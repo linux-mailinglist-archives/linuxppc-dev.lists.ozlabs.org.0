@@ -1,85 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-3845-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3846-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 621DC9E6FAD
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2024 14:57:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C865E9E7A4A
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2024 21:58:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y4Xqy0jmQz30W9;
-	Sat,  7 Dec 2024 00:57:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y4kBj1Vcrz2ywC;
+	Sat,  7 Dec 2024 07:58:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733493422;
-	cv=none; b=Vdw3voAZxPQDnp79b3ZzutsngcdtrW+TLBa1SOGpECEnb+FE6KQ4DIsXMUg6zjSYinWsjmbuNPUJpBVb4b6rVfORrArZ5DCBb0iegDvBsSoaf1kwiM/dSRAPde7lkTSwHz6n1g03HmNWKLiDbAw5XgCZnNusjzIC65i08IeJioC7VCIsGX+zs7fbxXrf3rga1D3Oo/38v1Z8QxulAWZ7CauE0L56YM2uZvXVe07kW38PoIayz92IdOVVnrKWV9hlt/xvZyOLqVrnjhQc3WLzY/FRbrKqxAG3t7B0BrBP770h3W/Dg9lIWE3CeXCXmKnMj+cIGpYof2n+u4I4XAQ/cw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733518733;
+	cv=none; b=JY60KTEfhwFS14dQSTMgYlMCACI8D06R2fn0mud6bGKT9Fl8rtE674aP7crAvJN6t3hx5Nep08IGy938KYEBoyrvSbeLXGRbkGjphY/Eny+EQMJXCgFajJ/9zvAJqcZN7Fbwc1RZALUHt5ZmeDTQ6+xA2SdJ1Fw47Ti2yLTyV8FwBznwbMS0O6/IUcvGRdMcFqo9JT+4/SFmCyNuRIICLI+d6p/JIldfXc52tMP66vLuySTl5knOyhtRprSbgWZTXa4Rr0v2PpEI2pSfIrPRdb27+FfJg8NUjRMYwWGH4kXNOxSGSk866FNyNgOO+ASCD8J2FUnXopQ4l9jQDrTBMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733493422; c=relaxed/relaxed;
-	bh=2VvAnUtmxhMMk6F7O3XnWBwviVIumRpdGIrNiXkcOoc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QxCas4zTDlbZEnhJhkSmTBvneWAVJOj1edSWYHLvlFOJI+AOWu+I8Qt+d6fddKSgh/zKgb0TqWi6wBmVlOCOPN/BPn0JYAhE0TWCAb56iSCiZ8EJJPNbATd3p5VZEVEVHMt4Xfj5bSzUXmLSaPh64Y/4cYw9WIl+eeHLDghxfbv7rifjlUgJKeHytu6CCUcjiyEXEM5PNaqaRVqBLZQ+LoXtQUOPX6hZUcGqEFnQmTpz5Ir2z9+kvcrgUD1UC7CSTwTUV5/49m4b/phqPAjiktH+SbLEGQLveQ2Hc67MVP9UwEPpjMfUuh32lEZFNkwTzxEerYmR5TUdnHm0VqtQdg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I623HFBA; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1733518733; c=relaxed/relaxed;
+	bh=M9PuEUd7fHK0twjnpmT4sQ2WiGKSyXN5nPrU+06sRxI=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=kt4MvkPI0ojMeYcr0kTI1OtuF0OLTJjivY9EgyyEU1yQKXdKCflGp3U2T5CpLmDzcalUqHaJ35JbnDTO5Wz96nn0e3KtqEJth6A+40nn3yKTO9mCcPWsa4kTPDmkg8jxO10wtnDs3/01ObDbxDN2XjVUex+MggzHXWSNidcYht6KJoY4lZbsVcvMAckzGtNRoKoIClzy0PKObO7PaXV/Nzol2O6nf0nyTwChq/PP51BAFIMdWLB+A/bpLkVfBkDxSyX/U1Asq36XV3D7uIey+5Z6CuaSTqHBMyq6LaXkL+tuazBgxfXlyfNhpIkqHEQf7cVhMedBBYCMHjaQtXvFfQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=opdIpAAC; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I623HFBA;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=opdIpAAC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y4Xqx06Mrz2y71
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Dec 2024 00:57:00 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B67UY7n000771;
-	Fri, 6 Dec 2024 13:56:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=2VvAnUtmxhMMk6F7O3XnWBwviVIumRpdGIrNiXkcO
-	oc=; b=I623HFBA1AeMiaayZmTj3kjVU75tzgchmJyHFXca7xaTnKmDHskpEBLvV
-	c2i88/0hhkAr7ARLArq/VpYkdRtcfisqha4S7o3bkFhj+tUaQVinUauwW0lV709U
-	HVlL9wmBP2r0gJ2OPcWVjNmwUiBcUOlIGRoHqqc9V3yUWq70+utNQlicga15Uz2L
-	O18SDU564YBHegGR0ZMwuFQybgq0sVeLwcmlJbExQG2miDZbPLeXJ+JGiqmdkXaP
-	TmF5f/X5HBuExPLCc8Zeae5edyy9tkugJTxFv3wdljRp5x6qF+ERbDsbMYTFHJR3
-	IoV23UaBBxLVj72RwKXbUAFlt8oWA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bvxksgrx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 13:56:52 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B6DupYG007143;
-	Fri, 6 Dec 2024 13:56:51 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bvxksgrw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 13:56:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B69mwY9007467;
-	Fri, 6 Dec 2024 13:56:51 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 438f8jxrtu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 13:56:51 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B6Dulmm31654516
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Dec 2024 13:56:47 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 83BDA20043;
-	Fri,  6 Dec 2024 13:56:47 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B5AEC20040;
-	Fri,  6 Dec 2024 13:56:41 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.245.143])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Dec 2024 13:56:41 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: [PATCH] tools/perf/arch/powerpc: Add register mask for power11 PVR in extended regs
-Date: Fri,  6 Dec 2024 19:26:37 +0530
-Message-Id: <20241206135637.36166-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y4kBg3pqhz2xjM
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Dec 2024 07:58:51 +1100 (AEDT)
+Received: from [100.65.128.154] (unknown [20.236.11.102])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8B63620ACD7A;
+	Fri,  6 Dec 2024 12:58:18 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8B63620ACD7A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1733518699;
+	bh=M9PuEUd7fHK0twjnpmT4sQ2WiGKSyXN5nPrU+06sRxI=;
+	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+	b=opdIpAACnQeStJ33oACe6p52ZM8f0Sws7Fv8oVZEtnJ34oxYkj2Ifncn0UBE7+8VM
+	 /Rer5IHWNKL+Om4cBhthsawIs+kQdevr3ykVw21CBvfVnNLhAZ1lcWLQbVr0aJDoH2
+	 0Lv+tHrW7mbf2ysXMzyMfTT7x/zNVB+cEVkkvmJU=
+Message-ID: <dab77729-682f-4182-9fb2-cd522ac29b5f@linux.microsoft.com>
+Date: Fri, 6 Dec 2024 12:58:17 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,60 +50,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0DRLT-rEuHGmPWYrKzBJijAP1s6fxZfy
-X-Proofpoint-ORIG-GUID: dhBZ0ROkcyuB7GAbcfJlCqU6k1RPxCLP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- malwarescore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501
- suspectscore=0 spamscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412060102
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+User-Agent: Mozilla Thunderbird
+Cc: eahariha@linux.microsoft.com, netfilter-devel@vger.kernel.org,
+ coreteam@netfilter.org, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, cocci@inria.fr,
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-mm@kvack.org,
+ linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
+ live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, oss-drivers@corigine.com,
+ linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
+Subject: Re: [PATCH v2 00/21] Converge on using secs_to_jiffies()
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <b9fcb12a-b7a4-4c33-836e-67109ce07deb@intel.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
+Content-Language: en-US
+In-Reply-To: <b9fcb12a-b7a4-4c33-836e-67109ce07deb@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Perf tools side uses extended mask to display the platform
-supported register names (with -I? option) to the user
-and also send this mask to the kernel to capture the extended registers
-as part of each sample. This mask value is decided based on
-the processor version ( from PVR ).
+On 11/29/2024 4:57 AM, Przemek Kitszel wrote:
+> 
+> [removed most non-list recipients, it's just too much]
+> 
+> On 11/15/24 10:26 PM, Easwar Hariharan wrote:
+<snip>
+>>
+>> ---
+>> Changes in v2:
+>> - EDITME: describe what is new in this series revision.
+>> - EDITME: use bulletpoints and terse descriptions.
+>> - Link to v1: https://lore.kernel.org/r/20241115-converge-secs-to-
+>> jiffies-v1-0-19aadc34941b@linux.microsoft.com
+> 
+> that is not a proper changelog, you were supposed to edit those
+> placeholder entries; please look around for examples
+> 
+> There is also just too much recipients. Please split up your patches
+> into smaller pieces. You will also learn the process on a smaller
+> sample.
+> 
+> And definitively please wait for 48h before reposting such big series.
 
-Add PVR value for power11 to enable capturing the extended regs
-as part of sample in power11.
+Yes, sorry, I sent out a v2 in a moment of panic on including the
+already accepted patch in v1. I failed to edit the changelog in that
+same panic. I'll try to not panic and do better in the future.
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
+> 
+> Regarding code - you could also convert msecs_to_jiffies(const * HZ),
+> there are 10 that are greppable.
+> 
 
- tools/perf/arch/powerpc/util/perf_regs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Those seem to be mistakes. const*HZ is a seconds-denominated timeout,
+being passed to msecs_to_jiffies() which will treat it as a
+millisecond-denominated timeout resulting in an excessively long
+timeout. I suppose that's better than a too-short timeout, and
+apparently it's been working fine all along since hardware responds
+before the too-long timeout expires. Half of them are in
+drivers/scsi/arcmsr/arcmsr_hba.c and the pattern has apparently been
+there since 2010.
 
-diff --git a/tools/perf/arch/powerpc/util/perf_regs.c b/tools/perf/arch/powerpc/util/perf_regs.c
-index e8e6e6fc6f17..bd36cfd420a2 100644
---- a/tools/perf/arch/powerpc/util/perf_regs.c
-+++ b/tools/perf/arch/powerpc/util/perf_regs.c
-@@ -16,6 +16,7 @@
- 
- #define PVR_POWER9		0x004E
- #define PVR_POWER10		0x0080
-+#define PVR_POWER11		0x0082
- 
- static const struct sample_reg sample_reg_masks[] = {
- 	SMPL_REG(r0, PERF_REG_POWERPC_R0),
-@@ -207,7 +208,7 @@ uint64_t arch__intr_reg_mask(void)
- 	version = (((mfspr(SPRN_PVR)) >>  16) & 0xFFFF);
- 	if (version == PVR_POWER9)
- 		extended_mask = PERF_REG_PMU_MASK_300;
--	else if (version == PVR_POWER10)
-+	else if ((version == PVR_POWER10) || (version == PVR_POWER11))
- 		extended_mask = PERF_REG_PMU_MASK_31;
- 	else
- 		return mask;
--- 
-2.43.5
-
+Thanks,
+Easwar
 
