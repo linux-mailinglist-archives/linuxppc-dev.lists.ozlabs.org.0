@@ -1,84 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-3844-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3845-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6D7B9E6F96
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2024 14:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 621DC9E6FAD
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  6 Dec 2024 14:57:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y4Xlm5LTRz2yVV;
-	Sat,  7 Dec 2024 00:53:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y4Xqy0jmQz30W9;
+	Sat,  7 Dec 2024 00:57:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733493204;
-	cv=none; b=EtFaPwVyqUV64StAVXCDK3LtUXf55SDMetP9JhgdC0WaU14WZO6gKdEiDH6upFLY3zjVxYJzLT0NCYc5K2wtxbqnFN0QUN+2D72K0ZpTRQpimYs8ap1+4FQ+eYTfW7aGzr5TgOQaNbQ7lBU46QOqAkKRu6t80T/i+Wa54Kq3Il751deBYG5RsHTUnS39GdTDa+7e61e9ACldL4iBd0ggmBbJfnTAhE2D/1WbJOOL3K2JTl5yEmRczS96zakzppVCwiuOezqw6Px4A/B/kV40dOw3w7SImJiZA6fnXiyo4Qs8811fzM6HiWJ1KwfcKto4AcIX0ptVpU0IsGCexQ80WQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733493422;
+	cv=none; b=Vdw3voAZxPQDnp79b3ZzutsngcdtrW+TLBa1SOGpECEnb+FE6KQ4DIsXMUg6zjSYinWsjmbuNPUJpBVb4b6rVfORrArZ5DCBb0iegDvBsSoaf1kwiM/dSRAPde7lkTSwHz6n1g03HmNWKLiDbAw5XgCZnNusjzIC65i08IeJioC7VCIsGX+zs7fbxXrf3rga1D3Oo/38v1Z8QxulAWZ7CauE0L56YM2uZvXVe07kW38PoIayz92IdOVVnrKWV9hlt/xvZyOLqVrnjhQc3WLzY/FRbrKqxAG3t7B0BrBP770h3W/Dg9lIWE3CeXCXmKnMj+cIGpYof2n+u4I4XAQ/cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733493204; c=relaxed/relaxed;
-	bh=j6a/5nELmVvzW7RBn0lo+X1Ulo3HZGlYxE0pch8J/Gg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U16n1yphW9oD4Uy5yxOYlSMvZOWti1JftA6oL7iyyIOkiD7uBuX39PKEZzxaoOaDe6CgQKWiXEF/M+ITdJ6XL4HcxXq3RQHSA+XOQ5KCskkg6SRwTD5aLRt7F46BrsxxYAwHeck2yelz9lmUJAPrYO4QilR2nvURx0NbU16u0rCdaRZa++rmbTPUIhA56N42Xj688Gwv6phYsW6+WE/q2LVNHMqluqlCf7WzTMp6ahQH8Hh3Kv12HbbI/GsaxZrHvazQKYWfODkwV/Bvg64C33jYMND6G9YD0sFzNDceYkVDS5duE2OjHgsg3gVDhzpMMEULchv6U8EPkARYmDxPNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hz4kGGB6; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+	t=1733493422; c=relaxed/relaxed;
+	bh=2VvAnUtmxhMMk6F7O3XnWBwviVIumRpdGIrNiXkcOoc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=QxCas4zTDlbZEnhJhkSmTBvneWAVJOj1edSWYHLvlFOJI+AOWu+I8Qt+d6fddKSgh/zKgb0TqWi6wBmVlOCOPN/BPn0JYAhE0TWCAb56iSCiZ8EJJPNbATd3p5VZEVEVHMt4Xfj5bSzUXmLSaPh64Y/4cYw9WIl+eeHLDghxfbv7rifjlUgJKeHytu6CCUcjiyEXEM5PNaqaRVqBLZQ+LoXtQUOPX6hZUcGqEFnQmTpz5Ir2z9+kvcrgUD1UC7CSTwTUV5/49m4b/phqPAjiktH+SbLEGQLveQ2Hc67MVP9UwEPpjMfUuh32lEZFNkwTzxEerYmR5TUdnHm0VqtQdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I623HFBA; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hz4kGGB6;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I623HFBA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y4Xll3Gt9z2y71
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Dec 2024 00:53:23 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6DRdPd010817;
-	Fri, 6 Dec 2024 13:53:17 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y4Xqx06Mrz2y71
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  7 Dec 2024 00:57:00 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B67UY7n000771;
+	Fri, 6 Dec 2024 13:56:52 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=j6a/5nELmVvzW7RBn0lo+X1Ulo3HZGlYxE0pch8J/
-	Gg=; b=hz4kGGB6IdjFe7t0mD2Gx7opnF2f77J08DxNCpkVWtVGnoFN6otT9r5+q
-	mhifmwCS4fw2B3nAZORsyDK+iZTVK3R+rl1hruyIPebJWhVEs2m4htXy1D+E1+5f
-	wplcSYRvsQTy8VRv+9d/cXRC2bKmDdLBD5bfi6gJxQAWqlTfkZG9D+xFdSdwR0sq
-	lSzAy2kwt5Bu0bahqtkIAPflGTMF0acinCzqMMhniT96kTNGGuXq8BB+agS3osn/
-	0qJdNKgL2y+w7/pKKUoPxQkV4P5dRHT8VsWYo6G4rBPoGOxIDhbII6OAEl1QmVbx
-	rEW9rUvwUUL/JcYvz20CpmtpV1DFg==
+	:subject:to; s=pp1; bh=2VvAnUtmxhMMk6F7O3XnWBwviVIumRpdGIrNiXkcO
+	oc=; b=I623HFBA1AeMiaayZmTj3kjVU75tzgchmJyHFXca7xaTnKmDHskpEBLvV
+	c2i88/0hhkAr7ARLArq/VpYkdRtcfisqha4S7o3bkFhj+tUaQVinUauwW0lV709U
+	HVlL9wmBP2r0gJ2OPcWVjNmwUiBcUOlIGRoHqqc9V3yUWq70+utNQlicga15Uz2L
+	O18SDU564YBHegGR0ZMwuFQybgq0sVeLwcmlJbExQG2miDZbPLeXJ+JGiqmdkXaP
+	TmF5f/X5HBuExPLCc8Zeae5edyy9tkugJTxFv3wdljRp5x6qF+ERbDsbMYTFHJR3
+	IoV23UaBBxLVj72RwKXbUAFlt8oWA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43b24rh9t9-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bvxksgrx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 13:53:17 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B6DlBSX030722;
-	Fri, 6 Dec 2024 13:53:16 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43b24rh9t6-1
+	Fri, 06 Dec 2024 13:56:52 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B6DupYG007143;
+	Fri, 6 Dec 2024 13:56:51 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43bvxksgrw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 13:53:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B6Ahbms023542;
-	Fri, 6 Dec 2024 13:53:15 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 438e1ndthd-1
+	Fri, 06 Dec 2024 13:56:51 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B69mwY9007467;
+	Fri, 6 Dec 2024 13:56:51 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 438f8jxrtu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 06 Dec 2024 13:53:15 +0000
+	Fri, 06 Dec 2024 13:56:51 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B6DrBtl48497106
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B6Dulmm31654516
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 6 Dec 2024 13:53:11 GMT
+	Fri, 6 Dec 2024 13:56:47 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9714420043;
-	Fri,  6 Dec 2024 13:53:11 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 83BDA20043;
+	Fri,  6 Dec 2024 13:56:47 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1AA7820040;
-	Fri,  6 Dec 2024 13:53:05 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B5AEC20040;
+	Fri,  6 Dec 2024 13:56:41 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.245.143])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  6 Dec 2024 13:53:04 +0000 (GMT)
+	Fri,  6 Dec 2024 13:56:41 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
         irogers@google.com, namhyung@kernel.org
 Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
         atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com, mpetlan@redhat.com, vmolnaro@redhat.com
-Subject: [PATCH V3] tools/perf/tests/shell/base_probe: Enhance print_overall_results to print summary information
-Date: Fri,  6 Dec 2024 19:22:54 +0530
-Message-Id: <20241206135254.35727-1-atrajeev@linux.vnet.ibm.com>
+        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Subject: [PATCH] tools/perf/arch/powerpc: Add register mask for power11 PVR in extended regs
+Date: Fri,  6 Dec 2024 19:26:37 +0530
+Message-Id: <20241206135637.36166-1-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -94,135 +94,57 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: T8M1A0-vWUG_BwSkCz0aMQqRKY4VZ6BB
-X-Proofpoint-ORIG-GUID: GYTlBYgYCohyvti5uNlTwmUku567qHIP
+X-Proofpoint-GUID: 0DRLT-rEuHGmPWYrKzBJijAP1s6fxZfy
+X-Proofpoint-ORIG-GUID: dhBZ0ROkcyuB7GAbcfJlCqU6k1RPxCLP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 suspectscore=0
- bulkscore=0 adultscore=0 impostorscore=0 priorityscore=1501
- lowpriorityscore=0 clxscore=1015 mlxscore=0 spamscore=0 malwarescore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 spamscore=0 adultscore=0 mlxlogscore=999 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2412060102
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Currently print_overall_results prints the number of
-fails in the summary, example from base_probe tests in
-testsuite_probe:
+Perf tools side uses extended mask to display the platform
+supported register names (with -I? option) to the user
+and also send this mask to the kernel to capture the extended registers
+as part of each sample. This mask value is decided based on
+the processor version ( from PVR ).
 
- ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
-	11 failures found
-
-test_invalid_options contains multiple tests and out
-of that 11 failed. Sometimes it could happen that it
-is due to missing dependency in the build or environment
-dependency.
-
-Example, perf probe -L requires DWARF enabled. otherwise
-it fails as below:
- ./perf probe -L
-  Error: switch `L' is not available because NO_DWARF=1
-
-"-L" is tested as one of the option in :
-   for opt in '-a' '-d' '-L' '-V'; do
-   <<perf probe test>>
-   print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "missing argument
-	for $opt"
-
-Here -a and -d doesn't require DWARF. Similarly there
-are few other tests requiring DWARF. To hint the user that
-missing dwarf could be one issue, update print_overall_results
-to print a comment string along with summary hinting the possible
-cause. Update test_invalid_options.sh and test_line_semantics.sh
-to pass the info about dwarf requirement since these tests
-failed when perf is built without DWARF. Use the check for
-presence of dwarf with "perf check feature" and append the
-hint message based on the result.
-
-With the change:
- ## [ FAIL ] ## perf_probe :: test_invalid_options SUMMARY ::
- 11 failures found :: Some of the tests need DWARF to run
+Add PVR value for power11 to enable capturing the extended regs
+as part of sample in power11.
 
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
-Changelog:
-v1 -> v2
- Check presence of dwarf using "perf check feature". Add
- failure hint message for dwarf based on this check
 
-v2 -> v3
- Check for empty task comment to avoid trailing space
- at the end as suggested by Michael Petlan
+ tools/perf/arch/powerpc/util/perf_regs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- tools/perf/tests/shell/base_probe/test_invalid_options.sh | 5 ++++-
- tools/perf/tests/shell/base_probe/test_line_semantics.sh  | 5 ++++-
- tools/perf/tests/shell/common/init.sh                     | 5 ++++-
- 3 files changed, 12 insertions(+), 3 deletions(-)
-
-diff --git a/tools/perf/tests/shell/base_probe/test_invalid_options.sh b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-index 1fedfd8b0d0d..c51d8d9bfdb7 100755
---- a/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-+++ b/tools/perf/tests/shell/base_probe/test_invalid_options.sh
-@@ -22,6 +22,9 @@ if ! check_kprobes_available; then
- 	exit 0
- fi
+diff --git a/tools/perf/arch/powerpc/util/perf_regs.c b/tools/perf/arch/powerpc/util/perf_regs.c
+index e8e6e6fc6f17..bd36cfd420a2 100644
+--- a/tools/perf/arch/powerpc/util/perf_regs.c
++++ b/tools/perf/arch/powerpc/util/perf_regs.c
+@@ -16,6 +16,7 @@
  
-+# Check for presence of dwarf
-+$CMD_PERF check feature -q dwarf
-+[ $? -ne 0 ] && HINT_FAIL="Some of the tests need DWARF to run"
+ #define PVR_POWER9		0x004E
+ #define PVR_POWER10		0x0080
++#define PVR_POWER11		0x0082
  
- ### missing argument
- 
-@@ -75,5 +78,5 @@ done
- 
- 
- # print overall results
--print_overall_results "$TEST_RESULT"
-+print_overall_results "$TEST_RESULT" $HINT_FAIL
- exit $?
-diff --git a/tools/perf/tests/shell/base_probe/test_line_semantics.sh b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-index d8f4bde0f585..f5d3b6e8d0d6 100755
---- a/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-+++ b/tools/perf/tests/shell/base_probe/test_line_semantics.sh
-@@ -23,6 +23,9 @@ if ! check_kprobes_available; then
- 	exit 0
- fi
- 
-+# Check for presence of dwarf
-+$CMD_PERF check feature -q dwarf
-+[ $? -ne 0 ] && HINT_FAIL="Some of the tests need DWARF to run"
- 
- ### acceptable --line descriptions
- 
-@@ -51,5 +54,5 @@ done
- 
- 
- # print overall results
--print_overall_results "$TEST_RESULT"
-+print_overall_results "$TEST_RESULT" $HINT_FAIL
- exit $?
-diff --git a/tools/perf/tests/shell/common/init.sh b/tools/perf/tests/shell/common/init.sh
-index 075f17623c8e..259706ef5899 100644
---- a/tools/perf/tests/shell/common/init.sh
-+++ b/tools/perf/tests/shell/common/init.sh
-@@ -46,10 +46,13 @@ print_results()
- print_overall_results()
- {
- 	RETVAL="$1"; shift
-+	TASK_COMMENT="$*"
-+	test -n "$TASK_COMMENT" && TASK_COMMENT=":: $TASK_COMMENT"
-+
- 	if [ $RETVAL -eq 0 ]; then
- 		_echo "$MALLPASS## [ PASS ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY"
+ static const struct sample_reg sample_reg_masks[] = {
+ 	SMPL_REG(r0, PERF_REG_POWERPC_R0),
+@@ -207,7 +208,7 @@ uint64_t arch__intr_reg_mask(void)
+ 	version = (((mfspr(SPRN_PVR)) >>  16) & 0xFFFF);
+ 	if (version == PVR_POWER9)
+ 		extended_mask = PERF_REG_PMU_MASK_300;
+-	else if (version == PVR_POWER10)
++	else if ((version == PVR_POWER10) || (version == PVR_POWER11))
+ 		extended_mask = PERF_REG_PMU_MASK_31;
  	else
--		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found"
-+		_echo "$MALLFAIL## [ FAIL ] ##$MEND $TEST_NAME :: $THIS_TEST_NAME SUMMARY :: $RETVAL failures found $TASK_COMMENT"
- 	fi
- 	return $RETVAL
- }
+ 		return mask;
 -- 
 2.43.5
 
