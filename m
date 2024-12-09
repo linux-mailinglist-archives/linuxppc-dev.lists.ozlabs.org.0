@@ -1,86 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-3873-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3876-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E2579E9A25
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2024 16:15:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 631A69E9D3E
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2024 18:44:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6QQK1LG3z2ydG;
-	Tue, 10 Dec 2024 02:14:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6TkM5QV9z2yNt;
+	Tue, 10 Dec 2024 04:43:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733757289;
-	cv=none; b=bB0Twl0D/B4iS2ctpm7vxeZ8bONGlMSED4sw+SYpvV8TgbRCAsf9X1RPZYhBhcMmXVN8DQFx87NF4TKDOVUi1gPG4zqFEQ+xDZoG+vzsSs0RN+DigzeCovlEoFFiYPgE228NPtOWZanBwa+rAc09Kup9P+loG/ZAuS8Oyd9EMHRCobGcadgznswKG1VFjVyEuzMkL1ECLMQd2b3e/KX4OsTMM7FkB1AeA7KQS5ov6w0sZyLzlJeC7S1s9fskS40x9noNE76gqwTwZ5VcakqE2t3xDgdpd1PNNvODoaPfGQGf8+oxQwKoGoPOUObUyAEaC1Ib01O5CyEoRHJ/l5nLKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733766235;
+	cv=none; b=esruv1rUhWGmBrHxprvrCPmZw5DLPJkhXu2tMVwnZUxhJbWfdjx14oOnsCQN+8M+7BC8dck1dJyysB0/NONAbHd+VBdkDyutwm+11erZtDv/5d2Q2nJOrwa2A7tanXwF+sBTQrjdnRYGvxWncaOU2i2OlOqjptCYJyPVtMlDxvtAO2BnfDTB0ydsPjb7mm5CA/v/JK+UK6TKdCQHCQjS8ZOR504HSMoNlGHQ1+/N26JmcLZ6is/CCvJb74mWXjAr4Dm490rfmlDVjjjz094rWY/hiq0HPZOvRwnpNEGgsiWtT9nDWu2DDMMHEuzK7uwJ5mNOfS71/kSwpz1JxYgrbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733757289; c=relaxed/relaxed;
-	bh=BH5TwweUkqOnsc172vXfteFPatvOsrj0SVX8Z9/kJAI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N8DlAptjx+0Hl5EH+9I2i1cF3zOGqC3XjhJN/z+q0yRZwRZyo7d2sp7+Km8/4zDQ/JcuMRrMaQJljTkxh1XlxIOMA/6Kb2Z1aZZbRRdzqftaGVKvzr1yteeWJLYlMSDaxDGyVEe4QwNYvReuWnx+avO6emRViONiJmAPX4gec8Y3VYsttJsr4fToCl+E+IMwH7j3weKTdTbTEhoItiJ1LuwCSaSVUFyT/zM1XeqW4WY6ek2NtyAiRJw35KnctAK2C3NmGT+wmcmTHbe2xpJOQFpVvgbrdsUxsc6spKCJbdoFVVtDU3SeQU10IR8QF+cul3AcDA2LpbaHnkD9Vp3xyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TtMmdhRc; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1733766235; c=relaxed/relaxed;
+	bh=d8t4rQo4GlIJNr1Ck0WNYMLnLZ4WaSFJXClmAi03iA4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cq+DdLp3uy+OAy5WR+tCZI1HACylsV1tMuJ9h6HCqLwjy2JPU3AGG1dd9PN8GJniatO1Dr09YyivV+PnxcxNk/VYQg3FavrYC3Bue3lqyyOtegar/py4zn/aFuxd1ty5pzqQHF68BGJvur45S136FFxsYT11QEzTVgzQ8JtIG5De0FuTdUGTIkQnf49QbySIeBfXel4jyYs8tvJcTLMuGUSC11TDc5LwsRhios3jhel1E+6iaaNWipHU+2k5rP3NS0Mw/VuquNGKDJfz4Dm9hShZbFx/mtAk67RQx8OrFC9RGCRkJUgJ75iiv2h73dlH4OWbRUpf8gov9lgfZMEOLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=T5POOHB5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=andrii.nakryiko@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TtMmdhRc;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=T5POOHB5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=andrii.nakryiko@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6QQJ1bGDz2yZ1
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2024 02:14:48 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B99fpie030610;
-	Mon, 9 Dec 2024 15:14:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=BH5TwweUkqOnsc172
-	vXfteFPatvOsrj0SVX8Z9/kJAI=; b=TtMmdhRcp4DpKeloEAPAS9XbIwC5NpxNj
-	Q33Bh9Ck5fchUFp989l/15e8sfNID5VDfWthdO09EPzlltvquVMtFdgkCrCxBjmr
-	dUebWdLcowruaB6Y3/rA8SZ/mUBu+j/FpaRgk2K6lyeFqYqC5csurmFHJvt+5rPV
-	3ZzME0psc+AwCidq9tLXWsjBO97af1t+TLDrWXAHiclH5V+sJTzx4r4QntGfHAI1
-	FsqWY0svkmmhjkjezKwl06ird25O+w4+wx0v0GWjOlC9lgV+yoAiMpHJZpnvn4cv
-	QZCzaNH86BuAlTCR2BHoAaIaX8MyNpQCab8rl+YmcsBixe0wKmsEw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cdv8j2cw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 15:14:37 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B9FEbCJ025338;
-	Mon, 9 Dec 2024 15:14:37 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cdv8j2cr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 15:14:37 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B9EAMQT000572;
-	Mon, 9 Dec 2024 15:14:35 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d1pmy66k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 15:14:35 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B9FEXbq59179342
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Dec 2024 15:14:33 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A11BD20043;
-	Mon,  9 Dec 2024 15:14:33 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9928B2004B;
-	Mon,  9 Dec 2024 15:14:31 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.38.185])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  9 Dec 2024 15:14:31 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen@kernel.org, shuah@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 3/3] selftest/powerpc/ptrace: Cleanup duplicate macro definitions
-Date: Mon,  9 Dec 2024 20:44:18 +0530
-Message-ID: <20241209151418.348085-3-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241209151418.348085-1-maddy@linux.ibm.com>
-References: <20241209151418.348085-1-maddy@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6TkL3Jwkz2yF6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2024 04:43:52 +1100 (AEDT)
+Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-2167141dfa1so28455ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Dec 2024 09:43:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1733766228; x=1734371028; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d8t4rQo4GlIJNr1Ck0WNYMLnLZ4WaSFJXClmAi03iA4=;
+        b=T5POOHB5lVkhJ/yLfZvN4CEFOCQ4STIwxzdy41wN19n1RUgFq0vUuVJYcbxkBT4EiG
+         X5dz7Js//dMHL4LwOTgSpIU1x6nVV2Jsb3mrQf4PoXHyTFG2rndhWNYSxFfKavDSJs3S
+         oo+6eozq6CrQUQYiaHbnQszL9N1AZRFR51X5/WO2oPzmleWahMT1Bx13iGtp8p6J5Kl+
+         noVGOZYSkVHftFyg7McZtedneZ+B1vW2c9a3LJEjJxvwYqG6pEFD8OZ27nXbVXipR2Pl
+         gEEQmNHiPiFlzKxFD40lgAZUKxo1KMAd/e3UYk9kNVneWJ8sEXFSiEc7SvJS4ZhCe1fx
+         YDYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1733766228; x=1734371028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=d8t4rQo4GlIJNr1Ck0WNYMLnLZ4WaSFJXClmAi03iA4=;
+        b=A2knB0TF06dNzXDirTRvtzn+0orPdm8FCh6AnYOBoNB2yYvdacxfLoCsGqQGp2uzdv
+         QtTyXKA1TMtALXwkRKRDP9Z+nHZGz+NSzpDpbrCaFb7FO3qpcyrjWzwSQzG3kVpVslnm
+         Q+2Mg2A8jcZ5kKllxRe3aFhFfdOMw60KCI1dlYdO7ZbhPubU8kq9wcRlB6sQDlSJbkJ6
+         KRpgJJKxFnt3RCQbMon2DFtC3oiNWRZ5329EO/YJcZ3EnZqpn3VfV2U11QJJ8zzWDjwt
+         thlbix5q4yNwPm/4hVXQiCdjkIbLeIqVX5ysLbyJ6wc+hpJodkZU4jSKtt04MG76gpo1
+         URuw==
+X-Forwarded-Encrypted: i=1; AJvYcCULth6ukhH7m2qjS+0Pa48zwD/JRQyokhhbz9XuSkJko56QvMFJhUr059cBsxowzpSuxso+nBOcgRQOHP8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw+ejPreEASj4mO18mWCpwGQ3UMqNzPJrR7LSMaih99bzQ0JqIQ
+	LBrZ6ttOFnzVc2HzVGnhadeJLoZF3PeeLHFffmB8+i/x0svkKSONBVaLQCjl/tTIkN9x+42DozJ
+	LN+I3ITOLcrN59Luwn35wUuaQWvE=
+X-Gm-Gg: ASbGncvFJOeKm3VQAqji/OqyQqvAUlhICcKvjAUkSg1zUFs3Lja7UtPwfyvKNztElrq
+	Fq5pVg2BoIhGFIr3NobsHtjTB3yAuSSYexRi07JuaFi4OO78=
+X-Google-Smtp-Source: AGHT+IF0BTr20MkxNzRSFNpph/h8vHNhmBKsOAPeY6Y0QdSHKlV0GxM2a08SVsbCGBad04gFH5w/DXOJoS3+X7u/Wjg=
+X-Received: by 2002:a17:902:f541:b0:216:4676:dfb5 with SMTP id
+ d9443c01a7336-21670a3f62cmr3456875ad.21.1733766228322; Mon, 09 Dec 2024
+ 09:43:48 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,104 +76,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 7bscHaX4F1XZSuaSPKyuX4qUhvgbviZm
-X-Proofpoint-ORIG-GUID: sj-gzOJt_bnju5K1pGraPhwvZ-PPWFnP
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011 mlxscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0 mlxlogscore=904
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412090117
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <20241205-sysfs-const-bin_attr-simple-v1-0-4a4e4ced71e3@weissschuh.net>
+ <20241205-sysfs-const-bin_attr-simple-v1-3-4a4e4ced71e3@weissschuh.net>
+In-Reply-To: <20241205-sysfs-const-bin_attr-simple-v1-3-4a4e4ced71e3@weissschuh.net>
+From: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date: Mon, 9 Dec 2024 09:43:36 -0800
+Message-ID: <CAEf4BzYtD-njaaSr8zHK3ay0hzWFHamJ+DEqoXOcjM9LDdY4Zw@mail.gmail.com>
+Subject: Re: [PATCH 3/4] btf: Switch vmlinux BTF attribute to sysfs_bin_attr_simple_read()
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
+	Armin Wolf <W_Armin@gmx.de>, Hans de Goede <hdegoede@redhat.com>, 
+	=?UTF-8?Q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	platform-driver-x86@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Both core-pkey.c and ptrace-pkey.c tests have similar macro
-definitions, move them to "pkeys.h" and remove the macro
-definitions from the C file.
+On Thu, Dec 5, 2024 at 9:35=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@weisssc=
+huh.net> wrote:
+>
+> The generic function from the sysfs core can replace the custom one.
+>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <linux@weissschuh.net>
+>
+> ---
+> This is a replacement for [0], as Alexei was not happy about BIN_ATTR_SIM=
+PLE_RO()
+>
+> [0] https://lore.kernel.org/lkml/20241122-sysfs-const-bin_attr-bpf-v1-1-8=
+23aea399b53@weissschuh.net/
+> ---
+>  kernel/bpf/sysfs_btf.c | 12 ++----------
+>  1 file changed, 2 insertions(+), 10 deletions(-)
+>
 
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
- tools/testing/selftests/powerpc/include/pkeys.h      | 8 ++++++++
- tools/testing/selftests/powerpc/ptrace/core-pkey.c   | 8 --------
- tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 8 --------
- 3 files changed, 8 insertions(+), 16 deletions(-)
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
 
-diff --git a/tools/testing/selftests/powerpc/include/pkeys.h b/tools/testing/selftests/powerpc/include/pkeys.h
-index 51729d9a7111..3a0129467de6 100644
---- a/tools/testing/selftests/powerpc/include/pkeys.h
-+++ b/tools/testing/selftests/powerpc/include/pkeys.h
-@@ -35,10 +35,18 @@
- #define __NR_pkey_alloc		384
- #define __NR_pkey_free		385
- 
-+#ifndef NT_PPC_PKEY
-+#define NT_PPC_PKEY		0x110
-+#endif
-+
- #define PKEY_BITS_PER_PKEY	2
- #define NR_PKEYS		32
- #define PKEY_BITS_MASK		((1UL << PKEY_BITS_PER_PKEY) - 1)
- 
-+#define AMR_BITS_PER_PKEY 2
-+#define PKEY_REG_BITS (sizeof(u64) * 8)
-+#define pkeyshift(pkey) (PKEY_REG_BITS - ((pkey + 1) * AMR_BITS_PER_PKEY))
-+
- inline unsigned long pkeyreg_get(void)
- {
- 	return mfspr(SPRN_AMR);
-diff --git a/tools/testing/selftests/powerpc/ptrace/core-pkey.c b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-index 31c9bf6d95db..f8ff05e5bf6e 100644
---- a/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-+++ b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-@@ -18,18 +18,10 @@
- #include "child.h"
- #include "pkeys.h"
- 
--#ifndef NT_PPC_PKEY
--#define NT_PPC_PKEY		0x110
--#endif
--
- #ifndef PKEY_DISABLE_EXECUTE
- #define PKEY_DISABLE_EXECUTE	0x4
- #endif
- 
--#define AMR_BITS_PER_PKEY 2
--#define PKEY_REG_BITS (sizeof(u64) * 8)
--#define pkeyshift(pkey) (PKEY_REG_BITS - ((pkey + 1) * AMR_BITS_PER_PKEY))
--
- #define CORE_FILE_LIMIT	(5 * 1024 * 1024)	/* 5 MB should be enough */
- 
- static const char core_pattern_file[] = "/proc/sys/kernel/core_pattern";
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-index 6893ed096457..5d528d0ea9d1 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-@@ -9,18 +9,10 @@
- #include "child.h"
- #include "pkeys.h"
- 
--#ifndef NT_PPC_PKEY
--#define NT_PPC_PKEY		0x110
--#endif
--
- #ifndef PKEY_DISABLE_EXECUTE
- #define PKEY_DISABLE_EXECUTE	0x4
- #endif
- 
--#define AMR_BITS_PER_PKEY 2
--#define PKEY_REG_BITS (sizeof(u64) * 8)
--#define pkeyshift(pkey) (PKEY_REG_BITS - ((pkey + 1) * AMR_BITS_PER_PKEY))
--
- static const char user_read[] = "[User Read (Running)]";
- static const char user_write[] = "[User Write (Running)]";
- static const char ptrace_read_running[] = "[Ptrace Read (Running)]";
--- 
-2.47.0
-
+> diff --git a/kernel/bpf/sysfs_btf.c b/kernel/bpf/sysfs_btf.c
+> index fedb54c94cdb830a4890d33677dcc5a6e236c13f..81d6cf90584a7157929c50f62=
+a5c6862e7a3d081 100644
+> --- a/kernel/bpf/sysfs_btf.c
+> +++ b/kernel/bpf/sysfs_btf.c
+> @@ -12,24 +12,16 @@
+>  extern char __start_BTF[];
+>  extern char __stop_BTF[];
+>
+> -static ssize_t
+> -btf_vmlinux_read(struct file *file, struct kobject *kobj,
+> -                struct bin_attribute *bin_attr,
+> -                char *buf, loff_t off, size_t len)
+> -{
+> -       memcpy(buf, __start_BTF + off, len);
+> -       return len;
+> -}
+> -
+>  static struct bin_attribute bin_attr_btf_vmlinux __ro_after_init =3D {
+>         .attr =3D { .name =3D "vmlinux", .mode =3D 0444, },
+> -       .read =3D btf_vmlinux_read,
+> +       .read_new =3D sysfs_bin_attr_simple_read,
+>  };
+>
+>  struct kobject *btf_kobj;
+>
+>  static int __init btf_vmlinux_init(void)
+>  {
+> +       bin_attr_btf_vmlinux.private =3D __start_BTF;
+>         bin_attr_btf_vmlinux.size =3D __stop_BTF - __start_BTF;
+>
+>         if (bin_attr_btf_vmlinux.size =3D=3D 0)
+>
+> --
+> 2.47.1
+>
 
