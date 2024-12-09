@@ -1,78 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-3864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3869-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1453C9E8D2C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2024 09:19:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51C049E9018
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2024 11:26:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6FCB6myjz2yVv;
-	Mon,  9 Dec 2024 19:19:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6J165Ws8z2xfR;
+	Mon,  9 Dec 2024 21:26:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733732374;
-	cv=none; b=N16zwNnh8WlpDjGGxIAYn60QpVjm2cfyS6x2bTc2MTb7fN+q9qpgnY6wNtgE0bqpbvNGRQkyG5XToIfY0nfYxgtnc+/ekWBl4sg4ucroxAC7cBYdjxUn+EjVKwece8O3EdTYa9yxUAQ5PRQH7vuNFXfdHwyS8ln/8AsP0qfx8BrHu0nVoA49SS4YMfVQ+wIIo8XEkcyD/YQ/v4e10mB2fuDEgNbGAbvNi6ds90CJ6tsy0oftlvifZQwEzD95CXlXeRrhfyMpSw0487FgRcwMUJG4ljsgHYqP2djD6KdSLZNH9G/BE+rY55T5eCP9zhOUa7GoD64w+PRafeeFXu5R3w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733736546;
+	cv=none; b=h4nhzC4+Y4WB+s1KhEW1aSE550aW5z8J/gAR+Ms29+A2bcmJWxQSqprOTyQUEgZtfKKrcuS+QRKlrO+i/vnPGYShC6Ks36DkrgY/tGDyDtuRBqEx6869PKjYNHQwlgXCTml7NyfzhoDuhWcrHgRL+EWOcoVCLE2/wNAnaf0hn+ZMPSlwleBjDmIcxsZGiIaYdiu3poe0JeeYsnZZsumVKMA2hoztE4+v0EI1oLpCUzFqXX6dKyZnOlJSBFlC2WAM2eQh1gSiws321T7rAyktfQp1I8ZNjAoNnMuIkplmyYxZRfGk9L6nJU6tuAbhxOJ/qWpFkysD0psyVPkBTGQbcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733732374; c=relaxed/relaxed;
-	bh=Y9uud5ruM6O8JA3vLeQfAAwPVqwN8jw+GdGTqPpU5WM=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RYjWZh6pIVrMyYJXlXVXyQEISKJMqcejpj0SDAGrT5dAhmQAZldeGSCvVsA3CV+w+qbCfHDUrhx2iEhmmDCD2+nndpGuf4SKu6+jpsR6HIfQKF/eke/Whlc7QmaXE2lrMObwRSUwowX4sgriDtHJvQyD36W03UlI+RMHU9x299rGu32dHnCPOH5Rkiq44j/aR38OF9IcftZOslK2MPHvP6OaJZp1cTifUh7tkxD0PmrehKKMayw2Lj0ZAky13PhOk7KJfH/14ppGOQys8GekFaajCPXvtK9IKW9F+AtwCsEUQfvXRVxxI8LK5UOeojnRRkgA3qjafTsfhh5wU47A0g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M5sIhcDm; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M5sIhcDm;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=huschle@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	t=1733736546; c=relaxed/relaxed;
+	bh=ulbn2gRU5MN0S+VZMneJpsyHlwuwCh9HUXmEX/tD+g4=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QJIkAeHNtQAbCTdm+u1XxdES5yH/L802QKOP1poeXVMUUEtEcsLoeH7TBwVk3zzGTCs62sRiu/eapK73xf3ljq++lnOHUuCPbN6dP+cPSgRgyBIqAD0gTEI/A/tgW62Z+DERjiJBXTWrKRWsQ8nWHpVAFexlQ6ZH0VegEyZj5H4v+lqESX2I8xDiAp4+Tl6nnlebZyRf+9O9MVOpQ1KNtitio6lutmMCFaeCGxd3NqwhuPrhwXTSm3GhjCW/to1BelD90sxU8krHnpqrDVFfv6lUqOHAtlDexrWz1qoZyCXempqQ9hqQH+AS2iujRtwqtwzrHgdDAbUAHodfUf17DQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=pangliyuan1@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=pangliyuan1@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 953 seconds by postgrey-1.37 at boromir; Mon, 09 Dec 2024 20:29:03 AEDT
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6FCB00Dfz2yVd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2024 19:19:33 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4B8NOkvp000529;
-	Mon, 9 Dec 2024 08:18:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Y9uud5
-	ruM6O8JA3vLeQfAAwPVqwN8jw+GdGTqPpU5WM=; b=M5sIhcDm/3G/epDf6wT9aq
-	tGk8dGfw4IOXZl02YhiMQtsX+oPNEjDZgf/pLL8lJMWJ2xylzERcKcY7tEK6SZ4+
-	GfrtygejRQB5aTRR2Eh0vdcy/BWp086JYTeJfIQjomAEzNv5Rqo9A0c4au+z/L6a
-	UTdv8PpSBVs2Pfb8OoojMyZG7wD6QjjjL6PnxYMyJy0ab1uDJaOcWuk8YJ1IvQaC
-	QOe15gA8hXTgITfV/GeMWJsOx5rqJ1kw7XuAg6b6/wOGt1JmEwgFB/6LQQ0l5+ko
-	OevbkDt0+1qOcyQtoQoZUtJPN4YK9Fet92OHpRy/K9PfOAWOsYmNpIs6BxA0s1Rg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cdv8g5nd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 08:18:51 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4B98IpFs016096;
-	Mon, 9 Dec 2024 08:18:51 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43cdv8g5na-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 08:18:51 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4B957Cju032734;
-	Mon, 9 Dec 2024 08:18:50 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43d0ps5wgw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 09 Dec 2024 08:18:50 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4B98Imqk65733056
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 9 Dec 2024 08:18:48 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C9D62004D;
-	Mon,  9 Dec 2024 08:18:48 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED04720043;
-	Mon,  9 Dec 2024 08:18:47 +0000 (GMT)
-Received: from [9.171.77.252] (unknown [9.171.77.252])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  9 Dec 2024 08:18:47 +0000 (GMT)
-Message-ID: <5e3c0502-1a28-483c-a831-6d1f814501da@linux.ibm.com>
-Date: Mon, 9 Dec 2024 09:18:51 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6GlM2f4kz2xVq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2024 20:29:00 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.48])
+	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4Y6GKX3tR5zhZVc;
+	Mon,  9 Dec 2024 17:10:08 +0800 (CST)
+Received: from kwepemd200025.china.huawei.com (unknown [7.221.188.181])
+	by mail.maildlp.com (Postfix) with ESMTPS id E76F118006C;
+	Mon,  9 Dec 2024 17:12:30 +0800 (CST)
+Received: from Linux-SUSE12SP5.huawei.com (10.67.136.247) by
+ kwepemd200025.china.huawei.com (7.221.188.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 9 Dec 2024 17:12:30 +0800
+From: pangliyuan <pangliyuan1@huawei.com>
+To: <linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>
+CC: <anju@linux.vnet.ibm.com>, <mhiramat@kernel.org>, <maddy@linux.ibm.com>,
+	<naveen@kernel.org>, <christophe.leroy@csgroup.eu>, <npiggin@gmail.com>,
+	<mpe@ellerman.id.au>, <wangfangpeng1@huawei.com>, <heyuqiang1@huawei.com>,
+	pangliyuan <pangliyuan1@huawei.com>
+Subject: [PATCH] powerpc/kprobes: don't save r13 register in kprobe context
+Date: Mon, 9 Dec 2024 17:10:39 +0800
+Message-ID: <20241209091039.72786-1-pangliyuan1@huawei.com>
+X-Mailer: git-send-email 2.12.3
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,110 +56,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Tobias Huschle <huschle@linux.ibm.com>
-Subject: Re: [RFC PATCH 2/2] s390/topology: Add initial implementation for
- selection of parked CPUs
-To: Shrikanth Hegde <sshegde@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        vschneid@redhat.com, linux-s390@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <20241204112149.25872-1-huschle@linux.ibm.com>
- <20241204112149.25872-3-huschle@linux.ibm.com>
- <1f7ad21c-372f-4d7d-b3dc-9a2fb194b704@linux.ibm.com>
-In-Reply-To: <1f7ad21c-372f-4d7d-b3dc-9a2fb194b704@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: G6Dqr1a2rHeB_Qv23cJ9bs_o2oSpnxIl
-X-Proofpoint-ORIG-GUID: aL5EcZ04MHp423ywKXRbgg7LWNalNb6c
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- impostorscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015 mlxscore=0
- malwarescore=0 adultscore=0 phishscore=0 suspectscore=0 mlxlogscore=999
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412090061
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain
+X-Originating-IP: [10.67.136.247]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemd200025.china.huawei.com (7.221.188.181)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+When CONFIG_STACKPROTECTOR_STRONG is enabled and FTRACE is disabled on
+powerpc64, repeatedly triggering the kprobe process may cause stack check
+failures and panic.
 
+Case:
+There is a kprobe(do nothing in handler) attached to the "shmem_get_inode",
+and a process A is creating file on tmpfs.
 
-On 05/12/2024 19:12, Shrikanth Hegde wrote:
-> 
-> 
-> On 12/4/24 16:51, Tobias Huschle wrote:
->> In this simplified example, vertical low CPUs are parked generally.
->> This will later be adjusted by making the parked state dependent
->> on the overall utilization on the underlying hypervisor.
->>
->> Vertical lows are always bound to the highest CPU IDs. This implies that
->> the three types of vertically polarized CPUs are always clustered by ID.
->> This has the following implications:
->> - There can be scheduler domains consisting of only vertical highs
->> - There can be scheduler domains consisting of only vertical lows
->>
-> 
-> A sched domain can have combination of these two as well. Is that not 
-> possible on s390?
+                           CPU0
+A |r13 = paca_ptrs[0], paca_ptrs[0]->canary=A->stack_canary
+  |touch a file on tmpfs
+  |shmem_mknod():
+  |    load A's canary through r13 and stored it in A's stack
+  |    shmem_get_inode():
+  |        enter kprobe first
+  |        optinsn_slot():
+  |            stored r13 (paca_ptrs[0]) in stack
 
-A combination is possible. It depends on the algorithm of the hypervisor 
-how many of those mixed groups might be possible.
+  ......
 
-> 
->> Signed-off-by: Tobias Huschle <huschle@linux.ibm.com>
->> ---
->>   arch/s390/include/asm/topology.h | 3 +++
->>   arch/s390/kernel/topology.c      | 5 +++++
->>   2 files changed, 8 insertions(+)
->>
->> diff --git a/arch/s390/include/asm/topology.h b/arch/s390/include/asm/ 
->> topology.h
->> index cef06bffad80..e86afeccde35 100644
->> --- a/arch/s390/include/asm/topology.h
->> +++ b/arch/s390/include/asm/topology.h
->> @@ -99,6 +99,9 @@ static inline int numa_node_id(void)
->>   #endif /* CONFIG_NUMA */
->> +#define arch_cpu_parked cpu_parked
->> +int cpu_parked(int cpu);
->> +
->>   #include <asm-generic/topology.h>
->>   #endif /* _ASM_S390_TOPOLOGY_H */
->> diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
->> index 4f9c301a705b..1032b65da574 100644
->> --- a/arch/s390/kernel/topology.c
->> +++ b/arch/s390/kernel/topology.c
->> @@ -299,6 +299,11 @@ void store_topology(struct sysinfo_15_1_x *info)
->>       stsi(info, 15, 1, topology_mnest_limit());
->>   }
->> +int cpu_parked(int cpu)
->> +{
->> +    return smp_cpu_get_polarization(cpu) == POLARIZATION_VL;
->> +}
-> 
-> Curious to know how this smp_cpu_get_polarization gets updated at 
-> runtime? is it done by add_cpus_to_mask?
+  ==> schedule,  B run on CPU0, A run on CPU1
 
-The polarization itself can get updated by the underlying hypervisor, 
-which passes that information on to the Linux kernel.
+			   CPU0
+B |r13 = paca_ptrs[0], paca_ptrs[0]->canary=B->stack_canary
+  |do something...
+                           CPU1
+A |            r13 = paca_ptrs[1], paca_ptrs[1]->canary=A->stack_canary
+  |            about to leave 'optinsn_slot', restore r13 from A's stack
+  |            r13 = paca_ptrs[0], paca_ptrs[0]->canary=B->stack_canary
+  |            leave optinsn_slot, back to shmem_get_inode
+  |        leave shmem_get_inode, back to shmem_mknod
+  |    do canary check in shmem_mknod, but canary stored in A's stack (A's
+       canary) doesn't match the canary loaded through r13 (B's canary),
+       so panic
 
-A future implementation will not rely on the polarization as the main 
-criterion but take more data points into account to allow a correct 
-adaption to the load of the system.
+When A(on CPU0) entring optinsn_slot, it stored r13(paca_ptrs[0]) in stack,
+then A is scheduled to CPU1 and restore r13 from A's stack when leaving
+'optinsn_slot'. Now A is running on CPU1 but r13 point to CPU0's
+paca_ptrs[0], at this time paca_ptrs[0]->__current points to another
+process B, which cause A use B's canary to do stack check and panic.
 
-Only using polarization would deny us the opportunity to overconsume on 
-our entitlement if the machine has enough spare capacity. This patch 
-just wants to be a tiny example on how this could be used.
+This can be simply fixed by not saving and restoring the r13 register,
+because on powerpc64, r13 is a special register that reserved to point
+to the current process, no need to restore the outdated r13 if scheduled
+had happened.
 
-> 
->> +
->>   static void __arch_update_dedicated_flag(void *arg)
->>   {
->>       if (topology_cpu_dedicated(smp_processor_id()))
+Fixes: 51c9c0843993 ("powerpc/kprobes: Implement Optprobes")
+Signed-off-by: pangliyuan <pangliyuan1@huawei.com>
+---
+ arch/powerpc/kernel/optprobes_head.S | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/powerpc/kernel/optprobes_head.S b/arch/powerpc/kernel/optprobes_head.S
+index 35932f45fb4e..bf0d77e62ba8 100644
+--- a/arch/powerpc/kernel/optprobes_head.S
++++ b/arch/powerpc/kernel/optprobes_head.S
+@@ -10,12 +10,12 @@
+ #include <asm/asm-offsets.h>
+ 
+ #ifdef CONFIG_PPC64
+-#define SAVE_30GPRS(base) SAVE_GPRS(2, 31, base)
+-#define REST_30GPRS(base) REST_GPRS(2, 31, base)
++#define SAVE_NEEDED_GPRS(base) SAVE_GPRS(2, 12, base); SAVE_GPRS(14, 31, base)
++#define REST_NEEDED_GPRS(base) REST_GPRS(2, 12, base); REST_GPRS(14, 31, base)
+ #define TEMPLATE_FOR_IMM_LOAD_INSNS	nop; nop; nop; nop; nop
+ #else
+-#define SAVE_30GPRS(base) stmw	r2, GPR2(base)
+-#define REST_30GPRS(base) lmw	r2, GPR2(base)
++#define SAVE_NEEDED_GPRS(base) stmw	r2, GPR2(base)
++#define REST_NEEDED_GPRS(base) lmw	r2, GPR2(base)
+ #define TEMPLATE_FOR_IMM_LOAD_INSNS	nop; nop; nop
+ #endif
+ 
+@@ -45,7 +45,7 @@ optprobe_template_entry:
+ 	/* Save the previous SP into stack */
+ 	addi	r0,r1,INT_FRAME_SIZE
+ 	PPC_STL	r0,GPR1(r1)
+-	SAVE_30GPRS(r1)
++	SAVE_NEEDED_GPRS(r1)
+ 	/* Save SPRS */
+ 	mfmsr	r5
+ 	PPC_STL	r5,_MSR(r1)
+@@ -123,7 +123,7 @@ optprobe_template_call_emulate:
+ 	PPC_LL	r5,_CCR(r1)
+ 	mtcr	r5
+ 	REST_GPR(0,r1)
+-	REST_30GPRS(r1)
++	REST_NEEDED_GPRS(r1)
+ 	/* Restore the previous SP */
+ 	addi	r1,r1,INT_FRAME_SIZE
+ 
+-- 
+2.37.7
 
 
