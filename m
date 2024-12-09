@@ -1,55 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-3868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3870-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C989E8F1D
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2024 10:48:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 790729E94A6
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  9 Dec 2024 13:45:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6H9q6tQxz2xWY;
-	Mon,  9 Dec 2024 20:48:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6M5v3xnWz2yFD;
+	Mon,  9 Dec 2024 23:45:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733737711;
-	cv=none; b=PLi5jo1NUv79WNAXRG0uW5ub1Ky5Qhd0S/Vr47yqZ0DlPBtI26e+PflZzlUTbP6LPY8mFnZQiZVDSidrQWgX+Hr0+ZdH4pA05FZLt0PyJ6mkY+jEByiYTRwSwwTACrcfHBRSUR6Dt6OCP7Ex+kSZVokFwJnTEfNfb5OQfDCK7Hhryb7bcW/9m2K9hV4z0awRDJVewTb4FtepSgur6DabgEkbd9p1Lkh2+h06663rYsDSXomS8AbG5vXjxxPYiFOFqN++JoeuxDGWH6P9Ezv4K1pPKm06nFAY80PE+rIbEMBWLmycpQsh2HAaOr58fmeMYh9E0qMAQj3+sWw5V/Ig5Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733748323;
+	cv=none; b=fNdaD7e+A5Cc2dN+HhHy1hrjoEurvXeGvVPeJPBrQhm51djfqxEdgBgf9j8Tbuuei4B5CgGbiN0UMs5vKXNj2HJb1fDvGbF6TOdTqe8mi877/OJwqe8wWqWsk3I67Y2lK4/4zfaIk+WXMJNP1r1HOWKQ3Wy+rwOUi5xDEUAoRSaaMNeikd46Mb1CL/z4dSIczyDrUEE5yYbB/x9qXkTqDLG0k6SBp+d/+CuYKv6h5nbziJCEFWzhg5AlC/VO7qjc9vyPpXO7X19ydMYRc9+A8640obyu0F8lAtkP9pUnm8WNKFd9K5j71Ja4UeO3brBb+Hbk/Owk65y5k3i7LfWNWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733737711; c=relaxed/relaxed;
-	bh=NoSyfg0H2xdXV8bVJGF6NwXUo5Fiq0F8nFCklb+ts3Y=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=e4tF9KQeytsaFVZdsxCHrbYV5ZySWKE+cBv91WnrxwLtgy3egNx2OwyuinzAIStH3dy4MqQUjflxCvXiwGl72k6LVvYSGLrxGKp8FgDjaOfnAMGCgnY/Mi8O7t91ICHca7JFHuCLuTEmQJWWE1Vw7D6HnUCcEO2Q1/qmURCLQ9kI697XXsOMOAWC2EADkNgCBtfI0H30PAc1V0OvqNjiACOJfrJD/GY3dJnaxmBL9v8vYdX2FXm4cCqJryfTqeJdy++hQv9V683NuzwSr050KOAeC+tNRf65w6Wu9YDQWwZKQNvhGqW97eqFwVrtEqBWrxHqBICXMDjBMvD6uo/jrg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6H9p74ySz2xHF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2024 20:48:30 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1C580175D;
-	Mon,  9 Dec 2024 01:48:28 -0800 (PST)
-Received: from udebian.localdomain (unknown [10.1.35.36])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E97E13F720;
-	Mon,  9 Dec 2024 01:47:57 -0800 (PST)
-From: Yury Khrustalev <yury.khrustalev@arm.com>
-To: linux-arch@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Sandipan Das <sandipan@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	x86@kernel.org,
-	linux-mm@kvack.org,
-	linux-kselftest@vger.kernel.org,
-	nd@arm.com,
-	Yury Khrustalev <yury.khrustalev@arm.com>
-Subject: [RESEND v4 3/3] selftests/powerpc: Use PKEY_UNRESTRICTED macro
-Date: Mon,  9 Dec 2024 09:47:19 +0000
-Message-Id: <20241209094719.2431126-4-yury.khrustalev@arm.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20241209094719.2431126-1-yury.khrustalev@arm.com>
-References: <20241209094719.2431126-1-yury.khrustalev@arm.com>
+	t=1733748323; c=relaxed/relaxed;
+	bh=ZJ7nOY4JZQnL45adJO0lC+Z9TbwWMhwmJf7E4yaDNec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JhpklayYk1V9ZDxgWN3jQyWQ/pzNqB1aPh2j26sTufmlKINr8cpg4G0Erdw8555Q+68A1bX2naq4muobHTAee3iWO/zBzXA0cIfz/vUoE/Y/MpMUPkEZcXHlsBvzZmb2UPH9jLL93tXfaVwjOO5UhLuaS8Pjgm5FA3cZdM/mmiaDMBz1vZzttTOh2c8tmevGncXDqMHxXQ4yYcZkGmDsu6NjyaJ9vfYfBwhWAcj2qM4jx5mW4lEG8M/Ta/ASS/oe7ajxGPUjwP2hN6Yx2aVlSfAo97gNIcPPCSVZ96cKA6qib4//LLc7qXfyhIdFl/JvP++Qtjrwg+0DFk6zlXVySw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6M5t20dCz2xWt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  9 Dec 2024 23:45:21 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Y6M5p179vz9tBf;
+	Mon,  9 Dec 2024 13:45:18 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ad8aC7rBW98b; Mon,  9 Dec 2024 13:45:18 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y6M5p0DxHz9tBd;
+	Mon,  9 Dec 2024 13:45:18 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E8A068B766;
+	Mon,  9 Dec 2024 13:45:17 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id OUa8UHFVNS_8; Mon,  9 Dec 2024 13:45:17 +0100 (CET)
+Received: from [10.25.209.139] (unknown [10.25.209.139])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A70C18B763;
+	Mon,  9 Dec 2024 13:45:17 +0100 (CET)
+Message-ID: <95a461ca-3ed6-4380-ad1a-da12e1109675@csgroup.eu>
+Date: Mon, 9 Dec 2024 13:45:17 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,117 +59,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 00/21] Converge on using secs_to_jiffies()
+To: Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+ Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
+ linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
+ ath11k@lists.infradead.org, linux-mm@kvack.org,
+ linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
+ linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
+ live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
+ etnaviv@lists.freedesktop.org, oss-drivers@corigine.com,
+ linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen <anna-maria@linutronix.de>
+References: <20241115-converge-secs-to-jiffies-v2-0-911fb7595e79@linux.microsoft.com>
+ <b9fcb12a-b7a4-4c33-836e-67109ce07deb@intel.com>
+ <dab77729-682f-4182-9fb2-cd522ac29b5f@linux.microsoft.com>
+ <72c8eb66-eb67-4f8b-b0c0-13f1aa001698@intel.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <72c8eb66-eb67-4f8b-b0c0-13f1aa001698@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Replace literal 0 with macro PKEY_UNRESTRICTED where pkey_*() functions
-are used in mm selftests for memory protection keys for ppc target.
 
-Signed-off-by: Yury Khrustalev <yury.khrustalev@arm.com>
-Suggested-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 
----
-Note that I couldn't build these tests so I would appreciate if someone
-could check this patch. Thank you!
----
- tools/testing/selftests/powerpc/include/pkeys.h      | 2 +-
- tools/testing/selftests/powerpc/mm/pkey_exec_prot.c  | 2 +-
- tools/testing/selftests/powerpc/mm/pkey_siginfo.c    | 2 +-
- tools/testing/selftests/powerpc/ptrace/core-pkey.c   | 6 +++---
- tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 6 +++---
- 5 files changed, 9 insertions(+), 9 deletions(-)
+Le 09/12/2024 à 13:01, Przemek Kitszel a écrit :
+> On 12/6/24 9:58 PM, Easwar Hariharan wrote:
+>> On 11/29/2024 4:57 AM, Przemek Kitszel wrote:
+>>>
+>>> [removed most non-list recipients, it's just too much]
+>>>
+>>> On 11/15/24 10:26 PM, Easwar Hariharan wrote:
+>> <snip>
+> 
+>>>
+>>> Regarding code - you could also convert msecs_to_jiffies(const * HZ),
+>>> there are 10 that are greppable.
+>>>
+>>
+>> Those seem to be mistakes. const*HZ is a seconds-denominated timeout,
+>> being passed to msecs_to_jiffies() which will treat it as a
+>> millisecond-denominated timeout resulting in an excessively long
+>> timeout. I suppose that's better than a too-short timeout, and
+>> apparently it's been working fine all along since hardware responds
+>> before the too-long timeout expires. Half of them are in
+>> drivers/scsi/arcmsr/arcmsr_hba.c and the pattern has apparently been
+>> there since 2010.
+> 
+> my point was that, the default value of HZ is 1000, and most of the code
+> that is just `$value*HZ` was meant as "$value seconds, in ms unit".
 
-diff --git a/tools/testing/selftests/powerpc/include/pkeys.h b/tools/testing/selftests/powerpc/include/pkeys.h
-index 51729d9a7111..430cb4bd7472 100644
---- a/tools/testing/selftests/powerpc/include/pkeys.h
-+++ b/tools/testing/selftests/powerpc/include/pkeys.h
-@@ -85,7 +85,7 @@ int pkeys_unsupported(void)
- 	SKIP_IF(!hash_mmu);
- 
- 	/* Check if the system call is supported */
--	pkey = sys_pkey_alloc(0, 0);
-+	pkey = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
- 	SKIP_IF(pkey < 0);
- 	sys_pkey_free(pkey);
- 
-diff --git a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-index 0af4f02669a1..29b91b7456eb 100644
---- a/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-+++ b/tools/testing/selftests/powerpc/mm/pkey_exec_prot.c
-@@ -72,7 +72,7 @@ static void segv_handler(int signum, siginfo_t *sinfo, void *ctx)
- 
- 		switch (fault_type) {
- 		case PKEY_DISABLE_ACCESS:
--			pkey_set_rights(fault_pkey, 0);
-+			pkey_set_rights(fault_pkey, PKEY_UNRESTRICTED);
- 			break;
- 		case PKEY_DISABLE_EXECUTE:
- 			/*
-diff --git a/tools/testing/selftests/powerpc/mm/pkey_siginfo.c b/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
-index 2db76e56d4cb..e89a164c686b 100644
---- a/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
-+++ b/tools/testing/selftests/powerpc/mm/pkey_siginfo.c
-@@ -83,7 +83,7 @@ static void segv_handler(int signum, siginfo_t *sinfo, void *ctx)
- 	    mprotect(pgstart, pgsize, PROT_EXEC))
- 		_exit(1);
- 	else
--		pkey_set_rights(pkey, 0);
-+		pkey_set_rights(pkey, PKEY_UNRESTRICTED);
- 
- 	fault_count++;
- }
-diff --git a/tools/testing/selftests/powerpc/ptrace/core-pkey.c b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-index f6da4cb30cd6..64c985445cb7 100644
---- a/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-+++ b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
-@@ -124,16 +124,16 @@ static int child(struct shared_info *info)
- 	/* Get some pkeys so that we can change their bits in the AMR. */
- 	pkey1 = sys_pkey_alloc(0, PKEY_DISABLE_EXECUTE);
- 	if (pkey1 < 0) {
--		pkey1 = sys_pkey_alloc(0, 0);
-+		pkey1 = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
- 		FAIL_IF(pkey1 < 0);
- 
- 		disable_execute = false;
- 	}
- 
--	pkey2 = sys_pkey_alloc(0, 0);
-+	pkey2 = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
- 	FAIL_IF(pkey2 < 0);
- 
--	pkey3 = sys_pkey_alloc(0, 0);
-+	pkey3 = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
- 	FAIL_IF(pkey3 < 0);
- 
- 	info->amr |= 3ul << pkeyshift(pkey1) | 2ul << pkeyshift(pkey2);
-diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-index d89474377f11..37794f82ed66 100644
---- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-+++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
-@@ -81,16 +81,16 @@ static int child(struct shared_info *info)
- 	/* Get some pkeys so that we can change their bits in the AMR. */
- 	pkey1 = sys_pkey_alloc(0, PKEY_DISABLE_EXECUTE);
- 	if (pkey1 < 0) {
--		pkey1 = sys_pkey_alloc(0, 0);
-+		pkey1 = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
- 		CHILD_FAIL_IF(pkey1 < 0, &info->child_sync);
- 
- 		disable_execute = false;
- 	}
- 
--	pkey2 = sys_pkey_alloc(0, 0);
-+	pkey2 = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
- 	CHILD_FAIL_IF(pkey2 < 0, &info->child_sync);
- 
--	pkey3 = sys_pkey_alloc(0, 0);
-+	pkey3 = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
- 	CHILD_FAIL_IF(pkey3 < 0, &info->child_sync);
- 
- 	info->amr1 |= 3ul << pkeyshift(pkey1);
--- 
-2.39.5
+I can't follow you here. The default value of HZ is 250 as far as I can see.
 
+Regardless, HZ is the number of jiffies per second, nothing else.
+
+> 
+> Same for HZ/const, HZ/2 being 500ms.
+> 
+> HZ is awful in that it is not 1s but 1/s, but it was easy to abuse the
+> value in simple context.
+
+Why is that awful ?
+
+HZ is a nice macro that gives you the number of ticks per second, so 
+that you are able to easily calculate the number of ticks for a given 
+duration, regardless of the configured number of ticks per second.
+
+Christophe
 
