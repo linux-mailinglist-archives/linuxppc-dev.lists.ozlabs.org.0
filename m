@@ -1,71 +1,120 @@
-Return-Path: <linuxppc-dev+bounces-3925-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3930-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A4C9EB935
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 19:20:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03609EBB3C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 21:55:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y76VZ3KXpz2yvh;
-	Wed, 11 Dec 2024 05:20:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y79x95K3pz3020;
+	Wed, 11 Dec 2024 07:55:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733854854;
-	cv=none; b=EVYrdjim4vTnh2WZLdQiYylOIM8Q2Rgw67t9bz2SkEdTfSLLV1uc6h3ac+Iqpg2v75+NA1MlCXOb+AJBYNrXiWStTGZmKEnDVIkh1zbsuxmKJ3I7UQo9O6cLUAdqHA5Zvif0oflutL/nla7/zISCQZOiUsDx3r5ShRhjUcW6pZvkYfCUiHVItmEN/0J2MW0rTZYxqsd1iM7BzZ/K4PjdisqfXmUWskslIjxVvJt6TUtdYixi16ckT2fJRprF1ZGSlwd4IucW7O5slk05mztHHRbx6vRAFVRxWbsXg5cSrBJsB5AanhXBiMn2PvUIvnmrM3J6PRmLlxWa0oX/67r8hw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.148.77
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733858987;
+	cv=none; b=eFUg8dGXclNskM6Q2BopXN2jPMafgLklBM4nmWE0R3HU0W0IfQAgUfDHfMO62ZeojJ71M4UAKhXSaPmwgRGF177fkAgS+SYnwpQxJPcEEZR85LBWxmJ9Z/6ZebSLynZVn0YTv2Czuk2A7AZZlUntvnZC9XlcqNgruUu1GdYduI9HroEAym+TYmYHrwjyeFqBsy5mmNyizzqD8Fg7QbI9SXBmE15oDIGLVRrgSnHt7etxHvUxbsn4yJ1KpaFKdSp8RyNX2fY21xYwXBTGXk8n6vKIxWYHtNjKKYsdX6UIS4xCL+1t868Ad1NuVJYucFScidMt+pommBJ8488msrqPZA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733854854; c=relaxed/relaxed;
-	bh=eK4GlBn6oLjIf2lO+aA7UPawj/3WzZ9ZOg56Ey1eZ18=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=VmnUHc3MHVZM42o3+/z37MHXhZbPncGbVIa3hE9+1Iv5ixbeEaJxPNxlFxxrKwm+MwaQn4ptkEOKQAn4EUUNZS5Eq9DueGij+kqs+0OXricScrC8YigDX3Jd3boO8zzCE/57biDYhxAuTGJdzYERm9O/zCgmIfvWc/cOgRqNaUtJO7liR1CfTX7Q8QVeu9PJxOCyOp+e+7JD34OcxZXn6o0NNj2OJ8xnkRjqktB5+qsSFPLp+EOG9sEMkBtVEJGFGxndPTtYrWP0UXb8WGfSlVnHCu0/smsyhy0midWYTChKcuacwoc786JQpdtY0QnoOKrKy9E8ZbSW/sbKXGhV0Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mGta4y4r; dkim-atps=neutral; spf=none (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1733858987; c=relaxed/relaxed;
+	bh=B1adUjR1VE80f1PTstNu785YA4jDE4rVDXmLSCYT2aI=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=mgJPIV/f3ouPsUlo4txgIMlAfjKSX6NCBiK0CwaMoTLKY0m31x/NMQHqAIKxt+7ULf3peOhAdARgKFC4KTDm7DCIWz674z0vHll86wbyNoL3a5qTtbhgDQVHZqmZk/s5IN4EJTmwvBbdIyuygmiyVnvok4/cuszYV6lAewVELBPkY5LeqtFvfe9LL2+GlUh+MXxr0aLVm/Yp8y0XcPZK0cLSHipznuAx1xhBodj/aqf+F4agGBhr7M5duFNH2MRti/xcKzHad0WzpQ8HSLkDW0fTUUKTXRf4dAF0TCku3Opw0Hw4TVSdHR9Zky5M6VeRmLaP/DzZIJAn/aYkZ3vEVg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; dkim=pass (2048-bit key; secure) header.d=crowdstrike.com header.i=@crowdstrike.com header.a=rsa-sha256 header.s=default header.b=Q5WLWETe; dkim-atps=neutral; spf=pass (client-ip=148.163.148.77; helo=mx0a-00206402.pphosted.com; envelope-from=prvs=40744c3adf=martin.kelly@crowdstrike.com; receiver=lists.ozlabs.org) smtp.mailfrom=crowdstrike.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=mGta4y4r;
+	dkim=pass (2048-bit key; secure) header.d=crowdstrike.com header.i=@crowdstrike.com header.a=rsa-sha256 header.s=default header.b=Q5WLWETe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Wed, 11 Dec 2024 05:20:50 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=crowdstrike.com (client-ip=148.163.148.77; helo=mx0a-00206402.pphosted.com; envelope-from=prvs=40744c3adf=martin.kelly@crowdstrike.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 742 seconds by postgrey-1.37 at boromir; Wed, 11 Dec 2024 06:29:46 AEDT
+Received: from mx0a-00206402.pphosted.com (mx0a-00206402.pphosted.com [148.163.148.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y76VV53bRz2ynr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 05:20:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1733854851; x=1765390851;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=bOl88BIrBVQcyS4UvrQpTwuyM5PF7qtNXyWSrImey1s=;
-  b=mGta4y4rxHkgYapDxPUFnbc8imT5krXCDbaTRuOmqi1xJYNuEQAd5Q09
-   J58xo6OuO6nz2lLM6Z+U4ShtYa8zOQzlcWW8uzHGdWWrWI25PVP8F/3BT
-   bgREI1HNA2usz7nnjfvrDQtHvkf3VGO1IBELCG4UY7YQIJjX7NkmlVXqv
-   +UnVJYNbVmN9PkiqvsDpKptyuW4UxLebmfoiP7nA2sD2L9dcBwPib1+/U
-   lfKdoC4iV1zRlIMcWphS9LVtLMgvkF8kEPKydm3WUksLCA+kOOylv8dy5
-   u4Cm1/QmbZbz6RHKjXsnrT4+BsfyDCu98d2IM+ntIKoTM27wD+ALNdpw5
-   A==;
-X-CSE-ConnectionGUID: uWWdWNv1Tu6+hcLycdY/WA==
-X-CSE-MsgGUID: 4u98f+uATJ6laG9RX1ef9A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="51626754"
-X-IronPort-AV: E=Sophos;i="6.12,223,1728975600"; 
-   d="scan'208";a="51626754"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 10:19:42 -0800
-X-CSE-ConnectionGUID: V8DJcyq5QXmnIWhcgVU0TA==
-X-CSE-MsgGUID: M4jpkmM9QUmVBhSJX0WQWg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,223,1728975600"; 
-   d="scan'208";a="99986249"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.56])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Dec 2024 10:19:39 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Tue, 10 Dec 2024 20:19:36 +0200 (EET)
-To: Bjorn Helgaas <bhelgaas@google.com>
-cc: linux-pci@vger.kernel.org, Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Oliver O'Halloran <oohall@gmail.com>, Lukas Wunner <lukas@wunner.de>, 
-    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>, 
-    LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v6 0/8] PCI: Consolidate TLP Log reading and printing
-In-Reply-To: <cb44bafe-a7ec-889b-5c1c-ee8ca6c540a0@linux.intel.com>
-Message-ID: <38a03e53-789e-363a-c336-dc939161d7d7@linux.intel.com>
-References: <20240913143632.5277-1-ilpo.jarvinen@linux.intel.com> <cb44bafe-a7ec-889b-5c1c-ee8ca6c540a0@linux.intel.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y78220GN3z2yft
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 06:29:45 +1100 (AEDT)
+Received: from pps.filterd (m0354652.ppops.net [127.0.0.1])
+	by mx0a-00206402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BAGAf2t018432;
+	Tue, 10 Dec 2024 19:15:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
+	 h=cc:content-id:content-transfer-encoding:content-type:date
+	:from:in-reply-to:message-id:mime-version:references:subject:to;
+	 s=default; bh=B1adUjR1VE80f1PTstNu785YA4jDE4rVDXmLSCYT2aI=; b=Q
+	5WLWETej/0uKO6cQ1WldX4CJ3IaLH90EjGr1lkk0cGOEJj9n5PVIBgjR9chPXsbh
+	WXfczIGo4DVHR8tSYL60ElqL20UzdQeCSsvKfZtraVBvxMfQNWA7GJ/+SG0UnDNz
+	aKyYPDoWR4XmnBmuqNDUlpXmXzhsu7tfSKi8/HI7jvRVcAEOEgNbqvgw9dFh+4zI
+	mwo5kSulGhKEyf1/Qm32CpBkx88bzZXpktbqg7i1aCI4I3PP2pU9IC1qmoqodYQA
+	abjRiSXTTPxt3IO7dNESBuZUu7pikklfjV20zIHwzNeudEq0BlTJggjPmdZvr173
+	tg/P8MaftEbtGDXHPrYtg==
+Received: from mail.crowdstrike.com (dragosx.crowdstrike.com [208.42.231.60] (may be forged))
+	by mx0a-00206402.pphosted.com (PPS) with ESMTPS id 43erxfgjqw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 10 Dec 2024 19:15:15 +0000 (GMT)
+Received: from 04wpexch06.crowdstrike.sys (10.100.11.99) by
+ 04wpexch05.crowdstrike.sys (10.100.11.98) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 10 Dec 2024 19:15:13 +0000
+Received: from 04wpexch06.crowdstrike.sys ([fe80::9386:41e4:ec25:9fd5]) by
+ 04wpexch06.crowdstrike.sys ([fe80::9386:41e4:ec25:9fd5%9]) with mapi id
+ 15.02.1544.009; Tue, 10 Dec 2024 19:15:13 +0000
+From: Martin Kelly <martin.kelly@crowdstrike.com>
+To: "masahiroy@kernel.org" <masahiroy@kernel.org>,
+        "ojeda@kernel.org"
+	<ojeda@kernel.org>,
+        "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
+        "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>,
+        "mhiramat@kernel.org" <mhiramat@kernel.org>,
+        "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>,
+        "james.clark@arm.com" <james.clark@arm.com>,
+        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+        "mathieu.desnoyers@efficios.com"
+	<mathieu.desnoyers@efficios.com>,
+        "akpm@linux-foundation.org"
+	<akpm@linux-foundation.org>,
+        "mingo@redhat.com" <mingo@redhat.com>,
+        "rostedt@goodmis.org" <rostedt@goodmis.org>,
+        "nathan@kernel.org"
+	<nathan@kernel.org>,
+        "tglx@linutronix.de" <tglx@linutronix.de>,
+        "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+        "nicolas@fjasle.eu" <nicolas@fjasle.eu>,
+        "surenb@google.com"
+	<surenb@google.com>,
+        "npiggin@gmail.com" <npiggin@gmail.com>,
+        "mark.rutland@arm.com" <mark.rutland@arm.com>,
+        "hpa@zytor.com"
+	<hpa@zytor.com>,
+        "peterz@infradead.org" <peterz@infradead.org>,
+        "zhengyejian@huaweicloud.com" <zhengyejian@huaweicloud.com>,
+        "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>,
+        "bp@alien8.de"
+	<bp@alien8.de>,
+        "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>,
+        "mcgrof@kernel.org" <mcgrof@kernel.org>
+CC: Amit Dang <amit.dang@crowdstrike.com>,
+        "linux-modules@vger.kernel.org"
+	<linux-modules@vger.kernel.org>,
+        "linux-kbuild@vger.kernel.org"
+	<linux-kbuild@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+        "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/5] kallsyms: Emit symbol for holes in text and fix
+ weak function issue
+Thread-Topic: [PATCH v2 0/5] kallsyms: Emit symbol for holes in text and fix
+ weak function issue
+Thread-Index: AQHbSzfWIbF4ko3yU0yIDGnRxekZ5w==
+Date: Tue, 10 Dec 2024 19:15:13 +0000
+Message-ID: <44353f4cd4d1cc7170d006031819550b37039dd2.camel@crowdstrike.com>
+References: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
+In-Reply-To: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
+Accept-Language: en-US, en-GB
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-originating-ip: [10.100.11.122]
+x-disclaimer: USA
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <894EEA24DDE3DA4C924E664F311AA9D3@crowdstrike.sys>
+Content-Transfer-Encoding: base64
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,39 +127,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1421109454-1733854776=:905"
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+X-Authority-Analysis: v=2.4 cv=Td5stQQh c=1 sm=1 tr=0 ts=67589343 cx=c_pps a=1d8vc5iZWYKGYgMGCdbIRA==:117 a=1d8vc5iZWYKGYgMGCdbIRA==:17 a=xqWC_Br6kY4A:10 a=EjBHVkixTFsA:10 a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=VwQbUJbxAAAA:8 a=i0EeH86SAAAA:8
+ a=pl6vuDidAAAA:8 a=eHuGQ7gFT_7OOu_YEIIA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: mM4J9j6hWFAPRFjVNI4NhQBKWaTtiq1Z
+X-Proofpoint-GUID: mM4J9j6hWFAPRFjVNI4NhQBKWaTtiq1Z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 suspectscore=0
+ spamscore=0 impostorscore=0 malwarescore=0 bulkscore=0 mlxlogscore=658
+ adultscore=0 clxscore=1011 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2412100140
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
-
---8323328-1421109454-1733854776=:905
-Content-Type: text/plain; charset=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-
-On Wed, 23 Oct 2024, Ilpo J=E4rvinen wrote:
-
-> On Fri, 13 Sep 2024, Ilpo J=E4rvinen wrote:
->=20
-> > This series has the remaining patches of the AER & DPC TLP Log handling
-> > consolidation and now includes a few minor improvements to the earlier
-> > accepted TLP Logging code.
-> >=20
-> > v6:
-> > - Preserve "AER:"/"DPC:" prefix on the printed TLP line
-> > - New patch to add "AER:" also  on other lines of the AER error dump
->=20
-> Hi Bjorn,
->=20
-> A small reminder this series exists.
-
-Another reminder about this series. :-)
-
---=20
- i.
-
---8323328-1421109454-1733854776=:905--
+T24gVHVlLCAyMDI0LTA3LTIzIGF0IDE0OjMyICswODAwLCBaaGVuZyBZZWppYW4gd3JvdGU6DQo+
+IEJhY2tncm91bmQgb2YgdGhpcyBwYXRjaCBzZXQgY2FuIGJlIGZvdW5kIGluIHYxOg0KPiANCj4g
+aHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYWxsLzIwMjQwNjEzMTMzNzExLjI4Njc3NDUtMS16aGVu
+Z3llamlhbjFAaHVhd2VpLmNvbS8NCj4gwqANCj4gDQo+IEhlcmUgYWRkIGEgcmVwcm9kdWN0aW9u
+IHRvIHNob3cgdGhlIGltcGFjdCB0byBsaXZlcGF0Y2g6DQo+IDEuIEFkZCBmb2xsb3dpbmcgaGFj
+ayB0byBtYWtlIGxpdmVwYXRjaC1zYW1wbGUua28gZG8gcGF0Y2ggb24NCj4gZG9fb25lX2luaXRj
+YWxsKCkNCj4gwqDCoCB3aGljaCBoYXMgYW4gb3ZlcnJpZGVuIHdlYWsgZnVuY3Rpb24gYmVoaW5k
+IGluIHZtbGludXgsIHRoZW4gcHJpbnQNCj4gdGhlDQo+IMKgwqAgYWN0dWFsbHkgdXNlZCBfX2Zl
+bnRyeV9fIGxvY2F0aW9uOg0KPiANCg0KSGkgYWxsLCB3aGF0IGlzIHRoZSBzdGF0dXMgb2YgdGhp
+cyBwYXRjaCBzZXJpZXM/IEknZCByZWFsbHkgbGlrZSB0byBzZWUNCml0IG9yIHNvbWUgb3RoZXIg
+Zml4IHRvIHRoaXMgaXNzdWUgbWVyZ2VkLiBUaGUgdW5kZXJseWluZyBidWcgaXMgYQ0Kc2lnbmlm
+aWNhbnQgb25lIHRoYXQgY2FuIGNhdXNlIGZ0cmFjZS9saXZlcGF0Y2gvQlBGIGZlbnRyeSB0byBm
+YWlsDQpzaWxlbnRseS4gSSd2ZSBub3RpY2VkIHRoaXMgYnVnIGluIGFub3RoZXIgY29udGV4dFsx
+XSBhbmQgcmVhbGl6ZWQNCnRoZXkncmUgdGhlIHNhbWUgaXNzdWUuDQoNCkknbSBoYXBweSB0byBo
+ZWxwIHdpdGggdGhpcyBwYXRjaCBzZXJpZXMgdG8gYWRkcmVzcyBhbnkgaXNzdWVzIGFzDQpuZWVk
+ZWQuDQoNClsxXQ0KaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvYnBmLzcxMzY2MDVkMjRkZTliMWZj
+NjJkMDJhMzU1ZWYxMWM5NTBhOTQxNTMuY2FtZWxAY3Jvd2RzdHJpa2UuY29tL1QvI21iN2U2Zjg0
+YWM5MGZhNzg5ODllOWUyYzNjZDhkMjlmNjVhNzg4NDViDQo=
 
