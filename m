@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-3939-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3938-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F18B9EBCB1
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A85B9EBCAE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:03:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRh4Jcjz30Bx;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRh2mt2z306l;
 	Wed, 11 Dec 2024 09:03:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868224;
-	cv=none; b=FlmSuhAfp/8jjG27cIs+ModPPeOG8hDsHIch7eV9YLsiW77CrVsjmrBCRiK9/PU8EZfy6I5EfvLhVNmx5KS9mnYDmq1Q8xAGyFa22Gt872x5fxcG+EQamjnxKv1DAfzlaTe9OQyUjylY5fJMmig/mk0xElXhk0RlI/SQa22nROJcxEYc2DXBkERx9DBFZ5WJRkguXqJnJYUX1gfZhOFCk57MleDejIsp+XFk2xQGGaBsmnO75lRaKZCqwo6LRlEsEn+vgP3ovDHrZBY1xmkDwIMST0eyL0Jtm5Cjh4znwxUzE+F8Ct0l5PUmJ6pm/K9UsR86HXArlngcsa0qzSXpTQ==
+	cv=none; b=HbC7dQ7PdBJA7zNCNEPX7l3SH7UazB9dNvNeqa3P2QztUOiQWOt5eR1franf8hkYSs5rAYvdG9HIXvKY+pu2miz+PZjYXICbD9pFT49VTn7cFiVnrB52eo7n5ZIgRe53rHvsz25YoI63e6KvN+D1BYswZt8mTT9Fqr75kh1JlJEd+2X7ftStsHmsBDwSErEGx70rHVt2yO2KBJ+FMwsZ9/Jf24YCyfVvwKoIFszfalYqmSVPxt2gQVGDJtDokBQWEIy/YMNT61t9WWHQd2YJOMGNosZWXi1O/QYjtJmd0HeQTY/2E5Ogw3V8F0p6cVbeJVT6F12WkTkvbhlbLt/F/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1733868224; c=relaxed/relaxed;
-	bh=2Yxce1Hb0/0P5cE6q+zb1yt8qEYqdCG+5Hx3X7W7CLE=;
+	bh=RbQWNnMSFMFriUk4NuHYTwiGcsEx+EnrYdZ9JaogvX4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HYcEcAqlEkteX3vY6Y9bH8bBlhgct/k1tvYGplXO7UzwcH4oT5oOXGaoDhgskwwhrv+lLkhaW57DQpMoUA67GSxqJ8FNrx3lTofvlkEdu6UiPNWLvvFsZAjoo5kjjA2X0F+/WFH07JElyvXmOGuH3lcTkeMZPnQp3AlCbNDa1bd8+bpS6De6L+0p4vOQQZ0BBRkKzst+qfXmQtQUeYjiRc2+8ZN8Al5/+AEgEpwnNx+JZgkRyKKDAUB2yx7Dj7EtOeZjVUTqgg44GfpnKz6mpl5ZYn8d77ZD5ZRhPUIRH+LXryvzRV2q/Sc/s0MRg88cKnrBCwTaatfkVZiDwGRI3g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=VsljeNAY; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=AZCw3DGKY4ziSDdY2BgIfRBsKI0qs0OITmeJTMrEhfi91nvMIOPbt5YLP2vCI9gM39lyrdzS2qq5U7G1GVj6oC3NypksO8wS3Szjv6BUbwc8s12es2MOeT9HBOZ2Zo+pyIUrrJ1AaW5HK/W8ZA8rVGqVfoznFb6wB8N1at4as5R22be9tFFW9PVkPdxbpAq3hj+Z4/r0ISB5FlW9Dr3PHJeEmxms4zwNEeOBHZxdqSGhXsL62RiCTTaqAeqIfp5eQhrYJonjCk8h14R5uzTCKw/uUm5g+wWmsiV0jGFHL4S0UuTXWXXNaMYtVupktRHMbtmkwlnrt5Z9u7MHJESIbw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=e/J9gwCA; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=VsljeNAY;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=e/J9gwCA;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRg3n7Cz3064
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRg3HCHz304f
 	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:43 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 93EFE20ACD6D;
+	by linux.microsoft.com (Postfix) with ESMTPSA id C173C20ACD6E;
 	Tue, 10 Dec 2024 14:02:39 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 93EFE20ACD6D
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C173C20ACD6E
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1733868159;
-	bh=2Yxce1Hb0/0P5cE6q+zb1yt8qEYqdCG+5Hx3X7W7CLE=;
+	bh=RbQWNnMSFMFriUk4NuHYTwiGcsEx+EnrYdZ9JaogvX4=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=VsljeNAYadFajIAeGJ9FMKFBGspy6ozrhBqU582XvcWkNMj13LfQdRwOadXZG5Pxf
-	 Argps4EtZvFIc7JynbCTgqDrOVF3u5K7Ah2l9+nekqV0coL2L+cEZsIcBHPG5GDao7
-	 B4HNxmwT4io4VbogtubQ+pF0xj14MXNsqvxe10Z0=
+	b=e/J9gwCA4uBKGknzsmiO3oet8slWv1kdiClhfZ9LTUvDcAr8km71ONqn/wjRdmpri
+	 4EyHjbbYG4CKX/8T2eN5ATCPWVrLNipH5jKYYefAMdH+qlSBTJn1LIV6HX/UxzfdGn
+	 9DHlxQpHUKnw1xm9c/b/XukYCVTGP1/9SF9qgehM=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 10 Dec 2024 22:02:48 +0000
-Subject: [PATCH v3 17/19] ceph: Convert timeouts to secs_to_jiffies()
+Date: Tue, 10 Dec 2024 22:02:49 +0000
+Subject: [PATCH v3 18/19] livepatch: Convert timeouts to secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,7 +53,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241210-converge-secs-to-jiffies-v3-17-ddfefd7e9f2a@linux.microsoft.com>
+Message-Id: <20241210-converge-secs-to-jiffies-v3-18-ddfefd7e9f2a@linux.microsoft.com>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 In-Reply-To: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -142,22 +142,83 @@ the following Coccinelle rules:
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- fs/ceph/quota.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ samples/livepatch/livepatch-callbacks-busymod.c |  3 +--
+ samples/livepatch/livepatch-shadow-fix1.c       |  3 +--
+ samples/livepatch/livepatch-shadow-mod.c        | 15 +++++----------
+ 3 files changed, 7 insertions(+), 14 deletions(-)
 
-diff --git a/fs/ceph/quota.c b/fs/ceph/quota.c
-index 06ee397e0c3a6172592e62dba95cd267cfff0db1..d90eda19bcc4618f98bfed833c10a6071cf2e2ac 100644
---- a/fs/ceph/quota.c
-+++ b/fs/ceph/quota.c
-@@ -166,7 +166,7 @@ static struct inode *lookup_quotarealm_inode(struct ceph_mds_client *mdsc,
- 	if (IS_ERR(in)) {
- 		doutc(cl, "Can't lookup inode %llx (err: %ld)\n", realm->ino,
- 		      PTR_ERR(in));
--		qri->timeout = jiffies + msecs_to_jiffies(60 * 1000); /* XXX */
-+		qri->timeout = jiffies + secs_to_jiffies(60); /* XXX */
- 	} else {
- 		qri->timeout = 0;
- 		qri->inode = in;
+diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
+index 378e2d40271a9717d09eff51d3d3612c679736fc..69105596e72e6826aa2815cb2599eea56a0055ba 100644
+--- a/samples/livepatch/livepatch-callbacks-busymod.c
++++ b/samples/livepatch/livepatch-callbacks-busymod.c
+@@ -44,8 +44,7 @@ static void busymod_work_func(struct work_struct *work)
+ static int livepatch_callbacks_mod_init(void)
+ {
+ 	pr_info("%s\n", __func__);
+-	schedule_delayed_work(&work,
+-		msecs_to_jiffies(1000 * 0));
++	schedule_delayed_work(&work, 0);
+ 	return 0;
+ }
+ 
+diff --git a/samples/livepatch/livepatch-shadow-fix1.c b/samples/livepatch/livepatch-shadow-fix1.c
+index 6701641bf12d454a770e49abeeb0dea92560e55e..f3f153895d6ce751fc91ae1224d91b220cba3e37 100644
+--- a/samples/livepatch/livepatch-shadow-fix1.c
++++ b/samples/livepatch/livepatch-shadow-fix1.c
+@@ -72,8 +72,7 @@ static struct dummy *livepatch_fix1_dummy_alloc(void)
+ 	if (!d)
+ 		return NULL;
+ 
+-	d->jiffies_expire = jiffies +
+-		msecs_to_jiffies(1000 * EXPIRE_PERIOD);
++	d->jiffies_expire = jiffies + secs_to_jiffies(EXPIRE_PERIOD);
+ 
+ 	/*
+ 	 * Patch: save the extra memory location into a SV_LEAK shadow
+diff --git a/samples/livepatch/livepatch-shadow-mod.c b/samples/livepatch/livepatch-shadow-mod.c
+index 7e753b0d2fa611524c9e2adbe02c8fa3e9b6015e..5d83ad5a8118dbbac897dfcbb92e6d5f399d1dc3 100644
+--- a/samples/livepatch/livepatch-shadow-mod.c
++++ b/samples/livepatch/livepatch-shadow-mod.c
+@@ -101,8 +101,7 @@ static __used noinline struct dummy *dummy_alloc(void)
+ 	if (!d)
+ 		return NULL;
+ 
+-	d->jiffies_expire = jiffies +
+-		msecs_to_jiffies(1000 * EXPIRE_PERIOD);
++	d->jiffies_expire = jiffies + secs_to_jiffies(EXPIRE_PERIOD);
+ 
+ 	/* Oops, forgot to save leak! */
+ 	leak = kzalloc(sizeof(*leak), GFP_KERNEL);
+@@ -152,8 +151,7 @@ static void alloc_work_func(struct work_struct *work)
+ 	list_add(&d->list, &dummy_list);
+ 	mutex_unlock(&dummy_list_mutex);
+ 
+-	schedule_delayed_work(&alloc_dwork,
+-		msecs_to_jiffies(1000 * ALLOC_PERIOD));
++	schedule_delayed_work(&alloc_dwork, secs_to_jiffies(ALLOC_PERIOD));
+ }
+ 
+ /*
+@@ -184,16 +182,13 @@ static void cleanup_work_func(struct work_struct *work)
+ 	}
+ 	mutex_unlock(&dummy_list_mutex);
+ 
+-	schedule_delayed_work(&cleanup_dwork,
+-		msecs_to_jiffies(1000 * CLEANUP_PERIOD));
++	schedule_delayed_work(&cleanup_dwork, secs_to_jiffies(CLEANUP_PERIOD));
+ }
+ 
+ static int livepatch_shadow_mod_init(void)
+ {
+-	schedule_delayed_work(&alloc_dwork,
+-		msecs_to_jiffies(1000 * ALLOC_PERIOD));
+-	schedule_delayed_work(&cleanup_dwork,
+-		msecs_to_jiffies(1000 * CLEANUP_PERIOD));
++	schedule_delayed_work(&alloc_dwork, secs_to_jiffies(ALLOC_PERIOD));
++	schedule_delayed_work(&cleanup_dwork, secs_to_jiffies(CLEANUP_PERIOD));
+ 
+ 	return 0;
+ }
 
 -- 
 2.43.0
