@@ -1,78 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-3907-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3908-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 596089EAFC8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 12:23:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EEE0B9EB206
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 14:36:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6xDT12FQz2y8P;
-	Tue, 10 Dec 2024 22:23:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y70B039D8z2yXs;
+	Wed, 11 Dec 2024 00:36:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733829785;
-	cv=none; b=XogJfCNop3lDcx47UnqDZGVo0waY6AcNABIR1Ek7M5xL1YlamvnJm1tO2KiqvTs5TLATQRATXEG4lQaUmbht8WdGY9jgD2o2b/rmlfKGzkcPTE23optE0HmjskfVjfAz/e5Q05ZZhZZ71tP0VNM8xz7baH/JhpKwbLmO0g6Fy1f1UjLPKUdp/N4cOXSgoPVuTyl2AZP9ZZ4V1tLvxr2SiOoK5gutF35B7mjtlK5jo7yPgtDrjcDD5Jdfk73ypDk7aj6a1hAjoO+kCHGsVyqz2QMdbsfIVSXLJ86nvgUN2adlh6en5BbMiT0S8+m8T+UjUHyF6+sGgLvLH+Pj127JuQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733837768;
+	cv=none; b=elMjGZioWiaYTnVhm1dB/yH7YOsBF4f8vCy4ZNLqB3kB9tWPj2DZBigKr1n7BZFp5AnsCAvfxeq873GwydGWPZsUBLiQwXebjlUGo0QOvoYjhrvjvJ7F1UGajP7a8f9UIyx9OCOPekfU3rwRkSp54WpJJE+MEJtKnOFYdTs4xl7rc3JP1Ve55MIerzX8T9A+dFDuKgVUuVzeiHykrVRqUbaoQUPNhsJBypdvOUPGkTka9s5x4NetCDFe4zk/hthihbDjwJL/1ShufbQZGe/DvoWWg7IIes+6sqfaUEM08W/GkVET7+ip6k2/JAgHuWiJha6DfhlLakJLmtfD6bdJ2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733829785; c=relaxed/relaxed;
-	bh=3Etygb1S5JD3SBkniCuVFCsMk1p5rd6f1kwfYbyymK4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PRMaZBBzCXakaoZ7/vJBaAhzn4fiQ0mTjl7OWGHIzAJycm6GAmDQdzcf79QKjlpkQ+HgEnkRE61RkNVQP69xIg110HXrkHBd4ipAqQ3259EnIP3Rbmgu7+fNWu/ZrxHR9udKt/K398zRBbi5y5f84ptdiNn3CTeUXPawyS31L71xzIDYuXFc4ljybi+4oBjNMzZT//JbTwFTOPuqh3dVU0UC4QiTBYi6FIRDMNJU9Nyrk76NskPnyDKYFOCChaLk5JM1itlP/p7jgSF1W0xxGghbMjNiySn2iwiaer2Co2qpKtQIMFkadF2muVkvDGMVPq2XIfsC0IByqs7r7nHU9w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H455Qbf4; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1733837768; c=relaxed/relaxed;
+	bh=DlE3f4kgUF1y5PhPQ1O0KJW0qCJeZnyhnzjRB1pHd9s=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=jyLSI6yPW9ZmT02Jg+fx9/ypdg8fPW5kxf8OwGxy50Ai8eGTMT7NCK2XbY5xKLust79jqT+8Yoa+PGIoGXTO9ELyjYIV9zwvNckD+VHlo7il/qp2O9MMhV/m2GCuE024NNws3FZXxNuDKRRgWuVTIiWTkojDFmJ9HhFPVfgYpXBRehilUSKGDXNMI9cK3G0LunzDjOLRbsEBB22C/tdCH2TfUKp3MXUfe0enw04/uS+21QTcJiROfPeLS1V66iIPs0Td0kI2MRKM/fV8OvyBRxtl11utPDWRotdUKnYhv58UCoYfSoiIhFZeUch6iJIBdgWYYBlO1Jco4Ywe5Q+8HA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nt6Lu3/d; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=H455Qbf4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nt6Lu3/d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6xDR2vWbz2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2024 22:23:02 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BAA5Q7H016921;
-	Tue, 10 Dec 2024 11:22:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3Etygb
-	1S5JD3SBkniCuVFCsMk1p5rd6f1kwfYbyymK4=; b=H455Qbf4KJis+OHkeu7tiT
-	HNSnMf8uWPzwoH+ynPjKM9FXQ/jROPkQClL1bymxMZbcHdbfTj5XvvQQVuSaO3Ps
-	UaUIDiSHpR2lo/1NYatrgTkYW7WTh7VZp9ve2+xCV5vH//PEw8WH0298K3sknoAJ
-	oC+cG6dHWtzu9CiwbHfUcTXT6ZcyjGRsiDn6lRYodJblppJqEOWjVx2Dg8Dgxsul
-	UUSyMhWl8uyfm2vASjCkUoQvkivcKUy8TfvbRWoui3FK0q7l1hKW3iDpErYSX3Fj
-	NxitZVlT8OLwpXFT3AFnN5Nl4Yu/kczhLc73H/KiXZOvTSyd4njIGPCkZruwexAg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce38ppns-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 11:22:41 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BABMfQA015952;
-	Tue, 10 Dec 2024 11:22:41 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce38ppnp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 11:22:41 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BAB04SK016910;
-	Tue, 10 Dec 2024 11:22:40 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d12y3gyb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 10 Dec 2024 11:22:39 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BABMcTn33882460
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Dec 2024 11:22:38 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id F30552004B;
-	Tue, 10 Dec 2024 11:22:37 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4BE7020040;
-	Tue, 10 Dec 2024 11:22:36 +0000 (GMT)
-Received: from [9.124.213.130] (unknown [9.124.213.130])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 10 Dec 2024 11:22:36 +0000 (GMT)
-Message-ID: <fe858c1c-4941-460c-98b4-7aa18a7830fe@linux.ibm.com>
-Date: Tue, 10 Dec 2024 16:52:35 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y709v18k9z2yR3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 00:36:03 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id A33ADA40693;
+	Tue, 10 Dec 2024 13:34:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD34EC4CED6;
+	Tue, 10 Dec 2024 13:35:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733837758;
+	bh=b2I0+eKk4iK9OnVnulSzlYA0NLcSmfUjvE0er6c4iww=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=nt6Lu3/dIXv//XgupGVTniobw37MR1F2itWDNVH8bY13QPrlj9SUF0qTMBS/3GRav
+	 WBV+isYER+30vTCC4Gtt3lRAFjlpJROLjV0ZCtaFY1SS+PK/pAN9oLC7eUnJwEhP+W
+	 iLBvCFRpArPQzIWjymSS1xunV3pXjD3VeWbOg7PBzALqbJIg2nB7tyyF4y2+PPGsO4
+	 MOxcO3EmsqRAqEjiwbDH78Gwk6CGDUULRaKZptjFQPipQZRwcXHnRrMMjFBPynWe86
+	 lhMJKb2q0h6G8WtoZJAwERUnHRTGRnxqhDToi8DmsgSbg8fyOCerbcgmZKaZdky/yk
+	 3Jzazp9hkDi4g==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-sound@vger.kernel.org, Chancel Liu <chancel.liu@nxp.com>
+In-Reply-To: <20241126115440.3929061-1-chancel.liu@nxp.com>
+References: <20241126115440.3929061-1-chancel.liu@nxp.com>
+Subject: Re: [PATCH 0/4] Add function to constrain rates
+Message-Id: <173383775650.46965.9428255940556546352.b4-ty@kernel.org>
+Date: Tue, 10 Dec 2024 13:35:56 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,69 +65,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] powerpc: Enable lazy preemption
-To: mpe@ellerman.id.au, maddy@linux.ibm.com
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, bigeasy@linutronix.de,
-        ankur.a.arora@oracle.com, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-References: <20241116192306.88217-1-sshegde@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20241116192306.88217-1-sshegde@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: qFGp4cZyfHY4VQHUpvHeX1Slqnl1i7tr
-X-Proofpoint-ORIG-GUID: DSoq0-uXG7HHhbhJkC-seEbLOJPTlu71
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
- spamscore=0 clxscore=1015 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 bulkscore=0 mlxscore=0 malwarescore=0 mlxlogscore=604
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412100082
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+X-Mailer: b4 0.15-dev-9b746
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Tue, 26 Nov 2024 20:54:36 +0900, Chancel Liu wrote:
+> Platforms like i.MX93/91 only have one audio PLL. Some sample rates are
+> not supported. If the PLL source is used for 8kHz series rates, then
+> 11kHz series rates can't be supported. Add common function to constrain
+> rates according to different clock sources.
+> 
+> In ASoC drivers switch to this new function.
+> 
+> [...]
 
+Applied to
 
-On 11/17/24 00:53, Shrikanth Hegde wrote:
-> preempt=lazy has been merged into tip[1]. Lets Enable it for PowerPC.
-> 
-> This has been very lightly tested and as michael suggested could go
-> through a test cycle. If needed, patches can be merged. I have kept it
-> separate for easier bisect.
-> 
-> Lazy preemption support for kvm on powerpc is still to be done.
-> 
-> Refs:
-> [1]: https://lore.kernel.org/lkml/20241007074609.447006177@infradead.org/
-> v1: https://lore.kernel.org/all/20241108101853.277808-1-sshegde@linux.ibm.com/
-> 
-> Changes since v1:
-> - Change for vmx copy as suggested by Sebastian.
-> - Add rwb tags
-> 
-> Shrikanth Hegde (2):
->    powerpc: Add preempt lazy support
->    powerpc: Large user copy aware of full:rt:lazy preemption
-> 
->   arch/powerpc/Kconfig                   | 1 +
->   arch/powerpc/include/asm/thread_info.h | 9 ++++++---
->   arch/powerpc/kernel/interrupt.c        | 4 ++--
->   arch/powerpc/lib/vmx-helper.c          | 2 +-
->   4 files changed, 10 insertions(+), 6 deletions(-)
-> 
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Hi mpe, maddy.
+Thanks!
 
-I see the lazy scheduling related changes are in powerpc tree.
-If there are no objections, can we please add support for lazy 
-preemption so it goes through a cycle?
+[1/4] ASoC: fsl_utils: Add function to constrain rates
+      commit: 820bcaeb1ff5705ba907563e554f17d0deecc3fa
+[2/4] ASoC: fsl_micfil: Switch to common sample rate constraint function
+      commit: daf7a173fc7c4b652f3fe69d3b5aa520976a7d63
+[3/4] ASoC: fsl_xcvr: Add sample rate constraint
+      commit: b622b677d255b41cbfce20b66535723933a6b640
+[4/4] ASoC: fsl_sai: Add sample rate constraint
+      commit: 4edc98598be43634f87af5d3876ebec6c274d2cb
 
-Let me know your thoughts.
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
