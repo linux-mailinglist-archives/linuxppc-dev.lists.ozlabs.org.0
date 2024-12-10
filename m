@@ -1,106 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-3953-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3954-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F4B99EBF6B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 00:36:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC33A9EBF85
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 00:42:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7FVT0zdjz3023;
-	Wed, 11 Dec 2024 10:36:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7Ff62HTDz2xQD;
+	Wed, 11 Dec 2024 10:42:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733873777;
-	cv=none; b=jHAavP2dxP2199lWhV4yeKnBcwACGygLN2pia6UkDFyjr8EwXafBK9FJ8k0zesaPSUMEDnN7CF3zEPkL46RPWdZrfn2RLqgQhLFw0ud6oUck2qAoxXYfb2+kAwTutRAAiARv4bw6F+w90Bp7l2cIQGLAAFYPL9cMUUoC1afu0wMPIonUXLzPrfamhJ8zQ+zQON9plb8IyDR/2sI/Rn9i1Rj+2ck2xtDuN8bv1qDzq6g53SaUKz9h6TuOP51q1LCLp/K6CNFmC4auRVjwdo/Ckpu0W0kgPP3fgoM2eOxtIsBM6Rjwv8MR/k6j89lWhrJY0rq2yxG3/AeUpSzvpuBl0g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.15.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733874174;
+	cv=none; b=dcdQkVj5fOCcudNrlBraEtmkFgYZoOh4NXQ2lqwfs+REI9ta00snz0/Z3cgP18zwq+KRhz5Z10Pe3UhVa+6S29FMewh6F12iQPq5FEd5eAa8NiaysAWqihEav7Tuf4gf6PE3cf8//rQhm8alj1Bs2nkXrTUD6RJNwGwxAfRua5h0av+LwfSfF3GAjsXu+Yus5m/nbxw7MRC1C/h+qEqpcKp29V9rDoJGaDIEoT1TqQHPjn2xwRYt5ebrULD8X18CsdBNTT62/pPeFoOyTGDB8fIeFrC+pL6d5jqNuU+moX5Hy+8mebIhfq7aDL7IZh+ml8M7cBN1lHu9Z5/NtMIIQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733873777; c=relaxed/relaxed;
-	bh=JnE4GkuUki30w5LL+XpW5dLghGEacvzXvaDzFLIE6S0=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Y7o1Osmf+RRmNeRdnCS9QZyJg43jrejrKnGnTa88onKgtl56a+HJ3YqqMleogwnDMPlKATwtaN65hF5bDBq4GDcjjQFPumE37zDyQQmnsNHZAXJjM78+0njM2+yC1qGsB7ap2PqamkTohw5+u2AU5AXes7FydAmqYisHAKjc4mrjGbk0HDfUlW9IkjBwq30993sTAfpc9a2OhbNoHYPtZGyWEOZ1n/vES7FmJy/GXLd6flh99+/MsPZ4nKCuYnEhjKUmSgNywTQbs72JHtlYWNymOmMduQ2X02eJ8DCW+UWqUuOR0jZC6SwRWiQ0Jd+Awtv36NR0XHUCnZhyLH8/jg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=JEUFC7jH; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1733874174; c=relaxed/relaxed;
+	bh=4x76lr1uKp4dzIQCuND/FkrveBcE5jD6f/7njWUTaiA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UI+xeUH2oSAhDmp/Vv+Y9Ggs4tkepX39mjqtjdheCzHfrophiuLjxpQCCDWQHu9/j2FsxvtzEA6k+lpqDCd8hlSIow3BW66hltlPLsr4VXcgGGFfwFNJS0epwVm3/5jbp02S0KnJInMIIRgBJL7qkWG+pythHiow3TeYlalHwsDzfd3eV7KtsmfKhTw4fnQxXWx2394bVzD0xxWjITVeG+MsfLdS76I1ZgdQh9bhu6sfTjYhPhO/X2PTNRsyufKZj6oSm/GrY4As1Q982sZXtl/6sSEM3FZYiUCc2IrvMqUFytEI+lnSaQtzXtaQJmJ0VXBtdaIKR/G/cFhbgJYceA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=huz+xtrR; dkim-atps=neutral; spf=pass (client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=JEUFC7jH;
+	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=huz+xtrR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 317 seconds by postgrey-1.37 at boromir; Wed, 11 Dec 2024 10:42:52 AEDT
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7FVN6KH7z2ykt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 10:36:12 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D5AF6A41CB8;
-	Tue, 10 Dec 2024 23:34:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 557E2C4CED6;
-	Tue, 10 Dec 2024 23:36:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1733873767;
-	bh=HHHMPXzhb0ErTbk6JDPXkklA5yJiK4ykiwi4ou5ZnCc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=JEUFC7jHRCmHI3pSRcaodXf1l/diOVpYu0xkyvRNQH8mQQn7b8CBtOxBJCrSzxiPd
-	 x5Ao+At5E5iCnmOoRtx4XFH3yzCpaefWwlAOlUrwnX+e1Xpsqclis9IS5OMX5ZHkAC
-	 NceJVwBIegWzfPrxO3hIAUaRVAN7EpBlmQG/j2MY=
-Date: Tue, 10 Dec 2024 15:36:04 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Cc: Easwar Hariharan <eahariha@linux.microsoft.com>, Pablo Neira Ayuso
- <pablo@netfilter.org>, Jozsef Kadlecsik <kadlec@netfilter.org>,
- "David S. Miller" <davem@davemloft.net>, Eric Dumazet
- <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Julia Lawall
- <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack
- <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>, Robert
- Jarzmik <robert.jarzmik@free.fr>, Russell King <linux@armlinux.org.uk>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
- <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Ofir
- Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>, Lucas De
- Marchi <lucas.demarchi@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
- <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
- <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
- <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, Jeroen de Borst
- <jeroendb@google.com>, Praveen Kaligineedi <pkaligineedi@google.com>,
- Shailend Chand <shailend@google.com>, Andrew Lunn <andrew+netdev@lunn.ch>,
- James Smart <james.smart@broadcom.com>, Dick Kennedy
- <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Roger Pau =?ISO-8859-1?Q?Monn=E9?=
- <roger.pau@citrix.com>, Jens Axboe <axboe@kernel.dk>, Kalle Valo
- <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel
- Holtmann <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>,
- Luiz Augusto von Dentz <luiz.dentz@gmail.com>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Florian Fainelli
- <florian.fainelli@broadcom.com>, Ray Jui <rjui@broadcom.com>, Scott Branden
- <sbranden@broadcom.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Xiubo Li <xiubli@redhat.com>, Ilya
- Dryomov <idryomov@gmail.com>, Josh Poimboeuf <jpoimboe@kernel.org>, Jiri
- Kosina <jikos@kernel.org>, Miroslav Benes <mbenes@suse.cz>, Petr Mladek
- <pmladek@suse.com>, Joe Lawrence <joe.lawrence@redhat.com>, Jaroslav Kysela
- <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>, Louis Peens
- <louis.peens@corigine.com>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas
- Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan
- <maddy@linux.ibm.com>, netfilter-devel@vger.kernel.org,
- coreteam@netfilter.org, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, cocci@inria.fr,
- linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
- dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
- linux-scsi@vger.kernel.org, xen-devel@lists.xenproject.org,
- linux-block@vger.kernel.org, linux-wireless@vger.kernel.org,
- ath11k@lists.infradead.org, linux-mm@kvack.org,
- linux-bluetooth@vger.kernel.org, linux-staging@lists.linux.dev,
- linux-rpi-kernel@lists.infradead.org, ceph-devel@vger.kernel.org,
- live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
- oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen
- <anna-maria@linutronix.de>
-Subject: Re: [PATCH v3 00/19] Converge on using secs_to_jiffies()
-Message-Id: <20241210153604.cf99699f264f12740ffce5c7@linux-foundation.org>
-In-Reply-To: <315e9178-5b10-4de0-bdcf-7243e0e355bb@oss.qualcomm.com>
-References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
-	<315e9178-5b10-4de0-bdcf-7243e0e355bb@oss.qualcomm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7Ff42Hftz2xG6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 10:42:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1733874166; x=1734478966; i=deller@gmx.de;
+	bh=4x76lr1uKp4dzIQCuND/FkrveBcE5jD6f/7njWUTaiA=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=huz+xtrRouSYxByEl1ItmA4n+WCpjouBI95w63/YN1MH+sLEiF0wtOEAltJO94dg
+	 2TbkSH0uanJY7OEo97R0fD7LU9ZrGTz31jDzF+ni/6NwJ96H4p0T1ISBEOnBYZCds
+	 rYop6vkHKLSP+e/y7bjKjC5ZdhrZY3RHmwECk7XFIdSHf7UQr1UgqSJ2cCt+Y5W1I
+	 OoOMEdv+xmHUsrcqXHD5hy5gXzWEe/BrDaxI7k1mCFAf2kl3yUHWKp0kCvM1BJJeb
+	 e1BdE+M8kOGWmQeyRhPzVmw1k+bycmdjHuof5GpvGdl1+3nef6KEi3Lm5S5e2z7Wp
+	 SZJ+2eCY99YXQfk+BQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.172] ([109.250.63.155]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1McY8d-1ttPCy1m7Z-00qmUT; Wed, 11
+ Dec 2024 00:37:17 +0100
+Message-ID: <6b543ccd-23dd-474d-9828-1eb0ecec9c5d@gmx.de>
+Date: Wed, 11 Dec 2024 00:37:15 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,37 +60,156 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] fbdev: Fix recursive dependencies wrt
+ BACKLIGHT_CLASS_DEVICE
+To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
+ arnd@arndb.de, simona@ffwll.ch, airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+References: <20241210142329.660801-1-tzimmermann@suse.de>
+ <20241210142329.660801-2-tzimmermann@suse.de>
+ <b5136312-e18c-46cb-9a01-3efc61d6fd9a@gmx.de>
+ <de810def-84ac-4d55-b625-536b5781a20f@gmx.de>
+ <e7d5fba5-7ecd-4ed3-be7a-56bf82030e67@suse.de>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <e7d5fba5-7ecd-4ed3-be7a-56bf82030e67@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:g1Z0RuN2yHK9zdK3CN22uyAaY3zXwn4gKn0FK6xqV6R+ixLc/i4
+ kGhsVpxhwsBiadg84ryrKGNgsw+JtXoUIZmSBpKG69w/Xl0xfLXHvdA2QiwbwN98aoBZ5jg
+ DQjsB9+lzwim64goruIinUYjq8BD6XrE5EBKC/uf6pYsWowsO1WVSylEWq5fngYJWsOYVlc
+ AOuYYYlHPERuMQGL/CT4g==
+UI-OutboundReport: notjunk:1;M01:P0:s1oy+DEVWtc=;/t7LjRn3uabP/s3D36jOCrzIHYb
+ /nIv+uxLpJ+axEoFjO4aTMIVQKsUxxnBg7mcg40uvwR7M22wdmB2dm+LSZ3Hshj2DobLvSsn3
+ UO0ZmZMpVRTMXOQhb8PTkYzkDnUHT9xG6/VwLa6Miel6RiOtVh8nxT7SR2+ZVKhHcL9DQO4An
+ +0jseCDa7URyfStLQOhsiNTtnw7BgFbCf40humtUsoATNGXNhuRW7N5C3zXA+kJhvzioQ2UQU
+ aJxn6SMJBic5FOwxHHN4fRZu8Lg4KzmFarXnP+ffdXdVXfcDYFOCNfzvCCClR4WOhdKj8gw4/
+ q9SwNNqPDtn3rz6Mf7nXVlsVywSiVbBSF9fyiSFTnxWGDv4v4+H8fNGK/5Bw5I3qth/AZftp7
+ YhbeVKkl1B3Ix2lfTS9yzFfL6gehl9RqeThfXmSROPBf4TTwrAg1rVB1Hh6x9LFzT7h2zNatN
+ t7/Vp7SG8mwf7xjZ5DavK1XttaTJ16dhnt8R45cC1MRDNGq2qvTDXGBE0Um7l9Xq68exIQTfB
+ /3ob99VYMv0O1RWfZlgG1feOwbcl1uojF5We2szDaniYjXHmZ1JD5jSy+HO1ZcKkqiBpLJRlB
+ v8nEiyU7fw/4fCoaQ4n77JBhoo+GxOFSbalAaBwOzAhK19+IonygXx3DC/koZRv6rDw6mKpUh
+ Y4VsFGYg8qdJlsC8xetvQ9ACInyondxFBgql9+XoTEw9u9sVg98X7c8jY+FA4WfzPnYuA68CD
+ qBLZzxDvPaaLMkC+SdDkZnHtww+4eBdfdnqx7NmC6NvXmuhhuKmhM0niDahvOyT3I96amu5PJ
+ 5lCe+mxfErjOtO2G/41ENDQ0pMTRiBs76A+9jyzyas8tMcxVojxTg5i04l3cTyZe6knlc2xkB
+ 66XsAD3R2RuUQ5FpjIHmD1EXR9Ofb0v/PBA5HAWHFdWVtj137Xpca5UDbiVDPSzZwkImYreUY
+ r8CeN3oRwCLDIECL4UuDcOE1yQK64ow6urx1mUBT2m7Q8akmdh/Q1qFdTDBh6FtYKnnhwelYk
+ GMzuuBTz8EGwxZpkT4UTewnrG29A/uHZ6AnovQXxaZSVj+XN8KCfpqK2UA8SdMlid4OZDeO9Q
+ pioNWIbVGohmMX9LVf7XeS8uFtuKnt
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 10 Dec 2024 15:14:22 -0800 Jeff Johnson <jeff.johnson@oss.qualcomm.com> wrote:
+On 12/10/24 16:41, Thomas Zimmermann wrote:
+> Hi
+>
+>
+> Am 10.12.24 um 15:34 schrieb Helge Deller:
+>> On 12/10/24 15:29, Helge Deller wrote:
+>>> On 12/10/24 15:09, Thomas Zimmermann wrote:
+>>>> diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kc=
+onfig
+>>>> index 77ab44362f16..577e91ff7bf6 100644
+>>>> --- a/drivers/staging/fbtft/Kconfig
+>>>> +++ b/drivers/staging/fbtft/Kconfig
+>>>> @@ -3,6 +3,7 @@ menuconfig FB_TFT
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "Support for small TFT LCD di=
+splay modules"
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on FB && SPI
+>>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on FB_DEVICE
+>>>> +=C2=A0=C2=A0=C2=A0 depends on BACKLIGHT_DEVICE_CLASS
+>>>
+>>> Typo. Should be BACKLIGHT_CLASS_DEVICE...
+>
+> Ah, thanks. I'll better check the rest of the series for similar mistake=
+s.
+>
+>>
+>> Beside the typo:
+>> In this case, doesn't it make sense to "select BACKLIGHT_DEVICE_CLASS" =
+instead?
+>
+> That causes the dependency error mentioned in the commit message. This t=
+ime it's just for fbtft instead of shmobilefb.
+>
+>> If people want the fbtft, backlight support should be enabled too.
+>
+> As a user-visible option, it should not be auto-selected
+> unnecessarily.
 
-> On 12/10/2024 2:02 PM, Easwar Hariharan wrote:
-> > This is a series that follows up on my previous series to introduce
-> > secs_to_jiffies() and convert a few initial users.[1] In the review for
-> > that series, Anna-Maria requested converting other users with
-> > Coccinelle. [2] This is part 1 that converts users of msecs_to_jiffies()
-> > that use the multiply pattern of either of:
-> > - msecs_to_jiffies(N*1000), or
-> > - msecs_to_jiffies(N*MSEC_PER_SEC)
-> > 
-> > where N is a constant, to avoid the multiplication.
-> > 
-> > The entire conversion is made with Coccinelle in the script added in
-> > patch 2. Some changes suggested by Coccinelle have been deferred to
-> > later parts that will address other possible variant patterns.
-> > 
-> > CC: Anna-Maria Behnsen <anna-maria@linutronix.de>
-> > Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-> 
-> I have the same question as before: How do you expect these to land?
-> Do you now have a maintainer who will take all of them?
-> Or do you want individual maintainers to take the ones applicable to them?
+Right, it should not be auto-selected.
+Unless if fbtft really needs it enabled to function.
+IMHO all fb/drm drivers have higher priority than some low-level
+background backlight controller code.
 
-I'll just grab everything and see if anyone complains ;)
+> The DRM panel drivers already depend on the backlight
+> instead of selecting it. It's the correct approach.
+
+Sounds wrong IMHO.
+
+> As I mentioned
+> in the cover letter, the few remaining driver that select it should
+> probably be updated.
+
+That dependency sounds weird, but maybe I simply misunderstand your logic.=
+..?
+
+As a Linux end user I usually know which graphic cards are in my machine
+and which ones I want to enable.
+But as a normal user I think I shouldn't be expected to know
+that I first need to enable the "backlight class device"
+so that I'm then able to afterwards enable the fbtft (or any other drm/fb =
+driver).
+
+Am I wrong?
+
+Helge
 
