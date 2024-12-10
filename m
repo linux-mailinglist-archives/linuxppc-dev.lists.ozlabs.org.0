@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-3896-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3894-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55CCA9EA5A7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 03:43:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F1829EA59E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 03:43:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6jgC6nNTz305c;
-	Tue, 10 Dec 2024 13:41:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y6jg71vQxz301x;
+	Tue, 10 Dec 2024 13:41:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4860:4864:20::4a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733798519;
-	cv=none; b=VCvdOFsm1CZXUu7iqlZFN1BonmFyI5/JinH7i3XufbA8Ey/N/2+tE35d5Q3D2iEt61GFMzaEHFqopLvo/JMGAL0tLg7SCK+5bNBo33acsbfHFMw0nfebIcGChrNtNLnOK6+C21M7d7VfVab1oJgfo806RpHOWo/kqk1zNmOsmhCFqEsRkJDOdVjyIve+8w6uKHdeo+ExBOb/udSUlq7J4P3+kXQ8Fyrmdbss5ThBysVYTCzvLWCu3tXgAyCPKRjHVDKtUBvBGzpdvUgZ1/MR/2ES9gS/IqOo4E5DnhfnZs8yH/zWH5X486hlvfiZadituv63wKYjUMYx2OG875EsdQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::449"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733798515;
+	cv=none; b=hGh/2KV0VTMlNQatHnwFN03GNiyPM70+sg1E1ZUeootdH1Hc3SCUs5EIsx/NSAYhPYtGL38kXtuck2h7q5M9gZlx1/JvOCulqV97Ufv3V4+rrwJpWLIqVGZnTW5hPbnXL2rjhaVZad9zxTKK6Bzj6E4HabSii3cfrn9O5rTL/ffY5n9YNG4Dht3LF8yKB/OrvFUOyHKeFCRTn8z8GRocvN1gP/N53i1UADMGsbh7nl2AaqaT1QMDv57bTEGKQwVfG3tKr3/szH7OGALbk2cXwnURxCK/ODod4X92bpq9LvrBGtZU0xFnSiE9g6z51P/fpzPrNdAH8TZDhb9Wis70Cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733798519; c=relaxed/relaxed;
-	bh=QfykOM1fOarLfySIdaHc0pH2J2Kgj1GMXq62gJs/y4s=;
+	t=1733798515; c=relaxed/relaxed;
+	bh=PpJ3voZ2zpkCxNiGYJ7mZV4beiWEDuh5gW+cJghhtIw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mR8TssncM2Zx/eLxqwPd8jlx+RGjkQPWzYZ7JrwadT+vYUc+OIvZpIPiCxa+dYsQfM4YYQR7ceSehCNzugXc44YmiQBtdc/lq7iEdX4tO3gyV0OebeTWMU9whFVQ5mAceSHOy2nlrsA0G2fUWH1i4Qw/O8O3RXFjfkVo9TLC3mBSeHlayzqjDbD9aOadXKevfnQpBajWxOeZVcIpWzpht7EUHxjZNn94apAy7hMwahOCU/msw2qV89KWBPm8Spiv/KT3SqGIOVc7a3ZuBmc223mqKLAhKLfVUoPxlhmpA4hdxTtX5nE8SKsUOI94V0DiMGwXIB2pQh1wVYa71cp9qQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=eb4WBx/+; dkim-atps=neutral; spf=pass (client-ip=2001:4860:4864:20::4a; helo=mail-oa1-x4a.google.com; envelope-from=3bqpxzwskdgmlbmftitjohihpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--kaleshsingh.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--kaleshsingh.bounces.google.com
+	 To:Cc:Content-Type; b=N+KhlERBdNH80ExVBcDlldJf2en/T+6L9HeAo2aGB6adIolgEEUnzj1mdFObPCn+HWPTWRe6JuKc7loBUERTVodtGA1O+ITol8ST/d8m5V9J0AgFWsAmrtv3TtCUamqLCvBuDr4cTEhB3y3jiYAhvFnUTZObbNkZUA020ysOdby767Y9A7WjPHG5aHyv69glLvK3ITucBRZFstDRTaPZepK7rT4WvAED7JQ43BpFzVjIbc0sS74Z4pX9/PvaUMhcp/ef7yJeKjscvwUd9Yc1QOK6SObCku5Z87IXaq164fHov5OAjTO/7oBjuHD4UvVX8H4bgVibJXfIvS5IRbjA3Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=SHG6/fE9; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3ckpxzwskdgundohvkvlqjkjrrjoh.frpolqxassf-ghyolvwv.rcodev.ruj@flex--kaleshsingh.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--kaleshsingh.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=eb4WBx/+;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=SHG6/fE9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--kaleshsingh.bounces.google.com (client-ip=2001:4860:4864:20::4a; helo=mail-oa1-x4a.google.com; envelope-from=3bqpxzwskdgmlbmftitjohihpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--kaleshsingh.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-oa1-x4a.google.com (mail-oa1-x4a.google.com [IPv6:2001:4860:4864:20::4a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--kaleshsingh.bounces.google.com (client-ip=2607:f8b0:4864:20::449; helo=mail-pf1-x449.google.com; envelope-from=3ckpxzwskdgundohvkvlqjkjrrjoh.frpolqxassf-ghyolvwv.rcodev.ruj@flex--kaleshsingh.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x449.google.com (mail-pf1-x449.google.com [IPv6:2607:f8b0:4864:20::449])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6jgC0bX1z2ysv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2024 13:41:58 +1100 (AEDT)
-Received: by mail-oa1-x4a.google.com with SMTP id 586e51a60fabf-2975e172b3bso4105610fac.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Dec 2024 18:41:58 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y6jg62Gq4z2ysv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2024 13:41:54 +1100 (AEDT)
+Received: by mail-pf1-x449.google.com with SMTP id d2e1a72fcca58-725c882576aso2797418b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 09 Dec 2024 18:41:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733798511; x=1734403311; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1733798512; x=1734403312; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=QfykOM1fOarLfySIdaHc0pH2J2Kgj1GMXq62gJs/y4s=;
-        b=eb4WBx/+LdhAy4ANG2pkkspwY8MxqAhEofQKlQR3ij166tQ8ZNyZUWIKMiciwrBtoH
-         uZV+HVF+w5/nd7OEitubrF2aYer1YdVDLWH0cn3agObiBOd4yLu3qRBXB2jYI/BOptJi
-         vb4o2eaTTVW4qZJxLZR5Ko1/XfRYVa0OIpnREPoyPmo1KkMZzTqBPudUTnqCnCX57eyZ
-         AGHTfeDuE5lB1GwcyxyIF2tLFQ+tJc/2QKAM09EGfz+vXPPndSKxuHpyDbxEZduMQIbJ
-         M7xNrA30REoNvgBrjt0xeCFJqIWugSpnStmrL3PZJLMuALtar9dFP1841vQ9Ai0erM7W
-         wH9w==
+        bh=PpJ3voZ2zpkCxNiGYJ7mZV4beiWEDuh5gW+cJghhtIw=;
+        b=SHG6/fE9IYg50Znv2wTQ65Wi1rpqdQ+QibFA7VZySyRCrTXfso3TkrEkG+vjySK3GY
+         R7PFHGurTecZV7ju1JrK1+kPvOxNe2wWK2sgK9m/gq/Q3+05BcQeVxCTYjnjwFqOBSSr
+         V3idcA1EgFAtV9+DRb4HMZNgh44bXrmGEKsploOcDDh8uLJ7G8ymnzKFVM9UJM+XEhob
+         oHzc2BZGjGAPEE9/kPEdcNhs9++VdExBKa8WUMDgeH9Z5WB/HnLuhQFo/RB1IxkQ6w39
+         eksiyDbqDmtocCS74fd79iHppzA8Y8fbzzgOdvJJTyqEQujUr25BEQ8ahNMnxAFuXcEF
+         JqvQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733798511; x=1734403311;
+        d=1e100.net; s=20230601; t=1733798512; x=1734403312;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QfykOM1fOarLfySIdaHc0pH2J2Kgj1GMXq62gJs/y4s=;
-        b=ne3FqgDOMPUrOhlEzSEFw8P/rIZ9JuWz6xKMx+PfRqOVLzXfJjwHd2MFee34hlmMtd
-         eXUh5hiM3IzBMrOB+Pc8dC3LDDN6NJSPFdEOhDKuo9U6Bzq+VdZ/ADO6Weay/lsg1oka
-         m2ooCk66kskJ1WUddezVae4yyPkXAmr5LmYfCNvYADNLS2dMf8cwtNf+Dgln6MnvPUVE
-         Fn0ukGNh5HUVWzDBg3+YvrRZCzGvXpOOCfUFs2ZcafXWH59stjKaf5IqSg1WjuXOzgBx
-         7H6/S1d31BPsa16sADpwRYZKMJdm35qO3tF5mxxk9PY9wY3CUIMSeqpelWc6vuk0k0aH
-         p6bw==
-X-Forwarded-Encrypted: i=1; AJvYcCUmcMDztKizn/h2Q07p1FoFWsUmlYXhkTm7/6gaToZiXze++CWMctGapLBG8c/miwpBOAQuL/Kjmk7Gh2U=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxhWG5xwHUblI2dKRUDDbLx2tInCRd/OrFQXftimXHz9c28faAB
-	86OcLWufy0qz+Cg5iXPA6rFwPvPyhZ5fWQ4Sqb3ediNTBXWvNe2qqLJcamcwDvqd5mA1kq1pyeD
-	uwixTDH+CGopbm4HejP519Q==
-X-Google-Smtp-Source: AGHT+IGyaGimLFtOc8xFMrBxHlvoKkgipEDRsXSRpIYCtUs3FtGiq87tnN7DOlflNQnY8+3VkwfOeHU4ERQxyW4QXg==
-X-Received: from oabps11.prod.google.com ([2002:a05:6870:9e0b:b0:296:5847:48e8])
+        bh=PpJ3voZ2zpkCxNiGYJ7mZV4beiWEDuh5gW+cJghhtIw=;
+        b=saossXNu5AS4pwLkjJiZ0qOuLjrO8HpMH0rjkUWj73AvxeHeOhUxzEHFwwIBeMjXDG
+         jFUu1CzddVTp1ogeZXvUCZFMgxSInrdagZUAC9ldiquPqjoDLCdriRptSbzQctBxyTTw
+         u+dNV4kng1xOR1k44LnRilo1Kloeld6SM87qUwH1i8AzT6fe5FsvzxA0NBJCP6Ff4+QF
+         eOSJ5QQRtlsca9pmQET9nkMSjkouzGIbY6l0Gs5n7HmjOMuh3cfE1KW0Hr+/LtEUVU0/
+         QwYb2XBhvtdnq58chUffrtH1ynZEq4R14mFGv36OkKWDZBTQb6uiTSDPQnJMGTZeq9Xv
+         LZAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUjnnjUU9s4nrF7ywYlRpUD3uzstKRZXK8c29aNbZcOGPA11Hmgg9UA5dJqImlxu69ouC3cmhNQjABbYfc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxjwtUalMg/bGL58Xyaj1NcH+dbrFDPkU8Jvoqi9EdvJVtWtIq3
+	y/3RxYygwYcY10n5tOKJnD9IWwE4rnKl/U5hq9x0PPUtyX0d4C0gr/jJSZW29KIGUVzR7BvLTVy
+	vLpGfkO5Dvkd8J7RlEHJxPQ==
+X-Google-Smtp-Source: AGHT+IH+U5NNduIwURg0BoDlPsKnnOIwfCnZdS3eRXACF/uPNRGoE141bvOCCDVesMcVlUE6OG1mnMpg0Q9mT2r6sg==
+X-Received: from pfu5.prod.google.com ([2002:a05:6a00:a385:b0:725:f376:f548])
  (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6870:3108:b0:29e:287e:3706 with SMTP id 586e51a60fabf-29f732d630amr9859551fac.17.1733798510837;
- Mon, 09 Dec 2024 18:41:50 -0800 (PST)
-Date: Mon,  9 Dec 2024 18:41:17 -0800
+ 2002:a05:6a00:3016:b0:725:c8ea:b320 with SMTP id d2e1a72fcca58-725c8eab756mr18454838b3a.14.1733798512543;
+ Mon, 09 Dec 2024 18:41:52 -0800 (PST)
+Date: Mon,  9 Dec 2024 18:41:18 -0800
 In-Reply-To: <20241210024119.2488608-1-kaleshsingh@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,8 +77,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20241210024119.2488608-1-kaleshsingh@google.com>
 X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241210024119.2488608-16-kaleshsingh@google.com>
-Subject: [PATCH mm-unstable 15/17] mm: powerpc: Introduce arch_mmap_hint()
+Message-ID: <20241210024119.2488608-17-kaleshsingh@google.com>
+Subject: [PATCH mm-unstable 16/17] mm: Fallback to generic_mmap_hint()
 From: Kalesh Singh <kaleshsingh@google.com>
 To: akpm@linux-foundation.org, vbabka@suse.cz, yang@os.amperecomputing.com, 
 	riel@surriel.com, david@redhat.com
@@ -102,69 +102,34 @@ X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Introduce powerpc arch_mmap_hint() and define HAVE_ARCH_MMAP_HINT.
-This is a preparatory patch, no functional change is introduced.
+If an architecture doesn't provide arch_mmap_hint() fallback to
+generic_mmap_hint().
 
 Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
 ---
- arch/powerpc/include/asm/book3s/64/slice.h |  1 +
- arch/powerpc/mm/book3s64/slice.c           | 31 ++++++++++++++++++++++
- 2 files changed, 32 insertions(+)
+ mm/mmap.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/powerpc/include/asm/book3s/64/slice.h b/arch/powerpc/include/asm/book3s/64/slice.h
-index 5fbe18544cbd..89f629080e90 100644
---- a/arch/powerpc/include/asm/book3s/64/slice.h
-+++ b/arch/powerpc/include/asm/book3s/64/slice.h
-@@ -10,6 +10,7 @@
- #endif
- #define HAVE_ARCH_UNMAPPED_AREA
- #define HAVE_ARCH_UNMAPPED_AREA_TOPDOWN
-+#define HAVE_ARCH_MMAP_HINT
- #endif
- 
- #define SLICE_LOW_SHIFT		28
-diff --git a/arch/powerpc/mm/book3s64/slice.c b/arch/powerpc/mm/book3s64/slice.c
-index bc9a39821d1c..70b95968301a 100644
---- a/arch/powerpc/mm/book3s64/slice.c
-+++ b/arch/powerpc/mm/book3s64/slice.c
-@@ -647,6 +647,37 @@ static int file_to_psize(struct file *file)
+diff --git a/mm/mmap.c b/mm/mmap.c
+index e97eb8bf4889..59bf7d127aa1 100644
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -691,6 +691,15 @@ arch_get_unmapped_area(struct file *filp, unsigned long addr,
  }
  #endif
  
-+static unsigned long slice_mmap_hint(unsigned long addr, unsigned long len,
-+				     unsigned long flags, unsigned int psize)
-+{
-+	unsigned long hint_addr = slice_get_unmapped_area(addr, len, flags, psize, 0);
-+
-+	if (IS_ERR_VALUE(hint_addr) || hint_addr != PAGE_ALIGN(addr))
-+		return 0;
-+
-+	return hint_addr;
-+}
-+
++#ifndef HAVE_ARCH_MMAP_HINT
 +unsigned long arch_mmap_hint(struct file *filp, unsigned long addr,
 +			     unsigned long len, unsigned long pgoff,
 +			     unsigned long flags)
 +{
-+	unsigned int psize;
-+
-+	if (!addr)
-+		return 0;
-+
-+	if (radix_enabled())
-+		return generic_mmap_hint(filp, addr, len, pgoff, flags);
-+
-+	if (filp && is_file_hugepages(filp))
-+		psize = file_to_psize(filp);
-+	else
-+		psize = mm_ctx_user_psize(&current->mm->context);
-+
-+	return slice_mmap_hint(addr, len, flags, psize);
++	return generic_mmap_hint(filp, addr, len, pgoff, flags);
 +}
++#endif
 +
- unsigned long arch_get_unmapped_area(struct file *filp,
- 				     unsigned long addr,
- 				     unsigned long len,
+ /*
+  * This mmap-allocator allocates new areas top-down from below the
+  * stack's low limit (the base):
 -- 
 2.47.0.338.g60cca15819-goog
 
