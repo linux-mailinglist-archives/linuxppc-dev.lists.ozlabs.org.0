@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-3935-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3937-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D4689EBCA6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:03:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB02A9EBCAA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:03:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR56Kv0z304l;
-	Wed, 11 Dec 2024 09:03:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR64dctz305S;
+	Wed, 11 Dec 2024 09:03:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868193;
-	cv=none; b=bMzSoS68yYzP6IWwJW8QdiFcW1azjhs3jUqxnDp33wBRcfbmSUiDyrffRbreCtWXbVshAE2KlSL3rJw1Aqh8TruarnRfiqW5DeugYWEQKeSytaNMUj0/w5bK7g2FFQsKf7yVihlcuOcqiQpIw3xGLVkL5Ssdc26/qysWfSmYE6PcqONswgH/N3rJE41ixacnctwazSfccV67yA391ppqgPQPB8HPsqHkTYuxSj8gks2NXNXMlfDEYQa3SIU87C3QqkMU1xj3U5mDqt0jULp47c6KRy52scxyvVwLPiChSfbW7ERWX48b8aPsInNoya10ofZXbgLb+m69afWd3V73iw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868194;
+	cv=none; b=mk5POpLpP1ax6kMrRUct5HHrkTsM4ogr+GvCSGJ8Pd9O+v1m0YDgeHIYPVufipnvclUXtXpg0Ddk0wPIoYHb3SM68coJBzmzUb7wvV/ZDVVv0xe2Da6q73riOR8xYYVw0eiHNMkAiTB1ttF4EbvI8g6NYtTiT53XCS8eN0ALZriKQNsahhN3TI/1ltoAbCuEe3q9WdlvJgN6e6v6o/ZXCWuWqvYlqZEDk5FiRrmetTyLKwKmYdGPHCTeTlDt4AAdM7j4nx0EPFkJvVEl0ireog3hSYWXyJFKe5NuIz3d3NfVsMRvQD5gDSLk44JNnjx3RwxaRFEc/EjUKSA3c2L5zQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733868193; c=relaxed/relaxed;
-	bh=c41QzYd4hhSXlS6Xp2pgWqH2EB3T3v3i9Pb37cjnO/o=;
+	t=1733868194; c=relaxed/relaxed;
+	bh=q4DaHZqCWeIKQe7TTG2rV3K7PdI1M/As9LhjCxxNuts=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=UkTQi5RrhexOxaT/G+p2JJSk1bqkpNx1s8p7UZ3kYX0vCCVqq6ICnvrfBJSNFRtjphzpRlgv6+fnzD7SEEmU0omyBLDHfcBZctiHWnPUzbYYnqIy37FbfTNORv+Fgo0Va2lHV5JIOLiZN6/GgFSrOi5ix82lacopSRD9chlhQg46XVxjk5q8i9ATbpO9vTYQxoZ9lGwGWFQQhAl3Jh0gRrEz5Q9octMnk9OI1IrfjZq++IJC++wzsNJYoVS50i2A7T6Zl+5Vm7bLNYtMTnuwQdg1d7tAYNhfKdcUywhQOFEqbhVzdjREjE/5KFV6fQBolpIoxtk6IUNEhFpnMrdJJA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=qVCIV9cf; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=NiY98XD7tPnYbr7LGcplI4consFonEg2xB8iKrG8ApM0vSb+HtUq5aL8oc2SUgJOSgmVR9cLRPpu9j14q7/9r2jeF/vdCKP8d/jXab03q7QjqSrauu6ku2Ge4TGCRkfoXCRlyP3hYt/m76Z5bjajSufUkNH7wCdsFYCa/1+ZoVgJFujjBYjv1hTLl+/Gp4teQxfan/bbJlXxDe529iybu94mhaKHwLH7uiT8XtmbZmm/MV1o1qGMt+Rl91yL8gwj6BedbSkoKPFRdyenDfVwhuV/MNtd1DhBMAq0kd3nO1R/aXEDs6AFOsPn4H1FU1flblWvCvIR9bkSBbq1JKcdYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Cha0cDHP; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=qVCIV9cf;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=Cha0cDHP;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR12TKTz2ykf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR20vtkz2ynr
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:10 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id E562F204722A;
-	Tue, 10 Dec 2024 14:02:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E562F204722A
+	by linux.microsoft.com (Postfix) with ESMTPSA id 1CDB6204722B;
+	Tue, 10 Dec 2024 14:02:37 -0800 (PST)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 1CDB6204722B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1733868157;
-	bh=c41QzYd4hhSXlS6Xp2pgWqH2EB3T3v3i9Pb37cjnO/o=;
+	bh=q4DaHZqCWeIKQe7TTG2rV3K7PdI1M/As9LhjCxxNuts=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=qVCIV9cfYQFUEbAPN5oHTbVOOCMPtJTRnplX1niaLB3lEuL2MM5F44Gr4RM6lOTTS
-	 WXCIz2JA6aYjhurN56TEZJEQV0OG8AVSPHDGlGJRGWabTGSgGWE+1I7d1M8c078PhJ
-	 k5GeR3RvYMN/zDxLHn2xchQHWB1a1MyycuJ1TrJU=
+	b=Cha0cDHP2vqeI8GSgKLIifsRbCjhIP9dfadMSDrPMIXzCzmN2lfENv6VOGo3TWGGc
+	 RhOk4eEHD3feUGZkxL7/wUYX3ev+tB6zBroy0qt0RlqU7ha1EGeg6x38R1w2x8kfbl
+	 wuStr/zn04e6xBcfNPjBsiQEchSCZugge2XzJeQs=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 10 Dec 2024 22:02:34 +0000
-Subject: [PATCH v3 03/19] arm: pxa: Convert timeouts to use
+Date: Tue, 10 Dec 2024 22:02:35 +0000
+Subject: [PATCH v3 04/19] s390: kernel: Convert timeouts to use
  secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241210-converge-secs-to-jiffies-v3-3-ddfefd7e9f2a@linux.microsoft.com>
+Message-Id: <20241210-converge-secs-to-jiffies-v3-4-ddfefd7e9f2a@linux.microsoft.com>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 In-Reply-To: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -125,7 +125,7 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
-secs_to_jiffies(). As the value here is a multiple of 1000, use
+secs_to_jiffies(). As the values here are a multiple of 1000, use
 secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 
 This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
@@ -143,28 +143,56 @@ the following Coccinelle rules:
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- arch/arm/mach-pxa/sharpsl_pm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/s390/kernel/lgr.c      | 2 +-
+ arch/s390/kernel/time.c     | 4 ++--
+ arch/s390/kernel/topology.c | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/mach-pxa/sharpsl_pm.c b/arch/arm/mach-pxa/sharpsl_pm.c
-index 0c8d9000df5a6384d615cf231ff986c0c6b71681..dd930e3a61a493293597815782d2ffd36605a700 100644
---- a/arch/arm/mach-pxa/sharpsl_pm.c
-+++ b/arch/arm/mach-pxa/sharpsl_pm.c
-@@ -31,10 +31,10 @@
- /*
-  * Constants
+diff --git a/arch/s390/kernel/lgr.c b/arch/s390/kernel/lgr.c
+index 6652e54cf3db9fbdd8cfb06f8a0dc1d4c05ae7d7..6d1ffca5f798086160112990cb947ec8deed0659 100644
+--- a/arch/s390/kernel/lgr.c
++++ b/arch/s390/kernel/lgr.c
+@@ -166,7 +166,7 @@ static struct timer_list lgr_timer;
   */
--#define SHARPSL_CHARGE_ON_TIME_INTERVAL        (msecs_to_jiffies(1*60*1000))  /* 1 min */
--#define SHARPSL_CHARGE_FINISH_TIME             (msecs_to_jiffies(10*60*1000)) /* 10 min */
--#define SHARPSL_BATCHK_TIME                    (msecs_to_jiffies(15*1000))    /* 15 sec */
--#define SHARPSL_BATCHK_TIME_SUSPEND            (60*10)                        /* 10 min */
-+#define SHARPSL_CHARGE_ON_TIME_INTERVAL        (secs_to_jiffies(60))
-+#define SHARPSL_CHARGE_FINISH_TIME             (secs_to_jiffies(10*60))
-+#define SHARPSL_BATCHK_TIME                    (secs_to_jiffies(15))
-+#define SHARPSL_BATCHK_TIME_SUSPEND            (60*10) /* 10 min */
+ static void lgr_timer_set(void)
+ {
+-	mod_timer(&lgr_timer, jiffies + msecs_to_jiffies(LGR_TIMER_INTERVAL_SECS * MSEC_PER_SEC));
++	mod_timer(&lgr_timer, jiffies + secs_to_jiffies(LGR_TIMER_INTERVAL_SECS));
+ }
  
- #define SHARPSL_WAIT_CO_TIME                   15  /* 15 sec */
- #define SHARPSL_WAIT_DISCHARGE_ON              100 /* 100 msec */
+ /*
+diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
+index 34a65c141ea076ba97b3238f1f36f077b15961df..e9f47c3a61978a45c72aee23bc44dcb128113c8c 100644
+--- a/arch/s390/kernel/time.c
++++ b/arch/s390/kernel/time.c
+@@ -662,12 +662,12 @@ static void stp_check_leap(void)
+ 		if (ret < 0)
+ 			pr_err("failed to set leap second flags\n");
+ 		/* arm Timer to clear leap second flags */
+-		mod_timer(&stp_timer, jiffies + msecs_to_jiffies(14400 * MSEC_PER_SEC));
++		mod_timer(&stp_timer, jiffies + secs_to_jiffies(14400));
+ 	} else {
+ 		/* The day the leap second is scheduled for hasn't been reached. Retry
+ 		 * in one hour.
+ 		 */
+-		mod_timer(&stp_timer, jiffies + msecs_to_jiffies(3600 * MSEC_PER_SEC));
++		mod_timer(&stp_timer, jiffies + secs_to_jiffies(3600));
+ 	}
+ }
+ 
+diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
+index 4f9c301a705b63f8dd0e7bc33e7206ad1222e7a7..0fd56a1cadbd4f41a9876a3a3fec7f5dc08ac2db 100644
+--- a/arch/s390/kernel/topology.c
++++ b/arch/s390/kernel/topology.c
+@@ -371,7 +371,7 @@ static void set_topology_timer(void)
+ 	if (atomic_add_unless(&topology_poll, -1, 0))
+ 		mod_timer(&topology_timer, jiffies + msecs_to_jiffies(100));
+ 	else
+-		mod_timer(&topology_timer, jiffies + msecs_to_jiffies(60 * MSEC_PER_SEC));
++		mod_timer(&topology_timer, jiffies + secs_to_jiffies(60));
+ }
+ 
+ void topology_expect_change(void)
 
 -- 
 2.43.0
