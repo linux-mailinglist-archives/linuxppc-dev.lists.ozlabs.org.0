@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-3942-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3940-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F3B19EBCB8
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:04:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E589EBCB4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:04:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRk5Zd7z30Pd;
-	Wed, 11 Dec 2024 09:03:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRj6nMBz30NY;
+	Wed, 11 Dec 2024 09:03:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868226;
-	cv=none; b=mUpSClZOBWB2jYRV2jAp9g01ZqQu0PgWGFQ0U5qbH/usfgXz0Y70BDCCSJv1F4M40lwrHm11729YU9p1RrPKZZF1FY/VMSsMqauiprPCXCG8BdlE1UkFTS47TF0J5Fv/mp77FFR/yplSBAfAwbWu+bVoIJwU92uk/hXoIRgCNddZY5yLOg6NiNpti1Elm2pocrqWPbSY8aIBgdwCKgdCW3abllIQ/14tUHum0vgshxanNR9nK+HiS1qzY+uKynt3AMVyBq1JLRfFWwXosfpHVIBdnKDukjFCcxxsQI3lT7SbcX59FhcvWVHcctLCzZ1L8ZTlWQDyfWBAQXWGYywWDw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868225;
+	cv=none; b=ERhl+X3rRdjiNPcFfbpslBlf3xG1MDQ7SljdUXptRlSA0I41WxJt2T9ZcgunX0KNfJE8qaVTAgayajtlsd5NGSEuL3rS4LDh+l/ZtFnZUKvF6mFre9c7jcbSym+JXuYNcSE31ArYzkchFPSOYyjvuHeCxtNBJfGWdBw0cJLzNeqoh0cCNM4sc/gRK3fWa04bJ9ryulweFzyFOBWp4+N0w8/Fc44YE7c03pXIzuG41Hfh02wOcHLBdFwQE+B2V09LbJTs38BTi5FpqGKZk2axB5cCsEO91hKvWjhtbiG4qiN+ig3R2ro3dm7Nh8BG1w15eKCWal4ZOMSt2UuT6ueg/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733868226; c=relaxed/relaxed;
-	bh=2KdSABVpHGeIl3K+Zfq51kwhEReKGYYzt3DUWqeHGog=;
+	t=1733868225; c=relaxed/relaxed;
+	bh=bkW4y6ENFXKRD3xTlI1AhDo8V7CjSAjUn/pFIvR2ry8=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=OqejK6SoUI87RhCdZxotEB7qpLoP8EQ8GccjQzVPvXTKMCReq/AypRVnA6Ko6jAfW3dXE48J3ZQPZFecwJ5AbTvxMxaTSk2/2o1zr9z9IMJCEPM2ZbKwgbI5yAnSmB1I1OhDLZ9I3RHLk1Ls5sT1/hiZS/BHT2jgTleFL/LUASBPeNJxbvjYaV8PD0hEqkHieAAuXntUXvTrDeSA9Alr6snEz/6ZDYyWU08COYAXQjAmGNnAJU57gbUSvVCa5w8aVA6STA+GWB+PhrcLgCKhwhU1KBTQsn60VBudS+IGYCPdtKtasbodtgFCDzR/qqqVxVu0vRiotJCxBhlaF1V+ww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=R9JyWtdI; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=lJqq9t9bLYZ25RqEeJEJPgWIuQJb8PGL4Lc5LlpnV1nEu7j9+80agdxlIC8gk9ea+qBNja0+3Z0yO14Q1XnijCBllQXaFvgS9xiFWJH8kl7prwasd2mOmWdM/rGyrnRxaxMyv+TsqervldKIbo2RcemmmhA+X3ayLxvQUZBkKZINfV/2cQDLSLJEPRJWWorOLxwOuEle0ESYVI92r10RxMAXxTrO+IrV4rjo0smbD4ItNFfKWsJ5FHuIC9YjDyeeCquEXPuGezYRYNFMjZzGps0oMXHsXT0XFaUEs2LIv6jiFOSjvuMozVbrDR/opt+vLsSgdM8thdF0KYTY/G3Hxw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=dOK8RnNQ; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=R9JyWtdI;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=dOK8RnNQ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRh3p8zz30Bt
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRg3s1rz306S
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:43 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 3576020ACD6C;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 6531B20ACD6B;
 	Tue, 10 Dec 2024 14:02:39 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 3576020ACD6C
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6531B20ACD6B
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1733868159;
-	bh=2KdSABVpHGeIl3K+Zfq51kwhEReKGYYzt3DUWqeHGog=;
+	bh=bkW4y6ENFXKRD3xTlI1AhDo8V7CjSAjUn/pFIvR2ry8=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=R9JyWtdIUEb4/zKyVfibrupVtLSA8I4Ge9h6DsznbqwDXYuMt91s9gMK2E8wvHrfF
-	 DAI6C0uY79rteNLP8XN3j0zl2c4hIe69V64Jd/WfL7mt75W43sZOrZK3S3e5zHR6NX
-	 Fb6Kd6ZyvfvV2PAG+yCh6AjQd+L5BQfffwiXvwAk=
+	b=dOK8RnNQMEEDnIPfeOf2mTH3/slP0EgBsz1RphSjHbLnDrQKEVkY9HcyDwOhMk5R6
+	 eaO83rvpJomkJuzNdNBxnuRf37TDgqADuidRQb6NchFG64SiUCMfdU7nMnXJqoCbUe
+	 LiFzIadqv43ZC7HtDm7c2pnyXRduc6YAQ9XNwlB0=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 10 Dec 2024 22:02:46 +0000
-Subject: [PATCH v3 15/19] Bluetooth: MGMT: Convert timeouts to
+Date: Tue, 10 Dec 2024 22:02:47 +0000
+Subject: [PATCH v3 16/19] staging: vc04_services: Convert timeouts to
  secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241210-converge-secs-to-jiffies-v3-15-ddfefd7e9f2a@linux.microsoft.com>
+Message-Id: <20241210-converge-secs-to-jiffies-v3-16-ddfefd7e9f2a@linux.microsoft.com>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 In-Reply-To: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -143,22 +143,22 @@ the following Coccinelle rules:
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- net/bluetooth/mgmt.c | 2 +-
+ drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index b31192d473d09b663dc7babd107b4894088ebf6d..8c993763ee0f0360e0d92705f9035f47754b793b 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -210,7 +210,7 @@ static const u16 mgmt_untrusted_events[] = {
- 	MGMT_EV_EXP_FEATURE_CHANGED,
- };
+diff --git a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
+index dc0d715ed97078ad0f0a41db78428db4f4135a76..0dbe76ee557032d7861acfc002cc203ff2e6971d 100644
+--- a/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
++++ b/drivers/staging/vc04_services/bcm2835-audio/bcm2835-vchiq.c
+@@ -59,7 +59,7 @@ static int bcm2835_audio_send_msg_locked(struct bcm2835_audio_instance *instance
  
--#define CACHE_TIMEOUT	msecs_to_jiffies(2 * 1000)
-+#define CACHE_TIMEOUT	secs_to_jiffies(2)
- 
- #define ZERO_KEY "\x00\x00\x00\x00\x00\x00\x00\x00" \
- 		 "\x00\x00\x00\x00\x00\x00\x00\x00"
+ 	if (wait) {
+ 		if (!wait_for_completion_timeout(&instance->msg_avail_comp,
+-						 msecs_to_jiffies(10 * 1000))) {
++						 secs_to_jiffies(10))) {
+ 			dev_err(instance->dev,
+ 				"vchi message timeout, msg=%d\n", m->type);
+ 			return -ETIMEDOUT;
 
 -- 
 2.43.0
