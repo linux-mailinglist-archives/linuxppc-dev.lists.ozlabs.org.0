@@ -1,44 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-3934-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3935-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 987819EBC99
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:03:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4689EBCA6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:03:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR4607Lz3024;
-	Wed, 11 Dec 2024 09:03:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR56Kv0z304l;
+	Wed, 11 Dec 2024 09:03:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868192;
-	cv=none; b=EHYCws2+EDoKMoJf/XxUg6gKOT0TwffD4g1JJWezus1ZiXjNO2GbTO6etaXjoJnvYMmkmIv3erpB59kAxSgrHmnXhSP95fbqi0PeEVtXsJBE4mh1Rm0nWrG+NZ1/5SXHaSLyh5HxoIDHyiUKjQep3hghNwtTgMoBreP2AM0l+W6BWVAaIDYQjC8uMiP8mDzeL+rkFbRuiKgkcmUlEw8UiWFfF/axxnW8EKloM3BejKmKhGvE1lGK7RrD8EK4pIb/mj0WQNuSs7B8ufG8muzRJYQTRjsZq4iRmXNCfMXPakY2/RfGZvk4N9xVlTMjZnWOFfwdIR4u1nlzICIdl0z9tA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868193;
+	cv=none; b=bMzSoS68yYzP6IWwJW8QdiFcW1azjhs3jUqxnDp33wBRcfbmSUiDyrffRbreCtWXbVshAE2KlSL3rJw1Aqh8TruarnRfiqW5DeugYWEQKeSytaNMUj0/w5bK7g2FFQsKf7yVihlcuOcqiQpIw3xGLVkL5Ssdc26/qysWfSmYE6PcqONswgH/N3rJE41ixacnctwazSfccV67yA391ppqgPQPB8HPsqHkTYuxSj8gks2NXNXMlfDEYQa3SIU87C3QqkMU1xj3U5mDqt0jULp47c6KRy52scxyvVwLPiChSfbW7ERWX48b8aPsInNoya10ofZXbgLb+m69afWd3V73iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733868192; c=relaxed/relaxed;
-	bh=p+8g58BSBlt5b8YhFCU18nddw3DZx2oHU0RyK/mdTxg=;
+	t=1733868193; c=relaxed/relaxed;
+	bh=c41QzYd4hhSXlS6Xp2pgWqH2EB3T3v3i9Pb37cjnO/o=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=GhjJdiJCmBdR0Rh4Yo6pYro811KZ2owGtlHNg35kk56M4qU2Ci4FvNg6/4oFFpQOIE22TiPv2niVrTtfI8C869X21+0uv2C+4E/PsF45HoC0m1bWFa7NN/rMEZUyMlk1ointjmUU5O/k87WGNeq/Fvc7CkpWDY6975YRQq/+Uf61vDoIwuOI2+mS7ZSQlsfC6zBI2RQrsHnRlOkbPTZ9bpxI2AW5r+A22Qpy+mmgFAJQzjPi3ED36JRNtmocU4xwmajtqa6b1cj4gBkqylDpD0X44QQMsQeBL+4MST9E+prZ9x8tb7kNqmNEaFlSxt8wMoLmehQ4ar/fSNlPYQVMlA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=D0ztEAtB; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=UkTQi5RrhexOxaT/G+p2JJSk1bqkpNx1s8p7UZ3kYX0vCCVqq6ICnvrfBJSNFRtjphzpRlgv6+fnzD7SEEmU0omyBLDHfcBZctiHWnPUzbYYnqIy37FbfTNORv+Fgo0Va2lHV5JIOLiZN6/GgFSrOi5ix82lacopSRD9chlhQg46XVxjk5q8i9ATbpO9vTYQxoZ9lGwGWFQQhAl3Jh0gRrEz5Q9octMnk9OI1IrfjZq++IJC++wzsNJYoVS50i2A7T6Zl+5Vm7bLNYtMTnuwQdg1d7tAYNhfKdcUywhQOFEqbhVzdjREjE/5KFV6fQBolpIoxtk6IUNEhFpnMrdJJA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=qVCIV9cf; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=D0ztEAtB;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=qVCIV9cf;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR06rmVz2yXd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CR12TKTz2ykf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:09 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B8E722047229;
+	by linux.microsoft.com (Postfix) with ESMTPSA id E562F204722A;
 	Tue, 10 Dec 2024 14:02:36 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B8E722047229
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com E562F204722A
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1733868156;
-	bh=p+8g58BSBlt5b8YhFCU18nddw3DZx2oHU0RyK/mdTxg=;
+	s=default; t=1733868157;
+	bh=c41QzYd4hhSXlS6Xp2pgWqH2EB3T3v3i9Pb37cjnO/o=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=D0ztEAtB7CqvQGSZsYp+tRN4xkI1U+Pf0qGPT6ILcEXORWxv5WkL8NhY8sec+1ep2
-	 o0YIUC89qlYyBwdj7sp7PypSXEaSKBYajv+HMKS2o/OP0mphIdTsuM5S4VkeWurXmd
-	 SYBz6bHa118hfuIgWOgwAoVQLPZwu51P6o2dfTvU=
+	b=qVCIV9cfYQFUEbAPN5oHTbVOOCMPtJTRnplX1niaLB3lEuL2MM5F44Gr4RM6lOTTS
+	 WXCIz2JA6aYjhurN56TEZJEQV0OG8AVSPHDGlGJRGWabTGSgGWE+1I7d1M8c078PhJ
+	 k5GeR3RvYMN/zDxLHn2xchQHWB1a1MyycuJ1TrJU=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 10 Dec 2024 22:02:33 +0000
-Subject: [PATCH v3 02/19] coccinelle: misc: Add secs_to_jiffies script
+Date: Tue, 10 Dec 2024 22:02:34 +0000
+Subject: [PATCH v3 03/19] arm: pxa: Convert timeouts to use
+ secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -53,7 +54,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241210-converge-secs-to-jiffies-v3-2-ddfefd7e9f2a@linux.microsoft.com>
+Message-Id: <20241210-converge-secs-to-jiffies-v3-3-ddfefd7e9f2a@linux.microsoft.com>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 In-Reply-To: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -123,44 +124,47 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-This script finds and suggests conversions of timeout patterns that
-result in seconds-denominated timeouts to use the new secs_to_jiffies()
-API in include/linux/jiffies.h for better readability.
+Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+secs_to_jiffies(). As the value here is a multiple of 1000, use
+secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 
-Suggested-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+the following Coccinelle rules:
+
+@@ constant C; @@
+
+- msecs_to_jiffies(C * 1000)
++ secs_to_jiffies(C)
+
+@@ constant C; @@
+
+- msecs_to_jiffies(C * MSEC_PER_SEC)
++ secs_to_jiffies(C)
+
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- scripts/coccinelle/misc/secs_to_jiffies.cocci | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+ arch/arm/mach-pxa/sharpsl_pm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/scripts/coccinelle/misc/secs_to_jiffies.cocci b/scripts/coccinelle/misc/secs_to_jiffies.cocci
-new file mode 100644
-index 0000000000000000000000000000000000000000..8bbb2884ea5db939c63fd4513cf5ca8c977aa8cb
---- /dev/null
-+++ b/scripts/coccinelle/misc/secs_to_jiffies.cocci
-@@ -0,0 +1,22 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+///
-+/// Find usages of:
-+/// - msecs_to_jiffies(value*1000)
-+/// - msecs_to_jiffies(value*MSEC_PER_SEC)
-+///
-+// Confidence: High
-+// Copyright: (C) 2024 Easwar Hariharan, Microsoft
-+// Keywords: secs, seconds, jiffies
-+//
-+
-+virtual patch
-+
-+@depends on patch@ constant C; @@
-+
-+- msecs_to_jiffies(C * 1000)
-++ secs_to_jiffies(C)
-+
-+@depends on patch@ constant C; @@
-+
-+- msecs_to_jiffies(C * MSEC_PER_SEC)
-++ secs_to_jiffies(C)
+diff --git a/arch/arm/mach-pxa/sharpsl_pm.c b/arch/arm/mach-pxa/sharpsl_pm.c
+index 0c8d9000df5a6384d615cf231ff986c0c6b71681..dd930e3a61a493293597815782d2ffd36605a700 100644
+--- a/arch/arm/mach-pxa/sharpsl_pm.c
++++ b/arch/arm/mach-pxa/sharpsl_pm.c
+@@ -31,10 +31,10 @@
+ /*
+  * Constants
+  */
+-#define SHARPSL_CHARGE_ON_TIME_INTERVAL        (msecs_to_jiffies(1*60*1000))  /* 1 min */
+-#define SHARPSL_CHARGE_FINISH_TIME             (msecs_to_jiffies(10*60*1000)) /* 10 min */
+-#define SHARPSL_BATCHK_TIME                    (msecs_to_jiffies(15*1000))    /* 15 sec */
+-#define SHARPSL_BATCHK_TIME_SUSPEND            (60*10)                        /* 10 min */
++#define SHARPSL_CHARGE_ON_TIME_INTERVAL        (secs_to_jiffies(60))
++#define SHARPSL_CHARGE_FINISH_TIME             (secs_to_jiffies(10*60))
++#define SHARPSL_BATCHK_TIME                    (secs_to_jiffies(15))
++#define SHARPSL_BATCHK_TIME_SUSPEND            (60*10) /* 10 min */
+ 
+ #define SHARPSL_WAIT_CO_TIME                   15  /* 15 sec */
+ #define SHARPSL_WAIT_DISCHARGE_ON              100 /* 100 msec */
 
 -- 
 2.43.0
