@@ -1,44 +1,44 @@
-Return-Path: <linuxppc-dev+bounces-3948-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3949-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A2E9EBCC6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:04:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8FF9EBCD0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 23:05:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRm6Zwzz30TF;
-	Wed, 11 Dec 2024 09:03:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRn4hlrz30TP;
+	Wed, 11 Dec 2024 09:03:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868228;
-	cv=none; b=LRTr7gsAgtmq1LG9ZoC3vG03YTvw3sRi1BxMCEyyGreEXsJTqnQuoVXizIHZYFe1lPDRqdHEaEjnEfPJUXWfPwlJ6cvgWXITV42L5mtxcRImDJZC0FxXc8eZJqXYSFIcPD8VQsCPTs+ogCP8+Dn+GeYWPrbFjWDh1FSyP2vaiamWizltC0CP2zOo5RoAoiFsF8GsTsxQqp4+lsazb58eCG33cHCAZUKM4slt3SO7/w33pOO3ECk7W4yHWZkBcZ1560xkzLMnfxIo7DTyvSkCsdHkIgZUDYLFRwPYz+zE1RbGr+/qekxmjU2n3WdhuXDEhj9AGOntmvP9lFHJdB9T5w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733868229;
+	cv=none; b=k/QLxm5Zv0yB07EA1PPWITCkzHs0ZebU1h4ljJujn1CyQd3g9lVeGCnQkhzOznYPS5a0ofCR00+2orRiUaD15qbqV7NMa3VbEQg10WGE+UJk2iq3Ww3cm+tah15gJpvtXZwsQHv3yGhUokLaq7Dvg0NnP/v+sGpvpHuAP91t5DfoYmAl92PEmqYdzv+i9if1abg0P036vjcMzEntr/5o8M+v8pj6x97vTgbTCWAelPv7gty8GTlO1TLYrywNcUcZOHp/SzAQgVbQAyD41i80k+pUnN2Mdbsna7qMZXKc4BmkitXEhlBn2GXF5fhrtwMa8HLj0cWOuBt+an3Jj0CkQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733868228; c=relaxed/relaxed;
-	bh=BGnsC+198VTSc2YUOR+tnnzodlQEmbpaf1xRkHMeOLA=;
+	t=1733868229; c=relaxed/relaxed;
+	bh=U++D0WKRUcBPTXKKmA8ay83+fBnoO24djfuDhPxnmd0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ggVGNtWt3sWn4zXLa/LVIZKEDZAHk6LRZnl3ARgkTDia7nolXioPXVuDcF6CQAy25aqpQFGhjElD2xHaJ9ET7xsq6/rppuQnf++9l9V+CrAao2mSJbmE+ejrNUm1+EVxW66JEmGeWsPVV4u5pw0KdFfPCDvVzUpvRWA/2qKKxAvUwR4EODF4iJlw6VVBY3hWr/omWodMzhDvK/iDsTJSB2kQUUePPu3pKyYBVcx1LtrzWci2+NKAbjs7aFJZP4t8FRTBjWaZWx7d5ArJ3u9/S+xSdfPrB14CJKRFuVbD2lGn2nnh7tDYagOh8nPuFcgt4BdBn0c6+RPntFZ/kbVLKg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=f8FLrazo; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
+	 In-Reply-To:To:Cc; b=ICydGFWRrjqV8uGm3j70EsV44hjlTsppWuEiZ5PRurzTfS7IqIybcXGI2JquV4AzBL4vG0GgNqowWrMB1c+gDOC1NI7D3Tv6/nnE8/zv+CnlCMcDDsFLHS/txaOiN1Jy4i6T4lv3amn1arClLQRyp71jPu4GKdQs0tuhMuSKxfMqChX0j+x+oPfSM6kytJ/p/zpEdLEQb3/yAXEignC77Di/833iX7QBAqSGCpF5A40J+YNoTNRWdlEo2FgGKZtr6IeAriRosyJSSvS/0y6jxH+dEq/EfkHqAfu0UzI1aSXMWafWMfouTS48+y7AH+6nr/09GhRm39d3prR5krThMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=i9DsTNH+; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=f8FLrazo;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=i9DsTNH+;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
 Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRj5yz0z3064
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7CRj6Kywz30NF
 	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 09:03:45 +1100 (AEDT)
 Received: from eahariha-devbox.internal.cloudapp.net (unknown [40.91.112.99])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 40433204722F;
+	by linux.microsoft.com (Postfix) with ESMTPSA id 6FF4C2047230;
 	Tue, 10 Dec 2024 14:02:38 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 40433204722F
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6FF4C2047230
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
 	s=default; t=1733868158;
-	bh=BGnsC+198VTSc2YUOR+tnnzodlQEmbpaf1xRkHMeOLA=;
+	bh=U++D0WKRUcBPTXKKmA8ay83+fBnoO24djfuDhPxnmd0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=f8FLrazoOSnG7X8aDWVI3nVNlHmQntetz0EU8Jiq9ArRSLgklxjGdYHhwJFkuGOqx
-	 IH/VjuOQp54aRZNV03h5piA8Q49loXnKOX2ThzuLLFf9IwCIw5oEVNJs8TgQ/6gM17
-	 zOuBTvw2xYfRYO0jrQtMw2wpWhKIeaajYB7zt3gs=
+	b=i9DsTNH+sl/IoEAtSjlSJHTOE30TcOTSfxv7yvCJsXzsKYC64wXa+LBK94U2wED8+
+	 6hMcKIbUoHeurUTa3oCFtWHdRYvf3LnrkdYUlQGzEUBgp5Wh7dgkbASpnSVSuIShxl
+	 Qe59P7FSrX+a5TC/+UUUxnQ63OeNqL5idRg6Tx5c=
 From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Date: Tue, 10 Dec 2024 22:02:41 +0000
-Subject: [PATCH v3 10/19] scsi: arcmsr: Convert timeouts to
+Date: Tue, 10 Dec 2024 22:02:42 +0000
+Subject: [PATCH v3 11/19] scsi: pm8001: Convert timeouts to
  secs_to_jiffies()
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -54,7 +54,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20241210-converge-secs-to-jiffies-v3-10-ddfefd7e9f2a@linux.microsoft.com>
+Message-Id: <20241210-converge-secs-to-jiffies-v3-11-ddfefd7e9f2a@linux.microsoft.com>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 In-Reply-To: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 To: Pablo Neira Ayuso <pablo@netfilter.org>, 
@@ -143,22 +143,22 @@ the following Coccinelle rules:
 
 Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 ---
- drivers/scsi/arcmsr/arcmsr_hba.c | 2 +-
+ drivers/scsi/pm8001/pm8001_init.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/arcmsr/arcmsr_hba.c b/drivers/scsi/arcmsr/arcmsr_hba.c
-index 6a32e3e0d516881fd87a56a394607930582644ee..fe7de7705b7e2c84324f1a493f7825343d6476c6 100644
---- a/drivers/scsi/arcmsr/arcmsr_hba.c
-+++ b/drivers/scsi/arcmsr/arcmsr_hba.c
-@@ -1045,7 +1045,7 @@ static void arcmsr_init_get_devmap_timer(struct AdapterControlBlock *pacb)
- static void arcmsr_init_set_datetime_timer(struct AdapterControlBlock *pacb)
- {
- 	timer_setup(&pacb->refresh_timer, arcmsr_set_iop_datetime, 0);
--	pacb->refresh_timer.expires = jiffies + msecs_to_jiffies(60 * 1000);
-+	pacb->refresh_timer.expires = jiffies + secs_to_jiffies(60);
- 	add_timer(&pacb->refresh_timer);
- }
- 
+diff --git a/drivers/scsi/pm8001/pm8001_init.c b/drivers/scsi/pm8001/pm8001_init.c
+index f8c81e53e93f7849bbe7fe9cbc861f22b964bc39..22e0e79e88ab0a60965ff3809de116eb4a6851e2 100644
+--- a/drivers/scsi/pm8001/pm8001_init.c
++++ b/drivers/scsi/pm8001/pm8001_init.c
+@@ -736,7 +736,7 @@ static int pm8001_init_sas_add(struct pm8001_hba_info *pm8001_ha)
+ 		return -EIO;
+ 	}
+ 	time_remaining = wait_for_completion_timeout(&completion,
+-				msecs_to_jiffies(60*1000)); // 1 min
++				secs_to_jiffies(60)); // 1 min
+ 	if (!time_remaining) {
+ 		kfree(payload.func_specific);
+ 		pm8001_dbg(pm8001_ha, FAIL, "get_nvmd_req timeout\n");
 
 -- 
 2.43.0
