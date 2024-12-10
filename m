@@ -1,69 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-3927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3928-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8C999EBA37
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 20:40:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6609EBA8B
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 10 Dec 2024 21:02:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y78G23sRLz302P;
-	Wed, 11 Dec 2024 06:40:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y78lH1m7vz302c;
+	Wed, 11 Dec 2024 07:02:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::52b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733859610;
-	cv=none; b=QhQN3iFIRH7YsM3m5A3qWoTQwVmMJG+ExxtChNA6KxRvegHiv3H1hIo62Rp6TyXaBdJT2/Dx68Ea837c4idD9Gydm+YbbP+BK7Ig0CvQ7oQPpYkWvBL+YipuOVG0QmBk05YexyJ4q2oo/+puLcZdbR+aQxVGaMrqz2/AAfSUI2wb0WEaDncuWsppC04KpqXKvMBtk+2nEXCuJtYXf5gaw2g9hewLooNHsOt+NR8aQiQf5GDLQ1aMwRo9Mpss1IyEhwZFtSCU9mESHJpnPQGe/jAdWvCxuCe966idoYaZC0Rn5qF5Crp1TTAkY6HrA77WRdymEsXVwhyw9d/ckpwUpQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733860923;
+	cv=none; b=JIN88UdTVpe2wiLZYJDXYrDhH6xExBJ/LiuPyjKpChj1BgiBzhqUKHDgNeyFdFgMjWANWYvwl1nqVE7IcigV67rN5YhMfRXiPAE4LGUxnI3F7UUPipVFlGiB1qBJ/PjGBVgSEE0OMePTp6NVm6j2uR25zOwwz2FcaeuV9rd9PsrCrxk4H/u2ebZy9A3boG3GvTIsObER0p5TeRZtl5pLNWEf5+/ybw6TRvkIrmHLkZGEeQxA1nhCFxtgQzC1bSLyNODWYia4hhTndEOyBvqe8ef8vRocZztONE42kdlH815rs0eTyYGEXbDwm8ffV2X6YbjKCcryAnnfAaMyeAg7aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733859610; c=relaxed/relaxed;
-	bh=IRTnbzohup0wCZkD2CjtRfmdnuYKFBQ3yOoD8MNis+g=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d5wg/i9IyMpKtQoWSBnuP2ASUdAFu8KG0/rns2Jk4MDovim3pbC/SeDxvBST/Bl585gRtESNXYFSZV0Be4Ufl6I3w30LptqzBYKTtmlf7r2d+NPR+90d/NPYpdr2sqzVocGW9LVm4RLWx2i5U1RsyxqmZ7hN4QRcnLGZ7F6V0Rq0UestSShh0aTKo0ZFf1OsFw2bU0nJpZ48+WE0ZAGuckVOpzBapMz0THtjdsPGQNxUnu2VSElwvt50ypueGX5tyYyuGwgUyPfbxM1hfhicbR8I2n+k1NgmFYoHzmMaIfhbo5QCDXAHVXpTFFYh2lYxjQlo4TCd3KvHgKdtvWxIQw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=O7rWxlsl; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=shy828301@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=O7rWxlsl;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::52b; helo=mail-ed1-x52b.google.com; envelope-from=shy828301@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+	t=1733860923; c=relaxed/relaxed;
+	bh=VGGimIwUUNnpqS+R8PkQedVX5VhidKZ+Rfdh8IsgnP0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LAg3cbph7I5cE3wZeTwdH1zV+uXxjsvX58bpwdyNDDNLyVCiTdfk+hFImR1pZDgapF0I4qlUNzNVYl9E9AkrEgZfhZWx0LypRDl2a4eU8uh7tWTeMG9BBS9Bw4skdfZ1ppH2UXjzBgxAVlOJ38Wj4ir7Scvm3eQ50qLTKh9i6MYD4uD3YWTHYvFzBunJAPxfHPqSKZ33LZt9ZmkHrJnVsMirF1Q+65z6L2Ju/qoT5ldyAZMtd2a+xnZ5MMPd0MK1GPQlW0bw7baRpP5w5TXrWlu81RzBDlG2I9pYWAZOYlljxImhtA095t+MCkl8+BQ8IVfTk4pY0s8UQPBiBRNhsw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y78Fz1m9Fz3023
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 06:40:06 +1100 (AEDT)
-Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-5d3f28a4fccso3654429a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 10 Dec 2024 11:40:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733859600; x=1734464400; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=IRTnbzohup0wCZkD2CjtRfmdnuYKFBQ3yOoD8MNis+g=;
-        b=O7rWxlslWSsw7OlbTL+I4KS7k0TAOTHCJDePnHYrm+e2MA+431zSf4OC6B+sCCZTCl
-         OJKdeHe27qvcq/qfG8IkobSfQZUSaknQXjiuMB6NGVAjuzvxfrQe5mDBHJsMmRTdOP2V
-         ng8nrJ2RNEfpXXIoAPW/H0zZRSYQTrI0yOcpaVjoD4ULCNbPku7iLTHCjFGEeYjtJe8K
-         9b3Kb5O9Vfn8O1Q7FtrVAZXACT8CY+SvdHdi8HxJKpG76biV5qBd9pGBNQnFVnCa389K
-         BDOHaaaV66nkwpW8O792vrVLYdhqbt4Z5PQaTvt4DS3mFjJ/UqzHS/ByNdGrVLeZ8o17
-         irEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733859600; x=1734464400;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=IRTnbzohup0wCZkD2CjtRfmdnuYKFBQ3yOoD8MNis+g=;
-        b=YGp/aVwualUsow53w9ex5P2Wi39+Ta1fBN+ZJsqnNsSHF5qnh6h9erYa66iZSJZHwS
-         //OUTKBx+9JF52eLAks8f/UXd/zGvmkEGCRnGAsUBwv2wbTcrLcrcXPa8VCIZk1K9mX5
-         FxG0mX1lOc7J7Q4bjqehwCXVSkHEgfYfsuLUQu/T2g/Fl9cPdn7eWC9s764zi1s9k4rn
-         h8faTEVeOjiUk0LZK6RvPK9KWNHIKCy5w1hQZpUZ9t0gmafixOrHe/DkQyHm9WxqWWk/
-         7gTYiQIqXE8I8WNF5V7D8CUgXHlAZZK3ptXaSQimHcTRSOMtRLMJFJMZTsiTvQXXB7Bb
-         W7tg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUn2aYIg4qKEhYnIoV2aXL61a++y33EujPczgpSmsrdW+XlwXAogejo9oQ7WtQUc8G7InuR/n7Cz44JCU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw01/WFSI1dX5df0xVszgHKqxlr2EsSTNHbGhnZZ5aYhTQSg9St
-	KWABLvNHBZttYky0Q1p4amMBjP/qlPvC8MeNDVFpbHRa+IJaD0BOoYHHtfXtxjZHBnnjzAQSg9t
-	3eC0TDobefzudpaA2HAry3rXGyw0=
-X-Gm-Gg: ASbGncsXUsY4kzbXAmfad0RUNKPo3Zx6d/INTxlwwHQ8fWkJ0mKTMX1O4tnWWF4aEB7
-	3slnUUO5FmKSEGhnteafMY5oEUPRZKp8ScRz9wA==
-X-Google-Smtp-Source: AGHT+IGn1TGMw5Q3ZRvX4tSkpBgSMsKO1aElzvBulPGolgowmhm7A7II8tzVQjdTXusigtkhjHD3HA/xYigxPDvvUCI=
-X-Received: by 2002:a05:6402:5299:b0:5d0:c9e6:30bc with SMTP id
- 4fb4d7f45d1cf-5d4330814d0mr38059a12.10.1733859599911; Tue, 10 Dec 2024
- 11:39:59 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y78lG1Pjjz302b
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 07:02:01 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Y78l81GySz9tMX;
+	Tue, 10 Dec 2024 21:01:56 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id Agk6G1NcVLjd; Tue, 10 Dec 2024 21:01:56 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y78l76Llsz9tMW;
+	Tue, 10 Dec 2024 21:01:55 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A260A8B778;
+	Tue, 10 Dec 2024 21:01:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 7E9cnDt9W5q9; Tue, 10 Dec 2024 21:01:55 +0100 (CET)
+Received: from [192.168.232.97] (unknown [192.168.232.97])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 196DA8B763;
+	Tue, 10 Dec 2024 21:01:54 +0100 (CET)
+Message-ID: <364aaf7c-cdc4-4e57-bb4c-f62e57c23279@csgroup.eu>
+Date: Tue, 10 Dec 2024 21:01:53 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,160 +59,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241210024119.2488608-1-kaleshsingh@google.com>
- <20241210024119.2488608-18-kaleshsingh@google.com> <CAHbLzkq2SNaqzx4d981H2QfQvtObS3X0pPL8=oqFsFbMditWPA@mail.gmail.com>
- <CAC_TJvdReRHzBSgg2iqOw3Kw6BBOtwGE=8nB2Hsw-nsmkxN0+g@mail.gmail.com>
-In-Reply-To: <CAC_TJvdReRHzBSgg2iqOw3Kw6BBOtwGE=8nB2Hsw-nsmkxN0+g@mail.gmail.com>
-From: Yang Shi <shy828301@gmail.com>
-Date: Tue, 10 Dec 2024 11:39:48 -0800
-Message-ID: <CAHbLzkqbH_AR2jy_6LZ7KSh6bcf4L5B51Mq9DwYtdBcVz1Lu6w@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable 17/17] mm: Respect mmap hint before THP
- alignment if allocation is possible
-To: Kalesh Singh <kaleshsingh@google.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, yang@os.amperecomputing.com, 
-	riel@surriel.com, david@redhat.com, linux@armlinux.org.uk, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	ysato@users.sourceforge.jp, dalias@libc.org, glaubitz@physik.fu-berlin.de, 
-	davem@davemloft.net, andreas@gaisler.com, tglx@linutronix.de, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, chris@zankel.net, 
-	jcmvbkbc@gmail.com, bhelgaas@google.com, jason.andryuk@amd.com, 
-	leitao@debian.org, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
-	kernel-team@android.com, android-mm@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 0/5] kallsyms: Emit symbol for holes in text and fix
+ weak function issue
+To: Martin Kelly <martin.kelly@crowdstrike.com>,
+ "masahiroy@kernel.org" <masahiroy@kernel.org>,
+ "ojeda@kernel.org" <ojeda@kernel.org>,
+ "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
+ "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>,
+ "mhiramat@kernel.org" <mhiramat@kernel.org>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "james.clark@arm.com" <james.clark@arm.com>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>,
+ "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "rostedt@goodmis.org" <rostedt@goodmis.org>,
+ "nathan@kernel.org" <nathan@kernel.org>,
+ "tglx@linutronix.de" <tglx@linutronix.de>,
+ "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+ "nicolas@fjasle.eu" <nicolas@fjasle.eu>,
+ "surenb@google.com" <surenb@google.com>,
+ "npiggin@gmail.com" <npiggin@gmail.com>,
+ "mark.rutland@arm.com" <mark.rutland@arm.com>, "hpa@zytor.com"
+ <hpa@zytor.com>, "peterz@infradead.org" <peterz@infradead.org>,
+ "zhengyejian@huaweicloud.com" <zhengyejian@huaweicloud.com>,
+ "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>,
+ "mcgrof@kernel.org" <mcgrof@kernel.org>
+Cc: Amit Dang <amit.dang@crowdstrike.com>,
+ "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
+ "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
+ "x86@kernel.org" <x86@kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "bpf@vger.kernel.org" <bpf@vger.kernel.org>,
+ "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>
+References: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
+ <44353f4cd4d1cc7170d006031819550b37039dd2.camel@crowdstrike.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <44353f4cd4d1cc7170d006031819550b37039dd2.camel@crowdstrike.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Dec 10, 2024 at 9:34=E2=80=AFAM Kalesh Singh <kaleshsingh@google.co=
-m> wrote:
->
-> On Mon, Dec 9, 2024 at 7:37=E2=80=AFPM Yang Shi <shy828301@gmail.com> wro=
-te:
-> >
-> > On Mon, Dec 9, 2024 at 6:45=E2=80=AFPM Kalesh Singh <kaleshsingh@google=
-.com> wrote:
-> > >
-> > > Commit 249608ee4713 ("mm: respect mmap hint address when aligning for=
- THP")
-> > > fallsback to PAGE_SIZE alignment instead of THP alignment
-> > > for anonymous mapping as long as a hint address is provided by the us=
-er
-> > > -- even if we weren't able to allocate the unmapped area at the hint
-> > > address in the end.
-> > >
-> > > This was done to address the immediate regression in anonymous mappin=
-gs
-> > > where the hint address were being ignored in some cases; due to commi=
-t
-> > > efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries"=
-).
-> > >
-> > > It was later pointed out that this issue also existed for file-backed
-> > > mappings from file systems that use thp_get_unmapped_area() for their
-> > > .get_unmapped_area() file operation.
-> > >
-> > > The same fix was not applied for file-backed mappings since it would
-> > > mean any mmap requests that provide a hint address would be only
-> > > PAGE_SIZE-aligned regardless of whether allocation was successful at
-> > > the hint address or not.
-> > >
-> > > Instead, use arch_mmap_hint() to first attempt allocation at the hint
-> > > address and fallback to THP alignment if that fails.
-> >
-> > Thanks for taking time to try to fix this.
-> >
-> > >
-> > > Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-> > > ---
-> > >  mm/huge_memory.c | 15 ++++++++-------
-> > >  mm/mmap.c        |  1 -
-> > >  2 files changed, 8 insertions(+), 8 deletions(-)
-> > >
-> > > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-> > > index 137abeda8602..f070c89dafc9 100644
-> > > --- a/mm/huge_memory.c
-> > > +++ b/mm/huge_memory.c
-> > > @@ -1097,6 +1097,14 @@ static unsigned long __thp_get_unmapped_area(s=
-truct file *filp,
-> > >         loff_t off_align =3D round_up(off, size);
-> > >         unsigned long len_pad, ret, off_sub;
-> > >
-> > > +       /*
-> > > +        * If allocation at the address hint succeeds; respect the hi=
-nt and
-> > > +        * don't try to align to THP boundary.
-> > > +        */
-> > > +       addr =3D arch_mmap_hint(filp, addr, len, off, flags);
-> > > +       if (addr)
-> > > +               return addr;
-> > > +
->
-> Hi Yang,
->
-> Thanks for the comments.
->
-> >
-> > IIUC, arch_mmap_hint() will be called in arch_get_unmapped_area() and
-> > arch_get_unmapped_area_topdown() again. So we will actually look up
-> > maple tree twice. It sounds like the second hint address search is
-> > pointless. You should be able to set addr to 0 before calling
-> > mm_get_unmapped_area_vmflags() in order to skip the second hint
-> > address search.
->
-> You are right that it would call into arch_mmap_hint() twice but it
-> only attempts the lookup once since on the second attempt addr =3D=3D 0.
+Hi,
 
-Aha, yeah, I missed addr is going to be reset if arch_mmap_hint()
-fails to find a suitable area.
+Le 10/12/2024 à 20:15, Martin Kelly a écrit :
+> [Vous ne recevez pas souvent de courriers de martin.kelly@crowdstrike.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> On Tue, 2024-07-23 at 14:32 +0800, Zheng Yejian wrote:
+>> Background of this patch set can be found in v1:
+>>
+>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fall%2F20240613133711.2867745-1-zhengyejian1%40huawei.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cbc4f27151ef04b74fba608dd194f0034%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638694550404456289%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C80000%7C%7C%7C&sdata=a5XFKy9qxVrM5yXuvJuilJ%2FsUxU4j326MOmEz7dBViY%3D&reserved=0
+>>
+>>
+>> Here add a reproduction to show the impact to livepatch:
+>> 1. Add following hack to make livepatch-sample.ko do patch on
+>> do_one_initcall()
+>>     which has an overriden weak function behind in vmlinux, then print
+>> the
+>>     actually used __fentry__ location:
+>>
+> 
+> Hi all, what is the status of this patch series? I'd really like to see
+> it or some other fix to this issue merged. The underlying bug is a
+> significant one that can cause ftrace/livepatch/BPF fentry to fail
+> silently. I've noticed this bug in another context[1] and realized
+> they're the same issue.
+> 
+> I'm happy to help with this patch series to address any issues as
+> needed.
 
->
-> Thanks,
-> Kalesh
-> >
-> > >         if (!IS_ENABLED(CONFIG_64BIT) || in_compat_syscall())
-> > >                 return 0;
-> > >
-> > > @@ -1117,13 +1125,6 @@ static unsigned long __thp_get_unmapped_area(s=
-truct file *filp,
-> > >         if (IS_ERR_VALUE(ret))
-> > >                 return 0;
-> > >
-> > > -       /*
-> > > -        * Do not try to align to THP boundary if allocation at the a=
-ddress
-> > > -        * hint succeeds.
-> > > -        */
-> > > -       if (ret =3D=3D addr)
-> > > -               return addr;
-> > > -
-> > >         off_sub =3D (off - ret) & (size - 1);
-> > >
-> > >         if (test_bit(MMF_TOPDOWN, &current->mm->flags) && !off_sub)
-> > > diff --git a/mm/mmap.c b/mm/mmap.c
-> > > index 59bf7d127aa1..6bfeec80152a 100644
-> > > --- a/mm/mmap.c
-> > > +++ b/mm/mmap.c
-> > > @@ -807,7 +807,6 @@ __get_unmapped_area(struct file *file, unsigned l=
-ong addr, unsigned long len,
-> > >         if (get_area) {
-> > >                 addr =3D get_area(file, addr, len, pgoff, flags);
-> > >         } else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && !file
-> > > -                  && !addr /* no hint */
-> > >                    && IS_ALIGNED(len, PMD_SIZE)) {
-> > >                 /* Ensures that larger anonymous mappings are THP ali=
-gned. */
-> > >                 addr =3D thp_get_unmapped_area_vmflags(file, addr, le=
-n,
-> > > --
-> > > 2.47.0.338.g60cca15819-goog
-> > >
-> > >
+As far as I can see there are problems on build with patch 1, see 
+https://patchwork.kernel.org/project/linux-modules/patch/20240723063258.2240610-2-zhengyejian@huaweicloud.com/
+
+> 
+> [1]
+> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fbpf%2F7136605d24de9b1fc62d02a355ef11c950a94153.camel%40crowdstrike.com%2FT%2F%23mb7e6f84ac90fa78989e9e2c3cd8d29f65a78845b&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7Cbc4f27151ef04b74fba608dd194f0034%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638694550404477455%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C80000%7C%7C%7C&sdata=v9qPnj%2FDDWAuSdB6dP19nyxUWijxveymI6mQb63KxbY%3D&reserved=0
+
+Christophe
+
+
 
