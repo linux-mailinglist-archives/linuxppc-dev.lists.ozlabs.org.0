@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-3999-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F3E9ED9C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 23:32:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E37009ED9C4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 23:32:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7r2V5Q0Mz30Nc;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7r2V5pyYz30Pl;
 	Thu, 12 Dec 2024 09:32:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733956354;
-	cv=none; b=kmgJAZSL5pLwNK1H7G0NmkdjP59zolmghqA17xIwXPjTLXVPtf3Br3zz2HhqM1yUWJ1HqcImCQFV8VXOJRCMGLtNfpMZ40rphzro8zLk3mBARQDekrQQ/zCydta7nuQPPbsnIuYDobPNp3109tgzDdPMg2GVWaqRL6PjlY24EVtfS2PGDFATp7GmcosZgXjp/120ML//7BEvsZWi4XU5lFJhr2nWKixTfSzPcrEaRNEvVjLPBSqmwItgDzUT9oXAtJQ+oPrfLOfbsJrsReUWMrbnK7SDq4aHw0VNxImkKzXUzb/SyL6lEgq0+tdpr1XMeB4RHU/ghfN2lB4a1KjJuA==
+	cv=none; b=VVernZL1yCn2aFs4AEh/HY01rdcrtsmL5SnnmTcUu97ZaJ2Gsdz7elVYd/W2LjxxmSv93VsHUEaMTEFm9W6OtAmJjNepqJWEvaoG9iLAEL987vo7nIYrAQddsHr9+FzoQmfm4ADxiRtMAblr40O6PXwKV0eh9MUxLNb4AdA5Wt7Q9NW933IAKkaaVbIceGP7/V8VEbZzvcOgu5D+PSi+iapA4i52EmgFbuRNMX4EMu6IxOhlsAGSGnja+FkyWCh/KpGVjiMkcL+uILTlX/l4nkxdYEf94df+wr0lpDsl7390p2b889H+DikIexbeEKLcgbET93MUhBxlUvzAroiQFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1733956354; c=relaxed/relaxed;
-	bh=o4ptZloOfFwNLV1nxYbKIFIsGukxF2nm3f5nBiNdcUE=;
+	bh=ryjrakl9bAirYB8Swa1Mz7aOUdVKkjHl/K2fh3pI4Ic=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=bPBXetZeynO1DxWJM/i5qz6fjVJforWY6b+X9YRkJ1QFpCD9aauQGT59kH63ub/1se1DSXpcTzp793+Wvb4QIGHxOG/rPrN49WDkIhE4oEzAuCQ21GnTC9axhVzuOe7YrT6yVIrae0vKL83Ro52eo4viOvCV9+0HzrpLyUYAuwr1JeRY3XSxlY511PKhM3Ly22k2rfgYdGx9aMl1fWNqRV824q4FCHxiVTf3M5LmBPjkWoYZRpGHC4MICun9pGoCKvOPHToW+irJKhHI27L4+/JtGgj6dDWckKFg6DZR64VHUbNJNZqNjhZx5hX0DOEkS2cQZw6cYbsj0QFd4pF23g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q+h6JdhY; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=DIwzmp441Kp+2s2mAqJUipq8Z4j7A4v0ZlrJdKUA9lULCfmvv1i+ftWFR6H5mtvY4VoOfCfxSXlFRsqHZbmxggdMTT9WyL8dSjWx/jaAoNS+vw/2ACyeJ9R+erFG745rC/uz7wBgZOtLrityE1tpLGL0CVXioDRZc8HI53eUCcdwlbZDgRZYzROHC6Zi8HtjpW/NJ2lAKc+s6yaEbcdbfduwZ0fa2t89rCBMQ/4EqTd88Kf7c0BR5/ZlPgI1+IOdj5TqKQNbQVKCGI/M1fNlqzBnes/OYNAvae3A6Ff/TpHSdvVuFmVZ6o77xrFGxVFjpVpCFiN3pbnAyMxCBoYL+Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nPOtlX5T; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Q+h6JdhY;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nPOtlX5T;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7r2T4hZYz2yP8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7r2T5nbyz30NF
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 09:32:33 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 0C2945C678F;
-	Wed, 11 Dec 2024 22:31:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ABF1C4CED2;
-	Wed, 11 Dec 2024 22:32:30 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 820405C67EF;
+	Wed, 11 Dec 2024 22:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A31DDC4CED3;
+	Wed, 11 Dec 2024 22:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733956350;
-	bh=Lj6m1KGdu6A9P37ePkeHmGhpEOYrC07Re+9IHx97taY=;
+	s=k20201202; t=1733956351;
+	bh=k0MtyxDbbtsm27qvkqsKV+jrSIBDfJRGa0WHRKH9KWs=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Q+h6JdhYbgWkkJZKxxBpvzzMrsNxkGoEdza4YFJyky6PGRqvTppB4WWSHpF2XbZEp
-	 3RmwDTIJ+IWZiPF6URzM7AFAUrovMRw7D8NbXB+92TG9vVWaXrcU/MsgUuSOZ3vPex
-	 o0MaFjihetIadNNvJTpEn+nlZctZbXnS0fVYRMWoku2hOngBPg/UbRT+WKkxpgNf2d
-	 SwvyT1mNlDgHbiMNbtlfPoLzmzqTgNvTIuq+Jo3m/NabxJ757iMFljbIUWU4KxUn8N
-	 5ID5hDIVQ1/ODfWBnJSI9qXoWm4SM9dKAfh3gfNA/Y4dMt1mVhzEjFLVbDxspwHNRS
-	 2u3nMpWh8Eo9Q==
+	b=nPOtlX5TKBph2olV5g0D84w7BiGXyaTzX/kmSl/KB3xl8BPQoIcxG64kiVppaKWV6
+	 UuVYIQk2nmWnJhIowxxs3i7Ezo4bFvlmC27nFpPkM/jb80vyzHBEMsDiWlhHJUBmrV
+	 E4nuPLnavEZNBvgxCnxSG/erFAKypXE58/ddSXOGTSgdiPaf+RxWJKbmenqt6qmjdG
+	 RpQEsDlCvg4cySX8p8aQt/+bGgUkkoqZuHIfhgpxn+qXexNXcqJewICJNI3vp9PVla
+	 22tDI2SHe01OOAbfoiss8OadArWzPpX9wRC6bdennXUaIn34M8kF/jHgNGbizmzpuY
+	 lZsn8ISnWGPaw==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70C81380A965;
-	Wed, 11 Dec 2024 22:32:47 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAEED380A965;
+	Wed, 11 Dec 2024 22:32:48 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -60,27 +60,23 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] kernel/irq/proc: performance: replace seq_printf with
- seq_put_decimal_ull_width
+Subject: Re: [PATCH v2] of/fdt: add dt_phys arg to early_init_dt_scan and
+ early_init_dt_verify
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <173395636600.1729195.17930169527159894833.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Dec 2024 22:32:46 +0000
-References: <20241103080552.4787-1-00107082@163.com>
-In-Reply-To: <20241103080552.4787-1-00107082@163.com>
-To: David Wang <00107082@163.com>
-Cc: linux-riscv@lists.infradead.org, tglx@linutronix.de,
- richard.henderson@linaro.org, linux@armlinux.org.uk, catalin.marinas@arm.com,
- will@kernel.org, guoren@kernel.org, chenhuacai@kernel.org, kernel@xen0n.name,
- James.Bottomley@HansenPartnership.com, deller@gmx.de, mpe@ellerman.id.au,
- paul.walmsley@sifive.com, ysato@users.sourceforge.jp, dalias@libc.org,
- glaubitz@physik.fu-berlin.de, davem@davemloft.net, andreas@gaisler.com,
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
- chris@zankel.net, jcmvbkbc@gmail.com, linux-kernel@vger.kernel.org,
- linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, loongarch@lists.linux.dev,
- linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+ <173395636750.1729195.6853192666319119853.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Dec 2024 22:32:47 +0000
+References: <20241023171426.452688-1-usamaarif642@gmail.com>
+In-Reply-To: <20241023171426.452688-1-usamaarif642@gmail.com>
+To: Usama Arif <usamaarif642@gmail.com>
+Cc: linux-riscv@lists.infradead.org, robh@kernel.org, mark.rutland@arm.com,
+ will@kernel.org, leitao@debian.org, catalin.marinas@arm.com,
+ tglx@linutronix.de, chris@zankel.net, saravanak@google.com,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, kexec@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-sh@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-openrisc@vger.kernel.org,
+ linux-mips@vger.kernel.org, linux-csky@vger.kernel.org
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
@@ -89,27 +85,25 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 Hello:
 
 This patch was applied to riscv/linux.git (fixes)
-by Michael Ellerman <mpe@ellerman.id.au>:
+by Rob Herring (Arm) <robh@kernel.org>:
 
-On Sun,  3 Nov 2024 16:05:52 +0800 you wrote:
-> seq_printf is costy, when stress reading /proc/interrupts, profiling indicates
-> seq_printf takes about ~47% of show_interrupts samples:
+On Wed, 23 Oct 2024 18:14:26 +0100 you wrote:
+> __pa() is only intended to be used for linear map addresses and using
+> it for initial_boot_params which is in fixmap for arm64 will give an
+> incorrect value. Hence save the physical address when it is known at
+> boot time when calling early_init_dt_scan for arm64 and use it at kexec
+> time instead of converting the virtual address using __pa().
 > 
->     show_interrupts(94.495% 5166019/5466991)
-> 	seq_printf(47.429% 2450210/5166019)
-> 	    vsnprintf(89.232% 2186366/2450210)
-> 		format_decode(24.005% 524831/2186366)
-> 		number(19.488% 426084/2186366)
-> 		memcpy_orig(3.739% 81753/2186366)
-> 		...
-> 	_raw_spin_unlock_irqrestore(26.643% 1376379/5166019)
-> 	mtree_load(8.059% 416304/5166019)
+> Reported-by: Breno Leitao <leitao@debian.org>
+> Suggested-by: Mark Rutland <mark.rutland@arm.com>
+> Signed-off-by: Usama Arif <usamaarif642@gmail.com>
+> Fixes: ac10be5cdbfa ("arm64: Use common of_kexec_alloc_and_setup_fdt()")
 > 
 > [...]
 
 Here is the summary with links:
-  - kernel/irq/proc: performance: replace seq_printf with seq_put_decimal_ull_width
-    https://git.kernel.org/riscv/c/5b881c1f8379
+  - [v2] of/fdt: add dt_phys arg to early_init_dt_scan and early_init_dt_verify
+    https://git.kernel.org/riscv/c/b2473a359763
 
 You are awesome, thank you!
 -- 
