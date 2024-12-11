@@ -1,69 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-3982-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3983-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C32229ECBBB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 13:06:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 206869ECE6C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 15:19:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7Z7f687Xz304x;
-	Wed, 11 Dec 2024 23:06:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7d5M3NKwz2yNR;
+	Thu, 12 Dec 2024 01:19:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733918766;
-	cv=none; b=DzLqjgc2lholkbd2Z1hpsVfRzQ3GeMlYi+nrIOpkyw6oVVs8HnnyC7JQQNPkEZvRCZrw4QjKcsj2hCvNWIrTMwpr/Jyx/eqUmT9o4/7K9+8Gxx/Pkf5olJALxFAMaGMlkSaiYuOx0u/Qa97OiVSc0A6vmsvalCHRqfkTS2jsaSTDm7oQm4K5DUt3UMrdPAH3PHAHkAIUb6vdxmqzv8KgM0H1AvPfzh8Bf28vLMzuEL+AaJrt9Ntkfx2co403EZ4IzmbfCL+WmioY4mdMkTtPN8TFm4TjriYIKD6y/O2md+Ki361bnq2wSyKEbhquKavGdqq9QYljmoq8PHdRsulP6g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733926759;
+	cv=none; b=C60SMonFzFxjH+zHPViBUIUDuUFOREjyJMJ4ej0z3m1ClKuAxNMGY9LEbnQJ6Xndvp8dz4Un3JimJyc3+4Djf2RS/HgruBfn8wlbtaqSZnQqIYQHE2/Qg1ruJPbPbXyRm6tT4S23oXDT+qkeSdS2T3xqhibjvX6bHi3Wlc18rUljBeNGOPyL5iAFOtuDPzSqifQWFirkn1dX3x3BTSoocyEKrHUXSJFEpDdabG04euMOn2ewu3diPRA3N1VDimtjXvnjymQVZ5WwD7srZrdPuYrRkTA4PlNf6NrbiTwlf9RXv0YUXO1oeH5C9NTVor7SH4BPnEMYgEhw9fogPfOqTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733918766; c=relaxed/relaxed;
-	bh=VuuQaVBjgIREiRO4cc9JGlg08zXjU3JughFoIKiiiH4=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=Ff8ElO7+rBZeF9RcbDb6mNGTmKRt+Nkk7ZNr8stvJEKcjo61E5lFB+1s0eMMxVvwTr0byRmjyd2dZT7tgSKrvjVtW64AhAy9WgARS2l+uh3kMbLEo33iuqp67zv5S+AKlRodJtcaieqWOyrxo2MdE/nqKp36ssaRMU4kWJlwTFWdG6Nn5A/B/svZA2emASHFB7m8pzN02Idvokx/Nk3k6VKfO2DGFfiimGONkPOCw6p8cLYizFHuDk5XAuXpRXaF8p5oh1z3VViSV0OeNXzXggrQm7fa/1iyf8yVxZXFMokc+hV5WS/V1Z37GWGu8B17brRySZ5P/hRHwwNjb8IUqw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MrQUm6Fy; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=avnish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1733926759; c=relaxed/relaxed;
+	bh=XwQQ3x8zvRTDshwJQNsTE1iolV5XC7jkIWrcp2laFsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+YDZYZoTmTpFd9H83hQNA6alfUKgyTqp23+6dZDdMU4Nn842GmGVN2if8B4TNGsuaY2ihgdBDHfarWGvPvPDOHR7d25P3xxMhNFc3dvjS2MqALHBWvlSnlSBEzMToEQDHozTTKxZ2U9dGnNOS08Uig0f32wPNfgbLB/svPK4ngzUmSvcSQRq19kAoNC3b/2NxiiNTSk1FizQ9Hr/9t+V2E/mwKiFfCUPaZO6x00Su9hU8Hpre1Ezj0ioaLImQVwSe/5LOvB6JcOHC95H3EMRzbW/lpuERRNvSsdX7oP34UgLezfgHMqhDZorcyve0x8Vv2H6TpfOvL2klpmO9OjJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XRANGyju; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MrQUm6Fy;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XRANGyju;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=avnish@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7Z7d5D7Yz2yZZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 23:06:05 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BBBZO1Z004001;
-	Wed, 11 Dec 2024 12:05:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=VuuQaV
-	BjgIREiRO4cc9JGlg08zXjU3JughFoIKiiiH4=; b=MrQUm6FyCMJzFyZVrinsQi
-	FqbKCDtrRLj0/qh0K8T8nejqGZ5hWswUSP5ijKwpAof0UqPglaGXV1ZXXO23tkrC
-	gCcspKSqHyTmIk/yp9qw6flCkV0zpFFS6qhSe1KoIaQwBqNwrlI1DButRsL6Qdph
-	YTi+rdT8IyNiMeCUaKXbYt4rKEvEdQ/NZGKfHQ414S8VrcK2xPU0vkeH51rPmoMS
-	eoLhCQa0RqIyMHbD+d057IzuCY7KZNGqxB3xye8zBEETNeuI5gD47ijktyHotc78
-	H57hpNEUDlcEYgibYucisoIW3SlkLPAE53IhxPrwMEG19bk8B1HG3XLX+5mYgo1A
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ce0xkvuv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Dec 2024 12:05:56 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BB8tT5x016944;
-	Wed, 11 Dec 2024 12:05:55 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43d12y9fv5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 11 Dec 2024 12:05:55 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BBC5q9i43581790
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 11 Dec 2024 12:05:53 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B82CE58055;
-	Wed, 11 Dec 2024 12:05:52 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 77E0258043;
-	Wed, 11 Dec 2024 12:05:52 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 11 Dec 2024 12:05:52 +0000 (GMT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7d5J2CwDz2yGT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 01:19:13 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1733926756; x=1765462756;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=n/bW5X2P50IWGPskV8bddp7mr3+Mz84TOOqK8/Bw/oE=;
+  b=XRANGyju2YnmPhXq/r3YpeLOv2FqyDRo9RH/12dtzm/QLiG54YlByl3r
+   29ZE6JxHPnJrEmUDeUrEIUajK58JMkKiAb4xHw50EkQslKfk5niZLVlbJ
+   mkR2zx9CeLbLebtQ52mlG3h5siZfYDVEbBB2QT/lCysc42/sh+m5YM1E9
+   8b5s20tY+WPmEGv5OYbW1MX5qynyZArvT2KNmRbXFbq2ELcJWH+E08Fy0
+   yID/tj8Q9TB6vJEUwgJ6YqnaADuXJY+pQYpeNu6cMGrhIGBy2LCN9qe6J
+   KOileb6LvHhx6MuTrMiNfxCSzkiD57axtbO38LgK4nPvYL7i5cpu9t64c
+   w==;
+X-CSE-ConnectionGUID: Wt3KMw5XRm6ClB1m6arUMw==
+X-CSE-MsgGUID: s1UY9tMOSOmZZ/EdBmr5UQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="38239161"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="38239161"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Dec 2024 06:19:09 -0800
+X-CSE-ConnectionGUID: V+dO8e6fQuaP7J/uGnbsQg==
+X-CSE-MsgGUID: 0Hp/6ujnREedJDCTms2R+Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,225,1728975600"; 
+   d="scan'208";a="95885459"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by orviesa006.jf.intel.com with ESMTP; 11 Dec 2024 06:19:07 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tLNYO-0006jh-1F;
+	Wed, 11 Dec 2024 14:19:04 +0000
+Date: Wed, 11 Dec 2024 22:18:44 +0800
+From: kernel test robot <lkp@intel.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
+	arnd@arndb.de, deller@gmx.de, simona@ffwll.ch, airlied@gmail.com
+Cc: oe-kbuild-all@lists.linux.dev, dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org, linux-staging@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: Re: [PATCH 1/3] fbdev: Fix recursive dependencies wrt
+ BACKLIGHT_CLASS_DEVICE
+Message-ID: <202412112135.pzFeIjEo-lkp@intel.com>
+References: <20241210142329.660801-2-tzimmermann@suse.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,93 +82,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Wed, 11 Dec 2024 17:35:52 +0530
-From: Avnish Chouhan <avnish@linux.ibm.com>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org, brking@linux.ibm.com,
-        meghanaprakash@in.ibm.com, sourabhjain@linux.ibm.com,
-        maddy@linux.ibm.com
-Subject: Re: [PATCH v2] powerpc: increase MIN RMA size for CAS negotiation
-In-Reply-To: <87ser05k5z.fsf@mpe.ellerman.id.au>
-References: <20241206065545.14815-1-avnish@linux.ibm.com>
- <87ser05k5z.fsf@mpe.ellerman.id.au>
-Message-ID: <6bd020f2d62ff62e8ce3fe3bab0de3fe@linux.ibm.com>
-X-Sender: avnish@linux.ibm.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: bOhP1Cm_y1WWkcEPqatjjmSeCwqqi4Qq
-X-Proofpoint-ORIG-GUID: bOhP1Cm_y1WWkcEPqatjjmSeCwqqi4Qq
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- spamscore=0 clxscore=1011 impostorscore=0 mlxscore=0 mlxlogscore=999
- priorityscore=1501 malwarescore=0 adultscore=0 bulkscore=0 phishscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412110085
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241210142329.660801-2-tzimmermann@suse.de>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Michael,
-Hope you're doing wonderful!
+Hi Thomas,
 
-Thank you so much for your response. I have checked on your queries. 
-Please find the findings below:
+kernel test robot noticed the following build errors:
 
-1. Did you consider just increasing it to 1GB?
+[auto build test ERROR on staging/staging-testing]
+[also build test ERROR on staging/staging-next staging/staging-linus drm/drm-next drm-exynos/exynos-drm-next linus/master v6.13-rc2 next-20241211]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-We have observed in our recent Out Of Memory issues, a shortage of 
-around 50-60 MBs space in RMA in current issues. So we decided to 
-increase the RMA by 256 MBs. Please give me couple of days, I'm 
-analyzing this 1 GB change and update you on it soon.
+url:    https://github.com/intel-lab-lkp/linux/commits/Thomas-Zimmermann/fbdev-Fix-recursive-dependencies-wrt-BACKLIGHT_CLASS_DEVICE/20241210-222618
+base:   staging/staging-testing
+patch link:    https://lore.kernel.org/r/20241210142329.660801-2-tzimmermann%40suse.de
+patch subject: [PATCH 1/3] fbdev: Fix recursive dependencies wrt BACKLIGHT_CLASS_DEVICE
+config: loongarch-defconfig (https://download.01.org/0day-ci/archive/20241211/202412112135.pzFeIjEo-lkp@intel.com/config)
+compiler: loongarch64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241211/202412112135.pzFeIjEo-lkp@intel.com/reproduce)
 
-2. an LPAR with less than 768MB of RAM
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202412112135.pzFeIjEo-lkp@intel.com/
 
-I have analyzed the multiple RAM scenarios. The behavior seems similar 
-regardless of RMA size 512 or 768 MBs, as the RMA region is used by PFW 
-and GRUB2 for booting. Even if GRUB is able to load the kernel for 
-booting, the machines isn't booting and behaving well in low amount of 
-RAM. We observe kernel panics, mostly "Out of memory: Killed 
-process...." when RAM is less than 3 GBs. The different RAM configs (via 
-HMC LPAR properties) and behaviors are given below:
+All errors (new ones prefixed by >>):
 
-i. RAM (3 GBs)
-    System boot fine when RAM is minimum 3 GBs (It does depend on system 
-config as well).
-ii. RMA (512 MBs)
-     With RAM as 512 MB, the system fails to boot with firmware error (eg 
-B2006006).
-iii. RAM (768 MB and 1 GB)
-      With RAM as 768 MB and 1 GB, System boot with kernel panic as 
-"Kernel panic - not syncing: System is    deadlocked on memory".
-iv. RAM (2 GBs)
-     System does boot fine, but abnormal behavior after the boot. I 
-observed system panic in one scenario while doing a reboot. "Out of 
-memory: Killed process 167....."
+   loongarch64-linux-ld: drivers/video/fbdev/aty/radeon_backlight.o: in function `radeonfb_bl_init':
+>> radeon_backlight.c:(.text+0x424): undefined reference to `backlight_device_register'
+   loongarch64-linux-ld: drivers/video/fbdev/aty/radeon_backlight.o: in function `radeonfb_bl_exit':
+>> radeon_backlight.c:(.text+0x560): undefined reference to `backlight_device_unregister'
 
-
-Regards,
-Avnish Chouhan
-
-
-On 2024-12-07 07:28, Michael Ellerman wrote:
-> Avnish Chouhan <avnish@linux.ibm.com> writes:
->> Change RMA size from 512 MB to 768 MB which will result
->> in more RMA at boot time for PowerPC.
-> 
-> Did you consider just increasing it to 1GB?
-> 
-> It's possible there's some folks running LPARs with less than 1GB, but
-> they are unlikely to continue doing so by the time this change trickles
-> into distros. To be supported modern RHEL requires 2GB minimum RAM
-> anyway.
-> 
-> Can you also describe the behaviour users will see when they configure
-> an LPAR with less than 768MB of RAM.
-> 
-> cheers
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
