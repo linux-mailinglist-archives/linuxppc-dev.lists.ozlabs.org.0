@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-4002-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4003-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC9CE9ED9C9
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 23:33:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A729ED9CA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 23:33:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7r2x4Gtpz30Ts;
-	Thu, 12 Dec 2024 09:32:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7r2z3N8jz30V7;
+	Thu, 12 Dec 2024 09:32:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733956377;
-	cv=none; b=oZVLHKoiXZQI3w281lQIDZlIGc+wFJnKzWnfKhXvxipl+NtGGk8wcYrWiOM0/sF+lN6F9+q5Thw2YEamUi+YCjmyEjfCaS65EgIOnUjNPUQgqR3xCUYZkxd1shXh5tnZY0CCT20cBq/liEYEeCQT+VU3Bn5QBjf502HZNsvC52R1aDwnxBfYFPVdmXIYC6+R4oadSoKPjX/+aEK6mIwDDS9zasoO+MK10IuVzLPO9TDiD/1guOXsn0bHzQ7y2Mbqw16SzG5RZeWuibzb7jOyWe0muCIhSF36LCW2jFTQash/M9zUNa59jRXHv2Wv2W/MOUy61mDUr9OgDgLgGc2Gzw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733956379;
+	cv=none; b=gm56SOr2RLD86NC0kmqTWp4gYfE1BE95iU7gysvw4qTZUK2P5hhtv50Mp3MVPQ7lc1N9xfroRJnX8D1XzUnos2YuvmpRINRgnX+WffstzfX4nqVvfXDmCXWi/ZKhFADhiLHkn7d54HQlgVWWZkvFQ+sYsxXgX5o2EXZFcZ/IBCHXztYpshbzyxkNJhlGh2V32pDvl3f2rv7wBcqkaZZtsknOGbK087T9FUbJRyMuCC02GUocQBXmBQmpe65pmw2KCUGz1RQSeaBntXlQ688CH0vMvUu8FdPeZKZ3XMdqMNeapan5rsQVRfSSK7fHngBFZOjo+2eLskq6t8KMFUqQPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733956377; c=relaxed/relaxed;
-	bh=qCUz4EPmZaE7vP+ZlBjxRLQxrvpznxUDXVXIJb/OFMY=;
+	t=1733956379; c=relaxed/relaxed;
+	bh=+R7WMFr8J5p1lUpd7cHc5bxsSxLWD66PUoHsVuNxldQ=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Mb+dUGPb8Pog5ulZcNNZk1ohx89lH4f2jQ3SkN44V2rjLJkg1V8Ll2VqE9MNQ4n/HnFPJlEmPd29HF5sz2Nu8O/KI56ZHi1OFfI0tgJnfGnXAzfXDGpMA/XJpVw9vbnewXHau/6/5I0fKN4UkA8T0qc6nB8ROTllvBVI/sSx8vCOUB7VEF1HNtaw2HKDj7Q7dfLeSEDDKs6IJCYvLEi0iIJEbdyqRhCcrMalP5GqjOGZp1vctJqBpf2au/eNlwR4V/0D9r5uup1Z0xW1OgGgUBQKel4/Ug/GtMHSUS+bDhfM6r6foBgUtv+qtyRcbfkn8AhcO9I9SjNg7qW3Tq7Jkg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dnrDcNkO; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=kAqS/mvwfaA5fHPmX+8E2Nd5eUwTzi4FCpG5KF1qRfEkjc1CM8uZkTDB1+GFKodsNyEnsR5/VIB3LvLFzz/Hda22QRcfcJbSiTV5ET9NEDeMNgDR6AxF0XIXSpbp8tAQE1KqZnU5l86qwidhKDUI2y/PHwQcHhaH4BT06uLdfUCLHkyhL5X9m+V7HduBthcjiNGZEo5rmjsoDZlqfDeYK0IH4f2Npj3nKUCbcf/AGTykoIN+JzCPhUEi22p4XTQp+NuLsBuu7GyO7KxrLcPOI+NwbENOnjB7/IFOfAijqwDzKV9vVCcv/mPLRsO1tCh0I2Gk32hK2ue3nUYelsU95A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hia/ijUE; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dnrDcNkO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Hia/ijUE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+linux-riscv@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7r2x08XTz2yP8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 09:32:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7r2y3Wdsz2yP8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 09:32:58 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 975595C67E0;
-	Wed, 11 Dec 2024 22:32:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C1BC4CED2;
-	Wed, 11 Dec 2024 22:32:54 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 249745C67E5;
+	Wed, 11 Dec 2024 22:32:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A09FC4CED3;
+	Wed, 11 Dec 2024 22:32:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733956374;
-	bh=29u5B09z/mNiOUipvbCAR8d/HfuJKD9vMPDnfCmrneU=;
+	s=k20201202; t=1733956376;
+	bh=1MJ06IwhKiUOka6t13pDPzzxerzMi81atHP/6c9+22c=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=dnrDcNkOoxwSBjPjDdUGrvVokaL8PbY/29PjhRdPkvydqw8DxYooD5ABeBk3HzL/N
-	 76xby5lMWnFghEv7vC3hF+lPCP97eOVPUwp3+ZSkE4SEdqJhuc4M4tsMuMgquf/1Sh
-	 MR1GipeeO24AReN6/ejtJZElR5CRC8RyZljN784IO+9YPc2RBnMzEXA7w+OQ/yoYqa
-	 adhGvjnBGfHafNdP3219wtIr4V6sPs3ti0dnt0aZa1Z6WSjl0+E+Zb5OzErlTpRYgu
-	 UkzyIpABUuFP1nVewt4cL6HBuOiiJYxbTNdocbttNyq8XlE99Zmw+EmsHH8rPlCKUB
-	 H5x4fe1dWfyKw==
+	b=Hia/ijUEuZBroxj7nHTcTLUeY0lUzwbIDShfmCnvrhgwkWkpcTiJx7pJ1rDHrcbYd
+	 v9xc5XYWsKCanEQ84GJFDJY00b2HgNbwArL4F0yC9b3PGcwDDt8RjKLjKLEhKLhhcd
+	 fmxIfg3UO49ThB7NCaSOMylOZeYdgxA9dXMqt5Zh24qGuiC5PnXYEzmSSsUEGzlsGM
+	 QIuCwUtbYZSKHZWQsPR/5JQlLYffzh4qHAuBe3D1CDOd8aIWP34Q5xS6MsQDi3t00y
+	 2Sa/0R/Urbix0SVQmgQhhgfeqd/s3orjw+NRpayKDn0m9Fbd2FqUvFGpLePlE4DJR6
+	 KkGTKHdygfE8A==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAD93380A965;
-	Wed, 11 Dec 2024 22:33:11 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 710A8380A965;
+	Wed, 11 Dec 2024 22:33:13 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -60,53 +60,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v3] ftrace: Consolidate ftrace_regs accessor functions for
- archs using pt_regs
+Subject: Re: [PATCH 00/28] vdso: Preparations for generic data storage
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <173395639050.1729195.18342749493985130890.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Dec 2024 22:33:10 +0000
-References: <20241010202114.2289f6fd@gandalf.local.home>
-In-Reply-To: <20241010202114.2289f6fd@gandalf.local.home>
-To: Steven Rostedt <rostedt@goodmis.org>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- loongarch@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
- linux-s390@vger.kernel.org, linux-arch@vger.kernel.org, x86@kernel.org,
- mhiramat@kernel.org, mathieu.desnoyers@efficios.com, mark.rutland@arm.com,
- catalin.marinas@arm.com, will@kernel.org, chenhuacai@kernel.org,
- kernel@xen0n.name, mpe@ellerman.id.au, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+ <173395639200.1729195.15576952837564128066.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Dec 2024 22:33:12 +0000
+References: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
+In-Reply-To: <20241010-vdso-generic-base-v1-0-b64f0842d512@linutronix.de>
+To: =?utf-8?q?Thomas_Wei=C3=9Fschuh_=3Cthomas=2Eweissschuh=40linutronix=2Ede=3E?=@aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org
+Cc: linux-riscv@lists.infradead.org, guoren@kernel.org, hca@linux.ibm.com,
+ gor@linux.ibm.com, agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+ svens@linux.ibm.com, catalin.marinas@arm.com, will@kernel.org,
  paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
- hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
- borntraeger@linux.ibm.com, svens@linux.ibm.com, tglx@linutronix.de,
- mingo@kernel.org, bp@alien8.de, dave.hansen@linux.intel.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+ linux@armlinux.org.uk, chenhuacai@kernel.org, kernel@xen0n.name,
+ tytso@mit.edu, Jason@zx2c4.com, tsbogend@alpha.franken.de,
+ dave.hansen@linux.intel.com, luto@kernel.org, peterz@infradead.org,
+ tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+ hpa@zytor.com, mpe@ellerman.id.au, npiggin@gmail.com,
+ christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com,
+ vincenzo.frascino@arm.com, linux-csky@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-s390@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ namcao@linutronix.de
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 Hello:
 
-This patch was applied to riscv/linux.git (fixes)
-by Steven Rostedt (Google) <rostedt@goodmis.org>:
+This series was applied to riscv/linux.git (fixes)
+by Thomas Gleixner <tglx@linutronix.de>:
 
-On Thu, 10 Oct 2024 20:21:14 -0400 you wrote:
-> From: Steven Rostedt <rostedt@goodmis.org>
-> 
-> Most architectures use pt_regs within ftrace_regs making a lot of the
-> accessor functions just calls to the pt_regs internally. Instead of
-> duplication this effort, use a HAVE_ARCH_FTRACE_REGS for architectures
-> that have their own ftrace_regs that is not based on pt_regs and will
-> define all the accessor functions, and for the architectures that just use
-> pt_regs, it will leave it undefined, and the default accessor functions
-> will be used.
+On Thu, 10 Oct 2024 09:01:02 +0200 you wrote:
+> Historically each architecture defined their own datapage to store the
+> VDSO data. This stands in contrast to the generic nature of the VDSO
+> code itself.
+> We plan to introduce a generic framework for the management of the VDSO
+> data storage that can be used by all architectures and which works
+> together with the existing generic VDSO code.
 > 
 > [...]
 
 Here is the summary with links:
-  - [v3] ftrace: Consolidate ftrace_regs accessor functions for archs using pt_regs
-    https://git.kernel.org/riscv/c/e4cf33ca4812
+  - [01/28] csky/vdso: Remove gettimeofday() and friends from VDSO
+    (no matching commit)
+  - [02/28] csky/vdso: Remove arch_vma_name()
+    (no matching commit)
+  - [03/28] s390/vdso: Drop LBASE_VDSO
+    (no matching commit)
+  - [04/28] arm64: vdso: Drop LBASE_VDSO
+    (no matching commit)
+  - [05/28] arm64: vdso: Use only one single vvar mapping
+    (no matching commit)
+  - [06/28] riscv: vdso: Use only one single vvar mapping
+    https://git.kernel.org/riscv/c/d34b60752fcb
+  - [07/28] arm: vdso: Remove assembly for datapage access
+    (no matching commit)
+  - [08/28] LoongArch: vDSO: Use vdso/datapage.h to access vDSO data
+    (no matching commit)
+  - [09/28] MIPS: vdso: Avoid name conflict around "vdso_data"
+    (no matching commit)
+  - [10/28] x86/mm/mmap: Remove arch_vma_name()
+    (no matching commit)
+  - [11/28] x86: vdso: Use __arch_get_vdso_data() to access vdso data
+    (no matching commit)
+  - [12/28] x86: vdso: Place vdso_data at beginning of vvar page
+    (no matching commit)
+  - [13/28] x86: vdso: Access rng data from kernel without vvar
+    (no matching commit)
+  - [14/28] x86: vdso: Allocate vvar page from C code
+    (no matching commit)
+  - [15/28] x86: vdso: Access timens vdso data without vvar.h
+    (no matching commit)
+  - [16/28] x86: vdso: Access rng vdso data without vvar.h
+    (no matching commit)
+  - [17/28] x86: vdso: Move the rng offset to vsyscall.h
+    (no matching commit)
+  - [18/28] x86: vdso: Access vdso data without vvar.h
+    (no matching commit)
+  - [19/28] x86: vdso: Delete vvar.h
+    (no matching commit)
+  - [20/28] x86: vdso: Split virtual clock pages into dedicated mapping
+    (no matching commit)
+  - [21/28] powerpc: vdso: Remove offset comment from 32bit vdso_arch_data
+    (no matching commit)
+  - [22/28] powerpc: procfs: Propagate error of remap_pfn_range()
+    (no matching commit)
+  - [23/28] powerpc/pseries/lparcfg: Fix printing of system_active_processors
+    (no matching commit)
+  - [24/28] powerpc/pseries/lparcfg: Use num_possible_cpus() for potential processors
+    (no matching commit)
+  - [25/28] powerpc: Add kconfig option for the systemcfg page
+    (no matching commit)
+  - [26/28] powerpc: Split systemcfg data out of vdso data page
+    (no matching commit)
+  - [27/28] powerpc: Split systemcfg struct definitions out from vdso
+    (no matching commit)
+  - [28/28] vdso: Rename struct arch_vdso_data to arch_vdso_time_data
+    (no matching commit)
 
 You are awesome, thank you!
 -- 
