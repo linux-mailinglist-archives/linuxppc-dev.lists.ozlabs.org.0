@@ -1,43 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-3974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3975-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB7329EC410
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 05:35:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824D09EC537
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 08:00:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7N7W0hxZz3054;
-	Wed, 11 Dec 2024 15:35:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7RLp6VG7z2yYd;
+	Wed, 11 Dec 2024 18:00:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=13.77.154.182
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733891719;
-	cv=none; b=JoNc3I39BQJRlYkMrVLQ3SIMgUrc5V+S4ob8PoaoaW2DcWHx8y5nILoDhHm16tOlhe5drpWUIVxcI5V8tZIyP+aun8/Rd40WU3q3OF8wseC/DTkQrfr5FzSlDfjq+lLAAWGOzL+Jkzt91vjNrE+UMvB8usXnLxq2jyMgyZQqgsqaTMCQlOSv3LiPqGhA15LktFeTwnGmwOOE7ZcNxPxCJFxTjqEFr1bytzUZNZbHZ3A/GMowg+ZgwHZh8erm+S1ewdHjO0JfmwMCBJPU7t/ctMvv43L9ZJLQ94bRPkMuCNPi8Y6RQmxaCW9cjkcn9ymzH8Qfc8dx9Ouf6LmqZbMQOQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733900418;
+	cv=none; b=AfRCQBJ2SLBSlSjNgy/jy5qog2flTvM33vPbXuLUHFQ+i/SXtbEuyBFGea8MdPf9DX08N9QtDwLk/m0QDeTWX2Gz7VC6/uCb5Hc7EUi9Uf5nRl/gmDlXhXSkGj9FJtGwyMiJAsrRKkmV3tfAmLGiIXcEO8rv8YzE6bgmEMFz1ZnD5zX2sanqSKrW5rDvT9j1METp9lKZUt2iwE6tc8h109h+CVvtifZk4mwQNH/Zh3TWMdNOhTh2oKRo7GH/7F/eUadNTJl85gfw+TriLDdd1lww6O8Px8NWdAkuc5qznSEqSstgHdNYuCQ5C4BIiEkpKyEJwlnhzBaxz2+8PLNSdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733891719; c=relaxed/relaxed;
-	bh=SKADluaoUiTETH1UwG/V5DVCwgNdNCuMvx/YiXR3rAc=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=X6YDx46qKTZhD7dCC4hWC8QGGM97fAAY9wNCY0wMo3RwKYNqHNTPdFHL7478fFDzX3qaFx4fJ8LIzxQFzQgDJlDCmeQB/aNGXGom3pT2FIH8L4GqrlcAAQlvGzGKYWS3osy48XHGMg/n+f7/0J4xoBtprA4yj6fXcd2kAgsgMF7rIKYySV329Yn+4Y5xnlu57aGNRiosz0kUo5teuHjiuG16qhinUK4zlX+qYwbmAqTXGgrclCEoUde6ETwi22Joucx7KM7PFeUl3KuaZWh4mYfsSMrNoytc8soYxT4pIm00iTZQFbFMPhQkPU1BHRw4UAhEv5VTXFImJnMjd1RcQA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=IJPud503; dkim-atps=neutral; spf=pass (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.microsoft.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.a=rsa-sha256 header.s=default header.b=IJPud503;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.microsoft.com (client-ip=13.77.154.182; helo=linux.microsoft.com; envelope-from=eahariha@linux.microsoft.com; receiver=lists.ozlabs.org)
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7N7T6r1zz304H
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 15:35:17 +1100 (AEDT)
-Received: from [100.65.208.14] (unknown [20.236.11.185])
-	by linux.microsoft.com (Postfix) with ESMTPSA id C44BD204722B;
-	Tue, 10 Dec 2024 20:34:43 -0800 (PST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com C44BD204722B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1733891686;
-	bh=SKADluaoUiTETH1UwG/V5DVCwgNdNCuMvx/YiXR3rAc=;
-	h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-	b=IJPud503TZQ7qC+nAh33r29ZAguv/DZaDYDmYDAbJHqsXv7vFEisx4C+2Bx4/X0Ny
-	 QNmGT6WWiLLDSDyIxMX24BlKcPvLa2DRjFmS0GhpoB9JmvKOYeEniEHPcKfYI5Rx3Y
-	 UFvay1FmNXEMmTdeKu7+xEJKV27TsW4+ndYHIugA=
-Message-ID: <d93e388c-ed18-400c-b6cf-ec00a5979457@linux.microsoft.com>
-Date: Tue, 10 Dec 2024 20:34:43 -0800
+	t=1733900418; c=relaxed/relaxed;
+	bh=70DCtPUdgNc021YcKVsQDNKHK1HZYV0RusIwRc3u0xg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TlanGySyKRD7ke8DtyXI28TvYtDQ2RUofFFVUChXtToOLlDTkfS7UweApR2Fz2q6AxU/63Qro4KMgWvG8lbpDwtQYowlJ1hgnHotmYrpwFPjJOH1GC45/ZAbW+/RSHcxJJ/oDj9aYzAW0frNuyHRIk3Bc7c7AUvz39xdSjXQeMHkwhdj+UGajVYUMKp5Xc8MFyrvlHtGcsAWx75IXqusXeP2zbnFVg5WCiMe4+i/T4c/0LO4xlULWmMVqmPza2CoUpydDYP5DDMl7QKQZZVFZipvDgDAuG8LQ1P4XN0a7FeI5hFVE96aYzOnXLi/VV2Obd/sN32GWD3z9aV0tgB1kw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7RLm692hz2yVZ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 18:00:16 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Y7RLj3GV8z9t4d;
+	Wed, 11 Dec 2024 08:00:13 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id c0Dk1hMGM9_h; Wed, 11 Dec 2024 08:00:13 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y7RLY2gbNz9t4Z;
+	Wed, 11 Dec 2024 08:00:05 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3FA418B76E;
+	Wed, 11 Dec 2024 08:00:05 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id lblUBnLQKeTT; Wed, 11 Dec 2024 08:00:05 +0100 (CET)
+Received: from [10.25.209.139] (unknown [10.25.209.139])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A13268B763;
+	Wed, 11 Dec 2024 08:00:03 +0100 (CET)
+Message-ID: <07784753-6874-4dda-a080-2d2812f4a10a@csgroup.eu>
+Date: Wed, 11 Dec 2024 08:00:02 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,14 +60,15 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Cc: Andrew Morton <akpm@linux-foundation.org>, eahariha@linux.microsoft.com,
- Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+Subject: Re: [PATCH v3 18/19] livepatch: Convert timeouts to secs_to_jiffies()
+To: Easwar Hariharan <eahariha@linux.microsoft.com>,
  Pablo Neira Ayuso <pablo@netfilter.org>,
  Jozsef Kadlecsik <kadlec@netfilter.org>,
  "David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Julia Lawall <Julia.Lawall@inria.fr>, Nicolas Palix <nicolas.palix@imag.fr>,
- Daniel Mack <daniel@zonque.org>, Haojian Zhuang <haojian.zhuang@gmail.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Simon Horman <horms@kernel.org>, Julia Lawall <Julia.Lawall@inria.fr>,
+ Nicolas Palix <nicolas.palix@imag.fr>, Daniel Mack <daniel@zonque.org>,
+ Haojian Zhuang <haojian.zhuang@gmail.com>,
  Robert Jarzmik <robert.jarzmik@free.fr>, Russell King
  <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>,
  Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
@@ -81,9 +91,9 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, eahariha@linux.microsoft.com,
  =?UTF-8?Q?Roger_Pau_Monn=C3=A9?= <roger.pau@citrix.com>,
  Jens Axboe <axboe@kernel.dk>, Kalle Valo <kvalo@kernel.org>,
  Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
- <catalin.marinas@arm.com>, Jack Wang <jinpu.wang@cloud.ionos.com>,
- Marcel Holtmann <marcel@holtmann.org>,
- Johan Hedberg <johan.hedberg@gmail.com>,
+ <catalin.marinas@arm.com>, Andrew Morton <akpm@linux-foundation.org>,
+ Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel Holtmann
+ <marcel@holtmann.org>, Johan Hedberg <johan.hedberg@gmail.com>,
  Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Florian Fainelli <florian.fainelli@broadcom.com>, Ray Jui
@@ -96,9 +106,8 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, eahariha@linux.microsoft.com,
  Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
  Louis Peens <louis.peens@corigine.com>, Michael Ellerman
  <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: netfilter-devel@vger.kernel.org, coreteam@netfilter.org,
  netdev@vger.kernel.org, linux-kernel@vger.kernel.org, cocci@inria.fr,
  linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
  dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
@@ -110,49 +119,63 @@ Cc: Andrew Morton <akpm@linux-foundation.org>, eahariha@linux.microsoft.com,
  live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
  oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
  Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: Re: [PATCH v3 00/19] Converge on using secs_to_jiffies()
-To: Jakub Kicinski <kuba@kernel.org>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
- <315e9178-5b10-4de0-bdcf-7243e0e355bb@oss.qualcomm.com>
- <20241210153604.cf99699f264f12740ffce5c7@linux-foundation.org>
- <20241210173548.5d32efe0@kernel.org>
- <20241210183130.81111d05148c41278a299aad@linux-foundation.org>
- <20241210184129.41aaf371@kernel.org>
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
-Content-Language: en-US
-In-Reply-To: <20241210184129.41aaf371@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS
+ <20241210-converge-secs-to-jiffies-v3-18-ddfefd7e9f2a@linux.microsoft.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20241210-converge-secs-to-jiffies-v3-18-ddfefd7e9f2a@linux.microsoft.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 12/10/2024 6:41 PM, Jakub Kicinski wrote:
-> On Tue, 10 Dec 2024 18:31:30 -0800 Andrew Morton wrote:
->>>> I'll just grab everything and see if anyone complains ;)  
->>>
->>> I may, if this leads to a conflict :(  
->>
->> Very unlikely, and any such conflict will be trivial.
-> 
-> Agreed, mainly I don't understand why we'd make an exception
-> and take the patchset via a special tree.
-> 
->>> Easwar, please break this up per subsystem.  
->>
->> The series is already one-patch-per-changed-file.
-> 
-> More confusingly still, they did send one standalone patch for 
-> an Ethernet driver:
-> https://lore.kernel.org/all/20241210-converge-secs-to-jiffies-v3-20-59479891e658@linux.microsoft.com/
-> And yet another Ethernet driver (drivers/net/ethernet/google/gve/) 
-> is converted in this series.
 
-Sorry about the confusion, I missed pulling the gve patch from this
-series. I'll send that (and ath11k) separately as well. I'll pull all
-these together into a series so you can merge them together if you prefer.
 
-Thanks,
-Easwar
+Le 10/12/2024 à 23:02, Easwar Hariharan a écrit :
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies(). As the value here is a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
+> 
+> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+> the following Coccinelle rules:
+> 
+> @@ constant C; @@
+> 
+> - msecs_to_jiffies(C * 1000)
+> + secs_to_jiffies(C)
+> 
+> @@ constant C; @@
+> 
+> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> + secs_to_jiffies(C)
+> 
+> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+> ---
+>   samples/livepatch/livepatch-callbacks-busymod.c |  3 +--
+>   samples/livepatch/livepatch-shadow-fix1.c       |  3 +--
+>   samples/livepatch/livepatch-shadow-mod.c        | 15 +++++----------
+>   3 files changed, 7 insertions(+), 14 deletions(-)
+> 
+> diff --git a/samples/livepatch/livepatch-callbacks-busymod.c b/samples/livepatch/livepatch-callbacks-busymod.c
+> index 378e2d40271a9717d09eff51d3d3612c679736fc..69105596e72e6826aa2815cb2599eea56a0055ba 100644
+> --- a/samples/livepatch/livepatch-callbacks-busymod.c
+> +++ b/samples/livepatch/livepatch-callbacks-busymod.c
+> @@ -44,8 +44,7 @@ static void busymod_work_func(struct work_struct *work)
+>   static int livepatch_callbacks_mod_init(void)
+>   {
+>   	pr_info("%s\n", __func__);
+> -	schedule_delayed_work(&work,
+> -		msecs_to_jiffies(1000 * 0));
+> +	schedule_delayed_work(&work, 0);
+
+This hunk is not in line with the patch description.
+
+This is probably OK to have in this patch, but you should add additional 
+description to mention that special case with a 0 delay.
+
+Allthough you should probably change it to schedule_work() instead of 
+using a 0 delay.
+
+Christophe
 
