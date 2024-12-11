@@ -1,115 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-3978-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3979-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2729EC5D8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 08:45:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 876589EC64C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 09:01:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7SMH4f6Mz305G;
-	Wed, 11 Dec 2024 18:45:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7Sj54JhQz306J;
+	Wed, 11 Dec 2024 19:01:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733903147;
-	cv=none; b=PZzHyplmcpl6b3LAAa6EocjpfVufDbiz8C2MdO0vcb/uCYovYxvc61fM7FDSSQL3AO/iGjVZog/eRjAIb0diNYSDQDlakz4frLrgJYFcZvP2BhZ8NetVrstw8F8qdYYIoIcApM6td6Mp9t/4CdQJULQRd+179ABGkcTk+Y3js0sjlbTUnuZI6LcFCDcLXweV2Bkao+nSPIFY89V3KiZxg9K7jXpxlcrgClXviSYWAmJ20Wi3fy99A5PgEp3/x6n/XXhK0Z1XBoi4N/sIJfUP0PDazt1zR8G24rue8YHZ0cHMEEsmb1CXrFYvVHxdz7zct7g8RIzkKE8/23Olk7wLew==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733904073;
+	cv=none; b=R5Jxlw7qWZdXyP4GrL0ERMuDspWxnzOdIwd3C7sZl9au2PclyqV3tJggFGvBFh7Lq7x8wqUTmyInWYppFM1kBx1jvZiCQ0hVVx2admdxpRbHnABHPcM+tqha5p37m/E1TSJ+B0Z8IUtTY0kzSiuEwxF5f81KKoAYz32geKSbawomAHrSoIYgX6GqxpwFh4O2Mj8SqzkpjXCzzyro+chBgLPN0Rmxb+Zrjv2KD03stWI5Uv1ZGw/LKJPpWA/8noukG1juhi0Y9sefmAmZOoVv0jR1/FPFnpzL08u5jduS9m53sGjRd5QZEMWP8f7BuzJfvSJbVv13VrY+axr9tsWq3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733903147; c=relaxed/relaxed;
-	bh=RNMFGkjaVVePSgh7GtbXoA+T3WPlMdrO90sFFhilL3E=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=SjRDwqbRlIh+jadOrBmnj+9scfEI+luIcI6C82ne8NO/POOZgbrHP3kLp1gm2f1wEAdPS1atprVwfDeHumWU7i06C34JibV7Ek15NMj5rH5EbzyIJgHCcWJLbQpuXCx2m7nk+KwNFtUccZhX/L4TxJzlHj4ONUYhNexp4g9It6gxWQ2pKS9q+ilfeJiTnznj1SOp0WLQ3RNDsza2Yf29xFQJzk+IYalQuDok2bXVG/kOLVKjrfTCEb8X9WKNZj17SwIYxd6hGj8BELD+YHoAKjp7OII41jXbK1H+6TP+HqmukWzHwvLwgSFyicW/EoDzC8jmvZauGWIY/PF0XjwOiA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZaN44Yyj; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ZaN44Yyj;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kvalo@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	t=1733904073; c=relaxed/relaxed;
+	bh=DgWuiN++oS0g7Y5qrW5JydBknNDpOHHVeu1pRG1HVME=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SlK4XNUl/YVL6HY7qzyhqFFJWM/FBE8AffI9kGBRLArir55doguOClAUKpNkvVAwgVh0ys2CQZlsQJIryuohTaet83S7IvZL0kRZgHSlQ4k/wEruEFkJXiWhaoGs+QQERZFJmnj0aY3He2+KXn1HcEDhQX+QQjBxRF8ALlXw2EiLk1S9VJVaqtieFdX+AaaMJzp+6D6Uoy9pEs88uge64cjDfgNYVDe1Q6Q5YZ+MkPXJ+ionE7kMSH1G5y1bm/2sqCVURykujIj6cZ0QPQae8Zrz3liAX4WA6MswQ61hjfxjoZ7bkXjJR2nUKBFjNP2UKBm17XmUmishgmKwQuV5mQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7SMG3dc7z304x
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 18:45:46 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 7D087A41F45;
-	Wed, 11 Dec 2024 07:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8A77C4CED2;
-	Wed, 11 Dec 2024 07:45:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1733903143;
-	bh=KM5Of7mM53fIwBBiaYiiUQ9BfxtVrpykBzubAzmUdlE=;
-	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
-	b=ZaN44YyjhRMRn1ZZ+GmTOS40UgIRbhL4wBsfJy8XjSPG4QXarlwE2h8LLmlSyCwwE
-	 mhsyVMxQDuDVaxW28PxQeU8er7lMNhKnh1DPb1k4CbIDr8a5tkumkBV/uTN9xwnFYp
-	 h1HNwJmQE+rv8LC4BNlfDvTcPd5XXQGZmdVG4PmZqn4aLOwa4oWj50GSY3CEXVAf2K
-	 4s9JO62HtV4AyzHzBTTKIyxerUXbJDme/tcsfk9nrdzoiXAN6SWU/JWU3UcTsBRxgt
-	 rxzg89ETMye2AN+BOVUz+OAR29EzCnQNdPIoMqWIY7xMbpGfvp3pWcUv4qGp3pyh75
-	 7MY47GTKlC4gQ==
-From: Kalle Valo <kvalo@kernel.org>
-To: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>,  Jozsef Kadlecsik
- <kadlec@netfilter.org>,  "David S. Miller" <davem@davemloft.net>,  Eric
- Dumazet <edumazet@google.com>,  Jakub Kicinski <kuba@kernel.org>,  Paolo
- Abeni <pabeni@redhat.com>,  Simon Horman <horms@kernel.org>,  Julia Lawall
- <Julia.Lawall@inria.fr>,  Nicolas Palix <nicolas.palix@imag.fr>,  Daniel
- Mack <daniel@zonque.org>,  Haojian Zhuang <haojian.zhuang@gmail.com>,
-  Robert Jarzmik <robert.jarzmik@free.fr>,  Russell King
- <linux@armlinux.org.uk>,  Heiko Carstens <hca@linux.ibm.com>,  Vasily
- Gorbik <gor@linux.ibm.com>,  Alexander Gordeev <agordeev@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,  Sven Schnelle
- <svens@linux.ibm.com>,  Ofir Bitton <obitton@habana.ai>,  Oded Gabbay
- <ogabbay@kernel.org>,  Lucas De Marchi <lucas.demarchi@intel.com>,  Thomas
- =?utf-8?Q?Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,  Rodrigo
- Vivi
- <rodrigo.vivi@intel.com>,  Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
-  Thomas Zimmermann <tzimmermann@suse.de>,  David Airlie
- <airlied@gmail.com>,  Simona Vetter <simona@ffwll.ch>,  Jeroen de Borst
- <jeroendb@google.com>,  Praveen Kaligineedi <pkaligineedi@google.com>,
-  Shailend Chand <shailend@google.com>,  Andrew Lunn
- <andrew+netdev@lunn.ch>,  James Smart <james.smart@broadcom.com>,  Dick
- Kennedy <dick.kennedy@broadcom.com>,  "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>,  "Martin K. Petersen"
- <martin.petersen@oracle.com>,  Roger Pau =?utf-8?Q?Monn=C3=A9?=
- <roger.pau@citrix.com>,
-  Jens Axboe <axboe@kernel.dk>,  Jeff Johnson <jjohnson@kernel.org>,
-  Catalin Marinas <catalin.marinas@arm.com>,  Andrew Morton
- <akpm@linux-foundation.org>,  Jack Wang <jinpu.wang@cloud.ionos.com>,
-  Marcel Holtmann <marcel@holtmann.org>,  Johan Hedberg
- <johan.hedberg@gmail.com>,  Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-  Greg Kroah-Hartman <gregkh@linuxfoundation.org>,  Florian Fainelli
- <florian.fainelli@broadcom.com>,  Ray Jui <rjui@broadcom.com>,  Scott
- Branden <sbranden@broadcom.com>,  Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,  Xiubo Li <xiubli@redhat.com>,
-  Ilya Dryomov <idryomov@gmail.com>,  Josh Poimboeuf <jpoimboe@kernel.org>,
-  Jiri Kosina <jikos@kernel.org>,  Miroslav Benes <mbenes@suse.cz>,  Petr
- Mladek <pmladek@suse.com>,  Joe Lawrence <joe.lawrence@redhat.com>,
-  Jaroslav Kysela <perex@perex.cz>,  Takashi Iwai <tiwai@suse.com>,  Louis
- Peens <louis.peens@corigine.com>,  Michael Ellerman <mpe@ellerman.id.au>,
-  Nicholas Piggin <npiggin@gmail.com>,  Christophe Leroy
- <christophe.leroy@csgroup.eu>,  Naveen N Rao <naveen@kernel.org>,
-  Madhavan Srinivasan <maddy@linux.ibm.com>,
-  netfilter-devel@vger.kernel.org,  coreteam@netfilter.org,
-  netdev@vger.kernel.org,  linux-kernel@vger.kernel.org,  cocci@inria.fr,
-  linux-arm-kernel@lists.infradead.org,  linux-s390@vger.kernel.org,
-  dri-devel@lists.freedesktop.org,  intel-xe@lists.freedesktop.org,
-  linux-scsi@vger.kernel.org,  xen-devel@lists.xenproject.org,
-  linux-block@vger.kernel.org,  linux-wireless@vger.kernel.org,
-  ath11k@lists.infradead.org,  linux-mm@kvack.org,
-  linux-bluetooth@vger.kernel.org,  linux-staging@lists.linux.dev,
-  linux-rpi-kernel@lists.infradead.org,  ceph-devel@vger.kernel.org,
-  live-patching@vger.kernel.org,  linux-sound@vger.kernel.org,
-  oss-drivers@corigine.com,  linuxppc-dev@lists.ozlabs.org,  Anna-Maria
- Behnsen <anna-maria@linutronix.de>,  Jeff Johnson
- <quic_jjohnson@quicinc.com>
-Subject: Re: [PATCH v3 14/19] wifi: ath11k: Convert timeouts to
- secs_to_jiffies()
-References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
-	<20241210-converge-secs-to-jiffies-v3-14-ddfefd7e9f2a@linux.microsoft.com>
-	<87sequr7ho.fsf@kernel.org>
-Date: Wed, 11 Dec 2024 09:45:24 +0200
-In-Reply-To: <87sequr7ho.fsf@kernel.org> (Kalle Valo's message of "Wed, 11 Dec
-	2024 09:42:11 +0200")
-Message-ID: <87o71ir7cb.fsf@kernel.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7Sj35q84z305Y
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 19:01:11 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id DE0952115D;
+	Wed, 11 Dec 2024 08:01:07 +0000 (UTC)
+Authentication-Results: smtp-out1.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 926DC13983;
+	Wed, 11 Dec 2024 08:01:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id zT5tIsNGWWePLwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 11 Dec 2024 08:01:07 +0000
+Message-ID: <16c09ca8-aa73-4fc2-b693-0bfcc8dcac6d@suse.de>
+Date: Wed, 11 Dec 2024 09:01:07 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -122,47 +57,166 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] fbdev: Fix recursive dependencies wrt
+ BACKLIGHT_CLASS_DEVICE
+To: Helge Deller <deller@gmx.de>, javierm@redhat.com, arnd@arndb.de,
+ simona@ffwll.ch, airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+References: <20241210142329.660801-1-tzimmermann@suse.de>
+ <20241210142329.660801-2-tzimmermann@suse.de>
+ <b5136312-e18c-46cb-9a01-3efc61d6fd9a@gmx.de>
+ <de810def-84ac-4d55-b625-536b5781a20f@gmx.de>
+ <e7d5fba5-7ecd-4ed3-be7a-56bf82030e67@suse.de>
+ <6b543ccd-23dd-474d-9828-1eb0ecec9c5d@gmx.de>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <6b543ccd-23dd-474d-9828-1eb0ecec9c5d@gmx.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[]
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: DE0952115D
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Kalle Valo <kvalo@kernel.org> writes:
+Hi
 
-> Easwar Hariharan <eahariha@linux.microsoft.com> writes:
->
->> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
->> secs_to_jiffies(). As the value here is a multiple of 1000, use
->> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
->>
->> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
->> the following Coccinelle rules:
->>
->> @@ constant C; @@
->>
->> - msecs_to_jiffies(C * 1000)
->> + secs_to_jiffies(C)
->>
->> @@ constant C; @@
->>
->> - msecs_to_jiffies(C * MSEC_PER_SEC)
->> + secs_to_jiffies(C)
->>
->> Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
->> Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
->> ---
->>  drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> I assume we can take this to our ath.git tree, please let us know if
-> that's not the case.
 
-Nevermind, I now saw the discussion in the cover letter and assume that
-this patch will be sent separately.
+Am 11.12.24 um 00:37 schrieb Helge Deller:
+> On 12/10/24 16:41, Thomas Zimmermann wrote:
+>> Hi
+>>
+>>
+>> Am 10.12.24 um 15:34 schrieb Helge Deller:
+>>> On 12/10/24 15:29, Helge Deller wrote:
+>>>> On 12/10/24 15:09, Thomas Zimmermann wrote:
+>>>>> diff --git a/drivers/staging/fbtft/Kconfig 
+>>>>> b/drivers/staging/fbtft/Kconfig
+>>>>> index 77ab44362f16..577e91ff7bf6 100644
+>>>>> --- a/drivers/staging/fbtft/Kconfig
+>>>>> +++ b/drivers/staging/fbtft/Kconfig
+>>>>> @@ -3,6 +3,7 @@ menuconfig FB_TFT
+>>>>>       tristate "Support for small TFT LCD display modules"
+>>>>>       depends on FB && SPI
+>>>>>       depends on FB_DEVICE
+>>>>> +    depends on BACKLIGHT_DEVICE_CLASS
+>>>>
+>>>> Typo. Should be BACKLIGHT_CLASS_DEVICE...
+>>
+>> Ah, thanks. I'll better check the rest of the series for similar 
+>> mistakes.
+>>
+>>>
+>>> Beside the typo:
+>>> In this case, doesn't it make sense to "select 
+>>> BACKLIGHT_DEVICE_CLASS" instead?
+>>
+>> That causes the dependency error mentioned in the commit message. 
+>> This time it's just for fbtft instead of shmobilefb.
+>>
+>>> If people want the fbtft, backlight support should be enabled too.
+>>
+>> As a user-visible option, it should not be auto-selected
+>> unnecessarily.
+>
+> Right, it should not be auto-selected.
+> Unless if fbtft really needs it enabled to function.
+> IMHO all fb/drm drivers have higher priority than some low-level
+> background backlight controller code.
+
+By that logic, we'd list always list all drivers and each driver would 
+auso-select the subsystems it requires. So each fbdev driver would 
+select CONFIG_FB.
+
+That's not how it works, of course. Instead, each subsystem is 
+user-selected and Kconfig offers the drivers that have their 
+dependencies met. The documentation for Kconfig clearly states that 
+select should be used carefully. [1]
+
+[1] 
+https://elixir.bootlin.com/linux/v6.12.4/source/Documentation/kbuild/kconfig-language.rst#L137
+
+>
+>> The DRM panel drivers already depend on the backlight
+>> instead of selecting it. It's the correct approach.
+>
+> Sounds wrong IMHO.
+
+Generally, it's the right approach. I guess what could be done is to 
+make backlight support optional in the driver code, and use the imply 
+attribute [2] instead of depends. So the driver would indicate a 
+preference for backlight support, but still work without. That could 
+also be done for the fbdev drivers, of course.
+
+[2] 
+https://elixir.bootlin.com/linux/v6.12.4/source/Documentation/kbuild/kconfig-language.rst#L163
+
+Best regards
+Thomas
+
+>
+>> As I mentioned
+>> in the cover letter, the few remaining driver that select it should
+>> probably be updated.
+>
+> That dependency sounds weird, but maybe I simply misunderstand your 
+> logic...?
+>
+> As a Linux end user I usually know which graphic cards are in my machine
+> and which ones I want to enable.
+> But as a normal user I think I shouldn't be expected to know
+> that I first need to enable the "backlight class device"
+> so that I'm then able to afterwards enable the fbtft (or any other 
+> drm/fb driver).
+>
+> Am I wrong?
+>
+> Helge
 
 -- 
-https://patchwork.kernel.org/project/linux-wireless/list/
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
 
-https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
