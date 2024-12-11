@@ -1,48 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-3964-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-3965-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70D029EC27A
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 03:50:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A4E09EC2AD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 11 Dec 2024 04:01:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7Kpw4RMYz30Sv;
-	Wed, 11 Dec 2024 13:50:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7L3T4q3Lz305v;
+	Wed, 11 Dec 2024 14:01:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733885448;
-	cv=none; b=SOMn185a5YaAPEfhYb2BbliG69ixSFsgBcmDk9PmfqWLCnqsvOSIi0Wm5vzto+js7BuJ1fm4X8xuPKI67YK10vgP2Q3KACjNTOL2Ob9yEq28WJZTtHwSc2DgDnrj22i+d6LW4ZTAZBw4nAjRDo3hkMiGHKKdugZaqckjcGiZ43MuF1teipNMah+woQ8U+FC74G9iJiCSAIKHl1tBwfIPjjgk/cqLP9cFtPMuqaky7Hevh1qZx9Pyws8jDHICTJ22ZbGbzlMNR22w+Z2rRGJeij4i0UyTQTQYT1Acsjl1emSn9DkY/h89MKMB8weumkc1qqLrucjnn6IT/Ws67TomUQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733886101;
+	cv=none; b=B3GW7zie60i3ETffxVWwxzVPcMtom271q71V3NAoE4qbPud30hll9jCE/kWGmZUgRL0E9LvJdvSkWPX2kZw5X2NRYGE6j0nzfz4lRwXxWGR2bQ4pde1ywxvosDQkRUEqQwEUfXw9Lp0Hr0zqAnZhkAhRb2v05p+2MB8nPMiy/87EBGd0jSoJg/dMhVGTq4wMnHtk4WQ+2SBp8r1VRhFyR+n9paTJzCNAVrm21O8mLsf1z6Lgdkiky0lhzQ9XvreYxCRxJapmgv2Fg5K9HTxGpKrnR01mtjziNa9WkhMJzXAbMIOXGLbSUuExlBWPArK1UDcOgxtXNfpF1UT8KYMN4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733885448; c=relaxed/relaxed;
-	bh=N26vas4GEiufvz52cgMnt3IU547A62BqTHy/82WNU3w=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=KALGo92WdKSBOZ5G5crZP4XRElMjNTvmd2dRGcZtsc3l/kQw5m61BaLNLW9vnhh11aiNQnGX6J6pKLhDqMi3bj1QNq4P5TJpS7U5QRZUj8QtQxu7Isb/nq5iSr+L4rFMVtPE2Y5eiR9haGNc7F0dvkNTzHt7G9W2+Xk0wpeT14WPAXActCdPkLaEKs9MjcwNXzmbgjI4JfatQSP5L11L0WzK+vY1ErQmYiEjC0CcKPEELxYEoqOwuvBS+gHboq6uiqWFG/LhyOSQugbLwi+Wfi45a1NT/VGwSG0tEJjTeKJiT9ICbldUFtMoIWb6qaKkm1Ihm6kYRKTEEbObi8L92g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=u5fZ/gpW; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1733886101; c=relaxed/relaxed;
+	bh=gxw7xNAURnoIfNlmqntyDrwCjAAkB0Aboi19WVNOC6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jPCIa67CpwgWkWSP56lJuFxNo/0eZfjfOB9ufEUFvWIY5M+GMFijCIiSQueYZAjqGpO4oyPlOAmmpnqPtv9S1N4x0fW33njwncw1GmVfSnGsVREhwUtmeLPoOvsMsL/Y95pEwlb7tA8UJTRwDpXt+8A+ICRajheZ0nSC60ttC6zwrb8AmgNPr1k3+ZoR1JrtA73RRwiotJoNQ8s7H+YmQpkc8ZJI/Ar6fJS5Q8zmGSxb+LVOhA8in5AxaOZ1huxLJMPWVd/IdRDT6IktPJq3NjJ6re9k0FLPhorVaVO8eg+1mdI2R08h8v/HbB5dIehnSmeD+M3vvlzkSCdC0GK7Pg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EmcE4/lj; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=u5fZ/gpW;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EmcE4/lj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7Kpv0Brlz30St
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 13:50:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7L3S3Rlnz304N
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 14:01:40 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8E954A41B57;
-	Wed, 11 Dec 2024 02:48:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2F66C4CEDF;
-	Wed, 11 Dec 2024 02:50:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1733885443;
-	bh=C1p1Ur5QCo63c2pabe6pdtPHc4DXD/edWuUg2c5W1rI=;
+	by nyc.source.kernel.org (Postfix) with ESMTP id C7872A41D8E;
+	Wed, 11 Dec 2024 02:59:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 097C6C4CED6;
+	Wed, 11 Dec 2024 03:01:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1733886097;
+	bh=08Gv+rg+muCd4b+QXxh4lSp3ciy5sU1jyZsQ2rNGCQs=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=u5fZ/gpW5jFRGO7MUBQaaZ7EgRL5SbKSrvY7yk4XgnrXQ7iTXlQdgNQuxkXW8XsEU
-	 DrSY2RvgO3myem+8+0r+fPnEVkJ622gxoAvBGZmHq1GHcjqcIgbi0UiHZMQHG1FvHq
-	 abSWtb/hxC5Xk4n2V4Wr5FYMY7W0R77+cgVDL+GA=
-Date: Tue, 10 Dec 2024 18:50:40 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Jakub Kicinski <kuba@kernel.org>
+	b=EmcE4/ljfCRY3RJanBjxtPhT62/nJjxk7ELO0ZGNbc2mhHWfd391knNb2HOuZGhSx
+	 1e9fTFNcZABywOnqpoRKAEZbgjlix3qU4Qd2lcLQX3AgcLKJ4vrIgfKpyVm37bJMAM
+	 wiwQScSc5AP2YRJa64ls0Q4PrRlmeIvzeFuzlqiXSS0E4b38+g1f5LgHQjP+e4bxxF
+	 EWfJBUd/sx64BPsSVOGtlrnzPfoqLHGXyBoBKFxBYI5CCDVF2OYRXR0K/LPrQzVMJu
+	 IZkEdyC65OkC/1hbUFTVO1xckc1Src7rjo3nhww+SaTgc+dkPD8qefo1Jh9IYKWx27
+	 gFWQHpinQ+82w==
+Date: Tue, 10 Dec 2024 19:01:33 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Easwar Hariharan <eahariha@linux.microsoft.com>, Jeff Johnson
  <jeff.johnson@oss.qualcomm.com>, Pablo Neira Ayuso <pablo@netfilter.org>,
  Jozsef Kadlecsik <kadlec@netfilter.org>, "David S. Miller"
@@ -55,7 +58,7 @@ Cc: Easwar Hariharan <eahariha@linux.microsoft.com>, Jeff Johnson
  Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
  <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Ofir
  Bitton <obitton@habana.ai>, Oded Gabbay <ogabbay@kernel.org>, Lucas De
- Marchi <lucas.demarchi@intel.com>, Thomas =?ISO-8859-1?Q?Hellstr=F6m?=
+ Marchi <lucas.demarchi@intel.com>, Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?=
  <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard
  <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, David Airlie
@@ -65,7 +68,7 @@ Cc: Easwar Hariharan <eahariha@linux.microsoft.com>, Jeff Johnson
  James Smart <james.smart@broadcom.com>, Dick Kennedy
  <dick.kennedy@broadcom.com>, "James E.J. Bottomley"
  <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Roger Pau =?ISO-8859-1?Q?Monn=E9?=
+ <martin.petersen@oracle.com>, Roger Pau =?UTF-8?B?TW9ubsOp?=
  <roger.pau@citrix.com>, Jens Axboe <axboe@kernel.dk>, Kalle Valo
  <kvalo@kernel.org>, Jeff Johnson <jjohnson@kernel.org>, Catalin Marinas
  <catalin.marinas@arm.com>, Jack Wang <jinpu.wang@cloud.ionos.com>, Marcel
@@ -96,15 +99,15 @@ Cc: Easwar Hariharan <eahariha@linux.microsoft.com>, Jeff Johnson
  oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org, Anna-Maria Behnsen
  <anna-maria@linutronix.de>
 Subject: Re: [PATCH v3 00/19] Converge on using secs_to_jiffies()
-Message-Id: <20241210185040.96c81a25f098f59191223c9f@linux-foundation.org>
-In-Reply-To: <20241210184129.41aaf371@kernel.org>
+Message-ID: <20241210190133.44818a76@kernel.org>
+In-Reply-To: <20241210185040.96c81a25f098f59191223c9f@linux-foundation.org>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
 	<315e9178-5b10-4de0-bdcf-7243e0e355bb@oss.qualcomm.com>
 	<20241210153604.cf99699f264f12740ffce5c7@linux-foundation.org>
 	<20241210173548.5d32efe0@kernel.org>
 	<20241210183130.81111d05148c41278a299aad@linux-foundation.org>
 	<20241210184129.41aaf371@kernel.org>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	<20241210185040.96c81a25f098f59191223c9f@linux-foundation.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -116,29 +119,25 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 10 Dec 2024 18:41:29 -0800 Jakub Kicinski <kuba@kernel.org> wrote:
-
-> On Tue, 10 Dec 2024 18:31:30 -0800 Andrew Morton wrote:
-> > > > I'll just grab everything and see if anyone complains ;)  
-> > > 
-> > > I may, if this leads to a conflict :(  
+On Tue, 10 Dec 2024 18:50:40 -0800 Andrew Morton wrote:
+> > > Very unlikely, and any such conflict will be trivial.  
 > > 
-> > Very unlikely, and any such conflict will be trivial.
+> > Agreed, mainly I don't understand why we'd make an exception
+> > and take the patchset via a special tree.  
 > 
-> Agreed, mainly I don't understand why we'd make an exception
-> and take the patchset via a special tree.
+> It saves work for everyone?
+> 
+> The patches are super-simple.  If a maintainer chooses to merge one of
+> them, Stephen tells us and I drop the mm.git copy.  It's all so easy.
 
-It saves work for everyone?
-
-The patches are super-simple.  If a maintainer chooses to merge one of
-them, Stephen tells us and I drop the mm.git copy.  It's all so easy.
-
+If it's just to save work - we're fine.
+Please don't apply the networking changes.
 
