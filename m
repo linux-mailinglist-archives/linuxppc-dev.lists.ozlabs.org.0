@@ -1,65 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-4039-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4042-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 007859EE3BF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 11:07:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E7B9EE54C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 12:45:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y87Rh2LFqz30W6;
-	Thu, 12 Dec 2024 21:06:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y89cw30MBz30Tc;
+	Thu, 12 Dec 2024 22:45:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733998016;
-	cv=none; b=PsxJGxc5/BJ63SsIez5qdNDbPkujBDT43myHiUG3MQEstoQRPyBSvd2fgRATfpPIGXj8k/HOn4xNbwUNcsN2It2HItOVVVdeL3OA+DgthQoq5KtID7haEyEksph2CHV7VDGyY5o6KKyUzYMg1I/yaFekdekWezZIzYzXH17J4i3RYuwePxfIEIkKUzMc20nlVTjvMpwWbZ8+ATnjLQwAXdyWsie5msFjLoGmAHLvTDlfnpfWHy9dH4gi0EUDOg3g+WDdRKmcUkwrvrfNfSkSrwz7ySqFBwFJYggaKyeEqh4DEz2wCp75DqZ99WqRKIAaPbwusktLjlYQdT9X0bgPHw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734003904;
+	cv=none; b=fxT98JOa2vKxuUyf/I+312e3cf1FT2DonFS+ut9ojohrWa+L7Fdke/5L1OlphKa9//Ylha8p2OaLhdYZd80PdkcudRen/JVA4natwgI0CAkH5EOaLcW+TlgTniZFA4p/fgMMIq8g5wWWNJs0QV6aPQUXu9Y7gOptXnN8ijZRPmbhW8kQl4cCPbpAtB/JYy30eITpQbNvTfDtMTg6wPH7qU7MzK4FBU8eua7WWGi0S+5HqVo56HlVL3b1DZXvkwI4l9GZ3E5r2L38NL7D+rs/kX38zic/UgtoKN3wVP9abRVqZ9IJTRjyXyLaAJQt9VHfIM5HO7is5Hatmba9Or2AqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733998016; c=relaxed/relaxed;
-	bh=ErN9wcGBgiB6JprkFXTrxRToJxKIiYBt8gCDJYKfCZU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdNncwanwTmkpoTB7kqdHWJH3jycPZdfj5IssqUhcQhYE3WpqIGs4HqsDiTMkM8zK7GoOSFCtgempoWlequsKgnL9IIXk5eM/KDaOBGaZo2EXLUI2j/hWJ3qC3bOMZkGi8Xvx4tTBiyiAHyH/oFbE6k1PG8qUHAJNmg0JFI9I6xzHfS/RoVcCVL7JBvA0DOmOT1fWEo6BZtd1oIUy0oQs1xt4ImKChcQj8joA9sjQsRKmIWvAf0SaIFyU7oQcZPv6pgLaXMvi0EPMyS+T3EJtmusC2bZShuzRtW0XxuboBL4c9HQSpcQtQXgJj5gDMob9pxmVu6W1HPzI5IKB0igaQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+	t=1734003904; c=relaxed/relaxed;
+	bh=H67+ULJY8BlrayRyzJmF+1YLc4VM1o3ZbYZqf7GEUjo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=X7iT6WqO7+rMq8SxjVQf5mLdVc2Xa97Az0coxDT/yYMbsvOP13BX1801EUVZoyxAnKo3F95sCaVlwsMpUpb253D6kK1cQxAx7Ldcpk+YoEXBbyP1mBXs2Zm8I2b9iYoclFikyAExRc03qs14FaS2BjNHUgrz+bCKxx9VFHghCq93W9k4xLZnWbkvjWPD4xIdBk8yeF7IxkMjPAK9BqQmf/ZdbjyZU/xlKfpONACaTfIPRddtwbfR50pW+8GQu9MINW3GFStwZtKdk0Yw15CJo8DZSWlwIPsEZ489FgNc1RbdKAvezz7Y6YJB1ugdZjwRO2BMpjdtuPrkC4QXxJeZtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fZ7PHaIa; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=fZ7PHaIa;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y87Rg11znz30Vf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 21:06:54 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CBC6221180;
-	Thu, 12 Dec 2024 10:06:48 +0000 (UTC)
-Authentication-Results: smtp-out1.suse.de;
-	none
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 890A913A3D;
-	Thu, 12 Dec 2024 10:06:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id eDlCILi1WmeaGwAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Thu, 12 Dec 2024 10:06:48 +0000
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: javierm@redhat.com,
-	arnd@arndb.de,
-	deller@gmx.de,
-	simona@ffwll.ch,
-	airlied@gmail.com
-Cc: dri-devel@lists.freedesktop.org,
-	linux-fbdev@vger.kernel.org,
-	linux-staging@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v2 3/3] drm: rework FB_CORE dependency
-Date: Thu, 12 Dec 2024 11:04:45 +0100
-Message-ID: <20241212100636.45875-4-tzimmermann@suse.de>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241212100636.45875-1-tzimmermann@suse.de>
-References: <20241212100636.45875-1-tzimmermann@suse.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y89cv19Qvz2yQJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 22:45:03 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id EB030A42749;
+	Thu, 12 Dec 2024 11:43:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C692C4CED1;
+	Thu, 12 Dec 2024 11:44:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734003899;
+	bh=4GmCDohNAOfCN5wWOW+nZPuvP+Y3UIn9m30OSN5j1JY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fZ7PHaIaPPzTVBHTSLkX1+O9i3Zzay8xBUl2gIG3heoj6Z+fk9meBl13EQtHQApDu
+	 Yw94mtEVg7nI8104jxTR94i4yw/MJJfGSIbgfp4ciEyhuk60ZjABeF4RAtV6cozv/I
+	 EGNGxUK2lp3f1g1KWx1NHWA8TvA/hfjKSjxFLH2UPn1Qx2/4rCVe38ivLVqwgjQkJQ
+	 fiBtT3zOeOtBw8cZRr8uVg3xQKACPhUNyLhUm2B2v7uXXG5XoBaSVVV9RhhmldzA0w
+	 wvtEu88criAqDPQ7R6jqh6P1tx4ccozYrt+Xoj44g5NveBFbwVr9Z9HLpvInw6lyxL
+	 PgsQDvsJRFdkg==
+Date: Thu, 12 Dec 2024 11:44:54 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@nxp.com>
+Cc: vkoul@kernel.org, perex@perex.cz, tiwai@suse.com,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org, shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v7 4/6] ASoC: fsl_asrc_m2m: Add memory to memory function
+Message-ID: <58b4a167-5a13-49b2-9b08-58c3041b772b@sirena.org.uk>
+References: <20241212074509.3445859-1-shengjiu.wang@nxp.com>
+ <20241212074509.3445859-5-shengjiu.wang@nxp.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,61 +67,186 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	REPLY(-4.00)[]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: CBC6221180
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Status: No, score=-0.7 required=5.0 tests=RCVD_IN_DNSWL_LOW,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="xCorpfkhpxX1YyjE"
+Content-Disposition: inline
+In-Reply-To: <20241212074509.3445859-5-shengjiu.wang@nxp.com>
+X-Cookie: You can't push on a string.
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Arnd Bergmann <arnd@arndb.de>
 
-The 'select FB_CORE' statement moved from CONFIG_DRM to DRM_CLIENT_LIB,
-but there are now configurations that have code calling into fb_core
-as built-in even though the client_lib itself is a loadable module:
+--xCorpfkhpxX1YyjE
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-x86_64-linux-ld: drivers/gpu/drm/drm_fb_helper.o: in function `drm_fb_helper_set_suspend':
-drm_fb_helper.c:(.text+0x2c6): undefined reference to `fb_set_suspend'
-x86_64-linux-ld: drivers/gpu/drm/drm_fb_helper.o: in function `drm_fb_helper_resume_worker':
-drm_fb_helper.c:(.text+0x2e1): undefined reference to `fb_set_suspend'
+On Thu, Dec 12, 2024 at 03:45:07PM +0800, Shengjiu Wang wrote:
+> Implement the ASRC memory to memory function using
+> the compress framework, user can use this function with
+> compress ioctl interface.
+>=20
+> This feature can be shared by ASRC and EASRC drivers
 
-In addition to DRM_CLIENT_LIB, the 'select' needs to be at least in
-DRM_KMS_HELPER and DRM_GEM_SHMEM_HELPER, so add it here.
+This breaks an x86 allmodconfig build (using GCC 13):
 
-This patch is the KMS_HELPER part of [1].
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:186:68: warning: =E2=80=98s=
+truct snd_compr_task_runtime=E2=80=99 declared inside parameter list will n=
+ot be visible outside of this definition or declaration
+  186 | static void asrc_m2m_device_run(struct fsl_asrc_pair *pair, struct =
+snd_compr_task_runtime *task)
+      |                                                                    =
+^~~~~~~~~~~~~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98asrc_=
+m2m_device_run=E2=80=99:
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:212:26: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  212 |         in_buf_len =3D task->input_size;
+      |                          ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:279:13: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  279 |         task->output_size =3D out_dma_len;
+      |             ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: At top level:
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:451:49: warning: =E2=80=98s=
+truct snd_compr_task_runtime=E2=80=99 declared inside parameter list will n=
+ot be visible outside of this definition or declaration
+  451 |                                          struct snd_compr_task_runt=
+ime *task)
+      |                                                 ^~~~~~~~~~~~~~~~~~~=
+~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98fsl_a=
+src_m2m_comp_task_create=E2=80=99:
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:465:13: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  465 |         task->input =3D dma_buf_export(&exp_info_in);
+      |             ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:466:24: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  466 |         if (IS_ERR(task->input)) {
+      |                        ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:467:35: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  467 |                 ret =3D PTR_ERR(task->input);
+      |                                   ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:475:13: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  475 |         task->output =3D dma_buf_export(&exp_info_out);
+      |             ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:476:24: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  476 |         if (IS_ERR(task->output)) {
+      |                        ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:477:35: error: invalid use =
+of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+  477 |                 ret =3D PTR_ERR(task->output);
+      |                                   ^~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: At top level:
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:523:48: warning: =E2=80=98s=
+truct snd_compr_task_runtime=E2=80=99 declared inside parameter list will n=
+ot be visible outside of this definition or declaration
+  523 |                                         struct snd_compr_task_runti=
+me *task)
+      |                                                ^~~~~~~~~~~~~~~~~~~~=
+~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98fsl_a=
+src_m2m_comp_task_start=E2=80=99:
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:528:35: error: passing argu=
+ment 2 of =E2=80=98asrc_m2m_device_run=E2=80=99 from incompatible pointer t=
+ype [-Werror=3Dincompatible-pointer-types]
+  528 |         asrc_m2m_device_run(pair, task);
+      |                                   ^~~~
+      |                                   |
+      |                                   struct snd_compr_task_runtime *
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:186:92: note: expected =E2=
+=80=98struct snd_compr_task_runtime *=E2=80=99 but argument is of type =E2=
+=80=98struct snd_compr_task_runtime *=E2=80=99
+  186 | static void asrc_m2m_device_run(struct fsl_asrc_pair *pair, struct =
+snd_compr_task_runtime *task)
+      |                                                             ~~~~~~~=
+~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: At top level:
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:534:47: warning: =E2=80=98s=
+truct snd_compr_task_runtime=E2=80=99 declared inside parameter list will n=
+ot be visible outside of this definition or declaration
+  534 |                                        struct snd_compr_task_runtim=
+e *task)
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:540:47: warning: =E2=80=98s=
+truct snd_compr_task_runtime=E2=80=99 declared inside parameter list will n=
+ot be visible outside of this definition or declaration
+  540 |                                        struct snd_compr_task_runtim=
+e *task)
+      |                                               ^~~~~~~~~~~~~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:623:10: error: =E2=80=98str=
+uct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_create=E2=80=99
+  623 |         .task_create =3D fsl_asrc_m2m_comp_task_create,
+      |          ^~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:623:24: warning: excess ele=
+ments in struct initializer
+  623 |         .task_create =3D fsl_asrc_m2m_comp_task_create,
+      |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:623:24: note: (near initial=
+ization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:624:10: error: =E2=80=98str=
+uct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_start=E2=80=99
+  624 |         .task_start =3D fsl_asrc_m2m_comp_task_start,
+      |          ^~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:624:23: warning: excess ele=
+ments in struct initializer
+  624 |         .task_start =3D fsl_asrc_m2m_comp_task_start,
+      |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:624:23: note: (near initial=
+ization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:625:10: error: =E2=80=98str=
+uct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_stop=E2=80=99
+  625 |         .task_stop =3D fsl_asrc_m2m_comp_task_stop,
+      |          ^~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:625:22: warning: excess ele=
+ments in struct initializer
+  625 |         .task_stop =3D fsl_asrc_m2m_comp_task_stop,
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:625:22: note: (near initial=
+ization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:626:10: error: =E2=80=98str=
+uct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_free=E2=80=99
+  626 |         .task_free =3D fsl_asrc_m2m_comp_task_free,
+      |          ^~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:626:22: warning: excess ele=
+ments in struct initializer
+  626 |         .task_free =3D fsl_asrc_m2m_comp_task_free,
+      |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:626:22: note: (near initial=
+ization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98fsl_a=
+src_m2m_init=E2=80=99:
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:701:41: error: =E2=80=98SND=
+_COMPRESS_ACCEL=E2=80=99 undeclared (first use in this function); did you m=
+ean =E2=80=98SNDRV_COMPRESS_AVAIL=E2=80=99?
+  701 |         ret =3D snd_compress_new(card, 0, SND_COMPRESS_ACCEL, "ASRC=
+ M2M", compr);
+      |                                         ^~~~~~~~~~~~~~~~~~
+      |                                         SNDRV_COMPRESS_AVAIL
+/build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:701:41: note: each undeclar=
+ed identifier is reported only once for each function it appears in
+cc1: some warnings being treated as errors
 
-Fixes: dadd28d4142f ("drm/client: Add client-lib module")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/series/141411/ # 1
----
- drivers/gpu/drm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+--xCorpfkhpxX1YyjE
+Content-Type: application/pgp-signature; name="signature.asc"
 
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 55ce61a46984..2f51546b0b88 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -99,6 +99,7 @@ config DRM_KUNIT_TEST
- config DRM_KMS_HELPER
- 	tristate
- 	depends on DRM
-+	select FB_CORE if DRM_FBDEV_EMULATION
- 	help
- 	  CRTC helpers for KMS drivers.
- 
--- 
-2.47.1
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmdazLUACgkQJNaLcl1U
+h9DcEgf+OJCZW0jgiKXMBoR3Ew+s4HvrHC3fxP0nd/Prc6FZAauL78YdYhJce2IO
+Bp2bONmgi4zDJCJM9+SR1kEonO1EI0hCluisw/T588uAXQfGe4bukCis09k7zaEn
+/w6FL5Na9sIbOGVLyEImrEDVgcm/XcekklQTrIifLdd51FWA4/9BYwV3LSKpaDX0
+icGNN5H9gKADDidG2fWdPtndf6mMtkxOmvW9/lGADAYRCRCuwjRSxfCgd4wN8MQs
+NithgGAj0D9hihQ5VNSo9+HYVdzBZ+9rFVEjiUD4WxdqSDUjmVFZJAqQfRzOaqsz
+kEcfFqKySi1g/P4F5smjSPnIr7A8AQ==
+=C/Kj
+-----END PGP SIGNATURE-----
+
+--xCorpfkhpxX1YyjE--
 
