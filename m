@@ -1,68 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4021-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4023-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B86B79EDB76
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 00:29:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86C349EDD54
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 03:07:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7sH30cVGz30fM;
-	Thu, 12 Dec 2024 10:28:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7wpL6y2rz30TG;
+	Thu, 12 Dec 2024 13:07:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::54a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733959711;
-	cv=none; b=T/ewTZPjL1BHi7DAc1rLiPulsHAm9jQumXwbQ4/kxE54SMHJ4uH+/ZR7ld+4TLaui+lm/x3wxWfIcL3Qe6CY8GpW+ggtpDPo/d5dihcgZLjNDyWOzeohd2hT9tWv7I1DgNZfhH1T6qHvsT2DH4naKI9ALDiPIDOOA9PI3sQPIXqz8fIRpITRXpMowcHXVc0MMC5sWZ2aiMY07Lu5UR41ZM/B6lnS0ba2JtkBEWyjn0Q7m2xTnwQIoPjhTzsR/rd1fl1u6lXbQYH68k/XBHvp3hMVcMuDZxRyeNLeLGtyLwu+i8uwwz7jKysB79o+Sa3xJMbrtUELj52HcVyE5p6tOg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::132"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733969242;
+	cv=none; b=bBSXGLeRZq5I+oByUZcbTeUjXyQDd8OLt8zYZDIBs6vGelnXMfBW64n5zHykRUIBxXAza6hD3d9RkVil8yErqyDZdtE3ikWwmWfuS4rClJV2r/oor0vJLtvn+Ys+bnMbNygaM2eiaUUZIWh95VaUD28tuwFdhZo5wDjVi0WlLI/8EoR92TgtwV8AS/FEjwxehWOTrIwRNlmJ87IKrSdAg+VWzs8AGaKrTx+4jwyUeKjCZG6i7ojQxOJxxWrd1aLg8S3iWXMrA0Dor1R9b9m3Rm0bS/QEIHRBvEm5RARK+gBTBQmeugG7uDSaZmXou+YUwVeAkQOVbZzXdfP1p8fcfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733959711; c=relaxed/relaxed;
-	bh=oHbDZ++mGE8tEdFCxijZAS2pZkYuZT5989Fg2aOx0oY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HSaE/sgyCSbGWDGcx5aUHp6pMDjk8GPC3gLzeb05E96DFxgSnpvc73Ia0abjZ11u8FGXuWw31SQwE202i4ciBTxCZUeIHR2197NjlEZeNwpIHVwFnSV1qA5QfAkem1VSz/yYO+1rz3pYmAcUeG2iWxPGUrRSZ/VQBwZkvjr6II5HKpMZd4WuqOFBMZEgrXBKqKtd0Ejjl6iV+iTm7NbwRmneqx2oAEtO+UsaPzR36QGJ6KXWG1H372KVHvZ/VEykmLHkMmwIfPwVNzmiK19MXVTwsliOsct46LQT0KzvIU+WPBOZO0pz231hW4Rnx66WySHmbkkw8uk9JDdv4+PCbA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cZGcrz6D; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3hcbazwskdacrhslzozpunonvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--kaleshsingh.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--kaleshsingh.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1733969242; c=relaxed/relaxed;
+	bh=zsEQWcKkwE2tUR4EtqQ/7dt4QrY1pJqjE2F4WHaD4wk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IhAKBnX24X4qrZbBc5kss+ncUzOrDjKnFi2pGW4hyBQh3sSv36MOOo1ggCbncDk2xEgHz32+iRtELY1EHyvZDXwZ+k6DnVQ2BNyd3rX4jCTutdKIIR9a+aHY+JVlEpQmf5BF5iXnxCjuXgG7+kgSK01NWYSo9ivN2gD5QKN5b3whLlC3wnH/C2mfkmFhazZrvMv7dxBJX9StNUnY9kLu3mUqm6UlKI3QJMlOvN9M9bc+JYSFc19+VF2xFxAwyP/k/XfE3AV/OEYIwSr/J4tZKf8QQhEp0hUYXH24P/D9dLXz2UjjEZ32o9TXDnH62HMQNPH6YNu2Qv3dd5qCPjT6sg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JRHdm3Gn; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cZGcrz6D;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JRHdm3Gn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--kaleshsingh.bounces.google.com (client-ip=2607:f8b0:4864:20::54a; helo=mail-pg1-x54a.google.com; envelope-from=3hcbazwskdacrhslzozpunonvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--kaleshsingh.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pg1-x54a.google.com (mail-pg1-x54a.google.com [IPv6:2607:f8b0:4864:20::54a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7sH21k5jz2xrb
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 10:28:30 +1100 (AEDT)
-Received: by mail-pg1-x54a.google.com with SMTP id 41be03b00d2f7-7eaac1e95ffso33106a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 15:28:30 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7wpK3tz2z30T2
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 13:07:21 +1100 (AEDT)
+Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-3a7dd54af4bso568325ab.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 18:07:20 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1733959708; x=1734564508; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=oHbDZ++mGE8tEdFCxijZAS2pZkYuZT5989Fg2aOx0oY=;
-        b=cZGcrz6DbhlSTLri9mgHgB+paA4jcc1Xh07Lsiw/HC27gXDCB6i6m0Py3vwlHtnSkL
-         H7BVXIPgFTNuKnxRkOrO3dq3VXvQ67D3GLNoAR/VRCQFLoFDlW6wA0TMUxOO1MKas35n
-         wFw5V4sqbRneGEQTVKyUftQRMUVVRaErxMZy20JBnG0Br2C+hHMsDczcQVlTmHg98+vY
-         kY3OKudWCEVneQqbSA5+1+1BYTf/sJbRNineW4ByoeFLUhzmOPRQICvtR3KNEucQ5cWl
-         oWzeYChhMT0rMj0fYBGFQKv3lSd2ngLhJgHDiUyLe4kN5Z+SFzVOcm46muz6zHnFMDaC
-         uBgg==
+        d=gmail.com; s=20230601; t=1733969237; x=1734574037; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zsEQWcKkwE2tUR4EtqQ/7dt4QrY1pJqjE2F4WHaD4wk=;
+        b=JRHdm3GnyKe3L2ekkv4oZQiD6mmBT5Asrc8TBpYy760bDMn73zg0+KSmxvdqtFNAdr
+         cs1Ob8oyVNxIuKQ1QlK+VcUJIgcMx6xMpWDrienY1eUuef4vnuvg7fuT+uytocnvjHSv
+         ntT5t/y5Tt4nQEWFHGgZ80K9DUNVHhLDq02EjKOqFekbHfSYfDd186fpTmINN1WSRUND
+         ChXuUFBFlcWCeMnmnIzLL90eVpXgPRU8scWOZIl4rLqS9ghvyT7dOMpl+MazAGZKZwZ4
+         aPFPRTIZOITZPL15hAcDyGQndOuqEqdgPrZ8Gfdg8pZnsSGzblo4H1xp2IazgL/xNVuC
+         orOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733959708; x=1734564508;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oHbDZ++mGE8tEdFCxijZAS2pZkYuZT5989Fg2aOx0oY=;
-        b=Tpolttm5YR4UwZr+H3HR0f6a3YoxVW13DirsBdep/NIlF/F2W6SBZJXIc81qnqwH4b
-         MCljvLaA0b9W5+fZxCvwi5/7uV/JD5gF3Q8Nd9hSmonQ6o+IeUSdzOXBX4AdeZPBIpnw
-         KSJkJMWT3Pip1daHFigjZ7x7d6hQVhuKdUYMGs2OnFctj3QJDg//tyCy1387nZNuShXQ
-         YfOQLvx8PnAxZ9c13eDxDjr2fHeGUH0ujAlwtcuugZUsADwr+4qVD7261wtH/Mv7QQTy
-         FcUE2ROTUTrxWkM/XLJdhhIm9IDNJ1Z/IlxPK/KeZG6/gtnDMbALaAlgenOZQHVos5Dt
-         94Gw==
-X-Forwarded-Encrypted: i=1; AJvYcCUz8V95Dnotmz7dN6Zs+s5RhAptxG/9qSXnwdglFnPSiVV9xX+mlXZLhq12mSrmqUu4IlJFw+uY2hhEFZ8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxNhnCLakQk6PGisW5uZYgfIc8+3/Oa3nopdY8me+XQ55jHDJu2
-	H7FP0aVUvIh33WxkmiRoMcgX+t2qMO5j4AHpP8e6TSl1LlxsEsY8bV8AJbm19fkkFlN7+faMvrL
-	V1AewDd82ym3Wi/dHBd41Kg==
-X-Google-Smtp-Source: AGHT+IGlmctwmnr0LOvk4eyOoUS2Mz0NPFGCSegKhSqs8wGodxRb0W3o7XrsirlslhQ66CcLZRwSCG2H88EXSdEssw==
-X-Received: from pgbdl12.prod.google.com ([2002:a05:6a02:d0c:b0:7fd:1eba:c2dd])
- (user=kaleshsingh job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a21:150b:b0:1e0:d89e:f5cc with SMTP id adf61e73a8af0-1e1ceaabbb2mr1312325637.11.1733959708164;
- Wed, 11 Dec 2024 15:28:28 -0800 (PST)
-Date: Wed, 11 Dec 2024 15:27:54 -0800
-In-Reply-To: <20241211232754.1583023-1-kaleshsingh@google.com>
+        d=1e100.net; s=20230601; t=1733969237; x=1734574037;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zsEQWcKkwE2tUR4EtqQ/7dt4QrY1pJqjE2F4WHaD4wk=;
+        b=arynG6pGFNUHuZFQtt1W3IZ3fhzHOazar5tRasWFpLIVlZewdA3mCA4ghD2vCg8dyq
+         WnhD12dCmz5/Dx/Vsaw0Zvj1rcodFKC74pM24NbUthmr7vzl7Gsxw3ScFx5TXM5dHoWb
+         PynP2jWmYcSCLL1mIfBwfgPHOVFPvTq/PHfxiFeSVcQo4jrfcy9Q2EqElAXIsT+CzxJE
+         1Gt81dnWZxO2XazioSInLVoiJBFpzR8teDpeirgNVHqWTeoDsx3hZJbX4Y8gql4dWRjT
+         bhHq8803EclN20ODnUQ3co7BRiLgeCDUaSGbU8owyCwTr4iEWuCWFKf+P5fjCyNpflT7
+         TH9A==
+X-Forwarded-Encrypted: i=1; AJvYcCVnB8gRdRHBtS+4t6dmjmDhjItbn6fNo3FAaKxw7nFCFlGS5fVeGk2mS5Iz8+kt1c2b5qrxDWGmdXSvqfI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwNf8vkJpgQDcwKPF12H7rHS/PC5WmPkCEnsIbTLRfmRI1ue+T1
+	lzyGGBfq1+ibLDPjDHTXHnnHDIKdsep17Ak+qRGR8ZG00YiP4bwVnhWqM4+XZFRFrRQxGC28LSz
+	PTLZzvSXWM2UuTxzuboiuSdF3c78=
+X-Gm-Gg: ASbGncsEXOhutiwFjWM1PQEEvXbh2ioyUxpAnbau/4bKm7AZT2uIlBZhkTU6z+2ZwKQ
+	d9G4S+igfmBy0tLFcSYbgamEOVsc19XhzT8cbsg==
+X-Google-Smtp-Source: AGHT+IFgbF3rpxFbC9uUWYHJ8NsiDEgvcpbD8m2ahheY6thhWrFNrML3gGOs0Uohbe0DWv40CeetB1K5Pc+PD5GSQGg=
+X-Received: by 2002:a05:6e02:1b05:b0:3a7:fe47:6228 with SMTP id
+ e9e14a558f8ab-3ac483ff34emr18454135ab.6.1733969237518; Wed, 11 Dec 2024
+ 18:07:17 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,112 +75,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20241211232754.1583023-1-kaleshsingh@google.com>
-X-Mailer: git-send-email 2.47.0.338.g60cca15819-goog
-Message-ID: <20241211232754.1583023-17-kaleshsingh@google.com>
-Subject: [PATCH mm-unstable v2 16/16] mm: Respect mmap hint before THP
- alignment if allocation is possible
-From: Kalesh Singh <kaleshsingh@google.com>
-To: akpm@linux-foundation.org, vbabka@suse.cz, yang@os.amperecomputing.com, 
-	riel@surriel.com, david@redhat.com, minchan@kernel.org, jyescas@google.com
-Cc: linux@armlinux.org.uk, tsbogend@alpha.franken.de, 
-	James.Bottomley@HansenPartnership.com, ysato@users.sourceforge.jp, 
-	dalias@libc.org, glaubitz@physik.fu-berlin.de, davem@davemloft.net, 
-	andreas@gaisler.com, tglx@linutronix.de, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, chris@zankel.net, 
-	jcmvbkbc@gmail.com, bhelgaas@google.com, jason.andryuk@amd.com, 
-	leitao@debian.org, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-mm@kvack.org, 
-	kernel-team@android.com, android-mm@google.com, 
-	Kalesh Singh <kaleshsingh@google.com>
+MIME-Version: 1.0
+References: <20241211030849.1834450-1-shengjiu.wang@nxp.com>
+ <20241211030849.1834450-5-shengjiu.wang@nxp.com> <dc52c945-b292-4cd8-97ae-369a45f5a4ad@sirena.org.uk>
+In-Reply-To: <dc52c945-b292-4cd8-97ae-369a45f5a4ad@sirena.org.uk>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 12 Dec 2024 10:07:04 +0800
+Message-ID: <CAA+D8ANG6enRKp7msjBs3Hxn8QozjT2tEvAmHDZjO7xtQYB4Jw@mail.gmail.com>
+Subject: Re: [PATCH v6 4/6] ASoC: fsl_asrc_m2m: Add memory to memory function
+To: Mark Brown <broonie@kernel.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, perex@perex.cz, tiwai@suse.com, 
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Commit 249608ee4713 ("mm: respect mmap hint address when aligning for THP")
-fallsback to PAGE_SIZE alignment instead of THP alignment
-for anonymous mapping as long as a hint address is provided by the user
--- even if we weren't able to allocate the unmapped area at the hint
-address in the end.
+On Wed, Dec 11, 2024 at 11:28=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
+ote:
+>
+> On Wed, Dec 11, 2024 at 11:08:47AM +0800, Shengjiu Wang wrote:
+> > Implement the ASRC memory to memory function using
+> > the compress framework, user can use this function with
+> > compress ioctl interface.
+> >
+> > This feature can be shared by ASRC and EASRC drivers
+>
+> This breaks an imx_v6_v7_defconfig build:
+>
+> arm-linux-gnueabihf-ld: sound/soc/fsl/fsl_asrc_m2m.o: in function `fsl_as=
+rc_m2m_
+> init':
+> fsl_asrc_m2m.c:(.text+0x7ac): undefined reference to `snd_compress_new'
+>
+> Looks like we're missing some select statements.
 
-This was done to address the immediate regression in anonymous mappings
-where the hint address were being ignored in some cases; due to commit
-efa7df3e3bb5 ("mm: align larger anonymous mappings on THP boundaries").
+Thanks for noticing this issue.
+Sorry about that, I will fix it.
 
-It was later pointed out that this issue also existed for file-backed
-mappings from file systems that use thp_get_unmapped_area() for their
-.get_unmapped_area() file operation.
-
-The same fix was not applied for file-backed mappings since it would
-mean any mmap requests that provide a hint address would be only
-PAGE_SIZE-aligned regardless of whether allocation was successful at
-the hint address or not.
-
-Instead, use arch_mmap_hint() to first attempt allocation at the hint
-address and fallback to THP alignment if there isn't sufficient VA space
-to satisfy the allocation at the hint address.
-
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
----
- mm/huge_memory.c | 17 ++++++++++-------
- mm/mmap.c        |  1 -
- 2 files changed, 10 insertions(+), 8 deletions(-)
-
-diff --git a/mm/huge_memory.c b/mm/huge_memory.c
-index 2da5520bfe24..426761a30aff 100644
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1097,6 +1097,16 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
- 	loff_t off_align = round_up(off, size);
- 	unsigned long len_pad, ret, off_sub;
- 
-+	/*
-+	 * If allocation at the address hint succeeds; respect the hint and
-+	 * don't try to align to THP boundary;
-+	 *
-+	 * Or if an the requested extent is invalid return the error immediately.
-+	 */
-+	addr = arch_mmap_hint(filp, addr, len, off, flags);
-+	if (addr)
-+		return addr;
-+
- 	if (!IS_ENABLED(CONFIG_64BIT) || in_compat_syscall())
- 		return 0;
- 
-@@ -1117,13 +1127,6 @@ static unsigned long __thp_get_unmapped_area(struct file *filp,
- 	if (IS_ERR_VALUE(ret))
- 		return 0;
- 
--	/*
--	 * Do not try to align to THP boundary if allocation at the address
--	 * hint succeeds.
--	 */
--	if (ret == addr)
--		return addr;
--
- 	off_sub = (off - ret) & (size - 1);
- 
- 	if (test_bit(MMF_TOPDOWN, &current->mm->flags) && !off_sub)
-diff --git a/mm/mmap.c b/mm/mmap.c
-index 76dd6acdf051..3286fdff26f2 100644
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -814,7 +814,6 @@ __get_unmapped_area(struct file *file, unsigned long addr, unsigned long len,
- 	if (get_area) {
- 		addr = get_area(file, addr, len, pgoff, flags);
- 	} else if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && !file
--		   && !addr /* no hint */
- 		   && IS_ALIGNED(len, PMD_SIZE)) {
- 		/* Ensures that larger anonymous mappings are THP aligned. */
- 		addr = thp_get_unmapped_area_vmflags(file, addr, len,
--- 
-2.47.0.338.g60cca15819-goog
-
+Best regards
+Shengjiu Wang
 
