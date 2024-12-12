@@ -1,69 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-4023-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4024-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C349EDD54
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 03:07:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BB269EDDC3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 03:55:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7wpL6y2rz30TG;
-	Thu, 12 Dec 2024 13:07:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y7xtK6mC2z2yjJ;
+	Thu, 12 Dec 2024 13:55:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::132"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733969242;
-	cv=none; b=bBSXGLeRZq5I+oByUZcbTeUjXyQDd8OLt8zYZDIBs6vGelnXMfBW64n5zHykRUIBxXAza6hD3d9RkVil8yErqyDZdtE3ikWwmWfuS4rClJV2r/oor0vJLtvn+Ys+bnMbNygaM2eiaUUZIWh95VaUD28tuwFdhZo5wDjVi0WlLI/8EoR92TgtwV8AS/FEjwxehWOTrIwRNlmJ87IKrSdAg+VWzs8AGaKrTx+4jwyUeKjCZG6i7ojQxOJxxWrd1aLg8S3iWXMrA0Dor1R9b9m3Rm0bS/QEIHRBvEm5RARK+gBTBQmeugG7uDSaZmXou+YUwVeAkQOVbZzXdfP1p8fcfQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733972153;
+	cv=none; b=gDRIV6+FNfJuj9fDvwb3r2zRXP0I3IaZ1nzAuyS7Zf83VS/BFOCXpHuvjiwnP9I5P1upE6D0HwD1p5Gj1IsVPbkHikqRAVCs9T522zewItycO+prE4mlW2F9Mb6wByiAE8Mb9rXDZ73Te21Pd4ZnZ+5ae5xIBFD8lZIWc0hnnqX24ByjjTnYsDeQNUfC0AFzbcYlFIQ22GFwJI4KbVRNipUs4teOQWWHsVYSpYxEXKTA7HbdMXTlZWb8WWIPjICWVU6j9gywaHP1oKI0/xFsKzpBGEZ4JrfeClnujyRcRqKlgz+FefVmc0eGc5qe+mG1AuGbsUzYlx4Vh4CRxnzedA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733969242; c=relaxed/relaxed;
-	bh=zsEQWcKkwE2tUR4EtqQ/7dt4QrY1pJqjE2F4WHaD4wk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IhAKBnX24X4qrZbBc5kss+ncUzOrDjKnFi2pGW4hyBQh3sSv36MOOo1ggCbncDk2xEgHz32+iRtELY1EHyvZDXwZ+k6DnVQ2BNyd3rX4jCTutdKIIR9a+aHY+JVlEpQmf5BF5iXnxCjuXgG7+kgSK01NWYSo9ivN2gD5QKN5b3whLlC3wnH/C2mfkmFhazZrvMv7dxBJX9StNUnY9kLu3mUqm6UlKI3QJMlOvN9M9bc+JYSFc19+VF2xFxAwyP/k/XfE3AV/OEYIwSr/J4tZKf8QQhEp0hUYXH24P/D9dLXz2UjjEZ32o9TXDnH62HMQNPH6YNu2Qv3dd5qCPjT6sg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JRHdm3Gn; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1733972153; c=relaxed/relaxed;
+	bh=h3bt3yLVk+LpBNVwqRgtTrNcwDAGMzslAPv9EpoWDR8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Imsq7nxJEE/OjB0qU6g7QJ+554aEM8Y4pFs73QcrOErX2I3FAYhmjwThCahpzOsnCFaVrHUPh0N4++zY/CGUZNk++os3paOknwiSHhba1+/GjksHeTWmQvV4+3/tsfAk8KbE7yn0D/ZYdflM/gprfhOH68l2HuoTqFgsw+puy4vjdT91GzgBVQgaeXvLaYwvnJEj2ZRaeUdZT3zg1niGlzAY3BEOP5QhCfCN6AXdwcocVSAxlF3CQ3iQNpALq2nLOdymmR9rlqrOWGvjsKR3BzGEdBBmzlSV/az+E2EXHru313ilztkGpNaPBGqiXeY6QSwYNriUM7MeZ23RmCA7Zw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UHhGUcge; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UHhGUcge; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=JRHdm3Gn;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UHhGUcge;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=UHhGUcge;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7wpK3tz2z30T2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 13:07:21 +1100 (AEDT)
-Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-3a7dd54af4bso568325ab.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 11 Dec 2024 18:07:20 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1733969237; x=1734574037; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zsEQWcKkwE2tUR4EtqQ/7dt4QrY1pJqjE2F4WHaD4wk=;
-        b=JRHdm3GnyKe3L2ekkv4oZQiD6mmBT5Asrc8TBpYy760bDMn73zg0+KSmxvdqtFNAdr
-         cs1Ob8oyVNxIuKQ1QlK+VcUJIgcMx6xMpWDrienY1eUuef4vnuvg7fuT+uytocnvjHSv
-         ntT5t/y5Tt4nQEWFHGgZ80K9DUNVHhLDq02EjKOqFekbHfSYfDd186fpTmINN1WSRUND
-         ChXuUFBFlcWCeMnmnIzLL90eVpXgPRU8scWOZIl4rLqS9ghvyT7dOMpl+MazAGZKZwZ4
-         aPFPRTIZOITZPL15hAcDyGQndOuqEqdgPrZ8Gfdg8pZnsSGzblo4H1xp2IazgL/xNVuC
-         orOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1733969237; x=1734574037;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zsEQWcKkwE2tUR4EtqQ/7dt4QrY1pJqjE2F4WHaD4wk=;
-        b=arynG6pGFNUHuZFQtt1W3IZ3fhzHOazar5tRasWFpLIVlZewdA3mCA4ghD2vCg8dyq
-         WnhD12dCmz5/Dx/Vsaw0Zvj1rcodFKC74pM24NbUthmr7vzl7Gsxw3ScFx5TXM5dHoWb
-         PynP2jWmYcSCLL1mIfBwfgPHOVFPvTq/PHfxiFeSVcQo4jrfcy9Q2EqElAXIsT+CzxJE
-         1Gt81dnWZxO2XazioSInLVoiJBFpzR8teDpeirgNVHqWTeoDsx3hZJbX4Y8gql4dWRjT
-         bhHq8803EclN20ODnUQ3co7BRiLgeCDUaSGbU8owyCwTr4iEWuCWFKf+P5fjCyNpflT7
-         TH9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVnB8gRdRHBtS+4t6dmjmDhjItbn6fNo3FAaKxw7nFCFlGS5fVeGk2mS5Iz8+kt1c2b5qrxDWGmdXSvqfI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwNf8vkJpgQDcwKPF12H7rHS/PC5WmPkCEnsIbTLRfmRI1ue+T1
-	lzyGGBfq1+ibLDPjDHTXHnnHDIKdsep17Ak+qRGR8ZG00YiP4bwVnhWqM4+XZFRFrRQxGC28LSz
-	PTLZzvSXWM2UuTxzuboiuSdF3c78=
-X-Gm-Gg: ASbGncsEXOhutiwFjWM1PQEEvXbh2ioyUxpAnbau/4bKm7AZT2uIlBZhkTU6z+2ZwKQ
-	d9G4S+igfmBy0tLFcSYbgamEOVsc19XhzT8cbsg==
-X-Google-Smtp-Source: AGHT+IFgbF3rpxFbC9uUWYHJ8NsiDEgvcpbD8m2ahheY6thhWrFNrML3gGOs0Uohbe0DWv40CeetB1K5Pc+PD5GSQGg=
-X-Received: by 2002:a05:6e02:1b05:b0:3a7:fe47:6228 with SMTP id
- e9e14a558f8ab-3ac483ff34emr18454135ab.6.1733969237518; Wed, 11 Dec 2024
- 18:07:17 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y7xtJ4YKvz2xQC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 13:55:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733972145;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h3bt3yLVk+LpBNVwqRgtTrNcwDAGMzslAPv9EpoWDR8=;
+	b=UHhGUcge80min/0+XE32ag3RUatIW3z+mGcjkwUNtAUI5huI+TPw1DYqLfdQMMsx1+zf5G
+	29hLpW/xWZ8GX4hW9rz/YN94leaMvnmVUAU/wTrtIUj6xtAzgQDAJAUgnu2K8YRE3CJcQn
+	rmMmmHNx6D9ZQyFkAWpgdT8ft+6WpWE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1733972145;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=h3bt3yLVk+LpBNVwqRgtTrNcwDAGMzslAPv9EpoWDR8=;
+	b=UHhGUcge80min/0+XE32ag3RUatIW3z+mGcjkwUNtAUI5huI+TPw1DYqLfdQMMsx1+zf5G
+	29hLpW/xWZ8GX4hW9rz/YN94leaMvnmVUAU/wTrtIUj6xtAzgQDAJAUgnu2K8YRE3CJcQn
+	rmMmmHNx6D9ZQyFkAWpgdT8ft+6WpWE=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-G1VQ4YhcN7Wjpbb7TucKnA-1; Wed,
+ 11 Dec 2024 21:55:39 -0500
+X-MC-Unique: G1VQ4YhcN7Wjpbb7TucKnA-1
+X-Mimecast-MFC-AGG-ID: G1VQ4YhcN7Wjpbb7TucKnA
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9B389195608C;
+	Thu, 12 Dec 2024 02:55:37 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.3])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 17A191956048;
+	Thu, 12 Dec 2024 02:55:34 +0000 (UTC)
+Date: Thu, 12 Dec 2024 10:55:30 +0800
+From: Baoquan he <bhe@redhat.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: ebiederm@xmission.com, Hari Bathini <hbathini@linux.ibm.com>,
+	akpm@linux-foundation.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kexec: Initialize ELF lowest address to ULONG_MAX
+Message-ID: <Z1pQoh7IwtERIWe5@MiWiFi-R3L-srv>
+References: <20241210091314.185785-1-sourabhjain@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,47 +86,65 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241211030849.1834450-1-shengjiu.wang@nxp.com>
- <20241211030849.1834450-5-shengjiu.wang@nxp.com> <dc52c945-b292-4cd8-97ae-369a45f5a4ad@sirena.org.uk>
-In-Reply-To: <dc52c945-b292-4cd8-97ae-369a45f5a4ad@sirena.org.uk>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 12 Dec 2024 10:07:04 +0800
-Message-ID: <CAA+D8ANG6enRKp7msjBs3Hxn8QozjT2tEvAmHDZjO7xtQYB4Jw@mail.gmail.com>
-Subject: Re: [PATCH v6 4/6] ASoC: fsl_asrc_m2m: Add memory to memory function
-To: Mark Brown <broonie@kernel.org>
-Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, perex@perex.cz, tiwai@suse.com, 
-	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241210091314.185785-1-sourabhjain@linux.ibm.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Dec 11, 2024 at 11:28=E2=80=AFPM Mark Brown <broonie@kernel.org> wr=
-ote:
->
-> On Wed, Dec 11, 2024 at 11:08:47AM +0800, Shengjiu Wang wrote:
-> > Implement the ASRC memory to memory function using
-> > the compress framework, user can use this function with
-> > compress ioctl interface.
-> >
-> > This feature can be shared by ASRC and EASRC drivers
->
-> This breaks an imx_v6_v7_defconfig build:
->
-> arm-linux-gnueabihf-ld: sound/soc/fsl/fsl_asrc_m2m.o: in function `fsl_as=
-rc_m2m_
-> init':
-> fsl_asrc_m2m.c:(.text+0x7ac): undefined reference to `snd_compress_new'
->
-> Looks like we're missing some select statements.
+On 12/10/24 at 02:43pm, Sourabh Jain wrote:
+> kexec_elf_load() loads an ELF executable and sets the address of the
+> lowest PT_LOAD section to the address held by the lowest_load_addr
+> function argument.
+> 
+> To determine the lowest PT_LOAD address, a local variable lowest_addr
+> (type unsigned long) is initialized to UINT_MAX. After loading each
+> PT_LOAD, its address is compared to lowest_addr. If a loaded PT_LOAD
+> address is lower, lowest_addr is updated. However, setting lowest_addr
+> to UINT_MAX won't work when the kernel image is loaded above 4G, as the
+> returned lowest PT_LOAD address would be invalid. This is resolved by
+> initializing lowest_addr to ULONG_MAX instead.
+> 
+> This issue was discovered while implementing crashkernel high/low
+> reservation on the PowerPC architecture.
+> 
+> Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
+> Cc: Baoquan he <bhe@redhat.com>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> CC: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: kexec@lists.infradead.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> ---
+>  kernel/kexec_elf.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
+> index d3689632e8b9..3a5c25b2adc9 100644
+> --- a/kernel/kexec_elf.c
+> +++ b/kernel/kexec_elf.c
+> @@ -390,7 +390,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
+>  			 struct kexec_buf *kbuf,
+>  			 unsigned long *lowest_load_addr)
+>  {
+> -	unsigned long lowest_addr = UINT_MAX;
+> +	unsigned long lowest_addr = ULONG_MAX;
 
-Thanks for noticing this issue.
-Sorry about that, I will fix it.
+Great catch.
 
-Best regards
-Shengjiu Wang
+Acked-by: Baoquan He <bhe@redhat.com>
+
+>  	int ret;
+>  	size_t i;
+>  
+> -- 
+> 2.47.1
+> 
+
 
