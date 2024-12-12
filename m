@@ -1,42 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-4041-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4040-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E069E9EE3CD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 11:11:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 025EF9EE3C1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 12 Dec 2024 11:07:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y87XP0QgVz30Vb;
-	Thu, 12 Dec 2024 21:11:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y87Rj0M7dz30Vf;
+	Thu, 12 Dec 2024 21:06:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.51
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733998260;
-	cv=none; b=SUQbLFGupp+SxhF+XWMrlh4q6qhhHw+U3yzvOL3IvzaXMDoDICHNeNzLl3Mg+WVAwdpWh2SvnAhGYbrtb1x9P2Seq9/nwFYywWKizSiQh4WPmkt6cKVi7TWk+rTrM0K447lz9/0lLCWSYIv/dZcnlLXGXEC6RcKDKHANDxw7ohc3/hMEModlk1Y9pX9wIfDqtWg2lM4T+MxsQxBYkhGEuDcz5g/vIUxK9PfFBib80VoJ0p+VmLQFZnlUqBsHc/GR2qj21ilfxKeBJBOqgzdtJWghk7tkEJ3COiHKB+YrEx39py5jEusv33ndy/rFjRrng2g6VS42HGZPhWiAZi8XJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:2"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1733998017;
+	cv=none; b=ZSjbEdnzkrs1NfCNsXQrEIza4gfXO9kY2MYJ0jc8Q9QdtTnq2ywbUsqj3+3+GJsQfiUbvr5zcMUZ+uxDv8s9R7PrSKtbTjTG6qj3QEv44SJQPjRYIDKHQ4hFVn3Rsw2T4HkzeK8XqJ0X/210CyCx41aFVp3zD+PVSwR6d0GKaCDy1uErbli+sc6fuZboyCJBzr8w5CZY3De3xxOxo6uiqtcQpEvou0Nmne+a9WhNL7r7xR6TubkjgLDP9QDQtzoTxyCrxnKsh/iaLMer+0PBieKkAh9Q/iWDssKbI9Rn7KOgLzv6dGyl5bQ+MVy0U0NWlrw4lGkgDPm4hIyUi9mLbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1733998260; c=relaxed/relaxed;
-	bh=0FNPbKOE96JNcPoCxE7KjT3hmaY8FJM2oQ0rEIYEcUw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PyjLe9vjr9ZL929r+lfiD8HbpDkM1P8U7t5wQwxuHzPsJ+Mn5cznh5AggjbJ7bCb+0u0O72c5t/QiBlbbVrwk8WsFYlWHYPY/fveZkObIh3+6KaR5xvj5SfBsBc/KnNcmUBu8S8oFhQJrOgoMy6OhRGHZulbix1WWi6lAJ9aD+ldM1jvAermNnAXCYWzAYvEkwOg3i90QhE1Lpm2sSP/rpZvnl+DENh37suvDvbJPDsrrVi5EY89wk7qn8ay8oH0Gz4gHnAXaUsIMeJlx1d7yawPOzWbGtRhoepM92CYnithTy3PBSvBIlCp+9ZdvT/xV/BHF20RLk/sy3ZVljr31g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none (client-ip=45.249.212.51; helo=dggsgout11.his.huawei.com; envelope-from=zhengyejian@huaweicloud.com; receiver=lists.ozlabs.org) smtp.mailfrom=huaweicloud.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=huaweicloud.com (client-ip=45.249.212.51; helo=dggsgout11.his.huawei.com; envelope-from=zhengyejian@huaweicloud.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1119 seconds by postgrey-1.37 at boromir; Thu, 12 Dec 2024 21:10:58 AEDT
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	t=1733998017; c=relaxed/relaxed;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c1hJXDDcSqZJUXQ5tIgTdXeJUv2MpjdvroftqY23EmikDLq88MLUNqfX+rsCnH/40kdGuXqRAU4XxKwr3cs8sTfazeVLQE4CYXwSBeSWWrqGEn0W0AodCxBnVcsTN29M+4lrnj7K7RtbiTWLuxP207QhF1S5w7Qs1HkhWNp+Fq/3gGGCmb7W9t11N4yRS+o7Qk2BoSC8vp+eOd7WBbQ5qScip+cx8/uJ1B9SAC7x+eqVLh0S2wNdHWJXN5RJPGM29GaR0kdXWZKkDKMG6go8WC4PcWcjmjqnBLh/ZbxJJFB/0o0uO1jdxhcRevqz7Ns4Qa/Lb/MOfKeBUrwa1JRp5w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=SzM+e4c5; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zFPTjN+S; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=C88eEKfu; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=m3hu/pJr; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=SzM+e4c5;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=zFPTjN+S;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=C88eEKfu;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=m3hu/pJr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y87XL6R64z306d
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 21:10:57 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4Y876F0n6sz4f3jJF
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 17:51:49 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 68F9E1A08DC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 17:52:09 +0800 (CST)
-Received: from [10.67.111.172] (unknown [10.67.111.172])
-	by APP4 (Coremail) with SMTP id gCh0CgCXcYVDslpnkZaEEQ--.63144S3;
-	Thu, 12 Dec 2024 17:52:04 +0800 (CST)
-Message-ID: <1f11e3c4-e8fd-d4ac-23cd-0ab2de9c1799@huaweicloud.com>
-Date: Thu, 12 Dec 2024 17:52:03 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y87Rg00Jjz2yWr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 21:06:54 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id EA3121F445;
+	Thu, 12 Dec 2024 10:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1733998008; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=SzM+e4c5Ym1h/jm5jVRn2Nl51bBZwlCrsSXJWKE8eSsIvW1x9151YFQ/8jopNe/WT25DGg
+	dd1JI7f5fPyaMHMgN/Ns+wcJEoBAlD4ktf1B5G0Rxga4vLYmWhLSQa2b/9SiuHDatXE9HY
+	OzOzrwlsl6v5KmUvSCQM31/RRV2N4gA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1733998008;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=zFPTjN+SsvBeunjkwP/6JkWexsWilBM8ALnk3ZViWyFS1fpwyJhjXgRJzw0NyKM21lX+lG
+	LIfa6gdLNBg95qBQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1733998007; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=C88eEKfuMDlPH1HvCmRgYqp7pDVG0sASkljzBfoFjeIItcffK0rfCEdrJ6k6fzsg2nJixD
+	ehYwzmW1s/iAjBGe1kDFRbd0z2U+Z76a6jqrJ3XZLxn+NeyeS9jXOgjRu1dmjfQei+JTv+
+	/CUM5DG9DIH47O3FPita/Ms4GR3rDzc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1733998007;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=INRxU7ywg6HovcPyrlJbcPMTZP3ggyxEfuKjc8HY5a0=;
+	b=m3hu/pJriaq1pEPdNSNu7jWg+8lOgOsUJfmtvq7KSt8hFHyu4O52BzltbsBFM3X7OFUdd3
+	yYq2vSEFm2yEa6Dw==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id A70C013939;
+	Thu, 12 Dec 2024 10:06:47 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uB+YJ7e1WmeaGwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Thu, 12 Dec 2024 10:06:47 +0000
+From: Thomas Zimmermann <tzimmermann@suse.de>
+To: javierm@redhat.com,
+	arnd@arndb.de,
+	deller@gmx.de,
+	simona@ffwll.ch,
+	airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org,
+	linux-fbdev@vger.kernel.org,
+	linux-staging@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v2 0/3] drm,fbdev: Fix module dependencies
+Date: Thu, 12 Dec 2024 11:04:42 +0100
+Message-ID: <20241212100636.45875-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -49,114 +103,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Subject: Re: [PATCH v2 0/5] kallsyms: Emit symbol for holes in text and fix
- weak function issue
-Content-Language: en-US
-To: Martin Kelly <martin.kelly@crowdstrike.com>,
- "masahiroy@kernel.org" <masahiroy@kernel.org>,
- "ojeda@kernel.org" <ojeda@kernel.org>,
- "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
- "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "james.clark@arm.com" <james.clark@arm.com>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
- "mingo@redhat.com" <mingo@redhat.com>,
- "rostedt@goodmis.org" <rostedt@goodmis.org>,
- "nathan@kernel.org" <nathan@kernel.org>,
- "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
- "tglx@linutronix.de" <tglx@linutronix.de>,
- "nicolas@fjasle.eu" <nicolas@fjasle.eu>,
- "mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>,
- "npiggin@gmail.com" <npiggin@gmail.com>,
- "mark.rutland@arm.com" <mark.rutland@arm.com>, "hpa@zytor.com"
- <hpa@zytor.com>, "surenb@google.com" <surenb@google.com>,
- "peterz@infradead.org" <peterz@infradead.org>,
- "naveen.n.rao@linux.ibm.com" <naveen.n.rao@linux.ibm.com>,
- "kent.overstreet@linux.dev" <kent.overstreet@linux.dev>,
- "bp@alien8.de" <bp@alien8.de>, "mcgrof@kernel.org" <mcgrof@kernel.org>,
- Ye Weihua <yeweihua4@huawei.com>
-Cc: Amit Dang <amit.dang@crowdstrike.com>,
- "linux-modules@vger.kernel.org" <linux-modules@vger.kernel.org>,
- "linux-kbuild@vger.kernel.org" <linux-kbuild@vger.kernel.org>,
- "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-References: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
- <44353f4cd4d1cc7170d006031819550b37039dd2.camel@crowdstrike.com>
- <364aaf7c-cdc4-4e57-bb4c-f62e57c23279@csgroup.eu>
- <d25741d8a6f88d5a6c219fb53e8aa0bcc1fea982.camel@crowdstrike.com>
-From: Zheng Yejian <zhengyejian@huaweicloud.com>
-In-Reply-To: <d25741d8a6f88d5a6c219fb53e8aa0bcc1fea982.camel@crowdstrike.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgCXcYVDslpnkZaEEQ--.63144S3
-X-Coremail-Antispam: 1UD129KBjvJXoW7Ww48WrWrXF4DKF4ftr43Wrg_yoW8XrWrpF
-	WfKFW5CF4DCF48J3Z2krs7ZF1Yyws3W3y7Wwn8Jw1UurZ8JFy3Ar4Sqr4jgrWDZF93Ww4U
-	ZF17tF95X34kZ37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9ab4IE77IF4wAFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x
-	0267AKxVW0oVCq3wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFV
-	Cjc4AY6r1j6r4UM4x0Y48IcVAKI48JM4IIrI8v6xkF7I0E8cxan2IY04v7Mxk0xIA0c2IE
-	e2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Wrv_ZF1l42xK82IYc2Ij64vIr41l4I8I3I0E4I
-	kC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
-	WwC2zVAF1VAY17CE14v26rWY6r4UJwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r
-	1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_
-	Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8Jr
-	UvcSsGvfC2KfnxnUUI43ZEXa7IU0EksDUUUUU==
-X-CM-SenderInfo: x2kh0w51hmxt3q6k3tpzhluzxrxghudrp/
-X-Spam-Status: No, score=-4.9 required=5.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid];
+	FREEMAIL_TO(0.00)[redhat.com,arndb.de,gmx.de,ffwll.ch,gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2024/12/11 04:49, Martin Kelly wrote:
-> On Tue, 2024-12-10 at 21:01 +0100, Christophe Leroy wrote:
->>>
->>> Hi all, what is the status of this patch series? I'd really like to
->>> see
->>> it or some other fix to this issue merged. The underlying bug is a
->>> significant one that can cause ftrace/livepatch/BPF fentry to fail
->>> silently. I've noticed this bug in another context[1] and realized
->>> they're the same issue.
->>>
->>> I'm happy to help with this patch series to address any issues as
->>> needed.
->>
->> As far as I can see there are problems on build with patch 1, see
->> https://patchwork.kernel.org/project/linux-modules/patch/20240723063258.2240610-2-zhengyejian@huaweicloud.com/
->>   
->>
->>
-> 
-> Yeah, I see those. Additionally, this patch no longer applies cleanly
-> to current master, though fixing it up to do so is pretty easy. Having
-> done that, this series appears to resolve the issues I saw in the other
-> linked thread.
-> 
-> Zheng, do you plan to send a v3? I'd be happy to help out with this
-> patch series if you'd like, as I'm hoping to get this issue resolved
-> (though I am not an ftrace expert).
+Fix the dependencies among the various graphics modules.
 
-Sorry to rely so late. Thanks for your feedback!
+Before addressing the FB_CORE issue, patch 1 first resolves a problem
+with BACKLIGHT_CLASS_DEVICE. A number of fbdev drivers select it, which
+results in a recursive-dependency error after patch has been applied.
+Making these drivers (or parts of them) depend on BACKLIGHT_CLASS_DEVICE
+fixes this.
 
-Steve recently started a discussion of the issue in:
-https://lore.kernel.org/all/20241014210841.5a4764de@gandalf.local.home/
-but there's no conclusion.
-  
-I can rebase this patch series and send a new version first, and
-I'm also hoping to get more feedbacks and help to resolve the issue.
+Patch 2 selects FB_CORE for DRM_GEM_DMA_HELPER and DRM_TTM_HELPER.
+This is necessary with the recently added DRM client library.
+
+Patch 3 is the second half of the patch provided by Arnd at [1]. It
+could not yet be merged because of the issues fixed by patch 1.
+
+Side note: For the majority of graphics drivers, backlight functionality
+depends on BACKLIGHT_CLASS_DEVICE. In a few cases drivers select the
+Kconfig token automatically. These drivers should be updated to depends
+on the token as well, such that backlight functionality is fully user-
+controlled.
+
+v2:
+- s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
+- Fix fbdev driver-dependency corner case (Arnd)
+
+[1] https://patchwork.freedesktop.org/series/141411/
+
+Arnd Bergmann (1):
+  drm: rework FB_CORE dependency
+
+Thomas Zimmermann (2):
+  fbdev: Fix recursive dependencies wrt BACKLIGHT_CLASS_DEVICE
+  drm/fbdev: Select FB_CORE dependency for fbdev on DMA and TTM
+
+ drivers/auxdisplay/Kconfig       |  2 +-
+ drivers/gpu/drm/Kconfig          |  3 +++
+ drivers/macintosh/Kconfig        |  1 +
+ drivers/staging/fbtft/Kconfig    |  1 +
+ drivers/video/fbdev/Kconfig      | 18 +++++++++++++-----
+ drivers/video/fbdev/core/Kconfig |  3 +--
+ 6 files changed, 20 insertions(+), 8 deletions(-)
 
 -- 
-Thanks,
-Zheng Yejian
+2.47.1
 
 
