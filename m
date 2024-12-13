@@ -1,92 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-4091-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4090-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95F1D9F062A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 09:16:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C24C09F05F6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 09:05:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8hxY1bzFz30ht;
-	Fri, 13 Dec 2024 19:16:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8hjL4sLLz3Wtr;
+	Fri, 13 Dec 2024 19:05:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.156
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734077777;
-	cv=none; b=moU2IUh/dpMFsAvn9GWOjyOzTIwBCGxBylGTyDFq49d6y2c/7rVs4eGz99F/DY5Ztjwl+ukrmHdvcjukPI2S/csD+bvL6lTv0v0djQPZ0LrMeVjg7FEa0sbRUv3yxd716ulNqyc3NPRX8SorCTC4fYsn5bNLp5XCeBkTc03aHLPp0CrwyZ9dVIrOYhAlKB0CGr/PS6fdoLFLb6EkyEPp2NY2EPndoP2EuwldC/mIUmvaN3q5i7H/BLDNFMddyD8obRgdbbkcgKnB6CMqxTvFW0aUz/qSmZsMcDrX691l072rvFyZCny5pd87OP35NTmMdcX/2ZT2FuQRh47us0AP6Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734077142;
+	cv=none; b=VBfWd5YEnOcV5y/51YOQR0U3ZDSIR4dTC2TmKAige0+1/AGhGdUUJUyaa4gRMWn22WiJeIEnmG4qWLe41kD8xo0ykvBMr0KkY/8gmrAIPD2cOX/grfpaoC8B8Cupvj9KCumxg/K1WEVQb2FYG2w96nI0Qq1pwPpXlJx6O1Dbwt8ZkPrWtbFRxzAyGWUhm3hAJbM1y2oWk+d0zcnhiFDxFD9eBP/PHIyysFw8FwuQzAGaPZjm+VbHyKr31CNjFOeH/XDWivuPfNryakSIl5F4t4HAiiSZhvdL3gR2GOuRXjvfmUHaikn3A9HsQ+DvFhi7YsT/A4ZiXt//MI5dME397Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734077777; c=relaxed/relaxed;
-	bh=xkdaBG8UMFyF010HWwrn18x+gfYMEYxilRcPMsaZiVs=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=Bf1L3S0a//XMmXz7xQHXbLssAGvONuvO1mu+lJF+lzAWO9LtViAYagTlLIhSK9h1b8Os/0bSihwUluhuzl/AulkJo1/elSoNGxMYac+xQLWGLclx2ahFPVYTg+32syXNvtdGxNMgIqzMg8zYcsoegLA8MAjqATjXDAD7d+4zmVFSYqmWIKXV3fSQ5S8SUeLxwJRn3pHAxZuKxkEO3+3gXfWy/+71c/ExFMP5IiYsTMHfpj9gzpTt9VLwAGNqTCGgT0tm3/JIKz6zqR6XPpUwqT3/CaBykL24v6Gj7TnKeeGhgrp2T06U7EcGu15v79SglJ/rhB6kFNN22GAh2IyWMA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kwRlWruO; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wf5Gfd1b; dkim-atps=neutral; spf=pass (client-ip=202.12.124.156; helo=fhigh-b5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kwRlWruO;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wf5Gfd1b;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.156; helo=fhigh-b5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-X-Greylist: delayed 722 seconds by postgrey-1.37 at boromir; Fri, 13 Dec 2024 19:16:11 AEDT
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	t=1734077142; c=relaxed/relaxed;
+	bh=FVOw+h27NlpLmIELNvAEpmKH/+bAsnaydDaBUOfayo4=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=PdG9uPyIpqZNcXoO9Af9BIiqqwciMDLoaSyAOjl629uZNPacmQbFFAZkNWr9YwjXVdKvIx8dFdKKWBLpRFjBQZTfHi5cLdxnbDgJ8hYwngUtkVyV2eoTszqb06mnJEMuNYzv1SNTl8H9M4tB7dRqFLlpa07xJN1K639XL5psBgz+WHpdeAPiXN/NSESZQhb8BFArTXKslAStLADeGD70FrZHud+mO0HIKMz3KH/LitfaMd4aPjHd5gsZUV9Yb/YZ9CCZqFnXGn92rzHprfmxWnDfTe29hPcPSUZ8JUKvzQmup8jnFutCbtCeY3JHmqly+xxu/sDwfdQlJeWWrrOYnQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8hxR3WwWz30gd
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 19:16:11 +1100 (AEDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 54FCB25401E2;
-	Fri, 13 Dec 2024 03:04:04 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Fri, 13 Dec 2024 03:04:05 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1734077044;
-	 x=1734163444; bh=xkdaBG8UMFyF010HWwrn18x+gfYMEYxilRcPMsaZiVs=; b=
-	kwRlWruOQXnYuoGU4ct7wnbZzpq8GbzYC5uXTtj+ieZM03zuV+Tt9PLNpT0OkMP6
-	K+i+RioQx0MTsgKt/M2b/PppfO3/x8ivdmXMgbKUtmfNssVe+GGwRCqCkPq5bfbN
-	N8dyhtPQ4Y8dIw971ni0aAoroFXoZxvgetECTodVWa9EpbwIvPIt4iAHApW4roYn
-	PLrV8oyDOOASxjzAJyxzXvs+w4ofKcTCDsZGygnEaPjBbVKKTcJ7ROn5U4zmudTy
-	pHmGayBV63ZE/DwrQOOgYnfHnYBuEJEH5T2XxdxRUAamVnwYsphSP+hCQiLbMifs
-	oeM1bdqzKH8E+n2zDWnHaQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734077044; x=
-	1734163444; bh=xkdaBG8UMFyF010HWwrn18x+gfYMEYxilRcPMsaZiVs=; b=w
-	f5Gfd1bCGgDhcncBvskPNse389eQ0QEfGBCs/NoAeMsbZBsXO0YkbIDC96jSrJMp
-	cNCa/5XjhA9LfhZLrr53T1E4loiHvDt1z6QQB8J1wFfiLQFQKw8FXuqapGsrT7H3
-	3aygnrdo/gs3YOJRdiVQ//Rs2j4wszfdrvufgk8UlHWrhRdlWosh1d47qkqAAYmB
-	khTX32HWGUwaBjac774RnINOTDWu5CQPe6Ug4YkIu7urQDpHwn157ajEAIblPN1d
-	PXruLjz38Mj0+8MiAVWehfM8jxaCtTPZqVTvceHDBYe0vw7bdf7vvMez/f94RXZJ
-	FGQnbO2l3OSOVvbmRJsgA==
-X-ME-Sender: <xms:cepbZwHYOLdK2uLiclp-OM6t1Q7gEnVCC9TlLMzbw6ClQ1So0jUu5g>
-    <xme:cepbZ5X6JlxRboE-OfGKmIOU19X6A6KLzaGL6IIsRwzSmlXK0mcMvG9MPVdsEZmsw
-    ZN8TN8gQeTOoFz0KY8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrkeeigdduudegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
-    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
-    guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
-    jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepfeeh
-    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprh
-    gtphhtthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghp
-    thhtohepghhrrghfsegrmhgriihonhdrtghomhdprhgtphhtthhopegrthhishhhphesrg
-    htihhshhhprghtrhgrrdhorhhgpdhrtghpthhtoheprghnuhhpsegsrhgrihhnfhgruhhl
-    thdrohhrghdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhroh
-    huphdrvghupdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghp
-    thhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehmph
-    gvsegvlhhlvghrmhgrnhdrihgurdgruh
-X-ME-Proxy: <xmx:cepbZ6LndnD8ZSZeGggeTF_B5V_DgMVWx-1ulNhV23ajSDoVV-Ti_w>
-    <xmx:cepbZyGY9wBofw83hXJKg-3q6hMTZIhwUkue-0Cp7reEPrBTSbMuKQ>
-    <xmx:cepbZ2UwyfQQq1czPmiqjUcFhf7znIqD5iwIE5qoLNE82ddwPCTk7Q>
-    <xmx:cepbZ1P1Jq82_ZoB3xLrj4H6gt9wqcGRFechLH3v8hR7FqCjabg6Sw>
-    <xmx:dOpbZw0XsZIrhDEJP9jq1aOwBLm0frAM5cG3_b5M1E0thNTIztJg5TAk>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 6A3682220072; Fri, 13 Dec 2024 03:04:01 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8hjK0JnWz30hf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 19:05:41 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 59CE41F394;
+	Fri, 13 Dec 2024 08:05:38 +0000 (UTC)
+Authentication-Results: smtp-out2.suse.de;
+	none
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1192E137CF;
+	Fri, 13 Dec 2024 08:05:38 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id NRQEA9LqW2caGQAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 13 Dec 2024 08:05:38 +0000
+Content-Type: multipart/mixed; boundary="------------nWuwnrygt0CNMuDcyFiuvcB0"
+Message-ID: <5484d576-d63e-4166-85ea-0b508b0cb865@suse.de>
+Date: Fri, 13 Dec 2024 09:05:37 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,81 +58,338 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Fri, 13 Dec 2024 09:03:30 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "A. Wilcox" <AWilcox@wilcox-tech.com>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: kvm@vger.kernel.org, "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Huacai Chen" <chenhuacai@kernel.org>,
- "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Alexander Graf" <graf@amazon.com>, "Crystal Wood" <crwood@redhat.com>,
- "Anup Patel" <anup@brainfault.org>,
- "Atish Patra" <atishp@atishpatra.org>,
- "Paul Walmsley" <paul.walmsley@sifive.com>,
- "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Albert Ou" <aou@eecs.berkeley.edu>,
- "Sean Christopherson" <seanjc@google.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,
- "Vitaly Kuznetsov" <vkuznets@redhat.com>,
- "David Woodhouse" <dwmw2@infradead.org>, "Paul Durrant" <paul@xen.org>,
- "Marc Zyngier" <maz@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org
-Message-Id: <6e971322-8b21-4d73-922c-a6032c6fe9bd@app.fastmail.com>
-In-Reply-To: <35E5C2A3-94AC-446B-A0A1-84B043DBC890@Wilcox-Tech.com>
-References: <20241212125516.467123-1-arnd@kernel.org>
- <35E5C2A3-94AC-446B-A0A1-84B043DBC890@Wilcox-Tech.com>
-Subject: Re: [RFC 0/5] KVM: drop 32-bit host support on all architectures
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] fbdev: Fix recursive dependencies wrt
+ BACKLIGHT_CLASS_DEVICE
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, javierm@redhat.com,
+ arnd@arndb.de, deller@gmx.de, simona@ffwll.ch, airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+References: <20241212100636.45875-1-tzimmermann@suse.de>
+ <20241212100636.45875-2-tzimmermann@suse.de>
+ <8403f989-c1de-48c9-ab48-83c1abb9e6f2@csgroup.eu>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <8403f989-c1de-48c9-ab48-83c1abb9e6f2@csgroup.eu>
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	REPLY(-4.00)[];
+	ASN(0.00)[asn:25478, ipnet:::/0, country:RU]
+X-Spam-Score: -4.00
+X-Rspamd-Queue-Id: 59CE41F394
+X-Rspamd-Pre-Result: action=no action;
+	module=replies;
+	Message is reply to one we originated
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Dec 13, 2024, at 04:51, A. Wilcox wrote:
-> On Dec 12, 2024, at 6:55=E2=80=AFAM, Arnd Bergmann <arnd@kernel.org> w=
-rote:
->> From: Arnd Bergmann <arnd@arndb.de>
->>=20
->> I submitted a patch to remove KVM support for x86-32 hosts earlier
->> this month, but there were still concerns that this might be useful f=
-or
->> testing 32-bit host in general, as that remains supported on three ot=
-her
->> architectures. I have gone through those three now and prepared simil=
-ar
->> patches, as all of them seem to be equally obsolete.
->>=20
->> Support for 32-bit KVM host on Arm hardware was dropped back in 2020
->> because of lack of users, despite Cortex-A7/A15/A17 based SoCs being
->> much more widely deployed than the other virtualization capable 32-bit
->> CPUs (Intel Core Duo/Silverthorne, PowerPC e300/e500/e600, MIPS P5600)
->> combined.
->
->
-> I do use 32-bit KVM on a Core Duo =E2=80=9CYonah=E2=80=9D and a Power =
-Mac G4 (MDD), for
-> purposes of bisecting kernel issues without having to reboot the host
-> machine (when it can be duplicated in a KVM environment).
->
-> I suppose it would still be possible to run the hosts on 6.12 LTS for
-> some time with newer guests, but it would be unfortunate.
+This is a multi-part message in MIME format.
+--------------nWuwnrygt0CNMuDcyFiuvcB0
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Would it be an option for you to just test those kernels on 64-bit
-machines? I assume you prefer to do native builds on 32-bit hardware
-because that fits your workflow, but once you get into debugging
-in a virtual machine, the results should generally be the same when
-building and running on a 64-bit host for both x86-32 and ppc32-classic,
-right?
+Hi
 
-      Arnd
+
+Am 13.12.24 um 08:44 schrieb Christophe Leroy:
+>
+>
+> Le 12/12/2024 à 11:04, Thomas Zimmermann a écrit :
+>> Do not select BACKLIGHT_CLASS_DEVICE from FB_BACKLIGHT. The latter
+>> only controls backlight support within fbdev core code and data
+>> structures.
+>>
+>> Make fbdev drivers depend on BACKLIGHT_CLASS_DEVICE and let users
+>> select it explicitly. Fixes warnings about recursive dependencies,
+>> such as
+>>
+>> error: recursive dependency detected!
+>>     symbol BACKLIGHT_CLASS_DEVICE is selected by FB_BACKLIGHT
+>>     symbol FB_BACKLIGHT is selected by FB_SH_MOBILE_LCDC
+>>     symbol FB_SH_MOBILE_LCDC depends on FB_DEVICE
+>>     symbol FB_DEVICE depends on FB_CORE
+>>     symbol FB_CORE is selected by DRM_GEM_DMA_HELPER
+>>     symbol DRM_GEM_DMA_HELPER is selected by DRM_PANEL_ILITEK_ILI9341
+>>     symbol DRM_PANEL_ILITEK_ILI9341 depends on BACKLIGHT_CLASS_DEVICE
+>>
+>> BACKLIGHT_CLASS_DEVICE is user-selectable, so making drivers adapt to
+>> it is the correct approach in any case. For most drivers, backlight
+>> support is also configurable separately.
+>>
+>> v2:
+>> - s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
+>> - Fix fbdev driver-dependency corner case (Arnd)
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> ---
+>>   drivers/auxdisplay/Kconfig       |  2 +-
+>>   drivers/macintosh/Kconfig        |  1 +
+>>   drivers/staging/fbtft/Kconfig    |  1 +
+>>   drivers/video/fbdev/Kconfig      | 18 +++++++++++++-----
+>>   drivers/video/fbdev/core/Kconfig |  3 +--
+>>   5 files changed, 17 insertions(+), 8 deletions(-)
+>
+> Build fails which pmac32_defconfig :
+>
+>   LD      .tmp_vmlinux1
+> powerpc64-linux-ld: drivers/macintosh/via-pmu-backlight.o: in function 
+> `pmu_backlight_init':
+> via-pmu-backlight.c:(.init.text+0xc0): undefined reference to 
+> `backlight_device_register'
+> make[2]: *** [scripts/Makefile.vmlinux:77: vmlinux] Error 1
+> make[1]: *** [/home/chleroy/linux-powerpc/Makefile:1225: vmlinux] Error 2
+
+The attached patch selects backlight support in the defconfigs that also 
+have PMAC_BACKLIGHT=y. Can you please apply it on top of the patchset 
+and report on the results?
+
+Best regards
+Thomas
+
+>
+>
+>>
+>> diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
+>> index 21545ffba065..8934e6ad5772 100644
+>> --- a/drivers/auxdisplay/Kconfig
+>> +++ b/drivers/auxdisplay/Kconfig
+>> @@ -489,7 +489,7 @@ config IMG_ASCII_LCD
+>>     config HT16K33
+>>       tristate "Holtek Ht16K33 LED controller with keyscan"
+>> -    depends on FB && I2C && INPUT
+>> +    depends on FB && I2C && INPUT && BACKLIGHT_CLASS_DEVICE
+>>       select FB_SYSMEM_HELPERS
+>>       select INPUT_MATRIXKMAP
+>>       select FB_BACKLIGHT
+>> diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
+>> index fb38f684444f..bf3824032d61 100644
+>> --- a/drivers/macintosh/Kconfig
+>> +++ b/drivers/macintosh/Kconfig
+>> @@ -120,6 +120,7 @@ config PMAC_MEDIABAY
+>>   config PMAC_BACKLIGHT
+>>       bool "Backlight control for LCD screens"
+>>       depends on PPC_PMAC && ADB_PMU && FB = y && (BROKEN || !PPC64)
+>> +    depends on BACKLIGHT_CLASS_DEVICE
+>>       select FB_BACKLIGHT
+>>       help
+>>         Say Y here to enable Macintosh specific extensions of the 
+>> generic
+>> diff --git a/drivers/staging/fbtft/Kconfig 
+>> b/drivers/staging/fbtft/Kconfig
+>> index 77ab44362f16..dcf6a70455cc 100644
+>> --- a/drivers/staging/fbtft/Kconfig
+>> +++ b/drivers/staging/fbtft/Kconfig
+>> @@ -3,6 +3,7 @@ menuconfig FB_TFT
+>>       tristate "Support for small TFT LCD display modules"
+>>       depends on FB && SPI
+>>       depends on FB_DEVICE
+>> +    depends on BACKLIGHT_CLASS_DEVICE
+>>       depends on GPIOLIB || COMPILE_TEST
+>>       select FB_BACKLIGHT
+>>       select FB_SYSMEM_HELPERS_DEFERRED
+>> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+>> index de035071fedb..55c6686f091e 100644
+>> --- a/drivers/video/fbdev/Kconfig
+>> +++ b/drivers/video/fbdev/Kconfig
+>> @@ -649,6 +649,7 @@ config FB_S1D13XXX
+>>   config FB_ATMEL
+>>       tristate "AT91 LCD Controller support"
+>>       depends on FB && OF && HAVE_CLK && HAS_IOMEM
+>> +    depends on BACKLIGHT_CLASS_DEVICE
+>>       depends on HAVE_FB_ATMEL || COMPILE_TEST
+>>       select FB_BACKLIGHT
+>>       select FB_IOMEM_HELPERS
+>> @@ -660,7 +661,6 @@ config FB_ATMEL
+>>   config FB_NVIDIA
+>>       tristate "nVidia Framebuffer Support"
+>>       depends on FB && PCI
+>> -    select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
+>>       select FB_CFB_FILLRECT
+>>       select FB_CFB_COPYAREA
+>>       select FB_CFB_IMAGEBLIT
+>> @@ -700,6 +700,8 @@ config FB_NVIDIA_DEBUG
+>>   config FB_NVIDIA_BACKLIGHT
+>>       bool "Support for backlight control"
+>>       depends on FB_NVIDIA
+>> +    depends on BACKLIGHT_CLASS_DEVICE=y || 
+>> BACKLIGHT_CLASS_DEVICE=FB_NVIDIA
+>> +    select FB_BACKLIGHT
+>>       default y
+>>       help
+>>         Say Y here if you want to control the backlight of your display.
+>> @@ -707,7 +709,6 @@ config FB_NVIDIA_BACKLIGHT
+>>   config FB_RIVA
+>>       tristate "nVidia Riva support"
+>>       depends on FB && PCI
+>> -    select FB_BACKLIGHT if FB_RIVA_BACKLIGHT
+>>       select FB_CFB_FILLRECT
+>>       select FB_CFB_COPYAREA
+>>       select FB_CFB_IMAGEBLIT
+>> @@ -747,6 +748,8 @@ config FB_RIVA_DEBUG
+>>   config FB_RIVA_BACKLIGHT
+>>       bool "Support for backlight control"
+>>       depends on FB_RIVA
+>> +    depends on BACKLIGHT_CLASS_DEVICE=y || 
+>> BACKLIGHT_CLASS_DEVICE=FB_RIVA
+>> +    select FB_BACKLIGHT
+>>       default y
+>>       help
+>>         Say Y here if you want to control the backlight of your display.
+>> @@ -934,7 +937,6 @@ config FB_MATROX_MAVEN
+>>   config FB_RADEON
+>>       tristate "ATI Radeon display support"
+>>       depends on FB && PCI
+>> -    select FB_BACKLIGHT if FB_RADEON_BACKLIGHT
+>>       select FB_CFB_FILLRECT
+>>       select FB_CFB_COPYAREA
+>>       select FB_CFB_IMAGEBLIT
+>> @@ -960,6 +962,8 @@ config FB_RADEON_I2C
+>>   config FB_RADEON_BACKLIGHT
+>>       bool "Support for backlight control"
+>>       depends on FB_RADEON
+>> +    depends on BACKLIGHT_CLASS_DEVICE=y || 
+>> BACKLIGHT_CLASS_DEVICE=FB_RADEON
+>> +    select FB_BACKLIGHT
+>>       default y
+>>       help
+>>         Say Y here if you want to control the backlight of your display.
+>> @@ -975,7 +979,6 @@ config FB_RADEON_DEBUG
+>>   config FB_ATY128
+>>       tristate "ATI Rage128 display support"
+>>       depends on FB && PCI
+>> -    select FB_BACKLIGHT if FB_ATY128_BACKLIGHT
+>>       select FB_IOMEM_HELPERS
+>>       select FB_MACMODES if PPC_PMAC
+>>       help
+>> @@ -989,6 +992,8 @@ config FB_ATY128
+>>   config FB_ATY128_BACKLIGHT
+>>       bool "Support for backlight control"
+>>       depends on FB_ATY128
+>> +    depends on BACKLIGHT_CLASS_DEVICE=y || 
+>> BACKLIGHT_CLASS_DEVICE=FB_ATY128
+>> +    select FB_BACKLIGHT
+>>       default y
+>>       help
+>>         Say Y here if you want to control the backlight of your display.
+>> @@ -999,7 +1004,6 @@ config FB_ATY
+>>       select FB_CFB_FILLRECT
+>>       select FB_CFB_COPYAREA
+>>       select FB_CFB_IMAGEBLIT
+>> -    select FB_BACKLIGHT if FB_ATY_BACKLIGHT
+>>       select FB_IOMEM_FOPS
+>>       select FB_MACMODES if PPC
+>>       select FB_ATY_CT if SPARC64 && PCI
+>> @@ -1040,6 +1044,8 @@ config FB_ATY_GX
+>>   config FB_ATY_BACKLIGHT
+>>       bool "Support for backlight control"
+>>       depends on FB_ATY
+>> +    depends on BACKLIGHT_CLASS_DEVICE=y || 
+>> BACKLIGHT_CLASS_DEVICE=FB_ATY
+>> +    select FB_BACKLIGHT
+>>       default y
+>>       help
+>>         Say Y here if you want to control the backlight of your display.
+>> @@ -1528,6 +1534,7 @@ config FB_SH_MOBILE_LCDC
+>>       depends on FB && HAVE_CLK && HAS_IOMEM
+>>       depends on SUPERH || COMPILE_TEST
+>>       depends on FB_DEVICE
+>> +    depends on BACKLIGHT_CLASS_DEVICE
+>>       select FB_BACKLIGHT
+>>       select FB_DEFERRED_IO
+>>       select FB_DMAMEM_HELPERS
+>> @@ -1793,6 +1800,7 @@ config FB_SSD1307
+>>       tristate "Solomon SSD1307 framebuffer support"
+>>       depends on FB && I2C
+>>       depends on GPIOLIB || COMPILE_TEST
+>> +    depends on BACKLIGHT_CLASS_DEVICE
+>>       select FB_BACKLIGHT
+>>       select FB_SYSMEM_HELPERS_DEFERRED
+>>       help
+>> diff --git a/drivers/video/fbdev/core/Kconfig 
+>> b/drivers/video/fbdev/core/Kconfig
+>> index 0ab8848ba2f1..d554d8c543d4 100644
+>> --- a/drivers/video/fbdev/core/Kconfig
+>> +++ b/drivers/video/fbdev/core/Kconfig
+>> @@ -183,9 +183,8 @@ config FB_SYSMEM_HELPERS_DEFERRED
+>>       select FB_SYSMEM_HELPERS
+>>     config FB_BACKLIGHT
+>> -    tristate
+>> +    bool
+>>       depends on FB
+>> -    select BACKLIGHT_CLASS_DEVICE
+>>     config FB_MODE_HELPERS
+>>       bool "Enable Video Mode Handling Helpers"
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
+--------------nWuwnrygt0CNMuDcyFiuvcB0
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-add-BACKLIGHT_CLASS_DEVICE-on-PPC-defconfigs.patch"
+Content-Disposition: attachment;
+ filename="0001-add-BACKLIGHT_CLASS_DEVICE-on-PPC-defconfigs.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBiMDI4MzM5NmFlZWQxOWNlZjhlMTM0MGMwNTEwMzkyOWNiNDFmYWY2IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5A
+c3VzZS5kZT4KRGF0ZTogRnJpLCAxMyBEZWMgMjAyNCAwOTowMjo0MSArMDEwMApTdWJqZWN0
+OiBbUEFUQ0hdIGFkZCBCQUNLTElHSFRfQ0xBU1NfREVWSUNFIG9uIFBQQyBkZWZjb25maWdz
+CgotLS0KIGFyY2gvcG93ZXJwYy9jb25maWdzL3BtYWMzMl9kZWZjb25maWcgfCAxICsKIGFy
+Y2gvcG93ZXJwYy9jb25maWdzL3BwYzZ4eF9kZWZjb25maWcgfCAxICsKIDIgZmlsZXMgY2hh
+bmdlZCwgMiBpbnNlcnRpb25zKCspCgpkaWZmIC0tZ2l0IGEvYXJjaC9wb3dlcnBjL2NvbmZp
+Z3MvcG1hYzMyX2RlZmNvbmZpZyBiL2FyY2gvcG93ZXJwYy9jb25maWdzL3BtYWMzMl9kZWZj
+b25maWcKaW5kZXggNTdkZWQ4MmMyODQwLi5lOGIzZjY3YmYzZjUgMTAwNjQ0Ci0tLSBhL2Fy
+Y2gvcG93ZXJwYy9jb25maWdzL3BtYWMzMl9kZWZjb25maWcKKysrIGIvYXJjaC9wb3dlcnBj
+L2NvbmZpZ3MvcG1hYzMyX2RlZmNvbmZpZwpAQCAtMjA4LDYgKzIwOCw3IEBAIENPTkZJR19G
+Ql9BVFk9eQogQ09ORklHX0ZCX0FUWV9DVD15CiBDT05GSUdfRkJfQVRZX0dYPXkKIENPTkZJ
+R19GQl8zREZYPXkKK0NPTkZJR19CQUNLTElHSFRfQ0xBU1NfREVWSUNFPXkKICMgQ09ORklH
+X1ZHQV9DT05TT0xFIGlzIG5vdCBzZXQKIENPTkZJR19GUkFNRUJVRkZFUl9DT05TT0xFPXkK
+IENPTkZJR19MT0dPPXkKZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJwYy9jb25maWdzL3BwYzZ4
+eF9kZWZjb25maWcgYi9hcmNoL3Bvd2VycGMvY29uZmlncy9wcGM2eHhfZGVmY29uZmlnCmlu
+ZGV4IDRkNzdlMTc1NDFlOS4uY2EwYzkwZTk1ODM3IDEwMDY0NAotLS0gYS9hcmNoL3Bvd2Vy
+cGMvY29uZmlncy9wcGM2eHhfZGVmY29uZmlnCisrKyBiL2FyY2gvcG93ZXJwYy9jb25maWdz
+L3BwYzZ4eF9kZWZjb25maWcKQEAgLTcxNiw2ICs3MTYsNyBAQCBDT05GSUdfRkJfVFJJREVO
+VD1tCiBDT05GSUdfRkJfU001MDE9bQogQ09ORklHX0ZCX0lCTV9HWFQ0NTAwPXkKIENPTkZJ
+R19MQ0RfUExBVEZPUk09bQorQ09ORklHX0JBQ0tMSUdIVF9DTEFTU19ERVZJQ0U9eQogQ09O
+RklHX0ZSQU1FQlVGRkVSX0NPTlNPTEU9eQogQ09ORklHX0ZSQU1FQlVGRkVSX0NPTlNPTEVf
+Uk9UQVRJT049eQogQ09ORklHX0xPR089eQotLSAKMi40Ny4xCgo=
+
+--------------nWuwnrygt0CNMuDcyFiuvcB0--
 
