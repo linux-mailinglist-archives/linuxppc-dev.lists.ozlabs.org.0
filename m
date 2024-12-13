@@ -1,52 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-4089-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4091-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A5C79F05E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 09:02:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 95F1D9F062A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 09:16:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8hdZ3Fwkz30hl;
-	Fri, 13 Dec 2024 19:02:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8hxY1bzFz30ht;
+	Fri, 13 Dec 2024 19:16:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734076946;
-	cv=none; b=Noa/ZOlXPzXJyz9qVY2UHmFiBeA39F6YXkvAVHfxkjIrLMjKl/0B09b+1eNoAqOWOPSN7F0p/V+8TQyXlvSAE/He56Hdg/TgCGgPULn4N9OEcleObtKIk8EVneHwg/xONfpxNqwEuqG1abvw5vU0EGNba9lMGF2Q+/gSZguvnJWORCTdyb4/5VFbavsv6dwgaTZ0OgSIDD1R83ZPdZIENFF+1rI6tL0/m7iy1VYQX/onFnPxaW8F12+8sWWqbpyencaK6VptDjptuW68zlwgL1V06WXVHgSYwgby7OxhTBapF3QX9VpMbO7USeYy33wadVaTVlbjANYDRYQUJac/XA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.156
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734077777;
+	cv=none; b=moU2IUh/dpMFsAvn9GWOjyOzTIwBCGxBylGTyDFq49d6y2c/7rVs4eGz99F/DY5Ztjwl+ukrmHdvcjukPI2S/csD+bvL6lTv0v0djQPZ0LrMeVjg7FEa0sbRUv3yxd716ulNqyc3NPRX8SorCTC4fYsn5bNLp5XCeBkTc03aHLPp0CrwyZ9dVIrOYhAlKB0CGr/PS6fdoLFLb6EkyEPp2NY2EPndoP2EuwldC/mIUmvaN3q5i7H/BLDNFMddyD8obRgdbbkcgKnB6CMqxTvFW0aUz/qSmZsMcDrX691l072rvFyZCny5pd87OP35NTmMdcX/2ZT2FuQRh47us0AP6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734076946; c=relaxed/relaxed;
-	bh=3c4iSX4t2r5V3ufu+qXgeWqmJh4T7Xdt27ovEM8ZVtY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=B+vbFuENo6Ws86RIjrs7tZXKHGMNXAYRWC3lUp31BRlG3xkfrRozuAmPACFQCLz4CCkSAURGEor/BiJetykNSj8EvhYFwlfvnkNfDj9/coWBNOC3k/RNwNA7qwWdB8CDoX6ehIO2yj5BuKWUvicRMkCtJBrwvCNGrMyBUs6FhbmuNFv0iUNZL7TxB9hCj13ybAF4ez5WHm0KrLdWrL4fEho/Rc2QsZRNpzpb1vUSh3Y0tR/QYBwc6l4Arj7OG7Gd3zeo+9w5ToWAKrQ0zNlpb8L+sd1EJrZDq1vUnlL5KrnIctntlpM9iG7w4u+HyC7bcOE5TGkgNEJuy43GLa9lqQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1734077777; c=relaxed/relaxed;
+	bh=xkdaBG8UMFyF010HWwrn18x+gfYMEYxilRcPMsaZiVs=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=Bf1L3S0a//XMmXz7xQHXbLssAGvONuvO1mu+lJF+lzAWO9LtViAYagTlLIhSK9h1b8Os/0bSihwUluhuzl/AulkJo1/elSoNGxMYac+xQLWGLclx2ahFPVYTg+32syXNvtdGxNMgIqzMg8zYcsoegLA8MAjqATjXDAD7d+4zmVFSYqmWIKXV3fSQ5S8SUeLxwJRn3pHAxZuKxkEO3+3gXfWy/+71c/ExFMP5IiYsTMHfpj9gzpTt9VLwAGNqTCGgT0tm3/JIKz6zqR6XPpUwqT3/CaBykL24v6Gj7TnKeeGhgrp2T06U7EcGu15v79SglJ/rhB6kFNN22GAh2IyWMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kwRlWruO; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wf5Gfd1b; dkim-atps=neutral; spf=pass (client-ip=202.12.124.156; helo=fhigh-b5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=kwRlWruO;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=wf5Gfd1b;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.156; helo=fhigh-b5-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 722 seconds by postgrey-1.37 at boromir; Fri, 13 Dec 2024 19:16:11 AEDT
+Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8hdY36Vnz30hL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 19:02:25 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Y8hdT5hV5z9str;
-	Fri, 13 Dec 2024 09:02:21 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id BkzwJyV56MEz; Fri, 13 Dec 2024 09:02:21 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y8hdT4bL5z9sST;
-	Fri, 13 Dec 2024 09:02:21 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 87B638B773;
-	Fri, 13 Dec 2024 09:02:21 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id XDvAIJXlZlMl; Fri, 13 Dec 2024 09:02:21 +0100 (CET)
-Received: from [192.168.232.97] (unknown [192.168.232.97])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2B4EE8B763;
-	Fri, 13 Dec 2024 09:02:20 +0100 (CET)
-Message-ID: <0b1ea054-22bb-4380-a1e4-8be988d8746d@csgroup.eu>
-Date: Fri, 13 Dec 2024 09:02:19 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8hxR3WwWz30gd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 19:16:11 +1100 (AEDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 54FCB25401E2;
+	Fri, 13 Dec 2024 03:04:04 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Fri, 13 Dec 2024 03:04:05 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1734077044;
+	 x=1734163444; bh=xkdaBG8UMFyF010HWwrn18x+gfYMEYxilRcPMsaZiVs=; b=
+	kwRlWruOQXnYuoGU4ct7wnbZzpq8GbzYC5uXTtj+ieZM03zuV+Tt9PLNpT0OkMP6
+	K+i+RioQx0MTsgKt/M2b/PppfO3/x8ivdmXMgbKUtmfNssVe+GGwRCqCkPq5bfbN
+	N8dyhtPQ4Y8dIw971ni0aAoroFXoZxvgetECTodVWa9EpbwIvPIt4iAHApW4roYn
+	PLrV8oyDOOASxjzAJyxzXvs+w4ofKcTCDsZGygnEaPjBbVKKTcJ7ROn5U4zmudTy
+	pHmGayBV63ZE/DwrQOOgYnfHnYBuEJEH5T2XxdxRUAamVnwYsphSP+hCQiLbMifs
+	oeM1bdqzKH8E+n2zDWnHaQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734077044; x=
+	1734163444; bh=xkdaBG8UMFyF010HWwrn18x+gfYMEYxilRcPMsaZiVs=; b=w
+	f5Gfd1bCGgDhcncBvskPNse389eQ0QEfGBCs/NoAeMsbZBsXO0YkbIDC96jSrJMp
+	cNCa/5XjhA9LfhZLrr53T1E4loiHvDt1z6QQB8J1wFfiLQFQKw8FXuqapGsrT7H3
+	3aygnrdo/gs3YOJRdiVQ//Rs2j4wszfdrvufgk8UlHWrhRdlWosh1d47qkqAAYmB
+	khTX32HWGUwaBjac774RnINOTDWu5CQPe6Ug4YkIu7urQDpHwn157ajEAIblPN1d
+	PXruLjz38Mj0+8MiAVWehfM8jxaCtTPZqVTvceHDBYe0vw7bdf7vvMez/f94RXZJ
+	FGQnbO2l3OSOVvbmRJsgA==
+X-ME-Sender: <xms:cepbZwHYOLdK2uLiclp-OM6t1Q7gEnVCC9TlLMzbw6ClQ1So0jUu5g>
+    <xme:cepbZ5X6JlxRboE-OfGKmIOU19X6A6KLzaGL6IIsRwzSmlXK0mcMvG9MPVdsEZmsw
+    ZN8TN8gQeTOoFz0KY8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrkeeigdduudegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtqhertdertdej
+    necuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrd
+    guvgeqnecuggftrfgrthhtvghrnhepvdfhvdekueduveffffetgfdvveefvdelhedvvdeg
+    jedvfeehtdeggeevheefleejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
+    hmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohepfeeh
+    pdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprh
+    gtphhtthhopehtshgsohhgvghnugesrghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghp
+    thhtohepghhrrghfsegrmhgriihonhdrtghomhdprhgtphhtthhopegrthhishhhphesrg
+    htihhshhhprghtrhgrrdhorhhgpdhrtghpthhtoheprghnuhhpsegsrhgrihhnfhgruhhl
+    thdrohhrghdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohiestghsghhroh
+    huphdrvghupdhrtghpthhtohepphgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghp
+    thhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehmph
+    gvsegvlhhlvghrmhgrnhdrihgurdgruh
+X-ME-Proxy: <xmx:cepbZ6LndnD8ZSZeGggeTF_B5V_DgMVWx-1ulNhV23ajSDoVV-Ti_w>
+    <xmx:cepbZyGY9wBofw83hXJKg-3q6hMTZIhwUkue-0Cp7reEPrBTSbMuKQ>
+    <xmx:cepbZ2UwyfQQq1czPmiqjUcFhf7znIqD5iwIE5qoLNE82ddwPCTk7Q>
+    <xmx:cepbZ1P1Jq82_ZoB3xLrj4H6gt9wqcGRFechLH3v8hR7FqCjabg6Sw>
+    <xmx:dOpbZw0XsZIrhDEJP9jq1aOwBLm0frAM5cG3_b5M1E0thNTIztJg5TAk>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 6A3682220072; Fri, 13 Dec 2024 03:04:01 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,91 +99,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC 3/5] powerpc: kvm: drop 32-bit book3s
-To: Arnd Bergmann <arnd@kernel.org>, kvm@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Alexander Graf <graf@amazon.com>, Crystal Wood <crwood@redhat.com>,
- Anup Patel <anup@brainfault.org>, Atish Patra <atishp@atishpatra.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
- Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+Date: Fri, 13 Dec 2024 09:03:30 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "A. Wilcox" <AWilcox@wilcox-tech.com>, "Arnd Bergmann" <arnd@kernel.org>
+Cc: kvm@vger.kernel.org, "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
+ "Huacai Chen" <chenhuacai@kernel.org>,
+ "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N Rao" <naveen@kernel.org>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Alexander Graf" <graf@amazon.com>, "Crystal Wood" <crwood@redhat.com>,
+ "Anup Patel" <anup@brainfault.org>,
+ "Atish Patra" <atishp@atishpatra.org>,
+ "Paul Walmsley" <paul.walmsley@sifive.com>,
+ "Palmer Dabbelt" <palmer@dabbelt.com>,
+ "Albert Ou" <aou@eecs.berkeley.edu>,
+ "Sean Christopherson" <seanjc@google.com>,
+ "Paolo Bonzini" <pbonzini@redhat.com>,
+ "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
+ "Borislav Petkov" <bp@alien8.de>,
+ "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>,
+ "Vitaly Kuznetsov" <vkuznets@redhat.com>,
+ "David Woodhouse" <dwmw2@infradead.org>, "Paul Durrant" <paul@xen.org>,
+ "Marc Zyngier" <maz@kernel.org>, linux-kernel@vger.kernel.org,
  linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org
+Message-Id: <6e971322-8b21-4d73-922c-a6032c6fe9bd@app.fastmail.com>
+In-Reply-To: <35E5C2A3-94AC-446B-A0A1-84B043DBC890@Wilcox-Tech.com>
 References: <20241212125516.467123-1-arnd@kernel.org>
- <20241212125516.467123-4-arnd@kernel.org>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241212125516.467123-4-arnd@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+ <35E5C2A3-94AC-446B-A0A1-84B043DBC890@Wilcox-Tech.com>
+Subject: Re: [RFC 0/5] KVM: drop 32-bit host support on all architectures
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Fri, Dec 13, 2024, at 04:51, A. Wilcox wrote:
+> On Dec 12, 2024, at 6:55=E2=80=AFAM, Arnd Bergmann <arnd@kernel.org> w=
+rote:
+>> From: Arnd Bergmann <arnd@arndb.de>
+>>=20
+>> I submitted a patch to remove KVM support for x86-32 hosts earlier
+>> this month, but there were still concerns that this might be useful f=
+or
+>> testing 32-bit host in general, as that remains supported on three ot=
+her
+>> architectures. I have gone through those three now and prepared simil=
+ar
+>> patches, as all of them seem to be equally obsolete.
+>>=20
+>> Support for 32-bit KVM host on Arm hardware was dropped back in 2020
+>> because of lack of users, despite Cortex-A7/A15/A17 based SoCs being
+>> much more widely deployed than the other virtualization capable 32-bit
+>> CPUs (Intel Core Duo/Silverthorne, PowerPC e300/e500/e600, MIPS P5600)
+>> combined.
+>
+>
+> I do use 32-bit KVM on a Core Duo =E2=80=9CYonah=E2=80=9D and a Power =
+Mac G4 (MDD), for
+> purposes of bisecting kernel issues without having to reboot the host
+> machine (when it can be duplicated in a KVM environment).
+>
+> I suppose it would still be possible to run the hosts on 6.12 LTS for
+> some time with newer guests, but it would be unfortunate.
 
+Would it be an option for you to just test those kernels on 64-bit
+machines? I assume you prefer to do native builds on 32-bit hardware
+because that fits your workflow, but once you get into debugging
+in a virtual machine, the results should generally be the same when
+building and running on a 64-bit host for both x86-32 and ppc32-classic,
+right?
 
-Le 12/12/2024 à 13:55, Arnd Bergmann a écrit :
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> Support for KVM on 32-bit Book III-s implementations was added in 2010
-> and supports PowerMac, CHRP, and embedded platforms using the Freescale G4
-> (mpc74xx), e300 (mpc83xx) and e600 (mpc86xx) CPUs from 2003 to 2009.
-> 
-> Earlier 603/604/750 machines might work but would be even more limited
-> by their available memory.
-> 
-> The only likely users of KVM on any of these were the final Apple
-> PowerMac/PowerBook/iBook G4 models with 2GB of RAM that were at the high
-> end 20 years ago but are just as obsolete as their x86-32 counterparts.
-> The code has been orphaned since 2023.
-> 
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-> ---
->   MAINTAINERS                               |   2 +-
->   arch/powerpc/include/asm/kvm_book3s.h     |  19 ----
->   arch/powerpc/include/asm/kvm_book3s_asm.h |  10 --
-
-pmac32_defconfig: something is going wrong with headers:
-
-   CC      arch/powerpc/kernel/asm-offsets.s
-In file included from ./arch/powerpc/include/asm/book3s/64/mmu-hash.h:20,
-                  from ./arch/powerpc/include/asm/kvm_book3s_64.h:14,
-                  from ./arch/powerpc/include/asm/kvm_book3s.h:380,
-                  from ./arch/powerpc/include/asm/kvm_ppc.h:22,
-                  from ./arch/powerpc/include/asm/dbell.h:17,
-                  from arch/powerpc/kernel/asm-offsets.c:36:
-./arch/powerpc/include/asm/book3s/64/pgtable.h:17: warning: "_PAGE_EXEC" 
-redefined
-    17 | #define _PAGE_EXEC              0x00001 /* execute permission */
-       |
-In file included from ./arch/powerpc/include/asm/book3s/pgtable.h:8,
-                  from ./arch/powerpc/include/asm/pgtable.h:18,
-                  from ./include/linux/pgtable.h:6,
-                  from ./arch/powerpc/include/asm/kup.h:43,
-                  from ./arch/powerpc/include/asm/uaccess.h:8,
-                  from ./include/linux/uaccess.h:12,
-                  from ./include/linux/sched/task.h:13,
-                  from ./include/linux/sched/signal.h:9,
-                  from ./include/linux/rcuwait.h:6,
-                  from ./include/linux/percpu-rwsem.h:7,
-                  from ./include/linux/fs.h:33,
-                  from ./include/linux/compat.h:17,
-                  from arch/powerpc/kernel/asm-offsets.c:12:
-./arch/powerpc/include/asm/book3s/32/pgtable.h:30: note: this is the 
-location of the previous definition
-    30 | #define _PAGE_EXEC      0x200   /* software: exec allowed */
-       |
-
-
+      Arnd
 
