@@ -1,56 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-4110-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4111-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3A639F0AAA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 12:15:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158CD9F0B94
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 12:46:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8mwP5BBjz3bTR;
-	Fri, 13 Dec 2024 22:15:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8nc453Qfz3bTM;
+	Fri, 13 Dec 2024 22:46:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734088533;
-	cv=none; b=G9YTWSq/uhqxsWYvfJfdLZjCEFTs5kva3Ch7da/Dr2bUegIe93+LR2cb6+ujTUUxZqsbXCyn7BmV0JHqOBhS3J1H8SbcclqPy64jnp6NQR2pK8OqSrfYHaVtVxQO07T1+JKGY+Ygfvj4oh3Z/Wy0A+7ZcKS/hK8XqflkhhMp3RqaO9ZdONHJ2gtw1ziGo+XRERul9hkysbRyFOLx1Eu37VZEcO1rhB/K7IA+IACYAVL/U2NYV0ik2a4aKhCKqui5YlmzHoRR9Wl2WhXipuoUsHYyFiKci7bauh9rmv/Z9FargXUxj1HGkvRDuxL+x1Hq6BV/2S72rKCgW1d3UOLzJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734090388;
+	cv=none; b=Fns2SOgRAqg+Mbm259bOYQ4ktiWy78Lq1VwTPRmYpDMiPZ5y46FSxhB0L1mJjxAmjQag7Ab2w8QSUDm9MnsfS/wyH5O//m6xPupWIQunWk9ZaovJcXY2pBn6Yy5yNPVnUunnhoCVZOSc/2VE15RaYvgly0IQRKsMOtObfKVdPU6AFOL9lZv0t4dP44WPVCxUKkw7w8APetWAP89CH0Xnuvs+D1/f3qoKtqQeNDHZJBLV9FucscaBvaftztt98UjR2YnJrAw1sgoJ43k98izk6Mzu8sRRQcsDL7CLZlWujY8hgO0ylK8a+xobD93zilKQhEE8ugJEypYCleE97IXI8A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734088533; c=relaxed/relaxed;
-	bh=UBueY58dUV8FoxPqlPdOtRsE2X7QVvRdN4+n13zlSX8=;
+	t=1734090388; c=relaxed/relaxed;
+	bh=GGQe7PrBLWKhr5aELxTpsrHE0Ho/kHt9ZqSvq1qJm/8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EmNoCEFsOUCJRAh1fabAbRhYqHVdNsydnJV1K3u8O4YAbGkThVf4R4rU/A+bmb5ZekIor/Te8cmk8Ik0Pgw8+pYiWBChViBIAEs3PGjXqNWcoGpN+Sc5sTdGhBHWJpcaU2c9VEhaodzey2atAYLobUgp+XHl58yz+UGzM27hDwjFtl5dJmOsuAwlI8bnoOZ1RY/4LAS50HvKqhpdbSpfyiTWXJfQoDcvILoI++a9LRnXdXxJAh7DTSW4w3CnzwxzcWZBUTFBOnQ/loxj5pf2alxn1fKGI4UfoPlxrVcYj+HSPI+kUKp9MVTjnzZ/cdQeIP+mrlPRo4OgIV3fb5peTQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=MoFAcTxU; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=SnS/E/J0jTW3ERxdtsnDNFo3nDZnV5ykE2BV9lza0JxxaKvDRyUW/1l7FDZgZvScMYbA2beSicMBtWjn/B9p4148gN/0iQZ/qmDFdebM3gxKL+zalzTXzGFnBVMVkZ7VFjD5jNK5j9vQMcFL6g4qdSPr4iUfjFYfD1/4umBj64l+6SE+Csjm+ouMXGEX6UpdkTVdVlytqt5M5kowtBkBK6cgCmh9RWwW5lKiPA1zCUUX7WAa7kDe8zJsRosiesYFhUPcB+jW2hvDk3DhN0vH88N/YU7o2V7rXTTk5sq74W+zc8nv0IaLdzDjicA9p1OeLcyawa4A1ztRePk49HomoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ga6vJJy9; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=MoFAcTxU;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ga6vJJy9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=frederic@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8mwN5yxCz3bTM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 22:15:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8nc34WVWz3bTH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 22:46:27 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 481265C4675;
-	Fri, 13 Dec 2024 11:14:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEB90C4CED0;
-	Fri, 13 Dec 2024 11:15:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1734088530;
-	bh=BTlSxEGtHZYuTq7GAzKkcSl04qcfdN+0PqhmkCjEG9E=;
+	by nyc.source.kernel.org (Postfix) with ESMTP id 5DE4BA42B35;
+	Fri, 13 Dec 2024 11:44:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D7FC4CED0;
+	Fri, 13 Dec 2024 11:46:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734090385;
+	bh=1LJTjOx7kJx7q2mytF+grEPfxYG6mPmq7VZvVuE7Nzg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MoFAcTxUm3bJTSh4WmQp1AqUGanXxrkwEhu8I2hNKlWwymLHHcB4/1R12KuSRg5Wn
-	 A2OTXSOSYWGUfPYGJbvF2CZgDLoqR57wP4R5PGqznRJimxPRFLEEyTlgcAmn9VAWc3
-	 0LRVW5lT26J8+nrY4AX6n1CY7XeDnu5S5hVfjVao=
-Date: Fri, 13 Dec 2024 12:15:27 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: haixiao.yan.cn@eng.windriver.com
-Cc: nathanl@linux.ibm.com, mpe@ellerman.id.au, benh@kernel.crashing.org,
-	paulus@samba.org, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	haixiao.yan.cn@windriver.com
-Subject: Re: [PATCH] powerpc/rtas: Prevent Spectre v1 gadget construction in
- sys_rtas()
-Message-ID: <2024121322-epileptic-feeble-75e8@gregkh>
-References: <20241213034422.2916981-1-haixiao.yan.cn@eng.windriver.com>
+	b=Ga6vJJy9Plt8rk1ZLRU0bSPuEEIFFP2NqMZ14P/0k78uOtrRzmJT9MR3QaA9haWSo
+	 gUUXUPwAVnTYsPGiYkA8V6YjKyalKDhOIvkczNBD7KGwWGv5g/x5BbfXbRRSQszI1F
+	 geoEG7xNXHypBybJOy49Thqk+6h/zux7VvR6IQLOuw+v1AE04G3zspHzqdrs2SDTka
+	 PQ27MD+bupU6M46eKS7qz5ZPI5RCCBdsyqdUqTdUZnpogDyaVmIE+2nAo8J6drEgWr
+	 DmbcHUFGaBT9QaDX65+w0C6gw0Cd7jFb1R9C6I83DglShv8SVKS5sf6gh1rm0gSE0Y
+	 y9+1nfDq9wnNg==
+Date: Fri, 13 Dec 2024 12:46:22 +0100
+From: Frederic Weisbecker <frederic@kernel.org>
+To: LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH 06/19] soc/qman: test: Use kthread_run_on_cpu()
+Message-ID: <Z1wejvFpGLFMhLJ9@localhost.localdomain>
+References: <20241211154035.75565-1-frederic@kernel.org>
+ <20241211154035.75565-7-frederic@kernel.org>
+ <986fee5c-8537-498f-83ec-65a7c7c7a71c@cs-soprasteria.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,27 +69,28 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20241213034422.2916981-1-haixiao.yan.cn@eng.windriver.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <986fee5c-8537-498f-83ec-65a7c7c7a71c@cs-soprasteria.com>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Dec 13, 2024 at 11:44:22AM +0800, haixiao.yan.cn@eng.windriver.com wrote:
-> From: Nathan Lynch <nathanl@linux.ibm.com>
+Le Fri, Dec 13, 2024 at 07:27:03AM +0000, LEROY Christophe a écrit :
 > 
-> [ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
 > 
+> Le 11/12/2024 à 16:40, Frederic Weisbecker a écrit :
+> > Use the proper API instead of open coding it.
+> > 
+> > However it looks like kthreads here could be replaced by the use of a
+> > per-cpu workqueue instead.
+> > 
+> > Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+> 
+> Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-
-Now deleted, please see:
-        https://lore.kernel.org/r/2024121322-conjuror-gap-b542@gregkh
-for what you all need to do, TOGETHER, to get this fixed and so that I
-can accept patches from your company in the future.
-
-thanks,
-
-greg k-h
+Thanks! Feel free to apply this patch to your tree as it's a pretty
+standalone change.
 
