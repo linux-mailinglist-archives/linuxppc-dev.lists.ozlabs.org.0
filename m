@@ -1,52 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4087-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4088-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC7A19F05AE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 08:44:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DA6F9F05B9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 08:46:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8hDp5J5tz30hj;
-	Fri, 13 Dec 2024 18:44:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8hGn2Shqz30hY;
+	Fri, 13 Dec 2024 18:46:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734075866;
-	cv=none; b=ORdl444CXj8MD95DARMvdgetmc+PZpkGeF2BuBhyi2hVEBRPdNd/6ktezIzzcnYUhKyf2siBIeEZKH9+RG96HQIlOIkX54rqpFoYhmWZ43Q/4aoltyxFHInJwWmlbW/FaDG/lpzLKZghp4ffCuo3BZip7fiEcZse3HS0oTV/lkVFY1xEUQcSjgm2BCLPoa2LBnOO/yqdVL2652BkZvHwn9aMBVV/TGzRF07nikDuE0ExCe/d3oHL4uPr2kLg1doSLXDUCfi/I4D7bOCyDojJKwrw+am2AS2v/mlbhnBD3PYs5n6cMdwRJ3mXMh4vwLWDJAUcwHw1a3E3txCaA9924A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::12e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734075969;
+	cv=none; b=R9SwgTbNbzW9U3LQkst7trdcOL6cbzTDMBP3RaDbMZmh5aV1aNJqYr9o9SylhVy+AaV07oYHZMYewdW3Kq5NGDeoVscF6zFhdWNco0rO2laT0uJiWO5FXuJgc6Z7FPY8Ed/cEXnpxmc4nHvoZSLS4Gy+R2mBuFQk/sY9FABTcRrXzP5rTGV8FncP4HGgHMqU43HeklC1YKfUVdLeaM2JjkIsgd+o//N9u7esK4YlxLC8j8aQxz3gvIhf4kphlpP3jLwklTR5ONw4lttI6XHm9L3RXlIRjompwl2wyYpWUSc8wG09SFbIMaxF4U2i9jCKRxN39Wbv5Vj0N3+WcapEVg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734075866; c=relaxed/relaxed;
-	bh=FHfYPIx50sSyA94R18kC3zCSycWO8BfBTUdyvsOeEFs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NcLdG5Pd+GfQrLxAcEDYxv9XXbn8vt2O5wRNng8+fdX6HcePMKHVpEmzY888x/wjVScf72amrmx3D2Up9n2x6Vy/Fct+WD1agaPKBFiiorgtkUJXVQPw52N47X4u3J92uKAzO+Za96JL2eHzpWmF9VwpTk7U7HkY9CQXJ0T1IXhQb5sfcws80J1bF0QL6UmxSNfgHXesW60GqefdgqEERjQnkmDEa2E3LYJWOe0hSu5fmt9dJ+SKoKhdwnTrNKOxKzb3c2+SHjQQEQYQrBQsKofMK0pP4HzST+apJvEFz2yBl2YZnk8sDxGptf/3XR7AQGr1fxRDLuRB2wg9+Ho25g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	t=1734075969; c=relaxed/relaxed;
+	bh=QYYkz5wo0agid+Six8DIqpuAadZaRu0O1Lrum3LM5+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dhuFh70YpB9gZFmBr07ayXhHCCtopLuTBLLkeLDgnIgBdSDudrxqLNWLZ/5xb2urkjlM0m7OlV7sQfHIrjSv0hSmEkn8EUctO3BqD8ocRA5DCfLCJwXKwhUhaq32E5eEW+wvW6cEFGG8GJkRoPIkT2m2HQtpZGkAPqVXwjzyJihMbA41Dd83TytONYOcMC6UOuFFRsHQsg+tmC3JMQd/uJavwaoNnGqTqiqP8X1GPOMCv+UaReAWRTjY9Cf73PgmhbhIbD+eavoeVnfYtsEYRMVeJBdXcM4rOXi1mxzpGveL3XBQTvXcQ4Sg/tN8iuOGwTGq8aChk++G+v9qY4LRmg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cq3VFNjD; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::12e; helo=mail-il1-x12e.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=cq3VFNjD;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12e; helo=mail-il1-x12e.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8hDn69GZz30hL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 18:44:25 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Y8hDk74H4z9stv;
-	Fri, 13 Dec 2024 08:44:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id NjS4Zc5qZafH; Fri, 13 Dec 2024 08:44:22 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Y8hDk5dmMz9sts;
-	Fri, 13 Dec 2024 08:44:22 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id AEA558B773;
-	Fri, 13 Dec 2024 08:44:22 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id aCRMBn4qewz9; Fri, 13 Dec 2024 08:44:22 +0100 (CET)
-Received: from [192.168.232.97] (unknown [192.168.232.97])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2720D8B763;
-	Fri, 13 Dec 2024 08:44:22 +0100 (CET)
-Message-ID: <8403f989-c1de-48c9-ab48-83c1abb9e6f2@csgroup.eu>
-Date: Fri, 13 Dec 2024 08:44:21 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8hGf3mTmz30hW
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 18:46:01 +1100 (AEDT)
+Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-3a7d7c1b190so5179275ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 12 Dec 2024 23:46:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1734075959; x=1734680759; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QYYkz5wo0agid+Six8DIqpuAadZaRu0O1Lrum3LM5+Y=;
+        b=cq3VFNjDLWMeQok1p7LQEyIsk9xqxmZIxQT3FQ54RIJ4JVziDyfY7/fsh79j8+CR+o
+         207DyNGq34l9dmcXGCyZPceCRdB0yyFIf4ZWuTdMNztzT/bgHwgIZvMUUq/S1n1M+aJb
+         AaQZHCle3lqneVPa1RY2jj7u6pedF8zpGJMDSn0XWTpEFFhF9N5cmpk4sy/M7JSrXxLF
+         SeA+EoQ/yWYoIUT1Z95nRXB+VRx1r/8y4Uh2EoW8yUHHvLXaG48+xGZMOfm7x2kh22GP
+         jTB0/UaG8z2si6OvKZN+vIrI/dRhIQa6oTq3LrDVRatA3vz+O7gdxlcGROgdqZZmusY/
+         jMmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734075959; x=1734680759;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QYYkz5wo0agid+Six8DIqpuAadZaRu0O1Lrum3LM5+Y=;
+        b=HzXNIKqlCR/QmedPngC/X2G5Ko+zAb0gLpfC+JRjOK7ilUE6/JfCgAlTHHPMEmvejS
+         R+V86IzNOxTQf1fYaSbLXBM6d3nhIADbbBof/6jKYsx/5hPbVkNOlVhvp8loQU83+VRZ
+         VUp6g/DfuL+IVdReffZfi2V+mRKQbIoJDuq+zbwjn1Lg9MSjIhVzxvxnP1Ckf53ZYO5B
+         /alyS5DhpxLXFDI7JzHLXR9jKKJ5tv7vGWk822MHaYdTKcO9KPK0wbPintfpdZIVcBrS
+         9a0QL13pN1n3OfaWlWVcxu/KDV1Bg9OOqHaHimpidt3cJiB1p3BgvlpOUu8rb+MSmGuF
+         pwxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU93BSKJIj+wIXiBEB1YqG+QzYpI5JxkoZC2reWKRcahmaVVcLaW9afq26YarW2CgjZ52LfgYUmG+wL/bM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YztC4obU40PRLKKidcGcGO6CQQMqktd1+rAXwfnzYaBGVhOVcvI
+	lKOjb8Okd3x6wMnr5WZKxlNSq5bqvjWCGp24BWo5zrSZxH6dt6VCVfTBTJVhLojgvCNoOaO0O44
+	D7d/EoSjxj0OEiL0Z7Xv4tDXqpR4=
+X-Gm-Gg: ASbGnctV38+8B2lPlFc+Y9sGqeiW+DUoCJNwWNshFTiFMcy5/NTQKx93yLKePxrzeq1
+	53wPeZgCJsM7+4j5ED4Rc/i7uhysDGn+dyhclmA==
+X-Google-Smtp-Source: AGHT+IEZp59bOt9C+xTIkk05sua6DTUcqnvF1/4kOUynOScRvwUkj4Pb9JtHkrWiwmRLpAQs8Kn/IRepKMWS2L8ZLWk=
+X-Received: by 2002:a05:6e02:168b:b0:3a7:a69c:9692 with SMTP id
+ e9e14a558f8ab-3aff8c91543mr15440795ab.21.1734075958652; Thu, 12 Dec 2024
+ 23:45:58 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,237 +76,197 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] fbdev: Fix recursive dependencies wrt
- BACKLIGHT_CLASS_DEVICE
-To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
- arnd@arndb.de, deller@gmx.de, simona@ffwll.ch, airlied@gmail.com
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
-References: <20241212100636.45875-1-tzimmermann@suse.de>
- <20241212100636.45875-2-tzimmermann@suse.de>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241212100636.45875-2-tzimmermann@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+References: <20241212074509.3445859-1-shengjiu.wang@nxp.com>
+ <20241212074509.3445859-5-shengjiu.wang@nxp.com> <58b4a167-5a13-49b2-9b08-58c3041b772b@sirena.org.uk>
+In-Reply-To: <58b4a167-5a13-49b2-9b08-58c3041b772b@sirena.org.uk>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 13 Dec 2024 15:45:46 +0800
+Message-ID: <CAA+D8AMKLFJx3Z03rLthaH-7_tAmb8c1c4wCSOee-t5uxZg2oA@mail.gmail.com>
+Subject: Re: [PATCH v7 4/6] ASoC: fsl_asrc_m2m: Add memory to memory function
+To: Mark Brown <broonie@kernel.org>
+Cc: Shengjiu Wang <shengjiu.wang@nxp.com>, vkoul@kernel.org, perex@perex.cz, tiwai@suse.com, 
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Thu, Dec 12, 2024 at 7:45=E2=80=AFPM Mark Brown <broonie@kernel.org> wro=
+te:
+>
+> On Thu, Dec 12, 2024 at 03:45:07PM +0800, Shengjiu Wang wrote:
+> > Implement the ASRC memory to memory function using
+> > the compress framework, user can use this function with
+> > compress ioctl interface.
+> >
+> > This feature can be shared by ASRC and EASRC drivers
+>
+> This breaks an x86 allmodconfig build (using GCC 13):
+>
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:186:68: warning: =E2=80=
+=98struct snd_compr_task_runtime=E2=80=99 declared inside parameter list wi=
+ll not be visible outside of this definition or declaration
+>   186 | static void asrc_m2m_device_run(struct fsl_asrc_pair *pair, struc=
+t snd_compr_task_runtime *task)
+>       |                                                                  =
+  ^~~~~~~~~~~~~~~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98asr=
+c_m2m_device_run=E2=80=99:
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:212:26: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   212 |         in_buf_len =3D task->input_size;
+>       |                          ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:279:13: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   279 |         task->output_size =3D out_dma_len;
+>       |             ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: At top level:
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:451:49: warning: =E2=80=
+=98struct snd_compr_task_runtime=E2=80=99 declared inside parameter list wi=
+ll not be visible outside of this definition or declaration
+>   451 |                                          struct snd_compr_task_ru=
+ntime *task)
+>       |                                                 ^~~~~~~~~~~~~~~~~=
+~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98fsl=
+_asrc_m2m_comp_task_create=E2=80=99:
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:465:13: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   465 |         task->input =3D dma_buf_export(&exp_info_in);
+>       |             ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:466:24: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   466 |         if (IS_ERR(task->input)) {
+>       |                        ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:467:35: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   467 |                 ret =3D PTR_ERR(task->input);
+>       |                                   ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:475:13: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   475 |         task->output =3D dma_buf_export(&exp_info_out);
+>       |             ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:476:24: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   476 |         if (IS_ERR(task->output)) {
+>       |                        ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:477:35: error: invalid us=
+e of undefined type =E2=80=98struct snd_compr_task_runtime=E2=80=99
+>   477 |                 ret =3D PTR_ERR(task->output);
+>       |                                   ^~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: At top level:
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:523:48: warning: =E2=80=
+=98struct snd_compr_task_runtime=E2=80=99 declared inside parameter list wi=
+ll not be visible outside of this definition or declaration
+>   523 |                                         struct snd_compr_task_run=
+time *task)
+>       |                                                ^~~~~~~~~~~~~~~~~~=
+~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98fsl=
+_asrc_m2m_comp_task_start=E2=80=99:
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:528:35: error: passing ar=
+gument 2 of =E2=80=98asrc_m2m_device_run=E2=80=99 from incompatible pointer=
+ type [-Werror=3Dincompatible-pointer-types]
+>   528 |         asrc_m2m_device_run(pair, task);
+>       |                                   ^~~~
+>       |                                   |
+>       |                                   struct snd_compr_task_runtime *
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:186:92: note: expected =
+=E2=80=98struct snd_compr_task_runtime *=E2=80=99 but argument is of type =
+=E2=80=98struct snd_compr_task_runtime *=E2=80=99
+>   186 | static void asrc_m2m_device_run(struct fsl_asrc_pair *pair, struc=
+t snd_compr_task_runtime *task)
+>       |                                                             ~~~~~=
+~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: At top level:
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:534:47: warning: =E2=80=
+=98struct snd_compr_task_runtime=E2=80=99 declared inside parameter list wi=
+ll not be visible outside of this definition or declaration
+>   534 |                                        struct snd_compr_task_runt=
+ime *task)
+>       |                                               ^~~~~~~~~~~~~~~~~~~=
+~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:540:47: warning: =E2=80=
+=98struct snd_compr_task_runtime=E2=80=99 declared inside parameter list wi=
+ll not be visible outside of this definition or declaration
+>   540 |                                        struct snd_compr_task_runt=
+ime *task)
+>       |                                               ^~~~~~~~~~~~~~~~~~~=
+~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:623:10: error: =E2=80=98s=
+truct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_create=E2=80=
+=99
+>   623 |         .task_create =3D fsl_asrc_m2m_comp_task_create,
+>       |          ^~~~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:623:24: warning: excess e=
+lements in struct initializer
+>   623 |         .task_create =3D fsl_asrc_m2m_comp_task_create,
+>       |                        ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:623:24: note: (near initi=
+alization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:624:10: error: =E2=80=98s=
+truct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_start=E2=80=
+=99
+>   624 |         .task_start =3D fsl_asrc_m2m_comp_task_start,
+>       |          ^~~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:624:23: warning: excess e=
+lements in struct initializer
+>   624 |         .task_start =3D fsl_asrc_m2m_comp_task_start,
+>       |                       ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:624:23: note: (near initi=
+alization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:625:10: error: =E2=80=98s=
+truct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_stop=E2=80=
+=99
+>   625 |         .task_stop =3D fsl_asrc_m2m_comp_task_stop,
+>       |          ^~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:625:22: warning: excess e=
+lements in struct initializer
+>   625 |         .task_stop =3D fsl_asrc_m2m_comp_task_stop,
+>       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:625:22: note: (near initi=
+alization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:626:10: error: =E2=80=98s=
+truct snd_compr_ops=E2=80=99 has no member named =E2=80=98task_free=E2=80=
+=99
+>   626 |         .task_free =3D fsl_asrc_m2m_comp_task_free,
+>       |          ^~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:626:22: warning: excess e=
+lements in struct initializer
+>   626 |         .task_free =3D fsl_asrc_m2m_comp_task_free,
+>       |                      ^~~~~~~~~~~~~~~~~~~~~~~~~~~
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:626:22: note: (near initi=
+alization for =E2=80=98fsl_asrc_m2m_compr_ops=E2=80=99)
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c: In function =E2=80=98fsl=
+_asrc_m2m_init=E2=80=99:
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:701:41: error: =E2=80=98S=
+ND_COMPRESS_ACCEL=E2=80=99 undeclared (first use in this function); did you=
+ mean =E2=80=98SNDRV_COMPRESS_AVAIL=E2=80=99?
+>   701 |         ret =3D snd_compress_new(card, 0, SND_COMPRESS_ACCEL, "AS=
+RC M2M", compr);
+>       |                                         ^~~~~~~~~~~~~~~~~~
+>       |                                         SNDRV_COMPRESS_AVAIL
+> /build/stage/linux/sound/soc/fsl/fsl_asrc_m2m.c:701:41: note: each undecl=
+ared identifier is reported only once for each function it appears in
+> cc1: some warnings being treated as errors
 
+Hi Mark
 
-Le 12/12/2024 à 11:04, Thomas Zimmermann a écrit :
-> Do not select BACKLIGHT_CLASS_DEVICE from FB_BACKLIGHT. The latter
-> only controls backlight support within fbdev core code and data
-> structures.
-> 
-> Make fbdev drivers depend on BACKLIGHT_CLASS_DEVICE and let users
-> select it explicitly. Fixes warnings about recursive dependencies,
-> such as
-> 
-> error: recursive dependency detected!
-> 	symbol BACKLIGHT_CLASS_DEVICE is selected by FB_BACKLIGHT
-> 	symbol FB_BACKLIGHT is selected by FB_SH_MOBILE_LCDC
-> 	symbol FB_SH_MOBILE_LCDC depends on FB_DEVICE
-> 	symbol FB_DEVICE depends on FB_CORE
-> 	symbol FB_CORE is selected by DRM_GEM_DMA_HELPER
-> 	symbol DRM_GEM_DMA_HELPER is selected by DRM_PANEL_ILITEK_ILI9341
-> 	symbol DRM_PANEL_ILITEK_ILI9341 depends on BACKLIGHT_CLASS_DEVICE
-> 
-> BACKLIGHT_CLASS_DEVICE is user-selectable, so making drivers adapt to
-> it is the correct approach in any case. For most drivers, backlight
-> support is also configurable separately.
-> 
-> v2:
-> - s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
-> - Fix fbdev driver-dependency corner case (Arnd)
-> 
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->   drivers/auxdisplay/Kconfig       |  2 +-
->   drivers/macintosh/Kconfig        |  1 +
->   drivers/staging/fbtft/Kconfig    |  1 +
->   drivers/video/fbdev/Kconfig      | 18 +++++++++++++-----
->   drivers/video/fbdev/core/Kconfig |  3 +--
->   5 files changed, 17 insertions(+), 8 deletions(-)
+     I can't reproduce this issue with 'make allmodconfig'.
+I tried the branches: for-6.13/for-6.14/for-next.
 
-Build fails which pmac32_defconfig :
+     I suspect you are using the wrong branch, because I can
+reproduce this issue on for-6.12. which is caused by the below
+commit that is only applied from for-6.13.
+04177158cf98 ("ALSA: compress_offload: introduce accel operation mode")
 
-   LD      .tmp_vmlinux1
-powerpc64-linux-ld: drivers/macintosh/via-pmu-backlight.o: in function 
-`pmu_backlight_init':
-via-pmu-backlight.c:(.init.text+0xc0): undefined reference to 
-`backlight_device_register'
-make[2]: *** [scripts/Makefile.vmlinux:77: vmlinux] Error 1
-make[1]: *** [/home/chleroy/linux-powerpc/Makefile:1225: vmlinux] Error 2
+    But could you please tell me your steps in detail?, so that I can
+try more.
 
-
-> 
-> diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
-> index 21545ffba065..8934e6ad5772 100644
-> --- a/drivers/auxdisplay/Kconfig
-> +++ b/drivers/auxdisplay/Kconfig
-> @@ -489,7 +489,7 @@ config IMG_ASCII_LCD
->   
->   config HT16K33
->   	tristate "Holtek Ht16K33 LED controller with keyscan"
-> -	depends on FB && I2C && INPUT
-> +	depends on FB && I2C && INPUT && BACKLIGHT_CLASS_DEVICE
->   	select FB_SYSMEM_HELPERS
->   	select INPUT_MATRIXKMAP
->   	select FB_BACKLIGHT
-> diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
-> index fb38f684444f..bf3824032d61 100644
-> --- a/drivers/macintosh/Kconfig
-> +++ b/drivers/macintosh/Kconfig
-> @@ -120,6 +120,7 @@ config PMAC_MEDIABAY
->   config PMAC_BACKLIGHT
->   	bool "Backlight control for LCD screens"
->   	depends on PPC_PMAC && ADB_PMU && FB = y && (BROKEN || !PPC64)
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	select FB_BACKLIGHT
->   	help
->   	  Say Y here to enable Macintosh specific extensions of the generic
-> diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconfig
-> index 77ab44362f16..dcf6a70455cc 100644
-> --- a/drivers/staging/fbtft/Kconfig
-> +++ b/drivers/staging/fbtft/Kconfig
-> @@ -3,6 +3,7 @@ menuconfig FB_TFT
->   	tristate "Support for small TFT LCD display modules"
->   	depends on FB && SPI
->   	depends on FB_DEVICE
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	depends on GPIOLIB || COMPILE_TEST
->   	select FB_BACKLIGHT
->   	select FB_SYSMEM_HELPERS_DEFERRED
-> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> index de035071fedb..55c6686f091e 100644
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -649,6 +649,7 @@ config FB_S1D13XXX
->   config FB_ATMEL
->   	tristate "AT91 LCD Controller support"
->   	depends on FB && OF && HAVE_CLK && HAS_IOMEM
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	depends on HAVE_FB_ATMEL || COMPILE_TEST
->   	select FB_BACKLIGHT
->   	select FB_IOMEM_HELPERS
-> @@ -660,7 +661,6 @@ config FB_ATMEL
->   config FB_NVIDIA
->   	tristate "nVidia Framebuffer Support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> @@ -700,6 +700,8 @@ config FB_NVIDIA_DEBUG
->   config FB_NVIDIA_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_NVIDIA
-> +	depends on BACKLIGHT_CLASS_DEVICE=y || BACKLIGHT_CLASS_DEVICE=FB_NVIDIA
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -707,7 +709,6 @@ config FB_NVIDIA_BACKLIGHT
->   config FB_RIVA
->   	tristate "nVidia Riva support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_RIVA_BACKLIGHT
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> @@ -747,6 +748,8 @@ config FB_RIVA_DEBUG
->   config FB_RIVA_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_RIVA
-> +	depends on BACKLIGHT_CLASS_DEVICE=y || BACKLIGHT_CLASS_DEVICE=FB_RIVA
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -934,7 +937,6 @@ config FB_MATROX_MAVEN
->   config FB_RADEON
->   	tristate "ATI Radeon display support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_RADEON_BACKLIGHT
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> @@ -960,6 +962,8 @@ config FB_RADEON_I2C
->   config FB_RADEON_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_RADEON
-> +	depends on BACKLIGHT_CLASS_DEVICE=y || BACKLIGHT_CLASS_DEVICE=FB_RADEON
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -975,7 +979,6 @@ config FB_RADEON_DEBUG
->   config FB_ATY128
->   	tristate "ATI Rage128 display support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_ATY128_BACKLIGHT
->   	select FB_IOMEM_HELPERS
->   	select FB_MACMODES if PPC_PMAC
->   	help
-> @@ -989,6 +992,8 @@ config FB_ATY128
->   config FB_ATY128_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_ATY128
-> +	depends on BACKLIGHT_CLASS_DEVICE=y || BACKLIGHT_CLASS_DEVICE=FB_ATY128
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -999,7 +1004,6 @@ config FB_ATY
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> -	select FB_BACKLIGHT if FB_ATY_BACKLIGHT
->   	select FB_IOMEM_FOPS
->   	select FB_MACMODES if PPC
->   	select FB_ATY_CT if SPARC64 && PCI
-> @@ -1040,6 +1044,8 @@ config FB_ATY_GX
->   config FB_ATY_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_ATY
-> +	depends on BACKLIGHT_CLASS_DEVICE=y || BACKLIGHT_CLASS_DEVICE=FB_ATY
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -1528,6 +1534,7 @@ config FB_SH_MOBILE_LCDC
->   	depends on FB && HAVE_CLK && HAS_IOMEM
->   	depends on SUPERH || COMPILE_TEST
->   	depends on FB_DEVICE
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	select FB_BACKLIGHT
->   	select FB_DEFERRED_IO
->   	select FB_DMAMEM_HELPERS
-> @@ -1793,6 +1800,7 @@ config FB_SSD1307
->   	tristate "Solomon SSD1307 framebuffer support"
->   	depends on FB && I2C
->   	depends on GPIOLIB || COMPILE_TEST
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	select FB_BACKLIGHT
->   	select FB_SYSMEM_HELPERS_DEFERRED
->   	help
-> diff --git a/drivers/video/fbdev/core/Kconfig b/drivers/video/fbdev/core/Kconfig
-> index 0ab8848ba2f1..d554d8c543d4 100644
-> --- a/drivers/video/fbdev/core/Kconfig
-> +++ b/drivers/video/fbdev/core/Kconfig
-> @@ -183,9 +183,8 @@ config FB_SYSMEM_HELPERS_DEFERRED
->   	select FB_SYSMEM_HELPERS
->   
->   config FB_BACKLIGHT
-> -	tristate
-> +	bool
->   	depends on FB
-> -	select BACKLIGHT_CLASS_DEVICE
->   
->   config FB_MODE_HELPERS
->   	bool "Enable Video Mode Handling Helpers"
-
+Best regards
+Shengjiu Wang
 
