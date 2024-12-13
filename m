@@ -1,50 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-4094-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4095-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D689F066F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 09:36:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9788B9F0693
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 09:41:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8jNH1Fz9z3bM7;
-	Fri, 13 Dec 2024 19:35:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8jVh26NGz3bN8;
+	Fri, 13 Dec 2024 19:41:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734078959;
-	cv=none; b=Wv1LE3v77UkhetfUbdxmxFOooMYbAFsqJm0+vuQpt6wZmPgurE6zIU9LrY7RojbxmSB4rhniMSFj8a1se+AyIJ89l6P+bo54m9o19vIvq2Ph+aFOi7xNvpVLacQkbmMxDFNW9iBYlizUG66elRjdDlgbR0cXVnVFNnnwAWf6GHGK0Nutf/Po3UhZqv/b3aWYWeYnIW/9pLYblnx06oSRxABo8y5vg5GGNfCpiPJB4zvy9TKpVJtmoK0nnU8AxrmWyWGHGltUztAVjD6S5HH54HUtVh1FiBgtDrB+Oka/gF9h+KyppraQoP6HBAk8p3aaUw9LKd6IGfSSz1du+Drdaw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734079292;
+	cv=none; b=XYLE1zNqjztHNJJKNfPqcl9nF41X1vnYkVXviJRjycq92fbMN5FF/IB4c6mlNPUzfJuRUcfwKT14ko2PhecOdZhF+aSm/4pU14qPwmw0/uRS0ffH+WBqxqmloPKCL83xPrkS5gf23Z5RwwlvyPUzPV57/avNtErJx6QaSGjWcp8Xm98dca/kexdQ3tAy1PHJeBQT4del5Jw8Y8mPngjmRs8uCiVwsF3zS0ia5WtwCCl6zX1rHoSxTBOYM/b3zgoZRETC3JiYspMn6DOXkvW/F1F+8eURXSU2bMh1i9Y5Mix4YGdHO9hSC/yxVvvs7IB7sRahNXDjv1qQuMEKzJ/4eA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734078959; c=relaxed/relaxed;
-	bh=Idr5Li285A9xYhmvvfUS9nxuxqyz9INnz9YXESH4A08=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NNJhHoeWak/uRfCGjSqm7WqUShMotaorwld5ic2uQNKln6DCywh7++BCiYBQWkl0J3uW7Lt4XVUDBpdp4qOS85i0dtTQCL8ng4ZEIrECvEuONfdn7lfDzxV8OjibN4CZ6M/yMZHynTLPv9SJ428dQE1i2DDb5bj3BTz+qd1tiFMNmH7ShgsC2EhnOLF/x5R2AYXcHzbk3pmUJCbAu3ItideRZlkxYxZ39LVI/hocHKNatmYQ2y7xlJiKR9M9pV7a76Z2vHx0FxYWVx06XOGsf+2p1NGwJ2HMDI2KV5wys2u3vCn2wDmu1SyOBu+dkP2C03mdgQWtatGLKGSwPt+aug==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+	t=1734079292; c=relaxed/relaxed;
+	bh=oSsHN5+J9d02VhyHWuNhjfQNarpFE5UJ1kpmx6k1wTg=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=O4ievV2GORUQHAkkBtWfgfNuBxoQ4rzKwwazXzAHncTF8c8s+we8rW9qXeJqeZN/39doGtYCIYvV2dS4vQFJGvitjgZFyWI0fk5kYLuqRnnK3OOTaBV9l1HkP1CcFDhIG0Jg2Rkq24zA3EBL3Hc6GYo+MtnETWegBmCyRKHo81E9eUqEdt1rm3sbc6Kt3umjyps1b2Wy3Dp7GWD1eGE7cPkSLknOHHNzOBjwV4V5Kl1gNaE5myWQcdwVz/QOfd1XFI+Krwt84XhcLL+Igi72PULZMEC0eS6+gNax410oDUQ5NIS9yWtkp3u7ujPyN5qSZsq97g7EcaX11pOUIFfLMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uXUKKijp; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sxDj1iJq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uXUKKijp; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sxDj1iJq; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uXUKKijp;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sxDj1iJq;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=uXUKKijp;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=sxDj1iJq;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8jNG0vF0z30jZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 19:35:58 +1100 (AEDT)
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8jVd6sHHz30jZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 19:41:29 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C9C731F394;
-	Fri, 13 Dec 2024 08:35:51 +0000 (UTC)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 0858F1F394;
+	Fri, 13 Dec 2024 08:41:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1734079287; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oSsHN5+J9d02VhyHWuNhjfQNarpFE5UJ1kpmx6k1wTg=;
+	b=uXUKKijp5KT/0OYL8V9MqL/7RWTxlQSg1dP9KZ3moEXBSlpwKVsN1eElbSZfeMBHc1Ixw/
+	WajNzw1IJGKKZYNXvNYhzIl1UonULRyz3gI5MmiwGTCA7F+oBuNsW2l5D1wSsFXiyGxxUF
+	AA02cgBL7AJCHIUej0VZy+8DP5zlko0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1734079287;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oSsHN5+J9d02VhyHWuNhjfQNarpFE5UJ1kpmx6k1wTg=;
+	b=sxDj1iJq2kYjPASgzIzsJzhp2H7fGcg4VaZZYX/WnjwZs+ASlN09yn6LI8S+o3wlB2qSIF
+	MuIA8k/UiiOkMnAg==
 Authentication-Results: smtp-out2.suse.de;
 	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1734079287; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oSsHN5+J9d02VhyHWuNhjfQNarpFE5UJ1kpmx6k1wTg=;
+	b=uXUKKijp5KT/0OYL8V9MqL/7RWTxlQSg1dP9KZ3moEXBSlpwKVsN1eElbSZfeMBHc1Ixw/
+	WajNzw1IJGKKZYNXvNYhzIl1UonULRyz3gI5MmiwGTCA7F+oBuNsW2l5D1wSsFXiyGxxUF
+	AA02cgBL7AJCHIUej0VZy+8DP5zlko0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1734079287;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=oSsHN5+J9d02VhyHWuNhjfQNarpFE5UJ1kpmx6k1wTg=;
+	b=sxDj1iJq2kYjPASgzIzsJzhp2H7fGcg4VaZZYX/WnjwZs+ASlN09yn6LI8S+o3wlB2qSIF
+	MuIA8k/UiiOkMnAg==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8289C13927;
-	Fri, 13 Dec 2024 08:35:51 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B1C1B13927;
+	Fri, 13 Dec 2024 08:41:26 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id 9P0cHufxW2c3IgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Fri, 13 Dec 2024 08:35:51 +0000
-Message-ID: <553d1a14-f0dd-4c37-a617-d2fddf36cd0a@suse.de>
-Date: Fri, 13 Dec 2024 09:35:51 +0100
+	id EqaQKTbzW2f1IwAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 13 Dec 2024 08:41:26 +0000
+Content-Type: multipart/mixed; boundary="------------z22sf2S97md0PwkqFF47hyBe"
+Message-ID: <690acce6-3e57-4731-9949-f8bb06d9cb58@suse.de>
+Date: Fri, 13 Dec 2024 09:41:26 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,84 +135,48 @@ Autocrypt: addr=tzimmermann@suse.de; keydata=
  Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
  4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
 In-Reply-To: <1248a2b6-71b0-4909-917f-a5605415a816@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.00 / 50.00];
+X-Spam-Score: -7.13
+X-Spamd-Result: default: False [-7.13 / 50.00];
 	REPLY(-4.00)[];
-	ASN(0.00)[asn:25478, ipnet:::/0, country:RU]
-X-Spam-Score: -4.00
-X-Rspamd-Queue-Id: C9C731F394
-X-Rspamd-Pre-Result: action=no action;
-	module=replies;
-	Message is reply to one we originated
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Status: No, score=-0.7 required=5.0 tests=RCVD_IN_DNSWL_LOW,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+	BAYES_HAM(-3.00)[100.00%];
+	MIME_BASE64_TEXT_BOGUS(1.00)[];
+	NEURAL_HAM_LONG(-0.93)[-0.929];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[multipart/mixed,text/plain,text/x-patch];
+	MIME_BASE64_TEXT(0.10)[];
+	FREEMAIL_TO(0.00)[csgroup.eu,redhat.com,arndb.de,gmx.de,ffwll.ch,gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+,1:+,2:+];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo];
+	RCVD_COUNT_TWO(0.00)[2];
+	HAS_ATTACHMENT(0.00)[]
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+
+This is a multi-part message in MIME format.
+--------------z22sf2S97md0PwkqFF47hyBe
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 Hi
 
 
 Am 13.12.24 um 09:33 schrieb Christophe Leroy:
 >
->
-> Le 13/12/2024 à 09:05, Thomas Zimmermann a écrit :
->> Hi
->>
->>
->> Am 13.12.24 um 08:44 schrieb Christophe Leroy:
->>>
->>>
->>> Le 12/12/2024 à 11:04, Thomas Zimmermann a écrit :
->>>> Do not select BACKLIGHT_CLASS_DEVICE from FB_BACKLIGHT. The latter
->>>> only controls backlight support within fbdev core code and data
->>>> structures.
->>>>
->>>> Make fbdev drivers depend on BACKLIGHT_CLASS_DEVICE and let users
->>>> select it explicitly. Fixes warnings about recursive dependencies,
->>>> such as
->>>>
->>>> error: recursive dependency detected!
->>>>     symbol BACKLIGHT_CLASS_DEVICE is selected by FB_BACKLIGHT
->>>>     symbol FB_BACKLIGHT is selected by FB_SH_MOBILE_LCDC
->>>>     symbol FB_SH_MOBILE_LCDC depends on FB_DEVICE
->>>>     symbol FB_DEVICE depends on FB_CORE
->>>>     symbol FB_CORE is selected by DRM_GEM_DMA_HELPER
->>>>     symbol DRM_GEM_DMA_HELPER is selected by DRM_PANEL_ILITEK_ILI9341
->>>>     symbol DRM_PANEL_ILITEK_ILI9341 depends on BACKLIGHT_CLASS_DEVICE
->>>>
->>>> BACKLIGHT_CLASS_DEVICE is user-selectable, so making drivers adapt to
->>>> it is the correct approach in any case. For most drivers, backlight
->>>> support is also configurable separately.
->>>>
->>>> v2:
->>>> - s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
->>>> - Fix fbdev driver-dependency corner case (Arnd)
->>>>
->>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->>>> ---
->>>>   drivers/auxdisplay/Kconfig       |  2 +-
->>>>   drivers/macintosh/Kconfig        |  1 +
->>>>   drivers/staging/fbtft/Kconfig    |  1 +
->>>>   drivers/video/fbdev/Kconfig      | 18 +++++++++++++-----
->>>>   drivers/video/fbdev/core/Kconfig |  3 +--
->>>>   5 files changed, 17 insertions(+), 8 deletions(-)
->>>
->>> Build fails which pmac32_defconfig :
->>>
->>>   LD      .tmp_vmlinux1
->>> powerpc64-linux-ld: drivers/macintosh/via-pmu-backlight.o: in 
->>> function `pmu_backlight_init':
->>> via-pmu-backlight.c:(.init.text+0xc0): undefined reference to 
->>> `backlight_device_register'
->>> make[2]: *** [scripts/Makefile.vmlinux:77: vmlinux] Error 1
->>> make[1]: *** [/home/chleroy/linux-powerpc/Makefile:1225: vmlinux] 
->>> Error 2
 >>
 >> The attached patch selects backlight support in the defconfigs that 
 >> also have PMAC_BACKLIGHT=y. Can you please apply it on top of the 
@@ -186,8 +189,8 @@ Am 13.12.24 um 09:33 schrieb Christophe Leroy:
 > If it is necessary for PMAC_BACKLIGHT then it shouldn't be possible to 
 > deselect it.
 
-If you disable CONFIG_BACKLIGHT_CLASS_DEVICE, shouldn't that 
-auto-disable PMAC_BACKLIGHT as well?
+Here's another patch that make it depend on BACKLIGHT_CLASS_DEVICE=y. 
+Can you please try this as well?
 
 Best regards
 Thomas
@@ -202,4 +205,47 @@ Frankenstrasse 146, 90461 Nuernberg, Germany
 GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
 HRB 36809 (AG Nuernberg)
 
+--------------z22sf2S97md0PwkqFF47hyBe
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-add-BACKLIGHT_CLASS_DEVICE-on-PPC-defconfigs.patch"
+Content-Disposition: attachment;
+ filename="0001-add-BACKLIGHT_CLASS_DEVICE-on-PPC-defconfigs.patch"
+Content-Transfer-Encoding: base64
+
+RnJvbSBhYzljN2MzZDk0MTMwMjFlN2ZhZTA2OTY2MTYwZDU4ZWIzYzVjNWQ3IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5A
+c3VzZS5kZT4KRGF0ZTogRnJpLCAxMyBEZWMgMjAyNCAwOTowMjo0MSArMDEwMApTdWJqZWN0
+OiBbUEFUQ0hdIGFkZCBCQUNLTElHSFRfQ0xBU1NfREVWSUNFIG9uIFBQQyBkZWZjb25maWdz
+CgotLS0KIGFyY2gvcG93ZXJwYy9jb25maWdzL3BtYWMzMl9kZWZjb25maWcgfCAxICsKIGFy
+Y2gvcG93ZXJwYy9jb25maWdzL3BwYzZ4eF9kZWZjb25maWcgfCAxICsKIGRyaXZlcnMvbWFj
+aW50b3NoL0tjb25maWcgICAgICAgICAgICAgfCAyICstCiAzIGZpbGVzIGNoYW5nZWQsIDMg
+aW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2FyY2gvcG93ZXJw
+Yy9jb25maWdzL3BtYWMzMl9kZWZjb25maWcgYi9hcmNoL3Bvd2VycGMvY29uZmlncy9wbWFj
+MzJfZGVmY29uZmlnCmluZGV4IDU3ZGVkODJjMjg0MC4uZThiM2Y2N2JmM2Y1IDEwMDY0NAot
+LS0gYS9hcmNoL3Bvd2VycGMvY29uZmlncy9wbWFjMzJfZGVmY29uZmlnCisrKyBiL2FyY2gv
+cG93ZXJwYy9jb25maWdzL3BtYWMzMl9kZWZjb25maWcKQEAgLTIwOCw2ICsyMDgsNyBAQCBD
+T05GSUdfRkJfQVRZPXkKIENPTkZJR19GQl9BVFlfQ1Q9eQogQ09ORklHX0ZCX0FUWV9HWD15
+CiBDT05GSUdfRkJfM0RGWD15CitDT05GSUdfQkFDS0xJR0hUX0NMQVNTX0RFVklDRT15CiAj
+IENPTkZJR19WR0FfQ09OU09MRSBpcyBub3Qgc2V0CiBDT05GSUdfRlJBTUVCVUZGRVJfQ09O
+U09MRT15CiBDT05GSUdfTE9HTz15CmRpZmYgLS1naXQgYS9hcmNoL3Bvd2VycGMvY29uZmln
+cy9wcGM2eHhfZGVmY29uZmlnIGIvYXJjaC9wb3dlcnBjL2NvbmZpZ3MvcHBjNnh4X2RlZmNv
+bmZpZwppbmRleCA0ZDc3ZTE3NTQxZTkuLmNhMGM5MGU5NTgzNyAxMDA2NDQKLS0tIGEvYXJj
+aC9wb3dlcnBjL2NvbmZpZ3MvcHBjNnh4X2RlZmNvbmZpZworKysgYi9hcmNoL3Bvd2VycGMv
+Y29uZmlncy9wcGM2eHhfZGVmY29uZmlnCkBAIC03MTYsNiArNzE2LDcgQEAgQ09ORklHX0ZC
+X1RSSURFTlQ9bQogQ09ORklHX0ZCX1NNNTAxPW0KIENPTkZJR19GQl9JQk1fR1hUNDUwMD15
+CiBDT05GSUdfTENEX1BMQVRGT1JNPW0KK0NPTkZJR19CQUNLTElHSFRfQ0xBU1NfREVWSUNF
+PXkKIENPTkZJR19GUkFNRUJVRkZFUl9DT05TT0xFPXkKIENPTkZJR19GUkFNRUJVRkZFUl9D
+T05TT0xFX1JPVEFUSU9OPXkKIENPTkZJR19MT0dPPXkKZGlmZiAtLWdpdCBhL2RyaXZlcnMv
+bWFjaW50b3NoL0tjb25maWcgYi9kcml2ZXJzL21hY2ludG9zaC9LY29uZmlnCmluZGV4IGJm
+MzgyNDAzMmQ2MS4uZDAwZTcxM2MxMDkyIDEwMDY0NAotLS0gYS9kcml2ZXJzL21hY2ludG9z
+aC9LY29uZmlnCisrKyBiL2RyaXZlcnMvbWFjaW50b3NoL0tjb25maWcKQEAgLTEyMCw3ICsx
+MjAsNyBAQCBjb25maWcgUE1BQ19NRURJQUJBWQogY29uZmlnIFBNQUNfQkFDS0xJR0hUCiAJ
+Ym9vbCAiQmFja2xpZ2h0IGNvbnRyb2wgZm9yIExDRCBzY3JlZW5zIgogCWRlcGVuZHMgb24g
+UFBDX1BNQUMgJiYgQURCX1BNVSAmJiBGQiA9IHkgJiYgKEJST0tFTiB8fCAhUFBDNjQpCi0J
+ZGVwZW5kcyBvbiBCQUNLTElHSFRfQ0xBU1NfREVWSUNFCisJZGVwZW5kcyBvbiBCQUNLTElH
+SFRfQ0xBU1NfREVWSUNFPXkKIAlzZWxlY3QgRkJfQkFDS0xJR0hUCiAJaGVscAogCSAgU2F5
+IFkgaGVyZSB0byBlbmFibGUgTWFjaW50b3NoIHNwZWNpZmljIGV4dGVuc2lvbnMgb2YgdGhl
+IGdlbmVyaWMKLS0gCjIuNDcuMQoK
+
+--------------z22sf2S97md0PwkqFF47hyBe--
 
