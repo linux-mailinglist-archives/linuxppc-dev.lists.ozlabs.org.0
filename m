@@ -1,92 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-4105-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4106-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5690B9F094B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 11:20:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3747F9F095A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 11:25:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8ljC5CPDz3bSd;
-	Fri, 13 Dec 2024 21:20:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8lp16JgSz3bSg;
+	Fri, 13 Dec 2024 21:24:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.149
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734085247;
-	cv=none; b=O/LwIrJbJ2pznif2/XclncjeaRLspWwjH2AZV3DgCp+q+Vh8jfDqxkzqgczmFfwKjXKEKq/KlBgmKH/l8cZDLSf2dJaAQXxPafRB2qbwEgg9QoESZMnLKmmO50IFVf9vVNW4Jhh0Elcd+yIY9rou/rd7CRTgmr7sm+MLCmOoNPlkU1ZfaT20v7QJbGqY2Ed6wd2gBSpKqnrD8yBYL6jTxk/ke6KThpI9LCgCZfdpanygkXba/yMk5SB14kBS+LM3zs0UEgvwdYL05BTV2jNIrr0MRpbx9tAZyh18GzQpt+TyoLCIyysumIGME+MxkXapXBvN91USwpp+Du07o5qy5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734085497;
+	cv=none; b=N/YlmO+3nHshKQ/1Rv13hviBd/CK/4hyNYEXKVnqpN/39yYdD90BjuHgoD8Sv4VMVi3LkzMdwVRt+2V/bTWyWpK9UAU0wGYuOigHG6TK6eaYp23qsElNI2G8RMfa6IhkyvoL5H6w9ikoFg22GUfqg+5o9yhefOGVDrXV+Bf7KBsf5rUHanahr5ave7OuX0aik1hnZcLoU7xsyAxiOD0ahrMTfjkLwwMFaJC7zEJefG4QSzUw1LfrGh6vXAqeQGLJbS00AXjV27v1ugufnZejAu459og/nz690dWDNmxbZnClL6TOSedgPaNnIUr/No4TMRANmoxjatHZe8lTVYwtDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734085247; c=relaxed/relaxed;
-	bh=IMb1NpbRY5gQZp1GGEw6l+bgS26lmUCIQ/gBSo44bCo=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=FCzsHEoQq5+OSHLZ2Y0klWVcSly0aoHuGh5kA8k4/LzQYECrKuLRE0oOuMuRHbq2spGXEMDxQpcznwtLeRs6RHLwyy/TQ9hPdhqU9Fqcz8A1Tc/9dl7h92XJ1pxyM3fch1MHzenyqvlhpD+/JPpR7XH8oEPiAb/8aFy4bqlFc+tcGOZvD+gs0d85CTFr7FHC/oSsE3khzG4sYvRWuiSfuuByt47l0gZdeRPxpwZZ0cGm9b1nC9l8ocLitfxG5V47M7AQ8Y1l95Ddow2Sjxid2qjpbUZrq7OU5xnX1nYoVRgKHr9/bsoxoI8uh2Hlrgan10MhXiPry9DI3cRVqwTNVg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=hafosO0p; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=3x+4DxUU; dkim-atps=neutral; spf=pass (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1734085497; c=relaxed/relaxed;
+	bh=wj3FQ4EHvuZ3Loo4qRwR0MhYvA8lZqwuoXZj5chSjlA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RPTXW6gMCstR1DF73LvvUHW4Us68IAyZM7Ka381rS3y0BRPBL3EkD3DTchtrMW6iphpqnkikAWEev64pNnS9eUXMHyXaHjK/oJKl+0RKX+xO2s6VrMgw+3FnMz8upBc0frqGEnWKQBBQfSSIqpUKi+M6uzeWUOWDkcOBvXvyApMoI7ggxEHMSgI3BoBmidBHla+Zr4pdR2Uz2nBMAHvJrL2rpzzmB15QRtvhF6bvTawlo7c4gagJWJ0P15PN1aAk654+surIEfvl4l4PnjHrq+C1DbyoXp6rw/NCwyKsnvVTygwlvfSJY3kNI4RssrtTZrwTnZqDgC7ccyWXeB/VoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QB3BAAvl; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=j6UBVK3e; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tPrPshOR; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=F35EiPjf; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=hafosO0p;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=3x+4DxUU;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=QB3BAAvl;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=j6UBVK3e;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=tPrPshOR;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=F35EiPjf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=202.12.124.149; helo=fout-b6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout-b6-smtp.messagingengine.com (fout-b6-smtp.messagingengine.com [202.12.124.149])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8ljB3Zw9z30jZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 21:20:46 +1100 (AEDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.stl.internal (Postfix) with ESMTP id 49C4911401EE;
-	Fri, 13 Dec 2024 05:20:43 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Fri, 13 Dec 2024 05:20:44 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1734085243;
-	 x=1734171643; bh=IMb1NpbRY5gQZp1GGEw6l+bgS26lmUCIQ/gBSo44bCo=; b=
-	hafosO0pH2ac5V+nw0ZbLPTQPoCnj1AnMwiOphXwbkjr1QUumcWVOk+JCGzm6Vmb
-	73nqdZMrmCmbHyU430dG2gjy4tDZ775WHwtR1MEiSYXwTfywli7b0zEMaHRIHSdh
-	AE1H13704vBMNuzvJODkJQy5lG3XYE8HkHgINCpxlVFDfzg/PQLu7yYC/1vmOkH0
-	E54PHfiAFIW5yl+zCHy2iUwzwK/6xX7NSwLqi228bb0yomLI8MToIL3qwswfCmQM
-	H3tRpqyfS+mteHS16dbMR/ErgM0WNxEU8A5AIv16aghWGbSONNMlbfWQzebOKNYd
-	/KFQCy5py8tXpXUFgRjg9g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734085243; x=
-	1734171643; bh=IMb1NpbRY5gQZp1GGEw6l+bgS26lmUCIQ/gBSo44bCo=; b=3
-	x+4DxUUnFK1oAP04tuB+w/czp3uTokr/Zg9W2b9Zjm630zQGMrBTi7LlvsthmHDF
-	v4/n4Fk4g3Zagod+Xc9JyXFWFP5vYTDp5rWmaacipX4mnVDIVKTSojdJ4ioU3A8e
-	uwscCfAdWDaV9O09NNUUAkQKVJJMfdiUNxixyh5bJkbTYqKbyuiwtR4YuVDr5LD9
-	sflY9mRXNWdt8qb9634QVNe4BzlqbJY1+OrSMiXI653DnKhnRhvf7yZ5LoZqpcc0
-	tgtckn6lJN1umcAb3hw3qpJo7MmWcZNcnZhsiwXXq9wRyHrrZJUMx2iIUqYUhNWW
-	yVFIUsb95eoywfolRo4qQ==
-X-ME-Sender: <xms:eQpcZ3huzLNM1lDyiMsvx3zdY-XIPlyj85bTVQ28NNItrL90D4PEBw>
-    <xme:eQpcZ0D14Gc52X5S5ZtfNduM96IUCXe7iD_C4IjaB9BHFrGbc9FpC4kwx3NgdVEmJ
-    TFesn6TphuzzfUsCKs>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrkeejgddugecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeen
-    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
-    gvqeenucggtffrrghtthgvrhhnpeevgfeigeffgfekteehvedvlefhgeeghedvfedukeeu
-    keeugfetveeludeuieehtdenucffohhmrghinhephhgvrggupgekheiggidrshgsnecuve
-    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegr
-    rhhnuggsrdguvgdpnhgspghrtghpthhtohepfeegpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopehtshgsohhgvghnuges
-    rghlphhhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthhtohepghhrrghfsegrmhgriihonh
-    drtghomhdprhgtphhtthhopegrthhishhhphesrghtihhshhhprghtrhgrrdhorhhgpdhr
-    tghpthhtoheprghnuhhpsegsrhgrihhnfhgruhhlthdrohhrghdprhgtphhtthhopegthh
-    hrihhsthhophhhvgdrlhgvrhhohiestghsghhrohhuphdrvghupdhrtghpthhtohepphgr
-    lhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvg
-    hrkhgvlhgvhidrvgguuhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrihgurdgr
-    uh
-X-ME-Proxy: <xmx:eQpcZ3FEgOWNkcGeKkURorYx6QvueeNLqkuTc_Hwx94hTEsT9_8MjA>
-    <xmx:egpcZ0QWKlBjJmj7g4B_YZtG_NZWIGeroqsXKuAsAsZjN5Mq79wB0g>
-    <xmx:egpcZ0xX4KzLhFwxphxSuo4EEuBLRe9OFVrz62tF1b5HJgyn_Ncy0A>
-    <xmx:egpcZ64P6gxah9oEjaEyU5qKQVeZk6phMOorf8qb-RmlMlHNpRDZvA>
-    <xmx:ewpcZyi2q0m3LnnLOp-IJ-luaQ5vhyjpu8MHEogB8umRK8eOuJjQ2PhV>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id D070E2220072; Fri, 13 Dec 2024 05:20:41 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8lnz36rQz30jZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 21:24:55 +1100 (AEDT)
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 4AE222115C;
+	Fri, 13 Dec 2024 10:24:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1734085462; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wj3FQ4EHvuZ3Loo4qRwR0MhYvA8lZqwuoXZj5chSjlA=;
+	b=QB3BAAvlMjSbem64YecmVjJGmws8bfOvUTD+KKvi7kRCMKvWOApY0uIfCet5lxrNDfoDUF
+	kYKima0XfjJ//cp6X9aPRpiv/cXNNNy+DfGwJ7aRzfdpnBl+Q98kMFgLY0/8dCj8FH7Eso
+	yySpVrlwNrq43Uq6G/B7E43pyz64j4Y=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1734085462;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wj3FQ4EHvuZ3Loo4qRwR0MhYvA8lZqwuoXZj5chSjlA=;
+	b=j6UBVK3eUBa8uR6nex3nUMjcfXl1CQPkSFrZPH8x2W8kQHDeRo1nrlthyHhnPsC73eZWWs
+	xJe2M8NkIDdXsJAA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=tPrPshOR;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=F35EiPjf
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1734085461; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wj3FQ4EHvuZ3Loo4qRwR0MhYvA8lZqwuoXZj5chSjlA=;
+	b=tPrPshOR8OGskNXqtHG5zsWfTFtAWkW2VMrNqELtJBW6l/2NFdcLs1OxedCw7R6xiZ51m7
+	h9tq3+U4I4rCuekR9CMWLRcbws6ajAhE5g6ncB3sCzZigANSiWhCZINWRagT/etWKBQbFJ
+	69sP2Jse0IoReokkrtrtOL0MchDeYg8=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1734085461;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=wj3FQ4EHvuZ3Loo4qRwR0MhYvA8lZqwuoXZj5chSjlA=;
+	b=F35EiPjf6rljhpNclFMv1DDqnxhLuSBOgjJzXGatSr0F1Y6LNmfwdq48C8L2640wlOpX+G
+	v8fzZgkVV3eOKTCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id B8DF813939;
+	Fri, 13 Dec 2024 10:24:20 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id +v76KVQLXGdsSAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Fri, 13 Dec 2024 10:24:20 +0000
+Message-ID: <eea7e1f0-cdcf-49ca-b50b-cac9bb320f4e@suse.de>
+Date: Fri, 13 Dec 2024 11:24:20 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,192 +100,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Fri, 13 Dec 2024 11:20:21 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Arnd Bergmann" <arnd@kernel.org>, kvm@vger.kernel.org
-Cc: "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Huacai Chen" <chenhuacai@kernel.org>,
- "Jiaxun Yang" <jiaxun.yang@flygoat.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Alexander Graf" <graf@amazon.com>, "Crystal Wood" <crwood@redhat.com>,
- "Anup Patel" <anup@brainfault.org>,
- "Atish Patra" <atishp@atishpatra.org>,
- "Paul Walmsley" <paul.walmsley@sifive.com>,
- "Palmer Dabbelt" <palmer@dabbelt.com>,
- "Albert Ou" <aou@eecs.berkeley.edu>,
- "Sean Christopherson" <seanjc@google.com>,
- "Paolo Bonzini" <pbonzini@redhat.com>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,
- "Vitaly Kuznetsov" <vkuznets@redhat.com>,
- "David Woodhouse" <dwmw2@infradead.org>, "Paul Durrant" <paul@xen.org>,
- "Marc Zyngier" <maz@kernel.org>, linux-kernel@vger.kernel.org,
- linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org
-Message-Id: <43a3765d-709b-4583-ad27-f9bb46a88440@app.fastmail.com>
-In-Reply-To: <1f1beb34-65cc-4038-a8b2-de8af3e0703e@csgroup.eu>
-References: <20241212125516.467123-1-arnd@kernel.org>
- <20241212125516.467123-3-arnd@kernel.org>
- <3589ad69-13df-40f1-88c2-55d39790bbac@csgroup.eu>
- <1633f30e-d885-4f31-a14d-11881e16deb9@app.fastmail.com>
- <1f1beb34-65cc-4038-a8b2-de8af3e0703e@csgroup.eu>
-Subject: Re: [RFC 2/5] powerpc: kvm: drop 32-bit booke
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] fbdev: Fix recursive dependencies wrt
+ BACKLIGHT_CLASS_DEVICE
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, javierm@redhat.com,
+ arnd@arndb.de, deller@gmx.de, simona@ffwll.ch, airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+References: <20241212100636.45875-1-tzimmermann@suse.de>
+ <20241212100636.45875-2-tzimmermann@suse.de>
+ <8403f989-c1de-48c9-ab48-83c1abb9e6f2@csgroup.eu>
+ <5484d576-d63e-4166-85ea-0b508b0cb865@suse.de>
+ <1248a2b6-71b0-4909-917f-a5605415a816@csgroup.eu>
+ <690acce6-3e57-4731-9949-f8bb06d9cb58@suse.de>
+ <941b3560-6572-476b-9e9f-c0a6df3e9ff4@csgroup.eu>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <941b3560-6572-476b-9e9f-c0a6df3e9ff4@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: 4AE222115C
+X-Spam-Score: -4.51
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_TO(0.00)[csgroup.eu,redhat.com,arndb.de,gmx.de,ffwll.ch,gmail.com];
+	ARC_NA(0.00)[];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	TO_DN_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_TRACE(0.00)[suse.de:+];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	RCPT_COUNT_SEVEN(0.00)[10];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Dec 13, 2024, at 07:25, Christophe Leroy wrote:
-> Le 12/12/2024 =C3=A0 22:08, Arnd Bergmann a =C3=A9crit=C2=A0:
+Hi
+
+
+Am 13.12.24 um 11:15 schrieb Christophe Leroy:
 >
-> So yes it is used on e5500/e6500 but only when they run a 32 bits kern=
-el=20
-> built with CONFIG_PPC_85xx. Isn't it what you want to get rid of with=20
-> this patch ?
 >
-> Am I missing something ?
+> Le 13/12/2024 à 09:41, Thomas Zimmermann a écrit :
+>> Hi
+>>
+>>
+>> Am 13.12.24 um 09:33 schrieb Christophe Leroy:
+>>>
+>>>>
+>>>> The attached patch selects backlight support in the defconfigs that 
+>>>> also have PMAC_BACKLIGHT=y. Can you please apply it on top of the 
+>>>> patchset and report on the results?
+>>>>
+>>>
+>>> That works for the defconfig but it is still possible to change 
+>>> CONFIG_BACKLIGHT_CLASS_DEVICE manually.
+>>>
+>>> If it is necessary for PMAC_BACKLIGHT then it shouldn't be possible 
+>>> to deselect it.
+>>
+>> Here's another patch that make it depend on BACKLIGHT_CLASS_DEVICE=y. 
+>> Can you please try this as well?
+>
+> That looks good, no build failure anymore with BACKLIGHT_CLASS_DEVICE=m
 
-I think I mixed up CONFIG_PPC_E500 and CONFIG_PPC_85xx and hadn't
-realized that we use CONFIG_PPC_BOOK3E_64 instead of PPC_85xx for
-the 64-bit mode. I found a few more things that can be removed
-now and folded in the patch below, which includes your suggestions.
+Great, I'll add this change to the next iteration.
 
-     Arnd
+Best regards
+Thomas
 
-diff --git a/arch/powerpc/kernel/head_85xx.S b/arch/powerpc/kernel/head_=
-85xx.S
-index f9a73fae6464..661903d31b54 100644
---- a/arch/powerpc/kernel/head_85xx.S
-+++ b/arch/powerpc/kernel/head_85xx.S
-@@ -425,16 +425,10 @@ interrupt_base:
- 	mtspr	SPRN_SPRG_WSCRATCH0, r10 /* Save some working registers */
- 	mfspr	r10, SPRN_SPRG_THREAD
- 	stw	r11, THREAD_NORMSAVE(0)(r10)
--#ifdef CONFIG_KVM_BOOKE_HV
--BEGIN_FTR_SECTION
--	mfspr	r11, SPRN_SRR1
--END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
--#endif
- 	stw	r12, THREAD_NORMSAVE(1)(r10)
- 	stw	r13, THREAD_NORMSAVE(2)(r10)
- 	mfcr	r13
- 	stw	r13, THREAD_NORMSAVE(3)(r10)
--	DO_KVM	BOOKE_INTERRUPT_DTLB_MISS SPRN_SRR1
- START_BTB_FLUSH_SECTION
- 	mfspr r11, SPRN_SRR1
- 	andi. r10,r11,MSR_PR
-@@ -517,16 +511,10 @@ END_BTB_FLUSH_SECTION
- 	mtspr	SPRN_SPRG_WSCRATCH0, r10 /* Save some working registers */
- 	mfspr	r10, SPRN_SPRG_THREAD
- 	stw	r11, THREAD_NORMSAVE(0)(r10)
--#ifdef CONFIG_KVM_BOOKE_HV
--BEGIN_FTR_SECTION
--	mfspr	r11, SPRN_SRR1
--END_FTR_SECTION_IFSET(CPU_FTR_EMB_HV)
--#endif
- 	stw	r12, THREAD_NORMSAVE(1)(r10)
- 	stw	r13, THREAD_NORMSAVE(2)(r10)
- 	mfcr	r13
- 	stw	r13, THREAD_NORMSAVE(3)(r10)
--	DO_KVM	BOOKE_INTERRUPT_ITLB_MISS SPRN_SRR1
- START_BTB_FLUSH_SECTION
- 	mfspr r11, SPRN_SRR1
- 	andi. r10,r11,MSR_PR
-@@ -660,8 +648,6 @@ END_BTB_FLUSH_SECTION
- 	DEBUG_DEBUG_EXCEPTION
- 	DEBUG_CRIT_EXCEPTION
-=20
--	GUEST_DOORBELL_EXCEPTION
--
- 	CRITICAL_EXCEPTION(0, GUEST_DBELL_CRIT, CriticalGuestDoorbell, \
- 			   unknown_exception)
-=20
-diff --git a/arch/powerpc/kernel/head_booke.h b/arch/powerpc/kernel/head=
-_booke.h
-index 0b5c1993809e..d1ffef4d05b5 100644
---- a/arch/powerpc/kernel/head_booke.h
-+++ b/arch/powerpc/kernel/head_booke.h
-@@ -3,8 +3,6 @@
- #define __HEAD_BOOKE_H__
-=20
- #include <asm/ptrace.h>	/* for STACK_FRAME_REGS_MARKER */
--#include <asm/kvm_asm.h>
--#include <asm/kvm_booke_hv_asm.h>
- #include <asm/thread_info.h>	/* for THREAD_SHIFT */
-=20
- #ifdef __ASSEMBLY__
-@@ -52,7 +50,6 @@ END_BTB_FLUSH_SECTION
- 	stw	r13, THREAD_NORMSAVE(2)(r10);				     \
- 	mfcr	r13;			/* save CR in r13 for now	   */\
- 	mfspr	r11, SPRN_SRR1;		                                     \
--	DO_KVM	BOOKE_INTERRUPT_##intno SPRN_SRR1;			     \
- 	andi.	r11, r11, MSR_PR;	/* check whether user or kernel    */\
- 	LOAD_REG_IMMEDIATE(r11, MSR_KERNEL);				\
- 	mtmsr	r11;							\
-@@ -114,25 +111,7 @@ END_BTB_FLUSH_SECTION
-=20
- .macro SYSCALL_ENTRY trapno intno srr1
- 	mfspr	r10, SPRN_SPRG_THREAD
--#ifdef CONFIG_KVM_BOOKE_HV
--BEGIN_FTR_SECTION
--	mtspr	SPRN_SPRG_WSCRATCH0, r10
--	stw	r11, THREAD_NORMSAVE(0)(r10)
--	stw	r13, THREAD_NORMSAVE(2)(r10)
--	mfcr	r13			/* save CR in r13 for now	   */
--	mfspr	r11, SPRN_SRR1
--	mtocrf	0x80, r11	/* check MSR[GS] without clobbering reg */
--	bf	3, 1975f
--	b	kvmppc_handler_\intno\()_\srr1
--1975:
--	mr	r12, r13
--	lwz	r13, THREAD_NORMSAVE(2)(r10)
--FTR_SECTION_ELSE
- 	mfcr	r12
--ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
--#else
--	mfcr	r12
--#endif
- 	mfspr	r9, SPRN_SRR1
- 	BOOKE_CLEAR_BTB(r11)
- 	mr	r11, r1
-@@ -198,7 +177,6 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 	stw	r11,GPR11(r8);						     \
- 	stw	r9,_CCR(r8);		/* save CR on stack		   */\
- 	mfspr	r11,exc_level_srr1;	/* check whether user or kernel    */\
--	DO_KVM	BOOKE_INTERRUPT_##intno exc_level_srr1;		             \
- 	BOOKE_CLEAR_BTB(r10)						\
- 	andi.	r11,r11,MSR_PR;						     \
- 	LOAD_REG_IMMEDIATE(r11, MSR_KERNEL & ~(MSR_ME|MSR_DE|MSR_CE));	\
-@@ -272,23 +250,6 @@ ALT_FTR_SECTION_END_IFSET(CPU_FTR_EMB_HV)
- 		EXC_LEVEL_EXCEPTION_PROLOG(MC, trapno+4, MACHINE_CHECK, \
- 			SPRN_MCSRR0, SPRN_MCSRR1)
-=20
--/*
-- * Guest Doorbell -- this is a bit odd in that uses GSRR0/1 despite
-- * being delivered to the host.  This exception can only happen
-- * inside a KVM guest -- so we just handle up to the DO_KVM rather
-- * than try to fit this into one of the existing prolog macros.
-- */
--#define GUEST_DOORBELL_EXCEPTION \
--	START_EXCEPTION(GuestDoorbell);					     \
--	mtspr	SPRN_SPRG_WSCRATCH0, r10;	/* save one register */	     \
--	mfspr	r10, SPRN_SPRG_THREAD;					     \
--	stw	r11, THREAD_NORMSAVE(0)(r10);				     \
--	mfspr	r11, SPRN_SRR1;		                                     \
--	stw	r13, THREAD_NORMSAVE(2)(r10);				     \
--	mfcr	r13;			/* save CR in r13 for now	   */\
--	DO_KVM	BOOKE_INTERRUPT_GUEST_DBELL SPRN_GSRR1;			     \
--	trap
--
- /*
-  * Exception vectors.
-  */
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstrasse 146, 90461 Nuernberg, Germany
+GF: Ivo Totev, Andrew Myers, Andrew McDonald, Boudien Moerman
+HRB 36809 (AG Nuernberg)
+
 
