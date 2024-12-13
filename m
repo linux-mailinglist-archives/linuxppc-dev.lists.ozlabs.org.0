@@ -1,51 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-4072-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4073-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C62D9F024E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 02:36:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B569F0254
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 02:39:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8X415KWNz30Sy;
-	Fri, 13 Dec 2024 12:36:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8X7w6JZ9z30g5;
+	Fri, 13 Dec 2024 12:39:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734053777;
-	cv=none; b=BjX3PHBCajUvravNeaR74+AzDSDLiqg6kVtEu5YzwH3DcQEFkrjd/dhUXGuiBH/iO1O/aayfLBZE5rU1kuZl+iiEK8+zG60c7PVsA+R066GahPo08R2ga285mkzBsEfJjUwDT3kkCdZwd8k+S7KOZdDP9JLuEFLRLpkMpAD+sOke6hewQh8F09at72GGjLepZ5rKjPx3DVWluqS90hIxG2LuA6HIp1i5mBBcQvcMMJr1U6n19jBJ0IRP/3Xbr2U/3ogh/9LO7HdWn6aPpD2N/rzro1RCbeByO5NNJenhEedsVMJwFIdJ5Nend9aSsZSvE45wltogCxN//To0+HGQqQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734053980;
+	cv=none; b=O4Cyud1TybZmzwl8opf7gOBENvZ8QygJebQPp3rJ6UMYRFj87mN/2N3/U1Lltr/S1WAMqBr0vYqaM3DJCZhP1tDLxyWWZCuWx9mTjRPB4iFKzlzSW8kLLNe7EZmJA5hdUMKV0873TcXt4f0Xwv+zWdsr1Bkx319v7GeoKN/UfWT5V3kf7k4dNTQ8OVTSdo25U1b/0H+dlej1uG53lH26TIXvM99IJAkwWeqWzzQBl3aCdXq1SjGwTpSFb6nCOVDcNptgBFRLvM57GOKYEIiLDWIfuhzgFpnHdFXo3Z0MO+z3OYOnemasfUqQ6Z6+bbcvktAoSNOcYicRzXqiq/t39w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734053777; c=relaxed/relaxed;
-	bh=XmLMT9HyJdtqZoszt9l3H7/SZ22CYQFZhILA0LbfIRc=;
+	t=1734053980; c=relaxed/relaxed;
+	bh=XDf95d9Uka+UIYv5wGQ9WydOISmAvXQAo6tglVHRDi0=;
 	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=Yhie0tAHHTQWDC2MlRFCSohEN7gnp1UmGCyGtGU6FjS0XMe0qdeynnLzJxBQkdeaohUMiNJUCEePMjQKeUDkttGDCX7lTFHd8Fx44WOMxf3fsdaaG/BlXlQTyGHUv0AooIxj2Lc2BAWbJq51Ua+6ZBd6nC/OO1bcpB0NaeQxlAQ08MFi9QT266026f+BeLKO4pj3zYwqpiMGFt/yvuP7H8T/V1nk6YCzugL3dji4svVcn2a9ByfPQxVNdiQ51bX2fp8bAaG088wxYSXO8+nZqJB4Qxd2BhIWuzadUKsZJnr9cQpWNN738lTw56WZYENtSpOOkVvBj2uv8rv1J1P96Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=pU24h8Qm; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
+	 Mime-Version:Content-Type; b=EsvbFz9APwzAWsZkHg9/TantjVv7yPFfFMr9rgjjfwgi559HRmmmG8cXrSmO39i7xNLCnrRoQZKaO6+JqWXU+u8zfhqNdojikxSQzCZOGg38DcHN0AKBtsGM1BjXgnwUiv6XoLtEuq3dHDP10USNmbV/N1KHv6BUiCNVgdTepvarOx6hU04TrSvjfjsqBP4wKOBQQcmiJoAb37gJnIVxpsh0TAL7/9nRoK/ITTl81iozYVX5vPvZtILzc5Ym83G2Uw8qTxpdkLao224ZISoehjAMknFGVEutzLL28i9XC2KczkKDGTtHPL+WHeLXGgxLNKuue2diS0NLn93LiwHO6g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=NOajGzF7; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=pU24h8Qm;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=NOajGzF7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8X4003bYz2yXm
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 12:36:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8X7v6J01z2yhM
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 13 Dec 2024 12:39:39 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E5A045C6682;
-	Fri, 13 Dec 2024 01:35:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07DAC4CECE;
-	Fri, 13 Dec 2024 01:36:09 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 50A5DA40E72;
+	Fri, 13 Dec 2024 01:37:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA84DC4CECE;
+	Fri, 13 Dec 2024 01:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1734053771;
-	bh=7f/5fqryMUGvRImZN3hfJmmlKUrLgbHGWnv+giipYko=;
+	s=korg; t=1734053976;
+	bh=z6KasiqXW9OocT/gPdXD8wxFCgxz3hJU5rxa3NS7ujM=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=pU24h8Qmf2l3dWmBoawfB733EGF8ZWmMJjrPI6B43pMJbMG4ZTBpTRzP1HUP8GzP4
-	 1boZnf+GhhYVxYCiYxKJ0ZLRya4Nw9Vpsn1tw6iHWN3gws31ENEkqbfbQgsb2j17Bw
-	 tbFaFZWjLH1q1pTGS9LCKFYhq+6kLBeOOeefROU4=
-Date: Thu, 12 Dec 2024 17:36:09 -0800
+	b=NOajGzF7Oghi2j823OVBOAGjMfDE2y8sqhBtABteyi+xNwCVBGrHLGBc4kP8k/ZzS
+	 nGpVqOiOxYmCXtpYVq8CDh3d/Emvq9T/1xFLC/6g4wNbedpjpYuIv/cuTxF0CeV0MY
+	 ibJbSfQIh1u6+D2zMIFRD+W8TWrIVtCfqGegBRio=
+Date: Thu, 12 Dec 2024 17:39:34 -0800
 From: Andrew Morton <akpm@linux-foundation.org>
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Kalesh Singh
- <kaleshsingh@google.com>, vbabka@suse.cz, yang@os.amperecomputing.com,
- riel@surriel.com, david@redhat.com, minchan@kernel.org, jyescas@google.com,
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Kalesh Singh <kaleshsingh@google.com>, lorenzo.stoakes@oracle.com,
+ vbabka@suse.cz, yang@os.amperecomputing.com, riel@surriel.com,
+ david@redhat.com, minchan@kernel.org, jyescas@google.com,
  linux@armlinux.org.uk, tsbogend@alpha.franken.de,
  James.Bottomley@hansenpartnership.com, ysato@users.sourceforge.jp,
  dalias@libc.org, glaubitz@physik.fu-berlin.de, davem@davemloft.net,
@@ -59,13 +59,14 @@ Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Kalesh Singh
  linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
  linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
  sparclinux@vger.kernel.org, linux-mm@kvack.org, kernel-team@android.com,
- android-mm@google.com, Jann Horn <jannh@google.com>
-Subject: Re: [PATCH mm-unstable v2 00/16] mm: Introduce arch_mmap_hint()
-Message-Id: <20241212173609.afd41d1dffbefe0d731ed4ed@linux-foundation.org>
-In-Reply-To: <1818e2ea-f170-4a9c-8d93-2a24f2755a41@lucifer.local>
+ android-mm@google.com
+Subject: Re: [PATCH mm-unstable v2 06/16] mm: csky: Introduce
+ arch_mmap_hint()
+Message-Id: <20241212173934.4dc429716acd4c71a76e15c2@linux-foundation.org>
+In-Reply-To: <vc2uhcysgosapznbuookcj5677w43a4kzxbotwqub237ccawww@i3pbqiacdwsx>
 References: <20241211232754.1583023-1-kaleshsingh@google.com>
-	<hmuzfspqjzb36xlj2x44keihacrrhzj5madqrfbcnhqouzredv@wo75achgkuh5>
-	<1818e2ea-f170-4a9c-8d93-2a24f2755a41@lucifer.local>
+	<20241211232754.1583023-7-kaleshsingh@google.com>
+	<vc2uhcysgosapznbuookcj5677w43a4kzxbotwqub237ccawww@i3pbqiacdwsx>
 X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -81,18 +82,41 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-5.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 12 Dec 2024 22:51:34 +0000 Lorenzo Stoakes <lorenzo.stoakes@oracle.com> wrote:
+On Thu, 12 Dec 2024 16:40:10 -0500 "Liam R. Howlett" <Liam.Howlett@oracle.com> wrote:
 
-> You've fundamentally violated kernel process and etiquette. I'd be more
-> forgiving, but this is at v2 and you've not cc'd KEY people. Twice. This is
-> totally unacceptable. See [0] if you are unsure of how to do so.
+> * Kalesh Singh <kaleshsingh@google.com> [241211 18:28]:
+> > Introduce csky arch_mmap_hint() and define HAVE_ARCH_MMAP_HINT.
+> > This is a preparatory patch, no functional change is introduced.
+> 
+> This also looks like it has changed the validation order and potentially
+> introduced functional changes?
+> 
+> All these stem from the same cloned code (sparc32 iirc), but were not
+> updated when the cloned code was updated.  This is why I am against
+> arch_* code.  We should find a better way to unify the code so that
+> there is nothing different.  You seem to have gotten some of the shared
+> code together, but some still exists.
+> 
+> In the addresses, there are upper and lower limits, and sometimes
+> "colours".  Could we not just define the upper/lower limits in each arch
+> and if colour is used?  Maybe this is complicated with 32/64 handled
+> both in the 64 bit code.
+> 
+> Is there any plan to unite this code further?
+> 
+> We have had errors for many years in cloned but not updated code.  I
+> really wish there was more information in the cover letter on what is
+> going on here.  I'd like to try and reduce the arch_ code to, basically
+> nothing.
+> 
+> I was also disappointed that I wasn't Cc'ed because I've spent a lot of
+> time in this code and this area.  I am probably the last one to crawl
+> through and change any of this.
 
-This feels excessive to me.  linux-mm averages a mere 140 mesages/day
-and it seems reasonable to assume that key people are spending their 5
-minutes to scroll through the email subjects.
+Thanks, I removed this version of this series from mm-unstable.
 
