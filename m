@@ -1,96 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-4130-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4131-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B136E9F1FB6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2024 16:32:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 403B59F212E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2024 23:19:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y9VZ42XhPz2yNn;
-	Sun, 15 Dec 2024 02:32:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y9gbT2BgHz305n;
+	Sun, 15 Dec 2024 09:19:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734190332;
-	cv=none; b=MSa2YTuosDfs2MdD9ahNMkUNzHPA3RKOrbhrV8Iey5fvn6Cmh+Ruy0fE+Jnb+ASaUZ1bn9WlssgZXK/9Z78di4v11v0IVCzAFP5+beXAkQCaP95MIfaobaj25X3cznwHf/jV+30Ls4DR1ZyVHtJzNjB2/DQd2zQ5r7D8SIUFIkLi8NRymEBRqoKHZhhmAkwXbYKrt5A8P03PcOQqi8gE1MhAu9Hx3EYkAdu998THiIyEr1tdrdAJ8hviJPJE3SlRTMvDLO24+co1SZtx4RwmK53sjGaNotYCPIMQFhYMG8CT05cP/OotYs2lu7kDOnAAijLfbxGFf0q9yI2Tn9lzGg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734214741;
+	cv=none; b=QePGDH4ZHdHlHg6GrSFyddv9F90XvyTwkGd22lRnzidoT+f17+oYPX7PN3xesbduLtaj232C5JFSnicHDUZ2d2FWNNaRbah8WzA+Cky92nvIGVyHzlQoSPppUqVEGH2/ItTtbCnYr8bD6I7XCdDH9x0tsM+6IsUraUHCPbQqgNq3FM/WRwqnDaEEy8XPxZZy9pvVWLJSEmzCnyvx6rFO27FUkOBtsx4rlQNd2X4Tk6q3Sx3oSf9hFvpGXmmKvTgyvu7Av28sDrdGs9XA2po+0mQDf8yHl9WCkKWlrweNJoj7XwoVcVQUUWqxqrbclz3PrYUJZn7dv4I4OfjnOPYp5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734190332; c=relaxed/relaxed;
-	bh=03N6Z6LVTWl2BXm3uGhmS6liuy/PRc0F/lQH4ag9wfQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dV/wn0/VA6pcE+zqRxv1IUovpeIkAIZyQQ1KZPOvkzoOzcEWSjYW5uozCg2pcpfVOYJDDSkYhQuk2ZPBThJUXIesspfjdk2HJHFhDYhqKAJpDBM4Lanvw9bFmch1zV7RYnr7JAIYVosaijR3F9q0GD+CoMCCrl2QxsVTmfx0aopbLZKrs1zy93jK+uBoevEFJbK/rDRcO7Ze10GRu2K2ku0qiafwDmZ4n0FL2poh/swsctgxTZhbrEBn76ren3yKrVGYDPn8uhZgUYRliywlTydEZ2an2BD9ogtKYkh+hAm0+N3Ke81l7xkoXADRC35Ex2vNztCEU3ywH4CgshoBLA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BZmKMVuI; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BZmKMVuI; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1734214741; c=relaxed/relaxed;
+	bh=ojvhoipSj9uYqFkxWM0ZJvN8PHOfCvAHw33hHU8rMo8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SJKZBNpXlJX7gF0aA+mpZfqNnLghUUkcuZS2D5eoMGTboyKMA6tf1/Eqwz9FrKHn2rdUlAWJm1Nd39/kFTAOEGTNG/Q1pu3URy1hNsIRmsAKucKqjlPJsTTjberSa1orgAuWTTESXBIzPWCyvIGB9sOkbe4AIUGmQCYUuKzADPMwdCXI8319fDEgbuGROi8p4j1p35v7Xpu40U4bEXHIp7OYuV6o5soik1sbUBS3wbPAClIVNn+iY7UVh4UZyNiReFKZZOZXuPDS0qGtdpsjnH5+78U5K0EwuX16LAYXBDw+5vj7/K58CtAxlBqwu4eoPzWEd9W6otxKUyeaJwhCLw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gpBLExQq; dkim-atps=neutral; spf=none (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BZmKMVuI;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=BZmKMVuI;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gpBLExQq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y9VZ314LXz2yL0
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2024 02:32:10 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734190327;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=03N6Z6LVTWl2BXm3uGhmS6liuy/PRc0F/lQH4ag9wfQ=;
-	b=BZmKMVuI/yljeqqDc3r76Bwo8yv/F848sFf2yID/lR4zlWn8DxsC4XB2EF7w16Nw+rfdHe
-	1xuneMwD8oVn9WCR7BC4OLtJtFUT/ep5ASgwsVyfJWVEwvJN06pP/YN+PeJAgXNo17Jqnt
-	11mSbz8LpVUr+LbAnLsb/jYfh5IVKbI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734190327;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=03N6Z6LVTWl2BXm3uGhmS6liuy/PRc0F/lQH4ag9wfQ=;
-	b=BZmKMVuI/yljeqqDc3r76Bwo8yv/F848sFf2yID/lR4zlWn8DxsC4XB2EF7w16Nw+rfdHe
-	1xuneMwD8oVn9WCR7BC4OLtJtFUT/ep5ASgwsVyfJWVEwvJN06pP/YN+PeJAgXNo17Jqnt
-	11mSbz8LpVUr+LbAnLsb/jYfh5IVKbI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-320-MCUduoPNOVKujeRFrbnVAg-1; Sat, 14 Dec 2024 10:32:05 -0500
-X-MC-Unique: MCUduoPNOVKujeRFrbnVAg-1
-X-Mimecast-MFC-AGG-ID: MCUduoPNOVKujeRFrbnVAg
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3862be3bfc9so1425365f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2024 07:32:04 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734190324; x=1734795124;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=03N6Z6LVTWl2BXm3uGhmS6liuy/PRc0F/lQH4ag9wfQ=;
-        b=Ae4pyDT0JuMMqyDMp0b3bkbCo43YWk4q5uZbR9oyoXHvxwgwoZNNSOXP/WG2Rj4tcR
-         uoNh2eoPYZjlx2+/0kKj39HqAV1jrwtV2PM7eDovGH8S8gRteJ55fANqmIEnOUhZdNzQ
-         QCaWHA5nZunEzq9uN5cjalwvtTFkxuFR+2+bBtbpJ/3dv7AqBDSU8Ts/RaxFTvRhR593
-         X5CeZx53vxCvYEOLEZ6hBt2VRW9HhWIsvRrS5z2zqshR6TCV3CrxDSzGOkWcmcGrgKap
-         133ONvmLH+MoobkwrKw1dIZCBRokAlgOid1PFK26QZYvXkOOtfSN3rdFU90RiVshDu/P
-         /K4g==
-X-Forwarded-Encrypted: i=1; AJvYcCW+6QlzxJ6aB55oLFEGJ5zAwRehjSKlMMm4uoN218xA2f4w7KrfsuWAJr1GrTJIzrxvIk3FbNqH/pvlncs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyZ6NARxqzS3u6+x9rRn/XcaGqKleIVNBlxgPm40nEEMtG5nCxl
-	Lotv6EreSwmzA2QURoQT11zZYfmN4IXv4s9PpbfLWorWwOaSZzc9xAowy+nqHOR+tCv2uYBzvgY
-	xz9Xk1qbSctYVE3/3uT7md7vsJcFINPjtMUtBTp91+RFzh+8MH09uUmahqKGt3Vs=
-X-Gm-Gg: ASbGnctSn0l5Qd8R3sWcsDlrc68q9B39R2toq/DkwXyHoHj4PPagM4SZA4EK4msOanD
-	jylQS7OLgdDGymfqC3i/jkroP1IsUup0n3MT18o24jvD3ome0IcMeXf8Nw1sd2jn9zoXR/ommOB
-	Da+fC5FF2KhF4lggPe2Q8k4ogn3NYgDF5CUMZO0BDAcjREeuN6jqILOxml+c5z2baC4N64FhZuY
-	FKvzSEiHhXIkZj2dvfXr7zBVjcjpTJ9EGhVZI0y9JpHpkHkzNkzDO/KTOEwSGIIeJ7jlUjWgLrC
-	elAJ+DmuqQkvzWxyJU7ia9Vu+pJJ7lqyW1ZX3wyc+EArKMQ6JUReRHQhhaaNv/ETgftRxa/7QNb
-	/2b/2kClR
-X-Received: by 2002:a5d:64a7:0:b0:385:e9ca:4e18 with SMTP id ffacd0b85a97d-38880ac23d0mr5273139f8f.1.1734190323876;
-        Sat, 14 Dec 2024 07:32:03 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGCAoXGEeWaw7IcCbVrauVtoSu57S5/3Q7OA9u+ckTPTWUXqMKHzSJmCciXfEjs+C07Qo9JLg==
-X-Received: by 2002:a5d:64a7:0:b0:385:e9ca:4e18 with SMTP id ffacd0b85a97d-38880ac23d0mr5273103f8f.1.1734190323507;
-        Sat, 14 Dec 2024 07:32:03 -0800 (PST)
-Received: from ?IPV6:2003:cb:c711:6400:d1b9:21c5:b517:5f4e? (p200300cbc7116400d1b921c5b5175f4e.dip0.t-ipconnect.de. [2003:cb:c711:6400:d1b9:21c5:b517:5f4e])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-388c801211dsm2844150f8f.17.2024.12.14.07.32.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 14 Dec 2024 07:32:03 -0800 (PST)
-Message-ID: <fc83a855-bb3f-4374-8896-579420732b25@redhat.com>
-Date: Sat, 14 Dec 2024 16:32:00 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y9gbP3KW2z305Y
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 15 Dec 2024 09:18:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734214737; x=1765750737;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=rrJn6Y3w1pf8OHmv/ZNQSjjsloyZOFExYTXbxTK9eXQ=;
+  b=gpBLExQqW+wgrxDoHZ2Fe5+YZL07mFqn4Ho7QjWLeY0F/QF+GzFSytjy
+   AvPxxffLPpSNTaoqnGyiE+nxxXdcUZAFYHFc3roC9igsabm4PSwRwvz2U
+   vnFNAtsHVCvDDqsWT9yhBdQ2U4ZBQ1dWlDuDaHo/QoRK7lyfqN7/WQ49B
+   j5j2qEUy4OD6bFP+68hjRFXJde8BOl8NoJrN/h0bwJuv4wR3AJC/w2SPS
+   0Z54djYkmHDZC9EUqAIiX3kT9egWlayxO6FqlfxlrGUztvrcVeEYMeMr9
+   AIYJIpyC/p/d4f+anVKaxizhQsO6iTW6BN4g9eg9WEKnyfIzZImDmLf1a
+   Q==;
+X-CSE-ConnectionGUID: mHg6O26qTz6L5RMcbERbZA==
+X-CSE-MsgGUID: HvR+wKXgSHCM4qZyA5H/6g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11286"; a="34515556"
+X-IronPort-AV: E=Sophos;i="6.12,235,1728975600"; 
+   d="scan'208";a="34515556"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2024 14:18:51 -0800
+X-CSE-ConnectionGUID: SRIzwWp+TsKokfDWIcZDeQ==
+X-CSE-MsgGUID: aNCuxcMYS92jKAMx48kYkA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="101942157"
+Received: from smile.fi.intel.com ([10.237.72.154])
+  by orviesa003.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Dec 2024 14:18:49 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1tMaTG-00000007voL-0SSV;
+	Sun, 15 Dec 2024 00:18:46 +0200
+Date: Sun, 15 Dec 2024 00:18:45 +0200
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH v2 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
+Message-ID: <Z14ERRHbVALHs8AT@smile.fi.intel.com>
+References: <20241118123254.620519-1-andriy.shevchenko@linux.intel.com>
+ <514964ea-0795-41d6-91d3-f3d4f193fc6d@csgroup.eu>
+ <Z1sOTf6UZbruptnl@smile.fi.intel.com>
+ <991aee8b-fb10-4152-89fb-6ac542ee87c1@csgroup.eu>
+ <Z1xp1xwLXAvkKgwD@smile.fi.intel.com>
+ <95951cd6-f98f-4793-a35c-22f4e8d743af@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,154 +88,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 14/25] huge_memory: Allow mappings of PUD sized pages
-To: Alistair Popple <apopple@nvidia.com>, dan.j.williams@intel.com,
- linux-mm@kvack.org
-Cc: lina@asahilina.net, zhang.lyra@gmail.com, gerald.schaefer@linux.ibm.com,
- vishal.l.verma@intel.com, dave.jiang@intel.com, logang@deltatee.com,
- bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, catalin.marinas@arm.com,
- will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
- dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org,
- djwong@kernel.org, tytso@mit.edu, linmiaohe@huawei.com, peterx@redhat.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
- david@fromorbit.com
-References: <cover.e1ebdd6cab9bde0d232c1810deacf0bae25e6707.1732239628.git-series.apopple@nvidia.com>
- <dd86249dee026991b1a996a8ab551b1b1fdd32a4.1732239628.git-series.apopple@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <dd86249dee026991b1a996a8ab551b1b1fdd32a4.1732239628.git-series.apopple@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 7S2hwf_RLhSrL9EsLRABK0o4I0eZWjIAudQY1ererCI_1734190324
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <95951cd6-f98f-4793-a35c-22f4e8d743af@csgroup.eu>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 22.11.24 02:40, Alistair Popple wrote:
-> Currently DAX folio/page reference counts are managed differently to
-> normal pages. To allow these to be managed the same as normal pages
-> introduce vmf_insert_folio_pud. This will map the entire PUD-sized folio
-> and take references as it would for a normally mapped page.
+On Fri, Dec 13, 2024 at 07:01:42PM +0100, Christophe Leroy wrote:
+> Le 13/12/2024 à 18:07, Andy Shevchenko a écrit :
+> > On Fri, Dec 13, 2024 at 07:28:45AM +0100, Christophe Leroy wrote:
+> > > Le 12/12/2024 à 17:24, Andy Shevchenko a écrit :
+> > > > On Mon, Nov 18, 2024 at 03:10:09PM +0100, Christophe Leroy wrote:
+> > > > > Le 18/11/2024 à 13:31, Andy Shevchenko a écrit :
+> > > > > > Remove legacy-of-mm-gpiochip.h header file. The above mentioned
+> > > > > > file provides an OF API that's deprecated. There is no agnostic
+> > > > > > alternatives to it and we have to open code the logic which was
+> > > > > > hidden behind of_mm_gpiochip_add_data(). Note, most of the GPIO
+> > > > > > drivers are using their own labeling schemas and resource retrieval
+> > > > > > that only a few may gain of the code deduplication, so whenever
+> > > > > > alternative is appear we can move drivers again to use that one.
+> > > > > > 
+> > > > > > As a side effect this change fixes a potential memory leak on
+> > > > > > an error path, if of_mm_gpiochip_add_data() fails.
+> > > > > > 
+> > > > > > Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> > > > > 
+> > > > > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > > > 
+> > > > Thanks, what's next?
+> > > 
+> > > Next step is that Michael or Madhavan apply it I guess ?
+> > 
+> > Folks, do you have any comments? Can you apply this and we move forward towards
+> > removing the legacy API from the kernel?
 > 
-> This is distinct from the current mechanism, vmf_insert_pfn_pud, which
-> simply inserts a special devmap PUD entry into the page table without
-> holding a reference to the page for the mapping.
-> 
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> ---
+> If you have some work which depends on this patch, you can also take it
+> together with that work through another tree. Just let us know.
 
-Hi,
+Not right now.
+If Linus or Bart want to take this via their tree, it also would be good.
 
-The patch subject of this (and especially the next patch) is misleading. 
-Likely you meant to have it as:
-
-"mm/huge_memory: add vmf_insert_folio_pud() for mapping PUD sized pages"
-
->   	for (i = 0; i < nr_pages; i++) {
-> @@ -1523,6 +1531,26 @@ void folio_add_file_rmap_pmd(struct folio *folio, struct page *page,
->   #endif
->   }
->   
-> +/**
-> + * folio_add_file_rmap_pud - add a PUD mapping to a page range of a folio
-> + * @folio:	The folio to add the mapping to
-> + * @page:	The first page to add
-> + * @vma:	The vm area in which the mapping is added
-> + *
-> + * The page range of the folio is defined by [page, page + HPAGE_PUD_NR)
-> + *
-> + * The caller needs to hold the page table lock.
-> + */
-> +void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
-> +		struct vm_area_struct *vma)
-> +{
-> +#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
-> +	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
-> +#else
-> +	WARN_ON_ONCE(true);
-> +#endif
-> +}
-> +
->   static __always_inline void __folio_remove_rmap(struct folio *folio,
->   		struct page *page, int nr_pages, struct vm_area_struct *vma,
->   		enum rmap_level level)
-> @@ -1552,6 +1580,7 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
->   		partially_mapped = nr && atomic_read(mapped);
->   		break;
->   	case RMAP_LEVEL_PMD:
-> +	case RMAP_LEVEL_PUD:
->   		atomic_dec(&folio->_large_mapcount);
->   		last = atomic_add_negative(-1, &folio->_entire_mapcount);
->   		if (last) {
-
-If you simply reuse that code (here and on the adding path), you will 
-end up effectively setting nr_pmdmapped to a very large value and 
-passing that into __folio_mod_stat().
-
-There, we will adjust NR_SHMEM_PMDMAPPED/NR_FILE_PMDMAPPED, which is 
-wrong (it's PUD mapped ;) ).
-
-It's probably best to split out the rmap changes from the other things 
-in this patch.
-
+> Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 
 -- 
-Cheers,
+With Best Regards,
+Andy Shevchenko
 
-David / dhildenb
 
 
