@@ -1,127 +1,120 @@
-Return-Path: <linuxppc-dev+bounces-4121-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4122-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD9829F15DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 13 Dec 2024 20:32:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEE1D9F1BFC
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 14 Dec 2024 02:41:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Y8zyB2hF9z30hG;
-	Sat, 14 Dec 2024 06:32:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Y987p0BYYz30Nl;
+	Sat, 14 Dec 2024 12:41:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.152.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734118370;
-	cv=none; b=h9CgU4nvn1DvhzlhNdTsXcMJEW64Q2KByURkUSsHufh0KqS/1Y2TtQuD2mpqUTValUd4kwn/p7iQAoFAyiJ9ePuyJpqjAq0r0mNb23bOaEn3kSkZ+Tev+BmmnsdGZXbJtEAG1JG8FrGl7N5TNj7F4EyK3k407qaud6Tmj3lsw9Av/sw28LOnrjEjedbpUmIhFAEh1WVr0IARDiB3FcVeLFr9Ul6FModT8+puXPb0yJNZkWdLodpBJ2vj3KRgfAyTaIweeZdICiJpLq/acIDRgBlKIBRy38uvJhS5VI5G8DQoLwCeXFRyhcEEDPQd8NhmTVhQCutGteHQPGdy1FpWoA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734118370; c=relaxed/relaxed;
-	bh=tPoDDdKr7gE1BldzHLPMcwm+vKnfJGCLwyb1r5quvMs=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=dbE2Ndc5HY2zxD3DZdr+sdrUfsrZXxjr7aqWZT5F6hHu4U1b8KgCyy5Mad6ZjjO0Pqk/tpuhHtok2NpNbaxaiB8y7YxeT4lAihws0ocQBBMRkYvyb16eSL0G2C+Sa0KhTF8vRbzV8hBxwdOOCq/vHTnxfER/IGaJklul5gfvdNJbHIccszEAmphGdAHjrj6TLLxL3ij+f+nOZAYJN/U/PMq4gPGxASCcJ6CdAgaFceE+7NpMbKfbz8JaCsssDU9I/eRn3Xz7ZfAQxkkln9nt9mKI0Q+3BHZKAGPigWIQryIIrmJNMtEeNygT1XrlnbIYQkQvgTl0ZBLbxSqs3N4M4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com; dkim=pass (2048-bit key; secure) header.d=crowdstrike.com header.i=@crowdstrike.com header.a=rsa-sha256 header.s=default header.b=uI8Jhstn; dkim-atps=neutral; spf=pass (client-ip=148.163.152.16; helo=mx0b-00206402.pphosted.com; envelope-from=prvs=4077d6e2ef=martin.kelly@crowdstrike.com; receiver=lists.ozlabs.org) smtp.mailfrom=crowdstrike.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=crowdstrike.com
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.19
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734140501;
+	cv=fail; b=n57kB8cPbY5VqHpojbl0YW404TK09BDpHXqg9eG0LFi/SXutWgrYDv6gm+y5fF6Tv6X2ba3qMIa/8GoifQEs+Q43WEH/NXy114iDI3OOdu2Y/BWjCJsdl2q2LTl5pnIaxhxepz4DqNungK40uU70JMlzCPTMWDRPXkQL83wY+azd0sSTmwOJHVFVLJmx4PrN9BZyNkEczNZPde1qCxOmTRm2mxogkTZONfYobTjpFtIb15mqqUsNaqGw5pvxKUifkVOh1iUYUxBkMv8MYhS3QPsJrLy5gcXnDTbfW5mVg4I148VWy8UdWWxp4H2ueNT1bjqi8cboqCIEisDNv7yNbA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1734140501; c=relaxed/relaxed;
+	bh=xEU6DxsZtnGG0dTembF9SUhTjIbhwhtiQZ9LnIX5+OI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=OycJ/qVJBMg8D2OLdON2XWASv9Bk6++Gwq2OPi6DsNsHZBIJ2ZC+2fbMigaQUSFaNt1fGPxeAVbQPXaiYZX6B9uEaheCJDISvN4Xp2zTX+BZCbSdHqALf/a5Kiq/UYssnLl/EoOH4Virgz8SEWd73UtFI/LNwY2KgqC2ze5nIirKZNqGwBZi+IYck8k+bWztI5P/ECI7BosHu7mTik5eBwImm16Ip0BqVjgLxLrRIc0L518X9zFDzSp9IUzCrQTTxH8Ai1zKsKYdw36r9b0YnZ4dUduymIietdMPAU8MA3GTGgMK3looXhzlijxI54/3IXcKSD9SDfO5dvnHAqtBww==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MABcyoax; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=crowdstrike.com header.i=@crowdstrike.com header.a=rsa-sha256 header.s=default header.b=uI8Jhstn;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MABcyoax;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=crowdstrike.com (client-ip=148.163.152.16; helo=mx0b-00206402.pphosted.com; envelope-from=prvs=4077d6e2ef=martin.kelly@crowdstrike.com; receiver=lists.ozlabs.org)
-Received: from mx0b-00206402.pphosted.com (mx0b-00206402.pphosted.com [148.163.152.16])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Sat, 14 Dec 2024 12:41:37 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y8zy76DQ8z30gv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2024 06:32:46 +1100 (AEDT)
-Received: from pps.filterd (m0354655.ppops.net [127.0.0.1])
-	by mx0b-00206402.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BDJ1keI032102;
-	Fri, 13 Dec 2024 19:31:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=crowdstrike.com;
-	 h=cc:content-id:content-transfer-encoding:content-type:date
-	:from:in-reply-to:message-id:mime-version:references:subject:to;
-	 s=default; bh=tPoDDdKr7gE1BldzHLPMcwm+vKnfJGCLwyb1r5quvMs=; b=u
-	I8JhstnPB00WefGtmHgPsqDI0fGArtSLljcKNaqbHCFXYfnqJ1PFbK/niLBCe95q
-	HnRcyTLSZbxWAcGKcvDx+HG+YNpVJxjCs3UJCgMPkpQTaGNGjaXTGaPNvjXM16a7
-	Q31fMlvUzOnJ6VFUmpooiFW5Ekjs+WKtTvZYszJvUlb1g2oBcq/RclhfKv2U7Q3c
-	wZm2wudNzHojQt90PJYv7nj8Uq2VPY9hCvZEEvLiXWn4TOEf1HfZyYE3zomqXKCD
-	rPUQyOoTkC6R9X63XyGL+EnpADAWEPDl8AqCA8HOv34aigK1isSnBnFus9L/KBxa
-	IhIYUDKAD1xMz4KsSYvqg==
-Received: from mail.crowdstrike.com (dragosx.crowdstrike.com [208.42.231.60] (may be forged))
-	by mx0b-00206402.pphosted.com (PPS) with ESMTPS id 43gtqk81xr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 13 Dec 2024 19:31:16 +0000 (GMT)
-Received: from 04WPEXCH005.crowdstrike.sys (10.100.11.69) by
- 04wpexch15.crowdstrike.sys (10.100.11.105) with Microsoft SMTP Server
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Y987j0stmz2yVG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 14 Dec 2024 12:41:36 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734140497; x=1765676497;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=ppIkqj4Zkp78bKTvw2F0rlfW4619DyLKaw1j+ODci5s=;
+  b=MABcyoax+6O+SV5+ig3vtqBFJRm8VhZc9xiUmKUv9DaVMyOBC53Appfu
+   gWHd3Ju1RMFZszNPNijbxHHSwtK5TgtGhsf3czn1mE9dlC+tja+jdNf90
+   6Qtyntb5Xwt7d7FqcMIhtcbq7ED2ASOe9YuithbwNGp/MdRo8X52VcV/D
+   L6KWwLAp0s2G4cAg5fZnjF6AwOiLu8Ot0/RgywkhUbyoJn2cetCJl0woi
+   zeRJHt2bSFHNvq7EmTiTBYfRz5cZ1SOGuoiK1OTSBRCjvmYI8CHPjUkdg
+   hb/OWLFT/TVhIeZbH1U0n9OtCU26pIXBiMNYJMDNnAfq2B14ghqYgwVcA
+   A==;
+X-CSE-ConnectionGUID: dLp2fZ2YQtesLJVKqFGlFA==
+X-CSE-MsgGUID: f62ERLHdSGm3iJzBKgvoeg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11285"; a="33909068"
+X-IronPort-AV: E=Sophos;i="6.12,233,1728975600"; 
+   d="scan'208";a="33909068"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Dec 2024 17:40:25 -0800
+X-CSE-ConnectionGUID: pkpu753ISh6WBtWgxbmt6w==
+X-CSE-MsgGUID: vtHqTsqlR5iBYJbCOm7CxA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="97480408"
+Received: from orsmsx602.amr.corp.intel.com ([10.22.229.15])
+  by orviesa008.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 13 Dec 2024 17:40:25 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX602.amr.corp.intel.com (10.22.229.15) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Fri, 13 Dec 2024 17:40:24 -0800
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Fri, 13 Dec 2024 17:40:24 -0800
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.44) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 13 Dec 2024 19:31:14 +0000
-Received: from 04WPEXCH006.crowdstrike.sys (10.100.11.70) by
- 04WPEXCH005.crowdstrike.sys (10.100.11.69) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Fri, 13 Dec 2024 19:31:13 +0000
-Received: from 04WPEXCH006.crowdstrike.sys ([fe80::f686:3950:aa30:445a]) by
- 04WPEXCH006.crowdstrike.sys ([fe80::f686:3950:aa30:445a%11]) with mapi id
- 15.02.1544.009; Fri, 13 Dec 2024 19:31:13 +0000
-From: Martin Kelly <martin.kelly@crowdstrike.com>
-To: "masahiroy@kernel.org" <masahiroy@kernel.org>,
-        "ojeda@kernel.org"
-	<ojeda@kernel.org>,
-        "jpoimboe@kernel.org" <jpoimboe@kernel.org>,
-        "pasha.tatashin@soleen.com" <pasha.tatashin@soleen.com>,
-        "mhiramat@kernel.org" <mhiramat@kernel.org>,
-        "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>,
-        "james.clark@arm.com" <james.clark@arm.com>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "akpm@linux-foundation.org"
-	<akpm@linux-foundation.org>,
-        "mingo@redhat.com" <mingo@redhat.com>,
-        "rostedt@goodmis.org" <rostedt@goodmis.org>,
-        "nicolas@fjasle.eu"
-	<nicolas@fjasle.eu>,
-        "tglx@linutronix.de" <tglx@linutronix.de>,
-        "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
-        "nathan@kernel.org" <nathan@kernel.org>,
-        "npiggin@gmail.com"
-	<npiggin@gmail.com>,
-        "mark.rutland@arm.com" <mark.rutland@arm.com>,
-        "hpa@zytor.com" <hpa@zytor.com>,
-        "surenb@google.com" <surenb@google.com>,
-        "zhengyejian@huaweicloud.com" <zhengyejian@huaweicloud.com>,
-        "peterz@infradead.org" <peterz@infradead.org>,
-        "naveen.n.rao@linux.ibm.com"
-	<naveen.n.rao@linux.ibm.com>,
-        "kent.overstreet@linux.dev"
-	<kent.overstreet@linux.dev>,
-        "bp@alien8.de" <bp@alien8.de>,
-        "yeweihua4@huawei.com" <yeweihua4@huawei.com>,
-        "mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>,
-        "mcgrof@kernel.org" <mcgrof@kernel.org>
-CC: Amit Dang <amit.dang@crowdstrike.com>,
-        "linux-modules@vger.kernel.org"
-	<linux-modules@vger.kernel.org>,
-        "linux-kbuild@vger.kernel.org"
-	<linux-kbuild@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
-        "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: Re: Re: [PATCH v2 0/5] kallsyms: Emit symbol for holes in text and
- fix weak function issue
-Thread-Topic: Re: [PATCH v2 0/5] kallsyms: Emit symbol for holes in text and
- fix weak function issue
-Thread-Index: AQHbTZWS+4Gf5OP880OTR/pO30cltA==
-Date: Fri, 13 Dec 2024 19:31:13 +0000
-Message-ID: <30ee9989044dad1a7083a85316d77b35f838e622.camel@crowdstrike.com>
-References: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
-	 <44353f4cd4d1cc7170d006031819550b37039dd2.camel@crowdstrike.com>
-	 <364aaf7c-cdc4-4e57-bb4c-f62e57c23279@csgroup.eu>
-	 <d25741d8a6f88d5a6c219fb53e8aa0bcc1fea982.camel@crowdstrike.com>
-	 <1f11e3c4-e8fd-d4ac-23cd-0ab2de9c1799@huaweicloud.com>
-In-Reply-To: <1f11e3c4-e8fd-d4ac-23cd-0ab2de9c1799@huaweicloud.com>
-Accept-Language: en-US, en-GB
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-originating-ip: [10.100.11.122]
-x-disclaimer: USA
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DCF0AA386CCD2A498936894F8CF5CF09@crowdstrike.sys>
-Content-Transfer-Encoding: base64
+ 15.1.2507.44; Fri, 13 Dec 2024 17:40:23 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=bQcNtFSQkHlBrSoBQVBhKA9cfURjNJHfm7r9BtRv57zRO8XNqLq16T+drJLSZg8e7bcdBDyawZjuCmy5SW0OuguvOuEkpVpQoNU5LbZlERNieq65DHnidjTRAtresytz4lYHeqHad920+XAM0cznYLlk5cLx8h1+3+jnVec4mTuM1xigASQQiI9zIREAdYXbW/qZrSxcFlr7kZ0lhAFMvV+u6OFPC7+DPyXrw4hy26VKUruaVUsiD7HSmQyeQ277tolJqbln6fOLFnuRoxY1smNYPSy2LZYp//tT9HbNDY/PMIH7PkxtDXe2toY5BUUPUg1siRjVxeIcrybLUnu3pA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xEU6DxsZtnGG0dTembF9SUhTjIbhwhtiQZ9LnIX5+OI=;
+ b=Z8hFjy5dSWkgtavRthb22iEga4IEAPNqTKev52V7h+TVLWhdmkRRzqmX5I073Jp3JHmo2Vmimgh0i1Oye1+liPMdp8I/bdPJRXPKiYXD5DhnGlgyD7DK0c59wCJL2ghN7tpjZpvjggHINbBpG44P2otPXo2ijBoWnMeBHCOFjj6Y/LD5buy7OhpmFRPY8T3WPcMlsF2WYuXJd7aw2G5QMUN/evx8pTs+38FMpb/oBW+UxEBTR+ut5JOR8BuasXEntQNjeEu3IiukEBDUlATQnFMk4Dxxls1UBbLHTlOeBvpSbgvhTpLa5ihF+UihfRqCd8hs93zMmq83K2SUSQnCNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by BL3PR11MB6411.namprd11.prod.outlook.com (2603:10b6:208:3ba::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.16; Sat, 14 Dec
+ 2024 01:39:54 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%5]) with mapi id 15.20.8251.015; Sat, 14 Dec 2024
+ 01:39:54 +0000
+Date: Fri, 13 Dec 2024 17:39:49 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alistair Popple <apopple@nvidia.com>, <dan.j.williams@intel.com>,
+	<linux-mm@kvack.org>
+CC: Alistair Popple <apopple@nvidia.com>, <lina@asahilina.net>,
+	<zhang.lyra@gmail.com>, <gerald.schaefer@linux.ibm.com>,
+	<vishal.l.verma@intel.com>, <dave.jiang@intel.com>, <logang@deltatee.com>,
+	<bhelgaas@google.com>, <jack@suse.cz>, <jgg@ziepe.ca>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <mpe@ellerman.id.au>,
+	<npiggin@gmail.com>, <dave.hansen@linux.intel.com>, <ira.weiny@intel.com>,
+	<willy@infradead.org>, <djwong@kernel.org>, <tytso@mit.edu>,
+	<linmiaohe@huawei.com>, <david@redhat.com>, <peterx@redhat.com>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
+	<linux-xfs@vger.kernel.org>, <jhubbard@nvidia.com>, <hch@lst.de>,
+	<david@fromorbit.com>, <akpm@linux-foundation.org>, <sfr@canb.auug.org.au>
+Subject: Re: [PATCH v3 00/25] fs/dax: Fix ZONE_DEVICE page reference counts
+Message-ID: <675ce1e5a3d68_fad0294d0@dwillia2-xfh.jf.intel.com.notmuch>
+References: <cover.e1ebdd6cab9bde0d232c1810deacf0bae25e6707.1732239628.git-series.apopple@nvidia.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <cover.e1ebdd6cab9bde0d232c1810deacf0bae25e6707.1732239628.git-series.apopple@nvidia.com>
+X-ClientProxiedBy: MW4PR02CA0002.namprd02.prod.outlook.com
+ (2603:10b6:303:16d::10) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -134,42 +127,678 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Authority-Analysis: v=2.4 cv=K9PYHzWI c=1 sm=1 tr=0 ts=675c8b84 cx=c_pps a=1d8vc5iZWYKGYgMGCdbIRA==:117 a=1d8vc5iZWYKGYgMGCdbIRA==:17 a=xqWC_Br6kY4A:10 a=EjBHVkixTFsA:10 a=IkcTkHD0fZMA:10 a=RZcAm9yDv7YA:10 a=VwQbUJbxAAAA:8 a=IycRoiFrBpt9NGDnbAcA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: HhB3chrMN4blfYrmAfJ7pHz4lEANNyfd
-X-Proofpoint-GUID: HhB3chrMN4blfYrmAfJ7pHz4lEANNyfd
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- bulkscore=0 mlxscore=0 adultscore=0 lowpriorityscore=0 priorityscore=1501
- spamscore=0 suspectscore=0 mlxlogscore=925 clxscore=1011 malwarescore=0
- classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412130139
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|BL3PR11MB6411:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3041327b-00e4-4fe2-67aa-08dd1be03561
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?TK73NVZwSoF33rO6nKPBXmFH+r70xfVTQoB/oj7gNSvPkx8ckdNKHfDGhX5E?=
+ =?us-ascii?Q?HabjxgkamSaHOy0qQPQh9IKYhbVctbLYCxMdjjzo6IhRTOW363okeS5BfSLP?=
+ =?us-ascii?Q?HXXlFbOW/F9jKB7xbZOQ1xduoQduZoGSGekSfA4ASEKuI+UYKQmh4xbCBM8b?=
+ =?us-ascii?Q?BZ3oEcheM+cKp1sre+Y8kdrFhdQeOxqgJCNLsBi1Lhj5x0hFQhqDpaphQ1xv?=
+ =?us-ascii?Q?B8I7gNBMh67A5b8mLd206su4V570dF6Gv3vuZKv557J+eHpROSDHJFbrmJAh?=
+ =?us-ascii?Q?sUrOQWZxP0C6RNTY8Yo5F6QGQubxUuDzXOsl2XXvtk+CwAOkAbsvFwfhTrFo?=
+ =?us-ascii?Q?ISM/TUxq6uh4DXmrdbKK0EzKxSQGZB3aP/G+qLqG+YvFdOP2X3i8cbwil6yo?=
+ =?us-ascii?Q?WR7lAe3wEzMRhLXydLieLiudpiQyGwaoPk7pt0FSpWp3nO/Z5PkbIQJrDJdn?=
+ =?us-ascii?Q?r6OZyFz//Pmkvj8x7uvfn7si5vkq3VZfep/SFMukNbfV9OTeg+tAKbAV5Rnc?=
+ =?us-ascii?Q?KcrI1jUVYCPWAd3tQ/ETfP3WyvMYFzWMdlIjDUTufVooA4dXvYLr3321Iikv?=
+ =?us-ascii?Q?VY/Jj8gUcu55zhrxE0dPzd2nWIGeg77tQ/NsuK2q3JnrHo6mBnqtDr9MJFjE?=
+ =?us-ascii?Q?DHkB8mrhkXPmYeCbiB8oWf69jzUxtos9SUor+IX1XtmIVdbwlSCZhtNMwoJd?=
+ =?us-ascii?Q?7uW8/66IisxpORESxtfD8mwEUZx8Ia5U3Mp5vpaKvDJTEDuQD7XkVVli2VjV?=
+ =?us-ascii?Q?qlqPW0AwgWFxND1K5Fbq9uRYt34MZZ6QVBXauje3jXLVwpeiIujIvoI0LChl?=
+ =?us-ascii?Q?WXi7FvExhSwb5pVkd7IsIGAdQpdtwN1Z0G6ZOJuY6gnYuNdROfaGPKu/+mmc?=
+ =?us-ascii?Q?F33iHcjWnzVzrPvS7w4i3VIbAbr5M3LkqdS7lO0ELPpSSz7FUn/LpBVTQVfh?=
+ =?us-ascii?Q?4y5hm6tnFwR8A5D9DYG8vwLijlsK1WOscnF5MDeLgCNGr93HW1bATYfyBi/F?=
+ =?us-ascii?Q?sSm88TojwLSB2RAJbqT1EYJnn/8b1zX1aA7V6UnNwAtVKRrOQLnIaB6tXTXl?=
+ =?us-ascii?Q?U4ltoULKj99of0bH4zH2NZZSCBTQ3InynKmPvreC6WwuyCVU0/wZqKmMV+pB?=
+ =?us-ascii?Q?8fwcb/G6JJu3Rju/etCudbFYk8s/fQAQoJp2Ubr2tWxlRUxATwFSqeWE4nbk?=
+ =?us-ascii?Q?RtIaL/LzZeS/R55EUnrelEWceV5ckAUHqh2lLK1ASJnx657hXkR0KJxCMou3?=
+ =?us-ascii?Q?myprTZISazbNTgW3YXoecuSYI9fF91XRRK/UBpwbG+xTCkbt+xvMz390clU9?=
+ =?us-ascii?Q?acTh2tc8I5ca4HSBBI6vP0fJBwDTpQ+kE02lwF7K/Ox0GCufre6Djl7pW+PO?=
+ =?us-ascii?Q?PRNT4CCTn/E9y5Y93TZLOlCF9VSd?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?SJ2DClowv5L5ZyuV8wEu4uoY9w3k2OryblMN/f09IKrsl1MSrWP6Qw7nr8D/?=
+ =?us-ascii?Q?TocTplr765RyR8y6NdR987J6HCDBRdK1oNicepdL5ZMY2vIC1TTCsltwHwN0?=
+ =?us-ascii?Q?2VjwCItIhT0IQxloAG/T9lRBEpXBjs/IXtwa0WXcLFL7w9nAAzQ8InSuQuN5?=
+ =?us-ascii?Q?whCQbID+rnzM++ZSRNXiyAq3C1l9b7Ph+HDNQvXKl6M8r7CkinCFymGpBN13?=
+ =?us-ascii?Q?IJbdUtoT7A55CcY+nf9gfrpfZyE5kApYxp63eOPvgclna2AzU8e65PC0PTIC?=
+ =?us-ascii?Q?VX/GPBzUaggdCJeO1nQuLOID8Me1Yt3zwIeQYXRlFI959wmSOqmWOwKn/uxU?=
+ =?us-ascii?Q?0cmNGa8djowzVzUZ5p+6st/4KdNFXNNlfZVeAN8BVaRBtE/ZW27hb09L6eX4?=
+ =?us-ascii?Q?Q7qKT67KZkdreizHYOzWHlvGBnRWlob+uJGlC4fBhwRsopQDF1IkxzfRm8z/?=
+ =?us-ascii?Q?pOhPhKTygvdc4OGlXxL2XATny2o6Ud4xcA9xSb6vQXtPsbV1oC9hO5Pjvc+q?=
+ =?us-ascii?Q?vLwMsUh3oPlVw9F6c/U4xjm4m00SWI7jpftnZzZuFw7RzzQqXaDKMKmKg3Bb?=
+ =?us-ascii?Q?WxpBEdMvCjvj+tfMGjvuSdN9Y4pnqmY9QN0z6Pe+h/vTdbEbl8dTTA0PRPAB?=
+ =?us-ascii?Q?lxftGjmzzFy7a33NWEcXLFLxeor0KYU1fToS23y2Ncctj+Rm+7wRO6dfo8Pt?=
+ =?us-ascii?Q?AeX1U6kXRwF4eS6yXkzQyDaooBg8jKQufhDOlPlLJo38gf9sKyhiQtNJ8wy8?=
+ =?us-ascii?Q?udpM2wbZxZ0bM1yZo9prlA6tLZA98Sc8s3gFrviK5WSLXcOYFAeNcVNzVcOJ?=
+ =?us-ascii?Q?k6V8dDLWzQVNFsab6xUm7v4UaD2LoHg9sWYxdfBckGijYKOjtezYT00d91BG?=
+ =?us-ascii?Q?MXInRPX5GV2R24Ec7ZtZSGT6fFmHio4O7KvOqNmbj2Ye6g4YNtOBE1G4XxPj?=
+ =?us-ascii?Q?Hgwa96hXg5iqiDkshOIgI+XGtuVHYYetlM0vIfyGIvj85Fmqk8eXclcCxzZW?=
+ =?us-ascii?Q?aq/IXl/TEWo8vPYiT1PIcXhyrvTzxVHL8vyb+RCMgW3nm9HkoKYACG8C2KRB?=
+ =?us-ascii?Q?MoRw+As4bfl5pTzEGqJsP7cS4J29pySup0tvqFDvJ3hNEo8DCP4IA4/hL4Lt?=
+ =?us-ascii?Q?Grj5tL+c1Tmq0wlSmmznFSfW6KBcUfTCbQhB5kP16eHEUjKe8yGx4yedu6Vm?=
+ =?us-ascii?Q?lc7JlgtzDf7xRZIZPoTHpB1dan7p3mOPpo55UiuJTNmeGT+W5onTJwC4GqCN?=
+ =?us-ascii?Q?rYnTFtnnEDNLobHhi6hzAOrZEG2jJIEMQW146hjOKTVawpejxIy/f2H+9jpz?=
+ =?us-ascii?Q?hWXryJiNDqLYecdgf2sjOOSVQe9iK1gStFdcY/MG30Wxgja23622TtN8+h5d?=
+ =?us-ascii?Q?Zwsot5za7KX4xYSzM0ayOR5iE2MXkDES7JzF6Le0sSi3FRQSnWCMF3pS+iTD?=
+ =?us-ascii?Q?o01DXqETz0qlvqKFpS/BNR72Jorl6x7dwJ5supFumweH2gxuEl+PX3ZKoS0N?=
+ =?us-ascii?Q?roAyCYH1lY2hn2q1NOc2Ek2NCSpw9RAvX3lkHkhdzjWeQRT5RMk8g2R092Bq?=
+ =?us-ascii?Q?709ZyLzwgGr5fTzCcNQPamQsjXsa2czDOlIsbwpu8+Zm66ZlCmGqx4ICzJiu?=
+ =?us-ascii?Q?sQ=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3041327b-00e4-4fe2-67aa-08dd1be03561
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2024 01:39:54.1314
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: osZcSL+1rBPyGtVhX28u1GrGkdShfWpIeoTUMewCuAzhdLgcohmQNzNCuiBJtd3pou/XaMBSOdLMQG8Vhi+pTqBtTP2tzKJwVv8S7A9n22c=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR11MB6411
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-T24gVGh1LCAyMDI0LTEyLTEyIGF0IDE3OjUyICswODAwLCBaaGVuZyBZZWppYW4gd3JvdGU6DQo+
-IE9uIDIwMjQvMTIvMTEgMDQ6NDksIE1hcnRpbiBLZWxseSB3cm90ZToNCj4gPiANCj4gPiANCj4g
-PiBaaGVuZywgZG8geW91IHBsYW4gdG8gc2VuZCBhIHYzPyBJJ2QgYmUgaGFwcHkgdG8gaGVscCBv
-dXQgd2l0aCB0aGlzDQo+ID4gcGF0Y2ggc2VyaWVzIGlmIHlvdSdkIGxpa2UsIGFzIEknbSBob3Bp
-bmcgdG8gZ2V0IHRoaXMgaXNzdWUNCj4gPiByZXNvbHZlZA0KPiA+ICh0aG91Z2ggSSBhbSBub3Qg
-YW4gZnRyYWNlIGV4cGVydCkuDQo+IA0KPiBTb3JyeSB0byByZWx5IHNvIGxhdGUuIFRoYW5rcyBm
-b3IgeW91ciBmZWVkYmFjayENCj4gDQo+IFN0ZXZlIHJlY2VudGx5IHN0YXJ0ZWQgYSBkaXNjdXNz
-aW9uIG9mIHRoZSBpc3N1ZSBpbjoNCj4gDQo+IGh0dHBzOi8vbG9yZS5rZXJuZWwub3JnL2FsbC8y
-MDI0MTAxNTEwMDExMS4zN2FkZmIyOEBnYW5kYWxmLmxvY2FsLmhvbWUvDQo+IGJ1dCB0aGVyZSdz
-IG5vIGNvbmNsdXNpb24uDQo+IMKgIA0KPiBJIGNhbiByZWJhc2UgdGhpcyBwYXRjaCBzZXJpZXMg
-YW5kIHNlbmQgYSBuZXcgdmVyc2lvbiBmaXJzdCwgYW5kDQo+IEknbSBhbHNvIGhvcGluZyB0byBn
-ZXQgbW9yZSBmZWVkYmFja3MgYW5kIGhlbHAgdG8gcmVzb2x2ZSB0aGUgaXNzdWUuDQo+IA0KDQpI
-aSBaaGVuZywNCg0KSSBtYXkgaGF2ZSBtaXN1bmRlcnN0b29kLCBidXQgYmFzZWQgb24gdGhlIGZp
-bmFsIG1lc3NhZ2UgZnJvbSBTdGV2ZW4sIEkNCmdvdCB0aGUgc2Vuc2UgdGhhdCB0aGUgaWRlYSBs
-aXN0ZWQgaW4gdGhhdCB0aHJlYWQgZGlkbid0IHdvcmsgb3V0IGFuZA0Kd2Ugc2hvdWxkIHByb2Nl
-ZWQgd2l0aCB5b3VyIGN1cnJlbnQgYXBwcm9hY2guDQoNClBsZWFzZSBjb25zaWRlciBtZSBhbiBp
-bnRlcmVzdGVkIHBhcnR5IGZvciB0aGlzIHBhdGNoIHNlcmllcywgYW5kIGxldA0KbWUga25vdyBp
-ZiB0aGVyZSdzIGFueXRoaW5nIEkgY2FuIGRvIHRvIGhlbHAgc3BlZWQgaXQgYWxvbmcgKGNvLQ0K
-ZGV2ZWxvcCwgdGVzdCwgYW55dGhpbmcgZWxzZSkuIEFuZCBvZiBjb3Vyc2UsIHRoYW5rcyB2ZXJ5
-IG11Y2ggZm9yIHlvdXINCndvcmsgdGh1cyBmYXIhDQo=
+[ add akpm and sfr for next steps ]
+
+Alistair Popple wrote:
+> Main updates since v2:
+> 
+>  - Rename the DAX specific dax_insert_XXX functions to vmf_insert_XXX
+>    and have them pass the vmf struct.
+> 
+>  - Seperate out the device DAX changes.
+> 
+>  - Restore the page share mapping counting and associated warnings.
+> 
+>  - Rework truncate to require file-systems to have previously called
+>    dax_break_layout() to remove the address space mapping for a
+>    page. This found several bugs which are fixed by the first half of
+>    the series. The motivation for this was initially to allow the FS
+>    DAX page-cache mappings to hold a reference on the page.
+> 
+>    However that turned out to be a dead-end (see the comments on patch
+>    21), but it found several bugs and I think overall it is an
+>    improvement so I have left it here.
+> 
+> Device and FS DAX pages have always maintained their own page
+> reference counts without following the normal rules for page reference
+> counting. In particular pages are considered free when the refcount
+> hits one rather than zero and refcounts are not added when mapping the
+> page.
+> 
+> Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
+> mechanism for allowing GUP to hold references on the page (see
+> get_dev_pagemap). However there doesn't seem to be any reason why FS
+> DAX pages need their own reference counting scheme.
+> 
+> By treating the refcounts on these pages the same way as normal pages
+> we can remove a lot of special checks. In particular pXd_trans_huge()
+> becomes the same as pXd_leaf(), although I haven't made that change
+> here. It also frees up a valuable SW define PTE bit on architectures
+> that have devmap PTE bits defined.
+> 
+> It also almost certainly allows further clean-up of the devmap managed
+> functions, but I have left that as a future improvment. It also
+> enables support for compound ZONE_DEVICE pages which is one of my
+> primary motivators for doing this work.
+
+So this is feeling ready for -next exposure, and ideally merged for v6.14. I
+see the comments from John and Bjorn and that you were going to respin for
+that, but if it's just those details things they can probably be handled
+incrementally.
+
+Alistair, are you ready for this to hit -next?
+
+As for which tree...
+
+Andrew, we could take this through -mm, but my first instinct would be to try
+to take it through nvdimm.git mainly to offload any conflict wrangling work and
+small fixups which are likely to be an ongoing trickle.
+
+However, I am not going to put up much of a fight if others prefer this go
+through -mm.
+
+Thoughts?
+
+Here is the current conflict diff vs -next:
+
+
+commit 2f678b756ddf2c4a0fad7819442c09d3c8b52e4e
+Merge: 4176cf5c5651 0f26a45ef326
+Author: Dan Williams <dan.j.williams@intel.com>
+Date:   Fri Dec 13 17:37:32 2024 -0800
+
+    Merge branch 'for-6.14/dax' into for-6.14/dax-next
+    
+    Fixup conflicts with pte_devmap removal and other misc conflicts.
+
+diff --cc arch/arm64/Kconfig
+index 39310a484d2d,1d90ab98af3c..81855d1c822c
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@@ -40,8 -38,6 +40,7 @@@ config ARM6
+  	select ARCH_HAS_MEM_ENCRYPT
+  	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+  	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+ +	select ARCH_HAS_NONLEAF_PMD_YOUNG if ARM64_HAFT
+- 	select ARCH_HAS_PTE_DEVMAP
+  	select ARCH_HAS_PTE_SPECIAL
+  	select ARCH_HAS_HW_PTE_YOUNG
+  	select ARCH_HAS_SETUP_DMA_OPS
+diff --cc arch/riscv/Kconfig
+index 7d5718667e39,2475c5b63c34..c285250a8ea8
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@@ -41,9 -39,7 +41,8 @@@ config RISC
+  	select ARCH_HAS_MMIOWB
+  	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+  	select ARCH_HAS_PMEM_API
+ +	select ARCH_HAS_PREEMPT_LAZY
+  	select ARCH_HAS_PREPARE_SYNC_CORE_CMD
+- 	select ARCH_HAS_PTE_DEVMAP if 64BIT && MMU
+  	select ARCH_HAS_PTE_SPECIAL
+  	select ARCH_HAS_SET_DIRECT_MAP if MMU
+  	select ARCH_HAS_SET_MEMORY if MMU
+diff --cc arch/x86/Kconfig
+index 77f001c6a567,6a1a06f6a98a..acac373f5097
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@@ -96,8 -93,6 +96,7 @@@ config X8
+  	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
+  	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
+  	select ARCH_HAS_PMEM_API		if X86_64
+ +	select ARCH_HAS_PREEMPT_LAZY
+- 	select ARCH_HAS_PTE_DEVMAP		if X86_64
+  	select ARCH_HAS_PTE_SPECIAL
+  	select ARCH_HAS_HW_PTE_YOUNG
+  	select ARCH_HAS_NONLEAF_PMD_YOUNG	if PGTABLE_LEVELS > 2
+diff --cc arch/x86/include/asm/pgtable_types.h
+index 4b804531b03c,4a13b76b9b97..e4c7b519d962
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@@ -33,15 -33,12 +33,14 @@@
+  #define _PAGE_BIT_CPA_TEST	_PAGE_BIT_SOFTW1
+  #define _PAGE_BIT_UFFD_WP	_PAGE_BIT_SOFTW2 /* userfaultfd wrprotected */
+  #define _PAGE_BIT_SOFT_DIRTY	_PAGE_BIT_SOFTW3 /* software dirty tracking */
+- #define _PAGE_BIT_DEVMAP	_PAGE_BIT_SOFTW4
+  
+  #ifdef CONFIG_X86_64
+ -#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit */
+ +#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW5 /* Saved Dirty bit (leaf) */
+ +#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW5 /* No PTI shadow (root PGD) */
+  #else
+  /* Shared with _PAGE_BIT_UFFD_WP which is not supported on 32 bit */
+ -#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit */
+ +#define _PAGE_BIT_SAVED_DIRTY	_PAGE_BIT_SOFTW2 /* Saved Dirty bit (leaf) */
+ +#define _PAGE_BIT_NOPTISHADOW	_PAGE_BIT_SOFTW2 /* No PTI shadow (root PGD) */
+  #endif
+  
+  /* If _PAGE_BIT_PRESENT is clear, we use these: */
+diff --cc include/linux/rmap.h
+index 683a04088f3f,4a811c5e9294..07a99abcaf2f
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@@ -192,10 -192,11 +192,11 @@@ typedef int __bitwise rmap_t
+  enum rmap_level {
+  	RMAP_LEVEL_PTE = 0,
+  	RMAP_LEVEL_PMD,
++ 	RMAP_LEVEL_PUD,
+  };
+  
+ -static inline void __folio_rmap_sanity_checks(struct folio *folio,
+ -		struct page *page, int nr_pages, enum rmap_level level)
+ +static inline void __folio_rmap_sanity_checks(const struct folio *folio,
+ +		const struct page *page, int nr_pages, enum rmap_level level)
+  {
+  	/* hugetlb folios are handled separately. */
+  	VM_WARN_ON_FOLIO(folio_test_hugetlb(folio), folio);
+diff --cc mm/internal.h
+index 39227887e47b,50ff42f7b783..c4df0ad37423
+--- a/mm/internal.h
++++ b/mm/internal.h
+@@@ -733,9 -687,8 +733,7 @@@ static inline void prep_compound_tail(s
+  	set_page_private(p, 0);
+  }
+  
+- extern void prep_compound_page(struct page *page, unsigned int order);
+- 
+ -extern void post_alloc_hook(struct page *page, unsigned int order,
+ -					gfp_t gfp_flags);
+ +void post_alloc_hook(struct page *page, unsigned int order, gfp_t gfp_flags);
+  extern bool free_pages_prepare(struct page *page, unsigned int order);
+  
+  extern int user_min_free_kbytes;
+diff --cc mm/madvise.c
+index 49f3a75046f6,ff139e57cca2..1f4c99ee5c82
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@@ -1030,214 -1017,6 +1030,214 @@@ static long madvise_remove(struct vm_ar
+  	return error;
+  }
+  
+ +static bool is_valid_guard_vma(struct vm_area_struct *vma, bool allow_locked)
+ +{
+ +	vm_flags_t disallowed = VM_SPECIAL | VM_HUGETLB;
+ +
+ +	/*
+ +	 * A user could lock after setting a guard range but that's fine, as
+ +	 * they'd not be able to fault in. The issue arises when we try to zap
+ +	 * existing locked VMAs. We don't want to do that.
+ +	 */
+ +	if (!allow_locked)
+ +		disallowed |= VM_LOCKED;
+ +
+ +	if (!vma_is_anonymous(vma))
+ +		return false;
+ +
+ +	if ((vma->vm_flags & (VM_MAYWRITE | disallowed)) != VM_MAYWRITE)
+ +		return false;
+ +
+ +	return true;
+ +}
+ +
+ +static bool is_guard_pte_marker(pte_t ptent)
+ +{
+ +	return is_pte_marker(ptent) &&
+ +		is_guard_swp_entry(pte_to_swp_entry(ptent));
+ +}
+ +
+ +static int guard_install_pud_entry(pud_t *pud, unsigned long addr,
+ +				   unsigned long next, struct mm_walk *walk)
+ +{
+ +	pud_t pudval = pudp_get(pud);
+ +
+ +	/* If huge return >0 so we abort the operation + zap. */
+- 	return pud_trans_huge(pudval) || pud_devmap(pudval);
+++	return pud_trans_huge(pudval);
+ +}
+ +
+ +static int guard_install_pmd_entry(pmd_t *pmd, unsigned long addr,
+ +				   unsigned long next, struct mm_walk *walk)
+ +{
+ +	pmd_t pmdval = pmdp_get(pmd);
+ +
+ +	/* If huge return >0 so we abort the operation + zap. */
+- 	return pmd_trans_huge(pmdval) || pmd_devmap(pmdval);
+++	return pmd_trans_huge(pmdval);
+ +}
+ +
+ +static int guard_install_pte_entry(pte_t *pte, unsigned long addr,
+ +				   unsigned long next, struct mm_walk *walk)
+ +{
+ +	pte_t pteval = ptep_get(pte);
+ +	unsigned long *nr_pages = (unsigned long *)walk->private;
+ +
+ +	/* If there is already a guard page marker, we have nothing to do. */
+ +	if (is_guard_pte_marker(pteval)) {
+ +		(*nr_pages)++;
+ +
+ +		return 0;
+ +	}
+ +
+ +	/* If populated return >0 so we abort the operation + zap. */
+ +	return 1;
+ +}
+ +
+ +static int guard_install_set_pte(unsigned long addr, unsigned long next,
+ +				 pte_t *ptep, struct mm_walk *walk)
+ +{
+ +	unsigned long *nr_pages = (unsigned long *)walk->private;
+ +
+ +	/* Simply install a PTE marker, this causes segfault on access. */
+ +	*ptep = make_pte_marker(PTE_MARKER_GUARD);
+ +	(*nr_pages)++;
+ +
+ +	return 0;
+ +}
+ +
+ +static const struct mm_walk_ops guard_install_walk_ops = {
+ +	.pud_entry		= guard_install_pud_entry,
+ +	.pmd_entry		= guard_install_pmd_entry,
+ +	.pte_entry		= guard_install_pte_entry,
+ +	.install_pte		= guard_install_set_pte,
+ +	.walk_lock		= PGWALK_RDLOCK,
+ +};
+ +
+ +static long madvise_guard_install(struct vm_area_struct *vma,
+ +				 struct vm_area_struct **prev,
+ +				 unsigned long start, unsigned long end)
+ +{
+ +	long err;
+ +	int i;
+ +
+ +	*prev = vma;
+ +	if (!is_valid_guard_vma(vma, /* allow_locked = */false))
+ +		return -EINVAL;
+ +
+ +	/*
+ +	 * If we install guard markers, then the range is no longer
+ +	 * empty from a page table perspective and therefore it's
+ +	 * appropriate to have an anon_vma.
+ +	 *
+ +	 * This ensures that on fork, we copy page tables correctly.
+ +	 */
+ +	err = anon_vma_prepare(vma);
+ +	if (err)
+ +		return err;
+ +
+ +	/*
+ +	 * Optimistically try to install the guard marker pages first. If any
+ +	 * non-guard pages are encountered, give up and zap the range before
+ +	 * trying again.
+ +	 *
+ +	 * We try a few times before giving up and releasing back to userland to
+ +	 * loop around, releasing locks in the process to avoid contention. This
+ +	 * would only happen if there was a great many racing page faults.
+ +	 *
+ +	 * In most cases we should simply install the guard markers immediately
+ +	 * with no zap or looping.
+ +	 */
+ +	for (i = 0; i < MAX_MADVISE_GUARD_RETRIES; i++) {
+ +		unsigned long nr_pages = 0;
+ +
+ +		/* Returns < 0 on error, == 0 if success, > 0 if zap needed. */
+ +		err = walk_page_range_mm(vma->vm_mm, start, end,
+ +					 &guard_install_walk_ops, &nr_pages);
+ +		if (err < 0)
+ +			return err;
+ +
+ +		if (err == 0) {
+ +			unsigned long nr_expected_pages = PHYS_PFN(end - start);
+ +
+ +			VM_WARN_ON(nr_pages != nr_expected_pages);
+ +			return 0;
+ +		}
+ +
+ +		/*
+ +		 * OK some of the range have non-guard pages mapped, zap
+ +		 * them. This leaves existing guard pages in place.
+ +		 */
+ +		zap_page_range_single(vma, start, end - start, NULL);
+ +	}
+ +
+ +	/*
+ +	 * We were unable to install the guard pages due to being raced by page
+ +	 * faults. This should not happen ordinarily. We return to userspace and
+ +	 * immediately retry, relieving lock contention.
+ +	 */
+ +	return restart_syscall();
+ +}
+ +
+ +static int guard_remove_pud_entry(pud_t *pud, unsigned long addr,
+ +				  unsigned long next, struct mm_walk *walk)
+ +{
+ +	pud_t pudval = pudp_get(pud);
+ +
+ +	/* If huge, cannot have guard pages present, so no-op - skip. */
+- 	if (pud_trans_huge(pudval) || pud_devmap(pudval))
+++	if (pud_trans_huge(pudval))
+ +		walk->action = ACTION_CONTINUE;
+ +
+ +	return 0;
+ +}
+ +
+ +static int guard_remove_pmd_entry(pmd_t *pmd, unsigned long addr,
+ +				  unsigned long next, struct mm_walk *walk)
+ +{
+ +	pmd_t pmdval = pmdp_get(pmd);
+ +
+ +	/* If huge, cannot have guard pages present, so no-op - skip. */
+- 	if (pmd_trans_huge(pmdval) || pmd_devmap(pmdval))
+++	if (pmd_trans_huge(pmdval))
+ +		walk->action = ACTION_CONTINUE;
+ +
+ +	return 0;
+ +}
+ +
+ +static int guard_remove_pte_entry(pte_t *pte, unsigned long addr,
+ +				  unsigned long next, struct mm_walk *walk)
+ +{
+ +	pte_t ptent = ptep_get(pte);
+ +
+ +	if (is_guard_pte_marker(ptent)) {
+ +		/* Simply clear the PTE marker. */
+ +		pte_clear_not_present_full(walk->mm, addr, pte, false);
+ +		update_mmu_cache(walk->vma, addr, pte);
+ +	}
+ +
+ +	return 0;
+ +}
+ +
+ +static const struct mm_walk_ops guard_remove_walk_ops = {
+ +	.pud_entry		= guard_remove_pud_entry,
+ +	.pmd_entry		= guard_remove_pmd_entry,
+ +	.pte_entry		= guard_remove_pte_entry,
+ +	.walk_lock		= PGWALK_RDLOCK,
+ +};
+ +
+ +static long madvise_guard_remove(struct vm_area_struct *vma,
+ +				 struct vm_area_struct **prev,
+ +				 unsigned long start, unsigned long end)
+ +{
+ +	*prev = vma;
+ +	/*
+ +	 * We're ok with removing guards in mlock()'d ranges, as this is a
+ +	 * non-destructive action.
+ +	 */
+ +	if (!is_valid_guard_vma(vma, /* allow_locked = */true))
+ +		return -EINVAL;
+ +
+ +	return walk_page_range(vma->vm_mm, start, end,
+ +			       &guard_remove_walk_ops, NULL);
+ +}
+ +
+  /*
+   * Apply an madvise behavior to a region of a vma.  madvise_update_vma
+   * will handle splitting a vm area into separate areas, each area with its own
+diff --cc mm/pagewalk.c
+index e478777c86e1,576ff14b118f..a85c3319c6d5
+--- a/mm/pagewalk.c
++++ b/mm/pagewalk.c
+@@@ -133,25 -109,18 +133,24 @@@ again
+  
+  		if (walk->action == ACTION_AGAIN)
+  			goto again;
+ -
+ -		/*
+ -		 * Check this here so we only break down trans_huge
+ -		 * pages when we _need_ to
+ -		 */
+ -		if ((!walk->vma && (pmd_leaf(*pmd) || !pmd_present(*pmd))) ||
+ -		    walk->action == ACTION_CONTINUE ||
+ -		    !(ops->pte_entry))
+ +		if (walk->action == ACTION_CONTINUE)
+  			continue;
+  
+ +		if (!has_handler) { /* No handlers for lower page tables. */
+ +			if (!has_install)
+ +				continue; /* Nothing to do. */
+ +			/*
+ +			 * We are ONLY installing, so avoid unnecessarily
+ +			 * splitting a present huge page.
+ +			 */
+- 			if (pmd_present(*pmd) &&
+- 			    (pmd_trans_huge(*pmd) || pmd_devmap(*pmd)))
+++			if (pmd_present(*pmd) && pmd_trans_huge(*pmd))
+ +				continue;
+ +		}
+ +
+  		if (walk->vma)
+  			split_huge_pmd(walk->vma, pmd, addr);
+ +		else if (pmd_leaf(*pmd) || !pmd_present(*pmd))
+ +			continue; /* Nothing to do. */
+  
+  		err = walk_pte_range(pmd, addr, next, walk);
+  		if (err)
+@@@ -200,26 -164,14 +199,25 @@@ static int walk_pud_range(p4d_t *p4d, u
+  
+  		if (walk->action == ACTION_AGAIN)
+  			goto again;
+ -
+ -		if ((!walk->vma && (pud_leaf(*pud) || !pud_present(*pud))) ||
+ -		    walk->action == ACTION_CONTINUE ||
+ -		    !(ops->pmd_entry || ops->pte_entry))
+ +		if (walk->action == ACTION_CONTINUE)
+  			continue;
+  
+ +		if (!has_handler) { /* No handlers for lower page tables. */
+ +			if (!has_install)
+ +				continue; /* Nothing to do. */
+ +			/*
+ +			 * We are ONLY installing, so avoid unnecessarily
+ +			 * splitting a present huge page.
+ +			 */
+- 			if (pud_present(*pud) &&
+- 			    (pud_trans_huge(*pud) || pud_devmap(*pud)))
+++			if (pud_present(*pud) && pud_trans_huge(*pud))
+ +				continue;
+ +		}
+ +
+  		if (walk->vma)
+  			split_huge_pud(walk->vma, pud, addr);
+ +		else if (pud_leaf(*pud) || !pud_present(*pud))
+ +			continue; /* Nothing to do. */
+ +
+  		if (pud_none(*pud))
+  			goto again;
+  
+@@@ -868,11 -753,7 +866,11 @@@ struct folio *folio_walk_start(struct f
+  		fw->pudp = pudp;
+  		fw->pud = pud;
+  
+ +		/*
+ +		 * TODO: FW_MIGRATION support for PUD migration entries
+ +		 * once there are relevant users.
+ +		 */
+- 		if (!pud_present(pud) || pud_devmap(pud) || pud_special(pud)) {
++ 		if (!pud_present(pud) || pud_special(pud)) {
+  			spin_unlock(ptl);
+  			goto not_found;
+  		} else if (!pud_leaf(pud)) {
+diff --cc mm/truncate.c
+index 7c304d2f0052,ee2f890dedde..cb29feac4624
+--- a/mm/truncate.c
++++ b/mm/truncate.c
+@@@ -73,34 -83,51 +73,47 @@@ static void truncate_folio_batch_except
+  		if (xa_is_value(fbatch->folios[j]))
+  			break;
+  
+ -	if (j == folio_batch_count(fbatch))
+ +	if (j == nr)
+  		return;
+  
+ -	dax = dax_mapping(mapping);
+ -	if (!dax) {
+ -		spin_lock(&mapping->host->i_lock);
+ -		xa_lock_irq(&mapping->i_pages);
+ -	}
+ -
+ -	for (i = j; i < folio_batch_count(fbatch); i++) {
+ -		struct folio *folio = fbatch->folios[i];
+ -		pgoff_t index = indices[i];
+ +	if (dax_mapping(mapping)) {
+ +		for (i = j; i < nr; i++) {
+- 			if (xa_is_value(fbatch->folios[i]))
+++			if (xa_is_value(fbatch->folios[i])) {
+++				/*
+++			 	* File systems should already have called
+++			 	* dax_break_mapping_entry() to remove all DAX entries
+++			 	* while holding a lock to prevent establishing new
+++			 	* entries. Therefore we shouldn't find any here.
+++			 	*/
+++				WARN_ON_ONCE(1);
++ 
+ -		if (!xa_is_value(folio)) {
+ -			fbatch->folios[j++] = folio;
+ -			continue;
+++				/*
+++			 	* Delete the mapping so truncate_pagecache() doesn't
+++			 	* loop forever.
+++			 	*/
+ +				dax_delete_mapping_entry(mapping, indices[i]);
+++			}
+  		}
+ +		goto out;
+ +	}
+  
+ -		if (unlikely(dax)) {
+ -			/*
+ -			 * File systems should already have called
+ -			 * dax_break_mapping_entry() to remove all DAX entries
+ -			 * while holding a lock to prevent establishing new
+ -			 * entries. Therefore we shouldn't find any here.
+ -			 */
+ -			WARN_ON_ONCE(1);
+ +	xas_set(&xas, indices[j]);
+ +	xas_set_update(&xas, workingset_update_node);
+  
+ -			/*
+ -			 * Delete the mapping so truncate_pagecache() doesn't
+ -			 * loop forever.
+ -			 */
+ -			dax_delete_mapping_entry(mapping, index);
+ -			continue;
+ -		}
+ +	spin_lock(&mapping->host->i_lock);
+ +	xas_lock_irq(&xas);
+  
+ -		__clear_shadow_entry(mapping, index, folio);
+ +	xas_for_each(&xas, folio, indices[nr-1]) {
+ +		if (xa_is_value(folio))
+ +			xas_store(&xas, NULL);
+  	}
+  
+ -	if (!dax) {
+ -		xa_unlock_irq(&mapping->i_pages);
+ -		if (mapping_shrinkable(mapping))
+ -			inode_add_lru(mapping->host);
+ -		spin_unlock(&mapping->host->i_lock);
+ -	}
+ -	fbatch->nr = j;
+ +	xas_unlock_irq(&xas);
+ +	if (mapping_shrinkable(mapping))
+ +		inode_add_lru(mapping->host);
+ +	spin_unlock(&mapping->host->i_lock);
+ +out:
+ +	folio_batch_remove_exceptionals(fbatch);
+  }
+  
+  /**
+diff --cc mm/vmscan.c
+index 78e9360a20aa,34ff5a6635b4..f0c8eac63972
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@@ -3362,12 -3303,9 +3362,12 @@@ static unsigned long get_pte_pfn(pte_t 
+  	if (!pte_present(pte) || is_zero_pfn(pfn))
+  		return -1;
+  
+- 	if (WARN_ON_ONCE(pte_devmap(pte) || pte_special(pte)))
++ 	if (WARN_ON_ONCE(pte_special(pte)))
+  		return -1;
+  
+ +	if (!pte_young(pte) && !mm_has_notifiers(vma->vm_mm))
+ +		return -1;
+ +
+  	if (WARN_ON_ONCE(!pfn_valid(pfn)))
+  		return -1;
+  
+@@@ -3387,12 -3321,6 +3387,9 @@@ static unsigned long get_pmd_pfn(pmd_t 
+  	if (!pmd_present(pmd) || is_huge_zero_pmd(pmd))
+  		return -1;
+  
+- 	if (WARN_ON_ONCE(pmd_devmap(pmd)))
+- 		return -1;
+- 
+ +	if (!pmd_young(pmd) && !mm_has_notifiers(vma->vm_mm))
+ +		return -1;
+ +
+  	if (WARN_ON_ONCE(!pfn_valid(pfn)))
+  		return -1;
+  
 
