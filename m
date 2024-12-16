@@ -1,78 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-4133-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4136-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44BE09F2888
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 03:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 771A59F291D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 05:08:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBPPh4LvZz2xWT;
-	Mon, 16 Dec 2024 13:43:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBRHX0mBtz2xk7;
+	Mon, 16 Dec 2024 15:07:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734316984;
-	cv=none; b=VSBu5s3nivj/ZNdbLrlaAEY7NQuh9gN31x4SKHw+FBy2/Izk3mnkiq0dG6LZOpJcGZllGQ/2bLuYqk89DF0mWbcTyns7z/tzqmESI16DwH0P6/9RT4K4wLxQeifqgT677jPcqdxuf/NtMReVdiCuJ+iyPCNBUsTkg1ZGXgVMhUNZVM5dfxreTGky8+0N0WrktxsRH11yMYgE8Opf2ji/UZBfOEWkidEcwLDs5LLdy6L0m1Rj8gOL7VtI/D8AcKDI/Joc0tAtND+LMnQ8XrGHMY7nSqRBImoeQPax5dIUt2mGYgl5Q1Lveg2KvLtFHKstCX9wznGmkQf3bCxXG10Lzg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:c010:41de::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734322072;
+	cv=none; b=Q/l7iyA4txp9FgrpkBn+pMl/Jt2d9O5RpDOtMpl+5SWadbT6TNkKaeJTWVP78jzyGT/gQwIxyJ/mACeR6bfW1zBMhXbzJ6Q+0SBE0QfcEO36H1Sn+XCE2p7/LPVwedIF+cYnkXTnQa1Dcad5b3tdi1QJU9DwZdPfvsbpp6qAWEWoWDun4BgfQ4qe6+alTSz4PAMt4qDwkB30uAq/GsnF4phyi/Y3+k2+RlAnXpyHMcnNr4RHOVhxmKg1PDqr6qqkaDZTrhsztm0dMa0BKLrY6S03w9a296xJgLwT5R61TRcbp1rJz55maBJPpl5/2rhRTYGPRfuTJsze0JFcgn67BQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734316984; c=relaxed/relaxed;
-	bh=DJWD5IHTprnQJpizlbbYq4Y/m24+PEuLlbPIF09EXVM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XyOmhtXV2k8upZcEqTfP8MqIl6EQptsNec1jNELhtV2hjBYJ2Xix3nKhPAsaEiDkSYSeR+xEy45EEcjl/lXyOQslvh+/2kxIgS8kyu13m2dsPgNCg/iWIh//KlI0FSH1VLVbj0oSoeF/NaX5y2jTV/bDXsHYM5Q39WRbNpbyjarsBhQIxjgNqtbe+pwer9jeR7WgmSLJSR/9afEwuzBRu9xBxQa36oy8+qsj1w2PmkcRovPUk4cW4Bps2AxasPS0DRu62/5MQfpmaboWzf4xMfgfQFH1HrjCq8HNmsoAfpqOlg/peKJPMz51EqV2vrjXoCsnrcAPPVEl9WyaX9r3jA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IOPb3Evw; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1734322072; c=relaxed/relaxed;
+	bh=DSRi32pmZVA539jKS7pLo7rgTN02chX/vM3hbLEQJMU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=RPuEtHNVkh81KCnRb0D5FcfxCr87u4dtVzU4/ZDLo7pAXnFgVYO7UkZIe896Z0Mb9t6/l+R0H04TEq6KtgxFNX8Tj8BjqgiKF+R6nR2iejKjr00cITMmooSosqX30bzk0qxUzoPKcSWi068sWbSbViCLWlYJhzUp2rx8FPq6iiQNDKhCIacWoxhnwUIt/mLQyQZJ3ANp93Dx315Ruiv7dNRNzAS52BTKlIPtPDvAolguDacnYNGqDlXWW5Yy59VSFgn3MkpCt9nqeTHslm5FWYtKCkf2/3Dxok86QT5/EWsQL1w1tX28/DmYt+vIQGgMNnfXzSYsuSP92uWLUSO0Dg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=s2HaDX5x; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IOPb3Evw;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=s2HaDX5x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
+Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBPPg14psz2xQC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 13:43:01 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BFLkmFc007226;
-	Mon, 16 Dec 2024 02:42:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=DJWD5I
-	HTprnQJpizlbbYq4Y/m24+PEuLlbPIF09EXVM=; b=IOPb3EvwmZ4Dg6Yzfh75ho
-	Tzav8GSJ5iGcc6e/ixi8SD7vroTtOlxem4v861Bfh/eo4WqbQlPODS1XOCgJvkwT
-	/DiypU8K/WaXzaPTCDM5SpIJDIYI3esYIKrZs6pt50+5AZnmRYuilTnG7G5tfQ9F
-	P3Nki1YqPknyKJGVI9QCY2Wo+zcUlmmx1zswXBwyCmrvu9VpOxQZ5JVJcA66S72J
-	GsLT/0PzI6bMONHpzXkEokiccErYsTGR8vXIB79iAzwWqdlsB/8Rol5HukUqobpR
-	59LbakUVigy/y5Hb8Fc2AAZrF1ZzV893d3Snjh3GTL4vECJTndNFmRaYjuGBsYLw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43j0k49p8d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Dec 2024 02:42:39 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BG2gdsX025538;
-	Mon, 16 Dec 2024 02:42:39 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43j0k49p8c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Dec 2024 02:42:39 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BFNg83j005694;
-	Mon, 16 Dec 2024 02:42:38 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43hnbmv1et-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Dec 2024 02:42:38 +0000
-Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BG2gcFN45810240
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Dec 2024 02:42:38 GMT
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 387CF58056;
-	Mon, 16 Dec 2024 02:42:38 +0000 (GMT)
-Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1F93E58052;
-	Mon, 16 Dec 2024 02:42:34 +0000 (GMT)
-Received: from [9.43.66.47] (unknown [9.43.66.47])
-	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 16 Dec 2024 02:42:33 +0000 (GMT)
-Message-ID: <629f23f0-5b2a-4d6f-a047-41bf2fc9daf4@linux.ibm.com>
-Date: Mon, 16 Dec 2024 08:12:29 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBRHV3tGrz2xWt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 15:07:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
+	s=mail; t=1734322065;
+	bh=DB5vwIg/fJ2YfNc/WxQNGHUdA0VU+r4WEQnW+S6JazE=;
+	h=From:Subject:Date:To:Cc:From;
+	b=s2HaDX5x5XeUnfpVDt/XL/l6toztQOrHq0IeXCAxExummg9X4XnFpCez7ryztUw+q
+	 +Xr9KJ73E6POFyu1IfA55fLVAVBQnYA9EHmOZlqpnXhrncQAb4RXATgtl2/vxLEf59
+	 npfur4KTyGL1D/9uXibPsWmX7atHUGXp1Iugsiyw=
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Subject: [PATCH 0/5] powerpc: Constify 'struct bin_attribute'
+Date: Mon, 16 Dec 2024 05:07:42 +0100
+Message-Id: <20241216-sysfs-const-bin_attr-powerpc-v1-0-bbed8906f476@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,73 +50,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/1] powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>
-References: <20241118123254.620519-1-andriy.shevchenko@linux.intel.com>
- <514964ea-0795-41d6-91d3-f3d4f193fc6d@csgroup.eu>
- <Z1sOTf6UZbruptnl@smile.fi.intel.com>
- <991aee8b-fb10-4152-89fb-6ac542ee87c1@csgroup.eu>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <991aee8b-fb10-4152-89fb-6ac542ee87c1@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: yoBKrrLQGOVttaVwZ1mnMNXBnWCRwgZu
-X-Proofpoint-ORIG-GUID: r-YDKyCtZxYSWOhqNWg273Mubikm9I24
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 malwarescore=0 bulkscore=0 mlxlogscore=768
- clxscore=1011 suspectscore=0 adultscore=0 phishscore=0 mlxscore=0
- spamscore=0 priorityscore=1501 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2412160019
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-B4-Tracking: v=1; b=H4sIAI6nX2cC/x3MwQqDMAwA0F+RnBdYqzL1V8YQ28WZS1uS4hTx3
+ y0e3+UdoCRMCkN1gNDKyjEUmEcFfpnCj5C/xWCftjHWtKi7zoo+Bs3oOIxTzoIp/kmSx87X1Lp
+ X76g2UIokNPN29+/PeV54Gva2bgAAAA==
+X-Change-ID: 20241215-sysfs-const-bin_attr-powerpc-8c3e5b79be31
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734322065; l=1297;
+ i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
+ bh=DB5vwIg/fJ2YfNc/WxQNGHUdA0VU+r4WEQnW+S6JazE=;
+ b=2qz6e6tK3FpAt91+mlHLwa1ANToXuXtEIRSqG88YZLsebOMdN9BXOJcJPMV85TldC5lwjnb8w
+ tOErlwkVB1HAA+fobbrvQbYUdDesW4w6zCQ+XFLrtr+Usl0twwWTNPG
+X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
+ pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+The sysfs core now allows instances of 'struct bin_attribute' to be
+moved into read-only memory. Make use of that to protect them against
+accidental or malicious modifications.
 
+Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+---
+Thomas Weißschuh (5):
+      powerpc/secvar: Mark __init functions as such
+      powerpc/secvar: Constify 'struct bin_attribute'
+      powerpc/powernv/ultravisor: Constify 'struct bin_attribute'
+      powerpc/powernv/opal: Constify 'struct bin_attribute'
+      powerpc/perf/hv-24x7: Constify 'struct bin_attribute'
 
-On 12/13/24 11:58 AM, Christophe Leroy wrote:
-> 
-> 
-> Le 12/12/2024 à 17:24, Andy Shevchenko a écrit :
->> On Mon, Nov 18, 2024 at 03:10:09PM +0100, Christophe Leroy wrote:
->>> Le 18/11/2024 à 13:31, Andy Shevchenko a écrit :
->>>> Remove legacy-of-mm-gpiochip.h header file. The above mentioned
->>>> file provides an OF API that's deprecated. There is no agnostic
->>>> alternatives to it and we have to open code the logic which was
->>>> hidden behind of_mm_gpiochip_add_data(). Note, most of the GPIO
->>>> drivers are using their own labeling schemas and resource retrieval
->>>> that only a few may gain of the code deduplication, so whenever
->>>> alternative is appear we can move drivers again to use that one.
->>>>
->>>> As a side effect this change fixes a potential memory leak on
->>>> an error path, if of_mm_gpiochip_add_data() fails.
->>>>
->>>> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
->>>
->>> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>
->> Thanks, what's next?
->>
+ arch/powerpc/kernel/secvar-sysfs.c           | 24 ++++++++++++------------
+ arch/powerpc/perf/hv-24x7.c                  |  8 ++++----
+ arch/powerpc/platforms/powernv/opal-core.c   | 10 +++++-----
+ arch/powerpc/platforms/powernv/opal-dump.c   |  4 ++--
+ arch/powerpc/platforms/powernv/opal-elog.c   |  4 ++--
+ arch/powerpc/platforms/powernv/opal-flash.c  |  4 ++--
+ arch/powerpc/platforms/powernv/opal-msglog.c |  6 +++---
+ arch/powerpc/platforms/powernv/ultravisor.c  |  6 +++---
+ 8 files changed, 33 insertions(+), 33 deletions(-)
+---
+base-commit: dccbe2047a5b0859de24bf463dae9eeea8e01c1e
+change-id: 20241215-sysfs-const-bin_attr-powerpc-8c3e5b79be31
 
-Yes, will take this via powerpc tree
-
-Maddy
-
-> 
-> Next step is that Michael or Madhavan apply it I guess ?
-> 
-> Christophe
-
-
+Best regards,
+-- 
+Thomas Weißschuh <linux@weissschuh.net>
 
 
