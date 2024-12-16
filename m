@@ -1,60 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-4146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4143-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DDEF9F2B23
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 08:45:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 524039F2B1C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 08:45:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBX6G0Ngfz2ysB;
-	Mon, 16 Dec 2024 18:45:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBX6C0LRlz2yYd;
+	Mon, 16 Dec 2024 18:45:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:2"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734335109;
-	cv=none; b=XuClyVB6upu4gr+YTWY9sauam36fNeM5HSkM3bZH0XN8LkIjSLSL6jwK8z7kfFTjbLn87Cv20rd3CG9MuNhFWhNyJpRwrE5zo1TlPZS8fA0x/czQOBgNXxyGbnD/dsXBy/MEZFZ99asJ8U59NEHCnsln8qwjkK9zSLr+X4w+GRM/0IDjPcOYCEcBIUcPb1saOChN+4hv6k7yYOrJpGkc5G8xPspEFrt5BHVjv2K5Aj/LH6k2MSKdFJJVg+TYas8LEQYDcWZiSFA6lc9Ba63kZg5HiAQ/2P8ABKHvbZlG9UzSpmkB+aXRuJ94NQLB00l7dKyPQtn1qVbWDsjxGit93w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734335106;
+	cv=none; b=OxRXexIqWQiRIzH32kjjqNqSznLvor0qe//HgwPRBYrqM54s4E4krji7GQIz7C5wfLYosJpBNoTPKDkyMficiJGPGFc5Yw1fAeI18F7NxMfydx1rIEr4N0m2ABBJOQj+Xn41ClIJO2WgkqLfyT2h9i918kbhJpTHzmnI/uQUNIDO8ncq0hQpopTszTpg9C04FhhNwZyPJ6ovcb2lnll2x6DIzKbQjKhjOU92PRGvDM/QGoGhpF0+AxUJ8RtQFjh2M6e1yNhqetBua4qO67ZjZOtZzBHqdbrG4ZRixbxnOylJlVFqrHKC3F7AO32g893hcq4XqA350KFuFWMlevYyCg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734335109; c=relaxed/relaxed;
-	bh=15kpYJEGyM7Ba6x0+bg6oTodDawM+ZCB0XClI5EgXYE=;
+	t=1734335106; c=relaxed/relaxed;
+	bh=ErN9wcGBgiB6JprkFXTrxRToJxKIiYBt8gCDJYKfCZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V3ZXCuX9gD5MDEjcVWWCxpEsbPLdkOJqjk2CnADbXjHe5FVVsKLsYevA7SVsop6pgOxargA8oVTcRpyXaJdEMzh49rHepbXB6j2KzMnkShY4ngUi527GNBpIc4z0dmshQfWgQbnlyCJXIL/rNpb7whuXELpUD7kb97qKtVLhyqiFfPRN0bi7h+0WxE/I9YAB7ZD1wShT0rSOOTcydkOl96iswRnowlnkLu4XXMLtQ1ExXynwf0wimnLeuALar5DbQ4l8UtpNS5khlk5P3ZU8oBYQxhJXfx+5jTfZ5mpq21JICjj9QX078FkRIq0vecOwajo9aHgMd9LMoReIge0V9w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=p4sTDPM3; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8/zozTl2; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=p4sTDPM3; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8/zozTl2; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+	 MIME-Version; b=mY1c7cWoe7sNhnbG5+dDFraa32ku5B+I62EzsDqoLfA5oxXTBi/V5lUsoPP4CN0w9VAU+bgD5fGkJpt7dJfwc+Nn0LTpHs+1qgPuT7olgiG9GFwITwOWZwkaefLTtfV1ffqur6XCaK/L4NImNPUuQYLGhFFhC4a24K9rZh0TVrIRWpMHFE2ddqzUtC8xd22zafldPqMJ4ki1G++uwW+dHNMT3CmHo4+pZvMT+XCkNd6VRj2FjbNEVQnPPLBUWS8b9GapZlv8NknHjEOzC4wSmqXc6Tltg1QhWVNusvh4rWq0dPMfAIVlqD0Sg6C6kLpjGScGkKlR7U1JJIVjfF2OyQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=m/p2ltQU; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3nz2fXgx; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=m/p2ltQU; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3nz2fXgx; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=p4sTDPM3;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8/zozTl2;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=p4sTDPM3;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8/zozTl2;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=m/p2ltQU;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3nz2fXgx;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=m/p2ltQU;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=3nz2fXgx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=2a07:de40:b251:101:10:150:64:2; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2a07:de40:b251:101:10:150:64:2])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=tzimmermann@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBX6D65vDz2yng
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 18:45:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBX693dR1z2yRd
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 18:45:05 +1100 (AEDT)
 Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 5A7FA1F396;
+	by smtp-out2.suse.de (Postfix) with ESMTPS id AE3201F441;
 	Mon, 16 Dec 2024 07:45:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	t=1734335101; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=15kpYJEGyM7Ba6x0+bg6oTodDawM+ZCB0XClI5EgXYE=;
-	b=p4sTDPM335f7UgyTNFtvUOTyT6VUFadghW6CA1vVQUfmmWuiWCeXRJO8qHrXlEpt+h8D3z
-	+EnSF1Sx4ryCS7lGNX0XF6X/GDpPvXeKAR6Y+wjVj5pG1EA47coSTjl9feh1Sjz2ajbOQs
-	g55IB/bhNsBX+PqgoabpYrsPQsPui8c=
+	bh=ErN9wcGBgiB6JprkFXTrxRToJxKIiYBt8gCDJYKfCZU=;
+	b=m/p2ltQU07FOSRB/0oMKIbbKi0qbzJtaRXnTmnrjKmzo91ghJsUWwrxWX37v+aFW9fAbr5
+	cNp5+8gyWon33wVe5J7wtlGzhgaR9d6t1Z2kJGJUAMQr8jbjzsqIeNL6AedHp7kxcL+WVh
+	dCZGJHMOscWUC/sMLkGk94CqgLljSvw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1734335101;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=15kpYJEGyM7Ba6x0+bg6oTodDawM+ZCB0XClI5EgXYE=;
-	b=8/zozTl28OG62K0kTRYPhuVDgIkieak3u5s/F6cJCn+Zo5UVekb8RfiXzdVcZy3XCAZUcl
-	Bo3oXZkVHJTDnxDg==
+	bh=ErN9wcGBgiB6JprkFXTrxRToJxKIiYBt8gCDJYKfCZU=;
+	b=3nz2fXgxmUgckT/dc1Y+F2wHfc+aBr5cjtyriaVo3Zo5anrzSfvl7SkJO5+DYXfFitEeMN
+	l/sjuB4LUD6ZzWAw==
 Authentication-Results: smtp-out2.suse.de;
 	none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
@@ -62,29 +62,29 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=15kpYJEGyM7Ba6x0+bg6oTodDawM+ZCB0XClI5EgXYE=;
-	b=p4sTDPM335f7UgyTNFtvUOTyT6VUFadghW6CA1vVQUfmmWuiWCeXRJO8qHrXlEpt+h8D3z
-	+EnSF1Sx4ryCS7lGNX0XF6X/GDpPvXeKAR6Y+wjVj5pG1EA47coSTjl9feh1Sjz2ajbOQs
-	g55IB/bhNsBX+PqgoabpYrsPQsPui8c=
+	bh=ErN9wcGBgiB6JprkFXTrxRToJxKIiYBt8gCDJYKfCZU=;
+	b=m/p2ltQU07FOSRB/0oMKIbbKi0qbzJtaRXnTmnrjKmzo91ghJsUWwrxWX37v+aFW9fAbr5
+	cNp5+8gyWon33wVe5J7wtlGzhgaR9d6t1Z2kJGJUAMQr8jbjzsqIeNL6AedHp7kxcL+WVh
+	dCZGJHMOscWUC/sMLkGk94CqgLljSvw=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
 	s=susede2_ed25519; t=1734335101;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=15kpYJEGyM7Ba6x0+bg6oTodDawM+ZCB0XClI5EgXYE=;
-	b=8/zozTl28OG62K0kTRYPhuVDgIkieak3u5s/F6cJCn+Zo5UVekb8RfiXzdVcZy3XCAZUcl
-	Bo3oXZkVHJTDnxDg==
+	bh=ErN9wcGBgiB6JprkFXTrxRToJxKIiYBt8gCDJYKfCZU=;
+	b=3nz2fXgxmUgckT/dc1Y+F2wHfc+aBr5cjtyriaVo3Zo5anrzSfvl7SkJO5+DYXfFitEeMN
+	l/sjuB4LUD6ZzWAw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C139D13418;
-	Mon, 16 Dec 2024 07:45:00 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5F63313A62;
+	Mon, 16 Dec 2024 07:45:01 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id CMj8LXzaX2egZAAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Mon, 16 Dec 2024 07:45:00 +0000
+	id EOoXFn3aX2egZAAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Mon, 16 Dec 2024 07:45:01 +0000
 From: Thomas Zimmermann <tzimmermann@suse.de>
 To: javierm@redhat.com,
 	arnd@arndb.de,
@@ -98,9 +98,9 @@ Cc: dri-devel@lists.freedesktop.org,
 	linux-staging@lists.linux.dev,
 	linuxppc-dev@lists.ozlabs.org,
 	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH v3 2/3] drm/fbdev: Select FB_CORE dependency for fbdev on DMA and TTM
-Date: Mon, 16 Dec 2024 08:42:48 +0100
-Message-ID: <20241216074450.8590-3-tzimmermann@suse.de>
+Subject: [PATCH v3 3/3] drm: rework FB_CORE dependency
+Date: Mon, 16 Dec 2024 08:42:49 +0100
+Message-ID: <20241216074450.8590-4-tzimmermann@suse.de>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241216074450.8590-1-tzimmermann@suse.de>
 References: <20241216074450.8590-1-tzimmermann@suse.de>
@@ -117,7 +117,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -6.80
+X-Spam-Level: 
 X-Spamd-Result: default: False [-6.80 / 50.00];
 	REPLY(-4.00)[];
 	BAYES_HAM(-3.00)[100.00%];
@@ -128,7 +128,7 @@ X-Spamd-Result: default: False [-6.80 / 50.00];
 	MIME_GOOD(-0.10)[text/plain];
 	ARC_NA(0.00)[];
 	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid,imap1.dmz-prg2.suse.org:helo];
 	RCPT_COUNT_TWELVE(0.00)[12];
 	MIME_TRACE(0.00)[0:+];
 	TO_DN_SOME(0.00)[];
@@ -142,45 +142,48 @@ X-Spamd-Result: default: False [-6.80 / 50.00];
 	R_RATELIMIT(0.00)[to_ip_from(RLykjg6e7ifkwtw7jmpw7b9yio)];
 	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
 	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de]
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+X-Spam-Score: -6.80
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Select FB_CORE if GEM's DMA and TTM implementations support fbdev
-emulation. Fixes linker errors about missing symbols from the fbdev
-subsystem.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Also see [1] for a related SHMEM fix.
+The 'select FB_CORE' statement moved from CONFIG_DRM to DRM_CLIENT_LIB,
+but there are now configurations that have code calling into fb_core
+as built-in even though the client_lib itself is a loadable module:
+
+x86_64-linux-ld: drivers/gpu/drm/drm_fb_helper.o: in function `drm_fb_helper_set_suspend':
+drm_fb_helper.c:(.text+0x2c6): undefined reference to `fb_set_suspend'
+x86_64-linux-ld: drivers/gpu/drm/drm_fb_helper.o: in function `drm_fb_helper_resume_worker':
+drm_fb_helper.c:(.text+0x2e1): undefined reference to `fb_set_suspend'
+
+In addition to DRM_CLIENT_LIB, the 'select' needs to be at least in
+DRM_KMS_HELPER and DRM_GEM_SHMEM_HELPER, so add it here.
+
+This patch is the KMS_HELPER part of [1].
 
 Fixes: dadd28d4142f ("drm/client: Add client-lib module")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
 Link: https://patchwork.freedesktop.org/series/141411/ # 1
 ---
- drivers/gpu/drm/Kconfig | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 9abb41da4e3a..55ce61a46984 100644
+index 55ce61a46984..2f51546b0b88 100644
 --- a/drivers/gpu/drm/Kconfig
 +++ b/drivers/gpu/drm/Kconfig
-@@ -293,6 +293,7 @@ config DRM_TTM_HELPER
- 	tristate
- 	depends on DRM
- 	select DRM_TTM
-+	select FB_CORE if DRM_FBDEV_EMULATION
- 	select FB_SYSMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
- 	help
- 	  Helpers for ttm-based gem objects
-@@ -300,6 +301,7 @@ config DRM_TTM_HELPER
- config DRM_GEM_DMA_HELPER
+@@ -99,6 +99,7 @@ config DRM_KUNIT_TEST
+ config DRM_KMS_HELPER
  	tristate
  	depends on DRM
 +	select FB_CORE if DRM_FBDEV_EMULATION
- 	select FB_DMAMEM_HELPERS_DEFERRED if DRM_FBDEV_EMULATION
  	help
- 	  Choose this if you need the GEM DMA helper functions
+ 	  CRTC helpers for KMS drivers.
+ 
 -- 
 2.47.1
 
