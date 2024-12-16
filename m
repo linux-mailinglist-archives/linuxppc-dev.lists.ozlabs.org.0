@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-4149-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4150-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 584FC9F2E92
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 11:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD6A9F2EA3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 11:56:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBcGx0wtQz2yVb;
-	Mon, 16 Dec 2024 21:52:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBcM30KWSz2yVd;
+	Mon, 16 Dec 2024 21:56:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734346377;
-	cv=none; b=m5Z9ycXGI794uThuqQIcTNgKcq6FJ64r+Hnr5bjo4Fo1Vql2VXd4OtG4H8mfPMiQmCBNIhnhfIDyWYSLoGzNgiPUThfeigNPuHQ4+CKs7919q5C0ra2ciK6YVAvVdzl2Qfd74FvbW7Oi7SLLgU6WoNrXsLuhiSpod2NsZAQ+MpddkrQ4YQADssZ2iS3hu5PRSL2Oj/U92TBjJpOnkX+wdEtg50VWcoG4tY3tZReQwuVKMwEUhAiiE9ofqqQflF9lSLd7fdYMnLGhGaEU1bq1ORGwWY30p9gG5yuMxr9cqkBA8mdiLrwlLpddyog4ynqAmOOVVXfdxfzJCl+JdjtnOw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::433"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734346590;
+	cv=none; b=dbKqSELS80mNIZmgWrjj0weCNg8ujRmfpNqa8a86caLIz80TmY0HV/pW2WumjnlBtdelfMAZnwo8BxHWsIVExIxxi7qFp4DATsxQxqksyyDU6H7oVyiLrICl56sRLqxSPW8hzzsHiS0Mjx5o+q+1DZnbGQapFnViqWPQXz/iSR3Cbu+7m5VOB3IqDGGTzSJvIkyA2Vdj8NY/33w8f/yRLhcgqKF+bVxcFVBjNInMrHbzl37VgP58OMDnwdHfPNo8yLbcNllBHXB/fpWoIM6VFS89IzYrqVWVQY+GRYSRXSn18EkKkipVXMmjyuvF7rZslpHiRlOIan1V36HFLY3oNQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734346377; c=relaxed/relaxed;
-	bh=/IOYRGCuJyL4W5aS5tIFFhGj7u336MTqvrcn+JIIAm8=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=fmoLwQ2U3r7AeXRIB8XDWAWpQzMO/k5pmX31xWIvnvIc8sZZeHO4y709dDg9fHuVwvhbRW5o+JKbGCtYDkIoTj3prVeCdg4nJKq2TPlalDCsMShLPZV0mvfWNXogIlt5JMRzQxLCcSoC3v2SsNm5EWKXW5lmaX3dVU2sXC4NKlmJD79A5p2wxJBsdNiTrBydwZLD15H8dCi0TEQftQKdrxi+Tdc45R0EtG3lLryOlUEsrH2KKlntN1Ry2Z3dwoTYHSlQU67o5y8QUb5tXjqjuIBpr3rZP9An4H4AYrFRdBQx5sk+X9neD7b8QLp2I13PaF1T7MBkPuMYz2DCZ9QmyQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NuGf11f1; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1734346590; c=relaxed/relaxed;
+	bh=pnug43zVwuHgF5ksLoeaIclgiDip3wakxrlun38CpQ4=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=WQBayamy19we93jgaChMNso9hZ6aTQCcRWo9t7MiiJGsc5DlPF8zwFzTG4X0cTxuWZjD/gAfmGcJhKxcd0edZyZ6NXXPsh61Yy2BMYK4amQTc8KckVnWip+CqWooulLLGZMR4+taVIYvCsf+nxWACE58qdblYfkocZo7UyQyIhYKf+wOKj/tvV0xxbA4yRVZlPzlUorU9Kl4uKInzsW/+W8DkUnfLFyMEsL8UJdkgIEg9UYgcNh65LjK4ZLGq8A8Tu8gUaaVvoci8HjGXxZB34cARzKmAvdMDCXRssESm3S8bZXeVg7Uj+Kl6dJXFO3kNEmyp5Yz6aqXb/fBaLVkew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fJkCTX1b; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NuGf11f1;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fJkCTX1b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62a; helo=mail-pl1-x62a.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::433; helo=mail-pf1-x433.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBcGv0KCqz2yNs
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 21:52:53 +1100 (AEDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-2165cb60719so29446425ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 02:52:53 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBcM20TV2z2yNs
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 21:56:29 +1100 (AEDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-7242f559a9fso4979322b3a.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 02:56:29 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734346371; x=1734951171; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1734346587; x=1734951387; darn=lists.ozlabs.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=/IOYRGCuJyL4W5aS5tIFFhGj7u336MTqvrcn+JIIAm8=;
-        b=NuGf11f1NOkivwYlBOBHIHFvEFG0WQc2Qf+mNmIfvOduLBSDzIeZvXs08Za2v3PprD
-         GcR6FQnWy25l74YS1nJm8ParTblDBKvU8+8AEf6PqesJ//9jT/MiHgDPnJWE46+FR8iT
-         b3+fXQ0eFHMm5Vp6BnaJ6t4dLxep+Lu+Nf2/y4D9fitCsTLahn40L1Ek6rHKEGCN7V4v
-         Oa3EZztndng7VCCTRzEyvOaCdDBl535uf88qdFcZ+rL2BWYtrsPW0XIyGLmjeUeNccPl
-         TM2Efsv3GX6F42jQqnRtN9yqe9ybWUYO/Gr/XqwSasmnLlA2Aa3+cFq55VJzjyFkghYi
-         RRVw==
+        bh=pnug43zVwuHgF5ksLoeaIclgiDip3wakxrlun38CpQ4=;
+        b=fJkCTX1bC/+DKG8qEG3RTq6rQ9UBb5GJAHOxaFNpGOKWH1B/SAsTUl3rWjhsT1wFS5
+         tbmGURmsCMbSTEhaHcsgjsLisBVvhBM0u+oLUkdrBL2rZX2l4QqkDaNZHmx1q/Dnw+dy
+         /8kGoG1vfHfuHNpCND2j8IYzAC1pT1dUaH4BCpLaHYfzwsufYnrxWpKTgeFtzDeyOahT
+         /9aX6K731XrOAnTkr9Xe57cMF+VgiZCxHelsRu7vTYmPIihFUAn/a8GP2/rBDvXym5DH
+         qIteX+FpnWxywxxhuIQw8QmkaJCkYNnwZtaBtopnK8cKDyEbEib4bC1rEcDcI9tTyM0h
+         qLGw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734346371; x=1734951171;
+        d=1e100.net; s=20230601; t=1734346587; x=1734951387;
         h=references:message-id:date:in-reply-to:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/IOYRGCuJyL4W5aS5tIFFhGj7u336MTqvrcn+JIIAm8=;
-        b=m0adEhPVcX2hNKXg3EO+i3Bm9uckgwocbHLXUo6fZpiJZ3QlWGPP9nHgYNsHhhcuhN
-         U1tgW3V+JtDnQKhmHRdxmU4W+lUNYZMuqU6feTOUbtrsKHRoFHso6/dtSf1c4HatXeFC
-         n6JWYeWdrq8FocRwXQAYX8yP9DiATFzOgidjp4CQ4X7YCEYYaWj8ZvVbZOBRuOqfo6Nx
-         cpYzjwPjPxF9oJVTTAwz2UJH1r3sV/miepjDOM+RVg3mDO02bMe2dAA6c1ncLjChWGwn
-         9cezYug/jBg14Axc20M9imfV5BxkPTuVXQGmCRKtIzZ92/zbo/DaLLk9vstu+Kgz5m85
-         6TLg==
-X-Gm-Message-State: AOJu0YyCZGP9298hDgNBXiKF6yoBAav0GngxTwrUrYmY/+4OJSdS5WCY
-	RVvV8oJs1CM5snQdHe+Jy3UT5dlMBUNi1DuzWvj/SW4LoIBxCoY5
-X-Gm-Gg: ASbGnctR2BWW4c1RhthSBCv4UIG6LOD6TpngTbjNOZMsPb4JukAVJmT1pVtTw88GIkj
-	6sYrKZewhSgcuvK1AUgktokn4eLSib6Zupel5i4tmUdbZNpzshBMmzx8GMXZ9S+W2tdytVnvugh
-	5SrwMhIpO+Yc2IwPEcEz17R8LDaZJZLiNapHGFiUvCLxq0D79Jb6BJG8+YeQh+KIesnhS5/f5yE
-	nrHfBD6DBJD/kLN9J7U1s9VAYFkTF+oze1tKvGqwoIVPtzZeA==
-X-Google-Smtp-Source: AGHT+IFJiAlnaF9JAZcPmO5jw8NyHNzP1w/c76TAR3axPfE/oqiSHzw63fHzw/0e/V7mrANpQjWIRQ==
-X-Received: by 2002:a17:902:da8b:b0:216:4b6f:ddda with SMTP id d9443c01a7336-21892a20f71mr165923095ad.35.1734346370592;
-        Mon, 16 Dec 2024 02:52:50 -0800 (PST)
+        bh=pnug43zVwuHgF5ksLoeaIclgiDip3wakxrlun38CpQ4=;
+        b=i14xj1gIXEqZ3fxQy7MxcoIC96heccd5wpE7vVnURUTeKmYTo62zA1+go0X/HkwMlK
+         BsD49k6RMbPtfCNhhgZLB0rspfEWpxmGLhQBtcIhoTtbfb5favKcQfP5PDh1bbVknJc/
+         WjyBEN/7EEPGmnmDwKhhFbxHJOPaKFnDmq9VPvMYMijtM5oExrdCkJHYYTxPCXsecujK
+         C9FOwamSh4CuNff1O4yQLnZG1V4TXkVje2HyEbD+XihLa7W6PRKujl3F3LeMoudLIrTn
+         0oK8TE5H6fm73q95oS/d+e6NuSOaILPu4TTC21eXRCQ9/1prbFpLjx10SOzufT8r9Djf
+         VCRw==
+X-Gm-Message-State: AOJu0YwHZJWFeBJRT1WRC07DmC7l1wEzvv3tpaRrZmg74R5z9JMb7bbT
+	Em0CaytwyMc8Eeq1eTbUNDwI/OZTDnNAFDC8DIJ3tBGYXJ44NCAR
+X-Gm-Gg: ASbGncs8aGplPlER7cDxjn/1wcaKumloFyd39B6IP0mWJS953Gyrt/IITRlVW9Q+95O
+	zXS7s7v24MROEIuDPAExLszEZ2Dhq1+nLHvo9eKDAPISBnQwg42FlaP/wZjM7XtJihBSUDQfuQk
+	7wsW5xJdNBd7ac9CScLa5yZ5HlNkXDlxpowppA2sBQLqDCwnzwpa+1gPigGJkhpVA9I0/Qahi2a
+	iG7HxeEXAtVDEfZEWMWX6kz6vQg6wWCI/915jC1rzaPCMyVww==
+X-Google-Smtp-Source: AGHT+IGqJ95IRtz/8wfjaNkt3SAtl9YnDmEtN2MogEjuhbLNQEajw73seuM7YcR6hnG8b6iPyL0I8g==
+X-Received: by 2002:a05:6a20:a11f:b0:1d9:c78f:4207 with SMTP id adf61e73a8af0-1e1dfd3d97dmr20475205637.11.1734346587306;
+        Mon, 16 Dec 2024 02:56:27 -0800 (PST)
 Received: from dw-tp ([49.205.218.89])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-218a1dcb43csm40230895ad.64.2024.12.16.02.52.47
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-801d5c0effasm3867778a12.60.2024.12.16.02.56.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Dec 2024 02:52:49 -0800 (PST)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+        Mon, 16 Dec 2024 02:56:26 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com> 
 To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, shuah@kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: Re: [PATCH 1/3] selftest/powerpc/ptrace/core-pkey: Remove duplicate macros
-In-Reply-To: <20241209151418.348085-1-maddy@linux.ibm.com>
-Date: Mon, 16 Dec 2024 16:17:56 +0530
-Message-ID: <87pllr52g3.fsf@gmail.com>
-References: <20241209151418.348085-1-maddy@linux.ibm.com>
+Subject: Re: [PATCH 2/3] selftest/powerpc/ptrace/ptrace-pkey: Remove duplicate macros
+In-Reply-To: <20241209151418.348085-2-maddy@linux.ibm.com>
+Date: Mon, 16 Dec 2024 16:24:50 +0530
+Message-ID: <87msgv524l.fsf@gmail.com>
+References: <20241209151418.348085-1-maddy@linux.ibm.com> <20241209151418.348085-2-maddy@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
@@ -90,24 +90,20 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
 Madhavan Srinivasan <maddy@linux.ibm.com> writes:
 
-> core-pkey.c test has couple of macros defined which
+> ptrace-pkey.c test has macros defined which
 > are part of "pkeys.h" header file. Remove those
 > duplicates and include "pkeys.h"
 >
 > Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 > ---
->  .../selftests/powerpc/ptrace/core-pkey.c      | 19 +------------------
->  1 file changed, 1 insertion(+), 18 deletions(-)
+>  .../testing/selftests/powerpc/ptrace/ptrace-pkey.c | 14 +-------------
+>  1 file changed, 1 insertion(+), 13 deletions(-)
+>
 
-.../powerpc/ptrace/Makefile includes flags.mk. In
-.../powerpc/flags.mk we anyways add -I$(selfdir)/powerpc/include in
-CFLAGS - so it will pick up the header files defined in powerpc/include.
+Similar to previous patch. Cleanup looks good to me. 
 
-It make sense to clean this up and consolidate the common header definitions
-into pkeys.h header file. The changes looks good to me. Please feel free
-to add - 
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Please feel free to add - 
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com> 
 
 -ritesh
 
