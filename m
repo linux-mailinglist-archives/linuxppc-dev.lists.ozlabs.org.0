@@ -1,78 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-4147-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4148-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7B99F2DAB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 11:02:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32AFB9F2DEC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 11:13:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBb926BzWz2xFm;
-	Mon, 16 Dec 2024 21:02:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBbPM0mL7z2yDT;
+	Mon, 16 Dec 2024 21:13:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734343366;
-	cv=none; b=Wb0bPSNaaQCFNjCARjYOqBLbU75k9RmkSznnji5836JRMLlsDFRDtrel+aw5iCFH/ciV9a3KSgz/JD+M+ay3pT7KyTtJ1T92iGHu9ra3F6QcpWTdMmMyhHuLIcN6Mozn2vDl1ruKsR91GfbnAzFF5Z0NR8nQYBpTOI1n22t5yehiC03axU0sBdvg+nVTitZvI2++6uRSwiGFIF0PIow9YhymKCf119F8u4bQwnMLIAE25/55J0lxsuFPXTssYUPKoM7QU/QxIoBsHgx6kTeq6EryVYwy80f8TQ7beJ0y4po33t/C6kdw6JWlcv6CUzSALJJWMz+RpbhyzTj+7HrQyA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.149
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734344007;
+	cv=none; b=g5xB+vYOnJLPWD/hZPVpLTI4stfCz1VUjVsMpm8CK8mqpn8knqLNRL43nVQtO4DSPZqRr8kJha88JSO8X1hJUW20ZteUpRCeOvx/4ZJ3A/dbASQ4WNoropxH8QWb7t+vkw+79RYnzy+/0xHg0h1EaRUw7JXZGyu6d9mJeF+y+3NRynYxr5glFOcOHtJDidGFSfInBfKQFMkn4ENCFz9+KwPMwVjmXwx3SZT8+m7HvTTBd7KFsZ3Bc+SdrohTKgMqipBX+h4RpHbCjF7A+8eMhNpzwDdTXt+ZqZIOKFjMW8EYJTDrW9xDXKw71PDs/bI/nqMNQXyfc8e9QsmaH8oIiQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734343366; c=relaxed/relaxed;
-	bh=GMfSVZrUKd+3JsU6/oSzmVKPJb1iTEVgft5NcsULspk=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=H+fCOO1z0g2uPaybd4oCfoBXKxCJZyEgA3CPYYntUrqnXKTGTVTZws8OTgftAgnS4Xxu3qNdCR8+RyB4xY7EQp+nrr4B83JZJrkjtNooNs3azyvbdyXXg/9bkiN3P4yz+iMX+6pECUMK/MtOldcFib901KzREnZAJByFuDxbFIa31BxCYWVWpiwYuLd6wQU7VcJkHFMgdhI6Of6RKydcm0EwBdcxkG91fehWmvRQ5CagQ40+1plmC4MrYhSol1ghd7Sd6/XsZPBfNfAzwoptLN0ESzVVWCX8MOp4KKpWEe11D4ArWxhUMg+5I8ShkbA3HBiDbhxTJWx+zU/VObVsJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T9pqEC0p; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1734344007; c=relaxed/relaxed;
+	bh=wivUGdcXYn6VwelfaLekmpNak5Bcy3xhV06KWiQzClA=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=geB7iBreHTzLHsYjU5Up7T+0grXg51cZbjqpZ9BVpVoHMH7c0XVyKYw81HGO8OFprzCr4+H1NmKW7mEH8iOXXJn5UUTAoLOdFKiRrG5kkWD8kDhfsEZNh4Tyz7U6PEZ8qtLWInJHK1/lYOaEDl7XkDPoSGEgSq1Hpfz22Tk8zTlP9SqxgpQUzIbnndJAT115EFxlIkRQouilsnwFSX8Gk1TBw+WQIMr/elxN79OB8sQBusff831Qa4tlXPz2AgCKVUyYLhaowmQBPXblc6bQLaTJjaR0rY7aoE95oPEnG0SAKLkUsZPGIskjC1sTC13k2xM2qQkpDiTRgZR/2t9Imw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=E4Wy5Iut; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=qDCud6QC; dkim-atps=neutral; spf=pass (client-ip=103.168.172.149; helo=fout-a6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=T9pqEC0p;
+	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=E4Wy5Iut;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=qDCud6QC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.149; helo=fout-a6-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
+Received: from fout-a6-smtp.messagingengine.com (fout-a6-smtp.messagingengine.com [103.168.172.149])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBb913Yq1z2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 21:02:44 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BG3qPq8011656;
-	Mon, 16 Dec 2024 10:02:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=GMfSVZ
-	rUKd+3JsU6/oSzmVKPJb1iTEVgft5NcsULspk=; b=T9pqEC0p1qUk7+oYu3PIQq
-	CSz5mDb6lSXiu2sX0KHl5RKrS7i6NGrXe4fhWxF/c4KlTTxeaZ22eMoC9fTpxNRc
-	BoWbVYzCXD54smos6ME2OZx8228kApWFBt3vfO0BLgj96e3CZha7ecM8K1UPk+Q7
-	mtoo1g1yaNSpQoaGtwfRwIwN+GIQAUyzo8gRkisJNnyhoPpFLRkwrBCkrpW4r/t2
-	eW/2sl8bM+6sZmnX3hF86fKZBevqeQGgrUMqor/3HAfZzwwsR6RAv0P1gcmIAyNU
-	3pezeX86vscGEMXEIS+RUF/in5XqFYoSS1coWy1ecUfcRnkmMHrkAx5NpnjtpsiA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jcpb1h8g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Dec 2024 10:02:39 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BG9vNn3003775;
-	Mon, 16 Dec 2024 10:02:39 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jcpb1h8e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Dec 2024 10:02:39 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BG8JUWY029329;
-	Mon, 16 Dec 2024 10:02:37 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hmbsdk8n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 16 Dec 2024 10:02:37 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BGA2Ykw48759252
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 16 Dec 2024 10:02:34 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D76020063;
-	Mon, 16 Dec 2024 10:02:34 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58F192005A;
-	Mon, 16 Dec 2024 10:02:27 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.241.124])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 16 Dec 2024 10:02:26 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBbPF71r4z2xks
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 21:13:21 +1100 (AEDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfout.phl.internal (Postfix) with ESMTP id 26BA91383AB0;
+	Mon, 16 Dec 2024 05:13:18 -0500 (EST)
+Received: from phl-imap-11 ([10.202.2.101])
+  by phl-compute-10.internal (MEProxy); Mon, 16 Dec 2024 05:13:18 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+	:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm1; t=1734343998;
+	 x=1734430398; bh=wivUGdcXYn6VwelfaLekmpNak5Bcy3xhV06KWiQzClA=; b=
+	E4Wy5IutbDxBHk8+mFIuN+1AMbV4u7yWjqcjs/ohVZLVVAHXszEUEfWI3EsvKgD4
+	uGHO1ky7A2JnKY2b5V/o9gedVq3mfvmB0O8n/hZ9Zdp6sjQsjJ0Ss/M3xVECN9Y2
+	285OVJ2qtUIguSLeU1h+ZUU/0jzDa2LhbSBGEWhfrYt//H/yqE4YoxhEepgVE6Te
+	gNB7/czcXQQcRG1Vxod/itgte84EX/Q50lRxM6pbOhkBoOGrrtMn61f5hcZb2CT/
+	pxYTDGtgm6ItwrkMC6ymMSxThAJ8e9LXE6jI2YFP6qlw9dU2yn4dzM10/fS9bSAM
+	kdE7SyinUJAW3+lsJ47EdA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1734343998; x=
+	1734430398; bh=wivUGdcXYn6VwelfaLekmpNak5Bcy3xhV06KWiQzClA=; b=q
+	DCud6QCp0V1iCaJmCs2gPw/rtFX7/5LQjHdNzXb950CIQJV2tBHWlSTERH+wu5mU
+	OcvaV78TQd0hdsZM555o6WkvKoVqP/ThqsQ5QxDAJmiS0GiDXkPrQmva0u9BYBWJ
+	hOP9ulZksMG4v43kVrklzDxoEllOTLJFKOdL3SFyLL0UqZBJ4WK/qYX+i9w0oZRf
+	Q+cO07omolM2Kd2chyN+Seph2Kh1dWLA1dU+ybfR9BhQjBUEF2I4IQk8ysq+CHQP
+	KXMuytkmU+Fs8vuZprFplJNUjlBIZLud0IFNOTjYeMd58fGjiSlvdG3w25P2Wih6
+	Ak7fL31c0qlMcGiu8+1LA==
+X-ME-Sender: <xms:Pf1fZwQL3IFh4yAdP0IZXTOYWupixVQKRIR2VXACtF0FIwMKs2bbnw>
+    <xme:Pf1fZ9xkPOTDIun49Y_r06EpTBwZraZgBdfcPadFOjHKiCOZrw5Mvrr9hLtoeI0-O
+    qduH0dY9WYQkb8KUtk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefuddrleefgddufecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
+    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
+    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthejredtredttden
+    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
+    gvqeenucggtffrrghtthgvrhhnpefhtdfhvddtfeehudekteeggffghfejgeegteefgffg
+    vedugeduveelvdekhfdvieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
+    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeduuddp
+    mhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghroh
+    ihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopehsihhmohhnrgesfhhffihllhdrtghh
+    pdhrtghpthhtoheprghirhhlihgvugesghhmrghilhdrtghomhdprhgtphhtthhopeguvg
+    hllhgvrhesghhmgidruggvpdhrtghpthhtohepjhgrnhhirdhnihhkuhhlrgeslhhinhhu
+    gidrihhnthgvlhdrtghomhdprhgtphhtthhopegurhhiqdguvghvvghlsehlihhsthhsrd
+    hfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpthhtoheplhhinhhugidqshhtrghgihhn
+    gheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopehlihhnuhigphhptgdqug
+    gvvheslhhishhtshdrohiilhgrsghsrdhorhhgpdhrtghpthhtohepjhgrvhhivghrmhes
+    rhgvughhrghtrdgtohhm
+X-ME-Proxy: <xmx:Pf1fZ93xhCqySX7gHNrptVHxhMGCe3rk4EOLDa7frWmCUGYK_WrnNQ>
+    <xmx:Pf1fZ0D1hm5-bVL5XAY4NjKbP6tXldx00oItEU-lMwIamAYLcIOwQw>
+    <xmx:Pf1fZ5iwESOtKK7P3N9JqntnJqIadOwfNE_dBBE1NGPtU5ub9ty3eA>
+    <xmx:Pf1fZwpdN_CUM20AQx7drnZuBhUmFQoV_uy_M_QXfCL0YxMag_ob-g>
+    <xmx:Pv1fZ-aYJaDSAZC-h4tgh1CAopr3btq1o-_2Lt81K2X-t6HIex-fugaU>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 52B3A2220072; Mon, 16 Dec 2024 05:13:17 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,101 +98,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH] tools/perf/arch/powerpc: Add register mask for power11
- PVR in extended regs
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <2907ca2f-b973-42fd-ae03-99732dfda7a1@linux.ibm.com>
-Date: Mon, 16 Dec 2024 15:32:12 +0530
-Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org, linux-kernel@vger.kernel.org,
-        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com,
-        hbathini@linux.ibm.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <0402AAF0-5498-48C7-BEBA-2C0B7508D9E2@linux.vnet.ibm.com>
-References: <20241206135637.36166-1-atrajeev@linux.vnet.ibm.com>
- <2907ca2f-b973-42fd-ae03-99732dfda7a1@linux.ibm.com>
-To: kajoljain <kjain@linux.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: r-IvdmR-sjJKaBbc_LpFv8jeup8W4K4o
-X-Proofpoint-GUID: pkGSb33H05pQcJrbwsQWXg2E2tI0LIeF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 clxscore=1015
- lowpriorityscore=0 impostorscore=0 spamscore=0 mlxscore=0 adultscore=0
- mlxlogscore=999 suspectscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2412160083
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+MIME-Version: 1.0
+Date: Mon, 16 Dec 2024 11:12:32 +0100
+From: "Arnd Bergmann" <arnd@arndb.de>
+To: "Thomas Zimmermann" <tzimmermann@suse.de>,
+ "Javier Martinez Canillas" <javierm@redhat.com>,
+ "Helge Deller" <deller@gmx.de>, "Jani Nikula" <jani.nikula@linux.intel.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Simona Vetter" <simona@ffwll.ch>, "Dave Airlie" <airlied@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+Message-Id: <1dcda6ee-dc0f-4d2e-b234-6f03b5637d01@app.fastmail.com>
+In-Reply-To: <20241216074450.8590-1-tzimmermann@suse.de>
+References: <20241216074450.8590-1-tzimmermann@suse.de>
+Subject: Re: [PATCH v3 0/3] drm,fbdev: Fix module dependencies
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Mon, Dec 16, 2024, at 08:42, Thomas Zimmermann wrote:
+> Fix the dependencies among the various graphics modules.
+>
+> Before addressing the FB_CORE issue, patch 1 first resolves a problem
+> with BACKLIGHT_CLASS_DEVICE. A number of fbdev drivers select it, which
+> results in a recursive-dependency error after patch has been applied.
+> Making these drivers (or parts of them) depend on BACKLIGHT_CLASS_DEVICE
+> fixes this.
+>
+> Patch 2 selects FB_CORE for DRM_GEM_DMA_HELPER and DRM_TTM_HELPER.
+> This is necessary with the recently added DRM client library.
+>
+> Patch 3 is the second half of the patch provided by Arnd at [1]. It
+> could not yet be merged because of the issues fixed by patch 1.
+>
+> Side note: For the majority of graphics drivers, backlight functionality
+> depends on BACKLIGHT_CLASS_DEVICE. In a few cases drivers select the
+> Kconfig token automatically. These drivers should be updated to depend
+> on the token as well, such that backlight functionality is fully user-
+> controlled.
+>
+> v3:
+> - Fix PMAC_BACKLIGHT case (Christophe)
+> v2:
 
+The patches look good to me. I've had a slightly different version
+in my randconfig test tree and have replaced it with yours now
+to do some more regression testing, but I expect this to be fine.
 
-> On 11 Dec 2024, at 5:32=E2=80=AFPM, kajoljain <kjain@linux.ibm.com> =
-wrote:
->=20
->=20
->=20
-> On 12/6/24 19:26, Athira Rajeev wrote:
->> Perf tools side uses extended mask to display the platform
->> supported register names (with -I? option) to the user
->> and also send this mask to the kernel to capture the extended =
-registers
->> as part of each sample. This mask value is decided based on
->> the processor version ( from PVR ).
->>=20
->> Add PVR value for power11 to enable capturing the extended regs
->> as part of sample in power11.
->=20
-> Patch looks fine to me.
->=20
-> Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
-
-Hi
-
-Can we please pull in this patch if it looks fine.
-
-Thanks
-Athira
->=20
->=20
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->> ---
->>=20
->> tools/perf/arch/powerpc/util/perf_regs.c | 3 ++-
->> 1 file changed, 2 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/tools/perf/arch/powerpc/util/perf_regs.c =
-b/tools/perf/arch/powerpc/util/perf_regs.c
->> index e8e6e6fc6f17..bd36cfd420a2 100644
->> --- a/tools/perf/arch/powerpc/util/perf_regs.c
->> +++ b/tools/perf/arch/powerpc/util/perf_regs.c
->> @@ -16,6 +16,7 @@
->>=20
->> #define PVR_POWER9 0x004E
->> #define PVR_POWER10 0x0080
->> +#define PVR_POWER11 0x0082
->>=20
->> static const struct sample_reg sample_reg_masks[] =3D {
->> SMPL_REG(r0, PERF_REG_POWERPC_R0),
->> @@ -207,7 +208,7 @@ uint64_t arch__intr_reg_mask(void)
->> version =3D (((mfspr(SPRN_PVR)) >>  16) & 0xFFFF);
->> if (version =3D=3D PVR_POWER9)
->> extended_mask =3D PERF_REG_PMU_MASK_300;
->> - else if (version =3D=3D PVR_POWER10)
->> + else if ((version =3D=3D PVR_POWER10) || (version =3D=3D =
-PVR_POWER11))
->> extended_mask =3D PERF_REG_PMU_MASK_31;
->> else
->> return mask;
->=20
-
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
 
