@@ -1,43 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-4160-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4154-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27DA9F2F3F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 12:30:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3603A9F2F31
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 12:29:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBd4z24Khz3048;
-	Mon, 16 Dec 2024 22:29:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBd4t6HhDz2yvh;
+	Mon, 16 Dec 2024 22:29:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=159.69.126.157
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734348563;
-	cv=none; b=NsmHkfUE5c/Xmnmj0b0bkrFD+UNlmee7hkmdlmqTZRvMzWoCottVM7Vkc/jOBSB46OfFmNA+glu5zyP3RQ/nRXnw2D9KHPApY3pIefErTh/dVCHEgaSjF3cjqC7FITIEm51ZDcES1Kf3crn55hYANYEHTHl3Xg2KjR74wyoHhy8cPIP3SPUfW+d56t3mqZHf5uk8XRDvkqQ66hYIgfQ/Hcpn2GGEKVqfdyUbUujGV7ip17YTg4SkXdKL7MNReW6NN1lfFtC7rExxD7umKTrosYOokFeemr3jfTG5dqE5uoZFKBePuNjaYQ4xZBLSW7tMWRhHhumtjPCWznr/0uFAEw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734348558;
+	cv=none; b=QVfTSXwB18DQUaWNKnMknSfNWu/QNbCLEC5u95Is9AXzh72/D9xSlxtQAY1fCzlKVSGY8e0UeIw3cgdt+DLHZsEEDMIiry4Vpw2fHZ2V0GbW3xjKZNYoznXXvR+P08sTszsIKPxDYvckao7hNWtAQtBxCgYsyS+0P7tYM86uHLQJ6DFJ1PwtyI+w5M4MH+QAkg/+sjA056b5iyA6oRSZ6f7bw4llfdYlEnvdJzxIkFdTpHbJP5y3CPydSEFWvVfb3V+nhtIuuMSUAJAz5/xZjFq1MwK+EZ93PtcARlSqCrVPeWwnEBz7CLWh1yiLn/Q6rRIadCQLleLbs4DxU+GdjA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734348563; c=relaxed/relaxed;
-	bh=htzlxY/hwm84cAKGwxjnQbmr1zTO4no+lM/1COcdNEY=;
+	t=1734348558; c=relaxed/relaxed;
+	bh=CbMUoMB5t9sWTp2/BgAr1nm2ivQaQG/RDD5TpUh/Su4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bcmFdC1sVTMjWLLkTBG8NzUYQQGBWhRZaY4sRmhu+BS9oql4jLYZ5KQ92ZOxaRAfXCoHFemRvF0C563LxjasTUg53SB3KTQDhJIBL7wXFFmi41b7mx1domXodZr9qdBrgtwBDNLzaYi9ENerdONJn3rCElqh2c48rFCxzM5EZ4VbkNnTUpO3wg9SOnlyMUlOsHjTlE8tDtaI/5SQ/uKVX2Wut+Rv10WtviPahtoljC+hdTjUzdDa99/IpYUQhjV15pHxiy1XdGTKNhaVsifmciaTW6d6gCR6yO8qTEHQSKubZ7hMv10fMzvUFwcGbdTjFTjMqkfUl442Y7z6/ICFmA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=Q1eyXdHb; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 In-Reply-To:To:Cc; b=CxEHNHyzjGC3A00z6VqDju1qyCY5p6+jz6lYXxBkdIXBivBn3YTuAqYNBJxKO3toF26If7LUtn145uzDmSpzaZha+Q6vlmazIDkh7H1g3S35kDs5YWYxheLcRNvv3qw0Joda1eq2YfMNW+Psh0cF34HDtGy15wyakMXg+V444Z91a9aUfOxmROMD177nluqG0a+637X4d/fImpbRROAVMuZ1gRF29ETKdlWWLCXFOMxI2L916ScQZYPI2WlJAbaZxqEQwgkJ0ZNBZL43zfQfXIwF857xV4+mZZcWVPTZAeQB4XCGxF8xg4SWGneHWCV8wXl8ZIJZHZL5JxDJdzFpYg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=FQQrBHSu; dkim-atps=neutral; spf=pass (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=Q1eyXdHb;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=FQQrBHSu;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=159.69.126.157; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [159.69.126.157])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBd4x0Clhz3011
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 22:29:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBd4r6KRwz2ynj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 22:29:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1734348552;
-	bh=oitZ6tqthOyv84s9N34Rb9nzMVcAd+9eCJs7DMuMPZg=;
+	bh=UxSxwL/qK4i4u8NjbrtHnSuDQ3zqF0XhxRjgbnp1ehs=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=Q1eyXdHbyag9KhzRNNgo9E8H9QL8KBm0VJ3bBuTYmu/Q8ID2LdEs7F82M+oAGmL0f
-	 hFS3ewEZkIiO22+WG30C4OWIEuIknRZphCNvM1N8nsB04lCaZxqliKvhBLxrIsnnGK
-	 yEdF8dh4FKu2rUj1XByTCI+l4AHJ0pzX80nSFnSk=
+	b=FQQrBHSuc72gKSix1QVSuur4IgSvsKGMsC93Gbmx0fPteAd57elXpFWksPYL3Wuul
+	 CtzDCAFfce5XoAN+wFusEAxuZ++WObbQDSu3h+vAgjVa2dsRO2udFjZNmvFleRSHic
+	 xlszaq5LqCMZmwjIwwXu0S/L1pscFPyLclE8Fkcw=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 16 Dec 2024 12:29:09 +0100
-Subject: [PATCH 02/11] scsi: 3w-sas: Constify 'struct bin_attribute'
+Date: Mon, 16 Dec 2024 12:29:10 +0100
+Subject: [PATCH 03/11] scsi: arcmsr: Constify 'struct bin_attribute'
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241216-sysfs-const-bin_attr-scsi-v1-2-f0a5e54b3437@weissschuh.net>
+Message-Id: <20241216-sysfs-const-bin_attr-scsi-v1-3-f0a5e54b3437@weissschuh.net>
 References: <20241216-sysfs-const-bin_attr-scsi-v1-0-f0a5e54b3437@weissschuh.net>
 In-Reply-To: <20241216-sysfs-const-bin_attr-scsi-v1-0-f0a5e54b3437@weissschuh.net>
 To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
@@ -72,11 +72,11 @@ Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
  linuxppc-dev@lists.ozlabs.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734348551; l=2354;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734348551; l=2527;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=oitZ6tqthOyv84s9N34Rb9nzMVcAd+9eCJs7DMuMPZg=;
- b=sacDHXbh5wtVuj4CIy4c8lPoMwYfRqbvW7o53sDn3Rl8gYBj1PngcDtMJ7orcye3Msm+5Yd3Y
- i5icvP0is0qAVyMZ0QA3a+yvatFzrL5ioZHW6iyicE3OkmniylWhmUR
+ bh=UxSxwL/qK4i4u8NjbrtHnSuDQ3zqF0XhxRjgbnp1ehs=;
+ b=vcyhEJcSeUIpb/s74+rAXfMuCTEu+PgS5tfd520cNRubmtpMJ+lqdXmNUTpuW64jf2eM5p4hu
+ EXGDhImAe/bCfxvGEXm5GK3GNZZPH02XxoEI1YUiBIbmgO1caKNY1v5
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -90,60 +90,67 @@ accidental or malicious modifications.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/scsi/3w-sas.c | 12 ++++++------
+ drivers/scsi/arcmsr/arcmsr_attr.c | 12 ++++++------
  1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/3w-sas.c b/drivers/scsi/3w-sas.c
-index caa6713a62a44a72c7cfa5128c01fe54788cf708..6b2b02f89490aeb0494f3b586c9df995ec05a158 100644
---- a/drivers/scsi/3w-sas.c
-+++ b/drivers/scsi/3w-sas.c
-@@ -96,7 +96,7 @@ static int twl_reset_device_extension(TW_Device_Extension *tw_dev, int ioctl_res
+diff --git a/drivers/scsi/arcmsr/arcmsr_attr.c b/drivers/scsi/arcmsr/arcmsr_attr.c
+index baeb5e79569026f1af6612705689219bb4a7052f..8e3d4799ce93c35b0befe8744fd20aa3fe467ad3 100644
+--- a/drivers/scsi/arcmsr/arcmsr_attr.c
++++ b/drivers/scsi/arcmsr/arcmsr_attr.c
+@@ -60,7 +60,7 @@
  
- /* This function returns AENs through sysfs */
- static ssize_t twl_sysfs_aen_read(struct file *filp, struct kobject *kobj,
--				  struct bin_attribute *bin_attr,
-+				  const struct bin_attribute *bin_attr,
- 				  char *outbuf, loff_t offset, size_t count)
+ static ssize_t arcmsr_sysfs_iop_message_read(struct file *filp,
+ 					     struct kobject *kobj,
+-					     struct bin_attribute *bin,
++					     const struct bin_attribute *bin,
+ 					     char *buf, loff_t off,
+ 					     size_t count)
  {
- 	struct device *dev = container_of(kobj, struct device, kobj);
-@@ -116,18 +116,18 @@ static ssize_t twl_sysfs_aen_read(struct file *filp, struct kobject *kobj,
- } /* End twl_sysfs_aen_read() */
+@@ -107,7 +107,7 @@ static ssize_t arcmsr_sysfs_iop_message_read(struct file *filp,
  
- /* aen_read sysfs attribute initializer */
--static struct bin_attribute twl_sysfs_aen_read_attr = {
-+static const struct bin_attribute twl_sysfs_aen_read_attr = {
- 	.attr = {
- 		.name = "3ware_aen_read",
- 		.mode = S_IRUSR,
+ static ssize_t arcmsr_sysfs_iop_message_write(struct file *filp,
+ 					      struct kobject *kobj,
+-					      struct bin_attribute *bin,
++					      const struct bin_attribute *bin,
+ 					      char *buf, loff_t off,
+ 					      size_t count)
+ {
+@@ -155,7 +155,7 @@ static ssize_t arcmsr_sysfs_iop_message_write(struct file *filp,
+ 
+ static ssize_t arcmsr_sysfs_iop_message_clear(struct file *filp,
+ 					      struct kobject *kobj,
+-					      struct bin_attribute *bin,
++					      const struct bin_attribute *bin,
+ 					      char *buf, loff_t off,
+ 					      size_t count)
+ {
+@@ -194,7 +194,7 @@ static const struct bin_attribute arcmsr_sysfs_message_read_attr = {
+ 		.mode = S_IRUSR ,
  	},
- 	.size = 0,
--	.read = twl_sysfs_aen_read
-+	.read_new = twl_sysfs_aen_read
+ 	.size = ARCMSR_API_DATA_BUFLEN,
+-	.read = arcmsr_sysfs_iop_message_read,
++	.read_new = arcmsr_sysfs_iop_message_read,
  };
  
- /* This function returns driver compatibility info through sysfs */
- static ssize_t twl_sysfs_compat_info(struct file *filp, struct kobject *kobj,
--				     struct bin_attribute *bin_attr,
-+				     const struct bin_attribute *bin_attr,
- 				     char *outbuf, loff_t offset, size_t count)
- {
- 	struct device *dev = container_of(kobj, struct device, kobj);
-@@ -147,13 +147,13 @@ static ssize_t twl_sysfs_compat_info(struct file *filp, struct kobject *kobj,
- } /* End twl_sysfs_compat_info() */
- 
- /* compat_info sysfs attribute initializer */
--static struct bin_attribute twl_sysfs_compat_info_attr = {
-+static const struct bin_attribute twl_sysfs_compat_info_attr = {
- 	.attr = {
- 		.name = "3ware_compat_info",
- 		.mode = S_IRUSR,
+ static const struct bin_attribute arcmsr_sysfs_message_write_attr = {
+@@ -203,7 +203,7 @@ static const struct bin_attribute arcmsr_sysfs_message_write_attr = {
+ 		.mode = S_IWUSR,
  	},
- 	.size = 0,
--	.read = twl_sysfs_compat_info
-+	.read_new = twl_sysfs_compat_info
+ 	.size = ARCMSR_API_DATA_BUFLEN,
+-	.write = arcmsr_sysfs_iop_message_write,
++	.write_new = arcmsr_sysfs_iop_message_write,
  };
  
- /* Show some statistics about the card */
+ static const struct bin_attribute arcmsr_sysfs_message_clear_attr = {
+@@ -212,7 +212,7 @@ static const struct bin_attribute arcmsr_sysfs_message_clear_attr = {
+ 		.mode = S_IWUSR,
+ 	},
+ 	.size = 1,
+-	.write = arcmsr_sysfs_iop_message_clear,
++	.write_new = arcmsr_sysfs_iop_message_clear,
+ };
+ 
+ int arcmsr_alloc_sysfs_attr(struct AdapterControlBlock *acb)
 
 -- 
 2.47.1
