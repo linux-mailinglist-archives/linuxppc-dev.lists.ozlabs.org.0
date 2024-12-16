@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-4203-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4204-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673609F356B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 17:10:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D8F89F356D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 17:10:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBlKf24rcz305m;
-	Tue, 17 Dec 2024 03:10:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBlKr0sTtz30Bx;
+	Tue, 17 Dec 2024 03:10:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734365446;
-	cv=none; b=g9DOz3w0Z5DBC4fMqEkW6FhctoDN8QfmZwQ2/hBKYAcJZVlVAh2PzujsTaSvNxyv4MYMTbtlXmiA4HV1JZ6swbHta0TFKkPe3FgMycqN5yQvWh6fpc1bZQ1vj28nPGYJ9P5ZT7vQf33RC4BO7puLVNUNoGbOjh+HYGXuECoBQiEhJ8ppWZFCVPLXUYMBONeIABukeYY0qiBkmybdIlxWTtvKuo8/s1M3zYAIcawn3vFNETaER77S+QUcGa4tLfqhIIXqAyrumIzRYT/7aN3/GR+2DbvYGA1VXSlb+9ZKCwUGKT3vOIOSHm3buiz+xrNYXsRaQOZXsdTxCNv6J/goCw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734365456;
+	cv=none; b=iOnWZkaXthtBTW3sSKYgSxYFh+UQihJZS/b87yjJd1CkabLXbp32XrgMQ6V3mjb/pdEIP1CwTPmXI8a8G+B4xbYcOAP4pNAYuJ0uEA6PCmphstiWzFn/C99DSibBbJ/uhHYKvyFFc/6lAmRmVCl/fPC60pbT5hRXQzXRyzCk4Fsz2mesHxs6Dm1d+BLNo7Cb1df1dPDB1eDBer18RMito6iFcUBTkzhWWCxrHfjTYb4jpl7lKzhnTG8j39NtKKaJ7Y/aLGfVZHgLiTKTUGrLUOnIg87A3lK6jgpOuW9EhI7+XxAIK3cYHFU5VRuKSFnk2mWE2M9+T2vSE+/oAhObnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734365446; c=relaxed/relaxed;
-	bh=q02g2hmIDWuzyAVMZ79AFfJ53i3H2qjO6KyTqbXRvjQ=;
+	t=1734365456; c=relaxed/relaxed;
+	bh=3+3/j8LmCVBd7mk8mNioEHCnqHgY1fJpLitAzIZ4S30=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=na+GeeK3ZtgnEEJ3IHiwNtH5RaPcdN7eoSkMUVLkF5PFGlB6o3sJKq1D4yp1IevN8zETG0EzVaud//JmGXeZCHfu5lVk5hVIb+R/U5WVoyMSvRzVDwGI3eRu/jUEOyySDQJghEU2nsCyIG6fLQgZUg9nC5WAW8ZDNLHi4nah5zCFEvE5tjCCdJeGsBS0HA2dHW4GkkWzjvzabjkVQ5quIdFDFQON9Q8DqBv1kRNvRASgeyfTKBYA3ppugE7RmAchU1C32pegqHcekwJNIz333mBdAj9WD7uCP+9LX8vOTCM0bB9AMNtxIEFq21fMu8qIvd6ZtJAj/lUr2qa5kfuhbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gZUP1DBW; dkim-atps=neutral; spf=none (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 MIME-Version:Content-Type; b=jY4BD4zJQFI+aDOcYsCb80SfHNfggRtvPthpYMMKiu2XLqvKWCMw7IuVZda0J9J4gGnibzpCqsBXikr555n4lDTLuiHrlxgTgdnG/VRAD7psZ4h/mXueyWdHFY0M4FDIxa2NJ3I1KcOrvPvztwj2J/k/1p1OsLSq1N/6Vj1VluZQy3Z/Bqi9r3KJNAwzsMPXfXn5sEwiAB/Y5zaJMZEWQ2fhzr9t/UnJnELVNRi9voEvmO42MFH7VWTDEIQ+lM7eXcADUgSVSMbWfXb4b1EB1FQAyI9hhP3NNASzmGQSBfBnVAPxvWWiIiI7LxtjdvyvjysvkJziNyS9IlCub59dGA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n8tgBze8; dkim-atps=neutral; spf=none (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gZUP1DBW;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=n8tgBze8;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBlKd2MTnz302D
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 03:10:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBlKp6r3Dz3050
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 03:10:54 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734365445; x=1765901445;
+  t=1734365455; x=1765901455;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=3pgiIp1ZgAgTA1StdehyboBWAMBtoT+jkzi2UeAtxoE=;
-  b=gZUP1DBW8u8PWdfV/RNuGbjQ2v55CGGpKdRu2wnwuZl9TY1UoxDSM7rM
-   8559RcHppcYF7NjGkwaDx/sK36vcPclceIL1tSI+SKAIqbPtEb3CTgoE8
-   6qoUzoGFCxJwWHF+g8XUE/tPA7Fk1jAMg0rZfrXzY7gDS6RYNqUszKTWF
-   oZRq5QyTW921cEw8ckePOUOphAREMJ6MMgg9fRDgri9wWabHCtNToIr2n
-   TzdZvS9rUq9X/0SpN/HOnmHTQAkn4SdDfEaxT9Sn2NdrQpXeE48zvyw1c
-   z+EUgKHoRXqicwLVxet3ICrwcajHkNi3bDGr45v8QklKa9hg9m5XH93XQ
-   A==;
-X-CSE-ConnectionGUID: nKdFfv84RE2rtHOhf37Gbw==
-X-CSE-MsgGUID: slxuEU9ITLyRXw68APmU9g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45761364"
+  bh=j/8R7WJoDO6RfNflWfXR5RXnV1qmNJGf5O3f1LCn+y0=;
+  b=n8tgBze8I2DeWWqq1GuYyseXo4S8l7FI7W7QhXLlMcNIafcZE1nyTOGK
+   hUsLcJcrnqHmOLWLlPT2J7R34pz9iumX2EMgIuOpWMbhExePBjRhOgjuS
+   bmKf70o1soDcxEn6uxUPx12XJytoQTlRuh6fNwJjrgaOL2eVW/4yl9cd+
+   zBNDa6/xlugfe7BDb+7jthZu5S3/sUlGOL82H+j49qx5Arn+zTrvuXZHs
+   YYbL2granOjEjQAWsk6zmLwkFd3sTdubix8byYwCyOTuWLEKHS+/07i/Z
+   swhx7+si+aV5+8ziPVVcZqx38irFybT1AZ8eTeMnELYrZJQu3y81Ox/1Z
+   w==;
+X-CSE-ConnectionGUID: hOV0jKCUREiuibDUpF8EUQ==
+X-CSE-MsgGUID: pZu8+zFLRWKjBoFW00tapA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="45761393"
 X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="45761364"
+   d="scan'208";a="45761393"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 08:10:44 -0800
-X-CSE-ConnectionGUID: FIKKxg6uQFidlzOQxQBWDA==
-X-CSE-MsgGUID: 7mBoGB7gQVuGvk/jIrgGow==
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 08:10:53 -0800
+X-CSE-ConnectionGUID: wrjHuh+eSAuFg8ggGOFU2Q==
+X-CSE-MsgGUID: 7efW7r51SWaBvrsH3B67mA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,239,1728975600"; 
-   d="scan'208";a="97015516"
+   d="scan'208";a="97015539"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.29])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 08:10:42 -0800
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 08:10:50 -0800
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: Bjorn Helgaas <bhelgaas@google.com>,
 	linux-pci@vger.kernel.org,
 	Karolina Stolarek <karolina.stolarek@oracle.com>,
-	linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
 	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
 	"Oliver O'Halloran" <oohall@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 3/4] PCI: shpchp: Cleanup logging and debug wrappers
-Date: Mon, 16 Dec 2024 18:10:11 +0200
-Message-Id: <20241216161012.1774-4-ilpo.jarvinen@linux.intel.com>
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 4/4] PCI: Descope pci_printk() to aer_printk()
+Date: Mon, 16 Dec 2024 18:10:12 +0200
+Message-Id: <20241216161012.1774-5-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241216161012.1774-1-ilpo.jarvinen@linux.intel.com>
 References: <20241216161012.1774-1-ilpo.jarvinen@linux.intel.com>
@@ -88,83 +88,79 @@ X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The shpchp hotplug driver defines logging wrappers ctrl_*() and another
-set of wrappers with generic names which are just duplicates of
-existing generic printk() wrappers. Only the former are useful to
-preserve as they handle the controller dereferencing (the latter are
-also unused).
+include/linux/pci.h provides low-level pci_printk() interface that is
+only used by AER because it needs to print the same message with
+different levels depending on the error severity. No other PCI code
+uses that functionality and calls pci_<level>() logging functions
+directly with the appropriate level.
 
-The "shpchp_debug" module parameter is used to enable debug logging.
-The generic ability to turn on/off debug prints dynamically covers this
-usecase already so there is no need to module specific debug handling.
-The ctrl_dbg() wrapper also uses a low-level pci_printk() despite
-always using KERN_DEBUG level.
-
-Convert ctrl_dbg() to use the pci_dbg() and remove "shpchp_debug" check
-from it.
-
-Removing the non-ctrl variants of logging wrappers and "shpchp_debug"
-module parameter as they are no longer used.
+Descope pci_printk() into AER as aer_printk().
 
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- drivers/pci/hotplug/shpchp.h      | 18 +-----------------
- drivers/pci/hotplug/shpchp_core.c |  3 ---
- 2 files changed, 1 insertion(+), 20 deletions(-)
+ drivers/pci/pcie/aer.c | 10 +++++++---
+ include/linux/pci.h    |  3 ---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/hotplug/shpchp.h b/drivers/pci/hotplug/shpchp.h
-index f0e2d2d54d71..f9e57dce010b 100644
---- a/drivers/pci/hotplug/shpchp.h
-+++ b/drivers/pci/hotplug/shpchp.h
-@@ -33,24 +33,8 @@ extern bool shpchp_poll_mode;
- extern int shpchp_poll_time;
- extern bool shpchp_debug;
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 80c5ba8d8296..bfc6b94dad4d 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -17,6 +17,7 @@
  
--#define dbg(format, arg...)						\
--do {									\
--	if (shpchp_debug)						\
--		printk(KERN_DEBUG "%s: " format, MY_NAME, ## arg);	\
--} while (0)
--#define err(format, arg...)						\
--	printk(KERN_ERR "%s: " format, MY_NAME, ## arg)
--#define info(format, arg...)						\
--	printk(KERN_INFO "%s: " format, MY_NAME, ## arg)
--#define warn(format, arg...)						\
--	printk(KERN_WARNING "%s: " format, MY_NAME, ## arg)
+ #include <linux/bitops.h>
+ #include <linux/cper.h>
++#include <linux/dev_printk.h>
+ #include <linux/pci.h>
+ #include <linux/pci-acpi.h>
+ #include <linux/sched.h>
+@@ -35,6 +36,9 @@
+ #include "../pci.h"
+ #include "portdrv.h"
+ 
++#define aer_printk(level, pdev, fmt, arg...) \
++	dev_printk(level, &(pdev)->dev, fmt, ##arg)
++
+ #define AER_ERROR_SOURCES_MAX		128
+ 
+ #define AER_MAX_TYPEOF_COR_ERRS		16	/* as per PCI_ERR_COR_STATUS */
+@@ -692,7 +696,7 @@ static void __aer_print_error(struct pci_dev *dev,
+ 		if (!errmsg)
+ 			errmsg = "Unknown Error Bit";
+ 
+-		pci_printk(level, dev, "   [%2d] %-22s%s\n", i, errmsg,
++		aer_printk(level, dev, "   [%2d] %-22s%s\n", i, errmsg,
+ 				info->first_error == i ? " (First)" : "");
+ 	}
+ 	pci_dev_aer_stats_incr(dev, info);
+@@ -715,11 +719,11 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
+ 
+ 	level = (info->severity == AER_CORRECTABLE) ? KERN_WARNING : KERN_ERR;
+ 
+-	pci_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
++	aer_printk(level, dev, "PCIe Bus Error: severity=%s, type=%s, (%s)\n",
+ 		   aer_error_severity_string[info->severity],
+ 		   aer_error_layer[layer], aer_agent_string[agent]);
+ 
+-	pci_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
++	aer_printk(level, dev, "  device [%04x:%04x] error status/mask=%08x/%08x\n",
+ 		   dev->vendor, dev->device, info->status, info->mask);
+ 
+ 	__aer_print_error(dev, info);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index db9b47ce3eef..02d23e795915 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -2685,9 +2685,6 @@ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
+ 
+ #include <linux/dma-mapping.h>
+ 
+-#define pci_printk(level, pdev, fmt, arg...) \
+-	dev_printk(level, &(pdev)->dev, fmt, ##arg)
 -
- #define ctrl_dbg(ctrl, format, arg...)					\
--	do {								\
--		if (shpchp_debug)					\
--			pci_printk(KERN_DEBUG, ctrl->pci_dev,		\
--					format, ## arg);		\
--	} while (0)
-+	pci_dbg(ctrl->pci_dev, format, ## arg);
- #define ctrl_err(ctrl, format, arg...)					\
- 	pci_err(ctrl->pci_dev, format, ## arg)
- #define ctrl_info(ctrl, format, arg...)					\
-diff --git a/drivers/pci/hotplug/shpchp_core.c b/drivers/pci/hotplug/shpchp_core.c
-index a10ce7be7f51..0c341453afc6 100644
---- a/drivers/pci/hotplug/shpchp_core.c
-+++ b/drivers/pci/hotplug/shpchp_core.c
-@@ -22,7 +22,6 @@
- #include "shpchp.h"
- 
- /* Global variables */
--bool shpchp_debug;
- bool shpchp_poll_mode;
- int shpchp_poll_time;
- 
-@@ -33,10 +32,8 @@ int shpchp_poll_time;
- MODULE_AUTHOR(DRIVER_AUTHOR);
- MODULE_DESCRIPTION(DRIVER_DESC);
- 
--module_param(shpchp_debug, bool, 0644);
- module_param(shpchp_poll_mode, bool, 0644);
- module_param(shpchp_poll_time, int, 0644);
--MODULE_PARM_DESC(shpchp_debug, "Debugging mode enabled or not");
- MODULE_PARM_DESC(shpchp_poll_mode, "Using polling mechanism for hot-plug events or not");
- MODULE_PARM_DESC(shpchp_poll_time, "Polling mechanism frequency, in seconds");
- 
+ #define pci_emerg(pdev, fmt, arg...)	dev_emerg(&(pdev)->dev, fmt, ##arg)
+ #define pci_alert(pdev, fmt, arg...)	dev_alert(&(pdev)->dev, fmt, ##arg)
+ #define pci_crit(pdev, fmt, arg...)	dev_crit(&(pdev)->dev, fmt, ##arg)
 -- 
 2.39.5
 
