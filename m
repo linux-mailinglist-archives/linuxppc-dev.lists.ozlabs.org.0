@@ -1,43 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-4171-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4174-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 046B69F2F67
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 12:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CB59F301B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 13:09:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBd9L0cD2z30PF;
-	Mon, 16 Dec 2024 22:33:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBdzY4PK4z2ysv;
+	Mon, 16 Dec 2024 23:09:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:c010:41de::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734348790;
-	cv=none; b=i3w6u4GUHeT5Jj4YbfDsmLoOc6VOj/JO/LktbquWwlYWlHvwP0TjpjZ4zLhoqaFF9eny1uWuF6EAqyEqvhEhh5xfH3ApDmC8yhwBLswi/kKR6hWppa0VOAjGnW8F59aVtQzuaHcEI4sYzY4Xo73fzDeNHa04Y6hDODmRUmj8iPW3eaAIauNMLKCgsaVzGQHTgBFlJqyqVqu5oN1ZTiQpORSltiXhDk6tXOA7Zzwu21VRIKQBBxEHyNBikftNfsJhszFmyGlKuCmzzRk22fhzB2/B5uh9GmhGTDV4ZWfnD8mGNpvxKsUX10ELF6CXtlDPDGYa0ra/TNxr2YUMIPQxuw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734350985;
+	cv=none; b=AsooEnT7yTVc3ag/36Jna2mNYzVmTUduv+ueW46gowLa8AqJQs/VvezZytGPMUmzz2vgN95hwzhv/AMjTnxR+fOr5ZSmt2HXSYLeMxVowTFhuBofFB5ZhxzrFvM4YBMCLwd7rcJP9uE7SYZn3lR0e4Yg83FWT+LAwUV6H9iooQD7vAxXhUdae6rYzyxxW0tmZn7mzAinpQrT/UBMgSb/9fLdWm3ifOqZVepWQTR06CfkBgm4FMGTrXHDPP7pe/NsDxkZMLKwfb5KGe+CbiHGgLnEj6Aa1SQxFdrr0y3Se9KaD1/jeQCnLteM8X7UE4WaeKgzdEDubx0RLNrEk8KhtA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734348790; c=relaxed/relaxed;
-	bh=W2aoAsoXZdNr8hS5e3F5W8WCSjJ43ew5jkRMAMhC6SQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=mxa0FbCUFLV8TaIrZ0AKz+Fu5Co6ITmED9EIkq4qvpxeYTgZKdEJb/wEwCem8nTNBHDDpF7yguH+GihhtWeMT2T7AzTAitN4TdjYeopbte6GW6UEHEbolHTYR7xmc63aFj1t+4MwoywPPb2LVamv+QIC2gLwunx5kmP4W6jfeiQmwQEQ4nQFDWHfqElrnNnbqpqUus5c8FeDcZiy9H5SbFPbFEEvh1AoU81Er0z+Hu/HKHoibwpMVq/9jrLd3eAT0jk9Canb9kpR1G+4Rf2QLkigH3O6MuLIBQSOhbl18iFAP9do4urn6vM6WmQxB/WD3LUKcGAmqYiLOtsxZzOO3w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=NfxFD6II; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
+	t=1734350985; c=relaxed/relaxed;
+	bh=WTSHcJ8eRCQYNL+hWiFrScopX+ZbF/jNY8lXSWTn3Ck=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YeOmLowNHBIFxEIeHQx/7dzUvEL2HiDZcHr10YpcmuG7phXmr72czi7yPD39A/5dCGGFH2dQ7AV8gRfu5kBLB3xokJpbhVhGTj7iSmA+2CA0BUhz0lj3+MPf18NsUL8OiqckDfS/Mt7N5kPSQ0uqulRSDxAszQDSpWmQXnEsCs17c9STQ7om2hhCYpbz5XmgXO/e28tyDQJWnLv8m3TOYkI/Eqv3LWtHutS4KnLLQa6IDB4U3hdMtyJabLBoivSfuG7GOrsf9Zxxa+yt94Dlq1CdhCUDuQjdEfW6SUpR4w1k8K4sIJPM+1tl/AxkFPkpyv4Yv1KzzO5HWkVkxgQr3w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ChfgpvZ1; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=NfxFD6II;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ChfgpvZ1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
-Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBd9K2KQjz30CD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 22:33:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
-	s=mail; t=1734348782;
-	bh=K4ArLdURdX68J2n0OD7NKA61+TDFNtIXruvjgSApS6k=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=NfxFD6IIfv0b72FnNHcUemUJKW7ucb4PD4uqSFqSynxbBJ1SFm8Ol1Sv7jwELRPFE
-	 749g1byC+LOX+bRy4uE6sridAEUEEZzgWFKpTEm6Voj+AnXNWP8H4ppwKng/R0X08P
-	 v5cPrKAYHLUWz/wmrCIA3gqttNBQATRla42PJpY0=
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 16 Dec 2024 12:33:04 +0100
-Subject: [PATCH 9/9] misc: ds1682: Constify 'struct bin_attribute'
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBdzW2RdDz2xJ5
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 23:09:42 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BG85ZiZ027025;
+	Mon, 16 Dec 2024 12:09:26 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WTSHcJ
+	8eRCQYNL+hWiFrScopX+ZbF/jNY8lXSWTn3Ck=; b=ChfgpvZ1WWBUw2MPcuNizl
+	tM7m1HK6aVnVvzOUzaRRtS1ozNw+v/vY/zekAW08+rHzh7M8UkVvTPHwk+nNMTLS
+	k6OmfCGcYd+j/H9FEVm6alLI70902+8Pdl+tzL2LhZ0UwXDtwDwEKpwBNuz0Y1fL
+	jLnzzGqeGTtS2zqKOEWWFDiX8yLFEY79xNKY+E4D8qgHX+EG9iDKjShx6EGScife
+	ffZUgnzbqIvghUIHCTCgwA0jTRpEwyLcX9OmMh3ubMYujINL8rcF/E+lYKnjldyD
+	Nhjg4WI/exQMRWeCfxHRUkYpyXHnGY8t76Q+zXpUsogVe/44y2GMxLba1JB7GArQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd292kf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 12:09:26 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BGC3TIN002189;
+	Mon, 16 Dec 2024 12:09:26 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd292kb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 12:09:26 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BGASkJ8011260;
+	Mon, 16 Dec 2024 12:09:25 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hpjjwjcu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 16 Dec 2024 12:09:25 +0000
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BGC9OKY27132444
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 16 Dec 2024 12:09:24 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5ADB658065;
+	Mon, 16 Dec 2024 12:09:24 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C54EC5805D;
+	Mon, 16 Dec 2024 12:09:19 +0000 (GMT)
+Received: from [9.43.70.111] (unknown [9.43.70.111])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 16 Dec 2024 12:09:19 +0000 (GMT)
+Message-ID: <bbde8e05-fc85-434e-998c-a6fcc8b2df4e@linux.ibm.com>
+Date: Mon, 16 Dec 2024 17:39:17 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -50,73 +85,138 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20241216-sysfs-const-bin_attr-misc-drivers-v1-9-d50ff7b21367@weissschuh.net>
-References: <20241216-sysfs-const-bin_attr-misc-drivers-v1-0-d50ff7b21367@weissschuh.net>
-In-Reply-To: <20241216-sysfs-const-bin_attr-misc-drivers-v1-0-d50ff7b21367@weissschuh.net>
-To: Frederic Barrat <fbarrat@linux.ibm.com>, 
- Andrew Donnellan <ajd@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734348781; l=1662;
- i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=K4ArLdURdX68J2n0OD7NKA61+TDFNtIXruvjgSApS6k=;
- b=vnav+SRhHMJUpON2XxNPS9SvCbHCVXWtEVYujeOfGn+lPW1BTFAAtx1VDP0H2bZFBSIJAl63w
- ei68QXNXhzlD7MjpC5Xdlp+pHXf2dPAekPEInby2gxMr4OzqQ7toj+/
-X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
- pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/3] selftest/powerpc/ptrace: Cleanup duplicate macro
+ definitions
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+        shuah@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org
+References: <20241209151418.348085-1-maddy@linux.ibm.com>
+ <20241209151418.348085-3-maddy@linux.ibm.com> <87ldwf520w.fsf@gmail.com>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <87ldwf520w.fsf@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: l6k8yrErjU-dP8EVAwrEkxuevyu2ZaYK
+X-Proofpoint-GUID: SZ4kf7HNimysG9KiQGPyaUuUwoSNRgI2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ mlxlogscore=867 priorityscore=1501 malwarescore=0 impostorscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412160101
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The sysfs core now allows instances of 'struct bin_attribute' to be
-moved into read-only memory. Make use of that to protect them against
-accidental or malicious modifications.
 
-Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
----
- drivers/misc/ds1682.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/misc/ds1682.c b/drivers/misc/ds1682.c
-index 4175df7ef0111f69ed8d4229b7ab50a3c3d7ad12..5d5a70a62e98b6691aac1c0f9142d39555ba4f8c 100644
---- a/drivers/misc/ds1682.c
-+++ b/drivers/misc/ds1682.c
-@@ -154,7 +154,7 @@ static const struct attribute_group ds1682_group = {
-  * User data attribute
-  */
- static ssize_t ds1682_eeprom_read(struct file *filp, struct kobject *kobj,
--				  struct bin_attribute *attr,
-+				  const struct bin_attribute *attr,
- 				  char *buf, loff_t off, size_t count)
- {
- 	struct i2c_client *client = kobj_to_i2c_client(kobj);
-@@ -172,7 +172,7 @@ static ssize_t ds1682_eeprom_read(struct file *filp, struct kobject *kobj,
- }
+On 12/16/24 4:27 PM, Ritesh Harjani (IBM) wrote:
+> Madhavan Srinivasan <maddy@linux.ibm.com> writes:
+> 
+>> Both core-pkey.c and ptrace-pkey.c tests have similar macro
+>> definitions, move them to "pkeys.h" and remove the macro
+>> definitions from the C file.
+>>
+>> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> ---
+>>  tools/testing/selftests/powerpc/include/pkeys.h      | 8 ++++++++
+>>  tools/testing/selftests/powerpc/ptrace/core-pkey.c   | 8 --------
+>>  tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 8 --------
+>>  3 files changed, 8 insertions(+), 16 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/powerpc/include/pkeys.h b/tools/testing/selftests/powerpc/include/pkeys.h
+>> index 51729d9a7111..3a0129467de6 100644
+>> --- a/tools/testing/selftests/powerpc/include/pkeys.h
+>> +++ b/tools/testing/selftests/powerpc/include/pkeys.h
+>> @@ -35,10 +35,18 @@
+>>  #define __NR_pkey_alloc		384
+>>  #define __NR_pkey_free		385
+>>  
+>> +#ifndef NT_PPC_PKEY
+>> +#define NT_PPC_PKEY		0x110
+>> +#endif
+>> +
+>>  #define PKEY_BITS_PER_PKEY	2
+>>  #define NR_PKEYS		32
+>>  #define PKEY_BITS_MASK		((1UL << PKEY_BITS_PER_PKEY) - 1)
+>>  
+>> +#define AMR_BITS_PER_PKEY 2
+>> +#define PKEY_REG_BITS (sizeof(u64) * 8)
+>> +#define pkeyshift(pkey) (PKEY_REG_BITS - ((pkey + 1) * AMR_BITS_PER_PKEY))
+>> +
+>>  inline unsigned long pkeyreg_get(void)
+>>  {
+>>  	return mfspr(SPRN_AMR);
+>> diff --git a/tools/testing/selftests/powerpc/ptrace/core-pkey.c b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
+>> index 31c9bf6d95db..f8ff05e5bf6e 100644
+>> --- a/tools/testing/selftests/powerpc/ptrace/core-pkey.c
+>> +++ b/tools/testing/selftests/powerpc/ptrace/core-pkey.c
+>> @@ -18,18 +18,10 @@
+>>  #include "child.h"
+>>  #include "pkeys.h"
+>>  
+>> -#ifndef NT_PPC_PKEY
+>> -#define NT_PPC_PKEY		0x110
+>> -#endif
+>> -
+>>  #ifndef PKEY_DISABLE_EXECUTE
+>>  #define PKEY_DISABLE_EXECUTE	0x4
+>>  #endif
+> 
+> We could remove this as well right. Since pkeys.h already has this
+> permission defines i.e.
+> PKEY_DISABLE_[ACCESS|WRITE|EXECUTE] 
+> 
+
+Nice catch. Yes we can drop these too.
+Will fix and send a v2
  
- static ssize_t ds1682_eeprom_write(struct file *filp, struct kobject *kobj,
--				   struct bin_attribute *attr,
-+				   const struct bin_attribute *attr,
- 				   char *buf, loff_t off, size_t count)
- {
- 	struct i2c_client *client = kobj_to_i2c_client(kobj);
-@@ -194,8 +194,8 @@ static const struct bin_attribute ds1682_eeprom_attr = {
- 		.mode = S_IRUGO | S_IWUSR,
- 	},
- 	.size = DS1682_EEPROM_SIZE,
--	.read = ds1682_eeprom_read,
--	.write = ds1682_eeprom_write,
-+	.read_new = ds1682_eeprom_read,
-+	.write_new = ds1682_eeprom_write,
- };
- 
- static int ds1682_nvmem_read(void *priv, unsigned int offset, void *val,
 
--- 
-2.47.1
+>>  
+>> -#define AMR_BITS_PER_PKEY 2
+>> -#define PKEY_REG_BITS (sizeof(u64) * 8)
+>> -#define pkeyshift(pkey) (PKEY_REG_BITS - ((pkey + 1) * AMR_BITS_PER_PKEY))
+>> -
+>>  #define CORE_FILE_LIMIT	(5 * 1024 * 1024)	/* 5 MB should be enough */
+>>  
+>>  static const char core_pattern_file[] = "/proc/sys/kernel/core_pattern";
+>> diff --git a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
+>> index 6893ed096457..5d528d0ea9d1 100644
+>> --- a/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
+>> +++ b/tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c
+>> @@ -9,18 +9,10 @@
+>>  #include "child.h"
+>>  #include "pkeys.h"
+>>  
+>> -#ifndef NT_PPC_PKEY
+>> -#define NT_PPC_PKEY		0x110
+>> -#endif
+>> -
+>>  #ifndef PKEY_DISABLE_EXECUTE
+>>  #define PKEY_DISABLE_EXECUTE	0x4
+>>  #endif
+>>  
+> 
+> Same here. This can be cleaned up, no? Since pkeys already has this defined.
+> 
+> 
+> -ritesh
+> 
+>> -#define AMR_BITS_PER_PKEY 2
+>> -#define PKEY_REG_BITS (sizeof(u64) * 8)
+>> -#define pkeyshift(pkey) (PKEY_REG_BITS - ((pkey + 1) * AMR_BITS_PER_PKEY))
+>> -
+>>  static const char user_read[] = "[User Read (Running)]";
+>>  static const char user_write[] = "[User Write (Running)]";
+>>  static const char ptrace_read_running[] = "[Ptrace Read (Running)]";
+>> -- 
+>> 2.47.0
 
 
