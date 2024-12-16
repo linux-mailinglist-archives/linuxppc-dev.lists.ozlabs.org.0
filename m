@@ -1,43 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-4172-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4167-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9047D9F2F6A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 12:33:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 738E09F2F5E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 16 Dec 2024 12:33:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YBd9L3m6Qz30QJ;
-	Mon, 16 Dec 2024 22:33:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YBd9H12Lvz302P;
+	Mon, 16 Dec 2024 22:33:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:4f8:c010:41de::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734348790;
-	cv=none; b=ADp5lZerytZwyR3kYeaTmls92kjminiENz2J6cVaTavq3210PKIqmZbwCrEd4d2x6LLrEFgETH2gQaj9X7M6J2GM0Gro0zPidmRystJwzpjjN4Xrj2UxO9Bqca5ixxyNxaDa0YYOgaZhS7qtk4qI/yOIxQm1ev4Z+qupwhwwxWslvPTWYucAokToZUW3qv+YifkmgJh2j3qRUWtsO5lJ2u9RDRLVN9FOvfsUSsMh9i1JxmWl3PJNoFU7gdOXrI/mgq3lG4iep+AQ/vOjHnVr6dURv2vlGVASscZhO+9ZSWyluTj4RwSxa6CoPLIoWrETU/IMg0cEtQqsJGUMLIkT7A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734348786;
+	cv=none; b=c51WfPbTvBnVlB2DuO5d6dT296b1bc+ZXa75ItkY/7BhWzECUssD8TFwAPg8+vUhpswcxVjlINta6iOP900qww+NMuRenZv7ll5wkKUsDjf4Avn/qapo25FyHqF6u8VdOng7qUrgTdhOG9lGQnmZL9TywybrA7DaVycltxb82HBxAJws+lC6dy7ZLp407C3c1pSN5RgTSbWFZ72W5HTe1yOKTmS8ycnN0sDIza0clGzj83yRjwv0R3Z9Z5JkHyl59f1aOihrCnjXPWOKKoFj83EYt75fGr9RwYcvGBTgNc/w2IJfME80gGUARjrT8SB3JW2OXtgcVA3nqZstdy/Pfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734348790; c=relaxed/relaxed;
-	bh=je7TtPYmXAL3B96XkKamzZ0x2OEFrZQ7tICpShfLom0=;
+	t=1734348786; c=relaxed/relaxed;
+	bh=HY1l/gLbDqwLfqp37PvnASgskJ0hQBGNk/+8L+cxBR0=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=TgAysarMJMC9iZ+dA7CL8jjqQgGUPvUyoP8bO7Ys91g68mASlTpoAm9SMBi3521+KKE7WFWcSXnXlSowJ6cK+azDjWFnWk0dYxCM3KqZEMyGbE58xjd0QISwzoXvixXeC/Mb4IkNSmGzWHxXWm8CqDbGzMPMk0E8PiFp3vSbeMM1maBh6SbiqeskTEJ9AuZD3MJ7ArJJJsgH0kDfUiARSbhzbq2iHVIYl8rLkWyfL2ckqNPY8OXv7Loq1jqIFcIBSWJFjfFawrQlnfv3Jnh2GxOltjxekYRCM6OIBpGvACab/TnwAp21RWXJLDlCeE6b0S/kKHTta5hK3tfIS6g4aw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=SfkGxAQc; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
+	 In-Reply-To:To:Cc; b=Dsf56dUyH/SUOx7plr5fX/ggQKV/jb4QdbVj8aFg92wywxTNc9eK9ndVLzE29ula1meUdHzXp82qtGLUf9r2ppqKFB5Wb2lxHhqYNxNhoNkOUh6REnqtYiJIXfmAYgPkC2FvL2OK9bbD82Mu9N3iNCH5SeIlZ6MSKhEM8K/ko0ZatG2yCt6MlBt4qWkyc6yjNaya3s/rky2aqMyou/TWpATKgOmpX0DcmtZJPbJ7EIbwmxB6L3mMhmiAFMKpX07jR/KQUrRpgRsrNGa9lhhYuLQrqaTMcDpyR++fZZ0k3+1XS8DFu9WSR1hUPuPFStzZBuRL7dU0KqKZ6WxxoWzdrQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net; dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=r7cZsmWq; dkim-atps=neutral; spf=pass (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org) smtp.mailfrom=weissschuh.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=weissschuh.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=SfkGxAQc;
+	dkim=pass (1024-bit key; unprotected) header.d=weissschuh.net header.i=@weissschuh.net header.a=rsa-sha256 header.s=mail header.b=r7cZsmWq;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=weissschuh.net (client-ip=2a01:4f8:c010:41de::1; helo=todd.t-8ch.de; envelope-from=linux@weissschuh.net; receiver=lists.ozlabs.org)
 Received: from todd.t-8ch.de (todd.t-8ch.de [IPv6:2a01:4f8:c010:41de::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBd9K4vXwz2yvj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 22:33:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YBd9F4PjTz2yvj
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 16 Dec 2024 22:33:05 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=weissschuh.net;
 	s=mail; t=1734348782;
-	bh=8m1RQ3DhfA9f6hdRy+DqOXn1T98rVvXAkNUHHyC1n88=;
+	bh=N27SW5V9S6zkyqz00AIvVG+5Rix9h0ENrJDmGyAeG8A=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:From;
-	b=SfkGxAQc9gPviIOEmy4LRe1MEdM+uibGvmTgCiGkHbfX969bE+uuzDsv7wi2aVMMr
-	 DRsuS81JPJO9/FhetrzfPoLM4SyqfjJCWgcRhNLYM4/fMv66PMmqt5rZdoW3UYqwPa
-	 AZty3dWGEvw2A1Szvx96eaaIHcdip8YJCBTUxud4=
+	b=r7cZsmWqkSHnWWTQwUfmtSM3avVaTLeMBQ+0ZIlNhWIb3YunB/5/WbAYBm3ILU8di
+	 Xg5Kpn6jYvHdLgxlAhONLCUPToOmQPQlA/IVbOEqHEybO5ppstUWToGUbWB+FyVaSN
+	 s6pY99uTMeTX248ff8x6WP/bndLS6dFjIYsIN6AQ=
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Date: Mon, 16 Dec 2024 12:33:00 +0100
-Subject: [PATCH 5/9] misc: c2port: Constify 'struct bin_attribute'
+Date: Mon, 16 Dec 2024 12:33:01 +0100
+Subject: [PATCH 6/9] misc: pch_phub: Constify 'struct bin_attribute'
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,7 +52,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20241216-sysfs-const-bin_attr-misc-drivers-v1-5-d50ff7b21367@weissschuh.net>
+Message-Id: <20241216-sysfs-const-bin_attr-misc-drivers-v1-6-d50ff7b21367@weissschuh.net>
 References: <20241216-sysfs-const-bin_attr-misc-drivers-v1-0-d50ff7b21367@weissschuh.net>
 In-Reply-To: <20241216-sysfs-const-bin_attr-misc-drivers-v1-0-d50ff7b21367@weissschuh.net>
 To: Frederic Barrat <fbarrat@linux.ibm.com>, 
@@ -61,11 +61,11 @@ To: Frederic Barrat <fbarrat@linux.ibm.com>,
 Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1734348781; l=2244;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1734348781; l=1571;
  i=linux@weissschuh.net; s=20221212; h=from:subject:message-id;
- bh=8m1RQ3DhfA9f6hdRy+DqOXn1T98rVvXAkNUHHyC1n88=;
- b=BcUHlLFzhkKMOTNksv+oFkNkaEG/oNFfc71yOk0a4fCYqm91WEtMRhVsrdt1ABPa80jDGdlEw
- 4U8JXjI4XnYCQDnpOJtBeyWF1JDi8sdGib54AvjHTZ0dDI4bMwgX+rx
+ bh=N27SW5V9S6zkyqz00AIvVG+5Rix9h0ENrJDmGyAeG8A=;
+ b=Vg1WUEDQnr3nZOKV8hRgDVUS+4THPY1UyKWYauf/B9CFckAcJE3ZW1ijdp1vYL8eG0Zw7vmZE
+ OJxRrEYRgIMCaPzGEyPSAJbwOZfPUTkjXzaNexouPQsjy0C9YaCO8qb
 X-Developer-Key: i=linux@weissschuh.net; a=ed25519;
  pk=KcycQgFPX2wGR5azS7RhpBqedglOZVgRPfdFSPB1LNw=
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -79,60 +79,42 @@ accidental or malicious modifications.
 
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 ---
- drivers/misc/c2port/core.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/misc/pch_phub.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/misc/c2port/core.c b/drivers/misc/c2port/core.c
-index 5d6767b484c998b44a3c90c177d12028db1ea1af..eb780e635352f3a815e8d400d71c04b47507cd4b 100644
---- a/drivers/misc/c2port/core.c
-+++ b/drivers/misc/c2port/core.c
-@@ -714,7 +714,7 @@ static ssize_t __c2port_read_flash_data(struct c2port_device *dev,
+diff --git a/drivers/misc/pch_phub.c b/drivers/misc/pch_phub.c
+index 8d2b7135738ed5543138f2249d2379a10113b410..6121c0940cd148d48b8d574065c50703b6a301d7 100644
+--- a/drivers/misc/pch_phub.c
++++ b/drivers/misc/pch_phub.c
+@@ -483,7 +483,7 @@ static int pch_phub_write_gbe_mac_addr(struct pch_phub_reg *chip, u8 *data)
  }
  
- static ssize_t c2port_read_flash_data(struct file *filp, struct kobject *kobj,
--				struct bin_attribute *attr,
-+				const struct bin_attribute *attr,
- 				char *buffer, loff_t offset, size_t count)
+ static ssize_t pch_phub_bin_read(struct file *filp, struct kobject *kobj,
+-				 struct bin_attribute *attr, char *buf,
++				 const struct bin_attribute *attr, char *buf,
+ 				 loff_t off, size_t count)
  {
- 	struct c2port_device *c2dev = dev_get_drvdata(kobj_to_dev(kobj));
-@@ -829,7 +829,7 @@ static ssize_t __c2port_write_flash_data(struct c2port_device *dev,
+ 	unsigned int rom_signature;
+@@ -553,7 +553,7 @@ static ssize_t pch_phub_bin_read(struct file *filp, struct kobject *kobj,
  }
  
- static ssize_t c2port_write_flash_data(struct file *filp, struct kobject *kobj,
--				struct bin_attribute *attr,
-+				const struct bin_attribute *attr,
- 				char *buffer, loff_t offset, size_t count)
+ static ssize_t pch_phub_bin_write(struct file *filp, struct kobject *kobj,
+-				  struct bin_attribute *attr,
++				  const struct bin_attribute *attr,
+ 				  char *buf, loff_t off, size_t count)
  {
- 	struct c2port_device *c2dev = dev_get_drvdata(kobj_to_dev(kobj));
-@@ -849,8 +849,8 @@ static ssize_t c2port_write_flash_data(struct file *filp, struct kobject *kobj,
- 	return ret;
- }
- /* size is computed at run-time */
--static BIN_ATTR(flash_data, 0644, c2port_read_flash_data,
--		c2port_write_flash_data, 0);
-+static const BIN_ATTR(flash_data, 0644, c2port_read_flash_data,
-+		      c2port_write_flash_data, 0);
- 
- /*
-  * Class attributes
-@@ -869,7 +869,7 @@ static struct attribute *c2port_attrs[] = {
- 	NULL,
+ 	int err;
+@@ -655,8 +655,8 @@ static const struct bin_attribute pch_bin_attr = {
+ 		.mode = S_IRUGO | S_IWUSR,
+ 	},
+ 	.size = PCH_PHUB_OROM_SIZE + 1,
+-	.read = pch_phub_bin_read,
+-	.write = pch_phub_bin_write,
++	.read_new = pch_phub_bin_read,
++	.write_new = pch_phub_bin_write,
  };
  
--static struct bin_attribute *c2port_bin_attrs[] = {
-+static const struct bin_attribute *const c2port_bin_attrs[] = {
- 	&bin_attr_flash_data,
- 	NULL,
- };
-@@ -888,7 +888,7 @@ static size_t c2port_bin_attr_size(struct kobject *kobj,
- 
- static const struct attribute_group c2port_group = {
- 	.attrs = c2port_attrs,
--	.bin_attrs = c2port_bin_attrs,
-+	.bin_attrs_new = c2port_bin_attrs,
- 	.bin_size = c2port_bin_attr_size,
- };
- 
+ static int pch_phub_probe(struct pci_dev *pdev,
 
 -- 
 2.47.1
