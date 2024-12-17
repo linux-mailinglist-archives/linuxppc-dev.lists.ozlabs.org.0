@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4267-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4268-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 496BD9F539D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 18:30:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57DDC9F53B9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 18:32:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YCP3N653rz2yRZ;
-	Wed, 18 Dec 2024 04:30:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YCP4v1Vxyz303B;
+	Wed, 18 Dec 2024 04:31:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734456640;
-	cv=none; b=T+t8pRe9XIu+3hj0vp5JHoo2N3Rp8Fo4HPGlPdLbs7XJe5tlfOoGaktk53tcmbvQ+XWF5nVD/ZPAjxgF1Gv1tpb21HbR0Vsm1LoPFPJMvUiUTFNkMbzAJGiMI6tuqozx0Ww0Eu+4UhncVMAbyvpCc9iULotKH29bBEqWG7g4fNCXlF8IM3WdOAb/+xMLal/Ub22rIx8frvd91fcXkrfUCxLNb+292LFk/mIqLTU+MoUl9tGGiQ4vS4ArUuX8FoWc+LsHLDEZHqiRldo3JMLxi3BDxYT6Js4VlY8lBj9TAbDKfJd6aYCMZEF9Et66KuYQt7B2GqToG8VMfQI2MyyVCA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734456719;
+	cv=none; b=F73a7C1PQUb4GIEpFN+wlTd2yMesu27w2S6+kQvJQNjCtsJo8vyGmiwYL6++GJVO4ipceSafkbhdY5OKy7LpNL/ZDOoDgCNT0rYGbBSsRtnkMl/asgwHZN+VZdJoXvK1QqnHhTuycNl5mRgDohQbd7dFKPx3rY8l57LZpEs1fUNTs8KIoCWg8dJLHXfr/EJt+LxsV8yawrXVugQdjzkQduFLZLkMJJCt3AM8FnW7tkymqKNXcjFEpbxNL3IeVQB2Xc7xA+hIrAWnyYs6pMxLmHGh0I/sAPl94SlvLJT+g6ohpHalsauJtvbc4URSRDQQiKUdwc8s3FE9p636fGAyXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734456640; c=relaxed/relaxed;
-	bh=g1hrCVwsLDHFXBw9S8SSEtW44ND3hIe5hEs7mvzMcv0=;
+	t=1734456719; c=relaxed/relaxed;
+	bh=Qku009jdAu0Sgq06JBD3twBP+vP3Ple+4ZyDkim0IzU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OV65/N3xTw9JZ2REZtBZpNqa1d9UObGwC3y2TSmwp/ptCS/l1WBltMhQzpPV2sn/5vsYkOKRhcQchMkWkS9n7zynieBefFDj4tCO9JNdMSh8XnGSSojbKIfL3cb1vIMksyCDbwplSh2rR29n3a0fMFyZfh4sEVmp5KrLps2uSyjbLFtOYExDV6W5E36RKDxteGdnL2GQIaFrJlpBiSUvIyTW3iLPnxVVvLXVbcpp/nSJ4EYwf21x/9Pbf69j/EkmU1WmqfOjKSYjQVSao3SQTp45DiZj6S517WYzXNZr9+IH9p9F/0SRxs132Wa3Yma0SzTyBbdYF8nagzwjwOwATw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cl9r35o3; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Cw+bX4QEWs56akM/Rg08jZIYDje9lDQlaDAXG+H8IMMcogjsQpIrxqCNcz5bh387GBw3JYnhsrKHeUmbSj/GL20d7ahJA8ZYuXKaYwiD3N/7KfV84wUtd15gjTSK55t4D4y/kXWUdkr5e+hQB5B1IHRTkZM8Atp/F4VDZSSAsaT8IUrNzTh2tPKRwUgtN0pPRS7dMPDoILjZy2uVSVlqfEodrpgru5+qQCYQIyCHGpB2ehTp7KynSZpQnw3Pcu59giZPKdPKokNAiXOIA4+jaH3JZ5W4tbgToMI2lVEj4RL4bCc7z57cjpDCUQyockVIpM0bfgNzluwhOFL3Rztvxg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MTO/Z+o6; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cl9r35o3;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MTO/Z+o6;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCP3K6134z2yFP
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 04:30:36 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BHHJOLq032407;
-	Tue, 17 Dec 2024 17:29:15 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCP4r1TXdz2yFP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 04:31:55 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BHE6H87020846;
+	Tue, 17 Dec 2024 17:31:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=g1hrCVwsLDHFXBw9S8SSEtW44ND3hI
-	e5hEs7mvzMcv0=; b=cl9r35o36KsL7jJKYCoj5LWAqgbCAwKQJ20PeY0lNPC00K
-	Wb2kXbck5OilzEheJEhO1UdwI+su1vwZEx+ymJ0mFVZPhk383HWoO7VUfjl4QPyC
-	NRZU5GuH7HUeI7pIrbgheTo3G3YyL9iJUTzTdJ2rQy11ZZUXxk/oz1ZsT4ro/HXW
-	RF1p1weL++6yCLkAsXqi4doi+5uKWL9CuTqE9RqoY9qtQhM5eVDQSPo42O2F/pZf
-	1E2hEAM56w/Zk8qrE4sU++MACbkaEvxnTnuSkGX19AfN+yNNhecbQM6ZfMsHhRv0
-	9OFeYY0UtsvX1JEiQmcTgZp6vrtBDv/o0B5nndaw==
+	:references:subject:to; s=pp1; bh=Qku009jdAu0Sgq06JBD3twBP+vP3Pl
+	e+4ZyDkim0IzU=; b=MTO/Z+o64j+lMdlSt7lwGrgEQppRaLzv9IemetXvJVf+eQ
+	cDcMHOowL34r8UPq4AkzwJy+6AWYi1tChb1UBoo4veqGiPUdkwFr8rpVFiuN71m8
+	4Wx9vkdpH3EtO5Hv3GdirgS69Lcr5+qFtZbefM2/H+mmJp/+ICb8xWKAOli3haFo
+	9qNOCbrE9oWnu8acOVKIDOgwMbAarQxEacZSNkXgLjhk512BYMMs29gN0AV2mmsQ
+	PdhP7cGWESbpvwRlQJc8Ko7koVPBuDV/7R/r8/lqWG+jNl3AtSdaRFKqfO/+GxUQ
+	UlSlIuxSuvNJlTiWhAHsT2md7A5meFzErQ9cQ+1A==
 Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43k5g2jmnp-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43kas4s2rw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 17:29:14 +0000 (GMT)
+	Tue, 17 Dec 2024 17:31:23 +0000 (GMT)
 Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BHDmDdx014412;
-	Tue, 17 Dec 2024 17:29:03 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hq21kfhm-1
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BHDwPa9014391;
+	Tue, 17 Dec 2024 17:31:22 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hq21kftu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 17:29:03 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BHHT0u259441574
+	Tue, 17 Dec 2024 17:31:22 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BHHVImO33161492
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Dec 2024 17:29:00 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0EEE820040;
-	Tue, 17 Dec 2024 17:29:00 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E39DD2004B;
-	Tue, 17 Dec 2024 17:28:58 +0000 (GMT)
+	Tue, 17 Dec 2024 17:31:18 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7AC1320040;
+	Tue, 17 Dec 2024 17:31:18 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3AC5E20043;
+	Tue, 17 Dec 2024 17:31:17 +0000 (GMT)
 Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 17 Dec 2024 17:28:58 +0000 (GMT)
-Date: Tue, 17 Dec 2024 18:28:57 +0100
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 17 Dec 2024 17:31:17 +0000 (GMT)
+Date: Tue, 17 Dec 2024 18:31:16 +0100
 From: Alexander Gordeev <agordeev@linux.ibm.com>
 To: Easwar Hariharan <eahariha@linux.microsoft.com>
 Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
@@ -131,10 +131,11 @@ Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
         live-patching@vger.kernel.org, linux-sound@vger.kernel.org,
         oss-drivers@corigine.com, linuxppc-dev@lists.ozlabs.org,
         Anna-Maria Behnsen <anna-maria@linutronix.de>
-Subject: Re: [PATCH v3 02/19] coccinelle: misc: Add secs_to_jiffies script
-Message-ID: <Z2G02RN7VelcrjNT@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Subject: Re: [PATCH v3 04/19] s390: kernel: Convert timeouts to use
+ secs_to_jiffies()
+Message-ID: <Z2G1ZPL2cAlQOYlF@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 References: <20241210-converge-secs-to-jiffies-v3-0-ddfefd7e9f2a@linux.microsoft.com>
- <20241210-converge-secs-to-jiffies-v3-2-ddfefd7e9f2a@linux.microsoft.com>
+ <20241210-converge-secs-to-jiffies-v3-4-ddfefd7e9f2a@linux.microsoft.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -149,69 +150,110 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241210-converge-secs-to-jiffies-v3-2-ddfefd7e9f2a@linux.microsoft.com>
+In-Reply-To: <20241210-converge-secs-to-jiffies-v3-4-ddfefd7e9f2a@linux.microsoft.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: fnzByXeLFO0AZ_AJF8SbPJqhCHN_hCrL
-X-Proofpoint-GUID: fnzByXeLFO0AZ_AJF8SbPJqhCHN_hCrL
+X-Proofpoint-ORIG-GUID: FFAKPmsOF7TzSfPGY_r91-e9_TqDPMGg
+X-Proofpoint-GUID: FFAKPmsOF7TzSfPGY_r91-e9_TqDPMGg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- phishscore=0 clxscore=1011 priorityscore=1501 lowpriorityscore=0
- impostorscore=0 suspectscore=0 spamscore=0 mlxlogscore=985 malwarescore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
+ mlxlogscore=999 mlxscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 clxscore=1011 phishscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2411120000 definitions=main-2412170134
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Dec 10, 2024 at 10:02:33PM +0000, Easwar Hariharan wrote:
-
-Hi Easwar,
-
-> This script finds and suggests conversions of timeout patterns that
-> result in seconds-denominated timeouts to use the new secs_to_jiffies()
-> API in include/linux/jiffies.h for better readability.
+On Tue, Dec 10, 2024 at 10:02:35PM +0000, Easwar Hariharan wrote:
+> Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+> secs_to_jiffies(). As the values here are a multiple of 1000, use
+> secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 > 
-> Suggested-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
+> This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+> the following Coccinelle rules:
+> 
+> @@ constant C; @@
+> 
+> - msecs_to_jiffies(C * 1000)
+> + secs_to_jiffies(C)
+> 
+> @@ constant C; @@
+> 
+> - msecs_to_jiffies(C * MSEC_PER_SEC)
+> + secs_to_jiffies(C)
+> 
 > Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
 > ---
->  scripts/coccinelle/misc/secs_to_jiffies.cocci | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
+>  arch/s390/kernel/lgr.c      | 2 +-
+>  arch/s390/kernel/time.c     | 4 ++--
+>  arch/s390/kernel/topology.c | 2 +-
+>  3 files changed, 4 insertions(+), 4 deletions(-)
 > 
-> diff --git a/scripts/coccinelle/misc/secs_to_jiffies.cocci b/scripts/coccinelle/misc/secs_to_jiffies.cocci
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..8bbb2884ea5db939c63fd4513cf5ca8c977aa8cb
-> --- /dev/null
-> +++ b/scripts/coccinelle/misc/secs_to_jiffies.cocci
-> @@ -0,0 +1,22 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +///
-> +/// Find usages of:
-> +/// - msecs_to_jiffies(value*1000)
-> +/// - msecs_to_jiffies(value*MSEC_PER_SEC)
-> +///
-> +// Confidence: High
-> +// Copyright: (C) 2024 Easwar Hariharan, Microsoft
-> +// Keywords: secs, seconds, jiffies
-> +//
-> +
-> +virtual patch
-> +
-> +@depends on patch@ constant C; @@
-> +
-> +- msecs_to_jiffies(C * 1000)
-> ++ secs_to_jiffies(C)
-> +
-> +@depends on patch@ constant C; @@
-> +
-> +- msecs_to_jiffies(C * MSEC_PER_SEC)
-> ++ secs_to_jiffies(C)
+> diff --git a/arch/s390/kernel/lgr.c b/arch/s390/kernel/lgr.c
+> index 6652e54cf3db9fbdd8cfb06f8a0dc1d4c05ae7d7..6d1ffca5f798086160112990cb947ec8deed0659 100644
+> --- a/arch/s390/kernel/lgr.c
+> +++ b/arch/s390/kernel/lgr.c
+> @@ -166,7 +166,7 @@ static struct timer_list lgr_timer;
+>   */
+>  static void lgr_timer_set(void)
+>  {
+> -	mod_timer(&lgr_timer, jiffies + msecs_to_jiffies(LGR_TIMER_INTERVAL_SECS * MSEC_PER_SEC));
+> +	mod_timer(&lgr_timer, jiffies + secs_to_jiffies(LGR_TIMER_INTERVAL_SECS));
+>  }
+>  
+>  /*
+> diff --git a/arch/s390/kernel/time.c b/arch/s390/kernel/time.c
+> index 34a65c141ea076ba97b3238f1f36f077b15961df..e9f47c3a61978a45c72aee23bc44dcb128113c8c 100644
+> --- a/arch/s390/kernel/time.c
+> +++ b/arch/s390/kernel/time.c
+> @@ -662,12 +662,12 @@ static void stp_check_leap(void)
+>  		if (ret < 0)
+>  			pr_err("failed to set leap second flags\n");
+>  		/* arm Timer to clear leap second flags */
+> -		mod_timer(&stp_timer, jiffies + msecs_to_jiffies(14400 * MSEC_PER_SEC));
+> +		mod_timer(&stp_timer, jiffies + secs_to_jiffies(14400));
+>  	} else {
+>  		/* The day the leap second is scheduled for hasn't been reached. Retry
+>  		 * in one hour.
+>  		 */
+> -		mod_timer(&stp_timer, jiffies + msecs_to_jiffies(3600 * MSEC_PER_SEC));
+> +		mod_timer(&stp_timer, jiffies + secs_to_jiffies(3600));
+>  	}
+>  }
+>  
+> diff --git a/arch/s390/kernel/topology.c b/arch/s390/kernel/topology.c
+> index 4f9c301a705b63f8dd0e7bc33e7206ad1222e7a7..0fd56a1cadbd4f41a9876a3a3fec7f5dc08ac2db 100644
+> --- a/arch/s390/kernel/topology.c
+> +++ b/arch/s390/kernel/topology.c
+> @@ -371,7 +371,7 @@ static void set_topology_timer(void)
+>  	if (atomic_add_unless(&topology_poll, -1, 0))
+>  		mod_timer(&topology_timer, jiffies + msecs_to_jiffies(100));
+>  	else
+> -		mod_timer(&topology_timer, jiffies + msecs_to_jiffies(60 * MSEC_PER_SEC));
+> +		mod_timer(&topology_timer, jiffies + secs_to_jiffies(60));
+>  }
+>  
+>  void topology_expect_change(void)
 
-If you used this script only, then it did not seem to recognize line arch/s390/mm/cmm.c:207
+With this chunk added to the patch:
 
-	mod_timer(&cmm_timer, jiffies + msecs_to_jiffies(cmm_timeout_seconds * MSEC_PER_SEC));
+diff --git a/arch/s390/mm/cmm.c b/arch/s390/mm/cmm.c
+index d01724a715d0..7bf0f691827b 100644
+--- a/arch/s390/mm/cmm.c
++++ b/arch/s390/mm/cmm.c
+@@ -204,7 +204,7 @@ static void cmm_set_timer(void)
+ 			del_timer(&cmm_timer);
+ 		return;
+ 	}
+-	mod_timer(&cmm_timer, jiffies + msecs_to_jiffies(cmm_timeout_seconds * MSEC_PER_SEC));
++	mod_timer(&cmm_timer, jiffies + secs_to_jiffies(cmm_timeout_seconds));
+ }
+ 
+ static void cmm_timer_fn(struct timer_list *unused)
 
-Thanks!
+
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
