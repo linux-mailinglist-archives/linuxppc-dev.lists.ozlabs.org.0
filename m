@@ -1,52 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-4255-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4256-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CEB09F4574
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 08:48:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 346089F457A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 08:49:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC8766xTdz30V1;
-	Tue, 17 Dec 2024 18:48:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YC88g0xqSz3bSh;
+	Tue, 17 Dec 2024 18:49:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734421682;
-	cv=none; b=ZWE9COWR8GvzBmWZkRBI/LRwVNfRCAPeZqsOaYKROswng73qvy9TYWGvvST7LKsf5K73aiT6+VRdn/wp5HHXMtCvpCFq9bRlHPPzTVGy/MBvawWyg+o8n4NKBql12Jvz2OLoCV/ILS6p615ULXYDrPiUPAMAqK1eaS/WGNgTmKWxQUzers82pfc6H67rgHOqParMWq8t+LKarCUE4rDVCrtcXTpYchAOImoGgE+Gpnn1mLAgwFlDCjDcHACJeStX78jVtJW6NNI0VhT+jy1RB/JI/9SvDGyUvw5MGNpnek6VxU7FlbMY53MpwpOZ7xDxc2QcbzDgbkqNJL2m7E1ATQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734421763;
+	cv=none; b=AdqufEFmGW85eRh85+sq9UC8opI4KKXal+nQNbVNXFQINafy1dTaJqQ9IKYdi0UlkTmv5qYadc/Lj0QHq5gHHdS8sj5WdwD58AZVYMTlhrxwH60uAphAAg+DHGdtkmcEzYRBX4e3KzyRSNEgRWfWgZifZrAeP4F5MAyYcHHDfZ/EVudI5jFLaposnupEj3XaF0qh50r0NxGP0xJkLPDYWjG9pxMVT2POIGqLP26gGIxVywl7TYm10Prfw/7q9tVKC+wQPQLoKSV/LLvCGrDP5ISexA/6ff966s5t1Aei7/ccFinAsx7q3wxTw8oO6Z8DdV0AzFwTzetRO+mIQJuZbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734421682; c=relaxed/relaxed;
-	bh=u+CROXNMQB4zsFWzTxbDDJajvghMgBuYZmlPGZXhJXg=;
+	t=1734421763; c=relaxed/relaxed;
+	bh=hdcfVvJFaG1srvh2k6b2oooyaPK9NySwGV7Y1UPCo9U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SjgET5X4xhUjlsU4F4J8AH69O8KaWvaE+JonAch3XWm9hqmrd1CrblV93xZ1ansPh0W5rl+ZGLPv99jX0D8ylxfbM/+BorvZJyzcdweHsxDmOHlaZchMi+LUyfOft2qVN8BzCafFPWKl0Yn+f6RiGAVmPaEUdNfVNGFKDu1wmr0f9FyPp7VAAFn+8qB9RrfoMWnmLkNCh4L8owaEEHwCJ/fpgEFUF5wI+vLyMedbWbC4svt30601VB4IscD0s2aSda+eGeV0jo5V8/UHzJ9qw1U1vWUUwcr2ASLeHAo8HukqtW+RPD/y6R9aY641MgMWmnb4FurbBINwyzWHOGVZsg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 In-Reply-To:Content-Type; b=DEgfNUBFIaNbjzbSjXodk1obJQjAB6tHAcDZGMruVkcf6+CP0T47luIJKjGd2ifJr/4xiBgH249b+xPt1hQ0AeZGU6FJWNhtmYrUtWUFkfh41XmgxWO/8xqMZJLcDTfo+yGeSfOhFQQCsimwWoBO/feg9/VDVMHbWmgOZIcgDqqTnop5wxgs9szki+FMji8jIN1ZoquMFPGYLuzmj7pr3tSvVneBkc6AcNBuou4Q2/sSyIolT0JRYmcWC9jm4vlxBKh2EDUWiLMREN0KJReY6D8PZHAg+nLqgQCLazUnDoBl9uOJ5QgtyqmNbcnV1Z5dCSLgIISFGP5ApHQAI4v4Fg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sjx03mFd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sjx03mFd;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC8755l8Qz2xVq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 18:48:01 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YC86z6Lcmz9sPd;
-	Tue, 17 Dec 2024 08:47:55 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id fC7tw8E5ccA2; Tue, 17 Dec 2024 08:47:55 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YC86z5K7qz9rvV;
-	Tue, 17 Dec 2024 08:47:55 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A3F418B768;
-	Tue, 17 Dec 2024 08:47:55 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id iR2VLUnfgYsc; Tue, 17 Dec 2024 08:47:55 +0100 (CET)
-Received: from [192.168.232.97] (unknown [192.168.232.97])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 73D238B763;
-	Tue, 17 Dec 2024 08:47:54 +0100 (CET)
-Message-ID: <ddd4439e-6f6f-4513-a7dc-b7f01bec03dc@csgroup.eu>
-Date: Tue, 17 Dec 2024 08:47:54 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC88f0Zykz3bTN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 18:49:21 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH6BsNY027059;
+	Tue, 17 Dec 2024 07:49:08 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=hdcfVv
+	JFaG1srvh2k6b2oooyaPK9NySwGV7Y1UPCo9U=; b=sjx03mFdD3SsLTYqP/nL1w
+	ivRdwlvJzgw3X+L0xRox37EoPiW2Q7682p4qOiCMK284OgoZ/uBEA8HStVyHNYKM
+	zH/27BV+OAXguMHW8ZRsu3NR3Ca1B8c3G3DzvpQrwgvS0WWboEjKguUQ0liqDlPk
+	LZRBpP5m5Cnjh1R7TTypt8dZkhMrLOnjRkY/jutjZG2J5NF3bTimORGbZ6EVZf3v
+	9GEqIEFPm0rN60unwLnzdUqKt1RG3Fs5FbCUwSx1DA2jZUl7I/agOvuViLwsQVhh
+	yJ/Pq4gB/o89XgjVWIKp1YsOkg/bqE1JutqL9i1eU/GE/GAa1Fcyqo3O/StfIjRA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd2dmjv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 07:49:08 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BH7fm5p012359;
+	Tue, 17 Dec 2024 07:49:08 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd2dmjq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 07:49:08 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH4n0JX014391;
+	Tue, 17 Dec 2024 07:49:07 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hq21hehv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 07:49:07 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BH7n31M48038374
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Dec 2024 07:49:03 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B279C20049;
+	Tue, 17 Dec 2024 07:49:03 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5AB2120040;
+	Tue, 17 Dec 2024 07:49:01 +0000 (GMT)
+Received: from [9.43.29.128] (unknown [9.43.29.128])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Dec 2024 07:49:01 +0000 (GMT)
+Message-ID: <96e92c6d-8d09-43e0-b279-8f6eb1d093fa@linux.ibm.com>
+Date: Tue, 17 Dec 2024 13:18:59 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,136 +86,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/ptdump: Drop GENERIC_PTDUMP
-To: Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc: steven.price@arm.com, Catalin Marinas <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
- Marc Zyngier <maz@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org
-References: <20241217034807.2541349-1-anshuman.khandual@arm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241217034807.2541349-1-anshuman.khandual@arm.com>
+Subject: Re: [PATCH] powerpc/book3s64/hugetlb: Fix disabling hugetlb when
+ fadump is active
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <20241202054310.928610-1-sourabhjain@linux.ibm.com>
+ <87h6734gp8.fsf@gmail.com> <87frmn4alk.fsf@gmail.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <87frmn4alk.fsf@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Ze414kLfMrgzOU-eqztwF6oJ6HVz7OuM
+X-Proofpoint-GUID: TeDlMPaHYS8JsLghNyuCayFfQO3XYgAM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ mlxlogscore=999 priorityscore=1501 malwarescore=0 impostorscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412170060
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hello Ritesh,
 
 
-Le 17/12/2024 à 04:48, Anshuman Khandual a écrit :
-> GENERIC_PTDUMP does not guard any code but instead just used for platform's
-> subscription into core ptdump defined under PTDUMP_CORE, which is selected.
-> Instead use PTDUMP_CORE for platform subscription and drop GENERIC_PTDUMP.
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: kvmarm@lists.linux.dev
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
-> This patch applies on v6.13-rc3 and has been tested on arm64, although it
-> also clears build tests on impacted platforms.
-> 
->   Documentation/arch/arm64/ptdump.rst       | 1 -
->   arch/arm64/Kconfig                        | 2 +-
->   arch/arm64/kvm/Kconfig                    | 3 +--
->   arch/powerpc/Kconfig                      | 2 +-
->   arch/powerpc/configs/mpc885_ads_defconfig | 1 -
->   arch/riscv/Kconfig                        | 2 +-
->   arch/s390/Kconfig                         | 2 +-
->   arch/x86/Kconfig                          | 2 +-
->   arch/x86/Kconfig.debug                    | 2 +-
->   kernel/configs/debug.config               | 1 -
->   mm/Kconfig.debug                          | 8 ++------
->   11 files changed, 9 insertions(+), 17 deletions(-)
-> 
+On 17/12/24 02:19, Ritesh Harjani (IBM) wrote:
+> Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
+>
+>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>>
+>>> Commit 8597538712eb ("powerpc/fadump: Do not use hugepages when fadump
+>>> is active") disabled hugetlb support when fadump is active by returning
+>>> early from hugetlbpage_init():arch/powerpc/mm/hugetlbpage.c and not
+>>> populating hpage_shift/HPAGE_SHIFT.
+>>>
+>>> Later, commit 2354ad252b66 ("powerpc/mm: Update default hugetlb size
+>>> early") moved the allocation of hpage_shift/HPAGE_SHIFT to early boot,
+>>> which inadvertently re-enabled hugetlb support when fadump is active.
+>>>
+>>> Fix this by implementing hugepages_supported() on powerpc. This ensures
+>>> that disabling hugetlb for the fadump kernel is independent of
+>>> hpage_shift/HPAGE_SHIFT.
+>>>
+>> Thanks for describing the history of the changes clearly.
+>>
+>>> Fixes: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
+>>> CC: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+>>> CC: Hari Bathini <hbathini@linux.ibm.com>
+>>> CC: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> CC: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>>> ---
+>>>
+>>> Note: Even with this fix included, it is possible to enable gigantic
+>>> pages in the fadump kernel. IIUC, gigantic pages were never disabled
+>>> for the fadump kernel.
+>>>
+>>> Currently, gigantic pages are allocated during early boot as long as
+>>> the respective hstate is supported by the architecture.
+>>>
+>>> I will introduce some changes in the generic hugetlb code to allow the
+>>> architecture to decide on supporting gigantic pages on the go. Bringing
+>>> gigantic page allocation under hugepages_supported() does work for
+>>> powerpc but I need verify the impact on other architectures.
+>>>
+>>> Regarding the Fixes tag: This patch fixes a bug inadvertently introduced
+>>> by the commit mentioned under Fixes tag in the commit message. Feel free
+>>> to remove the tag if it is unnecessary.
+>>>
+>>> ---
+>>>   arch/powerpc/include/asm/hugetlb.h | 9 +++++++++
+>>>   1 file changed, 9 insertions(+)
+>>>
+>>> diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+>>> index 18a3028ac3b6..f294e57663b0 100644
+>>> --- a/arch/powerpc/include/asm/hugetlb.h
+>>> +++ b/arch/powerpc/include/asm/hugetlb.h
+>>> @@ -15,6 +15,15 @@
+>>>   
+>>>   extern bool hugetlb_disabled;
+>>>   
+>>> +static inline int hugepages_supported(void)
+> I guess we may as well make it's return type as bool.
+Yes, fixed in v2:
+https://lore.kernel.org/all/20241217074640.1064510-1-sourabhjain@linux.ibm.com/
 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index a0ce777f9706..c716f8df10de 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -203,7 +203,7 @@ config PPC
->   	select GENERIC_IRQ_SHOW
->   	select GENERIC_IRQ_SHOW_LEVEL
->   	select GENERIC_PCI_IOMAP		if PCI
-> -	select GENERIC_PTDUMP
-> +	select PTDUMP_CORE
+Thanks again.
 
-Please keep alphabetical order.
-
->   	select GENERIC_SMP_IDLE_THREAD
->   	select GENERIC_TIME_VSYSCALL
->   	select GENERIC_VDSO_TIME_NS
-
-> diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-> index 41a58536531d..b206e5a11f96 100644
-> --- a/mm/Kconfig.debug
-> +++ b/mm/Kconfig.debug
-> @@ -187,7 +187,7 @@ config DEBUG_WX
->   	bool "Warn on W+X mappings at boot"
->   	depends on ARCH_HAS_DEBUG_WX
->   	depends on MMU
-> -	select PTDUMP_CORE
-> +	depends on PTDUMP_CORE
-
-This change is unclear to me. It works because all arch selecting 
-ARCH_HAS_DEBUG_WX also select GENERIC_PTDUMP. For riscv it's even more 
-tricking, Riscv only selects GENERIC_PTDUMP when MMU is set, so it works 
-because here it also depends on MMU.
-
-But what happens if in the future an architecture selects 
-ARCH_HAS_DEBUG_WX without selecting PTDUMP_CORE ?
-
-
->   	help
->   	  Generate a warning if any W+X mappings are found at boot.
->   
-> @@ -212,9 +212,6 @@ config DEBUG_WX
->   
->   	  If in doubt, say "Y".
->   
-> -config GENERIC_PTDUMP
-> -	bool
-> -
->   config PTDUMP_CORE
->   	bool
->   
-> @@ -222,8 +219,7 @@ config PTDUMP_DEBUGFS
->   	bool "Export kernel pagetable layout to userspace via debugfs"
->   	depends on DEBUG_KERNEL
->   	depends on DEBUG_FS
-> -	depends on GENERIC_PTDUMP
-> -	select PTDUMP_CORE
-> +	depends on PTDUMP_CORE
->   	help
->   	  Say Y here if you want to show the kernel pagetable layout in a
->   	  debugfs file. This information is only useful for kernel developers
-
+- Sourabh Jain
 
