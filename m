@@ -1,87 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-4244-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4245-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392799F4254
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 06:20:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF5879F43AE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 07:27:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC4sD1WN4z3055;
-	Tue, 17 Dec 2024 16:20:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YC6LW722Hz30g1;
+	Tue, 17 Dec 2024 17:27:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:240a::61c" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734412848;
-	cv=pass; b=DOwz945pU2gD++OPqas8vLNLOssWVnRJ3hsqC8GqV4RPFgS9XNmeMyWCy0Qvcs6XDUxIK+g3dh5X4VgkgL6OSPysKLFtzKy45jlN486P/YrBijJZjZhPMjHnbGS7a1jqv9aRETFrohb4ubYK01g41PkkjoMxj7APQEmX/dbZn/FULxY6Pip2851r9o9Ta/L6kyh9BtvSBEHCyE5klSFp/ip2OmEOcChVhhMAjgxZmSVSaJJH/JkedR9LS2+dffpj6nmNrvxDtoXXyJwbIp6FQCvQHnxj42YCHg4llTLaCDR3yw/+yEXgzByZv6MaBMjA4AbsdZILkMSFhedKfyh/Fg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734412848; c=relaxed/relaxed;
-	bh=LUM0Rt68ReLzLmETvsu4CJMhlxrGsD+rTS8nWDDVnrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VpTCSF/u9+E/RRw/wQn5QZkbvPNQazU+R22DyAPc4tezBZDcYlQSl8V86T2v0PKQKfKggBeXOCZRzST6bxUe1hrbJyjMDHMG6LuJm/jgICHZ3INYyBxz5D8pU0owUWtLYOcMCGxJHdInCeQ0wPWiRxJ9YRy+KzJ5HVxdLQpaGQXF/0mSc3LuWKW+d4KeYJme47AtHTTrFuzv3ANoMLeXSeWWPyS9IhgsNt8svcqYSmdroaFqDHTXsEKQbFJ+6wzpIgc2+1eICyeAHWX/Y65+qPA57suCfSt745j5ZON6aLDinB4o6NwyaXXfJXm/SGWXrjSBh1+uRRXKCXa8bHShQA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=dIaxQ3OS; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:240a::61c; helo=nam04-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734416867;
+	cv=none; b=ULkBIsds810qx906duOXI6MAyVe0X99OH9NYtWw/dtMc0+H4pcD+KwIgrOotPTCOwpBCbNxKxXgndWTZXI0WdOFKSuk+INzXKlf/v0Mcq0WD3TobQ1sSzg4pmTuEiZD5WqvNiPLCroWs12fTSvROladdVNYjYzWOKCMpdJs/WqJ+AUyaEo3CdvOnF1dOl4PPDbowtx5CgaIwCWPjqArRAU/oxR02cJeRN7uvGWghUxQ4WOv3HWxEDCsRJbMjrfKnfoTu6s2YqgHuwKGPOKVkEERcPL4IdJmtJR3x4EbTDv8ApaS+Rq3sp3Tpy6LFhpb1mVWs1wE9mIA61xBlbumDdA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1734416867; c=relaxed/relaxed;
+	bh=WWPNWcU0FNkKkn4vV60HW9D/U2Y9k6Epcfo1JvpcVZo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=NWgL1qmRWXGOjlWTEa1Ikv/VrfR2pHZ499kjk94h+paSibZDG+sIhLn+IBxf7kiBeKeruX5R9LjIBt6ezDTo20zMjlqwFHBwBOBk5uUMdxFxQTS0EC13moxaegwI3jkRPAJX93sF6TxwtPrBdRZgL6Whwej0PDpLwenmVgchy3fTCYpZX1J4ke573iHEoYJEDzUh+hf0WR6sBfIxOuguA/B6p/lgbAqBqGaya5jE6jvS6hrANx/Or24JFiWsLgTFfWiLihRInUaJhBlpBA0yH5crOMwongNVtV9RLBjZMHB+aIIX0SFPU1aU1iq+X0g9dg6X/jKaVXFMApn+dPsPfw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hYuWR4+7; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=dIaxQ3OS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hYuWR4+7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:240a::61c; helo=nam04-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04on2061c.outbound.protection.outlook.com [IPv6:2a01:111:f403:240a::61c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC4sC1Dq1z303N
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 16:20:45 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=BQAj8FuPjY5h2P2mlWhW0mf/ZTrH5SNcr3PoS4wQfgXBvgI/ayVWEmsM9xQHJ1VBn4bmhjwxKZHxkHohubIG2XwshrcnvzB+FyBFanVM7CIBIQzZ6TWpCcb9oVGhIfOTg9lwelQoUlUbdgILrCK1LqH5nbHEWOSM0tWoBdzcmaISmuVNqM/50jwQRjEm4S2U7rJGdXvlglgbRs61bqhoxRB+IW5/oX9AmVlIkJXvfSP6goiyd9NAqaZCZUIdXcBHzNdonEpsV0/4/tz/OwS8CkjPLnA8PBby2mHGtBn/ZN3Wh8+uq+izpKXbfAS7nBDaoroyoJCiI9wiLfEwZ8eANw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=LUM0Rt68ReLzLmETvsu4CJMhlxrGsD+rTS8nWDDVnrM=;
- b=r2y9IA8h5IHW3mOSyWQps0DC2sXjOgzbzEoHk/vzQrJjal0nU8fPNtaKp5BPdEi+ZdBzLWwCS+jWZwzn6enwJEK8n2GA3QNfI4OsYt67fBDl8A0kCF7Fl2+I7m9xprONF7g2Wrg3QuHHI+hS66INGOvmd8Hi6HD8aEIA5FUXvKq4Q3cSqoMPbkIAc3gIZBJ4qNMTxdG1xg2P6VjLXQIRqMhxhm0EYUQC9v5MAOfwqTVzT9xMhlrismqRKswCkeZAZYlxqXMPt6v0S2uXS98M4WmmBJ8dOLSMKlsuS/0bMjUgRwMeXfSHB7LjGSBQDhEy6ER3/0P4FaYeeeRcUqDmwA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=LUM0Rt68ReLzLmETvsu4CJMhlxrGsD+rTS8nWDDVnrM=;
- b=dIaxQ3OS8YFbhw+m+gnK+U64KvUglsJEWa9yLrgC68mYVvzRmQ00hwarLM8zjVdD8TzbN7/NGLAhrrLeVwHC6rM77RrhoXZeHS9JigQx7Ff9gB5Dy1Zk2scmYPv6ErQ2QFCFCIfNPMSa09Z5UdKU4JF5seBpfZnqW8cDteBTRuYd5ijQ/OYqbiKtV7sL+cIOAZ4vsy8kjdE0txLKm2aogzob99hdZYjmUZ14p5rUGqL3y5Pvx0f9OhXysY3B8Z96FFtz16xYMRC8anup7YFaB8BgfS6Jir80eUdnqnlsxmx1VZu7UZl0TRQ654MtWcBvtIJ/qkkDflbVij5MvADzFw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- PH7PR12MB7260.namprd12.prod.outlook.com (2603:10b6:510:208::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.19; Tue, 17 Dec
- 2024 05:20:26 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.8251.015; Tue, 17 Dec 2024
- 05:20:26 +0000
-Date: Tue, 17 Dec 2024 16:20:21 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: David Hildenbrand <david@redhat.com>, 
-	Dan Williams <dan.j.williams@intel.com>, linux-mm@kvack.org, lina@asahilina.net, zhang.lyra@gmail.com, 
-	gerald.schaefer@linux.ibm.com, vishal.l.verma@intel.com, dave.jiang@intel.com, 
-	logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, 
-	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org, 
-	tytso@mit.edu, linmiaohe@huawei.com, peterx@redhat.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
-	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com, 
-	sfr@canb.auug.org.au
-Subject: Re: [PATCH v3 00/25] fs/dax: Fix ZONE_DEVICE page reference counts
-Message-ID: <jn3j4pdzfnlai4oqr4g7ldl6cq6awiyugg5gbny3l3g5y67abe@rm6zpap7y2gh>
-References: <cover.e1ebdd6cab9bde0d232c1810deacf0bae25e6707.1732239628.git-series.apopple@nvidia.com>
- <675ce1e5a3d68_fad0294d0@dwillia2-xfh.jf.intel.com.notmuch>
- <45555f72-e82a-4196-94af-22d05d6ac947@redhat.com>
- <wysuus23bqmjtwkfu3zutqtmkse3ki3erf45x32yezlrl24qto@xlqt7qducyld>
- <20241215222655.ef0b15148120a2e2b06b2234@linux-foundation.org>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241215222655.ef0b15148120a2e2b06b2234@linux-foundation.org>
-X-ClientProxiedBy: SY5PR01CA0124.ausprd01.prod.outlook.com
- (2603:10c6:10:246::13) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC6LV3n1Cz30ft
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 17:27:45 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BGHXxBv027390;
+	Tue, 17 Dec 2024 06:27:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=WWPNWc
+	U0FNkKkn4vV60HW9D/U2Y9k6Epcfo1JvpcVZo=; b=hYuWR4+7TdfZ2oqMQ+kQQy
+	N+y+l8F6KJPlOCHBWtz8b2HuWPaGdpPxjfEU1Ygh/1oD2C0rdoAL1LKJY1QFmLNA
+	M3qeCLMd3M5Qn3j2TkIn3iFqafXj5vAmbDOat+9u9yuKbdzNKJAkSSsvFjsQEC1y
+	4un8sY9fSUKu4/Dec/3e6S1isd3xFRXBbLQveH4Q1ZS2DPAejGs/lqLHDQbOB7KE
+	tnhY6WYhbn5cQNxqg1YtqwiSmrb8cWlwpCIYaUUP8dZIrrs08LXHWBB3oX6xtgBF
+	3HuHDjg9YWRLz1fzNsOgF4wpRyOGxGU4Btfh3ypd3Wvqqi6eot88fohw2LsWUWdg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd2damb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 06:27:38 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BH6Lq81012878;
+	Tue, 17 Dec 2024 06:27:38 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd2dam9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 06:27:38 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH1qbaN014435;
+	Tue, 17 Dec 2024 06:27:37 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43hmqy1ny3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 06:27:37 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BH6RXxT57803182
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Dec 2024 06:27:33 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9280620049;
+	Tue, 17 Dec 2024 06:27:33 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3030820040;
+	Tue, 17 Dec 2024 06:27:26 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.252.224])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 17 Dec 2024 06:27:25 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,109 +84,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|PH7PR12MB7260:EE_
-X-MS-Office365-Filtering-Correlation-Id: 09fa143f-a910-44de-2d86-08dd1e5a83b7
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?QBdXMM9hvanblBDkFHsB8ujSjjRbgeudu2hTvExnLnMn7WrHn4AIO8oQF781?=
- =?us-ascii?Q?RPOG+7QqfOjwC8C+A6hqXrTubsX3OWhUCqn3OzQU3KMsfT9sBmzMgISqZdsw?=
- =?us-ascii?Q?uVWTYRdFv9CBo1NesnL7w4OiDfaHCcM7wx1Jo5a6KlExbiytVX9Y1YWSbxCX?=
- =?us-ascii?Q?91eJaKVTDKqLs2AW5A+CPBSIX/swPvAw+m2pK4XceEoGJJGatVHXJJWHEhwA?=
- =?us-ascii?Q?dlsz+Q1oo2wR7hc2VD7NPzpQhu/pVgBj9kiFIuapApg3XqagqFwQM4YjrYaU?=
- =?us-ascii?Q?TakNFv27+yodAAOVbbBB+Y2waECYHAqs8nM6qmHbofDULxaAFx48nQLtrVhd?=
- =?us-ascii?Q?55IdfVTWHW3SUhmCE26NgkTYvnWAIhLCpTbC66akrUUhseM8ybswuyZHI145?=
- =?us-ascii?Q?wundWigCsQk+Cz7uGpDdDU+na8eRIi2LUih2B4cTpZikC7jKezRwXR7gjeJu?=
- =?us-ascii?Q?9taaPGqSxtKvbfA0SuqCbep1274qBBR+s74ffpg9whH6op5SyBEEXXMItHpr?=
- =?us-ascii?Q?J/FtVft5PoZRBlDPSOjVRSqsKjRDbL93oYtONCq2h6ZUsdD6q9yw+HjI1wq2?=
- =?us-ascii?Q?jnkcmahjg5sfGtKEoqBH2ddG4YAzyrnHc9hsxQWBO5vLAYrs7jouqjpZWj/P?=
- =?us-ascii?Q?Z1NKBhm89Q2XaSmmpo3jU4nBkWKGZYuyr8JsecDQFqfGrXs2BMiyMaKG56UK?=
- =?us-ascii?Q?2PM8b86YGyqfCSuD+rDHUYxTHRUmcHWypX9yD8Y/x+5jEFy8G14SFejnFBe5?=
- =?us-ascii?Q?VOf1+z90v/6LsF58Bp01pm+Qa5UUKiiKt/+AcH7v9IFwyemHivkP82uDvC1x?=
- =?us-ascii?Q?4ncBq9oMn0ju1NcZhNSgcZNz486vhivhacfKmELebmOczWND65Kotv9uJ6Io?=
- =?us-ascii?Q?haJJ3o+xGvFoA0s2PA0B37Du6g+Fj7QaZMQO/WpznTf9baNghmwCFtIpxMFI?=
- =?us-ascii?Q?3pHXW04yVfp1wVjVL8UXToSj2n7Opo0T4P8EZ3AJmC5grvuYiyy0Pft3WOiD?=
- =?us-ascii?Q?BVEvPMLSmXKTgQpcM/t4JZdEI5zWdQH3XrwZl+pvhbFVfjJT0Z54yjZukH7k?=
- =?us-ascii?Q?TruXCOT/S+gbMaFgWY+RswQKkiSIuPOd4XRNimpOJa8b3z5MI/JJLlPwCDZD?=
- =?us-ascii?Q?2fDP7bsUiCqgf/Kd+pIKWqhWiPNMjlweKSki76hfsApCaxTX2hnaukhdEcES?=
- =?us-ascii?Q?5mF2eKQ+TGcuiphbamAkeMm7QPBQSV7/NR9Ug/bekAD2KyLSBGelnF+sCEK8?=
- =?us-ascii?Q?+zNwxg1i7m8s0NjceOd2OHzqt/n2722PNQIMv1ImsbGDNdCaJDWNT23rMvzM?=
- =?us-ascii?Q?78Uojf5LBYEJ7Y22RMRNTDV83bX1PynXX/O4mRGN035kCApB66UCj9b+luCf?=
- =?us-ascii?Q?BAL114gVgYugwEV9qYa7j9Sr0oMy?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?If3rDZo0rrZtk2bYOSVorabobhcJHrJANKix73jInXYC631Hz1gslodt+1eQ?=
- =?us-ascii?Q?SVjnw8FxlKhoUpEFkubBh7FWgzcJ2QPbzuar+302UzShc/LdZrsvy4MeD4O5?=
- =?us-ascii?Q?luvAjNfne6gCbuuXmRVgfezok987ceNREQ9ApDP2M9CbCm1oQwGzkeKzT9lB?=
- =?us-ascii?Q?73jAPS3cu47c8M4122w/l2Gz10WBnyhjvvnp4YS2F4u25JHIaBqAN+l6ihfw?=
- =?us-ascii?Q?MOIp8WjMNVRe6GBwqfBSOEbpuczSC9DxpA30E3OStrxIgXkbGr0J+Q3C0NZn?=
- =?us-ascii?Q?fDc/FtiGSWge2NxsCbnurhLrLxLD6r1xtr7LE3UTUzMQMTyYsJ1IE+0dsn36?=
- =?us-ascii?Q?vMgn6sJru0mRm9oppmGmqfXkeYSkSzsaxx59VsEjVfDsC4msRqrWPIa/+KvV?=
- =?us-ascii?Q?hf9/RGWiAC1FWdqlClQmuqh2K3RWuQy48JDhU5MHpaFPP+Kq6Bk1VEpahRs9?=
- =?us-ascii?Q?OsSMQaYN6tm3WTiptZGqEhKgRSdaOyYrgo+/+Tgx650TvYD5slt/0tUtdKKT?=
- =?us-ascii?Q?uyqcrE8ozSheJT1UC/dsFfWnC4HCkVLs2Ji2x4KrZSzAYCezjbWzcfEiPzCH?=
- =?us-ascii?Q?KKyXZCDWrBVWWgnIKbiHpohdIWB1j3ijHDf7STq+zZzs8Rd/e2RSp9Yph/RG?=
- =?us-ascii?Q?Ut5iDm4MPH1/rcklUc/SOIJlwbxVq7TFbrtEGyzM8ifoLpM/WEXCiZN4S8q1?=
- =?us-ascii?Q?CTR15UI7dH9GZZkJ70d5Njb1CGW8StWVqblNmEdrH8bvI9ttpD76Kw9oZq4d?=
- =?us-ascii?Q?uoljqVsz3h5MWs4c34Ip6IWFsVFGSiOm3GzETo5UfguSnZdmucm8NNLAGn9q?=
- =?us-ascii?Q?oOTF+UxCfOpUU8jNuOBhWioivK+LkqUuF1TRiub25CCzoHml8dxL3OWd8cLZ?=
- =?us-ascii?Q?IRrpW2DI4EV7FSJdbp/c0G4PN7+aaeXqzOXDBQYDtTjTggYDTvp8ae1ZqdNg?=
- =?us-ascii?Q?4ztyKmBi32FHYNK4ra+Uj6c7i42OsE04CQeVZDIlfIpv90rDegt0mfRKuvl9?=
- =?us-ascii?Q?3P0vHvMimsO+APzDQ64dSEtJ8Tr1ekigM660o8F5fMyRQ9pL8Pgy8zxZiLQn?=
- =?us-ascii?Q?tPtFyom3ZnznSkzkDa2Ul6f5jbMDF0ogbRJx00CUvJWeclVgb8FgktJLMLBN?=
- =?us-ascii?Q?gqQdvOJW2X9/sHhIdXdCa8yhbjIupAO88hWmYvuzgx1HBIdRBIk0AnDRjsqp?=
- =?us-ascii?Q?ndo5jnp3FGnYQdM91TxvSWFIqM5q8OVGUN/l7h0uozK7u83rgrSh6zUDQMkT?=
- =?us-ascii?Q?3GjNuhO6z8SV2B5U+y0Jvq5+zUoQ3DuK2IPih53761J5IrkfPuFn5Ew88/uF?=
- =?us-ascii?Q?JxZlFTJ917Qm8/iwWA1HS0VdOu09crfja7Il8LIEq41L6Nci0fiwG782C9Rr?=
- =?us-ascii?Q?dPmYlRBDkDlLK1NQU2uaHYVtSYCQ8BNm/d4CLvkQXbJTo3ycljAmV/9Y2LzS?=
- =?us-ascii?Q?zAddgPU+gwJykiyZfhTQueeUBUTsPGbdDaQ+uCIG4xpPv9P2xY1/iAqG2zTD?=
- =?us-ascii?Q?ThtzLu0JP1OrDG4ytv5idBAMALtIvlorck3iIBd4Zat48gKLPEI3dYEwWl4/?=
- =?us-ascii?Q?JB3uX3u0U1mvezMFr517YULLQny+zwsvFXTyYHA2?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 09fa143f-a910-44de-2d86-08dd1e5a83b7
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2024 05:20:26.3398
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: aKTLzMSyKZXfXNqtjImIlrzOrgbEx1lh4Cs/sguu9pMSnEumBaYEnXphL9j7mi7OPU3ShQkHej54X8xNV2Otqg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7260
-X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH] tools/perf/arch/powerpc: Add register mask for power11
+ PVR in extended regs
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <Z2BZMhDFO-aJ_Gjw@x1>
+Date: Tue, 17 Dec 2024 11:57:11 +0530
+Cc: kajoljain <kjain@linux.ibm.com>, Namhyung Kim <namhyung@kernel.org>,
+        Ian Rogers <irogers@google.com>, jolsa@kernel.org,
+        adrian.hunter@intel.com, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+        hbathini@linux.ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <67F96642-1A52-486C-BC55-E9B23E2F190D@linux.vnet.ibm.com>
+References: <20241206135637.36166-1-atrajeev@linux.vnet.ibm.com>
+ <2907ca2f-b973-42fd-ae03-99732dfda7a1@linux.ibm.com>
+ <0402AAF0-5498-48C7-BEBA-2C0B7508D9E2@linux.vnet.ibm.com>
+ <Z2BZMhDFO-aJ_Gjw@x1>
+To: Arnaldo Carvalho de Melo <acme@kernel.org>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: e7k5AqGA83bJXz4gWo1VKGa0FclRrmwL
+X-Proofpoint-GUID: k-SuPy_SPFhvBIUXZMLSyWOttBQlSQ5E
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
+ mlxlogscore=853 priorityscore=1501 malwarescore=0 impostorscore=0
+ mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412170047
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Dec 15, 2024 at 10:26:55PM -0800, Andrew Morton wrote:
-> On Mon, 16 Dec 2024 11:55:30 +1100 Alistair Popple <apopple@nvidia.com> wrote:
-> 
-> > The remainder are more -mm focussed. However they do depend on the fs/dax
-> > cleanups in the first half so the trick would be making sure Andrew only takes
-> > them if the nvdimm.git changes have made it into -next. I'm happy with either
-> > approach, so let me know if I should split the series or not.
-> 
-> My inclination is to put it all into the nvdimm tree, with appropriate
-> MM developer acks.
-> 
-> But I'm having difficulty determining how practical that is because the
-> v3 series is almost a month old so my test merging was quite ugly.
-> 
-> Perhaps you could prepare a new-doesn't-need-to-be-final version for
-> people to look at and to aid with this head-scratching?
 
-I have just sent a new-maybe-almost-final v4 rebased on top of next-20241216 to
-help with the head-scratching. I haven't yet done extensive build tests or a full
-xfs-test run on it yet because it sounded better to get it out sooner. So no doubt
-the kernel build bot will find some fat finger of mine somewhere :-)
 
-That said the rebase wasn't awful so let me know if it should be rebased on a
-different tree.
+> On 16 Dec 2024, at 10:15=E2=80=AFPM, Arnaldo Carvalho de Melo =
+<acme@kernel.org> wrote:
+>=20
+> On Mon, Dec 16, 2024 at 03:32:12PM +0530, Athira Rajeev wrote:
+>>> On 11 Dec 2024, at 5:32=E2=80=AFPM, kajoljain <kjain@linux.ibm.com> =
+wrote:
+>>> On 12/6/24 19:26, Athira Rajeev wrote:
+>>>> Perf tools side uses extended mask to display the platform
+>>>> supported register names (with -I? option) to the user
+>>>> and also send this mask to the kernel to capture the extended =
+registers
+>>>> as part of each sample. This mask value is decided based on
+>>>> the processor version ( from PVR ).
+>=20
+>>>> Add PVR value for power11 to enable capturing the extended regs
+>>>> as part of sample in power11.
+>=20
+>>> Patch looks fine to me.
+>=20
+>>> Reviewed-by: Kajol Jain <kjain@linux.ibm.com>
+>=20
+>> Can we please pull in this patch if it looks fine.
+>=20
+> Sure,
+>=20
+> Thanks, applied to perf-tools-next,
+>=20
+> - Arnaldo
+Thanks Arnaldo for pulling this in=20
 
- - Alistair
+Athira
+
+
 
