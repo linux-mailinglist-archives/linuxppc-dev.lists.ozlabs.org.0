@@ -1,73 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-4253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4254-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE2BB9F4558
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 08:42:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 048029F4571
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 08:47:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC80V1QGnz30ft;
-	Tue, 17 Dec 2024 18:42:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YC86K4h9wz30fd;
+	Tue, 17 Dec 2024 18:47:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734421338;
-	cv=none; b=or+BpmNDvXPL2WAKZ2yXOi/PkPqAGW4jcKyeSuPnjyifAOfELt2I/3dsRs/bShKJOuH/tZtHllfeRk1uBDJy4rql6yQeTMI2YucGUFqcKy9g2M4PksLEQTj1MxATmBnAmq1npJ6p05eb5mGuaRqDX1anxtiTixYgXnHgJi8GEJDDe8uLQIuob5kJlm5cic+8JSiGTjjl5NRg3A9MHUaJBR1+JuB5WfhssWnpsi1KMK+7eXfsQcyJ5QqczWw2DbVaAolPibo9q/vYdXYgBQ9UYACjBdgCfJzNYRvyvl2fJHfYS3lwt+VcP2VWwA2BTBbCg/nnOUY2fods48BWjM3TeA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734421641;
+	cv=none; b=VLSKTSdKFIJTNhCXaoinG3A9jgCPAMTiO0m9YU3jn0/o0xkrBA2TpG60Cxh8YDnD/HkQBM9sXe8U1GRYMWCVUI5GUL6VeLwwSrZ/ennNWdQ5gQL0dSNPV9npDodS/4WapA/vyA+8k+va10m8gKfF5VACkmilp3dYqGV/OY6lBPRSIFIWihT48cfqQUPlcb0mBsrylAzU9qCwQnzlhZs07mGEqueHV839twfxoTNUFJxjBFh+ZUa126n/jvuenBGIsjPpEK7TuO54C6gLZjc3osWSadvH3Pdvur4439urugAR9LSp4sAkEWdv+InFVKT3UexpbPE55uHWcEDLzV8m/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734421338; c=relaxed/relaxed;
-	bh=PVrzyO3+J1HknGPyq267/b5iR7R/P+dnv6IJ6ZQ7OsA=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=XXQS0omYuizKYGT5HZJHGVDflI7+DqssgJtBLMdjBuu+GsklX8UXRHUYdkW6Stdbq/GEkTzIBG2VwqENOHfjmCaJeqS0/9REQdLaBGbhURQHuvp0uLgO4/uoKf4llrGweJhQXi8N3WsxLiMjbS2TL0Sxgfgo9lJMIThoi24K9UovyJFHokm7D3E3kfTvMpxkjdf1/S9/4Gk13YKRKjisGbfei7DQh3ZM3/kl4S28ADF5g28Ir60bVGlWcU3p5W8RJr1fC98cT73MA/FhCjg5ohhh7bFA4NxjQ0wG8yy9dPHBzmOfXxwbPNZw45f2zXTqMlc4gQ5gCTNk0xVaLFT4pw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c1blxTdZ; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1734421641; c=relaxed/relaxed;
+	bh=iA6D4xH7cfxsy6OxBuVGMdmMxvsbC806gjbqVAE0s8U=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LznCiBtmjNLDVo0Ih1SDH2PQgPtVQj3XCR2dXKz0P2En3D8v9XmyoQ9S3cn4IEdKp1nntjFPMqDm6u9ly7ksIjMdSCqgg7a51TZI6mKLhkUlHCQLayyXEmAOgMkNgVBPHRDVh6HBjiSdjT72Oy2Pb2h02UeivMVnRF00jZVZ8O5dWVT2vyhoU+3b0T1nTZQ9TboyBJbYrKE/AVOAmp1pkwrdFZ1Xdp1XCG23mfzRXiiGiAe3ZM9zzGnnKXVa0Fl8SSX6MEMLB4thQZKsIg5DLXMbnwGaiVny8GGB/0sDOHbSlWKmkvENMRHc5LOlkpDkrvGjBsFRsKogRWDXkiGNnA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n07SHTzf; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c1blxTdZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n07SHTzf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC80R1wHsz30fd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 18:42:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734421335; x=1765957335;
-  h=date:from:to:cc:subject:message-id;
-  bh=GHitgfIPe9eSCl01e/Kc9G2acukGSPn3vLSzABqHdKM=;
-  b=c1blxTdZ7OdBtuvXz3seIgCsmNsln84xt4apLmDR9bXrV6ov6nqZ72gY
-   Lq+xI9AFbyTZc1hnSM85uwYYX1dT9/s70NH4X3ANsTBJULE+2/3f6d0H5
-   NVn2nBTPYpWd5HCJ9vmYUoRU4EtiN73EQ70LJNjoFZ201xmnhmlSpNgOt
-   mmZV2XM2fpxFw7SUmpb0B8wCFNgGEHK4qSSI4OcDnD0N0Q+1DPbgbN7a1
-   keVlA4p2NItOfpPDmA65GPH/DYDQ5OwRJosegqVaxVUJIjeV+DPyGx5As
-   9wGF2udMTIXywkWJ94XfkPoAWJpBTOH1pT6GWhByUabkaJx2kZTkFhZ08
-   A==;
-X-CSE-ConnectionGUID: ZCSRKFmmSWGBd6Xt0GW9rQ==
-X-CSE-MsgGUID: 4ArzBCTbTc6OBHEV+6JPsg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="38762406"
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="38762406"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 23:42:10 -0800
-X-CSE-ConnectionGUID: qlbRRYxjRteamrZRnBZKtw==
-X-CSE-MsgGUID: YSDTvsWURc25OaMe0U8cXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="120710461"
-Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 16 Dec 2024 23:42:09 -0800
-Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tNSDW-000EnQ-13;
-	Tue, 17 Dec 2024 07:42:06 +0000
-Date: Tue, 17 Dec 2024 15:41:56 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next-test] BUILD SUCCESS
- 34064c8267a61063d684408db6ae78b571a9999d
-Message-ID: <202412171550.PtYcyOSP-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC86H5gNCz30Wc
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 18:47:19 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BGNwCrT028471;
+	Tue, 17 Dec 2024 07:47:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=iA6D4xH7cfxsy6OxBuVGMdmMxvsbC806gjbqVAE0s
+	8U=; b=n07SHTzffUDt36bGubqjKz4sEyG9z2OCn+Lk1H0ZyJeQCdcS9MTCh6V62
+	u+LUQNicri36mhFPuqpY9pvdB2+oARMtUWURpCIs0XAvWdEkV59+U7pvNl78kIR9
+	DQ3YIMUSEEWrLsrsOkd2o0cmeiLeA7mjvbHgtC6wgE/B+VyhfSr+q4PhRNs8nwXx
+	seEnOeFuiMJVgLG7v4JJFhJPc8yttdKxx5JjKFpbppx8SOUvddMMNplk3bjunG5b
+	WjtuKtOowWY8Gbp1qP3kIgfM0rBCqUEcMRdFNMuu/83f9/jsRXXDgyU6ykAWjw2T
+	WN8kmKIbmYs7vofVBBs4Ra84K/CRg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jxbh1gde-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 07:47:03 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BH7l2mS014408;
+	Tue, 17 Dec 2024 07:47:02 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jxbh1gdb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 07:47:02 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH3Zung011260;
+	Tue, 17 Dec 2024 07:47:01 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hpjk1jcn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 07:47:01 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BH7kw4i31457536
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Dec 2024 07:46:58 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1433A20043;
+	Tue, 17 Dec 2024 07:46:58 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4D62420040;
+	Tue, 17 Dec 2024 07:46:55 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.29.128])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Dec 2024 07:46:54 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+Subject: [PATCH v2] powerpc/book3s64/hugetlb: Fix disabling hugetlb when fadump is active
+Date: Tue, 17 Dec 2024 13:16:40 +0530
+Message-ID: <20241217074640.1064510-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,157 +93,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Xhe6OxDEP8NO6pGoAdmo0fejfeCsdhaP
+X-Proofpoint-ORIG-GUID: rRzPjbI0BJPc4nDnL0zEmXkRRxeGU-ap
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ suspectscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1015 mlxlogscore=999 spamscore=0 bulkscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412170060
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 34064c8267a61063d684408db6ae78b571a9999d  powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
+Commit 8597538712eb ("powerpc/fadump: Do not use hugepages when fadump
+is active") disabled hugetlb support when fadump is active by returning
+early from hugetlbpage_init():arch/powerpc/mm/hugetlbpage.c and not
+populating hpage_shift/HPAGE_SHIFT.
 
-elapsed time: 1364m
+Later, commit 2354ad252b66 ("powerpc/mm: Update default hugetlb size
+early") moved the allocation of hpage_shift/HPAGE_SHIFT to early boot,
+which inadvertently re-enabled hugetlb support when fadump is active.
 
-configs tested: 136
-configs skipped: 5
+Fix this by implementing hugepages_supported() on powerpc. This ensures
+that disabling hugetlb for the fadump kernel is independent of
+hpage_shift/HPAGE_SHIFT.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Fixes: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
+CC: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+CC: Hari Bathini <hbathini@linux.ibm.com>
+CC: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+---
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-alpha                               defconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                     nsimosci_hs_defconfig    gcc-13.2.0
-arc                   randconfig-001-20241216    gcc-13.2.0
-arc                   randconfig-002-20241216    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                         bcm2835_defconfig    clang-16
-arm                   randconfig-001-20241216    clang-15
-arm                   randconfig-002-20241216    gcc-14.2.0
-arm                   randconfig-003-20241216    clang-20
-arm                   randconfig-004-20241216    clang-17
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20241216    gcc-14.2.0
-arm64                 randconfig-002-20241216    clang-20
-arm64                 randconfig-003-20241216    gcc-14.2.0
-arm64                 randconfig-004-20241216    clang-15
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20241216    gcc-14.2.0
-csky                  randconfig-001-20241217    gcc-14.2.0
-csky                  randconfig-002-20241216    gcc-14.2.0
-csky                  randconfig-002-20241217    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon               randconfig-001-20241216    clang-20
-hexagon               randconfig-001-20241217    clang-20
-hexagon               randconfig-002-20241216    clang-20
-hexagon               randconfig-002-20241217    clang-19
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20241216    clang-19
-i386        buildonly-randconfig-002-20241216    clang-19
-i386        buildonly-randconfig-003-20241216    clang-19
-i386        buildonly-randconfig-004-20241216    clang-19
-i386        buildonly-randconfig-005-20241216    clang-19
-i386        buildonly-randconfig-006-20241216    clang-19
-i386                                defconfig    clang-19
-loongarch                        alldefconfig    gcc-14.2.0
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20241216    gcc-14.2.0
-loongarch             randconfig-001-20241217    gcc-14.2.0
-loongarch             randconfig-002-20241216    gcc-14.2.0
-loongarch             randconfig-002-20241217    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                  cavium_octeon_defconfig    gcc-14.2.0
-mips                   sb1250_swarm_defconfig    gcc-14.2.0
-nios2                         10m50_defconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20241216    gcc-14.2.0
-nios2                 randconfig-001-20241217    gcc-14.2.0
-nios2                 randconfig-002-20241216    gcc-14.2.0
-nios2                 randconfig-002-20241217    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                randconfig-001-20241216    gcc-14.2.0
-parisc                randconfig-001-20241217    gcc-14.2.0
-parisc                randconfig-002-20241216    gcc-14.2.0
-parisc                randconfig-002-20241217    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc                       eiger_defconfig    clang-17
-powerpc                 mpc836x_rdk_defconfig    clang-18
-powerpc                      ppc64e_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20241216    clang-20
-powerpc               randconfig-002-20241216    clang-20
-powerpc               randconfig-002-20241217    gcc-14.2.0
-powerpc               randconfig-003-20241216    gcc-14.2.0
-powerpc               randconfig-003-20241217    clang-16
-powerpc                      tqm8xx_defconfig    clang-20
-powerpc64             randconfig-001-20241216    clang-20
-powerpc64             randconfig-002-20241216    clang-15
-powerpc64             randconfig-003-20241216    gcc-14.2.0
-riscv                            allmodconfig    clang-20
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-20
-riscv                 randconfig-001-20241216    clang-20
-riscv                 randconfig-002-20241216    clang-15
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20241216    gcc-14.2.0
-s390                  randconfig-002-20241216    gcc-14.2.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                        dreamcast_defconfig    gcc-14.2.0
-sh                    randconfig-001-20241216    gcc-14.2.0
-sh                    randconfig-002-20241216    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20241216    gcc-14.2.0
-sparc                 randconfig-002-20241216    gcc-14.2.0
-sparc64               randconfig-001-20241216    gcc-14.2.0
-sparc64               randconfig-002-20241216    gcc-14.2.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20241216    gcc-12
-um                    randconfig-002-20241216    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20241216    gcc-12
-x86_64      buildonly-randconfig-001-20241217    clang-19
-x86_64      buildonly-randconfig-002-20241216    gcc-12
-x86_64      buildonly-randconfig-002-20241217    gcc-12
-x86_64      buildonly-randconfig-003-20241216    clang-19
-x86_64      buildonly-randconfig-003-20241217    gcc-12
-x86_64      buildonly-randconfig-004-20241216    clang-19
-x86_64      buildonly-randconfig-004-20241217    clang-19
-x86_64      buildonly-randconfig-005-20241216    clang-19
-x86_64      buildonly-randconfig-005-20241217    gcc-12
-x86_64      buildonly-randconfig-006-20241216    clang-19
-x86_64      buildonly-randconfig-006-20241217    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                generic_kc705_defconfig    gcc-14.2.0
-xtensa                randconfig-001-20241216    gcc-14.2.0
-xtensa                randconfig-002-20241216    gcc-14.2.0
+Changelog:
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Since v1: https://lore.kernel.org/all/20241202054310.928610-1-sourabhjain@linux.ibm.com/
+ - Change return type of hugepages_supported() to bool
+ - Add a Reviewed-by
+
+Note: Even with this fix included, it is possible to enable gigantic
+pages in the fadump kernel. IIUC, gigantic pages were never disabled
+for the fadump kernel.
+
+Currently, gigantic pages are allocated during early boot as long as
+the respective hstate is supported by the architecture.
+
+I will introduce some changes in the generic hugetlb code to allow the
+architecture to decide on supporting gigantic pages on the go. Bringing
+gigantic page allocation under hugepages_supported() does work for
+powerpc but I need verify the impact on other architectures.
+
+Regarding the Fixes tag: This patch fixes a bug inadvertently introduced
+by the commit mentioned under Fixes tag in the commit message. Feel free
+to remove the tag if it is unnecessary.
+
+---
+ arch/powerpc/include/asm/hugetlb.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+index 18a3028ac3b6..dad2e7980f24 100644
+--- a/arch/powerpc/include/asm/hugetlb.h
++++ b/arch/powerpc/include/asm/hugetlb.h
+@@ -15,6 +15,15 @@
+ 
+ extern bool hugetlb_disabled;
+ 
++static inline bool hugepages_supported(void)
++{
++	if (hugetlb_disabled)
++		return false;
++
++	return HPAGE_SHIFT != 0;
++}
++#define hugepages_supported hugepages_supported
++
+ void __init hugetlbpage_init_defaultsize(void);
+ 
+ int slice_is_hugepage_only_range(struct mm_struct *mm, unsigned long addr,
+-- 
+2.47.1
+
 
