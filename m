@@ -1,78 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-4256-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4257-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346089F457A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 08:49:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAD179F4CD3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 14:54:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC88g0xqSz3bSh;
-	Tue, 17 Dec 2024 18:49:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YCJFm46G6z2xks;
+	Wed, 18 Dec 2024 00:54:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734421763;
-	cv=none; b=AdqufEFmGW85eRh85+sq9UC8opI4KKXal+nQNbVNXFQINafy1dTaJqQ9IKYdi0UlkTmv5qYadc/Lj0QHq5gHHdS8sj5WdwD58AZVYMTlhrxwH60uAphAAg+DHGdtkmcEzYRBX4e3KzyRSNEgRWfWgZifZrAeP4F5MAyYcHHDfZ/EVudI5jFLaposnupEj3XaF0qh50r0NxGP0xJkLPDYWjG9pxMVT2POIGqLP26gGIxVywl7TYm10Prfw/7q9tVKC+wQPQLoKSV/LLvCGrDP5ISexA/6ff966s5t1Aei7/ccFinAsx7q3wxTw8oO6Z8DdV0AzFwTzetRO+mIQJuZbQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734443660;
+	cv=none; b=Ks+elsaPVSbZyIL8FXxRkmIpvOmMDjkaD2iLYyEwc3LPa27FrPNRyciFKrkHqFX7pQPg7MAC5Id+gdwRlIqxjyzYH9vvUTnmxgtfTcvWbs8MHPKUS6opjNe4iB7zKVYzBLGD6RSykBJaoF7zH8Vo9a63/1dCfjT1wxZ9iuy/rzsgRcQ9iiMMRsNrihF6DOVXDIYkLzicXXcRFTVhlntuynbng3vj5pNtJjzL5kItl/v+yzzTALJVMLcy7Zl54rtIiKAU3psLB6sM9/Bs/OzSPW4GkBRlAhyyH1ZZ6dWMkgUbaxSb7+1LQ9zeLkyKkoac2X7rlH0PfFkhhJ/T/jyI2g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734421763; c=relaxed/relaxed;
-	bh=hdcfVvJFaG1srvh2k6b2oooyaPK9NySwGV7Y1UPCo9U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DEgfNUBFIaNbjzbSjXodk1obJQjAB6tHAcDZGMruVkcf6+CP0T47luIJKjGd2ifJr/4xiBgH249b+xPt1hQ0AeZGU6FJWNhtmYrUtWUFkfh41XmgxWO/8xqMZJLcDTfo+yGeSfOhFQQCsimwWoBO/feg9/VDVMHbWmgOZIcgDqqTnop5wxgs9szki+FMji8jIN1ZoquMFPGYLuzmj7pr3tSvVneBkc6AcNBuou4Q2/sSyIolT0JRYmcWC9jm4vlxBKh2EDUWiLMREN0KJReY6D8PZHAg+nLqgQCLazUnDoBl9uOJ5QgtyqmNbcnV1Z5dCSLgIISFGP5ApHQAI4v4Fg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sjx03mFd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1734443660; c=relaxed/relaxed;
+	bh=+mIZ+JVD1ZUeCiFcPq6TkdEQYjZJ22tX3KYfYaF6h+0=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=iAh8Go5N1P9w+dYRUSidiJCLNbvz/gKqvZORd9CxqfqIkX2sqDJrQosspuBWn6oBLvLuujjajAjRG5Fo30n25ldXHIrnizNrLdLj4/bv5gZRUx63pe3b9+PcrL6gRI60uItmhSxLo55m6Xa2VPakQMa8J2kOVo12NS47h401vzq/yg1WkIQ8ecuUFGw4JGygz0soiQiU3HPTwT6cUtt1RGTCIQavVLi4dvgqDhFAOjg60vR+6DvuWcVkYCVkbsibrEaBOMFPQ23vBliLdB8M82pu0rf06UkrYChHsFcpwq8/kmrJVpS2Inp7W2R11rYv9IlMDFEYsyQMOTOyeiKGxA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=htxY4ntt; dkim-atps=neutral; spf=none (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sjx03mFd;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=htxY4ntt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC88f0Zykz3bTN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 18:49:21 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH6BsNY027059;
-	Tue, 17 Dec 2024 07:49:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hdcfVv
-	JFaG1srvh2k6b2oooyaPK9NySwGV7Y1UPCo9U=; b=sjx03mFdD3SsLTYqP/nL1w
-	ivRdwlvJzgw3X+L0xRox37EoPiW2Q7682p4qOiCMK284OgoZ/uBEA8HStVyHNYKM
-	zH/27BV+OAXguMHW8ZRsu3NR3Ca1B8c3G3DzvpQrwgvS0WWboEjKguUQ0liqDlPk
-	LZRBpP5m5Cnjh1R7TTypt8dZkhMrLOnjRkY/jutjZG2J5NF3bTimORGbZ6EVZf3v
-	9GEqIEFPm0rN60unwLnzdUqKt1RG3Fs5FbCUwSx1DA2jZUl7I/agOvuViLwsQVhh
-	yJ/Pq4gB/o89XgjVWIKp1YsOkg/bqE1JutqL9i1eU/GE/GAa1Fcyqo3O/StfIjRA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd2dmjv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 07:49:08 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BH7fm5p012359;
-	Tue, 17 Dec 2024 07:49:08 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jgd2dmjq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 07:49:08 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH4n0JX014391;
-	Tue, 17 Dec 2024 07:49:07 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hq21hehv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 07:49:07 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BH7n31M48038374
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Dec 2024 07:49:03 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B279C20049;
-	Tue, 17 Dec 2024 07:49:03 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5AB2120040;
-	Tue, 17 Dec 2024 07:49:01 +0000 (GMT)
-Received: from [9.43.29.128] (unknown [9.43.29.128])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Dec 2024 07:49:01 +0000 (GMT)
-Message-ID: <96e92c6d-8d09-43e0-b279-8f6eb1d093fa@linux.ibm.com>
-Date: Tue, 17 Dec 2024 13:18:59 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCJFk0F5Hz2xdq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 00:54:16 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734443658; x=1765979658;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=CZX/6/+OxDVXx5b5rYNO8um6p31384Ad+FAPxWdGq8E=;
+  b=htxY4nttodtilg2S4M6ber4wFuNpMYyzpb7a0DqoRXEsqYUs2Hwd4wgO
+   TLFRQDS5b/GarUPWhkdchiDtL9CkRBAvpl3cG7Iuwxv3O63t+ASyIcoqe
+   B2Vktj9eNoummyA3WKFJuI550in9CwZXWH90XXtW9G3P2DSbyZQyl3kKn
+   en9YEyKKlXN4K/clRrnlFPUb9Y+UsOL9zttT+euOkWzZel+i7VQ7/1VKb
+   qMox4uTP0j9HcO66XY3JCHYhtxCc87Bg3P6TUItPoSS1gxH0UMRlIrgvX
+   72R6cdy8nUwHUyVZhMXChuH24e1I+aqkaCXnq3pNS1B+urOAv2gCHw7oG
+   w==;
+X-CSE-ConnectionGUID: K99FIp/gSJqw/AbBw7Y59A==
+X-CSE-MsgGUID: /F2HFxsnR26dMCajazURdQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11288"; a="34192957"
+X-IronPort-AV: E=Sophos;i="6.12,242,1728975600"; 
+   d="scan'208";a="34192957"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 05:54:13 -0800
+X-CSE-ConnectionGUID: js4GW3CoTES7nTTrGKNphw==
+X-CSE-MsgGUID: 9tpaRidnRuqgyvaom6Gz5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,199,1725346800"; 
+   d="scan'208";a="102634412"
+Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.192])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Dec 2024 05:54:09 -0800
+From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To: Bjorn Helgaas <bhelgaas@google.com>,
+	linux-pci@vger.kernel.org,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v7 0/8] PCI: Consolidate TLP Log reading and printing
+Date: Tue, 17 Dec 2024 15:53:50 +0200
+Message-Id: <20241217135358.9345-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,106 +80,82 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/book3s64/hugetlb: Fix disabling hugetlb when
- fadump is active
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20241202054310.928610-1-sourabhjain@linux.ibm.com>
- <87h6734gp8.fsf@gmail.com> <87frmn4alk.fsf@gmail.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <87frmn4alk.fsf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Ze414kLfMrgzOU-eqztwF6oJ6HVz7OuM
-X-Proofpoint-GUID: TeDlMPaHYS8JsLghNyuCayFfQO3XYgAM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- suspectscore=0 lowpriorityscore=0 adultscore=0 clxscore=1015
- mlxlogscore=999 priorityscore=1501 malwarescore=0 impostorscore=0
- mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412170060
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Ritesh,
+This series has the remaining patches of the AER & DPC TLP Log handling
+consolidation and now includes a few minor improvements to the earlier
+accepted TLP Logging code.
 
+I only now realized the last patch will conflict with my pci_printk()
+cleanups series. I'm sorry for the extra hassle.
 
-On 17/12/24 02:19, Ritesh Harjani (IBM) wrote:
-> Ritesh Harjani (IBM) <ritesh.list@gmail.com> writes:
->
->> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
->>
->>> Commit 8597538712eb ("powerpc/fadump: Do not use hugepages when fadump
->>> is active") disabled hugetlb support when fadump is active by returning
->>> early from hugetlbpage_init():arch/powerpc/mm/hugetlbpage.c and not
->>> populating hpage_shift/HPAGE_SHIFT.
->>>
->>> Later, commit 2354ad252b66 ("powerpc/mm: Update default hugetlb size
->>> early") moved the allocation of hpage_shift/HPAGE_SHIFT to early boot,
->>> which inadvertently re-enabled hugetlb support when fadump is active.
->>>
->>> Fix this by implementing hugepages_supported() on powerpc. This ensures
->>> that disabling hugetlb for the fadump kernel is independent of
->>> hpage_shift/HPAGE_SHIFT.
->>>
->> Thanks for describing the history of the changes clearly.
->>
->>> Fixes: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
->>> CC: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
->>> CC: Hari Bathini <hbathini@linux.ibm.com>
->>> CC: Madhavan Srinivasan <maddy@linux.ibm.com>
->>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->>> Cc: Michael Ellerman <mpe@ellerman.id.au>
->>> CC: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->>> ---
->>>
->>> Note: Even with this fix included, it is possible to enable gigantic
->>> pages in the fadump kernel. IIUC, gigantic pages were never disabled
->>> for the fadump kernel.
->>>
->>> Currently, gigantic pages are allocated during early boot as long as
->>> the respective hstate is supported by the architecture.
->>>
->>> I will introduce some changes in the generic hugetlb code to allow the
->>> architecture to decide on supporting gigantic pages on the go. Bringing
->>> gigantic page allocation under hugepages_supported() does work for
->>> powerpc but I need verify the impact on other architectures.
->>>
->>> Regarding the Fixes tag: This patch fixes a bug inadvertently introduced
->>> by the commit mentioned under Fixes tag in the commit message. Feel free
->>> to remove the tag if it is unnecessary.
->>>
->>> ---
->>>   arch/powerpc/include/asm/hugetlb.h | 9 +++++++++
->>>   1 file changed, 9 insertions(+)
->>>
->>> diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
->>> index 18a3028ac3b6..f294e57663b0 100644
->>> --- a/arch/powerpc/include/asm/hugetlb.h
->>> +++ b/arch/powerpc/include/asm/hugetlb.h
->>> @@ -15,6 +15,15 @@
->>>   
->>>   extern bool hugetlb_disabled;
->>>   
->>> +static inline int hugepages_supported(void)
-> I guess we may as well make it's return type as bool.
-Yes, fixed in v2:
-https://lore.kernel.org/all/20241217074640.1064510-1-sourabhjain@linux.ibm.com/
+v7:
+- Explain in commit message reasoning why eetlp_prefix_max stores Max
+  End-End TLP Prefixes value instead of limiting it by the bridge/RP
+  imposed limits
+- Take account TLP Prefix Log Present flag.
+- Align PCI_ERR_CAP_* flags in pci_regs.h
+- Add EE_PREFIX_STR define to be able to take its sizeof() for output
+  char[] sizing.
 
-Thanks again.
+v6:
+- Preserve "AER:"/"DPC:" prefix on the printed TLP line
+- New patch to add "AER:" also  on other lines of the AER error dump
 
-- Sourabh Jain
+v5:
+- Fix build with AER=y and DPC=n
+- Match kerneldoc and function parameter name
+
+v4:
+- Added patches:
+	- Remove EXPORT of pcie_read_tlp_log()
+	- Moved code to pcie/tlp.c and build only with AER enabled
+	- Match variables in prototype and function
+	- int -> unsigned int conversion
+	- eetlp_prefix_max into own patch
+- struct pcie_tlp_log param consistently called "log" within tlp.c
+- Moved function prototypes into drivers/pci/pci.h
+- Describe AER/DPC differences more clearly in one commit message
+
+v3:
+- Small rewording in a commit message
+
+v2:
+- Don't add EXPORT()s
+- Don't include igxbe changes
+- Don't use pr_cont() as it's incompatible with pci_err() and according
+  to Andy Shevchenko should not be used in the first place
+
+Ilpo Järvinen (8):
+  PCI: Don't expose pcie_read_tlp_log() outside of PCI subsystem
+  PCI: Move TLP Log handling to own file
+  PCI: Make pcie_read_tlp_log() signature same
+  PCI: Use unsigned int i in pcie_read_tlp_log()
+  PCI: Store # of supported End-End TLP Prefixes
+  PCI: Add TLP Prefix reading into pcie_read_tlp_log()
+  PCI: Create helper to print TLP Header and Prefix Log
+  PCI/AER: Add prefixes to printouts
+
+ drivers/pci/ats.c             |   2 +-
+ drivers/pci/pci.c             |  28 ---------
+ drivers/pci/pci.h             |   9 +++
+ drivers/pci/pcie/Makefile     |   2 +-
+ drivers/pci/pcie/aer.c        |  27 ++++----
+ drivers/pci/pcie/dpc.c        |  14 ++---
+ drivers/pci/pcie/tlp.c        | 112 ++++++++++++++++++++++++++++++++++
+ drivers/pci/probe.c           |  14 +++--
+ include/linux/aer.h           |   3 +-
+ include/linux/pci.h           |   2 +-
+ include/uapi/linux/pci_regs.h |  11 ++--
+ 11 files changed, 158 insertions(+), 66 deletions(-)
+ create mode 100644 drivers/pci/pcie/tlp.c
+
+-- 
+2.39.5
+
 
