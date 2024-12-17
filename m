@@ -1,60 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-4216-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4217-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0AD49F4150
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 04:48:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D61539F415A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 04:56:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC2qD4jyqz2yjJ;
-	Tue, 17 Dec 2024 14:48:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YC30H3BHJz2yk6;
+	Tue, 17 Dec 2024 14:56:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734407336;
-	cv=none; b=YtrEJuQh+PxeoodLdAYq08z4cOPoUp4l16K8NlfMEzKf+GpyhQC/yWj6r3P3TDi5PNfX43+RcNE+jYb6XIh1pLFcIQFiDK5pGiZi51hC7gCUmxP43QpscCH+Vtg0ZFrk1htG7ezXCpPvXc/8LCTYgzbxWfSs4zhMVCH9w3XTCoFCjyS/tlY9kiIn6bVNsYk7EPOA54PilFf7iY8vXDO+Z+C0+96uztwE7lMylOC26RgDUU3KmAzOL/EBdlBy198TeFKfIeL6rD0wi2SxsXP+7HhLz9N6va0ReFNSYy+uDE0MpTQGhe140IU7hsqNLQS8snL6dyVS7frtO4cdZNR4aA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734407807;
+	cv=none; b=IlSiExnX6BEcG5AFmuHqjjKGyMd+DLR39yg04Yo2mhoAUbkKj5FtM9hWI3sGBmmD4AqxmJzZuR0K9KA7Or9SNlSfSwU9KhyycMrnWE64zWxTgXUpL967fV/wYUgw7yB7adllOVcxpqI2sT0jXmjXMg9LIp0ahcOWgQBLYWJwGgrluzFacWvFE76SIp5vYQ9b59XMpwYjR1fTulD1j3quLCcOXubMf9uqyGzEQng+od5UuZ9nkQ1EWWkPyBuMWkEF/A+tIPUkoQ+QKOLedDqf/9h5OkZHaJ2jpgLYaNhGvfkg3PsDrQveHSqKBu4YMRS0zJvQZ0hmB/hg34e1Zd6nBg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734407336; c=relaxed/relaxed;
-	bh=c/CARx85000XHBKgmihX+K8OJrtESPIODkKBMnaE4CQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=ZHIZTqSUYn0z6stSd+Ew9iqBytgfoP5izrCuXPbC/Utfk2weHKjdSMnKpv2TUAY1nRsXvi8VFSNw0jnzNPoCmGwoEJGIFWmTQwooVP/vqIUqiwQ90GtbhtMmD642sI8hH/LSpqCMYXZ+1pZQHOLogM4ZB1gTy6zhvr8/RfOkF2iXxf7/bQdiW963TmfAPg+d/CyIwL1WEPhFwNRiFrq/7MoiX9wRqOJiJqLiof7G3ext5KRmio42BlAEfUDCUMKTFNuGg3JQrI+WO3Gz1mN2mrJuJY8Hqn5n8HViO510xAXB+raBhfyzZBpyQpCst6IbCxNB3SL9ToThwdvOYRJnVg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC2qB6J6Kz2yZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 14:48:52 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 32CDA1063;
-	Mon, 16 Dec 2024 19:48:48 -0800 (PST)
-Received: from a077893.blr.arm.com (a077893.blr.arm.com [10.162.16.49])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 7C23E3F720;
-	Mon, 16 Dec 2024 19:48:13 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: steven.price@arm.com,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org
-Subject: [PATCH] mm/ptdump: Drop GENERIC_PTDUMP
-Date: Tue, 17 Dec 2024 09:18:07 +0530
-Message-Id: <20241217034807.2541349-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
+	t=1734407807; c=relaxed/relaxed;
+	bh=ocqUixpySLRcGX5uIMsUIfrKCTgh7ROSLsVpKaoocNE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Hty8y5IoYeI6EcbnB/4+LSX6SuPCOz9yYI7N9xXasTGpASQ145wuiq4F4Lar2t+ID/tuMoYIDxDN5qAgvQmATEUnhmtgHPsfONRe5OiTxyI0W/Sb9vH0MB7HzGOILX5uzLZJPrzh1jgBXTdMtmvFAfFJy4JUpZwWUJvcACrfQOggR5GlUCGVnc6vZ4Dj6dI6ZkL7iDNN6ly8osIeAT6s5c16bel2O3QZMQR33d2fkJLP6pGTl/PQGN9vXw0GlJ9i8D9MGCpyDipLgOlDp9pQcJMuZT38kWVUArSUeiI1P1/PkLUXDIzsNiNLduHSgPavYVt/0D52/1P0LBMdQ1Xmiw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fxtAsYxw; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fxtAsYxw;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC30G23rMz2yZ4
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 14:56:45 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BGM1l42011312;
+	Tue, 17 Dec 2024 03:56:34 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ocqUix
+	pySLRcGX5uIMsUIfrKCTgh7ROSLsVpKaoocNE=; b=fxtAsYxw3q1r/IWdjtOuiI
+	J+HKPbalp84lR3biCY00vrryecOHs4PrdL9JSBWnaIJ/d7cMp2FWtP3EzL7LI50e
+	TDy2L6g1/XN/nHav1kq/8kzpq+NZxiY+go8lFWtTSnYt/k/Z1I2pXP87l8BJXuwI
+	DXyXs2f2X4lJyqfO/WQJ9xOz9OL20GVS2c13dAYXgUESuF9IPAN7BJ5VYYy5Pz6a
+	PiqMyeFbZjKqnU08VFuZTBjuS0IbOOi16lweUwUpxfMMmAUaRF9b/3WLQuvVvkuC
+	MQVqyvELrYbxbraXbN5Pm4KN53BRJmPNJI6m4UDVoe0fcmWm6SrZolTplLFZoXAQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jnp4k7dc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 03:56:34 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BH3rX7B001641;
+	Tue, 17 Dec 2024 03:56:33 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jnp4k7da-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 03:56:33 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH2GE25005488;
+	Tue, 17 Dec 2024 03:56:33 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43hnbn12qn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Dec 2024 03:56:32 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BH3uTHJ49152404
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Dec 2024 03:56:29 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1BF5720040;
+	Tue, 17 Dec 2024 03:56:29 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0F3B520043;
+	Tue, 17 Dec 2024 03:56:27 +0000 (GMT)
+Received: from [9.43.29.128] (unknown [9.43.29.128])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 17 Dec 2024 03:56:26 +0000 (GMT)
+Message-ID: <51f0c5cc-87bb-49c3-9131-801834700638@linux.ibm.com>
+Date: Tue, 17 Dec 2024 09:26:25 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,213 +85,155 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/book3s64/hugetlb: Fix disabling hugetlb when
+ fadump is active
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org
+Cc: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <20241202054310.928610-1-sourabhjain@linux.ibm.com>
+ <87h6734gp8.fsf@gmail.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <87h6734gp8.fsf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AH2h5lEMLzx3cFRlnUOO2K8WTWEnxaMO
+X-Proofpoint-ORIG-GUID: d5oseG65QVty6bShGCnzwUiDQHtNEL4j
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1011
+ malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0 spamscore=0
+ priorityscore=1501 phishscore=0 suspectscore=0 mlxlogscore=999
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412170026
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-GENERIC_PTDUMP does not guard any code but instead just used for platform's
-subscription into core ptdump defined under PTDUMP_CORE, which is selected.
-Instead use PTDUMP_CORE for platform subscription and drop GENERIC_PTDUMP.
+Hello Ritesh,
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kvmarm@lists.linux.dev
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-mm@kvack.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This patch applies on v6.13-rc3 and has been tested on arm64, although it
-also clears build tests on impacted platforms.
+On 17/12/24 00:07, Ritesh Harjani (IBM) wrote:
+> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>
+>> Commit 8597538712eb ("powerpc/fadump: Do not use hugepages when fadump
+>> is active") disabled hugetlb support when fadump is active by returning
+>> early from hugetlbpage_init():arch/powerpc/mm/hugetlbpage.c and not
+>> populating hpage_shift/HPAGE_SHIFT.
+>>
+>> Later, commit 2354ad252b66 ("powerpc/mm: Update default hugetlb size
+>> early") moved the allocation of hpage_shift/HPAGE_SHIFT to early boot,
+>> which inadvertently re-enabled hugetlb support when fadump is active.
+>>
+>> Fix this by implementing hugepages_supported() on powerpc. This ensures
+>> that disabling hugetlb for the fadump kernel is independent of
+>> hpage_shift/HPAGE_SHIFT.
+>>
+> Thanks for describing the history of the changes clearly.
+>
+>> Fixes: 2354ad252b66 ("powerpc/mm: Update default hugetlb size early")
+>> CC: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+>> CC: Hari Bathini <hbathini@linux.ibm.com>
+>> CC: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> CC: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> ---
+>>
+>> Note: Even with this fix included, it is possible to enable gigantic
+>> pages in the fadump kernel. IIUC, gigantic pages were never disabled
+>> for the fadump kernel.
+>>
+>> Currently, gigantic pages are allocated during early boot as long as
+>> the respective hstate is supported by the architecture.
+>>
+>> I will introduce some changes in the generic hugetlb code to allow the
+>> architecture to decide on supporting gigantic pages on the go. Bringing
+>> gigantic page allocation under hugepages_supported() does work for
+>> powerpc but I need verify the impact on other architectures.
+>>
+>> Regarding the Fixes tag: This patch fixes a bug inadvertently introduced
+>> by the commit mentioned under Fixes tag in the commit message. Feel free
+>> to remove the tag if it is unnecessary.
+>>
+>> ---
+>>   arch/powerpc/include/asm/hugetlb.h | 9 +++++++++
+>>   1 file changed, 9 insertions(+)
+>>
+>> diff --git a/arch/powerpc/include/asm/hugetlb.h b/arch/powerpc/include/asm/hugetlb.h
+>> index 18a3028ac3b6..f294e57663b0 100644
+>> --- a/arch/powerpc/include/asm/hugetlb.h
+>> +++ b/arch/powerpc/include/asm/hugetlb.h
+>> @@ -15,6 +15,15 @@
+>>   
+>>   extern bool hugetlb_disabled;
+>>   
+>> +static inline int hugepages_supported(void)
+>> +{
+>> +	if (hugetlb_disabled)
+>> +		return 0;
+>> +
+>> +	return HPAGE_SHIFT != 0;
+>> +}
+>> +#define hugepages_supported hugepages_supported
+>> +
+> In include/linux/hugetlb.h
+>
+> #ifndef hugepages_supported
+> /*
+>   * Some platform decide whether they support huge pages at boot
+>   * time. Some of them, such as powerpc, set HPAGE_SHIFT to 0
+>   * when there is no such support
+>   */
+> #define hugepages_supported() (HPAGE_SHIFT != 0)
+> #endif
+>
+> The above comment is not entirely correct after this change 2354ad252b66
+> ("powerpc/mm: Update default hugetlb size early), because we anyway go
+> ahead and initialize HPAGE_SHIFT even when hugetlb_disabled is true. But
+> nevertheless - we can fix the comment later. I see there are few other
+> cleanups which could be clubbed too.
 
- Documentation/arch/arm64/ptdump.rst       | 1 -
- arch/arm64/Kconfig                        | 2 +-
- arch/arm64/kvm/Kconfig                    | 3 +--
- arch/powerpc/Kconfig                      | 2 +-
- arch/powerpc/configs/mpc885_ads_defconfig | 1 -
- arch/riscv/Kconfig                        | 2 +-
- arch/s390/Kconfig                         | 2 +-
- arch/x86/Kconfig                          | 2 +-
- arch/x86/Kconfig.debug                    | 2 +-
- kernel/configs/debug.config               | 1 -
- mm/Kconfig.debug                          | 8 ++------
- 11 files changed, 9 insertions(+), 17 deletions(-)
 
-diff --git a/Documentation/arch/arm64/ptdump.rst b/Documentation/arch/arm64/ptdump.rst
-index 5dcfc5d7cddf..61ca040a885b 100644
---- a/Documentation/arch/arm64/ptdump.rst
-+++ b/Documentation/arch/arm64/ptdump.rst
-@@ -22,7 +22,6 @@ offlining of memory being accessed by the ptdump code.
- In order to dump the kernel page tables, enable the following
- configurations and mount debugfs::
- 
-- CONFIG_GENERIC_PTDUMP=y
-  CONFIG_PTDUMP_CORE=y
-  CONFIG_PTDUMP_DEBUGFS=y
- 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 100570a048c5..b5479c8b454c 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -154,7 +154,7 @@ config ARM64
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_LIB_DEVMEM_IS_ALLOWED
- 	select GENERIC_PCI_IOMAP
--	select GENERIC_PTDUMP
-+	select PTDUMP_CORE
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index ead632ad01b4..fe17d7f5b061 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -71,8 +71,7 @@ config PTDUMP_STAGE2_DEBUGFS
- 	depends on KVM
- 	depends on DEBUG_KERNEL
- 	depends on DEBUG_FS
--	depends on GENERIC_PTDUMP
--	select PTDUMP_CORE
-+	depends on PTDUMP_CORE
- 	default n
- 	help
- 	  Say Y here if you want to show the stage-2 kernel pagetables
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index a0ce777f9706..c716f8df10de 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -203,7 +203,7 @@ config PPC
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_PCI_IOMAP		if PCI
--	select GENERIC_PTDUMP
-+	select PTDUMP_CORE
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_VDSO_TIME_NS
-diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
-index 77306be62e9e..ea6f836407d2 100644
---- a/arch/powerpc/configs/mpc885_ads_defconfig
-+++ b/arch/powerpc/configs/mpc885_ads_defconfig
-@@ -78,4 +78,3 @@ CONFIG_DEBUG_VM_PGTABLE=y
- CONFIG_DETECT_HUNG_TASK=y
- CONFIG_BDI_SWITCH=y
- CONFIG_PPC_EARLY_DEBUG=y
--CONFIG_GENERIC_PTDUMP=y
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index d4a7ca0388c0..05f969729e72 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -111,7 +111,7 @@ config RISCV
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_LIB_DEVMEM_IS_ALLOWED
- 	select GENERIC_PCI_IOMAP
--	select GENERIC_PTDUMP if MMU
-+	select PTDUMP_CORE if MMU
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL if MMU && 64BIT
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 0077969170e8..0e19fe547d84 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -155,7 +155,7 @@ config S390
- 	select GENERIC_CPU_VULNERABILITIES
- 	select GENERIC_ENTRY
- 	select GENERIC_GETTIMEOFDAY
--	select GENERIC_PTDUMP
-+	select PTDUMP_CORE
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_VDSO_TIME_NS
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 9d7bd0ae48c4..d84cb2ac93ac 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -173,7 +173,7 @@ config X86
- 	select GENERIC_IRQ_RESERVATION_MODE
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_PENDING_IRQ		if SMP
--	select GENERIC_PTDUMP
-+	select PTDUMP_CORE
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_GETTIMEOFDAY
-diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index 74777a97e394..198d7f090b98 100644
---- a/arch/x86/Kconfig.debug
-+++ b/arch/x86/Kconfig.debug
-@@ -59,7 +59,7 @@ config EARLY_PRINTK_USB_XDBC
- config EFI_PGT_DUMP
- 	bool "Dump the EFI pagetable"
- 	depends on EFI
--	select PTDUMP_CORE
-+	depends on PTDUMP_CORE
- 	help
- 	  Enable this if you want to dump the EFI page table before
- 	  enabling virtual mode. This can be used to debug miscellaneous
-diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
-index 20552f163930..8aafd050b754 100644
---- a/kernel/configs/debug.config
-+++ b/kernel/configs/debug.config
-@@ -73,7 +73,6 @@ CONFIG_DEBUG_VM=y
- CONFIG_DEBUG_VM_PGFLAGS=y
- CONFIG_DEBUG_VM_RB=y
- CONFIG_DEBUG_VM_VMACACHE=y
--CONFIG_GENERIC_PTDUMP=y
- CONFIG_KASAN=y
- CONFIG_KASAN_GENERIC=y
- CONFIG_KASAN_INLINE=y
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index 41a58536531d..b206e5a11f96 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -187,7 +187,7 @@ config DEBUG_WX
- 	bool "Warn on W+X mappings at boot"
- 	depends on ARCH_HAS_DEBUG_WX
- 	depends on MMU
--	select PTDUMP_CORE
-+	depends on PTDUMP_CORE
- 	help
- 	  Generate a warning if any W+X mappings are found at boot.
- 
-@@ -212,9 +212,6 @@ config DEBUG_WX
- 
- 	  If in doubt, say "Y".
- 
--config GENERIC_PTDUMP
--	bool
--
- config PTDUMP_CORE
- 	bool
- 
-@@ -222,8 +219,7 @@ config PTDUMP_DEBUGFS
- 	bool "Export kernel pagetable layout to userspace via debugfs"
- 	depends on DEBUG_KERNEL
- 	depends on DEBUG_FS
--	depends on GENERIC_PTDUMP
--	select PTDUMP_CORE
-+	depends on PTDUMP_CORE
- 	help
- 	  Say Y here if you want to show the kernel pagetable layout in a
- 	  debugfs file. This information is only useful for kernel developers
--- 
-2.30.2
+Agree. Since it requires generic changes, it can be handled separately.
 
+> fadump when the capture kernel is active would like to disable hugetlb page
+> allocation (to avoid OOMs) hence it uses hugetlb_disabled flag to mark
+> it disabled. As you correctly pointed out, the change in question moved
+> initialization of HPAGE_SHIFT to early boot as it was required to set the
+> pageblock_order properly (especially for radix 2M huge pagesize).
+>
+> Now earlier generic hugepages_supported() was only checking for
+> HPAGE_SHIFT != 0. This patch will now check for both, hugetlb_disabled
+> should be false and HPAGE_SHIFT should not be 0. Only then hugetlb will
+> go and allocate hugepages in hugetlb_init().
+>
+>
+> So, the change looks good to me. Thanks for catching and fixing that.
+> I hope we can add a testcase to cover this scenario as the problematic
+> patch was added long ago - but we only noticed the problem now.
+
+Yes, we have a plan to add a couple of test cases in op-test to cover
+hugepages with fadump.
+
+> Quick
+> qn, was this caught due to any OOM? Or was it an observation?
+
+Yes, the kernel was hitting OOM when hugepages were enabled and
+fadump was active.
+
+> The patch looks good to me. So please feel free to add -
+> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+
+Thanks for the review, Ritesh.
+
+- Sourabh Jain
 
