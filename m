@@ -1,59 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-4231-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4232-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BEA29F4208
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 06:15:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF879F4209
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 06:15:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC4kd0mD7z30Gm;
-	Tue, 17 Dec 2024 16:15:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YC4kf6qdVz3029;
+	Tue, 17 Dec 2024 16:15:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2415::61d" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734412505;
-	cv=pass; b=gsYJGWLGrTEhmbMrOuYGfcNjK6bdMiSyh/wvcUtNBeERskpjeCLyvL5swttYe4nelVnjGsZtIv9yJN9c+MmXHp+baMYoUHtAhwkweroRdjC4LConeWNw/zHeihWgniMhtwmI/sh8ZVO3dFdeNYZx7tVGA/h7zqFYdsDVPObuTHllzZrEXyer2pYxp1DVL5A7Vlwg+Q81rt3jejlhG4SX2YqnuqB7V+gOqkQzu5bTGvcQG1CjlEHhyo97NTVqmPAjEuFtzJqwDOk/hMYO5/bNejxIrli1c3FqCuh4fPk5gCHd+IkwH8BvEMFv6pcIhD5SQkl82MZRbV9VsQtlqHrmBw==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734412506;
+	cv=pass; b=ZdUAgjguege/IsijdVPp+hLdF9b4CmtavtaPq5kQYV21fsZ4abcEfzoc57G3+k2X0YEQvZnRiXUuQI1Jg6gGQGkHS06B7ljm/NSq2cFM7UN4QnEVCCcOy7P9AMulC8RltOnaLcfdxYXwBvxoZ4g3rmNCpMBSqqaReSojJLxXFs605gnLmZ4v16PsjYJtkYCSzyc7yeB2VcZqBP6/+nRqc+md2GpYpa/V3FBsQD2EO2rTeC2vksfH2FfQoE/t7BHfTiKX7WwIUE8/pLLFqlY/nXWZVdmmNzvXC4vn9UVmCkpHY3ulia+QIq6/iJJch1cBOG0ZVSsZH8C+yr0tZ9hm1w==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734412505; c=relaxed/relaxed;
-	bh=H5MhO/dRA0tjI1dUV5ZoqTSusZp5BthCYTx40EefRUo=;
+	t=1734412506; c=relaxed/relaxed;
+	bh=3d8k0n8RHHqQFTOAVPp2FWmERdGB9c/dPWGRz1x4E+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=D1tvXjDq8SSDLoV3T0pFQHOX4CDKks2jxhkyNuZbZ69R2ozpLtMy51caStZ1nUu7ATyw+aIHGdTbBUnItG2CY5BINUsl2u9I3QEBeZi/m7VMmmTUVuFEQQ53PExnQOVPuyt33/0Eg7lI59/JtqhHHUugsiqBGmtEVkxiYluAPOeSujj9HT15RKt1SlA397y4m5oxXtW4+9J1dJWZMirIq732/RzcS31g1uXSnNMoVfVK+1dv750Go8psDHIgSI2gM+PAYY39uUgasug53APMvKxhjugxNt1v5oL1R3hwYxDKkvLxJss/l9pRMyjTsoX+MJGFow7cjfheCwKuwIVLRw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JIVvDalB; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2415::61d; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+	 Content-Type:MIME-Version; b=NDEVAsMLKFlB+iayWxJRRuuyrX8x7zyN5Zb4Cwg58r7HsVlAFfqtZobVCWsvlWHVEFva73GGNFhCKq/Fnbn8/7r5w3RQY0jUdllq8QeTX4S/NfX2fEQJOxnQeMwmBWQzm05rLBO3/d8TP4h/4QQYlZBwICiXebAbBZwRAYDA1+lz8sfBjCOfb+UEoPvwe0CcxR5XW3Il1J0yEZ8u77aOGw5nKfOzvn5kVomH0uMlgrPJezM95Z1BRoe6wxl+5tzGvUrhQdOfmjU5uMRG3/A9ttDRbeApDt2VtGxPTWxRDROC9ZZf8kkA57MNbUqZwNey6OiYUJU/TfwEhQCMt95TnA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sRHq0yrh; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2415::61d; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=JIVvDalB;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=sRHq0yrh;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2415::61d; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
 Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2061d.outbound.protection.outlook.com [IPv6:2a01:111:f403:2415::61d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC4kb1CGfz30CD
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 16:15:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC4kd1scQz30TZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 16:15:05 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x8nnEn1ajo+2Pj76utqjNUhwM1VIb1yjyfJl60/dlnw9nDy8wuh593+D290FZwxaP1vmLdMiw6sSctmrSoQPAwY2DyAF3VV4fTiD2DMUoLng7Pjjw5B94QuV2rFHyT1KCW9hFU2qpBps48Z2f3kKaSYChhFK/xdmbv6b18IWa+Yokf4UQp9HJR9g0vMLOE6gGfI6gwuYY2JwhWRTg/su5Rk1/nst3B0skfGsKb751gSjml9ACvskAOvNjPerIvqhYfEFmIwnxi2Hko9/ffGYVHZ6myAocnwMMjr+ssgziKRjdq8gkCEiVbXWvYOcQlODXmt8DVvCjZJK+xxAqSvy6Q==
+ b=Ct5OYc3bYyImuqdqXXLpsV02s6AxWIxgPg70Wm4FZG1+qXuUnAanHqG2Deb+X1z3RJ82EecAFaT03yFtTne7ZqpDHla0rgGzs162wj6dHnFnnOk662vKxk8JL8UY1h+eroPlIGG/z9HboUslORLVMVbta3a3HVbWqcljzZsnL+W960Gh0rpY8gNTGp/zKJPTDTjRBKOtkG7EBvJd+0PkCjauF/+H5Z4WsaRckcEbiq5oHTX1712ZwK7JDzKpTpnU+1HnD8/2ZM/hVrSYppb+cnV0w/aItlcXPPy7H8xQa3xyMiXkGUpiHFKApdW7zJPHV1ahGmZgLYpRUCtBwKZzdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=H5MhO/dRA0tjI1dUV5ZoqTSusZp5BthCYTx40EefRUo=;
- b=VsN5TdvIUvW7jm5aLviM9G6LT3yNMzFC2VNpK9JrYQVOuupY8oEUSPZkrfoZjCf/dskeqGqI0thmzakWDTiUjXZ7hiV/TBs9m9cQZ6CdUjcftAWQ/Ml+XvczUviqIsBj9AI/IxUbDJq4OK7fRTTYzWvXaFyQrBDEJ2djSTFNSU4ZuqBS1sUFsf3w/e1YHbXs1ngjoPHbxTxyz+5XUK6S9r9vrU6W1Ge1nrY8iuq1t7BUA/i5HDOay8MX8vC4pjOVRiuDG2N8pDh7nPuEmEy1/8xAhXxmpfpE85lGV/0qNJ/4lZTQpD9wMR1U38SO7x8gtB2urI+eTiZt/+4hNclD4Q==
+ bh=3d8k0n8RHHqQFTOAVPp2FWmERdGB9c/dPWGRz1x4E+I=;
+ b=EnLO31qMIFcgUzICuXZS/3uFnMM5NoyhRnRPSKP88oTPNZUZawCaKnja3iCCTdKuGUDHrp/L0nrx05HvI3tdZTOh1FDccudNMGNaRbxvIEnL9GwT78dxNkIdR9giIL7VHGM3FPQsuqKrAfyAx49mfbCJyg1f8t0AAM4YhYFCsXHOzi1nc2IMIqKW2893K5nytpxIMDzV+UqOGWwux37iwRoGRCTW0EQNbIF7ud2nrqDcFLBces1yhmnJkL7afKkuR6YsBY8t5uJadT5pyL/HWWWb8c0Q0d2sSnGKmp4e7wlto4ts36kAuCA/rwNBK0iEd7xCWRxYLvlB0ZhU51t/jg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=H5MhO/dRA0tjI1dUV5ZoqTSusZp5BthCYTx40EefRUo=;
- b=JIVvDalB7NE70/AIzHzsl59yFKa5FIM/rudzetMB87Wwh7YZs9CAR/64BGWedSXATj0V6+KG6K6x7NVZZQz+I27jpwM+ziwzZgwV3Jxp2byuAlEy7O3e1DOTGDsDUhDgy5az2aUYwaj96E+QTNFPpRQwY3mT4RXXzg5j6a9E6zkT6Rl2ov58sx/ad02FJBhIuk2VuofMCxcDi1WJaXkdwTaysh5EqpUYGVLPVCI9J5OqqhP1K7miSLHu8G3Zrl3Hh+pp64bhUR/Lcg8GhHwzT4j3YP69xQHXfblNlWd5D3g8Zk6LiBj9xV1AO64ousRMKjniFn0k78xnyg/AKZFlJA==
+ bh=3d8k0n8RHHqQFTOAVPp2FWmERdGB9c/dPWGRz1x4E+I=;
+ b=sRHq0yrhIgsNSsMfKPpZBpqvwRTKGVLDC0VNcgc3mzePufdgN1HZl79eGk/GS7OpaIR2qxVH27tshHK4b+yOtF10DpSpdmIbZEkhNXmeAhTWJymKyh9gCsTx1AA04Hy8szRsOeMs4sFy1tMZouLSUMrWQ3oC6oFxcZqC2z6jtlWCwcRRlgy8WYyKAc+AcEgEqGtXx3l2dQU/j8g6l1WRxW6sOza7UguHbxa7GXe6JoOJrxEq+24yuKeY5YYNEO+NayrlYt5Vyr2t7z2YslsXd8c5o8vrXLFsXpBPur7wD9fmEHDYb4lrMht4jjJda3aVpkWx0tb3rfNjQSSx7fVrAA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
  CH3PR12MB8936.namprd12.prod.outlook.com (2603:10b6:610:179::17) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8251.22; Tue, 17 Dec
- 2024 05:14:44 +0000
+ 2024 05:14:49 +0000
 Received: from DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
  ([fe80::953f:2f80:90c5:67fe%4]) with mapi id 15.20.8251.015; Tue, 17 Dec 2024
- 05:14:44 +0000
+ 05:14:49 +0000
 From: Alistair Popple <apopple@nvidia.com>
 To: akpm@linux-foundation.org,
 	dan.j.williams@intel.com,
@@ -92,16 +92,16 @@ Cc: Alistair Popple <apopple@nvidia.com>,
 	jhubbard@nvidia.com,
 	hch@lst.de,
 	david@fromorbit.com
-Subject: [PATCH v4 13/25] mm/memory: Add vmf_insert_page_mkwrite()
-Date: Tue, 17 Dec 2024 16:12:56 +1100
-Message-ID: <e55ea5e8aa44946b09030fc4a164d2735c305327.1734407924.git-series.apopple@nvidia.com>
+Subject: [PATCH v4 14/25] rmap: Add support for PUD sized mappings to rmap
+Date: Tue, 17 Dec 2024 16:12:57 +1100
+Message-ID: <7f739c9e9f0a25cafb76a482e31e632c8f72102e.1734407924.git-series.apopple@nvidia.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <cover.18cbcff3638c6aacc051c44533ebc6c002bf2bd9.1734407924.git-series.apopple@nvidia.com>
 References: <cover.18cbcff3638c6aacc051c44533ebc6c002bf2bd9.1734407924.git-series.apopple@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
-X-ClientProxiedBy: SYYP282CA0016.AUSP282.PROD.OUTLOOK.COM
- (2603:10c6:10:b4::26) To DS0PR12MB7726.namprd12.prod.outlook.com
+X-ClientProxiedBy: SYBPR01CA0044.ausprd01.prod.outlook.com
+ (2603:10c6:10:4::32) To DS0PR12MB7726.namprd12.prod.outlook.com
  (2603:10b6:8:130::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -117,176 +117,262 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|CH3PR12MB8936:EE_
-X-MS-Office365-Filtering-Correlation-Id: 707a850a-c47f-486d-7807-08dd1e59b788
+X-MS-Office365-Filtering-Correlation-Id: c64d6aca-46d6-4747-9005-08dd1e59bac1
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Kt66ZZU9iGjMeOzPDja6nI82dO8l/qPHRxslb32KOWvmTSnvJTYkVlk//pGV?=
- =?us-ascii?Q?UktMqE6bblUs3yAsSvfNBCr4mG+iZWBxyEz7PiJeWpUBCxWMXlR0aOUsLQGb?=
- =?us-ascii?Q?O2U2xSFkTNxaF9nwXDyiU+HnKAjWmdD3PfgzWpEfnjNvxZNqhGlpve0kPUvP?=
- =?us-ascii?Q?40dCl1KWf4AeGIQU9h6zusWFOW+4mCN71aXKh32qb0wwqCBAqniCprZY9UQA?=
- =?us-ascii?Q?+NTmI5NuRfEJv9RBOKW7zmoM9bmK1F58h/K2wwbJZe7wPyMa7tkaBUEXBG+2?=
- =?us-ascii?Q?kPhltXgt0KGdW2USi0Qwvq5vLLjEZRc0X8vUZwZsTUlVXpDVfAnb97/xJR7S?=
- =?us-ascii?Q?Ch6YcmgyyH7XcwDeOXAgLAUy1IdBVcVWPr5oTqw/T49xt5lHH1CaWo0Exy3u?=
- =?us-ascii?Q?UwF3UqWBPV5o0xLWA7XF1f4ylUxkypqKOf3j0AbxKA7gOLTUwjg1W7zDrQrw?=
- =?us-ascii?Q?SBsdLCSuuug83kyzx5WjI1oZI6pnwMvA5mBQRIjAZcAOGOj0FC80ZuTrDRa+?=
- =?us-ascii?Q?eaVeuoGErKiS8p+RsbXBys2mtr5KKlTkFVsl+ZCJEp0Xk1iYqQ2semyMJW7/?=
- =?us-ascii?Q?opn35URHJ9fdLqGVCdl50xEI+Umk+7P8A24pf0CznBDhFy+4JNjVvrgqJoKF?=
- =?us-ascii?Q?0liajL583dz8UMc7puiHJUVcJ0EY2PppaD3SygvJBoeXsWyIaHjULjS14e+9?=
- =?us-ascii?Q?R2h89GxTrX4LZLjYehumIXLSwVtMxg2xpgK+oDF+uEj2GBfdXs0jY3eJOYRx?=
- =?us-ascii?Q?rATIAOpw/XcuZGUSrFhNVePo795c6SOjzCiLNhT/Oc36eoFgLDSgItx1cASo?=
- =?us-ascii?Q?EelbMiKpvlGGeQ4yU8im0VS5Jhseq70MvsZEwkMGhSmftB/Shbuz1ZbuZnte?=
- =?us-ascii?Q?q2kQThhX/3BKp524Jf2wW5OmZv/pHnnBgsmncQ2CLgB3XWxWtMGCaBenhpmz?=
- =?us-ascii?Q?KUaM0YB9v/tHdY1KjNDDNyxby5uxsLvH2fjDbo2/ALCfgrT1EBog25xFSAtQ?=
- =?us-ascii?Q?aBVmuXmfVPnB0c6SJqCcUecqoDw0UycI6ZUOW//7GCQp5egXOxNPI5+X67W+?=
- =?us-ascii?Q?WqDnkRnwJDQKv49wAtnGt7RWsbbAoK9+0enXwMNBopH/8wogg2Oag2bcpBtW?=
- =?us-ascii?Q?6dqi1EYq1CxZtsB5AD2Boru/R2g0C9/Sjfnu8tSVEhcaiNUObIBEFfTGSQtG?=
- =?us-ascii?Q?z18bi6i/KweLO0leJC06XSsLB7hzkP2ut0zbcyQlYLudrRFyeKOmxCEoJu5K?=
- =?us-ascii?Q?WE6ShHODGNsHHlGjwpo19BI3v6HRRWf3+UUlvCjJOep+g0ts8RTWv32CL60y?=
- =?us-ascii?Q?YUMuZGz54mVDsDW4Y1htBjrb1aCQpsXt7chxgPg9tWcNEHygtL1/BBe+fM2U?=
- =?us-ascii?Q?WlsHLLg5BXBMywdjxl/4cDIwLhFz?=
+	=?us-ascii?Q?hKD1HlBqSFtPHZEyhZBcDJJ3th3zP7/3ZWJV6//EpaZXa0ZCaZlb5shiTy5x?=
+ =?us-ascii?Q?SXTHSvH5eaNMg1zWSVT3CzWvfNja/4tPJdiHdHFwgoIXTo/7oI9wVHs3w511?=
+ =?us-ascii?Q?9yyRQh9bv4JJiaMj5BTnqdd5xIM6SxndalmltFJ6GZ0MAO4s2/ScPwA8uzcw?=
+ =?us-ascii?Q?MkOV39N5IyOhtuh2mW525MKr/uUmlQngOVKAve9MQT15v1mK+T45RN7U9qgr?=
+ =?us-ascii?Q?5BVrCs6D3U/HgS/+FjtRvrtdK+o8uGMPh1iv8QvWXTo3+ufjt8hhlzuK3ZR4?=
+ =?us-ascii?Q?ZderDRCxg4qr3TrDIrTakn4eAGgl8WHPpZqwsjKaYJLE29GdlFustqGF9xwS?=
+ =?us-ascii?Q?gm1LyVPM6JBexZDKM1fSA0EUY7HjdlXLtrAJwgkNK1nB3q0Fy7IRnbb122pz?=
+ =?us-ascii?Q?RDTBXzfDqSxugK7p6hp0SFZcuGVOz1GCs+6wo3TEHggI446ozZzP/PKnL0Xi?=
+ =?us-ascii?Q?pr0RieLt8LuERG30WAkEPokTydvJ+zxI005rDUWSqZ+KPFuMrYVz/fWBghlL?=
+ =?us-ascii?Q?W9YnGFBhjqnj4pkh2stRsZaQ298MUCIZHOCE2Gx2mhe6TSrvo09JG1URuHw5?=
+ =?us-ascii?Q?SDYyfDsFaXq58Y+Bf2RyRu+geNszkvwWzQR923NaMbcE2AuUf8SPnPZB7aNi?=
+ =?us-ascii?Q?s2udSdbbepHP1mbZ+YA8SD7Iq1tCZzQ95rvPPoFZv13BHrZcNHN/Oj5xMT5k?=
+ =?us-ascii?Q?uwsQ5WK3OAOazliFcuccEQufn5f4x7emMNy5dJnHAF72/VIVuwJWiMmKZvwJ?=
+ =?us-ascii?Q?33l2RiceJSsPE6tlS1k+Yc8pdLYGWMBNO6EWwAar+F7KW7Ztr3okazTDAeQb?=
+ =?us-ascii?Q?gknN0Jf//XLxvIFrlFTWWyAbCEzLnK4eRjwSt/SHvxTX5oXZUaMxy6zyaCL/?=
+ =?us-ascii?Q?enQPx7B1As0XI63td71w1AW6WPruyOG13mBF5rlNwEdqL87YICpis9OIQS+A?=
+ =?us-ascii?Q?dvjIbu2YglL3ivKX15YN/Wqomd93b6FW/rzOLZBHnoEHDaxTySuyZFKjP5p8?=
+ =?us-ascii?Q?GsYh4frFpO95EF/bAJr0ViGqb9vuA9uLzKCv4mfDCKCneocBYGTcwBWFWxLU?=
+ =?us-ascii?Q?OD8/DpVH6pR3CTp3lcVk2MwFwjPPbBOScvazkQ00cgUESIZe0WidqzoPQiET?=
+ =?us-ascii?Q?m+fPivedtsecAbYfBTtBf7KtQQSR7RjJ6wSlN1rWV75ykAO6xnTajWYqYOH7?=
+ =?us-ascii?Q?Gz309d9Mcee1nBxxQvnVh9hnpZlLyizIRAewymwFu9fRK7YSAXp2DqTju2pj?=
+ =?us-ascii?Q?M/x/Oc7kzm7tltnPI4TdSsDzp7vYuJtQISvQ/piYIcC+NV3A0wh0v/hu1CiT?=
+ =?us-ascii?Q?Q1ZJDBPkF3MfOUi/9M4XZi42R0Gpk07f1OzsC94LZ6u2698XxQNFCoSVdP/+?=
+ =?us-ascii?Q?gYswuldkOdTBBlf+Zdxu5qUpC/3c?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?amY/o2cdeFIYVbsbGUtboZ6nfjsYmT6sdCKyFJ+YBQTeaEyqy/hGX84S1OZB?=
- =?us-ascii?Q?Hi71KqIBOvLG/ryD84984FLU2+3oKZ7Plg/SJ5jEhwsPkPzYvM+V81vDLFt2?=
- =?us-ascii?Q?QG3hshExJePplr2nobCaUfk2GhXerjo3g0X3pti/+7ALSW3FsJbcB9mX1AEA?=
- =?us-ascii?Q?zADP1Gp/Xi7+OdT+kdv0UNkurikx1XbS2uIuc2vrZTC5qzY0wKUcLpXXdIax?=
- =?us-ascii?Q?Wu2uBuauIY5wrI6gPv6qU90A7OYGF6IiYd3iW60AwImMUCbaOfoLFs4XZRHF?=
- =?us-ascii?Q?UItoF9c+/uE1RTkHCWlWuWhwjW/fvfLtZLWjyemkvKRFWFeSkWLYRkuoYDF/?=
- =?us-ascii?Q?dgyc16hxuDr3UNCDHHHXynwanodeCWZL/0rSpNh5J50EF3T3eyi/UXqwWUBl?=
- =?us-ascii?Q?5zdGpcsv7AmiMt5bLwbMAV/TCHe/0XBqycTHrh3Auvr21j40iGyqXgr96ilB?=
- =?us-ascii?Q?c44In/M/2N595jKEIBFFeutw2oPJimPBNEGoiU7r4XQQqV3bCX/gOdELVJkV?=
- =?us-ascii?Q?vcK2X2HcOysDqieYxZy5LqlUbZqINnviYPubBPH1jio4e6bXq3IFyiYxz2KD?=
- =?us-ascii?Q?g4E4+X1mwsvkfeXHVWgyD8Ez6SeKjO5/XdBSzxVz//N+AAJVTnSsCp4t+Q/F?=
- =?us-ascii?Q?Q291rD+6KkjECc4yXzKaaEUGJDun4aeWQY56JEAf8AXNFwik69AzleVJQlNI?=
- =?us-ascii?Q?2//TUdjZ5luFbgL5elut/NRYRXKEtXFXjr+tgdJdRcDOcUqXpKhcTAeJOu/+?=
- =?us-ascii?Q?pJMTTzuqWaod21oqtOtqn3nR2dho4XsBbWGFujRTk7Qsu4dkoBD2dweEToj1?=
- =?us-ascii?Q?GME32DcTHfOj+GjXByUuiABhf1yB0+2zZRNTVTkPcYG5aHkQUsWhukm1VBfo?=
- =?us-ascii?Q?pIgCmTqZlObhMyK0iOOAyLYI9Xg2FyiXB1V+h57lCfHrR/re63ghIqhhuE01?=
- =?us-ascii?Q?kDsKqfx7pDKIJ5FI6cqhLOFABs5mBHemSL5TTmbONCrAoA7BnadrOe2PPIwE?=
- =?us-ascii?Q?iByqIcwuIOnBRIsHtB1y44SRrgVnpwSa67Cysz/yeuMggUqacQhXoYTVXBk5?=
- =?us-ascii?Q?G4bJgQVPbYj79TZuYb6c1Rnp2xaTJ1p5oUUdk+ZVlsy2EVTDa6fo9x/VYYBx?=
- =?us-ascii?Q?xHXXf5osBp3Q5qsGRddXkaBn07ZH88FWMed4rCpKUkU24nKPtb5+7jBctGtW?=
- =?us-ascii?Q?zIXY8Uts0knsx4XyFPQuELXAuINR4KaAk88wF743npdhz0/6mM0ZZJGLKoxF?=
- =?us-ascii?Q?1h5uADermedp4ZolfMdtnZPT4ukxBXslfd1+ma3+Qz9Vsy2hOSWEjCZmfnmf?=
- =?us-ascii?Q?NYA6H5dQt9buZMb3rK011nVzfBsuI2Ezd5Sydb2PZW/t0YrrS6Qgoihydmb9?=
- =?us-ascii?Q?zphdLLnonXFbfXvd1u/9xyIO53t188x/VCzEx7ls2K3IG3GYCpfiilSzDVFn?=
- =?us-ascii?Q?xz0ac6seIiMDhp0WNgyrMp4y/DPzM1SXvnS/xLhtZ19YfjAIsRaQOWIXIKsa?=
- =?us-ascii?Q?Db8cKStNLJLCjF1aYI/x1Bgo4+UymDkT8JwNk6IG9MUYi1wJAmeK99HdcUuk?=
- =?us-ascii?Q?t/THQ9KzR53TmKU5i/+iNljd37GDEIlxwQpmhuFa?=
+	=?us-ascii?Q?0ap2TATHGi17x3GWHrXb7yHLTIqzFkzsGiHQh82VYM8Fb0b3ttcFiHcDs8Z7?=
+ =?us-ascii?Q?63qb9VKepqJ5LxQxRqTWa9tGBzZraEX1ITfnjPxkDFvV7mh70a3bb6rW5RQP?=
+ =?us-ascii?Q?Fj0BZ+0zJriYNbz6fAZg8uVhRkS+moOh06NdHs0xY0wwCWansa5IbmoJksPX?=
+ =?us-ascii?Q?wDu/99lDiyVj0PcVYNKcJKKZPRdJitxdATpPK6ygiFJj/UhcnaMOgVKVXh4l?=
+ =?us-ascii?Q?L6Qgw+CirTwd4bDybMPz8NMpBgfvI/veUHNSnLTkIWDekVUzz1rRvq6bk3p5?=
+ =?us-ascii?Q?RNuyzTU36FH+8VJC39KgG5a4Wjf6glhcWFI316JRV2sZuKRkiPdQiEuuYJtP?=
+ =?us-ascii?Q?vfFNkbWim6T6Gqu/UgHIi+k/NiYRr4EGtpX/G+YgrbRdbF9x0ZoenSFeolpU?=
+ =?us-ascii?Q?FxPFxPKlyEPQ8VeQHP9fSZzim8HZDRwWOIttPRBFj1vCgYQdhqzyzbrg7P8v?=
+ =?us-ascii?Q?Hk+jYd40e9KV0Ocpk8UoNJiLrXI/tm05QSjjf2TASEl9wFIzRY/hhXoCVjp7?=
+ =?us-ascii?Q?l9Ph9FDDjATy2nCCazMCK2zDn7shHKYVYFzLzCUXaEwEZU8quj3azpy9x69N?=
+ =?us-ascii?Q?OqCfPAJWhIt17BOM+QgdSErieguwehUR8bKgpwWpvd9gpIKLSsbarERNbne7?=
+ =?us-ascii?Q?Q9cawR7mtgRBQEIt6aU+J2X6URGTHwUzqaTk+5aUD9ehH0msUWBqKIMzfR6d?=
+ =?us-ascii?Q?sZ6JDrtmcEyhgZdM23rMumzoz5vE991nZhvJHCx3pf6Mfz50Og6INGLf4QdB?=
+ =?us-ascii?Q?wAOtP9EpltfLpXwLvcnI/cJeFG+D7hn/RYN9p4JN3iNaBGphf8vHdiS+11Q4?=
+ =?us-ascii?Q?NeV9k/a/YMPU5dhhSao1x+FUmymgfSAs2rr2nRObR6+tf+94d8J2ziWAA63Q?=
+ =?us-ascii?Q?ZsLn6GrufVQs71RCwrdv0wgJRFrRxUxv1SRiznRpUJrfDR2aDn4Eswumva35?=
+ =?us-ascii?Q?DF9jN6eYys+uDpe/Of0u2V72vVAHXxIHgZ151H5VX2b8ANa6ceS/i+7GeN+1?=
+ =?us-ascii?Q?IdDHe+aNtR3Kb+VFpZAKKmUpkpmxvWZpUAyooE/ByTE2sSq3wzFd0VQdbccX?=
+ =?us-ascii?Q?/GmU0raQXXCwsXkLNox5qRIfXEuOfLI73yc0NgoTshTuS52K2kNsN14ZgBWi?=
+ =?us-ascii?Q?b9sjjflsVSk1bPvf+s87bBerIaDM/gwW1NG0x816YxU1oMWBVQoX5jN80wir?=
+ =?us-ascii?Q?oPqZ6VALlUrfIaVF1Hjz2PW4gQCxvZCbb4NsHpyYqYrioYVdK5HeD3tiZ4vA?=
+ =?us-ascii?Q?Lpt7sZq91DNz1s1KGhDMto4SURpYI2FaNWwn2/C9hU8rWTiHiyBz5/7Ui8Fx?=
+ =?us-ascii?Q?wc6l6bN4kLb8AijabqrtF7w00nhoUGsJbXSVKdxEmpVm/3f5lvf+QL2hdLPi?=
+ =?us-ascii?Q?kaclRIiviHP4N82xMXHYB3pojV00ScYY0BbTH23OHA6LD8jAm0bKCIgDPPIn?=
+ =?us-ascii?Q?JpIURyhkdedeBcndwfv4Qf6+srNvwYSvVv74GZLjYdg3mAvl7OTKYH6v5GpZ?=
+ =?us-ascii?Q?hU+rLiCOKZ+dqlTiNhmovLbOy+eV2pC9wD7jGJju1wuFptcoF2oXdBPjGykr?=
+ =?us-ascii?Q?zYrCRA5+H1xu6g09H5hgT7jhSJtggXRNQ/VLExmO?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 707a850a-c47f-486d-7807-08dd1e59b788
+X-MS-Exchange-CrossTenant-Network-Message-Id: c64d6aca-46d6-4747-9005-08dd1e59bac1
 X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2024 05:14:43.9655
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Dec 2024 05:14:49.3443
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XrxOoINxJEPydz6kQXH89kVqUovVV1L7w3zmdQddH+16k9iBybaFjljYMzUw59MsXTnPCwWejuetQgi0zr5rjw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: dKohN67e3H/g180R8p2mw0bIlcAzt0522K3IHejIFMwCmrHXJiEZzXl4jjJWRBI0nZqCJlsY/DYB3PgXspj+/Q==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8936
 X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
 	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Currently to map a DAX page the DAX driver calls vmf_insert_pfn. This
-creates a special devmap PTE entry for the pfn but does not take a
-reference on the underlying struct page for the mapping. This is
-because DAX page refcounts are treated specially, as indicated by the
-presence of a devmap entry.
-
-To allow DAX page refcounts to be managed the same as normal page
-refcounts introduce vmf_insert_page_mkwrite(). This will take a
-reference on the underlying page much the same as vmf_insert_page,
-except it also permits upgrading an existing mapping to be writable if
-requested/possible.
+The rmap doesn't currently support adding a PUD mapping of a
+folio. This patch adds support for entire PUD mappings of folios,
+primarily to allow for more standard refcounting of device DAX
+folios. Currently DAX is the only user of this and it doesn't require
+support for partially mapped PUD-sized folios so we don't support for
+that for now.
 
 Signed-off-by: Alistair Popple <apopple@nvidia.com>
 
 ---
 
-Updates from v2:
+David - Thanks for your previous comments, I'm less familiar with the
+rmap code so I would appreciate you taking another look. In particular
+I haven't added a stat for PUD mapped folios as it seemed like
+overkill for just the device DAX case but let me know if you think
+otherwise.
 
- - Rename function to make not DAX specific
+Changes for v4:
 
- - Split the insert_page_into_pte_locked() change into a separate
-   patch.
-
-Updates from v1:
-
- - Re-arrange code in insert_page_into_pte_locked() based on comments
-   from Jan Kara.
-
- - Call mkdrity/mkyoung for the mkwrite case, also suggested by Jan.
+ - New for v4, split out rmap changes as suggested by David.
 ---
- include/linux/mm.h |  2 ++
- mm/memory.c        | 36 ++++++++++++++++++++++++++++++++++++
- 2 files changed, 38 insertions(+)
+ include/linux/rmap.h | 15 ++++++++++++-
+ mm/rmap.c            | 56 +++++++++++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 71 insertions(+)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index e790298..f267b06 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3620,6 +3620,8 @@ int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
- 				unsigned long num);
- int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
- 				unsigned long num);
-+vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
-+			bool write);
- vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
- 			unsigned long pfn);
- vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
-diff --git a/mm/memory.c b/mm/memory.c
-index cd82952..4f73454 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2632,6 +2632,42 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
- 	return VM_FAULT_NOPAGE;
+diff --git a/include/linux/rmap.h b/include/linux/rmap.h
+index 683a040..7043914 100644
+--- a/include/linux/rmap.h
++++ b/include/linux/rmap.h
+@@ -192,6 +192,7 @@ typedef int __bitwise rmap_t;
+ enum rmap_level {
+ 	RMAP_LEVEL_PTE = 0,
+ 	RMAP_LEVEL_PMD,
++	RMAP_LEVEL_PUD,
+ };
+ 
+ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
+@@ -228,6 +229,14 @@ static inline void __folio_rmap_sanity_checks(const struct folio *folio,
+ 		VM_WARN_ON_FOLIO(folio_nr_pages(folio) != HPAGE_PMD_NR, folio);
+ 		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PMD_NR, folio);
+ 		break;
++	case RMAP_LEVEL_PUD:
++		/*
++		 * Assume that we are creating * a single "entire" mapping of the
++		 * folio.
++		 */
++		VM_WARN_ON_FOLIO(folio_nr_pages(folio) != HPAGE_PUD_NR, folio);
++		VM_WARN_ON_FOLIO(nr_pages != HPAGE_PUD_NR, folio);
++		break;
+ 	default:
+ 		VM_WARN_ON_ONCE(true);
+ 	}
+@@ -251,12 +260,16 @@ void folio_add_file_rmap_ptes(struct folio *, struct page *, int nr_pages,
+ 	folio_add_file_rmap_ptes(folio, page, 1, vma)
+ void folio_add_file_rmap_pmd(struct folio *, struct page *,
+ 		struct vm_area_struct *);
++void folio_add_file_rmap_pud(struct folio *, struct page *,
++		struct vm_area_struct *);
+ void folio_remove_rmap_ptes(struct folio *, struct page *, int nr_pages,
+ 		struct vm_area_struct *);
+ #define folio_remove_rmap_pte(folio, page, vma) \
+ 	folio_remove_rmap_ptes(folio, page, 1, vma)
+ void folio_remove_rmap_pmd(struct folio *, struct page *,
+ 		struct vm_area_struct *);
++void folio_remove_rmap_pud(struct folio *, struct page *,
++		struct vm_area_struct *);
+ 
+ void hugetlb_add_anon_rmap(struct folio *, struct vm_area_struct *,
+ 		unsigned long address, rmap_t flags);
+@@ -341,6 +354,7 @@ static __always_inline void __folio_dup_file_rmap(struct folio *folio,
+ 		atomic_add(orig_nr_pages, &folio->_large_mapcount);
+ 		break;
+ 	case RMAP_LEVEL_PMD:
++	case RMAP_LEVEL_PUD:
+ 		atomic_inc(&folio->_entire_mapcount);
+ 		atomic_inc(&folio->_large_mapcount);
+ 		break;
+@@ -437,6 +451,7 @@ static __always_inline int __folio_try_dup_anon_rmap(struct folio *folio,
+ 		atomic_add(orig_nr_pages, &folio->_large_mapcount);
+ 		break;
+ 	case RMAP_LEVEL_PMD:
++	case RMAP_LEVEL_PUD:
+ 		if (PageAnonExclusive(page)) {
+ 			if (unlikely(maybe_pinned))
+ 				return -EBUSY;
+diff --git a/mm/rmap.c b/mm/rmap.c
+index c6c4d4e..39d0439 100644
+--- a/mm/rmap.c
++++ b/mm/rmap.c
+@@ -1203,6 +1203,11 @@ static __always_inline unsigned int __folio_add_rmap(struct folio *folio,
+ 		}
+ 		atomic_inc(&folio->_large_mapcount);
+ 		break;
++	case RMAP_LEVEL_PUD:
++		/* We only support entire mappings of PUD sized folios in rmap */
++		atomic_inc(&folio->_entire_mapcount);
++		atomic_inc(&folio->_large_mapcount);
++		break;
+ 	}
+ 	return nr;
+ }
+@@ -1338,6 +1343,13 @@ static __always_inline void __folio_add_anon_rmap(struct folio *folio,
+ 		case RMAP_LEVEL_PMD:
+ 			SetPageAnonExclusive(page);
+ 			break;
++		case RMAP_LEVEL_PUD:
++			/*
++			 * Keep the compiler happy, we don't support anonymous
++			 * PUD mappings.
++			 */
++			WARN_ON_ONCE(1);
++			break;
+ 		}
+ 	}
+ 	for (i = 0; i < nr_pages; i++) {
+@@ -1531,6 +1543,26 @@ void folio_add_file_rmap_pmd(struct folio *folio, struct page *page,
+ #endif
  }
  
-+vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
-+			bool write)
++/**
++ * folio_add_file_rmap_pud - add a PUD mapping to a page range of a folio
++ * @folio:	The folio to add the mapping to
++ * @page:	The first page to add
++ * @vma:	The vm area in which the mapping is added
++ *
++ * The page range of the folio is defined by [page, page + HPAGE_PUD_NR)
++ *
++ * The caller needs to hold the page table lock.
++ */
++void folio_add_file_rmap_pud(struct folio *folio, struct page *page,
++		struct vm_area_struct *vma)
 +{
-+	struct vm_area_struct *vma = vmf->vma;
-+	pgprot_t pgprot = vma->vm_page_prot;
-+	unsigned long pfn = page_to_pfn(page);
-+	unsigned long addr = vmf->address;
-+	int err;
-+
-+	if (addr < vma->vm_start || addr >= vma->vm_end)
-+		return VM_FAULT_SIGBUS;
-+
-+	track_pfn_insert(vma, &pgprot, pfn_to_pfn_t(pfn));
-+
-+	if (!pfn_modify_allowed(pfn, pgprot))
-+		return VM_FAULT_SIGBUS;
-+
-+	/*
-+	 * We refcount the page normally so make sure pfn_valid is true.
-+	 */
-+	if (!pfn_valid(pfn))
-+		return VM_FAULT_SIGBUS;
-+
-+	if (WARN_ON(is_zero_pfn(pfn) && write))
-+		return VM_FAULT_SIGBUS;
-+
-+	err = insert_page(vma, addr, page, pgprot, write);
-+	if (err == -ENOMEM)
-+		return VM_FAULT_OOM;
-+	if (err < 0 && err != -EBUSY)
-+		return VM_FAULT_SIGBUS;
-+
-+	return VM_FAULT_NOPAGE;
++#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
++	__folio_add_file_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
++#else
++	WARN_ON_ONCE(true);
++#endif
 +}
-+EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
 +
- vm_fault_t vmf_insert_mixed(struct vm_area_struct *vma, unsigned long addr,
- 		pfn_t pfn)
- {
+ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 		struct page *page, int nr_pages, struct vm_area_struct *vma,
+ 		enum rmap_level level)
+@@ -1578,6 +1610,10 @@ static __always_inline void __folio_remove_rmap(struct folio *folio,
+ 
+ 		partially_mapped = nr && nr < nr_pmdmapped;
+ 		break;
++	case RMAP_LEVEL_PUD:
++		atomic_dec(&folio->_large_mapcount);
++		atomic_dec(&folio->_entire_mapcount);
++		break;
+ 	}
+ 
+ 	/*
+@@ -1640,6 +1676,26 @@ void folio_remove_rmap_pmd(struct folio *folio, struct page *page,
+ #endif
+ }
+ 
++/**
++ * folio_remove_rmap_pud - remove a PUD mapping from a page range of a folio
++ * @folio:	The folio to remove the mapping from
++ * @page:	The first page to remove
++ * @vma:	The vm area from which the mapping is removed
++ *
++ * The page range of the folio is defined by [page, page + HPAGE_PUD_NR)
++ *
++ * The caller needs to hold the page table lock.
++ */
++void folio_remove_rmap_pud(struct folio *folio, struct page *page,
++		struct vm_area_struct *vma)
++{
++#ifdef CONFIG_HAVE_ARCH_TRANSPARENT_HUGEPAGE_PUD
++	__folio_remove_rmap(folio, page, HPAGE_PUD_NR, vma, RMAP_LEVEL_PUD);
++#else
++	WARN_ON_ONCE(true);
++#endif
++}
++
+ /*
+  * @arg: enum ttu_flags will be passed to this argument
+  */
 -- 
 git-series 0.9.1
 
