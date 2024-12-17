@@ -1,82 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-4252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74EB29F443D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 07:47:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2BB9F4558
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 17 Dec 2024 08:42:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YC6n40by5z3bjM;
-	Tue, 17 Dec 2024 17:47:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YC80V1QGnz30ft;
+	Tue, 17 Dec 2024 18:42:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734418040;
-	cv=none; b=XiUivXkT+fogIcnAVYSZCB0oIDOWhow5AHsgdoKeQvSTQoTpelb0tbSzQ//37oAtdTFWaABdLD36tRhvpEG1HMu9cBX1jRTLupxevFgyltp74NvF45LzYF3/BlIP6WzjFOJ7rcdVwX4QqEpDDoTIm7stsQNnyz1FgAPd0ZVOl93SynwvV3u64ICoGHTFcZMT87T5N7zCutMuJSNe2mcvu/kDK6LJ9tlbb/3U2DOE5wAXcOMJZUVfVISBaxGfATPRhoUcToQ7nELoA8g99lp6dC3z82LCse3OMEnM2tUm2X8IrVhB+lBEP6COTNG+Juoz1VR73Bodk8gmQRtlzz9VEg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734421338;
+	cv=none; b=or+BpmNDvXPL2WAKZ2yXOi/PkPqAGW4jcKyeSuPnjyifAOfELt2I/3dsRs/bShKJOuH/tZtHllfeRk1uBDJy4rql6yQeTMI2YucGUFqcKy9g2M4PksLEQTj1MxATmBnAmq1npJ6p05eb5mGuaRqDX1anxtiTixYgXnHgJi8GEJDDe8uLQIuob5kJlm5cic+8JSiGTjjl5NRg3A9MHUaJBR1+JuB5WfhssWnpsi1KMK+7eXfsQcyJ5QqczWw2DbVaAolPibo9q/vYdXYgBQ9UYACjBdgCfJzNYRvyvl2fJHfYS3lwt+VcP2VWwA2BTBbCg/nnOUY2fods48BWjM3TeA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734418040; c=relaxed/relaxed;
-	bh=dCDK6BOsU4ZX7A04sKP0HMI7l9HAPh7z4+ZQG7MoYvY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FA56OrDH5qD0wE9NfcesWrFMqSZXu+oY5yDXOLTQzyHXfY/ilZRxrev3CCEInoYiORZ3NBr9N+rr1tVs/6x3CArph6ZGQBWZzOh/Qb1U5ZLyeMn7SvHnfAUFLeI6l26zvWSkkpraJlQub1uaY965DaXHPWvC+GPTmDnsU+3D5ZROs/9Kp9sykZjg8oiJp5UWwxaJIgTKW5ZYsKUucY9yQRo8ia9S/2XsvgILW55FMGWcQ6jQ2t7X9mC97D5JDr+IGJHeSUJb2GJozSv8ka5dL+lpl26VHUlwqhBxxOdX4wpw4A2DMwOkxnRzkLuj1b7F/N+HjMP6qPDXEnyuudUH/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VtQc36Tj; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1734421338; c=relaxed/relaxed;
+	bh=PVrzyO3+J1HknGPyq267/b5iR7R/P+dnv6IJ6ZQ7OsA=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=XXQS0omYuizKYGT5HZJHGVDflI7+DqssgJtBLMdjBuu+GsklX8UXRHUYdkW6Stdbq/GEkTzIBG2VwqENOHfjmCaJeqS0/9REQdLaBGbhURQHuvp0uLgO4/uoKf4llrGweJhQXi8N3WsxLiMjbS2TL0Sxgfgo9lJMIThoi24K9UovyJFHokm7D3E3kfTvMpxkjdf1/S9/4Gk13YKRKjisGbfei7DQh3ZM3/kl4S28ADF5g28Ir60bVGlWcU3p5W8RJr1fC98cT73MA/FhCjg5ohhh7bFA4NxjQ0wG8yy9dPHBzmOfXxwbPNZw45f2zXTqMlc4gQ5gCTNk0xVaLFT4pw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c1blxTdZ; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VtQc36Tj;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=c1blxTdZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC6n321wtz30Pn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 17:47:19 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH16JJZ013078;
-	Tue, 17 Dec 2024 06:47:08 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=dCDK6BOsU4ZX7A04s
-	KP0HMI7l9HAPh7z4+ZQG7MoYvY=; b=VtQc36TjvM5fvJHlT506feBCvqiJTF7H6
-	oxwolecRAtV5MFNPjZsm5JYxDW1Apm1y8nCCoYIAGRG724wl5bl4HXzGGBXfk8mF
-	/NbeqwrXAUNuCyQbijZx0znO2iiajWLk4riGWZCsllUHTKnIgoQyJyC6H0Na+0Bq
-	kLGfTMFERwFOLOjJDg9vVvC8bNX2OWoQw753gSVD8Byq/0/DddQC9FyavPmtb286
-	EK865XbcphZkm2INiHh/Ltb5OrVUSwOIKuEaiYon6eqqO5f0P7pKq9Wuru8Thtrg
-	UDEQwcX2cbQhhaE40Ur7aAVSBCKAMPCn6+WdsjO1ShUxJyNgMelRA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43jnp4ks37-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 06:47:08 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BH6OduF014340;
-	Tue, 17 Dec 2024 06:47:07 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43hmqy1qve-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 17 Dec 2024 06:47:07 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BH6l4Q231981902
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 17 Dec 2024 06:47:04 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E30192004B;
-	Tue, 17 Dec 2024 06:47:03 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4084F20040;
-	Tue, 17 Dec 2024 06:47:01 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.29.128])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 17 Dec 2024 06:47:00 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>, Baoquan he <bhe@redhat.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 5/5] crash: option to let arch decide mem range is usable
-Date: Tue, 17 Dec 2024 12:16:13 +0530
-Message-ID: <20241217064613.1042866-6-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241217064613.1042866-1-sourabhjain@linux.ibm.com>
-References: <20241217064613.1042866-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YC80R1wHsz30fd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 17 Dec 2024 18:42:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1734421335; x=1765957335;
+  h=date:from:to:cc:subject:message-id;
+  bh=GHitgfIPe9eSCl01e/Kc9G2acukGSPn3vLSzABqHdKM=;
+  b=c1blxTdZ7OdBtuvXz3seIgCsmNsln84xt4apLmDR9bXrV6ov6nqZ72gY
+   Lq+xI9AFbyTZc1hnSM85uwYYX1dT9/s70NH4X3ANsTBJULE+2/3f6d0H5
+   NVn2nBTPYpWd5HCJ9vmYUoRU4EtiN73EQ70LJNjoFZ201xmnhmlSpNgOt
+   mmZV2XM2fpxFw7SUmpb0B8wCFNgGEHK4qSSI4OcDnD0N0Q+1DPbgbN7a1
+   keVlA4p2NItOfpPDmA65GPH/DYDQ5OwRJosegqVaxVUJIjeV+DPyGx5As
+   9wGF2udMTIXywkWJ94XfkPoAWJpBTOH1pT6GWhByUabkaJx2kZTkFhZ08
+   A==;
+X-CSE-ConnectionGUID: ZCSRKFmmSWGBd6Xt0GW9rQ==
+X-CSE-MsgGUID: 4ArzBCTbTc6OBHEV+6JPsg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11282"; a="38762406"
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="38762406"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Dec 2024 23:42:10 -0800
+X-CSE-ConnectionGUID: qlbRRYxjRteamrZRnBZKtw==
+X-CSE-MsgGUID: YSDTvsWURc25OaMe0U8cXQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="120710461"
+Received: from lkp-server01.sh.intel.com (HELO 82a3f569d0cb) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 16 Dec 2024 23:42:09 -0800
+Received: from kbuild by 82a3f569d0cb with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tNSDW-000EnQ-13;
+	Tue, 17 Dec 2024 07:42:06 +0000
+Date: Tue, 17 Dec 2024 15:41:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 34064c8267a61063d684408db6ae78b571a9999d
+Message-ID: <202412171550.PtYcyOSP-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,400 +79,157 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SdvJdPM8P27VchBEF8GkxHQecpPbbdXl
-X-Proofpoint-ORIG-GUID: SdvJdPM8P27VchBEF8GkxHQecpPbbdXl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 clxscore=1015
- malwarescore=0 adultscore=0 bulkscore=0 mlxscore=0 spamscore=0
- priorityscore=1501 phishscore=0 suspectscore=0 mlxlogscore=999
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412170052
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On PowerPC, the memory reserved for the crashkernel can contain
-components like RTAS, TCE, OPAL, etc., which should be avoided when
-loading kexec segments into crashkernel memory. Due to these special
-components, PowerPC has its own set of functions to locate holes in the
-crashkernel memory for loading kexec segments for kdump. However, for
-loading kexec segments in the kexec case, PowerPC uses generic functions
-to locate holes.
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 34064c8267a61063d684408db6ae78b571a9999d  powerpc/8xx: Drop legacy-of-mm-gpiochip.h header
 
-So, let's use generic functions to locate memory holes for kdump on
-PowerPC by adding an arch hook to handle such special regions while
-loading kexec segments, and remove the PowerPC functions to locate
-holes.
+elapsed time: 1364m
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Baoquan he <bhe@redhat.com>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-CC: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: kexec@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
- arch/powerpc/include/asm/kexec.h  |   6 +-
- arch/powerpc/kexec/file_load_64.c | 259 ++----------------------------
- include/linux/kexec.h             |   9 ++
- kernel/kexec_file.c               |  12 ++
- 4 files changed, 34 insertions(+), 252 deletions(-)
+configs tested: 136
+configs skipped: 5
 
-diff --git a/arch/powerpc/include/asm/kexec.h b/arch/powerpc/include/asm/kexec.h
-index 64741558071f..5e4680f9ff35 100644
---- a/arch/powerpc/include/asm/kexec.h
-+++ b/arch/powerpc/include/asm/kexec.h
-@@ -95,8 +95,10 @@ int arch_kexec_kernel_image_probe(struct kimage *image, void *buf, unsigned long
- int arch_kimage_file_post_load_cleanup(struct kimage *image);
- #define arch_kimage_file_post_load_cleanup arch_kimage_file_post_load_cleanup
- 
--int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf);
--#define arch_kexec_locate_mem_hole arch_kexec_locate_mem_hole
-+int arch_check_excluded_range(struct kimage *image, unsigned long start,
-+			      unsigned long end);
-+#define arch_check_excluded_range  arch_check_excluded_range
-+
- 
- int load_crashdump_segments_ppc64(struct kimage *image,
- 				  struct kexec_buf *kbuf);
-diff --git a/arch/powerpc/kexec/file_load_64.c b/arch/powerpc/kexec/file_load_64.c
-index dc65c1391157..e7ef8b2a2554 100644
---- a/arch/powerpc/kexec/file_load_64.c
-+++ b/arch/powerpc/kexec/file_load_64.c
-@@ -49,201 +49,18 @@ const struct kexec_file_ops * const kexec_file_loaders[] = {
- 	NULL
- };
- 
--/**
-- * __locate_mem_hole_top_down - Looks top down for a large enough memory hole
-- *                              in the memory regions between buf_min & buf_max
-- *                              for the buffer. If found, sets kbuf->mem.
-- * @kbuf:                       Buffer contents and memory parameters.
-- * @buf_min:                    Minimum address for the buffer.
-- * @buf_max:                    Maximum address for the buffer.
-- *
-- * Returns 0 on success, negative errno on error.
-- */
--static int __locate_mem_hole_top_down(struct kexec_buf *kbuf,
--				      u64 buf_min, u64 buf_max)
--{
--	int ret = -EADDRNOTAVAIL;
--	phys_addr_t start, end;
--	u64 i;
--
--	for_each_mem_range_rev(i, &start, &end) {
--		/*
--		 * memblock uses [start, end) convention while it is
--		 * [start, end] here. Fix the off-by-one to have the
--		 * same convention.
--		 */
--		end -= 1;
--
--		if (start > buf_max)
--			continue;
--
--		/* Memory hole not found */
--		if (end < buf_min)
--			break;
--
--		/* Adjust memory region based on the given range */
--		if (start < buf_min)
--			start = buf_min;
--		if (end > buf_max)
--			end = buf_max;
--
--		start = ALIGN(start, kbuf->buf_align);
--		if (start < end && (end - start + 1) >= kbuf->memsz) {
--			/* Suitable memory range found. Set kbuf->mem */
--			kbuf->mem = ALIGN_DOWN(end - kbuf->memsz + 1,
--					       kbuf->buf_align);
--			ret = 0;
--			break;
--		}
--	}
--
--	return ret;
--}
--
--/**
-- * locate_mem_hole_top_down_ppc64 - Skip special memory regions to find a
-- *                                  suitable buffer with top down approach.
-- * @kbuf:                           Buffer contents and memory parameters.
-- * @buf_min:                        Minimum address for the buffer.
-- * @buf_max:                        Maximum address for the buffer.
-- * @emem:                           Exclude memory ranges.
-- *
-- * Returns 0 on success, negative errno on error.
-- */
--static int locate_mem_hole_top_down_ppc64(struct kexec_buf *kbuf,
--					  u64 buf_min, u64 buf_max,
--					  const struct crash_mem *emem)
-+int arch_check_excluded_range(struct kimage *image, unsigned long start,
-+			      unsigned long end)
- {
--	int i, ret = 0, err = -EADDRNOTAVAIL;
--	u64 start, end, tmin, tmax;
--
--	tmax = buf_max;
--	for (i = (emem->nr_ranges - 1); i >= 0; i--) {
--		start = emem->ranges[i].start;
--		end = emem->ranges[i].end;
--
--		if (start > tmax)
--			continue;
--
--		if (end < tmax) {
--			tmin = (end < buf_min ? buf_min : end + 1);
--			ret = __locate_mem_hole_top_down(kbuf, tmin, tmax);
--			if (!ret)
--				return 0;
--		}
--
--		tmax = start - 1;
--
--		if (tmax < buf_min) {
--			ret = err;
--			break;
--		}
--		ret = 0;
--	}
--
--	if (!ret) {
--		tmin = buf_min;
--		ret = __locate_mem_hole_top_down(kbuf, tmin, tmax);
--	}
--	return ret;
--}
--
--/**
-- * __locate_mem_hole_bottom_up - Looks bottom up for a large enough memory hole
-- *                               in the memory regions between buf_min & buf_max
-- *                               for the buffer. If found, sets kbuf->mem.
-- * @kbuf:                        Buffer contents and memory parameters.
-- * @buf_min:                     Minimum address for the buffer.
-- * @buf_max:                     Maximum address for the buffer.
-- *
-- * Returns 0 on success, negative errno on error.
-- */
--static int __locate_mem_hole_bottom_up(struct kexec_buf *kbuf,
--				       u64 buf_min, u64 buf_max)
--{
--	int ret = -EADDRNOTAVAIL;
--	phys_addr_t start, end;
--	u64 i;
--
--	for_each_mem_range(i, &start, &end) {
--		/*
--		 * memblock uses [start, end) convention while it is
--		 * [start, end] here. Fix the off-by-one to have the
--		 * same convention.
--		 */
--		end -= 1;
--
--		if (end < buf_min)
--			continue;
--
--		/* Memory hole not found */
--		if (start > buf_max)
--			break;
--
--		/* Adjust memory region based on the given range */
--		if (start < buf_min)
--			start = buf_min;
--		if (end > buf_max)
--			end = buf_max;
--
--		start = ALIGN(start, kbuf->buf_align);
--		if (start < end && (end - start + 1) >= kbuf->memsz) {
--			/* Suitable memory range found. Set kbuf->mem */
--			kbuf->mem = start;
--			ret = 0;
--			break;
--		}
--	}
--
--	return ret;
--}
--
--/**
-- * locate_mem_hole_bottom_up_ppc64 - Skip special memory regions to find a
-- *                                   suitable buffer with bottom up approach.
-- * @kbuf:                            Buffer contents and memory parameters.
-- * @buf_min:                         Minimum address for the buffer.
-- * @buf_max:                         Maximum address for the buffer.
-- * @emem:                            Exclude memory ranges.
-- *
-- * Returns 0 on success, negative errno on error.
-- */
--static int locate_mem_hole_bottom_up_ppc64(struct kexec_buf *kbuf,
--					   u64 buf_min, u64 buf_max,
--					   const struct crash_mem *emem)
--{
--	int i, ret = 0, err = -EADDRNOTAVAIL;
--	u64 start, end, tmin, tmax;
--
--	tmin = buf_min;
--	for (i = 0; i < emem->nr_ranges; i++) {
--		start = emem->ranges[i].start;
--		end = emem->ranges[i].end;
--
--		if (end < tmin)
--			continue;
--
--		if (start > tmin) {
--			tmax = (start > buf_max ? buf_max : start - 1);
--			ret = __locate_mem_hole_bottom_up(kbuf, tmin, tmax);
--			if (!ret)
--				return 0;
--		}
--
--		tmin = end + 1;
-+	struct crash_mem *emem;
-+	int i;
- 
--		if (tmin > buf_max) {
--			ret = err;
--			break;
--		}
--		ret = 0;
--	}
-+	emem = image->arch.exclude_ranges;
-+	for (i = 0; i < emem->nr_ranges; i++)
-+		if (start < emem->ranges[i].end && end > emem->ranges[i].start)
-+			return 1;
- 
--	if (!ret) {
--		tmax = buf_max;
--		ret = __locate_mem_hole_bottom_up(kbuf, tmin, tmax);
--	}
--	return ret;
-+	return 0;
- }
- 
- #ifdef CONFIG_CRASH_DUMP
-@@ -1004,64 +821,6 @@ int setup_new_fdt_ppc64(const struct kimage *image, void *fdt, struct crash_mem
- 	return ret;
- }
- 
--/**
-- * arch_kexec_locate_mem_hole - Skip special memory regions like rtas, opal,
-- *                              tce-table, reserved-ranges & such (exclude
-- *                              memory ranges) as they can't be used for kexec
-- *                              segment buffer. Sets kbuf->mem when a suitable
-- *                              memory hole is found.
-- * @kbuf:                       Buffer contents and memory parameters.
-- *
-- * Assumes minimum of PAGE_SIZE alignment for kbuf->memsz & kbuf->buf_align.
-- *
-- * Returns 0 on success, negative errno on error.
-- */
--int arch_kexec_locate_mem_hole(struct kexec_buf *kbuf)
--{
--	struct crash_mem **emem;
--	u64 buf_min, buf_max;
--	int ret;
--
--	/* Look up the exclude ranges list while locating the memory hole */
--	emem = &(kbuf->image->arch.exclude_ranges);
--	if (!(*emem) || ((*emem)->nr_ranges == 0)) {
--		pr_warn("No exclude range list. Using the default locate mem hole method\n");
--		return kexec_locate_mem_hole(kbuf);
--	}
--
--	buf_min = kbuf->buf_min;
--	buf_max = kbuf->buf_max;
--	/* Segments for kdump kernel should be within crashkernel region */
--	if (IS_ENABLED(CONFIG_CRASH_DUMP) && kbuf->image->type == KEXEC_TYPE_CRASH) {
--		buf_min = (buf_min < crashk_res.start ?
--			   crashk_res.start : buf_min);
--		buf_max = (buf_max > crashk_res.end ?
--			   crashk_res.end : buf_max);
--	}
--
--	if (buf_min > buf_max) {
--		pr_err("Invalid buffer min and/or max values\n");
--		return -EINVAL;
--	}
--
--	if (kbuf->top_down)
--		ret = locate_mem_hole_top_down_ppc64(kbuf, buf_min, buf_max,
--						     *emem);
--	else
--		ret = locate_mem_hole_bottom_up_ppc64(kbuf, buf_min, buf_max,
--						      *emem);
--
--	/* Add the buffer allocated to the exclude list for the next lookup */
--	if (!ret) {
--		add_mem_range(emem, kbuf->mem, kbuf->memsz);
--		sort_memory_ranges(*emem, true);
--	} else {
--		pr_err("Failed to locate memory buffer of size %lu\n",
--		       kbuf->memsz);
--	}
--	return ret;
--}
--
- /**
-  * arch_kexec_kernel_image_probe - Does additional handling needed to setup
-  *                                 kexec segments.
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index f0e9f8eda7a3..407f8b0346aa 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -205,6 +205,15 @@ static inline int arch_kimage_file_post_load_cleanup(struct kimage *image)
- }
- #endif
- 
-+#ifndef arch_check_excluded_range
-+static inline int arch_check_excluded_range(struct kimage *image,
-+					    unsigned long start,
-+					    unsigned long end)
-+{
-+	return 0;
-+}
-+#endif
-+
- #ifdef CONFIG_KEXEC_SIG
- #ifdef CONFIG_SIGNED_PE_FILE_VERIFICATION
- int kexec_kernel_verify_pe_sig(const char *kernel, unsigned long kernel_len);
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 3eedb8c226ad..52e1480dbfa1 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -464,6 +464,12 @@ static int locate_mem_hole_top_down(unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
-+		/* Make sure this does not conflict exclude range */
-+		if (arch_check_excluded_range(image, temp_start, temp_end)) {
-+			temp_start = temp_start - PAGE_SIZE;
-+			continue;
-+		}
-+
- 		/* We found a suitable memory range */
- 		break;
- 	} while (1);
-@@ -498,6 +504,12 @@ static int locate_mem_hole_bottom_up(unsigned long start, unsigned long end,
- 			continue;
- 		}
- 
-+		/* Make sure this does not conflict exclude range */
-+		if (arch_check_excluded_range(image, temp_start, temp_end)) {
-+			temp_start = temp_start + PAGE_SIZE;
-+			continue;
-+		}
-+
- 		/* We found a suitable memory range */
- 		break;
- 	} while (1);
--- 
-2.47.1
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+alpha                               defconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    gcc-13.2.0
+arc                     nsimosci_hs_defconfig    gcc-13.2.0
+arc                   randconfig-001-20241216    gcc-13.2.0
+arc                   randconfig-002-20241216    gcc-13.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-14.2.0
+arm                         bcm2835_defconfig    clang-16
+arm                   randconfig-001-20241216    clang-15
+arm                   randconfig-002-20241216    gcc-14.2.0
+arm                   randconfig-003-20241216    clang-20
+arm                   randconfig-004-20241216    clang-17
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20241216    gcc-14.2.0
+arm64                 randconfig-002-20241216    clang-20
+arm64                 randconfig-003-20241216    gcc-14.2.0
+arm64                 randconfig-004-20241216    clang-15
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20241216    gcc-14.2.0
+csky                  randconfig-001-20241217    gcc-14.2.0
+csky                  randconfig-002-20241216    gcc-14.2.0
+csky                  randconfig-002-20241217    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    clang-20
+hexagon               randconfig-001-20241216    clang-20
+hexagon               randconfig-001-20241217    clang-20
+hexagon               randconfig-002-20241216    clang-20
+hexagon               randconfig-002-20241217    clang-19
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20241216    clang-19
+i386        buildonly-randconfig-002-20241216    clang-19
+i386        buildonly-randconfig-003-20241216    clang-19
+i386        buildonly-randconfig-004-20241216    clang-19
+i386        buildonly-randconfig-005-20241216    clang-19
+i386        buildonly-randconfig-006-20241216    clang-19
+i386                                defconfig    clang-19
+loongarch                        alldefconfig    gcc-14.2.0
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20241216    gcc-14.2.0
+loongarch             randconfig-001-20241217    gcc-14.2.0
+loongarch             randconfig-002-20241216    gcc-14.2.0
+loongarch             randconfig-002-20241217    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                  cavium_octeon_defconfig    gcc-14.2.0
+mips                   sb1250_swarm_defconfig    gcc-14.2.0
+nios2                         10m50_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20241216    gcc-14.2.0
+nios2                 randconfig-001-20241217    gcc-14.2.0
+nios2                 randconfig-002-20241216    gcc-14.2.0
+nios2                 randconfig-002-20241217    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                randconfig-001-20241216    gcc-14.2.0
+parisc                randconfig-001-20241217    gcc-14.2.0
+parisc                randconfig-002-20241216    gcc-14.2.0
+parisc                randconfig-002-20241217    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-16
+powerpc                       eiger_defconfig    clang-17
+powerpc                 mpc836x_rdk_defconfig    clang-18
+powerpc                      ppc64e_defconfig    gcc-14.2.0
+powerpc               randconfig-001-20241216    clang-20
+powerpc               randconfig-002-20241216    clang-20
+powerpc               randconfig-002-20241217    gcc-14.2.0
+powerpc               randconfig-003-20241216    gcc-14.2.0
+powerpc               randconfig-003-20241217    clang-16
+powerpc                      tqm8xx_defconfig    clang-20
+powerpc64             randconfig-001-20241216    clang-20
+powerpc64             randconfig-002-20241216    clang-15
+powerpc64             randconfig-003-20241216    gcc-14.2.0
+riscv                            allmodconfig    clang-20
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-20
+riscv                 randconfig-001-20241216    clang-20
+riscv                 randconfig-002-20241216    clang-15
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                  randconfig-001-20241216    gcc-14.2.0
+s390                  randconfig-002-20241216    gcc-14.2.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                        dreamcast_defconfig    gcc-14.2.0
+sh                    randconfig-001-20241216    gcc-14.2.0
+sh                    randconfig-002-20241216    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20241216    gcc-14.2.0
+sparc                 randconfig-002-20241216    gcc-14.2.0
+sparc64               randconfig-001-20241216    gcc-14.2.0
+sparc64               randconfig-002-20241216    gcc-14.2.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-18
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20241216    gcc-12
+um                    randconfig-002-20241216    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20241216    gcc-12
+x86_64      buildonly-randconfig-001-20241217    clang-19
+x86_64      buildonly-randconfig-002-20241216    gcc-12
+x86_64      buildonly-randconfig-002-20241217    gcc-12
+x86_64      buildonly-randconfig-003-20241216    clang-19
+x86_64      buildonly-randconfig-003-20241217    gcc-12
+x86_64      buildonly-randconfig-004-20241216    clang-19
+x86_64      buildonly-randconfig-004-20241217    clang-19
+x86_64      buildonly-randconfig-005-20241216    clang-19
+x86_64      buildonly-randconfig-005-20241217    gcc-12
+x86_64      buildonly-randconfig-006-20241216    clang-19
+x86_64      buildonly-randconfig-006-20241217    clang-19
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                generic_kc705_defconfig    gcc-14.2.0
+xtensa                randconfig-001-20241216    gcc-14.2.0
+xtensa                randconfig-002-20241216    gcc-14.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
