@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4323-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 096DF9F6867
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 15:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C73C9F686B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 15:28:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YCwxr5jnYz30VL;
-	Thu, 19 Dec 2024 01:27:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YCwyP2mdkz30Vb;
+	Thu, 19 Dec 2024 01:28:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734532064;
-	cv=none; b=VUbzu0eJKP8tWKnGiikxpFR1y4elWqxWzXGoRgSOMsK0bWSD5OtbZNRjaEE5j7S50Nhz2RcnCIeeJ3GdTNddHJC/bCF4FtMBCgoBZglhwJs1FouGKuqTv26u3F8y13mzL5dEida/0/3pKp0XFsmZEchmIL2H3SHU8aw/INgcZqIfm7aRjkFZFCtS7YK/aQwLSDz+1YgHpu4jVKiHZjcZP4Jufl+hhShdP6fP4DlnGjEhR61wOCHRzF5PS7p4RoHIBnv3ct8EfzhWkMwSKGUkmf13aa5xWPELVsH4ohWk2OHweKvIGjZuHXorXy7BsmvGx8lM4r+c4siiD/0hsyuIkA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::52a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734532093;
+	cv=none; b=RALMAPQysXC4dlXVyJCaYLgi/AF1XI7j/RbYC018GO19Q7oRvIg6fWfObzQQuNhzR2vu0JLl/TFxjMbh4mYvMLWwszQwodNcpQpt0d5ve6eGB8zOfJ8ijCPHS/v//ZAKVdqdok/1nKYC8VdZ3aZMpLrZMlzasr9Fxh8nayJ8lEV0o67yg5HFXEnQpDEVidozbH13L4vZycNLANGbIJsLstv5q8eO7Bi4HvAaXVi2E2ZU358VKBQUduKETdzfU+utXgjpqA/gltybuVWFQcCC3AbE1Fid/z7OCQP0SjRT0fYwqTw7KaboY48+kxL3ZhcA5CGf6XRdtHtblSWhyLfKww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734532064; c=relaxed/relaxed;
-	bh=HHZAhcdXs0Hg1NP/pycwUKr3mXkGKuoLrl2acIx+2i8=;
+	t=1734532093; c=relaxed/relaxed;
+	bh=U8jtJujB1TTw1eVv4jn2BLcoiUTyaKBpavnO2MJUXJY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AGDCiiztRE/xnj59bMqyvbXIXXS3EaKJNiY/90mraGZwfzu/lwQVdVgvj+1cdrgyf55Lf+hiR1CW2h9YWRxjprRJK41pjicMaYgNk5us6gJsIByxaM0xEtvgjE3I6SVsyI5bBnxSSvdb43haZxo2dVBomTpfhwasTKRaHdSiCATKNDtBUf0bNU/FNpdWqC9ogGrcsWOam7U7unxYE5rlnwJ3zE7BccS4lHckrWNcTl1B790JceN0PLu7Vbp5WGKyObWdf5rSzZ78P6wkEz4ibAHQbS7OEgqyageFwYRI3ZcCDzTxIBmd37zyj00QD0tKhYbjpsJd4hhgI8u/og4MjQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fqV9fW2u; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=JisHPWMM4a1zzaVRo6hZey6I6p/KXKc4iFUCAcPHog6DDLIQD5nGEXYVGagiiF6SNw/CXF+lAV7Eu/UyojQ2hJyel+xhu1l0Ul4hGm5xmnUJVfen2duc2aDV/iFOCj8VgQBrX6l2aN2MgnhkXJojOx+98v1YrS1OYBPmUpkMk/dmb6JLvnmMycxVYK1fMU/7VH7XwFSclenLmFf6vdx+s7bVLZVI6PQHz9M6iuQTf5KXM3T9OtlPAW6cUmCihJtfTRSxD0iVsN+HJ0FVHgjHE8qgajLVqWyNXMN9s1mdyGzW2aOdrenSnYdxGwBOclOoMy+p+IMQlhYMVZl9+uDk7A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ijBzZKls; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=fqV9fW2u;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ijBzZKls;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::52a; helo=mail-pg1-x52a.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCwxq0wHRz2xrC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2024 01:27:42 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2efded08c79so4565378a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 06:27:42 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCwyN43xHz2xrC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2024 01:28:12 +1100 (AEDT)
+Received: by mail-pg1-x52a.google.com with SMTP id 41be03b00d2f7-7feb6871730so4447787a12.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 06:28:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1734532060; x=1735136860; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1734532090; x=1735136890; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HHZAhcdXs0Hg1NP/pycwUKr3mXkGKuoLrl2acIx+2i8=;
-        b=fqV9fW2uGhlfLV/85hd5/uhOMyFYnpzcFfT6Ijbw+0nTBcO4iE4Bb7j23Z8rrXLtvi
-         9cG+7LIlDaN9+w2DJ2RZj61tzKOCUGkN3AamzU1BdkBT0fD1Z5epMVmwW00PqUkJmc6B
-         safRKzedSR9z6v5iT6rZA/q0gGa6OpwSSCySTp6WUj60R+vFD2KlSC5GwaSrnCr4RUoC
-         LT53mmWFQH4q0fuQqp4GqVX/7Wd59Oq4KXXHrJmjZsGpBSQZ95OStbAO6Bofb3i2T6tC
-         T+0IUCM7uVbb4FV7aO5OI1oM19WI1CgdAvmMIODntJ1F6XXzm4iIZR2q4fHq1kZGJmwo
-         JRPQ==
+        bh=U8jtJujB1TTw1eVv4jn2BLcoiUTyaKBpavnO2MJUXJY=;
+        b=ijBzZKlsAdACmNS8g/G28D4exVYdjQWwYMUI5PJN3b1urUUhPFJpW2H4H999hFL7lf
+         YpfFJWsByGhStr5JqGeNk7UXf0yrbBXyxD5l2iYh/EbgtBLArXIUKa/1J7qmYpLqJIjj
+         75eqbcUgj+WZaruUHJ4HZF6cF9yowB+uvPkqY3AnNeCumxqU8cj55OCjijwRYsOd1TKx
+         b4na2mYzbdTGTWfvT4gNo1QAdzYRZv/rQjF/0tdYdIrLU697ZbTZh2UNAL6RuaW6GaRD
+         S9o3N51FhmmNAA/Ui58sj18cYAHNtxjxmiqB1bDGmcOEccWwWD/wc2KQQuEoEC5Oumce
+         tEgA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734532060; x=1735136860;
+        d=1e100.net; s=20230601; t=1734532090; x=1735136890;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=HHZAhcdXs0Hg1NP/pycwUKr3mXkGKuoLrl2acIx+2i8=;
-        b=Ws31DNViKICbcKECK9SJEpYK/Th+Kq1YeIZX0BBJNdMOgtxte6HT0JRCaWTACX+Zut
-         vlzC9FYrqmqkpDSfLXj/CBPmzzt/rAIYqun9P4Mu9zoZbJUPj/+bktkFh+XSPrXKt6z1
-         sp4ZGDNrc2VIX6WYtG+tQ+xMAeKMSDEXznttfyVp+4PX4tdeGNOGxRDKuhuS4eZJ9RrH
-         G5XBP3cVv7Rc8wASQPRr6UCdr3WYXlChUsATk3ZjU6nTj+966U439Rn2/XgR1oIIDsOG
-         zdIiGdmToxaNIpfJ0v7qsuPpJlUjCCAeIH9uC/x21jgmmAeBnISqfzRSPZAXzYVM9PzP
-         23jw==
-X-Forwarded-Encrypted: i=1; AJvYcCWuIuik/8NxcnjVfroRJEpA6RIbuBwlOiBninrKCYgJGGNOjbmYw3+iMDs8cSYwNrtodBsTyHmUEqrCEeY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw1REeZ41e82bKcUMvtM38Km5PV0D3fPEcxzMbU0LtGzXKr/wFP
-	pK4aLqJ3LnXqXJdF8yxaL0gpSWKSqJcAEETX8ByXXM9IGRgdWk3sXqcGDXAgnIPq7SbhIU2eDxH
-	SA8CbsWjAuhNg5twqW3U0MpbOpQc=
-X-Gm-Gg: ASbGnctP1WcAdxVoUIAL/24XR29rpJrhfzTuGkkl6x4onkJkz50yvzSPGRv5WzTgrEU
-	g1AYk0GKnYUzxtVpXiHtaSliKKDbe9Py6fA==
-X-Google-Smtp-Source: AGHT+IGx1BX/NBGR0bn2XRM/2u89UX23yPc8oKOfco6hOhCYehGChJ121D815qbMSClQurVhlifry+CfZ/jLDB0Dseg=
-X-Received: by 2002:a17:90b:5287:b0:2ee:ba0c:1718 with SMTP id
- 98e67ed59e1d1-2f2e93792d0mr4653201a91.37.1734532060281; Wed, 18 Dec 2024
- 06:27:40 -0800 (PST)
+        bh=U8jtJujB1TTw1eVv4jn2BLcoiUTyaKBpavnO2MJUXJY=;
+        b=kgpjYnSO3vX6qPHhCHZ1E5Ux/M2K8p+obSb/Oy3Cnq22B8Og8NR46Y63ILmeHnUqpv
+         9ci8eDIlNP9n7/3/hprTA+ePpfuDNy/vUrJxvwfkfzPxK1f3vIXzCldLaNeVYbAQPBv6
+         560yR10UgZJ5yjMUQrx7/Cn4PG7/9buMXSPVHKOGmwTnX3vlII7LTLJeyj6GsvsO5NS6
+         Nck9r51iIDdvkxx2Qz8PpOCWvWoyoJgMQK5E9/Vu5baWRqwef3VGx/sNczXcob4x5LXF
+         0rOHuxuez1kgU2offSYu4RfN7YOKqziZ93lipVtUyRmAMfZk73sR8zE4Bmm4Fu2IKetJ
+         F5VA==
+X-Forwarded-Encrypted: i=1; AJvYcCUoMOy7uIEY70CI8bH+wBJhUPXlaOuHV+g5QewG4uGpfoJPuE+imTqqASWd6187qooQIkCjENQfRJDNE8E=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwZs6FXu8lgFbXfyvU1WspFRQINpoVTx/8MeEAqGsEiyH5ZpG0F
+	dMyMJs+ud3wHDmLgNVerlv+pMAFds7bQusUMRiJ1D3TyP3eHWxxXOhocJdkR6OYQELSdj/nxDdf
+	QXfr82b906WcV8+T8Q5KKwHwuRrE=
+X-Gm-Gg: ASbGncvpT4WSNW5AhawJ/jiOxFV1HvWyrpu45KnRCOGXnQN/P9PvRMJgBkYdecz3KiH
+	u9EpjPsfB415H70/NzdKwdgev0UW2g4amcw==
+X-Google-Smtp-Source: AGHT+IGLICEXof9Lk9Mu0+8v93sLWV1+QqNEVr04r0jLUUI28fU+qASD7M4o6Aa5GsX612QHPLBszL0iDSMJ0gEToXs=
+X-Received: by 2002:a17:90a:c884:b0:2ee:5111:a54b with SMTP id
+ 98e67ed59e1d1-2f2e93910bdmr3927977a91.31.1734532089984; Wed, 18 Dec 2024
+ 06:28:09 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,8 +79,8 @@ MIME-Version: 1.0
 References: <20241218024358.3022635-1-shengjiu.wang@nxp.com>
 In-Reply-To: <20241218024358.3022635-1-shengjiu.wang@nxp.com>
 From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 18 Dec 2024 16:28:57 +0200
-Message-ID: <CAEnQRZA2OzYRC-JZECXkz1q5PPKCx=0zOCep_QjKvq02k5gGFA@mail.gmail.com>
+Date: Wed, 18 Dec 2024 16:29:26 +0200
+Message-ID: <CAEnQRZCd-t1wX3-tHt2VFOSE-6JCzzp+nWCa2zQBSZjjoNqUFQ@mail.gmail.com>
 Subject: Re: [PATCH] ASoC: fsl_asrc_m2m: force cast for snd_pcm_format_t type
 To: Shengjiu Wang <shengjiu.wang@nxp.com>
 Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
@@ -129,52 +129,6 @@ ed] [usertype] k
 > Closes: https://lore.kernel.org/oe-kbuild-all/202412180043.PAA4t4sQ-lkp@i=
 ntel.com/
 > Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  sound/soc/fsl/fsl_asrc_m2m.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/sound/soc/fsl/fsl_asrc_m2m.c b/sound/soc/fsl/fsl_asrc_m2m.c
-> index f266a3f5fd48..4906843e2a8f 100644
-> --- a/sound/soc/fsl/fsl_asrc_m2m.c
-> +++ b/sound/soc/fsl/fsl_asrc_m2m.c
-> @@ -357,13 +357,13 @@ static int fsl_asrc_m2m_comp_set_params(struct snd_=
-compr_stream *stream,
->         if (ret)
->                 return -EINVAL;
->
-> -       if (pcm_format_to_bits(params->codec.format) & cap.fmt_in)
-> -               pair->sample_format[IN] =3D params->codec.format;
-> +       if (pcm_format_to_bits((__force snd_pcm_format_t)params->codec.fo=
-rmat) & cap.fmt_in)
-> +               pair->sample_format[IN] =3D (__force snd_pcm_format_t)par=
-ams->codec.format;
->         else
->                 return -EINVAL;
->
-> -       if (pcm_format_to_bits(params->codec.pcm_format) & cap.fmt_out)
-> -               pair->sample_format[OUT] =3D params->codec.pcm_format;
-> +       if (pcm_format_to_bits((__force snd_pcm_format_t)params->codec.pc=
-m_format) & cap.fmt_out)
-> +               pair->sample_format[OUT] =3D (__force snd_pcm_format_t)pa=
-rams->codec.pcm_format;
->         else
->                 return -EINVAL;
->
-> @@ -592,7 +592,7 @@ static int fsl_asrc_m2m_fill_codec_caps(struct fsl_as=
-rc *asrc,
->                                cap.rate_in,
->                                cap.rate_in_count * sizeof(__u32));
->                         codec->descriptor[j].num_sample_rates =3D cap.rat=
-e_in_count;
-> -                       codec->descriptor[j].formats =3D k;
-> +                       codec->descriptor[j].formats =3D (__force __u32)k=
-;
->                         codec->descriptor[j].pcm_formats =3D cap.fmt_out;
->                         codec->descriptor[j].src.out_sample_rate_min =3D =
-cap.rate_out[0];
->                         codec->descriptor[j].src.out_sample_rate_max =3D
-> --
-> 2.34.1
->
->
+
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
