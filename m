@@ -1,95 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-4332-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4333-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 341BC9F68C8
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 15:42:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAF6A9F6970
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 16:08:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YCxGQ0b7nz30Vv;
-	Thu, 19 Dec 2024 01:42:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YCxs94yN9z30Ty;
+	Thu, 19 Dec 2024 02:08:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.54 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734532926;
-	cv=pass; b=ZsZ6Ctcs/CNZDs8KIfF00qklo0HdFdL4Xc11q0teGiljDKt8x+yaCKw5yg+krjdtwrPCVfHHJ9ihFQVYoUkk5JvxLuU3+dDhc8cgSmgQmAZZgPCZ2Oj63M84rR5P5u+7nuqsTRFC+I9QIQ0NB/v4ss86eY3JURHvDUc3p3Flek2XxFbFO3jmHj6BalzzuZ85Mnu8XrgNCcRVzcON/y3ltbtIqurUZc95dT0dqK585ornYz6OVITtJRVXJRzNQQ2KQ3/geE6u0feIoXGBltBSU+xbrnhOW+bWlNAkHjk0n+kIMj/o1cGevjhYizm+t75bFDj2cqxcS5Endypj/VXf+g==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734532926; c=relaxed/relaxed;
-	bh=VoaJ674Dz9Ji3MhByg7qXA+c9MeGpzokPxZRl1XHuG0=;
-	h=Subject:From:To:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=nNq0ggs43jt9AKhXd93iflWAImcQM+92ZAAGd9TNXTC8Plfos/WHNeafGESK25uyL3aeqRTxBQrS7A9DM6jqPG544Yg0fsGImRFvTsrM4h/HesAh4psaP7aGruUDbIyUW0v2cUSh3YB52E3SB4wdieGxG1LtbrjYtipMdHTxxUUhLzaogJSu4o6lCCPGUXlE220LUsqyFk2jN0ytj6SvBLuTKFBoQ1gya6ZOSgytUZMGpumRX8WpHlc2k1WCIPDXC06gs/umSCCJHmbrneUN3MiN+K9sE9MovipTM2bjZJWu5aWFy0fIpkTVatBAi/vdmzpHNANVubhs99qsNVfRog==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=HbupGoHD; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=CwcKHli4; dkim-atps=neutral; spf=pass (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734534525;
+	cv=none; b=YDl+MYjYxnrzFXgID6OJWWopqhvZF3ESpKCekCEA0fMc2UObUVO89FNla2/WtDHiqttpMN+j8vQel5WzxCJj33Tn1ZRTBKoFxBP9CI1Ne+8N20QjfcZO/Pu8BxnxjOQl3kmGzZZS28gaefKxXVh1L8DfNHBnsi6WVopBQLXSX96cOFFY8C7gPsfgGBveINXuD9dtxIs1l7GcOnNsuiap2CFaXei2yM43LUJrkJU1kZS7+7VM5G/2p2ERnnrdeK0dsJC3gABVO8FYdRSH+rYQgwOPUI8c+OGWX3Q0PeUG4kvIUnHzG/erby2iN/JntZwf2OWgU38Frj6++r/HLJGdnw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1734534525; c=relaxed/relaxed;
+	bh=P0GSSGcRnHe8FFQURExf5BxgkwKsXJkD6Pr778L4WMk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XMacMlwgvUmEFwtcDTV5DGtjQhpAuw7w/RZmkGfSj05QEOJihwE77JKoEBG5dFNiBjRaYBAzz/NT3iQFarPs8VBQex3nUw3cIHo1CzlrEde8bR/eMvM0tm/BDUZhJEfooin2q30ikMR6d2Q+Z5ox8abHQpwmhxf2mUyEBsD7rnb5eSEHNRDluGnz3LSnbPwoc8ZKkdD11TSShWdlsd4vdYYNh1bib9q0cj4U34xbiEO50IPw71rgBZnrZTCaJxkA6ziuziDePPEr6oolWjATJrshlLB5mKDBkMAsI9uI+0LxrDbd+vf0wXs48RGPyQGEosN/vfn53dKGZLkGK8szPQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DOFYmV/O; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=HbupGoHD;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=CwcKHli4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=DOFYmV/O;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCxGL2Llfz30Vq
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2024 01:42:00 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1734532915; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=YJXfGUVyv/9bMLAUoH8VzSFFqnxuyprVfL3cYz1eFGvf8GZm05egNYhujii198hoYw
-    dVzvTNqmpHzTvZHJkFe5f5vKHhziLvns/zpWKrOKVgxoL1BVKMQP812+lJP851Vn7X//
-    eNRxXBX6huuwJ78bBYgbecC07hNNrzwYBDPtOl6ZwyInaQjvKog4wZA73kLDPojidi4/
-    dcP//ucBnV3h/TLRE0DYwDWgz6VXMT3jn+ecrOiLAxNxxLPfYDlnqMum0mlU5gLs01a/
-    sM2y4romnPEtBuNY5t21W1fPEzksjhqOQqZQp10xvXfcYEIJAxNoRiivbD5itekqsjfF
-    oUhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1734532915;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:Date:Message-ID:References:To:From:Subject:Cc:Date:From:
-    Subject:Sender;
-    bh=VoaJ674Dz9Ji3MhByg7qXA+c9MeGpzokPxZRl1XHuG0=;
-    b=e9ebCvIf8R53O+M+1SpUnExhL5W5wSuugAGm2ABMLcamwu+kdO12oMKRn9gudsWJ3q
-    axfpR8VMLfhNWT5F6Eq+PStgMBegasyNF1bX0Br3JQTqQHZSk8KMPvh2LywxcCjVaRg7
-    +Yb69mp2IFuZeeP9u3OXMLIDT/Ea4hah1lE+OAC5eyDF9A3QqdbSiMtGWvdz2VuGBdL6
-    I8MLI+vaD8Mz2/bXgyu5lAdHg5p4hZL5U4yV7+wiz7mDeRBOUsVcjbIEmqNI+42c8GSk
-    8bGmSF1/DYU1eyRjrkemvSHTIKKE6deNixeu8D+PRVEWEqPEQ6oHROfzarSNydjA9Vn2
-    9bnQ==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1734532915;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:To:From:Subject:Cc:Date:From:
-    Subject:Sender;
-    bh=VoaJ674Dz9Ji3MhByg7qXA+c9MeGpzokPxZRl1XHuG0=;
-    b=HbupGoHDEpuCfcfuNQZDnFrdiKmaRdvCvX5EEw2a6A1oBF17lZqepWkDd1Nk4F1YUn
-    kCPd3//t42gpDacA99hDGUlC9YE7HGPLuuzMmDtVKtXwk/QXotQsDNquVVhwkktDNDHj
-    hcWyZtXr5+uC4wTPQuSq8+SHdntiLZc8H97N5QFTIwhO9/zwymDpEZEFOIsWsbdedMg9
-    65VZZ/WpwHDucyCQAXAnL36ZszVUHQ9duwDuhrBzzERYI6IVe2tl3TivKWBFgr0r8+Bj
-    CZm8WozurHfwWYT8vyDAqWjUazDI4sMkVAOEcN4Su2EHwfxqxkmc0IDDqhIdREsqv3er
-    GdGw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1734532915;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:To:From:Subject:Cc:Date:From:
-    Subject:Sender;
-    bh=VoaJ674Dz9Ji3MhByg7qXA+c9MeGpzokPxZRl1XHuG0=;
-    b=CwcKHli4iLWJwc5em3rSE7O2NWgEba3MOtSPa8YhH/rMPjexzEXf5qpZK8i80iOlcN
-    Hb9ZQj9JO8RdF6VX9wBA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6Kxrf+5Dj7x4QgaMrvdtcX133EisT29BnYJMBKrhBYBGwL4fUrhbbg=="
-Received: from void-ppc.a-eon.tld
-    by smtp.strato.de (RZmta 51.2.15 AUTH)
-    with ESMTPSA id efffa60BIEfs7hy
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 18 Dec 2024 15:41:54 +0100 (CET)
-Subject: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: linuxppc-dev@lists.ozlabs.org, Darren Stevens <darren@stevens-zone.net>,
- Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>,
- Christian Zigotzky <info@xenosoft.de>, madskateman@gmail.com,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au
-References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
- <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de>
- <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
- <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
-Message-ID: <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
-Date: Wed, 18 Dec 2024 15:41:54 +0100
-X-Mailer: BrassMonkey/33.4.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCxs81qXbz30Tc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 19 Dec 2024 02:08:44 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 37A0F5C61EC;
+	Wed, 18 Dec 2024 15:07:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A23C4CECE;
+	Wed, 18 Dec 2024 15:08:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1734534519;
+	bh=dsz8257D+6as1uUtKCRNXMXuyupbAqskFTKy5dqOl5Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DOFYmV/OC+pxzzSN2F3KRoWuPa3RBYPTcC/zoOH2NCKjp1MeXanV999doe0z17HZ9
+	 kZeRFu9n52HpxIYfDvjY68cwj2dFjby7xXYHkkhE6r1WCfyp9XvKDBOdii0weYJCm+
+	 9xKCOdfjiu4YgHKWSLJx0oNXIh9y/gozVqQ4FgrGJap66A/Q1lO5Vt/tWoIGECJlWH
+	 Rp7OGHr4sDQ+63bPykzZvg4/ERY2JHbLdJSx7PfB1jdfh7ai0OGgoE0GCVZHUb6g+l
+	 lHS+ibQI7IPTVeyzL3d/9mjIO74XkR3qFvTP3HJ4GhKXpeqZidOrYIhtpJAdAEabhd
+	 m0OkMY0OfPMpw==
+Date: Wed, 18 Dec 2024 15:08:28 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Russell King <linux@armlinux.org.uk>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+	linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org, loongarch@lists.linux.dev,
+	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org,
+	Nam Cao <namcao@linutronix.de>
+Subject: Re: [PATCH 07/17] riscv: vdso: Switch to generic storage
+ implementation
+Message-ID: <20241218-action-matchbook-571b597b7f55@spud>
+References: <20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de>
+ <20241216-vdso-store-rng-v1-7-f7aed1bdb3b2@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,47 +99,114 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="fu8z2+BbmIxUgToy"
+Content-Disposition: inline
+In-Reply-To: <20241216-vdso-store-rng-v1-7-f7aed1bdb3b2@linutronix.de>
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 18/12/24 12:10, Christian Zigotzky wrote:
-> Hello,
->
-> The KVM HV host module doesn't work anymore since the PowerPC updates 
-> 6.13-1 [1] and PowerPC MM updates [2].
->
-> We have tested it with our FSL P5020/P5040 boards [3].
->
-> The guest kernel doesn't boot. There is no output via the serial 
-> connection and no output via the graphics card. (QEMU)
->
-> It boots without the PowerPC updates 6.13-1 [1] and PowerPC MM updates 
-> [2].
->
-> Is the problem already known? Is there already a solution? I have seen 
-> many Book3S KVM HV updates. Have you perhaps forgotten Book3E?
->
-> Thanks,
-> Christian
->
-> [1] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=42d9e8b7ccddee75989283cf7477305cfe3776ff
-> [2] 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=5c00ff742bf5caf85f60e1c73999f99376fb865d
-> [3] http://wiki.amiga.org/index.php?title=X5000
->
 
-I tried to bisect but without success. Link: 
-https://github.com/chzigotzky/kernels/issues/4#issuecomment-2551460323
+--fu8z2+BbmIxUgToy
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- Christian
+On Mon, Dec 16, 2024 at 03:10:03PM +0100, Thomas Wei=DFschuh wrote:
+> The generic storage implementation provides the same features as the
+> custom one. However it can be shared between architectures, making
+> maintenance easier.
+>=20
+> Co-developed-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Thomas Wei=DFschuh <thomas.weissschuh@linutronix.de>
+> ---
+>  arch/riscv/Kconfig                                 |  3 +-
+>  arch/riscv/include/asm/vdso.h                      |  2 +-
+>  .../include/asm/vdso/{time_data.h =3D> arch_data.h}  |  8 +-
+>  arch/riscv/include/asm/vdso/gettimeofday.h         | 14 +---
+>  arch/riscv/include/asm/vdso/vsyscall.h             |  9 ---
+>  arch/riscv/kernel/sys_hwprobe.c                    |  3 +-
+>  arch/riscv/kernel/vdso.c                           | 90 +---------------=
+------
+>  arch/riscv/kernel/vdso/hwprobe.c                   |  6 +-
+>  arch/riscv/kernel/vdso/vdso.lds.S                  |  7 +-
+>  9 files changed, 18 insertions(+), 124 deletions(-)
 
--- 
-Sent with BrassMonkey 33.4.0 (https://github.com/wicknix/brass-monkey/releases/tag/33.4.0)
+Fails to build:
+Patch 7/17: Test 1/12: .github/scripts/patches/tests/build_rv32_defconfig.sh
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:11:33: warning: de=
+claration of 'struct riscv_hwprobe' will not be visible outside of this fun=
+ction [-Wvisibility]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:15:41: warning: de=
+claration of 'struct riscv_hwprobe' will not be visible outside of this fun=
+ction [-Wvisibility]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:19:37: error: call=
+ to undeclared function '__arch_get_vdso_u_arch_data'; ISO C99 and later do=
+ not support implicit function declarations [-Wimplicit-function-declaratio=
+n]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:19:31: error: inco=
+mpatible integer to pointer conversion initializing 'const struct vdso_arch=
+_data *' with an expression of type 'int' [-Wint-conversion]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:22:36: error: arit=
+hmetic on a pointer to an incomplete type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:30:40: error: inco=
+mplete definition of type 'const struct vdso_arch_data'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:31:24: error: inco=
+mpatible pointer types passing 'struct riscv_hwprobe *' to parameter of typ=
+e 'struct riscv_hwprobe *' [-Werror,-Wincompatible-pointer-types]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:35:7: error: call =
+to undeclared function 'riscv_hwprobe_key_is_valid'; ISO C99 and later do n=
+ot support implicit function declarations [-Wimplicit-function-declaration]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:35:35: error: inco=
+mplete definition of type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:36:5: error: incom=
+plete definition of type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:36:18: error: inco=
+mplete definition of type 'const struct vdso_arch_data'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:36:44: error: inco=
+mplete definition of type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:39:5: error: incom=
+plete definition of type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:40:5: error: incom=
+plete definition of type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:43:4: error: arith=
+metic on a pointer to an incomplete type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:49:39: warning: de=
+claration of 'struct riscv_hwprobe' will not be visible outside of this fun=
+ction [-Wvisibility]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:53:37: error: call=
+ to undeclared function '__arch_get_vdso_u_arch_data'; ISO C99 and later do=
+ not support implicit function declarations [-Wimplicit-function-declaratio=
+n]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:53:31: error: inco=
+mpatible integer to pointer conversion initializing 'const struct vdso_arch=
+_data *' with an expression of type 'int' [-Wint-conversion]
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:55:36: error: arit=
+hmetic on a pointer to an incomplete type 'struct riscv_hwprobe'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:71:61: error: inco=
+mplete definition of type 'const struct vdso_arch_data'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:71:29: error: use =
+of undeclared identifier 'RISCV_HWPROBE_WHICH_CPUS'
+  /build/tmp.cAQOaMfDA3/arch/riscv/kernel/vdso/hwprobe.c:72:24: error: inco=
+mpatible pointer types passing 'struct riscv_hwprobe *' to parameter of typ=
+e 'struct riscv_hwprobe *' [-Werror,-Wincompatible-pointer-types]
+  fatal error: too many errors emitted, stopping now [-ferror-limit=3D]
 
+Might be a clang thing, allmodconfig with clang doesn't build either.
+
+--fu8z2+BbmIxUgToy
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ2LlbAAKCRB4tDGHoIJi
+0n2PAQDyBQBbIhWl4PuPh0Arh+dY5o5V02LpT/vyZTOInKNMcgEAqZD+a5hkxJEH
+lFXI4u2esepSVEUEOeQQYFauBervVQc=
+=gqd2
+-----END PGP SIGNATURE-----
+
+--fu8z2+BbmIxUgToy--
 
