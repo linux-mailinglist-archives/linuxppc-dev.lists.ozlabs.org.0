@@ -1,56 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-4301-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8839F6416
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 11:56:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F8F9F6418
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 11:56:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YCrF96bw4z30W9;
-	Wed, 18 Dec 2024 21:55:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YCrFB5K3vz2yP8;
+	Wed, 18 Dec 2024 21:55:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734519341;
-	cv=none; b=bHQKlBb3lR5YOAGrMHzvpF0sXBSYUDj9MdwPH1WCS3aPe068Mb1OE9CxPvcfXovC5sF8PJRZtJdVmzzsgbSPPT4upG8mh9tyqvT5iqVIGRPJGqtiK6pwuREpp7Qn2aXX9rX0GCFnMTPzGyTlZkTh5TGELWfNrsX8+VRtZL15eDrQ8l7Q8GGPWcUskxp61nmcLpZ6zPLXSmcDBpAOxzsGEkKuSLTJ3ANG9+/c1IFrIOuKpM+AruKVelLP9pMrNwtrxbWRfYTAUhHCWOGK5L3qXCYq74a7RJ6Kc014ihFIOyQiTab8n4Cwoegy6K6zRyywcPP9HNMmDKT/7pIM7SRZhA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734519342;
+	cv=none; b=VFlsO9rnCgQl1Dq4yXTKgHfi7lALf0qgKRzB1PSXIDOoS7rkJSejim3Cw4iDRYZBX7rAaTmyaOu9p/YaTFBq6N/4Dg2hwoMXU0nvC0Vvu/TTD2BAutixucFyIFZAhflxKW0kFBowFHu9WJuJYGFWHaKkeuTNkuigNOmbSNChfz/4/EvSJIGFbg7teL5TofH0DktKvJjGx3fN9UgNhwfkOlc4uDxQPUoBu/QZXZQa8Kjl1p+aGHhMZZKeEJj6zn9BVXa7smO4Olepq8z2fgTW0fj4K03toCtkiyJTir1Evs3wUbzHQuxI/bxjwNO94yTZ3KKM8hrP8Lf73HUBEPKHAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734519341; c=relaxed/relaxed;
-	bh=k51Vb6vcR5V4PGPJLYu+0yu2/xi3gjFlPKtoMgwac0s=;
+	t=1734519342; c=relaxed/relaxed;
+	bh=CaZLUXcO9xoFwxkAg0lI5f2YMcsLoYX+vnS7lc7T6Es=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CvDYpIQNRgOrSJqygX4NNaYLLL6maLPxjzGSzKat7CTvFsBzJM+8F7Ppah0N4IP7NkY4VrSNMspcEFvFImyjhQrVWTyAnE3Z0o0xkSCABVDjr7TfzctFL4VcakCyJi0eTeMkPrcw3qHzSzA+jfQlYc+LuyadUy4kmVus+rN0Bb4Gt/q5sOsLqIEvXpBkCftQzSwaJ0BJWba2wzTYTH+Ja2siwr8mcguHO2CnzwKVLx28vMNZOUqza30WcpOs9Cdpwo/VFmo2/K9bFpeYTP8awxhd0r1cxpCa/DwvpW7z9yy6k+X7Us7sdlzsOjFZylnBe4yxGDMmnTYpv4CGNQBtSA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Apm6ARvG; dkim-atps=neutral
+	 MIME-Version; b=dQFLF/WU5ZBk7pc4RIzj4v2X01OWgq9I6L+zXUTCrJqh17XhhyKZB3DE52GbSSWNDevU/8Oe9SAmkiBP5/ybnsW5julk8kP96hlg+GlmPxo6zBegKGX/2ePXtq/4e96W1yBTMpaZM6nLhQRN5Q12l1B2/UswdkXfhrwFSJhB8u/5U6nm3lGGSoifJn/bxGPu3asKC1yyvG4VhCNb80kgMSqhyqwAUv2AXA6ZuC3HHrIwmRumdz4K4HTf7XeMIhtPzhAAsPSoluRRlBoCnuGYQPrnteD5rtcAuwlYc6xWD3fiG9fw4r8GcidJuKVVB+mhgnSyehxh3Cbb7/N6kxeUHQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=e6f6Bpez; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=Apm6ARvG;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=e6f6Bpez;
 	dkim-atps=neutral
 Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCrF55B3hz2yP8
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 21:55:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCrF64lwDz30Ts
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 21:55:38 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1734519331;
-	bh=k51Vb6vcR5V4PGPJLYu+0yu2/xi3gjFlPKtoMgwac0s=;
+	s=201909; t=1734519332;
+	bh=CaZLUXcO9xoFwxkAg0lI5f2YMcsLoYX+vnS7lc7T6Es=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Apm6ARvGlJVixmQDMsOGGTKbT0BehAaRhzPcRrJIkwDVeRxlzQub3SEhsKjU/SKjS
-	 Gj+EyBbMdpHqrMPFrrN8w27ecIuVhgvEv5e1DApzj/yr58WTC36lRcQLuv/JgUj1rs
-	 FRRhvocCM1h4F/d0I5H9NFCYb6cTW//aAAg/Q8zYecW00j4YAJsZarqpyZ9i8OUvoy
-	 3T8vwBuvAcb8n6xPTQOM7RtpVFqZ/8Vb1n6YDgOZiSE1ANetBUZlPdT4+NfXAySxny
-	 75wYSwnmwi0bIO2x6YwwqOm2emym2slEjUuVStHKj/jh/v4Wv0Ml0244ZkCrQ/zZdM
-	 opmUPY1llwVrg==
+	b=e6f6BpezrVISU/tvHlHh/4mrJs6Wh6Cro/t8utrIwk9Y6L5mCZg2L1vBaK5UVYiI+
+	 owp8rtCvRZe0d9fwJSnfGcPh0346bMu2JVf1kRLOYn0xyyNYxiP1aJbrpCA9l40eZZ
+	 OZj6DMcac822fncYNm4VZ3YVwBATgPNYUwOSga4clC15vEjUUqbQnjqvIm0dBrVTTI
+	 oE0LMhCyAoN+L5/QeutL0+xCG4upuDf7aupJNZ0eal0QBCsaAt0uybuf/6iOKHzEyl
+	 6KjMiuGRBKqshrysIJ9kUUBr443tVW2lvxriWT2BCnVt2mynHyDlpu/AQU5LwHfZWe
+	 bV6N0MxKDXZcg==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YCrDz4skZz4xfH;
-	Wed, 18 Dec 2024 21:55:31 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YCrF011kHz4xfJ;
+	Wed, 18 Dec 2024 21:55:32 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
 To: <linuxppc-dev@lists.ozlabs.org>
 Cc: <arnd@arndb.de>,
 	<jk@ozlabs.org>,
 	<segher@kernel.crashing.org>
-Subject: [PATCH v2 11/25] powerpc/io: Remove PCI_FIX_ADDR
-Date: Wed, 18 Dec 2024 21:54:59 +1100
-Message-ID: <20241218105523.416573-11-mpe@ellerman.id.au>
+Subject: [PATCH v2 12/25] powerpc/io: Unhook MMIO accessors
+Date: Wed, 18 Dec 2024 21:55:00 +1100
+Message-ID: <20241218105523.416573-12-mpe@ellerman.id.au>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20241218105523.416573-1-mpe@ellerman.id.au>
 References: <20241218105523.416573-1-mpe@ellerman.id.au>
@@ -72,201 +72,317 @@ X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Now that PPC_INDIRECT_MMIO is removed, PCI_FIX_ADDR does nothing, so
-remove it.
+Now that PPC_INDIRECT_MMIO is removed, it's not possible/necessary
+to hook any of the "memory" accessors, so turn them back into regular
+static inlines, and restrict the hooking mechanism to the "pio"
+accessors only.
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Move the #defines that signal each routine is implemented next to the
+implementation, and update the out-of-date comment.
+
 Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
 ---
-v2: Unchanged.
+v2: Rebase. Move the #defines that signal each routine is implemented
+next to the implementation, and update the out-of-date comment.
 
- arch/powerpc/include/asm/io.h | 86 +++++++++++++++++------------------
- arch/powerpc/mm/ioremap_64.c  |  2 +-
- 2 files changed, 43 insertions(+), 45 deletions(-)
+ arch/powerpc/include/asm/io-defs.h |  70 ++----------
+ arch/powerpc/include/asm/io.h      | 169 ++++++++++++++++++++++++-----
+ 2 files changed, 153 insertions(+), 86 deletions(-)
 
+diff --git a/arch/powerpc/include/asm/io-defs.h b/arch/powerpc/include/asm/io-defs.h
+index faf8617cc574..5c2be9b54a9d 100644
+--- a/arch/powerpc/include/asm/io-defs.h
++++ b/arch/powerpc/include/asm/io-defs.h
+@@ -1,61 +1,15 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /* This file is meant to be include multiple times by other headers */
+-/* last 2 argments are used by platforms/cell/io-workarounds.[ch] */
+ 
+-DEF_PCI_AC_RET(readb, u8, (const PCI_IO_ADDR addr), (addr), mem, addr)
+-DEF_PCI_AC_RET(readw, u16, (const PCI_IO_ADDR addr), (addr), mem, addr)
+-DEF_PCI_AC_RET(readl, u32, (const PCI_IO_ADDR addr), (addr), mem, addr)
+-DEF_PCI_AC_RET(readw_be, u16, (const PCI_IO_ADDR addr), (addr), mem, addr)
+-DEF_PCI_AC_RET(readl_be, u32, (const PCI_IO_ADDR addr), (addr), mem, addr)
+-DEF_PCI_AC_NORET(writeb, (u8 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
+-DEF_PCI_AC_NORET(writew, (u16 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
+-DEF_PCI_AC_NORET(writel, (u32 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
+-DEF_PCI_AC_NORET(writew_be, (u16 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
+-DEF_PCI_AC_NORET(writel_be, (u32 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
+-
+-#ifdef __powerpc64__
+-DEF_PCI_AC_RET(readq, u64, (const PCI_IO_ADDR addr), (addr), mem, addr)
+-DEF_PCI_AC_RET(readq_be, u64, (const PCI_IO_ADDR addr), (addr), mem, addr)
+-DEF_PCI_AC_NORET(writeq, (u64 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
+-DEF_PCI_AC_NORET(writeq_be, (u64 val, PCI_IO_ADDR addr), (val, addr), mem, addr)
+-#endif /* __powerpc64__ */
+-
+-DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port), pio, port)
+-DEF_PCI_AC_RET(inw, u16, (unsigned long port), (port), pio, port)
+-DEF_PCI_AC_RET(inl, u32, (unsigned long port), (port), pio, port)
+-DEF_PCI_AC_NORET(outb, (u8 val, unsigned long port), (val, port), pio, port)
+-DEF_PCI_AC_NORET(outw, (u16 val, unsigned long port), (val, port), pio, port)
+-DEF_PCI_AC_NORET(outl, (u32 val, unsigned long port), (val, port), pio, port)
+-
+-DEF_PCI_AC_NORET(readsb, (const PCI_IO_ADDR a, void *b, unsigned long c),
+-		 (a, b, c), mem, a)
+-DEF_PCI_AC_NORET(readsw, (const PCI_IO_ADDR a, void *b, unsigned long c),
+-		 (a, b, c), mem, a)
+-DEF_PCI_AC_NORET(readsl, (const PCI_IO_ADDR a, void *b, unsigned long c),
+-		 (a, b, c), mem, a)
+-DEF_PCI_AC_NORET(writesb, (PCI_IO_ADDR a, const void *b, unsigned long c),
+-		 (a, b, c), mem, a)
+-DEF_PCI_AC_NORET(writesw, (PCI_IO_ADDR a, const void *b, unsigned long c),
+-		 (a, b, c), mem, a)
+-DEF_PCI_AC_NORET(writesl, (PCI_IO_ADDR a, const void *b, unsigned long c),
+-		 (a, b, c), mem, a)
+-
+-DEF_PCI_AC_NORET(insb, (unsigned long p, void *b, unsigned long c),
+-		 (p, b, c), pio, p)
+-DEF_PCI_AC_NORET(insw, (unsigned long p, void *b, unsigned long c),
+-		 (p, b, c), pio, p)
+-DEF_PCI_AC_NORET(insl, (unsigned long p, void *b, unsigned long c),
+-		 (p, b, c), pio, p)
+-DEF_PCI_AC_NORET(outsb, (unsigned long p, const void *b, unsigned long c),
+-		 (p, b, c), pio, p)
+-DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, unsigned long c),
+-		 (p, b, c), pio, p)
+-DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, unsigned long c),
+-		 (p, b, c), pio, p)
+-
+-DEF_PCI_AC_NORET(memset_io, (PCI_IO_ADDR a, int c, unsigned long n),
+-		 (a, c, n), mem, a)
+-DEF_PCI_AC_NORET(memcpy_fromio, (void *d, const PCI_IO_ADDR s, unsigned long n),
+-		 (d, s, n), mem, s)
+-DEF_PCI_AC_NORET(memcpy_toio, (PCI_IO_ADDR d, const void *s, unsigned long n),
+-		 (d, s, n), mem, d)
++DEF_PCI_AC_RET(inb, u8, (unsigned long port), (port))
++DEF_PCI_AC_RET(inw, u16, (unsigned long port), (port))
++DEF_PCI_AC_RET(inl, u32, (unsigned long port), (port))
++DEF_PCI_AC_NORET(outb, (u8 val, unsigned long port), (val, port))
++DEF_PCI_AC_NORET(outw, (u16 val, unsigned long port), (val, port))
++DEF_PCI_AC_NORET(outl, (u32 val, unsigned long port), (val, port))
++DEF_PCI_AC_NORET(insb, (unsigned long p, void *b, unsigned long c), (p, b, c))
++DEF_PCI_AC_NORET(insw, (unsigned long p, void *b, unsigned long c), (p, b, c))
++DEF_PCI_AC_NORET(insl, (unsigned long p, void *b, unsigned long c), (p, b, c))
++DEF_PCI_AC_NORET(outsb, (unsigned long p, const void *b, unsigned long c), (p, b, c))
++DEF_PCI_AC_NORET(outsw, (unsigned long p, const void *b, unsigned long c), (p, b, c))
++DEF_PCI_AC_NORET(outsl, (unsigned long p, const void *b, unsigned long c), (p, b, c))
 diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index fcb4ecca30a4..ecc0dff82dc6 100644
+index ecc0dff82dc6..24a0ae26510f 100644
 --- a/arch/powerpc/include/asm/io.h
 +++ b/arch/powerpc/include/asm/io.h
-@@ -277,58 +277,56 @@ extern void _memcpy_toio(volatile void __iomem *dest, const void *src,
- /* Shortcut to the MMIO argument pointer */
- #define PCI_IO_ADDR	volatile void __iomem *
- 
--#define PCI_FIX_ADDR(addr) (addr)
--
- /*
-  * Non ordered and non-swapping "raw" accessors
-  */
- 
- static inline unsigned char __raw_readb(const volatile void __iomem *addr)
- {
--	return *(volatile unsigned char __force *)PCI_FIX_ADDR(addr);
-+	return *(volatile unsigned char __force *)addr;
- }
- #define __raw_readb __raw_readb
- 
- static inline unsigned short __raw_readw(const volatile void __iomem *addr)
- {
--	return *(volatile unsigned short __force *)PCI_FIX_ADDR(addr);
-+	return *(volatile unsigned short __force *)addr;
- }
- #define __raw_readw __raw_readw
- 
- static inline unsigned int __raw_readl(const volatile void __iomem *addr)
- {
--	return *(volatile unsigned int __force *)PCI_FIX_ADDR(addr);
-+	return *(volatile unsigned int __force *)addr;
- }
- #define __raw_readl __raw_readl
- 
- static inline void __raw_writeb(unsigned char v, volatile void __iomem *addr)
- {
--	*(volatile unsigned char __force *)PCI_FIX_ADDR(addr) = v;
-+	*(volatile unsigned char __force *)addr = v;
- }
- #define __raw_writeb __raw_writeb
- 
- static inline void __raw_writew(unsigned short v, volatile void __iomem *addr)
- {
--	*(volatile unsigned short __force *)PCI_FIX_ADDR(addr) = v;
-+	*(volatile unsigned short __force *)addr = v;
- }
- #define __raw_writew __raw_writew
- 
- static inline void __raw_writel(unsigned int v, volatile void __iomem *addr)
- {
--	*(volatile unsigned int __force *)PCI_FIX_ADDR(addr) = v;
-+	*(volatile unsigned int __force *)addr = v;
- }
- #define __raw_writel __raw_writel
- 
- #ifdef __powerpc64__
- static inline unsigned long __raw_readq(const volatile void __iomem *addr)
- {
--	return *(volatile unsigned long __force *)PCI_FIX_ADDR(addr);
-+	return *(volatile unsigned long __force *)addr;
- }
- #define __raw_readq __raw_readq
- 
- static inline void __raw_writeq(unsigned long v, volatile void __iomem *addr)
- {
--	*(volatile unsigned long __force *)PCI_FIX_ADDR(addr) = v;
-+	*(volatile unsigned long __force *)addr = v;
- }
- #define __raw_writeq __raw_writeq
- 
-@@ -507,30 +505,30 @@ __do_out_asm(_rec_outl, "stwbrx")
-  * possible to hook directly at the toplevel PIO operation if they have to
-  * be handled differently
-  */
--#define __do_writeb(val, addr)	out_8(PCI_FIX_ADDR(addr), val)
--#define __do_writew(val, addr)	out_le16(PCI_FIX_ADDR(addr), val)
--#define __do_writel(val, addr)	out_le32(PCI_FIX_ADDR(addr), val)
--#define __do_writeq(val, addr)	out_le64(PCI_FIX_ADDR(addr), val)
--#define __do_writew_be(val, addr) out_be16(PCI_FIX_ADDR(addr), val)
--#define __do_writel_be(val, addr) out_be32(PCI_FIX_ADDR(addr), val)
--#define __do_writeq_be(val, addr) out_be64(PCI_FIX_ADDR(addr), val)
-+#define __do_writeb(val, addr)	out_8(addr, val)
-+#define __do_writew(val, addr)	out_le16(addr, val)
-+#define __do_writel(val, addr)	out_le32(addr, val)
-+#define __do_writeq(val, addr)	out_le64(addr, val)
-+#define __do_writew_be(val, addr) out_be16(addr, val)
-+#define __do_writel_be(val, addr) out_be32(addr, val)
-+#define __do_writeq_be(val, addr) out_be64(addr, val)
- 
- #ifdef CONFIG_EEH
--#define __do_readb(addr)	eeh_readb(PCI_FIX_ADDR(addr))
--#define __do_readw(addr)	eeh_readw(PCI_FIX_ADDR(addr))
--#define __do_readl(addr)	eeh_readl(PCI_FIX_ADDR(addr))
--#define __do_readq(addr)	eeh_readq(PCI_FIX_ADDR(addr))
--#define __do_readw_be(addr)	eeh_readw_be(PCI_FIX_ADDR(addr))
--#define __do_readl_be(addr)	eeh_readl_be(PCI_FIX_ADDR(addr))
--#define __do_readq_be(addr)	eeh_readq_be(PCI_FIX_ADDR(addr))
-+#define __do_readb(addr)	eeh_readb(addr)
-+#define __do_readw(addr)	eeh_readw(addr)
-+#define __do_readl(addr)	eeh_readl(addr)
-+#define __do_readq(addr)	eeh_readq(addr)
-+#define __do_readw_be(addr)	eeh_readw_be(addr)
-+#define __do_readl_be(addr)	eeh_readl_be(addr)
-+#define __do_readq_be(addr)	eeh_readq_be(addr)
- #else /* CONFIG_EEH */
--#define __do_readb(addr)	in_8(PCI_FIX_ADDR(addr))
--#define __do_readw(addr)	in_le16(PCI_FIX_ADDR(addr))
--#define __do_readl(addr)	in_le32(PCI_FIX_ADDR(addr))
--#define __do_readq(addr)	in_le64(PCI_FIX_ADDR(addr))
--#define __do_readw_be(addr)	in_be16(PCI_FIX_ADDR(addr))
--#define __do_readl_be(addr)	in_be32(PCI_FIX_ADDR(addr))
--#define __do_readq_be(addr)	in_be64(PCI_FIX_ADDR(addr))
-+#define __do_readb(addr)	in_8(addr)
-+#define __do_readw(addr)	in_le16(addr)
-+#define __do_readl(addr)	in_le32(addr)
-+#define __do_readq(addr)	in_le64(addr)
-+#define __do_readw_be(addr)	in_be16(addr)
-+#define __do_readl_be(addr)	in_be32(addr)
-+#define __do_readq_be(addr)	in_be64(addr)
- #endif /* !defined(CONFIG_EEH) */
- 
- #ifdef CONFIG_PPC32
-@@ -550,17 +548,17 @@ __do_out_asm(_rec_outl, "stwbrx")
- #endif /* !CONFIG_PPC32 */
- 
- #ifdef CONFIG_EEH
--#define __do_readsb(a, b, n)	eeh_readsb(PCI_FIX_ADDR(a), (b), (n))
--#define __do_readsw(a, b, n)	eeh_readsw(PCI_FIX_ADDR(a), (b), (n))
--#define __do_readsl(a, b, n)	eeh_readsl(PCI_FIX_ADDR(a), (b), (n))
-+#define __do_readsb(a, b, n)	eeh_readsb(a, (b), (n))
-+#define __do_readsw(a, b, n)	eeh_readsw(a, (b), (n))
-+#define __do_readsl(a, b, n)	eeh_readsl(a, (b), (n))
- #else /* CONFIG_EEH */
--#define __do_readsb(a, b, n)	_insb(PCI_FIX_ADDR(a), (b), (n))
--#define __do_readsw(a, b, n)	_insw(PCI_FIX_ADDR(a), (b), (n))
--#define __do_readsl(a, b, n)	_insl(PCI_FIX_ADDR(a), (b), (n))
-+#define __do_readsb(a, b, n)	_insb(a, (b), (n))
-+#define __do_readsw(a, b, n)	_insw(a, (b), (n))
-+#define __do_readsl(a, b, n)	_insl(a, (b), (n))
- #endif /* !CONFIG_EEH */
--#define __do_writesb(a, b, n)	_outsb(PCI_FIX_ADDR(a),(b),(n))
--#define __do_writesw(a, b, n)	_outsw(PCI_FIX_ADDR(a),(b),(n))
--#define __do_writesl(a, b, n)	_outsl(PCI_FIX_ADDR(a),(b),(n))
-+#define __do_writesb(a, b, n)	_outsb(a, (b), (n))
-+#define __do_writesw(a, b, n)	_outsw(a, (b), (n))
-+#define __do_writesl(a, b, n)	_outsl(a, (b), (n))
- 
- #define __do_insb(p, b, n)	readsb((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
- #define __do_insw(p, b, n)	readsw((PCI_IO_ADDR)(_IO_BASE+(p)), (b), (n))
-@@ -570,16 +568,16 @@ __do_out_asm(_rec_outl, "stwbrx")
- #define __do_outsl(p, b, n)	writesl((PCI_IO_ADDR)(_IO_BASE+(p)),(b),(n))
- 
- #define __do_memset_io(addr, c, n)	\
--				_memset_io(PCI_FIX_ADDR(addr), c, n)
-+				_memset_io(addr, c, n)
- #define __do_memcpy_toio(dst, src, n)	\
--				_memcpy_toio(PCI_FIX_ADDR(dst), src, n)
-+				_memcpy_toio(dst, src, n)
- 
- #ifdef CONFIG_EEH
- #define __do_memcpy_fromio(dst, src, n)	\
--				eeh_memcpy_fromio(dst, PCI_FIX_ADDR(src), n)
-+				eeh_memcpy_fromio(dst, src, n)
- #else /* CONFIG_EEH */
- #define __do_memcpy_fromio(dst, src, n)	\
--				_memcpy_fromio(dst,PCI_FIX_ADDR(src),n)
-+				_memcpy_fromio(dst, src, n)
+@@ -580,19 +580,149 @@ __do_out_asm(_rec_outl, "stwbrx")
+ 				_memcpy_fromio(dst, src, n)
  #endif /* !CONFIG_EEH */
  
++static inline u8 readb(const PCI_IO_ADDR addr)
++{
++	return __do_readb(addr);
++}
++#define readb readb
++
++static inline u16 readw(const PCI_IO_ADDR addr)
++{
++	return __do_readw(addr);
++}
++#define readw readw
++
++static inline u32 readl(const PCI_IO_ADDR addr)
++{
++	return __do_readl(addr);
++}
++#define readl readl
++
++static inline u16 readw_be(const PCI_IO_ADDR addr)
++{
++	return __do_readw_be(addr);
++}
++
++static inline u32 readl_be(const PCI_IO_ADDR addr)
++{
++	return __do_readl_be(addr);
++}
++
++static inline void writeb(u8 val, PCI_IO_ADDR addr)
++{
++	__do_writeb(val, addr);
++}
++#define writeb writeb
++
++static inline void writew(u16 val, PCI_IO_ADDR addr)
++{
++	__do_writew(val, addr);
++}
++#define writew writew
++
++static inline void writel(u32 val, PCI_IO_ADDR addr)
++{
++	__do_writel(val, addr);
++}
++#define writel writel
++
++static inline void writew_be(u16 val, PCI_IO_ADDR addr)
++{
++	__do_writew_be(val, addr);
++}
++
++static inline void writel_be(u32 val, PCI_IO_ADDR addr)
++{
++	__do_writel_be(val, addr);
++}
++
++static inline void readsb(const PCI_IO_ADDR a, void *b, unsigned long c)
++{
++	__do_readsb(a, b, c);
++}
++#define readsb readsb
++
++static inline void readsw(const PCI_IO_ADDR a, void *b, unsigned long c)
++{
++	__do_readsw(a, b, c);
++}
++#define readsw readsw
++
++static inline void readsl(const PCI_IO_ADDR a, void *b, unsigned long c)
++{
++	__do_readsl(a, b, c);
++}
++#define readsl readsl
++
++static inline void writesb(PCI_IO_ADDR a, const void *b, unsigned long c)
++{
++	__do_writesb(a, b, c);
++}
++#define writesb writesb
++
++static inline void writesw(PCI_IO_ADDR a, const void *b, unsigned long c)
++{
++	__do_writesw(a, b, c);
++}
++#define writesw writesw
++
++static inline void writesl(PCI_IO_ADDR a, const void *b, unsigned long c)
++{
++	__do_writesl(a, b, c);
++}
++#define writesl writesl
++
++static inline void memset_io(PCI_IO_ADDR a, int c, unsigned long n)
++{
++	__do_memset_io(a, c, n);
++}
++#define memset_io memset_io
++
++static inline void memcpy_fromio(void *d, const PCI_IO_ADDR s, unsigned long n)
++{
++	__do_memcpy_fromio(d, s, n);
++}
++#define memcpy_fromio memcpy_fromio
++
++static inline void memcpy_toio(PCI_IO_ADDR d, const void *s, unsigned long n)
++{
++	__do_memcpy_toio(d, s, n);
++}
++#define memcpy_toio memcpy_toio
++
++#ifdef __powerpc64__
++static inline u64 readq(const PCI_IO_ADDR addr)
++{
++	return __do_readq(addr);
++}
++
++static inline u64 readq_be(const PCI_IO_ADDR addr)
++{
++	return __do_readq_be(addr);
++}
++
++static inline void writeq(u64 val, PCI_IO_ADDR addr)
++{
++	__do_writeq(val, addr);
++}
++
++static inline void writeq_be(u64 val, PCI_IO_ADDR addr)
++{
++	__do_writeq_be(val, addr);
++}
++#endif /* __powerpc64__ */
++
  #ifdef CONFIG_PPC_INDIRECT_PIO
-diff --git a/arch/powerpc/mm/ioremap_64.c b/arch/powerpc/mm/ioremap_64.c
-index d24e5f166723..fb8b55bd2cd5 100644
---- a/arch/powerpc/mm/ioremap_64.c
-+++ b/arch/powerpc/mm/ioremap_64.c
-@@ -52,6 +52,6 @@ void iounmap(volatile void __iomem *token)
- 	if (!slab_is_available())
- 		return;
+-#define DEF_PCI_HOOK_pio(x)	x
++#define DEF_PCI_HOOK(x)	x
+ #else
+-#define DEF_PCI_HOOK_pio(x)	NULL
++#define DEF_PCI_HOOK(x)	NULL
+ #endif
  
--	generic_iounmap(PCI_FIX_ADDR(token));
-+	generic_iounmap(token);
+-#define DEF_PCI_HOOK_mem(x)	NULL
+-
+ /* Structure containing all the hooks */
+ extern struct ppc_pci_io {
+ 
+-#define DEF_PCI_AC_RET(name, ret, at, al, space, aa)	ret (*name) at;
+-#define DEF_PCI_AC_NORET(name, at, al, space, aa)	void (*name) at;
++#define DEF_PCI_AC_RET(name, ret, at, al)	ret (*name) at;
++#define DEF_PCI_AC_NORET(name, at, al)		void (*name) at;
+ 
+ #include <asm/io-defs.h>
+ 
+@@ -602,18 +732,18 @@ extern struct ppc_pci_io {
+ } ppc_pci_io;
+ 
+ /* The inline wrappers */
+-#define DEF_PCI_AC_RET(name, ret, at, al, space, aa)		\
++#define DEF_PCI_AC_RET(name, ret, at, al)			\
+ static inline ret name at					\
+ {								\
+-	if (DEF_PCI_HOOK_##space(ppc_pci_io.name) != NULL)	\
++	if (DEF_PCI_HOOK(ppc_pci_io.name) != NULL)		\
+ 		return ppc_pci_io.name al;			\
+ 	return __do_##name al;					\
  }
- EXPORT_SYMBOL(iounmap);
+ 
+-#define DEF_PCI_AC_NORET(name, at, al, space, aa)		\
++#define DEF_PCI_AC_NORET(name, at, al)		\
+ static inline void name at					\
+ {								\
+-	if (DEF_PCI_HOOK_##space(ppc_pci_io.name) != NULL)		\
++	if (DEF_PCI_HOOK(ppc_pci_io.name) != NULL)		\
+ 		ppc_pci_io.name al;				\
+ 	else							\
+ 		__do_##name al;					\
+@@ -624,21 +754,7 @@ static inline void name at					\
+ #undef DEF_PCI_AC_RET
+ #undef DEF_PCI_AC_NORET
+ 
+-/* Some drivers check for the presence of readq & writeq with
+- * a #ifdef, so we make them happy here.
+- */
+-#define readb readb
+-#define readw readw
+-#define readl readl
+-#define writeb writeb
+-#define writew writew
+-#define writel writel
+-#define readsb readsb
+-#define readsw readsw
+-#define readsl readsl
+-#define writesb writesb
+-#define writesw writesw
+-#define writesl writesl
++// Signal to asm-generic/io.h that we have implemented these.
+ #define inb inb
+ #define inw inw
+ #define inl inl
+@@ -655,9 +771,6 @@ static inline void name at					\
+ #define readq	readq
+ #define writeq	writeq
+ #endif
+-#define memset_io memset_io
+-#define memcpy_fromio memcpy_fromio
+-#define memcpy_toio memcpy_toio
+ 
+ /*
+  * We don't do relaxed operations yet, at least not with this semantic
 -- 
 2.47.1
 
