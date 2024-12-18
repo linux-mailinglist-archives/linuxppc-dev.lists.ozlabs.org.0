@@ -1,83 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-4291-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4299-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73A659F62D3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 11:25:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 177159F640E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 18 Dec 2024 11:56:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YCqZl0wC8z2yDM;
-	Wed, 18 Dec 2024 21:25:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YCrF85MMPz30Vj;
+	Wed, 18 Dec 2024 21:55:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734517551;
-	cv=none; b=HKUqDUMWxUq3fIXTEStn70CWFZnQ6fFNWLozWWI/rrzhp0FBjFkJX9Ue2kG96MAWJbMoj8SieZQpqQ6UVOD41gecpK6vN5QScDT2+fqRGWFIdi9ZtZMoKUZaDnHtdIBI3BwahGmSqdEn8Ho5fegKKLebC9WM7861Yy9nGVtnNif8ArKF8ZAm8pKk0T62yh4F/jlCqAAkQKpeib2C2b15HSXCrYgsebMRytVFeEiOEIdk+hCWK4LjmNZi0fe9Q9tF/Xv8lkteuP/MlfvS5Tge9Ci+CFQVjvtM0fnZH9/gj7qeu5S/V92DyPxDs9hyhK9qgInYuCLLHU3mhrql0lvItQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734519340;
+	cv=none; b=OikNRJtmltdiTeucls5C0WCndSALfaRPaQMCGHmbuEzoBlUbskoiz9+CSTxwpQgozIVIOc+ONZc6MInourO2xNBJHcdbYTqNlQS601FXRD8HjpjsyepALQDhikSdLTO2vAkwdXD2WIKBWp9FE4MBLrIusqgjjbevRppd/XBlHW8fDsbHrkVIGvO1QMGZSNoTLZ6NCG+rZgPhulfb1G2Zdb4BdtuVtuI8O8R8o10FpABF5SDGcVMx2B1gXgGoLevRbJ1t5ZriY51UwKosEv2hKofPWs4Y/oqYqipF+ealwBWri0upYw13aCymutiyetXa24xpJ4Ymh+3uRlUrMUP0lw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734517551; c=relaxed/relaxed;
-	bh=Wc3y2MMAV4l4fXGHcieZbsIyWfTg/ozhFPhFb4lifrk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=I3qWrlZvzwN6o4l11zjNQ1DjEdU2BkmQlrDV80NgZ5ptAEkPNE6vlI2fi4zfnmLjmHSJUloJQFnYMmpLJOxHy8g5mT9TwEJuWaAVSehtI0OVaQj7Jsp0oDPBS28aT5CtQcdk6M99cP8Kr3Xsiiw7Iuxp09rR9Emv/rKauK2EvaltfuDP/74bEVbbp1TB2/lpMSEypOb41Mf0ajWG+NI265UBJ7a6Fs7ZpoJhhesatAvZUID9EQGjzMVhTBoDMv6Ha/sLsuIiapMctULHd/SFIEKFQrRvQuyl8ihRnm4sKJ3g8GyVFPvAuvBBTuXsMncDhWV+GzQE7+tEehKJKYQI0g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=2SSWoTmi; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=AoKeNEyu; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1734519340; c=relaxed/relaxed;
+	bh=g7dpyYfm/o7tZRNHsrIIerum/dC5k7elSBJdNvT3DsE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U3aYErDzvjuOMq9j1dYliPAwEqcM4ArqIQEKXPPVTWCQZn66BKQ7cOr6ht8TW41p6UyA0GkMl+gT9yWJSOzm/4Nf+rSeeERytE7DtxXgS+nCq1iaVy5OqTRhxjtjU8ERqiGoGCzJTKserRWGXD8fEtfqrmoOec0b4cC0SAcvb5zzjPpECi4icXZcx6ey8BocyOWTfor7WQq3PY5aJjVzj371unx7DTD3cxWoJChB8AeHrBTadc6H3A/sH6Tu8fgBdpMWaAhxjPA129TEdIlMBQEGuka5otEivPsGGIolmVxaiEMOAkQa+w66nYXVzis3T2cMhoZTOoTrAGpwhB43Xg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JtgVbxAy; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=2SSWoTmi;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=AoKeNEyu;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=JtgVbxAy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCqZj4XVSz2yD4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 21:25:49 +1100 (AEDT)
-Date: Wed, 18 Dec 2024 11:25:44 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1734517545;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Wc3y2MMAV4l4fXGHcieZbsIyWfTg/ozhFPhFb4lifrk=;
-	b=2SSWoTmikqml+QyzziVj/m4Yg45xAoP4dNtwTBlJig2p14toOtHozKw5Bxfjy4L/DvACGV
-	OMNT4R2Rekm2Ck8CCOW0XGD1j8FoyZrt3Z7jazkfGB6Zv+KWrHTMOhmUum+sr+mgUm1e61
-	TM1KWhbGQXbTlvxJf51hlLY47fK7pZY7y05qey8SsXBH0Nkg9uMgzFSWUJ30b/nxZp2S3N
-	Hy4DtDnFlOUNAID7T8cQaJtlrwqn059Y+FAOYDMu2CWWxXTn5NsAeABAkO/WY90H+pP48R
-	uMCgaoU5KLrPl82I7qw8SvgoxROfvTSXg9ibM/gPkLEPvpm/oD+JPk198PVRXA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1734517545;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Wc3y2MMAV4l4fXGHcieZbsIyWfTg/ozhFPhFb4lifrk=;
-	b=AoKeNEyuPrW2z0f+0sR+kxNpoFiiPy1/gq9ak22q5IqO1FLos7EO/vgThimKc+44ktm5ZR
-	tRGCj/jF+KFa4yBw==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
-	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Theodore Ts'o <tytso@mit.edu>, 
-	"Jason A. Donenfeld" <Jason@zx2c4.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
-	Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Arnd Bergmann <arnd@arndb.de>, linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
-	linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>
-Subject: Re: [PATCH 03/17] vdso: Add generic time data storage
-Message-ID: <20241218111724-41f5e3c6-f41d-41ec-beed-bd05cca05016@linutronix.de>
-References: <20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de>
- <20241216-vdso-store-rng-v1-3-f7aed1bdb3b2@linutronix.de>
- <3b44defd-cd2a-4a3c-b72d-bcc0530336da@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YCrF141Xqz2xHl
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 18 Dec 2024 21:55:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1734519327;
+	bh=g7dpyYfm/o7tZRNHsrIIerum/dC5k7elSBJdNvT3DsE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=JtgVbxAy7Max2mx/AsGxclBYxV1Otvsz3qrJ822/Wqrfg0USGl3BrSpjPV8gCUNpr
+	 hkJ5A2MX5de7FYbM6/wBowGdEahNEAZJVPa/vqmrsce4WtiHJq0eUdCCsgRaN4lHbp
+	 beMTJwscJrAOl9weo01PETX6zG0bgPRJ8lBwE0sBCVX+JuwAYEspRCPR1sgKF+GKvV
+	 Eo66XXeGViT+4Y/XvUGtbZm+4zsInQ6eeh93F1JNBIUCanpYprZJbdRFD7mrd/mTBf
+	 CS8lqJ+euUluOV7M1EnFgQSf6lZ6YwiYUJkM+u+IkcVclEaI3pdijWm5M3o/lTmoDs
+	 6Ev1xfiKcb3nw==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YCrDt6t0fz4xdP;
+	Wed, 18 Dec 2024 21:55:26 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: <linuxppc-dev@lists.ozlabs.org>
+Cc: <arnd@arndb.de>,
+	<jk@ozlabs.org>,
+	<segher@kernel.crashing.org>
+Subject: [PATCH v2 01/25] powerpc/cell: Remove support for IBM Cell Blades
+Date: Wed, 18 Dec 2024 21:54:49 +1100
+Message-ID: <20241218105523.416573-1-mpe@ellerman.id.au>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,73 +63,6250 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <3b44defd-cd2a-4a3c-b72d-bcc0530336da@csgroup.eu>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Christophe,
+IBM Cell Blades used the Cell processor and the "blade" server form
+factor. They were sold as models QS20, QS21 & QS22 from roughly 2006 to
+2012 [1]. They were used in a few supercomputers (eg. Roadrunner) that
+have since been dismantled, and were not that widely used otherwise.
 
-On Wed, Dec 18, 2024 at 08:32:14AM +0100, Christophe Leroy wrote:
-> Le 16/12/2024 ‡ 15:09, Thomas Weiﬂschuh a Ècrit†:
-> > Historically each architecture defined their own way to store the vDSO
-> > data page. Add a generic mechanism to provide storage for that page.
-> > 
-> > Furthermore this generic storage will be extended to also provide
-> > uniform storage for *non*-time-related data, like the random state or
-> > architecture-specific data. These will have their own pages and data
-> > structures, so rename 'vdso_data' into 'vdso_time_data' to make that
-> > split clear from the name.
-> > 
-> > Also introduce a new consistent naming scheme for the symbols related to
-> > the vDSO, which makes it clear if the symbol is accessible from
-> > userspace or kernel space and the type of data behind the symbol.
-> > 
-> > The generic fault handler contains an optimization to prefault the vvar
-> > page when the timens page is accessed. This was lifted from s390 and x86.
-> > 
-> > Co-developed-by: Nam Cao <namcao@linutronix.de>
-> > Signed-off-by: Nam Cao <namcao@linutronix.de>
-> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> > ---
-> >   MAINTAINERS                    |  1 +
-> >   include/linux/time_namespace.h |  1 +
-> >   include/linux/vdso_datastore.h | 10 +++++
-> >   include/vdso/datapage.h        | 69 +++++++++++++++++++++++++----
-> >   lib/Kconfig                    |  1 +
-> >   lib/Makefile                   |  2 +
-> >   lib/vdso_kernel/Kconfig        |  7 +++
-> >   lib/vdso_kernel/Makefile       |  3 ++
-> >   lib/vdso_kernel/datastore.c    | 99 ++++++++++++++++++++++++++++++++++++++++++
-> 
-> There is only one single file, namely datastore.c. You don't need a new
-> directory for that, I should go in lib/vdso/
+Until recently I still had a working QS22, which meant I was able to
+keep the platform support working, but unfortunately that machine has
+now died.
 
-lib/vdso/ currently only contains userspace code.
-I don't have a strong opinion on that.
-The lib/vdso_kernel location was suggested by tglx, maybe he has some
-feedback. (Originally I put it into kernel/vdso_storage.c)
+I'm not aware of any users. If there is a user that wants to keep the
+upstream support working, we can look at bringing some of the code back
+as appropriate.
 
-[..]
+See previous discussion at [2].
 
-> > +enum vdso_pages {
-> > +	VDSO_TIME_PAGE_OFFSET,
-> > +	VDSO_TIMENS_PAGE_OFFSET,
-> > +	VDSO_NR_PAGES
-> > +};
-> 
-> Naming that VDSO_ is confusing. Most macros called VDSO_ are related to the
-> VDSO Code. VDSO data related macros should be prefixed with VVAR_
+Remove the top-level config symbol PPC_IBM_CELL_BLADE, and then
+the dependent symbols PPC_CELL_NATIVE, PPC_CELL_COMMON, CBE_RAS,
+PPC_IBM_CELL_RESETBUTTON, PPC_IBM_CELL_POWERBUTTON, CBE_THERM, and
+AXON_MSI. Then remove the associated C files and headers, and trim
+unused header content (some is shared with PS3).
 
-Also a request from tglx.
+Note that PPC_CELL_COMMON sounds like it would build code shared with
+PS3, but it does not. It's a relic from when code was shared between the
+Blade support and QPACE support.
 
-[..]
+Most of the primary authors already have CREDITS entries, with the
+exception of Christian, so add one for him.
 
+[1]: https://www.theregister.com/2011/06/28/ibm_kills_qs22_blade
+[2]: https://lore.kernel.org/linuxppc-dev/60581044-df82-40ad-b94c-56468007a93e@app.fastmail.com
 
-Thanks!
-Thomas
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Jeremy Kerr <jk@ozlabs.org>
+Acked-by: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+---
+v2: Rebase.
+
+Version 1: https://lore.kernel.org/linuxppc-dev/20241114125111.599093-1-mpe@ellerman.id.au/
+
+ CREDITS                                       |    3 +
+ arch/powerpc/include/asm/cell-pmu.h           |   56 -
+ arch/powerpc/include/asm/cell-regs.h          |  296 -----
+ arch/powerpc/include/asm/spu_priv1.h          |    2 -
+ arch/powerpc/kernel/exceptions-64s.S          |   55 -
+ arch/powerpc/platforms/cell/Kconfig           |   62 -
+ arch/powerpc/platforms/cell/Makefile          |   21 -
+ arch/powerpc/platforms/cell/axon_msi.c        |  481 --------
+ arch/powerpc/platforms/cell/cbe_powerbutton.c |  106 --
+ arch/powerpc/platforms/cell/cbe_regs.c        |  298 -----
+ arch/powerpc/platforms/cell/cbe_thermal.c     |  387 ------
+ arch/powerpc/platforms/cell/cell.h            |   15 -
+ arch/powerpc/platforms/cell/interrupt.c       |  390 ------
+ arch/powerpc/platforms/cell/interrupt.h       |   90 --
+ arch/powerpc/platforms/cell/iommu.c           | 1060 -----------------
+ arch/powerpc/platforms/cell/pervasive.c       |  125 --
+ arch/powerpc/platforms/cell/pervasive.h       |   26 -
+ arch/powerpc/platforms/cell/pmu.c             |  412 -------
+ arch/powerpc/platforms/cell/ras.c             |  352 ------
+ arch/powerpc/platforms/cell/ras.h             |   13 -
+ arch/powerpc/platforms/cell/setup.c           |  274 -----
+ arch/powerpc/platforms/cell/smp.c             |  162 ---
+ arch/powerpc/platforms/cell/spider-pci.c      |  170 ---
+ arch/powerpc/platforms/cell/spider-pic.c      |  344 ------
+ arch/powerpc/platforms/cell/spu_manage.c      |  530 ---------
+ arch/powerpc/platforms/cell/spu_priv1_mmio.c  |  167 ---
+ arch/powerpc/platforms/cell/spu_priv1_mmio.h  |   14 -
+ 27 files changed, 3 insertions(+), 5908 deletions(-)
+ delete mode 100644 arch/powerpc/platforms/cell/axon_msi.c
+ delete mode 100644 arch/powerpc/platforms/cell/cbe_powerbutton.c
+ delete mode 100644 arch/powerpc/platforms/cell/cbe_regs.c
+ delete mode 100644 arch/powerpc/platforms/cell/cbe_thermal.c
+ delete mode 100644 arch/powerpc/platforms/cell/cell.h
+ delete mode 100644 arch/powerpc/platforms/cell/interrupt.c
+ delete mode 100644 arch/powerpc/platforms/cell/interrupt.h
+ delete mode 100644 arch/powerpc/platforms/cell/iommu.c
+ delete mode 100644 arch/powerpc/platforms/cell/pervasive.c
+ delete mode 100644 arch/powerpc/platforms/cell/pervasive.h
+ delete mode 100644 arch/powerpc/platforms/cell/pmu.c
+ delete mode 100644 arch/powerpc/platforms/cell/ras.c
+ delete mode 100644 arch/powerpc/platforms/cell/ras.h
+ delete mode 100644 arch/powerpc/platforms/cell/setup.c
+ delete mode 100644 arch/powerpc/platforms/cell/smp.c
+ delete mode 100644 arch/powerpc/platforms/cell/spider-pci.c
+ delete mode 100644 arch/powerpc/platforms/cell/spider-pic.c
+ delete mode 100644 arch/powerpc/platforms/cell/spu_manage.c
+ delete mode 100644 arch/powerpc/platforms/cell/spu_priv1_mmio.c
+ delete mode 100644 arch/powerpc/platforms/cell/spu_priv1_mmio.h
+
+diff --git a/CREDITS b/CREDITS
+index b1777b53c63a..0140e0a53ef8 100644
+--- a/CREDITS
++++ b/CREDITS
+@@ -2185,6 +2185,9 @@ S: Markham, Ontario
+ S: L3R 8B2
+ S: Canada
+ 
++N: Christian Krafft
++D: PowerPC Cell support
++
+ N: Maxim Krasnyansky
+ E: maxk@qualcomm.com
+ W: http://vtun.sf.net
+diff --git a/arch/powerpc/include/asm/cell-pmu.h b/arch/powerpc/include/asm/cell-pmu.h
+index 6a79b5d1c44f..7fbefd64b4fb 100644
+--- a/arch/powerpc/include/asm/cell-pmu.h
++++ b/arch/powerpc/include/asm/cell-pmu.h
+@@ -20,36 +20,9 @@
+ 
+ /* Macros for the pm_control register. */
+ #define CBE_PM_16BIT_CTR(ctr)              (1 << (24 - ((ctr) & (NR_PHYS_CTRS - 1))))
+-#define CBE_PM_ENABLE_PERF_MON             0x80000000
+-#define CBE_PM_STOP_AT_MAX                 0x40000000
+-#define CBE_PM_TRACE_MODE_GET(pm_control)  (((pm_control) >> 28) & 0x3)
+-#define CBE_PM_TRACE_MODE_SET(mode)        (((mode)  & 0x3) << 28)
+-#define CBE_PM_TRACE_BUF_OVFLW(bit)        (((bit) & 0x1) << 17)
+-#define CBE_PM_COUNT_MODE_SET(count)       (((count) & 0x3) << 18)
+-#define CBE_PM_FREEZE_ALL_CTRS             0x00100000
+-#define CBE_PM_ENABLE_EXT_TRACE            0x00008000
+-#define CBE_PM_SPU_ADDR_TRACE_SET(msk)     (((msk) & 0x3) << 9)
+ 
+ /* Macros for the trace_address register. */
+-#define CBE_PM_TRACE_BUF_FULL              0x00000800
+ #define CBE_PM_TRACE_BUF_EMPTY             0x00000400
+-#define CBE_PM_TRACE_BUF_DATA_COUNT(ta)    ((ta) & 0x3ff)
+-#define CBE_PM_TRACE_BUF_MAX_COUNT         0x400
+-
+-/* Macros for the pm07_control registers. */
+-#define CBE_PM_CTR_INPUT_MUX(pm07_control) (((pm07_control) >> 26) & 0x3f)
+-#define CBE_PM_CTR_INPUT_CONTROL           0x02000000
+-#define CBE_PM_CTR_POLARITY                0x01000000
+-#define CBE_PM_CTR_COUNT_CYCLES            0x00800000
+-#define CBE_PM_CTR_ENABLE                  0x00400000
+-#define PM07_CTR_INPUT_MUX(x)              (((x) & 0x3F) << 26)
+-#define PM07_CTR_INPUT_CONTROL(x)          (((x) & 1) << 25)
+-#define PM07_CTR_POLARITY(x)               (((x) & 1) << 24)
+-#define PM07_CTR_COUNT_CYCLES(x)           (((x) & 1) << 23)
+-#define PM07_CTR_ENABLE(x)                 (((x) & 1) << 22)
+-
+-/* Macros for the pm_status register. */
+-#define CBE_PM_CTR_OVERFLOW_INTR(ctr)      (1 << (31 - ((ctr) & 7)))
+ 
+ enum pm_reg_name {
+ 	group_control,
+@@ -62,33 +35,4 @@ enum pm_reg_name {
+ 	pm_start_stop,
+ };
+ 
+-/* Routines for reading/writing the PMU registers. */
+-extern u32  cbe_read_phys_ctr(u32 cpu, u32 phys_ctr);
+-extern void cbe_write_phys_ctr(u32 cpu, u32 phys_ctr, u32 val);
+-extern u32  cbe_read_ctr(u32 cpu, u32 ctr);
+-extern void cbe_write_ctr(u32 cpu, u32 ctr, u32 val);
+-
+-extern u32  cbe_read_pm07_control(u32 cpu, u32 ctr);
+-extern void cbe_write_pm07_control(u32 cpu, u32 ctr, u32 val);
+-extern u32  cbe_read_pm(u32 cpu, enum pm_reg_name reg);
+-extern void cbe_write_pm(u32 cpu, enum pm_reg_name reg, u32 val);
+-
+-extern u32  cbe_get_ctr_size(u32 cpu, u32 phys_ctr);
+-extern void cbe_set_ctr_size(u32 cpu, u32 phys_ctr, u32 ctr_size);
+-
+-extern void cbe_enable_pm(u32 cpu);
+-extern void cbe_disable_pm(u32 cpu);
+-
+-extern void cbe_read_trace_buffer(u32 cpu, u64 *buf);
+-
+-extern void cbe_enable_pm_interrupts(u32 cpu, u32 thread, u32 mask);
+-extern void cbe_disable_pm_interrupts(u32 cpu);
+-extern u32  cbe_get_and_clear_pm_interrupts(u32 cpu);
+-extern void cbe_sync_irq(int node);
+-
+-#define CBE_COUNT_SUPERVISOR_MODE       0
+-#define CBE_COUNT_HYPERVISOR_MODE       1
+-#define CBE_COUNT_PROBLEM_MODE          2
+-#define CBE_COUNT_ALL_MODES             3
+-
+ #endif /* __ASM_CELL_PMU_H__ */
+diff --git a/arch/powerpc/include/asm/cell-regs.h b/arch/powerpc/include/asm/cell-regs.h
+index e1c431ef30e0..20f7339a3d4a 100644
+--- a/arch/powerpc/include/asm/cell-regs.h
++++ b/arch/powerpc/include/asm/cell-regs.h
+@@ -18,293 +18,6 @@
+ 
+ #include <asm/cell-pmu.h>
+ 
+-/*
+- *
+- * Some HID register definitions
+- *
+- */
+-
+-/* CBE specific HID0 bits */
+-#define HID0_CBE_THERM_WAKEUP	0x0000020000000000ul
+-#define HID0_CBE_SYSERR_WAKEUP	0x0000008000000000ul
+-#define HID0_CBE_THERM_INT_EN	0x0000000400000000ul
+-#define HID0_CBE_SYSERR_INT_EN	0x0000000200000000ul
+-
+-#define MAX_CBE		2
+-
+-/*
+- *
+- * Pervasive unit register definitions
+- *
+- */
+-
+-union spe_reg {
+-	u64 val;
+-	u8 spe[8];
+-};
+-
+-union ppe_spe_reg {
+-	u64 val;
+-	struct {
+-		u32 ppe;
+-		u32 spe;
+-	};
+-};
+-
+-
+-struct cbe_pmd_regs {
+-	/* Debug Bus Control */
+-	u64	pad_0x0000;					/* 0x0000 */
+-
+-	u64	group_control;					/* 0x0008 */
+-
+-	u8	pad_0x0010_0x00a8 [0x00a8 - 0x0010];		/* 0x0010 */
+-
+-	u64	debug_bus_control;				/* 0x00a8 */
+-
+-	u8	pad_0x00b0_0x0100 [0x0100 - 0x00b0];		/* 0x00b0 */
+-
+-	u64	trace_aux_data;					/* 0x0100 */
+-	u64	trace_buffer_0_63;				/* 0x0108 */
+-	u64	trace_buffer_64_127;				/* 0x0110 */
+-	u64	trace_address;					/* 0x0118 */
+-	u64	ext_tr_timer;					/* 0x0120 */
+-
+-	u8	pad_0x0128_0x0400 [0x0400 - 0x0128];		/* 0x0128 */
+-
+-	/* Performance Monitor */
+-	u64	pm_status;					/* 0x0400 */
+-	u64	pm_control;					/* 0x0408 */
+-	u64	pm_interval;					/* 0x0410 */
+-	u64	pm_ctr[4];					/* 0x0418 */
+-	u64	pm_start_stop;					/* 0x0438 */
+-	u64	pm07_control[8];				/* 0x0440 */
+-
+-	u8	pad_0x0480_0x0800 [0x0800 - 0x0480];		/* 0x0480 */
+-
+-	/* Thermal Sensor Registers */
+-	union	spe_reg	ts_ctsr1;				/* 0x0800 */
+-	u64	ts_ctsr2;					/* 0x0808 */
+-	union	spe_reg	ts_mtsr1;				/* 0x0810 */
+-	u64	ts_mtsr2;					/* 0x0818 */
+-	union	spe_reg	ts_itr1;				/* 0x0820 */
+-	u64	ts_itr2;					/* 0x0828 */
+-	u64	ts_gitr;					/* 0x0830 */
+-	u64	ts_isr;						/* 0x0838 */
+-	u64	ts_imr;						/* 0x0840 */
+-	union	spe_reg	tm_cr1;					/* 0x0848 */
+-	u64	tm_cr2;						/* 0x0850 */
+-	u64	tm_simr;					/* 0x0858 */
+-	union	ppe_spe_reg tm_tpr;				/* 0x0860 */
+-	union	spe_reg	tm_str1;				/* 0x0868 */
+-	u64	tm_str2;					/* 0x0870 */
+-	union	ppe_spe_reg tm_tsr;				/* 0x0878 */
+-
+-	/* Power Management */
+-	u64	pmcr;						/* 0x0880 */
+-#define CBE_PMD_PAUSE_ZERO_CONTROL	0x10000
+-	u64	pmsr;						/* 0x0888 */
+-
+-	/* Time Base Register */
+-	u64	tbr;						/* 0x0890 */
+-
+-	u8	pad_0x0898_0x0c00 [0x0c00 - 0x0898];		/* 0x0898 */
+-
+-	/* Fault Isolation Registers */
+-	u64	checkstop_fir;					/* 0x0c00 */
+-	u64	recoverable_fir;				/* 0x0c08 */
+-	u64	spec_att_mchk_fir;				/* 0x0c10 */
+-	u32	fir_mode_reg;					/* 0x0c18 */
+-	u8	pad_0x0c1c_0x0c20 [4];				/* 0x0c1c */
+-#define CBE_PMD_FIR_MODE_M8		0x00800
+-	u64	fir_enable_mask;				/* 0x0c20 */
+-
+-	u8	pad_0x0c28_0x0ca8 [0x0ca8 - 0x0c28];		/* 0x0c28 */
+-	u64	ras_esc_0;					/* 0x0ca8 */
+-	u8	pad_0x0cb0_0x1000 [0x1000 - 0x0cb0];		/* 0x0cb0 */
+-};
+-
+-extern struct cbe_pmd_regs __iomem *cbe_get_pmd_regs(struct device_node *np);
+-extern struct cbe_pmd_regs __iomem *cbe_get_cpu_pmd_regs(int cpu);
+-
+-/*
+- * PMU shadow registers
+- *
+- * Many of the registers in the performance monitoring unit are write-only,
+- * so we need to save a copy of what we write to those registers.
+- *
+- * The actual data counters are read/write. However, writing to the counters
+- * only takes effect if the PMU is enabled. Otherwise the value is stored in
+- * a hardware latch until the next time the PMU is enabled. So we save a copy
+- * of the counter values if we need to read them back while the PMU is
+- * disabled. The counter_value_in_latch field is a bitmap indicating which
+- * counters currently have a value waiting to be written.
+- */
+-
+-struct cbe_pmd_shadow_regs {
+-	u32 group_control;
+-	u32 debug_bus_control;
+-	u32 trace_address;
+-	u32 ext_tr_timer;
+-	u32 pm_status;
+-	u32 pm_control;
+-	u32 pm_interval;
+-	u32 pm_start_stop;
+-	u32 pm07_control[NR_CTRS];
+-
+-	u32 pm_ctr[NR_PHYS_CTRS];
+-	u32 counter_value_in_latch;
+-};
+-
+-extern struct cbe_pmd_shadow_regs *cbe_get_pmd_shadow_regs(struct device_node *np);
+-extern struct cbe_pmd_shadow_regs *cbe_get_cpu_pmd_shadow_regs(int cpu);
+-
+-/*
+- *
+- * IIC unit register definitions
+- *
+- */
+-
+-struct cbe_iic_pending_bits {
+-	u32 data;
+-	u8 flags;
+-	u8 class;
+-	u8 source;
+-	u8 prio;
+-};
+-
+-#define CBE_IIC_IRQ_VALID	0x80
+-#define CBE_IIC_IRQ_IPI		0x40
+-
+-struct cbe_iic_thread_regs {
+-	struct cbe_iic_pending_bits pending;
+-	struct cbe_iic_pending_bits pending_destr;
+-	u64 generate;
+-	u64 prio;
+-};
+-
+-struct cbe_iic_regs {
+-	u8	pad_0x0000_0x0400[0x0400 - 0x0000];		/* 0x0000 */
+-
+-	/* IIC interrupt registers */
+-	struct	cbe_iic_thread_regs thread[2];			/* 0x0400 */
+-
+-	u64	iic_ir;						/* 0x0440 */
+-#define CBE_IIC_IR_PRIO(x)      (((x) & 0xf) << 12)
+-#define CBE_IIC_IR_DEST_NODE(x) (((x) & 0xf) << 4)
+-#define CBE_IIC_IR_DEST_UNIT(x) ((x) & 0xf)
+-#define CBE_IIC_IR_IOC_0        0x0
+-#define CBE_IIC_IR_IOC_1S       0xb
+-#define CBE_IIC_IR_PT_0         0xe
+-#define CBE_IIC_IR_PT_1         0xf
+-
+-	u64	iic_is;						/* 0x0448 */
+-#define CBE_IIC_IS_PMI		0x2
+-
+-	u8	pad_0x0450_0x0500[0x0500 - 0x0450];		/* 0x0450 */
+-
+-	/* IOC FIR */
+-	u64	ioc_fir_reset;					/* 0x0500 */
+-	u64	ioc_fir_set;					/* 0x0508 */
+-	u64	ioc_checkstop_enable;				/* 0x0510 */
+-	u64	ioc_fir_error_mask;				/* 0x0518 */
+-	u64	ioc_syserr_enable;				/* 0x0520 */
+-	u64	ioc_fir;					/* 0x0528 */
+-
+-	u8	pad_0x0530_0x1000[0x1000 - 0x0530];		/* 0x0530 */
+-};
+-
+-extern struct cbe_iic_regs __iomem *cbe_get_iic_regs(struct device_node *np);
+-extern struct cbe_iic_regs __iomem *cbe_get_cpu_iic_regs(int cpu);
+-
+-
+-struct cbe_mic_tm_regs {
+-	u8	pad_0x0000_0x0040[0x0040 - 0x0000];		/* 0x0000 */
+-
+-	u64	mic_ctl_cnfg2;					/* 0x0040 */
+-#define CBE_MIC_ENABLE_AUX_TRC		0x8000000000000000LL
+-#define CBE_MIC_DISABLE_PWR_SAV_2	0x0200000000000000LL
+-#define CBE_MIC_DISABLE_AUX_TRC_WRAP	0x0100000000000000LL
+-#define CBE_MIC_ENABLE_AUX_TRC_INT	0x0080000000000000LL
+-
+-	u64	pad_0x0048;					/* 0x0048 */
+-
+-	u64	mic_aux_trc_base;				/* 0x0050 */
+-	u64	mic_aux_trc_max_addr;				/* 0x0058 */
+-	u64	mic_aux_trc_cur_addr;				/* 0x0060 */
+-	u64	mic_aux_trc_grf_addr;				/* 0x0068 */
+-	u64	mic_aux_trc_grf_data;				/* 0x0070 */
+-
+-	u64	pad_0x0078;					/* 0x0078 */
+-
+-	u64	mic_ctl_cnfg_0;					/* 0x0080 */
+-#define CBE_MIC_DISABLE_PWR_SAV_0	0x8000000000000000LL
+-
+-	u64	pad_0x0088;					/* 0x0088 */
+-
+-	u64	slow_fast_timer_0;				/* 0x0090 */
+-	u64	slow_next_timer_0;				/* 0x0098 */
+-
+-	u8	pad_0x00a0_0x00f8[0x00f8 - 0x00a0];		/* 0x00a0 */
+-	u64    	mic_df_ecc_address_0;				/* 0x00f8 */
+-
+-	u8	pad_0x0100_0x01b8[0x01b8 - 0x0100];		/* 0x0100 */
+-	u64    	mic_df_ecc_address_1;				/* 0x01b8 */
+-
+-	u64	mic_ctl_cnfg_1;					/* 0x01c0 */
+-#define CBE_MIC_DISABLE_PWR_SAV_1	0x8000000000000000LL
+-
+-	u64	pad_0x01c8;					/* 0x01c8 */
+-
+-	u64	slow_fast_timer_1;				/* 0x01d0 */
+-	u64	slow_next_timer_1;				/* 0x01d8 */
+-
+-	u8	pad_0x01e0_0x0208[0x0208 - 0x01e0];		/* 0x01e0 */
+-	u64	mic_exc;					/* 0x0208 */
+-#define CBE_MIC_EXC_BLOCK_SCRUB		0x0800000000000000ULL
+-#define CBE_MIC_EXC_FAST_SCRUB		0x0100000000000000ULL
+-
+-	u64	mic_mnt_cfg;					/* 0x0210 */
+-#define CBE_MIC_MNT_CFG_CHAN_0_POP	0x0002000000000000ULL
+-#define CBE_MIC_MNT_CFG_CHAN_1_POP	0x0004000000000000ULL
+-
+-	u64	mic_df_config;					/* 0x0218 */
+-#define CBE_MIC_ECC_DISABLE_0		0x4000000000000000ULL
+-#define CBE_MIC_ECC_REP_SINGLE_0	0x2000000000000000ULL
+-#define CBE_MIC_ECC_DISABLE_1		0x0080000000000000ULL
+-#define CBE_MIC_ECC_REP_SINGLE_1	0x0040000000000000ULL
+-
+-	u8	pad_0x0220_0x0230[0x0230 - 0x0220];		/* 0x0220 */
+-	u64	mic_fir;					/* 0x0230 */
+-#define CBE_MIC_FIR_ECC_SINGLE_0_ERR	0x0200000000000000ULL
+-#define CBE_MIC_FIR_ECC_MULTI_0_ERR	0x0100000000000000ULL
+-#define CBE_MIC_FIR_ECC_SINGLE_1_ERR	0x0080000000000000ULL
+-#define CBE_MIC_FIR_ECC_MULTI_1_ERR	0x0040000000000000ULL
+-#define CBE_MIC_FIR_ECC_ERR_MASK	0xffff000000000000ULL
+-#define CBE_MIC_FIR_ECC_SINGLE_0_CTE	0x0000020000000000ULL
+-#define CBE_MIC_FIR_ECC_MULTI_0_CTE	0x0000010000000000ULL
+-#define CBE_MIC_FIR_ECC_SINGLE_1_CTE	0x0000008000000000ULL
+-#define CBE_MIC_FIR_ECC_MULTI_1_CTE	0x0000004000000000ULL
+-#define CBE_MIC_FIR_ECC_CTE_MASK	0x0000ffff00000000ULL
+-#define CBE_MIC_FIR_ECC_SINGLE_0_RESET	0x0000000002000000ULL
+-#define CBE_MIC_FIR_ECC_MULTI_0_RESET	0x0000000001000000ULL
+-#define CBE_MIC_FIR_ECC_SINGLE_1_RESET	0x0000000000800000ULL
+-#define CBE_MIC_FIR_ECC_MULTI_1_RESET	0x0000000000400000ULL
+-#define CBE_MIC_FIR_ECC_RESET_MASK	0x00000000ffff0000ULL
+-#define CBE_MIC_FIR_ECC_SINGLE_0_SET	0x0000000000000200ULL
+-#define CBE_MIC_FIR_ECC_MULTI_0_SET	0x0000000000000100ULL
+-#define CBE_MIC_FIR_ECC_SINGLE_1_SET	0x0000000000000080ULL
+-#define CBE_MIC_FIR_ECC_MULTI_1_SET	0x0000000000000040ULL
+-#define CBE_MIC_FIR_ECC_SET_MASK	0x000000000000ffffULL
+-	u64	mic_fir_debug;					/* 0x0238 */
+-
+-	u8	pad_0x0240_0x1000[0x1000 - 0x0240];		/* 0x0240 */
+-};
+-
+-extern struct cbe_mic_tm_regs __iomem *cbe_get_mic_tm_regs(struct device_node *np);
+-extern struct cbe_mic_tm_regs __iomem *cbe_get_cpu_mic_tm_regs(int cpu);
+-
+-
+ /* Cell page table entries */
+ #define CBE_IOPTE_PP_W		0x8000000000000000ul /* protection: write */
+ #define CBE_IOPTE_PP_R		0x4000000000000000ul /* protection: read */
+@@ -315,13 +28,4 @@ extern struct cbe_mic_tm_regs __iomem *cbe_get_cpu_mic_tm_regs(int cpu);
+ #define CBE_IOPTE_H		0x0000000000000800ul /* cache hint */
+ #define CBE_IOPTE_IOID_Mask	0x00000000000007fful /* ioid */
+ 
+-/* some utility functions to deal with SMT */
+-extern u32 cbe_get_hw_thread_id(int cpu);
+-extern u32 cbe_cpu_to_node(int cpu);
+-extern u32 cbe_node_to_cpu(int node);
+-
+-/* Init this module early */
+-extern void cbe_regs_init(void);
+-
+-
+ #endif /* CBE_REGS_H */
+diff --git a/arch/powerpc/include/asm/spu_priv1.h b/arch/powerpc/include/asm/spu_priv1.h
+index 6fee411d973d..66b111fa1cd1 100644
+--- a/arch/powerpc/include/asm/spu_priv1.h
++++ b/arch/powerpc/include/asm/spu_priv1.h
+@@ -215,8 +215,6 @@ spu_disable_spu (struct spu_context *ctx)
+  * and only intended to be used by the platform setup code.
+  */
+ 
+-extern const struct spu_priv1_ops spu_priv1_mmio_ops;
+-
+ extern const struct spu_management_ops spu_management_of_ops;
+ 
+ #endif /* __KERNEL__ */
+diff --git a/arch/powerpc/kernel/exceptions-64s.S b/arch/powerpc/kernel/exceptions-64s.S
+index 195b075d116c..b7229430ca94 100644
+--- a/arch/powerpc/kernel/exceptions-64s.S
++++ b/arch/powerpc/kernel/exceptions-64s.S
+@@ -2537,27 +2537,8 @@ EXC_REAL_NONE(0x1000, 0x100)
+ EXC_VIRT_NONE(0x5000, 0x100)
+ EXC_REAL_NONE(0x1100, 0x100)
+ EXC_VIRT_NONE(0x5100, 0x100)
+-
+-#ifdef CONFIG_CBE_RAS
+-INT_DEFINE_BEGIN(cbe_system_error)
+-	IVEC=0x1200
+-	IHSRR=1
+-INT_DEFINE_END(cbe_system_error)
+-
+-EXC_REAL_BEGIN(cbe_system_error, 0x1200, 0x100)
+-	GEN_INT_ENTRY cbe_system_error, virt=0
+-EXC_REAL_END(cbe_system_error, 0x1200, 0x100)
+-EXC_VIRT_NONE(0x5200, 0x100)
+-EXC_COMMON_BEGIN(cbe_system_error_common)
+-	GEN_COMMON cbe_system_error
+-	addi	r3,r1,STACK_INT_FRAME_REGS
+-	bl	CFUNC(cbe_system_error_exception)
+-	b	interrupt_return_hsrr
+-
+-#else /* CONFIG_CBE_RAS */
+ EXC_REAL_NONE(0x1200, 0x100)
+ EXC_VIRT_NONE(0x5200, 0x100)
+-#endif
+ 
+ /**
+  * Interrupt 0x1300 - Instruction Address Breakpoint Interrupt.
+@@ -2708,26 +2689,8 @@ EXC_COMMON_BEGIN(denorm_exception_common)
+ 	b	interrupt_return_hsrr
+ 
+ 
+-#ifdef CONFIG_CBE_RAS
+-INT_DEFINE_BEGIN(cbe_maintenance)
+-	IVEC=0x1600
+-	IHSRR=1
+-INT_DEFINE_END(cbe_maintenance)
+-
+-EXC_REAL_BEGIN(cbe_maintenance, 0x1600, 0x100)
+-	GEN_INT_ENTRY cbe_maintenance, virt=0
+-EXC_REAL_END(cbe_maintenance, 0x1600, 0x100)
+-EXC_VIRT_NONE(0x5600, 0x100)
+-EXC_COMMON_BEGIN(cbe_maintenance_common)
+-	GEN_COMMON cbe_maintenance
+-	addi	r3,r1,STACK_INT_FRAME_REGS
+-	bl	CFUNC(cbe_maintenance_exception)
+-	b	interrupt_return_hsrr
+-
+-#else /* CONFIG_CBE_RAS */
+ EXC_REAL_NONE(0x1600, 0x100)
+ EXC_VIRT_NONE(0x5600, 0x100)
+-#endif
+ 
+ 
+ INT_DEFINE_BEGIN(altivec_assist)
+@@ -2755,26 +2718,8 @@ EXC_COMMON_BEGIN(altivec_assist_common)
+ 	b	interrupt_return_srr
+ 
+ 
+-#ifdef CONFIG_CBE_RAS
+-INT_DEFINE_BEGIN(cbe_thermal)
+-	IVEC=0x1800
+-	IHSRR=1
+-INT_DEFINE_END(cbe_thermal)
+-
+-EXC_REAL_BEGIN(cbe_thermal, 0x1800, 0x100)
+-	GEN_INT_ENTRY cbe_thermal, virt=0
+-EXC_REAL_END(cbe_thermal, 0x1800, 0x100)
+-EXC_VIRT_NONE(0x5800, 0x100)
+-EXC_COMMON_BEGIN(cbe_thermal_common)
+-	GEN_COMMON cbe_thermal
+-	addi	r3,r1,STACK_INT_FRAME_REGS
+-	bl	CFUNC(cbe_thermal_exception)
+-	b	interrupt_return_hsrr
+-
+-#else /* CONFIG_CBE_RAS */
+ EXC_REAL_NONE(0x1800, 0x100)
+ EXC_VIRT_NONE(0x5800, 0x100)
+-#endif
+ 
+ 
+ #ifdef CONFIG_PPC_WATCHDOG
+diff --git a/arch/powerpc/platforms/cell/Kconfig b/arch/powerpc/platforms/cell/Kconfig
+index 34669b060f36..ee43d6092e31 100644
+--- a/arch/powerpc/platforms/cell/Kconfig
++++ b/arch/powerpc/platforms/cell/Kconfig
+@@ -3,42 +3,6 @@ config PPC_CELL
+ 	select PPC_64S_HASH_MMU if PPC64
+ 	bool
+ 
+-config PPC_CELL_COMMON
+-	bool
+-	select PPC_CELL
+-	select PPC_DCR_MMIO
+-	select PPC_INDIRECT_PIO
+-	select PPC_INDIRECT_MMIO
+-	select PPC_HASH_MMU_NATIVE
+-	select PPC_RTAS
+-	select IRQ_EDGE_EOI_HANDLER
+-
+-config PPC_CELL_NATIVE
+-	bool
+-	select PPC_CELL_COMMON
+-	select MPIC
+-	select PPC_IO_WORKAROUNDS
+-	select IBM_EMAC_EMAC4 if IBM_EMAC
+-	select IBM_EMAC_RGMII if IBM_EMAC
+-	select IBM_EMAC_ZMII if IBM_EMAC #test only
+-	select IBM_EMAC_TAH if IBM_EMAC  #test only
+-
+-config PPC_IBM_CELL_BLADE
+-	bool "IBM Cell Blade"
+-	depends on PPC64 && PPC_BOOK3S && CPU_BIG_ENDIAN
+-	select PPC_CELL_NATIVE
+-	select PPC_OF_PLATFORM_PCI
+-	select FORCE_PCI
+-	select MMIO_NVRAM
+-	select PPC_UDBG_16550
+-	select UDBG_RTAS_CONSOLE
+-
+-config AXON_MSI
+-	bool
+-	depends on PPC_IBM_CELL_BLADE && PCI_MSI
+-	select IRQ_DOMAIN_NOMAP
+-	default y
+-
+ menu "Cell Broadband Engine options"
+ 	depends on PPC_CELL
+ 
+@@ -57,32 +21,6 @@ config SPU_BASE
+ 	bool
+ 	select PPC_COPRO_BASE
+ 
+-config CBE_RAS
+-	bool "RAS features for bare metal Cell BE"
+-	depends on PPC_CELL_NATIVE
+-	default y
+-
+-config PPC_IBM_CELL_RESETBUTTON
+-	bool "IBM Cell Blade Pinhole reset button"
+-	depends on CBE_RAS && PPC_IBM_CELL_BLADE
+-	default y
+-	help
+-	  Support Pinhole Resetbutton on IBM Cell blades.
+-	  This adds a method to trigger system reset via front panel pinhole button.
+-
+-config PPC_IBM_CELL_POWERBUTTON
+-	tristate "IBM Cell Blade power button"
+-	depends on PPC_IBM_CELL_BLADE && INPUT_EVDEV
+-	default y
+-	help
+-	  Support Powerbutton on IBM Cell blades.
+-	  This will enable the powerbutton as an input device.
+-
+-config CBE_THERM
+-	tristate "CBE thermal support"
+-	default m
+-	depends on CBE_RAS && SPU_BASE
+-
+ config PPC_PMI
+ 	tristate
+ 	default y
+diff --git a/arch/powerpc/platforms/cell/Makefile b/arch/powerpc/platforms/cell/Makefile
+index 7ea6692f67e2..1d85c41939f9 100644
+--- a/arch/powerpc/platforms/cell/Makefile
++++ b/arch/powerpc/platforms/cell/Makefile
+@@ -1,27 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+-obj-$(CONFIG_PPC_CELL_COMMON)		+= cbe_regs.o interrupt.o pervasive.o
+-
+-obj-$(CONFIG_PPC_CELL_NATIVE)		+= iommu.o setup.o spider-pic.o \
+-					   pmu.o spider-pci.o
+-obj-$(CONFIG_CBE_RAS)			+= ras.o
+-
+-obj-$(CONFIG_CBE_THERM)			+= cbe_thermal.o
+ obj-$(CONFIG_CBE_CPUFREQ_SPU_GOVERNOR)	+= cpufreq_spudemand.o
+ 
+-obj-$(CONFIG_PPC_IBM_CELL_POWERBUTTON)	+= cbe_powerbutton.o
+-
+-ifdef CONFIG_SMP
+-obj-$(CONFIG_PPC_CELL_NATIVE)		+= smp.o
+-endif
+-
+-# needed only when building loadable spufs.ko
+-spu-priv1-$(CONFIG_PPC_CELL_COMMON)	+= spu_priv1_mmio.o
+-spu-manage-$(CONFIG_PPC_CELL_COMMON)	+= spu_manage.o
+-
+ obj-$(CONFIG_SPU_BASE)			+= spu_callbacks.o spu_base.o \
+ 					   spu_syscalls.o \
+-					   $(spu-priv1-y) \
+-					   $(spu-manage-y) \
+ 					   spufs/
+-
+-obj-$(CONFIG_AXON_MSI)			+= axon_msi.o
+diff --git a/arch/powerpc/platforms/cell/axon_msi.c b/arch/powerpc/platforms/cell/axon_msi.c
+deleted file mode 100644
+index d243f7fd8982..000000000000
+--- a/arch/powerpc/platforms/cell/axon_msi.c
++++ /dev/null
+@@ -1,481 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Copyright 2007, Michael Ellerman, IBM Corporation.
+- */
+-
+-
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+-#include <linux/kernel.h>
+-#include <linux/pci.h>
+-#include <linux/msi.h>
+-#include <linux/export.h>
+-#include <linux/slab.h>
+-#include <linux/debugfs.h>
+-#include <linux/of.h>
+-#include <linux/of_irq.h>
+-#include <linux/platform_device.h>
+-
+-#include <asm/dcr.h>
+-#include <asm/machdep.h>
+-
+-#include "cell.h"
+-
+-/*
+- * MSIC registers, specified as offsets from dcr_base
+- */
+-#define MSIC_CTRL_REG	0x0
+-
+-/* Base Address registers specify FIFO location in BE memory */
+-#define MSIC_BASE_ADDR_HI_REG	0x3
+-#define MSIC_BASE_ADDR_LO_REG	0x4
+-
+-/* Hold the read/write offsets into the FIFO */
+-#define MSIC_READ_OFFSET_REG	0x5
+-#define MSIC_WRITE_OFFSET_REG	0x6
+-
+-
+-/* MSIC control register flags */
+-#define MSIC_CTRL_ENABLE		0x0001
+-#define MSIC_CTRL_FIFO_FULL_ENABLE	0x0002
+-#define MSIC_CTRL_IRQ_ENABLE		0x0008
+-#define MSIC_CTRL_FULL_STOP_ENABLE	0x0010
+-
+-/*
+- * The MSIC can be configured to use a FIFO of 32KB, 64KB, 128KB or 256KB.
+- * Currently we're using a 64KB FIFO size.
+- */
+-#define MSIC_FIFO_SIZE_SHIFT	16
+-#define MSIC_FIFO_SIZE_BYTES	(1 << MSIC_FIFO_SIZE_SHIFT)
+-
+-/*
+- * To configure the FIFO size as (1 << n) bytes, we write (n - 15) into bits
+- * 8-9 of the MSIC control reg.
+- */
+-#define MSIC_CTRL_FIFO_SIZE	(((MSIC_FIFO_SIZE_SHIFT - 15) << 8) & 0x300)
+-
+-/*
+- * We need to mask the read/write offsets to make sure they stay within
+- * the bounds of the FIFO. Also they should always be 16-byte aligned.
+- */
+-#define MSIC_FIFO_SIZE_MASK	((MSIC_FIFO_SIZE_BYTES - 1) & ~0xFu)
+-
+-/* Each entry in the FIFO is 16 bytes, the first 4 bytes hold the irq # */
+-#define MSIC_FIFO_ENTRY_SIZE	0x10
+-
+-
+-struct axon_msic {
+-	struct irq_domain *irq_domain;
+-	__le32 *fifo_virt;
+-	dma_addr_t fifo_phys;
+-	dcr_host_t dcr_host;
+-	u32 read_offset;
+-#ifdef DEBUG
+-	u32 __iomem *trigger;
+-#endif
+-};
+-
+-#ifdef DEBUG
+-void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic);
+-#else
+-static inline void axon_msi_debug_setup(struct device_node *dn,
+-					struct axon_msic *msic) { }
+-#endif
+-
+-
+-static void msic_dcr_write(struct axon_msic *msic, unsigned int dcr_n, u32 val)
+-{
+-	pr_devel("axon_msi: dcr_write(0x%x, 0x%x)\n", val, dcr_n);
+-
+-	dcr_write(msic->dcr_host, dcr_n, val);
+-}
+-
+-static void axon_msi_cascade(struct irq_desc *desc)
+-{
+-	struct irq_chip *chip = irq_desc_get_chip(desc);
+-	struct axon_msic *msic = irq_desc_get_handler_data(desc);
+-	u32 write_offset, msi;
+-	int idx;
+-	int retry = 0;
+-
+-	write_offset = dcr_read(msic->dcr_host, MSIC_WRITE_OFFSET_REG);
+-	pr_devel("axon_msi: original write_offset 0x%x\n", write_offset);
+-
+-	/* write_offset doesn't wrap properly, so we have to mask it */
+-	write_offset &= MSIC_FIFO_SIZE_MASK;
+-
+-	while (msic->read_offset != write_offset && retry < 100) {
+-		idx  = msic->read_offset / sizeof(__le32);
+-		msi  = le32_to_cpu(msic->fifo_virt[idx]);
+-		msi &= 0xFFFF;
+-
+-		pr_devel("axon_msi: woff %x roff %x msi %x\n",
+-			  write_offset, msic->read_offset, msi);
+-
+-		if (msi < irq_get_nr_irqs() && irq_get_chip_data(msi) == msic) {
+-			generic_handle_irq(msi);
+-			msic->fifo_virt[idx] = cpu_to_le32(0xffffffff);
+-		} else {
+-			/*
+-			 * Reading the MSIC_WRITE_OFFSET_REG does not
+-			 * reliably flush the outstanding DMA to the
+-			 * FIFO buffer. Here we were reading stale
+-			 * data, so we need to retry.
+-			 */
+-			udelay(1);
+-			retry++;
+-			pr_devel("axon_msi: invalid irq 0x%x!\n", msi);
+-			continue;
+-		}
+-
+-		if (retry) {
+-			pr_devel("axon_msi: late irq 0x%x, retry %d\n",
+-				 msi, retry);
+-			retry = 0;
+-		}
+-
+-		msic->read_offset += MSIC_FIFO_ENTRY_SIZE;
+-		msic->read_offset &= MSIC_FIFO_SIZE_MASK;
+-	}
+-
+-	if (retry) {
+-		printk(KERN_WARNING "axon_msi: irq timed out\n");
+-
+-		msic->read_offset += MSIC_FIFO_ENTRY_SIZE;
+-		msic->read_offset &= MSIC_FIFO_SIZE_MASK;
+-	}
+-
+-	chip->irq_eoi(&desc->irq_data);
+-}
+-
+-static struct axon_msic *find_msi_translator(struct pci_dev *dev)
+-{
+-	struct irq_domain *irq_domain;
+-	struct device_node *dn, *tmp;
+-	const phandle *ph;
+-	struct axon_msic *msic = NULL;
+-
+-	dn = of_node_get(pci_device_to_OF_node(dev));
+-	if (!dn) {
+-		dev_dbg(&dev->dev, "axon_msi: no pci_dn found\n");
+-		return NULL;
+-	}
+-
+-	for (; dn; dn = of_get_next_parent(dn)) {
+-		ph = of_get_property(dn, "msi-translator", NULL);
+-		if (ph)
+-			break;
+-	}
+-
+-	if (!ph) {
+-		dev_dbg(&dev->dev,
+-			"axon_msi: no msi-translator property found\n");
+-		goto out_error;
+-	}
+-
+-	tmp = dn;
+-	dn = of_find_node_by_phandle(*ph);
+-	of_node_put(tmp);
+-	if (!dn) {
+-		dev_dbg(&dev->dev,
+-			"axon_msi: msi-translator doesn't point to a node\n");
+-		goto out_error;
+-	}
+-
+-	irq_domain = irq_find_host(dn);
+-	if (!irq_domain) {
+-		dev_dbg(&dev->dev, "axon_msi: no irq_domain found for node %pOF\n",
+-			dn);
+-		goto out_error;
+-	}
+-
+-	msic = irq_domain->host_data;
+-
+-out_error:
+-	of_node_put(dn);
+-
+-	return msic;
+-}
+-
+-static int setup_msi_msg_address(struct pci_dev *dev, struct msi_msg *msg)
+-{
+-	struct device_node *dn;
+-	int len;
+-	const u32 *prop;
+-
+-	dn = of_node_get(pci_device_to_OF_node(dev));
+-	if (!dn) {
+-		dev_dbg(&dev->dev, "axon_msi: no pci_dn found\n");
+-		return -ENODEV;
+-	}
+-
+-	for (; dn; dn = of_get_next_parent(dn)) {
+-		if (!dev->no_64bit_msi) {
+-			prop = of_get_property(dn, "msi-address-64", &len);
+-			if (prop)
+-				break;
+-		}
+-
+-		prop = of_get_property(dn, "msi-address-32", &len);
+-		if (prop)
+-			break;
+-	}
+-
+-	if (!prop) {
+-		dev_dbg(&dev->dev,
+-			"axon_msi: no msi-address-(32|64) properties found\n");
+-		of_node_put(dn);
+-		return -ENOENT;
+-	}
+-
+-	switch (len) {
+-	case 8:
+-		msg->address_hi = prop[0];
+-		msg->address_lo = prop[1];
+-		break;
+-	case 4:
+-		msg->address_hi = 0;
+-		msg->address_lo = prop[0];
+-		break;
+-	default:
+-		dev_dbg(&dev->dev,
+-			"axon_msi: malformed msi-address-(32|64) property\n");
+-		of_node_put(dn);
+-		return -EINVAL;
+-	}
+-
+-	of_node_put(dn);
+-
+-	return 0;
+-}
+-
+-static int axon_msi_setup_msi_irqs(struct pci_dev *dev, int nvec, int type)
+-{
+-	unsigned int virq, rc;
+-	struct msi_desc *entry;
+-	struct msi_msg msg;
+-	struct axon_msic *msic;
+-
+-	msic = find_msi_translator(dev);
+-	if (!msic)
+-		return -ENODEV;
+-
+-	rc = setup_msi_msg_address(dev, &msg);
+-	if (rc)
+-		return rc;
+-
+-	msi_for_each_desc(entry, &dev->dev, MSI_DESC_NOTASSOCIATED) {
+-		virq = irq_create_direct_mapping(msic->irq_domain);
+-		if (!virq) {
+-			dev_warn(&dev->dev,
+-				 "axon_msi: virq allocation failed!\n");
+-			return -1;
+-		}
+-		dev_dbg(&dev->dev, "axon_msi: allocated virq 0x%x\n", virq);
+-
+-		irq_set_msi_desc(virq, entry);
+-		msg.data = virq;
+-		pci_write_msi_msg(virq, &msg);
+-	}
+-
+-	return 0;
+-}
+-
+-static void axon_msi_teardown_msi_irqs(struct pci_dev *dev)
+-{
+-	struct msi_desc *entry;
+-
+-	dev_dbg(&dev->dev, "axon_msi: tearing down msi irqs\n");
+-
+-	msi_for_each_desc(entry, &dev->dev, MSI_DESC_ASSOCIATED) {
+-		irq_set_msi_desc(entry->irq, NULL);
+-		irq_dispose_mapping(entry->irq);
+-		entry->irq = 0;
+-	}
+-}
+-
+-static struct irq_chip msic_irq_chip = {
+-	.irq_mask	= pci_msi_mask_irq,
+-	.irq_unmask	= pci_msi_unmask_irq,
+-	.irq_shutdown	= pci_msi_mask_irq,
+-	.name		= "AXON-MSI",
+-};
+-
+-static int msic_host_map(struct irq_domain *h, unsigned int virq,
+-			 irq_hw_number_t hw)
+-{
+-	irq_set_chip_data(virq, h->host_data);
+-	irq_set_chip_and_handler(virq, &msic_irq_chip, handle_simple_irq);
+-
+-	return 0;
+-}
+-
+-static const struct irq_domain_ops msic_host_ops = {
+-	.map	= msic_host_map,
+-};
+-
+-static void axon_msi_shutdown(struct platform_device *device)
+-{
+-	struct axon_msic *msic = dev_get_drvdata(&device->dev);
+-	u32 tmp;
+-
+-	pr_devel("axon_msi: disabling %pOF\n",
+-		 irq_domain_get_of_node(msic->irq_domain));
+-	tmp  = dcr_read(msic->dcr_host, MSIC_CTRL_REG);
+-	tmp &= ~MSIC_CTRL_ENABLE & ~MSIC_CTRL_IRQ_ENABLE;
+-	msic_dcr_write(msic, MSIC_CTRL_REG, tmp);
+-}
+-
+-static int axon_msi_probe(struct platform_device *device)
+-{
+-	struct device_node *dn = device->dev.of_node;
+-	struct axon_msic *msic;
+-	unsigned int virq;
+-	int dcr_base, dcr_len;
+-
+-	pr_devel("axon_msi: setting up dn %pOF\n", dn);
+-
+-	msic = kzalloc(sizeof(*msic), GFP_KERNEL);
+-	if (!msic) {
+-		printk(KERN_ERR "axon_msi: couldn't allocate msic for %pOF\n",
+-		       dn);
+-		goto out;
+-	}
+-
+-	dcr_base = dcr_resource_start(dn, 0);
+-	dcr_len = dcr_resource_len(dn, 0);
+-
+-	if (dcr_base == 0 || dcr_len == 0) {
+-		printk(KERN_ERR
+-		       "axon_msi: couldn't parse dcr properties on %pOF\n",
+-			dn);
+-		goto out_free_msic;
+-	}
+-
+-	msic->dcr_host = dcr_map(dn, dcr_base, dcr_len);
+-	if (!DCR_MAP_OK(msic->dcr_host)) {
+-		printk(KERN_ERR "axon_msi: dcr_map failed for %pOF\n",
+-		       dn);
+-		goto out_free_msic;
+-	}
+-
+-	msic->fifo_virt = dma_alloc_coherent(&device->dev, MSIC_FIFO_SIZE_BYTES,
+-					     &msic->fifo_phys, GFP_KERNEL);
+-	if (!msic->fifo_virt) {
+-		printk(KERN_ERR "axon_msi: couldn't allocate fifo for %pOF\n",
+-		       dn);
+-		goto out_free_msic;
+-	}
+-
+-	virq = irq_of_parse_and_map(dn, 0);
+-	if (!virq) {
+-		printk(KERN_ERR "axon_msi: irq parse and map failed for %pOF\n",
+-		       dn);
+-		goto out_free_fifo;
+-	}
+-	memset(msic->fifo_virt, 0xff, MSIC_FIFO_SIZE_BYTES);
+-
+-	/* We rely on being able to stash a virq in a u16, so limit irqs to < 65536 */
+-	msic->irq_domain = irq_domain_add_nomap(dn, 65536, &msic_host_ops, msic);
+-	if (!msic->irq_domain) {
+-		printk(KERN_ERR "axon_msi: couldn't allocate irq_domain for %pOF\n",
+-		       dn);
+-		goto out_free_fifo;
+-	}
+-
+-	irq_set_handler_data(virq, msic);
+-	irq_set_chained_handler(virq, axon_msi_cascade);
+-	pr_devel("axon_msi: irq 0x%x setup for axon_msi\n", virq);
+-
+-	/* Enable the MSIC hardware */
+-	msic_dcr_write(msic, MSIC_BASE_ADDR_HI_REG, msic->fifo_phys >> 32);
+-	msic_dcr_write(msic, MSIC_BASE_ADDR_LO_REG,
+-				  msic->fifo_phys & 0xFFFFFFFF);
+-	msic_dcr_write(msic, MSIC_CTRL_REG,
+-			MSIC_CTRL_IRQ_ENABLE | MSIC_CTRL_ENABLE |
+-			MSIC_CTRL_FIFO_SIZE);
+-
+-	msic->read_offset = dcr_read(msic->dcr_host, MSIC_WRITE_OFFSET_REG)
+-				& MSIC_FIFO_SIZE_MASK;
+-
+-	dev_set_drvdata(&device->dev, msic);
+-
+-	cell_pci_controller_ops.setup_msi_irqs = axon_msi_setup_msi_irqs;
+-	cell_pci_controller_ops.teardown_msi_irqs = axon_msi_teardown_msi_irqs;
+-
+-	axon_msi_debug_setup(dn, msic);
+-
+-	printk(KERN_DEBUG "axon_msi: setup MSIC on %pOF\n", dn);
+-
+-	return 0;
+-
+-out_free_fifo:
+-	dma_free_coherent(&device->dev, MSIC_FIFO_SIZE_BYTES, msic->fifo_virt,
+-			  msic->fifo_phys);
+-out_free_msic:
+-	kfree(msic);
+-out:
+-
+-	return -1;
+-}
+-
+-static const struct of_device_id axon_msi_device_id[] = {
+-	{
+-		.compatible	= "ibm,axon-msic"
+-	},
+-	{}
+-};
+-
+-static struct platform_driver axon_msi_driver = {
+-	.probe		= axon_msi_probe,
+-	.shutdown	= axon_msi_shutdown,
+-	.driver = {
+-		.name = "axon-msi",
+-		.of_match_table = axon_msi_device_id,
+-	},
+-};
+-
+-static int __init axon_msi_init(void)
+-{
+-	return platform_driver_register(&axon_msi_driver);
+-}
+-subsys_initcall(axon_msi_init);
+-
+-
+-#ifdef DEBUG
+-static int msic_set(void *data, u64 val)
+-{
+-	struct axon_msic *msic = data;
+-	out_le32(msic->trigger, val);
+-	return 0;
+-}
+-
+-static int msic_get(void *data, u64 *val)
+-{
+-	*val = 0;
+-	return 0;
+-}
+-
+-DEFINE_SIMPLE_ATTRIBUTE(fops_msic, msic_get, msic_set, "%llu\n");
+-
+-void axon_msi_debug_setup(struct device_node *dn, struct axon_msic *msic)
+-{
+-	char name[8];
+-	struct resource res;
+-
+-	if (of_address_to_resource(dn, 0, &res)) {
+-		pr_devel("axon_msi: couldn't get reg property\n");
+-		return;
+-	}
+-
+-	msic->trigger = ioremap(res.start, 0x4);
+-	if (!msic->trigger) {
+-		pr_devel("axon_msi: ioremap failed\n");
+-		return;
+-	}
+-
+-	snprintf(name, sizeof(name), "msic_%d", of_node_to_nid(dn));
+-
+-	debugfs_create_file(name, 0600, arch_debugfs_dir, msic, &fops_msic);
+-}
+-#endif /* DEBUG */
+diff --git a/arch/powerpc/platforms/cell/cbe_powerbutton.c b/arch/powerpc/platforms/cell/cbe_powerbutton.c
+deleted file mode 100644
+index 3d121acdf69b..000000000000
+--- a/arch/powerpc/platforms/cell/cbe_powerbutton.c
++++ /dev/null
+@@ -1,106 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * driver for powerbutton on IBM cell blades
+- *
+- * (C) Copyright IBM Corp. 2005-2008
+- *
+- * Author: Christian Krafft <krafft@de.ibm.com>
+- */
+-
+-#include <linux/input.h>
+-#include <linux/module.h>
+-#include <linux/of.h>
+-#include <linux/platform_device.h>
+-#include <asm/pmi.h>
+-
+-static struct input_dev *button_dev;
+-static struct platform_device *button_pdev;
+-
+-static void cbe_powerbutton_handle_pmi(pmi_message_t pmi_msg)
+-{
+-	BUG_ON(pmi_msg.type != PMI_TYPE_POWER_BUTTON);
+-
+-	input_report_key(button_dev, KEY_POWER, 1);
+-	input_sync(button_dev);
+-	input_report_key(button_dev, KEY_POWER, 0);
+-	input_sync(button_dev);
+-}
+-
+-static struct pmi_handler cbe_pmi_handler = {
+-	.type			= PMI_TYPE_POWER_BUTTON,
+-	.handle_pmi_message	= cbe_powerbutton_handle_pmi,
+-};
+-
+-static int __init cbe_powerbutton_init(void)
+-{
+-	int ret = 0;
+-	struct input_dev *dev;
+-
+-	if (!of_machine_is_compatible("IBM,CBPLUS-1.0")) {
+-		printk(KERN_ERR "%s: Not a cell blade.\n", __func__);
+-		ret = -ENODEV;
+-		goto out;
+-	}
+-
+-	dev = input_allocate_device();
+-	if (!dev) {
+-		ret = -ENOMEM;
+-		printk(KERN_ERR "%s: Not enough memory.\n", __func__);
+-		goto out;
+-	}
+-
+-	set_bit(EV_KEY, dev->evbit);
+-	set_bit(KEY_POWER, dev->keybit);
+-
+-	dev->name = "Power Button";
+-	dev->id.bustype = BUS_HOST;
+-
+-	/* this makes the button look like an acpi power button
+-	 * no clue whether anyone relies on that though */
+-	dev->id.product = 0x02;
+-	dev->phys = "LNXPWRBN/button/input0";
+-
+-	button_pdev = platform_device_register_simple("power_button", 0, NULL, 0);
+-	if (IS_ERR(button_pdev)) {
+-		ret = PTR_ERR(button_pdev);
+-		goto out_free_input;
+-	}
+-
+-	dev->dev.parent = &button_pdev->dev;
+-	ret = input_register_device(dev);
+-	if (ret) {
+-		printk(KERN_ERR "%s: Failed to register device\n", __func__);
+-		goto out_free_pdev;
+-	}
+-
+-	button_dev = dev;
+-
+-	ret = pmi_register_handler(&cbe_pmi_handler);
+-	if (ret) {
+-		printk(KERN_ERR "%s: Failed to register with pmi.\n", __func__);
+-		goto out_free_pdev;
+-	}
+-
+-	goto out;
+-
+-out_free_pdev:
+-	platform_device_unregister(button_pdev);
+-out_free_input:
+-	input_free_device(dev);
+-out:
+-	return ret;
+-}
+-
+-static void __exit cbe_powerbutton_exit(void)
+-{
+-	pmi_unregister_handler(&cbe_pmi_handler);
+-	platform_device_unregister(button_pdev);
+-	input_free_device(button_dev);
+-}
+-
+-module_init(cbe_powerbutton_init);
+-module_exit(cbe_powerbutton_exit);
+-
+-MODULE_DESCRIPTION("Driver for powerbutton on IBM cell blades");
+-MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Christian Krafft <krafft@de.ibm.com>");
+diff --git a/arch/powerpc/platforms/cell/cbe_regs.c b/arch/powerpc/platforms/cell/cbe_regs.c
+deleted file mode 100644
+index 99b3558753e9..000000000000
+--- a/arch/powerpc/platforms/cell/cbe_regs.c
++++ /dev/null
+@@ -1,298 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * cbe_regs.c
+- *
+- * Accessor routines for the various MMIO register blocks of the CBE
+- *
+- * (c) 2006 Benjamin Herrenschmidt <benh@kernel.crashing.org>, IBM Corp.
+- */
+-
+-#include <linux/percpu.h>
+-#include <linux/types.h>
+-#include <linux/export.h>
+-#include <linux/of.h>
+-#include <linux/of_address.h>
+-#include <linux/pgtable.h>
+-
+-#include <asm/io.h>
+-#include <asm/ptrace.h>
+-#include <asm/cell-regs.h>
+-
+-/*
+- * Current implementation uses "cpu" nodes. We build our own mapping
+- * array of cpu numbers to cpu nodes locally for now to allow interrupt
+- * time code to have a fast path rather than call of_get_cpu_node(). If
+- * we implement cpu hotplug, we'll have to install an appropriate notifier
+- * in order to release references to the cpu going away
+- */
+-static struct cbe_regs_map
+-{
+-	struct device_node *cpu_node;
+-	struct device_node *be_node;
+-	struct cbe_pmd_regs __iomem *pmd_regs;
+-	struct cbe_iic_regs __iomem *iic_regs;
+-	struct cbe_mic_tm_regs __iomem *mic_tm_regs;
+-	struct cbe_pmd_shadow_regs pmd_shadow_regs;
+-} cbe_regs_maps[MAX_CBE];
+-static int cbe_regs_map_count;
+-
+-static struct cbe_thread_map
+-{
+-	struct device_node *cpu_node;
+-	struct device_node *be_node;
+-	struct cbe_regs_map *regs;
+-	unsigned int thread_id;
+-	unsigned int cbe_id;
+-} cbe_thread_map[NR_CPUS];
+-
+-static cpumask_t cbe_local_mask[MAX_CBE] = { [0 ... MAX_CBE-1] = {CPU_BITS_NONE} };
+-static cpumask_t cbe_first_online_cpu = { CPU_BITS_NONE };
+-
+-static struct cbe_regs_map *cbe_find_map(struct device_node *np)
+-{
+-	int i;
+-	struct device_node *tmp_np;
+-
+-	if (!of_node_is_type(np, "spe")) {
+-		for (i = 0; i < cbe_regs_map_count; i++)
+-			if (cbe_regs_maps[i].cpu_node == np ||
+-			    cbe_regs_maps[i].be_node == np)
+-				return &cbe_regs_maps[i];
+-		return NULL;
+-	}
+-
+-	if (np->data)
+-		return np->data;
+-
+-	/* walk up path until cpu or be node was found */
+-	tmp_np = np;
+-	do {
+-		tmp_np = tmp_np->parent;
+-		/* on a correct devicetree we wont get up to root */
+-		BUG_ON(!tmp_np);
+-	} while (!of_node_is_type(tmp_np, "cpu") ||
+-		 !of_node_is_type(tmp_np, "be"));
+-
+-	np->data = cbe_find_map(tmp_np);
+-
+-	return np->data;
+-}
+-
+-struct cbe_pmd_regs __iomem *cbe_get_pmd_regs(struct device_node *np)
+-{
+-	struct cbe_regs_map *map = cbe_find_map(np);
+-	if (map == NULL)
+-		return NULL;
+-	return map->pmd_regs;
+-}
+-EXPORT_SYMBOL_GPL(cbe_get_pmd_regs);
+-
+-struct cbe_pmd_regs __iomem *cbe_get_cpu_pmd_regs(int cpu)
+-{
+-	struct cbe_regs_map *map = cbe_thread_map[cpu].regs;
+-	if (map == NULL)
+-		return NULL;
+-	return map->pmd_regs;
+-}
+-EXPORT_SYMBOL_GPL(cbe_get_cpu_pmd_regs);
+-
+-struct cbe_pmd_shadow_regs *cbe_get_pmd_shadow_regs(struct device_node *np)
+-{
+-	struct cbe_regs_map *map = cbe_find_map(np);
+-	if (map == NULL)
+-		return NULL;
+-	return &map->pmd_shadow_regs;
+-}
+-
+-struct cbe_pmd_shadow_regs *cbe_get_cpu_pmd_shadow_regs(int cpu)
+-{
+-	struct cbe_regs_map *map = cbe_thread_map[cpu].regs;
+-	if (map == NULL)
+-		return NULL;
+-	return &map->pmd_shadow_regs;
+-}
+-
+-struct cbe_iic_regs __iomem *cbe_get_iic_regs(struct device_node *np)
+-{
+-	struct cbe_regs_map *map = cbe_find_map(np);
+-	if (map == NULL)
+-		return NULL;
+-	return map->iic_regs;
+-}
+-
+-struct cbe_iic_regs __iomem *cbe_get_cpu_iic_regs(int cpu)
+-{
+-	struct cbe_regs_map *map = cbe_thread_map[cpu].regs;
+-	if (map == NULL)
+-		return NULL;
+-	return map->iic_regs;
+-}
+-
+-struct cbe_mic_tm_regs __iomem *cbe_get_mic_tm_regs(struct device_node *np)
+-{
+-	struct cbe_regs_map *map = cbe_find_map(np);
+-	if (map == NULL)
+-		return NULL;
+-	return map->mic_tm_regs;
+-}
+-
+-struct cbe_mic_tm_regs __iomem *cbe_get_cpu_mic_tm_regs(int cpu)
+-{
+-	struct cbe_regs_map *map = cbe_thread_map[cpu].regs;
+-	if (map == NULL)
+-		return NULL;
+-	return map->mic_tm_regs;
+-}
+-EXPORT_SYMBOL_GPL(cbe_get_cpu_mic_tm_regs);
+-
+-u32 cbe_get_hw_thread_id(int cpu)
+-{
+-	return cbe_thread_map[cpu].thread_id;
+-}
+-EXPORT_SYMBOL_GPL(cbe_get_hw_thread_id);
+-
+-u32 cbe_cpu_to_node(int cpu)
+-{
+-	return cbe_thread_map[cpu].cbe_id;
+-}
+-EXPORT_SYMBOL_GPL(cbe_cpu_to_node);
+-
+-u32 cbe_node_to_cpu(int node)
+-{
+-	return cpumask_first(&cbe_local_mask[node]);
+-
+-}
+-EXPORT_SYMBOL_GPL(cbe_node_to_cpu);
+-
+-static struct device_node *__init cbe_get_be_node(int cpu_id)
+-{
+-	struct device_node *np;
+-
+-	for_each_node_by_type (np, "be") {
+-		int len,i;
+-		const phandle *cpu_handle;
+-
+-		cpu_handle = of_get_property(np, "cpus", &len);
+-
+-		/*
+-		 * the CAB SLOF tree is non compliant, so we just assume
+-		 * there is only one node
+-		 */
+-		if (WARN_ON_ONCE(!cpu_handle))
+-			return np;
+-
+-		for (i = 0; i < len; i++) {
+-			struct device_node *ch_np = of_find_node_by_phandle(cpu_handle[i]);
+-			struct device_node *ci_np = of_get_cpu_node(cpu_id, NULL);
+-
+-			of_node_put(ch_np);
+-			of_node_put(ci_np);
+-
+-			if (ch_np == ci_np)
+-				return np;
+-		}
+-	}
+-
+-	return NULL;
+-}
+-
+-static void __init cbe_fill_regs_map(struct cbe_regs_map *map)
+-{
+-	if(map->be_node) {
+-		struct device_node *be, *np, *parent_np;
+-
+-		be = map->be_node;
+-
+-		for_each_node_by_type(np, "pervasive") {
+-			parent_np = of_get_parent(np);
+-			if (parent_np == be)
+-				map->pmd_regs = of_iomap(np, 0);
+-			of_node_put(parent_np);
+-		}
+-
+-		for_each_node_by_type(np, "CBEA-Internal-Interrupt-Controller") {
+-			parent_np = of_get_parent(np);
+-			if (parent_np == be)
+-				map->iic_regs = of_iomap(np, 2);
+-			of_node_put(parent_np);
+-		}
+-
+-		for_each_node_by_type(np, "mic-tm") {
+-			parent_np = of_get_parent(np);
+-			if (parent_np == be)
+-				map->mic_tm_regs = of_iomap(np, 0);
+-			of_node_put(parent_np);
+-		}
+-	} else {
+-		struct device_node *cpu;
+-		/* That hack must die die die ! */
+-		const struct address_prop {
+-			unsigned long address;
+-			unsigned int len;
+-		} __attribute__((packed)) *prop;
+-
+-		cpu = map->cpu_node;
+-
+-		prop = of_get_property(cpu, "pervasive", NULL);
+-		if (prop != NULL)
+-			map->pmd_regs = ioremap(prop->address, prop->len);
+-
+-		prop = of_get_property(cpu, "iic", NULL);
+-		if (prop != NULL)
+-			map->iic_regs = ioremap(prop->address, prop->len);
+-
+-		prop = of_get_property(cpu, "mic-tm", NULL);
+-		if (prop != NULL)
+-			map->mic_tm_regs = ioremap(prop->address, prop->len);
+-	}
+-}
+-
+-
+-void __init cbe_regs_init(void)
+-{
+-	int i;
+-	unsigned int thread_id;
+-	struct device_node *cpu;
+-
+-	/* Build local fast map of CPUs */
+-	for_each_possible_cpu(i) {
+-		cbe_thread_map[i].cpu_node = of_get_cpu_node(i, &thread_id);
+-		cbe_thread_map[i].be_node = cbe_get_be_node(i);
+-		cbe_thread_map[i].thread_id = thread_id;
+-	}
+-
+-	/* Find maps for each device tree CPU */
+-	for_each_node_by_type(cpu, "cpu") {
+-		struct cbe_regs_map *map;
+-		unsigned int cbe_id;
+-
+-		cbe_id = cbe_regs_map_count++;
+-		map = &cbe_regs_maps[cbe_id];
+-
+-		if (cbe_regs_map_count > MAX_CBE) {
+-			printk(KERN_ERR "cbe_regs: More BE chips than supported"
+-			       "!\n");
+-			cbe_regs_map_count--;
+-			of_node_put(cpu);
+-			return;
+-		}
+-		of_node_put(map->cpu_node);
+-		map->cpu_node = of_node_get(cpu);
+-
+-		for_each_possible_cpu(i) {
+-			struct cbe_thread_map *thread = &cbe_thread_map[i];
+-
+-			if (thread->cpu_node == cpu) {
+-				thread->regs = map;
+-				thread->cbe_id = cbe_id;
+-				map->be_node = thread->be_node;
+-				cpumask_set_cpu(i, &cbe_local_mask[cbe_id]);
+-				if(thread->thread_id == 0)
+-					cpumask_set_cpu(i, &cbe_first_online_cpu);
+-			}
+-		}
+-
+-		cbe_fill_regs_map(map);
+-	}
+-}
+-
+diff --git a/arch/powerpc/platforms/cell/cbe_thermal.c b/arch/powerpc/platforms/cell/cbe_thermal.c
+deleted file mode 100644
+index c295c6714f9b..000000000000
+--- a/arch/powerpc/platforms/cell/cbe_thermal.c
++++ /dev/null
+@@ -1,387 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * thermal support for the cell processor
+- *
+- * This module adds some sysfs attributes to cpu and spu nodes.
+- * Base for measurements are the digital thermal sensors (DTS)
+- * located on the chip.
+- * The accuracy is 2 degrees, starting from 65 up to 125 degrees celsius
+- * The attributes can be found under
+- * /sys/devices/system/cpu/cpuX/thermal
+- * /sys/devices/system/spu/spuX/thermal
+- *
+- * The following attributes are added for each node:
+- * temperature:
+- *	contains the current temperature measured by the DTS
+- * throttle_begin:
+- *	throttling begins when temperature is greater or equal to
+- *	throttle_begin. Setting this value to 125 prevents throttling.
+- * throttle_end:
+- *	throttling is being ceased, if the temperature is lower than
+- *	throttle_end. Due to a delay between applying throttling and
+- *	a reduced temperature this value should be less than throttle_begin.
+- *	A value equal to throttle_begin provides only a very little hysteresis.
+- * throttle_full_stop:
+- *	If the temperatrue is greater or equal to throttle_full_stop,
+- *	full throttling is applied to the cpu or spu. This value should be
+- *	greater than throttle_begin and throttle_end. Setting this value to
+- *	65 prevents the unit from running code at all.
+- *
+- * (C) Copyright IBM Deutschland Entwicklung GmbH 2005
+- *
+- * Author: Christian Krafft <krafft@de.ibm.com>
+- */
+-
+-#include <linux/module.h>
+-#include <linux/device.h>
+-#include <linux/kernel.h>
+-#include <linux/cpu.h>
+-#include <linux/stringify.h>
+-#include <asm/spu.h>
+-#include <asm/io.h>
+-#include <asm/cell-regs.h>
+-
+-#include "spu_priv1_mmio.h"
+-
+-#define TEMP_MIN 65
+-#define TEMP_MAX 125
+-
+-#define DEVICE_PREFIX_ATTR(_prefix,_name,_mode)			\
+-struct device_attribute attr_ ## _prefix ## _ ## _name = {	\
+-	.attr = { .name = __stringify(_name), .mode = _mode },	\
+-	.show	= _prefix ## _show_ ## _name,			\
+-	.store	= _prefix ## _store_ ## _name,			\
+-};
+-
+-static inline u8 reg_to_temp(u8 reg_value)
+-{
+-	return ((reg_value & 0x3f) << 1) + TEMP_MIN;
+-}
+-
+-static inline u8 temp_to_reg(u8 temp)
+-{
+-	return ((temp - TEMP_MIN) >> 1) & 0x3f;
+-}
+-
+-static struct cbe_pmd_regs __iomem *get_pmd_regs(struct device *dev)
+-{
+-	struct spu *spu;
+-
+-	spu = container_of(dev, struct spu, dev);
+-
+-	return cbe_get_pmd_regs(spu_devnode(spu));
+-}
+-
+-/* returns the value for a given spu in a given register */
+-static u8 spu_read_register_value(struct device *dev, union spe_reg __iomem *reg)
+-{
+-	union spe_reg value;
+-	struct spu *spu;
+-
+-	spu = container_of(dev, struct spu, dev);
+-	value.val = in_be64(&reg->val);
+-
+-	return value.spe[spu->spe_id];
+-}
+-
+-static ssize_t spu_show_temp(struct device *dev, struct device_attribute *attr,
+-			char *buf)
+-{
+-	u8 value;
+-	struct cbe_pmd_regs __iomem *pmd_regs;
+-
+-	pmd_regs = get_pmd_regs(dev);
+-
+-	value = spu_read_register_value(dev, &pmd_regs->ts_ctsr1);
+-
+-	return sprintf(buf, "%d\n", reg_to_temp(value));
+-}
+-
+-static ssize_t show_throttle(struct cbe_pmd_regs __iomem *pmd_regs, char *buf, int pos)
+-{
+-	u64 value;
+-
+-	value = in_be64(&pmd_regs->tm_tpr.val);
+-	/* access the corresponding byte */
+-	value >>= pos;
+-	value &= 0x3F;
+-
+-	return sprintf(buf, "%d\n", reg_to_temp(value));
+-}
+-
+-static ssize_t store_throttle(struct cbe_pmd_regs __iomem *pmd_regs, const char *buf, size_t size, int pos)
+-{
+-	u64 reg_value;
+-	unsigned int temp;
+-	u64 new_value;
+-	int ret;
+-
+-	ret = sscanf(buf, "%u", &temp);
+-
+-	if (ret != 1 || temp < TEMP_MIN || temp > TEMP_MAX)
+-		return -EINVAL;
+-
+-	new_value = temp_to_reg(temp);
+-
+-	reg_value = in_be64(&pmd_regs->tm_tpr.val);
+-
+-	/* zero out bits for new value */
+-	reg_value &= ~(0xffull << pos);
+-	/* set bits to new value */
+-	reg_value |= new_value << pos;
+-
+-	out_be64(&pmd_regs->tm_tpr.val, reg_value);
+-	return size;
+-}
+-
+-static ssize_t spu_show_throttle_end(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return show_throttle(get_pmd_regs(dev), buf, 0);
+-}
+-
+-static ssize_t spu_show_throttle_begin(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return show_throttle(get_pmd_regs(dev), buf, 8);
+-}
+-
+-static ssize_t spu_show_throttle_full_stop(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return show_throttle(get_pmd_regs(dev), buf, 16);
+-}
+-
+-static ssize_t spu_store_throttle_end(struct device *dev,
+-			struct device_attribute *attr, const char *buf, size_t size)
+-{
+-	return store_throttle(get_pmd_regs(dev), buf, size, 0);
+-}
+-
+-static ssize_t spu_store_throttle_begin(struct device *dev,
+-			struct device_attribute *attr, const char *buf, size_t size)
+-{
+-	return store_throttle(get_pmd_regs(dev), buf, size, 8);
+-}
+-
+-static ssize_t spu_store_throttle_full_stop(struct device *dev,
+-			struct device_attribute *attr, const char *buf, size_t size)
+-{
+-	return store_throttle(get_pmd_regs(dev), buf, size, 16);
+-}
+-
+-static ssize_t ppe_show_temp(struct device *dev, char *buf, int pos)
+-{
+-	struct cbe_pmd_regs __iomem *pmd_regs;
+-	u64 value;
+-
+-	pmd_regs = cbe_get_cpu_pmd_regs(dev->id);
+-	value = in_be64(&pmd_regs->ts_ctsr2);
+-
+-	value = (value >> pos) & 0x3f;
+-
+-	return sprintf(buf, "%d\n", reg_to_temp(value));
+-}
+-
+-
+-/* shows the temperature of the DTS on the PPE,
+- * located near the linear thermal sensor */
+-static ssize_t ppe_show_temp0(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return ppe_show_temp(dev, buf, 32);
+-}
+-
+-/* shows the temperature of the second DTS on the PPE */
+-static ssize_t ppe_show_temp1(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return ppe_show_temp(dev, buf, 0);
+-}
+-
+-static ssize_t ppe_show_throttle_end(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return show_throttle(cbe_get_cpu_pmd_regs(dev->id), buf, 32);
+-}
+-
+-static ssize_t ppe_show_throttle_begin(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return show_throttle(cbe_get_cpu_pmd_regs(dev->id), buf, 40);
+-}
+-
+-static ssize_t ppe_show_throttle_full_stop(struct device *dev,
+-			struct device_attribute *attr, char *buf)
+-{
+-	return show_throttle(cbe_get_cpu_pmd_regs(dev->id), buf, 48);
+-}
+-
+-static ssize_t ppe_store_throttle_end(struct device *dev,
+-			struct device_attribute *attr, const char *buf, size_t size)
+-{
+-	return store_throttle(cbe_get_cpu_pmd_regs(dev->id), buf, size, 32);
+-}
+-
+-static ssize_t ppe_store_throttle_begin(struct device *dev,
+-			struct device_attribute *attr, const char *buf, size_t size)
+-{
+-	return store_throttle(cbe_get_cpu_pmd_regs(dev->id), buf, size, 40);
+-}
+-
+-static ssize_t ppe_store_throttle_full_stop(struct device *dev,
+-			struct device_attribute *attr, const char *buf, size_t size)
+-{
+-	return store_throttle(cbe_get_cpu_pmd_regs(dev->id), buf, size, 48);
+-}
+-
+-
+-static struct device_attribute attr_spu_temperature = {
+-	.attr = {.name = "temperature", .mode = 0400 },
+-	.show = spu_show_temp,
+-};
+-
+-static DEVICE_PREFIX_ATTR(spu, throttle_end, 0600);
+-static DEVICE_PREFIX_ATTR(spu, throttle_begin, 0600);
+-static DEVICE_PREFIX_ATTR(spu, throttle_full_stop, 0600);
+-
+-
+-static struct attribute *spu_attributes[] = {
+-	&attr_spu_temperature.attr,
+-	&attr_spu_throttle_end.attr,
+-	&attr_spu_throttle_begin.attr,
+-	&attr_spu_throttle_full_stop.attr,
+-	NULL,
+-};
+-
+-static const struct attribute_group spu_attribute_group = {
+-	.name	= "thermal",
+-	.attrs	= spu_attributes,
+-};
+-
+-static struct device_attribute attr_ppe_temperature0 = {
+-	.attr = {.name = "temperature0", .mode = 0400 },
+-	.show = ppe_show_temp0,
+-};
+-
+-static struct device_attribute attr_ppe_temperature1 = {
+-	.attr = {.name = "temperature1", .mode = 0400 },
+-	.show = ppe_show_temp1,
+-};
+-
+-static DEVICE_PREFIX_ATTR(ppe, throttle_end, 0600);
+-static DEVICE_PREFIX_ATTR(ppe, throttle_begin, 0600);
+-static DEVICE_PREFIX_ATTR(ppe, throttle_full_stop, 0600);
+-
+-static struct attribute *ppe_attributes[] = {
+-	&attr_ppe_temperature0.attr,
+-	&attr_ppe_temperature1.attr,
+-	&attr_ppe_throttle_end.attr,
+-	&attr_ppe_throttle_begin.attr,
+-	&attr_ppe_throttle_full_stop.attr,
+-	NULL,
+-};
+-
+-static struct attribute_group ppe_attribute_group = {
+-	.name	= "thermal",
+-	.attrs	= ppe_attributes,
+-};
+-
+-/*
+- * initialize throttling with default values
+- */
+-static int __init init_default_values(void)
+-{
+-	int cpu;
+-	struct cbe_pmd_regs __iomem *pmd_regs;
+-	struct device *dev;
+-	union ppe_spe_reg tpr;
+-	union spe_reg str1;
+-	u64 str2;
+-	union spe_reg cr1;
+-	u64 cr2;
+-
+-	/* TPR defaults */
+-	/* ppe
+-	 *	1F - no full stop
+-	 *	08 - dynamic throttling starts if over 80 degrees
+-	 *	03 - dynamic throttling ceases if below 70 degrees */
+-	tpr.ppe = 0x1F0803;
+-	/* spe
+-	 *	10 - full stopped when over 96 degrees
+-	 *	08 - dynamic throttling starts if over 80 degrees
+-	 *	03 - dynamic throttling ceases if below 70 degrees
+-	 */
+-	tpr.spe = 0x100803;
+-
+-	/* STR defaults */
+-	/* str1
+-	 *	10 - stop 16 of 32 cycles
+-	 */
+-	str1.val = 0x1010101010101010ull;
+-	/* str2
+-	 *	10 - stop 16 of 32 cycles
+-	 */
+-	str2 = 0x10;
+-
+-	/* CR defaults */
+-	/* cr1
+-	 *	4 - normal operation
+-	 */
+-	cr1.val = 0x0404040404040404ull;
+-	/* cr2
+-	 *	4 - normal operation
+-	 */
+-	cr2 = 0x04;
+-
+-	for_each_possible_cpu (cpu) {
+-		pr_debug("processing cpu %d\n", cpu);
+-		dev = get_cpu_device(cpu);
+-
+-		if (!dev) {
+-			pr_info("invalid dev pointer for cbe_thermal\n");
+-			return -EINVAL;
+-		}
+-
+-		pmd_regs = cbe_get_cpu_pmd_regs(dev->id);
+-
+-		if (!pmd_regs) {
+-			pr_info("invalid CBE regs pointer for cbe_thermal\n");
+-			return -EINVAL;
+-		}
+-
+-		out_be64(&pmd_regs->tm_str2, str2);
+-		out_be64(&pmd_regs->tm_str1.val, str1.val);
+-		out_be64(&pmd_regs->tm_tpr.val, tpr.val);
+-		out_be64(&pmd_regs->tm_cr1.val, cr1.val);
+-		out_be64(&pmd_regs->tm_cr2, cr2);
+-	}
+-
+-	return 0;
+-}
+-
+-
+-static int __init thermal_init(void)
+-{
+-	int rc = init_default_values();
+-
+-	if (rc == 0) {
+-		spu_add_dev_attr_group(&spu_attribute_group);
+-		cpu_add_dev_attr_group(&ppe_attribute_group);
+-	}
+-
+-	return rc;
+-}
+-module_init(thermal_init);
+-
+-static void __exit thermal_exit(void)
+-{
+-	spu_remove_dev_attr_group(&spu_attribute_group);
+-	cpu_remove_dev_attr_group(&ppe_attribute_group);
+-}
+-module_exit(thermal_exit);
+-
+-MODULE_DESCRIPTION("Cell processor thermal driver");
+-MODULE_LICENSE("GPL");
+-MODULE_AUTHOR("Christian Krafft <krafft@de.ibm.com>");
+-
+diff --git a/arch/powerpc/platforms/cell/cell.h b/arch/powerpc/platforms/cell/cell.h
+deleted file mode 100644
+index d5142e905ab3..000000000000
+--- a/arch/powerpc/platforms/cell/cell.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * Cell Platform common data structures
+- *
+- * Copyright 2015, Daniel Axtens, IBM Corporation
+- */
+-
+-#ifndef CELL_H
+-#define CELL_H
+-
+-#include <asm/pci-bridge.h>
+-
+-extern struct pci_controller_ops cell_pci_controller_ops;
+-
+-#endif
+diff --git a/arch/powerpc/platforms/cell/interrupt.c b/arch/powerpc/platforms/cell/interrupt.c
+deleted file mode 100644
+index 03ee8152ee97..000000000000
+--- a/arch/powerpc/platforms/cell/interrupt.c
++++ /dev/null
+@@ -1,390 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cell Internal Interrupt Controller
+- *
+- * Copyright (C) 2006 Benjamin Herrenschmidt (benh@kernel.crashing.org)
+- *                    IBM, Corp.
+- *
+- * (C) Copyright IBM Deutschland Entwicklung GmbH 2005
+- *
+- * Author: Arnd Bergmann <arndb@de.ibm.com>
+- *
+- * TODO:
+- * - Fix various assumptions related to HW CPU numbers vs. linux CPU numbers
+- *   vs node numbers in the setup code
+- * - Implement proper handling of maxcpus=1/2 (that is, routing of irqs from
+- *   a non-active node to the active node)
+- */
+-
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+-#include <linux/irqdomain.h>
+-#include <linux/export.h>
+-#include <linux/percpu.h>
+-#include <linux/types.h>
+-#include <linux/ioport.h>
+-#include <linux/kernel_stat.h>
+-#include <linux/pgtable.h>
+-#include <linux/of_address.h>
+-
+-#include <asm/io.h>
+-#include <asm/ptrace.h>
+-#include <asm/machdep.h>
+-#include <asm/cell-regs.h>
+-
+-#include "interrupt.h"
+-
+-struct iic {
+-	struct cbe_iic_thread_regs __iomem *regs;
+-	u8 target_id;
+-	u8 eoi_stack[16];
+-	int eoi_ptr;
+-	struct device_node *node;
+-};
+-
+-static DEFINE_PER_CPU(struct iic, cpu_iic);
+-#define IIC_NODE_COUNT	2
+-static struct irq_domain *iic_host;
+-
+-/* Convert between "pending" bits and hw irq number */
+-static irq_hw_number_t iic_pending_to_hwnum(struct cbe_iic_pending_bits bits)
+-{
+-	unsigned char unit = bits.source & 0xf;
+-	unsigned char node = bits.source >> 4;
+-	unsigned char class = bits.class & 3;
+-
+-	/* Decode IPIs */
+-	if (bits.flags & CBE_IIC_IRQ_IPI)
+-		return IIC_IRQ_TYPE_IPI | (bits.prio >> 4);
+-	else
+-		return (node << IIC_IRQ_NODE_SHIFT) | (class << 4) | unit;
+-}
+-
+-static void iic_mask(struct irq_data *d)
+-{
+-}
+-
+-static void iic_unmask(struct irq_data *d)
+-{
+-}
+-
+-static void iic_eoi(struct irq_data *d)
+-{
+-	struct iic *iic = this_cpu_ptr(&cpu_iic);
+-	out_be64(&iic->regs->prio, iic->eoi_stack[--iic->eoi_ptr]);
+-	BUG_ON(iic->eoi_ptr < 0);
+-}
+-
+-static struct irq_chip iic_chip = {
+-	.name = "CELL-IIC",
+-	.irq_mask = iic_mask,
+-	.irq_unmask = iic_unmask,
+-	.irq_eoi = iic_eoi,
+-};
+-
+-
+-static void iic_ioexc_eoi(struct irq_data *d)
+-{
+-}
+-
+-static void iic_ioexc_cascade(struct irq_desc *desc)
+-{
+-	struct irq_chip *chip = irq_desc_get_chip(desc);
+-	struct cbe_iic_regs __iomem *node_iic =
+-		(void __iomem *)irq_desc_get_handler_data(desc);
+-	unsigned int irq = irq_desc_get_irq(desc);
+-	unsigned int base = (irq & 0xffffff00) | IIC_IRQ_TYPE_IOEXC;
+-	unsigned long bits, ack;
+-	int cascade;
+-
+-	for (;;) {
+-		bits = in_be64(&node_iic->iic_is);
+-		if (bits == 0)
+-			break;
+-		/* pre-ack edge interrupts */
+-		ack = bits & IIC_ISR_EDGE_MASK;
+-		if (ack)
+-			out_be64(&node_iic->iic_is, ack);
+-		/* handle them */
+-		for (cascade = 63; cascade >= 0; cascade--)
+-			if (bits & (0x8000000000000000UL >> cascade))
+-				generic_handle_domain_irq(iic_host,
+-							  base | cascade);
+-		/* post-ack level interrupts */
+-		ack = bits & ~IIC_ISR_EDGE_MASK;
+-		if (ack)
+-			out_be64(&node_iic->iic_is, ack);
+-	}
+-	chip->irq_eoi(&desc->irq_data);
+-}
+-
+-
+-static struct irq_chip iic_ioexc_chip = {
+-	.name = "CELL-IOEX",
+-	.irq_mask = iic_mask,
+-	.irq_unmask = iic_unmask,
+-	.irq_eoi = iic_ioexc_eoi,
+-};
+-
+-/* Get an IRQ number from the pending state register of the IIC */
+-static unsigned int iic_get_irq(void)
+-{
+-	struct cbe_iic_pending_bits pending;
+-	struct iic *iic;
+-	unsigned int virq;
+-
+-	iic = this_cpu_ptr(&cpu_iic);
+-	*(unsigned long *) &pending =
+-		in_be64((u64 __iomem *) &iic->regs->pending_destr);
+-	if (!(pending.flags & CBE_IIC_IRQ_VALID))
+-		return 0;
+-	virq = irq_linear_revmap(iic_host, iic_pending_to_hwnum(pending));
+-	if (!virq)
+-		return 0;
+-	iic->eoi_stack[++iic->eoi_ptr] = pending.prio;
+-	BUG_ON(iic->eoi_ptr > 15);
+-	return virq;
+-}
+-
+-void iic_setup_cpu(void)
+-{
+-	out_be64(&this_cpu_ptr(&cpu_iic)->regs->prio, 0xff);
+-}
+-
+-u8 iic_get_target_id(int cpu)
+-{
+-	return per_cpu(cpu_iic, cpu).target_id;
+-}
+-
+-EXPORT_SYMBOL_GPL(iic_get_target_id);
+-
+-#ifdef CONFIG_SMP
+-
+-/* Use the highest interrupt priorities for IPI */
+-static inline int iic_msg_to_irq(int msg)
+-{
+-	return IIC_IRQ_TYPE_IPI + 0xf - msg;
+-}
+-
+-void iic_message_pass(int cpu, int msg)
+-{
+-	out_be64(&per_cpu(cpu_iic, cpu).regs->generate, (0xf - msg) << 4);
+-}
+-
+-static void iic_request_ipi(int msg)
+-{
+-	int virq;
+-
+-	virq = irq_create_mapping(iic_host, iic_msg_to_irq(msg));
+-	if (!virq) {
+-		printk(KERN_ERR
+-		       "iic: failed to map IPI %s\n", smp_ipi_name[msg]);
+-		return;
+-	}
+-
+-	/*
+-	 * If smp_request_message_ipi encounters an error it will notify
+-	 * the error.  If a message is not needed it will return non-zero.
+-	 */
+-	if (smp_request_message_ipi(virq, msg))
+-		irq_dispose_mapping(virq);
+-}
+-
+-void iic_request_IPIs(void)
+-{
+-	iic_request_ipi(PPC_MSG_CALL_FUNCTION);
+-	iic_request_ipi(PPC_MSG_RESCHEDULE);
+-	iic_request_ipi(PPC_MSG_TICK_BROADCAST);
+-	iic_request_ipi(PPC_MSG_NMI_IPI);
+-}
+-
+-#endif /* CONFIG_SMP */
+-
+-
+-static int iic_host_match(struct irq_domain *h, struct device_node *node,
+-			  enum irq_domain_bus_token bus_token)
+-{
+-	return of_device_is_compatible(node,
+-				    "IBM,CBEA-Internal-Interrupt-Controller");
+-}
+-
+-static int iic_host_map(struct irq_domain *h, unsigned int virq,
+-			irq_hw_number_t hw)
+-{
+-	switch (hw & IIC_IRQ_TYPE_MASK) {
+-	case IIC_IRQ_TYPE_IPI:
+-		irq_set_chip_and_handler(virq, &iic_chip, handle_percpu_irq);
+-		break;
+-	case IIC_IRQ_TYPE_IOEXC:
+-		irq_set_chip_and_handler(virq, &iic_ioexc_chip,
+-					 handle_edge_eoi_irq);
+-		break;
+-	default:
+-		irq_set_chip_and_handler(virq, &iic_chip, handle_edge_eoi_irq);
+-	}
+-	return 0;
+-}
+-
+-static int iic_host_xlate(struct irq_domain *h, struct device_node *ct,
+-			   const u32 *intspec, unsigned int intsize,
+-			   irq_hw_number_t *out_hwirq, unsigned int *out_flags)
+-
+-{
+-	unsigned int node, ext, unit, class;
+-	const u32 *val;
+-
+-	if (!of_device_is_compatible(ct,
+-				     "IBM,CBEA-Internal-Interrupt-Controller"))
+-		return -ENODEV;
+-	if (intsize != 1)
+-		return -ENODEV;
+-	val = of_get_property(ct, "#interrupt-cells", NULL);
+-	if (val == NULL || *val != 1)
+-		return -ENODEV;
+-
+-	node = intspec[0] >> 24;
+-	ext = (intspec[0] >> 16) & 0xff;
+-	class = (intspec[0] >> 8) & 0xff;
+-	unit = intspec[0] & 0xff;
+-
+-	/* Check if node is in supported range */
+-	if (node > 1)
+-		return -EINVAL;
+-
+-	/* Build up interrupt number, special case for IO exceptions */
+-	*out_hwirq = (node << IIC_IRQ_NODE_SHIFT);
+-	if (unit == IIC_UNIT_IIC && class == 1)
+-		*out_hwirq |= IIC_IRQ_TYPE_IOEXC | ext;
+-	else
+-		*out_hwirq |= IIC_IRQ_TYPE_NORMAL |
+-			(class << IIC_IRQ_CLASS_SHIFT) | unit;
+-
+-	/* Dummy flags, ignored by iic code */
+-	*out_flags = IRQ_TYPE_EDGE_RISING;
+-
+-	return 0;
+-}
+-
+-static const struct irq_domain_ops iic_host_ops = {
+-	.match = iic_host_match,
+-	.map = iic_host_map,
+-	.xlate = iic_host_xlate,
+-};
+-
+-static void __init init_one_iic(unsigned int hw_cpu, unsigned long addr,
+-				struct device_node *node)
+-{
+-	/* XXX FIXME: should locate the linux CPU number from the HW cpu
+-	 * number properly. We are lucky for now
+-	 */
+-	struct iic *iic = &per_cpu(cpu_iic, hw_cpu);
+-
+-	iic->regs = ioremap(addr, sizeof(struct cbe_iic_thread_regs));
+-	BUG_ON(iic->regs == NULL);
+-
+-	iic->target_id = ((hw_cpu & 2) << 3) | ((hw_cpu & 1) ? 0xf : 0xe);
+-	iic->eoi_stack[0] = 0xff;
+-	iic->node = of_node_get(node);
+-	out_be64(&iic->regs->prio, 0);
+-
+-	printk(KERN_INFO "IIC for CPU %d target id 0x%x : %pOF\n",
+-	       hw_cpu, iic->target_id, node);
+-}
+-
+-static int __init setup_iic(void)
+-{
+-	struct device_node *dn;
+-	struct resource r0, r1;
+-	unsigned int node, cascade, found = 0;
+-	struct cbe_iic_regs __iomem *node_iic;
+-	const u32 *np;
+-
+-	for_each_node_by_name(dn, "interrupt-controller") {
+-		if (!of_device_is_compatible(dn,
+-				     "IBM,CBEA-Internal-Interrupt-Controller"))
+-			continue;
+-		np = of_get_property(dn, "ibm,interrupt-server-ranges", NULL);
+-		if (np == NULL) {
+-			printk(KERN_WARNING "IIC: CPU association not found\n");
+-			of_node_put(dn);
+-			return -ENODEV;
+-		}
+-		if (of_address_to_resource(dn, 0, &r0) ||
+-		    of_address_to_resource(dn, 1, &r1)) {
+-			printk(KERN_WARNING "IIC: Can't resolve addresses\n");
+-			of_node_put(dn);
+-			return -ENODEV;
+-		}
+-		found++;
+-		init_one_iic(np[0], r0.start, dn);
+-		init_one_iic(np[1], r1.start, dn);
+-
+-		/* Setup cascade for IO exceptions. XXX cleanup tricks to get
+-		 * node vs CPU etc...
+-		 * Note that we configure the IIC_IRR here with a hard coded
+-		 * priority of 1. We might want to improve that later.
+-		 */
+-		node = np[0] >> 1;
+-		node_iic = cbe_get_cpu_iic_regs(np[0]);
+-		cascade = node << IIC_IRQ_NODE_SHIFT;
+-		cascade |= 1 << IIC_IRQ_CLASS_SHIFT;
+-		cascade |= IIC_UNIT_IIC;
+-		cascade = irq_create_mapping(iic_host, cascade);
+-		if (!cascade)
+-			continue;
+-		/*
+-		 * irq_data is a generic pointer that gets passed back
+-		 * to us later, so the forced cast is fine.
+-		 */
+-		irq_set_handler_data(cascade, (void __force *)node_iic);
+-		irq_set_chained_handler(cascade, iic_ioexc_cascade);
+-		out_be64(&node_iic->iic_ir,
+-			 (1 << 12)		/* priority */ |
+-			 (node << 4)		/* dest node */ |
+-			 IIC_UNIT_THREAD_0	/* route them to thread 0 */);
+-		/* Flush pending (make sure it triggers if there is
+-		 * anything pending
+-		 */
+-		out_be64(&node_iic->iic_is, 0xfffffffffffffffful);
+-	}
+-
+-	if (found)
+-		return 0;
+-	else
+-		return -ENODEV;
+-}
+-
+-void __init iic_init_IRQ(void)
+-{
+-	/* Setup an irq host data structure */
+-	iic_host = irq_domain_add_linear(NULL, IIC_SOURCE_COUNT, &iic_host_ops,
+-					 NULL);
+-	BUG_ON(iic_host == NULL);
+-	irq_set_default_host(iic_host);
+-
+-	/* Discover and initialize iics */
+-	if (setup_iic() < 0)
+-		panic("IIC: Failed to initialize !\n");
+-
+-	/* Set master interrupt handling function */
+-	ppc_md.get_irq = iic_get_irq;
+-
+-	/* Enable on current CPU */
+-	iic_setup_cpu();
+-}
+-
+-void iic_set_interrupt_routing(int cpu, int thread, int priority)
+-{
+-	struct cbe_iic_regs __iomem *iic_regs = cbe_get_cpu_iic_regs(cpu);
+-	u64 iic_ir = 0;
+-	int node = cpu >> 1;
+-
+-	/* Set which node and thread will handle the next interrupt */
+-	iic_ir |= CBE_IIC_IR_PRIO(priority) |
+-		  CBE_IIC_IR_DEST_NODE(node);
+-	if (thread == 0)
+-		iic_ir |= CBE_IIC_IR_DEST_UNIT(CBE_IIC_IR_PT_0);
+-	else
+-		iic_ir |= CBE_IIC_IR_DEST_UNIT(CBE_IIC_IR_PT_1);
+-	out_be64(&iic_regs->iic_ir, iic_ir);
+-}
+diff --git a/arch/powerpc/platforms/cell/interrupt.h b/arch/powerpc/platforms/cell/interrupt.h
+deleted file mode 100644
+index a47902248541..000000000000
+--- a/arch/powerpc/platforms/cell/interrupt.h
++++ /dev/null
+@@ -1,90 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef ASM_CELL_PIC_H
+-#define ASM_CELL_PIC_H
+-#ifdef __KERNEL__
+-/*
+- * Mapping of IIC pending bits into per-node interrupt numbers.
+- *
+- * Interrupt numbers are in the range 0...0x1ff where the top bit
+- * (0x100) represent the source node. Only 2 nodes are supported with
+- * the current code though it's trivial to extend that if necessary using
+- * higher level bits
+- *
+- * The bottom 8 bits are split into 2 type bits and 6 data bits that
+- * depend on the type:
+- *
+- * 00 (0x00 | data) : normal interrupt. data is (class << 4) | source
+- * 01 (0x40 | data) : IO exception. data is the exception number as
+- *                    defined by bit numbers in IIC_SR
+- * 10 (0x80 | data) : IPI. data is the IPI number (obtained from the priority)
+- *                    and node is always 0 (IPIs are per-cpu, their source is
+- *                    not relevant)
+- * 11 (0xc0 | data) : reserved
+- *
+- * In addition, interrupt number 0x80000000 is defined as always invalid
+- * (that is the node field is expected to never extend to move than 23 bits)
+- *
+- */
+-
+-enum {
+-	IIC_IRQ_INVALID		= 0x80000000u,
+-	IIC_IRQ_NODE_MASK	= 0x100,
+-	IIC_IRQ_NODE_SHIFT	= 8,
+-	IIC_IRQ_MAX		= 0x1ff,
+-	IIC_IRQ_TYPE_MASK	= 0xc0,
+-	IIC_IRQ_TYPE_NORMAL	= 0x00,
+-	IIC_IRQ_TYPE_IOEXC	= 0x40,
+-	IIC_IRQ_TYPE_IPI	= 0x80,
+-	IIC_IRQ_CLASS_SHIFT	= 4,
+-	IIC_IRQ_CLASS_0		= 0x00,
+-	IIC_IRQ_CLASS_1		= 0x10,
+-	IIC_IRQ_CLASS_2		= 0x20,
+-	IIC_SOURCE_COUNT	= 0x200,
+-
+-	/* Here are defined the various source/dest units. Avoid using those
+-	 * definitions if you can, they are mostly here for reference
+-	 */
+-	IIC_UNIT_SPU_0		= 0x4,
+-	IIC_UNIT_SPU_1		= 0x7,
+-	IIC_UNIT_SPU_2		= 0x3,
+-	IIC_UNIT_SPU_3		= 0x8,
+-	IIC_UNIT_SPU_4		= 0x2,
+-	IIC_UNIT_SPU_5		= 0x9,
+-	IIC_UNIT_SPU_6		= 0x1,
+-	IIC_UNIT_SPU_7		= 0xa,
+-	IIC_UNIT_IOC_0		= 0x0,
+-	IIC_UNIT_IOC_1		= 0xb,
+-	IIC_UNIT_THREAD_0	= 0xe, /* target only */
+-	IIC_UNIT_THREAD_1	= 0xf, /* target only */
+-	IIC_UNIT_IIC		= 0xe, /* source only (IO exceptions) */
+-
+-	/* Base numbers for the external interrupts */
+-	IIC_IRQ_EXT_IOIF0	=
+-		IIC_IRQ_TYPE_NORMAL | IIC_IRQ_CLASS_2 | IIC_UNIT_IOC_0,
+-	IIC_IRQ_EXT_IOIF1	=
+-		IIC_IRQ_TYPE_NORMAL | IIC_IRQ_CLASS_2 | IIC_UNIT_IOC_1,
+-
+-	/* Base numbers for the IIC_ISR interrupts */
+-	IIC_IRQ_IOEX_TMI	= IIC_IRQ_TYPE_IOEXC | IIC_IRQ_CLASS_1 | 63,
+-	IIC_IRQ_IOEX_PMI	= IIC_IRQ_TYPE_IOEXC | IIC_IRQ_CLASS_1 | 62,
+-	IIC_IRQ_IOEX_ATI	= IIC_IRQ_TYPE_IOEXC | IIC_IRQ_CLASS_1 | 61,
+-	IIC_IRQ_IOEX_MATBFI	= IIC_IRQ_TYPE_IOEXC | IIC_IRQ_CLASS_1 | 60,
+-	IIC_IRQ_IOEX_ELDI	= IIC_IRQ_TYPE_IOEXC | IIC_IRQ_CLASS_1 | 59,
+-
+-	/* Which bits in IIC_ISR are edge sensitive */
+-	IIC_ISR_EDGE_MASK	= 0x4ul,
+-};
+-
+-extern void iic_init_IRQ(void);
+-extern void iic_message_pass(int cpu, int msg);
+-extern void iic_request_IPIs(void);
+-extern void iic_setup_cpu(void);
+-
+-extern u8 iic_get_target_id(int cpu);
+-
+-extern void spider_init_IRQ(void);
+-
+-extern void iic_set_interrupt_routing(int cpu, int thread, int priority);
+-
+-#endif
+-#endif /* ASM_CELL_PIC_H */
+diff --git a/arch/powerpc/platforms/cell/iommu.c b/arch/powerpc/platforms/cell/iommu.c
+deleted file mode 100644
+index 62c9679b8ca3..000000000000
+--- a/arch/powerpc/platforms/cell/iommu.c
++++ /dev/null
+@@ -1,1060 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * IOMMU implementation for Cell Broadband Processor Architecture
+- *
+- * (C) Copyright IBM Corporation 2006-2008
+- *
+- * Author: Jeremy Kerr <jk@ozlabs.org>
+- */
+-
+-#undef DEBUG
+-
+-#include <linux/kernel.h>
+-#include <linux/init.h>
+-#include <linux/interrupt.h>
+-#include <linux/irqdomain.h>
+-#include <linux/notifier.h>
+-#include <linux/of.h>
+-#include <linux/of_address.h>
+-#include <linux/platform_device.h>
+-#include <linux/slab.h>
+-#include <linux/memblock.h>
+-
+-#include <asm/prom.h>
+-#include <asm/iommu.h>
+-#include <asm/machdep.h>
+-#include <asm/pci-bridge.h>
+-#include <asm/udbg.h>
+-#include <asm/firmware.h>
+-#include <asm/cell-regs.h>
+-
+-#include "cell.h"
+-#include "interrupt.h"
+-
+-/* Define CELL_IOMMU_REAL_UNMAP to actually unmap non-used pages
+- * instead of leaving them mapped to some dummy page. This can be
+- * enabled once the appropriate workarounds for spider bugs have
+- * been enabled
+- */
+-#define CELL_IOMMU_REAL_UNMAP
+-
+-/* Define CELL_IOMMU_STRICT_PROTECTION to enforce protection of
+- * IO PTEs based on the transfer direction. That can be enabled
+- * once spider-net has been fixed to pass the correct direction
+- * to the DMA mapping functions
+- */
+-#define CELL_IOMMU_STRICT_PROTECTION
+-
+-
+-#define NR_IOMMUS			2
+-
+-/* IOC mmap registers */
+-#define IOC_Reg_Size			0x2000
+-
+-#define IOC_IOPT_CacheInvd		0x908
+-#define IOC_IOPT_CacheInvd_NE_Mask	0xffe0000000000000ul
+-#define IOC_IOPT_CacheInvd_IOPTE_Mask	0x000003fffffffff8ul
+-#define IOC_IOPT_CacheInvd_Busy		0x0000000000000001ul
+-
+-#define IOC_IOST_Origin			0x918
+-#define IOC_IOST_Origin_E		0x8000000000000000ul
+-#define IOC_IOST_Origin_HW		0x0000000000000800ul
+-#define IOC_IOST_Origin_HL		0x0000000000000400ul
+-
+-#define IOC_IO_ExcpStat			0x920
+-#define IOC_IO_ExcpStat_V		0x8000000000000000ul
+-#define IOC_IO_ExcpStat_SPF_Mask	0x6000000000000000ul
+-#define IOC_IO_ExcpStat_SPF_S		0x6000000000000000ul
+-#define IOC_IO_ExcpStat_SPF_P		0x2000000000000000ul
+-#define IOC_IO_ExcpStat_ADDR_Mask	0x00000007fffff000ul
+-#define IOC_IO_ExcpStat_RW_Mask		0x0000000000000800ul
+-#define IOC_IO_ExcpStat_IOID_Mask	0x00000000000007fful
+-
+-#define IOC_IO_ExcpMask			0x928
+-#define IOC_IO_ExcpMask_SFE		0x4000000000000000ul
+-#define IOC_IO_ExcpMask_PFE		0x2000000000000000ul
+-
+-#define IOC_IOCmd_Offset		0x1000
+-
+-#define IOC_IOCmd_Cfg			0xc00
+-#define IOC_IOCmd_Cfg_TE		0x0000800000000000ul
+-
+-
+-/* Segment table entries */
+-#define IOSTE_V			0x8000000000000000ul /* valid */
+-#define IOSTE_H			0x4000000000000000ul /* cache hint */
+-#define IOSTE_PT_Base_RPN_Mask  0x3ffffffffffff000ul /* base RPN of IOPT */
+-#define IOSTE_NPPT_Mask		0x0000000000000fe0ul /* no. pages in IOPT */
+-#define IOSTE_PS_Mask		0x0000000000000007ul /* page size */
+-#define IOSTE_PS_4K		0x0000000000000001ul /*   - 4kB  */
+-#define IOSTE_PS_64K		0x0000000000000003ul /*   - 64kB */
+-#define IOSTE_PS_1M		0x0000000000000005ul /*   - 1MB  */
+-#define IOSTE_PS_16M		0x0000000000000007ul /*   - 16MB */
+-
+-
+-/* IOMMU sizing */
+-#define IO_SEGMENT_SHIFT	28
+-#define IO_PAGENO_BITS(shift)	(IO_SEGMENT_SHIFT - (shift))
+-
+-/* The high bit needs to be set on every DMA address */
+-#define SPIDER_DMA_OFFSET	0x80000000ul
+-
+-struct iommu_window {
+-	struct list_head list;
+-	struct cbe_iommu *iommu;
+-	unsigned long offset;
+-	unsigned long size;
+-	unsigned int ioid;
+-	struct iommu_table table;
+-};
+-
+-#define NAMESIZE 8
+-struct cbe_iommu {
+-	int nid;
+-	char name[NAMESIZE];
+-	void __iomem *xlate_regs;
+-	void __iomem *cmd_regs;
+-	unsigned long *stab;
+-	unsigned long *ptab;
+-	void *pad_page;
+-	struct list_head windows;
+-};
+-
+-/* Static array of iommus, one per node
+- *   each contains a list of windows, keyed from dma_window property
+- *   - on bus setup, look for a matching window, or create one
+- *   - on dev setup, assign iommu_table ptr
+- */
+-static struct cbe_iommu iommus[NR_IOMMUS];
+-static int cbe_nr_iommus;
+-
+-static void invalidate_tce_cache(struct cbe_iommu *iommu, unsigned long *pte,
+-		long n_ptes)
+-{
+-	u64 __iomem *reg;
+-	u64 val;
+-	long n;
+-
+-	reg = iommu->xlate_regs + IOC_IOPT_CacheInvd;
+-
+-	while (n_ptes > 0) {
+-		/* we can invalidate up to 1 << 11 PTEs at once */
+-		n = min(n_ptes, 1l << 11);
+-		val = (((n /*- 1*/) << 53) & IOC_IOPT_CacheInvd_NE_Mask)
+-			| (__pa(pte) & IOC_IOPT_CacheInvd_IOPTE_Mask)
+-		        | IOC_IOPT_CacheInvd_Busy;
+-
+-		out_be64(reg, val);
+-		while (in_be64(reg) & IOC_IOPT_CacheInvd_Busy)
+-			;
+-
+-		n_ptes -= n;
+-		pte += n;
+-	}
+-}
+-
+-static int tce_build_cell(struct iommu_table *tbl, long index, long npages,
+-		unsigned long uaddr, enum dma_data_direction direction,
+-		unsigned long attrs)
+-{
+-	int i;
+-	unsigned long *io_pte, base_pte;
+-	struct iommu_window *window =
+-		container_of(tbl, struct iommu_window, table);
+-
+-	/* implementing proper protection causes problems with the spidernet
+-	 * driver - check mapping directions later, but allow read & write by
+-	 * default for now.*/
+-#ifdef CELL_IOMMU_STRICT_PROTECTION
+-	/* to avoid referencing a global, we use a trick here to setup the
+-	 * protection bit. "prot" is setup to be 3 fields of 4 bits appended
+-	 * together for each of the 3 supported direction values. It is then
+-	 * shifted left so that the fields matching the desired direction
+-	 * lands on the appropriate bits, and other bits are masked out.
+-	 */
+-	const unsigned long prot = 0xc48;
+-	base_pte =
+-		((prot << (52 + 4 * direction)) &
+-		 (CBE_IOPTE_PP_W | CBE_IOPTE_PP_R)) |
+-		CBE_IOPTE_M | CBE_IOPTE_SO_RW |
+-		(window->ioid & CBE_IOPTE_IOID_Mask);
+-#else
+-	base_pte = CBE_IOPTE_PP_W | CBE_IOPTE_PP_R | CBE_IOPTE_M |
+-		CBE_IOPTE_SO_RW | (window->ioid & CBE_IOPTE_IOID_Mask);
+-#endif
+-	if (unlikely(attrs & DMA_ATTR_WEAK_ORDERING))
+-		base_pte &= ~CBE_IOPTE_SO_RW;
+-
+-	io_pte = (unsigned long *)tbl->it_base + (index - tbl->it_offset);
+-
+-	for (i = 0; i < npages; i++, uaddr += (1 << tbl->it_page_shift))
+-		io_pte[i] = base_pte | (__pa(uaddr) & CBE_IOPTE_RPN_Mask);
+-
+-	mb();
+-
+-	invalidate_tce_cache(window->iommu, io_pte, npages);
+-
+-	pr_debug("tce_build_cell(index=%lx,n=%lx,dir=%d,base_pte=%lx)\n",
+-		 index, npages, direction, base_pte);
+-	return 0;
+-}
+-
+-static void tce_free_cell(struct iommu_table *tbl, long index, long npages)
+-{
+-
+-	int i;
+-	unsigned long *io_pte, pte;
+-	struct iommu_window *window =
+-		container_of(tbl, struct iommu_window, table);
+-
+-	pr_debug("tce_free_cell(index=%lx,n=%lx)\n", index, npages);
+-
+-#ifdef CELL_IOMMU_REAL_UNMAP
+-	pte = 0;
+-#else
+-	/* spider bridge does PCI reads after freeing - insert a mapping
+-	 * to a scratch page instead of an invalid entry */
+-	pte = CBE_IOPTE_PP_R | CBE_IOPTE_M | CBE_IOPTE_SO_RW |
+-		__pa(window->iommu->pad_page) |
+-		(window->ioid & CBE_IOPTE_IOID_Mask);
+-#endif
+-
+-	io_pte = (unsigned long *)tbl->it_base + (index - tbl->it_offset);
+-
+-	for (i = 0; i < npages; i++)
+-		io_pte[i] = pte;
+-
+-	mb();
+-
+-	invalidate_tce_cache(window->iommu, io_pte, npages);
+-}
+-
+-static irqreturn_t ioc_interrupt(int irq, void *data)
+-{
+-	unsigned long stat, spf;
+-	struct cbe_iommu *iommu = data;
+-
+-	stat = in_be64(iommu->xlate_regs + IOC_IO_ExcpStat);
+-	spf = stat & IOC_IO_ExcpStat_SPF_Mask;
+-
+-	/* Might want to rate limit it */
+-	printk(KERN_ERR "iommu: DMA exception 0x%016lx\n", stat);
+-	printk(KERN_ERR "  V=%d, SPF=[%c%c], RW=%s, IOID=0x%04x\n",
+-	       !!(stat & IOC_IO_ExcpStat_V),
+-	       (spf == IOC_IO_ExcpStat_SPF_S) ? 'S' : ' ',
+-	       (spf == IOC_IO_ExcpStat_SPF_P) ? 'P' : ' ',
+-	       (stat & IOC_IO_ExcpStat_RW_Mask) ? "Read" : "Write",
+-	       (unsigned int)(stat & IOC_IO_ExcpStat_IOID_Mask));
+-	printk(KERN_ERR "  page=0x%016lx\n",
+-	       stat & IOC_IO_ExcpStat_ADDR_Mask);
+-
+-	/* clear interrupt */
+-	stat &= ~IOC_IO_ExcpStat_V;
+-	out_be64(iommu->xlate_regs + IOC_IO_ExcpStat, stat);
+-
+-	return IRQ_HANDLED;
+-}
+-
+-static int __init cell_iommu_find_ioc(int nid, unsigned long *base)
+-{
+-	struct device_node *np;
+-	struct resource r;
+-
+-	*base = 0;
+-
+-	/* First look for new style /be nodes */
+-	for_each_node_by_name(np, "ioc") {
+-		if (of_node_to_nid(np) != nid)
+-			continue;
+-		if (of_address_to_resource(np, 0, &r)) {
+-			printk(KERN_ERR "iommu: can't get address for %pOF\n",
+-			       np);
+-			continue;
+-		}
+-		*base = r.start;
+-		of_node_put(np);
+-		return 0;
+-	}
+-
+-	/* Ok, let's try the old way */
+-	for_each_node_by_type(np, "cpu") {
+-		const unsigned int *nidp;
+-		const unsigned long *tmp;
+-
+-		nidp = of_get_property(np, "node-id", NULL);
+-		if (nidp && *nidp == nid) {
+-			tmp = of_get_property(np, "ioc-translation", NULL);
+-			if (tmp) {
+-				*base = *tmp;
+-				of_node_put(np);
+-				return 0;
+-			}
+-		}
+-	}
+-
+-	return -ENODEV;
+-}
+-
+-static void __init cell_iommu_setup_stab(struct cbe_iommu *iommu,
+-				unsigned long dbase, unsigned long dsize,
+-				unsigned long fbase, unsigned long fsize)
+-{
+-	struct page *page;
+-	unsigned long segments, stab_size;
+-
+-	segments = max(dbase + dsize, fbase + fsize) >> IO_SEGMENT_SHIFT;
+-
+-	pr_debug("%s: iommu[%d]: segments: %lu\n",
+-			__func__, iommu->nid, segments);
+-
+-	/* set up the segment table */
+-	stab_size = segments * sizeof(unsigned long);
+-	page = alloc_pages_node(iommu->nid, GFP_KERNEL, get_order(stab_size));
+-	BUG_ON(!page);
+-	iommu->stab = page_address(page);
+-	memset(iommu->stab, 0, stab_size);
+-}
+-
+-static unsigned long *__init cell_iommu_alloc_ptab(struct cbe_iommu *iommu,
+-		unsigned long base, unsigned long size, unsigned long gap_base,
+-		unsigned long gap_size, unsigned long page_shift)
+-{
+-	struct page *page;
+-	int i;
+-	unsigned long reg, segments, pages_per_segment, ptab_size,
+-		      n_pte_pages, start_seg, *ptab;
+-
+-	start_seg = base >> IO_SEGMENT_SHIFT;
+-	segments  = size >> IO_SEGMENT_SHIFT;
+-	pages_per_segment = 1ull << IO_PAGENO_BITS(page_shift);
+-	/* PTEs for each segment must start on a 4K boundary */
+-	pages_per_segment = max(pages_per_segment,
+-				(1 << 12) / sizeof(unsigned long));
+-
+-	ptab_size = segments * pages_per_segment * sizeof(unsigned long);
+-	pr_debug("%s: iommu[%d]: ptab_size: %lu, order: %d\n", __func__,
+-			iommu->nid, ptab_size, get_order(ptab_size));
+-	page = alloc_pages_node(iommu->nid, GFP_KERNEL, get_order(ptab_size));
+-	BUG_ON(!page);
+-
+-	ptab = page_address(page);
+-	memset(ptab, 0, ptab_size);
+-
+-	/* number of 4K pages needed for a page table */
+-	n_pte_pages = (pages_per_segment * sizeof(unsigned long)) >> 12;
+-
+-	pr_debug("%s: iommu[%d]: stab at %p, ptab at %p, n_pte_pages: %lu\n",
+-			__func__, iommu->nid, iommu->stab, ptab,
+-			n_pte_pages);
+-
+-	/* initialise the STEs */
+-	reg = IOSTE_V | ((n_pte_pages - 1) << 5);
+-
+-	switch (page_shift) {
+-	case 12: reg |= IOSTE_PS_4K;  break;
+-	case 16: reg |= IOSTE_PS_64K; break;
+-	case 20: reg |= IOSTE_PS_1M;  break;
+-	case 24: reg |= IOSTE_PS_16M; break;
+-	default: BUG();
+-	}
+-
+-	gap_base = gap_base >> IO_SEGMENT_SHIFT;
+-	gap_size = gap_size >> IO_SEGMENT_SHIFT;
+-
+-	pr_debug("Setting up IOMMU stab:\n");
+-	for (i = start_seg; i < (start_seg + segments); i++) {
+-		if (i >= gap_base && i < (gap_base + gap_size)) {
+-			pr_debug("\toverlap at %d, skipping\n", i);
+-			continue;
+-		}
+-		iommu->stab[i] = reg | (__pa(ptab) + (n_pte_pages << 12) *
+-					(i - start_seg));
+-		pr_debug("\t[%d] 0x%016lx\n", i, iommu->stab[i]);
+-	}
+-
+-	return ptab;
+-}
+-
+-static void __init cell_iommu_enable_hardware(struct cbe_iommu *iommu)
+-{
+-	int ret;
+-	unsigned long reg, xlate_base;
+-	unsigned int virq;
+-
+-	if (cell_iommu_find_ioc(iommu->nid, &xlate_base))
+-		panic("%s: missing IOC register mappings for node %d\n",
+-		      __func__, iommu->nid);
+-
+-	iommu->xlate_regs = ioremap(xlate_base, IOC_Reg_Size);
+-	iommu->cmd_regs = iommu->xlate_regs + IOC_IOCmd_Offset;
+-
+-	/* ensure that the STEs have updated */
+-	mb();
+-
+-	/* setup interrupts for the iommu. */
+-	reg = in_be64(iommu->xlate_regs + IOC_IO_ExcpStat);
+-	out_be64(iommu->xlate_regs + IOC_IO_ExcpStat,
+-			reg & ~IOC_IO_ExcpStat_V);
+-	out_be64(iommu->xlate_regs + IOC_IO_ExcpMask,
+-			IOC_IO_ExcpMask_PFE | IOC_IO_ExcpMask_SFE);
+-
+-	virq = irq_create_mapping(NULL,
+-			IIC_IRQ_IOEX_ATI | (iommu->nid << IIC_IRQ_NODE_SHIFT));
+-	BUG_ON(!virq);
+-
+-	ret = request_irq(virq, ioc_interrupt, 0, iommu->name, iommu);
+-	BUG_ON(ret);
+-
+-	/* set the IOC segment table origin register (and turn on the iommu) */
+-	reg = IOC_IOST_Origin_E | __pa(iommu->stab) | IOC_IOST_Origin_HW;
+-	out_be64(iommu->xlate_regs + IOC_IOST_Origin, reg);
+-	in_be64(iommu->xlate_regs + IOC_IOST_Origin);
+-
+-	/* turn on IO translation */
+-	reg = in_be64(iommu->cmd_regs + IOC_IOCmd_Cfg) | IOC_IOCmd_Cfg_TE;
+-	out_be64(iommu->cmd_regs + IOC_IOCmd_Cfg, reg);
+-}
+-
+-static void __init cell_iommu_setup_hardware(struct cbe_iommu *iommu,
+-	unsigned long base, unsigned long size)
+-{
+-	cell_iommu_setup_stab(iommu, base, size, 0, 0);
+-	iommu->ptab = cell_iommu_alloc_ptab(iommu, base, size, 0, 0,
+-					    IOMMU_PAGE_SHIFT_4K);
+-	cell_iommu_enable_hardware(iommu);
+-}
+-
+-static inline u32 cell_iommu_get_ioid(struct device_node *np)
+-{
+-	const u32 *ioid;
+-
+-	ioid = of_get_property(np, "ioid", NULL);
+-	if (ioid == NULL) {
+-		printk(KERN_WARNING "iommu: missing ioid for %pOF using 0\n",
+-		       np);
+-		return 0;
+-	}
+-
+-	return *ioid;
+-}
+-
+-static struct iommu_table_ops cell_iommu_ops = {
+-	.set = tce_build_cell,
+-	.clear = tce_free_cell
+-};
+-
+-static struct iommu_window * __init
+-cell_iommu_setup_window(struct cbe_iommu *iommu, struct device_node *np,
+-			unsigned long offset, unsigned long size,
+-			unsigned long pte_offset)
+-{
+-	struct iommu_window *window;
+-	struct page *page;
+-	u32 ioid;
+-
+-	ioid = cell_iommu_get_ioid(np);
+-
+-	window = kzalloc_node(sizeof(*window), GFP_KERNEL, iommu->nid);
+-	BUG_ON(window == NULL);
+-
+-	window->offset = offset;
+-	window->size = size;
+-	window->ioid = ioid;
+-	window->iommu = iommu;
+-
+-	window->table.it_blocksize = 16;
+-	window->table.it_base = (unsigned long)iommu->ptab;
+-	window->table.it_index = iommu->nid;
+-	window->table.it_page_shift = IOMMU_PAGE_SHIFT_4K;
+-	window->table.it_offset =
+-		(offset >> window->table.it_page_shift) + pte_offset;
+-	window->table.it_size = size >> window->table.it_page_shift;
+-	window->table.it_ops = &cell_iommu_ops;
+-
+-	if (!iommu_init_table(&window->table, iommu->nid, 0, 0))
+-		panic("Failed to initialize iommu table");
+-
+-	pr_debug("\tioid      %d\n", window->ioid);
+-	pr_debug("\tblocksize %ld\n", window->table.it_blocksize);
+-	pr_debug("\tbase      0x%016lx\n", window->table.it_base);
+-	pr_debug("\toffset    0x%lx\n", window->table.it_offset);
+-	pr_debug("\tsize      %ld\n", window->table.it_size);
+-
+-	list_add(&window->list, &iommu->windows);
+-
+-	if (offset != 0)
+-		return window;
+-
+-	/* We need to map and reserve the first IOMMU page since it's used
+-	 * by the spider workaround. In theory, we only need to do that when
+-	 * running on spider but it doesn't really matter.
+-	 *
+-	 * This code also assumes that we have a window that starts at 0,
+-	 * which is the case on all spider based blades.
+-	 */
+-	page = alloc_pages_node(iommu->nid, GFP_KERNEL, 0);
+-	BUG_ON(!page);
+-	iommu->pad_page = page_address(page);
+-	clear_page(iommu->pad_page);
+-
+-	__set_bit(0, window->table.it_map);
+-	tce_build_cell(&window->table, window->table.it_offset, 1,
+-		       (unsigned long)iommu->pad_page, DMA_TO_DEVICE, 0);
+-
+-	return window;
+-}
+-
+-static struct cbe_iommu *cell_iommu_for_node(int nid)
+-{
+-	int i;
+-
+-	for (i = 0; i < cbe_nr_iommus; i++)
+-		if (iommus[i].nid == nid)
+-			return &iommus[i];
+-	return NULL;
+-}
+-
+-static unsigned long cell_dma_nommu_offset;
+-
+-static unsigned long dma_iommu_fixed_base;
+-static bool cell_iommu_enabled;
+-
+-/* iommu_fixed_is_weak is set if booted with iommu_fixed=weak */
+-bool iommu_fixed_is_weak;
+-
+-static struct iommu_table *cell_get_iommu_table(struct device *dev)
+-{
+-	struct iommu_window *window;
+-	struct cbe_iommu *iommu;
+-
+-	/* Current implementation uses the first window available in that
+-	 * node's iommu. We -might- do something smarter later though it may
+-	 * never be necessary
+-	 */
+-	iommu = cell_iommu_for_node(dev_to_node(dev));
+-	if (iommu == NULL || list_empty(&iommu->windows)) {
+-		dev_err(dev, "iommu: missing iommu for %pOF (node %d)\n",
+-		       dev->of_node, dev_to_node(dev));
+-		return NULL;
+-	}
+-	window = list_entry(iommu->windows.next, struct iommu_window, list);
+-
+-	return &window->table;
+-}
+-
+-static u64 cell_iommu_get_fixed_address(struct device *dev);
+-
+-static void cell_dma_dev_setup(struct device *dev)
+-{
+-	if (cell_iommu_enabled) {
+-		u64 addr = cell_iommu_get_fixed_address(dev);
+-
+-		if (addr != OF_BAD_ADDR)
+-			dev->archdata.dma_offset = addr + dma_iommu_fixed_base;
+-		set_iommu_table_base(dev, cell_get_iommu_table(dev));
+-	} else {
+-		dev->archdata.dma_offset = cell_dma_nommu_offset;
+-	}
+-}
+-
+-static void cell_pci_dma_dev_setup(struct pci_dev *dev)
+-{
+-	cell_dma_dev_setup(&dev->dev);
+-}
+-
+-static int cell_of_bus_notify(struct notifier_block *nb, unsigned long action,
+-			      void *data)
+-{
+-	struct device *dev = data;
+-
+-	/* We are only interested in device addition */
+-	if (action != BUS_NOTIFY_ADD_DEVICE)
+-		return 0;
+-
+-	if (cell_iommu_enabled)
+-		dev->dma_ops = &dma_iommu_ops;
+-	cell_dma_dev_setup(dev);
+-	return 0;
+-}
+-
+-static struct notifier_block cell_of_bus_notifier = {
+-	.notifier_call = cell_of_bus_notify
+-};
+-
+-static int __init cell_iommu_get_window(struct device_node *np,
+-					 unsigned long *base,
+-					 unsigned long *size)
+-{
+-	const __be32 *dma_window;
+-	unsigned long index;
+-
+-	/* Use ibm,dma-window if available, else, hard code ! */
+-	dma_window = of_get_property(np, "ibm,dma-window", NULL);
+-	if (dma_window == NULL) {
+-		*base = 0;
+-		*size = 0x80000000u;
+-		return -ENODEV;
+-	}
+-
+-	of_parse_dma_window(np, dma_window, &index, base, size);
+-	return 0;
+-}
+-
+-static struct cbe_iommu * __init cell_iommu_alloc(struct device_node *np)
+-{
+-	struct cbe_iommu *iommu;
+-	int nid, i;
+-
+-	/* Get node ID */
+-	nid = of_node_to_nid(np);
+-	if (nid < 0) {
+-		printk(KERN_ERR "iommu: failed to get node for %pOF\n",
+-		       np);
+-		return NULL;
+-	}
+-	pr_debug("iommu: setting up iommu for node %d (%pOF)\n",
+-		 nid, np);
+-
+-	/* XXX todo: If we can have multiple windows on the same IOMMU, which
+-	 * isn't the case today, we probably want here to check whether the
+-	 * iommu for that node is already setup.
+-	 * However, there might be issue with getting the size right so let's
+-	 * ignore that for now. We might want to completely get rid of the
+-	 * multiple window support since the cell iommu supports per-page ioids
+-	 */
+-
+-	if (cbe_nr_iommus >= NR_IOMMUS) {
+-		printk(KERN_ERR "iommu: too many IOMMUs detected ! (%pOF)\n",
+-		       np);
+-		return NULL;
+-	}
+-
+-	/* Init base fields */
+-	i = cbe_nr_iommus++;
+-	iommu = &iommus[i];
+-	iommu->stab = NULL;
+-	iommu->nid = nid;
+-	snprintf(iommu->name, sizeof(iommu->name), "iommu%d", i);
+-	INIT_LIST_HEAD(&iommu->windows);
+-
+-	return iommu;
+-}
+-
+-static void __init cell_iommu_init_one(struct device_node *np,
+-				       unsigned long offset)
+-{
+-	struct cbe_iommu *iommu;
+-	unsigned long base, size;
+-
+-	iommu = cell_iommu_alloc(np);
+-	if (!iommu)
+-		return;
+-
+-	/* Obtain a window for it */
+-	cell_iommu_get_window(np, &base, &size);
+-
+-	pr_debug("\ttranslating window 0x%lx...0x%lx\n",
+-		 base, base + size - 1);
+-
+-	/* Initialize the hardware */
+-	cell_iommu_setup_hardware(iommu, base, size);
+-
+-	/* Setup the iommu_table */
+-	cell_iommu_setup_window(iommu, np, base, size,
+-				offset >> IOMMU_PAGE_SHIFT_4K);
+-}
+-
+-static void __init cell_disable_iommus(void)
+-{
+-	int node;
+-	unsigned long base, val;
+-	void __iomem *xregs, *cregs;
+-
+-	/* Make sure IOC translation is disabled on all nodes */
+-	for_each_online_node(node) {
+-		if (cell_iommu_find_ioc(node, &base))
+-			continue;
+-		xregs = ioremap(base, IOC_Reg_Size);
+-		if (xregs == NULL)
+-			continue;
+-		cregs = xregs + IOC_IOCmd_Offset;
+-
+-		pr_debug("iommu: cleaning up iommu on node %d\n", node);
+-
+-		out_be64(xregs + IOC_IOST_Origin, 0);
+-		(void)in_be64(xregs + IOC_IOST_Origin);
+-		val = in_be64(cregs + IOC_IOCmd_Cfg);
+-		val &= ~IOC_IOCmd_Cfg_TE;
+-		out_be64(cregs + IOC_IOCmd_Cfg, val);
+-		(void)in_be64(cregs + IOC_IOCmd_Cfg);
+-
+-		iounmap(xregs);
+-	}
+-}
+-
+-static int __init cell_iommu_init_disabled(void)
+-{
+-	struct device_node *np = NULL;
+-	unsigned long base = 0, size;
+-
+-	/* When no iommu is present, we use direct DMA ops */
+-
+-	/* First make sure all IOC translation is turned off */
+-	cell_disable_iommus();
+-
+-	/* If we have no Axon, we set up the spider DMA magic offset */
+-	np = of_find_node_by_name(NULL, "axon");
+-	if (!np)
+-		cell_dma_nommu_offset = SPIDER_DMA_OFFSET;
+-	of_node_put(np);
+-
+-	/* Now we need to check to see where the memory is mapped
+-	 * in PCI space. We assume that all busses use the same dma
+-	 * window which is always the case so far on Cell, thus we
+-	 * pick up the first pci-internal node we can find and check
+-	 * the DMA window from there.
+-	 */
+-	for_each_node_by_name(np, "axon") {
+-		if (np->parent == NULL || np->parent->parent != NULL)
+-			continue;
+-		if (cell_iommu_get_window(np, &base, &size) == 0)
+-			break;
+-	}
+-	if (np == NULL) {
+-		for_each_node_by_name(np, "pci-internal") {
+-			if (np->parent == NULL || np->parent->parent != NULL)
+-				continue;
+-			if (cell_iommu_get_window(np, &base, &size) == 0)
+-				break;
+-		}
+-	}
+-	of_node_put(np);
+-
+-	/* If we found a DMA window, we check if it's big enough to enclose
+-	 * all of physical memory. If not, we force enable IOMMU
+-	 */
+-	if (np && size < memblock_end_of_DRAM()) {
+-		printk(KERN_WARNING "iommu: force-enabled, dma window"
+-		       " (%ldMB) smaller than total memory (%lldMB)\n",
+-		       size >> 20, memblock_end_of_DRAM() >> 20);
+-		return -ENODEV;
+-	}
+-
+-	cell_dma_nommu_offset += base;
+-
+-	if (cell_dma_nommu_offset != 0)
+-		cell_pci_controller_ops.dma_dev_setup = cell_pci_dma_dev_setup;
+-
+-	printk("iommu: disabled, direct DMA offset is 0x%lx\n",
+-	       cell_dma_nommu_offset);
+-
+-	return 0;
+-}
+-
+-/*
+- *  Fixed IOMMU mapping support
+- *
+- *  This code adds support for setting up a fixed IOMMU mapping on certain
+- *  cell machines. For 64-bit devices this avoids the performance overhead of
+- *  mapping and unmapping pages at runtime. 32-bit devices are unable to use
+- *  the fixed mapping.
+- *
+- *  The fixed mapping is established at boot, and maps all of physical memory
+- *  1:1 into device space at some offset. On machines with < 30 GB of memory
+- *  we setup the fixed mapping immediately above the normal IOMMU window.
+- *
+- *  For example a machine with 4GB of memory would end up with the normal
+- *  IOMMU window from 0-2GB and the fixed mapping window from 2GB to 6GB. In
+- *  this case a 64-bit device wishing to DMA to 1GB would be told to DMA to
+- *  3GB, plus any offset required by firmware. The firmware offset is encoded
+- *  in the "dma-ranges" property.
+- *
+- *  On machines with 30GB or more of memory, we are unable to place the fixed
+- *  mapping above the normal IOMMU window as we would run out of address space.
+- *  Instead we move the normal IOMMU window to coincide with the hash page
+- *  table, this region does not need to be part of the fixed mapping as no
+- *  device should ever be DMA'ing to it. We then setup the fixed mapping
+- *  from 0 to 32GB.
+- */
+-
+-static u64 cell_iommu_get_fixed_address(struct device *dev)
+-{
+-	u64 best_size, dev_addr = OF_BAD_ADDR;
+-	struct device_node *np;
+-	struct of_range_parser parser;
+-	struct of_range range;
+-
+-	/* We can be called for platform devices that have no of_node */
+-	np = of_node_get(dev->of_node);
+-	if (!np)
+-		goto out;
+-
+-	while ((np = of_get_next_parent(np))) {
+-		if (of_pci_dma_range_parser_init(&parser, np))
+-			continue;
+-
+-		if (of_range_count(&parser))
+-			break;
+-	}
+-
+-	if (!np) {
+-		dev_dbg(dev, "iommu: no dma-ranges found\n");
+-		goto out;
+-	}
+-
+-	best_size = 0;
+-	for_each_of_range(&parser, &range) {
+-		if (!range.cpu_addr)
+-			continue;
+-
+-		if (range.size > best_size) {
+-			best_size = range.size;
+-			dev_addr = range.bus_addr;
+-		}
+-	}
+-
+-	if (!best_size)
+-		dev_dbg(dev, "iommu: no suitable range found!\n");
+-
+-out:
+-	of_node_put(np);
+-
+-	return dev_addr;
+-}
+-
+-static bool cell_pci_iommu_bypass_supported(struct pci_dev *pdev, u64 mask)
+-{
+-	return mask == DMA_BIT_MASK(64) &&
+-		cell_iommu_get_fixed_address(&pdev->dev) != OF_BAD_ADDR;
+-}
+-
+-static void __init insert_16M_pte(unsigned long addr, unsigned long *ptab,
+-			   unsigned long base_pte)
+-{
+-	unsigned long segment, offset;
+-
+-	segment = addr >> IO_SEGMENT_SHIFT;
+-	offset = (addr >> 24) - (segment << IO_PAGENO_BITS(24));
+-	ptab = ptab + (segment * (1 << 12) / sizeof(unsigned long));
+-
+-	pr_debug("iommu: addr %lx ptab %p segment %lx offset %lx\n",
+-		  addr, ptab, segment, offset);
+-
+-	ptab[offset] = base_pte | (__pa(addr) & CBE_IOPTE_RPN_Mask);
+-}
+-
+-static void __init cell_iommu_setup_fixed_ptab(struct cbe_iommu *iommu,
+-	struct device_node *np, unsigned long dbase, unsigned long dsize,
+-	unsigned long fbase, unsigned long fsize)
+-{
+-	unsigned long base_pte, uaddr, ioaddr, *ptab;
+-
+-	ptab = cell_iommu_alloc_ptab(iommu, fbase, fsize, dbase, dsize, 24);
+-
+-	dma_iommu_fixed_base = fbase;
+-
+-	pr_debug("iommu: mapping 0x%lx pages from 0x%lx\n", fsize, fbase);
+-
+-	base_pte = CBE_IOPTE_PP_W | CBE_IOPTE_PP_R | CBE_IOPTE_M |
+-		(cell_iommu_get_ioid(np) & CBE_IOPTE_IOID_Mask);
+-
+-	if (iommu_fixed_is_weak)
+-		pr_info("IOMMU: Using weak ordering for fixed mapping\n");
+-	else {
+-		pr_info("IOMMU: Using strong ordering for fixed mapping\n");
+-		base_pte |= CBE_IOPTE_SO_RW;
+-	}
+-
+-	for (uaddr = 0; uaddr < fsize; uaddr += (1 << 24)) {
+-		/* Don't touch the dynamic region */
+-		ioaddr = uaddr + fbase;
+-		if (ioaddr >= dbase && ioaddr < (dbase + dsize)) {
+-			pr_debug("iommu: fixed/dynamic overlap, skipping\n");
+-			continue;
+-		}
+-
+-		insert_16M_pte(uaddr, ptab, base_pte);
+-	}
+-
+-	mb();
+-}
+-
+-static int __init cell_iommu_fixed_mapping_init(void)
+-{
+-	unsigned long dbase, dsize, fbase, fsize, hbase, hend;
+-	struct cbe_iommu *iommu;
+-	struct device_node *np;
+-
+-	/* The fixed mapping is only supported on axon machines */
+-	np = of_find_node_by_name(NULL, "axon");
+-	of_node_put(np);
+-
+-	if (!np) {
+-		pr_debug("iommu: fixed mapping disabled, no axons found\n");
+-		return -1;
+-	}
+-
+-	/* We must have dma-ranges properties for fixed mapping to work */
+-	np = of_find_node_with_property(NULL, "dma-ranges");
+-	of_node_put(np);
+-
+-	if (!np) {
+-		pr_debug("iommu: no dma-ranges found, no fixed mapping\n");
+-		return -1;
+-	}
+-
+-	/* The default setup is to have the fixed mapping sit after the
+-	 * dynamic region, so find the top of the largest IOMMU window
+-	 * on any axon, then add the size of RAM and that's our max value.
+-	 * If that is > 32GB we have to do other shennanigans.
+-	 */
+-	fbase = 0;
+-	for_each_node_by_name(np, "axon") {
+-		cell_iommu_get_window(np, &dbase, &dsize);
+-		fbase = max(fbase, dbase + dsize);
+-	}
+-
+-	fbase = ALIGN(fbase, 1 << IO_SEGMENT_SHIFT);
+-	fsize = memblock_phys_mem_size();
+-
+-	if ((fbase + fsize) <= 0x800000000ul)
+-		hbase = 0; /* use the device tree window */
+-	else {
+-		/* If we're over 32 GB we need to cheat. We can't map all of
+-		 * RAM with the fixed mapping, and also fit the dynamic
+-		 * region. So try to place the dynamic region where the hash
+-		 * table sits, drivers never need to DMA to it, we don't
+-		 * need a fixed mapping for that area.
+-		 */
+-		if (!htab_address) {
+-			pr_debug("iommu: htab is NULL, on LPAR? Huh?\n");
+-			return -1;
+-		}
+-		hbase = __pa(htab_address);
+-		hend  = hbase + htab_size_bytes;
+-
+-		/* The window must start and end on a segment boundary */
+-		if ((hbase != ALIGN(hbase, 1 << IO_SEGMENT_SHIFT)) ||
+-		    (hend != ALIGN(hend, 1 << IO_SEGMENT_SHIFT))) {
+-			pr_debug("iommu: hash window not segment aligned\n");
+-			return -1;
+-		}
+-
+-		/* Check the hash window fits inside the real DMA window */
+-		for_each_node_by_name(np, "axon") {
+-			cell_iommu_get_window(np, &dbase, &dsize);
+-
+-			if (hbase < dbase || (hend > (dbase + dsize))) {
+-				pr_debug("iommu: hash window doesn't fit in"
+-					 "real DMA window\n");
+-				of_node_put(np);
+-				return -1;
+-			}
+-		}
+-
+-		fbase = 0;
+-	}
+-
+-	/* Setup the dynamic regions */
+-	for_each_node_by_name(np, "axon") {
+-		iommu = cell_iommu_alloc(np);
+-		BUG_ON(!iommu);
+-
+-		if (hbase == 0)
+-			cell_iommu_get_window(np, &dbase, &dsize);
+-		else {
+-			dbase = hbase;
+-			dsize = htab_size_bytes;
+-		}
+-
+-		printk(KERN_DEBUG "iommu: node %d, dynamic window 0x%lx-0x%lx "
+-			"fixed window 0x%lx-0x%lx\n", iommu->nid, dbase,
+-			 dbase + dsize, fbase, fbase + fsize);
+-
+-		cell_iommu_setup_stab(iommu, dbase, dsize, fbase, fsize);
+-		iommu->ptab = cell_iommu_alloc_ptab(iommu, dbase, dsize, 0, 0,
+-						    IOMMU_PAGE_SHIFT_4K);
+-		cell_iommu_setup_fixed_ptab(iommu, np, dbase, dsize,
+-					     fbase, fsize);
+-		cell_iommu_enable_hardware(iommu);
+-		cell_iommu_setup_window(iommu, np, dbase, dsize, 0);
+-	}
+-
+-	cell_pci_controller_ops.iommu_bypass_supported =
+-		cell_pci_iommu_bypass_supported;
+-	return 0;
+-}
+-
+-static int iommu_fixed_disabled;
+-
+-static int __init setup_iommu_fixed(char *str)
+-{
+-	struct device_node *pciep;
+-
+-	if (strcmp(str, "off") == 0)
+-		iommu_fixed_disabled = 1;
+-
+-	/* If we can find a pcie-endpoint in the device tree assume that
+-	 * we're on a triblade or a CAB so by default the fixed mapping
+-	 * should be set to be weakly ordered; but only if the boot
+-	 * option WASN'T set for strong ordering
+-	 */
+-	pciep = of_find_node_by_type(NULL, "pcie-endpoint");
+-
+-	if (strcmp(str, "weak") == 0 || (pciep && strcmp(str, "strong") != 0))
+-		iommu_fixed_is_weak = true;
+-
+-	of_node_put(pciep);
+-
+-	return 1;
+-}
+-__setup("iommu_fixed=", setup_iommu_fixed);
+-
+-static int __init cell_iommu_init(void)
+-{
+-	struct device_node *np;
+-
+-	/* If IOMMU is disabled or we have little enough RAM to not need
+-	 * to enable it, we setup a direct mapping.
+-	 *
+-	 * Note: should we make sure we have the IOMMU actually disabled ?
+-	 */
+-	if (iommu_is_off ||
+-	    (!iommu_force_on && memblock_end_of_DRAM() <= 0x80000000ull))
+-		if (cell_iommu_init_disabled() == 0)
+-			goto bail;
+-
+-	/* Setup various callbacks */
+-	cell_pci_controller_ops.dma_dev_setup = cell_pci_dma_dev_setup;
+-
+-	if (!iommu_fixed_disabled && cell_iommu_fixed_mapping_init() == 0)
+-		goto done;
+-
+-	/* Create an iommu for each /axon node.  */
+-	for_each_node_by_name(np, "axon") {
+-		if (np->parent == NULL || np->parent->parent != NULL)
+-			continue;
+-		cell_iommu_init_one(np, 0);
+-	}
+-
+-	/* Create an iommu for each toplevel /pci-internal node for
+-	 * old hardware/firmware
+-	 */
+-	for_each_node_by_name(np, "pci-internal") {
+-		if (np->parent == NULL || np->parent->parent != NULL)
+-			continue;
+-		cell_iommu_init_one(np, SPIDER_DMA_OFFSET);
+-	}
+- done:
+-	/* Setup default PCI iommu ops */
+-	set_pci_dma_ops(&dma_iommu_ops);
+-	cell_iommu_enabled = true;
+- bail:
+-	/* Register callbacks on OF platform device addition/removal
+-	 * to handle linking them to the right DMA operations
+-	 */
+-	bus_register_notifier(&platform_bus_type, &cell_of_bus_notifier);
+-
+-	return 0;
+-}
+-machine_arch_initcall(cell, cell_iommu_init);
+diff --git a/arch/powerpc/platforms/cell/pervasive.c b/arch/powerpc/platforms/cell/pervasive.c
+deleted file mode 100644
+index 58d967ee38b3..000000000000
+--- a/arch/powerpc/platforms/cell/pervasive.c
++++ /dev/null
+@@ -1,125 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * CBE Pervasive Monitor and Debug
+- *
+- * (C) Copyright IBM Corporation 2005
+- *
+- * Authors: Maximino Aguilar (maguilar@us.ibm.com)
+- *          Michael N. Day (mnday@us.ibm.com)
+- */
+-
+-#undef DEBUG
+-
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+-#include <linux/percpu.h>
+-#include <linux/types.h>
+-#include <linux/kallsyms.h>
+-#include <linux/pgtable.h>
+-
+-#include <asm/io.h>
+-#include <asm/machdep.h>
+-#include <asm/reg.h>
+-#include <asm/cell-regs.h>
+-#include <asm/cpu_has_feature.h>
+-
+-#include "pervasive.h"
+-#include "ras.h"
+-
+-static void cbe_power_save(void)
+-{
+-	unsigned long ctrl, thread_switch_control;
+-
+-	/* Ensure our interrupt state is properly tracked */
+-	if (!prep_irq_for_idle())
+-		return;
+-
+-	ctrl = mfspr(SPRN_CTRLF);
+-
+-	/* Enable DEC and EE interrupt request */
+-	thread_switch_control  = mfspr(SPRN_TSC_CELL);
+-	thread_switch_control |= TSC_CELL_EE_ENABLE | TSC_CELL_EE_BOOST;
+-
+-	switch (ctrl & CTRL_CT) {
+-	case CTRL_CT0:
+-		thread_switch_control |= TSC_CELL_DEC_ENABLE_0;
+-		break;
+-	case CTRL_CT1:
+-		thread_switch_control |= TSC_CELL_DEC_ENABLE_1;
+-		break;
+-	default:
+-		printk(KERN_WARNING "%s: unknown configuration\n",
+-			__func__);
+-		break;
+-	}
+-	mtspr(SPRN_TSC_CELL, thread_switch_control);
+-
+-	/*
+-	 * go into low thread priority, medium priority will be
+-	 * restored for us after wake-up.
+-	 */
+-	HMT_low();
+-
+-	/*
+-	 * atomically disable thread execution and runlatch.
+-	 * External and Decrementer exceptions are still handled when the
+-	 * thread is disabled but now enter in cbe_system_reset_exception()
+-	 */
+-	ctrl &= ~(CTRL_RUNLATCH | CTRL_TE);
+-	mtspr(SPRN_CTRLT, ctrl);
+-
+-	/* Re-enable interrupts in MSR */
+-	__hard_irq_enable();
+-}
+-
+-static int cbe_system_reset_exception(struct pt_regs *regs)
+-{
+-	switch (regs->msr & SRR1_WAKEMASK) {
+-	case SRR1_WAKEDEC:
+-		set_dec(1);
+-		break;
+-	case SRR1_WAKEEE:
+-		/*
+-		 * Handle these when interrupts get re-enabled and we take
+-		 * them as regular exceptions. We are in an NMI context
+-		 * and can't handle these here.
+-		 */
+-		break;
+-	case SRR1_WAKEMT:
+-		return cbe_sysreset_hack();
+-#ifdef CONFIG_CBE_RAS
+-	case SRR1_WAKESYSERR:
+-		cbe_system_error_exception(regs);
+-		break;
+-	case SRR1_WAKETHERM:
+-		cbe_thermal_exception(regs);
+-		break;
+-#endif /* CONFIG_CBE_RAS */
+-	default:
+-		/* do system reset */
+-		return 0;
+-	}
+-	/* everything handled */
+-	return 1;
+-}
+-
+-void __init cbe_pervasive_init(void)
+-{
+-	int cpu;
+-
+-	if (!cpu_has_feature(CPU_FTR_PAUSE_ZERO))
+-		return;
+-
+-	for_each_possible_cpu(cpu) {
+-		struct cbe_pmd_regs __iomem *regs = cbe_get_cpu_pmd_regs(cpu);
+-		if (!regs)
+-			continue;
+-
+-		 /* Enable Pause(0) control bit */
+-		out_be64(&regs->pmcr, in_be64(&regs->pmcr) |
+-					    CBE_PMD_PAUSE_ZERO_CONTROL);
+-	}
+-
+-	ppc_md.power_save = cbe_power_save;
+-	ppc_md.system_reset_exception = cbe_system_reset_exception;
+-}
+diff --git a/arch/powerpc/platforms/cell/pervasive.h b/arch/powerpc/platforms/cell/pervasive.h
+deleted file mode 100644
+index 0da74ab10716..000000000000
+--- a/arch/powerpc/platforms/cell/pervasive.h
++++ /dev/null
+@@ -1,26 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/*
+- * Cell Pervasive Monitor and Debug interface and HW structures
+- *
+- * (C) Copyright IBM Corporation 2005
+- *
+- * Authors: Maximino Aguilar (maguilar@us.ibm.com)
+- *          David J. Erb (djerb@us.ibm.com)
+- */
+-
+-
+-#ifndef PERVASIVE_H
+-#define PERVASIVE_H
+-
+-extern void cbe_pervasive_init(void);
+-
+-#ifdef CONFIG_PPC_IBM_CELL_RESETBUTTON
+-extern int cbe_sysreset_hack(void);
+-#else
+-static inline int cbe_sysreset_hack(void)
+-{
+-	return 1;
+-}
+-#endif /* CONFIG_PPC_IBM_CELL_RESETBUTTON */
+-
+-#endif
+diff --git a/arch/powerpc/platforms/cell/pmu.c b/arch/powerpc/platforms/cell/pmu.c
+deleted file mode 100644
+index b207a7f99be5..000000000000
+--- a/arch/powerpc/platforms/cell/pmu.c
++++ /dev/null
+@@ -1,412 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Cell Broadband Engine Performance Monitor
+- *
+- * (C) Copyright IBM Corporation 2001,2006
+- *
+- * Author:
+- *    David Erb (djerb@us.ibm.com)
+- *    Kevin Corry (kevcorry@us.ibm.com)
+- */
+-
+-#include <linux/interrupt.h>
+-#include <linux/irqdomain.h>
+-#include <linux/types.h>
+-#include <linux/export.h>
+-#include <asm/io.h>
+-#include <asm/irq_regs.h>
+-#include <asm/machdep.h>
+-#include <asm/pmc.h>
+-#include <asm/reg.h>
+-#include <asm/spu.h>
+-#include <asm/cell-regs.h>
+-
+-#include "interrupt.h"
+-
+-/*
+- * When writing to write-only mmio addresses, save a shadow copy. All of the
+- * registers are 32-bit, but stored in the upper-half of a 64-bit field in
+- * pmd_regs.
+- */
+-
+-#define WRITE_WO_MMIO(reg, x)					\
+-	do {							\
+-		u32 _x = (x);					\
+-		struct cbe_pmd_regs __iomem *pmd_regs;		\
+-		struct cbe_pmd_shadow_regs *shadow_regs;	\
+-		pmd_regs = cbe_get_cpu_pmd_regs(cpu);		\
+-		shadow_regs = cbe_get_cpu_pmd_shadow_regs(cpu);	\
+-		out_be64(&(pmd_regs->reg), (((u64)_x) << 32));	\
+-		shadow_regs->reg = _x;				\
+-	} while (0)
+-
+-#define READ_SHADOW_REG(val, reg)				\
+-	do {							\
+-		struct cbe_pmd_shadow_regs *shadow_regs;	\
+-		shadow_regs = cbe_get_cpu_pmd_shadow_regs(cpu);	\
+-		(val) = shadow_regs->reg;			\
+-	} while (0)
+-
+-#define READ_MMIO_UPPER32(val, reg)				\
+-	do {							\
+-		struct cbe_pmd_regs __iomem *pmd_regs;		\
+-		pmd_regs = cbe_get_cpu_pmd_regs(cpu);		\
+-		(val) = (u32)(in_be64(&pmd_regs->reg) >> 32);	\
+-	} while (0)
+-
+-/*
+- * Physical counter registers.
+- * Each physical counter can act as one 32-bit counter or two 16-bit counters.
+- */
+-
+-u32 cbe_read_phys_ctr(u32 cpu, u32 phys_ctr)
+-{
+-	u32 val_in_latch, val = 0;
+-
+-	if (phys_ctr < NR_PHYS_CTRS) {
+-		READ_SHADOW_REG(val_in_latch, counter_value_in_latch);
+-
+-		/* Read the latch or the actual counter, whichever is newer. */
+-		if (val_in_latch & (1 << phys_ctr)) {
+-			READ_SHADOW_REG(val, pm_ctr[phys_ctr]);
+-		} else {
+-			READ_MMIO_UPPER32(val, pm_ctr[phys_ctr]);
+-		}
+-	}
+-
+-	return val;
+-}
+-EXPORT_SYMBOL_GPL(cbe_read_phys_ctr);
+-
+-void cbe_write_phys_ctr(u32 cpu, u32 phys_ctr, u32 val)
+-{
+-	struct cbe_pmd_shadow_regs *shadow_regs;
+-	u32 pm_ctrl;
+-
+-	if (phys_ctr < NR_PHYS_CTRS) {
+-		/* Writing to a counter only writes to a hardware latch.
+-		 * The new value is not propagated to the actual counter
+-		 * until the performance monitor is enabled.
+-		 */
+-		WRITE_WO_MMIO(pm_ctr[phys_ctr], val);
+-
+-		pm_ctrl = cbe_read_pm(cpu, pm_control);
+-		if (pm_ctrl & CBE_PM_ENABLE_PERF_MON) {
+-			/* The counters are already active, so we need to
+-			 * rewrite the pm_control register to "re-enable"
+-			 * the PMU.
+-			 */
+-			cbe_write_pm(cpu, pm_control, pm_ctrl);
+-		} else {
+-			shadow_regs = cbe_get_cpu_pmd_shadow_regs(cpu);
+-			shadow_regs->counter_value_in_latch |= (1 << phys_ctr);
+-		}
+-	}
+-}
+-EXPORT_SYMBOL_GPL(cbe_write_phys_ctr);
+-
+-/*
+- * "Logical" counter registers.
+- * These will read/write 16-bits or 32-bits depending on the
+- * current size of the counter. Counters 4 - 7 are always 16-bit.
+- */
+-
+-u32 cbe_read_ctr(u32 cpu, u32 ctr)
+-{
+-	u32 val;
+-	u32 phys_ctr = ctr & (NR_PHYS_CTRS - 1);
+-
+-	val = cbe_read_phys_ctr(cpu, phys_ctr);
+-
+-	if (cbe_get_ctr_size(cpu, phys_ctr) == 16)
+-		val = (ctr < NR_PHYS_CTRS) ? (val >> 16) : (val & 0xffff);
+-
+-	return val;
+-}
+-EXPORT_SYMBOL_GPL(cbe_read_ctr);
+-
+-void cbe_write_ctr(u32 cpu, u32 ctr, u32 val)
+-{
+-	u32 phys_ctr;
+-	u32 phys_val;
+-
+-	phys_ctr = ctr & (NR_PHYS_CTRS - 1);
+-
+-	if (cbe_get_ctr_size(cpu, phys_ctr) == 16) {
+-		phys_val = cbe_read_phys_ctr(cpu, phys_ctr);
+-
+-		if (ctr < NR_PHYS_CTRS)
+-			val = (val << 16) | (phys_val & 0xffff);
+-		else
+-			val = (val & 0xffff) | (phys_val & 0xffff0000);
+-	}
+-
+-	cbe_write_phys_ctr(cpu, phys_ctr, val);
+-}
+-EXPORT_SYMBOL_GPL(cbe_write_ctr);
+-
+-/*
+- * Counter-control registers.
+- * Each "logical" counter has a corresponding control register.
+- */
+-
+-u32 cbe_read_pm07_control(u32 cpu, u32 ctr)
+-{
+-	u32 pm07_control = 0;
+-
+-	if (ctr < NR_CTRS)
+-		READ_SHADOW_REG(pm07_control, pm07_control[ctr]);
+-
+-	return pm07_control;
+-}
+-EXPORT_SYMBOL_GPL(cbe_read_pm07_control);
+-
+-void cbe_write_pm07_control(u32 cpu, u32 ctr, u32 val)
+-{
+-	if (ctr < NR_CTRS)
+-		WRITE_WO_MMIO(pm07_control[ctr], val);
+-}
+-EXPORT_SYMBOL_GPL(cbe_write_pm07_control);
+-
+-/*
+- * Other PMU control registers. Most of these are write-only.
+- */
+-
+-u32 cbe_read_pm(u32 cpu, enum pm_reg_name reg)
+-{
+-	u32 val = 0;
+-
+-	switch (reg) {
+-	case group_control:
+-		READ_SHADOW_REG(val, group_control);
+-		break;
+-
+-	case debug_bus_control:
+-		READ_SHADOW_REG(val, debug_bus_control);
+-		break;
+-
+-	case trace_address:
+-		READ_MMIO_UPPER32(val, trace_address);
+-		break;
+-
+-	case ext_tr_timer:
+-		READ_SHADOW_REG(val, ext_tr_timer);
+-		break;
+-
+-	case pm_status:
+-		READ_MMIO_UPPER32(val, pm_status);
+-		break;
+-
+-	case pm_control:
+-		READ_SHADOW_REG(val, pm_control);
+-		break;
+-
+-	case pm_interval:
+-		READ_MMIO_UPPER32(val, pm_interval);
+-		break;
+-
+-	case pm_start_stop:
+-		READ_SHADOW_REG(val, pm_start_stop);
+-		break;
+-	}
+-
+-	return val;
+-}
+-EXPORT_SYMBOL_GPL(cbe_read_pm);
+-
+-void cbe_write_pm(u32 cpu, enum pm_reg_name reg, u32 val)
+-{
+-	switch (reg) {
+-	case group_control:
+-		WRITE_WO_MMIO(group_control, val);
+-		break;
+-
+-	case debug_bus_control:
+-		WRITE_WO_MMIO(debug_bus_control, val);
+-		break;
+-
+-	case trace_address:
+-		WRITE_WO_MMIO(trace_address, val);
+-		break;
+-
+-	case ext_tr_timer:
+-		WRITE_WO_MMIO(ext_tr_timer, val);
+-		break;
+-
+-	case pm_status:
+-		WRITE_WO_MMIO(pm_status, val);
+-		break;
+-
+-	case pm_control:
+-		WRITE_WO_MMIO(pm_control, val);
+-		break;
+-
+-	case pm_interval:
+-		WRITE_WO_MMIO(pm_interval, val);
+-		break;
+-
+-	case pm_start_stop:
+-		WRITE_WO_MMIO(pm_start_stop, val);
+-		break;
+-	}
+-}
+-EXPORT_SYMBOL_GPL(cbe_write_pm);
+-
+-/*
+- * Get/set the size of a physical counter to either 16 or 32 bits.
+- */
+-
+-u32 cbe_get_ctr_size(u32 cpu, u32 phys_ctr)
+-{
+-	u32 pm_ctrl, size = 0;
+-
+-	if (phys_ctr < NR_PHYS_CTRS) {
+-		pm_ctrl = cbe_read_pm(cpu, pm_control);
+-		size = (pm_ctrl & CBE_PM_16BIT_CTR(phys_ctr)) ? 16 : 32;
+-	}
+-
+-	return size;
+-}
+-EXPORT_SYMBOL_GPL(cbe_get_ctr_size);
+-
+-void cbe_set_ctr_size(u32 cpu, u32 phys_ctr, u32 ctr_size)
+-{
+-	u32 pm_ctrl;
+-
+-	if (phys_ctr < NR_PHYS_CTRS) {
+-		pm_ctrl = cbe_read_pm(cpu, pm_control);
+-		switch (ctr_size) {
+-		case 16:
+-			pm_ctrl |= CBE_PM_16BIT_CTR(phys_ctr);
+-			break;
+-
+-		case 32:
+-			pm_ctrl &= ~CBE_PM_16BIT_CTR(phys_ctr);
+-			break;
+-		}
+-		cbe_write_pm(cpu, pm_control, pm_ctrl);
+-	}
+-}
+-EXPORT_SYMBOL_GPL(cbe_set_ctr_size);
+-
+-/*
+- * Enable/disable the entire performance monitoring unit.
+- * When we enable the PMU, all pending writes to counters get committed.
+- */
+-
+-void cbe_enable_pm(u32 cpu)
+-{
+-	struct cbe_pmd_shadow_regs *shadow_regs;
+-	u32 pm_ctrl;
+-
+-	shadow_regs = cbe_get_cpu_pmd_shadow_regs(cpu);
+-	shadow_regs->counter_value_in_latch = 0;
+-
+-	pm_ctrl = cbe_read_pm(cpu, pm_control) | CBE_PM_ENABLE_PERF_MON;
+-	cbe_write_pm(cpu, pm_control, pm_ctrl);
+-}
+-EXPORT_SYMBOL_GPL(cbe_enable_pm);
+-
+-void cbe_disable_pm(u32 cpu)
+-{
+-	u32 pm_ctrl;
+-	pm_ctrl = cbe_read_pm(cpu, pm_control) & ~CBE_PM_ENABLE_PERF_MON;
+-	cbe_write_pm(cpu, pm_control, pm_ctrl);
+-}
+-EXPORT_SYMBOL_GPL(cbe_disable_pm);
+-
+-/*
+- * Reading from the trace_buffer.
+- * The trace buffer is two 64-bit registers. Reading from
+- * the second half automatically increments the trace_address.
+- */
+-
+-void cbe_read_trace_buffer(u32 cpu, u64 *buf)
+-{
+-	struct cbe_pmd_regs __iomem *pmd_regs = cbe_get_cpu_pmd_regs(cpu);
+-
+-	*buf++ = in_be64(&pmd_regs->trace_buffer_0_63);
+-	*buf++ = in_be64(&pmd_regs->trace_buffer_64_127);
+-}
+-EXPORT_SYMBOL_GPL(cbe_read_trace_buffer);
+-
+-/*
+- * Enabling/disabling interrupts for the entire performance monitoring unit.
+- */
+-
+-u32 cbe_get_and_clear_pm_interrupts(u32 cpu)
+-{
+-	/* Reading pm_status clears the interrupt bits. */
+-	return cbe_read_pm(cpu, pm_status);
+-}
+-EXPORT_SYMBOL_GPL(cbe_get_and_clear_pm_interrupts);
+-
+-void cbe_enable_pm_interrupts(u32 cpu, u32 thread, u32 mask)
+-{
+-	/* Set which node and thread will handle the next interrupt. */
+-	iic_set_interrupt_routing(cpu, thread, 0);
+-
+-	/* Enable the interrupt bits in the pm_status register. */
+-	if (mask)
+-		cbe_write_pm(cpu, pm_status, mask);
+-}
+-EXPORT_SYMBOL_GPL(cbe_enable_pm_interrupts);
+-
+-void cbe_disable_pm_interrupts(u32 cpu)
+-{
+-	cbe_get_and_clear_pm_interrupts(cpu);
+-	cbe_write_pm(cpu, pm_status, 0);
+-}
+-EXPORT_SYMBOL_GPL(cbe_disable_pm_interrupts);
+-
+-static irqreturn_t cbe_pm_irq(int irq, void *dev_id)
+-{
+-	perf_irq(get_irq_regs());
+-	return IRQ_HANDLED;
+-}
+-
+-static int __init cbe_init_pm_irq(void)
+-{
+-	unsigned int irq;
+-	int rc, node;
+-
+-	for_each_online_node(node) {
+-		irq = irq_create_mapping(NULL, IIC_IRQ_IOEX_PMI |
+-					       (node << IIC_IRQ_NODE_SHIFT));
+-		if (!irq) {
+-			printk("ERROR: Unable to allocate irq for node %d\n",
+-			       node);
+-			return -EINVAL;
+-		}
+-
+-		rc = request_irq(irq, cbe_pm_irq,
+-				 0, "cbe-pmu-0", NULL);
+-		if (rc) {
+-			printk("ERROR: Request for irq on node %d failed\n",
+-			       node);
+-			return rc;
+-		}
+-	}
+-
+-	return 0;
+-}
+-machine_arch_initcall(cell, cbe_init_pm_irq);
+-
+-void cbe_sync_irq(int node)
+-{
+-	unsigned int irq;
+-
+-	irq = irq_find_mapping(NULL,
+-			       IIC_IRQ_IOEX_PMI
+-			       | (node << IIC_IRQ_NODE_SHIFT));
+-
+-	if (!irq) {
+-		printk(KERN_WARNING "ERROR, unable to get existing irq %d " \
+-		"for node %d\n", irq, node);
+-		return;
+-	}
+-
+-	synchronize_irq(irq);
+-}
+-EXPORT_SYMBOL_GPL(cbe_sync_irq);
+-
+diff --git a/arch/powerpc/platforms/cell/ras.c b/arch/powerpc/platforms/cell/ras.c
+deleted file mode 100644
+index f6b87926530c..000000000000
+--- a/arch/powerpc/platforms/cell/ras.c
++++ /dev/null
+@@ -1,352 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * Copyright 2006-2008, IBM Corporation.
+- */
+-
+-#undef DEBUG
+-
+-#include <linux/types.h>
+-#include <linux/kernel.h>
+-#include <linux/slab.h>
+-#include <linux/smp.h>
+-#include <linux/reboot.h>
+-#include <linux/kexec.h>
+-#include <linux/crash_dump.h>
+-#include <linux/of.h>
+-
+-#include <asm/kexec.h>
+-#include <asm/reg.h>
+-#include <asm/io.h>
+-#include <asm/machdep.h>
+-#include <asm/rtas.h>
+-#include <asm/cell-regs.h>
+-
+-#include "ras.h"
+-#include "pervasive.h"
+-
+-static void dump_fir(int cpu)
+-{
+-	struct cbe_pmd_regs __iomem *pregs = cbe_get_cpu_pmd_regs(cpu);
+-	struct cbe_iic_regs __iomem *iregs = cbe_get_cpu_iic_regs(cpu);
+-
+-	if (pregs == NULL)
+-		return;
+-
+-	/* Todo: do some nicer parsing of bits and based on them go down
+-	 * to other sub-units FIRs and not only IIC
+-	 */
+-	printk(KERN_ERR "Global Checkstop FIR    : 0x%016llx\n",
+-	       in_be64(&pregs->checkstop_fir));
+-	printk(KERN_ERR "Global Recoverable FIR  : 0x%016llx\n",
+-	       in_be64(&pregs->checkstop_fir));
+-	printk(KERN_ERR "Global MachineCheck FIR : 0x%016llx\n",
+-	       in_be64(&pregs->spec_att_mchk_fir));
+-
+-	if (iregs == NULL)
+-		return;
+-	printk(KERN_ERR "IOC FIR                 : 0x%016llx\n",
+-	       in_be64(&iregs->ioc_fir));
+-
+-}
+-
+-DEFINE_INTERRUPT_HANDLER(cbe_system_error_exception)
+-{
+-	int cpu = smp_processor_id();
+-
+-	printk(KERN_ERR "System Error Interrupt on CPU %d !\n", cpu);
+-	dump_fir(cpu);
+-	dump_stack();
+-}
+-
+-DEFINE_INTERRUPT_HANDLER(cbe_maintenance_exception)
+-{
+-	int cpu = smp_processor_id();
+-
+-	/*
+-	 * Nothing implemented for the maintenance interrupt at this point
+-	 */
+-
+-	printk(KERN_ERR "Unhandled Maintenance interrupt on CPU %d !\n", cpu);
+-	dump_stack();
+-}
+-
+-DEFINE_INTERRUPT_HANDLER(cbe_thermal_exception)
+-{
+-	int cpu = smp_processor_id();
+-
+-	/*
+-	 * Nothing implemented for the thermal interrupt at this point
+-	 */
+-
+-	printk(KERN_ERR "Unhandled Thermal interrupt on CPU %d !\n", cpu);
+-	dump_stack();
+-}
+-
+-static int cbe_machine_check_handler(struct pt_regs *regs)
+-{
+-	int cpu = smp_processor_id();
+-
+-	printk(KERN_ERR "Machine Check Interrupt on CPU %d !\n", cpu);
+-	dump_fir(cpu);
+-
+-	/* No recovery from this code now, lets continue */
+-	return 0;
+-}
+-
+-struct ptcal_area {
+-	struct list_head list;
+-	int nid;
+-	int order;
+-	struct page *pages;
+-};
+-
+-static LIST_HEAD(ptcal_list);
+-
+-static int ptcal_start_tok, ptcal_stop_tok;
+-
+-static int __init cbe_ptcal_enable_on_node(int nid, int order)
+-{
+-	struct ptcal_area *area;
+-	int ret = -ENOMEM;
+-	unsigned long addr;
+-
+-	if (is_kdump_kernel())
+-		rtas_call(ptcal_stop_tok, 1, 1, NULL, nid);
+-
+-	area = kmalloc(sizeof(*area), GFP_KERNEL);
+-	if (!area)
+-		goto out_err;
+-
+-	area->nid = nid;
+-	area->order = order;
+-	area->pages = __alloc_pages_node(area->nid,
+-						GFP_KERNEL|__GFP_THISNODE,
+-						area->order);
+-
+-	if (!area->pages) {
+-		printk(KERN_WARNING "%s: no page on node %d\n",
+-			__func__, area->nid);
+-		goto out_free_area;
+-	}
+-
+-	/*
+-	 * We move the ptcal area to the middle of the allocated
+-	 * page, in order to avoid prefetches in memcpy and similar
+-	 * functions stepping on it.
+-	 */
+-	addr = __pa(page_address(area->pages)) + (PAGE_SIZE >> 1);
+-	printk(KERN_DEBUG "%s: enabling PTCAL on node %d address=0x%016lx\n",
+-			__func__, area->nid, addr);
+-
+-	ret = -EIO;
+-	if (rtas_call(ptcal_start_tok, 3, 1, NULL, area->nid,
+-				(unsigned int)(addr >> 32),
+-				(unsigned int)(addr & 0xffffffff))) {
+-		printk(KERN_ERR "%s: error enabling PTCAL on node %d!\n",
+-				__func__, nid);
+-		goto out_free_pages;
+-	}
+-
+-	list_add(&area->list, &ptcal_list);
+-
+-	return 0;
+-
+-out_free_pages:
+-	__free_pages(area->pages, area->order);
+-out_free_area:
+-	kfree(area);
+-out_err:
+-	return ret;
+-}
+-
+-static int __init cbe_ptcal_enable(void)
+-{
+-	const u32 *size;
+-	struct device_node *np;
+-	int order, found_mic = 0;
+-
+-	np = of_find_node_by_path("/rtas");
+-	if (!np)
+-		return -ENODEV;
+-
+-	size = of_get_property(np, "ibm,cbe-ptcal-size", NULL);
+-	if (!size) {
+-		of_node_put(np);
+-		return -ENODEV;
+-	}
+-
+-	pr_debug("%s: enabling PTCAL, size = 0x%x\n", __func__, *size);
+-	order = get_order(*size);
+-	of_node_put(np);
+-
+-	/* support for malta device trees, with be@/mic@ nodes */
+-	for_each_node_by_type(np, "mic-tm") {
+-		cbe_ptcal_enable_on_node(of_node_to_nid(np), order);
+-		found_mic = 1;
+-	}
+-
+-	if (found_mic)
+-		return 0;
+-
+-	/* support for older device tree - use cpu nodes */
+-	for_each_node_by_type(np, "cpu") {
+-		const u32 *nid = of_get_property(np, "node-id", NULL);
+-		if (!nid) {
+-			printk(KERN_ERR "%s: node %pOF is missing node-id?\n",
+-					__func__, np);
+-			continue;
+-		}
+-		cbe_ptcal_enable_on_node(*nid, order);
+-		found_mic = 1;
+-	}
+-
+-	return found_mic ? 0 : -ENODEV;
+-}
+-
+-static int cbe_ptcal_disable(void)
+-{
+-	struct ptcal_area *area, *tmp;
+-	int ret = 0;
+-
+-	pr_debug("%s: disabling PTCAL\n", __func__);
+-
+-	list_for_each_entry_safe(area, tmp, &ptcal_list, list) {
+-		/* disable ptcal on this node */
+-		if (rtas_call(ptcal_stop_tok, 1, 1, NULL, area->nid)) {
+-			printk(KERN_ERR "%s: error disabling PTCAL "
+-					"on node %d!\n", __func__,
+-					area->nid);
+-			ret = -EIO;
+-			continue;
+-		}
+-
+-		/* ensure we can access the PTCAL area */
+-		memset(page_address(area->pages), 0,
+-				1 << (area->order + PAGE_SHIFT));
+-
+-		/* clean up */
+-		list_del(&area->list);
+-		__free_pages(area->pages, area->order);
+-		kfree(area);
+-	}
+-
+-	return ret;
+-}
+-
+-static int cbe_ptcal_notify_reboot(struct notifier_block *nb,
+-		unsigned long code, void *data)
+-{
+-	return cbe_ptcal_disable();
+-}
+-
+-static void cbe_ptcal_crash_shutdown(void)
+-{
+-	cbe_ptcal_disable();
+-}
+-
+-static struct notifier_block cbe_ptcal_reboot_notifier = {
+-	.notifier_call = cbe_ptcal_notify_reboot
+-};
+-
+-#ifdef CONFIG_PPC_IBM_CELL_RESETBUTTON
+-static int sysreset_hack;
+-
+-static int __init cbe_sysreset_init(void)
+-{
+-	struct cbe_pmd_regs __iomem *regs;
+-
+-	sysreset_hack = of_machine_is_compatible("IBM,CBPLUS-1.0");
+-	if (!sysreset_hack)
+-		return 0;
+-
+-	regs = cbe_get_cpu_pmd_regs(0);
+-	if (!regs)
+-		return 0;
+-
+-	/* Enable JTAG system-reset hack */
+-	out_be32(&regs->fir_mode_reg,
+-		in_be32(&regs->fir_mode_reg) |
+-		CBE_PMD_FIR_MODE_M8);
+-
+-	return 0;
+-}
+-device_initcall(cbe_sysreset_init);
+-
+-int cbe_sysreset_hack(void)
+-{
+-	struct cbe_pmd_regs __iomem *regs;
+-
+-	/*
+-	 * The BMC can inject user triggered system reset exceptions,
+-	 * but cannot set the system reset reason in srr1,
+-	 * so check an extra register here.
+-	 */
+-	if (sysreset_hack && (smp_processor_id() == 0)) {
+-		regs = cbe_get_cpu_pmd_regs(0);
+-		if (!regs)
+-			return 0;
+-		if (in_be64(&regs->ras_esc_0) & 0x0000ffff) {
+-			out_be64(&regs->ras_esc_0, 0);
+-			return 0;
+-		}
+-	}
+-	return 1;
+-}
+-#endif /* CONFIG_PPC_IBM_CELL_RESETBUTTON */
+-
+-static int __init cbe_ptcal_init(void)
+-{
+-	int ret;
+-	ptcal_start_tok = rtas_function_token(RTAS_FN_IBM_CBE_START_PTCAL);
+-	ptcal_stop_tok = rtas_function_token(RTAS_FN_IBM_CBE_STOP_PTCAL);
+-
+-	if (ptcal_start_tok == RTAS_UNKNOWN_SERVICE
+-			|| ptcal_stop_tok == RTAS_UNKNOWN_SERVICE)
+-		return -ENODEV;
+-
+-	ret = register_reboot_notifier(&cbe_ptcal_reboot_notifier);
+-	if (ret)
+-		goto out1;
+-
+-	ret = crash_shutdown_register(&cbe_ptcal_crash_shutdown);
+-	if (ret)
+-		goto out2;
+-
+-	return cbe_ptcal_enable();
+-
+-out2:
+-	unregister_reboot_notifier(&cbe_ptcal_reboot_notifier);
+-out1:
+-	printk(KERN_ERR "Can't disable PTCAL, so not enabling\n");
+-	return ret;
+-}
+-
+-arch_initcall(cbe_ptcal_init);
+-
+-void __init cbe_ras_init(void)
+-{
+-	unsigned long hid0;
+-
+-	/*
+-	 * Enable System Error & thermal interrupts and wakeup conditions
+-	 */
+-
+-	hid0 = mfspr(SPRN_HID0);
+-	hid0 |= HID0_CBE_THERM_INT_EN | HID0_CBE_THERM_WAKEUP |
+-		HID0_CBE_SYSERR_INT_EN | HID0_CBE_SYSERR_WAKEUP;
+-	mtspr(SPRN_HID0, hid0);
+-	mb();
+-
+-	/*
+-	 * Install machine check handler. Leave setting of precise mode to
+-	 * what the firmware did for now
+-	 */
+-	ppc_md.machine_check_exception = cbe_machine_check_handler;
+-	mb();
+-
+-	/*
+-	 * For now, we assume that IOC_FIR is already set to forward some
+-	 * error conditions to the System Error handler. If that is not true
+-	 * then it will have to be fixed up here.
+-	 */
+-}
+diff --git a/arch/powerpc/platforms/cell/ras.h b/arch/powerpc/platforms/cell/ras.h
+deleted file mode 100644
+index 226dbd48efad..000000000000
+--- a/arch/powerpc/platforms/cell/ras.h
++++ /dev/null
+@@ -1,13 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef RAS_H
+-#define RAS_H
+-
+-#include <asm/interrupt.h>
+-
+-DECLARE_INTERRUPT_HANDLER(cbe_system_error_exception);
+-DECLARE_INTERRUPT_HANDLER(cbe_maintenance_exception);
+-DECLARE_INTERRUPT_HANDLER(cbe_thermal_exception);
+-
+-extern void cbe_ras_init(void);
+-
+-#endif /* RAS_H */
+diff --git a/arch/powerpc/platforms/cell/setup.c b/arch/powerpc/platforms/cell/setup.c
+deleted file mode 100644
+index f64a1ef98aa8..000000000000
+--- a/arch/powerpc/platforms/cell/setup.c
++++ /dev/null
+@@ -1,274 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- *  linux/arch/powerpc/platforms/cell/cell_setup.c
+- *
+- *  Copyright (C) 1995  Linus Torvalds
+- *  Adapted from 'alpha' version by Gary Thomas
+- *  Modified by Cort Dougan (cort@cs.nmt.edu)
+- *  Modified by PPC64 Team, IBM Corp
+- *  Modified by Cell Team, IBM Deutschland Entwicklung GmbH
+- */
+-#undef DEBUG
+-
+-#include <linux/sched.h>
+-#include <linux/kernel.h>
+-#include <linux/mm.h>
+-#include <linux/stddef.h>
+-#include <linux/export.h>
+-#include <linux/unistd.h>
+-#include <linux/user.h>
+-#include <linux/reboot.h>
+-#include <linux/init.h>
+-#include <linux/delay.h>
+-#include <linux/irq.h>
+-#include <linux/seq_file.h>
+-#include <linux/root_dev.h>
+-#include <linux/console.h>
+-#include <linux/mutex.h>
+-#include <linux/memory_hotplug.h>
+-#include <linux/of_platform.h>
+-#include <linux/platform_device.h>
+-
+-#include <asm/mmu.h>
+-#include <asm/processor.h>
+-#include <asm/io.h>
+-#include <asm/rtas.h>
+-#include <asm/pci-bridge.h>
+-#include <asm/iommu.h>
+-#include <asm/dma.h>
+-#include <asm/machdep.h>
+-#include <asm/time.h>
+-#include <asm/nvram.h>
+-#include <asm/cputable.h>
+-#include <asm/ppc-pci.h>
+-#include <asm/irq.h>
+-#include <asm/spu.h>
+-#include <asm/spu_priv1.h>
+-#include <asm/udbg.h>
+-#include <asm/mpic.h>
+-#include <asm/cell-regs.h>
+-#include <asm/io-workarounds.h>
+-
+-#include "cell.h"
+-#include "interrupt.h"
+-#include "pervasive.h"
+-#include "ras.h"
+-
+-#ifdef DEBUG
+-#define DBG(fmt...) udbg_printf(fmt)
+-#else
+-#define DBG(fmt...)
+-#endif
+-
+-static void cell_show_cpuinfo(struct seq_file *m)
+-{
+-	struct device_node *root;
+-	const char *model = "";
+-
+-	root = of_find_node_by_path("/");
+-	if (root)
+-		model = of_get_property(root, "model", NULL);
+-	seq_printf(m, "machine\t\t: CHRP %s\n", model);
+-	of_node_put(root);
+-}
+-
+-static void cell_progress(char *s, unsigned short hex)
+-{
+-	printk("*** %04x : %s\n", hex, s ? s : "");
+-}
+-
+-static void cell_fixup_pcie_rootcomplex(struct pci_dev *dev)
+-{
+-	struct pci_controller *hose;
+-	const char *s;
+-	int i;
+-
+-	if (!machine_is(cell))
+-		return;
+-
+-	/* We're searching for a direct child of the PHB */
+-	if (dev->bus->self != NULL || dev->devfn != 0)
+-		return;
+-
+-	hose = pci_bus_to_host(dev->bus);
+-	if (hose == NULL)
+-		return;
+-
+-	/* Only on PCIE */
+-	if (!of_device_is_compatible(hose->dn, "pciex"))
+-		return;
+-
+-	/* And only on axon */
+-	s = of_get_property(hose->dn, "model", NULL);
+-	if (!s || strcmp(s, "Axon") != 0)
+-		return;
+-
+-	for (i = 0; i < PCI_BRIDGE_RESOURCES; i++) {
+-		dev->resource[i].start = dev->resource[i].end = 0;
+-		dev->resource[i].flags = 0;
+-	}
+-
+-	printk(KERN_DEBUG "PCI: Hiding resources on Axon PCIE RC %s\n",
+-	       pci_name(dev));
+-}
+-DECLARE_PCI_FIXUP_HEADER(PCI_ANY_ID, PCI_ANY_ID, cell_fixup_pcie_rootcomplex);
+-
+-static int cell_setup_phb(struct pci_controller *phb)
+-{
+-	const char *model;
+-	struct device_node *np;
+-
+-	int rc = rtas_setup_phb(phb);
+-	if (rc)
+-		return rc;
+-
+-	phb->controller_ops = cell_pci_controller_ops;
+-
+-	np = phb->dn;
+-	model = of_get_property(np, "model", NULL);
+-	if (model == NULL || !of_node_name_eq(np, "pci"))
+-		return 0;
+-
+-	/* Setup workarounds for spider */
+-	if (strcmp(model, "Spider"))
+-		return 0;
+-
+-	iowa_register_bus(phb, &spiderpci_ops, &spiderpci_iowa_init,
+-				  (void *)SPIDER_PCI_REG_BASE);
+-	return 0;
+-}
+-
+-static const struct of_device_id cell_bus_ids[] __initconst = {
+-	{ .type = "soc", },
+-	{ .compatible = "soc", },
+-	{ .type = "spider", },
+-	{ .type = "axon", },
+-	{ .type = "plb5", },
+-	{ .type = "plb4", },
+-	{ .type = "opb", },
+-	{ .type = "ebc", },
+-	{},
+-};
+-
+-static int __init cell_publish_devices(void)
+-{
+-	struct device_node *root = of_find_node_by_path("/");
+-	struct device_node *np;
+-	int node;
+-
+-	/* Publish OF platform devices for southbridge IOs */
+-	of_platform_bus_probe(NULL, cell_bus_ids, NULL);
+-
+-	/* On spider based blades, we need to manually create the OF
+-	 * platform devices for the PCI host bridges
+-	 */
+-	for_each_child_of_node(root, np) {
+-		if (!of_node_is_type(np, "pci") && !of_node_is_type(np, "pciex"))
+-			continue;
+-		of_platform_device_create(np, NULL, NULL);
+-	}
+-
+-	of_node_put(root);
+-
+-	/* There is no device for the MIC memory controller, thus we create
+-	 * a platform device for it to attach the EDAC driver to.
+-	 */
+-	for_each_online_node(node) {
+-		if (cbe_get_cpu_mic_tm_regs(cbe_node_to_cpu(node)) == NULL)
+-			continue;
+-		platform_device_register_simple("cbe-mic", node, NULL, 0);
+-	}
+-
+-	return 0;
+-}
+-machine_subsys_initcall(cell, cell_publish_devices);
+-
+-static void __init mpic_init_IRQ(void)
+-{
+-	struct device_node *dn;
+-	struct mpic *mpic;
+-
+-	for_each_node_by_name(dn, "interrupt-controller") {
+-		if (!of_device_is_compatible(dn, "CBEA,platform-open-pic"))
+-			continue;
+-
+-		/* The MPIC driver will get everything it needs from the
+-		 * device-tree, just pass 0 to all arguments
+-		 */
+-		mpic = mpic_alloc(dn, 0, MPIC_SECONDARY | MPIC_NO_RESET,
+-				0, 0, " MPIC     ");
+-		if (mpic == NULL)
+-			continue;
+-		mpic_init(mpic);
+-	}
+-}
+-
+-
+-static void __init cell_init_irq(void)
+-{
+-	iic_init_IRQ();
+-	spider_init_IRQ();
+-	mpic_init_IRQ();
+-}
+-
+-static void __init cell_set_dabrx(void)
+-{
+-	mtspr(SPRN_DABRX, DABRX_KERNEL | DABRX_USER);
+-}
+-
+-static void __init cell_setup_arch(void)
+-{
+-#ifdef CONFIG_SPU_BASE
+-	spu_priv1_ops = &spu_priv1_mmio_ops;
+-	spu_management_ops = &spu_management_of_ops;
+-#endif
+-
+-	cbe_regs_init();
+-
+-	cell_set_dabrx();
+-
+-#ifdef CONFIG_CBE_RAS
+-	cbe_ras_init();
+-#endif
+-
+-#ifdef CONFIG_SMP
+-	smp_init_cell();
+-#endif
+-	/* init to some ~sane value until calibrate_delay() runs */
+-	loops_per_jiffy = 50000000;
+-
+-	/* Find and initialize PCI host bridges */
+-	init_pci_config_tokens();
+-
+-	cbe_pervasive_init();
+-
+-	mmio_nvram_init();
+-}
+-
+-static int __init cell_probe(void)
+-{
+-	if (!of_machine_is_compatible("IBM,CBEA") &&
+-	    !of_machine_is_compatible("IBM,CPBW-1.0"))
+-		return 0;
+-
+-	pm_power_off = rtas_power_off;
+-
+-	return 1;
+-}
+-
+-define_machine(cell) {
+-	.name			= "Cell",
+-	.probe			= cell_probe,
+-	.setup_arch		= cell_setup_arch,
+-	.show_cpuinfo		= cell_show_cpuinfo,
+-	.restart		= rtas_restart,
+-	.halt			= rtas_halt,
+-	.get_boot_time		= rtas_get_boot_time,
+-	.get_rtc_time		= rtas_get_rtc_time,
+-	.set_rtc_time		= rtas_set_rtc_time,
+-	.progress		= cell_progress,
+-	.init_IRQ       	= cell_init_irq,
+-	.pci_setup_phb		= cell_setup_phb,
+-};
+-
+-struct pci_controller_ops cell_pci_controller_ops;
+diff --git a/arch/powerpc/platforms/cell/smp.c b/arch/powerpc/platforms/cell/smp.c
+deleted file mode 100644
+index 0e8f20ecca08..000000000000
+--- a/arch/powerpc/platforms/cell/smp.c
++++ /dev/null
+@@ -1,162 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * SMP support for BPA machines.
+- *
+- * Dave Engebretsen, Peter Bergner, and
+- * Mike Corrigan {engebret|bergner|mikec}@us.ibm.com
+- *
+- * Plus various changes from other IBM teams...
+- */
+-
+-#undef DEBUG
+-
+-#include <linux/kernel.h>
+-#include <linux/sched.h>
+-#include <linux/smp.h>
+-#include <linux/interrupt.h>
+-#include <linux/delay.h>
+-#include <linux/init.h>
+-#include <linux/spinlock.h>
+-#include <linux/cache.h>
+-#include <linux/err.h>
+-#include <linux/device.h>
+-#include <linux/cpu.h>
+-#include <linux/pgtable.h>
+-
+-#include <asm/ptrace.h>
+-#include <linux/atomic.h>
+-#include <asm/irq.h>
+-#include <asm/page.h>
+-#include <asm/io.h>
+-#include <asm/smp.h>
+-#include <asm/paca.h>
+-#include <asm/machdep.h>
+-#include <asm/cputable.h>
+-#include <asm/firmware.h>
+-#include <asm/rtas.h>
+-#include <asm/cputhreads.h>
+-#include <asm/text-patching.h>
+-
+-#include "interrupt.h"
+-#include <asm/udbg.h>
+-
+-#ifdef DEBUG
+-#define DBG(fmt...) udbg_printf(fmt)
+-#else
+-#define DBG(fmt...)
+-#endif
+-
+-/*
+- * The Primary thread of each non-boot processor was started from the OF client
+- * interface by prom_hold_cpus and is spinning on secondary_hold_spinloop.
+- */
+-static cpumask_t of_spin_map;
+-
+-/**
+- * smp_startup_cpu() - start the given cpu
+- * @lcpu: Logical CPU ID of the CPU to be started.
+- *
+- * At boot time, there is nothing to do for primary threads which were
+- * started from Open Firmware.  For anything else, call RTAS with the
+- * appropriate start location.
+- *
+- * Returns:
+- *	0	- failure
+- *	1	- success
+- */
+-static inline int smp_startup_cpu(unsigned int lcpu)
+-{
+-	int status;
+-	unsigned long start_here =
+-			__pa(ppc_function_entry(generic_secondary_smp_init));
+-	unsigned int pcpu;
+-	int start_cpu;
+-
+-	if (cpumask_test_cpu(lcpu, &of_spin_map))
+-		/* Already started by OF and sitting in spin loop */
+-		return 1;
+-
+-	pcpu = get_hard_smp_processor_id(lcpu);
+-
+-	/*
+-	 * If the RTAS start-cpu token does not exist then presume the
+-	 * cpu is already spinning.
+-	 */
+-	start_cpu = rtas_function_token(RTAS_FN_START_CPU);
+-	if (start_cpu == RTAS_UNKNOWN_SERVICE)
+-		return 1;
+-
+-	status = rtas_call(start_cpu, 3, 1, NULL, pcpu, start_here, lcpu);
+-	if (status != 0) {
+-		printk(KERN_ERR "start-cpu failed: %i\n", status);
+-		return 0;
+-	}
+-
+-	return 1;
+-}
+-
+-static void smp_cell_setup_cpu(int cpu)
+-{
+-	if (cpu != boot_cpuid)
+-		iic_setup_cpu();
+-
+-	/*
+-	 * change default DABRX to allow user watchpoints
+-	 */
+-	mtspr(SPRN_DABRX, DABRX_KERNEL | DABRX_USER);
+-}
+-
+-static int smp_cell_kick_cpu(int nr)
+-{
+-	if (nr < 0 || nr >= nr_cpu_ids)
+-		return -EINVAL;
+-
+-	if (!smp_startup_cpu(nr))
+-		return -ENOENT;
+-
+-	/*
+-	 * The processor is currently spinning, waiting for the
+-	 * cpu_start field to become non-zero After we set cpu_start,
+-	 * the processor will continue on to secondary_start
+-	 */
+-	paca_ptrs[nr]->cpu_start = 1;
+-
+-	return 0;
+-}
+-
+-static struct smp_ops_t bpa_iic_smp_ops = {
+-	.message_pass	= iic_message_pass,
+-	.probe		= iic_request_IPIs,
+-	.kick_cpu	= smp_cell_kick_cpu,
+-	.setup_cpu	= smp_cell_setup_cpu,
+-	.cpu_bootable	= smp_generic_cpu_bootable,
+-};
+-
+-/* This is called very early */
+-void __init smp_init_cell(void)
+-{
+-	int i;
+-
+-	DBG(" -> smp_init_cell()\n");
+-
+-	smp_ops = &bpa_iic_smp_ops;
+-
+-	/* Mark threads which are still spinning in hold loops. */
+-	if (cpu_has_feature(CPU_FTR_SMT)) {
+-		for_each_present_cpu(i) {
+-			if (cpu_thread_in_core(i) == 0)
+-				cpumask_set_cpu(i, &of_spin_map);
+-		}
+-	} else
+-		cpumask_copy(&of_spin_map, cpu_present_mask);
+-
+-	cpumask_clear_cpu(boot_cpuid, &of_spin_map);
+-
+-	/* Non-lpar has additional take/give timebase */
+-	if (rtas_function_token(RTAS_FN_FREEZE_TIME_BASE) != RTAS_UNKNOWN_SERVICE) {
+-		smp_ops->give_timebase = rtas_give_timebase;
+-		smp_ops->take_timebase = rtas_take_timebase;
+-	}
+-
+-	DBG(" <- smp_init_cell()\n");
+-}
+diff --git a/arch/powerpc/platforms/cell/spider-pci.c b/arch/powerpc/platforms/cell/spider-pci.c
+deleted file mode 100644
+index 68439445b1c3..000000000000
+--- a/arch/powerpc/platforms/cell/spider-pci.c
++++ /dev/null
+@@ -1,170 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * IO workarounds for PCI on Celleb/Cell platform
+- *
+- * (C) Copyright 2006-2007 TOSHIBA CORPORATION
+- */
+-
+-#undef DEBUG
+-
+-#include <linux/kernel.h>
+-#include <linux/of_address.h>
+-#include <linux/slab.h>
+-#include <linux/io.h>
+-
+-#include <asm/ppc-pci.h>
+-#include <asm/pci-bridge.h>
+-#include <asm/io-workarounds.h>
+-
+-#define SPIDER_PCI_DISABLE_PREFETCH
+-
+-struct spiderpci_iowa_private {
+-	void __iomem *regs;
+-};
+-
+-static void spiderpci_io_flush(struct iowa_bus *bus)
+-{
+-	struct spiderpci_iowa_private *priv;
+-
+-	priv = bus->private;
+-	in_be32(priv->regs + SPIDER_PCI_DUMMY_READ);
+-	iosync();
+-}
+-
+-#define SPIDER_PCI_MMIO_READ(name, ret)					\
+-static ret spiderpci_##name(const PCI_IO_ADDR addr)			\
+-{									\
+-	ret val = __do_##name(addr);					\
+-	spiderpci_io_flush(iowa_mem_find_bus(addr));			\
+-	return val;							\
+-}
+-
+-#define SPIDER_PCI_MMIO_READ_STR(name)					\
+-static void spiderpci_##name(const PCI_IO_ADDR addr, void *buf, 	\
+-			     unsigned long count)			\
+-{									\
+-	__do_##name(addr, buf, count);					\
+-	spiderpci_io_flush(iowa_mem_find_bus(addr));			\
+-}
+-
+-SPIDER_PCI_MMIO_READ(readb, u8)
+-SPIDER_PCI_MMIO_READ(readw, u16)
+-SPIDER_PCI_MMIO_READ(readl, u32)
+-SPIDER_PCI_MMIO_READ(readq, u64)
+-SPIDER_PCI_MMIO_READ(readw_be, u16)
+-SPIDER_PCI_MMIO_READ(readl_be, u32)
+-SPIDER_PCI_MMIO_READ(readq_be, u64)
+-SPIDER_PCI_MMIO_READ_STR(readsb)
+-SPIDER_PCI_MMIO_READ_STR(readsw)
+-SPIDER_PCI_MMIO_READ_STR(readsl)
+-
+-static void spiderpci_memcpy_fromio(void *dest, const PCI_IO_ADDR src,
+-				    unsigned long n)
+-{
+-	__do_memcpy_fromio(dest, src, n);
+-	spiderpci_io_flush(iowa_mem_find_bus(src));
+-}
+-
+-static int __init spiderpci_pci_setup_chip(struct pci_controller *phb,
+-					   void __iomem *regs)
+-{
+-	void *dummy_page_va;
+-	dma_addr_t dummy_page_da;
+-
+-#ifdef SPIDER_PCI_DISABLE_PREFETCH
+-	u32 val = in_be32(regs + SPIDER_PCI_VCI_CNTL_STAT);
+-	pr_debug("SPIDER_IOWA:PVCI_Control_Status was 0x%08x\n", val);
+-	out_be32(regs + SPIDER_PCI_VCI_CNTL_STAT, val | 0x8);
+-#endif /* SPIDER_PCI_DISABLE_PREFETCH */
+-
+-	/* setup dummy read */
+-	/*
+-	 * On CellBlade, we can't know that which XDR memory is used by
+-	 * kmalloc() to allocate dummy_page_va.
+-	 * In order to improve the performance, the XDR which is used to
+-	 * allocate dummy_page_va is the nearest the spider-pci.
+-	 * We have to select the CBE which is the nearest the spider-pci
+-	 * to allocate memory from the best XDR, but I don't know that
+-	 * how to do.
+-	 *
+-	 * Celleb does not have this problem, because it has only one XDR.
+-	 */
+-	dummy_page_va = kmalloc(PAGE_SIZE, GFP_KERNEL);
+-	if (!dummy_page_va) {
+-		pr_err("SPIDERPCI-IOWA:Alloc dummy_page_va failed.\n");
+-		return -1;
+-	}
+-
+-	dummy_page_da = dma_map_single(phb->parent, dummy_page_va,
+-				       PAGE_SIZE, DMA_FROM_DEVICE);
+-	if (dma_mapping_error(phb->parent, dummy_page_da)) {
+-		pr_err("SPIDER-IOWA:Map dummy page filed.\n");
+-		kfree(dummy_page_va);
+-		return -1;
+-	}
+-
+-	out_be32(regs + SPIDER_PCI_DUMMY_READ_BASE, dummy_page_da);
+-
+-	return 0;
+-}
+-
+-int __init spiderpci_iowa_init(struct iowa_bus *bus, void *data)
+-{
+-	void __iomem *regs = NULL;
+-	struct spiderpci_iowa_private *priv;
+-	struct device_node *np = bus->phb->dn;
+-	struct resource r;
+-	unsigned long offset = (unsigned long)data;
+-
+-	pr_debug("SPIDERPCI-IOWA:Bus initialize for spider(%pOF)\n",
+-		 np);
+-
+-	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
+-	if (!priv) {
+-		pr_err("SPIDERPCI-IOWA:"
+-		       "Can't allocate struct spiderpci_iowa_private");
+-		return -1;
+-	}
+-
+-	if (of_address_to_resource(np, 0, &r)) {
+-		pr_err("SPIDERPCI-IOWA:Can't get resource.\n");
+-		goto error;
+-	}
+-
+-	regs = ioremap(r.start + offset, SPIDER_PCI_REG_SIZE);
+-	if (!regs) {
+-		pr_err("SPIDERPCI-IOWA:ioremap failed.\n");
+-		goto error;
+-	}
+-	priv->regs = regs;
+-	bus->private = priv;
+-
+-	if (spiderpci_pci_setup_chip(bus->phb, regs))
+-		goto error;
+-
+-	return 0;
+-
+-error:
+-	kfree(priv);
+-	bus->private = NULL;
+-
+-	if (regs)
+-		iounmap(regs);
+-
+-	return -1;
+-}
+-
+-struct ppc_pci_io spiderpci_ops = {
+-	.readb = spiderpci_readb,
+-	.readw = spiderpci_readw,
+-	.readl = spiderpci_readl,
+-	.readq = spiderpci_readq,
+-	.readw_be = spiderpci_readw_be,
+-	.readl_be = spiderpci_readl_be,
+-	.readq_be = spiderpci_readq_be,
+-	.readsb = spiderpci_readsb,
+-	.readsw = spiderpci_readsw,
+-	.readsl = spiderpci_readsl,
+-	.memcpy_fromio = spiderpci_memcpy_fromio,
+-};
+-
+diff --git a/arch/powerpc/platforms/cell/spider-pic.c b/arch/powerpc/platforms/cell/spider-pic.c
+deleted file mode 100644
+index 11df737c8c6a..000000000000
+--- a/arch/powerpc/platforms/cell/spider-pic.c
++++ /dev/null
+@@ -1,344 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-/*
+- * External Interrupt Controller on Spider South Bridge
+- *
+- * (C) Copyright IBM Deutschland Entwicklung GmbH 2005
+- *
+- * Author: Arnd Bergmann <arndb@de.ibm.com>
+- */
+-
+-#include <linux/interrupt.h>
+-#include <linux/irq.h>
+-#include <linux/ioport.h>
+-#include <linux/of_address.h>
+-#include <linux/of_irq.h>
+-#include <linux/pgtable.h>
+-
+-#include <asm/io.h>
+-
+-#include "interrupt.h"
+-
+-/* register layout taken from Spider spec, table 7.4-4 */
+-enum {
+-	TIR_DEN		= 0x004, /* Detection Enable Register */
+-	TIR_MSK		= 0x084, /* Mask Level Register */
+-	TIR_EDC		= 0x0c0, /* Edge Detection Clear Register */
+-	TIR_PNDA	= 0x100, /* Pending Register A */
+-	TIR_PNDB	= 0x104, /* Pending Register B */
+-	TIR_CS		= 0x144, /* Current Status Register */
+-	TIR_LCSA	= 0x150, /* Level Current Status Register A */
+-	TIR_LCSB	= 0x154, /* Level Current Status Register B */
+-	TIR_LCSC	= 0x158, /* Level Current Status Register C */
+-	TIR_LCSD	= 0x15c, /* Level Current Status Register D */
+-	TIR_CFGA	= 0x200, /* Setting Register A0 */
+-	TIR_CFGB	= 0x204, /* Setting Register B0 */
+-			/* 0x208 ... 0x3ff Setting Register An/Bn */
+-	TIR_PPNDA	= 0x400, /* Packet Pending Register A */
+-	TIR_PPNDB	= 0x404, /* Packet Pending Register B */
+-	TIR_PIERA	= 0x408, /* Packet Output Error Register A */
+-	TIR_PIERB	= 0x40c, /* Packet Output Error Register B */
+-	TIR_PIEN	= 0x444, /* Packet Output Enable Register */
+-	TIR_PIPND	= 0x454, /* Packet Output Pending Register */
+-	TIRDID		= 0x484, /* Spider Device ID Register */
+-	REISTIM		= 0x500, /* Reissue Command Timeout Time Setting */
+-	REISTIMEN	= 0x504, /* Reissue Command Timeout Setting */
+-	REISWAITEN	= 0x508, /* Reissue Wait Control*/
+-};
+-
+-#define SPIDER_CHIP_COUNT	4
+-#define SPIDER_SRC_COUNT	64
+-#define SPIDER_IRQ_INVALID	63
+-
+-struct spider_pic {
+-	struct irq_domain		*host;
+-	void __iomem		*regs;
+-	unsigned int		node_id;
+-};
+-static struct spider_pic spider_pics[SPIDER_CHIP_COUNT];
+-
+-static struct spider_pic *spider_irq_data_to_pic(struct irq_data *d)
+-{
+-	return irq_data_get_irq_chip_data(d);
+-}
+-
+-static void __iomem *spider_get_irq_config(struct spider_pic *pic,
+-					   unsigned int src)
+-{
+-	return pic->regs + TIR_CFGA + 8 * src;
+-}
+-
+-static void spider_unmask_irq(struct irq_data *d)
+-{
+-	struct spider_pic *pic = spider_irq_data_to_pic(d);
+-	void __iomem *cfg = spider_get_irq_config(pic, irqd_to_hwirq(d));
+-
+-	out_be32(cfg, in_be32(cfg) | 0x30000000u);
+-}
+-
+-static void spider_mask_irq(struct irq_data *d)
+-{
+-	struct spider_pic *pic = spider_irq_data_to_pic(d);
+-	void __iomem *cfg = spider_get_irq_config(pic, irqd_to_hwirq(d));
+-
+-	out_be32(cfg, in_be32(cfg) & ~0x30000000u);
+-}
+-
+-static void spider_ack_irq(struct irq_data *d)
+-{
+-	struct spider_pic *pic = spider_irq_data_to_pic(d);
+-	unsigned int src = irqd_to_hwirq(d);
+-
+-	/* Reset edge detection logic if necessary
+-	 */
+-	if (irqd_is_level_type(d))
+-		return;
+-
+-	/* Only interrupts 47 to 50 can be set to edge */
+-	if (src < 47 || src > 50)
+-		return;
+-
+-	/* Perform the clear of the edge logic */
+-	out_be32(pic->regs + TIR_EDC, 0x100 | (src & 0xf));
+-}
+-
+-static int spider_set_irq_type(struct irq_data *d, unsigned int type)
+-{
+-	unsigned int sense = type & IRQ_TYPE_SENSE_MASK;
+-	struct spider_pic *pic = spider_irq_data_to_pic(d);
+-	unsigned int hw = irqd_to_hwirq(d);
+-	void __iomem *cfg = spider_get_irq_config(pic, hw);
+-	u32 old_mask;
+-	u32 ic;
+-
+-	/* Note that only level high is supported for most interrupts */
+-	if (sense != IRQ_TYPE_NONE && sense != IRQ_TYPE_LEVEL_HIGH &&
+-	    (hw < 47 || hw > 50))
+-		return -EINVAL;
+-
+-	/* Decode sense type */
+-	switch(sense) {
+-	case IRQ_TYPE_EDGE_RISING:
+-		ic = 0x3;
+-		break;
+-	case IRQ_TYPE_EDGE_FALLING:
+-		ic = 0x2;
+-		break;
+-	case IRQ_TYPE_LEVEL_LOW:
+-		ic = 0x0;
+-		break;
+-	case IRQ_TYPE_LEVEL_HIGH:
+-	case IRQ_TYPE_NONE:
+-		ic = 0x1;
+-		break;
+-	default:
+-		return -EINVAL;
+-	}
+-
+-	/* Configure the source. One gross hack that was there before and
+-	 * that I've kept around is the priority to the BE which I set to
+-	 * be the same as the interrupt source number. I don't know whether
+-	 * that's supposed to make any kind of sense however, we'll have to
+-	 * decide that, but for now, I'm not changing the behaviour.
+-	 */
+-	old_mask = in_be32(cfg) & 0x30000000u;
+-	out_be32(cfg, old_mask | (ic << 24) | (0x7 << 16) |
+-		 (pic->node_id << 4) | 0xe);
+-	out_be32(cfg + 4, (0x2 << 16) | (hw & 0xff));
+-
+-	return 0;
+-}
+-
+-static struct irq_chip spider_pic = {
+-	.name = "SPIDER",
+-	.irq_unmask = spider_unmask_irq,
+-	.irq_mask = spider_mask_irq,
+-	.irq_ack = spider_ack_irq,
+-	.irq_set_type = spider_set_irq_type,
+-};
+-
+-static int spider_host_map(struct irq_domain *h, unsigned int virq,
+-			irq_hw_number_t hw)
+-{
+-	irq_set_chip_data(virq, h->host_data);
+-	irq_set_chip_and_handler(virq, &spider_pic, handle_level_irq);
+-
+-	/* Set default irq type */
+-	irq_set_irq_type(virq, IRQ_TYPE_NONE);
+-
+-	return 0;
+-}
+-
+-static int spider_host_xlate(struct irq_domain *h, struct device_node *ct,
+-			   const u32 *intspec, unsigned int intsize,
+-			   irq_hw_number_t *out_hwirq, unsigned int *out_flags)
+-
+-{
+-	/* Spider interrupts have 2 cells, first is the interrupt source,
+-	 * second, well, I don't know for sure yet ... We mask the top bits
+-	 * because old device-trees encode a node number in there
+-	 */
+-	*out_hwirq = intspec[0] & 0x3f;
+-	*out_flags = IRQ_TYPE_LEVEL_HIGH;
+-	return 0;
+-}
+-
+-static const struct irq_domain_ops spider_host_ops = {
+-	.map = spider_host_map,
+-	.xlate = spider_host_xlate,
+-};
+-
+-static void spider_irq_cascade(struct irq_desc *desc)
+-{
+-	struct irq_chip *chip = irq_desc_get_chip(desc);
+-	struct spider_pic *pic = irq_desc_get_handler_data(desc);
+-	unsigned int cs;
+-
+-	cs = in_be32(pic->regs + TIR_CS) >> 24;
+-	if (cs != SPIDER_IRQ_INVALID)
+-		generic_handle_domain_irq(pic->host, cs);
+-
+-	chip->irq_eoi(&desc->irq_data);
+-}
+-
+-/* For hooking up the cascade we have a problem. Our device-tree is
+- * crap and we don't know on which BE iic interrupt we are hooked on at
+- * least not the "standard" way. We can reconstitute it based on two
+- * informations though: which BE node we are connected to and whether
+- * we are connected to IOIF0 or IOIF1. Right now, we really only care
+- * about the IBM cell blade and we know that its firmware gives us an
+- * interrupt-map property which is pretty strange.
+- */
+-static unsigned int __init spider_find_cascade_and_node(struct spider_pic *pic)
+-{
+-	unsigned int virq;
+-	const u32 *imap, *tmp;
+-	int imaplen, intsize, unit;
+-	struct device_node *iic;
+-	struct device_node *of_node;
+-
+-	of_node = irq_domain_get_of_node(pic->host);
+-
+-	/* First, we check whether we have a real "interrupts" in the device
+-	 * tree in case the device-tree is ever fixed
+-	 */
+-	virq = irq_of_parse_and_map(of_node, 0);
+-	if (virq)
+-		return virq;
+-
+-	/* Now do the horrible hacks */
+-	tmp = of_get_property(of_node, "#interrupt-cells", NULL);
+-	if (tmp == NULL)
+-		return 0;
+-	intsize = *tmp;
+-	imap = of_get_property(of_node, "interrupt-map", &imaplen);
+-	if (imap == NULL || imaplen < (intsize + 1))
+-		return 0;
+-	iic = of_find_node_by_phandle(imap[intsize]);
+-	if (iic == NULL)
+-		return 0;
+-	imap += intsize + 1;
+-	tmp = of_get_property(iic, "#interrupt-cells", NULL);
+-	if (tmp == NULL) {
+-		of_node_put(iic);
+-		return 0;
+-	}
+-	intsize = *tmp;
+-	/* Assume unit is last entry of interrupt specifier */
+-	unit = imap[intsize - 1];
+-	/* Ok, we have a unit, now let's try to get the node */
+-	tmp = of_get_property(iic, "ibm,interrupt-server-ranges", NULL);
+-	if (tmp == NULL) {
+-		of_node_put(iic);
+-		return 0;
+-	}
+-	/* ugly as hell but works for now */
+-	pic->node_id = (*tmp) >> 1;
+-	of_node_put(iic);
+-
+-	/* Ok, now let's get cracking. You may ask me why I just didn't match
+-	 * the iic host from the iic OF node, but that way I'm still compatible
+-	 * with really really old old firmwares for which we don't have a node
+-	 */
+-	/* Manufacture an IIC interrupt number of class 2 */
+-	virq = irq_create_mapping(NULL,
+-				  (pic->node_id << IIC_IRQ_NODE_SHIFT) |
+-				  (2 << IIC_IRQ_CLASS_SHIFT) |
+-				  unit);
+-	if (!virq)
+-		printk(KERN_ERR "spider_pic: failed to map cascade !");
+-	return virq;
+-}
+-
+-
+-static void __init spider_init_one(struct device_node *of_node, int chip,
+-				   unsigned long addr)
+-{
+-	struct spider_pic *pic = &spider_pics[chip];
+-	int i, virq;
+-
+-	/* Map registers */
+-	pic->regs = ioremap(addr, 0x1000);
+-	if (pic->regs == NULL)
+-		panic("spider_pic: can't map registers !");
+-
+-	/* Allocate a host */
+-	pic->host = irq_domain_add_linear(of_node, SPIDER_SRC_COUNT,
+-					  &spider_host_ops, pic);
+-	if (pic->host == NULL)
+-		panic("spider_pic: can't allocate irq host !");
+-
+-	/* Go through all sources and disable them */
+-	for (i = 0; i < SPIDER_SRC_COUNT; i++) {
+-		void __iomem *cfg = pic->regs + TIR_CFGA + 8 * i;
+-		out_be32(cfg, in_be32(cfg) & ~0x30000000u);
+-	}
+-
+-	/* do not mask any interrupts because of level */
+-	out_be32(pic->regs + TIR_MSK, 0x0);
+-
+-	/* enable interrupt packets to be output */
+-	out_be32(pic->regs + TIR_PIEN, in_be32(pic->regs + TIR_PIEN) | 0x1);
+-
+-	/* Hook up the cascade interrupt to the iic and nodeid */
+-	virq = spider_find_cascade_and_node(pic);
+-	if (!virq)
+-		return;
+-	irq_set_handler_data(virq, pic);
+-	irq_set_chained_handler(virq, spider_irq_cascade);
+-
+-	printk(KERN_INFO "spider_pic: node %d, addr: 0x%lx %pOF\n",
+-	       pic->node_id, addr, of_node);
+-
+-	/* Enable the interrupt detection enable bit. Do this last! */
+-	out_be32(pic->regs + TIR_DEN, in_be32(pic->regs + TIR_DEN) | 0x1);
+-}
+-
+-void __init spider_init_IRQ(void)
+-{
+-	struct resource r;
+-	struct device_node *dn;
+-	int chip = 0;
+-
+-	/* XXX node numbers are totally bogus. We _hope_ we get the device
+-	 * nodes in the right order here but that's definitely not guaranteed,
+-	 * we need to get the node from the device tree instead.
+-	 * There is currently no proper property for it (but our whole
+-	 * device-tree is bogus anyway) so all we can do is pray or maybe test
+-	 * the address and deduce the node-id
+-	 */
+-	for_each_node_by_name(dn, "interrupt-controller") {
+-		if (of_device_is_compatible(dn, "CBEA,platform-spider-pic")) {
+-			if (of_address_to_resource(dn, 0, &r)) {
+-				printk(KERN_WARNING "spider-pic: Failed\n");
+-				continue;
+-			}
+-		} else if (of_device_is_compatible(dn, "sti,platform-spider-pic")
+-			   && (chip < 2)) {
+-			static long hard_coded_pics[] =
+-				{ 0x24000008000ul, 0x34000008000ul};
+-			r.start = hard_coded_pics[chip];
+-		} else
+-			continue;
+-		spider_init_one(dn, chip++, r.start);
+-	}
+-}
+diff --git a/arch/powerpc/platforms/cell/spu_manage.c b/arch/powerpc/platforms/cell/spu_manage.c
+deleted file mode 100644
+index f464a1f2e568..000000000000
+--- a/arch/powerpc/platforms/cell/spu_manage.c
++++ /dev/null
+@@ -1,530 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * spu management operations for of based platforms
+- *
+- * (C) Copyright IBM Deutschland Entwicklung GmbH 2005
+- * Copyright 2006 Sony Corp.
+- * (C) Copyright 2007 TOSHIBA CORPORATION
+- */
+-
+-#include <linux/interrupt.h>
+-#include <linux/list.h>
+-#include <linux/export.h>
+-#include <linux/ptrace.h>
+-#include <linux/wait.h>
+-#include <linux/mm.h>
+-#include <linux/io.h>
+-#include <linux/mutex.h>
+-#include <linux/device.h>
+-#include <linux/of_address.h>
+-#include <linux/of_irq.h>
+-
+-#include <asm/spu.h>
+-#include <asm/spu_priv1.h>
+-#include <asm/firmware.h>
+-
+-#include "spufs/spufs.h"
+-#include "interrupt.h"
+-#include "spu_priv1_mmio.h"
+-
+-struct device_node *spu_devnode(struct spu *spu)
+-{
+-	return spu->devnode;
+-}
+-
+-EXPORT_SYMBOL_GPL(spu_devnode);
+-
+-static u64 __init find_spu_unit_number(struct device_node *spe)
+-{
+-	const unsigned int *prop;
+-	int proplen;
+-
+-	/* new device trees should provide the physical-id attribute */
+-	prop = of_get_property(spe, "physical-id", &proplen);
+-	if (proplen == 4)
+-		return (u64)*prop;
+-
+-	/* celleb device tree provides the unit-id */
+-	prop = of_get_property(spe, "unit-id", &proplen);
+-	if (proplen == 4)
+-		return (u64)*prop;
+-
+-	/* legacy device trees provide the id in the reg attribute */
+-	prop = of_get_property(spe, "reg", &proplen);
+-	if (proplen == 4)
+-		return (u64)*prop;
+-
+-	return 0;
+-}
+-
+-static void spu_unmap(struct spu *spu)
+-{
+-	if (!firmware_has_feature(FW_FEATURE_LPAR))
+-		iounmap(spu->priv1);
+-	iounmap(spu->priv2);
+-	iounmap(spu->problem);
+-	iounmap((__force u8 __iomem *)spu->local_store);
+-}
+-
+-static int __init spu_map_interrupts_old(struct spu *spu,
+-	struct device_node *np)
+-{
+-	unsigned int isrc;
+-	const u32 *tmp;
+-	int nid;
+-
+-	/* Get the interrupt source unit from the device-tree */
+-	tmp = of_get_property(np, "isrc", NULL);
+-	if (!tmp)
+-		return -ENODEV;
+-	isrc = tmp[0];
+-
+-	tmp = of_get_property(np->parent->parent, "node-id", NULL);
+-	if (!tmp) {
+-		printk(KERN_WARNING "%s: can't find node-id\n", __func__);
+-		nid = spu->node;
+-	} else
+-		nid = tmp[0];
+-
+-	/* Add the node number */
+-	isrc |= nid << IIC_IRQ_NODE_SHIFT;
+-
+-	/* Now map interrupts of all 3 classes */
+-	spu->irqs[0] = irq_create_mapping(NULL, IIC_IRQ_CLASS_0 | isrc);
+-	spu->irqs[1] = irq_create_mapping(NULL, IIC_IRQ_CLASS_1 | isrc);
+-	spu->irqs[2] = irq_create_mapping(NULL, IIC_IRQ_CLASS_2 | isrc);
+-
+-	/* Right now, we only fail if class 2 failed */
+-	if (!spu->irqs[2])
+-		return -EINVAL;
+-
+-	return 0;
+-}
+-
+-static void __iomem * __init spu_map_prop_old(struct spu *spu,
+-					      struct device_node *n,
+-					      const char *name)
+-{
+-	const struct address_prop {
+-		unsigned long address;
+-		unsigned int len;
+-	} __attribute__((packed)) *prop;
+-	int proplen;
+-
+-	prop = of_get_property(n, name, &proplen);
+-	if (prop == NULL || proplen != sizeof (struct address_prop))
+-		return NULL;
+-
+-	return ioremap(prop->address, prop->len);
+-}
+-
+-static int __init spu_map_device_old(struct spu *spu)
+-{
+-	struct device_node *node = spu->devnode;
+-	const char *prop;
+-	int ret;
+-
+-	ret = -ENODEV;
+-	spu->name = of_get_property(node, "name", NULL);
+-	if (!spu->name)
+-		goto out;
+-
+-	prop = of_get_property(node, "local-store", NULL);
+-	if (!prop)
+-		goto out;
+-	spu->local_store_phys = *(unsigned long *)prop;
+-
+-	/* we use local store as ram, not io memory */
+-	spu->local_store = (void __force *)
+-		spu_map_prop_old(spu, node, "local-store");
+-	if (!spu->local_store)
+-		goto out;
+-
+-	prop = of_get_property(node, "problem", NULL);
+-	if (!prop)
+-		goto out_unmap;
+-	spu->problem_phys = *(unsigned long *)prop;
+-
+-	spu->problem = spu_map_prop_old(spu, node, "problem");
+-	if (!spu->problem)
+-		goto out_unmap;
+-
+-	spu->priv2 = spu_map_prop_old(spu, node, "priv2");
+-	if (!spu->priv2)
+-		goto out_unmap;
+-
+-	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
+-		spu->priv1 = spu_map_prop_old(spu, node, "priv1");
+-		if (!spu->priv1)
+-			goto out_unmap;
+-	}
+-
+-	ret = 0;
+-	goto out;
+-
+-out_unmap:
+-	spu_unmap(spu);
+-out:
+-	return ret;
+-}
+-
+-static int __init spu_map_interrupts(struct spu *spu, struct device_node *np)
+-{
+-	int i;
+-
+-	for (i=0; i < 3; i++) {
+-		spu->irqs[i] = irq_of_parse_and_map(np, i);
+-		if (!spu->irqs[i])
+-			goto err;
+-	}
+-	return 0;
+-
+-err:
+-	pr_debug("failed to map irq %x for spu %s\n", i, spu->name);
+-	for (; i >= 0; i--) {
+-		if (spu->irqs[i])
+-			irq_dispose_mapping(spu->irqs[i]);
+-	}
+-	return -EINVAL;
+-}
+-
+-static int __init spu_map_resource(struct spu *spu, int nr,
+-			    void __iomem** virt, unsigned long *phys)
+-{
+-	struct device_node *np = spu->devnode;
+-	struct resource resource = { };
+-	unsigned long len;
+-	int ret;
+-
+-	ret = of_address_to_resource(np, nr, &resource);
+-	if (ret)
+-		return ret;
+-	if (phys)
+-		*phys = resource.start;
+-	len = resource_size(&resource);
+-	*virt = ioremap(resource.start, len);
+-	if (!*virt)
+-		return -EINVAL;
+-	return 0;
+-}
+-
+-static int __init spu_map_device(struct spu *spu)
+-{
+-	struct device_node *np = spu->devnode;
+-	int ret = -ENODEV;
+-
+-	spu->name = of_get_property(np, "name", NULL);
+-	if (!spu->name)
+-		goto out;
+-
+-	ret = spu_map_resource(spu, 0, (void __iomem**)&spu->local_store,
+-			       &spu->local_store_phys);
+-	if (ret) {
+-		pr_debug("spu_new: failed to map %pOF resource 0\n",
+-			 np);
+-		goto out;
+-	}
+-	ret = spu_map_resource(spu, 1, (void __iomem**)&spu->problem,
+-			       &spu->problem_phys);
+-	if (ret) {
+-		pr_debug("spu_new: failed to map %pOF resource 1\n",
+-			 np);
+-		goto out_unmap;
+-	}
+-	ret = spu_map_resource(spu, 2, (void __iomem**)&spu->priv2, NULL);
+-	if (ret) {
+-		pr_debug("spu_new: failed to map %pOF resource 2\n",
+-			 np);
+-		goto out_unmap;
+-	}
+-	if (!firmware_has_feature(FW_FEATURE_LPAR))
+-		ret = spu_map_resource(spu, 3,
+-			       (void __iomem**)&spu->priv1, NULL);
+-	if (ret) {
+-		pr_debug("spu_new: failed to map %pOF resource 3\n",
+-			 np);
+-		goto out_unmap;
+-	}
+-	pr_debug("spu_new: %pOF maps:\n", np);
+-	pr_debug("  local store   : 0x%016lx -> 0x%p\n",
+-		 spu->local_store_phys, spu->local_store);
+-	pr_debug("  problem state : 0x%016lx -> 0x%p\n",
+-		 spu->problem_phys, spu->problem);
+-	pr_debug("  priv2         :                       0x%p\n", spu->priv2);
+-	pr_debug("  priv1         :                       0x%p\n", spu->priv1);
+-
+-	return 0;
+-
+-out_unmap:
+-	spu_unmap(spu);
+-out:
+-	pr_debug("failed to map spe %s: %d\n", spu->name, ret);
+-	return ret;
+-}
+-
+-static int __init of_enumerate_spus(int (*fn)(void *data))
+-{
+-	int ret;
+-	struct device_node *node;
+-	unsigned int n = 0;
+-
+-	ret = -ENODEV;
+-	for_each_node_by_type(node, "spe") {
+-		ret = fn(node);
+-		if (ret) {
+-			printk(KERN_WARNING "%s: Error initializing %pOFn\n",
+-				__func__, node);
+-			of_node_put(node);
+-			break;
+-		}
+-		n++;
+-	}
+-	return ret ? ret : n;
+-}
+-
+-static int __init of_create_spu(struct spu *spu, void *data)
+-{
+-	int ret;
+-	struct device_node *spe = (struct device_node *)data;
+-	static int legacy_map = 0, legacy_irq = 0;
+-
+-	spu->devnode = of_node_get(spe);
+-	spu->spe_id = find_spu_unit_number(spe);
+-
+-	spu->node = of_node_to_nid(spe);
+-	if (spu->node >= MAX_NUMNODES) {
+-		printk(KERN_WARNING "SPE %pOF on node %d ignored,"
+-		       " node number too big\n", spe, spu->node);
+-		printk(KERN_WARNING "Check if CONFIG_NUMA is enabled.\n");
+-		ret = -ENODEV;
+-		goto out;
+-	}
+-
+-	ret = spu_map_device(spu);
+-	if (ret) {
+-		if (!legacy_map) {
+-			legacy_map = 1;
+-			printk(KERN_WARNING "%s: Legacy device tree found, "
+-				"trying to map old style\n", __func__);
+-		}
+-		ret = spu_map_device_old(spu);
+-		if (ret) {
+-			printk(KERN_ERR "Unable to map %s\n",
+-				spu->name);
+-			goto out;
+-		}
+-	}
+-
+-	ret = spu_map_interrupts(spu, spe);
+-	if (ret) {
+-		if (!legacy_irq) {
+-			legacy_irq = 1;
+-			printk(KERN_WARNING "%s: Legacy device tree found, "
+-				"trying old style irq\n", __func__);
+-		}
+-		ret = spu_map_interrupts_old(spu, spe);
+-		if (ret) {
+-			printk(KERN_ERR "%s: could not map interrupts\n",
+-				spu->name);
+-			goto out_unmap;
+-		}
+-	}
+-
+-	pr_debug("Using SPE %s %p %p %p %p %d\n", spu->name,
+-		spu->local_store, spu->problem, spu->priv1,
+-		spu->priv2, spu->number);
+-	goto out;
+-
+-out_unmap:
+-	spu_unmap(spu);
+-out:
+-	return ret;
+-}
+-
+-static int of_destroy_spu(struct spu *spu)
+-{
+-	spu_unmap(spu);
+-	of_node_put(spu->devnode);
+-	return 0;
+-}
+-
+-static void enable_spu_by_master_run(struct spu_context *ctx)
+-{
+-	ctx->ops->master_start(ctx);
+-}
+-
+-static void disable_spu_by_master_run(struct spu_context *ctx)
+-{
+-	ctx->ops->master_stop(ctx);
+-}
+-
+-/* Hardcoded affinity idxs for qs20 */
+-#define QS20_SPES_PER_BE 8
+-static int qs20_reg_idxs[QS20_SPES_PER_BE] =   { 0, 2, 4, 6, 7, 5, 3, 1 };
+-static int qs20_reg_memory[QS20_SPES_PER_BE] = { 1, 1, 0, 0, 0, 0, 0, 0 };
+-
+-static struct spu *__init spu_lookup_reg(int node, u32 reg)
+-{
+-	struct spu *spu;
+-	const u32 *spu_reg;
+-
+-	list_for_each_entry(spu, &cbe_spu_info[node].spus, cbe_list) {
+-		spu_reg = of_get_property(spu_devnode(spu), "reg", NULL);
+-		if (*spu_reg == reg)
+-			return spu;
+-	}
+-	return NULL;
+-}
+-
+-static void __init init_affinity_qs20_harcoded(void)
+-{
+-	int node, i;
+-	struct spu *last_spu, *spu;
+-	u32 reg;
+-
+-	for (node = 0; node < MAX_NUMNODES; node++) {
+-		last_spu = NULL;
+-		for (i = 0; i < QS20_SPES_PER_BE; i++) {
+-			reg = qs20_reg_idxs[i];
+-			spu = spu_lookup_reg(node, reg);
+-			if (!spu)
+-				continue;
+-			spu->has_mem_affinity = qs20_reg_memory[reg];
+-			if (last_spu)
+-				list_add_tail(&spu->aff_list,
+-						&last_spu->aff_list);
+-			last_spu = spu;
+-		}
+-	}
+-}
+-
+-static int __init of_has_vicinity(void)
+-{
+-	struct device_node *dn;
+-
+-	for_each_node_by_type(dn, "spe") {
+-		if (of_property_present(dn, "vicinity"))  {
+-			of_node_put(dn);
+-			return 1;
+-		}
+-	}
+-	return 0;
+-}
+-
+-static struct spu *__init devnode_spu(int cbe, struct device_node *dn)
+-{
+-	struct spu *spu;
+-
+-	list_for_each_entry(spu, &cbe_spu_info[cbe].spus, cbe_list)
+-		if (spu_devnode(spu) == dn)
+-			return spu;
+-	return NULL;
+-}
+-
+-static struct spu * __init
+-neighbour_spu(int cbe, struct device_node *target, struct device_node *avoid)
+-{
+-	struct spu *spu;
+-	struct device_node *spu_dn;
+-	const phandle *vic_handles;
+-	int lenp, i;
+-
+-	list_for_each_entry(spu, &cbe_spu_info[cbe].spus, cbe_list) {
+-		spu_dn = spu_devnode(spu);
+-		if (spu_dn == avoid)
+-			continue;
+-		vic_handles = of_get_property(spu_dn, "vicinity", &lenp);
+-		for (i=0; i < (lenp / sizeof(phandle)); i++) {
+-			if (vic_handles[i] == target->phandle)
+-				return spu;
+-		}
+-	}
+-	return NULL;
+-}
+-
+-static void __init init_affinity_node(int cbe)
+-{
+-	struct spu *spu, *last_spu;
+-	struct device_node *vic_dn, *last_spu_dn;
+-	phandle avoid_ph;
+-	const phandle *vic_handles;
+-	int lenp, i, added;
+-
+-	last_spu = list_first_entry(&cbe_spu_info[cbe].spus, struct spu,
+-								cbe_list);
+-	avoid_ph = 0;
+-	for (added = 1; added < cbe_spu_info[cbe].n_spus; added++) {
+-		last_spu_dn = spu_devnode(last_spu);
+-		vic_handles = of_get_property(last_spu_dn, "vicinity", &lenp);
+-
+-		/*
+-		 * Walk through each phandle in vicinity property of the spu
+-		 * (typically two vicinity phandles per spe node)
+-		 */
+-		for (i = 0; i < (lenp / sizeof(phandle)); i++) {
+-			if (vic_handles[i] == avoid_ph)
+-				continue;
+-
+-			vic_dn = of_find_node_by_phandle(vic_handles[i]);
+-			if (!vic_dn)
+-				continue;
+-
+-			if (of_node_name_eq(vic_dn, "spe") ) {
+-				spu = devnode_spu(cbe, vic_dn);
+-				avoid_ph = last_spu_dn->phandle;
+-			} else {
+-				/*
+-				 * "mic-tm" and "bif0" nodes do not have
+-				 * vicinity property. So we need to find the
+-				 * spe which has vic_dn as neighbour, but
+-				 * skipping the one we came from (last_spu_dn)
+-				 */
+-				spu = neighbour_spu(cbe, vic_dn, last_spu_dn);
+-				if (!spu)
+-					continue;
+-				if (of_node_name_eq(vic_dn, "mic-tm")) {
+-					last_spu->has_mem_affinity = 1;
+-					spu->has_mem_affinity = 1;
+-				}
+-				avoid_ph = vic_dn->phandle;
+-			}
+-
+-			of_node_put(vic_dn);
+-
+-			list_add_tail(&spu->aff_list, &last_spu->aff_list);
+-			last_spu = spu;
+-			break;
+-		}
+-	}
+-}
+-
+-static void __init init_affinity_fw(void)
+-{
+-	int cbe;
+-
+-	for (cbe = 0; cbe < MAX_NUMNODES; cbe++)
+-		init_affinity_node(cbe);
+-}
+-
+-static int __init init_affinity(void)
+-{
+-	if (of_has_vicinity()) {
+-		init_affinity_fw();
+-	} else {
+-		if (of_machine_is_compatible("IBM,CPBW-1.0"))
+-			init_affinity_qs20_harcoded();
+-		else
+-			printk("No affinity configuration found\n");
+-	}
+-
+-	return 0;
+-}
+-
+-const struct spu_management_ops spu_management_of_ops = {
+-	.enumerate_spus = of_enumerate_spus,
+-	.create_spu = of_create_spu,
+-	.destroy_spu = of_destroy_spu,
+-	.enable_spu = enable_spu_by_master_run,
+-	.disable_spu = disable_spu_by_master_run,
+-	.init_affinity = init_affinity,
+-};
+diff --git a/arch/powerpc/platforms/cell/spu_priv1_mmio.c b/arch/powerpc/platforms/cell/spu_priv1_mmio.c
+deleted file mode 100644
+index d150e3987304..000000000000
+--- a/arch/powerpc/platforms/cell/spu_priv1_mmio.c
++++ /dev/null
+@@ -1,167 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * spu hypervisor abstraction for direct hardware access.
+- *
+- *  (C) Copyright IBM Deutschland Entwicklung GmbH 2005
+- *  Copyright 2006 Sony Corp.
+- */
+-
+-#include <linux/interrupt.h>
+-#include <linux/list.h>
+-#include <linux/ptrace.h>
+-#include <linux/wait.h>
+-#include <linux/mm.h>
+-#include <linux/io.h>
+-#include <linux/mutex.h>
+-#include <linux/device.h>
+-#include <linux/sched.h>
+-
+-#include <asm/spu.h>
+-#include <asm/spu_priv1.h>
+-#include <asm/firmware.h>
+-
+-#include "interrupt.h"
+-#include "spu_priv1_mmio.h"
+-
+-static void int_mask_and(struct spu *spu, int class, u64 mask)
+-{
+-	u64 old_mask;
+-
+-	old_mask = in_be64(&spu->priv1->int_mask_RW[class]);
+-	out_be64(&spu->priv1->int_mask_RW[class], old_mask & mask);
+-}
+-
+-static void int_mask_or(struct spu *spu, int class, u64 mask)
+-{
+-	u64 old_mask;
+-
+-	old_mask = in_be64(&spu->priv1->int_mask_RW[class]);
+-	out_be64(&spu->priv1->int_mask_RW[class], old_mask | mask);
+-}
+-
+-static void int_mask_set(struct spu *spu, int class, u64 mask)
+-{
+-	out_be64(&spu->priv1->int_mask_RW[class], mask);
+-}
+-
+-static u64 int_mask_get(struct spu *spu, int class)
+-{
+-	return in_be64(&spu->priv1->int_mask_RW[class]);
+-}
+-
+-static void int_stat_clear(struct spu *spu, int class, u64 stat)
+-{
+-	out_be64(&spu->priv1->int_stat_RW[class], stat);
+-}
+-
+-static u64 int_stat_get(struct spu *spu, int class)
+-{
+-	return in_be64(&spu->priv1->int_stat_RW[class]);
+-}
+-
+-static void cpu_affinity_set(struct spu *spu, int cpu)
+-{
+-	u64 target;
+-	u64 route;
+-
+-	if (nr_cpus_node(spu->node)) {
+-		const struct cpumask *spumask = cpumask_of_node(spu->node),
+-			*cpumask = cpumask_of_node(cpu_to_node(cpu));
+-
+-		if (!cpumask_intersects(spumask, cpumask))
+-			return;
+-	}
+-
+-	target = iic_get_target_id(cpu);
+-	route = target << 48 | target << 32 | target << 16;
+-	out_be64(&spu->priv1->int_route_RW, route);
+-}
+-
+-static u64 mfc_dar_get(struct spu *spu)
+-{
+-	return in_be64(&spu->priv1->mfc_dar_RW);
+-}
+-
+-static u64 mfc_dsisr_get(struct spu *spu)
+-{
+-	return in_be64(&spu->priv1->mfc_dsisr_RW);
+-}
+-
+-static void mfc_dsisr_set(struct spu *spu, u64 dsisr)
+-{
+-	out_be64(&spu->priv1->mfc_dsisr_RW, dsisr);
+-}
+-
+-static void mfc_sdr_setup(struct spu *spu)
+-{
+-	out_be64(&spu->priv1->mfc_sdr_RW, mfspr(SPRN_SDR1));
+-}
+-
+-static void mfc_sr1_set(struct spu *spu, u64 sr1)
+-{
+-	out_be64(&spu->priv1->mfc_sr1_RW, sr1);
+-}
+-
+-static u64 mfc_sr1_get(struct spu *spu)
+-{
+-	return in_be64(&spu->priv1->mfc_sr1_RW);
+-}
+-
+-static void mfc_tclass_id_set(struct spu *spu, u64 tclass_id)
+-{
+-	out_be64(&spu->priv1->mfc_tclass_id_RW, tclass_id);
+-}
+-
+-static u64 mfc_tclass_id_get(struct spu *spu)
+-{
+-	return in_be64(&spu->priv1->mfc_tclass_id_RW);
+-}
+-
+-static void tlb_invalidate(struct spu *spu)
+-{
+-	out_be64(&spu->priv1->tlb_invalidate_entry_W, 0ul);
+-}
+-
+-static void resource_allocation_groupID_set(struct spu *spu, u64 id)
+-{
+-	out_be64(&spu->priv1->resource_allocation_groupID_RW, id);
+-}
+-
+-static u64 resource_allocation_groupID_get(struct spu *spu)
+-{
+-	return in_be64(&spu->priv1->resource_allocation_groupID_RW);
+-}
+-
+-static void resource_allocation_enable_set(struct spu *spu, u64 enable)
+-{
+-	out_be64(&spu->priv1->resource_allocation_enable_RW, enable);
+-}
+-
+-static u64 resource_allocation_enable_get(struct spu *spu)
+-{
+-	return in_be64(&spu->priv1->resource_allocation_enable_RW);
+-}
+-
+-const struct spu_priv1_ops spu_priv1_mmio_ops =
+-{
+-	.int_mask_and = int_mask_and,
+-	.int_mask_or = int_mask_or,
+-	.int_mask_set = int_mask_set,
+-	.int_mask_get = int_mask_get,
+-	.int_stat_clear = int_stat_clear,
+-	.int_stat_get = int_stat_get,
+-	.cpu_affinity_set = cpu_affinity_set,
+-	.mfc_dar_get = mfc_dar_get,
+-	.mfc_dsisr_get = mfc_dsisr_get,
+-	.mfc_dsisr_set = mfc_dsisr_set,
+-	.mfc_sdr_setup = mfc_sdr_setup,
+-	.mfc_sr1_set = mfc_sr1_set,
+-	.mfc_sr1_get = mfc_sr1_get,
+-	.mfc_tclass_id_set = mfc_tclass_id_set,
+-	.mfc_tclass_id_get = mfc_tclass_id_get,
+-	.tlb_invalidate = tlb_invalidate,
+-	.resource_allocation_groupID_set = resource_allocation_groupID_set,
+-	.resource_allocation_groupID_get = resource_allocation_groupID_get,
+-	.resource_allocation_enable_set = resource_allocation_enable_set,
+-	.resource_allocation_enable_get = resource_allocation_enable_get,
+-};
+diff --git a/arch/powerpc/platforms/cell/spu_priv1_mmio.h b/arch/powerpc/platforms/cell/spu_priv1_mmio.h
+deleted file mode 100644
+index 04f0db339dc1..000000000000
+--- a/arch/powerpc/platforms/cell/spu_priv1_mmio.h
++++ /dev/null
+@@ -1,14 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-/*
+- * spu hypervisor abstraction for direct hardware access.
+- *
+- *  Copyright (C) 2006 Sony Computer Entertainment Inc.
+- *  Copyright 2006 Sony Corp.
+- */
+-
+-#ifndef SPU_PRIV1_MMIO_H
+-#define SPU_PRIV1_MMIO_H
+-
+-struct device_node *spu_devnode(struct spu *spu);
+-
+-#endif /* SPU_PRIV1_MMIO_H */
+-- 
+2.47.1
+
 
