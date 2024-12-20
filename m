@@ -1,59 +1,104 @@
-Return-Path: <linuxppc-dev+bounces-4355-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4356-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C24369F94B8
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2024 15:43:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5339F97EA
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 20 Dec 2024 18:27:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YF9Bq56JBz303K;
-	Sat, 21 Dec 2024 01:43:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YFDrf633yz30WB;
+	Sat, 21 Dec 2024 04:27:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734705795;
-	cv=none; b=nMRAiN6Wl17veQvBhlwxWR/WR+QaH0DtVuRW9d3rzo1nEFB2I1HgI6KR6YaIF+vmnSLW3PiZ8na5GRs3tYw8ZKMnOufaDNjr7cT0Zgans90NiG3RqIJgmGu1f4xCqOd96MlcpZpTKY/vIOpUNndxS1dmisVEPIbKEIqUbobSQaeIOwIRQd+ciKrLopDgB7FsO1IxWCgxL4MLLW4agRhRz57bVi3lsjdi2SfDjQjU20Ius2VsBYAQn+kUI/v+YtLYfneOuzZ+25eN73CqSpG6EYcEB5o1XlKNQOtHOhd+zpBmgrRC4nVsWdzCaFE3yVmcYxQUi557R3+ECBwgXTpm5Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::435"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734715666;
+	cv=none; b=QQFAqSt1PNJCD3UHh1hFKL1JCVqguzvOSVxOa0FoAmt8H8Cchk1O90ncyCRqf7U0S4aeNKdSDVpvMtvPFiRLjZVpWZA2NBSHshZYulSrQ17qv3RFqyb4Lb++13sRU5ryJ9Gthqhx8X2LVDEbqDF0L9TC3SzsTQKkDbHnBkOLE0ikjGVUix46GPcPBM2TjTjGkjRod3the5xoQhY+4Gt0sdlmfdAkgLoY5smlDSymoujKhkRT42sjyaCItI/189QI01WdrN9Dt6AGOtNQtNDqQv79+R6z6LXa3q68si8rtbkESnyexkSIAzccaOfYHneAzCYhkvXeC7FMps3hoy/MVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734705795; c=relaxed/relaxed;
-	bh=bN7/LC4OfI6mHgatVMhnDTYPvxro/Lz5vE8lxIdsk3Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=LTqNlTnxqQ4OtyLvdfq+RQHbFo/czr7UDHU3k0vhiDkWz+J6nqp5BMHs4y5jzOBBYuEN11u4b238HlJkX5RanYpF5yUCEoH6G0CPBmncs1tNrfBoLdSY/W8fZSch5bdnPSN2DhOcZ3on8xGMk3JGbMWb6KZZl92ln0MLUWkTX9pk3GL+mPYfr2y6nAiGmdLuXMSAHj2uh982D86qLOatdPijCk5nc4sXrdVRCtI/vrE47Xz4HShaRmxjw4vYhT17TS9zYTwwhrK8m2Un9k+cEKttPWoqzuFJUuTlsugG7ByDs1HzJMDz+/ppZFK3wuejb24CWrgGLblHXB/2ySlNgA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HFYezXmV; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+	t=1734715666; c=relaxed/relaxed;
+	bh=rl2GUGW1SKIB73yuGvAyVPoBfBy5XbBiVj4hV5yN+VI=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=N8E+9HnBJEFEN7du43AO7XDLGdd4kPndJIXPzlrvega8Ro/NBGFMyPqby+TjdqAz4Xl0h/wVpKHsOR3jFfDknWpm1jpKaaj8Q1g66AzCfe8kkmdpkun1QurvOJ9tL5zxqfcj4OIOIURq1UWupuh9Zm5r7l7fnaXyJQ8TMl3ti8zUgmeEr0ikBtl98WIBTcW+RS9Pl+pxNPpPXqbjznD6jbjstXAJvYci3MwOpfOHX+nrtPGnZY5Grumv9Pr9cPCuzc9BCSutB496xHlG9TlraGR4jcclhxZGzSDRBhM8h2J4kj3HmKj5QvJw9Ft/zRUEVi5JMncFufs2DCLALstFCw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zBJzAK2j; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=srinivas.kandagatla@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=HFYezXmV;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=zBJzAK2j;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::435; helo=mail-wr1-x435.google.com; envelope-from=srinivas.kandagatla@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YF9Bn0nhvz2yL0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2024 01:43:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1734705786;
-	bh=bN7/LC4OfI6mHgatVMhnDTYPvxro/Lz5vE8lxIdsk3Q=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=HFYezXmV8dUTNShbpN0V7/U5d5shG5nvZH4AlA4HDr0EG9PCJsv9ytBgCjq1cwe2e
-	 +MARbFQ6wVHm+kewYHGrrJ2FTZFnaFtunAe2pWJ0rkiU7rgl7nn4WsjSYsQNCRtuBV
-	 oLvzMzxV7/CmFL+DZQ9wPfvjOsW2JmoOQIsm5TY1Jh2zzA9EJi8vzJfco5T8404/rr
-	 EkpwGwX5P8Z2FMksHhpGENGm2zYQ28poAEDUp6zRuN+h5n442m1F9DYN0ZS19rZV7/
-	 bbvP2Q9cAa+1H2aWoF4tDVssQeI+VK/NtV8yzlkZrsh7DFhkCApn4XVhkJioYsjJ0N
-	 g1vwYo/jsBeuA==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YF9Bf4Y7bz4wyw;
-	Sat, 21 Dec 2024 01:43:06 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, arnd@arndb.de, jk@ozlabs.org,
- segher@kernel.crashing.org, netdev@vger.kernel.org
-Subject: Re: [PATCH v2 24/25] net: spider_net: Remove powerpc Cell driver
-In-Reply-To: <20241218175954.3d0487c1@kernel.org>
-References: <20241218105523.416573-1-mpe@ellerman.id.au>
- <20241218105523.416573-24-mpe@ellerman.id.au>
- <20241218175917.74a404c1@kernel.org> <20241218175954.3d0487c1@kernel.org>
-Date: Sat, 21 Dec 2024 01:43:08 +1100
-Message-ID: <87r0621klf.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YFDrd36hqz30Vw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2024 04:27:43 +1100 (AEDT)
+Received: by mail-wr1-x435.google.com with SMTP id ffacd0b85a97d-3863703258fso2074530f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 20 Dec 2024 09:27:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1734715658; x=1735320458; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rl2GUGW1SKIB73yuGvAyVPoBfBy5XbBiVj4hV5yN+VI=;
+        b=zBJzAK2jfJOaXAPYViIEEWmR5gMnLN1yHo2iAE8mbw4e2+yUQ/muSDDND9Ok84Qs7z
+         UBQvJincinFhKebdXnkRcBh7mzUEMvkwv2jUBSRCUe0Uu/RgZCysA01Gnt2reje3KHuk
+         4weCJ6v95caEJugPDQDjpSkOXkyLapTXKZ+8WJJMzehfefq3YPOQwthoEjFUHNJhGwzH
+         /am5XL+hpG9WCFuwaE4j0YKUYeUTh2T4o9OVr0AyEHACuV+2yHLZISE6O/0Bf89vkzkL
+         NjFVJVXNvXMtFRG6b1NK8FIf1riUVUvoLoKOeTyJIqtGELo1uFgCOOS947vmnIRTI17z
+         bQSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734715658; x=1735320458;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rl2GUGW1SKIB73yuGvAyVPoBfBy5XbBiVj4hV5yN+VI=;
+        b=NG6S9hiVUXVnWp9XsJoOb7xsHUohnnk/WSd/tRZd5ECmjFbh/Zk2VLWv9/Gco7cSRX
+         owb2qG7bHRwkwoXsFfVKGSqq5AgD8XK0tUo3Lyy4t6RdcARDiJ5PWiYap/9AoaGjdlUJ
+         0+wSOhG+KRglFius8tnZzkADbLgub17Sedc5tjaxlttLGEjFlmkMTE5InK7O/jzbRQ9s
+         8J86kVputE04ooN3KFvTP7z+FvM3bcarVhSFLMdOAQPy4mxDWsjEGdcVBXXwAMGHfEMJ
+         /cdKYf64kP08YmnNrcslIIqW+BsYb50ylSxack8D5/uSyV9xx0Hk9upLFQ1fuQ92O91F
+         nTSA==
+X-Forwarded-Encrypted: i=1; AJvYcCVnF7dbvdbCVtoi/S1Lek7Tj+d1B33cBrFORa2QMFafRIGCO+lUzKjDw52jcDXLv9iXjzK16PIYlfiDg08=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzqQ45uvqN3P3DJK2b3BXRBbmocengAPdocEVB7oiFRO7QFo6Jl
+	M5ryu0+pZ/3YXoAYxXPomhE5r7FsKq2GkqrB6eCakf67kZjFGSL/XeFKPPsTtzk=
+X-Gm-Gg: ASbGnctMIQZStkngYiP/aeBu26Fblvzup/HlKibZ4ozPAtaAHY1/PacaxhePDak58Em
+	DfLo35mLjyqlpv6/9EAz0eF+2SqZwgKvX9UDElB54FtQ0iBlAHQf25W1N4V0qowYGrYK0zUG9R/
+	3/YYftH8i9R4m8yhOAv9pWQWCW+379DyHa9pKAoH8TSxaqtpDRHJVAN/UhxluNl7Se0ppPdfcK6
+	fv4HCl5dh1N/L+jzg1CyW/rLbxgv+DeZXUpSkrDJaExqC2JRK0C3sqYV8qN71BQY9JzxFSniKw=
+X-Google-Smtp-Source: AGHT+IHQofl14bIpVpiQqz6qAEwAjKsEmWVjRCOjis6wH9jKfvKMjWLHCbYlsDgmYPDOjR7ci+Y7xw==
+X-Received: by 2002:a5d:47c3:0:b0:388:cacf:24b0 with SMTP id ffacd0b85a97d-38a1a1f7253mr6745803f8f.2.1734715658179;
+        Fri, 20 Dec 2024 09:27:38 -0800 (PST)
+Received: from [192.168.68.114] ([5.133.47.210])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a1c89e357sm4642915f8f.72.2024.12.20.09.27.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Dec 2024 09:27:37 -0800 (PST)
+From: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+To: linux-gpio@vger.kernel.org, Julia Lawall <Julia.Lawall@inria.fr>
+Cc: kernel-janitors@vger.kernel.org, audit@vger.kernel.org, 
+ linux-mtd@lists.infradead.org, Zhihao Cheng <chengzhihao1@huawei.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, linux-arm-msm@vger.kernel.org, 
+ linux-pci@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+ linux-usb@vger.kernel.org, linux-mm@kvack.org, 
+ maple-tree@lists.infradead.org, alsa-devel@alsa-project.org, 
+ Sanyog Kale <sanyog.r.kale@intel.com>, 
+ Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>, dccp@vger.kernel.org, 
+ linux-fsdevel@vger.kernel.org, Jan Kara <jack@suse.cz>, 
+ drbd-dev@lists.linbit.com, linux-sound@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-omap@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org, 
+ nvdimm@lists.linux.dev, linux-leds@vger.kernel.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ linuxppc-dev@lists.ozlabs.org, tipc-discussion@lists.sourceforge.net, 
+ Robin Murphy <robin.murphy@arm.com>, iommu@lists.linux.dev, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ linux-trace-kernel@vger.kernel.org, Neil Brown <neilb@suse.de>, 
+ Olga Kornievskaia <okorniev@redhat.com>, Dai Ngo <Dai.Ngo@oracle.com>, 
+ Tom Talpey <tom@talpey.com>, linux-nfs@vger.kernel.org, 
+ amd-gfx@lists.freedesktop.org, linux-wireless@vger.kernel.org, 
+ intel-wired-lan@lists.osuosl.org
+In-Reply-To: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+References: <20240930112121.95324-1-Julia.Lawall@inria.fr>
+Subject: Re: (subset) [PATCH 00/35] Reorganize kerneldoc parameter names
+Message-Id: <173471565665.227782.7244101246430956449.b4-ty@linaro.org>
+Date: Fri, 20 Dec 2024 17:27:36 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,31 +111,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=2.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS,
-	TVD_SUBJ_WIPE_DEBT autolearn=disabled version=4.0.0
-X-Spam-Level: **
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.2
+X-Spam-Status: No, score=3.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_SBL_CSS,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Jakub Kicinski <kuba@kernel.org> writes:
-> On Wed, 18 Dec 2024 17:59:17 -0800 Jakub Kicinski wrote:
->> On Wed, 18 Dec 2024 21:55:12 +1100 Michael Ellerman wrote:
->> > This driver can no longer be built since support for IBM Cell Blades was
->> > removed, in particular PPC_IBM_CELL_BLADE.
->> > 
->> > Remove the driver and the documentation.
->> > Remove the MAINTAINERS entry, and add Ishizaki and Geoff to CREDITS.  
->> 
->> Yay! Please let us know if you'd like us to take these, otherwise I'll
->> assume you'll take them via powerpc.
->
-> I meant to say:
->
-> Acked-by: Jakub Kicinski <kuba@kernel.org>
 
-Thanks. Yeah I think it makes most sense for them to go via the powerpc
-tree with the rest of the series.
+On Mon, 30 Sep 2024 13:20:46 +0200, Julia Lawall wrote:
+> Reorganize kerneldoc parameter names to match the parameter
+> order in the function header.
+> 
+> The misordered cases were identified using the following
+> Coccinelle semantic patch:
+> 
+> // <smpl>
+> @initialize:ocaml@
+> @@
+> 
+> [...]
 
-cheers
+Applied, thanks!
+
+[31/35] slimbus: messaging: Reorganize kerneldoc parameter names
+        commit: 52d3d7f7a77ee9afc6a846b415790e13e1434847
+
+Best regards,
+-- 
+Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+
 
