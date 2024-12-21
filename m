@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-4372-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4373-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6EE99F9F19
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2024 08:38:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D679F9F1A
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2024 08:38:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YFbkR6fMjz2ymg;
-	Sat, 21 Dec 2024 18:38:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YFbkX0nFpz30Wj;
+	Sat, 21 Dec 2024 18:38:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734766719;
-	cv=none; b=SYR+MPXk+fsoEJDLroEAGrQX521oq50R5gvUTF+6N/Zde2D3EUZZ9WNItbMi0/780EXdZMH3VFoQSnijUBn5o7OhAbHAlrlmCDSjpm7VswwXfQUyDLc4bHgK9UcJXPi/Fjsg+V3MGDDmFACHVTjf0XZyHybE8xFlOOo+szdp/AgdMwkdY1fVp2Fk0DH2y/REv40Ry88azvQ9ogi6mlB82y+G7beIg2nKTtDTC4cny/nahvhCFG5g2injYp8zbj6a3N+vioJM1w7+tZk8fOyDhD3YeamiYT3ucKmeKaGfjCiHQRNvHr5pAMfZ6qrPLGrQaHdsJTX1jS5WhuaWcJBGKg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734766724;
+	cv=none; b=Kx3bJm1gUWhOhb98UhYZM/sI6wum9/WNuxXEcC67oKhaLjemQjSDP7vHTBUfrCbaqqS3s4Oep4SaHf3EA57zf6xQG9Dq4F/MqF7+YVz6XxuVuabk+4QKc0hqO3dKV4QaA/XMa2V7YJiRhD+rLCA4sNaUEGoW3s1D6Z0MEFGHI2h2JtKtO6fwvUeNPRnfcO02CgtDm6tY4nF1I12vd6itwfzTUZgi/suzJ5l2qQ3pXKjVktUjpGs07lCzRnJXZ4BZkbxjCFCV7MlnEWPhEdfVa+QayR5lXw/cG9TQRex5iU12w43x/PGzbpECb9NDVXeNvzvRirFGNAC0w2+hV0vqYw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734766719; c=relaxed/relaxed;
-	bh=8UIBfGyFcDPuHG3Owb9Fo6Ogao0KpnZYdnZWxHwj9rw=;
+	t=1734766724; c=relaxed/relaxed;
+	bh=oCjUOYL9q8FOjqVWXGhy+C/QL7HNYwUuASxwDMeio1Y=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gPkruoBn4MbqJYK3zfogZuyiT5ClnVvod4o6gTplLOZ0mofx7muqDhtYlH5nOUpr9VAGTFUaY/YDQG4jh4QcI9wVV7G04pcSO6ZpM6LP7DvRd3cAC2XDMcF7E6L5StFwTwkvr/ZrbsqODcGug2fFmmfOBKTxa4vE5IJFnnMDiIT9UfB+aBjDXBjf4E+GRhyjgo88JzX8qM9jKlEMwvDMwTzOMRAzYFsK3mDoBRGB1+vNV8CJnEBis/wA4Ww5jKdcnewubhn/yJuwbmo5pNlIxdQmtw6+LQOrN8kgsxA8i9mKGMLUjpXHo4H+ZW0F+ly/7jCWeYhiczJcdI/uAzyGGw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PM9n27aM; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+	 MIME-Version; b=ceirQPHyI/0ODoHP+KEvrRNS+1bUubyKYSxmTftPJuoFGDdsWPRFwNg8FHT6hEFyHnISylC5pILcg6lBELqp2Mznv5pTqmUENcfuq58opxhJJyFiKsUg1DpxpstKmWdnyIhrgk5XHhv9McIOPPKaQuPWBFoTC2OBLE2DehU21uo79xf1nYewHnibrChbEkOBSLPOl5aVfBEU/nhOdLda44HS0m/5tS79YiA74gBQCsvZY4THJfTKfHH94iRAQC+yYf20foAbMLAvppNduM37qll1EH6zbVOyQVU15VA+Nn+kRXIeHz82PfaLIXyafcMSNLoT0lSNcu6h00I8WNWiNQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fmDtZykF; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PM9n27aM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fmDtZykF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YFbkQ6VQNz2xjQ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2024 18:38:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YFbkV4XMcz2xjQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 21 Dec 2024 18:38:42 +1100 (AEDT)
 Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BL5HJS4003697;
-	Sat, 21 Dec 2024 07:38:37 GMT
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BL5Hl6q004157;
+	Sat, 21 Dec 2024 07:38:40 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=8UIBfGyFcDPuHG3Ow
-	b9Fo6Ogao0KpnZYdnZWxHwj9rw=; b=PM9n27aMdoQxXpDb3UqD8OmkrVnNhVV/3
-	r5eXPGEuJ9Vv6CtYpFfq5JOkNA6nhtaKgeWvSJCxcFx0kHIbJp2acpbLUNtrjL9J
-	VaMrV3kdc6Sd1xCbC8XED50Ig9PivyjSIRzCk2jwGUcamiZy/b/hPiURaNQdyG3y
-	vPwO/sXE/kq7cgI+dBWTetbfIsrliR42JhGgtyr+wMoTacznVo/hhhTvPJRnW0vV
-	UMzu7b/YMxMZfze5He8dPdgeK+VOx9wC3Guxk/shdgHzN4bf/kyFiel6dKkxoat3
-	OoDaH6xWE8jwmeNC7rUWIOtnlZctptp7vUoJF7HB6zf4OxYrSrr+A==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43nqd1ra1t-1
+	:mime-version:references:subject:to; s=pp1; bh=oCjUOYL9q8FOjqVWX
+	Ghy+C/QL7HNYwUuASxwDMeio1Y=; b=fmDtZykFjfU3lhsCfTmhug5E3Epe598b6
+	yx0pokg/2biNYJSzEmGtXohyvWmjXnz4DfC6jK8+5OvsceNGiXwn1Xx2Cqy7vvOS
+	XGEHlQThGe8t2RBPYYwrEOrYXwHkKubg848vd7sUEh1AnMnHq8viWsV4JVmC5UrU
+	PQpqqwEFudfMqmfRxb0gk7jnlBtQmwKXRmW4/3BHcjlnOhAkBhQ11kGP+FOMtQQK
+	/Bt947/fVvAYFupUveENr079VNsErcg0CSPxVlzrK+YaRrIlKSUtn551WHkQdtwg
+	vsROZMKxdChhX49dF8M+0o116RUzVhIPQzyf6mMPvLsRVF9S0h4PQ==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43nqd1ra1x-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Dec 2024 07:38:36 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BL3l8o2024022;
-	Sat, 21 Dec 2024 07:38:36 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43hnukwpvs-1
+	Sat, 21 Dec 2024 07:38:40 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BL4sPGN014451;
+	Sat, 21 Dec 2024 07:38:39 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43hq225dtk-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 21 Dec 2024 07:38:35 +0000
+	Sat, 21 Dec 2024 07:38:39 +0000
 Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BL7cVNs11338070
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BL7catq47448468
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 21 Dec 2024 07:38:31 GMT
+	Sat, 21 Dec 2024 07:38:36 GMT
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9944220043;
-	Sat, 21 Dec 2024 07:38:31 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 394A720043;
+	Sat, 21 Dec 2024 07:38:36 +0000 (GMT)
 Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EC49620040;
-	Sat, 21 Dec 2024 07:38:27 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 6CAA620040;
+	Sat, 21 Dec 2024 07:38:32 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.61.244.52])
 	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 21 Dec 2024 07:38:27 +0000 (GMT)
+	Sat, 21 Dec 2024 07:38:31 +0000 (GMT)
 From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, hbathini@linux.ibm.com
 Cc: linux-perf-users@vger.kernel.org, atrajeev@linux.vnet.ibm.com,
         kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com
-Subject: [PATCH 3/4] tools/testing/selftests/powerpc/pmu: Update comment description to mention ISA v3.1 for power10 and above
-Date: Sat, 21 Dec 2024 13:08:09 +0530
-Message-Id: <20241221073810.65802-3-atrajeev@linux.vnet.ibm.com>
+Subject: [PATCH 4/4] selftests/powerpc/pmu: Add interface test for extended reg support
+Date: Sat, 21 Dec 2024 13:08:10 +0530
+Message-Id: <20241221073810.65802-4-atrajeev@linux.vnet.ibm.com>
 X-Mailer: git-send-email 2.35.1
 In-Reply-To: <20241221073810.65802-1-atrajeev@linux.vnet.ibm.com>
 References: <20241221073810.65802-1-atrajeev@linux.vnet.ibm.com>
@@ -87,8 +87,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SQB-EUm_plXvknwv_9wJLkkSjcPcSjbp
-X-Proofpoint-ORIG-GUID: SQB-EUm_plXvknwv_9wJLkkSjcPcSjbp
+X-Proofpoint-GUID: Ow1wGZN5Ht6mbSiFZpNVZs92woiQjs8K
+X-Proofpoint-ORIG-GUID: Ow1wGZN5Ht6mbSiFZpNVZs92woiQjs8K
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
@@ -102,196 +102,105 @@ X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Updated the comments in the pmu selftests to include
-power11/ISA v3.1 where ever required.
+From: Kajol Jain <kjain@linux.ibm.com>
 
+The testcase uses check_extended_regs_support and
+perf_get_platform_reg_mask function to check if the
+platform has extended reg support. This will help to
+check if sampling pmu selftest is enabled or not for
+a given platform.
+
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- .../event_code_tests/group_constraint_l2l3_sel_test.c  |  2 +-
- .../group_constraint_radix_scope_qual_test.c           |  2 +-
- .../group_constraint_thresh_cmp_test.c                 |  2 +-
- .../pmu/event_code_tests/invalid_event_code_test.c     |  4 ++--
- .../reserved_bits_mmcra_sample_elig_mode_test.c        |  2 +-
- .../powerpc/pmu/sampling_tests/bhrb_filter_map_test.c  | 10 +++++-----
- .../powerpc/pmu/sampling_tests/mmcra_bhrb_cond_test.c  |  2 +-
- .../sampling_tests/mmcra_bhrb_disable_no_branch_test.c |  2 +-
- .../pmu/sampling_tests/mmcra_bhrb_disable_test.c       |  2 +-
- .../pmu/sampling_tests/mmcra_bhrb_ind_call_test.c      |  2 +-
- 10 files changed, 15 insertions(+), 15 deletions(-)
+ .../powerpc/pmu/sampling_tests/Makefile       |  3 +-
+ .../sampling_tests/check_extended_reg_test.c  | 35 +++++++++++++++++++
+ .../powerpc/pmu/sampling_tests/misc.c         |  2 +-
+ .../powerpc/pmu/sampling_tests/misc.h         |  2 ++
+ 4 files changed, 40 insertions(+), 2 deletions(-)
+ create mode 100644 tools/testing/selftests/powerpc/pmu/sampling_tests/check_extended_reg_test.c
 
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_l2l3_sel_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_l2l3_sel_test.c
-index 85a636886069..e3c7a0c071e2 100644
---- a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_l2l3_sel_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_l2l3_sel_test.c
-@@ -30,7 +30,7 @@ static int group_constraint_l2l3_sel(void)
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
+index 9f79bec5fce7..0c4ed299c3b8 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/Makefile
+@@ -5,7 +5,8 @@ TEST_GEN_PROGS := mmcr0_exceptionbits_test mmcr0_cc56run_test mmcr0_pmccext_test
+ 		   mmcr3_src_test mmcra_thresh_marked_sample_test mmcra_thresh_cmp_test \
+ 		   mmcra_bhrb_ind_call_test mmcra_bhrb_any_test mmcra_bhrb_cond_test \
+ 		   mmcra_bhrb_disable_test bhrb_no_crash_wo_pmu_test intr_regs_no_crash_wo_pmu_test \
+-		   bhrb_filter_map_test mmcr1_sel_unit_cache_test mmcra_bhrb_disable_no_branch_test
++		   bhrb_filter_map_test mmcr1_sel_unit_cache_test mmcra_bhrb_disable_no_branch_test \
++		   check_extended_reg_test
  
- 	/*
- 	 * Check for platform support for the test.
--	 * This test is only aplicable on power10
-+	 * This test is only aplicable on ISA v3.1
- 	 */
- 	SKIP_IF(platform_check_for_tests());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_radix_scope_qual_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_radix_scope_qual_test.c
-index 9225618b846a..9233175787cc 100644
---- a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_radix_scope_qual_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_radix_scope_qual_test.c
-@@ -26,7 +26,7 @@ static int group_constraint_radix_scope_qual(void)
+ top_srcdir = ../../../../../..
+ include ../../../lib.mk
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/check_extended_reg_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/check_extended_reg_test.c
+new file mode 100644
+index 000000000000..865bc69f920c
+--- /dev/null
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/check_extended_reg_test.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright 2024, Kajol Jain, IBM Corp.
++ */
++
++#include <stdio.h>
++#include <stdlib.h>
++
++#include "../event.h"
++#include "misc.h"
++#include "utils.h"
++
++/*
++ * A perf sampling test to check extended
++ * reg support.
++ */
++static int check_extended_reg_test(void)
++{
++	/* Check for platform support for the test */
++	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_00));
++
++	 /* Skip for Generic compat PMU */
++	SKIP_IF(check_for_generic_compat_pmu());
++
++	/* Check if platform supports extended regs */
++	platform_extended_mask = perf_get_platform_reg_mask();
++	FAIL_IF(check_extended_regs_support());
++
++	return 0;
++}
++
++int main(void)
++{
++	return test_harness(check_extended_reg_test, "check_extended_reg_test");
++}
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
+index c52d8bc2a5dc..1ba675802ee9 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.c
+@@ -92,7 +92,7 @@ static void init_ev_encodes(void)
+ }
  
- 	/*
- 	 * Check for platform support for the test.
--	 * This test is aplicable on power10 only.
-+	 * This test is aplicable on ISA v3.1 only.
- 	 */
- 	SKIP_IF(platform_check_for_tests());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_cmp_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_cmp_test.c
-index 9f1197104e8c..4b69e7214c0b 100644
---- a/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_cmp_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/group_constraint_thresh_cmp_test.c
-@@ -25,7 +25,7 @@
+ /* Return the extended regs mask value */
+-static u64 perf_get_platform_reg_mask(void)
++u64 perf_get_platform_reg_mask(void)
+ {
+ 	if (have_hwcap2(PPC_FEATURE2_ARCH_3_1))
+ 		return PERF_POWER10_MASK;
+diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
+index 09c5abe237af..357e9f0fc0f7 100644
+--- a/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
++++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/misc.h
+@@ -39,6 +39,8 @@ extern int pvr;
+ extern u64 platform_extended_mask;
+ extern int check_pvr_for_sampling_tests(void);
+ extern int platform_check_for_tests(void);
++extern int check_extended_regs_support(void);
++extern u64 perf_get_platform_reg_mask(void);
+ 
  /*
-  * Testcase for group constraint check of thresh_cmp bits which is
-  * used to program thresh compare field in Monitor Mode Control Register A
-- * (MMCRA: 9-18 bits for power9 and MMCRA: 8-18 bits for power10).
-+ * (MMCRA: 9-18 bits for power9 and MMCRA: 8-18 bits for power10/power11).
-  * All events in the group should match thresh compare bits otherwise
-  * event_open for the group will fail.
-  */
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/invalid_event_code_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/invalid_event_code_test.c
-index f51fcab837fc..88aa7fd64ec1 100644
---- a/tools/testing/selftests/powerpc/pmu/event_code_tests/invalid_event_code_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/invalid_event_code_test.c
-@@ -20,7 +20,7 @@
-  * Some of the bits in the event code is
-  * reserved for specific platforms.
-  * Event code bits 52-59 are reserved in power9,
-- * whereas in power10, these are used for programming
-+ * whereas in ISA v3.1, these are used for programming
-  * Monitor Mode Control Register 3 (MMCR3).
-  * Bit 9 in event code is reserved in power9,
-  * whereas it is used for programming "radix_scope_qual"
-@@ -39,7 +39,7 @@ static int invalid_event_code(void)
- 
- 	/*
- 	 * Events using MMCR3 bits and radix scope qual bits
--	 * should fail in power9 and should succeed in power10.
-+	 * should fail in power9 and should succeed in power10 ( ISA v3.1 )
- 	 * Init the events and check for pass/fail in event open.
- 	 */
- 	if (have_hwcap2(PPC_FEATURE2_ARCH_3_1)) {
-diff --git a/tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_sample_elig_mode_test.c b/tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_sample_elig_mode_test.c
-index 7bb26a232fbe..757f454c0dc0 100644
---- a/tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_sample_elig_mode_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/event_code_tests/reserved_bits_mmcra_sample_elig_mode_test.c
-@@ -57,7 +57,7 @@ static int reserved_bits_mmcra_sample_elig_mode(void)
- 
- 	/*
- 	 * MMCRA Random Sampling Mode (SM) value 0x10
--	 * is reserved in power10 and 0xC is reserved in
-+	 * is reserved in power10/power11 and 0xC is reserved in
- 	 * power9.
- 	 */
- 	if ((pvr == POWER10) || (pvr == POWER11)) {
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_filter_map_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_filter_map_test.c
-index 64ab9784f9b1..3ad71d49ae65 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_filter_map_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/bhrb_filter_map_test.c
-@@ -14,7 +14,7 @@
-  * A perf sampling test to check bhrb filter
-  * map. All the branch filters are not supported
-  * in powerpc. Supported filters in:
-- * power10: any, any_call, ind_call, cond
-+ * power10/power11: any, any_call, ind_call, cond
-  * power9: any, any_call
-  *
-  * Testcase checks event open for invalid bhrb filter
-@@ -24,13 +24,13 @@
-  */
- 
- /* Invalid types for powerpc */
--/* Valid bhrb filters in power9/power10 */
-+/* Valid bhrb filters in power9/power10/power11 */
- int bhrb_filter_map_valid_common[] = {
- 	PERF_SAMPLE_BRANCH_ANY,
- 	PERF_SAMPLE_BRANCH_ANY_CALL,
- };
- 
--/* Valid bhrb filters in power10 */
-+/* Valid bhrb filters in power10/power11 */
- int bhrb_filter_map_valid_p10[] = {
- 	PERF_SAMPLE_BRANCH_IND_CALL,
- 	PERF_SAMPLE_BRANCH_COND,
-@@ -69,7 +69,7 @@ static int bhrb_filter_map_test(void)
- 		FAIL_IF(!event_open(&event));
- 	}
- 
--	/* valid filter maps for power9/power10 which are expected to pass in event_open */
-+	/* valid filter maps for power9/power10/power11 which are expected to pass in event_open */
- 	for (i = 0; i < ARRAY_SIZE(bhrb_filter_map_valid_common); i++) {
- 		event.attr.branch_sample_type = bhrb_filter_map_valid_common[i];
- 		FAIL_IF(event_open(&event));
-@@ -77,7 +77,7 @@ static int bhrb_filter_map_test(void)
- 	}
- 
- 	/*
--	 * filter maps which are valid in power10 and invalid in power9.
-+	 * filter maps which are valid in power10/power11 and invalid in power9.
- 	 * PVR check is used here since PMU specific data like bhrb filter
- 	 * alternative tests is handled by respective PMU driver code and
- 	 * using PVR will work correctly for all cases including generic
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_cond_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_cond_test.c
-index 3e08176eb7f8..809de8d58b3b 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_cond_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_cond_test.c
-@@ -29,7 +29,7 @@ static int mmcra_bhrb_cond_test(void)
- 
- 	/*
- 	 * Check for platform support for the test.
--	 * This test is only aplicable on power10
-+	 * This test is only aplicable on ISA v3.1
- 	 */
- 	SKIP_IF(check_pvr_for_sampling_tests());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c
-index 488c865387e4..fa0dc15f9123 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_no_branch_test.c
-@@ -26,7 +26,7 @@ static int mmcra_bhrb_disable_no_branch_test(void)
- 
- 	/*
- 	 * Check for platform support for the test.
--	 * This test is only aplicable on power10
-+	 * This test is only aplicable on ISA v3.1
- 	 */
- 	SKIP_IF(check_pvr_for_sampling_tests());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c
-index 186a853c0f62..bc3161ab003d 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_disable_test.c
-@@ -26,7 +26,7 @@ static int mmcra_bhrb_disable_test(void)
- 
- 	/*
- 	 * Check for platform support for the test.
--	 * This test is only aplicable on power10
-+	 * This test is only aplicable on ISA v3.1
- 	 */
- 	SKIP_IF(check_pvr_for_sampling_tests());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
-diff --git a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_ind_call_test.c b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_ind_call_test.c
-index f0706730c099..fd6c9f12212c 100644
---- a/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_ind_call_test.c
-+++ b/tools/testing/selftests/powerpc/pmu/sampling_tests/mmcra_bhrb_ind_call_test.c
-@@ -29,7 +29,7 @@ static int mmcra_bhrb_ind_call_test(void)
- 
- 	/*
- 	 * Check for platform support for the test.
--	 * This test is only aplicable on power10
-+	 * This test is only aplicable on ISA v3.1
- 	 */
- 	SKIP_IF(check_pvr_for_sampling_tests());
- 	SKIP_IF(!have_hwcap2(PPC_FEATURE2_ARCH_3_1));
+  * Event code field extraction macro.
 -- 
 2.43.5
 
