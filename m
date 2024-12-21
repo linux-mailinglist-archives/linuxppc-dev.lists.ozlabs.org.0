@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-4391-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4392-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38A809FA2A0
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2024 22:49:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED8F9FA2A2
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 21 Dec 2024 22:49:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YFybn4MK7z2yFQ;
-	Sun, 22 Dec 2024 08:49:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YFybx4SCRz2yJ5;
+	Sun, 22 Dec 2024 08:49:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734817749;
-	cv=none; b=OOv7iUcsMIQlJQTstA9z/ALJypbecb+5BsUfw2KkvV5wN5eQqO8xIT0PN/q5MCPROvKDd/Htgm5kKChAUIADNNyk7jNfvvObDxVRu2D66d6dQooQSnuqA7Gm0h7OXsrCWh/gZLHfBMgAay4dvtTw9Xb7rnywwxQzBbjBcZX4zMtanMuja8QiRgCncQxLRGgIKyIXnaGRPXEYtRrwQc6YVhmOKSLpcjx4GlgyEI37qtZuyjoA1fzLfEFvdLpOLgyXlUMRhNnWtXVWUl4UeVccqGlwT8NAirtVJ+iSB78OYPD09bgOGwEwxhNVPUXFKWjJlmydzYegj5Ya/w3st041ng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734817757;
+	cv=none; b=RmlOcSbryk9Gt6WrRLBKKH7OrxrPb7XxY5MHiIon84mIMxjOuaJMbAo/SHiBfKXqPXTJwo1sETcVZfN5H9FAGDOIGdWKYG2v7SqRAJd6EPH2RRAfjaonfUurRnm63nLDUaoUUoZWf8fBYLNJlnKzSR7975TQNsCEhIvv2ibhPAynqTVDtCDfLwmJBKEgS3P+92d9gbpNks6Mfsvwh5EFUrijfbQsMiN+FGMG7qMyO74SngWSPGpvyzyop1oG+iLgydAgBq1G7+hjE984ybKDtsMrRaeoZSOsbJuR2OFX+kiOlAT+9M+TufLbNMqiil/NdsZIVC66wh1S4n9fNLVkYg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734817749; c=relaxed/relaxed;
-	bh=FduVFwH8WVbsbdzKEL4wIPhYGgwas/iA2OuumgH/IGY=;
+	t=1734817757; c=relaxed/relaxed;
+	bh=MsydR7sv8F1ysD/oDuX/iQ2/8qXbeteQVkXdwCqUCcI=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=B0UsWds6nGWnTX5thvICEx7VB9T8PygyaAltUTTF7U9IA9dYgWSDborYD6CFDEJ7Rx4LniRuzmRKhB8feKOTeU/wl61SiawhpeAbpegAmIlh/afuN9c7rw8BvBdaZPTAnLNiiQhCd51Jt84XnjbC5ujXaB+KDyQNLCfc+kYU2o3hRrhyMCFk03raeCkTru02W8+Ax03MJkQ5WtV1FARJ7dXDcoIWv/i7XtYyzi60D4FFg4PCYR7mdKIsFPEvTBeKFSc02FYNzLFG20CepbX7GijqOR5W0NZkWlX/rTGEg+O+lUQXpdikhsN1VcDYXSIVDK1EdkmG3rZkavP35JckvQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bVMEC9Y+; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=hx0QeLgthM/SKWYlbgUhnX8q1lkazmA5sk34ykYIWi9dM6IIj+saPFV8xGLZ2j4vCZWbJsZU1j3rrV4asjhr34yBsuUaXSoHQcHBJ8juCBiM+hWDxbhMv1N6k8GieYRh+T371lJ4iNiuueDlCfjcL86SrEbBmtr5NQXPsnTacUWbqM47Mt55s874/cKyLl6tj31yPaLjzuOFfdva9/Po0CotSwW/rRsdWc0Gf4L4Aw06Y77gKdJx7Gm9AeQFnElcuCUStgvjyEq7emjPR1WSaoVYvbcwPXLUZpb7NDuE/+C4JV6jjZWIZJ6rBLYmOQh4l9/Efw9epS8CPkiU9r5qFA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RhBbWiB2; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bVMEC9Y+;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=RhBbWiB2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YFybm41HFz2xH9
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 08:49:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YFybw3Lr9z2xH9
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 08:49:16 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 96A41A403F8;
-	Sat, 21 Dec 2024 21:47:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796B9C4CEDC;
-	Sat, 21 Dec 2024 21:48:59 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 88DC95C54A9;
+	Sat, 21 Dec 2024 21:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08437C4CEDD;
+	Sat, 21 Dec 2024 21:49:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1734817745;
-	bh=ddnMBrXLwpca2AnEflgP/5lR3wooUpnI/oec70m/B+8=;
+	s=k20201202; t=1734817752;
+	bh=A4Xal2bu7XHZMDN53ywR1+Edqh6+h/uUgPJL7FdzLJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bVMEC9Y+3g6+cIIS9eYVgivhAatjZ0OpNIXVQ2VcHyv7/HFz5VBer93QzOpcLyKpY
-	 d/8+mRB3ScdGvGaldZRtw2UXwc3xVv1Siy0CLpaOoA62OXbZGv1hrulnOlq5X3Pg4+
-	 CzRPjGDAz0d1TuK+BS6dAGxcH0ybef8UPMLT3rE/YinbeDwoNj8GUf62H/xHM2FSVc
-	 qNxT4kn96rrzTcesHgC43AUD/3fVG7jwVppA0KV9SKYZmbQHFox4bW0UZ/RnYjQO3c
-	 feI8HVkzyswER/TPMGQdzGXr8ehzgR3pvBwNTEa/POstchWGM79DDySwMxVgzdNh/v
-	 tcZDiYCaCDvgA==
+	b=RhBbWiB2K3h0H4KG9s3j2ERKII4rPWBfqYRhJrKOeihQGpgDyaDW2oLUWp/arJ6qT
+	 ZbrZfYbnpDOVUU7x9VV3/dCWblx8Us0N96SiFssHetG6h+LUjeg09vNpo1b515eqsq
+	 2dnUHztgK4/raIq5VJ2VURXxICNZQMjhhkMSAG5W/C+XDRU5arOAfOR3wEPsftljlz
+	 8gdfMnCuSoJ30ry8fru1FIP9/CJdl/X5Mtr+vN545UaJ7AbLYVj4J5qjIfa4Shfn/u
+	 FPcl2CBb/XjEVutdEtGLVaCJtnooAoDnVY+GPDpbcqjJVJ2EGp5ZIy+FVcyzUHk4nW
+	 x7PdjxrwyE3CA==
 From: Arnd Bergmann <arnd@kernel.org>
 To: kvm@vger.kernel.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -79,9 +79,9 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linuxppc-dev@lists.ozlabs.org,
 	kvm-riscv@lists.infradead.org,
 	linux-riscv@lists.infradead.org
-Subject: [PATCH v2 1/5] mips: kvm: drop support for 32-bit hosts
-Date: Sat, 21 Dec 2024 22:42:19 +0100
-Message-Id: <20241221214223.3046298-2-arnd@kernel.org>
+Subject: [PATCH v2 2/5] riscv: kvm: drop 32-bit host support
+Date: Sat, 21 Dec 2024 22:42:20 +0100
+Message-Id: <20241221214223.3046298-3-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20241221214223.3046298-1-arnd@kernel.org>
 References: <20241221214223.3046298-1-arnd@kernel.org>
@@ -105,317 +105,592 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-KVM support on MIPS was added in 2012 with both 32-bit and 64-bit mode
-included, but there is only one CPU implementation that actually includes
-the required VZ support with the Warrior P5600 core. Support for the
-one SoC using this core did not fully get merged into mainline, and
-very likely never will.
+KVM support on RISC-V includes both 32-bit and 64-bit host mode, but in
+practice, all RISC-V SoCs that may use this are 64-bit:
 
-Simplify the KVM code by dropping the corresponding #ifdef checks for
-32-bit mode, leaving only 64-bit mode available in Loongson, Cavium,
-Mobileye and Fungible SoCs.
+As of linux-6.13, there is no mainline Linux support for any specific
+32-bit SoC in arch/riscv/, although the generic qemu model should work.
+
+The available RV32 CPU implementations are mostly built for
+microcontroller applications and are lacking a memory management
+unit. There are a few CPU cores with an MMU, but those still lack the
+hypervisor extensions needed for running KVM.
+
+This is unlikely to change in the future, so remove the 32-bit host
+code and simplify the test matrix.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/mips/Kconfig                |  3 ---
- arch/mips/include/asm/kvm_host.h |  4 ----
- arch/mips/kvm/Kconfig            |  1 +
- arch/mips/kvm/emulate.c          |  8 --------
- arch/mips/kvm/msa.S              | 12 ------------
- arch/mips/kvm/vz.c               | 22 ----------------------
- 6 files changed, 1 insertion(+), 49 deletions(-)
+ arch/riscv/kvm/Kconfig            |   2 +-
+ arch/riscv/kvm/aia.c              | 105 ------------------------------
+ arch/riscv/kvm/aia_imsic.c        |  34 ----------
+ arch/riscv/kvm/mmu.c              |   8 ---
+ arch/riscv/kvm/vcpu_exit.c        |   4 --
+ arch/riscv/kvm/vcpu_insn.c        |  12 ----
+ arch/riscv/kvm/vcpu_sbi_pmu.c     |   8 ---
+ arch/riscv/kvm/vcpu_sbi_replace.c |   4 --
+ arch/riscv/kvm/vcpu_sbi_v01.c     |   4 --
+ arch/riscv/kvm/vcpu_timer.c       |  20 ------
+ 10 files changed, 1 insertion(+), 200 deletions(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index a33f05e1ad6d..7705d634d9c7 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -1415,7 +1415,6 @@ config CPU_MIPS32_R5
- 	select CPU_SUPPORTS_32BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_MSA
--	select CPU_SUPPORTS_VZ
- 	select MIPS_O32_FP64_SUPPORT
- 	help
- 	  Choose this option to build a kernel for release 5 or later of the
-@@ -1431,7 +1430,6 @@ config CPU_MIPS32_R6
- 	select CPU_SUPPORTS_32BIT_KERNEL
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_MSA
--	select CPU_SUPPORTS_VZ
- 	select MIPS_O32_FP64_SUPPORT
- 	help
- 	  Choose this option to build a kernel for release 6 or later of the
-@@ -1517,7 +1515,6 @@ config CPU_P5600
- 	select CPU_SUPPORTS_HIGHMEM
- 	select CPU_SUPPORTS_MSA
- 	select CPU_SUPPORTS_CPUFREQ
--	select CPU_SUPPORTS_VZ
- 	select CPU_MIPSR2_IRQ_VI
- 	select CPU_MIPSR2_IRQ_EI
- 	select MIPS_O32_FP64_SUPPORT
-diff --git a/arch/mips/include/asm/kvm_host.h b/arch/mips/include/asm/kvm_host.h
-index f7222eb594ea..1a506892322d 100644
---- a/arch/mips/include/asm/kvm_host.h
-+++ b/arch/mips/include/asm/kvm_host.h
-@@ -261,11 +261,7 @@ enum emulation_result {
- 	EMULATE_HYPERCALL,	/* HYPCALL instruction */
- };
+diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+index 0c3cbb0915ff..7405722e4433 100644
+--- a/arch/riscv/kvm/Kconfig
++++ b/arch/riscv/kvm/Kconfig
+@@ -19,7 +19,7 @@ if VIRTUALIZATION
  
--#if defined(CONFIG_64BIT)
- #define VPN2_MASK		GENMASK(cpu_vmbits - 1, 13)
--#else
--#define VPN2_MASK		0xffffe000
--#endif
- #define KVM_ENTRYHI_ASID	cpu_asid_mask(&boot_cpu_data)
- #define TLB_IS_GLOBAL(x)	((x).tlb_lo[0] & (x).tlb_lo[1] & ENTRYLO_G)
- #define TLB_VPN2(x)		((x).tlb_hi & VPN2_MASK)
-diff --git a/arch/mips/kvm/Kconfig b/arch/mips/kvm/Kconfig
-index ab57221fa4dd..2508ebbf49ba 100644
---- a/arch/mips/kvm/Kconfig
-+++ b/arch/mips/kvm/Kconfig
-@@ -18,6 +18,7 @@ if VIRTUALIZATION
  config KVM
- 	tristate "Kernel-based Virtual Machine (KVM) support"
- 	depends on CPU_SUPPORTS_VZ
-+	depends on 64BIT
- 	depends on MIPS_FP_SUPPORT
- 	select EXPORT_UASM
- 	select KVM_COMMON
-diff --git a/arch/mips/kvm/emulate.c b/arch/mips/kvm/emulate.c
-index 0feec52222fb..c84eaf21643c 100644
---- a/arch/mips/kvm/emulate.c
-+++ b/arch/mips/kvm/emulate.c
-@@ -994,7 +994,6 @@ enum emulation_result kvm_mips_emulate_store(union mips_instruction inst,
- 		goto out_fail;
+ 	tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTAL)"
+-	depends on RISCV_SBI && MMU
++	depends on RISCV_SBI && MMU && 64BIT
+ 	select HAVE_KVM_IRQCHIP
+ 	select HAVE_KVM_IRQ_ROUTING
+ 	select HAVE_KVM_MSI
+diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+index 19afd1f23537..a399a5a9af0e 100644
+--- a/arch/riscv/kvm/aia.c
++++ b/arch/riscv/kvm/aia.c
+@@ -66,33 +66,6 @@ static inline unsigned long aia_hvictl_value(bool ext_irq_pending)
+ 	return hvictl;
+ }
  
- 	switch (inst.i_format.opcode) {
--#if defined(CONFIG_64BIT)
- 	case sd_op:
- 		run->mmio.len = 8;
- 		*(u64 *)data = vcpu->arch.gprs[rt];
-@@ -1003,7 +1002,6 @@ enum emulation_result kvm_mips_emulate_store(union mips_instruction inst,
- 			  vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
- 			  vcpu->arch.gprs[rt], *(u64 *)data);
- 		break;
+-#ifdef CONFIG_32BIT
+-void kvm_riscv_vcpu_aia_flush_interrupts(struct kvm_vcpu *vcpu)
+-{
+-	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
+-	unsigned long mask, val;
+-
+-	if (!kvm_riscv_aia_available())
+-		return;
+-
+-	if (READ_ONCE(vcpu->arch.irqs_pending_mask[1])) {
+-		mask = xchg_acquire(&vcpu->arch.irqs_pending_mask[1], 0);
+-		val = READ_ONCE(vcpu->arch.irqs_pending[1]) & mask;
+-
+-		csr->hviph &= ~mask;
+-		csr->hviph |= val;
+-	}
+-}
+-
+-void kvm_riscv_vcpu_aia_sync_interrupts(struct kvm_vcpu *vcpu)
+-{
+-	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
+-
+-	if (kvm_riscv_aia_available())
+-		csr->vsieh = ncsr_read(CSR_VSIEH);
+-}
 -#endif
+-
+ bool kvm_riscv_vcpu_aia_has_interrupts(struct kvm_vcpu *vcpu, u64 mask)
+ {
+ 	int hgei;
+@@ -101,12 +74,6 @@ bool kvm_riscv_vcpu_aia_has_interrupts(struct kvm_vcpu *vcpu, u64 mask)
+ 	if (!kvm_riscv_aia_available())
+ 		return false;
  
- 	case sw_op:
- 		run->mmio.len = 4;
-@@ -1092,7 +1090,6 @@ enum emulation_result kvm_mips_emulate_store(union mips_instruction inst,
- 			  vcpu->arch.gprs[rt], *(u32 *)data);
- 		break;
- 
--#if defined(CONFIG_64BIT)
- 	case sdl_op:
- 		run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(
- 					vcpu->arch.host_cp0_badvaddr) & (~0x7);
-@@ -1186,7 +1183,6 @@ enum emulation_result kvm_mips_emulate_store(union mips_instruction inst,
- 			  vcpu->arch.pc, vcpu->arch.host_cp0_badvaddr,
- 			  vcpu->arch.gprs[rt], *(u64 *)data);
- 		break;
+-#ifdef CONFIG_32BIT
+-	if (READ_ONCE(vcpu->arch.irqs_pending[1]) &
+-	    (vcpu->arch.aia_context.guest_csr.vsieh & upper_32_bits(mask)))
+-		return true;
 -#endif
+-
+ 	seip = vcpu->arch.guest_csr.vsie;
+ 	seip &= (unsigned long)mask;
+ 	seip &= BIT(IRQ_S_EXT);
+@@ -128,9 +95,6 @@ void kvm_riscv_vcpu_aia_update_hvip(struct kvm_vcpu *vcpu)
+ 	if (!kvm_riscv_aia_available())
+ 		return;
  
- #ifdef CONFIG_CPU_LOONGSON64
- 	case sdc2_op:
-@@ -1299,7 +1295,6 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
- 
- 	vcpu->mmio_needed = 2;	/* signed */
- 	switch (op) {
--#if defined(CONFIG_64BIT)
- 	case ld_op:
- 		run->mmio.len = 8;
- 		break;
-@@ -1307,7 +1302,6 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
- 	case lwu_op:
- 		vcpu->mmio_needed = 1;	/* unsigned */
- 		fallthrough;
+-#ifdef CONFIG_32BIT
+-	ncsr_write(CSR_HVIPH, vcpu->arch.aia_context.guest_csr.hviph);
 -#endif
- 	case lw_op:
- 		run->mmio.len = 4;
- 		break;
-@@ -1374,7 +1368,6 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
- 		}
- 		break;
+ 	ncsr_write(CSR_HVICTL, aia_hvictl_value(!!(csr->hvip & BIT(IRQ_VS_EXT))));
+ }
  
--#if defined(CONFIG_64BIT)
- 	case ldl_op:
- 		run->mmio.phys_addr = kvm_mips_callbacks->gva_to_gpa(
- 					vcpu->arch.host_cp0_badvaddr) & (~0x7);
-@@ -1446,7 +1439,6 @@ enum emulation_result kvm_mips_emulate_load(union mips_instruction inst,
- 			break;
- 		}
- 		break;
+@@ -147,22 +111,10 @@ void kvm_riscv_vcpu_aia_load(struct kvm_vcpu *vcpu, int cpu)
+ 		nacl_csr_write(nsh, CSR_VSISELECT, csr->vsiselect);
+ 		nacl_csr_write(nsh, CSR_HVIPRIO1, csr->hviprio1);
+ 		nacl_csr_write(nsh, CSR_HVIPRIO2, csr->hviprio2);
+-#ifdef CONFIG_32BIT
+-		nacl_csr_write(nsh, CSR_VSIEH, csr->vsieh);
+-		nacl_csr_write(nsh, CSR_HVIPH, csr->hviph);
+-		nacl_csr_write(nsh, CSR_HVIPRIO1H, csr->hviprio1h);
+-		nacl_csr_write(nsh, CSR_HVIPRIO2H, csr->hviprio2h);
 -#endif
- 
- #ifdef CONFIG_CPU_LOONGSON64
- 	case ldc2_op:
-diff --git a/arch/mips/kvm/msa.S b/arch/mips/kvm/msa.S
-index d02f0c6cc2cc..c73858efb975 100644
---- a/arch/mips/kvm/msa.S
-+++ b/arch/mips/kvm/msa.S
-@@ -93,20 +93,8 @@ LEAF(__kvm_restore_msa)
- 	.macro	kvm_restore_msa_upper	wr, off, base
- 	.set	push
- 	.set	noat
--#ifdef CONFIG_64BIT
- 	ld	$1, \off(\base)
- 	insert_d \wr, 1
--#elif defined(CONFIG_CPU_LITTLE_ENDIAN)
--	lw	$1, \off(\base)
--	insert_w \wr, 2
--	lw	$1, (\off+4)(\base)
--	insert_w \wr, 3
--#else /* CONFIG_CPU_BIG_ENDIAN */
--	lw	$1, (\off+4)(\base)
--	insert_w \wr, 2
--	lw	$1, \off(\base)
--	insert_w \wr, 3
+ 	} else {
+ 		csr_write(CSR_VSISELECT, csr->vsiselect);
+ 		csr_write(CSR_HVIPRIO1, csr->hviprio1);
+ 		csr_write(CSR_HVIPRIO2, csr->hviprio2);
+-#ifdef CONFIG_32BIT
+-		csr_write(CSR_VSIEH, csr->vsieh);
+-		csr_write(CSR_HVIPH, csr->hviph);
+-		csr_write(CSR_HVIPRIO1H, csr->hviprio1h);
+-		csr_write(CSR_HVIPRIO2H, csr->hviprio2h);
 -#endif
- 	.set	pop
- 	.endm
+ 	}
+ }
  
-diff --git a/arch/mips/kvm/vz.c b/arch/mips/kvm/vz.c
-index ccab4d76b126..b376ac870256 100644
---- a/arch/mips/kvm/vz.c
-+++ b/arch/mips/kvm/vz.c
-@@ -746,7 +746,6 @@ static int kvm_vz_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- 			*gpa = gva32 & 0x1fffffff;
- 			return 0;
- 		}
--#ifdef CONFIG_64BIT
- 	} else if ((gva & 0xc000000000000000) == 0x8000000000000000) {
- 		/* XKPHYS */
- 		if (cpu_guest_has_segments) {
-@@ -771,7 +770,6 @@ static int kvm_vz_gva_to_gpa(struct kvm_vcpu *vcpu, unsigned long gva,
- 		 */
- 		*gpa = gva & 0x07ffffffffffffff;
+@@ -179,22 +131,10 @@ void kvm_riscv_vcpu_aia_put(struct kvm_vcpu *vcpu)
+ 		csr->vsiselect = nacl_csr_read(nsh, CSR_VSISELECT);
+ 		csr->hviprio1 = nacl_csr_read(nsh, CSR_HVIPRIO1);
+ 		csr->hviprio2 = nacl_csr_read(nsh, CSR_HVIPRIO2);
+-#ifdef CONFIG_32BIT
+-		csr->vsieh = nacl_csr_read(nsh, CSR_VSIEH);
+-		csr->hviph = nacl_csr_read(nsh, CSR_HVIPH);
+-		csr->hviprio1h = nacl_csr_read(nsh, CSR_HVIPRIO1H);
+-		csr->hviprio2h = nacl_csr_read(nsh, CSR_HVIPRIO2H);
+-#endif
+ 	} else {
+ 		csr->vsiselect = csr_read(CSR_VSISELECT);
+ 		csr->hviprio1 = csr_read(CSR_HVIPRIO1);
+ 		csr->hviprio2 = csr_read(CSR_HVIPRIO2);
+-#ifdef CONFIG_32BIT
+-		csr->vsieh = csr_read(CSR_VSIEH);
+-		csr->hviph = csr_read(CSR_HVIPH);
+-		csr->hviprio1h = csr_read(CSR_HVIPRIO1H);
+-		csr->hviprio2h = csr_read(CSR_HVIPRIO2H);
+-#endif
+ 	}
+ }
+ 
+@@ -226,10 +166,6 @@ int kvm_riscv_vcpu_aia_set_csr(struct kvm_vcpu *vcpu,
+ 	if (kvm_riscv_aia_available()) {
+ 		((unsigned long *)csr)[reg_num] = val;
+ 
+-#ifdef CONFIG_32BIT
+-		if (reg_num == KVM_REG_RISCV_CSR_AIA_REG(siph))
+-			WRITE_ONCE(vcpu->arch.irqs_pending_mask[1], 0);
+-#endif
+ 	}
+ 
+ 	return 0;
+@@ -282,19 +218,8 @@ static u8 aia_get_iprio8(struct kvm_vcpu *vcpu, unsigned int irq)
+ 		hviprio = ncsr_read(CSR_HVIPRIO1);
+ 		break;
+ 	case 1:
+-#ifndef CONFIG_32BIT
+ 		hviprio = ncsr_read(CSR_HVIPRIO2);
+ 		break;
+-#else
+-		hviprio = ncsr_read(CSR_HVIPRIO1H);
+-		break;
+-	case 2:
+-		hviprio = ncsr_read(CSR_HVIPRIO2);
+-		break;
+-	case 3:
+-		hviprio = ncsr_read(CSR_HVIPRIO2H);
+-		break;
+-#endif
+ 	default:
  		return 0;
+ 	}
+@@ -315,19 +240,8 @@ static void aia_set_iprio8(struct kvm_vcpu *vcpu, unsigned int irq, u8 prio)
+ 		hviprio = ncsr_read(CSR_HVIPRIO1);
+ 		break;
+ 	case 1:
+-#ifndef CONFIG_32BIT
+-		hviprio = ncsr_read(CSR_HVIPRIO2);
+-		break;
+-#else
+-		hviprio = ncsr_read(CSR_HVIPRIO1H);
+-		break;
+-	case 2:
+ 		hviprio = ncsr_read(CSR_HVIPRIO2);
+ 		break;
+-	case 3:
+-		hviprio = ncsr_read(CSR_HVIPRIO2H);
+-		break;
+-#endif
+ 	default:
+ 		return;
+ 	}
+@@ -340,19 +254,8 @@ static void aia_set_iprio8(struct kvm_vcpu *vcpu, unsigned int irq, u8 prio)
+ 		ncsr_write(CSR_HVIPRIO1, hviprio);
+ 		break;
+ 	case 1:
+-#ifndef CONFIG_32BIT
+ 		ncsr_write(CSR_HVIPRIO2, hviprio);
+ 		break;
+-#else
+-		ncsr_write(CSR_HVIPRIO1H, hviprio);
+-		break;
+-	case 2:
+-		ncsr_write(CSR_HVIPRIO2, hviprio);
+-		break;
+-	case 3:
+-		ncsr_write(CSR_HVIPRIO2H, hviprio);
+-		break;
+-#endif
+ 	default:
+ 		return;
+ 	}
+@@ -366,10 +269,8 @@ static int aia_rmw_iprio(struct kvm_vcpu *vcpu, unsigned int isel,
+ 	unsigned long old_val;
+ 	u8 prio;
+ 
+-#ifndef CONFIG_32BIT
+ 	if (isel & 0x1)
+ 		return KVM_INSN_ILLEGAL_TRAP;
+-#endif
+ 
+ 	nirqs = 4 * (BITS_PER_LONG / 32);
+ 	first_irq = (isel - ISELECT_IPRIO0) * 4;
+@@ -577,12 +478,6 @@ void kvm_riscv_aia_enable(void)
+ 	csr_write(CSR_HVICTL, aia_hvictl_value(false));
+ 	csr_write(CSR_HVIPRIO1, 0x0);
+ 	csr_write(CSR_HVIPRIO2, 0x0);
+-#ifdef CONFIG_32BIT
+-	csr_write(CSR_HVIPH, 0x0);
+-	csr_write(CSR_HIDELEGH, 0x0);
+-	csr_write(CSR_HVIPRIO1H, 0x0);
+-	csr_write(CSR_HVIPRIO2H, 0x0);
+-#endif
+ 
+ 	/* Enable per-CPU SGEI interrupt */
+ 	enable_percpu_irq(hgei_parent_irq,
+diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+index a8085cd8215e..16c44b10ee97 100644
+--- a/arch/riscv/kvm/aia_imsic.c
++++ b/arch/riscv/kvm/aia_imsic.c
+@@ -258,13 +258,7 @@ static u32 imsic_mrif_topei(struct imsic_mrif *mrif, u32 nr_eix, u32 nr_msis)
+ 		eix = &mrif->eix[ei];
+ 		eipend[0] = imsic_mrif_atomic_read(mrif, &eix->eie[0]) &
+ 			    imsic_mrif_atomic_read(mrif, &eix->eip[0]);
+-#ifdef CONFIG_32BIT
+-		eipend[1] = imsic_mrif_atomic_read(mrif, &eix->eie[1]) &
+-			    imsic_mrif_atomic_read(mrif, &eix->eip[1]);
+-		if (!eipend[0] && !eipend[1])
+-#else
+ 		if (!eipend[0])
+-#endif
+ 			continue;
+ 
+ 		imin = ei * BITS_PER_TYPE(u64);
+@@ -296,10 +290,8 @@ static int imsic_mrif_isel_check(u32 nr_eix, unsigned long isel)
+ 	default:
+ 		return -ENOENT;
+ 	}
+-#ifndef CONFIG_32BIT
+ 	if (num & 0x1)
+ 		return -EINVAL;
+-#endif
+ 	if ((num / 2) >= nr_eix)
+ 		return -EINVAL;
+ 
+@@ -337,13 +329,9 @@ static int imsic_mrif_rmw(struct imsic_mrif *mrif, u32 nr_eix,
+ 			return -EINVAL;
+ 		eix = &mrif->eix[num / 2];
+ 
+-#ifndef CONFIG_32BIT
+ 		if (num & 0x1)
+ 			return -EINVAL;
+ 		ei = (pend) ? &eix->eip[0] : &eix->eie[0];
+-#else
+-		ei = (pend) ? &eix->eip[num & 0x1] : &eix->eie[num & 0x1];
+-#endif
+ 
+ 		/* Bit0 of EIP0 or EIE0 is read-only */
+ 		if (!num)
+@@ -395,10 +383,6 @@ static void imsic_vsfile_local_read(void *data)
+ 			eix = &mrif->eix[i];
+ 			eix->eip[0] = imsic_eix_swap(IMSIC_EIP0 + i * 2, 0);
+ 			eix->eie[0] = imsic_eix_swap(IMSIC_EIE0 + i * 2, 0);
+-#ifdef CONFIG_32BIT
+-			eix->eip[1] = imsic_eix_swap(IMSIC_EIP0 + i * 2 + 1, 0);
+-			eix->eie[1] = imsic_eix_swap(IMSIC_EIE0 + i * 2 + 1, 0);
+-#endif
+ 		}
+ 	} else {
+ 		mrif->eidelivery = imsic_vs_csr_read(IMSIC_EIDELIVERY);
+@@ -407,10 +391,6 @@ static void imsic_vsfile_local_read(void *data)
+ 			eix = &mrif->eix[i];
+ 			eix->eip[0] = imsic_eix_read(IMSIC_EIP0 + i * 2);
+ 			eix->eie[0] = imsic_eix_read(IMSIC_EIE0 + i * 2);
+-#ifdef CONFIG_32BIT
+-			eix->eip[1] = imsic_eix_read(IMSIC_EIP0 + i * 2 + 1);
+-			eix->eie[1] = imsic_eix_read(IMSIC_EIE0 + i * 2 + 1);
+-#endif
+ 		}
+ 	}
+ 
+@@ -469,10 +449,8 @@ static void imsic_vsfile_local_rw(void *data)
+ 		break;
+ 	case IMSIC_EIP0 ... IMSIC_EIP63:
+ 	case IMSIC_EIE0 ... IMSIC_EIE63:
+-#ifndef CONFIG_32BIT
+ 		if (idata->isel & 0x1)
+ 			break;
+-#endif
+ 		if (idata->write)
+ 			imsic_eix_write(idata->isel, idata->val);
+ 		else
+@@ -536,10 +514,6 @@ static void imsic_vsfile_local_clear(int vsfile_hgei, u32 nr_eix)
+ 	for (i = 0; i < nr_eix; i++) {
+ 		imsic_eix_write(IMSIC_EIP0 + i * 2, 0);
+ 		imsic_eix_write(IMSIC_EIE0 + i * 2, 0);
+-#ifdef CONFIG_32BIT
+-		imsic_eix_write(IMSIC_EIP0 + i * 2 + 1, 0);
+-		imsic_eix_write(IMSIC_EIE0 + i * 2 + 1, 0);
 -#endif
  	}
  
- tlb_mapped:
-@@ -1740,9 +1738,7 @@ static u64 kvm_vz_get_one_regs[] = {
- 	KVM_REG_MIPS_CP0_CONFIG4,
- 	KVM_REG_MIPS_CP0_CONFIG5,
- 	KVM_REG_MIPS_CP0_CONFIG6,
--#ifdef CONFIG_64BIT
- 	KVM_REG_MIPS_CP0_XCONTEXT,
+ 	csr_write(CSR_HSTATUS, old_hstatus);
+@@ -573,10 +547,6 @@ static void imsic_vsfile_local_update(int vsfile_hgei, u32 nr_eix,
+ 		eix = &mrif->eix[i];
+ 		imsic_eix_set(IMSIC_EIP0 + i * 2, eix->eip[0]);
+ 		imsic_eix_set(IMSIC_EIE0 + i * 2, eix->eie[0]);
+-#ifdef CONFIG_32BIT
+-		imsic_eix_set(IMSIC_EIP0 + i * 2 + 1, eix->eip[1]);
+-		imsic_eix_set(IMSIC_EIE0 + i * 2 + 1, eix->eie[1]);
 -#endif
- 	KVM_REG_MIPS_CP0_ERROREPC,
- 
- 	KVM_REG_MIPS_COUNT_CTL,
-@@ -1752,9 +1748,7 @@ static u64 kvm_vz_get_one_regs[] = {
- 
- static u64 kvm_vz_get_one_regs_contextconfig[] = {
- 	KVM_REG_MIPS_CP0_CONTEXTCONFIG,
--#ifdef CONFIG_64BIT
- 	KVM_REG_MIPS_CP0_XCONTEXTCONFIG,
--#endif
- };
- 
- static u64 kvm_vz_get_one_regs_segments[] = {
-@@ -1937,13 +1931,11 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vcpu,
- 			return -EINVAL;
- 		*v = read_gc0_userlocal();
- 		break;
--#ifdef CONFIG_64BIT
- 	case KVM_REG_MIPS_CP0_XCONTEXTCONFIG:
- 		if (!cpu_guest_has_contextconfig)
- 			return -EINVAL;
- 		*v = read_gc0_xcontextconfig();
- 		break;
--#endif
- 	case KVM_REG_MIPS_CP0_PAGEMASK:
- 		*v = (long)read_gc0_pagemask();
- 		break;
-@@ -2083,11 +2075,9 @@ static int kvm_vz_get_one_reg(struct kvm_vcpu *vcpu,
- 			return -EINVAL;
- 		*v = kvm_read_sw_gc0_maari(&vcpu->arch.cop0);
- 		break;
--#ifdef CONFIG_64BIT
- 	case KVM_REG_MIPS_CP0_XCONTEXT:
- 		*v = read_gc0_xcontext();
- 		break;
--#endif
- 	case KVM_REG_MIPS_CP0_ERROREPC:
- 		*v = (long)read_gc0_errorepc();
- 		break;
-@@ -2163,13 +2153,11 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *vcpu,
- 			return -EINVAL;
- 		write_gc0_userlocal(v);
- 		break;
--#ifdef CONFIG_64BIT
- 	case KVM_REG_MIPS_CP0_XCONTEXTCONFIG:
- 		if (!cpu_guest_has_contextconfig)
- 			return -EINVAL;
- 		write_gc0_xcontextconfig(v);
- 		break;
--#endif
- 	case KVM_REG_MIPS_CP0_PAGEMASK:
- 		write_gc0_pagemask(v);
- 		break;
-@@ -2360,11 +2348,9 @@ static int kvm_vz_set_one_reg(struct kvm_vcpu *vcpu,
- 			return -EINVAL;
- 		kvm_write_maari(vcpu, v);
- 		break;
--#ifdef CONFIG_64BIT
- 	case KVM_REG_MIPS_CP0_XCONTEXT:
- 		write_gc0_xcontext(v);
- 		break;
--#endif
- 	case KVM_REG_MIPS_CP0_ERROREPC:
- 		write_gc0_errorepc(v);
- 		break;
-@@ -2632,11 +2618,9 @@ static int kvm_vz_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
- 	kvm_restore_gc0_context(cop0);
- 	if (cpu_guest_has_contextconfig)
- 		kvm_restore_gc0_contextconfig(cop0);
--#ifdef CONFIG_64BIT
- 	kvm_restore_gc0_xcontext(cop0);
- 	if (cpu_guest_has_contextconfig)
- 		kvm_restore_gc0_xcontextconfig(cop0);
--#endif
- 	kvm_restore_gc0_pagemask(cop0);
- 	kvm_restore_gc0_pagegrain(cop0);
- 	kvm_restore_gc0_hwrena(cop0);
-@@ -2717,11 +2701,9 @@ static int kvm_vz_vcpu_put(struct kvm_vcpu *vcpu, int cpu)
- 	kvm_save_gc0_context(cop0);
- 	if (cpu_guest_has_contextconfig)
- 		kvm_save_gc0_contextconfig(cop0);
--#ifdef CONFIG_64BIT
- 	kvm_save_gc0_xcontext(cop0);
- 	if (cpu_guest_has_contextconfig)
- 		kvm_save_gc0_xcontextconfig(cop0);
--#endif
- 	kvm_save_gc0_pagemask(cop0);
- 	kvm_save_gc0_pagegrain(cop0);
- 	kvm_save_gc0_wired(cop0);
-@@ -3030,12 +3012,10 @@ static int kvm_vz_check_extension(struct kvm *kvm, long ext)
- 		/* we wouldn't be here unless cpu_has_vz */
- 		r = 1;
- 		break;
--#ifdef CONFIG_64BIT
- 	case KVM_CAP_MIPS_64BIT:
- 		/* We support 64-bit registers/operations and addresses */
- 		r = 2;
- 		break;
--#endif
- 	case KVM_CAP_IOEVENTFD:
- 		r = 1;
- 		break;
-@@ -3179,12 +3159,10 @@ static int kvm_vz_vcpu_setup(struct kvm_vcpu *vcpu)
- 	if (cpu_guest_has_contextconfig) {
- 		/* ContextConfig */
- 		kvm_write_sw_gc0_contextconfig(cop0, 0x007ffff0);
--#ifdef CONFIG_64BIT
- 		/* XContextConfig */
- 		/* bits SEGBITS-13+3:4 set */
- 		kvm_write_sw_gc0_xcontextconfig(cop0,
- 					((1ull << (cpu_vmbits - 13)) - 1) << 4);
+ 	}
+ 	imsic_vs_csr_write(IMSIC_EITHRESHOLD, mrif->eithreshold);
+ 	imsic_vs_csr_write(IMSIC_EIDELIVERY, mrif->eidelivery);
+@@ -667,10 +637,6 @@ static void imsic_swfile_update(struct kvm_vcpu *vcpu,
+ 		eix = &mrif->eix[i];
+ 		imsic_mrif_atomic_or(smrif, &seix->eip[0], eix->eip[0]);
+ 		imsic_mrif_atomic_or(smrif, &seix->eie[0], eix->eie[0]);
+-#ifdef CONFIG_32BIT
+-		imsic_mrif_atomic_or(smrif, &seix->eip[1], eix->eip[1]);
+-		imsic_mrif_atomic_or(smrif, &seix->eie[1], eix->eie[1]);
 -#endif
  	}
  
- 	/* Implementation dependent, use the legacy layout */
+ 	imsic_swfile_extirq_update(vcpu);
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 1087ea74567b..2aee1100d450 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -19,15 +19,9 @@
+ #include <asm/page.h>
+ #include <asm/pgtable.h>
+ 
+-#ifdef CONFIG_64BIT
+ static unsigned long gstage_mode __ro_after_init = (HGATP_MODE_SV39X4 << HGATP_MODE_SHIFT);
+ static unsigned long gstage_pgd_levels __ro_after_init = 3;
+ #define gstage_index_bits	9
+-#else
+-static unsigned long gstage_mode __ro_after_init = (HGATP_MODE_SV32X4 << HGATP_MODE_SHIFT);
+-static unsigned long gstage_pgd_levels __ro_after_init = 2;
+-#define gstage_index_bits	10
+-#endif
+ 
+ #define gstage_pgd_xbits	2
+ #define gstage_pgd_size	(1UL << (HGATP_PAGE_SHIFT + gstage_pgd_xbits))
+@@ -739,7 +733,6 @@ void kvm_riscv_gstage_update_hgatp(struct kvm_vcpu *vcpu)
+ 
+ void __init kvm_riscv_gstage_mode_detect(void)
+ {
+-#ifdef CONFIG_64BIT
+ 	/* Try Sv57x4 G-stage mode */
+ 	csr_write(CSR_HGATP, HGATP_MODE_SV57X4 << HGATP_MODE_SHIFT);
+ 	if ((csr_read(CSR_HGATP) >> HGATP_MODE_SHIFT) == HGATP_MODE_SV57X4) {
+@@ -758,7 +751,6 @@ void __init kvm_riscv_gstage_mode_detect(void)
+ 
+ 	csr_write(CSR_HGATP, 0);
+ 	kvm_riscv_local_hfence_gvma_all();
+-#endif
+ }
+ 
+ unsigned long __init kvm_riscv_gstage_mode(void)
+diff --git a/arch/riscv/kvm/vcpu_exit.c b/arch/riscv/kvm/vcpu_exit.c
+index fa98e5c024b2..f5d598f6acfc 100644
+--- a/arch/riscv/kvm/vcpu_exit.c
++++ b/arch/riscv/kvm/vcpu_exit.c
+@@ -107,11 +107,7 @@ unsigned long kvm_riscv_vcpu_unpriv_read(struct kvm_vcpu *vcpu,
+ 			".option push\n"
+ 			".option norvc\n"
+ 			"add %[ttmp], %[taddr], 0\n"
+-#ifdef CONFIG_64BIT
+ 			HLV_D(%[val], %[addr])
+-#else
+-			HLV_W(%[val], %[addr])
+-#endif
+ 			".option pop"
+ 		: [val] "=&r" (val),
+ 		  [taddr] "+&r" (taddr), [ttmp] "+&r" (ttmp)
+diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+index 97dec18e6989..913c454bee26 100644
+--- a/arch/riscv/kvm/vcpu_insn.c
++++ b/arch/riscv/kvm/vcpu_insn.c
+@@ -78,11 +78,7 @@
+ 
+ #define INSN_LEN(insn)		(INSN_IS_16BIT(insn) ? 2 : 4)
+ 
+-#ifdef CONFIG_64BIT
+ #define LOG_REGBYTES		3
+-#else
+-#define LOG_REGBYTES		2
+-#endif
+ #define REGBYTES		(1 << LOG_REGBYTES)
+ 
+ #define SH_RD			7
+@@ -522,19 +518,16 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	} else if ((insn & INSN_MASK_LBU) == INSN_MATCH_LBU) {
+ 		len = 1;
+ 		shift = 8 * (sizeof(ulong) - len);
+-#ifdef CONFIG_64BIT
+ 	} else if ((insn & INSN_MASK_LD) == INSN_MATCH_LD) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+ 	} else if ((insn & INSN_MASK_LWU) == INSN_MATCH_LWU) {
+ 		len = 4;
+-#endif
+ 	} else if ((insn & INSN_MASK_LH) == INSN_MATCH_LH) {
+ 		len = 2;
+ 		shift = 8 * (sizeof(ulong) - len);
+ 	} else if ((insn & INSN_MASK_LHU) == INSN_MATCH_LHU) {
+ 		len = 2;
+-#ifdef CONFIG_64BIT
+ 	} else if ((insn & INSN_MASK_C_LD) == INSN_MATCH_C_LD) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+@@ -543,7 +536,6 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		   ((insn >> SH_RD) & 0x1f)) {
+ 		len = 8;
+ 		shift = 8 * (sizeof(ulong) - len);
+-#endif
+ 	} else if ((insn & INSN_MASK_C_LW) == INSN_MATCH_C_LW) {
+ 		len = 4;
+ 		shift = 8 * (sizeof(ulong) - len);
+@@ -645,13 +637,10 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		len = 4;
+ 	} else if ((insn & INSN_MASK_SB) == INSN_MATCH_SB) {
+ 		len = 1;
+-#ifdef CONFIG_64BIT
+ 	} else if ((insn & INSN_MASK_SD) == INSN_MATCH_SD) {
+ 		len = 8;
+-#endif
+ 	} else if ((insn & INSN_MASK_SH) == INSN_MATCH_SH) {
+ 		len = 2;
+-#ifdef CONFIG_64BIT
+ 	} else if ((insn & INSN_MASK_C_SD) == INSN_MATCH_C_SD) {
+ 		len = 8;
+ 		data64 = GET_RS2S(insn, &vcpu->arch.guest_context);
+@@ -659,7 +648,6 @@ int kvm_riscv_vcpu_mmio_store(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		   ((insn >> SH_RD) & 0x1f)) {
+ 		len = 8;
+ 		data64 = GET_RS2C(insn, &vcpu->arch.guest_context);
+-#endif
+ 	} else if ((insn & INSN_MASK_C_SW) == INSN_MATCH_C_SW) {
+ 		len = 4;
+ 		data32 = GET_RS2S(insn, &vcpu->arch.guest_context);
+diff --git a/arch/riscv/kvm/vcpu_sbi_pmu.c b/arch/riscv/kvm/vcpu_sbi_pmu.c
+index e4be34e03e83..0871265416fa 100644
+--- a/arch/riscv/kvm/vcpu_sbi_pmu.c
++++ b/arch/riscv/kvm/vcpu_sbi_pmu.c
+@@ -35,11 +35,7 @@ static int kvm_sbi_ext_pmu_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		ret = kvm_riscv_vcpu_pmu_ctr_info(vcpu, cp->a0, retdata);
+ 		break;
+ 	case SBI_EXT_PMU_COUNTER_CFG_MATCH:
+-#if defined(CONFIG_32BIT)
+-		temp = ((uint64_t)cp->a5 << 32) | cp->a4;
+-#else
+ 		temp = cp->a4;
+-#endif
+ 		/*
+ 		 * This can fail if perf core framework fails to create an event.
+ 		 * No need to forward the error to userspace and exit the guest.
+@@ -50,11 +46,7 @@ static int kvm_sbi_ext_pmu_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 						       cp->a2, cp->a3, temp, retdata);
+ 		break;
+ 	case SBI_EXT_PMU_COUNTER_START:
+-#if defined(CONFIG_32BIT)
+-		temp = ((uint64_t)cp->a4 << 32) | cp->a3;
+-#else
+ 		temp = cp->a3;
+-#endif
+ 		ret = kvm_riscv_vcpu_pmu_ctr_start(vcpu, cp->a0, cp->a1, cp->a2,
+ 						   temp, retdata);
+ 		break;
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 9c2ab3dfa93a..9276140644d1 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -26,11 +26,7 @@ static int kvm_sbi_ext_time_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 	}
+ 
+ 	kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_SET_TIMER);
+-#if __riscv_xlen == 32
+-	next_cycle = ((u64)cp->a1 << 32) | (u64)cp->a0;
+-#else
+ 	next_cycle = (u64)cp->a0;
+-#endif
+ 	kvm_riscv_vcpu_timer_next_event(vcpu, next_cycle);
+ 
+ 	return 0;
+diff --git a/arch/riscv/kvm/vcpu_sbi_v01.c b/arch/riscv/kvm/vcpu_sbi_v01.c
+index 8f4c4fa16227..e06ba01392d6 100644
+--- a/arch/riscv/kvm/vcpu_sbi_v01.c
++++ b/arch/riscv/kvm/vcpu_sbi_v01.c
+@@ -35,11 +35,7 @@ static int kvm_sbi_ext_v01_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		retdata->uexit = true;
+ 		break;
+ 	case SBI_EXT_0_1_SET_TIMER:
+-#if __riscv_xlen == 32
+-		next_cycle = ((u64)cp->a1 << 32) | (u64)cp->a0;
+-#else
+ 		next_cycle = (u64)cp->a0;
+-#endif
+ 		ret = kvm_riscv_vcpu_timer_next_event(vcpu, next_cycle);
+ 		break;
+ 	case SBI_EXT_0_1_CLEAR_IPI:
+diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
+index 96e7a4e463f7..fc32338b8cf8 100644
+--- a/arch/riscv/kvm/vcpu_timer.c
++++ b/arch/riscv/kvm/vcpu_timer.c
+@@ -71,12 +71,7 @@ static int kvm_riscv_vcpu_timer_cancel(struct kvm_vcpu_timer *t)
+ 
+ static int kvm_riscv_vcpu_update_vstimecmp(struct kvm_vcpu *vcpu, u64 ncycles)
+ {
+-#if defined(CONFIG_32BIT)
+-	ncsr_write(CSR_VSTIMECMP, ncycles & 0xFFFFFFFF);
+-	ncsr_write(CSR_VSTIMECMPH, ncycles >> 32);
+-#else
+ 	ncsr_write(CSR_VSTIMECMP, ncycles);
+-#endif
+ 	return 0;
+ }
+ 
+@@ -288,12 +283,7 @@ static void kvm_riscv_vcpu_update_timedelta(struct kvm_vcpu *vcpu)
+ {
+ 	struct kvm_guest_timer *gt = &vcpu->kvm->arch.timer;
+ 
+-#if defined(CONFIG_32BIT)
+-	ncsr_write(CSR_HTIMEDELTA, (u32)(gt->time_delta));
+-	ncsr_write(CSR_HTIMEDELTAH, (u32)(gt->time_delta >> 32));
+-#else
+ 	ncsr_write(CSR_HTIMEDELTA, gt->time_delta);
+-#endif
+ }
+ 
+ void kvm_riscv_vcpu_timer_restore(struct kvm_vcpu *vcpu)
+@@ -305,12 +295,7 @@ void kvm_riscv_vcpu_timer_restore(struct kvm_vcpu *vcpu)
+ 	if (!t->sstc_enabled)
+ 		return;
+ 
+-#if defined(CONFIG_32BIT)
+-	ncsr_write(CSR_VSTIMECMP, (u32)t->next_cycles);
+-	ncsr_write(CSR_VSTIMECMPH, (u32)(t->next_cycles >> 32));
+-#else
+ 	ncsr_write(CSR_VSTIMECMP, t->next_cycles);
+-#endif
+ 
+ 	/* timer should be enabled for the remaining operations */
+ 	if (unlikely(!t->init_done))
+@@ -326,12 +311,7 @@ void kvm_riscv_vcpu_timer_sync(struct kvm_vcpu *vcpu)
+ 	if (!t->sstc_enabled)
+ 		return;
+ 
+-#if defined(CONFIG_32BIT)
+ 	t->next_cycles = ncsr_read(CSR_VSTIMECMP);
+-	t->next_cycles |= (u64)ncsr_read(CSR_VSTIMECMPH) << 32;
+-#else
+-	t->next_cycles = ncsr_read(CSR_VSTIMECMP);
+-#endif
+ }
+ 
+ void kvm_riscv_vcpu_timer_save(struct kvm_vcpu *vcpu)
 -- 
 2.39.5
 
