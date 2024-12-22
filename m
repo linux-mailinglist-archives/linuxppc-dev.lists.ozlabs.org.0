@@ -1,86 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-4418-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D9D69FA769
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Dec 2024 18:53:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78F99FA812
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Dec 2024 21:16:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YGTJl2mQbz2xbP;
-	Mon, 23 Dec 2024 04:52:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YGXTz0nbnz2xnS;
+	Mon, 23 Dec 2024 07:16:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734889975;
-	cv=none; b=SL/0bnuV0vpQjMr/dINCko5ftchORti2v/oPkrbql0EhyGbadFM4WNOzCVC2737N4uvpxQ48fBwKuY3RN230mxziYRWOnVo4WGmo+zkZcCjDiLvZhLUGzQgxfRTg19YwRlIcPutiVaxWkNG9JUBRktEjfvr1H6+kNRf+QzPuLda2drRO+ebyk0PM05+Kx2zTMkPTBeotRgTDP/WSUVnhJMWQ+3plBL6flhbVJCs/LnYukLEqmCxv2WfwA4vPWrYsx2FOeienF+urW8UtC35JL9SPjzaNRn94PCiDjyS9yN8wQ2ZKKw02owxblp5N+iRFqSfEIU6ZYrdG7zEfmONVxw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.17.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734898567;
+	cv=none; b=byifrkuaeUu7jg+T5SsibHh0oRVLpwyU8zzTHPYuYytbsYU4RLsbaAN98EYUvYGxzbdVST1q3BAfqtlczPRNwFglv/zbwi8vOXoVJ6v3rWTbg3FcCjXckKoqzVNCHGmqd8TpK48/8D88mgnkJ2hwVadG0yVuPbeeShUi5yzlCa3i4mKfU4Xi11ZBc6QNuUpOk3ka9j025jJBHnwXvi/0zjyOCuxgBMIFBkdTitHYARM6ftbuwaz/8y6jPCDrNqx7BuntW8yuQc1eB+JhSs003I8hEA9MXoRK6yXjtg0KoKSOoCzdW95GLLC/GgAF0aSZZ6aeTd4YThipwRsxHPvhcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734889975; c=relaxed/relaxed;
-	bh=PUT6HYn3p+eOnR5/3YxggsDpwP1OTV4d4GKc89IZO/8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UnCWAf8vkkqlvkVfYZzMCNaDD4aEERj9tQz2cwSbwZzQtN7CEhCryIuMlpgg97mE4iioU9jsYn88VNCR3T47iL7hwAMFilOD5MBYPSaYraJMrLd6NSjCT+i5NoXl3SGHaPTld1quNkq9NIRSteHj4+nQqTKX4l9mr2nznu9uGGzF3wScbPnx2csYqXwOXhZHEGtV4ME63qAaORNp0rP7HBr0OZdqbkVq7kJvBCjGJc3Io8Sp40YcAgikqVXhsAhs304QP9GtxZRYPyhXSnhs8l0PdpCYknKX80IBnKf3jO+yU+pkOSNZIZiyz/x9eUmykVKI4Coza+8SjWt0Dyddmw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=br8IZRst; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=br8IZRst; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1734898567; c=relaxed/relaxed;
+	bh=4+YJaj6bWDjRyIaCYzEoaWrYt00NPZxQ7SPu361/P18=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZD7+GlN7WaWSO/zZpQ6PWPtBlEG6BtXby6xvIUQ4SyXiQ0SrVhsmLQIIOv3AZUOQgPulo3KUA3Rpty14Oq6cQbxRFnflCf3JG8HwnVvTIzAa/m3SflYS2bYOByXJjNLATZkCTjc2hSUmfUnnwE8GRcdJeZ/XMjkmzae7vIs3hQ2aFwJ+11d3bAPOMq/j2h3pJdxA5pD2vDJRTJxX8vBfbJ8Dm8UuTSAw7IZ9kW2r7CAl1PCLEyFLD/W6dWlLHNGxEgPUoS7NsyLxwSPZ/7SPKI33rNcwmpveZdCHvQfBJwuk18KGqMjd8yOG9GjYS7gbxl2Tj7uKLuYRHObVpuwXtg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=GYnXpAjQ; dkim-atps=neutral; spf=pass (client-ip=212.227.17.21; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=br8IZRst;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=br8IZRst;
+	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=GYnXpAjQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.17.21; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org)
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGTJj558vz2xC3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2024 04:52:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734889965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PUT6HYn3p+eOnR5/3YxggsDpwP1OTV4d4GKc89IZO/8=;
-	b=br8IZRstGM5ZP42NA3QcPHuQUWb8MFkqvKFDrO3vL3seXhhER7fOY8KORa1jkDzOi83QDI
-	p2m7P1uK3bScllcahA85xSIO4JeMEHS949l7lKYfh6GviS55Vl6/SuO+6TCXcUetZJYhCY
-	qCvil4rnoJR0GAd29trcioWoeL3um+Y=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1734889965;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=PUT6HYn3p+eOnR5/3YxggsDpwP1OTV4d4GKc89IZO/8=;
-	b=br8IZRstGM5ZP42NA3QcPHuQUWb8MFkqvKFDrO3vL3seXhhER7fOY8KORa1jkDzOi83QDI
-	p2m7P1uK3bScllcahA85xSIO4JeMEHS949l7lKYfh6GviS55Vl6/SuO+6TCXcUetZJYhCY
-	qCvil4rnoJR0GAd29trcioWoeL3um+Y=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-gltqxBzzMwGPMQxOP5xCaA-1; Sun, 22 Dec 2024 12:52:43 -0500
-X-MC-Unique: gltqxBzzMwGPMQxOP5xCaA-1
-X-Mimecast-MFC-AGG-ID: gltqxBzzMwGPMQxOP5xCaA
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3860bc1d4f1so2026788f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 09:52:43 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734889963; x=1735494763;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PUT6HYn3p+eOnR5/3YxggsDpwP1OTV4d4GKc89IZO/8=;
-        b=NvLtpk7hPgUIwLqDin3Eg6bwRnJxYxJCouC8FlQby/8LVSK6WabjAiwJSuKY6sJNPP
-         U40XV/sjppN7IxXOt7vrcf2OM6qIXZp5yuuRTj5bcTKXtzxPwnx33tI2BpUoQAG4gaQ8
-         z89UZ0qzfxp7xeBfJohaYgtJ1BkU5Uo1oM1QRD3yR7ooG3xY4Fa6LOwal+y3mhY0xBmt
-         C4hZckWwbGbNjBGto53Ok+tqLrvKQdBKK0upVk5TgrbqhPJpLrkIkGmDPpxZ+z90wG/z
-         +a+bMzMhtaZC+cSPRFjaDF+s7Gh75o4Iipjvebp7ae52KKRoRaiG2tJJL4Z8VXQFTc6s
-         KFpw==
-X-Gm-Message-State: AOJu0YzG7ZfyrCvvT05y9DYai346pBQnOKeiqxSNAQ5YiUqzRmIL1pyV
-	foVCIo8H7Zipv3QqbtbNiV0txXCiemuCwtxN+HLUuDhCRpwk0e76Lfe9ZTfkf3WJ5M2+bCGN1Qg
-	2oWCNtI1+KsGaXQTzSJCZ0tJ5YIDznyUDaCdguiw1GKyUaffU2obnuWMrxyTgsPnn2PO7MscjCs
-	kPhYdZlNNAzwHRoDFqPdGt92zHA9aBzHkuLzJVNQ==
-X-Gm-Gg: ASbGnctPwHj5TcqiAZsKR7nLdlS5dDxvihyFA3TYBhxlyV7d7jlFfmu6i8DYj2T5p9S
-	VROg+nPxLoX5WRtCCyJG3fodDFjK1uiyGKRAIaQ==
-X-Received: by 2002:a05:6000:144b:b0:385:df73:2f18 with SMTP id ffacd0b85a97d-38a223fee74mr8854486f8f.51.1734889962778;
-        Sun, 22 Dec 2024 09:52:42 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEdLxRQSyjBrqOT3kjTm+aba8OV1gzjTIw4k0In3VukgGMNVAbqYTWkCIc/Xu/NR1CLB+p1H0O4XOPn5wEhbTI=
-X-Received: by 2002:a05:6000:144b:b0:385:df73:2f18 with SMTP id
- ffacd0b85a97d-38a223fee74mr8854472f8f.51.1734889962460; Sun, 22 Dec 2024
- 09:52:42 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGXTs4txNz2xfR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2024 07:15:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1734898535; x=1735503335; i=deller@gmx.de;
+	bh=4+YJaj6bWDjRyIaCYzEoaWrYt00NPZxQ7SPu361/P18=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=GYnXpAjQ1Rh8M2H7pmGbH6Muj/ItFmVtrXX8GI/mh++mKTkpdh6ZBSxBKxbnL2EN
+	 gya9TLDXYLB32fb7T0IX+bNI8PtV+hwf42J+nHjVnq8fcdhMUz9dE9fMJ+/tgNXSz
+	 nWKLlYdv0UcNE/x9qbq/dk+TOWP21ERsEAdQI+Yt+pGIfiZTg50TxxJSFVpmibeSP
+	 tQSMLIhgTyewV3cJuvOtMqeRxl3LNPEqW0gPpTbs6KKCtg7Rr70P+Kuupd/oCw+Go
+	 Y0K2s4rImMhYI/3Wa9mAQk3Nd7ghxyPAb0H6DqETOZy1FowgGEH0apxd9jei4+55m
+	 RZFdt79BAKj6prJaUw==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.172] ([109.250.63.155]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MZktj-1t5GNM2ruZ-00X30D; Sun, 22
+ Dec 2024 21:15:35 +0100
+Message-ID: <83c2f489-4ef1-4b31-8fb3-50f027bebd4c@gmx.de>
+Date: Sun, 22 Dec 2024 21:15:33 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,95 +60,196 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
- <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de> <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
- <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de> <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
- <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de> <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
- <0769459a-10ee-4573-a3ce-541c01429948@redhat.com> <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
-In-Reply-To: <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sun, 22 Dec 2024 18:52:29 +0100
-Message-ID: <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
-Subject: Re: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: linuxppc-dev@lists.ozlabs.org, Darren Stevens <darren@stevens-zone.net>, 
-	Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>, Christian Zigotzky <info@xenosoft.de>, 
-	madskateman@gmail.com, "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: PhvyCcrp814AI9EvFNLvD8T9y3fUnkMhRgLnQcdOn8U_1734889963
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/3] fbdev: Fix recursive dependencies wrt
+ BACKLIGHT_CLASS_DEVICE
+To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
+ arnd@arndb.de, jani.nikula@linux.intel.com, christophe.leroy@csgroup.eu,
+ simona@ffwll.ch, airlied@gmail.com
+Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+ linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
+References: <20241216074450.8590-1-tzimmermann@suse.de>
+ <20241216074450.8590-2-tzimmermann@suse.de>
+ <6ed9693e-e8f5-4786-b440-4e27c6d31da3@gmx.de>
+ <4e1a06aa-3b00-45b5-a5e3-bb802e774c88@suse.de>
+Content-Language: en-US
+From: Helge Deller <deller@gmx.de>
+Autocrypt: addr=deller@gmx.de; keydata=
+ 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
+In-Reply-To: <4e1a06aa-3b00-45b5-a5e3-bb802e774c88@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Provags-ID: V03:K1:54lEiR+g9F3kljoFp172QPsHyGnFxNVpw0WMQUheSmWi4DUbz4u
+ HOI2IcmP5kYUxGKXY/0MYEYEB+XDkhaOcZmeglNKO66kM59IHeh4Saq+9ATN5DrvJIYIqn3
+ gx6A/8xBum959byEf4XKNUROzAwujMpkx1Phdqr2Npxl4za15i4oK/HOTyxFx7h+UJr4cwp
+ xq4FHzo1FAXgmT/8ECi1Q==
+UI-OutboundReport: notjunk:1;M01:P0:UVez4zGeoNI=;jJHQ41T3m4bKH4JxhgItCpDHeYp
+ MVmn3dTESnl7bnp4jRSkWuPJPw+0kRp/86flj17lwlAehO9iTtr2x8MPKFYi0hShTjZUa9ni5
+ WEn64QdWhSdHzUmNreEeJa7De9Hg8rRe4EZopezFwbEVwABrFFdktzXxYhwOaADepwOoNm5Ft
+ YDrmJDMW9wamMutm0yt3PZAEJGw9iOSTqEixlhBB9aOgBijq4TFaaSHTNXzW07qLAli/K7tnm
+ 2+Na0tIGCMYNVdMEOOPgEsm6hQq/2bUeoDzmQ8ZR/e+MoEmNCqlzMbA/YrJoWp77DKtZ0M7ja
+ jO/O2TR/rt3kxBXf1tmJK/16usnRo/mVnh3+ncMzs+4Uy1yNP0znUyVEzdo60NgXjvzYsPFrx
+ 8sGEFJjZJ9378lOBr8kH3Jage8/jU+WHnAdsKVrH8YYPGXXS2P2XszSMA+KGwziOdTXHtkghu
+ L1RKIUesRyHqiPDHJKRe04QTIxwaxY+Q4sU6/ILqK8csYpt9biIH6xw7L91HVURPiQmNMQxB3
+ OkOO3HNfeqwOhpWyeV71h5UvXCTAQEGcmvtbRXIsw4Wm8vcVKkAhRB0m8lXuKcJwy+fBksVY5
+ pwkYSzPHB9INNhW/ittspa5VPV8JAL33HaX75fDDWTmh26Mv+fhrJyj10tIJXjewB9PGcCjUM
+ w5V72HDTYVES09bfSvhp5RK8MchH1jz0PVps+EZfSi+2n/2XKKwQCx9dMm1nW32Hu1M7KZoTy
+ 8764UFdQrOivvSO1xdBRygsLoWyZL+nnBaUXxI2kNFPIuMbP+07+ZyFPAmuTFnWd+XEbmq/3O
+ A7Ji6J4N8JPfFfha2gM4tHvH2/73zE/W76ItUeBh5HxVYRuJtMzbIPpGlLTzNzTbEOxbbVl0i
+ XYB/x2GKnl82I9JKlEa0086pHYDBxGkYxQ12Mr+pHRME8P6TkSeTC8LzPRwxkN7wyRh00tF4Z
+ BXcYPioKT1cSfZmGcwc3uDtytTfy6jonB5AR1ExXjvo+4QWkd+3PWRhgCSBycEbe54endXXsM
+ oU9Do3UksfhrnoXb/ehzIFdJlLZd/bzVrvj2wldQheH2tJ3p3b/afXX7aJooGS5QgoSV+RSmq
+ LBkZgseeUY4NWZYp+kNfPUqVNMxBaa
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Dec 22, 2024 at 5:24=E2=80=AFPM Christian Zigotzky
-<chzigotzky@xenosoft.de> wrote:
-> Hello Paolo,
+On 12/22/24 17:09, Thomas Zimmermann wrote:
+> Hi
 >
-> I tried it but there is a host boot issue at the same time. Bisect log:
-> https://github.com/chzigotzky/kernels/issues/4
+>
+> Am 22.12.24 um 07:31 schrieb Helge Deller:
+>> On 12/16/24 08:42, Thomas Zimmermann wrote:
+>>> Do not select BACKLIGHT_CLASS_DEVICE from FB_BACKLIGHT. The latter
+>>> only controls backlight support within fbdev core code and data
+>>> structures.
+>>>
+>>> Make fbdev drivers depend on BACKLIGHT_CLASS_DEVICE and let users
+>>> select it explicitly. Fixes warnings about recursive dependencies,
+>>> such as
+>>>
+>>> error: recursive dependency detected!
+>>> =C2=A0=C2=A0=C2=A0=C2=A0symbol BACKLIGHT_CLASS_DEVICE is selected by F=
+B_BACKLIGHT
+>>> =C2=A0=C2=A0=C2=A0=C2=A0symbol FB_BACKLIGHT is selected by FB_SH_MOBIL=
+E_LCDC
+>>> =C2=A0=C2=A0=C2=A0=C2=A0symbol FB_SH_MOBILE_LCDC depends on FB_DEVICE
+>>> =C2=A0=C2=A0=C2=A0=C2=A0symbol FB_DEVICE depends on FB_CORE
+>>> =C2=A0=C2=A0=C2=A0=C2=A0symbol FB_CORE is selected by DRM_GEM_DMA_HELP=
+ER
+>>> =C2=A0=C2=A0=C2=A0=C2=A0symbol DRM_GEM_DMA_HELPER is selected by DRM_P=
+ANEL_ILITEK_ILI9341
+>>> =C2=A0=C2=A0=C2=A0=C2=A0symbol DRM_PANEL_ILITEK_ILI9341 depends on BAC=
+KLIGHT_CLASS_DEVICE
+>>>
+>>> BACKLIGHT_CLASS_DEVICE is user-selectable, so making drivers adapt to
+>>> it is the correct approach in any case. For most drivers, backlight
+>>> support is also configurable separately.
+>>>
+>>> v3:
+>>> - Select BACKLIGHT_CLASS_DEVICE in PowerMac defconfigs (Christophe)
+>>> - Fix PMAC_BACKLIGHT module dependency corner cases (Christophe)
+>>> v2:
+>>> - s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
+>>> - Fix fbdev driver-dependency corner case (Arnd)
+>>>
+>>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>>> ---
+>>> =C2=A0 arch/powerpc/configs/pmac32_defconfig |=C2=A0 1 +
+>>> =C2=A0 arch/powerpc/configs/ppc6xx_defconfig |=C2=A0 1 +
+>>> =C2=A0 drivers/auxdisplay/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+>>> =C2=A0 drivers/macintosh/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 1 +
+>>> =C2=A0 drivers/staging/fbtft/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 |=C2=A0 1 +
+>>> =C2=A0 drivers/video/fbdev/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 18 +++++++++++++-----
+>>> =C2=A0 drivers/video/fbdev/core/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 =
+|=C2=A0 3 +--
+>>> =C2=A0 7 files changed, 19 insertions(+), 8 deletions(-)
+>>>
+>>> ...
+>>> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
+>>> index de035071fedb..55c6686f091e 100644
+>>> --- a/drivers/video/fbdev/Kconfig
+>>> +++ b/drivers/video/fbdev/Kconfig
+>>> @@ -649,6 +649,7 @@ config FB_S1D13XXX
+>>> =C2=A0 config FB_ATMEL
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "AT91 LCD Controller support"
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on FB && OF && HAVE_CLK && HAS_=
+IOMEM
+>>> +=C2=A0=C2=A0=C2=A0 depends on BACKLIGHT_CLASS_DEVICE
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on HAVE_FB_ATMEL || COMPILE_TES=
+T
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_BACKLIGHT
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_IOMEM_HELPERS
+>>> @@ -660,7 +661,6 @@ config FB_ATMEL
+>>> =C2=A0 config FB_NVIDIA
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 tristate "nVidia Framebuffer Support"
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on FB && PCI
+>>> -=C2=A0=C2=A0=C2=A0 select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_CFB_FILLRECT
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_CFB_COPYAREA
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 select FB_CFB_IMAGEBLIT
+>>> @@ -700,6 +700,8 @@ config FB_NVIDIA_DEBUG
+>>> =C2=A0 config FB_NVIDIA_BACKLIGHT
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool "Support for backlight control"
+>>> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 depends on FB_NVIDIA
+>>> +=C2=A0=C2=A0=C2=A0 depends on BACKLIGHT_CLASS_DEVICE=3Dy || BACKLIGHT=
+_CLASS_DEVICE=3DFB_NVIDIA
+>>
+>> Seems wrong. BACKLIGHT_CLASS_DEVICE is of type tristate.
+>> There are more of those, please check.
+>
+> It's exactly correct. Linking would fail with FB_NVIDIA=3Dy and BACKLIGH=
+T=3Dm. The above construct avoids this case. Please see Arnd's review comm=
+ent at [1].
 
-Thanks, I left there some instructions which I'll copy here for reference.
+I'm not arguing against "depends on BACKLIGHT_CLASS_DEVICE=3Dy".
+It's the "BACKLIGHT_CLASS_DEVICE=3DFB_NVIDIA" which is wrong.
+BACKLIGHT_CLASS_DEVICE is tristate, so either "y", "n" or "m", but never "=
+FB_NVIDIA".
 
-We need to bisect the host boot issue:
-
-  git bisect start
-  git checkout c9be85dabb376299504e0d391d15662c0edf8273
-  # check that it does not boot
-  git bisect bad
-  git checkout adc218676eef25575469234709c2d87185ca223a
-  # check that it boots
-  git bisect good
-
-If the two commits have the expected result, the first bisection step shoul=
-d be
-
-  # Bisecting: a merge base must be tested
-  # [e9001a382fa2c25...] Merge tag 'kvmarm-fixes-6.12-3' of ...
-
-There are two possibilities.
-
-## If e9001a382fa2c25 succeeds to boot ##
-
-Then `git bisect good` and bisect to the patch that causes the host to
-fail to boot. What's left seems to be all non-PPC KVM patches, which
-is a bit weird but you never know. Once you have the result, we'll try
-to fix that, and provide you with a fixed branch to bisect the actual
-KVM-PPC failure.
-
-A potential candidate, based on your skips, is commit eec1e5db464e
-("KVM: Annotate that all paths in hva_to_pfn() might sleep").
-
-Please also provide the messages for the boot failure (I haven't seen
-it but I might be missing it).
-
-## If e9001a382fa2c25 fails to boot ##
-
-Then the boot regression was in the v6.12 tree. Fortunately the KVM
-tree can be rebased without conflicts to v6.12; go on with
-
-```
-git checkout -b bisection-rebase b467ab82a9fde4b46c0cd2c299220857afb0e0d4
-git rebase v6.12
-# check that it boots. if it fails to boot, please report this. if it
-succeds, continue:
-git bisect start
-git bisect bad bisection-rebase
-git bisect good v6.12
-```
-
-Proceed to bisect looking for the failure to start guests. If you
-never find a kernel that fails to boot, report the bisection log.
-
-If you find a kernel that fails to boot, drop the bisection. Start
-another bisection between v6.12 and bisection-rebase, this time
-looking for the first patch that fails to boot, and report the
-bisection log + the boot failure messages.
-
-Paolo
-
+> That's also why I mentioned that 'imply' could be used rather than 'depe=
+nds on'. It would handle this situation automatically.
+>
+> Best regards
+> Thomas
+>
+> [1] https://patchwork.freedesktop.org/patch/628099/?series=3D142356&rev=
+=3D1
 
