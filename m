@@ -1,53 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-4403-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 167229FA450
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Dec 2024 07:25:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B9DA9FA453
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Dec 2024 07:31:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YGB3g5T7Lz2xKL;
-	Sun, 22 Dec 2024 17:25:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YGBBT6CVKz2xbQ;
+	Sun, 22 Dec 2024 17:31:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.15.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734848735;
-	cv=none; b=Wb6B/ZoSn1dGnr78tkBOYPE6yprXG05SQcPCTgl68v7pG5vFjcWToFP7mHo+X1ARFJ/2RK46bUDwzl8o18Z5s5qQOe8v1bhkc/wMB/KubqnTxOBEWj3sjuQgNdY3AH65HmEmVM5iLyyk2WDVuaOQJBrYlJIPBVI2IY+eyLltx3KVdhha3+nZxzlvRkOg9Y4T1nS/ZW3pO4bQhbLA0FuBN3y0UIS0uLr7ls5rVaHI1dkv7vpuXTfxeI6MMAEFSJa8qI1SHD28Yi1oi49Dgp8MlYkLe6n/RekQ26iT2tWUiHGRB/IyH31i917Oi0U8ZfcuKPxaLVy/PH6x4Rr9hQ1YJQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.15.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734849089;
+	cv=none; b=b/JxXIuNwdfvXAWKARQkv7Y3THg7IlYJp3XqJeUuV16K83F9XyXaLziyKqdoCKfy3I3FwCbK0FeyKT2LFs+NgKOMWekTy3iLHBqTf2qdpB9rBjxBG5CkMmlcA79rOUhIHKB2ili2QEE+J8v9EKFY9DOY0Lp4I570yYUrWSMHPZ0Ns5EJF/ucLNSk+IBgcmic7f4Ccxk2gxE36a57AizB/oI7mC9vUnLJmYp3H5Nh8G9ocqOqM1XRQDnvbuYLBqMV9jxxJyu7gyYkbmf0Yu8qmgKFxi8dAdtKYdL/k805v9IgocONBSb8hgiTM7jhbjxWvlqvbeS0CtVggVBjlRaHZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734848735; c=relaxed/relaxed;
-	bh=pXJ2oMmF2CMAKN2B4GZMENmYy9GZitiRqDMzxdJK4qs=;
+	t=1734849089; c=relaxed/relaxed;
+	bh=bQc7ufe2asdu6tITElRdznUrVyFMBvZ5I/wmp5S0EKM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Msig4SQ3QV0WRILB5dc5avJc0iOHGKg7ThRVU7QF7zBqKT1Ruze805e83a9CyK/wiAZ2IyeKEj4l0iWy0z5ClqlH77HyIOzkkaFe89nB8YjDKmYSbNOAzcwg8tvG06gtSMZxmUpJnH0TZigrI2mba74fq5EflCRLDw/4I9BcWdjyBgIjxMW+Bu9UwrMZZCd5HTRnlXETU7uqziSAVe25C/pUWI9eVfYBEVyaq9V9P1DcBOr3GBM0ZX1SyQENnicukJsN3ZduJS6GzKa9LHwyjg3eUR8jS9M69L5TKLplkmlsDOF/312qia91pY/lo75WJO47BBKI3/ms6eB+SJfQ+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=YwvuZuZ8; dkim-atps=neutral; spf=pass (client-ip=212.227.15.19; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
+	 In-Reply-To:Content-Type; b=A4TBuYy6dAJNgPr9uY7I5qhvKL5joCFS/1iOceJMeWA6mxAOdKzWaMzPjL8VUP6xTCjkOtJ5k3+mdA9l3AAYGIa1l2YCCi63av1akF5ncrHPp8GG5S5uQbUpgH0AKvH8zsY32995S00QpD4pPBE1IEjDVbT9C4jGQ9n8ugMfzvTKHOOkFB1QW1PSb8z96Z3/516OzxjmxoEl3GTrJCIe/YDU2b68trBvh4R/kMWVR9j+akBXs5T4+NIwaem7NyjfG30eMexvH6hXAhg8DiAOeEAZVn57y0JA9sjbAnAvuK3fqFo64Wf96L0Q3PDiRr07asGnsxF5la8t/x5Ap9SDlA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=dF+KTpgK; dkim-atps=neutral; spf=pass (client-ip=212.227.15.18; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=YwvuZuZ8;
+	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=dF+KTpgK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.15.19; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org)
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.15.18; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org)
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGB3b6t9jz2xHF
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 17:25:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGBBR66Xvz2xbN
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 17:31:26 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1734848710; x=1735453510; i=deller@gmx.de;
-	bh=pXJ2oMmF2CMAKN2B4GZMENmYy9GZitiRqDMzxdJK4qs=;
+	s=s31663417; t=1734849070; x=1735453870; i=deller@gmx.de;
+	bh=bQc7ufe2asdu6tITElRdznUrVyFMBvZ5I/wmp5S0EKM=;
 	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
 	 References:From:In-Reply-To:Content-Type:
 	 Content-Transfer-Encoding:cc:content-transfer-encoding:
 	 content-type:date:from:message-id:mime-version:reply-to:subject:
 	 to;
-	b=YwvuZuZ8YAUrSkm0mNc2JH/TTJcOKazZ9SH+vDPDLVJ1uvW2+BIkgxDJJZy8KOvo
-	 ygbHcP0lOL3ovHCCTWSlSbLnDIF3+DxOElx0n6SmjcnJls3XR0URxP03Hwem4bmgo
-	 uIm5GWlP4b96t1tcLd9rvw24FNfMaPRGGymiNLdHcf6QzxQfb/DT/5lubAnRg+ATt
-	 iPHpqo0jBgXEiDyyvQYQAeEt8JTHRBbRcY42TNUDmidXaD4fne+L14AVKy0bHcO2S
-	 xay252kvVsOVpvwcpn+R0jpRm2GXtPsUyYt6UkfjEpjL9cGO2vnyWVkXJDg9cZmND
-	 SUmLek8TRU33s4hnBA==
+	b=dF+KTpgKHX9XizYHcqYui6ugagBQPJniktmdfoN564rrjRXygyYLw4H6eiv7PIQ0
+	 yU87fP7MnDWOUV86c38go2B/CFYuMGhL2v7SIiPGRxscMxixj55ZiJO/9rFpm88Z2
+	 NgayWvpXu56YvABk4dNFmCLgZweRbykEoBnmH3RamafUDhIbErW4sIM8tTVc7kIP5
+	 PlvwMa+sA5DfvE9yLUG5nm4VPLUU912IoCdITAYEWoixmPsOEHa4PlsxdOxVEzbk7
+	 oeCcOMb5DLZ4Y9Wf28LwujDxkouk2AoOsLWC92uEjS7rkH7/bZynTuzVxVdSsZCHn
+	 DlhrmQ3McrEUILoR9A==
 X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
 Received: from [192.168.20.172] ([109.250.63.155]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MfHAH-1u44nl0A5z-00kV0N; Sun, 22
- Dec 2024 07:25:10 +0100
-Message-ID: <3dc51082-57d5-4bbd-b6eb-febf1d13d6fd@gmx.de>
-Date: Sun, 22 Dec 2024 07:25:08 +0100
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mkpav-1tplKs46iF-00hDVK; Sun, 22
+ Dec 2024 07:31:10 +0100
+Message-ID: <6ed9693e-e8f5-4786-b440-4e27c6d31da3@gmx.de>
+Date: Sun, 22 Dec 2024 07:31:08 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,14 +61,15 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] fbdev: Fix recursive dependencies wrt
+Subject: Re: [PATCH v3 1/3] fbdev: Fix recursive dependencies wrt
  BACKLIGHT_CLASS_DEVICE
 To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
- arnd@arndb.de, simona@ffwll.ch, airlied@gmail.com
+ arnd@arndb.de, jani.nikula@linux.intel.com, christophe.leroy@csgroup.eu,
+ simona@ffwll.ch, airlied@gmail.com
 Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
  linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
-References: <20241212100636.45875-1-tzimmermann@suse.de>
- <20241212100636.45875-2-tzimmermann@suse.de>
+References: <20241216074450.8590-1-tzimmermann@suse.de>
+ <20241216074450.8590-2-tzimmermann@suse.de>
 Content-Language: en-US
 From: Helge Deller <deller@gmx.de>
 Autocrypt: addr=deller@gmx.de; keydata=
@@ -114,37 +115,37 @@ Autocrypt: addr=deller@gmx.de; keydata=
  FwRDcGV6nxanxZGKEkSHHOm8jHwvQWvPP73pvuPBEPtKGLzbgd7OOcGZWtq2hNC6cRtsRdDx
  4TAGMCz4j238m+2mdbdhRh3iBnWT5yPFfnv/2IjFAk+sdix1Mrr+LIDF++kiekeq0yUpDdc4
  ExBy2xf6dd+tuFFBp3/VDN4U0UfG4QJ2fg19zE5Z8dS4jGIbLg==
-In-Reply-To: <20241212100636.45875-2-tzimmermann@suse.de>
+In-Reply-To: <20241216074450.8590-2-tzimmermann@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:49gBNI1l6uSlxv0xDOXqslC0lAFzppCqw/9kkQlCRzeiOIs5dvN
- tV+MO0VNnBeVocS6r0t4GV+cGuO7P9WPJ91GCJiBhn6cwT19+/BOQ2dhNZ3SudRKxRYqUpT
- AgKQuW3tlPzz7ACXF3Pclb0qZ3JspR2a1xyS+lFlspI9AvA5/FDVmqKYJoB1M19NprfAkGj
- wbJYNj0rz8s01mS4BUU2A==
-UI-OutboundReport: notjunk:1;M01:P0:QVMY1zI2Yl8=;u7vFYIE7903EeQL3HWcK8vy0Xt7
- ZXPoKqHWEhYfJvdmVnXQx88L8q4T3QYwfWIt2iQRy+L3NpBHue9pvDHgPtDkt1sGAiqRjMU55
- Z0orTyhkNtfqy/Nf8gBa+zSI4i4UGVPw/WrygOI5PiH7ZOpSD+CYb24HN+zVVjITSWN7h2NmK
- 8lKkC8FZ66Rg2DncOJVWx9bT+TBSYZTFMMJZnb66d9JKjjmrByUk8pixflsODV5ylWtaKjJaP
- jL5ip6TaSpNByIi4x6HXRxbgEkc6cR+1+VX9vFP8cKcT/g/CqWJ0Xx2RifF8aMJsvlr0QPhP3
- VoyjtwXT5MKLpxqKjw4SLoj45EsAAkuFklNBT06ktIpix030aiTz04zBHhsY3LU3MGr8S2uZq
- exjCpHuYdAezZ+Pw0BIeidfWvhJ9Gdh7fbw5kr2dgpYqU1/kx2B9OV3dwg6UjmSStFakuFECT
- WA4N3Vx3OGp20a7o/xggStdIbT3BEAcdhpEd0RwRaw8oeAUSUxFd7YHMvhTliznaRzWk/mVLZ
- oLuJIfGyJq3bIGEalfZ15D7sv+m40J14Nig30n5afbheJzoKVMQaHf0gGhIZUxIFiFUQ+rOh9
- j36WqEc7CnybYmewCbr0p9xaI5sK7fH+u5Ai1y5W4qxX994H+sxxw0zQGOPwCqh54/V6pJPUm
- YDgZQzNVvUIEDqiONs9QrRTsyj4GTDaT41LFWIHDH9PBRD8RPIKxEC7y86AQTx9PB+JMcabZf
- R6kFvbvuW6IuA4mawP/YL93q8SvEh8AfVNhmlXnqU83NcqixmyLNT5uhBzQYYRUvM/TS6DXoP
- tUmHN4gvPz3o2YEGg7wLBkAr8cpHLMVzCUUEPqlaCBC81xp45Iaa4N19WwgGDNXjPT42kw0Wa
- UjTZ+R5sntoZFwI96kTSu1EztHto8l6eok39jzzzpN6Xn9RLjFjaleaNJZAJcvVM96O5B6kjs
- Bh309W06LTPNnhRK/0zMVwYAfhYCvjKdcm3pB+QdW9PNDBCbRoFcNL8V4HnTSa/MdvD+4yBir
- IM7+R7Oa5g8Hvrrj20jGs61qkA6kn3eZA57DCMfV60BjaPjNIodddi6pyPGYQeZsuYHs3Npce
- V965EGODkF8lEcVqX6eW3E7eptjcLJ
+X-Provags-ID: V03:K1:gxbxn0N+y9m/f9DhaH+wIp20cnsWdQ+6EfdndwhFtwCWpAa396t
+ 5PYD/pCb/fnJcPvyiYN459rEsGotmvGrRjxaa0KfHK32N73R89hXDbaQOzQxxLgMDkxVNhL
+ 4eiBjn7t2DfQ66k4dI+nz+RH/UQeSeBWTPMbQG9a2HntEH6o6uLA2X+ZfoieLkQtoNSw0bf
+ 2sZVXg7D/yaVEdYrnT0uA==
+UI-OutboundReport: notjunk:1;M01:P0:po+TEuw0EAE=;Yo7MmV9DC1PX/mABjNt9B6WcM6l
+ IEvSVXcC0gZbbUvyofbDIgqV3VjZTC3h3o+3EmwJyvElTW5HorpP0Q0ezZ8ZfXL36BdcY6NBB
+ oS2hRVOiP8DiyWNLmlo/257sIwQ0nIkiJl6undBIBEg4S8s1Mbf4drRjQcJPkRWKwOrTLVUSP
+ h/Zm7h+chB1rzSEl9eSiBFsJQMPAXka55yslF8nn6ZDxgtsaBIg2EjOu7LUYmnzBKgpLxjzt6
+ J7y1ufgoYrEsboDUjiOWaLrV0R6HPHQee6feuEHmbHyk86rF/RHfZXeqgKaN0x2IoUVLJFjsH
+ xr+MMJogwwU0gjRP3IJhLbgtM2g6rvGNbhhHrsqDiGnQc8i40PudeNAKmYCYeenZymz/SKnQL
+ KABBX2e7oDGvtytCTrfL2wyq72DOmMCVmwy+qCK4vnDwcnvuJm5lwErnJfD+m2uUUiWHx7Q/J
+ rhMbnGi864pBTBpMRW78embb+jjPJCP4sqmGfGm7SnyEWb7pHOz9qptqiAlMK3MeHzq14viy+
+ fwO2g+f6tJL+LvcVhzOoRKQdXAzasUF7Kn0k6DjYaCuwy5jrUBavzz9ImZKrBRH0FUEKCEVWC
+ RsW2ccljJegvPe+w5Y1iO/Ygl7KYJzgJwJ/FbZ4R/2N60X3VVPeCjnCaIAmpKvuFbyOcclTxP
+ 6U7AO0fW3eC4mhzh4WR9AQXiRVKipgDPoxVEoEmNhMZTG16VagTm3a9V8YhzfzQZQnqRgj9+T
+ epYl/6LK7dPPQPwI/HZenhi6Ax++QwyvrHvjFy3IEcYDINkp8vrwdebPv2/gN+8irtsKQgBZn
+ OmRZ3wqMgOfCznIMkBQjpTlgBvrO7AkT4ed4DyDtOce9S5YgR50HiwejkWAtVyiC3OLKFo0gU
+ ym0LwCIdVkCCl6Pk3kQSd0Stb9bCDzVtoxoppYIpUiuonDzhTNwQ3qKVnmArhfEopqYxbE49l
+ 5DETwOIZPMP+g8mIlprlo2H6p+3F6GYEND3LYIgDjoyRghNY1738HeNxVYeyKLN9q9cIiMYtl
+ 4oTjcqT7nqTYXxfDHTg9SAZzbB9eJioG2OBO47vO2qsu2VhewHrmRFYv6LbzhcKG7Tw6DciBQ
+ nBAFyx8FnmqgwS4Mz59GuIUjxdr5yR
 X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 12/12/24 11:04, Thomas Zimmermann wrote:
+On 12/16/24 08:42, Thomas Zimmermann wrote:
 > Do not select BACKLIGHT_CLASS_DEVICE from FB_BACKLIGHT. The latter
 > only controls backlight support within fbdev core code and data
 > structures.
@@ -166,57 +167,25 @@ On 12/12/24 11:04, Thomas Zimmermann wrote:
 > it is the correct approach in any case. For most drivers, backlight
 > support is also configurable separately.
 >
+> v3:
+> - Select BACKLIGHT_CLASS_DEVICE in PowerMac defconfigs (Christophe)
+> - Fix PMAC_BACKLIGHT module dependency corner cases (Christophe)
 > v2:
 > - s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
 > - Fix fbdev driver-dependency corner case (Arnd)
 >
 > Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
 > ---
->   drivers/auxdisplay/Kconfig       |  2 +-
->   drivers/macintosh/Kconfig        |  1 +
->   drivers/staging/fbtft/Kconfig    |  1 +
->   drivers/video/fbdev/Kconfig      | 18 +++++++++++++-----
->   drivers/video/fbdev/core/Kconfig |  3 +--
->   5 files changed, 17 insertions(+), 8 deletions(-)
+>   arch/powerpc/configs/pmac32_defconfig |  1 +
+>   arch/powerpc/configs/ppc6xx_defconfig |  1 +
+>   drivers/auxdisplay/Kconfig            |  2 +-
+>   drivers/macintosh/Kconfig             |  1 +
+>   drivers/staging/fbtft/Kconfig         |  1 +
+>   drivers/video/fbdev/Kconfig           | 18 +++++++++++++-----
+>   drivers/video/fbdev/core/Kconfig      |  3 +--
+>   7 files changed, 19 insertions(+), 8 deletions(-)
 >
-> diff --git a/drivers/auxdisplay/Kconfig b/drivers/auxdisplay/Kconfig
-> index 21545ffba065..8934e6ad5772 100644
-> --- a/drivers/auxdisplay/Kconfig
-> +++ b/drivers/auxdisplay/Kconfig
-> @@ -489,7 +489,7 @@ config IMG_ASCII_LCD
->
->   config HT16K33
->   	tristate "Holtek Ht16K33 LED controller with keyscan"
-> -	depends on FB && I2C && INPUT
-> +	depends on FB && I2C && INPUT && BACKLIGHT_CLASS_DEVICE
->   	select FB_SYSMEM_HELPERS
->   	select INPUT_MATRIXKMAP
->   	select FB_BACKLIGHT
-> diff --git a/drivers/macintosh/Kconfig b/drivers/macintosh/Kconfig
-> index fb38f684444f..bf3824032d61 100644
-> --- a/drivers/macintosh/Kconfig
-> +++ b/drivers/macintosh/Kconfig
-> @@ -120,6 +120,7 @@ config PMAC_MEDIABAY
->   config PMAC_BACKLIGHT
->   	bool "Backlight control for LCD screens"
->   	depends on PPC_PMAC && ADB_PMU && FB =3D y && (BROKEN || !PPC64)
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	select FB_BACKLIGHT
->   	help
->   	  Say Y here to enable Macintosh specific extensions of the generic
-> diff --git a/drivers/staging/fbtft/Kconfig b/drivers/staging/fbtft/Kconf=
-ig
-> index 77ab44362f16..dcf6a70455cc 100644
-> --- a/drivers/staging/fbtft/Kconfig
-> +++ b/drivers/staging/fbtft/Kconfig
-> @@ -3,6 +3,7 @@ menuconfig FB_TFT
->   	tristate "Support for small TFT LCD display modules"
->   	depends on FB && SPI
->   	depends on FB_DEVICE
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	depends on GPIOLIB || COMPILE_TEST
->   	select FB_BACKLIGHT
->   	select FB_SYSMEM_HELPERS_DEFERRED
+> ...
 > diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
 > index de035071fedb..55c6686f091e 100644
 > --- a/drivers/video/fbdev/Kconfig
@@ -244,127 +213,8 @@ ig
 > +	depends on BACKLIGHT_CLASS_DEVICE=3Dy || BACKLIGHT_CLASS_DEVICE=3DFB_N=
 VIDIA
 
-BACKLIGHT_CLASS_DEVICE is of type tristate.
+Seems wrong. BACKLIGHT_CLASS_DEVICE is of type tristate.
+There are more of those, please check.
 
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -707,7 +709,6 @@ config FB_NVIDIA_BACKLIGHT
->   config FB_RIVA
->   	tristate "nVidia Riva support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_RIVA_BACKLIGHT
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> @@ -747,6 +748,8 @@ config FB_RIVA_DEBUG
->   config FB_RIVA_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_RIVA
-> +	depends on BACKLIGHT_CLASS_DEVICE=3Dy || BACKLIGHT_CLASS_DEVICE=3DFB_R=
-IVA
-
-here too. BACKLIGHT_CLASS_DEVICE is of type tristate.
-
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -934,7 +937,6 @@ config FB_MATROX_MAVEN
->   config FB_RADEON
->   	tristate "ATI Radeon display support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_RADEON_BACKLIGHT
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> @@ -960,6 +962,8 @@ config FB_RADEON_I2C
->   config FB_RADEON_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_RADEON
-> +	depends on BACKLIGHT_CLASS_DEVICE=3Dy || BACKLIGHT_CLASS_DEVICE=3DFB_R=
-ADEON
-
-and here.
-
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -975,7 +979,6 @@ config FB_RADEON_DEBUG
->   config FB_ATY128
->   	tristate "ATI Rage128 display support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_ATY128_BACKLIGHT
->   	select FB_IOMEM_HELPERS
->   	select FB_MACMODES if PPC_PMAC
->   	help
-> @@ -989,6 +992,8 @@ config FB_ATY128
->   config FB_ATY128_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_ATY128
-> +	depends on BACKLIGHT_CLASS_DEVICE=3Dy || BACKLIGHT_CLASS_DEVICE=3DFB_A=
-TY128
-
-and here.
-
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -999,7 +1004,6 @@ config FB_ATY
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> -	select FB_BACKLIGHT if FB_ATY_BACKLIGHT
->   	select FB_IOMEM_FOPS
->   	select FB_MACMODES if PPC
->   	select FB_ATY_CT if SPARC64 && PCI
-> @@ -1040,6 +1044,8 @@ config FB_ATY_GX
->   config FB_ATY_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_ATY
-> +	depends on BACKLIGHT_CLASS_DEVICE=3Dy || BACKLIGHT_CLASS_DEVICE=3DFB_A=
-TY
-
-and here
-
-> +	select FB_BACKLIGHT
->   	default y
->   	help
->   	  Say Y here if you want to control the backlight of your display.
-> @@ -1528,6 +1534,7 @@ config FB_SH_MOBILE_LCDC
->   	depends on FB && HAVE_CLK && HAS_IOMEM
->   	depends on SUPERH || COMPILE_TEST
->   	depends on FB_DEVICE
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	select FB_BACKLIGHT
->   	select FB_DEFERRED_IO
->   	select FB_DMAMEM_HELPERS
-> @@ -1793,6 +1800,7 @@ config FB_SSD1307
->   	tristate "Solomon SSD1307 framebuffer support"
->   	depends on FB && I2C
->   	depends on GPIOLIB || COMPILE_TEST
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	select FB_BACKLIGHT
->   	select FB_SYSMEM_HELPERS_DEFERRED
->   	help
-> diff --git a/drivers/video/fbdev/core/Kconfig b/drivers/video/fbdev/core=
-/Kconfig
-> index 0ab8848ba2f1..d554d8c543d4 100644
-> --- a/drivers/video/fbdev/core/Kconfig
-> +++ b/drivers/video/fbdev/core/Kconfig
-> @@ -183,9 +183,8 @@ config FB_SYSMEM_HELPERS_DEFERRED
->   	select FB_SYSMEM_HELPERS
->
->   config FB_BACKLIGHT
-> -	tristate
-> +	bool
->   	depends on FB
-> -	select BACKLIGHT_CLASS_DEVICE
->
->   config FB_MODE_HELPERS
->   	bool "Enable Video Mode Handling Helpers"
-
+Helge
 
