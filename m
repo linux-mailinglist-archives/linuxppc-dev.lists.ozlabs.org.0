@@ -1,53 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-4404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4405-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9DA9FA453
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Dec 2024 07:31:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DC5F9FA4E3
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 22 Dec 2024 09:56:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YGBBT6CVKz2xbQ;
-	Sun, 22 Dec 2024 17:31:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YGFP91Cmvz2xgv;
+	Sun, 22 Dec 2024 19:55:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.15.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734849089;
-	cv=none; b=b/JxXIuNwdfvXAWKARQkv7Y3THg7IlYJp3XqJeUuV16K83F9XyXaLziyKqdoCKfy3I3FwCbK0FeyKT2LFs+NgKOMWekTy3iLHBqTf2qdpB9rBjxBG5CkMmlcA79rOUhIHKB2ili2QEE+J8v9EKFY9DOY0Lp4I570yYUrWSMHPZ0Ns5EJF/ucLNSk+IBgcmic7f4Ccxk2gxE36a57AizB/oI7mC9vUnLJmYp3H5Nh8G9ocqOqM1XRQDnvbuYLBqMV9jxxJyu7gyYkbmf0Yu8qmgKFxi8dAdtKYdL/k805v9IgocONBSb8hgiTM7jhbjxWvlqvbeS0CtVggVBjlRaHZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734857757;
+	cv=none; b=nvVXJcfP7+m6H7ursZh6GEqUa9bZ7X1yYzmFv0UYxTNGbC/x2URsfmSCo9DGKH6rXveQi6pqDeVzvENvHWAVyRsyo3L7TvQBEIJAVWWA9IlMf+tYsYqdukojnt7Kua4Lj8zqPPK3nkXU/g2jXPkUKPVoICk8yXb60Z1zf53x2npBvs9YJVhUl8eoyVDtWH20K7O3m2mFhiGkswYsKA+iMpstZkso8CIZrPzV8zV3xt9XR6cVPd2s+kJ8zLU6A8SpxJLt3RJ5K2jb9atV9eorHpGH8MdGnCk6jPUX5UAJkU6TLegW1UUZpAG0jCdfrLw831rzL7aIOdbpexyH/ZQrHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734849089; c=relaxed/relaxed;
-	bh=bQc7ufe2asdu6tITElRdznUrVyFMBvZ5I/wmp5S0EKM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A4TBuYy6dAJNgPr9uY7I5qhvKL5joCFS/1iOceJMeWA6mxAOdKzWaMzPjL8VUP6xTCjkOtJ5k3+mdA9l3AAYGIa1l2YCCi63av1akF5ncrHPp8GG5S5uQbUpgH0AKvH8zsY32995S00QpD4pPBE1IEjDVbT9C4jGQ9n8ugMfzvTKHOOkFB1QW1PSb8z96Z3/516OzxjmxoEl3GTrJCIe/YDU2b68trBvh4R/kMWVR9j+akBXs5T4+NIwaem7NyjfG30eMexvH6hXAhg8DiAOeEAZVn57y0JA9sjbAnAvuK3fqFo64Wf96L0Q3PDiRr07asGnsxF5la8t/x5Ap9SDlA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=dF+KTpgK; dkim-atps=neutral; spf=pass (client-ip=212.227.15.18; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+	t=1734857757; c=relaxed/relaxed;
+	bh=y0ZAM3AXc9I+Ry2cL5oc+u0H81OK6W9itbK+V3oRBvs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Tq92CDeXJkfM2kmZ7DgzUJsDmx+qsvZ/cA+16YPeH4fbdgi8vaO0Q6YRoq1t6DFEwubf72omU0ZO5KH74AUkyi9bOcaidmRDNta3OcitAojpcclrqZOGja8CAGtnumXgFKidfjGOm+eaglt/5BuDo/5J4kGu2f5UyM5XzcMI2U1+fYX1o5EHLz1fYVXY9PmvViBEYFP3Rb93Er9fuflkJTUZOeDE0k4Q4ts7AYFmbtfXJXTwv8GfLtgmPY+97vE7vNr6DQ2d5ToY0Ml/dVRhsHKhrLw1pNWbvob+qBlaYKgv8y8bVb5wD0ARk2gZw5w6mZUXzDaEie3bnsnp3+4Ong==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VzY6wDyC; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gBripJmg; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.de header.i=deller@gmx.de header.a=rsa-sha256 header.s=s31663417 header.b=dF+KTpgK;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=VzY6wDyC;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gBripJmg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.de (client-ip=212.227.15.18; helo=mout.gmx.net; envelope-from=deller@gmx.de; receiver=lists.ozlabs.org)
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGBBR66Xvz2xbN
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 17:31:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1734849070; x=1735453870; i=deller@gmx.de;
-	bh=bQc7ufe2asdu6tITElRdznUrVyFMBvZ5I/wmp5S0EKM=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=dF+KTpgKHX9XizYHcqYui6ugagBQPJniktmdfoN564rrjRXygyYLw4H6eiv7PIQ0
-	 yU87fP7MnDWOUV86c38go2B/CFYuMGhL2v7SIiPGRxscMxixj55ZiJO/9rFpm88Z2
-	 NgayWvpXu56YvABk4dNFmCLgZweRbykEoBnmH3RamafUDhIbErW4sIM8tTVc7kIP5
-	 PlvwMa+sA5DfvE9yLUG5nm4VPLUU912IoCdITAYEWoixmPsOEHa4PlsxdOxVEzbk7
-	 oeCcOMb5DLZ4Y9Wf28LwujDxkouk2AoOsLWC92uEjS7rkH7/bZynTuzVxVdSsZCHn
-	 DlhrmQ3McrEUILoR9A==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.172] ([109.250.63.155]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1Mkpav-1tplKs46iF-00hDVK; Sun, 22
- Dec 2024 07:31:10 +0100
-Message-ID: <6ed9693e-e8f5-4786-b440-4e27c6d31da3@gmx.de>
-Date: Sun, 22 Dec 2024 07:31:08 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGFP749ppz2xgX
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 19:55:51 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734857746;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=y0ZAM3AXc9I+Ry2cL5oc+u0H81OK6W9itbK+V3oRBvs=;
+	b=VzY6wDyC1Vp+P1/xHhuvbxnzFaeCru1PazShL1xVeC/K9nwF0314efkpN+EtQWwVRsh1xJ
+	FjnVfvwg/ZaOBVpNxGJBv+AbdUDq2YdpGCAJEBgihtUqRurL3zbEJYnLNnu3GE3juyyM2S
+	VHMWASPigg0g81IPHA5HRoQqgCkvrH4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1734857747;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=y0ZAM3AXc9I+Ry2cL5oc+u0H81OK6W9itbK+V3oRBvs=;
+	b=gBripJmg44x8jVLsezkHu4Ib1X/ndxuQlmZf18jcybPKZI+PXRogUGkBq06kGjPc7eCQvv
+	EXRnSKwNhjwGhhs28TPitzyzTeeie55KilqkIL+xI3LhMeKbjR/vzpB8EMb2W3q7dvn65W
+	qAuVqfsdshc89m/u6PtAZ2r3DWgCbN8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-500-byYRxUTiOVS4ALTE__x15Q-1; Sun, 22 Dec 2024 03:55:45 -0500
+X-MC-Unique: byYRxUTiOVS4ALTE__x15Q-1
+X-Mimecast-MFC-AGG-ID: byYRxUTiOVS4ALTE__x15Q
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4361f371908so25078145e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 22 Dec 2024 00:55:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734857744; x=1735462544;
+        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
+         :from:references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=y0ZAM3AXc9I+Ry2cL5oc+u0H81OK6W9itbK+V3oRBvs=;
+        b=aNzTaQpG8C5ycInnEQTPY7aQGqMdwFLDhA7ZnRzYlZeVGA9rujrauwAl/TTBuqXi2L
+         1Gi0dSKUPeRDU/7RqPzul/TNuMbpJT5IHensnk891cl4+x6Oo3/Knhamp0B++8oqCJiJ
+         DlII9slrbjeD351Kemdv0tOtzEZ8QAU1AfbPeLSWVGwrVddIVX8T5pMCJ1zqWxkGq0rH
+         RFkwu86EtNBVBme5r0J3CV9ics+OgEmNcfGYzInfgXVr+mePVe+DXmPStDK1EU19xEZX
+         XeisSEogwvJQvZEgHD8wJFgswi8/I7vh5ipgjjyE4vlTfwghhFZ4CPnmwHQNifU+ckJH
+         zPIg==
+X-Forwarded-Encrypted: i=1; AJvYcCXCydoMgCODvKub2F3/bAo0GtjGB1selW/IiK7wJu4VEd1Gd5Bt9mhU8xNqF/TOZEA32OhSzjSK0sp39dg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxxOW6EKTbhcMC/QOa4kDjMMaFKoNoa2BZzEZ/gpUkU0+Ai7RZY
+	SRU8VZ7AIe7h/q+WKpHwLdVPN+gqLLJeoVcSfHcwfrITtWg4lC9d5iyCSfHyxsmUnLHjCOG1zVU
+	BujdhjT5KfhvK/kt++mu9Xj+3jqMno6rhYGXjqSHN46WxmuAGEuRC7/0akLRNPOA=
+X-Gm-Gg: ASbGnct1Lm1zV5JoJr8rGMWpuq3ZsGFxnvVjFLy+5c7wTk9eJGQoSkuAjCTi6pHtf56
+	Hd/uFTlMxVF7CBSlrzjSpekOTkHyKIl9t7lSdrfZ8jGYutMA4nBS0F1AS3ZgO3+peYHqUdjuaRX
+	JVHvFyDEuT13jQplSthdh4jGEMaPO3ryjSL88WkorRhmJEf1yH/EwnrQ2ZU+w5rlH6mAPtPadU6
+	f/5408tF1yVJOHGCDZ8nliLlkRyhCuLhMH7FaKXAyme8+9nLHZmAu+VjFI=
+X-Received: by 2002:a05:600c:1c1a:b0:436:1b81:b65c with SMTP id 5b1f17b1804b1-43668646aebmr83568365e9.15.1734857743749;
+        Sun, 22 Dec 2024 00:55:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IGwQIaqX79Jsc08fWgLjZNlfLaWiLw3h95qj60CnnBCbqLOpL6NQRY1BKR2EveaHh7BBQQiow==
+X-Received: by 2002:a05:600c:1c1a:b0:436:1b81:b65c with SMTP id 5b1f17b1804b1-43668646aebmr83568305e9.15.1734857743418;
+        Sun, 22 Dec 2024 00:55:43 -0800 (PST)
+Received: from [192.168.10.3] ([151.81.118.45])
+        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-38a1c829297sm8639506f8f.4.2024.12.22.00.55.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Dec 2024 00:55:42 -0800 (PST)
+Message-ID: <0769459a-10ee-4573-a3ce-541c01429948@redhat.com>
+Date: Sun, 22 Dec 2024 09:55:41 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,160 +101,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] fbdev: Fix recursive dependencies wrt
- BACKLIGHT_CLASS_DEVICE
-To: Thomas Zimmermann <tzimmermann@suse.de>, javierm@redhat.com,
- arnd@arndb.de, jani.nikula@linux.intel.com, christophe.leroy@csgroup.eu,
- simona@ffwll.ch, airlied@gmail.com
-Cc: dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
- linux-staging@lists.linux.dev, linuxppc-dev@lists.ozlabs.org
-References: <20241216074450.8590-1-tzimmermann@suse.de>
- <20241216074450.8590-2-tzimmermann@suse.de>
+Subject: Re: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
+To: Christian Zigotzky <chzigotzky@xenosoft.de>,
+ linuxppc-dev@lists.ozlabs.org, Darren Stevens <darren@stevens-zone.net>,
+ Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>,
+ Christian Zigotzky <info@xenosoft.de>, madskateman@gmail.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au
+References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
+ <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de>
+ <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
+ <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
+ <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
+ <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de>
+ <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: Psbo1T4bTHCC5Hzaf-CESqQfNVLCyaOzC2S1E0d0jHc_1734857744
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-Autocrypt: addr=deller@gmx.de; keydata=
- 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
-In-Reply-To: <20241216074450.8590-2-tzimmermann@suse.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:gxbxn0N+y9m/f9DhaH+wIp20cnsWdQ+6EfdndwhFtwCWpAa396t
- 5PYD/pCb/fnJcPvyiYN459rEsGotmvGrRjxaa0KfHK32N73R89hXDbaQOzQxxLgMDkxVNhL
- 4eiBjn7t2DfQ66k4dI+nz+RH/UQeSeBWTPMbQG9a2HntEH6o6uLA2X+ZfoieLkQtoNSw0bf
- 2sZVXg7D/yaVEdYrnT0uA==
-UI-OutboundReport: notjunk:1;M01:P0:po+TEuw0EAE=;Yo7MmV9DC1PX/mABjNt9B6WcM6l
- IEvSVXcC0gZbbUvyofbDIgqV3VjZTC3h3o+3EmwJyvElTW5HorpP0Q0ezZ8ZfXL36BdcY6NBB
- oS2hRVOiP8DiyWNLmlo/257sIwQ0nIkiJl6undBIBEg4S8s1Mbf4drRjQcJPkRWKwOrTLVUSP
- h/Zm7h+chB1rzSEl9eSiBFsJQMPAXka55yslF8nn6ZDxgtsaBIg2EjOu7LUYmnzBKgpLxjzt6
- J7y1ufgoYrEsboDUjiOWaLrV0R6HPHQee6feuEHmbHyk86rF/RHfZXeqgKaN0x2IoUVLJFjsH
- xr+MMJogwwU0gjRP3IJhLbgtM2g6rvGNbhhHrsqDiGnQc8i40PudeNAKmYCYeenZymz/SKnQL
- KABBX2e7oDGvtytCTrfL2wyq72DOmMCVmwy+qCK4vnDwcnvuJm5lwErnJfD+m2uUUiWHx7Q/J
- rhMbnGi864pBTBpMRW78embb+jjPJCP4sqmGfGm7SnyEWb7pHOz9qptqiAlMK3MeHzq14viy+
- fwO2g+f6tJL+LvcVhzOoRKQdXAzasUF7Kn0k6DjYaCuwy5jrUBavzz9ImZKrBRH0FUEKCEVWC
- RsW2ccljJegvPe+w5Y1iO/Ygl7KYJzgJwJ/FbZ4R/2N60X3VVPeCjnCaIAmpKvuFbyOcclTxP
- 6U7AO0fW3eC4mhzh4WR9AQXiRVKipgDPoxVEoEmNhMZTG16VagTm3a9V8YhzfzQZQnqRgj9+T
- epYl/6LK7dPPQPwI/HZenhi6Ax++QwyvrHvjFy3IEcYDINkp8vrwdebPv2/gN+8irtsKQgBZn
- OmRZ3wqMgOfCznIMkBQjpTlgBvrO7AkT4ed4DyDtOce9S5YgR50HiwejkWAtVyiC3OLKFo0gU
- ym0LwCIdVkCCl6Pk3kQSd0Stb9bCDzVtoxoppYIpUiuonDzhTNwQ3qKVnmArhfEopqYxbE49l
- 5DETwOIZPMP+g8mIlprlo2H6p+3F6GYEND3LYIgDjoyRghNY1738HeNxVYeyKLN9q9cIiMYtl
- 4oTjcqT7nqTYXxfDHTg9SAZzbB9eJioG2OBO47vO2qsu2VhewHrmRFYv6LbzhcKG7Tw6DciBQ
- nBAFyx8FnmqgwS4Mz59GuIUjxdr5yR
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 12/16/24 08:42, Thomas Zimmermann wrote:
-> Do not select BACKLIGHT_CLASS_DEVICE from FB_BACKLIGHT. The latter
-> only controls backlight support within fbdev core code and data
-> structures.
->
-> Make fbdev drivers depend on BACKLIGHT_CLASS_DEVICE and let users
-> select it explicitly. Fixes warnings about recursive dependencies,
-> such as
->
-> error: recursive dependency detected!
-> 	symbol BACKLIGHT_CLASS_DEVICE is selected by FB_BACKLIGHT
-> 	symbol FB_BACKLIGHT is selected by FB_SH_MOBILE_LCDC
-> 	symbol FB_SH_MOBILE_LCDC depends on FB_DEVICE
-> 	symbol FB_DEVICE depends on FB_CORE
-> 	symbol FB_CORE is selected by DRM_GEM_DMA_HELPER
-> 	symbol DRM_GEM_DMA_HELPER is selected by DRM_PANEL_ILITEK_ILI9341
-> 	symbol DRM_PANEL_ILITEK_ILI9341 depends on BACKLIGHT_CLASS_DEVICE
->
-> BACKLIGHT_CLASS_DEVICE is user-selectable, so making drivers adapt to
-> it is the correct approach in any case. For most drivers, backlight
-> support is also configurable separately.
->
-> v3:
-> - Select BACKLIGHT_CLASS_DEVICE in PowerMac defconfigs (Christophe)
-> - Fix PMAC_BACKLIGHT module dependency corner cases (Christophe)
-> v2:
-> - s/BACKLIGHT_DEVICE_CLASS/BACKLIGHT_CLASS_DEVICE (Helge)
-> - Fix fbdev driver-dependency corner case (Arnd)
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> ---
->   arch/powerpc/configs/pmac32_defconfig |  1 +
->   arch/powerpc/configs/ppc6xx_defconfig |  1 +
->   drivers/auxdisplay/Kconfig            |  2 +-
->   drivers/macintosh/Kconfig             |  1 +
->   drivers/staging/fbtft/Kconfig         |  1 +
->   drivers/video/fbdev/Kconfig           | 18 +++++++++++++-----
->   drivers/video/fbdev/core/Kconfig      |  3 +--
->   7 files changed, 19 insertions(+), 8 deletions(-)
->
-> ...
-> diff --git a/drivers/video/fbdev/Kconfig b/drivers/video/fbdev/Kconfig
-> index de035071fedb..55c6686f091e 100644
-> --- a/drivers/video/fbdev/Kconfig
-> +++ b/drivers/video/fbdev/Kconfig
-> @@ -649,6 +649,7 @@ config FB_S1D13XXX
->   config FB_ATMEL
->   	tristate "AT91 LCD Controller support"
->   	depends on FB && OF && HAVE_CLK && HAS_IOMEM
-> +	depends on BACKLIGHT_CLASS_DEVICE
->   	depends on HAVE_FB_ATMEL || COMPILE_TEST
->   	select FB_BACKLIGHT
->   	select FB_IOMEM_HELPERS
-> @@ -660,7 +661,6 @@ config FB_ATMEL
->   config FB_NVIDIA
->   	tristate "nVidia Framebuffer Support"
->   	depends on FB && PCI
-> -	select FB_BACKLIGHT if FB_NVIDIA_BACKLIGHT
->   	select FB_CFB_FILLRECT
->   	select FB_CFB_COPYAREA
->   	select FB_CFB_IMAGEBLIT
-> @@ -700,6 +700,8 @@ config FB_NVIDIA_DEBUG
->   config FB_NVIDIA_BACKLIGHT
->   	bool "Support for backlight control"
->   	depends on FB_NVIDIA
-> +	depends on BACKLIGHT_CLASS_DEVICE=3Dy || BACKLIGHT_CLASS_DEVICE=3DFB_N=
-VIDIA
+On 12/20/24 13:48, Christian Zigotzky wrote:
+> Maybe the kvm updates [1] from Paolo Bonzini are responsible for this 
+> issue.
+> 
+> + Paolo Bonzini
+> 
+> I have found some changes in the e500_mmu_host.c file (a/arch/powerpc/ 
+> kvm/e500_mmu_host.c) in the kvm updates [1].
+> 
+> -- Christian
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/ 
+> commit/?id=9f16d5e6f220661f73b36a4be1b21575651d8833
+> 
 
-Seems wrong. BACKLIGHT_CLASS_DEVICE is of type tristate.
-There are more of those, please check.
+That's possible, there were very large treewide updates.  Can you bisect 
+my merge?
 
-Helge
+Paolo
+
 
