@@ -1,85 +1,102 @@
-Return-Path: <linuxppc-dev+bounces-4451-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4452-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4A719FAF0B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2024 14:58:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BE9E9FB03F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2024 15:42:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YH03t4mH5z301B;
-	Tue, 24 Dec 2024 00:58:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YH11x0ntlz300g;
+	Tue, 24 Dec 2024 01:41:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734962314;
-	cv=none; b=QaiKfwN8gJ6b0fi4M8X3oAllgLFtrIk4yxrLy7eqF3b9qtl0TQZumctz7x7pqtKoiNbCy6Kudsk62nxBMw1nBD+42DBapyoNzuaTyPl7VkegJN1DOLaylzOUknV0k0x0g4vfo6j4mG5vA+DSBVNZxTk1kEvD+M74yebu/LhFiejrUFoGEle2q69GGCfOADo9WIpBA+Sye5VU3TliGBpzr0A0BN5EXBR6jH0jEdUCGaoir2+JYT1HC5BEJIwiH1ofX75ojE8AmaOVCJ8pFLk90F4+Cqmc1zPS6xU2qncWHwg3jw08oET5A5ccicJqsrPTY+JBpJsUCnLCVAHnmoXCvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734962314; c=relaxed/relaxed;
-	bh=dgbh9h7yq+bf4IZ36hv9AeouFq+D3Q11BMyETjj4ZJE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WJisoV62kgjaA+2HqV/D77SOlKYUyil7bWO4M0IMJ6FlhzPOPVaqoXIphMsmj+nNB6w8Ow/MJBJty5EACxaHIqR49FDt8MniswDz8armjHdTOSbgmJaYgRIZmm6ZYvqfBNwj+OupdIhAbTOmDxGNnHxU21CUt3Ptrz6i3dmL5kaSplxT07rxBbfen5+Zcp7KbiPLTfS60kJ4WQ+5hvr3IdQjs8PAG+Dn7oNfB7Vgw0fpw2FCtVqzQhkLkwUwC20lMx5fF8a32jV9/BZqVyX63s/UP11j81MH+GSsdJPxy8mHuq02y6v48Miu8LR7Nrl2bWCn1b2DxxV6QiqRfrG4xA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q1g373r6; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=81.169.146.165 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734964917;
+	cv=pass; b=C7HUKBNXYeFKvQzi84yTWuEDIIVKGU3NVzVILDr0L5HdFH4A5HEdFjdXHl1s+qvfswVfHntHpw37/G+gDDYb6yGAV3Efo4xzXmJk/8dIhz9ju8n/+XyhLZnmbK9hFKcSJGnxw7kHIViEMbThgS1Vstd7IQnXWxTvYKZt20ofAYySo81jry72gUTyiKJdb/sNiKSf2B6seimJiUd1o4T+CEDlo8bemYWZetfwxv2lZJftaxL5Fywoaq+HYc97dseMizt9D8aRu8/vVMEhkiKswEcKAlX7F45xiwVXKxELHzLC1LHLkJmfLWjva3sxqchypRN5bJKfYRT6S8NOjegP8A==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1734964917; c=relaxed/relaxed;
+	bh=zXzAKpYtn9aAxbB7F7kn1Shm52PdvCkDcfQgN1nF5YQ=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Vp1M0/bSgHLQaGrTqo6iRMlwKZQ6+LGQ79PQFRRdgXYmqPPUhPPqhPI6xCXQ5LbNHUqHrcArV4t3K8iTt+wzjGQAFeBxCXfhLyvP3EA0Rqm40gsmuSRa6aXdbAw99ImDun7NkPUlsJtb8qUY9tUNSYg+7E1sdDZzbSAqedRcNRxO6t/FIKQmpNGhLikBOW4SzSEswZH5vg0ULehoPwlumtokWcLkPXhk3TkG0LH9U1gk5BzH/8URy4umSt/VZdccBQVPkzlqtMI9/SdadrpPNfUKzZovuDjuzlGtaGZn7URaiHfYOT2Lmmeg3UyS5Xi/gb2VDr+S0kk3JXpNHgXWHQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Mts8OwPS; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=Uir0HyxA; dkim-atps=neutral; spf=pass (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Q1g373r6;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Mts8OwPS;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=Uir0HyxA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=81.169.146.165; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [81.169.146.165])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YH03s4QyDz300g
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 00:58:33 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BN85pL9003922;
-	Mon, 23 Dec 2024 13:58:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=dgbh9h7yq+bf4IZ36hv9AeouFq+D3Q11BMyETjj4Z
-	JE=; b=Q1g373r6WzYBmNTQ4SK7VtCJc/qnDGkblrI577wogW7nAChWRC1fTo9X+
-	HAUxgBQinfjUD7bnkyXPJ5KT+TvDQiwDdA/jChDUYjq1OuchIVxBHXTxCA+iD62K
-	BBZ6gnrwRAHeI2szXPSaXKeisDF5/ilBxOlzpNddfVAS182GCYRNuaZj3EzG+jDl
-	CEI/o8tuaGHTtBpu3UJ5Q+OEccLDsAk/G3K84K+0fP0pjkDEd864GyX+SyGXQyJh
-	TFL2OcNL/EGh62IffZ2j0bHnRTInIf3Ubom/EYDlyZZWbQ+tqlkkRiZmmN0JdPEf
-	pN+0zNMs1es3Yj0RUFlOv0klx5Z5g==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43q422hb8p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Dec 2024 13:58:27 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BNDwQHg001932;
-	Mon, 23 Dec 2024 13:58:26 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43q422hb8m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Dec 2024 13:58:26 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BN9u9SY020189;
-	Mon, 23 Dec 2024 13:58:26 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43p8cy5yux-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Dec 2024 13:58:26 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BNDwM9b65274184
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Dec 2024 13:58:22 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5173620043;
-	Mon, 23 Dec 2024 13:58:22 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A19462004B;
-	Mon, 23 Dec 2024 13:58:16 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.252.112])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Dec 2024 13:58:16 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org, hbathini@linux.ibm.com
-Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com
-Subject: [PATCH] tools/perf: Fix segfault during perf record --off-cpu when debuginfo is not enabled
-Date: Mon, 23 Dec 2024 19:28:13 +0530
-Message-Id: <20241223135813.8175-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YH11r5GjQz2ykt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 01:41:50 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1734964902; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=EfzHzJ9mh/jdhTkCLzUEQLtnOcPtSXqLwXJqxCTz97Uiv6zXCYG1AOs8Zip4B391BB
+    fKcfBqG2CgPqsfSmgOAozqKRoO4e1J5RYp3XVQYjefZTmNT41fnbCAPeiOJQFuHO/xhQ
+    J7qFlWAcvfgTAXW0+d8/baq1pQAwAmakX1aGQfi1YInNzhGC1V7MTRmgs31ZRqXdmmKp
+    cez0RM6XjLAUSN+J5XF7VXaVle0UPKrISQzuLCo7T9P7gEQxyDTHCdAJsL1KPE1k5MNX
+    wnWW9AIH1/xZSp7Sj4LuDuRB6UaQMw1KKxp17H4YXKvIIlqEs7OIGlkiiSnS5ZrPw3f/
+    v72A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1734964902;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=zXzAKpYtn9aAxbB7F7kn1Shm52PdvCkDcfQgN1nF5YQ=;
+    b=tVTHuFzYrCawkGnsJCKlGhbIct2+adjb6LPbrbkpzzVhKb12Ge89jhTL+MbK7/Ln/t
+    zlDEYNmi1LMgcjgPR2NO2j17ryMOH7vd8qHUwM7OJBw70fG+fBG6lO5MLR3RMnjXMJnI
+    dXHsTQWFzEvvSfHYN3KfpP1Ke5Y5ojr+L3h+dgpI/lG6kC6ra4bYlmdogcd8SHJ/F4ag
+    bfEmues2aO/uP+Og3YRFwwhlmNyEwwPj8NUFZVYZFP2KLnhLD8h8RBqGUba5Kzx+sMAw
+    +RAQr1mayBGIBVSIhtMT1YvqwnWGDw+3yLsK37F7aOrNYFTyEYeKVLwQgvy8Qv/cefIM
+    efDg==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1734964902;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=zXzAKpYtn9aAxbB7F7kn1Shm52PdvCkDcfQgN1nF5YQ=;
+    b=Mts8OwPSbOQ1hW/BdGz3H17S78cLUNePVVWKRU6HrgtcN1+/Sv+QonbjNK8KbeYgV0
+    Xn/6nteD2wQbp4OSIK+1PO1GjlDJmQXtjs6/nWoODIfAjLzET7WAJ33RbPuNhN/PKHcp
+    3/0bpkO7bGeuTcZ2ExRS5K3xRgUqMH0ATNRSlD7Y5AFHxxXstCdW34O1j2pvusikEFE9
+    rriMyNr0DgveKvgX9cNfe/y8U5tKpPN1nHE3diqilTOlzXz5s2xDsQBD+yVPn00uvvz7
+    NtQMYGCsOQaBG+d7TxBfewkgwRn3pZmP41cIqFMHDiSiqjhjSO4Nw7MFKATH+AKRDmhM
+    sKWw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1734964902;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=zXzAKpYtn9aAxbB7F7kn1Shm52PdvCkDcfQgN1nF5YQ=;
+    b=Uir0HyxA1BRVS9eslEn4xp16uHC368oVlhqPPs5Uct7Cwn5eqGHgIzsP1pyhvIwW1F
+    Vsj2PnIFpER9GL8Z1MCw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6Kxrf+5Dj7x4QgaMrvdtcX133EisT29BnYJMBKrhBYBGwL4fUrhbbg=="
+Received: from void-ppc.a-eon.tld
+    by smtp.strato.de (RZmta 51.2.16 AUTH)
+    with ESMTPSA id ebe9c90BNEfgBMu
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Mon, 23 Dec 2024 15:41:42 +0100 (CET)
+Subject: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Darren Stevens <darren@stevens-zone.net>,
+ Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>,
+ Christian Zigotzky <info@xenosoft.de>, madskateman@gmail.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au
+References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
+ <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de>
+ <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
+ <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
+ <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
+ <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de>
+ <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
+ <0769459a-10ee-4573-a3ce-541c01429948@redhat.com>
+ <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
+ <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <7d8b5b78-b20c-d915-4a94-7082d7e01600@xenosoft.de>
+Date: Mon, 23 Dec 2024 15:41:33 +0100
+X-Mailer: BrassMonkey/33.4.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,80 +109,225 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+In-Reply-To: <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: _Usv8j7BfTmHTlu8xyb9b-9efpx3QpCE
-X-Proofpoint-ORIG-GUID: joqh_Ar9x7orU_mJvjEJVY4aRvvpwQBU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- impostorscore=0 mlxlogscore=999 malwarescore=0 mlxscore=0 phishscore=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 spamscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2412230121
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-When kernel is built without debuginfo, running perf record with
---off-cpu results in segfault as below:
+On 22/12/24 18:49, Paolo Bonzini wrote:
+ >
+ > Go on with
+ > git checkout -b bisection-rebase b467ab82a9fde4b46c0cd2c299220857afb0e0d4
+ > git rebase v6.12
+ > # check that it boots. if it fails to boot, please report this. if it 
+succeds, continue:
+ > git bisect start
+ > git bisect bad bisection-rebase
+ > git bisect good v6.12
+ >
+ > Proceed to bisect. If you never find a kernel that fails to boot, report.
+ >
+ > If you find a kernel that fails to boot, start another bisection 
+between v6.12 and bisection-rebase, looking for the first patch that 
+fails to boot.
 
-   ./perf record --off-cpu -e dummy sleep 1
-   libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
-   libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
-   libbpf: failed to find valid kernel BTF
-   Segmentation fault (core dumped)
+Hi Bonzini,
 
-The backtrace pointed to:
+Thank you for your answer.
 
-   #0  0x00000000100fb17c in btf.type_cnt ()
-   #1  0x00000000100fc1a8 in btf_find_by_name_kind ()
-   #2  0x00000000100fc38c in btf.find_by_name_kind ()
-   #3  0x00000000102ee3ac in off_cpu_prepare ()
-   #4  0x000000001002f78c in cmd_record ()
-   #5  0x00000000100aee78 in run_builtin ()
-   #6  0x00000000100af3e4 in handle_internal_command ()
-   #7  0x000000001001004c in main ()
+On 22/12/24 18:49, Paolo Bonzini wrote:
 
-Code sequence is:
-   static void check_sched_switch_args(void)
-   {
-        struct btf *btf = btf__load_vmlinux_btf();
-        const struct btf_type *t1, *t2, *t3;
-        u32 type_id;
+     Thanks. Please try this
 
-        type_id = btf__find_by_name_kind(btf, "btf_trace_sched_switch",
-                                         BTF_KIND_TYPEDEF);
+     git bisect start
+     git checkout c9be85dabb376299504e0d391d15662c0edf8273
 
-btf__load_vmlinux_btf fails when CONFIG_DEBUG_INFO_BTF is not enabled.
-Here bpf__find_by_name_kind calls btf__type_cnt with NULL btf
-value and results in segfault. To fix this, add a check to see if
-btf is not NULL before invoking bpf__find_by_name_kind
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 ---
- tools/perf/util/bpf_off_cpu.c | 5 +++++
- 1 file changed, 5 insertions(+)
 
-diff --git a/tools/perf/util/bpf_off_cpu.c b/tools/perf/util/bpf_off_cpu.c
-index a590a8ac1f9d..4269b41d1771 100644
---- a/tools/perf/util/bpf_off_cpu.c
-+++ b/tools/perf/util/bpf_off_cpu.c
-@@ -100,6 +100,11 @@ static void check_sched_switch_args(void)
- 	const struct btf_type *t1, *t2, *t3;
- 	u32 type_id;
- 
-+	if (!btf) {
-+		pr_debug("Missing btf, check if CONFIG_DEBUG_INFO_BTF is enabled\n");
-+		goto cleanup;
-+	}
-+
- 	type_id = btf__find_by_name_kind(btf, "btf_trace_sched_switch",
- 					 BTF_KIND_TYPEDEF);
- 	if ((s32)type_id < 0)
+HEAD is now at c9be85dabb37 KVM: PPC: e500: Mark "struct page" dirty in 
+kvmppc_e500_shadow_map()
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     check that it does not boot
+
+---
+
+Yes, it doesn't boot
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     git bisect bad
+     git checkout adc218676eef25575469234709c2d87185ca223a
+
+---
+
+Previous HEAD position was c9be85dabb37 KVM: PPC: e500: Mark "struct 
+page" dirty in kvmppc_e500_shadow_map() HEAD is now at adc218676eef 
+Linux 6.12
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     check that it boots
+
+---
+
+The host system boots and the guest kernel 6.13-rc3 boots in a KVM HV VM 
+too.
+
+git bisect good
+
+Bisecting: a merge base must be tested
+[e9001a382fa2c256229adc68d55212028b01d515] Merge tag 
+'kvmarm-fixes-6.12-3' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     There are two possibilities.
+     If e9001a382fa2c256229adc68d55212028b01d515 succeeds to boot
+
+     Then git bisect good and bisect to the patch that causes the host 
+to fail to boot. What's left seems to be all non-PPC KVM patches, which 
+is a bit weird but you never know. Once you have the result, we'll try 
+to fix that, and provide you with a fixed branch to bisect the actual 
+KVM-PPC failure.
+
+---
+
+The host system doesn't boot.
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     A potential candidate, based on your skips, is commit eec1e5db464e 
+("KVM: Annotate that all paths in hva_to_pfn() might sleep").
+
+     Please also provide a log of the boot failure (I haven't seen it 
+but I might be missing it).
+     If e9001a382fa2c256229adc68d55212028b01d515 fails to boot
+
+---
+
+Unfortunately, there isn't a guest kernel boot log via serial log.
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     Go on with
+
+     git checkout -b bisection-rebase 
+b467ab82a9fde4b46c0cd2c299220857afb0e0d4
+     git rebase v6.12
+
+---
+
+Applying: Documentation: kvm: fix a few mistakes Applying: 
+Documentation: kvm: replace section numbers with links
+Applying: Documentation: kvm: reorganize introduction Applying: 
+Documentation: KVM: fix malformed table
+Applying: x86: KVM: Advertise CPUIDs for new instructions in Clearwater 
+Forest
+Applying: KVM: x86: expose MSR_PLATFORM_INFO as a feature MSR
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     check that it boots. if it fails to boot, please report this.
+
+---
+
+The host kernel boots but the guest kernel doesn't boot so KVM HV 
+doesn't work.
+
+On 22/12/24 18:49, Paolo Bonzini wrote:
+
+     git bisect start
+     git bisect bad bisection-rebase
+     git bisect good v6.12
+
+---
+
+Bisecting: 99 revisions left to test after this (roughly 7 steps) 
+[e7f7cfdd90c5a8bff38e059ca885a668efd2311f] RISC-V: KVM: Save trap CSRs 
+in kvm_riscv_vcpu_enter_exit()
+
+git bisect bad (Host boots and guest doesn't boot)
+
+Output:
+
+Bisecting: 49 revisions left to test after this (roughly 6 steps) 
+[4f126962ea9b0d267c4a46f6be0e12698e723210] KVM: Move x86's API to 
+release a faultin page to common KVM
+
+git bisect good (Host and guest boot)
+
+Output:
+
+Bisecting: 24 revisions left to test after this (roughly 5 steps) 
+[2c56ca43bac9f741b9d1c45d292fd512cf22ce98] KVM: PPC: Use kvm_vcpu_map() 
+to map guest memory to patch dcbz instructions
+
+git bisect bad (Host boots and guest doesn't boot)
+
+Output:
+
+Bisecting: 12 revisions left to test after this (roughly 4 steps) 
+[a585688ac3ca4a91f80179ffcadb33575d9539a9] KVM: PPC: Use 
+__kvm_faultin_pfn() to handle page faults on Book3s Radix
+
+git bisect bad (Host boots and guest doesn't boot)
+
+Bisecting: 5 revisions left to test after this (roughly 3 steps) 
+[9f9bae39c20dc83e9c6b0de0ab20260b37f1f48e] KVM: arm64: Mark "struct 
+page" pfns accessed/dirty before dropping mmu_lock
+
+git bisect bad (Host boots and guest doesn't boot)
+
+Bisecting: 2 revisions left to test after this (roughly 2 steps) 
+[16dd33b96e8c0fb5dc335efaf5ebc7f92feef1ae] KVM: PPC: e500: Mark "struct 
+page" dirty in kvmppc_e500_shadow_map()
+
+git bisect good (Host and guest boot)
+
+Output:
+
+Bisecting: 0 revisions left to test after this (roughly 1 step) 
+[edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4] KVM: PPC: e500: Use 
+__kvm_faultin_pfn() to handle page faults
+
+git bisect bad (Host boots and guest doesn't boot)
+
+Bisecting: 0 revisions left to test after this (roughly 0 steps) 
+[a5608a81925937a230816652bc7b953880606e7c] KVM: PPC: e500: Mark "struct 
+page" pfn accessed before dropping mmu_lock
+
+git bisect good (Host and guest boot)
+
+`edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 is the first bad commit
+commit edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4
+Author: Sean Christopherson seanjc@google.com
+Date: Thu Oct 10 11:23:56 2024 -0700
+
+KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults
+
+Convert PPC e500 to use __kvm_faultin_pfn()+kvm_release_faultin_page(),
+and continue the inexorable march towards the demise of
+kvm_pfn_to_refcounted_page().
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Message-ID: <20241010182427.1434605-55-seanjc@google.com>
+
+arch/powerpc/kvm/e500_mmu_host.c | 8 +++-----
+1 file changed, 3 insertions(+), 5 deletions(-)`
+
+Cheers,
+Christian
+
 -- 
-2.43.5
+Sent with BrassMonkey 33.4.0 (https://github.com/wicknix/brass-monkey/releases/tag/33.4.0)
 
 
