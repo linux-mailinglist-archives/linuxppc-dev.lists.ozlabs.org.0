@@ -1,73 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-4458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4459-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44E249FB48C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2024 20:00:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C4D9FB4EA
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2024 21:13:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YH6mC1RlJz2xdq;
-	Tue, 24 Dec 2024 06:00:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YH8Nj5M7fz2xy0;
+	Tue, 24 Dec 2024 07:13:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734980427;
-	cv=none; b=L8u1jGtjkn3+6tr2cbUjzOeMZX6+Ge+n+jEh8P4hAd1NraL07SqZ0eUE/Vb4iHrq0N8r6lkWZ8J/YdS1rWaAQ9evgYUYr8c5p22REgxuiMJgq04LE2spbhAazTArEo9zk7mAOR7MGA2qfo+FRbq61OD3hRnDbz4lM1UBGxn3tbSwy8coI2tNCd+sIjyaAH01IAp0YsuVpU+c7oIUzBTTFZMBGprYJBixoM0aXpClggagZWyOAbtOeCvkcrCkf/d9PMaAWi/MPElk24eTwEiCO9LcLLBavPHyvW/w4PPy4Yh/pDYWk3eZNRSmOXJKOX4blfefGDGba7A1PwIGDMTS9w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::64a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734984821;
+	cv=none; b=iENqPw7sxNLiGq+pIdQ3ArM7ChNr18TDl/3jwT2/N0s5ONLkPqsBJuOXV2jhu1rIz6vAohHEsSpctjdb/iTLkYYdX2gNwpEu+X4ULUtp5O2KSsyhvQTDeGDevtG/VPc+RkYkqV4C4fMeb3eVS4zVfVwTrM2aFAkQL+s4Lju1iCzWFRrJ5g7ZttCmYkYb855Nnm8A/9Sgl4v8TAu0C6csA7OBJiBPX28efIwsbqnW2NJzjoSxDHE74E3hu/aLqqMOKQwELxEOY187B3bHc6p+qN954YzSFRpq8ARJzXBl4BMa+y/SelXAD934RLqfO9XAbHS2TfUJ26ge2GoagPm8NA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734980427; c=relaxed/relaxed;
-	bh=GoilfozunktQ1EU8TQ86q+nzegtvAF0rGECL+fCKcv0=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=D1raBBr/t7aFeiZFSm1lCPL7JoI8SjTLyY8+V0Y5AAQGO9yYnI+ipixCGcq1m+7QADjtlmWqNbhhtgnHqR+2yDKM8w/l0mDmiA6CMbp+o3UnJuuCZq0KlKwfswlZDNag6qKPL6zl812Dvjj2f/i0KeCr3w4+2diq1KaGKI6VlTMaIC0ryFPU3x2UlvJnSbf6y1tSVj4ZvUWWMWxUZIRWgCBy5L1CnmhP2ZtWMQs2q7jiq/PTHpYB8i2h/HPWmT5UNoQBusuzRj9BdAIsqEwQiZlNKtU2CGsKPrp49oVwxmbEWXKl8mr/5G7BafR4b9eFacR/IEPNRXTEBZkpuc/H5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nDKq9EoQ; dkim-atps=neutral; spf=pass (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1734984821; c=relaxed/relaxed;
+	bh=NdmPC/Cg+VRgcBcF/g9ZlGzIAQfrdNiF/rJDE7UZdnU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Ik7pSfnakoc79ROQiXIXmy8rFVOm+592Pu0REbFQbVslUPGhnxbCgxjEMuJFNFWQNonDJevxtwXHXfJ2/gqKaaZV8J9udromQ8eghgLZQmA9sanKgIAeQYgmBochqrluU2pTK5zc1XriYtZjAWpKm8eaHss4hhps7E+UubETgEIluU0pjZVI+ZH/XNvfXK/LbWFAPCkeujENTGulyAl+20nBnTSEpfvDnv0s09/La0ASGBoS6VguzU9YC0AlvgVFGtD6ldu5UuDsnfLazZ+jjW+YRoJx8am3vmuarFz/NEvPf3bUzciuUFxArfuLXk0gOvf3rSXA/Qex9Ph8SIRVAg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=usDF7SsZ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3bsrpzwckdn8nnbvsfshpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--mmaurer.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--mmaurer.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=nDKq9EoQ;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=usDF7SsZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--mmaurer.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3bsrpzwckdn8nnbvsfshpphmf.dpnmjovyqqd-efwmjtut.pambct.psh@flex--mmaurer.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YH6m82N29z2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 06:00:17 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1734980425; x=1766516425;
-  h=date:from:to:cc:subject:message-id;
-  bh=AC3AXesF3zz9xDgWOpXH5UYdbyh/QjuAId7MnJj09uA=;
-  b=nDKq9EoQtlt/0CDmiWYltG/6RTrUDXtVrnirjMLfX19BHDjG//ap4bNZ
-   /x7HwspJRF1FoV+lw+t/TVlP7Ez1BMS8v7UKEB00sOIJZ8ZmKOMIWRX6Q
-   3yImuIpe85DN8nBdvnzR435uzk+y63NnW2Sjtt14VAZ/M8qhqA9BQAp9m
-   ofKE/qQmnb2NRtvNjpo35yUaAtJylHFXtPOlfGETJoPDdu/v2C9HAP6mq
-   utIUbx74TBWqgwWNqwDRgfSbu8J5NhdCWzWpfX5eeVOYwDDGF7PDzX2iz
-   wnUXfaX/LYTMy8Nm9cbY5K0bPUW50oSFoskV0Fv0zmMUUoZPOWkZ4UsXM
-   Q==;
-X-CSE-ConnectionGUID: dBeX3S7bS4mcw9Fhldv/zQ==
-X-CSE-MsgGUID: 6JFB41iTRqGrX9hjiGVRVQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11295"; a="38291820"
-X-IronPort-AV: E=Sophos;i="6.12,257,1728975600"; 
-   d="scan'208";a="38291820"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Dec 2024 11:00:15 -0800
-X-CSE-ConnectionGUID: NnG4l4UxQliaeEzqL0I80Q==
-X-CSE-MsgGUID: hYVZjXWmRtKOPZji7ycRlQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,257,1728975600"; 
-   d="scan'208";a="99136626"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 23 Dec 2024 11:00:14 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tPnf2-0000ZT-0B;
-	Mon, 23 Dec 2024 19:00:12 +0000
-Date: Tue, 24 Dec 2024 02:59:32 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next-test] BUILD SUCCESS
- 26bef359bc4f10747f8d0b3a7f3fe60ef99ce2c1
-Message-ID: <202412240219.r8jKibb0-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YH8Nh0BKcz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 07:13:38 +1100 (AEDT)
+Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-216717543b7so62542685ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2024 12:13:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1734984814; x=1735589614; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NdmPC/Cg+VRgcBcF/g9ZlGzIAQfrdNiF/rJDE7UZdnU=;
+        b=usDF7SsZlacE9GZIN4XSTZqvX+H+AOKDKDFm8zWhG+6ugKcNyMh0u2rsvBz+WST+Q3
+         F+8Ke17BHNrVQdGjjqjg6GarGu5Mh93pW1LmzBG1zUCboCrMZmaxNVcY5Hh1F2vgWlRu
+         rkaTrlTWJh6J5TM7GmPklNvN0TpAIowjT8nXN8Kvf8rqjRCc4X3UwmpRZQdJ6h51wJiO
+         4KKtsBoQq8PqNR+bKpLwtTtgsmljv5c8Tf0heE5LMR8BK/dVWlFOlo9LSOmdopdNP140
+         jba0Zi1KdbfTdD/cwR6IYbcO8qz/1z0w1FYg61h8lxJgxmiER+XwXpg6Qr+Yuz8kQLEt
+         TMxA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1734984814; x=1735589614;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NdmPC/Cg+VRgcBcF/g9ZlGzIAQfrdNiF/rJDE7UZdnU=;
+        b=Lw/yUYKnyJsma9b1qqzlrJ1hjxo3O0I2rmVZvmqeSMdMeeeHsLQ/r7cVi2U/+d4iBa
+         C51WGJupZFnS5Y2lhMJlk2dQCsINKQ0XkuDcakJ9w7fqcVV0dqDaTLldRpj1lzcDQ93r
+         NS5bG6Hhh95s4h0vfgnvZbnQU4LaNwjSZMlaU1KF2Eo90wDzv0BU19/+lEH/PSeOVZgl
+         RJHkuHhIs1cn9LHgnpbLA09rARGBgDdIjCfSkoyCygnjLOZfHh0CIn9QOLnXXX0ApDKa
+         nltsnUvNVTscBSC21v5WoU3z0qKpK/IhEcFOZ48O259owPz3yCcNc2Mg0LQ3KhJJvJD+
+         gsOQ==
+X-Gm-Message-State: AOJu0Yx98bssvdzlkV2cUQwgD3vhA85TCoFFcgUaSXhLrY9kcRDr597j
+	sFRZBWBB39RizYMzPBaub6BI/MicQJpjKoSYY+UOR8Qk9c3og89dCP83LSLH5tiBbgxdaS6i8ST
+	n2YurSg==
+X-Google-Smtp-Source: AGHT+IHDdiQ8BcHRE1C+R/Gh/AVZ73dfmTeKtGuVX3u4tRShWf7DEBJfeyF3UjMT6m/kMUX66xFU/0X+ljnD
+X-Received: from pfxa2.prod.google.com ([2002:a05:6a00:1d02:b0:725:eb13:8be8])
+ (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:998b:b0:1e0:b5ae:8fc1
+ with SMTP id adf61e73a8af0-1e5e0484570mr22771345637.13.1734984814435; Mon, 23
+ Dec 2024 12:13:34 -0800 (PST)
+Date: Mon, 23 Dec 2024 20:13:29 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,161 +71,181 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAGrEaWcC/43Q32rDIBQG8FcJXs/iv9QYxth7jF2YeGyFGjdNQ
+ 0fpu+8kLSyjHezyiP78vnMmBXKAQtrqTDJMoYQ04MD5U0X6vR12QIPDAyKYUJwJQeE0wuDA0Zj
+ cBHl+UKjVnVLOd957TvDpRwYfTov79o6zzynScZ/BrjBeC8mNqDeyqZWQjHIaoz1myK+7lHYH2
+ PQp3rQMn0cMN15JEqEUu2Rrq+dFEyhxpuV2I4xhjWyoYLTYGMZ0mOwAw8p8mdHOFqA44I22GrA
+ VvTqCkTnxPpQx5a9lMZNePr2tQD5ewaQpo1Ia3eAupNRyXWIWp2alYNvHSoOKkbZ34Leih+ZOM T8K/zOLQaXrmWLSs1p1/k7h7D8MZ+gwb3WtvHcAvztdLpdvuKtXlEACAAA=
+X-Change-Id: 20241022-extended-modversions-a7b44dfbfff1
+X-Mailer: b4 0.15-dev
+Message-ID: <20241223-extended-modversions-v11-0-221d184ee9a7@google.com>
+Subject: [PATCH v11 0/5] Extended MODVERSIONS Support
+From: Matthew Maurer <mmaurer@google.com>
+To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
+	Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 26bef359bc4f10747f8d0b3a7f3fe60ef99ce2c1  powerpc: Use str_on_off() helper in check_cache_coherency()
+This patch series is intended for use alongside the Implement DWARF
+modversions series [1] to enable RUST and MODVERSIONS at the same
+time.
 
-elapsed time: 845m
+Elsewhere, we've seen a desire for long symbol name support for LTO
+symbol names [2], and the previous series came up [3] as a possible
+solution rather than hashing, which some have objected [4] to.
 
-configs tested: 140
-configs skipped: 9
+This series adds a MODVERSIONS format which uses a section per column.
+This avoids userspace tools breaking if we need to make a similar change
+to the format in the future - we would do so by adding a new section,
+rather than editing the struct definition. In the new format, the name
+section is formatted as a concatenated sequence of NUL-terminated
+strings, which allows for arbitrary length names.
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Emitting the extended format is guarded by CONFIG_EXTENDED_MODVERSIONS,
+but the kernel always knows how to validate both the original and
+extended formats.
 
-tested configs:
-alpha                            alldefconfig    gcc-14.2.0
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-alpha                               defconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                                 defconfig    gcc-13.2.0
-arc                   randconfig-001-20241223    gcc-13.2.0
-arc                   randconfig-002-20241223    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                     davinci_all_defconfig    clang-20
-arm                                 defconfig    clang-20
-arm                        keystone_defconfig    gcc-14.2.0
-arm                        multi_v5_defconfig    gcc-14.2.0
-arm                             pxa_defconfig    gcc-14.2.0
-arm                   randconfig-001-20241223    gcc-14.2.0
-arm                   randconfig-002-20241223    clang-16
-arm                   randconfig-003-20241223    clang-20
-arm                   randconfig-004-20241223    gcc-14.2.0
-arm                        vexpress_defconfig    gcc-14.2.0
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                               defconfig    gcc-14.2.0
-arm64                 randconfig-001-20241223    gcc-14.2.0
-arm64                 randconfig-002-20241223    clang-18
-arm64                 randconfig-003-20241223    gcc-14.2.0
-arm64                 randconfig-004-20241223    gcc-14.2.0
-csky                              allnoconfig    gcc-14.2.0
-csky                                defconfig    gcc-14.2.0
-csky                  randconfig-001-20241223    gcc-14.2.0
-csky                  randconfig-002-20241223    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon                          allyesconfig    clang-18
-hexagon                             defconfig    clang-20
-hexagon               randconfig-001-20241223    clang-19
-hexagon               randconfig-002-20241223    clang-20
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20241223    clang-19
-i386        buildonly-randconfig-002-20241223    clang-19
-i386        buildonly-randconfig-003-20241223    clang-19
-i386        buildonly-randconfig-004-20241223    gcc-12
-i386        buildonly-randconfig-005-20241223    clang-19
-i386        buildonly-randconfig-006-20241223    gcc-12
-i386                                defconfig    clang-19
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch                           defconfig    gcc-14.2.0
-loongarch             randconfig-001-20241223    gcc-14.2.0
-loongarch             randconfig-002-20241223    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                                defconfig    gcc-14.2.0
-m68k                        stmark2_defconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-microblaze                          defconfig    gcc-14.2.0
-microblaze                      mmu_defconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                          ath25_defconfig    clang-16
-mips                          eyeq6_defconfig    clang-20
-mips                           ip30_defconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20241223    gcc-14.2.0
-nios2                 randconfig-002-20241223    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-14.2.0
-openrisc                  or1klitex_defconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-14.2.0
-parisc                randconfig-001-20241223    gcc-14.2.0
-parisc                randconfig-002-20241223    gcc-14.2.0
-parisc64                            defconfig    gcc-14.1.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc                      katmai_defconfig    clang-18
-powerpc                     ksi8560_defconfig    gcc-14.2.0
-powerpc                 mpc837x_rdb_defconfig    gcc-14.2.0
-powerpc                         ps3_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20241223    clang-18
-powerpc               randconfig-002-20241223    clang-16
-powerpc               randconfig-003-20241223    clang-20
-powerpc                  storcenter_defconfig    gcc-14.2.0
-powerpc64                        alldefconfig    clang-20
-powerpc64             randconfig-001-20241223    gcc-14.2.0
-powerpc64             randconfig-002-20241223    clang-18
-powerpc64             randconfig-003-20241223    gcc-14.2.0
-riscv                            allmodconfig    clang-20
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-20
-riscv                 randconfig-001-20241223    clang-20
-riscv                 randconfig-002-20241223    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20241223    clang-20
-s390                  randconfig-002-20241223    gcc-14.2.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                            migor_defconfig    gcc-14.2.0
-sh                    randconfig-001-20241223    gcc-14.2.0
-sh                    randconfig-002-20241223    gcc-14.2.0
-sh                             sh03_defconfig    gcc-14.2.0
-sh                   sh7770_generic_defconfig    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20241223    gcc-14.2.0
-sparc                 randconfig-002-20241223    gcc-14.2.0
-sparc64               randconfig-001-20241223    gcc-14.2.0
-sparc64               randconfig-002-20241223    gcc-14.2.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20241223    clang-16
-um                    randconfig-002-20241223    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20241223    gcc-12
-x86_64      buildonly-randconfig-002-20241223    clang-19
-x86_64      buildonly-randconfig-003-20241223    clang-19
-x86_64      buildonly-randconfig-004-20241223    gcc-12
-x86_64      buildonly-randconfig-005-20241223    gcc-12
-x86_64      buildonly-randconfig-006-20241223    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20241223    gcc-14.2.0
-xtensa                randconfig-002-20241223    gcc-14.2.0
+Emitting the existing format is now guarded by CONFIG_BASIC_MODVERSIONS,
+but it is enabled by default when MODVERSIONS is enabled and must be
+explicitly disabled by the user.
+
+Disabling CONFIG_BASIC_MODVERSIONS may cause some userspace tools to be
+unable to retrieve CRCs until they are patched to understand the new
+location. Even with CONFIG_BASIC_MODVERSIONS enabled, those tools will
+be unable to read the CRCs for long symbols until they are updated to
+read the new format. This is not expected to interfere with normal
+operation, as the primary use for CRCs embedded in the module is
+load-time verification by the kernel. Recording and monitoring of CRCs
+is typically done through Module.symvers.
+
+Selecting RUST and MODVERSIONS is now possible if GENDWARFKSYMS is
+selected, and will implicitly select EXTENDED_MODVERSIONS.
+
+This series depends upon DWARF-based versions [1].
+
+[1] https://lore.kernel.org/lkml/20241219210736.2990838-20-samitolvanen@google.com/	
+[2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org/
+[3] https://lore.kernel.org/lkml/ZoxbEEsK40ASi1cY@bombadil.infradead.org/
+[4] https://lore.kernel.org/lkml/0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com/
+
+Changes in v11:
+- Fixed documentation about where strings are stored per Petr's
+  suggestion.
+- Rebased on to the latest version of Sami's series on linux-next
+
+v10: https://lore.kernel.org/r/20241123-extended-modversions-v10-0-0fa754ffdee3@google.com
+- Fixed accidental selects / default confusion in previous patch
+- Re-ran tests (check for section presence in Y/Y, Y/N, N/Y, N/N, check
+  all module kinds load)
+
+v9: https://lore.kernel.org/r/20241123-extended-modversions-v9-0-bc0403f054bf@google.com
+- Rebased onto the latest version of Sami's series, on top of linux-next
+- Added BASIC_MODVERSIONS to allow using *only* EXTENDED_MODVERSIONS
+- Documented where symbol data is stored and format limitations
+
+v8: https://lore.kernel.org/r/20241030-extended-modversions-v8-0-93acdef62ce8@google.com
+- Rebased onto latest version of Sami's series, on top of v6.12-rc5
+- Pass --stable when KBUILD_GENDWARFKSYMS_STABLE is set.
+- Flipped MODVERSIONS/GENDWARFKSYMS order in deps for CONFIG_RUST
+- Picked up trailers
+
+v7: https://lore.kernel.org/r/20241023-extended-modversions-v7-0-339787b43373@google.com
+- Fix modpost to detect EXTENDED_MODVERSIONS based on a flag
+- Drop patches to fix export_report.pl
+- Switch from conditional compilation in .mod.c to conditional emission
+  in modpost
+- Factored extended modversion emission into its own function
+- Allow RUST + MODVERSIONS if GENDWARFKSYMS is enabled by selecting
+  EXTENDED_MODVERSIONS
+
+v6: https://lore.kernel.org/lkml/20241015231925.3854230-1-mmaurer@google.com/
+- Splits verification refactor Luis requested out to a separate change
+- Clarifies commits around export_report.pl repairs
+- Add CONFIG_EXTENDED_MODVERSIONS to control whether extended
+  information is included in the module, per Luis's request.
+
+v5: https://lore.kernel.org/all/20240925233854.90072-1-mmaurer@google.com/
+- Addresses Sami's comments from v3 that I missed in v4 (missing early
+  return, extra parens)
+
+v4: https://lore.kernel.org/asahi/20240924212024.540574-1-mmaurer@google.com/
+- Fix incorrect dot munging in PPC
+
+v3: https://lore.kernel.org/lkml/87le0w2hop.fsf@mail.lhotse/T/
+- Split up the module verification refactor into smaller patches, per
+  Greg K-H's suggestion.
+
+v2: https://lore.kernel.org/all/20231118025748.2778044-1-mmaurer@google.com/
+- Add loading/verification refactor before modifying, per Luis's request
+
+v1: https://lore.kernel.org/rust-for-linux/20231115185858.2110875-1-mmaurer@google.com/
 
 --
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.47.0.rc1.288.g06298d1525-goog
+
+---
+Matthew Maurer (4):
+      modules: Support extended MODVERSIONS info
+      modpost: Produce extended MODVERSIONS information
+      modules: Allow extended modversions without basic MODVERSIONS
+      Documentation/kbuild: Document storage of symbol information
+
+Sami Tolvanen (1):
+      rust: Use gendwarfksyms + extended modversions for CONFIG_MODVERSIONS
+
+ Documentation/kbuild/modules.rst | 20 +++++++++
+ arch/powerpc/kernel/module_64.c  | 24 ++++++++++-
+ init/Kconfig                     |  3 +-
+ kernel/module/Kconfig            | 25 +++++++++++
+ kernel/module/internal.h         | 11 +++++
+ kernel/module/main.c             | 92 ++++++++++++++++++++++++++++++++++++----
+ kernel/module/version.c          | 45 ++++++++++++++++++++
+ rust/Makefile                    | 34 ++++++++++++++-
+ scripts/Makefile.modpost         |  2 +
+ scripts/mod/modpost.c            | 70 +++++++++++++++++++++++++++---
+ 10 files changed, 308 insertions(+), 18 deletions(-)
+---
+base-commit: b2c5bc987160cbc8478b982991f34f53189af909
+change-id: 20241022-extended-modversions-a7b44dfbfff1
+prerequisite-message-id: <20241219210736.2990838-20-samitolvanen@google.com>
+prerequisite-patch-id: 8a6a82b2f1858ee1483f41a1aa72c8cb030559ac
+prerequisite-patch-id: 5b22bc2e7f592e464d5d1dd4341efa2fb2afb9d0
+prerequisite-patch-id: 220585cf1a8d66ec722cf1d6ec474af6dc3b6a02
+prerequisite-patch-id: 8ae7cb66d809f902968f81354706edeb99a3d3fa
+prerequisite-patch-id: 4d6a826429c519b581d01215e1d9c7373fdfd8c6
+prerequisite-patch-id: 0dcd84187b222adf52696dbcab303d683d087dd2
+prerequisite-patch-id: 0abe8634eb844a85e8dc51c1cd3970cf96cc494a
+prerequisite-patch-id: 5fabb630792f9304f200b5996314f3c2ae4c83ae
+prerequisite-patch-id: 2772364d4b2132c9ede451f320162fc40c6f3d09
+prerequisite-patch-id: a5cf20d27871bf63be64ac79cc81e5eb9d117b89
+prerequisite-patch-id: 930230702709fe769b171a8ae94955e5d1de13ea
+prerequisite-patch-id: b43c0bc886a312e3b14be04a8fdad25badf4d834
+prerequisite-patch-id: 839b0c4859bdc8447d67bfe4b09f762140e747e7
+prerequisite-patch-id: 3c55d1e58a1d7aebfc3ea85ef5497a7262022040
+prerequisite-patch-id: 5a190c60e140cdf33caf4f4da03186a2bd75a531
+prerequisite-patch-id: 57d2fe708769154a6494fb1fece56911dea00687
+prerequisite-patch-id: 7e046331b05c61a87e1adc923b763b68a580cd03
+prerequisite-patch-id: 91c6131ab67a6f0fd8cf8bc95fa45144a868f095
+
+Best regards,
+-- 
+Matthew Maurer <mmaurer@google.com>
+
 
