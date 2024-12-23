@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-4437-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4438-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF609FAC47
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2024 10:44:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6749FAC4D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 23 Dec 2024 10:44:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YGtQq492Gz2yyD;
-	Mon, 23 Dec 2024 20:44:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YGtR43n3Nz2yyT;
+	Mon, 23 Dec 2024 20:44:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::429"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734947075;
-	cv=none; b=m1aeMgySGqtCFFG/nTSJLsp5u1N5hM1ZwLI32jLDEFNsI+6pWCNc3F24txW28HiSQHuMdLgR7v5G/GoOu+ZV00MxPeeoK0pq6AiyWYXzOe4A/ywsSA03/zprrWUDViGPMIFHjnVHXKJH1GYL5CGGhre56bsJXeXYMVsF5jdRdrPlPc80LdzIH3yY8UW+cMVsuk2GzIsgGYtvNwX8Y7GMbP8ApsaMvoVUGIG+hqszf1DI7MaR/8binxVNg7/MmjwI+9sVvZ+DKa5RY4L9+FOssFX0jRWl41br3KKzpCFHwmmUcre0GDUw17yp60NCBuBGjGVOi5ROjtUE9U6zXsb0Xw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::434"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1734947088;
+	cv=none; b=oH5CmXkpBGK9WAaKEFiTATP85aWloYPSUZGHmeDnehiSUOkW2mVg5FbOH0piEwcAzKFVNHGs8UaE7LlRhhFX6BeSMt+9yqcIkR3457/8sqNyo7BAFXRq3HA7OL6Du7WMGUBga76e4g+SJfRVLy7uNLv3058lpv3IEfR9/RX8rx9aQaFUJFH9s9FsLrXBR2jVgWztme0s5yJ1+5q+uBWDANEk+F/isu4jrTl97s3sfZZR3oi4vZ1juouQXE6iRfacnI81Qb28WKqBpEIj9Aq6GdMyPUMm1ewUh6WtS9r3sUDrPNQYZOWiWdj4JTWuOohZMqv4uPmpKNosLAVvgKtXnw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1734947075; c=relaxed/relaxed;
-	bh=if0a5qgfKyLZEs2UFcbOJ2pRLoezhNdJsDQpJdHhbkw=;
+	t=1734947088; c=relaxed/relaxed;
+	bh=qA0mhWnXo6upWemI3POPEc6VJyAkyxFJggkOB6WNq2k=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nHF73ECFxPN0zEDmPUXEo5RZb+Z63oY7vBuRuBO7n0RHONk36t/0b3lmPp9fhXp7QvlPkPoxm5iKFZ9Ca80x06SIiyVLLeXJl+7qBkIXHtZM3hKpNBEW/klMfBdwGJkZg+lyheZUMRvuTI7ntzcMYg0Sp2mGJysZHy4dZLduyc8zKNej8FiDkR+A/MTftT/vu7gFVKwdnTR0okNqg2VhjYR2vR7tLTPyGt6pXzEYSt0OnuDRSqUHn89r7vj/xTvqUh0RgmLSdOweY5YiXZcL99IRRxyfNfrL/Y/3bLbrdmj8Ak26XceG3qly0s9kZa4JliudxEuVq1EDHJJiS5C/PA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=FViw9oNl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+	 MIME-Version; b=Q2eSgVCoRALmRcTXi/yn/+mCbg4Dys/O4+4bbltTeByCmonyHdIn8e4iDlNTabxS3Y9YobChoA8duF4cvoMEAFrz72v3aYD5CyQ3TR1YRF/dqcDcAjl4Bsh0o+ZS9IDW4nNAC2Ejdx6IN8uBclQKHGOnLCtSoiFt0Z+CsfeRQhiJvYhfZbefUtYgMIML83fgwuALy3O/m7u6KykgyOeQ0PsDrOeUWlLd80L4a3ChPKYhioAaJMXGrOQureKBDQ87Jlav+ho0vc3c+qq30IOPxq/q8XqsG2NFi788lQKsMmsC3C9z602r7QbtZi3AwdJTQN0yfvk72SsvCWut+1v71Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=fVIh3CbE; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=FViw9oNl;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=fVIh3CbE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::429; helo=mail-pf1-x429.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::434; helo=mail-pf1-x434.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pf1-x434.google.com (mail-pf1-x434.google.com [IPv6:2607:f8b0:4864:20::434])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGtQp4NWmz2xbN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2024 20:44:34 +1100 (AEDT)
-Received: by mail-pf1-x429.google.com with SMTP id d2e1a72fcca58-725dbdf380aso3138507b3a.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2024 01:44:34 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YGtR34DwJz2xbN
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2024 20:44:47 +1100 (AEDT)
+Received: by mail-pf1-x434.google.com with SMTP id d2e1a72fcca58-725abf74334so3354390b3a.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 23 Dec 2024 01:44:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1734947073; x=1735551873; darn=lists.ozlabs.org;
+        d=bytedance.com; s=google; t=1734947085; x=1735551885; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=if0a5qgfKyLZEs2UFcbOJ2pRLoezhNdJsDQpJdHhbkw=;
-        b=FViw9oNlIphJpOTffWZC4StDlK7ezDXMpUFf0GZoj5UJMmIqbvR0CUsYL4ds4glaq8
-         EZ6+XW1L8gZ7z7OwxXsoCmxDUPUvHz6M2fOnWdJ/Dr/1sJMOW5LoApmDFxrC54bsslhc
-         A9kt/Zk4X+cV6Kpx7wmRTJS7tNvj4t6VuGMZHG6KiErokEu1bPFpQdWftx/LCNleJ3RG
-         kmq3Xn9eUl5DtJ9aEb7Hr0bz5eppYqVThHfAQIbA0GzRzwoEwRCw5AouP5fJRoQKi/SN
-         kdpEXHi4CIID6zhRkLspHp57RMps6b1dRb5RgfKIis8BrMQuFrG7OUln2ZRBAD4FhN2C
-         9PUQ==
+        bh=qA0mhWnXo6upWemI3POPEc6VJyAkyxFJggkOB6WNq2k=;
+        b=fVIh3CbEcFG6o3tLpYkEA53s92sOkn8PF0psNcIXPAWV8OnEp3dlIuczrKNp2iX1W+
+         hRRfPk4leVdR7oEVANAga9s3bTHd1/sBXVbIboCVXTYviVueAhw5si4LRhAkNXTR0hr7
+         S6iJwPVtCqG0dNNa/ocXWJpMbNwp2E9kaZ5mpqJrpoEUvmAyc078WoWKwr43x4yc6kXj
+         oPczxE4C22mSzgJCPqAUUzBwjo/oHcq3/bo/nie0MfS0Ob21Ccou1aRoxxW+4Pow5hn2
+         WvIDyXtqBB7KG9Ug6+BYhXOFj7e4FIhlizYX/A3feHj4tcugkflE895QXDmicbzyVeci
+         PCdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1734947073; x=1735551873;
+        d=1e100.net; s=20230601; t=1734947085; x=1735551885;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=if0a5qgfKyLZEs2UFcbOJ2pRLoezhNdJsDQpJdHhbkw=;
-        b=pbOquC0d0s/MrDIaoIX03G98vI4wjwicjBs12QXXxzRyjbQoypETaFp7qyHd7jHJAY
-         qaHFeENV1C7rbQwXTMKzDcDwPprhqNqjEjeRNDHB6NQGLedfLDAxpFu3DJsvK7fMwn5s
-         6QAWgPK3AjyiFgKKMZ3E1CuoPdm18lGbmP8AJXqx2zk6dXrGrtS6x3H92DBnP251wWVy
-         TgzGBHNCw4TMs3rtsOL7LPLToy/mjWwXJqvxgS7iUO9qZ8E2QiagkLYshgfvWy+PBbXZ
-         PVcs+3kn8sfRJ2OpMYAHuUXki2jpMRm5h06mAEVWnawmBkdCyR6ypvlD5P14xuZ4AtQg
-         Pu4g==
-X-Forwarded-Encrypted: i=1; AJvYcCXKDzfcp/jY8qon0P3Yhui1ZXNWrAsaypwrzSfBNOzLGglTlQSK3jLeB7Vkp+IYDChSTSjZLexdF3rIDQQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy9DnwFtoVn4agrDKbpkubBv7pEoYPoJDL2iQSZRpli6lVtWKzY
-	O07u4ohh/a4I4fyJofmMNApLmG1CE1n5cAqZU77zLm0FZxiJiImSEsZMynsSfrI=
-X-Gm-Gg: ASbGncvdtfO0oqTDQsuuNJsleOE5AIPs1NSaPciQvxuRMPTXEDJYhdc/UMJPPTQoFzu
-	MuHntuuzEOnS+u2k83zmJI29wFgaaOMTGyghXctJ0tPVjTnNudHh4cIa2iXm2rxHVFKbOX+kKi9
-	yuFN3XCne3FDDXyY5urioHzhCYbxvINkjV6GwODVtcQnISvDq6fd/6joHnxLKhi+tOW68l4Ab/S
-	dXpfs4TjOLCuyToV4PYxZ7iu4NUY9EDzujyw+MPbw0++rWLGACe5ACkfiFaObBcZmWqVuE2VgKi
-	PHwNNjcV/XJh9BfsAn9iGg==
-X-Google-Smtp-Source: AGHT+IHNcG21n8t2Tfuvp8LnDtpoSzOkwaxGY/BugzvHG6e31xXuyXvNhN+O2xx2uo+0V3sMDp7pew==
-X-Received: by 2002:a05:6a21:6f02:b0:1e5:b082:e38f with SMTP id adf61e73a8af0-1e5e081d16cmr18629210637.45.1734947072789;
-        Mon, 23 Dec 2024 01:44:32 -0800 (PST)
+        bh=qA0mhWnXo6upWemI3POPEc6VJyAkyxFJggkOB6WNq2k=;
+        b=uhGkp+iAKwhyVqQL2k+fmQmq8OAy6NlpaQ8AqlhNppYZ+wW7zAE1hS04JOeUY6gUYg
+         DgnZm9aO/rFh1ebvJ2oUsRE9Nr+vGF12KP7Yj2GUgBxHR4LgeY6FTiQ69Gejx6PYmT0M
+         eJupWMCcLj6k7OHdYTe3XoJuaGj59XwYec1xAEvhO5OLAZid5AdQK61bRGYEhmZyVXtb
+         yhjeM+OCpVBqm2zb1xUp0FrKe+9LV/2jUBABxzebSXkEjga4cJ3QvCuUFXOmEGorE4kx
+         d1DK6m+o7npij/dalm4rTPrbGATa/6mmw+wuksO39iW+l86NC9ODU3+H7g2QGagDq2eu
+         3YPw==
+X-Forwarded-Encrypted: i=1; AJvYcCVID74l4CcZfJepFZLXzs5b4K6mQlcylGr1ZW3ucwS7KJhkwn1ZG/U0u+XlLz7rvPYMH+T7b9vWbBTyCL0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy3oklVRfYR52GJ4iALtCP6iva8zf7AiGYh4QOpKj5Q7jEmT8R5
+	zLr3XRmO9ZynWiOB1fpQkj4GYOumkSInTIZtSO55NzBOqQIKuijKORuVJonUiiU=
+X-Gm-Gg: ASbGncvg2uiRbMoAjSl0Ev/Mt05zLeAwyfJjpoNsGR1USQxgDRFMVfeUKVBQ+q4hf+e
+	kCAh1A5PLTyeQJCHjJVFcMNCX+VCO4cEl0lBIVZ8UFbVRnpp0L7UX4vm2tfslyBNw8/BpAK2cCu
+	ZDGo2pOGO/KsbxIMEwpEkk7KuohsgTkR2SThjCQ/R0TbS348eCUeES9zeRrZO+1+lOQQ1F/Nj00
+	bQMXvj8a5jiyEHJwba/LpP90sEHabe86wLrTAZm2Lrm7pf3TRGxygnXenuD1r5cTIhTsemZ6raZ
+	Ohq4v52pPacy1xOQyzmOPw==
+X-Google-Smtp-Source: AGHT+IEwnxNRxjpY566VNLJW6lRIrSoOOApqv/9DKS3yUbVNE+/391+nOnqyFIwO+T3gR5XgQach6A==
+X-Received: by 2002:a05:6a00:330b:b0:728:e382:5f14 with SMTP id d2e1a72fcca58-72abdd7bae3mr14443469b3a.9.1734947085429;
+        Mon, 23 Dec 2024 01:44:45 -0800 (PST)
 Received: from C02DW0BEMD6R.bytedance.net ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8486c6sm7468309b3a.85.2024.12.23.01.44.20
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8486c6sm7468309b3a.85.2024.12.23.01.44.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Dec 2024 01:44:32 -0800 (PST)
+        Mon, 23 Dec 2024 01:44:45 -0800 (PST)
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 To: peterz@infradead.org,
 	agordeev@linux.ibm.com,
@@ -110,9 +110,9 @@ Cc: linux-mm@kvack.org,
 	linux-sh@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v3 07/17] mm: pgtable: introduce pagetable_dtor()
-Date: Mon, 23 Dec 2024 17:40:53 +0800
-Message-Id: <8ada95453180c71b7fca92b9a9f11fa0f92d45a6.1734945104.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v3 08/17] arm: pgtable: move pagetable_dtor() to __tlb_remove_table()
+Date: Mon, 23 Dec 2024 17:40:54 +0800
+Message-Id: <955162bfbbcd9fbb3b074e1fe2aef4f64b61d6f9.1734945104.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 In-Reply-To: <cover.1734945104.git.zhengqi.arch@bytedance.com>
 References: <cover.1734945104.git.zhengqi.arch@bytedance.com>
@@ -134,732 +134,59 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The pagetable_p*_dtor() are exactly the same except for the handling of
-ptlock. If we make ptlock_free() handle the case where ptdesc->ptl is
-NULL and remove VM_BUG_ON_PAGE() from pmd_ptlock_free(), we can unify
-pagetable_p*_dtor() into one function. Let's introduce pagetable_dtor()
-to do this.
+Move pagetable_dtor() to __tlb_remove_table(), so that ptlock and page
+table pages can be freed together (regardless of whether RCU is used).
+This prevents the use-after-free problem where the ptlock is freed
+immediately but the page table pages is freed later via RCU.
 
-Later, pagetable_dtor() will be moved to tlb_remove_ptdesc(), so that
-ptlock and page table pages can be freed together (regardless of whether
-RCU is used). This prevents the use-after-free problem where the ptlock
-is freed immediately but the page table pages is freed later via RCU.
+Page tables shouldn't have swap cache, so use pagetable_free() instead of
+free_page_and_swap_cache() to free page table pages.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: linux-arm-kernel@lists.infradead.org
 ---
- Documentation/mm/split_page_table_lock.rst |  4 +-
- arch/arm/include/asm/tlb.h                 |  4 +-
- arch/arm64/include/asm/tlb.h               |  8 ++--
- arch/csky/include/asm/pgalloc.h            |  2 +-
- arch/hexagon/include/asm/pgalloc.h         |  2 +-
- arch/loongarch/include/asm/pgalloc.h       |  2 +-
- arch/m68k/include/asm/mcf_pgalloc.h        |  4 +-
- arch/m68k/include/asm/sun3_pgalloc.h       |  2 +-
- arch/m68k/mm/motorola.c                    |  2 +-
- arch/mips/include/asm/pgalloc.h            |  2 +-
- arch/nios2/include/asm/pgalloc.h           |  2 +-
- arch/openrisc/include/asm/pgalloc.h        |  2 +-
- arch/powerpc/mm/book3s64/mmu_context.c     |  2 +-
- arch/powerpc/mm/book3s64/pgtable.c         |  2 +-
- arch/powerpc/mm/pgtable-frag.c             |  4 +-
- arch/riscv/include/asm/pgalloc.h           |  8 ++--
- arch/riscv/mm/init.c                       |  4 +-
- arch/s390/include/asm/pgalloc.h            |  6 +--
- arch/s390/include/asm/tlb.h                |  6 +--
- arch/s390/mm/pgalloc.c                     |  2 +-
- arch/sh/include/asm/pgalloc.h              |  2 +-
- arch/sparc/mm/init_64.c                    |  2 +-
- arch/sparc/mm/srmmu.c                      |  2 +-
- arch/um/include/asm/pgalloc.h              |  6 +--
- arch/x86/mm/pgtable.c                      | 12 ++---
- include/asm-generic/pgalloc.h              |  8 ++--
- include/linux/mm.h                         | 52 ++++------------------
- mm/memory.c                                |  3 +-
- 28 files changed, 62 insertions(+), 95 deletions(-)
+ arch/arm/include/asm/tlb.h | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/Documentation/mm/split_page_table_lock.rst b/Documentation/mm/split_page_table_lock.rst
-index 581446d4a4eba..8e1ceb0a6619a 100644
---- a/Documentation/mm/split_page_table_lock.rst
-+++ b/Documentation/mm/split_page_table_lock.rst
-@@ -62,7 +62,7 @@ Support of split page table lock by an architecture
- ===================================================
- 
- There's no need in special enabling of PTE split page table lock: everything
--required is done by pagetable_pte_ctor() and pagetable_pte_dtor(), which
-+required is done by pagetable_pte_ctor() and pagetable_dtor(), which
- must be called on PTE table allocation / freeing.
- 
- Make sure the architecture doesn't use slab allocator for page table
-@@ -73,7 +73,7 @@ PMD split lock only makes sense if you have more than two page table
- levels.
- 
- PMD split lock enabling requires pagetable_pmd_ctor() call on PMD table
--allocation and pagetable_pmd_dtor() on freeing.
-+allocation and pagetable_dtor() on freeing.
- 
- Allocation usually happens in pmd_alloc_one(), freeing in pmd_free() and
- pmd_free_tlb(), but make sure you cover all PMD table allocation / freeing
 diff --git a/arch/arm/include/asm/tlb.h b/arch/arm/include/asm/tlb.h
-index f40d06ad5d2a3..ef79bf1e8563f 100644
+index ef79bf1e8563f..264ab635e807a 100644
 --- a/arch/arm/include/asm/tlb.h
 +++ b/arch/arm/include/asm/tlb.h
-@@ -41,7 +41,7 @@ __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pte, unsigned long addr)
+@@ -26,12 +26,14 @@
+ 
+ #else /* !CONFIG_MMU */
+ 
+-#include <linux/swap.h>
+ #include <asm/tlbflush.h>
+ 
+ static inline void __tlb_remove_table(void *_table)
+ {
+-	free_page_and_swap_cache((struct page *)_table);
++	struct ptdesc *ptdesc = (struct ptdesc *)_table;
++
++	pagetable_dtor(ptdesc);
++	pagetable_free(ptdesc);
+ }
+ 
+ #include <asm-generic/tlb.h>
+@@ -41,8 +43,6 @@ __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pte, unsigned long addr)
  {
  	struct ptdesc *ptdesc = page_ptdesc(pte);
  
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 
+-	pagetable_dtor(ptdesc);
+-
  #ifndef CONFIG_ARM_LPAE
  	/*
-@@ -61,7 +61,7 @@ __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmdp, unsigned long addr)
+ 	 * With the classic ARM MMU, a pte page has two corresponding pmd
+@@ -61,7 +61,6 @@ __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmdp, unsigned long addr)
  #ifdef CONFIG_ARM_LPAE
  	struct ptdesc *ptdesc = virt_to_ptdesc(pmdp);
  
--	pagetable_pmd_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
+-	pagetable_dtor(ptdesc);
  	tlb_remove_ptdesc(tlb, ptdesc);
  #endif
  }
-diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
-index 445282cde9afb..408d0f36a8a8f 100644
---- a/arch/arm64/include/asm/tlb.h
-+++ b/arch/arm64/include/asm/tlb.h
-@@ -82,7 +82,7 @@ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pte,
- {
- 	struct ptdesc *ptdesc = page_ptdesc(pte);
- 
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	tlb_remove_ptdesc(tlb, ptdesc);
- }
- 
-@@ -92,7 +92,7 @@ static inline void __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmdp,
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pmdp);
- 
--	pagetable_pmd_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	tlb_remove_ptdesc(tlb, ptdesc);
- }
- #endif
-@@ -106,7 +106,7 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pudp,
- 	if (!pgtable_l4_enabled())
- 		return;
- 
--	pagetable_pud_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	tlb_remove_ptdesc(tlb, ptdesc);
- }
- #endif
-@@ -120,7 +120,7 @@ static inline void __p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4dp,
- 	if (!pgtable_l5_enabled())
- 		return;
- 
--	pagetable_p4d_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	tlb_remove_ptdesc(tlb, ptdesc);
- }
- #endif
-diff --git a/arch/csky/include/asm/pgalloc.h b/arch/csky/include/asm/pgalloc.h
-index 9c84c9012e534..f1ce5b7b28f22 100644
---- a/arch/csky/include/asm/pgalloc.h
-+++ b/arch/csky/include/asm/pgalloc.h
-@@ -63,7 +63,7 @@ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
- 
- #define __pte_free_tlb(tlb, pte, address)		\
- do {							\
--	pagetable_pte_dtor(page_ptdesc(pte));		\
-+	pagetable_dtor(page_ptdesc(pte));		\
- 	tlb_remove_page_ptdesc(tlb, page_ptdesc(pte));	\
- } while (0)
- 
-diff --git a/arch/hexagon/include/asm/pgalloc.h b/arch/hexagon/include/asm/pgalloc.h
-index 55988625e6fbc..40e42a0e71673 100644
---- a/arch/hexagon/include/asm/pgalloc.h
-+++ b/arch/hexagon/include/asm/pgalloc.h
-@@ -89,7 +89,7 @@ static inline void pmd_populate_kernel(struct mm_struct *mm, pmd_t *pmd,
- 
- #define __pte_free_tlb(tlb, pte, addr)				\
- do {								\
--	pagetable_pte_dtor((page_ptdesc(pte)));			\
-+	pagetable_dtor((page_ptdesc(pte)));			\
- 	tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
- } while (0)
- 
-diff --git a/arch/loongarch/include/asm/pgalloc.h b/arch/loongarch/include/asm/pgalloc.h
-index a7b9c9e73593d..7211dff8c969e 100644
---- a/arch/loongarch/include/asm/pgalloc.h
-+++ b/arch/loongarch/include/asm/pgalloc.h
-@@ -57,7 +57,7 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
- 
- #define __pte_free_tlb(tlb, pte, address)			\
- do {								\
--	pagetable_pte_dtor(page_ptdesc(pte));			\
-+	pagetable_dtor(page_ptdesc(pte));			\
- 	tlb_remove_page_ptdesc((tlb), page_ptdesc(pte));	\
- } while (0)
- 
-diff --git a/arch/m68k/include/asm/mcf_pgalloc.h b/arch/m68k/include/asm/mcf_pgalloc.h
-index 302c5bf67179e..22d6c1fcabfb4 100644
---- a/arch/m68k/include/asm/mcf_pgalloc.h
-+++ b/arch/m68k/include/asm/mcf_pgalloc.h
-@@ -37,7 +37,7 @@ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pgtable,
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
- 
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-@@ -61,7 +61,7 @@ static inline void pte_free(struct mm_struct *mm, pgtable_t pgtable)
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pgtable);
- 
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-diff --git a/arch/m68k/include/asm/sun3_pgalloc.h b/arch/m68k/include/asm/sun3_pgalloc.h
-index 4a137eecb6fe4..2b626cb3ad0ae 100644
---- a/arch/m68k/include/asm/sun3_pgalloc.h
-+++ b/arch/m68k/include/asm/sun3_pgalloc.h
-@@ -19,7 +19,7 @@ extern const char bad_pmd_string[];
- 
- #define __pte_free_tlb(tlb, pte, addr)				\
- do {								\
--	pagetable_pte_dtor(page_ptdesc(pte));			\
-+	pagetable_dtor(page_ptdesc(pte));			\
- 	tlb_remove_page_ptdesc((tlb), page_ptdesc(pte));	\
- } while (0)
- 
-diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
-index c1761d309fc61..81715cece70c6 100644
---- a/arch/m68k/mm/motorola.c
-+++ b/arch/m68k/mm/motorola.c
-@@ -201,7 +201,7 @@ int free_pointer_table(void *table, int type)
- 		list_del(dp);
- 		mmu_page_dtor((void *)page);
- 		if (type == TABLE_PTE)
--			pagetable_pte_dtor(virt_to_ptdesc((void *)page));
-+			pagetable_dtor(virt_to_ptdesc((void *)page));
- 		free_page (page);
- 		return 1;
- 	} else if (ptable_list[type].next != dp) {
-diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
-index f4440edcd8fe2..36d9805033c4b 100644
---- a/arch/mips/include/asm/pgalloc.h
-+++ b/arch/mips/include/asm/pgalloc.h
-@@ -56,7 +56,7 @@ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
- 
- #define __pte_free_tlb(tlb, pte, address)			\
- do {								\
--	pagetable_pte_dtor(page_ptdesc(pte));			\
-+	pagetable_dtor(page_ptdesc(pte));			\
- 	tlb_remove_page_ptdesc((tlb), page_ptdesc(pte));	\
- } while (0)
- 
-diff --git a/arch/nios2/include/asm/pgalloc.h b/arch/nios2/include/asm/pgalloc.h
-index ce6bb8e74271f..12a536b7bfbd4 100644
---- a/arch/nios2/include/asm/pgalloc.h
-+++ b/arch/nios2/include/asm/pgalloc.h
-@@ -30,7 +30,7 @@ extern pgd_t *pgd_alloc(struct mm_struct *mm);
- 
- #define __pte_free_tlb(tlb, pte, addr)					\
- 	do {								\
--		pagetable_pte_dtor(page_ptdesc(pte));			\
-+		pagetable_dtor(page_ptdesc(pte));			\
- 		tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
- 	} while (0)
- 
-diff --git a/arch/openrisc/include/asm/pgalloc.h b/arch/openrisc/include/asm/pgalloc.h
-index c6a73772a5466..596e2355824e3 100644
---- a/arch/openrisc/include/asm/pgalloc.h
-+++ b/arch/openrisc/include/asm/pgalloc.h
-@@ -68,7 +68,7 @@ extern pte_t *pte_alloc_one_kernel(struct mm_struct *mm);
- 
- #define __pte_free_tlb(tlb, pte, addr)				\
- do {								\
--	pagetable_pte_dtor(page_ptdesc(pte));			\
-+	pagetable_dtor(page_ptdesc(pte));			\
- 	tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
- } while (0)
- 
-diff --git a/arch/powerpc/mm/book3s64/mmu_context.c b/arch/powerpc/mm/book3s64/mmu_context.c
-index 1715b07c630c9..4e1e45420bd49 100644
---- a/arch/powerpc/mm/book3s64/mmu_context.c
-+++ b/arch/powerpc/mm/book3s64/mmu_context.c
-@@ -253,7 +253,7 @@ static void pmd_frag_destroy(void *pmd_frag)
- 	count = ((unsigned long)pmd_frag & ~PAGE_MASK) >> PMD_FRAG_SIZE_SHIFT;
- 	/* We allow PTE_FRAG_NR fragments from a PTE page */
- 	if (atomic_sub_and_test(PMD_FRAG_NR - count, &ptdesc->pt_frag_refcount)) {
--		pagetable_pmd_dtor(ptdesc);
-+		pagetable_dtor(ptdesc);
- 		pagetable_free(ptdesc);
- 	}
- }
-diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
-index 3745425280808..3f28e4acd920b 100644
---- a/arch/powerpc/mm/book3s64/pgtable.c
-+++ b/arch/powerpc/mm/book3s64/pgtable.c
-@@ -477,7 +477,7 @@ void pmd_fragment_free(unsigned long *pmd)
- 
- 	BUG_ON(atomic_read(&ptdesc->pt_frag_refcount) <= 0);
- 	if (atomic_dec_and_test(&ptdesc->pt_frag_refcount)) {
--		pagetable_pmd_dtor(ptdesc);
-+		pagetable_dtor(ptdesc);
- 		pagetable_free(ptdesc);
- 	}
- }
-diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
-index e89f64a0f24ae..713268ccb1a0e 100644
---- a/arch/powerpc/mm/pgtable-frag.c
-+++ b/arch/powerpc/mm/pgtable-frag.c
-@@ -25,7 +25,7 @@ void pte_frag_destroy(void *pte_frag)
- 	count = ((unsigned long)pte_frag & ~PAGE_MASK) >> PTE_FRAG_SIZE_SHIFT;
- 	/* We allow PTE_FRAG_NR fragments from a PTE page */
- 	if (atomic_sub_and_test(PTE_FRAG_NR - count, &ptdesc->pt_frag_refcount)) {
--		pagetable_pte_dtor(ptdesc);
-+		pagetable_dtor(ptdesc);
- 		pagetable_free(ptdesc);
- 	}
- }
-@@ -111,7 +111,7 @@ static void pte_free_now(struct rcu_head *head)
- 	struct ptdesc *ptdesc;
- 
- 	ptdesc = container_of(head, struct ptdesc, pt_rcu_head);
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
-index 3466fbe2e508d..b6793c5c99296 100644
---- a/arch/riscv/include/asm/pgalloc.h
-+++ b/arch/riscv/include/asm/pgalloc.h
-@@ -100,7 +100,7 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
- 	if (pgtable_l4_enabled) {
- 		struct ptdesc *ptdesc = virt_to_ptdesc(pud);
- 
--		pagetable_pud_dtor(ptdesc);
-+		pagetable_dtor(ptdesc);
- 		riscv_tlb_remove_ptdesc(tlb, ptdesc);
- 	}
- }
-@@ -111,7 +111,7 @@ static inline void __p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
- 	if (pgtable_l5_enabled) {
- 		struct ptdesc *ptdesc = virt_to_ptdesc(p4d);
- 
--		pagetable_p4d_dtor(ptdesc);
-+		pagetable_dtor(ptdesc);
- 		riscv_tlb_remove_ptdesc(tlb, virt_to_ptdesc(p4d));
- 	}
- }
-@@ -144,7 +144,7 @@ static inline void __pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd,
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pmd);
- 
--	pagetable_pmd_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	riscv_tlb_remove_ptdesc(tlb, ptdesc);
- }
- 
-@@ -155,7 +155,7 @@ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pte,
- {
- 	struct ptdesc *ptdesc = page_ptdesc(pte);
- 
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	riscv_tlb_remove_ptdesc(tlb, ptdesc);
- }
- #endif /* CONFIG_MMU */
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index fc53ce748c804..8d703fb51b1dc 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -1558,7 +1558,7 @@ static void __meminit free_pte_table(pte_t *pte_start, pmd_t *pmd)
- 			return;
- 	}
- 
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	if (PageReserved(page))
- 		free_reserved_page(page);
- 	else
-@@ -1580,7 +1580,7 @@ static void __meminit free_pmd_table(pmd_t *pmd_start, pud_t *pud, bool is_vmemm
- 	}
- 
- 	if (!is_vmemmap)
--		pagetable_pmd_dtor(ptdesc);
-+		pagetable_dtor(ptdesc);
- 	if (PageReserved(page))
- 		free_reserved_page(page);
- 	else
-diff --git a/arch/s390/include/asm/pgalloc.h b/arch/s390/include/asm/pgalloc.h
-index a0c1ca5d8423c..5fced6d3c36b0 100644
---- a/arch/s390/include/asm/pgalloc.h
-+++ b/arch/s390/include/asm/pgalloc.h
-@@ -66,7 +66,7 @@ static inline void p4d_free(struct mm_struct *mm, p4d_t *p4d)
- 	if (mm_p4d_folded(mm))
- 		return;
- 
--	pagetable_p4d_dtor(virt_to_ptdesc(p4d));
-+	pagetable_dtor(virt_to_ptdesc(p4d));
- 	crst_table_free(mm, (unsigned long *) p4d);
- }
- 
-@@ -87,7 +87,7 @@ static inline void pud_free(struct mm_struct *mm, pud_t *pud)
- 	if (mm_pud_folded(mm))
- 		return;
- 
--	pagetable_pud_dtor(virt_to_ptdesc(pud));
-+	pagetable_dtor(virt_to_ptdesc(pud));
- 	crst_table_free(mm, (unsigned long *) pud);
- }
- 
-@@ -109,7 +109,7 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
- {
- 	if (mm_pmd_folded(mm))
- 		return;
--	pagetable_pmd_dtor(virt_to_ptdesc(pmd));
-+	pagetable_dtor(virt_to_ptdesc(pmd));
- 	crst_table_free(mm, (unsigned long *) pmd);
- }
- 
-diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
-index b946964afce8e..74b6fba4c2ee3 100644
---- a/arch/s390/include/asm/tlb.h
-+++ b/arch/s390/include/asm/tlb.h
-@@ -102,7 +102,7 @@ static inline void pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd,
- {
- 	if (mm_pmd_folded(tlb->mm))
- 		return;
--	pagetable_pmd_dtor(virt_to_ptdesc(pmd));
-+	pagetable_dtor(virt_to_ptdesc(pmd));
- 	__tlb_adjust_range(tlb, address, PAGE_SIZE);
- 	tlb->mm->context.flush_mm = 1;
- 	tlb->freed_tables = 1;
-@@ -122,7 +122,7 @@ static inline void pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
- {
- 	if (mm_pud_folded(tlb->mm))
- 		return;
--	pagetable_pud_dtor(virt_to_ptdesc(pud));
-+	pagetable_dtor(virt_to_ptdesc(pud));
- 	tlb->mm->context.flush_mm = 1;
- 	tlb->freed_tables = 1;
- 	tlb->cleared_p4ds = 1;
-@@ -141,7 +141,7 @@ static inline void p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
- {
- 	if (mm_p4d_folded(tlb->mm))
- 		return;
--	pagetable_p4d_dtor(virt_to_ptdesc(p4d));
-+	pagetable_dtor(virt_to_ptdesc(p4d));
- 	__tlb_adjust_range(tlb, address, PAGE_SIZE);
- 	tlb->mm->context.flush_mm = 1;
- 	tlb->freed_tables = 1;
-diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-index 58696a0c4e4ac..569de24d33761 100644
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -182,7 +182,7 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
- 
- static void pagetable_pte_dtor_free(struct ptdesc *ptdesc)
- {
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-diff --git a/arch/sh/include/asm/pgalloc.h b/arch/sh/include/asm/pgalloc.h
-index 5d8577ab15911..96d938fdf2244 100644
---- a/arch/sh/include/asm/pgalloc.h
-+++ b/arch/sh/include/asm/pgalloc.h
-@@ -34,7 +34,7 @@ static inline void pmd_populate(struct mm_struct *mm, pmd_t *pmd,
- 
- #define __pte_free_tlb(tlb, pte, addr)				\
- do {								\
--	pagetable_pte_dtor(page_ptdesc(pte));			\
-+	pagetable_dtor(page_ptdesc(pte));			\
- 	tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
- } while (0)
- 
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 21f8cbbd0581c..05882bca5b732 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -2915,7 +2915,7 @@ static void __pte_free(pgtable_t pte)
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pte);
- 
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
-index 9df51a62333d6..e3a72c884b867 100644
---- a/arch/sparc/mm/srmmu.c
-+++ b/arch/sparc/mm/srmmu.c
-@@ -372,7 +372,7 @@ void pte_free(struct mm_struct *mm, pgtable_t ptep)
- 	page = pfn_to_page(__nocache_pa((unsigned long)ptep) >> PAGE_SHIFT);
- 	spin_lock(&mm->page_table_lock);
- 	if (page_ref_dec_return(page) == 1)
--		pagetable_pte_dtor(page_ptdesc(page));
-+		pagetable_dtor(page_ptdesc(page));
- 	spin_unlock(&mm->page_table_lock);
- 
- 	srmmu_free_nocache(ptep, SRMMU_PTE_TABLE_SIZE);
-diff --git a/arch/um/include/asm/pgalloc.h b/arch/um/include/asm/pgalloc.h
-index 04fb4e6969a46..f0af23c3aeb2b 100644
---- a/arch/um/include/asm/pgalloc.h
-+++ b/arch/um/include/asm/pgalloc.h
-@@ -27,7 +27,7 @@ extern pgd_t *pgd_alloc(struct mm_struct *);
- 
- #define __pte_free_tlb(tlb, pte, address)			\
- do {								\
--	pagetable_pte_dtor(page_ptdesc(pte));			\
-+	pagetable_dtor(page_ptdesc(pte));			\
- 	tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));	\
- } while (0)
- 
-@@ -35,7 +35,7 @@ do {								\
- 
- #define __pmd_free_tlb(tlb, pmd, address)			\
- do {								\
--	pagetable_pmd_dtor(virt_to_ptdesc(pmd));			\
-+	pagetable_dtor(virt_to_ptdesc(pmd));			\
- 	tlb_remove_page_ptdesc((tlb), virt_to_ptdesc(pmd));	\
- } while (0)
- 
-@@ -43,7 +43,7 @@ do {								\
- 
- #define __pud_free_tlb(tlb, pud, address)			\
- do {								\
--	pagetable_pud_dtor(virt_to_ptdesc(pud));		\
-+	pagetable_dtor(virt_to_ptdesc(pud));		\
- 	tlb_remove_page_ptdesc((tlb), virt_to_ptdesc(pud));	\
- } while (0)
- 
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index 3d6e84da45b24..a6cd9660e29ec 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -60,7 +60,7 @@ early_param("userpte", setup_userpte);
- 
- void ___pte_free_tlb(struct mmu_gather *tlb, struct page *pte)
- {
--	pagetable_pte_dtor(page_ptdesc(pte));
-+	pagetable_dtor(page_ptdesc(pte));
- 	paravirt_release_pte(page_to_pfn(pte));
- 	paravirt_tlb_remove_table(tlb, pte);
- }
-@@ -77,7 +77,7 @@ void ___pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd)
- #ifdef CONFIG_X86_PAE
- 	tlb->need_flush_all = 1;
- #endif
--	pagetable_pmd_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	paravirt_tlb_remove_table(tlb, ptdesc_page(ptdesc));
- }
- 
-@@ -86,7 +86,7 @@ void ___pud_free_tlb(struct mmu_gather *tlb, pud_t *pud)
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pud);
- 
--	pagetable_pud_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	paravirt_release_pud(__pa(pud) >> PAGE_SHIFT);
- 	paravirt_tlb_remove_table(tlb, virt_to_page(pud));
- }
-@@ -96,7 +96,7 @@ void ___p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d)
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(p4d);
- 
--	pagetable_p4d_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	paravirt_release_p4d(__pa(p4d) >> PAGE_SHIFT);
- 	paravirt_tlb_remove_table(tlb, virt_to_page(p4d));
- }
-@@ -233,7 +233,7 @@ static void free_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
- 		if (pmds[i]) {
- 			ptdesc = virt_to_ptdesc(pmds[i]);
- 
--			pagetable_pmd_dtor(ptdesc);
-+			pagetable_dtor(ptdesc);
- 			pagetable_free(ptdesc);
- 			mm_dec_nr_pmds(mm);
- 		}
-@@ -867,7 +867,7 @@ int pud_free_pmd_page(pud_t *pud, unsigned long addr)
- 
- 	free_page((unsigned long)pmd_sv);
- 
--	pagetable_pmd_dtor(virt_to_ptdesc(pmd));
-+	pagetable_dtor(virt_to_ptdesc(pmd));
- 	free_page((unsigned long)pmd);
- 
- 	return 1;
-diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-index bb482eeca0c3e..4afb346eae255 100644
---- a/include/asm-generic/pgalloc.h
-+++ b/include/asm-generic/pgalloc.h
-@@ -109,7 +109,7 @@ static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
- {
- 	struct ptdesc *ptdesc = page_ptdesc(pte_page);
- 
--	pagetable_pte_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-@@ -153,7 +153,7 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pmd);
- 
- 	BUG_ON((unsigned long)pmd & (PAGE_SIZE-1));
--	pagetable_pmd_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- #endif
-@@ -202,7 +202,7 @@ static inline void __pud_free(struct mm_struct *mm, pud_t *pud)
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pud);
- 
- 	BUG_ON((unsigned long)pud & (PAGE_SIZE-1));
--	pagetable_pud_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-@@ -248,7 +248,7 @@ static inline void __p4d_free(struct mm_struct *mm, p4d_t *p4d)
- 	struct ptdesc *ptdesc = virt_to_ptdesc(p4d);
- 
- 	BUG_ON((unsigned long)p4d & (PAGE_SIZE-1));
--	pagetable_p4d_dtor(ptdesc);
-+	pagetable_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 5d82f42ddd5cc..cad11fa10c192 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2992,6 +2992,15 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
- static inline void ptlock_free(struct ptdesc *ptdesc) {}
- #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
- 
-+static inline void pagetable_dtor(struct ptdesc *ptdesc)
-+{
-+	struct folio *folio = ptdesc_folio(ptdesc);
-+
-+	ptlock_free(ptdesc);
-+	__folio_clear_pgtable(folio);
-+	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
-+}
-+
- static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
- {
- 	struct folio *folio = ptdesc_folio(ptdesc);
-@@ -3003,15 +3012,6 @@ static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
- 	return true;
- }
- 
--static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
--{
--	struct folio *folio = ptdesc_folio(ptdesc);
--
--	ptlock_free(ptdesc);
--	__folio_clear_pgtable(folio);
--	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
--}
--
- pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
- static inline pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr,
- 			pmd_t *pmdvalp)
-@@ -3088,14 +3088,6 @@ static inline bool pmd_ptlock_init(struct ptdesc *ptdesc)
- 	return ptlock_init(ptdesc);
- }
- 
--static inline void pmd_ptlock_free(struct ptdesc *ptdesc)
--{
--#ifdef CONFIG_TRANSPARENT_HUGEPAGE
--	VM_BUG_ON_PAGE(ptdesc->pmd_huge_pte, ptdesc_page(ptdesc));
--#endif
--	ptlock_free(ptdesc);
--}
--
- #define pmd_huge_pte(mm, pmd) (pmd_ptdesc(pmd)->pmd_huge_pte)
- 
- #else
-@@ -3106,7 +3098,6 @@ static inline spinlock_t *pmd_lockptr(struct mm_struct *mm, pmd_t *pmd)
- }
- 
- static inline bool pmd_ptlock_init(struct ptdesc *ptdesc) { return true; }
--static inline void pmd_ptlock_free(struct ptdesc *ptdesc) {}
- 
- #define pmd_huge_pte(mm, pmd) ((mm)->pmd_huge_pte)
- 
-@@ -3131,15 +3122,6 @@ static inline bool pagetable_pmd_ctor(struct ptdesc *ptdesc)
- 	return true;
- }
- 
--static inline void pagetable_pmd_dtor(struct ptdesc *ptdesc)
--{
--	struct folio *folio = ptdesc_folio(ptdesc);
--
--	pmd_ptlock_free(ptdesc);
--	__folio_clear_pgtable(folio);
--	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
--}
--
- /*
-  * No scalability reason to split PUD locks yet, but follow the same pattern
-  * as the PMD locks to make it easier if we decide to.  The VM should not be
-@@ -3167,14 +3149,6 @@ static inline void pagetable_pud_ctor(struct ptdesc *ptdesc)
- 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
- }
- 
--static inline void pagetable_pud_dtor(struct ptdesc *ptdesc)
--{
--	struct folio *folio = ptdesc_folio(ptdesc);
--
--	__folio_clear_pgtable(folio);
--	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
--}
--
- static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
- {
- 	struct folio *folio = ptdesc_folio(ptdesc);
-@@ -3183,14 +3157,6 @@ static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
- 	lruvec_stat_add_folio(folio, NR_PAGETABLE);
- }
- 
--static inline void pagetable_p4d_dtor(struct ptdesc *ptdesc)
--{
--	struct folio *folio = ptdesc_folio(ptdesc);
--
--	__folio_clear_pgtable(folio);
--	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
--}
--
- extern void __init pagecache_init(void);
- extern void free_initmem(void);
- 
-diff --git a/mm/memory.c b/mm/memory.c
-index 9423967b24180..ad871e564568b 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -7051,7 +7051,8 @@ bool ptlock_alloc(struct ptdesc *ptdesc)
- 
- void ptlock_free(struct ptdesc *ptdesc)
- {
--	kmem_cache_free(page_ptl_cachep, ptdesc->ptl);
-+	if (ptdesc->ptl)
-+		kmem_cache_free(page_ptl_cachep, ptdesc->ptl);
- }
- #endif
- 
 -- 
 2.20.1
 
