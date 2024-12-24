@@ -1,93 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-4468-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4469-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611179FBCFA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2024 12:42:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 056C09FBD2C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2024 13:16:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YHY0C71M0z2yWK;
-	Tue, 24 Dec 2024 22:42:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YHYl00sWJz2y92;
+	Tue, 24 Dec 2024 23:15:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735040539;
-	cv=none; b=HDD8dMx02bg/+P7bqDYxIBKK4GsYaWIQDrtWaCnslErb6hwedqGelq87mqlbLgC4shpeAPPW3aV0Tx+rYm446FngQAh0NyFmvwFDKmzsnJoEHKFwIYN2zjQR2u25WLTSW64nnpn2+8wpBDqv4B/Y10rIpYax2QUurGq9hxWbP8zYlgXGkD+RBqVI9b0PRzlIFP/0+TbTauez3nYjCJ9uhKufi9hfcB20s++1nBAruxSO5e04Y1ED2YHMpHPOrhW4oCJ+k+YykeWAZSgkMf2fKXEc7UC1EOhPk09NcwPLu4gayl0rgi2fc3JEuz/JMhsWaFsHm0Yy1QS6zXvZYp+yuA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.190
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735042556;
+	cv=none; b=bC6sS8siBpC8KUNWJXRdX0AHY/TnIM5/A7LLo9SFjPBfyDSK6MX276Akcf9tBgTKXNzoPSEu8OdLAECfxa/oamEFsBStpbf+uBsXnJA1MTmf2lKtkhxEmCZxwFXRoLjt58x/uCpztq8F7ADliiMBx5DZVco2FauB75l2a/ejGg4hSPjdocCoBn9mbYyXiFBZVbFeFgZGu+awJIUBrNMEbfCCumHRAiKl9tvxFd2ViPr7ixXNel69/R5YX3aiLwofROBvptrXBTH+d6/f8hb5VZtt6crCJMeFCuoiVsFT016jOFgOtELkeR5Is7f9YZKVX1NaUYrYahXXJdiA7zgotQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735040539; c=relaxed/relaxed;
-	bh=OsMm2kkhF+Z9V26v62JgcmGA5nEWPAdaI8pCOc96qj0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=aXdhDCfteGssZ3/7l1C3nEuZeYZsBYtKeCdpu6wuTXQZGQH1nufxyfjyj8sK6OLtrzAlPtwJrPEm/ZKVlguyTh1pC0gjBa+p6qh7G+7WCAf2wQ+CNUxxMvDfQ5MDy345H026/3PNt9DJtyTwpwZVR09JDj5WoIpVeEt5hVMXggd/fNE6beE3k4cfO/wXYoR4Ox8BsWFyr6N4uu5vUuIkWlouc0l0o4uLp6vYwWrN/AWGpbvJYZ6N1GZf3MtfaiL5u+QtrQHB82olnXfAIxHOtHgeDaVIFxoXAcKIoruj1VHfImdQteuZ+4gnToNWs43XRKNmEyRq05mvVsFbZqU8Bg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HuKfOr+L; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HuKfOr+L; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HuKfOr+L;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HuKfOr+L;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1735042556; c=relaxed/relaxed;
+	bh=ExatVwjz/cALIX/NY3zMC3cZmTKBL1fAABq9aj/0jns=;
+	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=SJBejobAAsVnuKiUruYpLR/uuYqZ2n+b2hUScwlpXiyFbJI8iqvj91vFUTATuTzEZ6RznyD9MgxAIOKa4S7b2WCdIzd3Kmjz7tq24OWgoiq9HBRVe7xoMpXAwxta50k8a2EgNFiwe0E+a+2tHr3ZMyDYaCCt8PwT1qITdrcNJGt4A5imV9tFXORmuZxWfdfG3CAYaKg7fpk27gukop+T02OMcgwiTa1V5/r21berm+IeqWi4Xf92z4tDT2C5kpNrlspsB84nllT70UkFdogFviX4/tPc3feguBmWeuVMYfY8qbufUv9Y/OWpiNF7tJe5pmaObuVDtgw2WRTnSbST2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YHY0B4Dx1z2yVd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 22:42:15 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1735040532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OsMm2kkhF+Z9V26v62JgcmGA5nEWPAdaI8pCOc96qj0=;
-	b=HuKfOr+LvuE8i+K8zh7k6ZcIe2SRKLYDDe0kgIdnrxgOoxGSRbDLOZsUajgg71oySmFOVQ
-	pTNwTEwYtVEFPQOLWXs1CssXj/h2lfgRHP6FsryRAojwtuyUFq2zufWG8LZvmC2rmlL8u4
-	R0EEddY2B8q1C7RAV+NCIZqQ77/oVnA=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1735040532;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=OsMm2kkhF+Z9V26v62JgcmGA5nEWPAdaI8pCOc96qj0=;
-	b=HuKfOr+LvuE8i+K8zh7k6ZcIe2SRKLYDDe0kgIdnrxgOoxGSRbDLOZsUajgg71oySmFOVQ
-	pTNwTEwYtVEFPQOLWXs1CssXj/h2lfgRHP6FsryRAojwtuyUFq2zufWG8LZvmC2rmlL8u4
-	R0EEddY2B8q1C7RAV+NCIZqQ77/oVnA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-26-Yf_FChu1N0Khsl6GkibNhQ-1; Tue, 24 Dec 2024 06:42:11 -0500
-X-MC-Unique: Yf_FChu1N0Khsl6GkibNhQ-1
-X-Mimecast-MFC-AGG-ID: Yf_FChu1N0Khsl6GkibNhQ
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-436379713baso25615065e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 03:42:11 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735040529; x=1735645329;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :from:references:cc:to:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=OsMm2kkhF+Z9V26v62JgcmGA5nEWPAdaI8pCOc96qj0=;
-        b=ezVIrUl8zgidricyhjBgBBb5NeL97EvB81W6MA3hqraxHKw6h82PM9LTaWu9Th6/QS
-         /ctAvnK4Y8KuuUM+WDnFjlt7OzPoNYaCp2GjMM8NPFmn6+JPcbVgVB7+dac/ruikdi+1
-         a/cqzSJgrYDwUaf8npJCBAmF1y3M1Hhsd8ouk5hpj9z6mKh4eCNjDOr2nYchRN1X6VWF
-         tuKSAZy1R1flwAo/ZN1b46GyURMN0FXwckt7AcP/MFN/GU3agQz825cW6ORJx5bu0WSH
-         a88EEMhMEvy+BWgYSE8siEVEdAC4vfI0BMmvwBDsjPJY5M76kkonTYN8M6G49YTK+tA/
-         bIVw==
-X-Gm-Message-State: AOJu0YzOp1AQaL+bGbl/7zY2bR4Wy4Vl0+BRZQJ8uyuC3sV/lTCMjHCq
-	PQnpjlIF6gL6NQh34U/xJC1eOlAGYVJN1mWOKtjhsrgwbJgRFdG+TadtfF5CzUvJA6KSt5GG+53
-	ZEV7rXJZoxbmr6JKlRHdXjoUd4dU8dCQOil/RdlHxqaJsAcqHPW4atPk0DI/DhgoDsTjWZ0M=
-X-Gm-Gg: ASbGnct+r9LgjSvAjIvSESrjkBVxQHRGvUQ9lDOO6Gh75I7df7Ijn76t/HqkHw7cJkQ
-	XU3fiSp0Usnlpd0eNHjyPuncUsqOOqRoDhTp9LZEfxySEcUHcWlhLj0XtnJ5k+rtk2iqCK3+DvP
-	vhf1Nh9yqFYP6kJwPC2pFpjIccWphy5HNvV8Us7phR/LAbaF1ulziTt0U1ryG1S26lb1mKEQaUi
-	BxL1viUtzSbaySEXJ7WVdHQZ8zYGYhbnSeX/sjlonLsVBgP1HelS7aWX0kb
-X-Received: by 2002:a05:600c:350b:b0:434:f131:1e6d with SMTP id 5b1f17b1804b1-43668643203mr169420475e9.10.1735040529211;
-        Tue, 24 Dec 2024 03:42:09 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGbMh6wotEMWfZpgZnRHDkBfi3Bo6yh/+8fe8z0DOTLB74hdFgMsTqORdX5QKmkwoOy37B4aQ==
-X-Received: by 2002:a05:600c:350b:b0:434:f131:1e6d with SMTP id 5b1f17b1804b1-43668643203mr169420245e9.10.1735040528851;
-        Tue, 24 Dec 2024 03:42:08 -0800 (PST)
-Received: from [192.168.10.27] ([151.81.118.45])
-        by smtp.googlemail.com with ESMTPSA id 5b1f17b1804b1-43656b42757sm201972855e9.39.2024.12.24.03.42.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 24 Dec 2024 03:42:08 -0800 (PST)
-Message-ID: <2881940a-2da0-4498-b447-f09fffb14189@redhat.com>
-Date: Tue, 24 Dec 2024 12:42:06 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YHYkx08jzz2x9W
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 23:15:49 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YHYhR3MgXz22jdR;
+	Tue, 24 Dec 2024 20:13:43 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id 65F061A0188;
+	Tue, 24 Dec 2024 20:15:42 +0800 (CST)
+Received: from [10.67.121.177] (10.67.121.177) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Tue, 24 Dec 2024 20:15:41 +0800
+CC: <yangyicong@hisilicon.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
+	<sudeep.holla@arm.com>, <tglx@linutronix.de>, <peterz@infradead.org>,
+	<mpe@ellerman.id.au>, <linux-arm-kernel@lists.infradead.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<pierre.gondois@arm.com>, <dietmar.eggemann@arm.com>,
+	<linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
+	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<prime.zeng@hisilicon.com>, <linuxarm@huawei.com>, <xuwei5@huawei.com>,
+	<guohanjun@huawei.com>
+Subject: Re: [PATCH v10 1/4] cpu/SMT: Provide a default
+ topology_is_primary_thread()
+To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+References: <20241220075313.51502-1-yangyicong@huawei.com>
+ <20241220075313.51502-2-yangyicong@huawei.com>
+ <a5690fee-3019-f26c-8bad-1d95e388e877@huawei.com>
+ <20241223163448.00004354@huawei.com>
+From: Yicong Yang <yangyicong@huawei.com>
+Message-ID: <0f487c7e-0a03-e0b8-8bf6-0eebfe582bad@huawei.com>
+Date: Tue, 24 Dec 2024 20:15:40 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,91 +68,168 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
-To: Christian Zigotzky <chzigotzky@xenosoft.de>
-Cc: linuxppc-dev@lists.ozlabs.org, Darren Stevens <darren@stevens-zone.net>,
- Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>,
- Christian Zigotzky <info@xenosoft.de>, madskateman@gmail.com,
- "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
- regressions@lists.linux.dev
-References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
- <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de>
- <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
- <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
- <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
- <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de>
- <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
- <0769459a-10ee-4573-a3ce-541c01429948@redhat.com>
- <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
- <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
- <7d8b5b78-b20c-d915-4a94-7082d7e01600@xenosoft.de>
- <f944fadf-2dfe-4dd3-a086-ae7bb6c0bff6@redhat.com>
- <31895b11-5084-95bc-0f14-faaea023b7f8@xenosoft.de>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <31895b11-5084-95bc-0f14-faaea023b7f8@xenosoft.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: Z1H1xm5hsXiFxh4bRnsVuX5OkMhNCzBMw_IJStAXNkU_1735040530
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
+In-Reply-To: <20241223163448.00004354@huawei.com>
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Originating-IP: [10.67.121.177]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
+X-Spam-Status: No, score=-4.9 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 12/24/24 12:05, Christian Zigotzky wrote:
-> Hello Paolo,
+On 2024/12/24 0:34, Jonathan Cameron wrote:
+> On Fri, 20 Dec 2024 15:59:27 +0800
+> Yicong Yang <yangyicong@huawei.com> wrote:
 > 
-> Thanks a lot for your patch.
+>> On 2024/12/20 15:53, Yicong Yang wrote:
+>>> From: Yicong Yang <yangyicong@hisilicon.com>
+>>>
+>>> Currently if architectures want to support HOTPLUG_SMT they need to
+>>> provide a topology_is_primary_thread() telling the framework which
+>>> thread in the SMT cannot offline. However arm64 doesn't have a
+>>> restriction on which thread in the SMT cannot offline, a simplest
+>>> choice is that just make 1st thread as the "primary" thread. So
+>>> just make this as the default implementation in the framework and
+>>> let architectures like x86 that have special primary thread to
+>>> override this function (which they've already done).
+>>>
+>>> There's no need to provide a stub function if !CONFIG_SMP or
+>>> !CONFIG_HOTPLUG_SMP. In such case the testing CPU is already
+>>> the 1st CPU in the SMT so it's always the primary thread.
+>>>
+>>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>>> ---
+>>> As questioned in v9 [1] whether this works on architectures not using
+>>> CONFIG_GENERIC_ARCH_TOPOLOGY, hacked on LoongArch VM and this also works.
+>>> Architectures should use this on their own situation.
+>>> [1] https://lore.kernel.org/linux-arm-kernel/427bd639-33c3-47e4-9e83-68c428eb1a7d@arm.com/
+>>>
+>>> [root@localhost smt]# uname -m
+>>> loongarch64
+>>> [root@localhost smt]# pwd
+>>> /sys/devices/system/cpu/smt
+>>> [root@localhost smt]# cat ../possible 
+>>> 0-3
+>>> [root@localhost smt]# cat ../online 
+>>> 0-3
+>>> [root@localhost smt]# cat control 
+>>> on
+>>> [root@localhost smt]# echo off > control 
+>>> [root@localhost smt]# cat control 
+>>> off
+>>> [root@localhost smt]# cat ../online 
+>>> 0,2
+>>> [root@localhost smt]# echo on > control 
+>>> [root@localhost smt]# cat control 
+>>> on
+>>> [root@localhost smt]# cat ../online 
+>>> 0-3  
+>>
+>> Tested with below code using the topology_is_primary_thread() introduced
+>> in this patch. Tested on an ACPI-based QEMU VM emulating SMT2.
+> Nice bit of testing.
 > 
-> I tested it with the RC4 of kernel 6.13 today but unfortunately it 
-> doesn't solve the KVM HV issue. The guest system doesn't boot and I 
-> can't see any error messages. (console=ttyS0)
+> Given it all seems fine. FWIW
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> (for original patch, not the longarch one!)
 
-But do you see anything on the host dmesg (without and with the patch), 
-for example a WARN?
+thanks. certainly :)
 
-Also you might try edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 + the patch, 
-to see if there are two bugs.
-
-Paolo
-
+> 
+>>
+>> Subject: [PATCH] LoongArch: Support HOTPLUG_SMT on ACPI-based system
+>>
+>> Support HOTPLUG_SMT on ACPI-based system using generic
+>> topology_is_primary_thread().
+>>
+>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>> ---
+>>  arch/loongarch/Kconfig       |  1 +
+>>  arch/loongarch/kernel/acpi.c | 26 ++++++++++++++++++++++++--
+>>  2 files changed, 25 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+>> index dae3a9104ca6..bed1b0640b97 100644
+>> --- a/arch/loongarch/Kconfig
+>> +++ b/arch/loongarch/Kconfig
+>> @@ -172,6 +172,7 @@ config LOONGARCH
+>>  	select HAVE_SYSCALL_TRACEPOINTS
+>>  	select HAVE_TIF_NOHZ
+>>  	select HAVE_VIRT_CPU_ACCOUNTING_GEN if !SMP
+>> +	select HOTPLUG_SMT if HOTPLUG_CPU
+>>  	select IRQ_FORCED_THREADING
+>>  	select IRQ_LOONGARCH_CPU
+>>  	select LOCK_MM_AND_FIND_VMA
+>> diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
+>> index 382a09a7152c..e642b0de57e7 100644
+>> --- a/arch/loongarch/kernel/acpi.c
+>> +++ b/arch/loongarch/kernel/acpi.c
+>> @@ -15,9 +15,11 @@
+>>  #include <linux/memblock.h>
+>>  #include <linux/of_fdt.h>
+>>  #include <linux/serial_core.h>
+>> +#include <linux/xarray.h>
+>>  #include <asm/io.h>
+>>  #include <asm/numa.h>
+>>  #include <asm/loongson.h>
+>> +#include <linux/cpu_smt.h>
+>>
+>>  int acpi_disabled;
+>>  EXPORT_SYMBOL(acpi_disabled);
+>> @@ -175,8 +177,12 @@ int pptt_enabled;
+>>
+>>  int __init parse_acpi_topology(void)
+>>  {
+>> +	int thread_num, max_smt_thread_num = 1;
+>> +	struct xarray core_threads;
+>>  	int cpu, topology_id;
+>> +	void *entry;
+>>
+>> +	xa_init(&core_threads);
+>>  	for_each_possible_cpu(cpu) {
+>>  		topology_id = find_acpi_cpu_topology(cpu, 0);
+>>  		if (topology_id < 0) {
+>> @@ -184,19 +190,35 @@ int __init parse_acpi_topology(void)
+>>  			return -ENOENT;
+>>  		}
+>>
+>> -		if (acpi_pptt_cpu_is_thread(cpu) <= 0)
+>> +		if (acpi_pptt_cpu_is_thread(cpu) <= 0) {
+>>  			cpu_data[cpu].core = topology_id;
+>> -		else {
+>> +		} else {
+>>  			topology_id = find_acpi_cpu_topology(cpu, 1);
+>>  			if (topology_id < 0)
+>>  				return -ENOENT;
+>>
+>>  			cpu_data[cpu].core = topology_id;
+>> +
+>> +			entry = xa_load(&core_threads, topology_id);
+>> +			if (!entry) {
+>> +				xa_store(&core_threads, topology_id,
+>> +					 xa_mk_value(1), GFP_KERNEL);
+>> +			} else {
+>> +				thread_num = xa_to_value(entry);
+>> +				thread_num++;
+>> +				xa_store(&core_threads, topology_id,
+>> +					 xa_mk_value(thread_num), GFP_KERNEL);
+>> +
+>> +				if (thread_num > max_smt_thread_num)
+>> +					max_smt_thread_num = thread_num;
+>> +			}
+>>  		}
+>>  	}
+>>
+>>  	pptt_enabled = 1;
+>>
+>> +	cpu_smt_set_num_threads(max_smt_thread_num, max_smt_thread_num);
+>> +	xa_destroy(&core_threads);
+>>  	return 0;
+>>  }
+>>
+> 
+> .
+> 
 
