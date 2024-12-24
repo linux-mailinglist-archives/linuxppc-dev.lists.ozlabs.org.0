@@ -1,43 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-4466-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4467-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B6F89FBCDA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2024 12:04:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4E4C9FBCDE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2024 12:05:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YHX802w5Cz2xb3;
-	Tue, 24 Dec 2024 22:04:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YHX9Z5L67z2yD8;
+	Tue, 24 Dec 2024 22:05:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735038240;
-	cv=none; b=HLxNrDW65qH8SpRi9rczIw0F2wv+dxRjuBmShOPkE9pcv6fYLUDQ3XtB15MDMmegyKqAWohwVocFAaZosGr33LgKpKzHHworjaEXn8IvD1+mr68QuSN66DtVU9A5Z8eBllcq+4BxMAyqps2D1oUvlNCC1nVfvxC3q3RW2aZCb2jH/rh0NjmSdR77Rso/TzI4UKUwq8NOdh3mFm/hWrIZI8Uj8K6Gs2hu7k9dTmvsGro666hCnUDj+nu7BEJ1fOzuFE0yQQFec/2Gde72fkUcYRsTYJlWHEpy5ojP4xYXbFxxoUjg9AJ2yw8Nq2odQkKpubXczC/Ans6CWXGsIO36bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735038240; c=relaxed/relaxed;
-	bh=mvF+dV1vOqypF3DXfAFYUzb9UKgwVp9yfkPjXxoAPvw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Xn8+uA8+XX26/MGu5IadnDdHmBysD5kqz7711IU8cAbkfYH+9+cH7OFJ36AADBs2KLOntGQXnGJMUG7fz/tj2oPUdvQViVX2isclaDQMXZv6TAU1o+TeQ8hJfe5Am+jAfe1x5yUv90r+y7sjN5NuQHDp+T/dqyRx3X8Cl61Ee+cVOx2kHjieOwqrtZBiv1z8BOJDypxa5rLlfL8nf8sb6aQk2h621Fo/0E0mUs5ykG/53KH+HTJuS1Q2UrwUFlbUh0mmknalhn9CIKEiqhCXZGNJZ0ZmLWtLC5ylj25BZGVTGFyUhrMgap/K/ApbXAPYKMP1nd9snJ21eg6VOuVNBg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=QjNcArg8; dkim-atps=neutral; spf=pass (client-ip=115.124.30.131; helo=out30-131.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.53 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735038322;
+	cv=pass; b=oc2foGWvc60OuhBwhRuElq9fQTFoG/muYeE6RD5YVQ0hiwqznt2vh+ygKv0OiuejElx2YEGc0C5UhzB/18RXpsXmivYhoNfH92O4bQt8e7HFDXAl90q5RC1Teg5ZNTWeUm+ciY28rO/6eZ4ZacE/secciqlw2GmUMC6JjhIsr7qHdhslvx/SjSYdemqR1/deZvg4G91T8+YkFAp+5Wv+68EhAH6LuMTJOkcC4imhMgwtF5THu3A/Tm8ZCRHcuRJN2wQxQI/+ptm4IlTTHZ6NFkr9UpDpfFaXzQB9mmDR7ptN9DDBVSLO5D0yBkjCIucMzOl9+NX/QmetWcP4CsLUQg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1735038322; c=relaxed/relaxed;
+	bh=rWDJsGx4IEgo+D26UaSNArr51NpFOgRXg8WQAw+PHug=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=WY1b8yRjtMMxB0AX0F8UHth5szLaoCEe7Is33ISZYyjJnH/ymUVKDMc4Opr2zKTpJEdtngVpRizejVgKYPXiCWAJhvcTFPfrHAbaOZEep9sq9+QEe50W+KTyjfxuRX9dEV52Zr3XinLbdi1M/ympBviU4S/HryIEAWWnibURicnnRIEb7RrTmnOV96wf6i1MCX5ZK+lCIyktA/EcSUK63kFxbIyGfeAp8FYbA5d4d64UE99zM6v/8BPOnRLkOnNQAftSTRHAEi5to7APEk05XVad5cqN+duHN53Xjj3m8INpH8EHbLGsut68wsa5Ck2zp5UNgCr4IBasGehICLkaPg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Tg0O577v; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=zcKwnPtc; dkim-atps=neutral; spf=pass (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=QjNcArg8;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=Tg0O577v;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=zcKwnPtc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.131; helo=out30-131.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-131.freemail.mail.aliyun.com (out30-131.freemail.mail.aliyun.com [115.124.30.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.53; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.53])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YHX7w3jMBz2xWZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 22:03:54 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1735038228; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=mvF+dV1vOqypF3DXfAFYUzb9UKgwVp9yfkPjXxoAPvw=;
-	b=QjNcArg8R3VnbFkWSHzKV+5HPHZIvovArD5bT0TRF1b/fI3t0ZKPMa2SJeEUdHwcn6inBLgHtdBBUb1JEUMK9gVpiBlKTGtGHixnW1joChcplM64XT5l1ulOCz/QMWuy4hijqlY38KRngIVcHgumWWiMWH4xeAD8QzXqlPdQ2H8=
-Received: from 30.246.161.240(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WMBoiH8_1735038225 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 24 Dec 2024 19:03:46 +0800
-Message-ID: <07a8c3b9-c14d-4754-900c-e08ea1051393@linux.alibaba.com>
-Date: Tue, 24 Dec 2024 19:03:45 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YHX9V0Sr5z2xfW
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 22:05:15 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1735038308; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=F+3TvCAvdM1U2Ft/4mROPp+0LCTUyI9FGyIybhs1OwyJ6i06lq78na3CDUcKs/sn+r
+    hTVyg4LAujTV1NJ5aZOytozjifUG3S79PXUY6hNlOQN27lHpAbxGS7JuoGdbpFUCvTuR
+    PHp8+NuxXoQmD0KWjrkixi0u5KKGeNT2a8T5Ecidt43PNQNMr8mEaKsAFTnpdxRwZiBr
+    q+Rrpj1E2VyvUVeltIbce5PDD9Qs6NCNJWBUB4+l04RWqdt8VVDvMhzhjJPf1rzmfDFw
+    u4nCErdfTREK4/DwRTXDpWew6RpOX/oRrR+LaJ3DWeLbuZGKp7qJcDLRsjVS8bQ6Fegi
+    iyEg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1735038308;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=rWDJsGx4IEgo+D26UaSNArr51NpFOgRXg8WQAw+PHug=;
+    b=Hb2s3kei6EtzagwXPu8z/2KNN0Lo2es2ZHp3tVP6Jnj2oLNTe3e7kMnxOrAvfFsOlR
+    qQfRSphbTTqd/rdsBzrlEUNZaO7fDhpJ/zQ/7gQSKFajdZ7FMH0biUwEa9P4pel+3iMg
+    uclR3EME70GB+ARmovfOUA2/zT0w+Hz6Rvui/6MwIKlEWVRWXN2MfiieFKuY69CFpoXf
+    LEQWLsvPfyd+MW6LBqv3FJx7FT1dKwtH0TCOCxyrYWJwsqOxQB6lk8TzFGqjSHATzQ8w
+    0jZXY04fC+gn20yuHdxpYfYAENYMNzguJ/0od/c1cDLbp/CoY9cBrRHwLzKq/cy1af/V
+    SmWQ==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1735038308;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=rWDJsGx4IEgo+D26UaSNArr51NpFOgRXg8WQAw+PHug=;
+    b=Tg0O577v02zDr2cRLhEKVViHsKFGL52rxQ/dmvYDj/MjmbXgsI/+sl1vzKUtezsEFS
+    dc1PydjMly3Hn4+wYS/x6bOUCbIsT+HAnRtl3Z1QdRbX8vf0V/sx4P91dxjvaOO9KIX9
+    SBAHIKzTT7oVh+npNcU3IjP1n7us1jI4HUQey65YxFcyPa2jPbgGBj2v1OjOWUFMFm0r
+    UqSMI3RqCTsB4BVC/t309uIJaozBBNpwkfVEwmq7+sF2yvsCj2Zqz2vnAe8CkxycMJns
+    aK4g6AdTkqTMkRgyBQ9ZZr02AguAtfK/kbYc27e8NsXwwf3BXqUXhyLrrdtBQ3pA2w2O
+    OEeQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1735038308;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=rWDJsGx4IEgo+D26UaSNArr51NpFOgRXg8WQAw+PHug=;
+    b=zcKwnPtcHCDq46eqRSqXdwh33m+ZyHti9bFvqha5VqURMiX49en2VAFLwSWIabnd+J
+    EM2qSbabqpzi5Ls+CnAQ==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6Kxrf+5Dj7x4QgaMrvdtcX133EisT29BnYJMBKrhBYBGwL4fUrhbbg=="
+Received: from void-ppc.a-eon.tld
+    by smtp.strato.de (RZmta 51.2.16 AUTH)
+    with ESMTPSA id ebe9c90BOB57CN9
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Tue, 24 Dec 2024 12:05:07 +0100 (CET)
+Subject: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Darren Stevens <darren@stevens-zone.net>,
+ Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>,
+ Christian Zigotzky <info@xenosoft.de>, madskateman@gmail.com,
+ "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au,
+ regressions@lists.linux.dev
+References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
+ <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de>
+ <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
+ <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
+ <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
+ <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de>
+ <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
+ <0769459a-10ee-4573-a3ce-541c01429948@redhat.com>
+ <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
+ <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
+ <7d8b5b78-b20c-d915-4a94-7082d7e01600@xenosoft.de>
+ <f944fadf-2dfe-4dd3-a086-ae7bb6c0bff6@redhat.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <31895b11-5084-95bc-0f14-faaea023b7f8@xenosoft.de>
+Date: Tue, 24 Dec 2024 12:05:06 +0100
+X-Mailer: BrassMonkey/33.4.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -50,83 +112,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] PCI/AER: Report fatal errors of RCiEP and EP if
- link recoverd
-To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com,
- sathyanarayanan.kuppuswamy@linux.intel.com
-References: <20241112135419.59491-1-xueshuai@linux.alibaba.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <20241112135419.59491-1-xueshuai@linux.alibaba.com>
+In-Reply-To: <f944fadf-2dfe-4dd3-a086-ae7bb6c0bff6@redhat.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On 23/12/24 16:37, Paolo Bonzini wrote:
+>
+>
+> On Mon, Dec 23, 2024 at 3:41 PM Christian Zigotzky 
+> <chzigotzky@xenosoft.de> wrote:
+>> Bisecting: a merge base must be tested
+>> [e9001a382fa2c256229adc68d55212028b01d515] Merge tag
+>> 'kvmarm-fixes-6.12-3' of
+>> git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
+>>
+>> The host system doesn't boot.
+>> Unfortunately, there isn't a guest kernel boot log via serial log.
+>
+> No big deal since the boot hang was fixed via rebase.
+>
+>>      git checkout -b bisection-rebase
+>> b467ab82a9fde4b46c0cd2c299220857afb0e0d4
+>>      git rebase v6.12
+>>
+>> The host kernel boots but the guest kernel doesn't boot so KVM HV
+>> doesn't work.
+>
+> As expected, so that's good.
+>
+>>      git bisect start
+>>      git bisect bad bisection-rebase
+>>      git bisect good v6.12
+>>
+>> [skipping bisection process]
+>>
+>> `edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 is the first bad commit
+>
+> Ok, that means that the culprit is commit 419cfb983ca93 (the above
+> is the rebased hash).  Thank you very much, your work was really
+> helpful!
+>
+> Can you test this simple patch?
+>
+> --------------- 8< ----------------
+> From: Paolo Bonzini <pbonzini@redhat.com>
+> Subject: [PATCH] KVM: allow  NULL writable argument to __kvm_faultin_pfn
+>
+> kvm_follow_pfn() is able to work with NULL in the .map_writable field
+> of the homonymous struct.  But __kvm_faultin_pfn() rejects the combo
+> despite KVM for e500 trying to use it.  Indeed .map_writable is not
+> particularly useful if the flags include FOLL_WRITE and readonly
+> guest memory is not supported, so add support to __kvm_faultin_pfn()
+> for this case.
+>
+> Fixes: 1c7b627e9306 ("KVM: Add kvm_faultin_pfn() to specifically 
+> service guest page faults")
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+>
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index de2c11dae231..5177e56fdbd5 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -2975,10 +2975,11 @@ kvm_pfn_t __kvm_faultin_pfn(const struct 
+> kvm_memory_slot *slot, gfn_t gfn,
+>          .refcounted_page = refcounted_page,
+>      };
+>
+> -    if (WARN_ON_ONCE(!writable || !refcounted_page))
+> +    if (WARN_ON_ONCE(!refcounted_page))
+>          return KVM_PFN_ERR_FAULT;
+>
+> -    *writable = false;
+> +    if (writable)
+> +        *writable = false;
+>      *refcounted_page = NULL;
+>
+>      return kvm_follow_pfn(&kfp);
+>
+> Thanks,
+>
+> Paolo
 
+Hello Paolo,
 
-在 2024/11/12 21:54, Shuai Xue 写道:
-> changes since v1:
-> - rewrite commit log per Bjorn
-> - refactor aer_get_device_error_info to reduce duplication per Keith
-> - fix to avoid reporting fatal errors twice for root and downstream ports per Keith
-> 
-> The AER driver has historically avoided reading the configuration space of an
-> endpoint or RCiEP that reported a fatal error, considering the link to that
-> device unreliable. Consequently, when a fatal error occurs, the AER and DPC
-> drivers do not report specific error types, resulting in logs like:
-> 
->    pcieport 0000:30:03.0: EDR: EDR event received
->    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
->    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
->    pcieport 0000:30:03.0: AER: broadcast error_detected message
->    nvme nvme0: frozen state error detected, reset controller
->    nvme 0000:34:00.0: ready 0ms after DPC
->    pcieport 0000:30:03.0: AER: broadcast slot_reset message
-> 
-> AER status registers are sticky and Write-1-to-clear. If the link recovered
-> after hot reset, we can still safely access AER status of the error device.
-> In such case, report fatal errors which helps to figure out the error root
-> case.
-> 
-> - Patch 1/2 identifies the error device by SOURCE ID register
-> - Patch 2/3 reports the AER status if link recoverd.
-> 
-> After this patch set, the logs like:
-> 
->    pcieport 0000:30:03.0: EDR: EDR event received
->    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
->    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
->    pcieport 0000:30:03.0: AER: broadcast error_detected message
->    nvme nvme0: frozen state error detected, reset controller
->    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
->    nvme 0000:34:00.0: ready 0ms after DPC
->    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
->    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
->    nvme 0000:34:00.0:    [ 4] DLP                    (First)
->    pcieport 0000:30:03.0: AER: broadcast slot_reset message
-> 
-> Shuai Xue (2):
->    PCI/DPC: Run recovery on device that detected the error
->    PCI/AER: Report fatal errors of RCiEP and EP if link recoverd
-> 
->   drivers/pci/pci.h      |  5 +++--
->   drivers/pci/pcie/aer.c | 11 +++++++----
->   drivers/pci/pcie/dpc.c | 32 +++++++++++++++++++++++++-------
->   drivers/pci/pcie/edr.c | 35 ++++++++++++++++++-----------------
->   drivers/pci/pcie/err.c |  9 +++++++++
->   5 files changed, 62 insertions(+), 30 deletions(-)
-> 
+Thanks a lot for your patch.
 
-Hi, all,
+I tested it with the RC4 of kernel 6.13 today but unfortunately it 
+doesn't solve the KVM HV issue. The guest system doesn't boot and I 
+can't see any error messages. (console=ttyS0)
 
-Gentle ping.
+Regards,
 
-Best Regards,
-Shuai
+Christian
+
+-- 
+Sent with BrassMonkey 33.4.0 (https://github.com/wicknix/brass-monkey/releases/tag/33.4.0)
+
 
