@@ -1,60 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-4471-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4472-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5546D9FBD54
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 24 Dec 2024 13:31:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 914809FC38A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 25 Dec 2024 05:34:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YHZ4M6nDjz2ypx;
-	Tue, 24 Dec 2024 23:30:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YHzRl15Gnz2yFD;
+	Wed, 25 Dec 2024 15:34:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735043459;
-	cv=none; b=BsKN53YrTZCVzbSrvIrowvccs0Tl0Ef4oQi7/tXIE9t1cCSTZE2pABCzodSYdg4bHZzrZYp8vy0ghVlXZn2S5GjZKLQIMo8a95THo/7fT0a1jE8uJxdJ+SzhSdl2t4j8254Vns6Ruboh+utvZpPX9VaEcmdh6on/ndzYqNiMC6Mgay5Jb4mQLKbf+2YB8D3j6LWhxFgkAAm6vMqPGQ93lf1nlHbuIMdXgZj+B5ZTYVlKsku7qQVTxP1chvJhrg9c8eqG3qcf8s9e0W8ssH3dePluM1uFppZ4g19sKGoxJjIK8euoCOAsXu+5B/qyPGF15HwrlCtU74bAwFX3FAHf4w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735101251;
+	cv=none; b=VM9+8eKNrhEL3jIy0YfYHVPYaRjvBWsYVXCGOeDxus9bIR66sorc3lDj6ds0K/484FCFlG0GqmtLBUSOD8NIGOp+1WfecrzsfHPvH3jTGh2uQhFNhR2q5ucj/8m9KvZrkwOZ4MD969Qh0XGGBRz6drU25o8ZI9ozioX0Kxuh8ZuIb7AqrOGwyIiRvJO1UTWyhD8FWPkz/w9+wYOiaSD8xH4hKkpngj3D003vFYOiQBQXekVkPB0rBo9V2RuaXZ7dTONRXsUOjUSfyLzL6ZAXlBtKeEkoV0pg6HfQRulogXMcuWNrQgxnG1WHfnsPLv8LCWM4a5B731mw0fazIho4Vg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735043459; c=relaxed/relaxed;
-	bh=pyK847Wmcv0U9Ps0Ng/KwN1Jh+uUmUj7eSKq0lmRd6c=;
-	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=MdEKrgbzZqKq8KyunfuZAAcqNLfXAv3CryPm21q986rCSDnCzIq9QVBocK/ehInRAlUevaBuQG3L7rEDcipOoUmVPFsKaIHFm91y3jRG38Zrl/owZixxyfukvFaHR6Qa8kmZTJTJEb0PckDcuJAdQEABtBJvvbFeyytcuCEy3qzm0VVaso6BEUqBrKnp56tFwFcpPPxILkwijJ5c4F2k1OMFMZsJXGVCtq6gTfQysQq1YBfKmHaxypWpLt/5KIpw4GTmdLt/p/uZvEibXSpKEJ7Oo90kgci5A63DVXULJmRGqk5XehznPU/nRYa2s6+jK+TsCVEVGHZQii4yyGM01g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+	t=1735101251; c=relaxed/relaxed;
+	bh=ya7ZamQzWS2KOZI+zsJzBatlyjC0CxPZdQKzTQa5G94=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SIwwIpGOpnmyWyGEvzngmEMk0YHhmbBuo2hSLpyLiPFzvQjJ3TY1LFKp0TD/s5oDKZeIZVBTirbsPQ6KAnlUHQwjvU+MG5Xi3qrKuE4ffW+FnWU8Fbdjbu4vLO/rILZp3KhEDMmakNKCYJpzl+G8P/YBwaF48MVOcqN0cirB7q8sQ5U43GJ8xkSQnFgjI6W9wV3IT7zlu7iYAkkGgDvWScshe+9+aH2SOFW2trjEDOsYTqLrWdrrHTvDWBHuTd9XbRy63sEyFf6saaPNdRG5BqNHzY9oARZ13A7t7RjtI25id0ALlaacx1LDsOKld1JjRQ9R3YyAyT6vALvfoiP9Ew==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Mijq7tXB; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Mijq7tXB;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YHZ4K2lwZz2xfW
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 24 Dec 2024 23:30:52 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.105])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4YHYzc5zfhz11N9f;
-	Tue, 24 Dec 2024 20:26:52 +0800 (CST)
-Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id 9BFD81402C1;
-	Tue, 24 Dec 2024 20:30:15 +0800 (CST)
-Received: from [10.67.121.177] (10.67.121.177) by
- kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Tue, 24 Dec 2024 20:30:14 +0800
-CC: <yangyicong@hisilicon.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
-	<sudeep.holla@arm.com>, <tglx@linutronix.de>, <peterz@infradead.org>,
-	<mpe@ellerman.id.au>, <linux-arm-kernel@lists.infradead.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<pierre.gondois@arm.com>, <dietmar.eggemann@arm.com>,
-	<linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
-	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
-	<prime.zeng@hisilicon.com>, <linuxarm@huawei.com>, <xuwei5@huawei.com>,
-	<guohanjun@huawei.com>
-Subject: Re: [PATCH v10 3/4] arm64: topology: Support SMT control on ACPI
- based system
-To: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-References: <20241220075313.51502-1-yangyicong@huawei.com>
- <20241220075313.51502-4-yangyicong@huawei.com>
- <20241223164014.000032cc@huawei.com>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <a5dfbe0a-43aa-ee0d-fdb4-af2e2a2cc854@huawei.com>
-Date: Tue, 24 Dec 2024 20:30:14 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YHzRj5WqXz2xy6
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2024 15:34:09 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BP3qohN006681;
+	Wed, 25 Dec 2024 04:33:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ya7Zam
+	QzWS2KOZI+zsJzBatlyjC0CxPZdQKzTQa5G94=; b=Mijq7tXBebBqt6e7uPhNTu
+	2GKel5LzrqR2UrfErOesbfC6bM7/GssGJLyc3Qwez5Hc844xstQtDGQt5aAM0Gmv
+	vZ8eAmLRI1cUUtMaa96aK8KpNNNJgskxVWMFpbDi312IRiw0kKbIGAbMM+UKE+r2
+	fFaK/nS2GBjFtRrvHbRklgBZY2KjkG3bMiXwUtxYTFHx3SsvlN2MmYEMEC26PcWX
+	DInGNcTBtYOCUYdtWlnoga4bXtXwTprQbZryO1MMIY+50tTE1ZxijEsLPSK3jfD6
+	f7Evk1BAmvouuoVAzr3xG7yBVWELmegY4FwLYn1BqOfaCxcgIcohyOGqZvnToKtA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43rahk03tx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Dec 2024 04:33:58 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BP4Xwci030167;
+	Wed, 25 Dec 2024 04:33:58 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43rahk03tu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Dec 2024 04:33:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BP1DUAq020569;
+	Wed, 25 Dec 2024 04:33:57 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43p8cycwst-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 25 Dec 2024 04:33:57 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BP4XtCh52494792
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 25 Dec 2024 04:33:55 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 300DF20043;
+	Wed, 25 Dec 2024 04:33:55 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 389F020040;
+	Wed, 25 Dec 2024 04:33:52 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.66.240])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 25 Dec 2024 04:33:51 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Haren Myneni <haren@linux.ibm.com>
+Cc: mpe@ellerman.id.au, npiggin@gmail.com, hbabu@us.ibm.com
+Subject: Re: [PATCH] powerpc/pseries/vas: Add close() callback in vas_vm_ops struct
+Date: Wed, 25 Dec 2024 10:03:46 +0530
+Message-ID: <173510109647.1031723.12074222522167922593.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241214051758.997759-1-haren@linux.ibm.com>
+References: <20241214051758.997759-1-haren@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,168 +92,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <20241223164014.000032cc@huawei.com>
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.121.177]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemd200014.china.huawei.com (7.221.188.8)
-X-Spam-Status: No, score=-4.9 required=5.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: fV409cWVg1zSbs9sQ2sXMIq-MiZEeRT3
+X-Proofpoint-ORIG-GUID: ecCbRFFm1nNhGYXcwQW9r3NeXIlhl7SY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ mlxscore=0 clxscore=1015 spamscore=0 lowpriorityscore=0 adultscore=0
+ mlxlogscore=661 suspectscore=0 malwarescore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412250037
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2024/12/24 0:40, Jonathan Cameron wrote:
-> On Fri, 20 Dec 2024 15:53:12 +0800
-> Yicong Yang <yangyicong@huawei.com> wrote:
+On Fri, 13 Dec 2024 21:17:58 -0800, Haren Myneni wrote:
+> The mapping VMA address is saved in VAS window struct when the
+> paste address is mapped. This VMA address is used during migration
+> to unmap the paste address if the window is active. The paste
+> address mapping will be removed when the window is closed or with
+> the munmap(). But the VMA address in the VAS window is not updated
+> with munmap() which is causing invalid access during migration.
 > 
->> From: Yicong Yang <yangyicong@hisilicon.com>
->>
->> For ACPI we'll build the topology from PPTT and we cannot directly
->> get the SMT number of each core. Instead using a temporary xarray
->> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
->> and SMT information of the first core in its heterogeneous CPU cluster
->> when building the topology. Then we can know the largest SMT number
->> in the system. If a homogeneous system's using ACPI 6.2 or later,
->> all the CPUs should be under the root node of PPTT. There'll be
->> only one entry in the xarray and all the CPUs in the system will
->> be assumed identical.
->>
->> The core's SMT control provides two interface to the users [1]:
->> 1) enable/disable SMT by writing on/off
->> 2) enable/disable SMT by writing thread number 1/max_thread_number
->>
->> If a system have more than one SMT thread number the 2) may
->> not handle it well, since there're multiple thread numbers in the
->> system and 2) only accept 1/max_thread_number. So issue a warning
->> to notify the users if such system detected.
->>
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
->> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> 
-> A few trivial things inline.  Either way it's fine as really just my style
-> preferences
-> 
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> 
->> ---
->>  arch/arm64/kernel/topology.c | 66 ++++++++++++++++++++++++++++++++++++
->>  1 file changed, 66 insertions(+)
->>
->> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
->> index 1a2c72f3e7f8..85cb18d72a29 100644
->> --- a/arch/arm64/kernel/topology.c
->> +++ b/arch/arm64/kernel/topology.c
->> @@ -15,8 +15,10 @@
->>  #include <linux/arch_topology.h>
->>  #include <linux/cacheinfo.h>
->>  #include <linux/cpufreq.h>
->> +#include <linux/cpu_smt.h>
->>  #include <linux/init.h>
->>  #include <linux/percpu.h>
->> +#include <linux/xarray.h>
->>  
->>  #include <asm/cpu.h>
->>  #include <asm/cputype.h>
->> @@ -37,17 +39,28 @@ static bool __init acpi_cpu_is_threaded(int cpu)
->>  	return !!is_threaded;
->>  }
->>  
->> +struct cpu_smt_info {
->> +	int thread_num;
->> +	int core_id;
->> +};
->> +
->>  /*
->>   * Propagate the topology information of the processor_topology_node tree to the
->>   * cpu_topology array.
->>   */
->>  int __init parse_acpi_topology(void)
->>  {
->> +	int max_smt_thread_num = 0;
->> +	struct cpu_smt_info *entry;
->> +	struct xarray hetero_cpu;
->> +	unsigned long hetero_id;
->>  	int cpu, topology_id;
->>  
->>  	if (acpi_disabled)
->>  		return 0;
->>  
->> +	xa_init(&hetero_cpu);
->> +
->>  	for_each_possible_cpu(cpu) {
->>  		topology_id = find_acpi_cpu_topology(cpu, 0);
->>  		if (topology_id < 0)
->> @@ -57,6 +70,32 @@ int __init parse_acpi_topology(void)
->>  			cpu_topology[cpu].thread_id = topology_id;
->>  			topology_id = find_acpi_cpu_topology(cpu, 1);
->>  			cpu_topology[cpu].core_id   = topology_id;
->> +
->> +			/*
->> +			 * In the PPTT, CPUs below a node with the 'identical
->> +			 * implementation' flag have the same number of threads.
->> +			 * Count the number of threads for only one CPU (i.e.
->> +			 * one core_id) among those with the same hetero_id.
->> +			 * See the comment of find_acpi_cpu_topology_hetero_id()
->> +			 * for more details.
->> +			 *
->> +			 * One entry is created for each node having:
->> +			 * - the 'identical implementation' flag
->> +			 * - its parent not having the flag
->> +			 */
->> +			hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
->> +			entry = (struct cpu_smt_info *)xa_load(&hetero_cpu, hetero_id);
-> 
-> Given xa_load returns a void *,
-> 
-> 			entry = xa_load(&hetero_cpu, hetero_id);
-> 
-> should be fine (I haven't checked local style, so feel free to ignore if
-> local style is to cast anyway).  Maybe drag the definition of entry into
-> a more local scope as well.
-> 
+> [...]
 
-sure. will get rid of the cast and checked it won't violate the local style.
+Applied to powerpc/fixes.
 
-> 
->> +			if (!entry) {
->> +				entry = kzalloc(sizeof(*entry), GFP_KERNEL);
->> +				WARN_ON(!entry);
->> +
->> +				entry->core_id = topology_id;
->> +				entry->thread_num = 1;
->> +				xa_store(&hetero_cpu, hetero_id,
->> +					 entry, GFP_KERNEL);
->> +			} else if (entry->core_id == topology_id) {
->> +				entry->thread_num++;
->> +			}
->>  		} else {
->>  			cpu_topology[cpu].thread_id  = -1;
->>  			cpu_topology[cpu].core_id    = topology_id;
->> @@ -67,6 +106,33 @@ int __init parse_acpi_topology(void)
->>  		cpu_topology[cpu].package_id = topology_id;
->>  	}
->>  
->> +	/*
->> +	 * This should be a short loop depending on the number of heterogeneous
->> +	 * CPU clusters. Typically on a homogeneous system there's only one
->> +	 * entry in the XArray.
->> +	 */
->> +	xa_for_each(&hetero_cpu, hetero_id, entry) {
->> +		if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
->> +			pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
->> +
->> +		if (entry->thread_num > max_smt_thread_num)
->> +			max_smt_thread_num = entry->thread_num;
-> 
-> As with DT, maybe min is more informative?
-> 
-> 		max_smt_thread_num = min(max_smt_thread_num, entry->thread_num);
-> 
-> I don't care strongly about it though.
+[1/1] powerpc/pseries/vas: Add close() callback in vas_vm_ops struct
+      https://git.kernel.org/powerpc/c/05aa156e156ef3168e7ab8a68721945196495c17
 
-either's ok with me, will keep it consistent with DT.
-
-Thanks.
-
+Thanks
 
