@@ -1,50 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-4476-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7839FC8E4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Dec 2024 07:16:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 847C19FC951
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Dec 2024 08:01:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YJdfj06fZz2yh2;
-	Thu, 26 Dec 2024 17:15:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YJfgX6Vnqz306S;
+	Thu, 26 Dec 2024 18:01:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=43.155.80.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735188345;
-	cv=none; b=Y0Zsjwmnlu06HplWfMTU6z8STncnr4bZ6VbUHzjxiWRVaYfDcOeui78A0DMFmXOGrvc+kU3ciS7FHRkDFbEC/PCADlHX15ZKuH4OaTth4iKESXCMeVeTkmnLIRhwEdiIGYHY3sE/A5m4+oDTyavP7PnCq+JcEvfVTtIQHsXw1uLbuAi/OteYqpbfaUP25CKeDFr5+dddWoKj+ZYERF2d8FurkWnUXRBcfccps0pMJ5BHT/WcRavtLSptl8IvdnI9SrWJaUmqhYv7aWgnZNR7RDWEKmf4DfWKRITGJH3ZM4crajfyD+hnsGLoBv4TAH2QGk9pB0qmtjThPTZAmJB3iA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735196504;
+	cv=none; b=nRRr6ygIBcoJ7mfDkY2vglD0wfZNaC4Hd3QH/HLocbIbs24tWrZG8A1c/ebCHjJiDy0JhkzmWjL44HO1L9rrpk9R0mstufnwE4Gn8b2qCG5d16wgimxJP3Ls6VKO0bke26oW/PaYlJL7AXPc7WZsGjlNKE9ZhUXfUWxQ//HCtbEq804NLXWOLyuvfpmADNippeAm+1em3AJX+ilAKLdGhxMZAovy4MLPPjGhxyNLsVvpV2ljKSkQrETEnxsBZgR96DUS24LbzjgE5Ziba8b/Pi2+TUq0k4i0TWaFqgR0ZtclzaMKRfiazKdQZFMrbHvZSSMLTFMLDXEEZBb46eDOcg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735188345; c=relaxed/relaxed;
-	bh=jiZb7IpE41fCYnP6oF9fb5mZcXz5+H6sNQxK5lDZYw0=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=FJSvUAxwPv9uapTd0YNviiQYCloHDnE3kepZ+GJDE0lWOZBKhT03EImPb50XguofVGsrgrQVhTuGMyUVQI4o7cen1zIaKcJBbUImU4hjY3vAb8cfKv9OTqYQGX0g1GwjD2C2Q5C9vN6G5mM/OMyCA0QjO6oRlP8Sr09y6pr8Udtkg/VpKvwaWNC36pCMl80R3j0JwdLB3H7bUTgE6n8oL6cxBz9lf50yJm9RKCbK13rMAarF4riQor8NAKeebRde0AqzvnXg0B5DDTVZrVG/faF0PxP3wX28boekIWKtgfbynyZ2wpPhAOM2+sKQUY4PXU1+FT8thE9Dj3qDfGdtYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn; dkim=pass (1024-bit key; unprotected) header.d=m.fudan.edu.cn header.i=@m.fudan.edu.cn header.a=rsa-sha256 header.s=sorc2401 header.b=XpHYtviz; dkim-atps=neutral; spf=pass (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=huk23@m.fudan.edu.cn; receiver=lists.ozlabs.org) smtp.mailfrom=m.fudan.edu.cn
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn
+	t=1735196504; c=relaxed/relaxed;
+	bh=8fQxsL3TfVLtN2PN20FFK4dyk8D821iU5g3JKyZHuK4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pz4k5nayn/a1n5ud9NW2frHIZ5X6SFiAQvBUkuJfWHwlZLPUsseTi5DLg8+n5chH5dZxQfguVasuTJjiXC4ByOcReQOEgOhcfd2i/eid0fJo2ItDhAQ1hY22iryg0cKTH+ry3ALGh+rDmYef0ffZJ+Wilc9/5eWxF89CmEQ9+Gkqrr7XKXHlb4uZgEKrAz3KnyU7vBo/RRhKyJlNZoLUJlv4NO6iSuMFy8/u8WJHpBLD0UdpdrmGEEGT9S/EoZ7NDmKjPZdcgwPmAFF82By4juu1Us4KfPs0xDPFZZi/GV7jxcAPjGbXFDh9YSkcOU8WOK/edvvjEhZmnEUjGGemsQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1PqZ2FC; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1PqZ2FC; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=m.fudan.edu.cn header.i=@m.fudan.edu.cn header.a=rsa-sha256 header.s=sorc2401 header.b=XpHYtviz;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1PqZ2FC;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=W1PqZ2FC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=m.fudan.edu.cn (client-ip=43.155.80.173; helo=bg5.exmail.qq.com; envelope-from=huk23@m.fudan.edu.cn; receiver=lists.ozlabs.org)
-Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YJbfX5VHZz2xsd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Dec 2024 15:45:40 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=m.fudan.edu.cn;
-	s=sorc2401; t=1735188237;
-	bh=jiZb7IpE41fCYnP6oF9fb5mZcXz5+H6sNQxK5lDZYw0=;
-	h=From:Mime-Version:Subject:Message-Id:Date:To;
-	b=XpHYtvizDpBLguQvHmtCtwe0x/+7WM4FO0fZ9gJHiWo13phSej3rU9h1H5GGC4Qpc
-	 GZHj78YGRbfTrFdYS+IZ9XtIaAjMHGWGsG/rD5TjxBlM+CA3GQTUNIgrKZt//3f7lv
-	 w+pTvUsVeBo775ViaD53xaJXxCBLv/4fS8avSGvM=
-X-QQ-mid: bizesmtpip3t1735188235t6jo2bu
-X-QQ-Originating-IP: WZpoOor03qHPWQbVxBe0aAfnTtCpoWXv4JhYmMtkWYA=
-Received: from smtpclient.apple ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Thu, 26 Dec 2024 12:43:53 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 5617390984070268677
-From: Kun Hu <huk23@m.fudan.edu.cn>
-Content-Type: text/plain;
-	charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YJfgW3frBz306J
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Dec 2024 18:01:41 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1735196496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8fQxsL3TfVLtN2PN20FFK4dyk8D821iU5g3JKyZHuK4=;
+	b=W1PqZ2FCqP+vuwZ4kcn3Oyk7fp1heWi8f9/RjBONBjnIY6ZntoKi6o+hTonHxUFlTmm4hQ
+	/sN555pqmolJblkg9tKQhWVEwJGTMx+qJQ8CseWEa/C3ZZqsvEc2WOYW+S9fpSz/FHbTBA
+	8vdvAvpNnq86Oc6u3qs7jr13aZtSsI8=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1735196496;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8fQxsL3TfVLtN2PN20FFK4dyk8D821iU5g3JKyZHuK4=;
+	b=W1PqZ2FCqP+vuwZ4kcn3Oyk7fp1heWi8f9/RjBONBjnIY6ZntoKi6o+hTonHxUFlTmm4hQ
+	/sN555pqmolJblkg9tKQhWVEwJGTMx+qJQ8CseWEa/C3ZZqsvEc2WOYW+S9fpSz/FHbTBA
+	8vdvAvpNnq86Oc6u3qs7jr13aZtSsI8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-127-7tKdrABkP_2gVHssmmaXtQ-1; Thu, 26 Dec 2024 02:01:33 -0500
+X-MC-Unique: 7tKdrABkP_2gVHssmmaXtQ-1
+X-Mimecast-MFC-AGG-ID: 7tKdrABkP_2gVHssmmaXtQ
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-385dcadffebso3082882f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 25 Dec 2024 23:01:33 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735196493; x=1735801293;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8fQxsL3TfVLtN2PN20FFK4dyk8D821iU5g3JKyZHuK4=;
+        b=fvb22OLFVZFlcIhgXDOzMywCGStXXN1KCebU53GYK26+SwZqp/DUvS48vGKYKvafEw
+         1jof85UfKcFU+i98d241oMi6ttlhLdoVjmlKJ8KAx0wvWj0ras2SQJSmfmE1jnxnBO6f
+         b+/+kRpD9YfroLhj+1Q44aVRp0edaTYuki6pgXvyDd0yN82Z4GFIMSLDDKJJzYurUyAt
+         cbYUupAGoo6pjnt+jOAFXrsYfl1OOX59ltIbwUjRoufGj9uiRtMMuhLqNjSXLDUIScqP
+         KttFracq+EgjW53ejeOPfIqNIouSku/5qUrCFwTesGjsSTTQaGI1Eq0SMT/iBpbOqX4N
+         5ooA==
+X-Gm-Message-State: AOJu0YxRUQb2QQTknztbpvA/p4XgpbkhXQHODUMVc2cFspYDYMmp+2Qy
+	oruWppkSptK3pIAW9iEJULTtEzq0S0yvjqW8VzD0jqCI99NSoP+eAQB6XxSsYr8L5utoh6Y+qvO
+	A9E+BOw012TnPVjxzVxLlxK/A/EW0nB1qmBgP+nVp0YhGSi+XIh+9vhLuj4ES6ysW4I2bDrGCIw
+	75LNLi/QengCFYBnBj7FEh15/YYVLF39quW1Wa/Q==
+X-Gm-Gg: ASbGncsuJQKFVjLi7Gb+obW72tY9t8lCXT8xM3QCCMJEkPMglneoTeqk+Vcbj1FoDWf
+	ZrST4gpX/1cJIAcQ62p1ZsMK+8fPyXDGzvct/Ew==
+X-Received: by 2002:a05:6000:4007:b0:382:4926:98fa with SMTP id ffacd0b85a97d-38a223f5c46mr20850010f8f.40.1735196492810;
+        Wed, 25 Dec 2024 23:01:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFpKIaDGhmjXTuxSXUzGEzYXst6budEvOeS8g3EYCK3ao1R9BtmblVN3cngEBFLwotprpo4bydGpI+0DtVF544=
+X-Received: by 2002:a05:6000:4007:b0:382:4926:98fa with SMTP id
+ ffacd0b85a97d-38a223f5c46mr20849988f8f.40.1735196492452; Wed, 25 Dec 2024
+ 23:01:32 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,270 +90,166 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: BUG: soft lockup in kcov_ioctl
-Message-Id: <1E7C6DD5-A850-41F8-BB7A-B949CECB04AA@m.fudan.edu.cn>
-Date: Thu, 26 Dec 2024 12:43:43 +0800
-Cc: linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org,
- "jjtan24@m.fudan.edu.cn" <jjtan24@m.fudan.edu.cn>
-To: mpe@ellerman.id.au,
- npiggin@gmail.com,
- christophe.leroy@csgroup.eu,
- naveen@kernel.org,
- maddy@linux.ibm.com,
- nysal@linux.ibm.com
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:m.fudan.edu.cn:qybglogicsvrgz:qybglogicsvrgz8a-1
-X-QQ-XMAILINFO: MuKSsuOOvnd3UR2dF8crzt/AtOGdlF4laqHwbLD6UaZHvs7CI31rRKIF
-	xXpqanYqlD1jyypLlGZMsyPuFuBCSFkpbLBeTCrUf5bgoAc48DenUpEhF1I9MzVHcAIG2PM
-	YtUjAKOBBHeLhUEZEt7Q4o7cyKZ+2Melq38UCrPkhHOqvzwCxLzrnXR6xqne1wNeOvvrnVb
-	umzX+KGUSP2gyvYBIIy5uV1uO9wttaZ1wl5eKUVzS/1hBTE3Q2IFXX2YRe4moZnHeRY0HbY
-	PnLUYxXWBJhPmoFqMV2N1aMfJJjDdyWhh4zL6vbhj08qCo26VQ+biw3ZVhtTKtmnxP/EWhY
-	8PJIlxNG22T4obI/9enjahI7FZY9rdF1CNTynzHDgS0aScBUcYud2fPo4N+90acz2fwWJEB
-	AJiQK7d+Nveb2jFFNlW1l2uXPtnRDSGQp3ZsrNj+p95WzQJeRRTM2+XNn9U5y3aKl9dj98T
-	aynvL1ceHXErYsYEcEpVQm9mIghsT8jQSjOAEPDT0BK0tEO06uY5VFl69dH4tr5z3V6bEdd
-	pBGiNySZr61PLMEdRb9vwk1Tb+uXJlK+L2qjLBdFxkHmpUTztSW5/P7LYLWDC5DJ6Pm8li2
-	VHN1Hyh+UWFvzE2QRbYkHAsLrBaBVegMLC/aaYaAW/iEzVizGOrJGgwRHcpcB5mxoK1Or2p
-	q/azdvUNg2uaopR/byA+0ESeZwqqMLF0fioaOwpgwdyWh4j0hi6TOPlZ4WVgd+pMpDCy7T8
-	avfHdkpve2/JcYCLMTKUPYEnC5WA1B0tlLNzOk/xyKaW1Oog6+L6JknsG80Yt/5f2tZvKxE
-	GZrJ35O3s/ZF3QTjK7rmQR35DXxa8qJEOJO6ZNUvi5n5jFIswffNJ09Mi8u1rQmmdqUA6Zg
-	/xOKgiTUVLr8v2HXpijBAgio7VBgZby28Q4mGDZ+OFAPKJlJxdo/z+URLEP2wieLsGdyKtf
-	X88OGmRpD6rlbiA==
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-X-QQ-RECHKSPAM: 0
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY
-	autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
+ <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de> <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
+ <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de> <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
+ <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de> <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
+ <0769459a-10ee-4573-a3ce-541c01429948@redhat.com> <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
+ <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
+ <7d8b5b78-b20c-d915-4a94-7082d7e01600@xenosoft.de> <f944fadf-2dfe-4dd3-a086-ae7bb6c0bff6@redhat.com>
+ <31895b11-5084-95bc-0f14-faaea023b7f8@xenosoft.de> <2881940a-2da0-4498-b447-f09fffb14189@redhat.com>
+ <50149f09-174f-ad6e-e97d-3d8889b412a6@xenosoft.de>
+In-Reply-To: <50149f09-174f-ad6e-e97d-3d8889b412a6@xenosoft.de>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Thu, 26 Dec 2024 08:00:00 +0100
+Message-ID: <CABgObfYqGVQk0nvPZqzc1Q7K0jg-Gxk2tVmrk75R6TaLUt9exQ@mail.gmail.com>
+Subject: Re: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
+To: Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, Darren Stevens <darren@stevens-zone.net>, 
+	Pat Wall <pjwall@mac.com>, Pat Wall <pjwall@me.com>, Christian Zigotzky <info@xenosoft.de>, 
+	madskateman@gmail.com, "R.T.Dickinson" <rtd2@xtra.co.nz>, hypexed@yahoo.com.au, 
+	regressions@lists.linux.dev
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: gYFnx0thSXgu6_5Kys8oBG108I71SmJZ7n69yVwCkxU_1735196493
+X-Mimecast-Originator: redhat.com
+Content-Type: multipart/alternative; boundary="0000000000008c6d9c062a26ea1c"
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HTML_MESSAGE,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello,
+--0000000000008c6d9c062a26ea1c
+Content-Type: text/plain; charset="UTF-8"
 
-When using fuzzer tool to fuzz the latest Linux kernel, the following =
-crash
-was triggered.
+Il mer 25 dic 2024, 13:48 Christian Zigotzky <chzigotzky@xenosoft.de> ha
+scritto:
 
-HEAD commit: 78d4f34e2115b517bcbfe7ec0d018bbbb6f9b0b8
-git tree: upstream
-Console output: =
-https://drive.google.com/file/d/1hHx0XqzeOIA6IZ-_nC_XviXb1nlt0bxI/view?usp=
-=3Dsharing
-Kernel config: =
-https://drive.google.com/file/d/1RhT5dFTs6Vx1U71PbpenN7TPtnPoa3NI/view?usp=
-=3Dsharing
-C reproducer: /
-Syzlang reproducer: /
+> > But do you see anything on the host dmesg (without and with the
+> > patch), for example a WARN?
+> Unfortunately no log during the start of KVM HV.
+>
 
-Unfortunately, we're getting a stable reproduction of the program. If =
-you fix this issue, please add the following tag to the commit:
-Reported-by: Kun Hu <huk23@m.fudan.edu.cn>
+Ok.
 
-watchdog: BUG: soft lockup - CPU#3 stuck for 23s! [syz-executor:1847]
-Modules linked in:
-irq event stamp: 176368
-hardirqs last  enabled at (176367): [<ffffffff9dace9fb>] =
-irqentry_exit+0x3b/0x90 kernel/entry/common.c:357
-hardirqs last disabled at (176368): [<ffffffff9daccfcf>] =
-sysvec_apic_timer_interrupt+0xf/0xb0 arch/x86/kernel/apic/apic.c:1049
-softirqs last  enabled at (176360): [<ffffffff95b0f4d4>] =
-softirq_handle_end kernel/softirq.c:407 [inline]
-softirqs last  enabled at (176360): [<ffffffff95b0f4d4>] =
-handle_softirqs+0x544/0x870 kernel/softirq.c:589
-softirqs last disabled at (176351): [<ffffffff95b1117e>] __do_softirq =
-kernel/softirq.c:595 [inline]
-softirqs last disabled at (176351): [<ffffffff95b1117e>] invoke_softirq =
-kernel/softirq.c:435 [inline]
-softirqs last disabled at (176351): [<ffffffff95b1117e>] __irq_exit_rcu =
-kernel/softirq.c:662 [inline]
-softirqs last disabled at (176351): [<ffffffff95b1117e>] =
-irq_exit_rcu+0xee/0x140 kernel/softirq.c:678
-CPU: 3 UID: 0 PID: 1847 Comm: syz-executor Not tainted 6.13.0-rc3 #8
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS =
-1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:virt_spin_lock arch/x86/include/asm/qspinlock.h:102 [inline]
-RIP: 0010:queued_spin_lock_slowpath+0xcb/0xc60 =
-kernel/locking/qspinlock.c:324
-Code: 00 00 00 49 01 c6 41 83 c5 03 be 04 00 00 00 48 89 df e8 98 61 76 =
-f8 41 0f b6 06 41 38 c5 7c 08 84 c0 0f 85 f8 09 00 00 8b 03 <89> 44 24 =
-48 85 c0 0f 85 6f 01 00 00 48 89 df be 04 00 00 00 e8 9c
-RSP: 0018:ffa000002f0a7748 EFLAGS: 00000246
-RAX: 0000000000000001 RBX: ff1100006a241cc0 RCX: ffffffff9daf9078
-RDX: 0000000000000000 RSI: 0000000000000004 RDI: ff1100006a241cc0
-RBP: ffa000002f0a7790 R08: fff3fc0005e14f08 R09: ffe21c000d448399
-R10: ffe21c000d448398 R11: ff1100006a241cc3 R12: 0000000000000001
-R13: 0000000000000003 R14: ffe21c000d448398 R15: 1ffffffff3f91377
-FS:  0000555575f4fa00(0000) GS:ff1100006a380000(0000) =
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fdfa8d3f000 CR3: 0000000038ad2003 CR4: 0000000000771ef0
-PKRU: 80000000
-Call Trace:
- <IRQ>
- </IRQ>
- <TASK>
- queued_spin_lock include/asm-generic/qspinlock.h:114 [inline]
- do_raw_spin_lock+0x1de/0x290 kernel/locking/spinlock_debug.c:116
- spin_lock include/linux/spinlock.h:351 [inline]
- drain_pages_zone+0xa3/0x160 mm/page_alloc.c:2394
- drain_pages+0x58/0x80 mm/page_alloc.c:2415
- __drain_all_pages+0x291/0x3b0 mm/page_alloc.c:2504
- drain_all_pages mm/page_alloc.c:2517 [inline]
- __alloc_pages_direct_reclaim mm/page_alloc.c:3963 [inline]
- __alloc_pages_slowpath.constprop.0+0x624/0x2170 mm/page_alloc.c:4380
- __alloc_pages_noprof+0x564/0x660 mm/page_alloc.c:4764
- alloc_pages_mpol_noprof+0xf2/0x400 mm/mempolicy.c:2269
- vm_area_alloc_pages mm/vmalloc.c:3589 [inline]
- __vmalloc_area_node mm/vmalloc.c:3667 [inline]
- __vmalloc_node_range_noprof+0x9c0/0x12c0 mm/vmalloc.c:3844
- vmalloc_user_noprof+0x9e/0xe0 mm/vmalloc.c:3998
- kcov_ioctl+0x4c/0x500 kernel/kcov.c:716
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:906 [inline]
- __se_sys_ioctl fs/ioctl.c:892 [inline]
- __x64_sys_ioctl+0x19e/0x210 fs/ioctl.c:892
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xc3/0x1d0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f6a97aa732b
-Code: 0f 92 c0 84 c0 75 b0 49 8d 3c 1c e8 1f 3f 03 00 85 c0 78 b1 48 83 =
-c4 08 4c 89 e0 5b 41 5c c3 f3 0f 1e fa b8 10 00 00 00 0f 05 <48> 3d 01 =
-f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffd707a66e8 EFLAGS: 00000207 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 0000000000040000 RCX: 00007f6a97aa732b
-RDX: 0000000000040000 RSI: ffffffff80086301 RDI: 00000000000000e0
-RBP: 0000000000000003 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000207 R12: 00007f6a97c6a6d8
-R13: 0000000000000003 R14: 0000000000000002 R15: 00007ffd707a676c
- </TASK>
-Sending NMI from CPU 3 to CPUs 0-2:
-NMI backtrace for cpu 1
-CPU: 1 UID: 0 PID: 24 Comm: ksoftirqd/1 Not tainted 6.13.0-rc3 #8
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS =
-1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:tasklet_action_common+0x7f/0x810 kernel/softirq.c:827
-Code: 00 00 00 00 00 fc ff df 48 c1 ea 03 80 3c 02 00 0f 85 a8 06 00 00 =
-48 89 6d 08 e8 ac ac 40 00 fb 48 bb 00 00 00 00 00 fc ff df <4c> 8b 6c =
-24 10 49 c1 ed 03 49 8d 44 1d 00 48 89 04 24 4d 85 ff 75
-RSP: 0018:ffa00000001bfdc0 EFLAGS: 00000206
-RAX: 000000001b406ed8 RBX: dffffc0000000000 RCX: 1ffffffff4437279
-RDX: 0000000000000000 RSI: 0000000000000100 RDI: 0000000000000000
-RBP: ff1100006a2a87a0 R08: 0000000000000001 R09: 0000000000000001
-R10: fffffbfff44379c2 R11: ffffffffa21bce17 R12: 000000000003b18c
-R13: 0000000000000006 R14: 0000000000000006 R15: ff11000041ba15e8
-FS:  0000000000000000(0000) GS:ff1100006a280000(0000) =
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007fd8127e0090 CR3: 00000000350f0005 CR4: 0000000000771ef0
-PKRU: 55555554
-Call Trace:
- <NMI>
- </NMI>
- <TASK>
- handle_softirqs+0x1ad/0x870 kernel/softirq.c:561
- run_ksoftirqd kernel/softirq.c:950 [inline]
- run_ksoftirqd+0x3a/0x60 kernel/softirq.c:942
- smpboot_thread_fn+0x669/0xa80 kernel/smpboot.c:164
- kthread+0x345/0x450 kernel/kthread.c:389
- ret_from_fork+0x48/0x80 arch/x86/kernel/process.c:147
- ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-NMI backtrace for cpu 2 skipped: idling at native_safe_halt =
-arch/x86/include/asm/irqflags.h:48 [inline]
-NMI backtrace for cpu 2 skipped: idling at arch_safe_halt =
-arch/x86/include/asm/irqflags.h:106 [inline]
-NMI backtrace for cpu 2 skipped: idling at default_idle+0x1e/0x30 =
-arch/x86/kernel/process.c:742
-NMI backtrace for cpu 0
-CPU: 0 UID: 0 PID: 1729 Comm: syz.3.13 Not tainted 6.13.0-rc3 #8
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS =
-1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:get_current arch/x86/include/asm/current.h:49 [inline]
-RIP: 0010:__rcu_read_unlock+0xc6/0x570 kernel/rcu/tree_plugin.h:440
-Code: b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 0f b6 04 02 84 c0 =
-74 08 3c 03 0f 8e bf 01 00 00 8b 85 00 04 00 00 85 c0 75 57 <65> 48 8b =
-1d 92 ae 32 6a 48 8d bb fc 03 00 00 48 b8 00 00 00 00 00
-RSP: 0018:ffa0000000007e08 EFLAGS: 00000206
-RAX: 0000000000000016 RBX: ff1100006a23d240 RCX: 1ffffffff501ee6b
-RDX: 0000000000000000 RSI: 0000000000000102 RDI: 0000000000000000
-RBP: ffffffffa0326300 R08: 0000000000000001 R09: fffffbfff501ead5
-R10: fffffbfff501ead4 R11: 0000000000000001 R12: 0000000000000001
-R13: 0000000000000200 R14: ffa0000000007e00 R15: 1ff4000000000fc9
-FS:  00007f4bda0d2700(0000) GS:ff1100006a200000(0000) =
-knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f880e276310 CR3: 000000004167e005 CR4: 0000000000771ef0
-PKRU: 80000000
-Call Trace:
- <NMI>
- </NMI>
- <IRQ>
- rcu_read_unlock include/linux/rcupdate.h:882 [inline]
- ieee80211_rx_napi+0x117/0x410 net/mac80211/rx.c:5493
- ieee80211_rx include/net/mac80211.h:5166 [inline]
- ieee80211_handle_queued_frames+0xd9/0x130 net/mac80211/main.c:441
- tasklet_action_common+0x279/0x810 kernel/softirq.c:811
- handle_softirqs+0x1ad/0x870 kernel/softirq.c:561
- __do_softirq kernel/softirq.c:595 [inline]
- invoke_softirq kernel/softirq.c:435 [inline]
- __irq_exit_rcu kernel/softirq.c:662 [inline]
- irq_exit_rcu+0xee/0x140 kernel/softirq.c:678
- instr_sysvec_apic_timer_interrupt arch/x86/kernel/apic/apic.c:1049 =
-[inline]
- sysvec_apic_timer_interrupt+0x94/0xb0 arch/x86/kernel/apic/apic.c:1049
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20 =
-arch/x86/include/asm/idtentry.h:702
-RIP: 0010:lock_acquire+0x1f4/0x580 kernel/locking/lockdep.c:5817
-Code: 9a 24 3b 6a 83 f8 01 0f 85 00 03 00 00 9c 58 f6 c4 02 0f 85 eb 02 =
-00 00 48 83 3c 24 00 74 01 fb 48 b8 00 00 00 00 00 fc ff df <48> 01 c3 =
-48 c7 03 00 00 00 00 48 c7 43 08 00 00 00 00 48 8b 84 24
-RSP: 0018:ffa00000152ef590 EFLAGS: 00000206
-RAX: dffffc0000000000 RBX: 1ff4000002a5deb5 RCX: 0000000000000001
-RDX: 1fe22000005095af RSI: 0000000000000002 RDI: 0000000000000000
-RBP: 0000000000000001 R08: 0000000000000050 R09: fffffbfff501ead5
-R10: fffffbfff501ead4 R11: ffffffffa80f56a7 R12: 0000000000000000
-R13: ff1100006a241cd8 R14: 0000000000000001 R15: 0000000000000000
- __raw_spin_trylock include/linux/spinlock_api_smp.h:90 [inline]
- _raw_spin_trylock+0x68/0x80 kernel/locking/spinlock.c:138
- spin_trylock include/linux/spinlock.h:361 [inline]
- rmqueue_pcplist mm/page_alloc.c:3030 [inline]
- rmqueue mm/page_alloc.c:3074 [inline]
- get_page_from_freelist+0x4de/0x3800 mm/page_alloc.c:3471
- __alloc_pages_noprof+0x2f0/0x660 mm/page_alloc.c:4751
- alloc_pages_mpol_noprof+0xf2/0x400 mm/mempolicy.c:2269
- folio_alloc_mpol_noprof+0x38/0xa0 mm/mempolicy.c:2287
- shmem_alloc_folio+0x137/0x160 mm/shmem.c:1794
- shmem_alloc_and_add_folio mm/shmem.c:1833 [inline]
- shmem_get_folio_gfp mm/shmem.c:2355 [inline]
- shmem_get_folio_gfp.isra.0+0x45e/0x13d0 mm/shmem.c:2255
- shmem_get_folio mm/shmem.c:2461 [inline]
- shmem_write_begin+0x14f/0x2f0 mm/shmem.c:3117
- generic_perform_write+0x290/0x850 mm/filemap.c:4055
- shmem_file_write_iter+0x111/0x140 mm/shmem.c:3293
- new_sync_write fs/read_write.c:586 [inline]
- vfs_write fs/read_write.c:679 [inline]
- vfs_write+0xb9b/0x10f0 fs/read_write.c:659
- ksys_write+0x122/0x240 fs/read_write.c:731
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xc3/0x1d0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f4bdb3f018f
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 99 fd ff ff 48 8b 54 24 =
-18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 =
-f0 ff ff 77 2d 44 89 c7 48 89 44 24 08 e8 cc fd ff ff 48
-RSP: 002b:00007f4bda0d1940 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000000009 RCX: 00007f4bdb3f018f
-RDX: 0000000001000000 RSI: 00007f4bd1cb2000 RDI: 0000000000000009
-RBP: 00007f4bd1cb2000 R08: 0000000000000000 R09: 00000000000046db
-R10: 00000000000046db R11: 0000000000000293 R12: 0000000000000000
-R13: 00007f4bda0d1a0c R14: 00007f4bda0d1a10 R15: 00000000200047c2
- </TASK>
+> Also you might try edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 + the
+> > patch, to see if there are two bugs.
+> >
+> > Paolo
+> >
+> I think you mean 419cfb983ca93e75e905794521afefcfa07988bb because "git
+> checkout edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4" doesn't work.
+>
+> Error message: fatal: reference is not a tree:
+> edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4
+>
+> git checkout 419cfb983ca93e75e905794521afefcfa07988bb
+>
 
+That's the upstream commit that doesn't boot.
+edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 was the rebased version of the
+same commit, where your bisection finished.
 
----------------
-thanks,
-Kun Hu=
+Paolo
+
+Output:
+>
+> Updating files: 100% (16656/16656), done.
+> Note: switching to '419cfb983ca93e75e905794521afefcfa07988bb'.
+>
+> You are in 'detached HEAD' state. You can look around, make experimental
+> changes and commit them, and you can discard any commits you make in this
+> state without impacting any branches by switching back to a branch.
+> ...
+> HEAD is now at 419cfb983ca9 KVM: PPC: e500: Use __kvm_faultin_pfn() to
+> handle page faults
+>
+> ---
+>
+> patch -p0 < kvm_main.patch // Your patch
+>
+> Output:
+>
+> patching file a/virt/kvm/kvm_main.c
+>
+> Oh dear, the host kernel doesn't boot. :-(
+>
+> --
+> Sent with BrassMonkey 33.4.0 (
+> https://github.com/wicknix/brass-monkey/releases/tag/33.4.0)
+>
+>
+
+--0000000000008c6d9c062a26ea1c
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><br><br><div class=3D"gmail_quote"><div dir=3D"ltr" =
+class=3D"gmail_attr">Il mer 25 dic 2024, 13:48 Christian Zigotzky &lt;<a hr=
+ef=3D"mailto:chzigotzky@xenosoft.de" target=3D"_blank" rel=3D"noreferrer">c=
+hzigotzky@xenosoft.de</a>&gt; ha scritto:</div><blockquote class=3D"gmail_q=
+uote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,2=
+04);padding-left:1ex">
+&gt; But do you see anything on the host dmesg (without and with the <br>
+&gt; patch), for example a WARN?<br>
+Unfortunately no log during the start of KVM HV.<br></blockquote></div></di=
+v><div dir=3D"auto"><br></div><div dir=3D"auto">Ok.</div><div dir=3D"auto">=
+<br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=3D=
+"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rgb(2=
+04,204,204);padding-left:1ex">
+&gt; Also you might try edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 + the <br>
+&gt; patch, to see if there are two bugs.<br>
+&gt;<br>
+&gt; Paolo<br>
+&gt;<br>
+I think you mean 419cfb983ca93e75e905794521afefcfa07988bb because &quot;git=
+ <br>
+checkout edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4&quot; doesn&#39;t work.<b=
+r>
+<br>
+Error message: fatal: reference is not a tree: <br>
+edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4<br>
+<br>
+git checkout 419cfb983ca93e75e905794521afefcfa07988bb<br></blockquote></div=
+></div><div dir=3D"auto"><br></div><div dir=3D"auto">That&#39;s the upstrea=
+m commit that doesn&#39;t boot. edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 wa=
+s the rebased version of the same commit, where your bisection finished.</d=
+iv><div dir=3D"auto"><br></div><div dir=3D"auto">Paolo</div><div dir=3D"aut=
+o"><br></div><div dir=3D"auto"><div class=3D"gmail_quote"><blockquote class=
+=3D"gmail_quote" style=3D"margin:0px 0px 0px 0.8ex;border-left:1px solid rg=
+b(204,204,204);padding-left:1ex">
+Output:<br>
+<br>
+Updating files: 100% (16656/16656), done.<br>
+Note: switching to &#39;419cfb983ca93e75e905794521afefcfa07988bb&#39;.<br>
+<br>
+You are in &#39;detached HEAD&#39; state. You can look around, make experim=
+ental<br>
+changes and commit them, and you can discard any commits you make in this<b=
+r>
+state without impacting any branches by switching back to a branch.<br>
+...<br>
+HEAD is now at 419cfb983ca9 KVM: PPC: e500: Use __kvm_faultin_pfn() to <br>
+handle page faults<br>
+<br>
+---<br>
+<br>
+patch -p0 &lt; kvm_main.patch // Your patch<br>
+<br>
+Output:<br>
+<br>
+patching file a/virt/kvm/kvm_main.c<br>
+<br>
+Oh dear, the host kernel doesn&#39;t boot. :-(<br>
+<br>
+-- <br>
+Sent with BrassMonkey 33.4.0 (<a href=3D"https://github.com/wicknix/brass-m=
+onkey/releases/tag/33.4.0" rel=3D"noreferrer noreferrer noreferrer" target=
+=3D"_blank">https://github.com/wicknix/brass-monkey/releases/tag/33.4.0</a>=
+)<br>
+<br>
+</blockquote></div></div></div>
+
+--0000000000008c6d9c062a26ea1c--
+
 
