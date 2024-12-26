@@ -1,71 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-4482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4483-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 980449FCAF4
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Dec 2024 13:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 67D019FCB5F
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Dec 2024 15:27:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YJnx32M7mz2yNP;
-	Thu, 26 Dec 2024 23:28:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YJrYN0nRXz2yGM;
+	Fri, 27 Dec 2024 01:27:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735216135;
-	cv=none; b=nV0EcTUKyfGr/AOkyOGbw9YwESHTnqVbBRm9QmOtyLqTfkmS9+IpR43zZ95VmsL3FCR9xUGmV2YdFwvbaFntPz2TnoTnLi74RzgZhzVbnBnH3L8e+ibPh3mSYOpMcV1pRo995E0zzD4S4a0yJ2C0aO7PCMoiinwQVc6jJQbTkhx3balTJkN6jFX5XPShOxI42cnp5Gb6orMUKab0EDw1tMDqL+UiWCiZ+n3b+h4GhOsKIoWPAZUaOCEMowW3TV6GQGK/Im410REouySinEwnFphQZv10LUE7LGUsn+s14U2D+G08Z1D43jGfHqDZeO9sAbmVeM2R871vgKad1qrBQg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735216135; c=relaxed/relaxed;
-	bh=+zwpLnjl9L3WRLyxVo7AONhy8GcwJmaoi/rjBNSpGfo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WvKJI47DW0wnZRRMl4FRaTtK/lZ8S7n7Wqg3PYOMkvAeUzJsX136sOuqotfFlRODGi3bpaMhzauwiWlrMUYp+8IAKlVP+wJkSVO4qX8+RcAwadr+aT0xRDCgHpzP8I6AXUuSGrAzuHm92vCSWktbGbRSXVVKhCeSWiml2nukVAy/i+ggD19CxDoYqbxLL3rMnAnEoja7DI7VYg1EoXBwn3PgGhMN7EtwNUlRzSw7zqw18152GLPROvC0OTyClFOtwm/5z2OiFJqdRB0VjvsObvdL3UkCJq/Cw22IW9/DNrTZtJxo/zGEszgHbqLz+uTIWenD1h9S5LbjB2vSd0GMcA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QC/XxmNW; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.52 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735223224;
+	cv=pass; b=nZ56GXzjyNbTG/T/9HqN1p+jHmrBU6/xzZs+deeb8uZTqbSuRlPbeS4Bu6aMLMj/NI7abMuUP+Gpb2QESLYv0i8h4GvYvk0+nyIGC+0hH/e5gbfGCe5lE0dyvZa/a7PYYnQjGeTwpTM24+d9QUdg9hN6HXaZYcgeB8U64SZnhBIjCSNpIV0gh5slNhNaaxif1emdeeX2yHT+s52m17Z2slPKc9mTFsJY1y4Ug0PfZj3+yxYZANwzWaziGXNuddSr5Zu1JeMf/cl3MDTtzFSLX6RDMcRtGYs6INQ8w5myhRuGg/Keo+feLw42xc3X0ZC8xlqCUV1vV+NVem2r+MkkkQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1735223224; c=relaxed/relaxed;
+	bh=3VgK3myThIvIiqjtg3uv+l8MN6kZ/aVub4La46X66d0=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=nSFGPwPLCal4J7hduVTUZMSAXOiBl19iGvsGroFpkENj9ylRf1fKUt4emBmf0H0xoZZPLvy55bu4dv7z61vQHAL6xkf3JG5cXR1iympbGubMwHgnYQJjUCXWkqb4OKIeamf7wIB3MuKtN4++JzhjFLD0J0sze+l0RFetdDVlyQMzRkf7FSZqfuVL9Z2XuydOih1h9ao/d2a/iAaSOty+WDh+m+ej7CTCra66CnanLV+8hdW2oKx4GsJ0yCGBLtUAr2nAGsQsyZp388l/VSCA4CyFrWg00mzPqHBoH20NFmks1UIPXBZqQp5iNbVxtjgrQN7QDmQVmYP0scM5+p3Nlg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=aFrLiE3T; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=KEAKNImO; dkim-atps=neutral; spf=pass (client-ip=85.215.255.52; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QC/XxmNW;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=aFrLiE3T;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=KEAKNImO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.52; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.52])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YJnx16K0Yz2xs8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Dec 2024 23:28:53 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BQ85Yft020270;
-	Thu, 26 Dec 2024 12:28:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=+zwpLn
-	jl9L3WRLyxVo7AONhy8GcwJmaoi/rjBNSpGfo=; b=QC/XxmNWGm9U9Kba8THLNZ
-	ut8UYwZnI4JdWOoqRdpqUqxFVB7jvaV/dS2yZGvqDTXB8WHZJ05rcV9e4jqQ1ubh
-	1dtBaMIsdEEk1Tg3jc6ZbAPCiz96qSg5WHrdcVzBK8ccXyY2PVQoQ3Q1DAKx06mf
-	Q0NBo65sNixuZAUaRyLhC6WgDYOBeQgpToMAESrAGN7Pgjb/E6mtQJfNatfOjNuT
-	Mdk6svKbnZIhS2bC2gFWeQ4ZBZ/EnR3zWB+bBK43Su94Zp4ESf1JTWZ1iNK6LeH6
-	Nm76+P3hjXWIc/neP+EhZydLLzm6usUhOyDC51lp2Gi6GFeVvAtyGxDmzDfqiy3Q
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43s3b2rr14-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Dec 2024 12:28:10 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BQAUg8E010617;
-	Thu, 26 Dec 2024 12:28:09 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43p90n9wxc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Dec 2024 12:28:09 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BQCS7sU38470100
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Dec 2024 12:28:07 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E9962004B;
-	Thu, 26 Dec 2024 12:28:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EC20620040;
-	Thu, 26 Dec 2024 12:28:01 +0000 (GMT)
-Received: from [9.124.219.96] (unknown [9.124.219.96])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Dec 2024 12:28:01 +0000 (GMT)
-Message-ID: <04c9757c-98e9-4c5d-9759-8a9ac9d6a803@linux.ibm.com>
-Date: Thu, 26 Dec 2024 17:58:00 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YJrYH2n2Hz2xsd
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Dec 2024 01:26:57 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1735223207; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=jFZl+uoO22iXNoLnO2iM7BUzohCaaHN8CBdksmIpfGI8wHgffEvT8EAfda33oTQS+P
+    z8f1zXhPfIo0NS78PAbpkRXnWjsUXlzhTUKUW9FL5FLGICjZp2+M5lTO4PCGsW7DBatl
+    osP5Q6hJ5B6CAdvffbToO6pOaCbDwidGXuFwYMP9Z90tav5EQttJg/z89S5SegYNxO/v
+    Kf61e821JB8v/Kqle0fzLeXcJ6PY8x1s6THPnBFPFA7jpkg4ZCWn/SRuoMgTmvRsFGlQ
+    fR0VknsWvhDePMIsqnirP9FbL56ZpLdWIT1sRKXuB3Ju6MjjEG0VnCMmq9lUZiDedTUA
+    taeA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1735223207;
+    s=strato-dkim-0002; d=strato.com;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=3VgK3myThIvIiqjtg3uv+l8MN6kZ/aVub4La46X66d0=;
+    b=LQxs5Ot/A9jX4BuMwWiB84ICmgVob5dpgAibpKTM+WvwihEJo62MFb02SDizz3EsBV
+    /qbX0/ITo2+uZko6liNUzdQCUo99v4TspIl1PGhmsHwoPWo3buLZH2IU72ABpVmizTbG
+    qhpKG71dcB6/yFzwH1vy8+jqrd5jdlMqvJEZ6j+PP1g2zAHTE+d+wYNZWPy0+6amwPKK
+    4D1lTQZI6NCgBwR3vZURlHT8DWp7c2tqGNXGjnlYX3krS/uAfTtb0O4nAQwvfskY0XlS
+    +/iPVnPcDROe5QbQGhR302liiuSZM7EmJX/lH0V97eRJj3pg8AkLt08h3EPL2duI5L8c
+    JzXw==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1735223207;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=3VgK3myThIvIiqjtg3uv+l8MN6kZ/aVub4La46X66d0=;
+    b=aFrLiE3TZIyuqE9+SgxyTJ4CEVednk34jrLiwhJzF2zcatFL6m1vRRpR7d2WObT3qw
+    hyfl/oPJayyf+beW13GDkmhqdIiiszIwwHS95Khjb8WED5PINXmc6AG6CFWwAxbdcG1C
+    VXTSJwQPuWSkpj+yLjxog/A1T05YdG+f8QedLGc7k32JuHpU7KvJFTL9FT1d09rMNV3t
+    6rzXzQiNhdFa4DOCDPUNZd8JFIHbIevlpKrO0MLRjYPs4eD/6pzJWWkL0PaGac605ROB
+    W5HzgM5EhK+yrPjTZXvqBjYTuQxi4Vhp8L6IjNfvgK45YmqtL9KX+RSFPWiUnZgobsKX
+    xr1A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1735223207;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=In-Reply-To:Date:Message-ID:From:References:Cc:To:Subject:Cc:Date:
+    From:Subject:Sender;
+    bh=3VgK3myThIvIiqjtg3uv+l8MN6kZ/aVub4La46X66d0=;
+    b=KEAKNImOTSQNtzPMQ5xAGMyzAPAbyAw/8x8YJRlsj8VogIDjMJZIC85MJi4UP/munW
+    GHAcOfrkG904NMtlt4Aw==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6Kxrf+5Dj7x4QgaMrvdtcX133EivHj9FnXlZguLZm8PSmufN+FD/uA=="
+Received: from void-ppc.a-eon.tld
+    by smtp.strato.de (RZmta 51.2.16 AUTH)
+    with ESMTPSA id ebe9c90BQEQlE4n
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Thu, 26 Dec 2024 15:26:47 +0100 (CET)
+Subject: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+ Darren Stevens <darren@stevens-zone.net>, Pat Wall <pjwall@mac.com>,
+ Pat Wall <pjwall@me.com>, Christian Zigotzky <info@xenosoft.de>,
+ madskateman@gmail.com, "R.T.Dickinson" <rtd2@xtra.co.nz>,
+ hypexed@yahoo.com.au, regressions@lists.linux.dev
+References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
+ <6CC404E2-2442-47FE-877C-252B1F2872C2@xenosoft.de>
+ <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
+ <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
+ <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
+ <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de>
+ <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
+ <0769459a-10ee-4573-a3ce-541c01429948@redhat.com>
+ <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
+ <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
+ <7d8b5b78-b20c-d915-4a94-7082d7e01600@xenosoft.de>
+ <f944fadf-2dfe-4dd3-a086-ae7bb6c0bff6@redhat.com>
+ <31895b11-5084-95bc-0f14-faaea023b7f8@xenosoft.de>
+ <2881940a-2da0-4498-b447-f09fffb14189@redhat.com>
+ <50149f09-174f-ad6e-e97d-3d8889b412a6@xenosoft.de>
+ <CABgObfYqGVQk0nvPZqzc1Q7K0jg-Gxk2tVmrk75R6TaLUt9exQ@mail.gmail.com>
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
+Message-ID: <10826e5f-d3a6-7792-4466-0bf21082a155@xenosoft.de>
+Date: Thu, 26 Dec 2024 15:26:46 +0100
+X-Mailer: BrassMonkey/33.4.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,94 +116,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 0/4] Support SMT control on arm64
-To: Yicong Yang <yangyicong@huawei.com>
-Cc: yangyicong@hisilicon.com, linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org, morten.rasmussen@arm.com,
-        msuchanek@suse.de, gregkh@linuxfoundation.org, rafael@kernel.org,
-        jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
-        linuxarm@huawei.com, xuwei5@huawei.com, guohanjun@huawei.com,
-        catalin.marinas@arm.com, will@kernel.org, sudeep.holla@arm.com,
-        tglx@linutronix.de, peterz@infradead.org, mpe@ellerman.id.au,
-        linux-arm-kernel@lists.infradead.org, mingo@redhat.com, bp@alien8.de,
-        dave.hansen@linux.intel.com, pierre.gondois@arm.com,
-        dietmar.eggemann@arm.com, "Nysal Jan K.A." <nysal@linux.ibm.com>
-References: <20241220075313.51502-1-yangyicong@huawei.com>
- <d0e73e64-cdf7-443b-a8e3-7c1f25533000@linux.ibm.com>
- <a9e19d83-cfc4-910c-7bca-b2dd17647c5f@huawei.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <a9e19d83-cfc4-910c-7bca-b2dd17647c5f@huawei.com>
+In-Reply-To: <CABgObfYqGVQk0nvPZqzc1Q7K0jg-Gxk2tVmrk75R6TaLUt9exQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RnwgPUKSd5jtFDJmCXbPrRtXbk406JvN
-X-Proofpoint-ORIG-GUID: RnwgPUKSd5jtFDJmCXbPrRtXbk406JvN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- mlxlogscore=935 clxscore=1015 impostorscore=0 priorityscore=1501
- spamscore=0 suspectscore=0 lowpriorityscore=0 mlxscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412260107
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On 26/12/24 08:00, Paolo Bonzini wrote:
+>
+>
+> Il mer 25 dic 2024, 13:48 Christian Zigotzky <chzigotzky@xenosoft.de 
+> <mailto:chzigotzky@xenosoft.de>> ha scritto:
+>
+>     > But do you see anything on the host dmesg (without and with the
+>     > patch), for example a WARN?
+>     Unfortunately no log during the start of KVM HV.
+>
+>
+> Ok.
+>
+>     > Also you might try edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 + the
+>     > patch, to see if there are two bugs.
+>     >
+>     > Paolo
+>     >
+>     I think you mean 419cfb983ca93e75e905794521afefcfa07988bb because
+>     "git
+>     checkout edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4" doesn't work.
+>
+>     Error message: fatal: reference is not a tree:
+>     edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4
+>
+>     git checkout 419cfb983ca93e75e905794521afefcfa07988bb
+>
+>
+> That's the upstream commit that doesn't boot. 
+> edebc0a1b7ab5ff19b4f5cd011c93196fc34b3e4 was the rebased version of 
+> the same commit, where your bisection finished.
+>
+> Paolo
 
+Hi Paolo,
 
-On 12/26/24 17:20, Yicong Yang wrote:
-> On 2024/12/26 17:23, Shrikanth Hegde wrote:
->>
->>
->> On 12/20/24 13:23, Yicong Yang wrote:
->>> From: Yicong Yang <yangyicong@hisilicon.com>
->>>
->>> The core CPU control framework supports runtime SMT control which
->>> is not yet supported on arm64. Besides the general vulnerabilities
->>> concerns we want this runtime control on our arm64 server for:
->>>
->>> - better single CPU performance in some cases
->>> - saving overall power consumption
->>>
->>
->> EAS is disabled when SMT is present.
->> I am curious to know how power saving happens here.
-> 
-> EAS shouldn't work on non-asymmetic systems, so it's not the case here.
+This has solved the issue:
 
-Ok. so this is a symmetric system then?
+cp linux-6.12.6/arch/powerpc/kvm/e500_mmu_host.c 
+a/arch/powerpc/kvm/e500_mmu_host.c
 
-> System wide power consumption comes down from the CPU offlining here.
-> 
+cp linux-6.12.6/include/linux/kvm_host.h a/include/linux/kvm_host.h
 
-Ok. So SMT is enabled by default and then at runtime disable it to save 
-power by off-lining the sibling threads?
+cp linux-6.12.6/virt/kvm/kvm_main.c a/virt/kvm/kvm_main.c
 
+cp linux-6.12.6/virt/kvm/kvm_mm.h a/virt/kvm/kvm_mm.h
 
-Note: When enabling SMT, current behavior differs when a core is fully 
-offline on different archs. You may want to see which is behavior you 
-need in that case. i.e either online or skip.
+I created a patch for reverting the code that leads to the issue.
 
-PowerPC change where we are skipping a fully offline core.
-https://lore.kernel.org/all/20240731030126.956210-1-nysal@linux.ibm.com/
+Link: 
+https://github.com/chzigotzky/kernels/blob/main/patches/X5000/kvm_ppc_revert.patch
 
-> Thanks.
-> 
->>
->>> This patchset implements it in the following aspects:
->>>
->>> - Provides a default topology_is_primary_thread()
->>> - support retrieve SMT thread number on OF based system
->>> - support retrieve SMT thread number on ACPI based system
->>> - select HOTPLUG_SMT for arm64
->>>
->>> Tests has been done on our ACPI based arm64 server and on ACPI/OF\
->>> based QEMU VMs.
->>>
->> .
+Maybe you can find a hint to the issue in this revert patch.
+
+I will further test KVM HV with the patched kernel.
+
+Thanks,
+Christian
+
+-- 
+Sent with BrassMonkey 33.4.0 (https://github.com/wicknix/brass-monkey/releases/tag/33.4.0)
 
 
