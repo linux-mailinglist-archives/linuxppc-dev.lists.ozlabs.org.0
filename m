@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-4478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4479-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93419FC96F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Dec 2024 08:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A87629FC9E6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 26 Dec 2024 10:24:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YJg4Q2rvnz306x;
-	Thu, 26 Dec 2024 18:19:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YJjrg01l8z2yV6;
+	Thu, 26 Dec 2024 20:24:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735197590;
-	cv=none; b=bdLuE8eezz+SjP5Q/Kff+ocMBloPfiRMA7IMvD5uCR34UnCFAIOet1qB3CoJKR/YnMkxagKmKodDBB7NnF19Y8F9RLfn5CdWwVGIBFaQf1Nfx5m8dafnMy/g0827YwOa8IyZ13DM44w5JFuXIyNO8g9gukNN/INyUbdX18uj5x0kzuueOJZZ1cWDk9BEnnesCazWMuCkIlBE+O2diFLJdTyI84tbdDlr728QPJ5xZKzpidN8/EPsPn8xQllpAz5/0stT2fdC28WCmcU1uhW1Y9jUmXOBfvtTUcolmxYHH+uej5g5YyISxamJKcYLyCkw3WSKc+UlsmYs9S+LBlchdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735205090;
+	cv=none; b=C2Z9CYndbi4pfW2YucljwAxIq0DaiwYLOezceO9osA8sUZyih0eHZAegxj4qHPPcUKoM/eKHe/RYm56RXaPln2BOUguJ4HYxwb0ketRnc/PdSXcl+XYP7shrosLQKjH7NwrNIt5UVZjIMOt+VyJHH4vNERw1E2bK3gSiALzu90+x8TM2WQGO+2zL/VnqeI3g4Oxx8ToZIrcA/q/iDzPji/sM9JCzfc0OZy/OnS2LihoYl+D7EGk5KLrG0fPYwOlqcu6k9COGpy40jB2fgMwpug9Ta8z344Rfp8i1SKXCSEFT+sF0Gp7I6cWwt1+llJCLwk8n06zNgsE00Wder00tJw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735197590; c=relaxed/relaxed;
-	bh=PsGmik0b3kAu5BJK4vHKPRzb/9fZM/R7E7deKoSUc4E=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=k0PXbVNkwkEE4U+zYfAh9aS3X1idE/FBLTdUC4lb0YXOhar2J0UDj71hdWE6X6q1O1rHwKOarzccGX9TNY7Cmy3Q1M8flfXCV8bvthVGOR98gyVnf0Mn0UI74/7SUwwHRSjq5vaUexfIDiEVfJgI8FaeT2/7eMg1IJsboh7T5aaCULVUnV93pkCz1LILo5kYUGZJLHkmAUPTIJprBYcxVkli7yg7I3YeoCXjlnmFiJjsX3WOyeWpqAXaKeMJPPObUd+Kdo+SrNb5Ip41AYbEBr5fUbipB2aDj2EVZO7eGHHUsiCfu+sSXVh/UkqzRU1n7n+1KzUnaO158XSyd/hszA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GUeoftKs; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1735205090; c=relaxed/relaxed;
+	bh=HG/2rLZ96lKXoOhm/FE0fLTX6r570qhTekaN5ef5EsQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RWJSnZvEQsTjRNJ//pE8Z9Zy1IWOyAfejs5T/WKPpWud8kJaqND5Xcwg16/miWD1ACrZhc8Pd6q6ozlOGbq7nydjfM+4BxlJDxE1gxevsLAQBnE47wiJoZEoRFl6fRoEIzeC+4AMr8ip/fn7jzisOPPD6Of55ZzzdJmM2QKQ50qLb17wO3e/I1SLNkJ8HOx1FdYyv2MfM3y91YGcFj4TCfdagiesISSEfq2FWXqsE2BKVpjEvzwMa/mWJLr/dBNY7GcqWXETFsr924EJpwp2JctOoEx6zn1tp4tutPRj+FIAOCK5dDGTv+nsJyKpHwBIzzm/39NhydWQRkbD5uWx2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=heiEhqAJ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GUeoftKs;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=heiEhqAJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YJg4P10Jrz306J
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Dec 2024 18:19:48 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BPLHQrr028180;
-	Thu, 26 Dec 2024 07:18:33 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YJjrd4gZ1z2xdp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Dec 2024 20:24:48 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BQ3sI6M008911;
+	Thu, 26 Dec 2024 09:23:42 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=PsGmik
-	0b3kAu5BJK4vHKPRzb/9fZM/R7E7deKoSUc4E=; b=GUeoftKsaDjs059dTxGviK
-	8J7A2DvjZzcQAQ0LSrGeptA8Q/BywaNR5qmqLB4lZor+O3Sr1m964ZHmaFfcMryI
-	41LJS6RiOIAI664s81tk+ceQyx69X72TDpNFhQ2JKVQppzcksVHAeZVAncD3S07j
-	O5rUfyURSRiP+Z/pjfR1OLE7/zzoVV4BPDqqdm27tgZFS7MW7gES3QpWpwwTTIQk
-	ntCuLm7uXG0ecNckLgHM9rzAe6Vyc8MnpqwnFQlEi0iNQN15nk3yfEjZ9+YuIRq5
-	KCqAunFjXLfouJ5ui1PctNg3I89+QCZIJQU34gLjmbzVjjNJkDKl8kJfQ9MbpCpw
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HG/2rL
+	Z96lKXoOhm/FE0fLTX6r570qhTekaN5ef5EsQ=; b=heiEhqAJF6PB/bM1AYVNla
+	qdsA/8GwzTX2cw241Vmn0g/Xkd3Nz33Q/Nx4b+0CkGOnut3swCeK9PSuTgJgb86M
+	czX4dF8uH+WiD3EHrQDjBDgBZHbhojwW0RxOLfzZCbU5MEMKiiaQReAP95Sm4LV4
+	K4wBjszYgltx/Ow1KF0vDz6GihRSof57or0r+3RWZKlltzjIDdsXqXYsox/gyte1
+	hkY6+4IrlQfv8x4bHHWt8Niapik1p1Kjbbl4wG8kfm0z20eVCQEusd6ZYMDbbgpR
+	7kmN0KiFA+4ASmHINbQx6gNYpHJ5eEcMw7XGjGwQzyZmUdKUnWwKpKxdVNm2nh1A
 	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43rkh4jdyp-1
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43rymh12t5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Dec 2024 07:18:33 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BQ5xwku002065;
-	Thu, 26 Dec 2024 07:18:32 GMT
+	Thu, 26 Dec 2024 09:23:42 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BQ5VhGj010570;
+	Thu, 26 Dec 2024 09:23:41 GMT
 Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43pa7k0vrm-1
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43p90n9eng-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 26 Dec 2024 07:18:32 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BQ7IUHV56754506
+	Thu, 26 Dec 2024 09:23:40 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BQ9NcB856689004
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 26 Dec 2024 07:18:30 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD6CC2004D;
-	Thu, 26 Dec 2024 07:18:30 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8046E20040;
-	Thu, 26 Dec 2024 07:18:25 +0000 (GMT)
+	Thu, 26 Dec 2024 09:23:39 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DE0A52004B;
+	Thu, 26 Dec 2024 09:23:38 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C920320040;
+	Thu, 26 Dec 2024 09:23:33 +0000 (GMT)
 Received: from [9.124.219.96] (unknown [9.124.219.96])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 26 Dec 2024 07:18:25 +0000 (GMT)
-Message-ID: <718d69e0-f145-4393-b571-80e8a0a372f6@linux.ibm.com>
-Date: Thu, 26 Dec 2024 12:48:24 +0530
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 26 Dec 2024 09:23:33 +0000 (GMT)
+Message-ID: <d0e73e64-cdf7-443b-a8e3-7c1f25533000@linux.ibm.com>
+Date: Thu, 26 Dec 2024 14:53:32 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,9 +79,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: Re: [PATCH v10 1/4] cpu/SMT: Provide a default
- topology_is_primary_thread()
+Subject: Re: [PATCH v10 0/4] Support SMT control on arm64
 To: Yicong Yang <yangyicong@huawei.com>
 Cc: linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
         linux-kernel@vger.kernel.org, morten.rasmussen@arm.com,
@@ -94,22 +92,22 @@ Cc: linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
         mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
         pierre.gondois@arm.com, dietmar.eggemann@arm.com
 References: <20241220075313.51502-1-yangyicong@huawei.com>
- <20241220075313.51502-2-yangyicong@huawei.com>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
 Content-Language: en-US
-In-Reply-To: <20241220075313.51502-2-yangyicong@huawei.com>
+In-Reply-To: <20241220075313.51502-1-yangyicong@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9d6E4UnUrTpmLuaA2EsuZsqPL4YakM-9
-X-Proofpoint-GUID: 9d6E4UnUrTpmLuaA2EsuZsqPL4YakM-9
+X-Proofpoint-ORIG-GUID: TecHftRr10EKN3_ENZX2-3FGtFYZ8j2N
+X-Proofpoint-GUID: TecHftRr10EKN3_ENZX2-3FGtFYZ8j2N
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 phishscore=0
- priorityscore=1501 mlxscore=0 mlxlogscore=999 suspectscore=0
- lowpriorityscore=0 clxscore=1011 spamscore=0 impostorscore=0 adultscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2412260060
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ bulkscore=0 spamscore=0 priorityscore=1501 malwarescore=0 phishscore=0
+ adultscore=0 mlxscore=0 suspectscore=0 impostorscore=0 clxscore=1015
+ mlxlogscore=904 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412260079
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
@@ -120,126 +118,25 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 On 12/20/24 13:23, Yicong Yang wrote:
 > From: Yicong Yang <yangyicong@hisilicon.com>
 > 
-> Currently if architectures want to support HOTPLUG_SMT they need to
-> provide a topology_is_primary_thread() telling the framework which
-> thread in the SMT cannot offline. However arm64 doesn't have a
-> restriction on which thread in the SMT cannot offline, a simplest
-> choice is that just make 1st thread as the "primary" thread. So
-> just make this as the default implementation in the framework and
-> let architectures like x86 that have special primary thread to
-> override this function (which they've already done).
+> The core CPU control framework supports runtime SMT control which
+> is not yet supported on arm64. Besides the general vulnerabilities
+> concerns we want this runtime control on our arm64 server for:
 > 
-> There's no need to provide a stub function if !CONFIG_SMP or
-> !CONFIG_HOTPLUG_SMP. In such case the testing CPU is already
-
-s/CONFIG_HOTPLUG_SMP/CONFIG_HOTPLUG_SMT
-
-> the 1st CPU in the SMT so it's always the primary thread.
-> 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> ---
-> As questioned in v9 [1] whether this works on architectures not using
-> CONFIG_GENERIC_ARCH_TOPOLOGY, hacked on LoongArch VM and this also works.
-> Architectures should use this on their own situation.
-> [1] https://lore.kernel.org/linux-arm-kernel/427bd639-33c3-47e4-9e83-68c428eb1a7d@arm.com/
+> - better single CPU performance in some cases
+> - saving overall power consumption
 > 
 
-sorry to ask this question this late in the series.
+EAS is disabled when SMT is present.
+I am curious to know how power saving happens here.
 
-I am curious to know why not just add the arch specific 
-topology_is_primary_thread? current infra would handle that right?
-
-is there any other arch that is going to enable this soon? or the 
-rationale is to add the generic function so that archs that use generic 
-topology it is just a kconfig change in case they want to add the support?
-
-> [root@localhost smt]# uname -m
-> loongarch64
-> [root@localhost smt]# pwd
-> /sys/devices/system/cpu/smt
-> [root@localhost smt]# cat ../possible
-> 0-3
-> [root@localhost smt]# cat ../online
-> 0-3
-> [root@localhost smt]# cat control
-> on
-> [root@localhost smt]# echo off > control
-> [root@localhost smt]# cat control
-> off
-> [root@localhost smt]# cat ../online
-> 0,2
-> [root@localhost smt]# echo on > control
-> [root@localhost smt]# cat control
-> on
-> [root@localhost smt]# cat ../online
-> 0-3
+> This patchset implements it in the following aspects:
 > 
->   arch/powerpc/include/asm/topology.h |  1 +
->   arch/x86/include/asm/topology.h     |  2 +-
->   include/linux/topology.h            | 22 ++++++++++++++++++++++
->   3 files changed, 24 insertions(+), 1 deletion(-)
+> - Provides a default topology_is_primary_thread()
+> - support retrieve SMT thread number on OF based system
+> - support retrieve SMT thread number on ACPI based system
+> - select HOTPLUG_SMT for arm64
 > 
-> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
-> index 16bacfe8c7a2..da15b5efe807 100644
-> --- a/arch/powerpc/include/asm/topology.h
-> +++ b/arch/powerpc/include/asm/topology.h
-> @@ -152,6 +152,7 @@ static inline bool topology_is_primary_thread(unsigned int cpu)
->   {
->   	return cpu == cpu_first_thread_sibling(cpu);
->   }
-> +#define topology_is_primary_thread topology_is_primary_thread
->   
->   static inline bool topology_smt_thread_allowed(unsigned int cpu)
->   {
-> diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
-> index fd41103ad342..faa0d6334ea4 100644
-> --- a/arch/x86/include/asm/topology.h
-> +++ b/arch/x86/include/asm/topology.h
-> @@ -228,11 +228,11 @@ static inline bool topology_is_primary_thread(unsigned int cpu)
->   {
->   	return cpumask_test_cpu(cpu, cpu_primary_thread_mask);
->   }
-> +#define topology_is_primary_thread topology_is_primary_thread
->   
->   #else /* CONFIG_SMP */
->   static inline int topology_phys_to_logical_pkg(unsigned int pkg) { return 0; }
->   static inline int topology_max_smt_threads(void) { return 1; }
-> -static inline bool topology_is_primary_thread(unsigned int cpu) { return true; }
->   static inline unsigned int topology_amd_nodes_per_pkg(void) { return 1; }
->   #endif /* !CONFIG_SMP */
->   
-> diff --git a/include/linux/topology.h b/include/linux/topology.h
-> index 52f5850730b3..b3aba443c4eb 100644
-> --- a/include/linux/topology.h
-> +++ b/include/linux/topology.h
-> @@ -240,6 +240,28 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
->   }
->   #endif
->   
-> +#ifndef topology_is_primary_thread
-> +
-> +#define topology_is_primary_thread topology_is_primary_thread
-> +
-> +static inline bool topology_is_primary_thread(unsigned int cpu)
-> +{
-> +	/*
-> +	 * On SMT hotplug the primary thread of the SMT won't be disabled.
-> +	 * Architectures do have a special primary thread (e.g. x86) need
-> +	 * to override this function. Otherwise just make the first thread
-> +	 * in the SMT as the primary thread.
-> +	 *
-> +	 * The sibling cpumask of an offline CPU contains always the CPU
-> +	 * itself for architectures using CONFIG_GENERIC_ARCH_TOPOLOGY.
-> +	 * Other architectures should use this depend on their own
-> +	 * situation.
-> +	 */
-> +	return cpu == cpumask_first(topology_sibling_cpumask(cpu));
-> +}
-> +
-> +#endif
-> +
->   static inline const struct cpumask *cpu_cpu_mask(int cpu)
->   {
->   	return cpumask_of_node(cpu_to_node(cpu));
-
+> Tests has been done on our ACPI based arm64 server and on ACPI/OF\
+> based QEMU VMs.
+> 
 
