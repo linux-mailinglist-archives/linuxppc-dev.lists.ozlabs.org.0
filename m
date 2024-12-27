@@ -1,60 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-4488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4489-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4209B9FD0EF
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Dec 2024 08:17:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98CE39FD0F3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Dec 2024 08:19:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YKGym6M0dz2yVG;
-	Fri, 27 Dec 2024 18:17:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YKH1R3hMXz2xgp;
+	Fri, 27 Dec 2024 18:19:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.35
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735283824;
-	cv=none; b=aEREr4Rim6anLtCXBS3XCyfaMuehU28dMOze4vFXYgRIlk0QAR/fty75kgpugiih0DPNDBno6rU3R3F+Vr1Mtv2W1CfV9ca5KjNdI49l2C17/ECXggjiVjvbHBOqwnD9ZbaFexZNeT+I9kfhTfgWW0MZ8ywny810L2v/Wg8A5osAJUCVND/i8trZ0wE3McrqFo3tPXWXz+dd3bR3eM1dYSQUYNkAjq2VxRigrvv5kGqtr016XVCAbcQl5RK3HzmUHafkNSVZXzsH7vS1t9g9VF7rd4ksEOeRaaJAe5Eh2dwBFykUktyD0pgcSxx8fRfsbtKwz1toEtThTfTVJU9IAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735283963;
+	cv=none; b=PO30JqxPIkemFYvN8adZh6nNtuzGuuh2vui/l84CqhNInKqvT6CTrhAmnxRxgl8NyB+A2uLSCCUBzYG7+pjMQD7z8nHmVy2hA5IPoOgGDsVll6kxP0u2AmygeifxfXF4n+QRPoFFA7nW57YriEci/DnwnX10xkWTEiB0ypYaO3QhK/v8Krpf9O0xTZ7da2PoCjN4ZeEmKVEkp96ieeZwc7ETOw/3Ocua6iw1fvNaVTMENPadOgoloJe9/MtDNuLoebze9f5eqjxx6RjS0aEWFWKxgKV4slrko1ex0PJondvUePJTl/JN3EO4uhu52wXvxvtRWYp6Gq2mSmuIuap4Aw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735283824; c=relaxed/relaxed;
-	bh=peNV1/narB+N1OxtD8fDB5flsO2+vGuoHsNfdEP2yM0=;
-	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=NdhpdkdVpJJqj5u21fEJhcmXw7LTexcQmzqy8L4HwfA0P44WYvljBNx8JV9qafJk+DmLoxLD0CeS6cLL1F3C3JBAexVntRYle0BUqnxGgDfCH5BnFukWVdW3e5YtBuUKUvlvN6m5vKKMh8RUiEtQZCXDCAuV525SwDGewfD59zTYdetZcrKQoQsvVsmG48NJXDtsmXmOY3WE8vSPkvpcq0yM+FXAQ1Oqtrxgbx8UC5QOKD4BMIT99ymOrNqbcAloiP/ANWtNbvcUuk3RsqPlsFNoyFNhvxqDR4ipH4uq4JDe1JIqM3EfSkO8X3ECmNgPtkyq45F6l0pqi2mwVS2ifA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.35; helo=szxga07-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga07-in.huawei.com (szxga07-in.huawei.com [45.249.212.35])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1735283963; c=relaxed/relaxed;
+	bh=UnuLkUZSsf9O56DvJZoknEy7hBumP3/+WgCLz39mvuk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=WapilqeUyxy/lCD7pAJ0JyGnSL8VxMCuXA74he83zrKreVLGSNwpCPjZBE0TNqUMkXC0BfS+s8olABsXC0jqcDaImY8opn82vSIDiKa+Vu1aCKM+RSitiK2O93cRVdsOCxpYa319aiuXHRaxck2e3OwOM5KAbid7j1YsR32qtvuaNrd5JMIqnPrusxjMRDpYlExzEyzZqST/9rZpkTv31+q6Lwd/xEXcAXkt0MDZfubzIFH3RQW+KP4wn5kqwiaLHR8p6f82Gh4xXy56SHadr8GRRwZPYvyh3GdkCtT811W4y6200YcNPZq7+9+e0PicF16oWTEsXgvQS7vtg04Zwg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DuLgMumK; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=evepolonium@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=DuLgMumK;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=evepolonium@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YKGyk6hL2z2xYr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Dec 2024 18:16:59 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.214])
-	by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4YKGvG3K8mz1T7Vc;
-	Fri, 27 Dec 2024 15:14:02 +0800 (CST)
-Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id 0058A1A016C;
-	Fri, 27 Dec 2024 15:16:49 +0800 (CST)
-Received: from [10.67.121.177] (10.67.121.177) by
- kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Fri, 27 Dec 2024 15:16:47 +0800
-CC: <yangyicong@hisilicon.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
-	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
-	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
-	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>,
-	<catalin.marinas@arm.com>, <will@kernel.org>, <sudeep.holla@arm.com>,
-	<tglx@linutronix.de>, <peterz@infradead.org>, <mpe@ellerman.id.au>,
-	<linux-arm-kernel@lists.infradead.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <pierre.gondois@arm.com>,
-	<dietmar.eggemann@arm.com>, Nysal Jan K.A. <nysal@linux.ibm.com>
-Subject: Re: [PATCH v10 0/4] Support SMT control on arm64
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-References: <20241220075313.51502-1-yangyicong@huawei.com>
- <d0e73e64-cdf7-443b-a8e3-7c1f25533000@linux.ibm.com>
- <a9e19d83-cfc4-910c-7bca-b2dd17647c5f@huawei.com>
- <04c9757c-98e9-4c5d-9759-8a9ac9d6a803@linux.ibm.com>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <ec04a084-0e01-afe3-6836-ed33615926ab@huawei.com>
-Date: Fri, 27 Dec 2024 15:16:47 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YKH1Q1gHtz2xYr
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 27 Dec 2024 18:19:21 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-2ee76befe58so8512210a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 26 Dec 2024 23:19:21 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1735283959; x=1735888759; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UnuLkUZSsf9O56DvJZoknEy7hBumP3/+WgCLz39mvuk=;
+        b=DuLgMumKX/+6OTKDK5SWp2Ic1u7E9XoB2rcr81zpS53YKLTSgBy3ZoAuqCJD4AdQ9y
+         xGYt1rF7edISawS6kBL6IbR194EsGvzzQLZVzeKc0zoBIQesu/n7x/eBTwT/e8TXJExl
+         vGNCGnL2az+bGc+QKS7gS14igECgQBSi11vDRN19zaye9S0AupOhm64xbFVmeRUzNRtQ
+         XPLBAtWH3Y2S8OxhiQIhWjjd01t/CG+IhsATrH4KB25vK2uUEBc7Tri1/qhVIEtqalrP
+         q7QfWTiS04PRObKhpVMatzQ6Nw+XhPwHBcF+mSDJQtNvKT867wSKjx2u3FmiUKsfjrG5
+         V76w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735283959; x=1735888759;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UnuLkUZSsf9O56DvJZoknEy7hBumP3/+WgCLz39mvuk=;
+        b=btPLjl7ihWVfokPmbl6YgGrb3CzRlDKHlKtlWN16ZWJBpflqQ+lGmXAIf18LS2nTYR
+         NNJOx4/aJter2yRLVeIv/UHAQ4D9rAa3XdUmtRflmZryVVtr/qDigzBqRRxXb3GAlhQA
+         pnRatjfNw2tAHUWYucoMo9+VrZ6chf6FmXt/oRArkbfSQZKgms7Rd09gqD+AyHrb1oDl
+         dd19Ockhx5yR+6LdTI5ulErhR8NR/58vcunRyQyQKFESZXxUinLy8/qBvyzvnsHx09Mz
+         US2Bo/zFga16VhW0FDr0zvH/Ob8LKR+riRTIFYEdwPJGRPWvOISsGHV6G/1SjWL4nLUh
+         i+7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXkJSWmDdqfvkqyUIeEBw297ieTrwwm97LOPzThYo1P61oxEoa33W95X1IRxN7OaAaDAmWghI2OlZk0RU8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzp1JP0sJAnsJai6MyNRA3Z1z5P/XSSbLVyG8O+W4cfYKo8zrOs
+	vgvXCc8yZ6FU/5iUpgzrbiDKcj1Leut+TJNzTix45+CPCSq1e1tj
+X-Gm-Gg: ASbGncvWRtd+QbXo0PR0iCSYIewHnQTWNPBaXrVmFE2SPNjwAPHMsxH4HvSrd73OlcW
+	BzigqaOl6BTRzxgMDWX6E7HetnsuqH44tirBKgBliYyJXLN/S7AAiOdcSuVQ1y5OoXUOUryVfN9
+	4raES7Y4IP13AHxBhxKWRqbbu0HrFt/okF9M9Q0clGm9255lusjW6csrcuZzzlWCAZ1RBB2kF0L
+	CvnLKBMiilE7p7gxE2F6UM15GKUvXdsI02nVWaRPLavFcfT70Ke2oN68tg12yt2iQgrVxiNZd0=
+X-Google-Smtp-Source: AGHT+IE4gAS771EocxnX0fNLgBOnvBM1JMpmjqOEkQXBE1ofvVqYAzSgusfEUdwpY5nhbywfqhyo0w==
+X-Received: by 2002:a17:90b:2e4a:b0:2ee:fa0c:cebc with SMTP id 98e67ed59e1d1-2f452e38d0emr40078681a91.20.1735283959098;
+        Thu, 26 Dec 2024 23:19:19 -0800 (PST)
+Received: from localhost.localdomain ([2401:4900:45c8:7d73:b364:3050:fc3a:14f7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f4477c84d0sm15195994a91.14.2024.12.26.23.19.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Dec 2024 23:19:18 -0800 (PST)
+From: Atharva Tiwari <evepolonium@gmail.com>
+To: 
+Cc: evepolonium@gmail.com,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	"Oliver O'Halloran" <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] PCI/AER:Add error message when unable to handle additional devices
+Date: Fri, 27 Dec 2024 12:49:10 +0530
+Message-Id: <20241227071910.1719-1-evepolonium@gmail.com>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,80 +91,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <04c9757c-98e9-4c5d-9759-8a9ac9d6a803@linux.ibm.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.67.121.177]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemd200014.china.huawei.com (7.221.188.8)
-X-Spam-Status: No, score=-3.3 required=5.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2024/12/26 20:28, Shrikanth Hegde wrote:
-> 
-> 
-> On 12/26/24 17:20, Yicong Yang wrote:
->> On 2024/12/26 17:23, Shrikanth Hegde wrote:
->>>
->>>
->>> On 12/20/24 13:23, Yicong Yang wrote:
->>>> From: Yicong Yang <yangyicong@hisilicon.com>
->>>>
->>>> The core CPU control framework supports runtime SMT control which
->>>> is not yet supported on arm64. Besides the general vulnerabilities
->>>> concerns we want this runtime control on our arm64 server for:
->>>>
->>>> - better single CPU performance in some cases
->>>> - saving overall power consumption
->>>>
->>>
->>> EAS is disabled when SMT is present.
->>> I am curious to know how power saving happens here.
->>
->> EAS shouldn't work on non-asymmetic systems, so it's not the case here.
-> 
-> Ok. so this is a symmetric system then?
+Log an error message in `find_device_iter'
+when the system cannot handle more error devices.
 
-yes, symmetric.
+Signed-off-by: Atharva Tiwari <evepolonium@gmail.com>
+---
+ drivers/pci/pcie/aer.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
->> System wide power consumption comes down from the CPU offlining here.
->>
-> 
-> Ok. So SMT is enabled by default and then at runtime disable it to save power by off-lining the sibling threads?
-> 
+diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+index 34ce9f834d0c..04743617202e 100644
+--- a/drivers/pci/pcie/aer.c
++++ b/drivers/pci/pcie/aer.c
+@@ -886,7 +886,7 @@ static int find_device_iter(struct pci_dev *dev, void *data)
+ 		/* List this device */
+ 		if (add_error_device(e_info, dev)) {
+ 			/* We cannot handle more... Stop iteration */
+-			/* TODO: Should print error message here? */
++			pr_err("PCI: Unable to handle additional error devices\n");
+ 			return 1;
+ 		}
+ 
+-- 
+2.39.5
 
-yes.
-
-> 
-> Note: When enabling SMT, current behavior differs when a core is fully offline on different archs. You may want to see which is behavior you need in that case. i.e either online or skip.
-> 
-> PowerPC change where we are skipping a fully offline core.
-> https://lore.kernel.org/all/20240731030126.956210-1-nysal@linux.ibm.com/
-> 
-
-Thanks for the information! Currently it's implemented as online and no special need for skip. We may need further
-support if skip is required in the future, currently for GENERIC_ARCH_TOPOLOGY an offline CPU's thread sibling
-only contains itself so there's no information for checking whether the whole core is offline or not.
-
-Thanks.
-
->> Thanks.
->>
->>>
->>>> This patchset implements it in the following aspects:
->>>>
->>>> - Provides a default topology_is_primary_thread()
->>>> - support retrieve SMT thread number on OF based system
->>>> - support retrieve SMT thread number on ACPI based system
->>>> - select HOTPLUG_SMT for arm64
->>>>
->>>> Tests has been done on our ACPI based arm64 server and on ACPI/OF\
->>>> based QEMU VMs.
->>>>
->>> .
-> 
-> .
 
