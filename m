@@ -1,69 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-4495-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4496-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBDBB9FD779
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Dec 2024 20:22:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BB79FD7AE
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 27 Dec 2024 21:36:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YKb3P0DXDz2yDT;
-	Sat, 28 Dec 2024 06:22:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YKcjY2pVdz2xn3;
+	Sat, 28 Dec 2024 07:36:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735327328;
-	cv=none; b=Jm6R2mb2vXeSIgZC9ZQFYRF58U6hNMB8TCVAhdksFD6bAx2Gmz28YJf2+dhvshqeawPYBYnDHXCsOyM6fjSiL4i8QZnAEqyNoxZFYz69Z/O5MLFYhQmLY2rvGURpkHJzcznU+zBvgD5YoTCAPrxSiBrC9fzAfEIcg4rahSqUhliKJggnR9foqbS80AktsolRQ48pITgeBW9yJ6HLAgI99lXDEYzS9c7ulPqns2ok8iOb4DYPRjlXyHM4OSY+ut/g6vCOoR1sg24OE3r9sO1pF3pZfawkgUVw/6iODw1cjzUVvgawUB0vaPkgFC7sCLWZJYIhrcu6Gr+a5uQiczlJFg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.241.56.161
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735331809;
+	cv=none; b=Y0d2/Z/niRKzkh6Zo3Alh3usW+J6N6u81HHtO9rxNlT9tv9/LQKXG09ahcbLE81t4zb+Q+qSi9+BDYjh23c4Dvqp+yyjEF7b4NZClt1LdFthanzGiGDfcy51cavxyRn74L8swJMu2/4ghF3RpNNvLHzP/3gW9hO/LE6kfPz35lx9OpcZrIJZai1V29k0tKWCI6wYKCV3mFnFxZCT2/Curwx9HJW54UcRZJgR2E0wMwTRUuw/BcizPQ8Az4wmL8A/va+fuFH0UomfCDsKwtthJFAMI1JhwBPjBJzHq1W+7cvBSEdtFGRD4hnrPVqTa9q8koQumpKM4FlDn0Aayw1/TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735327328; c=relaxed/relaxed;
-	bh=LwFZ0EzbR5mXpwLnnq7V9GnyzO80DY7t4oAGN3RZaBA=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=AOrcsPwIHvrFNZR06np8lia+OD0kkfk8k8yWsbXh+tJFb2p/RWluB4clXmE48BcI8g5xpOry2JH+/m/KOP81oH/2jbB4i5dhR1+qBS9ScAep2WOPNXbl32PBJR6Im8aHUjBEUbe2/7k9JGc3V0379oOKGUFNgrQHWrx7edfOnI1t6uXDAjcaPEek6fbTkFOBNsdgjnmGLrvpdo6Aw/PPjv1DHDwT6VFx49ik63a6wkPlpyinp86KiP/wMXt7rpjOscS1PFg9Jbb+6SW48hWzL4OOT3ICwtmgZZ4dJr3Lfo65mug52GkYIjBNU77li3EoAp7OBWF7EsHC6DWKJ9vYDQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YQ30C27A; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1735331809; c=relaxed/relaxed;
+	bh=ZLoaewLaNbBagbxBsOZNZeHMkFTPiSaczS7RkDtYKok=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Yp8UpgotQ89vFTouBURDfsuQ+GuGLHTXvx8qSBN3AXR6MiQT5j/Ru8DocBopuw4xshOpnuqaAhRjK8Cpo+PkHaX8qwdkBU21MNXXAIYEia1+E2irRNmGEEFh39MoPdCTspQSD/T+vx6BZ6zmbWD/77+izG++XvjFn+zJLz8vEyZLf6ynKNH7MJIqfGDbxubIsz7o39xHe3j/fMpeLLk8YvB6AS7E2BoWo9X4wPtUtSLYyrFuQUld1XbaX7AUtmn0RXRiRuwdVg90ocQrhkc/wslHhYPIvmOcpPO2dJ7fuUeF/3mv7W4E9ebE63p4Q/rNhOEnpuJazZv1eLKtZt4xsA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=K/eJcIh9; dkim-atps=neutral; spf=pass (client-ip=80.241.56.161; helo=mout-p-103.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org) smtp.mailfrom=mailbox.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YQ30C27A;
+	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=K/eJcIh9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.161; helo=mout-p-103.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YKb3M2W0Tz2xtK
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Dec 2024 06:22:07 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 725395C5A49;
-	Fri, 27 Dec 2024 19:21:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE0E2C4CED0;
-	Fri, 27 Dec 2024 19:22:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735327322;
-	bh=uOFnp+xbV8RnU23eBTinmjNL8zZqpb9mEZkWXt3B06E=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=YQ30C27A79ehuM9AicaGMI3feNLJjEF9e7gWTrj9V0UxlURfTRK73bZ9PJrDN5rET
-	 fsnblepqAs95Xr58gt73WrRZcKVuPjJTB/74nLcK5es47wi3P5vqrCJUzpbcR+GBDM
-	 1HiAAgNIbTXgvVQvpEr/syD2eQ0NUFa1oJWJ70dBC0MREcygRl9ZFp/DRMP/7RrxYh
-	 XqcR5TCiz8VvBmo2P/xtxx4Ps8XtYFN4VHLfjJ7gKIGx03BI7bYFK6vJ2pzceWoz5N
-	 HBaCVkKq0auxUPszxU3+Y9CRA0ygrLqdMfiVEnnGG0uA1uX/oRMbYZZGvJoztB6J3C
-	 hPgTtYuacr6rg==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 34682380A955;
-	Fri, 27 Dec 2024 19:22:23 +0000 (UTC)
-Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.13-3 tag
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <abe4d3bb-549a-4e29-9084-e579b81694ff@linux.ibm.com>
-References: <abe4d3bb-549a-4e29-9084-e579b81694ff@linux.ibm.com>
-X-PR-Tracked-List-Id: <linuxppc-dev.lists.ozlabs.org>
-X-PR-Tracked-Message-Id: <abe4d3bb-549a-4e29-9084-e579b81694ff@linux.ibm.com>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.13-3
-X-PR-Tracked-Commit-Id: 05aa156e156ef3168e7ab8a68721945196495c17
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: eff4f6758360986fa913c2f17b4960645f4f4b1c
-Message-Id: <173532734173.574555.16105942693209458363.pr-tracker-bot@kernel.org>
-Date: Fri, 27 Dec 2024 19:22:21 +0000
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, haren@linux.ibm.com, LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YKcjV3nkXz2xks
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Dec 2024 07:36:43 +1100 (AEDT)
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [10.196.197.202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4YKcjJ733nz9slk;
+	Fri, 27 Dec 2024 21:36:36 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1735331797;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZLoaewLaNbBagbxBsOZNZeHMkFTPiSaczS7RkDtYKok=;
+	b=K/eJcIh94SAlMGy9j0IujjadR8/pB8gkvQSkX31iLJiURtvDzbjB7K0sJS8jdljcZxUUw/
+	DEVeKkGghZPW2k4X/gaWwDuOcgGGvXGDxbioFtHd4nE+HLbrt4HJhYCXn4h5hCDYyw2D6u
+	hg98M3AelMez8tO2FaLJ8Ewv9BwYChcXCIg6adKCSuBFAFZznaNriP2KOgKhIrWnml0L0o
+	5OwzWubsFSn+g0iXauk7bTwSQ5G5CAoLtuvA9T6R6HCXx5o48a+bszt2mpPjpFkmDZ7Aa7
+	vMLD/wzu4iXBkFCvBcVuqo0E/GNSQOnmBzSBDsBhG1gyJ2i1uCmRTh2LumVPVQ==
+Date: Fri, 27 Dec 2024 21:15:27 +0100
+From: Erhard Furtner <erhard_f@mailbox.org>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: Re: Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0 on
+ G5/G4 (kernel 6.13-rc3)
+Message-ID: <20241227211527.009a0f13@yea>
+In-Reply-To: <87jzbqpnd9.fsf@mpe.ellerman.id.au>
+References: <20241219000749.6836d610@yea>
+	<87jzbqpnd9.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,17 +67,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: a90aa51ceef70f26913
+X-MBO-RS-META: fqs9ctqn6d5q91csahaihxmcu6ns44sx
+X-Spam-Status: No, score=-0.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
+	URI_HEX autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The pull request you sent on Fri, 27 Dec 2024 12:24:58 +0530:
+On Mon, 23 Dec 2024 23:58:26 +1100
+Michael Ellerman <mpe@ellerman.id.au> wrote:
 
-> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.13-3
+> Erhard Furtner <erhard_f@mailbox.org> writes:
+> > Greetings!
+> >
+> > I am aware there is commit cf89c9434af122f28a3552e6f9cc5158c33ce50a
+> > (already merged in v6.13-rc3) which fixes some of the "Missing
+> > '#size-cells' errors" but there is more:
+> >
+> > ------------[ cut here ]------------
+> > hub 3-0:1.0: USB hub found
+> > Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0  
+> 
+> Something like below might fix it.
+> 
+> cheers
+> 
+> 
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index 8e776ba39497..462ee36ef891 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -2898,11 +2898,11 @@ static void __init fixup_device_tree_pmac(void)
+>  	char type[8];
+>  	phandle node;
+>  
+> -	// Some pmacs are missing #size-cells on escc nodes
+> +	// Some pmacs are missing #size-cells on escc & i2s nodes
+>  	for (node = 0; prom_next_node(&node); ) {
+>  		type[0] = '\0';
+>  		prom_getprop(node, "device_type", type, sizeof(type));
+> -		if (prom_strcmp(type, "escc"))
+> +		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
+>  			continue;
+>  
+>  		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+> 
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/eff4f6758360986fa913c2f17b4960645f4f4b1c
+Works like a charm! No more "Missing '#size-cells'" errors on both my G5 and G4. Thanks!
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Regards,
+Erhard
 
