@@ -1,96 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-4506-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4507-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 133669FDBE7
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Dec 2024 19:50:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC3D09FDBE9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 28 Dec 2024 19:50:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YLBHv2jXnz2xJ5;
-	Sun, 29 Dec 2024 05:50:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YLBHw719cz2xJ8;
+	Sun, 29 Dec 2024 05:50:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b2d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735411803;
-	cv=none; b=Qys02l02o7KiDJv43fTRFdcebYSC8oBFBC44sQ6hLuPtYEoAB7eivxp6QMKG7Wa1tWEodo5QYtCPEGBhS7Ohx4r3fhGAY0Fov3Fvt2n7GmLQ29y/PSC0NRfok9K2zh+2m0uijkvRqhzL1cx3xJqUcFuU2+W4rzkhXi9tJ9DTu7DqLFhu7RRBIG1jdLgksTj2n6Lp71J92Y8+fdA6Vb41VbBFmdOg+wGOLqrbCQP8L6HzmsVl6lIRVZ1Umi1l3fiab3BzZlI0t7VePUozkFixo5x0h+6jCBxkyfJWC46fxHjTspNkUx0HbSXy7OzqcWflx6j7niTu6vD1wPuqus7p9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b33"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735411804;
+	cv=none; b=KiGuT0iXMA3IlS6Lcjsq16So1bLbuZhdppeWe79Iw7bfItBHHLAMaYU+wjUdv8Sd29hqjhW73CMD40Dx5LuaTRdZFXwL2M/9olQmQ7zKkfvHVq5PBeXEQpAvHmltrFhC05+ACGSz5eIzXURmuplmz36TUzB515rHGyxB6oxKm/lKus7GkHDZuE+wB00VD8q+UxNFu+BYuA7F7GT+H+WlPsEm39SZ0kkbebU4CaQ6HLapPjrm1ppp42ejRIDcgelW7DyxWJwin3PxVzC77zRQylCWc9xSjL1Fiufwk/KPvysjiLNWqPksRdsdUFYv17SphVWYAnGKH58EqMxRTW7eHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735411803; c=relaxed/relaxed;
-	bh=lL8rNecoxrOgRuhpm+UkLZuLqFEtoRoNCimf/pNjqjs=;
+	t=1735411804; c=relaxed/relaxed;
+	bh=a3EcwrJaj13JFWV94S06ao9wKNfTeeg6w6xP84y4x0M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPNqm/4Q6ksLzV23YOXVeMxdj3uXQwxO+DEJyl/8IOE7/SkRgAU4v0P9vMIs3asHGaaKRTvRtKzWalUiZDCXeMW1IXC+4xiMe+cLF2oY5zibbP7vLypIivRohYC+LbcXNuXPsawnpyvou3Eiz8BFn/vWZYkEJR5K0ZfGMgl494OOpqozznOwiS6AnMpdVxlZF9fSvDkD+38ubSBrd07KDRdQzI4LDkPskSLN/KecdzVRHq8SZtPxaD7UlrEtWXfxU/mxqeABUP5nIQni2QA1pB8M3Z1KGi69r4MF0D9YTfftoIbf1dI5fr7zGwlM+GcOvfbS1u718rOEWjwPJh5EqA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kBpUNeXl; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b2d; helo=mail-yb1-xb2d.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 MIME-Version; b=YCkqP0fx/jNeRLLWLq36XkqpmNFpJ9YBAwJsicgdbBBOMvKSO8I+qNscA3TsvEnHnvBux19Qcfd6+Y12tUT4gj8Fa0iS7XnIqUWumNGlVR/o9GKygePmKCCMpHL4P7/jasf0HKUnrFCzZJACWwNk4hYQ9nN2+yyyRzbG4KsODeAHg5oXXTojFZIaW78XgbTJUeXbD2BkXkD5A88Po8OIjBGhM+/214P4CDGxJ35WacYiLPaNJSwlWwxX1cUW5r02AqLEt2b6MxwTnohr0/XCWYfXDhz6/AlAeR/lFj8mjytspzBt5iJY3W01TQehmLdNsKOn4OBJBXldrLbAfdy89A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f+mZXf3b; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b33; helo=mail-yb1-xb33.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=kBpUNeXl;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=f+mZXf3b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2d; helo=mail-yb1-xb2d.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b33; helo=mail-yb1-xb33.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb33.google.com (mail-yb1-xb33.google.com [IPv6:2607:f8b0:4864:20::b33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YLBHt1x9zz2xJ8
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Dec 2024 05:50:01 +1100 (AEDT)
-Received: by mail-yb1-xb2d.google.com with SMTP id 3f1490d57ef6-e4a6b978283so10107375276.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Dec 2024 10:50:01 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YLBHv646zz2yhM
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Dec 2024 05:50:03 +1100 (AEDT)
+Received: by mail-yb1-xb33.google.com with SMTP id 3f1490d57ef6-e455bf1f4d3so7767350276.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 28 Dec 2024 10:50:03 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1735411799; x=1736016599; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1735411800; x=1736016600; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lL8rNecoxrOgRuhpm+UkLZuLqFEtoRoNCimf/pNjqjs=;
-        b=kBpUNeXljA3gJLUNlo7a2qgLcanBrJa7plmErT7FaymXn/79R9mpN3pUirorbZM3SV
-         BFU58BxbHVGDKZm3FlL0nZAPNuVrDdxtaqWFY1JRfknnOTiBYvkXFCaCHKDRXy+LHNIw
-         NWh6UgIgrV/bfyJwwNJiXOXJODCLTLtI2MzYbRKeuxoHwuPCr8I4Aph7DQMFvys4M3dN
-         GLw9lQx5cswW10PD7dYhYOkbsMke4EduOXTgmbYVKE6RdxvWPVkOKGMZA1s+xk5QDeR5
-         bkSLcfuvsyjGT+PaTdgkqMIu4By8+p+r10YJYRHgN1myVA++TBWTGQVx7SW00FjLL49C
-         ZW7g==
+        bh=a3EcwrJaj13JFWV94S06ao9wKNfTeeg6w6xP84y4x0M=;
+        b=f+mZXf3btiTO4nX++rThLMtCyHxZ5Lr5jg4+NBvRlgknXYZ7Ruw546HP+K32LZ2V3O
+         2ZdcRGPnaoTQCishJm6dnpvs+K7K121jMOpXzhdBGQz8ZgQx2/jqQsEeTK8aEL9AUrnZ
+         l4youH/Rh72TMXhE/lepKoZOFfZTjXrfGsTHIofKI31pWm/86rAiZp3z3sc/4WMKhJ6o
+         Hn780nDTZvV/5bZn1uJJn9TREy929DZFcwL4/cp+3z4IeK7HbV3UcG4zdFZEE1bitYnW
+         O6ROM8TnyrylWDwVmwW0792HwBinmFUrb3hiuQ1qR2I6Z+XDHDLvams9/2hg2Q9rqMF9
+         uWUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735411799; x=1736016599;
+        d=1e100.net; s=20230601; t=1735411800; x=1736016600;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lL8rNecoxrOgRuhpm+UkLZuLqFEtoRoNCimf/pNjqjs=;
-        b=mn3zif/KV5ugMlBtOCG/FeuSp9iiXBvcvgupoXw6Cy3jCY+j0cqnguH4bNO4Np1beE
-         y3cs+nXZOwSqA9INlGnquwVT+yYRTxtgLDiRU2iTFnxW2JK8l1dNY6xPCAietwtwRNSq
-         czTmRRvimJJjgvw8JnGE8eBz5slEGB9Qolj0WMOnWvw+61KHoB7cHJlRB5MPlsLa3OSu
-         supZsIqhx8NRNw0zD8ZayheNSFe5zHf+3or/3q12e4XF7CsW+SlmNFUryi3DTL10ZeN7
-         ZqsEu6s2b+11MJYGvYOP+UAuiJWX6o8WeU6CMJE2CTofAtde6OrVMAJwrv/mDPA4MmZH
-         5X+w==
-X-Forwarded-Encrypted: i=1; AJvYcCWp2AoylQsA4HaVWt4lezLxvwIEhckNPSCsDfpA+WE5WeYqGVOfGsdr9xhND9zBJulYLT5BmPB1DVlHqD0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzLxXCuTOlh2xucP6sVOQfu2rKG5bbcfAQAiSNGbrz8nrnrbLVk
-	Gp5/OFU5jl/Zzej0s9NMhbPHYy3tjaHFiw0zle7DQd3S2BXLeRUN
-X-Gm-Gg: ASbGncsplXxoWseOvT2kBPxggmWirhyTW39XRL1ZAQxeP31ZatOx+utD1HRQJNTs9o9
-	/gg0nv3J1jJvh43WF6nqWz0JnBOKZFjqHwf70IShW1z3SVzpgmowpfOncJjkYxjV2kAJbBCAEuE
-	yg66Q7PGGNBe5qThzYArwGyAS5/ET3raHRjUNgzsU0s1EAll5fsj2wMbsYxYQWoYqWBYi3oLk4d
-	tNG6e/dSRGnUpnP6cvPCZQISGed/YEoPPojSKjOUQ4aKVdtExc8sSpRPktmEA/OtB3yIs4Rg/Ck
-	e4pQA3KQQ/Of/qFg
-X-Google-Smtp-Source: AGHT+IGzd+E2S8x2gXxoaCvAStSmkZ51igXj24qQWSN3ZW4n/H7SUeu2mKOPhIyoM4H12slkJ1LXvQ==
-X-Received: by 2002:a05:690c:4a0a:b0:6ee:5104:f43a with SMTP id 00721157ae682-6f3e2b8aeffmr257339587b3.20.1735411799162;
-        Sat, 28 Dec 2024 10:49:59 -0800 (PST)
+        bh=a3EcwrJaj13JFWV94S06ao9wKNfTeeg6w6xP84y4x0M=;
+        b=YjKGSwlEftlUJVz627N4/oV7qtSTKGaiPC6GgXKjL71xCoiG4sh0dmbLppI9i1ED3Q
+         YJ9lcv1+zNM+ecopFystT4/XlAJIiA5Ws1eEzw++L41qE5wfnfH4jr3cOG2mTT0GqtdJ
+         1Jz4WKbXZwVmuMxvmlvK5OhtQqXbEnd4dhGswuhUCY4qtuMh815E3o/4R/6Mk70f9PBm
+         zf1tgGQ/5fany05SJs7jlnI3zXM46t0cJlTrFSYJ4QCfpgvAx60tQ+iUoG9T5CQzUraD
+         u3+B8UKiXNHgbV7SFNY0a4g8vSo4ebb6OeFuQYyaWIlE3mEme0sDPDc1m+y/pA85AZtV
+         6JsQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXC0By97iapA7Q0ADA8+/f+lsdsL1pZnM8Gw4MRhcf6LQdN/jOvdX7mKY/aiEJEN84C4V09/PxvV1uWafs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxcIkN38zhzLftKe+r/HTqLJPMngtIHrPf9lsD9pytiUBi25yVd
+	Dmf2VCXpyRTqtSyQx75PJk5u5+s2ELeHn+029ql20eC0C7UVSls2
+X-Gm-Gg: ASbGncvZu2ZSEUGyt7FhVIVcO8EAOsfoQqMMgZzmYniRBAtdHz8CG41XLRPFUT4biJF
+	nJzUa/aSMmsa37anZGVYlNq5UKODaMgQEZI7i3LoD6yyv0UEujXqcNmFj5w0LRmbL2Oqb2HQtV3
+	uatDJdxjbdQJ+iF8RPkm++B9MeMCjU7ObVpy0zgk07BJ7B9gSh1aPDER0DHRrBXvLgjRkULWYuS
+	qm//m/STpo6EqqcVo0YP6mDtKa2Ayg0b3atMP3rc9K+ehWD5L2IS0RDxHgBGi3oxOPxbm/pjGag
+	arjqGuNdG5KSIuhy
+X-Google-Smtp-Source: AGHT+IHYxhV9z9c0TqaYoIc8tNJTOYJG9vJKS/fH54wKJcOX0hcp4pjTSDHzZiDSWaq/zIaFUgVQ0g==
+X-Received: by 2002:a05:690c:f0f:b0:6ef:698a:1f02 with SMTP id 00721157ae682-6f3f8219d18mr230627707b3.32.1735411800391;
+        Sat, 28 Dec 2024 10:50:00 -0800 (PST)
 Received: from localhost (c-24-129-28-254.hsd1.fl.comcast.net. [24.129.28.254])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f3e71a8d26sm47945657b3.0.2024.12.28.10.49.58
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f3e745648asm47410067b3.52.2024.12.28.10.49.59
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 28 Dec 2024 10:49:58 -0800 (PST)
+        Sat, 28 Dec 2024 10:50:00 -0800 (PST)
 From: Yury Norov <yury.norov@gmail.com>
 To: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	Haren Myneni <haren@linux.ibm.com>,
-	Rick Lindsley <ricklind@linux.ibm.com>,
-	Nick Child <nnac123@linux.ibm.com>,
-	Thomas Falcon <tlfalcon@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
+	Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Yury Norov <yury.norov@gmail.com>,
 	Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Subject: [PATCH 03/14] ibmvnic: simplify ibmvnic_set_queue_affinity()
-Date: Sat, 28 Dec 2024 10:49:35 -0800
-Message-ID: <20241228184949.31582-4-yury.norov@gmail.com>
+Subject: [PATCH 04/14] powerpc/xmon: simplify xmon_batch_next_cpu()
+Date: Sat, 28 Dec 2024 10:49:36 -0800
+Message-ID: <20241228184949.31582-5-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20241228184949.31582-1-yury.norov@gmail.com>
 References: <20241228184949.31582-1-yury.norov@gmail.com>
@@ -112,60 +103,33 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-A loop based on cpumask_next_wrap() opencodes the dedicated macro
-for_each_online_cpu_wrap(). Using the macro allows to avoid setting
-bits affinity mask more than once when stride >= num_online_cpus.
-
-This also helps to drop cpumask handling code in the caller function.
+The function opencodes for_each_cpu_wrap() macro. As a loop termination
+condition it uses cpumask_empty(), which is O(N), and it makes the whole
+algorithm O(N^2). Switching to for_each_cpu_wrap() simplifies the logic,
+and makes the algorithm linear.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- drivers/net/ethernet/ibm/ibmvnic.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+ arch/powerpc/xmon/xmon.c | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index e95ae0d39948..4cfd90fb206b 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -234,11 +234,16 @@ static int ibmvnic_set_queue_affinity(struct ibmvnic_sub_crq_queue *queue,
- 		(*stragglers)--;
- 	}
- 	/* atomic write is safer than writing bit by bit directly */
--	for (i = 0; i < stride; i++) {
--		cpumask_set_cpu(*cpu, mask);
--		*cpu = cpumask_next_wrap(*cpu, cpu_online_mask,
--					 nr_cpu_ids, false);
-+	for_each_online_cpu_wrap(i, *cpu) {
-+		if (!stride--)
-+			break;
-+		cpumask_set_cpu(i, mask);
- 	}
-+
-+	/* For the next queue we start from the first unused CPU in this queue */
-+	if (i < nr_cpu_ids)
-+		*cpu = i + 1;
-+
- 	/* set queue affinity mask */
- 	cpumask_copy(queue->affinity_mask, mask);
- 	rc = irq_set_affinity_and_hint(queue->irq, queue->affinity_mask);
-@@ -256,7 +261,7 @@ static void ibmvnic_set_affinity(struct ibmvnic_adapter *adapter)
- 	int num_rxqs = adapter->num_active_rx_scrqs, i_rxqs = 0;
- 	int num_txqs = adapter->num_active_tx_scrqs, i_txqs = 0;
- 	int total_queues, stride, stragglers, i;
--	unsigned int num_cpu, cpu;
-+	unsigned int num_cpu, cpu = 0;
- 	bool is_rx_queue;
- 	int rc = 0;
+diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
+index f4e841a36458..d7809f15dc68 100644
+--- a/arch/powerpc/xmon/xmon.c
++++ b/arch/powerpc/xmon/xmon.c
+@@ -1271,11 +1271,7 @@ static int xmon_batch_next_cpu(void)
+ {
+ 	unsigned long cpu;
  
-@@ -274,8 +279,6 @@ static void ibmvnic_set_affinity(struct ibmvnic_adapter *adapter)
- 	stride = max_t(int, num_cpu / total_queues, 1);
- 	/* number of leftover cpu's */
- 	stragglers = num_cpu >= total_queues ? num_cpu % total_queues : 0;
--	/* next available cpu to assign irq to */
--	cpu = cpumask_next(-1, cpu_online_mask);
- 
- 	for (i = 0; i < total_queues; i++) {
- 		is_rx_queue = false;
+-	while (!cpumask_empty(&xmon_batch_cpus)) {
+-		cpu = cpumask_next_wrap(smp_processor_id(), &xmon_batch_cpus,
+-					xmon_batch_start_cpu, true);
+-		if (cpu >= nr_cpu_ids)
+-			break;
++	for_each_cpu_wrap(cpu, &xmon_batch_cpus, xmon_batch_start_cpu) {
+ 		if (xmon_batch_start_cpu == -1)
+ 			xmon_batch_start_cpu = cpu;
+ 		if (xmon_switch_cpu(cpu))
 -- 
 2.43.0
 
