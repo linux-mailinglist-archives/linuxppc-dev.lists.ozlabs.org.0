@@ -1,76 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-4514-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4515-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61579FE294
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2024 06:01:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 753139FE315
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2024 08:04:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YM3qM2QGcz2yjV;
-	Mon, 30 Dec 2024 16:01:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YM6XX2Q7Rz2yk6;
+	Mon, 30 Dec 2024 18:04:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735534911;
-	cv=none; b=Ry5kv6FgVMdonB+iXbwRL1QSSvm2VBMm+z0jko0TE7xtTObkE3m/FQ32RSL4yFfnMcpPKkFRgUIOR+lWLglvnT2fP5PXeyuxI4YQ6KI9j8S4th5VgbDWeM4RR/rR9zgHCEU4NMELILpJDM/la3g1JvfADJYXRuJQxbCzMtkZauPmkjmBrnmXH3JvjTiITrOe3BGHrCNkmp9yoIUGVth3D8vZOV60Q7/FjrZA0kU1s7WWphcDebNtFNEzSoR34FN/yjqxEdz+7qlZWV/lbQDo9WtDEBcl2gsGwtUe0P1dTN2dh9B63mcNenN947SZzptKGiXfa8nn3Gn92lEkmj3liQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735542252;
+	cv=none; b=QNptKd5R1NIeSFsdCIoHFX/lXoAsNRmkazWjhqDjOBBd/5PLNxsk9Hw0LKEbEaLAMlko9Pjzr+qe/gjmwJiDWUovQL48NRvY5A25ZZomvPeQS/GYreE2A55YHBIoI1ITyXn3YMoTrYffDHjtJ2XBWV2BVEhks3UIP52/yEjFuCFudxrcuSS4TapjV7nudS9pI70B19g+8HohEw+VGykNEtv6iQQj8nVzQLHap0n9xmvjUdAEnampxP3Nj78arplJwYuTs5FKRRgYuF3y3Q2WYfNCTlUFvRRmyB4xmfMVTkA88f76/BCMgEVS2ujm6ARMIpZSy7emsXa8UfNwO7Hnug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735534911; c=relaxed/relaxed;
-	bh=z71RF7AQSzzvF96cC/aV2tD8Znb4DG916rBbscUdZ1I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Uxysx2LOh4BeujGbxku6xwpxJ0+uYlmdIYxbf5ZVNTN5o0ulvVUnvIDCQw5wTIJQjHSLA1Y3pF0KznwD+a8UGakZogUpRUekVrBQWw/bHhZhRCAfluteOxC6BtqSzgB6Eme1QJ2DVBMe4invaSSi6pa1rIbzW1+xVa+zUZ/WA8B7xaRBZDzsE1BPx03gN17AqOdT9QE5w0b3AM9W/ZlEm7rc9DSC0l8bAJrWS9q09Y6pSMCYz3PldrJ0TfIbVokpGui4A//QZj5NjKjHy5oNfFyGLyyZCPbQ6R3E6kn/KiHZwPv/L/b5jDTLhh42su8iCcTIap7cYbQlzxf3Ft/30A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=HmmAbT4C; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	t=1735542252; c=relaxed/relaxed;
+	bh=xUSMbY89H5WSfPtVNMoAeMf0ZXSlFHMT/P3toWiTG7Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QczKHTlabw9IScziijy08tWbwQ11fK+XS5oaBco8L7tGgSZf1bY6lz8dDy9XERIy8rozBaSsgLom0nCUvF8ivzM1+3WMquFE8dGHMunvDtoVMa9RDtJ6FTWTTa3Yyd1S6eJJHH97FVGmXCWoENQjYa4i+6FV3QtgJinUbSwO5EzUB796uHBEWDZUzrimcNVjnfQxojJAAjrrC/JbKTdYBkw75lQqpxcEZIiWw4nAOFNZS9mmd2K0uJI5gdMwaIwj1hOl/MeSurY6zEoJ+rt8W1CIZczH9MTmCwIcE6N/4+aOnzgp94VZEmZadI0U0urXFRoKbuUD+7hLt29VYIGzKw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Yz6kdZ7d; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=HmmAbT4C;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Yz6kdZ7d;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YM3qK35SLz2yhT
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2024 16:01:47 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-21636268e43so14422225ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Dec 2024 21:01:47 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1735534904; x=1736139704; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=z71RF7AQSzzvF96cC/aV2tD8Znb4DG916rBbscUdZ1I=;
-        b=HmmAbT4CGEZRtz29XUMZk6HPKnGPuF3aPbEcFOo8DFinSUa6ibzeu51c5vJJqak2/u
-         DDgPjaCaz8TfC4K74iWjZQ+Z2Cma++6y9L5tXu6P72F0yDQwBY51umYDQJdGVBgK6qd/
-         Hauu7aQm4+p9n5Dpb9fb4QcbqObbQkex2PNFj9kNjPl6OeETiSznrTPEcgHSFFqA7hQ2
-         g5qPzYeS+m0Wzkn2TZFzXJ6syOf9BEHcVBT9jj2l1wH34VpIyyi88ZKbSV31ajLrdH7v
-         mWVzVcsGXRxFmUeYl7WKKWprBJ4z76bjV/mh4Xc5QlR9ns+X0Yu8W1fFXZQNpNGkmstf
-         e0+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735534904; x=1736139704;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=z71RF7AQSzzvF96cC/aV2tD8Znb4DG916rBbscUdZ1I=;
-        b=TsBeVWccscyLLYBPNfNVVAJ2r4XglE+gtw0erAUsG06mAp7s/lZJctjau51Xyrsh3L
-         xBXioyX838ChjSW76nZh502W2Z7k4K/XPhsBzjx/jK699sUh4DAt32qkh9vJP/XGkpz2
-         UZu5on3mvDXgjHegzU0xRGQzu+GJzEtb5LqoGFNGJLIgpo/v8U8vuY3K1m0wmYiM9oDR
-         gAk6Sg/Dc6v4RYGGq4qQIiEnOfF30UpPwie3+kdgBUTTeSWhzkw529QIXbK618NZ/464
-         igARmoF/EGt5SpQsytVNSqs7wcUOmQT0/Uzu2OFDSsNhWGgBub83sdZJ/2nNl+M3nqJa
-         homw==
-X-Forwarded-Encrypted: i=1; AJvYcCVq0/7Oy0M7u7rok7Cq/p3MfShUqIeOLI9Q1zwekTuollzkTYKWgzSe2UC5de2FkPKCC2yhV0JkZPqMTAQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxGMgy5x8XB6PuL5u1BSj5qwFvKDzcOvxFs8qZCi5eFL7Ess7Ve
-	uQbP8K3gwQy9W8MMA3kEyFO0nMD4A4z7AuoonaUL9DotpK/b0yDUq0hwenujzJQ=
-X-Gm-Gg: ASbGncsV+mv3MiveQBN5V8Sp/08cAzIfZ8674eGYaCn6vSkkAB2H7Ku6OiWdHJBxkGU
-	GSgNlkaX+8d2K7R8fcYM36ibgNYCFQLorap2zIPhIP6YfYzTBQRRpx8tFxOfLtFBQ8vLtTqtt4+
-	/cAXF8hGWZx43RdU2lX5rjg1HIBYKipow7jvH3La19b8nnM6EooixERU3nm7yxDr9biTSqXBl/u
-	hLR5DtMhiSDaLSeUqzH6tlehjM9tZ6e16dOnqEY6Lk5Bc8/jt1wZTE0/piojbob7eCQ72wN4+6N
-	0Iq4iA==
-X-Google-Smtp-Source: AGHT+IGNJA4bVLowcqsTNcTKWXSt9C1oo/1EXH42Qr0z5K3kcPv3AzGfuER3K4niOaxH4y3G0nd6hA==
-X-Received: by 2002:a17:902:ce86:b0:215:a57e:88e7 with SMTP id d9443c01a7336-219e6e89215mr362710865ad.3.1735534904325;
-        Sun, 29 Dec 2024 21:01:44 -0800 (PST)
-Received: from [10.84.148.23] ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842aba7325csm16914771a12.7.2024.12.29.21.01.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 29 Dec 2024 21:01:43 -0800 (PST)
-Message-ID: <efd81018-f637-4925-9104-c9586fef688c@bytedance.com>
-Date: Mon, 30 Dec 2024 13:01:29 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YM6XV6WDzz2yXY
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2024 18:04:10 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BTNbTC9025760;
+	Mon, 30 Dec 2024 07:03:59 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=xUSMbY89H5WSfPtVNMoAeMf0ZXSlFH
+	MT/P3toWiTG7Y=; b=Yz6kdZ7d8OJnuSEXeE8/raCurL/g9unqwyaSjf9DhsbEH9
+	yxcuG8VFKJwpoJp6kQMQbLXXaK1a+eG9u8/BAAsSo6j6Yhl1e6gkr78J4gqkQi2O
+	q4lPShUsxxU8cjiu86arYOoVYze9qJyXD7O0kIugVuzltS1F0Dl53QWCvOCS2NBL
+	NgSYvXww2KpK04SIiCITsj7WYPPWcGDZ4r3RT/8mrK0dSX7DiVNGELZ5GXfpGPlK
+	lUtnmNAJyLfkPL8QwO2tRObit+heZRBX2ue2JOYR0RIvCZcX8YdebfgZx0BjlRqU
+	vG8SpRSZzPq3i8MCIe6dHGKLA8/o6/99f5HgtFDA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ug8a10rv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 07:03:59 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BU73wxA012671;
+	Mon, 30 Dec 2024 07:03:59 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43ug8a10rr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 07:03:58 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BU5Z8VL014022;
+	Mon, 30 Dec 2024 07:03:58 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43tv1xvmqa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 07:03:58 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BU73sAE19529986
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Dec 2024 07:03:54 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4FC4B20040;
+	Mon, 30 Dec 2024 07:03:54 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6B23020043;
+	Mon, 30 Dec 2024 07:03:51 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.39.28.22])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 30 Dec 2024 07:03:51 +0000 (GMT)
+Date: Mon, 30 Dec 2024 12:33:42 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, linux-doc@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, kconsul@linux.ibm.com, amachhiw@linux.ibm.com
+Subject: Re: [PATCH 1/6] [DOC] powerpc: Document APIv2 KVM hcall spec for
+ Hostwide counters
+Message-ID: <fimq6f367gj3ypuke2slogz4i3zt4jfst4kwnrlzps3xinkoh5@arkajtap562s>
+References: <20241222140247.174998-1-vaibhav@linux.ibm.com>
+ <20241222140247.174998-2-vaibhav@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,64 +97,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 15/17] mm: pgtable: remove tlb_remove_page_ptdesc()
-Content-Language: en-US
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>, kevin.brodsky@arm.com,
- peterz@infradead.org, agordeev@linux.ibm.com, tglx@linutronix.de,
- david@redhat.com, jannh@google.com, hughd@google.com, yuzhao@google.com,
- willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
- lorenzo.stoakes@oracle.com, rientjes@google.com, vishal.moola@gmail.com,
- arnd@arndb.de, will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- dave.hansen@linux.intel.com, ryan.roberts@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-um@lists.infradead.org
-References: <cover.1734945104.git.zhengqi.arch@bytedance.com>
- <b37435768345e0fcf7ea358f69b4a71767f0f530.1734945104.git.zhengqi.arch@bytedance.com>
- <Z2_EPmOTUHhcBegW@kernel.org>
- <9cac5690-c570-4d43-a6bc-2b59b85497ae@bytedance.com>
- <20241229205545.e4fa797886f30cb20c38ad06@linux-foundation.org>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <20241229205545.e4fa797886f30cb20c38ad06@linux-foundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241222140247.174998-2-vaibhav@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: d6aAhfS7Z7wGfRoxHAP5oyfsVoACgzBP
+X-Proofpoint-ORIG-GUID: Q8_Tw7QByTCwtHvkwxcqqr37KD7uI3Yt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ mlxlogscore=971 bulkscore=0 mlxscore=0 adultscore=0 priorityscore=1501
+ clxscore=1011 spamscore=0 lowpriorityscore=0 malwarescore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2412300058
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Andrew,
-
-On 2024/12/30 12:55, Andrew Morton wrote:
-> On Mon, 30 Dec 2024 11:12:00 +0800 Qi Zheng <zhengqi.arch@bytedance.com> wrote:
+On Sun, Dec 22, 2024 at 07:32:29PM +0530, Vaibhav Jain wrote:
+> Update kvm-nested APIv2 documentation to include five new
+> Guest-State-Elements to fetch the hostwide counters. These counters are
+> per L1-Lpar and indicate the amount of Heap/Page-table memory allocated,
+> available and Page-table memory reclaimed for all L2-Guests active
+> instances
 > 
->>> For now struct ptdesc overlaps struct page, but the goal is to have them
->>> separate and always operate on struct ptdesc when working with page tables.
->>
->> OK, so tlb_remove_page_ptdesc() and tlb_remove_ptdesc() are somewhat
->> intermediate products of the project.
->>
->> Hi Andrew, can you help remove [PATCH v3 15/17], [PATCH v3 16/17] and
->> [PATCH v3 17/17] from the mm-unstable branch?
->>
->> For [PATCH v3 17/17], I can send it separately later, or Kevin Brodsky
->> can help do this in his patch series. ;)
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+>  Documentation/arch/powerpc/kvm-nested.rst | 40 ++++++++++++++++-------
+>  1 file changed, 29 insertions(+), 11 deletions(-)
 > 
-> I think it would be best if you were to send a v4 series.  Please
-> ensure that the changelogs are appropriately updated to reflect these
-> (and any other) changes.
+> diff --git a/Documentation/arch/powerpc/kvm-nested.rst b/Documentation/arch/powerpc/kvm-nested.rst
+> index 5defd13cc6c1..c506192f3f98 100644
+> --- a/Documentation/arch/powerpc/kvm-nested.rst
+> +++ b/Documentation/arch/powerpc/kvm-nested.rst
+> @@ -208,13 +208,9 @@ associated values for each ID in the GSB::
+>        flags:
+>           Bit 0: getGuestWideState: Request state of the Guest instead
+>             of an individual VCPU.
+> -         Bit 1: takeOwnershipOfVcpuState Indicate the L1 is taking
+> -           over ownership of the VCPU state and that the L0 can free
+> -           the storage holding the state. The VCPU state will need to
+> -           be returned to the Hypervisor via H_GUEST_SET_STATE prior
+> -           to H_GUEST_RUN_VCPU being called for this VCPU. The data
+> -           returned in the dataBuffer is in a Hypervisor internal
+> -           format.
+> +         Bit 1: getHostWideState: Request stats of the Host. This causes
+> +           the guestId and vcpuId parameters to be ignored and attempting
+> +           to get the VCPU/Guest state will cause an error.
 
-Got it. Will send a v4 ASAP (remove [PATCH v3 15/17] and
-[PATCH v3 16/17], keep [PATCH v3 17/17]).
+s/Request stats/Request state
 
-Thanks!
+>           Bits 2-63: Reserved
+>        guestId: ID obtained from H_GUEST_CREATE
+>        vcpuId: ID of the vCPU pass to H_GUEST_CREATE_VCPU
+> @@ -402,13 +398,14 @@ GSB element:
+>  
+>  The ID in the GSB element specifies what is to be set. This includes
+>  archtected state like GPRs, VSRs, SPRs, plus also some meta data about
+> -the partition like the timebase offset and partition scoped page
+> +the partition and  like the timebase offset and partition scoped page
+>  table information.
 
+The statement that is already there looks correct IMO.
+
+>  
+>  +--------+-------+----+--------+----------------------------------+
+> -|   ID   | Size  | RW | Thread | Details                          |
+> -|        | Bytes |    | Guest  |                                  |
+> -|        |       |    | Scope  |                                  |
+> +|   ID   | Size  | RW |(H)ost  | Details                          |
+> +|        | Bytes |    |(G)uest |                                  |
+> +|        |       |    |(T)hread|                                  |
+> +|        |       |    |Scope   |                                  |
+>  +========+=======+====+========+==================================+
+>  | 0x0000 |       | RW |   TG   | NOP element                      |
+>  +--------+-------+----+--------+----------------------------------+
+> @@ -434,6 +431,27 @@ table information.
+>  |        |       |    |        |- 0x8 Table size.                 |
+>  +--------+-------+----+--------+----------------------------------+
+>  | 0x0007-|       |    |        | Reserved                         |
+> +| 0x07FF |       |    |        |                                  |
+> ++--------+-------+----+--------+----------------------------------+
+> +| 0x0800 | 0x08  | R  |   H    | Current usage in bytes of the    |
+> +|        |       |    |        | L0's Guest Management Space      |
+> ++--------+-------+----+--------+----------------------------------+
+> +| 0x0801 | 0x08  | R  |   H    | Max bytes available in the       |
+> +|        |       |    |        | L0's Guest Management Space      |
+> ++--------+-------+----+--------+----------------------------------+
+> +| 0x0802 | 0x08  | R  |   H    | Current usage in bytes of the    |
+> +|        |       |    |        | L0's Guest Page Table Management |
+> +|        |       |    |        | Space                            |
+> ++--------+-------+----+--------+----------------------------------+
+> +| 0x0803 | 0x08  | R  |   H    | Max bytes available in the L0's  |
+> +|        |       |    |        | Guest Page Table Management      |
+> +|        |       |    |        | Space                            |
+> ++--------+-------+----+--------+----------------------------------+
+> +| 0x0804 | 0x08  | R  |   H    | Amount of reclaimed L0 Guest's   |
+> +|        |       |    |        | Page Table Management Space due  |
+> +|        |       |    |        | to overcommit                    |
+
+I think it would be more clear to specify "... Management space for L1
+..." in the details of all above entries.
+
+> ++--------+-------+----+--------+----------------------------------+
+> +| 0x0805-|       |    |        | Reserved                         |
+>  | 0x0BFF |       |    |        |                                  |
+>  +--------+-------+----+--------+----------------------------------+
+>  | 0x0C00 | 0x10  | RW |   T    |Run vCPU Input Buffer:            |
+> -- 
+
+Also, the row 2 of this table mentions the 'takeOwnershipOfVcpuState' flag
+which is no longer supported. You can remove that as well.
+
+> 2.47.1
 > 
 
