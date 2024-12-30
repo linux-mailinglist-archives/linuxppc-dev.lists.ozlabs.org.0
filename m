@@ -1,64 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-4511-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0C2E9FE120
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2024 01:16:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F46C9FE238
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2024 04:12:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YLxTp6X4sz2yWK;
-	Mon, 30 Dec 2024 11:16:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YM1P24H0Zz2yjR;
+	Mon, 30 Dec 2024 14:12:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735517774;
-	cv=none; b=nvRMrr6ZSnIEYa6ykqpG+JkDZtAo1YHtGxkJYAeqAeTqa72v1kmP8EMZJguNNXS/xGrKGJ90CR6dM8aZu23Kw9//e+9Kt7bpqbHyJJuY2qXOzbqQfwX9t9r4lCWMSgviB7xfPOv+49KY5lSv5RNJKtpPz5sZqX4tGxEh63yUVqnNxRDHqcZh3XX3XvPVYkeIC1jV76eRJszoqZxu8Jj+o7igctPT1ZRMlAwIpM1zO16L1S3tgCkpauItDrs3XJH4V5+8PQlKuyzH9/f2BbmJmXnBgi+tsOAWpp4798CbWyopdek/6uPbFGZD/ptGLM7LMqG4kMR2eFN5MdWL67uMPQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735528342;
+	cv=none; b=kAgfT2NeC//Xgy4iZLfdweX6tM0OPX22FlFN67XuXnW9+KBzmKGcE+PJgZDsXqRomHmBOPQ/a8fdXvyLpQ7SO/3tr5sfDGh28TNBgwXwwNMLA2G8kyP0JdCyIWhpugoULi7xz8puZfTG5NPYvgK0TJr9CqljNSSqt9KvlYDJtQqQoAZqtRsUy47Sqh5ZZUqLcKdTGZq/P6il9OcHm+HSvgbJHTmp5j1cEwCmZyULEb20Kmb9/Sc44OsXKNNf0Wtxo1bHo7o9cWSkTgET0cRL0StPezIDredMYWPFYDPrRbYK56A/4ZIRhcvwfO7RqPfcpRgh8JND4kuccsbOBaTk5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735517774; c=relaxed/relaxed;
-	bh=yTe15Tj8VEIjbN08d1F8wK0WLROao4ZYg0eN8rBybW8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtkcwFSFaKXUaavnR/l1ER2O5QNVce7rBNk5X0f6NGuBFF0jnl+52OWNn/Jb+49skoEF1P68AxKg87vRne1+0xH6AdOQjBz3AE3X5C9mIEJSkHpUCIgiZZz7AGw4az9xVxmM/Tsr+5ju6795gAIRbdp25qWgJwni3zKC/oCBrzaIuTuFosk8mIx+5lXQRzO8S6bziuUooPxmomWt3ykiHen1Vkri/rLYNp6nTE8GwVDMb7nkyv8KI92X37P8oMQ3tPyI512s9m1x4dd4Hkj46sFeKMhM0bSWyOdziSCTcT8mPGbX41BkkZzmze/806DA17y/e2MRjtAgw/Wd7BkDPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T/UvuFwR; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1735528342; c=relaxed/relaxed;
+	bh=00MV44O/wLuPQ/RpQp8S/rpHXiOskq9DnLB00pReqmw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SxhstXk0iZpjACK/8hcMdgBfvA1S9/Exzncc4M7PIeHHuFEsYOhSnt+foagCZNdXEPLs/CAwOlHsC8gzsqyqqRc3GZOpb8eyBK7zYvwDHStD05ESls7vO0oMcKdBseipMR+j3wOGkkW/is0T5VBePk+AuxnHt+ikjzzVB6dthx1QL5AO/nH5VBmVErhWODfga3EBQMXwK7qHk7NeKjY7Xfk1IINA964ZCbHwD98A8oblJU2RevjSt+/UE1CYrmOkQlE4Y/5mnMx/6l7bCZYD3fuo3+FpOP56Sy5MANFmmmnWZ6XfzfbICBrx+WaaGcdJGZqf9W1SV2w+/Oh5dHBoyg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=ioqswVOB; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T/UvuFwR;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=ioqswVOB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YLxTn0Tp7z2xLR
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2024 11:16:12 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8F5F0A4056B;
-	Mon, 30 Dec 2024 00:14:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B7FC4CEDD;
-	Mon, 30 Dec 2024 00:16:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735517765;
-	bh=FDzNrJCoVdAmqgX/rTeMmUPgE6IOzOA1GEP6JN6T8HU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T/UvuFwRWdKLULyZldooFldhH+tu37W6X22cmGB8QkaaVYdGUqE2vErdBb3LOEZO/
-	 gZ7fJYbPzIF/smtDRzJE7n1NbbUqOI921yjPfm8iNWjQRA2hPN9l65SIy7+fvftSDT
-	 JempkVhxX8ZqgZ+D3JV9BMUUqPPu3rnxwgkJQ3idcCGc7mAa6af3GogSRr6269qD0F
-	 7gFNFvUU5uEllXPOgUP8xIIqaJeJLfa+6v+SnZV81TKv/RQrSQ/RYCAV5wwt2i3OvS
-	 wpvZamcvU+Wez3NStN+LB8Q5H7TF9CqVwwuPQ6d3G+FC6cijFylUrNdOxJvuYyzWOn
-	 gx68h5vs9jGAg==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v2 20/29] crypto: nx - use the new scatterwalk functions
-Date: Sun, 29 Dec 2024 16:14:09 -0800
-Message-ID: <20241230001418.74739-21-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <20241230001418.74739-1-ebiggers@kernel.org>
-References: <20241230001418.74739-1-ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YM1P0229Xz2yhT
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2024 14:12:17 +1100 (AEDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-2166f1e589cso136672255ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 29 Dec 2024 19:12:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1735528335; x=1736133135; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=00MV44O/wLuPQ/RpQp8S/rpHXiOskq9DnLB00pReqmw=;
+        b=ioqswVOBKJi8jGzAXtDUe/gxAnfwIEfP1ZqwZfhEssYHU40gVS0+upPf4tfCfKQCVZ
+         YTjN+hopmsLeAui/Veme+u/xWpVK3UMqEa7u55Mf9GwDUOQ14iMOqJm2BnitflV9Neb/
+         mJnMwSL5j43+V+YNicwc5bmTRCfGyafVfB1bdRFlAmwTFGFh3mOeLFFEL6lwkd61hd5F
+         FuenXMoyPiZ1HDjf2kEfQBsqV1kZN/4bY68RQXQI9uPHcY3M8j/1qe+HdgP40sqU5i/2
+         a+B/xfPg6CFTONhwnUh0chyY/R5NzWbPfs1OrT/beJo9kNQ2LEq8Y1g8zcT/n0Y8Pmci
+         m9JA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735528335; x=1736133135;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=00MV44O/wLuPQ/RpQp8S/rpHXiOskq9DnLB00pReqmw=;
+        b=mq89FUk7/ER9279YkNnQ09Mog3MGo62tV7zWJDVFAw0uY+b0y9rRZt8bOcF3ycucvy
+         SLBL5McEvk+S17ClHNNu8cAOxjaSV/3E+St2yKYTuiEwMMLiQxc9DLmUUjfKmqTbofXe
+         Z3T0rmTlATRqxAvfCinDJYN8TeZn2I/En0DR1nWPTNW7R+tzsRZTJBuPKZoLf4bf0l+5
+         N00C3xhPEyAecGjhE8jiMaDVzzkdbOashaiQ7i4F+M/8KPxQ5PWAd3/RJ7RRKYKSmuGD
+         AkUBw+I+n4OW6icxaFNaUouKlcjRmOIeGYbR8FMtdKmMWkk/qASJJ31kSegrmbObrwBt
+         3w3g==
+X-Forwarded-Encrypted: i=1; AJvYcCVbjSHsZ8KZnOcFDUXXcvXTzuTgQVenrvy5EQaLA7xY+ntvK655NlNoggYpzIFq0MIerpapdZkGkJqOQ2w=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YysHM5TBZTnzfmqHQjnD9VDTbZKI2/Z943P3OwR+LHz78Y0vt3y
+	W2g+f61pscG9km1YF649jtWPpxGX9noxsYeWXKxUAKWqGgGqjr4LoPXOtnd6aOo=
+X-Gm-Gg: ASbGncsO70bVD30e27VDffaiHh90+V90GybuGlD9NybBJiUwuGkb8PqTCdKSbd2rEGs
+	yxe2js60iq/BBvmxWKbvxgWblVvYmQhuegBhRuB3VZcWiE01w+2MXp8izTB4SCLBp3zpxlEVbAM
+	VEpakUvg48elsTy49AJ3SVbCFvuGoO6tRJAF2O+9SN9SNRmfDjyxCFTnprvnHv/YuSo4ebJmI1V
+	f1MP2UgQwQ8GnsY8WXGUsObYSj7eeCPLO1gpjT9yWc72ne9+AQIyPfRbvvtnLQNx2Dtoc5nmpj/
+	PEa+Lw==
+X-Google-Smtp-Source: AGHT+IHVtuGTDJKnXgo1JS5AtVrvj0I/cg1dyieo6seko5BYBtWvsXqnYPIAVAFKhaTndzKmWg8VgQ==
+X-Received: by 2002:a05:6a20:9185:b0:1e5:7db5:d6e7 with SMTP id adf61e73a8af0-1e5e083f019mr66304616637.46.1735528334820;
+        Sun, 29 Dec 2024 19:12:14 -0800 (PST)
+Received: from [10.84.148.23] ([203.208.167.148])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad84eb45sm18191842b3a.88.2024.12.29.19.12.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 29 Dec 2024 19:12:14 -0800 (PST)
+Message-ID: <9cac5690-c570-4d43-a6bc-2b59b85497ae@bytedance.com>
+Date: Mon, 30 Dec 2024 11:12:00 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,236 +83,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 15/17] mm: pgtable: remove tlb_remove_page_ptdesc()
+Content-Language: en-US
+To: Mike Rapoport <rppt@kernel.org>, akpm@linux-foundation.org,
+ kevin.brodsky@arm.com, peterz@infradead.org
+Cc: agordeev@linux.ibm.com, tglx@linutronix.de, david@redhat.com,
+ jannh@google.com, hughd@google.com, yuzhao@google.com, willy@infradead.org,
+ muchun.song@linux.dev, vbabka@kernel.org, lorenzo.stoakes@oracle.com,
+ rientjes@google.com, vishal.moola@gmail.com, arnd@arndb.de, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, dave.hansen@linux.intel.com,
+ ryan.roberts@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-um@lists.infradead.org
+References: <cover.1734945104.git.zhengqi.arch@bytedance.com>
+ <b37435768345e0fcf7ea358f69b4a71767f0f530.1734945104.git.zhengqi.arch@bytedance.com>
+ <Z2_EPmOTUHhcBegW@kernel.org>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <Z2_EPmOTUHhcBegW@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Eric Biggers <ebiggers@google.com>
+Hi Mike,
 
-- In nx_walk_and_build(), use scatterwalk_start_at_pos() instead of a
-  more complex way to achieve the same result.
+On 2024/12/28 17:26, Mike Rapoport wrote:
+> On Mon, Dec 23, 2024 at 05:41:01PM +0800, Qi Zheng wrote:
+>> Here we are explicitly dealing with struct page, and the following logic
+>> semms strange:
+>>
+>> tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));
+>>
+>> tlb_remove_page_ptdesc
+>> --> tlb_remove_page(tlb, ptdesc_page(pt));
+>>
+>> So remove tlb_remove_page_ptdesc() and make callers call tlb_remove_page()
+>> directly.
+> 
+> Please don't. The ptdesc wrappers are there as a part of reducing the size
+> of struct page project [1].
+> 
+> For now struct ptdesc overlaps struct page, but the goal is to have them
+> separate and always operate on struct ptdesc when working with page tables.
 
-- Also in nx_walk_and_build(), use the new functions scatterwalk_next()
-  which consolidates scatterwalk_clamp() and scatterwalk_map(), and use
-  scatterwalk_done_src() which consolidates scatterwalk_unmap(),
-  scatterwalk_advance(), and scatterwalk_done().  Remove unnecessary
-  code that seemed to be intended to advance to the next sg entry, which
-  is already handled by the scatterwalk functions.
+OK, so tlb_remove_page_ptdesc() and tlb_remove_ptdesc() are somewhat
+intermediate products of the project.
 
-  Note that nx_walk_and_build() does not actually read or write the
-  mapped virtual address, and thus it is misusing the scatter_walk API.
-  It really should just access the scatterlist directly.  This patch
-  does not try to address this existing issue.
+Hi Andrew, can you help remove [PATCH v3 15/17], [PATCH v3 16/17] and
+[PATCH v3 17/17] from the mm-unstable branch?
 
-- In nx_gca(), use memcpy_from_sglist() instead of a more complex way to
-  achieve the same result.
+For [PATCH v3 17/17], I can send it separately later, or Kevin Brodsky
+can help do this in his patch series. ;)
 
-- In various functions, replace calls to scatterwalk_map_and_copy() with
-  memcpy_from_sglist() or memcpy_to_sglist() as appropriate.  Note that
-  this eliminates the confusing 'out' argument (which this driver had
-  tried to work around by defining the missing constants for it...)
+Thanks,
+Qi
 
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
-
-This patch is part of a long series touching many files, so I have
-limited the Cc list on the full series.  If you want the full series and
-did not receive it, please retrieve it from lore.kernel.org.
-
- drivers/crypto/nx/nx-aes-ccm.c | 16 ++++++----------
- drivers/crypto/nx/nx-aes-gcm.c | 17 ++++++-----------
- drivers/crypto/nx/nx.c         | 31 +++++--------------------------
- drivers/crypto/nx/nx.h         |  3 ---
- 4 files changed, 17 insertions(+), 50 deletions(-)
-
-diff --git a/drivers/crypto/nx/nx-aes-ccm.c b/drivers/crypto/nx/nx-aes-ccm.c
-index c843f4c6f684..56a0b3a67c33 100644
---- a/drivers/crypto/nx/nx-aes-ccm.c
-+++ b/drivers/crypto/nx/nx-aes-ccm.c
-@@ -215,17 +215,15 @@ static int generate_pat(u8                   *iv,
- 	 */
- 	if (b1) {
- 		memset(b1, 0, 16);
- 		if (assoclen <= 65280) {
- 			*(u16 *)b1 = assoclen;
--			scatterwalk_map_and_copy(b1 + 2, req->src, 0,
--					 iauth_len, SCATTERWALK_FROM_SG);
-+			memcpy_from_sglist(b1 + 2, req->src, 0, iauth_len);
- 		} else {
- 			*(u16 *)b1 = (u16)(0xfffe);
- 			*(u32 *)&b1[2] = assoclen;
--			scatterwalk_map_and_copy(b1 + 6, req->src, 0,
--					 iauth_len, SCATTERWALK_FROM_SG);
-+			memcpy_from_sglist(b1 + 6, req->src, 0, iauth_len);
- 		}
- 	}
- 
- 	/* now copy any remaining AAD to scatterlist and call nx... */
- 	if (!assoclen) {
-@@ -339,13 +337,12 @@ static int ccm_nx_decrypt(struct aead_request   *req,
- 	spin_lock_irqsave(&nx_ctx->lock, irq_flags);
- 
- 	nbytes -= authsize;
- 
- 	/* copy out the auth tag to compare with later */
--	scatterwalk_map_and_copy(priv->oauth_tag,
--				 req->src, nbytes + req->assoclen, authsize,
--				 SCATTERWALK_FROM_SG);
-+	memcpy_from_sglist(priv->oauth_tag, req->src, nbytes + req->assoclen,
-+			   authsize);
- 
- 	rc = generate_pat(iv, req, nx_ctx, authsize, nbytes, assoclen,
- 			  csbcpb->cpb.aes_ccm.in_pat_or_b0);
- 	if (rc)
- 		goto out;
-@@ -463,13 +460,12 @@ static int ccm_nx_encrypt(struct aead_request   *req,
- 		processed += to_process;
- 
- 	} while (processed < nbytes);
- 
- 	/* copy out the auth tag */
--	scatterwalk_map_and_copy(csbcpb->cpb.aes_ccm.out_pat_or_mac,
--				 req->dst, nbytes + req->assoclen, authsize,
--				 SCATTERWALK_TO_SG);
-+	memcpy_to_sglist(req->dst, nbytes + req->assoclen,
-+			 csbcpb->cpb.aes_ccm.out_pat_or_mac, authsize);
- 
- out:
- 	spin_unlock_irqrestore(&nx_ctx->lock, irq_flags);
- 	return rc;
- }
-diff --git a/drivers/crypto/nx/nx-aes-gcm.c b/drivers/crypto/nx/nx-aes-gcm.c
-index 4a796318b430..b7fe2de96d96 100644
---- a/drivers/crypto/nx/nx-aes-gcm.c
-+++ b/drivers/crypto/nx/nx-aes-gcm.c
-@@ -101,20 +101,17 @@ static int nx_gca(struct nx_crypto_ctx  *nx_ctx,
- 		  u8                    *out,
- 		  unsigned int assoclen)
- {
- 	int rc;
- 	struct nx_csbcpb *csbcpb_aead = nx_ctx->csbcpb_aead;
--	struct scatter_walk walk;
- 	struct nx_sg *nx_sg = nx_ctx->in_sg;
- 	unsigned int nbytes = assoclen;
- 	unsigned int processed = 0, to_process;
- 	unsigned int max_sg_len;
- 
- 	if (nbytes <= AES_BLOCK_SIZE) {
--		scatterwalk_start(&walk, req->src);
--		scatterwalk_copychunks(out, &walk, nbytes, SCATTERWALK_FROM_SG);
--		scatterwalk_done(&walk, SCATTERWALK_FROM_SG, 0);
-+		memcpy_from_sglist(out, req->src, 0, nbytes);
- 		return 0;
- 	}
- 
- 	NX_CPB_FDM(csbcpb_aead) &= ~NX_FDM_CONTINUATION;
- 
-@@ -389,23 +386,21 @@ static int gcm_aes_nx_crypt(struct aead_request *req, int enc,
- 	} while (processed < nbytes);
- 
- mac:
- 	if (enc) {
- 		/* copy out the auth tag */
--		scatterwalk_map_and_copy(
--			csbcpb->cpb.aes_gcm.out_pat_or_mac,
-+		memcpy_to_sglist(
- 			req->dst, req->assoclen + nbytes,
--			crypto_aead_authsize(crypto_aead_reqtfm(req)),
--			SCATTERWALK_TO_SG);
-+			csbcpb->cpb.aes_gcm.out_pat_or_mac,
-+			crypto_aead_authsize(crypto_aead_reqtfm(req)));
- 	} else {
- 		u8 *itag = nx_ctx->priv.gcm.iauth_tag;
- 		u8 *otag = csbcpb->cpb.aes_gcm.out_pat_or_mac;
- 
--		scatterwalk_map_and_copy(
-+		memcpy_from_sglist(
- 			itag, req->src, req->assoclen + nbytes,
--			crypto_aead_authsize(crypto_aead_reqtfm(req)),
--			SCATTERWALK_FROM_SG);
-+			crypto_aead_authsize(crypto_aead_reqtfm(req)));
- 		rc = crypto_memneq(itag, otag,
- 			    crypto_aead_authsize(crypto_aead_reqtfm(req))) ?
- 		     -EBADMSG : 0;
- 	}
- out:
-diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
-index 010e87d9da36..dd95e5361d88 100644
---- a/drivers/crypto/nx/nx.c
-+++ b/drivers/crypto/nx/nx.c
-@@ -151,44 +151,23 @@ struct nx_sg *nx_walk_and_build(struct nx_sg       *nx_dst,
- 				unsigned int        start,
- 				unsigned int       *src_len)
- {
- 	struct scatter_walk walk;
- 	struct nx_sg *nx_sg = nx_dst;
--	unsigned int n, offset = 0, len = *src_len;
-+	unsigned int n, len = *src_len;
- 	char *dst;
- 
- 	/* we need to fast forward through @start bytes first */
--	for (;;) {
--		scatterwalk_start(&walk, sg_src);
--
--		if (start < offset + sg_src->length)
--			break;
--
--		offset += sg_src->length;
--		sg_src = sg_next(sg_src);
--	}
--
--	/* start - offset is the number of bytes to advance in the scatterlist
--	 * element we're currently looking at */
--	scatterwalk_advance(&walk, start - offset);
-+	scatterwalk_start_at_pos(&walk, sg_src, start);
- 
- 	while (len && (nx_sg - nx_dst) < sglen) {
--		n = scatterwalk_clamp(&walk, len);
--		if (!n) {
--			/* In cases where we have scatterlist chain sg_next
--			 * handles with it properly */
--			scatterwalk_start(&walk, sg_next(walk.sg));
--			n = scatterwalk_clamp(&walk, len);
--		}
--		dst = scatterwalk_map(&walk);
-+		dst = scatterwalk_next(&walk, len, &n);
- 
- 		nx_sg = nx_build_sg_list(nx_sg, dst, &n, sglen - (nx_sg - nx_dst));
--		len -= n;
- 
--		scatterwalk_unmap(dst);
--		scatterwalk_advance(&walk, n);
--		scatterwalk_done(&walk, SCATTERWALK_FROM_SG, len);
-+		scatterwalk_done_src(&walk, dst, n);
-+		len -= n;
- 	}
- 	/* update to_process */
- 	*src_len -= len;
- 
- 	/* return the moved destination pointer */
-diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
-index 2697baebb6a3..e1b4b6927bec 100644
---- a/drivers/crypto/nx/nx.h
-+++ b/drivers/crypto/nx/nx.h
-@@ -187,9 +187,6 @@ extern struct shash_alg nx_shash_aes_xcbc_alg;
- extern struct shash_alg nx_shash_sha512_alg;
- extern struct shash_alg nx_shash_sha256_alg;
- 
- extern struct nx_crypto_driver nx_driver;
- 
--#define SCATTERWALK_TO_SG	1
--#define SCATTERWALK_FROM_SG	0
--
- #endif
--- 
-2.47.1
+> 
+> [1] https://kernelnewbies.org/MatthewWilcox/Memdescs
+>   
 
 
