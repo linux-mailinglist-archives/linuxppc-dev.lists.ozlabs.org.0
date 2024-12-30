@@ -1,122 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-4533-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4534-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2DC609FE48B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2024 10:11:52 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE80B9FE4CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 30 Dec 2024 10:28:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YM9Mn6h47z30Nc;
-	Mon, 30 Dec 2024 20:11:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YM9lL355Mz2yhT;
+	Mon, 30 Dec 2024 20:28:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735549909;
-	cv=none; b=K2ut5E7TIPJ2RKvvIIpaCbIKph9R/pKVA11+AzIv/rGJA7mW5oINfoxzrZLc/zMfWN3DvBVxYZt1FCkaAfeZFABtq7tLAMBR8Z6TdVNtiyDvbjqqsbSun0x7hVNUX+BEQawwJfQrw52Z4atpLjkIS20rDoiXttrib4EK7vyw2qdf3/+hO2dAYGLM6tiDDE2ef8tlaQxOVi/BHPhjuSukd12csyX0Wax9P8WqrCDic92iviujk0b9PLlWpgS8PgfnzIjY0mGkAXJUhA8fsqe7xUrBTLgRxUjGlveDT/XcO24zWTUDRM58H9Au9GWxlZhasT6k/S3RVyxf/eXzQXZlvw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735550926;
+	cv=none; b=VQ6Z2IpAPyec4DTTcR8k46QhYzrt8JshSN5h2TpjF6Gt/2Yh+gt34agem9fDo8lYFGwl1w86NaO/LbVzBhqxplEO+vhn8wno0asTo+I9GCY6RTlJGkr9gFuL8LV3fcjwPHigzUnwwJ25QoQerwb8aljV5iN9Azr2lWofwbu/RtZxy9aUz4939DgYKOkLJJ9iREj8YA1fmvnvTwdpoaCj7SW585gJJKMBzKffAm3qa4IDHWfKhWscQe4yFNJYazO9aIH7k41SAa3xZY+drLooNbGEYVKP9KtbBNlFNxxLG1bXwP9rV0PO6K2CatNaA4FaI2X3ir5/fJk7YuXQTP0jnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735549909; c=relaxed/relaxed;
-	bh=Uxx1VFA8X6F1Vml9+szJuo78n9B3sJITH2LTRfnVDm8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CHgQ5PmfzqtaZ3cJ+PzesMsjEGLV04lpBFWX0phZh0+fcQYw3pjfntp1npfsOqDF5SVE1V2r5uIr+GpCcdnAXXZ6sXdODei3n4Mla6vJHbNmej1zv8x36+lZd0KGug8+cAKUz7NzmLrqknPWcMPzn1GbPAGTTsCP/V8rJ6/drmG9wdk8NC+SXoAfZkuP7B141Y1MHmEQO9W1SSP20xTo5kxuZxrY8lSkrps7ZzmfpIBUSuAybzG+FNzfRd13DXUDnsK2eCuTszheYRcLAlhMvfkk7bjcvuZVd0HN46UDYp570yibcDcGYUlX1yZYHwz0TE6u0B+mWTt4S/yIsxpijg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=YimxiTKt; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	t=1735550926; c=relaxed/relaxed;
+	bh=y45E+6Nso6G0MhE4dDdj+Lm0iCPoKeY3+BXyHPQJ44k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R8G9ZzoEXb14sCu9wI5yrc7UestlkBaoPtr3tSv/eoUbGxkAENewagfbkKU00+WKal8qUnFI8fyogtxScEGRrjsHfXsfR2eT4nSnvGK9cgZ3dTQcytXQAtXiK6bvrYgWZ8c6rp/xGnbg0+mPgJtkwaZ4TcdKT6l+Vlbk/QWSja0HqFvKWZZ/AEKRYucNcYWmUmmIXnmAp18Y2CsuJBjQyAKuBFbqPCwCuhv7BuTkzsdGDpvrNLEWAgTvD+bnqvNwqf4D/LeqEor67cWLw5kKJplofQrEp7JMOF08ZYFQvdaamUUSr4+q7y3Uuh4ySZCwoXACpvrp1ovEcuxFBOfAvw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I1MkuLlz; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=YimxiTKt;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I1MkuLlz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YM9Mm6ktwz30NY
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2024 20:11:48 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-2163bd70069so13728055ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2024 01:11:48 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1735549907; x=1736154707; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Uxx1VFA8X6F1Vml9+szJuo78n9B3sJITH2LTRfnVDm8=;
-        b=YimxiTKt7vXIjI4UMsf0Ev9PozZJsFqG/wDKhDJ9dl5tUIlIitoY7ujWMUaBz3UANq
-         JDAEeWj6jCw7SjAQFCEvNbOaeSYMNPxWM86TTqJaZD/KGYpwAz2IXe++xNLahxqZkQmS
-         UfCKtI5Hia0C55wdcJL7SM11tVUllxyi0x0FbRENp6RgMH6izyyjsLwQ3Bs4Z8K25NF/
-         ZfKCeIFQ1hZyTd+7mjDbsMnU9H7Q6Vl4vTzQS8GXqUTfz6mzZO+MbkdMEZsuJpu9KOjd
-         PjYr4omvPT+XXqXiQubu57rLDASJab/c/mbbuPu7GJF+qlB3O4ZTXilo/m8/nI6ErhBH
-         qjWQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735549907; x=1736154707;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Uxx1VFA8X6F1Vml9+szJuo78n9B3sJITH2LTRfnVDm8=;
-        b=v8mT2kCvrgH7twFtCf2pUY0VR2B5g0eoGucoafZU1g3Up4eycScDK5Uj8oUBbn+FOL
-         nJxRyC8yFe0lcDB/Y/95vs+vc1Cnx/BMvDi7ZxTvROzPgkOFw7NXcFUO9fJi93xkgVEX
-         4Z8R9qde2ASe1hQfEPrYzwScFYxPqTjfAK7v4VqRWw6Aeusl6ZOQBXaiO3fgNdUo7g3X
-         ixXqAZBe/nwgUfrtX2e4jKDsclUJH15ebt5QzbE+MBXizRzcTnKstScVGVLc6uW6Jjtt
-         8hwiJ3NkgaMDgq8GLYW1oiKUzASV5I1A/kflKmbflffTBQtk9q/sMqyMiamLxqCBZ1em
-         fATw==
-X-Forwarded-Encrypted: i=1; AJvYcCXNwv1hyOVysI3YNOQSQwORuQL/lZmOOXOHIkvzkOEb0JDQzn1kW4nowcn/CDWeGU8kEzqCVXdrkjamxNg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxNqc/kDCY3Jo9O6DtL51xI87eglXKX/Atb/JagWthasz3bO7rt
-	NSiIyvVyTeBQxH6czvXQvWnY3gT3iQ5wkHhsniVvlv9w/6KWT1zAdkVBsV6oB5U=
-X-Gm-Gg: ASbGncvZME3rEHkHV1r3vWE7bk2LCDNCF9Ckmft4Sg5na4hRGS7Zdq7UYlT0TMehGbL
-	2BNbRoOMhV4u1+cUzzpOksP01z4NZcLj2Tj135uOaWOO+nubJpqi6Ny3VP4eoawszINWqfDOKUt
-	HqvOIPEG1+CZw8XokyXMaFtTPXDD0/P1FwmdNk33RN5RxOJQ5E/zrtSPCunH0ucHrMGd/8HgVxA
-	Mp4cc7elA5aIsU8mfCoc5JMFjT34ZvsJsJIDrl5cRYg+oW+IcdhPnVqLEsi85LJvUPAGeh3w4du
-	t9O5fYFAjYR9hvBs51yjpw==
-X-Google-Smtp-Source: AGHT+IH6enLQBRxhPiyC+b4rbFoH6ZPXIb+9j2XLkfNoZdfNkkGtY/WgMqtF7HfldrPWQopcc9iyNw==
-X-Received: by 2002:a05:6a20:4308:b0:1e0:c8d9:3382 with SMTP id adf61e73a8af0-1e5e0847084mr55644198637.45.1735549906952;
-        Mon, 30 Dec 2024 01:11:46 -0800 (PST)
-Received: from C02DW0BEMD6R.bytedance.net ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-842aba72f7csm17057841a12.4.2024.12.30.01.11.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Dec 2024 01:11:46 -0800 (PST)
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-To: peterz@infradead.org,
-	agordeev@linux.ibm.com,
-	kevin.brodsky@arm.com,
-	palmer@dabbelt.com,
-	tglx@linutronix.de,
-	david@redhat.com,
-	jannh@google.com,
-	hughd@google.com,
-	yuzhao@google.com,
-	willy@infradead.org,
-	muchun.song@linux.dev,
-	vbabka@kernel.org,
-	lorenzo.stoakes@oracle.com,
-	akpm@linux-foundation.org,
-	rientjes@google.com,
-	vishal.moola@gmail.com,
-	arnd@arndb.de,
-	will@kernel.org,
-	aneesh.kumar@kernel.org,
-	npiggin@gmail.com,
-	dave.hansen@linux.intel.com,
-	rppt@kernel.org,
-	ryan.roberts@arm.com
-Cc: linux-mm@kvack.org,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	linux-arch@vger.kernel.org,
-	linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org,
-	linux-sh@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v4 15/15] mm: pgtable: introduce generic pagetable_dtor_free()
-Date: Mon, 30 Dec 2024 17:07:50 +0800
-Message-Id: <cb5700c21d0eed9eb50bac385be1fb6cdef7e530.1735549103.git.zhengqi.arch@bytedance.com>
-X-Mailer: git-send-email 2.24.3 (Apple Git-128)
-In-Reply-To: <cover.1735549103.git.zhengqi.arch@bytedance.com>
-References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YM9lJ6mNsz2xGr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 30 Dec 2024 20:28:44 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 4BU3refa032254;
+	Mon, 30 Dec 2024 09:28:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=y45E+6Nso6G0MhE4dDdj+Lm0iCPoKe
+	Y3+BXyHPQJ44k=; b=I1MkuLlzpBewVtE6qRiQa0ewtGfA1slUstSMm95RCY7/ax
+	YoZkZgHpZLmvMzDnzU+T5L7SwVxxBj29V1qgWMf1zlOPqUPPhd7QEPGBKE6wkxG3
+	UBRq6alcSRHh/RjF1qTlg7d3MVSsxW+h3m3jSAjk/pBvwtOIBHu+7JrzPHwOsY54
+	fQLnjFq2SWzEXTwEkVrYcJMrrQ0RFmQxGbVsXgWWylikIuejV8q4RuhweKumwAga
+	As3e9eC965fqt/xb/8dwTfDnlb0rgxR7bZu2/3vs/TjCIVc4ea35buHQ79CiNrYk
+	JBIQ3ZgXoB/4MrKUrW72djdNJ8QqKV/We/5IEySg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43um0gs03b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 09:28:35 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 4BU9K291032124;
+	Mon, 30 Dec 2024 09:28:35 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43um0gs038-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 09:28:35 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 4BU5W1qx014060;
+	Mon, 30 Dec 2024 09:28:34 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43tv1xw2be-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 30 Dec 2024 09:28:33 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 4BU9ST9m47055332
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 30 Dec 2024 09:28:30 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DF04E20043;
+	Mon, 30 Dec 2024 09:28:29 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0A7D020040;
+	Mon, 30 Dec 2024 09:28:27 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.39.28.22])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 30 Dec 2024 09:28:26 +0000 (GMT)
+Date: Mon, 30 Dec 2024 14:58:22 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, kconsul@linux.ibm.com, amachhiw@linux.ibm.com
+Subject: Re: [PATCH 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv specific
+ PMU
+Message-ID: <a527m2zupgqrxd4ba4lz2xwregcaamnbffj67ixwz7u6j4yxzr@z3wcmd5rfzhb>
+References: <20241222140247.174998-1-vaibhav@linux.ibm.com>
+ <20241222140247.174998-5-vaibhav@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -129,121 +96,262 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241222140247.174998-5-vaibhav@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: O8MKguqH_3ix0Tch_r-5ZxjY1X0fR00L
+X-Proofpoint-GUID: P8q4PriJbnLVqtbdyMMkGL94aP5fYaiA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 suspectscore=0 clxscore=1015 mlxscore=0 malwarescore=0
+ mlxlogscore=999 bulkscore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2412300077
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The pte_free(), pmd_free(), __pud_free() and __p4d_free() in
-asm-generic/pgalloc.h and the generic __tlb_remove_table() are basically
-the same, so let's introduce pagetable_dtor_free() to deduplicate them.
+On Sun, Dec 22, 2024 at 07:32:32PM +0530, Vaibhav Jain wrote:
+> Introduce a new PMU named 'kvm-hv' to report Book3s kvm-hv specific
+> performance counters. This will expose KVM-HV specific performance
+> attributes to user-space via kernel's PMU infrastructure and would enable
+> users to monitor active kvm-hv based guests.
+> 
+> The patch creates necessary scaffolding to for the new PMU callbacks and
+> introduces two new exports kvmppc_{,un}register_pmu() that are called from
+> kvm-hv init and exit function to perform initialize and cleanup for the
+> 'kvm-hv' PMU. The patch doesn't introduce any perf-events yet, which will
+> be introduced in later patches
+> 
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/kvm_book3s.h |  12 +++
+>  arch/powerpc/kvm/Makefile             |   6 ++
+>  arch/powerpc/kvm/book3s_hv.c          |   7 ++
+>  arch/powerpc/kvm/book3s_hv_pmu.c      | 133 ++++++++++++++++++++++++++
+>  4 files changed, 158 insertions(+)
+>  create mode 100644 arch/powerpc/kvm/book3s_hv_pmu.c
+> 
+> diff --git a/arch/powerpc/include/asm/kvm_book3s.h b/arch/powerpc/include/asm/kvm_book3s.h
+> index e1ff291ba891..cf91a1493159 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+> @@ -334,6 +334,9 @@ static inline bool kvmhv_is_nestedv1(void)
+>  	return !static_branch_likely(&__kvmhv_is_nestedv2);
+>  }
+>  
+> +int kvmppc_register_pmu(void);
+> +void kvmppc_unregister_pmu(void);
+> +
+>  #else
+>  
+>  static inline bool kvmhv_is_nestedv2(void)
+> @@ -346,6 +349,15 @@ static inline bool kvmhv_is_nestedv1(void)
+>  	return false;
+>  }
+>  
+> +static int kvmppc_register_pmu(void)
+> +{
+> +	return 0;
+> +}
+> +
+> +static void kvmppc_unregister_pmu(void)
+> +{
+> +}
+> +
+>  #endif
+>  
+>  int __kvmhv_nestedv2_reload_ptregs(struct kvm_vcpu *vcpu, struct pt_regs *regs);
+> diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
+> index 4bd9d1230869..094c3916d9d0 100644
+> --- a/arch/powerpc/kvm/Makefile
+> +++ b/arch/powerpc/kvm/Makefile
+> @@ -92,6 +92,12 @@ kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) += \
+>  	$(kvm-book3s_64-builtin-tm-objs-y) \
+>  	$(kvm-book3s_64-builtin-xics-objs-y)
+>  
+> +# enable kvm_hv perf events
+> +ifdef CONFIG_HAVE_PERF_EVENTS
+> +kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) += \
+> +	book3s_hv_pmu.o
+> +endif
+> +
+>  obj-$(CONFIG_GUEST_STATE_BUFFER_TEST) += test-guest-state-buffer.o
+>  endif
+>  
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 25429905ae90..83bcce2fb557 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6662,6 +6662,12 @@ static int kvmppc_book3s_init_hv(void)
+>  		return r;
+>  	}
+>  
+> +	r = kvmppc_register_pmu();
+> +	if (r) {
+> +		pr_err("KVM-HV: Unable to register PMUs %d\n", r);
+> +		goto err;
+> +	}
+> +
+>  	kvm_ops_hv.owner = THIS_MODULE;
+>  	kvmppc_hv_ops = &kvm_ops_hv;
+>  
+> @@ -6676,6 +6682,7 @@ static int kvmppc_book3s_init_hv(void)
+>  
+>  static void kvmppc_book3s_exit_hv(void)
+>  {
+> +	kvmppc_unregister_pmu();
+>  	kvmppc_uvmem_free();
+>  	kvmppc_free_host_rm_ops();
+>  	if (kvmppc_radix_possible())
+> diff --git a/arch/powerpc/kvm/book3s_hv_pmu.c b/arch/powerpc/kvm/book3s_hv_pmu.c
+> new file mode 100644
+> index 000000000000..e72542d5e750
+> --- /dev/null
+> +++ b/arch/powerpc/kvm/book3s_hv_pmu.c
+> @@ -0,0 +1,133 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Description: PMUs specific to running nested KVM-HV guests
+> + * on Book3S processors (specifically POWER9 and later).
+> + */
+> +
+> +#define pr_fmt(fmt)  "kvmppc-pmu: " fmt
+> +
+> +#include "asm-generic/local64.h"
+> +#include <linux/kernel.h>
+> +#include <linux/errno.h>
+> +#include <linux/ratelimit.h>
+> +#include <linux/kvm_host.h>
+> +#include <linux/gfp_types.h>
+> +#include <linux/pgtable.h>
+> +#include <linux/perf_event.h>
+> +#include <linux/spinlock_types.h>
+> +#include <linux/spinlock.h>
+> +
+> +#include <asm/types.h>
+> +#include <asm/kvm_ppc.h>
+> +#include <asm/kvm_book3s.h>
+> +#include <asm/mmu.h>
+> +#include <asm/pgalloc.h>
+> +#include <asm/pte-walk.h>
+> +#include <asm/reg.h>
+> +#include <asm/plpar_wrappers.h>
+> +#include <asm/firmware.h>
+> +
+> +enum kvmppc_pmu_eventid {
+> +	KVMPPC_EVENT_MAX,
+> +};
+> +
+> +static struct attribute *kvmppc_pmu_events_attr[] = {
+> +	NULL,
+> +};
+> +
+> +static const struct attribute_group kvmppc_pmu_events_group = {
+> +	.name = "events",
+> +	.attrs = kvmppc_pmu_events_attr,
+> +};
+> +
+> +PMU_FORMAT_ATTR(event, "config:0");
+> +static struct attribute *kvmppc_pmu_format_attr[] = {
+> +	&format_attr_event.attr,
+> +	NULL,
+> +};
+> +
+> +static struct attribute_group kvmppc_pmu_format_group = {
+> +	.name = "format",
+> +	.attrs = kvmppc_pmu_format_attr,
+> +};
+> +
+> +static const struct attribute_group *kvmppc_pmu_attr_groups[] = {
+> +	&kvmppc_pmu_events_group,
+> +	&kvmppc_pmu_format_group,
+> +	NULL,
+> +};
+> +
+> +static int kvmppc_pmu_event_init(struct perf_event *event)
+> +{
+> +	unsigned int config = event->attr.config;
+> +
+> +	pr_debug("%s: Event(%p) id=%llu cpu=%x on_cpu=%x config=%u",
+> +		 __func__, event, event->id, event->cpu,
+> +		 event->oncpu, config);
+> +
+> +	if (event->attr.type != event->pmu->type)
+> +		return -ENOENT;
+> +
+> +	if (config >= KVMPPC_EVENT_MAX)
+> +		return -EINVAL;
+> +
+> +	local64_set(&event->hw.prev_count, 0);
+> +	local64_set(&event->count, 0);
+> +
+> +	return 0;
+> +}
+> +
+> +static void kvmppc_pmu_del(struct perf_event *event, int flags)
+> +{
+> +}
+> +
+> +static int kvmppc_pmu_add(struct perf_event *event, int flags)
+> +{
+> +	return 0;
+> +}
+> +
+> +static void kvmppc_pmu_read(struct perf_event *event)
+> +{
+> +}
+> +
+> +/* L1 wide counters PMU */
+> +static struct pmu kvmppc_pmu = {
+> +	.task_ctx_nr = perf_sw_context,
+> +	.name = "kvm-hv",
+> +	.event_init = kvmppc_pmu_event_init,
+> +	.add = kvmppc_pmu_add,
+> +	.del = kvmppc_pmu_del,
+> +	.read = kvmppc_pmu_read,
+> +	.attr_groups = kvmppc_pmu_attr_groups,
+> +	.type = -1,
+> +};
+> +
+> +int kvmppc_register_pmu(void)
+> +{
+> +	int rc = -EOPNOTSUPP;
+> +
+> +	/* only support events for nestedv2 right now */
+> +	if (kvmhv_is_nestedv2()) {
+> +		/* Setup done now register the PMU */
+> +		pr_info("Registering kvm-hv pmu");
+> +
+> +		/* Register only if we arent already registyered */
+> +		rc = (kvmppc_pmu.type == -1) ?
+> +			     perf_pmu_register(&kvmppc_pmu, kvmppc_pmu.name,
+> +					       -1) : 0;
+> +	}
+> +
+> +	return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(kvmppc_register_pmu);
 
-In addition, the pagetable_dtor_free() in s390 does the same thing, so
-let's s390 also calls generic pagetable_dtor_free().
+This logic breaks on bare metal. kvmppc_register_pmu() returns
+-EOPNOTSUPP because of which kvm_hv cannot be loaded.
 
-Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
----
- arch/s390/mm/pgalloc.c        |  6 ------
- include/asm-generic/pgalloc.h | 12 ++++--------
- include/asm-generic/tlb.h     |  3 +--
- include/linux/mm.h            |  6 ++++++
- 4 files changed, 11 insertions(+), 16 deletions(-)
-
-diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-index 3e002dea6278f..a4e7619020931 100644
---- a/arch/s390/mm/pgalloc.c
-+++ b/arch/s390/mm/pgalloc.c
-@@ -180,12 +180,6 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
- 	return table;
- }
- 
--static void pagetable_dtor_free(struct ptdesc *ptdesc)
--{
--	pagetable_dtor(ptdesc);
--	pagetable_free(ptdesc);
--}
--
- void page_table_free(struct mm_struct *mm, unsigned long *table)
- {
- 	struct ptdesc *ptdesc = virt_to_ptdesc(table);
-diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-index 4afb346eae255..e3977ddca15e4 100644
---- a/include/asm-generic/pgalloc.h
-+++ b/include/asm-generic/pgalloc.h
-@@ -109,8 +109,7 @@ static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
- {
- 	struct ptdesc *ptdesc = page_ptdesc(pte_page);
- 
--	pagetable_dtor(ptdesc);
--	pagetable_free(ptdesc);
-+	pagetable_dtor_free(ptdesc);
- }
- 
- 
-@@ -153,8 +152,7 @@ static inline void pmd_free(struct mm_struct *mm, pmd_t *pmd)
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pmd);
- 
- 	BUG_ON((unsigned long)pmd & (PAGE_SIZE-1));
--	pagetable_dtor(ptdesc);
--	pagetable_free(ptdesc);
-+	pagetable_dtor_free(ptdesc);
- }
- #endif
- 
-@@ -202,8 +200,7 @@ static inline void __pud_free(struct mm_struct *mm, pud_t *pud)
- 	struct ptdesc *ptdesc = virt_to_ptdesc(pud);
- 
- 	BUG_ON((unsigned long)pud & (PAGE_SIZE-1));
--	pagetable_dtor(ptdesc);
--	pagetable_free(ptdesc);
-+	pagetable_dtor_free(ptdesc);
- }
- 
- #ifndef __HAVE_ARCH_PUD_FREE
-@@ -248,8 +245,7 @@ static inline void __p4d_free(struct mm_struct *mm, p4d_t *p4d)
- 	struct ptdesc *ptdesc = virt_to_ptdesc(p4d);
- 
- 	BUG_ON((unsigned long)p4d & (PAGE_SIZE-1));
--	pagetable_dtor(ptdesc);
--	pagetable_free(ptdesc);
-+	pagetable_dtor_free(ptdesc);
- }
- 
- #ifndef __HAVE_ARCH_P4D_FREE
-diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-index 69de47c7ef3c5..a96d4b440f3da 100644
---- a/include/asm-generic/tlb.h
-+++ b/include/asm-generic/tlb.h
-@@ -213,8 +213,7 @@ static inline void __tlb_remove_table(void *table)
- {
- 	struct ptdesc *ptdesc = (struct ptdesc *)table;
- 
--	pagetable_dtor(ptdesc);
--	pagetable_free(ptdesc);
-+	pagetable_dtor_free(ptdesc);
- }
- #endif
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index cad11fa10c192..94078c488e904 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3001,6 +3001,12 @@ static inline void pagetable_dtor(struct ptdesc *ptdesc)
- 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
- 
-+static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
-+{
-+	pagetable_dtor(ptdesc);
-+	pagetable_free(ptdesc);
-+}
-+
- static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
- {
- 	struct folio *folio = ptdesc_folio(ptdesc);
--- 
-2.20.1
-
+> +
+> +void kvmppc_unregister_pmu(void)
+> +{
+> +	if (kvmhv_is_nestedv2()) {
+> +		if (kvmppc_pmu.type != -1)
+> +			perf_pmu_unregister(&kvmppc_pmu);
+> +
+> +		pr_info("kvmhv_pmu unregistered.\n");
+> +	}
+> +}
+> +EXPORT_SYMBOL_GPL(kvmppc_unregister_pmu);
+> -- 
+> 2.47.1
+> 
 
