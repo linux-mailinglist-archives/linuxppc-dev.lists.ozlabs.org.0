@@ -1,111 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-4545-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4546-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95A19FEEFC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 31 Dec 2024 11:57:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19E8D9FF325
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jan 2025 07:47:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YMqgW2mnhz2yV6;
-	Tue, 31 Dec 2024 21:57:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YNL4H5Q1Zz2yFB;
+	Wed,  1 Jan 2025 17:47:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.51 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735642663;
-	cv=pass; b=JGrDwfSLzMggZvqnTju0G96FmmoOt3TiUYsxFM0ptUX2eZvXYVj/qWJkWwxhp+m6+rx/QzSjcBo6ZR49wxOf1z6nqpwaImDe0FMPsbcYjyTgiYiV9AJLaWcYeyjRCipl5EGP1HBwagAVEYrZSlqFNFYz6/GYcRca6PzKvSAWwkZsUK25mpDWl3I5iv3zI3lgvRjdD5kmhY9KbIZq70DFAjhlNJOmI0DjMI7ncUChx5VPKC8egcV/hlXzs3LuHQ6ZlJA4UUrfNbtDwe47LYJuVXWIfrAE3hqE4CrPpiFFMxq/fh+lDPfTxN3eBRUBjlLM5xKsqDiMjNCscz0pCJfHFw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735642663; c=relaxed/relaxed;
-	bh=e2TiCoA7eJaGUxv2X5diaZ853ViVgcepiDe1Q/wZFFA=;
-	h=Subject:From:To:Cc:References:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=ocZStSluajkR75z8jurG+Upnv76YgBxQrSiVl74AMvGzHDzRxV98jjA73Ulf/ZZOxahgki66THXy8jdiUT0fVQY2rq99SpLkUOQZz9YPWp54imWog8FMU6HiwvoWuHGxjiCWC3c0lIvXkMeECLUUJOiMy+bmIk8cQJW3sfpxbcOOD154L4nNpsUdPxSgTsvjkhsOKGtXe3k/lz1xnqoAQVfpp1ijam5fUliBGheZHxEQ0NIVLAO0B054RUUZpgtroPh1wYHDlqLbjvu4GJPN2LNNDXpTwLIY092ujVWC887LGQ2eJeAZPTETqaQSdxrh+wHksHAtPtlky3UVIPNX3g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=WBKKlMDJ; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=d0ie64Lg; dkim-atps=neutral; spf=pass (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735714047;
+	cv=none; b=bjWFA1I7vH2ZSddJR09/AUY4aelv0+zGg29E3QlFZ2dC5LnzGGtIhSaun9NN1mz55U69QeZFsgwKYi6YQKcDNH5xGfIp3OdfwVnWiHTk0fYc9ml+cjHmaTKfP/Ue2Z7gp4sggKB87X9HVbxuXP0CcVD4e2/mv3blcvYyiVVThRSAxgo9r8XFWndP8ZXSfl7dTVFmcwegodkLiEB4JMYPb8S32Xl1C4BOpYF+0NjY3rr4oipprd9lUVvlAn21nEGlrOsgBNIS1Z/1ju0v3+ZLunsmvwwf2ukifhLTUnao+MxUipAj6ARRtFNi8cpMyfR4D2PBWHZ8lg3nfJYGAvv05A==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1735714047; c=relaxed/relaxed;
+	bh=cegCRU9AZBgiNtCXKz4itaW7pnSmWtwrbW5bqWcet0o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=lyhbk9G/Hja85gA9GbMxN0lH86dZ5dfG5TM1lIoBvD2OPEBhylWZe0dBZTPgCWr4eo8Rbl7zlIJ8bqCYe+XMtOr9c0Ibb/0PTCAjR3tUwGrjWxL/474nXWoAYG+eLlgOtVT3RhmYeAOxKA47x/4zWxVyRrBPS3ja6orj8+kY+09+LG3bZZO5qYl2hqLkqGQP3jxw3w7qNZud4UwIMEXl4SIEBg5AUKl8rBuJ6UrIpl5TGWmWpReNqBZU3wYnsACGMdJyeW1XajfebRFoI3LhFssr/CsltLty5jjRUuviw8Bp3vdtjnArwJPvTvswa0H394WEagHeiX61fSEm56VQoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ekL2gybf; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=WBKKlMDJ;
-	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=d0ie64Lg;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ekL2gybf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YMqgQ48ZWz2xHl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 31 Dec 2024 21:57:36 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1735642647; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=CQx/fdeC3neetaD0yV4C2VRlnuH/bwLWiE4kS6NkDxvIKJNm1IItl46yqUDFKpvOo5
-    npX6vxMgu/yGvMVyiU/y5hDudI+9jgjPTQHC/iZN7hDZxrx7K0rj24i8mRmzA+lONOYT
-    Eje/JxgcbrBhC/g0Fi2ccOf8IsN4byGmfLhzr0g7I70/fKIZizjEaFbfqNxTXDzLWnrQ
-    hd2+GSV6nIhHVjm7mS8EhkeoZ8+9926XcnegTGoWvQVrk72YpaPUxV8/C+lJaH/jKQfy
-    GPWgB9itJPJSnSAHmwCdVxQIESazCX04ODWVkt29afjyDhVtrkGS6TXWc45X9qK8JMIZ
-    Q2Hg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1735642647;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=e2TiCoA7eJaGUxv2X5diaZ853ViVgcepiDe1Q/wZFFA=;
-    b=V74hRAsYz6xDzUFYwPS+qWgetNhzKgDu+xPtWjxNITMWABMY0jE88OXYPNn8VqoUVh
-    sk38HzSwW8wgvTJuGY2y3krv2t7reVFFaP7VZRpTqGsQvEs6ANuBWcmxtsbFU9UuRg1r
-    dml/2iquz+IPzEjPm1nCatXw/IVf6wP6kMWkRmVcOHc+sbJLZNMDOpkv9iyeJwEGOvl5
-    oBZ5kU7gPWaAgCYNCASB7yPA0njkE2QjFbrIblk1CIGf/7PVeaY/giYfO7unE02/k+OM
-    RMNFZGqu4LNFr8AhDx3CAv2AfgSlfsIo0KLzs4k2FL3K/Ok/NYtH5RvMBeeieHAJ3Rq8
-    U8hg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1735642647;
-    s=strato-dkim-0002; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=e2TiCoA7eJaGUxv2X5diaZ853ViVgcepiDe1Q/wZFFA=;
-    b=WBKKlMDJQNIA9H+yDoiod5yGr72N6LOMqWeHmcD8SHInC/iZY7EsBJPahs8MuQ4zqq
-    CjnCn87hOZPzb2iSoSgDYmw6U/UwIh+QPfQ50JDn0JmMx7cdgwrqgta5RklL+Ct6y/5j
-    k/7xN6+XQE7frIYT7tVBt3UxK8MCD8/Aww6nR/6tKDpkIZKnetThLjh++CZKIEokwWxP
-    27AQ99Ae0KOtRuVt/Ibi76i0CL788EOO440UWsRs5r7qbswD9YuPFbD/ZPvDahHT2mgH
-    FhlSMSlFPB9RrNKlaPK3llfKcWgEx/kCfeMmtI8wpcKBARzB/qjYFyXjjPfXHbwKPLx9
-    GFag==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1735642647;
-    s=strato-dkim-0003; d=xenosoft.de;
-    h=In-Reply-To:Date:Message-ID:References:Cc:To:From:Subject:Cc:Date:
-    From:Subject:Sender;
-    bh=e2TiCoA7eJaGUxv2X5diaZ853ViVgcepiDe1Q/wZFFA=;
-    b=d0ie64LgFvcJarmmwFJekk5YvG/KXQkyxbuk0qLgP0Sb5fzW3KOSJYdoKN7LdplfIU
-    7SSi5rwd2Hjfk3a1byDA==
-X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6Kxrf+5Dj7x4QgaMrvdtcX133EivHj9FnXlZguLZm8PSmufN+FD/uA=="
-Received: from void-ppc.a-eon.tld
-    by smtp.strato.de (RZmta 51.2.16 AUTH)
-    with ESMTPSA id ebe9c90BVAvQKm6
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Tue, 31 Dec 2024 11:57:26 +0100 (CET)
-Subject: KVM: PPC: Book3E: KVM HV host module doesn't work anymore
-From: Christian Zigotzky <chzigotzky@xenosoft.de>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
- Darren Stevens <darren@stevens-zone.net>, Pat Wall <pjwall@mac.com>,
- Pat Wall <pjwall@me.com>, Christian Zigotzky <info@xenosoft.de>,
- madskateman@gmail.com, "R.T.Dickinson" <rtd2@xtra.co.nz>,
- hypexed@yahoo.com.au, regressions@lists.linux.dev
-References: <F693EFBE-3F0D-4B7C-89D8-EA8DCAB3CAB7@xenosoft.de>
- <f31e176f-200d-f96c-2971-4da0fe8f1245@xenosoft.de>
- <04e5da1a-65e2-ce12-27a5-5fdba9f0408d@xenosoft.de>
- <5e8e202d-4a0b-ced3-8034-796cda679e8a@xenosoft.de>
- <e6672ce2-2bf9-4a1e-b4b8-e1396ccbb56a@xenosoft.de>
- <1539b4dd-9a52-4f87-882d-cb605018d1f4@xenosoft.de>
- <0769459a-10ee-4573-a3ce-541c01429948@redhat.com>
- <fdd0528d-96f2-bc8d-783c-30600b0c15d8@xenosoft.de>
- <CABgObfa6ei-=dSRaPgj7OP07Y4nKAbTt3cRgMSCGRHUmkguOdQ@mail.gmail.com>
- <7d8b5b78-b20c-d915-4a94-7082d7e01600@xenosoft.de>
- <f944fadf-2dfe-4dd3-a086-ae7bb6c0bff6@redhat.com>
- <31895b11-5084-95bc-0f14-faaea023b7f8@xenosoft.de>
- <2881940a-2da0-4498-b447-f09fffb14189@redhat.com>
- <50149f09-174f-ad6e-e97d-3d8889b412a6@xenosoft.de>
- <CABgObfYqGVQk0nvPZqzc1Q7K0jg-Gxk2tVmrk75R6TaLUt9exQ@mail.gmail.com>
- <10826e5f-d3a6-7792-4466-0bf21082a155@xenosoft.de>
- <CABgObfY-R+ASCGbhDNaQPBLRk4jHiOOvOrN9+e-ub3=-VzKEYw@mail.gmail.com>
- <4d291b7d-a65e-2ec9-146c-4063d14ef85f@xenosoft.de>
-Message-ID: <bfb4f3bc-23f3-3a9a-195e-afd73ab675cd@xenosoft.de>
-Date: Tue, 31 Dec 2024 11:57:26 +0100
-X-Mailer: BrassMonkey/33.4.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YNL4G3jp6z2y66
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jan 2025 17:47:25 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5013qflY029636
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 1 Jan 2025 06:47:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=cegCRU9AZBgiNtCXKz4itaW7pnSmWtwrbW5bqWcet
+	0o=; b=ekL2gybf8bscXzOP9Kd/Iha5+X086WeTdvZx6UyAEz/TKU1anG4u8IWxX
+	Ei58ItpTJzyitZfjV1vX5KxKukAGgF7vOrEWcjUf4rn8YNynYkYStFN8zlS4BidC
+	SdOSWFPi49yPLXJ4APnNbu42hPdCGq4DU3DYQfO/30LVslHbNM3RCqb2IkLm2/Y+
+	g7gKfmPcu7CEkmdI+1NA9qdn4wLL+7ccscXwg5yDYtDg7wEAGFXQqKVWB1jvro+u
+	wgbE7K5nFuBAjAHBqJyktRIc3loVyrKoHu1bQx8p2K5SoUswABpUCjN7rkc5Cva7
+	1VDXEznOzYd+vaXVuLtvxb+2mfGOQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43vx6hrdeb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jan 2025 06:47:23 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5011L690016656
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 1 Jan 2025 06:47:22 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43tw5kd5mt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jan 2025 06:47:21 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5016lHq939518468
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 1 Jan 2025 06:47:17 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F261D20040;
+	Wed,  1 Jan 2025 06:47:16 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D682720043;
+	Wed,  1 Jan 2025 06:47:15 +0000 (GMT)
+Received: from ltcden3-lp14.aus.stglabs.ibm.com (unknown [9.53.174.165])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  1 Jan 2025 06:47:15 +0000 (GMT)
+From: Abhishek Dubey <adubey@linux.ibm.com>
+To: maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com, hbathini@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Abhishek Dubey <adubey@linux.ibm.com>
+Subject: [PATCH v5 1/3] powerpc/pseries: Macros and wrapper functions for H_HTM call
+Date: Wed,  1 Jan 2025 01:46:54 -0500
+Message-ID: <a102e9d6923c4696c54f399b5c5ded7d28415fa5.1734277855.git.adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -118,44 +81,125 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <4d291b7d-a65e-2ec9-146c-4063d14ef85f@xenosoft.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: l4C3F-yZqSFLpLjw7aRsBDYj8r4G3pI0
+X-Proofpoint-GUID: l4C3F-yZqSFLpLjw7aRsBDYj8r4G3pI0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxscore=0
+ lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0 impostorscore=0
+ mlxlogscore=895 priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501010054
+X-Spam-Status: No, score=1.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi All,
+Define macros and wrapper functions to handle
+H_HTM (Hardware Trace Macro) hypervisor call.
+H_HTM is new HCALL added to export data from
+Hardware Trace Macro (HTM) function.
 
-I have compiled the RC5 of kernel 6.13 [1] with the latest revert patch. [2]
+v3 patch:
+  https://lore.kernel.org/linuxppc-dev/20240828085223.42177-1-maddy@linux.ibm.com/
 
-After that, I successfully tested the following QEMU/KVM HV components.
+Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ arch/powerpc/include/asm/hvcall.h         | 34 +++++++++++++++++++++++
+ arch/powerpc/include/asm/plpar_wrappers.h | 21 ++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-- Guest performance: good
-- Guest boot time: short
-- KVM HV works (-enable-kvm)
-- SMP works (-smp 4)
-- QEMU User Networking (SLIRP) via VirtIO_net works (Tested it with SSH 
-and with a web browser)
-- QEMU USB Audio works (Tested it with some audio files in the guest system)
-- VirtIO GPU works
-- Virtual mouse and keyboard controller works (VirtIO input)
-- 9p mount of a host folder via VirtIO works in the guest system
-- Serial output from the guest works (console=ttyS0,115200)
-- Shutdown and reboot works
-
-The issue still exists but I hope Paolo's patch can fix the issue. [3]
-
-Cheers,
-Christian
-
-[1] https://github.com/chzigotzky/kernels/releases/tag/v6.13.0-rc5
-[2] 
-https://github.com/chzigotzky/kernels/blob/main/patches/X5000/kvm_ppc_revert.patch
-[3] https://github.com/chzigotzky/kernels/issues/4
-
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 7a8495660c2f..7ad13685c127 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -348,6 +348,7 @@
+ #define H_SCM_FLUSH		0x44C
+ #define H_GET_ENERGY_SCALE_INFO	0x450
+ #define H_PKS_SIGNED_UPDATE	0x454
++#define H_HTM			0x458
+ #define H_WATCHDOG		0x45C
+ #define H_GUEST_GET_CAPABILITIES 0x460
+ #define H_GUEST_SET_CAPABILITIES 0x464
+@@ -497,6 +498,39 @@
+ #define H_GUEST_CAP_POWER10	(1UL<<(63-2))
+ #define H_GUEST_CAP_BITMAP2	(1UL<<(63-63))
+ 
++/*
++ * Defines for H_HTM - Macros for hardware trace macro (HTM) function.
++ */
++#define H_HTM_FLAGS_HARDWARE_TARGET	(1ul << 63)
++#define H_HTM_FLAGS_LOGICAL_TARGET	(1ul << 62)
++#define H_HTM_FLAGS_PROCID_TARGET	(1ul << 61)
++#define H_HTM_FLAGS_NOWRAP		(1ul << 60)
++
++#define H_HTM_OP_SHIFT			(63-15)
++#define H_HTM_OP(x)			((unsigned long)(x)<<H_HTM_OP_SHIFT)
++#define H_HTM_OP_CAPABILITIES		0x01
++#define H_HTM_OP_STATUS			0x02
++#define H_HTM_OP_SETUP			0x03
++#define H_HTM_OP_CONFIGURE		0x04
++#define H_HTM_OP_START			0x05
++#define H_HTM_OP_STOP			0x06
++#define H_HTM_OP_DECONFIGURE		0x07
++#define H_HTM_OP_DUMP_DETAILS		0x08
++#define H_HTM_OP_DUMP_DATA		0x09
++#define H_HTM_OP_DUMP_SYSMEM_CONF	0x0a
++#define H_HTM_OP_DUMP_SYSPROC_CONF	0x0b
++
++#define H_HTM_TYPE_SHIFT		(63-31)
++#define H_HTM_TYPE(x)			((unsigned long)(x)<<H_HTM_TYPE_SHIFT)
++#define H_HTM_TYPE_NEST			0x01
++#define H_HTM_TYPE_CORE			0x02
++#define H_HTM_TYPE_LLAT			0x03
++#define H_HTM_TYPE_GLOBAL		0xff
++
++#define H_HTM_TARGET_NODE_INDEX(x)		((unsigned long)(x)<<(63-15))
++#define H_HTM_TARGET_NODAL_CHIP_INDEX(x)	((unsigned long)(x)<<(63-31))
++#define H_HTM_TARGET_CORE_INDEX_ON_CHIP(x)	((unsigned long)(x)<<(63-47))
++
+ #ifndef __ASSEMBLY__
+ #include <linux/types.h>
+ 
+diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
+index 71648c126970..a63a4d29cfdf 100644
+--- a/arch/powerpc/include/asm/plpar_wrappers.h
++++ b/arch/powerpc/include/asm/plpar_wrappers.h
+@@ -65,6 +65,27 @@ static inline long register_dtl(unsigned long cpu, unsigned long vpa)
+ 	return vpa_call(H_VPA_REG_DTL, cpu, vpa);
+ }
+ 
++static inline long htm_call(unsigned long flags, unsigned long target,
++		unsigned long operation, unsigned long param1,
++		unsigned long param2, unsigned long param3)
++{
++	return plpar_hcall_norets(H_HTM, flags, target, operation,
++				  param1, param2, param3);
++}
++
++static inline long htm_get_dump_hardware(unsigned long nodeindex,
++		unsigned long nodalchipindex, unsigned long coreindexonchip,
++		unsigned long type, unsigned long addr, unsigned long size,
++		unsigned long offset)
++{
++	return htm_call(H_HTM_FLAGS_HARDWARE_TARGET,
++			H_HTM_TARGET_NODE_INDEX(nodeindex) |
++			H_HTM_TARGET_NODAL_CHIP_INDEX(nodalchipindex) |
++			H_HTM_TARGET_CORE_INDEX_ON_CHIP(coreindexonchip),
++			H_HTM_OP(H_HTM_OP_DUMP_DATA) | H_HTM_TYPE(type),
++			addr, size, offset);
++}
++
+ extern void vpa_init(int cpu);
+ 
+ static inline long plpar_pte_enter(unsigned long flags,
 -- 
-Sent with BrassMonkey 33.4.0 (https://github.com/wicknix/brass-monkey/releases/tag/33.4.0)
+2.44.0
 
 
