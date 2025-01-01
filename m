@@ -1,77 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-4548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A62339FF327
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jan 2025 07:47:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 925429FF329
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jan 2025 07:49:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YNL4r30Z0z2yFP;
-	Wed,  1 Jan 2025 17:47:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YNL6v2J6vz2ydG;
+	Wed,  1 Jan 2025 17:49:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735714076;
-	cv=none; b=l2f9QWX71bF6AyA9tsgbmpygeQa86jcOG6bvL+9rzbiCltnAAIljVwCAvlOoQ6vrBfPw34MzeA4OxxJWwyMmazlQcvx/pYqlskX1nJx9jOuvZzBLP4KfErzOOJ05SQjYgRJqFQoQTYDQSMqZbMaXwfxDCXTo8RPaFPK7cSLRvb6/d9h1WFGkMP4qGY4yuBz8qrfIHGN4AgBfG6EelytS2+tMQc6CkRXTyWIn/bVDmGqcQ15IeiqU9qi7Dhl3K5m5I4t3dxKN2sU1FExSeokD2eWr3vu/fE+JC7qQhiCTeZPM9ZLX2+YHnjGAmhLLUjsrQx8s8lgvzno/pJ5rnVsNmA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735714183;
+	cv=none; b=fnR2vS9z5AZOCza5kSBl3AUr5bAVpQcn7vv8CiPccOs4RB7d2nGQ/WY1JCVcw3QUJvT5IBX5dznZhPG1hC0cUine3O4HuG1VQjexUB8P+LBN7JYgH2Kd6ok5FwyAhGWsWXz5CM3NtEvICIykLSmz3TsZ9+Uc1emN4zY+MyPN9wORi0BEOCJJ/wzTYsMI3NoYPJ1dQudVEZ8fkLzzDf4yQzR7UtY0mIScbG7wk4lJG7HN+nQCKvdr0MDr7jW+eWTCGR/pE25zrxTRPF0dO/zHwivkYBiFuZlvIEiOj+itbxu4mLvtSa2cZZtCOhnkFY8iV9kuVqlJ00phJbbvbThhTQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735714076; c=relaxed/relaxed;
-	bh=frO7ktX0N9GLq4XmD+pUCsOtKvZJHs3osowN7Qj+UAo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKxs3Nd6BqnwhN4gP3rbrBkRwZKKj4gsITfYlJdNDUC8AzdZKVebvd+RyRWCQOPbxD92amckmlR+kWfy/AQ4pSf7qCMu2UrqvmWhNic/yKyljcfAWFADvfhTuvXDgOENStsWOhyWVoAyHrSkZZrjpBpqpg5OGkyCGrUW+t+lQ1rVNO0Hg8gzBbKCOmHfTrRMPtRtEDkDpIQGkAspVryYG1i+WV+Th5aceV94pZ2qJkzGOb8QFT33l/9+wYz9RYVlX54ATpfcqRVX7CPanahTuWOXS3PmarOGwb6/wR9lhtrBW3RuQ7aOHgD48/fku23nD23Q+NGjj9TFbPZ7IruFew==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h3CU9Cqk; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1735714183; c=relaxed/relaxed;
+	bh=YRIIgCXg3JsYIvS3NMssQ9//coF9ig5NRKK0Y4BlSBg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Vw1MQm73Bj8SU/NtvyvjR2liRenvCsqNaKhlPwNgxofG8RGLq2WJA/SpMCySzMMBZjzykil6CODB4LPqLwHBfnGffhOKlcj2xOF+KxzODRS+mMW8aOpYG8zNW2Erz8v8lDowsUHECdnpjLJpOkBjR2rdbQhlMxh9GJtLVZbYwb02l95grmgu6xZEeB6z2KwjURKdM39tNE7tazKYuj0LCCsfppQzxJHqTVQtXhkfLbH4nhz/LmnDxZYjH+txXfsBUvDpYUNYdB2GDReVd+aObd7D73t3UAg/Thn1capTJCKX3ZkWaYHgeCsklbDm2XUCR/AOgYeYACii+ulVClNiEQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cgb9DaKv; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cgb9DaKv; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=h3CU9Cqk;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cgb9DaKv;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=cgb9DaKv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YNL4q3BM7z2y66
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jan 2025 17:47:55 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5013qiX5029761
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 1 Jan 2025 06:47:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=frO7ktX0N9GLq4XmD
-	+pUCsOtKvZJHs3osowN7Qj+UAo=; b=h3CU9CqkakHi+GI3zQuriXSWlQyK4NoPQ
-	Ctlgy0olNFZs/ojum/F6Hl962cmvKjKhv8Q4zjz6nbQjTY/PliqCptW7fki8JH80
-	WWWrod6EyQy25mWejxbkksfu5BIoansqokuInR5aQq0N02y902Q+e4Idz3l8LRJf
-	5pkSx6gVhWUEjdUV2HR9eBja6VCRqF7l0Zm34WuGJnoA2w+wBmwCbfAyfKJxapaO
-	YuspLaglAWgLxEk+dBQJQTlqti5csYV62hDm6zbDNBqBX6BXcRvusCBsntO6teSE
-	GtBm3rPedaZbmCQ2/51xpZc+89xbXbUaYWjvG65YTmDF4wU0RpZuA==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43vx6hrdgu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jan 2025 06:47:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5011rBUp016708
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 1 Jan 2025 06:47:52 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43tw5kd5pq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 01 Jan 2025 06:47:52 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5016llsj49152506
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 1 Jan 2025 06:47:47 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90F1B20049;
-	Wed,  1 Jan 2025 06:47:47 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A4B0A20040;
-	Wed,  1 Jan 2025 06:47:46 +0000 (GMT)
-Received: from ltcden3-lp14.aus.stglabs.ibm.com (unknown [9.53.174.165])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  1 Jan 2025 06:47:46 +0000 (GMT)
-From: Abhishek Dubey <adubey@linux.ibm.com>
-To: maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, Abhishek Dubey <adubey@linux.ibm.com>
-Subject: [PATCH v5 3/3] powerpc: Document details on H_HTM hcall
-Date: Wed,  1 Jan 2025 01:47:44 -0500
-Message-ID: <aba1981d209559cbcc8a17adb594d5457824c51a.1734277855.git.adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <a102e9d6923c4696c54f399b5c5ded7d28415fa5.1734277855.git.adubey@linux.ibm.com>
-References: <a102e9d6923c4696c54f399b5c5ded7d28415fa5.1734277855.git.adubey@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YNL6s6WPGz2yZN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  1 Jan 2025 17:49:40 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1735714176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YRIIgCXg3JsYIvS3NMssQ9//coF9ig5NRKK0Y4BlSBg=;
+	b=cgb9DaKvvNJUhDMctXLO68/NZDLEUZ+cCZxhqJfOVXVxlU9CsVZZ6D6bmNbaKqaHk/z0qs
+	zQufTfqmC7s7WOgr/xA+gOwyVeR4wknX5ylfeVF0isSiMbmKdXdWQqfKJezQxhMoCYY90N
+	s7+bG6AEoDk2Bjl/AcFkcOKEEZqblww=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1735714176;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=YRIIgCXg3JsYIvS3NMssQ9//coF9ig5NRKK0Y4BlSBg=;
+	b=cgb9DaKvvNJUhDMctXLO68/NZDLEUZ+cCZxhqJfOVXVxlU9CsVZZ6D6bmNbaKqaHk/z0qs
+	zQufTfqmC7s7WOgr/xA+gOwyVeR4wknX5ylfeVF0isSiMbmKdXdWQqfKJezQxhMoCYY90N
+	s7+bG6AEoDk2Bjl/AcFkcOKEEZqblww=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-624-hpPfv1w2NzOgUfkeFTMczg-1; Wed,
+ 01 Jan 2025 01:49:32 -0500
+X-MC-Unique: hpPfv1w2NzOgUfkeFTMczg-1
+X-Mimecast-MFC-AGG-ID: hpPfv1w2NzOgUfkeFTMczg
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0B92019560A3;
+	Wed,  1 Jan 2025 06:49:31 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 426C6195394B;
+	Wed,  1 Jan 2025 06:49:29 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	Christian Zigotzky <chzigotzky@xenosoft.de>,
+	linuxppc-dev@lists.ozlabs.org,
+	regressions@lists.linux.dev
+Subject: [PATCH] KVM: allow NULL writable argument to __kvm_faultin_pfn
+Date: Wed,  1 Jan 2025 01:49:28 -0500
+Message-ID: <20250101064928.389504-1-pbonzini@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,61 +84,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: zfERpvAje5HmPuOma8Sw9e7fS0b-2795
-X-Proofpoint-GUID: zfERpvAje5HmPuOma8Sw9e7fS0b-2795
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 malwarescore=0 phishscore=0 bulkscore=0 impostorscore=0
- mlxlogscore=903 priorityscore=1501 spamscore=0 adultscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501010054
-X-Spam-Status: No, score=1.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
-X-Spam-Level: *
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Add documentation to 'papr_hcalls.rst' describing the
-input, output and return values of the H_HTM hcall as
-per the internal specification.
+kvm_follow_pfn() is able to work with NULL in the .map_writable field
+of the homonymous struct.  But __kvm_faultin_pfn() rejects the combo
+despite KVM for e500 trying to use it.  Indeed .map_writable is not
+particularly useful if the flags include FOLL_WRITE and readonly
+guest memory is not supported, so add support to __kvm_faultin_pfn()
+for this case.
 
-v3 patch:
-  https://lore.kernel.org/linuxppc-dev/20240828085223.42177-3-maddy@linux.ibm.com/
-
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
-Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Fixes: 1c7b627e9306 ("KVM: Add kvm_faultin_pfn() to specifically service guest page faults")
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Tested-by: Christian Zigotzky <chzigotzky@xenosoft.de>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: regressions@lists.linux.dev
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Documentation/arch/powerpc/papr_hcalls.rst | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ virt/kvm/kvm_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/Documentation/arch/powerpc/papr_hcalls.rst b/Documentation/arch/powerpc/papr_hcalls.rst
-index 80d2c0aadab5..805e1cb9bab9 100644
---- a/Documentation/arch/powerpc/papr_hcalls.rst
-+++ b/Documentation/arch/powerpc/papr_hcalls.rst
-@@ -289,6 +289,17 @@ to be issued multiple times in order to be completely serviced. The
- subsequent hcalls to the hypervisor until the hcall is completely serviced
- at which point H_SUCCESS or other error is returned by the hypervisor.
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index de2c11dae231..5177e56fdbd5 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2975,10 +2975,11 @@ kvm_pfn_t __kvm_faultin_pfn(const struct kvm_memory_slot *slot, gfn_t gfn,
+ 		.refcounted_page = refcounted_page,
+ 	};
  
-+**H_HTM**
-+
-+| Input: flags, target, operation (op), op-param1, op-param2, op-param3
-+| Out: *dumphtmbufferdata*
-+| Return Value: *H_Success,H_Busy,H_LongBusyOrder,H_Partial,H_Parameter,
-+		 H_P2,H_P3,H_P4,H_P5,H_P6,H_State,H_Not_Available,H_Authority*
-+
-+H_HTM supports setup, configuration, control and dumping of Hardware Trace
-+Macro (HTM) function and its data. HTM buffer stores tracing data for functions
-+like core instruction, core LLAT and nest.
-+
- References
- ==========
- .. [1] "Power Architecture Platform Reference"
+-	if (WARN_ON_ONCE(!writable || !refcounted_page))
++	if (WARN_ON_ONCE(!refcounted_page))
+ 		return KVM_PFN_ERR_FAULT;
+ 
+-	*writable = false;
++	if (writable)
++		*writable = false;
+ 	*refcounted_page = NULL;
+ 
+ 	return kvm_follow_pfn(&kfp);
 -- 
-2.44.0
+2.43.5
 
 
