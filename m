@@ -1,62 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-4569-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4574-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B839FFCB3
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 18:24:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FEE29FFE50
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 19:32:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPD9J3S5qz2yVX;
-	Fri,  3 Jan 2025 04:24:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPFgK4B7sz305c;
+	Fri,  3 Jan 2025 05:32:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735838692;
-	cv=none; b=ArkXI49tQvpqzddnZMHpNFofoI3mENFz5OexVIUs1GkTnokkRUWXAezAcHjYDjEWqgAWbfwm9kIGVKM72Jf4lTgV0jggyvZdfEDcuSpcbAqEWa+UgFQyj0qaImFnAR+ohMysn+bj3+Llxx7MyyFcS5Ftdrnxn9oLHzsO6Z6w+T09+TJ1lV1/ep/zS1QhQojxeUceT3eUGNhp+ZSVxsapgMMOjOtj5OKRXSxd9002Oh+LEDpHK5CxQAFbt8a1AimcugGK1SxOZpUplpeuGZjfPWUQOsb81uiyghSHa2AES3uHN1trtaBqj4lTCFuyxSuJB9GnDWZFDqlgYtysC+PZ9g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735842748;
+	cv=none; b=k2JVo0jG1AFeEBY8Cupy+uER1C4EwnFXCBLk7CoGICm/uSed6T75EnVKOvCHMBus0FI66uJ5vAyhxuufFs+m+eqFSMyTA4RIOI5cbZSiw88nXi03DV5TwOYF3sIpbIZAiAE56+VaWO0UZmAHsq8+vp+si/LmMbnsLAMsdEuLmoy4XvfYoYWAQiH4YuWesHDl4KuDlJpomLLFUt51/HyUiELCQ+6++TaXnrfx523JOAr4zxG8535ItQaxGVNKZBEJOE/MwY7GhhvfM6hTfB3bJqQskFVIu0xw+eg3t81hWY2K/sktP14/K9ERp+j+ByW1cYPWmF6iNqBa+9RS6VXvMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735838692; c=relaxed/relaxed;
-	bh=t1iXlsnsDe4bz1PnJhtN2ZjAG9ZaocmO4wo7p4W6M0g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bWF93nqgz4fT+OWGUDIjdaXpRLonSKoLxPyc8Rg5I1NT0UPpExGmmVkedmmu3K46H9jZhkKZn9JaGas2ZONJPMvwEys6pdJRe/ppXovVEX8ExXsOsuTEY/L7yo1qIWSP3fBRPzzsbGQXoMjJ5qkfBLzEBB463uhPVbrGDFUouvCw0BAe7sdb+0QTrTtds21ncjy6C7m/5lyfMm1oqDoitIujyn4tKEXNG92/I/WrxYF8zMbDTrxGShwI+zPALxuaoMFszx8M+TR8VauOxnmegpcA1xyiY0K+3bf66Nv/LpIZzXwsLv+tJ4CIuiU4LM23ene/4scGKi1ReR2LEujCoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AjRfdJPc; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1735842748; c=relaxed/relaxed;
+	bh=tvKYBUQJQm+MsJGQTE11/rXLqf+cBP/yZUlrAIDNSsg=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HxjkZk9ard4ZvsKSOlwDTsjZGw+2Xkhk5bw8nrO4jRnrcWs/DxhUUG7/lPNnn6d7Kdqwyz9krFSFP/FTZtkOkkbmJHmAwm5XXbcwNI/Ut0tzpMQDegWh3udAnq24S76TJUrDxfgrpaV2xk/E7lG451ImfpU3nx0O/a4iYimUosIb9MdnTdM3LhDxvLgFj1GWjaAl7uv+7f5WEyvNP/h80mnZrsJXUtErZZezBFG1dID+FiyzYgh1sBahIsIYa4pwc18/7+csaxzsjs4fet3YsRvh90tVW8M1Gy/hFWszyrFIeqcRFrgKaeRVRsYAa9IYIZpJ7gI/vzNOjuXUx/CY/g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VPF0n5bo; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AjRfdJPc;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VPF0n5bo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPD9H1L3lz2yN3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 04:24:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPFgF6DG8z2yvj
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 05:32:25 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 7F8B9A40B4C;
-	Thu,  2 Jan 2025 17:22:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F20C4CED0;
-	Thu,  2 Jan 2025 17:24:46 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 974D65C5D0E;
+	Thu,  2 Jan 2025 18:31:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 93B63C4CED0;
+	Thu,  2 Jan 2025 18:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1735838686;
-	bh=dhAKobW2Sn3UJxdMEMFF+/VJXFN/vgYVY2Kdus9Irc8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AjRfdJPcjYi4nv0p4ONg/pmLvQ/6q9hbqdWm92KbRtJ9C0henHMq2lTFg21M9Gnj6
-	 ZfWQYaJb+Ay0/MZaZj92C1BZjLCJJJBLqIBPrljMgam2Kl/6ViYf1/FSbzyW/3gkMV
-	 H1wZBaskVXi2fJk+Cg8LoKdnuWwHsPN2Kl1oyhI14dKva46zqIFRLFHK6L2Vj7gTJE
-	 QIIbI4uMo7HX6jCu/Ml/LePfxEpEic9/8kIfjwHNgMPBvnKlpB6hdo8JQppL3VA0Hl
-	 A04pidWhCcnL3sMGhq0ThkAC5Y2Ksi62eqIo0dwKPxHqTNl1mHNPU82llGLsmFqg+x
-	 B+kCaSt9e2EnA==
-Date: Thu, 2 Jan 2025 17:24:44 +0000
-From: Eric Biggers <ebiggers@kernel.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 10/29] crypto: powerpc/p10-aes-gcm - simplify handling
- of linear associated data
-Message-ID: <20250102172444.GB49952@google.com>
-References: <20241230001418.74739-1-ebiggers@kernel.org>
- <20241230001418.74739-11-ebiggers@kernel.org>
- <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
+	s=k20201202; t=1735842741;
+	bh=s9KOsJHPX8mNPryGVyICWhP1YoIx1vF2Sh4FXkHLgpk=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=VPF0n5bog8EFSaleFqb29oS++uwCjDIC7BwSFHDdXrkqJN2+jG3LoltSY2RYFi9fa
+	 CUzxHsSZeeA4rreNpI48kKsdLO8HP1thzglWCGB9WWKlzwz9PMJSSmMDR36YE2pDmC
+	 5APjLf8DXx74N5qIip/kwZphKJbC0IIjS5O1wuoTMm9lccsXVWjfW/s2lfx7jl0ixn
+	 Lqt5GHpPTYH3dxN5l4EGzbBU/vcmZmIcOAE3jFWx/X6DIAFRwuZl/aUKQhOkMkw4sv
+	 KFlKTpJOUTdzYPjj6wmBlKfvYnctUygK+EOFFohYSclGNFtBarHAfpmGyHWfM9z3A3
+	 +Oco9ypSnykRA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 82451E77188;
+	Thu,  2 Jan 2025 18:32:21 +0000 (UTC)
+From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
+Subject: [PATCH 00/19] powerpc: MPC83xx cleanup and LANCOM NWAPP2 board
+Date: Thu, 02 Jan 2025 19:31:41 +0100
+Message-Id: <20250102-mpc83xx-v1-0-86f78ba2a7af@posteo.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,86 +61,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-B4-Tracking: v=1; b=H4sIAI7bdmcC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxNDI2ND3dyCZAvjigpdQ/NkC0uLRBNLExNDJaDqgqLUtMwKsEnRsbW1ALn
+ E2NdZAAAA
+X-Change-ID: 20241231-mpc83xx-17c898a49441
+To: Michael Ellerman <mpe@ellerman.id.au>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, 
+ Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Frank Li <Frank.Li@nxp.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1735842735; l=2877;
+ i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
+ bh=s9KOsJHPX8mNPryGVyICWhP1YoIx1vF2Sh4FXkHLgpk=;
+ b=Yes62fmOx2x2qZhQDLO1dreJSQZiMF9f1nnFMaGDZeK+FBloj2U8kviImy+hqs0K4bJ17FFXx
+ oLI8tgG+VsmCNh41LCNbnc+oAla8AExIhxUWOPTE8qd9z8vIciFRu5Y
+X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
+ pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
+X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
+ auth_id=156
+X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Reply-To: j.ne@posteo.net
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Jan 02, 2025 at 12:50:50PM +0100, Christophe Leroy wrote:
-> 
-> 
-> Le 30/12/2024 ‡ 01:13, Eric Biggers a Ècrit†:
-> > From: Eric Biggers <ebiggers@google.com>
-> > 
-> > p10_aes_gcm_crypt() is abusing the scatter_walk API to get the virtual
-> > address for the first source scatterlist element.  But this code is only
-> > built for PPC64 which is a !HIGHMEM platform, and it can read past a
-> > page boundary from the address returned by scatterwalk_map() which means
-> > it already assumes the address is from the kernel's direct map.  Thus,
-> > just use sg_virt() instead to get the same result in a simpler way.
-> > 
-> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > Cc: Danny Tsen <dtsen@linux.ibm.com>
-> > Cc: Michael Ellerman <mpe@ellerman.id.au>
-> > Cc: Naveen N Rao <naveen@kernel.org>
-> > Cc: Nicholas Piggin <npiggin@gmail.com>
-> > Cc: linuxppc-dev@lists.ozlabs.org
-> > Signed-off-by: Eric Biggers <ebiggers@google.com>
-> > ---
-> > 
-> > This patch is part of a long series touching many files, so I have
-> > limited the Cc list on the full series.  If you want the full series and
-> > did not receive it, please retrieve it from lore.kernel.org.
-> > 
-> >   arch/powerpc/crypto/aes-gcm-p10-glue.c | 8 ++------
-> >   1 file changed, 2 insertions(+), 6 deletions(-)
-> > 
-> > diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> > index f37b3d13fc53..2862c3cf8e41 100644
-> > --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> > +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> > @@ -212,11 +212,10 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
-> >   	struct p10_aes_gcm_ctx *ctx = crypto_tfm_ctx(tfm);
-> >   	u8 databuf[sizeof(struct gcm_ctx) + PPC_ALIGN];
-> >   	struct gcm_ctx *gctx = PTR_ALIGN((void *)databuf, PPC_ALIGN);
-> >   	u8 hashbuf[sizeof(struct Hash_ctx) + PPC_ALIGN];
-> >   	struct Hash_ctx *hash = PTR_ALIGN((void *)hashbuf, PPC_ALIGN);
-> > -	struct scatter_walk assoc_sg_walk;
-> >   	struct skcipher_walk walk;
-> >   	u8 *assocmem = NULL;
-> >   	u8 *assoc;
-> >   	unsigned int cryptlen = req->cryptlen;
-> >   	unsigned char ivbuf[AES_BLOCK_SIZE+PPC_ALIGN];
-> > @@ -232,12 +231,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
-> >   	memset(ivbuf, 0, sizeof(ivbuf));
-> >   	memcpy(iv, riv, GCM_IV_SIZE);
-> >   	/* Linearize assoc, if not already linear */
-> >   	if (req->src->length >= assoclen && req->src->length) {
-> > -		scatterwalk_start(&assoc_sg_walk, req->src);
-> > -		assoc = scatterwalk_map(&assoc_sg_walk);
-> > +		assoc = sg_virt(req->src); /* ppc64 is !HIGHMEM */
-> >   	} else {
-> >   		gfp_t flags = (req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP) ?
-> >   			      GFP_KERNEL : GFP_ATOMIC;
-> >   		/* assoc can be any length, so must be on heap */
-> > @@ -251,13 +249,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
-> >   	vsx_begin();
-> >   	gcmp10_init(gctx, iv, (unsigned char *) &ctx->enc_key, hash, assoc, assoclen);
-> >   	vsx_end();
-> > -	if (!assocmem)
-> > -		scatterwalk_unmap(assoc);
-> > -	else
-> > +	if (assocmem)
-> >   		kfree(assocmem);
-> 
-> kfree() accepts a NULL pointer, you can call kfree(assocmem) without 'if
-> (assocmem)'
+This patchset adds a devicetree for the LANCOM NWAPP2 board based on the
+MPC8314E platform, and slightly modernizes the MPC83xx platform support
+in the process.
 
-The existing code did that too, but sure I'll change that in v3.
+This board is nominally end-of-life, but available to hobbyists.
+A U-Boot port is also in the making.
 
-- Eric
+Signed-off-by: J. Neusch√§fer <j.ne@posteo.net>
+---
+J. Neusch√§fer (19):
+      powerpc: Generalize MPC831x platform support
+      powerpc: dts: Extract mpc8315e.dtsi from mpc8315erdb.dts
+      powerpc: dts: mpc8315e: Use IRQ_TYPE_* macros
+      powerpc: dts: mpc8315e: Add labels to peripherals
+      powerpc: dts: mpc8315e: Disable peripherals by default
+      powerpc: dts: mpc8315e: Add missing #cells properties to SPI bus
+      powerpc: dts: mpc8315erdb: Add missing model property
+      powerpc: boot: Enable FIT image generation
+      powerpc: boot: Build devicetrees when CONFIG_MPC831x=y
+      powerpc: dts: Add MPC8314E devicetree
+      dt-bindings: gpio: fsl,qoriq-gpio: Add compatible string fsl,mpc8314-gpio
+      powerpc: dts: mpc8315e: Add GPIO controller node
+      gpio: mpc8xxx: Add MPC8314 support
+      powerpc: mpc83xx: Switch to of_platform_populate
+      dt-bindings: vendor-prefixes: Add LANCOM Systems GmbH
+      powerpc: dts: Add LANCOM NWAPP2 board devicetree
+      powerpc: Regenerate mpc83xx_defconfig
+      powerpc: mpc83xx_defconfig: Enable NWAPP2 board features
+      MAINTAINERS: Add entry for LANCOM board support
+
+ .../devicetree/bindings/gpio/fsl,qoriq-gpio.yaml   |   1 +
+ .../devicetree/bindings/vendor-prefixes.yaml       |   2 +
+ MAINTAINERS                                        |   8 +
+ arch/powerpc/Makefile                              |   3 +-
+ arch/powerpc/boot/Makefile                         |  11 +
+ arch/powerpc/boot/dts/Makefile                     |   6 +
+ arch/powerpc/boot/dts/lancom-nwapp2.dts            | 276 +++++++++++++++
+ arch/powerpc/boot/dts/mpc8314e.dtsi                |   7 +
+ arch/powerpc/boot/dts/mpc8315e.dtsi                | 390 +++++++++++++++++++++
+ arch/powerpc/boot/dts/mpc8315erdb.dts              | 327 +----------------
+ arch/powerpc/configs/83xx/mpc8313_rdb_defconfig    |   2 +-
+ arch/powerpc/configs/83xx/mpc8315_rdb_defconfig    |   2 +-
+ arch/powerpc/configs/mpc83xx_defconfig             |  41 ++-
+ arch/powerpc/configs/ppc6xx_defconfig              |   2 +-
+ arch/powerpc/platforms/83xx/Kconfig                |   6 +-
+ arch/powerpc/platforms/83xx/Makefile               |   2 +-
+ arch/powerpc/platforms/83xx/misc.c                 |   6 +-
+ .../platforms/83xx/{mpc831x_rdb.c => mpc831x.c}    |  21 +-
+ drivers/gpio/gpio-mpc8xxx.c                        |   1 +
+ 19 files changed, 769 insertions(+), 345 deletions(-)
+---
+base-commit: fc033cf25e612e840e545f8d5ad2edd6ba613ed5
+change-id: 20241231-mpc83xx-17c898a49441
+
+Best regards,
+-- 
+J. Neusch√§fer <j.ne@posteo.net>
+
+
 
