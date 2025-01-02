@@ -1,49 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-4564-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24AD99FF94D
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 13:20:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D10B89FFB5F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 17:10:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YP5Pg4Vnzz2xgX;
-	Thu,  2 Jan 2025 23:20:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPBWq2ytBz2yHj;
+	Fri,  3 Jan 2025 03:10:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735820407;
-	cv=none; b=RoovccSjW8YZsUDi/+gcjyp7JS8cVpprsPyGftUur/m9ZLIAOdR2yOpTKd0Uw6yatQMej+Gkbb/jzPy3Cz7+6La1mdV6ZrHvbJk6PnPDDNzZEG6xlFPoKjp7u1HQudFJt5Inwt/Q0CighhX5jzHQAiKJaqfAOoni60mVK3bg3J//yzSewzg/FkxjoTDbsQB/68yE34X+1MP7ieCU+a49hSgnobqntLwTHVYdGmuqKjFJaPL6s/VtDrZ/jMaj662mIzwRbagJJPd1UNmo2hu5aQjDi4VB8hWkFqRhneNDiIhAMfhm4Cg7DbIm2XTY5A5Hvz6FyancyNICk485QSUTiA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::330"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735834247;
+	cv=none; b=EunoyI9jKi8mMrwAXXO6FOXMg/G7ollkCUJsOMBmpx2OMsuhNND5D2dwpAfbr5OyUIiiAgRZnSdISLNo8NIIf4pgt7ZHHnAZqIFaQ2AUpZRrwd7b9Xsj4lOd/2CjhwOp3F8ciDxHLwk4cy2lgVIOIFJ0VC+vBdKa9bUrQ3wTLP05SAeIidFsCcWf4aK74QN21A05vwo8Cdbw3KhBOFcXace3Jig9fmF0nXw6VdrkCdJbNjpDcFzsbp8hBlAjV6uAXFNW9R/+b2Tfkjxd1MZvrihFgF099cyO6opZRvUjKHs2I2PKudKq3MfN+/+qC1YKoUo6UV/cWZFoQB+2UUGO4Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735820407; c=relaxed/relaxed;
-	bh=s85hPu6J7AIWOJKhu5vOpGVwEvzA+6SU7SbnAn6T72I=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T1DtAeUa3H2NrXDscLOHDzdqERWO6aTZU7vEqS4TWquVIK/F0JDbwNy6gIQJo3bxm0aqirgT4Z/pBP6wolKjQFGs9F3cHUtg+0kluzmzO/ZWAB9CinzrJF49BAKKQ9KLAza3XRTb2xfCxRPbN4QnZyPz6Ajkd3+f9Ml3pv7QSK3+D0fbkSommY8+MCtQfZWWa3aI0NdjRHToTmylJWYkJaxIyGw4EMXH7ahO62PMT1OWnP5tcOh1AmB7pS+UNILOgZafh8cfJpQkjJEKuJu3iWUA+MS5/LGTm532GeKNMH5Zk0ZoBP/5x/WJE4/SzK8nd50GLIYXEhUln2lPtxDt9Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YP5Pf3g9cz2xbS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jan 2025 23:20:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YP4lv3gC6z9shx;
-	Thu,  2 Jan 2025 12:50:51 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id qCix7nZ6SYKj; Thu,  2 Jan 2025 12:50:51 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YP4lv2m0zz9shw;
-	Thu,  2 Jan 2025 12:50:51 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4E98E8B767;
-	Thu,  2 Jan 2025 12:50:51 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Oius1QCwqKti; Thu,  2 Jan 2025 12:50:51 +0100 (CET)
-Received: from [192.168.232.97] (unknown [192.168.232.97])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BDC3E8B763;
-	Thu,  2 Jan 2025 12:50:50 +0100 (CET)
-Message-ID: <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
-Date: Thu, 2 Jan 2025 12:50:50 +0100
+	t=1735834247; c=relaxed/relaxed;
+	bh=w2MW83ZlBEB0slMAIjVzh1uN6EJmqPsNX84g/jW2efg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ci/bIrI7liO4mvj7U+BZXn/7JBpeQVeBbV7APyw6elUl7M0MDQbdpFeXQO958Mj6gDiQjWIGl+tdtZNaVv7w4n3UZOSrxl9zHbECslZHkngfiBe2nbyKxN9h+FkLkzbLWOhmWllebu/+ZIOFI+o82IqSw2JjJDv2+c832BX074BVcP6aOnNmg2Z2DZEo6FGMV9YhGhDNfql7pOHXtybFEL4QcXHnGjkpSR7HH1sKoorql9fU3vtr+40jRzE6V1XT/JyGpfMOoWjBVCQRkwZU4QAcCo2AtQ0ipqkaXebIwPavR/yf2SHwj44W8yuuNoE+0f06IdZhUHru3lcvNE8tiQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=H5N9G+pn; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=H5N9G+pn;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::330; helo=mail-wm1-x330.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x330.google.com (mail-wm1-x330.google.com [IPv6:2a00:1450:4864:20::330])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPBWm71lHz2xbS
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 03:10:43 +1100 (AEDT)
+Received: by mail-wm1-x330.google.com with SMTP id 5b1f17b1804b1-4361c705434so83681975e9.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jan 2025 08:10:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1735834237; x=1736439037; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=w2MW83ZlBEB0slMAIjVzh1uN6EJmqPsNX84g/jW2efg=;
+        b=H5N9G+pndP0vRbZL2O0Gsny1gk4CdjBrsjGuBs5P17jryFR5rc83Sdf1L9i3a4v8bs
+         a1I3EZVr40KOTOAFPRFEQDlQnz/rV8p6V4vYOSGJNuy7KIgW+MF4UQxUh6oruig4DDr8
+         H6euVTgIoxDtqEbGGp2LMFS9BhmKN0htgKnUS2lXtp1c8chCNOdBktKhCzkwq7qKgm1t
+         8CrVrzUrItQLS73IfBF2owdZtxUNr1q6ymzoZCsshKtevvL9ux2Yeya2VXTvqI4leKhO
+         9rqm2y9q22IKj4dZgNYs17hPX9iM9EGFBvz+PtnYYN0nXA/idfkHPfdBLtzmHkhyUTl9
+         vocw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735834237; x=1736439037;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=w2MW83ZlBEB0slMAIjVzh1uN6EJmqPsNX84g/jW2efg=;
+        b=ryownHzumUdXpoVQICkSnChu27Xb8D6NQsQu+oc6SFghZ9Nu50KHnz+ECCDbtZIdIK
+         Eav8vzYzlEhbHv07xXn3Yt4pmUDU1E0V3K6w+WvW3knuKfkJTYXINLhQJ7YeHzpVIQtx
+         e+WT3FZsUnFucHR6i/deXCIetA2/MDQYrboRnlFFqvyIOZWk8IheRxYCgffEXtVlkqA8
+         D1G/xMsSZEIkIe8UOo1opvWWpWxbDx4QkIDhXNBoJFul9Dso/F++ctLhLvAoL4iwHSLK
+         3YbbFx5ApjcWvNJXlhcVHpGEpsiAwxv3k3ZoVsopMJl4hEc4GK6GFNah2qT84y7w0ybh
+         WE8w==
+X-Forwarded-Encrypted: i=1; AJvYcCVyHirBI/rKORc0ibc6aJgQecKcX6dmdXFyMGB+hVyozAb2NbxkPbvzQEpNNQNns7gSshfNGGYkzyTGIAs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwdL+X7JkB6zlMcjUm3/JVCnhF+YgUWF0QGZdLWV2V6hoLovgf1
+	P7ZZ/wwxJfVv8ycEl5LAeNryQoKlZcWEciNuM4muTbRL5cf9Jzu5UaMJ5u2QLDk=
+X-Gm-Gg: ASbGnctnyUf3zDyiWkz/cMZDDanRZI9txeG8xM3TXuzdjknfNSAUv8MVP39/MhbrP3x
+	Evh96/L0OOkh4A9eJiYga+AJBMpcGFRQh86o6fdhDhO8cW+IGeSROhRT9edRMhkfdjCNR+OyR0J
+	sMWbCy7SAZpu9aCz2agJDoZgo5GRO74Cxj+rtV9d4pJoDnvgrwMarXDiXX2rI8OapQ1E3b/Tta+
+	J/gf+ORdQFhg/sGlzJDv3PXwzH/M+JPE/S+3fuEQyJKoEt6D7Ym4Eii0g==
+X-Google-Smtp-Source: AGHT+IErl4BqanoYDVUAZsHsogjaaRwncA1U/OXvBzPwYOV5N8q9kJ/EGpWxK0q8/x1dmkcwBA2jNg==
+X-Received: by 2002:a05:600c:35d2:b0:434:a929:42bb with SMTP id 5b1f17b1804b1-436686464cemr420475395e9.18.1735834237013;
+        Thu, 02 Jan 2025 08:10:37 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.50])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b11aecsm489101735e9.23.2025.01.02.08.10.35
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 02 Jan 2025 08:10:36 -0800 (PST)
+Date: Thu, 2 Jan 2025 17:10:33 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: wzs <wangzhengshu39@gmail.com>
+Cc: dianders@chromium.org, tglx@linutronix.de, liusong@linux.alibaba.com,
+	akpm@linux-foundation.org, kernelfans@gmail.com, deller@gmx.de,
+	npiggin@gmail.com, tsbogend@alpha.franken.de,
+	James.Bottomley@hansenpartnership.com, jan.kiszka@siemens.com,
+	linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	yaoma@linux.alibaba.com
+Subject: Re: watchdog: BUG: soft lockup
+Message-ID: <Z3a6eQHwjRdwnDXp@pathway.suse.cz>
+References: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,102 +92,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 10/29] crypto: powerpc/p10-aes-gcm - simplify handling
- of linear associated data
-To: Eric Biggers <ebiggers@kernel.org>, linux-crypto@vger.kernel.org
-Cc: netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
- Danny Tsen <dtsen@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
- Naveen N Rao <naveen@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
- linuxppc-dev@lists.ozlabs.org
-References: <20241230001418.74739-1-ebiggers@kernel.org>
- <20241230001418.74739-11-ebiggers@kernel.org>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20241230001418.74739-11-ebiggers@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Mon 2024-12-23 14:32:11, wzs wrote:
+> Hello,
+> when fuzzing the Linux kernel,
+> I triggered many "watch: BUG: soft lockup" warnings.
+> I am not sure whether this is an issue with the kernel or with the
+> fuzzing program I ran.
+> (The same fuzzing program, when tested on kernel versions from
+> Linux-6.7.0 to 6.12.0, triggers the 'watchdog: BUG: soft lockup'
+> warning on some versions, while others do not. Linux 6.12.0 is the
+> latest stable release where this error occurs.)
+
+I am not sure if I understand the above correctly.
+
+Did you test also kernel versions older than 6.7.0 or newer then 6.12.0?
+
+Was the result random? Like for example, did you saw the problem
+on 6.7.0 and 6.12.0 but not on 6.9.0?
+
+Did you try to run the test more times with the same version of the
+kernel? Was it reproducible?
+
+I guess that the problem is in all versions but it is not 100%
+reproducible. So that the softlockup happens or does not happen by chance.
 
 
-Le 30/12/2024 à 01:13, Eric Biggers a écrit :
-> From: Eric Biggers <ebiggers@google.com>
+> The bug information I provided below is from the Linux-6.12.0 kernel.
+> If you need bug information from other versions, I would be happy to provide it.
 > 
-> p10_aes_gcm_crypt() is abusing the scatter_walk API to get the virtual
-> address for the first source scatterlist element.  But this code is only
-> built for PPC64 which is a !HIGHMEM platform, and it can read past a
-> page boundary from the address returned by scatterwalk_map() which means
-> it already assumes the address is from the kernel's direct map.  Thus,
-> just use sg_virt() instead to get the same result in a simpler way.
-> 
-> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Cc: Danny Tsen <dtsen@linux.ibm.com>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Naveen N Rao <naveen@kernel.org>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
-> 
-> This patch is part of a long series touching many files, so I have
-> limited the Cc list on the full series.  If you want the full series and
-> did not receive it, please retrieve it from lore.kernel.org.
-> 
->   arch/powerpc/crypto/aes-gcm-p10-glue.c | 8 ++------
->   1 file changed, 2 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> index f37b3d13fc53..2862c3cf8e41 100644
-> --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
-> @@ -212,11 +212,10 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
->   	struct p10_aes_gcm_ctx *ctx = crypto_tfm_ctx(tfm);
->   	u8 databuf[sizeof(struct gcm_ctx) + PPC_ALIGN];
->   	struct gcm_ctx *gctx = PTR_ALIGN((void *)databuf, PPC_ALIGN);
->   	u8 hashbuf[sizeof(struct Hash_ctx) + PPC_ALIGN];
->   	struct Hash_ctx *hash = PTR_ALIGN((void *)hashbuf, PPC_ALIGN);
-> -	struct scatter_walk assoc_sg_walk;
->   	struct skcipher_walk walk;
->   	u8 *assocmem = NULL;
->   	u8 *assoc;
->   	unsigned int cryptlen = req->cryptlen;
->   	unsigned char ivbuf[AES_BLOCK_SIZE+PPC_ALIGN];
-> @@ -232,12 +231,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
->   	memset(ivbuf, 0, sizeof(ivbuf));
->   	memcpy(iv, riv, GCM_IV_SIZE);
->   
->   	/* Linearize assoc, if not already linear */
->   	if (req->src->length >= assoclen && req->src->length) {
-> -		scatterwalk_start(&assoc_sg_walk, req->src);
-> -		assoc = scatterwalk_map(&assoc_sg_walk);
-> +		assoc = sg_virt(req->src); /* ppc64 is !HIGHMEM */
->   	} else {
->   		gfp_t flags = (req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP) ?
->   			      GFP_KERNEL : GFP_ATOMIC;
->   
->   		/* assoc can be any length, so must be on heap */
-> @@ -251,13 +249,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
->   
->   	vsx_begin();
->   	gcmp10_init(gctx, iv, (unsigned char *) &ctx->enc_key, hash, assoc, assoclen);
->   	vsx_end();
->   
-> -	if (!assocmem)
-> -		scatterwalk_unmap(assoc);
-> -	else
-> +	if (assocmem)
->   		kfree(assocmem);
+> kernel config :https://pastebin.com/i4LPXNAN
+> console output :https://pastebin.com/uKVpvJ78
 
-kfree() accepts a NULL pointer, you can call kfree(assocmem) without 'if 
-(assocmem)'
+It would be great to see at least three logs. It might help to find
+a common pattern.
 
+Also it would be great to provide a full log if possible. Or at least
+the boot part and few more lines before the crash.
 
->   
->   	if (enc)
->   		ret = skcipher_walk_aead_encrypt(&walk, req, false);
->   	else
-
+Best Regards,
+Petr
 
