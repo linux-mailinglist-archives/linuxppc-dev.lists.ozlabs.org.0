@@ -1,73 +1,104 @@
-Return-Path: <linuxppc-dev+bounces-4561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4562-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6986D9FF4F6
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  1 Jan 2025 22:25:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 516579FF646
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 06:38:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YNjYC5zcLz2xGw;
-	Thu,  2 Jan 2025 08:25:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YNwTn0MC7z2xk1;
+	Thu,  2 Jan 2025 16:38:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.20
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735766719;
-	cv=none; b=Wh2MrrrFc7h/fF0gDlfCYciux8LoGy6T+tNIf83hndStnVW8/xEEdqencK6TGmtcUeIcyUBG/0I1YE5PQabD6kOzB7oSAnJqZzia+F+yMivvKB9Z+WfxdYb6XL1ZB1CiFTgdPgqgScj0iZoALTEfTM2ckLJ1Om99X46uKXBhqHWOt2jzCdN6ed2NVEU/cVdGqjJkrNYZ+lgLWXziQObzijs47YufApz3ILwwg065OdfrywKeP2FuFs96XSdeFL4xli+znmgNjpfvkpg01AJW3BdI5B5ihmfpw6gm1nW3Li1LSYUld/QxRRd7/bI5ZLYQ165hmbWSPujkYWVGjUpobQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735796284;
+	cv=none; b=X8WhFd4CvkQDpx3seXG5ZagXIiyrYUcj1bqLVv/JZl8QqUmDWDBq/cuIKlHBh1pVeFCo9x5t/ycbCsMuX6W50I4G7s0JMH0P/zezQ08uk9IdO5TSSAoRuQvh29MpqUfBp9LVKaDHBfJupohbrqa4ECphJkr9G8YYJpwOJp8AGJVq+NpcBOsu8wQoWLnRVWTxB8uHThMha3+vRsimq4pAJySU0d6qu2axARzqW2mVex8DFGeZPov+eunleikg8mZBYPwrplyfjZ97IiGG3Do+Hc03CZhV92pk9sPfn5yyFCtaYaIHXyhOYChQf7jnxCxFtEbWZ4RF0VoGXHvLM0HZBA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735766719; c=relaxed/relaxed;
-	bh=riNYf7frMAKBqMV0iBbjizRq6hJCr1+KQwyK1r51AUU=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=bomD/A7igHLOqd6tA90ez2pZFEz7St4KGml9tF/U0UWNbMQqYxCVqfX3ZmpBa2twggt53gLvnSYlgxIvYPQGATPQGmfjBpj7yVDvhh2qXbar5cgI3JrCm8xpCyZE+f9iqiNEi2NBaUnlZppiRxrXzqRD0mOE5V2Jy36TUl0eimb9CZKL/r1vFCueGlZrm9rZSZuTU7RE5XlVq3HtU3tJSJlXJRsHWeOs8ikX1FL2qhTDM0ronlx8EDPZiXGQL4tesEakijZnob/5Gt/cWBl2Kg5zn3guYoT4bdsB46IUZILhQbMlHoNNcrGtVf7dZcxYyp3EGmBO+rqGWwnXtLb9Ow==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZEcRaYBE; dkim-atps=neutral; spf=pass (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1735796284; c=relaxed/relaxed;
+	bh=eg4Fl9mNLoRP2XFOH1wDCUzePu3zwBZJdjFFc1eUlj4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ADMEEiwXyWajJqrILnen2QWryiQVU5dCaX4+p5R3ZDg6tc/zw+tMRbuL6wl2KwfBVsagbJ8/ga019BXgxliVT0Kx/6/q9mMSMLjWYhdez3yOCbm4S/BbCRwKUr9TA+hAnjAg7F0cXB8lETkc1A46/NMsmgF2UBNFgmM92q08LT+fykLJPmsw4/CArjnwyA9X0IUfnQjHEcdG6lidHhLU31PpPRq+bc3ZMgG86NsLggA8hUrsfdHQsIq/Bji8kTZWlGssGL3h48aOZ2/c7z0AbGxR5VDv5RKae/XfX4C79E3cIJbW5dNahlZTYSMRgbFie7M7ekmhxid3ewfJ8Hgy1g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aL4d7jKe; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityag@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZEcRaYBE;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=aL4d7jKe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.20; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adityag@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YNjY81rKGz2xGr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jan 2025 08:25:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1735766716; x=1767302716;
-  h=date:from:to:cc:subject:message-id;
-  bh=KreiaPBtuifjgegbMF6RYGcWiSQDrFVYGBZYXLg6Akk=;
-  b=ZEcRaYBEHANqcXGYFzWfjLHodZlohAGXqZYmmXk1/F8nzXWYPFovjwnp
-   5Zj3jPutM68YDMo9cZtnCEiiqXQ4wPnA+Ez3Wm9VvdS1Bpiuietu8BHUF
-   1KfQb/1a844R7O9BdigrMM8nPoYLZY74aBYQXtG+fxYM8t6uLEzgpTc6S
-   AGiGbZtgcGhm0kEWnRcOml+bEVAaCQYSUAtKXQnHPwPxtaONm+1pViXRd
-   fvXiIcJVSkWzD2csEcyyIoyUQpc1wi+San6gKWro9MAJ2AUYsLA5hD3AD
-   3/fJBAwPMKVTIUN0YD+konQmrel4/xP/Ff/rXPADyDOXHXvRmtg8As7Mx
-   g==;
-X-CSE-ConnectionGUID: GuC7uqRAS+eqwlV+ogFl/g==
-X-CSE-MsgGUID: P7hE5FStT0C5u5RtTYn7Gg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11302"; a="35711883"
-X-IronPort-AV: E=Sophos;i="6.12,283,1728975600"; 
-   d="scan'208";a="35711883"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Jan 2025 13:25:08 -0800
-X-CSE-ConnectionGUID: rxc7oWs+QtaGsXBdIFUH/Q==
-X-CSE-MsgGUID: pwZilB3ZSx2+vR4QcKZwQQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,283,1728975600"; 
-   d="scan'208";a="101760106"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 01 Jan 2025 13:25:07 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tT6DB-00084x-1B;
-	Wed, 01 Jan 2025 21:25:05 +0000
-Date: Thu, 02 Jan 2025 05:24:43 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- df6c1289f93dcc78d0ff1b4777d5920eb564a7fc
-Message-ID: <202501020535.rI9druzp-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YNwTl5YYXz2xGr
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  2 Jan 2025 16:38:03 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 501KlLEM008711;
+	Thu, 2 Jan 2025 05:37:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=eg4Fl9
+	mNLoRP2XFOH1wDCUzePu3zwBZJdjFFc1eUlj4=; b=aL4d7jKeRweKhrp42JV91v
+	JX8/8K3WaRTyyJ0R2cXm1fzmaZrGigvDRgqYpsnOLnEaPu0XKMM2iZZSTTeGVBSa
+	0VDMgqk8Dok6lgyOICbwTnDcoqleebv3AvrfuP1Iyca3uXn0omZkAI4xMLbULJCb
+	P+qRm3UYxUP849aIwrxtFAyXMqrIWStZJ+e9c5XkGIW+tonw2SwXWOQLi9ZeDvI2
+	T0E7jsPZtj5Gk18VQbeL2t59u9aKu5B9aG1bXKGLzjmY2GQ/odG/kdCPRn9XA0Xx
+	B4DjKTmzQ3VnZzYPsK8JAm3UZXZBt3FNR6MtMq8oobfAeSU5r75C4dg3plwiCYaQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43w7649xhb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jan 2025 05:37:29 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5025YuNa015477;
+	Thu, 2 Jan 2025 05:37:28 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43w7649xh8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jan 2025 05:37:28 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5024BUt7010120;
+	Thu, 2 Jan 2025 05:37:27 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43tvnngvyx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 02 Jan 2025 05:37:27 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5025bNn762456224
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 2 Jan 2025 05:37:24 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C7D4620043;
+	Thu,  2 Jan 2025 05:37:23 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F58920040;
+	Thu,  2 Jan 2025 05:37:19 +0000 (GMT)
+Received: from li-3c92a0cc-27cf-11b2-a85c-b804d9ca68fa.ibm.com (unknown [9.109.199.160])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  2 Jan 2025 05:37:19 +0000 (GMT)
+Date: Thu, 2 Jan 2025 11:07:06 +0530
+From: Aditya Gupta <adityag@linux.ibm.com>
+To: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Daniel Gomez <da.gomez@samsung.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-modules@vger.kernel.org, bpf@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] sysfs: constify bin_attribute argument of
+ sysfs_bin_attr_simple_read()
+Message-ID: <xbgqegeqsobrkf32aepwwe3khhucebgjraorpstt5226pghadd@yx62fi2gdv2p>
+References: <20241228-sysfs-const-bin_attr-simple-v2-0-7c6f3f1767a3@weissschuh.net>
+ <20241228-sysfs-const-bin_attr-simple-v2-1-7c6f3f1767a3@weissschuh.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,202 +110,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241228-sysfs-const-bin_attr-simple-v2-1-7c6f3f1767a3@weissschuh.net>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: K0tCbzaFqk7BHIgLmM55l7I93y31a2B1
+X-Proofpoint-ORIG-GUID: d1GjE4-ccz4lJkp22uUoE_W9nitpvG_E
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
+ spamscore=0 mlxscore=0 suspectscore=0 malwarescore=0 clxscore=1011
+ bulkscore=0 priorityscore=1501 lowpriorityscore=0 phishscore=0
+ mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501020046
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: df6c1289f93dcc78d0ff1b4777d5920eb564a7fc  Automatic merge of 'next' into merge (2025-01-01 14:09)
+Looks good to me. Did boot test and reading the /sys files works.
 
-elapsed time: 724m
+Linux-ci tests [0] are also good (the failing tests are broken from
+some time, ignoring them):
 
-configs tested: 181
-configs skipped: 8
+[0]: https://github.com/adi-g15-ibm/linux-ci/actions?query=branch%3Atmp-test-branch-10962+branch%3Atmp-test-branch-26310+branch%3Atmp-test-branch-23431++
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Tested-by: Aditya Gupta <adityagupta@ibm.com>
 
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-alpha                               defconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                                 defconfig    gcc-13.2.0
-arc                                 defconfig    gcc-14.2.0
-arc                   randconfig-001-20250101    gcc-13.2.0
-arc                   randconfig-002-20250101    gcc-13.2.0
-arc                    vdk_hs38_smp_defconfig    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                       aspeed_g4_defconfig    gcc-14.2.0
-arm                                 defconfig    clang-20
-arm                                 defconfig    gcc-14.2.0
-arm                           imxrt_defconfig    clang-19
-arm                        multi_v7_defconfig    gcc-14.2.0
-arm                   randconfig-001-20250101    clang-15
-arm                   randconfig-002-20250101    clang-17
-arm                   randconfig-003-20250101    gcc-14.2.0
-arm                   randconfig-004-20250101    gcc-14.2.0
-arm                        shmobile_defconfig    gcc-14.2.0
-arm                         socfpga_defconfig    gcc-14.2.0
-arm                          sp7021_defconfig    gcc-14.2.0
-arm                        spear6xx_defconfig    gcc-14.2.0
-arm64                            alldefconfig    gcc-14.2.0
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                               defconfig    gcc-14.2.0
-arm64                 randconfig-001-20250101    clang-20
-arm64                 randconfig-002-20250101    clang-20
-arm64                 randconfig-003-20250101    gcc-14.2.0
-arm64                 randconfig-004-20250101    clang-19
-csky                              allnoconfig    gcc-14.2.0
-csky                                defconfig    gcc-14.2.0
-csky                  randconfig-001-20250101    gcc-14.2.0
-csky                  randconfig-002-20250101    gcc-14.2.0
-hexagon                          allmodconfig    clang-20
-hexagon                           allnoconfig    clang-20
-hexagon                          allyesconfig    clang-18
-hexagon                             defconfig    clang-20
-hexagon                             defconfig    gcc-14.2.0
-hexagon               randconfig-001-20250101    clang-14
-hexagon               randconfig-002-20250101    clang-16
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250101    clang-19
-i386        buildonly-randconfig-002-20250101    gcc-12
-i386        buildonly-randconfig-003-20250101    clang-19
-i386        buildonly-randconfig-004-20250101    clang-19
-i386        buildonly-randconfig-005-20250101    clang-19
-i386        buildonly-randconfig-006-20250101    clang-19
-i386                                defconfig    clang-19
-i386                  randconfig-001-20250102    gcc-12
-i386                  randconfig-002-20250102    gcc-12
-i386                  randconfig-003-20250102    gcc-12
-i386                  randconfig-004-20250102    gcc-12
-i386                  randconfig-005-20250102    gcc-12
-i386                  randconfig-006-20250102    gcc-12
-i386                  randconfig-007-20250102    gcc-12
-i386                  randconfig-011-20250102    clang-19
-i386                  randconfig-012-20250102    clang-19
-i386                  randconfig-013-20250102    clang-19
-i386                  randconfig-014-20250102    clang-19
-i386                  randconfig-015-20250102    clang-19
-i386                  randconfig-016-20250102    clang-19
-i386                  randconfig-017-20250102    clang-19
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch                           defconfig    gcc-14.2.0
-loongarch             randconfig-001-20250101    gcc-14.2.0
-loongarch             randconfig-002-20250101    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                                defconfig    gcc-14.2.0
-m68k                       m5208evb_defconfig    gcc-14.2.0
-m68k                        m5307c3_defconfig    gcc-14.2.0
-m68k                        m5407c3_defconfig    gcc-14.2.0
-m68k                        mvme16x_defconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-microblaze                          defconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-mips                        bcm63xx_defconfig    gcc-14.2.0
-mips                         db1xxx_defconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                               defconfig    gcc-14.2.0
-nios2                 randconfig-001-20250101    gcc-14.2.0
-nios2                 randconfig-002-20250101    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-12
-openrisc                            defconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-12
-parisc                              defconfig    gcc-14.2.0
-parisc                randconfig-001-20250101    gcc-14.2.0
-parisc                randconfig-002-20250101    gcc-14.2.0
-parisc64                            defconfig    gcc-14.1.0
-parisc64                            defconfig    gcc-14.2.0
-powerpc                          allmodconfig    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc                 canyonlands_defconfig    clang-19
-powerpc                       ebony_defconfig    clang-18
-powerpc                          g5_defconfig    gcc-14.2.0
-powerpc                    ge_imp3a_defconfig    gcc-14.2.0
-powerpc                     mpc83xx_defconfig    clang-20
-powerpc                     ppa8548_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20250101    gcc-14.2.0
-powerpc               randconfig-002-20250101    clang-17
-powerpc               randconfig-003-20250101    gcc-14.2.0
-powerpc                        warp_defconfig    gcc-14.2.0
-powerpc                 xes_mpc85xx_defconfig    gcc-14.2.0
-powerpc64             randconfig-001-20250101    clang-20
-powerpc64             randconfig-002-20250101    gcc-14.2.0
-powerpc64             randconfig-003-20250101    clang-17
-riscv                            allmodconfig    clang-20
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-20
-riscv                               defconfig    clang-19
-riscv                               defconfig    gcc-12
-riscv                    nommu_k210_defconfig    gcc-14.2.0
-riscv                 randconfig-001-20250101    gcc-14.2.0
-riscv                 randconfig-002-20250101    clang-19
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-20
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    clang-15
-s390                                defconfig    gcc-12
-s390                  randconfig-001-20250101    clang-20
-s390                  randconfig-002-20250101    gcc-14.2.0
-sh                               alldefconfig    gcc-14.2.0
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-12
-sh                                  defconfig    gcc-14.2.0
-sh                          kfr2r09_defconfig    gcc-14.2.0
-sh                    randconfig-001-20250101    gcc-14.2.0
-sh                    randconfig-002-20250101    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250101    gcc-14.2.0
-sparc                 randconfig-002-20250101    gcc-14.2.0
-sparc64                             defconfig    gcc-12
-sparc64                             defconfig    gcc-14.2.0
-sparc64               randconfig-001-20250101    gcc-14.2.0
-sparc64               randconfig-002-20250101    gcc-14.2.0
-um                               allmodconfig    clang-20
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-20
-um                                  defconfig    gcc-12
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250101    gcc-12
-um                    randconfig-002-20250101    clang-20
-um                           x86_64_defconfig    clang-15
-um                           x86_64_defconfig    gcc-12
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250101    clang-19
-x86_64      buildonly-randconfig-002-20250101    clang-19
-x86_64      buildonly-randconfig-003-20250101    clang-19
-x86_64      buildonly-randconfig-004-20250101    gcc-12
-x86_64      buildonly-randconfig-005-20250101    clang-19
-x86_64      buildonly-randconfig-006-20250101    clang-19
-x86_64                              defconfig    gcc-11
-x86_64                                  kexec    clang-19
-x86_64                               rhel-9.4    clang-19
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                          iss_defconfig    gcc-14.2.0
-xtensa                randconfig-001-20250101    gcc-14.2.0
-xtensa                randconfig-002-20250101    gcc-14.2.0
+Thanks,
+- Aditya G
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On 24/12/28 09:43AM, Thomas Weißschuh wrote:
+> Most users use this function through the BIN_ATTR_SIMPLE* macros,
+> they can handle the switch transparently.
+> Also adapt the two non-macro users in the same change.
+> 
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> ---
+>  arch/powerpc/platforms/powernv/opal.c | 2 +-
+>  fs/sysfs/file.c                       | 2 +-
+>  include/linux/sysfs.h                 | 4 ++--
+>  kernel/module/sysfs.c                 | 2 +-
+>  4 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+> index 5d0f35bb917ebced8c741cd3af2c511949a1d2ef..013637e2b2a8e6a4ec6b93a520f8d5d9d3245467 100644
+> --- a/arch/powerpc/platforms/powernv/opal.c
+> +++ b/arch/powerpc/platforms/powernv/opal.c
+> @@ -818,7 +818,7 @@ static int opal_add_one_export(struct kobject *parent, const char *export_name,
+>  	sysfs_bin_attr_init(attr);
+>  	attr->attr.name = name;
+>  	attr->attr.mode = 0400;
+> -	attr->read = sysfs_bin_attr_simple_read;
+> +	attr->read_new = sysfs_bin_attr_simple_read;
+>  	attr->private = __va(vals[0]);
+>  	attr->size = vals[1];
+>  
+> diff --git a/fs/sysfs/file.c b/fs/sysfs/file.c
+> index 785408861c01c89fc84c787848243a13c1338367..6931308876c4ac3b4c19878d5e1158ad8fe4f16f 100644
+> --- a/fs/sysfs/file.c
+> +++ b/fs/sysfs/file.c
+> @@ -817,7 +817,7 @@ EXPORT_SYMBOL_GPL(sysfs_emit_at);
+>   * Returns number of bytes written to @buf.
+>   */
+>  ssize_t sysfs_bin_attr_simple_read(struct file *file, struct kobject *kobj,
+> -				   struct bin_attribute *attr, char *buf,
+> +				   const struct bin_attribute *attr, char *buf,
+>  				   loff_t off, size_t count)
+>  {
+>  	memcpy(buf, attr->private + off, count);
+> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+> index 0f2fcd244523f050c5286f19d4fe1846506f9214..2205561159afdb57d0a250bb0439b28c01d9010e 100644
+> --- a/include/linux/sysfs.h
+> +++ b/include/linux/sysfs.h
+> @@ -511,7 +511,7 @@ __printf(3, 4)
+>  int sysfs_emit_at(char *buf, int at, const char *fmt, ...);
+>  
+>  ssize_t sysfs_bin_attr_simple_read(struct file *file, struct kobject *kobj,
+> -				   struct bin_attribute *attr, char *buf,
+> +				   const struct bin_attribute *attr, char *buf,
+>  				   loff_t off, size_t count);
+>  
+>  #else /* CONFIG_SYSFS */
+> @@ -774,7 +774,7 @@ static inline int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
+>  
+>  static inline ssize_t sysfs_bin_attr_simple_read(struct file *file,
+>  						 struct kobject *kobj,
+> -						 struct bin_attribute *attr,
+> +						 const struct bin_attribute *attr,
+>  						 char *buf, loff_t off,
+>  						 size_t count)
+>  {
+> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
+> index 456358e1fdc43e6b5b24f383bbefa37812971174..254017b58b645d4afcf6876d29bcc2e2113a8dc4 100644
+> --- a/kernel/module/sysfs.c
+> +++ b/kernel/module/sysfs.c
+> @@ -196,7 +196,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
+>  			nattr->attr.mode = 0444;
+>  			nattr->size = info->sechdrs[i].sh_size;
+>  			nattr->private = (void *)info->sechdrs[i].sh_addr;
+> -			nattr->read = sysfs_bin_attr_simple_read;
+> +			nattr->read_new = sysfs_bin_attr_simple_read;
+>  			++nattr;
+>  		}
+>  		++loaded;
+> 
+> -- 
+> 2.47.1
+> 
 
