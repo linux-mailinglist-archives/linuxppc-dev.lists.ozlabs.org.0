@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4594-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4595-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F138A000C5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 22:37:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 902B9A000C9
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 22:38:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPKmp5s8Tz2x9T;
-	Fri,  3 Jan 2025 08:37:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPKp72G92z2xFq;
+	Fri,  3 Jan 2025 08:38:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::130"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735853850;
-	cv=none; b=lu9qIJLGKiOPQL4LcQYD7yfCUMs09mH1lB21cqGcZbEGQuoL/SSOR9Z08VVttcg+aitN0p6vES2H0ZkBA4NpQL9Nh2dgn1Ih3mCqSDDyKcvg0I3IsyvPxo8sibNMqiopD+PhFSIfHyZ+/4LGfsnuEYk4gG6GBH80A4JHwim/4dwfSW9/XqBNDGklmO4BudkMty3tz9JPOjelbzbC8bD1ir7xFXzIEOHxgTV7ZsG0aeaSJCiUpBrOc0OmR9KFpjZBRrsZFLyddVzq1BI8qqXePPwU9wJ7j0vye5szRBqGRg6xszX273t9ywz4KJoFlsrfpS8L8etT8t3uxU9bId7i0g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::235"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735853919;
+	cv=none; b=L5m0/1EleLvO9bHS4JTJYkydJVxPSpFZ/3df+Ln7jwAeQLN1OKYsMctl7pAE5yCrK0lTrA3WUbPhTN8FB7ZKRQmZfROjbG4bTUNSoJV7E4cEH5HbzhH1kcU5H0VoI58nlNdDapUy8/7RkYZ3kDsg9/lLfnptSpA9KXiR1qkIoJcDtqAsgAxB6I7+4M4eX6AS61so9cDX1/kaJIXfXClj84ZjQcN1aCDgDGF5uJOnMbYOYIh4NCWt6YeghlNvKIdQOiQQ3T6g8GQNufzJQLAyKCiE7nkKCb5G6F0QdNgaFWjGBDeZ0oxasws4CitWhFO2w6yTzhGgQBN1uqyqcz4qKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735853850; c=relaxed/relaxed;
-	bh=gisomaO+L2GIVKZW9oMvTTOjgiixCpyPxn51SMugAMU=;
+	t=1735853919; c=relaxed/relaxed;
+	bh=/QAvkI6HxTL5269JiZxSPsPSVibxMR8kD9bdLWJznEE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YS2qLT9m44lknJwcSEEDcL6GEhqzInILWvP4KPWNgDJxZZE34raTQeVyuUPoUR7UJwQ5cHyTNXIwKjq+qf/FaxLthv/lX6Cjii8jrxNpTfMqIVT4fIZ9FYKV4UWug/jCkr9rmhNlqnlh58JStcqY4QMKCP3hgMIM5/h0vDdexYdIleZaJkQLetQe+R9+RJj4vB/orjmOPo6e/ySx++k9CQ/BkcWY5i53rAARSk3cCG4kfuqWiOmwJKBB81j0q6xLZxeoLb462mrCYYBDmo4XwyNjWjoXFZZWwN3hLiUzTn6L+Tu8VHKjncOoy8Q/H+YEhLXPKOP7oL08A03IZUN7qQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=MSvgUklo; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+	 To:Cc:Content-Type; b=ZO/UBm50Qp2SaNpIRJx2Ga3QeXzHoH/czEVMK0cDHGt7kQU1zNGtP4ZuRw6egReh/0fSaO1UPN8RMjHlWG0S5nv7WGFQGjVaJr4zMWkR429Oty30J1NziOn4iPnkffmCFKps2gmOOcKP856T4wO+iI0z+RSiPWBK9VAwtsTdSPqGRfHR5ZkB2X5Ltsu1b5nKU1JqCCx7NiBaz8WM/TI3foYTL9BTpsPAOEdB7hiBMq6uFyL+jWXRisM0FilUeybENtTyFxQpt4c/YeZzMzpfs5W7FO6WCnwpPq4mzrO4228GG8XYUfIPUUYszZrjjlg8f93EHTUwmsWS3BWBbxbKLA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PLDPCtVU; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=MSvgUklo;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=PLDPCtVU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::130; helo=mail-lf1-x130.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=linus.walleij@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPKmm6hNbz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 08:37:26 +1100 (AEDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-53e399e3310so14301929e87.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jan 2025 13:37:26 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPKp60sXLz2xBK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 08:38:37 +1100 (AEDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-30227ccf803so137889401fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jan 2025 13:38:37 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1735853838; x=1736458638; darn=lists.ozlabs.org;
+        d=linaro.org; s=google; t=1735853914; x=1736458714; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gisomaO+L2GIVKZW9oMvTTOjgiixCpyPxn51SMugAMU=;
-        b=MSvgUklogweKDY9ms/G296LjY9P/Vmr6/cXyZit9jq5Auhl+ecJZYb/jyH8f2KtB84
-         cB9vPGyiRc0rfnF2oSy+KsK4I08d8Dv6lz7HGHAHn0grtgaW37Op2LNaEC39Olm03eql
-         FrVD7IeT4nvIUx+bS0Wb2Q/0Lj7lnrdZSdx5wq4NYGgmBGtBSibnuMx4tye1EWoqc16t
-         v9yTbzDuVQ+5KSODq1j0+ulBeZx83jXj2g4PjK3ng3SPjOdx1YNWG04AbedQ2PvMuwua
-         hzOwIxP1Gl9p05khjtXT9SMbYAP8w6r2JK4VZEtjt8Wldfnkt8RKufaeWuarIBkMhcpX
-         lwfg==
+        bh=/QAvkI6HxTL5269JiZxSPsPSVibxMR8kD9bdLWJznEE=;
+        b=PLDPCtVU7bl9apz5TJVfAkuit1y/VNIy48gOimTQPfL1SJYFLgqsurOzVqseur6QAQ
+         b1YDsl3bie1wd5O/X8yBuX3LKlufsH9otLiKps37rGNfGhqflHYDh+YyXRw5wAOlIR3z
+         snR7xWp/6ac9949YJNhE02DA0wNaqAxmEbdV9qP6FMJXi0G3vzgL/FbTErrRCGtJ9+PS
+         QeGecxR2yzsZ5cTFdshcWsSdUniDmX+RFaJbnM9BluVQJjYk3kR3Ll4H9geKB5ibHF31
+         WFX8S6OMCtUoQXeXwt/qj2DQATWpv4uLqvaFbQcWHoi2Js0HW9KvK6uKpp0AuUrvbLII
+         +4Ug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735853838; x=1736458638;
+        d=1e100.net; s=20230601; t=1735853914; x=1736458714;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gisomaO+L2GIVKZW9oMvTTOjgiixCpyPxn51SMugAMU=;
-        b=w0IqRGdcBBXEFyLCOsgEzDkGArf9BmgL8/zajyD2Sw6BePWPxZqbwXPabkn03KAgCi
-         s3RJhje/a75AH5kGznMfEO9gmL+kp0y+bkx7po8+NpnDSFAJp1m8qX+ogcPFOrd4tllf
-         TjmrDHuKskHLkdQGonnqrkEzf7rc7po+yYz5CMVb8K9/x+6oI5aOg6ACU3sP/uM2FUCY
-         jBQzv8RqsODtaFdbzFxALkQEOFN1feHwa+F4f+Db+rfB3CVWgr4jckOAXmJKlJLjCy7P
-         BUd6r3xXExOTvTLe+C3mmZzoCH0nf56dQfUw5Hr2jrGBsNLPcplpJTH2SGqIpbq4cF1P
-         PXdw==
-X-Forwarded-Encrypted: i=1; AJvYcCXAp7FKw2g7WptOYcWa0JDs9rEO6NNOpDEWlVYWImLVIFYfMvE/EuL5d/Gp8NhhSszNeF8Ri847eOTCvzY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxkFhpByuQCwgRZzympbIi/1IxDvwY/fSlAeoPocjXGpGf8b3vh
-	fH9GWs5cuQ3b5tF3jdqAR9WHjpfkc83hPtFn1AoQCrNwa5ZThwix2AnOvWKEF3yg4vg4D/9EB2W
-	lPy2kELnT93UQ7/qwlE5qkzqtJoABg3jrssi9/Q==
-X-Gm-Gg: ASbGncu/M3uYs5QSQQXAkmI0Wf5C2o1GhdYgsIXDLsn9bEsX4n3rNIL/CzIRPhWbD95
-	Gp6XEqQI5ZFeYDpuZSGr9TkHh/bg37roQduMh
-X-Google-Smtp-Source: AGHT+IFzHplckR4742TUfZ5sO6raHTYRlXz3BpSLB1Co99YggfuQOyG2xtX6buS1XOMwQ6IDHaXQhcF4tHvVn0hAZ0E=
-X-Received: by 2002:a05:6512:2246:b0:542:2e04:edd1 with SMTP id
- 2adb3069b0e04-5422e04f073mr10683653e87.42.1735853838389; Thu, 02 Jan 2025
- 13:37:18 -0800 (PST)
+        bh=/QAvkI6HxTL5269JiZxSPsPSVibxMR8kD9bdLWJznEE=;
+        b=SzWRHOLK4jWn3vmnEBiWhbAwCx5GvxrnjFrQsTPr3dxylQPXJ6Al64cIDYd+8HjgGw
+         h85CQpK2jnOBqklaSR+pZOjSBfylfB2WSrlvSr3tnHLyqKUopuYnZKF/3kgSFstsfRlX
+         8uLQHxIK4iDK8C6zQehH0zi5HE9BDjtRjlFlOtCrA8sXfKEQXK3cMLU0bY9F5nFXOH3D
+         +5aLF7ScPOyLXss41LYHM15eWeAKCkKAZswwC7mhL/IVSS+8yyDjrUyAj86C9aykRGfT
+         lbTtwLcXzZXfzuZZ9vGD4CirTeNWUKbHtpTMKwBL7bJecsO7/fe9j0okWuduvV/VyMaD
+         7Vsw==
+X-Forwarded-Encrypted: i=1; AJvYcCUiskibZrTeG6pWxrPw7okIv/6HV7+HPyeCCPXtVxkJuvj8Vbej0YVTuaiPpB69pe+HnQS5Gxuo0rMeD7A=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwW4JUycsZJcWHhAhcqncpCvF68XXp5aJM+WtbUHYOlq3jmwQNo
+	d96uPPk4dECEeOzlp6DZQPzqHg29PnuDK0r/K+GTQkOezKeqFZFSbnTo5XXFt3G8kRU37tXg00B
+	OKlSRALvR5eQbBnyZWpsuEar1z5PA4/Tv0qD1HQ==
+X-Gm-Gg: ASbGncvXVuA042jYon0gYxOn/oseDM5NAvhoARmgCFdrGEz0M3hMkxjzrGPd8WjKgsB
+	OacrUYMrO5HEjjEXsnCO1wwN+HploA3nz9FA6
+X-Google-Smtp-Source: AGHT+IGgIsXivWdreYxsNQCB/NDjR4aFqFJyr5ZVnW9Z9Bg0saPdaxlqhTNHFFgWt31bWtKnl3+Z4uC7x6U9BW4+fD8=
+X-Received: by 2002:a05:6512:b0d:b0:540:2576:d0d8 with SMTP id
+ 2adb3069b0e04-54229561a90mr12900419e87.40.1735853913704; Thu, 02 Jan 2025
+ 13:38:33 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,13 +76,12 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250102-mpc83xx-v1-0-86f78ba2a7af@posteo.net> <20250102-mpc83xx-v1-11-86f78ba2a7af@posteo.net>
-In-Reply-To: <20250102-mpc83xx-v1-11-86f78ba2a7af@posteo.net>
+References: <20250102-mpc83xx-v1-0-86f78ba2a7af@posteo.net> <20250102-mpc83xx-v1-13-86f78ba2a7af@posteo.net>
+In-Reply-To: <20250102-mpc83xx-v1-13-86f78ba2a7af@posteo.net>
 From: Linus Walleij <linus.walleij@linaro.org>
-Date: Thu, 2 Jan 2025 22:37:06 +0100
-Message-ID: <CACRpkdbwAUYxerznTzukeWkMSj80ni82oupdLjBbZRHzmjuH2A@mail.gmail.com>
-Subject: Re: [PATCH 11/19] dt-bindings: gpio: fsl,qoriq-gpio: Add compatible
- string fsl,mpc8314-gpio
+Date: Thu, 2 Jan 2025 22:38:22 +0100
+Message-ID: <CACRpkdZVKC9HhUT8LqNnOU5NSE_S-ucuZRWACesEejDWwCyV5w@mail.gmail.com>
+Subject: Re: [PATCH 13/19] gpio: mpc8xxx: Add MPC8314 support
 To: j.ne@posteo.net
 Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
 	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
@@ -103,11 +102,14 @@ On Thu, Jan 2, 2025 at 7:32=E2=80=AFPM J. Neusch=C3=A4fer via B4 Relay
 
 > From: "J. Neusch=C3=A4fer" <j.ne@posteo.net>
 >
-> This is for the MPC831{4,5}{,E} SoCs.
+> GPIO input, output, and interrupts have been tested on a MPC8314E board.
 >
 > Signed-off-by: J. Neusch=C3=A4fer <j.ne@posteo.net>
 
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+
+Can Bartosz simply apply this and the binding patch and get these
+two patches off our tail?
 
 Yours,
 Linus Walleij
