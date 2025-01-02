@@ -1,35 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-4568-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4569-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 612129FFC78
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 18:00:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B839FFCB3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  2 Jan 2025 18:24:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPCdX67yNz2yT0;
-	Fri,  3 Jan 2025 04:00:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPD9J3S5qz2yVX;
+	Fri,  3 Jan 2025 04:24:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735837248;
-	cv=none; b=Qa17KMG2KcggWHOnwqlz4qszRJAnPqecgN+ptA71CqpcaotMfAs/IsJ5jGbESFT3K5UgqxaNfWQjgKA+8wnY4L95AUv+LgHiBTCenGsR1yOPyl980p0y1wzFIjKHg94H16Rc0HRV5emHtr+0TYl0HrFIOOs6pK9EzF+kA/m2cUnOdT2PKBDB/NUsjv8KGOMeqVogbX1n7linIMFSCZm0alNYuZWfVccIqyitDpGWRyyfdO1TXm7sRVawmOQOd259//eA+XUypO2Gx8zks6QWY01377YlgqXp7a00yam1W3oUpVrvYA3BiHz8dm327YIgihomgfHfc/dHdb+rHHKtNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735838692;
+	cv=none; b=ArkXI49tQvpqzddnZMHpNFofoI3mENFz5OexVIUs1GkTnokkRUWXAezAcHjYDjEWqgAWbfwm9kIGVKM72Jf4lTgV0jggyvZdfEDcuSpcbAqEWa+UgFQyj0qaImFnAR+ohMysn+bj3+Llxx7MyyFcS5Ftdrnxn9oLHzsO6Z6w+T09+TJ1lV1/ep/zS1QhQojxeUceT3eUGNhp+ZSVxsapgMMOjOtj5OKRXSxd9002Oh+LEDpHK5CxQAFbt8a1AimcugGK1SxOZpUplpeuGZjfPWUQOsb81uiyghSHa2AES3uHN1trtaBqj4lTCFuyxSuJB9GnDWZFDqlgYtysC+PZ9g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735837248; c=relaxed/relaxed;
-	bh=DVKtDnv73lkMyTG56buW5+Lz0T+F0ADXYZ01KdwQv9k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Lx0ZarOBMUZvRXySdiStA3XFGnzfoHY8KmoSmSigzsN8EH0a7P3ULbGi8/ffBm/Ynoe7S5o4Y3ayk6u+WDDXu2qxZi7fbmqSPZOypXJ1xEG9p+xLw3exifIGtnYcEp2PB+1T/eyx7P8LX34Nf2+TVs/hyTcfsvb54BekauzvGEmODKrR9rWnUuUSpNouhKaztux8QoMNpAvwqdZhQA2IJ0+8SsMEqlGhJ8um/B7XbNVETTYsgKxyMsZkvxRdoFvZaXSDHkpNdWb+ilryBZeu2JD4cHc+fq4iUjJx2FBoQm+EmFC8BhY9jDSxSXQQwWZ6S2D34FatFwSR0VUUNL60og==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPCdW6S2kz2yN3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 04:00:47 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A4B9911FB;
-	Thu,  2 Jan 2025 09:00:44 -0800 (PST)
-Received: from [10.57.91.208] (unknown [10.57.91.208])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 91B853F673;
-	Thu,  2 Jan 2025 09:00:07 -0800 (PST)
-Message-ID: <04b0a778-7a6b-4df3-b40e-ca76adddb243@arm.com>
-Date: Thu, 2 Jan 2025 18:00:05 +0100
+	t=1735838692; c=relaxed/relaxed;
+	bh=t1iXlsnsDe4bz1PnJhtN2ZjAG9ZaocmO4wo7p4W6M0g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bWF93nqgz4fT+OWGUDIjdaXpRLonSKoLxPyc8Rg5I1NT0UPpExGmmVkedmmu3K46H9jZhkKZn9JaGas2ZONJPMvwEys6pdJRe/ppXovVEX8ExXsOsuTEY/L7yo1qIWSP3fBRPzzsbGQXoMjJ5qkfBLzEBB463uhPVbrGDFUouvCw0BAe7sdb+0QTrTtds21ncjy6C7m/5lyfMm1oqDoitIujyn4tKEXNG92/I/WrxYF8zMbDTrxGShwI+zPALxuaoMFszx8M+TR8VauOxnmegpcA1xyiY0K+3bf66Nv/LpIZzXwsLv+tJ4CIuiU4LM23ene/4scGKi1ReR2LEujCoA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AjRfdJPc; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AjRfdJPc;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPD9H1L3lz2yN3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 04:24:51 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 7F8B9A40B4C;
+	Thu,  2 Jan 2025 17:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40F20C4CED0;
+	Thu,  2 Jan 2025 17:24:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735838686;
+	bh=dhAKobW2Sn3UJxdMEMFF+/VJXFN/vgYVY2Kdus9Irc8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AjRfdJPcjYi4nv0p4ONg/pmLvQ/6q9hbqdWm92KbRtJ9C0henHMq2lTFg21M9Gnj6
+	 ZfWQYaJb+Ay0/MZaZj92C1BZjLCJJJBLqIBPrljMgam2Kl/6ViYf1/FSbzyW/3gkMV
+	 H1wZBaskVXi2fJk+Cg8LoKdnuWwHsPN2Kl1oyhI14dKva46zqIFRLFHK6L2Vj7gTJE
+	 QIIbI4uMo7HX6jCu/Ml/LePfxEpEic9/8kIfjwHNgMPBvnKlpB6hdo8JQppL3VA0Hl
+	 A04pidWhCcnL3sMGhq0ThkAC5Y2Ksi62eqIo0dwKPxHqTNl1mHNPU82llGLsmFqg+x
+	 B+kCaSt9e2EnA==
+Date: Thu, 2 Jan 2025 17:24:44 +0000
+From: Eric Biggers <ebiggers@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-crypto@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Danny Tsen <dtsen@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2 10/29] crypto: powerpc/p10-aes-gcm - simplify handling
+ of linear associated data
+Message-ID: <20250102172444.GB49952@google.com>
+References: <20241230001418.74739-1-ebiggers@kernel.org>
+ <20241230001418.74739-11-ebiggers@kernel.org>
+ <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,59 +69,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/15] move pagetable_*_dtor() to __tlb_remove_table()
-To: Qi Zheng <zhengqi.arch@bytedance.com>, peterz@infradead.org,
- agordeev@linux.ibm.com, palmer@dabbelt.com, tglx@linutronix.de,
- david@redhat.com, jannh@google.com, hughd@google.com, yuzhao@google.com,
- willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
- lorenzo.stoakes@oracle.com, akpm@linux-foundation.org, rientjes@google.com,
- vishal.moola@gmail.com, arnd@arndb.de, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, dave.hansen@linux.intel.com,
- rppt@kernel.org, ryan.roberts@arm.com
-Cc: linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org, linux-arch@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-um@lists.infradead.org
-References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <cover.1735549103.git.zhengqi.arch@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ec3515f1-f93a-4520-a9da-6ad14f9a6fe0@csgroup.eu>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 30/12/2024 10:07, Qi Zheng wrote:
-> Qi Zheng (13):
->   Revert "mm: pgtable: make ptlock be freed by RCU"
->   mm: pgtable: add statistics for P4D level page table
->   arm64: pgtable: use mmu gather to free p4d level page table
->   s390: pgtable: add statistics for PUD and P4D level page table
->   mm: pgtable: introduce pagetable_dtor()
->   arm: pgtable: move pagetable_dtor() to __tlb_remove_table()
->   arm64: pgtable: move pagetable_dtor() to __tlb_remove_table()
->   riscv: pgtable: move pagetable_dtor() to __tlb_remove_table()
->   x86: pgtable: move pagetable_dtor() to __tlb_remove_table()
->   s390: pgtable: also move pagetable_dtor() of PxD to
->     __tlb_remove_table()
->   mm: pgtable: introduce generic __tlb_remove_table()
->   mm: pgtable: move __tlb_remove_table_one() in x86 to generic file
->   mm: pgtable: introduce generic pagetable_dtor_free()
+On Thu, Jan 02, 2025 at 12:50:50PM +0100, Christophe Leroy wrote:
+> 
+> 
+> Le 30/12/2024 à 01:13, Eric Biggers a écrit :
+> > From: Eric Biggers <ebiggers@google.com>
+> > 
+> > p10_aes_gcm_crypt() is abusing the scatter_walk API to get the virtual
+> > address for the first source scatterlist element.  But this code is only
+> > built for PPC64 which is a !HIGHMEM platform, and it can read past a
+> > page boundary from the address returned by scatterwalk_map() which means
+> > it already assumes the address is from the kernel's direct map.  Thus,
+> > just use sg_virt() instead to get the same result in a simpler way.
+> > 
+> > Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > Cc: Danny Tsen <dtsen@linux.ibm.com>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: Naveen N Rao <naveen@kernel.org>
+> > Cc: Nicholas Piggin <npiggin@gmail.com>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
+> > ---
+> > 
+> > This patch is part of a long series touching many files, so I have
+> > limited the Cc list on the full series.  If you want the full series and
+> > did not receive it, please retrieve it from lore.kernel.org.
+> > 
+> >   arch/powerpc/crypto/aes-gcm-p10-glue.c | 8 ++------
+> >   1 file changed, 2 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/crypto/aes-gcm-p10-glue.c b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > index f37b3d13fc53..2862c3cf8e41 100644
+> > --- a/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > +++ b/arch/powerpc/crypto/aes-gcm-p10-glue.c
+> > @@ -212,11 +212,10 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+> >   	struct p10_aes_gcm_ctx *ctx = crypto_tfm_ctx(tfm);
+> >   	u8 databuf[sizeof(struct gcm_ctx) + PPC_ALIGN];
+> >   	struct gcm_ctx *gctx = PTR_ALIGN((void *)databuf, PPC_ALIGN);
+> >   	u8 hashbuf[sizeof(struct Hash_ctx) + PPC_ALIGN];
+> >   	struct Hash_ctx *hash = PTR_ALIGN((void *)hashbuf, PPC_ALIGN);
+> > -	struct scatter_walk assoc_sg_walk;
+> >   	struct skcipher_walk walk;
+> >   	u8 *assocmem = NULL;
+> >   	u8 *assoc;
+> >   	unsigned int cryptlen = req->cryptlen;
+> >   	unsigned char ivbuf[AES_BLOCK_SIZE+PPC_ALIGN];
+> > @@ -232,12 +231,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+> >   	memset(ivbuf, 0, sizeof(ivbuf));
+> >   	memcpy(iv, riv, GCM_IV_SIZE);
+> >   	/* Linearize assoc, if not already linear */
+> >   	if (req->src->length >= assoclen && req->src->length) {
+> > -		scatterwalk_start(&assoc_sg_walk, req->src);
+> > -		assoc = scatterwalk_map(&assoc_sg_walk);
+> > +		assoc = sg_virt(req->src); /* ppc64 is !HIGHMEM */
+> >   	} else {
+> >   		gfp_t flags = (req->base.flags & CRYPTO_TFM_REQ_MAY_SLEEP) ?
+> >   			      GFP_KERNEL : GFP_ATOMIC;
+> >   		/* assoc can be any length, so must be on heap */
+> > @@ -251,13 +249,11 @@ static int p10_aes_gcm_crypt(struct aead_request *req, u8 *riv,
+> >   	vsx_begin();
+> >   	gcmp10_init(gctx, iv, (unsigned char *) &ctx->enc_key, hash, assoc, assoclen);
+> >   	vsx_end();
+> > -	if (!assocmem)
+> > -		scatterwalk_unmap(assoc);
+> > -	else
+> > +	if (assocmem)
+> >   		kfree(assocmem);
+> 
+> kfree() accepts a NULL pointer, you can call kfree(assocmem) without 'if
+> (assocmem)'
 
-Aside from the nit on patch 4 and the request for clarification on patch
-10, this is looking good to me, so for the whole series (aside from my
-own patches of course):
+The existing code did that too, but sure I'll change that in v3.
 
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-
-And happy new year!
-
-Cheers,
-- Kevin
+- Eric
 
