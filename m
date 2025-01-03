@@ -1,75 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-4624-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B44C2A00699
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 10:15:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12556A006DE
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 10:26:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPdFt3CPlz30Sy;
-	Fri,  3 Jan 2025 20:15:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPdVZ3lJSz30RS;
+	Fri,  3 Jan 2025 20:26:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735895714;
-	cv=none; b=fYGL4NOPZTrVeCx8iYXYLiWS+QLnrJ2EFlvPEPgkkdvJeVldATv8BRNV1sjFt1nBcAPcEO2WPmEUSb2bh8g88FgRgtSfi/Py+2otZbYq6T/LMPSB15W6znU+bpG8IJj8NUImsxLS3U8TjExj8sYjL/mvOz82/LPDDSWCAsCkjqpzzSTaLqyTuGSU80EYsQJioGtLc9vQ3v1L6TQeTUx1FiXxFZZWpdfdC2PVj0lylIPn8HOOn8ONavZzCsA7mDCduGjmrB+SoAL/XrDSrIAFCGbexUCsuOl+Yv00FUuM9D/QGwV29VZX5NFqNnFTSRhNN+2oMu8xvqHz1g18YG2zZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.222.43
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735896374;
+	cv=none; b=jTEGbYazYSyLioqgR8TXm3YsxajG0styLpOqQTtS8Vxz0wlsnZjQtb2bKXRi9mh6CcMRpSWFspmFBQSsC0+EPMae1N9QyiVrO1a95HGIHlgj25r6LuuQJqAAk5nPPATq79J9IzVx1gTngBtbunGQlwd/JvC0xMIy7xBlb9dVRiRt1Vmz4+dUD9XqmUo3FQT17Lsx6H5ZDzZ9mY1bC30aFCmWT9RIAbtWqR4rXRaaf+B4JZo1pOckcsVwr0R/Ple3KPkxC5Vaaqmk/bz/uAHg+EIjacrAXvz7N33q3BeRPgBJNmA2RJpE2N9pXhw8xsej5dl7hoLt4M1ariRt/e4ueg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735895714; c=relaxed/relaxed;
-	bh=p/0ZPydhVXtTVMHNLoHCFCFgWyWY3f5z9PmqikZtYXs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=jDcIsK3vimpf8hWvPYzWaFEqpOdRUwtHPQj7eJe0lwasZjGkWJgU76GdgonftCBAwUH3yA3LM3MjzXz4YsuNKZSrdxakxU4h+fq/bt77pdSPnMFstvlP0BNdia/+z80galPd3z9nJGKdabjZFMZlWS9MNDyRUi/PIUJbyOu8H6n9EgZiOFSAy6xbMyTjZCfDi8FqE7/T4MPjfnxm4i7k/yKSh7N7lgilJgYzBnyeFPori5puCrDsxCsQ3y60zPWhbiiK0R9MkDat+WjDkzQkOERIcf9SASnd3kK1XqNroE3ZigbWqjpqrk4SnHZ49jkiDj2ZMh897ACn7dwbKbZKJQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+bb0ad7377905e29ffc45+7803+infradead.org+dwmw2@casper.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=casper.srs.infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+bb0ad7377905e29ffc45+7803+infradead.org+dwmw2@casper.srs.infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	t=1735896374; c=relaxed/relaxed;
+	bh=OjhYyamqLdDEJy3N4MKnSa94M/Zio7ELm/v+tKn61jg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NU0F/AITkwliCaP2mKjxYlawoEE0CO8tOgWVm4Ex+8x8wesZRh9RC0CwSCk+UpS5arqrqSzfUPtOImcVqr3+esORhdFbvts7hqh3gpwzD40kd5xMz9JWhTAh86wY74D0Ac5ThSWXgT3YbvJkgY1LaoENlE15B73lnw/ELvIzT9d7d/bhhZ7yUrbQ25Xv4UEyjwwU6HCMKZXYeYLHWUoqskNQ6VR+UsOSlc2dtCiK0dS3CBlK6H0Uz7S7fZVoS6vYmWfnYpet/6sHo2gkgzScWXfvrnASvStoorW41yoNp1gMk//mJ/gaNUJTjAk8nQB4NBg0DveD9XPXol/g7BwBCw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.222.43; helo=mail-ua1-f43.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.43; helo=mail-ua1-f43.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPdFk35wnz30RS
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 20:15:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=p/0ZPydhVXtTVMHNLoHCFCFgWyWY3f5z9PmqikZtYXs=; b=PL6mo2ZgMnYEk32oTqKxw46DJn
-	kZ3pq1EnJHd2x+Xyb/8k/iOHHmDJkDPP+oJgQO0Dat+m9xi3NtLMhlWwn3fh9QBpV619UJgJCEQWj
-	Y2L/ivagUSjrXDYzhpJvb50gY7RzIg3IuqpWxW36MZtDkCnNsubedpGi0cWwa4rh6RIPDyLI/1v9X
-	MEwba4qg0L17p83IMHkF/f9JLleVFyNVt1HHYpjxcLOvPVu3aEChc4vuiCAtE1LzZfCbXDXtJAPai
-	29bxJD59TDl2cJ/4d8y8LYM0HhhtOfVYLlvC1aZLAv9IJJ6mqVboyI3uSNYyUlv/HJvEXQjMpMO8m
-	m9AdxdgQ==;
-Received: from 54-240-197-233.amazon.com ([54.240.197.233] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tTdlK-00000005YdU-0Frz;
-	Fri, 03 Jan 2025 09:14:34 +0000
-Message-ID: <11ae0b7362284d4828021068b05b38a280a9cee5.camel@infradead.org>
-Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove
- driver using deprecated API wext
-From: David Woodhouse <dwmw2@infradead.org>
-To: Geert Uytterhoeven <geert@linux-m68k.org>, Philipp Hortmann
-	 <philipp.g.hortmann@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo
- Abeni <pabeni@redhat.com>, Geoff Levand <geoff@infradead.org>, Simon Horman
- <horms@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, 
- netdev@vger.kernel.org, linux-kernel@vger.kernel.org, Kalle Valo
- <kvalo@kernel.org>,  Alexandre Belloni <alexandre.belloni@bootlin.com>,
- Claudiu Beznea <claudiu.beznea@tuxon.dev>, Greg Kroah-Hartman
- <gregkh@linuxfoundation.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
- Larry Finger <Larry.Finger@lwfinger.net>, Nicolas Ferre
- <nicolas.ferre@microchip.com>, Pavel Machek <pavel@ucw.cz>, Stanislaw
- Gruszka <stf_xl@wp.pl>, Gregory Greenman <gregory.greenman@intel.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, 
- linux-staging@lists.linux.dev, linux-wireless@vger.kernel.org, Arnd
- Bergmann <arnd@arndb.de>, Stefan Lippers-Hollmann <s.l-h@gmx.de>, Christoph
- Hellwig <hch@lst.de>
-Date: Fri, 03 Jan 2025 09:14:31 +0000
-In-Reply-To: <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
-References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
-	 <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
-	 <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com>
-	 <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-0eAwRMTVU2XYo49bIPaY"
-User-Agent: Evolution 3.52.3-0ubuntu1 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPdVY2RtYz30Q3
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 20:26:12 +1100 (AEDT)
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-85bb13573fbso2268688241.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 01:26:12 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735896369; x=1736501169;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=OjhYyamqLdDEJy3N4MKnSa94M/Zio7ELm/v+tKn61jg=;
+        b=vA+xi0J0ZwfrMK2AjDfwtuId3TKGW/QCogb3boPnhtVbgEpX0donAyze2Qs1YubusG
+         7H5e/KdABWLj/XTG9Ts/hrHEL6t+l4Lt+VPvtBReM7JEJuqFIB0VmOmMJxGVi8qryWJm
+         yPd1hyepefA+UriJQodvnjg39UvwF/l/WGSiOYm0aZ+F98SsUmAXU5FoEtt7u5whBShr
+         yk443u9rtedYUdcxnUkLszhM+7uObebReCiBBAi7UhD7thsRlJfp2UYGuc1cWvDJVFFr
+         DBAjIrSaprjMekt19WIkgV1JSNPOUSN689WhdxoA+q27dI91yz0hoBejQsosgxZovDdI
+         a1Cw==
+X-Forwarded-Encrypted: i=1; AJvYcCVE68qsl4NIW4E3o5gtrstKKlIvaEJgtrIfP/MPp+BPNSLOm9ybJhMCXLGFrb6g5XmM2Q0tHkfaqCVPeNw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx0gKfBW9z76tmnu8yTeZ4IFGFzT80aSEBS4im7eOpefFxGgq+f
+	HMwW1wN4ANKCY/NZm6bt1wjTsgXPyuIIE6SuwwIYvxRgJItpypFX4oFS0VNn
+X-Gm-Gg: ASbGncvOGhZtb0q8itn0hUFjSAp8DGD6V9CHP2PKV4zBlvlV/k4OQm9Jh1wfBcElrgJ
+	sDueF8FMlixiSOJLs2fz9sSKdAMUsLTYwg8Zg0R+5cY2zeTSDZzIJc8FhJH/p0Ni1VK/NZzVFNZ
+	X+uVOXbn+Zusxfg8P4ihvJE74hVFdqMYsZAoUjVHv4gOWuI9B3l6cYeKE+WdLs7dham44OW+CHn
+	yNaMAYXCVmAc0ptLCqNs5P+PU3mwJ/aZWrmlB/584K5T+vL92k9dwW0Un2niRANy1H9aajsdY+Z
+	wsoZx3fypU4lXscEjus=
+X-Google-Smtp-Source: AGHT+IFRMjes22vWz8ev+yJ22vzgq1IG80x/9pHG14Nn0awNPcYWHEpSBeWiP+xjaY3VPnYgFxDsNQ==
+X-Received: by 2002:a05:6102:442a:b0:4b1:340a:ce63 with SMTP id ada2fe7eead31-4b2cc3740f1mr39188660137.11.1735896369077;
+        Fri, 03 Jan 2025 01:26:09 -0800 (PST)
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8610ac4c4dfsm5505892241.14.2025.01.03.01.26.08
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jan 2025 01:26:08 -0800 (PST)
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4affab62589so3166435137.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 01:26:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCV9P/OGFF//rUuPfjHtPLukBONz/fKEdSKmDq9VmktwjEp7VCLjF8lMZz5eh9IV/fW834zrzXa/kE8xiQQ=@lists.ozlabs.org
+X-Received: by 2002:a05:6102:50a7:b0:4b2:cbe5:fbc5 with SMTP id
+ ada2fe7eead31-4b2cc462478mr39231786137.20.1735896368688; Fri, 03 Jan 2025
+ 01:26:08 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,124 +73,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
-
-
---=-0eAwRMTVU2XYo49bIPaY
+References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
+ <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
+ <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com> <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
+ <11ae0b7362284d4828021068b05b38a280a9cee5.camel@infradead.org>
+In-Reply-To: <11ae0b7362284d4828021068b05b38a280a9cee5.camel@infradead.org>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 3 Jan 2025 10:25:57 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdXPSK-6_bMoiJyAsV4nhfW7HytZpOpf7Odg-4YKYNZfEA@mail.gmail.com>
+Message-ID: <CAMuHMdXPSK-6_bMoiJyAsV4nhfW7HytZpOpf7Odg-4YKYNZfEA@mail.gmail.com>
+Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove driver
+ using deprecated API wext
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Philipp Hortmann <philipp.g.hortmann@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Geoff Levand <geoff@infradead.org>, Simon Horman <horms@kernel.org>, 
+	Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	Larry Finger <Larry.Finger@lwfinger.net>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-staging@lists.linux.dev, 
+	linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Stefan Lippers-Hollmann <s.l-h@gmx.de>, Christoph Hellwig <hch@lst.de>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 2025-01-03 at 09:53 +0100, Geert Uytterhoeven wrote:
->=20
-> > The following points are also in the list of reasons:
-> > - This driver has a maximum 54MBit/s as it supports only 802.11 b/g.
-> > - Using this hardware is security wise not state of the art as WPA3 is
-> > =C2=A0=C2=A0=C2=A0 not supported.
->=20
-> If you only do VPN over such an insecure link, I guess it's still safe?
+Hi David,
 
-Why VPN? If it's public Internet that any you only use secure protocols
-such as https/ssh/etc over it that's just fine too.
+On Fri, Jan 3, 2025 at 10:14=E2=80=AFAM David Woodhouse <dwmw2@infradead.or=
+g> wrote:
+> On Fri, 2025-01-03 at 09:53 +0100, Geert Uytterhoeven wrote:
+> > > The following points are also in the list of reasons:
+> > > - This driver has a maximum 54MBit/s as it supports only 802.11 b/g.
+> > > - Using this hardware is security wise not state of the art as WPA3 i=
+s
+> > >     not supported.
+> >
+> > If you only do VPN over such an insecure link, I guess it's still safe?
+>
+> Why VPN? If it's public Internet that any you only use secure protocols
+> such as https/ssh/etc over it that's just fine too.
 
---=-0eAwRMTVU2XYo49bIPaY
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Oh sure.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDEwMzA5MTQz
-MVowLwYJKoZIhvcNAQkEMSIEILWX8VD19fHSVpx4JyZ3xe4HXYEM/S1gt99CvVQg8ruiMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIA0TXvxBVbV1Ur
-+n5Lb7nmGUBgpuXGkpuG73qSMfTv0McQ5q9IEmtEQHXobIP8i3y5++v6x4Lk01aBr9Y3EV8QH6C9
-q510NZQMgXEABP5H55F7UAd+b5w4LDG0zMWaPzoKa9Pj9Gosbfs355EvZsOKGVdXt5kPxudGQg7A
-NlFL5Ya7vVHBaVaftuocdWNUQ/mn/Rz+/OxTBPLHelesnUpoIK9/ZHV4hfneENu3PH891wuTm47s
-uA+KqRnIPkN6G/tal1y1JJb0bqu/Z46sNfyJSjPp2wdbKk8QZJRqu3Z16jVqDQEdNtDndASyN9SJ
-UhG5VNavlbasEcEgYy/NHA5U2A8b3rhxAbPoL1Pr1YN0v6+K0sOSJCd0cBTDo3zGcwjRVhJNDmgG
-NFutK8pf0Ichpx2i45JvZ8H8rj1O2LL6HfTC+Bi7+c8+6LpqxTInQc4pI9sua4qOTlXW4avu1yCo
-NcektzWe1a6OSPDfr51i/gz6fKriZLSzjZhRc/3Iu9KW+u35wRD++Zl9KU2H058pplS5E3Amkodg
-75sLZbmMwa3u3Q6Z8GFJHZ91LlveBaTxn+I66ukrpUQa1VUK4ygFP1PDE2qAqJC3D9GLbh0ihHBY
-BDX42w/CVaRLis2iHxVWMVHrIfrMaCwjX4ergB751rGCe5CEYb7H+8k3ats5IYsAAAAAAAA=
+I was also considering it from the side of the wireless access point:
+if you have to provide an non-secure access point just for your PS3,
+an attacker can not only impact PS3 wireless traffic, but also connect
+to the access point.
 
+Gr{oetje,eeting}s,
 
---=-0eAwRMTVU2XYo49bIPaY--
+                        Geert
+
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
+
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
