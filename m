@@ -1,66 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-4631-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4632-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B41A00874
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 12:17:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26510A00878
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 12:17:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPgyL4w9lz30Tt;
-	Fri,  3 Jan 2025 22:16:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPgyR6Crzz30V3;
+	Fri,  3 Jan 2025 22:17:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.222.48
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735903018;
-	cv=none; b=ixjpPRnOS8b2fsv/UGGI66gj4zw2tJTjSJKzTxVaqP/Xw8dudWgIqXsyzWnWQnPKr5K4JyoQE3y9eGMMvMLoeZGHYH0HxKPtGTCJZTRAIn6Lef5rncOrzh2ZRncNR6IuYKiaLC+IGAEfyJpZq3b6MKFxrwxic3OOHmD0bcVIGMBhyp9+em2eXK7KErG3KhqgDfAq2rRn9MRr4AMU/qNkvM7NUpvbiGoiPh2Gy6/SP9NtGgnQnhr3n2t9SmcKZB4fFCVfaPLz0kmkN0Uz2C1dgKwihFK4DPVRrXxe9nwZICrggjxHZnlFiNeUZXfMqNFakiIQLyjr+CGF8SLWSQe6cw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.176.79.56
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735903023;
+	cv=none; b=eZ5TbxjphD36fVNEsLkCJgapO4W03HEisksGTr3PZcF9e9oUOM8QJUXORnUM/h4eGvS9x23k48trJO90sDdR6/GHcci+iaX5dcyfvYBElgeKC0C3gjGimnM2bhqeRP9DwTzjRZzo/XR0DYCesMM2Y/2S0ebimQxoMDivmS7jhVmYMLtclVV2DJYbmIXLA808J7bqnRKpPCm+gRtZetshu3Lt7vfmT53xJBBxj5N+kXeH2bk2u8jg0pO+XoE5gsh9qvvthB+B6HM03PdLkzdoLp0nuJA+EDGHr1rtnjOU6MMRGErsqAhCmDWq6MwMZIDlNJvNz/KrNgD2IWDjyK/2vQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735903018; c=relaxed/relaxed;
-	bh=ZmSRcWChTP1b8zCChxx/86+scbNEDzughwHQ+tv0ThM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gcfYzQKj1JL6xmFhpuiJIiexJJlWrzv+11uMq4HV+AS5ESRL2bIj42vJslyH27Sog87ex5EevUHFmSW8vLWp3Rg+vMFaFY8zGFhMUvnDic5WEQI+4BSoq/xbWpepuFKcmXQHeDwUJc8SFoCM1VNcmd7q01Imr+MAyEi/JjLNhv9SOi6aiO0NrAtpwe1DFjKcVOOgLJyWPl8vAlz2rZ7reHGwe/qaTRWgsqn0ofTAh4/qpLftJQ53IvlocHuD3kCNQYOy7jLpVrcIX9CTMnZNPJB9WX8MxZ7YkkZOuVsPIbvruS3JIJPvSoMnWhyc/eSqtjYcPTAJizbY83sVU5sIlQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.222.48; helo=mail-ua1-f48.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.48; helo=mail-ua1-f48.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1735903023; c=relaxed/relaxed;
+	bh=XHOAbo5lWTu4pmQDsBp/wxFWWLS1pgmOveb6lpLWysM=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mpwL0YvWoNQa8FktIdl4Jtr2X5k0oCqeReloGtxszZABd8QP9iWxAOrFj64dmnY9wDNnHpNEdxEXJOjVnUYoxhwIj4eXX2T2YNzx9eEa7y0ogin5HbSJrpcVrcwRgWN88c826YKcSmu5zjNrgOmKrZmztsRmGl6tKwKKS04TJnj5Qo4butLWgQ9Gqpc94a1ibtb96xStRGhfLJ0ynqwjGv3EBaHMYOiupeMjoUb7DlFB058q1RerrCzHiopyJBYsQsjmXsOCaivbbuGhgzqAVBRDyi4F84g6GjlvuwBBOblSmn8rzQfcH41CBLNMkUCcN/2Qa52JagShPofGzzfVcw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=185.176.79.56; helo=frasgout.his.huawei.com; envelope-from=jonathan.cameron@huawei.com; receiver=lists.ozlabs.org)
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPgyK1fM5z30Tk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 22:16:56 +1100 (AEDT)
-Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-85c4e74e2baso2181256241.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 03:16:56 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735903012; x=1736507812;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZmSRcWChTP1b8zCChxx/86+scbNEDzughwHQ+tv0ThM=;
-        b=PHlFSlwFM8w49ddDtE04wfO5o90wBT57SJCBRQh5Q1SRDUSzQhHpMR3dRTp/cVBmHW
-         HYpqtZFNiB/fb2TO8SKms6B3bziTaTuP8G483dSlY8pYWXBxeHWhUUqkMuggsXlkD+mG
-         kwBQ2AvDRSecnIbZRcmR4c7JSPYufYxzNjY0ogKBUejYzCSYpIbLqOuFeE/rFc7az+OP
-         unz4ts9vjB5dyx9S1TK6Yy6KF5HCayIRZpldmwo7j7pG5GBiXXWxHQtmgEVGO22j1Hpe
-         qvyOu5gxy5UVLK0j2zWNTbvUIwztWsCo+B6PmsdCUwt8D4inoEwRaORj7DUSsQOak+Nr
-         kgng==
-X-Forwarded-Encrypted: i=1; AJvYcCWzn3idyUEqwJOERvC7tJcwmNmJWGvCCNbweEYRdcSUVQF6FbgpyexJChfMTe4Q/jZCNpft8AoTRaiMXAs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxlkdZnQAO+/Pk7z++nMHObJOzassQ0w4z2JGhoiofnuZvkrzYR
-	o5V5RChpwR8Qz4osGhL6QuMytXcn07Ry6hv+acpixfrLDnJa0x9zwWsamySeNuA=
-X-Gm-Gg: ASbGncsLXX9yIgn/oytQr2mCoTUh+Oz5zMqJ37BzLEZyLzdu+GkLJaYnprsUe5RMgC+
-	8YYPG4TnYwenAlZCOEeWtSz7KtfsQnuPPejI54zDnoYtztVmKmP4WDBHWerTNKaGGyU9IEmmvqb
-	jkHYSEHSMcqtqmYJ51GsWDMSMsPIHsUsDGjuQmlxNWzgIE/Rx0f6CgfpTvgTUxgSJROKsumGari
-	sALYPY2dMz/R9M7sLoAtvorNWq0a5Q6jkL0Oj152V0v/lddONf4/CygcfMKgPsEr4b/WdHg2LfZ
-	HHYfNJdQgiJhimG25Iw=
-X-Google-Smtp-Source: AGHT+IF4ZCnny4yunKY17brN/pZ9TLQ5fGV9nZF7FGBfZiJSNNFmDKRT+8jvCzD1Cl/YxXPMSYx/6A==
-X-Received: by 2002:a05:6102:4188:b0:4b2:4950:16fc with SMTP id ada2fe7eead31-4b2cc399b22mr36287124137.14.1735903011631;
-        Fri, 03 Jan 2025 03:16:51 -0800 (PST)
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com. [209.85.217.51])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b2bf9a7155sm5522151137.11.2025.01.03.03.16.50
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jan 2025 03:16:50 -0800 (PST)
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4affab62589so3187096137.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 03:16:50 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCU6II8Tf5geDWAirI6ujxaZIePyeIJxT1aU3VtBY0j4mK+Wch/yRNKfQRntBklgy82ML+NtTKH6iaD5qQY=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:3e83:b0:4b2:af6e:5fef with SMTP id
- ada2fe7eead31-4b2cc35c2d5mr38018549137.9.1735903010498; Fri, 03 Jan 2025
- 03:16:50 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPgyQ2sGGz30Tk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 22:16:59 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.18.186.216])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4YPgxF4ty1z6K6JG;
+	Fri,  3 Jan 2025 19:16:01 +0800 (CST)
+Received: from frapeml500008.china.huawei.com (unknown [7.182.85.71])
+	by mail.maildlp.com (Postfix) with ESMTPS id 60554140C72;
+	Fri,  3 Jan 2025 19:16:53 +0800 (CST)
+Received: from localhost (10.203.177.66) by frapeml500008.china.huawei.com
+ (7.182.85.71) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 3 Jan
+ 2025 12:16:52 +0100
+Date: Fri, 3 Jan 2025 11:16:51 +0000
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+To: Atharva Tiwari <evepolonium@gmail.com>
+CC: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver O'Halloran
+	<oohall@gmail.com>, Bjorn Helgaas <bhelgaas@google.com>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-pci@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] PCI/ERR: use panic instead pci_info for device recovery
+ failure in PCIe
+Message-ID: <20250103111651.00007c57@huawei.com>
+In-Reply-To: <20241227065253.72323-1-evepolonium@gmail.com>
+References: <20241227065253.72323-1-evepolonium@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.42; x86_64-w64-mingw32)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,63 +59,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
- <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
- <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com> <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
- <8dfe122d-ce0e-4a1d-9a2f-f7585036b989@gmail.com>
-In-Reply-To: <8dfe122d-ce0e-4a1d-9a2f-f7585036b989@gmail.com>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 3 Jan 2025 12:16:38 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdX_P9WGBiShm6Dp64Y9GRvESH-Nn=b=rRrsGbwza81VeA@mail.gmail.com>
-Message-ID: <CAMuHMdX_P9WGBiShm6Dp64Y9GRvESH-Nn=b=rRrsGbwza81VeA@mail.gmail.com>
-Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove driver
- using deprecated API wext
-To: Philipp Hortmann <philipp.g.hortmann@gmail.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
-	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Geoff Levand <geoff@infradead.org>, 
-	Simon Horman <horms@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
-	Larry Finger <Larry.Finger@lwfinger.net>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-staging@lists.linux.dev, 
-	linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Stefan Lippers-Hollmann <s.l-h@gmx.de>, Christoph Hellwig <hch@lst.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.203.177.66]
+X-ClientProxiedBy: lhrpeml100002.china.huawei.com (7.191.160.241) To
+ frapeml500008.china.huawei.com (7.182.85.71)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
 	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Philipp,
+On Fri, 27 Dec 2024 12:22:53 +0530
+Atharva Tiwari <evepolonium@gmail.com> wrote:
 
-On Fri, Jan 3, 2025 at 12:02=E2=80=AFPM Philipp Hortmann
-<philipp.g.hortmann@gmail.com> wrote:
-> On 03.01.25 09:53, Geert Uytterhoeven wrote:
-> > Care to tell us where the fix is?
->
-> please find all patches for T2 on this page:
-> https://wiki.t2linux.org/guides/kernel/
-> More exact here:
-> git clone --depth=3D1 https://github.com/t2linux/linux-t2-patches patches
+> update failed in drivers/pci/pcie/err.c to 
+> trigger a kernel panic instead of pci_info
+> 
+> Thanks
+Rewrite message as described in submitting patches documentation.
 
-Thanks, but I cannot find a ps3disk fix there?
+Key thing here is question of 'why?'
+A question was in that comment, what is your reasoning for panic being the
+correct choice?
 
-Gr{oetje,eeting}s,
+Jonathan
 
-                        Geert
+> 
+> Signed-off-by: Atharva Tiwari <evepolonium@gmail.com>
+> ---
+>  drivers/pci/pcie/err.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+> index 31090770fffc..2630b88564d8 100644
+> --- a/drivers/pci/pcie/err.c
+> +++ b/drivers/pci/pcie/err.c
+> @@ -271,8 +271,8 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>  
+>  	pci_uevent_ers(bridge, PCI_ERS_RESULT_DISCONNECT);
+>  
+> -	/* TODO: Should kernel panic here? */
+> -	pci_info(bridge, "device recovery failed\n");
+> +
+> +	panic("Kernel Panic: %s: Device recovery failed\n", pci_name(bridge));
+>  
+>  	return status;
+>  }
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
-
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
-                                -- Linus Torvalds
 
