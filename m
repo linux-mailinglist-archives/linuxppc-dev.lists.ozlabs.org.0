@@ -1,85 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-4653-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4654-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24485A00DE1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 19:45:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8F4FA010A3
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  4 Jan 2025 00:05:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPsvf5w5lz30Tr;
-	Sat,  4 Jan 2025 05:45:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPzh35QJWz2yvk;
+	Sat,  4 Jan 2025 10:05:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735929918;
-	cv=none; b=dwz21b8sXvph6HTrdKBl+jtzn6hptf0ytFmJTqFsMYAj+MLwFZBB1DoB6byNm4fygvD8AVbm3RFR2vynEZxIU8OYinkAVSgq4flv4TcMTImbmWHn2GpSQ5OPileFmuN+Tlc6SWMO9rOb/pHHxTHeJ26s1Xj90six4vVLE1sfSMeDsPwtO3VLQwOGRMSs8hnFQ5b7RvtAmt3757+Dpiv5pZLnHrSf4CMOSYXZUFGBhevzGLGUwMaM/+WqX6uS+94O/B9G2iEwTLzt+UcLoiInK1KQLUz6r4ZU6o4g39dQ+KPhKH6kr+sl4eFtBYV0w07Zs7jXPhtTVL2sdNXKa8RcJg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735945539;
+	cv=none; b=VzMy+v/avj8BWyN+c6vOi50sR7THGEjGsZp0Ndcpt3XbtnnEC0NPXLPBkTojPlf9ZwT68cgWN7FuhLqFSIhHQUr26noLL5ZApg30lr43ZPl6otLk7PwIc3yPzSvEdW16qfjOx49TlAgg52Zl0m9r56wg+2MgIs4spkGoU2REvei1+Sg6lH1CJBqckmjGt+c63Vuem908e2Nq5YKlEzV4qqpzoNXVkcWQ/dkKSjfw8phLDbNp6ZEBM5YohoRUHNdAueceL47OdSZ2Mqaqcp0Gk9PtPI8LZ0Ryurp5pA+HUpINorliid1EqJSK6LtjXiwCwwajE7aOZKuRXR1c/fqyIQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735929918; c=relaxed/relaxed;
-	bh=Xv2LJFwvzdFekdOiLKdjOBtXm3+icKcXY80cmxqTpUg=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=nv3vbdSCzELGBPPR6DPfsmt+gM6pxJzz3F/eahg+uhx/GPnse4EomcXu1VAwrxTHYn6vnWVAyUwrCrYPwrJRyHy+7PEAQTxC76Ebdp7aDklUEM6UX3TuBNrP0kHyubY55C3qf/rme5I+QuBIl4PrF4Eahrbd31LuDoiw42VoTqAfWvkpTDr0h7Fy/xhpS95cGpFdtPNo1KNPppOArTNrQiiSnzkvYf+GASiSJgjoGjUzQlRRPEYJUE2WtCJJC8htVnUOlcPrcOP1CSHLpeNVD6bRRYgMRNWneYt8YuxzxTGiBqjtVyFGZodBV0WGJ5oupHYUY1Q9ec0aEPQvtrYg4Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.dk; dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=SyDGs5WE; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=axboe@kernel.dk; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.dk
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+	t=1735945539; c=relaxed/relaxed;
+	bh=O7RAVM2Jap9AxkPfk1ESF2bd5G3cTNQQh7YWx/xRHgk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Wak1osnDCoVDSoPhFeMcRxA7v0/maJe9TqoZwUFkUfNYMflI7xvraJmQOZjHSO2/YBoWPF3QCSeS+YCkffMmwlzowESHLfb/WJXCMsE9pdOKMlrYOe8jHFI5tduwwvEqM+XMgsmwZl38rvyMy1u4rT8+6IbzwxtkfNp9Zj7KIO6ZEaywTW9NC8kAwD4qnQohS0a5WqjAaOTxvZ9tfMOUxkTyeCMW050D+pTy1f1nSCI308ZfjhOI5b/yjYFZX2F99ud7SAG6NRH/N/dv6GyIgDW+EFOPOtRemOpDBO8L4VPb6PxSoi0AqFoUznOkRWXePEkJ0LmpegW3AXG70BRM7Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=f0i7rqcV; dkim-atps=neutral; spf=pass (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=SyDGs5WE;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=f0i7rqcV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.dk (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=axboe@kernel.dk; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPsvc61pFz2yDT
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Jan 2025 05:45:13 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-2165448243fso209226605ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 10:45:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1735929905; x=1736534705; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xv2LJFwvzdFekdOiLKdjOBtXm3+icKcXY80cmxqTpUg=;
-        b=SyDGs5WEMzj9X+7fxHcmmAdZ6BosYe5kyGodHEXHhOEKlv/xMppD60/FPY046UjC+u
-         cxXdgL2O/G946VQPgKHr2psNQBnNPxcHuQ6KQsnijTqTO6wYsq4Dt7+Q4o/o0Ncsmjb5
-         ValNe+WRLRISY4gw0jzzLrq6m0pWDVYTFg7a0CP7g3CC0PT8hPNa0YuRy6I5Y/GVH0aT
-         bzoNFH6Lv/OuAW0o85ffJdFP39u8w7SuTIYvkfFoAMuyW6S8ENsvxAIsYhujSmF3QY8D
-         RActQpmsyzgta97aBIskkSPCWTn5BIM/To2V6xUQdd/iGA/hTTflHyZz5jU83sfIanyq
-         YWNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735929905; x=1736534705;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Xv2LJFwvzdFekdOiLKdjOBtXm3+icKcXY80cmxqTpUg=;
-        b=JJFQPMafhC2BloU8VC/hD5dNyO2dciMaX+m/hMJkpJlzWDV4lVdTno0OuZMlUF7uhW
-         YDOHIkE0nAkRgIo649X3IvS0YgfmGisR3jvVbjzcD8gXCn88GOMWPvfD+z6BJZnwU2p9
-         bkRHEmn3TUJbPPKcQqeh4NtxntSHZNd6HxHIi99H8yQcngQUDU+DXEmvGWnlmeiwrKpd
-         MI549Vc00ZBSCiV1Si+N6WD+L45bwsDFuLUy9sQ1FIJCfpzPZI2IkSOijJX86ptJjcny
-         z34pegyeG36JXus4fuJnkD+ELoNpEy1E8+2xkUxy6KhQmnJ/LqNMChcn0qSTlJvgt5fm
-         ViIQ==
-X-Gm-Message-State: AOJu0YxFhkTzokEGM99jiRTY4VlacEMEMAOFJkxKr4AbF47+UCxZdk6q
-	DkRHnX8dsomVJHd9QU3yU5gv0WAt7XE5T3v64sX0xXnkErGmDfLjc85+n0r4saB4vz8rH+Wt7de
-	W
-X-Gm-Gg: ASbGncsiOS3YGOLkfmDxRCGrisCJjXTOlb81GE/zHXnKhg2M7pX0SOzEAhwdYFq/iQU
-	BRbz3GA8jV+X+ARwLPVbc+t1/9aTi9TP5xGDC8Nc+88aEUcocIrEn+A+qVgC3RFmOgsUdjt4OJA
-	YIanSABB0xl+Z2lmngSpA8/48vg1kRNLcre6lv9PKFakOgWYZgZJmJJ4biNjYJ1pIdV8CgnDEOb
-	9q7h3YTUjURhHlqV73BHpo8QZ4NHHP1wprRoZxWQW3jw8kH
-X-Google-Smtp-Source: AGHT+IHsZrBLN1RWhsZeipatK91oybhaWrde5A6yKnYBFUk10SSfl5AYNAtf8Q+Y/yy6wggYtbAnXw==
-X-Received: by 2002:a17:902:c407:b0:216:4b5a:998b with SMTP id d9443c01a7336-219e6f14fb0mr631230515ad.45.1735929905333;
-        Fri, 03 Jan 2025 10:45:05 -0800 (PST)
-Received: from [127.0.0.1] ([198.8.77.157])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc9f6951sm248655295ad.171.2025.01.03.10.45.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 03 Jan 2025 10:45:04 -0800 (PST)
-From: Jens Axboe <axboe@kernel.dk>
-To: Christoph Hellwig <hch@lst.de>, 
- Philipp Hortmann <philipp.g.hortmann@gmail.com>, 
- Geoff Levand <geoff@infradead.org>, 
- Geert Uytterhoeven <geert+renesas@glider.be>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-block@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-In-Reply-To: <06988f959ea6885b8bd7fb3b9059dd54bc6bbad7.1735894216.git.geert+renesas@glider.be>
-References: <06988f959ea6885b8bd7fb3b9059dd54bc6bbad7.1735894216.git.geert+renesas@glider.be>
-Subject: Re: [PATCH] ps3disk: Do not use dev->bounce_size before it is set
-Message-Id: <173592990403.170261.3956098234051434369.b4-ty@kernel.dk>
-Date: Fri, 03 Jan 2025 11:45:04 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPzh05SxVz2yGZ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Jan 2025 10:05:33 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1735945538; x=1767481538;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=B8W+q9xxGmRh9DkOnC+lZU+X1RSdxitAqgxldKE5xgg=;
+  b=f0i7rqcV0KGkPmHkRTb7zMjru6rn0CjqWyJWm/lFJGgRIKRVALBk7iq6
+   u7C8gDc9VWBqd22gsB03iBc7j8bErmdUTzFrqev5HMvTMBTDkBXcVONuv
+   6CJ5bDHs237TUJ7nnkapHfNRgdjuwuHuQpMErXe4Z9G3TDw9ouysmeoYi
+   6vTcKIZ4qUoFWHKN5tv3VFNGaefZIZevAnebZEV9EVcvah1zGjev64Ygh
+   qZiUrD4LR9VYNIEADanyfDyaIMFU+TzudLKNT4h80Wto4onPJj+FYG85V
+   sHaHde61QkX+ESBw+b714aMkf/+p++JQ7ziPU5WB4f+DQt4aHY9UDFfWN
+   w==;
+X-CSE-ConnectionGUID: DJWGNQ0bSaCA+SiJYktLBQ==
+X-CSE-MsgGUID: TVS25ZJWQ2+m/cBUPzP0Yw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11304"; a="36343362"
+X-IronPort-AV: E=Sophos;i="6.12,287,1728975600"; 
+   d="scan'208";a="36343362"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Jan 2025 15:05:29 -0800
+X-CSE-ConnectionGUID: VkR9Cq0ISJukE/I8kQdvBQ==
+X-CSE-MsgGUID: Q8W+7y/DSROwbGJBnMWuyw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,287,1728975600"; 
+   d="scan'208";a="102417339"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 03 Jan 2025 15:05:26 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tTqjM-000APz-29;
+	Fri, 03 Jan 2025 23:05:24 +0000
+Date: Sat, 4 Jan 2025 07:04:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>, mpe@ellerman.id.au,
+	maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Cc: oe-kbuild-all@lists.linux.dev, sshegde@linux.ibm.com, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/1] powerpc: Enable dynamic preemption
+Message-ID: <202501040657.5tSQad1Y-lkp@intel.com>
+References: <20250102191856.499424-2-sshegde@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,30 +79,163 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.3-dev-14bd6
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250102191856.499424-2-sshegde@linux.ibm.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hi Shrikanth,
 
-On Fri, 03 Jan 2025 09:51:25 +0100, Geert Uytterhoeven wrote:
-> dev->bounce_size is only initialized after it is used to set the queue
-> limits.  Fix this by using BOUNCE_SIZE instead.
-> 
-> 
+kernel test robot noticed the following build errors:
 
-Applied, thanks!
+[auto build test ERROR on powerpc/next]
+[cannot apply to powerpc/fixes linus/master v6.13-rc5 next-20241220]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-[1/1] ps3disk: Do not use dev->bounce_size before it is set
-      commit: c2398e6d5f16e15598d3a37e17107fea477e3f91
+url:    https://github.com/intel-lab-lkp/linux/commits/Shrikanth-Hegde/powerpc-Enable-dynamic-preemption/20250103-032131
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20250102191856.499424-2-sshegde%40linux.ibm.com
+patch subject: [PATCH v2 1/1] powerpc: Enable dynamic preemption
+config: powerpc-randconfig-r072-20250104 (https://download.01.org/0day-ci/archive/20250104/202501040657.5tSQad1Y-lkp@intel.com/config)
+compiler: clang version 20.0.0git (https://github.com/llvm/llvm-project 096551537b2a747a3387726ca618ceeb3950e9bc)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250104/202501040657.5tSQad1Y-lkp@intel.com/reproduce)
 
-Best regards,
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501040657.5tSQad1Y-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:14:
+   In file included from include/linux/sem.h:5:
+   In file included from include/uapi/linux/sem.h:5:
+   In file included from include/linux/ipc.h:7:
+   In file included from include/linux/rhashtable-types.h:12:
+   In file included from include/linux/alloc_tag.h:11:
+   In file included from include/linux/preempt.h:79:
+>> arch/powerpc/include/asm/preempt.h:8:1: error: type specifier missing, defaults to 'int'; ISO C99 and later do not support implicit int [-Wimplicit-int]
+       8 | DECLARE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
+         | ^
+         | int
+>> arch/powerpc/include/asm/preempt.h:8:25: error: a parameter list without types is only allowed in a function definition
+       8 | DECLARE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
+         |                         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                         ^        ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (that has type 'unsigned long[2]') [-Warray-bounds]
+      98 |                 return (set->sig[3] | set->sig[2] |
+         |                                       ^        ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                          ^         ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
+     114 |                 return  (set1->sig[3] == set2->sig[3]) &&
+         |                                          ^         ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:115:5: warning: array index 2 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
+     115 |                         (set1->sig[2] == set2->sig[2]) &&
+         |                          ^         ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:115:21: warning: array index 2 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
+     115 |                         (set1->sig[2] == set2->sig[2]) &&
+         |                                          ^         ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:157:1: warning: array index 3 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
+     157 | _SIG_SET_BINOP(sigorsets, _sig_or)
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/signal.h:138:8: note: expanded from macro '_SIG_SET_BINOP'
+     138 |                 a3 = a->sig[3]; a2 = a->sig[2];                         \
+         |                      ^      ~
+   arch/powerpc/include/uapi/asm/signal.h:18:2: note: array 'sig' declared here
+      18 |         unsigned long sig[_NSIG_WORDS];
+         |         ^
+   In file included from arch/powerpc/kernel/asm-offsets.c:12:
+   In file included from include/linux/compat.h:17:
+   In file included from include/linux/fs.h:33:
+   In file included from include/linux/percpu-rwsem.h:7:
+   In file included from include/linux/rcuwait.h:6:
+   In file included from include/linux/sched/signal.h:6:
+   include/linux/signal.h:157:1: warning: array index 2 is past the end of the array (that has type 'const unsigned long[2]') [-Warray-bounds]
+     157 | _SIG_SET_BINOP(sigorsets, _sig_or)
+         | ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/signal.h:138:24: note: expanded from macro '_SIG_SET_BINOP'
+     138 |                 a3 = a->sig[3]; a2 = a->sig[2];                         \
+
+
+vim +/int +8 arch/powerpc/include/asm/preempt.h
+
+     6	
+     7	#if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
+   > 8	DECLARE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
+     9	#endif
+    10	
+
 -- 
-Jens Axboe
-
-
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
