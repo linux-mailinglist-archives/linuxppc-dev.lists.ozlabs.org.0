@@ -1,74 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-4630-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4631-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5CEA00869
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 12:15:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1B41A00874
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 12:17:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPgwW1kCcz30TP;
-	Fri,  3 Jan 2025 22:15:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPgyL4w9lz30Tt;
+	Fri,  3 Jan 2025 22:16:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735902923;
-	cv=none; b=J2i6ZAJ4FxAGzs7/bK5MZCN+Tmb20+tE0NPngKNAtfXxKbX93lb3VaGxyyqQfhwktfjewevevaiyCi+s9gNERWzhTOogl6MehG5UkP3qKqzY3drvvhGIyOScMzaSdQMjc4MpDeIpPSYlV+5xXVyY1idifxWv3DDEkqNfnEm8GWgdQezWyWBek2wJmgdNMx5IdmVa1lUusSMfyLLa00IIIvYA6fMfuTTPudQav6XTtH9qYX2yVJzzCuv5lVJ2wNYqU0X3w1n7kYYNG5VamTyJjlbROhPIbEg6DjtMAh4C0rMqgSVwRkOjcR9Eyubduks72LNrnHNnt5cBtXy4PB+rSA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.222.48
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735903018;
+	cv=none; b=ixjpPRnOS8b2fsv/UGGI66gj4zw2tJTjSJKzTxVaqP/Xw8dudWgIqXsyzWnWQnPKr5K4JyoQE3y9eGMMvMLoeZGHYH0HxKPtGTCJZTRAIn6Lef5rncOrzh2ZRncNR6IuYKiaLC+IGAEfyJpZq3b6MKFxrwxic3OOHmD0bcVIGMBhyp9+em2eXK7KErG3KhqgDfAq2rRn9MRr4AMU/qNkvM7NUpvbiGoiPh2Gy6/SP9NtGgnQnhr3n2t9SmcKZB4fFCVfaPLz0kmkN0Uz2C1dgKwihFK4DPVRrXxe9nwZICrggjxHZnlFiNeUZXfMqNFakiIQLyjr+CGF8SLWSQe6cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735902923; c=relaxed/relaxed;
-	bh=CPGOdr/jsXJNO5Wu3fEBGF99GP73lSQF/IKxQW4k0R4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QWP7d3urgsQlyl7rFgBTZQMGjZYtU1bqhkRZbPsp8HQgLP+SdvU4SZIhex1uC+AkKZVvKEyKjAnK0sKUrSe7tI2BJNmLYGv23f9OhDiow61Bwj3sXmETvEH82iJUkpPLB2+3AiDYioK0FdckXyg9+iZi0Mt2G6R7wINCy71LvCSxNvPzU+6nlizObAC3kNAFmA94JuVXleVuhULRGuVd8aLrgaaGwLPK3Gt/6opnsITj97b8f/KluKYq9R4aO787/AeLp20Kv2/zkQ5DjUFVSnJk0ZsZFDqMWkZXFjk01huMLZ9fLlEqnGJsPYm7YZQZOR/5Ys5OAvEXQxQCD3LtrA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Tf96QP1n; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Tf96QP1n;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+	t=1735903018; c=relaxed/relaxed;
+	bh=ZmSRcWChTP1b8zCChxx/86+scbNEDzughwHQ+tv0ThM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gcfYzQKj1JL6xmFhpuiJIiexJJlWrzv+11uMq4HV+AS5ESRL2bIj42vJslyH27Sog87ex5EevUHFmSW8vLWp3Rg+vMFaFY8zGFhMUvnDic5WEQI+4BSoq/xbWpepuFKcmXQHeDwUJc8SFoCM1VNcmd7q01Imr+MAyEi/JjLNhv9SOi6aiO0NrAtpwe1DFjKcVOOgLJyWPl8vAlz2rZ7reHGwe/qaTRWgsqn0ofTAh4/qpLftJQ53IvlocHuD3kCNQYOy7jLpVrcIX9CTMnZNPJB9WX8MxZ7YkkZOuVsPIbvruS3JIJPvSoMnWhyc/eSqtjYcPTAJizbY83sVU5sIlQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.222.48; helo=mail-ua1-f48.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.48; helo=mail-ua1-f48.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ua1-f48.google.com (mail-ua1-f48.google.com [209.85.222.48])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPgwR2Dbgz30TC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 22:15:19 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=CPGOdr/jsXJNO5Wu3fEBGF99GP73lSQF/IKxQW4k0R4=; b=Tf96QP1nI5zee8m+i5u3CA94h9
-	3PVNNoLdvhSBk2t6LZQP6KHn1+Y/Ig9kK3lwT2hFjHWgZiqq3VK4SzqQBmD6A0e29acKD8NJDsAzp
-	PBklhel75TRoOCf5VTzc00lXza1eWj1sW19Tjleo1fc/L5i9P5juDXyKQY9kHKExje/1wAmmZkrHj
-	FdESUWBGwWEamk3EA3c0+gwV4EPoveBGXJo3r+051uO72Cz+2Bir5nMUbKQ2FfpEvF0r1gyVxRelx
-	Ro4i1hRHlfJmHnjxqwmbD1SaYDgPeAH7HhcAneWE1IcOwP7nCEbEkp2xJxpa8O/6L3gNZJN11KFqb
-	fYAj5NUQ==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tTfdp-00000005j4l-1npS;
-	Fri, 03 Jan 2025 11:14:57 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 3EDFC3003AF; Fri,  3 Jan 2025 12:14:57 +0100 (CET)
-Date: Fri, 3 Jan 2025 12:14:57 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>, agordeev@linux.ibm.com,
-	kevin.brodsky@arm.com, tglx@linutronix.de, david@redhat.com,
-	jannh@google.com, hughd@google.com, yuzhao@google.com,
-	willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
-	lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
-	rientjes@google.com, vishal.moola@gmail.com, arnd@arndb.de,
-	will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
-	dave.hansen@linux.intel.com, ryan.roberts@arm.com,
-	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
-	linux-um@lists.infradead.org
-Subject: Re: [PATCH v3 15/17] mm: pgtable: remove tlb_remove_page_ptdesc()
-Message-ID: <20250103111457.GC22934@noisy.programming.kicks-ass.net>
-References: <cover.1734945104.git.zhengqi.arch@bytedance.com>
- <b37435768345e0fcf7ea358f69b4a71767f0f530.1734945104.git.zhengqi.arch@bytedance.com>
- <Z2_EPmOTUHhcBegW@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPgyK1fM5z30Tk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 22:16:56 +1100 (AEDT)
+Received: by mail-ua1-f48.google.com with SMTP id a1e0cc1a2514c-85c4e74e2baso2181256241.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 03:16:56 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735903012; x=1736507812;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZmSRcWChTP1b8zCChxx/86+scbNEDzughwHQ+tv0ThM=;
+        b=PHlFSlwFM8w49ddDtE04wfO5o90wBT57SJCBRQh5Q1SRDUSzQhHpMR3dRTp/cVBmHW
+         HYpqtZFNiB/fb2TO8SKms6B3bziTaTuP8G483dSlY8pYWXBxeHWhUUqkMuggsXlkD+mG
+         kwBQ2AvDRSecnIbZRcmR4c7JSPYufYxzNjY0ogKBUejYzCSYpIbLqOuFeE/rFc7az+OP
+         unz4ts9vjB5dyx9S1TK6Yy6KF5HCayIRZpldmwo7j7pG5GBiXXWxHQtmgEVGO22j1Hpe
+         qvyOu5gxy5UVLK0j2zWNTbvUIwztWsCo+B6PmsdCUwt8D4inoEwRaORj7DUSsQOak+Nr
+         kgng==
+X-Forwarded-Encrypted: i=1; AJvYcCWzn3idyUEqwJOERvC7tJcwmNmJWGvCCNbweEYRdcSUVQF6FbgpyexJChfMTe4Q/jZCNpft8AoTRaiMXAs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxlkdZnQAO+/Pk7z++nMHObJOzassQ0w4z2JGhoiofnuZvkrzYR
+	o5V5RChpwR8Qz4osGhL6QuMytXcn07Ry6hv+acpixfrLDnJa0x9zwWsamySeNuA=
+X-Gm-Gg: ASbGncsLXX9yIgn/oytQr2mCoTUh+Oz5zMqJ37BzLEZyLzdu+GkLJaYnprsUe5RMgC+
+	8YYPG4TnYwenAlZCOEeWtSz7KtfsQnuPPejI54zDnoYtztVmKmP4WDBHWerTNKaGGyU9IEmmvqb
+	jkHYSEHSMcqtqmYJ51GsWDMSMsPIHsUsDGjuQmlxNWzgIE/Rx0f6CgfpTvgTUxgSJROKsumGari
+	sALYPY2dMz/R9M7sLoAtvorNWq0a5Q6jkL0Oj152V0v/lddONf4/CygcfMKgPsEr4b/WdHg2LfZ
+	HHYfNJdQgiJhimG25Iw=
+X-Google-Smtp-Source: AGHT+IF4ZCnny4yunKY17brN/pZ9TLQ5fGV9nZF7FGBfZiJSNNFmDKRT+8jvCzD1Cl/YxXPMSYx/6A==
+X-Received: by 2002:a05:6102:4188:b0:4b2:4950:16fc with SMTP id ada2fe7eead31-4b2cc399b22mr36287124137.14.1735903011631;
+        Fri, 03 Jan 2025 03:16:51 -0800 (PST)
+Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com. [209.85.217.51])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b2bf9a7155sm5522151137.11.2025.01.03.03.16.50
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 03 Jan 2025 03:16:50 -0800 (PST)
+Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4affab62589so3187096137.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 03:16:50 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCU6II8Tf5geDWAirI6ujxaZIePyeIJxT1aU3VtBY0j4mK+Wch/yRNKfQRntBklgy82ML+NtTKH6iaD5qQY=@lists.ozlabs.org
+X-Received: by 2002:a05:6102:3e83:b0:4b2:af6e:5fef with SMTP id
+ ada2fe7eead31-4b2cc35c2d5mr38018549137.9.1735903010498; Fri, 03 Jan 2025
+ 03:16:50 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,47 +73,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z2_EPmOTUHhcBegW@kernel.org>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
+References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
+ <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
+ <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com> <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
+ <8dfe122d-ce0e-4a1d-9a2f-f7585036b989@gmail.com>
+In-Reply-To: <8dfe122d-ce0e-4a1d-9a2f-f7585036b989@gmail.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Fri, 3 Jan 2025 12:16:38 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX_P9WGBiShm6Dp64Y9GRvESH-Nn=b=rRrsGbwza81VeA@mail.gmail.com>
+Message-ID: <CAMuHMdX_P9WGBiShm6Dp64Y9GRvESH-Nn=b=rRrsGbwza81VeA@mail.gmail.com>
+Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove driver
+ using deprecated API wext
+To: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+Cc: Johannes Berg <johannes@sipsolutions.net>, Andrew Lunn <andrew+netdev@lunn.ch>, 
+	"David S . Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Geoff Levand <geoff@infradead.org>, 
+	Simon Horman <horms@kernel.org>, Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
+	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
+	Larry Finger <Larry.Finger@lwfinger.net>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>, 
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-staging@lists.linux.dev, 
+	linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
+	Stefan Lippers-Hollmann <s.l-h@gmx.de>, Christoph Hellwig <hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Dec 28, 2024 at 11:26:22AM +0200, Mike Rapoport wrote:
-> On Mon, Dec 23, 2024 at 05:41:01PM +0800, Qi Zheng wrote:
-> > Here we are explicitly dealing with struct page, and the following logic
-> > semms strange:
-> > 
-> > tlb_remove_page_ptdesc((tlb), (page_ptdesc(pte)));
-> > 
-> > tlb_remove_page_ptdesc
-> > --> tlb_remove_page(tlb, ptdesc_page(pt));
-> > 
-> > So remove tlb_remove_page_ptdesc() and make callers call tlb_remove_page()
-> > directly.
-> 
-> Please don't. The ptdesc wrappers are there as a part of reducing the size
-> of struct page project [1]. 
-> 
-> For now struct ptdesc overlaps struct page, but the goal is to have them
-> separate and always operate on struct ptdesc when working with page tables.
+Hi Philipp,
 
-I don't see how the current idiotic code helps with that at all.
+On Fri, Jan 3, 2025 at 12:02=E2=80=AFPM Philipp Hortmann
+<philipp.g.hortmann@gmail.com> wrote:
+> On 03.01.25 09:53, Geert Uytterhoeven wrote:
+> > Care to tell us where the fix is?
+>
+> please find all patches for T2 on this page:
+> https://wiki.t2linux.org/guides/kernel/
+> More exact here:
+> git clone --depth=3D1 https://github.com/t2linux/linux-t2-patches patches
 
-Fundamentally tlb_remove_page() is about removing *pages* as from a PTE,
-there should not be a page-table anywhere near here *ever*.
+Thanks, but I cannot find a ps3disk fix there?
 
-Yes, some architectures use tlb_remove_page() for page-tables too, but
-that is more or less an implementation detail that can be fixed.
+Gr{oetje,eeting}s,
 
-So no, please keep these patches and kill this utterly idiotic code.
+                        Geert
 
-The only thing that should eventually care about page-tables is
-tlb_remove_table(), and that takes a 'void *' and is expected to match
-whatever __tlb_remove_table() does.
+--=20
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
+.org
 
-Flipping those to pgdesc, once its actually a thing, should be fairly
-straight forward.
+In personal conversations with technical people, I call myself a hacker. Bu=
+t
+when I'm talking to journalists I just say "programmer" or something like t=
+hat.
+                                -- Linus Torvalds
 
