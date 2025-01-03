@@ -1,66 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-4625-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4626-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12556A006DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 10:26:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1E16A006FB
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 10:31:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPdVZ3lJSz30RS;
-	Fri,  3 Jan 2025 20:26:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPdd92zn8z30TH;
+	Fri,  3 Jan 2025 20:31:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.222.43
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735896374;
-	cv=none; b=jTEGbYazYSyLioqgR8TXm3YsxajG0styLpOqQTtS8Vxz0wlsnZjQtb2bKXRi9mh6CcMRpSWFspmFBQSsC0+EPMae1N9QyiVrO1a95HGIHlgj25r6LuuQJqAAk5nPPATq79J9IzVx1gTngBtbunGQlwd/JvC0xMIy7xBlb9dVRiRt1Vmz4+dUD9XqmUo3FQT17Lsx6H5ZDzZ9mY1bC30aFCmWT9RIAbtWqR4rXRaaf+B4JZo1pOckcsVwr0R/Ple3KPkxC5Vaaqmk/bz/uAHg+EIjacrAXvz7N33q3BeRPgBJNmA2RJpE2N9pXhw8xsej5dl7hoLt4M1ariRt/e4ueg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.42
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735896717;
+	cv=none; b=nmG4VQb0kaSHhI1DHKxYFtqjYIFebTOwVFcoypWOrYBQdwKkGSjXfCkuBATLNaNqBsMSi9z/y4eb6nRCO9z/i4Z35ex3OmHpMfcVBjEZpk/PzLSLXrlYw9F+LibOVXPiowx7hT/2l16PV8MFusmJ7TLUOJG41tfbrXTsRrW9OqLCcu9Kse0IESWcUQdKJDZTsGt7zLlT63m698Ple3GSha5DS6qLPgTlbR8vzXDvXsMpSo+9rvUQPIjDXqqTRZF6j87iTGSOI5e27Coan/F9/A9JG4tzXpXQ+H4QaxAA3i/Okjpmv+43vU45ba9vaG+4GpNeE1VoGesHxqGfuGQ0Ng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735896374; c=relaxed/relaxed;
-	bh=OjhYyamqLdDEJy3N4MKnSa94M/Zio7ELm/v+tKn61jg=;
+	t=1735896717; c=relaxed/relaxed;
+	bh=bhvKQFYrEHAPSyOkSeOFfnhuFEMUFCuy5EuswH6w1MU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NU0F/AITkwliCaP2mKjxYlawoEE0CO8tOgWVm4Ex+8x8wesZRh9RC0CwSCk+UpS5arqrqSzfUPtOImcVqr3+esORhdFbvts7hqh3gpwzD40kd5xMz9JWhTAh86wY74D0Ac5ThSWXgT3YbvJkgY1LaoENlE15B73lnw/ELvIzT9d7d/bhhZ7yUrbQ25Xv4UEyjwwU6HCMKZXYeYLHWUoqskNQ6VR+UsOSlc2dtCiK0dS3CBlK6H0Uz7S7fZVoS6vYmWfnYpet/6sHo2gkgzScWXfvrnASvStoorW41yoNp1gMk//mJ/gaNUJTjAk8nQB4NBg0DveD9XPXol/g7BwBCw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.222.43; helo=mail-ua1-f43.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=X7hMQumGRVYXrkiFvn7JUOdJ/Pfu2dOpOSDChXwycpSdcbCUa4IBn6DSyoO+sMTEwFQIlHGRLxQI/WqLrCQTz49WWfT/cyyVlw5j7GCGThHjt6SwUA3ai2VyJgIAQPCYOBgJ0TjyAsVJ9kdXapVVx6xdmqiPpAV3HAHfERTOzYYB9XipBnnyQKsHwStmNP/gL7PPTFWhaG1AXilxdFOKagrxxCEc4Dahyd+cSkDooQglp6rJIr9STs/YbZTPtZaC8KMTQQgaQ793Kb9n2ZEV2evYugIaZBiq8ytsQ+zOF9zJdMwgG+CA5/rRb7sCkDSueMeTGidTDL0Bnct1RcUeww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.208.42; helo=mail-ed1-f42.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.43; helo=mail-ua1-f43.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com [209.85.222.43])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.42; helo=mail-ed1-f42.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPdVY2RtYz30Q3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 20:26:12 +1100 (AEDT)
-Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-85bb13573fbso2268688241.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 01:26:12 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPdd71Vzsz30PH
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 20:31:53 +1100 (AEDT)
+Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5d3cf094768so19440848a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 01:31:53 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735896369; x=1736501169;
+        d=1e100.net; s=20230601; t=1735896707; x=1736501507;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=OjhYyamqLdDEJy3N4MKnSa94M/Zio7ELm/v+tKn61jg=;
-        b=vA+xi0J0ZwfrMK2AjDfwtuId3TKGW/QCogb3boPnhtVbgEpX0donAyze2Qs1YubusG
-         7H5e/KdABWLj/XTG9Ts/hrHEL6t+l4Lt+VPvtBReM7JEJuqFIB0VmOmMJxGVi8qryWJm
-         yPd1hyepefA+UriJQodvnjg39UvwF/l/WGSiOYm0aZ+F98SsUmAXU5FoEtt7u5whBShr
-         yk443u9rtedYUdcxnUkLszhM+7uObebReCiBBAi7UhD7thsRlJfp2UYGuc1cWvDJVFFr
-         DBAjIrSaprjMekt19WIkgV1JSNPOUSN689WhdxoA+q27dI91yz0hoBejQsosgxZovDdI
-         a1Cw==
-X-Forwarded-Encrypted: i=1; AJvYcCVE68qsl4NIW4E3o5gtrstKKlIvaEJgtrIfP/MPp+BPNSLOm9ybJhMCXLGFrb6g5XmM2Q0tHkfaqCVPeNw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx0gKfBW9z76tmnu8yTeZ4IFGFzT80aSEBS4im7eOpefFxGgq+f
-	HMwW1wN4ANKCY/NZm6bt1wjTsgXPyuIIE6SuwwIYvxRgJItpypFX4oFS0VNn
-X-Gm-Gg: ASbGncvOGhZtb0q8itn0hUFjSAp8DGD6V9CHP2PKV4zBlvlV/k4OQm9Jh1wfBcElrgJ
-	sDueF8FMlixiSOJLs2fz9sSKdAMUsLTYwg8Zg0R+5cY2zeTSDZzIJc8FhJH/p0Ni1VK/NZzVFNZ
-	X+uVOXbn+Zusxfg8P4ihvJE74hVFdqMYsZAoUjVHv4gOWuI9B3l6cYeKE+WdLs7dham44OW+CHn
-	yNaMAYXCVmAc0ptLCqNs5P+PU3mwJ/aZWrmlB/584K5T+vL92k9dwW0Un2niRANy1H9aajsdY+Z
-	wsoZx3fypU4lXscEjus=
-X-Google-Smtp-Source: AGHT+IFRMjes22vWz8ev+yJ22vzgq1IG80x/9pHG14Nn0awNPcYWHEpSBeWiP+xjaY3VPnYgFxDsNQ==
-X-Received: by 2002:a05:6102:442a:b0:4b1:340a:ce63 with SMTP id ada2fe7eead31-4b2cc3740f1mr39188660137.11.1735896369077;
-        Fri, 03 Jan 2025 01:26:09 -0800 (PST)
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-8610ac4c4dfsm5505892241.14.2025.01.03.01.26.08
+        bh=bhvKQFYrEHAPSyOkSeOFfnhuFEMUFCuy5EuswH6w1MU=;
+        b=lsIhAmFUVcl7fKaqUwDc9aQmG8eKUBglcnq+DI0QJZmJ7meh9o/eZY0yHAi5ShGI6a
+         XDua/yzC6IglyOhpM+oipdJYAkEQzZwc7g3daeW+Mh1B/kD3FdzG1KOjx5iyclnN3LEX
+         1EEGTVl/CiOaOL2RcFfOsqWl6vzhsj4EbnI4yMnfLVM6IzJXnaJFt/M07LGR0tsaVnse
+         kKBWSUIqvpcv+RZPhz4p8XoJB2XCXFnnIwJKsl5Is7GPDlUw9eEmebee2DYJc7xXuB1z
+         KIbyNsgnlc8q+EbJYlDJLvKMgi6n58ti2FY+BNojY1wiJZm3Dqciw7/XyNG5qKEAwWNM
+         aLyw==
+X-Forwarded-Encrypted: i=1; AJvYcCVlSA0V9sth50F6fqCl3517BtMhNAmj7DQvUcdLxoq+3ifAn9gmdWQP4Mw7yj0NAoavlb1nTUzHLrCsKUw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzbTRE1jUKtpX4Rz+2ogLtFp6GWiSPrZuDyAhySgOT1QHU1gVCs
+	K9xm80FY6BwEw+ZvjWZsL+PzeB/lerKf1aoV8BmxSuZ5973+B9sHAqVyyJQ5kwI=
+X-Gm-Gg: ASbGncs8Li4Yf+TrLZIVs/tF0m//ET0GY24sKmHU+BY7zoyPzMbMS8UQgLh6FZ3WTbT
+	6nmo+R37uQxX3gbGX9Vfl5GdbvC72VEMfSeD3aYzkXEg9PV4mlzwTSzA3mWhTReYsd/mXsfxHCb
+	lu5OtqgklY0FPN7NamVcAZ76fMthxz6te/itkeAjhKKDJEY0tLid/Yh6MOrPsSg0Ke3KmedPoig
+	XKlFVHaG8radMQVRQin2Z3KtNNkH9PPEYcxknyeAhaPtCC/7XjurT7NX9oEDZAdpGEsW0ulkCA9
+	9K/VwKxYP4zLJIydvUI=
+X-Google-Smtp-Source: AGHT+IFbbChqSnNrxmWP7Cpb8gRYjsuAA6PSAHLk72a7pTzg/5bapNZMXeAUoYCw5gE8kM9AscdKSQ==
+X-Received: by 2002:a05:6402:270a:b0:5d3:f6cb:73e7 with SMTP id 4fb4d7f45d1cf-5d81dd908edmr38012754a12.13.1735896706714;
+        Fri, 03 Jan 2025 01:31:46 -0800 (PST)
+Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com. [209.85.208.48])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d806fede4csm19893848a12.63.2025.01.03.01.31.45
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 03 Jan 2025 01:26:08 -0800 (PST)
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4affab62589so3166435137.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 01:26:08 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCV9P/OGFF//rUuPfjHtPLukBONz/fKEdSKmDq9VmktwjEp7VCLjF8lMZz5eh9IV/fW834zrzXa/kE8xiQQ=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:50a7:b0:4b2:cbe5:fbc5 with SMTP id
- ada2fe7eead31-4b2cc462478mr39231786137.20.1735896368688; Fri, 03 Jan 2025
- 01:26:08 -0800 (PST)
+        Fri, 03 Jan 2025 01:31:45 -0800 (PST)
+Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-5d3cf094768so19440637a12.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 01:31:45 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXns9m1WmhZeuA7uXWjmkdTCoIqn9D5jvdyhG8yrikI57bsIExAl5mw5Q0pZ/i4fAmRqWVcfQkR4OBID9I=@lists.ozlabs.org
+X-Received: by 2002:a17:907:7f2a:b0:aab:cdbd:595a with SMTP id
+ a640c23a62f3a-aac2702986emr4003780166b.3.1735896704686; Fri, 03 Jan 2025
+ 01:31:44 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,31 +73,18 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
- <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
- <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com> <CAMuHMdVGdpVqkdvoFxu84YgBh_0fsAKeBhWFEg+nDyGLwbruig@mail.gmail.com>
- <11ae0b7362284d4828021068b05b38a280a9cee5.camel@infradead.org>
-In-Reply-To: <11ae0b7362284d4828021068b05b38a280a9cee5.camel@infradead.org>
+References: <06988f959ea6885b8bd7fb3b9059dd54bc6bbad7.1735894216.git.geert+renesas@glider.be>
+ <20250103085652.GA31691@lst.de>
+In-Reply-To: <20250103085652.GA31691@lst.de>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Fri, 3 Jan 2025 10:25:57 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXPSK-6_bMoiJyAsV4nhfW7HytZpOpf7Odg-4YKYNZfEA@mail.gmail.com>
-Message-ID: <CAMuHMdXPSK-6_bMoiJyAsV4nhfW7HytZpOpf7Odg-4YKYNZfEA@mail.gmail.com>
-Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove driver
- using deprecated API wext
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Philipp Hortmann <philipp.g.hortmann@gmail.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Geoff Levand <geoff@infradead.org>, Simon Horman <horms@kernel.org>, 
-	Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>, 
-	Alexandre Belloni <alexandre.belloni@bootlin.com>, Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jeff Johnson <quic_jjohnson@quicinc.com>, 
-	Larry Finger <Larry.Finger@lwfinger.net>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
-	Pavel Machek <pavel@ucw.cz>, Stanislaw Gruszka <stf_xl@wp.pl>, 
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-staging@lists.linux.dev, 
-	linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, 
-	Stefan Lippers-Hollmann <s.l-h@gmx.de>, Christoph Hellwig <hch@lst.de>
+Date: Fri, 3 Jan 2025 10:31:30 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUw23VNeO44dPzwbzMnCBws+twM2JVm7mQ745Ey1Cq4FQ@mail.gmail.com>
+Message-ID: <CAMuHMdUw23VNeO44dPzwbzMnCBws+twM2JVm7mQ745Ey1Cq4FQ@mail.gmail.com>
+Subject: Re: [PATCH] ps3disk: Do not use dev->bounce_size before it is set
+To: Christoph Hellwig <hch@lst.de>
+Cc: Philipp Hortmann <philipp.g.hortmann@gmail.com>, Geoff Levand <geoff@infradead.org>, 
+	Jens Axboe <axboe@kernel.dk>, linuxppc-dev@lists.ozlabs.org, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
@@ -106,28 +93,35 @@ X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi David,
+Hi Christoph,
 
-On Fri, Jan 3, 2025 at 10:14=E2=80=AFAM David Woodhouse <dwmw2@infradead.or=
-g> wrote:
-> On Fri, 2025-01-03 at 09:53 +0100, Geert Uytterhoeven wrote:
-> > > The following points are also in the list of reasons:
-> > > - This driver has a maximum 54MBit/s as it supports only 802.11 b/g.
-> > > - Using this hardware is security wise not state of the art as WPA3 i=
-s
-> > >     not supported.
+On Fri, Jan 3, 2025 at 9:56=E2=80=AFAM Christoph Hellwig <hch@lst.de> wrote=
+:
+> On Fri, Jan 03, 2025 at 09:51:25AM +0100, Geert Uytterhoeven wrote:
+> > dev->bounce_size is only initialized after it is used to set the queue
+> > limits.  Fix this by using BOUNCE_SIZE instead.
 > >
-> > If you only do VPN over such an insecure link, I guess it's still safe?
+> > Fixes: a7f18b74dbe17162 ("ps3disk: pass queue_limits to blk_mq_alloc_di=
+sk")
+> > Reported-by: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+> > Closes: https://lore.kernel.org/39256db9-3d73-4e86-a49b-300dfd670212@gm=
+ail.com
+> > Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 >
-> Why VPN? If it's public Internet that any you only use secure protocols
-> such as https/ssh/etc over it that's just fine too.
+> Looks fine:
+>
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-Oh sure.
+Thanks!
 
-I was also considering it from the side of the wireless access point:
-if you have to provide an non-secure access point just for your PS3,
-an attacker can not only impact PS3 wireless traffic, but also connect
-to the access point.
+> But looking at the report it seems like no one cares about ps3 upstream,
+> and in fact the only person caring at all rather rants on youtube than
+> helping upstream, so maybe we should just remove the ps3 support entirely=
+?
+
+I am a bit surprised Geoff Levand didn't catch this in his regular testing.=
+..
+Hmm, looks like his last Tested-by tag predates v6.9.
 
 Gr{oetje,eeting}s,
 
