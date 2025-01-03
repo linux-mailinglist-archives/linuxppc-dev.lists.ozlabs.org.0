@@ -1,67 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-4650-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4651-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 746F9A00CDA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 18:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7AFDA00CF2
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 18:39:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPrP973Dpz30Vm;
-	Sat,  4 Jan 2025 04:37:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPrRw4SLnz30Vl;
+	Sat,  4 Jan 2025 04:39:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::349"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735925837;
-	cv=none; b=OQptRthBQdYWawTcb8uS5jll5pL9kzq0j7A3630g2XeoWlMUY1+D4Vz7QBScs6XLMoSOGnxlN3CgM6Ccc0OU4IYVfB/GPkWMnp0NrCHqMSxZ5n5TWlZWKzqqpjgoATiDDjMBPXa1lBDeMsa3zSWIgjGnZHK0JSKXhjocUletlyRcnunyjIb7KcswOuCDNw9ke8CvJV8EU0+7w3CpkMIk7V0uyGytwBO0hwi9jvVIElMrd0bCuxj3cca+FExB1Y5q9NCgHl6Ri4TWvZ4AJYZZcVW3wdH0QggaVmtul4p/xqRoAhtneXs6LDx/M1XOx19TCS0fU6OPdSUrv/EiSIw5mg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735925980;
+	cv=none; b=omwEhVcOTLf4cZRSpSmIldU1HIs7nqWLGfnjpdCw7vEG539PLMfY+3vGukKNeOYEQtIWHFrFT651rVX2JayzW6Sk9kF3AwJ02seRNT28ee0KJqO+FKs7MHDQAFuGG28XvnSSNTM59Du/YonU24MKCWA4LGokfO8Tz6+1m9/ZLWsMHem/pMfsVvOC2y7N/NzdHQhAvY2dGRxlDmBHRsz5x6qenyq7ad877qv7WH8OdjDlIt3Zkztzfj4KtoUbAEiJvcxQgO6+rqMm/TzmCiyyQI//BNLhst0JZPddk8PJKlMlG81cimQsKSt3jxvekueEL3AJ+9l2D2Q3/g/mMMppLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735925837; c=relaxed/relaxed;
-	bh=NnqTVWJzvIfhKg7Bjweyg4HBEOW+h34t+hptux0JJqo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=N1b8RFfSVBjkzHNPTaG/zpibHH5itfTzMIUv7aEDRtMZGnvsOl4VpEtXw8MMJbJYKRWI58t0pLR8bPnAiBEYnuvVXTnLdII8R3L7xWjzpaJpAkhJ8ODlRtnep9cgT8LVl2F7Of4d9d2XJ63WV6sQQdeMWWRwtEVV4drj41E2Bqb07ySEB7Lprj8JYzmEhZKVDoBm8y4V1qEkds8TjYufQuQHliZC8f4Ip8LNPUOlXwsR7gALnMrjRdP5tBgT5BVnpk5Dz8upxrHAsqalG+p90hjlneJMjkVto6eztOIYir9JjFtgyU46A0386D8tJ0wmY9EG7JQaTRu/oE6vbyl45A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=al1ahPKy; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::349; helo=mail-ot1-x349.google.com; envelope-from=3ssb4zwckdkwyymgdqdsaasxq.oayxuzgjbbo-pqhxuefe.alxmne.ads@flex--mmaurer.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--mmaurer.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1735925980; c=relaxed/relaxed;
+	bh=C8Ox30JFrgcS1ycgmV4l1Kj8w33bWzuORKs3ims3dPM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=jSeQ7XYQsZvH9qgF/u5xrImAKBeeZbbZ7vAINeBbiplTJztsWju/YjoKUVQWBhyx6jjTihYFdMesJMJorhnNImeSsNuc4mZZnnSE7AjTvuGoLZSqw3nNnVBuugneSEjZqjQLp1zDnAdNG2Bbx/vTinx1LOlfnW3phs8JUz1hJ3LJHN245AADNQOc6x0CYR+Diab3ph8ZlO2JfL7hUX8kItU28biJSRQh83QtoVsiV7lEGaELBRo7ib+Ur8a36yZnRSkcM3sWwzMdAVtlIQJ0PQNzFG4wl/0IxfTwWWtgaRDyD2x4BGqBEiJzT7uiiwQyYgr2RCwTJZ86Pv5WUCwWlQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BPZHQcSu; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=al1ahPKy;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=BPZHQcSu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--mmaurer.bounces.google.com (client-ip=2607:f8b0:4864:20::349; helo=mail-ot1-x349.google.com; envelope-from=3ssb4zwckdkwyymgdqdsaasxq.oayxuzgjbbo-pqhxuefe.alxmne.ads@flex--mmaurer.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-ot1-x349.google.com (mail-ot1-x349.google.com [IPv6:2607:f8b0:4864:20::349])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPrP80S3wz30WM
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Jan 2025 04:37:15 +1100 (AEDT)
-Received: by mail-ot1-x349.google.com with SMTP id 46e09a7af769-71e2940d1d3so8047701a34.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 03 Jan 2025 09:37:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1735925833; x=1736530633; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NnqTVWJzvIfhKg7Bjweyg4HBEOW+h34t+hptux0JJqo=;
-        b=al1ahPKy3KQwb8VgRzy3on1sAMTILRMLvUeauReY3Bqy84tGoJZfrWyEFizKZXkmjW
-         3gyVmMIuzgxGtvHT3YrfycKgd8BBSVDCgyGaD/rJqbAgi6f8/jPGATMXEQ/lgentH0Hz
-         gcfiiSxgvEKZljQ66XT4J910PKw/hNDpCVmn0OyTfopicVYtNKy/2fQKGfK8c1oQfFxc
-         gG0jL0GS5bAUSbIYOe/nC3RbAMT4QYnhhgr6Dn3sqv4LFcWLQknQUjdEy9m+1UiYC826
-         cwfUTypZiJzL8UPO5sutwGREf5dqVaj3e3100dHwEfSH851bXQpK1SFPnM/xZ28FOmRw
-         N/Yg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1735925833; x=1736530633;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NnqTVWJzvIfhKg7Bjweyg4HBEOW+h34t+hptux0JJqo=;
-        b=Y38Jv0il13wUUUug6tSgHvDaf0DMrukGgED74TR94Fy7IZIt0zk85vHcY7bSge3wNF
-         EMrX1SvNIVX56qcC3r1HDQMUeM6PIJktebA22tbtvx2TcUM9FGFjxoq9PXsxxjy95x+l
-         EkHqagPTZ4gJM7+immBI+Ow/fLkTsfTmUvKhhTwVFriSGtnnoPyJj+llUBxOlfuY+Z6F
-         U1E+sNrDRhNioCMitNNi4EmzsVllphfV1TRlRWREHUJ4yirRDH8zheYGdvSInEO+j6IG
-         xNo2E+DrQMe5LSd6L8sg7htMVKj0IxU6BxePhdAL7bJgYaRvXWHKnHUtrO6iWad5x2Xs
-         r0EQ==
-X-Gm-Message-State: AOJu0YyZWEw+/HYu75P1C+nbKXH04Ml0xXkNTh/uDSdP9ElUSYaG2BwK
-	w60v5EVqodRyn0wTqfcEWfYcfADixlwn1ZvVcmOBXPQOsJ48sDJknzC+yMoPoV/GoSRol0p2Y2D
-	NFX1JtQ==
-X-Google-Smtp-Source: AGHT+IGSTIF0juMK9VyJAJVfLygRi2f85BWQxzNFR64wOrkiaeDcNc+IiR3F3Rw5A8HO98Gdoqqk3B0klugH
-X-Received: from oabmm5.prod.google.com ([2002:a05:6870:e85:b0:297:2777:a7bb])
- (user=mmaurer job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6870:2f09:b0:29e:3eff:dea
- with SMTP id 586e51a60fabf-2a7fb00b558mr24668510fac.8.1735925833092; Fri, 03
- Jan 2025 09:37:13 -0800 (PST)
-Date: Fri, 03 Jan 2025 17:37:05 +0000
-In-Reply-To: <20250103-extended-modversions-v13-0-35d87c65ee04@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPrRv302Dz30Vf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  4 Jan 2025 04:39:39 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 10B1FA40FF2;
+	Fri,  3 Jan 2025 17:37:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE1FC4CECE;
+	Fri,  3 Jan 2025 17:39:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1735925972;
+	bh=1wIXlOJ0PKHN5nwQGBTEiR9c24IV0eG7sZVh7WolJVk=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=BPZHQcSuqbbqIrFTIHtpgna4b6QvnL4z/0HIBd8gv8ph5yszadSe/qj+ladr3VFNt
+	 +RzGsJVqLfFNKC/ELtlYOlI8qNNTl5pc7jno9F67QXEo3jd8YAESptcsx+qrGQNjRd
+	 sCrK2ZHAgXwzCB6C7R1ZM4XnPt0W82nZpG2X5E3i+FBChhK07J8+/vIyoQdBYlfMNm
+	 5xdrsJqUTRq2VWs3MjjZ0eWLBJF7182AFCCV6RZHioNKUg6/kmS1Xz4ovHGjFFi6WM
+	 +luqDU7/cilINIqmflBdqTukOj+NNIO2pBMdlD3sZcKGEBhxnH+x9P/lTeHzzT/3DP
+	 hpdMB8ku98kkw==
+Date: Fri, 3 Jan 2025 11:39:30 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+	virtualization@lists.linux.dev, linux-nvme@lists.infradead.org,
+	linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-crypto@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Haren Myneni <haren@linux.ibm.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Thomas Falcon <tlfalcon@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+	Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Matt Wu <wuqiang.matt@bytedance.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kurz <groug@kaod.org>, Peter Xu <peterx@redhat.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: Re: [PATCH 05/14] cpumask: deprecate cpumask_next_wrap()
+Message-ID: <20250103173930.GA4181899@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,152 +107,161 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250103-extended-modversions-v13-0-35d87c65ee04@google.com>
-X-Mailer: b4 0.15-dev
-Message-ID: <20250103-extended-modversions-v13-5-35d87c65ee04@google.com>
-Subject: [PATCH v13 5/5] rust: Use gendwarfksyms + extended modversions for CONFIG_MODVERSIONS
-From: Matthew Maurer <mmaurer@google.com>
-To: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
-	Daniel Gomez <da.gomez@samsung.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Jonathan Corbet <corbet@lwn.net>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
-	Matthew Maurer <mmaurer@google.com>
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241228184949.31582-6-yury.norov@gmail.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Sami Tolvanen <samitolvanen@google.com>
+On Sat, Dec 28, 2024 at 10:49:37AM -0800, Yury Norov wrote:
+> The next patche aligns implementation of cpumask_next_wrap() with the
+> generic version in find.h which changes function signature.
 
-Previously, two things stopped Rust from using MODVERSIONS:
-1. Rust symbols are occasionally too long to be represented in the
-   original versions table
-2. Rust types cannot be properly hashed by the existing genksyms
-   approach because:
-	* Looking up type definitions in Rust is more complex than C
-	* Type layout is potentially dependent on the compiler in Rust,
-	  not just the source type declaration.
+s/patche/patch/
 
-CONFIG_EXTENDED_MODVERSIONS addresses the first point, and
-CONFIG_GENDWARFKSYMS the second. If Rust wants to use MODVERSIONS, allow
-it to do so by selecting both features.
+I guess this is an indirect reference to find_next_bit_wrap()?  If so,
+I think mentioning the function name would be more useful than
+referring to "the generic version in find.h".
 
-Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
-Co-developed-by: Matthew Maurer <mmaurer@google.com>
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- init/Kconfig  |  3 ++-
- rust/Makefile | 34 ++++++++++++++++++++++++++++++++--
- 2 files changed, 34 insertions(+), 3 deletions(-)
-
-diff --git a/init/Kconfig b/init/Kconfig
-index c1f9eb3d5f2e892e977ba1425599502dc830f552..b60acfd9431e0ac2bf401ecb6523b5104ad31150 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1959,7 +1959,8 @@ config RUST
- 	bool "Rust support"
- 	depends on HAVE_RUST
- 	depends on RUST_IS_AVAILABLE
--	depends on !MODVERSIONS
-+	select EXTENDED_MODVERSIONS if MODVERSIONS
-+	depends on !MODVERSIONS || GENDWARFKSYMS
- 	depends on !GCC_PLUGIN_RANDSTRUCT
- 	depends on !RANDSTRUCT
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
-diff --git a/rust/Makefile b/rust/Makefile
-index a40a3936126d603836e0ec9b42a1285916b60e45..80f970ad81f7989afe5ff2b5f633f50feb7f6006 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -329,10 +329,11 @@ $(obj)/bindings/bindings_helpers_generated.rs: private bindgen_target_extra = ;
- $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers/helpers.c FORCE
- 	$(call if_changed_dep,bindgen)
- 
-+rust_exports = $(NM) -p --defined-only $(1) | awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ { printf $(2),$(3) }'
-+
- quiet_cmd_exports = EXPORTS $@
-       cmd_exports = \
--	$(NM) -p --defined-only $< \
--		| awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
-+	$(call rust_exports,$<,"EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3) > $@
- 
- $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
- 	$(call if_changed,exports)
-@@ -401,11 +402,36 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
- 		__ashlti3 __lshrti3
- endif
- 
-+ifdef CONFIG_MODVERSIONS
-+cmd_gendwarfksyms = $(if $(skip_gendwarfksyms),, \
-+	$(call rust_exports,$@,"%s\n",$$3) | \
-+	scripts/gendwarfksyms/gendwarfksyms \
-+		$(if $(KBUILD_GENDWARFKSYMS_STABLE), --stable) \
-+		$(if $(KBUILD_SYMTYPES), --symtypes $(@:.o=.symtypes),) \
-+		$@ >> $(dot-target).cmd)
-+endif
-+
- define rule_rustc_library
- 	$(call cmd_and_fixdep,rustc_library)
- 	$(call cmd,gen_objtooldep)
-+	$(call cmd,gendwarfksyms)
- endef
- 
-+define rule_rust_cc_library
-+	$(call if_changed_rule,cc_o_c)
-+	$(call cmd,force_checksrc)
-+	$(call cmd,gendwarfksyms)
-+endef
-+
-+# helpers.o uses the same export mechanism as Rust libraries, so ensure symbol
-+# versions are calculated for the helpers too.
-+$(obj)/helpers/helpers.o: $(src)/helpers/helpers.c $(recordmcount_source) FORCE
-+	+$(call if_changed_rule,rust_cc_library)
-+
-+# Disable symbol versioning for exports.o to avoid conflicts with the actual
-+# symbol versions generated from Rust objects.
-+$(obj)/exports.o: private skip_gendwarfksyms = 1
-+
- $(obj)/core.o: private skip_clippy = 1
- $(obj)/core.o: private skip_flags = -Wunreachable_pub
- $(obj)/core.o: private rustc_objcopy = $(foreach sym,$(redirect-intrinsics),--redefine-sym $(sym)=__rust$(sym))
-@@ -417,13 +443,16 @@ ifneq ($(or $(CONFIG_X86_64),$(CONFIG_X86_32)),)
- $(obj)/core.o: scripts/target.json
- endif
- 
-+$(obj)/compiler_builtins.o: private skip_gendwarfksyms = 1
- $(obj)/compiler_builtins.o: private rustc_objcopy = -w -W '__*'
- $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+$(obj)/build_error.o: private skip_gendwarfksyms = 1
- $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-+$(obj)/ffi.o: private skip_gendwarfksyms = 1
- $(obj)/ffi.o: $(src)/ffi.rs $(obj)/compiler_builtins.o FORCE
- 	+$(call if_changed_rule,rustc_library)
- 
-@@ -435,6 +464,7 @@ $(obj)/bindings.o: $(src)/bindings/lib.rs \
- 	+$(call if_changed_rule,rustc_library)
- 
- $(obj)/uapi.o: private rustc_target_flags = --extern ffi
-+$(obj)/uapi.o: private skip_gendwarfksyms = 1
- $(obj)/uapi.o: $(src)/uapi/lib.rs \
-     $(obj)/ffi.o \
-     $(obj)/uapi/uapi_generated.rs FORCE
-
--- 
-2.47.1.613.gc27f4b7a9f-goog
-
+> To make the transition smooth, this patch deprecates current
+> implementation by adding an _old suffix. The following patches switch
+> current users to the new implementation one by one.
+> 
+> No functional changes were intended.
+> 
+> Signed-off-by: Yury Norov <yury.norov@gmail.com>
+> ---
+>  arch/s390/kernel/processor.c        | 2 +-
+>  drivers/nvme/host/tcp.c             | 2 +-
+>  drivers/pci/controller/pci-hyperv.c | 2 +-
+>  drivers/scsi/lpfc/lpfc_init.c       | 2 +-
+>  include/linux/cpumask.h             | 4 ++--
+>  kernel/padata.c                     | 2 +-
+>  lib/cpumask.c                       | 6 +++---
+>  7 files changed, 10 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/s390/kernel/processor.c b/arch/s390/kernel/processor.c
+> index 5ce9a795a0fe..42ca61909030 100644
+> --- a/arch/s390/kernel/processor.c
+> +++ b/arch/s390/kernel/processor.c
+> @@ -72,7 +72,7 @@ void notrace stop_machine_yield(const struct cpumask *cpumask)
+>  	this_cpu = smp_processor_id();
+>  	if (__this_cpu_inc_return(cpu_relax_retry) >= spin_retry) {
+>  		__this_cpu_write(cpu_relax_retry, 0);
+> -		cpu = cpumask_next_wrap(this_cpu, cpumask, this_cpu, false);
+> +		cpu = cpumask_next_wrap_old(this_cpu, cpumask, this_cpu, false);
+>  		if (cpu >= nr_cpu_ids)
+>  			return;
+>  		if (arch_vcpu_is_preempted(cpu))
+> diff --git a/drivers/nvme/host/tcp.c b/drivers/nvme/host/tcp.c
+> index 28c76a3e1bd2..054904376c3c 100644
+> --- a/drivers/nvme/host/tcp.c
+> +++ b/drivers/nvme/host/tcp.c
+> @@ -1578,7 +1578,7 @@ static void nvme_tcp_set_queue_io_cpu(struct nvme_tcp_queue *queue)
+>  	if (wq_unbound)
+>  		queue->io_cpu = WORK_CPU_UNBOUND;
+>  	else
+> -		queue->io_cpu = cpumask_next_wrap(n - 1, cpu_online_mask, -1, false);
+> +		queue->io_cpu = cpumask_next_wrap_old(n - 1, cpu_online_mask, -1, false);
+>  }
+>  
+>  static void nvme_tcp_tls_done(void *data, int status, key_serial_t pskid)
+> diff --git a/drivers/pci/controller/pci-hyperv.c b/drivers/pci/controller/pci-hyperv.c
+> index cdd5be16021d..86d1c2be8eb5 100644
+> --- a/drivers/pci/controller/pci-hyperv.c
+> +++ b/drivers/pci/controller/pci-hyperv.c
+> @@ -1757,7 +1757,7 @@ static int hv_compose_multi_msi_req_get_cpu(void)
+>  
+>  	spin_lock_irqsave(&multi_msi_cpu_lock, flags);
+>  
+> -	cpu_next = cpumask_next_wrap(cpu_next, cpu_online_mask, nr_cpu_ids,
+> +	cpu_next = cpumask_next_wrap_old(cpu_next, cpu_online_mask, nr_cpu_ids,
+>  				     false);
+>  	cpu = cpu_next;
+>  
+> diff --git a/drivers/scsi/lpfc/lpfc_init.c b/drivers/scsi/lpfc/lpfc_init.c
+> index 7f57397d91a9..31622fb0614a 100644
+> --- a/drivers/scsi/lpfc/lpfc_init.c
+> +++ b/drivers/scsi/lpfc/lpfc_init.c
+> @@ -12876,7 +12876,7 @@ lpfc_irq_rebalance(struct lpfc_hba *phba, unsigned int cpu, bool offline)
+>  
+>  	if (offline) {
+>  		/* Find next online CPU on original mask */
+> -		cpu_next = cpumask_next_wrap(cpu, orig_mask, cpu, true);
+> +		cpu_next = cpumask_next_wrap_old(cpu, orig_mask, cpu, true);
+>  		cpu_select = lpfc_next_online_cpu(orig_mask, cpu_next);
+>  
+>  		/* Found a valid CPU */
+> diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+> index 30042351f15f..b267a4f6a917 100644
+> --- a/include/linux/cpumask.h
+> +++ b/include/linux/cpumask.h
+> @@ -296,7 +296,7 @@ unsigned int cpumask_next_and(int n, const struct cpumask *src1p,
+>  
+>  #if NR_CPUS == 1
+>  static __always_inline
+> -unsigned int cpumask_next_wrap(int n, const struct cpumask *mask, int start, bool wrap)
+> +unsigned int cpumask_next_wrap_old(int n, const struct cpumask *mask, int start, bool wrap)
+>  {
+>  	cpumask_check(start);
+>  	if (n != -1)
+> @@ -312,7 +312,7 @@ unsigned int cpumask_next_wrap(int n, const struct cpumask *mask, int start, boo
+>  	return cpumask_first(mask);
+>  }
+>  #else
+> -unsigned int __pure cpumask_next_wrap(int n, const struct cpumask *mask, int start, bool wrap);
+> +unsigned int __pure cpumask_next_wrap_old(int n, const struct cpumask *mask, int start, bool wrap);
+>  #endif
+>  
+>  /**
+> diff --git a/kernel/padata.c b/kernel/padata.c
+> index d51bbc76b227..454ff2fca40b 100644
+> --- a/kernel/padata.c
+> +++ b/kernel/padata.c
+> @@ -274,7 +274,7 @@ static struct padata_priv *padata_find_next(struct parallel_data *pd,
+>  	if (remove_object) {
+>  		list_del_init(&padata->list);
+>  		++pd->processed;
+> -		pd->cpu = cpumask_next_wrap(cpu, pd->cpumask.pcpu, -1, false);
+> +		pd->cpu = cpumask_next_wrap_old(cpu, pd->cpumask.pcpu, -1, false);
+>  	}
+>  
+>  	spin_unlock(&reorder->lock);
+> diff --git a/lib/cpumask.c b/lib/cpumask.c
+> index e77ee9d46f71..c9a9b451772a 100644
+> --- a/lib/cpumask.c
+> +++ b/lib/cpumask.c
+> @@ -8,7 +8,7 @@
+>  #include <linux/numa.h>
+>  
+>  /**
+> - * cpumask_next_wrap - helper to implement for_each_cpu_wrap
+> + * cpumask_next_wrap_old - helper to implement for_each_cpu_wrap
+>   * @n: the cpu prior to the place to search
+>   * @mask: the cpumask pointer
+>   * @start: the start point of the iteration
+> @@ -19,7 +19,7 @@
+>   * Note: the @wrap argument is required for the start condition when
+>   * we cannot assume @start is set in @mask.
+>   */
+> -unsigned int cpumask_next_wrap(int n, const struct cpumask *mask, int start, bool wrap)
+> +unsigned int cpumask_next_wrap_old(int n, const struct cpumask *mask, int start, bool wrap)
+>  {
+>  	unsigned int next;
+>  
+> @@ -37,7 +37,7 @@ unsigned int cpumask_next_wrap(int n, const struct cpumask *mask, int start, boo
+>  
+>  	return next;
+>  }
+> -EXPORT_SYMBOL(cpumask_next_wrap);
+> +EXPORT_SYMBOL(cpumask_next_wrap_old);
+>  
+>  /* These are not inline because of header tangles. */
+>  #ifdef CONFIG_CPUMASK_OFFSTACK
+> -- 
+> 2.43.0
+> 
 
