@@ -1,84 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-4612-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4613-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 552E4A00448
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 07:25:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90C4FA0047C
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  3 Jan 2025 07:44:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YPYSc0YM7z30TZ;
-	Fri,  3 Jan 2025 17:24:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YPYwB24Gfz2yK7;
+	Fri,  3 Jan 2025 17:44:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:260e::613" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735885456;
-	cv=pass; b=fr9GYRiOYYdyZ3fMKUZOHCKbusjDqfBnYXtegiu46lOhao+EC6RoCbzarVNklsYdjsY8qmN+VEuwTjPVp3DyBFSH8eL88W0TAw6eSt7rGc4u2ydCFLKstI1bWhHu30PfY3AW4w8ooBMVY4iv4JCpSBQ3/rOKKBsdzOBvdaH1AAbiBiZR8jPcReBZAlSpHrePJCWiT8jMSyrHIyY92otp+oBsrJXqsuibhw3znR1MNGVsFbs0HMzOA9SWHL5fI90JdSZpVY83SOGsiS5E+FRDZSdzgwBBb2jRmMOFcLzRmPZXvp8S1Btm6Nu9I24o4DevYvCXwOx87sZAqqT97FIGBw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1735885456; c=relaxed/relaxed;
-	bh=awuFpiNnGnu8PB/g+d5F5dMPKyhjVA8lFpOWRmvZ6yU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GiQW1NATV78LSOtjnKc28kB2JdyUjGRiiOlEKvra64Ntxg1yH4moXkByzkNIeJtjYQ2sMCJQ20o81N9dHv1LmcMGbImzed1nnmIroTmJl90Wom/Mqbgiy14t+JtpzVBx+kEHmAolnWctZbLeVb68xFCHikcLcaKlog3WTSvfu6idcWc6THro6JeW7Cad7K7XCVha04qbF7IWJV/3Vdjmxq0/fD14ZDzWwAmg+OPCvKdmSZzwKzc9ye/EDKlLfbiV3FZDGR+Kh9ilTT1Ba7dLlI7pIUUMOMBr3HD7jbJcjoxPArIM1aq7U25BspeYVyepYukkZvPB6ARqGe19dX5KiQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=bmIqEecy; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:260e::613; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::430"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1735886682;
+	cv=none; b=Ej+fCIt60MxICcQH4Qs/2bP9iJHLpldalphuhNeBwuhjTZ3c122eBpvRaJ/TuZUEBRIoRZstkaxJlVfFsowyHNCW00JkolK8gc4b/OXGmHjSuElPhtLM9w2wW314LmMsYsKOycWNCowEau1/drKSGriwyqqlOXBjIw3rRYn71EPGw3tYAOlhS05kzTmDpf0G5DhLuVXopov/CItgIgfxUsoiLql9YbM0qSU1l9PJT5xRyz4ve9iGnMagZxBxM4F7PpmsqU5lPZzG48Sm4trigmTaJXBRHo13c9F/bsNqsLBNbNjsK0A06IyxcEFgOlZFe6ZmjXBPufGwfzBpSJ3LKg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1735886682; c=relaxed/relaxed;
+	bh=ABL1p7nta/CRl8BsVQhOmjXI/HpJhPxNL3TKYtG8RXE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jMhMb/Ky2vcoW1624pvZ0el5itnXQstC0nHbCdCjVyWsuanxWSFV/93ISZFeZ0h1V3eygg39GOX5tQU9CachFU9VLRo7ZH597z6iOz9WKVteM5byzRaCpeYN4TnpRbLLLcDpkRFd4jOx1sZavp/VxOQn+zo95STu6EozY5720fSiV0uiARGqGcpRQ4HF87iBn9Doocw6cVYbyio4O+fxu5ZkKYjmcim5NXkB91sdTDdSLfGO0ZPD8hEknGpfIC+THwVOfLGeRx/mZDOe6ZtM/u8ako7+qeNKRhBajK4mpGSjRiws6ou3EhScnL4wgrS7ejpkxfuR6mludYzbuU0pZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d1PFPy8S; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=philipp.g.hortmann@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=bmIqEecy;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=d1PFPy8S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260e::613; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on20613.outbound.protection.outlook.com [IPv6:2a01:111:f403:260e::613])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::430; helo=mail-wr1-x430.google.com; envelope-from=philipp.g.hortmann@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPYSb36g9z30VM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 17:24:15 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yX7JlO6rDZ8BgPtDS9n+yLOnIYa09EDU8DQT08t72P4oyahITtMpMnbZKfEQGlaBlEgMkK3led1sK2nvpSu4T42E5nIgDfgwt61KF6IFVaUbIHC3y3Ah3luS8A3XD1q+PfxKhHMwD6ubQXvnGPIMa9qFMnJbtdeVNUakjYJ19PAjG2oVeRS6Nqwe74Gf6Ouhjz4qxuMAr6PBUiNavjJW2Ek+62V1b9GM1SnmKq9gjkzDmIBSuYxc85RMAInEfz/svV3woeahPv9XSARSLHtzkKCjWq69MdEjSX+iy2eqBjBnhi+dhTUIBXqRR1dEukaOdqksT0bsvDGTP+NcMMuEmg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=awuFpiNnGnu8PB/g+d5F5dMPKyhjVA8lFpOWRmvZ6yU=;
- b=xwzwF2MD7Cd6tJp0O6fotOV3mU1f3hcAFpJM0aWnA/vVLjCHlCKUxVnN19BGguB6n9khLBx7GlIw0qqNndubHNuPSunyQoa1tRGsSc0zawLZ+pu/EXgWFuk3pTo3DRJ9OReTwmA6mhjf6GGmxrkJyhNje81Rm/9WAVfOunK2rL0fWblWVCF6DDB+13E/apPCP9ZJZ+Ug4eKw44Ha8UczYw+oNh3dJRlCRvg3+YXTU3NFfDy7LZ/gipQKxaPQHHY9ijP8dT3bz0A0Sok9AUItiFsdV2Rv6xaSOUYP7WjZvIntev936XvQKhqmza4XNX4UGaljAgukTydM9fLaymzsnA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=awuFpiNnGnu8PB/g+d5F5dMPKyhjVA8lFpOWRmvZ6yU=;
- b=bmIqEecyf2i5PFWidAGWMT5e5gFi3tJeDCMhKvXXT21B5MmQyGOE4ijz8QUPny1+IS+dEoWKOzHVPYTE+e91T0XZ2dyFsI7kVNFnyXkWfVq63Q+B5EwTfPC+jJTpZCpX+s2KuB6Kniti9VHbnVyLHZNVFD89pR6AYhDXcZ1FjFvSwIvv+Y0SWd0xTJCcSRrJj+bNkXnxxcERAYv09giOlbnYzi4Tg0oP/OpLa5/fQ05Jug3KRnutW5zmHHi+M47tFf26eFFz/jtrVHINuQkssr6teZz+MspnMHeMr8ivFniKiMoBuSAZPsXw0auVQxVtb/yQNFLIF4CT+JHBOmHs5A==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DB9PR04MB9331.eurprd04.prod.outlook.com (2603:10a6:10:36d::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.12; Fri, 3 Jan
- 2025 06:23:56 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8314.013; Fri, 3 Jan 2025
- 06:23:56 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	xiaoning.wang@nxp.com,
-	andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	christophe.leroy@csgroup.eu
-Cc: netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org,
-	imx@lists.linux.dev
-Subject: [PATCH net-next 13/13] MAINTAINERS: add new file ntmp.h to ENETC driver
-Date: Fri,  3 Jan 2025 14:06:09 +0800
-Message-Id: <20250103060610.2233908-14-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250103060610.2233908-1-wei.fang@nxp.com>
-References: <20250103060610.2233908-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR03CA0127.apcprd03.prod.outlook.com
- (2603:1096:4:91::31) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YPYw84ljfz2yD6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  3 Jan 2025 17:44:40 +1100 (AEDT)
+Received: by mail-wr1-x430.google.com with SMTP id ffacd0b85a97d-3862b364538so6837121f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 02 Jan 2025 22:44:39 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1735886676; x=1736491476; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ABL1p7nta/CRl8BsVQhOmjXI/HpJhPxNL3TKYtG8RXE=;
+        b=d1PFPy8SiuvgFLNKPUfpY2DWPD7zdhQV+Hmqd4FUCTBCABBQLWxM3j/R3kocHEf3h5
+         GibqKVnj/6Lu2gwy0XD2Px5ZQA0eXoWCS6t8QmgO+ebPrsH5BxPhOUB6zeO7XrPDUBIJ
+         xId+/AujlkmvSdZu3Rm2vk91AQBWt14a4Q88yG8jvaFwctUKmIw/OpzUHzISJJ1sQU+5
+         mI8ofZTXqGxDaABE5fM2OlMu4aGwxBeqvv+pTdN9CXKDqxEZv0tvqYHQO1cWLV7ZE5Kr
+         KpamsInsCvTLDQt9T/8CNTeMcamBCLd3M2h/2vbeT2I/cd/BBHnJeoeYLPeZR1uZIzqb
+         jzcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1735886676; x=1736491476;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ABL1p7nta/CRl8BsVQhOmjXI/HpJhPxNL3TKYtG8RXE=;
+        b=srtnOyWdY23HBzS7JlKquuf5zrL1X6pHAI+x0fK3vY7A1WpJd05WWschUb9JPvrriW
+         JvzVglV8nXtqk8Xm7oX/GnZgxQzBKzyBlgqpalkBpOqOpEXGdUOSLkorEy4P5K6mbnE8
+         aX41722eX4+JBfCb/A91AJZVmQLi5xRqzDCQCDqTKjwziwxW4WJ2pbzm8vDpKEFcIHVu
+         ihDXMdfs8jkBsDT3os5Xhv6FQTsVQO+VnlVhe6HhBfCvzEzuuSSWuSY0S+2PIV59mmz/
+         C+EeDSLJMd+a+GK6eTN09w2LcEWTd8IUZM3UQoY3U6TLht2giPHHMkwKeCRX7acIwL0S
+         PZPw==
+X-Forwarded-Encrypted: i=1; AJvYcCUnPqDUBKLi4gzUmgCYl1Sz6bTloNui0BxpQyJNEHCyJ1L2F1eqxCvfxFCH2kcBQ6O29JVa0CXrNCmw2FM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwYYvKZY4rTUmHtWL1WTd/pNl0Q4UEJvqJxIuOc83RyGLN4VKQw
+	rqI7S9S/hfHKpgI9wazYnFy6SvufFGygHNCtsnh/TtI5HjdUPrFY
+X-Gm-Gg: ASbGnct1J41urCGWWBTQDgXC5hRwYVsdvCfv+2IyMfiwexTFhRN5x37AorY3IbLHjIB
+	kWVx3nqJj0b3tDbrC3GYlUjLSCNvjjUbbfaabwoxuGr7+dBXxo91AtCPo0YSIKSeNBCHIpqOb5n
+	TWdTlny965vPBREgzOEAxUzr3kQFcuiNNe/lkJS9TQ2J5gGoee7oYgOHOxoVg2F5TT4acDgdQSQ
+	VCw8k967mJLwwvxB5mElhi8MfYBJzIWlTnHuhmAugrr6i1W/JSI9a/e6br8Bp4/278b48Sp9tf5
+	4kTa+Y2J7nTZk5EjEZY7+zFAeyg=
+X-Google-Smtp-Source: AGHT+IGAa139yx3LH2QxpRgTHdKaVEYWhB6ijI8gOCJypp9phUqVp1ost3xXdpx7HlRS9Snm1/kE5w==
+X-Received: by 2002:a05:6000:2af:b0:388:ce0c:9f19 with SMTP id ffacd0b85a97d-38a1a177e24mr44534740f8f.0.1735886675749;
+        Thu, 02 Jan 2025 22:44:35 -0800 (PST)
+Received: from [192.168.2.105] (p57935577.dip0.t-ipconnect.de. [87.147.85.119])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4366128a44fsm471876805e9.43.2025.01.02.22.44.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 02 Jan 2025 22:44:35 -0800 (PST)
+Message-ID: <39256db9-3d73-4e86-a49b-300dfd670212@gmail.com>
+Date: Fri, 3 Jan 2025 07:44:32 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,106 +83,140 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|DB9PR04MB9331:EE_
-X-MS-Office365-Filtering-Correlation-Id: a7eceb04-a176-4565-faf1-08dd2bbf33b8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|52116014|376014|1800799024|7416014|366016|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MHGPrw6IGJyF2MGNTAyQi7c+1Jt24cp8K6+JjF6S0MNR2KKBeP6W6oAphCzq?=
- =?us-ascii?Q?62Ob+Gc6g8kC9nzqW2BZnK96g4kEhSiTUpIk4sDaxgr725deavsY/L7M3yHA?=
- =?us-ascii?Q?tS6J6gFYtVIDM9e7HmLtS8foLnz9bdXaKtVy5Fv5epgGIZGCVW3tG20NmbkC?=
- =?us-ascii?Q?C+LAryl4E9WH5DQ7vnSJzh8t8kcUGBHM+KBnzazem0IdaXnFAXlF5iN8O9IK?=
- =?us-ascii?Q?jJgUImlvIy8BvxA+DPO5moNwK293Lgh/ZmzTXOFkAQ5f7HB4OFcAN4R+SwLm?=
- =?us-ascii?Q?yxaY07XnPJQZP6telJOhgSzJFmls3z+b3rIFEuZuxTpWqchsBHbOuWMEqlZh?=
- =?us-ascii?Q?GeUD3WHl0lKqLU18D+Uq7kJh61ypi8nHGsO1aqZE6GB2/0/wntTJNP5rcRKw?=
- =?us-ascii?Q?R/3N/VonmSOneFnoppJ+cWYO0I3YZ8tB22VKNRRs1NiwWinc4uFxYL6cf1/a?=
- =?us-ascii?Q?IRhO6FmWx4ofIfPQuPidtQm0TKdPZ1+D7rTIn7yqtjw8JhtH9PGO3pS/q/od?=
- =?us-ascii?Q?xdlX2FuBx6FOYOBY7V71mCA8mJOGgXuqvVqyCF8GXmm9uDrvTEaFKMuGMc1s?=
- =?us-ascii?Q?25Sp0IkgtMrYNAE41cj++IwhHCzL5+Kn3ckHMRqJrIc/pWwKDkGc59KSgE76?=
- =?us-ascii?Q?W6h7jvf/HxFnr6tWTSY4rLR9BJEm3dwC6lRZFG8hMPa5WL7UsasasNpvQva2?=
- =?us-ascii?Q?yooIjRe/dlV+fRS8D0Pt9G1DGFzqcwUbkduSQ6laTplN5aIR110scLqNyp9k?=
- =?us-ascii?Q?UnTlFrwF67mgcg/Kh83LTJph094FHOXHrUkhaQ3IR5moNrj28c316/0UPima?=
- =?us-ascii?Q?b/ojNxeyDEkesfdb1IBDkZKUtfSDsCbw9MD35Ba5l4OOYMEa6ycbnDGGPL84?=
- =?us-ascii?Q?ZfIbQHI/BeRwLBKOw2wi0QMmtbJ3My6nM0XA6sbQnCbjkP/lNYrnVUwDUvGY?=
- =?us-ascii?Q?g5BSspt735mQMwDblMXtBjkntVvOw0a7iqX5ExVj686k4hgtRCAE0uHqclpj?=
- =?us-ascii?Q?QpikulLXtqafmBWcPTq9n/Kka4PqIYmRNI1PmFQg8KVzg8O5I2kfoMqv6AOp?=
- =?us-ascii?Q?aOOwUG5m/BeS0sQ2+hywcpnDDBZoneDEmm3jzyjBxwtlIzwi0bhwZ/+B61F2?=
- =?us-ascii?Q?SbOHJfYxJxuFo/6DsGaLgc3nJFXvxahmOWTIrBOCvk36jYaVvaJosyyw2v1l?=
- =?us-ascii?Q?f73wObp3Es2ETWl+pCGuV3hcxbBVj/4vxiCzC0jdmCTgPJL/QXaQ/N5xh06F?=
- =?us-ascii?Q?nF9xomWqePkPp2T9der2JztopeHBZ/l3LSGkUNRAxNafg+oieD/cfOvvcEbN?=
- =?us-ascii?Q?O13PZX+ccmWApvw670v9lvjQ/UAtKLpIGPJL3/JPUxhwqRuRfjTGq++SNGbB?=
- =?us-ascii?Q?t+SHG7tqFcAPiU7ppVdF8fX0VFDriuWXkPD+LzdDaVjMcaOEBRLpFrOI9Zq9?=
- =?us-ascii?Q?Db8pvEB7FJJVAruQno+k/l3g76s4/irT?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(52116014)(376014)(1800799024)(7416014)(366016)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1BA1dQyZjLNcOAMV4dByXH2H6E00ULUr/UtPfe9XqyfthS1vL0nHjvEoOxPp?=
- =?us-ascii?Q?cbHXVFMZ1ReUr+gzo/RIcw/OYcLXO30p+vKypGowiWfDPaeQvatmfLPKIWYk?=
- =?us-ascii?Q?xSL2nnX+I/kEdq/sRVHEk+pLzJku81GcODtLd5MEvk7PdncPlGmuAhGLb4KD?=
- =?us-ascii?Q?N5VOmTCied91dMv08DyKoPfCqeBGUZEZPdQi9MZnbkSztMX23L9Dj6rUHk9Z?=
- =?us-ascii?Q?q3674qr9eJyCD1ot5vbfd9cODqM7MYZd80BQPCbojSSbY9LAxu8Yq6USw1VQ?=
- =?us-ascii?Q?MX8r27BMrTqy9GWArZrv1YdEYBLk/Ou/rUiWaBtCUPHP82709A8cF/5/HJX4?=
- =?us-ascii?Q?e2mJ3vjPrxz1srbEC36TKaEvZNbuRy4CrR+TLEcpqTn+G6QV5+l0x+AjcKkl?=
- =?us-ascii?Q?miM1c7ABcdGF5e5dhmjUmeyU/JRPYBcuin/Lv4pYpSyf4a2UCR6T8XDn821T?=
- =?us-ascii?Q?grZTHyVsbPFm28hBit1rnCck/LjiSkYpT+38Esty3+J5sSnTJ+nc/fliZw8b?=
- =?us-ascii?Q?PfnUqPl/nyTIHH8ItaxaObgFtbya5/OO3V09RxY6uxp3B/eBY1wO84JWU8gR?=
- =?us-ascii?Q?SYIs/S5484R/ATVnZyph4qb66G6/SuqWZ/3Zxhcuy/9/DcE1yUqNip8tVFjM?=
- =?us-ascii?Q?GJgvStgnO69XfLaWIwJlOEhlg1TgWGigFTjuEreJXRW9f4Tl6FAZlUEpWLBc?=
- =?us-ascii?Q?0eDvgphrpHtkmskPi4ooJBaJqPIFlYm5+UHEe1qzP39PspXnuJI9tlDBjYjR?=
- =?us-ascii?Q?UKx9IpSfjd5Zp7IDJ0Xin0exgrH2s5ZtZpH2iHrB4Jq4Ubx+vhN3rbjPl+WQ?=
- =?us-ascii?Q?SGL99AikC9hXGE8pd8xTIv6sceI25giaGwUqKPG0UZ1KiSsfkIB9458UyBiK?=
- =?us-ascii?Q?Sr+IbDyylgsRyGA3eBvsfZVjku0UE37iCj242Srj5j1V1kzjllfOLyF1PF76?=
- =?us-ascii?Q?yB0jxbBfK7BK2rbxydBYOMhOx234xpgv5G1Bj9YnIUzzfEEJsqBPkj+jlE5e?=
- =?us-ascii?Q?/bdrqhwRv7O7m2IIIilxxvZxcYsZ5ip0/WNERAlL6iXtqKYYwm6h1Q9BM8gE?=
- =?us-ascii?Q?hPzcc+5OSbTUF6Oldui43aqyUVyLdUFYPVOF4ttH5pQ0aXGQvyZk2uJrTjK8?=
- =?us-ascii?Q?NhbuxYPVNxLwlGTC/rVLXVVpn0zyhPVlow+RYGK5gMPMJpziADkMVAu4gqxG?=
- =?us-ascii?Q?jq/7gzopwdP0EQ7mSXY5qAp9H+MH7GAcBRmYGa/b9ulFVlrpTZsr6k6uL9Ig?=
- =?us-ascii?Q?bX9kbdiVaVNC0ukA7+zLA/sFxUBVBMZxk7ZbfxFzZJRpbLKBLiSI7xs6pWOh?=
- =?us-ascii?Q?/vusm45Mz0cGPF+3n1JjyDg4QvN375hATg59Z3wxHbN+nIgnshKgsu6X/O8e?=
- =?us-ascii?Q?/kBtlRdCIx7o6z1fPhQzLio8ntqSxR3lk/PSUMkg6eqGVe9apcWagk2CZwFe?=
- =?us-ascii?Q?npzBCMW+QNtmr6SJ9YcVEai0vqyQfGP1+XqvOlDVn4vG27vH36UJpR34Wt34?=
- =?us-ascii?Q?iJOFUAJAfkzazn6hEsaMH/PXfSoKRcTv2by0ypQvcp27LI8g6XOk8+F/tZze?=
- =?us-ascii?Q?6OeOZSC7y2BNFcceVZOeHJwt1txaH4s5hXIqwNNq?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a7eceb04-a176-4565-faf1-08dd2bbf33b8
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 03 Jan 2025 06:23:56.5958
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: B5VnC3AFJptb+l/OTt+5PnO3Bu86IJvsflKUY/4VvY4yyISpbwGv9+RTer5Rj9ixW60IWRkIrnL05tVw4hi0FA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB9331
-X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] net: ethernet: toshiba: ps3_gelic_wireless: Remove driver
+ using deprecated API wext
+To: Johannes Berg <johannes@sipsolutions.net>,
+ Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
+ <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Geoff Levand <geoff@infradead.org>, Simon Horman <horms@kernel.org>,
+ Alexander Lobakin <aleksander.lobakin@intel.com>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Kalle Valo <kvalo@kernel.org>,
+ Alexandre Belloni <alexandre.belloni@bootlin.com>,
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Jeff Johnson <quic_jjohnson@quicinc.com>,
+ Larry Finger <Larry.Finger@lwfinger.net>,
+ Nicolas Ferre <nicolas.ferre@microchip.com>, Pavel Machek <pavel@ucw.cz>,
+ Stanislaw Gruszka <stf_xl@wp.pl>,
+ Gregory Greenman <gregory.greenman@intel.com>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, linux-staging@lists.linux.dev,
+ linux-wireless@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+ Stefan Lippers-Hollmann <s.l-h@gmx.de>
+References: <20241224080755.194508-1-philipp.g.hortmann@gmail.com>
+ <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
+Content-Language: en-US
+From: Philipp Hortmann <philipp.g.hortmann@gmail.com>
+In-Reply-To: <b811d4af6a634d61389dfefacd49853c0e77f1d7.camel@sipsolutions.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Add new file ntmp.h. to ENETC driver.
+On 30.12.24 09:22, Johannes Berg wrote:
+> On Tue, 2024-12-24 at 09:07 +0100, Philipp Hortmann wrote:
+>> Driver was contributed in 2008.
+>>
+>> The following reasons lead to the removal:
+>> - This driver generates maintenance workload for itself and for API wext
+> 
+> So I've been wondering, why are you so concerned about this? And in
+> particular, more concerned about it than the people actually doing the
+> maintenance? :)
 
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+One of my big fears is the hand over to the next generation maintainers 
+and developers. The less code and the less exceptions due to old 
+interfaces the easier it will be. We loose maintainers and developers 
+for many reasons, like: retirement, burnout, embargos or simply because 
+they are not paid and need to earn money. After giving some support on 
+the staging subsystem I cannot see at all that we can attract so many 
+talented people as required for a save future beyond 7 years...
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 1579124ef426..ac28154f7eb5 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -9099,6 +9099,7 @@ F:	Documentation/devicetree/bindings/net/nxp,netc-blk-ctrl.yaml
- F:	drivers/net/ethernet/freescale/enetc/
- F:	include/linux/fsl/enetc_mdio.h
- F:	include/linux/fsl/netc_global.h
-+F:	include/linux/fsl/ntmp.h
- 
- FREESCALE eTSEC ETHERNET DRIVER (GIANFAR)
- M:	Claudiu Manoil <claudiu.manoil@nxp.com>
--- 
-2.34.1
+People who evolved with the kernel development do not have a good sense 
+how difficult it can be to join nowadays.
+
+A friend just bought two servers. One with a paid OS and one planned 
+with Linux as OS. The difference was over 12000 € due to licenses. What 
+would be the price when we do not have a choice? Do not feel save 
+because of today. We need to fight for tomorrow.
+
+Where do you want to invest your time? Into the new technologies to keep 
+up at the front edge or to keep old stuff running that is not productive 
+anymore. But there might be someone who can pull the hardware once every 
+two month out of the shelf and ask why this is not working. Should this 
+really stop us from progress?
+
+> 
+> We got here because I removed a *staging* driver that was in the way of
+> some wext cleanups, but that had a thousand other reasons to never go
+> anywhere anyway.
+> 
+
+Partial, for me more important was the try to remove all wext drivers in 
+October 2023 by Arnd Bergmann.
+[PATCH] [RFC] wireless: move obsolete drivers to staging
+https://lore.kernel.org/linux-staging/20231010155444.858483-1-arnd@kernel.org/
+
+>> - wext is deprecated and only used by two wireless drivers in
+>>    mainline kernel
+> 
+> true
+> 
+>> - no progress changing to mac80211
+> 
+> It fundamentally cannot be converted to mac80211, it has a whole
+> different model. In fact it cannot even be converted to cfg80211 because
+> some APIs it uses just never existed there, and likely never will.
+> 
+>> Tested a rebased version of this patch on the Playstation 3. Used
+>> T2 Linux with Kernel 6.12.5 to test the Ethernet connection.
+>>
+> 
+> Arguably that's a pretty strong argument for *not* removing it, if it's
+> actually relatively simple today to bring up the latest kernel on a PS3.
+
+I was not able to use the WLAN on T2 Linux. I just tested the Ethernet 
+connection as I know that the developer of T2 is using it. The reason 
+why I bought the PS3 is to see if Linux on it is really a use case. But 
+all I found is that it is only a test vehicle to say T2 is working on 
+Power PC architecture.
+
+At the time the PS3 WLAN driver was added to the mainline kernel it was 
+really cool stuff. But nowadays it is just a high Power consuming device 
+with a noisy fan and not enough RAM to do anything (256MB). The 
+powerfull GPU is not supported by the kernel.
+
+Do I need to find out why the WLAN is not working under T2 on PS3 to 
+convince you? The WLAN is working under redribbon Linux with Kernel 3.5 
+on the PS3.
+
+T2 is working but to make this happen the T2 Author has an own repo for 
+patches to apply. In the following video he publishes his view on how 
+well the ps3disk is maintained and tested by the linux kernel community. 
+My impression of this is that ps3disk is not tested on hardware at all.
+You can find this in a youtube video: “I can't believe VIP Linux kernel 
+developer BROKE PS3 support” but watch out that you are in a good mood 
+otherwise it is pulling you down like me...
+
+The commit that is breaking the function is:
+commit a7f18b74dbe171625afc2751942a92f71a4dd4ba
+
+This fixes are not in Mainline up to today. So who beside T2 Linux is 
+using this? You can find more of those breaking patches... and videos...
+
+The following points are also in the list of reasons:
+- This driver has a maximum 54MBit/s as it supports only 802.11 b/g.
+- Using this hardware is security wise not state of the art as WPA3 is
+   not supported.
+
+Thanks for your patience.
+
+Bye Philipp
+
 
 
