@@ -1,76 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-4670-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4671-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 734F8A01786
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jan 2025 01:29:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AC5A017C4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  5 Jan 2025 02:45:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YQdTm1C4tz30CD;
-	Sun,  5 Jan 2025 11:29:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YQg9k32D8z2yn2;
+	Sun,  5 Jan 2025 12:45:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736001557;
-	cv=none; b=Gw3DMydkwxrs2nnz2SXK69KP42tXpgtvTGKPnB9WTl2vEWXBvXDoOetViGXbUN+d/wjPmQa3xgMWWDX4DrLxkTGjKVpBcIZxo036L+dbejhpK0aQ0ulAlCm1skkUH77WNoX12tecSZNFioJIHV4/0r+detK7CZ2Xe0OXhTnbrZwS/bKJRbD1zWqoXwbjjC7xk4SUaglR3seCN+M6xZB07VwpqzXrekJFLj+l5EUMoCPqXOm7oJpDxZHag0+bMvTSaRoVuR4N5NJ2jIW/iKB+PNOzCrZ4Jc94SMffvEEi8lnMXJzpn8l9AFJKurNRx43a1sTsNSckEaWZdrcsk9ocaQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736041514;
+	cv=none; b=fFjOMT2PA17/9P2q5c7j2YiPRvCOooLdwTBgjcE99pRZzko0ohYysHl8xFRmYy0Zpe1glpEDQOGI2YyA18Swh9biS4h4OX5jpW3r82814FVLCEw42uZnoinaTc1wBnF21GHKDoj4eAE5SyNT5G3sRWTkzXC29ysALj+IiC36VeI0TArWw3uFHsHEGSmeC/V5efzIa82yzlBXryONuR1LXpQ0rBPtkLNMHFWqE8OPSj8l1zveD9+2prcOA+bL7P+YNlWwwwQbyVIyMrLhUYCzhTrCerkTlu0fLXlWgMPtRke6xC3IGaRlkajFW9QM3nfyjEL7kPwAPPECIHydiCMqmw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736001557; c=relaxed/relaxed;
-	bh=lItEO8+vDf3ne2QEFaUdlfKMhS1868rwBEwl+2/8wc8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EfUOcFM4knQiPov9ujRDf8p29DJ9am703ZqxsLG6po4VdWocOhYVOyYwlcM+OLurrikPjNWwKKUKTFecOnsKSBX094bGXNDb2amaWHr7GCiGICe2/EUCPfy9pbeWtHIgLg3LGw1Gq/6KcwevGSsRQ72xnsxGMw8EX3eZPp4ggyS2lpLUiXhcckaCQdI6vJLYR7oh3rFDsJll7bGnfYRF0eicZo7ZhHBfmqUuuGov8WKoLdjWjQ5ZE7isb82pskeiX+sf3PtdA1tvL18cC4w/Dc1XmF7EYseQO5NZ5sBtdK+8x1BSmxDNlJgmyiTXWA9EuxuqTqa2pAAsr2006nVxrw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com; dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tigApzsK; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org) smtp.mailfrom=daynix.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com
+	t=1736041514; c=relaxed/relaxed;
+	bh=SOBt5DPnUIGvC38vlr30QgnqV2+SG/MycZQ+czmsjrQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n4CEwWwF2LVhm5S6xRH3teb/yf4mMWyUUSxWwkS1nm9d3LNwLFOBQCsUokxQnfP1ffbNhTUuI2YkUQBoKzQ//YMJ9Uy7Y0wG128HZdNeDWmsx+dY9DtxvycjGPt3aACNQmx6CaKpdy6/BY9r6m3zMQnJtQSzeK9aI+5kmYcmXMiC58d94vZT9vgTH0lNRBEPt4C0Yja5NjqOv1sS4txLL5mFEHXiaW+ZrRkLFPv94wpbl6YniWlAWiZXxeTF93q6a2eshLs4FpGozNETndBLP1fh4sT7OrXob06gd5uEa7JlADW9tVPPJCA99li4HSvvIRNlJMBIcqHn/QfJ149caw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dzldYET2; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tigApzsK;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dzldYET2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=daynix.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kuba@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YQNPJ72Tnz2y8c
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jan 2025 01:39:16 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-2166f1e589cso224184765ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 04 Jan 2025 06:39:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736001555; x=1736606355; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lItEO8+vDf3ne2QEFaUdlfKMhS1868rwBEwl+2/8wc8=;
-        b=tigApzsKbEXbNdBxnJd/6rPCUZEWRYk1htSqkQOmf7n//18iuYi+lsC7QtnunzcSJ/
-         RmGO6Aa90Am87r5XFRV9EoMoxGXEHxcbDDy3RRNq+8BfrCC72k2rxFvW0gvwrQ6qnjHk
-         iN3CMlzGhhWrX3di98TXn39iPax8RaTX6jgfy7Ocs+bygKegclGQNJvbOsYeQAxPoPCm
-         YZvUEiz9QGw6/Veo57aON4PrboM061vFLhRhVMeoidXW4LQ3n8TImwGN+nkN8CgKJRnM
-         IhG6OZEzLIOjT9ai/hsJV4oyekkIwbqbpPijyLw2KVHaj7e8FXcraQnVw2tFkCINr9Xt
-         SPdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736001555; x=1736606355;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lItEO8+vDf3ne2QEFaUdlfKMhS1868rwBEwl+2/8wc8=;
-        b=rTbChj5+DVPJgOdbBaNtyjZfK2heXrleZlAFSeQDDGZDDnA3aoxAv4CheRm2b0LKOv
-         SDAvxjE3q86rLktkght/4j84mvaEbX+bzG0MR7T3V/e21ofReVO05SmLafsYtunwyp7S
-         xY4yUqNZKX92NSZLagvgMkwRFJ98Urx1qg9awoPjuWTWsbdYlb4MsM2JoPvSzyDUMwxY
-         oeejtIpxMKAcPFZBYwN8XpR9pt13QaR8/s0HPoRmyao7cXE7BLKqcBNssyguWmaSsU44
-         PYZ5at4hMaP4sFmQyTBrcCk29N7Wj6F7GAx1WnopAGlfe1+D/rk8jn4ux0nolbgRfVpP
-         c5hA==
-X-Forwarded-Encrypted: i=1; AJvYcCXIN4Zpz4kmF4McPbBcjSFNnIJuNJYvkEvwjFf+SsgQVEb2qKt9SKLZJhDalpLWH2Fn2pO2NCLSD35j76E=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyhMagdMQos6Ps89+R6p7sAIa9R2+N00jgaf2PBoNs72I4zn50N
-	1jcaTinVIhZK8EXJ4gkT92eivvG8YmjGuEs3VLZgdWJS4j54DoRTaS4jb0SYGIM=
-X-Gm-Gg: ASbGncuyFTLmuxFykvqlMECcL6z6WNVkTNMfYQDc1Jlc7wfPcwVyQE0KhpNSTbMSavm
-	3jUITH79AvD1a0aJFgkboC8tStdBuSPtpWQ0bsg1ikkrChCck3cE3nlZgetIjL1ux1kiIAZAlzK
-	FE+mlMjvCot9M8RK7HvFSb0/cw6+JC9idSK+0j4eXCCGSa2S3JZan87jn+d0NTLCwl2H2ji8yfh
-	QJXSDcfwfRAzBR3QVbcmWSgLaVkFvL9YV67F2/LHdxc+Cu6gpY8CQXSlywtfO0=
-X-Google-Smtp-Source: AGHT+IE6l143okZ4K2hLdktIIklrvNPqE32MSRd/SLQaBZqLFpJB0ZcbHN/hLV+Lk0+UAUXZGQQd2Q==
-X-Received: by 2002:a05:6a00:4098:b0:725:c8ea:b30a with SMTP id d2e1a72fcca58-72abde2ab0emr75955118b3a.14.1736001555483;
-        Sat, 04 Jan 2025 06:39:15 -0800 (PST)
-Received: from localhost ([2400:4050:b783:b00:4952:3c52:120a:27e9])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-72aad8f90b9sm28017661b3a.131.2025.01.04.06.39.11
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 04 Jan 2025 06:39:15 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Sat, 04 Jan 2025 23:38:38 +0900
-Subject: [PATCH v2 5/5] crash: Remove KEXEC_CORE_NOTE_NAME
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YQg9f6c5Sz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  5 Jan 2025 12:45:10 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4A3875C5780;
+	Sun,  5 Jan 2025 01:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AE66C4CED1;
+	Sun,  5 Jan 2025 01:45:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736041504;
+	bh=oq/Zazx3snTJ//HvVkRX0cBRbpMDsarbsm2tecQIdeI=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=dzldYET2emHDIAf7pzP0JoImS29VgCeY5/sCXhrOSKaxR6uYeadUuElqftv4FLpGK
+	 fLXF6VYE8kqqFAQgqJ5ZPUAl6NcPe4N8yw63oF0pCNU7QCaQ3rUiaqrNkXAGZSAUpe
+	 pOml0TNelBOAPn8HO/MR/lobpU5ydKFYEuhZIIkndr2ok5amNRxKyyog/lE+QZ4Tz3
+	 Xt7sYf0lK3xoiLYHzahbLj3ljbjWtL4Z0eZvM4y4hwfBhihxbDjXJwBNr5R9HSE9Zb
+	 BZ6sVBRhXiQBLYpjk3km+425LXrZTM4OXYTHXwruV2TsbfxR1OMLFbkqUDq/PcpCaw
+	 W4mevP1ED11vQ==
+Date: Sat, 4 Jan 2025 17:45:02 -0800
+From: Jakub Kicinski <kuba@kernel.org>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: claudiu.manoil@nxp.com, vladimir.oltean@nxp.com, xiaoning.wang@nxp.com,
+ andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+ pabeni@redhat.com, christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, imx@lists.linux.dev
+Subject: Re: [PATCH net-next 04/13] net: enetc: add MAC filter for i.MX95
+ ENETC PF
+Message-ID: <20250104174502.0d43e7c0@kernel.org>
+In-Reply-To: <20250103060610.2233908-5-wei.fang@nxp.com>
+References: <20250103060610.2233908-1-wei.fang@nxp.com>
+	<20250103060610.2233908-5-wei.fang@nxp.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,76 +69,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250104-elf-v2-5-77dc2e06db4e@daynix.com>
-References: <20250104-elf-v2-0-77dc2e06db4e@daynix.com>
-In-Reply-To: <20250104-elf-v2-0-77dc2e06db4e@daynix.com>
-To: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, 
- Dave Martin <Dave.Martin@arm.com>, Baoquan He <bhe@redhat.com>, 
- Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
- kexec@lists.infradead.org, devel@daynix.com, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Now KEXEC_CORE_NOTE_NAME is only used at one place and it does not seem
-to provide any value anymore. Replace the remaining usage with the
-literal and remove the macro.
+On Fri,  3 Jan 2025 14:06:00 +0800 Wei Fang wrote:
+> The i.MX95 ENETC supports both MAC hash filter and MAC exact filter. MAC
+> hash filter is implenented through a 64-bits hash table to match against
+> the hashed addresses, PF and VFs each have two MAC hash tables, one is
+> for unicast and the other one is for multicast. But MAC exact filter is
+> shared between SIs (PF and VFs), each table entry contains a MAC address
+> that may be unicast or multicast and the entry also contains an SI bitmap
+> field that indicates for which SIs the entry is valid.
+> 
+> For i.MX95 ENETC, MAC exact filter only has 4 entries. According to the
+> observation of the system default network configuration, the MAC filter
+> will be configured with multiple multicast addresses, so MAC exact filter
+> does not have enough entries to implement multicast filtering. Therefore,
+> the current MAC exact filter is only used for unicast filtering. If the
+> number of unicast addresses exceeds 4, then MAC hash filter is used.
+> 
+> Note that both MAC hash filter and MAC exact filter can only be accessed
+> by PF, VFs can notify PF to set its corresponding MAC filter through the
+> mailbox mechanism of ENETC. But currently MAC filter is only added for
+> i.MX95 ENETC PF. The MAC filter support of ENETC VFs will be supported in
+> subsequent patches.
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
----
- arch/s390/kernel/crash_dump.c | 2 +-
- include/linux/kexec.h         | 2 --
- include/linux/vmcore_info.h   | 1 -
- 3 files changed, 1 insertion(+), 4 deletions(-)
+clang reports:
 
-diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
-index cd0c93a8fb8b..4a9817489e35 100644
---- a/arch/s390/kernel/crash_dump.c
-+++ b/arch/s390/kernel/crash_dump.c
-@@ -253,7 +253,7 @@ static const char *nt_name(Elf64_Word type)
- 	const char *name = "LINUX";
- 
- 	if (type == NT_PRPSINFO || type == NT_PRSTATUS || type == NT_PRFPREG)
--		name = KEXEC_CORE_NOTE_NAME;
-+		name = "CORE";
- 	return name;
- }
- 
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index f0e9f8eda7a3..c840431eadda 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -68,8 +68,6 @@ extern note_buf_t __percpu *crash_notes;
- #define KEXEC_CRASH_MEM_ALIGN PAGE_SIZE
- #endif
- 
--#define KEXEC_CORE_NOTE_NAME	CRASH_CORE_NOTE_NAME
--
- /*
-  * This structure is used to hold the arguments that are used when loading
-  * kernel binaries.
-diff --git a/include/linux/vmcore_info.h b/include/linux/vmcore_info.h
-index 1672801fd98c..37e003ae5262 100644
---- a/include/linux/vmcore_info.h
-+++ b/include/linux/vmcore_info.h
-@@ -6,7 +6,6 @@
- #include <linux/elfcore.h>
- #include <linux/elf.h>
- 
--#define CRASH_CORE_NOTE_NAME	   "CORE"
- #define CRASH_CORE_NOTE_HEAD_BYTES ALIGN(sizeof(struct elf_note), 4)
- #define CRASH_CORE_NOTE_NAME_BYTES ALIGN(sizeof(NN_PRSTATUS), 4)
- #define CRASH_CORE_NOTE_DESC_BYTES ALIGN(sizeof(struct elf_prstatus), 4)
-
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1158:6: warning: variable 'pf' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+ 1158 |         if (err)
+      |             ^~~
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1179:24: note: uninitialized use occurs here
+ 1179 |         enetc4_pf_struct_free(pf);
+      |                               ^~
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1158:2: note: remove the 'if' if its condition is always false
+ 1158 |         if (err)
+      |         ^~~~~~~~
+ 1159 |                 goto err_wq_task_init;
+      |                 ~~~~~~~~~~~~~~~~~~~~~
+drivers/net/ethernet/freescale/enetc/enetc4_pf.c:1128:21: note: initialize the variable 'pf' to silence this warning
+ 1128 |         struct enetc_pf *pf;
+      |                            ^
+      |                             = NULL
 -- 
-2.47.1
-
+pw-bot: cr
 
