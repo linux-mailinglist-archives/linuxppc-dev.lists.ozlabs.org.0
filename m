@@ -1,76 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-4691-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4692-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA7F1A02307
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 11:34:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3564EA02315
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 11:35:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRVsN1Sk1z2yXs;
-	Mon,  6 Jan 2025 21:34:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRVtx6YfRz2yb9;
+	Mon,  6 Jan 2025 21:35:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736159640;
-	cv=none; b=iXiNpYdod7NbcNcU5oxB/jDcQxDaB6X5Sgg6VLwZ02DzWLYmC6Xfxe21JDarTVIHAe6n5xwtu10mbMyy7O62ZAYVBfkqQFcKFP9+0xqKJ2pBQazT7kOMHVBY8YFgm0ijQNqdiJJP7/GWqP67OKJivjaxv4g2R70f7nJ/rUgXM/Iw+LqUSRN/wpGErhgSVIJ7tHgMMLT/8W9u3SrY5IZJntrjcGKusWrDjLnZrbmDOsBRPO7jZ/iKon/g049CW/C9vi09Ms/qjBOJfAAGPlr2M4oeEQX6gA+dBzjiydX671Au6P59uDrme1Bd+Wh0xCmX8cQn187TMgybbP1bRWFioA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736159721;
+	cv=none; b=OasPOjhZaCAS9nKDbK1QerjOXljOA32u8TAxC/tpxlOxviTIBOztLnbRa3UtczgxVYPBihlIlgFNV1LGUHAliKIOnPgv/obiBzy4xAPTfaKj6g+b5l3JDcsWxfbEgmy2E0MNCwQeDwUdQfIez78sRTeCtb+zzedPEc12kLsMkBjv+Di9m7yr7b8dT7If+rAsAU4cktjLoF20+SQt23RIFfmir56OtB6CMTvd++4IC9anp4tIzeCtbQw39/yR2mMQwjsLjDr1/Yzt6tqxCIWeO5PTPcMumJG3rQWAY/DKrbKsMQTCtbWasNC+S6UvRpFnt1QhQCpai1GO4dkjsQeJNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736159640; c=relaxed/relaxed;
-	bh=T/dIATF0B0cb2CjV4kpJjZfFPga/hCk4zk30iJIHW7w=;
+	t=1736159721; c=relaxed/relaxed;
+	bh=dnAi9vboNreX09uRn4QgN1f6lRQiYdckkGm/8S9k+Vc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nIFppDCJMZbb4+o+Walsoil4CWtKw10NruDRHIE/MpY4dWvcS+ag2leSF/yDaM68D51DC7qp4KEJ/SzAyxVtwGY+TB9Q5XQdFIZ+v1Udwts8Vje6z7A9Ta2PTBGcZ08lSsiuGxdL0dZGYuqnQG1s5VVQuy/8+lkmEtOJL6f5zQj+/bqRD06f8Cbm8PY55BUEtRio2peKP/ri1AS+Zmnr5mjddbwr29bj2rXmryNpEtmGGHU1/+eEs84rrgQrkO/m1Nv9/qA+bOvJasv3YHYIv+VseIVzB91WEc5+3ZGk8TjZjXSUHfCqrsrv0Qq80IzFmvP6rIssmKuB4Cv+jpJQww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UNSjWw3i; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=lEtPrWuFNZGkkE4AMbTxbOLcK5uuFIHpD7jBsv5rL5fz6CB/kJAkTSSqXK4IPwzYi5bqaNmFh1AW9q+djRlzmTsCbEs5SaVK9ED3cfy605HHk0zzM7FDGcM6r1duzSc8fgols1tbDKkuOf1KI1ZHkmcd0p/ct/QwJq4umasaTCBDAapg6UobyvVLVyxWbkQR45STIvOeLYdUvlg7sqLPDTTH5NwFQKPLM/xTJjCwX1i/EF20gS6RIn2za+JUoZ+CJYtDH+l909rslSMd0sqJrW1MjEvGlW7SKlkawUczhBRSA1HgjS4otQ5bVNddRSa4qsQ/v/FdGVJXzOVBwJn72g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lJjDdKQb; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UNSjWw3i;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lJjDdKQb;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRVsJ5Nwnz2y8P
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 21:33:56 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 505NaE33006668;
-	Mon, 6 Jan 2025 10:33:02 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRVtw5Dg3z2y8P
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 21:35:20 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 505JvJen031175;
+	Mon, 6 Jan 2025 10:34:50 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=T/dIATF0B0cb2CjV4kpJjZfFPga/hC
-	k4zk30iJIHW7w=; b=UNSjWw3irJn0V+Dm8j5t3FNW5/wXx/WChR9S+1E2fwnee6
-	3YnxLlHQxOWH5zrs+0j3Lht+s4UrTI6g7Yg1KPB8FMCugDt75nNJJWZKMmbDbPht
-	aD4e1ztejD6AY9RigrcvvmP08x+kE9ZPTuYPeo60tFTmnQ8k4Cpe4cZrulHW0baX
-	bOFNUKH9z8P8+JW+mRFxmH7ld8nXAdzH+SB/wWVmxjkHXf+l7Q0PcRAwggyYoIXJ
-	RPu2iCOjOnvWnlY1gzTc7zEiBMqw+MBx8ifutL9cQhg4trkc8IU7fa53qIVbDErN
-	zLxsI17bxYOGqDtgLVqTsRSbTQbHdK5UUjCL9AUQ==
+	:references:subject:to; s=pp1; bh=dnAi9vboNreX09uRn4QgN1f6lRQiYd
+	ckkGm/8S9k+Vc=; b=lJjDdKQbHBAfb2paVM4758NXe1/08nF6JK3uPflEn31ywo
+	1C0/oBGvo+Ljgoc8PbS/JHw2VSdo16T40bu7fqXETUxwGPxIHe1vYQpzGB/IVJ/+
+	ILYsydLUu1DCIt7AGPJsrcByuGV5RY8fiD4Yd44lrKx9+HqXFnP9gd9cHbonHYbC
+	BJlVtgSazqQQEHcEXS23IfkMVxl57CRM9NGSfC3DnvIhpP4n/W/sv7O7sr43fum0
+	M8q7Sscq7ZMICtfmFQLksYfQNImyVC3WC29iJ+rIJHTum6ej9wbIdZUXURyvohT5
+	EmZwj35ZLWmpFz1qlcU0aEk9eaRHKtXv7XMrc4xQ==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4403waj0t2-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj535pe-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 10:33:02 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 506AX1FB005709;
-	Mon, 6 Jan 2025 10:33:01 GMT
+	Mon, 06 Jan 2025 10:34:50 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 506AYna5006101;
+	Mon, 6 Jan 2025 10:34:49 GMT
 Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4403waj0sx-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj535pb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 10:33:01 +0000 (GMT)
+	Mon, 06 Jan 2025 10:34:49 +0000 (GMT)
 Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 506A0LB9008869;
-	Mon, 6 Jan 2025 10:33:00 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfpyndxu-1
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5069LKLx008875;
+	Mon, 6 Jan 2025 10:34:48 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfpyne4b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 10:33:00 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 506AWwE135127994
+	Mon, 06 Jan 2025 10:34:48 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 506AYkCL50004474
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Jan 2025 10:32:58 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8AC1920049;
-	Mon,  6 Jan 2025 10:32:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 535C720040;
-	Mon,  6 Jan 2025 10:32:56 +0000 (GMT)
+	Mon, 6 Jan 2025 10:34:46 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9455920040;
+	Mon,  6 Jan 2025 10:34:46 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5C37F20043;
+	Mon,  6 Jan 2025 10:34:44 +0000 (GMT)
 Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.179.15.34])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  6 Jan 2025 10:32:56 +0000 (GMT)
-Date: Mon, 6 Jan 2025 11:32:54 +0100
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  6 Jan 2025 10:34:44 +0000 (GMT)
+Date: Mon, 6 Jan 2025 11:34:42 +0100
 From: Alexander Gordeev <agordeev@linux.ibm.com>
 To: Qi Zheng <zhengqi.arch@bytedance.com>
 Cc: peterz@infradead.org, kevin.brodsky@arm.com, palmer@dabbelt.com,
@@ -89,11 +89,10 @@ Cc: peterz@infradead.org, kevin.brodsky@arm.com, palmer@dabbelt.com,
         linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
         linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
         linux-um@lists.infradead.org
-Subject: Re: [PATCH v4 06/15] s390: pgtable: add statistics for PUD and P4D
- level page table
-Message-ID: <Z3uxVkg3i7zXI92e@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Subject: Re: [PATCH v4 07/15] mm: pgtable: introduce pagetable_dtor()
+Message-ID: <Z3uxwiEhYHDqdTh3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
 References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
- <35be22a2b1666df729a9fc108c2da5cce266e4be.1735549103.git.zhengqi.arch@bytedance.com>
+ <8ada95453180c71b7fca92b9a9f11fa0f92d45a6.1735549103.git.zhengqi.arch@bytedance.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -108,88 +107,76 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <35be22a2b1666df729a9fc108c2da5cce266e4be.1735549103.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <8ada95453180c71b7fca92b9a9f11fa0f92d45a6.1735549103.git.zhengqi.arch@bytedance.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 3z7EZUf66yDmnmtJgcHtcRdfzcBMN59A
-X-Proofpoint-ORIG-GUID: jOq3BOzX-nfrjMJZAlUBmLDYevP81AVQ
+X-Proofpoint-GUID: EI5YeJeBWRmXu7KfUK8OQ8xMPr6rjfLI
+X-Proofpoint-ORIG-GUID: 1-ZrVK8NzjkPVWjFoOuBxf3mikBbpEnE
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=650
- lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0 mlxscore=0
- clxscore=1011 adultscore=0 impostorscore=0 priorityscore=1501
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501060093
-X-Spam-Status: No, score=-0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
+ malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=571 phishscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501060093
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Dec 30, 2024 at 05:07:41PM +0800, Qi Zheng wrote:
-> Like PMD and PTE level page table, also add statistics for PUD and P4D
-> page table.
+On Mon, Dec 30, 2024 at 05:07:42PM +0800, Qi Zheng wrote:
+> The pagetable_p*_dtor() are exactly the same except for the handling of
+> ptlock. If we make ptlock_free() handle the case where ptdesc->ptl is
+> NULL and remove VM_BUG_ON_PAGE() from pmd_ptlock_free(), we can unify
+> pagetable_p*_dtor() into one function. Let's introduce pagetable_dtor()
+> to do this.
+> 
+> Later, pagetable_dtor() will be moved to tlb_remove_ptdesc(), so that
+> ptlock and page table pages can be freed together (regardless of whether
+> RCU is used). This prevents the use-after-free problem where the ptlock
+> is freed immediately but the page table pages is freed later via RCU.
+> 
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 ...
-> diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
-> index e95b2c8081eb8..b946964afce8e 100644
-> --- a/arch/s390/include/asm/tlb.h
-> +++ b/arch/s390/include/asm/tlb.h
-> @@ -110,24 +110,6 @@ static inline void pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd,
->  	tlb_remove_ptdesc(tlb, pmd);
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 5d82f42ddd5cc..cad11fa10c192 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2992,6 +2992,15 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+>  static inline void ptlock_free(struct ptdesc *ptdesc) {}
+>  #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+>  
+> +static inline void pagetable_dtor(struct ptdesc *ptdesc)
+> +{
+> +	struct folio *folio = ptdesc_folio(ptdesc);
+> +
+> +	ptlock_free(ptdesc);
+> +	__folio_clear_pgtable(folio);
+> +	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+> +}
+> +
+
+If I am not mistaken, it is just pagetable_pte_dtor() rename.
+What is the point in moving the code around?
+
+>  static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
+>  {
+>  	struct folio *folio = ptdesc_folio(ptdesc);
+> @@ -3003,15 +3012,6 @@ static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
+>  	return true;
 >  }
 >  
-> -/*
-> - * p4d_free_tlb frees a pud table and clears the CRSTE for the
-> - * region second table entry from the tlb.
-> - * If the mm uses a four level page table the single p4d is freed
-> - * as the pgd. p4d_free_tlb checks the asce_limit against 8PB
-> - * to avoid the double free of the p4d in this case.
-> - */
-> -static inline void p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
-> -				unsigned long address)
+> -static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
 > -{
-> -	if (mm_p4d_folded(tlb->mm))
-> -		return;
-> -	__tlb_adjust_range(tlb, address, PAGE_SIZE);
-> -	tlb->mm->context.flush_mm = 1;
-> -	tlb->freed_tables = 1;
-> -	tlb_remove_ptdesc(tlb, p4d);
+> -	struct folio *folio = ptdesc_folio(ptdesc);
+> -
+> -	ptlock_free(ptdesc);
+> -	__folio_clear_pgtable(folio);
+> -	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
 > -}
 > -
->  /*
->   * pud_free_tlb frees a pud table and clears the CRSTE for the
->   * region third table entry from the tlb.
-> @@ -140,11 +122,30 @@ static inline void pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
->  {
->  	if (mm_pud_folded(tlb->mm))
->  		return;
-> +	pagetable_pud_dtor(virt_to_ptdesc(pud));
->  	tlb->mm->context.flush_mm = 1;
->  	tlb->freed_tables = 1;
->  	tlb->cleared_p4ds = 1;
->  	tlb_remove_ptdesc(tlb, pud);
->  }
->  
-> +/*
-> + * p4d_free_tlb frees a p4d table and clears the CRSTE for the
-> + * region second table entry from the tlb.
-> + * If the mm uses a four level page table the single p4d is freed
-> + * as the pgd. p4d_free_tlb checks the asce_limit against 8PB
-> + * to avoid the double free of the p4d in this case.
-> + */
-> +static inline void p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
-> +				unsigned long address)
-> +{
-> +	if (mm_p4d_folded(tlb->mm))
-> +		return;
-> +	pagetable_p4d_dtor(virt_to_ptdesc(p4d));
-> +	__tlb_adjust_range(tlb, address, PAGE_SIZE);
-> +	tlb->mm->context.flush_mm = 1;
-> +	tlb->freed_tables = 1;
-> +	tlb_remove_ptdesc(tlb, p4d);
-> +}
-
-I understand that you want to sort p.._free_tlb() routines, but please
-do not move the code around or make a separate follow-up patch.
-
-Thanks!
+>  pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
+>  static inline pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr,
+>  			pmd_t *pmdvalp)
 
