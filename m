@@ -1,49 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-4721-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4722-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F14A02EDC
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 18:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A84F5A03002
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 19:58:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRgzK10Xnz30Vv;
-	Tue,  7 Jan 2025 04:24:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRk300pl9z30VR;
+	Tue,  7 Jan 2025 05:58:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736184285;
-	cv=none; b=HysI9aJkdoHNwT4e7TfGNNrgiuG8wd7x3JDow1JoHJLJBckA4IjNHLQlQBShLZOQZQxhU6Af+24V3kVTHgclqnjdqk5jNV+rH/qyR5BHMzDcGJGxBFIsF0Zt2dl18FMa8k9cq7tT8F4yu3BzOXQeEgfy+tvK/aFHG8HKMEtXW+fWmW2qitVL+y0hiJeFIVqNRUegfjlNlMGWlQLOXhltr/YnF//ZaBYUBPrS26y7j/9OmK7ewYXoUn3hYByVxlaUNj5p6rH+yIkMBYyXfYmKx+ABPXrFC510XFRdm340V0vk4OQ0pqnI9w8vBiAOP5ezY/pM5WmCMIPBtdEMJqu4ag==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::64a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736189884;
+	cv=none; b=bUiTTa/HiqbvfTHJF4OCaPoXfGqB+eEzIvC6jjkp3UKOg3Nx5jXnbATDnoAtIbd/BujPvyTEf4wDOwScVlVyj62gtsYBNDHcStoQdO/Dx0Fi4/j8y5jPzCCfhkopwY2YvrLPyKO2x5CgkGJgwSUfb4qymQ48UlNU2V84aIZtJkaoTg/fkCyUFCt2F7FxPEVeGGmHEWX11ELk67JlonjOXkPzbyexzTW9LHOyCd/qfBYZpXJziykVLLp60MXc41Cwfano8Kc4GiJcPWNWPuafkoamdV1HXdvJSMyPbBN7ZFvW2PLE/riBSIZoESH+IRRGs7X1yKu9eY0AT9YJprBKIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736184285; c=relaxed/relaxed;
-	bh=rRA2mT1FDJLw9rDAL19zAy8V1ZZTmoCMlSJNj6lQNi4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZvBs5cq4+KK16cQUqC00ei14gG8r+8WBClrSlm3Z2ADkGBZ2MrMy2Frkr6MCgTADun8qXR1Y/rnGTkbKeQQx3D3GgJD0vE1j8IQq72YZ5MczkUY/7Lg+E/ZkZhr155dNXAA7qfQittzT6G13qBS14cA5S8xkJAq/AXehXoChflj3TJaQZUB0t8/7p6yc1iLAEj2WtrjcPtSgHlzHMQSscjHIONuE9dIwlS0S9uncSpDMbqrNkCRTmjKkiVkb1UhY7dGWOEiToYGl17QuVeqCu5dG2Tl/TR817/2zOj3FwH0MHSTxEbgnXV/JnHAgPEjiAZbeLTSJhOIx42SCk2TPFQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRgzH2XsNz30Vq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 04:24:41 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 33A32143D;
-	Mon,  6 Jan 2025 09:24:37 -0800 (PST)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F35C43F673;
-	Mon,  6 Jan 2025 09:24:06 -0800 (PST)
-Date: Mon, 6 Jan 2025 17:23:50 +0000
-From: Dave Martin <Dave.Martin@arm.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Akihiko Odaki <akihiko.odaki@daynix.com>,
-	Eric Biederman <ebiederm@xmission.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Brown <broonie@kernel.org>, Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	kexec@lists.infradead.org, devel@daynix.com
-Subject: Re: [PATCH v2 1/5] elf: Define note name macros
-Message-ID: <Z3wRnX4RHg7KDYDT@e133380.arm.com>
-References: <20250104-elf-v2-0-77dc2e06db4e@daynix.com>
- <20250104-elf-v2-1-77dc2e06db4e@daynix.com>
- <202501060830.B735C3A@keescook>
+	t=1736189884; c=relaxed/relaxed;
+	bh=/aNADIekx2j0/enI87SMjtmQjX7teTUCuYI/dNHjl3o=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Y73Y30bjmJ3hMv7rpLknw+mFguAv7OOLqXLFLyCcDAPwg3zi2hV0e5kmh7UC74lORnh74G0Tp1z9UHmxQiYaLXN0rXJoQA8o88vGuBwNyulwNB2DJiF3cY90UgxSY4iuX8BxkjX0pSFroGFSjPtBGTEWHKtxAza7JxIVEJBpIwaYJbfYoGyWhD+p1mGrLpy31aJVFYfyAJnbfM2CJv+A7SEbODAPtDrmRQzuEXDS5fkAq9/6ibMulU6im89dBS5gEFtBYn2uaXGTd8AY5IXV2Wn3H8yCslwMGf+k7yT4DEmfYDl/y7ZfgpSLXw7ZNQQCFSkJ4Yjveg/WC0+SUqY8ZQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=doqF7pFU; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3sid8zwykddujvreatxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=doqF7pFU;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3sid8zwykddujvreatxffxcv.tfdczeloggt-uvmczjkj.fqcrsj.fix@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRk2y0kjBz30CN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 05:58:00 +1100 (AEDT)
+Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-21681a2c0d5so172293955ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2025 10:58:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736189874; x=1736794674; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/aNADIekx2j0/enI87SMjtmQjX7teTUCuYI/dNHjl3o=;
+        b=doqF7pFUidQzabb3+QVRySrLlx4uN4Dk/9foPKix5E6CRolCBR8HkK5hOw9Q1NB7TR
+         jxp8gcKLIwuw3EwuRZ9Bcm2eo7jM1KshHFprz5KwIa3ZpxulZ5l8tFxLbe5svJUxfY9I
+         +1k/6Ymd1mEQY6w6dZLpWj8A2mk0AecM95A0kORB6ML8QZJuNwLncLUySSYq6zNv7mDd
+         LpNV6PcZgg3I7bF/PT7E5gZcChBUgrNx+MCoKZ8aa9RAe3GCrWZ6cD4/fa66cXCu1XPj
+         NNpwOSCisjnXaJTSUB43rQkVg/4UyVCKvk3ap02zkI0S5qdxfGObridiUwHy3HMExA5W
+         Cq2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736189874; x=1736794674;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/aNADIekx2j0/enI87SMjtmQjX7teTUCuYI/dNHjl3o=;
+        b=M3H9SC9NC1NbR7ecacsoLQavVDiY8hx/N3bQ5yPlNv0KZ7hbQ9gtmmFfDSqjFuPlji
+         fbW6bmfw5UWRZI/xd9/J9oPYEnP4s9z0ZVMwYr12/+JD/4Xa+/tkiVwKRhfs+eHoKbvr
+         aq42YZLm+wG4zdPR3zZEs8LspSiWBTA/v+6W0lZkXbDuExLOBEARUhwmfFJkd2crJmZq
+         EG/tlUrfFvneHUK0CvEly1SLRxY4SNoMcI+hfGjrvAai2pjYbyVrIgGcJ2ox6CqCNGsh
+         5/LZsGO/eYXyUFpM0sMsWASYkFLfn+BC0B2kUMuSqqFmNh6S7ajLXRRqyOJGa92NPlLi
+         VQtA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxbcoLHNgTjQSKjs2LZk1SpnXNjb9IkkFk+mKe+vhHCijBT+E3B0vhWawc80ZVlAG39HxfwzPZ3kQMXWM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyXly+ri8cA/x4Q49OzazhkpAu/PWNPlwN9112WRBxKe8gavDYr
+	iPa/eEIz497GE3n4f4eWnKUomXT+OaNajEbS5BrS+IrZpq2Dk6l9f4SQ2bH1cvaSf7dUQW1s5IH
+	XYQ==
+X-Google-Smtp-Source: AGHT+IFTUQyqLv9XSGGLv1fnVkWYgSUL4cT3Eg9R6oafiMKaRGpJd6axUPFHZbm1bK48Dbcs7JdFs6gpXoI=
+X-Received: from pgbcv4.prod.google.com ([2002:a05:6a02:4204:b0:7fd:4d08:df94])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:8412:b0:1e1:b727:1801
+ with SMTP id adf61e73a8af0-1e5e07a55e8mr87767148637.27.1736189874330; Mon, 06
+ Jan 2025 10:57:54 -0800 (PST)
+Date: Mon, 6 Jan 2025 10:57:53 -0800
+In-Reply-To: <20250101064928.389504-1-pbonzini@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,116 +74,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202501060830.B735C3A@keescook>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+References: <20250101064928.389504-1-pbonzini@redhat.com>
+Message-ID: <Z3wnsQQ67GBf1Vsb@google.com>
+Subject: Re: [PATCH] KVM: allow NULL writable argument to __kvm_faultin_pfn
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev@lists.ozlabs.org, 
+	regressions@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi all,
+On Wed, Jan 01, 2025, Paolo Bonzini wrote:
+> kvm_follow_pfn() is able to work with NULL in the .map_writable field
+> of the homonymous struct.  But __kvm_faultin_pfn() rejects the combo
+> despite KVM for e500 trying to use it.  Indeed .map_writable is not
+> particularly useful if the flags include FOLL_WRITE and readonly
+> guest memory is not supported, so add support to __kvm_faultin_pfn()
+> for this case.
 
-On Mon, Jan 06, 2025 at 08:48:05AM -0800, Kees Cook wrote:
-> On Sat, Jan 04, 2025 at 11:38:34PM +0900, Akihiko Odaki wrote:
-> > elf.h had a comment saying:
-> > > Notes used in ET_CORE. Architectures export some of the arch register
-> > > sets using the corresponding note types via the PTRACE_GETREGSET and
-> > > PTRACE_SETREGSET requests.
-> > > The note name for these types is "LINUX", except NT_PRFPREG that is
-> > > named "CORE".
-> > 
-> > However, NT_PRSTATUS is also named "CORE". It is also unclear what
-> > "these types" refers to.
-> > 
-> > To fix these problems, define a name for each note type. The added
-> > definitions are macros so the kernel and userspace can directly refer to
-> > them.
-> 
-> While ELF is specified in the Tool Interface Standard[1], the core dump
-> format doesn't have an official specification. It does follow a lot of
-> agreed rules, though, and the "note name" is intended to help coredump
-> consumers distinguish between "common" things ("CORE") and Linux-specific
-> things ("LINUX").
-> 
-> I think this should be explicitly spelled out in the UAPI header,
-> even if we have "mistakes" for this mapping.
+I would prefer to keep the sanity check to minimize the risk of a page fault
+handler not supporting opportunistic write mappings.  e500 is definitely the
+odd one out here.
 
-This seems reasonable.
+What about adding a dedicated wrapper for getting a writable PFN?  E.g. (untested)
 
-> I'm not convinced we need these macros, though: everything is "LINUX"
-> expect the common types. And the GNU types are "GNU". There are only 7
-> types under the "CORE" name. :)
+---
+ arch/powerpc/kvm/e500_mmu_host.c | 2 +-
+ arch/x86/kvm/vmx/vmx.c           | 3 +--
+ include/linux/kvm_host.h         | 8 ++++++++
+ 3 files changed, 10 insertions(+), 3 deletions(-)
 
-My starting point for suggesting the new macros was that the current
-usage seems to be a historical accident; there doesn't seem to be an
-underlying logic to it, except that arch-independent core note types
-defined by Linux are named "CORE" ... except when they aren't.
+diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
+index e5a145b578a4..2251bb30b8ec 100644
+--- a/arch/powerpc/kvm/e500_mmu_host.c
++++ b/arch/powerpc/kvm/e500_mmu_host.c
+@@ -444,7 +444,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 
+ 	if (likely(!pfnmap)) {
+ 		tsize_pages = 1UL << (tsize + 10 - PAGE_SHIFT);
+-		pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
++		pfn = kvm_faultin_writable_pfn(slot, gfn, &page);
+ 		if (is_error_noslot_pfn(pfn)) {
+ 			if (printk_ratelimit())
+ 				pr_err("%s: real page not found for gfn %lx\n",
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 893366e53732..7012b583f2e8 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -6800,7 +6800,6 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+ 	struct page *refcounted_page;
+ 	unsigned long mmu_seq;
+ 	kvm_pfn_t pfn;
+-	bool writable;
+ 
+ 	/* Defer reload until vmcs01 is the current VMCS. */
+ 	if (is_guest_mode(vcpu)) {
+@@ -6836,7 +6835,7 @@ void vmx_set_apic_access_page_addr(struct kvm_vcpu *vcpu)
+ 	 * controls the APIC-access page memslot, and only deletes the memslot
+ 	 * if APICv is permanently inhibited, i.e. the memslot won't reappear.
+ 	 */
+-	pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &refcounted_page);
++	pfn = kvm_faultin_writable_pfn(slot, gfn, &refcounted_page);
+ 	if (is_error_noslot_pfn(pfn))
+ 		return;
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index c788d0bd952a..b0af7c7f99da 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -1287,6 +1287,14 @@ static inline kvm_pfn_t kvm_faultin_pfn(struct kvm_vcpu *vcpu, gfn_t gfn,
+ 				 write ? FOLL_WRITE : 0, writable, refcounted_page);
+ }
+ 
++static inline kvm_pfn_t kvm_faultin_writable_pfn(const struct kvm_memory_slot *slot,
++						 gfn_t gfn, struct page **refcounted_page)
++{
++	bool writable;
++
++	return __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, refcounted_page);
++}
++
+ int kvm_read_guest_page(struct kvm *kvm, gfn_t gfn, void *data, int offset,
+ 			int len);
+ int kvm_read_guest(struct kvm *kvm, gpa_t gpa, void *data, unsigned long len);
 
-Although the number of exceptional cases is small today, this doesn't
-make for a robust rule -- nothing really prevents more unintentional
-anomalies being added in future, so it seems prone to bitrot.
-
-If the names are arbitrary, having a table rather than trying to
-describe a rule seems the best way to avoid confusion.
-
-Documenting these in a regular way may also encourage people to treat
-the name as a formal part of the identifier, rather than a sort of
-"comment" that nobody is quite sure what to do with (even if [1] makes
-it clear).
-
-That said, software does cope with the situation today; it's just a bit
-gross.
-
-> 
-> For the macros, I'd much prefer NN_CORE, NN_LINUX, and NN_GNU.
-
-What would be the point of these?
-
-#define NN_CORE "CORE" doesn't convey any information at all, though I
-suppose it does provide a layer of typo-resistance.
-
-> If you really want to be able to examine the name from the type, then
-> yeah, I guess we need something like the macros you have, but I'd much
-> prefer also adding a macro like Dave suggested[2], and then replace the
-> fill_note() with a macro that can unwrap it:
-> 
-> 	fill_note(note, NT_SIGINFO, size..., data...);
-> 
-> The repetition of NN_type, NT_type doesn't feel robust if we have a
-> programmatic mapping: only the "type" is needed to determine both, so
-> why supply both?
-> 
-> -Kees
-> 
-> [1] https://refspecs.linuxfoundation.org/elf/elf.pdf
-> [2] https://lore.kernel.org/lkml/Z3vuBTiQvnRvv9DQ@e133380.arm.com/
-
-Although not "robust", it should at least be obvious to the eye of
-anyone pasting and repurposing an existing snippet of code that the
-"type" is probably supposed to match in a single call.
-
-I suppose we could have a kernel helper function containing a big
-switch that gives you the name for each recognised note type though.
-At the source code level, that would avoid specifying the "NN_"
-arguments explicitly.  But if we still want a canonical way to describe
-this mapping in elf.h, the "NN_" macros still serve a purpose.
-
-
-With a literal string instead, I would expect then when adapting
-
-	fill_note(note, NT_SIGINFO, "CORE", ...)
-
-to
-
-	fill_note(note, NT_WIZZFOO, ???, ...)
-
-it's not clear what ??? should be.  I think people have tended to shrug
-and just leave it unchanged -- so, it depends on which bit of code was
-randomly chosen to serve as a template.  I could be guessing wrongly
-about that, but if that's how the name gets chosen for new notes then
-it doesn't feel ideal.
-
-Cheers
----Dave
+base-commit: 2c3412e999738bfd60859c493ff47f5c268814a3
+-- 
 
