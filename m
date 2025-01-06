@@ -1,58 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4726-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A2A0A030F0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 20:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5612A0311C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 21:06:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRlHT2DsLz30VM;
-	Tue,  7 Jan 2025 06:53:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRlYX5cVqz30WB;
+	Tue,  7 Jan 2025 07:06:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736193237;
-	cv=none; b=N6KHQsTY9pNfsx1aclHuYkzDR456RDcpAOS3uaAtVSFRQIa/iOh4upPK5kG9k4enNruTSByCzjs8zsnjPXKb5NmtnLaC7R66KEXi2u9T8T4q2vKv2SaiJgEPR5q+g3pIztdsbj+K1d4Q4o6EuF2uVS3tNilyRxSqlrRCW/L6tZM6aQwKqURh/Rql3lSgwQlu6UuTgQNysdrw3dw8Lzb1q2R9N8N0aoj6P3rbFC2Ic4TjS2MFYZvOSgakufeUAx8QYnHT14T4+xpQ95fUldxCBQ1zGzWe3A3qS02zq2VAjz+oC3qfXcQTIuxDz07GTWulQ8J8bXUrGYBFBj7UkYoAUQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::132"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736193968;
+	cv=none; b=cmRGSoTbf/OuVvHau+DlernyukzoAxLusNDQAXd+8vQM10Wjj7zUBrtagkgtPEGqtZBZ8KbqeI2zwuWiHIujX2AVHPJPzQ01QXx9zIwFGUw3xQ063XizpSUeQhe0JqRXpEY9I+LhGuSvXiUKM/SiGoWnaes45urebjIge362EG6aSxqczOXIUbo1n5c12RKaBj5JU6NT9/9eIqcW4C1vKy4SppcddBcOBAtFiUPwyap4W764ikNN2NN05j5PZByNszBrY3V7JKa0kWJaa2llfLY82rJguMvUjzgQQATvHPGbFmyMTapnYdfnt4o3pLYbOKXb3KvjSJ4LUGnRnjCWnA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736193237; c=relaxed/relaxed;
-	bh=KcRnOliVbPNnDerGTJx1m+xAYvr2alYi62GnOrQGtCY=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=X9/OAoNO3aeUYUhWk3rfFX3ATt37jrmVJL2JnHL6aPt6Rs+6kKdo6XRIHaqCIFqSuZFb3gCj5M0GlSyP+7cym1YjTEfYeGUCK1zkUq+NFrAUHdVnv2uvS0H6nDN8++CUN6Rh7AV/GznIElpzRPhgwTihi1T4as1DbJwCefnB8+lCWUjZBE7KuTBeFBsCrsCedHKDKfgWDKSPrEmVhloqnJvTzjRhXSwitZXPjxOhxYUUglyVYFfw8qD63HoYFr1nYOyKd7FNcfSKDlRyvF4jwgBGkdzSkU0pwqzasnsnSjWVW5qlCchgkIou/orMt5dlG0C+96Fgn1m24DgmqfxyuA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=BTF9JbDr; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=sanastasio@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
+	t=1736193968; c=relaxed/relaxed;
+	bh=89rhBgQRnXcKMVrwWMHxN9A0BmutKC2XU/2aaVYlH08=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hADSisLAqgFIdc3GcOyZNRF5saYyNMT5Xmz3g7sRJvo6MvizmZ67DryTJ9QBy8WCZKcOQpYvDiZXsful8jCzwDriWRkMwHBRZ8WEypjrqToApOhG2ujwhhyddrSaDmekh9hODz8ZI5N7pJSZnNPxUjX6VeCTz5TMF6Mf3i9TEutaJcBW+qQzgUVCUbZ8Q1RNyvbfFoAqr75Uvzy6lCmIqyGSv/hNNb2Z14tkjrTtAhL6oKDpXEfXHHCbXASLi0+2hzSki8Z35TKkMNOqUFq9DcYFpzKYs20t4OzZgcmUGYTHdZzAQflmNUaVMhur62HsgBTVvYJGb3msCudiJpmr6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=A+53lAL8; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=BTF9JbDr;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=A+53lAL8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=sanastasio@raptorengineering.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 355 seconds by postgrey-1.37 at boromir; Tue, 07 Jan 2025 06:53:54 AEDT
-Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::132; helo=mail-il1-x132.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x132.google.com (mail-il1-x132.google.com [IPv6:2607:f8b0:4864:20::132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRlHQ3802z2xn3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 06:53:54 +1100 (AEDT)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id 6E109828840C;
-	Mon,  6 Jan 2025 13:47:52 -0600 (CST)
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id uM6_vjIp4ZJe; Mon,  6 Jan 2025 13:47:51 -0600 (CST)
-Received: from localhost (localhost [127.0.0.1])
-	by mail.rptsys.com (Postfix) with ESMTP id C584A828840D;
-	Mon,  6 Jan 2025 13:47:51 -0600 (CST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com C584A828840D
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRlYW0NyZz30W9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 07:06:06 +1100 (AEDT)
+Received: by mail-il1-x132.google.com with SMTP id e9e14a558f8ab-3a9d0c28589so17005ab.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2025 12:06:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
-	t=1736192871; bh=KcRnOliVbPNnDerGTJx1m+xAYvr2alYi62GnOrQGtCY=;
-	h=Message-ID:Date:MIME-Version:From:To;
-	b=BTF9JbDrbhsfSd5jo7qDUIra0f0GDGdKbLW7dxP/+19MbewFHIYHPL0KUzK0aDbR0
-	 NyrZKXdpV7myVytWc8H742fp4E/gVctbpQ1Yw4n2AJrzkMFJOJsSn9rJpPLReKHQmU
-	 Ru5YDu5qr852s06HasKdo0CL7mUk4McMtfNiaAfk=
-X-Virus-Scanned: amavisd-new at rptsys.com
-Received: from mail.rptsys.com ([127.0.0.1])
-	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id eXzVAU9ak-L2; Mon,  6 Jan 2025 13:47:51 -0600 (CST)
-Received: from [10.11.0.2] (5.edge.rptsys.com [23.155.224.38])
-	by mail.rptsys.com (Postfix) with ESMTPSA id 4C15A828840C;
-	Mon,  6 Jan 2025 13:47:51 -0600 (CST)
-Message-ID: <8dd4546a-bb03-4727-a8c1-02a26301d1ad@raptorengineering.com>
-Date: Mon, 6 Jan 2025 13:47:50 -0600
+        d=google.com; s=20230601; t=1736193963; x=1736798763; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=89rhBgQRnXcKMVrwWMHxN9A0BmutKC2XU/2aaVYlH08=;
+        b=A+53lAL8fN+LzFm6G07aRvA05sD6R6tQVAI8WOBq5TltfF/V1rkwMgs0VkysuMyYc0
+         YfQcUkmRm/c4HuXI9Wsh9HOLaXYBmQa7dLTMG4SWXnD6VoH2j8cAzIIik16KDGgK5mSF
+         E4UikwkGrv/Ufu3W327w12Pb6RO2IGRVzQqSSnKdZcOU6yYc7NJB5OX5BkNgvnMbOlns
+         fRh2TSu/aR7nlPAaNUSrZWY41Hm2mFRdoBq4MCIN4ZLB+mgxhBaDdHqJnj9Bi4SyNbXg
+         6jEJhYqO5xfZjCefQxV8BijuLMgVu2LJGljroBJd3zQxDptwGXxzdZU9w0l10LTrfRmV
+         PNxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736193963; x=1736798763;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=89rhBgQRnXcKMVrwWMHxN9A0BmutKC2XU/2aaVYlH08=;
+        b=CKhBOq/UjpQQupIfXTb6il6g8nR3VEQxgnqXSnlSkYuU9Zjdh5Sc2b6tF9dsbUg9o6
+         b8s7TSml0r7G0p6cOGD9dBMScyjSdS3xic/0osajlm0cMIxUi0/xbo1F4e3kW0dN6m40
+         mqLslozIGklV/QzYTmCPcFJGqmUg1ELa5CYl3zUt/YQNLFNyh+C3e7yHdUkb20fIsZCq
+         4gOJW29vfag+aWfDVCgEShBCwi2TtM8sKgVlnHabvpeCVD0NghH8zS+/u/BCVz54fal2
+         IRcWWmcdCJef0KrwbxxkMEsQvzezIaFvgx+a4kOy3zViimdFWrV2x57JqP72hplQGCcP
+         s+Hg==
+X-Forwarded-Encrypted: i=1; AJvYcCW70e+bsCkzXi98973xTSLvb+dtit+9SzEcuBj7zSLN77CeCAI8+4/njWnbrhuk8+pusfE949mmcY/vmfc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw5SOioDm3sHH600kOm6SoXGZvGThIA8U6IC0khlFpbeIN8C0NN
+	B7dgCEyiLqkbDFVsPqg2qhIIZmHw3uFgtYHSnWo9xgdDkqv9OX1b0YX8fI1g8v6OH121ufpvsoi
+	WZKih7oJ6bxDSiiSW5HgCe6OGhNfo1SpLoLNJ
+X-Gm-Gg: ASbGncvGB3bs7zvN1y7vspeNA3kjABeU1+r+SFcA1/OxFz6eWsVUIt+8QAYcXwbr31+
+	goe2Ogsm/skwMHB051zHQytv5CiedLDZbGELNeINJIG6YAYAoDfYs6TMGIu+3eglZolYw
+X-Google-Smtp-Source: AGHT+IGLsDBrotQ8nYPvuMsyL75xnUrfiLQrTOomCApfYA934d/pM85xLj/qkn+OogjKmro8tOx+xHZtdXaJ9M7nvYE=
+X-Received: by 2002:a92:cac9:0:b0:3a7:91c2:c28d with SMTP id
+ e9e14a558f8ab-3ce32470286mr383485ab.28.1736193962916; Mon, 06 Jan 2025
+ 12:06:02 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,41 +76,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-From: Shawn Anastasio <sanastasio@raptorengineering.com>
-Subject: Raptor Engineering dedicating resources to KVM on PowerNV + KVM CI/CD
-To: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Cc: Timothy Pearson <tpearson@raptorengineering.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+References: <8c8553387ebf904a9e5a93eaf643cb01164d9fb3.1736188471.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <8c8553387ebf904a9e5a93eaf643cb01164d9fb3.1736188471.git.christophe.leroy@csgroup.eu>
+From: Ian Rogers <irogers@google.com>
+Date: Mon, 6 Jan 2025 12:05:51 -0800
+Message-ID: <CAP-5=fWVHaVpJbDf=afn5MhZ972uEq=sGEmsULoD=LRff2Vouw@mail.gmail.com>
+Subject: Re: [PATCH] libperf: Add back guard on MAX_NR_CPUS
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, "Liang, Kan" <kan.liang@linux.intel.com>, 
+	Leo Yan <leo.yan@arm.com>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi all,
+On Mon, Jan 6, 2025 at 11:38=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> Building perf with EXTRA_CFLAGS=3D"-DMAX_NR_CPUS=3D1" fails:
+>
+>           CC      /home/chleroy/linux-powerpc/tools/perf/libperf/cpumap.o
+>         cpumap.c:16: error: "MAX_NR_CPUS" redefined [-Werror]
+>            16 | #define MAX_NR_CPUS 4096
+>               |
+>         <command-line>: note: this is the location of the previous defini=
+tion
+>
+> Commit e8399d34d568 ("libperf cpumap: Hide/reduce scope of MAX_NR_CPUS")
+> moved definition of MAX_NR_CPUS from lib/perf/include/internal/cpumap.h
+> to lib/perf/cpumap.c but the guard surrounding that definition got lost
+> in the move.
+>
+> See commit 21b8732eb447 ("perf tools: Allow overriding MAX_NR_CPUS at
+> compile time") to see why it is needed.
+>
+> Note that MAX_NR_CPUS was initialy defined in perf/perf.h and a
+> redundant definition was added by commit 9c3516d1b850 ("libperf:
+> Add perf_cpu_map__new()/perf_cpu_map__read() functions").
+>
+> A cleaner fix would be to remove that duplicate but for the time
+> being fix the problem by bringing back the guard for when MAX_NR_CPUS
+> is already defined.
+>
+> Fixes: e8399d34d568 ("libperf cpumap: Hide/reduce scope of MAX_NR_CPUS")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-Just wanted to check in and let the community know that Raptor
-Engineering will be officially dedicating development resources towards
-maintaining, developing, and testing the existing Linux KVM facilities
-for PowerNV machines.
+Hello,
 
-To this end, we have developed a publicly-accessible CI/CD system[1]
-that performs bi-hourly automated KVM smoke tests on PowerNV, as well as
-some more advanced tests involving PCIe passthrough of various graphics
-cards through VFIO on a POWER9/PowerNV system. Access can also be
-provided upon request to any kernel developers that wish to use the test
-system for development/testing against their own trees.
+I believe this change might be unnecessary. The only use of
+MAX_NR_CPUS is in a warning message within perf_cpu_map__new, which
+takes a string and produces a perf_cpu_map. Other similar functions
+like cpu_map__new_sysconf don't check MAX_NR_CPUS. Therefore,
+specifying a -DMAX_NR_CPUS value on the build command line has little
+effect=E2=80=94it only impacts a warning message for certain kinds of
+perf_cpu_map creation. It's also unclear what the intended outcome is
+on the build command line.
 
-If anybody has any questions about the test system, or any insights
-about outstanding work items regarding KVM on PowerNV that might need
-attention, please feel free to reach out.
+Given that specifying the value doesn't seem to have a clear purpose,
+allowing the build to break might be the best option. This would alert
+the person building perf that they are doing something that doesn't
+make sense.
 
 Thanks,
-Shawn
-
-[1]
-https://gitlab.raptorengineering.com/raptor-engineering-public/kernel/kernel-developers-ci-cd-access/linux/-/pipelines/1075
-
+Ian
 
