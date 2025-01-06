@@ -1,76 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-4694-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4695-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECCAAA02391
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 11:56:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D15A023B4
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 12:00:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRWMB2yDGz2y8P;
-	Mon,  6 Jan 2025 21:56:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRWSJ23fKz2yVG;
+	Mon,  6 Jan 2025 22:00:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736160982;
-	cv=none; b=VEB2d0fRXgymj8sSvXpwI6eNet4NMtZ9lsyVV0oHHMM8h5WKuYU505lH6RDaTUGSg7MOnR4u2luTaelo0UAuduUf3JSsf8CMMxJzoZeD3mX14Z5f9tNYw7mKIEtRhGGnVmg/2otkrvBN/E659UaBShpmnt6O01IfMK6Oc2gLWPfwLGKkkvDq6oe8qBzuIpbzbWU1tW9XYnemEOSP5zZi40a7CZbq8wNW8EmrNqVMAGvwB6GDy2jrPQxcAL6L6KQb8EMVrR+YNZSjB3hnbijsJZl0pTzOA0b/+BZyedhFF5XyVetgGQZU3EdE/YwcKfOkP83uXvJsLZmsH9j47QKgWA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736161248;
+	cv=none; b=nc/iRm/TNqY8lLgPLrvdZmLiv65x7GMTAJisUW3I4Rma13fWUjz5jjIHaIkG7vG5d/smLmGJ7XGCWvSCxdqZ9Q+iFRsEUgIe5cvdm4UlKK3JoSSi9Onheljxt4Of8D1C2TB1IEJHCPwfqnTfLx48A48atejSLHuUYOtZe3qbm7B5UoZpfrb3pgAliw55DLi5qDwZGD+EQ6I6lZp6C9pSaHvhcstKUouuR+cw3+pOch8EpsouesA603pfJPfdDIgMFJJgbdHQRJ7TszXpJuSdY32XAxl7K6dReGCDCs1TXA4bNNSiBdbWO65e8HzCN+aGAcfVPtk2ZOpQaMLng5tirw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736160982; c=relaxed/relaxed;
-	bh=AZLWPPKublXNhPBg34EaNBNy6TKJ9wneFJV35MDnpZc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QEJTxJ4AARcm54JbreDKnFoatKzwLKtlpXww8Ui6WhZsM0OcHm15mrbUw2o80ITisIySxCj8R9V1Gbuh27Qb/uYquRvmdQc1LWO4TbD6RQR0+3ofxsTbIHKRpdcALOZMaDRXDkqxipOujKQF9H/x0jDyU1YTNXQpBVL/11+YT5jYBrp3Wx90m30TdIyGP6xactEWbau4uaAJhgc2tTKYkHyummLptGEOL7FLQm20CgPEqkTpBIfhFwXYrtQLEubXn10IBhGHsfkQBKtO6PYM3IwxwI7Orb8k4fHSCCQWjyf7tbaQsLE3wwiuzmpyXS5YFE+RlfBz56Jz2MNZ616upQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=e0foX5TL; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	t=1736161248; c=relaxed/relaxed;
+	bh=MMvOnQ3PAmRpfPa+4Bal1+FvmYfaAW4Wgr8onGT7XMg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Nh/P1Izaud7bEK9zokqDqg5iUCmdegRbQzP3wRoBST4nYzoet6HV6FHmifPCSQCiU58HACsEl+AgWvgrrd4M8Fc8pGl7iJhAbz9NREywP3kLGN5TWy4SpuUOd8mQm5OUz25v6Ns6smBFfZsujSZUsRxGuL5Yrq6oDz7CxDKRYs0AyCGF6aneKcRd3D4nOvtzpjwFWSK9qpnoKEPBJVQa6lgFn8USEd6Ms66C5Vm9BNI84m/nT6M0HID/6CELE1TcEpFRCxPgqVdyTOQsG2RJZUciZowugFXWdyFrqxiPK3+pSsL90uANOqngCv0AvRFJkCVZD8QPNl5tHok/GiLvDg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pc+4eojU; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=e0foX5TL;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Pc+4eojU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRWM80C3Yz2xtK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 21:56:18 +1100 (AEDT)
-Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-2f43da61ba9so16472791a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2025 02:56:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1736160974; x=1736765774; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=AZLWPPKublXNhPBg34EaNBNy6TKJ9wneFJV35MDnpZc=;
-        b=e0foX5TLnHyqECQjz/iUeVJxlnD6fXgYouDl+VeGOvMO1DXjyo0PK7KC639cLcQLgJ
-         wXnN8o41nWTSsqIX+VlRlakIlciC68g4V/9As10xOF+erk921kS9LnsfoptQgOr6NkaL
-         xVYEWU9KqSMfbgaaj3D2mjpwJPCIn9VKZnxkuSpPeGqF6zI1U60Ef3ck6G5nwEitO+dI
-         uFO9MmdbSxV3bckH+4917ZstHHn3f+blSkqJCVkdTG5s1dsR2yFZ9uRbuv4DwRrw68MV
-         bWu1pt/0ffLAsjhjPd895/nyksHFYyyHvNBGWqb8xyrSWHnExilG1wzrmJIWKwAF0Y8H
-         bt+Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736160974; x=1736765774;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AZLWPPKublXNhPBg34EaNBNy6TKJ9wneFJV35MDnpZc=;
-        b=hcQksdwac+VkWnZA9Y6AZo+fbw9G0XqCgIR6BGPz6nPY5ue55Fjk+Q4r5Lv8JZTfV3
-         3ALBi0MT2kwrnmhjO0oNZZz1lPZ2krB10jShLNsoPmsy65oFCBgKmJpDFiEgYLi9e9Uj
-         0dWPMSZEG2Ne1N+fhYEWl1Cs5Qw2hDy7wypM/2xsrBJMWelhEm91WFAHOSqsFvFJQoaJ
-         nFKR8xwFZU7ZCyCuHRwCSKApYKQTkVHE6wNvG1tITsPwQIAqR2jpFTDhtfIjF2gwB2HN
-         B8l8BQ1qMhTTS0UpvdrJjDCEAHlC5Gpom1ZSRABMBCbDGePn7kQbLAVvOTGsXYEMfsEY
-         Q3CQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVQtcPTNOsjzg+UNS/X4gszudy5cXq4FbabCwxZ7w7FyHPSzyyDaEwiYu2VBmfS2VBC3NWOmXIU1NEPSKQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyhijIJmVu9ffq/bLshfcYKO+/T60QiAopkvJGhRA0o23pedyju
-	vSL12G2TTNmBeQ/wBUywHq91xhgqMwwYiM0+7MevKm/dFLqwx/y/eroCp3BcWjs=
-X-Gm-Gg: ASbGncvFjeIXfz1eKZtOsVahcLj4CpHdEDyHSFulJBguZj/6jG+Pmcc9OqV6GBzquXh
-	nrb7HXJ8pY05yv/gw7rzUPHUnv9dYPLcnVGUDSpo62mtL5wq/EGrBh2h/RPZvXqMZuY/qjLmZ+C
-	4BboghgVYwxeUhQfKx8wTuY1QtfUFHmCXz4B8j7e5+sHlVE/ahOI2ZvbNNtVzdzyZ6HHMd5aFpu
-	AX+gStMXhyK2IB718lUE74U6m0nFmjvY0WPystzZko6cxg5FA4dTIK4VKkFHlj0e4fNWiguLrZ6
-	5DHtSg==
-X-Google-Smtp-Source: AGHT+IHHEGVNBdeeeMKsfSrtRayn5rgDW+sVv93AHdkC2kua4+TBudPLJJX1AZ3o0AE+Wq0oFkgydg==
-X-Received: by 2002:a17:90b:5347:b0:2ee:3fa7:ef4d with SMTP id 98e67ed59e1d1-2f452ec37bamr85837306a91.24.1736160973647;
-        Mon, 06 Jan 2025 02:56:13 -0800 (PST)
-Received: from [10.84.148.23] ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc96ead1sm290125115ad.91.2025.01.06.02.56.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 02:56:13 -0800 (PST)
-Message-ID: <e1de887c-6193-48ee-a9b3-04c8a0cdda45@bytedance.com>
-Date: Mon, 6 Jan 2025 18:55:58 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRWSH15Ncz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 22:00:46 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 505NainT007036;
+	Mon, 6 Jan 2025 11:00:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=MMvOnQ3PAmRpfPa+4Bal1+FvmYfaAW
+	4Wgr8onGT7XMg=; b=Pc+4eojU4+ztWQVNTlA7JVUyRDicaiYpV8T1V3Tg1fLvt7
+	j/e835ZUnDKtkIFWY1uFoGjPppSPPe5ZOojIcNJrDdo8sSMRNrPcoQnPBur0Pc9R
+	Aod+kl+X8RbyyhhkDrqTtm344r05jWOEekCavFLIshb/YXPmD1rBVz73djRYXa1v
+	HV9k9agOGWp2ATDMLGwzER1GBSBzMHKTDTFEK1CuJn3EvexHL286bnpzQglzgD/4
+	LPaNiZNymDVa1F+aY4uxc+JLc2znsoXae+BJ33pYLuNZI+/rAERt/iDB56ue+Vqd
+	pvAB+zKyXhdI0QqFewQxmP+DvqSIQwFaRdfhMbCg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4403waj459-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 11:00:37 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 506B0bN2007285;
+	Mon, 6 Jan 2025 11:00:37 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4403waj456-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 11:00:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5067A2dn026179;
+	Mon, 6 Jan 2025 11:00:36 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yj11w2pu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 11:00:36 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 506B0XbU18022732
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Jan 2025 11:00:33 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0C0952004B;
+	Mon,  6 Jan 2025 11:00:33 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1D3532004D;
+	Mon,  6 Jan 2025 11:00:29 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.39.19.130])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon,  6 Jan 2025 11:00:28 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 06 Jan 2025 16:30:27 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Gautam Menghani <gautam@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, linux-doc@vger.kernel.org,
+        Madhavan Srinivasan
+ <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas
+ Piggin <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan
+ <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, kconsul@linux.ibm.com, amachhiw@linux.ibm.com
+Subject: Re: [PATCH 1/6] [DOC] powerpc: Document APIv2 KVM hcall spec for
+ Hostwide counters
+In-Reply-To: <fimq6f367gj3ypuke2slogz4i3zt4jfst4kwnrlzps3xinkoh5@arkajtap562s>
+References: <20241222140247.174998-1-vaibhav@linux.ibm.com>
+ <20241222140247.174998-2-vaibhav@linux.ibm.com>
+ <fimq6f367gj3ypuke2slogz4i3zt4jfst4kwnrlzps3xinkoh5@arkajtap562s>
+Date: Mon, 06 Jan 2025 16:30:27 +0530
+Message-ID: <87r05g1a2c.fsf@vajain21.in.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,101 +103,139 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/15] mm: pgtable: introduce pagetable_dtor()
-Content-Language: en-US
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: peterz@infradead.org, kevin.brodsky@arm.com, palmer@dabbelt.com,
- tglx@linutronix.de, david@redhat.com, jannh@google.com, hughd@google.com,
- yuzhao@google.com, willy@infradead.org, muchun.song@linux.dev,
- vbabka@kernel.org, lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
- rientjes@google.com, vishal.moola@gmail.com, arnd@arndb.de, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, dave.hansen@linux.intel.com,
- rppt@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-um@lists.infradead.org
-References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
- <8ada95453180c71b7fca92b9a9f11fa0f92d45a6.1735549103.git.zhengqi.arch@bytedance.com>
- <Z3uxwiEhYHDqdTh3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <Z3uxwiEhYHDqdTh3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: bWikSTz9elmrjbakW7_8KUhkOTrKYI1O
+X-Proofpoint-ORIG-GUID: HP5fThnEfEFF-rv-yt2L2GsciEvMNfBi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
+ lowpriorityscore=0 spamscore=0 suspectscore=0 bulkscore=0 mlxscore=0
+ clxscore=1015 adultscore=0 impostorscore=0 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501060097
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hi Gautam,
 
+Thanks for reviewing this patch. My responses to your review comments
+inline below:
 
-On 2025/1/6 18:34, Alexander Gordeev wrote:
-> On Mon, Dec 30, 2024 at 05:07:42PM +0800, Qi Zheng wrote:
->> The pagetable_p*_dtor() are exactly the same except for the handling of
->> ptlock. If we make ptlock_free() handle the case where ptdesc->ptl is
->> NULL and remove VM_BUG_ON_PAGE() from pmd_ptlock_free(), we can unify
->> pagetable_p*_dtor() into one function. Let's introduce pagetable_dtor()
->> to do this.
->>
->> Later, pagetable_dtor() will be moved to tlb_remove_ptdesc(), so that
->> ptlock and page table pages can be freed together (regardless of whether
->> RCU is used). This prevents the use-after-free problem where the ptlock
->> is freed immediately but the page table pages is freed later via RCU.
->>
->> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->> Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> ...
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 5d82f42ddd5cc..cad11fa10c192 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -2992,6 +2992,15 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
->>   static inline void ptlock_free(struct ptdesc *ptdesc) {}
->>   #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
->>   
->> +static inline void pagetable_dtor(struct ptdesc *ptdesc)
->> +{
->> +	struct folio *folio = ptdesc_folio(ptdesc);
->> +
->> +	ptlock_free(ptdesc);
->> +	__folio_clear_pgtable(folio);
->> +	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
->> +}
->> +
-> 
-> If I am not mistaken, it is just pagetable_pte_dtor() rename.
-> What is the point in moving the code around?
+Gautam Menghani <gautam@linux.ibm.com> writes:
 
-No, this is to unify pagetable_p*_dtor() into pagetable_dtor(), so
-that we can move pagetable_dtor() to __tlb_remove_table(), and then
-ptlock and PTE page can be freed together through RCU, which is
-also the main purpose of this patch series.
+> On Sun, Dec 22, 2024 at 07:32:29PM +0530, Vaibhav Jain wrote:
+>> Update kvm-nested APIv2 documentation to include five new
+>> Guest-State-Elements to fetch the hostwide counters. These counters are
+>> per L1-Lpar and indicate the amount of Heap/Page-table memory allocated,
+>> available and Page-table memory reclaimed for all L2-Guests active
+>> instances
+>> 
+>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>> ---
+>>  Documentation/arch/powerpc/kvm-nested.rst | 40 ++++++++++++++++-------
+>>  1 file changed, 29 insertions(+), 11 deletions(-)
+>> 
+>> diff --git a/Documentation/arch/powerpc/kvm-nested.rst b/Documentation/arch/powerpc/kvm-nested.rst
+>> index 5defd13cc6c1..c506192f3f98 100644
+>> --- a/Documentation/arch/powerpc/kvm-nested.rst
+>> +++ b/Documentation/arch/powerpc/kvm-nested.rst
+>> @@ -208,13 +208,9 @@ associated values for each ID in the GSB::
+>>        flags:
+>>           Bit 0: getGuestWideState: Request state of the Guest instead
+>>             of an individual VCPU.
+>> -         Bit 1: takeOwnershipOfVcpuState Indicate the L1 is taking
+>> -           over ownership of the VCPU state and that the L0 can free
+>> -           the storage holding the state. The VCPU state will need to
+>> -           be returned to the Hypervisor via H_GUEST_SET_STATE prior
+>> -           to H_GUEST_RUN_VCPU being called for this VCPU. The data
+>> -           returned in the dataBuffer is in a Hypervisor internal
+>> -           format.
+>> +         Bit 1: getHostWideState: Request stats of the Host. This causes
+>> +           the guestId and vcpuId parameters to be ignored and attempting
+>> +           to get the VCPU/Guest state will cause an error.
+>
+> s/Request stats/Request state
+>
+Its is 'Request stats' are this flag currently return Hostwide stat
+counters.
 
-Thanks!
+>>           Bits 2-63: Reserved
+>>        guestId: ID obtained from H_GUEST_CREATE
+>>        vcpuId: ID of the vCPU pass to H_GUEST_CREATE_VCPU
+>> @@ -402,13 +398,14 @@ GSB element:
+>>  
+>>  The ID in the GSB element specifies what is to be set. This includes
+>>  archtected state like GPRs, VSRs, SPRs, plus also some meta data about
+>> -the partition like the timebase offset and partition scoped page
+>> +the partition and  like the timebase offset and partition scoped page
+>>  table information.
+>
+> The statement that is already there looks correct IMO.
+>
+Right. I will update it to reflect L1-lpar stats in v2.
+>>  
+>>  +--------+-------+----+--------+----------------------------------+
+>> -|   ID   | Size  | RW | Thread | Details                          |
+>> -|        | Bytes |    | Guest  |                                  |
+>> -|        |       |    | Scope  |                                  |
+>> +|   ID   | Size  | RW |(H)ost  | Details                          |
+>> +|        | Bytes |    |(G)uest |                                  |
+>> +|        |       |    |(T)hread|                                  |
+>> +|        |       |    |Scope   |                                  |
+>>  +========+=======+====+========+==================================+
+>>  | 0x0000 |       | RW |   TG   | NOP element                      |
+>>  +--------+-------+----+--------+----------------------------------+
+>> @@ -434,6 +431,27 @@ table information.
+>>  |        |       |    |        |- 0x8 Table size.                 |
+>>  +--------+-------+----+--------+----------------------------------+
+>>  | 0x0007-|       |    |        | Reserved                         |
+>> +| 0x07FF |       |    |        |                                  |
+>> ++--------+-------+----+--------+----------------------------------+
+>> +| 0x0800 | 0x08  | R  |   H    | Current usage in bytes of the    |
+>> +|        |       |    |        | L0's Guest Management Space      |
+>> ++--------+-------+----+--------+----------------------------------+
+>> +| 0x0801 | 0x08  | R  |   H    | Max bytes available in the       |
+>> +|        |       |    |        | L0's Guest Management Space      |
+>> ++--------+-------+----+--------+----------------------------------+
+>> +| 0x0802 | 0x08  | R  |   H    | Current usage in bytes of the    |
+>> +|        |       |    |        | L0's Guest Page Table Management |
+>> +|        |       |    |        | Space                            |
+>> ++--------+-------+----+--------+----------------------------------+
+>> +| 0x0803 | 0x08  | R  |   H    | Max bytes available in the L0's  |
+>> +|        |       |    |        | Guest Page Table Management      |
+>> +|        |       |    |        | Space                            |
+>> ++--------+-------+----+--------+----------------------------------+
+>> +| 0x0804 | 0x08  | R  |   H    | Amount of reclaimed L0 Guest's   |
+>> +|        |       |    |        | Page Table Management Space due  |
+>> +|        |       |    |        | to overcommit                    |
+>
+> I think it would be more clear to specify "... Management space for L1
+> ..." in the details of all above entries.
+>
+Agree, Updated that in v2.
 
-> 
->>   static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
->>   {
->>   	struct folio *folio = ptdesc_folio(ptdesc);
->> @@ -3003,15 +3012,6 @@ static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
->>   	return true;
->>   }
->>   
->> -static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
->> -{
->> -	struct folio *folio = ptdesc_folio(ptdesc);
->> -
->> -	ptlock_free(ptdesc);
->> -	__folio_clear_pgtable(folio);
->> -	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
->> -}
->> -
->>   pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
->>   static inline pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr,
->>   			pmd_t *pmdvalp)
+>> ++--------+-------+----+--------+----------------------------------+
+>> +| 0x0805-|       |    |        | Reserved                         |
+>>  | 0x0BFF |       |    |        |                                  |
+>>  +--------+-------+----+--------+----------------------------------+
+>>  | 0x0C00 | 0x10  | RW |   T    |Run vCPU Input Buffer:            |
+>> -- 
+>
+> Also, the row 2 of this table mentions the 'takeOwnershipOfVcpuState' flag
+> which is no longer supported. You can remove that as well.
+>
+Updating this document for 'takeOwnershipOfVcpuState' will be done as a
+separate patch and not part of this patch series
+
+>> 2.47.1
+>> 
+>
+
+-- 
+Cheers
+~ Vaibhav
 
