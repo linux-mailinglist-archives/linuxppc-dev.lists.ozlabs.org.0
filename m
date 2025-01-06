@@ -1,99 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-4693-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4694-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8AE8CA02324
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 11:37:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECCAAA02391
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 11:56:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRVws6q3xz2ydG;
-	Mon,  6 Jan 2025 21:37:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRWMB2yDGz2y8P;
+	Mon,  6 Jan 2025 21:56:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736159821;
-	cv=none; b=Jly4Ow34zvTcFDxdb6lCjWPJMRBwf1So0BvndiWGlosFG8wdVRcKxdnmNF8juIIwu3DYz+WWr1Z2BKDc/HdhOqGN2Kx7MSihS7SUsMv2pxYsCgvVAexmkAJUgrBNa5BCmHh2jM786GMdsfMAoeGimoTG8wTdwHFUf6+P+bJNjMOPJs1PASgwZ9MRkFfpRFrWtgvnQZVgW0j48vREjJk53diiSYKTuL4vyAXDR7U0E1KV0AE+FvH7HRT6+bzEJLcFOyvdEMyrJfQlJ5ffWYAEytIyGTSpPY0TL6qOuCQD5B0ZLNhDSC6Gy9e1QNTOrXXvZuWfjfEl90XG1j43ThG1Bg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736160982;
+	cv=none; b=VEB2d0fRXgymj8sSvXpwI6eNet4NMtZ9lsyVV0oHHMM8h5WKuYU505lH6RDaTUGSg7MOnR4u2luTaelo0UAuduUf3JSsf8CMMxJzoZeD3mX14Z5f9tNYw7mKIEtRhGGnVmg/2otkrvBN/E659UaBShpmnt6O01IfMK6Oc2gLWPfwLGKkkvDq6oe8qBzuIpbzbWU1tW9XYnemEOSP5zZi40a7CZbq8wNW8EmrNqVMAGvwB6GDy2jrPQxcAL6L6KQb8EMVrR+YNZSjB3hnbijsJZl0pTzOA0b/+BZyedhFF5XyVetgGQZU3EdE/YwcKfOkP83uXvJsLZmsH9j47QKgWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736159821; c=relaxed/relaxed;
-	bh=RryxP58J6OnCln8Pqlo5t61Qkdx5FcBQVf8+7yUkQC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j7c8NSJ1P1BEDm109maet5zvJpjoHCboZiCdE4HmPcplRn2buFg3lZKO8ASPzR1aQyFQzzFiyp948/fqZ3PxuQ9w/uTdRWeiH++4l4PxmhF3TBUzIShQqbSGzLxFUY2yS010WLb9dQUWYBAUzxH7UwBS4hfi7rM0Gn0sUzrRugt6jok+FD3wuugcDuV1nAnF7zENvOoRCsaae2xTcezTT2QwCB3K6sOjWVB/4Y1ZAxETHBT+yjcFyvZp4zMl8sIKK0+CcaDFkN2nKeWE897ZyEkGYLOHtOSlZkqFtS2RHDTGa35TDXfNYX5Nw8N/FFNm5nz+XR55TwiwIlHlGg/zgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qBCXpVvd; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1736160982; c=relaxed/relaxed;
+	bh=AZLWPPKublXNhPBg34EaNBNy6TKJ9wneFJV35MDnpZc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QEJTxJ4AARcm54JbreDKnFoatKzwLKtlpXww8Ui6WhZsM0OcHm15mrbUw2o80ITisIySxCj8R9V1Gbuh27Qb/uYquRvmdQc1LWO4TbD6RQR0+3ofxsTbIHKRpdcALOZMaDRXDkqxipOujKQF9H/x0jDyU1YTNXQpBVL/11+YT5jYBrp3Wx90m30TdIyGP6xactEWbau4uaAJhgc2tTKYkHyummLptGEOL7FLQm20CgPEqkTpBIfhFwXYrtQLEubXn10IBhGHsfkQBKtO6PYM3IwxwI7Orb8k4fHSCCQWjyf7tbaQsLE3wwiuzmpyXS5YFE+RlfBz56Jz2MNZ616upQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=e0foX5TL; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qBCXpVvd;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=e0foX5TL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::102f; helo=mail-pj1-x102f.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRVwr65Q7z2y8P
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 21:37:00 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5068Lt7i026633;
-	Mon, 6 Jan 2025 10:36:32 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=RryxP58J6OnCln8Pqlo5t61Qkdx5Fc
-	BQVf8+7yUkQC4=; b=qBCXpVvdPbt+ywixcDwnQL6Z9ZlbqjoTKd2P0szWJ5PG7K
-	HrQ1dU1lfCN1w8QdSGyr0DPgqO66Ie3q/rewjUdpPXV9XDc280aXNb7xaTJA7VBs
-	Apmo4/OJijEJhq+G0tWODsOXDI0M6JF8OhuoQwzpyTtJ6p890/4l5MBsiXCoaPdA
-	jWrav9CzXcn/gEDNtXvu3d6gHy7ENTCfUp3F/4dtHAicfe3a1lPqMC72/3iWTlQM
-	92BjmrYfEN7dxjeYXZgtqtc4DB5H338vNnKVg4GId9wHaKoWlSUxSjz7nK2elinr
-	7l9jgdC7oG1Qk16vMHzYBWtDa+b9EVRm1Gss1x4Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj5360w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 10:36:31 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 506AVZkY030738;
-	Mon, 6 Jan 2025 10:36:30 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj5360r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 10:36:30 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5066jHrP027971;
-	Mon, 6 Jan 2025 10:36:29 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yhhjw3xg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 10:36:29 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 506AaRat55837070
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Jan 2025 10:36:28 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CB29A20049;
-	Mon,  6 Jan 2025 10:36:27 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6187320040;
-	Mon,  6 Jan 2025 10:36:25 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.179.15.34])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  6 Jan 2025 10:36:25 +0000 (GMT)
-Date: Mon, 6 Jan 2025 11:36:23 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: peterz@infradead.org, kevin.brodsky@arm.com, palmer@dabbelt.com,
-        tglx@linutronix.de, david@redhat.com, jannh@google.com,
-        hughd@google.com, yuzhao@google.com, willy@infradead.org,
-        muchun.song@linux.dev, vbabka@kernel.org, lorenzo.stoakes@oracle.com,
-        akpm@linux-foundation.org, rientjes@google.com, vishal.moola@gmail.com,
-        arnd@arndb.de, will@kernel.org, aneesh.kumar@kernel.org,
-        npiggin@gmail.com, dave.hansen@linux.intel.com, rppt@kernel.org,
-        ryan.roberts@arm.com, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        x86@kernel.org, linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-um@lists.infradead.org
-Subject: Re: [PATCH v4 12/15] s390: pgtable: also move pagetable_dtor() of
- PxD to __tlb_remove_table()
-Message-ID: <Z3uyJ2BjslzsjkZI@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
- <ad21b9392096336cf15aee46f68f9989a9cf877e.1735549103.git.zhengqi.arch@bytedance.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRWM80C3Yz2xtK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 21:56:18 +1100 (AEDT)
+Received: by mail-pj1-x102f.google.com with SMTP id 98e67ed59e1d1-2f43da61ba9so16472791a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2025 02:56:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1736160974; x=1736765774; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AZLWPPKublXNhPBg34EaNBNy6TKJ9wneFJV35MDnpZc=;
+        b=e0foX5TLnHyqECQjz/iUeVJxlnD6fXgYouDl+VeGOvMO1DXjyo0PK7KC639cLcQLgJ
+         wXnN8o41nWTSsqIX+VlRlakIlciC68g4V/9As10xOF+erk921kS9LnsfoptQgOr6NkaL
+         xVYEWU9KqSMfbgaaj3D2mjpwJPCIn9VKZnxkuSpPeGqF6zI1U60Ef3ck6G5nwEitO+dI
+         uFO9MmdbSxV3bckH+4917ZstHHn3f+blSkqJCVkdTG5s1dsR2yFZ9uRbuv4DwRrw68MV
+         bWu1pt/0ffLAsjhjPd895/nyksHFYyyHvNBGWqb8xyrSWHnExilG1wzrmJIWKwAF0Y8H
+         bt+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736160974; x=1736765774;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AZLWPPKublXNhPBg34EaNBNy6TKJ9wneFJV35MDnpZc=;
+        b=hcQksdwac+VkWnZA9Y6AZo+fbw9G0XqCgIR6BGPz6nPY5ue55Fjk+Q4r5Lv8JZTfV3
+         3ALBi0MT2kwrnmhjO0oNZZz1lPZ2krB10jShLNsoPmsy65oFCBgKmJpDFiEgYLi9e9Uj
+         0dWPMSZEG2Ne1N+fhYEWl1Cs5Qw2hDy7wypM/2xsrBJMWelhEm91WFAHOSqsFvFJQoaJ
+         nFKR8xwFZU7ZCyCuHRwCSKApYKQTkVHE6wNvG1tITsPwQIAqR2jpFTDhtfIjF2gwB2HN
+         B8l8BQ1qMhTTS0UpvdrJjDCEAHlC5Gpom1ZSRABMBCbDGePn7kQbLAVvOTGsXYEMfsEY
+         Q3CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQtcPTNOsjzg+UNS/X4gszudy5cXq4FbabCwxZ7w7FyHPSzyyDaEwiYu2VBmfS2VBC3NWOmXIU1NEPSKQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyhijIJmVu9ffq/bLshfcYKO+/T60QiAopkvJGhRA0o23pedyju
+	vSL12G2TTNmBeQ/wBUywHq91xhgqMwwYiM0+7MevKm/dFLqwx/y/eroCp3BcWjs=
+X-Gm-Gg: ASbGncvFjeIXfz1eKZtOsVahcLj4CpHdEDyHSFulJBguZj/6jG+Pmcc9OqV6GBzquXh
+	nrb7HXJ8pY05yv/gw7rzUPHUnv9dYPLcnVGUDSpo62mtL5wq/EGrBh2h/RPZvXqMZuY/qjLmZ+C
+	4BboghgVYwxeUhQfKx8wTuY1QtfUFHmCXz4B8j7e5+sHlVE/ahOI2ZvbNNtVzdzyZ6HHMd5aFpu
+	AX+gStMXhyK2IB718lUE74U6m0nFmjvY0WPystzZko6cxg5FA4dTIK4VKkFHlj0e4fNWiguLrZ6
+	5DHtSg==
+X-Google-Smtp-Source: AGHT+IHHEGVNBdeeeMKsfSrtRayn5rgDW+sVv93AHdkC2kua4+TBudPLJJX1AZ3o0AE+Wq0oFkgydg==
+X-Received: by 2002:a17:90b:5347:b0:2ee:3fa7:ef4d with SMTP id 98e67ed59e1d1-2f452ec37bamr85837306a91.24.1736160973647;
+        Mon, 06 Jan 2025 02:56:13 -0800 (PST)
+Received: from [10.84.148.23] ([203.208.167.150])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dc96ead1sm290125115ad.91.2025.01.06.02.56.01
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jan 2025 02:56:13 -0800 (PST)
+Message-ID: <e1de887c-6193-48ee-a9b3-04c8a0cdda45@bytedance.com>
+Date: Mon, 6 Jan 2025 18:55:58 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -106,65 +83,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ad21b9392096336cf15aee46f68f9989a9cf877e.1735549103.git.zhengqi.arch@bytedance.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: RDtAwTXGBq-o50c3MhVc3_C2qJNd4B3w
-X-Proofpoint-ORIG-GUID: BH90a8PnsJG6ZogqWB6Telp_r4uMcgo3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0
- mlxlogscore=745 phishscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501060093
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 07/15] mm: pgtable: introduce pagetable_dtor()
+Content-Language: en-US
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: peterz@infradead.org, kevin.brodsky@arm.com, palmer@dabbelt.com,
+ tglx@linutronix.de, david@redhat.com, jannh@google.com, hughd@google.com,
+ yuzhao@google.com, willy@infradead.org, muchun.song@linux.dev,
+ vbabka@kernel.org, lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
+ rientjes@google.com, vishal.moola@gmail.com, arnd@arndb.de, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, dave.hansen@linux.intel.com,
+ rppt@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-um@lists.infradead.org
+References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
+ <8ada95453180c71b7fca92b9a9f11fa0f92d45a6.1735549103.git.zhengqi.arch@bytedance.com>
+ <Z3uxwiEhYHDqdTh3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <Z3uxwiEhYHDqdTh3@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Dec 30, 2024 at 05:07:47PM +0800, Qi Zheng wrote:
-> To unify the PxD and PTE TLB free path, also move the pagetable_dtor() of
-> PMD|PUD|P4D to __tlb_remove_table().
 
-The above and Subject are still incorrect: pagetable_dtor() is
-called from pagetable_dtor_free(), not from __tlb_remove_table().
 
-...
-> diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
-> index 569de24d33761..c73b89811a264 100644
-> --- a/arch/s390/mm/pgalloc.c
-> +++ b/arch/s390/mm/pgalloc.c
-> @@ -180,7 +180,7 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
->  	return table;
->  }
->  
-> -static void pagetable_pte_dtor_free(struct ptdesc *ptdesc)
-> +static void pagetable_dtor_free(struct ptdesc *ptdesc)
->  {
->  	pagetable_dtor(ptdesc);
->  	pagetable_free(ptdesc);
-> @@ -190,20 +190,14 @@ void page_table_free(struct mm_struct *mm, unsigned long *table)
->  {
->  	struct ptdesc *ptdesc = virt_to_ptdesc(table);
->  
-> -	pagetable_pte_dtor_free(ptdesc);
-> +	pagetable_dtor_free(ptdesc);
->  }
->  
->  void __tlb_remove_table(void *table)
->  {
->  	struct ptdesc *ptdesc = virt_to_ptdesc(table);
-> -	struct page *page = ptdesc_page(ptdesc);
->  
-> -	if (compound_order(page) == CRST_ALLOC_ORDER) {
-> -		/* pmd, pud, or p4d */
-> -		pagetable_free(ptdesc);
-> -		return;
-> -	}
-> -	pagetable_pte_dtor_free(ptdesc);
-> +	pagetable_dtor_free(ptdesc);
->  }
+On 2025/1/6 18:34, Alexander Gordeev wrote:
+> On Mon, Dec 30, 2024 at 05:07:42PM +0800, Qi Zheng wrote:
+>> The pagetable_p*_dtor() are exactly the same except for the handling of
+>> ptlock. If we make ptlock_free() handle the case where ptdesc->ptl is
+>> NULL and remove VM_BUG_ON_PAGE() from pmd_ptlock_free(), we can unify
+>> pagetable_p*_dtor() into one function. Let's introduce pagetable_dtor()
+>> to do this.
+>>
+>> Later, pagetable_dtor() will be moved to tlb_remove_ptdesc(), so that
+>> ptlock and page table pages can be freed together (regardless of whether
+>> RCU is used). This prevents the use-after-free problem where the ptlock
+>> is freed immediately but the page table pages is freed later via RCU.
+>>
+>> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>> Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> ...
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 5d82f42ddd5cc..cad11fa10c192 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -2992,6 +2992,15 @@ static inline bool ptlock_init(struct ptdesc *ptdesc) { return true; }
+>>   static inline void ptlock_free(struct ptdesc *ptdesc) {}
+>>   #endif /* defined(CONFIG_SPLIT_PTE_PTLOCKS) */
+>>   
+>> +static inline void pagetable_dtor(struct ptdesc *ptdesc)
+>> +{
+>> +	struct folio *folio = ptdesc_folio(ptdesc);
+>> +
+>> +	ptlock_free(ptdesc);
+>> +	__folio_clear_pgtable(folio);
+>> +	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+>> +}
+>> +
+> 
+> If I am not mistaken, it is just pagetable_pte_dtor() rename.
+> What is the point in moving the code around?
+
+No, this is to unify pagetable_p*_dtor() into pagetable_dtor(), so
+that we can move pagetable_dtor() to __tlb_remove_table(), and then
+ptlock and PTE page can be freed together through RCU, which is
+also the main purpose of this patch series.
+
+Thanks!
+
+> 
+>>   static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
+>>   {
+>>   	struct folio *folio = ptdesc_folio(ptdesc);
+>> @@ -3003,15 +3012,6 @@ static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
+>>   	return true;
+>>   }
+>>   
+>> -static inline void pagetable_pte_dtor(struct ptdesc *ptdesc)
+>> -{
+>> -	struct folio *folio = ptdesc_folio(ptdesc);
+>> -
+>> -	ptlock_free(ptdesc);
+>> -	__folio_clear_pgtable(folio);
+>> -	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
+>> -}
+>> -
+>>   pte_t *___pte_offset_map(pmd_t *pmd, unsigned long addr, pmd_t *pmdvalp);
+>>   static inline pte_t *__pte_offset_map(pmd_t *pmd, unsigned long addr,
+>>   			pmd_t *pmdvalp)
 
