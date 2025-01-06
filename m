@@ -1,76 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-4698-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4699-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 286E5A023DB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 12:05:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41DC9A0242B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 12:20:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRWYq4ZnXz2xYg;
-	Mon,  6 Jan 2025 22:05:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRWvJ5SmKz2ywy;
+	Mon,  6 Jan 2025 22:20:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736161535;
-	cv=none; b=daCNQV9laNM2WuE9UK1dQat46XX/ybLcLf1vixzoqLMl1Hy4gIksGZhY10sU+U62bmRWyJcWbj7AVAu1X9QDs4INTQm45nXViGM/a2SFf1S2qYieudcqZXoFESwmIyL2Yv4RyjuhzEFHS1p4FgeNyh+diJs9GvpSGGOdhTZEItu4iacsYNJVtW5GtgRysINRIFecQI6t8nQpLdviYkLtqHbtbPTaE1heGEdbYF5ZQuZtgWIV2iZFUYyEvWolUebW+N40CbH94RGC8/NWP963tcTO6gEud/u5rjjkF0nvaC5K/4Gk3eQQDbZsSE7Q0n0W3eUCurVjvU0/ScllDuSdsg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736162444;
+	cv=none; b=AbRYMCkf0y38HHzW4NPtS4tyykanjU4K6/Qb1mPZvEJwERnpFh7W4Y76eYTMM8/TxTMrLHEtg5dYTwprpa7ItBB4pB3pveGw2cXNg2jPdzz66rdqujL35hdRmyHgb7KFRemL16X3YZeQtAj3QJowqF5RY/2SU68Pkl3jNusei5SfFxB3Ld2Vk/yASYiyP1JxhKb9osNDO0ly8GF6xq2wSOSlBay8K2cgTdJ+l0wSGv+ISNB+aMTmvdmVdeIdxGtE2W8LgUizZtFHIodPvPLtnYXcjb5R+AVtc6e9wxyNChuLyFTdsa0uamNbxx5CElGebdcRRyXFkvAfg0IEDIPhRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736161535; c=relaxed/relaxed;
-	bh=90v7s8TT3xlSw2lUPUFz/yMbjnPAJgy/hnUWpq/XFIU=;
+	t=1736162444; c=relaxed/relaxed;
+	bh=v5Yw099EHz6MEkPnNaIh+3BXdkeUW5CBuDtmFhcraAo=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KDHo/iGKj5/PHTeRXULlfaXz7gKQMnUBwRvv67hSBnsSaaJMUnYKS9O/XblayuAHCPZ8pQn6804Byn7YKk8TmOk/YvNIV0MVsHWw1XXRmhCwhunkZ8yiQDR+JIILJlDfL//7UP9TbBwG1ItZizeehadkwkAzGYfHe3aUQY91GzfcYOImAJOIzWMrHeC6OlH1E4F9KTQOl1x3KUIDTIxlojDJaHqsoP7qaDu8ZAzv/gHMMs4S8u2TGPLsOZEI21J8m01sSwnmnk/jcYhua23KklMjNWPCIOCl7fL/r5TVkRJumh/9r2Fs8KKtfNTdkqPIZ3BTlTCZquaEZqXytYKjkA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=PKdqUaOY; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+	 In-Reply-To:Content-Type; b=iF8ysjk7QkNlvk2LUwKbAqh6oAa7Jspw+HiD4zUoHr05JScit9Gla6Iw5xjqsJFeQb+rThz01tlxUGlZaGw6xr1b/S5q2iFRNq128MHzFUIXlM2d40B+oHSrPJKbLU3ANJ4HC4DAW2zRxeZLe1F7uDBHP+dEB1qjk1rGHSLqrBGR+YrsgvBLPFevzCmzijp5jxNjP5P66WNCkvoc4ZvJhWQ3bboEmNjPSw6EX6GXYNdx/Tbneld5IM9oID6OSeK17CNUQRuXWxxOwDodWAKfd5CXRCpD5RDJBUmuiKoBXvRpzZU2O2ntYSNTOguhQlxrKL36DCSedBNBZvk+mGOvpA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CPNGojbR; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=PKdqUaOY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CPNGojbR;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRWYp4W1lz2xWZ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 22:05:34 +1100 (AEDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-216401de828so190743355ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2025 03:05:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1736161531; x=1736766331; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=90v7s8TT3xlSw2lUPUFz/yMbjnPAJgy/hnUWpq/XFIU=;
-        b=PKdqUaOYlGmW4Lx9K7WTKtxGQovMAc4cHCqKc6/L/Yizy+sUuW8vQRHQWLX9z1PO6V
-         /ukGZR1zc0XctN5EKNAbW2Y/crtICmwngEqCjryLg4x2zeA1OjKzBHXcLBB/2qQNFKSX
-         3DQMT651H3eMTuPh8TeXMRui45xwg+Z9B7Ssi3j5jUFtrzz8/qMl6W3Qyb19Dxg1OZXA
-         PV7ww4L52YtrHl8UFuQ411xqfAcHRjHmIgOcfsWKtZAdDjfvdTft/Vnd738eJLijxSZM
-         UChN5l4mBKVkrhUFYgmKh3TnPxcXfcpoHpFBmmbLlFYOcjSl5VE2Y5AsWDwQIqOTwOqy
-         Q63Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736161531; x=1736766331;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=90v7s8TT3xlSw2lUPUFz/yMbjnPAJgy/hnUWpq/XFIU=;
-        b=d1YjjXsOlCEYJfvdujUs5qzDJk7BsMK44VobzrgtKBJ3x0T+u+R4OCQxvg/vJ9jZA0
-         1qa1xeWAt02Sv5n80lRk+WU9viKm1AD6BTz8TuN33fAjelIR7eBZwj0mL6Dov0CsuN34
-         ypPKBd5CwhaRRwp/zmmQgywES3X91IbRj6YP8/CF9HnUWi9pIG4Mt+OF+4HKuj/GADCq
-         j/BvLK9+6EaRjkhYxasI+azGJ35Vc8UGY2BdkN1lU4L7P0MlBdCGO32JJHqIgEmYSGz/
-         swesNknNSKHOppIxVPxalFVP/pkuKmV4mlsjPmHiC1lCuDQys3r9Mj6k/k9zKgaX17c2
-         MBmw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdHq4dDnDWzqF3iS+kaLqhxmAPNEhrR0siY8zzszwjFkt7ACjpmRXIWVz2C3kwUDmut7wBgBUxr4QCU7s=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz89V/oHqyYccAWkO4iF7qB4NL/Kye8Jm1JyNPdCxv1IFlkz8+X
-	skCHh5t/jYeWwT6bBNzzGQ1rFZnXZUFc6oAVjrTGxS8jMv2/0t/MZ82DbJOOk0Y=
-X-Gm-Gg: ASbGnctP3DNvL9atTLFQnleiG5r9ld5PyeBVZ+FerwP7GJuTEYVTo4XgvNlRNJpJZdf
-	bEDy/kKJONKWc21htmhHQglR+ziVOz1V9Secpnb69/+9pAMe2cfj+Wq+Iu8PP/1RJOz8UPz/6Ff
-	zHpYqVhVjFHCVldOqQoUiTcZdoOjM50x6F8xRrA7s47Zisvhx8nrlNlYmxo2GucsQCyVwBcrGu/
-	ahroheUG2RKgHlrZSl10NyxQSyh4d5+5mXUQboM2RRtD8FwObcxSUZQ516AD5aAleXlL3QK36C4
-	VjFmyA==
-X-Google-Smtp-Source: AGHT+IE9JcDEXfRGdbs/GeoaL5OkZZjAJop4jCS2xW4+Uq7eaBcmeEMmC0BHepygycRFzBYwAZovzA==
-X-Received: by 2002:a05:6a00:35c6:b0:725:4109:5b5f with SMTP id d2e1a72fcca58-72abdd7bc5dmr104274758b3a.8.1736161531577;
-        Mon, 06 Jan 2025 03:05:31 -0800 (PST)
-Received: from [10.84.148.23] ([203.208.167.150])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad8dbb42sm31017515b3a.115.2025.01.06.03.05.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 06 Jan 2025 03:05:31 -0800 (PST)
-Message-ID: <a3a2bd64-9952-4c66-8626-f2436ce07d1d@bytedance.com>
-Date: Mon, 6 Jan 2025 19:05:16 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRWvH3Sxmz2y66
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 22:20:42 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 505Mt8wP020343;
+	Mon, 6 Jan 2025 11:20:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=v5Yw09
+	9EHz6MEkPnNaIh+3BXdkeUW5CBuDtmFhcraAo=; b=CPNGojbRI8G9Xe9YIDFYsa
+	kafvcBQgYQhmlGEz/C+0IhxctRuKzQGsVilvy7Pbj7T8ASoybNuVKDNkxa0exErd
+	5czzvX/f9LdFCecx51vbg4FNUM0tKnugB3oFMfC+ZFIiiLzL9j/NQJvxnFbkmOl8
+	iZia8w7ssOR6Hlze45ZsfHDF2jWrSwWXJQ9H3rKU0xwOLnpa14C/II38sc0uYnta
+	DJKcn5ZXEnMAnTjoJetH3VsQQcB60VSKShEtuFM4LroZUIYCYUyt/MQ+weGwCjHB
+	0Ls7mjQl8DRk4tNWPDl/3E6eLem5uJgK3MTRLXMw8rk/SXQhTuv8X8rzvlvNGuzg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj53b81-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 11:20:10 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 506BK9Jc018759;
+	Mon, 6 Jan 2025 11:20:10 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj53b7u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 11:20:09 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 506AsjqT015851;
+	Mon, 6 Jan 2025 11:20:09 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ygtknbjn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 11:20:09 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 506BK80C25166450
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Jan 2025 11:20:08 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 65C665805E;
+	Mon,  6 Jan 2025 11:20:08 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AF4EE5805A;
+	Mon,  6 Jan 2025 11:19:59 +0000 (GMT)
+Received: from [9.204.206.207] (unknown [9.204.206.207])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  6 Jan 2025 11:19:59 +0000 (GMT)
+Message-ID: <1fe2354e-3547-4000-80b7-1ed2b8e9fb4a@linux.ibm.com>
+Date: Mon, 6 Jan 2025 16:49:56 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,114 +86,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 06/15] s390: pgtable: add statistics for PUD and P4D
- level page table
+Subject: Re: [PATCH v2 1/3] sysfs: constify bin_attribute argument of
+ sysfs_bin_attr_simple_read()
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Luis Chamberlain
+ <mcgrof@kernel.org>,
+        Petr Pavlu <petr.pavlu@suse.com>,
+        Sami Tolvanen <samitolvanen@google.com>,
+        Daniel Gomez
+ <da.gomez@samsung.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Eduard Zingerman
+ <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
+        Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        linux-modules@vger.kernel.org, bpf@vger.kernel.org
+References: <20241228-sysfs-const-bin_attr-simple-v2-0-7c6f3f1767a3@weissschuh.net>
+ <20241228-sysfs-const-bin_attr-simple-v2-1-7c6f3f1767a3@weissschuh.net>
 Content-Language: en-US
-To: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: peterz@infradead.org, kevin.brodsky@arm.com, palmer@dabbelt.com,
- tglx@linutronix.de, david@redhat.com, jannh@google.com, hughd@google.com,
- yuzhao@google.com, willy@infradead.org, muchun.song@linux.dev,
- vbabka@kernel.org, lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
- rientjes@google.com, vishal.moola@gmail.com, arnd@arndb.de, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, dave.hansen@linux.intel.com,
- rppt@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
- linux-um@lists.infradead.org
-References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
- <35be22a2b1666df729a9fc108c2da5cce266e4be.1735549103.git.zhengqi.arch@bytedance.com>
- <Z3uxVkg3i7zXI92e@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-From: Qi Zheng <zhengqi.arch@bytedance.com>
-In-Reply-To: <Z3uxVkg3i7zXI92e@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <20241228-sysfs-const-bin_attr-simple-v2-1-7c6f3f1767a3@weissschuh.net>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AHfJrK3rb9Diywl8AVVuZD27PQCq2XP8
+X-Proofpoint-ORIG-GUID: As2AB4yLDgPlApUpgdQrhIW0gWCBUZqh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
+ malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501060097
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
 
-On 2025/1/6 18:32, Alexander Gordeev wrote:
-> On Mon, Dec 30, 2024 at 05:07:41PM +0800, Qi Zheng wrote:
->> Like PMD and PTE level page table, also add statistics for PUD and P4D
->> page table.
-> ...
->> diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
->> index e95b2c8081eb8..b946964afce8e 100644
->> --- a/arch/s390/include/asm/tlb.h
->> +++ b/arch/s390/include/asm/tlb.h
->> @@ -110,24 +110,6 @@ static inline void pmd_free_tlb(struct mmu_gather *tlb, pmd_t *pmd,
->>   	tlb_remove_ptdesc(tlb, pmd);
->>   }
->>   
->> -/*
->> - * p4d_free_tlb frees a pud table and clears the CRSTE for the
->> - * region second table entry from the tlb.
->> - * If the mm uses a four level page table the single p4d is freed
->> - * as the pgd. p4d_free_tlb checks the asce_limit against 8PB
->> - * to avoid the double free of the p4d in this case.
->> - */
->> -static inline void p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
->> -				unsigned long address)
->> -{
->> -	if (mm_p4d_folded(tlb->mm))
->> -		return;
->> -	__tlb_adjust_range(tlb, address, PAGE_SIZE);
->> -	tlb->mm->context.flush_mm = 1;
->> -	tlb->freed_tables = 1;
->> -	tlb_remove_ptdesc(tlb, p4d);
->> -}
->> -
->>   /*
->>    * pud_free_tlb frees a pud table and clears the CRSTE for the
->>    * region third table entry from the tlb.
->> @@ -140,11 +122,30 @@ static inline void pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
->>   {
->>   	if (mm_pud_folded(tlb->mm))
->>   		return;
->> +	pagetable_pud_dtor(virt_to_ptdesc(pud));
->>   	tlb->mm->context.flush_mm = 1;
->>   	tlb->freed_tables = 1;
->>   	tlb->cleared_p4ds = 1;
->>   	tlb_remove_ptdesc(tlb, pud);
->>   }
->>   
->> +/*
->> + * p4d_free_tlb frees a p4d table and clears the CRSTE for the
->> + * region second table entry from the tlb.
->> + * If the mm uses a four level page table the single p4d is freed
->> + * as the pgd. p4d_free_tlb checks the asce_limit against 8PB
->> + * to avoid the double free of the p4d in this case.
->> + */
->> +static inline void p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
->> +				unsigned long address)
->> +{
->> +	if (mm_p4d_folded(tlb->mm))
->> +		return;
->> +	pagetable_p4d_dtor(virt_to_ptdesc(p4d));
->> +	__tlb_adjust_range(tlb, address, PAGE_SIZE);
->> +	tlb->mm->context.flush_mm = 1;
->> +	tlb->freed_tables = 1;
->> +	tlb_remove_ptdesc(tlb, p4d);
->> +}
-> 
-> I understand that you want to sort p.._free_tlb() routines, but please
+On 12/28/24 2:13 PM, Thomas Weißschuh wrote:
+> Most users use this function through the BIN_ATTR_SIMPLE* macros,
+> they can handle the switch transparently.
+> Also adapt the two non-macro users in the same change.
 
-Yes, I thought it was a minor change, so I just did it.
+Changes looks fine to me.
 
-> do not move the code around or make a separate follow-up patch.
-
-Well, if you have a strong opinion about this, I can send an updated
-patch.
-
-Thanks!
+Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 
 > 
-> Thanks!
+> Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
+> ---
+>  arch/powerpc/platforms/powernv/opal.c | 2 +-
+>  fs/sysfs/file.c                       | 2 +-
+>  include/linux/sysfs.h                 | 4 ++--
+>  kernel/module/sysfs.c                 | 2 +-
+>  4 files changed, 5 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/powerpc/platforms/powernv/opal.c b/arch/powerpc/platforms/powernv/opal.c
+> index 5d0f35bb917ebced8c741cd3af2c511949a1d2ef..013637e2b2a8e6a4ec6b93a520f8d5d9d3245467 100644
+> --- a/arch/powerpc/platforms/powernv/opal.c
+> +++ b/arch/powerpc/platforms/powernv/opal.c
+> @@ -818,7 +818,7 @@ static int opal_add_one_export(struct kobject *parent, const char *export_name,
+>  	sysfs_bin_attr_init(attr);
+>  	attr->attr.name = name;
+>  	attr->attr.mode = 0400;
+> -	attr->read = sysfs_bin_attr_simple_read;
+> +	attr->read_new = sysfs_bin_attr_simple_read;
+>  	attr->private = __va(vals[0]);
+>  	attr->size = vals[1];
+>  
+> diff --git a/fs/sysfs/file.c b/fs/sysfs/file.c
+> index 785408861c01c89fc84c787848243a13c1338367..6931308876c4ac3b4c19878d5e1158ad8fe4f16f 100644
+> --- a/fs/sysfs/file.c
+> +++ b/fs/sysfs/file.c
+> @@ -817,7 +817,7 @@ EXPORT_SYMBOL_GPL(sysfs_emit_at);
+>   * Returns number of bytes written to @buf.
+>   */
+>  ssize_t sysfs_bin_attr_simple_read(struct file *file, struct kobject *kobj,
+> -				   struct bin_attribute *attr, char *buf,
+> +				   const struct bin_attribute *attr, char *buf,
+>  				   loff_t off, size_t count)
+>  {
+>  	memcpy(buf, attr->private + off, count);
+> diff --git a/include/linux/sysfs.h b/include/linux/sysfs.h
+> index 0f2fcd244523f050c5286f19d4fe1846506f9214..2205561159afdb57d0a250bb0439b28c01d9010e 100644
+> --- a/include/linux/sysfs.h
+> +++ b/include/linux/sysfs.h
+> @@ -511,7 +511,7 @@ __printf(3, 4)
+>  int sysfs_emit_at(char *buf, int at, const char *fmt, ...);
+>  
+>  ssize_t sysfs_bin_attr_simple_read(struct file *file, struct kobject *kobj,
+> -				   struct bin_attribute *attr, char *buf,
+> +				   const struct bin_attribute *attr, char *buf,
+>  				   loff_t off, size_t count);
+>  
+>  #else /* CONFIG_SYSFS */
+> @@ -774,7 +774,7 @@ static inline int sysfs_emit_at(char *buf, int at, const char *fmt, ...)
+>  
+>  static inline ssize_t sysfs_bin_attr_simple_read(struct file *file,
+>  						 struct kobject *kobj,
+> -						 struct bin_attribute *attr,
+> +						 const struct bin_attribute *attr,
+>  						 char *buf, loff_t off,
+>  						 size_t count)
+>  {
+> diff --git a/kernel/module/sysfs.c b/kernel/module/sysfs.c
+> index 456358e1fdc43e6b5b24f383bbefa37812971174..254017b58b645d4afcf6876d29bcc2e2113a8dc4 100644
+> --- a/kernel/module/sysfs.c
+> +++ b/kernel/module/sysfs.c
+> @@ -196,7 +196,7 @@ static int add_notes_attrs(struct module *mod, const struct load_info *info)
+>  			nattr->attr.mode = 0444;
+>  			nattr->size = info->sechdrs[i].sh_size;
+>  			nattr->private = (void *)info->sechdrs[i].sh_addr;
+> -			nattr->read = sysfs_bin_attr_simple_read;
+> +			nattr->read_new = sysfs_bin_attr_simple_read;
+>  			++nattr;
+>  		}
+>  		++loaded;
+> 
+
 
