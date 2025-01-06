@@ -1,59 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-4729-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4730-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE234A031E7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 22:15:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C062A03204
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 22:25:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRn5X6X2lz2yDH;
-	Tue,  7 Jan 2025 08:15:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRnKG0lpFz2yFK;
+	Tue,  7 Jan 2025 08:25:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736198128;
-	cv=none; b=B0PnmpcBQG6ZAsRmiA2l0gVhYNzxpOze27vDv3ALRxLE0t7XiMssBAmlepk73rlWdDX5PYlM3W2h9TbiXgL/FCizpYuDjVgYYevSEl2+lvdPWvFmJm7GgxKq2roWa4myemS/f8TTyFLAQUcqy9qkS8adwKfhEi13t+H64Vn5pIcieKriMdZN0xO+DcqFTJ9XAJHFjB8oEGkvHfYReQ7TCRwvwZgOy305twRWl2zAC0jvEc3ksFkx3rdZUt7eC5gz985dyqdwiFbcEMsNuMD14E+6PmUmmgNkJJUyG4s/l1JdP+HgBr71Nc7RVu9gzYL4EgmNgRwjjZwrCnE+kIID5g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736198738;
+	cv=none; b=H6Ely7tLJ4FfeevBOMBkxf8L4QPikktGCWt+3DWpxcLMf06TIQHImfrnzHIenPm4AuH1x9ZxE8cgyNhXKfrKk+GP/s/BI4XmD/H5TzGTpBo0QrrEUgmONhp/oaL8JGUNQCfrkPiADFLZieLxKUEpFTfm2jq8re4eVhpTnFwdFU8wU7/SUazLjXxgx4mqpT3RIg734O5TVPxKFRfSiTb5pJvGlyc0tLiWIgScwmye9fkAScNB/2FkzS0fNCtj2PmT9N6HTYcjMhiK3aCXoc9gu0XOLvfFAyfzSgM20kuhznSHpiTGNJJ0YQQ8Wn2c0bMf715j+sadMWyaUXAxNBIf6Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736198128; c=relaxed/relaxed;
-	bh=DDcR8Y2nQap6isM4yzcBhuLulxQn4fp7frqrTfpm25Q=;
+	t=1736198738; c=relaxed/relaxed;
+	bh=qFu0B9L0DMFJYDH8yCxprqXxYynQ8MtPqu+wyChHbzI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XFjKZbpv0hxJqardQ1Z6MaXrRHFHzXTyOtwFR/TFNZqpFgc59zHI02+f+j/oQqmfnLsW85QT+NkHUmw63l/bothyjI+MsfoNmt9Fo9FE7Dvl/E73RFRnM3lDQBjiu/qG9b67j6x3RD9YOGenoBHCZZUmOqSMKvhknABuu59v5g0ZdMWwTTg2Tlcclz3JyDlD3bp0exiAQ6GUMOH20cijiHCtIwbH1PFthz2Sfc4KgHS9NdjGkhqIRHAmXcbTyxUkpLL5uouHVYv6Lpbw0zmaw7wGnN59bOlpiswLPpPTjG9OkAfl3s2spphoVLVHYySPdpXb6z/5xtGHTcQsM8uumA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dwGagPV4; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=dU3nk/FINfPkkW3tg/JIRhb3M2r4dmKp4vaeTc9xrTB1/QM2otLL7mKcdQ+ZCwFdevH9tHLp8IZ0AhmJelR0lkp2In2Dw20UxutbxbejU6nGDf/ocHduA8cGWczO+aN1uile7KXTXBrpc5wIVNCcNnSbiaocGa9QcK0y91s6w2GfuZ+pLmQJSZGrUtx0mIQCWKkOgAdNX3RJVgy85nTfqu5ZaHwxakuhdg7Os3dN9kto6dqQtFP7blYxDaqzr/yIqOIlNkVtn8CLHF8WAwwT8Jsi4HRBGUqlODSrwrXxUkrSFiSsLPIT65G3ory2jZxKQLOLT2pR1O++Z6ujE2ln8Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t2gJQqCa; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dwGagPV4;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t2gJQqCa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRn5W5mNMz2y8k
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 08:15:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRnKF08KLz2y8k
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 08:25:36 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 11A14A41E96;
-	Mon,  6 Jan 2025 21:13:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D953C4CED2;
-	Mon,  6 Jan 2025 21:15:24 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9F1F85C5F18;
+	Mon,  6 Jan 2025 21:24:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09358C4CED2;
+	Mon,  6 Jan 2025 21:25:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736198124;
-	bh=IlUoArd3cgICxTGfsWTXC+9GlSm6A1FG5iyMIObahC0=;
+	s=k20201202; t=1736198734;
+	bh=hi1GMaWRkgQ+46UxxVoQ3+2NmjCT2Y5rvyleUJPSy0s=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dwGagPV4zLkJa5iQxsPetExJbd2Anx2BZkFgd93Zg9A4i6J9V03AAp8GtT14zgXy2
-	 fBqK0+rm6zyUhARLe6/oaTN6y6IG2Tx4SnBSir04ItlTfdwGBC4CDH+SdWQ4gJes3G
-	 RWpAEPrAHGH2dn6sFTadTjz2L05Reo9/6n9tF4MiWFiPE2E1o4EqHKfXIKLh/+LwEH
-	 DDIPupJY7U0qRZ8It5lESknB8k/g0b9GSyCEldvE9FFg5Iuu5Wsd2z7SYmDsT4PZGy
-	 QxwjJcWjzNkX1ypXCbxL8VnuyLlPPSBt1i0f+CE9zrJ4wR8Gftrz0Q0U1T9DiRmVe5
-	 ZJMUtFO1VYqIQ==
-Date: Mon, 6 Jan 2025 13:15:22 -0800
+	b=t2gJQqCaXjOVITG6+z2iI7AUZ1q5sJ+NaMpfM3nks3w42avbACcCaVuKGG3FHpMIh
+	 KYlNRBYYYaI/yo6n7bRcgAq6Y3gG5nHBPtYVqos9+Wy9SKm33PIsfSxH+jdR4XRRBr
+	 iBGGzgGEHcu/P9d1VClrMQTt7A/pdbnXXtKQgXx4clkCemiw5GTjmslFlnhn8dXa+h
+	 fDWN3c/07GcMYEm8e5pVo64g1G1SRNVX6xqmNrNgafudSHv5ZxITmop66fOJj7ANGP
+	 8+UsNNDKVsY7jszAY4G96rzt+fMn5XM+jJPhirQHDTQaEwJJgynY1hNkPSUV62OLsI
+	 98oAfaD4qAV1A==
+Date: Mon, 6 Jan 2025 13:25:32 -0800
 From: Namhyung Kim <namhyung@kernel.org>
 To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-	irogers@google.com, linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	maddy@linux.ibm.com, kjain@linux.ibm.com,
-	disgoel@linux.vnet.ibm.com
-Subject: Re: [PATCH] tools/perf: Fix return code for lock_contention_prepare
-Message-ID: <Z3xH6kCK9zj5ttZM@google.com>
-References: <20241223135655.8042-1-atrajeev@linux.vnet.ibm.com>
+	irogers@google.com, hbathini@linux.ibm.com,
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+	kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com
+Subject: Re: [PATCH] tools/perf: Fix segfault during perf record --off-cpu
+ when debuginfo is not enabled
+Message-ID: <Z3xKTKkVSf7tWCtD@google.com>
+References: <20241223135813.8175-1-atrajeev@linux.vnet.ibm.com>
+ <409D0233-93FF-40D6-BC2E-B7625E4E1B97@linux.vnet.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,64 +70,88 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20241223135655.8042-1-atrajeev@linux.vnet.ibm.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <409D0233-93FF-40D6-BC2E-B7625E4E1B97@linux.vnet.ibm.com>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello,
+On Fri, Dec 27, 2024 at 04:18:32PM +0530, Athira Rajeev wrote:
+> 
+> 
+> > On 23 Dec 2024, at 7:28 PM, Athira Rajeev <atrajeev@linux.vnet.ibm.com> wrote:
+> > 
+> > When kernel is built without debuginfo, running perf record with
+> > --off-cpu results in segfault as below:
+> > 
+> >   ./perf record --off-cpu -e dummy sleep 1
+> >   libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
+> >   libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
+> >   libbpf: failed to find valid kernel BTF
+> >   Segmentation fault (core dumped)
+> > 
+> > The backtrace pointed to:
+> > 
+> >   #0  0x00000000100fb17c in btf.type_cnt ()
+> >   #1  0x00000000100fc1a8 in btf_find_by_name_kind ()
+> >   #2  0x00000000100fc38c in btf.find_by_name_kind ()
+> >   #3  0x00000000102ee3ac in off_cpu_prepare ()
+> >   #4  0x000000001002f78c in cmd_record ()
+> >   #5  0x00000000100aee78 in run_builtin ()
+> >   #6  0x00000000100af3e4 in handle_internal_command ()
+> >   #7  0x000000001001004c in main ()
+> > 
+> > Code sequence is:
+> >   static void check_sched_switch_args(void)
+> >   {
+> >        struct btf *btf = btf__load_vmlinux_btf();
+> >        const struct btf_type *t1, *t2, *t3;
+> >        u32 type_id;
+> > 
+> >        type_id = btf__find_by_name_kind(btf, "btf_trace_sched_switch",
+> >                                         BTF_KIND_TYPEDEF);
+> > 
+> > btf__load_vmlinux_btf fails when CONFIG_DEBUG_INFO_BTF is not enabled.
+> > Here bpf__find_by_name_kind calls btf__type_cnt with NULL btf
+> > value and results in segfault. To fix this, add a check to see if
+> > btf is not NULL before invoking bpf__find_by_name_kind
+> > 
+> > Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-On Mon, Dec 23, 2024 at 07:26:55PM +0530, Athira Rajeev wrote:
-> perf lock contention returns zero exit value even if the lock contention
-> BPF setup failed.
-> 
->    # ./perf lock con -b true
->    libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
->    libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
->    libbpf: failed to find valid kernel BTF
->    libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
->    libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
->    libbpf: failed to find valid kernel BTF
->    libbpf: Error loading vmlinux BTF: -ESRCH
->    libbpf: failed to load object 'lock_contention_bpf'
->    libbpf: failed to load BPF skeleton 'lock_contention_bpf': -ESRCH
->    Failed to load lock-contention BPF skeleton
->    lock contention BPF setup failed
->    # echo $?
->     0
-> 
-> Fix this by saving the return code for lock_contention_prepare
-> so that command exits with proper return code
-> 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-
-Thanks for the fix, the change itself looks good but I think we need the
-same for setup_output_field() and select_key() as well.
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
 
 Thanks,
 Namhyung
 
-
-> ---
->  tools/perf/builtin-lock.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+> > ---
+> > tools/perf/util/bpf_off_cpu.c | 5 +++++
+> > 1 file changed, 5 insertions(+)
+> > 
+> > diff --git a/tools/perf/util/bpf_off_cpu.c b/tools/perf/util/bpf_off_cpu.c
+> > index a590a8ac1f9d..4269b41d1771 100644
+> > --- a/tools/perf/util/bpf_off_cpu.c
+> > +++ b/tools/perf/util/bpf_off_cpu.c
+> > @@ -100,6 +100,11 @@ static void check_sched_switch_args(void)
+> > const struct btf_type *t1, *t2, *t3;
+> > u32 type_id;
+> > 
+> > + if (!btf) {
+> > + pr_debug("Missing btf, check if CONFIG_DEBUG_INFO_BTF is enabled\n");
+> > + goto cleanup;
+> > + }
+> > +
 > 
-> diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
-> index 208c482daa56..2226c7dd4ae6 100644
-> --- a/tools/perf/builtin-lock.c
-> +++ b/tools/perf/builtin-lock.c
-> @@ -2049,7 +2049,8 @@ static int __cmd_contention(int argc, const char **argv)
->  				goto out_delete;
->  		}
->  
-> -		if (lock_contention_prepare(&con) < 0) {
-> +		err = lock_contention_prepare(&con);
-> +		if (err < 0) {
->  			pr_err("lock contention BPF setup failed\n");
->  			goto out_delete;
->  		}
-> -- 
-> 2.43.5
+> Hi,
+> 
+> Looking for review comments on this
+> 
+> Athira
+> > type_id = btf__find_by_name_kind(btf, "btf_trace_sched_switch",
+> > BTF_KIND_TYPEDEF);
+> > if ((s32)type_id < 0)
+> > -- 
+> > 2.43.5
+> > 
 > 
 
