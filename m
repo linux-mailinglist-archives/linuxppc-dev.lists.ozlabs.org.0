@@ -1,86 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-4688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4689-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5C9FA01F59
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 07:43:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EAC6A02001
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 08:38:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRPlq1gcQz304s;
-	Mon,  6 Jan 2025 17:43:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRQyy1Z6Cz2yFP;
+	Mon,  6 Jan 2025 18:38:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2416::62e" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736145831;
-	cv=pass; b=WaqeUQTfHWEVXSyej8J5HS+G7R3xflfOLZJIDzFc6QrSOyAT6Gq/J32Ie7/8R0CfFzn1Xi4V5/A+khZrD9aZGU/jN+R0RbAcaRnUlpUd1temVl5Onv/FcdW6oQdcRdFoUaViuuWjR51aDmt8CmM7yEWUChEN2B71oAUY1ux4tjVJRa5AuH0KP0SPAOfOGNEpVY6sPjm4ib2sCzbcS3GW+BSK3VNfYnDYE1hB/uS4Bw84fJBoRnD1bUoqiWLjuZMw7bhLVkKCW5ImBq0/kcV3gDT3n6+R1DGltIbg5ePto+uw3qGbhF1g209OSspfL5OfQre3uX+9ssdZ11AK1V51GQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736145831; c=relaxed/relaxed;
-	bh=JCcXG3JIFkEbKyh+uur/Wu+q8UM9XaBlD9VZ5VT4/Zc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=IYQMr+/ZsgAixI9gv45Co0AHBBMTHulFtewMmD4az175c1JaV9zlq4buH/3ZQ0E89JINsdrgs3C0dJZOLhOGqKLuijUMiZTFcKO7nfJ5IP7dNKN1cNEDYbCV00kSo5kKvVzS7Br1HaTLHF7K717or8aJvzG+aHMKE93jkmqWqMEq1UHHuqG8NlfIXN+qO7hVxX8CCl6JZ0/+hTfCfE3Qc11neMVar0qD/3R664ZtEMwhzynk4rHH2S94aKSyBD396xJIgxvDnhF0Ay4yybfJCaQ36k3yzxAHfP+nme4LGQzejZGPI1xOd/mqC3QDoU8LxJKfYRKtl57ef9TcJt909g==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NLTDt9A7; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2416::62e; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736149114;
+	cv=none; b=K62aL+vtzIJfWHIx6I/4YbB+8wGUJTXRYKki1lIWes3juGj2hcsmtoeQv7BoZ9jx4v4peM5zITQddoeV2W5sSB9+8mNfO11JOEo+R3rnl2JKzOr3dm9MwEwMd1004vxkR4CqABhIyXrKZkpZsAmJ6W9cQs0i8CnGd9Un6ToqHBO+9hf/FSDdxoGEeRTR3LfUMuN2iYMCFzc+jUBtb9uypZmvH/ytOb7OKksZ2c/aD/eAlA5WmYYmKm4PO2AnkEs8yf9aZS7hFPbOIo1Qc4zjTr2wtv6E8+cPt87COEealtt1FSz+TRii6N9rv0Qvk/IxTYgTyJ/H0awIjFoNjv3b2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736149114; c=relaxed/relaxed;
+	bh=TZu5cpjMKoXlQ+coQODbh5QbZWMAyvKma52uD11AbuA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=XXYcv+8Je5VStIlxd0XtY1/9D9Fekxf7i4FlvIazYjife3dqNW91pbzLx21zgRjLn+oli+oWVAKCvJ/5D+UCZJMxHQDElBoubzACfKzaMY90GQZYDke+mLpJxwSeKuvA7f89LvKvDc5M3HZV37g0g88lHco9qkHXg1psLlyYssAWMqkGlSm5+H/WSMO+ti9nTrlcABM31r5IPr7r65FEGTZUSqhpkce82BczZaa2DS31gYXIKFxA11c/EEC3PtWlTN+1NmIvwGZiCMieAmeXly4fM/Nv8zgLJ2qnR7xJpsSBoHPDEWhcpPTp08x695o2MW7KLeOWj5xAlR00LJrAzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Jzhd5ozU; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=NLTDt9A7;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Jzhd5ozU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2416::62e; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2062e.outbound.protection.outlook.com [IPv6:2a01:111:f403:2416::62e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRPlp1DN9z2yYs
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 17:43:48 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=SrzWKZFRSxGhxXwG1DDuAG/txA/cDvsKMN7dEbX0mfa/908bpoDOg7C0bzHAsy/F2/VbKS2+ifiTEOExk0UJo1S+Igp6AKuRuo1g05tuULhBHvoSBzfNhPA/fzlf2N2fkppMUnXNK+SVNZO3sVSc30qW84shuw76VAWdtkH+Lp/MLELnXv9A4468/XhFAb1B71WViTePTbI62TOxtaKjWZlZMgMnQ6vRJRcSNsh7twu5/xSWkrwiry17rDFBvGzEDjtSZGhib9qrgOFx1nfVFg03puR0cCbKyCB+hu96fOGHQUZmu2CU6ddRbpiCrW6G31rUQ+SlhvT89URd36q5IA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JCcXG3JIFkEbKyh+uur/Wu+q8UM9XaBlD9VZ5VT4/Zc=;
- b=POJvYVHwVbQbXTz/reX1MWqDW9QQYwIrguH3FkBXGUEj9xa61jX2BLZhiTzCDmxSDbmYJElGGinr7+EH6EJhv6Uf6nH5tdQHvoX7NgDDWehJr5PAnVCfaasWH1Jc2VCbzXLe8rj5hrT59nJvesgrM75UQx+p64DXOlWOZt65VgmzryjoLMDTZYJZx/LFlgWo5IsYfO5RCgIEkP9hAlMknESrESrzIIOayT0LwKyM90F+3WzuKE/7L5k/FiP4uddF/yf5R+Ey0LPhpNZntRNqp5vZvCFbz3wQ/5nfyJPYPtlYXYd/3MGGqrkHrjKrBRz7w+qYOr7pVCOSdfXWCMGPlQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JCcXG3JIFkEbKyh+uur/Wu+q8UM9XaBlD9VZ5VT4/Zc=;
- b=NLTDt9A7kncEHwE+gzy1McQOOdj9PNst/BFBS1w0gmCY1ixviVpAODoSkzaKd9SS4BfQZxovcJ1RGl6bas3qTGtPJVefxSsbht8okskTuXWmX1Z+VZ8tloAGfoZ6fnfUOXNX8PzCJmLmYLln7faZfXA5OOWYNQglu8uqlFsEvqcgXbffU07hE1aKtgUIeZjUYmwVjvzfUOdnZ9p7sIeKVKVsQMd08gaQz7IIDPMPTZCZelWy7xg+PY1rBnP17h5+RRm0SbmCwF/zzbPCyAxM/WQiImOhu/PkvustDVe+hF8qq0+GD8W1RA6emdOLgQy/G0/5j4Oajb/tcY70b3JvPQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- SJ0PR12MB6989.namprd12.prod.outlook.com (2603:10b6:a03:448::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
- 2025 06:43:25 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%6]) with mapi id 15.20.8314.015; Mon, 6 Jan 2025
- 06:43:24 +0000
-Date: Mon, 6 Jan 2025 17:43:20 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: David Hildenbrand <david@redhat.com>, a@nvdebian.thelocal
-Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, 
-	linux-mm@kvack.org, lina@asahilina.net, zhang.lyra@gmail.com, 
-	gerald.schaefer@linux.ibm.com, vishal.l.verma@intel.com, dave.jiang@intel.com, 
-	logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, 
-	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org, 
-	tytso@mit.edu, linmiaohe@huawei.com, peterx@redhat.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
-	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com
-Subject: Re: [PATCH v4 19/25] proc/task_mmu: Ignore ZONE_DEVICE pages
-Message-ID: <54hi667mw7agwueoo4ijmogdvrt4unmw35xekwyiycrxe7o2i7@novwkzibndz5>
-References: <cover.18cbcff3638c6aacc051c44533ebc6c002bf2bd9.1734407924.git-series.apopple@nvidia.com>
- <f3ebda542373feb70ed3e5d83b276a2e8347609f.1734407924.git-series.apopple@nvidia.com>
- <c7bd9b00-6920-4dc0-8e2e-36c16ef7ad5a@redhat.com>
- <37rxl2bjda3psdknhboexhbg3hahf5ifmublp5fw7ltdoyqllc@udbz76jklmnu>
- <36334f20-2b9e-4529-89c4-120678bc5985@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <36334f20-2b9e-4529-89c4-120678bc5985@redhat.com>
-X-ClientProxiedBy: SY5P300CA0055.AUSP300.PROD.OUTLOOK.COM
- (2603:10c6:10:1fe::10) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRQyw4xghz2xy2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 18:38:31 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5063rF69013343;
+	Mon, 6 Jan 2025 07:38:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TZu5cp
+	jMKoXlQ+coQODbh5QbZWMAyvKma52uD11AbuA=; b=Jzhd5ozUAFuc6t941ZEOX8
+	uPQ0oZaTJLWUic+HwbDa6nPGFFU8IzDnEBKbPRhkIp+0V+qw8oZtjq6ArNXEwz7k
+	HkQR+uETathcHOn2Tq9Qbo4ESVKhBtrcrkTNrWULiNhP2/7bXsXTl3xIS+HrZ0d7
+	HTWohwg1qEFS+3UO94yPBKckKMU9Nj1way9gOFPZxpxWPNIvIO8juWej1imxL+h2
+	cHA5taKNlPCT6tZAQJjqPxfWX4OHwGHsZXpkN2wqnhW5Y6aZf68xZMsv2JQHbLCA
+	7lbh7Joviq0P6/wLA+PJQfUfGBk3YcAs/h00t7XKLOS6N41KAeQkwNsLHZa+BibA
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4407nh0scm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 07:38:23 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5067Qvp2026189;
+	Mon, 6 Jan 2025 07:38:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yj11vf0e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 06 Jan 2025 07:38:22 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5067cIib58982826
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 6 Jan 2025 07:38:18 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 73A3B20043;
+	Mon,  6 Jan 2025 07:38:18 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A915220040;
+	Mon,  6 Jan 2025 07:38:14 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.242.249])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon,  6 Jan 2025 07:38:14 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,161 +77,622 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SJ0PR12MB6989:EE_
-X-MS-Office365-Filtering-Correlation-Id: c5bed9a7-f6ff-494b-e593-08dd2e1d6b4e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ncdyri868tJYUgjU/AS/aewgUGj97phEP5wqelOR1xhFnpqXJHbkZJnkeAnW?=
- =?us-ascii?Q?ISJPy+svP4NLd02F4wwLFOOkZ3WWGeTjwbaeEbbDpHTdWz0Op0uDZXn6oe1F?=
- =?us-ascii?Q?4xhgl8z+bn9+7bzWNQt0fWdReXkYVg0ohryfrqvZQhh0IL/F2UCrTvc3Bmy8?=
- =?us-ascii?Q?Y/ot/7lLBcLw1AkNLkiTdiztcp8Rr/qwumAAhcUz74XJJn9/3h+Agkncz+bF?=
- =?us-ascii?Q?IRIMXjGG6YivoF9H1TZ+AxoUkYZnJ+a+AX/zAX50FlriG/ArpOpE+PVH2ah7?=
- =?us-ascii?Q?lcnAOwXqGD+8fjxPDd25Fq0BKDtdfkexoaNoVV4HxNWaZ/Emw+N/BgHg+YeA?=
- =?us-ascii?Q?3rwUH6I04f/keZAof0oL/mW/SsausMDyvGK7s6hnaxR5OHB48Sit22QpcAgd?=
- =?us-ascii?Q?5YzZ9jzD9QKH+FydF9VVsppkf9L6qFY2fKKZcyc7NqridAfrPWG7pO1Ws71W?=
- =?us-ascii?Q?JulKfx02G+aH7Tf9ic6JXXVaxSXDQfuP6CXPIP31bCZVNvosBop2IKALMoPf?=
- =?us-ascii?Q?9FWKUjbBYfHEKXa/FfepTELPqaZuRrt5IGb/H68a3kyi5we/iNfC2AZYHd7k?=
- =?us-ascii?Q?Pjo80bEJVeC/7T4a+qKLK1PArAb+8d73uRdVglrtA8kKa21ejOiFoMJ3jyN/?=
- =?us-ascii?Q?GcEIIWcjUndIicMNreMVPK4vVDECvwxeXwaRlzrfzRdplZ9lN6fmNyhoYwQg?=
- =?us-ascii?Q?DD2p2EA7IJs3h6I6w7vEm/NorLimZ6IdHR6lVk1wWQiCPQyyidie0U2Y6wb+?=
- =?us-ascii?Q?XaX8ul1t4PYPMyoDcEql0ObucZqVLrGIOh03UahM5UZi1IzNyd2INos1xuKN?=
- =?us-ascii?Q?hfxhIAfmrSYToYTl+BU4WorbNq1lM8y/dafqJn+n4TZJiJy1nhnmVK+t3ijH?=
- =?us-ascii?Q?jyOww0rmpHQR/WV0ZcAYnBUtj2G7/KVtVPhodUE5JtUODliKetTYT+bF9C9f?=
- =?us-ascii?Q?UQmqTMF2HlVWBPleXIT39nGpfj77VpqappmguakX3p8YZrTcLLjFStEw2OQ7?=
- =?us-ascii?Q?W+PoAzsaE1vOpfskfYcdOwxya6/YFsISzXLhIVL3E6ubqAxA2ksy4njX8E7I?=
- =?us-ascii?Q?FDQfu4P9pUH94N2hdcbthPjvjuASCXJCCitpkwd1Ef2ckVwImgPe3Lm6KPZf?=
- =?us-ascii?Q?hVoHiFTPKZ41hLdjbaKDB97zfE5MnE22vkvof9sBhMLAVDhKSzVLFX9yQS6t?=
- =?us-ascii?Q?zihPfOmTq8H2bwKugGCSCVDQ2/U0e1KbDoKbprxJXQRcRPEjrEjvt65je4fs?=
- =?us-ascii?Q?UDwJlpRvDLsBjEk0kncDKcKynFtHHcYiOXT5tsUVPFtMFUK+kK446V0Yy+cN?=
- =?us-ascii?Q?3GQXDggCewI4vXtXfHrKIICu7wAHbC3Nnfo+EGiKnS7KT+Go5kAdKV4gBxzn?=
- =?us-ascii?Q?0hHy6RvhIfy0ZUR1nKsj9+9I+Lww?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?LtCegbPKFp0togHtIa15iB24W0Rh3Sg36cMDf4i/nqCKVHu/gslMgPc1p0yb?=
- =?us-ascii?Q?eKGSTz4wukWvQ/hsAvK/hJHkN8OXbGOyNJeF6DIlOjxb77qIr7X6NDskSvg3?=
- =?us-ascii?Q?BAcYAPG0Gq99f3tusGaCnkIl3NrJ6E0cEbtePcSBYmJGshYhBHNwkAnKYkqR?=
- =?us-ascii?Q?HJ0Vlau0ESYvYdsv3D2rLdogJr937HR/xBxBxLLtVnv4RjchkDLe93zYxFTg?=
- =?us-ascii?Q?CJ8YvguSwxjMgNb7hQphOkRkBDXPxTQvl+iizLDOYqxbDiBstoaiapR8qilS?=
- =?us-ascii?Q?sBoL6aP5R7LHr1Y/o1s33lZwxtZq0zMj3DoSoBdX7sC6u97AwfXT1mQ5O3bB?=
- =?us-ascii?Q?k5+4EIUZbgm5sTtjnEsk3i8LLDEv2+bPTZJbkXMdeuxx7oer6mSXE8CHbgqA?=
- =?us-ascii?Q?iAoEmZcRD7IF+0SnGZYHickerllRT5zQS9aNeXMkg4lzHdrddBivrWQw2c9M?=
- =?us-ascii?Q?6Wm4dP1PuWnYb68oGDOGK/0Y1xrDeZ7hZSnw0zofJL2ki1e8BQetshPu1M+9?=
- =?us-ascii?Q?qwGq35zTQ94yGztSFAT0DGcWaHqbOayUmuWYKZ88HbuOVjHAZL2yTSYmL0Dz?=
- =?us-ascii?Q?ziWWCyDvE3YovIC0q5MBwfkLKsc7bBSeGmNIFkUyNDqJq/30HJMZarGsODp5?=
- =?us-ascii?Q?5yN90chjDklPM4O83KwSI110BLARXv3T1EqD8TsVJ1Br5brj9UGKOVsrpGhB?=
- =?us-ascii?Q?dK7sqqcC5uQh8o57Bcc3wwonblm5eiHuUtbzesdCoM7dXDzKjzmAobtFmAkk?=
- =?us-ascii?Q?fiIIZbqQ+Z7vZWYsXweRd80oUMMuw6lPCy3yZGbY/S/E1PQjUqW7MH/spk8N?=
- =?us-ascii?Q?nt0YVJRWvO2Q9i5S89ckh5PWwZ6l0unn5NrL0Y8C8OZm4gG7ZxaeaIyR+pLE?=
- =?us-ascii?Q?CJCAtqfmZM6dHIYUUCj+q2TaOD2Qv04YGP4uUUmWYycfAP6eZmNo6FECSw8n?=
- =?us-ascii?Q?M047Vt4hQbklbX1Yh8F6F0Lia3NO50rf6VS/BO9TNygL0slqqi8pd0/V14NO?=
- =?us-ascii?Q?GXJg7DOMRYxBrAWoz2VyJ1QJRaenW7YBgIHtjtXXq3BFeIDIYm98LMGz3LWJ?=
- =?us-ascii?Q?dNF9p3l8n1fm7Ks9HDYQhEgsBOcNx/hqxyHoptufNiIzrtUX2Z4uq2XlFBQF?=
- =?us-ascii?Q?g6ESmA88YofrxWxL6FH2sxNJi8uByvkqZIqHwkJQdkPMPK5nqUt3mXLbrsDN?=
- =?us-ascii?Q?6VR+T62AcwUdq2sjYH9AbowDjWMYHCrqIAB9VY7Wm3gNK+u/vIex6wPTr0ar?=
- =?us-ascii?Q?kYljzHAomvTLZp9LwMoD8MxlTFoDuZXM/batwEzYypmhCyQxOFrFhrtChr0I?=
- =?us-ascii?Q?q88td4nbwZSuTTeStt7CEu/1z6XA4ZgDqlNtcss/bX94ckXfh0G8sZ9RUoQD?=
- =?us-ascii?Q?wfP4lu4Bz2B58mlmTxfoUPbA6l9ZfsfriFWchX9DU32TGthDZINVw8nxBc2j?=
- =?us-ascii?Q?NOeGh2mFYoGBXHs+ea51AlLjMcVPpR6FB54LhVjjzB5Pl3WbcKvFmS40UIoV?=
- =?us-ascii?Q?2nPL/XnuEjXuIiAK+2NpxiDbwXsKeQ4F7tnDzUq6Ga/epf/lXZpP8UVfUopF?=
- =?us-ascii?Q?Fkh6zouS1teQecAUMmwxF3b5uf+Y2gkSaSG/B5O9?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c5bed9a7-f6ff-494b-e593-08dd2e1d6b4e
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2025 06:43:24.9172
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xew9SqsYOzwEXBZwBE9a5GoZbdqd1svaYPGY5YX/R1QDrRpr10vHFRBHi+vTfsETdLUDPPdLwsf4W2J+RL5v+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB6989
-X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH 1/2] powerpc/vpa_dtl: Add interface to expose vpa dtl
+ counters via perf
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20241216071516.104324-1-kjain@linux.ibm.com>
+Date: Mon, 6 Jan 2025 13:08:00 +0530
+Cc: mpe@ellerman.id.au, maddy@linux.ibm.com, disgoel@linux.ibm.com,
+        hbathini@linux.ibm.com, adubey@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9F3BF4EC-54F7-48DF-8EC5-2220F943230E@linux.vnet.ibm.com>
+References: <20241216071516.104324-1-kjain@linux.ibm.com>
+To: Kajol Jain <kjain@linux.ibm.com>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: It7P6585do75iWjMhlRQdc_LD-i17Vmg
+X-Proofpoint-GUID: It7P6585do75iWjMhlRQdc_LD-i17Vmg
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ lowpriorityscore=0 priorityscore=1501 phishscore=0 spamscore=0
+ clxscore=1011 adultscore=0 suspectscore=0 malwarescore=0 mlxlogscore=999
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501060065
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Dec 20, 2024 at 07:32:52PM +0100, David Hildenbrand wrote:
-> On 19.12.24 00:11, Alistair Popple wrote:
-> > On Tue, Dec 17, 2024 at 11:31:25PM +0100, David Hildenbrand wrote:
-> > > On 17.12.24 06:13, Alistair Popple wrote:
-> > > > The procfs mmu files such as smaps currently ignore device dax and fs
-> > > > dax pages because these pages are considered special. To maintain
-> > > > existing behaviour once these pages are treated as normal pages and
-> > > > returned from vm_normal_page() add tests to explicitly skip them.
-> > > > 
-> > > > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> > > > ---
-> > > >    fs/proc/task_mmu.c | 18 ++++++++++++++----
-> > > >    1 file changed, 14 insertions(+), 4 deletions(-)
-> > > > 
-> > > > diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> > > > index 38a5a3e..c9b227a 100644
-> > > > --- a/fs/proc/task_mmu.c
-> > > > +++ b/fs/proc/task_mmu.c
-> > > > @@ -801,6 +801,8 @@ static void smaps_pte_entry(pte_t *pte, unsigned long addr,
-> > > >    	if (pte_present(ptent)) {
-> > > >    		page = vm_normal_page(vma, addr, ptent);
-> > > > +		if (page && (is_device_dax_page(page) || is_fsdax_page(page)))
-> > > 
-> > > This "is_device_dax_page(page) || is_fsdax_page(page)" is a common theme
-> > > here, likely we should have a special helper?
-> > 
-> > Sounds good, will add is_dax_page() if there are enough callers left after any
-> > review comments.
-> 
-> :)
 
-In the end there was only a single caller so I will leave this open-coded.
 
-> > > But, don't we actually want to include them in the smaps output now? I think
-> > > we want.
-> > 
-> > I'm not an expert in what callers of vm_normal_page() think of as a "normal"
-> > page.
-> 
-> Yeah, it's tricky. It means "this is abnormal, don't look at the struct
-> page". We're moving away from that, such that these folios/pages will be ...
-> mostly normal :)
-> 
-> > So my philosphy here was to ensure anything calling vm_normal_page()
-> > didn't accidentally start seeing DAX pages, either by checking existing filters
-> > (lots of callers already call vma_is_special_huge() or some equivalent) or
-> > explicitly filtering them out in the hope someone smarter than me could tell me
-> > it was unneccssary.
-> > 
-> > That stategy seems to have worked, and so I agree we likely do want them in
-> > smaps. I just didn't want to silently do it without this kind of discussion
-> > first.
-> 
-> Yes, absolutely.
-> 
-> > 
-> > > The rmap code will indicate these pages in /proc/meminfo, per-node info, in
-> > > the memcg ... as "Mapped:" etc.
-> > > 
-> > > So likely we just want to also indicate them here, or is there any downsides
-> > > we know of?
-> > 
-> > I don't know of any, and I think it makes sense to also indicate them so will
-> > drop this check in the respin.
-> 
-> It will be easy to hide them later, at least we talked about it. Thanks for
-> doing all this!
+> On 16 Dec 2024, at 12:45=E2=80=AFPM, Kajol Jain <kjain@linux.ibm.com> =
+wrote:
+>=20
+> The pseries Shared Processor Logical Partition(SPLPAR) machines
+> can retrieve a log of dispatch and preempt events from the
+> hypervisor using data from Disptach Trace Log(DTL) buffer.
+> With this information, user can retrieve when and why each dispatch &
+> preempt has occurred. Added an interface to expose the Virtual =
+Processor
+> Area(VPA) DTL counters via perf.
+>=20
+> The following events are available and exposed in sysfs:
+>=20
+> vpa_dtl/dtl_cede/ - Trace voluntary (OS initiated) virtual processor =
+waits
+> vpa_dtl/dtl_preempt/ - Trace time slice preempts
+> vpa_dtl/dtl_fault/ - Trace virtual partition memory page faults.
+> vpa_dtl/dtl_all/ - Trace all (dtl_cede/dtl_preempt/dtl_fault)
+>=20
+> Added interface defines supported event list, config fields for the
+> event attributes and their corresponding bit values which are exported
+> via sysfs. User could use the standard perf tool to access perf events
+> exposed via vpa-dtl pmu.
+>=20
+> The VPA DTL PMU counters do not interrupt on overflow or generate any
+> PMI interrupts. Therefore, the kernel needs to poll the counters, =
+added
+> hrtimer code to do that. The timer interval can be provided by user =
+via
+> sample_period field in nano seconds.
+>=20
+> Result on power10 SPLPAR system with 656 cpu threads.
+> In the below perf record command with vpa_dtl pmu, -c option is used
+> to provide sample_period whch corresponding to 1000000000ns i.e; 1sec
+> and the workload time is also 1 second, hence we are getting 656 =
+samples:
+>=20
+> [command] perf record -a -R -e vpa_dtl/dtl_all/ -c 1000000000 sleep 1
+> [ perf record: Woken up 1 times to write data ]
+> [ perf record: Captured and wrote 0.828 MB perf.data (656 samples) ]
+>=20
+> There is one hrtimer added per vpa-dtl pmu thread. Code added to =
+handle
+> addition of dtl buffer data in the raw sample. Since DTL does not =
+provide
+> IP address for a sample and it just have traces on reason of
+> dispatch/preempt, we directly saving DTL buffer data to perf.data file =
+as
+> raw sample. For each hrtimer restart call, interface will dump all the
+> new dtl entries added to dtl buffer as a raw sample.
+>=20
+> To ensure there are no other conflicting dtl users (example: debugfs =
+dtl
+> or /proc/powerpc/vcpudispatch_stats), interface added code to use
+> "down_write_trylock" call to take the dtl_access_lock. The =
+dtl_access_lock
+> is defined in dtl.h file. Also added global reference count variable =
+called
+> "dtl_global_refc", to ensure dtl data can be captured per-cpu. Code =
+also
+> added global lock called "dtl_global_lock" to avoid race condition.
+>=20
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
 
-Not a problem. The other main thing in this patch is also hiding them from
-/proc/<PID>/pagemap. Based on this discussion I can't think of any good reason
-why we would want to hide them there so will also remove the checks in the
-pagemap walker.
+For both the patches,
 
-> -- 
-> Cheers,
-> 
-> David / dhildenb
-> 
+Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+
+Thanks
+Athira
+> ---
+> arch/powerpc/perf/Makefile  |   2 +-
+> arch/powerpc/perf/vpa-dtl.c | 462 ++++++++++++++++++++++++++++++++++++
+> include/linux/cpuhotplug.h  |   1 +
+> 3 files changed, 464 insertions(+), 1 deletion(-)
+> create mode 100644 arch/powerpc/perf/vpa-dtl.c
+>=20
+> diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
+> index ac2cf58d62db..623168572685 100644
+> --- a/arch/powerpc/perf/Makefile
+> +++ b/arch/powerpc/perf/Makefile
+> @@ -14,7 +14,7 @@ obj-$(CONFIG_PPC_POWERNV) +=3D imc-pmu.o
+> obj-$(CONFIG_FSL_EMB_PERF_EVENT) +=3D core-fsl-emb.o
+> obj-$(CONFIG_FSL_EMB_PERF_EVENT_E500) +=3D e500-pmu.o e6500-pmu.o
+>=20
+> -obj-$(CONFIG_HV_PERF_CTRS) +=3D hv-24x7.o hv-gpci.o hv-common.o
+> +obj-$(CONFIG_HV_PERF_CTRS) +=3D hv-24x7.o hv-gpci.o hv-common.o =
+vpa-dtl.o
+>=20
+> obj-$(CONFIG_VPA_PMU) +=3D vpa-pmu.o
+>=20
+> diff --git a/arch/powerpc/perf/vpa-dtl.c b/arch/powerpc/perf/vpa-dtl.c
+> new file mode 100644
+> index 000000000000..0a3ca46c602d
+> --- /dev/null
+> +++ b/arch/powerpc/perf/vpa-dtl.c
+> @@ -0,0 +1,462 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Perf interface to expose Dispatch Trace Log counters.
+> + *
+> + * Copyright (C) 2024 Kajol Jain, IBM Corporation
+> + */
+> +
+> +#define pr_fmt(fmt) "vpa_dtl: " fmt
+> +
+> +#include <asm/dtl.h>
+> +#include <linux/perf_event.h>
+> +#include <asm/plpar_wrappers.h>
+> +
+> +#define EVENT(_name, _code)     enum{_name =3D _code}
+> +
+> +/*
+> + * Based on Power Architecture Platform Reference(PAPR) =
+documentation,
+> + * Table 14.14. Per Virtual Processor Area, below Dispatch Trace =
+Log(DTL)
+> + * Enable Mask used to get corresponding virtual processor dispatch
+> + * to preempt traces:
+> + *   DTL_CEDE(0x1): Trace voluntary (OS initiated) virtual
+> + *   processor waits
+> + *   DTL_PREEMPT(0x2): Trace time slice preempts
+> + *   DTLFAULT(0x4): Trace virtual partition memory page
+> + faults.
+> + *   DTL_ALL(0x7): Trace all (DTL_CEDE | DTL_PREEMPT | DTL_FAULT)
+> + *
+> + * Event codes based on Dispatch Trace Log Enable Mask.
+> + */
+> +EVENT(DTL_CEDE,         0x1);
+> +EVENT(DTL_PREEMPT,      0x2);
+> +EVENT(DTL_FAULT,        0x4);
+> +EVENT(DTL_ALL,          0x7);
+> +
+> +GENERIC_EVENT_ATTR(dtl_cede, DTL_CEDE);
+> +GENERIC_EVENT_ATTR(dtl_preempt, DTL_PREEMPT);
+> +GENERIC_EVENT_ATTR(dtl_fault, DTL_FAULT);
+> +GENERIC_EVENT_ATTR(dtl_all, DTL_ALL);
+> +
+> +PMU_FORMAT_ATTR(event, "config:0-7");
+> +
+> +static struct attribute *events_attr[] =3D {
+> + GENERIC_EVENT_PTR(DTL_CEDE),
+> + GENERIC_EVENT_PTR(DTL_PREEMPT),
+> + GENERIC_EVENT_PTR(DTL_FAULT),
+> + GENERIC_EVENT_PTR(DTL_ALL),
+> + NULL
+> +};
+> +
+> +static struct attribute_group event_group =3D {
+> + .name =3D "events",
+> + .attrs =3D events_attr,
+> +};
+> +
+> +static struct attribute *format_attrs[] =3D {
+> + &format_attr_event.attr,
+> + NULL,
+> +};
+> +
+> +static const struct attribute_group format_group =3D {
+> + .name =3D "format",
+> + .attrs =3D format_attrs,
+> +};
+> +
+> +static const struct attribute_group *attr_groups[] =3D {
+> + &format_group,
+> + &event_group,
+> + NULL,
+> +};
+> +
+> +struct vpa_dtl {
+> + struct dtl_entry *buf;
+> + u64 last_idx;
+> + bool active_lock;
+> +};
+> +
+> +static DEFINE_PER_CPU(struct vpa_dtl, vpa_dtl_cpu);
+> +
+> +/* variable to capture reference count for the active dtl threads */
+> +static int dtl_global_refc;
+> +static spinlock_t dtl_global_lock =3D =
+__SPIN_LOCK_UNLOCKED(dtl_global_lock);
+> +
+> +/*
+> + * Function to dump the dispatch trace log buffer data to the
+> + * perf raw sample.
+> + */
+> +static void vpa_dtl_dump_sample_data(struct perf_event *event)
+> +{
+> + struct perf_sample_data data;
+> + struct perf_raw_record raw;
+> + struct pt_regs regs;
+> + u64 cur_idx, last_idx, i;
+> + char *buf;
+> +
+> + /* actual number of entries read */
+> + long n_read =3D 0, read_size =3D 0;
+> +
+> + /* number of entries added to dtl buffer */
+> + long n_req;
+> +
+> + struct vpa_dtl *dtl =3D &per_cpu(vpa_dtl_cpu, event->cpu);
+> +
+> + /* Setup perf sample */
+> + perf_sample_data_init(&data, 0, event->hw.last_period);
+> + memset(&regs, 0, sizeof(regs));
+> + memset(&raw, 0, sizeof(raw));
+> +
+> + cur_idx =3D be64_to_cpu(lppaca_of(event->cpu).dtl_idx);
+> + last_idx =3D dtl->last_idx;
+> +
+> + if (last_idx + N_DISPATCH_LOG <=3D cur_idx)
+> + last_idx =3D cur_idx - N_DISPATCH_LOG + 1;
+> +
+> + n_req =3D cur_idx - last_idx;
+> +
+> + /* no new entry added to the buffer, return */
+> + if (n_req <=3D 0)
+> + return;
+> +
+> + dtl->last_idx =3D last_idx + n_req;
+> +
+> + buf =3D kzalloc((n_req * sizeof(struct dtl_entry)) +
+> + sizeof(tb_ticks_per_sec) + sizeof(n_req), GFP_NOWAIT);
+> + if (!buf) {
+> + pr_warn("buffer alloc failed for perf raw data for cpu%d\n", =
+event->cpu);
+> + return;
+> + }
+> + raw.frag.data =3D buf;
+> +
+> + /* Save tb_ticks_per_sec to convert timebase to sec */
+> + memcpy(buf, &tb_ticks_per_sec, sizeof(tb_ticks_per_sec));
+> + buf +=3D sizeof(tb_ticks_per_sec);
+> +
+> + /* Save total number of dtl entries added to the dtl buffer */
+> + memcpy(buf, &n_req, sizeof(n_req));
+> + buf +=3D sizeof(n_req);
+> +
+> + i =3D last_idx % N_DISPATCH_LOG;
+> +
+> + /* read the tail of the buffer if we've wrapped */
+> + if (i + n_req > N_DISPATCH_LOG) {
+> + read_size =3D N_DISPATCH_LOG - i;
+> + memcpy(buf, &dtl->buf[i], read_size * sizeof(struct dtl_entry));
+> + i =3D 0;
+> + n_req -=3D read_size;
+> + n_read +=3D read_size;
+> + buf +=3D read_size * sizeof(struct dtl_entry);
+> + }
+> +
+> + /* .. and now the head */
+> + memcpy(buf, &dtl->buf[i], n_req * sizeof(struct dtl_entry));
+> + n_read +=3D n_req;
+> +
+> + raw.frag.size =3D n_read * sizeof(struct dtl_entry) +
+> + sizeof(tb_ticks_per_sec) + sizeof(n_req);
+> +
+> + perf_sample_save_raw_data(&data, &raw);
+> + perf_event_overflow(event, &data, &regs);
+> +}
+> +
+> +/*
+> + * The VPA Dispatch Trace log counters do not interrupt on overflow.
+> + * Therefore, the kernel needs to poll the counters to avoid missing
+> + * an overflow using hrtimer. The timer interval is based on =
+sample_period
+> + * count provided by user, and minimum interval is 1 millisecond.
+> + */
+> +static enum hrtimer_restart vpa_dtl_hrtimer_handle(struct hrtimer =
+*hrtimer)
+> +{
+> + struct perf_event *event;
+> + u64 period;
+> +
+> + event =3D container_of(hrtimer, struct perf_event, hw.hrtimer);
+> +
+> + if (event->state !=3D PERF_EVENT_STATE_ACTIVE)
+> + return HRTIMER_NORESTART;
+> +
+> + vpa_dtl_dump_sample_data(event);
+> + period =3D max_t(u64, 1000000, event->hw.sample_period);
+> + hrtimer_forward_now(hrtimer, ns_to_ktime(period));
+> +
+> + return HRTIMER_RESTART;
+> +}
+> +
+> +static void vpa_dtl_start_hrtimer(struct perf_event *event)
+> +{
+> + u64 period;
+> + struct hw_perf_event *hwc =3D &event->hw;
+> +
+> + period =3D max_t(u64, 1000000, hwc->sample_period);
+> + hrtimer_start(&hwc->hrtimer, ns_to_ktime(period), =
+HRTIMER_MODE_REL_PINNED);
+> +}
+> +
+> +static void vpa_dtl_stop_hrtimer(struct perf_event *event)
+> +{
+> + struct hw_perf_event *hwc =3D &event->hw;
+> +
+> + hrtimer_cancel(&hwc->hrtimer);
+> +}
+> +
+> +static void vpa_dtl_reset_global_refc(struct perf_event *event)
+> +{
+> + spin_lock(&dtl_global_lock);
+> + dtl_global_refc--;
+> + if (dtl_global_refc <=3D 0) {
+> + dtl_global_refc =3D 0;
+> + up_write(&dtl_access_lock);
+> + }
+> + spin_unlock(&dtl_global_lock);
+> +}
+> +
+> +static int vpa_dtl_event_init(struct perf_event *event)
+> +{
+> + struct hw_perf_event *hwc =3D &event->hw;
+> + struct vpa_dtl *dtl =3D &per_cpu(vpa_dtl_cpu, event->cpu);
+> +
+> + /* test the event attr type for PMU enumeration */
+> + if (event->attr.type !=3D event->pmu->type)
+> + return -ENOENT;
+> +
+> + if (!perfmon_capable())
+> + return -EACCES;
+> +
+> + /* Return if this is a counting event */
+> + if (!is_sampling_event(event))
+> + return -EOPNOTSUPP;
+> +
+> + if (!(event->attr.sample_type & PERF_SAMPLE_RAW)) {
+> + pr_debug("To enable perf sampling, run with -R/raw-samples option");
+> + return -EOPNOTSUPP;
+> + }
+> +
+> + /* Invalid eventcode */
+> + switch (event->attr.config) {
+> + case DTL_LOG_CEDE:
+> + case DTL_LOG_PREEMPT:
+> + case DTL_LOG_FAULT:
+> + case DTL_LOG_ALL:
+> + break;
+> + default:
+> + return -EINVAL;
+> + }
+> +
+> + spin_lock(&dtl_global_lock);
+> +
+> + /*
+> + * To ensure there are no other conflicting dtl users
+> + * (example: /proc/powerpc/vcpudispatch_stats or debugfs dtl),
+> + * below code try to take the dtl_access_lock.
+> + * The dtl_access_lock is a rwlock defined in dtl.h, which is used
+> + * to unsure there is no conflicting dtl users.
+> + * Based on below code, vpa_dtl pmu tries to take write access lock
+> + * and also checks for dtl_global_refc, to make sure that the
+> + * dtl_access_lock is taken by vpa_dtl pmu interface.
+> + */
+> + if (dtl_global_refc =3D=3D 0 && =
+!down_write_trylock(&dtl_access_lock)) {
+> + spin_unlock(&dtl_global_lock);
+> + return -EBUSY;
+> + }
+> +
+> + /*
+> + * Increment the number of active vpa_dtl pmu threads. The
+> + * dtl_global_refc is used to keep count of cpu threads that
+> + * currently capturing dtl data using vpa_dtl pmu interface.
+> + */
+> + dtl_global_refc++;
+> +
+> + /*
+> + * active_lock is a per cpu variable which is set if
+> + * current cpu is running vpa_dtl perf record session.
+> + */
+> + dtl->active_lock =3D true;
+> + spin_unlock(&dtl_global_lock);
+> +
+> + hrtimer_init(&hwc->hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
+> + hwc->hrtimer.function =3D vpa_dtl_hrtimer_handle;
+> +
+> + /*
+> + * Since hrtimers have a fixed rate, we can do a static freq->period
+> + * mapping and avoid the whole period adjust feedback stuff.
+> + */
+> + if (event->attr.freq) {
+> + long freq =3D event->attr.sample_freq;
+> +
+> + event->attr.sample_period =3D NSEC_PER_SEC / freq;
+> + hwc->sample_period =3D event->attr.sample_period;
+> + local64_set(&hwc->period_left, hwc->sample_period);
+> + hwc->last_period =3D hwc->sample_period;
+> + event->attr.freq =3D 0;
+> + }
+> +
+> + event->destroy =3D vpa_dtl_reset_global_refc;
+> + return 0;
+> +}
+> +
+> +static int vpa_dtl_event_add(struct perf_event *event, int flags)
+> +{
+> + int ret, hwcpu;
+> + unsigned long addr;
+> + struct vpa_dtl *dtl =3D &per_cpu(vpa_dtl_cpu, event->cpu);
+> +
+> + /*
+> + * Register our dtl buffer with the hypervisor. The
+> + * HV expects the buffer size to be passed in the second
+> + * word of the buffer. Refer section '14.11.3.2. H_REGISTER_VPA'
+> + * from PAPR for more information.
+> + */
+> + ((u32 *)dtl->buf)[1] =3D cpu_to_be32(DISPATCH_LOG_BYTES);
+> + dtl->last_idx =3D 0;
+> +
+> + hwcpu =3D get_hard_smp_processor_id(event->cpu);
+> + addr =3D __pa(dtl->buf);
+> +
+> + ret =3D register_dtl(hwcpu, addr);
+> + if (ret) {
+> + pr_warn("DTL registration for cpu %d (hw %d) failed with %d\n",
+> + event->cpu, hwcpu, ret);
+> + return ret;
+> + }
+> +
+> + /* set our initial buffer indices */
+> + lppaca_of(event->cpu).dtl_idx =3D 0;
+> +
+> + /*
+> + * Ensure that our updates to the lppaca fields have
+> + * occurred before we actually enable the logging
+> + */
+> + smp_wmb();
+> +
+> + /* enable event logging */
+> + lppaca_of(event->cpu).dtl_enable_mask =3D event->attr.config;
+> +
+> + vpa_dtl_start_hrtimer(event);
+> +
+> + return 0;
+> +}
+> +
+> +static void vpa_dtl_event_del(struct perf_event *event, int flags)
+> +{
+> + int hwcpu =3D get_hard_smp_processor_id(event->cpu);
+> + struct vpa_dtl *dtl =3D &per_cpu(vpa_dtl_cpu, event->cpu);
+> +
+> + vpa_dtl_stop_hrtimer(event);
+> + unregister_dtl(hwcpu);
+> + lppaca_of(event->cpu).dtl_enable_mask =3D 0x0;
+> + dtl->active_lock =3D false;
+> +}
+> +
+> +static void vpa_dtl_event_read(struct perf_event *event)
+> +{
+> + /*
+> + * This function defination is empty as vpa_dtl_dump_sample_data
+> + * is used to parse and dump the dispatch trace log data,
+> + * to perf raw sample.
+> + */
+> +}
+> +
+> +/* Allocate dtl buffer memory for given cpu. */
+> +static int vpa_dtl_mem_alloc(int cpu)
+> +{
+> + struct vpa_dtl *dtl =3D &per_cpu(vpa_dtl_cpu, cpu);
+> + struct dtl_entry *buf =3D NULL;
+> +
+> + if (dtl->buf)
+> + return 0;
+> + dtl->active_lock =3D false;
+> +
+> + /* Check for dispatch trace log buffer cache */
+> + if (!dtl_cache)
+> + return -ENOMEM;
+> +
+> + buf =3D kmem_cache_alloc_node(dtl_cache, GFP_KERNEL, =
+cpu_to_node(cpu));
+> + if (!buf) {
+> + pr_warn("buffer allocation failed for cpu %d\n", cpu);
+> + return -ENOMEM;
+> + }
+> + dtl->buf =3D buf;
+> + return 0;
+> +}
+> +
+> +static int vpa_dtl_cpu_online(unsigned int cpu)
+> +{
+> + return vpa_dtl_mem_alloc(cpu);
+> +}
+> +
+> +static int vpa_dtl_cpu_offline(unsigned int cpu)
+> +{
+> + struct vpa_dtl *dtl =3D &per_cpu(vpa_dtl_cpu, cpu);
+> +
+> + /* Reduce the ref count if dtl event running on this cpu */
+> + spin_lock(&dtl_global_lock);
+> + if (dtl_global_refc && dtl->active_lock)
+> + dtl_global_refc--;
+> + if (dtl_global_refc <=3D 0) {
+> + dtl_global_refc =3D 0;
+> + up_write(&dtl_access_lock);
+> + }
+> + spin_unlock(&dtl_global_lock);
+> + return 0;
+> +}
+> +
+> +static int vpa_dtl_cpu_hotplug_init(void)
+> +{
+> + return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_VPA_DTL_ONLINE,
+> +  "perf/powerpc/vpa_dtl:online",
+> +  vpa_dtl_cpu_online,
+> +  vpa_dtl_cpu_offline);
+> +}
+> +
+> +static void vpa_dtl_clear_memory(void)
+> +{
+> + int i;
+> +
+> + for_each_online_cpu(i) {
+> + struct vpa_dtl *dtl =3D &per_cpu(vpa_dtl_cpu, i);
+> +
+> + kmem_cache_free(dtl_cache, dtl->buf);
+> + dtl->buf =3D NULL;
+> + }
+> +}
+> +
+> +static struct pmu vpa_dtl_pmu =3D {
+> + .task_ctx_nr =3D perf_invalid_context,
+> +
+> + .name =3D "vpa_dtl",
+> + .attr_groups =3D attr_groups,
+> + .event_init  =3D vpa_dtl_event_init,
+> + .add         =3D vpa_dtl_event_add,
+> + .del         =3D vpa_dtl_event_del,
+> + .read        =3D vpa_dtl_event_read,
+> + .capabilities =3D PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_EXCLUSIVE,
+> +};
+> +
+> +static int vpa_dtl_init(void)
+> +{
+> + int r;
+> +
+> + if (!firmware_has_feature(FW_FEATURE_SPLPAR)) {
+> + pr_debug("not a shared virtualized system, not enabling\n");
+> + return -ENODEV;
+> + }
+> +
+> + /* This driver is intended only for L1 host. */
+> + if (is_kvm_guest()) {
+> + pr_debug("Only supported for L1 host system\n");
+> + return -ENODEV;
+> + }
+> +
+> + /* init cpuhotplug */
+> + r =3D vpa_dtl_cpu_hotplug_init();
+> + if (r) {
+> + vpa_dtl_clear_memory();
+> + return r;
+> + }
+> +
+> + r =3D perf_pmu_register(&vpa_dtl_pmu, vpa_dtl_pmu.name, -1);
+> + if (r)
+> + return r;
+> +
+> + return 0;
+> +}
+> +
+> +device_initcall(vpa_dtl_init);
+> diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
+> index a04b73c40173..7803da11d684 100644
+> --- a/include/linux/cpuhotplug.h
+> +++ b/include/linux/cpuhotplug.h
+> @@ -234,6 +234,7 @@ enum cpuhp_state {
+> CPUHP_AP_PERF_POWERPC_TRACE_IMC_ONLINE,
+> CPUHP_AP_PERF_POWERPC_HV_24x7_ONLINE,
+> CPUHP_AP_PERF_POWERPC_HV_GPCI_ONLINE,
+> + CPUHP_AP_PERF_POWERPC_VPA_DTL_ONLINE,
+> CPUHP_AP_PERF_CSKY_ONLINE,
+> CPUHP_AP_TMIGR_ONLINE,
+> CPUHP_AP_WATCHDOG_ONLINE,
+> --=20
+> 2.43.0
+>=20
+>=20
+>=20
+
 
