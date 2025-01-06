@@ -1,69 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-4728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4729-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA580A03154
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 21:24:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE234A031E7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 22:15:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRlyW51WKz30WR;
-	Tue,  7 Jan 2025 07:24:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRn5X6X2lz2yDH;
+	Tue,  7 Jan 2025 08:15:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::130"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736195059;
-	cv=none; b=bBwfZqenkFvbwtqJskLR+2DEmuL9IWFbjds9s0AVQIenvLKds8e+wV0iw+2qi6rcr45or4YTCwtbo5zjcvznXpRSwfOtdtm8Y57+IwnZd60FdWkjffMUo3VamRjBJdceZ2NJYChsIx2rnYjqMbS6HIwmuipyfm/FT/LmtWSsJiwPlCfY1dVLj9C9qjwI3W1SQQrpy/d+CGQ9/XD9VeZqjRlsUp3H/wGebhVXMvaZUs2mhxPUhHiXbG9LSNKfWLzrJAMONGTPr95GLxQoMF5cl06BL5jL7FaKurmnhNL6lZXWVxit8p1haqz78vXwVOh+LNElrJy8OQap5JzNmS+LPg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736198128;
+	cv=none; b=B0PnmpcBQG6ZAsRmiA2l0gVhYNzxpOze27vDv3ALRxLE0t7XiMssBAmlepk73rlWdDX5PYlM3W2h9TbiXgL/FCizpYuDjVgYYevSEl2+lvdPWvFmJm7GgxKq2roWa4myemS/f8TTyFLAQUcqy9qkS8adwKfhEi13t+H64Vn5pIcieKriMdZN0xO+DcqFTJ9XAJHFjB8oEGkvHfYReQ7TCRwvwZgOy305twRWl2zAC0jvEc3ksFkx3rdZUt7eC5gz985dyqdwiFbcEMsNuMD14E+6PmUmmgNkJJUyG4s/l1JdP+HgBr71Nc7RVu9gzYL4EgmNgRwjjZwrCnE+kIID5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736195059; c=relaxed/relaxed;
-	bh=5pK73faD2iUHU43HzvTFZI0Cc/e5Ytr8pBdbyU/Jw7w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H63Harol2EyGf9SQ3DxqY+ecuLx9RXGUYQxaFT0JWvWDArErz4omjdv/nJlpMPDA9sq+P5waNIfaEth5tOhuIc7V0Lr0A/59cB/noO1IPzwXrvlZnNRXKf8OQoXnnosYxM8wX+6kSsp5J6MtQcx93mIZ4/wxejTsauAWDq+rlxHWr22ZQzVomZDNOvtSH2udARJ3KssnI/0CFIq0TxdS6ZC7z5YT4wV89KwJBTV74E8jeo8c0o/9h5fDWev1ssFv4FPn27yfEIjkvgfJJSNQ81OtrKVjsIaR4tU2slioOqUH5WakDKLcWmm1mlO7YIvBIcLvmxbZNETKke/iiygPNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=SaeJR5H3; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1736198128; c=relaxed/relaxed;
+	bh=DDcR8Y2nQap6isM4yzcBhuLulxQn4fp7frqrTfpm25Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XFjKZbpv0hxJqardQ1Z6MaXrRHFHzXTyOtwFR/TFNZqpFgc59zHI02+f+j/oQqmfnLsW85QT+NkHUmw63l/bothyjI+MsfoNmt9Fo9FE7Dvl/E73RFRnM3lDQBjiu/qG9b67j6x3RD9YOGenoBHCZZUmOqSMKvhknABuu59v5g0ZdMWwTTg2Tlcclz3JyDlD3bp0exiAQ6GUMOH20cijiHCtIwbH1PFthz2Sfc4KgHS9NdjGkhqIRHAmXcbTyxUkpLL5uouHVYv6Lpbw0zmaw7wGnN59bOlpiswLPpPTjG9OkAfl3s2spphoVLVHYySPdpXb6z/5xtGHTcQsM8uumA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dwGagPV4; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=SaeJR5H3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dwGagPV4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRlyS45Srz30WQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 07:24:16 +1100 (AEDT)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-3a815a5fb60so21485ab.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2025 12:24:15 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736195054; x=1736799854; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5pK73faD2iUHU43HzvTFZI0Cc/e5Ytr8pBdbyU/Jw7w=;
-        b=SaeJR5H3ujN/E0z3NmydlFN83yPo3fYopNTpURd08kHL6Ar4SP9y4EzpYJl1ZTRcLV
-         4DoNOWQfmuzhu/Y39uTs64MZtJGisgrte3cBDI6reXBgLLMkhHtEzXk2Pj1xkfBqQCqV
-         NytgT10o6MEBCVo5G7UQ5BBaEF+wIMyL++j+CUcB4UiISkY2HJdS2aDU8ugGPFPAJMsZ
-         tci16IAkZBnpuoBDCZweRaSeEXM5+L01xBvxdbPU69iqdBY9e0TYNSTm6bGDm7pWtwzA
-         i8PGNId4UdzpoAUWh6GgRB3W2sYZVAT9efGntklCPM81yhjcsH6UX7QggKVt0ci3kZx6
-         S16g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736195054; x=1736799854;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5pK73faD2iUHU43HzvTFZI0Cc/e5Ytr8pBdbyU/Jw7w=;
-        b=SWjD/1tDHBw5gsAVGkeef2wE4x0EYyZkNNg1V46j8yMoOvarO+Zoc/qNhPZtDrp6KE
-         wRLoJMzsBhciR3cVsQb4Kqni78iRqxf7MCA6QH1q9oQLPZnSpy1XFttgJToyxwNafC7c
-         nUmOzV4rhhf4mizufU1hRk8J8Bi0CwiqCVSPUbxxZr2hhSc+lJhyXA63a5jhvt3mpUiy
-         vk/Lh0W/R3xLpglSQCU4GAHPsu4dqdApfF18hEE/oY2PH3ZdNBR7WSNxg052wMRrcrSZ
-         mDkOulDqgJc9aACnLfwRjjUROTXcK4O4kUls7ORHQuSQNBZDrD0ZsIcTWW+bet7TG/RX
-         64Xg==
-X-Forwarded-Encrypted: i=1; AJvYcCWv4Tc7cITojP9mD7Ot+ZIetJXFuYXpQmddWliyjFRYSRuZi3Mc/xXjeAwemuIn0iZcu9iBsG90LfbNAfE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxMfp/8BVToJ3uX6TCznDD2RLPL29QLGbp8MY6ZMxSxgzqgKDK7
-	k/ExL1Wir1jRBqdg0+N8jHApZdOtpnMowEEtTD52JALfDSFCkvfK/ThJD6RnBJi6Er5xkiF8UFt
-	7J/eNWoetObxkMNCn9lWaHx674yUrkO/uPM4L
-X-Gm-Gg: ASbGncvteUTxJQt0Gz7FfjOpu1/jZ9Goa7wXIMOEmg5ZYbByx0U3FDeqYUPI2hkiJgp
-	ky1MMKKPLkGwSq2d4d1JcF8GYN+e0QrYmBY6mhHiTeBsWFovkxuOCI253itd2jMNomAt7
-X-Google-Smtp-Source: AGHT+IG/x5R/zua5r2i6YsQhWKKZ2ogrxjvF/cbOiTTSPADkG+pErtfI7/WJKmkrTs/Ppy0SdSu5BFv+/dRQEuollP4=
-X-Received: by 2002:a92:d205:0:b0:3a7:6126:ca3 with SMTP id
- e9e14a558f8ab-3ce32459024mr444465ab.24.1736195053560; Mon, 06 Jan 2025
- 12:24:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRn5W5mNMz2y8k
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 08:15:27 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 11A14A41E96;
+	Mon,  6 Jan 2025 21:13:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D953C4CED2;
+	Mon,  6 Jan 2025 21:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736198124;
+	bh=IlUoArd3cgICxTGfsWTXC+9GlSm6A1FG5iyMIObahC0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dwGagPV4zLkJa5iQxsPetExJbd2Anx2BZkFgd93Zg9A4i6J9V03AAp8GtT14zgXy2
+	 fBqK0+rm6zyUhARLe6/oaTN6y6IG2Tx4SnBSir04ItlTfdwGBC4CDH+SdWQ4gJes3G
+	 RWpAEPrAHGH2dn6sFTadTjz2L05Reo9/6n9tF4MiWFiPE2E1o4EqHKfXIKLh/+LwEH
+	 DDIPupJY7U0qRZ8It5lESknB8k/g0b9GSyCEldvE9FFg5Iuu5Wsd2z7SYmDsT4PZGy
+	 QxwjJcWjzNkX1ypXCbxL8VnuyLlPPSBt1i0f+CE9zrJ4wR8Gftrz0Q0U1T9DiRmVe5
+	 ZJMUtFO1VYqIQ==
+Date: Mon, 6 Jan 2025 13:15:22 -0800
+From: Namhyung Kim <namhyung@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+	irogers@google.com, linux-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	maddy@linux.ibm.com, kjain@linux.ibm.com,
+	disgoel@linux.vnet.ibm.com
+Subject: Re: [PATCH] tools/perf: Fix return code for lock_contention_prepare
+Message-ID: <Z3xH6kCK9zj5ttZM@google.com>
+References: <20241223135655.8042-1-atrajeev@linux.vnet.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,100 +66,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <8c8553387ebf904a9e5a93eaf643cb01164d9fb3.1736188471.git.christophe.leroy@csgroup.eu>
- <3fda227e6ff229b5063d4181ecf75567ca016c18.1736188475.git.christophe.leroy@csgroup.eu>
-In-Reply-To: <3fda227e6ff229b5063d4181ecf75567ca016c18.1736188475.git.christophe.leroy@csgroup.eu>
-From: Ian Rogers <irogers@google.com>
-Date: Mon, 6 Jan 2025 12:24:02 -0800
-Message-ID: <CAP-5=fX2mr_N8fqScrb9Sr4b+Y726J9StGn7T3_Qfx36-Q=T5A@mail.gmail.com>
-Subject: Re: [PATCH] perf: Fix display of kernel symbols
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, "Liang, Kan" <kan.liang@linux.intel.com>, 
-	linux-perf-users@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, Arnaldo Carvalho de Melo <acme@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20241223135655.8042-1-atrajeev@linux.vnet.ibm.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 6, 2025 at 11:38=E2=80=AFAM Christophe Leroy
-<christophe.leroy@csgroup.eu> wrote:
->
-> Since commit 659ad3492b91 ("perf maps: Switch from rbtree to lazily
-> sorted array for addresses"), perf doesn't display anymore kernel
-> symbols on powerpc, allthough it still detects them as kernel addresses.
->
->         # Overhead  Command     Shared Object  Symbol
->         # ........  ..........  ............. ...........................=
-...........
->         #
->             80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
->              3.91%  Coeur main  gau            [.] engine_loop.constprop.=
-0.isra.0
->              1.72%  Coeur main  [unknown]      [k] 0xc005f11c
->              1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
->              0.44%  Coeur main  libc.so.6      [.] epoll_wait
->              0.38%  Coeur main  [unknown]      [k] 0xc0011718
->              0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
->
-> This is because function maps__find_next_entry() now returns current
-> entry instead of next entry, leading to kernel map end address
-> getting mis-configured with its own start address instead of the
-> start address of the following map.
->
-> Fix it by really taking the next entry.
->
-> Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted arra=
-y for addresses")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-> ---
->  tools/perf/util/maps.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-> index 432399cbe5dd..d39bf27a5fdd 100644
-> --- a/tools/perf/util/maps.c
-> +++ b/tools/perf/util/maps.c
-> @@ -1137,7 +1137,7 @@ struct map *maps__find_next_entry(struct maps *maps=
-, struct map *map)
->
->         down_read(maps__lock(maps));
->         i =3D maps__by_address_index(maps, map);
-> -       if (i < maps__nr_maps(maps))
-> +       if (++i < maps__nr_maps(maps))
->                 result =3D map__get(maps__maps_by_address(maps)[i]);
+Hello,
 
-Thanks for diagnosing this and sorry for the bug! Using the next entry
-in this way won't work if the entries aren't sorted. I think the code
-needs to be a little more complex, something like:
-```
-while (1) {
-    down_read(maps__lock(maps));
-    if (!maps__maps_by_address_sorted(maps)) {
-        up_read(maps__lock(maps));
-        maps__sort_by_address(maps);
-        continue;
-    }
-    i =3D maps__by_address_index(maps, map) + 1;
-    if (i < maps__nr_maps(maps))
-        result =3D map__get(maps__maps_by_address(maps)[i]);
-    up_read(maps__lock(maps));
-    break;
-}
-```
-We could also implement the code similar to maps__by_address_index but
-with some kind of best next value in the unsorted case. Given the
-function has a single caller then this is probably overkill, but we've
-seen performance issues in this code before.
+On Mon, Dec 23, 2024 at 07:26:55PM +0530, Athira Rajeev wrote:
+> perf lock contention returns zero exit value even if the lock contention
+> BPF setup failed.
+> 
+>    # ./perf lock con -b true
+>    libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
+>    libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
+>    libbpf: failed to find valid kernel BTF
+>    libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
+>    libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
+>    libbpf: failed to find valid kernel BTF
+>    libbpf: Error loading vmlinux BTF: -ESRCH
+>    libbpf: failed to load object 'lock_contention_bpf'
+>    libbpf: failed to load BPF skeleton 'lock_contention_bpf': -ESRCH
+>    Failed to load lock-contention BPF skeleton
+>    lock contention BPF setup failed
+>    # echo $?
+>     0
+> 
+> Fix this by saving the return code for lock_contention_prepare
+> so that command exits with proper return code
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+
+Thanks for the fix, the change itself looks good but I think we need the
+same for setup_output_field() and select_key() as well.
 
 Thanks,
-Ian
+Namhyung
+
+
+> ---
+>  tools/perf/builtin-lock.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
+> index 208c482daa56..2226c7dd4ae6 100644
+> --- a/tools/perf/builtin-lock.c
+> +++ b/tools/perf/builtin-lock.c
+> @@ -2049,7 +2049,8 @@ static int __cmd_contention(int argc, const char **argv)
+>  				goto out_delete;
+>  		}
+>  
+> -		if (lock_contention_prepare(&con) < 0) {
+> +		err = lock_contention_prepare(&con);
+> +		if (err < 0) {
+>  			pr_err("lock contention BPF setup failed\n");
+>  			goto out_delete;
+>  		}
+> -- 
+> 2.43.5
+> 
 
