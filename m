@@ -1,86 +1,154 @@
-Return-Path: <linuxppc-dev+bounces-4676-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4677-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FC68A01D38
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 03:08:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2FE9A01D4A
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 03:19:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRHf90Tf4z2xs7;
-	Mon,  6 Jan 2025 13:08:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRHtx2rwTz2yGY;
+	Mon,  6 Jan 2025 13:19:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2412::602" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736129312;
-	cv=pass; b=GhUqUGQ5VT/cpHiDOozQBN2qzGZ5JO4fOXixr/FMrfTYKVTMLIT3QpuCL5dgQWS88ALiMyJPhCAUD8hk9B5evH62tkpHmY3vcEosIHbkk8Zy3aLR/1OmXnZyiFF5UxQlG3Bv/wzHTXs0jqB704e/KfL8fg6G4VwEEgMp738Xz6O7k/jH5PBVX6LygcJdRpsulaKx9gQ94fg2XbLoG1txwKQGidIZMHqgOTwetr7RYBy/OvPYcNZlUTnpn7RpBOYGeBshGIxxIWvqwzWLv4Zmvzjw/quBp8FtOyCKUC5KFwkoQRGYroldmiG25a3Avux4Jb3rxL8fLruVB1u4t6Oy4w==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:260e::617" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736129977;
+	cv=pass; b=FKrv3ViUMIN2TvtG0gp88ZNSnB1CWMubTmhgHPjBhryy5RfLNvnBp3rtd18FczBiMc9ftnrNr2lep6lwxfGHAKeRLF6ljbZ3hQkIyV41uWUrZpLLV0ZG4WIJtnAULgSeMcPe8Zi1AleFxcanzdfNd/vYJo1BvJ+PdX7CMJ7WIR4T9eCXY5Y4tSjoQngf2pV0Mn0eBDSbWPrF44h5hjl2WWwKXTacfjyz7HepjpOlEVb9tqEDrRIKwdcVL2KdjbSbVOSLbZgirHTivbLe1Z+8yGnh2ouCCRxemFpemNzNQHZUVBk/FsE/0Oor8+o4jEMQcfopL7GO6FQ41CMtB3DUNg==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736129312; c=relaxed/relaxed;
-	bh=+hVCHEIpUQo/vZQnBNIGnZKWwYd0e1IulxgIyqJo8LQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=P96XR4bJ94DsO/Uw1aQnqIGIu68USUa4N+jM2z47KJQ4b1x/aYIwuyns5wUqD6itO7WxUx5+NKcq9ELlOdxNsi1Dw7bmyNCpsfYKTqvHdME3dgvP0q3zFri4uwccjmAjYcnFp7xgPw+If0DYA3Wcb/XE7pm/TSd31y+0QhQhDxgJfTp1Mjip2c3CmDMLqAYjHicdhGLYO60of8bxu3hTg5eTRUW4eyOcm5DSTJ8RRtR+MciH/5D7CCtG49fTAU850QouZBBwwuc7vAC3MwKAsqeoPw7Zy7RrPw1CNFgE4+JDb5NEQ+BrM3sq/7CgiZt9NIJVNdaKB4KxAoIOgQkRzQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=EgfET40I; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2412::602; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+	t=1736129977; c=relaxed/relaxed;
+	bh=r44BQ4A4x63V0/itwoiDFTeWVR0qqDMnO+p4SqveV5Y=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=HWY46IATtzor2YcS5UA0/Vkf6us4fFEnyIMsIRR4p3jUeDrF+kqXRXXYs8EwSaH3D0ZgnyGHOOHIFTvBH/4aK112CTbtkWU9jU6qFn6UUUsHab8mYI6G20GYPOwlb8RRqfLyAvGNTL5mX/vLn4P+g7SC+dZX0IcXfEz/AOZ+vBfQPrhPMZJps7FNwRmeKPU4NVKsYuIc3GqQ1QQZKldE2t2OiJIq6N6jPUcm1bUaVEtE73Lk+DGQ5lnMUdsorYDlZWffJRMHv1xN8q5JVHpoIlkOp/FSMVpB4gmfEb01OHGT6eHrZfryrjnSa2k5I6Z0WAvYP/lW2L99wePxCg2LYw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=QJpDvDZF; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:260e::617; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=EgfET40I;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=QJpDvDZF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2412::602; helo=nam10-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on20602.outbound.protection.outlook.com [IPv6:2a01:111:f403:2412::602])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260e::617; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on20617.outbound.protection.outlook.com [IPv6:2a01:111:f403:260e::617])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRHf72lSzz2xrJ
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 13:08:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRHtw03g7z2ykZ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 13:19:35 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WAFcRxq93vRwrcwye+FyFzV862X2ra6DyYsWlwl3R7oe1uijUkQBjC7uD1A7kOdU80LJmVN/urDCMP41CxbOFs3TPDdyQF9EQOLkKcdFS8XfMMRVasCTY/t+IF+OE+9DXiJ3K+BECP06bmz6woqckVwgox30YLTSc1y/EXY+NieTIhmW0yg2f62em6m0tvrUm6K54b9cQjD6Z2A5bGsX5G6bwbzyt04szTHNRpd/d5sArYGZb8v3xyAdtdubnhp1vwHZRoKmtUvmKuYxcozimeEZgvlxdrzKw4n9qPC+xyty/aGbE//KdJzIUPGRIuVmcjKgQVRapAPxibByHLCYbQ==
+ b=xNSv61Ifh1jKq8jIpXUfN+AsqM3QLfJo4dQ1N6DqDxWJ+wCy7PbSyV4QetBIvy/juEI+1b2lPXFylh07oRTYjKNMQOTNYX7cke0EEzDlwWnoR8ZoBdn7L8L6jic1K/1Sd/KNfTJ8+Ku6kiiNqiowdSHJ8M+itV2eFfrr5kQZ+LMWHiIqqW6likGlT6HsImrQib4AohyjWgzVV9x+IrX7MNQVXaK/TW/4OFVPQlvhWt/eMwngR5fJjNUuuNXRnA/c3leTbOlnkiwRgAR2NT60BmRuxw5vYqbYm+ACAm97mU9WHN09osn0HZ9hMlxqOY0Q54eBv6iYJgUauECE6d5Chw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+hVCHEIpUQo/vZQnBNIGnZKWwYd0e1IulxgIyqJo8LQ=;
- b=YB8ZFqFL6QhV6HQ5Gw9ZQk6/3EPIi/UbyhN/xFjhaAyhAWS4yovz/cfsI2Z0OUcSOBuV2cAB/VduGd1W0q1zw7oMD6nkTR3/5AsBFYv7QS1dFf03AV1YnW64BHvLuhx+bvZqKLG2L8rV16/EmRVpdbgYl+z4HhRwPdKpnGvk/nei0MPFnlJaqOS+bVXXW11LlwVgIJXL85j0jVKXsmAPv1zhATCgeIrUMecr1W3qXidjkQFWBQjwjR021wyw5ANMhKxo20iiUdOLhabsKIIwb4HFlwBnP3D0x9vGCuUmcGHCoj07q1yM2ZPWixSSq2vR0zfInPGhEYpzJhaap1/lfA==
+ bh=r44BQ4A4x63V0/itwoiDFTeWVR0qqDMnO+p4SqveV5Y=;
+ b=lMAiI+QqeFSdlyK+k6zI/UQgsySHq/YeN3hMHA/u+Pd5BX+39oxXJxa7LLY1CPG6WhtWWHAntQqWB+sNC/L2zWYOwL6/ErmqbO+rYiVrE83J1BQwN0NBCl9TBKWyJU2E0+Vx3ODWRz/lyo+21/WJuDT/P/jLJCDsSXEVVj+Qf/S44F+rhyNDEuWcO3OLsG8rKQ4WLWGLoixVc5rCtN/7ZjJYmlMQTmAXIX4KQQByBef2+ZF5ryY/plyytGuhGlh1JpKCUlmQ/vZZT/kF/JHEhJ04TKe25u6RhG/HWMOUzYADAXMnTCJymnL3+RSZoB+uov2oE5Z3vxi1JqQSAkGqTg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+hVCHEIpUQo/vZQnBNIGnZKWwYd0e1IulxgIyqJo8LQ=;
- b=EgfET40ItMcHaTZagsuS3cl5jJXG6VNU8LGrXddmnFcY0yXsiDZ0jkT6GzyjNH1975tqBYkSq5x0kPzVhKisgsjH/rBRVeuGitzYKfBiACRbCKNGrkDlWfwZuiqnHAeeUK+rc0fTmriU+/CcO/ZsQ886IPUYqXSDkvz754mT5ZHUpuQWx4IGHUqr7I1KWjB0L7U1JyXWpjwS/pP6W36mQqEtkCxAklvQ3CBCJ80qDYB7mx0rnFwNMA8j9iCrgjJWYHXCeeCtV/aVFV3tGe4HCrSrucOniJOkDmu2ewtkYLe/x9xnDcYCq7lPGj9CZLOIQw+FuJpoEEjP+aX9IxmCZg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- LV8PR12MB9153.namprd12.prod.outlook.com (2603:10b6:408:185::17) with
+ bh=r44BQ4A4x63V0/itwoiDFTeWVR0qqDMnO+p4SqveV5Y=;
+ b=QJpDvDZFruyfFa+1lyIrGJR24rj/Bb1Au+CocxxFOWI5rjjMt3J/MCvoJ1P6n/yZ1ZvbsdIFyzxYpTkADiwkPW3gBcadcrt+3iagVS0SPNMJBCtfmyl5FOs+QbH0lUxsFl1gK9ke3sBwtrdbVK4PSLFhpNnV+AZ7ZIeGzlnI+nokbAbRoMVYit+U8ZW83YVUms5spFHxhi2iDdP+hw43YL0mLVPvD8OENa4iv6OoK/edPHYXdvW3bfWbwglTpt8dtAdY+wsJSNwQJAkfvBT1TdlntFouxxZvZvasv+aUCk2+JNk+kxXmJhYKw9iuzW8qjkG6/IOeUtIe7DF0NR62uQ==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by DBAPR04MB7269.eurprd04.prod.outlook.com (2603:10a6:10:1a4::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8314.17; Mon, 6 Jan
- 2025 02:08:05 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%6]) with mapi id 15.20.8314.015; Mon, 6 Jan 2025
- 02:08:04 +0000
-Date: Mon, 6 Jan 2025 13:07:58 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: David Hildenbrand <david@redhat.com>
-Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, 
-	linux-mm@kvack.org, lina@asahilina.net, zhang.lyra@gmail.com, 
-	gerald.schaefer@linux.ibm.com, vishal.l.verma@intel.com, dave.jiang@intel.com, 
-	logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, 
-	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org, 
-	tytso@mit.edu, linmiaohe@huawei.com, peterx@redhat.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
-	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com
-Subject: Re: [PATCH v4 12/25] mm/memory: Enhance
- insert_page_into_pte_locked() to create writable mappings
-Message-ID: <gjuqvidcpvzwqrwogeoygwnsbvlpa4fvsvaoq6rlfzcq4wxmh5@tdhz3f2fm4ga>
-References: <cover.18cbcff3638c6aacc051c44533ebc6c002bf2bd9.1734407924.git-series.apopple@nvidia.com>
- <25a23433cb70f0fe6af92042eb71e962fcbf092b.1734407924.git-series.apopple@nvidia.com>
- <d4d32e17-d8e2-4447-bd33-af41e89a528f@redhat.com>
- <6254ce2c-4a47-4501-b518-dedaddcbf91a@redhat.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6254ce2c-4a47-4501-b518-dedaddcbf91a@redhat.com>
-X-ClientProxiedBy: SYBPR01CA0195.ausprd01.prod.outlook.com
- (2603:10c6:10:16::15) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+ 2025 02:19:07 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8314.015; Mon, 6 Jan 2025
+ 02:19:06 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Andrew Lunn <andrew@lunn.ch>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
+	<imx@lists.linux.dev>
+Subject: RE: [PATCH net-next 05/13] net: enetc: add debugfs interface to dump
+ MAC filter
+Thread-Topic: [PATCH net-next 05/13] net: enetc: add debugfs interface to dump
+ MAC filter
+Thread-Index: AQHbXaf8wsu7OhVxNE6rUk/X61GqHrMFPNAAgAPDL4A=
+Date: Mon, 6 Jan 2025 02:19:06 +0000
+Message-ID:
+ <PAXPR04MB8510C38BC40EB0E6D95F726888102@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250103060610.2233908-1-wei.fang@nxp.com>
+ <20250103060610.2233908-6-wei.fang@nxp.com>
+ <696fb436-40f6-4a9c-af0b-2851f8450bd1@lunn.ch>
+In-Reply-To: <696fb436-40f6-4a9c-af0b-2851f8450bd1@lunn.ch>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DBAPR04MB7269:EE_
+x-ms-office365-filtering-correlation-id: 605b17cc-aca5-4140-a8a3-08dd2df87f68
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|366016|7416014|376014|1800799024|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?GphpTNf4/6JegBiwWHLVBD2A38I8lZodOE8lyfdmx71cP9x3UNcbxvbZOlkZ?=
+ =?us-ascii?Q?RL72UAEKE/rKUH/cWsWbsjLgQbFz6+v1xnDgCoyj9UZ5dTXeUigweBbW2UKy?=
+ =?us-ascii?Q?Urg9aWNlqik6O1HCC+AAIx96DE2v6ME8wglDihKdGF/9gGKgO8VDQPNWHrMR?=
+ =?us-ascii?Q?RTnokmtRbK67J+0vYEDRh+IjuBVV/DuP6V4TALq0699aHfuATKoz+uTdzKhA?=
+ =?us-ascii?Q?EzQha52cB+7eOwzwjTdf2OdnZx9qmVuDqYApqey1R2ntD/Wxa3SIcxspYDZE?=
+ =?us-ascii?Q?bJZHzmGfFPRTvrEbLE4xmaAkvbtfk51IL14VvIsr5Kba5rPvf1vGeMc1HPBH?=
+ =?us-ascii?Q?1QBsPyG0JHkPMMBfOA4oh2I0zXuYg4qQsIZZW5W9JwT4LqxBN69EiYI+zFNt?=
+ =?us-ascii?Q?xM64bk0XZcQNyjg4mso4VBDZ84WFOEc5ecnOrB4jOzm1PhHbSYy4IE58Uwzl?=
+ =?us-ascii?Q?pfCGJEdvhfOZJ/S5gtVBkTjMAOS+ShmACEGZLHZzB/pYdWm8Ph+Xhy3AY3oQ?=
+ =?us-ascii?Q?b3IQrSzZDwy4to7hEe3Fq7u9lMRGw5ziLhIBZsOS5trUXjL9Avn6s4zZUjvC?=
+ =?us-ascii?Q?QxmZmlWQT6JE22i1dHwMMpj+iEHTgmCoU0B8aJaEIS02qrcU5vfqPXSPYQ8w?=
+ =?us-ascii?Q?40Q6jwDcf8k8E7jSS4wVpm+CZQmO1tJjXqAEZ86ov/96WIr0QlQjqM1CV8uJ?=
+ =?us-ascii?Q?UU/nmbdR0r+sIrBI88//aX1islIXwicTokz2VnzS/MYSPVanMkskgalCpb+c?=
+ =?us-ascii?Q?bv5UoHLpVKUEfQOhZdLl/6qpfUY+RpwO1D0NrJojVCPwAh3IK8t0hjixhxvQ?=
+ =?us-ascii?Q?8bf4Vyb55yACyDTAXeNag8lAFnkrO12AuwMqmmangimFYVjJBD/xfw0oIkNh?=
+ =?us-ascii?Q?wdqzvKQQ/sCANnHOFxn9EEVtiXQGI8Qo4jAcPcpy5JCEnsyO2RaLiKqcVsKZ?=
+ =?us-ascii?Q?IB/EIsAinbg50JMRSzBTpf7rniqsYTpgb4K+nfV3OjJPwgL3HL7l0+BW3QfE?=
+ =?us-ascii?Q?s77ocac0+o4MmpeFg1rHoyZNqdQ2mSyDbnTArO/bmBfAgSO5igJuluXRxHjZ?=
+ =?us-ascii?Q?bykYVamDdS2w2Dj4/rZiEF3cc9pEboIOmWUk6L5B2WF/Rmz8Up3YlR2ydPLA?=
+ =?us-ascii?Q?24n34h0O46NOeg3i0XSRnuWBstt0ayYfI5bj5ktQMsdgvIYbfbJpTFgGU4Dt?=
+ =?us-ascii?Q?eM8AVtX9+KWN0yKQMwLk4iWG42Pk342uGUdqQP3JF5xjgn7kA/ZieTjRrwFN?=
+ =?us-ascii?Q?rds2daE22igV5LL1ZfcAoNULD2D06gS+/3uOqhZlvUgMjDIj5okNH91dpEEa?=
+ =?us-ascii?Q?9Ji5TuZWCpKc47iQNmAiRBa6kiqWYiu2LNnEPg89X98tmOSEboA2YLagCo+Y?=
+ =?us-ascii?Q?uPIg4odtZTIiHeFN4GlImdMA5B51jL4QyWQkZrm9HrAtzpk+5cE/7fdhWlBV?=
+ =?us-ascii?Q?tY56VEjgbgnFFal7CarbuicLQInnIWib?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?UQ7vKghIOjBdIEY8TmysBHU1P8In97pQ9gKO5767Lot3m6dmg+7e25V3getw?=
+ =?us-ascii?Q?MEdPCAaBlExVFpTPtBY9ebY7rVaBBRIha3N/aOvtXri2GEKKfQOcMrg1/WnH?=
+ =?us-ascii?Q?tD587BuEjhgsjqSSoL9t4LS64tQgOqh4ZRvyLcwUDscadML/gbtY8ai4YF7Z?=
+ =?us-ascii?Q?lSTQYiHPg2TIISLTDzwDjHWfP5ab3RFa/N8jP1DAaaFBjgnBEf1vNcWSKGDQ?=
+ =?us-ascii?Q?/sCvZ4QGOJ/jYJwux4hgY7XVEmJltilDFh9qMeYEtgpSceZz+xwnGQmx/Q4e?=
+ =?us-ascii?Q?B4kKToVUfDpWOzutN/CPYDt9OCBWXawFetOgyApnH2mm6gGkmVMt2fnt6cdW?=
+ =?us-ascii?Q?WtL/z/FKlhFR+TQmpnXw592FGU7kplP0c7+2n0XT6TxHCnnsvVzQEBOCrlXq?=
+ =?us-ascii?Q?jXrbiDCXNC91ZZx/NRjPbmeTpxcyc0oiw/QVsgroltF93Qj8QfcNUUYhYnu2?=
+ =?us-ascii?Q?CeBBmpMMrS3lq1poxjPt8eoIpXy0XeWySUiX2KYpsbqSQi4GVUMCC8WH26tA?=
+ =?us-ascii?Q?EU7oBuSKvKgmm3e/W2mIltFH+3/ZVJ93md7KwpL1New5wWZtCbUGWzx2WzBW?=
+ =?us-ascii?Q?FnES7tA29xRn9in05diOUu4PS7EnXuZvjOhzTcp75lQS33eX2Y0WJAnZbJ4W?=
+ =?us-ascii?Q?vZaEken7Tir8FyNAwtSgJUHHZBjrtdujQAOtcGcAS0dLy2m17OHDfrDmst4m?=
+ =?us-ascii?Q?RUPT5abnV3GohfIgXsnGJeyA1RcQk25MO0lohA1n1ctjt2hwnQC/o2MyhJPB?=
+ =?us-ascii?Q?dOt0hrIGJTNhmJPITPxd6r3aGc0iT0vh5tY3HXvyGyUPbsjPBDo5UE/vTNgS?=
+ =?us-ascii?Q?HMcowsuXousMgbfFuGrbHRBqrLvm4k7Ps/vxaSyVKqszvFTHdek06WXJURl1?=
+ =?us-ascii?Q?aKfb0iohrlyKQsXZ9mYE7IFt7JR1CzNqZc4+nQtbaXPpCQRWpciWLjqxB3Nk?=
+ =?us-ascii?Q?X5chEnSQNDjYWhnDt9tLxN91QY+pqIFFcJMm8SDC9730OjLyfzNfawwfZy9g?=
+ =?us-ascii?Q?8/S4lRhdJp8uEQ4pYBKhZExivfIQz/VygDBGD+Nzl/y7Qe3Sr476tDUrlu8k?=
+ =?us-ascii?Q?qd6moO3ZR0UwOZ0ZiTpexOIuWkMxcLcusrgckUD9NBWbkxfZYr38Tc0gL+u+?=
+ =?us-ascii?Q?djS/nGOHLNmvY0Q0DrIzNxVgmovnc4Znvg60UajbBTNm4dNHpa7hhM51lzbb?=
+ =?us-ascii?Q?K0JYfY9G+fmcypSGcbC8/ZMfmXfYvPrnBAb+AqhRiIC8KiJelJga8TzZBFFS?=
+ =?us-ascii?Q?fh3oeWIGd0nnvF7WZ0Z4TsjYZbFY7MSH85M9o/5s2gEuNZdlGWF3P/3K8k17?=
+ =?us-ascii?Q?hd1ZbuP0YAkbuw9jTKCwJT0yIYbFay/NS3RKbfNVRdHYezkudAOR0azOnlvr?=
+ =?us-ascii?Q?0ZLXvakkeFDVmiBY68HlkU2yC9y55mKaIvqxW4e7IGumRFGoLs/gaTA58sMr?=
+ =?us-ascii?Q?6KgsVzTy2UhjWopTy/a7mCn1MVupkzdFdodvfJH17UFj760w1O5OuJ9k1LPx?=
+ =?us-ascii?Q?BMODDffFYeCkB1A70pdOnG6evmDrxchotItY/GH3NpmH13gX9Q60oeQHzcPf?=
+ =?us-ascii?Q?RJCw4QNPISNX0YAIVSY=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,195 +161,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|LV8PR12MB9153:EE_
-X-MS-Office365-Filtering-Correlation-Id: 08099fd0-03a1-4238-e1bf-08dd2df6f412
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cITYSKQRF4nAAZv0ungvDBV7dDs1xhblmZ6R0EiAGsQbmQO75Km7ORqygUyl?=
- =?us-ascii?Q?N4Ez9UerIUCk0akdzCATTbjKkgtlofvCdQp0Pg6BZfrjX6Y0ARREu+91ZBTD?=
- =?us-ascii?Q?stz2p1We5+fHxoRzeXKG+3ZmI2zyGVhplec8E4tDH3HEkUxABC1/nmXDrgBb?=
- =?us-ascii?Q?Y3p8NUi0l0+C4GLliejn8IxexX3wmTV06vbER06hkE8lANuVv1oYdoJFz9Vb?=
- =?us-ascii?Q?7ITy+q5Ec1c9RJ9XACcOG5vnWUlHbfxU5dw5PT5FzlZYGyZKyDseuV5gFwwc?=
- =?us-ascii?Q?QqDhwFSJ7ngTBGwtS/8weWSLMcExMZlWMY12tgwa6nVR5FGbvdIgyWzVpJnm?=
- =?us-ascii?Q?/M/Q07IvGQDRXNxNxnUDKkqXHhQ5sXaF0haARVyPE+ZFlq1+PmPnS7Wvm+kc?=
- =?us-ascii?Q?pLH7snVDrrLMWrMG3uSdDaWt/Oler07VUSJDKbk8bNDZQob+Kzj1ks9/vgTn?=
- =?us-ascii?Q?S0Z7fCDWs/9m2FanqpCadhfyZoBRlXmjlrNV7aqqIhBtB/BHe/J2rhVHF76N?=
- =?us-ascii?Q?XfV8iM//Ngo5guQLEfATL2egbYD45SK5X5gNj/PXOjYpBEMeirggTg9MO9un?=
- =?us-ascii?Q?wcUYSPAJC0caVfK3zP3gia5voFVN2To2wXBI1wVadHnIjHLHC5/xBOzbGT9S?=
- =?us-ascii?Q?jUo4o+LGnt2zQP3SEoPKSH9ajKPMsmtKYvGpjfUWYk65+hMp5bIK/IfWqIQI?=
- =?us-ascii?Q?xasFWzGESh4LU2WDGqn4Fh5xdnACf8O1dZeWXoXv2/l5i/EoCzgb1JtWFhFQ?=
- =?us-ascii?Q?UubZQ+53CM1ozbFEdbMxenuNadxO5du3HchMQyO4kace0QJcIgEs8L71kRwe?=
- =?us-ascii?Q?5tU9LAUj5TvcBjXtUIs+9V203JRq3bvyK1XDZA1zVZUtpk5lVjb6KM3b7tUf?=
- =?us-ascii?Q?PyPrFQlUR3eW0HiWDJFd+Qs5sUVfQRcOnc5nmMupuPpdYTwMT3GA0um7LgEO?=
- =?us-ascii?Q?ArJYaIdA9mtNn/nv7iNjQGIjdjr7xyP0hRWP31jzJquwFrwl9hL0mKGfC3ZN?=
- =?us-ascii?Q?vwsDOb14XIsYwXFfuCUF/iFEyARwa8iF1S3YugsO0vnD+DLtXJIfci6ibP6i?=
- =?us-ascii?Q?FKutS/8nENuhfjSnn+r4dorgdDW+ea0pQnDiGn7yFoq4r5t329DX/6AJCOD7?=
- =?us-ascii?Q?2rwuNLsWGrT8UwBG1dH3oisUKGwFVEKGawNQCjNNM/MPuk10+3DLhRRryTPv?=
- =?us-ascii?Q?y/W8Z+SOBtPcxEuijutFRlWcSP9+xQgYOHYrmuzN3FLL6SAj1Siz9r88z1AB?=
- =?us-ascii?Q?RLhP48AgX6JN5RdXOuEZQu2vNnCthPv4fknwvr4iXO2vgQOyGWkWeXWQZ8lw?=
- =?us-ascii?Q?4g7/JKxvKXPdfmp6Tr1mPXc+gcs+IjDVo8SkfTAU7M85Z/fpvOPmRuHoaCaV?=
- =?us-ascii?Q?8Xdwx8aLw54VbNqD5VeDd7aEFowt?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?M4ArkhiKeKcwE60YDeOiSSW/y4eGefoZnfBhoj0Kj/yHFBfE3H4IgmbMsMxo?=
- =?us-ascii?Q?STDYqhw9IVvL8AR1i/YEeoyEUV1Q3Y9MC5TsSd2KPC23njqNQHcp37EysH1W?=
- =?us-ascii?Q?iq1GTPyDTIvzBTJO8vOWENnpiOOWsCH++Xx5XJlL5UBXF+aZt8igdJk4Wtpl?=
- =?us-ascii?Q?q1SzjaghYWp/3uJbr3wZSh8O/iMaa2H/qIigyz1Ury5kZbSJdMxYM7oIOHdm?=
- =?us-ascii?Q?R3aNfVU2y0yWo4RE0JrQNMtuXGtd43OJOWVx0thjYSTPE8H6aTdMbqXMS6SE?=
- =?us-ascii?Q?lryov6Nqp26TEuAlCP33BmJHQEBcQb8goqNx7oWna6MS4uV0+1qeR0Fva4n8?=
- =?us-ascii?Q?AmhyBMD5Aous9SksPsTrYLnlL759EO1t9OS+Gp+CBS7KNtZ9/fMAh9N99NRM?=
- =?us-ascii?Q?HBBgxStDWsWA93vBpLGY8aiWMqd7Y0OwlIe+thQY797CizwSSUm98XvOIlp1?=
- =?us-ascii?Q?9pF8M5+1PNQ2EH3Ve5RpZrGhR7xNl4k/1fwGe4/yINDIDhCZ+RXJmRaHEYAR?=
- =?us-ascii?Q?DzC0ELcX0uykleX32i+X21rpxkMHTUtKfjG5oQFe1uLyKOdG2sHTfMbeN1c6?=
- =?us-ascii?Q?m8ffN1FMRG5BFy87K0cC0hQ2yQJeexYGw37jiM4X8egegUsLhPniBazYXv+C?=
- =?us-ascii?Q?qttojlgtimt6AUYLkyXv+G40/qR9tX4EKwo+hG9OunYH2BkkAHF2wd09+Y/R?=
- =?us-ascii?Q?VOJ1Sng6DojNCxIP2qaJup+ZDr71QEYTwgGa/E4yyvKdAbz5YS8ZSA+MbFYJ?=
- =?us-ascii?Q?cvwBa4m+2BbGzAIgvnsylmoWPfglk6Hx4o90FtnUARw4T4YdLWq96ZDXENAK?=
- =?us-ascii?Q?Wd7Q2ii553hSD01XabWGYNVN4ngY4Fp2arCsQfY20XcFOTkU5SYmCYLYDQ9W?=
- =?us-ascii?Q?KqYxR58e45UaWbHsXFbSE6MDwFPj5/qp3Z9FQ4gUQ6/2I41724Id2KzaSyet?=
- =?us-ascii?Q?taomf1vhhd6sN7eAPKI1uNQjLFwvO7Z+TcaxG2i22Rn4mG4mj3CHMKWCI1bq?=
- =?us-ascii?Q?RaTX6Cys3seqRv4waUZqS84VM/rZVCbVMGAjmHIPvECEX5AahgtWO0BIFYcj?=
- =?us-ascii?Q?sB2NfGtRGf5kTzPnhFWO76IBkNK1YZiMzJ6DVwrNw/q5fCXGWxENsAsSNpDa?=
- =?us-ascii?Q?2487oA9cOamZqF1+m6AEKKilBPp/blYzg3NfnlHDN1wp1IoeoVFGidJ1hW7h?=
- =?us-ascii?Q?mK3/bN0JTaqcIVrTnzIHoUXwy041eUYlSC38waKccMddVKp7bSqMojdvlp9q?=
- =?us-ascii?Q?pbU9QQE5iIhdAa4wsrMT/+AgUVLt2w8oB2M2GLmDb98T/mTKqtzIO4h56jxV?=
- =?us-ascii?Q?LvpqhgImUfdxNPdX9DSbSvQt5UMoC7cbFy5iGzdlViWerfQa0a4GnFrLQarX?=
- =?us-ascii?Q?C3IoOCsj4gDoyBZwARmqmSTmQ3y0pSzsDAtrJd60x/2T2hAWUpYNkObAPEYt?=
- =?us-ascii?Q?3K3TUtp8AyGNVemeraT5v5vapYA1gxJIvjxN81NvEDSPSJWMoOOlW0IcAolr?=
- =?us-ascii?Q?BSOyDdLydjDBVAxtVN69gqRY8N2QqScbQaIg8nBmrAuuDjKKTAmycUDdX0tP?=
- =?us-ascii?Q?cRIRfNXUscWWnJzAPVucGAga7zhXcnjaA5oj8VA6?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 08099fd0-03a1-4238-e1bf-08dd2df6f412
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-OriginatorOrg: nxp.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Jan 2025 02:08:04.0496
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 605b17cc-aca5-4140-a8a3-08dd2df87f68
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 02:19:06.8705
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /lTVVfB5+rvnN3cylkXTbKpEYyqnhxz1lGso175z+6KC3GX4bxhU/2J8CLYswfgFjFKifu2ebNRB9y9t0zfS/A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9153
-X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: LNeWOsQvMLTo68FPaZK1PCe4pAqMtpIl3xypRrk3ZQ3chdLCkduey6yHfYLuhAVeOfSNs/Pl/5QXOOkNOaJeqA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7269
+X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Dec 20, 2024 at 08:06:48PM +0100, David Hildenbrand wrote:
-> On 20.12.24 20:01, David Hildenbrand wrote:
-> > On 17.12.24 06:12, Alistair Popple wrote:
-> > > In preparation for using insert_page() for DAX, enhance
-> > > insert_page_into_pte_locked() to handle establishing writable
-> > > mappings.  Recall that DAX returns VM_FAULT_NOPAGE after installing a
-> > > PTE which bypasses the typical set_pte_range() in finish_fault.
-> > > 
-> > > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> > > Suggested-by: Dan Williams <dan.j.williams@intel.com>
-> > > 
-> > > ---
-> > > 
-> > > Changes since v2:
-> > > 
-> > >    - New patch split out from "mm/memory: Add dax_insert_pfn"
-> > > ---
-> > >    mm/memory.c | 45 +++++++++++++++++++++++++++++++++++++--------
-> > >    1 file changed, 37 insertions(+), 8 deletions(-)
-> > > 
-> > > diff --git a/mm/memory.c b/mm/memory.c
-> > > index 06bb29e..cd82952 100644
-> > > --- a/mm/memory.c
-> > > +++ b/mm/memory.c
-> > > @@ -2126,19 +2126,47 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
-> > >    }
-> > >    static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
-> > > -			unsigned long addr, struct page *page, pgprot_t prot)
-> > > +				unsigned long addr, struct page *page,
-> > > +				pgprot_t prot, bool mkwrite)
-> > >    {
-> > >    	struct folio *folio = page_folio(page);
-> > > +	pte_t entry = ptep_get(pte);
-> > >    	pte_t pteval;
-> > > -	if (!pte_none(ptep_get(pte)))
-> > > -		return -EBUSY;
-> > > +	if (!pte_none(entry)) {
-> > > +		if (!mkwrite)
-> > > +			return -EBUSY;
-> > > +
-> > > +		/*
-> > > +		 * For read faults on private mappings the PFN passed in may not
-> > > +		 * match the PFN we have mapped if the mapped PFN is a writeable
-> > > +		 * COW page.  In the mkwrite case we are creating a writable PTE
-> > > +		 * for a shared mapping and we expect the PFNs to match. If they
-> > > +		 * don't match, we are likely racing with block allocation and
-> > > +		 * mapping invalidation so just skip the update.
-> > > +		 */
-> > 
-> > Would it make sense to instead have here
-> > 
-> > /* See insert_pfn(). */
-> > 
-> > But ...
-> > 
-> > > +		if (pte_pfn(entry) != page_to_pfn(page)) {
-> > > +			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
-> > > +			return -EFAULT;
-> > > +		}
-> > > +		entry = maybe_mkwrite(entry, vma);
-> > > +		entry = pte_mkyoung(entry);
-> > > +		if (ptep_set_access_flags(vma, addr, pte, entry, 1))
-> > > +			update_mmu_cache(vma, addr, pte);
-> > 
-> > ... I am not sure if we want the above at all. Someone inserted a page,
-> > which is refcounted + mapcounted already.
-> > 
-> > Now you ignore that and do like the second insertion "worked" ?
-> > 
-> > No, that feels wrong, I suspect you will run into refcount+mapcount issues.
-> > 
-> > If there is already something, inserting must fail IMHO. If you want to
-> > change something to upgrade write permissions, then a different
-> > interface should be used.
-> 
-> Ah, now I realize that the early exit saves you because we won't adjust the
-> refcount +mapcount.
+> Subject: Re: [PATCH net-next 05/13] net: enetc: add debugfs interface to =
+dump
+> MAC filter
+>=20
+> On Fri, Jan 03, 2025 at 02:06:01PM +0800, Wei Fang wrote:
+> > ENETC's MAC filter consists of hash MAC filter and exact MAC filter. Ha=
+sh
+> > MAC filter is a 64-entry hash table consisting of two 32-bit registers.
+> > Exact MAC filter is implemented by configuring MAC address filter table
+> > through command BD ring. The table is stored in ENETC's internal memory
+> > and needs to be read through command BD ring. In order to facilitate
+> > debugging, added a debugfs interface to get the relevant information
+> > about MAC filter.
+>=20
+> How do other drivers do this?
 
-Right.
- 
-> I still wonder if that really belongs in here, I would prefer to not play
-> such tricks to upgrade write permissions if possible.
+I don't know about other vendor's hardware, but IMO, if the configuration i=
+s
+done through registers, we only need to debug through some tools that read
+and write registers, such as devmem2. I also saw some drivers added debugfs
+interface, such as Intel, Huawei, Marvell, etc. I think they also added it =
+to
+facilitate obtaining some debugging information.
 
-As you have pointed out this was all inspired (ie. mostly copied)
-from the existing insert_pfn() implementation which is used from
-vmf_insert_mixed{_mkwrite}().
+>=20
+> You should only use debugfs if there is no standard way to accomplish
+> something. And if there is no standard way, you should be thinking is
+> this a common feature other drivers will need, and if so, add a
+> standard mechanism.
+>=20
+> You will get pushback for using debugfs as a bumping ground without
+> adding some justification that debugfs is the only possible solution.
+>=20
 
-I agree a different interface to upgrade permissions would be nice. However
-it's tricky because in general callers of these functions (eg. FS DAX) aren't
-aware if the page is already mapped by a PTE/PMD. They only know a fault has
-occured and the faulting permissions.
+IMO, standard methods are only suitable for extracting common
+information, but each vendor's implementation is not uniform, and the
+specific details are also different. It is impossible to obtain every detai=
+l
+information through standard methods. The purpose of adding debugfs
+is just to facilitate debugging, so we need to obtain all the detailed
+information, so I think the debugfs interface is good, which allows us to
+obtain every specific information in all NETC tables.
 
-This wouldn't be impossible to fix - the mm does provide vm_ops->page_mkwrite()
-for permission upgrades. The difficulty is that most filesystems that support
-FS DAX (ie. ext4, XFS) don't treat a vm_ops->page_mkwrite() call any differently
-from a vm_ops->fault() call due to write fault. Therefore the FS DAX code is
-unaware of whether or not this is a permission upgrade or initial writeable
-mapping of the page in the VMA.
-
-A further issue in there is currently no vm_ops->huge_mkwrite() callback.
-
-Obviously this could all be plumbed through the MM/FS layers, but that would
-require a separate patch series. Given the current implementation has no issues
-beyond the cosmetic I'd rather not delay this series any longer, especially as
-the cosmetic defect is largely pre-existing (vmf_insert_mixed{_mkwrite}() could
-have equally had a separate upgrade interface).
-
-> --
->
-> Cheers,
-> 
-> David / dhildenb
-> 
 
