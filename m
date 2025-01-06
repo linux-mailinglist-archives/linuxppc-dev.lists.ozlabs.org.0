@@ -1,85 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-4684-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4685-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10E86A01EC9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 06:19:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ADAEEA01F17
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 07:07:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRMty0TVdz302c;
-	Mon,  6 Jan 2025 16:19:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRNxR2mkMz2yyD;
+	Mon,  6 Jan 2025 17:07:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736140794;
-	cv=none; b=bUXtOBfIxJq5Wt5iR6nrFozH4uuIwdfuOF6xOshd4VKz8XG9R6sJdQeaWLLyuhsB7+atZfwEZNxwnDr7BCs6kPehnpnyEiHjODIt0Z+RC8uMl96bWLpgmPm8msPSkqN3BD0jJpISj4jblVIV1oUnpqusCI9U5BosqNQU4Ck3hT4DfVg0OY3H9cCX25bwVmLyPVhvZQ5epTpMlvBcjBFvlxJbRUhLg4jkqbQWJLO7EJOzfmqwOwK/tYpWnmwmdt8W5TZpNOwItCGO31ElQtaaMWQFK0LfeYE1uaC9Y7cGF1wL9FGr7q8EFCXf6mz//Ass32pUfxrdT4F05YYLRJ1HnA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736143627;
+	cv=none; b=Td6ZPOmQLH0xz0BkxfjAWlMFx/z39U5GC3yYuAmrIM65r/92GzLyGMlfaT2Twg41J1VdK2uGHrUPKh5XfWxn5DtT0NQsDezvXlX5uSkXZ0Tj1kzsk3V1lBnbjQT26wM+UidwNiITdPv+A8po3q9UglB790U6LXqgzjlMO7eRaYTgPpRp67RTFxI4oiMUJjt2fIWgqofvAkaJcntThcYMK0wGFxUwCqTPHS+R3g/1DtYBm44AFF/gbpR7Gu7CbeOSg0BlWpBYOsn66av5UwFzHiJK93J5jD/5rTyNKfTVQyoyeHpSwC/AO4QoQEqd2LRXthDGlNbzMQXrYxT8ci/7OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736140794; c=relaxed/relaxed;
-	bh=HFatan5vFgHfU+xgQAtw+xb3SoU2Urzwl7VQC0V+FG4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cifGsMsaRLBa3fQ3RJrTzDOsP3F+rnrnhBoC0ws0MHKaZkL4AbNXt/fZjcZ2ESBVLV/gtLvfvLu4Fvpp2bT4nEU0hvo/yLyFsl21ZFCy8aDNXWvbcjllqHVuY5CHPVyC+gwryXVPIH70MEr6kPg64ji4Kk2OWn6xF9nz+EnOop3rXYsncHhMZi6f6eZ8CvEa8nV744jONS8cVKgUK8GT3BLJroKHaFwVODBu1EFXXIJE00t7JjqkmDEd5xjLW8x4fpwBGRlPc2J+l2A6EUSfwqDmy0MMJMmIvM7NTzMhriLegiTx7r7FK6v6RZtS7nm//NehPiR8qMBArwfZsvoFRA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j8tynZp5; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1736143627; c=relaxed/relaxed;
+	bh=rZEyOknT6FMXaCRBHIS8IeQzepG9pSVU98fwitc15cw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ITJWDki8vn/eACiDCnh5tYWHcIyJzJog1bTO6t+yD3TAsk2iHNEgVtHfCCbCjoSD2MecZtMECSLWGDv1Pik1f4luoHLIbOlwHUUQWFlKYVt/UFXSpgPa7PRU61Mu18UKNPhjQnF3xSyE1jX9qEATbuj52tyxiLTtk7+0ROLjzSr5L/jhK7DCu8Fggw0oAkL18Gp6F+/5dEp/1S+BJlPDBXUBZJo99MJY9k1xwmBiUmPdxG4J9aAgiS5TVeos5Smso7Qn31iXNgOw2OOrUDPw6VHZbHV2XcXfXxmfSx66coFmFPNjPKDUcYCz9CBEoUcVTJqkwfApLfhJsQSK8z014g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i4bHKwFG; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i4bHKwFG; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j8tynZp5;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i4bHKwFG;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i4bHKwFG;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=bhe@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRMtw3nwbz2ywy
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 16:19:52 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 505JsGYS026901;
-	Mon, 6 Jan 2025 05:19:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=HFatan5vFgHfU+xgQ
-	Atw+xb3SoU2Urzwl7VQC0V+FG4=; b=j8tynZp5UoUubHTkGZIvime1HjSzUmCmt
-	2tAjo1qoLwWCspRyxsOZWF7XvvYQYd5e0Ac96zqEYriCyCu/hz177E0oaOkIFU30
-	1SyhR2PnIx+M9Fy167Xg/0C5pXOJink4bxVayQD41YIcXb9l6mHTSoXjKnMaYNPe
-	s6kyhJ7M9xaS7Lza02YmVcTumS1PHzIUfdY8WgVY3P2E7HtJ9jAVDbfC56ssk9Yu
-	NnH8XDs8DmoX6GWgTv335Epek3saYUZXTSjYjfK8T3q+6oM1iEVBANmrQlDbKy8v
-	XtsWAyAMPo8S7+ZDi43jzwER3DoLTLLgu/7FgWu8sDvs9bnZp3d5A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj521cp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 05:19:40 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5065JeuN019909;
-	Mon, 6 Jan 2025 05:19:40 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 43yuj521cm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 05:19:40 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5065Dx5q008869;
-	Mon, 6 Jan 2025 05:19:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfpymfvq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 06 Jan 2025 05:19:39 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5065JaIn47710626
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 6 Jan 2025 05:19:36 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E4BBE2004E;
-	Mon,  6 Jan 2025 05:19:35 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6AF0A20040;
-	Mon,  6 Jan 2025 05:19:34 +0000 (GMT)
-Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.in.ibm.com (unknown [9.109.215.252])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  6 Jan 2025 05:19:34 +0000 (GMT)
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: mpe@ellerman.id.au, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
-Cc: sshegde@linux.ibm.com, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH v3 1/1] powerpc: Enable dynamic preemption
-Date: Mon,  6 Jan 2025 10:49:19 +0530
-Message-ID: <20250106051919.55020-2-sshegde@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250106051919.55020-1-sshegde@linux.ibm.com>
-References: <20250106051919.55020-1-sshegde@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRNxP4n9kz2xy2
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 17:07:03 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736143619;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rZEyOknT6FMXaCRBHIS8IeQzepG9pSVU98fwitc15cw=;
+	b=i4bHKwFG3mgWfja0ekFgrk7dbUIZ4JUnqiY2Ydk4zj2BcYJvaMN9QVWPWlFVhrIKt65qnv
+	sEAw2jKNuWQ/jNZr0D/20CKVmg1XKYgB5sNswiYV+UvRhMHBdF2nCgQzqqHFH6WA6goiVE
+	vyg1eZ+2imwNPzslNqAvY9zVBn5Kl98=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736143619;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=rZEyOknT6FMXaCRBHIS8IeQzepG9pSVU98fwitc15cw=;
+	b=i4bHKwFG3mgWfja0ekFgrk7dbUIZ4JUnqiY2Ydk4zj2BcYJvaMN9QVWPWlFVhrIKt65qnv
+	sEAw2jKNuWQ/jNZr0D/20CKVmg1XKYgB5sNswiYV+UvRhMHBdF2nCgQzqqHFH6WA6goiVE
+	vyg1eZ+2imwNPzslNqAvY9zVBn5Kl98=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-680-Ol1aODmFNWyCxf2Aofwj4g-1; Mon,
+ 06 Jan 2025 01:06:55 -0500
+X-MC-Unique: Ol1aODmFNWyCxf2Aofwj4g-1
+X-Mimecast-MFC-AGG-ID: Ol1aODmFNWyCxf2Aofwj4g
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 301221956087;
+	Mon,  6 Jan 2025 06:06:52 +0000 (UTC)
+Received: from localhost (unknown [10.72.112.99])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B5FC319560A2;
+	Mon,  6 Jan 2025 06:06:49 +0000 (UTC)
+Date: Mon, 6 Jan 2025 14:06:45 +0800
+From: Baoquan He <bhe@redhat.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Brown <broonie@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
+	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	kexec@lists.infradead.org, devel@daynix.com
+Subject: Re: [PATCH v2 1/5] elf: Define note name macros
+Message-ID: <Z3ty9adBwE+C/guf@MiWiFi-R3L-srv>
+References: <20250104-elf-v2-0-77dc2e06db4e@daynix.com>
+ <20250104-elf-v2-1-77dc2e06db4e@daynix.com>
+ <Z3s+QeMv8AaGbMGs@MiWiFi-R3L-srv>
+ <70daf544-f59f-404b-bec0-0d60e892a9e9@daynix.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,145 +91,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: o_U7VfXHwPN--Txs21H4QlPEAZ8Oy7cE
-X-Proofpoint-ORIG-GUID: fawtzZlIlkVx1dNJH43koXWzAN7hQQgr
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
- malwarescore=0 priorityscore=1501 bulkscore=0 spamscore=0 impostorscore=0
- mlxlogscore=999 phishscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501060042
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <70daf544-f59f-404b-bec0-0d60e892a9e9@daynix.com>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Once the lazy preemption is supported, it would be desirable to change
-the preemption models at runtime. So add support for dynamic preemption
-using DYNAMIC_KEY.
+On 01/06/25 at 02:07pm, Akihiko Odaki wrote:
+> On 2025/01/06 11:21, Baoquan He wrote:
+> > On 01/04/25 at 11:38pm, Akihiko Odaki wrote:
+> > > elf.h had a comment saying:
+> > > > Notes used in ET_CORE. Architectures export some of the arch register
+> > > > sets using the corresponding note types via the PTRACE_GETREGSET and
+> > > > PTRACE_SETREGSET requests.
+> > > > The note name for these types is "LINUX", except NT_PRFPREG that is
+> > > > named "CORE".
+> > > 
+> > > However, NT_PRSTATUS is also named "CORE". It is also unclear what
+> > > "these types" refers to.
+> > > 
+> > > To fix these problems, define a name for each note type. The added
+> > > definitions are macros so the kernel and userspace can directly refer to
+> > > them.
+> > > 
+> > > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> > > ---
+> > >   include/uapi/linux/elf.h | 86 ++++++++++++++++++++++++++++++++++++++++++++++--
+> > >   1 file changed, 83 insertions(+), 3 deletions(-)
+> > > 
+> > > diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
+> > > index b44069d29cec..014b705b97d7 100644
+> > > --- a/include/uapi/linux/elf.h
+> > > +++ b/include/uapi/linux/elf.h
+> > > @@ -372,8 +372,6 @@ typedef struct elf64_shdr {
+> > >    * Notes used in ET_CORE. Architectures export some of the arch register sets
+> > >    * using the corresponding note types via the PTRACE_GETREGSET and
+> > >    * PTRACE_SETREGSET requests.
+> > > - * The note name for these types is "LINUX", except NT_PRFPREG that is named
+> > > - * "CORE".
+> > >    */
+> > >   #define NT_PRSTATUS	1
+> > >   #define NT_PRFPREG	2
+> > > @@ -460,9 +458,91 @@ typedef struct elf64_shdr {
+> > >   #define NT_LOONGARCH_HW_BREAK	0xa05   /* LoongArch hardware breakpoint registers */
+> > >   #define NT_LOONGARCH_HW_WATCH	0xa06   /* LoongArch hardware watchpoint registers */
+> > > -/* Note types with note name "GNU" */
+> > > +/* Note used in ET_EXEC and ET_DYN. */
+> > >   #define NT_GNU_PROPERTY_TYPE_0	5
+> > > +/* Note names */
+> > > +#define NN_PRSTATUS	"CORE"
+> > > +#define NN_PRFPREG	"CORE"
+> > > +#define NN_PRPSINFO	"CORE"
+> > > +#define NN_TASKSTRUCT	"CORE"
+> > > +#define NN_AUXV	"CORE"
+> > > +#define NN_SIGINFO	"CORE"
+> > > +#define NN_FILE	"CORE"
+> > > +#define NN_PRXFPREG	"LINUX"
+> > 
+> > No objection to make them clearer. Thanks for the effort.
+> > 
+> > Wondering where below arch specific macros are used. So you just
+> > added all NN_xxx for the corresponding NT_xxx? Not sure if this is
+> > needed if we don't use them at all in the current kernel.
+> 
+> Indeed I just added all NN_xxx. The kernel won't use the macros that are
+> defined as "LINUX"; fs/binfmt_elf.c uses "LINUX" by default as the notes
+> named "CORE" or "GNU" are exceptional.
+> 
+> Userspace applications may still be interested in these macros as
+> demonstrated in:
+> https://lore.kernel.org/r/Z3f7zJwu8bu8HYln@e133380.arm.com
+> 
+> These macros also serve as documentation; correcting and clarifying the
+> documentation is the main purpose of this series.
 
-In irq-exit to kernel path, use preempt_model_preemptible for decision.
-Other way would be using static key based decision. Keeping it
-simpler since key based change didn't show performance improvement.
-
-Also print the right preemption model in __die.
-
-::Tested lightly on Power10 LPAR
-Performance numbers indicate that, preempt=none(no dynamic) and
-preempt=none(dynamic) are similar.
-
-cat /sys/kernel/debug/sched/preempt
-(none) voluntary full lazy
-perf stat -e probe:__cond_resched -a sleep 1
- Performance counter stats for 'system wide':
-             1,253      probe:__cond_resched
-
-echo full > /sys/kernel/debug/sched/preempt
-cat /sys/kernel/debug/sched/preempt
-none voluntary (full) lazy
-perf stat -e probe:__cond_resched -a sleep 1
- Performance counter stats for 'system wide':
-                 0      probe:__cond_resched
-
-Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
----
- arch/powerpc/Kconfig               |  1 +
- arch/powerpc/include/asm/preempt.h | 12 ++++++++++++
- arch/powerpc/kernel/interrupt.c    |  6 +++++-
- arch/powerpc/kernel/traps.c        |  6 +++++-
- arch/powerpc/lib/vmx-helper.c      |  2 +-
- 5 files changed, 24 insertions(+), 3 deletions(-)
- create mode 100644 arch/powerpc/include/asm/preempt.h
-
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index db9f7b2d07bf..b14218344e74 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -272,6 +272,7 @@ config PPC
- 	select HAVE_PERF_EVENTS_NMI		if PPC64
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
-+	select HAVE_PREEMPT_DYNAMIC_KEY
- 	select HAVE_RETHOOK			if KPROBES
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RELIABLE_STACKTRACE
-diff --git a/arch/powerpc/include/asm/preempt.h b/arch/powerpc/include/asm/preempt.h
-new file mode 100644
-index 000000000000..eb1ed8295f13
---- /dev/null
-+++ b/arch/powerpc/include/asm/preempt.h
-@@ -0,0 +1,12 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __ASM_POWERPC_PREEMPT_H
-+#define __ASM_POWERPC_PREEMPT_H
-+
-+#include <asm-generic/preempt.h>
-+
-+#if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
-+#include <linux/jump_label.h>
-+DECLARE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
-+#endif
-+
-+#endif /* __ASM_POWERPC_PREEMPT_H */
-diff --git a/arch/powerpc/kernel/interrupt.c b/arch/powerpc/kernel/interrupt.c
-index 8f4acc55407b..8e2400ba208c 100644
---- a/arch/powerpc/kernel/interrupt.c
-+++ b/arch/powerpc/kernel/interrupt.c
-@@ -25,6 +25,10 @@
- unsigned long global_dbcr0[NR_CPUS];
- #endif
- 
-+#if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
-+DEFINE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
-+#endif
-+
- #ifdef CONFIG_PPC_BOOK3S_64
- DEFINE_STATIC_KEY_FALSE(interrupt_exit_not_reentrant);
- static inline bool exit_must_hard_disable(void)
-@@ -396,7 +400,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
- 		/* Returning to a kernel context with local irqs enabled. */
- 		WARN_ON_ONCE(!(regs->msr & MSR_EE));
- again:
--		if (IS_ENABLED(CONFIG_PREEMPTION)) {
-+		if (preempt_model_preemptible()) {
- 			/* Return to preemptible kernel context */
- 			if (unlikely(read_thread_flags() & _TIF_NEED_RESCHED)) {
- 				if (preempt_count() == 0)
-diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
-index edf5cabe5dfd..2556fa8ec019 100644
---- a/arch/powerpc/kernel/traps.c
-+++ b/arch/powerpc/kernel/traps.c
-@@ -266,7 +266,11 @@ static int __die(const char *str, struct pt_regs *regs, long err)
- 	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s %s\n",
- 	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
- 	       PAGE_SIZE / 1024, get_mmu_str(),
--	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
-+	       preempt_model_none()      ? "none" :
-+	       preempt_model_voluntary() ? "voluntary" :
-+	       preempt_model_full()      ? "full" :
-+	       preempt_model_lazy()      ? "lazy" :
-+	       "",
- 	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
- 	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
- 	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
-diff --git a/arch/powerpc/lib/vmx-helper.c b/arch/powerpc/lib/vmx-helper.c
-index 58ed6bd613a6..7b069c832ce2 100644
---- a/arch/powerpc/lib/vmx-helper.c
-+++ b/arch/powerpc/lib/vmx-helper.c
-@@ -45,7 +45,7 @@ int exit_vmx_usercopy(void)
- 	 * set and we are preemptible. The hack here is to schedule a
- 	 * decrementer to fire here and reschedule for us if necessary.
- 	 */
--	if (IS_ENABLED(CONFIG_PREEMPTION) && need_resched())
-+	if (preempt_model_preemptible() && need_resched())
- 		set_dec(1);
- 	return 0;
- }
--- 
-2.39.3
+I see, thanks. Then the overall series looks good to me.
 
 
