@@ -1,69 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-4724-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C3C3A030E2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 20:50:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A2A0A030F0
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 20:53:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRlC90gPfz30WD;
-	Tue,  7 Jan 2025 06:50:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRlHT2DsLz30VM;
+	Tue,  7 Jan 2025 06:53:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736193013;
-	cv=none; b=mj4bnCJkE1wXC4hhKmQ73knyuQbIia1B6zVl7EVVGVsQfeOLkaGriKqPg53EE+yFgTWh6Y2mw8pyZbgRcygYYH7z+s/c0C1fOEJ5P7L6P3PX7O7Po/oti+kT3xvQbSpixQj3e5Xrh4zJqyblmEUyIzyV3r/+53HJ4bcP8q9P5xD4JDZ9KcGk8cBo3z/fwSxDyK/0N5yvxzUzzRcTGs16aRl1LOIXsNNLNRlU/m6Qn9/QNgdc+sjCcHL9kV45jd6ssfpOYkggiW6mDGtg/4BdHm1QPiSEje+voTgVx93fa8PlW/edXNrhw1Dpz/Rf1UCkDtlnh2JkGj7D8J4x4do8bA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=23.155.224.40
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736193237;
+	cv=none; b=N6KHQsTY9pNfsx1aclHuYkzDR456RDcpAOS3uaAtVSFRQIa/iOh4upPK5kG9k4enNruTSByCzjs8zsnjPXKb5NmtnLaC7R66KEXi2u9T8T4q2vKv2SaiJgEPR5q+g3pIztdsbj+K1d4Q4o6EuF2uVS3tNilyRxSqlrRCW/L6tZM6aQwKqURh/Rql3lSgwQlu6UuTgQNysdrw3dw8Lzb1q2R9N8N0aoj6P3rbFC2Ic4TjS2MFYZvOSgakufeUAx8QYnHT14T4+xpQ95fUldxCBQ1zGzWe3A3qS02zq2VAjz+oC3qfXcQTIuxDz07GTWulQ8J8bXUrGYBFBj7UkYoAUQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736193013; c=relaxed/relaxed;
-	bh=cUDPCdXVirQTvetaM6NAN3EOyjWfePZ4otP8TA4tPto=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/5HAyCpR6qfJdjWZ0BSMksdT9vY0StUvGrh6GtrXEOCqq7RDRraQJs3qXnKV7Q+9yepoR14ZYu0ufy81Y3aTDQHeoO86eyzag70j6Tbh0FPlgy59jAKTehe4HrLyfyh7v/u2VjFnNcBdRUaFf7WpvLoswfhSg3jb6g/elI0v/1BHoboR8ouacf+Dz3iqbazOj/jwkUwOvi4On7VCjOl6zPVWDa0qUTXKJdTMAf3x5/aYi7lolZJWxzk5m9gToyoaI6dckZbhS8nR46U4ZaALXPoHqj+xjs3vcGvlGljID16z9khSRFRdIpHpts+WV0XyqPdsT/vIVGVr3uxqNiBMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRlC82q0Fz30Vq
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 06:50:12 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YRkxw3VvCz9sRk;
-	Mon,  6 Jan 2025 20:38:44 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id Xx50HgpFI3Gi; Mon,  6 Jan 2025 20:38:44 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YRkxw2dmJz9rvV;
-	Mon,  6 Jan 2025 20:38:44 +0100 (CET)
+	t=1736193237; c=relaxed/relaxed;
+	bh=KcRnOliVbPNnDerGTJx1m+xAYvr2alYi62GnOrQGtCY=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=X9/OAoNO3aeUYUhWk3rfFX3ATt37jrmVJL2JnHL6aPt6Rs+6kKdo6XRIHaqCIFqSuZFb3gCj5M0GlSyP+7cym1YjTEfYeGUCK1zkUq+NFrAUHdVnv2uvS0H6nDN8++CUN6Rh7AV/GznIElpzRPhgwTihi1T4as1DbJwCefnB8+lCWUjZBE7KuTBeFBsCrsCedHKDKfgWDKSPrEmVhloqnJvTzjRhXSwitZXPjxOhxYUUglyVYFfw8qD63HoYFr1nYOyKd7FNcfSKDlRyvF4jwgBGkdzSkU0pwqzasnsnSjWVW5qlCchgkIou/orMt5dlG0C+96Fgn1m24DgmqfxyuA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com; dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=BTF9JbDr; dkim-atps=neutral; spf=pass (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=sanastasio@raptorengineering.com; receiver=lists.ozlabs.org) smtp.mailfrom=raptorengineering.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=raptorengineering.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; secure) header.d=raptorengineering.com header.i=@raptorengineering.com header.a=rsa-sha256 header.s=B8E824E6-0BE2-11E6-931D-288C65937AAD header.b=BTF9JbDr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=raptorengineering.com (client-ip=23.155.224.40; helo=raptorengineering.com; envelope-from=sanastasio@raptorengineering.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 355 seconds by postgrey-1.37 at boromir; Tue, 07 Jan 2025 06:53:54 AEDT
+Received: from raptorengineering.com (mail.raptorengineering.com [23.155.224.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRlHQ3802z2xn3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 06:53:54 +1100 (AEDT)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 3776D8B779;
-	Mon,  6 Jan 2025 20:38:44 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id c7EvnHz87GyX; Mon,  6 Jan 2025 20:38:44 +0100 (CET)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8D4C78B781;
-	Mon,  6 Jan 2025 20:38:43 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Peter Zijlstra <peterz@infradead.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	"Liang, Kan" <kan.liang@linux.intel.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-perf-users@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: [PATCH] perf: Fix display of kernel symbols
-Date: Mon,  6 Jan 2025 20:38:29 +0100
-Message-ID: <3fda227e6ff229b5063d4181ecf75567ca016c18.1736188475.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <8c8553387ebf904a9e5a93eaf643cb01164d9fb3.1736188471.git.christophe.leroy@csgroup.eu>
-References: <8c8553387ebf904a9e5a93eaf643cb01164d9fb3.1736188471.git.christophe.leroy@csgroup.eu>
+	by mail.rptsys.com (Postfix) with ESMTP id 6E109828840C;
+	Mon,  6 Jan 2025 13:47:52 -0600 (CST)
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10032)
+	with ESMTP id uM6_vjIp4ZJe; Mon,  6 Jan 2025 13:47:51 -0600 (CST)
+Received: from localhost (localhost [127.0.0.1])
+	by mail.rptsys.com (Postfix) with ESMTP id C584A828840D;
+	Mon,  6 Jan 2025 13:47:51 -0600 (CST)
+DKIM-Filter: OpenDKIM Filter v2.10.3 mail.rptsys.com C584A828840D
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=raptorengineering.com; s=B8E824E6-0BE2-11E6-931D-288C65937AAD;
+	t=1736192871; bh=KcRnOliVbPNnDerGTJx1m+xAYvr2alYi62GnOrQGtCY=;
+	h=Message-ID:Date:MIME-Version:From:To;
+	b=BTF9JbDrbhsfSd5jo7qDUIra0f0GDGdKbLW7dxP/+19MbewFHIYHPL0KUzK0aDbR0
+	 NyrZKXdpV7myVytWc8H742fp4E/gVctbpQ1Yw4n2AJrzkMFJOJsSn9rJpPLReKHQmU
+	 Ru5YDu5qr852s06HasKdo0CL7mUk4McMtfNiaAfk=
+X-Virus-Scanned: amavisd-new at rptsys.com
+Received: from mail.rptsys.com ([127.0.0.1])
+	by localhost (vali.starlink.edu [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id eXzVAU9ak-L2; Mon,  6 Jan 2025 13:47:51 -0600 (CST)
+Received: from [10.11.0.2] (5.edge.rptsys.com [23.155.224.38])
+	by mail.rptsys.com (Postfix) with ESMTPSA id 4C15A828840C;
+	Mon,  6 Jan 2025 13:47:51 -0600 (CST)
+Message-ID: <8dd4546a-bb03-4727-a8c1-02a26301d1ad@raptorengineering.com>
+Date: Mon, 6 Jan 2025 13:47:50 -0600
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,56 +65,41 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1736192308; l=1838; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=IZC+Ucm7AU9piK1OfxvR+u81ZkjwnuBAOrtHh5CBEKk=; b=qKg2BDod6CEGJ0IHAxSluXn8fNvV2JKvDgvHH+WujAxVHXaqYD20W7XM/907bzJGYJbnawM1N U/m7HeRSm6/Ascmu0OWMMe/cdHzEmS9W6Vw+g1IK5JHkwh4+mvOfNj/
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Shawn Anastasio <sanastasio@raptorengineering.com>
+Subject: Raptor Engineering dedicating resources to KVM on PowerNV + KVM CI/CD
+To: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Timothy Pearson <tpearson@raptorengineering.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Since commit 659ad3492b91 ("perf maps: Switch from rbtree to lazily
-sorted array for addresses"), perf doesn't display anymore kernel
-symbols on powerpc, allthough it still detects them as kernel addresses.
+Hi all,
 
-	# Overhead  Command     Shared Object  Symbol
-	# ........  ..........  ............. ......................................
-	#
-	    80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
-	     3.91%  Coeur main  gau            [.] engine_loop.constprop.0.isra.0
-	     1.72%  Coeur main  [unknown]      [k] 0xc005f11c
-	     1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
-	     0.44%  Coeur main  libc.so.6      [.] epoll_wait
-	     0.38%  Coeur main  [unknown]      [k] 0xc0011718
-	     0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
+Just wanted to check in and let the community know that Raptor
+Engineering will be officially dedicating development resources towards
+maintaining, developing, and testing the existing Linux KVM facilities
+for PowerNV machines.
 
-This is because function maps__find_next_entry() now returns current
-entry instead of next entry, leading to kernel map end address
-getting mis-configured with its own start address instead of the
-start address of the following map.
+To this end, we have developed a publicly-accessible CI/CD system[1]
+that performs bi-hourly automated KVM smoke tests on PowerNV, as well as
+some more advanced tests involving PCIe passthrough of various graphics
+cards through VFIO on a POWER9/PowerNV system. Access can also be
+provided upon request to any kernel developers that wish to use the test
+system for development/testing against their own trees.
 
-Fix it by really taking the next entry.
+If anybody has any questions about the test system, or any insights
+about outstanding work items regarding KVM on PowerNV that might need
+attention, please feel free to reach out.
 
-Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
----
- tools/perf/util/maps.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks,
+Shawn
 
-diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
-index 432399cbe5dd..d39bf27a5fdd 100644
---- a/tools/perf/util/maps.c
-+++ b/tools/perf/util/maps.c
-@@ -1137,7 +1137,7 @@ struct map *maps__find_next_entry(struct maps *maps, struct map *map)
- 
- 	down_read(maps__lock(maps));
- 	i = maps__by_address_index(maps, map);
--	if (i < maps__nr_maps(maps))
-+	if (++i < maps__nr_maps(maps))
- 		result = map__get(maps__maps_by_address(maps)[i]);
- 
- 	up_read(maps__lock(maps));
--- 
-2.47.0
+[1]
+https://gitlab.raptorengineering.com/raptor-engineering-public/kernel/kernel-developers-ci-cd-access/linux/-/pipelines/1075
 
 
