@@ -1,47 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-4716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4717-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 863D3A0283E
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 15:40:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335DCA02850
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 15:44:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRcKB0y5kz2yZN;
-	Tue,  7 Jan 2025 01:39:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRcQk4kYmz2yjb;
+	Tue,  7 Jan 2025 01:44:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736174398;
-	cv=none; b=BLBAJQ+7eYwXXL5XNItZKpoG+qkwtgCSZFFHD6uRJbT1Nfy973eSm7Etx15M6GbHKXLhfKfLg3T2joiCahmQfLWdD7UaX5fw9nsSiXgOShJ+TmD4XFmMUTTLPod4tGG2s1hDUHcodQKMJHtQND2RlFR5TAEMVlnTtj2itbawasM6WB29Q39xHpiFMF+o1J2yvmZmptkNu+lZFm0Rc6LwJyutuPH4WhLZEpvPPJbOu0MSjnHWMmRN6xz/6sMG+lUrXv0Ztc9TW31HnsgMxZPEppVKFvi1B6R1rmwnzGxgmBoUox/q6r5U4jcSXGuerSxChBqHHiSk09PPr5nH0Vi7MA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::631"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736174686;
+	cv=none; b=MQfws1fZw6qBFWsFd2rFAJNfAUvCVsoySZb2GmzPGA2RYlAZSOdAfz86B7tsIsuffHxD9SW7Y+p/Wm0Vygj+U4B4fTuegq63H1tqalNXXNs0tqpvIJ/MvLoEmOWZUuBwCcou16ZHpjjuQlooUoUFu2hgrMP1AMi9K4QMz5G2nLhkpgqE4ZwlwVuNSmvti3QT0zmRxLsOwecI3D1wGsP1PAMtKtgoQ3eDZWTuUXEMG9nhzuTu5mhzNXTl8zlRZoyCJEC8WjNl55luUyCACux67vsyBog7g76aGSOjIm7SsAECYMJMJPlmZCwMDZAOim5PicEN+7qwLhYmC8yXmth3ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736174398; c=relaxed/relaxed;
-	bh=KScFq6VCrgf/nu/Jb5BN/GzdP0ojcAD8SI4fYCVhxV8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j7CA6AaoCfwkiMmnhM5wanNNVuyrCZvHCzksGwLwPRU5x5w2UNfkFwyjDfCV4DCowzCXTeUHj78z8jzi2YIXWHXe97WvEuP+sQudIvaHpfC/YYKpo8qHThI+FjCYM0/VFHmDFQkv8r4EM8m7nqWw5iam3sZWpGNYtI5bJCMZ6+e+D/2ZhysvgoGYyq6+lnqlDSADhfw/D7dDW0s1DChg5lWlA2s2d8Jl7fjcaurfsAQTDDv650JoYsRUNops4ieQdW/eQ7d1k5RpdYR7lU7JVvnaH6/3M6v1Fvdhxx/rW1xzCV2KQWtltY0qg4LaKyMMyeHvBNnvGGnayAw//uhHgg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRcK84Jsqz2yFB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 01:39:54 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 85C64143D;
-	Mon,  6 Jan 2025 06:39:49 -0800 (PST)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 052903F59E;
-	Mon,  6 Jan 2025 06:39:18 -0800 (PST)
-Date: Mon, 6 Jan 2025 14:39:13 +0000
-From: Dave Martin <Dave.Martin@arm.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Brown <broonie@kernel.org>, Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	kexec@lists.infradead.org, devel@daynix.com
-Subject: Re: [PATCH v2 1/5] elf: Define note name macros
-Message-ID: <Z3vrEYQVlff1+ZBW@e133380.arm.com>
-References: <20250104-elf-v2-0-77dc2e06db4e@daynix.com>
- <20250104-elf-v2-1-77dc2e06db4e@daynix.com>
+	t=1736174686; c=relaxed/relaxed;
+	bh=NViglkR77PlL2AqsFJ9M2rA8vsy0VBtzEibmSHACi+I=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=awkBv9JiluG2s2p22mhIU1abRAZa6cECTwrFA2oU7jPExlyJfKW9u3V3DD/NCjh0fI6cPEHc6engRmGRxcWooPpwCTWUncBLKC3hCHQ6GNo3hmvlQE0ODvgKPPdkV2iRuDmX4FmqT2myTQYP2q4Df8Dk2NaldBs9dJWhsMNzC/EdVL62YEQTMO89YLEI7lotbYhnBXMkD0wOM1Jzn5pzS8o0p3SrGKWQ5Lf0r2TSHB7egRnytO5SkZIouArRNLA+e/dVIa3B78SNRH+79MJXMEa4u6UJzmnsxz5EbIV9AIILy9pOw0aY3ZtaQj1XRbIyUwqXwu4kT6bn4qKasOOJ1g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=H6cbFm05; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=H6cbFm05;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::631; helo=mail-pl1-x631.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRcQh6QyPz2xYs
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 01:44:42 +1100 (AEDT)
+Received: by mail-pl1-x631.google.com with SMTP id d9443c01a7336-216401de828so196142745ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 06 Jan 2025 06:44:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1736174674; x=1736779474; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NViglkR77PlL2AqsFJ9M2rA8vsy0VBtzEibmSHACi+I=;
+        b=H6cbFm05cs2MaY4RvRANPyCzjv5DyWBdtRWccGBhMu5JcFfcqNSf77y8ZL0cfW2ohe
+         O9AGtKCZHFoLAiglTIiE+8o9JKRMwlDYn4PWl/D7LXjyKBZo2eMlqGCYzm8RFAe7t2bS
+         G/1OIV5giZaC2nKvwT5G7hWef4aMVxvHposn5y98vvo+yGIPj5+UQB2sKsY+iOrxyRzB
+         7G1Oqs1W8K81UtKDEv7OIwi4HeKo7YBhbtSXgfmtODHH/lwk3uGlBxrGphMtX7O32q5n
+         htcU3D0wlKUowIIVwpJYyR024sczsoNQGCXLhvou3uQUKauUIRY/lV0rfGwZlL/hmgzJ
+         eQKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736174674; x=1736779474;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NViglkR77PlL2AqsFJ9M2rA8vsy0VBtzEibmSHACi+I=;
+        b=qCRfL1bDY2u1cfaeYtfMR/Dsi22/NkooILxPlB8aPuWWVDErjBHW3nIJoCJwuqLA9h
+         q2NM2RORRz6JjFLTnTlyLw4wPK+h27Go6qM0OnAJzyLn/ji6Qz/xdam7u/FdJKwPC3f1
+         5iVtsCSnOmLOAhhDm/2IynecRnrdEhoy+Z1zIkUwlpLexIRTvaqQ4hS5AUy4w5FqZFYz
+         3UjfyvgzuuYnWnbbaR4hNeOrPlgTCPGqQ4BaSeskoI1DIFz8W5FcAMx41gfsKblNU//k
+         kR2e8dzkvXtObxNqkFjyfOOC/kGELrzYNm5VsvUO1RwP+mdte0GRlYUIElFk1Fblunk9
+         +w5Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU6kjJf35UI8v6FVwbQdLmBv2QdCcaMTcDWgwjkPPqDDxdKsh3GwT1ycCc1CxXsp6rOaefBTJuYKRSVpUE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyH19a5ulYycNbVqOmWwksCyzV/p7XeiUUoH51P9BjXlsXj9URb
+	FDG7vzsr5dj1Js1pgrIKkI+QVjlliEwywN9ykHOB5v0oRAYLwfx1I1r8cotno2U=
+X-Gm-Gg: ASbGncsqy7PsDRdA5Irl1UB6m7Qi3+KoQgWb12js0PrDMpNIVk16vDYMeUnDo3jbCnP
+	+0ELlu/39h0GSz5pbOufmWzEPzZ/Sckf36+ZW1GuSqOB+gvEPyQTPPZhndw4kr9q/2jS0dNPcPA
+	nFPl/0JZ1+wVZx6kZnvWqqZHXKqiZGh/4PCj6jp2l1llSk+r9RmOA5FrpO9qn4MVr7M5HnlLgjb
+	fANoUeTUkXMQwZHe+xgxk37XLBAmdn4oUVy6VdcTmwSQF7NZFG31DCcpQF4KOGwkGMKTQNi6OzB
+	TpTzCIoR6EsxB+Z9nEnzScPPUeo0ughvd/boQp54cDLpiMnk0yfn
+X-Google-Smtp-Source: AGHT+IHfRKlSBRBXUw7mHIW0SQFNESOEWbBrtQcBXd7/ffhetsdlBCZHRjeTrMJdIBfoDiMG7l+wRg==
+X-Received: by 2002:a05:6a00:ac3:b0:726:f7c9:7b1e with SMTP id d2e1a72fcca58-72abddcadd6mr82367083b3a.13.1736174674262;
+        Mon, 06 Jan 2025 06:44:34 -0800 (PST)
+Received: from ?IPV6:2409:8a28:f44:d64:296c:a8f3:f81e:f88b? ([2409:8a28:f44:d64:296c:a8f3:f81e:f88b])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72aad815804sm31532588b3a.32.2025.01.06.06.44.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 06 Jan 2025 06:44:33 -0800 (PST)
+Message-ID: <dbcbf4c3-f86a-4414-be52-8ac02dae5b6b@bytedance.com>
+Date: Mon, 6 Jan 2025 22:44:21 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,77 +83,71 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250104-elf-v2-1-77dc2e06db4e@daynix.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 12/15] s390: pgtable: also move pagetable_dtor() of PxD
+ to __tlb_remove_table()
+Content-Language: en-US
+To: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: peterz@infradead.org, kevin.brodsky@arm.com, palmer@dabbelt.com,
+ tglx@linutronix.de, david@redhat.com, jannh@google.com, hughd@google.com,
+ yuzhao@google.com, willy@infradead.org, muchun.song@linux.dev,
+ vbabka@kernel.org, lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
+ rientjes@google.com, vishal.moola@gmail.com, arnd@arndb.de, will@kernel.org,
+ aneesh.kumar@kernel.org, npiggin@gmail.com, dave.hansen@linux.intel.com,
+ rppt@kernel.org, ryan.roberts@arm.com, linux-mm@kvack.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
+ linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
+ linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+ linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+ linux-um@lists.infradead.org
+References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
+ <ad21b9392096336cf15aee46f68f9989a9cf877e.1735549103.git.zhengqi.arch@bytedance.com>
+ <Z3uyJ2BjslzsjkZI@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <2d16f0fe-9c7f-4229-b7b5-ffa3ab1b1143@bytedance.com>
+ <Z3vQHplZqtHf6Td8@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+ <57ea8193-2fd9-41a9-85b4-7af924f900f4@bytedance.com>
+ <Z3vqHXdwIMBVQ2GT@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <Z3vqHXdwIMBVQ2GT@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Jan 04, 2025 at 11:38:34PM +0900, Akihiko Odaki wrote:
-> elf.h had a comment saying:
-> > Notes used in ET_CORE. Architectures export some of the arch register
-> > sets using the corresponding note types via the PTRACE_GETREGSET and
-> > PTRACE_SETREGSET requests.
-> > The note name for these types is "LINUX", except NT_PRFPREG that is
-> > named "CORE".
+
+
+On 2025/1/6 22:35, Alexander Gordeev wrote:
+> On Mon, Jan 06, 2025 at 09:34:55PM +0800, Qi Zheng wrote:
+>> OK, will change the subject and description to:
+>>
+>> s390: pgtable: also move pagetable_dtor() of PxD to pagetable_dtor_free()
+>>
+>> To unify the PxD and PTE TLB free path, also move the pagetable_dtor() of
+>> PMD|PUD|P4D to pagetable_dtor_free().
+>>
+>> But pagetable_dtor_free() is newly introduced in this patch, should it
+>> be changed to 'move ... to pagetable_pte_dtor_free()'? But this seems
+>> strange. :(
 > 
-> However, NT_PRSTATUS is also named "CORE". It is also unclear what
-> "these types" refers to.
+> s390: pgtable: consolidate PxD and PTE TLB free paths
 > 
-> To fix these problems, define a name for each note type. The added
-> definitions are macros so the kernel and userspace can directly refer to
-> them.
+> Call pagetable_dtor() for PMD|PUD|P4D tables just before ptdesc is
+> freed - same as it is done for PTE tables. That allows consolidating
+> TLB free paths for all table types.
 > 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> ---
->  include/uapi/linux/elf.h | 86 ++++++++++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 83 insertions(+), 3 deletions(-)
+> Makes sense?
+
+Ah, make sense. Many thanks to you!
+
+Will do it in v5.
+
 > 
-> diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-> index b44069d29cec..014b705b97d7 100644
-> --- a/include/uapi/linux/elf.h
-> +++ b/include/uapi/linux/elf.h
-> @@ -372,8 +372,6 @@ typedef struct elf64_shdr {
->   * Notes used in ET_CORE. Architectures export some of the arch register sets
->   * using the corresponding note types via the PTRACE_GETREGSET and
->   * PTRACE_SETREGSET requests.
-> - * The note name for these types is "LINUX", except NT_PRFPREG that is named
-> - * "CORE".
-
-Maybe most people would find it obvious, but is it worth saying what
-the NT_ and NN_ macros are for?  They can easily be explained in terms
-of the elfXX_note struct fields.
-
->   */
->  #define NT_PRSTATUS	1
->  #define NT_PRFPREG	2
-> @@ -460,9 +458,91 @@ typedef struct elf64_shdr {
->  #define NT_LOONGARCH_HW_BREAK	0xa05   /* LoongArch hardware breakpoint registers */
->  #define NT_LOONGARCH_HW_WATCH	0xa06   /* LoongArch hardware watchpoint registers */
->  
-> -/* Note types with note name "GNU" */
-> +/* Note used in ET_EXEC and ET_DYN. */
-
-May just "other notes"?  I think that the comment might bitrot
-over time.
-
->  #define NT_GNU_PROPERTY_TYPE_0	5
->  
-> +/* Note names */
-> +#define NN_PRSTATUS	"CORE"
-
-Can these be interleaved with the NT_ definitions?  I think this would
-make the resulting header (and the diff) easier to read.
-
-> +#define NN_PRFPREG	"CORE"
-
-[...]
-
-> +#define NN_GNU_PROPERTY_TYPE_0	"GNU"
-
-[...]
-
-Cheers
----Dave
+>> Thanks!
+> 
+> Thank you!
 
