@@ -1,154 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-4679-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4680-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46077A01DC7
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 03:46:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EBCA01E58
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  6 Jan 2025 04:50:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YRJTZ5LVyz3013;
-	Mon,  6 Jan 2025 13:46:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YRKvN4x02z2yJL;
+	Mon,  6 Jan 2025 14:50:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2613::629" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736131570;
-	cv=pass; b=U7Ech7FUIqPprxMBaXFssK0B7MLH8RtY5bio5iNA91oZUOHEMbIdrqqdgJRUoHlvTklnWdDCCqstcOPnG8wMelbeI/vzND8kUkfQ97wNHwmIUA9aj+jxOXdN3f3CwN0tK5VTQh2nUcq7a7PFHQ0cBBIUZvy/CVr4gTPerq7upg8rkQjt52cO9GrcSjmLeTNQjE4Cw5GKVejoWJBubzDFT1oD6GMYkyM+rdyJRD3EtNW/76NSkRsp2B2BejX8UTR9NN5x7IWth+BjOy80NBjAQ3I8pvpT73k5bg3VCqv9DUTkolWq2+AKHol8HwDKjqahEnGyazXJjdKiqXMdmhSk3A==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736131570; c=relaxed/relaxed;
-	bh=ruEDSCum9xValD/8fje29AdFDnXw69Zf56J/1DXr/w4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=C+4rmvqVcxcZJ28A7FgU/6uo2tWpGQV+PkSv8GIbYi8kXpuTPQwOXlXehBSP/Ln2/4d+kGATfuV8no6zbD8qD+4Desu1uGzBVF0L2O02FdOaHxeZCZhTGDsfeB3t2IislEqSJ6vL1D0a4TOuF44i+bf5HnXKfbiqOkayBAi2GWf/yqZej8Urw1keozBy4Y0Utavyc97UNIVmCwrv5kmDzmr+oEkwmFkTHdZD+LSKGHnIdY1LTbo8C8ptgNgu1hFAD/lOqg4kHLyaR5BhXRKkGu0ApCYNaCdDIuCnoSBYD2IRKzToeejfr6uFdxdyVm9JoCadNdiu9wwXcbk+CjsKPg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=YZxH7891; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2613::629; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736135408;
+	cv=none; b=l+uMgTNPzZEuRmC75Y/lDypJFlR9uMXulGwf0lOn6Xd5WNZHezuBpPWK/GzeXqTjX04rm2IhIV/LXmhMkp70Q5qJAk9LiF1cj4M/T0GeTN46D3lVQ35zrvAQMJsCLiZzn6mak6F676ec7xmQ4ReqmlGBgIrVsFMY5u02x2xrqo3sTmtZfBk3g4/Orcr6T7HAXKgw4IVvg6kccWVTPckGcc+6W5yL5aDtgoBle3ZKGEBD409X7JVBZGsARsGpNi2u0J9IKSyA1PXCEOL5jG3epkPGG7BGWSHs/cm1mOvixjrtMJo1pfF8dTBWIHieDNC1Xzvqpxxs4W9BVRbmzYjwxg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736135408; c=relaxed/relaxed;
+	bh=M/CQCfwbCGmNbncAnjTVlLDBhrllfolDtdV4jFWfmgY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=VD39/6JJXOKf281kSm0Jv6bZzirQnZneP64KRV2GErxGNKQu3k5wOvoZmEQsgsXHRLhZ4H3mpL+mQiiEMDx6BEKVo+1yHySQfXpJmMKwBRfYsTz9Dn9H0Znkkf+KlP5mcdq1BHaHH5uTWC0wEQ2Lw2ZeNG7BwhXCwzNytIMYhOK0CenqnQ2RVfvfITqD8/oCnuyrgGefAAqkR36CRUpQNrirTZi37/lo5YsmI3ChVAdPteB3tsqHEn7ZtCtbDMUbDZmC8ZLgXNZ6tRd6FmJRzVYaN5QSHRxk+zOfLrvsVozSouROJ9KCwR89TlItpDs9BYtNNrtS6FOgtTfllNwjXw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=M69sW6zv; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=YZxH7891;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=M69sW6zv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::629; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20629.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::629])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRJTY2QgYz2yFK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 13:46:08 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KjSRhGXTTkuU3DXyrjQmVL04zE325aU3i4yzOmzRQNyJRw7s3MdCanxoEa/UjwDNqAOCxjVgAU7vGvlOtiN3F5TodzX+u/NJiBOxn455TCzUJgV8cdEC0NGrlRrYnBFOTWdxivtD0vs0sQe+kYFVxrUa6zMPDctHiLDaaej4odsgY3oVitZ2bB8i41JkpLIcguI0SKITI4L1i83tG2AF9yf9812fHV6fdH+7NIzgBO5vVkbjx+jl24pU1DD11x8o6eeisCWj6Nz+iPP9x2jPI/uN9HrobJweVMkt+sTIq44Sc0dt55rqRlaFt7Cn4uLogs8/VfBnzKAyQ63J9jdMAg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ruEDSCum9xValD/8fje29AdFDnXw69Zf56J/1DXr/w4=;
- b=s4nfcVYav4lk9xSpjT3kGT1ImjJy4kdJYeQUPZEohMsnS+LZcaaM6Z0OtuEkCTBhb1p9Q9JlQG9kd1tg9TAz070yVhOoKBslT2i5b9SKXxrQkyZSC/iEWsUw27bgAEjjQuhinQ5eVyQVe8RjII8RKLzFqGN6Sr1ZYvpatuvYyE35Rw0r4SBxs9Ht2oIeL3V8VsT2pVo/8KUz/EJe9KYdKD1F7iSY71Gnlz0EAu7rNubKQ5u4rTR/8VB6QPvoYApmFxtjvM0xLP6k+zUI/ULXQd/8RyF7NpBouAj2MeT/Cwnjm0s5A9Al4eelwPue5inBKTuHyKejfaIdvlwVDP/7RQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ruEDSCum9xValD/8fje29AdFDnXw69Zf56J/1DXr/w4=;
- b=YZxH78915l9q/g0cZahBk7FQC/sqnM+OJo5eEExBf8BXmvfI2vNywjG93ds+4S7yNmL5kKM18qLBI+TK1Yug5VPjb1Y1FznCicwYJreq3Q5z0K4R/c04/qKDQrmWolBlfsvcgwbBuv9dyq8IkQSgIoSgHRuifmbz5uvz1wB50EC2leI+QnnrNspAsdyx0L+pN8HTnjTeCA2UspoqkV9bwyq2j3WGhDugAn/VaaINj07E6VwXWVUDMZFRsoUweNbEb9A1IXIIRUX5DXtUhJxyKwKcyvgfFZtCFnOzERz/OyW/gVW8Uun8nHmaUgcSVR86DOaUArRNUA3NxmkoW8eDug==
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by DB9PR04MB8493.eurprd04.prod.outlook.com (2603:10a6:10:2c5::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8293.17; Mon, 6 Jan
- 2025 02:45:45 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.8314.015; Mon, 6 Jan 2025
- 02:45:45 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: Andrew Lunn <andrew@lunn.ch>
-CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
-	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
-	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
-	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>, "imx@lists.linux.dev"
-	<imx@lists.linux.dev>
-Subject: RE: [PATCH net-next 01/13] net: enetc: add initial netc-lib driver to
- support NTMP
-Thread-Topic: [PATCH net-next 01/13] net: enetc: add initial netc-lib driver
- to support NTMP
-Thread-Index: AQHbXafxW8MqA7bx7kqd2V4Q9Gz5GrMFO4aAgAPM3kA=
-Date: Mon, 6 Jan 2025 02:45:45 +0000
-Message-ID:
- <PAXPR04MB851069DEC17319C96837BE9B88102@PAXPR04MB8510.eurprd04.prod.outlook.com>
-References: <20250103060610.2233908-1-wei.fang@nxp.com>
- <20250103060610.2233908-2-wei.fang@nxp.com>
- <829ccd93-8b4e-4dd9-bd15-58d345797aca@lunn.ch>
-In-Reply-To: <829ccd93-8b4e-4dd9-bd15-58d345797aca@lunn.ch>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|DB9PR04MB8493:EE_
-x-ms-office365-filtering-correlation-id: 4b329604-b56d-41d9-7e98-08dd2dfc37fc
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?/r1FhjH9kILmIMlxNO/cHjnKOn0EcNWD854/2L/WHXGgGDI58CITQR3VeV6c?=
- =?us-ascii?Q?u2+nfNlVLR0ZCBGaEzJxGat+9HrIG8xenP4aG2uQ7+jdL0tiYUqYN62/H+mR?=
- =?us-ascii?Q?7YHFDq5O6xi54WY9LllXWiY9gZjN/BX7M7FvB+ujeRpqrKQ+V2yzbl9/fqBo?=
- =?us-ascii?Q?N6jLaGaFM8NwG9ByeQBAGbgp8PyBNpy7vnPrYhnCVMLOjpFnQnE3+QwWQ+YI?=
- =?us-ascii?Q?YPWqBfrE0dUayCR/XRvpDR5son87yHXaOI2CdrLm6dL2YiafwhWJq/gyxZXx?=
- =?us-ascii?Q?kYRkjV/Iv7E45TYk1kyl0SSm0kDKYetVEw81VVLyHkatIh3Obf/zw89op/aw?=
- =?us-ascii?Q?O/sq1typHcJej/XeG/+/oHJHusMGbF+7GsChyp0bPw9jubTJmALNqf+np63V?=
- =?us-ascii?Q?2vXdgTD+24RtIv27qsomkBgyMiUhd1kNqS8hJ0NHofxdVFWBVL45xHvG8vPQ?=
- =?us-ascii?Q?CkkQOxkOgfkIvrjkIcc/nRy208OFZKwBZu6y/J+vyGg78AdFihROTOhVdiLy?=
- =?us-ascii?Q?9rlygUt2raWWfrujmkHZrT1UYoFizBz29xCH7BgwDGdnpuF+W8EaGiq9TDYf?=
- =?us-ascii?Q?hzTgN2RZpOVwmtfw3CLrEToY28ateXguL/xgDaNs8JvfVB2xUkh2e/blRWx5?=
- =?us-ascii?Q?uHdus17mXqWwL42ZNseG+OgH64WT8oj76qOCvx9Im5QAve516FbWv1xEqrUM?=
- =?us-ascii?Q?oiByJgSWO/JxM8ujSnSnksrONn3cD2RLwiFVlUyYmXyzc5l/a2diYjzViqU0?=
- =?us-ascii?Q?Cjez1JXXiqXm4bbgP8NuFoLxhlhUOHTa/mzX/gcPKsFj02v1xbdoRUKucX03?=
- =?us-ascii?Q?XEJ4EYL3YReEdiigRg8sUhZQmGkT3EIpr1xJ9xV8OHsX8MUbkGDegRHnzW5F?=
- =?us-ascii?Q?6Alyx3hh14FlA0TXc2tDA+pl/mXXWGXy8MkapxaovimWabq+ZlqAMR8MO6Ca?=
- =?us-ascii?Q?bxPq9YW9EkGvH93jEZNh/CW+xaCusgGVJgQh68V+jiEVbbVBE3/mSRdDBZbg?=
- =?us-ascii?Q?8K8HgQ/ieXMFrwgT8mzxKjiXssozkzQR6Pr7x5ad6T4WHAeMXtVPpvigQlSx?=
- =?us-ascii?Q?UXX9QRuAQyKOMEQ6M+fa01d94MxhjGAreBZMSz9vpp8B83bJK26J+azB17vf?=
- =?us-ascii?Q?OzEwiAgjgLsj6LP8wRSVjcVJgqRmtUAPtVVx9Q7FCmK3QtgRVlQ1/8K8AYLi?=
- =?us-ascii?Q?5+pzjGgvCKL3zbMtjTAlINZBAbWYG3NTpyE3RxMkpuBBIIBYlUPdHM0vuXNU?=
- =?us-ascii?Q?HE5bfLHZpLwVHGBfffThrsxJp3jBbO4YimGSt+/gfmegzdGqs2M8qqjhBMu1?=
- =?us-ascii?Q?ZQbYZ9rmv3wcCJm/doA8AAyX/2HFhtK4vfPF0YaA3nxKbQNd+8cKFbTZHfFS?=
- =?us-ascii?Q?6bq84DOgZ8xisoLTOY4tM2WJ6bzDaNtojjUXgF/hwPTwC2mAILAUQOWCgRfe?=
- =?us-ascii?Q?zB97rl9UGyPhJOY5ySXWyeOXpZ11lSe0?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?fIXKDNXa/m3kg1oX3qtUabfKaR0h/unAwTemdBPQ5GjGPdLq1SxWvYoW14ed?=
- =?us-ascii?Q?NXK6+O2kXgATL1yy7o+19ybNdNoj1So8mpVsT+/9gX0jZVLF3YAQoQR3NPx1?=
- =?us-ascii?Q?GCD1pKhaDcu/GFF0EWPLJJ+WN1PSGrtSqywaQCGcT1xlXVggTuuxelb4sBfW?=
- =?us-ascii?Q?iXFwJ2fRXyN46gnrP0wy1bFF1+DGRF3Ejmbw5bKwkQAnlnBLA8tjgPX3rChG?=
- =?us-ascii?Q?C90hS3BMnAi9u9kdlh9wWw04pOl7Xug5k2OTitGnEIh7gfCd8HBGzFBRlUUe?=
- =?us-ascii?Q?jiDWwLIQfgM1dQRtsoqS5sSni6gpX1ifqidJAAAtdM5jQSIhOTEWph0fQqy8?=
- =?us-ascii?Q?+YRmT35ZkQU0Bj7kklF4NEmAJoI9dV1zY7YDLSGX6ZQV8MDLelZppYPmHnAG?=
- =?us-ascii?Q?FCbCr78aGSVnCClfvMsWaLxT62X4/THUdjAhP1QYJGGEwklvUxlU3tFdXnVH?=
- =?us-ascii?Q?1Hxx052qOl0WsXvS2VdpQa+g4b6Ts4arWWEIzPF5lFga0qN4p5PtLi9kE0TT?=
- =?us-ascii?Q?tL8Yrdd+E5zNuXl3EMJAIWxteY+sMbMPAl7SDqIea3FTVwLEFE3mQicYZlid?=
- =?us-ascii?Q?9+H91RsViXcP0C8bI6OgbNrfDDbY9g/2JWohYDct010x+jJhZ4BMvWZfOuw/?=
- =?us-ascii?Q?egdC5nrMYsMs86p9xbCWJPKxUpM5p4A4k1HfyyvPDdi20G5osIOGuDV/Bz0p?=
- =?us-ascii?Q?V58ZM0/ZefoH4cgwRIBQMGg/4qxXdd6HftmfAcmJqFYJMJIJluUFTgyTt+I/?=
- =?us-ascii?Q?rfAFJ6z4H4Q20L/VvX5D2PmsWO1wHyXXRtHUk4fTlug2UIZbozD6MAUtJPg3?=
- =?us-ascii?Q?PQp4swULzpA0zEnGM0yfpzQVtunhZ+PsfGSI0rchFWV7uJiDlMrz3xxw6fMZ?=
- =?us-ascii?Q?Te4tWt5HNoiZU6bfxlCbRScJoOQLHwV7BZoaP0WG+D3tPRFT4IHzPi2ucODG?=
- =?us-ascii?Q?2sTc3WiJKbVUbFGdNCDgcKnRzbCPAidCKT1l8QjHLUHHVAUf+pHhEyQz2hOr?=
- =?us-ascii?Q?ldKgRePB4ZubrcTnHig1+V3JG6jhBVc8UBMyav1AyYoKbpuueJ+t1vSv0oZo?=
- =?us-ascii?Q?vivZSaPeLITJ8V34doaegjQXjZBuD3A3vxn/O8M0yfI0sdx4PjAiXdQASNAZ?=
- =?us-ascii?Q?fJvjmdNm8LcMR/8TbjPKuRjEhXwlEmZ16NNeXNBY3OlCHTLZaln31cNTO9yH?=
- =?us-ascii?Q?MIxVdZXqKFVDepSiauda98pKBnZ3vtcTAxBoOem8gkSNYkZL1vSTEjlGe/bv?=
- =?us-ascii?Q?zFb2wTkHNECiUpn6QsKvhu3OmY6jXx4ELq9XVwLKPH0YbpBNEHPFlTJV3Bfp?=
- =?us-ascii?Q?XjJb/xc3wt7ZCim9lBV8jWRdVANOls506DAKbuPDj6brQcXmscoRFgcq3Yob?=
- =?us-ascii?Q?5kZghj3piWMnpwzwDElHFo1V7HPakcfiN4pKCM2PBujk0KoWy7E+5qVOc8y5?=
- =?us-ascii?Q?h9UL/68jhkuMq+IHoNkfO0OU9mG5AexeZ66hymkX2eIidhX0MK4Ef+IJ8naY?=
- =?us-ascii?Q?R3Ks6ncnBP5oAggQjhqk4xtO8QWXG2iCL8B/M/vvQ8P8mgsdyWlwFln97WxQ?=
- =?us-ascii?Q?M33/l8+Whsk+zOXfHp8=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YRKvK430Wz2xrJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  6 Jan 2025 14:50:03 +1100 (AEDT)
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2ee51f8c47dso15664363a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 05 Jan 2025 19:50:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1736135398; x=1736740198; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=M/CQCfwbCGmNbncAnjTVlLDBhrllfolDtdV4jFWfmgY=;
+        b=M69sW6zvOu4P3RZaBBOujdUCXxNP+qi90xUkzqKMYyvEPY6lAb7MNUprwfLLjQWVrH
+         L/UYR6xuYsjWE1E+VjWRVLoZjYoqVqnUJnkeO8eYRh0stCBlwzhQW95DCqo/mGPufThw
+         N/W99ZsDxyHwMPdA+hILtjM60Mnnomq99ImLWlN5p5U1W01BEjxY9ba2cANfhE30aRyH
+         rc+lYByiWzLvpbr94ZiXf+aMqFqNt9Buujmbt8jX27l8GjB+wSTl8S21EI4qzkPhcden
+         aq3CK2ZYMnDF7jW+t1wwbpTiK0BReS97xxnvfmSD9tZLBYzRsG6GWql+N/sGSYx1NVhS
+         bElg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736135398; x=1736740198;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=M/CQCfwbCGmNbncAnjTVlLDBhrllfolDtdV4jFWfmgY=;
+        b=OLrRiZlEKHW7VMfW/CgQ88AA7CtbxkPNcCKOh/gXONZFGgZPqRDGv6BmwZX6iFduF8
+         ZEoV813GUKk64fz1s4UQm5tRSfeYtrENKvKTF+NGpkNw93+pC3JMse5uTTYp+jBqo5i5
+         TmOvlR6JSx5S4HG4/ReXyWTXiaqnbawfmejiH1KL/d+mlzxZZbWt5WEOE+g/+vgvQcRq
+         3NG0817E+sBLZjpda4lm8NoVDhGfSYcHqpH81hPCm8LIBLpY9j9YxJyPq9m06JQuZv8f
+         xTvS70dENuCoTKLS9Sn3nFA6HAyUgS9g9rTPh5kxuljDmoflmN9VpM16sJjOIewpdlZY
+         2D0A==
+X-Forwarded-Encrypted: i=1; AJvYcCVgbBPose8nQYXIviELhr9BOtOgyOX+yEcDFyBDnioOyyhnREYCp0dwm6kV2FNTChuwgfChCB/kWazOWTg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzGNjfiqIci3hM+lGaA+4GhoCbeQT2eFj2aR0H9hQzX2jTRsjDT
+	MBrZksyj5MICYZBVwegTxuxoQTWZwZXZm0nLha1YblaZzBCyp8IZu53naZiGi+4=
+X-Gm-Gg: ASbGncv+pRT57yP3G8HSHCyK5HoSHp/379JUkxSGBeBswWuhX0u6L882Fwzzrj3Xqic
+	QEFh08r3fJ70TRB22BwMk0IOljEOPEb+czJWgw+Dwuf8FOYnuAA2Chp/URSOXINa5/NnGTYNm/E
+	LcU+ESO8eM8OGpZyz1rDNUYk1UpFcMGCw31N+I01yXqKCsCjt6eIkASvB7FPK5niBN/UH7wdMP0
+	U7jGuJtPvwb0VBx0IzqNHIGVqhFgfnMMhCjHcYm3kAAlWMyCe13lh1rzmFT2L9C7SCATSXN3s3p
+	aQYVjg==
+X-Google-Smtp-Source: AGHT+IHpHJsHb9mpdlPf1WMyDHeUmOQ71xKKXnSQB+gdiLoxCAO6i7uhLAJzOXuDIN6Nxvn4zgv7zA==
+X-Received: by 2002:a17:90b:53c8:b0:2ee:c2df:5d30 with SMTP id 98e67ed59e1d1-2f452eb11e2mr54849162a91.26.1736135398510;
+        Sun, 05 Jan 2025 19:49:58 -0800 (PST)
+Received: from [10.84.148.23] ([203.208.167.150])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f447799048sm32821110a91.10.2025.01.05.19.49.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 05 Jan 2025 19:49:58 -0800 (PST)
+Message-ID: <de8756aa-dbf7-4f6f-91f0-934270397192@bytedance.com>
+Date: Mon, 6 Jan 2025 11:49:41 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -161,123 +83,158 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4b329604-b56d-41d9-7e98-08dd2dfc37fc
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Jan 2025 02:45:45.0640
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: L6DHWNV0XWvxE1BfeIpdKOcmnO3ksveOyMXSajGyn+ZpIV9YQbkYMJQ4bP9AsQCdR/Zkj36n24QMkBlqgHmLlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8493
-X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/15] riscv: pgtable: move pagetable_dtor() to
+ __tlb_remove_table()
+Content-Language: en-US
+To: Kevin Brodsky <kevin.brodsky@arm.com>, peterz@infradead.org,
+ akpm@linux-foundation.org
+Cc: agordeev@linux.ibm.com, palmer@dabbelt.com, tglx@linutronix.de,
+ david@redhat.com, jannh@google.com, hughd@google.com, yuzhao@google.com,
+ willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
+ lorenzo.stoakes@oracle.com, rientjes@google.com, vishal.moola@gmail.com,
+ arnd@arndb.de, will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ dave.hansen@linux.intel.com, rppt@kernel.org, ryan.roberts@arm.com,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org, linux-arch@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-um@lists.infradead.org
+References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
+ <0e8f0b3835c15e99145e0006ac1020ae45a2b166.1735549103.git.zhengqi.arch@bytedance.com>
+ <1b09335c-f0b6-4ccb-9800-5fb22f7e8083@arm.com>
+ <ebce5e05-5e46-4c6e-94a0-bcf3655a862b@bytedance.com>
+ <7e2c26c8-f5df-4833-a93f-3409b00b58fd@arm.com>
+ <e9fe97d4-99d5-443e-b722-43903655a76e@bytedance.com>
+ <31e1a033-00a7-4953-81e7-0caedd0227a9@bytedance.com>
+ <d9a14211-4bbd-4fb6-ba87-a555a40bb67a@arm.com>
+From: Qi Zheng <zhengqi.arch@bytedance.com>
+In-Reply-To: <d9a14211-4bbd-4fb6-ba87-a555a40bb67a@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-> > +#define NTMP_FILL_CRD(crd, tblv, qa, ua) \
-> > +({ \
-> > +	typeof(crd) _crd =3D (crd); \
-> > +	(_crd)->update_act =3D cpu_to_le16(ua); \
-> > +	(_crd)->tblv_qact =3D NTMP_TBLV_QACT(tblv, qa); \
-> > +})
-> > +
-> > +#define NTMP_FILL_CRD_EID(req, tblv, qa, ua, eid) \
-> > +({ \
-> > +	typeof(req) _req =3D (req); \
-> > +	NTMP_FILL_CRD(&(_req)->crd, tblv, qa, ua); \
-> > +	(_req)->entry_id =3D cpu_to_le32(eid); \
-> > +})
->=20
->=20
-> These are pretty complex for #defines. Can they be made into
-> functions? That will get you type checking, finding bugs where
-> parameters are swapped.
+Hi Kevin,
 
-The problem is that different tables have different types of 'req'
-parameters. Of course, since the headers of these request data
-are the same, we can force these pointers to be converted to
-common type pointers, but I think the forced conversion has made
-this pointless.
+On 2025/1/3 21:27, Kevin Brodsky wrote:
+> On 03/01/2025 10:35, Qi Zheng wrote:
+>> On 2025/1/3 17:13, Qi Zheng wrote:
+>>> On 2025/1/3 16:02, Kevin Brodsky wrote:
+>>>> On 03/01/2025 04:48, Qi Zheng wrote:
+>>>>> [...]
+>>>>>
+>>>>> In __tlb_batch_free_encoded_pages(), we can indeed detect PageTable()
+>>>>> and call pagetable_dtor() to dtor the page table pages.
+>>>>> But __tlb_batch_free_encoded_pages() is also used to free normal pages
+>>>>> (not page table pages), so I don't want to add overhead there.
+>>>>
+>>>> Interesting, can a tlb batch refer to pages than are not PTPs then?
+>>>
+>>> Yes, you can see the caller of __tlb_remove_folio_pages() or
+>>> tlb_remove_page_size().
+> 
+> I had a brief look but clearly not a good enough one! I hadn't realised
+> that "table" in tlb_remove_table() means PTP, while "page" in
+> tlb_remove_page() can mean any page, and it's making more sense now.
+> 
+> [...]
+> 
+>>>
+>>> For arm, the call to pagetable_dtor() is indeed missed in the
+>>> non-MMU_GATHER_RCU_TABLE_FREE case. This needs to be fixed. But we
+>>> can't fix this by adding pagetable_dtor() to tlb_remove_table(),
+>>> because some architectures call tlb_remove_table() but don't support
+>>> page table statistics, like sparc.
+> 
+> When I investigated this for my own series, I found that the only case
+> where ctor/dtor are not called for page-sized page tables is 32-bit
+> sparc (see table at the end of [1]). However only 64-bit sparc makes use
+> of tlb_remove_table() (at PTE level, where ctor/dtor are already called).
 
->=20
-> > +int netc_setup_cbdr(struct device *dev, int cbd_num,
-> > +		    struct netc_cbdr_regs *regs,
-> > +		    struct netc_cbdr *cbdr)
-> > +{
-> > +	int size;
-> > +
-> > +	size =3D cbd_num * sizeof(union netc_cbd) + NTMP_BASE_ADDR_ALIGN;
-> > +
-> > +	cbdr->addr_base =3D dma_alloc_coherent(dev, size, &cbdr->dma_base,
-> > +					     GFP_KERNEL);
-> > +	if (!cbdr->addr_base)
-> > +		return -ENOMEM;
-> > +
-> > +	cbdr->dma_size =3D size;
-> > +	cbdr->bd_num =3D cbd_num;
-> > +	cbdr->regs =3D *regs;
-> > +
-> > +	/* The base address of the Control BD Ring must be 128 bytes aligned =
-*/
-> > +	cbdr->dma_base_align =3D  ALIGN(cbdr->dma_base,
-> NTMP_BASE_ADDR_ALIGN);
-> > +	cbdr->addr_base_align =3D PTR_ALIGN(cbdr->addr_base,
-> > +					  NTMP_BASE_ADDR_ALIGN);
-> > +
-> > +	cbdr->next_to_clean =3D 0;
-> > +	cbdr->next_to_use =3D 0;
-> > +	spin_lock_init(&cbdr->ring_lock);
-> > +
-> > +	/* Step 1: Configure the base address of the Control BD Ring */
-> > +	netc_write(cbdr->regs.bar0, lower_32_bits(cbdr->dma_base_align));
-> > +	netc_write(cbdr->regs.bar1, upper_32_bits(cbdr->dma_base_align));
-> > +
-> > +	/* Step 2: Configure the producer index register */
-> > +	netc_write(cbdr->regs.pir, cbdr->next_to_clean);
-> > +
-> > +	/* Step 3: Configure the consumer index register */
-> > +	netc_write(cbdr->regs.cir, cbdr->next_to_use);
-> > +
-> > +	/* Step4: Configure the number of BDs of the Control BD Ring */
-> > +	netc_write(cbdr->regs.lenr, cbdr->bd_num);
-> > +
-> > +	/* Step 5: Enable the Control BD Ring */
-> > +	netc_write(cbdr->regs.mr, NETC_CBDR_MR_EN);
-> > +
-> > +	return 0;
-> > +}
-> > +EXPORT_SYMBOL_GPL(netc_setup_cbdr);
->=20
-> I assume there is a version 3 in development, which will need a
-> different library, or at least different symbols. Maybe you should
-> think about the naming issues now?
+Thanks for providing this information.
 
-I think that version 3 will not exist for a long time or will never exist.
-The reason for developing NTMP 2.0 is that NTMP 1.0 cannot be
-extended, so its table format is fixed, but for NTMP 2.0, its table
-format supports extension. For the same table, multiple versions
-can be expanded.
+> 
+> So really calling pagetable_dtor() from tlb_remove_table() in the
+> non-MMU_GATHER_TABLE_FREE case seems to be the obvious thing to do.
 
->=20
-> > diff --git a/include/linux/fsl/ntmp.h b/include/linux/fsl/ntmp.h
-> > new file mode 100644
-> > index 000000000000..7cf322a1c8e3
-> > --- /dev/null
-> > +++ b/include/linux/fsl/ntmp.h
-> > @@ -0,0 +1,178 @@
-> > +/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
-> > +/* Copyright 2025 NXP */
-> > +#ifndef __NETC_NTMP_H
-> > +#define __NETC_NTMP_H
->=20
-> Does this header need to be global? What else will use it outside of
-> drivers/net/ethernet/freescale/enetc?
->=20
-Yes, this library will be used by NETC Switch driver, although there is
-no NETC switch driver in the upstream yet, this is already in the plan.
+Right. Currently, only powerpc, sparc and x86 will directly call
+tlb_remove_table(), and all of them are in the MMU_GATHER_TABLE_FREE
+case. Therefore, I think the modification you mentioned below is
+feasible.
 
+In summary, currently only arm calls tlb_remove_table() in the
+non-MMU_GATHER_RCU_TABLE_FREE case. So I think we can add this fix
+directly to patch #8. If I haven't missed anything, I'll send an
+updated patch #8.
+
+> 
+> Once this is done, we should be able to replace all those confusing
+> calls to tlb_remove_page() on PTPs with tlb_remove_table() and remove
+> the explicit call to pagetable_dtor(). AIUI this is essentially what
+> Peter suggested on v3 [2].
+
+Since this patch series is mainly for bug fix, I think that these things
+can be done in separate patch series later.
+
+> 
+> [1]
+> https://lore.kernel.org/linux-mm/20241219164425.2277022-1-kevin.brodsky@arm.com/
+> [2]
+> https://lore.kernel.org/linux-mm/20250103111457.GC22934@noisy.programming.kicks-ass.net/
+> 
+> [...]
+> 
+>> Or can we just not let tlb_remove_table() fall back to
+>> tlb_remove_page()? Like the following:
+>>
+>> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+>> index a59205863f431..354ffaa4bd120 100644
+>> --- a/include/asm-generic/tlb.h
+>> +++ b/include/asm-generic/tlb.h
+>> @@ -195,8 +195,6 @@
+>>    *  various ptep_get_and_clear() functions.
+>>    */
+>>
+>> -#ifdef CONFIG_MMU_GATHER_TABLE_FREE
+>> -
+>>   struct mmu_table_batch {
+>>   #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
+>>          struct rcu_head         rcu;
+>> @@ -219,16 +217,6 @@ static inline void __tlb_remove_table(void *table)
+>>
+>>   extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
+>>
+>> -#else /* !CONFIG_MMU_GATHER_HAVE_TABLE_FREE */
+>> -
+>> -/*
+>> - * Without MMU_GATHER_TABLE_FREE the architecture is assumed to have
+>> page based
+>> - * page directories and we can use the normal page batching to free
+>> them.
+>> - */
+>> -#define tlb_remove_table(tlb, page) tlb_remove_page((tlb), (page))
+> 
+> We still need a different implementation of tlb_remove_table() in this
+> case. We could define it inline here:
+> 
+> static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
+> {
+>      struct page *page = table;
+> 
+>      pagetable_dtor(page_ptdesc(page));
+>      tlb_remove_page(page);
+> }
+
+Right. As I said above, will add this to the updated patch #8.
+
+Thanks!
+
+> 
+> - Kevin
 
