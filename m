@@ -1,50 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-4791-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFBDCA04C9D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 23:46:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A855A04CE3
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 00:01:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSR3R2V8yz2yDk;
-	Wed,  8 Jan 2025 09:45:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSRP64gNzz2yD6;
+	Wed,  8 Jan 2025 10:01:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736289955;
-	cv=none; b=ZMLhLfVws+KHf1wyijh3gwjt3eXF3u4foWfrDdA2cfIMzRZGxVZo3vPSfp5SEUHFNNb0ci03CdIegtnkbTWD0KR+4MVHDpZ/J4+n9+5tjsY7rR1GC5TxCSQxN5RTB4vlCMGn+SAQ4uj29q3/GHSlVmf3wUROul8KPZ7YA60oK+moytAGCbnaGgtGtD9rhVslv0yhpVnpONy0CIpSBHg1ar+vZL3Lx3yWLWRSSVDPzmcMrJl7H+qCyTyLjkvsh+mV5FkHTDpqtdqSOPNzTXt3LEAcfkev5rVioIXgaorh5SfO1bIecX0mAXMfpE4AvnynbACH87SThPSWhq/ABOou+Q==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736290874;
+	cv=none; b=hkPT6KGdB1OL4y9gXfQHQxi7YXzVkDCuUXEMUB529VRXdeJvVa1JvOgEnNPy+nT8SqLZwQyb4m3D3vh+ensuYbDUqGwJrfXn22YGIsnVgmhJkA1La/ZxsoHRFLereTBJrPqFNB2D96KFosADha1jKjRl2ehgQyxNQtp9PTguO16D6J41DhCkmRBZn9Z6WpK06r2LX28vJJ9rg8E4S+wK/iQDyvW4neHk0VPHNdRcYDDzzoU3pKkgQjxK6H4ernf4psUCNPAVr1+1ARqA4mFgh/flPgaX/+mgbaQnw4gy9mrXLb67mUcYZIrogbPv/9z3QZUxxbE/+i7Mnl+OduuShg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736289955; c=relaxed/relaxed;
-	bh=8yX2WRMh1jgl1DTYfEy2ynxdF0LMsVRUcWHIneRAIvk=;
+	t=1736290874; c=relaxed/relaxed;
+	bh=oKNPpPln1dq6JzdrqWFdARjtMxHIDxSUZwktQBs/ig0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BPr4IVWVUXNQF6LB6qni4Frrnelmg4VIr2dayHWwI03SU9SzRjjX+6yXiVjZ7VoocIcmlcO5PT96i5AF+bah+UAZmdWng5shcnu2lTw9W9hI+aRItR6gJ2h6o2TtZfjaipFUeOlY7P32I/CKaJIilpUNDysY7JzrzNW4PqrnWcqHTjcIi4X54C8QoDeJTgtMaiKwova+uX2WqDvjyYBGtaBvHJTvGp8BwMVZyGo4JE1tfz+EXVfBblkvj2CWuLSk2yshuUX9ago6Ha68I5VRRc5VVXR29XD//ZvBbl+3rvWm0NJUZBP22TE27V72TIeo+JaVppR9dlz/EoGbS5nVLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=NED0+7Ze; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=mLiqMewE3jahJ3qkK79PWW6XTht+PBR5QvxhWF/oSS6ZIri2GU7J1A4rw5m+GJ2rIB8B4lNbUIPnKhF95l+1yaqgl4BQCNeWRZYotJZF5Dn92appZZfrdALDPxB/5CJvU+NomMzEYurTRP3mVyiaG0beMxJ0rjFZMYERTIppAkpld+PjntkdOYG0fnryk59im+YmCxp6jJyGaLfrBBsRjXlE7ZnDpjDREd2y48uddFhJvnJQeck0pxTjAzBUEg1u/XTD27JDurLXAn/GSrvltpzL3ArPtvJJNIj4eCu7jt4ehp3/yFz53JXpCfti7znM7U7KYxVV/KNg10AJSDWwUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=mbWNCIVd; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=NED0+7Ze;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=mbWNCIVd;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
 Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSR3M3JP0z3fpS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 09:45:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSRP31xVlz2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 10:01:08 +1100 (AEDT)
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 5EC9C240028
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 23:45:42 +0100 (CET)
+	by mout01.posteo.de (Postfix) with ESMTPS id 1668924002D
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 00:01:02 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1736289942; bh=0p7I6CjwprjKUPF85iarFF3/An5PH4d3rFnUVpXCKjo=;
+	t=1736290862; bh=ql/VMdwMNYI4OeumrsAV90Qo71dCO+1E5E929QhrV7k=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
 	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=NED0+7Zef0TlyRwcDOcxyomiAje/XlK64U5Isxg5aOeL8X9Liz8niSLE6ZnPkXXXt
-	 y+rkSZgKeB59X49tFTC8BwOpFWgDJpcgEl8VOn19kTfSrlqmJLz8Hl05foLpILl5Gp
-	 oCFXU53bh2eh5mug3HfK35IOrV4Q27i5qEEXnim1YkXzQtCjwWhM2noQXAI2Bgqr5w
-	 KsFh39G/+TsFiBc6dtKKLhWzzF0MKCC/dVtRl90eoN+S4p9Q2fx8r2C9SQ1pk7vQJz
-	 IkSbdZ0LscoGj4sVWTrCtx0ueYR9OKzw9ucpzYOVErxqrfVBwxHGjywToOVpxDNtLi
-	 1fIjeHFpUFAjg==
+	b=mbWNCIVdf7W+//FaBBJw39+KdLxo8Ymi1tmmHyuWehn4vslPFgfne7mpg1whR72PD
+	 llWhC6BbH/deWJdqfA6e+SG4aDXmdcZJkzlwpphJTQTwvyeeOXl8wbrvLU1HkJyNN/
+	 8EueOmBSdQo80mgCftPBtHHT/RhmTuBEZanwkkUuslRwoTsA2VlwFNqkBIcQ5SUzis
+	 y1RZgrOp486x8oa3jO4y8By5oaUanR/z00O0Vvgm3dSiPwrCiFB2BxRfhJK6sy1d9O
+	 OYNZgW3SMFXsXF7OaNQQwgMH6YLiUCZ1YZXPMZnDEAWSEUZkxuSBP9JsQkY8OAO10i
+	 2gHisC6RFjO8g==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YSR374WRgz6tvZ;
-	Tue,  7 Jan 2025 23:45:39 +0100 (CET)
-Date: Tue,  7 Jan 2025 22:45:39 +0000
+	by submission (posteo.de) with ESMTPSA id 4YSRNp409yz9rxP;
+	Wed,  8 Jan 2025 00:00:58 +0100 (CET)
+Date: Tue,  7 Jan 2025 23:00:58 +0000
 From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: j.ne@posteo.net, Michael Ellerman <mpe@ellerman.id.au>,
@@ -58,11 +58,11 @@ Cc: j.ne@posteo.net, Michael Ellerman <mpe@ellerman.id.au>,
 	Bartosz Golaszewski <brgl@bgdev.pl>, Frank Li <Frank.Li@nxp.com>,
 	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
 	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
-Subject: Re: [PATCH 01/19] powerpc: Generalize MPC831x platform support
-Message-ID: <Z32uk8VJqhlogY50@probook>
+Subject: Re: [PATCH 08/19] powerpc: boot: Enable FIT image generation
+Message-ID: <Z32yKoW2ozZs2oA_@probook>
 References: <20250102-mpc83xx-v1-0-86f78ba2a7af@posteo.net>
- <20250102-mpc83xx-v1-1-86f78ba2a7af@posteo.net>
- <0b66e94d-7116-4916-b897-06b1199752b4@csgroup.eu>
+ <20250102-mpc83xx-v1-8-86f78ba2a7af@posteo.net>
+ <f4552e33-87d9-4b71-be21-f6884e4b5fa1@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,13 +78,13 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <0b66e94d-7116-4916-b897-06b1199752b4@csgroup.eu>
+In-Reply-To: <f4552e33-87d9-4b71-be21-f6884e4b5fa1@csgroup.eu>
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 06, 2025 at 02:50:31PM +0100, Christophe Leroy wrote:
+On Mon, Jan 06, 2025 at 02:52:59PM +0100, Christophe Leroy wrote:
 > 
 > 
 > Le 02/01/2025 à 19:31, J. Neuschäfer via B4 Relay a écrit :
@@ -92,90 +92,29 @@ On Mon, Jan 06, 2025 at 02:50:31PM +0100, Christophe Leroy wrote:
 > > 
 > > From: "J. Neuschäfer" <j.ne@posteo.net>
 > > 
-> > The Reference Design Boards (RDB) don't have the same relevance they had
-> > then the MPC831x platform was new; if any work is done today, then
-> > likely based on used production boards, which are more readily available
-> > than NXP's discontinued devboards.
-> > 
-> > To further reduce the focus on RDBs, add DT compatible strings for all
-> > four MPC8314/5 variants.
+> > The Flat Image Tree (FIT) format combines a kernel, a set of
+> > devicetrees, and optionally additional resources into a single file that
+> > can be loaded by a bootloader such as U-Boot. Generating a FIT image as
+> > part of the kernel build reduces the need for additional build scripts,
+> > and produces a single boot image without falling back to one of the
+> > many legacy methods implemented in arch/powerpc/boot/Makefile, which
+> > would require additional changes for arch/powerpc/boot for each board.
 > 
-> Seems like this patch does more than adding DT compatible strings.
+> Will that allow compressed vmlinux ?
 
-I'll move the addition of DT compatibles to a new patch.
+Yes, the make_fit.py script can compress included data (kernel, dtb),
+and the logic in scripts/Makefile.lib makes use of this feature.
+By default, gzip is used:
 
-> 
-> > 
-> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > ---
-[...]
-> > diff --git a/arch/powerpc/platforms/83xx/Kconfig b/arch/powerpc/platforms/83xx/Kconfig
-> > index d355ad40995fdc0fc3b4355126c65c761c21c296..944ec44a1fa6044b03ac71c295e891cd411ce444 100644
-> > --- a/arch/powerpc/platforms/83xx/Kconfig
-> > +++ b/arch/powerpc/platforms/83xx/Kconfig
-> > @@ -18,12 +18,12 @@ config MPC830x_RDB
-> >          help
-> >            This option enables support for the MPC8308 RDB and MPC8308 P1M boards.
-> > 
-> > -config MPC831x_RDB
-> > -       bool "Freescale MPC831x RDB"
-> > +config MPC831x
-> 
-> That looks confusing. We already have CONFIG_PPC_MPC831x
+# Use this to override the compression algorithm
+FIT_COMPRESSION ?= gzip
 
-Fair enough. How about CONFIG_MPC831x_BOARDS?
-
-> 
-> > +       bool "Freescale MPC831x boards"
-> >          select DEFAULT_UIMAGE
-> >          select PPC_MPC831x
-> >          help
-> > -         This option enables support for the MPC8313 RDB and MPC8315 RDB boards.
-> > +         This option enables support for all MPC831x-based boards.
-> > 
-> >   config MPC832x_RDB
-> >          bool "Freescale MPC832x RDB"
-> > diff --git a/arch/powerpc/platforms/83xx/Makefile b/arch/powerpc/platforms/83xx/Makefile
-> > index 6fc3dba943dade4f63da090b520b0c35bb46a091..92fb0b34913e1113d3e6eac49acbb1c32fb06ab7 100644
-> > --- a/arch/powerpc/platforms/83xx/Makefile
-> > +++ b/arch/powerpc/platforms/83xx/Makefile
-> > @@ -6,7 +6,7 @@ obj-y                           := misc.o
-> >   obj-$(CONFIG_SUSPEND)          += suspend.o suspend-asm.o
-> >   obj-$(CONFIG_MCU_MPC8349EMITX) += mcu_mpc8349emitx.o
-> >   obj-$(CONFIG_MPC830x_RDB)      += mpc830x_rdb.o
-> > -obj-$(CONFIG_MPC831x_RDB)      += mpc831x_rdb.o
-> > +obj-$(CONFIG_MPC831x)          += mpc831x.o
-> >   obj-$(CONFIG_MPC832x_RDB)      += mpc832x_rdb.o
-> >   obj-$(CONFIG_MPC834x_ITX)      += mpc834x_itx.o
-> >   obj-$(CONFIG_MPC836x_RDK)      += mpc836x_rdk.o
-> > diff --git a/arch/powerpc/platforms/83xx/mpc831x_rdb.c b/arch/powerpc/platforms/83xx/mpc831x.c
-> > similarity index 65%
-> > rename from arch/powerpc/platforms/83xx/mpc831x_rdb.c
-> > rename to arch/powerpc/platforms/83xx/mpc831x.c
-> > index 5c39966762e4264d2ef91b2c4ef75fdf2c2c5d65..7250fc11c7ee80b266f39d0b3aebb0deb777c129 100644
-> > --- a/arch/powerpc/platforms/83xx/mpc831x_rdb.c
-> > +++ b/arch/powerpc/platforms/83xx/mpc831x.c
-> > @@ -1,8 +1,8 @@
-> >   // SPDX-License-Identifier: GPL-2.0-or-later
-> >   /*
-> > - * arch/powerpc/platforms/83xx/mpc831x_rdb.c
-> > + * arch/powerpc/platforms/83xx/mpc831x.c
-> 
-> Please remove the file name from the file.
-
-Will do.
-
-> >    *
-> > - * Description: MPC831x RDB board specific routines.
-> > + * Description: MPC831x board specific routines.
-> 
-> s/board/boards ?
-
-No, the "board" in "board specific" doesn't get pluralized when there
-are multiple boards. How about the following?
-
-      * Description: MPC831x specific routines.
-
+quiet_cmd_fit = FIT     $@
+      cmd_fit = $(MAKE_FIT) -o $@ --arch $(UIMAGE_ARCH) --os linux \
+		--name '$(UIMAGE_NAME)' \
+		$(if $(findstring 1,$(KBUILD_VERBOSE)),-v) \
+		$(if $(FIT_DECOMPOSE_DTBS),--decompose-dtbs) \
+		--compress $(FIT_COMPRESSION) -k $< @$(word 2,$^)
 
 
 Best regards,
