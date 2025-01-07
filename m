@@ -1,34 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-4786-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4787-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149BDA045D6
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 17:18:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92369A045DA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 17:19:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSGSR3Yj6z30WT;
-	Wed,  8 Jan 2025 03:18:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSGT21CVCz3bSc;
+	Wed,  8 Jan 2025 03:19:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736266711;
-	cv=none; b=hqKcAlo9LhqyeiMfi/y1J/HHN59KmCMHjhiE3lHASdIcbFH+ZUK9ToqpRg1I1fRYK798KsbopUqRDm9S7pYiQLt2XJ7qd2GkZv2Rwvbyrv2HmbeiE63jP007tpV8c+9PQ5L0eIFRH41ifuzxr3AN7kYe6FWEUE2HLL6j6cU/wzqAEfFABOvRRfl5uXlUsQURCknvQGf1KL3kcTdWAMy38rFnbaEFO4a84BmOxIHBeAxYelxG4ulam0f2k8Qe6qNQ+3qapnnTZ8wRuUU6y5v0ai3FZbzUFiOySQzfY5+B1uviyAXtq1sqJmaDFRU3k/7wmg//nNU32HtlSPDL5telJg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736266742;
+	cv=none; b=jpq+qzhnZ7tE/GXE5vEMyskRB3SQt5NkfWTMPJl/j2BgcPll4J3BCLIp8CnLScV+vmVisU1KR7Cq1wyaM9RAZ3hHVDNW1SyClUsxB6liey6zp/EX4IivcisTMVYGWEg34CuuXxuzvcZftUYUtrwCPQF8Y/5NPsiu7Ly8/Lg8XcFCCuOSI4nI0ek+Y2wvCn5ESpwAjMFyqwi9JY9UM7/N3v6eUfU16553r4fxW51TXnh75Q+jl7joTBe+rXJhQ/xrb75rRADAmA97Z1qtwau5B6RfVasqXwfT7Y8fYj3JrV76uH08FYrWDO8HRlAPWU9YmqSYtrllrlHIS+PbEX/iCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736266711; c=relaxed/relaxed;
-	bh=t8CtES2oYL8C/kvAQfa6mDbgVViASQ+zfjrwizDMYAU=;
+	t=1736266742; c=relaxed/relaxed;
+	bh=oJSphBGIariLO7Kt8bB27/WK7gPxbh/RSwAS9mn80rs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oCCni3vY7at5RAyVVompvdD5Lu7AbXirMjfqB6pawsW9C+l0zwzBT7aWqtLKbWJyNjDB2kvXOXJJBswW2oaS89gORNrcPmB2BcFbPVzf5lLZ87KXU3GzT+YdKG+sZFOz4ZMoUGMG1k6OAcxEiGq4UHJNx7wXcImqx9qtGFblYVfGetbnFiM1+EVVOxfmzwmEZHq/W3lKfQsgZb7nlx8z8DNNtfk8ASrEXkZ84MQ6T+FfyO3DEKE23wjehPStpQdZOK7pQF0RiNJRZCZcYz9cXEmvYWJmVWrVIyMWwm7RyHrQGch/H+QA2MfVueGym32kA5ssJBMrKYbblhnYT9HdLw==
+	 Content-Type:Content-Disposition:In-Reply-To; b=VszRHTEXPrJmZDTAfiDvGzdsKcrrFrsWtjR2jpdkJ+ef4ilmyHuiKk7T/0T++XH+THfPBkoFbUDYM2djierWrHJrRkrII+QdikN/jfuVZktIRh6y3MU8XGC2coEdUuP4MwUxHcgBi3pg+zvtMq86ClnjKH9216jmCnwU3Tbweykn89rL2nWbi3GFiA2tfBGg5kO5g0p0U899N/I8vhSf5ZzO59kLrjCX5Zqmm+8XhrK8S2Hcs0tSDOsxlu+8AC1e05NJm08AWSbJX/bnNmidzXxQlRVnCpI/g1nE1x2DLEyv9fiU/wwOHfAxXSWzVQ9efInRlEWAUYkpWOMazF/xNg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSGSP3KbSz30WM
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 03:18:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSGT10mTGz30gd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 03:19:00 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 955311424;
-	Tue,  7 Jan 2025 08:18:22 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 30929143D;
+	Tue,  7 Jan 2025 08:18:58 -0800 (PST)
 Received: from e133380.arm.com (e133380.arm.com [10.1.197.41])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8FDFC3F59E;
-	Tue,  7 Jan 2025 08:17:52 -0800 (PST)
-Date: Tue, 7 Jan 2025 16:17:43 +0000
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD3AA3F59E;
+	Tue,  7 Jan 2025 08:18:27 -0800 (PST)
+Date: Tue, 7 Jan 2025 16:18:25 +0000
 From: Dave Martin <Dave.Martin@arm.com>
 To: Akihiko Odaki <akihiko.odaki@daynix.com>
 Cc: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
@@ -39,10 +39,10 @@ Cc: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
 	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
 	kexec@lists.infradead.org, binutils@sourceware.org,
 	devel@daynix.com
-Subject: Re: [PATCH v3 5/6] s390/crash: Use note name macros
-Message-ID: <Z31Tp0nMhb/ntUW0@e133380.arm.com>
+Subject: Re: [PATCH v3 2/6] binfmt_elf: Use note name macros
+Message-ID: <Z31T0dMgMucke5KS@e133380.arm.com>
 References: <20250107-elf-v3-0-99cb505b1ab2@daynix.com>
- <20250107-elf-v3-5-99cb505b1ab2@daynix.com>
+ <20250107-elf-v3-2-99cb505b1ab2@daynix.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,114 +57,103 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250107-elf-v3-5-99cb505b1ab2@daynix.com>
+In-Reply-To: <20250107-elf-v3-2-99cb505b1ab2@daynix.com>
 X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
-
-On Tue, Jan 07, 2025 at 09:45:56PM +0900, Akihiko Odaki wrote:
+On Tue, Jan 07, 2025 at 09:45:53PM +0900, Akihiko Odaki wrote:
 > Use note name macros to match with the userspace's expectation.
+
+Also (and more importantly) get rid of duplicated knowledge about the
+mapping of note types to note names, so that elf.h is the authoritative
+source of this information?
+
 > 
 > Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Acked-by: Baoquan He <bhe@redhat.com>
 > ---
->  arch/s390/kernel/crash_dump.c | 62 ++++++++++++++++---------------------------
->  1 file changed, 23 insertions(+), 39 deletions(-)
+>  fs/binfmt_elf.c       | 21 ++++++++++-----------
+>  fs/binfmt_elf_fdpic.c |  8 ++++----
+>  2 files changed, 14 insertions(+), 15 deletions(-)
 > 
-> diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
+> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> index 106f0e8af177..5b4a92e5e508 100644
+> --- a/fs/binfmt_elf.c
+> +++ b/fs/binfmt_elf.c
 
 [...]
 
-> @@ -281,10 +272,8 @@ static void *nt_init_name(void *buf, Elf64_Word type, void *desc, int d_len,
->  	return PTR_ADD(buf, len);
->  }
+> @@ -1538,7 +1538,7 @@ static int elf_fdpic_core_dump(struct coredump_params *cprm)
+>  	do
+>  		i += 2;
+>  	while (auxv[i - 2] != AT_NULL);
+> -	fill_note(&auxv_note, "CORE", NT_AUXV, i * sizeof(elf_addr_t), auxv);
+> +	fill_note(&auxv_note, NN_AUXV, NT_AUXV, i * sizeof(elf_addr_t), auxv);
+>  	thread_status_size += notesize(&auxv_note);
 >  
-> -static inline void *nt_init(void *buf, Elf64_Word type, void *desc, int d_len)
-> -{
-> -	return nt_init_name(buf, type, desc, d_len, nt_name(type));
-> -}
-> +#define NT_INIT(buf, type, desc) \
-> +	(nt_init_name((buf), NT_ ## type, &(desc), sizeof(desc), NN_ ## type))
+>  	offset = sizeof(*elf);				/* ELF header */
 
-Nit: this macro name clashes with the naming scheme in elf.h.
+Looking at this code, it appears that the right name is explicitly
+taken from elf.h for a few specific notes, but for those that are
+specified by the arch code (e.g., in struct user_regset entries) the
+name is still guessed locally:
 
-I think that there is a (weak) convention that macros with upper-case
-names don't expand to a C function call; thus, a macro with an upper-
-case name can be invoked in places where a C function call would not be
-allowed.  (This convention is not followed everywhere, though -- it's
-up to the maintainer what they prefer here.)
+static int fill_thread_core_info(...) {
 
-(Note also, the outer parentheses and the parentheses around (buf)
-appear redundant -- although harmless?)
+...
 
->  
->  /*
->   * Calculate the size of ELF note
-> @@ -300,10 +289,7 @@ static size_t nt_size_name(int d_len, const char *name)
->  	return size;
->  }
->  
-> -static inline size_t nt_size(Elf64_Word type, int d_len)
-> -{
-> -	return nt_size_name(d_len, nt_name(type));
-> -}
-> +#define NT_SIZE(type, desc) (nt_size_name(sizeof(desc), NN_ ## type))
+	fill_note(&t->notes[note_iter], is_fpreg ? "CORE" : "LINUX",
+		note_type, ret, data);
 
-Nit: name prefix clash (again); possibly redundant parentheses.
 
-[...]
+It would be preferable to clean this up if we want elf.h to be the
+authoritative source for the names.
 
-> @@ -348,16 +332,16 @@ static size_t get_cpu_elf_notes_size(void)
->  	struct save_area *sa = NULL;
->  	size_t size;
->  
-> -	size =	nt_size(NT_PRSTATUS, sizeof(struct elf_prstatus));
-> -	size +=  nt_size(NT_PRFPREG, sizeof(elf_fpregset_t));
-> -	size +=  nt_size(NT_S390_TIMER, sizeof(sa->timer));
-> -	size +=  nt_size(NT_S390_TODCMP, sizeof(sa->todcmp));
-> -	size +=  nt_size(NT_S390_TODPREG, sizeof(sa->todpreg));
-> -	size +=  nt_size(NT_S390_CTRS, sizeof(sa->ctrs));
-> -	size +=  nt_size(NT_S390_PREFIX, sizeof(sa->prefix));
-> +	size =	NT_SIZE(PRSTATUS, struct elf_prstatus);
-> +	size +=  NT_SIZE(PRFPREG, elf_fpregset_t);
-> +	size +=  NT_SIZE(S390_TIMER, sa->timer);
-> +	size +=  NT_SIZE(S390_TODCMP, sa->todcmp);
-> +	size +=  NT_SIZE(S390_TODPREG, sa->todpreg);
-> +	size +=  NT_SIZE(S390_CTRS, sa->ctrs);
-> +	size +=  NT_SIZE(S390_PREFIX, sa->prefix);
+It would be possible to add a .core_note_name entry in struct
+user_regset, and define a helper macro to populate the note type and
+name, something like the following:
 
-It might be worth fixing the funny spacing on these lines, since all
-the affected lines are being replaced.
+struct user_regset {
+	...
+	unsigned int core_note_type;
++	unsigned int core_note_name;
+};
 
->  	if (cpu_has_vx()) {
-> -		size += nt_size(NT_S390_VXRS_HIGH, sizeof(sa->vxrs_high));
-> -		size += nt_size(NT_S390_VXRS_LOW, sizeof(sa->vxrs_low));
-> +		size += NT_SIZE(S390_VXRS_HIGH, sa->vxrs_high);
-> +		size += NT_SIZE(S390_VXRS_LOW, sa->vxrs_low);
->  	}
->  
->  	return size;
-> @@ -373,7 +357,7 @@ static void *nt_prpsinfo(void *ptr)
->  	memset(&prpsinfo, 0, sizeof(prpsinfo));
->  	prpsinfo.pr_sname = 'R';
->  	strcpy(prpsinfo.pr_fname, "vmlinux");
-> -	return nt_init(ptr, NT_PRPSINFO, &prpsinfo, sizeof(prpsinfo));
-> +	return NT_INIT(ptr, PRPSINFO, prpsinfo);
->  }
->  
->  /*
-> @@ -589,7 +573,7 @@ static size_t get_elfcorehdr_size(int phdr_count)
->  	/* PT_NOTES */
->  	size += sizeof(Elf64_Phdr);
->  	/* nt_prpsinfo */
-> -	size += nt_size(NT_PRPSINFO, sizeof(struct elf_prpsinfo));
-> +	size += NT_SIZE(PRPSINFO, struct elf_prpsinfo);
->  	/* regsets */
->  	size += get_cpu_cnt() * get_cpu_elf_notes_size();
->  	/* nt_vmcoreinfo */
+#define USER_REGSET_NOTE_TYPE(type) \
+	.core_note_type = NT_ ## type, \
+	.core_note_name = NN_ ## name,
 
-Otherwise, this looks sensible to me.
+...and then replace every .core_note_type assignment with an invocation
+of this macro.  A quick git grep should easily find all the affected
+cases.
+
+
+Alternatively, as discussed in the last review round, a helper could
+be defined to get the name for a note type:
+
+const char *elf_note_name(int Elf32_Word n_type)
+{
+	switch (n_type) {
+	case NT_PRSTATUS:	return NN_PRSTATUS;
+	case NT_PRFPREG:	return NN_PRFPREG;
+	/* ...and all the rest..., then: */
+
+	default:
+		WARN();
+		return "LINUX";
+	}
+}
+
+This avoids the caller having to specify the name explicitly, but only
+works if all the n_type values are unique for the note types that Linux
+knows about (currently true).
+
+Experimenting with this shows that GCC 11.4.0 (for example) doesn't do
+a very good job with this switch, though, and it requires building
+knowledge about irrelevant arch-specific note types into every kernel.
+I think that extending struct user_regset is probably the better
+approach -- though other people may disagree.
 
 Cheers
 ---Dave
