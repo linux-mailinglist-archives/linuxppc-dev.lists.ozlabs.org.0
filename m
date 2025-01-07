@@ -1,71 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-4764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4765-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5522A03D43
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 12:06:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC46A03DB0
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 12:29:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YS7Xr2Dc2z3bSm;
-	Tue,  7 Jan 2025 22:06:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YS83Q6X6Gz30gH;
+	Tue,  7 Jan 2025 22:29:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736248012;
-	cv=none; b=ocFZLtcH7AJgy2g0XpF4jdHbbPmkfNbFCrprYj68XAOSxXEYztr30uUKD8FEJ+8pcrkTzVDdfx73674S3iiByNyGcMow5chGFlhMonCPP5mgPJ7TVcWJM17OY8UKUpHKq1jWehgbKaqxCdPuJhjEhNQSOJiTZvQevsqJwxMf4WdfOi3GVrkET48q0F6Bqi/RAQk/eGknKReApxuHLEqEvcPXVtiIzwkBXOXzwKjoWXJo0eyo/LHqgbfVpvzW5+0ipw3yaqC0ogp9i6YZ2gJBsOLnZ2S0qzIdvCh4O3T96a/s1WjOCZB+09VqrpAeqGvAonNX6yYCiwjWFY1gpdgNXg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736249394;
+	cv=none; b=QRrFkJCQ0El/Winh/vuWQoDsL2/uCUykU1XJiuqZhPUBkGcIAmVP5gRLJ7ZOm+Lw6hr0YhSiExVuYznOXdjdH+ph2Wr5W3zKoAIHNYnRVtV4+LwDWPKJSBOLTdGGEEyKHrGkR3MQVoFA83GS6+o3R6+QTJP/5NlifRx37hH1mKiSBWExUGzJm3m6lL3Th9G9ScVN1bN91p8Hm1SnWjO1UynSpuBZs9Jm4CAIA4Jq0M0N3W9H8ZQgS+npdF+st4yqck2fBxo7WFo8VZoO6CKLMSGjcr/BwWUC9hijCONKp5dmd0PTZBw6ntcg42IkreBSepLy0YUh+f6gefcpGj1PsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736248012; c=relaxed/relaxed;
-	bh=jUD9nZM9jF2fEL+xDglMyA2yUtEwDNLT4/aAuAksyeQ=;
+	t=1736249394; c=relaxed/relaxed;
+	bh=dT6jaGzM8ONtg5YiCq4PRzv+lHLx9HZ9naYINeLLcq4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mCvH+mwZrHYdeO9kC5A9rHqA0X78aUnhx5lBGnVFHP1EbwAH5QunaXKtxI7Q82ZixtIoNaj4oxiVoHuH+6mOk194NLjqNxpEOQJfR/fHTUli3/fwffzmRO2Eai0U2nT4xSlwME6juuSk0sTTEFM0j7Ykik1uSQzPlX1MTgTS9TEWFF6RgO8C3Qu8DOktyR6IDILK8ZYzakumgdsfboaCvO2dzMJpphBBmNw7KUB5uFFEqKc6KnrnLfw5l382GPssmh2srn7RFRF7DNXNG3w/k1hmlizzo1hnrlbK8H61WyQydM+CAyQhzEPEejeyictxqPXFeyxM+1NARiBVo8rBRg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qd6smgDS; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	 In-Reply-To:Content-Type; b=n4L8IJZnOvWd+Q+DqA9HXAaJA1VVDYAW8HCrs3yFVQ9QW9NiYJMGQdr3XIMLTdYxwjJ2NI11sbMAqATjBnmmJjCZBLR5uLwFbBj7L4+OB6ebf1G/aqr16SOUZQOWY6nDpnL52yxx17Y0z3R/6704VMfmwEwuw0XPxt1MxWaPnENbdliiw8iKm2FZoc8UF83/4yZAjMJnV1JdUEhbYNDNrv5sUj0Uxun2w/AyyfRGpSVUMMVfuSbk/dCYA7QGOiO3xmLqatoM06n5thkUYRgR0wvGjVrEf5wGgLOkv3Cp+WkUkAhEV6RtJKltu0Bj31pm4lh6JOdqetRQgQhKbu+A4Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V+97O02f; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V+97O02f; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qd6smgDS;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V+97O02f;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=V+97O02f;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YS7Xp118lz3bSb
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 22:06:49 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507869wo019076;
-	Tue, 7 Jan 2025 11:06:35 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=jUD9nZ
-	M9jF2fEL+xDglMyA2yUtEwDNLT4/aAuAksyeQ=; b=Qd6smgDS0OzmpBAH+tL9xS
-	ISdqfMZjQslUetEuMeCXyR+vnDub6P68kR/X6Gnv4PKIUes5aC2IuRKuG6nK3VqI
-	R5HFFyUcbSh3KFZ/FYhm8Q323CPz9hhws0NrsIjdJYUHn8C7pOWZc76/mIKNX2Se
-	oVvP+MM+4DtzGOlXhIBGgjhU324Sip28gUGPmg6v6/4CoGQ1lCHoflrSKFzQpx6w
-	YbaKXvt5qXTqPaeJwm6szRSa+zfI2wpql29KaUJdl5Ap+sph65E27c50fmjqer/m
-	W63TxKbW+75cVGKZ6v9PobVZ37M0ajAsnGFI5oaLgtt1UE5DYgGvxJqQcY39urXg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4410f38r1v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 11:06:35 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5078VEdr008869;
-	Tue, 7 Jan 2025 11:06:34 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfpyt85f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 07 Jan 2025 11:06:34 +0000
-Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 507B6XMS27722478
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 7 Jan 2025 11:06:33 GMT
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 62FB45816B;
-	Tue,  7 Jan 2025 11:06:33 +0000 (GMT)
-Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 46E595816D;
-	Tue,  7 Jan 2025 11:06:30 +0000 (GMT)
-Received: from [9.204.206.207] (unknown [9.204.206.207])
-	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  7 Jan 2025 11:06:29 +0000 (GMT)
-Message-ID: <bf0c8765-c3a4-494e-af01-0f483ffa8e85@linux.ibm.com>
-Date: Tue, 7 Jan 2025 16:36:28 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YS83P3nKpz30fn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 22:29:50 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736249387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dT6jaGzM8ONtg5YiCq4PRzv+lHLx9HZ9naYINeLLcq4=;
+	b=V+97O02f/ro3VsYbdzexcbfvGLVoLbED2x8729EvBpw88MtR6gQ3MCgY8vCZYsaAeGooYi
+	dGPubdzO3Z0Cm4G/FCdldWFmP29QqnZz2kIh8p5l4YHJDWg/3I6fWqFNQHbXoKW9OF4py3
+	wMfhMkC+UjHb/z9jZQMWOOQIuf2mE7o=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736249387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dT6jaGzM8ONtg5YiCq4PRzv+lHLx9HZ9naYINeLLcq4=;
+	b=V+97O02f/ro3VsYbdzexcbfvGLVoLbED2x8729EvBpw88MtR6gQ3MCgY8vCZYsaAeGooYi
+	dGPubdzO3Z0Cm4G/FCdldWFmP29QqnZz2kIh8p5l4YHJDWg/3I6fWqFNQHbXoKW9OF4py3
+	wMfhMkC+UjHb/z9jZQMWOOQIuf2mE7o=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-267--BUElWBmMrauGsu9-isLAw-1; Tue, 07 Jan 2025 06:29:45 -0500
+X-MC-Unique: -BUElWBmMrauGsu9-isLAw-1
+X-Mimecast-MFC-AGG-ID: -BUElWBmMrauGsu9-isLAw
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-43628594d34so46778585e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2025 03:29:44 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736249384; x=1736854184;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dT6jaGzM8ONtg5YiCq4PRzv+lHLx9HZ9naYINeLLcq4=;
+        b=RPSAqymKHvsUvRvIeeT/hvcL6fpY91J/siuqaB1F5x2YSRZB/OzbXizitjAt0ytEr3
+         4SZ930nnrCzTYrnpTLaEiJC9aK9aBNFzWOYg5GufkSB6EzR0rghlu7/PYtw0QWn7eAZq
+         hwLHWFSpK9XQuwf1KCIE3fUfNEv2gXnmeEVI5K37wB1cq0sejkB83qfHUlwZgyqw041k
+         BGvWH1sXRmhnVesGGc3C+aBgNJT7nVTOsV9N4uTgssTCWXcuSxjTKuzKGLN8T00ai/i1
+         WeWlC37fa2eOTGfjjLhmKNBNIOfyg1dzEm6m05a9PbZTU9Aeo5CsvBHs+Ae1fGRreX48
+         E67w==
+X-Forwarded-Encrypted: i=1; AJvYcCU+SAuygsbiAoLoMKpMOF5k4l+l2Q8UVD8LCgAakZOmrV9uM3YVKsTcUl1e+GC3ryFhojdnSTTbPkZ7PCE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywe2zzmu/asYaCOYGIIuUU/qCA6ARyJk83JCYLcF/KLGgPD5MKf
+	Oc7K8mmhaZgpTBCsXZvpBPjc4UNztAdaLMXqHYAa0XD1m8MQ6Dw14LHZwNObJf+ZAOgz47tsDDO
+	yvme0yBBTvKSe9RLkBzXpwqcUxOjGFbkbw/W5XVtQ4Lqe1DhArmZtcrHrXlblySU=
+X-Gm-Gg: ASbGnctFcE1/9afAK+GUt2Ivy++MmoAseCYNGzobfCg/KCtdX19aBB5855bKtNYXP6l
+	/vFHdwaSz5MPo/0oRpsyP5gZtiZ6X9aV5hmv9CvdwtsnWxJrTdkudSZT7UBHwqo5j+zUDCJnspD
+	s1jKd+6e7UvfFMuALiFKGy2SCpjzjzKSHiiofNu62NDXXUid7umDDMNQUB2qJ64Ldrxid79sNQl
+	22P6qTRi02VS1txg/NEYvR3AITYuhZta793/LsB90sGHoL4pz7cI12MOf/PPD3hNQgScROAw70A
+	82/SwQ0lpPU/EwfILwGteZ359LvPmXP3NQ4L+GVLoFgys8C8M3xwZWrPqjKsSCxKI0I07Bvvl0s
+	zpFPmRN5f
+X-Received: by 2002:a05:600c:45d2:b0:434:f7f0:1880 with SMTP id 5b1f17b1804b1-436cf562615mr96542775e9.32.1736249383799;
+        Tue, 07 Jan 2025 03:29:43 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHJ3qnj0FFqFijLuXZ4Dwc22AX0w86kSYGeu3WGMLaEQBJgLzuIVM01ibBPmcl6KS6iZpaLSA==
+X-Received: by 2002:a05:600c:45d2:b0:434:f7f0:1880 with SMTP id 5b1f17b1804b1-436cf562615mr96542315e9.32.1736249383367;
+        Tue, 07 Jan 2025 03:29:43 -0800 (PST)
+Received: from ?IPV6:2003:cb:c719:1700:56dc:6a88:b509:d3f3? (p200300cbc719170056dc6a88b509d3f3.dip0.t-ipconnect.de. [2003:cb:c719:1700:56dc:6a88:b509:d3f3])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43656b3b214sm635741635e9.28.2025.01.07.03.29.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 07 Jan 2025 03:29:42 -0800 (PST)
+Message-ID: <35b64e41-b9b1-4fdb-af4f-1296602592ff@redhat.com>
+Date: Tue, 7 Jan 2025 12:29:40 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,590 +104,198 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] powerpc/vpa_dtl: Add interface to expose vpa dtl
- counters via perf
-To: Kajol Jain <kjain@linux.ibm.com>, mpe@ellerman.id.au
-Cc: atrajeev@linux.vnet.ibm.com, disgoel@linux.ibm.com, hbathini@linux.ibm.com,
-        adubey@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-References: <20241216071516.104324-1-kjain@linux.ibm.com>
+Subject: Re: [PATCH v4 12/25] mm/memory: Enhance insert_page_into_pte_locked()
+ to create writable mappings
+To: Alistair Popple <apopple@nvidia.com>
+Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, linux-mm@kvack.org,
+ lina@asahilina.net, zhang.lyra@gmail.com, gerald.schaefer@linux.ibm.com,
+ vishal.l.verma@intel.com, dave.jiang@intel.com, logang@deltatee.com,
+ bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, catalin.marinas@arm.com,
+ will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
+ dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org,
+ djwong@kernel.org, tytso@mit.edu, linmiaohe@huawei.com, peterx@redhat.com,
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+ nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+ linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
+ david@fromorbit.com
+References: <cover.18cbcff3638c6aacc051c44533ebc6c002bf2bd9.1734407924.git-series.apopple@nvidia.com>
+ <25a23433cb70f0fe6af92042eb71e962fcbf092b.1734407924.git-series.apopple@nvidia.com>
+ <d4d32e17-d8e2-4447-bd33-af41e89a528f@redhat.com>
+ <6254ce2c-4a47-4501-b518-dedaddcbf91a@redhat.com>
+ <gjuqvidcpvzwqrwogeoygwnsbvlpa4fvsvaoq6rlfzcq4wxmh5@tdhz3f2fm4ga>
+From: David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <gjuqvidcpvzwqrwogeoygwnsbvlpa4fvsvaoq6rlfzcq4wxmh5@tdhz3f2fm4ga>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: ltYUyraJzvJEg6Tu1YMBPjbR3xYTTmfiV9tORsTjs2s_1736249384
+X-Mimecast-Originator: redhat.com
 Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20241216071516.104324-1-kjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: kSMo_k_Dun6bkTfMMZP9l3LiQm1Z45Dm
-X-Proofpoint-ORIG-GUID: kSMo_k_Dun6bkTfMMZP9l3LiQm1Z45Dm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
- spamscore=0 lowpriorityscore=0 adultscore=0 malwarescore=0 impostorscore=0
- bulkscore=0 phishscore=0 suspectscore=0 priorityscore=1501 clxscore=1015
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501070091
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On 06.01.25 03:07, Alistair Popple wrote:
+> On Fri, Dec 20, 2024 at 08:06:48PM +0100, David Hildenbrand wrote:
+>> On 20.12.24 20:01, David Hildenbrand wrote:
+>>> On 17.12.24 06:12, Alistair Popple wrote:
+>>>> In preparation for using insert_page() for DAX, enhance
+>>>> insert_page_into_pte_locked() to handle establishing writable
+>>>> mappings.  Recall that DAX returns VM_FAULT_NOPAGE after installing a
+>>>> PTE which bypasses the typical set_pte_range() in finish_fault.
+>>>>
+>>>> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+>>>> Suggested-by: Dan Williams <dan.j.williams@intel.com>
+>>>>
+>>>> ---
+>>>>
+>>>> Changes since v2:
+>>>>
+>>>>     - New patch split out from "mm/memory: Add dax_insert_pfn"
+>>>> ---
+>>>>     mm/memory.c | 45 +++++++++++++++++++++++++++++++++++++--------
+>>>>     1 file changed, 37 insertions(+), 8 deletions(-)
+>>>>
+>>>> diff --git a/mm/memory.c b/mm/memory.c
+>>>> index 06bb29e..cd82952 100644
+>>>> --- a/mm/memory.c
+>>>> +++ b/mm/memory.c
+>>>> @@ -2126,19 +2126,47 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
+>>>>     }
+>>>>     static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+>>>> -			unsigned long addr, struct page *page, pgprot_t prot)
+>>>> +				unsigned long addr, struct page *page,
+>>>> +				pgprot_t prot, bool mkwrite)
+>>>>     {
+>>>>     	struct folio *folio = page_folio(page);
+>>>> +	pte_t entry = ptep_get(pte);
+>>>>     	pte_t pteval;
+>>>> -	if (!pte_none(ptep_get(pte)))
+>>>> -		return -EBUSY;
+>>>> +	if (!pte_none(entry)) {
+>>>> +		if (!mkwrite)
+>>>> +			return -EBUSY;
+>>>> +
+>>>> +		/*
+>>>> +		 * For read faults on private mappings the PFN passed in may not
+>>>> +		 * match the PFN we have mapped if the mapped PFN is a writeable
+>>>> +		 * COW page.  In the mkwrite case we are creating a writable PTE
+>>>> +		 * for a shared mapping and we expect the PFNs to match. If they
+>>>> +		 * don't match, we are likely racing with block allocation and
+>>>> +		 * mapping invalidation so just skip the update.
+>>>> +		 */
+>>>
+>>> Would it make sense to instead have here
+>>>
+>>> /* See insert_pfn(). */
+>>>
+>>> But ...
+>>>
+>>>> +		if (pte_pfn(entry) != page_to_pfn(page)) {
+>>>> +			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
+>>>> +			return -EFAULT;
+>>>> +		}
+>>>> +		entry = maybe_mkwrite(entry, vma);
+>>>> +		entry = pte_mkyoung(entry);
+>>>> +		if (ptep_set_access_flags(vma, addr, pte, entry, 1))
+>>>> +			update_mmu_cache(vma, addr, pte);
+>>>
+>>> ... I am not sure if we want the above at all. Someone inserted a page,
+>>> which is refcounted + mapcounted already.
+>>>
+>>> Now you ignore that and do like the second insertion "worked" ?
+>>>
+>>> No, that feels wrong, I suspect you will run into refcount+mapcount issues.
+>>>
+>>> If there is already something, inserting must fail IMHO. If you want to
+>>> change something to upgrade write permissions, then a different
+>>> interface should be used.
+>>
+>> Ah, now I realize that the early exit saves you because we won't adjust the
+>> refcount +mapcount.
+> 
+> Right.
+>   
+>> I still wonder if that really belongs in here, I would prefer to not play
+>> such tricks to upgrade write permissions if possible.
+> 
+> As you have pointed out this was all inspired (ie. mostly copied)
+> from the existing insert_pfn() implementation which is used from
+> vmf_insert_mixed{_mkwrite}().
+> 
+> I agree a different interface to upgrade permissions would be nice. However
+> it's tricky because in general callers of these functions (eg. FS DAX) aren't
+> aware if the page is already mapped by a PTE/PMD. They only know a fault has
+> occured and the faulting permissions.
+> 
+> This wouldn't be impossible to fix - the mm does provide vm_ops->page_mkwrite()
+> for permission upgrades. The difficulty is that most filesystems that support
+> FS DAX (ie. ext4, XFS) don't treat a vm_ops->page_mkwrite() call any differently
+> from a vm_ops->fault() call due to write fault. Therefore the FS DAX code is
+> unaware of whether or not this is a permission upgrade or initial writeable
+> mapping of the page in the VMA.
+> 
+> A further issue in there is currently no vm_ops->huge_mkwrite() callback.
+> 
+> Obviously this could all be plumbed through the MM/FS layers, but that would
+> require a separate patch series. Given the current implementation has no issues
+> beyond the cosmetic I'd rather not delay this series any longer, especially as
+> the cosmetic defect is largely pre-existing (vmf_insert_mixed{_mkwrite}() could
+> have equally had a separate upgrade interface).
 
+Fine with me, just stumbled over it an thought "that looks odd".
 
-On 12/16/24 12:45 PM, Kajol Jain wrote:
-> The pseries Shared Processor Logical Partition(SPLPAR) machines
-> can retrieve a log of dispatch and preempt events from the
-> hypervisor using data from Disptach Trace Log(DTL) buffer.
-> With this information, user can retrieve when and why each dispatch &
-> preempt has occurred. Added an interface to expose the Virtual Processor
-> Area(VPA) DTL counters via perf.
-> 
-> The following events are available and exposed in sysfs:
-> 
->  vpa_dtl/dtl_cede/ - Trace voluntary (OS initiated) virtual processor waits
->  vpa_dtl/dtl_preempt/ - Trace time slice preempts
->  vpa_dtl/dtl_fault/ - Trace virtual partition memory page faults.
->  vpa_dtl/dtl_all/ - Trace all (dtl_cede/dtl_preempt/dtl_fault)
-> 
-> Added interface defines supported event list, config fields for the
-> event attributes and their corresponding bit values which are exported
-> via sysfs. User could use the standard perf tool to access perf events
-> exposed via vpa-dtl pmu.
-> 
-> The VPA DTL PMU counters do not interrupt on overflow or generate any
-> PMI interrupts. Therefore, the kernel needs to poll the counters, added
-> hrtimer code to do that. The timer interval can be provided by user via
-> sample_period field in nano seconds.
-> 
-> Result on power10 SPLPAR system with 656 cpu threads.
-> In the below perf record command with vpa_dtl pmu, -c option is used
-> to provide sample_period whch corresponding to 1000000000ns i.e; 1sec
-> and the workload time is also 1 second, hence we are getting 656 samples:
-> 
-> [command] perf record -a -R -e vpa_dtl/dtl_all/ -c 1000000000 sleep 1
-> [ perf record: Woken up 1 times to write data ]
-> [ perf record: Captured and wrote 0.828 MB perf.data (656 samples) ]
-> 
-> There is one hrtimer added per vpa-dtl pmu thread. Code added to handle
-> addition of dtl buffer data in the raw sample. Since DTL does not provide
-> IP address for a sample and it just have traces on reason of
-> dispatch/preempt, we directly saving DTL buffer data to perf.data file as
-> raw sample. For each hrtimer restart call, interface will dump all the
-> new dtl entries added to dtl buffer as a raw sample.
-> 
-> To ensure there are no other conflicting dtl users (example: debugfs dtl
-> or /proc/powerpc/vcpudispatch_stats), interface added code to use
-> "down_write_trylock" call to take the dtl_access_lock. The dtl_access_lock
-> is defined in dtl.h file. Also added global reference count variable called
-> "dtl_global_refc", to ensure dtl data can be captured per-cpu. Code also
-> added global lock called "dtl_global_lock" to avoid race condition.
-> 
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
->  arch/powerpc/perf/Makefile  |   2 +-
->  arch/powerpc/perf/vpa-dtl.c | 462 ++++++++++++++++++++++++++++++++++++
->  include/linux/cpuhotplug.h  |   1 +
->  3 files changed, 464 insertions(+), 1 deletion(-)
->  create mode 100644 arch/powerpc/perf/vpa-dtl.c
-> 
-> diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
-> index ac2cf58d62db..623168572685 100644
-> --- a/arch/powerpc/perf/Makefile
-> +++ b/arch/powerpc/perf/Makefile
-> @@ -14,7 +14,7 @@ obj-$(CONFIG_PPC_POWERNV)	+= imc-pmu.o
->  obj-$(CONFIG_FSL_EMB_PERF_EVENT) += core-fsl-emb.o
->  obj-$(CONFIG_FSL_EMB_PERF_EVENT_E500) += e500-pmu.o e6500-pmu.o
->  
-> -obj-$(CONFIG_HV_PERF_CTRS) += hv-24x7.o hv-gpci.o hv-common.o
-> +obj-$(CONFIG_HV_PERF_CTRS) += hv-24x7.o hv-gpci.o hv-common.o vpa-dtl.o
->  
->  obj-$(CONFIG_VPA_PMU) += vpa-pmu.o
->  
-> diff --git a/arch/powerpc/perf/vpa-dtl.c b/arch/powerpc/perf/vpa-dtl.c
-> new file mode 100644
-> index 000000000000..0a3ca46c602d
-> --- /dev/null
-> +++ b/arch/powerpc/perf/vpa-dtl.c
-> @@ -0,0 +1,462 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Perf interface to expose Dispatch Trace Log counters.
-> + *
-> + * Copyright (C) 2024 Kajol Jain, IBM Corporation
-> + */
-> +
-> +#define pr_fmt(fmt) "vpa_dtl: " fmt
-> +
-> +#include <asm/dtl.h>
-> +#include <linux/perf_event.h>
-> +#include <asm/plpar_wrappers.h>
-> +
-> +#define EVENT(_name, _code)     enum{_name = _code}
-> +
-> +/*
-> + * Based on Power Architecture Platform Reference(PAPR) documentation,
-> + * Table 14.14. Per Virtual Processor Area, below Dispatch Trace Log(DTL)
-> + * Enable Mask used to get corresponding virtual processor dispatch
-> + * to preempt traces:
-> + *   DTL_CEDE(0x1): Trace voluntary (OS initiated) virtual
-> + *   processor waits
-> + *   DTL_PREEMPT(0x2): Trace time slice preempts
-> + *   DTLFAULT(0x4): Trace virtual partition memory page
-> + faults.
-> + *   DTL_ALL(0x7): Trace all (DTL_CEDE | DTL_PREEMPT | DTL_FAULT)
-> + *
-> + * Event codes based on Dispatch Trace Log Enable Mask.
-> + */
-> +EVENT(DTL_CEDE,         0x1);
-> +EVENT(DTL_PREEMPT,      0x2);
-> +EVENT(DTL_FAULT,        0x4);
-> +EVENT(DTL_ALL,          0x7);
-> +
-> +GENERIC_EVENT_ATTR(dtl_cede, DTL_CEDE);
-> +GENERIC_EVENT_ATTR(dtl_preempt, DTL_PREEMPT);
-> +GENERIC_EVENT_ATTR(dtl_fault, DTL_FAULT);
-> +GENERIC_EVENT_ATTR(dtl_all, DTL_ALL);
-> +
-> +PMU_FORMAT_ATTR(event, "config:0-7");
-> +
-> +static struct attribute *events_attr[] = {
-> +	GENERIC_EVENT_PTR(DTL_CEDE),
-> +	GENERIC_EVENT_PTR(DTL_PREEMPT),
-> +	GENERIC_EVENT_PTR(DTL_FAULT),
-> +	GENERIC_EVENT_PTR(DTL_ALL),
-> +	NULL
-> +};
-> +
-> +static struct attribute_group event_group = {
-> +	.name = "events",
-> +	.attrs = events_attr,
-> +};
-> +
-> +static struct attribute *format_attrs[] = {
-> +	&format_attr_event.attr,
-> +	NULL,
-> +};
-> +
-> +static const struct attribute_group format_group = {
-> +	.name = "format",
-> +	.attrs = format_attrs,
-> +};
-> +
-> +static const struct attribute_group *attr_groups[] = {
-> +	&format_group,
-> +	&event_group,
-> +	NULL,
-> +};
-> +
-> +struct vpa_dtl {
-> +	struct dtl_entry	*buf;
-> +	u64			last_idx;
-> +	bool			active_lock;
-> +};
-> +
-> +static DEFINE_PER_CPU(struct vpa_dtl, vpa_dtl_cpu);
-> +
-> +/* variable to capture reference count for the active dtl threads */
-> +static int dtl_global_refc;
-> +static spinlock_t dtl_global_lock = __SPIN_LOCK_UNLOCKED(dtl_global_lock);
-> +
-> +/*
-> + * Function to dump the dispatch trace log buffer data to the
-> + * perf raw sample.
-> + */
-> +static void vpa_dtl_dump_sample_data(struct perf_event *event)
-> +{
-> +	struct perf_sample_data data;
-> +	struct perf_raw_record raw;
-> +	struct pt_regs regs;
-> +	u64 cur_idx, last_idx, i;
-> +	char *buf;
-> +
-> +	/* actual number of entries read */
-> +	long n_read = 0, read_size = 0;
-> +
-> +	/* number of entries added to dtl buffer */
-> +	long n_req;
-> +
-> +	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, event->cpu);
-> +
-> +	/* Setup perf sample */
-> +	perf_sample_data_init(&data, 0, event->hw.last_period);
-> +	memset(&regs, 0, sizeof(regs));
-> +	memset(&raw, 0, sizeof(raw));
-> +
-> +	cur_idx = be64_to_cpu(lppaca_of(event->cpu).dtl_idx);
-> +	last_idx = dtl->last_idx;
-> +
-> +	if (last_idx + N_DISPATCH_LOG <= cur_idx)
-> +		last_idx = cur_idx - N_DISPATCH_LOG + 1;
-> +
-> +	n_req = cur_idx - last_idx;
-> +
-> +	/* no new entry added to the buffer, return */
-> +	if (n_req <= 0)
-> +		return;
-> +
-> +	dtl->last_idx = last_idx + n_req;
-> +
-> +	buf = kzalloc((n_req * sizeof(struct dtl_entry)) +
-> +			sizeof(tb_ticks_per_sec) + sizeof(n_req), GFP_NOWAIT);
-> +	if (!buf) {
-> +		pr_warn("buffer alloc failed for perf raw data for cpu%d\n", event->cpu);
-> +		return;
-> +	}
-> +	raw.frag.data = buf;
-> +
-> +	/* Save tb_ticks_per_sec to convert timebase to sec */
-> +	memcpy(buf, &tb_ticks_per_sec, sizeof(tb_ticks_per_sec));
-> +	buf += sizeof(tb_ticks_per_sec);
-> +
-> +	/* Save total number of dtl entries added to the dtl buffer */
-> +	memcpy(buf, &n_req, sizeof(n_req));
-> +	buf += sizeof(n_req);
-> +
-> +	i = last_idx % N_DISPATCH_LOG;
-> +
-> +	/* read the tail of the buffer if we've wrapped */
-> +	if (i + n_req > N_DISPATCH_LOG) {
-> +		read_size = N_DISPATCH_LOG - i;
-> +		memcpy(buf, &dtl->buf[i], read_size * sizeof(struct dtl_entry));
-> +		i = 0;
-> +		n_req -= read_size;
-> +		n_read += read_size;
-> +		buf += read_size * sizeof(struct dtl_entry);
-> +	}
-> +
-> +	/* .. and now the head */
-> +	memcpy(buf, &dtl->buf[i], n_req * sizeof(struct dtl_entry));
-> +	n_read += n_req;
-> +
-> +	raw.frag.size = n_read * sizeof(struct dtl_entry) +
-> +			sizeof(tb_ticks_per_sec) + sizeof(n_req);
-> +
-> +	perf_sample_save_raw_data(&data, &raw);
-> +	perf_event_overflow(event, &data, &regs);
-> +}
-> +
-> +/*
-> + * The VPA Dispatch Trace log counters do not interrupt on overflow.
-> + * Therefore, the kernel needs to poll the counters to avoid missing
-> + * an overflow using hrtimer. The timer interval is based on sample_period
-> + * count provided by user, and minimum interval is 1 millisecond.
-> + */
-> +static enum hrtimer_restart vpa_dtl_hrtimer_handle(struct hrtimer *hrtimer)
-> +{
-> +	struct perf_event *event;
-> +	u64 period;
-> +
-> +	event = container_of(hrtimer, struct perf_event, hw.hrtimer);
-> +
-> +	if (event->state != PERF_EVENT_STATE_ACTIVE)
-> +		return HRTIMER_NORESTART;
-> +
-> +	vpa_dtl_dump_sample_data(event);
-> +	period = max_t(u64, 1000000, event->hw.sample_period);
-> +	hrtimer_forward_now(hrtimer, ns_to_ktime(period));
-> +
-> +	return HRTIMER_RESTART;
-> +}
-> +
-> +static void vpa_dtl_start_hrtimer(struct perf_event *event)
-> +{
-> +	u64 period;
-> +	struct hw_perf_event *hwc = &event->hw;
-> +
-> +	period = max_t(u64, 1000000, hwc->sample_period);
-> +	hrtimer_start(&hwc->hrtimer, ns_to_ktime(period), HRTIMER_MODE_REL_PINNED);
-> +}
-> +
-> +static void vpa_dtl_stop_hrtimer(struct perf_event *event)
-> +{
-> +	struct hw_perf_event *hwc = &event->hw;
-> +
-> +	hrtimer_cancel(&hwc->hrtimer);
-> +}
-> +
-> +static void vpa_dtl_reset_global_refc(struct perf_event *event)
-> +{
-> +	spin_lock(&dtl_global_lock);
-> +	dtl_global_refc--;
-> +	if (dtl_global_refc <= 0) {
-> +		dtl_global_refc = 0;
-> +		up_write(&dtl_access_lock);
-> +	}
-> +	spin_unlock(&dtl_global_lock);
-> +}
-> +
-> +static int vpa_dtl_event_init(struct perf_event *event)
-> +{
-> +	struct hw_perf_event *hwc = &event->hw;
-> +	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, event->cpu);
-> +
-> +	/* test the event attr type for PMU enumeration */
-> +	if (event->attr.type != event->pmu->type)
-> +		return -ENOENT;
-> +
-> +	if (!perfmon_capable())
-> +		return -EACCES;
-> +
-> +	/* Return if this is a counting event */
-> +	if (!is_sampling_event(event))
-> +		return -EOPNOTSUPP;
-> +
-> +	if (!(event->attr.sample_type & PERF_SAMPLE_RAW)) {
-> +		pr_debug("To enable perf sampling, run with -R/raw-samples option");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	/* Invalid eventcode */
-> +	switch (event->attr.config) {
-> +	case DTL_LOG_CEDE:
-> +	case DTL_LOG_PREEMPT:
-> +	case DTL_LOG_FAULT:
-> +	case DTL_LOG_ALL:
-> +		break;
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +
-> +	spin_lock(&dtl_global_lock);
-> +
-> +	/*
-> +	 * To ensure there are no other conflicting dtl users
-> +	 * (example: /proc/powerpc/vcpudispatch_stats or debugfs dtl),
-> +	 * below code try to take the dtl_access_lock.
-> +	 * The dtl_access_lock is a rwlock defined in dtl.h, which is used
-> +	 * to unsure there is no conflicting dtl users.
-> +	 * Based on below code, vpa_dtl pmu tries to take write access lock
-> +	 * and also checks for dtl_global_refc, to make sure that the
-> +	 * dtl_access_lock is taken by vpa_dtl pmu interface.
-> +	 */
-> +	if (dtl_global_refc == 0 && !down_write_trylock(&dtl_access_lock)) {
-> +		spin_unlock(&dtl_global_lock);
-> +		return -EBUSY;
-> +	}
-> +
-> +	/*
-> +	 * Increment the number of active vpa_dtl pmu threads. The
-> +	 * dtl_global_refc is used to keep count of cpu threads that
-> +	 * currently capturing dtl data using vpa_dtl pmu interface.
-> +	 */
-> +	dtl_global_refc++;
-> +
-> +	/*
-> +	 * active_lock is a per cpu variable which is set if
-> +	 * current cpu is running vpa_dtl perf record session.
-> +	 */
-> +	dtl->active_lock = true;
-> +	spin_unlock(&dtl_global_lock);
-> +
-> +	hrtimer_init(&hwc->hrtimer, CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-> +	hwc->hrtimer.function = vpa_dtl_hrtimer_handle;
-> +
-> +	/*
-> +	 * Since hrtimers have a fixed rate, we can do a static freq->period
-> +	 * mapping and avoid the whole period adjust feedback stuff.
-> +	 */
-> +	if (event->attr.freq) {
-> +		long freq = event->attr.sample_freq;
-> +
-> +		event->attr.sample_period = NSEC_PER_SEC / freq;
-> +		hwc->sample_period = event->attr.sample_period;
-> +		local64_set(&hwc->period_left, hwc->sample_period);
-> +		hwc->last_period = hwc->sample_period;
-> +		event->attr.freq = 0;
-> +	}
-> +
-> +	event->destroy = vpa_dtl_reset_global_refc;
-> +	return 0;
-> +}
-> +
-> +static int vpa_dtl_event_add(struct perf_event *event, int flags)
-> +{
-> +	int ret, hwcpu;
-> +	unsigned long addr;
-> +	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, event->cpu);
-> +
-> +	/*
-> +	 * Register our dtl buffer with the hypervisor. The
-> +	 * HV expects the buffer size to be passed in the second
-> +	 * word of the buffer. Refer section '14.11.3.2. H_REGISTER_VPA'
-> +	 * from PAPR for more information.
-> +	 */
-> +	((u32 *)dtl->buf)[1] = cpu_to_be32(DISPATCH_LOG_BYTES);
-> +	dtl->last_idx = 0;
-> +
-> +	hwcpu = get_hard_smp_processor_id(event->cpu);
-> +	addr = __pa(dtl->buf);
-> +
-> +	ret = register_dtl(hwcpu, addr);
-> +	if (ret) {
-> +		pr_warn("DTL registration for cpu %d (hw %d) failed with %d\n",
-> +			event->cpu, hwcpu, ret);
-> +		return ret;
-> +	}
-> +
-> +	/* set our initial buffer indices */
-> +	lppaca_of(event->cpu).dtl_idx = 0;
-> +
-> +	/*
-> +	 * Ensure that our updates to the lppaca fields have
-> +	 * occurred before we actually enable the logging
-> +	 */
-> +	smp_wmb();
-> +
-> +	/* enable event logging */
-> +	lppaca_of(event->cpu).dtl_enable_mask = event->attr.config;
-> +
-> +	vpa_dtl_start_hrtimer(event);
-> +
-> +	return 0;
-> +}
-> +
-> +static void vpa_dtl_event_del(struct perf_event *event, int flags)
-> +{
-> +	int hwcpu = get_hard_smp_processor_id(event->cpu);
-> +	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, event->cpu);
-> +
-> +	vpa_dtl_stop_hrtimer(event);
-> +	unregister_dtl(hwcpu);
-> +	lppaca_of(event->cpu).dtl_enable_mask = 0x0;
-> +	dtl->active_lock = false;
-> +}
-> +
-> +static void vpa_dtl_event_read(struct perf_event *event)
-> +{
-> +	/*
-> +	 * This function defination is empty as vpa_dtl_dump_sample_data
-> +	 * is used to parse and dump the dispatch trace log data,
-> +	 * to perf raw sample.
-> +	 */
-> +}
-> +
-> +/* Allocate dtl buffer memory for given cpu. */
-> +static int vpa_dtl_mem_alloc(int cpu)
-> +{
-> +	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, cpu);
-> +	struct dtl_entry *buf = NULL;
-> +
-> +	if (dtl->buf)
-> +		return 0;
-> +	dtl->active_lock = false;
-> +
-> +	/* Check for dispatch trace log buffer cache */
-> +	if (!dtl_cache)
-> +		return -ENOMEM;
-> +
-> +	buf = kmem_cache_alloc_node(dtl_cache, GFP_KERNEL, cpu_to_node(cpu));
-> +	if (!buf) {
-> +		pr_warn("buffer allocation failed for cpu %d\n", cpu);
-> +		return -ENOMEM;
-> +	}
-> +	dtl->buf = buf;
-> +	return 0;
-> +}
-> +
-> +static int vpa_dtl_cpu_online(unsigned int cpu)
-> +{
-> +	return vpa_dtl_mem_alloc(cpu);
-> +}
-> +
-> +static int vpa_dtl_cpu_offline(unsigned int cpu)
-> +{
-> +	struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, cpu);
-> +
-> +	/* Reduce the ref count if dtl event running on this cpu */
-> +	spin_lock(&dtl_global_lock);
-> +	if (dtl_global_refc && dtl->active_lock)
-> +		dtl_global_refc--;
-> +	if (dtl_global_refc <= 0) {
-> +		dtl_global_refc = 0;
-> +		up_write(&dtl_access_lock);
-> +	}
-> +	spin_unlock(&dtl_global_lock);
+-- 
+Cheers,
 
-I guess you need to free the dtl and dtl->buf here
-
-Maddy
-
-
-> +	return 0;
-> +}
-> +
-> +static int vpa_dtl_cpu_hotplug_init(void)
-> +{
-> +	return cpuhp_setup_state(CPUHP_AP_PERF_POWERPC_VPA_DTL_ONLINE,
-> +			  "perf/powerpc/vpa_dtl:online",
-> +			  vpa_dtl_cpu_online,
-> +			  vpa_dtl_cpu_offline);
-> +}
-> +
-> +static void vpa_dtl_clear_memory(void)
-> +{
-> +	int i;
-> +
-> +	for_each_online_cpu(i) {
-> +		struct vpa_dtl *dtl = &per_cpu(vpa_dtl_cpu, i);
-> +
-> +		kmem_cache_free(dtl_cache, dtl->buf);
-> +		dtl->buf = NULL;
-> +	}
-> +}
-> +
-> +static struct pmu vpa_dtl_pmu = {
-> +	.task_ctx_nr = perf_invalid_context,
-> +
-> +	.name = "vpa_dtl",
-> +	.attr_groups = attr_groups,
-> +	.event_init  = vpa_dtl_event_init,
-> +	.add         = vpa_dtl_event_add,
-> +	.del         = vpa_dtl_event_del,
-> +	.read        = vpa_dtl_event_read,
-> +	.capabilities = PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_EXCLUSIVE,
-> +};
-> +
-> +static int vpa_dtl_init(void)
-> +{
-> +	int r;
-> +
-> +	if (!firmware_has_feature(FW_FEATURE_SPLPAR)) {
-> +		pr_debug("not a shared virtualized system, not enabling\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	/* This driver is intended only for L1 host. */
-> +	if (is_kvm_guest()) {
-> +		pr_debug("Only supported for L1 host system\n");
-> +		return -ENODEV;
-> +	}
-> +
-> +	/* init cpuhotplug */
-> +	r = vpa_dtl_cpu_hotplug_init();
-> +	if (r) {
-> +		vpa_dtl_clear_memory();
-> +		return r;
-> +	}
-> +
-> +	r = perf_pmu_register(&vpa_dtl_pmu, vpa_dtl_pmu.name, -1);
-> +	if (r)
-> +		return r;
-> +
-> +	return 0;
-> +}
-> +
-> +device_initcall(vpa_dtl_init);
-> diff --git a/include/linux/cpuhotplug.h b/include/linux/cpuhotplug.h
-> index a04b73c40173..7803da11d684 100644
-> --- a/include/linux/cpuhotplug.h
-> +++ b/include/linux/cpuhotplug.h
-> @@ -234,6 +234,7 @@ enum cpuhp_state {
->  	CPUHP_AP_PERF_POWERPC_TRACE_IMC_ONLINE,
->  	CPUHP_AP_PERF_POWERPC_HV_24x7_ONLINE,
->  	CPUHP_AP_PERF_POWERPC_HV_GPCI_ONLINE,
-> +	CPUHP_AP_PERF_POWERPC_VPA_DTL_ONLINE,
->  	CPUHP_AP_PERF_CSKY_ONLINE,
->  	CPUHP_AP_TMIGR_ONLINE,
->  	CPUHP_AP_WATCHDOG_ONLINE,
+David / dhildenb
 
 
