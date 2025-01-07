@@ -1,76 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-4776-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4777-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23BC9A03FAB
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 13:48:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 033EFA03FAC
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 13:48:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YS9nr1b7cz3bTn;
-	Tue,  7 Jan 2025 23:48:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YS9ny1fDRz3bSr;
+	Tue,  7 Jan 2025 23:48:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1032"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736254096;
-	cv=none; b=AsC8RVyTIcxjPizYYchqepAGwQKAkBtXDOWUqERRTbg1fBCIV3lSfCkzV3aZO0wwbg6DxtYikl+XfieZFP25WVwfQ6oNEacTZP3baC402t9zFO2G/pQxtoBYNr5/UDC6Byk+cm1zCShpA8vdjawoK9gt9pubUPK0riNiEOE/NxK1BYFHkkaMMgm3bVpG+cIa11yQnOsTHGyyTM1xp9qeXMhUsNKcPZmgk+CjfKfSWiJB92dSSyDemgE19qLGm4tWFb7MVGs0BWoR3Ra3rey1GdPs0h+/BZqjQRwWXA0ev+1n5KZ4JalH5dZ+Plx3PBdHwJ8eG5kUbLoPeFyTpR+yAQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1031"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736254102;
+	cv=none; b=OlW0A2Z4hD4gMURYqFgAjT+ByH7bxkCiJVt6sD1l0298dYpetLMI1AD8LU5Sjv5lLfNZfq1yW8kWnE+ZBTw/nzSRobrQ+bOztfrEIF74CpDOEDVyY4XVGnmZfJDZC6j+FAY6gqL+xZmMJE7wepSH9eEsCckO4t9vbSeT6MOVP39QwEqGXg8a7VoiL1Br5fO+mkBc23mmVwye6/o8JY2oXALadoMd1ouwoFR+DcxnxiSrX3vpUmVg2ggmzPUeLPz5U843LCKLoOtovNj1g9EM7N1WlsO758hUT0isG/p4F22oRXeP4EwsLMK+NBKRFhEaA3+rL1kggvJjchWO4srmyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736254096; c=relaxed/relaxed;
-	bh=NDoGkIZOBZADHox4rebBhOBkiub95NT2vaNCAf0u1/w=;
+	t=1736254102; c=relaxed/relaxed;
+	bh=d5w0df8A0RGvduNGo/n7gECMAUl7ttjM0kfw51R7kHo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QeLng5ZoGe8+5x63sg3D0QXf333OOE6j1L48kibYKgqGf+b206x2JWPeZ2tmbDx+2aGjcirgMXxZ80vdxiXFhEyql8LgVderPp6TiPbkoG0/nnV/H+CKtfPwYrXN0k/p1R5bZ0deu/R/h+th0/cNP87NGZgzNx/q4krTlC+UI6ju4MwKringHGu4Jm7xzJ7sifKdIT6eTS/w1MRGvuuo6LMF83EbnbvNZ+cZTt4Zpdb0BVH4iCbGCOe93N9alAGJeC//kb1+z+7Z0rRZx+Qqf9Jka/xWEEZBCwFzgNfIZf/pWo7xdmgY/1qPpNDD+J7uecpQqHMDL64Nb7xOMuIfrA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com; dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=sRI4Z+lS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org) smtp.mailfrom=daynix.com
+	 In-Reply-To:To:Cc; b=DNe67DgKQgse7RQVd41U3Ly6/rV/wJL87Lqsq0kvlrHoxk4e0dyCOl+/14PPyO6tHv+ey4iJKUt6qJNPC1C4ivtgak3ouxi83g0E9T97jI08cE72ynuKZjfdmcEm+O8qOGgVKLs5adCTXcxv61QBHpqY6E+CU1MLSZzII8kFQFvsnVUI5nmx21QyQEX5U4mIZu6VZc+SjRwJZEezjBchiW4iLYG+naeDTWmMW/aIoqbdauKZEoPKqW8ul2IPSFo7KwFQDF7AMDhlVg5C8TtEzo+kRU9/lvUhNeKmXId4nXCqdVmwTZk5HrqqHZchDq1rLlLFzZIqr28PW/rGGvO2uw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com; dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tbFw+hvP; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org) smtp.mailfrom=daynix.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=sRI4Z+lS;
+	dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=tbFw+hvP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=daynix.com (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=daynix.com (client-ip=2607:f8b0:4864:20::1031; helo=mail-pj1-x1031.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1031.google.com (mail-pj1-x1031.google.com [IPv6:2607:f8b0:4864:20::1031])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YS9nq2Kycz30hQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 23:48:15 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id 98e67ed59e1d1-2eeb4d643a5so22990186a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2025 04:48:15 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YS9nx1j40z30hQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 23:48:21 +1100 (AEDT)
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-2efd81c7ca4so18415837a91.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2025 04:48:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736254092; x=1736858892; darn=lists.ozlabs.org;
+        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736254099; x=1736858899; darn=lists.ozlabs.org;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NDoGkIZOBZADHox4rebBhOBkiub95NT2vaNCAf0u1/w=;
-        b=sRI4Z+lShYi57tDAFXZpKVTvXXyBsgpqKl/a2koY0ZF9pwx8Q/uOP6eGSdVctzeUuR
-         Os8FfebIeJbH4U6MIOSMM4avFBq+fbQ23+DYLqGQL+VeJqKvrhYdiHJn1IHr+h7WkDJe
-         w6nMFAlc9qHhLeim8xQhe993pHOaMHEvCvCT3eI4gKtAqTbWO5sk5NDiHD0BSV7MB1ih
-         ZZhAM/JPJYZOAXGnK2ql5Qk9gTbcO9Id/VxWXSy4DqR6hfxhM3gh0ZLSdGxIqER7UNI1
-         NmZWCQXBQ8ZQ61pwifLIkE7AmKIsbYfoIx18DxIArkPR8YQonZUCDgF1HfZJNkzbxIOz
-         fH+w==
+        bh=d5w0df8A0RGvduNGo/n7gECMAUl7ttjM0kfw51R7kHo=;
+        b=tbFw+hvP6/06jvLUsX4ZvYQOo+y/kMuMmC5Mq5NxDD0xA+fShmKSBtYdVAhO7U+429
+         JZ/7PGmTsUhmNMXUTFrqH+Dp7wgLPJWHUHCDV5mUhHsLjW7bC9ycZn+6hiL+03KUto04
+         uNV4b0jNjxNYbnQDo7/UpDGcWsQS6FQQcP+oSlwzJgMESJrXWz1fUpwajVNHzy0C7tPU
+         j1BdXy/NABoDOcdVUsMTCzass0gtd/mQZvAutyig6dhtxKZQC+fngs9QHYQYHI26GPxz
+         xu0SF9jvEIq1R8MB2XJzqRJlHsjzbfG2z5ubwBPTzv3v0++clfO1fMzqCbTilnyHMgMa
+         +2Iw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736254092; x=1736858892;
+        d=1e100.net; s=20230601; t=1736254099; x=1736858899;
         h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
          :mime-version:subject:date:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=NDoGkIZOBZADHox4rebBhOBkiub95NT2vaNCAf0u1/w=;
-        b=GxSIRXULiVl0TybN+Vo0dghg55yVjBkt2QjNee9ucVivYgtyKqiIFqks3t4Yqznudu
-         gmEVnOwKyX/cwog21hiVs5Yx3Q/2BrpI5n9fhWrg4AbZXZ1/Ha+NR8UEb0Pu2dOARUW9
-         zKxauJojUWu4Opp8vsr1O8KOr2FdOA1+g9Dxpi4QzohFNDFlAghSIKGc11hk6soYTVgx
-         T6cVErvHEhaMJqu/P2KgOYuMjy6FJYt8uRCJB6XRMISZkOaqmh5EmtwRblVxeGhSr1GY
-         +R37C/6QzoQlHAQvPFIZ3mqrZI53nyf2VuDKLGo3SjcP94LNL6FG0evX2Rbg0sGUL9Q7
-         my/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUU0X2Ljnz3Oe8+/r9o1loN7QDuasZxPP3BNUuDz+1tJcm0EKUkWdXvDeEel5L8f5DU8ORupSqHEULtzgo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyu66C/0Xo9i+UCs/r/neqSBpZZrRjbkbGcVZXjU3JG3fJpZIzf
-	irmPuqaz4nGCVdI7/kHhKP1JYsce1xasVJbE9f7GM/GGq/f5nwtca9UHvIqxh6E=
-X-Gm-Gg: ASbGncs0DWzO1lPc4CQHeuYIOrpMh330L9yzZxKqvq4mBIOL6QLwViOquFwggMUYUSB
-	QZpSj071j82r67+SHkOQ6sdIhQMGJswlk7p/Xa5fu38K6ZSLV2aecTLtyo9Cls3Sy7SDLGbDRlZ
-	A4XXK7DO7G9/pnFSoxiIEKJ0r7Hs4A4Ut5h2CqHhIaI1HCmQICFMDTITWuGQF8iBgppLLleYO1c
-	RRe4TLggDlPAHcmlCbYuG2vjEPLqvpZgKT6UHld/d7/uQAQ194TO3UcpzU=
-X-Google-Smtp-Source: AGHT+IEVKBP005EvKmW5Tl+CNM3WgQ4gF7V3wiTUcNw/Hf4GbFW1YRz6KtZiTE3d5Nc2ByQmLcCTzA==
-X-Received: by 2002:a05:6a00:240d:b0:71e:6b8:2f4a with SMTP id d2e1a72fcca58-72abde04f6fmr85408908b3a.12.1736254092437;
-        Tue, 07 Jan 2025 04:48:12 -0800 (PST)
+        bh=d5w0df8A0RGvduNGo/n7gECMAUl7ttjM0kfw51R7kHo=;
+        b=I5v1bQLFpbEN40N64wBKh4DHm+dItSoyMiWl77pqgJ+xQdB7FLiE0b8KSv6UgyfktR
+         w9yAY/e9fQBEuWkHRgaXm38FK1Ed+qwLKNiT5PVWAx+ofMt+pMtQUNfYqOMRDgOUqycG
+         WyQnOu8eiur438HPEUFX+JZ9vinkkivtKOf8zdgSJbgZcwlqP/WYmnoNWSsnDk43XS9I
+         S+mDyt3DD5BwLj3hSnzzo31+2ildydU3d3IgEnU+IoJhp+oit/kyeWLPm6f2EX/36D/m
+         4o9OrfRSVghLTZwfyAe2rqQDoaIOJrLluZ8HtpQvcXM1+HDFvM2vqzYuZ4YdrJxH9Hnf
+         PzMA==
+X-Forwarded-Encrypted: i=1; AJvYcCVMvMnq4zKIybCNNI1rdFnnGCcTprXGK3EKfhOjyeaGwXGwM96wRpqL93nwcN9s8uo8ujk8zURLQ760bw8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwiDut8Uynv6JlebbqWRqvx3tZZ7kywPor2Bql8G8NEwXc0tV8B
+	R2CUYvjnaIphZX6lOLYrpmAMdOeMkjpj4O9chIiL5WxNjrNxkrzz+VC+bFULP1I=
+X-Gm-Gg: ASbGnctCK/8BBc8cwAu5MN0qS3UECBGafUSwGsYIDUomP8LDKKAO8JokpgRxQ6r3g7U
+	nLri8WxxtnXSU2eVvW9TxDtfQmpeQ5DoymX8FSINAKzmpK6HqGpBGuaCw23eMkYG9gqqAkDRKr1
+	hHoyOhuKWV2wrd3dlvBBR8P/goDEYZ8vKhfzhF8tBFNLB7SlN6a0+WHhg0SYK+h3a2y27k/EdRu
+	ozClIubzPOnGfhWKJ/+beUHbsTX/i+txmkPcqFrCjKfRxcSpSIKoAKNqvM=
+X-Google-Smtp-Source: AGHT+IF4unLvSG3ozl/K+xZg50qJ9RhkOXYw+z5VR9QTjd55CxK7F8LQeDMLqnNt5CS4t8mxmL2QoA==
+X-Received: by 2002:a17:90b:534b:b0:2ee:a127:ba96 with SMTP id 98e67ed59e1d1-2f452ec6d35mr81063623a91.23.1736254098937;
+        Tue, 07 Jan 2025 04:48:18 -0800 (PST)
 Received: from localhost ([157.82.203.37])
-        by smtp.gmail.com with UTF8SMTPSA id d2e1a72fcca58-72aad90c133sm34268685b3a.183.2025.01.07.04.48.08
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2f2ee06dd46sm41574100a91.36.2025.01.07.04.48.14
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2025 04:48:12 -0800 (PST)
+        Tue, 07 Jan 2025 04:48:18 -0800 (PST)
 From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 07 Jan 2025 21:45:54 +0900
-Subject: [PATCH v3 3/6] powwerpc: Use note name macros
+Date: Tue, 07 Jan 2025 21:45:55 +0900
+Subject: [PATCH v3 4/6] crash: Use note name macros
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,7 +85,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250107-elf-v3-3-99cb505b1ab2@daynix.com>
+Message-Id: <20250107-elf-v3-4-99cb505b1ab2@daynix.com>
 References: <20250107-elf-v3-0-99cb505b1ab2@daynix.com>
 In-Reply-To: <20250107-elf-v3-0-99cb505b1ab2@daynix.com>
 To: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
@@ -104,66 +104,79 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 Use note name macros to match with the userspace's expectation.
 
-Acked-by: Baoquan He <bhe@redhat.com>
 Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+Acked-by: Baoquan He <bhe@redhat.com>
 ---
- arch/powerpc/kernel/fadump.c               | 2 +-
- arch/powerpc/platforms/powernv/opal-core.c | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ fs/proc/kcore.c             | 12 ++++++------
+ include/linux/vmcore_info.h |  2 +-
+ kernel/crash_core.c         |  2 +-
+ 3 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index 4b371c738213..d44349fe8e2b 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -751,7 +751,7 @@ u32 *__init fadump_regs_to_elf_notes(u32 *buf, struct pt_regs *regs)
- 	 * prstatus.pr_pid = ????
- 	 */
+diff --git a/fs/proc/kcore.c b/fs/proc/kcore.c
+index e376f48c4b8b..e5612313b8b4 100644
+--- a/fs/proc/kcore.c
++++ b/fs/proc/kcore.c
+@@ -34,8 +34,6 @@
+ #include <asm/sections.h>
+ #include "internal.h"
+ 
+-#define CORE_STR "CORE"
+-
+ #ifndef ELF_CORE_EFLAGS
+ #define ELF_CORE_EFLAGS	0
+ #endif
+@@ -119,7 +117,9 @@ static size_t get_kcore_size(int *nphdr, size_t *phdrs_len, size_t *notes_len,
+ 
+ 	*phdrs_len = *nphdr * sizeof(struct elf_phdr);
+ 	*notes_len = (4 * sizeof(struct elf_note) +
+-		      3 * ALIGN(sizeof(CORE_STR), 4) +
++		      ALIGN(sizeof(NN_PRSTATUS), 4) +
++		      ALIGN(sizeof(NN_PRPSINFO), 4) +
++		      ALIGN(sizeof(NN_TASKSTRUCT), 4) +
+ 		      VMCOREINFO_NOTE_NAME_BYTES +
+ 		      ALIGN(sizeof(struct elf_prstatus), 4) +
+ 		      ALIGN(sizeof(struct elf_prpsinfo), 4) +
+@@ -444,11 +444,11 @@ static ssize_t read_kcore_iter(struct kiocb *iocb, struct iov_iter *iter)
+ 			goto out;
+ 		}
+ 
+-		append_kcore_note(notes, &i, CORE_STR, NT_PRSTATUS, &prstatus,
++		append_kcore_note(notes, &i, NN_PRSTATUS, NT_PRSTATUS, &prstatus,
+ 				  sizeof(prstatus));
+-		append_kcore_note(notes, &i, CORE_STR, NT_PRPSINFO, &prpsinfo,
++		append_kcore_note(notes, &i, NN_PRPSINFO, NT_PRPSINFO, &prpsinfo,
+ 				  sizeof(prpsinfo));
+-		append_kcore_note(notes, &i, CORE_STR, NT_TASKSTRUCT, current,
++		append_kcore_note(notes, &i, NN_TASKSTRUCT, NT_TASKSTRUCT, current,
+ 				  arch_task_struct_size);
+ 		/*
+ 		 * vmcoreinfo_size is mostly constant after init time, but it
+diff --git a/include/linux/vmcore_info.h b/include/linux/vmcore_info.h
+index e1dec1a6a749..1672801fd98c 100644
+--- a/include/linux/vmcore_info.h
++++ b/include/linux/vmcore_info.h
+@@ -8,7 +8,7 @@
+ 
+ #define CRASH_CORE_NOTE_NAME	   "CORE"
+ #define CRASH_CORE_NOTE_HEAD_BYTES ALIGN(sizeof(struct elf_note), 4)
+-#define CRASH_CORE_NOTE_NAME_BYTES ALIGN(sizeof(CRASH_CORE_NOTE_NAME), 4)
++#define CRASH_CORE_NOTE_NAME_BYTES ALIGN(sizeof(NN_PRSTATUS), 4)
+ #define CRASH_CORE_NOTE_DESC_BYTES ALIGN(sizeof(struct elf_prstatus), 4)
+ 
+ /*
+diff --git a/kernel/crash_core.c b/kernel/crash_core.c
+index 078fe5bc5a74..335b8425dd4b 100644
+--- a/kernel/crash_core.c
++++ b/kernel/crash_core.c
+@@ -436,7 +436,7 @@ void crash_save_cpu(struct pt_regs *regs, int cpu)
+ 	memset(&prstatus, 0, sizeof(prstatus));
+ 	prstatus.common.pr_pid = current->pid;
  	elf_core_copy_regs(&prstatus.pr_reg, regs);
--	buf = append_elf_note(buf, CRASH_CORE_NOTE_NAME, NT_PRSTATUS,
+-	buf = append_elf_note(buf, KEXEC_CORE_NOTE_NAME, NT_PRSTATUS,
 +	buf = append_elf_note(buf, NN_PRSTATUS, NT_PRSTATUS,
  			      &prstatus, sizeof(prstatus));
- 	return buf;
+ 	final_note(buf);
  }
-diff --git a/arch/powerpc/platforms/powernv/opal-core.c b/arch/powerpc/platforms/powernv/opal-core.c
-index c9a9b759cc92..a379ff86c120 100644
---- a/arch/powerpc/platforms/powernv/opal-core.c
-+++ b/arch/powerpc/platforms/powernv/opal-core.c
-@@ -149,7 +149,7 @@ static Elf64_Word *__init auxv_to_elf64_notes(Elf64_Word *buf,
- 	/* end of vector */
- 	bufp[idx++] = cpu_to_be64(AT_NULL);
- 
--	buf = append_elf64_note(buf, CRASH_CORE_NOTE_NAME, NT_AUXV,
-+	buf = append_elf64_note(buf, NN_AUXV, NT_AUXV,
- 				oc_conf->auxv_buf, AUXV_DESC_SZ);
- 	return buf;
- }
-@@ -252,7 +252,7 @@ static Elf64_Word * __init opalcore_append_cpu_notes(Elf64_Word *buf)
- 	 * crashing CPU's prstatus.
- 	 */
- 	first_cpu_note = buf;
--	buf = append_elf64_note(buf, CRASH_CORE_NOTE_NAME, NT_PRSTATUS,
-+	buf = append_elf64_note(buf, NN_PRSTATUS, NT_PRSTATUS,
- 				&prstatus, sizeof(prstatus));
- 
- 	for (i = 0; i < oc_conf->num_cpus; i++, bufp += size_per_thread) {
-@@ -279,7 +279,7 @@ static Elf64_Word * __init opalcore_append_cpu_notes(Elf64_Word *buf)
- 		fill_prstatus(&prstatus, thread_pir, &regs);
- 
- 		if (thread_pir != oc_conf->crashing_cpu) {
--			buf = append_elf64_note(buf, CRASH_CORE_NOTE_NAME,
-+			buf = append_elf64_note(buf, NN_PRSTATUS,
- 						NT_PRSTATUS, &prstatus,
- 						sizeof(prstatus));
- 		} else {
-@@ -287,7 +287,7 @@ static Elf64_Word * __init opalcore_append_cpu_notes(Elf64_Word *buf)
- 			 * Add crashing CPU as the first NT_PRSTATUS note for
- 			 * GDB to process the core file appropriately.
- 			 */
--			append_elf64_note(first_cpu_note, CRASH_CORE_NOTE_NAME,
-+			append_elf64_note(first_cpu_note, NN_PRSTATUS,
- 					  NT_PRSTATUS, &prstatus,
- 					  sizeof(prstatus));
- 		}
 
 -- 
 2.47.1
