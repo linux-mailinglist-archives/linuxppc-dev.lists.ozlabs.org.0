@@ -1,76 +1,126 @@
-Return-Path: <linuxppc-dev+bounces-4779-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4780-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A03FA03FB0
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 13:48:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 551F7A040CF
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 14:29:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YS9pD0dHgz3bWy;
-	Tue,  7 Jan 2025 23:48:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSBjH54yBz30dx;
+	Wed,  8 Jan 2025 00:29:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736254116;
-	cv=none; b=WlOkcoyAl1IErS7S59fQ7uwNU34guddgxcFE1nox55kgv30fXdKBPRW5ZVrLm4FfgZEB/HvAOLUVa+gjY3UCmJQG70AB42NynNf3BfekXaoBr+GV35ZIBTJmLd/Ns3okbN9E8Ws5UsTgcoAbGkeiVYYV583t+pGJLXzNvrUmjEdqWOT9tEr9O7JbFl92BZHrcJv19CE4tBNp9P3wDJiPpsAhDljKUChuTLgXYyzIDTEBUJm59T8IvYYmjVyzRWojuYhBRZkYHBH/o0VzzDHMYVWdcfY10NIXcB0vmxfz7XOmt3/Tpgz6qdAoZW4T6ju4sDYLyScTbqan9al08aeJ5Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736256563;
+	cv=none; b=hb3IjsvOKx+lXfuUPXmprx2d37M3h0z+CnxAL7ZTHOa3ybfh57Dw1l2/5nO1ZQPAL+5tchdBL2+etTaRBuvhtaUekzSuwO+bP4kmAHt7/Ut4CBB1g58UccxbyoOwvqkCAC8A/b/CAIJ+8/N41buz0fi91M4tN+6BBiWSOP4FX/OC1Q7EIo+up5CGnCo78mgyCi3ButINsggGZjEfO9kuZXLbvmhF5KqIhfxHS/CFjUlp3PXpZNFDYW2+kigLRPrXxmC7/nyEHILjC/GSlvGL1fyy6rax560d/kdrVB10wHHW7fO0IW4LET9imsC1TLyCGwvQbBtAaT/SnDOypJmkhw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736254116; c=relaxed/relaxed;
-	bh=hJIM5PjsK5XkECqCUUoGiieCybrsun7CzYeIZbw5syM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=eOuatrphzpWw6YCuWWA9Nnn0YaFfxzzGt0ZiwCCdSdB0PCu1ulqd5sP7SeHdNgZsIsgag0gSq9aX44WgrfBKIpXQePVtUiZeHZypjaX9iq3EJHckUrkH5xcYjKhUyetkzreZpQxnSE4Km8dJdDifw1p9mAT4qwDIFeJPd7CiEN+dhN06TZ2ZqupfjjyPUL1b8pogQtww/v35ui/GnES/N7FIwmTb3BwFLQ2O7lifxipUSIcL5JGbUGIakC2jnyyuPHlpzRXxNLlSFV4gmvJXh/6q/pJP/SjDxbiwZw15G8kZEvZjo8TYQiqyzjoXG5M6KqemgIL4JNMm6kLcj134Yg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com; dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Vpxlbbd0; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org) smtp.mailfrom=daynix.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com
+	t=1736256563; c=relaxed/relaxed;
+	bh=mLgDzv/pVpbzGVF/OSbbOoTsrwb8sA5JJIlfnBc5IRk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h+gBMxdn23e4h6jPyvOzyAjtwQYJhXyAK0DMK1tQsIO/ni6Zvb1o9LFo5TE2VzRyoEcmb5QLkJlFZscKU2Econ1CIvBeTANFb6xG4ocpiR3GHC3tjRC4injo6/O5Ow6rtTrA/IS1mCzPWsJKmIHFrDZjPvhftCXP3lWeRHzq1cd2gqhpDUsz3PXSYuDLY5oU2Mgs6QM9IbL8f4509EL89e0xXMGRgUyzS1GZPIVcaZ4ZVM/OxtxIMjtlrEPIYZ88OvEnjZktUhnz4n6A1IUzBpYYK+AYI4Dj6L/IR8119ar1maRcNoBnEM5EMvnImwZw2MQUxptJAu4PzGf9jvHUDA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OBlsnYR/; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Vpxlbbd0;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=OBlsnYR/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=daynix.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YS9pC0908z3bxf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 23:48:34 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-216281bc30fso6460815ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2025 04:48:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736254112; x=1736858912; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hJIM5PjsK5XkECqCUUoGiieCybrsun7CzYeIZbw5syM=;
-        b=Vpxlbbd01mVr2p+VGjEgHJW8/NEbYQ9n5OcaFiNfgUgS37Wqf9lr2hbzUFK8JegvS1
-         2pJuw+1qlbtzPXcYSeAKKHS7L9chzKWauaYPeCp5Ys18W7wGnu3CYaZTicitChH6IdzQ
-         zpxeQaTWcvO9kGGkCyOqa7LGyDWsylT9uUa8pjEoehZSsyO7qXst6Tni0UaKYQFb6+ai
-         vaTwF+Sfnwm+C3loHod6nm7lNyGDpYqmrg4jpaSR7TiX0AhOWU+seHEwI71DCE+dshnx
-         f8K19fF+x4sbaat0nMOmfKiMVXRjugR/lInMpgoRxtAOwafaBZbUORAiKvJPjZFFytBO
-         tfhQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736254112; x=1736858912;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hJIM5PjsK5XkECqCUUoGiieCybrsun7CzYeIZbw5syM=;
-        b=pgA6t+boKhmZZ2zIHxMxtqJpqoQ5B3ohpOG8lRGGQJDtkWXJcIrUf+NS6+nu9KQAZw
-         JoX5+iYqQKW9jhQp5xgurgNmUwjNHJc0s/yDg4RDNq1VJMAvhhB++gYbIicLsfohOa8j
-         5a13Z7KdtoivdW1PJPoXYN7TRQsZnPWyZuF4OsCX0CLsx0swOCLex+9g/hOAFFPVl8Az
-         rmy+52YVkpVY0lb8Azdy+5sW/TgsTUFMK1bxBufaqO9hf5dsudx1sobfpF0etUtuDtC8
-         XOoZnHRh+LyQddQCq8VKa9YiuUmz6nRafU0Wlu7kKp47ywLF2oc+uzHJbz4cJ0bLPaKU
-         8qog==
-X-Forwarded-Encrypted: i=1; AJvYcCWs5OcLasrcJcKXPIEpWHzwYhSF05OrzXR+DPKdQRpASygMf+sw8omgGtFDwS/213c3ObVYaQIgz/9vODY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw19/+KElkak+0VAbluLsvgpP1dxwwjmWI1zms4nSAbPKWZcBoo
-	VIvCztQ+8TkxGn1rENPO3Q8HuS3pPRalMFwrZFq/Dx5K7neyDA/1+NhulFAXsOE=
-X-Gm-Gg: ASbGncuTox9RpbGyQbWI7paQHckspGEi+Fg46IBk/AUVsZXuFU6Jd4JONY58l3JTghD
-	1gCx2tQR+kkUah4q3rybvIw8zmI8F3Ct7wgzuQC3hQnpkt9vZ0OXzDk+VuXG0NYRwzJDN2A+4JQ
-	DgvNxbcDZ83krzJ7s78EzZN6ueVGJ2A4fTdkz4D//AWw/ybYfeXJ3DYsoUGiDSLZHJnoibEZZv6
-	l7LoErwusiKHvrXkZa6zQ3pws/6bcWRwxiCdmR+N7K/I094wBBg3cfwQmY=
-X-Google-Smtp-Source: AGHT+IEgGWm+TwbUeO+9N7FURX28AGtJrPEUj7uS49yO94eCRFf85XIQjkIdMNAyflZYWE42i4plAQ==
-X-Received: by 2002:a17:903:22c6:b0:216:2474:3c9f with SMTP id d9443c01a7336-219e6f38177mr919043015ad.52.1736254112256;
-        Tue, 07 Jan 2025 04:48:32 -0800 (PST)
-Received: from localhost ([157.82.203.37])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-219dca02f72sm310596305ad.249.2025.01.07.04.48.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 07 Jan 2025 04:48:31 -0800 (PST)
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-Date: Tue, 07 Jan 2025 21:45:57 +0900
-Subject: [PATCH v3 6/6] crash: Remove KEXEC_CORE_NOTE_NAME
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSBjG2Rt5z30WW
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 00:29:21 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 507BWGNg009731;
+	Tue, 7 Jan 2025 13:28:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=mLgDzv/pVpbzGVF/OSbbOoTsrwb8sA
+	5JJIlfnBc5IRk=; b=OBlsnYR/bBezL2GRdAOvCDpfjTzgBC1YAjcDWKh3genAFF
+	7VmFYGzCQqntDisGxSNct7Weq0zBh7U5qGIkA5VFcOJnoftvLaehKEFWCQfbiAfR
+	Hl5eFKoY3fwyy2nUB/xz6agS+ZhpnxTY7T/PX+63Xv2yU1Kk0y9tcnz2IFIcrbYV
+	NzQeY+t+o8ZjwiyLasSJ3MUgeMRk8A4h2B7dp/wPkINyHfgIfyQ633G927/t2rHM
+	KAh2R9OaibMnsh2VLHw9gByqghhedxAONPnPg+tuNpdgnb/8oi6iqo8T34dO6hVT
+	kuVJh4zs/jK+zKcJflBj0i12SBFp1JxjCTVCM/Nw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 440s0aaygh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jan 2025 13:28:40 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 507DSdcj025835;
+	Tue, 7 Jan 2025 13:28:39 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 440s0aaygc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jan 2025 13:28:39 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5079nnbp027946;
+	Tue, 7 Jan 2025 13:28:38 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yhhk2dgt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 07 Jan 2025 13:28:38 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 507DSY0s27591038
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 7 Jan 2025 13:28:34 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8D9D820040;
+	Tue,  7 Jan 2025 13:28:34 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2A3C020043;
+	Tue,  7 Jan 2025 13:28:33 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue,  7 Jan 2025 13:28:33 +0000 (GMT)
+Date: Tue, 7 Jan 2025 14:28:31 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Yury Norov <yury.norov@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, netdev@vger.kernel.org,
+        virtualization@lists.linux.dev, linux-nvme@lists.infradead.org,
+        linux-hyperv@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-crypto@vger.kernel.org,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Haren Myneni <haren@linux.ibm.com>,
+        Rick Lindsley <ricklind@linux.ibm.com>,
+        Nick Child <nnac123@linux.ibm.com>,
+        Thomas Falcon <tlfalcon@linux.ibm.com>,
+        Andrew Lunn <andrew+netdev@lunn.ch>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>,
+        "K. Y. Srinivasan" <kys@microsoft.com>,
+        Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+        Dexuan Cui <decui@microsoft.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+        James Smart <james.smart@broadcom.com>,
+        Dick Kennedy <dick.kennedy@broadcom.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Matt Wu <wuqiang.matt@bytedance.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>, Greg Kurz <groug@kaod.org>,
+        Peter Xu <peterx@redhat.com>, Shrikanth Hegde <sshegde@linux.ibm.com>,
+        Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: Re: [PATCH 06/14] cpumask: re-introduce cpumask_next{,_and}_wrap()
+Message-ID: <Z30r/6S8VBU8/Ml5@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <20241228184949.31582-1-yury.norov@gmail.com>
+ <20241228184949.31582-7-yury.norov@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,61 +133,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250107-elf-v3-6-99cb505b1ab2@daynix.com>
-References: <20250107-elf-v3-0-99cb505b1ab2@daynix.com>
-In-Reply-To: <20250107-elf-v3-0-99cb505b1ab2@daynix.com>
-To: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
- Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, 
- Dave Martin <Dave.Martin@arm.com>, Baoquan He <bhe@redhat.com>, 
- Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>
-Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
- kexec@lists.infradead.org, binutils@sourceware.org, devel@daynix.com, 
- Akihiko Odaki <akihiko.odaki@daynix.com>
-X-Mailer: b4 0.14-dev-fd6e3
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241228184949.31582-7-yury.norov@gmail.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: CvBcdJZ3Px_Fxar3yVlr0JKsNe7bUdCi
+X-Proofpoint-ORIG-GUID: MYFcjTtUWdbqcyxPXpK7_i-p0KcJF5T7
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1011
+ phishscore=0 mlxlogscore=999 lowpriorityscore=0 impostorscore=0
+ malwarescore=0 mlxscore=0 adultscore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501070109
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-KEXEC_CORE_NOTE_NAME is no longer used.
+On Sat, Dec 28, 2024 at 10:49:38AM -0800, Yury Norov wrote:
 
-Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-Acked-by: Baoquan He <bhe@redhat.com>
----
- include/linux/kexec.h       | 2 --
- include/linux/vmcore_info.h | 1 -
- 2 files changed, 3 deletions(-)
+Hi Yury,
 
-diff --git a/include/linux/kexec.h b/include/linux/kexec.h
-index f0e9f8eda7a3..c840431eadda 100644
---- a/include/linux/kexec.h
-+++ b/include/linux/kexec.h
-@@ -68,8 +68,6 @@ extern note_buf_t __percpu *crash_notes;
- #define KEXEC_CRASH_MEM_ALIGN PAGE_SIZE
- #endif
- 
--#define KEXEC_CORE_NOTE_NAME	CRASH_CORE_NOTE_NAME
--
- /*
-  * This structure is used to hold the arguments that are used when loading
-  * kernel binaries.
-diff --git a/include/linux/vmcore_info.h b/include/linux/vmcore_info.h
-index 1672801fd98c..37e003ae5262 100644
---- a/include/linux/vmcore_info.h
-+++ b/include/linux/vmcore_info.h
-@@ -6,7 +6,6 @@
- #include <linux/elfcore.h>
- #include <linux/elf.h>
- 
--#define CRASH_CORE_NOTE_NAME	   "CORE"
- #define CRASH_CORE_NOTE_HEAD_BYTES ALIGN(sizeof(struct elf_note), 4)
- #define CRASH_CORE_NOTE_NAME_BYTES ALIGN(sizeof(NN_PRSTATUS), 4)
- #define CRASH_CORE_NOTE_DESC_BYTES ALIGN(sizeof(struct elf_prstatus), 4)
+> cpumask_next_wrap_old() has two additional parameters, comparing to it's
+> analogue in linux/find.h find_next_bit_wrap(). The reason for that is
+> historical.
+> 
+> Before 4fe49b3b97c262 ("lib/bitmap: introduce for_each_set_bit_wrap()
+> macro"), cpumask_next_wrap() was used to implement for_each_cpu_wrap()
+> iterator. Now that the iterator is an alias to generic
+> for_each_set_bit_wrap(), the additional parameters aren't used and may
+> confuse readers.
+> 
+> All existing users call cpumask_next_wrap() in a way that makes it
+> possible to turn it to straight and simple alias to find_next_bit_wrap().
+> 
+> In a couple places kernel users opencode missing cpumask_next_and_wrap().
+> Add it as well.
+> 
+> Signed-off-by: Yury Norov <yury.norov@gmail.com>
+> ---
+>  include/linux/cpumask.h | 37 +++++++++++++++++++++++++++++++++++++
+>  1 file changed, 37 insertions(+)
+> 
+> diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
+> index b267a4f6a917..18c9908d50c4 100644
+> --- a/include/linux/cpumask.h
+> +++ b/include/linux/cpumask.h
+> @@ -284,6 +284,43 @@ unsigned int cpumask_next_and(int n, const struct cpumask *src1p,
+>  		small_cpumask_bits, n + 1);
+>  }
+>  
+> +/**
+> + * cpumask_next_and_wrap - get the next cpu in *src1p & *src2p, starting from
+> + *			   @n and wrapping around, if needed
+> + * @n: the cpu prior to the place to search (i.e. return will be > @n)
+> + * @src1p: the first cpumask pointer
+> + * @src2p: the second cpumask pointer
+> + *
+> + * Return: >= nr_cpu_ids if no further cpus set in both.
+> + */
+> +static __always_inline
+> +unsigned int cpumask_next_and_wrap(int n, const struct cpumask *src1p,
+> +			      const struct cpumask *src2p)
+> +{
+> +	/* -1 is a legal arg here. */
+> +	if (n != -1)
+> +		cpumask_check(n);
+> +	return find_next_and_bit_wrap(cpumask_bits(src1p), cpumask_bits(src2p),
+> +		small_cpumask_bits, n + 1);
+> +}
+> +
+> +/*
+> + * cpumask_next_wrap - get the next cpu in *src, starting from
+> + *			   @n and wrapping around, if needed
 
--- 
-2.47.1
+Does it mean the search wraps a cpumask and starts from the beginning
+if the bit is not found and returns >= nr_cpu_ids if @n crosses itself?
 
+> + * @n: the cpu prior to the place to search
+> + * @src: cpumask pointer
+> + *
+> + * Return: >= nr_cpu_ids if no further cpus set in both.
+
+It looks like Return is a cpumask_next_and_wrap() comment leftover.
+
+> + */
+> +static __always_inline
+> +unsigned int cpumask_next_wrap(int n, const struct cpumask *src)
+> +{
+> +	/* -1 is a legal arg here. */
+> +	if (n != -1)
+> +		cpumask_check(n);
+> +	return find_next_bit_wrap(cpumask_bits(src), small_cpumask_bits, n + 1);
+> +}
+> +
+>  /**
+>   * for_each_cpu - iterate over every cpu in a mask
+>   * @cpu: the (optionally unsigned) integer iterator
+
+Thanks!
 
