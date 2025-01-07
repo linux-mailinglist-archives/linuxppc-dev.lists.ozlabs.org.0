@@ -1,102 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-4767-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4768-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87063A03E23
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 12:46:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12FE8A03E63
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 12:58:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YS8Q80FNzz3bNh;
-	Tue,  7 Jan 2025 22:46:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YS8ht4q6Nz30fg;
+	Tue,  7 Jan 2025 22:58:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736250367;
-	cv=none; b=KsdV9DuZKq/1/PqjSgthWTreyQHHNeID5e3yIDFRW2WDuC1TgourSlXanmQdak9QUDASeg+TAkryQciQV9LfuoYaF/xdWYszPsWh/he/FVXzdBi7G3fXZoNIi5WalRF8N7ZaoHx+nD+kM2ZClOOadAiQ03sNB97c4b4/bOdSDYpRO3glw8RCsrOhOTpmyOoWhODu5CYxJjUU/MjAhKYUrq8bKEzMhZxnKNgkl9dcbH12EMhEQqDmxH4BkvHysQwSHWlxyeVI7meRGd7ydOLPw20A74yDajZOYcCxDHlmz3EKnbjSUjufVh9N8mANA5UzkxZ8U8iNW4tuyUEj38o/mQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736251134;
+	cv=none; b=ViSQExNa6/sazuW1KSVhWi4fowhAiokyLCTg3c3jmIXsZsfyPNawOy954KZ9+VfbVos2hiYihdNuLqyBpVPyVGvN4OzdAHZ6DFzxHwwj1Sd1fFcycAGFF+DACLBebup8Xb60EMdIRCYb9lepzpSKTTVxPgTt7sHrzs7N5FVXp5Fw+G8C1A0cU8rV4uTA4AdrG+tMjxCKslMehbBsO3roLczcULWnsBl9ZgAq+Iq2VHoxEohZf2S4d0AREk8wqmk/3T8FGLEZFFTalSOGPoPXErowL5FbhmB9xM63xB5pibjV1IbIVtmEkeI2pMDYeV+UUwolCZLrbLFd7b7dMudcpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736250367; c=relaxed/relaxed;
-	bh=lD4QOrzRsNYasrC3n0IGBLoyR09ALTVeCEEVYB2IkKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SvJgpalVuNdeWczJSYfOA07PVMR+o5To4mp79oxrIP1jxoJQNFXzYvsxgjiH/2g6Tue7l0NuhLoxqrWywr4TyLFurLUvDKPLSbE18nOkG3ZWDo+YuZAiGsQ4/g4W4wppaP+OyaPZv/Qzs0cSn5vtBI9TSkbvm1JfP0jXB614uMLWodmDWdSciZwkdRFeG5LNLJWSMBFFUmJKBQF4zp+U+gyvEMvqiQ7si8XU0zNzAhlX3sfxlyOZ7Jkr8lGLAHT72bvPy68/lt1EtcSBWNzUrYE2AtkSIgFCuUnmocneKVCHQT3p7JXxkcevMZwUorbX9/MCqgFQRA7TcJzvfT1qOw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HlVTr3ne; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HlVTr3ne; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HlVTr3ne;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=HlVTr3ne;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YS8Q26WQTz30dx
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 22:46:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736250358;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lD4QOrzRsNYasrC3n0IGBLoyR09ALTVeCEEVYB2IkKs=;
-	b=HlVTr3nezH0dPl7fI5GqOpsWFrbd0HDyZAIqherP+ZrmFOSDxZqYjEoWkvz77GsPQiu2cB
-	THgnmxKlc9TVzL1br16JOOVUCRVqK0c84feUQyry/OlbkZxuGHD5srXC6/H7uuCvcVqPdA
-	TU5x2mI/oxqhwYobYf4M0G3mWtOimWE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736250358;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=lD4QOrzRsNYasrC3n0IGBLoyR09ALTVeCEEVYB2IkKs=;
-	b=HlVTr3nezH0dPl7fI5GqOpsWFrbd0HDyZAIqherP+ZrmFOSDxZqYjEoWkvz77GsPQiu2cB
-	THgnmxKlc9TVzL1br16JOOVUCRVqK0c84feUQyry/OlbkZxuGHD5srXC6/H7uuCvcVqPdA
-	TU5x2mI/oxqhwYobYf4M0G3mWtOimWE=
-Received: from mail-io1-f71.google.com (mail-io1-f71.google.com
- [209.85.166.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-643-q0iHneRzOhGOOGEWZ4mc4Q-1; Tue, 07 Jan 2025 06:45:57 -0500
-X-MC-Unique: q0iHneRzOhGOOGEWZ4mc4Q-1
-X-Mimecast-MFC-AGG-ID: q0iHneRzOhGOOGEWZ4mc4Q
-Received: by mail-io1-f71.google.com with SMTP id ca18e2360f4ac-84cd123df74so13299039f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2025 03:45:57 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736250356; x=1736855156;
-        h=content-transfer-encoding:mime-version:organization:references
-         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=lD4QOrzRsNYasrC3n0IGBLoyR09ALTVeCEEVYB2IkKs=;
-        b=ImHnwelsMrQ06XXNsvzYjKp+aM2OMG9acVZbeo1ykVNnFSlTGlUv9afQvlJShUqgc7
-         WO24ZsI3Ea9kj8nkM653UaTJpj7Whr84VkM4xkG4ga60pfvvBzSoxdmViC8PZ0CmUuHI
-         4XI0CNpSqzHVJ2GFM+d8PBJxasb+ZwcM/qPoxsZbHIDPMsfQyA1B1ZTSfUqZJPlj2QDh
-         8P4Bv1VnYy4ubN+iTb1K2wFFnJ5vQVpm/IOIJ2z4wdwksMRQO23nxoR20hdY40qy75UO
-         QbFdN2Htd+tX+C9B4WTwQyi8Tw0X0Omtf+kxyGBiGwSnYukUnOArXFzakZSHPML2siSs
-         hDNg==
-X-Forwarded-Encrypted: i=1; AJvYcCVASNWwLjovdt9pPBnST1rhf0opbOU61KV4ZbN3XnVtecxusH49AfSqSeya5ctrPYJAEtFqHVioHe8zT3Q=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwbzpIuzHyYYTvmszy+JKffRdhzwl7JoABd+hql1UK2zJDtq+PP
-	q//YPwek3C8YK1oWz7CUm8g4ZOKaT7l/ZAYoQ/6m9ULrKH6BK5gapIYPC4P0PGwbDYkeAOR7vMJ
-	H0AMr1njWJDaa5MlCXWKGU+KdJcfi/LfkOiV4RO1zOE/hInacZqmz0aTXUk0pRKw=
-X-Gm-Gg: ASbGncvsSkCw/10oL6pM1Y1Bk8g3pHk3HM2pnodcl6qA8eecL8J4CyWNXuh+S7v/tF5
-	eTecJjBcPTU4NMUc9zisKHYyJcxS8lb4489yiqweReocAQOtTKqS5Ton4iIUUbqYsANUyW9SMzZ
-	hoy85UIwOL/kPxBW3hqhh6ZBx+PVhgYWT6CW2E1hTQeWSPTvS2K8islsO3IromN2W8eq3wXyNMc
-	7Z1YEss8bM5wXnOgJ+XatplhIcWiXPvmPCUORBE+OexNTBhO9UdA6p4YQp8
-X-Received: by 2002:a05:6e02:1a04:b0:3a7:bfc6:be with SMTP id e9e14a558f8ab-3c2d5d2a628mr137550075ab.5.1736250356589;
-        Tue, 07 Jan 2025 03:45:56 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGWHXMEgPhkbbicAC9Ldxi95MuYLoSCuQgZJMCqfPjHvdiB3LeWRroJcOAXhLJIgad1B6jH/g==
-X-Received: by 2002:a05:6e02:1a04:b0:3a7:bfc6:be with SMTP id e9e14a558f8ab-3c2d5d2a628mr137550025ab.5.1736250356217;
-        Tue, 07 Jan 2025 03:45:56 -0800 (PST)
-Received: from redhat.com ([38.15.36.11])
-        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3ce2d260971sm6225975ab.79.2025.01.07.03.45.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 03:45:55 -0800 (PST)
-Date: Tue, 7 Jan 2025 06:45:50 -0500
-From: Alex Williamson <alex.williamson@redhat.com>
-To: Shawn Anastasio <sanastasio@raptorengineering.com>
-Cc: kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Timothy Pearson
- <tpearson@raptorengineering.com>
-Subject: Re: Raptor Engineering dedicating resources to KVM on PowerNV + KVM
- CI/CD
-Message-ID: <20250107064550.713c2fd9.alex.williamson@redhat.com>
-In-Reply-To: <8dd4546a-bb03-4727-a8c1-02a26301d1ad@raptorengineering.com>
-References: <8dd4546a-bb03-4727-a8c1-02a26301d1ad@raptorengineering.com>
-Organization: Red Hat
+	t=1736251134; c=relaxed/relaxed;
+	bh=TGGJkJPzJ/ul/QAPsmtmQeMD95tQCTIq4WEnha2ywd0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=h4/tqgDQVH1cszxdLxBptoLBQJzcdzq9ajHp33KOD2OAd81445qJHfdjzUkpmKs32Qm8XsVhJauDdaOwTyWzHir1pvMNkAt77U6jTU4oZ/1gYaE+OY+l2J9LP69u+XPsub0mJE5OYrabWqso9HOgb6duasIJ25PPnPXR50Cq16y9ihic/rmIp25egS0Dgh1aDWBZLbm7R3mFx7czJKCcpIHMAKmFRVfyDL1pXTbd3NtLq5s1EP2ra2YgsbMKAfYzZUHFsk1M9V9v/dTKM54wVWM0LHdUMPZmSe8FxER/hdREycdiQ54occHiZt0yta8z0W8VPlqJxaIdH6oSpghNWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YS8hr5L9cz30fd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 22:58:50 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9DC6143D;
+	Tue,  7 Jan 2025 03:58:45 -0800 (PST)
+Received: from [10.44.160.93] (e126510-lin.lund.arm.com [10.44.160.93])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 187FC3F673;
+	Tue,  7 Jan 2025 03:58:09 -0800 (PST)
+Message-ID: <4a0b5edb-6fc7-4df4-93d9-ca834e6a760b@arm.com>
+Date: Tue, 7 Jan 2025 12:58:08 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -109,52 +42,140 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: cIECIzlcUD9xV_zY5N1Qq_sRo0gSCd-RL6ewBYynAfk_1736250356
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 10/15] riscv: pgtable: move pagetable_dtor() to
+ __tlb_remove_table()
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: agordeev@linux.ibm.com, palmer@dabbelt.com, tglx@linutronix.de,
+ david@redhat.com, jannh@google.com, hughd@google.com, yuzhao@google.com,
+ willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
+ lorenzo.stoakes@oracle.com, rientjes@google.com, vishal.moola@gmail.com,
+ arnd@arndb.de, will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
+ dave.hansen@linux.intel.com, rppt@kernel.org, ryan.roberts@arm.com,
+ linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org, linux-arch@vger.kernel.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-sh@vger.kernel.org, linux-um@lists.infradead.org,
+ peterz@infradead.org, akpm@linux-foundation.org
+References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
+ <0e8f0b3835c15e99145e0006ac1020ae45a2b166.1735549103.git.zhengqi.arch@bytedance.com>
+ <1b09335c-f0b6-4ccb-9800-5fb22f7e8083@arm.com>
+ <ebce5e05-5e46-4c6e-94a0-bcf3655a862b@bytedance.com>
+ <7e2c26c8-f5df-4833-a93f-3409b00b58fd@arm.com>
+ <e9fe97d4-99d5-443e-b722-43903655a76e@bytedance.com>
+ <31e1a033-00a7-4953-81e7-0caedd0227a9@bytedance.com>
+ <d9a14211-4bbd-4fb6-ba87-a555a40bb67a@arm.com>
+ <de8756aa-dbf7-4f6f-91f0-934270397192@bytedance.com>
+ <ee393a7f-d01e-4e5d-9bf8-779795613af1@arm.com>
+ <07e0c05f-cb69-4263-885d-6d20d4442152@bytedance.com>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <07e0c05f-cb69-4263-885d-6d20d4442152@bytedance.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 6 Jan 2025 13:47:50 -0600
-Shawn Anastasio <sanastasio@raptorengineering.com> wrote:
+On 07/01/2025 11:51, Qi Zheng wrote:
+> [...]
+>
+> Author: Qi Zheng <zhengqi.arch@bytedance.com>
+> Date:   Fri Dec 13 17:13:48 2024 +0800
+>
+>     mm: pgtable: completely move pagetable_dtor() to generic
+> tlb_remove_table()
+>
+>     For the generic tlb_remove_table(), it is implemented in the
+> following two
+>     forms:
+>
+>     1) CONFIG_MMU_GATHER_TABLE_FREE is enabled
+>
+>     tlb_remove_table
+>     --> generic __tlb_remove_table()
+>
+>     2) CONFIG_MMU_GATHER_TABLE_FREE is disabled
+>
+>     tlb_remove_table
+>     --> tlb_remove_page
+>
+>     For case 1), the pagetable_dtor() has already been moved to generic
+>     __tlb_remove_table().
+>
+>     For case 2), now only arm will call
+> tlb_remove_table()/tlb_remove_ptdesc()
+>     when CONFIG_MMU_GATHER_TABLE_FREE is disabled. Let's move
+> pagetable_dtor()
+>     completely to generic tlb_remove_table(), so that the
+> architectures can
+>     follow more easily.
+>
+>     Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+>
+> diff --git a/arch/arm/include/asm/tlb.h b/arch/arm/include/asm/tlb.h
+> index b8eebdb598631..ea4fbe7b17f6f 100644
+> --- a/arch/arm/include/asm/tlb.h
+> +++ b/arch/arm/include/asm/tlb.h
+> @@ -34,10 +34,6 @@ __pte_free_tlb(struct mmu_gather *tlb, pgtable_t
+> pte, unsigned long addr)
+>  {
+>         struct ptdesc *ptdesc = page_ptdesc(pte);
+>
+> -#ifndef CONFIG_MMU_GATHER_TABLE_FREE
+> -       pagetable_dtor(ptdesc);
+> -#endif
 
-> Hi all,
-> 
-> Just wanted to check in and let the community know that Raptor
-> Engineering will be officially dedicating development resources towards
-> maintaining, developing, and testing the existing Linux KVM facilities
-> for PowerNV machines.
-> 
-> To this end, we have developed a publicly-accessible CI/CD system[1]
-> that performs bi-hourly automated KVM smoke tests on PowerNV, as well as
-> some more advanced tests involving PCIe passthrough of various graphics
-> cards through VFIO on a POWER9/PowerNV system. Access can also be
-> provided upon request to any kernel developers that wish to use the test
-> system for development/testing against their own trees.
-> 
-> If anybody has any questions about the test system, or any insights
-> about outstanding work items regarding KVM on PowerNV that might need
-> attention, please feel free to reach out.
+I guess this hunk will disappear since this call isn't present to start
+with.
 
-Hi,
+> -
+>  #ifndef CONFIG_ARM_LPAE
+>         /*
+>          * With the classic ARM MMU, a pte page has two corresponding pmd
+> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
+> index 69de47c7ef3c5..53ae7748f555b 100644
+> --- a/include/asm-generic/tlb.h
+> +++ b/include/asm-generic/tlb.h
+> @@ -220,14 +220,20 @@ static inline void __tlb_remove_table(void *table)
+>
+>  extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
+>
+> -#else /* !CONFIG_MMU_GATHER_HAVE_TABLE_FREE */
+> +#else /* !CONFIG_MMU_GATHER_TABLE_FREE */
 
-What are you supposing the value to the community is for a CI pipeline
-that always fails?  Are you hoping the community will address the
-failing tests or monitor the failures to try to make them not become
-worse?
+Good catch!
 
-I would imagine that CI against key developer branches or linux-next
-would be more useful than finding problems after we've merged with
-mainline, but it's not clear there's any useful baseline here to
-monitor for regressions.  Thanks,
+>
+> +static inline void tlb_remove_page(struct mmu_gather *tlb, struct
+> page *page);
 
-Alex
+Nit: might be better to move the declaration up, e.g. above #ifdef
+CONFIG_MMU_GATHER_TABLE_FREE.
 
-> [1]
-> https://gitlab.raptorengineering.com/raptor-engineering-public/kernel/kernel-developers-ci-cd-access/linux/-/pipelines/1075
+>  /*
+>   * Without MMU_GATHER_TABLE_FREE the architecture is assumed to have
+> page based
+>   * page directories and we can use the normal page batching to free
+> them.
+>   */
+> -#define tlb_remove_table(tlb, page) tlb_remove_page((tlb), (page))
+> +static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
+> +{
+> +       struct page *page = (struct page *)table;
+>
+> +       pagetable_dtor(page_ptdesc(page));
+> +       tlb_remove_page(tlb, page);
+> +}
+>  #endif /* CONFIG_MMU_GATHER_TABLE_FREE */
+>
+>  #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
 
+Looks good to me otherwise.
+
+- Kevin
 
