@@ -1,35 +1,42 @@
-Return-Path: <linuxppc-dev+bounces-4768-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4769-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FE8A03E63
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 12:58:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC90A03EF4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  7 Jan 2025 13:17:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YS8ht4q6Nz30fg;
-	Tue,  7 Jan 2025 22:58:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YS96h0QZfz30hY;
+	Tue,  7 Jan 2025 23:17:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736251134;
-	cv=none; b=ViSQExNa6/sazuW1KSVhWi4fowhAiokyLCTg3c3jmIXsZsfyPNawOy954KZ9+VfbVos2hiYihdNuLqyBpVPyVGvN4OzdAHZ6DFzxHwwj1Sd1fFcycAGFF+DACLBebup8Xb60EMdIRCYb9lepzpSKTTVxPgTt7sHrzs7N5FVXp5Fw+G8C1A0cU8rV4uTA4AdrG+tMjxCKslMehbBsO3roLczcULWnsBl9ZgAq+Iq2VHoxEohZf2S4d0AREk8wqmk/3T8FGLEZFFTalSOGPoPXErowL5FbhmB9xM63xB5pibjV1IbIVtmEkeI2pMDYeV+UUwolCZLrbLFd7b7dMudcpQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::ba"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736252267;
+	cv=none; b=fsq8O25atViHFPAw++moxWLRX4wBWcQDnPzxhTQgJg67eoJXVSi5NszPiJgDJvdIcb6gT6vKamFaMGJliSYbkErBThIbNhKNlmfzxtEgYl2HsDtbVf/uZJFnrEbXsxFnxFhdSVZQMxcteUzEP8naK9pnD7Sj7omoYqDRb1/2f2xzyX0FPdFRJJ6l2468TQWRvXN0MJFeJnXqPuHVgybhpdqm89akuZHxi5lEeNuFTbGEMyRF4f+cjecyWoEkKy5iGi8D9rHN4MxGAJuPvnMyXOvS6jUDCjbrAK5mFKKNdca7zlJdcxhrBpXkMOHTFuNmeeT4Qkcu2y7zxIhJfzUO0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736251134; c=relaxed/relaxed;
-	bh=TGGJkJPzJ/ul/QAPsmtmQeMD95tQCTIq4WEnha2ywd0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=h4/tqgDQVH1cszxdLxBptoLBQJzcdzq9ajHp33KOD2OAd81445qJHfdjzUkpmKs32Qm8XsVhJauDdaOwTyWzHir1pvMNkAt77U6jTU4oZ/1gYaE+OY+l2J9LP69u+XPsub0mJE5OYrabWqso9HOgb6duasIJ25PPnPXR50Cq16y9ihic/rmIp25egS0Dgh1aDWBZLbm7R3mFx7czJKCcpIHMAKmFRVfyDL1pXTbd3NtLq5s1EP2ra2YgsbMKAfYzZUHFsk1M9V9v/dTKM54wVWM0LHdUMPZmSe8FxER/hdREycdiQ54occHiZt0yta8z0W8VPlqJxaIdH6oSpghNWQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YS8hr5L9cz30fd
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 22:58:50 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E9DC6143D;
-	Tue,  7 Jan 2025 03:58:45 -0800 (PST)
-Received: from [10.44.160.93] (e126510-lin.lund.arm.com [10.44.160.93])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 187FC3F673;
-	Tue,  7 Jan 2025 03:58:09 -0800 (PST)
-Message-ID: <4a0b5edb-6fc7-4df4-93d9-ca834e6a760b@arm.com>
-Date: Tue, 7 Jan 2025 12:58:08 +0100
+	t=1736252267; c=relaxed/relaxed;
+	bh=d9nLKw/TBKhv6igKvwiN3bHxEHFcUwZGkyor1G6qVPQ=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=HmZUD4G0aKiEBFB4UEHl600444RO6HMBTcn/meg5T7OQHt+2UpYyb5pRrYbTyCHSt2AlHOUXhkJh9+TfvWjz9vZpg8W8gWvBpAM214KD+lAbl1iqDd+TPBX+tAQwnwnXlmi8M8S57RjyQRvtA5chJ2ZNrl5XDCuzFCVVFZczHAXlCrpZXcfLb1aarL6VsbmHwNkNTqvH2bzIu4dSjUAGA8pUss5AbnDgEEBaSafjRW3vllp/CbDXqxbszXeeS7ffTl5D+Da/yOeCMenGrTJRh4ZJpt8ZC9euwOxQC6IRTKP3aMr/H/xuodDiey8RXZ5v2POCgISOIHFURwGS8RlI5g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=2001:41d0:203:375::ba; helo=out-186.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::ba; helo=out-186.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [IPv6:2001:41d0:203:375::ba])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YS96V4C71z30hG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  7 Jan 2025 23:17:35 +1100 (AEDT)
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1736252228;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d9nLKw/TBKhv6igKvwiN3bHxEHFcUwZGkyor1G6qVPQ=;
+	b=YDXTTLX5n+bg56cnV6XC6B3Qy+MwlzuWxdI0TDZbEEps9qJYCi0/RQJManwVaIEsNEv0qL
+	yaoLipH1tJQJmzYOKJSzDHBMcuuTWbv4GTkuYy8FtZ5C8sVBtV0lrBhBaZ3j5XKaiCJClP
+	AlrDosNRlS8miATbYh9YsPDRTLyMcsE=
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -41,141 +48,43 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 10/15] riscv: pgtable: move pagetable_dtor() to
- __tlb_remove_table()
-To: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: agordeev@linux.ibm.com, palmer@dabbelt.com, tglx@linutronix.de,
- david@redhat.com, jannh@google.com, hughd@google.com, yuzhao@google.com,
- willy@infradead.org, muchun.song@linux.dev, vbabka@kernel.org,
- lorenzo.stoakes@oracle.com, rientjes@google.com, vishal.moola@gmail.com,
- arnd@arndb.de, will@kernel.org, aneesh.kumar@kernel.org, npiggin@gmail.com,
- dave.hansen@linux.intel.com, rppt@kernel.org, ryan.roberts@arm.com,
- linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org, linux-arch@vger.kernel.org,
- linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
- loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
- linux-sh@vger.kernel.org, linux-um@lists.infradead.org,
- peterz@infradead.org, akpm@linux-foundation.org
-References: <cover.1735549103.git.zhengqi.arch@bytedance.com>
- <0e8f0b3835c15e99145e0006ac1020ae45a2b166.1735549103.git.zhengqi.arch@bytedance.com>
- <1b09335c-f0b6-4ccb-9800-5fb22f7e8083@arm.com>
- <ebce5e05-5e46-4c6e-94a0-bcf3655a862b@bytedance.com>
- <7e2c26c8-f5df-4833-a93f-3409b00b58fd@arm.com>
- <e9fe97d4-99d5-443e-b722-43903655a76e@bytedance.com>
- <31e1a033-00a7-4953-81e7-0caedd0227a9@bytedance.com>
- <d9a14211-4bbd-4fb6-ba87-a555a40bb67a@arm.com>
- <de8756aa-dbf7-4f6f-91f0-934270397192@bytedance.com>
- <ee393a7f-d01e-4e5d-9bf8-779795613af1@arm.com>
- <07e0c05f-cb69-4263-885d-6d20d4442152@bytedance.com>
-Content-Language: en-GB
-From: Kevin Brodsky <kevin.brodsky@arm.com>
-In-Reply-To: <07e0c05f-cb69-4263-885d-6d20d4442152@bytedance.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+Subject: Re: [PATCH] powerpc: Transliterate author name and remove FIXME
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <d9e232bb-5069-4526-b781-f4e316bda95d@csgroup.eu>
+Date: Tue, 7 Jan 2025 13:16:54 +0100
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <774CD605-AE6F-4D37-AB50-B9676858CDFA@linux.dev>
+References: <20241110162139.5179-2-thorsten.blum@linux.dev>
+ <87v7wuy3p5.fsf@mpe.ellerman.id.au>
+ <55B1EE24-BEC9-4A8D-84B0-ED32FCC070A5@linux.dev>
+ <87v7weodqn.fsf@mpe.ellerman.id.au>
+ <d9e232bb-5069-4526-b781-f4e316bda95d@csgroup.eu>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_INVALID,DKIM_SIGNED,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 07/01/2025 11:51, Qi Zheng wrote:
-> [...]
->
-> Author: Qi Zheng <zhengqi.arch@bytedance.com>
-> Date:   Fri Dec 13 17:13:48 2024 +0800
->
->     mm: pgtable: completely move pagetable_dtor() to generic
-> tlb_remove_table()
->
->     For the generic tlb_remove_table(), it is implemented in the
-> following two
->     forms:
->
->     1) CONFIG_MMU_GATHER_TABLE_FREE is enabled
->
->     tlb_remove_table
->     --> generic __tlb_remove_table()
->
->     2) CONFIG_MMU_GATHER_TABLE_FREE is disabled
->
->     tlb_remove_table
->     --> tlb_remove_page
->
->     For case 1), the pagetable_dtor() has already been moved to generic
->     __tlb_remove_table().
->
->     For case 2), now only arm will call
-> tlb_remove_table()/tlb_remove_ptdesc()
->     when CONFIG_MMU_GATHER_TABLE_FREE is disabled. Let's move
-> pagetable_dtor()
->     completely to generic tlb_remove_table(), so that the
-> architectures can
->     follow more easily.
->
->     Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
->
-> diff --git a/arch/arm/include/asm/tlb.h b/arch/arm/include/asm/tlb.h
-> index b8eebdb598631..ea4fbe7b17f6f 100644
-> --- a/arch/arm/include/asm/tlb.h
-> +++ b/arch/arm/include/asm/tlb.h
-> @@ -34,10 +34,6 @@ __pte_free_tlb(struct mmu_gather *tlb, pgtable_t
-> pte, unsigned long addr)
->  {
->         struct ptdesc *ptdesc = page_ptdesc(pte);
->
-> -#ifndef CONFIG_MMU_GATHER_TABLE_FREE
-> -       pagetable_dtor(ptdesc);
-> -#endif
+On 23. Nov 2024, at 11:19, Christophe Leroy wrote:
+> Isn't our file just a copy of the one from binutils ? Shouldn't we =
+adjust it based on commit =
+https://github.com/bminor/binutils-gdb/commit/2ce18a16268a ?
 
-I guess this hunk will disappear since this call isn't present to start
-with.
+It looks like it's a copy and the name is spelled the same as in my =
+patch:
 
-> -
->  #ifndef CONFIG_ARM_LPAE
->         /*
->          * With the classic ARM MMU, a pte page has two corresponding pmd
-> diff --git a/include/asm-generic/tlb.h b/include/asm-generic/tlb.h
-> index 69de47c7ef3c5..53ae7748f555b 100644
-> --- a/include/asm-generic/tlb.h
-> +++ b/include/asm-generic/tlb.h
-> @@ -220,14 +220,20 @@ static inline void __tlb_remove_table(void *table)
->
->  extern void tlb_remove_table(struct mmu_gather *tlb, void *table);
->
-> -#else /* !CONFIG_MMU_GATHER_HAVE_TABLE_FREE */
-> +#else /* !CONFIG_MMU_GATHER_TABLE_FREE */
+  "Mimi Phuong-Thao Vo"
 
-Good catch!
+What's missing to get this merged?
 
->
-> +static inline void tlb_remove_page(struct mmu_gather *tlb, struct
-> page *page);
-
-Nit: might be better to move the declaration up, e.g. above #ifdef
-CONFIG_MMU_GATHER_TABLE_FREE.
-
->  /*
->   * Without MMU_GATHER_TABLE_FREE the architecture is assumed to have
-> page based
->   * page directories and we can use the normal page batching to free
-> them.
->   */
-> -#define tlb_remove_table(tlb, page) tlb_remove_page((tlb), (page))
-> +static inline void tlb_remove_table(struct mmu_gather *tlb, void *table)
-> +{
-> +       struct page *page = (struct page *)table;
->
-> +       pagetable_dtor(page_ptdesc(page));
-> +       tlb_remove_page(tlb, page);
-> +}
->  #endif /* CONFIG_MMU_GATHER_TABLE_FREE */
->
->  #ifdef CONFIG_MMU_GATHER_RCU_TABLE_FREE
-
-Looks good to me otherwise.
-
-- Kevin
+Thanks,
+Thorsten=
 
