@@ -1,70 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-4870-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0023A0663F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 21:37:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A330A065A2
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 20:56:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YT09D18v2z301B;
-	Thu,  9 Jan 2025 07:37:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSzF26lbJz30Tk;
+	Thu,  9 Jan 2025 06:56:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=162.240.238.73
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736346341;
-	cv=none; b=Fxro98TUeXmLDGH3n9DygUgzkUfLgZQpdEmcV42bMpJNSEK/I5788h0Lnn/+ztMsbWzJdEvD4J23ZCcCvrfj2/bfYNsXfrhWRrZasojYi4dYdstdAcPlMVJvxvbPIK2+kVnKwexo2TKTfAbNjQpGw2AT2b00cXscSj60eDPkQy2Cog8CDnvFrhFch5k+KGXSddb6gJk6MM7polJlEKsZcZMJkZ4y7Hvm1dUVApJAh+WD/FIidKzB/KKrCEn2ILMa0FViUPba11TYPFq3hHx9ayi4nLXh5wHz9l7JlYZ6hD+gK7bE+ycJP7iQqv5Auxppp1J5y3AEiGS4NX6FFO+Zdg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736366166;
+	cv=none; b=MnkNhcyEJXUmpmQsXJaWot2LZauTxLa6QmleT35cpsdOrS//4vw0BN5vd76HOGgAP6QmBLPKlvNcxgdx+qaGpn0+i0A0UPyi0kgLU6HEdnHzE3QbaP0y6tkfsMT4/s/dkkpMoeTv7aXlimIlpilcmH1JEslnw/d8M0EDNoj1/+e7yAIVY28TyroIrLjwLkt8vXg1P/1Y2yQibMz5vVttujpizll8CBQ5N2JASPwiBeFVNvbnAidHSQPOi0ao0usSeOZJTLGm93A78y0C9RKFjXgWLPtLSOiD66mlM+o7pk8ZYpizp1ptWLYg17eur4bJcmFIZUg70sh9zyHptJlQfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736346341; c=relaxed/relaxed;
-	bh=o3+neP8aeeIFPqI/lL7EOOrgM0uRKroB1bs8o3zpJWY=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KC3tt0KsKIfyLanU1oP9rvgAQ92Lrb+qQgnyPlKIJnaRFwuuW2qBJ9xQPRqFmc3RXJyEWRIaUg8KuzPkczZV6UlH4SCqEOXHm6kl6AXpQRZoI5rCEnvwYz31T70HCpwC5NJlKn+MDm5J9loQoengEZEHloaeKgpqUUOeYKLo9F0c9z1jpi6a6cyMc8C5CWJNA7Aip7sAiGmB96QwAiBXdagTSnVFCqsgzgrXXPrSsZdxu2831URVso7I1qFzb8c8m5oaIVRaoEim8JIx5lUI/MQ75FMvADPRrioEkPB4iE59DhBLeNLAQLw6156StnASczFmfKhpK7HfFKz40WbTKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=couthit.com; dkim=pass (2048-bit key; unprotected) header.d=couthit.com header.i=@couthit.com header.a=rsa-sha256 header.s=default header.b=GLgEGooG; dkim-atps=neutral; spf=pass (client-ip=162.240.238.73; helo=server.wki.vra.mybluehostin.me; envelope-from=basharath@couthit.com; receiver=lists.ozlabs.org) smtp.mailfrom=couthit.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=couthit.com
+	t=1736366166; c=relaxed/relaxed;
+	bh=DLoj7F2XuhLzbYcZG1StIPmnR6qXvg+yrwpMBesALIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fu+8tCjg/oTR0DH2VAEoJy1pf3qmxdX2fnbZGkpx9V35Mf8tREYxKdsf1l+7Yrz+1rzrSCw5tYO/Y9sZ48SpUI1B5m5MepVWp+YgsJAnyy6vIgTSjY1KmTu4KtuleXS5c83pqI0SMy0nuei4JJTeZTI1QX/gaGtiy0hC/H1jJMpc3cS6VtUeUUjlVKziVBsye6+qhNzdBHLbd1ggv4eEmC12alIP/taAS3GJKIrX2E3JkffwhajDwvFanlTeiEvc6MDhMbpflDou0K3kpeYldKSrYpY34zHHnI8CBIz1neVTnlnR1SzrPp0+iuzyAhQaDaIDfKwR+r8Jeheca9qc2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OH+Lj21X; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=couthit.com header.i=@couthit.com header.a=rsa-sha256 header.s=default header.b=GLgEGooG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OH+Lj21X;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=couthit.com (client-ip=162.240.238.73; helo=server.wki.vra.mybluehostin.me; envelope-from=basharath@couthit.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1269 seconds by postgrey-1.37 at boromir; Thu, 09 Jan 2025 01:25:38 AEDT
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSqvk5pPSz30TC
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 01:25:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References
-	:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=o3+neP8aeeIFPqI/lL7EOOrgM0uRKroB1bs8o3zpJWY=; b=GLgEGooG7UkcsXby1uEwokCfe9
-	s7iqTJT6t7fQ4bL0NWVQMCEd65TTxjAFKf2+LqVADVmFKTCVURhW1aCfK8Trf65EDbc4KVqSV1ltD
-	lSGtUlzcMkXUU5yDZ/k7C1puX4VVmPeOxgWAP8bAlDLPpUnt+MgzkKma8BGraXxrxAX/yiYF9EQVD
-	6xQYRtKfMLjxsM3coBB6+X8FTlZL4w8iAHs5O2jw6Vf+mT82Vn1U8n+xvb6u+f0XHVKwtyMSEBeFP
-	x7pTMmGFOo36RpQTGWOd5Fayup4mYlEPt6DmvG2igOHvsqIVolcaygPwdnk26spE8ENxUQsdFlb1q
-	LObjzvOQ==;
-Received: from [122.175.9.182] (port=22813 helo=cypher.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpa (Exim 4.96.2)
-	(envelope-from <basharath@couthit.com>)
-	id 1tVWfY-0001mA-0L;
-	Wed, 08 Jan 2025 19:34:24 +0530
-From: Basharath Hussain Khaja <basharath@couthit.com>
-To: robh@kernel.org,
-	mpe@ellerman.id.au,
-	thomas.weissschuh@linutronix.de
-Cc: devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	saravanak@google.com,
-	basharath@couthit.com,
-	danishanwar@ti.com,
-	krishna@couthit.com,
-	mohan@couthit.com,
-	parvathi@couthit.com,
-	pmohan@couthit.com
-Subject: Re: [PATCH] of: address: Unify resource bounds overflow checking
-Date: Wed,  8 Jan 2025 19:34:14 +0530
-Message-Id: <20250108140414.13530-1-basharath@couthit.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <87mskbqher.fsf@mail.lhotse>
-References: <87mskbqher.fsf@mail.lhotse>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSzDx5kslz30Tc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 06:56:01 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id D8D30A418E8;
+	Wed,  8 Jan 2025 19:54:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9E3C4CED3;
+	Wed,  8 Jan 2025 19:55:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736366156;
+	bh=d+BjqX6a64TsT7Fi6gIQ6p4XPXOWjDadBxtZpjjVovA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OH+Lj21XHbgPnC5NYzAOBn+0XFmBdOYGW+2uq7Q05QfZsIGko1fVrqdXRXROpO+eW
+	 IBIPB60MrsrRF9UN+stOzAQwvS0WXGcN1gOhl0Y0j/LpOwaas02s0NPB4LrsbCwii6
+	 ty4yaa7SAg/PvDevQ30LStkmfSZYhbkQyFBHOY3dlmokGXyIh5B73LwbVBVnslFQZz
+	 8NZkKDibtwZ9zzkrVTY6OQUsngSI3BbbLiLZntA5Kq+ffvBZEzhv75Nh32KGi+EohB
+	 ZX69upswPUNBiHZsw6WIIFMQSbWIPB+AvgNzUUC6rJqDvm7mKv4w0pmyH6mkPV21QG
+	 HWT3KPgejjQHg==
+Date: Wed, 8 Jan 2025 16:55:53 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Liang, Kan" <kan.liang@linux.intel.com>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-perf-users@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: Re: [PATCH v2] perf: Fix display of kernel symbols
+Message-ID: <Z37YSfVMabaJ3A8z@x1>
+References: <2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu>
+ <Z36Ra23US_zC3n2v@x1>
+ <590b2f02-f7f0-48b2-b45e-8a31bbadef2a@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,76 +73,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: basharath@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: basharath@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+In-Reply-To: <590b2f02-f7f0-48b2-b45e-8a31bbadef2a@csgroup.eu>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
+On Wed, Jan 08, 2025 at 06:06:03PM +0100, Christophe Leroy wrote:
+> 
+> 
+> Le 08/01/2025 ‡ 15:53, Arnaldo Carvalho de Melo a Ècrit†:
+> > On Wed, Jan 08, 2025 at 10:54:20AM +0100, Christophe Leroy wrote:
+> > > Since commit 659ad3492b91 ("perf maps: Switch from rbtree to lazily
+> > > sorted array for addresses"), perf doesn't display anymore kernel
+> > > symbols on powerpc, allthough it still detects them as kernel addresses.
+> > > 
+> > > 	# Overhead  Command     Shared Object  Symbol
+> > > 	# ........  ..........  ............. ......................................
+> > > 	#
+> > > 	    80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
+> > > 	     3.91%  Coeur main  gau            [.] engine_loop.constprop.0.isra.0
+> > > 	     1.72%  Coeur main  [unknown]      [k] 0xc005f11c
+> > > 	     1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
+> > > 	     0.44%  Coeur main  libc.so.6      [.] epoll_wait
+> > > 	     0.38%  Coeur main  [unknown]      [k] 0xc0011718
+> > > 	     0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
+> > > 
+> > > This is because function maps__find_next_entry() now returns current
+> > > entry instead of next entry, leading to kernel map end address
+> > > getting mis-configured with its own start address instead of the
+> > > start address of the following map.
+> > > 
+> > > Fix it by really taking the next entry, also make sure that entry
+> > > follows current one by making sure entries are sorted.
+> > > 
+> > > Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
+> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> > > Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+> > > ---
+> > > v2: Make sure the entries are sorted, if not sort them.
+> > 
+> > Since you have changed what I reviewed I'll have to re-review :-) Will
+> > try to do it after some calls.
+> 
+> Ah yes sorry, should have removed your Reviewed-by.
+> 
+> Based on Ian's feedback "Using the next entry in this way won't work if the
+> entries aren't sorted", I added the following block in front of the initial
+> change:
+> 
+> +	while (!maps__maps_by_address_sorted(maps)) {
+> +		up_read(maps__lock(maps));
+> +		maps__sort_by_address(maps);
+> +		down_read(maps__lock(maps));
+> +	}
 
->> Thomas Wei√üschuh <thomas.weissschuh@linutronix.de> writes:
->> > The members "start" and "end" of struct resource are of type
->> > "resource_size_t" which can be 32bit wide.
->> > Values read from OF however are always 64bit wide.
->> >
->> > Refactor the diff overflow checks into a helper function.
->> > Also extend the checks to validate each calculation step.
->> >
->> > Signed-off-by: Thomas Wei√üschuh <thomas.weissschuh@linutronix.de>
->> > ---
->> >  drivers/of/address.c | 45 ++++++++++++++++++++++++++-------------------
->> >  1 file changed, 26 insertions(+), 19 deletions(-)
->> >
->> > diff --git a/drivers/of/address.c b/drivers/of/address.c
->> > index 7e59283a4472..df854bb427ce 100644
->> > --- a/drivers/of/address.c
->> > +++ b/drivers/of/address.c
->> > @@ -198,6 +198,25 @@ static u64 of_bus_pci_map(__be32 *addr, const __be32 *range, int na, int ns,
->> >
->> >  #endif /* CONFIG_PCI */
->> >
->> > +static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
->> > +{
->> > +     u64 end = start;
->> > +
->> > +     if (overflows_type(start, r->start))
->> > +             return -EOVERFLOW;
->> > +     if (size == 0)
->> > +             return -EOVERFLOW;
->> > +     if (check_add_overflow(end, size - 1, &end))
->> > +             return -EOVERFLOW;
->> > +     if (overflows_type(end, r->end))
->> > +             return -EOVERFLOW;
->>
->> This breaks PCI on powerpc qemu. Part of the PCI probe reads a resource
->> that's zero sized, which used to succeed but now fails due to the size
->> check above.
->>
->> The diff below fixes it for me.
->
-> I fixed it up with your change.
+Its ok, I'll keep it now that I looked at it.
 
+Thanks!
 
-This commit is breaking Ethernet functionality on the TI AM57xx platform due to zero byte SRAM block size allocation during initialization. Prior to this patch, zero byte block sizes were handled properly.
-
-The issue is with the following line of code:
-
-if (size && check_add_overflow(end, size - 1, &end))  // check_add_overflow not called when size is zero
-
-We feel check_add_overflow() should be invoked even when the size is zero to ensure correct block size allocation.
-
-Thanks & Best Regards,
-Basharath
+- Arnaldo
 
