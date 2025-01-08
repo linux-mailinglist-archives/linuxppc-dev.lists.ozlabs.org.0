@@ -1,49 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-4866-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4867-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE87A06439
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 19:20:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5699A064DD
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 19:50:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSx6H49ZCz30Pn;
-	Thu,  9 Jan 2025 05:20:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSxn10sklz2xWZ;
+	Thu,  9 Jan 2025 05:50:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736360407;
-	cv=none; b=g/q67UtVQTGTSDgwzvgLxaqumiIMlIPGrJ44PKgCI2KsMS36eu0bMYah5Qp9IS7O1wl7u/WpnugV/T8PvzSGNYFnMnEGS0nz2b5snDOb80cVb44z4qIb5p52MZw9pieAh6DC7K2xO77VDK1qdYcvkDK96UGqTUonYijR4xWElVQd6J5vmniqLyxSGIOutWnMdY+0xPsYTeJTL7oni9KSE4JTmEhAeW5r9ntSU0SJKYSCH3+6pa8Y2KNPMOqruQ9fZzNQGVNORrOmpQ6Seuk4QhnpYMqlJ8Xq/InTREWuupc/dWUe+qMHMI1E8HltoW0NtSSCnMr5zd9QwbHnQYRm8w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736362213;
+	cv=none; b=cqKaJBZu6c/TPZYVsVS8Dk6tS/v0L+itL3rr8VgoheRSTPdBjMsJKhFEAneWKZJGRxPlWH7rzrFcJOWQ8HPeKeDsAcJz3It0hWRVvUWSDAqlUHloszW0G1tuCZXpu7/C7gOEX8RwsO6Np6o/UrWp4P0UOguVBF3mjFMTTj1z1Fb+MbuSSsAoAttWXxtHOFei7ZtvxppLGBtdaWJfCnJ7x3xloiM1EcmbmC1GSrJuKsWzG3B6gwOHglT3GbHNvZTCn/AoKnCvSa7cwLDFlZa7mMNfuNkML+4liPwbTzs6LwYpuqja+wQW1uzziezrYz3j907LEqyfQ7ffP9BIeAb0/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736360407; c=relaxed/relaxed;
-	bh=8tjM3TfdI1BDmnFOls/6XSul5ZufMXKzimA8Ca0u7sY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kPSFgr36WvVHRoz06TEw2KOXpmg7pz2bEo2FSqMmkhibyAwvv2MN+e2ju6IkBJ4NocebSVvnrf3uCjIm+S5MBhelO0MtUjTKiZ4Y3E7fUuGrG0k8dDi8ey37qGcgvMhk+02QbM5/905DR4tJcYE5al5wWDhlVBjfaUs6tffWsn0WV3thXt3oYQSDYXgaEe1f3QSL8iKpXhCgz4MUFdiQIexVRpjHMvJIxe9aod2bVG35H6uyZYVmQ/5oEprsC22XDeFjurjd8fo1i9/GZVInsQLpNr6ObYAWiELZCJ0pRp0hTLCX0wFJnevg+YkUZ9dtCK5T0/gEbe61tc/uOsV+Hw==
+	t=1736362213; c=relaxed/relaxed;
+	bh=pXxkbqk6X/WiRKMUk9hun81URjCf0nD1qo+HECzlVjM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=N9zG9IMBtCBZOhklQjAS3LMUtfljHoHlmq216sEPljhOzx8AYQf2d4F0jT9EqTqECrEyAlNrptQD0OQ3sb/5YMGQRSWnbb6I2sQJ2xxkC75YawgAlNqTTd1lL/WEEdKHNb88C5iqimthHumU2j3xDC4R0GGmA/YzDc0FVBHjHuy3NModV5770GDSi5pRpzVvoRDFwnkleYjHFYzubJwM6+4FGBQVMfE2zvZ71Kwxp9ySefRYAAnG+A5jBm+SAAWnalxU1XvetMfKyzfzl6zi1rW4n96WDW0wKSOknA08bbCJDy5rRLdHo4AVUu2ICIVM+YH8qOSFqZu1+N5V8JrMHg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSx6G0YlQz300C
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 05:20:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSxmt4rcKz2xLR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 05:50:05 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YSwYZ4lk8z9sPd;
-	Wed,  8 Jan 2025 18:55:14 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4YSxZ85Yfyz9sPd;
+	Wed,  8 Jan 2025 19:40:48 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ATU5y-duZQVG; Wed,  8 Jan 2025 18:55:14 +0100 (CET)
+	with ESMTP id 8rVyIxD7aMmT; Wed,  8 Jan 2025 19:40:48 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YSwYZ408mz9rvV;
-	Wed,  8 Jan 2025 18:55:14 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YSxZ84hzyz9rvV;
+	Wed,  8 Jan 2025 19:40:48 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7853E8B783;
-	Wed,  8 Jan 2025 18:55:14 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8ADE58B783;
+	Wed,  8 Jan 2025 19:40:48 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id JyxhuDd45FHW; Wed,  8 Jan 2025 18:55:14 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 17D168B768;
-	Wed,  8 Jan 2025 18:55:14 +0100 (CET)
-Message-ID: <4e4ffc4f-e8dd-4771-bf97-8b372b1c97e0@csgroup.eu>
-Date: Wed, 8 Jan 2025 18:55:13 +0100
+	with ESMTP id eHaHAVFUYBnZ; Wed,  8 Jan 2025 19:40:48 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 15C5B8B768;
+	Wed,  8 Jan 2025 19:40:48 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Arvind Sankar <nivedita@alum.mit.edu>,
+	Kees Cook <keescook@chromium.org>
+Subject: [PATCH] powerpc/32: Stop printing Kernel virtual memory layout
+Date: Wed,  8 Jan 2025 19:40:38 +0100
+Message-ID: <430bc8c1f2ff2eb9224b04450e22db472b0b9fa9.1736361630.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,60 +67,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Perf doesn't display kernel symbols anymore (bisected commit
- 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for
- addresses"))
-To: Namhyung Kim <namhyung@kernel.org>
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>,
- James Clark <james.clark@linaro.org>,
- "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Ian Rogers <irogers@google.com>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <719a89a5-8dff-48a0-ba8f-802c740a00a6@csgroup.eu>
- <53f3abe5-dd22-4a1a-82e6-bc88e91d1869@linaro.org> <Z217eBsXIaSgKuSs@x1>
- <5217124a-f033-4085-b9f5-a477c96728d6@csgroup.eu> <Z3bYltoidQpqtyJ_@x1>
- <48724052-4003-4140-8106-f9ea098cedcb@csgroup.eu> <Z3c4nupM-UENN5LM@x1>
- <5b8ec160-4b50-4736-8012-30ae35c45028@csgroup.eu> <Z3gPncBcCnZiNy57@x1>
- <752a31b0-4370-4f52-b7cc-45f0078c1d6c@csgroup.eu>
- <Z3xPHSrVInsc6W6I@google.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <Z3xPHSrVInsc6W6I@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736361639; l=2229; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=PSo2/lOXLdAbBLFI9HqIkBg4P3ojWkalxsjwCFD8bMA=; b=5ajoRupaJ2Z0D41DN3Y6Nl2LVCuyWAxqlJ9pw7gIQsHcthgwNdLlAXe+QtNf5T3soHyGeyOFj zgo89m8jH8QCqchHvCOjI4+floJ72g3w4t64BMaduz5kjMeZSng0DpZ
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Printing of Kernel virtual memory layout was added for debug purpose
+by commit f637a49e507c ("powerpc: Minor cleanups of kernel virt
+address space definitions")
 
+For security reasons, don't display the kernel's virtual memory layout.
 
-Le 06/01/2025 à 22:46, Namhyung Kim a écrit :
->>
->> And in System.map I have:
->>
->> c136a000 D __start___bug_table
->> c1377c14 D __stop___bug_table
->> c1378000 B __bss_start
->> c1378000 B _edata
->> c1378000 B initcall_debug
->> c1378004 B reset_devices
->>
->> Should perf try to locate the very last symbol when it doesn't find _edata ?
->> Or should architecture's link script be modified ? Otherwise commit
->> 69a87a32f5cd ("perf machine: Include data symbols in the kernel map") is
->> just pointless.
-> 
-> Let's go with kallsyms__get_symbol_start().  I think it's the most
-> straight-forward and simplest fix.
-> 
+Other architectures have removed it through following commits.
 
-Ok, I did that, see patch 
-https://lore.kernel.org/linux-perf-users/b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu/T/#u
+071929dbdd86 ("arm64: Stop printing the virtual memory layout")
+1c31d4e96b8c ("ARM: 8820/1: mm: Stop printing the virtual memory layout")
+31833332f798 ("m68k/mm: Stop printing the virtual memory layout")
+fd8d0ca25631 ("parisc: Hide virtual kernel memory layout")
+681ff0181bbf ("x86/mm/init/32: Stop printing the virtual memory layout")
 
-And for the _edata which is sometimes missing, I send patch 
-https://lore.kernel.org/linux-perf-users/2fec8c50c271dff59f0177ff0884b6c374486ba5.1736327770.git.christophe.leroy@csgroup.eu/T/#u
+Commit 681ff0181bbf ("x86/mm/init/32: Stop printing the virtual memory
+layout") thought x86 was the last one, but in reality powerpc/32 still
+had it.
 
-Christophe
+So remove it now on powerpc/32 as well.
+
+Cc: Arvind Sankar <nivedita@alum.mit.edu>
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/mm/mem.c | 22 ----------------------
+ 1 file changed, 22 deletions(-)
+
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index c7708c8fad29..34806c858e54 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -319,28 +319,6 @@ void __init mem_init(void)
+ 	per_cpu(next_tlbcam_idx, smp_processor_id()) =
+ 		(mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) - 1;
+ #endif
+-
+-#ifdef CONFIG_PPC32
+-	pr_info("Kernel virtual memory layout:\n");
+-#ifdef CONFIG_KASAN
+-	pr_info("  * 0x%08lx..0x%08lx  : kasan shadow mem\n",
+-		KASAN_SHADOW_START, KASAN_SHADOW_END);
+-#endif
+-	pr_info("  * 0x%08lx..0x%08lx  : fixmap\n", FIXADDR_START, FIXADDR_TOP);
+-#ifdef CONFIG_HIGHMEM
+-	pr_info("  * 0x%08lx..0x%08lx  : highmem PTEs\n",
+-		PKMAP_BASE, PKMAP_ADDR(LAST_PKMAP));
+-#endif /* CONFIG_HIGHMEM */
+-	if (ioremap_bot != IOREMAP_TOP)
+-		pr_info("  * 0x%08lx..0x%08lx  : early ioremap\n",
+-			ioremap_bot, IOREMAP_TOP);
+-	pr_info("  * 0x%08lx..0x%08lx  : vmalloc & ioremap\n",
+-		VMALLOC_START, VMALLOC_END);
+-#ifdef MODULES_VADDR
+-	pr_info("  * 0x%08lx..0x%08lx  : modules\n",
+-		MODULES_VADDR, MODULES_END);
+-#endif
+-#endif /* CONFIG_PPC32 */
+ }
+ 
+ void free_initmem(void)
+-- 
+2.47.0
+
 
