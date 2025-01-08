@@ -1,79 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-4857-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03ED9A061D4
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 17:27:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B33A06283
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 17:48:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YStc72Bt4z30T0;
-	Thu,  9 Jan 2025 03:27:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSv4N6nGNz30T2;
+	Thu,  9 Jan 2025 03:48:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip="2a01:111:f403:2415::602"
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736353639;
-	cv=fail; b=H++29mIKPfWGAILIFb660GOq/x2wkgI4iOeEv9VdQ9Zaqek0SaL+JQa7K0x2zysGWnkFlHmjjizywG6GATLlD8XDj8CAjvtTpw6SkKPbqd5FRFgR4aijZIgdK9Z5pyBcNIb9mvNmtFqnwjM4MlZVo4cT0QOszV/0lh7ScWCf5KrPGD4ybMHrcmP4BG6zQQ2dKAsyjgTb7uQ53EBsWqb6kPK/oXqFqhkVohFZw9jV7DjKrsqZkni5auwYTPM8/IFhuVr3AnwMqYm/wcIXmh+ES77RcTd9A9E5L35QtYnEtOjMJpKqfhoMC/jKsf23sxMQWMXWWL4rXUxqGp7wmnATvQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736353639; c=relaxed/relaxed;
-	bh=im58jhsCB1c8ehwk8tTvAiWueItuejDYDV7PzVfC3HQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=bPzktovlt+6BgERXTs62FniQQXG0SPH0qkwrlY6rSOH0LGXmzfxdifrfzt5blnKSgduHl/+8zrPM9UpJAhTeldv3MW2PY7MvrFXdbwilOiSGP5TT6rJfEG/Rpx3s4znc+Ho4h7OhdLN0L2bAusiikrP5FNIGMyBG/pOmrl9Dv1azVpI6gx/uT3Q9rblx0F8oFrxuwqrT1JI03DkWUghMSrK530QBJnEgNTHPBBuf/NoSKQZleDr6aF65PBT0eNFLApY5uMmEZNZVnT9BvG/EKAAVgViKS29vSEXgj19/j1Usi4tygRK1DDKXxBWThR9Fgwd7BpZdw5UkQLnf6kmVwQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=fail (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=PgVXMwxc reason="signature verification failed"; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2415::602; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736354900;
+	cv=none; b=nlY0kznNKWFcnKO8qT+F57N6+mSuFnTqTdM6Lr6HLx9ny21JDxKTgj7AuwcDA6U2RFtsDnBCH/gNG4v+tQQutoW/qcMdG1f17G7QdRBDORRJwYWw1jrMpGNBkQGqNhxJJ0Oh3QS/7pfS13msK+MM5JycTeN0irSC++F4fI9W8rcJT7I00xP0FvuEMrPizZJOeIh9TZLDjL0Vkx2zGhExKTVDTKrspCMYJYWDyxgibfqIyDxBBOQYU1ocwoZK+v51jf1S+of0PeQacFY5zMXnZU3cvkLO/M8dYNzBEkuUp7XC/RCVovDOHCB2SiQJ6FLy6/f2b3dgErdNR+nqztXlLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736354900; c=relaxed/relaxed;
+	bh=O4Mc8c6uM51ivX9BCoaX07Rr74LW0rOWxJl6TFPjMJI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CmX1xFL4rODv/t9r4qKu9fGpqEwOveVONe8LkjL+pnIqk4uxuWXSdallxFCtSX0q4iseXs906Pw3BfgjewnllZW9xopMf7furcaF+EpbR22u9jSlpvbK3nmQ3rhODXYmy03+FT8AEZ7XPC2/oUbqZwe/sAHyxEVolRAMXVMDue8tMPuxP+LYLyqnVe9xP50hKaq1N03D0WibbTfJTjKgmCV7iDsk3EUFsf9Lyx3ryzoLJ4rgOQLL4UTvhajM8XF4kgoVTwaaHeghrgbUIoPXxc1ffTKsjdfkdwRiSRXVAFDh5Bc7hs5kiYOp81bCdSgnBbnCopSIlDgJfqb100DDPg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LDa1BRFD; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=PgVXMwxc;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LDa1BRFD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2415::602; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on20602.outbound.protection.outlook.com [IPv6:2a01:111:f403:2415::602])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gbatra@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YStc50h0fz2yNs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 03:27:14 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zRNqSTQ2Fz3xAW0zYc59sHS6J+GM7ZxDYOrfrT1VK9FqUVljT/pAZstPhvRWBwkDN+b057olqGGpM610qCMnYOlz+hOkVocanQ0PVbLn7VEsm+R9sOXQkAiV7pZUpWQ+5/8GHyZsmG1+Hi1J0aWOD1vMl68BviWaQRsJsVk5FVwa/CTP8hbGQQrHogX6GCuJCyUtenrb7yYHRx6kSM1hCuj77Oxg+V9uGNLQiC3aAxi75JhdKqsPcaUxqCn+hpNXZwR+PW5eXn7VFFJcOAqCnfh2m/+w9rmOkHyPTTr72pDIzCWgMp+9hD7I3UG1m8HFpuuqTeMgSf/1QMTZgld/Jg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=wPtZA5owjjLGtqAZ9n9Vp5KD86FZbi6SjGLcehoNt9g=;
- b=GbI4aS63zvP14UmU1eJbkWrlQVofbf43uk5cQahmzrp0FqMoSGo8Mt2OhNc3XQ/vpMEr8jy+mFlPcvSjmUWFMSDadYP+gE1ir8JRioUI2Aco+yO9LygIul1j0SRTIIIo/aqrtG6kWJjI/UrLF48o6aVGQWkpd5oMj79nEqFOhOpGFt2NKoNTA3WwLQa9dKB9tuCJifEdJ1eJUYhtNd9uGK18ovjBJ06LT7CCpu7RxatHL/G2rux8ccgpva0OvwFHMrC9yZ9jj7xvCzfd2kRX4yVv+iojG0oP6COS0FY7WXWq5pj3CsDTe3J3liW0nad8tj5I9/2P+IJjtNCPLesUGA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=wPtZA5owjjLGtqAZ9n9Vp5KD86FZbi6SjGLcehoNt9g=;
- b=PgVXMwxcKce2ejq2KoWL8p0QBFZMdvL0DDPfnboi5eEAj/keZoWWRFt8MzgWsidoHBdR3EqlYvo7X90pqlTjmOJ59jGwsYwMc5VM5/JHxn1ehO4pFkDk5DLzmwaLxb93sma2E/xXKeOJ23f8qFFwHSaX4yXYdsifJYzrcIUW4Ek=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- PH0PR12MB7981.namprd12.prod.outlook.com (2603:10b6:510:26c::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Wed, 8 Jan
- 2025 16:26:56 +0000
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f%6]) with mapi id 15.20.8335.010; Wed, 8 Jan 2025
- 16:26:55 +0000
-Date: Wed, 8 Jan 2025 11:26:48 -0500
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-kernel@vger.kernel.org,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 2/7] PCI: Move TLP Log handling to own file
-Message-ID: <20250108162648.GD1221136@yaz-khff2.amd.com>
-References: <20241218143747.3159-1-ilpo.jarvinen@linux.intel.com>
- <20241218143747.3159-3-ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241218143747.3159-3-ilpo.jarvinen@linux.intel.com>
-X-ClientProxiedBy: BN0PR04CA0022.namprd04.prod.outlook.com
- (2603:10b6:408:ee::27) To DM4PR12MB6373.namprd12.prod.outlook.com
- (2603:10b6:8:a4::7)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSv4M5dgsz2yNs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 03:48:19 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508D8TC7023466
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 Jan 2025 16:48:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=O4Mc8c6uM51ivX9BCoaX07Rr74LW0rOWxJl6TFPjM
+	JI=; b=LDa1BRFD5NvuT8/EaQPA+X0tYAlqZZshb3h9HtqOy3+JCtk1SzxOLtjVo
+	k6/b8T4QckHUkZ+iR7hL8kqDxowh6pVCb+NAPPUxzibgqb6sxtzreg6G+6iuzQMe
+	2+doC2bAlasibpH2apec/M9bCiSup0lAA4XdE6rmf1R4E/5948T6vkCpFsGk4LCy
+	dbJ2FH9N7Tr/9DYy2p9MgTGmY5M7UJz3Nwqt3foO5q3YBro3dGntlhesVGdYUKZc
+	NLEX9Tn+SPqIRjZ/KqPuL62tMRli/zcyjONa6J2kUMBMq4bs9FmPHzmfWlBo9HaU
+	JYLGfaVwsw9TV+oUsIzauDJdSaySw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441edj44b8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 16:48:16 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 508DYM53015798
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 8 Jan 2025 16:48:15 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ygtm0mwb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 16:48:15 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 508GmEcf21365378
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Jan 2025 16:48:14 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 94FED58056;
+	Wed,  8 Jan 2025 16:48:14 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7585558052;
+	Wed,  8 Jan 2025 16:48:14 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.242.62])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  8 Jan 2025 16:48:14 +0000 (GMT)
+From: Gaurav Batra <gbatra@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Gaurav Batra <gbatra@linux.ibm.com>
+Subject: [PATCH] powerpc/pseries/iommu: create DDW for devices with DMA mask less than 64-bits
+Date: Wed,  8 Jan 2025 10:48:14 -0600
+Message-Id: <20250108164814.73250-1-gbatra@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,243 +81,264 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|PH0PR12MB7981:EE_
-X-MS-Office365-Filtering-Correlation-Id: 4e8905f4-736b-4c3c-22d6-08dd30014451
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?4GZKIUe7a/f4BDfblfr501tv/wVKASLiDgJSOk5wN9XjTcbTv5g9skO/IF?=
- =?iso-8859-1?Q?08Q5eskFthTeA4reSL64M1PjAsL5GdGci5hXzIRo81CUKYgW64OV5o2BNd?=
- =?iso-8859-1?Q?3tcqvBqvYmc56jkbHVbeFOnIeEMoyxDbEJa9/isuGBJ8fp3OxlIikvpaGC?=
- =?iso-8859-1?Q?mgbr2fSLO4WEbjb1HvvSCYJ5+CfOzOPk9hOJPOt3e+18VV1E71F44yOmak?=
- =?iso-8859-1?Q?EtiFyr2jqKwbSMDcoxdUhIE5bticv+MPu1FoJJ6CsQTPB3bX8BD1xyXNJz?=
- =?iso-8859-1?Q?iCOVtKy1BRfCa9CoQyomW7N6JGofFhKsssiFWlnh5exptBF7rRchpZ+N86?=
- =?iso-8859-1?Q?wd7a4gA+QeswmrQ93XIaU0u0PHzw6idkijg4XSJX1bMiuuE2fJAtdfXsOI?=
- =?iso-8859-1?Q?tgPb1S/nfqjWSAYovEZPmi1xkVEyuV38kyZRr4GvSD3nnyR4d9JA1eUhse?=
- =?iso-8859-1?Q?MzdduxP3llryRxHX/D000Qjhld4GTBqluLGVQmLPOJgxhj508UtJkQ4SJq?=
- =?iso-8859-1?Q?VU09D9rrLq+cnnu1HT3lyaOh01qvnmLOt1mrPnBJqH4CcPmY+sI6opBIg2?=
- =?iso-8859-1?Q?ieBeg3G0wRyq0hRFmp0UVZ7EGnWMEHpNirsXetcBUna4DqoBznFHMMZBDS?=
- =?iso-8859-1?Q?oxow80quzile2N3M+9U2mgzwk1rL4M4fpUP749pw6rFwuenhkeBKJIH6Ym?=
- =?iso-8859-1?Q?u99aSF8W5nbVsjyaPCRvvRaO5w8yR7qkMvkLR8SZVXiOkCF1rVBkpvLT/D?=
- =?iso-8859-1?Q?8M1tNjevSDF7wmI2jNUGiauH44asRcAyF55SxE3CcK/sDWNnqjwuUTrZJe?=
- =?iso-8859-1?Q?j1SNhADSatoMKJ/EW0atI5+7LvbDtzoaeM60OM6waqYVChSqfyxeA24pU6?=
- =?iso-8859-1?Q?KFGATK4pYsmp++rXOpq0woDouMZ0rXFO/cozgoRh2IkLaIQPewtE47fg+m?=
- =?iso-8859-1?Q?DDjLa1q6t/CEZzXWCCkxuZn2jipMoL3PkoipEJ1BMW89Fw2TT9he+k4mQE?=
- =?iso-8859-1?Q?r4PGDxadxAKZyOksL87senRDN90Sl8In9cPaqTcIFYEzCJG7ZPNrcqpjRm?=
- =?iso-8859-1?Q?72KiMTK7/gij3ti6hOnfCIcfzV00t3YJL4JE+UMmWYxPfHtSbdeTKGBX7P?=
- =?iso-8859-1?Q?XlvUAchnSMOo2Oielw4sv+emp9I3wrbAEU2Y2x327Xuk6eMOEyXD9PvGDn?=
- =?iso-8859-1?Q?pX0Na25Cb2fg3M4fGrb/f0WajvQz5/YssMS7ExeUczLSz28e6SJ/VU5g18?=
- =?iso-8859-1?Q?lC6ZVNbjWsOLcpONK+T7Z0n4duus+KWDf8mRBUvvcIxnoKxp0UmjpvThwB?=
- =?iso-8859-1?Q?CKeZdhuCOdjUlYlGgokeOYBbag94PSi4r/CzgZJGPmiezeMc/T+gge8bag?=
- =?iso-8859-1?Q?jQp4tg/gX5JssEbML3rAQcJsKYToO/n2C283L3FffjucLRcQdzIcURg3tc?=
- =?iso-8859-1?Q?J0LGQAiIcrkfS+9I?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?raLeDLdROigzVNESmYDRzCql4yfgLyE99Z4x+2kBRVqxfM/0VlnYBDU5/c?=
- =?iso-8859-1?Q?Z/Aen3kVW1Iv/nGUIll6CGK8J/KChugFPgE1MlG0JjZT9swIBBtzdWYZJ6?=
- =?iso-8859-1?Q?y5SzUe46xRALWs/X4rXfxCOQDKs1s7iOh1x9MOi4Di7/t/li8x/Abk+9An?=
- =?iso-8859-1?Q?UPFM1XqCEyN47GCKQItE6xngX3HqZhFH25Bx5YjsrGBu6NsRHNQuYuEQJ8?=
- =?iso-8859-1?Q?5FxV8sKjs0/z0JvBJ8g2mRA7764lfBx/UE/r06FApLRFN/Ms+LGDotLu/s?=
- =?iso-8859-1?Q?vlk6Z97sjCCBzrRbyFcnOBCwZWqo9fk4ybzxJAnENHm5h+TXtMng79y0Qg?=
- =?iso-8859-1?Q?wpeoraDtfhn/Rh+3Gh7qwH7FMAdDSZ6SQWpyEmeujSHe63N2eCXGe2VMFN?=
- =?iso-8859-1?Q?99x6yOUR5f/7CJExwnLq2Ue6Ps1g4B6w+M0lqb9hBMJsRUqgQX8d3e2XVQ?=
- =?iso-8859-1?Q?C+S9C1t/aL7dxW3xlh4cmvK+Re8sgniS8eohlgcAjXRrKb6ptSgQzLHwg/?=
- =?iso-8859-1?Q?CFBOGPS9p2H88e+hU92w7YRGABQArvNFrNeLjqZzxdqGPECaC/rk7YGcOU?=
- =?iso-8859-1?Q?VYzYEShg294nudo0hye8shV/oTMG7YmkyA/TL2dbSl2/qjxn5E0RDYe2Qp?=
- =?iso-8859-1?Q?GPV/5rtI1SOXr76BUr8OFAn5KGlPhpsV3G/8xxUzcWSSa9jtB/yREaXF3O?=
- =?iso-8859-1?Q?m7x5EpHJjgq16PozwNqZIBmxaXYUIWZndWwYC2Ao40oQadBfttrM8vlm6y?=
- =?iso-8859-1?Q?EEm1saGhdOThAJLXDKBWh1QFBJfkTNRyiH54cOOnk1Q7nex5AoKxC0skKO?=
- =?iso-8859-1?Q?vG7MJEbp9FWyZvm8izmzngOoaCgjMUqExg1LeSROLSLzLajlk6L05Jt4TW?=
- =?iso-8859-1?Q?JESnTzL6R1j4rfQC82gn3/B9dsA96QOlpNAGCRsfXOHw7Oru5NcQNmFg+y?=
- =?iso-8859-1?Q?56wUxWtNSR7s6YX1Yp0piDWkbY2Fg4+dMLoEoArJDVCL0e4oQroeLer64B?=
- =?iso-8859-1?Q?mp2DHPDUuYqBhzkqvYXmL3N7Cr+QmoeUMVaFImXBF9lx+DEMocwb08l35A?=
- =?iso-8859-1?Q?lRat0ZfiTrRKf31TJOUwjk7aL+7cRxc6KPvJGFyqEyWYDH6bR1FEdR6lbb?=
- =?iso-8859-1?Q?sbdbWdRPJril8XkXXMvCQ9Fk/gS0zJT7oxV8j5DU0D/ktcSxbYjTSgmxc/?=
- =?iso-8859-1?Q?obIhwECiS8lo3+Vg80pN3iej/2lUyi451cAO8dY7XuucJj2Q5tCYiwyBV4?=
- =?iso-8859-1?Q?e65KHP/BzX9g1vEPTrdu2xbjhYmphJV3x8VUYBXo2/nvDnw+dPCWbhm0a+?=
- =?iso-8859-1?Q?HKPChtJ10m8Xo3Jf63fbt4xCpAnO1Nh3uthg4EtQRQ4ntLNA/ED4IoxN+K?=
- =?iso-8859-1?Q?YfHwEujbC036eJMd65ufKoU4V4mtIEjDOx1e07SE2VSBjtUQqVsd4N0Dny?=
- =?iso-8859-1?Q?FtY1QciaLZ+TgWA+w121LyZg82v6GG1+4wR7sxMmXvg+cBpFaGhWbzMCiF?=
- =?iso-8859-1?Q?PL4FMKNG0i0bS+MR/fMa32nyersbFzzFD7IUeMj9caB3fvxicBLHZqiEYA?=
- =?iso-8859-1?Q?Jx4o+fVl3XxQR5dXxpnKn5AVejZSHyhTWPMiuWrwCNlLm0lDhiOdrOi5DH?=
- =?iso-8859-1?Q?borudfHb0PgeAxrDGrdwRN4ByBrNHBgo/X?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 4e8905f4-736b-4c3c-22d6-08dd30014451
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 16:26:55.7669
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8DHL3R7TlD3EV6E2pcPzvAYOMGuYkbolqhhZJBmYtfFFVTAQ2Sn9HGSECbxfU9Db9EljuZoDRsHlaKL+0UjWoA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7981
-X-Spam-Status: No, score=0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_INVALID,DKIM_SIGNED,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: Odmtj8yEzsPAfQMTwYN-nRM1PEIOliz9
+X-Proofpoint-ORIG-GUID: Odmtj8yEzsPAfQMTwYN-nRM1PEIOliz9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 mlxlogscore=999 phishscore=0 malwarescore=0
+ impostorscore=0 priorityscore=1501 clxscore=1015 adultscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501080137
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Dec 18, 2024 at 04:37:42PM +0200, Ilpo Järvinen wrote:
-> TLP Log is PCIe feature and is processed only by AER and DPC.
-> Configwise, DPC depends AER being enabled. In lack of better place, the
-> TLP Log handling code was initially placed into pci.c but it can be
-> easily placed in a separate file.
-> 
-> Move TLP Log handling code to own file under pcie/ subdirectory and
-> include it only when AER is enabled.
-> 
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> ---
+Starting with PAPR level 2.13, platform supports placing PHB in limited
+address mode. Devices that support DMA masks less that 64-bit but greater
+than 32-bits are placed in limited address mode. In this mode, the
+starting DMA address returned by the DDW is 4GB.
 
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+When the device driver calls dma_supported, with mask less then 64-bit, the
+PowerPC IOMMU driver places PHB in the Limited Addressing Mode before
+creating DDW.
 
-Overall, looks good to me, but I have one idea below.
+Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/iommu.c | 110 +++++++++++++++++++++----
+ 1 file changed, 94 insertions(+), 16 deletions(-)
 
->  drivers/pci/pci.c         | 27 ---------------------------
->  drivers/pci/pci.h         |  2 +-
->  drivers/pci/pcie/Makefile |  2 +-
->  drivers/pci/pcie/tlp.c    | 39 +++++++++++++++++++++++++++++++++++++++
->  4 files changed, 41 insertions(+), 29 deletions(-)
->  create mode 100644 drivers/pci/pcie/tlp.c
-> 
-> diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-> index e0fdc9d10f91..02cd4c7eb80b 100644
-> --- a/drivers/pci/pci.c
-> +++ b/drivers/pci/pci.c
-> @@ -1099,33 +1099,6 @@ static void pci_enable_acs(struct pci_dev *dev)
->  	pci_write_config_word(dev, pos + PCI_ACS_CTRL, caps.ctrl);
->  }
->  
-> -/**
-> - * pcie_read_tlp_log - read TLP Header Log
-> - * @dev: PCIe device
-> - * @where: PCI Config offset of TLP Header Log
-> - * @tlp_log: TLP Log structure to fill
-> - *
-> - * Fill @tlp_log from TLP Header Log registers, e.g., AER or DPC.
-> - *
-> - * Return: 0 on success and filled TLP Log structure, <0 on error.
-> - */
-> -int pcie_read_tlp_log(struct pci_dev *dev, int where,
-> -		      struct pcie_tlp_log *tlp_log)
-> -{
-> -	int i, ret;
-> -
-> -	memset(tlp_log, 0, sizeof(*tlp_log));
-> -
-> -	for (i = 0; i < 4; i++) {
-> -		ret = pci_read_config_dword(dev, where + i * 4,
-> -					    &tlp_log->dw[i]);
-> -		if (ret)
-> -			return pcibios_err_to_errno(ret);
-> -	}
-> -
-> -	return 0;
-> -}
-> -
->  /**
->   * pci_restore_bars - restore a device's BAR values (e.g. after wake-up)
->   * @dev: PCI device to have its BARs restored
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 8a60fc9e7786..55fcf3bac4f7 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -549,9 +549,9 @@ struct aer_err_info {
->  
->  int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
->  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
-> -#endif	/* CONFIG_PCIEAER */
->  
->  int pcie_read_tlp_log(struct pci_dev *dev, int where, struct pcie_tlp_log *log);
-> +#endif	/* CONFIG_PCIEAER */
->  
->  #ifdef CONFIG_PCIEPORTBUS
->  /* Cached RCEC Endpoint Association */
-> diff --git a/drivers/pci/pcie/Makefile b/drivers/pci/pcie/Makefile
-> index 53ccab62314d..173829aa02e6 100644
-> --- a/drivers/pci/pcie/Makefile
-> +++ b/drivers/pci/pcie/Makefile
-> @@ -7,7 +7,7 @@ pcieportdrv-y			:= portdrv.o rcec.o
->  obj-$(CONFIG_PCIEPORTBUS)	+= pcieportdrv.o bwctrl.o
->  
->  obj-y				+= aspm.o
-> -obj-$(CONFIG_PCIEAER)		+= aer.o err.o
-> +obj-$(CONFIG_PCIEAER)		+= aer.o err.o tlp.o
->  obj-$(CONFIG_PCIEAER_INJECT)	+= aer_inject.o
->  obj-$(CONFIG_PCIE_PME)		+= pme.o
->  obj-$(CONFIG_PCIE_DPC)		+= dpc.o
-> diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-> new file mode 100644
-> index 000000000000..3f053cc62290
-> --- /dev/null
-> +++ b/drivers/pci/pcie/tlp.c
-> @@ -0,0 +1,39 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * PCIe TLP Log handling
-> + *
-> + * Copyright (C) 2024 Intel Corporation
-> + */
-> +
-> +#include <linux/aer.h>
-> +#include <linux/pci.h>
-> +#include <linux/string.h>
-> +
-> +#include "../pci.h"
-> +
-> +/**
-> + * pcie_read_tlp_log - read TLP Header Log
-> + * @dev: PCIe device
-> + * @where: PCI Config offset of TLP Header Log
-> + * @tlp_log: TLP Log structure to fill
-> + *
-> + * Fill @tlp_log from TLP Header Log registers, e.g., AER or DPC.
-> + *
-> + * Return: 0 on success and filled TLP Log structure, <0 on error.
-> + */
-> +int pcie_read_tlp_log(struct pci_dev *dev, int where,
-> +		      struct pcie_tlp_log *tlp_log)
-> +{
-> +	int i, ret;
-> +
-> +	memset(tlp_log, 0, sizeof(*tlp_log));
-> +
+diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+index 534cd159e9ab..551e9ca4dcc2 100644
+--- a/arch/powerpc/platforms/pseries/iommu.c
++++ b/arch/powerpc/platforms/pseries/iommu.c
+@@ -52,7 +52,8 @@ enum {
+ enum {
+ 	DDW_EXT_SIZE = 0,
+ 	DDW_EXT_RESET_DMA_WIN = 1,
+-	DDW_EXT_QUERY_OUT_SIZE = 2
++	DDW_EXT_QUERY_OUT_SIZE = 2,
++	DDW_EXT_LIMITED_ADDR_MODE = 3
+ };
+ 
+ static struct iommu_table *iommu_pseries_alloc_table(int node)
+@@ -1331,6 +1332,54 @@ static void reset_dma_window(struct pci_dev *dev, struct device_node *par_dn)
+ 			 ret);
+ }
+ 
++/*
++ * Platforms support placing PHB in limited address mode starting with LoPAR
++ * level 2.13 implement. In this mode, the DMA address returned by DDW is over
++ * 4GB but, less than 64-bits. This benefits IO adapters that don't support
++ * 64-bits for DMA addresses.
++ */
++static int limited_dma_window(struct pci_dev *dev, struct device_node *par_dn)
++{
++	int ret;
++	u32 cfg_addr, reset_dma_win, las_supported;
++	u64 buid;
++	struct device_node *dn;
++	struct pci_dn *pdn;
++
++	ret = ddw_read_ext(par_dn, DDW_EXT_RESET_DMA_WIN, &reset_dma_win);
++	if (ret)
++		goto out;
++
++	ret = ddw_read_ext(par_dn, DDW_EXT_LIMITED_ADDR_MODE, &las_supported);
++
++	/* Limited Address Space extension available on the platform but DDW in
++	 * limited addressing mode not supported
++	 */
++	if (!ret && !las_supported)
++		ret = -EPROTO;
++
++	if (ret) {
++		dev_info(&dev->dev, "Limited Address Space for DDW not Supported, err: %d", ret);
++		goto out;
++	}
++
++	dn = pci_device_to_OF_node(dev);
++	pdn = PCI_DN(dn);
++	buid = pdn->phb->buid;
++	cfg_addr = (pdn->busno << 16) | (pdn->devfn << 8);
++
++	ret = rtas_call(reset_dma_win, 4, 1, NULL, cfg_addr, BUID_HI(buid),
++			BUID_LO(buid), 1);
++	if (ret)
++		dev_info(&dev->dev,
++			 "ibm,reset-pe-dma-windows(%x) for Limited Addr Support: %x %x %x returned %d ",
++			 reset_dma_win, cfg_addr, BUID_HI(buid), BUID_LO(buid),
++			 ret);
++
++out:
++	return ret;
++}
++
+ /* Return largest page shift based on "IO Page Sizes" output of ibm,query-pe-dma-window. */
+ static int iommu_get_page_shift(u32 query_page_size)
+ {
+@@ -1398,7 +1447,7 @@ static struct property *ddw_property_create(const char *propname, u32 liobn, u64
+  *
+  * returns true if can map all pages (direct mapping), false otherwise..
+  */
+-static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
++static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn, u64 dma_mask)
+ {
+ 	int len = 0, ret;
+ 	int max_ram_len = order_base_2(ddw_memory_hotplug_max());
+@@ -1417,6 +1466,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	bool pmem_present;
+ 	struct pci_dn *pci = PCI_DN(pdn);
+ 	struct property *default_win = NULL;
++	bool limited_addr_req = false, limited_addr_enabled = false;
++	int dev_max_ddw;
++	int ddw_sz;
+ 
+ 	dn = of_find_node_by_type(NULL, "ibm,pmemory");
+ 	pmem_present = dn != NULL;
+@@ -1443,7 +1495,6 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	 * the ibm,ddw-applicable property holds the tokens for:
+ 	 * ibm,query-pe-dma-window
+ 	 * ibm,create-pe-dma-window
+-	 * ibm,remove-pe-dma-window
+ 	 * for the given node in that order.
+ 	 * the property is actually in the parent, not the PE
+ 	 */
+@@ -1463,6 +1514,20 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	if (ret != 0)
+ 		goto out_failed;
+ 
++	/* DMA Limited Addressing required? This is when the driver has
++	 * requested to create DDW but supports mask which is less than 64-bits
++	 */
++	limited_addr_req = (dma_mask != DMA_BIT_MASK(64));
++
++	/* place the PHB in Limited Addressing mode */
++	if (limited_addr_req) {
++		if (limited_dma_window(dev, pdn))
++			goto out_failed;
++
++		/* PHB is in Limited address mode */
++		limited_addr_enabled = true;
++	}
++
+ 	/*
+ 	 * If there is no window available, remove the default DMA window,
+ 	 * if it's present. This will make all the resources available to the
+@@ -1509,6 +1574,15 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 		goto out_failed;
+ 	}
+ 
++	/* Maximum DMA window size that the device can address (in log2) */
++	dev_max_ddw = fls64(dma_mask);
++
++	/* If the device DMA mask is less than 64-bits, make sure the DMA window
++	 * size is not bigger than what the device can access
++	 */
++	ddw_sz = min(order_base_2(query.largest_available_block << page_shift),
++			dev_max_ddw);
++
+ 	/*
+ 	 * The "ibm,pmemory" can appear anywhere in the address space.
+ 	 * Assuming it is still backed by page structs, try MAX_PHYSMEM_BITS
+@@ -1517,23 +1591,21 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	 */
+ 	len = max_ram_len;
+ 	if (pmem_present) {
+-		if (query.largest_available_block >=
+-		    (1ULL << (MAX_PHYSMEM_BITS - page_shift)))
++		if (ddw_sz >= MAX_PHYSMEM_BITS)
+ 			len = MAX_PHYSMEM_BITS;
+ 		else
+ 			dev_info(&dev->dev, "Skipping ibm,pmemory");
+ 	}
+ 
+ 	/* check if the available block * number of ptes will map everything */
+-	if (query.largest_available_block < (1ULL << (len - page_shift))) {
++	if (ddw_sz < len) {
+ 		dev_dbg(&dev->dev,
+ 			"can't map partition max 0x%llx with %llu %llu-sized pages\n",
+ 			1ULL << len,
+ 			query.largest_available_block,
+ 			1ULL << page_shift);
+ 
+-		len = order_base_2(query.largest_available_block << page_shift);
+-
++		len = ddw_sz;
+ 		dynamic_mapping = true;
+ 	} else {
+ 		direct_mapping = !default_win_removed ||
+@@ -1547,8 +1619,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 		 */
+ 		if (default_win_removed && pmem_present && !direct_mapping) {
+ 			/* DDW is big enough to be split */
+-			if ((query.largest_available_block << page_shift) >=
+-			     MIN_DDW_VPMEM_DMA_WINDOW + (1ULL << max_ram_len)) {
++			if ((1ULL << ddw_sz) >=
++			    MIN_DDW_VPMEM_DMA_WINDOW + (1ULL << max_ram_len)) {
++
+ 				direct_mapping = true;
+ 
+ 				/* offset of the Dynamic part of DDW */
+@@ -1559,8 +1632,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 			dynamic_mapping = true;
+ 
+ 			/* create max size DDW possible */
+-			len = order_base_2(query.largest_available_block
+-							<< page_shift);
++			len = ddw_sz;
+ 		}
+ 	}
+ 
+@@ -1688,7 +1760,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 	__remove_dma_window(pdn, ddw_avail, create.liobn);
+ 
+ out_failed:
+-	if (default_win_removed)
++	if (default_win_removed || limited_addr_enabled)
+ 		reset_dma_window(dev, pdn);
+ 
+ 	fpdn = kzalloc(sizeof(*fpdn), GFP_KERNEL);
+@@ -1707,6 +1779,9 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+ 		dev->dev.bus_dma_limit = dev->dev.archdata.dma_offset +
+ 						(1ULL << max_ram_len);
+ 
++	dev_info(&dev->dev, "lsa_required: %x, lsa_enabled: %x, direct mapping: %x\n",
++			limited_addr_req, limited_addr_enabled, direct_mapping);
++
+ 	return direct_mapping;
+ }
+ 
+@@ -1832,8 +1907,11 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
+ {
+ 	struct device_node *dn = pci_device_to_OF_node(pdev), *pdn;
+ 
+-	/* only attempt to use a new window if 64-bit DMA is requested */
+-	if (dma_mask < DMA_BIT_MASK(64))
++	/* For DDW, DMA mask should be more than 32-bits. For mask more then
++	 * 32-bits but less then 64-bits, DMA addressing is supported in
++	 * Limited Addressing mode.
++	 */
++	if (dma_mask <= DMA_BIT_MASK(32))
+ 		return false;
+ 
+ 	dev_dbg(&pdev->dev, "node is %pOF\n", dn);
+@@ -1846,7 +1924,7 @@ static bool iommu_bypass_supported_pSeriesLP(struct pci_dev *pdev, u64 dma_mask)
+ 	 */
+ 	pdn = pci_dma_find(dn, NULL);
+ 	if (pdn && PCI_DN(pdn))
+-		return enable_ddw(pdev, pdn);
++		return enable_ddw(pdev, pdn, dma_mask);
+ 
+ 	return false;
+ }
 
-Can we include a define for the number of registers? 
+base-commit: e32cde8d2bd7d251a8f9b434143977ddf13dcec6
+-- 
+2.39.3 (Apple Git-146)
 
-> +	for (i = 0; i < 4; i++) {
-
-This '4' is "MIN_TLP_REGS" or something similar.
-
-> +		ret = pci_read_config_dword(dev, where + i * 4,
-
-This '4' is the register offset factor.
-
-Another thought is to make the offset a variable and adjust it in the
-for-loop conditions.
-
-	int i, ret, offset = where;
-
-	for (i = 0; i < MIN_TLP_REGS; i++, offset += 4) {
-		ret = pci_read_config_dword(dev, offset, &tlp_log->dw[i]);
-
-I think this will help as variable-size TLP logs are added in later
-patches.
-
-> +					    &tlp_log->dw[i]);
-> +		if (ret)
-> +			return pcibios_err_to_errno(ret);
-> +	}
-> +
-> +	return 0;
-> +}
-
-Thanks,
-Yazen
 
