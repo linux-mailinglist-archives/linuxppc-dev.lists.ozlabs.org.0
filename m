@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-4868-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4869-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A330A065A2
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 20:56:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89F5BA065D5
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 21:14:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSzF26lbJz30Tk;
-	Thu,  9 Jan 2025 06:56:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSzfn0fGMz30Tt;
+	Thu,  9 Jan 2025 07:14:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736366166;
-	cv=none; b=MnkNhcyEJXUmpmQsXJaWot2LZauTxLa6QmleT35cpsdOrS//4vw0BN5vd76HOGgAP6QmBLPKlvNcxgdx+qaGpn0+i0A0UPyi0kgLU6HEdnHzE3QbaP0y6tkfsMT4/s/dkkpMoeTv7aXlimIlpilcmH1JEslnw/d8M0EDNoj1/+e7yAIVY28TyroIrLjwLkt8vXg1P/1Y2yQibMz5vVttujpizll8CBQ5N2JASPwiBeFVNvbnAidHSQPOi0ao0usSeOZJTLGm93A78y0C9RKFjXgWLPtLSOiD66mlM+o7pk8ZYpizp1ptWLYg17eur4bJcmFIZUg70sh9zyHptJlQfw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736367297;
+	cv=none; b=heskrxy8LYywykJhMMg69kHbauDmrkNlAXv+wrGw5Ae1WXLWtx5hXTJmjVQ+w9yem/KNnKKaTPx116BurKVU1gjVdAYOOPgJanwBVwjx6u2rROPh41vCKNYDKAJoDBqKIssU1r8wufD8HIZiZNopMCGpMKkbu8j4oFyBUYcx23CZtd5RtPpT8JrxcyL4qX38Bl9+KGUZyJD2n0pE7QV+EdCDLXzuvEw76Irk5uzAqeS/Ou/4gvR/j9kzhZCKhuUl9W1Q+hy+KwucOBuu4JZApakw/1dbX58r0/Rf7VGKeVD7L+8fWlwannkNZRUlLiGkAhWNyvyv+22obstI1MX29Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736366166; c=relaxed/relaxed;
-	bh=DLoj7F2XuhLzbYcZG1StIPmnR6qXvg+yrwpMBesALIs=;
+	t=1736367297; c=relaxed/relaxed;
+	bh=irdZ0a192jwtxnm7/O0zqaok+/VoiMoD/GEREN5Js1A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fu+8tCjg/oTR0DH2VAEoJy1pf3qmxdX2fnbZGkpx9V35Mf8tREYxKdsf1l+7Yrz+1rzrSCw5tYO/Y9sZ48SpUI1B5m5MepVWp+YgsJAnyy6vIgTSjY1KmTu4KtuleXS5c83pqI0SMy0nuei4JJTeZTI1QX/gaGtiy0hC/H1jJMpc3cS6VtUeUUjlVKziVBsye6+qhNzdBHLbd1ggv4eEmC12alIP/taAS3GJKIrX2E3JkffwhajDwvFanlTeiEvc6MDhMbpflDou0K3kpeYldKSrYpY34zHHnI8CBIz1neVTnlnR1SzrPp0+iuzyAhQaDaIDfKwR+r8Jeheca9qc2g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OH+Lj21X; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=QS7NC+86ZJ+u7xaBB9oXSebTS4vjN38+D5SHZdMb7Ge3IEzo9OVczQcz0hVzCdrzD5yhaJyCXQKZGVtI05MRG/x7DMMO/+9EYAJPuPCaja4BTcK7po/LGMHVrBpIvySB/tLdM+W+INPBsIUl8k7VG3Nankjcrcc8XM1TXgCfJ/0hssDnBig7K3DbDgibssuO98zlEWsYNA90e78uRXByhMOpZUSaCs4De/N8Hg4+xMpff/RKqHqnzgE25ZqwzE9JBgGzGcajaf7mXNIBVinzZ3ow7ymn7+LMZX5ZmD/omSjrxeMohpx1lrGNiglTUXPeFZZf3yEpgbtLkO9EePh1mw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=el/bqvOE; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OH+Lj21X;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=el/bqvOE;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSzDx5kslz30Tc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 06:56:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSzfm1d2zz30Tc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 07:14:56 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D8D30A418E8;
-	Wed,  8 Jan 2025 19:54:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9E3C4CED3;
-	Wed,  8 Jan 2025 19:55:55 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 218CBA41976;
+	Wed,  8 Jan 2025 20:13:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAEA1C4CED3;
+	Wed,  8 Jan 2025 20:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736366156;
-	bh=d+BjqX6a64TsT7Fi6gIQ6p4XPXOWjDadBxtZpjjVovA=;
+	s=k20201202; t=1736367293;
+	bh=+k8VSgg2WNZLayqdbQDDh8INehLekajaO7o4aXfvkpA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OH+Lj21XHbgPnC5NYzAOBn+0XFmBdOYGW+2uq7Q05QfZsIGko1fVrqdXRXROpO+eW
-	 IBIPB60MrsrRF9UN+stOzAQwvS0WXGcN1gOhl0Y0j/LpOwaas02s0NPB4LrsbCwii6
-	 ty4yaa7SAg/PvDevQ30LStkmfSZYhbkQyFBHOY3dlmokGXyIh5B73LwbVBVnslFQZz
-	 8NZkKDibtwZ9zzkrVTY6OQUsngSI3BbbLiLZntA5Kq+ffvBZEzhv75Nh32KGi+EohB
-	 ZX69upswPUNBiHZsw6WIIFMQSbWIPB+AvgNzUUC6rJqDvm7mKv4w0pmyH6mkPV21QG
-	 HWT3KPgejjQHg==
-Date: Wed, 8 Jan 2025 16:55:53 -0300
+	b=el/bqvOEmDTzHp5fiNlPZyX8I/jbI79LrxZhOyFlRE2mlN2YQJPBX8XoFMH8+/zhz
+	 QOxms9We+e8b6bF0okRur4OeFWM60a1IZraBU5+v6Hrdt/fnSSPnWLucPXLeE///HU
+	 wH3zvmmHhIeMSXlTIEjLz4r5AWMFKS1You4/PdNpxnBpf946W3JUIp19drATxrpyiP
+	 2SSGRy32UJYi4zcfGz6QrGh54TsXYIknlpZYooz7Sk9GWn9Y2SnavOKuSpusWVphuE
+	 28/1a+ITi0dKmQmKW9fuCRnGnJ56k1jjGEdgF8AQmHWooUdrah2a1XzlAiL7Eh6STU
+	 zNseIIk+8fhvw==
+Date: Wed, 8 Jan 2025 17:14:50 -0300
 From: Arnaldo Carvalho de Melo <acme@kernel.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
@@ -53,14 +53,11 @@ Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
 	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
 	Adrian Hunter <adrian.hunter@intel.com>,
 	"Liang, Kan" <kan.liang@linux.intel.com>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-perf-users@vger.kernel.org,
-	Arnaldo Carvalho de Melo <acme@redhat.com>
-Subject: Re: [PATCH v2] perf: Fix display of kernel symbols
-Message-ID: <Z37YSfVMabaJ3A8z@x1>
-References: <2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu>
- <Z36Ra23US_zC3n2v@x1>
- <590b2f02-f7f0-48b2-b45e-8a31bbadef2a@csgroup.eu>
+	Song Liu <songliubraving@fb.com>, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-perf-users@vger.kernel.org
+Subject: Re: [PATCH] perf machine: Don't ignore _etext when not a text symbol
+Message-ID: <Z37cuobj6NVRUKoo@x1>
+References: <b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,67 +70,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <590b2f02-f7f0-48b2-b45e-8a31bbadef2a@csgroup.eu>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <b3ee1994d95257cb7f2de037c5030ba7d1bed404.1736327613.git.christophe.leroy@csgroup.eu>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Jan 08, 2025 at 06:06:03PM +0100, Christophe Leroy wrote:
+On Wed, Jan 08, 2025 at 10:15:24AM +0100, Christophe Leroy wrote:
+> Depending on how vmlinux.lds is written, _etext might be the very
+> first data symbol instead of the very last text symbol.
 > 
-> 
-> Le 08/01/2025 à 15:53, Arnaldo Carvalho de Melo a écrit :
-> > On Wed, Jan 08, 2025 at 10:54:20AM +0100, Christophe Leroy wrote:
-> > > Since commit 659ad3492b91 ("perf maps: Switch from rbtree to lazily
-> > > sorted array for addresses"), perf doesn't display anymore kernel
-> > > symbols on powerpc, allthough it still detects them as kernel addresses.
-> > > 
-> > > 	# Overhead  Command     Shared Object  Symbol
-> > > 	# ........  ..........  ............. ......................................
-> > > 	#
-> > > 	    80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
-> > > 	     3.91%  Coeur main  gau            [.] engine_loop.constprop.0.isra.0
-> > > 	     1.72%  Coeur main  [unknown]      [k] 0xc005f11c
-> > > 	     1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
-> > > 	     0.44%  Coeur main  libc.so.6      [.] epoll_wait
-> > > 	     0.38%  Coeur main  [unknown]      [k] 0xc0011718
-> > > 	     0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
-> > > 
-> > > This is because function maps__find_next_entry() now returns current
-> > > entry instead of next entry, leading to kernel map end address
-> > > getting mis-configured with its own start address instead of the
-> > > start address of the following map.
-> > > 
-> > > Fix it by really taking the next entry, also make sure that entry
-> > > follows current one by making sure entries are sorted.
-> > > 
-> > > Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > > Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-> > > ---
-> > > v2: Make sure the entries are sorted, if not sort them.
-> > 
-> > Since you have changed what I reviewed I'll have to re-review :-) Will
-> > try to do it after some calls.
-> 
-> Ah yes sorry, should have removed your Reviewed-by.
-> 
-> Based on Ian's feedback "Using the next entry in this way won't work if the
-> entries aren't sorted", I added the following block in front of the initial
-> change:
-> 
-> +	while (!maps__maps_by_address_sorted(maps)) {
-> +		up_read(maps__lock(maps));
-> +		maps__sort_by_address(maps);
-> +		down_read(maps__lock(maps));
-> +	}
+> Don't require it to be a text symbol, accept any symbol type.
 
-Its ok, I'll keep it now that I looked at it.
+I'm adding a Link:
 
-Thanks!
+Link: https://lore.kernel.org/all/752a31b0-4370-4f52-b7cc-45f0078c1d6c@csgroup.eu
+
+To give more context as where this has been observed, and also add a
+snippet of your explanation there, this:
+
+----
+# grep -e _stext -e _etext -e _edata /proc/kallsyms
+c0000000 T _stext
+c08b8000 D _etext
+
+So there is no _edata and _etext is not text
+
+$ ppc-linux-objdump -x vmlinux | grep -e _stext -e _etext -e _edata
+c0000000 g       .head.text	00000000 _stext
+c08b8000 g       .rodata	00000000 _etext
+c1378000 g       .sbss	00000000 _edata
+----
+
+Thanks,
 
 - Arnaldo
+
+> Fixes: ed9adb2035b5 ("perf machine: Read also the end of the kernel")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  tools/perf/util/machine.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
+> index 27d5345d2b30..9be2f4479f52 100644
+> --- a/tools/perf/util/machine.c
+> +++ b/tools/perf/util/machine.c
+> @@ -1003,7 +1003,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
+>  
+>  	err = kallsyms__get_symbol_start(filename, "_edata", &addr);
+>  	if (err)
+> -		err = kallsyms__get_function_start(filename, "_etext", &addr);
+> +		err = kallsyms__get_symbol_start(filename, "_etext", &addr);
+>  	if (!err)
+>  		*end = addr;
+>  
+> -- 
+> 2.47.0
 
