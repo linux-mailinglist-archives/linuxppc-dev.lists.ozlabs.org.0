@@ -1,68 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-4850-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4851-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3FDA05F05
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 15:41:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EAA30A05F5E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 15:53:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSrGJ5QvFz30TP;
-	Thu,  9 Jan 2025 01:41:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSrX46RtMz30Tm;
+	Thu,  9 Jan 2025 01:53:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736347304;
-	cv=none; b=n4QcgCjgOtW7mdiURLwbKSB+alzCutbfigYoN9hN2j5LNxNyNJZex+/jGLWwZwHUqDlIpnLXg/coyGxzl3qXcJCgKU0IX/OcyqVBcUkSykvoBBzNGUs1u3XB1LmsI0Vl4S6QWGWK7iui6VkZ3C5nBo1ndixiynYhAtiUcFi+hCkVL4lL/3iNSYiYORI7xiXIcjlDTFcb1lvr3ZdvKpGfEUO/8CIy7WB5RYCaaJOx08oqFJhGEt4Tnndb5XUR5o0IXDTnMzPCKR5ygZZvx3Z03u856XWk3sAs0VpR/dqwRMh9X4+zoFuWZ1QZgJniZZJ2tZTz3DVMbJow5ZZP/eJNtQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736348020;
+	cv=none; b=ChJCBZQ5OAZMGU196VNvOIJTjbxYW0VYxCfFDrXm9KmDn4ZtZZQf4Oa9bMb0I1PNWK+ZN+6SbDWdh5g0oY+0ikGwAVYBl4Jjos31ziYKCNIBfB3h2XQ2S7e4gtRIx8BM4r+e1oH6TSswNFZoci4ggBH/wp6cVpMeAIqZZ9dnT6SLI/qEp4dCObPyqof+dzdFsFfScwWTcfS8XfVq3oVnHu9Gwr/X4z67TQDhutUM28/A2QcZFAiQtHP1kASgGBpwqs71UKM0o9O8WtmVEd8ALV4BhXcgxLUR65rtVhgpRgYDDemxu6Arcmu6vhMV8PzeGBKGT3Vgy+Y9i0lDY8BquA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736347304; c=relaxed/relaxed;
-	bh=SQLM+LoHGnaCGsXSe5lLcsoCAmL6bhSjsazuawUJ1sE=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=I1bHDTf8UVAbeBWAUbApz2h1UdRsfIuCMhE1cJP4eP74bRdXTnB10Xu2DmJ7oSmHy7lzdLjCkq9+DNPGJNHvuo13d29YVr8JKDdU/hbvKoAzgi/grrzce5Llax0Lvey5Z5LVLp2LnuhKhEr4id+oT7pMd1neOterKOMSKDfuuxWes5UUzNRZeDb9OTfw3I07uCfah8Yuj3zBGl2jPSzQy+DgSXtgPuzpf8qRGR/1N+nm+cb0jh1ic8ixF8qvuA57baV3pX8i7I/omc1TIsWEsqQ9b0W7nMxQ7j/VkZf3JBqXF1T3Cfuc+OTYSXegrcta3r7QJmVLpxVvUdogWY5mLQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ksl6hlCw; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3n45-zwykdpgxjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1736348020; c=relaxed/relaxed;
+	bh=CmZeVg4paUqZXHBA1Hyf9TodgrR7l1lwRSqll3f7GMQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bstQT7QXqNheRi9SMAYrqJhePTHHHCq4HzxgTzUBEzMJBLdJsrsQ4xfdtCGxUvqZhaAFzwum2TAZ5Ye2ABq0cs+gdXfskO1lT8wHZhBTIAOaTqS0sbJP6EBZS1u3/YzEs726QvY9mrpGSJL7l9YJrMJesiw7P5+u+VCtepTkNAvTIKiReil4u7+pTE4iGxouS5q8iwxClkecezbSzvdDDqkkYHlHgnHTxETp3+f+VgbFOnqpBVxdiHyzhY0cT64HF2bTqMVAK8deZ/Usk9cALkRZ0xqW3pnzAnC2gjiFxbf1ufAfxUJtwRvor5l40AMkeKI26feB//uWXkTeYIhDzg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d6iG+uf4; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ksl6hlCw;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=d6iG+uf4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3n45-zwykdpgxjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=acme@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSrGH26sMz30TH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 01:41:41 +1100 (AEDT)
-Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-2ef9204f898so24257696a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 06:41:41 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736347296; x=1736952096; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SQLM+LoHGnaCGsXSe5lLcsoCAmL6bhSjsazuawUJ1sE=;
-        b=ksl6hlCwOAqrysAOTI0o5LrDgOSmPyhaWwBDExfqfH+zcOEgCLm6g8Vfw7bLUrwo2F
-         Us/0UhFCIOowiCby2sZhuvGdFPUfGi9KuafE9uXwLKB8++DvKZHrSDWMcMJxfAOv2QBs
-         m9af3MY7AbH4M10Wy/jg8VNtvCSia4wqeLmRSRAkbdmWZFBlSToRDIsTdOHO2CzwUDR0
-         Ao+4pWnCERXoo5RVz58m+Dp++1WxmB1PHMYGVRuJhKh/NtpLU/xiJelDLTjZ9sO85+w7
-         O7nBiPgaiAp5WGBtuWRlginPlmyfTbrPkdmipTn4124Pj+tTX+zkBOXfGm6lTtgfiDAo
-         Ssbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736347296; x=1736952096;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=SQLM+LoHGnaCGsXSe5lLcsoCAmL6bhSjsazuawUJ1sE=;
-        b=EpYRrNCzBqn2qscxwy2So3Cu+kBhdWvlkIj312wYGO/ArVvx+PZfIUUqrbOG2M/iok
-         VPPAgDaMBC5kimfsIZkkqDwQZS3WWGbOeiYibLLd/RMOA4EbT8k2fK7o7epwQHaQQaCl
-         q95PUseVWEkmBCQOCPqYnW4cePU3Z6tw7vzYJ8M+3VJV+7Q3tJDZRLjNzLeQwHdyu3JS
-         F6fSxxCfZViAN8QsqTFXLEHR0pCVg7nnXegJyzD11dhTu8nfeAJWM5hF6Yhzjwj9ilrj
-         +qWstzYK3ibrPmIpzANCG4JkNxOojVbFW8JOUy3RkYQrPgWsse0pcS08QJmGhdDXrp0b
-         ZntA==
-X-Forwarded-Encrypted: i=1; AJvYcCVoI/haa9Kdb8RW2+zu8JeNqgauRMWq4dPrmD9k0RYXWvUoJx8nuovO3Zf/sI52R+bX/e1IJfctikftC9o=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwCY5hTMoadUEH4s3sN9oUP5jnp8J7eDjRGTzf5p0lystcPe940
-	gN7gnYiDEGMbi3XXNO/W+sWZT/dnfdI/g5yhkCSuFWATGgjZmquWtYXeuQVMgqMX33WoQP1cPgA
-	zuw==
-X-Google-Smtp-Source: AGHT+IGmkPaMq6fyPiGwNEznCVmXKv73lSbOSvpsyNn1ze2H+LKp+qpzjKZzXeZPKeZkIqzTmMcSaKGlbq8=
-X-Received: from pfbbt23.prod.google.com ([2002:a05:6a00:4397:b0:727:3c81:f42a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e01:b0:725:e37d:cd35
- with SMTP id d2e1a72fcca58-72d21ff4af7mr4989790b3a.18.1736347295712; Wed, 08
- Jan 2025 06:41:35 -0800 (PST)
-Date: Wed, 8 Jan 2025 06:41:34 -0800
-In-Reply-To: <Z3wnsQQ67GBf1Vsb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSrX349nwz30Tk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 01:53:39 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id D31F05C490A;
+	Wed,  8 Jan 2025 14:52:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 131F0C4CEDD;
+	Wed,  8 Jan 2025 14:53:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736348014;
+	bh=Wc5NJJgSLmBbDtDATC3/rAfSv7csY6/S8IjZjpkVFY4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=d6iG+uf4HD0hHIn8yoaeCaAg58A2M84CQ202sAQJx4yyinOEEgMMIh420h+t5BZCp
+	 ZpDSQeRM9e5RYXIVjWoZ4CTh8IqoY2EqIjsKPD4BHwwYuxiI0nU9RsmlB3qCCF2O8I
+	 M/xPGQmJtJ+KbDcSZApuNjDHdu0nKzMSCcREJP4qQfY8f7wSkzFqtlp4p78+GtKfx/
+	 RyZxm+wE7c7S2lqNwivcFQuRbrNwXL1MKqXG7E7Ni+NhB61Ojw/ruf+0kVwjeEbf7k
+	 BpZrZviQHaVEeMHYgxsRQsA3zBWbjGnQCIHC7+nMv+1qvfkIrDVr9c9r6FzEfhWquC
+	 CpgGCQJO5KFXQ==
+Date: Wed, 8 Jan 2025 11:53:31 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	"Liang, Kan" <kan.liang@linux.intel.com>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-perf-users@vger.kernel.org,
+	Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: Re: [PATCH v2] perf: Fix display of kernel symbols
+Message-ID: <Z36Ra23US_zC3n2v@x1>
+References: <2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,34 +70,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250101064928.389504-1-pbonzini@redhat.com> <Z3wnsQQ67GBf1Vsb@google.com>
-Message-ID: <Z36OnrAGOL9c7cku@google.com>
-Subject: Re: [PATCH] KVM: allow NULL writable argument to __kvm_faultin_pfn
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Christian Zigotzky <chzigotzky@xenosoft.de>, linuxppc-dev@lists.ozlabs.org, 
-	regressions@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu>
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 06, 2025, Sean Christopherson wrote:
-> On Wed, Jan 01, 2025, Paolo Bonzini wrote:
-> > kvm_follow_pfn() is able to work with NULL in the .map_writable field
-> > of the homonymous struct.  But __kvm_faultin_pfn() rejects the combo
-> > despite KVM for e500 trying to use it.  Indeed .map_writable is not
-> > particularly useful if the flags include FOLL_WRITE and readonly
-> > guest memory is not supported, so add support to __kvm_faultin_pfn()
-> > for this case.
+On Wed, Jan 08, 2025 at 10:54:20AM +0100, Christophe Leroy wrote:
+> Since commit 659ad3492b91 ("perf maps: Switch from rbtree to lazily
+> sorted array for addresses"), perf doesn't display anymore kernel
+> symbols on powerpc, allthough it still detects them as kernel addresses.
 > 
-> I would prefer to keep the sanity check to minimize the risk of a page fault
-> handler not supporting opportunistic write mappings.  e500 is definitely the
-> odd one out here.
+> 	# Overhead  Command     Shared Object  Symbol
+> 	# ........  ..........  ............. ......................................
+> 	#
+> 	    80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
+> 	     3.91%  Coeur main  gau            [.] engine_loop.constprop.0.isra.0
+> 	     1.72%  Coeur main  [unknown]      [k] 0xc005f11c
+> 	     1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
+> 	     0.44%  Coeur main  libc.so.6      [.] epoll_wait
+> 	     0.38%  Coeur main  [unknown]      [k] 0xc0011718
+> 	     0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
+> 
+> This is because function maps__find_next_entry() now returns current
+> entry instead of next entry, leading to kernel map end address
+> getting mis-configured with its own start address instead of the
+> start address of the following map.
+> 
+> Fix it by really taking the next entry, also make sure that entry
+> follows current one by making sure entries are sorted.
+> 
+> Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted array for addresses")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+> ---
+> v2: Make sure the entries are sorted, if not sort them.
 
-Per a quick chat at PUCK, Paolo is going to try and fix the e500 code to actually
-use the @writable param as it's intended.
+Since you have changed what I reviewed I'll have to re-review :-) Will
+try to do it after some calls.
+
+- Arnaldo
+
+> ---
+>  tools/perf/util/maps.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
+> index 432399cbe5dd..09c9cc326c08 100644
+> --- a/tools/perf/util/maps.c
+> +++ b/tools/perf/util/maps.c
+> @@ -1136,8 +1136,13 @@ struct map *maps__find_next_entry(struct maps *maps, struct map *map)
+>  	struct map *result = NULL;
+>  
+>  	down_read(maps__lock(maps));
+> +	while (!maps__maps_by_address_sorted(maps)) {
+> +		up_read(maps__lock(maps));
+> +		maps__sort_by_address(maps);
+> +		down_read(maps__lock(maps));
+> +	}
+>  	i = maps__by_address_index(maps, map);
+> -	if (i < maps__nr_maps(maps))
+> +	if (++i < maps__nr_maps(maps))
+>  		result = map__get(maps__maps_by_address(maps)[i]);
+>  
+>  	up_read(maps__lock(maps));
+> -- 
+> 2.47.0
 
