@@ -1,56 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-4823-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792F6A0561E
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 10:05:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41550A0561C
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 10:05:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YShpM6BX6z30WJ;
-	Wed,  8 Jan 2025 20:05:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YShpL4zBJz30PF;
+	Wed,  8 Jan 2025 20:05:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736327131;
-	cv=none; b=Eq8ILm/F4tv7Sur672vzds6kiCZCvaAjAHVEYXVB/y9kzzRbiNHjj79qaady6svl+/1PX+P+Q2RNAVakcvKKyRZs2BLAWoXWlVMd+baJ9ZVQPHMGk/u60bUgBTk0d334iB/4/9IT237Am8w6pzjyciv5idyTb3pPKd0AVOKZHUXZ7B9n1yUpPvfUAtdrvQca40n6yyshWiCmHZ9vGb6it2UE4JOqV4+Alzbiq57wzrxvBnZNbIe4ug6yqzltWT9ek1mzVVuYl1k6k18E6gh+QCQU1iPWd8yprEJy9AYdf7R3kuyvufF1Va1KwXJRYzFth4OwR6CGDdjKnYygWjcLiA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736327130;
+	cv=none; b=JFmHO9eChrZtjtnb5U6BxehK/w3Bmz4C9bCrGTsI2pvtcIN5eyZvdbb67DTMrfg159fuTEhan4qO0U5Mu6BXfcpPPCo5RY9u0T4Ya6FBkY8hrNlYEBDQyAta25x/z6f7nQcTf6rxPFbbQx8eVCHEW2uOQNiS/griceTYaqul5Uv+j6qzWc98KKHrcrUxX2NLvaCJhMXnz/0yH4f1ZVI8ko/+qIJerCE73eREx7FzUHIf79+DRhOACGyVDa+WUHpq9iG8PT36+nB7oiJQpVjkteCZn3HMNRkeFibYpsBnS2Mo/hhfN53VxviCW+C1kkvSVl6PByDC5gHAG8AKTIkMjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736327131; c=relaxed/relaxed;
-	bh=PPE2aj8MMacLBet/cFcEFX/RuW9ep+ZbC89Owtm7YeQ=;
+	t=1736327130; c=relaxed/relaxed;
+	bh=rwBYB6GDGtwSo0ZVmHQeUUNLy015tLjU3w/e5JgGy/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ne4JC5VSLKG6NHS+nWPrYGyqb+sDOcg4FBtprQG26eu0E2tmrat5xHzw5M1Pm1lPGzjYcogrZ90r/UV7kQfbrjXW0OR1E7MvFjHk3jgt11Z6j7hcFIKNZGg6ErT32Mb+l12W7qMCzKuYznMZ0fV9ZDp6YthYYtkr8GMkHLIuAKYS3yYFDSw+6xgUt9GxJC4k9P1hyHr0Qrk/tqWdlIlzq/GmUtbytRz702nCXQ5ZH9MIBG+9ZbcOgBo8xRFnbYpqp3wOVjwcHQxMfh272+58d84rq3A1uBeDg43pGD/poQ1SZWriulh0ojxwTwevtbf1c3N/B5pyeTHzR6yPKYyqNw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=fbL7PaM/; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=OSBg5lXo; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 MIME-Version; b=GhiBQyxBTFcItvCRRzpvornnDz1TbVERGCfatwBAIhyfyymec3/9VWLhlauhDg24ZKCn/TN7N+7gJU6EvXtPQaXWNZ7w9G26nhzTrW0U68mThxScVTlsNig4GSgolN6ZjeBl/nORbdr0U3CWkaY35+9LI64+BYabP2vvSI4gBQLBzQ1D+K0EMiUxvbpHaN9R/quQRn+GHL92tioqGPDjY4ncwJLFDgPBP0Xw0AGmr+uSo9sncBAK1mX2lotEEcHF7zfaQLi7MVZ7sMpa8CTiIokVh57tVD3lubtynNJFg6dJ8KyytAA/M2k18ykJwXKA7x8rSURuLI++wyoELoiJuw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=LEApxjYZ; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=dKYJumFF; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=fbL7PaM/;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=OSBg5lXo;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=LEApxjYZ;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=dKYJumFF;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YShpM131xz30CL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 20:05:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YShpJ2qw9z30CL
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 20:05:28 +1100 (AEDT)
 From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1736327114;
+	s=2020; t=1736327122;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PPE2aj8MMacLBet/cFcEFX/RuW9ep+ZbC89Owtm7YeQ=;
-	b=fbL7PaM/jGm3qxpDrkSd+OOV7zI9CCrWhK14XQQj/sTBnt5P0YQD0RVra8HFOMFBUfOQ9o
-	ZeiwMHWOi5LYUi7Di9bJgMSxMDCUW3fiwPp2judcLdfWVK23tgF678cOtYn+yVpFoN/Gms
-	I7BHOMfWvtyv1WlXNjtgE8b3v2b2o9BAuH01E+17hUdm4tCDN7jwTWbpwetE+wKsYlEJdN
-	v2tTEdls+9oQiny3wsLcc02lP+uZFcluG4fQMCkxJSTbRWtzCVikVgqv3E6qJmVBwzPuLc
-	MgGtp/snz9ICbfa9JSaVWBETsCxx7ltqjFwZ1mEtKO1dTNwu9FmqvY5nz50DLA==
+	bh=rwBYB6GDGtwSo0ZVmHQeUUNLy015tLjU3w/e5JgGy/c=;
+	b=LEApxjYZTkhUm30+CjLuvcHX5E2bkNJXnvyUNg8o7S/Fx61HuGetUOphWXxK7KkRlZqXpf
+	HIajKikSPhM8iYZN10EyVeaIzc72/iuTnHo0mHHluGSqAyHpEEYIRDomEhG9ucd0bA5QNe
+	mRPhhSVD5Mw3kKlEi3iLDkgTEd9R0q6Yh3r6PhO3zt9soyTkYfj7cbuQJvgsCtqdXTTnlw
+	ziHMU5S1znSAkYMIhcFJfJmVQN6bapUF4Om3FT+TXqop0bh27OgxrqxKTt84hR6nd7BVvF
+	tLQEVolIS16851bhceciMfsJOItqvtrr+VnjFSLqFCRl5W7HJYyANETR5/2Arw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1736327114;
+	s=2020e; t=1736327122;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=PPE2aj8MMacLBet/cFcEFX/RuW9ep+ZbC89Owtm7YeQ=;
-	b=OSBg5lXo+ufWWbp8J7i4SouYnhWhb4+QsBz5t/KMyFqT4Mz+2/cdk9gWc2IFkA4tH5UwY5
-	s+fGjtoLVNIUGsAg==
+	bh=rwBYB6GDGtwSo0ZVmHQeUUNLy015tLjU3w/e5JgGy/c=;
+	b=dKYJumFF1zyEaO2G91SGXq3IYr7DTmPO/R3ooBrOdSFGUIexbJ7PDdRkr4PzJr+nPMoUvE
+	ybGJf41RElFb2sDA==
 To: linux-modules@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Cc: Daniel Gomez <da.gomez@samsung.com>,
@@ -61,20 +61,19 @@ Cc: Daniel Gomez <da.gomez@samsung.com>,
 	Sami Tolvanen <samitolvanen@google.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Helge Deller <deller@gmx.de>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Naveen N Rao <naveen@kernel.org>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
-	linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: [PATCH v3 01/28] module: Extend the preempt disabled section in dereference_symbol_descriptor().
-Date: Wed,  8 Jan 2025 10:04:30 +0100
-Message-ID: <20250108090457.512198-2-bigeasy@linutronix.de>
+	Steven Rostedt <rostedt@goodmis.org>,
+	linux-trace-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 20/28] powerpc/ftrace: Use RCU in all users of __module_text_address().
+Date: Wed,  8 Jan 2025 10:04:49 +0100
+Message-ID: <20250108090457.512198-21-bigeasy@linutronix.de>
 In-Reply-To: <20250108090457.512198-1-bigeasy@linutronix.de>
 References: <20250108090457.512198-1-bigeasy@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -95,51 +94,67 @@ X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-dereference_symbol_descriptor() needs to obtain the module pointer
-belonging to pointer in order to resolve that pointer.
-The returned mod pointer is obtained under RCU-sched/ preempt_disable()
-guarantees and needs to be used within this section to ensure that the
-module is not removed in the meantime.
+__module_text_address() can be invoked within a RCU section, there is no
+requirement to have preemption disabled.
 
-Extend the preempt_disable() section to also cover
-dereference_module_function_descriptor().
+Replace the preempt_disable() section around __module_text_address()
+with RCU.
 
-Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descript=
-or()")
-Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Helge Deller <deller@gmx.de>
 Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Michael Ellerman <mpe@ellerman.id.au>
 Cc: Naveen N Rao <naveen@kernel.org>
 Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
-Cc: linux-parisc@vger.kernel.org
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: linux-trace-kernel@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- include/linux/kallsyms.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/kernel/trace/ftrace.c       | 6 ++----
+ arch/powerpc/kernel/trace/ftrace_64_pg.c | 6 ++----
+ 2 files changed, 4 insertions(+), 8 deletions(-)
 
-diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index c3f075e8f60cb..1c6a6c1704d8d 100644
---- a/include/linux/kallsyms.h
-+++ b/include/linux/kallsyms.h
-@@ -57,10 +57,10 @@ static inline void *dereference_symbol_descriptor(void =
-*ptr)
+diff --git a/arch/powerpc/kernel/trace/ftrace.c b/arch/powerpc/kernel/trace=
+/ftrace.c
+index 5ccd791761e8f..558d7f4e4bea6 100644
+--- a/arch/powerpc/kernel/trace/ftrace.c
++++ b/arch/powerpc/kernel/trace/ftrace.c
+@@ -115,10 +115,8 @@ static unsigned long ftrace_lookup_module_stub(unsigne=
+d long ip, unsigned long a
+ {
+ 	struct module *mod =3D NULL;
 =20
- 	preempt_disable();
- 	mod =3D __module_address((unsigned long)ptr);
+-	preempt_disable();
+-	mod =3D __module_text_address(ip);
 -	preempt_enable();
+-
++	scoped_guard(rcu)
++		mod =3D __module_text_address(ip);
+ 	if (!mod)
+ 		pr_err("No module loaded at addr=3D%lx\n", ip);
 =20
- 	if (mod)
- 		ptr =3D dereference_module_function_descriptor(mod, ptr);
-+	preempt_enable();
- #endif
- 	return ptr;
- }
+diff --git a/arch/powerpc/kernel/trace/ftrace_64_pg.c b/arch/powerpc/kernel=
+/trace/ftrace_64_pg.c
+index 98787376eb87c..531d40f10c8a1 100644
+--- a/arch/powerpc/kernel/trace/ftrace_64_pg.c
++++ b/arch/powerpc/kernel/trace/ftrace_64_pg.c
+@@ -120,10 +120,8 @@ static struct module *ftrace_lookup_module(struct dyn_=
+ftrace *rec)
+ {
+ 	struct module *mod;
+=20
+-	preempt_disable();
+-	mod =3D __module_text_address(rec->ip);
+-	preempt_enable();
+-
++	scoped_guard(rcu)
++		mod =3D __module_text_address(rec->ip);
+ 	if (!mod)
+ 		pr_err("No module loaded at addr=3D%lx\n", rec->ip);
+=20
 --=20
 2.47.1
 
