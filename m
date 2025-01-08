@@ -1,79 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4865-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37491A06389
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 18:34:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 024F3A063A7
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 18:46:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSw674qmvz2xnc;
-	Thu,  9 Jan 2025 04:34:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSwM63kClz30V1;
+	Thu,  9 Jan 2025 04:46:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::530"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736357695;
-	cv=none; b=e4chV3rFYdNV+a1brCtp46Lm6hIW2l7kJe9KB6fTTkXX4V7aAWjgjqq7pHH/v4lO2a41eRQsg3NV030Ji5crl4L7IDIep30YiY6rukFU4B+02xk/MUwQJ0+INysH3etCDvKFMVbHjawtbkXZK2iyl1ISSHtlOZTiCjGcSartotTLfQUI2FYj3ermIXB6v8sxEI1iLvOB5TnKvVdzF7/3bVxr1R2gNBeH3T4Y1DgdrIB0JcESoOo899T0uuP+kST+qNzpH2ekNa8ldkVvwY8HJqSENIRcEO2BLkXom8t+XMEWz4UytQLCg5DFkl7sOEth1+L0CGkAeO6n2bCrOnRjAg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::332"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736358370;
+	cv=none; b=darsuSiU1NwZmAvykG0gJ7m2iTsQJHOmHO0oDfBLvAPJvExcTOdooJYld29GOW4F2oET8/2SdkB9wQIiFFADVwBu31ZqkCaQ1TDn7EfTgpBj4BoX5UV+lcsrg47vSbYln6LUvfEsa/VdGjz+D0qpIV/pHHXBwfpJ+1K6ZJ0iOaXpgMKLrdAeDvyGi5kWhQPwTx6zbCJAtYyDjg7mIdLYdvMzibbYLjKNhhI2VPQPPzdk7TOCf9jymwnSIh7E+4sw8gmceExEeE+rMO3oAG6xbHJefOYK8loKyWEqO4U4XLO7S7W3ISILIVuGvmJEyiBOHvf18K5f+PxK95WvNnEv/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736357695; c=relaxed/relaxed;
-	bh=uFSUfP1qtRuzGaG+XFGpp6Zt99NNZ4zrYvsYvHahhsA=;
+	t=1736358370; c=relaxed/relaxed;
+	bh=CntFd34V+ZehwA1bDAGud6oqD/tsVSgbkgAOGItU+Es=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZJPlOs8ppvBuEXdtEmmiwyQIgJDQ3JqgBa26ts3dsSn/XUlAba+wiG30RNFE2g/m4uYA+LLhC7ws1y+n1PQ1XmjWtUaqBUBwddp0ByOwq5kYxyebI6O8W5CbFGFGfX+uyPJNqzjK19c/TZ4F+FzuNHRKRPD7IHWmNOrFz8gMfhynbCBz+EM2GA0PEr3be5AbksRb5DyAIa7+iXUP8wNG21jl94f2TjCNCHWFTp8wViy7Azw2lQcypkMY6kLjtEqzFAOfzEQ6hr9cwjmJaD4uxF39KVTQPc9q8nX2fL2yse0yDmyRj5rrYj+n5qjsLTzxn+E1XsdD6dTwJ2+7Lu2XJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=CuJHc01O; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+	 To:Cc:Content-Type; b=BdtotyngWvk8vtm5f+xp91Mn7iY04eHah8EQJgLN7BZ8iIi0E+H2lR+7AMTbOr8YjoPWaY5ATNplnq9qCFPZaYjCGV3D9MkP0srHLQDP3+jJppmhxaXgYL+teAaDmgfovK/IPPBc9hA4vrFy+lJ1geu6gu/Dm33E8J2BkrEQlCSdL8RQFW4aE6hAfyuBF08avUbip83XB4HyRxL14tJXJ1KD2r6FECXe6rK2SC6O/QJR4Pm43/iEbu1jfWU71r26GErczp+7NUe8kAugQB05SuA5yqbMmWMgoG4uhMCApNaXP8tySU1DH9sP8y79K77P7nqK1Uh0WkPI3NhxnTG4Ag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C8Ns3Sx1; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=alexei.starovoitov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=CuJHc01O;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=C8Ns3Sx1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2a00:1450:4864:20::530; helo=mail-ed1-x530.google.com; envelope-from=dianders@chromium.org; receiver=lists.ozlabs.org)
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::332; helo=mail-wm1-x332.google.com; envelope-from=alexei.starovoitov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSw654Z1lz2xGH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 04:34:51 +1100 (AEDT)
-Received: by mail-ed1-x530.google.com with SMTP id 4fb4d7f45d1cf-5d647d5df90so14403008a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 09:34:51 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSwM34fZQz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 04:46:06 +1100 (AEDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-436202dd730so695975e9.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 09:46:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1736357687; x=1736962487; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1736358356; x=1736963156; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uFSUfP1qtRuzGaG+XFGpp6Zt99NNZ4zrYvsYvHahhsA=;
-        b=CuJHc01OM9knnIOe9bHLTwexrS56YqBdMpmoFw6nbyE68DHrZu0ipAmt8S1ObJC+Ia
-         bG4A37FjQLSPtSFsDjV1d1+08vxqwKI6uFe0RdvJXMWfzQxf6OhRG19161cMAw0cTDKM
-         6oTkPpGuIudEqfpPJKc+suQOWJ9G20289rCYk=
+        bh=CntFd34V+ZehwA1bDAGud6oqD/tsVSgbkgAOGItU+Es=;
+        b=C8Ns3Sx1Dd+wBfb+3VRg+T2Tk0WSG6NFRZWGSDL0FXJ7RJbYtbtBt5/CDB/U62DefK
+         /16UiIdkUZt6OWX5zJ0JknVO+BceY7OQf/EkcIbdE41UYL9Qmo4GE0kS9p+RLolwRCtg
+         eO975w91sbl0N4W7XxUxNkH81wlHXYMl0G/tUa9orueKcjjMnmJADvwaDbIbKda5tbQI
+         isXYyRA/ifmHnqnreYrUJW7CHOw2w01iQtBCnv9e5SYd8OhpiIwb4fNIbS9kcvtCCH9n
+         BOG4CA3x1rATGVra8HTz1th5HhqXycCWtKDd5bKvodqiqSYLA6JRDxiQ+43x37T8hTxh
+         xLmQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736357687; x=1736962487;
+        d=1e100.net; s=20230601; t=1736358356; x=1736963156;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=uFSUfP1qtRuzGaG+XFGpp6Zt99NNZ4zrYvsYvHahhsA=;
-        b=CrZeXc+uGfjklABAzAJixz/1DI5r5WiMqdZ7sJIIotVjnixwNfbH2XmfuGFzT5hTLL
-         +Kf3VpyjACYDxj2suz9jQpK5hg9mQJ+ge1EZoITC8knIQn2asqsBg8BTXOeRx1mPm9pN
-         sQdtP88Ld48DRh9zzbHrTB05iHim3SKyHK790B2exJU4rFabHmoW3BWJo7IU9JXED476
-         eQuZ0SUw26i+v/Sny/IUVDejnNU3a07hSTU1b4VbEaH+1vqPAk4lQ/yye1+VOkPpbLK7
-         nWGrYT62woQUn1OpIBcpGZQhwF3fCuXcKmS15Ikbcw+uXTh2wHl2HWfbaxb0IxJ/MIZR
-         cUaA==
-X-Forwarded-Encrypted: i=1; AJvYcCWmboeUIW6KJ6W4/lxKoJtTJxmeuOGVFj/l8dTe1sO7oXYjZObTgTjtaOYosC0ezOj/mf1xi04Cv6/NGIE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzEmYf1jwtvJ2cZ2pyOJukQ8gHoferIjYoD02AHEAl4tBpruv03
-	xaDVToscZMdrGFUekyfQ4khXf062A5YcO50LHdBPIFWTc3siETtfWbSvR06fRcyRz4c7295Brix
-	SSV7w
-X-Gm-Gg: ASbGnctrHVYtVOuO4vzxCJEFr75C2UAj9Zb1EkgiT/v2AnSVaWcJpjepRW+KH0Bo2sM
-	bzHKkjoLK3eP0wQB/O92FJCOMgTbQKVMGCBqHPtgUo/HxamV5y/LXUdDwi32zyhIxy7YpszmLSA
-	q+4LlMXBQ6DAL7Onn9gxwlpAnu1m3CJRjBCloViYCuI3/z5ss+bulWEVrtmpcWK63sQFQjpHNrM
-	eXOtJ1tzOxoAJRjHULfmIcBe6b2h/1tXJ7WQKIj7RDnEaGfh7vCGsUNJqunG+YdNxK9BQkmLnrP
-	1dkNotO/MpRsYmV62BBg
-X-Google-Smtp-Source: AGHT+IE7Q6ysiVQk2gsxCwcy9K0QoGNW8iwQ5KwS3YYP9jmJ29U53IuSLFTRJiCqVR9L21YPh2bg0Q==
-X-Received: by 2002:a05:6402:2681:b0:5d0:214b:96b0 with SMTP id 4fb4d7f45d1cf-5d972dfbc21mr3185274a12.1.1736357687277;
-        Wed, 08 Jan 2025 09:34:47 -0800 (PST)
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com. [209.85.128.44])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5d806fedca8sm26137937a12.61.2025.01.08.09.34.46
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 09:34:46 -0800 (PST)
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4361fe642ddso803325e9.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 09:34:46 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWjvEI7pzifs4IqLEujbkJOYFMuS4jo5XxYwthX3rvKuhH/nzwMuJJsQ2NHIkcyhpV2WMbM7Tt3cKZxfLU=@lists.ozlabs.org
-X-Received: by 2002:a05:6512:2354:b0:540:21f1:e9e7 with SMTP id
- 2adb3069b0e04-542845b9b94mr1068026e87.16.1736357249082; Wed, 08 Jan 2025
- 09:27:29 -0800 (PST)
+        bh=CntFd34V+ZehwA1bDAGud6oqD/tsVSgbkgAOGItU+Es=;
+        b=BTiEnwMYHJqSgoqiM/P4wN01N3+lzy8SQxzj+fzZ/OL0f2b2xGl6RQnCfZEjhje6FS
+         9pdgZirxcdG+72FnIbX2LTMBhlxHWjMZGz/r/JY4AQovIPzl/l9xjpAGzCyZJ6S7ff1I
+         ExEZssH5qIgcETR+uitDVOGlDZGSuJeDxItHDlVJMUoyR9Yg/TWGkqGv94g/x3adfu9N
+         9QDpeAsO1SQQe43Xs4obEnS8qMWRe7Esc8MTBlA4NK8z5mQeI4FwqjXRKAM0kgzvY7bx
+         FMmNR4J7y1EAg0QApsRDkIaE/5gtbVnkCmtuftz1kcspcjLPgqlYALcay6ZCpDAbPIDD
+         shqg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/inSbf+Di/gpoGOA/vMOqjwZo/LJTZHwxlouQSUrL/SOsbRuXslAzgbP2fQvYh9zqRtiKOJNiq0dWDY8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwfBFWUvrnwIwn+5dX4mk/au6gfq+Q+M3eMoTYKtKH1S9US9+vr
+	gj2tqwIZRr9Bri4lZ3vlN4tNSLE1xUx6LWXi0DNagpkUvcnI0P5IK+xUbv7rcKgHQxmEO9kwjvW
+	YpWHa3zPFTUpxOOVE/A5W9o8PCQY=
+X-Gm-Gg: ASbGncvcRuYsnkw4KkihOp6O4yVGzQhYccALx3OefId/n7rTuaHWA2JZtNfxdYjw2nb
+	P3+fofLgMKGVUYiOiaGqKj13Rm8L7JZ06dO8zi7oj
+X-Google-Smtp-Source: AGHT+IENYaJN9qJzVvS74XH6AptDhLta++2dMAjueUTCbMsr4OTDR6rI80EcBDLV3vhFQ2EURExJxkFEPfZHEixQvQg=
+X-Received: by 2002:a05:6000:18a3:b0:385:f0dc:c9fd with SMTP id
+ ffacd0b85a97d-38a8730dcf2mr3304762f8f.27.1736358356386; Wed, 08 Jan 2025
+ 09:45:56 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,73 +76,70 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
-In-Reply-To: <CAGXGE_JWtMo8Qs=hsH=NULkDRFoYKYorKHACpqvqpYiO3am8eQ@mail.gmail.com>
-From: Doug Anderson <dianders@chromium.org>
-Date: Wed, 8 Jan 2025 09:27:17 -0800
-X-Gmail-Original-Message-ID: <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
-X-Gm-Features: AbW1kvZ7WHp39ciL3QA7T0aXBTFHS6WcSbmLSDiGkRPVgTELV5ossj5Zmm_Z_6A
-Message-ID: <CAD=FV=VOjzdBvyx9-g=Mvv6SJvur5ogtUbRfR3oCFpQoQ4VK3w@mail.gmail.com>
-Subject: Re: watchdog: BUG: soft lockup
-To: wzs <wangzhengshu39@gmail.com>
-Cc: tglx@linutronix.de, liusong@linux.alibaba.com, akpm@linux-foundation.org, 
-	pmladek@suse.com, kernelfans@gmail.com, deller@gmx.de, npiggin@gmail.com, 
-	tsbogend@alpha.franken.de, James.Bottomley@hansenpartnership.com, 
-	jan.kiszka@siemens.com, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, yaoma@linux.alibaba.com
+References: <20241228-sysfs-const-bin_attr-simple-v2-0-7c6f3f1767a3@weissschuh.net>
+ <CAADnVQ+E0z8mY4BF9qamPh1XV9qs2jZ03bfYz2tVw8E4nFVWBw@mail.gmail.com> <0cbfd352-ee3b-4670-afae-8e56d888e8c3@t-8ch.de>
+In-Reply-To: <0cbfd352-ee3b-4670-afae-8e56d888e8c3@t-8ch.de>
+From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Date: Wed, 8 Jan 2025 09:45:45 -0800
+X-Gm-Features: AbW1kvYKPSAAqEJsfNmyLOCD7SVL_sAo95rJ07iFN2FuKSqH132N8xtEs5_kMIo
+Message-ID: <CAADnVQJMV-zRcDKftZ-MbKEJQ7XGmPteMYCS0Bm5siBEXUK=Fw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/3] sysfs: constify bin_attribute argument of sysfs_bin_attr_simple_read()
+To: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"Rafael J. Wysocki" <rafael@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Daniel Gomez <da.gomez@samsung.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
+	Jiri Olsa <jolsa@kernel.org>, ppc-dev <linuxppc-dev@lists.ozlabs.org>, 
+	LKML <linux-kernel@vger.kernel.org>, linux-modules@vger.kernel.org, 
+	bpf <bpf@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
-
-On Sun, Dec 22, 2024 at 10:32=E2=80=AFPM wzs <wangzhengshu39@gmail.com> wro=
-te:
+On Tue, Dec 31, 2024 at 2:30=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@weisss=
+chuh.net> wrote:
 >
-> Hello,
-> when fuzzing the Linux kernel,
-> I triggered many "watch: BUG: soft lockup" warnings.
-> I am not sure whether this is an issue with the kernel or with the
-> fuzzing program I ran.
-> (The same fuzzing program, when tested on kernel versions from
-> Linux-6.7.0 to 6.12.0, triggers the 'watchdog: BUG: soft lockup'
-> warning on some versions, while others do not. Linux 6.12.0 is the
-> latest stable release where this error occurs.)
+> On 2024-12-30 16:50:41-0800, Alexei Starovoitov wrote:
+> > On Sat, Dec 28, 2024 at 12:43=E2=80=AFAM Thomas Wei=C3=9Fschuh <linux@w=
+eissschuh.net> wrote:
+> > >
+> > > Most users use this function through the BIN_ATTR_SIMPLE* macros,
+> > > they can handle the switch transparently.
+> > >
+> > > This series is meant to be merged through the driver core tree.
+> >
+> > hmm. why?
 >
-> The bug information I provided below is from the Linux-6.12.0 kernel.
-> If you need bug information from other versions, I would be happy to prov=
-ide it.
+> Patch 1 changes the signature of sysfs_bin_attr_simple_read().
+> Before patch 1 sysfs_bin_attr_simple_read() needs to be assigned to the
+> callback member .read, after patch 1 it's .read_new.
+> (Both callbacks work exactly the same, except for their signature,
+> .read_new is only a transition mechanism and will go away again)
 >
-> kernel config :https://pastebin.com/i4LPXNAN
-> console output :https://pastebin.com/uKVpvJ78
+> > I'd rather take patches 2 and 3 into bpf-next to avoid
+> > potential conflicts.
+> > Patch 1 looks orthogonal and independent.
+>
+> If you pick up 2 and 3 through bpf-next you would need to adapt these
+> assignments. As soon as both patch 1 and the modified 2 and 3 hit
+> Linus' tree, the build would break due to mismatches function pointers.
+> (Casting function pointers to avoid the mismatch will blow up with KCFI)
 
-IMO it's nearly always a bug if userspace can cause the kernel to soft
-lockup. I'd expect this isn't a bug in the soft lockup detector but a
-problem in whatever part of the kernel you're fuzzing. For some
-details of the soft lockup detector, see
-`Documentation/admin-guide/lockup-watchdogs.rst`.
+I see. All these steps to constify is frankly a mess.
+You're wasting cpu and memory for this read vs read_new
+when const is not much more than syntactic sugar in C.
+You should have done one tree wide patch without doing this _new() hack.
 
-Presumably you're fuzzing the kernel in a way that causes it to enter
-a big loop while preemption is disabled, or something like that.
-Presumably the kernel should be detecting something invalid that
-userspace did and that would keep it from looping so long.
-
-I tried looking at your pastebin and probably what's going on is
-somewhere hidden in there, but unfortunately the beginning of the logs
-are a bit jumbled since it looks like the RCU warning and the soft
-lockup warning happened at about the same time and their stuff is
-jumbled. There's also a lot of tasks to go through. Honestly, it's
-probably less work just to look at whatever you were trying to fuzz to
-help you pinpoint the problem.
-
-I'll also note that you seem to be using KASAN and are running in a
-virtual machine. It's not inconceivable that's contributing to your
-problems. KASAN makes things _a lot_ slower and a VM may be getting
-its time stolen by the host.
-
--Doug
+Anyway, rant over. Carry patches 2,3. Hopefully they won't conflict.
+But I don't want to see any constification patches in bpf land
+that come with such pointless runtime penalty.
 
