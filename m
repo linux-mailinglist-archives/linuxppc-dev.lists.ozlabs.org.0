@@ -1,82 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-4860-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4861-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D612BA06302
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 18:07:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7A14A0631B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 18:15:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSvVC531yz30TJ;
-	Thu,  9 Jan 2025 04:07:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSvgV1qWrz30Tw;
+	Thu,  9 Jan 2025 04:15:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736356035;
-	cv=none; b=WlWMuhyL1QzWOwF11x5zDQj2pbGTVXxl4u8zandRvkrn+CYjq1NlOlHguHmiMcAWspO/Txdbl6KG876qmV1Bh5zSw3+1rmGln+X/WZxTX98ByGWkfkS7GCixvDRnIuV8uVhzEPnL89Ezj6xWEnqTxEkvyeUhKoIxrKoy/rgyfjZE1DGK0n20Tn2F8aQJge2MCkxg9lhddCWjm19G+cOjp4RmZ8bTUa54hwgGP2w6Y480wVh2O+8WhNh/sMa+oD3Qihv7g8AKUBr94l+/hwU3lYiD0P9drkkCVHuZheBrMPNJPeTjzM1/tkBdh0wIU9qXi3wEWE6ykBPWlgK92RWFgQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::629"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736356518;
+	cv=none; b=gbtBBg5JKWgQRly60b3FNTWiI6EKz9TblDJM6b1I07wgrtsuIGxA0iopKrLAxRCPqe7lSSmjnxy0KGuaHX12aGe8crnl45VtmPidKHZ6+qDGcAQGF/wBvZuWb9EwHJJVKhfrdzFQWShSMb8FJwftqVCIT85swCHhF8eJshNkmiuxth17wdN03+/N4sPTZuhwxWSBedRVQ+6fRjw0iFjTyXBWusn8/AnEZlbKQsnaKx7AXTdbOSQXovGeBhNH6wQmWQeji2setrXMR00p9UFCrGY5qCAdks5szMdvgsYJ7R2smytoG7l/LSUEthiGECmIRW36EzrS7NkvzbRYmpYBLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736356035; c=relaxed/relaxed;
-	bh=7Rco7cktgzZ8MgePhAM+gb77taf7Sd6JzK6MPuBfnxk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UkD7Bj4Ts0YvFtbLnZ+NVZrsOX+WyokYxXI9cpQsiFstUUGFYtQ0XZh1RABELQdHLSGusnyoZvInmW2nZ9CjJhO6hPA6J1wP0RjUn2zV3g6D/wcARH7Qanmv69vXzgpTd8Ka+LWjBoGZo3aea9DKi+cp7s2dJqTl4dgXo+M1UiOYP7SpXeXIqiGE6KVr5aiS1wMaYu0779p4DK0MI0PTM3o+Tu85m6lSdya2fuXSgjmwtGoqxwf1rRwgs4RPksZk+kEGaYeAQuyQkubrIMBsIf0v5C6209IiDsDJiSxxEKMSabeOhir/lsWfeixg9rlV5T0hS5UHc55VXGqZLg1yjA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fT2Lg/Mz; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1736356518; c=relaxed/relaxed;
+	bh=MzeQL7SWoLSVUIhwFJy6hAJPLk/Pb4CjeJOLnjQXvvU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LxoE8c495kt0s/WA8Mu+yNU6GCzFyeXVO9n6Wz8rj3lcYrE0sqfnnWA44lWW+MBQPGWol7jUAj5LL+PxNlTm5tp2pBrwhl8qMD2cf9Ts8maTOc9ubJ7TJ2kIg+OF11Z5kevU2Su80wX5R8Gfq2XTWC0sQLNrvdnOKkX6vTStenui+k6e6KrNYfyEXRprFoRKmj1mOoiHKg8tre0D/aHl31zWuHjvVf3NqYwIOWY7hNZXN1RAJQCbIk8NpOjtJeN8gakY/MaFrK9wTg3ilM8f1kX5sP/gcHvuyfy4cQn38YBma12Gdn3Oykk5VJfNA25YELrmzidALjSM3d0R79o1Og==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=2b/TYO7J; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=fT2Lg/Mz;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=2b/TYO7J;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::629; helo=mail-pl1-x629.google.com; envelope-from=irogers@google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSvVB50Pqz2y33
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 04:07:14 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508EHPDk009609;
-	Wed, 8 Jan 2025 17:07:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:to; s=pp1; bh=7Rco7cktgzZ8MgePhAM+g
-	b77taf7Sd6JzK6MPuBfnxk=; b=fT2Lg/Mz66ez873RIgd1O7ShK7ptRYqcdSr+3
-	dO1pFvlmgdYsxwJFnshZBkntVnWwCiN8FBIE3CAE1AYCis7Y2i6PDLnum+/N1eWp
-	ujMFCveqiDAMgcX7trV11NqekbchCgLUhkevM0KNXo07dIZfdiFH9EbddhApTjVG
-	gZRLpRx5IfRNAra9XRHU7EVJFvvONIQ3JhlcTQGKfGeoaE1R3iSx3SYNbep7LagW
-	MeVqezJ8LNACG0LHGqOaGz1Oeag4GGkbvec0vA1AMdvK4HLdp3PTU+PvSH/W1OnN
-	YX92m4+NnpXB8J3wYXHtDyqWQSANMerpT8i7kdC/FlcQYL38w==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441hupuh2r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jan 2025 17:07:03 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 508DlggC016144;
-	Wed, 8 Jan 2025 17:07:02 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ygtm0qcm-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 08 Jan 2025 17:07:02 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 508H6weY65732980
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 8 Jan 2025 17:06:58 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B726B20049;
-	Wed,  8 Jan 2025 17:06:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 652DA20040;
-	Wed,  8 Jan 2025 17:06:56 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.39.20.94])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  8 Jan 2025 17:06:56 +0000 (GMT)
-Date: Wed, 8 Jan 2025 22:36:52 +0530
-From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan he <bhe@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RESEND v1 3/5] powerpc/kdump: preserve user-specified
- memory limit
-Message-ID: <k2eoi22mh5lod4nzee3qfbaagh36yljcqwxcyvvewmzbktcual@mzleqvtlojj3>
-Reply-To: mahesh@linux.ibm.com
-References: <20250108101458.406806-1-sourabhjain@linux.ibm.com>
- <20250108101458.406806-4-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSvgS3flNz30Tk
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 04:15:15 +1100 (AEDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-2163affd184so141355ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 09:15:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736356513; x=1736961313; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MzeQL7SWoLSVUIhwFJy6hAJPLk/Pb4CjeJOLnjQXvvU=;
+        b=2b/TYO7JRFmGH7DIDjkOneVclexREijbujmvASMpaZNF9E7wCXVS4l+HYM7ujSUvru
+         WrB0b1uKQyN1zfozUMkzRpkwh7xBgsRfTVHlXKnzza1D7PRb3FNKn1GsMbTKJvWhHFhq
+         HTu8qLVb2T4VNqb2B+3rlaFzpcPkEo+k7dRCunnwG4Uw+E/pmYcD2V1qZor2ZndCJhT+
+         hCG8wo+8tqQGOvdiicUsMtsXEp8cxNgcEJBm5U/Y8FRdzYURrzlB7N06DMu7l3Vchtep
+         6o1b1OSiefjmIdA5oTko45ztopvypkiCRjzEJBQsn7pjY+cwJ1AKZJkgVB16pLmqYDf4
+         loMw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736356513; x=1736961313;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=MzeQL7SWoLSVUIhwFJy6hAJPLk/Pb4CjeJOLnjQXvvU=;
+        b=pnvT3e0GW3TMCx3c6gZGpAAiUP2EGsORFjMQTiicZ8g04HYF+Bg1p5gBRE998rVd8n
+         Z3KLT+9oOrURWMEp1Vp/M6QbP4zqvMHHYmqa0tEUuRQKXqaabIqbDHqWeAkLTDxybQ2g
+         q+rXjz/q20ML6YKDtZ6NgQqXbFhMibeGz/HrZoMUReU1P7aYdCW7qaR2mpzT1YyPRoOa
+         v4Qon31D4I3kARZd45UL8FmRxGXevpgA/cwlUFbPkdlcM7VtDSU8PWP+jYBxPl6iMUB1
+         +tIFscKKIEEtHjZzjxyVV2PN5KVH7IGA78DZa5JP8mhL0sRy5yvSQJb0hM2PcDe+nlwX
+         Rgkg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDimA/sP+jZQtbjbyRL+JFYtCcfEOp0Vs6IcXUXKmpiKv2dWfbOVzWiyM3u7xdSO76lAkQS4n9TMHRRtk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyOc2PbsJVfTHrKHkfPniGdyNmhmpajSt35MAPFrp3IxG0KaJp6
+	KMtSdVJrpUx/4WCfR/v0/JCI0BU2mEFlFlZI1zfEQ9lpiftY8FUAaWoKPQidbOrh/8llft/Q5xm
+	n5evQR5OwPDLesW3bxTtDfIKcH/ijFsOFCC5L
+X-Gm-Gg: ASbGncuAK8L7p0WZxWGdvp/tkW/rrG8r0QElAgd14Nj6G6lMkrpkGOWGZHuP9p1iPnO
+	fWzZhOAq6zCDAx1zLIubSifUl9PzjSoz6Rj9qEfsOk+5NZyUxIFQyk/jlIlF7VYxlESNmTw==
+X-Google-Smtp-Source: AGHT+IHV2vEIiKkJXNgvzoiZpd1XCj/Pi+js5cCr0y1wseawq73Fx5cJ7suh74eghtNIkWTrTA8T/QAGrw/1Nt4vuQI=
+X-Received: by 2002:a17:902:f54a:b0:216:405e:8e2 with SMTP id
+ d9443c01a7336-21a85463148mr2168665ad.27.1736356512676; Wed, 08 Jan 2025
+ 09:15:12 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,40 +76,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250108101458.406806-4-sourabhjain@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 0k2Nk1NO3SK3S2mkcvoPrnX37nTnCIAg
-X-Proofpoint-GUID: 0k2Nk1NO3SK3S2mkcvoPrnX37nTnCIAg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
- clxscore=1011 mlxscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 mlxlogscore=779
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501080141
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <2ea4501209d5363bac71a6757fe91c0747558a42.1736329923.git.christophe.leroy@csgroup.eu>
+From: Ian Rogers <irogers@google.com>
+Date: Wed, 8 Jan 2025 09:15:00 -0800
+X-Gm-Features: AbW1kvbRRMuz4ZomzPJSO4OQ8dFOiTuQmMSN2W1Z3i_Udy0Uz506YYihKwYBq5Q
+Message-ID: <CAP-5=fWSRJ=PNTRkHVVpWGSM5R0rLH5Sqgwv_St7+Q3TJaLRWw@mail.gmail.com>
+Subject: Re: [PATCH v2] perf: Fix display of kernel symbols
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, "Liang, Kan" <kan.liang@linux.intel.com>, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-perf-users@vger.kernel.org, Arnaldo Carvalho de Melo <acme@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2025-01-08 15:44:56 Wed, Sourabh Jain wrote:
-> Commit 59d58189f3d9 ("crash: fix crash memory reserve exceed system
-> memory bug") fails crashkernel parsing if the crash size is found to be
-> higher than system RAM, which makes the memory_limit adjustment code
-> ineffective due to an early exit from reserve_crashkernel().
-> 
-> Regardless lets not violated the user-specified memory limit by
-> adjusting it. Remove this adjustment to ensure all reservations stay
-> within the limit. Commit f94f5ac07983 ("powerpc/fadump: Don't update
-> the user-specified memory limit") did the same for fadump.
+On Wed, Jan 8, 2025 at 1:54=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
+>
+> Since commit 659ad3492b91 ("perf maps: Switch from rbtree to lazily
+> sorted array for addresses"), perf doesn't display anymore kernel
+> symbols on powerpc, allthough it still detects them as kernel addresses.
+>
+>         # Overhead  Command     Shared Object  Symbol
+>         # ........  ..........  ............. ...........................=
+...........
+>         #
+>             80.49%  Coeur main  [unknown]      [k] 0xc005f0f8
+>              3.91%  Coeur main  gau            [.] engine_loop.constprop.=
+0.isra.0
+>              1.72%  Coeur main  [unknown]      [k] 0xc005f11c
+>              1.09%  Coeur main  [unknown]      [k] 0xc01f82c8
+>              0.44%  Coeur main  libc.so.6      [.] epoll_wait
+>              0.38%  Coeur main  [unknown]      [k] 0xc0011718
+>              0.36%  Coeur main  [unknown]      [k] 0xc01f45c0
+>
+> This is because function maps__find_next_entry() now returns current
+> entry instead of next entry, leading to kernel map end address
+> getting mis-configured with its own start address instead of the
+> start address of the following map.
+>
+> Fix it by really taking the next entry, also make sure that entry
+> follows current one by making sure entries are sorted.
+>
+> Fixes: 659ad3492b91 ("perf maps: Switch from rbtree to lazily sorted arra=
+y for addresses")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Reviewed-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-Agreed.
+Reviewed-by: Ian Rogers <irogers@google.com>
 
-Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Thanks!
+Ian
 
-Thanks,
--Mahesh.
+> ---
+> v2: Make sure the entries are sorted, if not sort them.
+> ---
+>  tools/perf/util/maps.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/tools/perf/util/maps.c b/tools/perf/util/maps.c
+> index 432399cbe5dd..09c9cc326c08 100644
+> --- a/tools/perf/util/maps.c
+> +++ b/tools/perf/util/maps.c
+> @@ -1136,8 +1136,13 @@ struct map *maps__find_next_entry(struct maps *map=
+s, struct map *map)
+>         struct map *result =3D NULL;
+>
+>         down_read(maps__lock(maps));
+> +       while (!maps__maps_by_address_sorted(maps)) {
+> +               up_read(maps__lock(maps));
+> +               maps__sort_by_address(maps);
+> +               down_read(maps__lock(maps));
+> +       }
+>         i =3D maps__by_address_index(maps, map);
+> -       if (i < maps__nr_maps(maps))
+> +       if (++i < maps__nr_maps(maps))
+>                 result =3D map__get(maps__maps_by_address(maps)[i]);
+>
+>         up_read(maps__lock(maps));
+> --
+> 2.47.0
+>
 
