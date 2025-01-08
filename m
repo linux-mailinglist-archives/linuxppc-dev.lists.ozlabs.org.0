@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-4807-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4808-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A376AA053A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 08:00:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 997AAA053AC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 08:00:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSf1z2k7kz2xmk;
-	Wed,  8 Jan 2025 18:00:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YSf2H2TVCz2yNR;
+	Wed,  8 Jan 2025 18:00:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736319623;
-	cv=none; b=k0t/CenD0kzdh9/myei3RlMtPw27joCLC7JT8LtS8bdB4d/jZCjQzY0Wi65YR+U3hEl+PnWMXIhQxxS9fni4uxH7y+cZu35ybVBKdY8pp3dvKvm3o/owKAixOMdBuviJNBN7vc84ecepAB2O5CYlDw+nsqyX3rZpQgK1LHOeZKu9EzH4barktlmaWYU03HQMab3iUW1OD67Ye/+9/Dc3jFdmKsYRTHA/ksjkfTIrndcuaKNvyl6ByyL2U4SpRXCE+1pEOGauuIRtmNdiq2VzNNhH7v/e1DE+3fMRwcYGpdG+qbIz1CJ4QWM7CijqnQLL9aC/Qxfpl8TMJPPboOw1lg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736319639;
+	cv=none; b=AYG0hNYfzA+d0dSXKAjqq+XyK5fjt3BucdYb3FZ94YiR9F74ychVFK5kiYBLmRlHMJ6pvZ/nf4oifDuJDPNtKKaHTgKXk0xZqxjInPkYRT9ZpOi34V+Swt9+PRs9QjrDH2Y0ppwFS1V9QOIHDwfH/fLaLmuflK8AzlBJ6HyqRsig/neMK+VZH5ru/m7MGVWAZZ8jiGh4P4qRXm2iyb10EdhXkSB+NmnQMFYgeAqRiZteOblObTiJ/Ft0Qb0J9s9v2f8tjcvYxBG4Ct1CafAHiFk3VXMLlcApxV4c8a9UfWSSG0mk1tTfg8E/+qfW/3kFcKLoB156lw/S0wge/vI9iw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736319623; c=relaxed/relaxed;
-	bh=/cYfjcYM2i48jLO7NuvQJ4j04U6+7fBnrQjgIuvbLyg=;
+	t=1736319639; c=relaxed/relaxed;
+	bh=s3ajwCEJzuBWHLhfIS3uOIg9mbtSga1CIaOnP3nLDr0=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Db7MYF9c+AsoFmvtMiGLS9+kmVJC30aieyoWnRbWg/KrON/CpStyihaEITLtIQgM8UOOpzn5BLFbGEEbiEjlH6JY3pJSuZWmAIFFATmx/Ztvj56EXXfTaRBBcI4jxunhD5fqgWd1vfYtYkdPub07MlWxugK98GGdnIBD0dF/+ByOVIf/zxU34ynrJyEskVKxJCaO12tpTG8j+nIvpYQoWIRTLNNktg8/GDa4asiWtCX1d1govRz5brASzsKYor39OFq5pzYsUAKG4nuNxfYuOvsluhie9NRQBpMc7TIeg4/aS3aRcUyJ7gyLZ8Rxp+5R7BKWM1P7PfqTEHFy583JbA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=OF9riJFY; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
+	 MIME-Version; b=I5DfTA5YB5A0gl+xDcipAIYABBRdLL6Pht/+jBwwZP7VPagtdlFXLBS9sJTiHxKnrpA6Q30zNCePhAS9G+a8ch/i7k5/IMSkzb50T9/M6FTJj6tqWFV1TpH3uYjLP1gcJnAN5VvyuRBy2KzawKRtNQlpmcKUgf3C2fzhDehdG90DVwiQqnFDOvv576LmhMKJdTo2cUl1TWdwVZ6urHWiTBqC6nAfOZ9giY7cGa4PXf9ouvWC8s2jF7h9aTbYCwzOUSnNjiOJPdcmvVUPJZb8kAyyk4Ud2n/VmQgPLQuEplOMbVIZ6vTYZvdWLZxPHB2aL7CV6GkbKecwd2Cex4Zb0Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=KP5/IQvs; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org) smtp.mailfrom=bytedance.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=OF9riJFY;
+	dkim=pass (2048-bit key; unprotected) header.d=bytedance.com header.i=@bytedance.com header.a=rsa-sha256 header.s=google header.b=KP5/IQvs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bytedance.com (client-ip=2607:f8b0:4864:20::62d; helo=mail-pl1-x62d.google.com; envelope-from=zhengqi.arch@bytedance.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSf1y2kHjz2yNR
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 18:00:22 +1100 (AEDT)
-Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-21a7ed0155cso22821155ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2025 23:00:22 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSf2G20Yfz2yDx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  8 Jan 2025 18:00:38 +1100 (AEDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-2166022c5caso215981845ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 07 Jan 2025 23:00:38 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1736319620; x=1736924420; darn=lists.ozlabs.org;
+        d=bytedance.com; s=google; t=1736319635; x=1736924435; darn=lists.ozlabs.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=/cYfjcYM2i48jLO7NuvQJ4j04U6+7fBnrQjgIuvbLyg=;
-        b=OF9riJFY5BuQJCuNniJzeStIwq1uFNLH9ZoZb04ARm2wQvo2c555aKx7StCWkS9tFj
-         r7n+qHsAc8dsSCoWTPogwb1a2NE7vfJPNuGKDSkYw1GAVePwmMo72YKHHByk35jZSb+x
-         boFR0HFzFAUK8uOi7fxxkYQCShRxsWJVkWgEEHGaed+uHKeWfHIWy3qIjQ7TFzbo9qI9
-         1+yGWh765AH/NDEvAYvCa+iq3rthAulAu8ApR499PpVMpQol29G0TujDGAemGontIueM
-         Y8YPbqmVUktdCgeWfc5sKZI6h0uAqLzVLdEGPeE96s0Z/0BkzigSWHZBQMbfp7EqQmzg
-         JiRA==
+        bh=s3ajwCEJzuBWHLhfIS3uOIg9mbtSga1CIaOnP3nLDr0=;
+        b=KP5/IQvslcjSKULM+y1X7UGfhb3AhRJxj+p2rZuxsMvPQwXmP+GjL6A4bvxdbKya0r
+         xwPCnjPUaRu02KDE+uL0eogWh0yTl8fyniY0mQw1IfUPPvZ/lXe2RpWLwND8N9LjB0hH
+         NqT7DSVqOpX/3//DcVYUQAwQW6rokwDPPs8VFAywDRewxmv7fEQNG11YfhhkzOa1OPzP
+         VsuT4bg7cR8fZiNrj4stSyzFu5otpTVNRAl5yRg/60LzRGSB8LSC0XfrGw+wm1fUjIi6
+         AI9RWMnMqt8AbpjgdcBJyvRfBpt4Rvkb+OoGN/yuO6kkwSZlwe2BAoxJvkJSNH86J0eh
+         17Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736319620; x=1736924420;
+        d=1e100.net; s=20230601; t=1736319635; x=1736924435;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=/cYfjcYM2i48jLO7NuvQJ4j04U6+7fBnrQjgIuvbLyg=;
-        b=svwEldYLeSrI1W5mWod6q/7PupdH2VMRGKbXck8GM8x52bsG670IbzbE93K+SvksIQ
-         nDFU95Ro4tznaKo5dN7gLJj89E471ak+nl/mTJZX/XSzm/+tFwPSr1N42g0TTMk+view
-         huhIS3ozLoQ8gSnU9T/FQOHPSat9HrXcNfhf9IUcDoHNZcDgMBE8yOyDbrxMqj9CBhq4
-         3nHVJaZwYSCeJAa1Hj581VJPX5sZ7yyQJkbQjoNLIPgvOpoku7vHdNgqRr8rwNWrHIRZ
-         NM8rpZl3lelehbi/kR+Aa2+6cLC0TFR3lE25HDAS0wbemCwh15I+XxCQh9ETkxLwfIcx
-         ONXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVhMOwJcsE08abqj4wNKAHZfrrx0TbIjE7jvJGb6PCoHNzdkjr/otUMUJbl3Z+sCSjbqawCoOsnuwQmvhA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YygQIGb6BsLBVFxrx/Y+heAntEkRtn3bmiylV9CumbOfNgB1BPR
-	bc29FH3o3J1ejMlU/psYuV7ZeaybE7371qCAbkiH928C/BE6OOP3uysvd3udkiA=
-X-Gm-Gg: ASbGncvi/lqsf2NR9vVOk6QFH9SBLNta3UFPvqPmjTiKdi2Qka4NebYcdpQ+2K/A9/w
-	hXbdIhF7ypgImpL63cj5NAi9nT2ug2jBil2NIfcQYhjlxK3E1VHZzSuMuJYuBL/HiEvJMTUePAp
-	Yhgf0YJEAnkMmwbR8Ne6d7K8PFxHSAJg3f8f5IIAoWX0y2TcLvP85ykhAj2/t+5QnHdh5CMCWED
-	lBFeYGLVrC4oKNzwP9dsSer/uNGyd/zh1oN8JPdOieNL4tuvDmpJ0h2wy7juMsj0Medfm+Q/DzN
-	k+DTjPdt59XR/24YK+VrJCC6RGE=
-X-Google-Smtp-Source: AGHT+IExFPt1bVFS1B+HfK/rni8xCakw0mpYmNpiHCGWtvviMVtfvk5MaDovSIdy5xSOdSeWSopXEQ==
-X-Received: by 2002:a17:903:2311:b0:210:fce4:11ec with SMTP id d9443c01a7336-21a83f42687mr30246255ad.1.1736319619595;
-        Tue, 07 Jan 2025 23:00:19 -0800 (PST)
+        bh=s3ajwCEJzuBWHLhfIS3uOIg9mbtSga1CIaOnP3nLDr0=;
+        b=sL7ueq0NStScRpXphDbO0zw/QZiCGngLIMpcav+1JyiTxUCDSxcBkR+74Y3AWRKSvH
+         gYuhWc9j0jMzNTjX2HkQk3o34q5MuJZ3CJmQ5hIMdmz4W5/X9C4ko0BnlyeMhkUE8xZJ
+         6HXQYrhYthwXs+7XMMaoR89hTbuxZdHc8M0TLiIyfWBemIuUn9Qmw9S82xmb7PpdzVKb
+         Yf23m5gRDVTGwHbCEhy9Ry+cVBFOZCC2m5gr0Pdc5W556LYl0ZBfCWxAPNjs6Qj0zCS+
+         k9INC2fHOTGIG9OKw/bvYZE8/YB485TYHfooOrgpAA69UthniYmUpN44dVMTMUVXuldV
+         JjVw==
+X-Forwarded-Encrypted: i=1; AJvYcCXfTz5wxEE/v5Bks1zqrsAZ0qoWlsYZjIlsilz8YR6muxhc+2q3Z6xzsnfNUA2FMWiQ1r/E2FYaRyOXAk8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwXn+uI7S+3UfzLTt98UYiFBhiZNIsvvK8v3IwatmwldqDp/Abn
+	ixwZ8rvLOohDf45djAJtCvAJLAC/qHjs1/ZpFmTGQuaeXlubpbSCafQV8LJVE1c=
+X-Gm-Gg: ASbGncs2k3tWpSQmMX++3csIdYX8H//+XT3WuzH3/2OuDnovIgbYV1KJlGSb6mDkM1l
+	S1bfByGVnmJBUzQH53bkmQ5fb69IrzJoGM6c2ygxHGEjWW/KXmM1OGUkGRiRAp4jomZmG7a3x0H
+	y7VtYOhy1GUwffsDbZOO38tYszx1LkZX9lXvGrkJ9Sv+kusFgtKMsGSTiEjLSnqWxL2X0xct9YE
+	Of7YIc+fQLh4PBR91jYqX6VNV554F0d7MXNvdpmiAlHY16Q28BOU9ULNKNrD7km3TNGllBJhZdC
+	F3RGBsKx79bnuL3vzHs0kcFjYGQ=
+X-Google-Smtp-Source: AGHT+IFQatZJEh1vMaYN2M2lTtxd4TB3DgwS5fDlIHVUeP0cQjVCzCSP2sGAFE7qJT7hKS5hKn1bKA==
+X-Received: by 2002:a17:902:d4d2:b0:215:9642:4d6d with SMTP id d9443c01a7336-21a83f55157mr23731385ad.17.1736319635015;
+        Tue, 07 Jan 2025 23:00:35 -0800 (PST)
 Received: from C02DW0BEMD6R.bytedance.net ([139.177.225.244])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca023a3sm320067275ad.250.2025.01.07.23.00.02
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-219dca023a3sm320067275ad.250.2025.01.07.23.00.20
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jan 2025 23:00:19 -0800 (PST)
+        Tue, 07 Jan 2025 23:00:34 -0800 (PST)
 From: Qi Zheng <zhengqi.arch@bytedance.com>
 To: peterz@infradead.org,
 	agordeev@linux.ibm.com,
@@ -113,9 +113,9 @@ Cc: linux-mm@kvack.org,
 	linux-sh@vger.kernel.org,
 	linux-um@lists.infradead.org,
 	Qi Zheng <zhengqi.arch@bytedance.com>
-Subject: [PATCH v5 04/17] mm: pgtable: add statistics for P4D level page table
-Date: Wed,  8 Jan 2025 14:57:20 +0800
-Message-Id: <d55fe3c286305aae84457da9e1066df99b3de125.1736317725.git.zhengqi.arch@bytedance.com>
+Subject: [PATCH v5 05/17] arm64: pgtable: use mmu gather to free p4d level page table
+Date: Wed,  8 Jan 2025 14:57:21 +0800
+Message-Id: <3fd48525397b34a64f7c0eb76746da30814dc941.1736317725.git.zhengqi.arch@bytedance.com>
 X-Mailer: git-send-email 2.24.3 (Apple Git-128)
 In-Reply-To: <cover.1736317725.git.zhengqi.arch@bytedance.com>
 References: <cover.1736317725.git.zhengqi.arch@bytedance.com>
@@ -137,97 +137,53 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Like other levels of page tables, add statistics for P4D level page table.
+Like other levels of page tables, also use mmu gather mechanism to free
+p4d level page table.
 
 Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
 Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Cc: linux-arm-kernel@lists.infradead.org
 ---
- arch/riscv/include/asm/pgalloc.h |  6 +++++-
- arch/x86/mm/pgtable.c            |  3 +++
- include/asm-generic/pgalloc.h    |  2 ++
- include/linux/mm.h               | 16 ++++++++++++++++
- 4 files changed, 26 insertions(+), 1 deletion(-)
+ arch/arm64/include/asm/pgalloc.h |  1 -
+ arch/arm64/include/asm/tlb.h     | 14 ++++++++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/riscv/include/asm/pgalloc.h b/arch/riscv/include/asm/pgalloc.h
-index 551d614d3369c..3466fbe2e508d 100644
---- a/arch/riscv/include/asm/pgalloc.h
-+++ b/arch/riscv/include/asm/pgalloc.h
-@@ -108,8 +108,12 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
- static inline void __p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
- 				  unsigned long addr)
- {
--	if (pgtable_l5_enabled)
-+	if (pgtable_l5_enabled) {
-+		struct ptdesc *ptdesc = virt_to_ptdesc(p4d);
-+
-+		pagetable_p4d_dtor(ptdesc);
- 		riscv_tlb_remove_ptdesc(tlb, virt_to_ptdesc(p4d));
-+	}
+diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
+index 2965f5a7e39e3..1b4509d3382c6 100644
+--- a/arch/arm64/include/asm/pgalloc.h
++++ b/arch/arm64/include/asm/pgalloc.h
+@@ -85,7 +85,6 @@ static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
+ 	__pgd_populate(pgdp, __pa(p4dp), pgdval);
  }
- #endif /* __PAGETABLE_PMD_FOLDED */
  
-diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
-index 69a357b15974a..3d6e84da45b24 100644
---- a/arch/x86/mm/pgtable.c
-+++ b/arch/x86/mm/pgtable.c
-@@ -94,6 +94,9 @@ void ___pud_free_tlb(struct mmu_gather *tlb, pud_t *pud)
- #if CONFIG_PGTABLE_LEVELS > 4
- void ___p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d)
+-#define __p4d_free_tlb(tlb, p4d, addr)  p4d_free((tlb)->mm, p4d)
+ #else
+ static inline void __pgd_populate(pgd_t *pgdp, phys_addr_t p4dp, pgdval_t prot)
  {
-+	struct ptdesc *ptdesc = virt_to_ptdesc(p4d);
+diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
+index a947c6e784ed2..445282cde9afb 100644
+--- a/arch/arm64/include/asm/tlb.h
++++ b/arch/arm64/include/asm/tlb.h
+@@ -111,4 +111,18 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pudp,
+ }
+ #endif
+ 
++#if CONFIG_PGTABLE_LEVELS > 4
++static inline void __p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4dp,
++				  unsigned long addr)
++{
++	struct ptdesc *ptdesc = virt_to_ptdesc(p4dp);
++
++	if (!pgtable_l5_enabled())
++		return;
 +
 +	pagetable_p4d_dtor(ptdesc);
- 	paravirt_release_p4d(__pa(p4d) >> PAGE_SHIFT);
- 	paravirt_tlb_remove_table(tlb, virt_to_page(p4d));
- }
-diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-index 59131629ac9cc..bb482eeca0c3e 100644
---- a/include/asm-generic/pgalloc.h
-+++ b/include/asm-generic/pgalloc.h
-@@ -230,6 +230,7 @@ static inline p4d_t *__p4d_alloc_one_noprof(struct mm_struct *mm, unsigned long
- 	if (!ptdesc)
- 		return NULL;
- 
-+	pagetable_p4d_ctor(ptdesc);
- 	return ptdesc_address(ptdesc);
- }
- #define __p4d_alloc_one(...)	alloc_hooks(__p4d_alloc_one_noprof(__VA_ARGS__))
-@@ -247,6 +248,7 @@ static inline void __p4d_free(struct mm_struct *mm, p4d_t *p4d)
- 	struct ptdesc *ptdesc = virt_to_ptdesc(p4d);
- 
- 	BUG_ON((unsigned long)p4d & (PAGE_SIZE-1));
-+	pagetable_p4d_dtor(ptdesc);
- 	pagetable_free(ptdesc);
- }
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c49bc7b764535..5d82f42ddd5cc 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3175,6 +3175,22 @@ static inline void pagetable_pud_dtor(struct ptdesc *ptdesc)
- 	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
- }
- 
-+static inline void pagetable_p4d_ctor(struct ptdesc *ptdesc)
-+{
-+	struct folio *folio = ptdesc_folio(ptdesc);
-+
-+	__folio_set_pgtable(folio);
-+	lruvec_stat_add_folio(folio, NR_PAGETABLE);
++	tlb_remove_ptdesc(tlb, ptdesc);
 +}
++#endif
 +
-+static inline void pagetable_p4d_dtor(struct ptdesc *ptdesc)
-+{
-+	struct folio *folio = ptdesc_folio(ptdesc);
-+
-+	__folio_clear_pgtable(folio);
-+	lruvec_stat_sub_folio(folio, NR_PAGETABLE);
-+}
-+
- extern void __init pagecache_init(void);
- extern void free_initmem(void);
- 
+ #endif
 -- 
 2.20.1
 
