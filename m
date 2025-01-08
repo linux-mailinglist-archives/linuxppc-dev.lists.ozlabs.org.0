@@ -1,79 +1,100 @@
-Return-Path: <linuxppc-dev+bounces-4855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4856-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B647A06116
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 17:06:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CEF0A0613B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  8 Jan 2025 17:13:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YSt7X6QbZz30V0;
-	Thu,  9 Jan 2025 03:06:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YStJM6wSjz30V3;
+	Thu,  9 Jan 2025 03:13:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip="2a01:111:f403:2413::62c"
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736352360;
-	cv=fail; b=gD9/HkMaNDMPCEAxCbkYr7XXb8OYw+R3djy9CDuSosT4mLtySJ0BNCz9wGv+dwZJb0mr0tfEYnlXawVqRXRyswA85Xwr84+A3EepSt66NJRixqlWm/Us3VKXnPJ2lg7KgKo2/R6gMdNJvP/Rn5fg+Qz4SIehTl7XxtSDV+kL/mlAN5SfXui31H1dPVbE08I4dwewvPNLthzzgEyoJ9QA2yT86/sByROhIxWohgPBLwdHBOqFjVhXwOg0W2UQ/7K24nohHmwUPYDLTm4b6mFR22fFWWvOyQeKvTZFKkgKdSZfCHzFrrTLfN2FDaTZo3zW/SLOozGSPkgt/2Hh3lxmMw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736352360; c=relaxed/relaxed;
-	bh=jA8mhnIaMqRxYR0tXqTy/eQmQ/AZz8tuiDPdbAqVcnk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=PEUcE1ROyWZVdKx1f6pN8x71LSD+/FVgYECclsGJZuoV95fbya9+jmdsMleVS7rzhDA/DLDlroFX/vmizH9H/sLqIqg0LRDCS6wucvS0QlSL8BeraGqgOuGNEXPOXSt3xk+2iH+B3Ubykd3QN993wQB3MgnrMHqKkGG0BpvavQYCVJz+/S6VykEbOu/gx6Ss/IPMJCKmVjcwZSLh1jVCYGDJQP9dklJvH6W8+xTJOvhAagDXsVL7ANVMoWY5ahuyeaXz/KtoOEzi2BRPP6sX6JKc+cwiYyotg78WXi9FbcwD/aAb9MMQdVe2e9lSOX/0jIH/PqllKd0IbDNo8Sm5qQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=fail (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=TfJ6A2Ge reason="signature verification failed"; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2413::62c; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736352819;
+	cv=none; b=fLkInfGZUE3l5hsfEsZKFkdv/m7TPuhW+xK2bC3eXAc1qEqyw+ZD9c8TqVRxMf47sgo9I8yRM87R/Lsbq9G/VA3DVdtQ/toABToHfbwDPILXrW3RlkbFmOWWP9s0oqsGAyJ7Ho30TXdSlbuaQ0v/u/9ukbXZL3xd1QEPRLPh9/Y85LbFhQeuzFWhdqJ9YAf3f7HGbMazQ0r+6xJY+uX32TYWvD1CxvwDjFNvHsQcdnEaQ9a+SPwWTGZKoSQjEEU/Fq64dIPiGDyTb9/AVctv4DKmyGbqi1Xtfw8QIovbL/yodsqklLtFe2N7n6M3BzyyyejBT6wVr6ofyDwZR60Lvw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736352819; c=relaxed/relaxed;
+	bh=/0pEosJAtrrq7+AZfl2ID181pVMDXxvqRB1iDHPru/M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IhSQ7y6zJsUuMP6KP9Rl3cS9lv0cXjG4o8CwOIs3VQAbIzQFj2kJj/LJKkaFCAVmwID4sGxHRap06m26PW1hWaViHRUgsb+yr/OmZSA57Hawl7EIn5Z2FEMkzYZXlezQo8F+XOKKu5Yuith0yrmMrl1BDyyTzXaK7WqD89wUPRDJrOjgWhFqXrOkUJIEdzNDz8lcaNKmbt+VO9q4QTSzJNVsCXSkJiy/B3QVjju35vwToJ4hArdMd6cucj1R/IGkbzr+pi29C1SMQgBFJ0J0zzUdaVJtKFumQCK+wBDwbs3I/uykEj4C6b45yp99lDVv0tRbj+psTnn5wrNeqdXvTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qc2i4Tp0; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=TfJ6A2Ge;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Qc2i4Tp0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2413::62c; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2062c.outbound.protection.outlook.com [IPv6:2a01:111:f403:2413::62c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YSt7W5VXHz2xnc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 03:05:57 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LzM8vIDpHxdHxbhVahWqaX9IsD0+OmQIK6MFId3ahwBpaCtFNRQxUd7euJzYRvDRWNithM1mN0WAJUSRyz0zPW1x69yneUGQpYXmu3TCg71LisTiSKrRbP5yfsDPp0Uyny8BslgBBnmw6OIwav5J9Ydv19TZyf2ShcRtd6Jcilh1nQZ9Mf5lE4r2W+9uuka+AX0uSY5CpaNwlsoSMObuOmTd5cysr/TEoJPNalm2a0VCfN7q3E+p77wTgfdAhnxlRy56SSnN6r3EpCzyy3QGihk49w9f/XS+QGrVFBsTP3vWXGCDOlpQ6Z+1t7R+W2E5G1yJLmfBgUcNdcSIU11H7Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JNRER4e4mLrF55o4DjplUU27MM3IpEv3OTG4dNc+3Lg=;
- b=nPhCa9lBDpdfR5FQOWrfHF7LBV9ZZ5cVtHYmSw4RENa8E0w0wJOrPPTjfm+gwRqWCuDyImJs8eqsiXH2sHGxlOgCLx3MoIgyvGoSWNy0/gu9FXxIyePh1TFwy5j3LxaEYKZW63VsH80kjqqVPjuH/2pgpt988GtKjWV4AJrclReiV76bgS0VORHlk3hByl4gPk5jjQu4t/kRPumoRf5IF22Enk6StO252vndtnyz1d8BQJIK1IGlUAGpGnTPGb6DUjY+SCGfHu1WbTs6kBpvCs3G3/UK+xVLvjBiI/5P6FlNlZv+IMy88wDFzbju6txFu0s8F85BRpzMPKjC6qkc9g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JNRER4e4mLrF55o4DjplUU27MM3IpEv3OTG4dNc+3Lg=;
- b=TfJ6A2GepfPZYCkayya43IZQce2yCmAQCHFiIQ1irdsuWxyUi5l/NNvuNGtONyYWtkxA5KoxFm2j2ysQ2TrOErhp4qHFBFYSUun59qGqYVsQq7G0LLeOTjbMvK+fDrs7GzpldI4GNDktuO4RCWTSbJsr05hpjo1kLoItpXq/qWA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- CY5PR12MB6550.namprd12.prod.outlook.com (2603:10b6:930:42::6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8335.11; Wed, 8 Jan 2025 16:05:39 +0000
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f%6]) with mapi id 15.20.8335.010; Wed, 8 Jan 2025
- 16:05:39 +0000
-Date: Wed, 8 Jan 2025 11:05:35 -0500
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	linux-kernel@vger.kernel.org,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 1/7] PCI: Don't expose pcie_read_tlp_log() outside of
- PCI subsystem
-Message-ID: <20250108160535.GC1221136@yaz-khff2.amd.com>
-References: <20241218143747.3159-1-ilpo.jarvinen@linux.intel.com>
- <20241218143747.3159-2-ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20241218143747.3159-2-ilpo.jarvinen@linux.intel.com>
-X-ClientProxiedBy: BN0PR04CA0159.namprd04.prod.outlook.com
- (2603:10b6:408:eb::14) To DM4PR12MB6373.namprd12.prod.outlook.com
- (2603:10b6:8:a4::7)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YStJL5mZBz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 03:13:38 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508Ew0Hd008979;
+	Wed, 8 Jan 2025 16:13:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=/0pEosJAtrrq7+AZfl2ID181pVMDXx
+	vqRB1iDHPru/M=; b=Qc2i4Tp0uvBRyl+jGtaMLwYGZKKaztQUee3zrazLkmkths
+	BKjfeh5hc4DNF+FovJkBB/fHbU/DPDjRCbIEh/eMZyHyvXxayMqu9FBQFJOug4QH
+	iQGB7QT793mBW00g/2e5RWsTUnIRvzEqsPYZoZ1xrycOjY77mjmhxD3Tr58vKYfh
+	i5WI1PseA+GU3nr66lZ1WH05bULNRioNAgJgAm9VNeTRLQ4pRSeX+RYdvIB2cetS
+	GTBBs7NBz+M3Z6MiU02DQX/J9dzcrcbfHP6qZ8C6ajXXZ6zofEYRDTTx4bda1nof
+	mnWd9f4JhtWC7wiQ3TFYDev/txCoPQl/rsnDG/uQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441hupu905-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jan 2025 16:13:02 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 508GD1K1025958;
+	Wed, 8 Jan 2025 16:13:01 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441hupu901-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jan 2025 16:13:01 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 508CW5fH003630;
+	Wed, 8 Jan 2025 16:13:00 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yfat8qq7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 08 Jan 2025 16:13:00 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 508GCwru8061280
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 8 Jan 2025 16:12:58 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B38D720040;
+	Wed,  8 Jan 2025 16:12:58 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1575720043;
+	Wed,  8 Jan 2025 16:12:58 +0000 (GMT)
+Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed,  8 Jan 2025 16:12:58 +0000 (GMT)
+Date: Wed, 8 Jan 2025 17:12:56 +0100
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: peterz@infradead.org, kevin.brodsky@arm.com, alex@ghiti.fr,
+        andreas@gaisler.com, palmer@dabbelt.com, tglx@linutronix.de,
+        david@redhat.com, jannh@google.com, hughd@google.com,
+        yuzhao@google.com, willy@infradead.org, muchun.song@linux.dev,
+        vbabka@kernel.org, lorenzo.stoakes@oracle.com,
+        akpm@linux-foundation.org, rientjes@google.com, vishal.moola@gmail.com,
+        arnd@arndb.de, will@kernel.org, aneesh.kumar@kernel.org,
+        npiggin@gmail.com, dave.hansen@linux.intel.com, rppt@kernel.org,
+        ryan.roberts@arm.com, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        x86@kernel.org, linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-um@lists.infradead.org
+Subject: Re: [PATCH v5 06/17] s390: pgtable: add statistics for PUD and P4D
+ level page table
+Message-ID: <Z36kCF6tgnzkIRDM@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+References: <cover.1736317725.git.zhengqi.arch@bytedance.com>
+ <4707dffce228ccec5c6662810566dd12b5741c4b.1736317725.git.zhengqi.arch@bytedance.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,106 +107,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|CY5PR12MB6550:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5c63129c-7fd8-447a-67d7-08dd2ffe4b8f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?WVf7hL3pb6oPHLT2low2x+syLBkdHFz9uAWjmrl8/Zqqf4QK5h7NNPPtcH?=
- =?iso-8859-1?Q?cPab0CPnsfosCh58MpmoCmL9DQSDEiec0gHX+3fLWLlL77SWUqwehKVw2s?=
- =?iso-8859-1?Q?LGXyh49HHR9DyRaYq9ApyBm9pi1EReC5NtR4GzUYLL3KizjuYhBqITvkox?=
- =?iso-8859-1?Q?jEhz40ILMs0WxE5kXrTfx96bSXf2GmSsjgP+c+fptAl4VZ11EjonqXdOm7?=
- =?iso-8859-1?Q?ql8OWO7Ry84ZU6Xre39Qhn5NUzuMiYzfj9RLPBsONm1scmG5DichGORoNU?=
- =?iso-8859-1?Q?FuPKAEz4JcjRMxJCLv4H0zjJ44NmQuQ64p3i9+hWvoxWIeooJ/gfgk22S0?=
- =?iso-8859-1?Q?+Tbc10ofXWCoYjOzX9ioH3zpFsyDlUVoyRysqq0W5cg/xbK1dB+bCQpq9Z?=
- =?iso-8859-1?Q?GhBBtgTX1jtUuOH+AXGsaxX3XpHvV2spnS4742VtKQKYYH32N/rUvCFjTj?=
- =?iso-8859-1?Q?qRhGZ95lSd1x4yGM48xf1CsZMkj2EIaExqn4hkXiiVyKCMmYl5+PoA3dDZ?=
- =?iso-8859-1?Q?MDe4VkpHpLcAICuWB5AWa/jzcDn6+yldb5KpT0dBmSPI38yLupjd6fqlEU?=
- =?iso-8859-1?Q?IT4Y7vhqnW1tlcJcZ0tA2QilCvab2X3G+Ob/mMq76zRBT7bdB6aCzpDR5/?=
- =?iso-8859-1?Q?MlNnzRRhimYNaxGluyqBP9eueFBmP92soXr0PVKb5sL7/ZVxsODTXI/LEW?=
- =?iso-8859-1?Q?H49XL4Q8V7IOnbe1/gb1U4EfU2hmaWNKleQQ3xtauVQknxtRQQNUm3/KF5?=
- =?iso-8859-1?Q?KRuZzsQHjc12g2tKdn6S1HVuL7lUkBIYmyWA4oU4jkNRHSYIC6Jyfz6S17?=
- =?iso-8859-1?Q?MdsV4Ghy+RVhBSRlw8nwM9bwHMl7Bqx1Ju1qsDskmmQdENawD+R2OssYvz?=
- =?iso-8859-1?Q?AhrlZgFErdld3XgclqxK7uLd4W6N2fR6cCATmk9Etp3bRry2Ans+VhnBmX?=
- =?iso-8859-1?Q?U42HLq1+415fdnrkrD/VTALXrLq4ha9GGy1zQiweFDn3Caf77sUEj4/7BK?=
- =?iso-8859-1?Q?UiBi1yPCebQVjciNVhlPurCQJfl6/y0rdrhfbw0aaazPeSvIytN3Va2PDc?=
- =?iso-8859-1?Q?CfEJKz2tBEvRCbnYzXDDpnUCGYlcomCQCFuXM2P01VlPXBmsJLLn9YY12S?=
- =?iso-8859-1?Q?rqFjYvY9nGV+FzjlyM8yFvuMazUN7Sr+z4qkFaGGZqSRyDcBaj/4szL48b?=
- =?iso-8859-1?Q?EOdMvrD9Qq14IfgWp5UgXqIzFITbSFGGK4F8itZIgBsrJ/Ilx3xC8CuYcd?=
- =?iso-8859-1?Q?aapNqhKsEHcPYHx0aW4oEQbcGhrW+3q2vDRvTnf5Fosb3l95xqYxnhvwrw?=
- =?iso-8859-1?Q?TLYEwJTYChPDZCSvsiqW8xMMPUvKsSwcO8sSf8vJCpWo5l0YKxoXZLLtco?=
- =?iso-8859-1?Q?sE8xb1UJZm6XRQqE5BVzGbt41W5vHM3TDaDmK82Eaj61YCEZCzjHRYjQYd?=
- =?iso-8859-1?Q?QugOpoUSFN9WlIHD?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?bBMrq1p//ckVncgCovf4xDcGVIlZ+HscIl5opg/uqu+QW8J9JV7pd+yZlD?=
- =?iso-8859-1?Q?zznxtFxfMEfQ2vsJ/KP0lI9w2g/oTSH/MlExm6YcwIiSaVZ7jeViF/WBbW?=
- =?iso-8859-1?Q?g0O+pjmoEs3SQb2sV2wsGbiDNrTA7goHWSRnYifnPtyAMfvebjAMuaJg1k?=
- =?iso-8859-1?Q?9LlQYtBeUQQ/nMIOADsc90m5C/bJwbPDkH+6LsH+1FrucUGIm2+RoISEPD?=
- =?iso-8859-1?Q?8NqE+s7eLJmcfTpVEEtEuh8LU6OV+E5t2h9oV+llR4/K3V+mHbLWNzbDsd?=
- =?iso-8859-1?Q?sndaVKXjuBIZlkMOYlC7MeS1dI17CoapKwyyg4B3fhtv7pdPlN4A7/gdH1?=
- =?iso-8859-1?Q?m8Vp02USaCeP6z2pOwRdKUEWouO69Qi1QAtGZsbSH1Uuosq+KRB/AAJ+ww?=
- =?iso-8859-1?Q?WqMqewTZhWHmaknfhpBtHNYRokn68NYhXiv6oStzBYa2KrcwiILbdVgX7M?=
- =?iso-8859-1?Q?gKfHb+z51rVbVlY0pap+hJ/ZyxedwoZIaV5avgjWBdRgvccfniQSBTUkRH?=
- =?iso-8859-1?Q?kb1itt10DrQ+eg/26FYzi+V5BQH1m9fcMb06FphY/SbO8GzYPfLFy0rMxe?=
- =?iso-8859-1?Q?jaIOAfJDdbScTdNexaTAIcQk3c9Zn675afy5JqWDLIqijk3pq1vUtuM1Jl?=
- =?iso-8859-1?Q?zQ/EkB2k0Ss7PCEAQFVzs6qSA/dMAH8EJzZl9CsTZ2Hy783REOlyMuVfWe?=
- =?iso-8859-1?Q?lSrHmaMPgRG36cNb0J6At18QvuZGCboiH3Bf6FJ9OhihSC7YxOptk/Ol9f?=
- =?iso-8859-1?Q?CuuQeRhMN/StaypsZKMse4MmvfXwjzgJBohYoy7L1U9+cZcKdWT4rlffSD?=
- =?iso-8859-1?Q?JgPLK50X22//aucMOStuohYMkhSVtLc7WlkZNamkLpdP+CY8kzBfvVeFUy?=
- =?iso-8859-1?Q?hLrnG8L4JLDKXePng4SC2a8JknEf8zSodNPE9JpDaMhy//+KAAjCCzryKP?=
- =?iso-8859-1?Q?4snVz08pq8rjr2GqSPTQRY/YxX0+Y26p8bLLbAXnvgsS2aLN14cCoBqoT0?=
- =?iso-8859-1?Q?r/34FwhKeCxwyvqEc62W7MwY60IMnY5HEUZINreNyXKH6tqnefTAb0zJrF?=
- =?iso-8859-1?Q?xLqzcm7CMjRLTvXMkc/SDStqIhJs5qq6m1s28jBeLEbtbxMTNjcoX+bu8F?=
- =?iso-8859-1?Q?D24gnXck9Ld2SutKutT0eaSaXhoO/MteufvFrOZ5Yaknu5FpAAaOUSqjuF?=
- =?iso-8859-1?Q?ndcedjzK5oPO6VEBNhXXAcYuk+/bU9G2ZaIN4SONJtKO5z9OzWrC3EEI6T?=
- =?iso-8859-1?Q?wa4crPaYokd9vcUSEzDMLdcUayJ+vmHYHgG8lGpZu5djHGaVOJx1+5APsz?=
- =?iso-8859-1?Q?f95/H38Mnwth0wYVzVjx5+PEjRtRFG7I59SjSRhI1WLRe1isB8TyFYMi1T?=
- =?iso-8859-1?Q?fRHOdLDMuIMEJnkN3j+nxIvdmpFsMtWEP86eCNtQTEPjv4GtNd6qMcZf0f?=
- =?iso-8859-1?Q?49qseVZlUwv6awWHQHawitTNVn02HicxEoRLFJJ+MAaytUzFDbggjkS/cS?=
- =?iso-8859-1?Q?1v92d5KKFTP3fL2pfR8LMSAt8yzpqIEHRWS0v5vMjmH131fyfT0mN4t8Im?=
- =?iso-8859-1?Q?gfO3Qt+OW+FPRLsnWDRv0JLMcnH8kgBepQx9gVzlHm1+mntslIYReUnxrm?=
- =?iso-8859-1?Q?YJ6ALgKa+jmb0xD2ZC6AATNNls9o6mUVUL?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5c63129c-7fd8-447a-67d7-08dd2ffe4b8f
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Jan 2025 16:05:39.4182
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JlKeloK1KNxdUBNfL/SO4Dz7M0onY2UWNTuUIAnm7O8Oh1SlPqfNhUQewutY2ob80ZGdftptgonSDCTjwd4c/g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY5PR12MB6550
-X-Spam-Status: No, score=0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_INVALID,DKIM_SIGNED,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4707dffce228ccec5c6662810566dd12b5741c4b.1736317725.git.zhengqi.arch@bytedance.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: KUhXNS6aArO_tUV9i1PAsm9yGShhoIw3
+X-Proofpoint-GUID: AEhKKtU-rxWzLnMSxQ4AI9AzMP3tXlSR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 adultscore=0
+ clxscore=1011 mlxscore=0 malwarescore=0 priorityscore=1501
+ lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 mlxlogscore=890
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501080133
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Dec 18, 2024 at 04:37:41PM +0200, Ilpo Järvinen wrote:
-> pcie_read_tlp_log() was exposed by the commit 0a5a46a6a61b ("PCI/AER:
-> Generalize TLP Header Log reading") but this is now considered a
-> mistake. No drivers outside of PCI subsystem should build their own
-> diagnostic logging but should rely on PCI core doing it for them.
+On Wed, Jan 08, 2025 at 02:57:22PM +0800, Qi Zheng wrote:
+> Like PMD and PTE level page table, also add statistics for PUD and P4D
+> page table.
 > 
-> There's currently one driver (ixgbe) doing it independently which was
-> the initial reason why the export was added but it was decided by the
-> PCI maintainer that it's something that should be eliminated.
+> Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> Cc: linux-s390@vger.kernel.org
+> ---
+>  arch/s390/include/asm/pgalloc.h | 29 +++++++++++++++++++++--------
+>  arch/s390/include/asm/tlb.h     |  2 ++
+>  2 files changed, 23 insertions(+), 8 deletions(-)
 > 
-> Remove the unwanted EXPORT of pcie_read_tlp_log() and remove it from
-> include/linux/aer.h.
-> 
-> Link: https://lore.kernel.org/all/20240322193011.GA701027@bhelgaas/
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> diff --git a/arch/s390/include/asm/pgalloc.h b/arch/s390/include/asm/pgalloc.h
+> index 7b84ef6dc4b6d..a0c1ca5d8423c 100644
+> --- a/arch/s390/include/asm/pgalloc.h
+> +++ b/arch/s390/include/asm/pgalloc.h
+> @@ -53,29 +53,42 @@ static inline p4d_t *p4d_alloc_one(struct mm_struct *mm, unsigned long address)
+>  {
+>  	unsigned long *table = crst_table_alloc(mm);
+>  
+> -	if (table)
+> -		crst_table_init(table, _REGION2_ENTRY_EMPTY);
+> +	if (!table)
+> +		return NULL;
+> +	crst_table_init(table, _REGION2_ENTRY_EMPTY);
+> +	pagetable_p4d_ctor(virt_to_ptdesc(table));
+> +
+>  	return (p4d_t *) table;
+>  }
+>  
+>  static inline void p4d_free(struct mm_struct *mm, p4d_t *p4d)
+>  {
+> -	if (!mm_p4d_folded(mm))
+> -		crst_table_free(mm, (unsigned long *) p4d);
+> +	if (mm_p4d_folded(mm))
+> +		return;
+> +
+> +	pagetable_p4d_dtor(virt_to_ptdesc(p4d));
+> +	crst_table_free(mm, (unsigned long *) p4d);
+>  }
+>  
+>  static inline pud_t *pud_alloc_one(struct mm_struct *mm, unsigned long address)
+>  {
+>  	unsigned long *table = crst_table_alloc(mm);
+> -	if (table)
+> -		crst_table_init(table, _REGION3_ENTRY_EMPTY);
+> +
+> +	if (!table)
+> +		return NULL;
+> +	crst_table_init(table, _REGION3_ENTRY_EMPTY);
+> +	pagetable_pud_ctor(virt_to_ptdesc(table));
+> +
+>  	return (pud_t *) table;
+>  }
+>  
+>  static inline void pud_free(struct mm_struct *mm, pud_t *pud)
+>  {
+> -	if (!mm_pud_folded(mm))
+> -		crst_table_free(mm, (unsigned long *) pud);
+> +	if (mm_pud_folded(mm))
+> +		return;
+> +
+> +	pagetable_pud_dtor(virt_to_ptdesc(pud));
+> +	crst_table_free(mm, (unsigned long *) pud);
+>  }
+>  
+>  static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long vmaddr)
+> diff --git a/arch/s390/include/asm/tlb.h b/arch/s390/include/asm/tlb.h
+> index e95b2c8081eb8..907d57a68145c 100644
+> --- a/arch/s390/include/asm/tlb.h
+> +++ b/arch/s390/include/asm/tlb.h
+> @@ -122,6 +122,7 @@ static inline void p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4d,
+>  {
+>  	if (mm_p4d_folded(tlb->mm))
+>  		return;
+> +	pagetable_p4d_dtor(virt_to_ptdesc(p4d));
+>  	__tlb_adjust_range(tlb, address, PAGE_SIZE);
+>  	tlb->mm->context.flush_mm = 1;
+>  	tlb->freed_tables = 1;
+> @@ -140,6 +141,7 @@ static inline void pud_free_tlb(struct mmu_gather *tlb, pud_t *pud,
+>  {
+>  	if (mm_pud_folded(tlb->mm))
+>  		return;
+> +	pagetable_pud_dtor(virt_to_ptdesc(pud));
+>  	tlb->mm->context.flush_mm = 1;
+>  	tlb->freed_tables = 1;
+>  	tlb->cleared_p4ds = 1;
 
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Acked-by: Alexander Gordeev <agordeev@linux.ibm.com>
 
-Thanks,
-Yazen
+Thanks!
 
