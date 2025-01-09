@@ -1,73 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-4921-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F8E9A07C73
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 16:52:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33E4CA07F7F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 19:06:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTTmt5nF7z3c1w;
-	Fri, 10 Jan 2025 02:51:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTXll34s7z3bWH;
+	Fri, 10 Jan 2025 05:06:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736437918;
-	cv=none; b=Z69QQ2RgzHK0E5i8txDKCbttJ89BJwHXTeHOdBKN2esSBH30PvdFKIKUmDwp2PtOP+8fP1mF46184R3pygoW7D3VGOqmbeVJpXThp3jD/ZZ6Mlqy5tk5cL36I7GepRO55zV3i1JMJq6OiiPjI0oVduPkr5K5inTf0X5+K1ENJQgJV9THQObrmgP7ANiLsOGFqO0xhrDeh5Z1KI0z7/yaIzSC9je3odgpYzRXFgydCw8kBQHDMI97OUjyMTJbXBRR0Sf+E6kffItMdBAF19BqVetFrjCvo8rPPKKnV9dnk1Bxa/A+8DvOwITSQbEfh2tenC/rlgH4LkCl+jeDJpTlyg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736445971;
+	cv=none; b=X1PKtimNBaFgtumuLxLwRhPnsvWLatMYO0+/TPKvi65ClCDyq/y/7tv/Kjzcb3pBkkoYwbkGCPbJA1QdvnXriesaroRg+hvqkns/SE45pI1EeiuXyw67H6oQ4gzrqPQQdGcDyGqE9aPexyF75YW81ZMADQqmAnGh32x2H+bjhtR2O/FB8iYkO/YhlJ31dbkzdVGJkNzHN97e/0zEHfoRC4tKMsEBB9L7wRNa4EQEgh+Gta0eKtTL+NqzZ7W2ChUNVU0A9Tho5+3wV0crJg35C3ogWb2a/nmpIUgTmVQmhlRqymgui/js/XQJaYysWp4iIJveOvchUKizV5O8pLJGxA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736437918; c=relaxed/relaxed;
-	bh=aLvwPrq2OgaU0a/cBhR7BasCwOVkoEZA5e8ZFXYAKgU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lk9FEbMG/EW01Yq/m+oVernnt5c8M5XqLy9y1UOVNXaFvIwWhVf1MZhMOxa7dGUDhJrZBBvpTaSXlNy2DyXbIM75SCfS2R7C/Fo5a5gA7D1n7xmnlVw9eLb6150FDVW6T1KTbYeZ0cqBWFgPC3bnGdR+oiKLm6iSTt+et16sM2LLergI/y+XFKT6PeqGT3nGus7XwDCRqQRhb/sCAfvG7xmCv23uTaQP8iIkuZrzk/Vlm41CG8ACr9eoX4t5j2OhMwB3a10JVh9E08sfjxyEzCm7wyEF6bN+fPrAA5IpacLzUecv2KtAZ8I0pA03zuHGbHEs72T96BQ+ANYkgPvx0g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F9BSlQcx; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=djwong@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1736445971; c=relaxed/relaxed;
+	bh=Oj14ywmszEKTo8pcqpdQOE/Eg/vLBK+a32sIyoJJO2E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=L36V2qzHEChaUJ3zQ7A+nvYNrNlWTlJQLUwhffcDScEqAHDyhBQc20vSdOkd7rJZYwlQLFUACC7WxSDwllSlcQsS1a2FCnjV1lBX088WcX8NJthu2n4ctMS1AuWBN4oODOrCh/tkF5R9AoQV7+0bg+Ep1SJurb6W9LXlhWhfb+UfMtZWisW22H0ieEcF7QV/pSlAK/atffFoIiZ3v2rm82nwnrWmqUOaDwWVQUCiSnKzMzkQth1VkW7rC7InbGbWA2gyohC+KCgryU0K8srUXeKVHWIZa6AQu89PrNqW1M3J79CxTvX92BMGkZy1FnTslIfpEifqGITmPOOAfuD09A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hXJVC9TE; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=F9BSlQcx;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hXJVC9TE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=djwong@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTTms4dMCz3c03
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 02:51:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTXlh072Vz30Ng
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 05:06:07 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id D378CA420AB;
-	Thu,  9 Jan 2025 15:50:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E5AC4CED2;
-	Thu,  9 Jan 2025 15:51:55 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1CA1D5C5CC5
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 18:05:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C650BC4CEE7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 18:06:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736437915;
-	bh=4PNW5U1RCpwSI6ed5qCmkDfjxSB39XjXAAnaje7o+L4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F9BSlQcxUU/kvrDz8ezVoOO+s/YBhBI99DBGbLdRbteRKBcsdBNKhfA6NIrkjDYkC
-	 9GtrmQ7VK0dv7qDBCLFFprwhk5flkxmRl+V2FYyKWlDlaQk5dy/y43RuJc1rAObSVE
-	 sl7FszvwCJ3ZWmJ3LwoRXHehBmq48TqQ4/nOFcPMPAGWGxlPfP39p5Evt4580Qxykh
-	 T6IreW5JxdI40u2aiQRRvDdYRS5jpPoTlnD0T3RTnaN10Mg41YwaqUaSESqRhF+j/w
-	 8yWPU7z9RguVCtFoKzz3OeFzncyxzknkL/0P6P7tlQkSO/uCgw6CAfTy6ch0j+etXR
-	 6KWhdTwfzx9bw==
-Date: Thu, 9 Jan 2025 07:51:54 -0800
-From: "Darrick J. Wong" <djwong@kernel.org>
-To: Joel Granados <joel.granados@kernel.org>
-Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-raid@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
-	codalist@coda.cs.cmu.edu, linux-mm@kvack.org,
-	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	fsverity@lists.linux.dev, linux-xfs@vger.kernel.org,
-	io-uring@vger.kernel.org, bpf@vger.kernel.org,
-	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
-Subject: Re: [PATCH] treewide: const qualify ctl_tables where applicable
-Message-ID: <20250109155154.GP1306365@frogsfrogsfrogs>
-References: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
+	s=k20201202; t=1736445963;
+	bh=rp9xKD+8m1msQ0xxbCs9oZzFyU1GURrqUZhq3NbpvyQ=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hXJVC9TEna9TWYKbS9F02aIUvOHalq4E7m1+cvMk0ArDdbnyNkOQeESQ7Ur7QTEYq
+	 oV3fJnNHiU6ugTU9/tuOjHdJ9qaR831jsML8BcJ2B2+uzRQfA4kpmr3AmZ+XqRvw70
+	 BTN8HX8ggLtR2WOIhN2X2Ipa4OKa5qs1wwTNGfy1p+9su4jHqsiWIAwGFmgaxU7Nfw
+	 H9Abn1fQ/2SPP2QU6lVw0EYHITfjtwSWp9wIQJbaVZRVNv4TDYE1jWwRNuescPEqI8
+	 vYK392uOFALwuMqP1HoC1bERclFcBuYV7fmAeGJqkaXECHPwUoHQw9LVho0fFgK9tk
+	 fJ+fXn+JQWXLQ==
+Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-844ee15d6f4so82757239f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2025 10:06:03 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUOM6k9PZ9TKabRHQO7ztIho/n49Gy8ZIniTl3wHqtJnuWnY1//rQ7GzaG524EgqwRNAhzRnqgAiI4wAwA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YznxtczBErHsEo7RbkCAARSTA1VzBaYrz3ef3/nxAXwJcEa8M30
+	OpN2/DaoFQAKaC0xOE4qOMqa1l6H2Yvi0XT7phdH/Qo+nXuBkGclydfLMGq8ZdJrXiTYhbLWHE7
+	5gqmO346zAtwkwp/gS4MW4ToF4qQ=
+X-Google-Smtp-Source: AGHT+IHw82IqZn0L3vIWI2GRAE2/Fu1vkOzFuTOkK3ccul7HxPp7E2ac95iMCNTUN8mztI4YyZ2Kf9FZUsicSlonzfg=
+X-Received: by 2002:a05:6e02:3048:b0:3a7:6a98:3fdf with SMTP id
+ e9e14a558f8ab-3ce3a9da817mr60484875ab.14.1736445963152; Thu, 09 Jan 2025
+ 10:06:03 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,27 +65,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
 In-Reply-To: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+From: Song Liu <song@kernel.org>
+Date: Thu, 9 Jan 2025 10:05:51 -0800
+X-Gmail-Original-Message-ID: <CAPhsuW5zpA28gkBQYMMuYCUbnDzdeq4pHsd0Mx=PBnDPiHKqHw@mail.gmail.com>
+X-Gm-Features: AbW1kvZZD8oqcdTZ9DXv7tEUC7bpyqeBsuw6nnhXboAE2kNg_1eTiibnv93HXj8
+Message-ID: <CAPhsuW5zpA28gkBQYMMuYCUbnDzdeq4pHsd0Mx=PBnDPiHKqHw@mail.gmail.com>
+Subject: Re: [PATCH] treewide: const qualify ctl_tables where applicable
+To: Joel Granados <joel.granados@kernel.org>
+Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
+	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org, 
+	openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org, 
+	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
+	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
+	linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org, 
+	linux-serial@vger.kernel.org, xen-devel@lists.xenproject.org, 
+	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, 
+	codalist@coda.cs.cmu.edu, linux-mm@kvack.org, linux-nfs@vger.kernel.org, 
+	ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev, 
+	linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org, 
+	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com, 
+	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Jan 09, 2025 at 02:16:39PM +0100, Joel Granados wrote:
-> Add the const qualifier to all the ctl_tables in the tree except the
-> ones in ./net dir. The "net" sysctl code is special as it modifies the
-> arrays before passing it on to the registration function.
-> 
-> Constifying ctl_table structs will prevent the modification of
-> proc_handler function pointers as the arrays would reside in .rodata.
-> This is made possible after commit 78eb4ea25cd5 ("sysctl: treewide:
-> constify the ctl_table argument of proc_handlers") constified all the
-> proc_handlers.
+On Thu, Jan 9, 2025 at 5:16=E2=80=AFAM Joel Granados <joel.granados@kernel.=
+org> wrote:
+>
+[...]
+>  drivers/base/firmware_loader/fallback_table.c | 2 +-
+>  drivers/cdrom/cdrom.c                         | 2 +-
+>  drivers/char/hpet.c                           | 2 +-
+>  drivers/char/ipmi/ipmi_poweroff.c             | 2 +-
+>  drivers/char/random.c                         | 2 +-
+>  drivers/gpu/drm/i915/i915_perf.c              | 2 +-
+>  drivers/gpu/drm/xe/xe_observation.c           | 2 +-
+>  drivers/hv/hv_common.c                        | 2 +-
+>  drivers/infiniband/core/iwcm.c                | 2 +-
+>  drivers/infiniband/core/ucma.c                | 2 +-
+>  drivers/macintosh/mac_hid.c                   | 2 +-
+>  drivers/md/md.c                               | 2 +-
 
-Sounds like a good idea,
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org> # xfs
+For md bits:
 
---D
+Reviewed-by: Song Liu <song@kernel.org>
+
+Thanks,
+Song
+
+[...]
 
