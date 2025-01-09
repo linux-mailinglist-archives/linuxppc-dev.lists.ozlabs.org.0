@@ -1,58 +1,121 @@
-Return-Path: <linuxppc-dev+bounces-4881-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4882-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A76E5A069A8
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 00:46:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5C37A069D2
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 01:14:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YT4LZ5Y01z2yvk;
-	Thu,  9 Jan 2025 10:46:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YT4zN2fT5z30Qy;
+	Thu,  9 Jan 2025 11:14:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736379974;
-	cv=none; b=b0FLB3Bhb5gj7ekqXjR9BPrPNkWPl0rKydkHewwna0rKsyflPOzvqfYjf/YvJdDXWxiveGSW8EhhSJv8dKcC3L6bECAj1+1LMzDANHalhhljzyVVfWRpRAGv5mhsemIzV6Nxg5eGlgiRpgvzrrXWUa6oSKkZXy+etxDhB/AgDnFm2oDJ8JmqpuwjD2uxJtd3S2DqVhqkqPhfZ0lTYeSPd2EKGIJr61ldNB9aUE0iTYX7CPqg2x6bilNRwyU/nRXA3L8UfCp2GLDRprVMnCCpBSBnFpj+tC9MFmVRZtD/OiXxuib1tGWliUb2psd6s8PO2As5xMUNk1fsDZEkc3qXxA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736379974; c=relaxed/relaxed;
-	bh=Ly9fn1T4zx4H8wNaz3hsD2gBcjX7dDKW3DZGhWNHt+c=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=Vi/w4GN50Tc3VStn8IQlt9fYUhbtrOVkT6y0Aj31PEwGgyl7L9F1M8Qhg7XqFGBY4SpHv0kngDzZ6wR7FVkfAKm/ADF96NDETHhGZ6dcCPH3jCCYtQZDyfASZPRVnfbtb3uTAxgVl9DD0kwi9dldVgte7CWCPxTQaX7ptyYimdtB6B3mLrRHZRD+q/1wKMNr6z6fxHIgH290NlCmgolzfrOIsxvf+O9iEmVvIRBnyReN5g/p0K0aIPzcMKOPUAOtwzEkd0K7xr9JgZKVmHXeBVVQ/mxCq3t9u8Ipz5Yd6sk3+pW66dKO/QL2mKL2Zr0ZBOFiweYCAln0dlJ4CbFckA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=VeqBWMwv; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=198.175.65.17
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736381680;
+	cv=fail; b=OgUXMARhABY2b/+hcoV5nWzCghQoP3ku8pp8IZ5jJShzm+6EcZmaYAtXjlQA6mnb54zevsE+cYsxGneuXFNSAgCJE1foPQiyRoaw/b0JnAPK5sXnTJbBs7ZKo9Or8ipZ4eynw8cv0M7cnAdyVilws1wmhnNFXe3wmuKEmD1NW95jwzcp6x7u13HU6ilrXKIxM0bZaNPVDpLtCiccmZmqn+L28OVuWghs2VzcxoeTf3I4OI8zEkD3SppTPk9wg2LDrXh6P3q1sOU2gu8nbsYISaoVhAStu+/WbwuEngR/J5IUzNujw7m+Y0J02zUKs2grXkF9AON9xK7tiOg2a3BA9w==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736381680; c=relaxed/relaxed;
+	bh=03LWZx/Dcm2M7hIFkswGHb3oGb9DtsrgN0DKrTJeKac=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=C0zRLNRNNPKdM/PqpJ7HBWF6P68Xq1Hs/TwTeGE6nTISf/Dvw+rsQp6G+q6PKq6cM50S/62PSa0e5HF5+uX7ostRZl/VzPSwg/TV21f6uDhJOMBPwdNN+1Nvw1IeshlCWV/bjJRFqB/iQS/Z3aMfMXcpHEg1V1ZjFcteuf0bcG331kDM6wygRphTmSMVEAQTq/wfIY4ToM900V9lMxAyshLodxTrZyb98iRGbrwwz5R6aGeh1PvM4yFIleRjCzcmjtEnM8+M7r06Xl0nlI8IJ9FDiZXUF2rzOX/7JBnaFFuuxFJkF1LvPY8LPT0LjqayIdikHdm0blTVYM5yLV0DvQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JBIGlI/n; dkim-atps=neutral; spf=pass (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=VeqBWMwv;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=JBIGlI/n;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YT4LX4lwzz2yZ4
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 10:46:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1736379965;
-	bh=Ly9fn1T4zx4H8wNaz3hsD2gBcjX7dDKW3DZGhWNHt+c=;
-	h=Date:From:To:Cc:Subject:From;
-	b=VeqBWMwv3dGs6P8EIcVZXj/Ac88f8sttRMqilZ0PZszEvvpGpzX0/MMwcrvdqsZTe
-	 TxWfcnrx0wUF/O2ia0U0x07AHoRsbuIUw2mJG6V0Itgtahn5G5HLsTWCki5fEGdZGr
-	 wqGolE/43MlMlYK4HE56ewLEGajluuKQs/QzYRDyPpjp1x8h06aTx6Ivjj47cC7RTa
-	 4SMRpUsExEocqh+TBrdUFMVsN9gd5Y75Fc6d/PH73TX8cH5cdXdnBD+lbEJ2MPPTwA
-	 EtU73O+BThPUs5xbyTJ7x5nfvjO9b1NCwkDBuWgv5rVXlZwlx/1F+9HEgP+17SqnrB
-	 Va9Gv4z3SRFDw==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YT4LP1xQJz4wbR;
-	Thu,  9 Jan 2025 10:46:05 +1100 (AEDT)
-Date: Thu, 9 Jan 2025 10:46:11 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Michael Ellerman <mpe@ellerman.id.au>, Andrew Morton
- <akpm@linux-foundation.org>
-Cc: Alistair Popple <apopple@nvidia.com>, PowerPC
- <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List
- <linux-kernel@vger.kernel.org>, Linux Next Mailing List
- <linux-next@vger.kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Shrikanth Hegde <sshegde@linux.ibm.com>
-Subject: linux-next: manual merge of the powerpc tree with the mm tree
-Message-ID: <20250109104611.2491cc3b@canb.auug.org.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YT4zK1N0lz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 11:14:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1736381677; x=1767917677;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=RNhUvrYzureu1Wcz6QVzpvRxfytm2tn7PdmcHQnmL+o=;
+  b=JBIGlI/nxruf9aHieAhK8/ZYpmktaiBv7VtPSM06PtKUSsaCP6+oowGm
+   C9WIRZ5dinZr1mcgqt6LsWglC1iIE6mGugAY3vLT7T8BBkPY64YTXw6tp
+   /JjQaDjcwq6ZI9qqyLNnoz/lXbywLiSiu2MdVK2K92ks867DXqP29udOl
+   iO5YUltik04jTHQ6XHFiRzj5Gnd4LVcEYkvIst0lTIBeSS4ZnhyVmCtvV
+   ihHgCMhueMd1aA0MzGD9EjMp4CLJehiTGO8EWhovyE2OXe+VRPklnzsXG
+   smFUR0M3o8vgTkzduPgOd7qwpwVSBjx/HqtyUJnO7abOjEugpteuwVF5P
+   Q==;
+X-CSE-ConnectionGUID: S7hc2fqlTauN79aIOY/6Zw==
+X-CSE-MsgGUID: JSQNHDSmQbaAnZEpg+aWIw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="36646646"
+X-IronPort-AV: E=Sophos;i="6.12,299,1728975600"; 
+   d="scan'208";a="36646646"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 16:14:29 -0800
+X-CSE-ConnectionGUID: nv7xC/6gTwWlcpkvaHqRMA==
+X-CSE-MsgGUID: p4r2fVD4QNCe+brL6wRJ8g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="107292053"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 08 Jan 2025 16:14:28 -0800
+Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Wed, 8 Jan 2025 16:14:27 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44 via Frontend Transport; Wed, 8 Jan 2025 16:14:27 -0800
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (104.47.70.42) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Wed, 8 Jan 2025 16:14:27 -0800
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GmOZfc4JdjhCtvRz0kEDFD2H4sMtgFPoNMUlvgfdERDHQU1uuov4NpiJAmlTWbgdC+w+HnEB9LAQP1fOfA8K9tO54cchdI/gCrwnjIeZsF3YbB7dU9RgXWrueUHfbzZqXPwSCHKL/4gCNbU8IJZjRCI0qAi9N4sE+dit4YV0XHekQy5QgxSmRXKoZxgaHDgBjh+ycs+kQBep4ikB9R8pkjl/wDHavewC2lxxt6IOz4yS3rFxhglYomIYWWl0aLstDyGtMD7blTQNZ3bGF4sd6cqbP27/AVLHGX5eexCaCcBYDVRiv4BVRd3fO4DYf/I1NsfFg/i3PHnA7nITX4k9cg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=03LWZx/Dcm2M7hIFkswGHb3oGb9DtsrgN0DKrTJeKac=;
+ b=Y4DcpiyCKXcZFvMzOYE2YFepMNXaoK2AxKnf+Jqekep9bGSqMlO8QderzwPO0DQpodRjwTou9QO++mdjmIyE/xwnG/CFJgs3yoCUeF87p2PL/8wIueog16gJNWYejhspLIfulBRL0Jj0nY30OuvsqovppkvOBDSLEYzWb5RBQ+37NV8M28Yn+dFAUWoW3veC5L5WpVP9EYu8CYOFfosJG01/RbeQnozMYgtKv1zhcm4Sjw5rbY3ZxJCsI8T4kp7rZfBQTlGpu+KQbbgQE+86mgrv5vPEM1SKzchwPd/BTvhRqdt9jsXlrZDD1tXBKifu7b6Rp1EWTukFXQodxY4Xdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
+ by MW4PR11MB5910.namprd11.prod.outlook.com (2603:10b6:303:189::5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Thu, 9 Jan
+ 2025 00:14:24 +0000
+Received: from PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
+ ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8314.015; Thu, 9 Jan 2025
+ 00:14:24 +0000
+Date: Wed, 8 Jan 2025 16:14:20 -0800
+From: Dan Williams <dan.j.williams@intel.com>
+To: Alistair Popple <apopple@nvidia.com>, <akpm@linux-foundation.org>,
+	<dan.j.williams@intel.com>, <linux-mm@kvack.org>
+CC: Alistair Popple <apopple@nvidia.com>, <lina@asahilina.net>,
+	<zhang.lyra@gmail.com>, <gerald.schaefer@linux.ibm.com>,
+	<vishal.l.verma@intel.com>, <dave.jiang@intel.com>, <logang@deltatee.com>,
+	<bhelgaas@google.com>, <jack@suse.cz>, <jgg@ziepe.ca>,
+	<catalin.marinas@arm.com>, <will@kernel.org>, <mpe@ellerman.id.au>,
+	<npiggin@gmail.com>, <dave.hansen@linux.intel.com>, <ira.weiny@intel.com>,
+	<willy@infradead.org>, <djwong@kernel.org>, <tytso@mit.edu>,
+	<linmiaohe@huawei.com>, <david@redhat.com>, <peterx@redhat.com>,
+	<linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+	<linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
+	<linux-xfs@vger.kernel.org>, <jhubbard@nvidia.com>, <hch@lst.de>,
+	<david@fromorbit.com>
+Subject: Re: [PATCH v5 05/25] fs/dax: Create a common implementation to break
+ DAX layouts
+Message-ID: <677f14dc3e96c_f58f294f6@dwillia2-xfh.jf.intel.com.notmuch>
+References: <cover.425da7c4e76c2749d0ad1734f972b06114e02d52.1736221254.git-series.apopple@nvidia.com>
+ <e8f1302aa676169ef5a10e2e06397e78794d5bb4.1736221254.git-series.apopple@nvidia.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <e8f1302aa676169ef5a10e2e06397e78794d5bb4.1736221254.git-series.apopple@nvidia.com>
+X-ClientProxiedBy: MW3PR05CA0017.namprd05.prod.outlook.com
+ (2603:10b6:303:2b::22) To PH8PR11MB8107.namprd11.prod.outlook.com
+ (2603:10b6:510:256::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,74 +128,168 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/m9da.KuDx9fnbdx1dYJFT7v";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MW4PR11MB5910:EE_
+X-MS-Office365-Filtering-Correlation-Id: 69f2d7b9-6dfa-4f45-4eed-08dd304292d7
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?YbrRzBodjh9IUP4TfL5QAzhpBu4j5pffZHY5j807wpdpvDmbntu1jmUBHT76?=
+ =?us-ascii?Q?uUmVO/pP2ftH8v+UN43dwOxXf+2/huuqIbQjgpvBBAY3wOJDa98XZzbgOERl?=
+ =?us-ascii?Q?yjNm0Kl2pdJeXa7w95rbazz2ez5ot2dDPaTdl4X/PMSFQCpNaem5ni6VjzsU?=
+ =?us-ascii?Q?0eJlOJxgWU+ElhskZ8I5b0fyGJIfHj4mULM536cpj6UsSkbSpzWMIvJ9mpQb?=
+ =?us-ascii?Q?7KUI6TfQkK8kmya13h4uFPawth5uQ6g2YjCM9FujPFLO6zT61AmlwLM3Uhlp?=
+ =?us-ascii?Q?lMFXwTV4mnz2ycKYPGVP/NsSfgz+BpHWu8UERjLPcl/m/WrNTkuD3nOhKQyu?=
+ =?us-ascii?Q?LAzF92xR1VMscdGhSNgKf3vDXiiqAL6m2maWD+JQ/1/rBe2URmX2tZjx8ee/?=
+ =?us-ascii?Q?mJaKdpg17VKdy0xrG0iYnr59IwpuXti5x+jzcP0Mtv0Y9//X6vq6mKBymYGo?=
+ =?us-ascii?Q?1SPY38+r7uWAmRshMJDihXkWXbopJ/dOyUumLzn7fD0oPDWD65xqjhwpDfzk?=
+ =?us-ascii?Q?c0KiBjE6PPfDNCwuz4sI0iOqh6xmldLkO28iAdH/wpMA2kGUtoY9ZrEzchgY?=
+ =?us-ascii?Q?UYBwCTuT/xyEGFyX4W2Reyrj6d6rSks7jH1QG7vBBg7/vVgnwxU1jP04jKtr?=
+ =?us-ascii?Q?mEF3jK3yDjDOlnK2Ujnj/qBwfqcMCAX2wtfH8zWZ6HjoMT3CtObWRVdCZPS1?=
+ =?us-ascii?Q?n3mLvvfgusRwwgheoRBCdC3nB2FLS9iI4l05Jp4XVlipjAoVWyWuxSvgLQZa?=
+ =?us-ascii?Q?pm9Rt1uMRhqxkYHXi7WI2Y/JZX0iem6f5VesVRP/7HmibksjFltPxmnzibpo?=
+ =?us-ascii?Q?24fGGotCcQHO93yc/MmBvZ2H1oF+sDbKNRbfNOXSJsuYmdWhldtgmI/Dg08H?=
+ =?us-ascii?Q?dZqkOCyP4C4r8FEN/pXz3UhEfJFHGb3tLVmKBAmLRPh5jnfse8ZSfZVYZMSs?=
+ =?us-ascii?Q?fL8NpQVrRMeYPGv0+Qxw6vb3rrLj9VV+sr8hcOsR3WhitzKBKHKZ/ulh4l/v?=
+ =?us-ascii?Q?Y1M5mXkzwcAhpo+I6kDfHkbEV4ZGODff9gCtC6Ryug3RBTnDs8dNY8yChIZH?=
+ =?us-ascii?Q?+mUxXUDIqKd/Gu/9PFOCfRUnGYMaZEEMntRXXLVBxdWIFcb+zlp+eTDTT35b?=
+ =?us-ascii?Q?fWhNxlmyf/tUwsFK5c9AVYy8KBopW2rbs+BuuyDeiR4MQUV1jILfUBngtAKn?=
+ =?us-ascii?Q?Lmzg3LkfqBAH7b3TTdj2qapeCmbNYbTcUb83tdFtdvv+/SNmAHcfG4hDzeHq?=
+ =?us-ascii?Q?ZjCtKzQNZGXZWDc8iPFY1pWnUkI8A207amm+UbwJ+3Vu0QuY7n+oz7Ukt0U9?=
+ =?us-ascii?Q?I2286Cn6Mfo9rHeqiAYcaoDpn9s2iFAwcxPyOS2IvgGCvrIH5nrV2r/wKlFw?=
+ =?us-ascii?Q?WH7QEH1lpnpun1SAbOB0LNFLEUBO?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?UYOPjVrmzv1r+jnp1PDAyseNFFmdL2iat+rIQ/BalkiqqozhuvtV9cUcu9Sz?=
+ =?us-ascii?Q?rn5B0puQRMD/cXlrNwFas7CdLKr17i25Z6o1SjiUhgUaQu8dGvP8Zta6QGQc?=
+ =?us-ascii?Q?k9nQxvPX1oR9GN/A7F/M78WfUqKX8GHzaexXTEr57HbgMnN9xZz56gzkAma3?=
+ =?us-ascii?Q?2t0PgQ8XF93J8kC6Vi46IfmenqUDO5wFgy63zmXBshHqmSEhqKITsqGbl6Zv?=
+ =?us-ascii?Q?i0r852i3XXDYPXT8VR4SvvJoMQTM9zuQj9A27aTKmbEgcQ8OEIutSiNtSC7q?=
+ =?us-ascii?Q?MdDEuTrDyGypcTcRRgY7evJjXu/3ZW0f5e0DdlYUMl/0Pnl12g5y9aQj3Jwe?=
+ =?us-ascii?Q?QRTTwaqsf+y+s27QHblVYhGVx7mxvHNG7jK1VeVdkB3prkwyPunfJjT5gM3c?=
+ =?us-ascii?Q?OjYY/pEX5NTQYlF15kbZOO6LRol0rtpxNFJJ+n+5aU5zjdR6CmmI0awjCEu7?=
+ =?us-ascii?Q?2rpc63rzVy1+zIimGsPEk17nD7RfdBQVCV7RLpu5OTQuqGewEnAog4Nhxs+L?=
+ =?us-ascii?Q?Nrni3R6W8D7mOSOKK7/SIwFfqNuhAmL8/+it0Dgsqi0Z2+SwgxTpCuByNIMt?=
+ =?us-ascii?Q?iPaG4/xo38kQcl5CxDwkoBKhXSZlyu62GVBAwbhOihz4hmtymb+gLo2qZFVO?=
+ =?us-ascii?Q?KeX0rr0kJhLgQHNLKy6wfFBR5hpzVnEneLnmKyxKlqDa4/p2B5sNGv9a3qL8?=
+ =?us-ascii?Q?Dob3PY3rgQAaF76Ma4y6gZywgEGE/jwoH7nWjeAxolPa98IQMi72g8s7cKQ1?=
+ =?us-ascii?Q?YugW48Jb3SOdL2Jft2g4pAt/aGhIRFmt6roriqgLNzIIuoXbDO6XV40ak34k?=
+ =?us-ascii?Q?9KC//mZTDGjoF+cAqlE+Kd2QAsE7xn0+bS0ipSZ8TgVp+7u+P+tZW1EDrPiC?=
+ =?us-ascii?Q?SKWajOBAEK8Ldd2vsIl07EOupF7/F59fSQmHH9X4bf5+MT0yKA1xT3FzBwty?=
+ =?us-ascii?Q?8y//eQaWNOJrz44OaWBMtnQKVv/IVDMML11KjR0QQzcIk69nQ+uk7jOVMtlY?=
+ =?us-ascii?Q?fVdLRxOHaoWKQ7UCDxML1SZOcwg4WcUVIcT9gHbqzUqjdLxb/R8lyPNhlIj1?=
+ =?us-ascii?Q?8vvWLc5MrtiAC2ON80JOuCALs1Cb5XbdcHuAePv8xn9Sg3UxYNARFbWv7YJ0?=
+ =?us-ascii?Q?1Zb0CCnvma4wKlggn90mroonWuHI9YIboEvkJcg8nuirkkNwcK5pNtWjKBSD?=
+ =?us-ascii?Q?HZIoP34bUawjVU4Di5+8HXmaZ8nDX9tFJchBTyq7RLBL3S622BecSV8ODjMg?=
+ =?us-ascii?Q?DyjCuaFeHtOyGLSBVYlTE+wAdzk/aJe+0Wco5Rr87UQQe8FvYnLBGKZ26Hze?=
+ =?us-ascii?Q?cVmyGQS9eiaMKaP0+mFj3YsazQ2aPAIu+yUk9X3Fq3KDdkPXqjKBkDGO7vGk?=
+ =?us-ascii?Q?IoLUrgwpmawmBGRWwFDd8Z9hW6LfoKeg8QDl+m5fCIHTr1jW0JsxAxgm9CYm?=
+ =?us-ascii?Q?u4glx83os61X/TTWzOw2dfHb8H44CKqImqJfJ7Uz4SjlNNOOA7Wk4zLctiaW?=
+ =?us-ascii?Q?MLya4PbWV5QucRGBeMlH+2rzJXmca6uvwa1JqQUZzIjfxgYUOiV6Uv5xIR/o?=
+ =?us-ascii?Q?xSePUBomS8aCMxJ/BKVYEIJsbXHuRCbjEZbCeMfjThncIxuvsPkmO1bfsqxR?=
+ =?us-ascii?Q?gA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: 69f2d7b9-6dfa-4f45-4eed-08dd304292d7
+X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2025 00:14:24.7510
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: v5qSL2SlE9Yc4dQnMD5LVxmzx0AmSAgnRcnPu9+ADORw+M8elwJKf36EHOu+ulIJRRMqmUGB+7sRlowXCQBifpCfwwtSrO214/SZd3dDG7E=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB5910
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
---Sig_/m9da.KuDx9fnbdx1dYJFT7v
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: quoted-printable
+Alistair Popple wrote:
+> Prior to freeing a block file systems supporting FS DAX must check
+> that the associated pages are both unmapped from user-space and not
+> undergoing DMA or other access from eg. get_user_pages(). This is
+> achieved by unmapping the file range and scanning the FS DAX
+> page-cache to see if any pages within the mapping have an elevated
+> refcount.
+> 
+> This is done using two functions - dax_layout_busy_page_range() which
+> returns a page to wait for the refcount to become idle on. Rather than
+> open-code this introduce a common implementation to both unmap and
+> wait for the page to become idle.
+> 
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> 
+> ---
+> 
+> Changes for v5:
+> 
+>  - Don't wait for idle pages on non-DAX mappings
+> 
+> Changes for v4:
+> 
+>  - Fixed some build breakage due to missing symbol exports reported by
+>    John Hubbard (thanks!).
+> ---
+>  fs/dax.c            | 33 +++++++++++++++++++++++++++++++++
+>  fs/ext4/inode.c     | 10 +---------
+>  fs/fuse/dax.c       | 29 +++++------------------------
+>  fs/xfs/xfs_inode.c  | 23 +++++------------------
+>  fs/xfs/xfs_inode.h  |  2 +-
+>  include/linux/dax.h | 21 +++++++++++++++++++++
+>  mm/madvise.c        |  8 ++++----
+>  7 files changed, 70 insertions(+), 56 deletions(-)
+> 
+> diff --git a/fs/dax.c b/fs/dax.c
+> index d010c10..9c3bd07 100644
+> --- a/fs/dax.c
+> +++ b/fs/dax.c
+> @@ -845,6 +845,39 @@ int dax_delete_mapping_entry(struct address_space *mapping, pgoff_t index)
+>  	return ret;
+>  }
+>  
+> +static int wait_page_idle(struct page *page,
+> +			void (cb)(struct inode *),
+> +			struct inode *inode)
+> +{
+> +	return ___wait_var_event(page, page_ref_count(page) == 1,
+> +				TASK_INTERRUPTIBLE, 0, 0, cb(inode));
+> +}
+> +
+> +/*
+> + * Unmaps the inode and waits for any DMA to complete prior to deleting the
+> + * DAX mapping entries for the range.
+> + */
+> +int dax_break_mapping(struct inode *inode, loff_t start, loff_t end,
+> +		void (cb)(struct inode *))
+> +{
+> +	struct page *page;
+> +	int error;
+> +
+> +	if (!dax_mapping(inode->i_mapping))
+> +		return 0;
+> +
+> +	do {
+> +		page = dax_layout_busy_page_range(inode->i_mapping, start, end);
+> +		if (!page)
+> +			break;
+> +
+> +		error = wait_page_idle(page, cb, inode);
 
-Hi all,
+This implementations removes logic around @retry found in the XFS and
+FUSE implementations, I think that is a mistake, and EXT4 has
+apparently been broken in this regard.
 
-Today's linux-next merge of the powerpc tree got a conflict in:
+wait_page_idle() returns after @page is idle, but that does not mean
+@inode is DMA idle. After one found page from
+dax_layout_busy_page_range() is waited upon a new call to
+dax_break_mapping() needs to made to check if another DMA started, or if
+there were originally more pages active.
 
-  arch/powerpc/Kconfig
+> +	} while (error == 0);
+> +
+> +	return error;
 
-between commit:
-
-  c0c3319917db ("mm: remove devmap related functions and page table bits")
-
-from the mm-unstable branch of the mm tree and commit:
-
-  00199ed6f2ca ("powerpc: Add preempt lazy support")
-
-from the powerpc tree.
-
-I fixed it up (see below) and can carry the fix as necessary. This
-is now fixed as far as linux-next is concerned, but any non trivial
-conflicts should be mentioned to your upstream maintainer when your tree
-is submitted for merging.  You may also want to consider cooperating
-with the maintainer of the conflicting tree to minimise any particularly
-complex conflicts.
-
---=20
-Cheers,
-Stephen Rothwell
-
-diff --cc arch/powerpc/Kconfig
-index 85409ec1fd83,db9f7b2d07bf..000000000000
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@@ -145,6 -145,8 +145,7 @@@ config PP
-  	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
-  	select ARCH_HAS_PHYS_TO_DMA
-  	select ARCH_HAS_PMEM_API
-+ 	select ARCH_HAS_PREEMPT_LAZY
- -	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
-  	select ARCH_HAS_PTE_SPECIAL
-  	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOO=
-K3S_64
-  	select ARCH_HAS_SET_MEMORY
-
---Sig_/m9da.KuDx9fnbdx1dYJFT7v
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmd/DkMACgkQAVBC80lX
-0Gx9vAgAiLlgHrrzPA8JJSrN0rllQimHcOttT+WgXoKP9UYTViqfcr3Q8n5THMDu
-sYljjJ+HsPhQCFXoIOqMfwyVV2rFY1gqV3GbEUyj1JA9WO5/S5BTESX1lK61JmZU
-ZaCY0oTciiyqV2nnFIt/lYpZ+x8a6OVaANTSHLYWUckUzddL3uzX/ztAqNCicY6C
-xJGiyEt9l8BtH3P0ny123M/ZBa39LkghE8CA7DO4mCZmHpMyh2i+bKJBtf/Yno9t
-fYCA/nXvF6J1p706rjourhGzKWZwd4zGW8MZvAsgcQVxb0vhjAlmEgkLqB6FsY3j
-gjoW3E9tvHcW7CupRdiN/gTv2aT/Sw==
-=xeh6
------END PGP SIGNATURE-----
-
---Sig_/m9da.KuDx9fnbdx1dYJFT7v--
+Surprised that the compiler does not warn about an uninitialized
+variable here?
 
