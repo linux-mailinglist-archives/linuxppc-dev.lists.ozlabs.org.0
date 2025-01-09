@@ -1,58 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-4922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33E4CA07F7F
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 19:06:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A6DDA07FBB
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 19:23:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTXll34s7z3bWH;
-	Fri, 10 Jan 2025 05:06:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTY7d5qxRz3bP7;
+	Fri, 10 Jan 2025 05:23:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736445971;
-	cv=none; b=X1PKtimNBaFgtumuLxLwRhPnsvWLatMYO0+/TPKvi65ClCDyq/y/7tv/Kjzcb3pBkkoYwbkGCPbJA1QdvnXriesaroRg+hvqkns/SE45pI1EeiuXyw67H6oQ4gzrqPQQdGcDyGqE9aPexyF75YW81ZMADQqmAnGh32x2H+bjhtR2O/FB8iYkO/YhlJ31dbkzdVGJkNzHN97e/0zEHfoRC4tKMsEBB9L7wRNa4EQEgh+Gta0eKtTL+NqzZ7W2ChUNVU0A9Tho5+3wV0crJg35C3ogWb2a/nmpIUgTmVQmhlRqymgui/js/XQJaYysWp4iIJveOvchUKizV5O8pLJGxA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736447005;
+	cv=none; b=ljcMUws5J2umep75nucJWMafkLWc7IDuIHADSOmcxhu0z4F5MIoZiQuA59hLEZH1SMGZXx4xK8kqiSntnogF1RO7tLUxSY7XQs5CzAkfWRHxncZV9aNZpakbaAqCjjQzmtT3riLx95hdur8pOaOaKeCyRDbvizEa6YVQQUgVh/tKguBiMl24K2xCQ1tdjL8mGLW9EEvaBDZrtmjqmR26TBoHmbTWXFm7JvkFbYeuPLUMSOUrMcgA7GakkYuncIYSb6Lc7GkfZHCik3QJTDhNTxZYFdwaJviYyq0F5Vm82vLBZAqftWmZF/7ZvSGmvSzsvo68XUvq792qTWrFZI/KCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736445971; c=relaxed/relaxed;
-	bh=Oj14ywmszEKTo8pcqpdQOE/Eg/vLBK+a32sIyoJJO2E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L36V2qzHEChaUJ3zQ7A+nvYNrNlWTlJQLUwhffcDScEqAHDyhBQc20vSdOkd7rJZYwlQLFUACC7WxSDwllSlcQsS1a2FCnjV1lBX088WcX8NJthu2n4ctMS1AuWBN4oODOrCh/tkF5R9AoQV7+0bg+Ep1SJurb6W9LXlhWhfb+UfMtZWisW22H0ieEcF7QV/pSlAK/atffFoIiZ3v2rm82nwnrWmqUOaDwWVQUCiSnKzMzkQth1VkW7rC7InbGbWA2gyohC+KCgryU0K8srUXeKVHWIZa6AQu89PrNqW1M3J79CxTvX92BMGkZy1FnTslIfpEifqGITmPOOAfuD09A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hXJVC9TE; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1736447005; c=relaxed/relaxed;
+	bh=OGlUGFG/cEJ/gfrzvBfQhy1iAufA2q1lsN2qQazCkh0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y4gaP6KQPkLneAU+0ZVl/G0c7TsyAC/GXDbeX32hOTmm7xlv6CH3ZKy+Ykct8p9GJ1RxiQpDvl+JreKy4d3EreUxQRe9OPHzciFFEREqJqpiw7/Y4De0iQm5HFJeRHe1s+qf/rAaZe67K3rNjaL7wXkpJBocl2Wc1fAwbnR2rnNssaWUF4nDSaz8qoZ5ZXZQFhQLLhZDQJyXhWIsW76uFDAxPqvAwi9CbCFRNZG0ijSuqdNIBC+HFurbVqJRtR64dnRbT3gTBvIS1bi9P1JqlBXJ9i1R7bV3QIgg0Ju+Xak4aUiwDwqqowBek2N7sXwn5/sFo7gOnFC1CbVhj9aIJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mVCmatJN; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hXJVC9TE;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mVCmatJN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=song@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTXlh072Vz30Ng
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 05:06:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTY7c3x7Gz30Vl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 05:23:24 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1CA1D5C5CC5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 18:05:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C650BC4CEE7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 18:06:03 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id EB934A4255D;
+	Thu,  9 Jan 2025 18:21:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4A58C4CED2;
+	Thu,  9 Jan 2025 18:23:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736445963;
-	bh=rp9xKD+8m1msQ0xxbCs9oZzFyU1GURrqUZhq3NbpvyQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=hXJVC9TEna9TWYKbS9F02aIUvOHalq4E7m1+cvMk0ArDdbnyNkOQeESQ7Ur7QTEYq
-	 oV3fJnNHiU6ugTU9/tuOjHdJ9qaR831jsML8BcJ2B2+uzRQfA4kpmr3AmZ+XqRvw70
-	 BTN8HX8ggLtR2WOIhN2X2Ipa4OKa5qs1wwTNGfy1p+9su4jHqsiWIAwGFmgaxU7Nfw
-	 H9Abn1fQ/2SPP2QU6lVw0EYHITfjtwSWp9wIQJbaVZRVNv4TDYE1jWwRNuescPEqI8
-	 vYK392uOFALwuMqP1HoC1bERclFcBuYV7fmAeGJqkaXECHPwUoHQw9LVho0fFgK9tk
-	 fJ+fXn+JQWXLQ==
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-844ee15d6f4so82757239f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2025 10:06:03 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUOM6k9PZ9TKabRHQO7ztIho/n49Gy8ZIniTl3wHqtJnuWnY1//rQ7GzaG524EgqwRNAhzRnqgAiI4wAwA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YznxtczBErHsEo7RbkCAARSTA1VzBaYrz3ef3/nxAXwJcEa8M30
-	OpN2/DaoFQAKaC0xOE4qOMqa1l6H2Yvi0XT7phdH/Qo+nXuBkGclydfLMGq8ZdJrXiTYhbLWHE7
-	5gqmO346zAtwkwp/gS4MW4ToF4qQ=
-X-Google-Smtp-Source: AGHT+IHw82IqZn0L3vIWI2GRAE2/Fu1vkOzFuTOkK3ccul7HxPp7E2ac95iMCNTUN8mztI4YyZ2Kf9FZUsicSlonzfg=
-X-Received: by 2002:a05:6e02:3048:b0:3a7:6a98:3fdf with SMTP id
- e9e14a558f8ab-3ce3a9da817mr60484875ab.14.1736445963152; Thu, 09 Jan 2025
- 10:06:03 -0800 (PST)
+	s=k20201202; t=1736447000;
+	bh=30wB/WI/0/f7UcIF3TPsN2HMLACXVtv2YkGpGhKaM+Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mVCmatJNDUWzfqTMCBQzuH+/WwFgR7ZiBEoOhRtVouJ4etPjdmWg8Cml95dH3zBzr
+	 EZImpKYehXgqxOAL7HNgiFnu2mIv96I8uSxiD1WdKPeEnahEFdOxjxHYbWEOoOBfZd
+	 HSEcBX6LluhfuZPUj+SDfkxftr/NbjA9eFJMay7qZgcX1xjQlJdiyrP52hyw6wOkUy
+	 bLhfUzQW/8afz1h4rAVINdftN71VP4ew+B54zL1hyNbk/p99O71NYpjk0PgU12vWKt
+	 L85RvKCytBmp5jxrJFdTV6dPa3y95fqH5YPJHBLszrofzsrWUiZGjYkzJ0eLtXgKlm
+	 TgKOaRnUFGjNA==
+From: "Rob Herring (Arm)" <robh@kernel.org>
+To: Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.dev>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Cc: linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH] ASoC: Use of_property_present() for non-boolean properties
+Date: Thu,  9 Jan 2025 12:23:00 -0600
+Message-ID: <20250109182303.3973082-1-robh@kernel.org>
+X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,62 +87,180 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
-In-Reply-To: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
-From: Song Liu <song@kernel.org>
-Date: Thu, 9 Jan 2025 10:05:51 -0800
-X-Gmail-Original-Message-ID: <CAPhsuW5zpA28gkBQYMMuYCUbnDzdeq4pHsd0Mx=PBnDPiHKqHw@mail.gmail.com>
-X-Gm-Features: AbW1kvZZD8oqcdTZ9DXv7tEUC7bpyqeBsuw6nnhXboAE2kNg_1eTiibnv93HXj8
-Message-ID: <CAPhsuW5zpA28gkBQYMMuYCUbnDzdeq4pHsd0Mx=PBnDPiHKqHw@mail.gmail.com>
-Subject: Re: [PATCH] treewide: const qualify ctl_tables where applicable
-To: Joel Granados <joel.granados@kernel.org>
-Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-serial@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, 
-	codalist@coda.cs.cmu.edu, linux-mm@kvack.org, linux-nfs@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev, 
-	linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Jan 9, 2025 at 5:16=E2=80=AFAM Joel Granados <joel.granados@kernel.=
-org> wrote:
->
-[...]
->  drivers/base/firmware_loader/fallback_table.c | 2 +-
->  drivers/cdrom/cdrom.c                         | 2 +-
->  drivers/char/hpet.c                           | 2 +-
->  drivers/char/ipmi/ipmi_poweroff.c             | 2 +-
->  drivers/char/random.c                         | 2 +-
->  drivers/gpu/drm/i915/i915_perf.c              | 2 +-
->  drivers/gpu/drm/xe/xe_observation.c           | 2 +-
->  drivers/hv/hv_common.c                        | 2 +-
->  drivers/infiniband/core/iwcm.c                | 2 +-
->  drivers/infiniband/core/ucma.c                | 2 +-
->  drivers/macintosh/mac_hid.c                   | 2 +-
->  drivers/md/md.c                               | 2 +-
+The use of of_property_read_bool() for non-boolean properties is
+deprecated in favor of of_property_present() when testing for property
+presence.
 
-For md bits:
+Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
+---
+ sound/soc/fsl/fsl-asoc-card.c                    | 2 +-
+ sound/soc/fsl/imx-audmux.c                       | 2 +-
+ sound/soc/fsl/imx-card.c                         | 2 +-
+ sound/soc/fsl/imx-rpmsg.c                        | 2 +-
+ sound/soc/generic/simple-card-utils.c            | 4 ++--
+ sound/soc/intel/keembay/kmb_platform.c           | 2 +-
+ sound/soc/mediatek/common/mtk-soundcard-driver.c | 4 ++--
+ sound/soc/qcom/common.c                          | 6 +++---
+ sound/soc/qcom/sc7180.c                          | 2 +-
+ 9 files changed, 13 insertions(+), 13 deletions(-)
 
-Reviewed-by: Song Liu <song@kernel.org>
+diff --git a/sound/soc/fsl/fsl-asoc-card.c b/sound/soc/fsl/fsl-asoc-card.c
+index 02e1594e8223..2bad9cb1daaf 100644
+--- a/sound/soc/fsl/fsl-asoc-card.c
++++ b/sound/soc/fsl/fsl-asoc-card.c
+@@ -932,7 +932,7 @@ static int fsl_asoc_card_probe(struct platform_device *pdev)
+ 	if (!asrc_pdev)
+ 		priv->card.num_dapm_routes /= 2;
+ 
+-	if (of_property_read_bool(np, "audio-routing")) {
++	if (of_property_present(np, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(&priv->card, "audio-routing");
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to parse audio-routing: %d\n", ret);
+diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+index 43e14f2eca8d..cc2918ee2cf5 100644
+--- a/sound/soc/fsl/imx-audmux.c
++++ b/sound/soc/fsl/imx-audmux.c
+@@ -237,7 +237,7 @@ static int imx_audmux_parse_dt_defaults(struct platform_device *pdev,
+ 					child);
+ 			continue;
+ 		}
+-		if (!of_property_read_bool(child, "fsl,port-config")) {
++		if (!of_property_present(child, "fsl,port-config")) {
+ 			dev_warn(&pdev->dev, "child node \"%pOF\" does not have property fsl,port-config\n",
+ 					child);
+ 			continue;
+diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+index 95a57fda0250..ac043ad367ac 100644
+--- a/sound/soc/fsl/imx-card.c
++++ b/sound/soc/fsl/imx-card.c
+@@ -529,7 +529,7 @@ static int imx_card_parse_of(struct imx_card_data *data)
+ 	}
+ 
+ 	/* DAPM routes */
+-	if (of_property_read_bool(dev->of_node, "audio-routing")) {
++	if (of_property_present(dev->of_node, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(card, "audio-routing");
+ 		if (ret)
+ 			return ret;
+diff --git a/sound/soc/fsl/imx-rpmsg.c b/sound/soc/fsl/imx-rpmsg.c
+index ce98d2288193..7cd3aa4c8706 100644
+--- a/sound/soc/fsl/imx-rpmsg.c
++++ b/sound/soc/fsl/imx-rpmsg.c
+@@ -218,7 +218,7 @@ static int imx_rpmsg_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto fail;
+ 
+-	if (of_property_read_bool(np, "audio-routing")) {
++	if (of_property_present(np, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(&data->card, "audio-routing");
+ 		if (ret) {
+ 			dev_err(&pdev->dev, "failed to parse audio-routing: %d\n", ret);
+diff --git a/sound/soc/generic/simple-card-utils.c b/sound/soc/generic/simple-card-utils.c
+index a0c3111f7e08..91325286894e 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -713,7 +713,7 @@ int simple_util_parse_routing(struct snd_soc_card *card,
+ 
+ 	snprintf(prop, sizeof(prop), "%s%s", prefix, "routing");
+ 
+-	if (!of_property_read_bool(node, prop))
++	if (!of_property_present(node, prop))
+ 		return 0;
+ 
+ 	return snd_soc_of_parse_audio_routing(card, prop);
+@@ -731,7 +731,7 @@ int simple_util_parse_widgets(struct snd_soc_card *card,
+ 
+ 	snprintf(prop, sizeof(prop), "%s%s", prefix, "widgets");
+ 
+-	if (of_property_read_bool(node, prop))
++	if (of_property_present(node, prop))
+ 		return snd_soc_of_parse_audio_simple_widgets(card, prop);
+ 
+ 	/* no widgets is not error */
+diff --git a/sound/soc/intel/keembay/kmb_platform.c b/sound/soc/intel/keembay/kmb_platform.c
+index aa5de167e790..4ed71d11ad77 100644
+--- a/sound/soc/intel/keembay/kmb_platform.c
++++ b/sound/soc/intel/keembay/kmb_platform.c
+@@ -869,7 +869,7 @@ static int kmb_plat_dai_probe(struct platform_device *pdev)
+ 
+ 	kmb_i2s->fifo_th = (1 << COMP1_FIFO_DEPTH(comp1_reg)) / 2;
+ 
+-	kmb_i2s->use_pio = !(of_property_read_bool(np, "dmas"));
++	kmb_i2s->use_pio = !of_property_present(np, "dmas");
+ 
+ 	if (kmb_i2s->use_pio) {
+ 		irq = platform_get_irq_optional(pdev, 0);
+diff --git a/sound/soc/mediatek/common/mtk-soundcard-driver.c b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+index 3bbf42c42805..f4314dddc460 100644
+--- a/sound/soc/mediatek/common/mtk-soundcard-driver.c
++++ b/sound/soc/mediatek/common/mtk-soundcard-driver.c
+@@ -221,7 +221,7 @@ int mtk_soundcard_common_probe(struct platform_device *pdev)
+ 		card->name = pdata->card_name;
+ 	}
+ 
+-	needs_legacy_probe = !of_property_read_bool(pdev->dev.of_node, "audio-routing");
++	needs_legacy_probe = !of_property_present(pdev->dev.of_node, "audio-routing");
+ 	if (needs_legacy_probe) {
+ 		/*
+ 		 * If we have no .soc_probe() callback there's no way of using
+@@ -262,7 +262,7 @@ int mtk_soundcard_common_probe(struct platform_device *pdev)
+ 		adsp_node = NULL;
+ 
+ 	if (adsp_node) {
+-		if (of_property_read_bool(pdev->dev.of_node, "mediatek,dai-link")) {
++		if (of_property_present(pdev->dev.of_node, "mediatek,dai-link")) {
+ 			ret = mtk_sof_dailink_parse_of(card, pdev->dev.of_node,
+ 						       "mediatek,dai-link",
+ 						       card->dai_link, card->num_links);
+diff --git a/sound/soc/qcom/common.c b/sound/soc/qcom/common.c
+index 928cf5cb5999..7ee60a58a336 100644
+--- a/sound/soc/qcom/common.c
++++ b/sound/soc/qcom/common.c
+@@ -44,20 +44,20 @@ int qcom_snd_parse_of(struct snd_soc_card *card)
+ 		return ret;
+ 	}
+ 
+-	if (of_property_read_bool(dev->of_node, "widgets")) {
++	if (of_property_present(dev->of_node, "widgets")) {
+ 		ret = snd_soc_of_parse_audio_simple_widgets(card, "widgets");
+ 		if (ret)
+ 			return ret;
+ 	}
+ 
+ 	/* DAPM routes */
+-	if (of_property_read_bool(dev->of_node, "audio-routing")) {
++	if (of_property_present(dev->of_node, "audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(card, "audio-routing");
+ 		if (ret)
+ 			return ret;
+ 	}
+ 	/* Deprecated, only for compatibility with old device trees */
+-	if (of_property_read_bool(dev->of_node, "qcom,audio-routing")) {
++	if (of_property_present(dev->of_node, "qcom,audio-routing")) {
+ 		ret = snd_soc_of_parse_audio_routing(card, "qcom,audio-routing");
+ 		if (ret)
+ 			return ret;
+diff --git a/sound/soc/qcom/sc7180.c b/sound/soc/qcom/sc7180.c
+index bc030ce29680..d95710b1ea4e 100644
+--- a/sound/soc/qcom/sc7180.c
++++ b/sound/soc/qcom/sc7180.c
+@@ -513,7 +513,7 @@ static int sc7180_snd_platform_probe(struct platform_device *pdev)
+ 	card->controls = sc7180_snd_controls;
+ 	card->num_controls = ARRAY_SIZE(sc7180_snd_controls);
+ 
+-	if (of_property_read_bool(dev->of_node, "dmic-gpios")) {
++	if (of_property_present(dev->of_node, "dmic-gpios")) {
+ 		card->dapm_widgets = sc7180_snd_dual_mic_widgets,
+ 		card->num_dapm_widgets = ARRAY_SIZE(sc7180_snd_dual_mic_widgets),
+ 		card->controls = sc7180_snd_dual_mic_controls,
+-- 
+2.45.2
 
-Thanks,
-Song
-
-[...]
 
