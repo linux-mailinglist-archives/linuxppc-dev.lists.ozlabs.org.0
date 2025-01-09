@@ -1,80 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-4883-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4884-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EA93A06A59
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 02:34:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F31EA06BFE
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 04:24:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YT6lm5Sbvz2yVb;
-	Thu,  9 Jan 2025 12:34:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YT9Bv1vR1z302P;
+	Thu,  9 Jan 2025 14:24:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736386484;
-	cv=none; b=HgAW5PlUzVjQXRzO8ibUhMdiQh5hoNE9HDDEOfsOUiYuKI3R0SacHzYI/dUTwsDI6H8xDzHkhmvW+OKhEh+1NS7kepqD6PSHFhZwjz1ufiYUVjvP6kxYnKTHzkRfPKjV78AQfFBhv/1cVets2QGanQo3vlV8p59sPASdaT3spncfXXEWYJKSXmFdD4rcEIRpdjuBev3HdsRZLylq8fr7xkU8rtPqu82QDreZS4iD+WsRR4tpfZnfxIaK3MjFjHQhgS15qczJS7OCj39zYEtnYdpYO2vHTusfTqR8WY2zYMnnbhD8Qbq4aPf8MThzoasytamws/1/lPvxulTLfCE5Kw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736393095;
+	cv=none; b=M7oGBwE8fl22zskmiPavhwpa1uk9HrdplzHDsHglUEU7vx5B5RYINNIqqVj7mZjAnEeRjD2V2hghSEnXn4Gdgi0I6gO0lQpYCSwubj01m2v4TDpJDKS2o/+bI1MVaBC4tt7zZ2zMT8QoscNVpUA3klXbpmlq0LVWljoMH8R+CzDrm4pWY4rnw5ptgiSfN1ElDjdS/IXO+4jcX5u8onDfvfKbgUYkxWG0ay5IFZw8vFomSorWJQGWTqvol+TkIrgrutNfqd+QM0WTfK6SMeFqrit44y0HwJYkkXWasYw2ePCVYmA+197hWiLJ6yYCTUA2W6WxQnxFqTETBdMde8vA1g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736386484; c=relaxed/relaxed;
-	bh=cOpwEm3vc64U9el0o8BXgtUsBUXlhU3xwaCjuDgOqVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DRqeWQ6Usv61Gw9yxipJtdidhDdmhHG5D/WIyAjKtYDe+orMHUsAWvRDM2EWAX9KpTZNPqrN2ODNT3iIgdiegatKu8A1O3ZO8tj2x6gFwW1N6E6xW7qrrdnWt8pVtGkgqaV/qhSQ/NlgaesoxdU/OtKjE1o5DfdibD6kI6h/XtDY2y5SpowYZdaYFtg81qbRdE9P4HycP7i5nrFfZp3LrsJ3N3H1oyrW1JehowLNYOcB7VPsleEkJ02KwFI6YC6tqsvkkxGAkQ7Komu9qv1x6smvLwHwqlZVkkMSh+hjq+dA5gbV/UCV0TvV+tb4hhUoFgLih5j1VKPvJr0wkzm8qw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jMe+NTqy; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=alison.schofield@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1736393095; c=relaxed/relaxed;
+	bh=Ev41nye3EYCrH/8qKuYkTcjX/MgP5c6SOfM76NspYuQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S60YGzn0sjhA/obJqGto+KNv+hJ4F0zAdXNaZzqGnnKCEnSOGq/z2SGJOvlcHnX/VT6ernK3q9KwtKKt/tHyl/2vEiJ4rphvCCbZwvhbQhdKGWl3D4n+J0InR41uxbMASAbgyV22jodIudBYcLY9la63NNKlWLMHCitjWN//zeA6IjQNxwOZQ66RDIqr6YzgwUqZF+/S7GJDu5EJwHUxs9pMESGtzBiEptDuKPFn+aFl1zkQA/zBdnLkr4YiH5MrEFnlqzkiMdxAMMKHSq13unAOxeSG/0g3736Q4+qmP1YQirzTKwv71PwbBwP8utODyYbTextr7w52bOR7lb/o/g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IfKc/qRH; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=jMe+NTqy;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IfKc/qRH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=alison.schofield@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YT6lk0KRTz2yVX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 12:34:39 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736386483; x=1767922483;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=RER8xEkbtZJunXd1DrZR4xiCOceE1iPmaLstar6K/Ws=;
-  b=jMe+NTqyQWbdDIsRtGvuOsXcIqDN0QxeFXw1wk2Ai1Y1e3fPRux1M4Wx
-   hkh5qtVyckL3Zrs/K1ImEgKZoUWXR74OoOztmr/gIJlkjEhlZzqk3Fy90
-   jFkoBkFThcbgzf2Ep2CwRdh1/iDAZbteXthIA/W81psYh06LMyWtueG6L
-   TOgQUaKJOs8oOVOalJ9eN0gU1HZ/o9rlJZY+kw1uXoQ8C1eTz6s0S2Gzy
-   dAwWOvPoFxn4yDvAlx/ZF/MiQW/9M7O182a+1+lmwqooka4qgizbYcBSJ
-   RqwgyqmeKp6CbKabr22C5cL0KX/t5C4Axa32iuv6LqG8K5rEaFRLOWGQf
-   Q==;
-X-CSE-ConnectionGUID: GypLofJaSWebhD/hn74Rhg==
-X-CSE-MsgGUID: cxn8rDOcRjy+LDIu/pufxw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="40313998"
-X-IronPort-AV: E=Sophos;i="6.12,300,1728975600"; 
-   d="scan'208";a="40313998"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 17:34:35 -0800
-X-CSE-ConnectionGUID: Hc5lWmCDRcOCp4HuSUdhaQ==
-X-CSE-MsgGUID: 8EZhG4KIQciXTPEzWMApnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="107305857"
-Received: from aschofie-mobl2.amr.corp.intel.com (HELO aschofie-mobl2.lan) ([10.125.111.65])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Jan 2025 17:34:32 -0800
-Date: Wed, 8 Jan 2025 17:34:30 -0800
-From: Alison Schofield <alison.schofield@intel.com>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, linux-mm@kvack.org,
-	lina@asahilina.net, zhang.lyra@gmail.com,
-	gerald.schaefer@linux.ibm.com, vishal.l.verma@intel.com,
-	dave.jiang@intel.com, logang@deltatee.com, bhelgaas@google.com,
-	jack@suse.cz, jgg@ziepe.ca, catalin.marinas@arm.com,
-	will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
-	dave.hansen@linux.intel.com, ira.weiny@intel.com,
-	willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
-	linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
-	david@fromorbit.com
-Subject: Re: [PATCH v5 00/25] fs/dax: Fix ZONE_DEVICE page reference counts
-Message-ID: <Z38npigJajz_gm-5@aschofie-mobl2.lan>
-References: <cover.425da7c4e76c2749d0ad1734f972b06114e02d52.1736221254.git-series.apopple@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YT9Bs652Lz3024
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 14:24:53 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5090lRFL016024;
+	Thu, 9 Jan 2025 03:24:40 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Ev41ny
+	e3EYCrH/8qKuYkTcjX/MgP5c6SOfM76NspYuQ=; b=IfKc/qRHSi3too9zjUGngr
+	yd5Whg+EMcZmvDUFrUhW0Vvr/nJUD1aLtTTlMT+em4RdcDGZa2UCn7tINV1yewaC
+	gmvbQSrvi3qySpIONBfn0BSI+s/rKIxzByrmgTVAAXwwAUBD2mKHuMi++XORau0+
+	DstnVuMrpaC+CByzxeAT2B4ucghcNdUJDbqnIsn3hZiCS+FsOB1ll0evW1ncdCNa
+	FSd06hoWxqCdGrX9Bjv7CM/kTZ2mFd716aw1920yBcjoCS2d9jTr+DFUmPWFeLn6
+	bV3sJJsmEydfmTmv9eiN84o+BYpizEAdfWz5rBK1ZjDadOhE+h9WBE8RIuIOsMig
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 441huc5st0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 03:24:40 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5091oCht027963;
+	Thu, 9 Jan 2025 03:24:39 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yhhkawqt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 03:24:39 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5093OZ2Y56099216
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jan 2025 03:24:35 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CAEAC20049;
+	Thu,  9 Jan 2025 03:24:35 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E983E20040;
+	Thu,  9 Jan 2025 03:24:32 +0000 (GMT)
+Received: from [9.43.18.121] (unknown [9.43.18.121])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jan 2025 03:24:32 +0000 (GMT)
+Message-ID: <bbad32bd-20fb-4d7b-8744-25d4c3fa7f8e@linux.ibm.com>
+Date: Thu, 9 Jan 2025 08:54:31 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,35 +78,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.425da7c4e76c2749d0ad1734f972b06114e02d52.1736221254.git-series.apopple@nvidia.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND v1 3/5] powerpc/kdump: preserve user-specified
+ memory limit
+To: mahesh@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
+        Baoquan he <bhe@redhat.com>, Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org
+References: <20250108101458.406806-1-sourabhjain@linux.ibm.com>
+ <20250108101458.406806-4-sourabhjain@linux.ibm.com>
+ <k2eoi22mh5lod4nzee3qfbaagh36yljcqwxcyvvewmzbktcual@mzleqvtlojj3>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <k2eoi22mh5lod4nzee3qfbaagh36yljcqwxcyvvewmzbktcual@mzleqvtlojj3>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: bZFNVDDvboEUw35uLegZ6MU7qopIFoUk
+X-Proofpoint-GUID: bZFNVDDvboEUw35uLegZ6MU7qopIFoUk
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
+ spamscore=0 phishscore=0 suspectscore=0 lowpriorityscore=0 mlxlogscore=850
+ bulkscore=0 mlxscore=0 malwarescore=0 adultscore=0 priorityscore=1501
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501090022
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Jan 07, 2025 at 02:42:16PM +1100, Alistair Popple wrote:
-> Main updates since v4:
-> 
->  - Removed most of the devdax/fsdax checks in fs/proc/task_mmu.c. This
->    means smaps/pagemap may contain DAX pages.
-> 
->  - Fixed rmap accounting of PUD mapped pages.
-> 
->  - Minor code clean-ups.
-> 
-> Main updates since v3:
-> 
->  - Rebased onto next-20241216.
-
-Hi Alistair-
-
-This set passes the ndctl/dax unit tests when applied to next-20241216
-
-Tested-by: Alison Schofield <alison.schofield@intel.com>
-
--- snip
+Hello Mahesh,
 
 
+On 08/01/25 22:36, Mahesh J Salgaonkar wrote:
+> On 2025-01-08 15:44:56 Wed, Sourabh Jain wrote:
+>> Commit 59d58189f3d9 ("crash: fix crash memory reserve exceed system
+>> memory bug") fails crashkernel parsing if the crash size is found to be
+>> higher than system RAM, which makes the memory_limit adjustment code
+>> ineffective due to an early exit from reserve_crashkernel().
+>>
+>> Regardless lets not violated the user-specified memory limit by
+>> adjusting it. Remove this adjustment to ensure all reservations stay
+>> within the limit. Commit f94f5ac07983 ("powerpc/fadump: Don't update
+>> the user-specified memory limit") did the same for fadump.
+> Agreed.
+>
+> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+
+Thanks for the review.
+
+- Sourabh Jain
 
