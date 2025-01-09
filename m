@@ -1,75 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-4891-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4892-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5782A06D94
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 06:29:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150B4A06D97
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 06:32:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTCyg3P85z30fm;
-	Thu,  9 Jan 2025 16:29:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTD283kjbz30gd;
+	Thu,  9 Jan 2025 16:32:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736400571;
-	cv=none; b=X5iEU0USvfe3XRtzb3R9rIKXQ0wOxJH/S/AAdp4mRFI3k35tcmEJHIzUXhkTNfCYRoDHVW7RgEEU/+bnac/QrBxC+0qMTYC3rVfOUnE1AGtgSVwWEnfQccKr61oQDp/YbGxouCyeR/UpqyDHfEoxF3JyzF1PS6bfYInMDx3pVOBg/xFjxZb279NcRwXkgwdrZf/higtfZn8r8GP5BEEabC4PJHA0FT/YpNSQ72N+LjU0aVGMQGlCy2HnVsRhJDCBkHsOBUCihy0U7Tqab3kvvfHgUSy+Qqkjaw6DpPFuENKozAyQHTZVjbgfP8260F4V5CPWysGJT1bN7LCKo97SgA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736400752;
+	cv=none; b=UN1YGAIQtsVmKYtd02pKsOogyrFFCQ7r/82C6L6G2BDm2EAh4t6flb0xRbf+x6qxrQhBvm127oTjgOPnJqZpumMGfl5f0ysdRtPIf4kABUesK6WsIxEARxjgwDz03WioCXE264MlQqb1q3AchzX8agQ9IQ7dPXMu+vLxUGdifqlVd2bT6LLXtnaLN3AxD7SJn1N+Sph4rSvNNZIY0IMwaIKY0u7C7L/Srq+vfKb4TgILRcb6llC1QhVBawE4uDCAoFp806ZbCbKI4N7Vx7iUnQPp3qVrh2m3DpkZe3txEKvnv1qNEAkitnHDxhQ6ErFjPKq639I9yWpMfGh9nd+XRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736400571; c=relaxed/relaxed;
-	bh=XMJt/YhwUnBzvs59wX/sgUOAGddtx1maXOTnOv1QH5s=;
+	t=1736400752; c=relaxed/relaxed;
+	bh=h5j9sM6ZygV6v/cZEi3e0Oz3FL1wLmqSFPtHaDymFco=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=H38RKRCUW4WMJZGgl0pSeAUf8RoNyA1Dc79Vnhs/M3ONvSY9+rGgMpGC1EFP787cC+k4lGAOonM0URpvy7UL1tplHrKXXJWCa+LyifjQepDSVWSwjG2N+VeGEavqQ1x+1HHXt/3OJXlAKm62MEX4Lj+NKWfRV/zQ2VXquEnviUCwvKS1ShAA1a5zOBbHzrbr1EMhq+u9t+UqHHeQeliB/7j3u0UUSYxDeS9dFdCPWjkQKlQo0mPcMk4nuOVKQM3ouhZLOazlBs2P9dM3OoRTGDES9RNLj8QW93tYXzSbtq+qEiBitCNJxx2N/Wr2Xy42s8jf+H6M1VkqjBabNBfxkA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com; dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=QPjBC0at; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org) smtp.mailfrom=daynix.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com
+	 In-Reply-To:Content-Type; b=F9MPpAIpZ+nyUNO6fHEbqGGKBRsFRleB08WpWrYv06fdojzHrJRna/Hf0WsNXtV2bXZmzbBNHkpF4rVKnbqYfYy8guT66SAk+ASreEYNyZ3ebpheAMY9/sYGHF2sVwKjD/YqwX8AwWXpVophkCzBQ+2iGGN6ZPM+1KwVmuWB3TKXh/6QoJXPmyRg0c13Rm9F0JSFu4JRkaY1CBUG15bb3oaRgWmDny/IA5AqZ6hZtnl6t/zi+yMT3xhcN1sZtIAxJE+o6IlW8XiSsX4IYdAEBLV/vfT/Ii3oIZTKOtumYKPLra+5icOsMsvACgARTrOaA6mIwG6Ehkh/5jqhWRGCnA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nbHkyLGS; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=QPjBC0at;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nbHkyLGS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=daynix.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTCyd1qV6z30W0
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 16:29:28 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-21675fd60feso9866245ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 08 Jan 2025 21:29:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736400566; x=1737005366; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XMJt/YhwUnBzvs59wX/sgUOAGddtx1maXOTnOv1QH5s=;
-        b=QPjBC0atOmQ36TvylYwDOhhPfzzen4iXvRXhaLJDs1xmc0HFRDJtGruHjyiE/c29ul
-         EGGtjHSQo3rh6HDGOZ5qRLGVHaoTUmWsE4tnQfaZ+cD6aiw81oB/6QHhyfxaMfCV0VkY
-         /bzu3OYLH6r7jwUsN54qLU+3MLzQ1uF2btnhAtANBt5UARWxODeLg6uAV5+ywA6DTDkJ
-         Io24cc0l/SEuenuP4mkt1S6Lb+iyz8dc4cBX616k0LSVen+9yQBBTp0UYL+t2p5Qc6Dd
-         wfd1JayDY0o6Wc5HaMS2Mj+WekaLdwS8Sq+E7h9bCGlZ31Cp9tSCfMfL23ZsEVvhrRLV
-         AaTg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736400566; x=1737005366;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XMJt/YhwUnBzvs59wX/sgUOAGddtx1maXOTnOv1QH5s=;
-        b=KGGp0SfNYyH2PjP/yEIIONpVnru7CZUlOcrzR1ggVF09oGcdHMjPbKCONFZ99NQSmW
-         fz1gzL/9038TAuKUSAyscBG1/6+tXgU19UKYm3/b3adVSYjqzpf50RdBme4Rm/cQYwVe
-         3eFI8CkWdxWQk9hdW+LV83MDaNQ5M00hpjcfUIUjtAaJyAamV5e66Qke9Kbj1AfB5skd
-         FBQo7+ttcF4q6YV2H3kY88CMejzaIpLldRyAXk86IVrdJvvQ7f1BlHepm7q1X7BMJK1a
-         MPlgHPxqsyR/kOq77JpA506XMjOB0LsBDqNj/Ub+iqQ9AcRHgWRZz+36mon8ULkrwIQ9
-         KYhg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlAv3sYHqDrqcq3f29kMhXjvkMAK60quMGwzUCk2xGypGNlhOBoP80WNH2hJAUQsJNNlQd8ctKXNDV20c=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzl7nlniHF3Q/YBNBBo34uYJz5kouIlWzzHXXQSXY3dLLTMDbAX
-	EVd7eVXD4TIvG5OiZ4xHO6wVyN/77CEMXWOmmdgVJWxQseW+PGdONsstXVN8vGI=
-X-Gm-Gg: ASbGnctMCwRVDkkvw6GedWV+x/kvCk8NZ9LA8yOpB9SL92V0OQLvj8tARAOE3famdGb
-	9r42F5sPlSj24jNmVuioB/dxbw6Cr7O5CuuA8FkVwH7WeUaXo5JSFf0EfkTX4Oz5FDZBHTndIE9
-	CtM0P3+QwNNefqf5lQdqDyp4gC3lO1n2D3/Zh6zpelYgu9OvZdSavNFagZjyjcl9z8Di9i6BoJv
-	Rc8bVn9L0filCFOK3IH4afrFGj+niA7VgkEj8UQdrnAvQdnAp/9dmrIIcdf8u0NbcQ=
-X-Google-Smtp-Source: AGHT+IHb0FVyvp1dm7B/1h/x9uzjYQ//zMkoJ4qWj36+ahLI4sk0W30C74Z9uJRWuq6gqr8rh892HA==
-X-Received: by 2002:a17:902:f681:b0:215:e98c:c5bc with SMTP id d9443c01a7336-21a840094b7mr86342285ad.48.1736400565988;
-        Wed, 08 Jan 2025 21:29:25 -0800 (PST)
-Received: from [157.82.203.37] ([157.82.203.37])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a91744580sm3702405ad.84.2025.01.08.21.29.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Jan 2025 21:29:25 -0800 (PST)
-Message-ID: <2ad7234d-bfc5-49e3-abe6-7a85d992329d@daynix.com>
-Date: Thu, 9 Jan 2025 14:29:19 +0900
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTD271MGWz30gL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 16:32:30 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508Nx5Sk017951;
+	Thu, 9 Jan 2025 05:32:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=h5j9sM
+	6ZygV6v/cZEi3e0Oz3FL1wLmqSFPtHaDymFco=; b=nbHkyLGS//ZO/uZG07+aBh
+	3l3E1fwMlY0/zZ98hcYe9aQMNUWJ/uDYrvgJUs9F2RsIgZzMVXRfDKBwnOFCpo72
+	XnneLjhgCMrmYgamp40G3ZBivYcSSeDoaBMDPVIp+gVoMiXzYMANbYSXi1z8D3AU
+	gILv05gAyBr9vv67vbmYFIdcL6/spPXYxntK8YbSDjxAg57W91RtZFZFBNs8NVP3
+	SV68vj9LBWEfrMqMramHm53zBMhQaGXTkI1xlDbYJD6YnyqWz2sapbsESkuG/oX4
+	FL1XIr26HnD0QeX8imzHc9i+YrdvN6nN+L3Ymdtgkh+JSzGob2bOokD0JZb2mDDg
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4423ghs47e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 05:32:17 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5093IKj7004143;
+	Thu, 9 Jan 2025 05:32:16 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yfatbt2k-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 05:32:16 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5095WD6i49217824
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jan 2025 05:32:13 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0820D2004B;
+	Thu,  9 Jan 2025 05:32:13 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5852620049;
+	Thu,  9 Jan 2025 05:32:10 +0000 (GMT)
+Received: from [9.43.18.121] (unknown [9.43.18.121])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  9 Jan 2025 05:32:10 +0000 (GMT)
+Message-ID: <5c814eef-b4e4-4afc-a394-c17857da8a07@linux.ibm.com>
+Date: Thu, 9 Jan 2025 11:02:08 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,84 +79,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/6] s390/crash: Use note name macros
-To: Dave Martin <Dave.Martin@arm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
- Alexander Gordeev <agordeev@linux.ibm.com>,
- Christian Borntraeger <borntraeger@linux.ibm.com>,
- Sven Schnelle <svens@linux.ibm.com>, Eric Biederman <ebiederm@xmission.com>,
- Kees Cook <kees@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>,
- Mark Brown <broonie@kernel.org>, Baoquan He <bhe@redhat.com>,
- Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
- kexec@lists.infradead.org, binutils@sourceware.org, devel@daynix.com
-References: <20250107-elf-v3-0-99cb505b1ab2@daynix.com>
- <20250107-elf-v3-5-99cb505b1ab2@daynix.com>
- <Z31Tp0nMhb/ntUW0@e133380.arm.com>
- <965b73e7-d0a3-4fae-b0ec-70b5497cb6c4@daynix.com>
- <Z36Cljsz2p0hYsFd@e133380.arm.com>
+Subject: Re: [PATCH] kexec: Initialize ELF lowest address to ULONG_MAX
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Baoquan he <bhe@redhat.com>, ebiederm@xmission.com,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20241210091314.185785-1-sourabhjain@linux.ibm.com>
+ <Z1pQoh7IwtERIWe5@MiWiFi-R3L-srv>
+ <ea2d2f5d-5410-4f7e-a3f5-258c432e9be9@linux.ibm.com>
+ <20250108212813.ebc0014e384e9996ab72db40@linux-foundation.org>
 Content-Language: en-US
-From: Akihiko Odaki <akihiko.odaki@daynix.com>
-In-Reply-To: <Z36Cljsz2p0hYsFd@e133380.arm.com>
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <20250108212813.ebc0014e384e9996ab72db40@linux-foundation.org>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: WTn7GuVs0jUb3wRC6a6crfU-Oz7_JEjL
+X-Proofpoint-ORIG-GUID: WTn7GuVs0jUb3wRC6a6crfU-Oz7_JEjL
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ mlxscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ clxscore=1015 mlxlogscore=999 spamscore=0 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501090043
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2025/01/08 22:50, Dave Martin wrote:
-> On Wed, Jan 08, 2025 at 01:53:51PM +0900, Akihiko Odaki wrote:
->> On 2025/01/08 1:17, Dave Martin wrote:
->>> Hi,
->>>
->>> On Tue, Jan 07, 2025 at 09:45:56PM +0900, Akihiko Odaki wrote:
->>>> Use note name macros to match with the userspace's expectation.
->>>>
->>>> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
->>>> ---
->>>>    arch/s390/kernel/crash_dump.c | 62 ++++++++++++++++---------------------------
->>>>    1 file changed, 23 insertions(+), 39 deletions(-)
->>>>
->>>> diff --git a/arch/s390/kernel/crash_dump.c b/arch/s390/kernel/crash_dump.c
->>>
->>> [...]
-> 
->>>> +#define NT_INIT(buf, type, desc) \
->>>> +	(nt_init_name((buf), NT_ ## type, &(desc), sizeof(desc), NN_ ## type))
-> 
-> [...]
-> 
->>> (Note also, the outer parentheses and the parentheses around (buf)
->>> appear redundant -- although harmless?)
+Hello Andrew,
+
+On 09/01/25 10:58, Andrew Morton wrote:
+> On Thu, 9 Jan 2025 09:42:14 +0530 Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
+>
+>> Hello Baoquan and Eric,
 >>
->> They only make a difference in trivial corner cases and may look needlessly
->> verbose.
-> 
-> (In case there was a misunderstanding here, I meant that some
-> parentheses can be removed without affecting correctness:
-> 
-> #define NT_INIT(buf, type, desc) \
-> 	nt_init_name(buf, NT_ ## type, &(desc), sizeof(desc), NN_ ## type))
-> 
-> It still doesn't matter though -- and some people do prefer to be
-> defensive anyway and err on the side of having too many parentheses
-> rather than too few.)
+>>
+>> On 12/12/24 08:25, Baoquan he wrote:
+>>> On 12/10/24 at 02:43pm, Sourabh Jain wrote:
+>>>> kexec_elf_load() loads an ELF executable and sets the address of the
+>>>> lowest PT_LOAD section to the address held by the lowest_load_addr
+>>>> function argument.
+>>>>
+>>>> To determine the lowest PT_LOAD address, a local variable lowest_addr
+>>>> (type unsigned long) is initialized to UINT_MAX. After loading each
+>>>> PT_LOAD, its address is compared to lowest_addr. If a loaded PT_LOAD
+>>>> address is lower, lowest_addr is updated. However, setting lowest_addr
+>>>> to UINT_MAX won't work when the kernel image is loaded above 4G, as the
+>>>> returned lowest PT_LOAD address would be invalid. This is resolved by
+>>>> initializing lowest_addr to ULONG_MAX instead.
+>>>>
+>>>> This issue was discovered while implementing crashkernel high/low
+>>>> reservation on the PowerPC architecture.
+>>>>
+>>>> Fixes: a0458284f062 ("powerpc: Add support code for kexec_file_load()")
+>>>> Cc: Baoquan he <bhe@redhat.com>
+>>>> Cc: Hari Bathini <hbathini@linux.ibm.com>
+>>>> CC: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>>> Cc: kexec@lists.infradead.org
+>>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>>> Cc: linux-kernel@vger.kernel.org
+>>>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>>>> ---
+>>>>    kernel/kexec_elf.c | 2 +-
+>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/kernel/kexec_elf.c b/kernel/kexec_elf.c
+>>>> index d3689632e8b9..3a5c25b2adc9 100644
+>>>> --- a/kernel/kexec_elf.c
+>>>> +++ b/kernel/kexec_elf.c
+>>>> @@ -390,7 +390,7 @@ int kexec_elf_load(struct kimage *image, struct elfhdr *ehdr,
+>>>>    			 struct kexec_buf *kbuf,
+>>>>    			 unsigned long *lowest_load_addr)
+>>>>    {
+>>>> -	unsigned long lowest_addr = UINT_MAX;
+>>>> +	unsigned long lowest_addr = ULONG_MAX;
+>>> Great catch.
+>>>
+>>> Acked-by: Baoquan He <bhe@redhat.com>
+>> Thank you for the Ack! The upcoming two patch series, which aim to
+>> enable generic crashkernel reservation, depends on this fix. One of them
+>> is already posted for upstream review:
+>> https://lore.kernel.org/all/20250108101458.406806-1-sourabhjain@linux.ibm.com/
+>> I was wondering if you could guide us on how to get this fix pushed to
+>> the mainline tree.
+> Please include this patch (with Baoquan's ack) in whichever tree
+> contains the powerpc patches which depend upon it.
 
-Well, being very pedantic, there are some cases where these parentheses 
-have some effect.
+Sure, I will include this patch in the respective patch series.
 
-If you omit the outer parentheses, the following code will have 
-different consequences:
-a->NT_INIT(buf, PRSTATUS, desc)
-
-The parentheses around buf will make difference for the following code:
-#define COMMA ,
-NT_INIT(NULL COMMA buf, PRSTATUS, desc)
-
-But nobody will write such code.
-
-Regards,
-Akihiko Odaki
+Thanks,
+Sourabh Jain
 
