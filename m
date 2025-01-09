@@ -1,74 +1,115 @@
-Return-Path: <linuxppc-dev+bounces-4905-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4906-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD7AEA07193
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 10:36:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B46A07523
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 12:56:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTKRk416Nz2xQD;
-	Thu,  9 Jan 2025 20:36:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTNYB644gz3bSg;
+	Thu,  9 Jan 2025 22:56:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736415394;
-	cv=none; b=ZIcPaOgK7HIacCMrXzeX9M1LxGrIlw+7q9jHxw9IcPt6/WadvsW/TC97NYyyGBQwWdf43a9rAbaH+WtIcb7yF3lB/CNcG60EZtW+QWhM9xKOOXSoNtU3Tu3Riz+1QqkkoGFowY2nNLMP6KIBeHl5tQo1sil8CxnNb4zYoaIVTzyiAAjM/+llMo3PqK6VZuVtFUNT8uhlsCa/lJ9irhMFGVlHl2hbPG28MYCBSti5zZS16QmKJ5jHnfnZJsFRiqJDh4Lgz+sBAgb+EPtH5mEX1QeElP+4dEEIyTifuf+mZz6kfpXQF5+0yuBIuQe7KpnFKUPZ1EUJg2P7CWjZNDSUfA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736423790;
+	cv=none; b=AJPRkV1HLHnHwZl5wsmKK6YxVixduQB6YtIBpMKCq6z/i1iqEEDtcHTZMQjhMaPsyCNFczjm3uqsDRYfmYqO0Ap/XEP5e242EbacHo3vmmsnyEjLh+sStXvN6hvBq0XPHRblTUAoacTh6NOgEw7tZoMZlqfHAYBdvsiQvg70oCixTCaIU30aMj1NfeC6R17nr+Cysxxf/dg/Y7fPdhgd+eJr0oS0YxYIL8eVSMAxvLlvIHE8u9HGX21StoXiFKsEGdSbTst2RJhJoZkodN5JSiw7JAXEPvwuyNO8fdghUcC9TDW8D0tbi/T69n2pntFJC84ul26cWsuvDP4o28Uu5A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736415394; c=relaxed/relaxed;
-	bh=EbMmRZyZumO7XVF1M9BsS2pwQ0q+NGeRk/B5QixjUL0=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=M/51sT0dgNUzMQo6jYzcQMwhX7R2didCr3KVAqldNTCPquwCuGi+AtxxVwPQaIwTvSNucmcsJjIQVGhP5CJcvwLeRPxS3qyICXsDUbGc/nPP6sGw+I0Aaf6WUppY9wm2K+8+zDQCsgdBYd61CwmiRpv+dvHLBfD1D+AkyUayn3tEYuoo98rRODn6YUc4sQz11wGzaxQj+9vH0A6KKZzfZXM5ptFY6SSetDlOrIiqk0dhjerV9wo+A668dhLHoNQYpiYoEO9B2SpA0KwFYUgUQlFis6xEBukuaikYZdQm3S/H2Umo6ZKlg1j1CCSpzblBbcpZb4M9F6n8bJUuqnBmfA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R5xIGR22; dkim-atps=neutral; spf=none (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1736423790; c=relaxed/relaxed;
+	bh=TEFEUsDUypMb0E06F+mIr6mms6VLi/ADn+g21sLTM6M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ASi67EoKziSBqC+osW+zxVz6M0YtSPrNqZAHHECTW+GWBB1K6je0ZAqvywXp4EQObrqb61twK2dxRjqhOT9wH1L/UHU64+RXSqAFVZE4egUk97A0/lcLKi5/uwmMD+fqY1FHVpw/mrfKEadOR/pj3/DawaQfEc2lHdaqcHf+n6ZLqt2Q7H2tvv+4ZanK5jCVNkvHq7w0BBdIjZrqVnrpIoYs1tGG5QlY8+IbrJX21bykxMFb8HIzmVXTH+Eh/NE/L2NmvBwozOowWyuKeKdfPu62ijm65/1smlOA9z5wG3wpPySFbu9CiIHOmRjvTqoas0xGOa+tYrZRlOGpYR7L+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HU3Eulhe; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R5xIGR22;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HU3Eulhe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTKRg0Qz7z2xJ5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 20:36:29 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736415391; x=1767951391;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version:content-id;
-  bh=K4rx36aF+LJL+HwBYL4wZ1WTeoNafvHfL/WkHvywtxQ=;
-  b=R5xIGR22ezPJz/mn+DXcwjyPvUMVYvD+dd7knu42jgfk0flSXjXGPQyS
-   xYQD92W3p24X/iEx8jAT1Zkz846ttWagP2n1We+QgFsWTG7O70Ip54CwU
-   fcwdX3w/jFbdzBHjegEvNg8G3+TrQ1ab/Go5qYqiY8G7qNx3aHlw8jv6q
-   BOaM7H6yEAYLvaN8Zi3/p03UpUKwgvzd3Dl2r4a+CZxf30QSoUY1YGdT2
-   k75E5qDe8avwJvmpQIqWVTB5JiliEF9hUHW4n6qgS/mEnVgPNEeGAjNLk
-   qRy1XeqHcdLRZKgnPrDInRyVeztQSCU42z0VltJc/ltlX42fptRNzal0b
-   g==;
-X-CSE-ConnectionGUID: hHXT0bQaQjiZ2M8NdW+gmQ==
-X-CSE-MsgGUID: P1JhtbfwQ6S8jgTXb8X/FA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11309"; a="62044707"
-X-IronPort-AV: E=Sophos;i="6.12,301,1728975600"; 
-   d="scan'208";a="62044707"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 01:36:24 -0800
-X-CSE-ConnectionGUID: LDrN3JQiSryHOg+BI2B8fw==
-X-CSE-MsgGUID: mwjSmZbwQyqyqZfLSODPLg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="140679668"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.210])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2025 01:36:21 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Thu, 9 Jan 2025 11:36:17 +0200 (EET)
-To: Yazen Ghannam <yazen.ghannam@amd.com>
-cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, 
-    =?ISO-8859-2?Q?Krzysztof_Wilczy=F1ski?= <kw@linux.com>, 
-    Lukas Wunner <lukas@wunner.de>, 
-    Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
-    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Oliver O'Halloran <oohall@gmail.com>, LKML <linux-kernel@vger.kernel.org>, 
-    linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v8 6/7] PCI: Add TLP Prefix reading into
- pcie_read_tlp_log()
-In-Reply-To: <20250108213359.GC1342186@yaz-khff2.amd.com>
-Message-ID: <a7a769c6-0a4d-0e50-f2d7-6556db0fa7bf@linux.intel.com>
-References: <20241218143747.3159-1-ilpo.jarvinen@linux.intel.com> <20241218143747.3159-7-ilpo.jarvinen@linux.intel.com> <20250108213359.GC1342186@yaz-khff2.amd.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTNY86HZQz3bPR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 22:56:28 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 508NwEl2016724;
+	Thu, 9 Jan 2025 11:55:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TEFEUs
+	DUypMb0E06F+mIr6mms6VLi/ADn+g21sLTM6M=; b=HU3Eulheor5aaMA38MgqND
+	w5D0VsYZ9Y4ZQYJZvyu4WLwzk/lzISPX279vOi1rwp0OvImCElaqBmZ7yGv4GXtm
+	vKwEzqRIH6fu9psGCV1MCIKHOFAwC/4SQQ1AC5BtxaNM8wdtW+DAIciNpYPO6Ll6
+	rLdpqprshTa3IetrfZ8gd5phbjzubOZ9ML1FsMTvRNrN2rZkXWtL51/wIfyNRwsc
+	zmVXIeHDTR4Dx4SMQ7DiZQb0y62yBcOaIrAEugKNmaBRj2/WpqHifUmZzBe2/kuP
+	CAm9wsvyCG2SQnvkSXl/G1rirz7QoOVkinRwkhD5FGKGs504YPdGvBwjkZgyGuxw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4423ghtph4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 11:55:26 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 509BlQgB005767;
+	Thu, 9 Jan 2025 11:55:25 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4423ghtph1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 11:55:25 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5099fC1i027929;
+	Thu, 9 Jan 2025 11:55:24 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yhhkcq4h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 09 Jan 2025 11:55:24 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 509BtLGd26739390
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 9 Jan 2025 11:55:21 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E2F272004B;
+	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 379C620043;
+	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
+Received: from osiris (unknown [9.152.212.60])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  9 Jan 2025 11:55:20 +0000 (GMT)
+Date: Thu, 9 Jan 2025 12:55:18 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        Anna-Maria Behnsen <anna-maria@linutronix.de>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, "Theodore Ts'o" <tytso@mit.edu>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
+        Russell King <linux@armlinux.org.uk>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>,
+        linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+        loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>
+Subject: Re: [PATCH 10/17] s390/vdso: Switch to generic storage implementation
+Message-ID: <20250109115518.9731-A-hca@linux.ibm.com>
+References: <20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de>
+ <20241216-vdso-store-rng-v1-10-f7aed1bdb3b2@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,315 +122,47 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; BOUNDARY="8323328-1620162179-1736413457=:938"
-Content-ID: <d097befd-a7a7-8093-a0aa-3d69536ba622@linux.intel.com>
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241216-vdso-store-rng-v1-10-f7aed1bdb3b2@linutronix.de>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 7R5Vx0DTIiffSevdjEEF0ZCUrhmWvYEy
+X-Proofpoint-ORIG-GUID: A1txILdScefs6fUz5lPDNoUjZ1geeRhz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 phishscore=0
+ mlxscore=0 impostorscore=0 bulkscore=0 priorityscore=1501 suspectscore=0
+ clxscore=1011 mlxlogscore=405 spamscore=0 adultscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501090091
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+On Mon, Dec 16, 2024 at 03:10:06PM +0100, Thomas Weiﬂschuh wrote:
+> The generic storage implementation provides the same features as the
+> custom one. However it can be shared between architectures, making
+> maintenance easier.
+> 
+> Co-developed-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> ---
+>  arch/s390/Kconfig                         |  1 +
+>  arch/s390/include/asm/vdso.h              |  4 +-
+>  arch/s390/include/asm/vdso/getrandom.h    | 12 ----
+>  arch/s390/include/asm/vdso/gettimeofday.h | 15 +----
+>  arch/s390/include/asm/vdso/vsyscall.h     | 20 -------
+>  arch/s390/kernel/time.c                   |  6 +-
+>  arch/s390/kernel/vdso.c                   | 97 ++-----------------------------
+>  arch/s390/kernel/vdso32/vdso32.lds.S      |  7 +--
+>  arch/s390/kernel/vdso64/vdso64.lds.S      |  8 +--
+>  9 files changed, 17 insertions(+), 153 deletions(-)
 
---8323328-1620162179-1736413457=:938
-Content-Type: text/plain; CHARSET=ISO-8859-15
-Content-Transfer-Encoding: QUOTED-PRINTABLE
-Content-ID: <d145a1cb-57f9-ef27-d597-5ada2cb814fc@linux.intel.com>
+Looks good to me and works.
 
-On Wed, 8 Jan 2025, Yazen Ghannam wrote:
-
-> On Wed, Dec 18, 2024 at 04:37:46PM +0200, Ilpo J=E4rvinen wrote:
-> > pcie_read_tlp_log() handles only 4 Header Log DWORDs but TLP Prefix Log
-> > (PCIe r6.1 secs 7.8.4.12 & 7.9.14.13) may also be present.
-> >=20
-> > Generalize pcie_read_tlp_log() and struct pcie_tlp_log to handle also
-> > TLP Prefix Log. The relevant registers are formatted identically in AER
-> > and DPC Capability, but has these variations:
-> >=20
-> > a) The offsets of TLP Prefix Log registers vary.
-> > b) DPC RP PIO TLP Prefix Log register can be < 4 DWORDs.
-> > c) AER TLP Prefix Log Present (PCIe r6.1 sec 7.8.4.7) can indicate
-> >    Prefix Log is not present.
-> >=20
-> > Therefore callers must pass the offset of the TLP Prefix Log register
-> > and the entire length to pcie_read_tlp_log() to be able to read the
-> > correct number of TLP Prefix DWORDs from the correct offset.
-> >=20
-> > Signed-off-by: Ilpo J=E4rvinen <ilpo.jarvinen@linux.intel.com>
-> > Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> > ---
-> >  drivers/pci/pci.h             |  5 +++-
-> >  drivers/pci/pcie/aer.c        |  5 +++-
-> >  drivers/pci/pcie/dpc.c        | 13 +++++----
-> >  drivers/pci/pcie/tlp.c        | 51 +++++++++++++++++++++++++++++++----
-> >  include/linux/aer.h           |  1 +
-> >  include/uapi/linux/pci_regs.h | 10 ++++---
-> >  6 files changed, 67 insertions(+), 18 deletions(-)
-> >=20
-> > diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> > index 55fcf3bac4f7..7797b2544d00 100644
-> > --- a/drivers/pci/pci.h
-> > +++ b/drivers/pci/pci.h
-> > @@ -550,7 +550,9 @@ struct aer_err_info {
-> >  int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info=
- *info);
-> >  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
-> > =20
-> > -int pcie_read_tlp_log(struct pci_dev *dev, int where, struct pcie_tlp_=
-log *log);
-> > +int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
-> > +=09=09      unsigned int tlp_len, struct pcie_tlp_log *log);
-> > +unsigned int aer_tlp_log_len(struct pci_dev *dev, u32 aercc);
-> >  #endif=09/* CONFIG_PCIEAER */
-> > =20
-> >  #ifdef CONFIG_PCIEPORTBUS
-> > @@ -569,6 +571,7 @@ void pci_dpc_init(struct pci_dev *pdev);
-> >  void dpc_process_error(struct pci_dev *pdev);
-> >  pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
-> >  bool pci_dpc_recovered(struct pci_dev *pdev);
-> > +unsigned int dpc_tlp_log_len(struct pci_dev *dev);
-> >  #else
-> >  static inline void pci_save_dpc_state(struct pci_dev *dev) { }
-> >  static inline void pci_restore_dpc_state(struct pci_dev *dev) { }
-> > diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> > index 80c5ba8d8296..656dbf1ac45b 100644
-> > --- a/drivers/pci/pcie/aer.c
-> > +++ b/drivers/pci/pcie/aer.c
-> > @@ -1248,7 +1248,10 @@ int aer_get_device_error_info(struct pci_dev *de=
-v, struct aer_err_info *info)
-> > =20
-> >  =09=09if (info->status & AER_LOG_TLP_MASKS) {
-> >  =09=09=09info->tlp_header_valid =3D 1;
-> > -=09=09=09pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG, &info->tlp);
-> > +=09=09=09pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG,
-> > +=09=09=09=09=09  aer + PCI_ERR_PREFIX_LOG,
-> > +=09=09=09=09=09  aer_tlp_log_len(dev, aercc),
-> > +=09=09=09=09=09  &info->tlp);
-> >  =09=09}
-> >  =09}
-> > =20
-> > diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> > index 2b6ef7efa3c1..7933b3cedb59 100644
-> > --- a/drivers/pci/pcie/dpc.c
-> > +++ b/drivers/pci/pcie/dpc.c
-> > @@ -190,7 +190,7 @@ pci_ers_result_t dpc_reset_link(struct pci_dev *pde=
-v)
-> >  static void dpc_process_rp_pio_error(struct pci_dev *pdev)
-> >  {
-> >  =09u16 cap =3D pdev->dpc_cap, dpc_status, first_error;
-> > -=09u32 status, mask, sev, syserr, exc, log, prefix;
-> > +=09u32 status, mask, sev, syserr, exc, log;
-> >  =09struct pcie_tlp_log tlp_log;
-> >  =09int i;
-> > =20
-> > @@ -217,20 +217,19 @@ static void dpc_process_rp_pio_error(struct pci_d=
-ev *pdev)
-> > =20
-> >  =09if (pdev->dpc_rp_log_size < 4)
-> >  =09=09goto clear_status;
-> > -=09pcie_read_tlp_log(pdev, cap + PCI_EXP_DPC_RP_PIO_HEADER_LOG, &tlp_l=
-og);
-> > +=09pcie_read_tlp_log(pdev, cap + PCI_EXP_DPC_RP_PIO_HEADER_LOG,
-> > +=09=09=09  cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG,
-> > +=09=09=09  dpc_tlp_log_len(pdev), &tlp_log);
-> >  =09pci_err(pdev, "TLP Header: %#010x %#010x %#010x %#010x\n",
-> >  =09=09tlp_log.dw[0], tlp_log.dw[1], tlp_log.dw[2], tlp_log.dw[3]);
-> > +=09for (i =3D 0; i < pdev->dpc_rp_log_size - 5; i++)
-> > +=09=09pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, tlp_log.pr=
-efix[i]);
-> > =20
-> >  =09if (pdev->dpc_rp_log_size < 5)
-> >  =09=09goto clear_status;
-> >  =09pci_read_config_dword(pdev, cap + PCI_EXP_DPC_RP_PIO_IMPSPEC_LOG, &=
-log);
-> >  =09pci_err(pdev, "RP PIO ImpSpec Log %#010x\n", log);
-> > =20
-> > -=09for (i =3D 0; i < pdev->dpc_rp_log_size - 5; i++) {
-> > -=09=09pci_read_config_dword(pdev,
-> > -=09=09=09cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG + i * 4, &prefix);
-> > -=09=09pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, prefix);
-> > -=09}
-> >   clear_status:
-> >  =09pci_write_config_dword(pdev, cap + PCI_EXP_DPC_RP_PIO_STATUS, statu=
-s);
-> >  }
-> > diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-> > index 65ac7b5d8a87..302ba99e64e6 100644
-> > --- a/drivers/pci/pcie/tlp.c
-> > +++ b/drivers/pci/pcie/tlp.c
-> > @@ -11,26 +11,67 @@
-> > =20
-> >  #include "../pci.h"
-> > =20
-> > +/**
-> > + * aer_tlp_log_len - Calculates AER Capability TLP Header/Prefix Log l=
-ength
-> > + * @dev: PCIe device
-> > + * @aercc: AER Capabilities and Control register value
-> > + *
-> > + * Return: TLP Header/Prefix Log length
-> > + */
-> > +unsigned int aer_tlp_log_len(struct pci_dev *dev, u32 aercc)
-> > +{
-> > +=09return 4 + (aercc & PCI_ERR_CAP_PREFIX_LOG_PRESENT) ?
->=20
-> Another place for a "BASE_NR_*" define. I incorrectly said "MAX_NR_*" in
-> a previous patch. But "BASE" or "STD" seems more appropriate.
-
-Thanks for the reviews!
-
-I don't know why I didn't realize I was adding a literal 4 in many places.=
-=20
-I'll surely add a define for it now that you pointed it out, thanks.
-
-> > +=09=09   dev->eetlp_prefix_max : 0;
-> > +}
-> > +
-> > +#ifdef CONFIG_PCIE_DPC
-> > +/**
-> > + * dpc_tlp_log_len - Calculates DPC RP PIO TLP Header/Prefix Log lengt=
-h
-> > + * @dev: PCIe device
-> > + *
-> > + * Return: TLP Header/Prefix Log length
-> > + */
-> > +unsigned int dpc_tlp_log_len(struct pci_dev *dev)
-> > +{
-> > +=09/* Remove ImpSpec Log register from the count */
-> > +=09if (dev->dpc_rp_log_size >=3D 5)
-> > +=09=09return dev->dpc_rp_log_size - 1;
-> > +
-> > +=09return dev->dpc_rp_log_size;
-> > +}
-> > +#endif
-> > +
-> >  /**
-> >   * pcie_read_tlp_log - read TLP Header Log
-> >   * @dev: PCIe device
-> >   * @where: PCI Config offset of TLP Header Log
-> > + * @where2: PCI Config offset of TLP Prefix Log
-> > + * @tlp_len: TLP Log length (Header Log + TLP Prefix Log in DWORDs)
-> >   * @log: TLP Log structure to fill
-> >   *
-> >   * Fill @log from TLP Header Log registers, e.g., AER or DPC.
-> >   *
-> >   * Return: 0 on success and filled TLP Log structure, <0 on error.
-> >   */
-> > -int pcie_read_tlp_log(struct pci_dev *dev, int where,
-> > -=09=09      struct pcie_tlp_log *log)
-> > +int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
-> > +=09=09      unsigned int tlp_len, struct pcie_tlp_log *log)
-> >  {
-> >  =09unsigned int i;
-> > -=09int ret;
-> > +=09int off, ret;
-> > +=09u32 *to;
-> > =20
-> >  =09memset(log, 0, sizeof(*log));
-> > =20
-> > -=09for (i =3D 0; i < 4; i++) {
-> > -=09=09ret =3D pci_read_config_dword(dev, where + i * 4, &log->dw[i]);
-> > +=09for (i =3D 0; i < tlp_len; i++) {
-> > +=09=09if (i < 4) {
-> > +=09=09=09off =3D where + i * 4;
-> > +=09=09=09to =3D &log->dw[i];
-> > +=09=09} else {
-> > +=09=09=09off =3D where2 + (i - 4) * 4;
-> > +=09=09=09to =3D &log->prefix[i - 4];
-> > +=09=09}
-> > +
-> > +=09=09ret =3D pci_read_config_dword(dev, off, to);
-> >  =09=09if (ret)
-> >  =09=09=09return pcibios_err_to_errno(ret);
->=20
-> Could we do two loops? Sorry if this was already discussed.
->=20
-> =09for (i =3D 0; i < min(tlp_len, BASE_NR_TLP); i++, where +=3D 4, tlp_le=
-n--) {
-> =09=09ret =3D pci_read_config_dword(dev, where, &log->dw[i]);
-> =09=09if (ret)
-> =09=09=09return pcibios_err_to_errno(ret);
-> =09}
->=20
-> =09for (i =3D 0; i < tlp_len; i++, where2 +=3D 4) {
-> =09=09ret =3D pci_read_config_dword(dev, where2, &log->prefix[i]);
-> =09=09if (ret)
-> =09=09=09return pcibios_err_to_errno(ret);
-> =09}
-
-I'm not convinced splitting it would be clearly better. After the flit=20
-mode patch, only variation that will remain is the offset calculation=20
-(extended ->dw[] entires will be overlapping with ->prefix[] using union=20
-trickery so I can just use ->dw[i] in the loop).
-
-> >  =09}
-> > diff --git a/include/linux/aer.h b/include/linux/aer.h
-> > index 190a0a2061cd..dc498adaa1c8 100644
-> > --- a/include/linux/aer.h
-> > +++ b/include/linux/aer.h
-> > @@ -20,6 +20,7 @@ struct pci_dev;
-> > =20
-> >  struct pcie_tlp_log {
-> >  =09u32 dw[4];
-> > +=09u32 prefix[4];
->=20
-> Another place for "BASE_NR_*".
->=20
-> >  };
-> > =20
-> >  struct aer_capability_regs {
-> > diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_reg=
-s.h
-> > index 14a6306c4ce1..82866ac0bda7 100644
-> > --- a/include/uapi/linux/pci_regs.h
-> > +++ b/include/uapi/linux/pci_regs.h
-> > @@ -790,10 +790,11 @@
-> >  =09/* Same bits as above */
-> >  #define PCI_ERR_CAP=09=090x18=09/* Advanced Error Capabilities & Ctrl*=
-/
-> >  #define  PCI_ERR_CAP_FEP(x)=09((x) & 0x1f)=09/* First Error Pointer */
-> > -#define  PCI_ERR_CAP_ECRC_GENC=090x00000020=09/* ECRC Generation Capab=
-le */
-> > -#define  PCI_ERR_CAP_ECRC_GENE=090x00000040=09/* ECRC Generation Enabl=
-e */
-> > -#define  PCI_ERR_CAP_ECRC_CHKC=090x00000080=09/* ECRC Check Capable */
-> > -#define  PCI_ERR_CAP_ECRC_CHKE=090x00000100=09/* ECRC Check Enable */
-> > +#define  PCI_ERR_CAP_ECRC_GENC=09=090x00000020 /* ECRC Generation Capa=
-ble */
-> > +#define  PCI_ERR_CAP_ECRC_GENE=09=090x00000040 /* ECRC Generation Enab=
-le */
-> > +#define  PCI_ERR_CAP_ECRC_CHKC=09=090x00000080 /* ECRC Check Capable *=
-/
-> > +#define  PCI_ERR_CAP_ECRC_CHKE=09=090x00000100 /* ECRC Check Enable */
-> > +#define  PCI_ERR_CAP_PREFIX_LOG_PRESENT=090x00000800 /* TLP Prefix Log=
- Present */
->=20
-> I didn't think to mention this in a previous patch, but could/should we
-> use GENMASK() for bitmasks updates? I know it's a break from the current
-> style though.
-
-Bjorn called himself "a dinosaur" when it comes to GENMASK() :-):
-
-https://lore.kernel.org/linux-pci/20231031200312.GA25127@bhelgaas/
-
-> >  #define PCI_ERR_HEADER_LOG=090x1c=09/* Header Log Register (16 bytes) =
-*/
-> >  #define PCI_ERR_ROOT_COMMAND=090x2c=09/* Root Error Command */
-> >  #define  PCI_ERR_ROOT_CMD_COR_EN=090x00000001 /* Correctable Err Repor=
-ting Enable */
-> > @@ -809,6 +810,7 @@
-> >  #define  PCI_ERR_ROOT_FATAL_RCV=09=090x00000040 /* Fatal Received */
-> >  #define  PCI_ERR_ROOT_AER_IRQ=09=090xf8000000 /* Advanced Error Interr=
-upt Message Number */
-> >  #define PCI_ERR_ROOT_ERR_SRC=090x34=09/* Error Source Identification *=
-/
-> > +#define PCI_ERR_PREFIX_LOG=090x38=09/* TLP Prefix LOG Register (up to =
-16 bytes) */
-> > =20
-> >  /* Virtual Channel */
-> >  #define PCI_VC_PORT_CAP1=090x04
-
---=20
- i.
---8323328-1620162179-1736413457=:938--
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
