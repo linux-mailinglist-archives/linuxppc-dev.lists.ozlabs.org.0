@@ -1,49 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-4899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4900-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 594F0A06F93
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 08:57:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7954A06FB1
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 09:06:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTHFW617sz30ht;
-	Thu,  9 Jan 2025 18:57:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTHRq25crz30jZ;
+	Thu,  9 Jan 2025 19:06:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736409455;
-	cv=none; b=ZrwkW4JcBncaknGs4sGJJ67Wf5fP5dyEJ3NSyoc4XTdiUKL8WR3GI5dviwseCiVN2/gWozS+rGaDvWWYKUGKqWb5hqfN9sDy2gackdfu0jn8cJ/2aF7ypwL1LWUN/euXrrgUF+nL+25qwS89nC1ULpigs0y6muZLceDooum2rNS6JZWnAXK/5zfP55af1mFQM1dXRx0BKJdYNy+qSHB8vllp7BN5WbSWTT6iWPoN/Q9IcqZshPUPbeSeG8zsf5cLsBdZ8jqYjmhuMrbuq8mboQ8AEOoRIRCgu4T3raUSKgCgfxA8ndRMr5ip82PdrxbLfvWZmD7es9fC9gx4xYju/w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:7c80:54:3::133"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736409991;
+	cv=none; b=BX5fbij5qaSESfw45mdIF66O9iOU1HsScHowhWDVaDp5lvb/uE9b4QIAwCGLME5LmkpR32UFq+W4VWiwwxmxZZccIMB12XshXjw2RnXIRAfx+Er5q5IUS3vML9vi74OYO5PJyXOd+sy2uZMDTWI0/ooIM2iWI9WRJXVETDGwnke1WuERWFHwDpALTCkXiiuxrtV+bkCWHtkpaxOc9sbhm8Krh0hSrc0d5LfeCybz9fgLFCE9J+wPOwQC7Q6iwe/hA6CwXyLZ0Ol9XRcHmqNuXi5GzKzZFl7LSE4fAw1L3SyOvB4l67MpWkUf9HuJKU2ScDmkrordGmSSAHhOpIztvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736409455; c=relaxed/relaxed;
-	bh=4IuucZ7Qxpx9JBGWW0dkFfdTcRybNIZZIoS5Em1Dg7U=;
+	t=1736409991; c=relaxed/relaxed;
+	bh=J+7TSGHXFL8/Y9YPMq/aeDzuJIsjLfw7/hMIKRXc/M4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b7UZgUQJ+UXAjgnUZNUlSFZphyVNl2BzQdO/sotGn2vU82hhtiyGieR4oOBGFStllMb2EAsVhj1UsjA6KMMKX2Q3JHSRB1Oe85lDhez95Lm18i4TnC8JOXmJedKUGFXvh/VFxOJjBAlOB0c8+c7hqV3O3NLs1jK4RV54Lk+xU+ImRuBrPPhSR3B8maGtYswcRbh+V6zUrzi/0nZv8TUcpfRIhKXQ3YrGqlUl336fI7sreZtdGAxct8kz7EdxrlFHTkYKzjkjvHcVZoH35xheK5kxDkG8p3NDAC35VNrpNm5JdTVdaeo95bpBAwZGm8ut+iAiLN+aHTjQbkb8SPF2IA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0eH39eGh; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XcEzsrOgFSBsrF9U1XvPXrF4Mvuk8VGoGtWQu/xtAkyUJN3QbDM1QQ60SyB3felpOfJPX8E8e7XOeHxQ8bIEr3Y9PqqjJX+v4mTu7IQGGFxeS0jdY/QRVodYXIZwMaMMaiRTmgHSgfGgjyhToX+dR6crL9FSam2GkZ97lIcdLVHEL0ruioHhq87o8kvAWz1HgV1pr1ardD97on8KBmlT9aNfNbtOEMpG0s98mt+gvlRzesKWjuWV2pBK+k4EYzRagZ4Eiij4QdosB7kHToTiWQq6XDRIJk0x0pxCikomN57tEvtoMhpOWJsfd5qIhyKxi2QEt5Av/Y+kXbrQa920dg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=1b2zKe+l; dkim-atps=neutral; spf=none (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+2e5c2b0d924108c2b4cb+7809+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=bombadil.srs.infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0eH39eGh;
+	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=bombadil.20210309 header.b=1b2zKe+l;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bombadil.srs.infradead.org (client-ip=2607:7c80:54:3::133; helo=bombadil.infradead.org; envelope-from=batv+2e5c2b0d924108c2b4cb+7809+infradead.org+hch@bombadil.srs.infradead.org; receiver=lists.ozlabs.org)
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTHFV2mg5z30hf
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 18:57:33 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 8D320A4135B;
-	Thu,  9 Jan 2025 07:55:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B10C4CED2;
-	Thu,  9 Jan 2025 07:57:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736409447;
-	bh=la/AGYY75gNYY12SISkKn5wPrr5eGjIcyo23Hqc0rAE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0eH39eGhMX8OPsBsF7mpcicMTjnKnyc/btU0UDMpYSoY0cwPEtwdkrCg9jt9cqc72
-	 xwWOru/ApEbXd3aWI4vXRsBtmP8wiHiw+BjJC1kck32CnkKzl8kcjeNvjlJNVSiE8Q
-	 lNHzio/+K8tM2k5MTABboHo3dwIFP5ucwxktGhNA=
-Date: Thu, 9 Jan 2025 08:56:37 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTHRh19mnz30hf
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  9 Jan 2025 19:06:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=J+7TSGHXFL8/Y9YPMq/aeDzuJIsjLfw7/hMIKRXc/M4=; b=1b2zKe+let/4glvc6CEebbRQN4
+	GitgyZO0o5i1jesnNGaKE/FZhb18mmWvEz3QGoScqAD3LL53847hb354Vs//hlMbuZ3MKr6YZ+U2h
+	uLJwJT1O3V7M6IPkWkelZ1xJdan92GsNPcmGgDahedD5jwKlwAZRTbEKJNcjXDdj/qdEToXhy9Dji
+	oiYU/u8YuyFfDA+6J7CBrMcW3Rhwn4LaiO65Zdn/Qn9zbTXmm9/GZuJjYhBls6xB8CpzKvJEPZQKb
+	C09/FQ1MaIAQlDjtnikIb2ghvXS0t4wNVqFAU01PE6MbSa2e3JnlZuv3CbgwKKK9uPykETs9WoIxk
+	dImQantQ==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1tVnYP-0000000B8TT-3duK;
+	Thu, 09 Jan 2025 08:06:09 +0000
+Date: Thu, 9 Jan 2025 00:06:09 -0800
+From: Christoph Hellwig <hch@infradead.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -68,11 +70,12 @@ Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
 	bpf <bpf@vger.kernel.org>
 Subject: Re: [PATCH v2 0/3] sysfs: constify bin_attribute argument of
  sysfs_bin_attr_simple_read()
-Message-ID: <2025010914-gangly-trodden-aa96@gregkh>
+Message-ID: <Z3-DcbY60SxoM0dN@infradead.org>
 References: <20241228-sysfs-const-bin_attr-simple-v2-0-7c6f3f1767a3@weissschuh.net>
  <CAADnVQ+E0z8mY4BF9qamPh1XV9qs2jZ03bfYz2tVw8E4nFVWBw@mail.gmail.com>
  <0cbfd352-ee3b-4670-afae-8e56d888e8c3@t-8ch.de>
  <CAADnVQJMV-zRcDKftZ-MbKEJQ7XGmPteMYCS0Bm5siBEXUK=Fw@mail.gmail.com>
+ <2025010914-gangly-trodden-aa96@gregkh>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,62 +88,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAADnVQJMV-zRcDKftZ-MbKEJQ7XGmPteMYCS0Bm5siBEXUK=Fw@mail.gmail.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <2025010914-gangly-trodden-aa96@gregkh>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Jan 08, 2025 at 09:45:45AM -0800, Alexei Starovoitov wrote:
-> On Tue, Dec 31, 2024 at 2:30 AM Thomas Weißschuh <linux@weissschuh.net> wrote:
-> >
-> > On 2024-12-30 16:50:41-0800, Alexei Starovoitov wrote:
-> > > On Sat, Dec 28, 2024 at 12:43 AM Thomas Weißschuh <linux@weissschuh.net> wrote:
-> > > >
-> > > > Most users use this function through the BIN_ATTR_SIMPLE* macros,
-> > > > they can handle the switch transparently.
-> > > >
-> > > > This series is meant to be merged through the driver core tree.
-> > >
-> > > hmm. why?
-> >
-> > Patch 1 changes the signature of sysfs_bin_attr_simple_read().
-> > Before patch 1 sysfs_bin_attr_simple_read() needs to be assigned to the
-> > callback member .read, after patch 1 it's .read_new.
-> > (Both callbacks work exactly the same, except for their signature,
-> > .read_new is only a transition mechanism and will go away again)
-> >
-> > > I'd rather take patches 2 and 3 into bpf-next to avoid
-> > > potential conflicts.
-> > > Patch 1 looks orthogonal and independent.
-> >
-> > If you pick up 2 and 3 through bpf-next you would need to adapt these
-> > assignments. As soon as both patch 1 and the modified 2 and 3 hit
-> > Linus' tree, the build would break due to mismatches function pointers.
-> > (Casting function pointers to avoid the mismatch will blow up with KCFI)
+On Thu, Jan 09, 2025 at 08:56:37AM +0100, Greg Kroah-Hartman wrote:
+> The "pointless" penalty will go away once we convert all instances, and
+> really, it's just one pointer check, sysfs files should NOT be a hot
+> path for anything real, and one more pointer check should be cached and
+> not measurable compared to the real logic behind the binary data coming
+> from the hardware/kernel, right?
 > 
-> I see. All these steps to constify is frankly a mess.
-> You're wasting cpu and memory for this read vs read_new
-> when const is not much more than syntactic sugar in C.
-> You should have done one tree wide patch without doing this _new() hack.
-> 
-> Anyway, rant over. Carry patches 2,3. Hopefully they won't conflict.
-> But I don't want to see any constification patches in bpf land
-> that come with such pointless runtime penalty.
+> sysfs is NOT tuned for speed at all, so adding more checks like this
+> should be fine.
 
-The "pointless" penalty will go away once we convert all instances, and
-really, it's just one pointer check, sysfs files should NOT be a hot
-path for anything real, and one more pointer check should be cached and
-not measurable compared to the real logic behind the binary data coming
-from the hardware/kernel, right?
+Hey, when I duplicated the method to convert sysfs over to a proper
+seq_file based approach that avoids buffer overflows you basically
+came up with the same line that Alexei had here.  And that is a lot
+more useful than constification. Not that I mind the latter, but it
+would be better if it could be done without leaving both variants
+in for long.
 
-sysfs is NOT tuned for speed at all, so adding more checks like this
-should be fine.
-
-thanks,
-
-greg k-h
 
