@@ -1,91 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-4913-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4915-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8B4A077B9
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 14:38:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C8F6BA077BF
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  9 Jan 2025 14:39:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTQpz5wzNz3bwf;
-	Fri, 10 Jan 2025 00:38:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTQq41Rztz3byh;
+	Fri, 10 Jan 2025 00:38:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736429915;
-	cv=none; b=GKwRAxkqow6EZzo9mLWm/dP3VITNSB2aCRV3rUUneZf2r1NKivcbLlYswSpQLQaDjpH9UqHFIB5h/q56DPgF32gQ7tdtlOKlL+KVXZIdm1fXyX1eoBNUePv7JnCGmUbyC0Lb3DOvTQB15hdvaYtNH0wdAk8z8gyl6FMiehOxg1dmley22klFm0Fc2Ruj+kIIYEi+pUKfL7z+8AeJ7DPg66fkEVa9wFrr1NlMxtwJTMZOyWSLNW9FgWMgNMhE9lDNh/RCLjxHYVPlp56DLa0TNtMA7NZo/mmgIBo0muTVY6PtcV3Oe5rp7k2X96lq8Z/SUsXkH8Spa1OzZolMCT9YZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736429920;
+	cv=none; b=ho88SqfMd2efXrm90SyY/9ynkKCiaqsb8ds9ed5LfPRlGPdqIZ2CFa6vu85PfRc3dTHS7vyFUa0sFhi7UdAApvgUVuNJPtWOMrMrFqW4phaa2/8jt4PtgDZvZ9dACOzJgOUgyy7y61lnO/9+Yzhk2YKTDkjk3MtfWKisnPvVwmowDYHVp4Ka5fzGhRWqjdzGl4g9fZXHloxIhncuRhNvoHngSs44ClLj8FxHuGWpM1Ef76mCvhywLX73pqN3Gr7tnjjzBcav+QAwUCv8rzEpk0ZEC+Gbp87MXPfPpWBZNMBzqfMkmIDfcYQfWE0wIVDtW8SuOiP7c/YzHL9NrHageQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736429915; c=relaxed/relaxed;
-	bh=zguszej+6js0jv121He/RU1+H3xrJy3UeZApbWTSTbc=;
+	t=1736429920; c=relaxed/relaxed;
+	bh=Y4qkNvDxtryDJuaOhZabXXDqOZ28SJd16eOJBotltio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:content-type; b=BXSLMWAlGiG0YTKZfB0rPKt3SWR/bp1su2fqgpjO84BO0ef0j0KD8Up9dPjC6ikkbp1HEsppLWVewajtNVGhRJOnwedqfu3JEoBouqA90tqj7WJsh55BtvxvyA2WKgHFQ0FxtOoe4v0Q0EAiqJkX0mS7q3AC9Y0HSgU7XTv1Bsjpq7AcoY+GsLgXnYp8sUweX3cB2+GgDh9VmAsm8Qh4483VoaC+tE9BOMFE8PSkAeSAgeT58iwBxfITScW2JNgCR2k5zz4KOPxEBps6H52y4dEYNjrNZdifWV4POnvP4U7tDEQ4cxKUfs6ogeNB4r0NX12LOnQCdJBEdfe5snUn+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WQXP3Z4q; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D8KsiW+d; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 MIME-Version:content-type; b=ZqWxdCODd6LFe/Mz1vKCOwDcsugvkyweGX2TQvwrZVUaJ8xry0RytqK397yXvOmJTjMxA1oj5zLH+57FUap11T8pzFckyQQJWLDJAq019qP+TH3Qo+cGvusaUonGQvf4GS2I8m0IgmythjI3uCOAdjErN3x8mZNsq5QHDQX9n2JwHxxd1eBPBDe0B4RM+UFMQbxtCiS6269MUUA83XqcSIbzZckANcod0aDHTLNM7oukLAaV811E6cTzyobSf2NlTgKrsup40kZhB74SxK7RsqCktnj4yuZ9oz9ZZ+FEEzj8q/ZqiUwCjjloT2OVtl1Z7Hnl+IctboDTTw9yyq3/6Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hQXZq8/H; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yq/VgGT8; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=WQXP3Z4q;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=D8KsiW+d;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=hQXZq8/H;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Yq/VgGT8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTQpy6lBvz3bWf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 00:38:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTQq302cRz3bxR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 00:38:38 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736429911;
+	s=mimecast20190719; t=1736429915;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zguszej+6js0jv121He/RU1+H3xrJy3UeZApbWTSTbc=;
-	b=WQXP3Z4qnt9M/Y7jlwzRTQlhY6y7FrOy3KIXd8hX+DW980B5nrMNsySY32fMhJMy/EOY9y
-	L3z158JTqvYn7hhIiNcyxYNfz73vwCFCBbv8iO50uuhR4nfwlg6U7xyOxAQ3WDbLw7litu
-	F5R3XKg4/s7JIi+NQQ0EFFj7ZgtkhAA=
+	bh=Y4qkNvDxtryDJuaOhZabXXDqOZ28SJd16eOJBotltio=;
+	b=hQXZq8/H2DYevavCbOOCNZROaE3BQqM60pM38u4Po+CLX+n+8XKQBPnxAx8GYgpMMwpnPc
+	tf78PnfDRInJdnwZ4dB9RVg2GfBmAK1HHTVpUQls4s8AS/4aSi0WiuZtX3rl6Up7xy/ej1
+	LYWUka9d9BSZ6+nUFHtQZW2vx21cZc8=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736429912;
+	s=mimecast20190719; t=1736429916;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zguszej+6js0jv121He/RU1+H3xrJy3UeZApbWTSTbc=;
-	b=D8KsiW+d3zH4p+WGvFiAHz67apSzDG2Kn75DDPOBDA0KbFTYe2ypSdoqlHx52TkcUHu0A4
-	vy4HJIGSStlaxt0pv4JCeo6O+cDcVZr0Nlo0l2hHxc3XeOPbhCa72rD6H5vaoxf6vl+E7Q
-	V0+yA1v0SQSehSFsZGJ6+Y6ssmE0fOQ=
+	bh=Y4qkNvDxtryDJuaOhZabXXDqOZ28SJd16eOJBotltio=;
+	b=Yq/VgGT8Pbnqj7uEy0Pagp01rTiCtStEROciJgHLaBYXgAONIwfwtgQ16ZrW6uQ8ujKdkx
+	ahel0a3D6r8YHZfQixn5DzeEyfATPlpsRNHRskbRx9dKd7etvN4WEH8xW6QNrEuZBJNuJ+
+	yALcowf8cDlSlv4jkRHQQ7NpL2Iqavo=
 Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
  [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-439-ep1O4aBSNvOfWT5dWRUEUA-1; Thu, 09 Jan 2025 08:38:29 -0500
-X-MC-Unique: ep1O4aBSNvOfWT5dWRUEUA-1
-X-Mimecast-MFC-AGG-ID: ep1O4aBSNvOfWT5dWRUEUA
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-aa6704ffcaeso89968366b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2025 05:38:29 -0800 (PST)
+ us-mta-84-z9ehhnHxPaWRjx2yc3AgjA-1; Thu, 09 Jan 2025 08:38:32 -0500
+X-MC-Unique: z9ehhnHxPaWRjx2yc3AgjA-1
+X-Mimecast-MFC-AGG-ID: z9ehhnHxPaWRjx2yc3AgjA
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-aa622312962so71851866b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 09 Jan 2025 05:38:32 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736429909; x=1737034709;
+        d=1e100.net; s=20230601; t=1736429911; x=1737034711;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zguszej+6js0jv121He/RU1+H3xrJy3UeZApbWTSTbc=;
-        b=Drn/orCu93JdsU35ntqXh8Jul66d8t/GUlL6svLF7+jUUqDQr0TjpLTKzJRR1ubrqw
-         kNDMn9ojnib3+AQj7CJEK5p3eHT8acZGmjHEhqUDEXvzeKtIyEWBDLzqmIkyM9l7fCfe
-         99WjfCxIf5rmgkYAcJvM8ZtzWrbz7C+J4GUyc8AWR0klw6y2DXwCE+rP8+ghYn6FvWhP
-         wY5XwK0QCifE9aCFqa8ht/JKbeNSocoe9yzKbVfhBlfuMpF/7PKCj5imsEZffJYFmcQS
-         ypoMR4/vVz7jXp0wVPtQcWeJ8lDsOJdjjOiqAuOb4jmTJfT54/teAwW9drYmZC3Ne9J5
-         B94A==
-X-Forwarded-Encrypted: i=1; AJvYcCXdcnfft/uLwuO9t5ANy9todqCtB7SkN1rZIXc6hb4AfZHHRy8ccSQ1PP5UPHqWWqgmrFDUn+9cblC/li0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxpdAJeL8AuQ6Q695YNc42dPh2WOalDh6WCUxnVSrrl7rRbeziJ
-	udwF3qrjwKfCED5/0iTbjZruP2m3JpwvaQ/h7rS39tuBAK7K6xkuW3tVWKW7rqdqqYNzf7Qmdgg
-	akmqkoopPS/YIsZ0mV4VfI/4oVRc4m0/Q2zGoiXLOcgo9w4bBri88AcVF6STjX64=
-X-Gm-Gg: ASbGncutatqSzHrAMSFz85rnRtbHN6qDF8kA845j31CbZbRzblg4XfqG3T2ieWNyyFO
-	KN/DhcaArdSSFbtn8P2GUD7wnfSBrbvsiars5I7EnGEOLzEHwoTnM7w2UPTN8/i/J/uuDP2v333
-	+bMsV7R53iARNnQD0GkndoaligwXwtaYjoEE9zRL+bd/83PW2CZTDZpTTi07N8WdxUE+g/RUXI8
-	69MEt5NPqlDSOwWpGSfhqNtsyrKHlhdyncZxZQaq1kyEo5kxJLQ4QziScYa
-X-Received: by 2002:a17:907:724b:b0:aa6:abb2:be12 with SMTP id a640c23a62f3a-ab2abc91b53mr573667566b.37.1736429908682;
-        Thu, 09 Jan 2025 05:38:28 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IGo9tyQhMRCjTpqjQKY5ONk4yRTr2KDDRMNsirKe/0lHnxJJpvXbaOhKUZHyIFh2cUX8sdNHg==
-X-Received: by 2002:a17:907:724b:b0:aa6:abb2:be12 with SMTP id a640c23a62f3a-ab2abc91b53mr573664766b.37.1736429908325;
-        Thu, 09 Jan 2025 05:38:28 -0800 (PST)
+        bh=Y4qkNvDxtryDJuaOhZabXXDqOZ28SJd16eOJBotltio=;
+        b=gKyP2qRwWCTbxC/XqIKS/9M8yJJ1Jlzi74M//OD4OA+zMNdlqk5xlQ+42oCbPGyiOb
+         GDsdkQwGSeayWlK9uZtG0V2+azXxO99HuKiE7daCOJc5lChAjCVK4GTqtHEXw89TB5ER
+         m/r6Lohtsnuw8Co3vdWmjq06GihOXLb3kuLWXxzNQYQYnuS1g81AdBUzZYW94ZDBzAL/
+         UvoCc1wd63AnVhHATNWD4m0FHnnyD5NZ85yZwOrWdE1SlwciXxJrQ+Nwq6mtmG2HdqD1
+         IlhdaUTFAK5XvZuBEftnO2DiSEYk35SFh7zro24SM1T0baYftNug7F4L1vK0RSj/dhtE
+         JdVg==
+X-Forwarded-Encrypted: i=1; AJvYcCUJm+JlaUmaF+qFhraQqx81oEzkSFJ1UilOgm3FG2QNDVHU35QksIpfFThK/L+PK3IsjlPCHtmcsEE4/ck=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzJm5knGn6qtlklCUHTMlqrzKvDS1fmJPkOa1VV1m25rqYQGsIG
+	QyYDLTvSMFzAMM5bEC/gsIipKlzbkDnKW8u4/uClraqks9z7KOmPc5gUKo7CN6eN5IfQ+2356kJ
+	pKf4Dya9Hel6RgGlT6we9JmlLcwENspRUT9N7ohISOjLtMwyM+0QPBzML8ZMrW6Y=
+X-Gm-Gg: ASbGnctWkU4sNPGo3IrhFKustKBxl3No+qHGxdVeCpJyNA1Pj2Y1axcOb1B5HS7D6cO
+	21PctVLggFybtiWqUAlN8yfGBAXMkyRiTnm/FzcLzK6R4GDRdoRJz756glcKWBXnkUiTr6Xp2A1
+	74151g2ELoIo6dJ6oh37dSixhWOmxzgUYueUWAKE431UUczb4knWAesVnRlIusFWhutmHyhcJXn
+	qIBSOp8hTp4PhBECA6RbAbtIYuwdSk9AlXlkP7O+j2XO6AdFMqaOHG9PV6z
+X-Received: by 2002:a17:907:97c6:b0:aaf:208:fd3f with SMTP id a640c23a62f3a-ab2ab558911mr610030966b.13.1736429911040;
+        Thu, 09 Jan 2025 05:38:31 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEcNnAC+O5NQsf3e6ZbNH5VgDVjtZpeWPQB3s6uy9MQKvp52Beiu2u+bl2BWL3zXg+RcIfN2Q==
+X-Received: by 2002:a17:907:97c6:b0:aaf:208:fd3f with SMTP id a640c23a62f3a-ab2ab558911mr610029466b.13.1736429910681;
+        Thu, 09 Jan 2025 05:38:30 -0800 (PST)
 Received: from [192.168.10.47] ([151.62.105.73])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95af187sm73137566b.142.2025.01.09.05.38.27
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c90d6838sm74386766b.55.2025.01.09.05.38.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 09 Jan 2025 05:38:27 -0800 (PST)
+        Thu, 09 Jan 2025 05:38:29 -0800 (PST)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -95,10 +95,11 @@ Cc: oliver.upton@linux.dev,
 	Andrew Jones <ajones@ventanamicro.com>,
 	seanjc@google.com,
 	linuxppc-dev@lists.ozlabs.org,
-	regressions@lists.linux.dev
-Subject: [PATCH 3/5] KVM: e500: track host-writability of pages
-Date: Thu,  9 Jan 2025 14:38:15 +0100
-Message-ID: <20250109133817.314401-4-pbonzini@redhat.com>
+	regressions@lists.linux.dev,
+	Christian Zigotzky <chzigotzky@xenosoft.de>
+Subject: [PATCH 4/5] KVM: e500: map readonly host pages for read
+Date: Thu,  9 Jan 2025 14:38:16 +0100
+Message-ID: <20250109133817.314401-5-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.47.1
 In-Reply-To: <20250109133817.314401-1-pbonzini@redhat.com>
 References: <20250109133817.314401-1-pbonzini@redhat.com>
@@ -115,96 +116,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 4krDpJAMoK3dJPxcFgB6a91kprbIOesrlo1XnbVVclM_1736429909
+X-Mimecast-MFC-PROC-ID: -oX3QYAaaXZd5F3oknOImXY7HQWDScnRu-Lb7MKkyO0_1736429911
 X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 content-type: text/plain; charset="US-ASCII"; x-default=true
 X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Add the possibility of marking a page so that the UW and SW bits are
-force-cleared.  This is stored in the private info so that it persists
-across multiple calls to kvmppc_e500_setup_stlbe.
+The new __kvm_faultin_pfn() function is upset by the fact that e500 KVM
+ignores host page permissions - __kvm_faultin requires a "writable"
+outgoing argument, but e500 KVM is nonchalantly passing NULL.
 
+If the host page permissions do not include writability, the shadow
+TLB entry is forcibly mapped read-only.
+
+Reported-by: Christian Zigotzky <chzigotzky@xenosoft.de>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/powerpc/kvm/e500.h          |  2 ++
- arch/powerpc/kvm/e500_mmu_host.c | 15 +++++++++++----
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ arch/powerpc/kvm/e500_mmu_host.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/powerpc/kvm/e500.h b/arch/powerpc/kvm/e500.h
-index 6d0d329cbb35..f9acf866c709 100644
---- a/arch/powerpc/kvm/e500.h
-+++ b/arch/powerpc/kvm/e500.h
-@@ -34,6 +34,8 @@ enum vcpu_ftr {
- #define E500_TLB_BITMAP		(1 << 30)
- /* TLB1 entry is mapped by host TLB0 */
- #define E500_TLB_TLB0		(1 << 29)
-+/* entry is writable on the host */
-+#define E500_TLB_WRITABLE	(1 << 28)
- /* bits [6-5] MAS2_X1 and MAS2_X0 and [4-0] bits for WIMGE */
- #define E500_TLB_MAS2_ATTR	(0x7f)
- 
 diff --git a/arch/powerpc/kvm/e500_mmu_host.c b/arch/powerpc/kvm/e500_mmu_host.c
-index 06e23c625be0..e332a10fff00 100644
+index e332a10fff00..7752b7f24c51 100644
 --- a/arch/powerpc/kvm/e500_mmu_host.c
 +++ b/arch/powerpc/kvm/e500_mmu_host.c
-@@ -45,11 +45,14 @@ static inline unsigned int tlb1_max_shadow_size(void)
- 	return host_tlb_params[1].entries - tlbcam_index - 1;
- }
+@@ -379,6 +379,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 			unsigned long slot_start, slot_end;
  
--static inline u32 e500_shadow_mas3_attrib(u32 mas3, int usermode)
-+static inline u32 e500_shadow_mas3_attrib(u32 mas3, bool writable, int usermode)
- {
- 	/* Mask off reserved bits. */
- 	mas3 &= MAS3_ATTRIB_MASK;
+ 			pfnmap = 1;
++			writable = vma->vm_flags & VM_WRITE;
  
-+	if (!writable)
-+		mas3 &= ~(MAS3_UW|MAS3_SW);
-+
- #ifndef CONFIG_KVM_BOOKE_HV
- 	if (!usermode) {
- 		/* Guest is in supervisor mode,
-@@ -244,10 +247,13 @@ static inline int tlbe_is_writable(struct kvm_book3e_206_tlb_entry *tlbe)
+ 			start = vma->vm_pgoff;
+ 			end = start +
+@@ -454,7 +455,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
  
- static inline void kvmppc_e500_ref_setup(struct tlbe_ref *ref,
- 					 struct kvm_book3e_206_tlb_entry *gtlbe,
--					 kvm_pfn_t pfn, unsigned int wimg)
-+					 kvm_pfn_t pfn, unsigned int wimg,
-+					 bool writable)
- {
- 	ref->pfn = pfn;
- 	ref->flags = E500_TLB_VALID;
-+	if (writable)
-+		ref->flags |= E500_TLB_WRITABLE;
- 
- 	/* Use guest supplied MAS2_G and MAS2_E */
- 	ref->flags |= (gtlbe->mas2 & MAS2_ATTRIB_MASK) | wimg;
-@@ -303,6 +309,7 @@ static void kvmppc_e500_setup_stlbe(
- {
- 	kvm_pfn_t pfn = ref->pfn;
- 	u32 pr = vcpu->arch.shared->msr & MSR_PR;
-+	bool writable = !!(ref->flags & E500_TLB_WRITABLE);
- 
- 	BUG_ON(!(ref->flags & E500_TLB_VALID));
- 
-@@ -310,7 +317,7 @@ static void kvmppc_e500_setup_stlbe(
- 	stlbe->mas1 = MAS1_TSIZE(tsize) | get_tlb_sts(gtlbe) | MAS1_VALID;
- 	stlbe->mas2 = (gvaddr & MAS2_EPN) | (ref->flags & E500_TLB_MAS2_ATTR);
- 	stlbe->mas7_3 = ((u64)pfn << PAGE_SHIFT) |
--			e500_shadow_mas3_attrib(gtlbe->mas7_3, pr);
-+			e500_shadow_mas3_attrib(gtlbe->mas7_3, writable, pr);
- }
- 
- static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
-@@ -492,7 +499,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
+ 	if (likely(!pfnmap)) {
+ 		tsize_pages = 1UL << (tsize + 10 - PAGE_SHIFT);
+-		pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
++		pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, &writable, &page);
+ 		if (is_error_noslot_pfn(pfn)) {
+ 			if (printk_ratelimit())
+ 				pr_err("%s: real page not found for gfn %lx\n",
+@@ -499,7 +500,7 @@ static inline int kvmppc_e500_shadow_map(struct kvmppc_vcpu_e500 *vcpu_e500,
  		}
  	}
  
--	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg);
-+	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg, true);
+-	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg, true);
++	kvmppc_e500_ref_setup(ref, gtlbe, pfn, wimg, writable);
  	kvmppc_e500_setup_stlbe(&vcpu_e500->vcpu, gtlbe, tsize,
  				ref, gvaddr, stlbe);
  	writable = tlbe_is_writable(stlbe);
