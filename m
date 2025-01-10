@@ -1,83 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-4981-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4982-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B77C9A092D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 15:02:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3AEA09402
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 15:46:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YV3Jb2rVLz3cWG;
-	Sat, 11 Jan 2025 01:02:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YV4GV06Yhz3cYd;
+	Sat, 11 Jan 2025 01:46:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736517774;
-	cv=none; b=Bwzo1Fo6RsxqMDOzebeLvp5r7vwxyllY8bK5Z/MtAkQRC5TGUtnSdiSVb3kBEkgSCWBEUvW1zLi/8eT/5EI6Rej1LtNqhG4vRLa5fOWtHjo5bY8WjHNEtPF5qQzJeNwOO8LajAdLyM2t7X6GARvRLfqKNKUPdQrRWfRp9G/JbQnUT5ef1FjriO9YzoOkg2ciAFHyuIN6P+FkDySbmV3uBTQj0ipDDPhSWWh25G4p5aEfkYt4LY+8T1bK5ezBvxo9yXBEZN1iiJ9INHEMgUEo1LBbBS6asc+7R0tO6FhUC8WZj7+K0MLdkSSVcnM3Kpmchgl2o/2x7cmXgiQr3fc13g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736520369;
+	cv=none; b=cK+++mo4IpNZx5t7DRLgC0qWP9wAWEOFG9pzAVMLr2YfxvNN0eKCmorfoe97nHf9ZsNefqP5e7n6qvXl5yuKJc5+bzaoKY+u9Z7zyh2z4qsiHAkpj5+0gjHC3/I2m/LFd6nXMuEE7f+wraKGf66g14b6fRANHM6HKZR98d557+DdZI1xjBltGs2neOCDhZ0WW2RZRSAjv77aOZq0cet+TxS/TBIhDWS+ShV7vRqBmSizrZHEFDKaP6pil2Io35+pnr5Pn0HFaDpyQwKWbCKYsR2UmhJcoaRYteRGW7TlofKwqmGqDS+1GQRJsCuZ7NFWeIi382CFqUhgAGYo80f5oA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736517774; c=relaxed/relaxed;
-	bh=ZtM8CdxlkYiqGAke/bmDfXgVLUohRlvgKD0ty7jBgy4=;
+	t=1736520369; c=relaxed/relaxed;
+	bh=D0VkJu27Sxbh1i1XLm1qEj87CeB4KdKGqj1Z5VORNqo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVArEWnCSwM2nv9YB+dwmN0USDkGVxgrnH+2yttonBENjgyu72gQGjZWfhFKcbmB/XNrpipNfOxGeYlKB0UsSzJe8/0E5em92VTk4oJdShsJjPO3cOKLx6orKgmaCNfhkK/p2i4o+hoYi1YWiaVl5NCmB4sWV6O/FDwYzV5iosSruYhJpWP0n25g8GVl+ng6xar4J59W/X3RVGJsG9fSLMsRpFXce9yCNs4hipLVxYfh/NXqPfK0vailLwv0Sx4TFZfEnY6TQ6V9AfwJhD5b7GPUJWFPfMpSL/i02+Iq5umlJ6UQLDzoRwJvnDZJZ3evfWlHX+Vmkqo2vWQw5XU43w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1UgEq73O; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=NjO+DUfMt5LDE2+TL7tP/fpJmWshZ0Cw3KDCWPKxK/qlnKzIDZk1WEKEuiCShA0/PQaubXwHe76jrN69crmWtG0NMJwHtLwbOP4J4vacloUKhjzKEeG5IOUN++Nbm5EPFPXCGgqvj/oxXamXe/rs+FLAMf/E6YbF0efkVrwsIQi2+8GsPUQmzPOQk6ZJzIvq7uRKox7UOX+q1IRAETLqPe7SmCCcrovO86c9A6q8euJsQybWS8Jwy33eEDU+aMKS7zG/EY1Eh1shIQ60PGLdZd2C7d+0TmbcRP36KYqPc442xrW7p/tCDF94zRRmqkOhNbmX2+HiIH6tOvnoSeJWkw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=mQTX3y8t; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=1UgEq73O;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=mQTX3y8t;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV3JY4MCyz3cWF
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 01:02:52 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5817A5C4779;
-	Fri, 10 Jan 2025 14:02:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59F6AC4CED6;
-	Fri, 10 Jan 2025 14:02:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1736517770;
-	bh=PiHOuTmg4zVKpJegF6ABeMDuMTjgr4kkSmGq4TpISGQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=1UgEq73O4FHpe2ME6QHxe7teMM6bDpyu8MXMdN9O8AaLkv60GwON/KHpjZUgYVvmR
-	 Ry1Dhq+iyNhko0bi34d1pq+B+TjcxHfguJ0Ye49THfp7BuRgEtJt5K+Ap9BrbOlPnI
-	 aeoCFckJv7amvcq7csX9bujUVnd56/4c9I2Y0wo8=
-Date: Fri, 10 Jan 2025 15:02:46 +0100
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Alexei Starovoitov <alexei.starovoitov@gmail.com>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV4GN01Jgz3cY0
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 01:46:00 +1100 (AEDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id EF1AF240027
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 15:45:52 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1736520352; bh=dYYaYFEM24+iiQPImiW+lLFpDQ1hFqc+9xNycR8IE3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=mQTX3y8tMVkoUzUoLoHNqk6Efo9PMc+vYEnVnhkKokT0BwTiK9uzovbdH4tps0r0c
+	 WNYDYn6tkkBBp60NiXOpxTW8tCoTu3iHhx0cGxfHa9CqcJiaHp3yUJaXa+XZty6r0Y
+	 jBh46z7ei2dg4UGJOIkBmcLwvekAcO/CX9eOqm4wrqJGDW8veA8mSo+t3++itJntsE
+	 cP28ijJ8ZfvQYjVkTY1QbTVH1NypaPifrVjdlxuv7OePJbLYs3WMpSBvr2EFvvQRn+
+	 yV/7+CROrI92h4qg9fk+xWYMRjZLnUgnQ4g6T3gis5vyOlIEYEctkUl4x9msX4V66g
+	 JLiNfydXYIAbg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YV4G56d9Bz6tx7;
+	Fri, 10 Jan 2025 15:45:49 +0100 (CET)
+Date: Fri, 10 Jan 2025 14:45:49 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Rob Herring <robh@kernel.org>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Martin KaFai Lau <martin.lau@linux.dev>,
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
-	John Fastabend <john.fastabend@gmail.com>,
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>,
-	Hao Luo <haoluo@google.com>, Jiri Olsa <jolsa@kernel.org>,
-	ppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	LKML <linux-kernel@vger.kernel.org>, linux-modules@vger.kernel.org,
-	bpf <bpf@vger.kernel.org>
-Subject: Re: [PATCH v2 0/3] sysfs: constify bin_attribute argument of
- sysfs_bin_attr_simple_read()
-Message-ID: <2025011017-tubeless-hanky-0e99@gregkh>
-References: <20241228-sysfs-const-bin_attr-simple-v2-0-7c6f3f1767a3@weissschuh.net>
- <CAADnVQ+E0z8mY4BF9qamPh1XV9qs2jZ03bfYz2tVw8E4nFVWBw@mail.gmail.com>
- <0cbfd352-ee3b-4670-afae-8e56d888e8c3@t-8ch.de>
- <CAADnVQJMV-zRcDKftZ-MbKEJQ7XGmPteMYCS0Bm5siBEXUK=Fw@mail.gmail.com>
- <2025010914-gangly-trodden-aa96@gregkh>
- <Z3-DcbY60SxoM0dN@infradead.org>
- <2025010930-resurrect-attest-94c9@gregkh>
- <Z3-HZT5kwt18QSQn@infradead.org>
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <brgl@bgdev.pl>, Frank Li <Frank.Li@nxp.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linux-gpio@vger.kernel.org
+Subject: Re: [PATCH 14/19] powerpc: mpc83xx: Switch to of_platform_populate
+Message-ID: <Z4EynSpNghUpjY8W@probook>
+References: <20250102-mpc83xx-v1-0-86f78ba2a7af@posteo.net>
+ <20250102-mpc83xx-v1-14-86f78ba2a7af@posteo.net>
+ <CAL_JsqKU0AQ+ym_iDZSN5hNUTMF0bgjqu-aAVtG792Mw_eZTbg@mail.gmail.com>
+ <Z3lKqLXphxeI1Gvo@probook>
+ <CAL_Jsq+HrXpqi-mDJF+vyg5zL5mTD5FsCTSq_39U8DffKW+XYQ@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,41 +78,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <Z3-HZT5kwt18QSQn@infradead.org>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAL_Jsq+HrXpqi-mDJF+vyg5zL5mTD5FsCTSq_39U8DffKW+XYQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Jan 09, 2025 at 12:23:01AM -0800, Christoph Hellwig wrote:
-> On Thu, Jan 09, 2025 at 09:12:03AM +0100, Greg Kroah-Hartman wrote:
-> > > Hey, when I duplicated the method to convert sysfs over to a proper
-> > > seq_file based approach that avoids buffer overflows you basically
-> > > came up with the same line that Alexei had here.
-> > 
-> > I did?  Sorry about that, I don't remember that.
+On Sun, Jan 05, 2025 at 02:28:37PM -0600, Rob Herring wrote:
+> On Sat, Jan 4, 2025 at 8:50 AM J. Neuschäfer <j.ne@posteo.net> wrote:
+> >
+> > On Thu, Jan 02, 2025 at 12:51:47PM -0600, Rob Herring wrote:
+> > > On Thu, Jan 2, 2025 at 12:32 PM J. Neuschäfer via B4 Relay
+> > > <devnull+j.ne.posteo.net@kernel.org> wrote:
+[...]
+> > > >  static const struct of_device_id of_bus_ids[] __initconst = {
+> > > >         { .type = "soc", },
+> > >
+> > > of_platform_populate() won't work on this match unless there's a
+> > > compatible in the node, too. Can we use compatible instead or are
+> > > there a bunch of them?
+> >
+> > In arch/powerpc/boot/dts, I can find the following cases of device_type
+> > = "soc" without compatible = "simple-bus":
+> >
+[...]
+> > - arch/powerpc/boot/dts/asp834x-redboot.dts  (MPC83xx!)
+> > - arch/powerpc/boot/dts/ksi8560.dts          (MPC85xx)
+> >
+> > i.e. there is one affected devicetree. I can simply patch that one in
+> > the next iteration.
 > 
-> It's been a while..
+> You can, but that doesn't fix existing DTBs with your kernel change.
 > 
-> > As for seq_file for sysfs, is that for binary attributes only, or for
-> > all?  I can't recall that at all.
+> We either have to determine no one cares about that platform or the
+> ABI or add a fixup to add the compatible property.
+
+The last substantial change to asp834x-redboot.dts happened in 2009,
+so I think it's fairly safe to suspect that any remaining users are
+stuck with old software versions; new or recurring users will have to do
+some debugging to get the board up and running anyway.
+
+
+> > >
+> > > > -       { .compatible = "soc", },
+> > > >         { .compatible = "simple-bus" },
+> > > >         { .compatible = "gianfar" },
+> > > > -       { .compatible = "gpio-leds", },
+> > > > -       { .type = "qe", },
+> > > > -       { .compatible = "fsl,qe", },
+> > >
+> > > Better still would be if we could move the remaining ones to the
+> > > default table and just call of_platform_default_populate().
+> >
+> > of_platform_default_populate does sound preferable.
+> >
+> > I'll investigate why exactly the "gianfar" match is necessary and how to
+> > fix it in the corresponding driver (I don't think it's general enough to
+> > warrant being listed in of_default_bus_match_table).
 > 
-> Non-binary ones.
+> That may work too.
 
-Ah, yeah, well the churn for "one single value" sysfs files would be
-rough and seq_file doesn't really do much, if anything, for them as they
-should be all simple strings that never overflow or are complex.
-
-Yes, there are exceptions, so maybe for just them?  I don't want to make
-it easier to abuse sysfs files, but if you feel it would really help
-out, I'm willing to reconsider it.
-
-thanks,
-
-greg k-h
+I have investigated this issue now and will include a patch in the next
+version.
 
 
-> 
+Best regards,
+J. Neuschäfer
 
