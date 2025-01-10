@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-5027-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5028-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF8E0A09F0B
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:12:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BDE88A09F0E
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:12:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJqh5P61z3cfy;
-	Sat, 11 Jan 2025 11:12:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJr03hyRz3cb8;
+	Sat, 11 Jan 2025 11:12:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::349"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736534462;
-	cv=none; b=MwT3kDhlMQoyLNP8CQcQfNKzJzVlWYLi5aypudtkK2QfzR1/OhowL4g9ajen3HLV5hxYUYgWJoIRHdxD0v3u0ZqyBGPuA/hlA/d1GNJPnM5v+n6/A6Y3/8XZrKurNhMI23wSoRdi1p0DEuepiOP4//zEzis8QErmuqbNMMPjfO4UsIkDciYTesUuQxAzP2QEOo9enLmTr9vZJR0EqdBteK3uIUfRP/0ryYof16yArd1NSsMwBt/M7Vacw9uKN4E11V7xH10dh6QAEtwTCHRv6IUrHh9z9dGG7sq2sleT6/O6ETenyHTBiGTWsxdVEoY6LxCSbkApXnnCJQR67ODFIg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::44a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736534467;
+	cv=none; b=RhH6yAHKx1n7RqDESwdt/Tc1LvT2v4lOHX3unFXL0q8j/qDBEaXHk7ywJDnTdQn4v0Ixn6JFTa5b1K2ZUUv+BrJCN+JE6qhNe5LLj0KZyjvKF+Vlyujk0n/Ur6gPUGnwWXbC/q/Vsfw8OaO4E+tWcujsaJJp7MJ6/KPbD1j1CJCOtMv6FfwAk3DfDeGi8MErI1DbQrbOB6GuZe+mWLsfTcCpJV0HW35m0UEsJ025iqnS+EFZbeb1tDfhS2zV4xPuXVj9tbUW2R1KVailZrLUhlCXQYJNpbqMlg/m2EX4EsgAvlMU5Uer3j5mlmmLjBwXrJhulU3CPZqjNBD2XGKKqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736534462; c=relaxed/relaxed;
-	bh=kYL7XeCfcudeBLlUDEGoh0o6eIbGWBwJtwhvHOdo8c0=;
+	t=1736534467; c=relaxed/relaxed;
+	bh=/j+RB8/lAgzqGTtPca+XTmsHyqC3ld9qGwXYbAsCbQ0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=kfv2fWRhIv9ghFZbq2U/ZXuHGNxrQDqx73LYKr1KScWIa82UKxiwIAQVzX4W2j2ynj3jlspiVxC5ejCLZw4nf/3GNvvbc5k3daCcLzv9n68T9Jb1KhOIJS3m7TM24jXKURuIwxUckksTxmtfHEYRMJIsqX0dvatG1E+ojcwoadaP0CwEcDh9G38kAWF8IeQvbq0kPidzXoXV3cakKaizfJ0kILq/3LltlVJSKWLtGPUfAglNnxRoyH8awmIav3JYKUxf6daYoAhJlBPVrK+P2o1m/I/+9Qzg2IsXKaXD1n6Dp343EHz8BMLhg9Nd20Y0EopJHm6BKkPJY3p18kVQCA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JT394fAU; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3u2mbzwgkdnyb24ce2f38gg8d6.4gedafmphh4-56ndaklk.grd23k.gj8@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
+	 To:Cc:Content-Type; b=klUGLs7UcpNREx3GXX9ApnGXY+KyQfJPBuHnK2nwhc5iaDl3c9uumuM49f5pVNAK8Q4XuqdWGP1NRU/YVVcdMBFrHyT81gZTDEifkNg4z2URoqbvzwJmiUNdafOaoVpe/3a+m0YOw6emR8M6tU4ixlkwz9c+tYaoj1tlndKlpaATIz5rAPWXfbBEiliL+LVfA7dDsFeMLWasuNuAh7f9qq6gOmfo7eOSwxzmsRfXojITjW2L+7x/aDnvTPjMQq/wRTkgN0h0jKNxBy8iqOcwHT7as5gZ4/6YS9mNWgnZDl3IthWAcsdVCJ4DG/JzF/QeHEp26q8Cs1PjFv58+2lU9Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QRcGMFPf; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::44a; helo=mail-wr1-x44a.google.com; envelope-from=3vwmbzwgkdngd46eg4h5aiiaf8.6igfchorjj6-78pfcmnm.itf45m.ila@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=JT394fAU;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QRcGMFPf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3u2mbzwgkdnyb24ce2f38gg8d6.4gedafmphh4-56ndaklk.grd23k.gj8@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x349.google.com (mail-wm1-x349.google.com [IPv6:2a00:1450:4864:20::349])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::44a; helo=mail-wr1-x44a.google.com; envelope-from=3vwmbzwgkdngd46eg4h5aiiaf8.6igfchorjj6-78pfcmnm.itf45m.ila@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x44a.google.com (mail-wr1-x44a.google.com [IPv6:2a00:1450:4864:20::44a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9TT6zdBz3cb8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 05:41:01 +1100 (AEDT)
-Received: by mail-wm1-x349.google.com with SMTP id 5b1f17b1804b1-4361b090d23so12504965e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 10:41:01 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9TY44vrz3cYP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 05:41:05 +1100 (AEDT)
+Received: by mail-wr1-x44a.google.com with SMTP id ffacd0b85a97d-385d7611ad3so1372646f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 10:41:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736534459; x=1737139259; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1736534462; x=1737139262; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=kYL7XeCfcudeBLlUDEGoh0o6eIbGWBwJtwhvHOdo8c0=;
-        b=JT394fAUHoOMvyONTM1LVdKllqhk+2rMJe+4NpF43145IVEWZ8oCUOoitLrqgMfSjb
-         kkj4gmz2bNOGlkcT1vR9bwTF1GkwCBMI5Kg3QEaSNS9FmJ91XE8fMUUoLR51mjEXFQT4
-         5KgnFsev8tEn1XfO1+Ka71UEx9bLfvo2HSGWh7ZUoIjgnGvEGh4zfZirbPKd2SDJDQCm
-         Jw9j9XaI6dfDltQLBRnFqh9suBi5tgDTayHMmMRPG0mbbtX9UJHURYAi02FnInS1yFLZ
-         Oauwj6PHEqiFvnN9WZVwUBVTDMGmz98LczIsZ8tKf5cs+B2fsj+cDUuhs5x7Eh6Uxy86
-         iVEw==
+        bh=/j+RB8/lAgzqGTtPca+XTmsHyqC3ld9qGwXYbAsCbQ0=;
+        b=QRcGMFPfSNfTebqiD1tEx4bMUKDio57U+pK7HtCi6XbsIv92B70XII4IiYs04lWrBV
+         V9REwcQuD4bPPXXs+fTIF0jHCPCwfYIdpiPCtrXaimZ/WctI86zwop7JNhaCJMojba5I
+         TpDfWcoAr+lU5PMHIsIT9tcRNZMaQHlY5bsHoZP1riL3lYZDs2RY8dM5DEmTrWcmI5HO
+         BEPHzcrpXrIZtdeuP5zsf+6igiCSKTW9avdnWEJUjzR3YlBFrK2lN0FAX1LZgsU0lpWs
+         z/QETz7WYGX+tIhP4YHm/MFrQB4IOmi2I9a4qMJD/W705bztDBcb17egwWczXFd9mIYF
+         zxqQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736534459; x=1737139259;
+        d=1e100.net; s=20230601; t=1736534462; x=1737139262;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kYL7XeCfcudeBLlUDEGoh0o6eIbGWBwJtwhvHOdo8c0=;
-        b=vxaCnH0AQN2YCwnpuyZz7dRd+7k9DTG8tJ/n8f9qs6m93wKPUoUp6DJrsOWioKCT6O
-         Fi6B4Q9sRaudbtEIM+lngZrn0uY8atky0DoqPweQzoXW4jr13+8aSKQ4nIIBGpOthHZW
-         XPemqTxPV3NFYuF/fRqZtrAsg0DkQEsWRyTYmsZaGKhwI4f+sRPi2TGKuR0HZNeK+O28
-         mS+40mjgPTQuCn8TpE7A31vFZrBCSQ3AsKoZ/ku0gPUDtQmdDNQ1QWptmMRrFzC3SqfE
-         c6tskcphh35iJR8ae+4PHOR/TiSyY5ptdUVYeyXpzmeCgXWWQmjpAmCkdkX1v0MUsJ6Q
-         UIhg==
-X-Forwarded-Encrypted: i=1; AJvYcCUsdvma4ruUi+Gd/wF+7bwTPvxKHWl5ZIhHaKiYOcx/Fmb8vowdI2ylABsJugeLNerW25fk/eoImrhUhD8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyzVnqLPkm1+FLMr9OnpIuGFVhtemS/Hcvf+5m1g4nHhx6a+N/W
-	oKxd4dJhxUG9JytbIiIUY6X19KrO0xyECvRlU/JOkD5m7NX+02/5luepGBq0OSLBdlcOz3Ub3cs
-	ltiTv87oKMQ==
-X-Google-Smtp-Source: AGHT+IH0DyTQGUBeXAkb8pkdNHIPyF1JMCOQ9V4x2A26uY/IXi2bUp3/F2mGP9HMTIoPxxyBiM7AkavMfpYEag==
-X-Received: from wmdn10.prod.google.com ([2002:a05:600c:294a:b0:436:d819:e4eb])
+        bh=/j+RB8/lAgzqGTtPca+XTmsHyqC3ld9qGwXYbAsCbQ0=;
+        b=K50QAgoNomcgr37AFwvqPSSsP6rrArl6iIla/cNLWGLe2PnaGGyjJWUludCkZ+z7L3
+         guUlcepXX1peFUaV1budhbrJzUCMYRx6EaBn4/aAD2BH8yvvVzH5nd3yg3KFf6ia6w30
+         ixQP9WpOK53DOVDL0E8ak1f2TLxfbfOqyucSXp88E4YvusEyXDqr8XSbCEeIhsj/j63s
+         g8KYO1EIm81McFW7RxRwPjTO6AbdbsTLq3ZgcJXJyPxgh0JJv0jdFicmAXzz2wSdN23N
+         QQye3IicVpWQnvEFt/aOYbEq931eO1fDYlMqQ+JKeqDKfupMDDFKZBwRsyuA2t5pSq0q
+         eImQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWkNCZc0OpgOXnVPsNHGB3EsMyYndb//kAa83tuZY4zYFQxF3ob4G/mY/lZoTBVi0jEmzM6WUqXv/9dsCQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yynxvg+Mgp5pxz6q4BrmuXDteLXA4CCi7jTjxTUY/JBSGKDTL81
+	dO3ZCr0JOHJSpFoKIvyE4wUBBM7UtWp0Gm8XXJeWTY5Q83XZ3t0DBzugtrHCJ4O93iaBGvEFqvu
+	1Z5ypxmI2Jg==
+X-Google-Smtp-Source: AGHT+IEaBJ4kVsH9fdlEpqyA1vEXALZVlXyRkre6Nr4itvNL2JHwYHaMyiaIiF1xr8efeWfazalHNzAFq1Ad7A==
+X-Received: from wrbfi1.prod.google.com ([2002:a05:6000:4401:b0:386:333e:ad16])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f09:b0:434:fafe:edb with SMTP id 5b1f17b1804b1-436e26f00fdmr96576145e9.24.1736534459144;
- Fri, 10 Jan 2025 10:40:59 -0800 (PST)
-Date: Fri, 10 Jan 2025 18:40:32 +0000
+ 2002:a05:6000:470d:b0:385:dedb:a156 with SMTP id ffacd0b85a97d-38a872cfdffmr10312148f8f.6.1736534461506;
+ Fri, 10 Jan 2025 10:41:01 -0800 (PST)
+Date: Fri, 10 Jan 2025 18:40:33 +0000
 In-Reply-To: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,9 +77,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailer: b4 0.15-dev
-Message-ID: <20250110-asi-rfc-v2-v2-6-8419288bc805@google.com>
-Subject: [PATCH RFC v2 06/29] mm: asi: Use separate PCIDs for restricted
- address spaces
+Message-ID: <20250110-asi-rfc-v2-v2-7-8419288bc805@google.com>
+Subject: [PATCH RFC v2 07/29] mm: asi: Make __get_current_cr3_fast() ASI-aware
 From: Brendan Jackman <jackmanb@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -130,260 +129,97 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
 	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
 	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
 	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>, Yosry Ahmed <yosryahmed@google.com>, 
-	Junaid Shahid <junaids@google.com>
+	Brendan Jackman <jackmanb@google.com>, Junaid Shahid <junaids@google.com>
 Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Yosry Ahmed <yosryahmed@google.com>
+From: Junaid Shahid <junaids@google.com>
 
-Each restricted address space is assigned a separate PCID. Since
-currently only one ASI instance per-class exists for a given process,
-the PCID is just derived from the class index.
+When ASI is active, __get_current_cr3_fast() adjusts the returned CR3
+value accordingly to reflect the actual ASI CR3.
 
-This commit only sets the appropriate PCID when switching CR3, but does
-not actually use the NOFLUSH bit. That will be done by later patches.
-
-Co-developed-by: Junaid Shahid <junaids@google.com>
 Signed-off-by: Junaid Shahid <junaids@google.com>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/include/asm/asi.h             |  4 +--
- arch/x86/include/asm/processor-flags.h | 24 +++++++++++++++++
- arch/x86/include/asm/tlbflush.h        |  3 +++
- arch/x86/mm/asi.c                      | 10 +++----
- arch/x86/mm/tlb.c                      | 49 +++++++++++++++++++++++++++++++---
- include/asm-generic/asi.h              |  2 ++
- 6 files changed, 81 insertions(+), 11 deletions(-)
+ arch/x86/mm/tlb.c | 37 +++++++++++++++++++++++++++++++------
+ 1 file changed, 31 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/include/asm/asi.h b/arch/x86/include/asm/asi.h
-index 9a9a139518289fc65f26a4d1cd311aa52cc5357f..a55e73f1b2bc84c41b9ab25f642a4d5f1aa6ba90 100644
---- a/arch/x86/include/asm/asi.h
-+++ b/arch/x86/include/asm/asi.h
-@@ -4,13 +4,13 @@
- 
- #include <linux/sched.h>
- 
--#include <asm-generic/asi.h>
--
- #include <asm/pgtable_types.h>
- #include <asm/percpu.h>
- #include <asm/cpufeature.h>
- #include <asm/processor.h>
- 
-+#include <asm-generic/asi.h>
-+
- #ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
- 
- /*
-diff --git a/arch/x86/include/asm/processor-flags.h b/arch/x86/include/asm/processor-flags.h
-index e5f204b9b33dfaa92ed1b05faa6b604e50d5f2f3..42c5acb67c2d2a6b03deb548fe3dd088baa88842 100644
---- a/arch/x86/include/asm/processor-flags.h
-+++ b/arch/x86/include/asm/processor-flags.h
-@@ -55,4 +55,28 @@
- # define X86_CR3_PTI_PCID_USER_BIT	11
- #endif
- 
-+/*
-+ * An ASI identifier is included in the higher bits of PCID to use a different
-+ * PCID for each restricted address space, different from the PCID of the
-+ * unrestricted address space (see asi_pcid()). We use the bits directly after
-+ * the bit used by PTI (if any).
-+ */
-+#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-+
-+#define X86_CR3_ASI_PCID_BITS 2
-+
-+/* Use the highest available PCID bits after the PTI bit (if any) */
-+#ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
-+#define X86_CR3_ASI_PCID_END_BIT (X86_CR3_PTI_PCID_USER_BIT - 1)
-+#else
-+#define X86_CR3_ASI_PCID_END_BIT (X86_CR3_PCID_BITS - 1)
-+#endif
-+
-+#define X86_CR3_ASI_PCID_BITS_SHIFT (X86_CR3_ASI_PCID_END_BIT - X86_CR3_ASI_PCID_BITS + 1)
-+#define X86_CR3_ASI_PCID_MASK (((1UL << X86_CR3_ASI_PCID_BITS) - 1) << X86_CR3_ASI_PCID_BITS_SHIFT)
-+
-+#else
-+#define X86_CR3_ASI_PCID_BITS 0
-+#endif
-+
- #endif /* _ASM_X86_PROCESSOR_FLAGS_H */
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index c884174a44e119a3c027c44ada6c5cdba14d1282..f167feb5ebdfc7faba26b8b18ac65888cd9b0494 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -425,5 +425,8 @@ static inline void __native_tlb_flush_global(unsigned long cr4)
- }
- 
- unsigned long build_cr3_noinstr(pgd_t *pgd, u16 asid, unsigned long lam);
-+unsigned long build_cr3_pcid_noinstr(pgd_t *pgd, u16 pcid, unsigned long lam, bool noflush);
-+
-+u16 asi_pcid(struct asi *asi, u16 asid);
- 
- #endif /* _ASM_X86_TLBFLUSH_H */
-diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
-index 054315d566c082c0925a00ce3a0877624c8b9957..8d060c633be68b508847e2c1c111761df1da92af 100644
---- a/arch/x86/mm/asi.c
-+++ b/arch/x86/mm/asi.c
-@@ -238,6 +238,7 @@ static __always_inline void maybe_flush_data(struct asi *next_asi)
- noinstr void __asi_enter(void)
- {
- 	u64 asi_cr3;
-+	u16 pcid;
- 	struct asi *target = asi_get_target(current);
- 
- 	/*
-@@ -266,9 +267,8 @@ noinstr void __asi_enter(void)
- 	this_cpu_write(curr_asi, target);
- 	maybe_flush_control(target);
- 
--	asi_cr3 = build_cr3_noinstr(target->pgd,
--				    this_cpu_read(cpu_tlbstate.loaded_mm_asid),
--				    tlbstate_lam_cr3_mask());
-+	pcid = asi_pcid(target, this_cpu_read(cpu_tlbstate.loaded_mm_asid));
-+	asi_cr3 = build_cr3_pcid_noinstr(target->pgd, pcid, tlbstate_lam_cr3_mask(), false);
- 	write_cr3(asi_cr3);
- 
- 	maybe_flush_data(target);
-@@ -335,8 +335,8 @@ noinstr void asi_exit(void)
- 
- 		unrestricted_cr3 =
- 			build_cr3_noinstr(this_cpu_read(cpu_tlbstate.loaded_mm)->pgd,
--					  this_cpu_read(cpu_tlbstate.loaded_mm_asid),
--					  tlbstate_lam_cr3_mask());
-+					 this_cpu_read(cpu_tlbstate.loaded_mm_asid),
-+					 tlbstate_lam_cr3_mask());
- 
- 		/* Tainting first makes reentrancy easier to reason about.  */
- 		this_cpu_or(asi_taints, ASI_TAINT_KERNEL_DATA);
 diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 7c2309996d1d5a7cac23bd122f7b56a869d67d6a..2601beed83aef182d88800c09d70e4c5e95e7ed0 100644
+index 2601beed83aef182d88800c09d70e4c5e95e7ed0..b2a13fdab0c6454c1d9d4e3338801f3402da4191 100644
 --- a/arch/x86/mm/tlb.c
 +++ b/arch/x86/mm/tlb.c
-@@ -13,6 +13,7 @@
- #include <linux/mmu_notifier.h>
- #include <linux/mmu_context.h>
+@@ -20,6 +20,7 @@
+ #include <asm/cache.h>
+ #include <asm/cacheflush.h>
+ #include <asm/apic.h>
++#include <asm/asi.h>
+ #include <asm/perf_event.h>
  
-+#include <asm/processor-flags.h>
- #include <asm/tlbflush.h>
- #include <asm/mmu_context.h>
- #include <asm/nospec-branch.h>
-@@ -96,7 +97,10 @@
- # define PTI_CONSUMED_PCID_BITS	0
- #endif
- 
--#define CR3_AVAIL_PCID_BITS (X86_CR3_PCID_BITS - PTI_CONSUMED_PCID_BITS)
-+#define CR3_AVAIL_PCID_BITS (X86_CR3_PCID_BITS - PTI_CONSUMED_PCID_BITS - \
-+			     X86_CR3_ASI_PCID_BITS)
-+
-+static_assert(BIT(CR3_AVAIL_PCID_BITS) > TLB_NR_DYN_ASIDS);
- 
- /*
-  * ASIDs are zero-based: 0->MAX_AVAIL_ASID are valid.  -1 below to account
-@@ -125,6 +129,11 @@ static __always_inline u16 kern_pcid(u16 asid)
- 	 */
- 	VM_WARN_ON_ONCE(asid & (1 << X86_CR3_PTI_PCID_USER_BIT));
- #endif
-+
-+#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-+	BUILD_BUG_ON(TLB_NR_DYN_ASIDS >= (1 << X86_CR3_ASI_PCID_BITS_SHIFT));
-+	VM_WARN_ON_ONCE(asid & X86_CR3_ASI_PCID_MASK);
-+#endif
- 	/*
- 	 * The dynamically-assigned ASIDs that get passed in are small
- 	 * (<TLB_NR_DYN_ASIDS).  They never have the high switch bit set,
-@@ -153,17 +162,22 @@ static inline u16 user_pcid(u16 asid)
- 	return ret;
- }
- 
-+static __always_inline unsigned long __build_cr3(pgd_t *pgd, u16 pcid, unsigned long lam)
-+{
-+	return __sme_pa_nodebug(pgd) | pcid | lam;
-+}
-+
- static __always_inline unsigned long build_cr3(pgd_t *pgd, u16 asid, unsigned long lam)
- {
--	unsigned long cr3 = __sme_pa_nodebug(pgd) | lam;
-+	u16 pcid = 0;
- 
- 	if (static_cpu_has(X86_FEATURE_PCID)) {
--		cr3 |= kern_pcid(asid);
-+		pcid = kern_pcid(asid);
- 	} else {
- 		VM_WARN_ON_ONCE(asid != 0);
- 	}
- 
--	return cr3;
-+	return __build_cr3(pgd, pcid, lam);
- }
- 
- noinstr unsigned long build_cr3_noinstr(pgd_t *pgd, u16 asid, unsigned long lam)
-@@ -183,6 +197,19 @@ static inline unsigned long build_cr3_noflush(pgd_t *pgd, u16 asid,
+ #include "mm_internal.h"
+@@ -197,8 +198,8 @@ static inline unsigned long build_cr3_noflush(pgd_t *pgd, u16 asid,
  	return build_cr3(pgd, asid, lam) | CR3_NOFLUSH;
+ }
+ 
+-noinstr unsigned long build_cr3_pcid_noinstr(pgd_t *pgd, u16 pcid,
+-					     unsigned long lam, bool noflush)
++static __always_inline unsigned long build_cr3_pcid(pgd_t *pgd, u16 pcid,
++						    unsigned long lam, bool noflush)
+ {
+ 	u64 noflush_bit = 0;
+ 
+@@ -210,6 +211,12 @@ noinstr unsigned long build_cr3_pcid_noinstr(pgd_t *pgd, u16 pcid,
+ 	return __build_cr3(pgd, pcid, lam) | noflush_bit;
  }
  
 +noinstr unsigned long build_cr3_pcid_noinstr(pgd_t *pgd, u16 pcid,
 +					     unsigned long lam, bool noflush)
 +{
-+	u64 noflush_bit = 0;
-+
-+	if (!static_cpu_has(X86_FEATURE_PCID))
-+		pcid = 0;
-+	else if (noflush)
-+		noflush_bit = CR3_NOFLUSH;
-+
-+	return __build_cr3(pgd, pcid, lam) | noflush_bit;
++	return build_cr3_pcid(pgd, pcid, lam, noflush);
 +}
 +
  /*
   * We get here when we do something requiring a TLB invalidation
   * but could not go invalidate all of the contexts.  We do the
-@@ -998,6 +1025,20 @@ static void put_flush_tlb_info(void)
- #endif
+@@ -1133,14 +1140,32 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
+  */
+ noinstr unsigned long __get_current_cr3_fast(void)
+ {
+-	unsigned long cr3 =
+-		build_cr3(this_cpu_read(cpu_tlbstate.loaded_mm)->pgd,
+-			  this_cpu_read(cpu_tlbstate.loaded_mm_asid),
+-			  tlbstate_lam_cr3_mask());
++	unsigned long cr3;
++	pgd_t *pgd;
++	u16 asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
++	struct asi *asi = asi_get_current();
++	u16 pcid;
++
++	if (asi) {
++		pgd = asi_pgd(asi);
++		pcid = asi_pcid(asi, asid);
++	} else {
++		pgd = this_cpu_read(cpu_tlbstate.loaded_mm)->pgd;
++		pcid = kern_pcid(asid);
++	}
++
++	cr3 = build_cr3_pcid(pgd, pcid, tlbstate_lam_cr3_mask(), false);
+ 
+ 	/* For now, be very restrictive about when this can be called. */
+ 	VM_WARN_ON(in_nmi() || preemptible());
+ 
++	/*
++	 * Outside of the ASI critical section, an ASI-restricted CR3 is
++	 * unstable because an interrupt (including an inner interrupt, if we're
++	 * already in one) could cause a persistent asi_exit.
++	 */
++	VM_WARN_ON_ONCE(asi && asi_in_critical_section());
++
+ 	VM_BUG_ON(cr3 != __read_cr3());
+ 	return cr3;
  }
- 
-+#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-+
-+noinstr u16 asi_pcid(struct asi *asi, u16 asid)
-+{
-+	return kern_pcid(asid) | ((asi->class_id + 1) << X86_CR3_ASI_PCID_BITS_SHIFT);
-+	// return kern_pcid(asid) | ((asi->index + 1) << X86_CR3_ASI_PCID_BITS_SHIFT);
-+}
-+
-+#else /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
-+
-+u16 asi_pcid(struct asi *asi, u16 asid) { return kern_pcid(asid); }
-+
-+#endif /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
-+
- void flush_tlb_mm_range(struct mm_struct *mm, unsigned long start,
- 				unsigned long end, unsigned int stride_shift,
- 				bool freed_tables)
-diff --git a/include/asm-generic/asi.h b/include/asm-generic/asi.h
-index 7f542c59c2b8a2b74432e4edb7199f9171db8a84..f777a6cf604b0656fb39087f6eba08f980b2cb6f 100644
---- a/include/asm-generic/asi.h
-+++ b/include/asm-generic/asi.h
-@@ -2,6 +2,7 @@
- #ifndef __ASM_GENERIC_ASI_H
- #define __ASM_GENERIC_ASI_H
- 
-+#include <linux/log2.h>
- #include <linux/types.h>
- 
- #ifndef _ASSEMBLY_
-@@ -16,6 +17,7 @@ enum asi_class_id {
- #endif
- 	ASI_MAX_NUM_CLASSES,
- };
-+static_assert(order_base_2(X86_CR3_ASI_PCID_BITS) <= ASI_MAX_NUM_CLASSES);
- 
- typedef u8 asi_taints_t;
- 
 
 -- 
 2.47.1.613.gc27f4b7a9f-goog
