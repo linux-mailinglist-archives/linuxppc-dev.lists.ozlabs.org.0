@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-5033-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5034-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B9DFA09F14
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:13:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 814AEA09F15
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:13:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJsJ6jqkz3ck3;
-	Sat, 11 Jan 2025 11:13:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJsS24kjz3cfq;
+	Sat, 11 Jan 2025 11:13:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::34a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736534476;
-	cv=none; b=JOsPhvkoOquNtGNHZwNo4vc4givvyRjySePlx48ig/x4mNpYXej8EfEgSKzGFCdxrnFAMSqAga4N6S/rj+Jcd7gRcgs9bboaAMd9B+RzJZ3dPEd+gNv0qWwuhBT7RNGeJ1P3GJvMuEZldutnCvg7G/M04RJNtQuIRwe7MMiR6NzavugEafucEnCfCCHePaf0gCW30a6QCMdHSjY5MquibzjziBAfA8kbwWTmLhSqInp+hIDRhgXKsoac5vGSIyYenL7EUjLFstzAX7OWZBjR8rlFJ+BUl2/sJvBOtyIiZtZhdPDePZc02v5tHP2V2UzHkW3TOsys0qZeErbOaWqELA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736534478;
+	cv=none; b=euw30FUU/wBkW1VFaXSIolwRvwxJnWn5SK0SP4arfFF8zc3PDelx+m/3cjibeI7dWsk1Udaayfefrtg+xI9RuXgYK/hXuP0eyo4VKF18pge/MdhDv4rJJ2oj/Qn2kakcM04L3mzD/Rdl6V166jVrmIIrdkYWHdquzUXxLMH+JfIQ0nw8Jg5kLdN/F9m92rVEOsLHQL60gYEjfrXBHVD7KXjtPZG2rGAwS3gNFkAPNlJzCGbFfeuNoIJWDD7cb7ugpRsC/bWbc+N/F72rmH+p4hP/TSIBGfXT5/EFYZxG45SKWnIlZc6YzrHMfCSf6MqJB2yjQWuiKM/b/TYl/oAGww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736534476; c=relaxed/relaxed;
-	bh=UzXM9zi9X6couWShNCb4EkjJb05AI+Oo7qUi6Mvjsww=;
+	t=1736534478; c=relaxed/relaxed;
+	bh=DqQy0/uo7rp5xt5hxwNN280PfwFL6RX7EFGPCdWY0es=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CVs2N02lMeHF8FNK0BcC/5R4MhlNGmmPyfeCqwXRamWB/Z+s87OUmLJrqm9zp2bBQf8ukjjSeSRUAPiHUpweJdIOGdxe4prNlE2PKMfDnF5FFCPYtU7KrH/817rhiYoqzPEsMdv1n0RZuzDsIIFdwOSQdIw5GQcWlaD3epYbc0gfP5yx9LdtAxUE8JhcWlvq/SbT3lHjqsqu7NcI4BSooHnj0d40xL2+N4KF/roit0my1/9uFXOvctOZ5/iTH6JF0i3OBm7GmeAYDq6/9XXA97045vXR8lcOLFfyyn7vMWZXmK/lE0Dds9UjQIKOwWt8RMu9U71auax6c7T3XpbQgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=OyDEt6jH; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3ygmbzwgkdomofhprfsglttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
+	 To:Cc:Content-Type; b=hnoHCx+gwogVo1GZmALnR8JryWLeb1M6anxs6lpVSPcSmku7ArEqkSm3TQ5MqAtZTdBiocZg1CqXtgIEErJziEGO7BKRaFpArl/CCUV8n1Z/yqjN/PcrUh/9LcCUhIIjRry3gSOeShPa21NxcBz71ee/eykXAQCi/5kd/SR5Tsg5XQnZWRjeyPOObVd4MSWqlFN48PqUnzxSFM2QZLprdY2ZOv00QWkp8lzcAxUuoO94WhdPfJProBcjDn0DauODZFQAgxzwxjXSIB/RcNwe8OMZ9g20/PQ69TRE9Zj2kDkvbU3ol2zLZZGk7nTT5cqF5u+z05kSYUY2i9BosyiyHQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=iJMV5I3m; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3ymmbzwgkdouqhjrthuinvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=OyDEt6jH;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=iJMV5I3m;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3ygmbzwgkdomofhprfsglttlqj.htrqnszcuuh-ijaqnxyx.teqfgx.twl@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3ymmbzwgkdouqhjrthuinvvnsl.jvtspubewwj-klcspzaz.vgshiz.vyn@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
 Received: from mail-wm1-x34a.google.com (mail-wm1-x34a.google.com [IPv6:2a00:1450:4864:20::34a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9Tl5MV9z3cYR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 05:41:15 +1100 (AEDT)
-Received: by mail-wm1-x34a.google.com with SMTP id 5b1f17b1804b1-43631d8d9c7so11982495e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 10:41:15 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9Tn5lRJz3cYR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 05:41:17 +1100 (AEDT)
+Received: by mail-wm1-x34a.google.com with SMTP id 5b1f17b1804b1-4361f371908so16547445e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 10:41:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736534473; x=1737139273; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1736534475; x=1737139275; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UzXM9zi9X6couWShNCb4EkjJb05AI+Oo7qUi6Mvjsww=;
-        b=OyDEt6jHrKhTOWp/RPkgl1icePk/tQMlQpSBWH4SE+jNxZcuk0lRAu4L6wkS0O5cRE
-         p/756ZM/fX0VhXnoD7mhng+3DkGngHAjzqy4MFPWPo6bs1+PViULdazSSszB2xBDU+nO
-         7+XX4BQGoK0Kf2BdgPq+uUMpqB+7ZqfoF5QLcJPySr2j+eAnULRqxmvJFEj5xACghEuH
-         kq0Vvi0CqVbLgJJYR1I4T51tWVc7pxYynhu0baWfJCi/0KmQjoBmtpYFNgpx6TUAnGxD
-         6LiRMy2xWWTcyCCHqRReEghhWe6crG8Z9KWaO/iOFK4d4przEZQMPG47iqOH22KrmBBi
-         scnQ==
+        bh=DqQy0/uo7rp5xt5hxwNN280PfwFL6RX7EFGPCdWY0es=;
+        b=iJMV5I3m8wzpHEEMZF46/AZ/7TPfwXgnwqsvuYwfkjz755tmdtYK4PMhqYHTfbLPHh
+         dwzBLX0+kuvFZ/2Z4Y9WFHAhWpDoStynC8vAduXUAnTko80pL8Mod2rJV4VjqpCPNbqE
+         Aowoc5X+3Z1Xiy4Qaqs4ThDlLKaROCDZ69PsUrJqftUaZEQHT8lIVmL7i2dzkEHZVSaO
+         r87GmcUqOVgTK8pN1qshWtqaQRDeLiuy4JoW/8qgzzmjxqk6D/oZiCmFvMbep00v8Qe4
+         8kUNcSOJgOkyW/LO1rlhJlEmJXECO640o8L2KPyQ7sRsoJsnwqhHdkIJ0NYXLD2Sa17i
+         XB7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736534473; x=1737139273;
+        d=1e100.net; s=20230601; t=1736534475; x=1737139275;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UzXM9zi9X6couWShNCb4EkjJb05AI+Oo7qUi6Mvjsww=;
-        b=kA0xiLiXHs7zach6r94U4Dl3kOdKAfuZEH94FYeQk/rFeF9HUFBozyFDVkMR3cB5t2
-         veLNruuGkHB3jvNIL86zxVaqyntWQ4nS0rplR42O1Au5sLat4rEommkEGKczOadgFj79
-         3Q+AxFZBJ0ZwJtlime/vo2thajbhaQD139NC8XFLh2c+K/z83/hqnK/Cycz65OKK+Tge
-         AkFjpH2qrr/vWgnuXdUsQKrFlAE4eVWHcL5P09mpfjwi9Ii2DTOF7epDY7CY6MyoBFBo
-         CSkklGfP3pzAY+UE+acQ1rUTuuYvmLmkqKq/otJIDnefoBM+gL3C20pVwqrJeTCjojUN
-         C2YA==
-X-Forwarded-Encrypted: i=1; AJvYcCW0oaRsh6XwHDOTb0PGvbN9Htqjt+lbigcntvMQ5yPSqh00RUKPyHYtcOIXvvqCPBthlETON+p1TpCa15w=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzvNf07lz6Bgse8ZG6RK8acuOKGu65KsAgVicgPvuxepIzPwKll
-	LMxKn0XyDOU0sWcVJOl2KJryf8F+xVBN9WUoLomGGt5D1RCBc7zJ2/Jq7kmEEvYsYkXGz7cNDoY
-	GjLl1cjMDbQ==
-X-Google-Smtp-Source: AGHT+IFDRv4zNENk63KYcLxYmQdIUcLs7zTtS/Sd8xMbR3tJqcykEbsngD0F8tGcq40UK8q2XIPTmnyPYnp+hA==
-X-Received: from wmqe5.prod.google.com ([2002:a05:600c:4e45:b0:435:21e:7bec])
+        bh=DqQy0/uo7rp5xt5hxwNN280PfwFL6RX7EFGPCdWY0es=;
+        b=EIzjeEIkUyabT4namOuThuQOibE7PVv+3n1jlVGqeA/2IEecBopsYA/OnBBFH19CeY
+         YONX0p0MDE8zWRQfnZnLYBi6aRxvJ9Cto+Ln7OaaQwsn+eDjbBApQH6tva5exqkVvy+F
+         jXPhf9QjWeuuPwfLqk+AhGFElGj77VI+87tqmUXRRCr7zvyG6FxNn4/Oh3m7CT3cPAzQ
+         Z1b5QietQ9prWg/Vo13/e0BLmYF/288gJcgJa+N9x5Vx4lInwKOTmMslxttoPOrDJz8y
+         ObLDFbNtLqJEd2NAtxYdHyo8xzCNN/s/peqQQMqvHbl8MzV1wxbLLC56oHWwbvFFskGd
+         jmIw==
+X-Forwarded-Encrypted: i=1; AJvYcCV9kniQSB436kOcCqpNfUonSGuBY4WAts+m9u05i9XH0Lc+4Jlpr5sgS9uyErNMsIPi97HZxAO5SkIeR0Y=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzZgF7yBb6x1NB4qc6DMnXJfrUq6E3XVdWxhbNSeNgIPVEmTTxS
+	Z3APLw65JnFdqqrxxGryLtEaqvsBozvwywUvZEXJxlsZmfGX7Yxu3aQPUIOQtgmH6AZuueJvl/e
+	5MECCPQfMaQ==
+X-Google-Smtp-Source: AGHT+IEHMyjAf4Ii6uANDaoYyo5ZkF+D1/fwKOgm4kaaSXfegc+L5vVxTYn6WIEloGlJDmt93RFbSdb2jTZqKA==
+X-Received: from wmbjt19.prod.google.com ([2002:a05:600c:5693:b0:435:4bd2:1dcd])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d2a:b0:435:edb0:5d27 with SMTP id 5b1f17b1804b1-436e8827fbcmr75837805e9.9.1736534472863;
- Fri, 10 Jan 2025 10:41:12 -0800 (PST)
-Date: Fri, 10 Jan 2025 18:40:38 +0000
+ 2002:a05:600c:4e44:b0:434:e9ee:c3d with SMTP id 5b1f17b1804b1-436e27070b1mr106983675e9.20.1736534474969;
+ Fri, 10 Jan 2025 10:41:14 -0800 (PST)
+Date: Fri, 10 Jan 2025 18:40:39 +0000
 In-Reply-To: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,9 +77,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailer: b4 0.15-dev
-Message-ID: <20250110-asi-rfc-v2-v2-12-8419288bc805@google.com>
-Subject: [PATCH RFC v2 12/29] mm: asi: Add basic infrastructure for global
- non-sensitive mappings
+Message-ID: <20250110-asi-rfc-v2-v2-13-8419288bc805@google.com>
+Subject: [PATCH RFC v2 13/29] mm: Add __PAGEFLAG_FALSE
 From: Brendan Jackman <jackmanb@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -130,201 +129,46 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
 	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
 	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
 	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>, Junaid Shahid <junaids@google.com>
+	Brendan Jackman <jackmanb@google.com>
 Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Junaid Shahid <junaids@google.com>
+__PAGEFLAG_FALSE is a non-atomic equivalent of PAGEFLAG_FALSE.
 
-A pseudo-PGD is added to store global non-sensitive ASI mappings.
-Actual ASI PGDs copy entries from this pseudo-PGD during asi_init().
-
-Memory can be mapped as globally non-sensitive by calling asi_map()
-with ASI_GLOBAL_NONSENSITIVE.
-
-Page tables allocated for global non-sensitive mappings are never
-freed.
-
-These page tables are shared between all domains and init_mm, so they
-don't need special synchronization.
-
-RFC note: A refactoring/prep commit should be split out of this patch.
-
-Signed-off-by: Junaid Shahid <junaids@google.com>
+Checkpatch-args: --ignore=COMPLEX_MACRO
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/include/asm/asi.h |  3 +++
- arch/x86/mm/asi.c          | 37 +++++++++++++++++++++++++++++++++++++
- arch/x86/mm/init_64.c      | 25 ++++++++++++++++---------
- arch/x86/mm/mm_internal.h  |  3 +++
- include/asm-generic/asi.h  |  2 ++
- 5 files changed, 61 insertions(+), 9 deletions(-)
+ include/linux/page-flags.h | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/x86/include/asm/asi.h b/arch/x86/include/asm/asi.h
-index 33f18be0e268b3a6725196619cbb8d847c21e197..555edb5f292e4d6baba782f51d014aa48dc850b6 100644
---- a/arch/x86/include/asm/asi.h
-+++ b/arch/x86/include/asm/asi.h
-@@ -120,6 +120,9 @@ struct asi_taint_policy {
- 	asi_taints_t set;
- };
+diff --git a/include/linux/page-flags.h b/include/linux/page-flags.h
+index cc839e4365c18223e68c35efd0f67e7650708e8b..7ee9a0edc6d21708fc93dfa8913dc1ae9478dee3 100644
+--- a/include/linux/page-flags.h
++++ b/include/linux/page-flags.h
+@@ -484,6 +484,10 @@ static inline int Page##uname(const struct page *page) { return 0; }
+ FOLIO_SET_FLAG_NOOP(lname)						\
+ static inline void SetPage##uname(struct page *page) {  }
  
-+extern struct asi __asi_global_nonsensitive;
-+#define ASI_GLOBAL_NONSENSITIVE	(&__asi_global_nonsensitive)
++#define __SETPAGEFLAG_NOOP(uname, lname)					\
++static inline void __folio_set_##lname(struct folio *folio) { }		\
++static inline void __SetPage##uname(struct page *page) {  }
 +
- /*
-  * An ASI domain (struct asi) represents a restricted address space. The
-  * unrestricted address space (and user address space under PTI) are not
-diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
-index f2d8fbc0366c289891903e1c2ac6c59b9476d95f..17391ec8b22e3c0903cd5ca29cbb03fcc4cbacce 100644
---- a/arch/x86/mm/asi.c
-+++ b/arch/x86/mm/asi.c
-@@ -13,6 +13,7 @@
- #include <asm/mmu_context.h>
- #include <asm/traps.h>
+ #define CLEARPAGEFLAG_NOOP(uname, lname)				\
+ FOLIO_CLEAR_FLAG_NOOP(lname)						\
+ static inline void ClearPage##uname(struct page *page) {  }
+@@ -506,6 +510,9 @@ static inline int TestClearPage##uname(struct page *page) { return 0; }
+ #define TESTSCFLAG_FALSE(uname, lname)					\
+ 	TESTSETFLAG_FALSE(uname, lname) TESTCLEARFLAG_FALSE(uname, lname)
  
-+#include "mm_internal.h"
- #include "../../../mm/internal.h"
- 
- static struct asi_taint_policy *taint_policies[ASI_MAX_NUM_CLASSES];
-@@ -26,6 +27,13 @@ const char *asi_class_names[] = {
- DEFINE_PER_CPU_ALIGNED(struct asi *, curr_asi);
- EXPORT_SYMBOL(curr_asi);
- 
-+static __aligned(PAGE_SIZE) pgd_t asi_global_nonsensitive_pgd[PTRS_PER_PGD];
++#define __PAGEFLAG_FALSE(uname, lname) TESTPAGEFLAG_FALSE(uname, lname)		\
++	__SETPAGEFLAG_NOOP(uname, lname) __CLEARPAGEFLAG_NOOP(uname, lname)
 +
-+struct asi __asi_global_nonsensitive = {
-+	.pgd = asi_global_nonsensitive_pgd,
-+	.mm = &init_mm,
-+};
-+
- static inline bool asi_class_id_valid(enum asi_class_id class_id)
- {
- 	return class_id >= 0 && class_id < ASI_MAX_NUM_CLASSES;
-@@ -156,6 +164,31 @@ void __init asi_check_boottime_disable(void)
- 		pr_info("ASI enablement ignored due to incomplete implementation.\n");
- }
- 
-+static int __init asi_global_init(void)
-+{
-+	if (!boot_cpu_has(X86_FEATURE_ASI))
-+		return 0;
-+
-+	/*
-+	 * Lower-level pagetables for global nonsensitive mappings are shared,
-+	 * but the PGD has to be copied into each domain during asi_init. To
-+	 * avoid needing to synchronize new mappings into pre-existing domains
-+	 * we just pre-allocate all of the relevant level N-1 entries so that
-+	 * the global nonsensitive PGD already has pointers that can be copied
-+	 * when new domains get asi_init()ed.
-+	 */
-+	preallocate_sub_pgd_pages(asi_global_nonsensitive_pgd,
-+				  PAGE_OFFSET,
-+				  PAGE_OFFSET + PFN_PHYS(max_pfn) - 1,
-+				  "ASI Global Non-sensitive direct map");
-+	preallocate_sub_pgd_pages(asi_global_nonsensitive_pgd,
-+				  VMALLOC_START, VMALLOC_END,
-+				  "ASI Global Non-sensitive vmalloc");
-+
-+	return 0;
-+}
-+subsys_initcall(asi_global_init)
-+
- static void __asi_destroy(struct asi *asi)
- {
- 	WARN_ON_ONCE(asi->ref_count <= 0);
-@@ -170,6 +203,7 @@ int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_
- {
- 	struct asi *asi;
- 	int err = 0;
-+	uint i;
- 
- 	*out_asi = NULL;
- 
-@@ -203,6 +237,9 @@ int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_
- 	asi->mm = mm;
- 	asi->class_id = class_id;
- 
-+	for (i = KERNEL_PGD_BOUNDARY; i < PTRS_PER_PGD; i++)
-+		set_pgd(asi->pgd + i, asi_global_nonsensitive_pgd[i]);
-+
- exit_unlock:
- 	if (err)
- 		__asi_destroy(asi);
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index ff253648706fa9cd49169a54882014a72ad540cf..9d358a05c4e18ac6d5e115de111758ea6cdd37f2 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1288,18 +1288,15 @@ static void __init register_page_bootmem_info(void)
- #endif
- }
- 
--/*
-- * Pre-allocates page-table pages for the vmalloc area in the kernel page-table.
-- * Only the level which needs to be synchronized between all page-tables is
-- * allocated because the synchronization can be expensive.
-- */
--static void __init preallocate_vmalloc_pages(void)
-+/* Initialize empty pagetables at the level below PGD.  */
-+void __init preallocate_sub_pgd_pages(pgd_t *pgd_table, ulong start,
-+				      ulong end, const char *name)
- {
- 	unsigned long addr;
- 	const char *lvl;
- 
--	for (addr = VMALLOC_START; addr <= VMEMORY_END; addr = ALIGN(addr + 1, PGDIR_SIZE)) {
--		pgd_t *pgd = pgd_offset_k(addr);
-+	for (addr = start; addr <= end; addr = ALIGN(addr + 1, PGDIR_SIZE)) {
-+		pgd_t *pgd = pgd_offset_pgd(pgd_table, addr);
- 		p4d_t *p4d;
- 		pud_t *pud;
- 
-@@ -1335,7 +1332,17 @@ static void __init preallocate_vmalloc_pages(void)
- 	 * The pages have to be there now or they will be missing in
- 	 * process page-tables later.
- 	 */
--	panic("Failed to pre-allocate %s pages for vmalloc area\n", lvl);
-+	panic("Failed to pre-allocate %s pages for %s area\n", lvl, name);
-+}
-+
-+/*
-+ * Pre-allocates page-table pages for the vmalloc area in the kernel page-table.
-+ * Only the level which needs to be synchronized between all page-tables is
-+ * allocated because the synchronization can be expensive.
-+ */
-+static void __init preallocate_vmalloc_pages(void)
-+{
-+	preallocate_sub_pgd_pages(init_mm.pgd, VMALLOC_START, VMEMORY_END, "vmalloc");
- }
- 
- void __init mem_init(void)
-diff --git a/arch/x86/mm/mm_internal.h b/arch/x86/mm/mm_internal.h
-index 3f37b5c80bb32ff34656a20789449da92e853eb6..1203a977edcd523589ad88a37aab01398a10a129 100644
---- a/arch/x86/mm/mm_internal.h
-+++ b/arch/x86/mm/mm_internal.h
-@@ -25,4 +25,7 @@ void update_cache_mode_entry(unsigned entry, enum page_cache_mode cache);
- 
- extern unsigned long tlb_single_page_flush_ceiling;
- 
-+extern void preallocate_sub_pgd_pages(pgd_t *pgd_table, ulong start,
-+				      ulong end, const char *name);
-+
- #endif	/* __X86_MM_INTERNAL_H */
-diff --git a/include/asm-generic/asi.h b/include/asm-generic/asi.h
-index 5be8f7d657ba0bc2196e333f62b084d0c9eef7b6..7867b8c23449058a1dd06308ab5351e0d210a489 100644
---- a/include/asm-generic/asi.h
-+++ b/include/asm-generic/asi.h
-@@ -23,6 +23,8 @@ typedef u8 asi_taints_t;
- 
- #ifndef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
- 
-+#define ASI_GLOBAL_NONSENSITIVE		NULL
-+
- struct asi_hooks {};
- struct asi {};
- 
+ __PAGEFLAG(Locked, locked, PF_NO_TAIL)
+ FOLIO_FLAG(waiters, FOLIO_HEAD_PAGE)
+ FOLIO_FLAG(referenced, FOLIO_HEAD_PAGE)
 
 -- 
 2.47.1.613.gc27f4b7a9f-goog
