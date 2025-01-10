@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-5048-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5049-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BDD5A09F25
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:15:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D68CFA09F26
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:15:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJvj0nPlz3d7n;
-	Sat, 11 Jan 2025 11:15:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJvr4M7Vz3d8F;
+	Sat, 11 Jan 2025 11:15:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::34a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736534510;
-	cv=none; b=Ze3+LZM2mm1bKvdlExMgm1ErApNwbYzSI+rtMYu7M3bePXwkhiy2feOP0QO/NLDvTIFr3ifX5hY09+gCtFRgrWLMzQCSr0Gd79WcYDnDmynKnVcGwJ1uli497FJGs2qvlsurEftye0cWwFw+E656JuGsMa+kcT5C7h3x/uPOPvtfWJlpOzPd4cTfzO1VBu6F8d5IBju/09LbwJw5AoMq2n33/s2L2/yl6v13QQEMhFhMRzP4Hd2/EMI1N0NZgwq+cETVbjEznzvcjRB6+Jz94cKDOwzmFTd4+4rz36t9yKtkaF311AKQex8wfwhRQBmH0vKFGsaMknySI1c8RgZ8UQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736534513;
+	cv=none; b=k2QXb0lgH4CE2U/djQByZSGVPLJhTDh8skCteR5MSqZ2iUJEDVJqAJO7//zbP0IgSw3ZZJJBI02I2yau9zAyU6tPntN6QVcQHCsRnYCV62kZukAzeRr+MVKKZWwdgVZOgsog/CraolR5zc34bkjjq3w1j0hQU0YsSm5XmjUNOgN6BJciNARbSZOwbSI+2SiOj6FyXTYUPBp1UIcHpsRZ5VOmpozFf29nVLAmCU1Mzhr+6rZGjhSCouggpTUL9V6WtBLl53ATb7s9VCe2RqIeaUmct9q8A9IzK5M4uqf3x97ljsGJbHJgIafzmaXu67PXvh+C/BrdiIr8qC7GZpPi4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736534510; c=relaxed/relaxed;
-	bh=YGrdWVEeU4Ptbj/O5LlMCmxq+nbCGI8+4U1HKBQ0dew=;
+	t=1736534513; c=relaxed/relaxed;
+	bh=49F9KmkByYRspQkaSYzsGBFq+GnQYA+RnfOGnAD1TNs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JVUggQ73BcUvVIMitf9nNRX8kCPdMQHjoMUdFqkJ3RupaYjeGebDhSSlzj5LpPxP6KXc3cs9wvcXiJnh9JQgC6JgrFRon2GzxE/cpqbqLN3egsMUnYg0n8jDikdkVW7LTJO7vHb1eR5+2D/TMtzQn2jJYaNzj6ZEBPFNJognIVGUlIMhAvbHbfKTOd0S/LaHtNsTtYIfF7Bdvgtdmu8HHjaVaP03BIfq3Pedly/UNn1lVVi/07l9GoadoSzoljMg7RYw3HW1kEhwd1CSTxodn61JkPiUpRZqa4hzMnwNgpL8O8MaCBTKryenvG85G7CFAo7pr+cAmMr+mUv8yVCvRg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=S2gQxDWw; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=36mmbzwgkdacqhjrthuinvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
+	 To:Cc:Content-Type; b=opbxWrsjwM31hkNeLLpfTFk3HZqoA8Zmk2mfTuHonGGiMROBcQKPsaTyv+Mb5aK253reRl8howhkZocmFJD0sZGgEoW4IdOmYn9GG6noRp4eJm8AYnIwVJKvKQWojSVlrZiO62ZaP+dU9yLKcp0aEJi2mo9drvUBLTXIS+c9Cl/DRzGTJWUNMTTIlc1DyFIaFTvjJ+6S0faV9Je+6+IZG6Lrcr3Cnh525fiZpOBoJ/gl+YPIHICdORC21mQRvFbaoJbGIy4hNYYP7+FOb2U+hKVlWtACj7lufbJC12ff/AnlVm5y4LKwHxjsN2xk2GfivjPJoLplqpQJtL27kXOXIg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Bv3Bc+q1; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=37gmbzwgkdaksjltvjwkpxxpun.lxvurw36yyl-mn4ur121.x8ujk1.x0p@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=S2gQxDWw;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Bv3Bc+q1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=36mmbzwgkdacqhjrthuinvvnsl.jvtspu14wwj-kl2spz0z.v6shiz.vyn@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=37gmbzwgkdaksjltvjwkpxxpun.lxvurw36yyl-mn4ur121.x8ujk1.x0p@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
 Received: from mail-wm1-x34a.google.com (mail-wm1-x34a.google.com [IPv6:2a00:1450:4864:20::34a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9VP4vRkz3cYP
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 05:41:49 +1100 (AEDT)
-Received: by mail-wm1-x34a.google.com with SMTP id 5b1f17b1804b1-43626224274so13176125e9.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 10:41:49 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9VS0SdJz3cYP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 05:41:52 +1100 (AEDT)
+Received: by mail-wm1-x34a.google.com with SMTP id 5b1f17b1804b1-436328fcfeeso20438615e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 10:41:51 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736534507; x=1737139307; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1736534509; x=1737139309; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YGrdWVEeU4Ptbj/O5LlMCmxq+nbCGI8+4U1HKBQ0dew=;
-        b=S2gQxDWwXqdUuh5edsnUXK2xfofJtswZzdZUWWKMe6iqW9wRUmecekL8Ll2WjXyZE8
-         +FhHVDNMaelcrdaa7ZoPC7HsU+8aSJfCG6La3s+/PDCKbKuW+ez5pNwr5NNIxcB1vGDX
-         j9zXtnXKGK8FjIA657x3Vuxh/gdtlsjxtQbsi6pcX47zbajld/t3BsPuLWgwM4SPiSOC
-         8tAudZ1s/SctJHSH+/+BMc0ewB65rXOdIBeq1JJINZc8evTt3JD0TqKW0a+cDQVAGB8V
-         EGkoSIBw2gAUhu63GE8gAnKkE9OGVtC0WE+QoRgOoBEL9lMK6Ml9oR12XBzEboa/O/4b
-         9ANA==
+        bh=49F9KmkByYRspQkaSYzsGBFq+GnQYA+RnfOGnAD1TNs=;
+        b=Bv3Bc+q1NUjoNs2uTtZqM8xsaLPNDL9w6+b/DpmbWBpWSWDSryQ4FRfUOadAXFlXON
+         AorjbVLmf7+XZO6X97BScuciIaxS0PMTbxLyikN0O5ct4nOL8R9D5F1Y+5twut9UySKr
+         qqxMT4mYKg61QM+zcPPnZSkN6mCR0NkbKxj7Q0eeKGk52Zqjc4KE7hB5VaW20RJSUx/F
+         FyetJCBrndSpollmrHmjKZ6x7z/4916F5h6FxAg8VLNBgSJeiAH06Ck+thWDYtYEtoEJ
+         mkPwh9O8ZVyUJ09B/RQqfD1DetnLzFT4nMI/j4f7bS0tHkoUVsJgsQjvlswsDQU0U/FY
+         hbsA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736534507; x=1737139307;
+        d=1e100.net; s=20230601; t=1736534509; x=1737139309;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YGrdWVEeU4Ptbj/O5LlMCmxq+nbCGI8+4U1HKBQ0dew=;
-        b=uXS1Ka2Hk6lyoq85VVZkM1w6pz19aKQPFuOj8Pz7VxoLT5thS6SIc9WDTCPSX16EYI
-         qqbwb/rmVlKF11RPDQiTu241w3jOw12HpGDKqBzch5JIpoY4rIXcB8FPxDKisKRIoHz2
-         TpOfPD5JQClnrALTed+Vmp++pLJSP/+yIJH3cD93K9AY2dbgwPvuJmeOg/Cjdf6pBPMM
-         T2MnnOYwGTyvqoprqznFoblD9QxLQlMnk1pyBggKiCuA/vQ3SWWxFTkSn4SbuNyLSjsz
-         GLFvHFxwQOiABXJ6Wnf7wZrL5vDCa9dO9VyDrio4QE/dKsunbfgbErw0ClgAKM/gzgGv
-         3s8A==
-X-Forwarded-Encrypted: i=1; AJvYcCUgHH0tjtqrt+RGBbz3znZpL9gkSZGhs4XaSiRJ3zXZIVqfwsak1r8vxU9K/PV8JUFL33dgtT7VObZE/wA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy4aeC2qtTf0KNcmQ/hlL6d1G0ilY5HuYgBijUkcxnKEEaHB8s6
-	jKiOJL6HlTeFykHwCen4OcOzS2zOc/Tgrq6e9ePb3cvCNWIiu7pxeGaIMmn87k18v13hLRW4w69
-	BKZW1fNSTcQ==
-X-Google-Smtp-Source: AGHT+IEgsXbDoolH8oLFMalWBy0djT9uJM60zMy+Lo0ErgHawFZLEGOSZUiE5P0d6bxzOZZfpK4Vh92Jd6K16A==
-X-Received: from wmrn43.prod.google.com ([2002:a05:600c:502b:b0:434:a9bd:e68c])
+        bh=49F9KmkByYRspQkaSYzsGBFq+GnQYA+RnfOGnAD1TNs=;
+        b=QB3jtIbzVsoEUhvWvfUmhrwrhE49L/Co+Vq2qG/phtOioI+0BteQwl2xGp4sD3ahOK
+         UfIzUv50mbWTGMd4kd5RUMu8QWdc/XNBx15H4NVMaHkwav1Dg5xoIrlwQx54VDccCNDe
+         JtxEo7ULKgsIcUEvAJjIrd9NY7JzsOHpZ0BjN4uFadhWx6CzFsegq8SRYzknp8/oC6F3
+         uHYOJyk/IHd9Tjc7yj02gnLYt0l2IcEAA1h++DN6mhtSIi07Ms1ZbJklYE7HhaG5ObJD
+         pe2cnW4HEDryKHs4HMy+nAhbodefM8apxAQuvL8kJp+IUSp9Xf/IJXU2lf+gyJyj1K7i
+         etCg==
+X-Forwarded-Encrypted: i=1; AJvYcCUorANO1WeRNPUYWIg3vPIUpCcSpgCR6peg/3l/nHe5lpBDxQ01fDAtrc8XufF5PEXe2tErzg8Evxoeua8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yynqp9EWmdT9mGlzI7R2/dOApHg6CFrEzZsG2xmlK3q5R1Bf2q6
+	Zj3O67i2/tOHiugS+deDE17alLTQyyRwCWmj+leA4+2Adu1KPKXPrlsx/xqcMyusXkeZiRQQnCB
+	UsYMcLHFfuw==
+X-Google-Smtp-Source: AGHT+IFKWz0raFavEVPdqLi0m3c/SgK/uJNRKjAz6M2EuA2Ei6coxzOA0we1XFhGSIskVPMsumh+r4On/rf0kg==
+X-Received: from wmrn35.prod.google.com ([2002:a05:600c:5023:b0:434:f2eb:aa72])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:4f81:b0:434:f1d5:1453 with SMTP id 5b1f17b1804b1-436e2531ec8mr120237105e9.0.1736534506703;
- Fri, 10 Jan 2025 10:41:46 -0800 (PST)
-Date: Fri, 10 Jan 2025 18:40:53 +0000
+ 2002:a05:600c:1d07:b0:434:fa73:a907 with SMTP id 5b1f17b1804b1-436e269a5f5mr112362055e9.13.1736534508901;
+ Fri, 10 Jan 2025 10:41:48 -0800 (PST)
+Date: Fri, 10 Jan 2025 18:40:54 +0000
 In-Reply-To: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,8 +77,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailer: b4 0.15-dev
-Message-ID: <20250110-asi-rfc-v2-v2-27-8419288bc805@google.com>
-Subject: [PATCH RFC v2 27/29] mm: asi: Add some mitigations on address space transitions
+Message-ID: <20250110-asi-rfc-v2-v2-28-8419288bc805@google.com>
+Subject: [PATCH RFC v2 28/29] x86/pti: Disable PTI when ASI is on
 From: Brendan Jackman <jackmanb@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -136,152 +136,94 @@ X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Here we ASI actually starts becoming a real exploit mitigation,
+Now that ASI has support for sandboxing userspace, although userspace
+now has much more mapped than it would under KPTI, in theory none of
+that data is important to protect.
 
-On CPUs with L1TF, flush L1D when the ASI data taints say so.
+Note that one particular impact of this is it makes locally defeating
+KASLR easier. I don't think this is a great loss given [1] etc.
 
-On all CPUs, do some general branch predictor clearing
-whenever the control taints say so.
+Why do we pass in an argument instead of just having
+pti_check_boottime_disable() check boot_cpu_has(X86_FEATURE_ASI)? Just
+for clarity: I wanted it to be at least _sort of_ visible that it would
+break if you reordered asi_check_boottime_disable() afterwards.
 
-This policy is very much just a starting point for discussion.
-Primarily it's a vague gesture at the fact that there is leeway
-in how ASI is used: it can be used to target CPU-specific issues (as
-is the case for L1TF here), or it can be used as a fairly broad
-mitigation (asi_maybe_flush_control() mitigates several known
-Spectre-style attacks and very likely also some unknown ones).
+[1]:  https://gruss.cc/files/prefetch.pdf
+      and https://dl.acm.org/doi/pdf/10.1145/3623652.3623669
 
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/include/asm/nospec-branch.h |  2 ++
- arch/x86/kvm/vmx/vmx.c               |  1 +
- arch/x86/lib/l1tf.c                  |  2 ++
- arch/x86/lib/retpoline.S             | 10 ++++++++++
- arch/x86/mm/asi.c                    | 29 +++++++++++++++++++++--------
- 5 files changed, 36 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/pti.h |  6 ++++--
+ arch/x86/mm/init.c         |  2 +-
+ arch/x86/mm/pti.c          | 14 +++++++++++++-
+ 3 files changed, 18 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index 96b410b1d4e841eb02f53a4691ee794ceee4ad2c..4582fb1fb42f6fd226534012d969ed13085e943a 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -614,6 +614,8 @@ static __always_inline void mds_idle_clear_cpu_buffers(void)
- 		mds_clear_cpu_buffers();
- }
+diff --git a/arch/x86/include/asm/pti.h b/arch/x86/include/asm/pti.h
+index ab167c96b9ab474b33d778453db0bb550f42b0ac..79b9ba927db9b76ac3cc72cdda6f8b5fc413d352 100644
+--- a/arch/x86/include/asm/pti.h
++++ b/arch/x86/include/asm/pti.h
+@@ -3,12 +3,14 @@
+ #define _ASM_X86_PTI_H
+ #ifndef __ASSEMBLY__
  
-+extern void fill_return_buffer(void);
++#include <linux/types.h>
 +
+ #ifdef CONFIG_MITIGATION_PAGE_TABLE_ISOLATION
+ extern void pti_init(void);
+-extern void pti_check_boottime_disable(void);
++extern void pti_check_boottime_disable(bool asi_enabled);
+ extern void pti_finalize(void);
+ #else
+-static inline void pti_check_boottime_disable(void) { }
++static inline void pti_check_boottime_disable(bool asi_enabled) { }
+ #endif
+ 
  #endif /* __ASSEMBLY__ */
- 
- #endif /* _ASM_X86_NOSPEC_BRANCH_H_ */
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index b1a02f27b3abce0ef6ac448b66bef2c653a52eef..a532783caaea97291cd92a2e2cac617f74f76c7e 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -6635,6 +6635,7 @@ int vmx_handle_exit(struct kvm_vcpu *vcpu, fastpath_t exit_fastpath)
- 	return ret;
- }
- 
-+/* Must be reentrant, for use by vmx_post_asi_enter. */
- static noinstr void vmx_l1d_flush(struct kvm_vcpu *vcpu)
+diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
+index ded3a47f2a9c1f554824d4ad19f3b48bce271274..4ccf6d60705652805342abefc5e71cd00c563207 100644
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -754,8 +754,8 @@ void __init init_mem_mapping(void)
  {
- 	/*
-diff --git a/arch/x86/lib/l1tf.c b/arch/x86/lib/l1tf.c
-index c474f18ae331c8dfa7a029c457dd3cf75bebf808..ffe1c3d0ef43ff8f1781f2e446aed041f4ce3179 100644
---- a/arch/x86/lib/l1tf.c
-+++ b/arch/x86/lib/l1tf.c
-@@ -46,6 +46,8 @@ EXPORT_SYMBOL(l1tf_flush_setup);
-  *  - may or may not work on other CPUs.
-  *
-  * Don't call unless l1tf_flush_setup() has returned successfully.
-+ *
-+ * Must be reentrant, for use by ASI.
-  */
- noinstr void l1tf_flush(void)
+ 	unsigned long end;
+ 
+-	pti_check_boottime_disable();
+ 	asi_check_boottime_disable();
++	pti_check_boottime_disable(boot_cpu_has(X86_FEATURE_ASI));
+ 	probe_page_size_mask();
+ 	setup_pcid();
+ 
+diff --git a/arch/x86/mm/pti.c b/arch/x86/mm/pti.c
+index 851ec8f1363a8b389ea4579cc68bf3300a4df27c..b7132080d3c9b6962a0252383190335e171bafa6 100644
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -76,7 +76,7 @@ static enum pti_mode {
+ 	PTI_FORCE_ON
+ } pti_mode;
+ 
+-void __init pti_check_boottime_disable(void)
++void __init pti_check_boottime_disable(bool asi_enabled)
  {
-diff --git a/arch/x86/lib/retpoline.S b/arch/x86/lib/retpoline.S
-index 391059b2c6fbc4a571f0582c7c4654147a930cef..6d126fff6bf839889086fe21464d8af07316d7e5 100644
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -396,3 +396,13 @@ SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
+ 	if (hypervisor_is_type(X86_HYPER_XEN_PV)) {
+ 		pti_mode = PTI_FORCE_OFF;
+@@ -91,6 +91,18 @@ void __init pti_check_boottime_disable(void)
+ 		return;
+ 	}
  
- #endif /* CONFIG_MITIGATION_RETHUNK */
-+
-+.pushsection .noinstr.text, "ax"
-+SYM_CODE_START(fill_return_buffer)
-+	UNWIND_HINT_FUNC
-+	ENDBR
-+	__FILL_RETURN_BUFFER(%_ASM_AX,RSB_CLEAR_LOOPS)
-+	RET
-+SYM_CODE_END(fill_return_buffer)
-+__EXPORT_THUNK(fill_return_buffer)
-+.popsection
-diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
-index 1e9dc568e79e8686a4dbf47f765f2c2535d025ec..f10f6614b26148e5ba423d8a44f640674573ee40 100644
---- a/arch/x86/mm/asi.c
-+++ b/arch/x86/mm/asi.c
-@@ -10,6 +10,7 @@
- 
- #include <asm/cmdline.h>
- #include <asm/cpufeature.h>
-+#include <asm/l1tf.h>
- #include <asm/page.h>
- #include <asm/pgalloc.h>
- #include <asm/mmu_context.h>
-@@ -38,6 +39,8 @@ struct asi __asi_global_nonsensitive = {
- 	.mm = &init_mm,
- };
- 
-+static bool do_l1tf_flush __ro_after_init;
-+
- static inline bool asi_class_id_valid(enum asi_class_id class_id)
- {
- 	return class_id >= 0 && class_id < ASI_MAX_NUM_CLASSES;
-@@ -361,6 +364,15 @@ static int __init asi_global_init(void)
- 	asi_clone_pgd(asi_global_nonsensitive_pgd, init_mm.pgd,
- 		      VMEMMAP_START + (1UL << PGDIR_SHIFT));
- 
-+	if (boot_cpu_has_bug(X86_BUG_L1TF)) {
-+		int err = l1tf_flush_setup();
-+
-+		if (err)
-+			pr_warn("Failed to setup L1TF flushing for ASI (%pe)", ERR_PTR(err));
-+		else
-+			do_l1tf_flush = true;
++	if (asi_enabled) {
++		/*
++		 * Having both ASI and PTI enabled is not a totally ridiculous
++		 * thing to do; if you want ASI but you are not confident in the
++		 * sensitivity annotations then it provides useful
++		 * defence-in-depth. But, the implementation doesn't support it.
++		 */
++		if (pti_mode != PTI_FORCE_OFF)
++			pti_print_if_insecure("disabled by ASI");
++		return;
 +	}
 +
- #ifdef CONFIG_PM_SLEEP
- 	register_syscore_ops(&asi_syscore_ops);
- #endif
-@@ -512,10 +524,12 @@ static __always_inline void maybe_flush_control(struct asi *next_asi)
- 	if (!taints)
- 		return;
- 
--	/*
--	 * This is where we'll do the actual dirty work of clearing uarch state.
--	 * For now we just pretend, clear the taints.
--	 */
-+	/* Clear normal indirect branch predictions, if we haven't */
-+	if (cpu_feature_enabled(X86_FEATURE_IBPB))
-+		__wrmsr(MSR_IA32_PRED_CMD, PRED_CMD_IBPB, 0);
-+
-+	fill_return_buffer();
-+
- 	this_cpu_and(asi_taints, ~ASI_TAINTS_CONTROL_MASK);
- }
- 
-@@ -536,10 +550,9 @@ static __always_inline void maybe_flush_data(struct asi *next_asi)
- 	if (!taints)
- 		return;
- 
--	/*
--	 * This is where we'll do the actual dirty work of clearing uarch state.
--	 * For now we just pretend, clear the taints.
--	 */
-+	if (do_l1tf_flush)
-+		l1tf_flush();
-+
- 	this_cpu_and(asi_taints, ~ASI_TAINTS_DATA_MASK);
- }
+ 	if (pti_mode == PTI_FORCE_ON)
+ 		pti_print_if_secure("force enabled on command line.");
  
 
 -- 
