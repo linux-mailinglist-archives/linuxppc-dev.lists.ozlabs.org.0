@@ -1,87 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-5013-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5014-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3013AA09843
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 18:15:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08875A098B0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 18:38:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YV7ZS3n3Fz3cbg;
-	Sat, 11 Jan 2025 04:15:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YV85m0Cwmz30Vn;
+	Sat, 11 Jan 2025 04:38:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736529312;
-	cv=none; b=nMyIsu8qaZAPiYFFM4d3j95rwI37/q9g2+xjrdUJyMd7bEFuBR7TdFkekCW73ORIHggx2oucWEJddomUhl6h7dcpHY4gp9n9dCHYCxYHv1UH+7L2RqWy1fYn4KEYNnmfrnVq0r6TglJ8SKK4+nVuAqm+hPRiHAhQcQafRLxMnqgwF9kfY1Uv5AZMXk8fuBDGrgysCKFu27XsoyUafQNCgFfc7742K9iBzMXVWvjNlZiGBBqIb2jMVq/iWRyy7/WJu1OcfuzkE6b65nhm7QWK2hda1ZRDdpc3n8IU5ijr6wqDyDO2+y0sWoSn4gmFmCg6q0ZT1W3vte3mDzk7YqIU3w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736530731;
+	cv=none; b=RBxAw7HYp8Is9AmWSOEqXJSccLsjiKjtq5MfARk6amsj+0ZW+BpuNQ9M6CARG8WD21r2O4oHHt98ijKPKPu/uiwY1VvLzkdc/Xfv7bvVn/zyO+jsfmOb/L/yLp2beNQxJI0/CUomyFyniUBvobyKWrX0gC62XT94VaKqTHWwe4gHehHSVuj0Rx3j6YWc+yiSuTcOJds0h/aw3JIrz/13Y0I/uJAqWWONotv92EDns28GNqJOgeHeUqPBBnKstcUxrLOwPFL1UrFUuWl7ONLzvkbDnExvGS3wndo+0vId4VMkpcXdNvamchEU5cAWVHe2HYUaqWbpvFwfmpUXfxRl8g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736529312; c=relaxed/relaxed;
-	bh=rU8B9pXUWMp+CstKuXw+YGxa2kBNtjGh+nPj+/URa+U=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NTEvFg/HASp8vTfWctz3BsfBbi4SpllzBAuq5SfIsuzxUlbwvRhwYZRGo15YXt0PPwkX9EV8mGHTEN2WCy2YFjzFR6vvIXru62ktThklt37lQ1vt8OakWyFkzIMc9vh5jYI2iDXDjgxcM+qXulGUD8lR5DkvPQEUJP9hjHLVMOt70BMqVyVVEk6oKDA/ArcT1GPTu7me9uncjAfBgxeHEhg+p7tCofa1zpkDXHxL+FCalGWtYBA8uFVJdfIErmDxxCorYDStUZgjSA61unaGoCj1u1EQSxVgCnDSyK3S/rZbPrOzT6nxW7wGrOVKmlEMEBX9OHvqsuQfLYoaXlzUjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R9QF8Jn8; dkim-atps=neutral; spf=pass (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=ashutosh.dixit@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1736530731; c=relaxed/relaxed;
+	bh=RD6nZV1XtAPWMC9dEZfIf2cqcyFr6kW2Ap+29KyEOFw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CKgmqqhOoTM4SJdSwbndPIZ3Bx3bd5sMrU8Y9MaiballNYdHS4K+zWbd7NmZzpnV7+dLGSQRoYjCdivVIQuxeEyOx5F/9z0pUFh8sfJDOFsCI1RXZRv3gso2A9Q7NKIYihZPStc4fpJ0JfHUQW22klikBundF1iDibqCTqxuS3om0UTHQRuwodmNWePNSrjKEPRpDuxZVsU3lTwJyopLoGPhjgCWXe3dZ4TBeNCiO3WRrSMjWnWGntW3n2PTt0vc3LElFQgPMdp+aM9VmBtVTsrwHFkXBOSn/BE4FiyVjeeoBPe0TF4nKMPPEYA0VInUmIcaXXXfvB3KzCf6DCjwaw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YSfPPwGv; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=R9QF8Jn8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YSfPPwGv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=ashutosh.dixit@intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Sat, 11 Jan 2025 04:15:08 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV7ZN2q2Vz3cbL
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 04:15:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736529308; x=1768065308;
-  h=date:message-id:from:to:cc:subject:in-reply-to:
-   references:mime-version;
-  bh=zCD9wMt7oj+kJBhlIcsVVTGT43QE2wPIyfO0mHZuo3E=;
-  b=R9QF8Jn8iKznUKVRSTrloSueTFu/IvwtijynjYwngqd9KqJRfDP9ZgOv
-   pMWnaIR8g93gcr4RzBKmW0k5xpLKUA4exDj55weXL3U6uzmmITyXHsv/6
-   3vftq/qHWvalUFb6NtSecyL4wu3N10Ucl4FYa1vlzgpTbEfSRPsFoZ329
-   vFksbMD7MilkcW0wpu8JYgTHy8XGa6i4K19FhLoWveUzZZ08Ca5TqGXjH
-   1zEDs3Tl3AsmAG2fBZlU++DJLn2hCUN+8KQPz9gmnMksOJac2rTdt97Ml
-   iqBSDW5jj5k9lxz11FSxMDULC04i5foBeWBOecrmld/xS+ZL3Kn1N1VuX
-   Q==;
-X-CSE-ConnectionGUID: gkEgOc2TQrerMHWTDNZnAw==
-X-CSE-MsgGUID: 6tBvRwF0SkWxe/xmS1IHWA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11311"; a="36712477"
-X-IronPort-AV: E=Sophos;i="6.12,303,1728975600"; 
-   d="scan'208";a="36712477"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:13:58 -0800
-X-CSE-ConnectionGUID: d+N1H3FPQryemumCSoERgQ==
-X-CSE-MsgGUID: skCK+1HISZSgobnkHZdoJg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="127073384"
-Received: from orsosgc001.jf.intel.com (HELO orsosgc001.intel.com) ([10.165.21.142])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jan 2025 09:13:57 -0800
-Date: Fri, 10 Jan 2025 09:13:56 -0800
-Message-ID: <8534hqvbfv.wl-ashutosh.dixit@intel.com>
-From: "Dixit, Ashutosh" <ashutosh.dixit@intel.com>
-To: Joel Granados <joel.granados@kernel.org>
-Cc: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,	Kees Cook
- <kees@kernel.org>,	Luis Chamberlain <mcgrof@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,	linux-crypto@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,	intel-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org,	intel-xe@lists.freedesktop.org,
-	linux-hyperv@vger.kernel.org,	linux-rdma@vger.kernel.org,
-	linux-raid@vger.kernel.org,	linux-scsi@vger.kernel.org,
-	linux-serial@vger.kernel.org,	xen-devel@lists.xenproject.org,
-	linux-aio@kvack.org,	linux-fsdevel@vger.kernel.org,	netfs@lists.linux.dev,
-	codalist@coda.cs.cmu.edu,	linux-mm@kvack.org,	linux-nfs@vger.kernel.org,
-	ocfs2-devel@lists.linux.dev,	fsverity@lists.linux.dev,
-	linux-xfs@vger.kernel.org,	io-uring@vger.kernel.org,	bpf@vger.kernel.org,
-	kexec@lists.infradead.org,	linux-trace-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org,	apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org,	keyrings@vger.kernel.org
-Subject: Re: [PATCH] treewide: const qualify ctl_tables where applicable
-In-Reply-To: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
-References: <20250109-jag-ctl_table_const-v1-1-622aea7230cf@kernel.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?ISO-8859-4?Q?Goj=F2?=) APEL-LB/10.8 EasyPG/1.0.0
- Emacs/28.2 (x86_64-redhat-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV85k5c36z30Pp
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 04:38:50 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 505E6A42767
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 17:36:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2304FC4AF0C
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 17:38:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736530727;
+	bh=RD6nZV1XtAPWMC9dEZfIf2cqcyFr6kW2Ap+29KyEOFw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YSfPPwGv7C4m3Vg7Q31vn4+yQY5y99PHqI1t9URfjH0psI6NRYtfeWQ76G/Q79wIa
+	 Ge/9OL0HHJKGF7aDPuFO75Y9AaYgA17po7HEQpXATAOxyDJ5c7DgIzwGvJJXSWIvzL
+	 rh2gSYD8e+82wuKaPFzg6Ln78lcMmnBwYVQxabs/HRelCXuk29u3V7DjPEgDe/+8uY
+	 W17vuCJJts5mh0GnGi9LH7y6kaKrFTzeg4dvRANUTzqMjm1WWN0T82KzWwxFP+4Ymd
+	 kXYZptgGGtfRu1Q+ckTuffp0qrikqr+14T2pweQ54TFruSrXcibeReOZZDorEioCM9
+	 BCp9VHIy1X4Mw==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-5401bd6ccadso2298123e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 09:38:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWASDdXDsdZEYoAZV5dpZmpPayfa5S42LxreMKWBtO6YbVd1P9LkKToQjeFKFa/NuVgi1CUBSh6gURoqCI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz+5Qf0++QDJIkHS15dRK8oNPigodOsdEAxAYui367aDOgFfPym
+	UQgnfW9AbDlB+DoOsEXa5LTOFKV/Oil1I/Lxm9n9mamNaoCVcdTMRy27xczkJckgJxJ1m20B1jX
+	HquUjTR2PUACqbL8AN7QNE8RnBg4=
+X-Google-Smtp-Source: AGHT+IFDj4e7Qdk/CVrOBd4VzNqB9OZxNuR4FJLEDyAVOab6ZdZEbgzo0h2oKJsV4Ny6JXL/f8VoeR70ySCzaDQuN2I=
+X-Received: by 2002:a05:6512:a8c:b0:542:29a6:db5a with SMTP id
+ 2adb3069b0e04-542845b1fdcmr3674248e87.35.1736530725759; Fri, 10 Jan 2025
+ 09:38:45 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,43 +64,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
+MIME-Version: 1.0
+References: <20250103-extended-modversions-v13-0-35d87c65ee04@google.com>
+In-Reply-To: <20250103-extended-modversions-v13-0-35d87c65ee04@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 11 Jan 2025 02:38:09 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATi1cAH5Gmp0Q=e5tdhVcCW1mACnCKSPuHke4A_VnEczg@mail.gmail.com>
+X-Gm-Features: AbW1kvZuf7C0InUFz8wtQFKA4D5Ukm8tL8xvzKpSnzBouaaarUSzvSOupLkZC14
+Message-ID: <CAK7LNATi1cAH5Gmp0Q=e5tdhVcCW1mACnCKSPuHke4A_VnEczg@mail.gmail.com>
+Subject: Re: [PATCH v13 0/5] Extended MODVERSIONS Support
+To: Matthew Maurer <mmaurer@google.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Daniel Gomez <da.gomez@samsung.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Jonathan Corbet <corbet@lwn.net>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 09 Jan 2025 05:16:39 -0800, Joel Granados wrote:
+On Sat, Jan 4, 2025 at 2:37=E2=80=AFAM Matthew Maurer <mmaurer@google.com> =
+wrote:
 >
-> diff --git a/drivers/gpu/drm/i915/i915_perf.c b/drivers/gpu/drm/i915/i915_perf.c
-> index 2406cda75b7b..5384d1bb4923 100644
-> --- a/drivers/gpu/drm/i915/i915_perf.c
-> +++ b/drivers/gpu/drm/i915/i915_perf.c
-> @@ -4802,7 +4802,7 @@ int i915_perf_remove_config_ioctl(struct drm_device *dev, void *data,
->	return ret;
->  }
+> This patch series is intended for use alongside the Implement DWARF
+> modversions series [1] to enable RUST and MODVERSIONS at the same
+> time.
 >
-> -static struct ctl_table oa_table[] = {
-> +static const struct ctl_table oa_table[] = {
->	{
->	 .procname = "perf_stream_paranoid",
->	 .data = &i915_perf_stream_paranoid,
-> diff --git a/drivers/gpu/drm/xe/xe_observation.c b/drivers/gpu/drm/xe/xe_observation.c
-> index 8ec1b84cbb9e..57cf01efc07f 100644
-> --- a/drivers/gpu/drm/xe/xe_observation.c
-> +++ b/drivers/gpu/drm/xe/xe_observation.c
-> @@ -56,7 +56,7 @@ int xe_observation_ioctl(struct drm_device *dev, void *data, struct drm_file *fi
->	}
->  }
+> Elsewhere, we've seen a desire for long symbol name support for LTO
+> symbol names [2], and the previous series came up [3] as a possible
+> solution rather than hashing, which some have objected [4] to.
 >
-> -static struct ctl_table observation_ctl_table[] = {
-> +static const struct ctl_table observation_ctl_table[] = {
->	{
->	 .procname = "observation_paranoid",
->	 .data = &xe_observation_paranoid,
+> This series adds a MODVERSIONS format which uses a section per column.
+> This avoids userspace tools breaking if we need to make a similar change
+> to the format in the future - we would do so by adding a new section,
+> rather than editing the struct definition. In the new format, the name
+> section is formatted as a concatenated sequence of NUL-terminated
+> strings, which allows for arbitrary length names.
+>
+> Emitting the extended format is guarded by CONFIG_EXTENDED_MODVERSIONS,
+> but the kernel always knows how to validate both the original and
+> extended formats.
+>
+> Emitting the existing format is now guarded by CONFIG_BASIC_MODVERSIONS,
+> but it is enabled by default when MODVERSIONS is enabled and must be
+> explicitly disabled by the user.
+>
+> Disabling CONFIG_BASIC_MODVERSIONS may cause some userspace tools to be
+> unable to retrieve CRCs until they are patched to understand the new
+> location. Even with CONFIG_BASIC_MODVERSIONS enabled, those tools will
+> be unable to read the CRCs for long symbols until they are updated to
+> read the new format. This is not expected to interfere with normal
+> operation, as the primary use for CRCs embedded in the module is
+> load-time verification by the kernel. Recording and monitoring of CRCs
+> is typically done through Module.symvers.
+>
+> Selecting RUST and MODVERSIONS is now possible if GENDWARFKSYMS is
+> selected, and will implicitly select EXTENDED_MODVERSIONS.
+>
+> This series depends upon DWARF-based versions [1] and Masahiro's u32
+> fixup patch [5].
+>
+> [1] https://lore.kernel.org/lkml/20241219210736.2990838-20-samitolvanen@g=
+oogle.com/
+> [2] https://lore.kernel.org/lkml/20240605032120.3179157-1-song@kernel.org=
+/
+> [3] https://lore.kernel.org/lkml/ZoxbEEsK40ASi1cY@bombadil.infradead.org/
+> [4] https://lore.kernel.org/lkml/0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@sus=
+e.com/
+> [5] https://lore.kernel.org/linux-kbuild/20241228154603.2234284-1-masahir=
+oy@kernel.org
+>
+> Changes in v13:
+> - Fixed up missed s32 usage (Thanks Sami).
 
-For i915 and xe:
 
-Acked-by: Ashutosh Dixit <ashutosh.dixit@intel.com>
+Applied to linux-kbuild.
+Thanks.
+
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
 
