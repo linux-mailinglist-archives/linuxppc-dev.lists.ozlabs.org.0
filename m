@@ -1,67 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-5022-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5021-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 818E5A09F06
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:11:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F1E0A09F05
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 01:11:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJpm2BXwz3bT8;
-	Sat, 11 Jan 2025 11:11:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVJpW2Hnmz3cV3;
+	Sat, 11 Jan 2025 11:11:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::34a"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::349"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736534458;
-	cv=none; b=UG6QpEf+57/qSf4umwhYjtmm5CV9D2qxibyRy02XpQPNWWXCWUB5OulYqpNuvwVYDcHXXWKywUvQpe71df9GnMLFUNOJ1dwT6KLd+MZZUjc/0SdzSyXFvfCpBZmWiw0WIoPqEhwlmnypaPByQ7cRpNUcI7EZGA1gbHCwpUgLze39xOcoh+xQl0lydYQG920HArkHcsDqlco3rmkUJuTXoHtZPKceWfjopKYuCV1pyYPppmfvojOgRYwNr0RpxFoZoyCohfiF4elZf/pbg1QWk7P47lqIczenGuLRFHHXBQlq7554gHL4Y+3TeCy9LtAGC7hPrvSAx4GEB/0Qy11PhQ==
+	cv=none; b=CM9GQD6skdtvFGmb7Sm8LZKgBGU9N8pFMFQQibbCyv7SPN814iqDtAQx5YBUNJqJzj6gzHa18B62a+ET3BtHRKKb62GYTZ+7LerWr1XVWPjWBcn8gWkpqVVjfXKLDI0zo3faMgqfSsKW44O/6rspWOTZagusoTyOlR0Rv8IdqgGlxL+KmjLDnj7YbbegAR4zjloNST4Yju0DgqAIP1VMEr5RTzvBlU/bDysceMoKLEUFkZSmE2Okw0srhleyFUTRKt7kFi/+K8LuWobVFIpwl6+bNEmVaBfxxCUCwHj8gS8VSrkvHYyvq4sgLdhH0d9wBphOKk2Uwiu772icBI2Kpg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1736534458; c=relaxed/relaxed;
-	bh=lMV7uJ7I18OKYw8GMGFQsmzHxbOybRxQHWQLaqO2yfM=;
+	bh=LLeVb0ZgyFkqRQqFmxHZC1txeWSVEDEElINoAb1GRXw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PePnHC65/n8o3FQC8yqtBXEwOgP/2jUV2AYbvdK9JqoQR9oP3O10dAJPxicA2QcStGUklllKisAXx4BqzNKeUw6WS+dlNC10a03nouEch7YA/idaxHpTs5+GgLjzIXEBi2+paM2+RJUHKqL2n6n4hR0rDYviPpWxOuC2HdgfqDLJ+AujH9mbWmb+i3jCnV5GVqR+OCOHkwTB5IvgFYJ0OB030Eed6zmdWrY+Lt09E/MduMfvhxymaCGYhvfxgaTCtkspiN42zqaWkJpWvaL6WHvELKANIpj3w9NbcchS1WXJclVxUr15CdZH6VMbgiCgah1UMMumQD2vwDF/CvcH/A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KP/RIdoI; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3r2mbzwgkdmozqs02q3rw44w1u.s421y3ad55s-tub1y898.4f1qr8.47w@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
+	 To:Cc:Content-Type; b=lBz44odAxLDg1ikNdT+TyGf16Gjgilc7taSTGPRIzFlJ4DFGp16rZDYso5wiK18UfCZlq0L26AO5Pg2MLT1fGitCEqt7uexu6HtNn8gtZaWCOUyfQ+JcLaKE4I5asjEEsYBTYl8dS/ybiYUxFX9jJQDKMQOdKhlDuBrkafhHVUFGXa95j3LjQ0Pp+KxGob/3GrdzDsf3CisTt+LvBQHC04lC3x/uOW32Jxj4+ACJBEPoll8GN0jcwQVCYSnfMfu1eCPL18A6uqDFXhbF/7W/8Q3qH8vkDXXKR8kVMKkjKTFwA8/gfbZMdV8rXP4OM4x/QqTjQyRSNhigT9A3mK46pw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=p5XGwlzQ; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3smmbzwgkdm02tv35t6uz77z4x.v75416dg88v-wxe41bcb.7i4tub.7az@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KP/RIdoI;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=p5XGwlzQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::34a; helo=mail-wm1-x34a.google.com; envelope-from=3r2mbzwgkdmozqs02q3rw44w1u.s421y3ad55s-tub1y898.4f1qr8.47w@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x34a.google.com (mail-wm1-x34a.google.com [IPv6:2a00:1450:4864:20::34a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3smmbzwgkdm02tv35t6uz77z4x.v75416dg88v-wxe41bcb.7i4tub.7az@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x349.google.com (mail-wm1-x349.google.com [IPv6:2a00:1450:4864:20::349])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9TN4xjJz3cYP
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YV9TN5Vwrz3cZM
 	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 05:40:55 +1100 (AEDT)
-Received: by mail-wm1-x34a.google.com with SMTP id 5b1f17b1804b1-436289a570eso19444315e9.0
+Received: by mail-wm1-x349.google.com with SMTP id 5b1f17b1804b1-43619b135bcso12091075e9.1
         for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 10:40:55 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736534448; x=1737139248; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1736534450; x=1737139250; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lMV7uJ7I18OKYw8GMGFQsmzHxbOybRxQHWQLaqO2yfM=;
-        b=KP/RIdoIM8dUnXcvJLao2zTmYMqNS49i4AgpP6lv+aETAzkTsArMIzI/NuMFWOAWYK
-         qgzUMV10zwavNosCNEBUVxAOOp2vNfjlHc6rTkb6Q4/h8sIJb9kOsjtRfybqI+7K90b7
-         Ze0bxWEDkJ7wozpfEcTT3QhEcRH5vB27OZLsm3EAQOMKe1IGYGloc4YoRrSL9QWNWJ4O
-         AK23Unn0G6SbM4n+EEVEYGhFOMdj9dklJhiFWiEiOtvbr+IqoiJjwrSMpoCRjKhMmE7C
-         2NREoXSbhNRTny2twy254uLyX1sGKJKrfNO1DZ6XKrPLOyV80qRWPpuo0yH+rJwXIxqB
-         S6xA==
+        bh=LLeVb0ZgyFkqRQqFmxHZC1txeWSVEDEElINoAb1GRXw=;
+        b=p5XGwlzQvDnJP5B/RYJauJlzYZ6GLtVCP67+CS8AZqIYTEoYTUv3loVQyqpX7xVmgg
+         8GPAmoLuxlqTbIuDt9l3e7ys4N3ubQGbA8Vlshi0PGOzC1ZfKwLPDomgseQvYCh2IqUE
+         jCBEk3F/fRP+rlbOb0HlcLJMHAZsHMPdOePv6qtKq048bpu33q14K/w/spbtWWt97gdt
+         asm0n/pGjS/yELmSxk3DBN1/8MPzrgtvS1lRe9kgmET3pyGyWjehFKbA9SxVlFIiEr6G
+         jjqUD9DRipkYkM7Ze2hu44daKuoq8ZwPhrEYz65YBs+PYBIFVwoSgLp+mVgZwX5wQ8ry
+         dXBA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736534448; x=1737139248;
+        d=1e100.net; s=20230601; t=1736534450; x=1737139250;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lMV7uJ7I18OKYw8GMGFQsmzHxbOybRxQHWQLaqO2yfM=;
-        b=VqD/8h1k9JJdjFPLBnV9IP7ocJVvAKlLNXhd3fKRe0aHhI6fBEeiuEe/815kXLBRfp
-         wKB+VySpcm8jhZrql/ehPpFDWOEIL9BQndEbBqkfrhC3ipQAL1GIjuVVmnDIy2kxnwns
-         dATYYfPgjZ/30Oc08SAiEFEJHTsZuXT1AVPPDGCme2vi8nFffVe82Gwbox7Bm5S+0y7c
-         fDFs/sQ4Dgk7fAnVbN5At3xXB0q4PuGiPEDAH3htLNAy29Phlk63FNKWj8fyPaMVoBTf
-         5En5xKOC3ql7MAg8CtOcfpxo7RC7fe0nU8E3dHYVYBJPF9Wbv91worN3BGXcpz+1EH+d
-         hskA==
-X-Forwarded-Encrypted: i=1; AJvYcCWckaKWDvoxsMZ2Kjq2htr0xWvxD3jF6Bt3VtNPyjG4acae3hMeCuEsjwTXYoDHl9chQuWKAqgcZicuwxc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwN4EA1aCigCadZJgOD4nYFbBUwgaLxJt77fvbhSUINUnvwAMCA
-	yvX+LFCl7JQcUBNfWaWtswwt2ng19J5JCFNrAd2pUHrz1ptB/HqAHF/Fi8B6c4sq8tyFKjVQhd/
-	Mkggln2PMHQ==
-X-Google-Smtp-Source: AGHT+IFp39E9krgcILEXjwgS0eG/yaDAJpZCMdfJgN+pTbMyBclx0Pttf9qnW8OHp1hJ5TpOh65GX4riAPR9zA==
-X-Received: from wmbbd12.prod.google.com ([2002:a05:600c:1f0c:b0:434:fd41:173c])
+        bh=LLeVb0ZgyFkqRQqFmxHZC1txeWSVEDEElINoAb1GRXw=;
+        b=aWMiLh+T3ZizRKDicNoS2CD+Exdd0Eu+A7rrXRBvg8s/8N43CxtMEBG8HRSLv2VCKa
+         VArnrQ9SZeurLRg2Chz2gtQm3A9yBs9LXtY+L6Xjjwe2nNzGjL8qejfAYSMPJFYYrPOG
+         9E3+lQomrzGpTwF7Tdg33kpIGYLJ0sMF/f01cPHiN/8BoB5pfnbCP4o67cGnv+3D7w7J
+         kFJh7CJHu+7x11ygvZktv+pmP94hhV5Lvp5k98s482tyMfo7mAFci+JITe6K6mnpLp4G
+         MrTqp5kNzFECnpefKqMez2HLF98o3Sloz1lWN9dYWqLz5Q7fq72uF5tTolNHmOiAPpWP
+         vasA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaNj0Ytw05+RtjCgnDwS3X5q3g1Z/9yygOC1DAh0jTsJ0HzNNcQLe9vuk9S6c2/XEVrv3ZAOwJ972GSds=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyEB3MiO7rX68wZ73rd5wpR7tddwC1U0eJhiuSH4L69iO0zhvN9
+	E5LZjyJJ1utj/toPrBVhrnYl5ONIp8RCYIlAhh25RBUOo0rImGqEC5V5J9Sfxih/TWRqULkWZf/
+	vxkeaPnrDSw==
+X-Google-Smtp-Source: AGHT+IEYbvktq49LdsReUEtwVFMZ4u0AErNwMdQm9eBuwPrj68sv++2uU8TAXJvwJwbpoJD68/9N90LfrlOyOw==
+X-Received: from wmbay14.prod.google.com ([2002:a05:600c:1e0e:b0:434:a8d7:e59b])
  (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1d03:b0:434:a781:f5d9 with SMTP id 5b1f17b1804b1-436e2697b32mr62972955e9.11.1736534447848;
- Fri, 10 Jan 2025 10:40:47 -0800 (PST)
-Date: Fri, 10 Jan 2025 18:40:27 +0000
+ 2002:a05:600c:1d07:b0:434:9934:575 with SMTP id 5b1f17b1804b1-436e26a8f4dmr128290085e9.16.1736534450259;
+ Fri, 10 Jan 2025 10:40:50 -0800 (PST)
+Date: Fri, 10 Jan 2025 18:40:28 +0000
 In-Reply-To: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -77,8 +77,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
 X-Mailer: b4 0.15-dev
-Message-ID: <20250110-asi-rfc-v2-v2-1-8419288bc805@google.com>
-Subject: [PATCH RFC v2 01/29] mm: asi: Make some utility functions noinstr compatible
+Message-ID: <20250110-asi-rfc-v2-v2-2-8419288bc805@google.com>
+Subject: [PATCH RFC v2 02/29] x86: Create CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
 From: Brendan Jackman <jackmanb@google.com>
 To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
 	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -129,152 +129,271 @@ Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
 	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
 	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
 	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Brendan Jackman <jackmanb@google.com>
+	Brendan Jackman <jackmanb@google.com>, Junaid Shahid <junaids@google.com>
 Content-Type: text/plain; charset="utf-8"
 X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Some existing utility functions would need to be called from a noinstr
-context in the later patches. So mark these as either noinstr or
-__always_inline.
+Currently a nop config. Keeping as a separate commit for easy review of
+the boring bits. Later commits will use and enable this new config.
 
-An earlier version of this by Junaid had a macro that was intended to
-tell the compiler "either inline this function, or call it in the
-noinstr section", which basically boiled down to:
+This config is only added for non-UML x86_64 as other architectures do
+not yet have pending implementations. It also has somewhat artificial
+dependencies on !PARAVIRT and !KASAN which are explained in the Kconfig
+file.
 
- #define inline_or_noinstr noinline __section(".noinstr.text")
-
-Unfortunately Thomas pointed out this will prevent the function from
-being inlined at call sites in .text.
-
-So far I haven't been able[1] to find a formulation that lets us :
-1. avoid calls from .noinstr.text -> .text,
-2. while also letting the compiler freely decide what to inline.
-
-1 is a functional requirement so here I'm just giving up on 2. Existing
-callsites of this code are just forced inline. For the incoming code
-that needs to call it from noinstr, they will be out-of-line calls.
-
-[1] https://lore.kernel.org/lkml/CA+i-1C1z35M8wA_4AwMq7--c1OgjNoLGTkn4+Td5gKg7QQAzWw@mail.gmail.com/
-
-Checkpatch-args: --ignore=COMMIT_LOG_LONG_LINE
+Co-developed-by: Junaid Shahid <junaids@google.com>
+Signed-off-by: Junaid Shahid <junaids@google.com>
 Signed-off-by: Brendan Jackman <jackmanb@google.com>
 ---
- arch/x86/include/asm/processor.h     |  2 +-
- arch/x86/include/asm/special_insns.h |  8 ++++----
- arch/x86/include/asm/tlbflush.h      |  3 +++
- arch/x86/mm/tlb.c                    | 13 +++++++++----
- 4 files changed, 17 insertions(+), 9 deletions(-)
+ arch/alpha/include/asm/Kbuild      |  1 +
+ arch/arc/include/asm/Kbuild        |  1 +
+ arch/arm/include/asm/Kbuild        |  1 +
+ arch/arm64/include/asm/Kbuild      |  1 +
+ arch/csky/include/asm/Kbuild       |  1 +
+ arch/hexagon/include/asm/Kbuild    |  1 +
+ arch/loongarch/include/asm/Kbuild  |  3 +++
+ arch/m68k/include/asm/Kbuild       |  1 +
+ arch/microblaze/include/asm/Kbuild |  1 +
+ arch/mips/include/asm/Kbuild       |  1 +
+ arch/nios2/include/asm/Kbuild      |  1 +
+ arch/openrisc/include/asm/Kbuild   |  1 +
+ arch/parisc/include/asm/Kbuild     |  1 +
+ arch/powerpc/include/asm/Kbuild    |  1 +
+ arch/riscv/include/asm/Kbuild      |  1 +
+ arch/s390/include/asm/Kbuild       |  1 +
+ arch/sh/include/asm/Kbuild         |  1 +
+ arch/sparc/include/asm/Kbuild      |  1 +
+ arch/um/include/asm/Kbuild         |  2 +-
+ arch/x86/Kconfig                   | 14 ++++++++++++++
+ arch/xtensa/include/asm/Kbuild     |  1 +
+ include/asm-generic/asi.h          |  5 +++++
+ 22 files changed, 41 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 4a686f0e5dbf6d906ed38276148b186e920927b3..1a1b7ea5d7d32a47d783d9d62cd2a53672addd6f 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -220,7 +220,7 @@ void print_cpu_msr(struct cpuinfo_x86 *);
- /*
-  * Friendlier CR3 helpers.
-  */
--static inline unsigned long read_cr3_pa(void)
-+static __always_inline unsigned long read_cr3_pa(void)
- {
- 	return __read_cr3() & CR3_ADDR_MASK;
- }
-diff --git a/arch/x86/include/asm/special_insns.h b/arch/x86/include/asm/special_insns.h
-index aec6e2d3aa1d52e5c8f513e188015a45e9eeaeb2..6e103358966f6f1333aa07be97aec5f8af794120 100644
---- a/arch/x86/include/asm/special_insns.h
-+++ b/arch/x86/include/asm/special_insns.h
-@@ -42,14 +42,14 @@ static __always_inline void native_write_cr2(unsigned long val)
- 	asm volatile("mov %0,%%cr2": : "r" (val) : "memory");
- }
+diff --git a/arch/alpha/include/asm/Kbuild b/arch/alpha/include/asm/Kbuild
+index 396caece6d6d99c7a428f439322a0a18452e1a42..ca72ce3baca13a32913ac9e01a8f86ef42180b1c 100644
+--- a/arch/alpha/include/asm/Kbuild
++++ b/arch/alpha/include/asm/Kbuild
+@@ -5,3 +5,4 @@ generic-y += agp.h
+ generic-y += asm-offsets.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += asi.h
+diff --git a/arch/arc/include/asm/Kbuild b/arch/arc/include/asm/Kbuild
+index 49285a3ce2398cc7442bc44172de76367dc33dda..68604480864bbcb58d896da6bdf71591006ab2f6 100644
+--- a/arch/arc/include/asm/Kbuild
++++ b/arch/arc/include/asm/Kbuild
+@@ -6,3 +6,4 @@ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
+ generic-y += user.h
++generic-y += asi.h
+diff --git a/arch/arm/include/asm/Kbuild b/arch/arm/include/asm/Kbuild
+index 03657ff8fbe3d202563184b8902aa181e7474a5e..1e2c3d8dbbd99bdf95dbc6b47c2c78092c68b808 100644
+--- a/arch/arm/include/asm/Kbuild
++++ b/arch/arm/include/asm/Kbuild
+@@ -6,3 +6,4 @@ generic-y += parport.h
  
--static inline unsigned long __native_read_cr3(void)
-+static __always_inline unsigned long __native_read_cr3(void)
- {
- 	unsigned long val;
- 	asm volatile("mov %%cr3,%0\n\t" : "=r" (val) : __FORCE_ORDER);
- 	return val;
- }
+ generated-y += mach-types.h
+ generated-y += unistd-nr.h
++generic-y += asi.h
+diff --git a/arch/arm64/include/asm/Kbuild b/arch/arm64/include/asm/Kbuild
+index 4e350df9a02dd8de387b912740af69035da93e34..15f8aaaa96b80b5657b789ecf3529b1f18d16d80 100644
+--- a/arch/arm64/include/asm/Kbuild
++++ b/arch/arm64/include/asm/Kbuild
+@@ -14,6 +14,7 @@ generic-y += qrwlock.h
+ generic-y += qspinlock.h
+ generic-y += parport.h
+ generic-y += user.h
++generic-y += asi.h
  
--static inline void native_write_cr3(unsigned long val)
-+static __always_inline void native_write_cr3(unsigned long val)
- {
- 	asm volatile("mov %0,%%cr3": : "r" (val) : "memory");
- }
-@@ -153,12 +153,12 @@ static __always_inline void write_cr2(unsigned long x)
-  * Careful!  CR3 contains more than just an address.  You probably want
-  * read_cr3_pa() instead.
-  */
--static inline unsigned long __read_cr3(void)
-+static __always_inline unsigned long __read_cr3(void)
- {
- 	return __native_read_cr3();
- }
+ generated-y += cpucap-defs.h
+ generated-y += sysreg-defs.h
+diff --git a/arch/csky/include/asm/Kbuild b/arch/csky/include/asm/Kbuild
+index 9a9bc65b57a9d73dadc9d597700d7229f8554ddf..4f497118fb172d1f2bf0f9e472479f24227f42f4 100644
+--- a/arch/csky/include/asm/Kbuild
++++ b/arch/csky/include/asm/Kbuild
+@@ -11,3 +11,4 @@ generic-y += qspinlock.h
+ generic-y += parport.h
+ generic-y += user.h
+ generic-y += vmlinux.lds.h
++generic-y += asi.h
+diff --git a/arch/hexagon/include/asm/Kbuild b/arch/hexagon/include/asm/Kbuild
+index 8c1a78c8f5271ebd47f1baad7b85e87220d1bbe8..b26f186bc03c2e135f8d125a4805b95a41513655 100644
+--- a/arch/hexagon/include/asm/Kbuild
++++ b/arch/hexagon/include/asm/Kbuild
+@@ -5,3 +5,4 @@ generic-y += extable.h
+ generic-y += iomap.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += asi.h
+diff --git a/arch/loongarch/include/asm/Kbuild b/arch/loongarch/include/asm/Kbuild
+index 5b5a6c90e6e20771b1074a6262230861cc51bcb4..dd3d0c6891369a9dfa35ccfb8b81c8697c2a3e90 100644
+--- a/arch/loongarch/include/asm/Kbuild
++++ b/arch/loongarch/include/asm/Kbuild
+@@ -11,3 +11,6 @@ generic-y += ioctl.h
+ generic-y += mmzone.h
+ generic-y += statfs.h
+ generic-y += param.h
++generic-y += asi.h
++generic-y += posix_types.h
++generic-y += resource.h
+diff --git a/arch/m68k/include/asm/Kbuild b/arch/m68k/include/asm/Kbuild
+index 0dbf9c5c6faeb30eeb38bea52ab7fade99bbd44a..faf0f135df4ab946ef115f3a2fc363f370fc7491 100644
+--- a/arch/m68k/include/asm/Kbuild
++++ b/arch/m68k/include/asm/Kbuild
+@@ -4,3 +4,4 @@ generic-y += extable.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += spinlock.h
++generic-y += asi.h
+diff --git a/arch/microblaze/include/asm/Kbuild b/arch/microblaze/include/asm/Kbuild
+index a055f5dbe00a31616592c3a848b49bbf9ead5d17..012e4bf83c13497dc296b66cd5e0fd519274306b 100644
+--- a/arch/microblaze/include/asm/Kbuild
++++ b/arch/microblaze/include/asm/Kbuild
+@@ -8,3 +8,4 @@ generic-y += parport.h
+ generic-y += syscalls.h
+ generic-y += tlb.h
+ generic-y += user.h
++generic-y += asi.h
+diff --git a/arch/mips/include/asm/Kbuild b/arch/mips/include/asm/Kbuild
+index 7ba67a0d6c97b2879fb710aca05ae1e2d47c8ce2..3191699298d80735920481eecc64dd2d1dbd2e54 100644
+--- a/arch/mips/include/asm/Kbuild
++++ b/arch/mips/include/asm/Kbuild
+@@ -13,3 +13,4 @@ generic-y += parport.h
+ generic-y += qrwlock.h
+ generic-y += qspinlock.h
+ generic-y += user.h
++generic-y += asi.h
+diff --git a/arch/nios2/include/asm/Kbuild b/arch/nios2/include/asm/Kbuild
+index 0d09829ed14454f2f15a32bf713fa1eb213e85ea..03a5ec74e28b3679a5ef7271606af3c07bb7a198 100644
+--- a/arch/nios2/include/asm/Kbuild
++++ b/arch/nios2/include/asm/Kbuild
+@@ -7,3 +7,4 @@ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += spinlock.h
+ generic-y += user.h
++generic-y += asi.h
+diff --git a/arch/openrisc/include/asm/Kbuild b/arch/openrisc/include/asm/Kbuild
+index cef49d60d74c0f46f01cf46cc35e1e52404185f3..6a81a58bf59e20cafa563c422df4dfa6f9f791ec 100644
+--- a/arch/openrisc/include/asm/Kbuild
++++ b/arch/openrisc/include/asm/Kbuild
+@@ -9,3 +9,4 @@ generic-y += spinlock.h
+ generic-y += qrwlock_types.h
+ generic-y += qrwlock.h
+ generic-y += user.h
++generic-y += asi.h
+diff --git a/arch/parisc/include/asm/Kbuild b/arch/parisc/include/asm/Kbuild
+index 4fb596d94c8932dd1e12a765a21af5b5099fbafd..3cbb4eb14712c7bd6c248dd26ab91cc41da01825 100644
+--- a/arch/parisc/include/asm/Kbuild
++++ b/arch/parisc/include/asm/Kbuild
+@@ -5,3 +5,4 @@ generic-y += agp.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += user.h
++generic-y += asi.h
+diff --git a/arch/powerpc/include/asm/Kbuild b/arch/powerpc/include/asm/Kbuild
+index e5fdc336c9b22527f824ed30d06b5e8c0fa8a1ef..e86cc027f35564c7b301c283043bde0e5d2d3b6a 100644
+--- a/arch/powerpc/include/asm/Kbuild
++++ b/arch/powerpc/include/asm/Kbuild
+@@ -7,3 +7,4 @@ generic-y += kvm_types.h
+ generic-y += mcs_spinlock.h
+ generic-y += qrwlock.h
+ generic-y += early_ioremap.h
++generic-y += asi.h
+diff --git a/arch/riscv/include/asm/Kbuild b/arch/riscv/include/asm/Kbuild
+index 1461af12da6e2bbbff6cf737a7babf33bd298cdd..82060ed50d9beb1ea72d3570ad236d1e08d9d8c6 100644
+--- a/arch/riscv/include/asm/Kbuild
++++ b/arch/riscv/include/asm/Kbuild
+@@ -13,3 +13,4 @@ generic-y += qrwlock.h
+ generic-y += qrwlock_types.h
+ generic-y += user.h
+ generic-y += vmlinux.lds.h
++generic-y += asi.h
+diff --git a/arch/s390/include/asm/Kbuild b/arch/s390/include/asm/Kbuild
+index 297bf7157968907d6e4c4ff8b65deeef02dbd630..e15c2a138392b57b186633738ddda913474aa8c4 100644
+--- a/arch/s390/include/asm/Kbuild
++++ b/arch/s390/include/asm/Kbuild
+@@ -8,3 +8,4 @@ generic-y += asm-offsets.h
+ generic-y += kvm_types.h
+ generic-y += mcs_spinlock.h
+ generic-y += mmzone.h
++generic-y += asi.h
+diff --git a/arch/sh/include/asm/Kbuild b/arch/sh/include/asm/Kbuild
+index fc44d9c88b41915a7021042eb8b462517cfdbd2c..ea19e4515828552f436d67f764607dd5d15cb19f 100644
+--- a/arch/sh/include/asm/Kbuild
++++ b/arch/sh/include/asm/Kbuild
+@@ -3,3 +3,4 @@ generated-y += syscall_table.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
+ generic-y += parport.h
++generic-y += asi.h
+diff --git a/arch/sparc/include/asm/Kbuild b/arch/sparc/include/asm/Kbuild
+index 43b0ae4c2c2112d4d4d3cb3c60e787b175172dea..cb9062c9be17fe276cc92d2ac99d8b165f6297bf 100644
+--- a/arch/sparc/include/asm/Kbuild
++++ b/arch/sparc/include/asm/Kbuild
+@@ -4,3 +4,4 @@ generated-y += syscall_table_64.h
+ generic-y += agp.h
+ generic-y += kvm_para.h
+ generic-y += mcs_spinlock.h
++generic-y += asi.h
+diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
+index 18f902da8e99769da857d34af43141ea97a0ca63..6054972f1babdaebae64040b05ab48893915cb04 100644
+--- a/arch/um/include/asm/Kbuild
++++ b/arch/um/include/asm/Kbuild
+@@ -27,4 +27,4 @@ generic-y += trace_clock.h
+ generic-y += kprobes.h
+ generic-y += mm_hooks.h
+ generic-y += vga.h
+-generic-y += video.h
++generic-y += asi.h
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 7b9a7e8f39acc8e9aeb7d4213e87d71047865f5c..5a50582eb210e9d1309856a737d32b76fa1bfc85 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2519,6 +2519,20 @@ config MITIGATION_PAGE_TABLE_ISOLATION
  
--static inline void write_cr3(unsigned long x)
-+static __always_inline void write_cr3(unsigned long x)
- {
- 	native_write_cr3(x);
- }
-diff --git a/arch/x86/include/asm/tlbflush.h b/arch/x86/include/asm/tlbflush.h
-index 69e79fff41b800a0a138bcbf548dde9d72993105..c884174a44e119a3c027c44ada6c5cdba14d1282 100644
---- a/arch/x86/include/asm/tlbflush.h
-+++ b/arch/x86/include/asm/tlbflush.h
-@@ -423,4 +423,7 @@ static inline void __native_tlb_flush_global(unsigned long cr4)
- 	native_write_cr4(cr4 ^ X86_CR4_PGE);
- 	native_write_cr4(cr4);
- }
+ 	  See Documentation/arch/x86/pti.rst for more details.
+ 
++config MITIGATION_ADDRESS_SPACE_ISOLATION
++	bool "Allow code to run with a reduced kernel address space"
++	default n
++	depends on X86_64 && !PARAVIRT && !UML
++	help
++	  This feature provides the ability to run some kernel code
++	  with a reduced kernel address space. This can be used to
++	  mitigate some speculative execution attacks.
 +
-+unsigned long build_cr3_noinstr(pgd_t *pgd, u16 asid, unsigned long lam);
++	  The !PARAVIRT dependency is only because of lack of testing; in theory
++	  the code is written to work under paravirtualization. In practice
++	  there are likely to be unhandled cases, in particular concerning TLB
++	  flushes.
 +
- #endif /* _ASM_X86_TLBFLUSH_H */
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 86593d1b787d8a5b9fa4bd492356898ec8870938..f0428e5e1f1947903ee87c4c6444844ee11b45c3 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -108,7 +108,7 @@
- /*
-  * Given @asid, compute kPCID
-  */
--static inline u16 kern_pcid(u16 asid)
-+static __always_inline u16 kern_pcid(u16 asid)
- {
- 	VM_WARN_ON_ONCE(asid > MAX_ASID_AVAILABLE);
- 
-@@ -153,9 +153,9 @@ static inline u16 user_pcid(u16 asid)
- 	return ret;
- }
- 
--static inline unsigned long build_cr3(pgd_t *pgd, u16 asid, unsigned long lam)
-+static __always_inline unsigned long build_cr3(pgd_t *pgd, u16 asid, unsigned long lam)
- {
--	unsigned long cr3 = __sme_pa(pgd) | lam;
-+	unsigned long cr3 = __sme_pa_nodebug(pgd) | lam;
- 
- 	if (static_cpu_has(X86_FEATURE_PCID)) {
- 		cr3 |= kern_pcid(asid);
-@@ -166,6 +166,11 @@ static inline unsigned long build_cr3(pgd_t *pgd, u16 asid, unsigned long lam)
- 	return cr3;
- }
- 
-+noinstr unsigned long build_cr3_noinstr(pgd_t *pgd, u16 asid, unsigned long lam)
-+{
-+	return build_cr3(pgd, asid, lam);
-+}
+ config MITIGATION_RETPOLINE
+ 	bool "Avoid speculative indirect branches in kernel"
+ 	select OBJTOOL if HAVE_OBJTOOL
+diff --git a/arch/xtensa/include/asm/Kbuild b/arch/xtensa/include/asm/Kbuild
+index fa07c686cbcc2153776a478ac4093846f01eddab..07cea6902f98053be244d026ed594fe7246755a6 100644
+--- a/arch/xtensa/include/asm/Kbuild
++++ b/arch/xtensa/include/asm/Kbuild
+@@ -8,3 +8,4 @@ generic-y += parport.h
+ generic-y += qrwlock.h
+ generic-y += qspinlock.h
+ generic-y += user.h
++generic-y += asi.h
+diff --git a/include/asm-generic/asi.h b/include/asm-generic/asi.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..c4d9a5ff860a96428422a15000c622aeecc2d664
+--- /dev/null
++++ b/include/asm-generic/asi.h
+@@ -0,0 +1,5 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_GENERIC_ASI_H
++#define __ASM_GENERIC_ASI_H
 +
- static inline unsigned long build_cr3_noflush(pgd_t *pgd, u16 asid,
- 					      unsigned long lam)
- {
-@@ -1084,7 +1089,7 @@ void flush_tlb_kernel_range(unsigned long start, unsigned long end)
-  * It's intended to be used for code like KVM that sneakily changes CR3
-  * and needs to restore it.  It needs to be used very carefully.
-  */
--unsigned long __get_current_cr3_fast(void)
-+noinstr unsigned long __get_current_cr3_fast(void)
- {
- 	unsigned long cr3 =
- 		build_cr3(this_cpu_read(cpu_tlbstate.loaded_mm)->pgd,
++#endif
 
 -- 
 2.47.1.613.gc27f4b7a9f-goog
