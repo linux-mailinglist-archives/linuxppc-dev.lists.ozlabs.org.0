@@ -1,109 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-4971-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4969-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A6B0A08E45
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 11:44:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B92C4A08C9F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 10:46:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTyvC3JBpz3c9W;
-	Fri, 10 Jan 2025 21:44:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTxd11my8z3cTv;
+	Fri, 10 Jan 2025 20:46:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736502302;
-	cv=none; b=hU/VttKU9+ipd2453ke/QmBJ7Y5zukWybcW+525wofahiE70zBThRVoblaGzXqECg1HpLS1cuk4qCdaPhNuDQqxpgoA82bOD1jcSTdZjFUfAtKleq62PQPIKfIdmuoPAebrgALXMAvhPhTfRDblBXHhh1UgGSGepGaH4X3QwHEnpsJpRTB/5ZEgkQq6aBRK6IVmCg2lnN4+c8gInf7JbQxio436Q2x5E4S83MGu7rO9ifGzdFeBT52sb/PWuf+VliGyfUB9lOkBH2n8vX6XldESx20UeVfJGVkaHsQUhGTGuQmDbt6yMhtTbD6kA7zpl2Ypzfo/iwfk9F5O+5xiRLQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736502405;
+	cv=none; b=DjQzjKsdNmTle9gNT4I9XiGGI0l5xX8BB/NF2iatVDL2xeljGc8wrts1CQnyDcMWutMJfqr/lpmy32m0FtaoPlhU+I/FtXRFwS0dFohX5RqRwNkcVLEKOIZwj2jP5YAmsRpLvL6X5Mw+3oF/9YKui5Ww6ob6dfrtjfvML83iCOoRKmI426Y7hkvwW/N2n9kPjuiYwKn6xRqgK6EjyO8q0bsrpkWQz5ofqnrSfzmYc0SRsZ9xkxI1cmdSyc8Obh1ff+rCFVmlw0O9IFTCr7gTX+6ZaZC51YJTtMffDh9kJFGND23T8Wb6O4f8OdSWg8vM80DIkoqaE9N/zhgCIw24yA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736502302; c=relaxed/relaxed;
-	bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=jky95A4nlo8IFFmzIBi+J38jdj5fFo9qcTfMCJSBvc00SHe1HA9Oxjn7ve4oBWJo9Yrkpmv5E7Svzt4lKmt2TxRZZQj3/BUkLNUmUjFqXBz+5D5yZDKbEIjS9qK9wa7r4MaGwk+aai+KK5H0yAKUmTZiqDOTHnRyiwI1TGd5C7LF0MOXifokplr/eoZ5ofk5TcyxwuiVVihfhh1OdpMlkPWZHcIUC4NMJmvWMJ2S+Yt9/dVM1Ky9CxhxVHYS+V7p2cYEKvpS7wEo28a163+/xoViyG+io1/e14RKGZZ0LCV69lIZPdo3Ds043F1XKh/cmN6832f91IKSNZcOhoEHbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=aalbersh@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1736502405; c=relaxed/relaxed;
+	bh=4JWTjYaowA2AgNonAIBe8lJAGtBhfrsYvawa/QHC8q4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=PfBSGtAnKxqGi0+IANJ7B2zdYvbh8Scy3KLyyJNq97slxHDJCp5TZZtJ2RV0fZnK3M/W7lo8oa9LqyQhXmHxRqugva2y/7/2S8YDUMDpTpGbP2xqNZMD5mYMObLc4Ccx3mKpJF6qOovbwXf0JqfgFdWMSlpqJ1cJU/zOYld+40dzcFwNlyzEOC+gpuH1BVH/8wt7oTy7j/9ry5LpG6ChdziyI6kpKUIohuPLaVPWYWK1hhHRqM/nAT6SCZX2bJVOvmTXh0L+vv3/hQtEg4IDVY17X4YaxMJVPsIYkxb2rRAeTG22O1o+lj6GcUOMF93zOdjjw//jcWWD1aOZwMv9Ag==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KvAUE7Ys; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=KvAUE7Ys;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=aalbersh@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTxb05t4tz3cBk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 20:44:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736502296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
-	b=OpFonKHK4rsGIFf7HSuUlaFhBRRdsLlK1R0arRX8Qgj5U/1r5D9F44B4TYsKgwx49xHb+n
-	5vBk4tEV8CbMFGi4NRmAKUmHTkpEW8Vd0dtx1wt9VRXgkCiiKSc63/ZnsFhVqgMtiikhQ6
-	B6aTnOhYbqo/Q402brHq8KN6vSuJqMs=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736502296;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
-	b=OpFonKHK4rsGIFf7HSuUlaFhBRRdsLlK1R0arRX8Qgj5U/1r5D9F44B4TYsKgwx49xHb+n
-	5vBk4tEV8CbMFGi4NRmAKUmHTkpEW8Vd0dtx1wt9VRXgkCiiKSc63/ZnsFhVqgMtiikhQ6
-	B6aTnOhYbqo/Q402brHq8KN6vSuJqMs=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-613-Ko5u8BBNMpaBn7XAPuQIAg-1; Fri, 10 Jan 2025 04:44:54 -0500
-X-MC-Unique: Ko5u8BBNMpaBn7XAPuQIAg-1
-X-Mimecast-MFC-AGG-ID: Ko5u8BBNMpaBn7XAPuQIAg
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-385dcae001fso783582f8f.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 01:44:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736502293; x=1737107093;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
-        b=GoggFeifY3vVHJYMb6AwILk576h2Q+NIy0SryYSTTAyayyTHJiZ15G/VCrsdakb7eC
-         vfuwP3ClDQc1+fYvEM5OkoS7WF9yUWeXASoiLBDnqQPWjDWgOIi+w3dTSIf039zg74g3
-         IQ2IfXOF1lVNVAYZHDVf5ZtC9i5qwiIjlxAu6ewFKplH39wY17prVXDqXwvXMqBu4iOs
-         PbmRdO5Sr69+nEcFvhw3dsOAyGukbgsVqjm3v8gseR5ek0vXw6oqiye7AjKPriBn3RwT
-         qJDz+boTemI0gqYOYoecI6N0miVsZ4tNPnPG7gcHulDis3+h4o9bqQwGTcrtT/g0f2d0
-         NM9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUSu79Y//bFBgvLEfregWZTexpcbcO4k4QrgOoccCneNu8cPMv/ctzL1TknN2zb+FI/wc0ihrNR5kdxrKc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxmGqQSoqMZgdwmMzSRCGKCjGJ9K+OknuNQKcgMEEdSaN8QRU68
-	ob89TXlyJjdB1rVIMK5Nya+CEMYH9UH1ZX6Nxd3w6LFCrDUhPUCGzE6YyfETXNoWpJYfb4wntKq
-	ISMCotruhspeuZMeHMX+sosU3IjlMUTIk5Ei5UYofrrvy17BJiDnSxWjtZ+LD1A==
-X-Gm-Gg: ASbGnct9SnXyiE1+lRzNArbvaO8iw/sDgpnMCUzwSElq2gCfwM/EzWJk3eIfpuY/Sya
-	ELt8BoJ+/KdNCf00zgLinpMJF7EhpoCn+hjtjtEfdUQ7maOCx6pAQLR+YRQwXEHa3wiwjWCHxg5
-	l5qYh1nNyORxfGj9fbz+HVVz+T9dpXxb3HWkj0NIegxzEA4/rtOQYMYsiRf3/owv4RTCQyjEOPr
-	Hd4duSeeeThWkrVWfkWv7/011hXJnd/uBAaxVCWme4KTShtlTC2UB4mDQThp3kPUZfHVmjhxG/e
-X-Received: by 2002:a05:6000:709:b0:386:3803:bbd5 with SMTP id ffacd0b85a97d-38a8733a1f9mr9910081f8f.45.1736502293453;
-        Fri, 10 Jan 2025 01:44:53 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFWMxVaNXeUTe+wjdV2pCbQXCctILb5vVg9f3+psJOjGS23Sr767uuQBsbyCemBlGukLyZjgw==
-X-Received: by 2002:a05:6000:709:b0:386:3803:bbd5 with SMTP id ffacd0b85a97d-38a8733a1f9mr9910059f8f.45.1736502293124;
-        Fri, 10 Jan 2025 01:44:53 -0800 (PST)
-Received: from thinky (ip-217-030-074-039.aim-net.cz. [217.30.74.39])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e383965sm4140444f8f.31.2025.01.10.01.44.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Jan 2025 01:44:52 -0800 (PST)
-Date: Fri, 10 Jan 2025 10:44:51 +0100
-From: Andrey Albershteyn <aalbersh@redhat.com>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
-	Michal Simek <monstr@monstr.eu>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	chris@zankel.net, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>
-Subject: Re: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
-Message-ID: <4ad35w4mrxb4likkqijkivrkom5rpfdja6klb5uoufdjdyjioq@ksxubq4xb7ei>
-References: <20250109174540.893098-1-aalbersh@kernel.org>
- <e7deabf6-8bba-45d7-a0f4-395bc8e5aabe@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTxd01MxZz3cBk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 20:46:44 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509NwaDt001006;
+	Fri, 10 Jan 2025 09:46:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=4JWTjYaowA2AgNonAIBe8lJAGtBhfrsYvawa/QHC8
+	q4=; b=KvAUE7YsQCPNclkljIzfetJyNBX1Qg2ypu8LABVpSCr1gbycX2tC5r4b+
+	/KCGNoRGilTzVV1GwTgS14YgTWobre0jHlJwEO35nnB/WBN0//HLpmfbBvuanSyf
+	IgceTDdlCibWugAhZNmnsL3znvQcKzVkLfK4UDtGU0tDOHULazNPCxdmTbZknpOI
+	tEnwTOzF/6R1EwDhN8iqfWWPWMcrkNKfOl/EzguL5LkG8m2uGoPpq9Z/b75Ih7oh
+	u1khM5WP2QRvfY56Cer3DaNA9BU17KCxHYLQZ9G1ynXk3fAvUYxtOtr3SSsV1WS0
+	vmZQ+xvOSvOC1Zq1sSByxEoztH/7g==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442rkhsw9t-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jan 2025 09:46:36 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50A9kapV002070;
+	Fri, 10 Jan 2025 09:46:36 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442rkhsw9p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jan 2025 09:46:36 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50A8iUB4008851;
+	Fri, 10 Jan 2025 09:46:35 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfq09qc7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 10 Jan 2025 09:46:35 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50A9kV1E52363666
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 10 Jan 2025 09:46:31 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 432882004B;
+	Fri, 10 Jan 2025 09:46:30 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AFD0820040;
+	Fri, 10 Jan 2025 09:46:23 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.241.17])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 10 Jan 2025 09:46:23 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org, ravi.bangoria@amd.com
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
+        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com,
+        Tejas Manhas <Tejas.Manhas1@ibm.com>
+Subject: [PATCH] tools/perf/tests: Update event_groups test to use instructions as one of the sibling event for hw type
+Date: Fri, 10 Jan 2025 15:16:20 +0530
+Message-Id: <20250110094620.94976-1-atrajeev@linux.vnet.ibm.com>
+X-Mailer: git-send-email 2.35.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -116,46 +92,119 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <e7deabf6-8bba-45d7-a0f4-395bc8e5aabe@app.fastmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 6FQw9htdZ9i-uFu1tK9omgQHn-U_zZeGYLCMIIPz87M_1736502293
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: hEbtGVwie3N2lI0JA3J0jDAvhZ0lc9XZ
+X-Proofpoint-GUID: ESjg9RtrWE0iJLPkB0G2M0If43vudTMQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ mlxscore=0 suspectscore=0 phishscore=0 impostorscore=0 adultscore=0
+ malwarescore=0 priorityscore=1501 mlxlogscore=999 lowpriorityscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501100078
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2025-01-09 20:59:45, Arnd Bergmann wrote:
-> On Thu, Jan 9, 2025, at 18:45, Andrey Albershteyn wrote:
-> >
-> >  arch/alpha/kernel/syscalls/syscall.tbl      |   2 +
-> >  arch/m68k/kernel/syscalls/syscall.tbl       |   2 +
-> >  arch/microblaze/kernel/syscalls/syscall.tbl |   2 +
-> >  arch/parisc/kernel/syscalls/syscall.tbl     |   2 +
-> >  arch/powerpc/kernel/syscalls/syscall.tbl    |   2 +
-> >  arch/s390/kernel/syscalls/syscall.tbl       |   2 +
-> >  arch/sh/kernel/syscalls/syscall.tbl         |   2 +
-> >  arch/sparc/kernel/syscalls/syscall.tbl      |   2 +
-> >  arch/x86/entry/syscalls/syscall_32.tbl      |   2 +
-> >  arch/x86/entry/syscalls/syscall_64.tbl      |   2 +
-> >  arch/xtensa/kernel/syscalls/syscall.tbl     |   2 +
-> 
-> You seem to be missing a couple of files here: 
-> 
-> arch/arm/tools/syscall.tbl
-> arch/arm64/tools/syscall_32.tbl
-> arch/mips/kernel/syscalls/syscall_n32.tbl
-> arch/mips/kernel/syscalls/syscall_n64.tbl
-> arch/mips/kernel/syscalls/syscall_o32.tbl
-> 
->        Arnd
-> 
+In some of the powerpc platforms, event group testcase fails as below:
 
-Thanks! Added
+   # perf test -v 'Event groups'
+   69: Event groups                                                    :
+   --- start ---
+   test child forked, pid 9765
+   Using CPUID 0x00820200
+   Using hv_24x7 for uncore pmu event
+   0x0 0x0, 0x0 0x0, 0x0 0x0: Fail
+   0x0 0x0, 0x0 0x0, 0x1 0x3: Pass
 
+The testcase creates various combinations of hw, sw and uncore
+PMU events and verify group creation succeeds or fails as expected.
+This tests one of the limitation in perf where it doesn't allow
+creating a group of events from different hw PMUs.
+
+The testcase starts a leader event and opens two sibling events.
+The combination the fails is three hardware events in a group.
+"0x0 0x0, 0x0 0x0, 0x0 0x0: Fail"
+
+Type zero and config zero which translates to PERF_TYPE_HARDWARE
+and PERF_COUNT_HW_CPU_CYCLE. There is event constraint in powerpc
+that events using same counter cannot be programmed in a group.
+Here there is one alternative event for cycles, hence one leader
+and only one sibling event can go in as a group.
+
+if all three events (leader and two sibling events), are hardware
+events, use instructions as one of the sibling event. Since
+PERF_COUNT_HW_INSTRUCTIONS is a generic hardware event and present
+in all architectures, use this as third event.
+
+Reported-by: Tejas Manhas <Tejas.Manhas1@ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+---
+ tools/perf/tests/event_groups.c | 31 ++++++++++++++++++++++++++-----
+ 1 file changed, 26 insertions(+), 5 deletions(-)
+
+diff --git a/tools/perf/tests/event_groups.c b/tools/perf/tests/event_groups.c
+index ccd9d8b2903f..c119ff114948 100644
+--- a/tools/perf/tests/event_groups.c
++++ b/tools/perf/tests/event_groups.c
+@@ -10,9 +10,10 @@
+ #include "header.h"
+ #include "../perf-sys.h"
+ 
+-/* hw: cycles, sw: context-switch, uncore: [arch dependent] */
++/* hw: cycles,instructions sw: context-switch, uncore: [arch dependent] */
+ static int types[] = {0, 1, -1};
+ static unsigned long configs[] = {0, 3, 0};
++static unsigned long configs_hw[] = {1};
+ 
+ #define NR_UNCORE_PMUS 5
+ 
+@@ -93,7 +94,18 @@ static int run_test(int i, int j, int k)
+ 		return erroneous ? 0 : -1;
+ 	}
+ 
+-	sibling_fd2 = event_open(types[k], configs[k], group_fd);
++	/*
++	 * if all three events (leader and two sibling events)
++	 * are hardware events, use instructions as one of the
++	 * sibling event. There is event constraint in powerpc that
++	 * events using same counter cannot be programmed in a group.
++	 * Since PERF_COUNT_HW_INSTRUCTIONS is a generic hardware
++	 * event and present in all platforms, lets use that.
++	 */
++	if (!i && !j && !k)
++		sibling_fd2 = event_open(types[k], configs_hw[k], group_fd);
++	else
++		sibling_fd2 = event_open(types[k], configs[k], group_fd);
+ 	if (sibling_fd2 == -1) {
+ 		close(sibling_fd1);
+ 		close(group_fd);
+@@ -124,9 +136,18 @@ static int test__event_groups(struct test_suite *text __maybe_unused, int subtes
+ 				if (r)
+ 					ret = TEST_FAIL;
+ 
+-				pr_debug("0x%x 0x%lx, 0x%x 0x%lx, 0x%x 0x%lx: %s\n",
+-					 types[i], configs[i], types[j], configs[j],
+-					 types[k], configs[k], r ? "Fail" : "Pass");
++				/*
++				 * For all three events as HW events, second sibling
++				 * event is picked from configs_hw. So print accordingly
++				 */
++				if (!i && !j && !k)
++					pr_debug("0x%x 0x%lx, 0x%x 0x%lx, 0x%x 0x%lx: %s\n",
++						 types[i], configs[i], types[j], configs[j],
++						 types[k], configs_hw[k], r ? "Fail" : "Pass");
++				else
++					pr_debug("0x%x 0x%lx, 0x%x 0x%lx, 0x%x 0x%lx: %s\n",
++						 types[i], configs[i], types[j], configs[j],
++						 types[k], configs[k], r ? "Fail" : "Pass");
+ 			}
+ 		}
+ 	}
 -- 
-- Andrey
+2.43.5
 
 
