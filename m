@@ -1,151 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-4962-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4963-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25973A08911
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 08:38:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA49DA08937
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 08:43:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTtmy2VNvz3cVR;
-	Fri, 10 Jan 2025 18:38:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTttM3VnWz3cVS;
+	Fri, 10 Jan 2025 18:43:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736494706;
-	cv=none; b=ZbAf0KDMgcqIsqnTM3yjmXICK7E5zfA2EDfd+LGKdVaukHAhytrqS1nTarXhWoy/uMWwr+iE4kH0NcquW81r9aQ68Em3rL23sbhuwxqMDrd6L6YgkIOXw/IpY6fgdVeNvBzWV0Y/mGLMyOveuB4lAV+Kj6909JwSjZ3BN2BonqkgDf6jLUQY9ZgGcZDNr5cGSdsUTLwgT86ViyYU4d/oXb9p2XXp5e4FC7oSeEXqmPMQUolPwHxK0QAZBv/KU7rTZIw3VQlHmoO5o8AOzGJ8zrZG1bD8Yfn6wded2l54On0xetJKi6f0ePjC3DI3RnJ8tWVAs7NoFTS9daB9Pxl7IQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736494987;
+	cv=none; b=d7jVI2MxjJjVuxdrivTEHPEqd7C5/MtoAdLQMWx5nqjqzC/ZyEYUAab8EgNsHAR2wX1pRWMLwuATWxt31C4TGrfP5x7r8ikfC3V+KKxTZmesWyDjhDYajGJS6BqfwaVey6yD1lG998i7pb5mrLqDhRqT9LAgKiTbUmpwrsh5j3ZusZCK2SyBU0EpaRhhSpRUysQtnCSGH/d+FwFL8C/sbuklPsjeVNzoiXhIuF53ec64C2yTPqa7cYmi+rurdO69XfIM3HntihZEwQl/qJirOAGRa/NmXb3wd2mkQyQB7dDuYSxYwtVZSReTdRorek6WpdeIrVN18XICL5ZCeyG2LQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736494706; c=relaxed/relaxed;
-	bh=2WLKmmEPE7uT96J0bnuWzAWEZ+Ks9Ue/uzhm9byypE8=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DYk7so6KX9YVv/EilJ6NeRUHG25np+C3Kcn2Dh7+7jazbF1tP5aRb/s/kY5P/PEy5C8tYy4ovbLPlhY0T/AUpTZ7dV7VW81Q3uS7/ZWaK/ot9advjeUqbibEZS1Ove/1h43owQjDwub4MqffioIea6iKBhsK4UbPOaMY9LMI9hYs66Tj09h3+WPAeRek4G2cNY75fjtH1YQQJL+PM/6KgfM0o5vcHu49qHlxKf2gUjVR0iV9fozk0zHe1TR1qUQl+tizLqM/hMKRdh05Z8YLIGMoU01FtM9x7IVXSKdGWpySb6aP7H5iTTjGzzhO1Rd02E6J1h7YBWpINEpWYn6Ykw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oRQpF/U/; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=svens@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1736494987; c=relaxed/relaxed;
+	bh=7Pg9Hf0VD6xs/EweUM7V5NCNy6H2ch3ICqCOENEVxWo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=AZyIm6E54HvECpnH5HI80r+fNuzHEhLC1OclHBHENDM+ok2vT1jSQTI7NxMzxc6g02CugQRyLlVonTH7geDPVg6wcqR1aWP+qtbdQPoRnfAcZoG2cBfpv4hDg2SzzrNDJ4VK48R6xkWZlQPTl/RDSW6gUuOv1bXfypPon0pFtL9ZqyYB1bBAPNZqAqZJnBJnnlo2JuWxIleastl52Q7uPZUyyaZDnzcibJmodY0K6+zhhN3+hni+OBYXVzBk471Cbfwr5uulTibbr8z5egEUv4NHewuLHVKK8BvFAxuPu4U2s7Pmo3kAHsUnjCqRP/jmwl5saL3ot+qyGkwkYK7Rpg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CJsgvR/+; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oRQpF/U/;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CJsgvR/+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=svens@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTtmw65zrz3cVG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 18:38:24 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509Nx3H2001639;
-	Fri, 10 Jan 2025 07:37:54 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTttL27Ftz2xgX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 18:43:06 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50A1xlhe009581;
+	Fri, 10 Jan 2025 07:42:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=2WLKmmEPE7uT96J0bnuWzAWEZ+Ks9U
-	e/uzhm9byypE8=; b=oRQpF/U/6grcr4Snq1iRk/I9GYPWsewmz147QsJg3tlJpp
-	Sm/UeyETvgjJAENQaWXaSd8cfqXr/0vuRhl8N3wtL6grgFwp/aIijZOMmhsN47FV
-	f5jNMRsdgk7yT4y+tHRFOoWJtkEWYjhp56XaA02mxcT8qNb30IwNF63MXXQkZAEl
-	UIlk8MTqRCqzy91KOcrwItqlnQdxp2B2h/5xAgUKTct76fC0NSNLcVTVxD2ZYQ7X
-	9rxhSluh+DwsIN5cVsDEsi/dxgg4ADMCRoXyhv5xzciWSwH6XZkvVHoOuULqD2BA
-	tjfE3Xo8v5ux7lwgyBH9IJOGKqLEpFGzYgoJwZfA==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=7Pg9Hf
+	0VD6xs/EweUM7V5NCNy6H2ch3ICqCOENEVxWo=; b=CJsgvR/+ywrBKwxSAH45qr
+	4r/qKrI6mbUA4uTAiTTsBWmb2HkSXx9hQLAGV8I5zXJnz9DVKhFa/QbSsN3OuLmR
+	Z5CrfjotiFbXKvDZR2Svw93k52FXVLf3sfvZpUF0U7KHgHvo31rnJoZDV1Pgaytk
+	/0EY/5uLmil/oHtjLgSM4YJ9tyGs+uGRo8JdLbY3MOAFDfh6EZGnIpQyDPHLl5Sg
+	3kHepFUonyu8miSePqQI/TMIDfoGaioH21gfriZzriXalzOTq++Pcc5dI0KlRmaf
+	ayy0VbMfp/u9QPeWJIhe6TtoNiVQPmhIJ/mC2AF55u0aoswpqX8x3Sp8eQH+MayA
+	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442rkhsd0u-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442fx5bp2u-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 07:37:54 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50A7YWLB014523;
-	Fri, 10 Jan 2025 07:37:53 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442rkhsd0p-1
+	Fri, 10 Jan 2025 07:42:59 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50A7gw4Q007704;
+	Fri, 10 Jan 2025 07:42:58 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442fx5bp2s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 07:37:53 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50A5a76b015805;
-	Fri, 10 Jan 2025 07:37:51 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43ygtm930f-1
+	Fri, 10 Jan 2025 07:42:58 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50A6WlY5027963;
+	Fri, 10 Jan 2025 07:42:57 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 43yhhkgxck-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 07:37:51 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50A7bmZl54264154
+	Fri, 10 Jan 2025 07:42:57 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50A7gsJk17039636
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2025 07:37:48 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DCF1520049;
-	Fri, 10 Jan 2025 07:37:47 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2113920040;
-	Fri, 10 Jan 2025 07:37:47 +0000 (GMT)
-Received: from tuxmaker.linux.ibm.com (unknown [9.152.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 10 Jan 2025 07:37:47 +0000 (GMT)
-From: Sven Schnelle <svens@linux.ibm.com>
-To: "Dmitry V. Levin" <ldv@strace.io>
-Cc: Oleg Nesterov <oleg@redhat.com>, Eugene Syromyatnikov
- <evgsyr@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>, Renzo Davoli
- <renzo@cs.unibo.it>,
-        Davide Berardi <berardi.dav@gmail.com>, strace-devel@lists.strace.io,
-        Vineet Gupta <vgupta@kernel.org>,
-        Russell
- King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Brian Cain <bcain@quicinc.com>,
-        Huacai
- Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>,
-        Geert
- Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dinh Nguyen
- <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-        Stefan
- Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne
- <shorne@gmail.com>,
-        "James E.J. Bottomley"
- <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan
- <maddy@linux.ibm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer
- Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Heiko
- Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger
- <borntraeger@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Richard Weinberger
- <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner
- <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov
- <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel
- <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann
- <arnd@arndb.de>,
-        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH 3/6] syscall.h: introduce syscall_set_nr()
-In-Reply-To: <20250107230438.GC30633@strace.io> (Dmitry V. Levin's message of
-	"Wed, 8 Jan 2025 01:04:38 +0200")
-References: <20250107230438.GC30633@strace.io>
-Date: Fri, 10 Jan 2025 08:37:46 +0100
-Message-ID: <yt9dzfjz6rw5.fsf@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	Fri, 10 Jan 2025 07:42:54 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3629A20040;
+	Fri, 10 Jan 2025 07:42:54 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0DB502004B;
+	Fri, 10 Jan 2025 07:42:49 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.241.17])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 10 Jan 2025 07:42:48 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -157,83 +84,131 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH] tools/perf: Fix segfault during perf record --off-cpu
+ when debuginfo is not enabled
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <Z3xKTKkVSf7tWCtD@google.com>
+Date: Fri, 10 Jan 2025 13:12:34 +0530
+Cc: jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
+        hbathini@linux.ibm.com, linux-kernel@vger.kernel.org,
+        linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <F2E04F8D-AC28-491A-ADC1-8C90DFC2CB9D@linux.vnet.ibm.com>
+References: <20241223135813.8175-1-atrajeev@linux.vnet.ibm.com>
+ <409D0233-93FF-40D6-BC2E-B7625E4E1B97@linux.vnet.ibm.com>
+ <Z3xKTKkVSf7tWCtD@google.com>
+To: Namhyung Kim <namhyung@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: oQL9q4Cm2OlRS0avVKS0GOik26TaXbjd
-X-Proofpoint-GUID: v26jL7-Nw4XZK-M8Nskiprqug0sq7Zhb
+X-Proofpoint-GUID: i0emdf_TQ_gI4G83-7HuaLFU-RTj8OWB
+X-Proofpoint-ORIG-GUID: IbIAa9nIwuFRptSY7kMa83NBU-4nUslp
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
  definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
- mlxscore=0 suspectscore=0 phishscore=0 impostorscore=0 adultscore=0
- malwarescore=0 priorityscore=1501 mlxlogscore=723 lowpriorityscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501100061
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1015
+ spamscore=0 suspectscore=0 impostorscore=0 phishscore=0 priorityscore=1501
+ mlxlogscore=999 bulkscore=0 lowpriorityscore=0 malwarescore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
+ definitions=main-2501100061
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-"Dmitry V. Levin" <ldv@strace.io> writes:
 
-> Similar to syscall_set_arguments() that complements
-> syscall_get_arguments(), introduce syscall_set_nr()
-> that complements syscall_get_nr().
->
-> syscall_set_nr() is going to be needed along with
-> syscall_set_arguments() on all HAVE_ARCH_TRACEHOOK
-> architectures to implement PTRACE_SET_SYSCALL_INFO API.
->
-> Signed-off-by: Dmitry V. Levin <ldv@strace.io>
-> ---
->  arch/arc/include/asm/syscall.h        |  6 ++++++
->  arch/arm/include/asm/syscall.h        | 12 ++++++++++++
->  arch/arm64/include/asm/syscall.h      |  7 +++++++
->  arch/hexagon/include/asm/syscall.h    |  7 +++++++
->  arch/loongarch/include/asm/syscall.h  |  7 +++++++
->  arch/m68k/include/asm/syscall.h       |  7 +++++++
->  arch/microblaze/include/asm/syscall.h |  7 +++++++
->  arch/mips/include/asm/syscall.h       |  7 +++++++
->  arch/nios2/include/asm/syscall.h      |  5 +++++
->  arch/openrisc/include/asm/syscall.h   |  6 ++++++
->  arch/parisc/include/asm/syscall.h     |  7 +++++++
->  arch/powerpc/include/asm/syscall.h    |  5 +++++
->  arch/riscv/include/asm/syscall.h      |  7 +++++++
->  arch/s390/include/asm/syscall.h       |  7 +++++++
->  arch/sh/include/asm/syscall_32.h      |  7 +++++++
->  arch/sparc/include/asm/syscall.h      |  7 +++++++
->  arch/um/include/asm/syscall-generic.h |  5 +++++
->  arch/x86/include/asm/syscall.h        |  7 +++++++
->  arch/xtensa/include/asm/syscall.h     |  7 +++++++
->  include/asm-generic/syscall.h         | 14 ++++++++++++++
->  20 files changed, 144 insertions(+)
->
-> diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
-> index b3dd883699e7..1c0e349fd5c9 100644
-> --- a/arch/s390/include/asm/syscall.h
-> +++ b/arch/s390/include/asm/syscall.h
-> @@ -24,6 +24,13 @@ static inline long syscall_get_nr(struct task_struct *task,
->  		(regs->int_code & 0xffff) : -1;
->  }
->  
-> +static inline void syscall_set_nr(struct task_struct *task,
-> +				  struct pt_regs *regs,
-> +				  int nr)
-> +{
 
-I think there should be a
+> On 7 Jan 2025, at 2:55=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> =
+wrote:
+>=20
+> On Fri, Dec 27, 2024 at 04:18:32PM +0530, Athira Rajeev wrote:
+>>=20
+>>=20
+>>> On 23 Dec 2024, at 7:28=E2=80=AFPM, Athira Rajeev =
+<atrajeev@linux.vnet.ibm.com> wrote:
+>>>=20
+>>> When kernel is built without debuginfo, running perf record with
+>>> --off-cpu results in segfault as below:
+>>>=20
+>>>  ./perf record --off-cpu -e dummy sleep 1
+>>>  libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was =
+CONFIG_DEBUG_INFO_BTF enabled?
+>>>  libbpf: failed to find '.BTF' ELF section in =
+/lib/modules/6.13.0-rc3+/build/vmlinux
+>>>  libbpf: failed to find valid kernel BTF
+>>>  Segmentation fault (core dumped)
+>>>=20
+>>> The backtrace pointed to:
+>>>=20
+>>>  #0  0x00000000100fb17c in btf.type_cnt ()
+>>>  #1  0x00000000100fc1a8 in btf_find_by_name_kind ()
+>>>  #2  0x00000000100fc38c in btf.find_by_name_kind ()
+>>>  #3  0x00000000102ee3ac in off_cpu_prepare ()
+>>>  #4  0x000000001002f78c in cmd_record ()
+>>>  #5  0x00000000100aee78 in run_builtin ()
+>>>  #6  0x00000000100af3e4 in handle_internal_command ()
+>>>  #7  0x000000001001004c in main ()
+>>>=20
+>>> Code sequence is:
+>>>  static void check_sched_switch_args(void)
+>>>  {
+>>>       struct btf *btf =3D btf__load_vmlinux_btf();
+>>>       const struct btf_type *t1, *t2, *t3;
+>>>       u32 type_id;
+>>>=20
+>>>       type_id =3D btf__find_by_name_kind(btf, =
+"btf_trace_sched_switch",
+>>>                                        BTF_KIND_TYPEDEF);
+>>>=20
+>>> btf__load_vmlinux_btf fails when CONFIG_DEBUG_INFO_BTF is not =
+enabled.
+>>> Here bpf__find_by_name_kind calls btf__type_cnt with NULL btf
+>>> value and results in segfault. To fix this, add a check to see if
+>>> btf is not NULL before invoking bpf__find_by_name_kind
+>>>=20
+>>> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+>=20
+> Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+>=20
+> Thanks,
+> Namhyung
+>=20
 
-	if (!test_pt_regs_flags(regs, PIF_SYSCALL))
-		return;
+Thanks Namhyung for reviewing the patch
 
-before the modification so a user can't accidentally change int_code
-when ptrace stopped in a non-syscall path.
+Athira
+>>> ---
+>>> tools/perf/util/bpf_off_cpu.c | 5 +++++
+>>> 1 file changed, 5 insertions(+)
+>>>=20
+>>> diff --git a/tools/perf/util/bpf_off_cpu.c =
+b/tools/perf/util/bpf_off_cpu.c
+>>> index a590a8ac1f9d..4269b41d1771 100644
+>>> --- a/tools/perf/util/bpf_off_cpu.c
+>>> +++ b/tools/perf/util/bpf_off_cpu.c
+>>> @@ -100,6 +100,11 @@ static void check_sched_switch_args(void)
+>>> const struct btf_type *t1, *t2, *t3;
+>>> u32 type_id;
+>>>=20
+>>> + if (!btf) {
+>>> + pr_debug("Missing btf, check if CONFIG_DEBUG_INFO_BTF is =
+enabled\n");
+>>> + goto cleanup;
+>>> + }
+>>> +
+>>=20
+>> Hi,
+>>=20
+>> Looking for review comments on this
+>>=20
+>> Athira
+>>> type_id =3D btf__find_by_name_kind(btf, "btf_trace_sched_switch",
+>>> BTF_KIND_TYPEDEF);
+>>> if ((s32)type_id < 0)
+>>> --=20
+>>> 2.43.5
 
-> +	regs->int_code = (regs->int_code & ~0xffff) | (nr & 0xffff);
-> +}
-> +
->  static inline void syscall_rollback(struct task_struct *task,
->  				    struct pt_regs *regs)
->  {
+
 
