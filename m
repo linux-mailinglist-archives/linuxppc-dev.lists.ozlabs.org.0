@@ -1,85 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-4968-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4971-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9C5EA08C84
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 10:43:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A6B0A08E45
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 11:44:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTxYd58qPz3cC6;
-	Fri, 10 Jan 2025 20:43:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTyvC3JBpz3c9W;
+	Fri, 10 Jan 2025 21:44:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736502229;
-	cv=none; b=fRB3pEqfkbPrijBfdfa5bFsKbEYUwWij3JHjlTJ3Smwe86PfSu4inlXSk+SsOpAfTzrwcl2RBLwFBVDgw0LxcWUXmxI9bj03btjFFBiWkpf0enA6cfFKE9MmNuG/BAPV6ppv/RLv1CJfkLp3Yu0ew6YY2ZeY5n9g4Uzd3JBXCzeJttxjMz3Puu4aS6vqG643WiS/G+ABW7MmidHLFaLcZmOGXCTXjSY3Y5rN6JHqiD96liK/v01eu/+Dtv93SDOHsG+ssamkPBiHyKkx0wzb0zGNU/eGXnB8xGV3vViNJpWLby69gIC50YOd5i0vxwOO9MWpfrprNinizGogtTLBmQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736502302;
+	cv=none; b=hU/VttKU9+ipd2453ke/QmBJ7Y5zukWybcW+525wofahiE70zBThRVoblaGzXqECg1HpLS1cuk4qCdaPhNuDQqxpgoA82bOD1jcSTdZjFUfAtKleq62PQPIKfIdmuoPAebrgALXMAvhPhTfRDblBXHhh1UgGSGepGaH4X3QwHEnpsJpRTB/5ZEgkQq6aBRK6IVmCg2lnN4+c8gInf7JbQxio436Q2x5E4S83MGu7rO9ifGzdFeBT52sb/PWuf+VliGyfUB9lOkBH2n8vX6XldESx20UeVfJGVkaHsQUhGTGuQmDbt6yMhtTbD6kA7zpl2Ypzfo/iwfk9F5O+5xiRLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736502229; c=relaxed/relaxed;
-	bh=Q15Qs22smqoIRdd57Er+BBVsac7oQoNNAeF9ajmNHjk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=LIFluEXwSQINVCEPKNyA0bFS0RD7KMO33MBbRYD2HrqBOcvpXxVITpGa0DCODeKp8U/ZFiA9cOg25S0uQxSWrfXtK7QaOR1u0ydBIokiEdMec9a0sm9u4tWv3AxrAf8U7zMvGW+h43b0tLu1p2XWMcI17JvpZMygqVsII2luKNW2uaF2Jr4PXWvZp5F3qW9DebesraabmuCGiTX2oQVpHPEGlcMbRGiEU2v14Y9uHR64CGH/50ZsN+2b04i4lCwh/JRzyFehvD3O8FwrqbvcOWuJzqOJkdKw5F1NuuGpn7yMDQO2hRwdQjTYantTZkjMd4T7ddOzU+6Sx8/gkUN0vg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a9ivZtts; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1736502302; c=relaxed/relaxed;
+	bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=jky95A4nlo8IFFmzIBi+J38jdj5fFo9qcTfMCJSBvc00SHe1HA9Oxjn7ve4oBWJo9Yrkpmv5E7Svzt4lKmt2TxRZZQj3/BUkLNUmUjFqXBz+5D5yZDKbEIjS9qK9wa7r4MaGwk+aai+KK5H0yAKUmTZiqDOTHnRyiwI1TGd5C7LF0MOXifokplr/eoZ5ofk5TcyxwuiVVihfhh1OdpMlkPWZHcIUC4NMJmvWMJ2S+Yt9/dVM1Ky9CxhxVHYS+V7p2cYEKvpS7wEo28a163+/xoViyG+io1/e14RKGZZ0LCV69lIZPdo3Ds043F1XKh/cmN6832f91IKSNZcOhoEHbg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=aalbersh@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=a9ivZtts;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OpFonKHK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=aalbersh@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTxYc3fL2z3cBk
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 20:43:48 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 509NaGfW018158;
-	Fri, 10 Jan 2025 09:43:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=Q15Qs22smqoIRdd57Er+BBVsac7o
-	QoNNAeF9ajmNHjk=; b=a9ivZtts+eZCel7EAVYBohbqWBrjA+zQfuQvLmEME+FW
-	5xiiLM6Mqxzq4AUSR/6D5LYHgMaPaswBlpxlsGMzzaKLl8cKLlsL94SBWViJydxx
-	M0iOTwo9lRnq+2elhrl8/cOoH3tobBfLFsosY85uMQTHcJS/nRltWRUnJBvZbmew
-	Ls2gqLLxqEeYf0/4hdNvFyLSrNGfSUKSU5lv4+TCMjB8aVZ0Iwpabw5HqgyyyTW7
-	6ClqykijLbTZI1AxkO8TnkAlcg7X+TvwzxkrjyQxnsQsV4h6qbkU9iWbYCnr7KGI
-	gx7pRSyDNKxriP1u+1wM9oZPqHe86FjBuoJ2qAEPlQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442r9asw7p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 09:43:39 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50A9efm3013605;
-	Fri, 10 Jan 2025 09:43:38 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 442r9asw7n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 09:43:38 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50A9NEBg008974;
-	Fri, 10 Jan 2025 09:43:38 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 43yfq09q3u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 10 Jan 2025 09:43:38 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50A9hYwl21037528
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 10 Jan 2025 09:43:34 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 564FB2004B;
-	Fri, 10 Jan 2025 09:43:34 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 00C2F20040;
-	Fri, 10 Jan 2025 09:43:28 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.241.17])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 10 Jan 2025 09:43:27 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org, vmolnaro@redhat.com,
-        mpetlan@redhat.com
-Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        maddy@linux.ibm.com, atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com, hbathini@linux.ibm.com
-Subject: [PATCH V2] tools/perf/tests/base_probe: Fix check for the count of existing probes in test_adding_kernel
-Date: Fri, 10 Jan 2025 15:13:24 +0530
-Message-Id: <20250110094324.94604-1-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTxb05t4tz3cBk
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 20:44:59 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736502296;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
+	b=OpFonKHK4rsGIFf7HSuUlaFhBRRdsLlK1R0arRX8Qgj5U/1r5D9F44B4TYsKgwx49xHb+n
+	5vBk4tEV8CbMFGi4NRmAKUmHTkpEW8Vd0dtx1wt9VRXgkCiiKSc63/ZnsFhVqgMtiikhQ6
+	B6aTnOhYbqo/Q402brHq8KN6vSuJqMs=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1736502296;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
+	b=OpFonKHK4rsGIFf7HSuUlaFhBRRdsLlK1R0arRX8Qgj5U/1r5D9F44B4TYsKgwx49xHb+n
+	5vBk4tEV8CbMFGi4NRmAKUmHTkpEW8Vd0dtx1wt9VRXgkCiiKSc63/ZnsFhVqgMtiikhQ6
+	B6aTnOhYbqo/Q402brHq8KN6vSuJqMs=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-613-Ko5u8BBNMpaBn7XAPuQIAg-1; Fri, 10 Jan 2025 04:44:54 -0500
+X-MC-Unique: Ko5u8BBNMpaBn7XAPuQIAg-1
+X-Mimecast-MFC-AGG-ID: Ko5u8BBNMpaBn7XAPuQIAg
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-385dcae001fso783582f8f.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 01:44:54 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736502293; x=1737107093;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A4Kw1qoNYerqhNjh25Dgp7jdmE++mW9Fl3ZiJ8T3co8=;
+        b=GoggFeifY3vVHJYMb6AwILk576h2Q+NIy0SryYSTTAyayyTHJiZ15G/VCrsdakb7eC
+         vfuwP3ClDQc1+fYvEM5OkoS7WF9yUWeXASoiLBDnqQPWjDWgOIi+w3dTSIf039zg74g3
+         IQ2IfXOF1lVNVAYZHDVf5ZtC9i5qwiIjlxAu6ewFKplH39wY17prVXDqXwvXMqBu4iOs
+         PbmRdO5Sr69+nEcFvhw3dsOAyGukbgsVqjm3v8gseR5ek0vXw6oqiye7AjKPriBn3RwT
+         qJDz+boTemI0gqYOYoecI6N0miVsZ4tNPnPG7gcHulDis3+h4o9bqQwGTcrtT/g0f2d0
+         NM9w==
+X-Forwarded-Encrypted: i=1; AJvYcCUSu79Y//bFBgvLEfregWZTexpcbcO4k4QrgOoccCneNu8cPMv/ctzL1TknN2zb+FI/wc0ihrNR5kdxrKc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxmGqQSoqMZgdwmMzSRCGKCjGJ9K+OknuNQKcgMEEdSaN8QRU68
+	ob89TXlyJjdB1rVIMK5Nya+CEMYH9UH1ZX6Nxd3w6LFCrDUhPUCGzE6YyfETXNoWpJYfb4wntKq
+	ISMCotruhspeuZMeHMX+sosU3IjlMUTIk5Ei5UYofrrvy17BJiDnSxWjtZ+LD1A==
+X-Gm-Gg: ASbGnct9SnXyiE1+lRzNArbvaO8iw/sDgpnMCUzwSElq2gCfwM/EzWJk3eIfpuY/Sya
+	ELt8BoJ+/KdNCf00zgLinpMJF7EhpoCn+hjtjtEfdUQ7maOCx6pAQLR+YRQwXEHa3wiwjWCHxg5
+	l5qYh1nNyORxfGj9fbz+HVVz+T9dpXxb3HWkj0NIegxzEA4/rtOQYMYsiRf3/owv4RTCQyjEOPr
+	Hd4duSeeeThWkrVWfkWv7/011hXJnd/uBAaxVCWme4KTShtlTC2UB4mDQThp3kPUZfHVmjhxG/e
+X-Received: by 2002:a05:6000:709:b0:386:3803:bbd5 with SMTP id ffacd0b85a97d-38a8733a1f9mr9910081f8f.45.1736502293453;
+        Fri, 10 Jan 2025 01:44:53 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFWMxVaNXeUTe+wjdV2pCbQXCctILb5vVg9f3+psJOjGS23Sr767uuQBsbyCemBlGukLyZjgw==
+X-Received: by 2002:a05:6000:709:b0:386:3803:bbd5 with SMTP id ffacd0b85a97d-38a8733a1f9mr9910059f8f.45.1736502293124;
+        Fri, 10 Jan 2025 01:44:53 -0800 (PST)
+Received: from thinky (ip-217-030-074-039.aim-net.cz. [217.30.74.39])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e383965sm4140444f8f.31.2025.01.10.01.44.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 10 Jan 2025 01:44:52 -0800 (PST)
+Date: Fri, 10 Jan 2025 10:44:51 +0100
+From: Andrey Albershteyn <aalbersh@redhat.com>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org, 
+	Michal Simek <monstr@monstr.eu>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	chris@zankel.net, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
+Message-ID: <4ad35w4mrxb4likkqijkivrkom5rpfdja6klb5uoufdjdyjioq@ksxubq4xb7ei>
+References: <20250109174540.893098-1-aalbersh@kernel.org>
+ <e7deabf6-8bba-45d7-a0f4-395bc8e5aabe@app.fastmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,118 +116,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XgF3CVrlekrAvSZ0E1Ww3Ry2vnMElDRM
-X-Proofpoint-ORIG-GUID: l2G_PTBcpE4blZkPYnPmoCQgJMFNnW34
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 spamscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 adultscore=0 suspectscore=0
- mlxlogscore=999 impostorscore=0 priorityscore=1501 mlxscore=0 phishscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501100078
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
+In-Reply-To: <e7deabf6-8bba-45d7-a0f4-395bc8e5aabe@app.fastmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 6FQw9htdZ9i-uFu1tK9omgQHn-U_zZeGYLCMIIPz87M_1736502293
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-perftool-testsuite_probe fails in test_adding_kernel as below:
-	Regexp not found: "probe:inode_permission_11"
-	-- [ FAIL ] -- perf_probe :: test_adding_kernel :: force-adding probes ::
-	second probe adding (with force) (output regexp parsing)
-	event syntax error: 'probe:inode_permission_11'
-	  \___ unknown tracepoint
+On 2025-01-09 20:59:45, Arnd Bergmann wrote:
+> On Thu, Jan 9, 2025, at 18:45, Andrey Albershteyn wrote:
+> >
+> >  arch/alpha/kernel/syscalls/syscall.tbl      |   2 +
+> >  arch/m68k/kernel/syscalls/syscall.tbl       |   2 +
+> >  arch/microblaze/kernel/syscalls/syscall.tbl |   2 +
+> >  arch/parisc/kernel/syscalls/syscall.tbl     |   2 +
+> >  arch/powerpc/kernel/syscalls/syscall.tbl    |   2 +
+> >  arch/s390/kernel/syscalls/syscall.tbl       |   2 +
+> >  arch/sh/kernel/syscalls/syscall.tbl         |   2 +
+> >  arch/sparc/kernel/syscalls/syscall.tbl      |   2 +
+> >  arch/x86/entry/syscalls/syscall_32.tbl      |   2 +
+> >  arch/x86/entry/syscalls/syscall_64.tbl      |   2 +
+> >  arch/xtensa/kernel/syscalls/syscall.tbl     |   2 +
+> 
+> You seem to be missing a couple of files here: 
+> 
+> arch/arm/tools/syscall.tbl
+> arch/arm64/tools/syscall_32.tbl
+> arch/mips/kernel/syscalls/syscall_n32.tbl
+> arch/mips/kernel/syscalls/syscall_n64.tbl
+> arch/mips/kernel/syscalls/syscall_o32.tbl
+> 
+>        Arnd
+> 
 
-	Error:  File /sys/kernel/tracing//events/probe/inode_permission_11
-	not found.
-	Hint:   Perhaps this kernel misses some CONFIG_ setting to
-	enable this feature?.
+Thanks! Added
 
-The test does the following:
-1) Adds a probe point first using :
-    $CMD_PERF probe --add $TEST_PROBE
-2) Then tries to add same probe again without —force
-and expects it to fail. Next tries to add same probe again
-with —force. In this case, perf probe succeeds and adds
-the probe with a suffix number. Example:
-
- ./perf probe --add inode_permission
- Added new event:
-  probe:inode_permission (on inode_permission)
-
- ./perf probe --add inode_permission --force
- Added new event:
-  probe:inode_permission_1 (on inode_permission)
-
-  ./perf probe --add inode_permission --force
- Added new event:
-  probe:inode_permission_2 (on inode_permission)
-
-Each time, suffix is added to existing probe name.
-To get the suffix number, test cases uses :
-NO_OF_PROBES=`$CMD_PERF probe -l | wc -l`
-
-This will work if there is no other probe existing
-in the system. If there are any other probes other than
-kernel probes or inode_permission, ( example: any probe),
-"perf probe -l" will include count for other probes too.
-
-Example, in the system where this failed, already some
-probes were default added. So count became 10
-  ./perf probe -l | wc -l
-  10
-
-So to be specific for "inode_permission", restrict the
-probe count check to that probe point alone using :
-NO_OF_PROBES=`$CMD_PERF probe -l $TEST_PROBE| wc -l`
-
-Similarly while removing the probe using "probe --del *",
-( removing all probes ), check uses:
-
- ../common/check_all_lines_matched.pl "Removed event: probe:$TEST_PROBE"
-
-But if there are other probes in the system, the log will
-contain reference to other existing probe too. Hence change
-usage of check_all_lines_matched.pl to check_all_patterns_found.pl
-This will make sure expecting string comes in the result
-
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
-Changelog:
- v1 -> v2:
- No code changes. After being reviewed by Michael Petlan, since
- initial patch was posted in 2024-10-14, rebased on top of latest
- perf-tools-next
-
- tools/perf/tests/shell/base_probe/test_adding_kernel.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
-index d541ffd44a93..f8b5f096d0d7 100755
---- a/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
-+++ b/tools/perf/tests/shell/base_probe/test_adding_kernel.sh
-@@ -169,7 +169,7 @@ print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "force-adding probes :: second pr
- (( TEST_RESULT += $? ))
- 
- # adding existing probe with '--force' should pass
--NO_OF_PROBES=`$CMD_PERF probe -l | wc -l`
-+NO_OF_PROBES=`$CMD_PERF probe -l $TEST_PROBE| wc -l`
- $CMD_PERF probe --force --add $TEST_PROBE 2> $LOGS_DIR/adding_kernel_forceadd_03.err
- PERF_EXIT_CODE=$?
- 
-@@ -205,7 +205,7 @@ print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "using doubled probe"
- $CMD_PERF probe --del \* 2> $LOGS_DIR/adding_kernel_removing_wildcard.err
- PERF_EXIT_CODE=$?
- 
--../common/check_all_lines_matched.pl "Removed event: probe:$TEST_PROBE" "Removed event: probe:${TEST_PROBE}_1" < $LOGS_DIR/adding_kernel_removing_wildcard.err
-+../common/check_all_patterns_found.pl "Removed event: probe:$TEST_PROBE" "Removed event: probe:${TEST_PROBE}_1" < $LOGS_DIR/adding_kernel_removing_wildcard.err
- CHECK_EXIT_CODE=$?
- 
- print_results $PERF_EXIT_CODE $CHECK_EXIT_CODE "removing multiple probes"
 -- 
-2.43.5
+- Andrey
 
 
