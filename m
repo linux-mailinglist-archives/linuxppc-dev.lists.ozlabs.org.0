@@ -1,52 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-4930-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-4931-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BAA8A085EA
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 04:26:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BCF7A0872D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 10 Jan 2025 07:01:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YTnB42llmz3023;
-	Fri, 10 Jan 2025 14:26:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YTrdS2MCrz3020;
+	Fri, 10 Jan 2025 17:01:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.137.202.136
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736479580;
-	cv=none; b=CIs9oU7E+IPHffoQm6UK4TzO7jnx3F2j7G05r0WtHR4QWFqKu3f7FzLNzxxs4yMpJg7UvYJ6WvU1cEsh72n5BIo/XyAlXFRn5sZ/VOx60zSSiOlVnibby5u8DXX2Tmp2N/ifv8QGZfnqhmEOO5plhsHpjKxvQ+//bnfTDNe9f+TgxA1wCYErqExNMqCE2Z/sDLSoV+LBlPZ+P+H5SpneT/o2QWCo+fj8XgDLo3BiKI/hPkjo2u0O86X3Uh8bDESyH72AuDJZWcGApZwjzoJgsnO+NOmVE9GdO3XotGtxPc2xGsyY1oV7MWNmEW4BB3hzD42zGIfDSjG9x7CQPh8ruQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736479580; c=relaxed/relaxed;
-	bh=2Gsk7+JP3PoZg8VhoEWFUmet8fDEOviqEDX2siCLmXA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TfNqtDT5G4ZD+NxrcHrjCqJvDR8thhwkvBtBe812LakXZMXqs2cvTUFHp4XCUZHRE2W6xGtReuJ/MmD8cpAchZXZK0Sn1JV9onaIhX3Hin+e2dT1WX4QcRs8rclHc85flHtUoWsMoQG4Y4tJnOoqt8DCp4GAUrJK39rUH5JtK2aa4yKv5ajGKC+quoVLnd5VKt+LYGiUhu2AzjbBj8SYIiPAo4bM3PzX8I3LAbC9ZtSToioCI5YI8tu0PLo/Lasrzs5WXPng/Cs+9PCKstdmpN0yjv1z/kGLHRIDd/VtZG8j7J/lx4572bPIZ2+SbVIlM/cUvWhhDXONPGG2YQETVQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com; dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2024121701 header.b=UI2PWbpd; dkim-atps=neutral; spf=pass (client-ip=198.137.202.136; helo=terminus.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org) smtp.mailfrom=zytor.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2415::610" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736488908;
+	cv=pass; b=UacCqb3v59HtZTvnq9fke1Kc6NBjxlnch6zMW/O4vGn4KJkJl6pxohQmMlXdEtoijqznRrz/q7PtLqi7uHZMKA5C5SrIl3Ym85MBLk7qNBvKq92Edp+djwiudoP2r4UW7gv+kWcMQj0Ciq7TO0YOQ7i0G/TElXLwXG8b7+v67wurUUJdqEjLd9mq6u4IzcinqbyxC+Lp2YYjRPLQIkIWvHfMlf8kOO3LJjMna9CLWZvlUEfaGkc6YEcofLY2mXuwM2Cltf2feSOjHXSjbC7oQbekpiaSDnxq3MzJ0dF/cZnM7oJ7CbDLaLf197KgkshC8G9drktKZJaUtD/Z1/2JCA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736488908; c=relaxed/relaxed;
+	bh=O+ETWHCw+kESvn8e/BiAqQ/rHRY+W9sQ0yNvEdshxTY=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=byjLfYbkHtc6pl+AVWmPnFCPUiHSYfdRXDRbBSGU0Hi9ESVQ+2bRAg9OKi5fO7oIdk6TN4bgCyas5sST3MUr84jitl2V4XAPrEzDX54nRFgAnADXMF1fjpiYYjqHfcWqOroL4GvPEu8bIOFQA8MJzxsl+YZcAYa+jlPmrVRMqvemuMPKHQVJsq7HRiOf4hhwIe3FcnYiwQYITu0E6my24ZKgZ+Mi7YBMLUe/a2sG7AOA8YNVWKusFJNnw0j3sfLbmGkkQPi+fI7bG3qlXELJoWuu4dXSEyTzMRxnMAXULEb6tsnb6KGcoQ0PhkW3m/sUk6qPPbrKJKLlGzVSZ7YBeQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=N431crZq; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2415::610; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2024121701 header.b=UI2PWbpd;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=N431crZq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zytor.com (client-ip=198.137.202.136; helo=terminus.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 300 seconds by postgrey-1.37 at boromir; Fri, 10 Jan 2025 14:26:17 AEDT
-Received: from terminus.zytor.com (terminus.zytor.com [198.137.202.136])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2415::610; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on20610.outbound.protection.outlook.com [IPv6:2a01:111:f403:2415::610])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTnB151Cdz2ynR
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 14:26:17 +1100 (AEDT)
-Received: from [IPV6:2601:646:8080:c1f1:e386:c572:17d3:6ddc] ([IPv6:2601:646:8080:c1f1:e386:c572:17d3:6ddc])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50A3FGON981507
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Thu, 9 Jan 2025 19:15:22 -0800
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50A3FGON981507
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2024121701; t=1736478939;
-	bh=2Gsk7+JP3PoZg8VhoEWFUmet8fDEOviqEDX2siCLmXA=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=UI2PWbpd/173uf8ET7OhKCSxHMq3wIV9uPwlDabKLopTn4XQlVOW2UhdDhLNKQ2ou
-	 8eY5IkJPjKd/ufxYXpC3T7ngILIHHww7s3f/TxHKadq33uowsRPtdqvlulWYDcl4s8
-	 98gF9cD/iHRBhl+LkNR2Vz4dcuRwuyCMkzCPxTONo9GrePkGJYLa5vUD7mYV9L5Uos
-	 ee2fTgpV4TmVkm3/EnjzCs2Wh3is/8drjYQa4kdxx6i4NZ58BWsIW3fEOCUEzu/US4
-	 z0xQ+UHFUiZOJoDRJIqr/23SWWVPTNXl6Nb/6Jv9OAyLaNK9jKDb4DWbnzq60xty/Q
-	 X0SCgYzOXKJQw==
-Message-ID: <4536aca6-c430-4cf9-a98f-8282c7378955@zytor.com>
-Date: Thu, 9 Jan 2025 19:15:09 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YTrdQ0Hpqz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 17:01:44 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=UdRqWGWwrvs8cnCPShh3PCHVIYgPCYqkJi72C8OfAyQJ5gyAR6zFOn3csg/1tylUv4ZIDnvTTPZWh2xH+BgNIC35FngUOgUHXJtbprYtzGLtmxCrLqlkiyeHvzs+E89PVUwWQdCkIZcLlN229nzDRQzVUB+MIhlYGQj37sphZ/ldUuPlOmtya7kPelK34hb9a+fX9w5fjaIXHX5/czqp+OiWY+HwtTgvxm5cQLgTErazPEmzduD2YXyhM+nYmT1fT06hgwBPaZ/XKDvzM70LhXpEkyIzluREFluo1UkgPii2AAQIpgXE6LBN6MZ9QEWJYDd55ojZRQTuOfusBFC0UQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=O+ETWHCw+kESvn8e/BiAqQ/rHRY+W9sQ0yNvEdshxTY=;
+ b=Ta30VdLBH5b4KskN6BV4h3R+c4d4uH7U6l6JZz/9k2eMZ8fVQNtYkA0JGf9a9A5OqH4ES3PdAyPn4iJRR+9nD0TqENJyEfMow4TNKgZvJyZ27VlU3o/FAh2lC77P0Bdct40zVp59JADRamyy59TLQBEMDmEpZFszOaAI0qbdq+G3BVe50izLYN0EFYsnIm9DQRPELwwxUo+Ohu1oVnCpWvtkPlpApDxGd4HO3K53nZDvr849YWo0j7zZJZo7uSDSin4ZRPK22j7zCX/YQ3EIHvWLAPQj1ltd0a7Zqarzlmsjvu15d1DLNjByiJZEdt/3LjdbmTw04+7DBb1rmxcAiA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=O+ETWHCw+kESvn8e/BiAqQ/rHRY+W9sQ0yNvEdshxTY=;
+ b=N431crZqsg6jiaAQiMqLe5LXSQBl18/kVEcyVKNBG0kqrW02gBrCuNFHCL3Yu1cncEhLklFvIfFrJDjNNq7hkhqNnAQo1gTl6lWZthhceGWjz9EFL60Td+qig2VHuEksYo3uFrY3jZUiVQdl80WIX1UItJ+S6w6j+bsp3+/2uw4hGwITJkYS1xCoxo71HsY/FY+ZGgfvEOXpaUssJVZF4gp8wJp5imdqdiav6T5Vt3Ffs9NBZSlsXo19Vs57Jnjesz7njjoBW8yyYkYvNkifsxPx37OnzgsVhykZTyUYW2nf3LXTaGmhHTP2hPBWe92EPrpvWrvLrv0kQZzoBJ6Wvg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ BY5PR12MB4132.namprd12.prod.outlook.com (2603:10b6:a03:209::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.10; Fri, 10 Jan
+ 2025 06:01:18 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.8335.011; Fri, 10 Jan 2025
+ 06:01:18 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: akpm@linux-foundation.org,
+	dan.j.williams@intel.com,
+	linux-mm@kvack.org
+Cc: alison.schofield@intel.com,
+	Alistair Popple <apopple@nvidia.com>,
+	lina@asahilina.net,
+	zhang.lyra@gmail.com,
+	gerald.schaefer@linux.ibm.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	logang@deltatee.com,
+	bhelgaas@google.com,
+	jack@suse.cz,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	dave.hansen@linux.intel.com,
+	ira.weiny@intel.com,
+	willy@infradead.org,
+	djwong@kernel.org,
+	tytso@mit.edu,
+	linmiaohe@huawei.com,
+	david@redhat.com,
+	peterx@redhat.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	jhubbard@nvidia.com,
+	hch@lst.de,
+	david@fromorbit.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	loongarch@lists.linux.dev
+Subject: [PATCH v6 00/26] fs/dax: Fix ZONE_DEVICE page reference counts
+Date: Fri, 10 Jan 2025 17:00:28 +1100
+Message-ID: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SY2PR01CA0023.ausprd01.prod.outlook.com
+ (2603:10c6:1:14::35) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,156 +116,312 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/6] ptrace: introduce PTRACE_SET_SYSCALL_INFO API
-To: "Dmitry V. Levin" <ldv@strace.io>, Oleg Nesterov <oleg@redhat.com>
-Cc: Eugene Syromyatnikov <evgsyr@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>,
-        Davide Berardi <berardi.dav@gmail.com>, strace-devel@lists.strace.io,
-        Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt
- <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.osdn.me>, Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, Shuah Khan <shuah@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org
-References: <20250107230153.GA30560@strace.io>
-Content-Language: en-US
-From: "H. Peter Anvin" <hpa@zytor.com>
-In-Reply-To: <20250107230153.GA30560@strace.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|BY5PR12MB4132:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4ace6797-add2-4fc4-e082-08dd313c32f0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CBLVPcOYaYEJYbkSQ3VUQvJrJ9fKa8kjwxNV1uTtYlVNzP9gktOtNkN2H8ts?=
+ =?us-ascii?Q?imUjkql6eKDdMXMEhwQracQRgsoN/ShOMP8g3FZ3otx0PyS/m3SR/tgOxDKh?=
+ =?us-ascii?Q?v6ZaQ0YLXjoom8FaTlxqGl1rusZ701CnEKPwueK0CCrC6uSwSWFT87/miP9R?=
+ =?us-ascii?Q?zKGdG+fY8FXhsLqQNgHwX8iNdwk2vpADhjhIhrcUEh/wZZHUmINJt5JODmgP?=
+ =?us-ascii?Q?CDrDNuY1l7+oArLqndDanJ9+xDZpl8tN1zXmVDRbGRnXsmwR36g6oLZKqFwa?=
+ =?us-ascii?Q?QdaaOfksBhAeiWDj3gmjktKQlH+j4CjkcCqUUv//UEsAA3OqwUgoTTniNNF6?=
+ =?us-ascii?Q?ixr5aBCubxLYkXknx+cItoeCNQl0u0Jmy7p5p9puf2dmr/PJ8HVtlWlc5WmB?=
+ =?us-ascii?Q?AfEWRXgQ9Z/QmCXqhzY5X4UwG2hOvw8bJEJr/06r0L1JurFp02okvnzUJiZj?=
+ =?us-ascii?Q?MQbwKC9kvMK4zBETKfNNxQmtz87Wzi0eb0wjLHlygy4D9mi04pb8mDE/RDlX?=
+ =?us-ascii?Q?DUorsKR5XVkU3Zjr5XOz4ymsf5OIRQo0xeRWbNYGj/z9S8m7QGBPebGtrYJ5?=
+ =?us-ascii?Q?WoIk5fchzhpYP1j5J6cdo05HhvKcDSj3hKqV1lZQJvEPNmGz8KP+x8YjZod7?=
+ =?us-ascii?Q?iDx7nWXk+8k6wSdg1DAn0P7rolU6yiJug94SSsM+ITMukkKuNPAO8dY0bRjb?=
+ =?us-ascii?Q?VZXLpY5dkFRJofOEbqFyp669Oo9SJk6/JEF++F207joJA2Vt57tkV2WirFY9?=
+ =?us-ascii?Q?cV8sV6fpQeYnyIoxLYt+DLHw3Fkun2NZCJ6KN9Ith2Aty+vl1FeQUod+x3t3?=
+ =?us-ascii?Q?MGHv+9l9fnsHN6WIsUMu79OY/D+IIGako64ExC7F9WIrUwvoarg2dEHP+o0E?=
+ =?us-ascii?Q?PVxYpp2nyTDi4DRTsQWoEMrwHkJhIrdNCXV3fMDnlSQxANc9Ou9oJCjo3SCQ?=
+ =?us-ascii?Q?cgATuVsmtUftcyRx/iRsL8maODL67MolObJ7M2NI6BW0smjTh6szxZe9RDik?=
+ =?us-ascii?Q?DHnsD8592vfp0lDSCWQZg4BakyQX/RFg6b8TVOuhD5EUK+0ZA8by1SKN8h5d?=
+ =?us-ascii?Q?tA/jEnumKJ5c5PkqxbnrpsfdzB82EMKa5vVqPeRwwysq5uj25+gc9MJvsrSp?=
+ =?us-ascii?Q?KwqJfDbpv4FNi1+CjSyWCOWv4V/N6til+VzIE3+6YA+rfu/qlQ52gQG/yPkh?=
+ =?us-ascii?Q?FGzIxfSDbO2rJucIC3qoW+q1EsyzI6L9NEhNuUld7laP7VDt0SIXx+fFH+pq?=
+ =?us-ascii?Q?OGhNinNyxt2LMS0MmAOgiN8vv7qUiUwruEiQw4LNhwmH1f+kKzUqF2LkP2PP?=
+ =?us-ascii?Q?x47rcqzvSbtaAgQYnStEifmNfdFDYeJJUA84FfwOA7jYsDdahJi+nF/WFvJn?=
+ =?us-ascii?Q?vgQkuNpg/l31SPTHRZJWccyq1kDt?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?mzhGNZPsBssJ33djBOUuaZE5rcN4fffcLxJj+73YFogJ+/mnRZZRo1AKAZ0u?=
+ =?us-ascii?Q?sIzz+CO+74OTqdjWEQh6/Y0pCi8V3WYn4Xnvl77MmBDIuzaUawAKFzG0u1Qg?=
+ =?us-ascii?Q?aBb7NIQC5JkUsXBKW/K5/7Uw28LWVYnidAJ/ot0WqRnPpHa3AztrXq/hgI1n?=
+ =?us-ascii?Q?aqWHhCiiFSj0LEvSbiCdhNngrzdRhxtd+w3mCtdILYLrOlCC5BRGS9YZyhuH?=
+ =?us-ascii?Q?5fbSxLYlo1MOrbsCk8djpYjEU9qZB2CkB5xqDUsJkzxl/ZWyUVoVh0QTzGH2?=
+ =?us-ascii?Q?TEs+Edewie9rDL9OJZzjmBTbwzBLMsTOZtOuI6rEuIw09N8pvXBeMqJ/WYFi?=
+ =?us-ascii?Q?X+1oumlvhBXp8vqgPGu6JLTmxzKq+6DAy/Z4zx7tXnnU27dibpTxziPml9io?=
+ =?us-ascii?Q?dRZUSB0x35Ih9fm4uVFqgonKkjLfsMwvs6WZSfUlFITSjlvaOxBHLXax2gxM?=
+ =?us-ascii?Q?HBmQKb2y/yqGAgCIbi3DDgFD87J2WVWYG4aIo3tSYTtjC8sP2ZZMS0Q1QVwT?=
+ =?us-ascii?Q?ZmcBVFgpZU3ESIIKGWnhe61SbVONSkGM3PsXnUmT1sQrMOcrrxlhO32D/cOo?=
+ =?us-ascii?Q?O/9kSEtcXM0NL7Z3Q/0AXbjHJkumWg5PWfGXNvB/zgK8wjAaM3n3eUDq6Xwg?=
+ =?us-ascii?Q?rn1POGGx4bAsVI6ROEwXrbRcw4NXpNL5LE4tfDqVOJaGRFtBm9k9uitgHa5p?=
+ =?us-ascii?Q?8cwwK1UtdBxbyeG6KangMm3b4weRnwsu4Gc/p0rISR20WxGaqbgkO536x7F1?=
+ =?us-ascii?Q?KslM7egv/8nwXg9YUf1Mz8ozktuFMUErmGSd0Yub0o7XpG4UVf0hHufUole9?=
+ =?us-ascii?Q?NOWR0QZ1lC/1QKlgLVsTWBR+Y0p1++97oiEXzO3/8eL3o3s+ECYYmJBrUo2r?=
+ =?us-ascii?Q?bLUSeqDZZd/We1fs+vS3yZQppSxlS+jUsKNmPLgPlSTjlr3PlNJYUO2zbFl2?=
+ =?us-ascii?Q?Qn+c2BCjb4AP5jCn2njuBM4qM9XPFMH+QQCrCxrVk5pAu0S3HsbyW/gvDILO?=
+ =?us-ascii?Q?p6zVA6MCZAMy8epLxGwKAYvXNmUVSZarNFOxukpIqeklZMGnlSCsIcNIeViq?=
+ =?us-ascii?Q?5OrZG6FJ1Lshi1q8ANcUhaJelsZBcs6wPq2EkvxYbnxGftnUaYcZNt5uMzVq?=
+ =?us-ascii?Q?Bw7XK3tMdLjmcKjyQrTo4MaA6aejSHzXNC6SP6TYWvmaa/MQygH2X97xWeOx?=
+ =?us-ascii?Q?HqkXCNS9EksTkdtyAD7n1bTMBefThRnt3MCESIy2GxUJxObLNPdcvRTcGXoL?=
+ =?us-ascii?Q?IJmPV66EWkoDPBNknOoUWxQFTpkqhDmO510LDR662Dpj4nSzL8V61dy5R69a?=
+ =?us-ascii?Q?qE3dUiFeiIv576Uaa9IcVNyoVUWuSIMxkHB0ZEN4hayGd9G580BnEofsr/bL?=
+ =?us-ascii?Q?GP/xZQVgOyO5EHzy6dMWz50J2qDv5u3zFut8CM4HLKlb3eEATxIXobdpvAKl?=
+ =?us-ascii?Q?AvN7J4M+OHEYMn5jMphBwejij2z5YVDhs7pXsL8Vkat0e9Fo4vcedBwUppz4?=
+ =?us-ascii?Q?lzEFXAH8IPlFJrlAKhEfsv+M5zRXI/oR5kTL4sS1bvoJMlP5FbWAn+oU3eRY?=
+ =?us-ascii?Q?+Uc7lQHxyJc1j56FCdOGpC7PEWY5avLMDpWl73Cw?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4ace6797-add2-4fc4-e082-08dd313c32f0
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jan 2025 06:01:18.0876
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: BYS11yP6/10kv6WUcPTb1COot2sZGnOIrJplwswS9h0J58vCizjgazUak9mxBbjfbIyb/y/O5tLYClx+JTKqxw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4132
+X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-This would seem like a very good idea. However, it is perhaps important 
-to realize that it doesn't fully eliminate the problems with 64-bit 
-arguments on 32-bit ABIs being handled differently (never mind 
-inconsistencies in system call ABIs etc.) There isn't all that much that 
-can be done about that directly, though.
+Main updates since v5:
 
-	-hpa
+ - Reworked patch 1 based on Dan's feedback.
 
+ - Fixed build issues on PPC and when CONFIG_PGTABLE_HAS_HUGE_LEAVES
+   is no defined.
 
-On 1/7/25 15:01, Dmitry V. Levin wrote:
-> PTRACE_SET_SYSCALL_INFO is a generic ptrace API that complements
-> PTRACE_GET_SYSCALL_INFO by letting the ptracer modify details of
-> system calls the tracee is blocked in.
-> 
-> This API allows ptracers to obtain and modify system call details
-> in a straightforward and architecture-agnostic way.
-> 
-> Current implementation supports changing only those bits of system call
-> information that are used by strace, namely, syscall number, syscall
-> arguments, and syscall return value.
-> 
-> Support of changing additional details returned by PTRACE_GET_SYSCALL_INFO,
-> such as instruction pointer and stack pointer, could be added later
-> if needed, by re-using struct ptrace_syscall_info.reserved to specify
-> the additional details that should be set.  Currently, the reserved
-> field of struct ptrace_syscall_info must be initialized with zeroes;
-> arch, instruction_pointer, and stack_pointer fields are ignored.
-> 
-> PTRACE_SET_SYSCALL_INFO currently supports only PTRACE_SYSCALL_INFO_ENTRY,
-> PTRACE_SYSCALL_INFO_EXIT, and PTRACE_SYSCALL_INFO_SECCOMP operations.
-> Other operations could be added later if needed.
-> 
-> Ideally, PTRACE_SET_SYSCALL_INFO should have been introduced along with
-> PTRACE_GET_SYSCALL_INFO, but it didn't happen.  The last straw that
-> convinced me to implement PTRACE_SET_SYSCALL_INFO was apparent failure
-> to provide an API of changing the first system call argument on riscv
-> architecture [1].
-> 
-> ptrace(2) man page:
-> 
-> long ptrace(enum __ptrace_request request, pid_t pid, void *addr, void *data);
-> ...
-> PTRACE_SET_SYSCALL_INFO
->         Modify information about the system call that caused the stop.
->         The "data" argument is a pointer to struct ptrace_syscall_info
->         that specifies the system call information to be set.
->         The "addr" argument should be set to sizeof(struct ptrace_syscall_info)).
-> 
-> [1] https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
-> 
-> Dmitry V. Levin (6):
->    Revert "arch: remove unused function syscall_set_arguments()"
->    syscall.h: add syscall_set_arguments() on remaining
->      HAVE_ARCH_TRACEHOOK arches
->    syscall.h: introduce syscall_set_nr()
->    ptrace_get_syscall_info: factor out ptrace_get_syscall_info_op
->    ptrace: introduce PTRACE_SET_SYSCALL_INFO request
->    selftests/ptrace: add a test case for PTRACE_SET_SYSCALL_INFO
-> 
->   arch/arc/include/asm/syscall.h                |  20 +
->   arch/arm/include/asm/syscall.h                |  25 +
->   arch/arm64/include/asm/syscall.h              |  20 +
->   arch/csky/include/asm/syscall.h               |  13 +
->   arch/hexagon/include/asm/syscall.h            |  14 +
->   arch/loongarch/include/asm/syscall.h          |  15 +
->   arch/m68k/include/asm/syscall.h               |   7 +
->   arch/microblaze/include/asm/syscall.h         |   7 +
->   arch/mips/include/asm/syscall.h               |  53 +++
->   arch/nios2/include/asm/syscall.h              |  16 +
->   arch/openrisc/include/asm/syscall.h           |  13 +
->   arch/parisc/include/asm/syscall.h             |  19 +
->   arch/powerpc/include/asm/syscall.h            |  15 +
->   arch/riscv/include/asm/syscall.h              |  16 +
->   arch/s390/include/asm/syscall.h               |  19 +
->   arch/sh/include/asm/syscall_32.h              |  19 +
->   arch/sparc/include/asm/syscall.h              |  17 +
->   arch/um/include/asm/syscall-generic.h         |  19 +
->   arch/x86/include/asm/syscall.h                |  43 ++
->   arch/xtensa/include/asm/syscall.h             |  18 +
->   include/asm-generic/syscall.h                 |  30 ++
->   include/linux/ptrace.h                        |   3 +
->   include/uapi/linux/ptrace.h                   |   3 +-
->   kernel/ptrace.c                               | 154 ++++++-
->   tools/testing/selftests/ptrace/Makefile       |   2 +-
->   .../selftests/ptrace/set_syscall_info.c       | 436 ++++++++++++++++++
->   26 files changed, 994 insertions(+), 22 deletions(-)
->   create mode 100644 tools/testing/selftests/ptrace/set_syscall_info.c
-> 
+ - Minor comment formatting and documentation fixes.
 
+ - Remove PTE_DEVMAP definitions from Loongarch which were added since
+   this series was initially written.
+
+Main updates since v4:
+
+ - Removed most of the devdax/fsdax checks in fs/proc/task_mmu.c. This
+   means smaps/pagemap may contain DAX pages.
+
+ - Fixed rmap accounting of PUD mapped pages.
+
+ - Minor code clean-ups.
+
+Main updates since v3:
+
+ - Rebased onto next-20241216. The rebase wasn't too difficult, but in
+   the interests of getting this out sooner for Andrew to look at as
+   requested by him I have yet to extensively build/run test this
+   version of the series.
+
+ - Fixed a bunch of build breakages reported by John Hubbard and the
+   kernel test robot due to various combinations of CONFIG options.
+
+ - Split the rmap changes into a separate patch as suggested by David H.
+
+ - Reworded the description for the P2PDMA change.
+
+Main updates since v2:
+
+ - Rename the DAX specific dax_insert_XXX functions to vmf_insert_XXX
+   and have them pass the vmf struct.
+
+ - Separate out the device DAX changes.
+
+ - Restore the page share mapping counting and associated warnings.
+
+ - Rework truncate to require file-systems to have previously called
+   dax_break_layout() to remove the address space mapping for a
+   page. This found several bugs which are fixed by the first half of
+   the series. The motivation for this was initially to allow the FS
+   DAX page-cache mappings to hold a reference on the page.
+
+   However that turned out to be a dead-end (see the comments on patch
+   21), but it found several bugs and I think overall it is an
+   improvement so I have left it here.
+
+Device and FS DAX pages have always maintained their own page
+reference counts without following the normal rules for page reference
+counting. In particular pages are considered free when the refcount
+hits one rather than zero and refcounts are not added when mapping the
+page.
+
+Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
+mechanism for allowing GUP to hold references on the page (see
+get_dev_pagemap). However there doesn't seem to be any reason why FS
+DAX pages need their own reference counting scheme.
+
+By treating the refcounts on these pages the same way as normal pages
+we can remove a lot of special checks. In particular pXd_trans_huge()
+becomes the same as pXd_leaf(), although I haven't made that change
+here. It also frees up a valuable SW define PTE bit on architectures
+that have devmap PTE bits defined.
+
+It also almost certainly allows further clean-up of the devmap managed
+functions, but I have left that as a future improvment. It also
+enables support for compound ZONE_DEVICE pages which is one of my
+primary motivators for doing this work.
+
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Tested-by: Alison Schofield <alison.schofield@intel.com>
+
+---
+
+Cc: lina@asahilina.net
+Cc: zhang.lyra@gmail.com
+Cc: gerald.schaefer@linux.ibm.com
+Cc: dan.j.williams@intel.com
+Cc: vishal.l.verma@intel.com
+Cc: dave.jiang@intel.com
+Cc: logang@deltatee.com
+Cc: bhelgaas@google.com
+Cc: jack@suse.cz
+Cc: jgg@ziepe.ca
+Cc: catalin.marinas@arm.com
+Cc: will@kernel.org
+Cc: mpe@ellerman.id.au
+Cc: npiggin@gmail.com
+Cc: dave.hansen@linux.intel.com
+Cc: ira.weiny@intel.com
+Cc: willy@infradead.org
+Cc: djwong@kernel.org
+Cc: tytso@mit.edu
+Cc: linmiaohe@huawei.com
+Cc: david@redhat.com
+Cc: peterx@redhat.com
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev
+Cc: linux-cxl@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-ext4@vger.kernel.org
+Cc: linux-xfs@vger.kernel.org
+Cc: jhubbard@nvidia.com
+Cc: hch@lst.de
+Cc: david@fromorbit.com
+Cc: chenhuacai@kernel.org
+Cc: kernel@xen0n.name
+Cc: loongarch@lists.linux.dev
+
+Alistair Popple (26):
+  fuse: Fix dax truncate/punch_hole fault path
+  fs/dax: Return unmapped busy pages from dax_layout_busy_page_range()
+  fs/dax: Don't skip locked entries when scanning entries
+  fs/dax: Refactor wait for dax idle page
+  fs/dax: Create a common implementation to break DAX layouts
+  fs/dax: Always remove DAX page-cache entries when breaking layouts
+  fs/dax: Ensure all pages are idle prior to filesystem unmount
+  fs/dax: Remove PAGE_MAPPING_DAX_SHARED mapping flag
+  mm/gup: Remove redundant check for PCI P2PDMA page
+  mm/mm_init: Move p2pdma page refcount initialisation to p2pdma
+  mm: Allow compound zone device pages
+  mm/memory: Enhance insert_page_into_pte_locked() to create writable mappings
+  mm/memory: Add vmf_insert_page_mkwrite()
+  rmap: Add support for PUD sized mappings to rmap
+  huge_memory: Add vmf_insert_folio_pud()
+  huge_memory: Add vmf_insert_folio_pmd()
+  memremap: Add is_devdax_page() and is_fsdax_page() helpers
+  mm/gup: Don't allow FOLL_LONGTERM pinning of FS DAX pages
+  proc/task_mmu: Mark devdax and fsdax pages as always unpinned
+  mm/mlock: Skip ZONE_DEVICE PMDs during mlock
+  fs/dax: Properly refcount fs dax pages
+  device/dax: Properly refcount device dax pages when mapping
+  mm: Remove pXX_devmap callers
+  mm: Remove devmap related functions and page table bits
+  Revert "riscv: mm: Add support for ZONE_DEVICE"
+  Revert "LoongArch: Add ARCH_HAS_PTE_DEVMAP support"
+
+ Documentation/mm/arch_pgtable_helpers.rst     |   6 +-
+ arch/arm64/Kconfig                            |   1 +-
+ arch/arm64/include/asm/pgtable-prot.h         |   1 +-
+ arch/arm64/include/asm/pgtable.h              |  24 +-
+ arch/loongarch/Kconfig                        |   1 +-
+ arch/loongarch/include/asm/pgtable-bits.h     |   6 +-
+ arch/loongarch/include/asm/pgtable.h          |  19 +-
+ arch/powerpc/Kconfig                          |   1 +-
+ arch/powerpc/include/asm/book3s/64/hash-4k.h  |   6 +-
+ arch/powerpc/include/asm/book3s/64/hash-64k.h |   7 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h  |  53 +---
+ arch/powerpc/include/asm/book3s/64/radix.h    |  14 +-
+ arch/powerpc/mm/book3s64/hash_hugepage.c      |   2 +-
+ arch/powerpc/mm/book3s64/hash_pgtable.c       |   3 +-
+ arch/powerpc/mm/book3s64/hugetlbpage.c        |   2 +-
+ arch/powerpc/mm/book3s64/pgtable.c            |  10 +-
+ arch/powerpc/mm/book3s64/radix_pgtable.c      |   5 +-
+ arch/powerpc/mm/pgtable.c                     |   2 +-
+ arch/riscv/Kconfig                            |   1 +-
+ arch/riscv/include/asm/pgtable-64.h           |  20 +-
+ arch/riscv/include/asm/pgtable-bits.h         |   1 +-
+ arch/riscv/include/asm/pgtable.h              |  17 +-
+ arch/x86/Kconfig                              |   1 +-
+ arch/x86/include/asm/pgtable.h                |  51 +---
+ arch/x86/include/asm/pgtable_types.h          |   5 +-
+ drivers/dax/device.c                          |  15 +-
+ drivers/gpu/drm/nouveau/nouveau_dmem.c        |   3 +-
+ drivers/nvdimm/pmem.c                         |   4 +-
+ drivers/pci/p2pdma.c                          |  19 +-
+ fs/dax.c                                      | 363 ++++++++++++++-----
+ fs/ext4/inode.c                               |  43 +--
+ fs/fuse/dax.c                                 |  30 +--
+ fs/fuse/dir.c                                 |   2 +-
+ fs/fuse/file.c                                |   4 +-
+ fs/fuse/virtio_fs.c                           |   3 +-
+ fs/proc/task_mmu.c                            |   2 +-
+ fs/userfaultfd.c                              |   2 +-
+ fs/xfs/xfs_inode.c                            |  40 +-
+ fs/xfs/xfs_inode.h                            |   3 +-
+ fs/xfs/xfs_super.c                            |  18 +-
+ include/linux/dax.h                           |  37 ++-
+ include/linux/huge_mm.h                       |  12 +-
+ include/linux/memremap.h                      |  28 +-
+ include/linux/migrate.h                       |   4 +-
+ include/linux/mm.h                            |  40 +--
+ include/linux/mm_types.h                      |  16 +-
+ include/linux/mmzone.h                        |  12 +-
+ include/linux/page-flags.h                    |   6 +-
+ include/linux/pfn_t.h                         |  20 +-
+ include/linux/pgtable.h                       |  21 +-
+ include/linux/rmap.h                          |  15 +-
+ lib/test_hmm.c                                |   3 +-
+ mm/Kconfig                                    |   4 +-
+ mm/debug_vm_pgtable.c                         |  59 +---
+ mm/gup.c                                      | 176 +---------
+ mm/hmm.c                                      |  12 +-
+ mm/huge_memory.c                              | 220 +++++++-----
+ mm/internal.h                                 |   2 +-
+ mm/khugepaged.c                               |   2 +-
+ mm/madvise.c                                  |   8 +-
+ mm/mapping_dirty_helpers.c                    |   4 +-
+ mm/memory-failure.c                           |   6 +-
+ mm/memory.c                                   | 118 ++++--
+ mm/memremap.c                                 |  59 +--
+ mm/migrate_device.c                           |   9 +-
+ mm/mlock.c                                    |   2 +-
+ mm/mm_init.c                                  |  23 +-
+ mm/mprotect.c                                 |   2 +-
+ mm/mremap.c                                   |   5 +-
+ mm/page_vma_mapped.c                          |   5 +-
+ mm/pagewalk.c                                 |  14 +-
+ mm/pgtable-generic.c                          |   7 +-
+ mm/rmap.c                                     |  67 +++-
+ mm/swap.c                                     |   2 +-
+ mm/truncate.c                                 |  16 +-
+ mm/userfaultfd.c                              |   5 +-
+ mm/vmscan.c                                   |   5 +-
+ 77 files changed, 895 insertions(+), 961 deletions(-)
+
+base-commit: e25c8d66f6786300b680866c0e0139981273feba
+-- 
+git-series 0.9.1
 
