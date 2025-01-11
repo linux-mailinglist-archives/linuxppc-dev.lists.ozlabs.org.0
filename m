@@ -1,81 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-5081-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5082-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08673A0A476
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 16:47:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B163A0A4F4
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 18:11:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVjb44LjMz2yP8;
-	Sun, 12 Jan 2025 02:47:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVlRM4LKmz3c9l;
+	Sun, 12 Jan 2025 04:11:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736610464;
-	cv=none; b=Cj3NFljXD682Khr9iMG7OxU4CUcv+tskHCoPdQuuSncsm5VYo3vtHo9vwY5aPnE8fVSSYTRds+mhXqyDBfEohd6EywulucynS/FvzEYKpAwlIwPZYT2dRamHsjx/Yk+qq15YGJx7THBUcGYbfyd13DGPebGIBZBwJ6vvOA4CwRWye3RZSrOoJG7O7dLJlQMqnCqDM/OocW28vhQbWAPdrjb+kxNhqTKJbCOYQ/gOLOsyj95gWwQgzXyh7iyzpSSIMjj0HLyo18+l74AmbCzoyPx03uwNi4gGZv5P7p4CZQJS4c9D3FNk6/c9lC9JPLkREz3EVbDCWp4Wh6mltMWV0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736615471;
+	cv=none; b=Yzn4/6eR8YHluEfPwY+TeYP77jgg/7llqvKxADVf92Qf0jexaRlCrD9g+YxNAjxR1SLIVYr3bPSp5tRYSJoR3CJ6fErq8cdscdmeAiFsWmeTDvgg43A0lNsnySo76M2VZf/kKsrksKujx1vIDEDuW1RfJTq/38+WBjgK9O41REMuDMEcO/nEJJbRxCGAKRUhB9hX1XqHWN/nF4V1OYwBJY7/Gnp7cu+qT8JT5EQW+M41RBVkXX9SSxxyKB6blT+xFnhqkgpk/TI1HqwcsIZyfsLEJtk6oTZenOk8FRWCjA4G0GYjqFU8ZtrW+23AnqQtrd2wBAYTr/tpbc72Y/Wq0A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736610464; c=relaxed/relaxed;
-	bh=dW0Y3OLXirtF2KtBYrYbIBJYUKU/g9TObXwbTI3O2Ac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SmJWAeE6pWLVGrNghCtksfSaRXlQ4xQw367ArEAxZNdXtMcF3kJURc/0APgdPW+lqv5oFIa40y+1nh3x+jGPGS3gsK6uFUdymJ4ThqhzBnulol+aimQs4X9i15VHFz3oqOaO+wiGjKP6kjr50ZDkLkJoct4l7s3tTwi7xVc5bhJoZBIG3AHrFQyyiKxk6gqhafglg6VBCFmgHku4m9CMXc0FtU/AuWTMgIvWcR8ySPXCxzHdIpLxAwQhHi18k+ybNyGDJ7X96WwgNn4zfBi0akMyjBX8Akue7gCw1ZS3pTln+FdJ9/JUps7m60sBb7YlGXCN7MA1kdulVpbwyrYxCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ufoe67jH; dkim-atps=neutral; spf=pass (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1736615471; c=relaxed/relaxed;
+	bh=oiDIac9UCgslMdyoZCP/7jQnvyDk7prCS5jJXe0SP8M=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=cTw7t6zc1jyl8C5+Pkht/isGj6r23eG+94IshZk1mMhjoctoKDXtjD9B/ODM1mZ+AIJ0Fjqrh2dd3pvugDi8tawDx2teZFisRH/WBu3WI+eBTFPmKboFtG6xFWriIuC/uR4t+1kDHDSE8hWQhZ0nozKCbcOzUIfP6xLZWIEIlzP79neF6NCliDtP2ZsVJxUBNeTvqLzwoaQxLG77QC/QrzSoLGC9OATekRsFd15kA7xquapnECrQW5NYlDXVnQEssodYP5cSueNsNL9xronzXkO3xk70dksdOKCgzDQ76UL7jTEQ+btl05c7EB4tBLjPVRvzP+QfiX5MlNkLD1v+XA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZPzo6BKp; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Ufoe67jH;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZPzo6BKp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.19; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YVjb11Bsrz2y8X
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2025 02:47:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736610461; x=1768146461;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=b3P6KNSNfX8VCZ+6tJgRB2tHLM4xz/W71xYZ7MASfBg=;
-  b=Ufoe67jHsUZysr74ImEX5yOm3uCdseyajbPjn60sqmDSp1jsXHINtUl0
-   fWvbSuRa9Bu3y/xYoarsD5+uJewPeRqVwaXkCD9fvGLMDQfdlCIA8lJlb
-   R/+h0bOV9eDecL0dKVsAdSRrDzpUdK1wgWUN5a/DD4MeUn9nSsSm7VbJe
-   xq0MoUAFcBCjoDbg+CU6UmFr03Tc4AZne2QwDg9xosU0k92D6gydCG+Vu
-   gDTaZJX0uxPs+1XP/JQNXXPZmuuabYDPr8phpQyEUDlk5wUp1y/KeFFEG
-   9INq4yipigxCWrNXgnxgdA8GcqGx3i0OVl9O1PinJmKkkE+qQDvVKLub1
-   Q==;
-X-CSE-ConnectionGUID: paoM6AKuS02wtOUo1v4xHw==
-X-CSE-MsgGUID: Ku2np7zESCaN7sWIqPgW/Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11312"; a="36105398"
-X-IronPort-AV: E=Sophos;i="6.12,307,1728975600"; 
-   d="scan'208";a="36105398"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2025 07:47:33 -0800
-X-CSE-ConnectionGUID: TrK7FUPAQ9a6FiuyaSBJlA==
-X-CSE-MsgGUID: H2dRrx1jSreuGV87yZ9ZVQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="127290445"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 11 Jan 2025 07:47:27 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tWdhs-000Kqd-2f;
-	Sat, 11 Jan 2025 15:47:24 +0000
-Date: Sat, 11 Jan 2025 23:47:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Andrey Albershteyn <aalbersh@redhat.com>, linux-fsdevel@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Andrey Albershteyn <aalbersh@redhat.com>,
-	linux-api@vger.kernel.org, monstr@monstr.eu, mpe@ellerman.id.au,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
-	maddy@linux.ibm.com, luto@kernel.org, tglx@linutronix.de,
-	mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-	viro@zeniv.linux.org.uk, brauner@kernel.org, jack@suse.cz,
-	arnd@arndb.de, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org
-Subject: Re: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
-Message-ID: <202501112305.EPQr5jnx-lkp@intel.com>
-References: <20250109174540.893098-1-aalbersh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YVlRG1Zgjz3c9g
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2025 04:11:04 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-21644aca3a0so65446615ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 09:11:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1736615457; x=1737220257; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=oiDIac9UCgslMdyoZCP/7jQnvyDk7prCS5jJXe0SP8M=;
+        b=ZPzo6BKpMOUGriRvmN6WNID82MepA32bdzFSz8pVYLboYBeB/w8M0VLIUes1gzAjHL
+         7Q5tfOFmwN87njOAGVI0gj58AHaUVfc9XZQHj+9arh5O/2dAqwknjKzXGh3h4xEYfURI
+         VUD/tLlxW72MyQiaftWEHtwGXXt4Va6w/JSlQ8FRJc3YQVH3RqpuDPcsjaafigBwzbAg
+         BL1UDTpBZVFYXlPhzrSXuMZRwAIPVjnSLezuAU8dQRTsQHJsbkO1ymo+5FHVs4yXG/Sf
+         kqxNu9goQYZjxAJpzTVubah0woGZheS61IGWBtWhoyPt3PIKguLWg7vwSBLcP5kxcZrj
+         Xtew==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736615457; x=1737220257;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oiDIac9UCgslMdyoZCP/7jQnvyDk7prCS5jJXe0SP8M=;
+        b=i/PFzTGZRhAZhQ+0WpZOqGfoEtllCV6Gyw7y4HUylTxzMFN+jGjOLawJeboEoXQecS
+         QJ6a9HygKRMmXwBetRMNmLS7FJgyW7Zvjt3QiafJzPl71NI6glcvi/u2wG1c2JsMCMKR
+         mOEgYZ6NuaV7X2FfjAUqIwzXY/fn65xdLkdVHkBUoZmW+ocgH33NsRHEoQ2Nn/H8LN+X
+         sBw9Tw1h/2Qz31OjxzZzpZFI+9WkqbaQANHa8SO2WBsdOaxvPVA6MiFC/6nqej2WT5Ki
+         /3ZskVommU3LTd4swVwuh7AP+VA+yBjhmuiHEGqhxzBGR18FYQhb4RTMGF7EymBKgwKG
+         iO/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXIOx525KYP8y3ztRHh4OzVa8Ll7lA0XO8aUzvQNmVe6fY8rvgCK1IYmGuRVe5urCO1o0fzJySohxExGk8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxbgc7IiycIvwe043k0ju3JxnndwoomiAUx5I5ukosf9qiTIBNY
+	V1ZXxEh41uZC7gxZCSqMVDCrlKySxdm/vfVSJmeNybVRRqYxVEPA
+X-Gm-Gg: ASbGncv8+TkKddli8BynP8nB+j7x8qozAeNruyKuf52i3IO4TZKv+Aiit9LQLc4R7B2
+	BZup0J5SreKB78pTLUtHORAgwfh8Atjb7sZyLPPzVd6CY7q9cCAuUr3pGsIw4NzXIvN9BdpDWEF
+	ulq9cMYYT0d1n2/h5XKsEjzW+MtO70k3u67D5NBKdihsstmIsAgNH6KmTq3E04G2ZlKXxIwFfIO
+	oVy0ne3IwTcRCytfoSS7QsAiTTtlaJ2e0vE17+4jC7XSbaY
+X-Google-Smtp-Source: AGHT+IHQdKqTwbYiK/nAlWC/6KumIvaC+qTQc/SilPBS3OQGqUFXiS/0kAwbi+fQRJYCJkv76bVryg==
+X-Received: by 2002:a05:6a20:72a1:b0:1e0:ae58:2945 with SMTP id adf61e73a8af0-1e88d0afc33mr28533903637.31.1736615456851;
+        Sat, 11 Jan 2025 09:10:56 -0800 (PST)
+Received: from dw-tp ([171.76.81.42])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4056bc88sm3302165b3a.67.2025.01.11.09.10.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 11 Jan 2025 09:10:56 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] powerpc/64s: Rewrite __real_pte() as a static inline
+In-Reply-To: <06750dbc7bf961e3ea7ef7a89d5c220972465ea5.1736331264.git.christophe.leroy@csgroup.eu>
+Date: Sat, 11 Jan 2025 22:33:04 +0530
+Message-ID: <87o70duvuf.fsf@gmail.com>
+References: <06750dbc7bf961e3ea7ef7a89d5c220972465ea5.1736331264.git.christophe.leroy@csgroup.eu>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,126 +88,66 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250109174540.893098-1-aalbersh@kernel.org>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Andrey,
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
 
-kernel test robot noticed the following build warnings:
+> Rewrite __real_pte() as a static inline in order to avoid
+> following warning/error when building with 4k page size:
+>
+> 	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
+> 	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
+> 	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
+> 	   49 |         int i, offset;
+> 	      |                ^~~~~~
+> 	cc1: all warnings being treated as errors
+>
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
 
-[auto build test WARNING on brauner-vfs/vfs.all]
-[also build test WARNING on geert-m68k/for-next powerpc/next powerpc/fixes s390/features linus/master v6.13-rc6 next-20250110]
-[cannot apply to geert-m68k/for-linus deller-parisc/for-next jcmvbkbc-xtensa/xtensa-for-next arnd-asm-generic/master tip/x86/asm]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Great. Why not fix the other warning as well which is reported in above
+link, which is...  
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Andrey-Albershteyn/fs-introduce-getfsxattrat-and-setfsxattrat-syscalls/20250110-014739
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git vfs.all
-patch link:    https://lore.kernel.org/r/20250109174540.893098-1-aalbersh%40kernel.org
-patch subject: [PATCH] fs: introduce getfsxattrat and setfsxattrat syscalls
-config: s390-randconfig-r133-20250111 (https://download.01.org/0day-ci/archive/20250111/202501112305.EPQr5jnx-lkp@intel.com/config)
-compiler: s390-linux-gcc (GCC) 14.2.0
-reproduce: (https://download.01.org/0day-ci/archive/20250111/202501112305.EPQr5jnx-lkp@intel.com/reproduce)
+--
+   arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
+>> arch/powerpc/mm/book3s64/hash_native.c:786:29: warning: variable 'index' set but not used [-Wunused-but-set-variable]
+     786 |         unsigned long hash, index, hidx, shift, slot;
+--
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501112305.EPQr5jnx-lkp@intel.com/
+...similar to how we fixed this warning by making the macro as static
+inline? That means something like this (not tested)?
 
-sparse warnings: (new ones prefixed by >>)
-   fs/inode.c:605:28: sparse: sparse: context imbalance in 'inode_wait_for_lru_isolating' - unexpected unlock
-   fs/inode.c: note: in included file (through include/linux/wait.h, include/linux/wait_bit.h, include/linux/fs.h):
-   include/linux/list.h:83:21: sparse: sparse: self-comparison always evaluates to true
-   include/linux/list.h:83:21: sparse: sparse: self-comparison always evaluates to true
-   include/linux/list.h:83:21: sparse: sparse: self-comparison always evaluates to true
-   fs/inode.c:999:28: sparse: sparse: context imbalance in 'inode_lru_isolate' - unexpected unlock
-   fs/inode.c:1058:9: sparse: sparse: context imbalance in 'find_inode' - different lock contexts for basic block
-   fs/inode.c:1099:9: sparse: sparse: context imbalance in 'find_inode_fast' - different lock contexts for basic block
-   fs/inode.c:1829:5: sparse: sparse: context imbalance in 'insert_inode_locked' - wrong count at exit
-   fs/inode.c:1947:20: sparse: sparse: context imbalance in 'iput_final' - unexpected unlock
-   fs/inode.c:1961:6: sparse: sparse: context imbalance in 'iput' - wrong count at exit
-   fs/inode.c:2494:17: sparse: sparse: context imbalance in '__wait_on_freeing_inode' - unexpected unlock
->> fs/inode.c:2960:1: sparse: sparse: Using plain integer as NULL pointer
->> fs/inode.c:2960:1: sparse: sparse: Using plain integer as NULL pointer
->> fs/inode.c:2960:1: sparse: sparse: Using plain integer as NULL pointer
->> fs/inode.c:2960:1: sparse: sparse: Using plain integer as NULL pointer
-   fs/inode.c:2998:39: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct fsxattr [noderef] __user *ufa @@     got struct fsxattr *fsx @@
-   fs/inode.c:2998:39: sparse:     expected struct fsxattr [noderef] __user *ufa
-   fs/inode.c:2998:39: sparse:     got struct fsxattr *fsx
-   fs/inode.c:2998:39: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct fsxattr [noderef] __user *ufa @@     got struct fsxattr *fsx @@
-   fs/inode.c:2998:39: sparse:     expected struct fsxattr [noderef] __user *ufa
-   fs/inode.c:2998:39: sparse:     got struct fsxattr *fsx
-   fs/inode.c:3008:1: sparse: sparse: Using plain integer as NULL pointer
-   fs/inode.c:3008:1: sparse: sparse: Using plain integer as NULL pointer
-   fs/inode.c:3008:1: sparse: sparse: Using plain integer as NULL pointer
-   fs/inode.c:3008:1: sparse: sparse: Using plain integer as NULL pointer
-   fs/inode.c:3032:41: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct fsxattr [noderef] __user *ufa @@     got struct fsxattr *fsx @@
-   fs/inode.c:3032:41: sparse:     expected struct fsxattr [noderef] __user *ufa
-   fs/inode.c:3032:41: sparse:     got struct fsxattr *fsx
-   fs/inode.c:3032:41: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct fsxattr [noderef] __user *ufa @@     got struct fsxattr *fsx @@
-   fs/inode.c:3032:41: sparse:     expected struct fsxattr [noderef] __user *ufa
-   fs/inode.c:3032:41: sparse:     got struct fsxattr *fsx
+-#define __rpte_to_hidx(r,index)        (pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
++static inline unsigned long __rpte_to_hidx(real_pte_t r, unsigned long index)
++{
++       return pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT;
++}
 
-vim +2960 fs/inode.c
 
-  2959	
-> 2960	SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
-  2961			struct fsxattr *, fsx, int, at_flags)
-  2962	{
-  2963		struct fd dir;
-  2964		struct fileattr fa;
-  2965		struct path filepath;
-  2966		struct inode *inode;
-  2967		int error;
-  2968	
-  2969		if (at_flags)
-  2970			return -EINVAL;
-  2971	
-  2972		if (!capable(CAP_FOWNER))
-  2973			return -EPERM;
-  2974	
-  2975		dir = fdget(dfd);
-  2976		if (!fd_file(dir))
-  2977			return -EBADF;
-  2978	
-  2979		if (!S_ISDIR(file_inode(fd_file(dir))->i_mode)) {
-  2980			error = -EBADF;
-  2981			goto out;
-  2982		}
-  2983	
-  2984		error = user_path_at(dfd, filename, at_flags, &filepath);
-  2985		if (error)
-  2986			goto out;
-  2987	
-  2988		inode = filepath.dentry->d_inode;
-  2989		if (file_inode(fd_file(dir))->i_sb->s_magic != inode->i_sb->s_magic) {
-  2990			error = -EBADF;
-  2991			goto out_path;
-  2992		}
-  2993	
-  2994		error = vfs_fileattr_get(filepath.dentry, &fa);
-  2995		if (error)
-  2996			goto out_path;
-  2997	
-  2998		if (copy_fsxattr_to_user(&fa, fsx))
-  2999			error = -EFAULT;
-  3000	
-  3001	out_path:
-  3002		path_put(&filepath);
-  3003	out:
-  3004		fdput(dir);
-  3005		return error;
-  3006	}
-  3007	
+-ritesh
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+
+> Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/book3s/64/hash-4k.h | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> index c3efacab4b94..a7a68ba9c71b 100644
+> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+> @@ -77,7 +77,10 @@
+>  /*
+>   * With 4K page size the real_pte machinery is all nops.
+>   */
+> -#define __real_pte(e, p, o)		((real_pte_t){(e)})
+> +static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
+> +{
+> +	return (real_pte_t){pte};
+> +}
+>  #define __rpte_to_pte(r)	((r).pte)
+>  #define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
+>  
+> -- 
+> 2.47.0
 
