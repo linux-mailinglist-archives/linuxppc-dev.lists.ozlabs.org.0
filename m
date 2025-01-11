@@ -1,70 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-5064-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5065-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A34EA0A002
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 02:25:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E615A0A016
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 02:30:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVLRf5BHlz3d4H;
-	Sat, 11 Jan 2025 12:25:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVLZS1Z1sz3d3W;
+	Sat, 11 Jan 2025 12:30:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::64a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736558702;
-	cv=none; b=Fpn6jo6VEAh1OJjk5B60ovQBtMTkZYdN9C7P5aBzBrEgkSIGmC2P/UVRIIXf9wH3n/OpBsBR1gAmHh/h6yxitHFNw/XnolPsLFrRoHKnMxrRiG8u5t31qJs52bVoiIUb974ojGrWbV1tLTFQBPqE0sUJbrddQ9ZsiIwP5EdAg/lAPdH6Ioluc1Z+zSjdZ2sIRaMR+ltgdeIhNYabr0E1Q06qdBA45JGe9XkQyxGMCar28XaXnPsMBjdp3NfdhGlF/DbmthNYXvGbpM3idvHQJJyJCRMVxjSMwtK0uIf1zW0kgiZ9A7HS/hkf46U4FoCscaxJ0krkTz98CYzLeJ1AYA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736559056;
+	cv=none; b=CqSkrv/y7NmLQJAn0EzDDrckLkpS+MW/fRFVbV9lLaCs6zH1QhOHd2kZc2wl0Y2zeZEcmVCreR0Y8YbjLttPe8d275YENXP9N0SKCifNzed0snDPZP3J65PTg29N+h9JEl3/cJ7pTGk8wTmLxjiOW9dxgSB51FYrLZG1FXTAAb4+m57HGHISRzMRscN37mhP0q6QC4anJ8AEReB1FnNExNjE2ityFyzWfR53AkbV2Cw/ylBf4mLllT45+A0mBYFVBOvUl6+6gAU/KtQrs9nXjXgZSRRVbWtjYDKlOPmEpdDGiVs6MaGggLrucO12Gk0yG9/fjEarf0OEnKaWzZKIKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736558702; c=relaxed/relaxed;
-	bh=bnP9l4TBgZavFgl9ingoWbV7IQlMfBLutKO12YuuQSs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=JQ6eWaledDlyCZvApKxlhVrqeur52IO3VIv9r4a1BNW72nDUDEkbiSYAuRLI0OL3vopn3SDH/Msovu27wr23hq9DUQSoTs98lMqrJ9RDGlkJ5czTPHra1QeLi8kifjtcv//6yjQ6mxGJv69wOloyz50M1a8dPmZf957hlmum/P8EJQw2+O4ZZYwyt54mnSxz+/H7rFmZvwh5XdkzZjFiVtb4kg0A3LOJtrLd0XP2lKoQZKhfTZi06S5x/+hvCCddocP4fwedq0Z67lRS4eLOToXPGbgCUDpsfb8ZyKO7Oxm8TUfarkH15Udb6SJ1e79YNY/aliulRMjkFn6Bde9ODQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=YUTFTyy0; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3bmibzwykdec1njwslpxxpun.lxvurw36yyl-mn4ur121.x8ujk1.x0p@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1736559056; c=relaxed/relaxed;
+	bh=JSJ2//G/dyGy/Z/QtKtRmb1VcieLheCT8CgoEclYxvU=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=cf09QYo0L72tKWBogJUWLGOFWNSa+9hGQs1vo3GmX8v0KnuAliZgQ0JGRmnbr981j6qQ4rqkYT4mY9Qgml39sSEJykIfB45a5MEFfbGKHogfFP3jQldSvnhM9wdJRAIlK3dQX71j4Tfw8/KgazInMt44igfVXrF2RzfWpC+1Qa9Uny6+KeyT+nVSp6ostSKFIWcsHSLy4RfN3vTpHDoxreEc/sRC0SLUnY6SOY/wBIowCAmD618NZgKSfuR6+YpHLjlfEKlyUjzsUkG/clbUTNJ3vaCj538I2c4Jk/A+s5vBfpT20j9pxz/n2Xp28GcPFjcsuJ5dBnxC42jegXVH0g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=wCdNg1TF; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=YUTFTyy0;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=wCdNg1TF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3bmibzwykdec1njwslpxxpun.lxvurw36yyl-mn4ur121.x8ujk1.x0p@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YVLRf0DhTz3d9L
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 12:25:02 +1100 (AEDT)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-2161d5b3eb5so46318625ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 17:25:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736558700; x=1737163500; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=bnP9l4TBgZavFgl9ingoWbV7IQlMfBLutKO12YuuQSs=;
-        b=YUTFTyy06JmC/cH2gZu2SEAVqIBhKQ+shjXCTLoAeX+25q1YbzinN81RbAkWIVU7ox
-         SYkA2RfZiyiCpValtlYJBG7ED1ZANe0FI0Gc17N2f6sNjNkbaAaypaXesTQ9Fo8owxGc
-         /bepbW6gyg5K3QuwhknAeuaxufX3md1JRzibfNJCF50J6S9sZjutO0gbg3URT5afecym
-         KU2WcmKA3Vr1srV+IF9qLd324yzEwbGT9OvHoYvyK5Mgdcyb1wmvvEDzrBCf5EW/TZF+
-         QbbEnheo28QONnyzfHLouEVIgTsCF9MndJY+FNKGv4hKq/P2yLVOUvFB57UoI8T5jW4a
-         Eg2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736558700; x=1737163500;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bnP9l4TBgZavFgl9ingoWbV7IQlMfBLutKO12YuuQSs=;
-        b=mFscYCtQaunXDh+tzkehZK2Ni2+++35lIy/7fnJo0WVEMniqzrxAJR2N0Vg79wCatE
-         mwuUheMej131Ltq57pMCR9UMInj0U+k2ASNScS3+tViQQNEZFQIcNDiH5vltg0fKwGal
-         AOPWDbLSMb6YKTfccD0Dhja4X3/CprygVKgkFtYcYWaEcCt/r0Xki+NfC4OABeugDxYa
-         H6lGPMN1Vv//ArNqZDzZONOAHHnE9v2RjMXqBXH9q6/AQW3RQ5EHlQQoWwnIMiKSHJjR
-         HY0sIjnDmrcERcvw927uO+thwfP6ZDrpUxjGF4h+yCERRE/7iYCpW1rut2JCr2zJsqiL
-         RPWw==
-X-Forwarded-Encrypted: i=1; AJvYcCV4psXLrOeoU6h7Y0hFX0iKT2UmcckO0jD+dCOAJsKyYg9iWV0N+xnb/9o0zs3ol0JI5cBzhBZrty6WKLw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxDEy0RYLPM1dBxYO9vgE+E8i847aVon1owmsj359kCaznq8pg2
-	CjvkJuUyrMQ0SUvrr6mXmcw6fvbI5UVTtcCxRTQTfne9CDvgyN5O9+Wf9iW9NsLvaHIYjWVP/Xe
-	lZw==
-X-Google-Smtp-Source: AGHT+IH1NdERQE8OQLjVGWXsUxxFzmL931Ova+zIR4kc3ay4XMIaQ3TzbpO5jT/NYBJvXHUAPCJZD+fSckk=
-X-Received: from pfbfh41.prod.google.com ([2002:a05:6a00:3929:b0:72a:bc54:8507])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4393:b0:1e1:ca91:b0e3
- with SMTP id adf61e73a8af0-1e88d09e17fmr21120449637.36.1736558700525; Fri, 10
- Jan 2025 17:25:00 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 10 Jan 2025 17:24:50 -0800
-In-Reply-To: <20250111012450.1262638-1-seanjc@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YVLZQ6KPxz3d32
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 12:30:53 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1C3F25C3674;
+	Sat, 11 Jan 2025 01:30:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CC51C4CED6;
+	Sat, 11 Jan 2025 01:30:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1736559049;
+	bh=7I1OBfWbo908Mx7qvQkrDHGouLRf+dWAo5fEwim6p1w=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=wCdNg1TFG2mQ2V7JLabBLagQ3iPh1FJkujMfPxuiGPq8mHSUiRbicfuDz2i9VqjFf
+	 EAUFhX6Dmh7OxXqZl8IYRBtst8NCQct6t/dFbEismIfwpRA3Qoo2LI1c6LPpWu8fRG
+	 2Kmoai3+QNA8Ga1fKjMEVJkS7d/Z4QkUiwdQ67Rg=
+Date: Fri, 10 Jan 2025 17:30:48 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: Alistair Popple <apopple@nvidia.com>, <linux-mm@kvack.org>,
+ <alison.schofield@intel.com>, <lina@asahilina.net>, <zhang.lyra@gmail.com>,
+ <gerald.schaefer@linux.ibm.com>, <vishal.l.verma@intel.com>,
+ <dave.jiang@intel.com>, <logang@deltatee.com>, <bhelgaas@google.com>,
+ <jack@suse.cz>, <jgg@ziepe.ca>, <catalin.marinas@arm.com>,
+ <will@kernel.org>, <mpe@ellerman.id.au>, <npiggin@gmail.com>,
+ <dave.hansen@linux.intel.com>, <ira.weiny@intel.com>,
+ <willy@infradead.org>, <djwong@kernel.org>, <tytso@mit.edu>,
+ <linmiaohe@huawei.com>, <david@redhat.com>, <peterx@redhat.com>,
+ <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <nvdimm@lists.linux.dev>, <linux-cxl@vger.kernel.org>,
+ <linux-fsdevel@vger.kernel.org>, <linux-ext4@vger.kernel.org>,
+ <linux-xfs@vger.kernel.org>, <jhubbard@nvidia.com>, <hch@lst.de>,
+ <david@fromorbit.com>, <chenhuacai@kernel.org>, <kernel@xen0n.name>,
+ <loongarch@lists.linux.dev>
+Subject: Re: [PATCH v6 00/26] fs/dax: Fix ZONE_DEVICE page reference counts
+Message-Id: <20250110173048.5565901e0fec24556325bd18@linux-foundation.org>
+In-Reply-To: <6780c6d43d73e_2aff42943b@dwillia2-xfh.jf.intel.com.notmuch>
+References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
+	<6780c6d43d73e_2aff42943b@dwillia2-xfh.jf.intel.com.notmuch>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,135 +77,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
-References: <20250111012450.1262638-1-seanjc@google.com>
-X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
-Message-ID: <20250111012450.1262638-6-seanjc@google.com>
-Subject: [PATCH 5/5] KVM: selftests: Rely on KVM_RUN_NEEDS_COMPLETION to
- complete userspace exits
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Add selftests coverage for KVM_RUN_NEEDS_COMPLETION by redoing KVM_RUN if
-and only if KVM states that completion is required.
+On Thu, 9 Jan 2025 23:05:56 -0800 Dan Williams <dan.j.williams@intel.com> wrote:
 
-Opportunistically rename the helper to replace "io" with "exit", as exits
-that require completion are no longer limited to I/O.
+> >  - Remove PTE_DEVMAP definitions from Loongarch which were added since
+> >    this series was initially written.
+> [..]
+> > 
+> > base-commit: e25c8d66f6786300b680866c0e0139981273feba
+> 
+> If this is going to go through nvdimm.git I will need it against a
+> mainline tag baseline. Linus will want to see the merge conflicts.
+> 
+> Otherwise if that merge commit is too messy, or you would rather not
+> rebase, then it either needs to go one of two options:
+> 
+> - Andrew's tree which is the only tree I know of that can carry
+>   patches relative to linux-next.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- tools/testing/selftests/kvm/include/kvm_util.h            | 8 ++++++--
- tools/testing/selftests/kvm/lib/kvm_util.c                | 4 ++++
- tools/testing/selftests/kvm/lib/ucall_common.c            | 2 +-
- tools/testing/selftests/kvm/lib/x86/processor.c           | 8 +-------
- tools/testing/selftests/kvm/x86/triple_fault_event_test.c | 3 +--
- 5 files changed, 13 insertions(+), 12 deletions(-)
+I used to be able to do that but haven't got around to setting up such
+a thing with mm.git.  This is the first time the need has arisen,
+really.
 
-diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
-index 78fd597c1b60..86e1850e4e49 100644
---- a/tools/testing/selftests/kvm/include/kvm_util.h
-+++ b/tools/testing/selftests/kvm/include/kvm_util.h
-@@ -29,6 +29,8 @@
- 
- #define NSEC_PER_SEC 1000000000L
- 
-+extern bool kvm_has_needs_completion;
-+
- struct userspace_mem_region {
- 	struct kvm_userspace_memory_region2 region;
- 	struct sparsebit *unused_phy_pages;
-@@ -634,9 +636,11 @@ static inline int __vcpu_run(struct kvm_vcpu *vcpu)
- 
- void vcpu_run_immediate_exit(struct kvm_vcpu *vcpu);
- 
--static inline void vcpu_run_complete_io(struct kvm_vcpu *vcpu)
-+static inline void vcpu_run_complete_exit(struct kvm_vcpu *vcpu)
- {
--	vcpu_run_immediate_exit(vcpu);
-+	if (!kvm_has_needs_completion ||
-+	    (vcpu->run->flags & KVM_RUN_NEEDS_COMPLETION))
-+		vcpu_run_immediate_exit(vcpu);
- }
- 
- struct kvm_reg_list *vcpu_get_reg_list(struct kvm_vcpu *vcpu);
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index c9a33766f673..95ac9b981049 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -19,6 +19,8 @@
- 
- #define KVM_UTIL_MIN_PFN	2
- 
-+bool kvm_has_needs_completion;
-+
- uint32_t guest_random_seed;
- struct guest_random_state guest_rng;
- static uint32_t last_guest_seed;
-@@ -2253,6 +2255,8 @@ void __attribute((constructor)) kvm_selftest_init(void)
- 	/* Tell stdout not to buffer its content. */
- 	setbuf(stdout, NULL);
- 
-+	kvm_has_needs_completion = kvm_check_cap(KVM_CAP_NEEDS_COMPLETION);
-+
- 	guest_random_seed = last_guest_seed = random();
- 	pr_info("Random seed: 0x%x\n", guest_random_seed);
- 
-diff --git a/tools/testing/selftests/kvm/lib/ucall_common.c b/tools/testing/selftests/kvm/lib/ucall_common.c
-index 42151e571953..125584a94ba8 100644
---- a/tools/testing/selftests/kvm/lib/ucall_common.c
-+++ b/tools/testing/selftests/kvm/lib/ucall_common.c
-@@ -154,7 +154,7 @@ uint64_t get_ucall(struct kvm_vcpu *vcpu, struct ucall *uc)
- 			    "Guest failed to allocate ucall struct");
- 
- 		memcpy(uc, addr, sizeof(*uc));
--		vcpu_run_complete_io(vcpu);
-+		vcpu_run_complete_exit(vcpu);
- 	} else {
- 		memset(uc, 0, sizeof(*uc));
- 	}
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index bd5a802fa7a5..1db4764e413b 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -1077,13 +1077,7 @@ struct kvm_x86_state *vcpu_save_state(struct kvm_vcpu *vcpu)
- 			    nested_size, sizeof(state->nested_));
- 	}
- 
--	/*
--	 * When KVM exits to userspace with KVM_EXIT_IO, KVM guarantees
--	 * guest state is consistent only after userspace re-enters the
--	 * kernel with KVM_RUN.  Complete IO prior to migrating state
--	 * to a new VM.
--	 */
--	vcpu_run_complete_io(vcpu);
-+	vcpu_run_complete_exit(vcpu);
- 
- 	state = malloc(sizeof(*state) + msr_list->nmsrs * sizeof(state->msrs.entries[0]));
- 	TEST_ASSERT(state, "-ENOMEM when allocating kvm state");
-diff --git a/tools/testing/selftests/kvm/x86/triple_fault_event_test.c b/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
-index 56306a19144a..82d732788bc1 100644
---- a/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
-+++ b/tools/testing/selftests/kvm/x86/triple_fault_event_test.c
-@@ -97,8 +97,7 @@ int main(void)
- 	events.flags |= KVM_VCPUEVENT_VALID_TRIPLE_FAULT;
- 	events.triple_fault.pending = true;
- 	vcpu_events_set(vcpu, &events);
--	run->immediate_exit = true;
--	vcpu_run_complete_io(vcpu);
-+	vcpu_run_complete_exit(vcpu);
- 
- 	vcpu_events_get(vcpu, &events);
- 	TEST_ASSERT(events.flags & KVM_VCPUEVENT_VALID_TRIPLE_FAULT,
--- 
-2.47.1.613.gc27f4b7a9f-goog
+> - Wait for v6.14-rc1 
+
+I'm thinking so.  Darrick's review comments indicate that we'll be seeing a v7.
+
+> and get this into nvdimm.git early in the cycle
+>   when the conflict storm will be low.
+
+erk.  This patchset hits mm/ a lot, and nvdimm hardly at all.  Is it
+not practical to carry this in mm.git?
 
 
