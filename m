@@ -1,90 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-5058-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5060-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D29DCA09FE4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 02:16:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1343CA09FF9
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 02:25:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVLG16q7pz3cjL;
-	Sat, 11 Jan 2025 12:16:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVLRZ5T1pz3d2c;
+	Sat, 11 Jan 2025 12:24:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736558201;
-	cv=none; b=L1fxHhL/NJmVejGBRx16quVYcQKW9GJSQTzhH4GXPhzcLO6giOblC6Ob5jT9X3zeHSW6yVq3PFs5tFpK3WJmgqE/lGYdaE7Xmp7+kMeOuFhZovxsfOX/s2DfaSXR9UmbIB8Bx122U+s/84q1D9v9Qse/3pAxBIb1gvFT2+1ljCZpivkKYtiMSXAt17XaHuH43VgJBMlX/nFOWnBUxVUXWmjYUCwDvTzOFihE/7PJRjbZoUbo02Sn2yIadzMzJ516XU1hl9IgmvRHe1SXwaSwoEK1rfxhr6olvfvVVAaYAAN2/+LDdWYLb/VjWERnkla/FeZRxjKYSryVBjiRZ4tKeQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::104a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736558698;
+	cv=none; b=B6P8u/uIFbTe/HZI2ddEteS8aC/VCfF10ai06xcZYDYVLuK/t372iCG92FSli2qBsdjN8HsWQwxxnPdhkfE5UcRu3VSv2AYFwxIfcu3vehjWoYJa5ufPvbTe8qpBoVva2SLtBuN7JFr2jwfQVpzgxkbxRSU5pobyAJgIGMYCh7c/dtEddjdGTxXkFZocKxZTVueSj5kcvsyJP5ByhS1gQnr/SQrTPnBLYy8F816j/UEL0CHI+G2b3dE66FmKrvwQF9Lc1KSFRnOvmr2lpwlNUiamh+agyGZxqECXoiNlHDYJ7X6rkKZi1qPwElm/sSR7VN0QNjJkK7qRn62K8aafuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736558201; c=relaxed/relaxed;
-	bh=OGaUIIECp53nz7ZUChA/HGseFYhZkADFgRs/+WkgOTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oBTwZ9UUW4aOibgJ4WTFc+4NpD3KPtEbL8UaQenxEL1s9nQfS5BMzswo165N7IMKVzJDhLMRubVVLwQzeBQDzUE7bOD+rvIqWUL88wsQCPCXLFEPJJgmMZ+jWGWJb+f4MAzXtZC6LfJZu3Hg9ZSJhTKwvHpgmGAm/t2N2fm11pGPkwqgEA4s/2MeX4/fEwkNJ6HtKLOepH8UYB5EJsJFXUsV5hWZmMkEcb4lT109cFO2Inzdq8wyKUgnz4v9eU9MZjlvB26V3nMVHdaBVlMKqSBv5AWfpqKyJFqWt3NZaxqOa8V0t3DFEfsJt4rt8wXfa2vcR3d7cNJrQWv1Y0ui6g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVLG03sggz3cdm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 12:16:38 +1100 (AEDT)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 3D21472C8FB;
-	Sat, 11 Jan 2025 04:16:32 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id 2736C7CCB3A; Sat, 11 Jan 2025 03:16:32 +0200 (IST)
-Date: Sat, 11 Jan 2025 03:16:32 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Sven Schnelle <svens@linux.ibm.com>
-Cc: Oleg Nesterov <oleg@redhat.com>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	strace-devel@lists.strace.io, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Brian Cain <bcain@quicinc.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH 3/6] syscall.h: introduce syscall_set_nr()
-Message-ID: <20250111011632.GA1724@strace.io>
-References: <20250107230438.GC30633@strace.io>
- <yt9dzfjz6rw5.fsf@linux.ibm.com>
+	t=1736558698; c=relaxed/relaxed;
+	bh=Wth181Oju/yKYvdF4NH88lRCMZbnQWr4S1ULRikLXgA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=MrsVOU4toGBYvJjUaMX2toA3knpeScvEgE97sBRqd+QHrtS/0DOxZppX19woiFRF+hUQCk+CSBwMrfEAE9pcA8EbzwOsvpk+xPZJYV/FJa4FeJUaCaft23I1/zU7ANC9rDZtD/5ZxX9IbKBDWQ11nqjGCMHPoYNvWc1w/VGiPr1N56ZACfj17bMSzRuH4crXmfLV/NT3OhBw2NsqmSYlf8j4gfbcr/LWxJny0RO0h89/nBwOgYxLBCkVyQCRiQmYexclvzhSFntTY3O4UrQy/WCUj5DxnS8RHgveoYGiRWK9nsplBy9TJ35ETPaF/zFk5nNm6yxuMooxTGQIMXszWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QfW8n55U; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3zmibzwykdd8tfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=QfW8n55U;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::104a; helo=mail-pj1-x104a.google.com; envelope-from=3zmibzwykdd8tfbokdhpphmf.dpnmjovyqqd-efwmjtut.p0mbct.psh@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x104a.google.com (mail-pj1-x104a.google.com [IPv6:2607:f8b0:4864:20::104a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YVLRY2Bdrz3cnt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 12:24:55 +1100 (AEDT)
+Received: by mail-pj1-x104a.google.com with SMTP id 98e67ed59e1d1-2efa0eb9dacso4852748a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 10 Jan 2025 17:24:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1736558692; x=1737163492; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Wth181Oju/yKYvdF4NH88lRCMZbnQWr4S1ULRikLXgA=;
+        b=QfW8n55UweEzHU5MD797H+6p9UOAb9voBrf1CvKljXAcmQT0e2gjEOfiP5M+l8wn/V
+         4MNM7tRYvTrYh0PhISsLAjKM6HUwMNsevdlQoch1rfpLnnippHSViBVSb64By2oKz1SR
+         oprY93nmig3dzu/vKbjCyyCtxe64vqV9ADKrvaLJiAkqohVIOKTOlOA/QgvMwfveskIR
+         av8fMbSy0t0X4OhfQSX1NHYgMfEtG2Oe0XzixAt+mRs29nN1JG6MUyfOau7MgcfINpKd
+         cHKzq8N9yG9VE3JKJs+KcFHWk0/+BDLfIxsBw+L1WUxpvmYl4S4W5+/OcnlLJKNp5U7f
+         j/dA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736558692; x=1737163492;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wth181Oju/yKYvdF4NH88lRCMZbnQWr4S1ULRikLXgA=;
+        b=CyPvAIvvbzW5t2QAvwIUI2hrGkaXeIUqdKTF9mpoLdTegkYynYTz8BIjQ014T/7Svv
+         /9VA+EjPGTRUBG1Te0E5KkEBrzAyaIWyTPiADYGSHHcDnI6E81mxBRGtVnq6gnlCW9Hw
+         TTM0DPUqGAHFZi7xHKf0LzrANbg+VIhvHDMXEVGHdCV4gjGI6Ze/rINbgAv+O35PUuFp
+         Aqhb9aqyfLcJY68r3/qpaZC/brXAnmefkSwhDhFkaQ7IHHdv9oss0tuM0fq0jVXQ44eN
+         +ywx7MGceoC7fJZAhd1KRJZfKoNGQ7ve1s55Sh42BSCEwKHPoHIZ2ymgrf2Mg+5CM769
+         Z5ug==
+X-Forwarded-Encrypted: i=1; AJvYcCWfZ7ZdPBnaJ5cUsjdninHlrhQXFYy5Ko1fL9iexNyXnMoa1QJauLlUtLqXG1/uPUtq1ZFgDjvxImGpAkg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwXoWlXhfGDbHSTVZ0PEKhorXRZMlwQJVIcVnoit6c8BcwaiMVy
+	GgWswOPx48HxSqmCGotTidG+HyLMCwOjFR9qPc4dbjtXeVQJQOmDEX/VA8kz4KcKOJ0dFI3iz9p
+	KDQ==
+X-Google-Smtp-Source: AGHT+IEfMuWFVKhsS9utsiRr0qZN46F4y7a5kx/arb7GLt+tjCHLQTHDuOdaekKI3i56eThn0gAXDuFPjYQ=
+X-Received: from pfef19.prod.google.com ([2002:a05:6a00:2293:b0:725:e39e:1055])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:230a:b0:725:ef4b:de30
+ with SMTP id d2e1a72fcca58-72d21f4b537mr18483242b3a.14.1736558692541; Fri, 10
+ Jan 2025 17:24:52 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri, 10 Jan 2025 17:24:45 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,70 +73,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <yt9dzfjz6rw5.fsf@linux.ibm.com>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.47.1.613.gc27f4b7a9f-goog
+Message-ID: <20250111012450.1262638-1-seanjc@google.com>
+Subject: [PATCH 0/5] KVM: Add a kvm_run flag to signal need for completion
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 10, 2025 at 08:37:46AM +0100, Sven Schnelle wrote:
-> "Dmitry V. Levin" <ldv@strace.io> writes:
-> 
-> > Similar to syscall_set_arguments() that complements
-> > syscall_get_arguments(), introduce syscall_set_nr()
-> > that complements syscall_get_nr().
-> >
-> > syscall_set_nr() is going to be needed along with
-> > syscall_set_arguments() on all HAVE_ARCH_TRACEHOOK
-> > architectures to implement PTRACE_SET_SYSCALL_INFO API.
-[...]
-> > diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
-> > index b3dd883699e7..1c0e349fd5c9 100644
-> > --- a/arch/s390/include/asm/syscall.h
-> > +++ b/arch/s390/include/asm/syscall.h
-> > @@ -24,6 +24,13 @@ static inline long syscall_get_nr(struct task_struct *task,
-> >  		(regs->int_code & 0xffff) : -1;
-> >  }
-> >  
-> > +static inline void syscall_set_nr(struct task_struct *task,
-> > +				  struct pt_regs *regs,
-> > +				  int nr)
-> > +{
-> 
-> I think there should be a
-> 
-> 	if (!test_pt_regs_flags(regs, PIF_SYSCALL))
-> 		return;
-> 
-> before the modification so a user can't accidentally change int_code
-> when ptrace stopped in a non-syscall path.
+Add a flag to kvm_run, KVM_RUN_NEEDS_COMPLETION, that is set by KVM to
+inform userspace that KVM_RUN needs to be re-invoked prior to state
+save/restore.  The current approach of relying on KVM developers to
+update documentation, and on VMM developers to read said documentation,
+is brittle and error prone.
 
-The reason why syscall_get_nr() has this check on s390 (and similar checks
-on arc, powerpc, and sparc) is that syscall_get_nr() can be called while
-the target task is not in syscall.
+Note, this series is *very* lightly tested (borderline RFC).
 
-Unlike syscall_get_nr(), syscall_set_nr() can be called only when the
-target task is stopped for tracing on entering syscall: the description in
-include/asm-generic/syscall.h explicitly states that, and the follow-up
-patch that introduces PTRACE_SET_SYSCALL_INFO adds a syscall_set_nr() call
-when the tracee is stopped on entering syscall in either
-PTRACE_SYSCALL_INFO_ENTRY or PTRACE_SYSCALL_INFO_SECCOMP state.
+Sean Christopherson (5):
+  KVM: x86: Document that KVM_EXIT_HYPERCALL requires completion
+  KVM: Clear vcpu->run->flags at start of KVM_RUN for all architectures
+  KVM: Add a common kvm_run flag to communicate an exit needs completion
+  KVM: selftests: Provide separate helper for KVM_RUN with
+    immediate_exit
+  KVM: selftests: Rely on KVM_RUN_NEEDS_COMPLETION to complete userspace
+    exits
 
-I don't mind adding a check, but syscall_set_nr() invocation while the
-target task is not in syscall wouldn't be a result of user actions but
-a kernel programing error, and in that case WARN_ON_ONCE() would be more
-appropriate.
-
-If calling syscall_set_nr() while the target task is not in syscall was
-legal, then syscall_set_nr() would have been designed to return a value
-indicating the status of operation.
-
-Anyway, I'll add an explanatory comment to syscall_set_nr() on all
-architectures where syscall_get_nr() has a check.
+ Documentation/virt/kvm/api.rst                | 77 ++++++++++++-------
+ arch/arm64/kvm/arm.c                          |  1 -
+ arch/arm64/kvm/handle_exit.c                  |  2 +-
+ arch/powerpc/kvm/book3s_emulate.c             |  1 +
+ arch/powerpc/kvm/book3s_hv.c                  |  5 +-
+ arch/powerpc/kvm/book3s_pr.c                  |  2 +
+ arch/powerpc/kvm/booke.c                      |  1 +
+ arch/x86/include/uapi/asm/kvm.h               |  7 +-
+ arch/x86/kvm/x86.c                            |  3 +-
+ include/uapi/linux/kvm.h                      |  3 +
+ .../testing/selftests/kvm/include/kvm_util.h  | 13 +++-
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  6 +-
+ .../testing/selftests/kvm/lib/ucall_common.c  |  2 +-
+ .../testing/selftests/kvm/lib/x86/processor.c |  8 +-
+ .../kvm/x86/nested_exceptions_test.c          |  3 +-
+ .../kvm/x86/triple_fault_event_test.c         |  3 +-
+ virt/kvm/kvm_main.c                           |  4 +
+ 17 files changed, 90 insertions(+), 51 deletions(-)
 
 
+base-commit: 10b2c8a67c4b8ec15f9d07d177f63b563418e948
 -- 
-ldv
+2.47.1.613.gc27f4b7a9f-goog
+
 
