@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-5082-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5083-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B163A0A4F4
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 18:11:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CADB4A0A507
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 11 Jan 2025 18:17:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YVlRM4LKmz3c9l;
-	Sun, 12 Jan 2025 04:11:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YVlZs1Mmfz2xk1;
+	Sun, 12 Jan 2025 04:17:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736615471;
-	cv=none; b=Yzn4/6eR8YHluEfPwY+TeYP77jgg/7llqvKxADVf92Qf0jexaRlCrD9g+YxNAjxR1SLIVYr3bPSp5tRYSJoR3CJ6fErq8cdscdmeAiFsWmeTDvgg43A0lNsnySo76M2VZf/kKsrksKujx1vIDEDuW1RfJTq/38+WBjgK9O41REMuDMEcO/nEJJbRxCGAKRUhB9hX1XqHWN/nF4V1OYwBJY7/Gnp7cu+qT8JT5EQW+M41RBVkXX9SSxxyKB6blT+xFnhqkgpk/TI1HqwcsIZyfsLEJtk6oTZenOk8FRWCjA4G0GYjqFU8ZtrW+23AnqQtrd2wBAYTr/tpbc72Y/Wq0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736615861;
+	cv=none; b=nCNge2jfYrX5DcfP33LdTORNmYviVVDSfWvPPQdZgLhw2bYkjUQZFg4BM/7184mjHal5BPhp850dDijPElww/9yKyavYmTYdKLTUb1pSa5gMHIa9tQUTh+GfPl67jsbnj8mgH4WEye85Nj7bYy7mH06fxfkUV8WXI5rMM0FjNUSyVMb69TAaP0DJr3c+Wqd25m2wPXfGzDLjkPcFLsKjoXAMSb7TFCFOSfXV1ghDPEYCYQsvemQzkOGq/YyFy55S3r9pi+gfEP6LwIfQAtaw3W1deO+lL29/YhDl+PBaEUirBk9Uk2h3iLveoEQXG5XOkWPN4SWZN+bSKMmw46BqHQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736615471; c=relaxed/relaxed;
-	bh=oiDIac9UCgslMdyoZCP/7jQnvyDk7prCS5jJXe0SP8M=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=cTw7t6zc1jyl8C5+Pkht/isGj6r23eG+94IshZk1mMhjoctoKDXtjD9B/ODM1mZ+AIJ0Fjqrh2dd3pvugDi8tawDx2teZFisRH/WBu3WI+eBTFPmKboFtG6xFWriIuC/uR4t+1kDHDSE8hWQhZ0nozKCbcOzUIfP6xLZWIEIlzP79neF6NCliDtP2ZsVJxUBNeTvqLzwoaQxLG77QC/QrzSoLGC9OATekRsFd15kA7xquapnECrQW5NYlDXVnQEssodYP5cSueNsNL9xronzXkO3xk70dksdOKCgzDQ76UL7jTEQ+btl05c7EB4tBLjPVRvzP+QfiX5MlNkLD1v+XA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZPzo6BKp; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1736615861; c=relaxed/relaxed;
+	bh=mv5nPDuSkLgLboAUc81Li6u8jhY2AQ/d+h/O/Cu28pg=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=exxLtZWQibVtJAaVSeWq3vrC9C2G7FR3SEBysGwwFWiwF/nWfe1sfbU7dTd+OlTU8ioP8Uzes7ixsH0cUlAFtJpmsl3PAyecZiyFIY8DCNSN/7tkzRVcUlKwj17FTP2x1y0ohJokJwSWWLnQhQ4COo0AdiruSJ9Rf7T+/iH7YSGCPa3aRGtuzZBYgEx3V0vlYms+C/S1tIAPHZQbmzLJRXNZeb4PJdVYChmjhwfanjU/qoBs3tAIgefDgP6BebnNAdYfFwUfPmqwLdiG9CkDtATuOvQJ9Uz0GI6+KEY1I2FvAbASntXM13E5kNmxgtY2Pkrg8/ML76ki933GMCAhEw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PdoQ2pAO; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ZPzo6BKp;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PdoQ2pAO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YVlRG1Zgjz3c9g
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2025 04:11:04 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-21644aca3a0so65446615ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 09:11:04 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YVlZr1GXxz2xDl
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2025 04:17:39 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-216728b1836so51218175ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 11 Jan 2025 09:17:39 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736615457; x=1737220257; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1736615856; x=1737220656; darn=lists.ozlabs.org;
         h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=oiDIac9UCgslMdyoZCP/7jQnvyDk7prCS5jJXe0SP8M=;
-        b=ZPzo6BKpMOUGriRvmN6WNID82MepA32bdzFSz8pVYLboYBeB/w8M0VLIUes1gzAjHL
-         7Q5tfOFmwN87njOAGVI0gj58AHaUVfc9XZQHj+9arh5O/2dAqwknjKzXGh3h4xEYfURI
-         VUD/tLlxW72MyQiaftWEHtwGXXt4Va6w/JSlQ8FRJc3YQVH3RqpuDPcsjaafigBwzbAg
-         BL1UDTpBZVFYXlPhzrSXuMZRwAIPVjnSLezuAU8dQRTsQHJsbkO1ymo+5FHVs4yXG/Sf
-         kqxNu9goQYZjxAJpzTVubah0woGZheS61IGWBtWhoyPt3PIKguLWg7vwSBLcP5kxcZrj
-         Xtew==
+        bh=mv5nPDuSkLgLboAUc81Li6u8jhY2AQ/d+h/O/Cu28pg=;
+        b=PdoQ2pAOS2moXEk17PRp7nw74uMtDPqh7wOL7VOybYAmu1uwYyc/5bwXSE1g5ROy7i
+         K+CSEEDYeM6tAMMV3mt4wZ8ZEXqhtywr9f1KeTWMOiFuzmEwuKms4AgqouPTToLcPuf7
+         VR13F+MrH9KmcpdVZS0ctVWaBKux3zsxTkmqAHMnDGOeVWKoiFOh9C05VXtbLalLrESA
+         dnXBnazpXN8y8yKzRDPakZJEMfL/vKS+1Ow7ALJEnrN4kKgDIh/GY3l/XRjFnnp64qja
+         ale6uavkcrdi54FJW0dbUwxA230kKINdQSXRuXmYix+la0rfAJvyac+f/FxwiUCyXces
+         y0Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736615457; x=1737220257;
+        d=1e100.net; s=20230601; t=1736615856; x=1737220656;
         h=references:message-id:date:in-reply-to:subject:cc:to:from
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oiDIac9UCgslMdyoZCP/7jQnvyDk7prCS5jJXe0SP8M=;
-        b=i/PFzTGZRhAZhQ+0WpZOqGfoEtllCV6Gyw7y4HUylTxzMFN+jGjOLawJeboEoXQecS
-         QJ6a9HygKRMmXwBetRMNmLS7FJgyW7Zvjt3QiafJzPl71NI6glcvi/u2wG1c2JsMCMKR
-         mOEgYZ6NuaV7X2FfjAUqIwzXY/fn65xdLkdVHkBUoZmW+ocgH33NsRHEoQ2Nn/H8LN+X
-         sBw9Tw1h/2Qz31OjxzZzpZFI+9WkqbaQANHa8SO2WBsdOaxvPVA6MiFC/6nqej2WT5Ki
-         /3ZskVommU3LTd4swVwuh7AP+VA+yBjhmuiHEGqhxzBGR18FYQhb4RTMGF7EymBKgwKG
-         iO/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXIOx525KYP8y3ztRHh4OzVa8Ll7lA0XO8aUzvQNmVe6fY8rvgCK1IYmGuRVe5urCO1o0fzJySohxExGk8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxbgc7IiycIvwe043k0ju3JxnndwoomiAUx5I5ukosf9qiTIBNY
-	V1ZXxEh41uZC7gxZCSqMVDCrlKySxdm/vfVSJmeNybVRRqYxVEPA
-X-Gm-Gg: ASbGncv8+TkKddli8BynP8nB+j7x8qozAeNruyKuf52i3IO4TZKv+Aiit9LQLc4R7B2
-	BZup0J5SreKB78pTLUtHORAgwfh8Atjb7sZyLPPzVd6CY7q9cCAuUr3pGsIw4NzXIvN9BdpDWEF
-	ulq9cMYYT0d1n2/h5XKsEjzW+MtO70k3u67D5NBKdihsstmIsAgNH6KmTq3E04G2ZlKXxIwFfIO
-	oVy0ne3IwTcRCytfoSS7QsAiTTtlaJ2e0vE17+4jC7XSbaY
-X-Google-Smtp-Source: AGHT+IHQdKqTwbYiK/nAlWC/6KumIvaC+qTQc/SilPBS3OQGqUFXiS/0kAwbi+fQRJYCJkv76bVryg==
-X-Received: by 2002:a05:6a20:72a1:b0:1e0:ae58:2945 with SMTP id adf61e73a8af0-1e88d0afc33mr28533903637.31.1736615456851;
-        Sat, 11 Jan 2025 09:10:56 -0800 (PST)
+        bh=mv5nPDuSkLgLboAUc81Li6u8jhY2AQ/d+h/O/Cu28pg=;
+        b=HAsKywg0bMdw2/TOPa85fWbwBFs4CdeRrs4+xjRMovcvKpTvFo8jxSi31Tl939ZArQ
+         ZIyP9o7MGRowvo/Laec8U48gT+4RMsIArKdhuN2sYPexCEjFDZwpsKH66xaiwtNsQAU0
+         eSd4em1ag/dJKKm/9l4OyfloiCcYZlKz0xWw0P0hF/HlSIh0aFHZtwUktX+b8MIBRynZ
+         UZdeXWlPIdDiTJ+1SJnH4zCgXWNJ6lnRwQrHp1tVzJJPiEcCjvf/txFSzikHDdYnB8LR
+         2LPqA4eNAoxdpS9jt8pGHzDvzAUTRlsnl4sCeB7f3mw02/zOfqVQmF+pDjpvoHtAC8fs
+         x+QQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX410Ahxs6ZAdGbOUzc55oH0+Dya+57baVq+PAq/Zw9bnVCTzmy2jJAgbonqE4mEK4YjmQkXE3n/2C7I5Y=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxKcVxKc8ncLm+Ug60vaxW7etssNjoa52kmR2x8TQaLwZL0IMxg
+	DbbWDKR8fk4KUDf5PQ9a1F2zFn+yyK0L6zKhUwnzEswvseiCdhl2
+X-Gm-Gg: ASbGnct68O/HFlioKVniEXhWObXPglrajpoDDYwYG9KUfR88B6LJmTadpnxS+adUqgE
+	x8+a+qyt61lmvFaYEhmqrXiAWJ2ECa+sCNpEh014SI0zByny3O112AkuyS+e3y/Ipsq90emcFhA
+	BzCQrQMeZ/J3zzwusLzivMJ1fbJozdR4vEiTZXNeEcyHUSOykJqM9HqYx+pyA4c/98gT07mGpM4
+	aBk49y4th5s8pK4LskojbNH2ZH4d8UTo4dP25WSjHceGwGS
+X-Google-Smtp-Source: AGHT+IFmH5kLnKiwygZLtZII1Q5Ns974ni/++S7l2rNvfuzSQsaymXo7+MIjEk/3NegBZ2X7p0HvIg==
+X-Received: by 2002:a17:902:e542:b0:215:b468:1a33 with SMTP id d9443c01a7336-21a83f43c52mr252689035ad.4.1736615855805;
+        Sat, 11 Jan 2025 09:17:35 -0800 (PST)
 Received: from dw-tp ([171.76.81.42])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72d4056bc88sm3302165b3a.67.2025.01.11.09.10.53
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21a9f22f6d1sm29719875ad.202.2025.01.11.09.17.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 11 Jan 2025 09:10:56 -0800 (PST)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH] powerpc/64s: Rewrite __real_pte() as a static inline
-In-Reply-To: <06750dbc7bf961e3ea7ef7a89d5c220972465ea5.1736331264.git.christophe.leroy@csgroup.eu>
-Date: Sat, 11 Jan 2025 22:33:04 +0530
-Message-ID: <87o70duvuf.fsf@gmail.com>
-References: <06750dbc7bf961e3ea7ef7a89d5c220972465ea5.1736331264.git.christophe.leroy@csgroup.eu>
+        Sat, 11 Jan 2025 09:17:35 -0800 (PST)
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+To: Gautam Menghani <gautam@linux.ibm.com>, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, maddy@linux.ibm.com
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] arch/powerpc: Remove unused function icp_native_cause_ipi_rm()
+In-Reply-To: <20250101134251.436679-1-gautam@linux.ibm.com>
+Date: Sat, 11 Jan 2025 22:44:03 +0530
+Message-ID: <87msfxuvc4.fsf@gmail.com>
+References: <20250101134251.436679-1-gautam@linux.ibm.com>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
@@ -89,65 +89,22 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+Gautam Menghani <gautam@linux.ibm.com> writes:
 
-> Rewrite __real_pte() as a static inline in order to avoid
-> following warning/error when building with 4k page size:
+> Remove icp_native_cause_ipi_rm() as it has no callers since
+> commit 53af3ba2e819("KVM: PPC: Book3S HV: Allow guest exit path to have
+> MMU on")
 >
-> 	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
-> 	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
-> 	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
-> 	   49 |         int i, offset;
-> 	      |                ^~~~~~
-> 	cc1: all warnings being treated as errors
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/xics.h       |  1 -
+>  arch/powerpc/sysdev/xics/icp-native.c | 21 ---------------------
+>  2 files changed, 22 deletions(-)
 
-Great. Why not fix the other warning as well which is reported in above
-link, which is...  
+Indeed there are no callers left of this function. Great catch!
 
---
-   arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
->> arch/powerpc/mm/book3s64/hash_native.c:786:29: warning: variable 'index' set but not used [-Wunused-but-set-variable]
-     786 |         unsigned long hash, index, hidx, shift, slot;
---
-
-...similar to how we fixed this warning by making the macro as static
-inline? That means something like this (not tested)?
-
--#define __rpte_to_hidx(r,index)        (pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
-+static inline unsigned long __rpte_to_hidx(real_pte_t r, unsigned long index)
-+{
-+       return pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT;
-+}
-
+Looks good to me. Please feel free to add - 
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
 -ritesh
-
-
-> Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
-> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> ---
->  arch/powerpc/include/asm/book3s/64/hash-4k.h | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-> index c3efacab4b94..a7a68ba9c71b 100644
-> --- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
-> +++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
-> @@ -77,7 +77,10 @@
->  /*
->   * With 4K page size the real_pte machinery is all nops.
->   */
-> -#define __real_pte(e, p, o)		((real_pte_t){(e)})
-> +static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
-> +{
-> +	return (real_pte_t){pte};
-> +}
->  #define __rpte_to_pte(r)	((r).pte)
->  #define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
->  
-> -- 
-> 2.47.0
 
