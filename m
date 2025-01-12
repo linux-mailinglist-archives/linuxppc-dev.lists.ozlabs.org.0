@@ -1,77 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-5097-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5099-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 862FAA0A9B2
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jan 2025 14:39:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2AD6A0AB8D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 12 Jan 2025 19:50:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWGhR2ySjz306S;
-	Mon, 13 Jan 2025 00:39:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWPb83lXgz30YT;
+	Mon, 13 Jan 2025 05:50:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736689159;
-	cv=none; b=IXF3aScBhqtkcjjmuB5q4o4x4uywv2XAM5o/vV5GzzMO0Nq31QrQbMcFpQm6+cs2KP8SxSV0ZhvdrEIKbjN+XkLqznPAB0aA+f7ptxjQDORlHA1oc2BO45byMfYV1xoA4rulsFKz+EpSOsjakqqsCJpdDe+/UIfKVWFyBKDPxdCb6YXepu3REHkkDjpCY02f4VOn61m5F9M27e/VdoValYuEd41OSKm2ULhi+MyxhCOn+UyI1KUFbtR67MdnusJUbfYoDiEIGeyNU7kJ9HqTtLqcG9hbOGw9rmu0NUD7HX0otSC9sM5Vg46oh9IAX4wUPsepeq1idg3kOI0R8xbd9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736707812;
+	cv=none; b=WvBQcCVj3F0J9R91o58g1jgkoR+bJQtYRUehX/JBooS6hr42v1UVqDXgW+JB+XIyglXQI9uQ+8WhozpF6IkQkV0OjKIt+2aKs49rlahE0MNQi7kbSnqEEtm01zHlJ9zFMTJeYSTrFye8JsFwf76b+x5+St2rku845fKIcKqUSH6mIku97ZxY+5tkowLENs/blfw3BGDGrrjPQruiE/fdiQrMbN2WHjnYnDNXt8xSvMNjxBLMEoxaF2jvrAZVL7CQReqAb1r9DjXoAMyzh/5vUuFCSEglhDXH57UBJ0pmrCGS3aMT5kwGtKvVSkBJ/ahJkKphpqCo/XTpAU/iXJR4yQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736689159; c=relaxed/relaxed;
-	bh=bE2H5VemRTsToLsccovLxNOaroqPN7uFot+UTGgYNy8=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=BDwki66is6AeJ5AwXh0uBG14ERCagjICBhCDlEDcFj5/fIS6HXx2iZeckIbTEj6ViZRM5kiAt1uoXSnbz2A3TNGykohDsbZ5VBH/r7KeCOaNEZPPfLJVsBcrIFo0ylfSkcniezUMS3amM1/rWL5lRae6/7CauXSTgeJwuChjtKgAWq+IhZgc/W+zN+f3aenUHn8zPPEYSDqBt1JktddI/3eLsMBrDv2whaeryp6jHelVDct9TL+xdY8yj4wTHffSthcrO7ks5NuLgDPcnIoNzkxXpI2vUCPNRuLgAml/glTPUmlfY/D5LWEchlGljQ369UeTybXCKuiPdoLh8O5Hpg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=A47gBgTD; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=A47gBgTD;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::32e; helo=mail-wm1-x32e.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWGhQ16ndz30gH
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 00:39:17 +1100 (AEDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-4363298fff2so2925025e9.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 12 Jan 2025 05:39:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736689154; x=1737293954; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=bE2H5VemRTsToLsccovLxNOaroqPN7uFot+UTGgYNy8=;
-        b=A47gBgTDX/eP1VXXbjZQ4wvNB99D3niWrVh4Sqt2Bgx7KG4QErEuzsGDNJ1kowb9ty
-         G9U4M0msJWtQJ0CqmUSxl470qdcYBAxzSa4MbbTFkl914aeIo+dhvuJfCCTnzs/Y7yUX
-         lB07+N4oUgQqV4LJ63pZhui/o1BCaicVFb0FtqThJFk99OPATxARm90Ed7RJD91aSImI
-         Cj1u3y8WmDbX8/kgetEAGOoZV0MHzqSqByJtKWvTD30QXofh6U+cK+ZdeQas5aw2LJeU
-         0QkU7UeGLJyczbD2iY4i6y8EdYuGrqlzeZ+yTM2ixHpTvToJtBHuEvLngVTYg77CLdWn
-         Hp+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736689154; x=1737293954;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=bE2H5VemRTsToLsccovLxNOaroqPN7uFot+UTGgYNy8=;
-        b=XvvlC6fxr7qy4DxHP5a+dWxj/ec5+dzJhu0+5CxR8/M5XB+v3i/TqkySAbHXkXxwFa
-         08gEcsUvo+FTTVi55F1grUc/AqMBkZWI6fNIHppB6grH3I6TqzeX7qfMVqRIJiIwgN+s
-         2kPh1DtyN4m6qeuk7ZuvrucKxlQFluKJYmfbz07jVCFg2sOgEyqUCgzpbz6BPOBj9o47
-         DYSK2iUUCVkCifsW/whteCJKMICMY0RHfKbKJjkHg8RqB5eAY42+85qy4Ln2knx8H5Pa
-         h1qs08b023K9oYXxT8kBKLEHR+x3LT/00hXjzVX8utzzKVMyhZtt+1FjiEnEnDDJ2beU
-         VKMw==
-X-Forwarded-Encrypted: i=1; AJvYcCXRxV6ICjF197welcukB6okanbrVu4OJfDbYFzh+wk72KhC/hALNn8PjzrzQWfWGeH8DzcCGMKt2DGhNnM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyYge7kgM9P4HUmoVmYYqRepR6EkZaRhxKWlVu+utFr8/FlBj96
-	sH0DNnN2mgw207yuyz/d3iIeNXkMlpakPMysCyn245raVpNEVWYezn+PIsgG3Ag=
-X-Gm-Gg: ASbGnctpBMn+wqjyyPKHX+LD9wgb20dMVZpycjc38LWmc7SWbVafsRNtd0CEp7K1bjN
-	ody6882pv9Nt8a1n5Z9eIuzedQU/k0K5mhZByrQvJ5j2iixHHDKwg+uWKf8ofQRBuKqHjPAk6L7
-	WieH2zd8D2549CSOZMrNlHJTwt5qSg1htLwJhpFrtB3cuy6T4nYhDqr5+3Qu101xzhxJtBSmIa0
-	ZumVqodsT27/VgUXB3eshhXugjLK7IP6eMemW72twhkKiec7693y5TvCzN7adPKuhW/MJ25
-X-Google-Smtp-Source: AGHT+IHa/wlOBb5BLOSfZHKhJOKZ66IHreWI0aFAGTr50Xgpw10Wi7ykrB23Ux8LPFxNTSCfVkbaWg==
-X-Received: by 2002:a05:6000:18a3:b0:38a:615c:8266 with SMTP id ffacd0b85a97d-38a872d2e1cmr6158761f8f.1.1736689153919;
-        Sun, 12 Jan 2025 05:39:13 -0800 (PST)
-Received: from [127.0.1.1] ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38c006sm9581924f8f.46.2025.01.12.05.39.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 12 Jan 2025 05:39:13 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Date: Sun, 12 Jan 2025 14:39:03 +0100
-Subject: [PATCH 2/2] PCI: dwc: layerscape: Use
- syscon_regmap_lookup_by_phandle_args
+	t=1736707812; c=relaxed/relaxed;
+	bh=ZS3D37KsxlMxbUg7nOnlXx+xE6RRgLno2WktnT7Kkn8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KQvzF+mFP0klaaiHDgdfIq26Vh4tcOZG4NLy6oEWVPogZff+fzppcCEbK+7H40J2ZYm0YAkm8T9LWTk7OdgQrrVtSdnBEVcxNnnuPbcxHcQhsCN/y368Vwzc8xUicME3kYc8Z7zLVrU2UKXDurJRxYehR9WRyJmrLg02CqjIpNpeAE8dPxyz245TS/3pASdCmfWIdxy9F328EWWIVQF4NC2f4UK9LeOACO1ZRROExW1UsF0T9QpKJTdggvBF7Infx3dGQJz8dk/gG+tJhvjXu8YfhVh+9OE8fLFDb/ECnNxMYnzOkCVOXiM8ao75sV/oHuEQ2ouYQ7ThvgNw6IbtRw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWPb768fWz30WC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 05:50:11 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4YWP216Q9pz9sPd;
+	Sun, 12 Jan 2025 19:24:57 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id QCO98kkgqQfo; Sun, 12 Jan 2025 19:24:57 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YWP215KR8z9rvV;
+	Sun, 12 Jan 2025 19:24:57 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9B6A68B764;
+	Sun, 12 Jan 2025 19:24:57 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id MEc6TNQfKkRM; Sun, 12 Jan 2025 19:24:57 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id CD4658B763;
+	Sun, 12 Jan 2025 19:24:56 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	kernel test robot <lkp@intel.com>
+Subject: [PATCH v2] powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
+Date: Sun, 12 Jan 2025 19:24:46 +0100
+Message-ID: <e0d340a5b7bd478ecbf245d826e6ab2778b74e06.1736706263.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,91 +66,63 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250112-syscon-phandle-args-pci-v1-2-fcb6ebcc0afc@linaro.org>
-References: <20250112-syscon-phandle-args-pci-v1-0-fcb6ebcc0afc@linaro.org>
-In-Reply-To: <20250112-syscon-phandle-args-pci-v1-0-fcb6ebcc0afc@linaro.org>
-To: Vignesh Raghavendra <vigneshr@ti.com>, 
- Siddharth Vadapalli <s-vadapalli@ti.com>, 
- Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
- Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
- Minghuan Lian <minghuan.Lian@nxp.com>, Mingkai Hu <mingkai.hu@nxp.com>, 
- Roy Zang <roy.zang@nxp.com>
-Cc: linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
- Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1680;
- i=krzysztof.kozlowski@linaro.org; h=from:subject:message-id;
- bh=xwSxcTgpz0V5yXRtTiY4r8e2MzVXviCXnTPUR+OLILk=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBng8X583ThdqsNd+ai1Rg32YXT0CpzKBfUsuy7+
- rVM3hECbbqJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCZ4PF+QAKCRDBN2bmhouD
- 1xFpD/wLpb8jbZTwROWh7xkacIWp36gfWl8++ftg72bpoJgL1J+cC+JgxcgMYugfFbWP6qRzmUx
- hiaUj96QLiicIo1r1hgKftiuvegGo9HdhvbMVhE+7l0G8O+LtC2e4p0oP2C/UkKFmQ9n3Cv370d
- 6Lf7OMg8A5s9Ngoiz4e3Hm3GwAKIYBAbNLTu67FEYwqKABIVtqF17ylKCD2OkbLU3qq4Rci6t0S
- dTgPPWNFq2k2SD6nItw9XUmSythajF3r6e0Bpc4IMb1TnFaijuSvzkZwlMtXrmLUbz2flgLH1TS
- BuhYMNBhpDDaHyMdyrPv/dbwZsgzISRIXyIRttdR8cvTv0tDDnz0bS7tvqnBWHztTjLpA4wSgwQ
- SOokV7tpa4D4XdhoZ9w54GbaKwYvx57guoSBJxmoWaXmDxvejiAcONb6YZ9fM8KpVAdYlemsd0i
- Z5wMMCkDbNUJskVmpA290eOz6cLRUTCSl/Pq7YGLvDsjORqWvs+EsZ2VefmLQ+wIpM046++/UNV
- jzql0Rvpd0glIlC8i6MKRTFuJnxF+HjqVO5LlsMPSnug5oHwkIEUJHaMzlf/Q/ErJsZpR5Scfk7
- QIFMUrZkwPpRWIfXEM7fI2hgVP+OUrs/xnyDNgq9ltdcqBcWM5vMFkxa0yY/aaiuicwh0kiS5Sd
- wYC2d0drGiCb1FA==
-X-Developer-Key: i=krzysztof.kozlowski@linaro.org; a=openpgp;
- fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1736706286; l=2193; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=OtdjuQYF5cvXROXXZjm5jTcVXVT7DR3WsPE6iY4JKJY=; b=LJ+tM3q4Oo0nf5jzTmSnj6pd+WwJWWkhnGxgTUkYmk+bVmBQ9oqn2TwxVvc/ttOzT4idRGypq Ogq5D9JnOEmDCd5VfntIC2ZYxHDDn4/rAMaPXfOKVYg8Nkmo/17Wikm
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Use syscon_regmap_lookup_by_phandle_args() which is a wrapper over
-syscon_regmap_lookup_by_phandle() combined with getting the syscon
-argument.  Except simpler code this annotates within one line that given
-phandle has arguments, so grepping for code would be easier.
+Rewrite __real_pte() and __rpte_to_hidx() as static inline in order to
+avoid following warnings/errors when building with 4k page size:
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+	  CC      arch/powerpc/mm/book3s64/hash_tlb.o
+	arch/powerpc/mm/book3s64/hash_tlb.c: In function 'hpte_need_flush':
+	arch/powerpc/mm/book3s64/hash_tlb.c:49:16: error: variable 'offset' set but not used [-Werror=unused-but-set-variable]
+	   49 |         int i, offset;
+	      |                ^~~~~~
+
+	  CC      arch/powerpc/mm/book3s64/hash_native.o
+	arch/powerpc/mm/book3s64/hash_native.c: In function 'native_flush_hash_range':
+	arch/powerpc/mm/book3s64/hash_native.c:782:29: error: variable 'index' set but not used [-Werror=unused-but-set-variable]
+	  782 |         unsigned long hash, index, hidx, shift, slot;
+	      |                             ^~~~~
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501081741.AYFwybsq-lkp@intel.com/
+Fixes: ff31e105464d ("powerpc/mm/hash64: Store the slot information at the right offset for hugetlb")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- drivers/pci/controller/dwc/pci-layerscape.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+v2: Also inline __rpte_to_hidx() for the same reason
+---
+ arch/powerpc/include/asm/book3s/64/hash-4k.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
-index ee6f5256813374bdf656bef4f9b96e1b8760d1b5..239a05b36e8e6291b195f1253289af79f4a86d36 100644
---- a/drivers/pci/controller/dwc/pci-layerscape.c
-+++ b/drivers/pci/controller/dwc/pci-layerscape.c
-@@ -329,7 +329,6 @@ static int ls_pcie_probe(struct platform_device *pdev)
- 	struct ls_pcie *pcie;
- 	struct resource *dbi_base;
- 	u32 index[2];
--	int ret;
+diff --git a/arch/powerpc/include/asm/book3s/64/hash-4k.h b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+index c3efacab4b94..aa90a048f319 100644
+--- a/arch/powerpc/include/asm/book3s/64/hash-4k.h
++++ b/arch/powerpc/include/asm/book3s/64/hash-4k.h
+@@ -77,9 +77,17 @@
+ /*
+  * With 4K page size the real_pte machinery is all nops.
+  */
+-#define __real_pte(e, p, o)		((real_pte_t){(e)})
++static inline real_pte_t __real_pte(pte_t pte, pte_t *ptep, int offset)
++{
++	return (real_pte_t){pte};
++}
++
+ #define __rpte_to_pte(r)	((r).pte)
+-#define __rpte_to_hidx(r,index)	(pte_val(__rpte_to_pte(r)) >> H_PAGE_F_GIX_SHIFT)
++
++static inline unsigned long __rpte_to_hidx(real_pte_t rpte, unsigned long index)
++{
++	return pte_val(__rpte_to_pte(rpte)) >> H_PAGE_F_GIX_SHIFT;
++}
  
- 	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
- 	if (!pcie)
-@@ -355,16 +354,15 @@ static int ls_pcie_probe(struct platform_device *pdev)
- 	pcie->pf_lut_base = pci->dbi_base + pcie->drvdata->pf_lut_off;
- 
- 	if (pcie->drvdata->scfg_support) {
--		pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
-+		pcie->scfg =
-+			syscon_regmap_lookup_by_phandle_args(dev->of_node,
-+							     "fsl,pcie-scfg", 2,
-+							     index);
- 		if (IS_ERR(pcie->scfg)) {
- 			dev_err(dev, "No syscfg phandle specified\n");
- 			return PTR_ERR(pcie->scfg);
- 		}
- 
--		ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
--		if (ret)
--			return ret;
--
- 		pcie->index = index[1];
- 	}
- 
-
+ #define pte_iterate_hashed_subpages(rpte, psize, va, index, shift)       \
+ 	do {							         \
 -- 
-2.43.0
+2.47.0
 
 
