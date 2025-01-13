@@ -1,68 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-5172-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5173-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88DCA0BE27
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 17:59:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7EFA0BE50
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 18:07:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWz5C25rWz3cgW;
-	Tue, 14 Jan 2025 03:59:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWzFj4db2z3cgx;
+	Tue, 14 Jan 2025 04:07:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736787583;
-	cv=none; b=CnUykQsRA3l8JHo9m8llTKF4aZWfcxnGgHbQpZnnTpnQhUnC0aR2KAe1SD6yBEc3e0+AKj4nE+PIogQrqFC5UzTAATyYfb+GW9FihyMo2jYW/2tb4U+Z3KJGbzsg0z/RwVFgFmDPrbu1AxtCmhvysoWftqyM7BQN3PCr7R5j49GNIyGNzE7acq/0p958sTa+dL/mlJ3GC0Zzcwbq2G50/UD9HRQuRdZFvIzk1GTS0PGoiMFpgVJhq7oNOmJTd+PVal0naQy/NaNKg/h3PS5fzinknKFppzj9kZTKQ8U+9sQy0H2IpgfmGqM9g7V55mufR6lM69FyRUxqAZlXcwB/tg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736788025;
+	cv=none; b=Sq7qy1g78ykRUBnQPUhdyFdeWXNpBfAe25w7izFLMI5Pu1L5t5ehAyFGLHXFIQO2CkO7KT0/fWiQ97zAKk6hko1KG4Y9tasjG7Ph9rtPx8lrIGKN5TmZlMOjD8pTvgZmzlJI8InWmC2qExIMyAAwFYwgVjQgI7P9BIuN5VcIbcpvRwdI3HHnVpqSJ77QskxDPFi1Z/260kMrjq9PhNuKDLCf7rLZyzby8gKcudHWT+PbLF7tGbCmpo0CDqWOuUEPumyA5mL6gUeKQhj8LG/AJ3holBr4p/My1L5cLZC5Ghay0SQkJJh8nqWXDvMrUN63qHj7XEZFfUnMpk9iK75/Sw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736787583; c=relaxed/relaxed;
-	bh=lNi4ttNXrfrXDMynei5+HVfxxr2BRc6T71jVjH9tT8o=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Uk3y8xHPaPkQ9KYiAuxLM7brWhozs6+eCVPgJyirqtNZuOWiGoB/IcM90mt41A5EreKmzYQrbGfz8Lt+IyaKH4rqs+0nVHVRC9y/kSEHWxvVBUcpTbihvBRZseP+njVZ7JZhz+PKiEpy7Hzz9ln+zPlqIHAUyg3LPJJAtjZevsuNVw2XuZ5AqTHvtCKyiQ/SgNzlUAMzEzhFkza32DxrwD8Na2LnWxqJQ9acfhUAztcWnr9D5lRpZ4iJ7lWi9rmnhy2wxcBDLUu2hEnjUT4dFFMPtNGK7GX4O+2rBcxas9MZRlA0CTlqABxqxEkxP78dCTjBwqz0U8me/rAR4rsMDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dH6fQyWr; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3eeafzwykdf0n95ie7bjjbg9.7jhgdipskk7-89qgdnon.jug56n.jmb@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=dH6fQyWr;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3eeafzwykdf0n95ie7bjjbg9.7jhgdipskk7-89qgdnon.jug56n.jmb@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWz593gZGz3cgV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 03:59:40 +1100 (AEDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-2166f9f52fbso138436675ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 08:59:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736787576; x=1737392376; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lNi4ttNXrfrXDMynei5+HVfxxr2BRc6T71jVjH9tT8o=;
-        b=dH6fQyWrK2WvhILT+K0ZUWpscC/7oWtplgbxElWvX2UGGxDH/HQbuN+xPhTea5pexd
-         fFjokuP01BazEJTtg9LtpcFf84n5/9BvlO1Dy0VcnYZIXZNziZ877EdjoCZjGzPHKlSh
-         JjZAwD65S+eDbWY/v8FD57U/Bu7cy0Pvl3+mZ9YkguJEpnfEhYumJ1d9AjcPupmeZAAJ
-         sL82IbMffjTQjli34WgJURKNQOtuQ2BzvXTg9Fz1Si6kHcK1lmbFf2M3FrLoMRZYiPVi
-         ACf0kJhTX6s/A6aKUwMrtMzrJTAfCSBeImCjNkaAmZ9Vm48elHRiYX2nrqrSyNFIsXEw
-         VhLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736787576; x=1737392376;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lNi4ttNXrfrXDMynei5+HVfxxr2BRc6T71jVjH9tT8o=;
-        b=D+Q1xSwZ2GIXqcCSS0w+Izk7UYlKXb19QtX5FxDi+8MbM5AvBHftNLW+ZEKgtohP/N
-         mlIErQgKoSzwWWFXr8S3Xh1iIw/axSwuX68wj1cFdJNf8VqaLvaXjxwaZ2etUkEqQQ9v
-         5D7kbGhLHpqwo03/1RoQf7b6WVim5ySvQj8GaOuiEhzrf4I680/IReqSuIGa+47OYgWb
-         4mMhRnk5LMJCBBnULS6qsJcC0gZtO8Z9y2A79WG9lekM7kEU2OceeSAg5mhjfbelCd7j
-         S1HnLPbuVFY9J5PBdT6hH39JxGGByLC46aXkfcdGgIOYXTJNrlxVJ7qj/wgDRYTNAp1k
-         PTIA==
-X-Forwarded-Encrypted: i=1; AJvYcCW2FqgJBq8TYA9Si0O6wFcV8MPrdDQqB9AI6Z0z155eMbd6S2QZCoKaKArjUZ9VNQB3dyvw8ATp4FwEubQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzjdupac/hbjudxHUYekTq0p0qqABr7Xhv88lGkF2Yd9LeU+jNe
-	epVEfgw2xuJVDwshXflLF5h705v29mC+RR4K56Ui1XbECq58FBsPDIUWwfQokYC02QVAGVYL9Zc
-	szg==
-X-Google-Smtp-Source: AGHT+IENu5ZK9kPpRwdS1+EeXpR6nVCXMTR+IXJJExBjfsTrkclg65OJwbQ4mKEvtimncd2M4JDnxOz3MCM=
-X-Received: from plks12.prod.google.com ([2002:a17:903:2cc:b0:211:fb3b:763b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e74b:b0:215:5ea2:654b
- with SMTP id d9443c01a7336-21a83f3eebemr334554025ad.1.1736787576636; Mon, 13
- Jan 2025 08:59:36 -0800 (PST)
-Date: Mon, 13 Jan 2025 08:59:35 -0800
-In-Reply-To: <Z4R12HOD1o8ETYzm@intel.com>
+	t=1736788025; c=relaxed/relaxed;
+	bh=87zAL3DZcqPYFzoHGYuBI9BAT1ktFT16wiQFT/4+t9A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KoNlKw3xzMq86US1U8mol0aoh0Uzf/ru58AwGlbyoHs4/FtxSMEams6kv3Mhza6WmW1G/6L5TFQ2i7DrW7PfitVdRsvplvrSvPIRm9E2Ct7AIVFI5SY6JooWZpl/Q7Zpw7sY8/2neJRJFUmG5BurIWlwHuEEwb1UGnxgOTkbX8Ia5O7Jtqy+nuuwMLXStcm7epoATUK8xvzex8k4Qt/4vy+60YUPDoU/aaVj/ifS96IrpVXBwu7jIK4zhDxnSH+AaL/guK/3eMXCHUqLaqfm9chyvl99hAC/XR1dCXxh+YhXz3ntcxILOEXZo3SN2oX25sFLRf9y6eLtz5HsRWjVRg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWzFg75Rhz3cgt
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 04:07:02 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C242312FC;
+	Mon, 13 Jan 2025 09:06:55 -0800 (PST)
+Received: from udebian.localdomain (unknown [10.1.25.34])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2BE843F673;
+	Mon, 13 Jan 2025 09:06:25 -0800 (PST)
+From: Yury Khrustalev <yury.khrustalev@arm.com>
+To: linux-arch@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sandipan Das <sandipan@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org,
+	x86@kernel.org,
+	linux-mm@kvack.org,
+	linux-kselftest@vger.kernel.org,
+	Andrew Morton <akpm@linux-foundation.org>,
+	nd@arm.com,
+	Yury Khrustalev <yury.khrustalev@arm.com>
+Subject: [RESEND v4 0/3] mm/pkey: Add PKEY_UNRESTRICTED macro
+Date: Mon, 13 Jan 2025 17:06:16 +0000
+Message-Id: <20250113170619.484698-1-yury.khrustalev@arm.com>
+X-Mailer: git-send-email 2.39.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,82 +59,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250111012450.1262638-1-seanjc@google.com> <20250111012450.1262638-4-seanjc@google.com>
- <Z4R12HOD1o8ETYzm@intel.com>
-Message-ID: <Z4VGdxyswQ6qcKR0@google.com>
-Subject: Re: [PATCH 3/5] KVM: Add a common kvm_run flag to communicate an exit
- needs completion
-From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Michael Ellerman <mpe@ellerman.id.au>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 13, 2025, Chao Gao wrote:
-> On Fri, Jan 10, 2025 at 05:24:48PM -0800, Sean Christopherson wrote:
-> >Add a kvm_run flag, KVM_RUN_NEEDS_COMPLETION, to communicate to userspace
-> >that KVM_RUN needs to be re-executed prior to save/restore in order to
-> >complete the instruction/operation that triggered the userspace exit.
-> >
-> >KVM's current approach of adding notes in the Documentation is beyond
-> >brittle, e.g. there is at least one known case where a KVM developer added
-> >a new userspace exit type, and then that same developer forgot to handle
-> >completion when adding userspace support.
-> 
-> This answers one question I had:
-> https://lore.kernel.org/kvm/Z1bmUCEdoZ87wIMn@intel.com/
-> 
-> So, it is the VMM's (i.e., QEMU's) responsibility to re-execute KVM_RUN in this
-> case.
+Add PKEY_UNRESTRICTED macro to mman.h and use it in selftests.
 
-Yep.
+For context, this change will also allow for more consistent update of the
+Glibc manual which in turn will help with introducing memory protection
+keys on AArch64 targets.
 
-> Btw, can this flag be used to address the issue [*] with steal time accounting?
-> We can set the new flag for each vCPU in the PM notifier and we need to change
-> the re-execution to handle steal time accounting (not just IO completion).
-> 
-> [*]: https://lore.kernel.org/kvm/Z36XJl1OAahVkxhl@google.com/
+Applies to 5bc55a333a2f (tag: v6.13-rc7).
 
-Uh, hmm.  Partially?  And not without creating new, potentially worse problems.
+Note that I couldn't build ppc tests so I would appreciate if someone
+could check the 3rd patch. Thank you!
 
-I like the idea, but (a) there's no guarantee a vCPU would be "in" KVM_RUN at
-the time of suspend, and (b) KVM would need to take vcpu->mutex in the PM notifier
-in order to avoid clobbering the current completion callback, which is definitely
-a net negative (hello, deadlocks).
+Signed-off-by: Yury Khrustalev <yury.khrustalev@arm.com>
 
-E.g. if a vCPU task is in userspace processing emulated MMIO at the time of
-suspend+resume, KVM's completion callback will be non-zero and must be preserved.
-And if a vCPU task is in userspace processing an exit that _doesn't_ require
-completion, setting KVM_RUN_NEEDS_COMPLETION would likely be missed by userspace,
-e.g. if userspace checks the flag only after regaining control from KVM_RUN.
+---
+Changes in v4:
+ - Removed change to tools/include/uapi/asm-generic/mman-common.h as it is not
+   necessary.
 
-In general, I think setting KVM_RUN_NEEDS_COMPLETION outside of KVM_RUN would add
-too much complexity.
+Link to v3: https://lore.kernel.org/all/20241028090715.509527-1-yury.khrustalev@arm.com/
 
-> one nit below,
-> 
-> >--- a/arch/x86/include/uapi/asm/kvm.h
-> >+++ b/arch/x86/include/uapi/asm/kvm.h
-> >@@ -104,9 +104,10 @@ struct kvm_ioapic_state {
-> > #define KVM_IRQCHIP_IOAPIC       2
-> > #define KVM_NR_IRQCHIPS          3
-> > 
-> >-#define KVM_RUN_X86_SMM		 (1 << 0)
-> >-#define KVM_RUN_X86_BUS_LOCK     (1 << 1)
-> >-#define KVM_RUN_X86_GUEST_MODE   (1 << 2)
-> >+#define KVM_RUN_X86_SMM			(1 << 0)
-> >+#define KVM_RUN_X86_BUS_LOCK		(1 << 1)
-> >+#define KVM_RUN_X86_GUEST_MODE		(1 << 2)
-> >+#define KVM_RUN_X86_NEEDS_COMPLETION	(1 << 2)
-> 
-> This X86_NEEDS_COMPLETION should be dropped. It is never used.
+Changes in v3:
+ - Replaced previously missed 0-s tools/testing/selftests/mm/mseal_test.c
+ - Replaced previously missed 0-s in tools/testing/selftests/mm/mseal_test.c
 
-Gah, thanks!
+Link to v2: https://lore.kernel.org/linux-arch/20241027170006.464252-2-yury.khrustalev@arm.com/
+
+Changes in v2:
+ - Update tools/include/uapi/asm-generic/mman-common.h as well
+ - Add usages of the new macro to selftests.
+
+Link to v1: https://lore.kernel.org/linux-arch/20241022120128.359652-1-yury.khrustalev@arm.com/
+
+---
+
+Yury Khrustalev (3):
+  mm/pkey: Add PKEY_UNRESTRICTED macro
+  selftests/mm: Use PKEY_UNRESTRICTED macro
+  selftests/powerpc: Use PKEY_UNRESTRICTED macro
+
+ include/uapi/asm-generic/mman-common.h               | 1 +
+ tools/testing/selftests/mm/mseal_test.c              | 6 +++---
+ tools/testing/selftests/mm/pkey-helpers.h            | 3 ++-
+ tools/testing/selftests/mm/pkey_sighandler_tests.c   | 4 ++--
+ tools/testing/selftests/mm/protection_keys.c         | 2 +-
+ tools/testing/selftests/powerpc/include/pkeys.h      | 2 +-
+ tools/testing/selftests/powerpc/mm/pkey_exec_prot.c  | 2 +-
+ tools/testing/selftests/powerpc/mm/pkey_siginfo.c    | 2 +-
+ tools/testing/selftests/powerpc/ptrace/core-pkey.c   | 6 +++---
+ tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 6 +++---
+ 10 files changed, 18 insertions(+), 16 deletions(-)
+
+-- 
+2.39.5
+
 
