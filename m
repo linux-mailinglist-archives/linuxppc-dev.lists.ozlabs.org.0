@@ -1,68 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-5193-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5194-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8FFA0C457
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 23:04:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E6CA0C477
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 23:17:20 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YX5rj3jlZz3by2;
-	Tue, 14 Jan 2025 09:04:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YX67f2RYzz3cfR;
+	Tue, 14 Jan 2025 09:17:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736805861;
-	cv=none; b=jac7dL1t+gzemMPp2M0XEp5bEuytHgEzGQPxtX0x7cfUKrsgUP/k5b6Zx6UQ8fqniWCpQGYKUU9ioWh6XLWhNNNFlgwbtrfZ3+XDC0dkHg8i2nt1RYD5V1v/WKEFbfUjTxkbad/YFOQ+u05K9xzHOwK0aIZRFXW2pqvDUjwmqWbycztzhzy6f/jUV8r9uBu9NpOuUfHk4wpOB2NLLwwwrBMkjg1Am3I9A3r9vtEK16Ehv02WoHc65bSAF8cJyynd45y0GbKb7Ihk/yz+f4HPPPAeMKqyp10jPg4NZqkx27n2lVEkoocsuaYs+IL4ZEvq+5b03nqaWhMXtzinxiaeTQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736806638;
+	cv=none; b=W6ArDyBo5OBLGfGi8zH9rr7LEpqLMoKituFNikZb3h9iewBA8ZxmbrlVTb/NkJzOayk6i9p76G8E/MyM64I1FLDiW0tZzDLJDKZMBE4XbmFS5on4Oo/OKsegIF0AK6obAoMyL2fWoO1HkfAFK+4PSPJEqEEGXcj+h0eS3QVBvh8sRcpDQ3oxlofWQN73AqQfCI16fGy0aUAuGybsqzU9x/OoHJzx/V2ecTuVAGSuxQRFF394h2DHO2kXeaenvlypuaDgThnid2M6dWwZOVzPAEs3RgRkQ3ANvuv+kCondNu6VErc+2r+gOM5jzm0rN+EP6oagR4kEuof0WxCEkWtog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736805861; c=relaxed/relaxed;
-	bh=5ouQM0W6rpy+hi197i8Zk+lTDosT4d/QAcoc26c/0W4=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QhHqc+KZmNMtw92fp6i5XIzHbZSfPZZnPiskobKgBariKYXcL6AcGqFT5bQs+vtkxfUVZi5aZUmgVGAV0iL00GRI9LSlqe1lc04NLMbFV0WHNdsaTk06+kYlcpy1e+bwDQjVhZMAcRKl80Qf7yD5lXdvexLiQLqDt/oIkox8nY9I0Xyd5B5sRv5dniBAXw49C4zpmWhJYhYrFcM/QnJSVJmwbeqKrwnEV+lYp1N3xnT1DyBXIVFGsPd+vDnfN9Dp4mi1iCyxkFTRh3BoinOboznqnbCKJDATSgDRs3Y90behE9/BIEfaJP4a61/qBUoSfLXc7lTvBPfSI3driUtZKQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=EK7G42ul; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=34i2fzwykdfuf1xa6z3bb381.zb985ahkccz-01i85fgf.bm8xyf.be3@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1736806638; c=relaxed/relaxed;
+	bh=h2HdAYgKZXGxEZpzL0ti7ClIBEEj+08LEvmtxYZoQv4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OcEPcF0XSUWmsyd0ooas19iYv+BSFXwcWpl7bcpvffm9iQ6II0RgIyhy/xh8CgnAci4O3Ojo3XJBHY8oYkoxdlX388IrkLUBTI4SKMDxQXf/emqoh1Z6YgM3edaFXAYoKBVdCsqn6TH4yWee/uvKnOaEGs6U/NawjHtC0dyYrevAnRgK4TJnJWiB0xdqjK5Ok3CB0CfsAe3lJneyudsu7Lv3oI9sbfIGkniHuzgKL7DHH6kdlRre0XyEF0FCyoUEpHk+ODadakxbwR8092XDF40A4u/MCPDdoBNyXolXUKQ1vMOkR6ZU+IfgDA1/3zasNrYVMCGP+7MDKr4qZd/tqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cApdJnv4; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=EK7G42ul;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cApdJnv4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=34i2fzwykdfuf1xa6z3bb381.zb985ahkccz-01i85fgf.bm8xyf.be3@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YX5rg75Mwz3bxf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 09:04:18 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-2efa0eb9dacso8637245a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 14:04:18 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736805857; x=1737410657; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ouQM0W6rpy+hi197i8Zk+lTDosT4d/QAcoc26c/0W4=;
-        b=EK7G42ul/snrbnPMICfcvQv7rbp/ssOB3rOEf+vXU1mr+hvuCarAPjmW4RZvmqUxE8
-         UC4z8qbVkUYYRAuNeHoeqvQrZLry5wTyOoDDiSkHVDL1K/ZW2RLbcDViNiFyrRJp5AGG
-         JZbKq9CdiOb3D9+puUh1Fk96zr4EzcXaO+9Zo/K6Q2EMpS1rtTChqfu7DQ8khzd5pO95
-         10gQsARP5H4garumQUhqHvv72OQze0cbZGqoQ1IOJlux7QWEq7xZGHB+LrcPEpAviJTG
-         Jlw+PlJIh2NpT2dRGW20s1MfdFIIk74yb+3pj53U9tfZ7QK14ENWJ9ZIY5WmCUPCmd23
-         TvTQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736805857; x=1737410657;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5ouQM0W6rpy+hi197i8Zk+lTDosT4d/QAcoc26c/0W4=;
-        b=v7lvgofhr65JUBodyiOg6qX9DyA6ttaEI/FmbqnsXza4ff/UmVQQLkmRHpXsQMLt0m
-         ttIZAydaV5HC/CPJ70LGCu/gPd/d8/yf+kARPsycQgiZthe7ZeTXczo9SY0kfDI+Up7/
-         2ou7hWpHhpOdU3bt2rnbyTm3+bP3J0gCgbVDCa3J4na7dsLtgCqEmC+umbtaRdaFCDQn
-         +HOAnDH69+7w63x3uPH6xLlz/G1vH5WPLOMZKvsBjm1PGWjuwdNil3jzaxyrMEUz404F
-         B7Dt63XqFkV7mx8iX2VL/SGDacfuRc7pVx5yJ3WK//GMJh43r9FXcOdQhhNjZWihqxQw
-         K+xA==
-X-Forwarded-Encrypted: i=1; AJvYcCX3pSOvQiVyruDGZLPY2bRk/Xo9jX+HNp94uigo2tg84Ctzq0B+LqttKb4KLLs3WdNNdtYU2LzvCQeyZmQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxuyZLJDoDtaVyxtQUBIdbxXUA3QdTx9akzh+M8CzoHAxlu2jOP
-	84S1eU3Rrbr47r1Q/RVOJ6bYRvutKbU8SGYwJCyUxswLN2WvyE5OMpX8LYiB7DbTNt7GoOAOo9h
-	sCA==
-X-Google-Smtp-Source: AGHT+IHPN8TIZGkXrQIWMGITx0F8fOm3vw8dMWb7JVx/B9HZzRXtZecChEPlXNK7/wkOh+HdmqOb1zcL5aE=
-X-Received: from pjbdb14.prod.google.com ([2002:a17:90a:d64e:b0:2e2:9021:cf53])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f90:b0:2f6:f107:faf8
- with SMTP id 98e67ed59e1d1-2f6f107fe30mr4478474a91.24.1736805856584; Mon, 13
- Jan 2025 14:04:16 -0800 (PST)
-Date: Mon, 13 Jan 2025 14:04:15 -0800
-In-Reply-To: <87bjwaqzbz.wl-maz@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YX67d29Lnz3bxf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 09:17:17 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id BAA525C5754;
+	Mon, 13 Jan 2025 22:16:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0D7C4CED6;
+	Mon, 13 Jan 2025 22:17:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736806634;
+	bh=nyWosVO4gXhoNan9ZDnAorgdajMFfqV7pgwt7RBeMIM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cApdJnv4KbxaGWcejg6A2RbyrozepKqmlndvXBi2hkv0PwCbDyuRefMCVC6AogllV
+	 VOcVN4YfrAWCFkzgPg6hMg8iACkZVi05w3DrKIWxkEwjtyufI2g1QbdSHU5hLrvp1K
+	 t4JDUPfbyrWaCCRAYhVSpsndbMdIMezIXlgdTsKkGDKy/JaL8aPa3HvTPx4ajSF7It
+	 QqJ2PRDrdAyQDTcJJsS6xUB5RT4vTiqih4CfeKzsZdD7axjFa+7YhiK6bSMkIQUHfC
+	 ga/avwv08EA7UVMkt1KjZc7WGO1E2ymB9ozc8a0NizLZA2pFMrAdivrTD7+lEObYC3
+	 S1aPf7+G7CWXA==
+Date: Mon, 13 Jan 2025 14:17:12 -0800
+From: Namhyung Kim <namhyung@kernel.org>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+	irogers@google.com, linux-perf-users@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
+	kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+	hbathini@linux.ibm.com
+Subject: Re: [PATCH V2] tools/perf/builtin-lock: Fix return code for
+ functions in __cmd_contention
+Message-ID: <Z4WQ6IO1euKOMIHN@google.com>
+References: <20250110093730.93610-1-atrajeev@linux.vnet.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,94 +66,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250111012450.1262638-1-seanjc@google.com> <20250111012450.1262638-4-seanjc@google.com>
- <87ikqlr4vo.wl-maz@kernel.org> <Z4U03KRYy2DVEgJR@google.com>
- <86ikqiwq7y.wl-maz@kernel.org> <Z4ViZb7rruRiN-Oe@google.com> <87bjwaqzbz.wl-maz@kernel.org>
-Message-ID: <Z4WN3_wUZ1H_e7ou@google.com>
-Subject: Re: [PATCH 3/5] KVM: Add a common kvm_run flag to communicate an exit
- needs completion
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Michael Ellerman <mpe@ellerman.id.au>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250110093730.93610-1-atrajeev@linux.vnet.ibm.com>
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 13, 2025, Marc Zyngier wrote:
-> On Mon, 13 Jan 2025 18:58:45 +0000,
-> Sean Christopherson <seanjc@google.com> wrote:
-> > 
-> > On Mon, Jan 13, 2025, Marc Zyngier wrote:
-> > > On Mon, 13 Jan 2025 15:44:28 +0000,
-> > > Sean Christopherson <seanjc@google.com> wrote:
-> > > > 
-> > > > On Sat, Jan 11, 2025, Marc Zyngier wrote:
-> > > > > Yet, you don't amend arm64 to publish that flag. Not that I think this
-> > > > > causes any issue (even if you save the state at that point without
-> > > > > reentering the guest, it will be still be consistent), but that
-> > > > > directly contradicts the documentation (isn't that ironic? ;-).
-> > > > 
-> > > > It does cause issues, I missed this code in kvm_arch_vcpu_ioctl_run():
-> > > > 
-> > > > 	if (run->exit_reason == KVM_EXIT_MMIO) {
-> > > > 		ret = kvm_handle_mmio_return(vcpu);
-> > > > 		if (ret <= 0)
-> > > > 			return ret;
-> > > > 	}
-> > > 
-> > > That's satisfying a load from the guest forwarded to userspace.
-> > 
-> > And MMIO stores, no?  I.e. PC needs to be incremented on stores as well.
+On Fri, Jan 10, 2025 at 03:07:30PM +0530, Athira Rajeev wrote:
+> perf lock contention returns zero exit value even if the lock contention
+> BPF setup failed.
 > 
-> Yes, *after* the store as completed. If you replay the instruction,
-> the same store comes out.
+>   # ./perf lock con -b true
+>   libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
+>   libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
+>   libbpf: failed to find valid kernel BTF
+>   libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
+>   libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
+>   libbpf: failed to find valid kernel BTF
+>   libbpf: Error loading vmlinux BTF: -ESRCH
+>   libbpf: failed to load object 'lock_contention_bpf'
+>   libbpf: failed to load BPF skeleton 'lock_contention_bpf': -ESRCH
+>   Failed to load lock-contention BPF skeleton
+>   lock contention BPF setup failed
+>   # echo $?
+>    0
 > 
-> > > If the VMM did a save of the guest at this stage, restored and resumed it,
-> > > *nothing* bad would happen, as PC still points to the instruction that got
-> > > forwarded. You'll see the same load again.
-> > 
-> > But replaying an MMIO store could cause all kinds of problems, and even MMIO
-> > loads could theoretically be problematic, e.g. if there are side effects in the
-> > device that trigger on access to a device register.
+> Fix this by saving the return code for lock_contention_prepare
+> so that command exits with proper return code. Similarly set the
+> return code properly for two other functions in builtin-lock, namely
+> setup_output_field() and select_key().
 > 
-> But that's the VMM's problem. If it has modified its own state and
-> doesn't return to the guest to complete the instruction, that's just
-> as bad as a load, which *do* have side effects as well.
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Agreed, just wanted to make sure I wasn't completely misunderstanding something
-about arm64.
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
 
-> Overall, the guest state exposed by KVM is always correct, and
-> replaying the instruction is not going to change that. It is if the
-> VMM is broken that things turn ugly *for the VMM itself*, 
-> and I claim that no amount of flag being added is going to help that.
+Thanks,
+Namhyung
 
-On x86 at least, adding KVM_RUN_NEEDS_COMPLETION reduces the chances for human
-error.  x86 has had bugs in both KVM (patch 1) and userspace (Google's VMM when
-handling MSR exits) that would have been avoided if KVM_RUN_NEEDS_COMPLETION existed.
-Unless the VMM is doing something decidely odd, userspace needs to write code once
-(maybe even just once for all architectures).  For KVM, the flag is set based on
-whether or not the vCPU has a valid completion callback, i.e. will be correct so
-long as the underlying KVM code is correct.
-
-Contrast that with the current approach, where the KVM developer needs to get
-the KVM code correct and remember to update KVM's documentation.  Documentation
-is especially problematic, because in practice it can't be tested, i.e. is much
-more likely to be missed by the developer and the maintainer.  The VMM either
-needs to blindly redo KVM_RUN (as selftests do, and apparently as QEMU does), or
-the developer adding VMM support needs to be diligent in reading KVM's documentation.
-And like KVM documentation, testing that the VMM is implemented to KVM's "spec"
-is effectively impossible in practice, because 99.9999% of the time userspace
-exits and save/restore will work just fine.
-
-I do agree that the VMM is likely going to run into problems sooner or later if
-the developers/maintainers don't fundamentally understand the need to redo KVM_RUN,
-but I also think there's significant value in reducing the chances for simple
-human error to result in broken VMs.
+> ---
+> Changelog:
+>  v1 -> v2
+>  Fixed return code in functions: setup_output_field()
+>  and select_key() as pointed out by Namhyung.
+> 
+>  tools/perf/builtin-lock.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/perf/builtin-lock.c b/tools/perf/builtin-lock.c
+> index 208c482daa56..94a2bc15a2fa 100644
+> --- a/tools/perf/builtin-lock.c
+> +++ b/tools/perf/builtin-lock.c
+> @@ -2049,7 +2049,8 @@ static int __cmd_contention(int argc, const char **argv)
+>  				goto out_delete;
+>  		}
+>  
+> -		if (lock_contention_prepare(&con) < 0) {
+> +		err = lock_contention_prepare(&con);
+> +		if (err < 0) {
+>  			pr_err("lock contention BPF setup failed\n");
+>  			goto out_delete;
+>  		}
+> @@ -2070,10 +2071,14 @@ static int __cmd_contention(int argc, const char **argv)
+>  		}
+>  	}
+>  
+> -	if (setup_output_field(true, output_fields))
+> +	err = setup_output_field(true, output_fields);
+> +	if (err) {
+> +		pr_err("Failed to setup output field\n");
+>  		goto out_delete;
+> +	}
+>  
+> -	if (select_key(true))
+> +	err = select_key(true);
+> +	if (err)
+>  		goto out_delete;
+>  
+>  	if (symbol_conf.field_sep) {
+> -- 
+> 2.43.5
+> 
 
