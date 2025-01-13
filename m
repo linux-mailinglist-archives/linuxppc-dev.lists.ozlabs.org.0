@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-5182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5183-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E75CA0BF30
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 18:50:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D3AEA0BF5B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 18:54:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YX0CL6bBKz3cc0;
-	Tue, 14 Jan 2025 04:50:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YX0Jv5HGbz3cYh;
+	Tue, 14 Jan 2025 04:54:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736790606;
-	cv=none; b=FYeJ6LBN72k9xpinidDzy+vz8nYmcnpNFmEkstFKm4tKZESbLne/f97fbzI2J5ERYiJdsTIjTk0ihbgHUlqQwF5DAb+7eugVqkTC3QZ/Q95oZFPrxVHIKIP/bUOFOb5ldUyXQKTPp96IH+mxV2+TSKdYRw9mZTarCPC0tCW+LZXnWq0bB6/4Ot1RQoYAx8Y42kgpnqCdWU1odKkMM8lY1hes8nr5vBYkrMg4AsNBXF25WhzK2jp5ewn57iZYhwe1LVxIXv4kETiC62Tus1VURDGf60ksuG2FOJlM9YtvdwvYxM3RwickH96j5U5Dszv7sli/Vju1Cs02cw5drKcDMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736790895;
+	cv=none; b=IcwUb1wfMYCnLyEtMG95RfNc8IgiKuP07qcoPTA8Tkzq1icD1tlaQ5bAS+HMGwf3UZVzleLpkQJxrWl+7bd2tsR3ZGXX945HFSfibJv/TvxDAHw88UmtvtqvYe+3TKRLatL9HGZ6XrN1ww9S100Uu571snlXFLFv2wshea+uGALouKU8vEFV/rAHS/k5gT2m5XrMPU++p+Vmro9tgbR6uperan4hYqhg02Lc+Vq1HoHz2Ir66+zrMg4njIHvv07UfYEHwX0l2Z6ky41BYmNxRNeDBHXFqEqEbwZxo6VoHVkV/gIG7FwMhBCvHgvZs7yqMLS1udf6J9aiE8wqAZ5hig==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736790606; c=relaxed/relaxed;
-	bh=rGaYhU6SOqCDR5KQn+mVlZLPi+gzFrOm5ljEkEWlGuk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=g7ViSfMCGlrWOk7xlztAL+BHK4r6XELRgvnM/HhwEH1tQDnOLU9DHBrYEF1z0XdJPhkXqY8ANJOi2cFxtB81l/nuOqwC2+wuZZOYFl1DZSHJVqKl+w7RYiQpeIvCohsXaAVZddMQX/CIF0Co5TQOrYshFdV7wLkYQBcFWbyqklZShvLh188hFyWR4zeXEQMSRxiAieNlyOq7E9apmF2LLI8BQNq3eHkT8gNxIwvKeuyFQ0zZ3SPIx1PVS7M/PRYjdRTjwyt4xQqSWO30585PRk0rzi5liDwtCRUJ41KlJ7d94tQKjlfp9njr814qL+U7ZlRX/9JwoqifJU2MPZ5GHQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YX0CK52LTz3cYh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 04:50:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YWzsl0knNz9sS7;
-	Mon, 13 Jan 2025 18:34:51 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id aQe7aT3g5CqG; Mon, 13 Jan 2025 18:34:51 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YWzsd6c22z9sRk;
-	Mon, 13 Jan 2025 18:34:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id C46E08B76C;
-	Mon, 13 Jan 2025 18:34:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id JGvQgK_t-4vp; Mon, 13 Jan 2025 18:34:45 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 39FCA8B768;
-	Mon, 13 Jan 2025 18:34:45 +0100 (CET)
-Message-ID: <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
-Date: Mon, 13 Jan 2025 18:34:44 +0100
+	t=1736790895; c=relaxed/relaxed;
+	bh=Xd8k5mTFO0RMaW5hiPU4LxjxyPaS/5ktS/CWIJVgbEg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OYxi8cJrMJvrynTKPSykIrq8KsMB2RW9glv0ePhVRV1xiTTq1Ww96axVv8FIbH/WNlBFqZrabhy4slN0HtmG9DqujouL/TRwR4pD8VC1U116HV4Nh8UQTtF7tuQ8MUUFro1Lsd/mMfrNQBmbt093qeICzvRJfNE2RxPfVgrjSV60DzVLj1AZA2MspUioZpPydeO6/fqTFCZ8mHKvQFlokup3XWbFQqM9w52e5Rk5bdiUINUkXVlLmEX6wGIU/hDQLdGRDeCemXpDCaijizHGreg4NRV6jw3gEsYbtaC3vrRaS+/BdG8+sG2Vj2mPiawPxxbEKZYkXigR0+YMwzun5A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YX0Jt4VVYz3013
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 04:54:54 +1100 (AEDT)
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 1B60E72C8CC;
+	Mon, 13 Jan 2025 20:54:53 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+	id F21AA7CCB3A; Mon, 13 Jan 2025 19:54:52 +0200 (IST)
+Date: Mon, 13 Jan 2025 19:54:52 +0200
+From: "Dmitry V. Levin" <ldv@strace.io>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Oleg Nesterov <oleg@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>,
+	Eugene Syromyatnikov <evgsyr@gmail.com>,
+	Mike Frysinger <vapier@gentoo.org>,
+	Renzo Davoli <renzo@cs.unibo.it>,
+	Davide Berardi <berardi.dav@gmail.com>,
+	strace-devel@lists.strace.io,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
+ syscall_set_return_value()
+Message-ID: <20250113175452.GA646@strace.io>
+References: <20250113171054.GA589@strace.io>
+ <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,64 +57,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
- syscall_set_return_value()
-To: "Dmitry V. Levin" <ldv@strace.io>, Oleg Nesterov <oleg@redhat.com>,
- Michael Ellerman <mpe@ellerman.id.au>
-Cc: Eugene Syromyatnikov <evgsyr@gmail.com>,
- Mike Frysinger <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>,
- Davide Berardi <berardi.dav@gmail.com>, strace-devel@lists.strace.io,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
- linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20250113171054.GA589@strace.io>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250113171054.GA589@strace.io>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
+X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-Le 13/01/2025 à 18:10, Dmitry V. Levin a écrit :
-> Bring syscall_set_return_value() in sync with syscall_get_error(),
-> and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
+On Mon, Jan 13, 2025 at 06:34:44PM +0100, Christophe Leroy wrote:
+> Le 13/01/2025 à 18:10, Dmitry V. Levin a écrit :
+> > Bring syscall_set_return_value() in sync with syscall_get_error(),
+> > and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
+> > 
+> > This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
+> > syscall_set_return_value()").
 > 
-> This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
-> syscall_set_return_value()").
-
-There is a clear detailed explanation in that commit of why it needs to 
-be done.
-
-If you think that commit is wrong you have to explain why with at least 
-the same level of details.
-
+> There is a clear detailed explanation in that commit of why it needs to 
+> be done.
 > 
-> Signed-off-by: Dmitry V. Levin <ldv@strace.io>
-> ---
->   arch/powerpc/include/asm/syscall.h | 6 +++++-
->   1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-> index 3dd36c5e334a..422d7735ace6 100644
-> --- a/arch/powerpc/include/asm/syscall.h
-> +++ b/arch/powerpc/include/asm/syscall.h
-> @@ -82,7 +82,11 @@ static inline void syscall_set_return_value(struct task_struct *task,
->   		 */
->   		if (error) {
->   			regs->ccr |= 0x10000000L;
-> -			regs->gpr[3] = error;
-> +			/*
-> +			 * In case of an error regs->gpr[3] contains
-> +			 * a positive ERRORCODE.
-> +			 */
-> +			regs->gpr[3] = -error;
->   		} else {
->   			regs->ccr &= ~0x10000000L;
->   			regs->gpr[3] = val;
+> If you think that commit is wrong you have to explain why with at least 
+> the same level of details.
 
+I'm sorry, I'm not by any means a powerpc expert to explain why that
+commit was added in the first place, I wish Michael would be able to do it
+himself.  All I can say is that for some mysterious reason current
+syscall_set_return_value() implementation assumes that in case of an error
+regs->gpr[3] has to be negative, while, according to well-tested
+syscall_get_error(), it has to be positive.
+
+This is very visible with PTRACE_SET_SYSCALL_INFO that exposes
+syscall_set_return_value() to userspace, and, in particular, with the
+architecture-agnostic ptrace/set_syscall_info selftest added later in the
+series.
+
+> > diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+> > index 3dd36c5e334a..422d7735ace6 100644
+> > --- a/arch/powerpc/include/asm/syscall.h
+> > +++ b/arch/powerpc/include/asm/syscall.h
+> > @@ -82,7 +82,11 @@ static inline void syscall_set_return_value(struct task_struct *task,
+> >   		 */
+> >   		if (error) {
+> >   			regs->ccr |= 0x10000000L;
+> > -			regs->gpr[3] = error;
+> > +			/*
+> > +			 * In case of an error regs->gpr[3] contains
+> > +			 * a positive ERRORCODE.
+> > +			 */
+> > +			regs->gpr[3] = -error;
+> >   		} else {
+> >   			regs->ccr &= ~0x10000000L;
+> >   			regs->gpr[3] = val;
+
+-- 
+ldv
 
