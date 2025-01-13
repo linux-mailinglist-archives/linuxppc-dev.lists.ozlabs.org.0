@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-5165-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5166-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61599A0BD3B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 17:26:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27CF4A0BD7B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 17:29:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWyLb5WJYz30TH;
-	Tue, 14 Jan 2025 03:26:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWyQf1r9Bz30V2;
+	Tue, 14 Jan 2025 03:29:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736785575;
-	cv=none; b=nnKCFKjAlI29wAbm9cyPBq9+25Z0py7B9O98VzFze38/J/wh+xSkcohikAusRGLi+ofiOhqMrA6kkTAFeMhiipK9SCuE2TPll+YwF1YiMfrJ+69O9ppfTcBG1NSP36y1pVDLGRLHATXLHCoAccAjHDd8J6MtRTxwaNT+K96Ruo7Op8YVIkolGZJgJYyAuEX08CYD81FWGmD69ScQJ1dKWIRLj03tYtxlJ00+a34QRq9k2VyWzjs7FsPhuuZehb1Kb/DTukdvvFV/fi+QPzIXxggDrG/hjcjnol7p8/Urk79ZZQt/4iIA2RjipgtMcjaFdUm8pB4laYHPop3EVo/1kg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736785786;
+	cv=none; b=D9KJi64HbD8bjJukZmcvYqVT5nJpA7q1r6U2MQs9MHRBRwVAEK1mr0O0Pfgit9u1d6hIqYfWmkLwkGJ3rebEgh/kkLka5NrxxRFsNmU3KX5bogI1Shq0ZY5Jn5faRiNOdjjwvonqywRETxgq9w8WpjLv31ymye6b9YB917ccsUvJNI8XWz4bBjDMoEiRMEmOitR4yXVUdddLeOCaJp145m+ZToJv2py3AGnlHQpP4pQLflhebJQgJIYvpPGAz6uOUitFjS5nTXYRCbb45oBjpxaijWtOuPBNR+Spgis19KseFISZfNebSAs4U0Xp+rq9RAV86BjzrYTFE4O/YG0Buw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736785575; c=relaxed/relaxed;
-	bh=pGWnrfB5x3vsMl15xo3lUlJT+6QAr+LaD+zHKo33cfU=;
+	t=1736785786; c=relaxed/relaxed;
+	bh=Vgd/0g+LaWmef5gDX62Sg126yqP4bAmhxx9nw+tAZek=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j1PB9ugNxyLCO8yC68GQaGaj6Q5tUl64X90aJSfO2RUI7Z8dP8hWnhmCAkW6MJvfZQ8HonKq5QRMbS5dUX82gw/gWsMqQVE80r/dxYBpJO7YjHdugXaGFA81gKI5noQ39aaMsKQkxH1psisdL5C77aZI31zVdcugCuId3M9FDd1/HFrfT14pRFIyXd0+J7nP/dw+2IJVkhC4fIw5FNCZiI+lkhxpDxN08SRNGEJJHnPdguVp6IBBXKCTuMmDrFyGKxiL+qcs+3SqBzFCnOT/ILRIN/P8hM7agG67Yo5uReplPStkEBuht9L+rA4xuqL7dDnqb5IMfJnolA807SEnAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9OxD2cj; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pqg7c7whl758ljf+R48rjUq7/KHCAAWhIc+cfbn9tnSbG9zU3qPmTT+1Ha4VgfTRKjn64+AMxAajmkkLgQoh2O7Zt3dDkbu6VC+KjdJwlgyPrgliOv3bTZrG6TU8kmIELHWtjsmhLVMYWWasoPLI6T55FFb8DpxeyvzfWRcna12i/0CPYpcWyIQXqQAt29CZw49PHZORcx4MyzF1q/POkWVk3g8gfDEPB9BTQzakh1NQmR70hFUzgNtBxaEQuIEa74t31YVCSZb8xCfbaiTqdRs7soWF10yq33Cw1KcWRRi0fGLrCoiT8nLgYAAQOqIdj+JClQV1aHQBd1Z2QIqNcg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lPMzoMzo; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=f9OxD2cj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lPMzoMzo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWyLZ31FQz30TC
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 03:26:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWyQd0bvdz30V0
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 03:29:45 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 198035C51B3;
-	Mon, 13 Jan 2025 16:25:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB06FC4CEE3;
-	Mon, 13 Jan 2025 16:26:04 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id D37DA5C56E5;
+	Mon, 13 Jan 2025 16:29:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749DDC4CED6;
+	Mon, 13 Jan 2025 16:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736785571;
-	bh=aIErGEJQ93Edr09sqGtwbrisP+GLeiu0+v58Z3b4+wg=;
+	s=k20201202; t=1736785782;
+	bh=G/WL7za6/FhMEJQUPPYaVa5AR3im6p6zdx508VpTd8Y=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=f9OxD2cjCU02a1TFHaQkRJkHTJaf800j2ThaRkmaDO8PnvHYcKvQAfMic1HE/Vgu4
-	 bhoThTemMYdDsEruG0k1HE1twIt5p+okmQ1Fme2xsmkJ1BQLD8H+Zp7QUSFbDk27Gn
-	 B5ufSBakDorBmKAc7MajbPl5qEyM8Cvsp7UlPF7Qlqy8u3xJW5fG1y1vkiwGoluiPG
-	 TaVdI6SpQBvsCUt754VDxKLXg9xhYJFxRfy3Q35WM4nn1s+LKSVLKt3udttwPvQ+n7
-	 7RdzermO/y9ghDR77Ho+plqpTXITbyFwEjDbIrmeX2kZUFwI7wLBL/ndLmvBoivzIj
-	 msVg4+kWAVaUA==
-Date: Mon, 13 Jan 2025 16:26:01 +0000
+	b=lPMzoMzonmm2uaOFLfrdzxlqYEZB9gyC4UNDIA7tmVyD1CdeiDw/0q7HTvvJaEdU9
+	 O8zfvzFkV7uaD3Eeih9wt9NYEMgB9jFV0IHWkVr1H3T/eBEPpuOfFcMO/Ou4iLVDWQ
+	 Hml2UsTpltlAGqg8dCV2vjov8Jfdy8hAWDfRY3MLkqHK6jF+OtTwqCUS2Mr7UtQJAG
+	 LdHkSaSmCjlHGRuBlI0oL1FiCdYRvc0JfAH5RdDfH6z1lRwE3aqHCLNuC9IujuiGvW
+	 +MOXpYRLwV7Hg46tyDx5cj6hTBCHBY3taAzyPWeFgdxktJaT7Of+Zg4hhGTcDn07vF
+	 bC7Um3/mpT7aQ==
+Date: Mon, 13 Jan 2025 16:29:32 +0000
 From: Will Deacon <will@kernel.org>
 To: Qi Zheng <zhengqi.arch@bytedance.com>
 Cc: peterz@infradead.org, agordeev@linux.ibm.com, kevin.brodsky@arm.com,
@@ -64,11 +64,11 @@ Cc: peterz@infradead.org, agordeev@linux.ibm.com, kevin.brodsky@arm.com,
 	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
 	linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
 	linux-um@lists.infradead.org
-Subject: Re: [PATCH v5 05/17] arm64: pgtable: use mmu gather to free p4d
- level page table
-Message-ID: <20250113162600.GA14101@willie-the-truck>
+Subject: Re: [PATCH v5 09/17] arm64: pgtable: move pagetable_dtor() to
+ __tlb_remove_table()
+Message-ID: <20250113162931.GB14101@willie-the-truck>
 References: <cover.1736317725.git.zhengqi.arch@bytedance.com>
- <3fd48525397b34a64f7c0eb76746da30814dc941.1736317725.git.zhengqi.arch@bytedance.com>
+ <cf4b847caf390f96a3e3d534dacb2c174e16c154.1736317725.git.zhengqi.arch@bytedance.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,61 +83,31 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <3fd48525397b34a64f7c0eb76746da30814dc941.1736317725.git.zhengqi.arch@bytedance.com>
+In-Reply-To: <cf4b847caf390f96a3e3d534dacb2c174e16c154.1736317725.git.zhengqi.arch@bytedance.com>
 User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Jan 08, 2025 at 02:57:21PM +0800, Qi Zheng wrote:
-> Like other levels of page tables, also use mmu gather mechanism to free
-> p4d level page table.
+On Wed, Jan 08, 2025 at 02:57:25PM +0800, Qi Zheng wrote:
+> Move pagetable_dtor() to __tlb_remove_table(), so that ptlock and page
+> table pages can be freed together (regardless of whether RCU is used).
+> This prevents the use-after-free problem where the ptlock is freed
+> immediately but the page table pages is freed later via RCU.
+> 
+> Page tables shouldn't have swap cache, so use pagetable_free() instead of
+> free_page_and_swap_cache() to free page table pages.
 > 
 > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
-> Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 > Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
 > Cc: linux-arm-kernel@lists.infradead.org
 > ---
->  arch/arm64/include/asm/pgalloc.h |  1 -
->  arch/arm64/include/asm/tlb.h     | 14 ++++++++++++++
->  2 files changed, 14 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
-> index 2965f5a7e39e3..1b4509d3382c6 100644
-> --- a/arch/arm64/include/asm/pgalloc.h
-> +++ b/arch/arm64/include/asm/pgalloc.h
-> @@ -85,7 +85,6 @@ static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
->  	__pgd_populate(pgdp, __pa(p4dp), pgdval);
->  }
->  
-> -#define __p4d_free_tlb(tlb, p4d, addr)  p4d_free((tlb)->mm, p4d)
->  #else
->  static inline void __pgd_populate(pgd_t *pgdp, phys_addr_t p4dp, pgdval_t prot)
->  {
-> diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
-> index a947c6e784ed2..445282cde9afb 100644
-> --- a/arch/arm64/include/asm/tlb.h
-> +++ b/arch/arm64/include/asm/tlb.h
-> @@ -111,4 +111,18 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pudp,
->  }
->  #endif
->  
-> +#if CONFIG_PGTABLE_LEVELS > 4
-> +static inline void __p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4dp,
-> +				  unsigned long addr)
-> +{
-> +	struct ptdesc *ptdesc = virt_to_ptdesc(p4dp);
-> +
-> +	if (!pgtable_l5_enabled())
-> +		return;
-> +
-> +	pagetable_p4d_dtor(ptdesc);
-> +	tlb_remove_ptdesc(tlb, ptdesc);
-> +}
+>  arch/arm64/include/asm/tlb.h | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
 
-Should we update p4d_free() to call the destructor, too? It looks like
-it just does free_page() atm.
+Acked-by: Will Deacon <will@kernel.org>
 
 Will
 
