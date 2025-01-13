@@ -1,89 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-5177-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5178-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B4BA0BE5B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 18:09:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30807A0BE71
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 18:10:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWzJY6yY5z3clH;
-	Tue, 14 Jan 2025 04:09:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWzL864tvz3cmV;
+	Tue, 14 Jan 2025 04:10:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736788173;
-	cv=none; b=mM7JAWMqbT5QSOmeZiPdsNVXg+jjQplQ+JHnRY7wfHhbJyLRon+dqfRgbFyEIIIFpf8i23A6028m7BReUuVZSWz0kXmYxMfoei3FJW46iBTv13GeaVNTJ8b4yPVhmScaqXDZYw3djSi4GdRMV9/ycFlsk7WMVqmXcaQlUphH4wnL0vBwZGz133k7wdvqgS5U/TB1ehRgcWNZcKl+nP/q5RoES9qSkOzY6EFQVLiBJzV5GsCkGBaF2+et7M0maBX+QOUwtv5SmqNeaRw6JclAFT47GwYG/trmoczz4Ae9WtHT3Jqt37rt5Qxd3F2FU+L9VZ8COvZi7tvRys6VGxoF6g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736788256;
+	cv=none; b=TpxxfEzkyVL6dWfm9/p/C6gDiJvOzuGj9IMPPBxkQJYj1aiXFQ9Q4zbjXNO4+AsakaO/AZtHdtsi5PK6TrOE/ON81Ssq4cTGcUeSxUuIMy6KV/rgpLk+4IJBt0ZFRrcytGHL5tqY0pPbvkuOblJe9Hw8XXLk98oxe7Omfj47smrptnp0gvUDRScG6wx7ksH5RevGdU8HYVoF+DMZO3rB8YtG9mSUBOPZl+39T60zjH6hDNGJ7+9/hDLQkNs3RcHIjESVpuAnrxXmQchk7zeNB7Wya4KxicEsRHzLNbGz2g0LogfKHZAvUUid2GrJm4v378d6lrjvt2VQQq8B7nPwKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736788173; c=relaxed/relaxed;
-	bh=pRQhUW8dQ+0CujHJfWL4uly3saXw3ma1OCWVp0SB+SA=;
+	t=1736788256; c=relaxed/relaxed;
+	bh=L2jpNdRlSu2kZgJqIveeGQbslvJgQMtiriX0N3K+DzQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=GElzeZ90F4IdgPNdCC5ckqe+UvtBnLmba7S0jFfciL2gEnIW2Ka0PNpG/hoz2HIcwpcICGUCVR0j+3togRXk4385GmlVLyc1dOZmnyRgc+DkKSohf6s1eElx6eJF367l/lSvDQEjuoNFE8yNw/4HNm0HQyGfIKf/vgcCYXrM0JTXdmEmYtsH8Uj02GstkWufYPKRbpw2gYxbV9VGlABcQD/oV1M9PU75wO1ekgR1P3qk+N0LZ/kyoxQYBatYldRj62sB4zvlBlEnUKCTJLGcMpJIWTg3O+3eG2o9+EYHKWeS6Tt1mv/S0g2VBDChqlOc9NuXu/Q3r+07atn0ccMoRA==
+	 Content-Disposition:In-Reply-To; b=isg8j8kaFKdJq25oWcah3+shyBmqXzCGyd6dwL93tTQmAWNUEevLUL2sfDkmlgCbQqZyHV2AM//Wo/8apsyhS/cX4T1AozmBB2fbawLcCxTyFf8Akm31/+uzW+8w4K6Iom4QA3ZEkWHXcAI0cI6rYp/l8bntwM+R4zNdjJwwHpOVrtOQnwlDY3eQ+TnCyhxacL4gGwEX+HeBQ9dhxxZxQ7NhuwfiKRgIQF3WL79LBG3sf0/YZq2X6UBecofELMTsLGAFTqz0JKZgeQN33VeQeRQ9YB1ijzKTP4TKkOecufMxGmEK0T/Ywo/xXDh8A/yF5tT/GUv4p/xe+lRObaL6xQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
 Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWzJX2FJ8z3ckc
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 04:09:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWzL76Dcvz3clw
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 04:10:55 +1100 (AEDT)
 Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 37B7E72C8CC;
-	Mon, 13 Jan 2025 20:09:26 +0300 (MSK)
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 5D76072C8CC;
+	Mon, 13 Jan 2025 20:10:54 +0300 (MSK)
 Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id 150757CCB3A; Mon, 13 Jan 2025 19:09:25 +0200 (IST)
-Date: Mon, 13 Jan 2025 19:09:25 +0200
+	id 52A327CCB3A; Mon, 13 Jan 2025 19:10:54 +0200 (IST)
+Date: Mon, 13 Jan 2025 19:10:54 +0200
 From: "Dmitry V. Levin" <ldv@strace.io>
-To: Oleg Nesterov <oleg@redhat.com>
+To: Oleg Nesterov <oleg@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>
 Cc: Eugene Syromyatnikov <evgsyr@gmail.com>,
 	Mike Frysinger <vapier@gentoo.org>,
 	Renzo Davoli <renzo@cs.unibo.it>,
 	Davide Berardi <berardi.dav@gmail.com>,
-	strace-devel@lists.strace.io, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>, Will Deacon <will@kernel.org>,
-	Guo Ren <guoren@kernel.org>, Brian Cain <bcain@quicinc.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	strace-devel@lists.strace.io,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	Shuah Khan <shuah@kernel.org>, linux-snps-arc@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linux-api@vger.kernel.org
-Subject: [PATCH v2 0/7] ptrace: introduce PTRACE_SET_SYSCALL_INFO API
-Message-ID: <20250113170925.GA392@altlinux.org>
+	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 1/7] powerpc: properly negate error in
+ syscall_set_return_value()
+Message-ID: <20250113171054.GA589@strace.io>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,113 +57,39 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20250113170925.GA392@strace.io>
 X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-PTRACE_SET_SYSCALL_INFO is a generic ptrace API that complements
-PTRACE_GET_SYSCALL_INFO by letting the ptracer modify details of
-system calls the tracee is blocked in.
+Bring syscall_set_return_value() in sync with syscall_get_error(),
+and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
 
-This API allows ptracers to obtain and modify system call details
-in a straightforward and architecture-agnostic way.
+This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
+syscall_set_return_value()").
 
-Current implementation supports changing only those bits of system call
-information that are used by strace, namely, syscall number, syscall
-arguments, and syscall return value.
-
-Support of changing additional details returned by PTRACE_GET_SYSCALL_INFO,
-such as instruction pointer and stack pointer, could be added later
-if needed, by using struct ptrace_syscall_info.flags to specify
-the additional details that should be set.  Currently, flags and reserved
-fields of struct ptrace_syscall_info must be initialized with zeroes;
-arch, instruction_pointer, and stack_pointer fields are ignored.
-
-PTRACE_SET_SYSCALL_INFO currently supports only PTRACE_SYSCALL_INFO_ENTRY,
-PTRACE_SYSCALL_INFO_EXIT, and PTRACE_SYSCALL_INFO_SECCOMP operations.
-Other operations could be added later if needed.
-
-Ideally, PTRACE_SET_SYSCALL_INFO should have been introduced along with
-PTRACE_GET_SYSCALL_INFO, but it didn't happen.  The last straw that
-convinced me to implement PTRACE_SET_SYSCALL_INFO was apparent failure
-to provide an API of changing the first system call argument on riscv
-architecture [1].
-
-ptrace(2) man page:
-
-long ptrace(enum __ptrace_request request, pid_t pid, void *addr, void *data);
-...
-PTRACE_SET_SYSCALL_INFO
-       Modify information about the system call that caused the stop.
-       The "data" argument is a pointer to struct ptrace_syscall_info
-       that specifies the system call information to be set.
-       The "addr" argument should be set to sizeof(struct ptrace_syscall_info)).
-
-[1] https://lore.kernel.org/all/59505464-c84a-403d-972f-d4b2055eeaac@gmail.com/
-
+Signed-off-by: Dmitry V. Levin <ldv@strace.io>
 ---
+ arch/powerpc/include/asm/syscall.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Notes:
-    v2:
-    * Add patch to fix syscall_set_return_value() on powerpc
-    * Add patch to fix mips_get_syscall_arg() on mips
-    * Merge two patches adding syscall_set_arguments() implementations
-      from different sources into a single patch
-    * Add syscall_set_return_value() implementation on hexagon
-    * Add syscall_set_return_value() invocation to syscall_set_nr()
-      on arm and arm64.
-    * Fix syscall_set_nr() and mips_set_syscall_arg() on mips
-    * Add a comment to syscall_set_nr() on arc, powerpc, s390, sh,
-      and sparc
-    * Remove redundant ptrace_syscall_info.op assignments in
-      ptrace_get_syscall_info_*
-    * Minor style tweaks in ptrace_get_syscall_info_op()
-    * Remove syscall_set_return_value() invocation from
-      ptrace_set_syscall_info_entry()
-    * Skip syscall_set_arguments() invocation in case of syscall number -1
-      in ptrace_set_syscall_info_entry() 
-    * Split ptrace_syscall_info.reserved into ptrace_syscall_info.reserved
-      and ptrace_syscall_info.flags
-    * Use __kernel_ulong_t instead of unsigned long in set_syscall_info test
-
-Dmitry V. Levin (7):
-  powerpc: properly negate error in syscall_set_return_value()
-  mips: fix mips_get_syscall_arg() for O32 and N32
-  syscall.h: add syscall_set_arguments() and syscall_set_return_value()
-  syscall.h: introduce syscall_set_nr()
-  ptrace_get_syscall_info: factor out ptrace_get_syscall_info_op
-  ptrace: introduce PTRACE_SET_SYSCALL_INFO request
-  selftests/ptrace: add a test case for PTRACE_SET_SYSCALL_INFO
-
- arch/arc/include/asm/syscall.h                |  25 +
- arch/arm/include/asm/syscall.h                |  37 ++
- arch/arm64/include/asm/syscall.h              |  29 ++
- arch/csky/include/asm/syscall.h               |  13 +
- arch/hexagon/include/asm/syscall.h            |  21 +
- arch/loongarch/include/asm/syscall.h          |  15 +
- arch/m68k/include/asm/syscall.h               |   7 +
- arch/microblaze/include/asm/syscall.h         |   7 +
- arch/mips/include/asm/syscall.h               |  72 ++-
- arch/nios2/include/asm/syscall.h              |  16 +
- arch/openrisc/include/asm/syscall.h           |  13 +
- arch/parisc/include/asm/syscall.h             |  19 +
- arch/powerpc/include/asm/syscall.h            |  26 +-
- arch/riscv/include/asm/syscall.h              |  16 +
- arch/s390/include/asm/syscall.h               |  24 +
- arch/sh/include/asm/syscall_32.h              |  24 +
- arch/sparc/include/asm/syscall.h              |  22 +
- arch/um/include/asm/syscall-generic.h         |  19 +
- arch/x86/include/asm/syscall.h                |  43 ++
- arch/xtensa/include/asm/syscall.h             |  18 +
- include/asm-generic/syscall.h                 |  30 ++
- include/linux/ptrace.h                        |   3 +
- include/uapi/linux/ptrace.h                   |   4 +-
- kernel/ptrace.c                               | 153 +++++-
- tools/testing/selftests/ptrace/Makefile       |   2 +-
- .../selftests/ptrace/set_syscall_info.c       | 441 ++++++++++++++++++
- 26 files changed, 1052 insertions(+), 47 deletions(-)
- create mode 100644 tools/testing/selftests/ptrace/set_syscall_info.c
-
+diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+index 3dd36c5e334a..422d7735ace6 100644
+--- a/arch/powerpc/include/asm/syscall.h
++++ b/arch/powerpc/include/asm/syscall.h
+@@ -82,7 +82,11 @@ static inline void syscall_set_return_value(struct task_struct *task,
+ 		 */
+ 		if (error) {
+ 			regs->ccr |= 0x10000000L;
+-			regs->gpr[3] = error;
++			/*
++			 * In case of an error regs->gpr[3] contains
++			 * a positive ERRORCODE.
++			 */
++			regs->gpr[3] = -error;
+ 		} else {
+ 			regs->ccr &= ~0x10000000L;
+ 			regs->gpr[3] = val;
 -- 
 ldv
 
