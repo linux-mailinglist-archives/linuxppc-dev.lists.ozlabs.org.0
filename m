@@ -1,71 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-5153-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5154-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D44ECA0B943
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 15:19:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C354A0B9CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 15:40:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWvXQ1jyYz305m;
-	Tue, 14 Jan 2025 01:19:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWw0Q6gkRz30TY;
+	Tue, 14 Jan 2025 01:40:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736777974;
-	cv=none; b=HVPuvVfx2v1pLMkRDC+wS4dXhEQk1EbaWFMOSSBcHMwksiEwGeaKbcDIr5/MaxbZeOEFIImjOdwv6l6bZg1b037YAj6oIUPfHZdH4ftHaOGUneW0SF3Q+uMmXJitRQz1X7NniSqS6NOZKP+XVq6Mejc0b2/7eUNWscwMrXlehhasm1QF3hrznMtfikBA791+314xVuol5rYOHQ/xWKiVDXEsh4XBDurOy0ZuX+JfebxXJl8aafsZ5e6nXGfBJo5ryCYArcVY5iRH5w7b+ukn3nT+3qyvEbrhaVg8IyJx7WQVhyR0XcwfH2znTQ3D5zxI+pwu3p9wzRp/0SvnQ+qS0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736779222;
+	cv=none; b=oGv2vxIRVWlQamryrrspiDxolZ85KluUN7TgXpnCFoMGNgv/B3BU7352NahI544IcN6CXD7j09vge3tO5c9iGlMfWN0TuZjDl+gDvlv9OcXaWaMNLAh+bpXL4BvlOeimtrhKwiL9rxDPcNwcSIuW/SOqPP0+OKV/QsHiPN/2jSXxoXgG+63ArFtQ2a7bWt/j15jU0a0Lu2QolPQ1Vxq5XG5u/VXIBRRM1XEtR6IBe8upmmly2fFfDhDwF/PWqn8rCsMgQaTdxnzF5n9E1459VR2XyLNuNuve16AGvK9AQZ7lREpP1y5zY2a4UkT+Zs9XNmx78vjufxRtj1OIfDddhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736777974; c=relaxed/relaxed;
-	bh=L1Hkahwn3Tu1sVj07GUocAsi8xoUwveZ+BSr9SpV9Ms=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=GGZgXJpymnqxUiKTuRxl8tG/9gwKcKNIspS0WCd+Rj8TQbhXVIEfnKDeTJ+/d6sBD0iBhYrdaMlpuezGnXpamx71NWQfLgiZjhuMYOhg9NODch7nlN5fiNvIMU/x/9N0RBmnORYnZ0Ve54GOJcz0AWngTJDyjospYzTFpRrW+bM4ux3zoxaEzJHs0pbaQU2L2Un3RNpzZV4ti0F6Taq+lQYzNUb2Ux+BiPqQyi4IBVWd6p+80Oxs1jFRGCrMc3gjHVL7IxNWCAMxa3V6S24Qd8Gp2cYktsBnjyGEpMIzAHaQufTu6NBjXFVldM/WkI+W6WV6TjI2aDA7g42TRnQGsg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=awnAor2c; dkim-atps=neutral; spf=none (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1736779222; c=relaxed/relaxed;
+	bh=+82re+Z1LrZRRopK/GGcdBsiN/kNdJCfofV49mEVpns=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VOHvVeq/lng9W2egIKXQ2iJqQjgUjkf22vulkyOgTyWrDb0fWyRIsZJoZrv6Y4ak7CPfFSxFlWGcoDp7JGlva6J7jSN2NYQ99tUioS2BgficvWv+jF/slm406FavBEeoP3I8jX8jbIr3QOlP26EJIddjYYz9niDmug/xkgb+bBbER8v2Hu4Dzl+f0QTHfFSbmLAoiz6md/qdpBAGUce9+1bFS3VpfMOmAbgaXCrFBTxOUdN04seIexbWnB73+S/X5qoCRw2oO2kmaDhCinu1MtCh9BXyOs8+5seJIlbPVtmcOZq/oXlywboJk8XaQ3Ol2tl73mWbYkTJ4zrRemS1DQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nlM6IauN; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=awnAor2c;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nlM6IauN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWvXP0lf4z305c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 01:19:32 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50D3qM52031739
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 14:19:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=L1Hkah
-	wn3Tu1sVj07GUocAsi8xoUwveZ+BSr9SpV9Ms=; b=awnAor2cGxJNZ+LLwt0ta1
-	YxMpqkN6PosW23MJ5CT3SGKtPmC6sNMu7yBLZyqHztLcOwzxFCcn0u5yJIyf4Isv
-	iYrr6KqAkeTVqLun/uocyN9ZJCHwhFASNJ5C2D0WbORdUWCYt/GcbHHYDqD0qXw4
-	j8B/s62rbokvgBaDiqrbcygrlftg+7o9d3FYPr57piU/FudSNQiKIZtHL1KvD3in
-	Z6PuEKPefqWextyvfGvoUCtoKPm16Q4cRuf8PiY1iTmHZZ/rxPDNIZC2EnBuWzoQ
-	b1zYW5OcHYtdodfMRt/NS0VerMpEv/+DL4bmbIg9FPV00l0Iy9Co7YjfkOEtECCg
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 444uac2cny-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 14:19:29 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50DC0l0Y002738
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 14:19:27 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4443bxxnh5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 14:19:27 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50DEJN9718547152
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Jan 2025 14:19:24 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CCD3F2004D;
-	Mon, 13 Jan 2025 14:19:23 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 431C520040;
-	Mon, 13 Jan 2025 14:19:21 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.243.204])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 13 Jan 2025 14:19:20 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWw0P673Rz30Ss
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 01:40:21 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 30E705C53CD;
+	Mon, 13 Jan 2025 14:39:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8E7C4CED6;
+	Mon, 13 Jan 2025 14:40:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736779213;
+	bh=LXLnwsUoapd7rB4MXtppWJ/94xPhiTZNAMTipBuP1bM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nlM6IauN5qYlDDo4U7ZhhsBv5Ok1CYmeBYJAmeDupHgXGneA26VqJJSTqSRAKJ9Pv
+	 RiPP/OuRNq1MX+RWrq1yTWckWwvvLbPelYQbf4Fehf8urTpzFqTgk99izZ+LEncos/
+	 CBgg6qY0/kfUmKQEDrMah+NwNJDngF1laqmmZbULZ1IPTGC269FfXZ/Lr7aKInCVT8
+	 v997u48DODE2Sd7fn0NS4qB5ConucOopQD/p5uq0btvPHIme9y9CiVPkzh5OK/Xj+7
+	 jBAu/EAEOB1yvFAvUZcJ41gEeWGcwMg7tkqvexy4VVp+hCGiiN2R52TKhdy+nE2uH9
+	 ZlG6I9UvtmFmw==
+From: Christian Brauner <brauner@kernel.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Christian Brauner <brauner@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-fsdevel@vger.kernel.org,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Jan Kara <jack@suse.cz>
+Subject: Re: [PATCH] select: Fix unbalanced user_access_end()
+Date: Mon, 13 Jan 2025 15:39:56 +0100
+Message-ID: <20250113-sitzreihen-dezernat-86551af2a480@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <a7139e28d767a13e667ee3c79599a8047222ef36.1736751221.git.christophe.leroy@csgroup.eu>
+References: <a7139e28d767a13e667ee3c79599a8047222ef36.1736751221.git.christophe.leroy@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,258 +68,41 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
-Subject: Re: [PATCH v6 2/3] powerpc/pseries: Export hardware trace macro dump
- via debugfs
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-In-Reply-To: <20250113104015.290566-2-adubey@linux.ibm.com>
-Date: Mon, 13 Jan 2025 19:49:06 +0530
-Cc: maddy@linux.ibm.com, atrajeev@linux.ibm.com, hbathini@linux.ibm.com,
-        linuxppc-dev@lists.ozlabs.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <85376DB1-B2EA-4E12-A2C5-CF24BAA50995@linux.vnet.ibm.com>
-References: <20250113104015.290566-1-adubey@linux.ibm.com>
- <20250113104015.290566-2-adubey@linux.ibm.com>
-To: adubey@linux.ibm.com
-X-Mailer: Apple Mail (2.3818.100.11.1.3)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KBGl0zJ-hHbDmrVXs15de5t8aY12ExFW
-X-Proofpoint-ORIG-GUID: KBGl0zJ-hHbDmrVXs15de5t8aY12ExFW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- mlxscore=0 mlxlogscore=999 priorityscore=1501 phishscore=0 suspectscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501130118
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1168; i=brauner@kernel.org; h=from:subject:message-id; bh=LXLnwsUoapd7rB4MXtppWJ/94xPhiTZNAMTipBuP1bM=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaS3qp5gyGz4k7n9RtSLbwu4Q8Nq1K7ONS75vXnOJS31F HcphdWHO0pZGMS4GGTFFFkc2k3C5ZbzVGw2ytSAmcPKBDaEi1MAJrJ9B8N/T8slD2264hU27rFs j7XdOE1t5uas49fy1b8yFfwXZbfaw/BXKuMfa4ld7eOD8W1bGTviM5oPHW+2uNS+eMXbDyqhbem 8AA==
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Mon, 13 Jan 2025 09:37:24 +0100, Christophe Leroy wrote:
+> While working on implementing user access validation on powerpc
+> I got the following warnings on a pmac32_defconfig build:
+> 
+> 	  CC      fs/select.o
+> 	fs/select.o: warning: objtool: sys_pselect6+0x1bc: redundant UACCESS disable
+> 	fs/select.o: warning: objtool: sys_pselect6_time32+0x1bc: redundant UACCESS disable
+> 
+> [...]
 
+Applied to the vfs-6.14.misc branch of the vfs/vfs.git tree.
+Patches in the vfs-6.14.misc branch should appear in linux-next soon.
 
-> On 13 Jan 2025, at 4:10=E2=80=AFPM, adubey@linux.ibm.com wrote:
->=20
-> From: Abhishek Dubey <adubey@linux.ibm.com>
->=20
-> This patch adds debugfs interface to export Hardware Trace Macro (HTM)
-> function data in a LPAR. New hypervisor call "H_HTM" has been
-> defined to setup, configure, control and dump the HTM data.
-> This patch supports only dumping of HTM data in a LPAR.
-> New debugfs folder called "htmdump" has been added under
-> /sys/kernel/debug/arch path which contains files need to
-> pass required parameters for the H_HTM dump function. New Kconfig
-> option called "CONFIG_HTMDUMP" is added in platform/pseries
-> for the same.
->=20
-> With this module loaded, list of files in debugfs path
->=20
-> /sys/kernel/debug/powerpc/htmdump
-> coreindexonchip  htmtype  nodalchipindex  nodeindex  trace
->=20
-> Changelog:
->  v5->v6 : Header file inclusion
->  v4->v5 : Removed offset from available calculation, as offset is
->           always zero leading to buffur size reads.
->           Edited comments and commit message
->=20
-> v3 patch:
->  =
-https://lore.kernel.org/linuxppc-dev/20240828085223.42177-2-maddy@linux.ib=
-m.com/
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
 
-Please move the Changelog and v3 patch reference to below where it =
-won=E2=80=99t come as part of git log
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
 
->=20
-> Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
-> Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> =E2=80=94
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
 
-Here we can add the changelog.
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs-6.14.misc
 
-With that change,
-Reviewed-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-
-Thanks
-Athira
-> arch/powerpc/platforms/pseries/Kconfig   |   9 ++
-> arch/powerpc/platforms/pseries/Makefile  |   1 +
-> arch/powerpc/platforms/pseries/htmdump.c | 121 +++++++++++++++++++++++
-> 3 files changed, 131 insertions(+)
-> create mode 100644 arch/powerpc/platforms/pseries/htmdump.c
->=20
-> diff --git a/arch/powerpc/platforms/pseries/Kconfig =
-b/arch/powerpc/platforms/pseries/Kconfig
-> index 42fc66e97539..b839e87408aa 100644
-> --- a/arch/powerpc/platforms/pseries/Kconfig
-> +++ b/arch/powerpc/platforms/pseries/Kconfig
-> @@ -128,6 +128,15 @@ config CMM
->  will be reused for other LPARs. The interface allows firmware to
->  balance memory across many LPARs.
->=20
-> +config HTMDUMP
-> + tristate "PowerVM data dumper"
-> + depends on PPC_PSERIES && DEBUG_FS
-> + default m
-> + help
-> +  Select this option, if you want to enable the kernel debugfs
-> +  interface to dump the Hardware Trace Macro (HTM) function data
-> +  in the LPAR.
-> +
-> config HV_PERF_CTRS
-> bool "Hypervisor supplied PMU events (24x7 & GPCI)"
-> default y
-> diff --git a/arch/powerpc/platforms/pseries/Makefile =
-b/arch/powerpc/platforms/pseries/Makefile
-> index 7bf506f6b8c8..3f3e3492e436 100644
-> --- a/arch/powerpc/platforms/pseries/Makefile
-> +++ b/arch/powerpc/platforms/pseries/Makefile
-> @@ -19,6 +19,7 @@ obj-$(CONFIG_HVC_CONSOLE) +=3D hvconsole.o
-> obj-$(CONFIG_HVCS) +=3D hvcserver.o
-> obj-$(CONFIG_HCALL_STATS) +=3D hvCall_inst.o
-> obj-$(CONFIG_CMM) +=3D cmm.o
-> +obj-$(CONFIG_HTMDUMP) +=3D htmdump.o
-> obj-$(CONFIG_IO_EVENT_IRQ) +=3D io_event_irq.o
-> obj-$(CONFIG_LPARCFG) +=3D lparcfg.o
-> obj-$(CONFIG_IBMVIO) +=3D vio.o
-> diff --git a/arch/powerpc/platforms/pseries/htmdump.c =
-b/arch/powerpc/platforms/pseries/htmdump.c
-> new file mode 100644
-> index 000000000000..57fc1700f604
-> --- /dev/null
-> +++ b/arch/powerpc/platforms/pseries/htmdump.c
-> @@ -0,0 +1,121 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +/*
-> + * Copyright (C) IBM Corporation, 2024
-> + */
-> +
-> +#define pr_fmt(fmt) "htmdump: " fmt
-> +
-> +#include <linux/debugfs.h>
-> +#include <linux/module.h>
-> +#include <asm/io.h>
-> +#include <asm/machdep.h>
-> +#include <asm/plpar_wrappers.h>
-> +
-> +static void *htm_buf;
-> +static u32 nodeindex;
-> +static u32 nodalchipindex;
-> +static u32 coreindexonchip;
-> +static u32 htmtype;
-> +static struct dentry *htmdump_debugfs_dir;
-> +
-> +static ssize_t htmdump_read(struct file *filp, char __user *ubuf,
-> +     size_t count, loff_t *ppos)
-> +{
-> + void *htm_buf =3D filp->private_data;
-> + unsigned long page, read_size, available;
-> + loff_t offset;
-> + long rc;
-> +
-> + page =3D ALIGN_DOWN(*ppos, PAGE_SIZE);
-> + offset =3D (*ppos) % PAGE_SIZE;
-> +
-> + rc =3D htm_get_dump_hardware(nodeindex, nodalchipindex, =
-coreindexonchip,
-> +   htmtype, virt_to_phys(htm_buf), PAGE_SIZE, page);
-> +
-> + switch (rc) {
-> + case H_SUCCESS:
-> + /* H_PARTIAL for the case where all available data can't be
-> + * returned due to buffer size constraint.
-> + */
-> + case H_PARTIAL:
-> + break;
-> + /* H_NOT_AVAILABLE indicates reading from an offset outside the =
-range,
-> + * i.e. past end of file.
-> + */
-> + case H_NOT_AVAILABLE:
-> + return 0;
-> + case H_BUSY:
-> + case H_LONG_BUSY_ORDER_1_MSEC:
-> + case H_LONG_BUSY_ORDER_10_MSEC:
-> + case H_LONG_BUSY_ORDER_100_MSEC:
-> + case H_LONG_BUSY_ORDER_1_SEC:
-> + case H_LONG_BUSY_ORDER_10_SEC:
-> + case H_LONG_BUSY_ORDER_100_SEC:
-> + return -EBUSY;
-> + case H_PARAMETER:
-> + case H_P2:
-> + case H_P3:
-> + case H_P4:
-> + case H_P5:
-> + case H_P6:
-> + return -EINVAL;
-> + case H_STATE:
-> + return -EIO;
-> + case H_AUTHORITY:
-> + return -EPERM;
-> + }
-> +
-> + available =3D PAGE_SIZE;
-> + read_size =3D min(count, available);
-> + *ppos +=3D read_size;
-> + return simple_read_from_buffer(ubuf, count, &offset, htm_buf, =
-available);
-> +}
-> +
-> +static const struct file_operations htmdump_fops =3D {
-> + .llseek =3D NULL,
-> + .read =3D htmdump_read,
-> + .open =3D simple_open,
-> +};
-> +
-> +static int htmdump_init_debugfs(void)
-> +{
-> + htm_buf =3D kmalloc(PAGE_SIZE, GFP_KERNEL);
-> + if (!htm_buf) {
-> + pr_err("Failed to allocate htmdump buf\n");
-> + return -ENOMEM;
-> + }
-> +
-> + htmdump_debugfs_dir =3D debugfs_create_dir("htmdump",
-> +  arch_debugfs_dir);
-> +
-> + debugfs_create_u32("nodeindex", 0600,
-> + htmdump_debugfs_dir, &nodeindex);
-> + debugfs_create_u32("nodalchipindex", 0600,
-> + htmdump_debugfs_dir, &nodalchipindex);
-> + debugfs_create_u32("coreindexonchip", 0600,
-> + htmdump_debugfs_dir, &coreindexonchip);
-> + debugfs_create_u32("htmtype", 0600,
-> + htmdump_debugfs_dir, &htmtype);
-> + debugfs_create_file("trace", 0400, htmdump_debugfs_dir, htm_buf, =
-&htmdump_fops);
-> +
-> + return 0;
-> +}
-> +
-> +static int __init htmdump_init(void)
-> +{
-> + if (htmdump_init_debugfs())
-> + return -ENOMEM;
-> +
-> + return 0;
-> +}
-> +
-> +static void __exit htmdump_exit(void)
-> +{
-> + debugfs_remove_recursive(htmdump_debugfs_dir);
-> + kfree(htm_buf);
-> +}
-> +
-> +module_init(htmdump_init);
-> +module_exit(htmdump_exit);
-> +MODULE_DESCRIPTION("PHYP Hardware Trace Macro (HTM) data dumper");
-> +MODULE_LICENSE("GPL");
-> --=20
-> 2.39.3
->=20
-
+[1/1] select: Fix unbalanced user_access_end()
+      https://git.kernel.org/vfs/vfs/c/83e724bcabc5
 
