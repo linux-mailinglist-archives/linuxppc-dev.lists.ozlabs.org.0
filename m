@@ -1,85 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-5138-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5139-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F4C3A0B252
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 10:05:21 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05FD8A0B42C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 11:10:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWmYc40VHz3cXV;
-	Mon, 13 Jan 2025 20:05:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWp1X1XVcz30RS;
+	Mon, 13 Jan 2025 21:10:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2606::62b" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736759108;
-	cv=pass; b=aZnuNupdTdJ9scQX3aKsXaFExNq8dxGcFkohoe1N9AtNZ/EMJJEeSd9F27/FEFHo0jgyzjw4clfo36KXC6P/xucK6/Eqog8p6hNAYXxvZ1qBa0cT/Uwb+e1FMFYjkByapi/WfA4nKYVzIPCJftUKenlqRrx4+nL1g8m1QZhlPQkJ4YHfWv98v+e1BQmahX8aOwwEXz2CcqM0Mby9ba6IMqjru5jWQGg+1El5qWtlFt4EPpGpvFJmCSZApp/qoenLMsEzXKuuuNOysPMxSFIUxpzl/98wlOKJIhutKW9ifLoCWnMrAxOWnV90gyIO2EKwGRnr8mmzMhDUhhJLj2F4kA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736759108; c=relaxed/relaxed;
-	bh=hg/chxatBh6+Fdzh9Cw7OI/JL5X2j75Nrzl5R3HDaIs=;
-	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=QQNMbbaYkYUilJ4qBK5mk72KaazFihNdlvxSF8kk+zvH3XnPWWKwyhe1yS7HCmNsRpFjwfeN/YKyvhrY2ptgRSwODhwJMdqvCG/cIDe0fauKLoEqYD/JKtEwB3ChDwIYcCnOg1UOty9lciij8T6RttX4UoySolD4bZ5iaIqW1ZCGaLdrjwywpserfnpCgT6MyOL2WSeJgIx9n2bsgvJhADDVMkO137pQni5pF4hfCjOk+lZjtA2yN3zvYy6tdhSBL4JalThQI6ua1IF+nuOBaX7WZRZwe3TPR0qjH9kM9fXUMRVs6+OaJEfANUCup4VCmAcC6gb+p22lSwhRclFghw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P+D6hKBA; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2606::62b; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736763056;
+	cv=none; b=Tg8woq1sWYkUMdl1DgReL8w8sifyhoRj7EwpylzE5QMb+v3kknVdga/mr+WYASktMBGj17AIJM/ZDkPYsS82xsMYiDiDRgJCOQBjYQUHsHjqIGYGpfHR5WGj/AHOls/YvQetvRHfSmabQ+QxNoe4Tzi2AwIGiYwxFXQ0cvq+5SYIt28rzPqDYt2qud8NcNOA6UeFgITgGX1Ba7z+0uE6VA3d2V50hqzflqpzgYSQRSHZKFPne3d8TONfIiGPWgqYeg2liERD8PrF6z2oB0S/rQT47cHxBU1VnCTAFDFrEm0y3ZXazRX0s3dM5HG7fOW8optdwA1/ktvzhKRuSVWqZQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736763056; c=relaxed/relaxed;
+	bh=o4tsKYDpvLj4ioh1d8CMeFdxY1E2+fnVC8DpzLndD4A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=it5TD3SxNTDm+COPerEAWA9FsyKtYxBqIzm1o/fiM+RHp3cI7nQAb0p1DjvX68EXZyWvjjrUkUJldZyFHamn3g1vHMvj6oodHvE/fv3O5n9dul5W4IvRiFQ9fgaZ/uIwzfF2ETcznB04t/6U8AlWBVxFuVsrnAt4aHWqLyyAQx3VJMLiZChvuS9Y/0WrASXqaMbCnmIca4yP2ArC2av0c4HRr+OuybT4vttqw4UXqmOR54v5r9q/+Uicc1WA1hO28+Hs0IzfM/criIGuW3s0yWN+cHB1RFKia5izYYVuDY7BPAL6vHFHGjbLQdnXBCpw2Aywx46RO1jduZ2GJj53Iw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j9WJvn8c; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P+D6hKBA;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=j9WJvn8c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2606::62b; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on2062b.outbound.protection.outlook.com [IPv6:2a01:111:f403:2606::62b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWmYb6Gkkz3cXk
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 20:05:07 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bt5qi792tNYHRgnrZugJ+Z0uWjGjt8inaG1FUvCxX9Ogo3u5dvpP7r1RXvGyM5lXsUbjQzPsCZb/ZFl2k1Qh+/y+K9MYJNEElS5BePo3mKWMyHvr5M82722hmHDFXfG4noMEOTR2tDRNMcSwaVb2qnOSln89bCastnrtVpsYfo1/8LlNVVbeHdVD9rs1n3s4Y1mbTEG5q4uFryZzmoo49LaIkqfc1aNRGeLmUO7L9EhJd37YZBJ/eJw1ApO19u6eg5OslCWruYXngsHiwTsGweo4SP7HW0id8Cw/tgpsH5bnd72bzPzLWwlly8MYogR0hMOuSuxb78Jw/yAbcpF/Ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hg/chxatBh6+Fdzh9Cw7OI/JL5X2j75Nrzl5R3HDaIs=;
- b=tFf5T8ShJU60g4t9SbCIICjBnqwlGTaaMdEgolDXvSBZRgCFip9gP0K5zXTCWgTVk43tYZiiD4B9KpMAz4Pq9W/WMLinRm2MHdguHMpyrQurPKFp7k8g4qrofb0fzQ9T45t2RQb+2EUFuZP9kVCcOQH52BElYT0JMKLn/FW78qLn6u2JL2enD8e0tstGA66EUM3uT/8bCcmCvWWQHttb+yz+M64KYmglpZi0GO2v5n8XVj/kTfC6h1kSvsBCg0aQXHHR0vLgrXQyksXei1nB0FH2R10ZiCxEJVYH7i5d0EmbTRZBaZaF3PU8hjpepxpx+x5MNK/T1DPgFkrsn9ZVrw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hg/chxatBh6+Fdzh9Cw7OI/JL5X2j75Nrzl5R3HDaIs=;
- b=P+D6hKBA7iw1IPgDF27iQn5dMfS5oyZEIO77N2ItVLbYXB75hQorFOZbTcxRu0QHOLhHCElVWCSQzQiTVk/WXilWYUmrvTlar57vMCYylbgwwjSrnakbfVPCucHgple3HDpvJxJZt/D7mu0RFEGsRBaLCSi9rXWKd1UmcEa3BpxzroshWBZZh+GGgEPeVxHGAC6ELz8K1Lvdd97ki2RwlxVIK0unr2YzMTXsKsL1gGxwZH1by+rXxXcUyWAc9BSaLd0R4Dx6JydyL9fpAXhgtDIFyHMAjv2ZAKBHSS1Hmw4+TIcP7SsBJ8xalxP5zL7ADWsIvv/lgjMGI8LT0d7JHw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
- by GV1PR04MB10377.eurprd04.prod.outlook.com (2603:10a6:150:1d1::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Mon, 13 Jan
- 2025 09:04:54 +0000
-Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
- ([fe80::7be0:296:768c:e891%3]) with mapi id 15.20.8335.017; Mon, 13 Jan 2025
- 09:04:54 +0000
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
-To: shengjiu.wang@gmail.com,
-	Xiubo.Lee@gmail.com,
-	festevam@gmail.com,
-	nicoleotsuka@gmail.com,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	linux-sound@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	robh@kernel.org,
-	krzk+dt@kernel.org,
-	conor+dt@kernel.org,
-	devicetree@vger.kernel.org
-Subject: [PATCH 2/2] ASoC: dt-bindings: fsl,mqs: Add compatible string for i.MX943 platform
-Date: Mon, 13 Jan 2025 17:03:21 +0800
-Message-Id: <20250113090321.3193464-3-shengjiu.wang@nxp.com>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20250113090321.3193464-1-shengjiu.wang@nxp.com>
-References: <20250113090321.3193464-1-shengjiu.wang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI2PR02CA0045.apcprd02.prod.outlook.com
- (2603:1096:4:196::21) To AM0PR04MB7044.eurprd04.prod.outlook.com
- (2603:10a6:208:191::20)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWp1V5tgjz2ynn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 21:10:54 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50D3qqdb002380
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:10:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=o4tsKYDpvLj4ioh1d8CMeFdxY1E2+fnVC8DpzLndD
+	4A=; b=j9WJvn8chJRKzSUWZ0CBZjFJ2N4fZkHylsbEgBJqd6f6ADyw/dtbsVUD2
+	92zAGn/SMLen/HtkC/ylJgnJVIiTuegohFAdDP9Z/o+w5SNDqntRG0zT474H0qHC
+	h0T05gydzE/dSGSxqatBKdbSQWVCc0voU5/LgPI9d2FQ+sAvDmr3cgxJEX9ZfG6o
+	p5ryQ1XeSJnK7clUJT/IBbR26UrCDC8k+AgEZrYPRWo49vwdAF42lKO4YRAPGEJI
+	MI/Q5tkig+x381r5DT/S8GcCxNfzs0xZaIbvAp50js9TdLnmojptMUS+8xJqcqUq
+	D1uYAyAQTyMMhit6jWWkdbbbz/2Tw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 444uagsaxy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:10:50 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50DA0ia6016582
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:10:49 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4445p1da2r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:10:49 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50DAAkPl33554946
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 13 Jan 2025 10:10:46 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0D82920075;
+	Mon, 13 Jan 2025 10:10:46 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4412B20040;
+	Mon, 13 Jan 2025 10:10:45 +0000 (GMT)
+Received: from ltcden3-lp4.aus.stglabs.ibm.com (unknown [9.53.174.155])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 13 Jan 2025 10:10:45 +0000 (GMT)
+From: adubey@linux.ibm.com
+To: maddy@linux.ibm.com, atrajeev@linux.ibm.com, hbathini@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v6 1/3] powerpc/pseries: Macros and wrapper functions for H_HTM call
+Date: Mon, 13 Jan 2025 05:10:35 -0500
+Message-Id: <20250113101035.289773-1-adubey@linux.ibm.com>
+X-Mailer: git-send-email 2.39.3
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -92,114 +81,126 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|GV1PR04MB10377:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5da4eb86-9227-4aeb-c9fd-08dd33b1589f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|7416014|52116014|376014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?XoMPe3tvoMX/cV6FtyODoMJwO0y4/YUHOQwtFtR7rviwszOf+kbdtj85kCmp?=
- =?us-ascii?Q?h/lHuX8Xnq9McaOmMxmuTl3RY1v4me9QR+JCB2ZmBQUTzItceakt1KdVQlpQ?=
- =?us-ascii?Q?XGyxWd8edj4mysI0dfcsl6iUF1VTGGssvng/TZ5eoHz2aeUWgJOBIk6miXbs?=
- =?us-ascii?Q?y3M8G7J7qbTMUC7jyTx6eILOfycbk9DD5EQOrTLaQL+W6eXc8bEXnzFOEMiz?=
- =?us-ascii?Q?pB+YCFgv4hjEcpHdpOsdmi30SajQ9fK8RZhqY+aSbqWEqm8A2qCDWl0U3CPY?=
- =?us-ascii?Q?VTBa7Lut06gxrf6Oy1TZ+KDg2jDy6rgjI+bJHBIrzaJ7bV/NQzjTTN807CoE?=
- =?us-ascii?Q?zJDqYj54G65xppeDxG3VEv9sRsBF/5JsjiOE3HhAWPCFxf7q6sVHJFj27nzG?=
- =?us-ascii?Q?9HhNJtdTC44dL3ZdNLvm3iBrrnhSlPTubcM7E9F2kxDLXvSZXEDNq2u/rNyI?=
- =?us-ascii?Q?wlCiqcjNZ5TaxFoYanL48rioUY5j9E691FBsxZEWGAQxl0Ws6wr7uvO4P8nF?=
- =?us-ascii?Q?PeGzlEKs1Lx7MHf/lwUFOZkIb4SDeYUudhWS74Sq1xN3cXnX8EiftM0BODtS?=
- =?us-ascii?Q?nIgWe6pgPjyuW6hXzxumOGKG1S0d+XjqP2eT/rPhlWBss80gOggcjEVl36u5?=
- =?us-ascii?Q?THEApabxl9CcvnhYcx3HdRbPTiAF+/3vLdxjYE7kh4zQi9wOAQs2g9++k5eR?=
- =?us-ascii?Q?QdXpt5neowWEo+Yhm5TO6DDkrR7kUv8h46sBWxUt/9fgwELrEBRW2iDmJ2VC?=
- =?us-ascii?Q?MLou5zpap/Y8TP5nAEyhOHmhzpjIU8H6F8zfvXxKcNDgWY9gxxuHy4K40k+m?=
- =?us-ascii?Q?anZOLnn/JjyGHx/Z13Qnt8BkaiK7RAYtToft8yeX2mI+Uz/y/QXozkWlFbVR?=
- =?us-ascii?Q?kqOj2j7HZlDaYHaEvu7NREQVUxPU+lvCrvKWwYKelEs0sajJ9Y1g30ltgykK?=
- =?us-ascii?Q?YstWZhB7ApH5rtZYH78JEsza3j8jQJHNTy8tFM9z419YT8rCalT5+pJ1eAbF?=
- =?us-ascii?Q?dThRfo6UmFsWkNQY/kfRa/zFQa0A8sRGc/3mbWmWDY7MsGU0kpUm0p4m1Eih?=
- =?us-ascii?Q?z3QEM7xfLchxLroGQgRIhSwatNFy67ZJ22G+0qS2F3TwvDv8VKSImFILKKyY?=
- =?us-ascii?Q?eNDO4RsewC0nMBBt9gaRKsstgLI4EF8VThfrVgKmnp1nfkArv36D1hx+t2jf?=
- =?us-ascii?Q?S45KY6OmvtGzIhgfPVSBbNsWLbNF6zEqLf9OdwyCVsuzZPUYMJndjRCfbCAm?=
- =?us-ascii?Q?TH7bNvv563lWFb7FCLt9KIB6Iif9LjOI0foJEa8LDLq8BYLTKfl6XpiPfqvp?=
- =?us-ascii?Q?c3uFbX9NufyrJGMgiHdsHvCXbPwCZt8Bxl6EBFwL1wQQGy33dVTxNZKfXEVi?=
- =?us-ascii?Q?Ps6vYGn4XNKkwPBnTVVzsBDwZWw62MT5qUof7Qiiz36ITMxm/kffHdiyYTTA?=
- =?us-ascii?Q?m+I6tSrMU3OJ1tkV801uXKWmBjGUDHE4QliHbmwL2bOTeIKvVFIp+w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(52116014)(376014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?re2mq4HY/HYO98QSOtHRyastGhU3hsFV937DLcyvlOJTXnG5amSo7MVCYi/O?=
- =?us-ascii?Q?73pqArZwmRvrPpe/iOMVLE6IxJcKPjiMOnRY1hOLRhNW1kgp7yuceVsehUMf?=
- =?us-ascii?Q?jSEUWN72eHflpLpp4SVO0h3jUSEGnn3/N9Kj0TLHWtVMXs/gVqgLCdXUxjOV?=
- =?us-ascii?Q?h2p5hASPuMSeo7ePSGej0NncKcSYPwjrm1A2ek70rRqlOZ5us/VecnxBxyC2?=
- =?us-ascii?Q?oF4YGysdjrKadEHK7Feh3BQv3tsz5wIcniuG+56l3P9K4T/L7RXC+LjML9vY?=
- =?us-ascii?Q?qGHRTHT2mShBhwMzVWuxl4RKndZe9WPbgcOHjo5WuvPSmMy2LnVdNtixbY5P?=
- =?us-ascii?Q?2q3rW43/eJ0bGRcaeu+PfeTT7SMLCmZEdS2C3NQtHzN464xs0yULDMMiNIp0?=
- =?us-ascii?Q?0RVlsueZC3THnGTwKt9qMtXiH/Kb66XGtraKm/rlQd+kzS5YsnHc1g84D5Qr?=
- =?us-ascii?Q?SCHxvVRmrTMgWIMRHDUkC4g0IkFblrPBk5Y/l3fun+bfB1WyT9VNMtxlcNbN?=
- =?us-ascii?Q?wzn/BmkBF+tMaLMlRCD3K+HKNtq2WkPDwzf3kvdTpQ0VICAxSdH6IB9Tua2a?=
- =?us-ascii?Q?EpXEF89cuC6ncQ3HSFxe8X4JSxv7YmoMRW+zRklPA8HiyndaTIbxRCAKqP+l?=
- =?us-ascii?Q?gNXd88S8LSvO2yyQ38PihMXTm5SlaOcJ0htAqXOfcwbPL8RsNUZ/mUlWqXBi?=
- =?us-ascii?Q?nu2jNC6GFhV+25Q6hywdIym8S4YYNJqUGAilSivtEb7iH/LOi4yZhy+ZjaqC?=
- =?us-ascii?Q?rvgDwIhmSMFA6cyTk/rsZASEiq0+WH29Mx4aomOTUM+LM5/8vAVu/dvhstnB?=
- =?us-ascii?Q?V9WmAO8W2Gr7Bknl3J84Ha8cblGee+bVywF4peXfwP3nWiuBn/7BPRhqMGRa?=
- =?us-ascii?Q?nPsWyTG4MGAZR3i89Gly8U/WYPUlzP38ow6woUh3P68Olh14dFgSpuf8XHGR?=
- =?us-ascii?Q?TSuHqyEWFsfAO4mqlQM3/7I86YpEZO6PAzgWlsw3NDVwGWJKWt3Tzk+r9nD6?=
- =?us-ascii?Q?4rSyDntt5eppJGf4GLAE7Ya8XyZcCN8wbbtngNMkFWCRJGW5IJg5dEJwR2rB?=
- =?us-ascii?Q?CFvXu02m1iI/uEr8tu3Tb/5ZpV7EZvCZWr85t6ltuERZh0XjXFe15vFfU8jD?=
- =?us-ascii?Q?60GpVqUyQXHBALFRtJ1jM5AWBe3thm45vcOJRAE1a55t7rdxjHZliC7ZsxfB?=
- =?us-ascii?Q?qeJfj51uN7GzcWfVQwlxv7dXDmMUC4wT563/G6Epw5UTyFuh/k3BX30PapU8?=
- =?us-ascii?Q?WxsSUlTwRW6nU19o+ujFGteXYAtuf4B2D2kWoDT/D9y/ml6QlQVBI7Vh6/DH?=
- =?us-ascii?Q?L1elmt3A3rPM4qOCwODuQ61A9L3zL4+DEc83OnJUsdTjicKoBYBBs7Ep8Hxh?=
- =?us-ascii?Q?aX0MAzwcXnUFV5WQvIM7hrViZJcFZbin0BVMNpDdjrvgF4WhPUMLlnRD0SDy?=
- =?us-ascii?Q?dpdoLpW2h0C2HHa6W42NQ6EYvoVekxu/NOxK1dJOmEmJDAlOPULLGn5YbcTk?=
- =?us-ascii?Q?sjmMhW4JWjYOferFPx3Kep+TtU38Rhl+P+z5Tugb+6ilVVHP/lelGSfdSsFc?=
- =?us-ascii?Q?vpuAbo3XOUi/BvdPahJ90QFex26tXVICx42rxSto?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5da4eb86-9227-4aeb-c9fd-08dd33b1589f
-X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 09:04:54.8840
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: roYzdPDWcP4bykk9ZFMb+Npmns+/ntmU/PdueeRYa9Vl8ix+IkZuIIM+oaBsi+JJ+bn84nPXoZBJyWbDGNDxuw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10377
-X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: GXm0CiMUZZNO5xe6kZVDdCyFwZ_COojo
+X-Proofpoint-GUID: GXm0CiMUZZNO5xe6kZVDdCyFwZ_COojo
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=999
+ malwarescore=0 suspectscore=0 lowpriorityscore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 spamscore=0 mlxscore=0 priorityscore=1501
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501130084
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-There are two MQS instances on the i.MX943 platform.
-The definition of bit positions in the control register are
-different. In order to support these MQS modules, define
-two compatible strings to distinguish them.
+From: Abhishek Dubey <adubey@linux.ibm.com>
 
-As one instance is in the always-on domain, another is in the
-wakeup domain, so the compatible strings are
-"fsl,imx943-aonmix-mqs", "fsl,imx943-wakeupmix-mqs".
+Define macros and wrapper functions to handle
+H_HTM (Hardware Trace Macro) hypervisor call.
+H_HTM is new HCALL added to export data from
+Hardware Trace Macro (HTM) function.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+v3 patch:
+  https://lore.kernel.org/linuxppc-dev/20240828085223.42177-1-maddy@linux.ibm.com/
+
+Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
+Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 ---
- Documentation/devicetree/bindings/sound/fsl,mqs.yaml | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/include/asm/hvcall.h         | 34 +++++++++++++++++++++++
+ arch/powerpc/include/asm/plpar_wrappers.h | 21 ++++++++++++++
+ 2 files changed, 55 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/sound/fsl,mqs.yaml b/Documentation/devicetree/bindings/sound/fsl,mqs.yaml
-index 030ccc173130..8c22e8348b14 100644
---- a/Documentation/devicetree/bindings/sound/fsl,mqs.yaml
-+++ b/Documentation/devicetree/bindings/sound/fsl,mqs.yaml
-@@ -23,6 +23,8 @@ properties:
-       - fsl,imx8qm-mqs
-       - fsl,imx8qxp-mqs
-       - fsl,imx93-mqs
-+      - fsl,imx943-aonmix-mqs
-+      - fsl,imx943-wakeupmix-mqs
-       - fsl,imx95-aonmix-mqs
-       - fsl,imx95-netcmix-mqs
+diff --git a/arch/powerpc/include/asm/hvcall.h b/arch/powerpc/include/asm/hvcall.h
+index 65d1f291393d..eeef13db2770 100644
+--- a/arch/powerpc/include/asm/hvcall.h
++++ b/arch/powerpc/include/asm/hvcall.h
+@@ -348,6 +348,7 @@
+ #define H_SCM_FLUSH		0x44C
+ #define H_GET_ENERGY_SCALE_INFO	0x450
+ #define H_PKS_SIGNED_UPDATE	0x454
++#define H_HTM                   0x458
+ #define H_WATCHDOG		0x45C
+ #define H_GUEST_GET_CAPABILITIES 0x460
+ #define H_GUEST_SET_CAPABILITIES 0x464
+@@ -498,6 +499,39 @@
+ #define H_GUEST_CAP_POWER11	(1UL<<(63-3))
+ #define H_GUEST_CAP_BITMAP2	(1UL<<(63-63))
  
++/*
++ * Defines for H_HTM - Macros for hardware trace macro (HTM) function.
++ */
++#define H_HTM_FLAGS_HARDWARE_TARGET    (1ul << 63)
++#define H_HTM_FLAGS_LOGICAL_TARGET     (1ul << 62)
++#define H_HTM_FLAGS_PROCID_TARGET      (1ul << 61)
++#define H_HTM_FLAGS_NOWRAP             (1ul << 60)
++
++#define H_HTM_OP_SHIFT                 (63-15)
++#define H_HTM_OP(x)                    ((unsigned long)(x)<<H_HTM_OP_SHIFT)
++#define H_HTM_OP_CAPABILITIES          0x01
++#define H_HTM_OP_STATUS                        0x02
++#define H_HTM_OP_SETUP                 0x03
++#define H_HTM_OP_CONFIGURE             0x04
++#define H_HTM_OP_START                 0x05
++#define H_HTM_OP_STOP                  0x06
++#define H_HTM_OP_DECONFIGURE           0x07
++#define H_HTM_OP_DUMP_DETAILS          0x08
++#define H_HTM_OP_DUMP_DATA             0x09
++#define H_HTM_OP_DUMP_SYSMEM_CONF      0x0a
++#define H_HTM_OP_DUMP_SYSPROC_CONF     0x0b
++
++#define H_HTM_TYPE_SHIFT               (63-31)
++#define H_HTM_TYPE(x)                  ((unsigned long)(x)<<H_HTM_TYPE_SHIFT)
++#define H_HTM_TYPE_NEST                        0x01
++#define H_HTM_TYPE_CORE                        0x02
++#define H_HTM_TYPE_LLAT                        0x03
++#define H_HTM_TYPE_GLOBAL              0xff
++
++#define H_HTM_TARGET_NODE_INDEX(x)             ((unsigned long)(x)<<(63-15))
++#define H_HTM_TARGET_NODAL_CHIP_INDEX(x)       ((unsigned long)(x)<<(63-31))
++#define H_HTM_TARGET_CORE_INDEX_ON_CHIP(x)     ((unsigned long)(x)<<(63-47))
++
+ #ifndef __ASSEMBLY__
+ #include <linux/types.h>
+ 
+diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
+index 71648c126970..91be7b885944 100644
+--- a/arch/powerpc/include/asm/plpar_wrappers.h
++++ b/arch/powerpc/include/asm/plpar_wrappers.h
+@@ -65,6 +65,27 @@ static inline long register_dtl(unsigned long cpu, unsigned long vpa)
+ 	return vpa_call(H_VPA_REG_DTL, cpu, vpa);
+ }
+ 
++static inline long htm_call(unsigned long flags, unsigned long target,
++               unsigned long operation, unsigned long param1,
++               unsigned long param2, unsigned long param3)
++{
++       return plpar_hcall_norets(H_HTM, flags, target, operation,
++                                 param1, param2, param3);
++}
++
++static inline long htm_get_dump_hardware(unsigned long nodeindex,
++               unsigned long nodalchipindex, unsigned long coreindexonchip,
++               unsigned long type, unsigned long addr, unsigned long size,
++               unsigned long offset)
++{
++       return htm_call(H_HTM_FLAGS_HARDWARE_TARGET,
++                       H_HTM_TARGET_NODE_INDEX(nodeindex) |
++                       H_HTM_TARGET_NODAL_CHIP_INDEX(nodalchipindex) |
++                       H_HTM_TARGET_CORE_INDEX_ON_CHIP(coreindexonchip),
++                       H_HTM_OP(H_HTM_OP_DUMP_DATA) | H_HTM_TYPE(type),
++                       addr, size, offset);
++}
++
+ extern void vpa_init(int cpu);
+ 
+ static inline long plpar_pte_enter(unsigned long flags,
 -- 
-2.34.1
+2.39.3
 
 
