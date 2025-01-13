@@ -1,74 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-5141-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5142-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0259A0B431
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 11:11:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A7F6A0B453
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 11:18:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWp244kGrz3c9G;
-	Mon, 13 Jan 2025 21:11:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWp9h1nJVz2ysv;
+	Mon, 13 Jan 2025 21:18:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736763084;
-	cv=none; b=QQR8YqfeaJEaheIRo50HRBwX5E6q7o7yScxTTUTKPo7hTOGAyqlflZtdwmsOXHYBe1wfIbtTS/GB+ERvY/ApMTQ1fXu/mK50fJTrBU1TwCJCmiBFQqcxM2SjLwrB14tPDQYjjy8FUy21SBpVRPhVq8yU80Z319m0MEtVxkS7bhDZfX9g5m7xsP6nUciJXEGJAkx48B1dTGqjtFIqimrWU5iAmgnXVbckkEvThmPIoa8SBkBH9P+4iCUvh37yQEBRqM8N9wLjjh9ePKc0SjTpaJ3SykOvf9xHFbfCGbKG8jLi88etTqXujiCKQaGaa4PPn2wso2DSDywVRNH9MoSmMQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736763480;
+	cv=none; b=MsAXIeB4FR7FzbiE4Iz37wEPSFe8xwSiNXu4GFqNVeHjUiH3q4lJqzk1ACGgeFtg0etUfnKm/6benEK3NnFp18ZbNI+/F+8lkGJEGWATjSmt2L5jTfkzr6zWP+TGY+SsKpCWDcEBfStLSejBjHLTfrLRLzGDfrmTO7TT0F4KwSjuudUn3Qb5bwp/Sz+cKuGkC/m7+JlRZDGYYJ5ucjJsyrZnDczaRw8p4obiDrB00Ps+uZ+nBxkYZg1dq6fSUSA80FtwdYHMb8YipDLUb2qOKSnnPVoV843bIK9Nj/wBT9kPxHK1cfAXqZG6ta3Ccpdt+S2nJBZj/jP1aZqSX0f8qQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736763084; c=relaxed/relaxed;
-	bh=Zz1ewnf5umyRtwvW3ZFlsF0yM/dhD1hBvztkDt0HZcs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Aypv+Ne9UQ8UCDG0Glm3QSkvjCO2LGwrzjvJ5fgdWDnCPhuMToVF09Az3dFOcgKB98azJ9IRZJBJYzqnJd3WikFMlH1otoRo3x9Qg4WqLhDaX+4xiLgBWd9/Hw6lj0d1lTkqcykNQBmosLXLZXve7lFYlTpMDxjVpqZX9UEyuHyzzoGIdDzkFiCYNNXl3iTEuc2WJ2gX6ZaxlhfcgT45bhSrJUXwCyzm40s/LFPG7GkAiVnprhLfSZiQKHG6iPOd7tjOP1EKoXRQW7lz+4X2dOkJEO0/+KH8BjGcoRXKoEMqDJEXfRc6cBDq2oVsztzWI7oKo36S3uPePRsnYKcnwA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BLcnQi/W; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BLcnQi/W;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=adubey@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWp2340C4z2ynn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 21:11:23 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50CNonv8000829
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:11:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=Zz1ewnf5umyRtwvW3ZFlsF0yM/dhD1hBvztkDt0HZ
-	cs=; b=BLcnQi/WB9XPzH7ofZ5F8wwR354dLz1owU5StlVQhuCNo7nlL+RQ5/0zo
-	yFd6FEbVQiRzGvcT7bC1nslccfArVd8V3cGsKfAUMh0rx/Ob5gT9UEWplbmTbzF+
-	imZIp0WjgebKiMgWunOyBzH8DBgHCUj3iz3qY5GaT+M2ca9WTxV924Zfek6l43BS
-	trlnATas4C6YD4Lu+4/7cZ8q2mbtin75GuG/Fafg7gpsb651OBqdyxYupr2Wzilw
-	O54Ki072yOP/fPr/pphPfwI8T+JD0mNnmngzkVdXV1geraqM/ZCtHnCY74wL+Ke6
-	Mb4qvMrhb14/pMWh47Ha1ltFMpftw==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 444f74k3uw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:11:20 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50D8bTFT017014
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:11:19 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4444fjwj3d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 10:11:19 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50DABGwA50397622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 13 Jan 2025 10:11:16 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0560C2006E;
-	Mon, 13 Jan 2025 10:11:16 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2D8202006C;
-	Mon, 13 Jan 2025 10:11:15 +0000 (GMT)
-Received: from ltcden3-lp4.aus.stglabs.ibm.com (unknown [9.53.174.155])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 13 Jan 2025 10:11:15 +0000 (GMT)
-From: adubey@linux.ibm.com
-To: maddy@linux.ibm.com, atrajeev@linux.ibm.com, hbathini@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH v6 3/3] powerpc: Document details on H_HTM hcall
-Date: Mon, 13 Jan 2025 05:11:11 -0500
-Message-Id: <20250113101111.289810-1-adubey@linux.ibm.com>
-X-Mailer: git-send-email 2.39.3
+	t=1736763480; c=relaxed/relaxed;
+	bh=DbJrjvQ8St4IYkmbZHqFnXi3esZtoeC/sv8Qj0rDjec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aUntXODVW572dhIiGTNODYHZAw2pIFOOFWrzZMcDfQGw2YOVeKhfx9FkXUdUqreLVK6L8YDa/PsWxvZrthaZA7kDAtCLRzCvkJcPE2NOlpSbWwTU2mdYkYo2j+Gfg3+uu+CkHdvcFw/N9Oo+ZUWLuf1fK7hgoFXJv0FS/2KHaxjWBdYLhX3sfV8UVNpVA3nVmhIcEOJbPc5dNgrPsAWg7uKYGKxq8O3eA2ygisFejEMeVqEr9WnjPeluttfVCdM5Hd6WM3185BrxCPn9Vy5tw6Satk/rRbBt5ypliziOmhd6XXQwY32afgEf7vYua8TEbCamEopCaaxVNPVZa4aVNA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=vladimir.murzin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=vladimir.murzin@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWp9f52qdz2ynn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 21:17:57 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5D9A51424;
+	Mon, 13 Jan 2025 02:17:52 -0800 (PST)
+Received: from [10.1.28.144] (e121487-lin.cambridge.arm.com [10.1.28.144])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 23D0E3F66E;
+	Mon, 13 Jan 2025 02:17:20 -0800 (PST)
+Message-ID: <44d60dff-ab73-4d10-9110-c5c2ddebadf6@arm.com>
+Date: Mon, 13 Jan 2025 10:17:18 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,62 +42,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KQKUXXZTlbbbIfuIaC9AYLHX8kqyqqgJ
-X-Proofpoint-ORIG-GUID: KQKUXXZTlbbbIfuIaC9AYLHX8kqyqqgJ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
- definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- priorityscore=1501 mlxlogscore=999 bulkscore=0 clxscore=1015
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2411120000 definitions=main-2501130084
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [kvm-unit-tests PATCH v1 0/5] arm64: Change the default
+ --processor to max
+To: Alexandru Elisei <alexandru.elisei@arm.com>, andrew.jones@linux.dev,
+ eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+ frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+ david@redhat.com, pbonzini@redhat.com
+Cc: kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+ kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org
+References: <20250110135848.35465-1-alexandru.elisei@arm.com>
+Content-Language: en-GB
+From: Vladimir Murzin <vladimir.murzin@arm.com>
+In-Reply-To: <20250110135848.35465-1-alexandru.elisei@arm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Abhishek Dubey <adubey@linux.ibm.com>
+On 1/10/25 13:58, Alexandru Elisei wrote:
+> (CC'ing everyone from MAINTAINERS because I'm touching configure)
+> 
+> Vladimir sent a test for MTE [1], which didn't work on the default -cpu
+> model, cortex-a57, because that CPU didn't implement MTE. There were two
+> options to get it working:
+> 
+> 1. Add -cpu max to the extra_params unittest parameter.
+> 2. Make the default value for the configure --processor option 'max'.
+> 
+> We decided that the second option was preferable, so here it is.
+> 
+> The first patch might look unrelated, but when I was writing the function
+> to select the default processor based on the architecture I noticed that
+> for arm64, $arch is first equal to aarch64, then it gets changed to arm64.
+> My first instinct was to have it be arm64 from the start, but then I
+> realized that, despite the help text, --arch=aarch64 has been supported
+> ever since arm64 was added to kvm-unit-tests. So I decided that it might
+> more prudent to go with it and document it.
+> 
+> [1] https://lore.kernel.org/all/20241212103447.34593-1-vladimir.murzin@arm.com/
+> 
 
-Add documentation to 'papr_hcalls.rst' describing the
-input, output and return values of the H_HTM hcall as
-per the internal specification.
+Thanks Alex! That removes extra hassle of setting up -cpu to match required
+feature. My MTE test continue working fine and require one less configuration
+option - undeniable improvement in user experience!
 
-v3 patch:
-  https://lore.kernel.org/linuxppc-dev/20240828085223.42177-3-maddy@linux.ibm.com/
+FWIW:
+Tested-by: Vladimir Murzin <vladimir.murzin@arm.com> # arm64
 
-Signed-off-by: Abhishek Dubey <adubey@linux.ibm.com>
-Co-developed-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
- Documentation/arch/powerpc/papr_hcalls.rst | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Vladimir
 
-diff --git a/Documentation/arch/powerpc/papr_hcalls.rst b/Documentation/arch/powerpc/papr_hcalls.rst
-index 80d2c0aadab5..805e1cb9bab9 100644
---- a/Documentation/arch/powerpc/papr_hcalls.rst
-+++ b/Documentation/arch/powerpc/papr_hcalls.rst
-@@ -289,6 +289,17 @@ to be issued multiple times in order to be completely serviced. The
- subsequent hcalls to the hypervisor until the hcall is completely serviced
- at which point H_SUCCESS or other error is returned by the hypervisor.
- 
-+**H_HTM**
-+
-+| Input: flags, target, operation (op), op-param1, op-param2, op-param3
-+| Out: *dumphtmbufferdata*
-+| Return Value: *H_Success,H_Busy,H_LongBusyOrder,H_Partial,H_Parameter,
-+		 H_P2,H_P3,H_P4,H_P5,H_P6,H_State,H_Not_Available,H_Authority*
-+
-+H_HTM supports setup, configuration, control and dumping of Hardware Trace
-+Macro (HTM) function and its data. HTM buffer stores tracing data for functions
-+like core instruction, core LLAT and nest.
-+
- References
- ==========
- .. [1] "Power Architecture Platform Reference"
--- 
-2.39.3
+> Alexandru Elisei (5):
+>   configure: Document that the architecture name 'aarch64' is also
+>     supported
+>   configure: Display the default processor for arm and arm64
+>   arm64: Implement the ./configure --processor option
+>   arm/arm64: Add support for --processor=max
+>   configure: arm64: Make 'max' the default for --processor
+> 
+>  arm/Makefile.arm    |  1 -
+>  arm/Makefile.common |  3 +++
+>  configure           | 35 ++++++++++++++++++++++++++---------
+>  3 files changed, 29 insertions(+), 10 deletions(-)
+> 
+> 
+> base-commit: 0ed2cdf3c80ee803b9150898e687e77e4d6f5db2
+> -- 2.47.1
+> 
 
 
