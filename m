@@ -1,68 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-5163-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5164-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CEEA0BC53
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 16:44:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 94BD7A0BCD5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 13 Jan 2025 17:03:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YWxQW4Symz3cYr;
-	Tue, 14 Jan 2025 02:44:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YWxrV1VPQz3cZ9;
+	Tue, 14 Jan 2025 03:03:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::64a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736783075;
-	cv=none; b=kpGsgLoLPN87JLWVqX6ZYOdsMMeZePnqJelJ+AVtvUFgSjaCLLhyNb2Q32R1t/MFAzef9R7qXeRxRZvIERKvgQ70BSz6JXZZSyFLrOCcrZG3XmrQYGWoHNFPQqHUWnVFUI7FRaHduVB/8I95qu4tDakK7c0ObUHgDcqk7giljy0MoXualYkiNthLZ/TWYV+1Sx0UdcNnxNwfg/fQwS8cE4TrZPghiPLrdIpf9JSkvWnNFrVQUXhh2yXBRHcsGB88JtG+Y/PCRAPwcAkDkBcq6+9xc0aJShfTwjScdNOgEOiAKF9o3hemMTGDLokfnqeL6NVCKjrYrcpiku4KxnKlvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736783075; c=relaxed/relaxed;
-	bh=f9GN/9Nt3vZP1g4PXg+O1YxepiT+zT9oJT9rhlVkhGw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=M5ZQjnvdh5hEp4OdhsM4tDk6r5iiLzj58VrrifEsa0QawtMmcm11Zd0UYSMHyRwbyUHP6iZ/Xq9ynEHgeKUMnp7SiQ04rRIWx4ek4Th5zmXy3Yzk4A9OYlOMd/pbE9uoToJRTqsS8eDiZ76TT3Gi1TFCdfRyQBQeuj28QTevYhW1m2gT8EvLXXgmGY9dWXypoAimGQlRCe8pakQj4zO8t521Uy/dHIIVzuGZRc093Jauy5z2nZxBhDSRTmZOT+QYSEUSnW8ywIsLCW6BImIxtSkci8fZUA1Sw3Cjt+umzsEe9KMYfLlus9YovV5yQ3JB/Xy6jBMXK/jzLszX2C5g7A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cP0Tq/Qr; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=33jsfzwykdj8rd9mibfnnfkd.bnlkhmtwoob-cdukhrsr.nyk9ar.nqf@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c20f::7" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736784218;
+	cv=pass; b=AipvMMcjBswrgD05iIkrMHh2uascTb4lWvRbv8vB1cqMGX0Kn58sCZedCAhxgKGTtnuGHEDGc12fIOFROwwmX+t1TTgQO7UV4+v+AqN93pb1vYiDPeaPBHVhhUw0LOkx8AngRw/WKyTOVy0NUMmW3vbem+Zao6BQRwVCbT8JI8P4gB1HqEKbS3TMf9pf+EWyVaiVvMDAqWd7mPP6AqACDoMwX01FfIJXsO+J4GBs/9CAGfPXt9VdciYuR3MASXMS6wQEufH8xK/L4K7WgVR7LgpQcHPWHi0ST+BjZXMX2U/6rJNcyb/Cjl5ZwYzDVtVgiS20EsUwFdUXCwcvb+F3ew==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736784218; c=relaxed/relaxed;
+	bh=6FQLHSDVrgdEFEHJ6gzkncGrVOML7jPhWb6lKJ6otSY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=BeWBAe4srAZaqvXsM20KTa/9L8b56+jTbPpC9ksNFhzIxuf+titcGQR+bGFzIg/G/xnPOMmXdnnsvtL7TI9p5xZ0LQoEDnrCEa3EMjwybaCI/DlpGtoDbulwqEh0hCQ1vTs8dXtGBeNl72weL2uy14cy1i/jzkJ3rTdeYmb6dCthkUGMJyJs73Hc7ji2k2ZH2ErPP1AZ0E9a3ysnos7G5OOljiv9c8I0WGksvNtpzN1jGuIb82Tk5a57BeWARl9027nb5jSDXbaCQsXmcEwqqr4NfGUPIVrdHQXFtjkMcA8/hoNf2qvjX/eYClfaoj5Pelf20b8zl2ZdXeAhRnY1dw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=DQ4npudt; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c20f::7; helo=osppr02cu001.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=cP0Tq/Qr;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=DQ4npudt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=33jsfzwykdj8rd9mibfnnfkd.bnlkhmtwoob-cdukhrsr.nyk9ar.nqf@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c20f::7; helo=osppr02cu001.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20f::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWxQV0brDz3cYh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 02:44:33 +1100 (AEDT)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-2163dc0f689so114251205ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 13 Jan 2025 07:44:33 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1736783070; x=1737387870; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=f9GN/9Nt3vZP1g4PXg+O1YxepiT+zT9oJT9rhlVkhGw=;
-        b=cP0Tq/Qrc5kDu5/XbRPd12z1fXt+jbrtVRFRQKscW9cMiyMQpyj/nlzjMF1gCnnJE7
-         fag/b5y9BFnNTSTag934vr3e2KNE9jARFQyaZHMWOWmNQZyEUNJ/qKFOAF9BMBlqZyke
-         GzV+bA8aZPsM4SqVu7w8xABHaAc/0T/ByZPMX6DODUHRvnS92Pf526uPrulSPC7vt+0M
-         9SogH7Z7Z0kkC97fOyCYvPo4CKMA9XNNksYZ9tCuZpJx88jd0cn7xq3g5r32KWa345l8
-         Ful60xHpIbWNmHaAhtOUus877AndzHt4AJrUUPlrq5PxqpfNMOVmADEpzCVODkIrhCE8
-         BEUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736783070; x=1737387870;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=f9GN/9Nt3vZP1g4PXg+O1YxepiT+zT9oJT9rhlVkhGw=;
-        b=wsqA3yu42fGAVSHNBdITBRYSdu+tTEn053ZyOrqrQenmAvUsEc0q2o/qfL7DcUjMKo
-         8nv0Z8gL1Focxvuv8OddS/IcnNI1sSGYkrowO+NQO3oxxg4vnG7Fw//k3r/yrayI5Yi0
-         3g3NSLH0iIQmhzg4C2AE3+yldob0NHwe9prfkpNXqBpjkTRxxUIrln9CvEOCPhedKJzC
-         805ObYQeirUb0dYJWdx9pKho58aHIaZttiPmDV2aPl6TVi8JprnZIlduro8sa1kmD35P
-         xjfl/F/1YT0UYA38GXH4sel32LLiwfsBsplWmyu1g08IHswc9XEgciuhfMYdTJZeq5cl
-         68GA==
-X-Forwarded-Encrypted: i=1; AJvYcCVQ2OrI/KEWu7T/c0wCNwNVWClLqw3Wg3SzHX5V3mGPNekQx3FoEwlvxw1UiSMdGZcHgnb9SdUISIqqmFo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyBf3D9sefgJFsamftZcAjVdY2lcSrnyCJIEmaIacpEwE6dgseF
-	E1X2EZZTq2SSqGfv8Xs2s9ocYb8lygiZiffLwGitrlpGnY2NAcfpUgezAQQ0ZrUZXmEE5VSrufn
-	urw==
-X-Google-Smtp-Source: AGHT+IHIQyazhiyyUpnFFe5650540BmH10WSCzq7nQUkxQTSPWj6gISntiQcqyGsVty8NrTJi6F4Z/IpKIc=
-X-Received: from pfbfh41.prod.google.com ([2002:a05:6a00:3929:b0:72a:bc54:8507])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3993:b0:1e1:adb9:d1a6
- with SMTP id adf61e73a8af0-1e88d0f000fmr33694244637.41.1736783070268; Mon, 13
- Jan 2025 07:44:30 -0800 (PST)
-Date: Mon, 13 Jan 2025 07:44:28 -0800
-In-Reply-To: <87ikqlr4vo.wl-maz@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YWxrS41x0z3cYh
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 03:03:35 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NYF3ooZ3JSqtUg0pQgAAhawo2KhQ9V6UeCo/oQhjxo3RSw74yHGorQ/RtD7LJXZnd/MKxhgYhNW294xqFPTx9INzff1IV7dJTbU6JQ6zkzkOkHt4Cy5qjqKQ7iI/UCFlBMaa9wouCv1cqYyAJIyJ/4etdT8GkSSiYdEuH4qYqN4txkgoWuw3yxRE+wJL+iz1paVJaq72k/X9W9n7IOdQVfWbD/Rffh5DrQAHQJQG+h009HhbHYkMWWwW+G3YSer+JtR91585Y0VSBaue9vhY9qcg4mZvt2FQVd7/eJ2y+LHuO6c4VME4Tl+d4taD12JOv+8E/pVRI9e26JfnZZmMNA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=6FQLHSDVrgdEFEHJ6gzkncGrVOML7jPhWb6lKJ6otSY=;
+ b=p8ebTPc7KbPnqiQ1/IWk/H57y/56n9rb4fWvIi/uFmWA0nGSExbs01B7oRYLem9hLVqKeuE4VIdN4xcGZOt4YE3dAsiUhGYZkdILQSoOe6qd6l+0A3vz0A3HzIftrc3TX5ARi5AEKsfQpJpva82bI2NIxCmQmNRqjwegKfIGI3ed7C3FFS6bLG4BMob5IiULbm57oQM+jFI5d3Ff84HeBMCU4L3uzO5mxcScSOQIGbMRfLWRO2P21A3MVm1ztF5FRKjaXtQxz435W1M1AGZoOOwY+plml6tyo8jIG2sRAAFTeo8fcH7sdWwWTjLQoKFhNaRl4VqqMZNwOBzxc9gmdw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=6FQLHSDVrgdEFEHJ6gzkncGrVOML7jPhWb6lKJ6otSY=;
+ b=DQ4npudtC2jAlTB3I9uOv7T7Ti2UYtcbYDNEA1DZkHBuhSYzVRPXzyGCJEE9Kqez7xFEvet5DfQZSXf/M3K2H2+CKLJyfV/HJ6b4OOozrZA9U9BSplDFUZ2pr7i//zAVQZ+pv8IK9/wk7e02n4OeernlH+d5ymMWIllHOzQmjbm8nDfpPCGC6NmKjayDuiC1d1480dTynZUZTktW7Ffva8XUs7Kg8apq5w64ldHR4CPc619RzRe3AE88hE6xFmMTcJTtxU2+rGvqIbU6o1pkB03C5fi659xmK6k0Evinc9vEqJczlgRVrjZJM8SeQ/97s20XcHCLBneQkwd7lZQo9w==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by PA3PR04MB11154.eurprd04.prod.outlook.com (2603:10a6:102:4b2::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Mon, 13 Jan
+ 2025 16:03:04 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%5]) with mapi id 15.20.8335.017; Mon, 13 Jan 2025
+ 16:03:04 +0000
+Date: Mon, 13 Jan 2025 11:02:54 -0500
+From: Frank Li <Frank.li@nxp.com>
+To: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: Vignesh Raghavendra <vigneshr@ti.com>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>,
+	Minghuan Lian <minghuan.Lian@nxp.com>,
+	Mingkai Hu <mingkai.hu@nxp.com>, Roy Zang <roy.zang@nxp.com>,
+	linux-omap@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev
+Subject: Re: [PATCH 2/2] PCI: dwc: layerscape: Use
+ syscon_regmap_lookup_by_phandle_args
+Message-ID: <Z4U5Ljw+ro3BRHSd@lizhi-Precision-Tower-5810>
+References: <20250112-syscon-phandle-args-pci-v1-0-fcb6ebcc0afc@linaro.org>
+ <20250112-syscon-phandle-args-pci-v1-2-fcb6ebcc0afc@linaro.org>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250112-syscon-phandle-args-pci-v1-2-fcb6ebcc0afc@linaro.org>
+X-ClientProxiedBy: SJ0PR05CA0023.namprd05.prod.outlook.com
+ (2603:10b6:a03:33b::28) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,96 +89,136 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250111012450.1262638-1-seanjc@google.com> <20250111012450.1262638-4-seanjc@google.com>
- <87ikqlr4vo.wl-maz@kernel.org>
-Message-ID: <Z4U03KRYy2DVEgJR@google.com>
-Subject: Re: [PATCH 3/5] KVM: Add a common kvm_run flag to communicate an exit
- needs completion
-From: Sean Christopherson <seanjc@google.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Michael Ellerman <mpe@ellerman.id.au>, kvm@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PA3PR04MB11154:EE_
+X-MS-Office365-Filtering-Correlation-Id: 26baf35a-3e28-473b-c6c7-08dd33ebc2ad
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|52116014|1800799024|7416014|366016|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?3JfptpOIRkA+uBCvSVmPzoCK8ZrRGqleC+BLLUs+gX9jF1ns0DGcuaUocUVz?=
+ =?us-ascii?Q?2eDv+PZC/OVpl5Q2U81P5930Vqj3YDaAY8tOfanphbsBY2VEJlmpzBv8cHmP?=
+ =?us-ascii?Q?melS1VvO0Ke7w10lnCZOreQi5bxU5NHHdWnWwYg9R8zXT6npKzC9hNr0Bbg9?=
+ =?us-ascii?Q?pMx5Q8OOrHBAt6ZkykrdlhzVS6sHEmj9xpFRs3cUtsIO8NZiJJH/6LeAMq1/?=
+ =?us-ascii?Q?D0I8jK6EVjrni3Meof5Y/tj9ZY/ukMuyzDhyxnGQmDV3zMDK7GOAw2nSI8Or?=
+ =?us-ascii?Q?H2QZ9H/9/1iblvp+fuZeJ96b8ugx+o/C/sfaBEJ1C6kHBBWqR8KBjKyjbiLq?=
+ =?us-ascii?Q?cTlsBER31XxF17iAVGc3OHx0baJk2YrynqVnJL7hVcuGZgZ1N2CRVsjSAj1c?=
+ =?us-ascii?Q?5ja8eMbgQ2FpzPO2Sce5vW/Cpo9XkZD70cYnhk/rWRBRdO5exwyTYyA8FPtz?=
+ =?us-ascii?Q?Zp0pzynCLH/mC93pQQ07y+0LGoR/Vqe9CiwQ7pD3+Tz8JzaR/ipJ5mB6J9Fv?=
+ =?us-ascii?Q?+3b3u6K/0UiG+poDg6SLGrOQa+2a0Adyme8QDWYH60EkzZ5QlayRSbzqzKEZ?=
+ =?us-ascii?Q?4cchXFXTXjkxzX4o8g3+hxbVHhbKMqgWa/JPOgCq/FgACSJYfXrKwFyuoe/L?=
+ =?us-ascii?Q?4g7mUp3+0x1pmWPqVCfxFZTjd8/InU5eq+vE9C7cvJCayAUuwrg7+J9QvARV?=
+ =?us-ascii?Q?wtYR017sE8RAXEcseTpYNHrtuLZW5o7xp+l+i/Z9nqUht5p4iWPVESh7CVnz?=
+ =?us-ascii?Q?gMpACL6yO2GXSdGWqdK1VDa1/ZwMShudBwLzGK2PI7oWav/29ojYpZrOLz58?=
+ =?us-ascii?Q?fniWcR1Oq7MpkLrE+StH1AUVigV1ZhMW+IQPQlkCLEW0GlXiCbvraXJYmWIy?=
+ =?us-ascii?Q?RHhxYsJgcZdXiQ3UYrwCjOHDdos7ITiuIBl0L1wtWFAHMrH6ukXESDDMuKMF?=
+ =?us-ascii?Q?7mlPl7r/cMfsem71KYrsI3u4RK42+4a0ltnIPumRW/cJDrhsteFcLMwB3lam?=
+ =?us-ascii?Q?ZAvwmInzdeglneHtx9vcZQfa8MTQXFVL614i1W7/J4P8ytxYuGjnEOo3EfNa?=
+ =?us-ascii?Q?qKSR2PDvkyOiRniko6UMQqjf4+qqApLLSfGW0DoQsjr7XZVkkJf8/+Ky/jj4?=
+ =?us-ascii?Q?tr1qh8sHMbugIZoLAgX/ldNlIRl7ojUGriXgdgYrMmEBYVpg86N7XGp7ARJl?=
+ =?us-ascii?Q?zXVca87prZ7YUK0IYkF0EzjFycWl6QGmjtig9vxWxezYPUoditAe3BhuM2j1?=
+ =?us-ascii?Q?hr/gpMgVmafxAKDOPJWpX4u6lm7vIwwGtZYhpVAYVR2/lgqiJFfubNqdueTC?=
+ =?us-ascii?Q?svP7BKys9WKCWn3VRqZrK+88fu0USWRP3obS8lwA4/DvwWdxJmP9pV0t8Vg4?=
+ =?us-ascii?Q?dPSelo93wP3qimvJiAMzRqWw+atMxL75KyTLd9yu1dABRETpbBssprMCZLMu?=
+ =?us-ascii?Q?ckKILuMlWJByvuapmUFweq30L9la4JXa?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(1800799024)(7416014)(366016)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?BlTlACrCmntqRLRLTxnZHzFa8kycloEETAgBIHZAO59TWI5uLQ5Z1KhD27gJ?=
+ =?us-ascii?Q?Ocxyn8wBqq9rccck4I/6RirxUfI5wwe+N1DLFuhHuHiepq3lbgk3iQZnkZVe?=
+ =?us-ascii?Q?opiTWMXWjhsm1lO5Ps19W113Qt+QJn+wWjGqygv3Y5pAVbtlY/moHz5WnBFu?=
+ =?us-ascii?Q?YZOKhhsfA4Y89EXbtjkQ78ISjF+OilK3pbh88H0GHzgm50A/LlHimSIkvh8S?=
+ =?us-ascii?Q?5emJK5Reyz7b2gbDLO4ISduIzXfVFLqPCoFRuDi3+IrDaEWPuopUZLmStvXA?=
+ =?us-ascii?Q?ZzIfi3yjFUyItowQLeUHUr8zUw6dssF1RLfHTsLZtkOQG+k6+UhcJgWzSjxW?=
+ =?us-ascii?Q?BYfHveO1Gp8DoeDjvv4/anMPc9scI7bi55wGamXuVQ1ewLxIqkXSk+LSzfzm?=
+ =?us-ascii?Q?bWRAyk8nOB2+gG4tYdqnfR5pA8HwNI9Z+Ptby5eCCBdpR2jNqUZQoUbkQ95w?=
+ =?us-ascii?Q?GbRK5mCHt/dHBnMVpjxz9NcVHRyEGgDu/rSI94GqXe+WaGp21SsbgzC2TS3d?=
+ =?us-ascii?Q?05yFYw7+7bPn8lSCVDPwLidsgmACS4H77CtqikR08C6vdTRJMDknzwts0dht?=
+ =?us-ascii?Q?ln+rZKdJBORXcyOmWQ9hetnG62G3gYfSkbDUneRoMdQmlOahjsBxeBlc2twY?=
+ =?us-ascii?Q?xjXSMELRznPiJQYhM+vjn7012688w+Rdvc3yJoTI9SObMdgxrYadHxXirWqx?=
+ =?us-ascii?Q?SmUNs4UMwMuejay6pJJUpKDHU7Ih4jcu8+05it2bl0eIiaTkRmBKUECKevrv?=
+ =?us-ascii?Q?BUjAnshoYgpHV7XeTTk1LDoOfmw/eqOeq/FMNsGEfYSFx57zP5qOZw1nx+PC?=
+ =?us-ascii?Q?WtkcjYKlNtpohvZwHrzK2RlFEJqCQCHe6/QGvvcanIsEb2uQzzc3tMDsG43B?=
+ =?us-ascii?Q?IFry/aaofzrt8ID73TWToAZuU48gckz5DfFJVkHZifz8E/xW7+KoWJagrYxE?=
+ =?us-ascii?Q?11gQkyll8LBWFtob9D7839GOxEGZ0bRy1igTTD2l8Jxgi9WQeRTAC0K1ukts?=
+ =?us-ascii?Q?xTpUmAlXMNMu+l5a0OArW+Ae4cu3aR7AfAMPnBpIJNdCa9zjS39YmzesUQZN?=
+ =?us-ascii?Q?rQPCuM1jTsMPPqCuQstRb0lueg0uL6WAdrLDKk/c8lEBrQgoOGob1ZyYm91H?=
+ =?us-ascii?Q?m0eQOwG3vzfWxXBIrcg7/KFl8gT2i4NhdeVOg1eT66aQmZjh3XCX/YkMYvov?=
+ =?us-ascii?Q?3i4lmviNy3HhfOc1/30hyMYdLRTMPIKc4Y1Rox8VIHgOpjL4FIuLBNeEAMs2?=
+ =?us-ascii?Q?bGDgaPKy+AJ4Fhusxdvlbxo5bvj1EHL/3ndRcS30H0PtDNGH3gUJLNV3XV9+?=
+ =?us-ascii?Q?hFzrURMfHzQKU7VMWMG3qX7mmyqIgWkfKJVdcZiQokMAytbhKYmYPR+C4BEL?=
+ =?us-ascii?Q?WGWZmH0eWwO1ruDkb/drf3ZI5TpAz4sn836VQq7O6fP0lAxIjiNyBd35MDHk?=
+ =?us-ascii?Q?Y/1r/xoEnbTn8+fUr77Ra0auNGdL3C/b6V+nuvMCqp2yzSC+2f5/ias67cBn?=
+ =?us-ascii?Q?HiSQU/NTUL8uxkO9cPg8YPkS6vJIcou6z1Qe8c39Dow2h9+K1pVijjzMcRvQ?=
+ =?us-ascii?Q?rwBSa72uyo7qsqu3wTw=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 26baf35a-3e28-473b-c6c7-08dd33ebc2ad
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Jan 2025 16:03:04.0134
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: ZSMtULLRSsxU0kyR0b6ZOlMhbBKFlgONyueiH/yW4brxNNv6zLGPHgE4+xKEnO5qwCNGkrov0U/CqELQzN9nqg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA3PR04MB11154
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Jan 11, 2025, Marc Zyngier wrote:
-> On Sat, 11 Jan 2025 01:24:48 +0000,
-> Sean Christopherson <seanjc@google.com> wrote:
-> > 
-> > Add a kvm_run flag, KVM_RUN_NEEDS_COMPLETION, to communicate to userspace
-> > that KVM_RUN needs to be re-executed prior to save/restore in order to
-> > complete the instruction/operation that triggered the userspace exit.
-> > 
-> > KVM's current approach of adding notes in the Documentation is beyond
-> > brittle, e.g. there is at least one known case where a KVM developer added
-> > a new userspace exit type, and then that same developer forgot to handle
-> > completion when adding userspace support.
-> 
-> Is this going to fix anything? If they couldn't be bothered to read
-> the documentation, let alone update it, how is that going to be
-> improved by extra rules and regulations?
-> 
-> I don't see how someone ignoring the documented behaviour of a given
-> exit reason is, all of a sudden, have an epiphany and take a *new*
-> flag into account.
+On Sun, Jan 12, 2025 at 02:39:03PM +0100, Krzysztof Kozlowski wrote:
+> Use syscon_regmap_lookup_by_phandle_args() which is a wrapper over
+> syscon_regmap_lookup_by_phandle() combined with getting the syscon
+> argument.  Except simpler code this annotates within one line that given
+> phandle has arguments, so grepping for code would be easier.
+>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-The idea is to reduce the probability of introducing bugs, in KVM or userspace,
-every time KVM attaches a completion callback.  Yes, userspace would need to be
-updated to handle KVM_RUN_NEEDS_COMPLETION, but once that flag is merged, neither
-KVM's documentation nor userspace would never need to be updated again.  And if
-all architectures took an approach of handling completion via function callback,
-I'm pretty sure we'd never need to manually update KVM itself either.
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-> > +7.37 KVM_CAP_NEEDS_COMPLETION
-> > +-----------------------------
-> > +
-> > +:Architectures: all
-> > +:Returns: Informational only, -EINVAL on direct KVM_ENABLE_CAP.
-> > +
-> > +The presence of this capability indicates that KVM_RUN will set
-> > +KVM_RUN_NEEDS_COMPLETION in kvm_run.flags if KVM requires userspace to re-enter
-> > +the kernel KVM_RUN to complete the exit.
-> > +
-> > +For select exits, userspace must re-enter the kernel with KVM_RUN to complete
-> > +the corresponding operation, only after which is guest state guaranteed to be
-> > +consistent.  On such a KVM_RUN, the kernel side will first finish incomplete
-> > +operations and then check for pending signals.
-> > +
-> > +The pending state of the operation for such exits is not preserved in state
-> > +which is visible to userspace, thus userspace should ensure that the operation
-> > +is completed before performing state save/restore, e.g. for live migration.
-> > +Userspace can re-enter the guest with an unmasked signal pending or with the
-> > +immediate_exit field set to complete pending operations without allowing any
-> > +further instructions to be executed.
-> > +
-> > +Without KVM_CAP_NEEDS_COMPLETION, KVM_RUN_NEEDS_COMPLETION will never be set
-> > +and userspace must assume that exits of type KVM_EXIT_IO, KVM_EXIT_MMIO,
-> > +KVM_EXIT_OSI, KVM_EXIT_PAPR, KVM_EXIT_XEN, KVM_EXIT_EPR, KVM_EXIT_X86_RDMSR,
-> > +KVM_EXIT_X86_WRMSR, and KVM_EXIT_HYPERCALL require completion.
-> 
-> So once you advertise KVM_CAP_NEEDS_COMPLETION, the completion flag
-> must be present for all of these exits, right? And from what I can
-> tell, this capability is unconditionally advertised.
-> 
-> Yet, you don't amend arm64 to publish that flag. Not that I think this
-> causes any issue (even if you save the state at that point without
-> reentering the guest, it will be still be consistent), but that
-> directly contradicts the documentation (isn't that ironic? ;-).
-
-It does cause issues, I missed this code in kvm_arch_vcpu_ioctl_run():
-
-	if (run->exit_reason == KVM_EXIT_MMIO) {
-		ret = kvm_handle_mmio_return(vcpu);
-		if (ret <= 0)
-			return ret;
-	}
-
-> Or is your intent to *relax* the requirements on arm64 (and anything
-> else but x86 and POWER)?
+> ---
+>  drivers/pci/controller/dwc/pci-layerscape.c | 10 ++++------
+>  1 file changed, 4 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/pci/controller/dwc/pci-layerscape.c b/drivers/pci/controller/dwc/pci-layerscape.c
+> index ee6f5256813374bdf656bef4f9b96e1b8760d1b5..239a05b36e8e6291b195f1253289af79f4a86d36 100644
+> --- a/drivers/pci/controller/dwc/pci-layerscape.c
+> +++ b/drivers/pci/controller/dwc/pci-layerscape.c
+> @@ -329,7 +329,6 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	struct ls_pcie *pcie;
+>  	struct resource *dbi_base;
+>  	u32 index[2];
+> -	int ret;
+>
+>  	pcie = devm_kzalloc(dev, sizeof(*pcie), GFP_KERNEL);
+>  	if (!pcie)
+> @@ -355,16 +354,15 @@ static int ls_pcie_probe(struct platform_device *pdev)
+>  	pcie->pf_lut_base = pci->dbi_base + pcie->drvdata->pf_lut_off;
+>
+>  	if (pcie->drvdata->scfg_support) {
+> -		pcie->scfg = syscon_regmap_lookup_by_phandle(dev->of_node, "fsl,pcie-scfg");
+> +		pcie->scfg =
+> +			syscon_regmap_lookup_by_phandle_args(dev->of_node,
+> +							     "fsl,pcie-scfg", 2,
+> +							     index);
+>  		if (IS_ERR(pcie->scfg)) {
+>  			dev_err(dev, "No syscfg phandle specified\n");
+>  			return PTR_ERR(pcie->scfg);
+>  		}
+>
+> -		ret = of_property_read_u32_array(dev->of_node, "fsl,pcie-scfg", index, 2);
+> -		if (ret)
+> -			return ret;
+> -
+>  		pcie->index = index[1];
+>  	}
+>
+>
+> --
+> 2.43.0
+>
 
