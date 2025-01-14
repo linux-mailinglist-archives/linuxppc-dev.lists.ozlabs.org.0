@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-5218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 851DDA1040B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 11:28:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED12A1040E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 11:28:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXQMN1Ndmz2yys;
-	Tue, 14 Jan 2025 21:28:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXQMP1CKLz301v;
+	Tue, 14 Jan 2025 21:28:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2608::61b" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736850512;
-	cv=pass; b=TbTFI1E43rtLflKO36KE+pTDHREL/nvxlNAkakJ4VzuV8fc1ZuCX2PfCRZ0ZRCgCKLddOaVg9mJYdUuoqQYyGCYcEqvNDjXI5SsGkiWFMONrOJYcvKDTHgJMm2C5hseAkS+Vq381R5+NEUI0iFt1Ez83gfWP3xrNQHIAv2GLyWAgA2MImlJO+e4e3eLi8/L4lHOzZb8RHnxNPmypQJpqaLghtiCAzmMq80BFVXqQW+PaX3BrBIZuHrfcNrzhca0obP1J/JlWR6/JjWl9/L+z/fHsaZqIa08ipbx3mUGyOZ478Ln6uPJoNAoCumXptZs6v+ORMGWxrbOO7T61LA+Mtw==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736850513;
+	cv=pass; b=DBH96mRr33bwy5cvqHIRquE58e7tgB+xauE+MxZVmibhiwsLPtfVRtHmLwSaE6zTjK4bhJ+Zw3Y72EkzARCzO0v4/eHCwZlpcozod0BonOYyDcCzMbmKRlASN6wRuP1LHLGCpWb+zQ0xm3+pKbsfW3e/65oDhO0v0jrvxcjGMPAaLz6hvHAnen4zRsbFdGmM74dbViWtMTyg14KVsrfyGOKvjQKA45YGT31jNq8Kjofeq4uzJY8YoJmaMyeoS6zJepqJkjNco+TOYbX3iTxm6eB9JGtkJGiAGwz0YmTDorTjnlWgaOTfJdihec3t0Y/0LKPNS1erVSn82S5ZIff39A==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736850512; c=relaxed/relaxed;
-	bh=3EnQFAmGejzaT4WiXeists04vr+HuTT/+IVQW86dumw=;
+	t=1736850513; c=relaxed/relaxed;
+	bh=v5fR8JC7NMlovC+1qO/wS9qMNHsvo21JDo8K0drx5EI=;
 	h=From:To:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=eRtwgx485kr4ZZ9iYZ3DwNDBzlshHZCth/X3dmCE24ySN562PTbtk/lhv2lBwus3gF9pYtpNovjuP21W5YG60og7qaf4/Jnxva/HVY4Ej8UfWKQdpeZII2kJFAEBYr3HVeOT+itKlFf5yQB2Bl1VSwc8PyoyhgMp1Hl7MFCZa6SRPXc/MGxSprH5LAuGXZYByM6F5TlVwqi2cEGEPBykc5scSg5ChtI015gt5xDtiX2t0CxITZ17bC2i6/gOnzWrTNnaFEfwUwkasu7LQslPvx+fgsuEiMb5zxVnMMhrZQ6EOEFKYNjCcNuTH318wwq/gXqLluMjF2SQvKHX0rf1wA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=QND1HXk4; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2608::61b; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=YbR6OIcoHuhqwwWSkuVm92I/CwPmYjTjsZ43nl3svpVYwqfdf1Uie9aS9WemJipxWCZqH/BlJ12yoyNzCFmDD2L8j3UFn06Nati9NyUjXUWHbxQ0O4CSlMedmKwRFjtiJ3UpeMN2ReTspZzMfYHXo+eDDCGiMqt+Wf2z8N8lAkDlOgolqLI4moxDjok7/CBMdLw1cy7XSoeHuDinjkRgwcFNAwlVLYDlrmeceMNo8BJqmmVE0iDfjMVySKGTGxdekSNooGzChjEyBdz+q+aQE5mObwN3ThopmvyPzJSo8V8Ts6FfszFZMZ1yicfSNW3APTnrJaJhA+UJ1PpCsQHjXw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=MxVy6JnH; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2608::61b; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=QND1HXk4;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=MxVy6JnH;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2608::61b; helo=eur02-db5-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
 Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2061b.outbound.protection.outlook.com [IPv6:2a01:111:f403:2608::61b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXQMM2cs6z301v
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 21:28:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXQMN3MpNz306x
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 21:28:32 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=AluFMFhYL19dGVy2JvDoBrmEmc1GfAru7R1xnXvujphFTKCrJPRqwLGOgMa7gvO0iiN6me3M+tcQiVj8/WAvCBPxJvzB77KOeyl4GGSDiR4sJKjGwrE9BdymDhYH5mLVppLDxXqu9X2taEF5YDmVLbJ4i9DdP9jviR4OgP/hvvOmYt4EIrJyXNY4ABIa+4TO7OzeDd09xLgNFon/6pY6Nhcv4cXjXPn1HC2yyiv9aI++vf6ecWgGMHazkGWNpTgtXJVetmDNOk86N5HhtNrQLBG78ABe13rVQl1PiOTc/WpVSa3w+6EtRJVaPzGAWChK4qPhU1dTsPrvztJyWAlKuQ==
+ b=lzF79nReC8kPVHFit5fSehv1ZcODsKjLn4PO/8L2tubmgCAv/AWyXlK+UzY9XhCo8iEOuVxBv/lH0PKJt2TXb3GI4YlKmcpVhmYvBuOzW06/dPyCQqH/sCPQnlidW7e0rn4RorxME/Sw8Ds8Mh7P/zA8+C7/oSG2JmuEfwkmgCKdoN0q4Cq8Z3RnaBQIOqPHtnfgd8Njf7rSdLPJfquVU+gqDWQCPrie5XeP56fsFTgU18KbXIys2wn52c5MnYi/6T2D61TAitPU+XD7z+QboAIWQeqrXhhEtuY2wT8p1k+BaQVXh9D9U24Cw1dlYD9IOfOXF8tXoAmcUJupocagMQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=3EnQFAmGejzaT4WiXeists04vr+HuTT/+IVQW86dumw=;
- b=GEb2xUi9TAun8rIVgsCgNYZPL0lURA5E4gE+rVKS+N0spllwlxckLflZoJlviy7/nc3B5oyZjLd9qYED+BJQlPA0hOzt8sRo5Ack4IYM5Ni0xHAUkKus2id6coWHbbRE4wPR31F9GeZ4O0AZU+6m+d+qjiJiYrwokNHVc5TSYD4w6tjy4GNarFHNRd8nMpEqTSSVHWhr9pDq6feDcpiYlJuwyivaCR3jO9orSZjg9CbWiFaHEkoJAPhVWaVxcXl32aIta0SE4bz5SikRkir6H6ZebxrqM2TqM+z2/+JOdEg5fy5Bpb47lw42JNX1wS/0STZGUtphySNFSuLSn9cKwQ==
+ bh=v5fR8JC7NMlovC+1qO/wS9qMNHsvo21JDo8K0drx5EI=;
+ b=rpCBjELZnTqu0gAow000kfDHtNai26YVQBVTpGJ0j993NIu3oCattP3QJ7vof3+WyvMxgV5su8ar2HQcVH9sUej6SPzsUGgrxtvPwcaHoNaDxySZSZsaDvUQHNtl1wU6API3t8HC2jd7aZ+oqhlwP0IkcdC80lrdzoVSD1sxGqQ6cr6y+v+MFVQ0H46C85d4ft8S8hADYJkMna7zDwYpiYDIeC4bZ7j/Rv5RkZ3opX/pO7+PbLR7nzNBkSeYUoETa8v1vy0HgKMY1mev6wMqtzrZ2374pb4PQjiPwRkvFtCbxQ40jjGlr+uwg/wuASr2Xzn9LiUJvnYYHZ+8/qM2Ig==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=3EnQFAmGejzaT4WiXeists04vr+HuTT/+IVQW86dumw=;
- b=QND1HXk4A+eOJnFL1tP/vZBILJi5r/tbw88wkfmEwbRXjVGJJcdWCI4BnZ33k/J0u5rxsqp/HR/9wvqQQvn0nG3wC6tdvm5/S9zYtmADOe2jlXt7aQMGrmhCJXcMsC8f2+8bgReB1XUDAc+6YBJSYfjNX8wlACERZQpfW7mqyhKm+0isv+BovD9c457wGo2lzbUthFoBbgqgWR+i5PBgeV7rcIa63shGcVepR5zTdM8f8tArkIHahhnaeIJHSqfTvX9R69rtLy9HWUMAFXy/bfrZYnqqBhXup0AMNpGxhSSwRMGbeTEWiIVd8+b/6GS00HOUL8cFex8srs0PDvkKOg==
+ bh=v5fR8JC7NMlovC+1qO/wS9qMNHsvo21JDo8K0drx5EI=;
+ b=MxVy6JnH/i17b4hl2XTKWemiJukiESzjBvBS+71pwiOOTrJZ5q4yp9OwuSYPw3/mJLdqt4TNLKjR4+z8IJ0Fsu76neeKsLvVWOh+hGpTyozFcb5pAsCuclRqqns/AkdG7X+uskkCbYnBPgHV1L1wbzheEA0xrI6uLGNdol/p9d3RsFF+UiNAvcccq9K/BHkCa1E2+55wEV67qhBqlY+4gp0+3Uq2I/tsCeJb3ArWZ86Cd2AXgdVcJC8Og0pQ4VsQ8znFgmJHKZQScjJJSmXK5NT2hjyMw88yKpgY8yfXsfq5ZKPVbY50+AchxQo14yhwQUevNOMapkxbXskitL8e4Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
  by AM9PR04MB8082.eurprd04.prod.outlook.com (2603:10a6:20b:3e8::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.18; Tue, 14 Jan
- 2025 10:28:12 +0000
+ 2025 10:28:17 +0000
 Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
  ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
  ([fe80::7be0:296:768c:e891%3]) with mapi id 15.20.8335.017; Tue, 14 Jan 2025
- 10:28:12 +0000
+ 10:28:17 +0000
 From: Shengjiu Wang <shengjiu.wang@nxp.com>
 To: shengjiu.wang@gmail.com,
 	Xiubo.Lee@gmail.com,
@@ -69,9 +69,9 @@ To: shengjiu.wang@gmail.com,
 	krzk+dt@kernel.org,
 	conor+dt@kernel.org,
 	devicetree@vger.kernel.org
-Subject: [PATCH 1/2] ASoC: fsl_micfil: Add i.MX943 platform support
-Date: Tue, 14 Jan 2025 18:27:19 +0800
-Message-Id: <20250114102720.3664667-2-shengjiu.wang@nxp.com>
+Subject: [PATCH 2/2] ASoC: dt-bindings: fsl,micfil: Add compatible string for i.MX943 platform
+Date: Tue, 14 Jan 2025 18:27:20 +0800
+Message-Id: <20250114102720.3664667-3-shengjiu.wang@nxp.com>
 X-Mailer: git-send-email 2.37.1
 In-Reply-To: <20250114102720.3664667-1-shengjiu.wang@nxp.com>
 References: <20250114102720.3664667-1-shengjiu.wang@nxp.com>
@@ -93,301 +93,105 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|AM9PR04MB8082:EE_
-X-MS-Office365-Filtering-Correlation-Id: a1f16f68-ff23-43ee-7e02-08dd3486260b
+X-MS-Office365-Filtering-Correlation-Id: cf48486c-53b2-4c22-23b0-08dd348628b9
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|366016|7416014|1800799024|376014|52116014|38350700014|921020;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?U5z1o7nnEdB3xVGzVz60zNmeEZgq49gO+u86v0duU8NwKK1cdbbLiq/MLnWP?=
- =?us-ascii?Q?+qlMTfx0VxCk5KEu3bfD/PdH6MLe2cWt5/f5EVENmQhXit4YX93TrBZeb1SM?=
- =?us-ascii?Q?UVRBC4n8yrhGblPDbJwSDTcDrJ4AwKJMCorj73jiWd1UGMFS6yAJ4RGPMJlL?=
- =?us-ascii?Q?CdtzTqI8xSEqDOWlddl9V9Ph9RAJ7kwfS2LtIJoO2UibRlSrpRjsI4Kn7ef6?=
- =?us-ascii?Q?acz/gVNhe8FmpNdjnABFp/I1r7z0+vNOi8B79G7iz0INdXVk/CoFBdnnnLJN?=
- =?us-ascii?Q?YPk25akbg0g3RY3nED/O7i9ppWwmxSD4ETh1Ju71fG+MUapE/L31hftoX0+b?=
- =?us-ascii?Q?jhzfMEUVfsYwUeYvwZ40XAHg+c49Xqoy1yhw/BGg3IZBhZVXPmK/PcP6hFEP?=
- =?us-ascii?Q?JchLx7J1aZ1vwGdwei8JMq9wK04FF/slBIwqU7n/D2qcol2THukYC4H/awAL?=
- =?us-ascii?Q?aBlA7jAMYb5eKAlGGfSW2U13N8OCUmQ8RaK+LdPMsB3p0PlJ8kegrJVQWPOR?=
- =?us-ascii?Q?HYrpkbf94ndHCz6fmsuQsFUC+t7jkR7ZNEzAXr6M2reaYa2n2WOrJMQSc/Ws?=
- =?us-ascii?Q?Pac+qK86qGvr4wiMbqDNdT9UOhQcuAWGaoisza3dIWAe8mtN2RGIKE5J5Ari?=
- =?us-ascii?Q?cIhr828QWQWShZcsdkRatlYjDSEfRfFMrMks4OEm7ReqBbGV3nADL1qCf0J0?=
- =?us-ascii?Q?LKuBo+G7eWCTpzaAk+iNU34kizt0GgXOnpBlTOSWC2kC833c9Q9jcGyCJO7z?=
- =?us-ascii?Q?6ng4OE4Oz2GwZGp+tvVJIY94KBdI2lKKV6V0TLzvCukjPW6x59Q3LJHXPFTd?=
- =?us-ascii?Q?pGwBqz5OsvYI4SwnK06yLvGpWXPmRSvVeYLQgcrQqmLm/aIyKQt26f51ZlFj?=
- =?us-ascii?Q?FyHjkqOGhlEDF/vN+0eqJKlmjC/Ro/89Yw66OxIS/Lr99/uMSgHlK3xAh2yJ?=
- =?us-ascii?Q?20M4axxwbmZjh7emclLS5iADyTXJ0RwZfRbx2wEwtomXiJH0ZP/ToDdNKGaV?=
- =?us-ascii?Q?m8gKLgVpiIS3YSvrXtBSQwfbMlZawKh8llWonbmoB2btv3D5gpotxZnxkzs4?=
- =?us-ascii?Q?lbB9hsTUiJ1lLGrqxowRzrev6Wt4osWVJ+yrejjNIu2MWPXc1MKg9lo3NFp2?=
- =?us-ascii?Q?UEdpifb7PpSmFv5nicFcbDCHzs4xEyL/J25d9Gwkath1Ah06pJJcoidLBT/L?=
- =?us-ascii?Q?WpRpsygAl9vFur3tTHyQb5RpYGA9/gcbKvQjE/bvExITmi1D9AIKUP/FxbKi?=
- =?us-ascii?Q?jDchTcVZ35cQM6rK3DUnJamQ078QWb/XnGUO2jrWlvUFWl2jntmUYoXVPsoW?=
- =?us-ascii?Q?78VtbbCx26w+BzwrybYJ8xDzgxjKSfdgyYTQF+5kt3zRHqYuZux9ljpHG18I?=
- =?us-ascii?Q?wRxp4Wp/4hdRBv2wUPaTV3M+KqhTosuKF0v83bDqgEUtzDPtvBtT1oKeVxp6?=
- =?us-ascii?Q?JzXS+O0KBzo26SyHO3eMJhM/IGDQP9npFFn7LbFEkoDT0XZ09YnwoA=3D=3D?=
+	=?us-ascii?Q?LZbEbx5WsVxNOXnCz+WVLBWQe+PYrF6xxYWnjkUxDAAlFAJ3COvIjFuWQ7e4?=
+ =?us-ascii?Q?FTRNPKiBSgtRKqeVFsYAbyfg6ui2OVmVXvHj139Q+Jp9/ySwbQdFKL8/qjff?=
+ =?us-ascii?Q?ilh1PIQgtAQa8DgZuept8HX2a2CHJfAgHpX6STa2HTw6x4X8gs2I0FY9xhA5?=
+ =?us-ascii?Q?8lfg/I+cHNggRWVuI2LJut+EjZ12K8u7KGzBnFrq97fFNcf046YRSxTyzKuy?=
+ =?us-ascii?Q?hjKAbVOkrBgcivPXfEaNHF+D3/rbdBORGgFH0UVqdAIdeGuqL4Nf4pRalzdR?=
+ =?us-ascii?Q?TBbez3/TiqiWUaaivsOiwZz3z1q+31TAbOZ+kkFUvJuH1yhDZJclfEx41yoV?=
+ =?us-ascii?Q?cQuinxFkN8FFawp44pfXA2vQ5B/v3dd44Ua/724JxBpmlkn9+h0gK3QhphC4?=
+ =?us-ascii?Q?pLxhAoUZtyv+z/sQBjrmQj2UvC4xE5WB6fzl1al3GSF3FFSu/3n3wGn+sSC0?=
+ =?us-ascii?Q?0yWkjGS2ImBJ9g4rXVwKGhffI/q+FpPuQkaR41roiKg05uIZluQdvOVjDzYb?=
+ =?us-ascii?Q?QnzOW/zGJ/rCUvjunmaM/rwFchwustZqQoXbzGMj4/i5zu75z6SDzLoQOv8Y?=
+ =?us-ascii?Q?MqS9Jm3o9Ee8n0/u+OmJmFkqURfQfGbxIIwZQmpbN9pM1LGTwbOkhQgdsvVE?=
+ =?us-ascii?Q?H4Xi1Qa53isgiOVwldUQSxy1Ea1279/3IjwapoqNR6GYvoHJT2sLBtSMXqGC?=
+ =?us-ascii?Q?bk2ntp9mVNs15bo+k/sV2ecn+SE6x+YVPK8W+G9PlOn9HYKWb9znb2yumd4v?=
+ =?us-ascii?Q?5Zxfoa1uClPBKaf+p4RSKTMAvDyV8BkW6uWDqlpkX9CeUK+LbfsG31g2vDOp?=
+ =?us-ascii?Q?xwkc8H7oZF2ZDkedu/kYMRocez+xPcLB6ml+gqCIu8RFnxoLQ3OfbE/nKSrC?=
+ =?us-ascii?Q?aufdIlf41Ml+/cPBp8eLwmZVwfx/fOoiVTcRoikVfsJlE7Y70k6xUd4ryn5b?=
+ =?us-ascii?Q?Qn14KXSgZgahq8Lj0HYPeBBND55onhZFD5b1B4tbjjQX/1OUTBo1vfFyZzQl?=
+ =?us-ascii?Q?7lvEPw/71kzTQMrAsXGZbyZ50xSn7S8z2GmgAIIH4ZOjpeWsGvKJ7A7GevC2?=
+ =?us-ascii?Q?Aa8NF3TTsfn2rnA72BcSBZVcruhvXUNkG+6xzvE6oIImyRCUd2FJuW66fK53?=
+ =?us-ascii?Q?cAqbCA42Gw6v9DeS0jsE8VFZedoCv99gHBoAMK4P9SiB/L7ptKDqBeryJtgr?=
+ =?us-ascii?Q?8QanvCiuzsDutWyZ7d6u/AVVGEXjdbyU8VTJfT0nGWG6/0iaC3dr3unJP8Mh?=
+ =?us-ascii?Q?txqK4mF/hApk019LWR+BwEmAua8Dymq5wFndKqPyUp7aXXfShwtm/qtQb6af?=
+ =?us-ascii?Q?6ZOoPsGbHFWnhmlWVL1KEeOOjgxBD8UpKF8N630tPaLEThWgOKX6d4f6aPSk?=
+ =?us-ascii?Q?zeRLtkNlk99siRxCMtizTA9bN7waVtt2qimDFG7BG29gtzCyexbHYCN4Wvtn?=
+ =?us-ascii?Q?qJYs7VsvWNysf18eKdr1MJni4usRIcjiL5sIoBVHpj+j96it+YmVLQ=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(1800799024)(376014)(52116014)(38350700014)(921020);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?4ocLG1PCCr1zOuSR27KL3Lp8V7jIHXUXkfyQgv5zYs7J3+G2zci1pbKpXmHH?=
- =?us-ascii?Q?RCTt4ieWjmvza25OK8tm24botWHM9rIOTHWEYjJHVWtNnEFpYfU5p5rU3+9A?=
- =?us-ascii?Q?SgPPgVBA3B9zFL7BgBN2ZIbyvdFmFmMJz3pVSNFcW/bNnIkvAxqV7zvW3Psi?=
- =?us-ascii?Q?Y/jXOPLld0oC9N95+xQ3QiZiRp+1CBeQ7fMifDIcseRfnPnk43W9MXy6kLpF?=
- =?us-ascii?Q?CWN839mZSBZpm2+c9lf1un0robRr2mojtbZmbCx1Fn5kaul+ACeRKOI1jeYL?=
- =?us-ascii?Q?Wr96oHDFmTFtUHFf0Y64VK4VCV91dJQsHLBo2XAqEsxELaGcyr02xKkf9lvK?=
- =?us-ascii?Q?RsrHemDwQolPCh8omM/zas+ca5w5ii9rSuFO7V+jpGnqm9ZL3L1z10joYfTJ?=
- =?us-ascii?Q?BFtCvltHEJHqQcf9NzZUX1JROTPbaGjG04VnQgMro9B9MsMyEweYhB9E73vK?=
- =?us-ascii?Q?KykuW/I1KS+FfDwKATYNaipxrYS0BIqBdbG3FNxhgx4eGgSq+P+b4oqAtmGc?=
- =?us-ascii?Q?BJyaqLopau6R3g2FrpA0TilqeavIIkrAXCSvPLcaOuHADCjNQMJjqdB3Ryi5?=
- =?us-ascii?Q?e16LeaFMgkY8ALcpgGxi+XvGTH0IXFldZ3JPleAY141Vm6+5uHfX2lsNY4pE?=
- =?us-ascii?Q?Raqo/Vpb5v0jqG+LcD0kRwxiwK4Px5NNQcnGGIPe1f+IS1ajsVi1E3FFYGV0?=
- =?us-ascii?Q?ngKCnN/cmSPw2n5s0DF2tAhd3aPEFgBPeoxrt+mZ5ZoV9T/GkIQHDrea9LI/?=
- =?us-ascii?Q?8fu4esJ69MJwjbpouyCtYO7ycovf03gocCziJOhfOeVKBa2JjVMcZjGVJuEb?=
- =?us-ascii?Q?Z88Ak0a8Ih+YNYns1z6Vb+ST9i5vDW8Iclk1xaZPjw/XTcwdGJagCNpkgrwK?=
- =?us-ascii?Q?X+PImcJSXYegbdtJ/eiUIHfkWpOkc188T1/WNsb0mZxEGQ4FChr85QwfiaUW?=
- =?us-ascii?Q?ww92w2Vmmq2i+CNF3BSvXMj5Ir+A46TWZZGqvqSiJmpEjCcRQLriT81HRaLm?=
- =?us-ascii?Q?8dOgQCZnmUoVLUivaNbTInaNquXinBYA5HpuuM8P4cFobUhAE3u2gF6wgagX?=
- =?us-ascii?Q?4LJ+KBRGtmI8FyTAtXi0IcU2/wpAXaCMxIgx06vkr71Baeh3Tel5+TQNORrE?=
- =?us-ascii?Q?h99uevyDvGtYzB2huNxMIHozsfcwuz+gwqiH6mTbBSfv7dtYg+Ea8kLgV3hh?=
- =?us-ascii?Q?jJ1de8L9/P6MUMjQkNYBTMbrPC3WYwCV5tLDztOtCcDm+Z9+gwEcoZ5zqOEa?=
- =?us-ascii?Q?o9c10bnJj4/lxLOQ6DTSvKzYVYZRF4lCxwuKQns7fKeH5NwniB1n5kiLqXM5?=
- =?us-ascii?Q?s5TENc7L0REUsxNIHucwGk3VVswxkS8X7zXssk7Zh0ZHN+cNolJP1tXrhUgo?=
- =?us-ascii?Q?myCtud0JkOgeLgkvCVTCY6b1K1CmLZDqpWNv7hx86hQpU3hmCtqkHBi0H3KM?=
- =?us-ascii?Q?VJP34Qsf3HeBkiyFK+6nE0r9k8f8NcDhRU0YlE2s9QDYFe4/2f4BXTKbNqP4?=
- =?us-ascii?Q?kkhgwVzjeVjjZBftcpl0jCyquk50qnBiwDlxTac+oKqgVrKMGl7yxPeEsYEd?=
- =?us-ascii?Q?PQcNLYjer78Fr/KbAAsMOoM0saHh+7NTOxpOV88e?=
+	=?us-ascii?Q?UflHiP2mHTRCGPrWBxbEE3OO9qiqEXFSKZP754QS8aIQp6iSIngiygBEVyVA?=
+ =?us-ascii?Q?YgzcuH8HCHXp9zie/AKSPzxTWHpT4vYwMwONzST+JilQDPjyGzk0mgYwRRmU?=
+ =?us-ascii?Q?ejbRPczyW5/IK9pNd35RfYwBA1uWV1PvDJxaaafr1IJ03eETGh9IMOtIvw8U?=
+ =?us-ascii?Q?XTtE6/jvNXzr6o/NFzatXXPaphGuPjXHyri7uEuoJoOMzTLd+UKX9dBpI6g8?=
+ =?us-ascii?Q?/cCX7h4fRE1dt0bWvF3GDjqgmoq7BsSxmlceXBqyf/gZNwzXdaMpywZIj1Sp?=
+ =?us-ascii?Q?J3IOKZN7x0HM9rO8buivFbzU276HwS67XOkxl+H9QMATEbzv/GYTmUmQRSX4?=
+ =?us-ascii?Q?AnQ79+yglmm5LUF7USQIy/ZSlYCl+49KOlafwePXMtLqnXJYdGbpVH0O19Dq?=
+ =?us-ascii?Q?eAyKaOJZlJdo9PTGlnj0m0DK+hcS0rGoqgIvbIctxZ+rnFswOlv0P38iFwtM?=
+ =?us-ascii?Q?mDmy6LXQ1sts//CfrTEaSOmLepQs/OCLgB6Sv3rtopUC9lBgoysmKk6MN8Pz?=
+ =?us-ascii?Q?RSOEODQaVkPuiKlNoL3W//ykCYwW/yBswAt2TzztKN5H4Cj3ee5Gi4lbpZEc?=
+ =?us-ascii?Q?VHG1b09cJviBY3onEhn56kxHpr/8iUT7dKfKHvDQ5f7acA52RrnE7w4EVBaD?=
+ =?us-ascii?Q?t7nNanx2uvtgUjHGoaASi9vr1duaXCkxfwsaOqD40uoyWWLQRz0G1CAm6Bg8?=
+ =?us-ascii?Q?kbvJ6muS1p0EDKPCpG6wHLeVu6fsJUQt487BU73hUwZUiAAtQHJl9TvE3Q3H?=
+ =?us-ascii?Q?f4dG0E3XZdO28plkNtDMmMDI3e1loN0QUOqltR8YH2O4OV5r33KaNlNBtya9?=
+ =?us-ascii?Q?kiewMQXLPKsZfcf3ubzXouOV/t+iwKDa2b9b45tMGDsQcSGc2TkGgyP3sfme?=
+ =?us-ascii?Q?YmBG5dhpeXag4DgsjJZ8ub+ZZvxEpF2Srzumw6htg3TV+HJXYDOInIkFcLR9?=
+ =?us-ascii?Q?qotDMUGeuBHqtFrieq8+TmAKt/P8HdHdzCIXfa69as7NLEkhxqqT/5pEWDUQ?=
+ =?us-ascii?Q?phZ7PxqJ4ErmIPaewx41TNNmhsLJYkdpMu2tNFU5a4kaPSLs4xphpL8emcRs?=
+ =?us-ascii?Q?C6k+lxZThe4YV0om7qrCJ7pN47JC+xS2VKZGkJWZqV/6hqBvbZRxfRxrECy7?=
+ =?us-ascii?Q?x2qXGE6pk9lwg588pYiqLjonmvP9hzaFtGZWGbunWlmQC4PAX8l2WqJtKeV8?=
+ =?us-ascii?Q?OFBLt7KtIDrq1TMw87+I4WF0UgJYHuiGqtmC38q8Kon7Fuk5ySnpF0p46EqK?=
+ =?us-ascii?Q?4lRRzpPwIHCt+9zY980xiECPnzgzmEDKJWjUPXMlauESnU/z0nTofe+s3/zE?=
+ =?us-ascii?Q?xLQEfRsnnB2W+WbDeYYHrmx90uwdpPoM91T8v56Rr3+iRVifLfVJa4054NVx?=
+ =?us-ascii?Q?A3U4H7RGxef/pfdNw0Xmo0pHA5r9fX18btR3OBb4ks+RCVMTkQ3S2PgN5vND?=
+ =?us-ascii?Q?fOyyrd6OGxFkmTJ8gYUoNsGzfzvkRmc/Dh3byF/W29pPiWtKmLtsD5yI22yH?=
+ =?us-ascii?Q?CaT5THWd+71ii3legUnJFcPHM/47/TeBDyHbyW6nTIjXY9V/gecGlIy551LR?=
+ =?us-ascii?Q?MSIKOU2Jm6RqkCE7Whhflg74zzQePObChFCYH20F?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a1f16f68-ff23-43ee-7e02-08dd3486260b
+X-MS-Exchange-CrossTenant-Network-Message-Id: cf48486c-53b2-4c22-23b0-08dd348628b9
 X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 10:28:12.7355
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Jan 2025 10:28:17.3206
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: l/0CqiY13XHUXRZq8JFhvlNtClIbaz4h65pXs4UrcpKPoWWLwqWOiS2s3n2uGc0gu1a66CanENdfZBzGKWQXDw==
+X-MS-Exchange-CrossTenant-UserPrincipalName: dD4fTW0UsyGPhGaQ++LeuTajtJAz1AbP1NUm/ZTM0H5y2K/yvTDlhVPtY7ubAcApkzbHg4k2WaRCcDkGoHqVvA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB8082
 X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
 	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On i.MX943, the FIFO data address is changed to 0x20~0x3c,
-compared to previous version, there is a minus 4 offset,
-so add a new regmap configuration for it.
-And the bit width of CICOSR is changed to 5 bits, from bit
-16th to 20th in REG_MICFIL_CTRL2 register, so update its
-definition header file.
+Add compatible string "fsl,imx943-micfil" for i.MX943 platform.
+The definition of register map and some register bit map is
+different on the i.MX943 platform.
 
 Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
 ---
- sound/soc/fsl/fsl_micfil.c | 98 ++++++++++++++++++++++++++++++--------
- sound/soc/fsl/fsl_micfil.h |  2 +-
- 2 files changed, 78 insertions(+), 22 deletions(-)
+ Documentation/devicetree/bindings/sound/fsl,micfil.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/fsl/fsl_micfil.c b/sound/soc/fsl/fsl_micfil.c
-index e908cfb594ab..1075598a6647 100644
---- a/sound/soc/fsl/fsl_micfil.c
-+++ b/sound/soc/fsl/fsl_micfil.c
-@@ -89,6 +89,7 @@ struct fsl_micfil_soc_data {
- 	bool use_verid;
- 	bool volume_sx;
- 	u64  formats;
-+	int  fifo_offset;
- };
+diff --git a/Documentation/devicetree/bindings/sound/fsl,micfil.yaml b/Documentation/devicetree/bindings/sound/fsl,micfil.yaml
+index c1e9803fc113..c47b7a097490 100644
+--- a/Documentation/devicetree/bindings/sound/fsl,micfil.yaml
++++ b/Documentation/devicetree/bindings/sound/fsl,micfil.yaml
+@@ -25,6 +25,7 @@ properties:
+           - fsl,imx8mm-micfil
+           - fsl,imx8mp-micfil
+           - fsl,imx93-micfil
++          - fsl,imx943-micfil
  
- static struct fsl_micfil_soc_data fsl_micfil_imx8mm = {
-@@ -98,6 +99,7 @@ static struct fsl_micfil_soc_data fsl_micfil_imx8mm = {
- 	.dataline =  0xf,
- 	.formats = SNDRV_PCM_FMTBIT_S16_LE,
- 	.volume_sx = true,
-+	.fifo_offset = 0,
- };
- 
- static struct fsl_micfil_soc_data fsl_micfil_imx8mp = {
-@@ -107,6 +109,7 @@ static struct fsl_micfil_soc_data fsl_micfil_imx8mp = {
- 	.dataline =  0xf,
- 	.formats = SNDRV_PCM_FMTBIT_S32_LE,
- 	.volume_sx = false,
-+	.fifo_offset = 0,
- };
- 
- static struct fsl_micfil_soc_data fsl_micfil_imx93 = {
-@@ -118,12 +121,26 @@ static struct fsl_micfil_soc_data fsl_micfil_imx93 = {
- 	.use_edma = true,
- 	.use_verid = true,
- 	.volume_sx = false,
-+	.fifo_offset = 0,
-+};
-+
-+static struct fsl_micfil_soc_data fsl_micfil_imx943 = {
-+	.imx = true,
-+	.fifos = 8,
-+	.fifo_depth = 32,
-+	.dataline =  0xf,
-+	.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+	.use_edma = true,
-+	.use_verid = true,
-+	.volume_sx = false,
-+	.fifo_offset = -4,
- };
- 
- static const struct of_device_id fsl_micfil_dt_ids[] = {
- 	{ .compatible = "fsl,imx8mm-micfil", .data = &fsl_micfil_imx8mm },
- 	{ .compatible = "fsl,imx8mp-micfil", .data = &fsl_micfil_imx8mp },
- 	{ .compatible = "fsl,imx93-micfil", .data = &fsl_micfil_imx93 },
-+	{ .compatible = "fsl,imx943-micfil", .data = &fsl_micfil_imx943 },
- 	{}
- };
- MODULE_DEVICE_TABLE(of, fsl_micfil_dt_ids);
-@@ -793,7 +810,7 @@ static int fsl_micfil_hw_params(struct snd_pcm_substream *substream,
- 	ret = regmap_update_bits(micfil->regmap, REG_MICFIL_CTRL2,
- 				 MICFIL_CTRL2_CLKDIV | MICFIL_CTRL2_CICOSR,
- 				 FIELD_PREP(MICFIL_CTRL2_CLKDIV, clk_div) |
--				 FIELD_PREP(MICFIL_CTRL2_CICOSR, 16 - osr));
-+				 FIELD_PREP(MICFIL_CTRL2_CICOSR, 32 - osr));
- 
- 	/* Configure CIC OSR in VADCICOSR */
- 	regmap_update_bits(micfil->regmap, REG_MICFIL_VAD0_CTRL1,
-@@ -932,9 +949,39 @@ static const struct reg_default fsl_micfil_reg_defaults[] = {
- 	{REG_MICFIL_VAD0_ZCD,		0x00000004},
- };
- 
-+static const struct reg_default fsl_micfil_reg_defaults_v2[] = {
-+	{REG_MICFIL_CTRL1,		0x00000000},
-+	{REG_MICFIL_CTRL2,		0x00000000},
-+	{REG_MICFIL_STAT,		0x00000000},
-+	{REG_MICFIL_FIFO_CTRL,		0x0000001F},
-+	{REG_MICFIL_FIFO_STAT,		0x00000000},
-+	{REG_MICFIL_DATACH0 - 0x4,	0x00000000},
-+	{REG_MICFIL_DATACH1 - 0x4,	0x00000000},
-+	{REG_MICFIL_DATACH2 - 0x4,	0x00000000},
-+	{REG_MICFIL_DATACH3 - 0x4,	0x00000000},
-+	{REG_MICFIL_DATACH4 - 0x4,	0x00000000},
-+	{REG_MICFIL_DATACH5 - 0x4,	0x00000000},
-+	{REG_MICFIL_DATACH6 - 0x4,	0x00000000},
-+	{REG_MICFIL_DATACH7 - 0x4,	0x00000000},
-+	{REG_MICFIL_DC_CTRL,		0x00000000},
-+	{REG_MICFIL_OUT_CTRL,		0x00000000},
-+	{REG_MICFIL_OUT_STAT,		0x00000000},
-+	{REG_MICFIL_VAD0_CTRL1,		0x00000000},
-+	{REG_MICFIL_VAD0_CTRL2,		0x000A0000},
-+	{REG_MICFIL_VAD0_STAT,		0x00000000},
-+	{REG_MICFIL_VAD0_SCONFIG,	0x00000000},
-+	{REG_MICFIL_VAD0_NCONFIG,	0x80000000},
-+	{REG_MICFIL_VAD0_NDATA,		0x00000000},
-+	{REG_MICFIL_VAD0_ZCD,		0x00000004},
-+};
-+
- static bool fsl_micfil_readable_reg(struct device *dev, unsigned int reg)
- {
- 	struct fsl_micfil *micfil = dev_get_drvdata(dev);
-+	int ofs = micfil->soc->fifo_offset;
-+
-+	if (reg >= (REG_MICFIL_DATACH0 + ofs) && reg <= (REG_MICFIL_DATACH7 + ofs))
-+		return true;
- 
- 	switch (reg) {
- 	case REG_MICFIL_CTRL1:
-@@ -942,14 +989,6 @@ static bool fsl_micfil_readable_reg(struct device *dev, unsigned int reg)
- 	case REG_MICFIL_STAT:
- 	case REG_MICFIL_FIFO_CTRL:
- 	case REG_MICFIL_FIFO_STAT:
--	case REG_MICFIL_DATACH0:
--	case REG_MICFIL_DATACH1:
--	case REG_MICFIL_DATACH2:
--	case REG_MICFIL_DATACH3:
--	case REG_MICFIL_DATACH4:
--	case REG_MICFIL_DATACH5:
--	case REG_MICFIL_DATACH6:
--	case REG_MICFIL_DATACH7:
- 	case REG_MICFIL_DC_CTRL:
- 	case REG_MICFIL_OUT_CTRL:
- 	case REG_MICFIL_OUT_STAT:
-@@ -1003,17 +1042,15 @@ static bool fsl_micfil_writeable_reg(struct device *dev, unsigned int reg)
- 
- static bool fsl_micfil_volatile_reg(struct device *dev, unsigned int reg)
- {
-+	struct fsl_micfil *micfil = dev_get_drvdata(dev);
-+	int ofs = micfil->soc->fifo_offset;
-+
-+	if (reg >= (REG_MICFIL_DATACH0 + ofs) && reg <= (REG_MICFIL_DATACH7 + ofs))
-+		return true;
-+
- 	switch (reg) {
- 	case REG_MICFIL_STAT:
- 	case REG_MICFIL_FIFO_STAT:
--	case REG_MICFIL_DATACH0:
--	case REG_MICFIL_DATACH1:
--	case REG_MICFIL_DATACH2:
--	case REG_MICFIL_DATACH3:
--	case REG_MICFIL_DATACH4:
--	case REG_MICFIL_DATACH5:
--	case REG_MICFIL_DATACH6:
--	case REG_MICFIL_DATACH7:
- 	case REG_MICFIL_OUT_STAT:
- 	case REG_MICFIL_VERID:
- 	case REG_MICFIL_PARAM:
-@@ -1039,6 +1076,20 @@ static const struct regmap_config fsl_micfil_regmap_config = {
- 	.cache_type = REGCACHE_MAPLE,
- };
- 
-+static const struct regmap_config fsl_micfil_regmap_config_v2 = {
-+	.reg_bits = 32,
-+	.reg_stride = 4,
-+	.val_bits = 32,
-+
-+	.max_register = REG_MICFIL_VAD0_ZCD,
-+	.reg_defaults = fsl_micfil_reg_defaults_v2,
-+	.num_reg_defaults = ARRAY_SIZE(fsl_micfil_reg_defaults_v2),
-+	.readable_reg = fsl_micfil_readable_reg,
-+	.volatile_reg = fsl_micfil_volatile_reg,
-+	.writeable_reg = fsl_micfil_writeable_reg,
-+	.cache_type = REGCACHE_MAPLE,
-+};
-+
- /* END OF REGMAP */
- 
- static irqreturn_t micfil_isr(int irq, void *devid)
-@@ -1243,9 +1294,14 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 	if (IS_ERR(regs))
- 		return PTR_ERR(regs);
- 
--	micfil->regmap = devm_regmap_init_mmio(&pdev->dev,
--					       regs,
--					       &fsl_micfil_regmap_config);
-+	if (of_device_is_compatible(np, "fsl,imx943-micfil"))
-+		micfil->regmap = devm_regmap_init_mmio(&pdev->dev,
-+						       regs,
-+						       &fsl_micfil_regmap_config_v2);
-+	else
-+		micfil->regmap = devm_regmap_init_mmio(&pdev->dev,
-+						       regs,
-+						       &fsl_micfil_regmap_config);
- 	if (IS_ERR(micfil->regmap)) {
- 		dev_err(&pdev->dev, "failed to init MICFIL regmap: %ld\n",
- 			PTR_ERR(micfil->regmap));
-@@ -1314,7 +1370,7 @@ static int fsl_micfil_probe(struct platform_device *pdev)
- 	}
- 
- 	micfil->dma_params_rx.chan_name = "rx";
--	micfil->dma_params_rx.addr = res->start + REG_MICFIL_DATACH0;
-+	micfil->dma_params_rx.addr = res->start + REG_MICFIL_DATACH0 + micfil->soc->fifo_offset;
- 	micfil->dma_params_rx.maxburst = MICFIL_DMA_MAXBURST_RX;
- 
- 	platform_set_drvdata(pdev, micfil);
-diff --git a/sound/soc/fsl/fsl_micfil.h b/sound/soc/fsl/fsl_micfil.h
-index b7798a7cbf2a..aa3661ea4ffc 100644
---- a/sound/soc/fsl/fsl_micfil.h
-+++ b/sound/soc/fsl/fsl_micfil.h
-@@ -62,7 +62,7 @@
- #define MICFIL_QSEL_VLOW1_QUALITY	5
- #define MICFIL_QSEL_VLOW2_QUALITY	4
- 
--#define MICFIL_CTRL2_CICOSR		GENMASK(19, 16)
-+#define MICFIL_CTRL2_CICOSR		GENMASK(20, 16)
- #define MICFIL_CTRL2_CLKDIV		GENMASK(7, 0)
- 
- /* MICFIL Status Register -- REG_MICFIL_STAT 0x08 */
+   reg:
+     maxItems: 1
 -- 
 2.34.1
 
