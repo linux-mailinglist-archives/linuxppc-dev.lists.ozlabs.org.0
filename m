@@ -1,59 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-5245-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5246-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CDCA10D10
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 18:09:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 40EB4A10D13
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 18:09:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbFh1b7Gz3bSx;
-	Wed, 15 Jan 2025 04:09:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbFr73prz3bV2;
+	Wed, 15 Jan 2025 04:09:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736874552;
-	cv=none; b=eNQ9CyTB3MAc+a7hYcdkMBYTFCV8B8+1APeSZbrLwhH8LQnlCacKx64uHScX7sqqwPQN80ofLknm+Bi7anT3XV49xebDTi0xUl6sl9ixVx3zIGIUmXUhqcbHc85XsAo7+pQZODcps0dXeFedpEKdtoI3ZnoIhM2fNvsqgIx3LVhtnk+UaSm4TB0BOmfkJ5pKhr48N4VJsilvHnJl92FplsLZGgKzTJxMvS0v7teo0uVtZXbM8m6Em7y3w6cwt9yIc8AYAJfN8WvBpGLlhrscfZOTHxcXaAXUmO55n2ntu3KgLij7r9iHwnx7FkejlGUgwS1aHXsTanDrMPnNihaAsQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736874560;
+	cv=none; b=Z+Sjvh2no84fePor14aMx9YVYgHY0Uh93JaUBtSfYNdhkP/Pgau0+SzS2IYXg7CJlg7gDfIbv/84W1SOy/c62zzSGSCFC1g0fEH4UIlgUzZ35uQUt/Tm6RhCsdxPXtgArMNgOVQTx5q00ci46TpPSJv0rIaLRi/8bBQgSy4wPqnGFmPsORUooW+kUb+RP2dX+Qa0Z1ILmJvA7xotFYu2IpbN0aW12ovONfX5wlD0/QJXAn/D828Y+lM6eVxgHI80jeBuXhBRSpCGR2NhtuTJIHZzp1xrFuNVgBaTAtHEArRfelcG53t7BTKSbYieBQK5tMNMGzqhXwz5yD3tL2mF2Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736874552; c=relaxed/relaxed;
-	bh=YQOecFTcxHRUK37E7vuD3jRGd0/JlePMprT1EGKBhpo=;
+	t=1736874560; c=relaxed/relaxed;
+	bh=24YRmAwxRBz24T9SMKxRBWtfqpXV6QkhRozeaYnu7H4=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AB0lf3EO+nuyBqlUIJw8uioJG/IJmOxJNIcobR8/ZEGNgNpcDbEQ71Hnm0mgAasioe1T9AKmHecR9PPIQ6j3cN2gj1mnU3D2sfO0C2r6EP+p9BPpkjpLbjrQV3vGChefhpJx9vkP5bPz5dk7mo9PQzQ6HX+mXSCNo58BKLIFEe9wXH5qtN2B5GD+GNnUGV389sIRWZEJnjFsEoneqda4HZxS4E8qxCcXNvDQqxezeEHVwor7fccNShyGJXgr2xHG9dGG9gXOw0w4p6yEGjQQREoVOCpdriHuNemqROBVBgyBT+VOONJD+AvIvtIGkKG+tBtR7jeO5TLyXgs23I7Xxw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=D9ny/mBN; dkim-atps=neutral; spf=none (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 MIME-Version:Content-Type; b=h1hYobd087fBtsgVv3qz0etXiIkcYxkLfBcelgLdTaECYGpAv7E+o1nRC5X8QFi5QO0Lmnrf/wQji0lA5uIXA7150s2p3XdJoXP/oHxtePuyvbCtovgD9ZXbau6qpPQMn2MCENtoMyTksifjKOEh59fVTocLdocqR1UDTHzxSEmN1fLMK/Y3X6YhvQVt7chKPFC6syiduj026dQoLM7aBn/Jw7TVzBXUtkGnWxkcL9/En8Dmx3rSHAW+7q81MX/hcEr93nVSjG5lBaVeGcLjN4oNz/30uILKv4oHJ4vud+REQwxt2Wtru+QHGJZueoc4ARITgkkN0V7SMO+stGuTmA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZY3OSnb1; dkim-atps=neutral; spf=none (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=D9ny/mBN;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ZY3OSnb1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXbFd69thz3bSg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 04:09:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXbFq5bRkz3bTn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 04:09:19 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736874550; x=1768410550;
+  t=1736874560; x=1768410560;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=Pmf0mERBbsrlwrPgn3Zx9waxXdXa/Lnwkdukhw5FyGU=;
-  b=D9ny/mBNyL4W8sJoIYvm29MD5g7t84UoIvzq4N7OIDXGIsjYTZx/Jpe1
-   0kBXH1W5xRqbx8A0kypRmvfX/cb44+9zZ19gzONsXTxd5WsLPjD+6FXCF
-   9X/gejPfnXAEcmViag5qzVjK/CaCI4EloHEBuoJboqkz4C0fUuOdXIwTL
-   WlMVM2WYJSsFHN2k8ILWryqW79XyflioyNDKtDm9Rdom3PcMe5+o7Ydvu
-   v9dg7/axGb6Fd/BmMLvnowh0IP/upChh3Fml1MT8kWQ7kYzrLP99RK2rf
-   7Cbfnf46eYrvverGj4DKHvOgCBJCZ9GbbtCPu/jTMBMDaZZWC2GMdHu2h
-   Q==;
-X-CSE-ConnectionGUID: rrnSjQlURLmY0jLesjx6QA==
-X-CSE-MsgGUID: EmPSBgR8TJOrEgSXqGV5wA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="24783715"
+  bh=ggZFsm9wBAcbdZnkGIV7EGJ0wyT9a+GuGk67HWpEVpY=;
+  b=ZY3OSnb1go7tekfaXhpJPTAmy9FZBp1tAbeZ9ijy+4BM42mvXxZX5D7O
+   qgBMzoz1IzReh56WyAm+usC/kSN3qsHqaQ0b6pYBX4rQ8lMmjunuHycuZ
+   dI/RLKSCckY5p+YuHCcR7484ENfBKXfjM9HD9gW9y25egQTLyJJBpXqHV
+   FsFhePTHaZN21TLIQWrHglno7LngLKSeveREPxFJVkcE0ve8x3h0rJPq7
+   Ndus5F/5PFjXFY3TddlavVwACabhSbt0hISvocPK/5B7xBvWz4eI+acIf
+   1UBjgWWD3nDkahd1jDwtvdCPOj0zIU7efOXG3rSFSP1sWbx3nidzHhxX/
+   w==;
+X-CSE-ConnectionGUID: IxvWEcfJSHmPIYoAH7b2Ww==
+X-CSE-MsgGUID: /RlIHWkmT5+k2T77f/kF3A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="36465793"
 X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; 
-   d="scan'208";a="24783715"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:09:07 -0800
-X-CSE-ConnectionGUID: FeOh3efjTNuYocifUlK5ew==
-X-CSE-MsgGUID: KrVasvItSVu9A7VOJ8XS7w==
+   d="scan'208";a="36465793"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:09:17 -0800
+X-CSE-ConnectionGUID: R8xOEQe/ScGx571nK2q+ew==
+X-CSE-MsgGUID: qz15C2F5SReIC4nxqZeJRQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; 
-   d="scan'208";a="105377303"
+   d="scan'208";a="105452762"
 Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.54])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:09:04 -0800
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:09:13 -0800
 From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To: Bjorn Helgaas <bhelgaas@google.com>,
 	linux-pci@vger.kernel.org,
@@ -63,12 +63,12 @@ To: Bjorn Helgaas <bhelgaas@google.com>,
 	Lukas Wunner <lukas@wunner.de>,
 	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
 	Oliver O'Halloran <oohall@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH v9 2/8] PCI: Move TLP Log handling to own file
-Date: Tue, 14 Jan 2025 19:08:34 +0200
-Message-Id: <20250114170840.1633-3-ilpo.jarvinen@linux.intel.com>
+Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH v9 3/8] PCI: Add defines for TLP Header/Prefix log sizes
+Date: Tue, 14 Jan 2025 19:08:35 +0200
+Message-Id: <20250114170840.1633-4-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250114170840.1633-1-ilpo.jarvinen@linux.intel.com>
 References: <20250114170840.1633-1-ilpo.jarvinen@linux.intel.com>
@@ -91,136 +91,115 @@ X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-TLP Log is PCIe feature and is processed only by AER and DPC.
-Configwise, DPC depends AER being enabled. In lack of better place, the
-TLP Log handling code was initially placed into pci.c but it can be
-easily placed in a separate file.
+Add defines for AER and DPC capabilities TLP Header Logging register
+sizes (PCIe r6.2, sec 7.8.4 / 7.9.14) and replace literals with them.
 
-Move TLP Log handling code to own file under pcie/ subdirectory and
-include it only when AER is enabled.
-
+Suggested-by: Yazen Ghannam <yazen.ghannam@amd.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Reviewed-by: Yazen Ghannam <yazen.ghannam@amd.com>
 ---
- drivers/pci/pci.c         | 27 ---------------------------
- drivers/pci/pci.h         |  2 +-
- drivers/pci/pcie/Makefile |  2 +-
- drivers/pci/pcie/tlp.c    | 39 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 41 insertions(+), 29 deletions(-)
- create mode 100644 drivers/pci/pcie/tlp.c
+ drivers/pci/pcie/dpc.c | 10 ++++++----
+ drivers/pci/pcie/tlp.c |  2 +-
+ drivers/pci/quirks.c   |  6 ++++--
+ include/linux/aer.h    |  9 ++++++++-
+ 4 files changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index e0fdc9d10f91..02cd4c7eb80b 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -1099,33 +1099,6 @@ static void pci_enable_acs(struct pci_dev *dev)
- 	pci_write_config_word(dev, pos + PCI_ACS_CTRL, caps.ctrl);
- }
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index 2b6ef7efa3c1..0674d8c89bfa 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -215,18 +215,18 @@ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
+ 				first_error == i ? " (First)" : "");
+ 	}
  
--/**
-- * pcie_read_tlp_log - read TLP Header Log
-- * @dev: PCIe device
-- * @where: PCI Config offset of TLP Header Log
-- * @tlp_log: TLP Log structure to fill
-- *
-- * Fill @tlp_log from TLP Header Log registers, e.g., AER or DPC.
-- *
-- * Return: 0 on success and filled TLP Log structure, <0 on error.
-- */
--int pcie_read_tlp_log(struct pci_dev *dev, int where,
--		      struct pcie_tlp_log *tlp_log)
--{
--	int i, ret;
--
--	memset(tlp_log, 0, sizeof(*tlp_log));
--
--	for (i = 0; i < 4; i++) {
--		ret = pci_read_config_dword(dev, where + i * 4,
--					    &tlp_log->dw[i]);
--		if (ret)
--			return pcibios_err_to_errno(ret);
--	}
--
--	return 0;
--}
--
- /**
-  * pci_restore_bars - restore a device's BAR values (e.g. after wake-up)
-  * @dev: PCI device to have its BARs restored
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 8a60fc9e7786..55fcf3bac4f7 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -549,9 +549,9 @@ struct aer_err_info {
+-	if (pdev->dpc_rp_log_size < 4)
++	if (pdev->dpc_rp_log_size < PCIE_STD_NUM_TLP_HEADERLOG)
+ 		goto clear_status;
+ 	pcie_read_tlp_log(pdev, cap + PCI_EXP_DPC_RP_PIO_HEADER_LOG, &tlp_log);
+ 	pci_err(pdev, "TLP Header: %#010x %#010x %#010x %#010x\n",
+ 		tlp_log.dw[0], tlp_log.dw[1], tlp_log.dw[2], tlp_log.dw[3]);
  
- int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
- void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
--#endif	/* CONFIG_PCIEAER */
+-	if (pdev->dpc_rp_log_size < 5)
++	if (pdev->dpc_rp_log_size < PCIE_STD_NUM_TLP_HEADERLOG + 1)
+ 		goto clear_status;
+ 	pci_read_config_dword(pdev, cap + PCI_EXP_DPC_RP_PIO_IMPSPEC_LOG, &log);
+ 	pci_err(pdev, "RP PIO ImpSpec Log %#010x\n", log);
  
- int pcie_read_tlp_log(struct pci_dev *dev, int where, struct pcie_tlp_log *log);
-+#endif	/* CONFIG_PCIEAER */
- 
- #ifdef CONFIG_PCIEPORTBUS
- /* Cached RCEC Endpoint Association */
-diff --git a/drivers/pci/pcie/Makefile b/drivers/pci/pcie/Makefile
-index 53ccab62314d..173829aa02e6 100644
---- a/drivers/pci/pcie/Makefile
-+++ b/drivers/pci/pcie/Makefile
-@@ -7,7 +7,7 @@ pcieportdrv-y			:= portdrv.o rcec.o
- obj-$(CONFIG_PCIEPORTBUS)	+= pcieportdrv.o bwctrl.o
- 
- obj-y				+= aspm.o
--obj-$(CONFIG_PCIEAER)		+= aer.o err.o
-+obj-$(CONFIG_PCIEAER)		+= aer.o err.o tlp.o
- obj-$(CONFIG_PCIEAER_INJECT)	+= aer_inject.o
- obj-$(CONFIG_PCIE_PME)		+= pme.o
- obj-$(CONFIG_PCIE_DPC)		+= dpc.o
+-	for (i = 0; i < pdev->dpc_rp_log_size - 5; i++) {
++	for (i = 0; i < pdev->dpc_rp_log_size - PCIE_STD_NUM_TLP_HEADERLOG - 1; i++) {
+ 		pci_read_config_dword(pdev,
+ 			cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG + i * 4, &prefix);
+ 		pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, prefix);
+@@ -404,7 +404,9 @@ void pci_dpc_init(struct pci_dev *pdev)
+ 	if (!pdev->dpc_rp_log_size) {
+ 		pdev->dpc_rp_log_size =
+ 				FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, cap);
+-		if (pdev->dpc_rp_log_size < 4 || pdev->dpc_rp_log_size > 9) {
++		if (pdev->dpc_rp_log_size < PCIE_STD_NUM_TLP_HEADERLOG ||
++		    pdev->dpc_rp_log_size > PCIE_STD_NUM_TLP_HEADERLOG + 1 +
++					    PCIE_STD_MAX_TLP_PREFIXLOG) {
+ 			pci_err(pdev, "RP PIO log size %u is invalid\n",
+ 				pdev->dpc_rp_log_size);
+ 			pdev->dpc_rp_log_size = 0;
 diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-new file mode 100644
-index 000000000000..3f053cc62290
---- /dev/null
+index 3f053cc62290..4cc76bd1867a 100644
+--- a/drivers/pci/pcie/tlp.c
 +++ b/drivers/pci/pcie/tlp.c
-@@ -0,0 +1,39 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * PCIe TLP Log handling
-+ *
-+ * Copyright (C) 2024 Intel Corporation
-+ */
-+
+@@ -28,7 +28,7 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where,
+ 
+ 	memset(tlp_log, 0, sizeof(*tlp_log));
+ 
+-	for (i = 0; i < 4; i++) {
++	for (i = 0; i < PCIE_STD_NUM_TLP_HEADERLOG; i++) {
+ 		ret = pci_read_config_dword(dev, where + i * 4,
+ 					    &tlp_log->dw[i]);
+ 		if (ret)
+diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
+index 76f4df75b08a..84487615e1d1 100644
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -12,6 +12,7 @@
+  * file, where their drivers can use them.
+  */
+ 
 +#include <linux/aer.h>
-+#include <linux/pci.h>
-+#include <linux/string.h>
-+
-+#include "../pci.h"
-+
-+/**
-+ * pcie_read_tlp_log - read TLP Header Log
-+ * @dev: PCIe device
-+ * @where: PCI Config offset of TLP Header Log
-+ * @tlp_log: TLP Log structure to fill
-+ *
-+ * Fill @tlp_log from TLP Header Log registers, e.g., AER or DPC.
-+ *
-+ * Return: 0 on success and filled TLP Log structure, <0 on error.
+ #include <linux/align.h>
+ #include <linux/bitfield.h>
+ #include <linux/types.h>
+@@ -6233,8 +6234,9 @@ static void dpc_log_size(struct pci_dev *dev)
+ 		return;
+ 
+ 	if (FIELD_GET(PCI_EXP_DPC_RP_PIO_LOG_SIZE, val) == 0) {
+-		pci_info(dev, "Overriding RP PIO Log Size to 4\n");
+-		dev->dpc_rp_log_size = 4;
++		pci_info(dev, "Overriding RP PIO Log Size to %d\n",
++			 PCIE_STD_NUM_TLP_HEADERLOG);
++		dev->dpc_rp_log_size = PCIE_STD_NUM_TLP_HEADERLOG;
+ 	}
+ }
+ DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL, 0x461f, dpc_log_size);
+diff --git a/include/linux/aer.h b/include/linux/aer.h
+index 190a0a2061cd..4ef6515c3205 100644
+--- a/include/linux/aer.h
++++ b/include/linux/aer.h
+@@ -16,10 +16,17 @@
+ #define AER_CORRECTABLE			2
+ #define DPC_FATAL			3
+ 
++/*
++ * AER and DPC capabilities TLP Logging register sizes (PCIe r6.2, sec 7.8.4
++ * & 7.9.14).
 + */
-+int pcie_read_tlp_log(struct pci_dev *dev, int where,
-+		      struct pcie_tlp_log *tlp_log)
-+{
-+	int i, ret;
++#define PCIE_STD_NUM_TLP_HEADERLOG     4
++#define PCIE_STD_MAX_TLP_PREFIXLOG     4
 +
-+	memset(tlp_log, 0, sizeof(*tlp_log));
-+
-+	for (i = 0; i < 4; i++) {
-+		ret = pci_read_config_dword(dev, where + i * 4,
-+					    &tlp_log->dw[i]);
-+		if (ret)
-+			return pcibios_err_to_errno(ret);
-+	}
-+
-+	return 0;
-+}
+ struct pci_dev;
+ 
+ struct pcie_tlp_log {
+-	u32 dw[4];
++	u32 dw[PCIE_STD_NUM_TLP_HEADERLOG];
+ };
+ 
+ struct aer_capability_regs {
 -- 
 2.39.5
 
