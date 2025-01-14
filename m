@@ -1,87 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-5221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5222-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14A15A104BC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 11:56:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5464A10687
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 13:23:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXQzW4KvVz306x;
-	Tue, 14 Jan 2025 21:56:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXSvq0wKQz307C;
+	Tue, 14 Jan 2025 23:23:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736852183;
-	cv=none; b=CHWr692jsPMLamnE/4qPXQl3gWPN3GeP2GIaWHaTcLbO0tAp+NeaZgdGHaYNDD0+Dz5+St1S3GN/L+I2+8Aa8BAOjJ9UlznhChcqk/8UhWMwosQOAc6xhhKlh8d8hGNmY76QoZfTigmJvb//10DlGX0Hmf5ARwur1cQprUHSNB/LCR+8kbn/txw8vRX0p8nQHl5JMTzjYM0iME2K+3GzOMkXabM330qTfh0/0qhaVyDtQJLPue/PnbWjqR/pY1ORn4zeXHmh3JmgGwX8xxozUl4XFQ5IXtLCGAVN7cz1p1OKqOPO3SVFamhvBLNwaLPX5yfnND3tDpXSVxdtjdb7lQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736857399;
+	cv=none; b=jooNGmta4oEy3eDwo4YFpjsj3XlDMjXEQmVV3lFq9E2ceDZKY+CAG0jTWjhfFADEuwuFZpwtDTLwHKsSFR7vnqEAMdHx/A1p9BVWTIZmyk0uJqVupPpnDvwFbRTU2g34bULraYazxUATYp9YhOzaNi1+PfXpvyY/+M2cIBVhvySDMZgptVAEUtZF6HsohGkrXcnTiMYI/eR4XD7cwUBV4lW8NipQSrg3QXcrNeJhDcg9jsj9QGODmoK1w/XU16BGSI665Wgr+yvBNVH8IZIpZdQcobIvGBpNsrDy+d3d7NmywvK2Lfb6K9hNUEFZG8wyZvZfl78Ve1ADm4wUO5W0cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736852183; c=relaxed/relaxed;
-	bh=/9oSrldtgC1P5MkOGOlIxpHFkeRWTLigJBFqOxmE9I8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AnPJCykJPpNET3maF2pFbQcxLtc/pVbkVwK0OXCvOqEYSyRzKHhZrKCViO0jZ5Krui0RyYIM5+A4ZnhVd8X3tdFjGDF9MiNkiCm223rl2RVOqD63rorLcQchbb+ltkhPqpSR3NqeGTAfBoCHq7zQVpuZIfMO1l5j3jp8CynZfDyfyhA8RdCQRI2KvqNrYsskoksZvDuSIIolAsPr0aiZ3pnV05nGaCVWpZKOYAofNCU0yMgEcSG48rmtp3N+1BncaVMMnbEsTQyx/+xG3VsEr3YWblZm5I81lnCrBaT3EFNfgeKBs2wGSiLJEF1IXBJgXGC6qeBy5rc762rITjd4yg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ipyMAmwe; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=ipyMAmwe;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::62b; helo=mail-ej1-x62b.google.com; envelope-from=krzysztof.kozlowski@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62b.google.com (mail-ej1-x62b.google.com [IPv6:2a00:1450:4864:20::62b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXQzV1rjWz3011
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 21:56:20 +1100 (AEDT)
-Received: by mail-ej1-x62b.google.com with SMTP id a640c23a62f3a-aa6647a7556so94764466b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 02:56:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1736852174; x=1737456974; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=/9oSrldtgC1P5MkOGOlIxpHFkeRWTLigJBFqOxmE9I8=;
-        b=ipyMAmweLkH/D+pngg0+UEgvPUPJm68Rf6QsvV6HrEMnOEytlUNWM57j2sHGcxbwIV
-         hxsyRL9A9WlBI+bW6txAO0j4Jch6pJJYawTN/7En74rOUxvd/2NIDMoeBIgrVKm7K1CN
-         ULWg2p4RKxv2ONFxpylg/5EEPedJUibxbFKc3rdlRyhFnAaDRI8v45jXG/cDKG2Qc+cH
-         NUn3Srktu5SkWT/eBi8Ki8kBd34uzIrb6yUKQqpqA5wmbwGJQgi7CvUOM+ur3fxHCkzC
-         fskf8brgpA6DeZTrDvCFSTrE0fmFJtPEO14WzNhXuuO4EaEhnM+V8Ko6eEw2A9knymR1
-         mFLw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736852174; x=1737456974;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/9oSrldtgC1P5MkOGOlIxpHFkeRWTLigJBFqOxmE9I8=;
-        b=XzjJpqkD9+RitVTGRFqtRz+VqWgR82ITk5/hoQDfUjSjo/YzAEiUTS6ZtitO2lrivu
-         qx0LWUApgzST7L0Qj9VLKgns7JD0wYrkYitxORcXgLcdA/dSjqW0uA/uPVpyefiVsDt1
-         stPXfXAkwuq4OVnxDy2qHtY3PAnmHprQwvrz6C1wJqTIfjclDvbdtUI82VHBO3e1+Hyb
-         UrFOFdRO/wKbdWblrMn8SAc6HIBi2Ka6cR68akSZxIHtARW14l6qJE8fGMuNHnfPTB5B
-         6sJWq/s/SEflzYgcFKUQRyXWFKKuqFgZxYJM+qFFr6mN/n0WKfpsYVfXv3yB7hkK5cVl
-         0ELg==
-X-Forwarded-Encrypted: i=1; AJvYcCV7ptz+dVEV04OiXejOSOeFO3rFK+LDBaMcfbbbi7zgqzXT3PNsVjXVKmZgiJv32Pv6omohAnhisvCtTJw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwS6SInZQxWNVGO+Evkj93kCOfP1NKmM2cSy7pvolAWRAFNHhAJ
-	oDQpQFFop6DFEn0V9gydseibpfhypyJs7L8G6EVNyvQlR9tNWyli1FZyf7kfPJw=
-X-Gm-Gg: ASbGncuz2uZZRIxRXLBRHKqEOinSRjxB/76FvWMesjMwIFF3k20uGm0lKigDR3fs8A8
-	xe3NErVt7dxmRdnVclPqZlvSEeWYnSRpnFlUrxq8vX/tiX0TVAtP6oo4mKUHHy8ZRXUa5Q/DvxO
-	wpYOOwdqJEPaVfF89XJQOyDBOyfu9jL24dFByrcEcmZ4jQ0M7Yc2tjiniTH6pPaVRCyXmKyit92
-	C2Oi8gI6NHfs4zUXMIdk8wrkedXUJ9bpiBgqd1Bs8DfsKbXjfsO4jJrIu1SPgujj5kEmco=
-X-Google-Smtp-Source: AGHT+IELLCYYvHKb5lpw7z0EW5WhiA9Rzrdg/loEMvWoWRnv3YcLbL4xd0LbtlI+AziAeBNghsD6uQ==
-X-Received: by 2002:a17:907:2d92:b0:aa6:9631:923f with SMTP id a640c23a62f3a-ab2abc9519fmr845034066b.12.1736852174367;
-        Tue, 14 Jan 2025 02:56:14 -0800 (PST)
-Received: from krzk-bin.. ([178.197.223.165])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab2c95b215esm611700266b.161.2025.01.14.02.56.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 02:56:13 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-pm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Subject: [PATCH] cpufreq: Use str_enable_disable-like helpers
-Date: Tue, 14 Jan 2025 11:56:11 +0100
-Message-ID: <20250114105611.273202-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.43.0
+	t=1736857399; c=relaxed/relaxed;
+	bh=4M9snT9qbDvQ88PdgmNC6RL0sxoR82CuhIh6v4YfX4A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lhwV7ZdREBIclvKTJ7etY/z0K/QoP6M0STo06tWvMc+aIws0n5SmYpxzNzLkCSNjZ9njj11g1qAGuA9ewOWeD7dqjyMsdytZWOpScpY7bbrPftf+iWm9xQht6H056oxeOxqgMT3i+d7IKGZIDXMKTqRQppygcmDUSAEALzVLdLlkuCdHG70r/SbfFSaOgpskjCxPAkZMI/ZLHmajokyG3PYalG9+c0R/g0h7tD0En1/SNlSGc6iTgtwb8ovht94EFuQOFy1mpaPZHYres090SEDvpAlxU/GoTZz+9EupmF28D0HTcSfb4jTmkR3dkyT+KFAunnx8/azrNb1D1BLpXw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXSvn18Y5z305n
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 23:23:14 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1E61311FB;
+	Tue, 14 Jan 2025 04:23:09 -0800 (PST)
+Received: from e133380.arm.com (e133380.arm.com [10.1.197.43])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7E5BF3F66E;
+	Tue, 14 Jan 2025 04:22:38 -0800 (PST)
+Date: Tue, 14 Jan 2025 12:22:31 +0000
+From: Dave Martin <Dave.Martin@arm.com>
+To: Akihiko Odaki <akihiko.odaki@daynix.com>
+Cc: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Mark Brown <broonie@kernel.org>, Baoquan He <bhe@redhat.com>,
+	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
+	LEROY Christophe <christophe.leroy2@cs-soprasteria.com>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+	kexec@lists.infradead.org, binutils@sourceware.org,
+	devel@daynix.com
+Subject: Re: [PATCH v4 1/6] elf: Define note name macros
+Message-ID: <Z4ZXB2UJaZWOmshN@e133380.arm.com>
+References: <20250111-elf-v4-0-b3841fa0dcd9@daynix.com>
+ <20250111-elf-v4-1-b3841fa0dcd9@daynix.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,86 +56,104 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250111-elf-v4-1-b3841fa0dcd9@daynix.com>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Replace ternary (condition ? "enable" : "disable") syntax with helpers
-from string_choices.h because:
-1. Simple function call with one argument is easier to read.  Ternary
-   operator has three arguments and with wrapping might lead to quite
-   long code.
-2. Is slightly shorter thus also easier to read.
-3. It brings uniformity in the text - same string.
-4. Allows deduping by the linker, which results in a smaller binary
-   file.
+Hi,
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- drivers/cpufreq/cpufreq.c         | 7 ++++---
- drivers/cpufreq/powernv-cpufreq.c | 3 ++-
- 2 files changed, 6 insertions(+), 4 deletions(-)
+On Sat, Jan 11, 2025 at 02:48:44PM +0900, Akihiko Odaki wrote:
+> elf.h had a comment saying:
+> > Notes used in ET_CORE. Architectures export some of the arch register
+> > sets using the corresponding note types via the PTRACE_GETREGSET and
+> > PTRACE_SETREGSET requests.
+> > The note name for these types is "LINUX", except NT_PRFPREG that is
+> > named "CORE".
+> 
+> However, NT_PRSTATUS is also named "CORE". It is also unclear what
+> "these types" refers to.
+> 
+> To fix these problems, define a name for each note type. The added
+> definitions are macros so the kernel and userspace can directly refer to
+> them.
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 418236fef172..fba62124b56a 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -25,6 +25,7 @@
- #include <linux/mutex.h>
- #include <linux/pm_qos.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/suspend.h>
- #include <linux/syscore_ops.h>
- #include <linux/tick.h>
-@@ -602,12 +603,12 @@ static ssize_t store_boost(struct kobject *kobj, struct kobj_attribute *attr,
- 
- 	if (cpufreq_boost_trigger_state(enable)) {
- 		pr_err("%s: Cannot %s BOOST!\n",
--		       __func__, enable ? "enable" : "disable");
-+		       __func__, str_enable_disable(enable));
- 		return -EINVAL;
- 	}
- 
- 	pr_debug("%s: cpufreq BOOST %s\n",
--		 __func__, enable ? "enabled" : "disabled");
-+		 __func__, str_enable_disable(enable));
- 
- 	return count;
- }
-@@ -2812,7 +2813,7 @@ int cpufreq_boost_trigger_state(int state)
- 	write_unlock_irqrestore(&cpufreq_driver_lock, flags);
- 
- 	pr_err("%s: Cannot %s BOOST\n",
--	       __func__, state ? "enable" : "disable");
-+	       __func__, str_enable_disable(state));
- 
- 	return ret;
- }
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index 8de759247771..ae79d909943b 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -18,6 +18,7 @@
- #include <linux/of.h>
- #include <linux/reboot.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/cpu.h>
- #include <linux/hashtable.h>
- #include <trace/events/power.h>
-@@ -281,7 +282,7 @@ static int init_powernv_pstates(void)
- 	pr_info("cpufreq pstate min 0x%x nominal 0x%x max 0x%x\n", pstate_min,
- 		pstate_nominal, pstate_max);
- 	pr_info("Workload Optimized Frequency is %s in the platform\n",
--		(powernv_pstate_info.wof_enabled) ? "enabled" : "disabled");
-+		str_enabled_disabled(powernv_pstate_info.wof_enabled));
- 
- 	pstate_ids = of_get_property(power_mgt, "ibm,pstate-ids", &len_ids);
- 	if (!pstate_ids) {
--- 
-2.43.0
+I guess another motivation is to move towards having elf.h as the
+single point of definition for the note names, so that obscure and
+duplicate logic for determining note names can be removed.
+
+(Could be worth adding a note on this is the patch is respun, but this
+would be overkill otherwise...)
+
+
+> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+> Acked-by: Baoquan He <bhe@redhat.com>
+> ---
+>  include/uapi/linux/elf.h | 86 ++++++++++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 83 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
+> index b44069d29cec..343f5c40d03a 100644
+> --- a/include/uapi/linux/elf.h
+> +++ b/include/uapi/linux/elf.h
+> @@ -368,99 +368,179 @@ typedef struct elf64_shdr {
+>  #define ELF_OSABI ELFOSABI_NONE
+>  #endif
+>  
+> +/* Note definitions: NN_ defines names. NT_ defines types. */
+> +
+>  /*
+>   * Notes used in ET_CORE. Architectures export some of the arch register sets
+>   * using the corresponding note types via the PTRACE_GETREGSET and
+>   * PTRACE_SETREGSET requests.
+> - * The note name for these types is "LINUX", except NT_PRFPREG that is named
+> - * "CORE".
+>   */
+> +#define NN_PRSTATUS	"CORE"
+>  #define NT_PRSTATUS	1
+> +#define NN_PRFPREG	"CORE"
+>  #define NT_PRFPREG	2
+> +#define NN_PRPSINFO	"CORE"
+>  #define NT_PRPSINFO	3
+> +#define NN_TASKSTRUCT	"CORE"
+>  #define NT_TASKSTRUCT	4
+> +#define NN_AUXV		"CORE"
+>  #define NT_AUXV		6
+>  /*
+>   * Note to userspace developers: size of NT_SIGINFO note may increase
+>   * in the future to accomodate more fields, don't assume it is fixed!
+>   */
+> +#define NN_SIGINFO      "CORE"
+>  #define NT_SIGINFO      0x53494749
+> +#define NN_FILE         "CORE"
+>  #define NT_FILE         0x46494c45
+> +#define NN_PRXFPREG     "LINUX"
+>  #define NT_PRXFPREG     0x46e62b7f      /* copied from gdb5.1/include/elf/common.h */
+
+[...]
+
+> +#define NN_LOONGARCH_HW_WATCH	"LINUX"
+>  #define NT_LOONGARCH_HW_WATCH	0xa06   /* LoongArch hardware watchpoint registers */
+>  
+> -/* Note types with note name "GNU" */
+> +/* Note used in other file types. */
+
+For this, it may make sense to be vaguer, e.g.
+
+	/* Other notes */
+
+(We don't dump NT_GNU_PROPERTY_TYPE_0 in coredumps, but I don't think
+it would be nonsensical to do so.)
+
+> +#define NN_GNU_PROPERTY_TYPE_0	"GNU"
+>  #define NT_GNU_PROPERTY_TYPE_0	5
+
+[...]
+
+With or without those changes,
+
+Reviewed-by: Dave Martin <Dave.Martin@arm.com>
 
 
