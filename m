@@ -1,52 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-5230-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5231-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6130BA1081E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 14:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CBCAA1096C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 15:32:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXVpX0GQKz30QX;
-	Wed, 15 Jan 2025 00:48:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXWmd0rW7z2ysX;
+	Wed, 15 Jan 2025 01:32:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736862531;
-	cv=none; b=gZNfKs7Yr2b05Jdls2AZAZQl9OB3BCvO4TUdYG1XEWH3ItCmXTmlxP0+xJu+0kueNjWikCqi3Dx2JCq0rp2n8mx6Uwh4RNEHu5lMZ/aTCfHSA/PuOlz5Y96YOWFcT4y+1FTiHBGXmzQc8xN5kPtcz2zqxnCvh3OYE5rZvMvCkZ/OSSX7U+31BhQiugtyDhzjQg2NXfqm8SG1QZLqUhF/PrVF5YEWwoweSi5gof/uiJCKputb0081itU4cnC3kBmzNehwPjjW8AmSeOKaimx59ZVXoVu/lWKahySPYZKWrLYKhdGgVgSzFy7uuPlW9kCq+WkWHBVkBOUqsF/f4QlT0g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736865137;
+	cv=none; b=P0pYFDC9ozSYMycA8bcNT/+LB4b/PitSaYfgU3O/hekcI+onZwEA20vosCYn52WQMue3pZyeHoxkprMIoji9q1HPbPKp1iz764BPuI5TcBbpM4MZIM62p7RJDWwsWRU6eKfPgx83aDKa5zNEbNFtF25emqYLpXGDqsGndrSNk2ZKEhKo+MfNWT+DSl+fmEslujrAmFk4lwJdG4WVqNsEmvondWOMAZ5kU0v5jBY/zpRkXLyEHhI1UYQJ+UzfNFjOZTFE66qH/5lLOkncnY6q95WMcnwnArYwk4neXzNLKkb8vJjXm9K3hsJeoHMjJBIuxkdWGGr5nJNDHmosIR5o+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736862531; c=relaxed/relaxed;
-	bh=4hJY0OkOJYlflfehaptiNIRfa4yPOLTwyVlOIEXXHiw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MJOtw/kg5a5fWcGEjrsF76T/PlRfU1d/j5XF7wpp7q55py/LVM+IDOMVJQP3Ku9GwBMDuudDwsZ7nNrx6XXWJoMlS4I1y5mpMojvywtcdRM4JE3dNBWIj9Yl+sw6AO3zNB9R1/tjDqBcWGFDPjMcm4QznjBfj0duVWtQzTy9aurU4XikJrXPplyw/xliAQNoHzTvuf+t45UTVkZu3OeXZG7g/24tRhSYpODQJeyQQC8IuRhWL4PeT+mniLiIquZ4IpcTC3S7W3G04fPzHe+kXyY5vNLfn3TLx98eYAb37PaI5xYuThlG/Imjdzk41ZR1NMSi2W+QR4wbIcA+cP1izQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXVpV4mpxz30Pn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 00:48:49 +1100 (AEDT)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 2113A72C8CC;
-	Tue, 14 Jan 2025 16:48:45 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id 0DD4B7CCB3A; Tue, 14 Jan 2025 15:48:44 +0200 (IST)
-Date: Tue, 14 Jan 2025 15:48:44 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Alexey Gladkov <legion@kernel.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	strace-devel@lists.strace.io,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
- syscall_set_return_value()
-Message-ID: <20250114134844.GA10630@strace.io>
-References: <20250113170925.GA392@strace.io>
- <20250113171054.GA589@strace.io>
- <Z4Zf4MppsrpoPiC1@example.org>
+	t=1736865137; c=relaxed/relaxed;
+	bh=WuwNzSCv4EUuRn8dRTh7pIOxZia6gwwm11Bgq1t1CAk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m6trtvj9BM+Il+mNqiKsPxNdv5TATj/mTK+pzyanrhKeR900fqxE/dzVmiFWGlg2Hbk2g51bdHIjd43I0lpNzMOOo6JM3PsGfAuFmfJlvHmHFkBrXNxg6AiqdGglL2q3Mffgw7UeDnpum4Y+J21kv92G0o4q2n3VuOnGAMWhxRbIzA7zltuNrjMl6HaePJJ1RQ8Ymd1kQZpHBIUdQUC6eKOgVayskTTIKl8JzYvJi6f6N2hlYTEbsZRtG1D61eocju8l+iuluY6Hmw2jvRl3Vyj8cVwzgAMV2vTxHRudCVt11WgJPyapeIQvpTE1tsEPQFb4uhQGVUiFPqDtCltN8Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AjLS4P50; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AjLS4P50;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXWmc0VdCz2yNH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 01:32:15 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50E3s7DV005799;
+	Tue, 14 Jan 2025 14:32:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=WuwNzSCv4EUuRn8dRTh7pIOxZia6gwwm11Bgq1t1C
+	Ak=; b=AjLS4P501IufRuKc92kDYkBUM694yB5w/MZlTC7+3X9c7BC+BgMMfBs/N
+	vitm9AUJcpmRlfYQtxRG04HyOkPUcQy9vxfJ6aUQyE2bqjrNYYISglkfK1Q4QgmH
+	qIBTC+QXuWShepkfFmZkHBaCgPpzJ6fV1WGfTC0CEJLWRWh9q/g3f/530INX32vb
+	PHjeBfAklyhJ5F9zeqTWnbeWMm5c+9PtdGd9ER+L5wn/ujIM9C4j/GvObFtHX5pf
+	jJO7f7rodkOa1Y5yhdSTjILTf7G0FXwSbF+z55S0yRI+yVoN+0JhpLEORdFf7Vdg
+	HWpZYoqFQ57sqNu9qhMkaEcnkJ7zQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445gdjjaa2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 14:32:02 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50EETRnd029597;
+	Tue, 14 Jan 2025 14:32:02 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 445gdjja9v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 14:32:02 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50EEJctk017014;
+	Tue, 14 Jan 2025 14:32:01 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4444fk3fc4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 14 Jan 2025 14:32:00 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50EEVxHk29754032
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 14 Jan 2025 14:31:59 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id EDA5C20043;
+	Tue, 14 Jan 2025 14:31:58 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA0D420040;
+	Tue, 14 Jan 2025 14:31:52 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.0.219])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 14 Jan 2025 14:31:52 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: jikos@kernel.org, mbenes@suse.cz, pmladek@suse.com,
+        joe.lawrence@redhat.com, shuah@kernel.org
+Cc: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        naveen@kernel.org, live-patching@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [PATCH] selftests: livepatch: handle PRINTK_CALLER in check_result()
+Date: Tue, 14 Jan 2025 20:01:44 +0530
+Message-ID: <20250114143144.164250-1-maddy@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,70 +92,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z4Zf4MppsrpoPiC1@example.org>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: qnPN_SzONfNK6j-06uxQuxcWq8HlKsP6
+X-Proofpoint-ORIG-GUID: gCspiTx0ec9vkIAjl20tG56LdC5i68fC
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.62.30
+ definitions=2024-10-15_01,2024-10-11_01,2024-09-30_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=635
+ suspectscore=0 malwarescore=0 bulkscore=0 clxscore=1011 phishscore=0
+ priorityscore=1501 adultscore=0 impostorscore=0 spamscore=0 mlxscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501140115
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Jan 14, 2025 at 02:00:16PM +0100, Alexey Gladkov wrote:
-> On Mon, Jan 13, 2025 at 07:10:54PM +0200, Dmitry V. Levin wrote:
-> > Bring syscall_set_return_value() in sync with syscall_get_error(),
-> > and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
-> > 
-> > This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
-> > syscall_set_return_value()").
-> > 
-> > Signed-off-by: Dmitry V. Levin <ldv@strace.io>
-> > ---
-> >  arch/powerpc/include/asm/syscall.h | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-> > index 3dd36c5e334a..422d7735ace6 100644
-> > --- a/arch/powerpc/include/asm/syscall.h
-> > +++ b/arch/powerpc/include/asm/syscall.h
-> > @@ -82,7 +82,11 @@ static inline void syscall_set_return_value(struct task_struct *task,
-> >  		 */
-> >  		if (error) {
-> >  			regs->ccr |= 0x10000000L;
-> > -			regs->gpr[3] = error;
-> > +			/*
-> > +			 * In case of an error regs->gpr[3] contains
-> > +			 * a positive ERRORCODE.
-> > +			 */
-> > +			regs->gpr[3] = -error;
-> 
-> After this change the syscall_get_error() will return positive value if
-> the system call failed. Since syscall_get_error() still believes
-> regs->gpr[3] is still positive in case !trap_is_scv().
-> 
-> Or am I missing something?
+Some arch configs (like ppc64) enable CONFIG_PRINTK_CALLER, which
+adds the caller id as part of the dmesg. Due to this, even though
+the expected vs observed are same, end testcase results are failed.
 
-syscall_get_error() does the following in case of !trap_is_scv():
+ -% insmod test_modules/test_klp_livepatch.ko
+ -livepatch: enabling patch 'test_klp_livepatch'
+ -livepatch: 'test_klp_livepatch': initializing patching transition
+ -livepatch: 'test_klp_livepatch': starting patching transition
+ -livepatch: 'test_klp_livepatch': completing patching transition
+ -livepatch: 'test_klp_livepatch': patching complete
+ -% echo 0 > /sys/kernel/livepatch/test_klp_livepatch/enabled
+ -livepatch: 'test_klp_livepatch': initializing unpatching transition
+ -livepatch: 'test_klp_livepatch': starting unpatching transition
+ -livepatch: 'test_klp_livepatch': completing unpatching transition
+ -livepatch: 'test_klp_livepatch': unpatching complete
+ -% rmmod test_klp_livepatch
+ +[   T3659] % insmod test_modules/test_klp_livepatch.ko
+ +[   T3682] livepatch: enabling patch 'test_klp_livepatch'
+ +[   T3682] livepatch: 'test_klp_livepatch': initializing patching transition
+ +[   T3682] livepatch: 'test_klp_livepatch': starting patching transition
+ +[    T826] livepatch: 'test_klp_livepatch': completing patching transition
+ +[    T826] livepatch: 'test_klp_livepatch': patching complete
+ +[   T3659] % echo 0 > /sys/kernel/livepatch/test_klp_livepatch/enabled
+ +[   T3659] livepatch: 'test_klp_livepatch': initializing unpatching transition
+ +[   T3659] livepatch: 'test_klp_livepatch': starting unpatching transition
+ +[    T789] livepatch: 'test_klp_livepatch': completing unpatching transition
+ +[    T789] livepatch: 'test_klp_livepatch': unpatching complete
+ +[   T3659] % rmmod test_klp_livepatch
 
-                /*
-                 * If the system call failed,
-                 * regs->gpr[3] contains a positive ERRORCODE.
-                 */
-                return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
+  ERROR: livepatch kselftest(s) failed
+ not ok 1 selftests: livepatch: test-livepatch.sh # exit=1
 
-That is, in !trap_is_scv() case it assumes that regs->gpr[3] is positive
-and is going to return a negative value (-ERRORCODE).
+Currently the check_result() handles the "[time]" removal from
+the dmesg. Enhance the check to handle removal of "[Tid]" also.
 
-> It looks like the selftest you mentioned in the commit message doesn't
-> check the !trap_is_scv() branch.
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+---
+ tools/testing/selftests/livepatch/functions.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-The selftest is architecture-agnostic, it just executes syscalls and
-checks whether the data returned by PTRACE_GET_SYSCALL_INFO meets
-expectations.  Do you mean that syscall() is not good enough for syscall
-invocation from coverage perspective on powerpc?
-
-See also commit d72500f99284 ("powerpc/64s/syscall: Fix ptrace syscall
-info with scv syscalls").
-
-
+diff --git a/tools/testing/selftests/livepatch/functions.sh b/tools/testing/selftests/livepatch/functions.sh
+index e5d06fb40233..a1730c1864a4 100644
+--- a/tools/testing/selftests/livepatch/functions.sh
++++ b/tools/testing/selftests/livepatch/functions.sh
+@@ -306,7 +306,8 @@ function check_result {
+ 	result=$(dmesg | awk -v last_dmesg="$LAST_DMESG" 'p; $0 == last_dmesg { p=1 }' | \
+ 		 grep -e 'livepatch:' -e 'test_klp' | \
+ 		 grep -v '\(tainting\|taints\) kernel' | \
+-		 sed 's/^\[[ 0-9.]*\] //')
++		 sed 's/^\[[ 0-9.]*\] //' | \
++		 sed 's/^\[[ ]*T[0-9]*\] //')
+ 
+ 	if [[ "$expect" == "$result" ]] ; then
+ 		echo "ok"
 -- 
-ldv
+2.47.0
+
 
