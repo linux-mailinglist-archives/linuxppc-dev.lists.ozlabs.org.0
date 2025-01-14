@@ -1,96 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-5236-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5237-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F0DFA10A36
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 16:03:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 261B2A10BFE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 17:16:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXXSs0LnNz30Vw;
-	Wed, 15 Jan 2025 02:03:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXZ4X3XMzz30Vf;
+	Wed, 15 Jan 2025 03:16:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736867020;
-	cv=none; b=VrFT4f6t4WnM+Hxiveif9qey0eIPzTCvYMZVxYn/tAJG8zbkMyqw+Oe/C0nh7lG6WgCGdNtWvug9g4j4ru/fGQDOGUIjcsM4XXp86cTHcmSrvzFb71YEvx9Yn5FXXFfiPKTxsRZ5QUX2vWZnzgYx02tve0VcKA3JXhmWzsejzx96ftxRVgmMkxu5Pnq9mPozOnK1d73moNrXb5EFXnDDXAd26TkRN5LTyfBHfj5AjJwG079e12yoz+Fz0b38wotQi407qQJx9tcWIfVRKL3wNozcI/hHc/wXUjGalv/NVXz1fdM4Ir7xQ+4AHRg+ATfZJP7Zc89yB7bH8uH2NT0loA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736871372;
+	cv=none; b=g3995F3PgJtv05qKiwU+Ciuy27V84QFchw/sfVlRdUyliByXNysFFel5fndOk35h/H3JntUj7Wwg1S7MNzzwo4cqtkqZzLaRHR6Gik3hN+JMlB4ddUpH6roHeIwh6ZxPrKNEa8bJeCEOijEbCcIRw4BPbtZTOKXHzv6xqiOv5p4aEZ8XNxYXYI9+DqPoDNMhssLou0dfjOopSDpT+xks/75u0R+dcfp+V2jnBCIBz0F28/01gD5gU8KlFiY4PWrsVJlVx4Wh4BpVXruxXHoyx21tdI9XH16kRlY4LaLxxwILXjJD5DOw0aLRodt1U+dUacU8dJuqFK2yRLX1N+NcXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736867020; c=relaxed/relaxed;
-	bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
+	t=1736871372; c=relaxed/relaxed;
+	bh=BKZGegbns0oO2BiwJ3+f97YYTvSOiPn2dNKausDj72c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZC3SUoUNbL4QvVo9SokHiqGoj7tFoo34h/4Qo+1tOFrx4j77jEKe3qtikOPtp787qYkOPrbG3g2n0H4gYkfPFImSvAxDITVuVgOTY8l3+wvfKADX+SLMtNv+XhPiH8WpUYx2fHbbF5Do/0vfbqjv+cYFKZrCYxDc53nWgKCviS/33ChTr4TRsY77syo3CB14Sxp1Yqn+6QG6lxy6fMN2tzLhTMHS4RT7+KkspC1BPKvvuBtr0CDt4II1BbPT35FY6s0E+QajzJvkfIrs9f48JrHYeTSGRLjhAtyr748NAALOvXvDwS0ENPi5VnLLtGAr7gl/QJsb3X6mzhycy+agHg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=UyiSlBk5fRbcmgphthnA5/vOFLSn0sAu6roWDcFRw8gz1PSjj2pmdJ+fXqkP6xitrNG0uRERQ46P3ibHZdVJYR8a2lggEqhjgDyKhjgDbpJqiSrl0ElMv/l7ldeFbtB//aZ9cHWUxesmEsTvpaeYPuu0/aT6/T7/7nxJW4tf3pwY5wM5MmkrHJWenPPdo4crCTkE59NUw5Zqa0HqZcL/faAqsBegimDprCda0Vk4WnaeTqbjRKgz8BitQnF2O7t49f5kpjwV6FLnIhOGZEXL+zZNGi8bVMmI/r12AnncYuoeXPCWFLOKT+srR8SfdRK1mNO2MwtyHjnMiEXLShEqSQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KWdlXYp9; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KWdlXYp9; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KWdlXYp9;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=KWdlXYp9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXXSq5gxqz30Vf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 02:03:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXZ4R3m35z30TQ
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 03:16:05 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736867016;
+	s=mimecast20190719; t=1736871362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
-	b=Rwk0LiTHoLJEMeQtvsYQdRWmm5D7wkqV5NDamE/W8s3t7V3H4jrCrn9VIYGdm2sCB4GOz/
-	UnQSfNXlHA9oCtUXyZAVCWsnCvv3gpRI1m2zI/bXf/oZsT4hjQDnUearC8uM5dWSSQENeu
-	vAHR6aQd6qHwbynWEvQqndVOJuFOLFk=
+	bh=BKZGegbns0oO2BiwJ3+f97YYTvSOiPn2dNKausDj72c=;
+	b=KWdlXYp96kRAOGa4AzA7Dftvh/1ZxxBQ9UGtAZDsskq/aqIYyRC3q/Mm+PjvHMyTGpwn/E
+	ot5C57xAj3FRqJ1G0KY0LUStToLs2qPUIWcFYAsK/UThXEqN9asiEnle8bK4D3Qbg9oohr
+	QTq9C9CTma0QGVVEy+/abdYUKAoUrkU=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736867016;
+	s=mimecast20190719; t=1736871362;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
-	b=Rwk0LiTHoLJEMeQtvsYQdRWmm5D7wkqV5NDamE/W8s3t7V3H4jrCrn9VIYGdm2sCB4GOz/
-	UnQSfNXlHA9oCtUXyZAVCWsnCvv3gpRI1m2zI/bXf/oZsT4hjQDnUearC8uM5dWSSQENeu
-	vAHR6aQd6qHwbynWEvQqndVOJuFOLFk=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=BKZGegbns0oO2BiwJ3+f97YYTvSOiPn2dNKausDj72c=;
+	b=KWdlXYp96kRAOGa4AzA7Dftvh/1ZxxBQ9UGtAZDsskq/aqIYyRC3q/Mm+PjvHMyTGpwn/E
+	ot5C57xAj3FRqJ1G0KY0LUStToLs2qPUIWcFYAsK/UThXEqN9asiEnle8bK4D3Qbg9oohr
+	QTq9C9CTma0QGVVEy+/abdYUKAoUrkU=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-513-GRHDrSQINqOOhaChcJjwyQ-1; Tue, 14 Jan 2025 10:03:35 -0500
-X-MC-Unique: GRHDrSQINqOOhaChcJjwyQ-1
-X-Mimecast-MFC-AGG-ID: GRHDrSQINqOOhaChcJjwyQ
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385d7611ad3so3163769f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 07:03:34 -0800 (PST)
+ us-mta-546-v_RBTiHQPu2gRAQQ2YXVcg-1; Tue, 14 Jan 2025 11:16:00 -0500
+X-MC-Unique: v_RBTiHQPu2gRAQQ2YXVcg-1
+X-Mimecast-MFC-AGG-ID: v_RBTiHQPu2gRAQQ2YXVcg
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4362f893bfaso31087775e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 08:16:00 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736867014; x=1737471814;
+        d=1e100.net; s=20230601; t=1736871359; x=1737476159;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
-        b=ivX2Ku/J9wvD9cTsUzI8NdA2A6rGBs/nnzKCU4OLxiIHH9YLT+I9ZNc9vRuoY2r3Qo
-         3B7a23sEg0iXUQhIw2eOHWzXPwFic2CSIlkEoCmoyV/AW7bBWodVn+aflBrVDGjZZDFg
-         I+M99Eop1SWv2eAd+xEQ6HRL7IlRTDbR3X3fW3NNxsQB67kjOrqvE/uGmZ9zU47danm+
-         MvgNQDZcB4NxrS/g6yvlYyMkT/ucnB+r9/ExJ/IoFQB4AX4RedpO4BeDrreWtT69emjZ
-         M+Jc0pFNjMaX4OIuJ5HhwXBP79BVfLDGZyKcQXMc3MyG1Z4qMGhl3M173PjIMYANJN6i
-         Pgng==
-X-Forwarded-Encrypted: i=1; AJvYcCVxcWAdmNyLq31WVAPeo0ph/UI8oW3d6GvNbnfplCTwQlKXOd+nk7qzA+mMSI3EusiKcE8gy/OeFAuwUT8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxH9/STKf0aWfkJ8k9bveMsQvrVs8qv7hf728FtM2lbT7C7hCBN
-	3DL5E+L5D+YwGLU/jVfGCTW8KwgVfyiyapUt7q33j1+P8B92KHnJOxj3PyCRVP61JAyB95joPLH
-	CXfd9U3K+5eIPm8zVdruVAx9LVJCPVYSusSZeAkRKtPsKRlr9p3pnymvdvtj6HBc=
-X-Gm-Gg: ASbGncsoyX2pfwShtK4UwoaEDcp8aMfKmru1gvumHbty8nIs4axuqh7QZ6J0pVsGI8z
-	lXRXXgCTdpH0r8h2blBXmJ0uEdmBXZ8vLGTAKVSH/8dM0OfrKkMrmeTKSbR6f3sQXLvpumRlZA+
-	E78T8pPHmF9UZnDXJ+O3jqdLEtqizH+xwB5qMcp2w5YrsU/32/rWKZTOyviBdzD59XYTt2XOSvQ
-	X7A0aboqGY/xjbKJ0yhT6dkESAMJweWbkAvRoWqaTYn0M0T64b0fjP/qWhKw70RJ0L902SRps+x
-	pJdl3KgqN7MRAUQbGzIMuSR+NY7h55pVZ6y2rAsvo4WV0X3AYB/LLrMZFX3XYnU/6R1p+13OcyX
-	qEhCY1UaQ
-X-Received: by 2002:adf:c08d:0:b0:38a:87cc:fb42 with SMTP id ffacd0b85a97d-38a87ccfc9cmr18854414f8f.21.1736867012189;
-        Tue, 14 Jan 2025 07:03:32 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHM3HjhBhsAPB1JfMTMphs8VamtwcWCRs8AeFhEVZ770be4gDgdSn1pqkoBasZXrNwqQMUsQg==
-X-Received: by 2002:adf:c08d:0:b0:38a:87cc:fb42 with SMTP id ffacd0b85a97d-38a87ccfc9cmr18854332f8f.21.1736867011446;
-        Tue, 14 Jan 2025 07:03:31 -0800 (PST)
+        bh=BKZGegbns0oO2BiwJ3+f97YYTvSOiPn2dNKausDj72c=;
+        b=D/2AD3i/YA1R4eWmnLJeO/FAhaoXxcZmiY3NNhrGs5euXKFrp+JcjGCAgT3geiohfm
+         Up64wEn0Gr3f2OKc1BEiH2HTceBc8X1ZKqBzNqQsvaVxeK//wqxoNcjYYgttqVXziXUr
+         E6ZwdfkVWIynsqNqS6aN5DzLnwg5dVM2N6I+CqnJLpuW+fwTr9E9q2pu8qXGf6Wt+QTU
+         bNfRU+oPJOLHvGHX0Uqtp7KwLILU7mQbLQxYZ+GsatpgtWWj4ruZcqDqGDgA+DjMSknt
+         p49fNKnwvXuSEcad348WwineToclAuH603bnNGoYwR6PV8y+w4jubZfTkdbejHPJu+Hn
+         an5A==
+X-Forwarded-Encrypted: i=1; AJvYcCXdrNO5w/+RLELgQzGArHDg8STinPwfpJ/j/w4KSUAsKhdH/ANIjB4axfrfcg00HuotN3Ne6hplIbHj3Fc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxK65BVPeBF0BOrI7LFxFo1GAaF6TXqRnWutkcs+WImUUr5evfU
+	YNyr5UHx4R1GQxPXX6Jt5CcebIuly9PP3E1ThW97lDQfxTyOCdtMCamtes+07Zdxx6WquSHFo0H
+	zroOWe0QwvG1pXFJQk8bgY6CdguyssLZu+3tO67L4f/Kg0YPhkHbnVpNrW9Ka24Q=
+X-Gm-Gg: ASbGnctN024k6F5WLqx8XxZ3NJyW6zoLJNAYAWgM+s0Mp4tbqUnuuej5WR/3TXRoiMF
+	j4dj3GsIu2znOMMFRjzU7rCSRWZpMvlIVG8020cqO/zPOXfiGEjTbIw4fYC1Q3D28lByTc+eMxA
+	ohmCDBDRcyce8dOTrc0ETw7pMKJCn6h9iHMU4Kd4oyEiFzzM5M5KFcwlpb09kwrcyihinYyuxkN
+	KlKTYCEUmlMwm0PNyv+aT5dLbiYSEa5WI/aiUWfpU5jv1q3zWzRocy299znLUCDU2EnB/F8U6D+
+	0tuxjT1j6460o2MM9In5tyqkyMJBedEq75PX0HFNPygHQWJT5uoZjKZmgS2zgX3g+zkDVmCnBQM
+	OHp5MKNq9
+X-Received: by 2002:a05:600c:5355:b0:436:ed33:1526 with SMTP id 5b1f17b1804b1-436ed33162amr182756975e9.9.1736871359379;
+        Tue, 14 Jan 2025 08:15:59 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IFQbYca8iq/sXXNIyR3sSpTPcooFVjpwvneyEuVZssY7PhZf37hAnmkM55yUX0wAVqiodKD2A==
+X-Received: by 2002:a05:600c:5355:b0:436:ed33:1526 with SMTP id 5b1f17b1804b1-436ed33162amr182756535e9.9.1736871359013;
+        Tue, 14 Jan 2025 08:15:59 -0800 (PST)
 Received: from ?IPV6:2003:cb:c738:3100:8133:26cf:7877:94aa? (p200300cbc7383100813326cf787794aa.dip0.t-ipconnect.de. [2003:cb:c738:3100:8133:26cf:7877:94aa])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fc51sm180089645e9.7.2025.01.14.07.03.29
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9e6249csm178402255e9.38.2025.01.14.08.15.54
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 07:03:31 -0800 (PST)
-Message-ID: <c3df67b5-47f5-4a2c-ba50-cc0de2b937f5@redhat.com>
-Date: Tue, 14 Jan 2025 16:03:29 +0100
+        Tue, 14 Jan 2025 08:15:57 -0800 (PST)
+Message-ID: <17d32dc8-39c1-4aa4-ab8c-873c78097fde@redhat.com>
+Date: Tue, 14 Jan 2025 17:15:54 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,8 +104,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 12/26] mm/memory: Enhance insert_page_into_pte_locked()
- to create writable mappings
+Subject: Re: [PATCH v6 13/26] mm/memory: Add vmf_insert_page_mkwrite()
 To: Alistair Popple <apopple@nvidia.com>, akpm@linux-foundation.org,
  dan.j.williams@intel.com, linux-mm@kvack.org
 Cc: alison.schofield@intel.com, lina@asahilina.net, zhang.lyra@gmail.com,
@@ -122,7 +121,7 @@ Cc: alison.schofield@intel.com, lina@asahilina.net, zhang.lyra@gmail.com,
  hch@lst.de, david@fromorbit.com, chenhuacai@kernel.org, kernel@xen0n.name,
  loongarch@lists.linux.dev
 References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
- <68974d46091eea460f404f8ced3c6de5964c9ec4.1736488799.git-series.apopple@nvidia.com>
+ <e75232267bb9b5411b67df267e16aa27597eba33.1736488799.git-series.apopple@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -169,101 +168,145 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <68974d46091eea460f404f8ced3c6de5964c9ec4.1736488799.git-series.apopple@nvidia.com>
+In-Reply-To: <e75232267bb9b5411b67df267e16aa27597eba33.1736488799.git-series.apopple@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: htjQxSk6rMu8iiUBqKUJpabx_8D6_ujgfqcAON-Jurk_1736867014
+X-Mimecast-MFC-PROC-ID: aYsSP1SbjBtjl2aDZPa3qbeU82aKcYThYuCPXvGR3Hg_1736871359
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 On 10.01.25 07:00, Alistair Popple wrote:
-> In preparation for using insert_page() for DAX, enhance
-> insert_page_into_pte_locked() to handle establishing writable
-> mappings.  Recall that DAX returns VM_FAULT_NOPAGE after installing a
-> PTE which bypasses the typical set_pte_range() in finish_fault.
+> Currently to map a DAX page the DAX driver calls vmf_insert_pfn. This
+> creates a special devmap PTE entry for the pfn but does not take a
+> reference on the underlying struct page for the mapping. This is
+> because DAX page refcounts are treated specially, as indicated by the
+> presence of a devmap entry.
+> 
+> To allow DAX page refcounts to be managed the same as normal page
+> refcounts introduce vmf_insert_page_mkwrite(). This will take a
+> reference on the underlying page much the same as vmf_insert_page,
+> except it also permits upgrading an existing mapping to be writable if
+> requested/possible.
 > 
 > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> Suggested-by: Dan Williams <dan.j.williams@intel.com>
 > 
 > ---
 > 
-> Changes for v5:
->   - Minor comment/formatting fixes suggested by David Hildenbrand
+> Updates from v2:
 > 
-> Changes since v2:
+>   - Rename function to make not DAX specific
 > 
->   - New patch split out from "mm/memory: Add dax_insert_pfn"
+>   - Split the insert_page_into_pte_locked() change into a separate
+>     patch.
+> 
+> Updates from v1:
+> 
+>   - Re-arrange code in insert_page_into_pte_locked() based on comments
+>     from Jan Kara.
+> 
+>   - Call mkdrity/mkyoung for the mkwrite case, also suggested by Jan.
 > ---
->   mm/memory.c | 37 +++++++++++++++++++++++++++++--------
->   1 file changed, 29 insertions(+), 8 deletions(-)
+>   include/linux/mm.h |  2 ++
+>   mm/memory.c        | 36 ++++++++++++++++++++++++++++++++++++
+>   2 files changed, 38 insertions(+)
 > 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index e790298..f267b06 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -3620,6 +3620,8 @@ int vm_map_pages(struct vm_area_struct *vma, struct page **pages,
+>   				unsigned long num);
+>   int vm_map_pages_zero(struct vm_area_struct *vma, struct page **pages,
+>   				unsigned long num);
+> +vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+> +			bool write);
+>   vm_fault_t vmf_insert_pfn(struct vm_area_struct *vma, unsigned long addr,
+>   			unsigned long pfn);
+>   vm_fault_t vmf_insert_pfn_prot(struct vm_area_struct *vma, unsigned long addr,
 > diff --git a/mm/memory.c b/mm/memory.c
-> index 06bb29e..8531acb 100644
+> index 8531acb..c60b819 100644
 > --- a/mm/memory.c
 > +++ b/mm/memory.c
-> @@ -2126,19 +2126,40 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
+> @@ -2624,6 +2624,42 @@ static vm_fault_t __vm_insert_mixed(struct vm_area_struct *vma,
+>   	return VM_FAULT_NOPAGE;
 >   }
 >   
->   static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
-> -			unsigned long addr, struct page *page, pgprot_t prot)
-> +				unsigned long addr, struct page *page,
-> +				pgprot_t prot, bool mkwrite)
->   {
->   	struct folio *folio = page_folio(page);
-> +	pte_t entry = ptep_get(pte);
->   	pte_t pteval;
- >
-
-Just drop "entry" and reuse "pteval"; even saves you from one bug below :)
-
-pte_t pteval = ptep_get(pte);
-
-> -	if (!pte_none(ptep_get(pte)))
-> -		return -EBUSY;
-> +	if (!pte_none(entry)) {
-> +		if (!mkwrite)
-> +			return -EBUSY;
+> +vm_fault_t vmf_insert_page_mkwrite(struct vm_fault *vmf, struct page *page,
+> +			bool write)
+> +{
+> +	struct vm_area_struct *vma = vmf->vma;
+> +	pgprot_t pgprot = vma->vm_page_prot;
+> +	unsigned long pfn = page_to_pfn(page);
+> +	unsigned long addr = vmf->address;
+> +	int err;
 > +
-> +		/* see insert_pfn(). */
-> +		if (pte_pfn(entry) != page_to_pfn(page)) {
-> +			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
-> +			return -EFAULT;
-> +		}
-> +		entry = maybe_mkwrite(entry, vma);
-> +		entry = pte_mkyoung(entry);
-> +		if (ptep_set_access_flags(vma, addr, pte, entry, 1))
-> +			update_mmu_cache(vma, addr, pte);
-> +		return 0;
-> +	}
+> +	if (addr < vma->vm_start || addr >= vma->vm_end)
+> +		return VM_FAULT_SIGBUS;
 > +
->   	/* Ok, finally just insert the thing.. */
->   	pteval = mk_pte(page, prot);
->   	if (unlikely(is_zero_folio(folio))) {
->   		pteval = pte_mkspecial(pteval);
->   	} else {
->   		folio_get(folio);
-> +		entry = mk_pte(page, prot);
+> +	track_pfn_insert(vma, &pgprot, pfn_to_pfn_t(pfn));
 
-we already do "pteval = mk_pte(page, prot);" above?
+I think I raised this before: why is this track_pfn_insert() in here? It 
+only ever does something to VM_PFNMAP mappings, and that cannot possibly 
+be the case here (nothing in VM_PFNMAP is refcounted, ever)?
 
-And I think your change here does not do what you want, because you
-modify the new "entry" but we do
+> +
+> +	if (!pfn_modify_allowed(pfn, pgprot))
+> +		return VM_FAULT_SIGBUS;
 
-	set_pte_at(vma->vm_mm, addr, pte, pteval);
+Why is that required? Why are we messing so much with PFNs? :)
 
-below ...
+Note that x86 does in there
 
-> +		if (mkwrite) {
-> +			entry = pte_mkyoung(entry);
-> +			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
-> +		}
+	/* If it's real memory always allow */
+	if (pfn_valid(pfn))
+		return true;
 
-So again, better just reuse pteval :)
+See below, when would we ever have a "struct page *" but !pfn_valid() ?
+
+
+> +
+> +	/*
+> +	 * We refcount the page normally so make sure pfn_valid is true.
+> +	 */
+> +	if (!pfn_valid(pfn))
+> +		return VM_FAULT_SIGBUS;
+
+Somebody gave us a "struct page", how could the pfn ever by invalid (not 
+have a struct page)?
+
+I think all of the above regarding PFNs should be dropped -- unless I am 
+missing something important.
+
+> +
+> +	if (WARN_ON(is_zero_pfn(pfn) && write))
+> +		return VM_FAULT_SIGBUS;
+
+is_zero_page() if you already have the "page". But note that in 
+validate_page_before_insert() we do have a check that allows for 
+conditional insertion of the shared zeropage.
+
+So maybe this hunk is also not required.
+
+> +
+> +	err = insert_page(vma, addr, page, pgprot, write);
+> +	if (err == -ENOMEM)
+> +		return VM_FAULT_OOM;
+> +	if (err < 0 && err != -EBUSY)
+> +		return VM_FAULT_SIGBUS;
+> +
+> +	return VM_FAULT_NOPAGE;
+> +}
+> +EXPORT_SYMBOL_GPL(vmf_insert_page_mkwrite);
+
+
+
+
 
 -- 
 Cheers,
