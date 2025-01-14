@@ -1,77 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-5251-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5252-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ABFA10D1F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 18:10:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 272D0A10D5D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 18:18:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbGk4PhMz3bXy;
-	Wed, 15 Jan 2025 04:10:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbRz4Bjjz2yl1;
+	Wed, 15 Jan 2025 04:18:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736874606;
-	cv=none; b=eRuevypyK+jEZrxr+MmbIL132XaXkpDyo55L8L8lLRaXD+vXo1DdjfxSAtpYisnIMDNAne58jrXiBBsfCsHFM33xBoUzkwH4xBv7kzdJ2i0R4UUdO9t4ZYQorOQI/oLODwj795K9apUnE5ZlXH76diGb0MN9aXaWRvgU5orbqafPxWEwCJAaT49erH6ChmcYE8Co7F+MODp6UF1/c2W8SHmYu/0y6buNeICvGiEyjfc/1v8DTZHn4f5Jbh8Iuv8Cp/W6r40ZKKDAdJF+zB9ICTTJbSHCtOt1R7L1AlwNGZ97UPaXg0ZwXP6UpUE4R+OHdMGu2jaGWPP9VJ6yRqhXQA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736875087;
+	cv=none; b=ScjEpPkD9b2uzLEF+T35k02zMbQ7acJfk1z9SWPzqI4v26fLscOgNaw65ctp8/sV1KrXX8tuCbKS8rP1RGosYGQs79IgOJQ1jeSFCpTLWovEzB03/EXOr+KQn1wtCBloi0ZS0ZJD6slAhCU+xtHKz4cj4x9paIs3O+K2ID67If8Sh0IdDFra51IEgekHzbT1ks7qD3/BNMhEqONeXkSi6dAgVYkI0MEeXtGhaTUjmGalt6qIRKehB0LhKrD/3YDqz1srSX5aOCn63MHE/ijI/kJxIASevJUKeBF9+f8L3hCvEMJ4uECf+Ju1D24IWBqH+WKg5a3IrDcIy8ciCk7dqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736874606; c=relaxed/relaxed;
-	bh=B2LTTo0VlvzGKS9yRcACXsB6+uZFKbRTksAp1fF3ksE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=itCcmyIDst1bxYTRO40a/emAKHjaFp2sMYcAjMPviLczt2GLmAo1uokpi5tBImboHiUQvIr18oSn00fgsT8GILOTzHhxA+Ty5rWqlEm7A5dLHAD0qGf5Vu2/PezVPaLRKWLcq0KNA3TzZxrSC0R6GNBKAJOhhEUMo1/A7RfjMFK/7YLQqXGObu5re3C2gDBn4Kuu/R41LHFbOYGH7KY4KpJI56yv66bqtz1agUCPFSzgytoBkfnd1xyCZOaNB6XrY48g7ebnTHC2kx1MPc8TfWpTodh4cj5JFqv6Q7hvythbA3ZMpi0R4kPWGtyd7ZaMKS3DHdYQHZEg0WXg7cj1hg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=INt5KMse; dkim-atps=neutral; spf=none (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=INt5KMse;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXbGj1mQgz3bY4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 04:10:04 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736874606; x=1768410606;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=YN6jBfVsCwubCRxSCKu0MOqOD9GhIkzGuukStgxjENU=;
-  b=INt5KMseGY7CMZv9XrzZu9qM5GiLZxG28PYQ3DePGzd4MOT/usIJOtJL
-   TPYsSG1WRXY0hTXGI0gEchZRBzGyPVAaJFE9Ni7khH3UfbkXEUwVm6gpT
-   LFnN+l/h7LIEtmWANArMMVgJoQUHPUT0MzzJaqWPhML5yTqSYBxkyfQXt
-   16BKoV+Kk8hxqOYJsl9k16mkq1x9hEibYNxrT9DOuLnKmuiTZ1B4WdKfV
-   NGhaurHmjwOYo8Gl7s70uTCHyOBySZnV/eQbnQeHEvRIgPx9+HOW/7p42
-   4/rpdvX3ccJpIHmfTS2PfnX6tfq7+0pDuCfr1mdbH8SJEH+OeAvD+GutP
-   w==;
-X-CSE-ConnectionGUID: t38GNBWWSOStkdApl59KTg==
-X-CSE-MsgGUID: NTW9XD/WRlOg3nrCgQD1TA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="37410143"
-X-IronPort-AV: E=Sophos;i="6.12,314,1728975600"; 
-   d="scan'208";a="37410143"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:10:03 -0800
-X-CSE-ConnectionGUID: F71/uFm0R/+Gt9SGaboJ1w==
-X-CSE-MsgGUID: 6ESYGjbCRHaZs4B472J1ww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104724521"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.244.54])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 09:09:57 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-To: Bjorn Helgaas <bhelgaas@google.com>,
-	linux-pci@vger.kernel.org,
-	Yazen Ghannam <yazen.ghannam@amd.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH v9 8/8] PCI: Create helper to print TLP Header and Prefix Log
-Date: Tue, 14 Jan 2025 19:08:40 +0200
-Message-Id: <20250114170840.1633-9-ilpo.jarvinen@linux.intel.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250114170840.1633-1-ilpo.jarvinen@linux.intel.com>
-References: <20250114170840.1633-1-ilpo.jarvinen@linux.intel.com>
+	t=1736875087; c=relaxed/relaxed;
+	bh=x1mWxUkcdZa6EgnRgOiTKx/eQOhn3QGxIFtlwSkzowM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IDP76NRgbbIZ1F7r4wLqTEN13tF8NrQJuYchjsVB1smMOaLtkzVFaesXXhI23hgYHshSbIO5I+2xONb6dWXFP59xT0ecur/HK63BwjFHu/QMHjRe6N9fZ6p4RR5TLX6EHn0G2E89gYrBCVK1XzNRGGCU2CNjQOdSGWJ45yNGa5YfpJ9Wo5MwUkgvvlCdeDwOelPM7fQhYAyGFHezx8enklrQ6tq7ti8PLpFrzikeUOUdkXxzkN7GvtJL1K9wAOJGgSVLrb5YnHD71217tB4aLWtyOx263isfXQUOR+JRvB4vG01ywz/S7/uBGuH7rQHTqNxukFBobfRnUnaWOQufTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbRy3CYlz2xrC
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 04:18:05 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6D06512FC;
+	Tue, 14 Jan 2025 09:18:03 -0800 (PST)
+Received: from arm.com (e134078.arm.com [10.32.102.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CB8E03F673;
+	Tue, 14 Jan 2025 09:17:31 -0800 (PST)
+Date: Tue, 14 Jan 2025 17:17:28 +0000
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+	david@redhat.com, pbonzini@redhat.com, kvmarm@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, vladimir.murzin@arm.com
+Subject: Re: [kvm-unit-tests PATCH v1 2/5] configure: Display the default
+ processor for arm and arm64
+Message-ID: <Z4acKHEn/dE0yLM2@arm.com>
+References: <20250110135848.35465-1-alexandru.elisei@arm.com>
+ <20250110135848.35465-3-alexandru.elisei@arm.com>
+ <20250113-45b57478be2241a35ffa1b67@orel>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,148 +54,114 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250113-45b57478be2241a35ffa1b67@orel>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Add pcie_print_tlp_log() helper to print TLP Header and Prefix Log.
-Print End-End Prefixes only if they are non-zero.
+Hi Drew,
 
-Consolidate the few places which currently print TLP using custom
-formatting.
+On Mon, Jan 13, 2025 at 04:11:06PM +0100, Andrew Jones wrote:
+> On Fri, Jan 10, 2025 at 01:58:45PM +0000, Alexandru Elisei wrote:
+> > The help text for the --processor option displays the architecture name as
+> > the default processor type. But the default for arm is cortex-a15, and for
+> > arm64 is cortex-a57. Teach configure to display the correct default
+> > processor type for these two architectures.
+> > 
+> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> > ---
+> >  configure | 30 ++++++++++++++++++++++--------
+> >  1 file changed, 22 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/configure b/configure
+> > index 5b0a2d7f39c0..138840c3f76d 100755
+> > --- a/configure
+> > +++ b/configure
+> > @@ -5,6 +5,24 @@ if [ -z "${BASH_VERSINFO[0]}" ] || [ "${BASH_VERSINFO[0]}" -lt 4 ] ; then
+> >      exit 1
+> >  fi
+> >  
+> > +function get_default_processor()
+> > +{
+> > +    local arch="$1"
+> > +
+> > +    case "$arch" in
+> > +    "arm")
+> > +        default_processor="cortex-a15"
+> > +        ;;
+> > +    "arm64" | "aarch64")
+> > +        default_processor="cortex-a57"
+> > +        ;;
+> > +    *)
+> > +        default_processor=$arch
+> > +    esac
+> > +
+> > +    echo "$default_processor"
+> > +}
+> > +
+> >  srcdir=$(cd "$(dirname "$0")"; pwd)
+> >  prefix=/usr/local
+> >  cc=gcc
+> > @@ -33,6 +51,7 @@ page_size=
+> >  earlycon=
+> >  efi=
+> >  efi_direct=
+> > +default_processor=$(get_default_processor $arch)
+> >  
+> >  # Enable -Werror by default for git repositories only (i.e. developer builds)
+> >  if [ -e "$srcdir"/.git ]; then
+> > @@ -48,7 +67,7 @@ usage() {
+> >  	Options include:
+> >  	    --arch=ARCH            architecture to compile for ($arch). ARCH can be one of:
+> >  	                           arm, arm64/aarch64, i386, ppc64, riscv32, riscv64, s390x, x86_64
+> > -	    --processor=PROCESSOR  processor to compile for ($arch)
+> > +	    --processor=PROCESSOR  processor to compile for ($default_processor)
+> >  	    --target=TARGET        target platform that the tests will be running on (qemu or
+> >  	                           kvmtool, default is qemu) (arm/arm64 only)
+> >  	    --cross-prefix=PREFIX  cross compiler prefix
+> > @@ -283,13 +302,8 @@ else
+> >      fi
+> >  fi
+> >  
+> > -[ -z "$processor" ] && processor="$arch"
+> > -
+> > -if [ "$processor" = "arm64" ]; then
+> > -    processor="cortex-a57"
+> > -elif [ "$processor" = "arm" ]; then
+> > -    processor="cortex-a15"
+> > -fi
+> > +# $arch will have changed when cross-compiling.
+> > +[ -z "$processor" ] && processor=$(get_default_processor $arch)
+> 
+> The fact that $arch and $processor are wrong until they've had a chance to
 
-The first attempt used pr_cont() instead of building a string first but
-it turns out pr_cont() is not compatible with pci_err() and prints on a
-separate line. When I asked about this, Andy Shevchenko suggested
-pr_cont() should not be used in the first place (to eventually get rid
-of it) so pr_cont() is now replaced with building the string first.
+$processor is never wrong. $processor is unset until either the user sets it
+with --processor, or until this line. This patch introduces $default_processor
+only for the purpose of having an accurate help text, it doesn't change when and
+how $processor is assigned.
 
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/pci/pci.h      |  2 ++
- drivers/pci/pcie/aer.c | 10 ++--------
- drivers/pci/pcie/dpc.c |  5 +----
- drivers/pci/pcie/tlp.c | 34 ++++++++++++++++++++++++++++++++++
- 4 files changed, 39 insertions(+), 12 deletions(-)
+> be converted might be another reason for the $do_help idea. But it'll
+> always be fragile since another change that does some sort of conversion
+> could end up getting added after the '[ $do_help ] && usage' someday.
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 7797b2544d00..797ad43a7683 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -553,6 +553,8 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
- int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
- 		      unsigned int tlp_len, struct pcie_tlp_log *log);
- unsigned int aer_tlp_log_len(struct pci_dev *dev, u32 aercc);
-+void pcie_print_tlp_log(const struct pci_dev *dev,
-+			const struct pcie_tlp_log *log, const char *pfx);
- #endif	/* CONFIG_PCIEAER */
- 
- #ifdef CONFIG_PCIEPORTBUS
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 656dbf1ac45b..ece8cb88d110 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -665,12 +665,6 @@ static void pci_rootport_aer_stats_incr(struct pci_dev *pdev,
- 	}
- }
- 
--static void __print_tlp_header(struct pci_dev *dev, struct pcie_tlp_log *t)
--{
--	pci_err(dev, "  TLP Header: %08x %08x %08x %08x\n",
--		t->dw[0], t->dw[1], t->dw[2], t->dw[3]);
--}
--
- static void __aer_print_error(struct pci_dev *dev,
- 			      struct aer_err_info *info)
- {
-@@ -725,7 +719,7 @@ void aer_print_error(struct pci_dev *dev, struct aer_err_info *info)
- 	__aer_print_error(dev, info);
- 
- 	if (info->tlp_header_valid)
--		__print_tlp_header(dev, &info->tlp);
-+		pcie_print_tlp_log(dev, &info->tlp, dev_fmt("  "));
- 
- out:
- 	if (info->id && info->error_dev_num > 1 && info->id == id)
-@@ -797,7 +791,7 @@ void pci_print_aer(struct pci_dev *dev, int aer_severity,
- 			aer->uncor_severity);
- 
- 	if (tlp_header_valid)
--		__print_tlp_header(dev, &aer->header_log);
-+		pcie_print_tlp_log(dev, &aer->header_log, dev_fmt("  "));
- 
- 	trace_aer_event(dev_name(&dev->dev), (status & ~mask),
- 			aer_severity, tlp_header_valid, &aer->header_log);
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index 0aa20bc58697..242cabd5eeeb 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -220,10 +220,7 @@ static void dpc_process_rp_pio_error(struct pci_dev *pdev)
- 	pcie_read_tlp_log(pdev, cap + PCI_EXP_DPC_RP_PIO_HEADER_LOG,
- 			  cap + PCI_EXP_DPC_RP_PIO_TLPPREFIX_LOG,
- 			  dpc_tlp_log_len(pdev), &tlp_log);
--	pci_err(pdev, "TLP Header: %#010x %#010x %#010x %#010x\n",
--		tlp_log.dw[0], tlp_log.dw[1], tlp_log.dw[2], tlp_log.dw[3]);
--	for (i = 0; i < pdev->dpc_rp_log_size - PCIE_STD_NUM_TLP_HEADERLOG - 1; i++)
--		pci_err(pdev, "TLP Prefix Header: dw%d, %#010x\n", i, tlp_log.prefix[i]);
-+	pcie_print_tlp_log(pdev, &tlp_log, dev_fmt(""));
- 
- 	if (pdev->dpc_rp_log_size < PCIE_STD_NUM_TLP_HEADERLOG + 1)
- 		goto clear_status;
-diff --git a/drivers/pci/pcie/tlp.c b/drivers/pci/pcie/tlp.c
-index 2f029deebc33..7eb88d1b37b7 100644
---- a/drivers/pci/pcie/tlp.c
-+++ b/drivers/pci/pcie/tlp.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/aer.h>
-+#include <linux/array_size.h>
- #include <linux/pci.h>
- #include <linux/string.h>
- 
-@@ -79,3 +80,36 @@ int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
- 
- 	return 0;
- }
-+
-+#define EE_PREFIX_STR " E-E Prefixes:"
-+
-+/**
-+ * pcie_print_tlp_log - Print TLP Header / Prefix Log contents
-+ * @dev: PCIe device
-+ * @log: TLP Log structure
-+ * @pfx: String prefix
-+ *
-+ * Prints TLP Header and Prefix Log information held by @log.
-+ */
-+void pcie_print_tlp_log(const struct pci_dev *dev,
-+			const struct pcie_tlp_log *log, const char *pfx)
-+{
-+	char buf[11 * (PCIE_STD_NUM_TLP_HEADERLOG + ARRAY_SIZE(log->prefix)) +
-+		 sizeof(EE_PREFIX_STR)];
-+	unsigned int i;
-+	int len;
-+
-+	len = scnprintf(buf, sizeof(buf), "%#010x %#010x %#010x %#010x",
-+			log->dw[0], log->dw[1], log->dw[2], log->dw[3]);
-+
-+	if (log->prefix[0])
-+		len += scnprintf(buf + len, sizeof(buf) - len, EE_PREFIX_STR);
-+	for (i = 0; i < ARRAY_SIZE(log->prefix); i++) {
-+		if (!log->prefix[i])
-+			break;
-+		len += scnprintf(buf + len, sizeof(buf) - len,
-+				 " %#010x", log->prefix[i]);
-+	}
-+
-+	pci_err(dev, "%sTLP Header: %s\n", pfx, buf);
-+}
--- 
-2.39.5
+configure needs to distinguish between:
 
+1. The user not having specified --processor when doing ./configure.
+2. The user having set --processor.
+
+If 1, then kvm-unit-tests can use the default $processor value for $arch,
+which could have also been specified by the user.
+
+If 2, then kvm-unit-tests should not touch $processor because that's what the
+user wants.
+
+Do you see something wrong with that reasoning?
+
+Also, I don't understand why you say it's fragile, since configure doesn't
+touch $processor until this point (and unless the user sets it, of course).
+
+Thanks,
+Alex
 
