@@ -1,96 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-5235-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5236-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3280BA10A1A
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 15:59:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0DFA10A36
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 16:03:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXXNH51QSz30Vm;
-	Wed, 15 Jan 2025 01:59:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXXSs0LnNz30Vw;
+	Wed, 15 Jan 2025 02:03:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736866783;
-	cv=none; b=BQ7NTKTPtHrKDpbQZtqI3Jxb9paKKT1EKSUU6Rh2/lvrsOiSlegreqApE/5zq8dGK42a7JTI8oFGSxZ4/JNDyBXAFzWlZ+MWasVZzyDZpUVlpTxccvaW5GszZCOr6NwUkt7up2R/y3DB+bYi2s05Syv+5utjz0A3hWf8IXZpJZOUjAflQt/0LLAw4R4ebFPlw+1VFXmUblcDwH/u2XEjJ7CS7NbkUzjTT4EUVSFzNm9uw+YEosI1j1zL9GnjuSwCP2tBupB3R/9oKfD5YQKa8G9NcZ3ACVnn4pSsRREmJqpbYBuvXRP0sCe8fkSHd6LROgZoRUGCoNG7uSc+BOvYbw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736867020;
+	cv=none; b=VrFT4f6t4WnM+Hxiveif9qey0eIPzTCvYMZVxYn/tAJG8zbkMyqw+Oe/C0nh7lG6WgCGdNtWvug9g4j4ru/fGQDOGUIjcsM4XXp86cTHcmSrvzFb71YEvx9Yn5FXXFfiPKTxsRZ5QUX2vWZnzgYx02tve0VcKA3JXhmWzsejzx96ftxRVgmMkxu5Pnq9mPozOnK1d73moNrXb5EFXnDDXAd26TkRN5LTyfBHfj5AjJwG079e12yoz+Fz0b38wotQi407qQJx9tcWIfVRKL3wNozcI/hHc/wXUjGalv/NVXz1fdM4Ir7xQ+4AHRg+ATfZJP7Zc89yB7bH8uH2NT0loA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736866783; c=relaxed/relaxed;
-	bh=YOOFa4tjOJHbzYzB4ngXxpUasXqbBcdKvOApLshzGmU=;
+	t=1736867020; c=relaxed/relaxed;
+	bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C9v8coYRSVj1+bxP+qpxBf9cqKVFXf5eUjtG4rhdXU9JaakL08lz3+ww2xpO9TFMI1biC9l8ZdnidetGRJiafUou2eEBPjwns3W28ypQmb4+v+4Ivi+lUmkGwp9TWT1XdVuVecObvds/cfaYPTJ/HeDgj3ZM5518ByFhRUWUET+XiiJeGLqD377H/9MHRsFmcazGVlnTkVBswUFuTgGAU6rIOmQK3guv/zDTaivHwGFpPpCVKF6sjkc97jNVXPIduxXQMN1kpLDpEblMtClX+B8BLEdCJRcJ2c0yqcIdlDunf9/wnEg4ReptKCv/IbUfQzIXlz/XHBiR6/u3yLwFcA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f8Tz4pGp; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f8Tz4pGp; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=ZC3SUoUNbL4QvVo9SokHiqGoj7tFoo34h/4Qo+1tOFrx4j77jEKe3qtikOPtp787qYkOPrbG3g2n0H4gYkfPFImSvAxDITVuVgOTY8l3+wvfKADX+SLMtNv+XhPiH8WpUYx2fHbbF5Do/0vfbqjv+cYFKZrCYxDc53nWgKCviS/33ChTr4TRsY77syo3CB14Sxp1Yqn+6QG6lxy6fMN2tzLhTMHS4RT7+KkspC1BPKvvuBtr0CDt4II1BbPT35FY6s0E+QajzJvkfIrs9f48JrHYeTSGRLjhAtyr748NAALOvXvDwS0ENPi5VnLLtGAr7gl/QJsb3X6mzhycy+agHg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f8Tz4pGp;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=f8Tz4pGp;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Rwk0LiTH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXXNG2vp2z30Vf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 01:59:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXXSq5gxqz30Vf
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 02:03:39 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736866777;
+	s=mimecast20190719; t=1736867016;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YOOFa4tjOJHbzYzB4ngXxpUasXqbBcdKvOApLshzGmU=;
-	b=f8Tz4pGpGRQF+jI/wRn64nQPvajyUqbYkSb3j7FWopfzugSNRT8IBrlmy548F2zN0Whc4H
-	aNsWyjCrbF+4RYHCBRHUjo4j/ekU0+2j7FJVp8Q9UYHgcw2t2KPIwdlav9FQ952pKv/6vt
-	i1lOCSQfBUbSIwLP+rr3D4lySsMzTbU=
+	bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
+	b=Rwk0LiTHoLJEMeQtvsYQdRWmm5D7wkqV5NDamE/W8s3t7V3H4jrCrn9VIYGdm2sCB4GOz/
+	UnQSfNXlHA9oCtUXyZAVCWsnCvv3gpRI1m2zI/bXf/oZsT4hjQDnUearC8uM5dWSSQENeu
+	vAHR6aQd6qHwbynWEvQqndVOJuFOLFk=
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736866777;
+	s=mimecast20190719; t=1736867016;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=YOOFa4tjOJHbzYzB4ngXxpUasXqbBcdKvOApLshzGmU=;
-	b=f8Tz4pGpGRQF+jI/wRn64nQPvajyUqbYkSb3j7FWopfzugSNRT8IBrlmy548F2zN0Whc4H
-	aNsWyjCrbF+4RYHCBRHUjo4j/ekU0+2j7FJVp8Q9UYHgcw2t2KPIwdlav9FQ952pKv/6vt
-	i1lOCSQfBUbSIwLP+rr3D4lySsMzTbU=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
+	b=Rwk0LiTHoLJEMeQtvsYQdRWmm5D7wkqV5NDamE/W8s3t7V3H4jrCrn9VIYGdm2sCB4GOz/
+	UnQSfNXlHA9oCtUXyZAVCWsnCvv3gpRI1m2zI/bXf/oZsT4hjQDnUearC8uM5dWSSQENeu
+	vAHR6aQd6qHwbynWEvQqndVOJuFOLFk=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-264-a4wkNU_fPSS_Mev_qasWKA-1; Tue, 14 Jan 2025 09:59:35 -0500
-X-MC-Unique: a4wkNU_fPSS_Mev_qasWKA-1
-X-Mimecast-MFC-AGG-ID: a4wkNU_fPSS_Mev_qasWKA
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-385d6ee042eso3371720f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 06:59:35 -0800 (PST)
+ us-mta-513-GRHDrSQINqOOhaChcJjwyQ-1; Tue, 14 Jan 2025 10:03:35 -0500
+X-MC-Unique: GRHDrSQINqOOhaChcJjwyQ-1
+X-Mimecast-MFC-AGG-ID: GRHDrSQINqOOhaChcJjwyQ
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-385d7611ad3so3163769f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 07:03:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736866774; x=1737471574;
+        d=1e100.net; s=20230601; t=1736867014; x=1737471814;
         h=content-transfer-encoding:in-reply-to:organization:autocrypt
          :content-language:from:references:cc:to:subject:user-agent
          :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=YOOFa4tjOJHbzYzB4ngXxpUasXqbBcdKvOApLshzGmU=;
-        b=T9dgoIO3bc0fARoPcGt9R61A1W08H0fV4myxgZv0ve2LbCD5LcahlrdvgdPI7Rtrp1
-         73z1iing3jm2SHy5KjX6pv0ELkX8mjcV4rwq26KrrXjoIrQBwUVgsxt3H/WwXioPA2mC
-         AKDQT0iWoxLzfuo1zbvlaxbF1vHqYiRXR7VOTtygxInfFJ2oVauhi56G7LDoI/ATfcPA
-         7L16G8CJltTClnktwtF7c/Mih2A/vgM341E0uCXuzM2Y4vAscwYGbRfeZcNCoYTBJKRv
-         ZMlV4mHoqoHEVNXboo69nIlkzFChWeTeYws7Bfk44sUxTLFVK+t2SZPzPLKZbb8HsdzJ
-         4j0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVMhfiTeAzunt0MuZBEQmz+4EP0+DYSY6WFk5Xf1tlsadLhxjTmndj/d33nIzDRAp4uWgaHPhty8VM9ICY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyACdY9i5y3IuozqvXKNTNtbuU45HNMwfbFyghvbg417q878bfa
-	pkd3Pvw99so4Yc2ya42niiVHxfTe5qgf4n8UhI1dOnaGIjIHWNQ/Va2KG6diUsLH42567yneX4T
-	yP+WPK21HbRzmAPnPgDh8jwb1sUG4GuxydCT0WaYgy1Z6MQJFGgsvTwUWla96TVY=
-X-Gm-Gg: ASbGncsDXTYud5kh22mcs1NfjIxGtacYsu0CEirnpVfhN5dT8H2SRpMrQifT0OXz9Cd
-	81m1lcVzG8x6wqdGSwz/6VhIT3ZPGmteKbvHc7BWWcf6Qwfzc4S2rydH0s1H7wHjK+JkSJFqEj+
-	rd004wCM4kyDt9l3vbAqgQoYvvxbWq9VDlckQcncCN1iQw1PTp6nOV0EMJ9HsH4CrU6kexpw17W
-	aTX07rhiviZASCUEe7BVbFbtZcg10EAjAs66G4E9rFZwa9b7ZneHjfCLJUwLwYM0wbNgpKGz6KS
-	vjd3+WDRH3I7Wn2f653xHlO/cQJ4bgSARazuepf5vKt2J54BpCkVuYfAa3UgRJF0gfEpaxZMEr5
-	LUlVoXOko
-X-Received: by 2002:a5d:64cc:0:b0:38a:86fe:52b3 with SMTP id ffacd0b85a97d-38a872e173emr22802719f8f.22.1736866774378;
-        Tue, 14 Jan 2025 06:59:34 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHz2uZAV+J70P9YucwAztT9JSZ7+2iGUIBmkejGoMGYwNzGwovCPwKhDvjPwFBNmG0N05EWIg==
-X-Received: by 2002:a5d:64cc:0:b0:38a:86fe:52b3 with SMTP id ffacd0b85a97d-38a872e173emr22802666f8f.22.1736866773899;
-        Tue, 14 Jan 2025 06:59:33 -0800 (PST)
+        bh=EVcF0mu+oOpfopIC/ZRaz1f1Q3v6efqkEhKRWk3onBA=;
+        b=ivX2Ku/J9wvD9cTsUzI8NdA2A6rGBs/nnzKCU4OLxiIHH9YLT+I9ZNc9vRuoY2r3Qo
+         3B7a23sEg0iXUQhIw2eOHWzXPwFic2CSIlkEoCmoyV/AW7bBWodVn+aflBrVDGjZZDFg
+         I+M99Eop1SWv2eAd+xEQ6HRL7IlRTDbR3X3fW3NNxsQB67kjOrqvE/uGmZ9zU47danm+
+         MvgNQDZcB4NxrS/g6yvlYyMkT/ucnB+r9/ExJ/IoFQB4AX4RedpO4BeDrreWtT69emjZ
+         M+Jc0pFNjMaX4OIuJ5HhwXBP79BVfLDGZyKcQXMc3MyG1Z4qMGhl3M173PjIMYANJN6i
+         Pgng==
+X-Forwarded-Encrypted: i=1; AJvYcCVxcWAdmNyLq31WVAPeo0ph/UI8oW3d6GvNbnfplCTwQlKXOd+nk7qzA+mMSI3EusiKcE8gy/OeFAuwUT8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxH9/STKf0aWfkJ8k9bveMsQvrVs8qv7hf728FtM2lbT7C7hCBN
+	3DL5E+L5D+YwGLU/jVfGCTW8KwgVfyiyapUt7q33j1+P8B92KHnJOxj3PyCRVP61JAyB95joPLH
+	CXfd9U3K+5eIPm8zVdruVAx9LVJCPVYSusSZeAkRKtPsKRlr9p3pnymvdvtj6HBc=
+X-Gm-Gg: ASbGncsoyX2pfwShtK4UwoaEDcp8aMfKmru1gvumHbty8nIs4axuqh7QZ6J0pVsGI8z
+	lXRXXgCTdpH0r8h2blBXmJ0uEdmBXZ8vLGTAKVSH/8dM0OfrKkMrmeTKSbR6f3sQXLvpumRlZA+
+	E78T8pPHmF9UZnDXJ+O3jqdLEtqizH+xwB5qMcp2w5YrsU/32/rWKZTOyviBdzD59XYTt2XOSvQ
+	X7A0aboqGY/xjbKJ0yhT6dkESAMJweWbkAvRoWqaTYn0M0T64b0fjP/qWhKw70RJ0L902SRps+x
+	pJdl3KgqN7MRAUQbGzIMuSR+NY7h55pVZ6y2rAsvo4WV0X3AYB/LLrMZFX3XYnU/6R1p+13OcyX
+	qEhCY1UaQ
+X-Received: by 2002:adf:c08d:0:b0:38a:87cc:fb42 with SMTP id ffacd0b85a97d-38a87ccfc9cmr18854414f8f.21.1736867012189;
+        Tue, 14 Jan 2025 07:03:32 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IHM3HjhBhsAPB1JfMTMphs8VamtwcWCRs8AeFhEVZ770be4gDgdSn1pqkoBasZXrNwqQMUsQg==
+X-Received: by 2002:adf:c08d:0:b0:38a:87cc:fb42 with SMTP id ffacd0b85a97d-38a87ccfc9cmr18854332f8f.21.1736867011446;
+        Tue, 14 Jan 2025 07:03:31 -0800 (PST)
 Received: from ?IPV6:2003:cb:c738:3100:8133:26cf:7877:94aa? (p200300cbc7383100813326cf787794aa.dip0.t-ipconnect.de. [2003:cb:c738:3100:8133:26cf:7877:94aa])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38a8e38428bsm15089893f8f.37.2025.01.14.06.59.31
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-436e9d8fc51sm180089645e9.7.2025.01.14.07.03.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Jan 2025 06:59:33 -0800 (PST)
-Message-ID: <927f9cef-3f97-4bef-b6d8-53e6ef1b78a8@redhat.com>
-Date: Tue, 14 Jan 2025 15:59:31 +0100
+        Tue, 14 Jan 2025 07:03:31 -0800 (PST)
+Message-ID: <c3df67b5-47f5-4a2c-ba50-cc0de2b937f5@redhat.com>
+Date: Tue, 14 Jan 2025 16:03:29 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,7 +104,8 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 11/26] mm: Allow compound zone device pages
+Subject: Re: [PATCH v6 12/26] mm/memory: Enhance insert_page_into_pte_locked()
+ to create writable mappings
 To: Alistair Popple <apopple@nvidia.com>, akpm@linux-foundation.org,
  dan.j.williams@intel.com, linux-mm@kvack.org
 Cc: alison.schofield@intel.com, lina@asahilina.net, zhang.lyra@gmail.com,
@@ -119,9 +120,9 @@ Cc: alison.schofield@intel.com, lina@asahilina.net, zhang.lyra@gmail.com,
  linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org,
  linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, jhubbard@nvidia.com,
  hch@lst.de, david@fromorbit.com, chenhuacai@kernel.org, kernel@xen0n.name,
- loongarch@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>
+ loongarch@lists.linux.dev
 References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
- <9210f90866fef17b54884130fb3e55ab410dd015.1736488799.git-series.apopple@nvidia.com>
+ <68974d46091eea460f404f8ced3c6de5964c9ec4.1736488799.git-series.apopple@nvidia.com>
 From: David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; keydata=
  xsFNBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -168,122 +169,101 @@ Autocrypt: addr=david@redhat.com; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat
-In-Reply-To: <9210f90866fef17b54884130fb3e55ab410dd015.1736488799.git-series.apopple@nvidia.com>
+In-Reply-To: <68974d46091eea460f404f8ced3c6de5964c9ec4.1736488799.git-series.apopple@nvidia.com>
 X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: wvNhE-zejIsjZ1FSbPaQvdPlwhXT-oTmhfxOtzt90uY_1736866775
+X-Mimecast-MFC-PROC-ID: htjQxSk6rMu8iiUBqKUJpabx_8D6_ujgfqcAON-Jurk_1736867014
 X-Mimecast-Originator: redhat.com
 Content-Language: en-US
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 On 10.01.25 07:00, Alistair Popple wrote:
-> Zone device pages are used to represent various type of device memory
-> managed by device drivers. Currently compound zone device pages are
-> not supported. This is because MEMORY_DEVICE_FS_DAX pages are the only
-> user of higher order zone device pages and have their own page
-> reference counting.
+> In preparation for using insert_page() for DAX, enhance
+> insert_page_into_pte_locked() to handle establishing writable
+> mappings.  Recall that DAX returns VM_FAULT_NOPAGE after installing a
+> PTE which bypasses the typical set_pte_range() in finish_fault.
 > 
-> A future change will unify FS DAX reference counting with normal page
-> reference counting rules and remove the special FS DAX reference
-> counting. Supporting that requires compound zone device pages.
-> 
-> Supporting compound zone device pages requires compound_head() to
-> distinguish between head and tail pages whilst still preserving the
-> special struct page fields that are specific to zone device pages.
-> 
-> A tail page is distinguished by having bit zero being set in
-> page->compound_head, with the remaining bits pointing to the head
-> page. For zone device pages page->compound_head is shared with
-> page->pgmap.
-> 
-> The page->pgmap field is common to all pages within a memory section.
-> Therefore pgmap is the same for both head and tail pages and can be
-> moved into the folio and we can use the standard scheme to find
-> compound_head from a tail page.
-
-The more relevant thing is that the pgmap field must be common to all 
-pages in a folio, even if a folio exceeds memory sections (e.g., 128 MiB 
-on x86_64 where we have 1 GiB folios).
-
- > > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Suggested-by: Dan Williams <dan.j.williams@intel.com>
 > 
 > ---
 > 
-> Changes for v4:
->   - Fix build breakages reported by kernel test robot
+> Changes for v5:
+>   - Minor comment/formatting fixes suggested by David Hildenbrand
 > 
 > Changes since v2:
 > 
->   - Indentation fix
->   - Rename page_dev_pagemap() to page_pgmap()
->   - Rename folio _unused field to _unused_pgmap_compound_head
->   - s/WARN_ON/VM_WARN_ON_ONCE_PAGE/
-> 
-> Changes since v1:
-> 
->   - Move pgmap to the folio as suggested by Matthew Wilcox
+>   - New patch split out from "mm/memory: Add dax_insert_pfn"
 > ---
-
-[...]
-
->   static inline bool folio_is_device_coherent(const struct folio *folio)
-> diff --git a/include/linux/migrate.h b/include/linux/migrate.h
-> index 29919fa..61899ec 100644
-> --- a/include/linux/migrate.h
-> +++ b/include/linux/migrate.h
-> @@ -205,8 +205,8 @@ struct migrate_vma {
->   	unsigned long		end;
+>   mm/memory.c | 37 +++++++++++++++++++++++++++++--------
+>   1 file changed, 29 insertions(+), 8 deletions(-)
+> 
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 06bb29e..8531acb 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -2126,19 +2126,40 @@ static int validate_page_before_insert(struct vm_area_struct *vma,
+>   }
 >   
->   	/*
-> -	 * Set to the owner value also stored in page->pgmap->owner for
-> -	 * migrating out of device private memory. The flags also need to
-> +	 * Set to the owner value also stored in page_pgmap(page)->owner
-> +	 * for migrating out of device private memory. The flags also need to
->   	 * be set to MIGRATE_VMA_SELECT_DEVICE_PRIVATE.
->   	 * The caller should always set this field when using mmu notifier
->   	 * callbacks to avoid device MMU invalidations for device private
-> diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-> index df8f515..54b59b8 100644
-> --- a/include/linux/mm_types.h
-> +++ b/include/linux/mm_types.h
-> @@ -129,8 +129,11 @@ struct page {
->   			unsigned long compound_head;	/* Bit zero is set */
->   		};
->   		struct {	/* ZONE_DEVICE pages */
-> -			/** @pgmap: Points to the hosting device page map. */
-> -			struct dev_pagemap *pgmap;
-> +			/*
-> +			 * The first word is used for compound_head or folio
-> +			 * pgmap
-> +			 */
-> +			void *_unused_pgmap_compound_head;
->   			void *zone_device_data;
->   			/*
->   			 * ZONE_DEVICE private pages are counted as being
-> @@ -299,6 +302,7 @@ typedef struct {
->    * @_refcount: Do not access this member directly.  Use folio_ref_count()
->    *    to find how many references there are to this folio.
->    * @memcg_data: Memory Control Group data.
-> + * @pgmap: Metadata for ZONE_DEVICE mappings
->    * @virtual: Virtual address in the kernel direct map.
->    * @_last_cpupid: IDs of last CPU and last process that accessed the folio.
->    * @_entire_mapcount: Do not use directly, call folio_entire_mapcount().
-> @@ -337,6 +341,7 @@ struct folio {
->   	/* private: */
->   				};
->   	/* public: */
-> +				struct dev_pagemap *pgmap;
+>   static int insert_page_into_pte_locked(struct vm_area_struct *vma, pte_t *pte,
+> -			unsigned long addr, struct page *page, pgprot_t prot)
+> +				unsigned long addr, struct page *page,
+> +				pgprot_t prot, bool mkwrite)
+>   {
+>   	struct folio *folio = page_folio(page);
+> +	pte_t entry = ptep_get(pte);
+>   	pte_t pteval;
+ >
 
-Agreed, that should work.
+Just drop "entry" and reuse "pteval"; even saves you from one bug below :)
 
-Acked-by: David Hildenbrand <david@redhat.com>
+pte_t pteval = ptep_get(pte);
+
+> -	if (!pte_none(ptep_get(pte)))
+> -		return -EBUSY;
+> +	if (!pte_none(entry)) {
+> +		if (!mkwrite)
+> +			return -EBUSY;
+> +
+> +		/* see insert_pfn(). */
+> +		if (pte_pfn(entry) != page_to_pfn(page)) {
+> +			WARN_ON_ONCE(!is_zero_pfn(pte_pfn(entry)));
+> +			return -EFAULT;
+> +		}
+> +		entry = maybe_mkwrite(entry, vma);
+> +		entry = pte_mkyoung(entry);
+> +		if (ptep_set_access_flags(vma, addr, pte, entry, 1))
+> +			update_mmu_cache(vma, addr, pte);
+> +		return 0;
+> +	}
+> +
+>   	/* Ok, finally just insert the thing.. */
+>   	pteval = mk_pte(page, prot);
+>   	if (unlikely(is_zero_folio(folio))) {
+>   		pteval = pte_mkspecial(pteval);
+>   	} else {
+>   		folio_get(folio);
+> +		entry = mk_pte(page, prot);
+
+we already do "pteval = mk_pte(page, prot);" above?
+
+And I think your change here does not do what you want, because you
+modify the new "entry" but we do
+
+	set_pte_at(vma->vm_mm, addr, pte, pteval);
+
+below ...
+
+> +		if (mkwrite) {
+> +			entry = pte_mkyoung(entry);
+> +			entry = maybe_mkwrite(pte_mkdirty(entry), vma);
+> +		}
+
+So again, better just reuse pteval :)
 
 -- 
 Cheers,
