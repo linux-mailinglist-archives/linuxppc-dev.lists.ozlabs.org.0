@@ -1,60 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-5253-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5254-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67190A10D61
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 18:18:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C281DA10D76
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 14 Jan 2025 18:20:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbS813t6z3bY4;
-	Wed, 15 Jan 2025 04:18:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbW93mc9z3bbS;
+	Wed, 15 Jan 2025 04:20:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736875096;
-	cv=none; b=JGH4E/IP4UTL5gCS3LXuHNliXXDD2DUML69MPEu/bvizJoS+lAxB6TytrlVsUZcM+Mic0IoMlPOLCbksUfpdUbNFvmP7oPwQUuP0M7d+JCLuJ1IbXlgD6dhgjjcWovv/LambXcaGjVTx8lNRatJFaOgTVVzDj0JmJzRL9d0DF85WSMjZ5Hi9QjyGsz4RLNFiG8wORzMGYxEmNwaEm+MuXNs2FQSzBg2mJTS04bOWZ48Z59H3pwhkPdIK3TONPPMplGmR7/ROSpm5zHycgV8ZMpGXLUlHO1z879NTMNpfJZhkM6EJ1eXyFAcZK2anRdsP16gN35gaK38Yna/+7D+gCw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736875253;
+	cv=none; b=kjBBB+T9SMPYNO6CEhSUtNfeMbIThvl++EPho9LxcXUHpIes2EPjSvY4rV6Jt555l2yv3zDMwhwwSn+D8fr15p4tEanp8Bn6st7nRrcbuvT7JP1eWtwEAc+J2RV3ohjRh1qyFb4trmrARlZQSuDkGA//je8WSRkpAdY+fgdK2Xan6AXOyx/0jCm8dHJylivFNvg8vqeLiiHUW72A9tu4p9MferyytaRSukuOLkNbcZoK6J5WKcpqrdsMxeaQV6c2XR1zCJPi1wsJPd0kFTB/gKoc9L5uQ/+qjd2be/C8bk5/FjpEuSVtkmkoMC8AwJ6q0fHwYvGFOVj8dSVB6wPzvg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736875096; c=relaxed/relaxed;
-	bh=nPHTaqnYbJSXfhbodandFyRu/InoCJ2vFF9vbIGZN5M=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=OtFXtnOOs3YIzDyy01MwMtyyP3IlnYYTA4ioa6IkknQCXRVYVYZh7FBg0lCBeq+O7YAqTO3T/1Z7i0foWNojF9JjfJIxMUuXq45+Jn3NbbRAgigcI+hofdZ9bvZJpWsDMG23mvqM0+kUfZKylHOZ70WUE3yaoSaKX2Lm5YFF85CZLpk/UUfz1DDeLjvyGKkk18YCB1lL4Mk2GQp1Eh8FSKl0+l6vyRCKd1UYg7mxIgAqOf9obQdKD7DNgEyVSqDYpuMq5mMltRNzQ1AwcHWbMsSiCrYkmlJPIhldy5SIj8Wvblg/QjDlgyooFUxpOQc7O5mnNRF4c9ZfIxBOeEw5kA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p/0xJnkK; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=p/0xJnkK;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXbS66pwtz3bWr
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 04:18:14 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4220AA41974;
-	Tue, 14 Jan 2025 17:16:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E103C4CEDD;
-	Tue, 14 Jan 2025 17:18:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1736875091;
-	bh=/5Iyd6ukvw+wlfQuDAyxHew2KnpdZoyclKKn5oIODnc=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=p/0xJnkKcMlzgcYf+caIAsKLu41HOHiDmbDt7TflB3ciDUvNV0mapiUS4aZ2sl8bM
-	 71BZlEr1vxuE8K3p0XpbdGKjlF6vqqSduHIRtX7WVMQ33NP1aT3GB0h7FCl72XhYtU
-	 hIwy0e6+K71x9qrGKINpjjN4dBZQhfpnX86/Qb9AQSuGYc3YjNMnLZvcnP5fSFY8fo
-	 PnMigJHQe+Az0t5Xdw5B4HZ4zZndZ5lL/gCZb603LvkFNE9u0opnxUTLSaubJ8/HqM
-	 2VlFEX8r+qF36MobSHXgHk5yDP37XCMr/U9kKMyqn+FBtlg/zdBeHnWcW00jW9H568
-	 NrC5sgbnSG9JQ==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, devicetree@vger.kernel.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <20250114102720.3664667-1-shengjiu.wang@nxp.com>
-References: <20250114102720.3664667-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/2] ASoC: fsl: Support micfil on i.MX943
-Message-Id: <173687508729.71321.6375235704794853519.b4-ty@kernel.org>
-Date: Tue, 14 Jan 2025 17:18:07 +0000
+	t=1736875253; c=relaxed/relaxed;
+	bh=3u6i7dTXIC6UC3EBVjZ7WTNkP6tZoNyQPuuLU0pnVAk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fwB2UVXFhWbOext8N1sMyAiikbHwcDx1QDMXnRWNGyHSxBWEvWRXncGJqNZgsNNjjukfypNMz6GWSMUUCkNV/ojX4JeULIkSQpQYcem8NwUlciUWnf+a+itLrBDcawakhv3ikRqSl3nCfYB4c+aYOmQxayiH/+7enh7I4WUb2Ru+zjPEh6ktUnBaLMXGG5QOB+tfUdd+RT6np485g38IOcVqGtozRb8ZbxQ9/cCH8PBvzd6NcNU+V2JYp86ZNVRhWkzBcJn+5kqjT2d28GI/iiIUqNeygtm2R3Wi+4iuJDksjoyZNWPoCztcqNWX6SCeoXObZF+uslGdQ+cSS1Kzww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXbW7584Vz3bbR
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 04:20:51 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BE5EA12FC;
+	Tue, 14 Jan 2025 09:20:48 -0800 (PST)
+Received: from arm.com (e134078.arm.com [10.32.102.51])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6240D3F673;
+	Tue, 14 Jan 2025 09:20:17 -0800 (PST)
+Date: Tue, 14 Jan 2025 17:20:13 +0000
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+	david@redhat.com, pbonzini@redhat.com, kvmarm@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, vladimir.murzin@arm.com
+Subject: Re: [kvm-unit-tests PATCH v1 4/5] arm/arm64: Add support for
+ --processor=max
+Message-ID: <Z4aczXTAVxxkuOhA@arm.com>
+References: <20250110135848.35465-1-alexandru.elisei@arm.com>
+ <20250110135848.35465-5-alexandru.elisei@arm.com>
+ <20250113-8711bc93ade1e8c83dfe3582@orel>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,54 +54,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250113-8711bc93ade1e8c83dfe3582@orel>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 14 Jan 2025 18:27:18 +0800, Shengjiu Wang wrote:
-> On i.MX943, the FIFO data address is changed and the bit width
-> of CICOSR is changed.
-> Add a new compatible string and update driver for these changes.
+Hi Drew,
+
+On Mon, Jan 13, 2025 at 04:21:45PM +0100, Andrew Jones wrote:
+> On Fri, Jan 10, 2025 at 01:58:47PM +0000, Alexandru Elisei wrote:
+> > For arm64, newer architecture features are supported only on newer CPUs.
+> > Instead of expecting the user to know which CPU model supports which
+> > feature when using the TCG accelerator for qemu, let's make it easier and
+> > add support for the --processor 'max' value.
+> > 
+> > The --processor value is passed to the compiler's -mcpu argument and to
+> > qemu's -cpu argument. 'max' is a special value that only qemu understands -
+> > it means that all CPU features that qemu implements are supported by the
+> > guest CPU, and passing it to the compiler causes a build error. So omit the
+> > -mcpu argument when $PROCESSOR=max.
+> > 
+> > This affects only the TCG accelerator; when using KVM or HVF,
+> > kvm-unit-tests sets the cpu model to 'host'.
+> > 
+> > Note that using --processor=max with a 32 bit compiler will cause a build
+> > error: the CPU model that the compiler defaults to when the -mcpu argument
+> > is missing lacks support for some of the instructions that kvm-unit-tests
+> > uses. The solution in the case is to specify a CPU model for the compiler
+> > using --cflags:
+> > 
+> >   ./configure --arch=arm --processor=max --cflags=-mcpu=<cpu>
+> > 
+> > This patch doesn't introduce a regression for arm when --processor=max is
+> > used, it's only the error that changes: from an unknown processor type to
+> > using instructions that are not available on the processor.
+> > 
+> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> > ---
+> >  arm/Makefile.common | 2 ++
+> >  configure           | 5 ++++-
+> >  2 files changed, 6 insertions(+), 1 deletion(-)
+> > 
+> > diff --git a/arm/Makefile.common b/arm/Makefile.common
+> > index a5d97bcf477a..b757250dc9ae 100644
+> > --- a/arm/Makefile.common
+> > +++ b/arm/Makefile.common
+> > @@ -25,7 +25,9 @@ AUXFLAGS ?= 0x0
+> >  # stack.o relies on frame pointers.
+> >  KEEP_FRAME_POINTER := y
+> >  
+> > +ifneq ($(PROCESSOR),max)
+> >  CFLAGS += -mcpu=$(PROCESSOR)
+> > +endif
+> >  CFLAGS += -std=gnu99
+> >  CFLAGS += -ffreestanding
+> >  CFLAGS += -O2
+> > diff --git a/configure b/configure
+> > index 138840c3f76d..46964d36a7d8 100755
+> > --- a/configure
+> > +++ b/configure
+> > @@ -67,7 +67,10 @@ usage() {
+> >  	Options include:
+> >  	    --arch=ARCH            architecture to compile for ($arch). ARCH can be one of:
+> >  	                           arm, arm64/aarch64, i386, ppc64, riscv32, riscv64, s390x, x86_64
+> > -	    --processor=PROCESSOR  processor to compile for ($default_processor)
+> > +	    --processor=PROCESSOR  processor to compile for ($default_processor). For arm and arm64, the
+> > +	                           value 'max' is special and it will be passed directly to
+> > +	                           qemu, bypassing the compiler. In this case, --cflags can be
+> > +	                           used to compile for a specific processor.
+> >  	    --target=TARGET        target platform that the tests will be running on (qemu or
+> >  	                           kvmtool, default is qemu) (arm/arm64 only)
+> >  	    --cross-prefix=PREFIX  cross compiler prefix
+> > -- 
+> > 2.47.1
+> >
 > 
-> Shengjiu Wang (2):
->   ASoC: fsl_micfil: Add i.MX943 platform support
->   ASoC: dt-bindings: fsl,micfil: Add compatible string for i.MX943
->     platform
-> 
-> [...]
+> I don't think we want to overload processor this way. While mcpu and QEMU
+> could both understand the same cpu names, then it was mostly fine
+> (although it probably shouldn't have been overloaded before either). Now
+> that we want one name for compiling and another for running, then I think
+> we need another configure parameter, something like --qemu-cpu.
 
-Applied to
-
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
-
-Thanks!
-
-[1/2] ASoC: fsl_micfil: Add i.MX943 platform support
-      commit: eab69050450ba63a4edb17d3d1a8654d2a130786
-[2/2] ASoC: dt-bindings: fsl,micfil: Add compatible string for i.MX943 platform
-      commit: 3927c51e49c1a45785334dc578f0b29c685619ec
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
+I agree, that's a better approach than overloading --processor. I'll try that
+for the next iteration.
 
 Thanks,
-Mark
-
+Alex
 
