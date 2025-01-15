@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-5270-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5271-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AD1A117E4
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 04:38:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DE6A117F4
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 04:41:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXsCz6Kqnz30gv;
-	Wed, 15 Jan 2025 14:38:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXsGq42mtz3bPM;
+	Wed, 15 Jan 2025 14:41:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b2a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736912319;
-	cv=none; b=fZ1vLFqSWrGvgxe/KjhVmQaz3gPLmuvh8W+BV9YjOjySlYO0GoAIP8Wuvi4Mj0BE66LxVCkB/0yzbBJ5OAdyq+CkSKzXiRjJ/cWTklPihjNM+APDqCUI6j54XQ2Kq2GZF8ZS3sq/8YE2qcLuPW2otJtrOc2vV6FqTg4D5K60tYp/gFhGFgPYY4+cyPntWIjxbnAfclJl8agjJkPHrFSQQvcpUcFMdm66OEXH+60xa6BpNK0gB4Qu2RgOyBQKRJUDdKoVpS3OEYglVoc8v6KavpMtB+NhcJTx2waS+GLy0X0/+5KWIqKYYQWdWzXHd7JdBIl1o0XmyYh/RR3WEuqnRQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b31"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736912467;
+	cv=none; b=khoP0gwO0/Xg5csk5bIuAAPmIufuOiQO+RuUUFBbAdrmUb+3dbOVjxUnSjCeJanWdPY24DGaXS1C90C43oARQJduJsReiBSBu5vYOWg6WUrtLZRdTzm/ObPiHSncpyJcsQEp+T2wj/J3T6eUa84srm2QAiZ5mC80DHR6SLc7FMml3bnWb/UfeIzP9qCvEJPOi6wEo8yv2FIvctcZdNvls/P8TOakv9UHYhVMDB46J/RgZThkgyOHt5pmcD5s5VO+VYa6+eH4OlgHmXF9h8nU1UmyOv2qo/1Kc/1JD9QkYO4zK2YgvVNBagNCfzpG9ERSxkkZLeidQ10YZpOEzZEuSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736912319; c=relaxed/relaxed;
-	bh=ggG1Vuf9tiZ0JKZNDTMJJvN8O1nAUNZ5coZeOdFCGi0=;
+	t=1736912467; c=relaxed/relaxed;
+	bh=UmTK2k4vF2mqctoCssOfytU8KQ/2i1ya8c1dPxSZwZk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WChWZ6mXj8JOYaem5/0lemyQUwQu8JI75JjIbvuqwEmfpeB/oCA4ytn4E2PXXDZGQrYX5F9xchiuA5wSlWxlak/dW1e1quZOtXr5AN67uaX6Ycyo5HY+f4PiSz8BcbbmkfOn1gYLWY+2SN2p+F4DGwMXHdhjDyrO7WFxbQv7KuBn+KalD4LHHYv/KTmiFJ5iKJmhfRlbmz3agv43kcQXD7WT7u5hFvc8YscH75d0re1b1jukcSL91wTWjen6xkKylTwcxFd4z1zWhtjn1tDzzr6ckC3m1pvVYjLglSYqWpiEOrsItCXdSVZnHWFwyL2F1H6fK406teZDG7NxwyoHkQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jcjWoFWQ; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZBwFccGzYz6AgWBuPXEeBepttKl3MNIQvH0iC4iYXcHPUc+BBLQTTlWDciEbtJLoZbMkGaFs9i2xssOY1kg0jgigif1+zAFI4qx6aGE/aBriAtcPwf4vGcPNU7tZvSP7k3g3Ux17hdD8hdHu6qM7f8odwM/WNInLyM3YmiSQRtqAvXw0JLfNjUnWg+uDyahZsbASlhD1Lw5+uR5HKyxkKwnD+erkFxsxgYaMQrsQPHnJzVkap+hnAYlKksg0v2R3DvQwHdDt5VLzATsu1nEozTTVbhIKBMrACceLfs4hABlulv+wTL1sq/HyY/Cn1ai3ZdX8lDQT+xUSAKn4t3gNTQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Rnmyr4uH; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jcjWoFWQ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Rnmyr4uH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b31; helo=mail-yb1-xb31.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb31.google.com (mail-yb1-xb31.google.com [IPv6:2607:f8b0:4864:20::b31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXsCv6dllz30g1
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 14:38:35 +1100 (AEDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-e54d268bc3dso11146432276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 19:38:35 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXsGp5wJBz30g1
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 14:41:06 +1100 (AEDT)
+Received: by mail-yb1-xb31.google.com with SMTP id 3f1490d57ef6-e54d268bc3dso11148568276.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 19:41:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1736912313; x=1737517113; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1736912464; x=1737517264; darn=lists.ozlabs.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ggG1Vuf9tiZ0JKZNDTMJJvN8O1nAUNZ5coZeOdFCGi0=;
-        b=jcjWoFWQ9Viv4RkHVst5s4JoNQttg+EA8jdGBqrDS4wNBDtRlMlWir+T2OEP9b8Pqv
-         8KcXcURpZTBa5ses0zZzTBV3F8qhEkH+GEmIUJtT5v51HHNQR/pEZYuWdGDbBS0DEbh1
-         Ys8Leq/is9a93J5XzQDURO7sA+nUCtdNtpa8o/MR9VYr0ZF1qxuSSaWCPuYTzciFkC1o
-         DhSwD/+9pLVI3TGXTMZ10IEsuWBklSqzV+8Zp3mKKeKWDAMPMYiEdgIBB/ZPItAUUvHN
-         lENcJNkIlu2bigd5yYDwped53hJDlOjKkif5csUKSDeHZAs9/8qOIcgctY7SYQPG35rc
-         aQZQ==
+        bh=UmTK2k4vF2mqctoCssOfytU8KQ/2i1ya8c1dPxSZwZk=;
+        b=Rnmyr4uH4jLUi+2Xa91KabZeEDhH+HNCo6jTPIx98SiOcuQ08etQ53BkGLJ9hzZINF
+         7EpaIhbFnxnMuXEal2sT3kH/RHBL9Nc7/Mn7G5dY31QRvgCNnlIVcgmr4l7If2b1Lipj
+         Dhx5tmXkZUj3qcQiWsylXl+5jUmGRtNdM66pVGvzW+9ZhvDQ7B83yGFIax6ENMp7C7ZE
+         hhneiDh1GBc6p/5vL54EGZv/wzU2yGfhjo27e5jYZ56gLUznlTnnWAtRVSEvJzEbzuCN
+         /mRyZWMOx9H4b7JO1r42rFN8rdB0z+ONTjoT4JU9UrmhqCwQjWBsgod53vRB7RIf+ZCU
+         QSIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1736912313; x=1737517113;
+        d=1e100.net; s=20230601; t=1736912464; x=1737517264;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ggG1Vuf9tiZ0JKZNDTMJJvN8O1nAUNZ5coZeOdFCGi0=;
-        b=dNJahYyyy/bNXqZFGbpXUc3luMUENglNGHhpQ6uuGpPpH2fcowRofS700cKzAL46M+
-         4ZNvp3NgA0sxhV7mozLxon6fpt8rrriD7UUyphsn8qYRK3l4yYwobjSK6ZtUnWJpdK96
-         CZHDyE+EkFR9XWG+tR03MxoHU9NQYX1tX/4Dcg6SGP50loI/MEPJSvGSkQGImWbAEHsN
-         nKYtDmM9E0BA8QQmXw0sv+VYiFFH5K0+xCWJVcN3Oy70pO7XkstJGAAMN7Jw7UaBZdOw
-         z2PXTotFDpixA4GWFbZud187/Pl3v/XY1nNXheB5fPIwDkSUt6oKi5zqcXkXmEB81qq+
-         MUMQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVZuZOu4RuSEySGcnuDdW+tCGh06zidxJ868I30ds9oyZ1oIm4PUA/2cwkynCHb9O97F4L/ZjQIWsoYpZI=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzoLyVTGBM13UtmwlcmIfo1mnRILftGOjxmj7s/vEtjlSV+q00f
-	46e+gWw2CfkldHUoh8U4h1q9LQ8j9pa4e4c4In25PVWS8DXExEza
-X-Gm-Gg: ASbGncvSCJ2EQaT+FtDmVOUqtlmYthYkZ/9+y3PYd2PIAeZ2IcaWqREOPAibUWIg54B
-	NhhYhyZRLu2b1fELaVLUW9IIIB200x7465b+BSr//yBrKebJrRO7esv2iqUOwyxzERZrpXsMrdz
-	h8NYBtuPBovbTWzfWv77fQOODdydVU6tfj83Yi0A4RDvgZYhMHwyO5nEcga+29IAMDc8UvgQnKA
-	c3KxpbXGF3lJI2sc8QEFPeTlGhho+OWwfL26CFRxm/EUrCAEn/UwwAL
-X-Google-Smtp-Source: AGHT+IGcxF5UAr9VMjmEWcxKQm1jPE9VpwQlX4HhGZHkGGwOlZgKnKfAZqEBywSv8uk39tmS/FGABQ==
-X-Received: by 2002:a05:690c:62ca:b0:6ef:7d51:eba6 with SMTP id 00721157ae682-6f5312a8384mr216747977b3.28.1736912312722;
-        Tue, 14 Jan 2025 19:38:32 -0800 (PST)
+        bh=UmTK2k4vF2mqctoCssOfytU8KQ/2i1ya8c1dPxSZwZk=;
+        b=re85aw+cJzFfDVZqYKdyammV2IhNZvyHV5q6n5md6nfWAcHYlm9oYC9y473rl1voB0
+         hrAlASNcyEwQwwZl/Ctm0m8WinssqZ24NZrN9yIOQpJHTVTyvrf3hMW3DoD3QSqbAdNI
+         puDVH9yPyxp2JHQGK1zjOTCXGjKwUAK4YJ1vfR1r51UZxkgyyYVhj01gEE4ZsAQgYVqg
+         7aj3FoEqkqpvhO6zR2syvwiuAStxqblvzcakLPCwK/YcIgDS8zZL5H/M7DbL7REszyfj
+         s7xl7p9zjLnWIxSrk5tnIegCpm8gEjTA3vlALr3/Nz8OUFsRrbNiRAcdo5ZlfFFvEgLU
+         9xPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXBkTviAFucBt0wcovPhWqOWpIK4EmRKgArYOe284D2A8BHAm+P1yqsx0wWoVBjPqoZ+THB5XfxNdwBGEU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxUwOLtNghEXt9idSoJyLUPlO/Pi8h3gVspgidrlkrTmFVjVMv+
+	/XfOo8YV6CrLT5cjeXOPTQYjLkt/bdByVU4z7+N/MQxHWmmsNAUQ
+X-Gm-Gg: ASbGncsx44wS2dmBVw8GTh1eGJGG7vr8p6LqZqoLyh431YlaRuKV2p7lEW8T5UwID8p
+	yO3Y4yNP829KVz/6JrVvApQv7gHvZcf/1W+xKQEk8w0I8MZD0LDUZMa7Wgzd6hAijI+eAb0suBb
+	GE7+nhHLKW3xB1oiTWisgbeDmlyHLAXGWJ6EBgWFjOG2KaKmES+/eks5mD3lHx0/kol8Rh5Ibaz
+	qfzP8loIksEc2RqrXI3aG+XvzcA/Y1y/9V+kcKs58tBED+I68cMiHyd
+X-Google-Smtp-Source: AGHT+IGlCnPNZfANCVJooif/vwR9Wcfdn14fNs9Squ/CXSzhwHBTvNfC1cp1ga3/es5eAiOB92QKfQ==
+X-Received: by 2002:a05:690c:45c9:b0:6f6:cad6:6b5a with SMTP id 00721157ae682-6f6cad66c84mr8171767b3.13.1736912464441;
+        Tue, 14 Jan 2025 19:41:04 -0800 (PST)
 Received: from localhost ([2601:347:100:5ea0:e12f:d330:c8d6:a6b7])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f546dd712esm23854477b3.79.2025.01.14.19.38.30
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6f6c93732c9sm1796417b3.103.2025.01.14.19.41.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Jan 2025 19:38:31 -0800 (PST)
-Date: Tue, 14 Jan 2025 22:38:30 -0500
+        Tue, 14 Jan 2025 19:41:03 -0800 (PST)
+Date: Tue, 14 Jan 2025 22:41:02 -0500
 From: Yury Norov <yury.norov@gmail.com>
-To: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Bjorn Helgaas <helgaas@kernel.org>
 Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	linux-s390@vger.kernel.org, netdev@vger.kernel.org,
 	virtualization@lists.linux.dev, linux-nvme@lists.infradead.org,
@@ -82,6 +82,7 @@ Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Heiko Carstens <hca@linux.ibm.com>,
 	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
 	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Sven Schnelle <svens@linux.ibm.com>,
 	Haren Myneni <haren@linux.ibm.com>,
@@ -118,10 +119,9 @@ Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	Shrikanth Hegde <sshegde@linux.ibm.com>,
 	Hendrik Brueckner <brueckner@linux.ibm.com>
 Subject: Re: [PATCH 06/14] cpumask: re-introduce cpumask_next{,_and}_wrap()
-Message-ID: <Z4cttq0dfHnapkUI@thinkpad>
-References: <20241228184949.31582-1-yury.norov@gmail.com>
- <20241228184949.31582-7-yury.norov@gmail.com>
- <Z30r/6S8VBU8/Ml5@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+Message-ID: <Z4cuTsHbO6yiuFKA@thinkpad>
+References: <20241228184949.31582-7-yury.norov@gmail.com>
+ <20250103174432.GA4182129@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -136,95 +136,31 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Z30r/6S8VBU8/Ml5@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
+In-Reply-To: <20250103174432.GA4182129@bhelgaas>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Jan 07, 2025 at 02:28:31PM +0100, Alexander Gordeev wrote:
+On Fri, Jan 03, 2025 at 11:44:32AM -0600, Bjorn Helgaas wrote:
 > On Sat, Dec 28, 2024 at 10:49:38AM -0800, Yury Norov wrote:
-> 
-> Hi Yury,
-> 
 > > cpumask_next_wrap_old() has two additional parameters, comparing to it's
 > > analogue in linux/find.h find_next_bit_wrap(). The reason for that is
 > > historical.
-> > 
-> > Before 4fe49b3b97c262 ("lib/bitmap: introduce for_each_set_bit_wrap()
-> > macro"), cpumask_next_wrap() was used to implement for_each_cpu_wrap()
-> > iterator. Now that the iterator is an alias to generic
-> > for_each_set_bit_wrap(), the additional parameters aren't used and may
-> > confuse readers.
-> > 
-> > All existing users call cpumask_next_wrap() in a way that makes it
-> > possible to turn it to straight and simple alias to find_next_bit_wrap().
-> > 
-> > In a couple places kernel users opencode missing cpumask_next_and_wrap().
-> > Add it as well.
-> > 
-> > Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> > ---
-> >  include/linux/cpumask.h | 37 +++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 37 insertions(+)
-> > 
-> > diff --git a/include/linux/cpumask.h b/include/linux/cpumask.h
-> > index b267a4f6a917..18c9908d50c4 100644
-> > --- a/include/linux/cpumask.h
-> > +++ b/include/linux/cpumask.h
-> > @@ -284,6 +284,43 @@ unsigned int cpumask_next_and(int n, const struct cpumask *src1p,
-> >  		small_cpumask_bits, n + 1);
-> >  }
-> >  
-> > +/**
+> 
+> s/it's/its/
+> 
+> Personally I think cscope/tags/git grep make "find_next_bit_wrap()"
+> enough even without mentioning "linux/find.h".
+> 
 > > + * cpumask_next_and_wrap - get the next cpu in *src1p & *src2p, starting from
 > > + *			   @n and wrapping around, if needed
 > > + * @n: the cpu prior to the place to search (i.e. return will be > @n)
-> > + * @src1p: the first cpumask pointer
-> > + * @src2p: the second cpumask pointer
-> > + *
-> > + * Return: >= nr_cpu_ids if no further cpus set in both.
-> > + */
-> > +static __always_inline
-> > +unsigned int cpumask_next_and_wrap(int n, const struct cpumask *src1p,
-> > +			      const struct cpumask *src2p)
-> > +{
-> > +	/* -1 is a legal arg here. */
-> > +	if (n != -1)
-> > +		cpumask_check(n);
-> > +	return find_next_and_bit_wrap(cpumask_bits(src1p), cpumask_bits(src2p),
-> > +		small_cpumask_bits, n + 1);
-> > +}
-> > +
-> > +/*
-> > + * cpumask_next_wrap - get the next cpu in *src, starting from
-> > + *			   @n and wrapping around, if needed
 > 
-> Does it mean the search wraps a cpumask and starts from the beginning
-> if the bit is not found and returns >= nr_cpu_ids if @n crosses itself?
-> 
-> > + * @n: the cpu prior to the place to search
-> > + * @src: cpumask pointer
-> > + *
-> > + * Return: >= nr_cpu_ids if no further cpus set in both.
-> 
-> It looks like Return is a cpumask_next_and_wrap() comment leftover.
-> 
-> > + */
-> > +static __always_inline
-> > +unsigned int cpumask_next_wrap(int n, const struct cpumask *src)
-> > +{
-> > +	/* -1 is a legal arg here. */
-> > +	if (n != -1)
-> > +		cpumask_check(n);
-> > +	return find_next_bit_wrap(cpumask_bits(src), small_cpumask_bits, n + 1);
-> > +}
-> > +
-> >  /**
-> >   * for_each_cpu - iterate over every cpu in a mask
-> >   * @cpu: the (optionally unsigned) integer iterator
-> 
-> Thanks!
+> Is the return really > @n if it wraps?
 
-Thanks, I'll update the comments.
+No, this is a copy-paste error. Will fix in v2.
+
+Thanks,
+Yury
 
