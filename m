@@ -1,124 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-5274-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5275-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00F55A11926
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 06:45:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF86A11938
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 06:48:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YXw2W2wSWz3bSg;
-	Wed, 15 Jan 2025 16:45:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YXw606Slcz3bW3;
+	Wed, 15 Jan 2025 16:48:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.12
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736919939;
-	cv=fail; b=kDlEIiaw3XFjLC90JMfU6CRHklCPdm7G7uPRStn1/4WYx6J1ODfHdNJzVeVcL86yavWU41PSZmS6ewJL948uumig9TyqdXLgGo66IFr6kKx3L1OF7yHxG3KFwd7qxSZ3YfyJO4/wQg4nqvBUeoK3TvDEsMgwxWCSWauJ1iXSTtt6eQdaNzyyWYCSWt+pGw7KioG/0lHiY1RKBXAYnmtMxcDvwvyWzS1voD4sEkb9OOfPPWzumZvlmXjoSPA/7QyWixhsc5THL4B25VUN5293UYn22I8KbjCjc/zkp9FMdjm6MCfaqBWOEUqdz3xBi3lIRkeOpXTVLKJb3qBwQ1Qv7w==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736919939; c=relaxed/relaxed;
-	bh=dwAsDqa83SBftxpZBhgIknSr+t8xo9ZEfQankdK2l3M=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=NUudi6jday69oU2o2P3edyrT4+/NffzyeGDzhqO6+h5AzZj4TJzeqVuvOHEYxJJevoVx/hU9UdrjoCN9xpEtElx/JtnPYbpmrNMXo0giiBwRNZw42fuOzHT7/Ks9/6SFWCjlD4F/QF9PlJRrzdRZsBzoz8kbbnDxz/9+DNQOZUuwIwi/QMViMLUz+5HJzmGYpchHyKNGEGoY7ouFL8GuNKdeAY/iqLBe5SKdLPzyAfTTpLgAT7aC0JrtPAUCzmt15C+ttWLJc8Eh28n/BJQP0IRuErLTrsdsOIp3OTe8BHR93JgStIzL9AtkqHQ/4YiEWoidw1NsSpm9Ortf2Ddt6Q==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G9wiLZ+8; dkim-atps=neutral; spf=pass (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1030"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736920120;
+	cv=none; b=Ak9bKm2utnPmgvb0Lk9ckG2wHMiIIZI/0Ys32v9JYFzGfqFFARixxt2DROkqG2aIDAN7vHZmoc9SlNmGVW5JWMtKbBEmdPjFm2CSEYNqPFkqklT3VWeUWFywqci4l9MQ1Lg5Cp2qAeU1QIbvAfsPNbgoW2INA2ulg2/u57M+GNEOcUiUIZzJ4t1mGLpD9LWMYXeE9FmfePhoiikQPIz3q+C/eZr6JZhV/9Aeb3ecshwYmx//BWsxVUA3g84Uyx8kC8hD/FkRFE+2lh3RzNVFV8QOMbKYChqI6+oI8W+hk2WSkCqfOysG3tMal1xlmJQmE6J6xi/Bteg8pGOjOLYF+g==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1736920120; c=relaxed/relaxed;
+	bh=Akn62yShjkzTVW+wH6ehtLyqM9iw3YLFKJEmmviG+rI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=aGagxo6xkvt9xAaDWcYxr+QxlNhuiFilKTHr+3hOUxzFQ73ADJo0TOj3QWY9/qo2PH2YKOyhvosPS5wLYBWeqcY7MxQ/Lbm7JORbmymVSqyzbg4kQNB8hf4nane+UBRqscbCm3RiGxdhDmwDLwYNuxLKty4d9qMA4uwprt7pUKAVcRqYYRyv1xTJmMxuM2dK031HCBtDxDJ7J6/VYDY+EhHQCRM7VwR57hDDUPzpfKCvk8PddTrkRzwd7aCr6kMjlgr4f953z0KoSrWYTukzNPoNW8VaCuoouMWrkiTBM036fcxrIVkvu964wt+K9oVl8OXIWfgzl3VqGYUa3IN+tQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com; dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Ip77rQ5G; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org) smtp.mailfrom=daynix.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=daynix.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=G9wiLZ+8;
+	dkim=pass (2048-bit key; unprotected) header.d=daynix-com.20230601.gappssmtp.com header.i=@daynix-com.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=Ip77rQ5G;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.12; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=daynix.com (client-ip=2607:f8b0:4864:20::1030; helo=mail-pj1-x1030.google.com; envelope-from=akihiko.odaki@daynix.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1030.google.com (mail-pj1-x1030.google.com [IPv6:2607:f8b0:4864:20::1030])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXw2S6XL5z3bSN
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 16:45:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1736919937; x=1768455937;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=Rag4rQfmoeiGqv6sC8nCDRn6Hg0Mac3OnSkHeNdxHSY=;
-  b=G9wiLZ+8CZ+cPOgWFFP6VjkJVt9CD88Qpidn/BxlWpfA4hS3OdMBlp70
-   3L/kBK42Zi733YRFcb7CgHi2qqpABEL21k0t29/WgLyw+vsO1vXncxLP0
-   ynwXO/WFgS8jyqyOqsI7G6NDa5+5hruJWr+OmtfAYtQQLQKm7vbIHk/Fh
-   ooblvsYuimnxdErWB/5Mt0o/2aXqi6ETcWjmVh5AoNUr3YX665NPQkBfB
-   CwL/LLCUzBZItDdTT5cbHGFFnVPy0EDiuOnH128Q4VcPOdC34iS6l6OB/
-   U3JJ+z5ki5HczC8g+qZGKm9raY4h/U1ld5RDgaLXWyy5lCI2pvW44rh+Q
-   A==;
-X-CSE-ConnectionGUID: 0uAsOREqQlS22X1Z2RhnBg==
-X-CSE-MsgGUID: Ttkaz5onRo2foPWeLlecJg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11315"; a="41176874"
-X-IronPort-AV: E=Sophos;i="6.12,316,1728975600"; 
-   d="scan'208";a="41176874"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2025 21:45:20 -0800
-X-CSE-ConnectionGUID: +dSrfhqvTVaVYKB+6mVGWQ==
-X-CSE-MsgGUID: HHkWPYFfT66nqUn+A02QXQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="104897592"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 14 Jan 2025 21:45:18 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Tue, 14 Jan 2025 21:45:17 -0800
-Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Tue, 14 Jan 2025 21:45:17 -0800
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (104.47.56.174)
- by edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Tue, 14 Jan 2025 21:45:17 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=o6KPePJY0VCY6h6gfoOdWes6MM4QKmp2kV7+wfZdhPwoA8Ti0N96ZWROPoP1x8fxEtLRW+7wSCC8h1Yd9+4pjmQVmQOqZqLbqZzdni4R3EYDGJV6Ta+0BNDfWuGED5lXdPMAGYt8SdQfnWm3nbW5RNMMmm+vvhcWT21fDhTSDIsgxuRMJ3WHPt0x5lIU/90BDnTAy+O8infy3kdNIwxhV9h4ETATWWyHFlFmWyhXWDIdwfPHdOfSV5zOzU8s4Qmm2D1/rnTiXL2kMlHSx1DiEsRMK6JjZoUMEufdYhdULgKwuq1VUgIF830gVqR44/JG4ylOwJtNI9GdSRvYltH9wg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dwAsDqa83SBftxpZBhgIknSr+t8xo9ZEfQankdK2l3M=;
- b=SH0ziOvH1MFmdBSuVZdYB5wvmngkKf4NGOFajn7k76gAfRLmfRd03zDX+YUOLy2b6vmEMvg1PtlFhqA22/+ZZtNcpppJ8AOrc/y38d8GQLHsCt6HWEdLyE15Z7mim4X8YhoR0LJRuYBSOa9LHIa98KzQLSzf0OAmCnG0uu22J2RV2Js30aof32HKFJqJGXfPuK4y5sPJH9w75NCmKjhzPYHIaiPB+SLzhq8K7ibDl+DcioaSppmO45qUcHcJkIPFcX4kSBlQSTsouSnaAAPyC1HAH6ie160XPNmLdR1z2SDhiTJLLwvDreRhFj+5n+nY+GBg93F4ISU8gpEfFtRV7g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by MW4PR11MB6811.namprd11.prod.outlook.com (2603:10b6:303:208::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8335.11; Wed, 15 Jan
- 2025 05:44:43 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%5]) with mapi id 15.20.8356.010; Wed, 15 Jan 2025
- 05:44:43 +0000
-Date: Tue, 14 Jan 2025 21:44:38 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Alistair Popple <apopple@nvidia.com>, Dan Williams
-	<dan.j.williams@intel.com>
-CC: <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<alison.schofield@intel.com>, <lina@asahilina.net>, <zhang.lyra@gmail.com>,
-	<gerald.schaefer@linux.ibm.com>, <vishal.l.verma@intel.com>,
-	<dave.jiang@intel.com>, <logang@deltatee.com>, <bhelgaas@google.com>,
-	<jack@suse.cz>, <jgg@ziepe.ca>, <catalin.marinas@arm.com>, <will@kernel.org>,
-	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <dave.hansen@linux.intel.com>,
-	<ira.weiny@intel.com>, <willy@infradead.org>, <djwong@kernel.org>,
-	<tytso@mit.edu>, <linmiaohe@huawei.com>, <david@redhat.com>,
-	<peterx@redhat.com>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <nvdimm@lists.linux.dev>,
-	<linux-cxl@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<jhubbard@nvidia.com>, <hch@lst.de>, <david@fromorbit.com>,
-	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <loongarch@lists.linux.dev>
-Subject: Re: [PATCH v6 08/26] fs/dax: Remove PAGE_MAPPING_DAX_SHARED mapping
- flag
-Message-ID: <67874b46c0493_20fa2941d@dwillia2-xfh.jf.intel.com.notmuch>
-References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
- <b8b39849e171c120442963d3fd81c49a8f005bf0.1736488799.git-series.apopple@nvidia.com>
- <6785b5525dd93_20fa294f2@dwillia2-xfh.jf.intel.com.notmuch>
- <pxpog7xsknwpaqh44vjkg5anegfwxizn6sgpdipntsljx5jg2s@rwqa5zfxooag>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <pxpog7xsknwpaqh44vjkg5anegfwxizn6sgpdipntsljx5jg2s@rwqa5zfxooag>
-X-ClientProxiedBy: MW4P221CA0005.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:303:8b::10) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YXw5z4Jf5z3bVS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 15 Jan 2025 16:48:38 +1100 (AEDT)
+Received: by mail-pj1-x1030.google.com with SMTP id 98e67ed59e1d1-2ee46851b5eso8337726a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 14 Jan 2025 21:48:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=daynix-com.20230601.gappssmtp.com; s=20230601; t=1736920116; x=1737524916; darn=lists.ozlabs.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Akn62yShjkzTVW+wH6ehtLyqM9iw3YLFKJEmmviG+rI=;
+        b=Ip77rQ5GKJ2LgibNXYTiH4xaJzzZIlvL5Moz9H0exqoTn3fQEBJ4vBCznzfy9jDQK2
+         ftqdef4Gyp1d2fKVzB/altV/EN5yADOcnPmIXw9n/40egA/5kSW+yi4y3Sb4hjO/syz3
+         dqFMq2upPWjbll4lZzDt1IjXqaRwRKihoFolDpDJPlsD6yA5bH2Bx9Ijdx5fqcdhEvbX
+         LeGcOSEBq5siz2ey6rMcpfmzo45eOxyc2JGFQpt9E6ma2PfQfyrcmxahjM8xrBWFPhM4
+         SV9hmzG5eH/9ZhwHjmtdTY0ND4LpXfAlRGUk+xA9qLZKkw6EgKRLcA1ThsOVfQwiTGn1
+         VqOQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1736920116; x=1737524916;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Akn62yShjkzTVW+wH6ehtLyqM9iw3YLFKJEmmviG+rI=;
+        b=cmbnigl6m+nOBUQQ7ZfLD4RQHLdJOmkQvLIFpPVnwAoV2r89le27V1YkXGCG2UtTg9
+         8y4ggNRVdQ0PG3rpzlfhW4zM4s8/ytsdnz17w5GpLIdM8ir5f59vppPwyrM7zyMrKWNN
+         qPh+nHIHlk4tiy0+aY4FfyjVZMlksaEWGt1f0/fqQCbt4wf9t62sTMfclZnsy8awgJGz
+         Zq/tNQnv+QUNsgFK4OpDgVHfEz94oT37KTxdg10pQly9Fs9eeH1zTz9UFnK0T3Hy05Ii
+         oEGWYmUpisuvASJ1NkKq/TfaoXL6fjACboTSq4aDBGhDJOaWuuP3/bebIpK3un/qHJ5w
+         B9Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCXLVIXns3DEeJJei8L+O/B8oBC0E5gt8w5oAY5Enb4eH4qLzXvCJT8PHVxYRXeoOMWlG50v59hAUI8PEVY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxRcjKYbiFtZXwNS2J+9mplkylB4Kss3jAVQf0wX8+P//eGok4L
+	8pbwenqacCIsEl4n7WIUq0eaQFRdqkLygbfjRDwjRSK2oxBfKHmAuZk9jSyjgQw=
+X-Gm-Gg: ASbGncsN8FAgu4UNdy70iFRTn40ZTyhXDk1Ko9GmuOE4/EbE4thnWzO56hImUil2SiX
+	Kx8hPRcGZYq/hRxXg8DFBmyHUxHY5s4Ehgnon/Y+jdnGIlmRuVfy87nmscbhMl676slWA0/K20B
+	bcn8Qc0cujDT3SAGFmrC7H6N5vKa//d84KOk3tTrvEdw8YyU25JnK01DykrgnoDdeY8ANKzJyI2
+	EUUimvZZiJLvq2dXurDOvGDqm3oIdVRWcvCMFvINH/dGAAoJoJdlzvwm5o=
+X-Google-Smtp-Source: AGHT+IGTAFr6fQ9a6YArcK/8amGmkIoCg+M7qyB/EhAZVK1D/0q1h57yniAmS1nzzXQhV2aOnFsX2A==
+X-Received: by 2002:a17:90b:3bc3:b0:2ee:bbd8:2b9d with SMTP id 98e67ed59e1d1-2f548f75de6mr34075229a91.34.1736920116365;
+        Tue, 14 Jan 2025 21:48:36 -0800 (PST)
+Received: from localhost ([157.82.203.37])
+        by smtp.gmail.com with UTF8SMTPSA id 98e67ed59e1d1-2f72c1cb28csm504577a91.21.2025.01.14.21.48.31
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 14 Jan 2025 21:48:35 -0800 (PST)
+From: Akihiko Odaki <akihiko.odaki@daynix.com>
+Subject: [PATCH v5 0/6] elf: Define note name macros
+Date: Wed, 15 Jan 2025 14:47:57 +0900
+Message-Id: <20250115-elf-v5-0-0f9e55bbb2fc@daynix.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -131,98 +82,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|MW4PR11MB6811:EE_
-X-MS-Office365-Filtering-Correlation-Id: 84a129ec-1459-49b3-5c98-08dd3527b619
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?06KpsT/QPJ971IC9WWwh4e2lDyWW+S7eeXH4qJPNaffOL+b/AufKCXx5lcpC?=
- =?us-ascii?Q?ubk5awfO//jN+KA8lBDKmS4aLD0KHZP1sN+7FRFMXz5NdJiaba2RPPZsfZve?=
- =?us-ascii?Q?ybnH3vM1fU7EUPn9ZHZ0rvlbkwEkeKt9dEGweelK+BzVxNHUTVw5QdvuwYcd?=
- =?us-ascii?Q?1/DpBjygqzfUi2Ds650Vr8nygXGLXT0NodPD29eH9rIKoiRVDkeXpoYsulZR?=
- =?us-ascii?Q?7fWxMOzpseZIhdIrO6eLa76sKkLJdBFhSy6mD7sINHDbGm7livLujzhqAWPX?=
- =?us-ascii?Q?tvJ1ekd0LSjWJwvqboqgx/mHZ/9QJYsfqWtqEiQw4kO6QaB1Dii9vPWN/je7?=
- =?us-ascii?Q?JVOzWilBIX0IMTDyJoA5/v6rB7Y0Ck5wbGQ4eG9UfxNBnrKSe8n01vRjS/A/?=
- =?us-ascii?Q?01+zhXhHFZJF7ptm9KJ7rgF6geyoHrwFCw07cR8jMjOSHAQTfdF4+cr8kIZI?=
- =?us-ascii?Q?WAIDuoopZeO9GJAazKTADnzckdbXXB6hOy7QV3FlolY/iZN8gERc1HTRqbCr?=
- =?us-ascii?Q?TDeIfhQ43bGjSt3jokU2ubjLT2VcRjx/4zrzC4RIVsUwiHlJ5zjzzhXEqVZv?=
- =?us-ascii?Q?67TeYTELE6pCxdtaDA7W4VkMn2YpKgXHvUT75xYcqbxsEFwYp4o5L/lR/Xy5?=
- =?us-ascii?Q?PHvYcb35Mbe1Rk4XWGLq0iRyOE03b0+Oej/LpyMILyQbmqmO77fslQxRFJYm?=
- =?us-ascii?Q?q299VXLp7U3wP2fa4+6/rsUePl/90ni3TF7S/FJxGrJ6i9K0cC8jpMQ+EVZy?=
- =?us-ascii?Q?N/AZS3lp5rD0eXcmD2U9zQYqEDIbXPLGjujgtSETSwSnzvH5AA+SPS0AaahS?=
- =?us-ascii?Q?lD6ymgsPEzwY2IuyHaiSZ7aY0hA+VNctujELBO++fnaCINucaO4ulRzUpQ4U?=
- =?us-ascii?Q?xKURWUGKcKD4WX6vMqVntgv81Pso89Y5N8PjuOUEoA0ca8T23Mfb+9SKLsZ7?=
- =?us-ascii?Q?A1949IK67BelIwJfK1v4tsl+DwNtuIso1A9VZPwZH+GN9Qpic7wVuvbH19Na?=
- =?us-ascii?Q?+KfbsfX2BOXGqBbD9xVs98mnihUbmJsiGDXuSY8aJ36HdHNjiVUUGplqrs4x?=
- =?us-ascii?Q?ILmJVbh+d8xL0uLrHuILtez7I24IqUn01CzHEJWpscrRn10Brx5nyWeRJcU8?=
- =?us-ascii?Q?kExwk00smj9Dch0HZPcLtWc+Lm7sHZmLrvBYmxpDptrY1NrvGou4Al2NwpyX?=
- =?us-ascii?Q?yJr/UUGlW8jFL5xEYy+FiR33wMwX9t5DctunlK8WKrrcz32yAmVLlKUnq89/?=
- =?us-ascii?Q?eqMqbvE6NGTyLm+UPnZpDqrdPoYhvG60EZtyt/VkjQYI0aqcu6NZzzk8+Jf8?=
- =?us-ascii?Q?ngZk2HXBFZLJFBNTVhliLPXnozv9G3JlXh7HwFo5DUsvOq5TzchniXwW1H/2?=
- =?us-ascii?Q?LyqMp/21GBJ1L/b1KsA8j0Ppx/6x?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?VoWQhXkXyPS+81OOtBnYGW7ICXZDnZ05kLckHpF5DZ/K9KoUikGG4c6mZhe7?=
- =?us-ascii?Q?lF+wtck7SaeDCxPK4E1IPPQnlm/a2IhoBXT4iSQ+BabW+henkErTNo8dqOoY?=
- =?us-ascii?Q?4mFykoZxxJCKflOcz66cHOqiXFR75m5PH1Tq/vljbDfaJv8moyoaC72jiSz2?=
- =?us-ascii?Q?hNndj9W05JzxHQXkC9bgC/+ui9nETcwCSBYfIEiA5Zo7vAHeyIBmbvtxLZfx?=
- =?us-ascii?Q?JOVH3sniaL05jnxw51FGeqWCW93UORzfA6S7WO/awou71HvSOaGWl2o0Ti5T?=
- =?us-ascii?Q?jWY/8FZze/9roS/LUVQO7a5Va/MEGhQdYfOqj3Knu3eECex/IYsdtdxJpuDZ?=
- =?us-ascii?Q?FwQNjoJ110Jgft8HkigrGIjJdVsyHIF6zUTjxVh+eWN3boVNqPCbgdm03kmZ?=
- =?us-ascii?Q?JHWT1rPxjBwGc84hoa6s1NniXsYowixpETCYQJdp+AkQ1Z+JOcYY92GiqvrV?=
- =?us-ascii?Q?eRxbGxI7DxIblfSoZNs0gSJ2OakckcFub0QgKn3qaIBxO7Q8SmHELokBje1P?=
- =?us-ascii?Q?n4vZH18hR4OsEGtFdSecmBppHUy0ViltX1cG720Tz0p9xfXjQqQoYCRPUpYa?=
- =?us-ascii?Q?GPb2WmBBOKEYnmqrS8FxIs+AopSfkV4b200KbBoLRCwXzsIYIo7f9tVPn5XP?=
- =?us-ascii?Q?4EKahwLPP+ktN35bzkEixkl9fWSSWRdDU3upbKYlJfiIht9NG1zDYOZFV1mQ?=
- =?us-ascii?Q?ymRvSrKCTXEyxSFPNrplw3Wn7gWwGgOfS2uUvRmK9qR5d0rJPn9OvijJniSM?=
- =?us-ascii?Q?Bowg5i/0zcsjewuXK0ULwS3TzJo08qC4pwds0SHvoBJ3ZbBNFpsmZzw1CJlC?=
- =?us-ascii?Q?zlT2EqjxXh25nO36ljmq7k6y4yg5E8hnJr6tFmmysekIY3Gkqn0hxkEJIKih?=
- =?us-ascii?Q?9Fif3Yy2QA/jHFH26UOEAdZcTS8F71DMjjE2bZHirG6Tawr40OymB02K+8sG?=
- =?us-ascii?Q?Jo3oFTEWtTbT9UYZzW2lPXGEEioBKryeduHCTb7V46+wAPGF0vCm0XUj3GME?=
- =?us-ascii?Q?+ZRdr6JMCUtB6kTNF8f64eCXDjA/TgU99qxrUK2bgM3C0ho3MisDl7x0Me/Z?=
- =?us-ascii?Q?mqevgyN1yGBTmjxPXjvmnjMNvNSrQu2q0hgW1PI3a5Hbvro72RCuBTvSXM7p?=
- =?us-ascii?Q?DEAik2iZmkNMQtqoWBmFfnE234C0jpT1hW7iF6fxqvHdhlJDVzBG0mKbOa01?=
- =?us-ascii?Q?0LiwiDxKck1YX7IMjwEeA6PwIOCNvLZvJtxiwYrZ/Tzp39eM4im59e3yoLpN?=
- =?us-ascii?Q?biCtNf3Cq2g7tluSYjXOOqUV3jH3v7eVtbCnVZyxBYBNHKcrtO5GFJMHhFwZ?=
- =?us-ascii?Q?fdDRhVLC8d4ZU3Nkib3cE31dWuyHLLbvDPwp7OSCyE9hUfpO5VLcmATzo5gL?=
- =?us-ascii?Q?jsqNS3tsJkvmR0bNCAyV7hWKemRrJkvQHdRlZ8bDc+tWuYuquFJnj7rilY+/?=
- =?us-ascii?Q?tLGES4E9ZpKg7OmFO83dM6+FpAP6cwmgxUonLx0ZfnwKRH/ByP37vCzx+YHW?=
- =?us-ascii?Q?OIjp/WJTCTWJktflIQBCZtRieBEHHcAYG/NC5gxhG/g3r5jStpy8QeFctAb3?=
- =?us-ascii?Q?9sMqwGeOUd8R4PBR7xeK+pObQhotq8pe6WhQEiIjC1xwPohLQcwJmo0qbKEa?=
- =?us-ascii?Q?wA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 84a129ec-1459-49b3-5c98-08dd3527b619
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2025 05:44:43.2936
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 9pVl0zV8YoEFocKu2RZB+2jhfFTvGoR6BSrsxtQtcnbSk5WfpqYS/1j+1mNIuexf0N7gyrpfcZOiaDMTkPJPx0R+OgjgPkN9xiVMRfU0s4w=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR11MB6811
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAA1Mh2cC/2XMyw6CMBCF4VchXVsz04tYV76HcdHLoE0UDBgCI
+ by7BTTBsDyT+f6BNVRHatgpG1hNbWxiVaahdxnzd1veiMeQNhMgFAoETo+CuyOQlUYZLw1Ln6+
+ aitjNlcs17Xts3lXdz9EWp+vXCz37Fjny3JBRIDUEDedg+zJ2e1892RRoxQ9pQFALEhx4ngcvC
+ A7BKdoguUb5gmRCxninQTu0TmyQWiHEBamEnDwqLCwEH8wfGsfxA3RS27E2AQAA
+To: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Mark Brown <broonie@kernel.org>, 
+ Dave Martin <Dave.Martin@arm.com>, Baoquan He <bhe@redhat.com>, 
+ Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>, 
+ LEROY Christophe <christophe.leroy2@cs-soprasteria.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+ kexec@lists.infradead.org, binutils@sourceware.org, devel@daynix.com, 
+ Akihiko Odaki <akihiko.odaki@daynix.com>, 
+ Heiko Carstens <hca@linux.ibm.com>
+X-Mailer: b4 0.14-dev-fd6e3
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Alistair Popple wrote:
-[..]
-> > How does this case happen? I don't think any page would ever enter with
-> > both ->mapping and ->share set, right?
-> 
-> Sigh. You're right - it can't. This patch series is getting a litte bit large
-> and unweildy with all the prerequisite bugfixes and cleanups. Obviously I fixed
-> this when developing the main fs dax count fixup but forgot to rebase the fix
-> further back in the series.
+elf.h had a comment saying:
+> Notes used in ET_CORE. Architectures export some of the arch register
+> sets using the corresponding note types via the PTRACE_GETREGSET and
+> PTRACE_SETREGSET requests.
+> The note name for these types is "LINUX", except NT_PRFPREG that is
+> named "CORE".
 
-I assumed as much when I got to that patch.
+However, NT_PRSTATUS is also named "CORE". It is also unclear what
+"these types" refers to.
 
-> Anyway I have fixed that now, thanks.
+To fix these problems, define a name for each note type. The added
+definitions are macros so the kernel and userspace can directly refer to
+them.
 
-You deserve a large helping of grace for waking and then slaying this
-old dragon.
+For userspace program developers
+---------------------------------------------------
+While the main purpose of new macros is documentation, they are also
+hoped to be useful for userspace programs. Please check patch
+"elf: Define note name macros" and if you have a suggestion to make it
+more convenient for you, please share.
+
+I added the Binutils mailing list to the CC as it contains code to parse
+dumps. I'm also planning to share this series on LLVM Discourse.
+
+Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
+---
+Changes in v5:
+- Noted that patch "elf: Define note name macros" allows removing
+  duplicate definitions of note names.
+- Reordered NT_GNU_PROPERTY_TYPE_0 to precede notes used in ET_CORE to
+  show its not specific to ET_CORE.
+- Link to v4: https://lore.kernel.org/r/20250111-elf-v4-0-b3841fa0dcd9@daynix.com
+
+Changes in v4:
+- s/powwerpc/powerpc/
+- s/NT_INIT/nt_init/g s/NT_SIZE/nt_size/g
+- Removed parentheses that have little value.
+- Fixed the code alignment in get_cpu_elf_notes_size().
+- Link to v3: https://lore.kernel.org/r/20250107-elf-v3-0-99cb505b1ab2@daynix.com
+
+Changes in v3:
+- Added patch "s390/crash: Use note name macros".
+- Changed to interleave note name and type macros.
+- Described NN_ and NT_ macros.
+- Link to v2: https://lore.kernel.org/r/20250104-elf-v2-0-77dc2e06db4e@daynix.com
+
+Changes in v2:
+- Added a macro definition for each note type instead of trying to
+  describe in a comment.
+- Link to v1: https://lore.kernel.org/r/20241225-elf-v1-1-79e940350d50@daynix.com
+
+---
+Akihiko Odaki (6):
+      elf: Define note name macros
+      binfmt_elf: Use note name macros
+      powerpc: Use note name macros
+      crash: Use note name macros
+      s390/crash: Use note name macros
+      crash: Remove KEXEC_CORE_NOTE_NAME
+
+ arch/powerpc/kernel/fadump.c               |  2 +-
+ arch/powerpc/platforms/powernv/opal-core.c |  8 +--
+ arch/s390/kernel/crash_dump.c              | 62 ++++++++-------------
+ fs/binfmt_elf.c                            | 21 ++++---
+ fs/binfmt_elf_fdpic.c                      |  8 +--
+ fs/proc/kcore.c                            | 12 ++--
+ include/linux/kexec.h                      |  2 -
+ include/linux/vmcore_info.h                |  3 +-
+ include/uapi/linux/elf.h                   | 89 ++++++++++++++++++++++++++++--
+ kernel/crash_core.c                        |  2 +-
+ 10 files changed, 134 insertions(+), 75 deletions(-)
+---
+base-commit: a32e14f8aef69b42826cf0998b068a43d486a9e9
+change-id: 20241210-elf-b80ea3949c39
+
+Best regards,
+-- 
+Akihiko Odaki <akihiko.odaki@daynix.com>
+
 
