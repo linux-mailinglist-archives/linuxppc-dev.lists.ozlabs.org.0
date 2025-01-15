@@ -1,79 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-5303-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5304-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E407A12A7D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 19:10:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0459A12C3C
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 21:09:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YYDYx5bByz305P;
-	Thu, 16 Jan 2025 05:10:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YYHCD6tMbz3bVG;
+	Thu, 16 Jan 2025 07:09:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736964629;
-	cv=none; b=GPKiGWd2bndHhataFDWEmfdNeaexwJyWe0KWXyIbi6udVlQsmHBk8m3e8843KKVh2it0Ga0v7mDOxBm1Jkuwv7BTtogsGqIJ4pie+u4XUIu2U5o2UrFFgTBjJiKFOn3uF9qwRAhmNbdTCsyMlMsJcZKVYeNbYW9MBQQuQBiYREGy2k24c95oof+F8Wlqkw5j3ZQEEsj2FZ9yCDv0cP4dt5LfyOKRZJ/BsOlPGLWFpAecanT2WSZD8k3vwCAg7mKSgQFE3XLRsjedsZH42SbwiN8EixDUnWYtPR1OA/a57fp8CCD1oKv4nJZXuXiQ9FiZY1TR6Hpb7Dpk93A7vmUDfg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736971768;
+	cv=none; b=SmhqIn7CKgQ4Vm4If0w3aaT7x781iokzasblC8XBU+j3N6oYzXaLsx3NySkajahnQZyGxz/aN6MTFa9qB5v3/3uWvBTSqNyyLLS8BsFXxaw3DY2QIlAjJRsLWmXUuZ2uCU5M8OpnfZz9QC5PgsRR1AJ/m7u2wd5PMifYndM2t+bK38Ge+TRgJb6qnrLc32YZuzI4M0fAdgRzWrxhYFKW7Ox7ZuaOYH39yy52C6FFyFIdDsGZ8YG5bP1UaPsTBPw5VU+Xd3RkUq8zloIqd71v/axfiEbD+H+gKmXRJ1h4PJtbbu8rKpJTaZe/V19FFy7MvT+95h6/r1oC0mbje4WbeQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736964629; c=relaxed/relaxed;
-	bh=Np7pSsxaw2iUiB/sIQw22hWaNnI9by8bAfVe0S6KgrQ=;
+	t=1736971768; c=relaxed/relaxed;
+	bh=MstsdCK7fs6TiHB2aoEPFnlipyR3FTW1b6bpj6iFCyM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gLi/jPY424kISVcUJsnhgPmH/hUkUJn62jEhZTFJuxFOJ1uEBMwH3C6ryc1fiYzrFjZDY7ibiufbh7trXJ+DtSBzCFng49+06shKdRzOJ4E/BWFEg4+2J5X9UAkku0wabG1hfGblnxt4soIXoRZ2B265ogtn3t1Oanxok44ME12AOCGnVgGQ+uDBzTr+1Es4pGjWRHYA346kAt28dY8xh3aPw4B7apyHkhECH83qeGaTZA5c3YF1KalkjHiD4VW30GZupaAY5k39u738SAzvB6ifjnpR1PNKbLS5coEJIlUaQTKgLK0MXWt/Zm+y72VzDCo5xgRAsaPgHnWWkU5zyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XuV1yODz; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XuV1yODz; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZLaMt/YFSzbTdJ/L6ujZ0j6dcZAklX7ZkTktbFo+gRZT1tLEtTo9XX0OKQTJVIVMZ/sRn31guBX3ySkF63ukEuFPyWhc4EyVvdYwNjbxXnfcME54kq/GBY2MIbZoR+YAusCVtkEpoBPEJDaYJjNHNbfo5KFfPSdmuTNLScvlbEL98ZZZlIWc9Coms+2Cr9XvQHVtJjE6Fr8i53c2W8zz4GrYvIIx/L0ojYz0a9VJ3ZMvQk0G49GjHGzn0sFno0/ZC76oEEZn3mH/mwMvaQQdYzb+gvssQjbkhCQeWoSDyYvV0FXEskqm7/c9p5afJhLlkK3bipQ1tYCym7YfC6BAWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mMh7oPcJ; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=wei.liu@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XuV1yODz;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XuV1yODz;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mMh7oPcJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=joe.lawrence@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=wei.liu@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YYDYw54Yxz2ysB
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 05:10:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736964623;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Np7pSsxaw2iUiB/sIQw22hWaNnI9by8bAfVe0S6KgrQ=;
-	b=XuV1yODzfRpVFmjp44r8TQIQVdcX9h1G1Wf6jGyRakyjHODG6Bo9c31cx9MHTMw83MFpx7
-	oy4DN+0UVYMs81nYfen9oweghjPcupeJZHQO7FrAvUDzeMTtsxJuRVwWvZYC0a09LZIFe/
-	+5jJ0PKGPIe2/IcC3XWmxjJzPzssChc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1736964623;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Np7pSsxaw2iUiB/sIQw22hWaNnI9by8bAfVe0S6KgrQ=;
-	b=XuV1yODzfRpVFmjp44r8TQIQVdcX9h1G1Wf6jGyRakyjHODG6Bo9c31cx9MHTMw83MFpx7
-	oy4DN+0UVYMs81nYfen9oweghjPcupeJZHQO7FrAvUDzeMTtsxJuRVwWvZYC0a09LZIFe/
-	+5jJ0PKGPIe2/IcC3XWmxjJzPzssChc=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-279-cfTrX9eZNAu5ZcVcw0aX2w-1; Wed,
- 15 Jan 2025 13:10:17 -0500
-X-MC-Unique: cfTrX9eZNAu5ZcVcw0aX2w-1
-X-Mimecast-MFC-AGG-ID: cfTrX9eZNAu5ZcVcw0aX2w
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 278E71956055;
-	Wed, 15 Jan 2025 18:10:15 +0000 (UTC)
-Received: from redhat.com (unknown [10.22.81.40])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 151E719560AB;
-	Wed, 15 Jan 2025 18:10:11 +0000 (UTC)
-Date: Wed, 15 Jan 2025 13:10:09 -0500
-From: Joe Lawrence <joe.lawrence@redhat.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: jikos@kernel.org, mbenes@suse.cz, pmladek@suse.com, shuah@kernel.org,
-	mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	naveen@kernel.org, live-patching@vger.kernel.org,
-	linux-kselftest@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] selftests: livepatch: handle PRINTK_CALLER in
- check_result()
-Message-ID: <Z4f6AbC7pQLIWuX+@redhat.com>
-References: <20250114143144.164250-1-maddy@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YYHCC3WBvz30NF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 07:09:27 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 41F7BA42164;
+	Wed, 15 Jan 2025 20:07:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A6BC4CED1;
+	Wed, 15 Jan 2025 20:09:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1736971763;
+	bh=HKd2BYN0EJzvcqr3Xx3Vueop4tDJh+K1d/v1F43ixq4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mMh7oPcJEGeeR1CbLFNvT6sYm/PkFQwDWfBsQ90yztglpZ3/YZEBVnarQ1AC7szWo
+	 7TIaoC/5Ds9yuqwsCSv511HrZQrz9DYKTCs5teywBQChtbtwCLdUU15B57wDXyESFf
+	 A/x13wKP5lj3nSG+MtRjOv+yVwR6g+BlMg1RaQLmyhmo5lqJ4XKmsH9giN7zUcgT0G
+	 JjdlmRxxbsFDdoqRPMfd7BNNsEMs0mR8Cyqj/oCkFnsbRsTmQflWeOU3bRrVWJH9mq
+	 wFz46x9sk38sYnuYTKWOXCW+bAgDPbIH7khSU1whNzE/e3Hn5P+2qU6Lun6bUVc/Ly
+	 lJaxe0RpKwpyA==
+Date: Wed, 15 Jan 2025 20:09:21 +0000
+From: Wei Liu <wei.liu@kernel.org>
+To: Joel Granados <joel.granados@kernel.org>
+Cc: Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
+	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org,
+	openipmi-developer@lists.sourceforge.net,
+	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-raid@vger.kernel.org,
+	linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
+	xen-devel@lists.xenproject.org, linux-aio@kvack.org,
+	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
+	codalist@coda.cs.cmu.edu, linux-mm@kvack.org,
+	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
+	fsverity@lists.linux.dev, linux-xfs@vger.kernel.org,
+	io-uring@vger.kernel.org, bpf@vger.kernel.org,
+	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com,
+	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
+	Song Liu <song@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Corey Minyard <cminyard@mvista.com>, Wei Liu <wei.liu@kernel.org>
+Subject: Re: [PATCH v2] treewide: const qualify ctl_tables where applicable
+Message-ID: <Z4gV8QNnafm-iCC4@liuwe-devbox-debian-v2>
+References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,83 +88,27 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250114143144.164250-1-maddy@linux.ibm.com>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
-X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Jan 14, 2025 at 08:01:44PM +0530, Madhavan Srinivasan wrote:
-> Some arch configs (like ppc64) enable CONFIG_PRINTK_CALLER, which
-> adds the caller id as part of the dmesg. Due to this, even though
-> the expected vs observed are same, end testcase results are failed.
-> 
->  -% insmod test_modules/test_klp_livepatch.ko
->  -livepatch: enabling patch 'test_klp_livepatch'
->  -livepatch: 'test_klp_livepatch': initializing patching transition
->  -livepatch: 'test_klp_livepatch': starting patching transition
->  -livepatch: 'test_klp_livepatch': completing patching transition
->  -livepatch: 'test_klp_livepatch': patching complete
->  -% echo 0 > /sys/kernel/livepatch/test_klp_livepatch/enabled
->  -livepatch: 'test_klp_livepatch': initializing unpatching transition
->  -livepatch: 'test_klp_livepatch': starting unpatching transition
->  -livepatch: 'test_klp_livepatch': completing unpatching transition
->  -livepatch: 'test_klp_livepatch': unpatching complete
->  -% rmmod test_klp_livepatch
->  +[   T3659] % insmod test_modules/test_klp_livepatch.ko
->  +[   T3682] livepatch: enabling patch 'test_klp_livepatch'
->  +[   T3682] livepatch: 'test_klp_livepatch': initializing patching transition
->  +[   T3682] livepatch: 'test_klp_livepatch': starting patching transition
->  +[    T826] livepatch: 'test_klp_livepatch': completing patching transition
->  +[    T826] livepatch: 'test_klp_livepatch': patching complete
->  +[   T3659] % echo 0 > /sys/kernel/livepatch/test_klp_livepatch/enabled
->  +[   T3659] livepatch: 'test_klp_livepatch': initializing unpatching transition
->  +[   T3659] livepatch: 'test_klp_livepatch': starting unpatching transition
->  +[    T789] livepatch: 'test_klp_livepatch': completing unpatching transition
->  +[    T789] livepatch: 'test_klp_livepatch': unpatching complete
->  +[   T3659] % rmmod test_klp_livepatch
-> 
->   ERROR: livepatch kselftest(s) failed
->  not ok 1 selftests: livepatch: test-livepatch.sh # exit=1
-> 
-> Currently the check_result() handles the "[time]" removal from
-> the dmesg. Enhance the check to handle removal of "[Tid]" also.
-> 
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> ---
->  tools/testing/selftests/livepatch/functions.sh | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/tools/testing/selftests/livepatch/functions.sh b/tools/testing/selftests/livepatch/functions.sh
-> index e5d06fb40233..a1730c1864a4 100644
-> --- a/tools/testing/selftests/livepatch/functions.sh
-> +++ b/tools/testing/selftests/livepatch/functions.sh
-> @@ -306,7 +306,8 @@ function check_result {
->  	result=$(dmesg | awk -v last_dmesg="$LAST_DMESG" 'p; $0 == last_dmesg { p=1 }' | \
->  		 grep -e 'livepatch:' -e 'test_klp' | \
->  		 grep -v '\(tainting\|taints\) kernel' | \
-> -		 sed 's/^\[[ 0-9.]*\] //')
-> +		 sed 's/^\[[ 0-9.]*\] //' | \
-> +		 sed 's/^\[[ ]*T[0-9]*\] //')
+On Fri, Jan 10, 2025 at 03:16:08PM +0100, Joel Granados wrote:
+[...]
+> diff --git a/drivers/hv/hv_common.c b/drivers/hv/hv_common.c
+> index 7a35c82976e0..9453f0c26f2a 100644
+> --- a/drivers/hv/hv_common.c
+> +++ b/drivers/hv/hv_common.c
+> @@ -141,7 +141,7 @@ static int sysctl_record_panic_msg = 1;
+>   * sysctl option to allow the user to control whether kmsg data should be
+>   * reported to Hyper-V on panic.
+>   */
+> -static struct ctl_table hv_ctl_table[] = {
+> +static const struct ctl_table hv_ctl_table[] = {
+>  	{
+>  		.procname	= "hyperv_record_panic_msg",
+>  		.data		= &sysctl_record_panic_msg,
 
-Thanks for adding this to the filter.
-
-If I read the PRINTK_CALLER docs correctly, there is a potential CPU
-identifier as well.  Are there any instances where the livepatching code
-will use the "[C$processor_id]" (out of task context) prefix?  Or would
-it hurt to future proof with [CT][0-9]?
-
-Acked-by: Joe Lawrence <joe.lawrence@redhat.com>
-
---
-Joe
-
->  
->  	if [[ "$expect" == "$result" ]] ; then
->  		echo "ok"
-> -- 
-> 2.47.0
-> 
-
+Acked-by: Wei Liu <wei.liu@kernel.org>
 
