@@ -1,49 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-5301-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3CEA12982
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 18:12:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BBAA12A2D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 15 Jan 2025 18:52:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YYCGp5F2mz2yyJ;
-	Thu, 16 Jan 2025 04:12:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YYD9f6GKSz2ypx;
+	Thu, 16 Jan 2025 04:52:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736961138;
-	cv=none; b=II5ljh2r6ZFLFzUaS0xAulZR8SKhtzfShr4/4QThxmlqOf00lh35IFmFHxS9hSVCg8r1QKGnU9HXQ7GCARPmNOSvDTUNmZ/ciis/+JDHfMfcc58iNpe9bum/xJvc2amhbImuyGFONLViNpk0ClShy75mHb5pACsbyyvXZF0wXyA+qseqRze9uZqQ9eGhDe0YxxGhPbbnHAzQJ/b2bBCNxQaAf8a/lqZVZLvIjQ1/MSZtuNDgMa+q3IY7jcfkQD1R2WHcgPkbftVcKeIcLDMzxp0UMqj3j3uHLR6kQ1LX2r4CR3ZfpkEIvECFhYuIgC5Jw1s7S4HulqtpvkbQhAGOFA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1736963574;
+	cv=none; b=nABoEN6KylyVKhpV+nAfcPJ4vK1wfLzl3kBoDtIcl7oFZqpWpZEvVpn4a7x2b5S9BCz4Ct0ss0kZlO4Sb7gacpycyDKp34v/r8+mMoRWS9GHaY25Qz5daFuRsaxE3cQxKrrC/IXCZdy42zvEXciqGzzviEaTiXWSDyyiLJoD7TouHnP3MFq1oBAP7DZNEVRyabyXoCy0MXp9sHSLwZHaHV6s4PAWognI9SEZMiG8rLrG4LJQMnjOS6GDLr6Xj+Ir1e4jVnX1RFn+rnVpZ76CPAOlpq8o+dkAt9NIV4fm+KyqvU0Ev4zLlz0BZbjBo5uyc3WzMhNKqJVIrtp23HggAw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1736961138; c=relaxed/relaxed;
-	bh=AQnotGj8O8dtIqdw3qds2F4aUxndTgIwthGYOjx9Xqw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IHARFtwFvenqjMV2jPTJXL9e+B6jmlKGwyyD8CqbRs6Y79EAY5Kwzy65vF6sKQVDggS11u4ppIvlBPwfZorkdUUWkQor6QvJDsF4x7Bhr1fgDTXYONkWsQYkFcgo9WddDnQguxej00qQVp0K7DqhMrhhVrZuodGmZgQmPMVhu5Ik1pmYV47hMueqnBH4zC1R7cFYTDsque9eNoooUx9ln0wU2wOHg23Q8Urdo7mNY0wfyQ0pV1JVXLQyuBY30iGiLpjFmouNVULl6JWlfDz/r0LLqG05gjecyztzgJWrxK2pXmvMW47AouOKStYZlqEOnw+w5fu09VB+bgnVLC5GKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dave.martin@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YYCGn6XQHz2ywS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 04:12:16 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E4E6611FB;
-	Wed, 15 Jan 2025 09:12:12 -0800 (PST)
-Received: from e133380.arm.com (e133380.arm.com [10.1.197.43])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9A0F63F673;
-	Wed, 15 Jan 2025 09:11:42 -0800 (PST)
-Date: Wed, 15 Jan 2025 17:11:34 +0000
-From: Dave Martin <Dave.Martin@arm.com>
-To: Akihiko Odaki <akihiko.odaki@daynix.com>
-Cc: Eric Biederman <ebiederm@xmission.com>, Kees Cook <kees@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Brown <broonie@kernel.org>, Baoquan He <bhe@redhat.com>,
-	Vivek Goyal <vgoyal@redhat.com>, Dave Young <dyoung@redhat.com>,
-	LEROY Christophe <christophe.leroy2@cs-soprasteria.com>,
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-	kexec@lists.infradead.org, binutils@sourceware.org,
-	devel@daynix.com
-Subject: Re: [PATCH v5 1/6] elf: Define note name macros
-Message-ID: <Z4fsRq4D4X5Qb+Dq@e133380.arm.com>
-References: <20250115-elf-v5-0-0f9e55bbb2fc@daynix.com>
- <20250115-elf-v5-1-0f9e55bbb2fc@daynix.com>
+	t=1736963574; c=relaxed/relaxed;
+	bh=HoxPdbGDiDXMZjZ2YzakPSB0m74gINsG6VFgtuazYj8=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=TKo91VJcqMKLx4Tn+HWhA1VOkki8BRNq3GYn/prVeUR/VhIuOd2PclkmMpzHKtlhALF01Kl0c0aamXDuOaKi9vDTKOoeOPh963Qskrd4WeKmqpq8HmVpMXdCutWF+N5ilp+5QKcIISctnKrSV8uixWRmkWUs/g6M8bLZXOMWoo41Tki4B/0lmR6l+tQz2cAgwFEcDJD36DuLgWR1zImJpp8xzWab4NTl6tnajqHHrklzgI4OeeshJvruL44fIdKQtPJarHr0EHDehUAXpwHn/hzelh/ZCGmKaDfD5MNb+n3gfpO9J8N4zy+4/W5jEUHZb+nWdir+n7jXwwrTROVqVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=O59TkAiV; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fzGlQJbE; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=O59TkAiV;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=fzGlQJbE;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YYD9d1JV3z2yVv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 04:52:53 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1736963561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HoxPdbGDiDXMZjZ2YzakPSB0m74gINsG6VFgtuazYj8=;
+	b=O59TkAiVIoh/kyWqt3sD2QUaiElCxlt4joNfsm5Vy47rl6VB5TFRsEG8yyBoGzvY2r/6mY
+	lQrxl2KFOtZwXB8o2yGswqA28AwPR3ILexVj+8YMlHNoNTQyAqrecm5DQu43fEOAoeu1zB
+	AUUJUV3mFLL/jKj4Q1eejS9vRnjN/1NreJFiVLN6lXCv97Xxmp1pRrzkdAR4+8k7oYySE3
+	EjRlx3bwRLZ1kPZatpooq203bOQXFsUoJ5K9wvWgIoGkzYbbWPFekFpYB6FKtIibo4IGCl
+	3qtrgWckX7984+Okk9ULQbx1KIxKVOK20qnnIXjJMWBsTxDlkgtJ8kE9XE9ROg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1736963561;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=HoxPdbGDiDXMZjZ2YzakPSB0m74gINsG6VFgtuazYj8=;
+	b=fzGlQJbELsuQf/TIokTn215dpIYwMgfAYRUXgXNteW1TJ/rfCFCi40yte9UtrzUzNBp68H
+	ns68VXLDVpNCEbAA==
+To: Joel Granados <joel.granados@kernel.org>, Thomas =?utf-8?Q?Wei=C3=9Fsc?=
+ =?utf-8?Q?huh?=
+ <linux@weissschuh.net>, Kees Cook <kees@kernel.org>, Luis Chamberlain
+ <mcgrof@kernel.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org,
+ openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+ linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org,
+ linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org,
+ linux-serial@vger.kernel.org, xen-devel@lists.xenproject.org,
+ linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
+ codalist@coda.cs.cmu.edu, linux-mm@kvack.org, linux-nfs@vger.kernel.org,
+ ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev,
+ linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org,
+ kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+ linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com,
+ linux-security-module@vger.kernel.org, keyrings@vger.kernel.org, Song Liu
+ <song@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+ "Martin K. Petersen" <martin.petersen@oracle.com>, "Darrick J. Wong"
+ <djwong@kernel.org>, Jani Nikula <jani.nikula@intel.com>, Corey Minyard
+ <cminyard@mvista.com>, Joel Granados <joel.granados@kernel.org>
+Subject: Re: [PATCH v2] treewide: const qualify ctl_tables where applicable
+In-Reply-To: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
+References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
+Date: Wed, 15 Jan 2025 18:52:40 +0100
+Message-ID: <87jzawarrr.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,77 +89,25 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115-elf-v5-1-0f9e55bbb2fc@daynix.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
+On Fri, Jan 10 2025 at 15:16, Joel Granados wrote:
+> sed:
+>     sed --in-place \
+>       -e "s/struct ctl_table .table = &uts_kern/const struct ctl_table *table = \&uts_kern/" \
+>       kernel/utsname_sysctl.c
+>
+> Reviewed-by: Song Liu <song@kernel.org>
+> Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org> # for kernel/trace/
+> Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com> # SCSI
+> Reviewed-by: Darrick J. Wong <djwong@kernel.org> # xfs
+> Acked-by: Jani Nikula <jani.nikula@intel.com>
+> Acked-by: Corey Minyard <cminyard@mvista.com>
+> Signed-off-by: Joel Granados <joel.granados@kernel.org>
 
-On Wed, Jan 15, 2025 at 02:47:58PM +0900, Akihiko Odaki wrote:
-> elf.h had a comment saying:
-> > Notes used in ET_CORE. Architectures export some of the arch register
-> > sets using the corresponding note types via the PTRACE_GETREGSET and
-> > PTRACE_SETREGSET requests.
-> > The note name for these types is "LINUX", except NT_PRFPREG that is
-> > named "CORE".
-> 
-> However, NT_PRSTATUS is also named "CORE". It is also unclear what
-> "these types" refers to.
-> 
-> To fix these problems, define a name for each note type. The added
-> definitions are macros so the kernel and userspace can directly refer to
-> them to remove their duplicate definitions of note names.
-> 
-> Signed-off-by: Akihiko Odaki <akihiko.odaki@daynix.com>
-> Acked-by: Baoquan He <bhe@redhat.com>
-> ---
->  include/uapi/linux/elf.h | 89 +++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 84 insertions(+), 5 deletions(-)
-> 
-> diff --git a/include/uapi/linux/elf.h b/include/uapi/linux/elf.h
-> index b44069d29cec..592507aa9b3a 100644
-> --- a/include/uapi/linux/elf.h
-> +++ b/include/uapi/linux/elf.h
-> @@ -368,101 +368,180 @@ typedef struct elf64_shdr {
->  #define ELF_OSABI ELFOSABI_NONE
->  #endif
->  
-> +/* Note definitions: NN_ defines names. NT_ defines types. */
-> +
-> +#define NN_GNU_PROPERTY_TYPE_0	"GNU"
-> +#define NT_GNU_PROPERTY_TYPE_0	5
-> +
-
-I guess this also works as a neutral way of saying that
-NT_GNU_PROPERTY_TYPE_0 isn't _specifically_ for coredumps.
-
-I would worry that moving this block is going to generate unwanted
-context noise with other patches that may be in flight and add new
-NT_ definitions.
-
-But (a) changing the comments will cause that anyway, and
-(b) if there are any new NT_ definitions in flight, we want people to
-notice the conflict and add the accompanying NN_ definition.
-
-So, perhaps context noise is not such a bad thing in this instance.
-
-[...]
-
-> +#define NN_LOONGARCH_HW_WATCH	"LINUX"
->  #define NT_LOONGARCH_HW_WATCH	0xa06   /* LoongArch hardware watchpoint registers */
->  
-> -/* Note types with note name "GNU" */
-> -#define NT_GNU_PROPERTY_TYPE_0	5
-> -
->  /* Note header in a PT_NOTE section */
->  typedef struct elf32_note {
->    Elf32_Word	n_namesz;	/* Name size */
-
-Reviewed-by: Dave Martin <Dave.Martin@arm.com>
-
-Cheers
----Dave
+Acked-by: Thomas Gleixner <tglx@linutronix.de>
 
