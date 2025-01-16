@@ -1,71 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-5334-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED11A13694
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2025 10:28:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE4E8A13699
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2025 10:29:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YYcxV3tr8z30WC;
-	Thu, 16 Jan 2025 20:28:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YYcym3jD9z3bgy;
+	Thu, 16 Jan 2025 20:29:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1:d65d:64ff:fe57:4e05"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737019726;
-	cv=none; b=IkPDQoY4z/tWRaw38wQZOgEleBMKAUnUjxriuactjLLGgiF5urbu/UiWRngTeNkg0esn4FVZHkAE1VlRDucVGQ6CUYzOzfD4kqln/ylS91rsKY2aWgzxSqX5WRxjotd/TJ+BDxi13/EkMMHyC+cZwB0a23W/e2CfgtpiqBzhZy2ggcz4cUO/V8bzUBL3ARbZA6A1nTtA/hc8aUoryhwvNfGxca+BXVTgQGoZFnFL5Rc9cATpzKB7rR+prjjyMxTvn+YZJaf1rLRcYsBE20OoH+rThgJ42PatPeAs7aiZ/aNwo/pCJjtz4PsKzWcKCB7i/C0TRUYoigxYEwx+j3Q+wg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737019792;
+	cv=none; b=EcVqC6dopqip+BI810GJ59EABF/2LPiald37VVbhjdJcXIM3a9Igt0IJYlIW9y9X1POqPP7f+dzYUhZ/jJjS1q64oFze7QG+E3KPxKhCv41NIj31Q9sGUU/5YTDYLX8nHAuWxCszGLJAhna66p7GfYEKJd0VCi9sWy977K6LdLOdLJ7R4762GKnAGM8Q+frKytjTUshjFug0/fLDGZ/UqLZv0I22uxw9eApjf0Y2NFfZSENq+s67EOKjFtc6bjyZwwxsDw2SXBl8YAHrtoLbm7zjCe4L5WUVILdib3GuhxxeP9wWp3d6npdlSnYehYZ8XM+SjWoO3ALiRqGdhf9ttA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737019726; c=relaxed/relaxed;
-	bh=Z0Iy6G1ZUP0wTa1IVULCyE4DXrqOGuwbr9pw93Rn8q8=;
+	t=1737019792; c=relaxed/relaxed;
+	bh=ndOQe7iYVdafaQgYnE+41A58i1xptE9OdOrBo0S9x6g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JIRd+Gtvzm1c0RO1TvHQuQpWdze65X72+O9dghFDr0I/3MCB0wn2l4LI3g9Yry2E7h1OeoJq5UnX18aDJThNsfS8BO0jgXs188cctV6SWsX96knMH0JmPCwpFkgQHTvNBDdcB7pRv9FjrDSyuuixTmQiFmlKapwFwpcDpk2uk62+dIXEbflTS+FHPu27TGS9phNvcZGiwdG1uWsHLorS/wN0tuDEDw7ifRMeM7VUfG+cQjqB9Plun5shrMaFkDssBJehLc8Z1kOBHIiUWBjLCWQZ8hM/o5ycJhDkuJZ8dn568HcKvYSeD6p54PBmMaOTId+Z6nW5O3dyAAVikMB/4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=TPh4Nsho; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=QO0pl63TNxXER3eKfWB3cymc4QOmf5GuqKUWaSHLsOEvAikfRCJETxedwoPYdcgpVv8CfrwOKU0Omne3f2tXK229aLDn/ApDEB8omK3bMTGEn4A24gNkTXqlUfSvU7kN9HgLAg2U7aie373EVsyLYy7fQ8XQF4I5FEUFp8eevxucSvuTLm2dz1mCApPKwTFW38Whn0UXrgrNHrcJAl7/xif+rGdrFBiN2U3JZzlTmjTnnD/QXEUF18k4L5yFS5tMzbdmFRULyUPIpTieHjGr3zVkHn4rwrMH0Tfu2KnMif37HNUp1GhglBaCeCFQqPQHLyY8bFMCUY5vISXg3xzPUA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=XRXao3j9; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=TPh4Nsho;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=XRXao3j9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YYcxR24Btz2ywS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 20:28:43 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Z0Iy6G1ZUP0wTa1IVULCyE4DXrqOGuwbr9pw93Rn8q8=; b=TPh4NshoGx/paZseZCheS8u4fL
-	V7N1zZ0cHmuC6v28KFSe6EQpQZZmb0QUDFbCxzlhM2Q6MQwdVEPv6lxdcH4+OXobM/U6Ffc7hp+2I
-	6drY/2I7fJ7jLfojHbnG1FlE+3j82ULfvJ48CYk4g7UPsMYLDjmXZE+sL4BZOw8Ryv2WGpiBxFJai
-	4YXfk7Oaq4D4W8qiBw3wdgGPPdqUCUbIjaIuq8Dl3ju0K/lQweDe2k62o6obSxyewZgOUhqcY4meT
-	NY4d2sJkSiZM1DNtBkpxL6tu5Pk3xs26qoUhhjpmTRzGhcjpPCgXWuaSOhz3CT0ebUsQP5jXRciZv
-	64DU8LcQ==;
-Received: from 77-249-17-89.cable.dynamic.v4.ziggo.nl ([77.249.17.89] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tYMAy-0000000B1dK-2sxh;
-	Thu, 16 Jan 2025 09:28:33 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 19922300777; Thu, 16 Jan 2025 10:28:32 +0100 (CET)
-Date: Thu, 16 Jan 2025 10:28:32 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Julien Thierry <jthierry@redhat.com>,
-	Miroslav Benes <mbenes@suse.cz>,
-	Raphael Gault <raphael.gault@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	llvm@lists.linux.dev
-Subject: Re: [PATCH v5 12/15] objtool: Add support for more complex UACCESS
- control
-Message-ID: <20250116092832.GG8362@noisy.programming.kicks-ass.net>
-References: <cover.1736955567.git.christophe.leroy@csgroup.eu>
- <64a6921ec7bc78c4b25561cf13e8147f26e884a6.1736955567.git.christophe.leroy@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YYcyl4qTNz3bfc
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 20:29:51 +1100 (AEDT)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-3862b40a6e0so399830f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 01:29:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1737019788; x=1737624588; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ndOQe7iYVdafaQgYnE+41A58i1xptE9OdOrBo0S9x6g=;
+        b=XRXao3j9urVTm5ajBt4SJV59ew0hwdkxIrOWPYH7wixV4pgLKUM+eLdWWaAf4feba2
+         NPDxhYz2fKi5O6L13Ep1+Q2zuTi0JS6RilgRmwLldnaeS1ouFntMw+ZiClx/vfwu5Ysn
+         nTeS3B0icNLr5cQ9r767D0Bgv+qoEpSQZu/JFV6pT5+8HzKG/lrIaIWGqP3RoUfRd58w
+         J5gxNBVxHb162Yx1Yxz08OP0GIqUnjHtM/vYqqJG3mtoQXafX59lRL/cai057E+UoHUD
+         aQo5n8l4k2C3NUdJ9p4jZJQvd5qRpTLMdk/5h908brHZ7J+PXNhfJxV5fbT5AdPAbcIu
+         rFzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737019788; x=1737624588;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ndOQe7iYVdafaQgYnE+41A58i1xptE9OdOrBo0S9x6g=;
+        b=bGSCOy6G82rrXV+X6x7LB4LuLjRZBf1g2CfcQmQYXhAwUOFo63wCQBhJci8byBzVV0
+         vg2Ceun79m4jrWQRva4aDRcnvo7sO1/VQW456m0Q2VFIkVR+cxRHVZukUynBTBNSI9k/
+         mOdDXvxh0m3tJsoVYpqqruPC+9GFrLOUGuEKwhYv5zdeuQboC276An/h1+PWx882Oc9M
+         fgyAsrrBIuXev8LKTHuNrXeyJioTM1GrSAwONU2oXrkFErfYPvg8d2i6auO9u9Hf0rPd
+         2zDtiLsL9KLo3x/TN4tw6X9zCn2d41ldqLKJeLAcwVO4g5n6w8gAJe+60ZWpIOF7ao3T
+         ah4A==
+X-Forwarded-Encrypted: i=1; AJvYcCVaFVaK5jwR+Y0rXlW7GTg6lpEQssGMYIArYLUkXSZ6+pFI5rDU6WuKHRoHHaxD36MoZ9G/p17hmInONoo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx1wcBSPdp1awBUgIAETCPStt/2MjKhVyJDestWI51u/EoRdqy1
+	DD625r2aAEiZbFJ+5ejMc+rCY2nKr2rL6IiJyst9YO43SOLhMBmLbDDaIjN46F4=
+X-Gm-Gg: ASbGncvRSqYMOTW2hAPW2EIR1wCU0cpVc01M8RZkRGbA5W5bOqP60483zv1e3p/rzsG
+	UXRDXsSD5bteC0gZ9Y7WsRK9LMP9rfHX2K2SlwetyWHteP/JPwa7eVCZ/2kk4pcsuPJ3lf26ssV
+	Kc4U55uJWIVZaEuZi8SVn5mpx/trNr/glRUHJus84OdZmrU0yHYPiKWqyGk3RcQlJh8QBq1Lyy9
+	tOiu3ApkQTzeIr4wSjdK6s2JcOjqnR5MsljxWBpsfxHs3ZK/DjY3+2Yhg==
+X-Google-Smtp-Source: AGHT+IH5nuIBbL7/hc99gmUbXnHjV1QmVgQbVuzI8DIlS9I/l5k+cT/NveGuMhqp+ADX/0RVXMkBfA==
+X-Received: by 2002:a05:6000:4011:b0:385:f47b:1501 with SMTP id ffacd0b85a97d-38a87312d58mr26829937f8f.32.1737019788570;
+        Thu, 16 Jan 2025 01:29:48 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.50])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c73e370fsm53343725e9.0.2025.01.16.01.29.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 16 Jan 2025 01:29:48 -0800 (PST)
+Date: Thu, 16 Jan 2025 10:29:46 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: jikos@kernel.org, mbenes@suse.cz, joe.lawrence@redhat.com,
+	shuah@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, naveen@kernel.org,
+	live-patching@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] selftests: livepatch: handle PRINTK_CALLER in
+ check_result()
+Message-ID: <Z4jRisgTXOR5-gmv@pathway.suse.cz>
+References: <20250114143144.164250-1-maddy@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,34 +93,32 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <64a6921ec7bc78c4b25561cf13e8147f26e884a6.1736955567.git.christophe.leroy@csgroup.eu>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+In-Reply-To: <20250114143144.164250-1-maddy@linux.ibm.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Jan 15, 2025 at 11:42:52PM +0100, Christophe Leroy wrote:
+On Tue 2025-01-14 20:01:44, Madhavan Srinivasan wrote:
+> Some arch configs (like ppc64) enable CONFIG_PRINTK_CALLER, which
+> adds the caller id as part of the dmesg. Due to this, even though
+> the expected vs observed are same, end testcase results are failed.
 
-> diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-> index 91436f4b3622..54625f09d831 100644
-> --- a/tools/objtool/check.c
-> +++ b/tools/objtool/check.c
-> @@ -2422,6 +2422,14 @@ static int __annotate_late(struct objtool_file *file, int type, struct instructi
->  		insn->dead_end = false;
->  		break;
->  
-> +	case ANNOTYPE_UACCESS_BEGIN:
-> +		insn->type = INSN_STAC;
-> +		break;
-> +
-> +	case ANNOTYPE_UACCESS_END:
-> +		insn->type = INSN_CLAC;
-> +		break;
+CONFIG_PRINTK_CALLER is not the only culprit. We (SUSE) have it enabled
+as well and the selftests pass without this patch.
 
-I would feel better if this had something like:
+The difference might be in dmesg. It shows the caller only when
+the messages are read via the syslog syscall (-S) option. It should
+not show the caller when the messages are read via /dev/kmsg
+which should be the default.
 
-	if (insn->type != INSN_OTHER)
-		WARN_INSN(insn, "over-riding instruction type: %d", insn->type);
+I wonder if you define an alias to dmesg which adds the "-S" option
+or if /dev/kmsg is not usable from some reason.
 
-Adding these annotations to control flow instruction would be bad etc.
+That said, I am fine with the patch. But I would like to better
+understand and document why you need it. Also it would be nice
+to update the filter format as suggested by Joe.
+
+Best Regards,
+Petr
 
