@@ -1,84 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-5335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5337-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE4E8A13699
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2025 10:29:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66671A136F2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2025 10:50:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YYcym3jD9z3bgy;
-	Thu, 16 Jan 2025 20:29:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YYdQ719Vbz30VV;
+	Thu, 16 Jan 2025 20:50:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42f"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737019792;
-	cv=none; b=EcVqC6dopqip+BI810GJ59EABF/2LPiald37VVbhjdJcXIM3a9Igt0IJYlIW9y9X1POqPP7f+dzYUhZ/jJjS1q64oFze7QG+E3KPxKhCv41NIj31Q9sGUU/5YTDYLX8nHAuWxCszGLJAhna66p7GfYEKJd0VCi9sWy977K6LdLOdLJ7R4762GKnAGM8Q+frKytjTUshjFug0/fLDGZ/UqLZv0I22uxw9eApjf0Y2NFfZSENq+s67EOKjFtc6bjyZwwxsDw2SXBl8YAHrtoLbm7zjCe4L5WUVILdib3GuhxxeP9wWp3d6npdlSnYehYZ8XM+SjWoO3ALiRqGdhf9ttA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737021007;
+	cv=none; b=UPTf2XofFPuYeVDMGwq3YvMBKpO6FuxaP431qz4t0AXOfsgPUpRZj9qdUfS2m9/B2dhac5xfOyJSysVgDwkGlIfjMw9OObkj3lFbxpkAL4Hy9y/DGka/M/4fP+bMmA2LcXQcnWajhw8716SLZeMPlgcf+70J2qkCX24eQsEA5YApO5YHrj7+Fy060iKWGF8pLQwoS/BuFxKgxB8kScmnILtBgFeDD5hv4yflAlpS07p6ZIh/0a73FrGFqQZHQgDLxd8ToiVpfiDYbXXYtGcnhsnYRx4v1xU5MXQYctzUYhMZGm2oG2Yx5sMg8qugFjGIeSgpBqpApw7mLTpMC9UH7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737019792; c=relaxed/relaxed;
-	bh=ndOQe7iYVdafaQgYnE+41A58i1xptE9OdOrBo0S9x6g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QO0pl63TNxXER3eKfWB3cymc4QOmf5GuqKUWaSHLsOEvAikfRCJETxedwoPYdcgpVv8CfrwOKU0Omne3f2tXK229aLDn/ApDEB8omK3bMTGEn4A24gNkTXqlUfSvU7kN9HgLAg2U7aie373EVsyLYy7fQ8XQF4I5FEUFp8eevxucSvuTLm2dz1mCApPKwTFW38Whn0UXrgrNHrcJAl7/xif+rGdrFBiN2U3JZzlTmjTnnD/QXEUF18k4L5yFS5tMzbdmFRULyUPIpTieHjGr3zVkHn4rwrMH0Tfu2KnMif37HNUp1GhglBaCeCFQqPQHLyY8bFMCUY5vISXg3xzPUA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=XRXao3j9; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=XRXao3j9;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YYcyl4qTNz3bfc
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 20:29:51 +1100 (AEDT)
-Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-3862b40a6e0so399830f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 01:29:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1737019788; x=1737624588; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ndOQe7iYVdafaQgYnE+41A58i1xptE9OdOrBo0S9x6g=;
-        b=XRXao3j9urVTm5ajBt4SJV59ew0hwdkxIrOWPYH7wixV4pgLKUM+eLdWWaAf4feba2
-         NPDxhYz2fKi5O6L13Ep1+Q2zuTi0JS6RilgRmwLldnaeS1ouFntMw+ZiClx/vfwu5Ysn
-         nTeS3B0icNLr5cQ9r767D0Bgv+qoEpSQZu/JFV6pT5+8HzKG/lrIaIWGqP3RoUfRd58w
-         J5gxNBVxHb162Yx1Yxz08OP0GIqUnjHtM/vYqqJG3mtoQXafX59lRL/cai057E+UoHUD
-         aQo5n8l4k2C3NUdJ9p4jZJQvd5qRpTLMdk/5h908brHZ7J+PXNhfJxV5fbT5AdPAbcIu
-         rFzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737019788; x=1737624588;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ndOQe7iYVdafaQgYnE+41A58i1xptE9OdOrBo0S9x6g=;
-        b=bGSCOy6G82rrXV+X6x7LB4LuLjRZBf1g2CfcQmQYXhAwUOFo63wCQBhJci8byBzVV0
-         vg2Ceun79m4jrWQRva4aDRcnvo7sO1/VQW456m0Q2VFIkVR+cxRHVZukUynBTBNSI9k/
-         mOdDXvxh0m3tJsoVYpqqruPC+9GFrLOUGuEKwhYv5zdeuQboC276An/h1+PWx882Oc9M
-         fgyAsrrBIuXev8LKTHuNrXeyJioTM1GrSAwONU2oXrkFErfYPvg8d2i6auO9u9Hf0rPd
-         2zDtiLsL9KLo3x/TN4tw6X9zCn2d41ldqLKJeLAcwVO4g5n6w8gAJe+60ZWpIOF7ao3T
-         ah4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVaFVaK5jwR+Y0rXlW7GTg6lpEQssGMYIArYLUkXSZ6+pFI5rDU6WuKHRoHHaxD36MoZ9G/p17hmInONoo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx1wcBSPdp1awBUgIAETCPStt/2MjKhVyJDestWI51u/EoRdqy1
-	DD625r2aAEiZbFJ+5ejMc+rCY2nKr2rL6IiJyst9YO43SOLhMBmLbDDaIjN46F4=
-X-Gm-Gg: ASbGncvRSqYMOTW2hAPW2EIR1wCU0cpVc01M8RZkRGbA5W5bOqP60483zv1e3p/rzsG
-	UXRDXsSD5bteC0gZ9Y7WsRK9LMP9rfHX2K2SlwetyWHteP/JPwa7eVCZ/2kk4pcsuPJ3lf26ssV
-	Kc4U55uJWIVZaEuZi8SVn5mpx/trNr/glRUHJus84OdZmrU0yHYPiKWqyGk3RcQlJh8QBq1Lyy9
-	tOiu3ApkQTzeIr4wSjdK6s2JcOjqnR5MsljxWBpsfxHs3ZK/DjY3+2Yhg==
-X-Google-Smtp-Source: AGHT+IH5nuIBbL7/hc99gmUbXnHjV1QmVgQbVuzI8DIlS9I/l5k+cT/NveGuMhqp+ADX/0RVXMkBfA==
-X-Received: by 2002:a05:6000:4011:b0:385:f47b:1501 with SMTP id ffacd0b85a97d-38a87312d58mr26829937f8f.32.1737019788570;
-        Thu, 16 Jan 2025 01:29:48 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.50])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-437c73e370fsm53343725e9.0.2025.01.16.01.29.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 16 Jan 2025 01:29:48 -0800 (PST)
-Date: Thu, 16 Jan 2025 10:29:46 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: jikos@kernel.org, mbenes@suse.cz, joe.lawrence@redhat.com,
-	shuah@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, naveen@kernel.org,
-	live-patching@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] selftests: livepatch: handle PRINTK_CALLER in
- check_result()
-Message-ID: <Z4jRisgTXOR5-gmv@pathway.suse.cz>
-References: <20250114143144.164250-1-maddy@linux.ibm.com>
+	t=1737021007; c=relaxed/relaxed;
+	bh=N++8J+/BNEg8KNeo6FWcNQJ3JMXvJ7Y76KbvsY7n8B0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XGq7PutG4NlTcaTJgGI4b67uX0kT8xuQTVoBw20Xwytim9exWzXlaiRmWUq4D3Mta8wGRlsUKTaJOSIi6QvIe66dGSRx0s4Tv00zhOjJQXl4yBzsEA5jeJEwey3ibbc2zeLQ0eJUqgBv5o89Vae5SJHhVH9xbVyEDwB3D/s+3W0itgB+egRUEGzYl+E6patp5mX7NIa3LStP9UaHVn47lQDTe92Z5zgReTxwYmuKFkOw1aXyISvidLvBGZ4/uOlhoyJcdSRP9LaphGcXWsjxEG+iv973sxbD2fFBcv1uXs3qGHAEHbnVrlOoc0tRRnsE/pCSZfUSlPlObHaaZhE2+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YYdQ53DPtz3020
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 16 Jan 2025 20:50:04 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4YYd1205DMz9sYh;
+	Thu, 16 Jan 2025 10:31:50 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id D7y-gc8VZ5x8; Thu, 16 Jan 2025 10:31:49 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YYd0y4ZFDz9sTX;
+	Thu, 16 Jan 2025 10:31:46 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8BF458B77A;
+	Thu, 16 Jan 2025 10:31:46 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id khfz3ZtWsvHe; Thu, 16 Jan 2025 10:31:46 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E732B8B774;
+	Thu, 16 Jan 2025 10:31:45 +0100 (CET)
+Message-ID: <b97011b1-9e9f-4de4-af42-41cd6bf7c53b@csgroup.eu>
+Date: Thu, 16 Jan 2025 10:31:41 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,34 +56,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250114143144.164250-1-maddy@linux.ibm.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH] powerpc/kprobes: don't save r13 register in kprobe
+ context
+To: pangliyuan <pangliyuan1@huawei.com>, mpe@ellerman.id.au,
+ npiggin@gmail.com, naveen@kernel.org, maddy@linux.ibm.com,
+ anil.s.keshavamurthy@intel.com, davem@davemloft.net, mhiramat@kernel.org,
+ rostedt@goodmis.org
+Cc: wangfangpeng1@huawei.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20241209091039.72786-1-pangliyuan1@huawei.com>
+ <20250116084539.58847-1-pangliyuan1@huawei.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250116084539.58847-1-pangliyuan1@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue 2025-01-14 20:01:44, Madhavan Srinivasan wrote:
-> Some arch configs (like ppc64) enable CONFIG_PRINTK_CALLER, which
-> adds the caller id as part of the dmesg. Due to this, even though
-> the expected vs observed are same, end testcase results are failed.
 
-CONFIG_PRINTK_CALLER is not the only culprit. We (SUSE) have it enabled
-as well and the selftests pass without this patch.
 
-The difference might be in dmesg. It shows the caller only when
-the messages are read via the syslog syscall (-S) option. It should
-not show the caller when the messages are read via /dev/kmsg
-which should be the default.
+Le 16/01/2025 à 09:45, pangliyuan a écrit :
+> [Vous ne recevez pas souvent de courriers de pangliyuan1@huawei.com. Découvrez pourquoi ceci est important à https://aka.ms/LearnAboutSenderIdentification ]
+> 
+> When CONFIG_STACKPROTECTOR_STRONG is enabled and FTRACE is disabled on
+> powerpc64, repeatedly triggering the kprobe process may cause stack check
+> failures and panic.
+> 
+> Case:
+> There is a kprobe(do nothing in handler) attached to the "shmem_get_inode",
+> and a process A is creating file on tmpfs.
+> 
+>                             CPU0
+> A |r13 = paca_ptrs[0], paca_ptrs[0]->canary=A->stack_canary
+>    |touch a file on tmpfs
+>    |shmem_mknod():
+>    |    load A's canary through r13 and stored it in A's stack
+>    |    shmem_get_inode():
+>    |        enter kprobe first
+>    |        optinsn_slot():
+>    |            stored r13 (paca_ptrs[0]) in stack
+> 
+>    ......
+> 
+>    ==> schedule,  B run on CPU0, A run on CPU1
+> 
+>                             CPU0
+> B |r13 = paca_ptrs[0], paca_ptrs[0]->canary=B->stack_canary
+>    |do something...
+>                             CPU1
+> A |            r13 = paca_ptrs[1], paca_ptrs[1]->canary=A->stack_canary
+>    |            about to leave 'optinsn_slot', restore r13 from A's stack
+>    |            r13 = paca_ptrs[0], paca_ptrs[0]->canary=B->stack_canary
+>    |            leave optinsn_slot, back to shmem_get_inode
+>    |        leave shmem_get_inode, back to shmem_mknod
+>    |    do canary check in shmem_mknod, but canary stored in A's stack (A's
+>         canary) doesn't match the canary loaded through r13 (B's canary),
+>         so panic
+> 
+> When A(on CPU0) entring optinsn_slot, it stored r13(paca_ptrs[0]) in stack,
+> then A is scheduled to CPU1 and restore r13 from A's stack when leaving
+> 'optinsn_slot'. Now A is running on CPU1 but r13 point to CPU0's
+> paca_ptrs[0], at this time paca_ptrs[0]->__current points to another
+> process B, which cause A use B's canary to do stack check and panic.
+> 
+> This can be simply fixed by not saving and restoring the r13 register,
+> because on powerpc64, r13 is a special register that reserved to point
+> to the current process, no need to restore the outdated r13 if scheduled
+> had happened.
 
-I wonder if you define an alias to dmesg which adds the "-S" option
-or if /dev/kmsg is not usable from some reason.
+Does r13 really points to current process ? I thought it was pointing to 
+PACA which is a structure attached to a given CPU not a given process.
 
-That said, I am fine with the patch. But I would like to better
-understand and document why you need it. Also it would be nice
-to update the filter format as suggested by Joe.
+By the way, don't we have the same problem on powerpc32 with register r2 ?
 
-Best Regards,
-Petr
+> 
+> Fixes: 51c9c0843993 ("powerpc/kprobes: Implement Optprobes")
+> Signed-off-by: pangliyuan <pangliyuan1@huawei.com>
+> ---
+>   arch/powerpc/kernel/optprobes_head.S | 12 ++++++------
+>   1 file changed, 6 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/optprobes_head.S b/arch/powerpc/kernel/optprobes_head.S
+> index 35932f45fb4e..bf0d77e62ba8 100644
+> --- a/arch/powerpc/kernel/optprobes_head.S
+> +++ b/arch/powerpc/kernel/optprobes_head.S
+> @@ -10,12 +10,12 @@
+>   #include <asm/asm-offsets.h>
+> 
+>   #ifdef CONFIG_PPC64
+> -#define SAVE_30GPRS(base) SAVE_GPRS(2, 31, base)
+> -#define REST_30GPRS(base) REST_GPRS(2, 31, base)
+> +#define SAVE_NEEDED_GPRS(base) SAVE_GPRS(2, 12, base); SAVE_GPRS(14, 31, base)
+> +#define REST_NEEDED_GPRS(base) REST_GPRS(2, 12, base); REST_GPRS(14, 31, base)
+
+This macro name seems a bit sketchy, as far as I understand r0 and r1 
+also need to be saved/restored allthough they are not handled by this macro.
+
+
+>   #define TEMPLATE_FOR_IMM_LOAD_INSNS    nop; nop; nop; nop; nop
+>   #else
+> -#define SAVE_30GPRS(base) stmw r2, GPR2(base)
+> -#define REST_30GPRS(base) lmw  r2, GPR2(base)
+> +#define SAVE_NEEDED_GPRS(base) stmw    r2, GPR2(base)
+> +#define REST_NEEDED_GPRS(base) lmw     r2, GPR2(base)
+>   #define TEMPLATE_FOR_IMM_LOAD_INSNS    nop; nop; nop
+>   #endif
+> 
+> @@ -45,7 +45,7 @@ optprobe_template_entry:
+>          /* Save the previous SP into stack */
+>          addi    r0,r1,INT_FRAME_SIZE
+>          PPC_STL r0,GPR1(r1)
+> -       SAVE_30GPRS(r1)
+> +       SAVE_NEEDED_GPRS(r1)
+>          /* Save SPRS */
+>          mfmsr   r5
+>          PPC_STL r5,_MSR(r1)
+> @@ -123,7 +123,7 @@ optprobe_template_call_emulate:
+>          PPC_LL  r5,_CCR(r1)
+>          mtcr    r5
+>          REST_GPR(0,r1)
+> -       REST_30GPRS(r1)
+> +       REST_NEEDED_GPRS(r1)
+>          /* Restore the previous SP */
+>          addi    r1,r1,INT_FRAME_SIZE
+> 
+> --
+> 2.37.7
+> 
+
 
