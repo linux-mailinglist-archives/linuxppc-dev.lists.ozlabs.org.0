@@ -1,147 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-5346-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5347-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6241CA13FBC
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 16 Jan 2025 17:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C30A2A14729
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 01:55:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YYpcw5PS6z30NF;
-	Fri, 17 Jan 2025 03:45:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ1VF33sdz30Th;
+	Fri, 17 Jan 2025 11:55:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737045904;
-	cv=none; b=EauAdqvwoUd2ykTNaSabI0QpfKk1O3Cmy9vrql2BoKCuuPzoEqhSPRD27Xqr6GM+m4CEOzu67W+1SyN0QJ6IR/64TW/RfEd6OaNrDgxCjGPbFT8N7Zqz6UAH2N+UpZiguwID8S4f+lrWQoG1MNc7gi6V47IREZGcOMqyxp62sWhXUwnlaLOqzU1RNxaRuUtHoJ+/TWWenZAwEvrTgc3lCXu6wk8eApLnpnXyHMPUfMRtG7/oV7RnveGg1r41ZyUtMyN6PuRxjIYTaYgJkEkEATxy0moSco9YCwN7aaeBVvnXDIF3nPY0Qz0G4Gj++2jKGG/DBcw5QfWEm9fe1IumMA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737045904; c=relaxed/relaxed;
-	bh=WgoKIzz0OYQgA951gA+dXClPJUSxVjM8SRERMxXCGDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n9SOCcPtRq0JCxVzkqs6NzWJQCVRSl2zXovAqL6NgDKBZSWHL947N7BzjFvxK/NlSNlFmDeB6In2sTOVtkhOKZ6l2E7PAFbrHcsU4zMWMY1zbbkK7QvchTaQD4yDFLEZEdGyPvYsjxfSU41WydDce+BDYYWtf4hvervUZE/nO0chsg0EgjI2o3jAm0ksXTktyLSohaKqQHydSZlVwqZrP7vSFH5TFwBQCwGVBugLG7R8fo9sHU7/aXKxr/gwo+lHuDrQmDWliadTwSGttty/M4UwpfOZl5McR1U0CpFYMXTcR3Lw2ztBHbgJU6L4y6YPJYts5olXG88cF+cJ8RW16g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Ii/k/+mE; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2414::623" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737075301;
+	cv=pass; b=SbyNVLkf1F+t6tz5aMMhFsJP8ifs6oFAIGLt9oB7k9U4zW/sXBAinSU/zEQTAiLnZZTKveeUQcYwyphhTP4DmD7kYnj1O3lrgUCUVBmIHgJx21ug+tXlBysUl0OqfEPd8adOGd3IXC9HVhNimgKUCoShJJd41Nzv6ooE08qHz7BH5WMTY18wALrf2V9FWNO7GIwUiJENhpLbd9OGiM3w1OSyLXRbV/TMSfg5tHk8s3Rpzce9AjzEaeQzRD9YvPOQsyk01torsEQC7VhQoK1jiFPz11uOSsP8q0nFnexuiLDJfk+RFJ/qgSPTdThK2VWEnEsr69RG6aUHzrjK9js6xw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1737075301; c=relaxed/relaxed;
+	bh=PsorMIcWx4N+7qkEgr+BbXGvsZfm6KhzZ3DohD8VoDU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Km5Xb4MPhHY+I7xbmwCNrbFgvAdkFDUQ2cFdNlwAD/xokHmZrpIVlhVRpxavXvve6JdY5dfUCAaKb3ui9M5XDu8xgRCCmq1x0eN43ouHUSfAtSxndU/bZwUGzl7DezTbQvpLV3pSKQVAkdlTn225Kzv2CoR7uYzNwz4gmgx7J/9nd/ZNhuH7yNLoKuP62fNq9J9lsalhP8CoMyhzzJQV00DPU7K5dupUahqRkCiyvKBVaDTWVknwGh52l93aKVjkrVXD02V9Y+fviLbAVdMzIxt9nOblpllKhmGonsQS5uMxCXaaqMQf8cfLtKth768m3iCJT/drKJAJ+GUXp2QdSw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jM+15JCa; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2414::623; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=Ii/k/+mE;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jM+15JCa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2414::623; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20623.outbound.protection.outlook.com [IPv6:2a01:111:f403:2414::623])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YYpcv5TYCz30Mn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 03:45:03 +1100 (AEDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id CA9C340E015F;
-	Thu, 16 Jan 2025 16:44:59 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id w_qUMcx4OXut; Thu, 16 Jan 2025 16:44:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1737045896; bh=WgoKIzz0OYQgA951gA+dXClPJUSxVjM8SRERMxXCGDE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ii/k/+mEQxhvi2cUq/OXag0RZzqM3+5gAKnmstJm1M3emqPqpm+FuBuTOkVG6z7Xf
-	 jK+idKpC77Q5Bb60bZEBETOeIYeybsV/OSz+HtCJkvQFCOANvCv50k0v7NDa6SMX+M
-	 eW8d/Kr6ZqmS72pz22a2f/+VjuvWRZi/DggF/7WWes5sPk2G2kgdDpbQuINvEg40Bw
-	 N23oo0oWrzyrbeWzAdiyVuD5Yw3mo37WXbbioRprWVaR2YxBJ0EXK+Gl4VR5xC9PZr
-	 OEgpLDhSThdeD7i1O5+lXsNAoSSCiqPlPw+UuhcmOIMMGEIbCewfQxWy1tU8HF3OLo
-	 971HvVXWqqaYqOUXF6C1rkTZJSjg6i1KL8jPchO1X57XYToTkMPLyPzCkyoYJKp2F/
-	 Q31hRdIdEbLaR8cpz5o5mXbI7I5fBMqVNSBbod4oBwfFPYgChEyFgfhZOsoRk9Bs8B
-	 Mq20gwUu5GXJt+hzn0MH9j0zSLA7eW0zjtMDtDIwaj3DW5gUm514gGFeEzI1eUM7E8
-	 OlSpl1gBnv9+jHVUT6Im6NNIQMxUYvTlP22zuE4gO60oYZW58v76F1ovgaGaD+UBVR
-	 WxxI3+3u6J2jlTd3rFkC2SVxOeTNpyK1mHsXzhJ+es/K1LUAYRL+ghsyJTRL2GcbTo
-	 vQ/6kTLCL9KspKSVn+JOGlao=
-Received: from zn.tnic (p200300ea971f934f329c23fffea6a903.dip0.t-ipconnect.de [IPv6:2003:ea:971f:934f:329c:23ff:fea6:a903])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id AF48840E0286;
-	Thu, 16 Jan 2025 16:43:11 +0000 (UTC)
-Date: Thu, 16 Jan 2025 17:43:05 +0100
-From: Borislav Petkov <bp@alien8.de>
-To: Brendan Jackman <jackmanb@google.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-	Valentin Schneider <vschneid@redhat.com>,
-	Uladzislau Rezki <urezki@gmail.com>,
-	Christoph Hellwig <hch@infradead.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
-	Christoph Lameter <cl@linux.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-arch@vger.kernel.org, linux-mm@kvack.org,
-	linux-trace-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
-	linux-efi@vger.kernel.org, Junaid Shahid <junaids@google.com>
-Subject: Re: [PATCH RFC v2 02/29] x86: Create
- CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-Message-ID: <20250116164305.GEZ4k3Gd2IoJpJzEIl@fat_crate.local>
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-2-8419288bc805@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ1VC43kwz30TQ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 11:54:58 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JgIdxjJkvCmQ/e6mEJ+Pd6+7OFVulTIb5IM4i6ZSvzZbQSHpSSnsgOzcBCjszAA0CDpJ6QdcGKRD9HIuatH2Oz++3Q86SdexfQYCMAeY8LFm6zy6dH4qdk00l5JwjVZAU/pkfO5pC6mdK4GXfXLNBTOa34Lgqmqew5Qe/jlpZzjJ8PLgxBjhPd34qWBjtPGlqZhMYvlaquaCF+wj4oBkRumtbwzTFzvCCNeI64wEE8phF7iCJMVcLpRoRlyYRaufhzv6J6hg9MZaj7OTVtEUc/6zCQKg0rbYGkJnwa9Zx2vvuZOsk6V9lVBYfHv4u8x44LRjuO2D2CyUgSpIuzXUHw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PsorMIcWx4N+7qkEgr+BbXGvsZfm6KhzZ3DohD8VoDU=;
+ b=hw8Cd/9NtVX5fCF4TJkjD3qEGS0+yeM4B/z0UvRB3/gEYjD9Xm1Tkkz8kjDf1z8oJO1o4fyCefBRfSwy6oRxd24Y+oQigYp1qNRHugzCWrJtk6lH2zCm2y7TfqsXmCWJE4I4w5uyL+WSyNQyxLzDwow2SC+YMa8BH43P+btXaMsMBYpT9HFIr4MyfgKZ88NPxG0Gxb82GEhFQTJLyr7ixH38sm4lgm6Jf32F/an2TzvoBfAqEtb/7QHYkxNTYT1IEaY2sORxBouxcz7coHJmQuo3ZQlredkE6tLHydAPanX83IqPs4i76TzgClQ15vIxUGb/3p+bNDdiAky/oXNxyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PsorMIcWx4N+7qkEgr+BbXGvsZfm6KhzZ3DohD8VoDU=;
+ b=jM+15JCapMpp5APia+ATkjD7NdAk2jFQLjmAcsaMwGB7P5LWIeSfPxrTTljgzeaeiyT/YyZx0ScICQ9BLDE8VfoI/5iPcQ/M1I5fR4ADpvwv6fHbGq3R2HLII0MIIs7ZBtAzShHSqpjeNM2q7DphRMfMtwdUHCg65mPPyjJAyKMtBpKi1DG+KmCxlR5suTURgV/xDl2gn1HPJU0O8UF4ntNh8kpv6D6Zw8a4Q2K8K7F2ZxGRghaIbmV2fUZYb+alyguCv/upvVJqQ+sUaGIx9xzJFzlHjiwqugZjETcRW+caAMu8/0AAoUASishwqaTsnxn2dk0kzGPUZrpTnbNgOg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ MW4PR12MB6804.namprd12.prod.outlook.com (2603:10b6:303:20d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Fri, 17 Jan
+ 2025 00:54:37 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.8356.010; Fri, 17 Jan 2025
+ 00:54:37 +0000
+Date: Fri, 17 Jan 2025 11:54:32 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: Dan Williams <dan.j.williams@intel.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	alison.schofield@intel.com, lina@asahilina.net, zhang.lyra@gmail.com, 
+	gerald.schaefer@linux.ibm.com, vishal.l.verma@intel.com, dave.jiang@intel.com, 
+	logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, 
+	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
+	dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org, 
+	tytso@mit.edu, linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
+	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com, 
+	chenhuacai@kernel.org, kernel@xen0n.name, loongarch@lists.linux.dev
+Subject: Re: [PATCH v6 08/26] fs/dax: Remove PAGE_MAPPING_DAX_SHARED mapping
+ flag
+Message-ID: <unu63k4trmt5klmors65j2or5vd2ghmfayrd3p22cquoyrjvcy@fynjzwnr5t3h>
+References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
+ <b8b39849e171c120442963d3fd81c49a8f005bf0.1736488799.git-series.apopple@nvidia.com>
+ <6785b5525dd93_20fa294f2@dwillia2-xfh.jf.intel.com.notmuch>
+ <pxpog7xsknwpaqh44vjkg5anegfwxizn6sgpdipntsljx5jg2s@rwqa5zfxooag>
+ <67874b46c0493_20fa2941d@dwillia2-xfh.jf.intel.com.notmuch>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <67874b46c0493_20fa2941d@dwillia2-xfh.jf.intel.com.notmuch>
+X-ClientProxiedBy: SY6PR01CA0037.ausprd01.prod.outlook.com
+ (2603:10c6:10:e9::6) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -154,48 +95,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250110-asi-rfc-v2-v2-2-8419288bc805@google.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MW4PR12MB6804:EE_
+X-MS-Office365-Filtering-Correlation-Id: 35f14e47-71a4-42f9-85db-08dd36918414
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?HFJ7cepUJaPX6BJv8plAbENAUfkUFRUMrfm0+2owzS0bsgRxfDFPWsD2tRzo?=
+ =?us-ascii?Q?/HuT5tDiz314TbCtrMCJAj9Z7HbV/FeXYm9sE33AftbyIs9Vp7/xW61LALbZ?=
+ =?us-ascii?Q?TQdS+4Ymb0+bdOK52ZvXkFsHTKjTpTHx6oEntJJHtpjo4K+DjLLaRQrUq9Bz?=
+ =?us-ascii?Q?7lOPdj6yLyDh39RDasdtdO7X9Alt5LnV58YsjRnzA1xO9f8NC/Huw0y/5ESi?=
+ =?us-ascii?Q?WOSK9JtxcLpDUfBC0wyR21An8wcsSS+dH69QiObd5SWbaOBQis1+z8SzPlDT?=
+ =?us-ascii?Q?59XfMS/HeF/jb3h0/+iYCYKd3Egkg1yYYgAAk+hPY3b6MTjbWFpZ7NuWPq4U?=
+ =?us-ascii?Q?TLspUokk99MRccCf7AZLCLPRL3ZwU1rKvksLN+dmtRWgNdfPFMYhdoD+hTV8?=
+ =?us-ascii?Q?gRwV2J+nkj/d0Nud9LlpLqJn1bWjrDUQodtLovcfy/gmM6lsjxlgCE3bUX06?=
+ =?us-ascii?Q?M0ksEDr6yBj8iT/Xx5qyDp1EZIAP0WSCV/DMwzDM3zmu1BFCHYhj4laCtOwh?=
+ =?us-ascii?Q?LasAGNERcUphIgn7+FURhTdhxwDJbg6UuPLM3MMRNX0hutVVuoFtqg72tQER?=
+ =?us-ascii?Q?xnwhVwcmeYSYt7cE1nk5z2MGifCwjBFNJy7UzYgo9fdakeAcOy7GhwwQNhkL?=
+ =?us-ascii?Q?BijCkjMsq2cZp/Ypsgf9/uaWZ5jjkxeZ9fzyXM3Dji0MhK1VRIrjYmEBkQ3M?=
+ =?us-ascii?Q?VJ5cdN0DNme+iyTDJPNib1SQcNa2rzTjNNKF+aYVtjyWeDURB6wkb65oASPq?=
+ =?us-ascii?Q?PPAlHRoMYCEhceshAaj3Tfq/b+U1wVsWZU4aHC9gUnhioQwvWtuUym/MZvwv?=
+ =?us-ascii?Q?mKalTPRRd3Y3JURUccpar1w0w/QUUTv9JQj0OxQ/uCL+2XFdticignv0KUgP?=
+ =?us-ascii?Q?odQRSkFEU9NLPo76nQVfxoFr5vTIWzWtR9oQc5euxpFLbqZlR7b6kemFM8/J?=
+ =?us-ascii?Q?+p8TxBph9u3tHw6ldgzgDtbCtoUtYVJdYH12QcVR2mVNkNpnSsmIaFyYXv/g?=
+ =?us-ascii?Q?BdOvHybthoquRXbs+1drsbHG+wZiDdZgXj/vgyL3C6QpNz6N5CUxO4ydANwK?=
+ =?us-ascii?Q?4GLCFlxeS2/7ao2Eamh6g1hf7nFLVbU/hQ/LC6ULwZvcqt5A6jtD6zFzsToU?=
+ =?us-ascii?Q?+SBUCypH7bJBINz07vpYv6hLpujDY/QJ8Tcly976KbHsI5W2+jClh2YpP/HN?=
+ =?us-ascii?Q?AOTSqbnRXFuqQvQm/3jnuZvIlErdeN9IboGTq55O7eGHWFN4S4PyLhInIaap?=
+ =?us-ascii?Q?5IEKWWiFIOhjK8Fyg9oRAk6zbg62DlWZSKDSeEOQjwJVwWLFuSkRkp54hSGa?=
+ =?us-ascii?Q?osUQItTWdrSVG/wYP3teaphPxt5flOTghz0iAttBfKbhE6QTnaVt6+RKDpUr?=
+ =?us-ascii?Q?Dheu6Q6Fz+yQeGrXN/Y+cWTybtsf?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?PrAhdCqXGd9V4QSXI2u7X0ckPAq1T3jnz0PbJ//ll1y1Laj3+Df6hquRQ79z?=
+ =?us-ascii?Q?i4gRcpeV9YAbika54Pi93MwFZl+PXAs0idxTBNkumOHUxyEijkthTuN7ctrC?=
+ =?us-ascii?Q?3739nxnGkBpA4J3thFSvUab0inFVNHPnXqG5Q7TDRXOOcJfSFy/Zv421hFxg?=
+ =?us-ascii?Q?cYA+omq61f6poC695f/gcFuqPh2FXKlSZYtcDliSFT3l3/fow8iJCPu1KyY8?=
+ =?us-ascii?Q?KMogaItn+S5xh+QBrXPQ03jg213bMqReRqofdVUYAcolE/TSAl748BeogI3q?=
+ =?us-ascii?Q?4upZH1Gic/WCDjPvNixW0T8iX07nT6Wxnb/q8icMTH8JLjjIIfVQC3VyE3Ty?=
+ =?us-ascii?Q?eCIEKZnsz+TniKxaruzxW/PdO7ug6IEl864oZd3j/mmYvc0jDh08m6H2iKhT?=
+ =?us-ascii?Q?1DADk3xSL5mYaqLM6H0TwKLRnc+2uFcOyrVnjTKfycYQh8X3u5OR1DOfkJJe?=
+ =?us-ascii?Q?PETE8wXZxB2hxD9eRlsChS05IkDogN5JOcFDCx3BaKCiQGWfvZxIhsX/lqHA?=
+ =?us-ascii?Q?l1yGImSvy5DJQQZ/ZnqKHitkUP8BoDID/wb9HGN+PfqVvJfs3J/R66wIAK1n?=
+ =?us-ascii?Q?+0DAzdPOoQPwq8JGHYxb1+v23kPLcXFdIlfm0YIn5FtGoLq2cZXtpglXJYdn?=
+ =?us-ascii?Q?ZbCtPPWpHp1/zi0v2WTz6X0p1zxIOsdoy6O3Qr62oTTRLQvKjwyMp4ZKNABz?=
+ =?us-ascii?Q?j236CY8TzQl7PJ5zHYlA2ov67oD6MbVBCJlpQO1Hg7FU/MrZUJxz/nt3D4aC?=
+ =?us-ascii?Q?bS2DGByFkppFTv2/5Jsx5tL86FAiHnKORQtCsTtHkkuQiXC7x4HNHmNO6d44?=
+ =?us-ascii?Q?RN/GDpf0CzjhuJAKDNW0z6fXVWHglCE8QR4KR7UZylbfZ6ioz2288L6sT49J?=
+ =?us-ascii?Q?j+SNa7kEFTF5hGI8dELx3FurjsZUMvy/lwpS5YRzKzXXgjagljGhh0AhN2fI?=
+ =?us-ascii?Q?JyQ9gzEZAcZ5Ogf5N73TZoGqdLQyc6kDpseYfMcU1tw9lzWRBTGMg3jMKGNS?=
+ =?us-ascii?Q?n6UjcrV1LTriA1to4n43h6KzN/GI+wcTEvEXMVlAWEWDHz25bBV9gEM/w/YV?=
+ =?us-ascii?Q?GUjFsj5E/QuMQmPUt2s0vCf+L2PdAPR2NxsHfH8FZqteC5AZnuHBkoXyJyGH?=
+ =?us-ascii?Q?HPGKMK3zMGCKPB8TlJwpNB7pRuDV9mAnRhAIL8UWo5ZI/h0Ya75jYBDVi+/9?=
+ =?us-ascii?Q?JIKvR/rjzpmxTc5nqn4wApVcOsaLsdMBrTOpWhllSPTgngJY7eUhdB2lVPPj?=
+ =?us-ascii?Q?kAAY+/xz9cpX0A+jaekrMySP+ocPSugIDyGs4xcmJRNU7iRfZo4ojtLcY5PU?=
+ =?us-ascii?Q?PsQ6wKa4T4r+Z/SVKh/pZDr+HdgibQ21SKLzNUixtS2uYyQqz9they6lfCk+?=
+ =?us-ascii?Q?pTAcjJRjh3GniUi3Vaq8j+Vp+nIB6pFkzNAcatXGA+Yf4g2dZfn5h64sUy1p?=
+ =?us-ascii?Q?6b1xp8QFCgMMzunubJeAculcUVeyVMVxKjKoisj2QAxqhuNPzQu3efRcT3zE?=
+ =?us-ascii?Q?ffRlhac2dl0RSe4gK3blvGtLnNRfvoMsHOku40RdaJNECpcqIWSFPT566H/m?=
+ =?us-ascii?Q?zQyh05vcIy+ITPkQ28bbaHVJ/T0JhwKehoG8jXxM?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 35f14e47-71a4-42f9-85db-08dd36918414
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 00:54:37.1999
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i14WgzCUjuccS7tyN4hfsg9KaBuV0rLTrosYsEa/RkH2HKVRcjScdGdKSGYrnKLdRbyd/CzcLjWmpEG8q0fyDg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6804
+X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 10, 2025 at 06:40:28PM +0000, Brendan Jackman wrote:
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 7b9a7e8f39acc8e9aeb7d4213e87d71047865f5c..5a50582eb210e9d1309856a737d32b76fa1bfc85 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -2519,6 +2519,20 @@ config MITIGATION_PAGE_TABLE_ISOLATION
->  
->  	  See Documentation/arch/x86/pti.rst for more details.
->  
-> +config MITIGATION_ADDRESS_SPACE_ISOLATION
-> +	bool "Allow code to run with a reduced kernel address space"
-> +	default n
-> +	depends on X86_64 && !PARAVIRT && !UML
-> +	help
-> +	  This feature provides the ability to run some kernel code
+On Tue, Jan 14, 2025 at 09:44:38PM -0800, Dan Williams wrote:
+> Alistair Popple wrote:
+> [..]
+> > > How does this case happen? I don't think any page would ever enter with
+> > > both ->mapping and ->share set, right?
+> > 
+> > Sigh. You're right - it can't. This patch series is getting a litte bit large
+> > and unweildy with all the prerequisite bugfixes and cleanups. Obviously I fixed
+> > this when developing the main fs dax count fixup but forgot to rebase the fix
+> > further back in the series.
+> 
+> I assumed as much when I got to that patch.
+> 
+> > Anyway I have fixed that now, thanks.
+> 
+> You deserve a large helping of grace for waking and then slaying this
+> old dragon.
 
-s/This feature provide/Provide/
-
-> +	  with a reduced kernel address space. This can be used to
-> +	  mitigate some speculative execution attacks.
-> +
-> +	  The !PARAVIRT dependency is only because of lack of testing; in theory
-> +	  the code is written to work under paravirtualization. In practice
-> +	  there are likely to be unhandled cases, in particular concerning TLB
-> +	  flushes.
-
-Right, this paragraph should be under the "---" line too until PARAVIRT gets
-tested, ofc.
-
-Thx.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Heh, thanks. Lets hope this dragon doesn't have too many more heads :-)
 
