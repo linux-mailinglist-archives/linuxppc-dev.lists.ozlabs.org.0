@@ -1,91 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-5360-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5359-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BF56A15039
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 14:09:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 54C89A15010
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 14:06:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YZKnZ425gz2yDr;
-	Sat, 18 Jan 2025 00:09:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YZKkj60c2z2xrJ;
+	Sat, 18 Jan 2025 00:06:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737119362;
-	cv=none; b=OfnDyNRPUbA83FSyGakKLyOq+oMSyDvu5skLJtfCdhHz+M3leo55kR4zOda0VQSOehkLKZiD3JtZEX6u8JGQf7ONeZ4mfRbqC/wWdbrlWlIGS53qYGNL3w+dm8icANlE9DJg9M08oHiPBZyMXYZlVLKEbkubHuyiaDfiTJ8wcQCw0z3PbeE1aqTRRgoeVxwP0TSYBP0rkisqNLlMwM5q2Q8yHI2nPxQPIBz2n4eLCyAJ+Ao6BEl1DWimLuiN5rkOjFnfv22rs54WbTOQFhfahcDjBkPu9/UJCyZuW+aTSAejTqzFDwxJWJBs6uZ9peruAdwgw4xUEyk4wo/wBg6qhQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737119213;
+	cv=none; b=U5OeevJz5Y3cLie/7ZGrZ6ply69Fu18wTbHhs1oar4TpVULhZzJhY6uesGiHbq4n3vc7Sh2s6RycN7X+RLeQNxZs/8LJn0eu5MikzSz0Eo8uahUxR5XntgMl23ZGKZuBXdq1e2kCKNlVbJ22aJWuhOA3oUGPCGrX+805hy5EVjwldH0/tbVs0ouZQGveTj/842Qj0B76QQC90+SbFk2PHb3odiX6GPmC98wycbshbfyP96HHDgpdmd1zDLtsWzaHidxKdTd/09cAmf3DGhp35+ZyFW69hj0VObYqW4rr7uwP96DslrABBT4FodWb3qA/WVE6x3fDJJTMUCRrkJGOZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737119362; c=relaxed/relaxed;
-	bh=JgSrgxATeLSMWrnRc+d58QJE+AgqKRYBqUdU25meeXM=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=DA+hbib8d9un7Xfut4S+AOlWLge04lrhKw6H8Juv3UY6hCtTwdOksrcvDgt6N1q5i8BSqaWL7tUPu7V0bo/0dzskn8VP6RexLr2NX+xX/3INelBuXUG6tvkHOfF2lYDvStsNaDp6ECEHQQgUCo/BBdrnsoM8CUUaNKuCBkUdMmRglHPKpsPsbBEfPjxddnbJVXUKft8Qih2086qIl4+nZwTHfDCul7cUV5yQ3wIjos25I1AZtZehMMuwVzqi8qC0TfeywiavcA458RirGE79aQVIlUADMgcavjgSwys+aNbzFlKsLVgJT/s13ZOXfEyaVwOG8j/MjfONV/PMgrrV+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=gB+0yLEX; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=fZo1H/BE; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=gB+0yLEX; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=fZo1H/BE; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=mbenes@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
+	t=1737119213; c=relaxed/relaxed;
+	bh=hY4yjRKCRod/AXSrQsJwmxP2ZGQ5suLIGcArrFvDpVc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=K0lwhPJ7MfUIgcyip1ehviywsvQqPjSUp4lb2nOAMyMu1YPOkklF6ZYur8yCmcCATDIxzF8Ccb+eP7CMGWeRK2OtOjKKihMH7q3qcZ6j3W6cyQCY1p07//h58ogzcDOhSmjWPr7BxSCOKdncE+ClOHokLll8UXwxvZolxLe+f1Rb43f+EFdE2zx0uNwGG1sPABEVDfpUeCcnYMPT6UDGt3TuuemAHqcsWGOck9YQDNyEx/RanKa8LVY7iF+zf6OiXWb3h5vv+ocqFo8ozG8Y24fr2seQATGfUmjtZF28tVms4XDPcnt4p8InugCe/YDTy/molrEaNiIGUwpctqMdUw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dFRmjx5M; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9WBtT9o6; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=gB+0yLEX;
-	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=fZo1H/BE;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=gB+0yLEX;
-	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=fZo1H/BE;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dFRmjx5M;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9WBtT9o6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=mbenes@suse.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 432 seconds by postgrey-1.37 at boromir; Sat, 18 Jan 2025 00:09:21 AEDT
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZKnY1hc1z2xst
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 00:09:20 +1100 (AEDT)
-Received: from pobox.suse.cz (unknown [10.100.2.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id CDA1221177;
-	Fri, 17 Jan 2025 13:02:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1737118924; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZKkg6c8tz2xHl
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 00:06:51 +1100 (AEDT)
+Date: Fri, 17 Jan 2025 14:06:44 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1737119206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JgSrgxATeLSMWrnRc+d58QJE+AgqKRYBqUdU25meeXM=;
-	b=gB+0yLEXF2s+dZ6ugNySFz7tUpEiyJU2ys49pfpdfHnwn8ZqxJNXCymKHvpf5/QGv4j8sD
-	/eKXq/ZXdqjugJz2j9eUyFWv/Fc3pR9l3CLfapeoXCt7YtO7PwIry/AVJNt2TjfUG4vLDY
-	wMz6CvhVegJqwY+qZIedRREjLp+Occw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1737118924;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
+	bh=hY4yjRKCRod/AXSrQsJwmxP2ZGQ5suLIGcArrFvDpVc=;
+	b=dFRmjx5M4i6s3ggklbqmIkVzFIrTqF0HonDj4Fv0mkCWGdMMmXs/T4/aSZdlLnp9tDYulp
+	dOrJ1qvFIdpw2j+rkJejTrRhUP3yi/7EnsZbDeWctkLCbFohSfoxlpbacT0aCO9j005tO7
+	4d9QEEA/e6HnhqxBmSV7sxR9p/I1U87l3nRx1D5+AeULcoNr5zi5RNEVIIQkKIlOhRB/Cc
+	T+XyrhUPg9A7kfM+e+Db0MOXf3DfC7cFsra4/3Lyk4VVZ5yvZN/svBgywKGdkfmJiB9/Qp
+	YMWMdYADkR3PP0h1ES+igS/fNEhmgPbZ66rKlMUffachERibFukINTqnKkrhGA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1737119206;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=JgSrgxATeLSMWrnRc+d58QJE+AgqKRYBqUdU25meeXM=;
-	b=fZo1H/BEKSEaEFUQjYrAy7Ye9Zi6rB9/n8du7zJXp3hL9uZV0R6N5jzUAD0RflvIw7AQhz
-	Zeh1+dWrD+V8KxBg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1737118924; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JgSrgxATeLSMWrnRc+d58QJE+AgqKRYBqUdU25meeXM=;
-	b=gB+0yLEXF2s+dZ6ugNySFz7tUpEiyJU2ys49pfpdfHnwn8ZqxJNXCymKHvpf5/QGv4j8sD
-	/eKXq/ZXdqjugJz2j9eUyFWv/Fc3pR9l3CLfapeoXCt7YtO7PwIry/AVJNt2TjfUG4vLDY
-	wMz6CvhVegJqwY+qZIedRREjLp+Occw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1737118924;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=JgSrgxATeLSMWrnRc+d58QJE+AgqKRYBqUdU25meeXM=;
-	b=fZo1H/BEKSEaEFUQjYrAy7Ye9Zi6rB9/n8du7zJXp3hL9uZV0R6N5jzUAD0RflvIw7AQhz
-	Zeh1+dWrD+V8KxBg==
-Date: Fri, 17 Jan 2025 14:02:04 +0100 (CET)
-From: Miroslav Benes <mbenes@suse.cz>
-To: Petr Mladek <pmladek@suse.com>
-cc: Joe Lawrence <joe.lawrence@redhat.com>, 
-    Madhavan Srinivasan <maddy@linux.ibm.com>, jikos@kernel.org, 
-    shuah@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
-    christophe.leroy@csgroup.eu, naveen@kernel.org, 
-    live-patching@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-    linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH] selftests: livepatch: handle PRINTK_CALLER in
- check_result()
-In-Reply-To: <Z4ktTdwl8aqqwZpf@pathway.suse.cz>
-Message-ID: <alpine.LSU.2.21.2501171401290.6283@pobox.suse.cz>
-References: <20250114143144.164250-1-maddy@linux.ibm.com> <Z4jRisgTXOR5-gmv@pathway.suse.cz> <af77083e-2100-ea2e-ae14-dc5761456fef@redhat.com> <Z4ktTdwl8aqqwZpf@pathway.suse.cz>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	bh=hY4yjRKCRod/AXSrQsJwmxP2ZGQ5suLIGcArrFvDpVc=;
+	b=9WBtT9o6vTQ88sIgTNnDvZ7GnfUlb5LHAN1EezNk61xvUNfyG771NRpLCOCbVUMQmPLw1J
+	4BV1hYPZ5MMWLZDg==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: Basharath Hussain Khaja <basharath@couthit.com>
+Cc: Rob Herring <robh@kernel.org>, mpe@ellerman.id.au, 
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	saravanak@google.com, danishanwar <danishanwar@ti.com>, krishna <krishna@couthit.com>, 
+	mohan <mohan@couthit.com>, parvathi <parvathi@couthit.com>, pmohan <pmohan@couthit.com>
+Subject: Re: [PATCH] of: address: Unify resource bounds overflow checking
+Message-ID: <20250117134255-bee95a37-250c-437a-a101-938800cba218@linutronix.de>
+References: <87mskbqher.fsf@mail.lhotse>
+ <20250108140414.13530-1-basharath@couthit.com>
+ <CAL_JsqLLGW_o9i6a5wcUj=Z=4nL-GhzHwAQMFtQkb9OSHuSgTA@mail.gmail.com>
+ <2089813158.341858.1737096833060.JavaMail.zimbra@couthit.local>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,96 +75,166 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Score: -8.30
-X-Spamd-Result: default: False [-8.30 / 50.00];
-	REPLY(-4.00)[];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.996];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[redhat.com,linux.ibm.com,kernel.org,ellerman.id.au,gmail.com,csgroup.eu,vger.kernel.org,lists.ozlabs.org];
-	RCVD_COUNT_ZERO(0.00)[0];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	FROM_EQ_ENVFROM(0.00)[];
-	MID_RHS_MATCH_FROMTLD(0.00)[];
-	TO_DN_SOME(0.00)[]
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2089813158.341858.1737096833060.JavaMail.zimbra@couthit.local>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
-
-On Thu, 16 Jan 2025, Petr Mladek wrote:
-
-> On Thu 2025-01-16 08:10:44, Joe Lawrence wrote:
-> > On 1/16/25 04:29, Petr Mladek wrote:
-> > > On Tue 2025-01-14 20:01:44, Madhavan Srinivasan wrote:
-> > >> Some arch configs (like ppc64) enable CONFIG_PRINTK_CALLER, which
-> > >> adds the caller id as part of the dmesg. Due to this, even though
-> > >> the expected vs observed are same, end testcase results are failed.
-> > > 
-> > > CONFIG_PRINTK_CALLER is not the only culprit. We (SUSE) have it enabled
-> > > as well and the selftests pass without this patch.
-> > > 
-> > > The difference might be in dmesg. It shows the caller only when
-> > > the messages are read via the syslog syscall (-S) option. It should
-> > > not show the caller when the messages are read via /dev/kmsg
-> > > which should be the default.
-> > > 
-> > > I wonder if you define an alias to dmesg which adds the "-S" option
-> > > or if /dev/kmsg is not usable from some reason.
-> > > 
+On Fri, Jan 17, 2025 at 12:23:53PM +0530, Basharath Hussain Khaja wrote:
+> >> >> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de> writes:
+> >> >> > The members "start" and "end" of struct resource are of type
+> >> >> > "resource_size_t" which can be 32bit wide.
+> >> >> > Values read from OF however are always 64bit wide.
+> >> >> >
+> >> >> > Refactor the diff overflow checks into a helper function.
+> >> >> > Also extend the checks to validate each calculation step.
+> >> >> >
+> >> >> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
+> >> >> > ---
+> >> >> >  drivers/of/address.c | 45 ++++++++++++++++++++++++++-------------------
+> >> >> >  1 file changed, 26 insertions(+), 19 deletions(-)
+> >> >> >
+> >> >> > diff --git a/drivers/of/address.c b/drivers/of/address.c
+> >> >> > index 7e59283a4472..df854bb427ce 100644
+> >> >> > --- a/drivers/of/address.c
+> >> >> > +++ b/drivers/of/address.c
+> >> >> > @@ -198,6 +198,25 @@ static u64 of_bus_pci_map(__be32 *addr, const __be32
+> >> >> > *range, int na, int ns,
+> >> >> >
+> >> >> >  #endif /* CONFIG_PCI */
+> >> >> >
+> >> >> > +static int __of_address_resource_bounds(struct resource *r, u64 start, u64
+> >> >> > size)
+> >> >> > +{
+> >> >> > +     u64 end = start;
+> >> >> > +
+> >> >> > +     if (overflows_type(start, r->start))
+> >> >> > +             return -EOVERFLOW;
+> >> >> > +     if (size == 0)
+> >> >> > +             return -EOVERFLOW;
+> >> >> > +     if (check_add_overflow(end, size - 1, &end))
+> >> >> > +             return -EOVERFLOW;
+> >> >> > +     if (overflows_type(end, r->end))
+> >> >> > +             return -EOVERFLOW;
+> >> >>
+> >> >> This breaks PCI on powerpc qemu. Part of the PCI probe reads a resource
+> >> >> that's zero sized, which used to succeed but now fails due to the size
+> >> >> check above.
+> >> >>
+> >> >> The diff below fixes it for me.
+> >> >
+> >> > I fixed it up with your change.
+> >>
+> >>
+> >> This commit is breaking Ethernet functionality on the TI AM57xx platform due to
+> >> zero byte SRAM block size allocation during initialization. Prior to this
+> >> patch, zero byte block sizes were handled properly.
 > > 
-> > Hi Petr,
-> > 
-> > To see the thread markers on a RHEL-9.6 machine, I built and installed
-> > the latest dmesg from:
-> > 
-> >   https://github.com/util-linux/util-linux
-> > 
-> > and ran Madhavan's tests.  I don't think there was any alias involved:
-> > 
-> >   $ alias | grep dmesg
-> >   (nothing)
-> > 
-> >   $ ~/util-linux/dmesg | tail -n1
-> >   [ 4361.322790] [  T98877] % rmmod test_klp_livepatch
+> > What driver and where exactly?
 > 
-> Good to know. I havn't seen this yet.
+> We found an issue while developing the driver [1] and more
+> specifically in [2] (lines 313-327), but it looks like this is a
+> generic issue which can block 1 byte of memory, when a zero size
+> request has been initiated for the reserved region.
+>
+> static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
+> {
+>     u64 end = start;
 > 
-> > >From util-linux's 467a5b3192f1 ("dmesg: add caller_id support"):
-> > 
-> >  The dmesg -S using the old syslog interface supports printing the
-> >  PRINTK_CALLER field but currently standard dmesg does not support
-> >  printing the field if present. There are utilities that use dmesg and
-> >  so it would be optimal if dmesg supported PRINTK_CALLER as well.
-> > 
-> > does that imply that printing the thread IDs is now a (util-linux's)
-> > dmesg default?
+>     if (overflows_type(start, r->start))
+>         return -EOVERFLOW;
+>     if (size && check_add_overflow(end, size - 1, &end))
+>         return -EOVERFLOW;
+>     if (overflows_type(end, r->end))
+>         return -EOVERFLOW;
 > 
-> It looks like. The caller ID information is available also via
-> /dev/kmsg but the older dmesg version did not show it. I guess that
-> they just added support to parse and show it. It actually makes
-> sense to show the same output independently on whether the messages
-> are read via syslog or /dev/kmsg.
+>     r->start = start;
+>     r->end = end;
 > 
-> So, we need this patch, definitely ;-)
+>     return 0;
+> }
+> 
+> Though we have the start address handling already in place above, we
+> do see an issue with the end address, because there is an
+> unconditional +1 afterwards in resource_size() API below which is
+> responsible for reserving the extra byte
+> 
+> static inline resource_size_t resource_size(const struct resource *res)
+> {
+>         return res->end - res->start + 1;
+> }
 
-Yes.
+Now the report makes more sense.
 
-Madhavan, could you add the above findings to the commit log when you 
-submit a new version, please?
+> We have 4 ways of fixing it.
+> 
+> Option 1: Modify the function to handle the size zero case
+> 
+> diff --git a/drivers/of/address.c b/drivers/of/address.c
+> index c1f1c810e810..8db6ae9a12b8 100644
+> --- a/drivers/of/address.c
+> +++ b/drivers/of/address.c
+> @@ -204,6 +204,12 @@ static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
+>  
+>         if (overflows_type(start, r->start))
+>                 return -EOVERFLOW;
+> +       if (!size) {
+> +               r->start = start;
+> +               r->end = end - 1;
+> +
+> +               return 0;
+> +       }
+>         if (size && check_add_overflow(end, size - 1, &end))
+>                 return -EOVERFLOW;
+>         if (overflows_type(end, r->end))
+> 
+> This seems to be the simplest solution.
 
-Thank you,
-Miroslav
+Fixing it in __of_address_resource_bounds() looks correct to me.
+The proposed solution doesn't look as clean as I'd like though,
+this is highly subjective, though.
+
+What about the following (untested)?
+
+static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
+{
+	if (overflows_type(start, r->start))
+		return -EOVERFLOW;
+
+	r->start = start;
+	r->end = start;
+
+	if (!size)
+		r->end -= 1; /* May underflow for empty resources. */
+	else if (check_add_overflow(r->end, size - 1, &r->end))
+		return -EOVERFLOW;
+
+	return 0;
+}
+
+A kunit test looks to be in order in any case, to make sure all the
+edgecases are handled.
+
+> Option 2: Handle in resource_size().
+> static inline resource_size_t resource_size(const struct resource *res)
+> {      
+>           return  (res->end == res->start) ? 0 : (res->end - res->start + 1);
+> }
+> There are plenty of places where we are using this API and there is an assumption that the end address should always be start + size -1. We are a bit unsure about the side effects of this change.
+> 
+> Option 3: Handle in sram_reserve_region().
+> We can avoid calling the resource_size() API and handle size zero as a special case. We are a bit unsure about the side effects of this change as well.
+> 
+> Option 4: Handle this in dts [2] with non zero size. Estimate the approximate size and update that value in dts file with extra buffer. However, as indicated in [2] in lines 313-327, the size is not known apriori and the actual size is only known in runtime. So if we set some size for this buffer, then this will always be blocked and may or may not be used subsequently.
+> 
+> [1] https://lore.kernel.org/all/20250109105600.41297-1-basharath@couthit.com/
+> [2] https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/ti/omap/dra7.dtsi
+> 
+> 
+> Thanks & Best Regards,
+> Basharath
 
