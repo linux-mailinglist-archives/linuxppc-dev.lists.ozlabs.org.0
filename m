@@ -1,84 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-5351-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5352-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41DA4A147CC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 02:55:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFEBA1484D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 03:34:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ2qg0Fhdz3cfQ;
-	Fri, 17 Jan 2025 12:55:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ3jD1kYzz30VP;
+	Fri, 17 Jan 2025 13:34:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2415::62c" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737078910;
-	cv=pass; b=Xe9wA361M0XTF65BZCbb0FVlSVjeTOCWvnI3YEAUEW45xJndMgtE0ZdYbUVgq0AK0RTbsxIMmnW/EGBi08DZV8te/IKN2o8l7t0ISViAUkyzc+w6/1OKtLIssN00c1Qf9DZfLsCpZ4Lf3+WuHoOtAhTk2IZCDU0l6Cpw7+litGemTvkhGqu40N1OXJwftul3Fc5rWgTZwRAOOYLQsZruiF0PRgDOblG0RGLviCS+2+jbmEeg7SEOn3UGCzLr/c91hWwYw5MTHDlRHYpMa7zNsFV8qiXrYlYj40zB2wTj2hQzKMGdnFAurHKhkMItanKHH5xEwUe8rQg9NvsfnP64NQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737078910; c=relaxed/relaxed;
-	bh=hpQhF1Eu3o5/dVcEBvFi4uqy64IBZ4EGdR7QRq2M8j0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=VT/ngHH1fIjklQ5KUMDVGEf0GOADIVwm+02PLFwSh29VA6DRLsB7tc0FKNDL+W4R2RXcwyK3XE0DmTU0HQ92EQnHJmmcd5X8sQ5uXOrfz+2LyxGWw1Vjyj4/9nGhQOxJuFMdbrHTcp5vpJ6yIzj9oDMagGnnpBqPBX3VFo6/UXVPdZNwHxKekP930UjV8JUYM4M33Gl/WLwawRGuPfKYeCt0JKS8hSIXgQ9zPIOjQ9W1kmCF49QdwPAuTxR4X4I8YB4gHfEL5EeYKHLel6Ia+p3V8F251eX4Z45gzA3XOxI//rWygMN3gilwCZUltIShHdCofr8woDtJFHBcZ8eIeA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kcReJsJh; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2415::62c; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737081280;
+	cv=none; b=IUkXzTI228RoIttwxdi0Z7OjXcwhu5ZY3kyra6a1ECNmk4o1m9LKTzKn0eN/4Z9nHQUHEIN+NcSDdCKsC3QWMElnBbCoocFVKidkCq4zq+3gKT6amTolY6aaDdO/7R23hYaD4cl1Qmn/dNm5Nn/Kk5EdyHDLIw4iY97pAiXezJ8o6b4QI/7vhwJplxn3sJrKaJjpKiwQDMefUd3PQDqPgF0IKxzLNCXpNudbvur6nSNLkj+dzFC7cFNBDCxnaOYYAy6iYLUWPg6Umeq0q8YscQC7TIA4Hkb5G422gdls3lXtR6tN8Ugh8R4TCALDJKSM5+LeD8u/WSFDP812N1D14w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1737081280; c=relaxed/relaxed;
+	bh=u2lKbXZHyMt4RAtOLSwxcYqnvlCA+WUH2hQXc3LzmDY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HK9DYSp7KX36GAubSFhi6E550h+oJ+fM3SQDSjflsIsdagMl0Jyz+t4kM7MglRtbPYAzticiKHY2CkX/qIRhHjKAG/ZnZCDIGCkJV+HAYHslL1MnN16CQLHyiVxPNaj9Hci5knPTe+86Zv5K8Redtj9mj+rVCDSxYf3kBsyzhE3Qyxgdr+NB3LmMP5ZKjMrbRFnoVVZXVseXVDcBau93ksZV/RQSZLXAdYBiy0l9JicJ7S01pWhq7/o11wrDjun8d9xjFMtc0GLFYJbto7RMKt5IBoCtuFsFHrjovN7FkyUvRviLztsyj8ZMv0VVrY4yaBhyhpU/cJEWeWrRHcCc8A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SWGEzJWm; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=kcReJsJh;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SWGEzJWm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2415::62c; helo=nam11-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2062c.outbound.protection.outlook.com [IPv6:2a01:111:f403:2415::62c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ2qZ4rdcz3by8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 12:55:06 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=p0Ndik2jUJLLqNfyDZDeLNl0yWLbsxxOHUlriBEB06QDE/IY/XeEYPywChj79cZiPLeeR739wTHdhuXQ5Gw1pjs/X+rqbMW/0QZc9+uplc+Mc5+tvANDto7jlrNoYJW818Rt16/IPpSnvKPArDJ4uB6JPrPJA9dLiKZBmnyo7cGZ55rW0m/Cl9YHC/vWQNzfTSRx0ikGLmbyrQYqjKDzHxfFE0lcWS5cxp3vjSKnp1FHsv0KPZy3We+OfLKpsY8mkB9Of+gUDMe2+nJ4LJLrkFKs+v+4B4vrLMGN0hZibwcFzgmD5UM2fFhKUMTo+QY5MrWGEinlw1NPNHpYv+NJBA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hpQhF1Eu3o5/dVcEBvFi4uqy64IBZ4EGdR7QRq2M8j0=;
- b=IVSCvIVGZLKTUl3fFU4IN83os37u9e4oqQ+5wsZGJ6In+mLN7hOdNiPcIFmvYzBdLywWf12kNP/sEkBTTyrocd82yS3kYucLN8B6gBV9zo3KhUo8XbWflLXgngUTyFEQzoUHIjpvkQsjfGUKdtXYrq37UhyP5a2mkfhPO9pzYdBIFoKrs2TtisAZheLCeUJxaerV8aB4cyLauKNEhkTrvzYTpnUblRyCCn04mCd0t+YOu8F5fiVIu41oh8lvaiXaSYlpB4QfYgiPQW5ie9L/ko5BUaHkxfF02+RpUj8s9wIDzLxXrbmqRUXZjMgmZUM49RL08X1gZ13yO/FWPn1pMw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hpQhF1Eu3o5/dVcEBvFi4uqy64IBZ4EGdR7QRq2M8j0=;
- b=kcReJsJhU7OvOX+s02NrSJrEIy8pDI8zLOE3MnXnlPKiGn2ldR/cS69jj9AiVXJZc/pEVfEUuYAzvTEqQ7ReDo9yGFTCshtTddiWCm5eakx1+K+j+xCgR+zpT+kjdO/J3bTVvcuE5cAARiW5xtlBU1HcIdAeTfv48RffJyUcUXhut4r/kaDujDgwCWnCHpmsDEbjXT4xeKIqIDaXfp80iSZz6Mha/eBA6tzco7fyCEvEyqSdbQWGTzKzIfZJpruxZXoG1QniHubLHx0WKUf0gox6c8C2oNihuBk7RQ/F7V4XRwMQOmPdckNCvEl2SIayMC6fPGyTm7xsXnOcr6sJzg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- DS0PR12MB8272.namprd12.prod.outlook.com (2603:10b6:8:fc::7) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.8356.13; Fri, 17 Jan 2025 01:54:46 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.8356.010; Fri, 17 Jan 2025
- 01:54:46 +0000
-Date: Fri, 17 Jan 2025 12:54:42 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>, a@nvdebian.thelocal
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	alison.schofield@intel.com, lina@asahilina.net, zhang.lyra@gmail.com, 
-	gerald.schaefer@linux.ibm.com, vishal.l.verma@intel.com, dave.jiang@intel.com, 
-	logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, 
-	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org, 
-	tytso@mit.edu, linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
-	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com, 
-	chenhuacai@kernel.org, kernel@xen0n.name, loongarch@lists.linux.dev
-Subject: Re: [PATCH v6 20/26] mm/mlock: Skip ZONE_DEVICE PMDs during mlock
-Message-ID: <2oqithhbrzugwdyucy44ehcl3oumly65oml2ozi5x5cbuj3pxp@empgh6q3buzy>
-References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
- <e08dfe5ec6a654e8cb48f9203d7406326368f5a6.1736488799.git-series.apopple@nvidia.com>
- <6785cf266ea89_20fa29487@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6785cf266ea89_20fa29487@dwillia2-xfh.jf.intel.com.notmuch>
-X-ClientProxiedBy: SY2PR01CA0020.ausprd01.prod.outlook.com
- (2603:10c6:1:14::32) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ3j94mc6z2ysg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 13:34:35 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737081278; x=1768617278;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IbpOuCB0PVCg0GMj7JYqLyLPivC2fAXTi2lfyteKyjw=;
+  b=SWGEzJWmIz7aOMPkN24rzgzeSiAvghI+cqfKMFY1RJErTzXTtNb69Wpk
+   AxejKHEx4T8GHUPbhv+jsTVa8Z+zRHnKBXwP6ofMEYufEz9Xx0iLotmLI
+   HWIT2MLidg0O7pMCWJtPylptImfjM08qRkJan1Zsc0aYbxC6++L0SRqMC
+   n1GhQ9tG7tLYokZTSM1C5WRjvWJxTbMiS5M7B5CB8T8aerUIlvjKi4tSE
+   DGPdUZ1wyq+iAtX3tXXd6LlExkLOcpRocyG96m/c79eayhZyaJjkVbKZp
+   HJIZXp5kvlYakmdutNqGFatTBBFnCamiM5Gu6mpWSFGPyMNZPfHnxj6A7
+   A==;
+X-CSE-ConnectionGUID: cMVplBnMTdCjrHKrB+Mxnw==
+X-CSE-MsgGUID: PNmcsdN2RsiKD6ZOWC5IIQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="37735286"
+X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
+   d="scan'208";a="37735286"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 18:34:32 -0800
+X-CSE-ConnectionGUID: pLWp/igBRTWuqm7bF9lITA==
+X-CSE-MsgGUID: TrgTChtERluJ67P28x4/yA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="128928043"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa002.fm.intel.com with ESMTP; 16 Jan 2025 18:34:29 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tYcBn-000SdL-09;
+	Fri, 17 Jan 2025 02:34:27 +0000
+Date: Fri, 17 Jan 2025 10:34:01 +0800
+From: kernel test robot <lkp@intel.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+	sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
+	amachhiw@linux.ibm.com
+Subject: Re: [PATCH v2 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv
+ specific PMU
+Message-ID: <202501171030.3x0gqW8G-lkp@intel.com>
+References: <20250115143948.369379-5-vaibhav@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,109 +85,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DS0PR12MB8272:EE_
-X-MS-Office365-Filtering-Correlation-Id: 10aebc8a-4fc3-4fd5-4fc5-08dd3699eb60
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?MWXGs+NOUhX/MZLeCteINhkZxXMkzzQnns/R0OOpV9ii0xc4W/kMuOPdsLQU?=
- =?us-ascii?Q?ZkwAFpc9PaRKZWlelNDKpVvSOyE/2qvw0Inc8O6sXvIKYJ2jyMBFdZ0MX83v?=
- =?us-ascii?Q?5aPmFNheu/C3l2IRpc2U1z4ekxdbXdGJlQha8Gy/uHTpTEX1tO8ynSiihRwv?=
- =?us-ascii?Q?gr3FsEHACSFqTd2Fy3vTgO3tnfqS1M80+vkdWXuRa97vPv+flacKNkP5QHPo?=
- =?us-ascii?Q?rDFZAywmFVbb8eiUOVvM3rOC4+hbQWQk8bxrbGwM0Gn37pcv1/8Ua6QOBGro?=
- =?us-ascii?Q?ANGi8gUuPNZscHQsqqjULvvdjb273COGhOTbWAMaxRE5Pmym6Wc2nEObNKMr?=
- =?us-ascii?Q?j3MjFNdf5T9gctwpY6ZRjXH225oiWwLB3ta0hbkE+fTA2mtroTf/DQDMh0hs?=
- =?us-ascii?Q?yvGu73TYjuMOSa4uVKKZFe3xPLTb/aDhTvRnpUr9JtuJQC65Z3DeBFpjhrJ7?=
- =?us-ascii?Q?3QYTGT4TI4PrtCXXXE2pWb5Ar21xyOoIm8jOv3GRykNVBgPSQ5mx0sl5JjKC?=
- =?us-ascii?Q?DmVMOGbWkpI6N8oBWt592eSEJY1eKM63v8JZwnE9je0IMttKsn93Y97lYfXZ?=
- =?us-ascii?Q?tBoFXSZ2YV1vSWClxU0yGEENzOCiwBTqOLG/LHfTD10jR3atKXUanR3UcVIG?=
- =?us-ascii?Q?+JkjBzxf7I2AryeVw0qvYTJ3tKGGEw4Passf2oItn/84cFOGJYyp/BlXvByc?=
- =?us-ascii?Q?/tfdrUfbeX4w5w++8B0TmBOcjKOMRnYy9U/mEV1DxtGz7fqvz74r5bcrwjNa?=
- =?us-ascii?Q?/z3vBtvO71W2ZbtnUwqXOMKip51mdnwCuzAh3bQgvzg4iQnKKDy5f4t6W579?=
- =?us-ascii?Q?/oVdt1AVKLIAGQfTHDcFugDbDM9+KoNagMq5YqP4hNlcx9Kporr5jdJOp3gT?=
- =?us-ascii?Q?0o+5oGl1fdOtxRVNXKJW0srHxvSlgaHTIyFA7DuCivgnLGdyYIrhRgGwNCZi?=
- =?us-ascii?Q?lSiqKQXbdIrutN1sS4bQ5hwGneOCEa4gsUabr4RI37ISjZHqkt/sv+L1sO77?=
- =?us-ascii?Q?E2NbOp0qFje1RcpDzPWSkkp6InPxHfdwTyRYj2vPBLUUm+bOjnXXTuf91SZi?=
- =?us-ascii?Q?mdGf0LQzQaHBqLBhafnsmBZL5pQOJpDX+IXsM/yU3X6jkAvR8L/o01D1THoH?=
- =?us-ascii?Q?094ooYW7NZAL7dMgwVURv8EA40gWsvQkDckjARmHR5y+9XorS9N816ebi2b8?=
- =?us-ascii?Q?D79Ej1wqCfDFb8QO471k1Yemfdk25K3ULOV2kH42o+m7bWigHEx9s3uehGLk?=
- =?us-ascii?Q?ODbC8qGmY3v7RtOD8RQdLqhfzluKKAQ2uLYmebk7nfCruF9YX4V3OnkNpw/k?=
- =?us-ascii?Q?OB3dQs/2fJACpJtDsWB3hTRxLm7yxLonBt9EXArde44ErT4TS6dqKfUJvDRx?=
- =?us-ascii?Q?fj5/GkrQx8NswsPwbSTpgepLvZ9N?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?7bsvSXwgl/uWpGvhqsCMERpnYm39nGUpRpNvQgR5DvP9vze5FM9N8lk7YHwd?=
- =?us-ascii?Q?1mtVrQQJd3UKGZwscXnE5oo53WeHRhtA5YHCxRFDuFqVeSg4wqgEsFwg57fF?=
- =?us-ascii?Q?D64R5n09sr0WyR10Rod7+hSuHKHQ7zdoqnL9377Be7Eu31OgKYzLcwe4xpTy?=
- =?us-ascii?Q?nz6nFMgUdq6XCIRV48dcB1wxY2yRvf6DIK18evmKivq10eXNFWFb0IE88B+5?=
- =?us-ascii?Q?7gUYU03ooK2AyL4sqCmFYTxp8XTe445GGO6lahSY+O3i9Q6zRbu1eIlkVYdV?=
- =?us-ascii?Q?WjijLKm4XJWBUZLmNgE0f3D9VaLkUtulUTZdv+w+vtXeZfecn1+zsVABwp/Y?=
- =?us-ascii?Q?v3msX7dnBzUHyh9hS81wPSQhxgRbzdobh4KVyh4s5rSVh8h8hPn8KnTWm4vQ?=
- =?us-ascii?Q?aZJtfr+OE40HdxBTjXR+HyKOw16rt3HxmLDzV6fv+lCbe12JNGm/1X2qYSfQ?=
- =?us-ascii?Q?8LXFG1F89uAddG85AQkxnAFDTCu9k6a1EQlDa4rehQ5D6tGfRw0/HmNpvMVs?=
- =?us-ascii?Q?V47e3JYPXqPBz9sX2wyzQn4+frYAryj3MCe9bOnPhdKt44UYchy3gDXYgeUo?=
- =?us-ascii?Q?3EHtBTTQyvn2GzYgZWTvrojpJHSh3cWgFJZDUYAIaPmrbDd2BMIlikYOuDpd?=
- =?us-ascii?Q?Qar1s08RnHzMB7+STU58VM/7RaaS4MFAVX/xVBohaBtnpodsq1iTUF6Vqol/?=
- =?us-ascii?Q?RpzUVSleIAdDxC+dmcRCMaMOCkyiBNgi5/UflPh+n4t8E+rN2uHylf4HngGu?=
- =?us-ascii?Q?/xos9CTAKRBA+t0AGtmPz5Vg8Um7kZc8/ILVCpuIbF08ICUGrPOH3lbWte66?=
- =?us-ascii?Q?OMUVQEzkUpohVMEd/yoFDxGBpm0T2ehD4WFpMLzZg1JqirGEdQOAx6ufMF8t?=
- =?us-ascii?Q?luM3kiwMTSc6949WIy9LKjJyty+EHJ0wNnoxXVVCbexTfkWhxhLVHICQW5xI?=
- =?us-ascii?Q?Pd1qK2Jf5Cl/besoB/tLO3PGLd/jirn/LjGVyUFrI15pb0XbU29YBGmn3Qqy?=
- =?us-ascii?Q?wZbfhYE9soVRmXnAJY/ACEnAtzH1GOC+QfzB4G+FXvtFFaWjG9eRPz1gDAhr?=
- =?us-ascii?Q?D6vyfkJGE2KytuU3oN3llp83yn2HSoGYtybcEGxbvj0q1MqBnsDXogpoBXOz?=
- =?us-ascii?Q?tBTlXBe+ifWyxByb2XJuduIFrrVjvaZP+Zqz2Uot7tTWnDGX250nIPlCJUUC?=
- =?us-ascii?Q?N7EIk7N+hYk+KBygpI9z5v+0TIPij1WiIzDMsWgWE8IEsyY8BwHRIxdhjkfM?=
- =?us-ascii?Q?YgWCMhHPKwuvTMVdX2rH6Cb74QJNhQhJHaLXajWPmGxXJEDDcGgN22gGNb5B?=
- =?us-ascii?Q?MXsnkxOM7DmJQpiCfwGBZUn4A/b/oDt4kW5ZOPZ6WaNn6FBBBDctrQfBF6R9?=
- =?us-ascii?Q?BE/DQoz//AGrhJJARXsdudK1q5SCALRKvzgK2vbj+qbnxOuA3KqYJkaFW+GZ?=
- =?us-ascii?Q?MyMMwiky9dgOnur4u1D8hWFgDP97pQbDU3PJqled32EYw6gVnqxEHW2uGBXn?=
- =?us-ascii?Q?ixZZg8NWJWRh2TnDTOn5kmc3Till+Ngu6HVq5w3meIKH9tZKsfKzL4oRRWPr?=
- =?us-ascii?Q?z19xTE8wEyR+enOliTUYqPB6ddWnld7hdv0VeSjo?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 10aebc8a-4fc3-4fd5-4fc5-08dd3699eb60
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 01:54:46.4350
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QdZzbjUSCPneQxQX95jdT2oBpKGz2zQRBy1cLVLGwzHqwn5Wg8cbRkBm6Of1DZSOe3pG/bI3z1XzV1f7ERvuDA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB8272
-X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250115143948.369379-5-vaibhav@linux.ibm.com>
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 13, 2025 at 06:42:46PM -0800, Dan Williams wrote:
-> Alistair Popple wrote:
-> > At present mlock skips ptes mapping ZONE_DEVICE pages. A future change
-> > to remove pmd_devmap will allow pmd_trans_huge_lock() to return
-> > ZONE_DEVICE folios so make sure we continue to skip those.
-> > 
-> > Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> > Acked-by: David Hildenbrand <david@redhat.com>
-> 
-> This looks like a fix in that mlock_pte_range() *does* call mlock_folio() 
-> when pmd_trans_huge_lock() returns a non-NULL @ptl.
-> 
-> So it is not in preparation for a future change it is making the pte and
-> pmd cases behave the same to drop mlock requests.
-> 
-> The code change looks good, but do add a Fixes tag and reword the
-> changelog a bit before adding:
+Hi Vaibhav,
 
-Yeah, that changelog is a bit whacked. In fact it's not a fix - because
-mlock_fixup() (the only caller) already filters dax VMAs. So this is really
-about fixing a possible future bug when we start having PMDs for other types of
-ZONE_DEVICE pages (ie. private, coherent, etc).
+kernel test robot noticed the following build warnings:
 
-So probably I should just roll this into "mm: Allow compound zone device pages".
+[auto build test WARNING on powerpc/topic/ppc-kvm]
+[also build test WARNING on powerpc/next powerpc/fixes kvm/queue kvm/next mst-vhost/linux-next linus/master v6.13-rc7 next-20250116]
+[cannot apply to kvm/linux-next]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+url:    https://github.com/intel-lab-lkp/linux/commits/Vaibhav-Jain/powerpc-Document-APIv2-KVM-hcall-spec-for-Hostwide-counters/20250116-024240
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
+patch link:    https://lore.kernel.org/r/20250115143948.369379-5-vaibhav%40linux.ibm.com
+patch subject: [PATCH v2 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv specific PMU
+config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20250117/202501171030.3x0gqW8G-lkp@intel.com/config)
+compiler: powerpc-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250117/202501171030.3x0gqW8G-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202501171030.3x0gqW8G-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+   In file included from arch/powerpc/include/asm/kvm_ppc.h:22,
+                    from arch/powerpc/include/asm/dbell.h:17,
+                    from arch/powerpc/kernel/asm-offsets.c:36:
+>> arch/powerpc/include/asm/kvm_book3s.h:357:13: warning: 'kvmppc_unregister_pmu' defined but not used [-Wunused-function]
+     357 | static void kvmppc_unregister_pmu(void)
+         |             ^~~~~~~~~~~~~~~~~~~~~
+>> arch/powerpc/include/asm/kvm_book3s.h:352:12: warning: 'kvmppc_register_pmu' defined but not used [-Wunused-function]
+     352 | static int kvmppc_register_pmu(void)
+         |            ^~~~~~~~~~~~~~~~~~~
+--
+   In file included from arch/powerpc/include/asm/kvm_ppc.h:22,
+                    from arch/powerpc/include/asm/dbell.h:17,
+                    from arch/powerpc/kernel/asm-offsets.c:36:
+>> arch/powerpc/include/asm/kvm_book3s.h:357:13: warning: 'kvmppc_unregister_pmu' defined but not used [-Wunused-function]
+     357 | static void kvmppc_unregister_pmu(void)
+         |             ^~~~~~~~~~~~~~~~~~~~~
+>> arch/powerpc/include/asm/kvm_book3s.h:352:12: warning: 'kvmppc_register_pmu' defined but not used [-Wunused-function]
+     352 | static int kvmppc_register_pmu(void)
+         |            ^~~~~~~~~~~~~~~~~~~
+
+
+vim +/kvmppc_unregister_pmu +357 arch/powerpc/include/asm/kvm_book3s.h
+
+   351	
+ > 352	static int kvmppc_register_pmu(void)
+   353	{
+   354		return 0;
+   355	}
+   356	
+ > 357	static void kvmppc_unregister_pmu(void)
+   358	{
+   359	}
+   360	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
