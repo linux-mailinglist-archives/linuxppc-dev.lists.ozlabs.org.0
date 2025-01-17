@@ -1,88 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-5347-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5349-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C30A2A14729
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 01:55:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6348A1474F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 02:06:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ1VF33sdz30Th;
-	Fri, 17 Jan 2025 11:55:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ1lY4WK0z3bXd;
+	Fri, 17 Jan 2025 12:06:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2414::623" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737075301;
-	cv=pass; b=SbyNVLkf1F+t6tz5aMMhFsJP8ifs6oFAIGLt9oB7k9U4zW/sXBAinSU/zEQTAiLnZZTKveeUQcYwyphhTP4DmD7kYnj1O3lrgUCUVBmIHgJx21ug+tXlBysUl0OqfEPd8adOGd3IXC9HVhNimgKUCoShJJd41Nzv6ooE08qHz7BH5WMTY18wALrf2V9FWNO7GIwUiJENhpLbd9OGiM3w1OSyLXRbV/TMSfg5tHk8s3Rpzce9AjzEaeQzRD9YvPOQsyk01torsEQC7VhQoK1jiFPz11uOSsP8q0nFnexuiLDJfk+RFJ/qgSPTdThK2VWEnEsr69RG6aUHzrjK9js6xw==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737075301; c=relaxed/relaxed;
-	bh=PsorMIcWx4N+7qkEgr+BbXGvsZfm6KhzZ3DohD8VoDU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Km5Xb4MPhHY+I7xbmwCNrbFgvAdkFDUQ2cFdNlwAD/xokHmZrpIVlhVRpxavXvve6JdY5dfUCAaKb3ui9M5XDu8xgRCCmq1x0eN43ouHUSfAtSxndU/bZwUGzl7DezTbQvpLV3pSKQVAkdlTn225Kzv2CoR7uYzNwz4gmgx7J/9nd/ZNhuH7yNLoKuP62fNq9J9lsalhP8CoMyhzzJQV00DPU7K5dupUahqRkCiyvKBVaDTWVknwGh52l93aKVjkrVXD02V9Y+fviLbAVdMzIxt9nOblpllKhmGonsQS5uMxCXaaqMQf8cfLtKth768m3iCJT/drKJAJ+GUXp2QdSw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jM+15JCa; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2414::623; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.137.202.136
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737075993;
+	cv=none; b=cLSrf+NBWJ5rPe+Snp2VLsIKKnqqjtQAgXQG7jYtivmAM3nXGZXeH+qASq67H8nx5WiFYyX801s2AVdP9zDvBi/t2pOXJDy/HsSDaapY58Q2kt0Ea1X6M5E+cnNFi0UCtL5lkLoaPIYyVMviewISOSyoJfVp6DT0dkgOKsMRjvMYPlpXd6qD6kY89X7WB1E9HOhlTmU3JZFU/TeY24JrOj6MJrUwkBA7yWf8Opu1VvKlJI23rNScoD1D0+z0TnVwMtPkb+mcvnsAEL/n80/JX3gY6B7cV3fDlh4xpQEcAeAFLYkHqXgT270XGQa2Su140r4JAWcAOI/5LMOlAXYLlA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1737075993; c=relaxed/relaxed;
+	bh=UnJza3M7ovW+3GQtfqyhUd50Nd+1cSpEjlVwEgMdrWg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aiDJIeAEJLIFyDI7UtTMqfQsk79iwuPXVq0fRroi6tbTAEBT/j8ppRIoJqdw+NSdwEA8DqOoUg7ijQ6pVGdOOwjJ0rai3yIlP9CtYiIKnjyl4ZWAks/wz+jyLkOjwlO8+s1JVHLe/IwZ3Btd0m6Eta+mzadu0OJHFFJ6ySuyU9Fj7guS3xbErSUdmmztWthAMyL3ckTJ0qeJAcYwe1D3Yescm74Q2RnHGhI1OC2MNEQEq2rqcqRa1empdGtNkvnqHOxaz0vtD498opvHvN0pJiCV3Rwvou9PQEYkuytiB8FCcA+0snfG4c8CLIfVsIKk4OeMFDRAcqFDeJj7h8PFtQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com; dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2024121701 header.b=TNjrgLCf; dkim-atps=neutral; spf=pass (client-ip=198.137.202.136; helo=terminus.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org) smtp.mailfrom=zytor.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=zytor.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=jM+15JCa;
+	dkim=pass (2048-bit key; unprotected) header.d=zytor.com header.i=@zytor.com header.a=rsa-sha256 header.s=2024121701 header.b=TNjrgLCf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2414::623; helo=nam11-bn8-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on20623.outbound.protection.outlook.com [IPv6:2a01:111:f403:2414::623])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=zytor.com (client-ip=198.137.202.136; helo=terminus.zytor.com; envelope-from=hpa@zytor.com; receiver=lists.ozlabs.org)
+Received: from terminus.zytor.com (terminus.zytor.com [198.137.202.136])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ1VC43kwz30TQ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 11:54:58 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=JgIdxjJkvCmQ/e6mEJ+Pd6+7OFVulTIb5IM4i6ZSvzZbQSHpSSnsgOzcBCjszAA0CDpJ6QdcGKRD9HIuatH2Oz++3Q86SdexfQYCMAeY8LFm6zy6dH4qdk00l5JwjVZAU/pkfO5pC6mdK4GXfXLNBTOa34Lgqmqew5Qe/jlpZzjJ8PLgxBjhPd34qWBjtPGlqZhMYvlaquaCF+wj4oBkRumtbwzTFzvCCNeI64wEE8phF7iCJMVcLpRoRlyYRaufhzv6J6hg9MZaj7OTVtEUc/6zCQKg0rbYGkJnwa9Zx2vvuZOsk6V9lVBYfHv4u8x44LRjuO2D2CyUgSpIuzXUHw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PsorMIcWx4N+7qkEgr+BbXGvsZfm6KhzZ3DohD8VoDU=;
- b=hw8Cd/9NtVX5fCF4TJkjD3qEGS0+yeM4B/z0UvRB3/gEYjD9Xm1Tkkz8kjDf1z8oJO1o4fyCefBRfSwy6oRxd24Y+oQigYp1qNRHugzCWrJtk6lH2zCm2y7TfqsXmCWJE4I4w5uyL+WSyNQyxLzDwow2SC+YMa8BH43P+btXaMsMBYpT9HFIr4MyfgKZ88NPxG0Gxb82GEhFQTJLyr7ixH38sm4lgm6Jf32F/an2TzvoBfAqEtb/7QHYkxNTYT1IEaY2sORxBouxcz7coHJmQuo3ZQlredkE6tLHydAPanX83IqPs4i76TzgClQ15vIxUGb/3p+bNDdiAky/oXNxyQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PsorMIcWx4N+7qkEgr+BbXGvsZfm6KhzZ3DohD8VoDU=;
- b=jM+15JCapMpp5APia+ATkjD7NdAk2jFQLjmAcsaMwGB7P5LWIeSfPxrTTljgzeaeiyT/YyZx0ScICQ9BLDE8VfoI/5iPcQ/M1I5fR4ADpvwv6fHbGq3R2HLII0MIIs7ZBtAzShHSqpjeNM2q7DphRMfMtwdUHCg65mPPyjJAyKMtBpKi1DG+KmCxlR5suTURgV/xDl2gn1HPJU0O8UF4ntNh8kpv6D6Zw8a4Q2K8K7F2ZxGRghaIbmV2fUZYb+alyguCv/upvVJqQ+sUaGIx9xzJFzlHjiwqugZjETcRW+caAMu8/0AAoUASishwqaTsnxn2dk0kzGPUZrpTnbNgOg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- MW4PR12MB6804.namprd12.prod.outlook.com (2603:10b6:303:20d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8356.13; Fri, 17 Jan
- 2025 00:54:37 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.8356.010; Fri, 17 Jan 2025
- 00:54:37 +0000
-Date: Fri, 17 Jan 2025 11:54:32 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Dan Williams <dan.j.williams@intel.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	alison.schofield@intel.com, lina@asahilina.net, zhang.lyra@gmail.com, 
-	gerald.schaefer@linux.ibm.com, vishal.l.verma@intel.com, dave.jiang@intel.com, 
-	logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, 
-	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
-	dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org, 
-	tytso@mit.edu, linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, 
-	linux-cxl@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com, 
-	chenhuacai@kernel.org, kernel@xen0n.name, loongarch@lists.linux.dev
-Subject: Re: [PATCH v6 08/26] fs/dax: Remove PAGE_MAPPING_DAX_SHARED mapping
- flag
-Message-ID: <unu63k4trmt5klmors65j2or5vd2ghmfayrd3p22cquoyrjvcy@fynjzwnr5t3h>
-References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
- <b8b39849e171c120442963d3fd81c49a8f005bf0.1736488799.git-series.apopple@nvidia.com>
- <6785b5525dd93_20fa294f2@dwillia2-xfh.jf.intel.com.notmuch>
- <pxpog7xsknwpaqh44vjkg5anegfwxizn6sgpdipntsljx5jg2s@rwqa5zfxooag>
- <67874b46c0493_20fa2941d@dwillia2-xfh.jf.intel.com.notmuch>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <67874b46c0493_20fa2941d@dwillia2-xfh.jf.intel.com.notmuch>
-X-ClientProxiedBy: SY6PR01CA0037.ausprd01.prod.outlook.com
- (2603:10c6:10:e9::6) To DS0PR12MB7726.namprd12.prod.outlook.com
- (2603:10b6:8:130::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ1lX296Jz30W6
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 12:06:31 +1100 (AEDT)
+Received: from [IPV6:2601:646:8080:c1f1:e386:c572:17d3:6ddc] ([IPv6:2601:646:8080:c1f1:e386:c572:17d3:6ddc])
+	(authenticated bits=0)
+	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 50H0xxhL3934088
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
+	Thu, 16 Jan 2025 17:00:00 -0800
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 50H0xxhL3934088
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
+	s=2024121701; t=1737075612;
+	bh=UnJza3M7ovW+3GQtfqyhUd50Nd+1cSpEjlVwEgMdrWg=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TNjrgLCfYZNNPZ49KJWymAbXl2TFHkfm//Qe3P3h7JQNMpOPesMB19MGAvRHlOjfj
+	 qjYsds2K5IBTNAR4wxRDYPu3PJs2wM16Z3Gt+9Nmxjt/J3JiA4CQn6evQPOPrvHVRM
+	 Vdvt39yXjXGJkwOhyMujbL0APwojtWzu3HKjP8mo6Xpn7jqtci9ETXx/+m4k6fp7Kq
+	 tGiAKH9bBvGfw8meptsdJB9qVlHAbUApngwznDbU0AWUkdUenCNfnADzPmLfLprW1+
+	 GkmpjgTMR8u8ngiRVbDAdqwzgq24g6hILUiGCxMxMvGahelhkJRbzKb3AO9bDd2XXu
+	 dxcBKLA5m0E8g==
+Message-ID: <eecada37-9d0e-4e3c-9b70-fefb990835b2@zytor.com>
+Date: Thu, 16 Jan 2025 16:59:54 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,101 +58,614 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|MW4PR12MB6804:EE_
-X-MS-Office365-Filtering-Correlation-Id: 35f14e47-71a4-42f9-85db-08dd36918414
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?HFJ7cepUJaPX6BJv8plAbENAUfkUFRUMrfm0+2owzS0bsgRxfDFPWsD2tRzo?=
- =?us-ascii?Q?/HuT5tDiz314TbCtrMCJAj9Z7HbV/FeXYm9sE33AftbyIs9Vp7/xW61LALbZ?=
- =?us-ascii?Q?TQdS+4Ymb0+bdOK52ZvXkFsHTKjTpTHx6oEntJJHtpjo4K+DjLLaRQrUq9Bz?=
- =?us-ascii?Q?7lOPdj6yLyDh39RDasdtdO7X9Alt5LnV58YsjRnzA1xO9f8NC/Huw0y/5ESi?=
- =?us-ascii?Q?WOSK9JtxcLpDUfBC0wyR21An8wcsSS+dH69QiObd5SWbaOBQis1+z8SzPlDT?=
- =?us-ascii?Q?59XfMS/HeF/jb3h0/+iYCYKd3Egkg1yYYgAAk+hPY3b6MTjbWFpZ7NuWPq4U?=
- =?us-ascii?Q?TLspUokk99MRccCf7AZLCLPRL3ZwU1rKvksLN+dmtRWgNdfPFMYhdoD+hTV8?=
- =?us-ascii?Q?gRwV2J+nkj/d0Nud9LlpLqJn1bWjrDUQodtLovcfy/gmM6lsjxlgCE3bUX06?=
- =?us-ascii?Q?M0ksEDr6yBj8iT/Xx5qyDp1EZIAP0WSCV/DMwzDM3zmu1BFCHYhj4laCtOwh?=
- =?us-ascii?Q?LasAGNERcUphIgn7+FURhTdhxwDJbg6UuPLM3MMRNX0hutVVuoFtqg72tQER?=
- =?us-ascii?Q?xnwhVwcmeYSYt7cE1nk5z2MGifCwjBFNJy7UzYgo9fdakeAcOy7GhwwQNhkL?=
- =?us-ascii?Q?BijCkjMsq2cZp/Ypsgf9/uaWZ5jjkxeZ9fzyXM3Dji0MhK1VRIrjYmEBkQ3M?=
- =?us-ascii?Q?VJ5cdN0DNme+iyTDJPNib1SQcNa2rzTjNNKF+aYVtjyWeDURB6wkb65oASPq?=
- =?us-ascii?Q?PPAlHRoMYCEhceshAaj3Tfq/b+U1wVsWZU4aHC9gUnhioQwvWtuUym/MZvwv?=
- =?us-ascii?Q?mKalTPRRd3Y3JURUccpar1w0w/QUUTv9JQj0OxQ/uCL+2XFdticignv0KUgP?=
- =?us-ascii?Q?odQRSkFEU9NLPo76nQVfxoFr5vTIWzWtR9oQc5euxpFLbqZlR7b6kemFM8/J?=
- =?us-ascii?Q?+p8TxBph9u3tHw6ldgzgDtbCtoUtYVJdYH12QcVR2mVNkNpnSsmIaFyYXv/g?=
- =?us-ascii?Q?BdOvHybthoquRXbs+1drsbHG+wZiDdZgXj/vgyL3C6QpNz6N5CUxO4ydANwK?=
- =?us-ascii?Q?4GLCFlxeS2/7ao2Eamh6g1hf7nFLVbU/hQ/LC6ULwZvcqt5A6jtD6zFzsToU?=
- =?us-ascii?Q?+SBUCypH7bJBINz07vpYv6hLpujDY/QJ8Tcly976KbHsI5W2+jClh2YpP/HN?=
- =?us-ascii?Q?AOTSqbnRXFuqQvQm/3jnuZvIlErdeN9IboGTq55O7eGHWFN4S4PyLhInIaap?=
- =?us-ascii?Q?5IEKWWiFIOhjK8Fyg9oRAk6zbg62DlWZSKDSeEOQjwJVwWLFuSkRkp54hSGa?=
- =?us-ascii?Q?osUQItTWdrSVG/wYP3teaphPxt5flOTghz0iAttBfKbhE6QTnaVt6+RKDpUr?=
- =?us-ascii?Q?Dheu6Q6Fz+yQeGrXN/Y+cWTybtsf?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?PrAhdCqXGd9V4QSXI2u7X0ckPAq1T3jnz0PbJ//ll1y1Laj3+Df6hquRQ79z?=
- =?us-ascii?Q?i4gRcpeV9YAbika54Pi93MwFZl+PXAs0idxTBNkumOHUxyEijkthTuN7ctrC?=
- =?us-ascii?Q?3739nxnGkBpA4J3thFSvUab0inFVNHPnXqG5Q7TDRXOOcJfSFy/Zv421hFxg?=
- =?us-ascii?Q?cYA+omq61f6poC695f/gcFuqPh2FXKlSZYtcDliSFT3l3/fow8iJCPu1KyY8?=
- =?us-ascii?Q?KMogaItn+S5xh+QBrXPQ03jg213bMqReRqofdVUYAcolE/TSAl748BeogI3q?=
- =?us-ascii?Q?4upZH1Gic/WCDjPvNixW0T8iX07nT6Wxnb/q8icMTH8JLjjIIfVQC3VyE3Ty?=
- =?us-ascii?Q?eCIEKZnsz+TniKxaruzxW/PdO7ug6IEl864oZd3j/mmYvc0jDh08m6H2iKhT?=
- =?us-ascii?Q?1DADk3xSL5mYaqLM6H0TwKLRnc+2uFcOyrVnjTKfycYQh8X3u5OR1DOfkJJe?=
- =?us-ascii?Q?PETE8wXZxB2hxD9eRlsChS05IkDogN5JOcFDCx3BaKCiQGWfvZxIhsX/lqHA?=
- =?us-ascii?Q?l1yGImSvy5DJQQZ/ZnqKHitkUP8BoDID/wb9HGN+PfqVvJfs3J/R66wIAK1n?=
- =?us-ascii?Q?+0DAzdPOoQPwq8JGHYxb1+v23kPLcXFdIlfm0YIn5FtGoLq2cZXtpglXJYdn?=
- =?us-ascii?Q?ZbCtPPWpHp1/zi0v2WTz6X0p1zxIOsdoy6O3Qr62oTTRLQvKjwyMp4ZKNABz?=
- =?us-ascii?Q?j236CY8TzQl7PJ5zHYlA2ov67oD6MbVBCJlpQO1Hg7FU/MrZUJxz/nt3D4aC?=
- =?us-ascii?Q?bS2DGByFkppFTv2/5Jsx5tL86FAiHnKORQtCsTtHkkuQiXC7x4HNHmNO6d44?=
- =?us-ascii?Q?RN/GDpf0CzjhuJAKDNW0z6fXVWHglCE8QR4KR7UZylbfZ6ioz2288L6sT49J?=
- =?us-ascii?Q?j+SNa7kEFTF5hGI8dELx3FurjsZUMvy/lwpS5YRzKzXXgjagljGhh0AhN2fI?=
- =?us-ascii?Q?JyQ9gzEZAcZ5Ogf5N73TZoGqdLQyc6kDpseYfMcU1tw9lzWRBTGMg3jMKGNS?=
- =?us-ascii?Q?n6UjcrV1LTriA1to4n43h6KzN/GI+wcTEvEXMVlAWEWDHz25bBV9gEM/w/YV?=
- =?us-ascii?Q?GUjFsj5E/QuMQmPUt2s0vCf+L2PdAPR2NxsHfH8FZqteC5AZnuHBkoXyJyGH?=
- =?us-ascii?Q?HPGKMK3zMGCKPB8TlJwpNB7pRuDV9mAnRhAIL8UWo5ZI/h0Ya75jYBDVi+/9?=
- =?us-ascii?Q?JIKvR/rjzpmxTc5nqn4wApVcOsaLsdMBrTOpWhllSPTgngJY7eUhdB2lVPPj?=
- =?us-ascii?Q?kAAY+/xz9cpX0A+jaekrMySP+ocPSugIDyGs4xcmJRNU7iRfZo4ojtLcY5PU?=
- =?us-ascii?Q?PsQ6wKa4T4r+Z/SVKh/pZDr+HdgibQ21SKLzNUixtS2uYyQqz9they6lfCk+?=
- =?us-ascii?Q?pTAcjJRjh3GniUi3Vaq8j+Vp+nIB6pFkzNAcatXGA+Yf4g2dZfn5h64sUy1p?=
- =?us-ascii?Q?6b1xp8QFCgMMzunubJeAculcUVeyVMVxKjKoisj2QAxqhuNPzQu3efRcT3zE?=
- =?us-ascii?Q?ffRlhac2dl0RSe4gK3blvGtLnNRfvoMsHOku40RdaJNECpcqIWSFPT566H/m?=
- =?us-ascii?Q?zQyh05vcIy+ITPkQ28bbaHVJ/T0JhwKehoG8jXxM?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 35f14e47-71a4-42f9-85db-08dd36918414
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jan 2025 00:54:37.1999
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i14WgzCUjuccS7tyN4hfsg9KaBuV0rLTrosYsEa/RkH2HKVRcjScdGdKSGYrnKLdRbyd/CzcLjWmpEG8q0fyDg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB6804
-X-Spam-Status: No, score=-0.5 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 3/7] syscall.h: add syscall_set_arguments() and
+ syscall_set_return_value()
+To: Charlie Jenkins <charlie@rivosinc.com>, "Dmitry V. Levin" <ldv@strace.io>
+Cc: Oleg Nesterov <oleg@redhat.com>, Eugene Syromyatnikov <evgsyr@gmail.com>,
+        Mike Frysinger <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>,
+        Davide Berardi <berardi.dav@gmail.com>, strace-devel@lists.strace.io,
+        Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.osdn.me>, Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+        Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-snps-arc@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-arch@vger.kernel.org
+References: <20250113170925.GA392@strace.io> <20250113171140.GC589@strace.io>
+ <Z4hs0X8RhGTuevnn@ghost>
+Content-Language: en-US
+From: "H. Peter Anvin" <hpa@zytor.com>
+In-Reply-To: <Z4hs0X8RhGTuevnn@ghost>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Jan 14, 2025 at 09:44:38PM -0800, Dan Williams wrote:
-> Alistair Popple wrote:
-> [..]
-> > > How does this case happen? I don't think any page would ever enter with
-> > > both ->mapping and ->share set, right?
-> > 
-> > Sigh. You're right - it can't. This patch series is getting a litte bit large
-> > and unweildy with all the prerequisite bugfixes and cleanups. Obviously I fixed
-> > this when developing the main fs dax count fixup but forgot to rebase the fix
-> > further back in the series.
-> 
-> I assumed as much when I got to that patch.
-> 
-> > Anyway I have fixed that now, thanks.
-> 
-> You deserve a large helping of grace for waking and then slaying this
-> old dragon.
+I link the concept of this patchset, but *please* make it clear in the 
+comments that this does not solve the issue of 64-bit kernel arguments 
+on 32-bit systems being ABI specific.
 
-Heh, thanks. Lets hope this dragon doesn't have too many more heads :-)
+This isn't unique to this patch in any way; the only way to handle it is 
+by keeping track of each ABI.
+
+On 1/15/25 18:20, Charlie Jenkins wrote:
+> On Mon, Jan 13, 2025 at 07:11:40PM +0200, Dmitry V. Levin wrote:
+>> These functions are going to be needed on all HAVE_ARCH_TRACEHOOK
+>> architectures to implement PTRACE_SET_SYSCALL_INFO API.
+>>
+>> This partially reverts commit 7962c2eddbfe ("arch: remove unused
+>> function syscall_set_arguments()") by reusing some of old
+>> syscall_set_arguments() implementations.
+>>
+>> Signed-off-by: Dmitry V. Levin <ldv@strace.io>
+>> ---
+>>
+>> Note that I'm not a MIPS expert, I just added mips_set_syscall_arg() by
+>> looking at mips_get_syscall_arg() and the result passes tests in qemu on
+>> mips O32, mips64 O32, mips64 N32, and mips64 N64.
+>>
+>>   arch/arc/include/asm/syscall.h        | 14 +++++++++++
+>>   arch/arm/include/asm/syscall.h        | 13 ++++++++++
+>>   arch/arm64/include/asm/syscall.h      | 13 ++++++++++
+>>   arch/csky/include/asm/syscall.h       | 13 ++++++++++
+>>   arch/hexagon/include/asm/syscall.h    | 14 +++++++++++
+>>   arch/loongarch/include/asm/syscall.h  |  8 ++++++
+>>   arch/mips/include/asm/syscall.h       | 32 ++++++++++++++++++++++++
+>>   arch/nios2/include/asm/syscall.h      | 11 ++++++++
+>>   arch/openrisc/include/asm/syscall.h   |  7 ++++++
+>>   arch/parisc/include/asm/syscall.h     | 12 +++++++++
+>>   arch/powerpc/include/asm/syscall.h    | 10 ++++++++
+>>   arch/riscv/include/asm/syscall.h      |  9 +++++++
+>>   arch/s390/include/asm/syscall.h       | 12 +++++++++
+>>   arch/sh/include/asm/syscall_32.h      | 12 +++++++++
+>>   arch/sparc/include/asm/syscall.h      | 10 ++++++++
+>>   arch/um/include/asm/syscall-generic.h | 14 +++++++++++
+>>   arch/x86/include/asm/syscall.h        | 36 +++++++++++++++++++++++++++
+>>   arch/xtensa/include/asm/syscall.h     | 11 ++++++++
+>>   include/asm-generic/syscall.h         | 16 ++++++++++++
+>>   19 files changed, 267 insertions(+)
+>>
+>> diff --git a/arch/arc/include/asm/syscall.h b/arch/arc/include/asm/syscall.h
+>> index 9709256e31c8..89c1e1736356 100644
+>> --- a/arch/arc/include/asm/syscall.h
+>> +++ b/arch/arc/include/asm/syscall.h
+>> @@ -67,6 +67,20 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
+>>   	}
+>>   }
+>>   
+>> +static inline void
+>> +syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+>> +		      unsigned long *args)
+>> +{
+>> +	unsigned long *inside_ptregs = &regs->r0;
+>> +	unsigned int n = 6;
+>> +	unsigned int i = 0;
+>> +
+>> +	while (n--) {
+>> +		*inside_ptregs = args[i++];
+>> +		inside_ptregs--;
+>> +	}
+>> +}
+>> +
+>>   static inline int
+>>   syscall_get_arch(struct task_struct *task)
+>>   {
+>> diff --git a/arch/arm/include/asm/syscall.h b/arch/arm/include/asm/syscall.h
+>> index fe4326d938c1..21927fa0ae2b 100644
+>> --- a/arch/arm/include/asm/syscall.h
+>> +++ b/arch/arm/include/asm/syscall.h
+>> @@ -80,6 +80,19 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	memcpy(args, &regs->ARM_r0 + 1, 5 * sizeof(args[0]));
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	memcpy(&regs->ARM_r0, args, 6 * sizeof(args[0]));
+>> +	/*
+>> +	 * Also copy the first argument into ARM_ORIG_r0
+>> +	 * so that syscall_get_arguments() would return it
+>> +	 * instead of the previous value.
+>> +	 */
+>> +	regs->ARM_ORIG_r0 = regs->ARM_r0;
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	/* ARM tasks don't change audit architectures on the fly. */
+>> diff --git a/arch/arm64/include/asm/syscall.h b/arch/arm64/include/asm/syscall.h
+>> index ab8e14b96f68..76020b66286b 100644
+>> --- a/arch/arm64/include/asm/syscall.h
+>> +++ b/arch/arm64/include/asm/syscall.h
+>> @@ -73,6 +73,19 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	memcpy(args, &regs->regs[1], 5 * sizeof(args[0]));
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	memcpy(&regs->regs[0], args, 6 * sizeof(args[0]));
+>> +	/*
+>> +	 * Also copy the first argument into orig_x0
+>> +	 * so that syscall_get_arguments() would return it
+>> +	 * instead of the previous value.
+>> +	 */
+>> +	regs->orig_x0 = regs->regs[0];
+>> +}
+>> +
+>>   /*
+>>    * We don't care about endianness (__AUDIT_ARCH_LE bit) here because
+>>    * AArch64 has the same system calls both on little- and big- endian.
+>> diff --git a/arch/csky/include/asm/syscall.h b/arch/csky/include/asm/syscall.h
+>> index 0de5734950bf..30403f7a0487 100644
+>> --- a/arch/csky/include/asm/syscall.h
+>> +++ b/arch/csky/include/asm/syscall.h
+>> @@ -59,6 +59,19 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
+>>   	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
+>>   }
+>>   
+>> +static inline void
+>> +syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+>> +		      const unsigned long *args)
+>> +{
+>> +	memcpy(&regs->a0, args, 6 * sizeof(regs->a0));
+>> +	/*
+>> +	 * Also copy the first argument into orig_x0
+>> +	 * so that syscall_get_arguments() would return it
+>> +	 * instead of the previous value.
+>> +	 */
+>> +	regs->orig_a0 = regs->a0;
+>> +}
+>> +
+>>   static inline int
+>>   syscall_get_arch(struct task_struct *task)
+>>   {
+>> diff --git a/arch/hexagon/include/asm/syscall.h b/arch/hexagon/include/asm/syscall.h
+>> index f6e454f18038..1024a6548d78 100644
+>> --- a/arch/hexagon/include/asm/syscall.h
+>> +++ b/arch/hexagon/include/asm/syscall.h
+>> @@ -33,6 +33,13 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	memcpy(args, &(&regs->r00)[0], 6 * sizeof(args[0]));
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 unsigned long *args)
+>> +{
+>> +	memcpy(&(&regs->r00)[0], args, 6 * sizeof(args[0]));
+>> +}
+>> +
+>>   static inline long syscall_get_error(struct task_struct *task,
+>>   				     struct pt_regs *regs)
+>>   {
+>> @@ -45,6 +52,13 @@ static inline long syscall_get_return_value(struct task_struct *task,
+>>   	return regs->r00;
+>>   }
+>>   
+>> +static inline void syscall_set_return_value(struct task_struct *task,
+>> +					    struct pt_regs *regs,
+>> +					    int error, long val)
+>> +{
+>> +	regs->r00 = (long) error ?: val;
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	return AUDIT_ARCH_HEXAGON;
+>> diff --git a/arch/loongarch/include/asm/syscall.h b/arch/loongarch/include/asm/syscall.h
+>> index e286dc58476e..ff415b3c0a8e 100644
+>> --- a/arch/loongarch/include/asm/syscall.h
+>> +++ b/arch/loongarch/include/asm/syscall.h
+>> @@ -61,6 +61,14 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	memcpy(&args[1], &regs->regs[5], 5 * sizeof(long));
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 unsigned long *args)
+>> +{
+>> +	regs->orig_a0 = args[0];
+>> +	memcpy(&regs->regs[5], &args[1], 5 * sizeof(long));
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	return AUDIT_ARCH_LOONGARCH64;
+>> diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
+>> index 2f85f2d8f754..3163d1506fae 100644
+>> --- a/arch/mips/include/asm/syscall.h
+>> +++ b/arch/mips/include/asm/syscall.h
+>> @@ -76,6 +76,23 @@ static inline void mips_get_syscall_arg(unsigned long *arg,
+>>   #endif
+>>   }
+>>   
+>> +static inline void mips_set_syscall_arg(unsigned long *arg,
+>> +	struct task_struct *task, struct pt_regs *regs, unsigned int n)
+>> +{
+>> +#ifdef CONFIG_32BIT
+>> +	switch (n) {
+>> +	case 0: case 1: case 2: case 3:
+>> +		regs->regs[4 + n] = *arg;
+>> +		return;
+>> +	case 4: case 5: case 6: case 7:
+>> +		*arg = regs->pad0[n] = *arg;
+>> +		return;
+>> +	}
+>> +#else
+>> +	regs->regs[4 + n] = *arg;
+>> +#endif
+>> +}
+>> +
+>>   static inline long syscall_get_error(struct task_struct *task,
+>>   				     struct pt_regs *regs)
+>>   {
+>> @@ -122,6 +139,21 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   		mips_get_syscall_arg(args++, task, regs, i++);
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 unsigned long *args)
+>> +{
+>> +	unsigned int i = 0;
+>> +	unsigned int n = 6;
+>> +
+>> +	/* O32 ABI syscall() */
+>> +	if (mips_syscall_is_indirect(task, regs))
+>> +		i++;
+>> +
+>> +	while (n--)
+>> +		mips_set_syscall_arg(args++, task, regs, i++);
+>> +}
+>> +
+>>   extern const unsigned long sys_call_table[];
+>>   extern const unsigned long sys32_call_table[];
+>>   extern const unsigned long sysn32_call_table[];
+>> diff --git a/arch/nios2/include/asm/syscall.h b/arch/nios2/include/asm/syscall.h
+>> index fff52205fb65..526449edd768 100644
+>> --- a/arch/nios2/include/asm/syscall.h
+>> +++ b/arch/nios2/include/asm/syscall.h
+>> @@ -58,6 +58,17 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	*args   = regs->r9;
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +	struct pt_regs *regs, const unsigned long *args)
+>> +{
+>> +	regs->r4 = *args++;
+>> +	regs->r5 = *args++;
+>> +	regs->r6 = *args++;
+>> +	regs->r7 = *args++;
+>> +	regs->r8 = *args++;
+>> +	regs->r9 = *args;
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	return AUDIT_ARCH_NIOS2;
+>> diff --git a/arch/openrisc/include/asm/syscall.h b/arch/openrisc/include/asm/syscall.h
+>> index 903ed882bdec..e6383be2a195 100644
+>> --- a/arch/openrisc/include/asm/syscall.h
+>> +++ b/arch/openrisc/include/asm/syscall.h
+>> @@ -57,6 +57,13 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
+>>   	memcpy(args, &regs->gpr[3], 6 * sizeof(args[0]));
+>>   }
+>>   
+>> +static inline void
+>> +syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+>> +		      const unsigned long *args)
+>> +{
+>> +	memcpy(&regs->gpr[3], args, 6 * sizeof(args[0]));
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	return AUDIT_ARCH_OPENRISC;
+>> diff --git a/arch/parisc/include/asm/syscall.h b/arch/parisc/include/asm/syscall.h
+>> index 00b127a5e09b..b146d0ae4c77 100644
+>> --- a/arch/parisc/include/asm/syscall.h
+>> +++ b/arch/parisc/include/asm/syscall.h
+>> @@ -29,6 +29,18 @@ static inline void syscall_get_arguments(struct task_struct *tsk,
+>>   	args[0] = regs->gr[26];
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *tsk,
+>> +					 struct pt_regs *regs,
+>> +					 unsigned long *args)
+>> +{
+>> +	regs->gr[21] = args[5];
+>> +	regs->gr[22] = args[4];
+>> +	regs->gr[23] = args[3];
+>> +	regs->gr[24] = args[2];
+>> +	regs->gr[25] = args[1];
+>> +	regs->gr[26] = args[0];
+>> +}
+>> +
+>>   static inline long syscall_get_error(struct task_struct *task,
+>>   				     struct pt_regs *regs)
+>>   {
+>> diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+>> index 422d7735ace6..521f279e6b33 100644
+>> --- a/arch/powerpc/include/asm/syscall.h
+>> +++ b/arch/powerpc/include/asm/syscall.h
+>> @@ -114,6 +114,16 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	}
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	memcpy(&regs->gpr[3], args, 6 * sizeof(args[0]));
+>> +
+>> +	/* Also copy the first argument into orig_gpr3 */
+>> +	regs->orig_gpr3 = args[0];
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	if (is_tsk_32bit_task(task))
+>> diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
+>> index 121fff429dce..8d389ba995c8 100644
+>> --- a/arch/riscv/include/asm/syscall.h
+>> +++ b/arch/riscv/include/asm/syscall.h
+>> @@ -66,6 +66,15 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	regs->orig_a0 = args[0];
+>> +	args++;
+>> +	memcpy(&regs->a1, args, 5 * sizeof(regs->a1));
+>> +}
+> 
+> Looks good for riscv.
+> 
+> Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+> Reviewed-by: Charlie Jenkins <charlie@rivosinc.com
+> 
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   #ifdef CONFIG_64BIT
+>> diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
+>> index 27e3d804b311..b3dd883699e7 100644
+>> --- a/arch/s390/include/asm/syscall.h
+>> +++ b/arch/s390/include/asm/syscall.h
+>> @@ -78,6 +78,18 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	args[0] = regs->orig_gpr2 & mask;
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	unsigned int n = 6;
+>> +
+>> +	while (n-- > 0)
+>> +		if (n > 0)
+>> +			regs->gprs[2 + n] = args[n];
+>> +	regs->orig_gpr2 = args[0];
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   #ifdef CONFIG_COMPAT
+>> diff --git a/arch/sh/include/asm/syscall_32.h b/arch/sh/include/asm/syscall_32.h
+>> index d87738eebe30..cb51a7528384 100644
+>> --- a/arch/sh/include/asm/syscall_32.h
+>> +++ b/arch/sh/include/asm/syscall_32.h
+>> @@ -57,6 +57,18 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	args[0] = regs->regs[4];
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	regs->regs[1] = args[5];
+>> +	regs->regs[0] = args[4];
+>> +	regs->regs[7] = args[3];
+>> +	regs->regs[6] = args[2];
+>> +	regs->regs[5] = args[1];
+>> +	regs->regs[4] = args[0];
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	int arch = AUDIT_ARCH_SH;
+>> diff --git a/arch/sparc/include/asm/syscall.h b/arch/sparc/include/asm/syscall.h
+>> index 20c109ac8cc9..62a5a78804c4 100644
+>> --- a/arch/sparc/include/asm/syscall.h
+>> +++ b/arch/sparc/include/asm/syscall.h
+>> @@ -117,6 +117,16 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	}
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	unsigned int i;
+>> +
+>> +	for (i = 0; i < 6; i++)
+>> +		regs->u_regs[UREG_I0 + i] = args[i];
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   #if defined(CONFIG_SPARC64) && defined(CONFIG_COMPAT)
+>> diff --git a/arch/um/include/asm/syscall-generic.h b/arch/um/include/asm/syscall-generic.h
+>> index 172b74143c4b..2984feb9d576 100644
+>> --- a/arch/um/include/asm/syscall-generic.h
+>> +++ b/arch/um/include/asm/syscall-generic.h
+>> @@ -62,6 +62,20 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	*args   = UPT_SYSCALL_ARG6(r);
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	struct uml_pt_regs *r = &regs->regs;
+>> +
+>> +	UPT_SYSCALL_ARG1(r) = *args++;
+>> +	UPT_SYSCALL_ARG2(r) = *args++;
+>> +	UPT_SYSCALL_ARG3(r) = *args++;
+>> +	UPT_SYSCALL_ARG4(r) = *args++;
+>> +	UPT_SYSCALL_ARG5(r) = *args++;
+>> +	UPT_SYSCALL_ARG6(r) = *args;
+>> +}
+>> +
+>>   /* See arch/x86/um/asm/syscall.h for syscall_get_arch() definition. */
+>>   
+>>   #endif	/* __UM_SYSCALL_GENERIC_H */
+>> diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
+>> index 7c488ff0c764..b9c249dd9e3d 100644
+>> --- a/arch/x86/include/asm/syscall.h
+>> +++ b/arch/x86/include/asm/syscall.h
+>> @@ -90,6 +90,18 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	args[5] = regs->bp;
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	regs->bx = args[0];
+>> +	regs->cx = args[1];
+>> +	regs->dx = args[2];
+>> +	regs->si = args[3];
+>> +	regs->di = args[4];
+>> +	regs->bp = args[5];
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	return AUDIT_ARCH_I386;
+>> @@ -121,6 +133,30 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   	}
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +# ifdef CONFIG_IA32_EMULATION
+>> +	if (task->thread_info.status & TS_COMPAT) {
+>> +		regs->bx = *args++;
+>> +		regs->cx = *args++;
+>> +		regs->dx = *args++;
+>> +		regs->si = *args++;
+>> +		regs->di = *args++;
+>> +		regs->bp = *args;
+>> +	} else
+>> +# endif
+>> +	{
+>> +		regs->di = *args++;
+>> +		regs->si = *args++;
+>> +		regs->dx = *args++;
+>> +		regs->r10 = *args++;
+>> +		regs->r8 = *args++;
+>> +		regs->r9 = *args;
+>> +	}
+>> +}
+>> +
+>>   static inline int syscall_get_arch(struct task_struct *task)
+>>   {
+>>   	/* x32 tasks should be considered AUDIT_ARCH_X86_64. */
+>> diff --git a/arch/xtensa/include/asm/syscall.h b/arch/xtensa/include/asm/syscall.h
+>> index 5ee974bf8330..f9a671cbf933 100644
+>> --- a/arch/xtensa/include/asm/syscall.h
+>> +++ b/arch/xtensa/include/asm/syscall.h
+>> @@ -68,6 +68,17 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>>   		args[i] = regs->areg[reg[i]];
+>>   }
+>>   
+>> +static inline void syscall_set_arguments(struct task_struct *task,
+>> +					 struct pt_regs *regs,
+>> +					 const unsigned long *args)
+>> +{
+>> +	static const unsigned int reg[] = XTENSA_SYSCALL_ARGUMENT_REGS;
+>> +	unsigned int i;
+>> +
+>> +	for (i = 0; i < 6; ++i)
+>> +		regs->areg[reg[i]] = args[i];
+>> +}
+>> +
+>>   asmlinkage long xtensa_rt_sigreturn(void);
+>>   asmlinkage long xtensa_shmat(int, char __user *, int);
+>>   asmlinkage long xtensa_fadvise64_64(int, int,
+>> diff --git a/include/asm-generic/syscall.h b/include/asm-generic/syscall.h
+>> index 5a80fe728dc8..0f7b9a493de7 100644
+>> --- a/include/asm-generic/syscall.h
+>> +++ b/include/asm-generic/syscall.h
+>> @@ -117,6 +117,22 @@ void syscall_set_return_value(struct task_struct *task, struct pt_regs *regs,
+>>   void syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
+>>   			   unsigned long *args);
+>>   
+>> +/**
+>> + * syscall_set_arguments - change system call parameter value
+>> + * @task:	task of interest, must be in system call entry tracing
+>> + * @regs:	task_pt_regs() of @task
+>> + * @args:	array of argument values to store
+>> + *
+>> + * Changes 6 arguments to the system call.
+>> + * The first argument gets value @args[0], and so on.
+>> + *
+>> + * It's only valid to call this when @task is stopped for tracing on
+>> + * entry to a system call, due to %SYSCALL_WORK_SYSCALL_TRACE or
+>> + * %SYSCALL_WORK_SYSCALL_AUDIT.
+>> + */
+>> +void syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+>> +			   const unsigned long *args);
+>> +
+>>   /**
+>>    * syscall_get_arch - return the AUDIT_ARCH for the current system call
+>>    * @task:	task of interest, must be blocked
+>> -- 
+>> ldv
+
 
