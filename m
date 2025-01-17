@@ -1,68 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-5359-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5362-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54C89A15010
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 14:06:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AA74A15076
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 14:25:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YZKkj60c2z2xrJ;
-	Sat, 18 Jan 2025 00:06:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YZL8R4jZ8z30WQ;
+	Sat, 18 Jan 2025 00:25:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737119213;
-	cv=none; b=U5OeevJz5Y3cLie/7ZGrZ6ply69Fu18wTbHhs1oar4TpVULhZzJhY6uesGiHbq4n3vc7Sh2s6RycN7X+RLeQNxZs/8LJn0eu5MikzSz0Eo8uahUxR5XntgMl23ZGKZuBXdq1e2kCKNlVbJ22aJWuhOA3oUGPCGrX+805hy5EVjwldH0/tbVs0ouZQGveTj/842Qj0B76QQC90+SbFk2PHb3odiX6GPmC98wycbshbfyP96HHDgpdmd1zDLtsWzaHidxKdTd/09cAmf3DGhp35+ZyFW69hj0VObYqW4rr7uwP96DslrABBT4FodWb3qA/WVE6x3fDJJTMUCRrkJGOZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737120343;
+	cv=none; b=ddaxSTBd18W5ALVCH1NMQud7dwuVJHecXFCfmwnbFI5xXae/ioGkhIpcga5b0Bpqcthj02Lv2ETP/iDw14QyIraetaiBgu60CECrvkWeRI6F+SWdeHJ5PBI2x0A2BS03VCPcNkfvIa9D7hmUqJ+TeajDJgPzkmO9ME/79MCIhkVjWngiZN7rcPuyFYf45RMNipKSaU9ZniY0+/UFUZurBaGbJBCIna7dkIU8cOJ+wcXwHDmmJeNdPY9ga+qr7O32xlNgTJAGVH3V3Uo2Wq+eOgEkikdEE4oaMEgpa2E+lZn8aYYyQMsZDemGDSDXdjz1GFG8idXw4uQIxEw0RUjfgA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737119213; c=relaxed/relaxed;
-	bh=hY4yjRKCRod/AXSrQsJwmxP2ZGQ5suLIGcArrFvDpVc=;
+	t=1737120343; c=relaxed/relaxed;
+	bh=XEKAG0VVDbRMDZVYLbr0bVW85rqDk6xFXu+Myl9rZ5s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K0lwhPJ7MfUIgcyip1ehviywsvQqPjSUp4lb2nOAMyMu1YPOkklF6ZYur8yCmcCATDIxzF8Ccb+eP7CMGWeRK2OtOjKKihMH7q3qcZ6j3W6cyQCY1p07//h58ogzcDOhSmjWPr7BxSCOKdncE+ClOHokLll8UXwxvZolxLe+f1Rb43f+EFdE2zx0uNwGG1sPABEVDfpUeCcnYMPT6UDGt3TuuemAHqcsWGOck9YQDNyEx/RanKa8LVY7iF+zf6OiXWb3h5vv+ocqFo8ozG8Y24fr2seQATGfUmjtZF28tVms4XDPcnt4p8InugCe/YDTy/molrEaNiIGUwpctqMdUw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dFRmjx5M; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9WBtT9o6; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=SS2oFZxvsG8of4dBWNI9bDJX3wgwLWUeEpAsSP5JZClEl700Rzrr7YLAILJaPRLTQo4aF3OGUU6Gg2fdoHVMWR8H+ExaUjBw8ctaDtAv679CuDD+MMkTKeyr2WJhxmmbuGq43HkCMT/Qf5F3aoRSinsBl9W4xbNCPucPdpTsHdu/zBAuwkRIib3OZ8NJKCgtGsQU+y1t0gusWSKi8E9kRP9rBYPxkBwdD4FcuDW2THFLXQIj3gT0MV4CjSY3pU/jYUXgFHUrCi3AUpnDBYMLSQqnHLDy83OKpG3sjT9OuJirp6O/VKBzDw6ipxRpHwhLy1EbzKk4p35l5mRqsJeDJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nCvHMpF2; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=dFRmjx5M;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=9WBtT9o6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nCvHMpF2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZKkg6c8tz2xHl
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 00:06:51 +1100 (AEDT)
-Date: Fri, 17 Jan 2025 14:06:44 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1737119206;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hY4yjRKCRod/AXSrQsJwmxP2ZGQ5suLIGcArrFvDpVc=;
-	b=dFRmjx5M4i6s3ggklbqmIkVzFIrTqF0HonDj4Fv0mkCWGdMMmXs/T4/aSZdlLnp9tDYulp
-	dOrJ1qvFIdpw2j+rkJejTrRhUP3yi/7EnsZbDeWctkLCbFohSfoxlpbacT0aCO9j005tO7
-	4d9QEEA/e6HnhqxBmSV7sxR9p/I1U87l3nRx1D5+AeULcoNr5zi5RNEVIIQkKIlOhRB/Cc
-	T+XyrhUPg9A7kfM+e+Db0MOXf3DfC7cFsra4/3Lyk4VVZ5yvZN/svBgywKGdkfmJiB9/Qp
-	YMWMdYADkR3PP0h1ES+igS/fNEhmgPbZ66rKlMUffachERibFukINTqnKkrhGA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1737119206;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hY4yjRKCRod/AXSrQsJwmxP2ZGQ5suLIGcArrFvDpVc=;
-	b=9WBtT9o6vTQ88sIgTNnDvZ7GnfUlb5LHAN1EezNk61xvUNfyG771NRpLCOCbVUMQmPLw1J
-	4BV1hYPZ5MMWLZDg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: Basharath Hussain Khaja <basharath@couthit.com>
-Cc: Rob Herring <robh@kernel.org>, mpe@ellerman.id.au, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	saravanak@google.com, danishanwar <danishanwar@ti.com>, krishna <krishna@couthit.com>, 
-	mohan <mohan@couthit.com>, parvathi <parvathi@couthit.com>, pmohan <pmohan@couthit.com>
-Subject: Re: [PATCH] of: address: Unify resource bounds overflow checking
-Message-ID: <20250117134255-bee95a37-250c-437a-a101-938800cba218@linutronix.de>
-References: <87mskbqher.fsf@mail.lhotse>
- <20250108140414.13530-1-basharath@couthit.com>
- <CAL_JsqLLGW_o9i6a5wcUj=Z=4nL-GhzHwAQMFtQkb9OSHuSgTA@mail.gmail.com>
- <2089813158.341858.1737096833060.JavaMail.zimbra@couthit.local>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZL8Q4RmBz2ynR
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 00:25:42 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id D60BBA42C2C;
+	Fri, 17 Jan 2025 13:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84C43C4CEDD;
+	Fri, 17 Jan 2025 13:25:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737120338;
+	bh=i5g2DbcJlsukG3CuQeCOvnrmGoI0+t7RerfHcE2ITE8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nCvHMpF21/84VoMzTIfTmODZawDxjude8tCR6JJtkJECU6I5I9whWXy05LWEyoVNW
+	 KSzrpuQi7EY7p8WZMS465l3rzsHJ8EnYeKCSayrYuWoVdpTDqvziBmoejLV5qSMBK6
+	 f5E+BQjEiCRh0u6SKqq//93pPU+X4JoeMx70R+9aHhWo8pxelv+5LYbQpozArWbl4N
+	 fjahkxBv/te1ioiDTpeoXYuLizhvr0ePIgbB6YsYdqX4IS/429ehvwWhMUBrLB8HOx
+	 2ER9LwPKInXFc4sc8Z5xZ0s6RECYLRZli7PrwB954w5tTFqDoUfRjjNblQvSNEU4sb
+	 Uskxi7/yiLEew==
+Date: Fri, 17 Jan 2025 13:25:28 +0000
+From: Will Deacon <will@kernel.org>
+To: Qi Zheng <zhengqi.arch@bytedance.com>
+Cc: peterz@infradead.org, agordeev@linux.ibm.com, kevin.brodsky@arm.com,
+	alex@ghiti.fr, andreas@gaisler.com, palmer@dabbelt.com,
+	tglx@linutronix.de, david@redhat.com, jannh@google.com,
+	hughd@google.com, yuzhao@google.com, willy@infradead.org,
+	muchun.song@linux.dev, vbabka@kernel.org,
+	lorenzo.stoakes@oracle.com, akpm@linux-foundation.org,
+	rientjes@google.com, vishal.moola@gmail.com, arnd@arndb.de,
+	aneesh.kumar@kernel.org, npiggin@gmail.com,
+	dave.hansen@linux.intel.com, rppt@kernel.org, ryan.roberts@arm.com,
+	linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, x86@kernel.org,
+	linux-arch@vger.kernel.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-sh@vger.kernel.org,
+	linux-um@lists.infradead.org
+Subject: Re: [PATCH v5 05/17] arm64: pgtable: use mmu gather to free p4d
+ level page table
+Message-ID: <20250117132527.GA17058@willie-the-truck>
+References: <cover.1736317725.git.zhengqi.arch@bytedance.com>
+ <3fd48525397b34a64f7c0eb76746da30814dc941.1736317725.git.zhengqi.arch@bytedance.com>
+ <20250113162600.GA14101@willie-the-truck>
+ <a017d072-943f-4008-bb1d-7be438804a44@bytedance.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,166 +83,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2089813158.341858.1737096833060.JavaMail.zimbra@couthit.local>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <a017d072-943f-4008-bb1d-7be438804a44@bytedance.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 17, 2025 at 12:23:53PM +0530, Basharath Hussain Khaja wrote:
-> >> >> Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de> writes:
-> >> >> > The members "start" and "end" of struct resource are of type
-> >> >> > "resource_size_t" which can be 32bit wide.
-> >> >> > Values read from OF however are always 64bit wide.
-> >> >> >
-> >> >> > Refactor the diff overflow checks into a helper function.
-> >> >> > Also extend the checks to validate each calculation step.
-> >> >> >
-> >> >> > Signed-off-by: Thomas Weiﬂschuh <thomas.weissschuh@linutronix.de>
-> >> >> > ---
-> >> >> >  drivers/of/address.c | 45 ++++++++++++++++++++++++++-------------------
-> >> >> >  1 file changed, 26 insertions(+), 19 deletions(-)
-> >> >> >
-> >> >> > diff --git a/drivers/of/address.c b/drivers/of/address.c
-> >> >> > index 7e59283a4472..df854bb427ce 100644
-> >> >> > --- a/drivers/of/address.c
-> >> >> > +++ b/drivers/of/address.c
-> >> >> > @@ -198,6 +198,25 @@ static u64 of_bus_pci_map(__be32 *addr, const __be32
-> >> >> > *range, int na, int ns,
-> >> >> >
-> >> >> >  #endif /* CONFIG_PCI */
-> >> >> >
-> >> >> > +static int __of_address_resource_bounds(struct resource *r, u64 start, u64
-> >> >> > size)
-> >> >> > +{
-> >> >> > +     u64 end = start;
-> >> >> > +
-> >> >> > +     if (overflows_type(start, r->start))
-> >> >> > +             return -EOVERFLOW;
-> >> >> > +     if (size == 0)
-> >> >> > +             return -EOVERFLOW;
-> >> >> > +     if (check_add_overflow(end, size - 1, &end))
-> >> >> > +             return -EOVERFLOW;
-> >> >> > +     if (overflows_type(end, r->end))
-> >> >> > +             return -EOVERFLOW;
-> >> >>
-> >> >> This breaks PCI on powerpc qemu. Part of the PCI probe reads a resource
-> >> >> that's zero sized, which used to succeed but now fails due to the size
-> >> >> check above.
-> >> >>
-> >> >> The diff below fixes it for me.
-> >> >
-> >> > I fixed it up with your change.
-> >>
-> >>
-> >> This commit is breaking Ethernet functionality on the TI AM57xx platform due to
-> >> zero byte SRAM block size allocation during initialization. Prior to this
-> >> patch, zero byte block sizes were handled properly.
+On Tue, Jan 14, 2025 at 10:26:54AM +0800, Qi Zheng wrote:
+> Hi Will,
+> 
+> On 2025/1/14 00:26, Will Deacon wrote:
+> > On Wed, Jan 08, 2025 at 02:57:21PM +0800, Qi Zheng wrote:
+> > > Like other levels of page tables, also use mmu gather mechanism to free
+> > > p4d level page table.
+> > > 
+> > > Signed-off-by: Qi Zheng <zhengqi.arch@bytedance.com>
+> > > Originally-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > > Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+> > > Cc: linux-arm-kernel@lists.infradead.org
+> > > ---
+> > >   arch/arm64/include/asm/pgalloc.h |  1 -
+> > >   arch/arm64/include/asm/tlb.h     | 14 ++++++++++++++
+> > >   2 files changed, 14 insertions(+), 1 deletion(-)
+> > > 
+> > > diff --git a/arch/arm64/include/asm/pgalloc.h b/arch/arm64/include/asm/pgalloc.h
+> > > index 2965f5a7e39e3..1b4509d3382c6 100644
+> > > --- a/arch/arm64/include/asm/pgalloc.h
+> > > +++ b/arch/arm64/include/asm/pgalloc.h
+> > > @@ -85,7 +85,6 @@ static inline void pgd_populate(struct mm_struct *mm, pgd_t *pgdp, p4d_t *p4dp)
+> > >   	__pgd_populate(pgdp, __pa(p4dp), pgdval);
+> > >   }
+> > > -#define __p4d_free_tlb(tlb, p4d, addr)  p4d_free((tlb)->mm, p4d)
+> > >   #else
+> > >   static inline void __pgd_populate(pgd_t *pgdp, phys_addr_t p4dp, pgdval_t prot)
+> > >   {
+> > > diff --git a/arch/arm64/include/asm/tlb.h b/arch/arm64/include/asm/tlb.h
+> > > index a947c6e784ed2..445282cde9afb 100644
+> > > --- a/arch/arm64/include/asm/tlb.h
+> > > +++ b/arch/arm64/include/asm/tlb.h
+> > > @@ -111,4 +111,18 @@ static inline void __pud_free_tlb(struct mmu_gather *tlb, pud_t *pudp,
+> > >   }
+> > >   #endif
+> > > +#if CONFIG_PGTABLE_LEVELS > 4
+> > > +static inline void __p4d_free_tlb(struct mmu_gather *tlb, p4d_t *p4dp,
+> > > +				  unsigned long addr)
+> > > +{
+> > > +	struct ptdesc *ptdesc = virt_to_ptdesc(p4dp);
+> > > +
+> > > +	if (!pgtable_l5_enabled())
+> > > +		return;
+> > > +
+> > > +	pagetable_p4d_dtor(ptdesc);
+> > > +	tlb_remove_ptdesc(tlb, ptdesc);
+> > > +}
 > > 
-> > What driver and where exactly?
+> > Should we update p4d_free() to call the destructor, too? It looks like
+> > it just does free_page() atm.
 > 
-> We found an issue while developing the driver [1] and more
-> specifically in [2] (lines 313-327), but it looks like this is a
-> generic issue which can block 1 byte of memory, when a zero size
-> request has been initiated for the reserved region.
->
-> static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
-> {
->     u64 end = start;
-> 
->     if (overflows_type(start, r->start))
->         return -EOVERFLOW;
->     if (size && check_add_overflow(end, size - 1, &end))
->         return -EOVERFLOW;
->     if (overflows_type(end, r->end))
->         return -EOVERFLOW;
-> 
->     r->start = start;
->     r->end = end;
-> 
->     return 0;
-> }
-> 
-> Though we have the start address handling already in place above, we
-> do see an issue with the end address, because there is an
-> unconditional +1 afterwards in resource_size() API below which is
-> responsible for reserving the extra byte
-> 
-> static inline resource_size_t resource_size(const struct resource *res)
-> {
->         return res->end - res->start + 1;
-> }
+> The patch #3 introduces the generic p4d_free() and lets arm64 to use it.
+> The patch #4 adds the destructor to generic p4d_free(). So IIUC, there
+> is no problem here.
 
-Now the report makes more sense.
+Sorry, I missed that. In which case:
 
-> We have 4 ways of fixing it.
-> 
-> Option 1: Modify the function to handle the size zero case
-> 
-> diff --git a/drivers/of/address.c b/drivers/of/address.c
-> index c1f1c810e810..8db6ae9a12b8 100644
-> --- a/drivers/of/address.c
-> +++ b/drivers/of/address.c
-> @@ -204,6 +204,12 @@ static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
->  
->         if (overflows_type(start, r->start))
->                 return -EOVERFLOW;
-> +       if (!size) {
-> +               r->start = start;
-> +               r->end = end - 1;
-> +
-> +               return 0;
-> +       }
->         if (size && check_add_overflow(end, size - 1, &end))
->                 return -EOVERFLOW;
->         if (overflows_type(end, r->end))
-> 
-> This seems to be the simplest solution.
+Acked-by: Will Deacon <will@kernel.org>
 
-Fixing it in __of_address_resource_bounds() looks correct to me.
-The proposed solution doesn't look as clean as I'd like though,
-this is highly subjective, though.
-
-What about the following (untested)?
-
-static int __of_address_resource_bounds(struct resource *r, u64 start, u64 size)
-{
-	if (overflows_type(start, r->start))
-		return -EOVERFLOW;
-
-	r->start = start;
-	r->end = start;
-
-	if (!size)
-		r->end -= 1; /* May underflow for empty resources. */
-	else if (check_add_overflow(r->end, size - 1, &r->end))
-		return -EOVERFLOW;
-
-	return 0;
-}
-
-A kunit test looks to be in order in any case, to make sure all the
-edgecases are handled.
-
-> Option 2: Handle in resource_size().
-> static inline resource_size_t resource_size(const struct resource *res)
-> {      
->           return  (res->end == res->start) ? 0 : (res->end - res->start + 1);
-> }
-> There are plenty of places where we are using this API and there is an assumption that the end address should always be start + size -1. We are a bit unsure about the side effects of this change.
-> 
-> Option 3: Handle in sram_reserve_region().
-> We can avoid calling the resource_size() API and handle size zero as a special case. We are a bit unsure about the side effects of this change as well.
-> 
-> Option 4: Handle this in dts [2] with non zero size. Estimate the approximate size and update that value in dts file with extra buffer. However, as indicated in [2] in lines 313-327, the size is not known apriori and the actual size is only known in runtime. So if we set some size for this buffer, then this will always be blocked and may or may not be used subsequently.
-> 
-> [1] https://lore.kernel.org/all/20250109105600.41297-1-basharath@couthit.com/
-> [2] https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/ti/omap/dra7.dtsi
-> 
-> 
-> Thanks & Best Regards,
-> Basharath
+Will
 
