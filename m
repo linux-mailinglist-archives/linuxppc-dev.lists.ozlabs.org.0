@@ -1,76 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-5354-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5355-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D9CA149D5
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 07:54:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9241DA14E61
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 12:23:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ9Sb6t3Dz3cgl;
-	Fri, 17 Jan 2025 17:54:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YZHRk5cKZz30Nl;
+	Fri, 17 Jan 2025 22:23:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=162.240.238.73
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737096847;
-	cv=none; b=da0zi+duUv4QWCLKH4cqyinAL7cXk3fwT9URSiosm7qGOuyT3wWdljnc+pZh6WnkTdJCROKKJKA8PJaFxst+M7LSpYrsymjEKaWWIWyKDQywbs+ViKiogcKpcL9oNfYlzV44IABza8fnSpoGfW7QLAP36/2y1mWuwzSpSYlkQhll/nTWvHg2KLyyCzKwwBcy+p72kyS8rcZLjZhDznrhT92IMPQncGpHu5mici1qA/KPfjJRsp91tYRQeyjjvUg0Lnib/jraiggrpYljGluuMbGXVJLTI5kK+ubM3sJ3iSl2u1N3NiwCvKJPBu5NbEQlcCAw3l2hB4W4jl3H67IGUA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737113026;
+	cv=none; b=UMcUhI7sFGRgdhWjht2CYTY1YUIcCN70P5yvrlT9fWXiFiF11PAV6dKjqhJhYrOY0fEw3o/eX2A4Sx2Pt9jLEoe4L2seYXL609NaZb+Q4y0xBLx15A7SxpzjZGRo5jPOHjzowNNYRmxGOCAmZxYqYU3aryLm2Dx51Me5ak+sTaT09Ezc0/v7lqXjtzSxzVQezqKAuAZeezWWwujJYbiD6s99TIaNSlUPExRWVdUN1M49nWQtb0FcFqC+BNLy2ZGK5aTXCdS6+R5hIprFRZ8H5CPSNdR7GWKlFAX+YKvwRZ+PQNA0W6zBCZO6QBdI3iNYk/6Qt9/ODHL1Hq08Gwi3fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737096847; c=relaxed/relaxed;
-	bh=RvEJx+iUj82UJ08IPqOji8YgVCxkuHaa+9nIn/7Qdso=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=YTSItWnOcEQaLvVOsZyUvImF0Rz68q8hcccU+tPslj2ccnyLKyC9SLurdL+/Cs7ZA2+kX9Xo1TR9XTapAQ+/UH8LSw2R3POJ7k6fruZPs1cvEwkV9xQAbzHbUogH9Cd5T1l86WAXDBbqxebEUyB7KOtuMkUQLGqq2bhSIyku/rigyqdJ7W7rtsRsqWZaSH70gVoEOmVPcm792G2gO2Lyl1Bb+RjvOTp9DInFSbGRpoDrLf6ilZp4dHmyUOlzKdtAmPlRc6cMQ64WbR9ZzSDtdIV5iX0rlIGZo9ujqJb4XJT8bqYGdyoAjDE06LqM+Qy0m1Wmkr5RN7hovQE0HaVhvA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=couthit.com; dkim=pass (2048-bit key; unprotected) header.d=couthit.com header.i=@couthit.com header.a=rsa-sha256 header.s=default header.b=uEnMZBrn; dkim-atps=neutral; spf=pass (client-ip=162.240.238.73; helo=server.wki.vra.mybluehostin.me; envelope-from=basharath@couthit.com; receiver=lists.ozlabs.org) smtp.mailfrom=couthit.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=couthit.com
+	t=1737113026; c=relaxed/relaxed;
+	bh=FIGX2U5Y620ytLuHZv9C2YKRXU6LkFVVh5lOzeeXil4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ovqkY5Ki7cF0CAGqlKWOnkScZKmBNiSfZVwFvrnKEjQ9LjI1SoR/zuYTERqsjjEKvjCNFvCzXVzcjwDcQ3Q0A/cVm0e9VLmZcPc+ZdESQskxiWh+oMkiH54BccxfP7mDKkiUnaqoXY2rOcgNWeX+eEWp9U8NudmztXLMYMKWBZ/UIJ9vCA/edanHvO8DTrbUawm3izpK7rf2jfIkSQt7V+Y4Z49tnjjO3dLhJXcA7yYW5LFMtix1VM3BhcMzopaFhzVIljKZACTL4p+D+z406pRJ02Iehuw9rGVnVREUvncNfEFBblsHYuTYLV576i6e9PO900Lzq8lfTFkqXHQ/Ug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=s5WZKkFt; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=jackmanb@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=couthit.com header.i=@couthit.com header.a=rsa-sha256 header.s=default header.b=uEnMZBrn;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=s5WZKkFt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=couthit.com (client-ip=162.240.238.73; helo=server.wki.vra.mybluehostin.me; envelope-from=basharath@couthit.com; receiver=lists.ozlabs.org)
-Received: from server.wki.vra.mybluehostin.me (server.wki.vra.mybluehostin.me [162.240.238.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=jackmanb@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ9SZ17ygz3cgg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 17:54:05 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=couthit.com
-	; s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:
-	References:In-Reply-To:Message-ID:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=RvEJx+iUj82UJ08IPqOji8YgVCxkuHaa+9nIn/7Qdso=; b=uEnMZBrnw7gp6XURWLlsVxmjNg
-	im/ra1bEax1xyeeolARUmvEw/g+JudsS7F6NPB6lw2NgPUk85eSU3TyBQPsFv4llX2wo3PF+7UC9X
-	krgk9pSPB1RjdWKaNKu9v3vLoAb+H1NxNC+QoFp8Dhf4dZgC+9QIQsOV/i+djoUdHAlQbzYd6Wgjs
-	vprAHiQb3TxYsxSwQAL4svgn7bO+zWqOZoaCGHHkwcrxryZqhhrNb9Pc3SIKDcUL7ewroQujtq4vc
-	6Nq4jhICh/ZEy9ICsSuXahWpexP4apNOYs1cmKpEt7Oq10cbOKLdygm4nIv2eN5R+1lescOLPmeAH
-	VevxcQ8g==;
-Received: from [122.175.9.182] (port=57873 helo=zimbra.couthit.local)
-	by server.wki.vra.mybluehostin.me with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96.2)
-	(envelope-from <basharath@couthit.com>)
-	id 1tYgEx-0006NA-2h;
-	Fri, 17 Jan 2025 12:24:00 +0530
-Received: from zimbra.couthit.local (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTPS id 9BEE1178202C;
-	Fri, 17 Jan 2025 12:23:53 +0530 (IST)
-Received: from localhost (localhost [127.0.0.1])
-	by zimbra.couthit.local (Postfix) with ESMTP id 7A9981783FED;
-	Fri, 17 Jan 2025 12:23:53 +0530 (IST)
-Received: from zimbra.couthit.local ([127.0.0.1])
-	by localhost (zimbra.couthit.local [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id ddwyJiRLDEq9; Fri, 17 Jan 2025 12:23:53 +0530 (IST)
-Received: from zimbra.couthit.local (zimbra.couthit.local [10.10.10.103])
-	by zimbra.couthit.local (Postfix) with ESMTP id 4A00E178202C;
-	Fri, 17 Jan 2025 12:23:53 +0530 (IST)
-Date: Fri, 17 Jan 2025 12:23:53 +0530 (IST)
-From: Basharath Hussain Khaja <basharath@couthit.com>
-To: Rob Herring <robh@kernel.org>
-Cc: basharath <basharath@couthit.com>, mpe@ellerman.id.au, 
-	thomas weissschuh <thomas.weissschuh@linutronix.de>, 
-	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, saravanak@google.com, 
-	danishanwar <danishanwar@ti.com>, krishna <krishna@couthit.com>, 
-	mohan <mohan@couthit.com>, parvathi <parvathi@couthit.com>, 
-	pmohan <pmohan@couthit.com>
-Message-ID: <2089813158.341858.1737096833060.JavaMail.zimbra@couthit.local>
-In-Reply-To: <CAL_JsqLLGW_o9i6a5wcUj=Z=4nL-GhzHwAQMFtQkb9OSHuSgTA@mail.gmail.com>
-References: <87mskbqher.fsf@mail.lhotse> <20250108140414.13530-1-basharath@couthit.com> <CAL_JsqLLGW_o9i6a5wcUj=Z=4nL-GhzHwAQMFtQkb9OSHuSgTA@mail.gmail.com>
-Subject: Re: [PATCH] of: address: Unify resource bounds overflow checking
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZHRj35QGz2ynL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 22:23:44 +1100 (AEDT)
+Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-467896541e1so208141cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 03:23:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1737113021; x=1737717821; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FIGX2U5Y620ytLuHZv9C2YKRXU6LkFVVh5lOzeeXil4=;
+        b=s5WZKkFtQX/gKfVOXmEva/cErdD3GuBX7YjXEsazkIMA2mxBFn8mvh+Db15Qo32Ct6
+         6S8uJRpFTBPjQG/uAtZYyMpkELN8tgiESBRFA0cWE6MgiGCvv7tRz5TacAtP7Oifx2Ak
+         WlGylDlptJ0/kwLZjEDv3JLA9S/K29pQcojcJuC13RCpw3td/o/ApRTKGiTk58AEcSTr
+         AFyp3Q9s8GDk37oIt8nmFoPVcMtxpmZ+a03QOFwJenm0UmSf56AUi1N/dEt6XgkGQVkl
+         AlGfYGlIE2ykUjm7CInDUWZfIYta6tCbdDtqCsWrEdlcOkvg6vPRQBBOQ9En+tZHeVZI
+         Mh4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737113021; x=1737717821;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FIGX2U5Y620ytLuHZv9C2YKRXU6LkFVVh5lOzeeXil4=;
+        b=Ut8g3+tgrz4hv3272YbDM3+cvFTx4SocBwXXzsQeJZCmashZqN9DeBh2LrkI0DZ6z8
+         1/EAiFFy1dygl1u68qNAna5vbPxfyu/wQSAMjL47hPvUkn9C3x8YDB7nI5TYpVGGNOw3
+         sL74pl13rdVJMoTMSniWwgY3usbYZ6dQsBL7rhO9RC2BhSiUwS36nITO8WMzfxudaWe7
+         USaCLsoXO4yq6DCjrMXRvbhlDA1QXkp28gDcp4ARZ99F+tg/X2ZWOYU8VCZFdS7Z7EKj
+         vkPGq0QzU2VWGpSk0p7+S/C36Lpq3l8lqWwF/PsSlwkhp7jy5eP1D12QCnSF0ZPuWwyx
+         dCpg==
+X-Forwarded-Encrypted: i=1; AJvYcCWVK2zNyiZj2MDKK3KYm/JvGYF6bGHuO+PKybnrEoS5Bn2kJUIpT5wYgqqzoqZSjZWz8rbeuMK+HiZ1nNQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyYSFjzv1UdVbQxh9ArqQAVR2jkvCZIVFMwwiE9UtZ7Im4xDRcS
+	4tvLUYXRMeHcCgXhDdu4IZnMxO/zLgQZN/3mR3WSXBfVfm128qJAZV17auv4vUSJsjVxg45hExl
+	wK4gSTbWiyKdvrfNr8lXmMAaYphiKzzOfY1n+
+X-Gm-Gg: ASbGncvH7AHIJTBsq2/ExWieDZQhDCHIiip6qUzsoCrmVgGHAJEBOEEUOrak7lZoAm0
+	UEI8LEIWK5LOFi2jBInIxOQfQmc7lVptBWP583yhk2mpQYE3uZ7Vab1qHoSPcUvkr5OwA
+X-Google-Smtp-Source: AGHT+IGncYyjy1GhHnzrsXOo74WzCLmIKZegqTWM730ikUDOlazbTaQH35QB0zgmvzL1yJ283cNPWINqKuKsZStNP0A=
+X-Received: by 2002:a05:622a:1997:b0:466:923f:a749 with SMTP id
+ d75a77b69052e-46e130af265mr2539121cf.15.1737113021050; Fri, 17 Jan 2025
+ 03:23:41 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,173 +75,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Originating-IP: [10.10.10.103]
-X-Mailer: Zimbra 8.8.15_GA_3968 (ZimbraWebClient - FF133 (Linux)/8.8.15_GA_3968)
-Thread-Topic: address: Unify resource bounds overflow checking
-Thread-Index: j8VwIhKXO53jYYVbH1cgOpEQbMygPw==
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - server.wki.vra.mybluehostin.me
-X-AntiAbuse: Original Domain - lists.ozlabs.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - couthit.com
-X-Get-Message-Sender-Via: server.wki.vra.mybluehostin.me: authenticated_id: smtp@couthit.com
-X-Authenticated-Sender: server.wki.vra.mybluehostin.me: smtp@couthit.com
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com> <20250110-asi-rfc-v2-v2-16-8419288bc805@google.com>
+In-Reply-To: <20250110-asi-rfc-v2-v2-16-8419288bc805@google.com>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Fri, 17 Jan 2025 12:23:30 +0100
+X-Gm-Features: AbW1kvZ_KaymUoc5jGYX-groCnX_p-Tg9PrSiJ2rBOnB_iSLYbhJZulsHf6-rd0
+Message-ID: <CA+i-1C1JKEd43vtyGO6RLCQQA8qVCvALjm+q1oVTGMLtjo64iw@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 16/29] mm: asi: Map kernel text and static data as nonsensitive
+To: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Mike Rapoport <rppt@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+Cc: x86@kernel.org, linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Fri, 10 Jan 2025 at 19:41, Brendan Jackman <jackmanb@google.com> wrote:
+> +       asi_clone_pgd(asi_global_nonsensitive_pgd, init_mm.pgd, VMEMMAP_START);
+> +       asi_clone_pgd(asi_global_nonsensitive_pgd, init_mm.pgd,
+> +                     VMEMMAP_START + (1UL << PGDIR_SHIFT));
 
->> >> Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de> writes:
->> >> > The members "start" and "end" of struct resource are of type
->> >> > "resource_size_t" which can be 32bit wide.
->> >> > Values read from OF however are always 64bit wide.
->> >> >
->> >> > Refactor the diff overflow checks into a helper function.
->> >> > Also extend the checks to validate each calculation step.
->> >> >
->> >> > Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.=
-de>
->> >> > ---
->> >> >  drivers/of/address.c | 45 ++++++++++++++++++++++++++--------------=
------
->> >> >  1 file changed, 26 insertions(+), 19 deletions(-)
->> >> >
->> >> > diff --git a/drivers/of/address.c b/drivers/of/address.c
->> >> > index 7e59283a4472..df854bb427ce 100644
->> >> > --- a/drivers/of/address.c
->> >> > +++ b/drivers/of/address.c
->> >> > @@ -198,6 +198,25 @@ static u64 of_bus_pci_map(__be32 *addr, const =
-__be32
->> >> > *range, int na, int ns,
->> >> >
->> >> >  #endif /* CONFIG_PCI */
->> >> >
->> >> > +static int __of_address_resource_bounds(struct resource *r, u64 st=
-art, u64
->> >> > size)
->> >> > +{
->> >> > +     u64 end =3D start;
->> >> > +
->> >> > +     if (overflows_type(start, r->start))
->> >> > +             return -EOVERFLOW;
->> >> > +     if (size =3D=3D 0)
->> >> > +             return -EOVERFLOW;
->> >> > +     if (check_add_overflow(end, size - 1, &end))
->> >> > +             return -EOVERFLOW;
->> >> > +     if (overflows_type(end, r->end))
->> >> > +             return -EOVERFLOW;
->> >>
->> >> This breaks PCI on powerpc qemu. Part of the PCI probe reads a resour=
-ce
->> >> that's zero sized, which used to succeed but now fails due to the siz=
-e
->> >> check above.
->> >>
->> >> The diff below fixes it for me.
->> >
->> > I fixed it up with your change.
->>
->>
->> This commit is breaking Ethernet functionality on the TI AM57xx platform=
- due to
->> zero byte SRAM block size allocation during initialization. Prior to thi=
-s
->> patch, zero byte block sizes were handled properly.
->=20
-> What driver and where exactly?
+There's a bug here that Yosry has fixed in our internal version, I
+neglected to incorporate that here.
 
-We found an issue while developing the driver [1] and more specifically in =
-[2] (lines 313-327), but it looks like this is a generic issue which can bl=
-ock 1 byte of memory, when a zero size request has been initiated for the r=
-eserved region.
+Under KASLR, vmemmap is not necessarily exactly 2 PGDs like this is
+assuming. In fact it can share a PGD entry with the vmalloc area. So
+to be correct this cloning logic needs to actually look at the
+alignment and then navigate the page table hierarchy appropriately.
 
-static int __of_address_resource_bounds(struct resource *r, u64 start, u64 =
-size)
-{
-    u64 end =3D start;
+To be fixed for the next version.
 
-    if (overflows_type(start, r->start))
-        return -EOVERFLOW;
-    if (size && check_add_overflow(end, size - 1, &end))
-        return -EOVERFLOW;
-    if (overflows_type(end, r->end))
-        return -EOVERFLOW;
-
-    r->start =3D start;
-    r->end =3D end;
-
-    return 0;
-}
-
-Though we have the start address handling already in place above, we do see=
- an issue with the end address, because there is an unconditional +1 afterw=
-ards in resource_size() API below which is responsible for reserving the ex=
-tra byte
-
-static inline resource_size_t resource_size(const struct resource *res)
-{
-        return res->end - res->start + 1;
-}
-
-
-We have 4 ways of fixing it.
-
-Option 1: Modify the function to handle the size zero case
-
-diff --git a/drivers/of/address.c b/drivers/of/address.c
-index c1f1c810e810..8db6ae9a12b8 100644
---- a/drivers/of/address.c
-+++ b/drivers/of/address.c
-@@ -204,6 +204,12 @@ static int __of_address_resource_bounds(struct resourc=
-e *r, u64 start, u64 size)
-=20
-        if (overflows_type(start, r->start))
-                return -EOVERFLOW;
-+       if (!size) {
-+               r->start =3D start;
-+               r->end =3D end - 1;
-+
-+               return 0;
-+       }
-        if (size && check_add_overflow(end, size - 1, &end))
-                return -EOVERFLOW;
-        if (overflows_type(end, r->end))
-
-This seems to be the simplest solution.
-
-Option 2: Handle in resource_size().
-static inline resource_size_t resource_size(const struct resource *res)
-{     =20
-          return  (res->end =3D=3D res->start) ? 0 : (res->end - res->start=
- + 1);
-}
-There are plenty of places where we are using this API and there is an assu=
-mption that the end address should always be start + size -1. We are a bit =
-unsure about the side effects of this change.
-
-Option 3: Handle in sram_reserve_region().
-We can avoid calling the resource_size() API and handle size zero as a spec=
-ial case. We are a bit unsure about the side effects of this change as well=
-.
-
-Option 4: Handle this in dts [2] with non zero size. Estimate the approxima=
-te size and update that value in dts file with extra buffer. However, as in=
-dicated in [2] in lines 313-327, the size is not known apriori and the actu=
-al size is only known in runtime. So if we set some size for this buffer, t=
-hen this will always be blocked and may or may not be used subsequently.
-
-[1] https://lore.kernel.org/all/20250109105600.41297-1-basharath@couthit.co=
-m/
-[2] https://github.com/torvalds/linux/blob/master/arch/arm/boot/dts/ti/omap=
-/dra7.dtsi
-
-
-Thanks & Best Regards,
-Basharath
+As Yosry noted internally we also need to think about vmmemap getting
+updated under memory hotplug.
 
