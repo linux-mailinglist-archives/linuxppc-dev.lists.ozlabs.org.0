@@ -1,78 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-5352-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5353-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFEBA1484D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 03:34:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BB6B2A149C3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 17 Jan 2025 07:41:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ3jD1kYzz30VP;
-	Fri, 17 Jan 2025 13:34:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YZ99Q5XPRz3bgf;
+	Fri, 17 Jan 2025 17:40:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.14
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737081280;
-	cv=none; b=IUkXzTI228RoIttwxdi0Z7OjXcwhu5ZY3kyra6a1ECNmk4o1m9LKTzKn0eN/4Z9nHQUHEIN+NcSDdCKsC3QWMElnBbCoocFVKidkCq4zq+3gKT6amTolY6aaDdO/7R23hYaD4cl1Qmn/dNm5Nn/Kk5EdyHDLIw4iY97pAiXezJ8o6b4QI/7vhwJplxn3sJrKaJjpKiwQDMefUd3PQDqPgF0IKxzLNCXpNudbvur6nSNLkj+dzFC7cFNBDCxnaOYYAy6iYLUWPg6Umeq0q8YscQC7TIA4Hkb5G422gdls3lXtR6tN8Ugh8R4TCALDJKSM5+LeD8u/WSFDP812N1D14w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737096058;
+	cv=none; b=PtTXp6KLw/ZTjY+JGKuHTYewnl+KyaeFjegD1zLYn/hwDCCFZVkV1c0V6jDJaO6CDpN66VEK4Wd8/J0YIfcDY7YDqCfVM3yH2BlEPhw8wD0vBsfYyvFFpYcJtmfnLWInJ+zXEVVnOV98YrWeypmdylFiasLPNQ1lRiUdDwtor53s+IUeIF0Mn7LRjgLCrkcwyS644Ovv2J6/IovPHoYsYe4HH6oxSJ9Qua+M7EIGMyArei6a2e7Qdz6R5hB1c76SEK/cxbYa++d8dDdDD7MrH9lmqDnuued5YUs80vVrF+vlPA8+nIlDRAyCavutWpCz+DX3m0sHmIabraJrN0ornA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737081280; c=relaxed/relaxed;
-	bh=u2lKbXZHyMt4RAtOLSwxcYqnvlCA+WUH2hQXc3LzmDY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HK9DYSp7KX36GAubSFhi6E550h+oJ+fM3SQDSjflsIsdagMl0Jyz+t4kM7MglRtbPYAzticiKHY2CkX/qIRhHjKAG/ZnZCDIGCkJV+HAYHslL1MnN16CQLHyiVxPNaj9Hci5knPTe+86Zv5K8Redtj9mj+rVCDSxYf3kBsyzhE3Qyxgdr+NB3LmMP5ZKjMrbRFnoVVZXVseXVDcBau93ksZV/RQSZLXAdYBiy0l9JicJ7S01pWhq7/o11wrDjun8d9xjFMtc0GLFYJbto7RMKt5IBoCtuFsFHrjovN7FkyUvRviLztsyj8ZMv0VVrY4yaBhyhpU/cJEWeWrRHcCc8A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SWGEzJWm; dkim-atps=neutral; spf=pass (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1737096058; c=relaxed/relaxed;
+	bh=zdXuDVUI7CyF8Bo3jd9Jqbh/sm7uJdr2kFF1bV8j7ZM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=mubqYReveKJyTNPaR3ROJKIv1wYnGN/WvOWuCDC0FAbu3WOeMFrlvlMkNC8hDiUWQyTzeuiTBx0lyLkB0SjddbhgREsaN48U+hjbUArSVuU9TZOBKkNHgdpW43HQ23XMQoJnySy+6NGZmjMKTsdvRO8iwImDCVB86ox+1A90n+H2LcVnWSh/jZGnLo7VYckIpjD24Aylhq0D3DIufW4tjfi3tELt9uTRtqcy9zmX3lCKAZAh7uImzF7B62EH8nyLRjS2RJEoXYHCnmEvpBKtBos7sZ4Dz1Hmb2BGL7WdTTpwmB5V+A57ChJ4NJusUE7/8AexXetrRwV4lj4YIjPlbg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=HtX9vNx0; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=SWGEzJWm;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=HtX9vNx0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.14; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ3j94mc6z2ysg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 13:34:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737081278; x=1768617278;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=IbpOuCB0PVCg0GMj7JYqLyLPivC2fAXTi2lfyteKyjw=;
-  b=SWGEzJWmIz7aOMPkN24rzgzeSiAvghI+cqfKMFY1RJErTzXTtNb69Wpk
-   AxejKHEx4T8GHUPbhv+jsTVa8Z+zRHnKBXwP6ofMEYufEz9Xx0iLotmLI
-   HWIT2MLidg0O7pMCWJtPylptImfjM08qRkJan1Zsc0aYbxC6++L0SRqMC
-   n1GhQ9tG7tLYokZTSM1C5WRjvWJxTbMiS5M7B5CB8T8aerUIlvjKi4tSE
-   DGPdUZ1wyq+iAtX3tXXd6LlExkLOcpRocyG96m/c79eayhZyaJjkVbKZp
-   HJIZXp5kvlYakmdutNqGFatTBBFnCamiM5Gu6mpWSFGPyMNZPfHnxj6A7
-   A==;
-X-CSE-ConnectionGUID: cMVplBnMTdCjrHKrB+Mxnw==
-X-CSE-MsgGUID: PNmcsdN2RsiKD6ZOWC5IIQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11317"; a="37735286"
-X-IronPort-AV: E=Sophos;i="6.13,211,1732608000"; 
-   d="scan'208";a="37735286"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Jan 2025 18:34:32 -0800
-X-CSE-ConnectionGUID: pLWp/igBRTWuqm7bF9lITA==
-X-CSE-MsgGUID: TrgTChtERluJ67P28x4/yA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="128928043"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa002.fm.intel.com with ESMTP; 16 Jan 2025 18:34:29 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tYcBn-000SdL-09;
-	Fri, 17 Jan 2025 02:34:27 +0000
-Date: Fri, 17 Jan 2025 10:34:01 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-Cc: oe-kbuild-all@lists.linux.dev, Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
-	sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
-	amachhiw@linux.ibm.com
-Subject: Re: [PATCH v2 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv
- specific PMU
-Message-ID: <202501171030.3x0gqW8G-lkp@intel.com>
-References: <20250115143948.369379-5-vaibhav@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZ99M0wdfz3bSR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 17 Jan 2025 17:40:55 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1737096045;
+	bh=zdXuDVUI7CyF8Bo3jd9Jqbh/sm7uJdr2kFF1bV8j7ZM=;
+	h=Date:From:To:Cc:Subject:From;
+	b=HtX9vNx0+sg2k7Fq3UvUGn3+dRu8qJBfE8kBhoh3DlHZDef3F/X2vfowhxEGOHerg
+	 S5ITPuVbZyw4LKFAKQSFofu1i/D0OnqWOGBR9xnA8dVqOpaxzeAzmY2a7zKv6XBfEy
+	 xAInxkTrgqk3CBL4WJ3hi73y//L67eH47lTEeXz9Od+kMlQU/qE/8SVLgt+l0w4lmc
+	 E21TZSaMJXck38Grxb5Z1guef8wUdixLeJ9rJLIIrRim/L3+JGdF91uEstT1+MwG0n
+	 wHOqFmV5Ly0paommXSrceYU3p3WgEcG2pW57/rihwWxkAEygm65MTem71RP9609z+r
+	 NLmx9K7xkmzvQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YZ9990z9Sz4xQZ;
+	Fri, 17 Jan 2025 17:40:45 +1100 (AEDT)
+Date: Fri, 17 Jan 2025 17:40:51 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>
+Cc: PowerPC <linuxppc-dev@lists.ozlabs.org>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: duplicate patch in the powerpc tree
+Message-ID: <20250117174051.532c5772@canb.auug.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,75 +63,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250115143948.369379-5-vaibhav@linux.ibm.com>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: multipart/signed; boundary="Sig_/SRU59EaH/GQymPt.eeeIr/L";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Vaibhav,
+--Sig_/SRU59EaH/GQymPt.eeeIr/L
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-kernel test robot noticed the following build warnings:
+Hi all,
 
-[auto build test WARNING on powerpc/topic/ppc-kvm]
-[also build test WARNING on powerpc/next powerpc/fixes kvm/queue kvm/next mst-vhost/linux-next linus/master v6.13-rc7 next-20250116]
-[cannot apply to kvm/linux-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The following commit is also in Linus Torvalds' tree as a different commit
+(but the same patch):
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vaibhav-Jain/powerpc-Document-APIv2-KVM-hcall-spec-for-Hostwide-counters/20250116-024240
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git topic/ppc-kvm
-patch link:    https://lore.kernel.org/r/20250115143948.369379-5-vaibhav%40linux.ibm.com
-patch subject: [PATCH v2 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv specific PMU
-config: powerpc-allnoconfig (https://download.01.org/0day-ci/archive/20250117/202501171030.3x0gqW8G-lkp@intel.com/config)
-compiler: powerpc-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250117/202501171030.3x0gqW8G-lkp@intel.com/reproduce)
+  7fee0217538a ("MAINTAINERS: powerpc: Update my status")
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202501171030.3x0gqW8G-lkp@intel.com/
+This is commit
 
-All warnings (new ones prefixed by >>):
+  77a903cd8e5a ("MAINTAINERS: powerpc: Update my status")
 
-   In file included from arch/powerpc/include/asm/kvm_ppc.h:22,
-                    from arch/powerpc/include/asm/dbell.h:17,
-                    from arch/powerpc/kernel/asm-offsets.c:36:
->> arch/powerpc/include/asm/kvm_book3s.h:357:13: warning: 'kvmppc_unregister_pmu' defined but not used [-Wunused-function]
-     357 | static void kvmppc_unregister_pmu(void)
-         |             ^~~~~~~~~~~~~~~~~~~~~
->> arch/powerpc/include/asm/kvm_book3s.h:352:12: warning: 'kvmppc_register_pmu' defined but not used [-Wunused-function]
-     352 | static int kvmppc_register_pmu(void)
-         |            ^~~~~~~~~~~~~~~~~~~
---
-   In file included from arch/powerpc/include/asm/kvm_ppc.h:22,
-                    from arch/powerpc/include/asm/dbell.h:17,
-                    from arch/powerpc/kernel/asm-offsets.c:36:
->> arch/powerpc/include/asm/kvm_book3s.h:357:13: warning: 'kvmppc_unregister_pmu' defined but not used [-Wunused-function]
-     357 | static void kvmppc_unregister_pmu(void)
-         |             ^~~~~~~~~~~~~~~~~~~~~
->> arch/powerpc/include/asm/kvm_book3s.h:352:12: warning: 'kvmppc_register_pmu' defined but not used [-Wunused-function]
-     352 | static int kvmppc_register_pmu(void)
-         |            ^~~~~~~~~~~~~~~~~~~
+in Linus' tree.
 
+--=20
+Cheers,
+Stephen Rothwell
 
-vim +/kvmppc_unregister_pmu +357 arch/powerpc/include/asm/kvm_book3s.h
+--Sig_/SRU59EaH/GQymPt.eeeIr/L
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
-   351	
- > 352	static int kvmppc_register_pmu(void)
-   353	{
-   354		return 0;
-   355	}
-   356	
- > 357	static void kvmppc_unregister_pmu(void)
-   358	{
-   359	}
-   360	
+-----BEGIN PGP SIGNATURE-----
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmeJ+3MACgkQAVBC80lX
+0Gx0Jgf/dlzQ1JQyarmjHUmRSbjDzNF3bz/p+KDagVrlmLMGzmS2Dy2cWn6/wGC8
+bB9MWj91OqnP7AQVh42qPRsN4ANWAKLxz4L/SQPIyAy3WIYuH3G4PseBrUEdi+hX
+DUDu+ei1XZWJkWEd2vBA8FttmL9VKSQBsGTBbp+/ZCg9i83FDfFDGG8424gMIS3F
+JD/P96OZdl4cO6IWPZaDHkqns8yZAOK+fB87C8VVs5xoTd6Od9dloFB1PqverkPU
+IpP/lkEXGMyyEurk63oYIiv3gdnPHA9fSfJNrVJE8VxMMjGdWgjCY0KbJtcHdnvl
+zYNU2S0XEpF5aWYc0lnl0vjcypRe6g==
+=ebah
+-----END PGP SIGNATURE-----
+
+--Sig_/SRU59EaH/GQymPt.eeeIr/L--
 
