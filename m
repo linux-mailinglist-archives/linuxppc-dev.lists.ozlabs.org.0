@@ -1,78 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-5377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA93A15D2F
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2025 14:21:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30F50A15E70
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 18 Jan 2025 18:59:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YZy0l0rsrz2yYq;
-	Sun, 19 Jan 2025 00:21:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yb49x3Nd1z2yYy;
+	Sun, 19 Jan 2025 04:59:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737206471;
-	cv=none; b=XyLngPysclNFla1G80HXwW4sCGLiJnwVzWrmrSQlWzgjMcnQCNVD+waUsxwU4+j2LWtfVm5ed0OH0eCPHg9r4YK7UfVekLl9acYxlrXuO5p5uujm4HpCWS6J4sOBMr8bTN3TV3fkKwt9hkldaJRcgDMwM8mgCwvx+lg/zrr9zkW2VDkd2QpkqImrM+BPwq+W0wLz9GzIdkLv8pV+Pllyv0H3rlth10siFuoFYRYQMjeyfWCJXG9tHNGJxJ9GP5fvZ1lZ+VGYDcgaIYEuiMD6rRIti6XNhtoTxoq5qeoEW1xxxkfqBXNjsAN2/6IhqR2aeKeLfk79PF+NLk40Wq0xSg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737223173;
+	cv=none; b=fahErRKDh9rVRkRRW/rcHSehTHVNmoNmCt6J+hxWyEZmdWrn8Bjzx8CMWf4TnjvU+adnbr7iGQJbBebINeh6+cV3BIS2h65BQ0W+U0cyLR540b5FZE/Nk2cmpH1Lmi12DUgkWfMu7PEKfZ/ItHWsZFL+zXPFNjtLPBtbb7cQim9HPXcldViPXltH8EdsYkqNQdli2JFeJftdGAmS1xOmNRMtT0ddgPMSEmqVI10RsASZy8BvSmNuGz3TDTuoBSJ8WhpAxaHtbL8Zwz/pQ5wSTV+g1GsNzdf1EajzcBqx6JG+eLi5wd3ViGJPS8yWCb4+AsjMyNy/TVb1xlhnNwHofw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737206471; c=relaxed/relaxed;
-	bh=/drKaW5KH3n8+cPpyv+re95WdZOTIW6bwt1Fx1sqS+w=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=nPmkNbuOvvOjaAXLQPVdrC/dWZBmHqpVevbCh8eilJ2AFHVpDMmXbWz+x9tMQ9UhhY0kC96wJgzpIsN0bbjc8zz5hhPRvq+tk9FoDCIgOQtDVGP0tB+ls9wV5sTOcRJRj3L03wvqFrlt+n53Yw7eHSmZ0R0O9kbNZj7rOa18sOtu/wX/8nOtbOKsaLCn+yYDHWK1yXNl82KMog6t5tO9eublllC8X5RdWzi78naBYqcx0aWvExe7APFGxxWdE9WOtfLkZJAGdgA5IYAUEMrhuXrtfHOlvD6iD6c6J/zCKWghoQMyNNxgl6UA/ivO89Aj4tX5jrs6cwqziIA7ZG8R+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ove599Dl; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+	t=1737223173; c=relaxed/relaxed;
+	bh=R8CPaWKImj74AF3tLuTcPNVDOThAVEEzMAxFWGeCN5I=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=CyjwDDXkiGbZM8Pjkf8OZARbwWLRQG3l8LdSS7jqTNUyUgmQd4y3gs++esQ7yrynxY5lZxQvIAN3RYoX8BiUNXvvR+PD+0MUzFBs2HWG9xdP1RxTaK9gnNwzm/bx+d8zUGx4/9SS3Ln9HMr01k7Sm6XC/qjDTKkI1h0G+YtbHhM3HZjfFTWNqb5G4EvrB7lk/9ZiEjyPX7euqJVaqlsrYf2ZpL7yqCdLuWz/IZOl9MmVQta8J9iH83OpJOUrJZR9zvgWqtgxjqbrBaUVI2/grqweJdWTZWl9ArxrQj4ufWfkoSuGtFD+D/yxx6U9pCrQAOVsrGbu584T8WBY+RPgUw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g3yW4Pkm; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ove599Dl;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=g3yW4Pkm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YZy0g291Vz2yjJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jan 2025 00:21:07 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50IBF5So007612
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 13:21:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=/drKaW5KH3n8+cPpy
-	v+re95WdZOTIW6bwt1Fx1sqS+w=; b=ove599Dl6eHLoScYv5Gtvy9wJbPJFSiUN
-	OS+1p27IWQBLvCcFSFwTUoRqluBxxZDgO9BKE6eKNrrAr/hXj5wSFTccbt9V2Nne
-	HkLWDsNZOy+sN0rgOp7+4RzehWE3eN/1PcIr3EUsGn4t00ftR3mQNxUyx8msGLbZ
-	PDjQkMYGIzIffkADHs4oBy7fOlNZxYxjQCJhT+AG0k8MnLyiUw6oej6hqLXr4ELp
-	jnlVir/ruSsiQ7/NBDK15EpyWjMJIreah+BJ58fRtr4gpYC0kVUgiHpI2WerwLrL
-	GJimAFJ1cZonqAP3U7o+S7HXBxLN6OdZGLxtLV5xpGpEtBVShKFfQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44880n8tdb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 13:21:03 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50IA0D3M032421
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 13:21:03 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4485pqhf8u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 18 Jan 2025 13:21:03 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50IDKxCF52298126
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 18 Jan 2025 13:21:00 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C4F0520040;
-	Sat, 18 Jan 2025 13:20:59 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6218C20043;
-	Sat, 18 Jan 2025 13:20:56 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.61.250.155])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 18 Jan 2025 13:20:55 +0000 (GMT)
-From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, hbathini@linux.ibm.com
-Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com
-Subject: [PATCH V2 2/2] arch/powerpc/perf: Update get_mem_data_src function to use saved values of sier and mmcra regs
-Date: Sat, 18 Jan 2025 18:50:46 +0530
-Message-Id: <20250118132046.93872-2-atrajeev@linux.vnet.ibm.com>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20250118132046.93872-1-atrajeev@linux.vnet.ibm.com>
-References: <20250118132046.93872-1-atrajeev@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yb49w2m3Mz2yXs
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 19 Jan 2025 04:59:32 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 93027A412DE;
+	Sat, 18 Jan 2025 17:57:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0EA1C4CED1;
+	Sat, 18 Jan 2025 17:59:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737223168;
+	bh=V0FY+gqIgfN4D3E7+TqhT8qsOfNMrmhXpFpfH0hX1HY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=g3yW4PkmbtYxErVnwIBR78TUPbf9PSOOMLEr6qvGU/71Mzm+e0JlU+xt5f3t/gGin
+	 rW3bY2UETp8O/D2DS1AAdmrroG5fL2TCPgagXUo0SmDfAZaVQb77PfXPsy22pY3W2S
+	 4/ItnuSCBlynlcvc9ND+Q3caHLzyQis4cRS7Lw7okTzaOONpRHPWrgcDgrG7jCda4g
+	 8HagJNonwA+/NZxBarvxXqnVxVORgkBw9PnvhZ5mOI9Bl7cnUYp9yMw6FuPx+IjOkI
+	 Dsz5OMaJJM0uF6bEX9x7fm1UlHfYuaLEQgihY4OxTCpkfHf1Lb+1tkKdjQAk6RpINN
+	 G8JebkUwXMqCQ==
+From: Namhyung Kim <namhyung@kernel.org>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com, 
+ irogers@google.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, 
+ hbathini@linux.ibm.com
+In-Reply-To: <20250110093730.93610-1-atrajeev@linux.vnet.ibm.com>
+References: <20250110093730.93610-1-atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH V2] tools/perf/builtin-lock: Fix return code for
+ functions in __cmd_contention
+Message-Id: <173722316773.2826057.12496163001807331882.b4-ty@kernel.org>
+Date: Sat, 18 Jan 2025 09:59:27 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,74 +67,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: jbF0lZWFL-A4DOed5xHeC4Lj-uCoqbrl
-X-Proofpoint-GUID: jbF0lZWFL-A4DOed5xHeC4Lj-uCoqbrl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-18_04,2025-01-16_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- suspectscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 mlxscore=0
- spamscore=0 mlxlogscore=822 malwarescore=0 adultscore=0 priorityscore=1501
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501180104
-X-Spam-Status: No, score=1.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,
-	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
-X-Spam-Level: *
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c04d2
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-During performance monitor interrupt handling, the regs are setup using
-perf_read_regs function. Here some of the pt_regs fields is overloaded.
-Samples Instruction Event Register (SIER) is loaded into pt_regs,
-overloading regs->dar. And regs->dsisr to store MMCRA (Monitor Mode
-Control Register A) so that we only need to read these once on each
-interrupt.
+On Fri, 10 Jan 2025 15:07:30 +0530, Athira Rajeev wrote:
 
-Update the isa207_get_mem_data_src function to use regs->dar instead of
-reading from SPRN_SIER again. Also use regs->dsisr to read the mmcra
-value
+> perf lock contention returns zero exit value even if the lock contention
+> BPF setup failed.
+> 
+>   # ./perf lock con -b true
+>   libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
+>   libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
+>   libbpf: failed to find valid kernel BTF
+>   libbpf: kernel BTF is missing at '/sys/kernel/btf/vmlinux', was CONFIG_DEBUG_INFO_BTF enabled?
+>   libbpf: failed to find '.BTF' ELF section in /lib/modules/6.13.0-rc3+/build/vmlinux
+>   libbpf: failed to find valid kernel BTF
+>   libbpf: Error loading vmlinux BTF: -ESRCH
+>   libbpf: failed to load object 'lock_contention_bpf'
+>   libbpf: failed to load BPF skeleton 'lock_contention_bpf': -ESRCH
+>   Failed to load lock-contention BPF skeleton
+>   lock contention BPF setup failed
+>   # echo $?
+>    0
+> 
+> [...]
 
-Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
----
- arch/powerpc/perf/isa207-common.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+Applied to perf-tools-next, thanks!
 
-diff --git a/arch/powerpc/perf/isa207-common.c b/arch/powerpc/perf/isa207-common.c
-index 031a2b63c171..2b3547fdba4a 100644
---- a/arch/powerpc/perf/isa207-common.c
-+++ b/arch/powerpc/perf/isa207-common.c
-@@ -319,7 +319,13 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
- 		return;
- 	}
- 
--	sier = mfspr(SPRN_SIER);
-+	/*
-+	 * Use regs-dar for SPRN_SIER which is saved
-+	 * during perf_read_regs at the beginning
-+	 * of the PMU interrupt handler to avoid multiple
-+	 * reads of SPRN_SIER
-+	 */
-+	sier = regs->dar;
- 	val = (sier & ISA207_SIER_TYPE_MASK) >> ISA207_SIER_TYPE_SHIFT;
- 	if (val != 1 && val != 2 && !(val == 7 && cpu_has_feature(CPU_FTR_ARCH_31))) {
- 		dsrc->val = 0;
-@@ -340,8 +346,12 @@ void isa207_get_mem_data_src(union perf_mem_data_src *dsrc, u32 flags,
- 		 * to determine the exact instruction type. If the sampling
- 		 * criteria is neither load or store, set the type as default
- 		 * to NA.
-+		 *
-+		 * Use regs->dsisr for MMCRA which is saved during perf_read_regs
-+		 * at the beginning of the PMU interrupt handler to avoid
-+		 * multiple reads of SPRN_MMCRA
- 		 */
--		mmcra = mfspr(SPRN_MMCRA);
-+		mmcra = regs->dsisr;
- 
- 		op_type = (mmcra >> MMCRA_SAMP_ELIG_SHIFT) & MMCRA_SAMP_ELIG_MASK;
- 		switch (op_type) {
--- 
-2.39.3
+Best regards,
+Namhyung
 
 
