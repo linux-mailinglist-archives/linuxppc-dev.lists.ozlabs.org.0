@@ -1,61 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-5392-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5393-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D05CA16BF2
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 13:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93043A16C92
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 13:54:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yc89s1Xwzz2yyR;
-	Mon, 20 Jan 2025 23:03:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yc9K51JqTz2y92;
+	Mon, 20 Jan 2025 23:54:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.143.211.150
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737374432;
-	cv=none; b=fn3TNBZRrMfzWuH2W5DMWRoiOPeTaPGDrk2saUJarQaElSFXcsfOsGIWAtB8hFdTEKhrIAsLg5xfNuvq7MHzNM4zc3h6xNi7BHNMC6o/c3q0OdF3NI+JttrYjEVn0ioJzvI6z8WrmaZbCi5HNbr+b+YxzziOr59bJgP1zCszxh3ZS9UakFoS150aWL38yZLO4DulsDKYCeXnalKZKzBNUVPDVLtS4SqxRWUPeAh6OcrJOM0Lx+n7bR8/QnwU0ARRfLp/9QwRX3mqcEN/WtCCmATAS8jrQsuzYLzr2i03tOFgxLBT2aBUg7ct1PppGbGed6/NYFiHjgHb9F4QgWG+Zg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a07:de40:b251:101:10:150:64:1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737377673;
+	cv=none; b=cnW/AqyEHCxlw15DoU4SK/LzLSedgg9lcWTj/E4Pk7pEB+CiDOml9hLElUHWz8wsjGiJsSfKcCgGdb0zc1P37ItLyaOrOHXlSPzyDQrC37IGi0oFVDue8YbHWSSITbT/Eniz8+xzBJWvCLp10pb6FBOb87JKPujCWxxqExtzTHSoAVfIgBcnvS2siN0hSxLuc9AAhQM/LTcbIPG3VF3qnLUjB0+9J6n/MmcFDN4apQRQ/02ny0bo21J5ovVrvJnE5EFwLZ/UI3u28Z8FsuRhn8cwCYlmWRGRtroozGXYL0BTA/uboqopGoagASncujbFzwI52fm8ic4AX1L2fssWZQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737374432; c=relaxed/relaxed;
-	bh=mXZ3I+8rEu5hC7Bbr/07M4uZY5uMU2tu8N9VtF7I1iA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gTpJLfbKueOF1mZhx247Xp/JfjxqYGZyiQXND0vfd0jKD0Tsd4eCxwAjWdHl8t9YoxCSRfbM0bKLIjAJfuTQxF13OaVoz8hs6wBo6WUyT3HG2Hm5t04kAnvVoNZesp0iN3epAW4fJ25ahiMqLftlZY4ExUmi3Bm/01DYmWdvPgaWovNhBoSGWQGhfJPbvM3AYTnnK6PzYt288SZPIIJDLLtJto+3XY/y5j0g3f5yyW1ub5BSPE3NiQIwvSLdA1G4ibYsstOMPxb8CW98MTBFJ5Bxq/n3Lwpp2fQT9yni+avfNJo3VLjVZwc7XqRUIU/yo3CsaDoQHbOXnD1AD6EJDg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; dkim=pass (1024-bit key; unprotected) header.d=swemel.ru header.i=@swemel.ru header.a=rsa-sha256 header.s=mail header.b=jqOCzB7p; dkim-atps=neutral; spf=pass (client-ip=95.143.211.150; helo=mx.swemel.ru; envelope-from=arefev@swemel.ru; receiver=lists.ozlabs.org) smtp.mailfrom=swemel.ru
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
+	t=1737377673; c=relaxed/relaxed;
+	bh=dENmDQuJs1xXFdoO9XY/CuTPv0FcoxD3ePEE0cuT3Sc=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=ZVXlB29hf0MxbBmrHJxtNiGkX2FHHhWO70TbYUGqq1zYJ2O+zOlHoqvxnjDjej4ULjfOnE+fG4eBbsf28bB6CtsNbfnAZsf0SoxVrOtvM4DL+cMMiOWx04Mn6vyCCPcwtxKl6lOWWWru9D13RemMIcSluTTQPc4JCEaLUlEma1hN8/znFiQ0zYEnfzba9ZkiMq2nH/aKVwnc6bFTAuv1Q7jbDZCa88nHiaUqk1zgetHfPHXN/iaLP1VcZlKcSfxr92gOAyADVX0BVTDFimQQpNA4QHwUQYagJBYxryZxekJm4Dl2uxvV0UH/ODteOeb8O1aWrBdMn2Jjk3nDpKsw+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz; dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=UJA3fAtR; dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QvFBqHqQ; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=yoGroTVf; dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tGzZg2l+; dkim-atps=neutral; spf=pass (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=mbenes@suse.cz; receiver=lists.ozlabs.org) smtp.mailfrom=suse.cz
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=swemel.ru header.i=@swemel.ru header.a=rsa-sha256 header.s=mail header.b=jqOCzB7p;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=UJA3fAtR;
+	dkim=pass header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=QvFBqHqQ;
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.a=rsa-sha256 header.s=susede2_rsa header.b=yoGroTVf;
+	dkim=neutral header.d=suse.cz header.i=@suse.cz header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=tGzZg2l+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=swemel.ru (client-ip=95.143.211.150; helo=mx.swemel.ru; envelope-from=arefev@swemel.ru; receiver=lists.ozlabs.org)
-X-Greylist: delayed 387 seconds by postgrey-1.37 at boromir; Mon, 20 Jan 2025 23:00:29 AEDT
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.cz (client-ip=2a07:de40:b251:101:10:150:64:1; helo=smtp-out1.suse.de; envelope-from=mbenes@suse.cz; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2a07:de40:b251:101:10:150:64:1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yc86j4yLCz2ywh
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2025 23:00:29 +1100 (AEDT)
-From: Denis Arefev <arefev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1737374034;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=mXZ3I+8rEu5hC7Bbr/07M4uZY5uMU2tu8N9VtF7I1iA=;
-	b=jqOCzB7pFmmic5jfsD/stli7oRpav9Pv1HpqWYAbYMGjlBbhNW/x4/xgl1Ne942/izqIzb
-	KsLDTvokPyL03Z9hXWk12SPJlnJeCnKfyYnAmUWYjxkPwn5rNYj+9NyLQSqvy1wZtgkVSs
-	vqRoDwi8z3B4ygD7q98J9L/5cIQ9lEc=
-To: stable@vger.kernel.org,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Nick Child <nnac123@linux.ibm.com>,
-	Dany Madden <drt@linux.ibm.com>,
-	Lijun Pan <ljp@linux.ibm.com>,
-	Sukadev Bhattiprolu <sukadev@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-	Paul Mackerras <paulus@samba.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH] ibmvnic: Add tx check to prevent skb leak
-Date: Mon, 20 Jan 2025 14:53:53 +0300
-Message-ID: <20250120115354.49654-1-arefev@swemel.ru>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yc9K338Ntz2y8X
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 20 Jan 2025 23:54:31 +1100 (AEDT)
+Received: from pobox.suse.cz (unknown [10.100.2.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id E7CBF21120;
+	Mon, 20 Jan 2025 12:54:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1737377663; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dENmDQuJs1xXFdoO9XY/CuTPv0FcoxD3ePEE0cuT3Sc=;
+	b=UJA3fAtRHyBiyNsNFtuZ6b1LvgrrGS8JvoZY6kg61DdCknQrzF81nWncWt684NuK/sQ74q
+	BkfoJzWYooX9nadWj39H+v4OMLNLTyhgKqI17X2d6jO1VlF6Dhyze3v4KnLax/PhW+lMcU
+	KAQtHZiE5YIFHzyxYmn3isj9Fl+zIzs=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1737377663;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dENmDQuJs1xXFdoO9XY/CuTPv0FcoxD3ePEE0cuT3Sc=;
+	b=QvFBqHqQKUV6FaWuReKnInGYqqerx3MNqbkdsiLvcaxs57aAog5rQxcgCErlYbmLI6gMrP
+	GxIZj+tXnW6JRzBA==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1737377662; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dENmDQuJs1xXFdoO9XY/CuTPv0FcoxD3ePEE0cuT3Sc=;
+	b=yoGroTVfoeof3PR/+HOq4a5PuQzt+cEglOhzznMQdb22FtUbh/cdlc/82uMB7upPzMTCq9
+	6LJtYXAKxVZF678sKO+uhMuqzU7vpCnGn8E3nwHq8MOUCMY8N1AJUH7kt5zx0oCSeRNuam
+	/BzuZeQMU7srxy/WR9mhMzJhHRtsoMY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1737377662;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dENmDQuJs1xXFdoO9XY/CuTPv0FcoxD3ePEE0cuT3Sc=;
+	b=tGzZg2l+gsqIeqmEuN+JWQcQYrtVKrfMEVqi0wP58YcV9+vP/IUfFB9+oJZH2XI0IPGvRS
+	PYgVANJqfqf1FTBw==
+Date: Mon, 20 Jan 2025 13:54:22 +0100 (CET)
+From: Miroslav Benes <mbenes@suse.cz>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+cc: jikos@kernel.org, pmladek@suse.com, joe.lawrence@redhat.com, 
+    shuah@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com, 
+    christophe.leroy@csgroup.eu, naveen@kernel.org, 
+    live-patching@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+    linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v2] selftests: livepatch: handle PRINTK_CALLER in
+ check_result()
+In-Reply-To: <20250119163238.749847-1-maddy@linux.ibm.com>
+Message-ID: <alpine.LSU.2.21.2501201354120.12227@pobox.suse.cz>
+References: <20250119163238.749847-1-maddy@linux.ibm.com>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,74 +96,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Score: -8.30
+X-Spamd-Result: default: False [-8.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	MID_RHS_MATCH_FROMTLD(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FREEMAIL_CC(0.00)[kernel.org,suse.com,redhat.com,ellerman.id.au,gmail.com,csgroup.eu,vger.kernel.org,lists.ozlabs.org];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[]
+X-Spam-Level: 
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Nick Child <nnac123@linux.ibm.com>
+On Sun, 19 Jan 2025, Madhavan Srinivasan wrote:
 
-From: Nick Child <nnac123@linux.ibm.com>
+> Some arch configs (like ppc64) enable CONFIG_PRINTK_CALLER,
+> which adds the caller id as part of the dmesg. With recent
+> util-linux's update 467a5b3192f16 ('dmesg: add caller_id support')
+> the standard "dmesg" has been enhanced to print PRINTK_CALLER fields.
+> 
+> Due to this, even though the expected vs observed are same,
+> end testcase results are failed.
+> 
+>  -% insmod test_modules/test_klp_livepatch.ko
+>  -livepatch: enabling patch 'test_klp_livepatch'
+>  -livepatch: 'test_klp_livepatch': initializing patching transition
+>  -livepatch: 'test_klp_livepatch': starting patching transition
+>  -livepatch: 'test_klp_livepatch': completing patching transition
+>  -livepatch: 'test_klp_livepatch': patching complete
+>  -% echo 0 > /sys/kernel/livepatch/test_klp_livepatch/enabled
+>  -livepatch: 'test_klp_livepatch': initializing unpatching transition
+>  -livepatch: 'test_klp_livepatch': starting unpatching transition
+>  -livepatch: 'test_klp_livepatch': completing unpatching transition
+>  -livepatch: 'test_klp_livepatch': unpatching complete
+>  -% rmmod test_klp_livepatch
+>  +[   T3659] % insmod test_modules/test_klp_livepatch.ko
+>  +[   T3682] livepatch: enabling patch 'test_klp_livepatch'
+>  +[   T3682] livepatch: 'test_klp_livepatch': initializing patching transition
+>  +[   T3682] livepatch: 'test_klp_livepatch': starting patching transition
+>  +[    T826] livepatch: 'test_klp_livepatch': completing patching transition
+>  +[    T826] livepatch: 'test_klp_livepatch': patching complete
+>  +[   T3659] % echo 0 > /sys/kernel/livepatch/test_klp_livepatch/enabled
+>  +[   T3659] livepatch: 'test_klp_livepatch': initializing unpatching transition
+>  +[   T3659] livepatch: 'test_klp_livepatch': starting unpatching transition
+>  +[    T789] livepatch: 'test_klp_livepatch': completing unpatching transition
+>  +[    T789] livepatch: 'test_klp_livepatch': unpatching complete
+>  +[   T3659] % rmmod test_klp_livepatch
+> 
+>   ERROR: livepatch kselftest(s) failed
+>  not ok 1 selftests: livepatch: test-livepatch.sh # exit=1
+> 
+> Currently the check_result() handles the "[time]" removal from
+> the dmesg. Enhance the check to also handle removal of "[Thread Id]"
+> or "[CPU Id]".
+> 
+> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 
-commit 0983d288caf984de0202c66641577b739caad561 upstream.
+Acked-by: Miroslav Benes <mbenes@suse.cz>
 
-Below is a summary of how the driver stores a reference to an skb during
-transmit:
-    tx_buff[free_map[consumer_index]]->skb = new_skb;
-    free_map[consumer_index] = IBMVNIC_INVALID_MAP;
-    consumer_index ++;
-Where variable data looks like this:
-    free_map == [4, IBMVNIC_INVALID_MAP, IBMVNIC_INVALID_MAP, 0, 3]
-                                               	consumer_index^
-    tx_buff == [skb=null, skb=<ptr>, skb=<ptr>, skb=null, skb=null]
-
-The driver has checks to ensure that free_map[consumer_index] pointed to
-a valid index but there was no check to ensure that this index pointed
-to an unused/null skb address. So, if, by some chance, our free_map and
-tx_buff lists become out of sync then we were previously risking an
-skb memory leak. This could then cause tcp congestion control to stop
-sending packets, eventually leading to ETIMEDOUT.
-
-Therefore, add a conditional to ensure that the skb address is null. If
-not then warn the user (because this is still a bug that should be
-patched) and free the old pointer to prevent memleak/tcp problems.
-
-Signed-off-by: Nick Child <nnac123@linux.ibm.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[Denis: minor fix to resolve merge conflict.]
-Signed-off-by: Denis Arefev <arefev@swemel.ru>
----
-Backport fix for CVE-2024-41066
-Link: https://nvd.nist.gov/vuln/detail/CVE-2024-41066
----
- drivers/net/ethernet/ibm/ibmvnic.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
-
-diff --git a/drivers/net/ethernet/ibm/ibmvnic.c b/drivers/net/ethernet/ibm/ibmvnic.c
-index 84da6ccaf339..439796975cbf 100644
---- a/drivers/net/ethernet/ibm/ibmvnic.c
-+++ b/drivers/net/ethernet/ibm/ibmvnic.c
-@@ -1625,6 +1625,18 @@ static netdev_tx_t ibmvnic_xmit(struct sk_buff *skb, struct net_device *netdev)
- 	    (tx_pool->consumer_index + 1) % tx_pool->num_buffers;
- 
- 	tx_buff = &tx_pool->tx_buff[index];
-+
-+	/* Sanity checks on our free map to make sure it points to an index
-+	 * that is not being occupied by another skb. If skb memory is
-+	 * not freed then we see congestion control kick in and halt tx.
-+	 */
-+	if (unlikely(tx_buff->skb)) {
-+		dev_warn_ratelimited(dev, "TX free map points to untracked skb (%s %d idx=%d)\n",
-+				     skb_is_gso(skb) ? "tso_pool" : "tx_pool",
-+				     queue_num, bufidx);
-+		dev_kfree_skb_any(tx_buff->skb);
-+	}
-+
- 	tx_buff->skb = skb;
- 	tx_buff->data_dma[0] = data_dma_addr;
- 	tx_buff->data_len[0] = skb->len;
--- 
-2.43.0
-
+M
 
