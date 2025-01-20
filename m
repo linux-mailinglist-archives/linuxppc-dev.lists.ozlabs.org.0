@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-5404-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5405-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85BDEA1706C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 17:44:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AB7A1A1706F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 17:44:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGQ243l4z30FR;
-	Tue, 21 Jan 2025 03:44:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGQ63wd1z30HB;
+	Tue, 21 Jan 2025 03:44:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737391450;
-	cv=none; b=ePe4uMDlRZB71I0dQhj9AJjofOlgtyRM0QCKEpMlXwhEBBpyaCt3/jXO/hg7W6k8d6Vhu5X+ERW+2lfje1l70IjXWAUwRqDI8ifXTci0Stdkn5g/HF4EZvn9QbnSL3SqEpOEbe6fclFTMmPEjdF4RcXiZxUqmfnwkcFGnoqMxqTcXuq5YyjABJDMnlrhty2mZGRyoZ59ZhWXgVyqn2wNLMPbPmAyXNd4K7hg8uMSlxnq6vwusW07BhF5STZJErH96QGlIbznwla/+ErXjkbtLXVnh7r8Je6VSfvEXPSu7w2d2Tj2jAfKln+zQ+2TtcOnaaLpwTv4i4MawZ+uRKuvQw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737391454;
+	cv=none; b=djG1BSeh3yMjExB9i2d6YAVJWp9KaLQLzXoQno05ppXZrs0zK3wtSrsgXxJdVnM/7e4TEyFU4FjwyNEMXDk1KqPDhEMMi9oYrYCtflplj+KFa0y909WXVLFtzYRnjc12Pw713WCe3xTumM8xbhc0K4uUb4oewsAfbf1EQB2YVcf/gk/8v3BQTXky48tW+1Uln6xyAIhIYvtkJK2DadYPpyIJJAnjQvX4hnpA6Lf0pOz6qcOT3Ic7vTsiJH43+LbURASq72UFPSOnKaQSXp/8wL1BpfDSl8wBQQSDvdtoee6wf3oJY1JxHf6+uEPTInD1bCI3Q8t9/bUO5I7pRj3+Uw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737391450; c=relaxed/relaxed;
-	bh=LID/oXGtXOpkBTARbpqdwbxhsAykSjQ0C3oAGHMZ9SA=;
+	t=1737391454; c=relaxed/relaxed;
+	bh=keyiLREdrLvzc3Vm5AgBCsvbxSWutHk3WUjoRTr/IwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUNLso8pMk6kDK5bxam92cnT07cTfYx+m+wECwvcs07Ys96/+CI1bWduhqDN6UZSNtnLH4gmZKzj5Hf7Eqsyvq4uutvwB5DKe41AYAZIyCmGIYeK04/l4NnaQ3+BjSHv4g4KLajokdg7rkyQ7rRxoHyA5R46n1+TAHSLUvK66mtUlBBhWpLEkyuU02GLaZfiyCdQan4aiHnrmSWIQw/Gy0y/9pg8tQpBlyV59DiCchUuIn7sDsKYurcax4WjlXgCV/yvn9fUhK//yTlgCOL3cBko+6AfJgy6B3rVX53MzcpCtJKUczCHQAKa78KJzdgGT7/J+VwH8AjN42ebvK/52A==
+	 MIME-Version; b=JXp3Swj4iJ5JwESM2hC34pBt6f6f1HCnLztZwdPeawS8FrcP9C5oxGJW5wWRcRpGTVeDMevMbeSwbWC1vKJxWxFcqylp22pD5Rm83taOg5gY0NAMPp7Pj16W4mXU5f2OhZWu6m2J3uwYijd6Evjnv9iBwlvO5L8ktnqrNYdhqeZJCN123u9fwdzJovn2wKHg+nkwX4G81JmzCWcdRaxTCwamQj5RwrqxNH/e7Qa+a8hOmSLuCiMut1xJkH+5cD/xzWDKeJLsIeZpfWH2RXXHNHCNNMIJtI+Vh6LEVSzBpY5qCR5awMsw/rEXTzyDnVvPHs8AagoIlTllTJr8LfZOpw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGQ2196kz2ypP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 03:44:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGQ55Z63z2ypP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 03:44:13 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id BDF701688;
-	Mon, 20 Jan 2025 08:44:07 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 402B1106F;
+	Mon, 20 Jan 2025 08:44:11 -0800 (PST)
 Received: from localhost.localdomain (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EEF843F5A1;
-	Mon, 20 Jan 2025 08:43:35 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 990FB3F5A1;
+	Mon, 20 Jan 2025 08:43:39 -0800 (PST)
 From: Alexandru Elisei <alexandru.elisei@arm.com>
 To: andrew.jones@linux.dev,
 	eric.auger@redhat.com,
@@ -50,11 +50,10 @@ Cc: kvm@vger.kernel.org,
 	suzuki.poulose@arm.com,
 	yuzenghui@huawei.com,
 	joey.gouly@arm.com,
-	andre.przywara@arm.com,
-	Andrew Jones <drjones@redhat.com>
-Subject: [kvm-unit-tests PATCH v2 02/18] Document environment variables
-Date: Mon, 20 Jan 2025 16:43:00 +0000
-Message-ID: <20250120164316.31473-3-alexandru.elisei@arm.com>
+	andre.przywara@arm.com
+Subject: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests if not configured for qemu
+Date: Mon, 20 Jan 2025 16:43:01 +0000
+Message-ID: <20250120164316.31473-4-alexandru.elisei@arm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250120164316.31473-1-alexandru.elisei@arm.com>
 References: <20250120164316.31473-1-alexandru.elisei@arm.com>
@@ -75,59 +74,116 @@ X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Document the environment variables that influence how a test is executed
-by the run_tests.sh test runner.
+Arm and arm64 support running the tests under kvmtool. Unsurprisingly,
+kvmtool and qemu have a different command line syntax for configuring and
+running a virtual machine.
 
-Suggested-by: Andrew Jones <drjones@redhat.com>
+On top of that, when kvm-unit-tests has been configured to run under
+kvmtool (via ./configure --target=kvmtool), the early UART address changes,
+and if then the tests are run with qemu, this warning is displayed:
+
+WARNING: early print support may not work. Found uart at 0x9000000, but early base is 0x1000000.
+
+At the moment, the only way to run a test under kvmtool is manually, as no
+script has any knowledge of how to invoke kvmtool. Also, unless one looks
+at the logs, it's not obvious that the test runner is using qemu to run the
+tests, and not kvmtool.
+
+To avoid any confusion for unsuspecting users, refuse to run a test via the
+testing scripts when kvm-unit-tests has been configured for kvmtool.
+
+There are four different ways to run a test using the test infrastructure:
+with run_tests.sh, by invoking arm/run or arm/efi/run with the correct
+parameters (only the arm directory is mentioned here because the tests can
+be configured for kvmtool only on arm and arm64), and by creating
+standalone tests. Add a check in each of these locations for the supported
+virtual machine manager.
+
 Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 ---
- docs/unittests.txt |  5 ++++-
- run_tests.sh       | 12 +++++++++---
- 2 files changed, 13 insertions(+), 4 deletions(-)
+ arm/efi/run             | 8 ++++++++
+ arm/run                 | 9 +++++++++
+ run_tests.sh            | 8 ++++++++
+ scripts/mkstandalone.sh | 8 ++++++++
+ 4 files changed, 33 insertions(+)
 
-diff --git a/docs/unittests.txt b/docs/unittests.txt
-index c4269f6230c8..dbc2c11e3b59 100644
---- a/docs/unittests.txt
-+++ b/docs/unittests.txt
-@@ -88,7 +88,8 @@ timeout
- -------
- timeout = <duration>
+diff --git a/arm/efi/run b/arm/efi/run
+index 8f41fc02df31..916f4c4deef6 100755
+--- a/arm/efi/run
++++ b/arm/efi/run
+@@ -12,6 +12,14 @@ fi
+ source config.mak
+ source scripts/arch-run.bash
  
--Optional timeout in seconds, after which the test will be killed and fail.
-+Optional timeout in seconds, after which the test will be killed and fail. Can
-+be overwritten with the TIMEOUT=<duration> environment variable.
- 
- check
- -----
-@@ -99,3 +100,5 @@ can contain multiple files to check separated by a space, but each check
- parameter needs to be of the form <path>=<value>
- 
- The path and value cannot contain space, =, or shell wildcard characters.
++case "$TARGET" in
++qemu)
++    ;;
++*)
++    echo "$0 does not support '$TARGET'"
++    exit 2
++esac
 +
-+Can be overwritten with the CHECK environment variable with the same syntax.
+ if [ -f /usr/share/qemu-efi-aarch64/QEMU_EFI.fd ]; then
+ 	DEFAULT_UEFI=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd
+ elif [ -f /usr/share/edk2/aarch64/QEMU_EFI.silent.fd ]; then
+diff --git a/arm/run b/arm/run
+index efdd44ce86a7..6db32cf09c88 100755
+--- a/arm/run
++++ b/arm/run
+@@ -8,6 +8,15 @@ if [ -z "$KUT_STANDALONE" ]; then
+ 	source config.mak
+ 	source scripts/arch-run.bash
+ fi
++
++case "$TARGET" in
++qemu)
++    ;;
++*)
++   echo "'$TARGET' not supported"
++   exit 3
++esac
++
+ processor="$PROCESSOR"
+ 
+ if [ "$QEMU" ] && [ -z "$ACCEL" ] &&
 diff --git a/run_tests.sh b/run_tests.sh
-index f30b6dbd131c..23d81b2caaa1 100755
+index 23d81b2caaa1..61480d0c05ed 100755
 --- a/run_tests.sh
 +++ b/run_tests.sh
-@@ -27,9 +27,15 @@ Usage: $0 [-h] [-v] [-a] [-g group] [-j NUM-TASKS] [-t] [-l]
-     -l, --list          Only output all tests list
-         --probe-maxsmp  Update the maximum number of VCPUs supported by host
+@@ -100,6 +100,14 @@ while [ $# -gt 0 ]; do
+     shift
+ done
  
--Set the environment variable QEMU=/path/to/qemu-system-ARCH to
--specify the appropriate qemu binary for ARCH-run.
--
-+The following environment variables are used:
++case "$TARGET" in
++qemu)
++    ;;
++*)
++    echo "$0 does not support '$TARGET'"
++    exit 2
++esac
 +
-+    QEMU            Path to QEMU binary for ARCH-run
-+    ACCEL           QEMU accelerator to use, e.g. 'kvm', 'hvf' or 'tcg'
-+    ACCEL_PROPS     Extra argument to ACCEL
-+    MACHINE         QEMU machine type
-+    TIMEOUT         Timeout duration for the timeout(1) command
-+    CHECK           Overwrites the 'check' unit test parameter (see
-+                    docs/unittests.txt)
- EOF
- }
+ # RUNTIME_log_file will be configured later
+ if [[ $tap_output == "no" ]]; then
+     process_test_output() { cat >> $RUNTIME_log_file; }
+diff --git a/scripts/mkstandalone.sh b/scripts/mkstandalone.sh
+index 2318a85f0706..4de97056e641 100755
+--- a/scripts/mkstandalone.sh
++++ b/scripts/mkstandalone.sh
+@@ -7,6 +7,14 @@ fi
+ source config.mak
+ source scripts/common.bash
  
++case "$TARGET" in
++qemu)
++    ;;
++*)
++    echo "'$TARGET' not supported for standlone tests"
++    exit 2
++esac
++
+ temp_file ()
+ {
+ 	local var="$1"
 -- 
 2.47.1
 
