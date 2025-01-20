@@ -1,61 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-5425-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5426-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4365A172AD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 19:27:07 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 948DFA17448
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 22:48:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcJhk0S5pz305P;
-	Tue, 21 Jan 2025 05:27:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcP9D50Wsz2yYJ;
+	Tue, 21 Jan 2025 08:48:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737397621;
-	cv=none; b=SkaTfv2Pr9W4zLpFyV9K1XjT+rGZYsr8G76IWpH3GGpYsQZT0Gf2z5BOnpRwaSWNTkQi7LghUG7FidD4wUsm2KMDUuucOq/MRWdhMcq42ksehV1HbEe2JNjcnnVyosQ1DRVxQbOjlfxQGJgZ19kbiOvdfUNvSWxKug8dVwsZKIq9MqGxtM+vvPoYZ2f96yBwYT5QqpZ4kpEI4Ih/4wDQqeJRdhggJ9nlIXBBvVVDaySMz8B4LrKxfTntaFijunmsdcoOiV0zobodNOXJuSzQihEyC9AR+8hbSxeOeoOm7fDzEAmv2pxp54xkM0DxrJoBX3y2ZuOUUS+VgcsbkD1WFA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737409712;
+	cv=none; b=hh9Q12Ca3dcbzvuy9sVfzOq+3RyX/lU7r0F6HvmcDnx+Fi+uyS/g7rX2E28TaQ7fDzndxZno+JGDR/DnLWJbu2jBAUKG7jXpIoGDsAUzdEQ9uA9Y3d2sFfoiLRVSJYbCNX3UIHGqaSLgcZ9B+Gb0BdNJro/fEuTBJ/LfVX25M4g9QN5ye4v0yOe6Se0Uhos4EEw9T5iNNIzPW51WPqAqNYXrxjOY9gxjttO4w5iKUum+/ctzeRQo4/4U05ItL4vpjUpOzg1x8DUtDTlLB/QoTnzz1DVE1lQFLpbJsK9Rh+AuMrgbP4bXpovJZYiT5qKW/8zpjjj0nOiAoajxO8qFjg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737397621; c=relaxed/relaxed;
-	bh=sFS1Wen+ORvk3OHr3TFsRC9dAs5hXsL3v2o+QsjhikE=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Y28EXX4L3fmt2ktKMiPB5u/TVRP4bdGkDHVNXbo8R6vjab65Zxs3uPpYkzBTTYT7SG83Ip3OYFE2H1RLREFTxECqY2UWdC4AZvRodDurQBrve9PGN13Z6ulLUZp64QbiKxhYhtM9c1a8b7xaivLWyL/p+/rcMTMmW74sn5LQmJzjWPGOqefHcbLwvVyQtSyMWixuTE9Nv8Wg1KB8BLR9n9xCdW3ZMWdK8WRNv0DRbLchf7YWPD9rcbrj2XSYm4Nb5jo0QDAR2WVKYRhOs1V7vQ1IukPIw2vq0Qz8pk4G3zL3mr+Do2EjHO3CqVlI0bY/uwvFtLIzbfcRglxFYWXkTw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CR8a9K2U; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1737409712; c=relaxed/relaxed;
+	bh=s4fWueicN30uzSJ6/tLCrkBtP5IUh4iqac2TI55ULfo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G+FnfjdzLBuEzxP+BHANEMNQUIL6QNvXwgbSklcVRW1vrr0KFMcFte8ye0uDtAiAc8NWbJPaFHOsuXVno8h8VzFx2PXjpqi4xtSPKT6D/Ax1R9z1eG2J2yjBWN0alf660ejdG/3dvwyq1CqPJXGObB7pB2UvdwtWnnQZ/Je15wvKp/M4Sosac0xX0CZhgdFpMJFFD4fkQ5xg2u5qg4OKmf9Qlu9XUsBeA7I8DmX6pZeLRVRQSfOSYYNfepzrRTcHIDZl51a91Q04dmgaeBsfijQBx2T7rIpMzf40PfFR+PwZvI1Q5AOaDuCcFA9jtQqA+Tp6ZRnT8NqjCqkv+icCJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ul7c/xwL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CR8a9K2U;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ul7c/xwL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=namhyung@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcJhf5t5Mz2xjQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 05:26:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcP9C6tbnz2yRd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 08:48:31 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 1796CA4132B;
-	Mon, 20 Jan 2025 18:25:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B15F0C4CEDD;
-	Mon, 20 Jan 2025 18:26:53 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 13B4CA40589;
+	Mon, 20 Jan 2025 21:46:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B029C4CEDD;
+	Mon, 20 Jan 2025 21:48:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737397614;
-	bh=3Ec0q/3tdObVXJBG60rzWCKvQBWmVLyUV9dr8jd55QA=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=CR8a9K2U2l/ty+sYOWLjiAlBF/YGotue1UZg5v7EN7AMmaJiK1WLbM/kH8eTGIpCU
-	 UTcGHEi+cXR/Ebmg2s/9irOnRy1lP8GxzJ4Q8uJrJsh0HX+hIPXiFDfNYYttGXHTcx
-	 4BYRvvvq1r5DCx4dY8rqRneRZxtxAlrXLCQPmKIfY3L5pIu1EvFQsrtN/wmmSFQo5A
-	 MOFMl/UVEtPKT81uNZtBytYDujFkCM54cQa5B/zPZ1XQAIS0+LHiRMlyjb/K7iUQ3p
-	 Eu8TcLalG5WAQ/x0mODE4ebVqk4AfaFG7HMRJ2W1E+NjcwWEeIRT8KtsXbl/Yk1H+X
-	 qlwvOyVlZw6Rg==
-From: Namhyung Kim <namhyung@kernel.org>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com, 
- irogers@google.com, ravi.bangoria@amd.com, 
- Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com, 
- hbathini@linux.ibm.com, Tejas Manhas <Tejas.Manhas1@ibm.com>
-In-Reply-To: <20250110094620.94976-1-atrajeev@linux.vnet.ibm.com>
-References: <20250110094620.94976-1-atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH] tools/perf/tests: Update event_groups test to use
- instructions as one of the sibling event for hw type
-Message-Id: <173739761368.3950752.17907962905280799459.b4-ty@kernel.org>
-Date: Mon, 20 Jan 2025 10:26:53 -0800
+	s=k20201202; t=1737409708;
+	bh=KJBGFuDnQEzeIGfx6nk02kCtmyMiS+ukeSEcCPa1o2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ul7c/xwLDHY/rXiymPqGfvNNH/EQK/VE6tlmlLiHLAKWHy8qi26cYVItN7x8jsjLl
+	 tY+N12xvlQuU9bhlpyq6wczQp9MZ6rsfdqwEv2F2U4cVIVwS+XcKlk38vYgQVBz2cp
+	 ek/HRgkUSGvwVdNFUhjlsd4mn/byqUVr470aPlH1+5nRZ0Idg0D3GbUwDZBVYKCGyT
+	 RHKWUVC4dUNCGhNsLqqvHg+ljDnn6FR5Ik8OyWbbib+8GfWBMdZfrFoUjXutaJnRd/
+	 dXKHGlYRH2Cr3T0OuNiceU7OhgcnnTb5lg6m87Xhirj1Ma8N8Mg2MDhBk4giQZgRez
+	 WvNCUpJ7DsDTA==
+Date: Mon, 20 Jan 2025 13:48:25 -0800
+From: Kees Cook <kees@kernel.org>
+To: Oleg Nesterov <oleg@redhat.com>
+Cc: Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 1/4] seccomp/mips: change syscall_trace_enter() to use
+ secure_computing()
+Message-ID: <202501201344.E7FBB164@keescook>
+References: <20250120134409.GA21241@redhat.com>
+ <20250120134445.GA21268@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,32 +70,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c04d2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120134445.GA21268@redhat.com>
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 10 Jan 2025 15:16:20 +0530, Athira Rajeev wrote:
-
-> In some of the powerpc platforms, event group testcase fails as below:
+On Mon, Jan 20, 2025 at 02:44:45PM +0100, Oleg Nesterov wrote:
+> arch/mips/Kconfig selects HAVE_ARCH_SECCOMP_FILTER so syscall_trace_enter()
+> can just use __secure_computing(NULL) and rely on populate_seccomp_data(sd)
+> and "sd == NULL" checks in __secure_computing(sd) paths.
 > 
->    # perf test -v 'Event groups'
->    69: Event groups                                                    :
->    --- start ---
->    test child forked, pid 9765
->    Using CPUID 0x00820200
->    Using hv_24x7 for uncore pmu event
->    0x0 0x0, 0x0 0x0, 0x0 0x0: Fail
->    0x0 0x0, 0x0 0x0, 0x1 0x3: Pass
+> With the change above syscall_trace_enter() can just use secure_computing()
+> and avoid #ifdef + test_thread_flag(TIF_SECCOMP). CONFIG_GENERIC_ENTRY is
+> not defined, so test_syscall_work(SECCOMP) will check TIF_SECCOMP.
 > 
-> [...]
+> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> ---
+>  arch/mips/kernel/ptrace.c | 20 ++------------------
+>  1 file changed, 2 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/mips/kernel/ptrace.c b/arch/mips/kernel/ptrace.c
+> index 61503a36067e..f7107479c7fa 100644
+> --- a/arch/mips/kernel/ptrace.c
+> +++ b/arch/mips/kernel/ptrace.c
+> @@ -1326,24 +1326,8 @@ asmlinkage long syscall_trace_enter(struct pt_regs *regs)
+>  			return -1;
+>  	}
+>  
+> -#ifdef CONFIG_SECCOMP
+> -	if (unlikely(test_thread_flag(TIF_SECCOMP))) {
 
-Applied to perf-tools-next, thanks!
+Yup, this test works out the same as what secure_computing() does.
 
-Best regards,
-Namhyung
+> -		int ret, i;
+> -		struct seccomp_data sd;
+> -		unsigned long args[6];
+> -
+> -		sd.nr = current_thread_info()->syscall;
 
+This matches MIPS's syscall_get_nr() in populate_seccomp_data().
+
+> -		sd.arch = syscall_get_arch(current);
+> -		syscall_get_arguments(current, regs, args);
+> -		for (i = 0; i < 6; i++)
+> -			sd.args[i] = args[i];
+> -		sd.instruction_pointer = KSTK_EIP(current);
+
+Rest matches the rest of populate_seccomp_data().
+
+> -
+> -		ret = __secure_computing(&sd);
+> -		if (ret == -1)
+> -			return ret;
+> -	}
+> -#endif
+> +	if (secure_computing())
+> +		return -1;
+>  
+>  	if (unlikely(test_thread_flag(TIF_SYSCALL_TRACEPOINT)))
+>  		trace_sys_enter(regs, regs->regs[2]);
+> -- 
+
+So this check out logically from what I can see. I can build test it,
+but I don't have MIPS emulation set up. I'd love an Ack from a MIPS
+maintainer...
+
+Reviewed-by: Kees Cook <kees@kernel.org>
+
+-- 
+Kees Cook
 
