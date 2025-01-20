@@ -1,32 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-5402-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5403-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F22A17065
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 17:44:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB972A17067
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 17:44:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGPz4gtjz2yvj;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGPz62Csz300g;
 	Tue, 21 Jan 2025 03:44:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737391447;
-	cv=none; b=PrDkM9IYliVcQ3pECtt7hT6OngfDQbOupKi94HbadnFsFUenMQxrxpVRd4GQoDlwILqYbAVesZLtkeOZhy3Ki9A7At1C5ybESNVwN4NktXKM1/R+puE62ubCGKwXcPTynGpkQy53Il6VuAiTvRKpzMSfIz+cMa3ABqt5fQOCm0PN7JotiIm5CGmm8Y0ELFqbq4yJQGYoyPJZSzHtRBt4tZhgMvXHPPfzsBbcyyJS5ZuGHZBEEpOJPP2Vs04Alniq5AZV3IU53KaAhyvnxg+oUYup29YUx9OI4jSYYQmq30vP+4fro9NHzG4d6RuGiQxaAEAi3rF97Or2nTx2qczLww==
+	cv=none; b=GAKMHcAAvtNzYmum9vD1w3M/f2TOUL2TLIOvnHEezl4Fg80NweXvCHa0Lzw6zBbpBQ6gkkgdIGSN39vfmy/rirwz5b+Kvd6TL7ZUXd+2zAVroNWQkceGWi3N8qlHj5HUTL1pqVK9xvoXzPaG3zsR5yglrIfx+b64uXJt8qxWUlmEpDWHX/x0nJcFyT/rJrELACiWavEAIX9jlgi22mh9hC0tJMoLkDZQxyq8xsVn5x1YOVGa+pgI40O0Ckee+BCECsAMI7xdMoBwtJ/aU1TTr04Wly1o/QHi1e/ellGwMin9+6dh2zdACFwpKRyxJJvHRAa/Zzqb/C/XmqEA+yBOZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1737391447; c=relaxed/relaxed;
-	bh=K1Rarx//W6aTN5tT5MRI2OkYb1S/SbpxrhF7OY4kQTc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Am7vG72QEm25zqi+agqcGbD2alIwAAauCSfdWq4Ty1UL6OsEpuoZ65iHMEdydxhBgegPZZWDbt6QyBVWkl/NdOaeC0SpOTHRghFsNQnWh4e7bhFVakEOrbyvRbDRxwSf37tDFvRhLXaW5OqakfL6t4s34/2tztGVuHzwgqNREMbvPGryLDIwP9qk++TlZ+tZ/UU+L6Rn9+4pvesLO0cHN9n5jCcZurXurDs5TQxnnImzwkliZ8k1/Y6+LluUhCez8RSQRnliTkn93AdnEzT+FKy7TV2WCcbhFnhQ7wJTeagx6fByDLSwUliJWSM7ArC8r06Tigsm7qr4KGAZXdjMzQ==
+	bh=kZ0oUvVPU4mYJxi3HehQyhYbS/vGealiJ7roYkMAFp0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=OOhLguGrdJAWvNNnSq1/qinDb2LAmvig1S0duGGeOywvdtMTMWe7D9SobQpO7lqMzX0g6RA8i0w+atts5MNNRLfJlBlXzBIO2jQ1v3kgtCWVIXQTlPe6B71ObVQm5mNQ9E69ITmEh1s4/zkwawsw2ilBhsj09a9tC6Rt5QLYOWG5joDNIbK3KkL661wN3xj1AjchoMc9EWm5wnd7IB/1Ias7OfS/hxd9zZysoXmRB9Zb++/GzsgX7RSgzu9Hdzki951vlHT+i0Ocqls4XHkk5t2g0lUlK5sbhle44tdcekcU6t/ACe86Mpp+sQk3bW1172yCyfeIC3EF/gKpekoQRQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGPy16T2z2ydQ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 03:44:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcGPy6Jlpz2ypP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 03:44:06 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A5758FEC;
-	Mon, 20 Jan 2025 08:44:00 -0800 (PST)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22C0E1063;
+	Mon, 20 Jan 2025 08:44:04 -0800 (PST)
 Received: from localhost.localdomain (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 081F73F5A1;
-	Mon, 20 Jan 2025 08:43:28 -0800 (PST)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7D2A93F5A1;
+	Mon, 20 Jan 2025 08:43:32 -0800 (PST)
 From: Alexandru Elisei <alexandru.elisei@arm.com>
 To: andrew.jones@linux.dev,
 	eric.auger@redhat.com,
@@ -50,10 +51,12 @@ Cc: kvm@vger.kernel.org,
 	yuzenghui@huawei.com,
 	joey.gouly@arm.com,
 	andre.przywara@arm.com
-Subject: [kvm-unit-tests PATCH v2 00/18] arm/arm64: Add kvmtool to the runner script
-Date: Mon, 20 Jan 2025 16:42:58 +0000
-Message-ID: <20250120164316.31473-1-alexandru.elisei@arm.com>
+Subject: [kvm-unit-tests PATCH v2 01/18] run_tests: Document --probe-maxsmp argument
+Date: Mon, 20 Jan 2025 16:42:59 +0000
+Message-ID: <20250120164316.31473-2-alexandru.elisei@arm.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250120164316.31473-1-alexandru.elisei@arm.com>
+References: <20250120164316.31473-1-alexandru.elisei@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,110 +74,44 @@ X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Finally got fed up with manually running a test with kvmtool, so I've
-decided to send v2 of the series [1] that adds kvmtool support to
-run_tests.sh. The series has significantly more patches now, but that's
-mostly because I split a large patch into several smaller ones (as per
-Andre's suggestion), which I hope will make reviewing easier. Because of
-this I removed two Reviewed-by tags from Drew and Thomas Huth - your review
-is much appreciated!
+Commit 5dd20ec76ea63 ("runtime: Update MAX_SMP probe") added the
+--probe-maxmp argument, but the help message for run_tests.sh wasn't
+updated. Document --probe-maxsmp.
 
-To goal is to have an user do:
+Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+---
+ run_tests.sh | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-$ ./configure --target=kvmtool
-$ make clean && make
-$ ./run_tests.sh
-
-to run all the tests automatically with kvmtool.
-
-Reasons to use kvmtool:
-
-* kvmtool is smaller and a lot easier to hack than qemu, which means
-developers may prefer it when adding or prototyping new features to KVM.
-Being able to run all the tests reliably and automatically is very useful
-in the development process.
-
-* kvmtool is faster to run the tests (a couple of times faster on
-my rockpro64), making for a quick turnaround. But do keep in mind that not
-all tests work on kvmtool because of missing features compared to qemu.
-
-* kvmtool does things differently than qemu: different memory layout,
-different uart, PMU emulation is disabled by default, etc. This makes it a
-good testing vehicule for kvm-unit-tests itself.
-
-The series has been rewritten since v1 [1]. This is a brief overview of the
-major changes:
-
-* Split into smaller patches.
-* Document environment variables and --probe-maxsmp options.
-* New unittest parameter, qemu_params, to replace extra_params going
-forward (extra_params has been kept for compatibility)
-* New unittest parameter, kvmtool_params, for kvmtool specific arguments
-needed to run a test.
-* New unittest parameter, disabled_if, to disable a test that cannot run
-under kvmtool.
-
-I would very much like more input regarding disabled_if. Allows all sorts
-of combinations, like:
-
-[ "$TARGET" = kvmtool ] && ([ -z "$CONFIG_EFI" ] || [ "$CONFIG_EFI" = n ])
-
-and that's because it's evaluated as-is in a bash if statement - might have
-security implications. I could have just added something like
-supported_vmms, but I thought the current approach looks more flexible.
-Although that might just be premature optimization.
-
-There's only one limitation as far as I know - UEFI tests don't work. I
-tried to run a .efi test with kvmtool manually, but kvmtool froze and I
-didn't get any output. I am not familiar with EDK2, so I thought I can send
-the this series and get feedback on it while I make time to figure out what
-is going on - it might be something with kvm-unit-tests, EDK2, kvmtool, or
-a combination of them. And I don't think UEFI support is very important at
-the moment, no distro ships a EDK2 binary compiled for kvmtool so I don't
-think there would be many users for it.
-
-[1] https://lore.kernel.org/kvm/20210702163122.96110-1-alexandru.elisei@arm.com/
-
-Please review,
-Alex
-
-Alexandru Elisei (18):
-  run_tests: Document --probe-maxsmp argument
-  Document environment variables
-  scripts: Refuse to run the tests if not configured for qemu
-  run_tests: Introduce unittest parameter 'qemu_params'
-  scripts: Rename run_qemu_status -> run_test_status
-  scripts: Merge the qemu parameter -smp into $qemu_opts
-  scripts: Introduce kvmtool_opts
-  scripts/runtime: Detect kvmtool failure in premature_failure()
-  scripts/runtime: Skip test when kvmtool and $accel is not KVM
-  scripts/arch-run: Add support for kvmtool
-  arm/run: Add support for kvmtool
-  scripts/runtime: Add default arguments for kvmtool
-  run_tests: Do not probe for maximum number of VCPUs when using kvmtool
-  run_tests: Add KVMTOOL environment variable for kvmtool binary path
-  Add kvmtool_params to test specification
-  scripts/mkstandalone: Export $TARGET
-  unittest: Add disabled_if parameter and use it for kvmtool
-  run_tests: Enable kvmtool
-
- arm/efi/run             |   8 ++
- arm/run                 | 164 +++++++++++++++++++++++++---------------
- arm/unittests.cfg       |  34 +++++++++
- docs/unittests.txt      |  43 +++++++++--
- powerpc/run             |   2 +-
- riscv/run               |   4 +-
- run_tests.sh            |  50 ++++++++----
- s390x/run               |   2 +-
- scripts/arch-run.bash   |  80 ++++++++++++++++++--
- scripts/common.bash     |  63 +++++++++------
- scripts/mkstandalone.sh |   9 +++
- scripts/runtime.bash    |  64 +++++++++++++---
- 12 files changed, 399 insertions(+), 124 deletions(-)
-
-
-base-commit: 0ed2cdf3c80ee803b9150898e687e77e4d6f5db2
+diff --git a/run_tests.sh b/run_tests.sh
+index 152323ffc8a2..f30b6dbd131c 100755
+--- a/run_tests.sh
++++ b/run_tests.sh
+@@ -17,14 +17,15 @@ cat <<EOF
+ 
+ Usage: $0 [-h] [-v] [-a] [-g group] [-j NUM-TASKS] [-t] [-l]
+ 
+-    -h, --help      Output this help text
+-    -v, --verbose   Enables verbose mode
+-    -a, --all       Run all tests, including those flagged as 'nodefault'
+-                    and those guarded by errata.
+-    -g, --group     Only execute tests in the given group
+-    -j, --parallel  Execute tests in parallel
+-    -t, --tap13     Output test results in TAP format
+-    -l, --list      Only output all tests list
++    -h, --help          Output this help text
++    -v, --verbose       Enables verbose mode
++    -a, --all           Run all tests, including those flagged as 'nodefault'
++                        and those guarded by errata.
++    -g, --group         Only execute tests in the given group
++    -j, --parallel      Execute tests in parallel
++    -t, --tap13         Output test results in TAP format
++    -l, --list          Only output all tests list
++        --probe-maxsmp  Update the maximum number of VCPUs supported by host
+ 
+ Set the environment variable QEMU=/path/to/qemu-system-ARCH to
+ specify the appropriate qemu binary for ARCH-run.
 -- 
-2.34.1
+2.47.1
 
 
