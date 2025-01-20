@@ -1,63 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-5429-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 170F1A17474
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 23:00:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18FB8A17482
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 23:14:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcPRF3sgmz30KY;
-	Tue, 21 Jan 2025 09:00:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcPlR4Tq8z30Pl;
+	Tue, 21 Jan 2025 09:14:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737410441;
-	cv=none; b=erqj2rd5gLJ+Q9FrfNym3NPdXIGEKq30deGldRe8uUirAkBaLJ4NJTf8zlpZ5O0WnNEJi9jqaHn/Zz5v572/I/g8OW1oFWR/KR5OKWOs1RJ8EPGD4bvP6oqsBlCeDVF8p8KA7eJScwrU5T3waxQhUWojyUwuufZaaanmfhT4eY/hzGjgOQJrYjYMEJt3jiGQMycxZRjndWhOblapV/VVJp4ybn7efbHnt3qLcs7g5QS7jRXJOozF5WOzaWf1CJ9zxyqqwgsc41rn4w/4ZVF7yZPwWiC6V9rmKSgBAnCuaqXuJs9/Mx/d6Bd/pycMhXh5U92hq5ma5uTSs7iBcgLFZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737411283;
+	cv=none; b=dt5zBvXrkM9zfThkVNBCSav7lssTC1fvcS5/olVyqHof3Oks/3STSvRzB1ph1zgT3GUa10gMjWJp/aJMFIvgEEHk4srdPbp9FXbbNquARQQ0upwd2lmFMhWRfsdRIgFcUwQDicLS5k8WIa+yDRSNhOkIP1T57Mp8B1IOb68lWjWYDTBLoITGfLdh6tjV/zOGmebdUVKAx+2Xx2XrXurvtVjoKRRxDqeM6XjbJMfNKNKnF9V3hBUIou0jFZ8OJag0ZOZpFsRnKGrRlqNiFhJLN7e9/cU4LjZvo0P51q7dsUlIuq7o7F/5JpvI5cY6rqb7b7j8fOawo3KM32C5LfXrqw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737410441; c=relaxed/relaxed;
-	bh=0VBzDlbXYdy/UmsV+7csHAfHvMtvGzDQ7LSEmakNkrQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ITcXLbu7ssGemJD0lpqaWVoAGoqUcDnYnMJwmfiGDpVOcROs6htTqJEcAIZDD0CnvQSq7ZTdmrUhaSgLL/OJLJQBxkLAgxRCSQ6G5Yam2CHYQ5WHNb0e+0IuQHihqgOw+URNP8V0dhjfvcajHE/oNLTOey4SJlw8c6uyW9omFA6icnnMpimGXPGHTLDNaVf6rm+1NxIY4eLAuGLZoojODDLRCf1oD/efRpCIawz2oDiVl+FGYea8XGKbLDKg/lUqvjTZcPBLKOHub+cfJV4sW1u8O77LegHllwHaO3Dq6ITkvZDc2AmRjHfzxDsHR/OktZl5r7mlDhOAdyq+DNLHdg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KSz3FXjO; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1737411283; c=relaxed/relaxed;
+	bh=W1GBoGr0cNxmP2khnvKu/LnLTvDZ+w3kLFhBvCAGapk=;
+	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=fnr0Z2WxyitDOL028hOiMz11lCMU5AqnpahATLag7MSWlk/yzCWlRtrS3TSUg2msgJHiOwrFqSfm5nSdby+FiBNVdjHA/vRHEyQQNdyurrrGWbw9nQSAunkqZLu8TyFgVD5TfPoZm3KGb/pOld4+hFYtGStgdthlInZUvGA5RQaq8x5l4+TygQDeH0jsfMZS5MSuCV6TbQ8ekdO4Rwv4WcqtO8DoGA0aY+eKSH/FokFbd2heRmQrQNFwuOHlUB5ZOWpRcqipgSp2szSoRG1pvxYk/2tdICZDxtd6Mg35nTZkjhydu+VUSZw1iSfqWZDwyjCJ7YUBJw5q6kL2K6t4iA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J23hoFOp; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KSz3FXjO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J23hoFOp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcPRD6q62z30Hf
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 09:00:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcPlR0NDqz30NP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 09:14:42 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 44490A406A6;
-	Mon, 20 Jan 2025 21:58:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CE52C4CEDD;
-	Mon, 20 Jan 2025 22:00:38 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 955FD5C5D33;
+	Mon, 20 Jan 2025 22:14:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6028C4CEDD;
+	Mon, 20 Jan 2025 22:14:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737410438;
-	bh=QydTgFx2tlV3wKwstA1o+PHgPAeyZHx6Y5RneVhyBxY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KSz3FXjOnhJSy+OViALjtWEPph6mytJgOz7i+y2ylB3MRrDTtCgGvj0l0Q7+IrAp3
-	 FDZjbc0e4xG5lsHdKOy5Np6xziYExDu53QsRIY3Es3iEy+LN5e9HYrOjhH9FZJ+1J0
-	 VTMd8hZDRbZTSxa3X2V/4ff5u3s0fwEtbQxq9bnIcUte1Kp7xJaCFimsbXMH2q2qS2
-	 yTG4CSaiUXI3AA0MRE0BAOyPOvxH3N0B0Np1MxXQnJ5PCmA1KcqRl4Yxtz5eHVYtLU
-	 fgOU6Ej9LTu906sGjQPavBoyxR8u0j/cNfI6mR/ymR4X++b35Z3gtnzba6AzrLVCOb
-	 XiMhu1kEiP31Q==
-Date: Mon, 20 Jan 2025 14:00:35 -0800
-From: Kees Cook <kees@kernel.org>
-To: Oleg Nesterov <oleg@redhat.com>
-Cc: Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 4/4] seccomp: remove the 'sd' argument from
- __seccomp_filter()
-Message-ID: <202501201400.3518CED7C@keescook>
-References: <20250120134409.GA21241@redhat.com>
- <20250120134505.GA21290@redhat.com>
+	s=k20201202; t=1737411280;
+	bh=FPNR7tBW/dPlzjn1OZcp8VhyZfjwqjwr5bADwiGv0vM=;
+	h=From:To:In-Reply-To:References:Subject:Date:From;
+	b=J23hoFOpXnJW3Ax/iwnUpZkyP6q6VTHnrgJJCu324qbNYib3JnCs0IqP/qrRCoNtc
+	 wn5vel0GGLtCx1PJJ5RLJ4JZoou+/lOjKa2oUo4JTcQ1aCTyvXebQa7IXPiOYH8t4x
+	 YIt7slaS/k15AiEd947QUDEWoyV5y/TTMIJxuSazcbYIz4n/S4sGtlRTGdakYum7IH
+	 SpoVRr2vuQPPNPDbpz0z4SZ6DAxvMmN8u//TpeYRpzz56yMk1h95txFlfigbQ9pnh+
+	 zMlF9DcGAe6xZFu6XRoIE3l9cmuRAagUc/C2TsuJeBb3QuTKVZfNiRaq4xa3fVvjJp
+	 J9bBnYZ4kTFzA==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
+In-Reply-To: <20250120081938.2501554-1-shengjiu.wang@nxp.com>
+References: <20250120081938.2501554-1-shengjiu.wang@nxp.com>
+Subject: Re: [PATCH 0/2] ASoC: fsl: two fixes for asrc memory to memory
+Message-Id: <173741127845.104623.1779188125305683967.b4-ty@kernel.org>
+Date: Mon, 20 Jan 2025 22:14:38 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,21 +65,52 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250120134505.GA21290@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 20, 2025 at 02:45:05PM +0100, Oleg Nesterov wrote:
-> After the previous change 'sd' is always NULL.
+On Mon, 20 Jan 2025 16:19:36 +0800, Shengjiu Wang wrote:
+> 1. Fix the suspend failure for memory to peripheral function.
+> 2. Return error value for processing function.
 > 
-> Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+> Shengjiu Wang (2):
+>   ASoC: fsl_asrc_m2m: only handle pairs for m2m in the suspend
+>   ASoC: fsl_asrc_m2m: return error value in asrc_m2m_device_run()
+> 
+> [...]
 
-Reviewed-by: Kees Cook <kees@kernel.org>
+Applied to
 
--- 
-Kees Cook
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+
+Thanks!
+
+[1/2] ASoC: fsl_asrc_m2m: only handle pairs for m2m in the suspend
+      commit: d12ca6d4c31bf974ecc80e36761488f41d05d18b
+[2/2] ASoC: fsl_asrc_m2m: return error value in asrc_m2m_device_run()
+      commit: abe01a78bfc8be9cc025a73b991c4e77431de9de
+
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
+
 
