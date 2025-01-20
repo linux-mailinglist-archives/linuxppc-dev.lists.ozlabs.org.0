@@ -1,58 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-5430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18FB8A17482
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 23:14:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F85A174BF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 20 Jan 2025 23:43:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcPlR4Tq8z30Pl;
-	Tue, 21 Jan 2025 09:14:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcQND5C4bz30Gm;
+	Tue, 21 Jan 2025 09:43:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737411283;
-	cv=none; b=dt5zBvXrkM9zfThkVNBCSav7lssTC1fvcS5/olVyqHof3Oks/3STSvRzB1ph1zgT3GUa10gMjWJp/aJMFIvgEEHk4srdPbp9FXbbNquARQQ0upwd2lmFMhWRfsdRIgFcUwQDicLS5k8WIa+yDRSNhOkIP1T57Mp8B1IOb68lWjWYDTBLoITGfLdh6tjV/zOGmebdUVKAx+2Xx2XrXurvtVjoKRRxDqeM6XjbJMfNKNKnF9V3hBUIou0jFZ8OJag0ZOZpFsRnKGrRlqNiFhJLN7e9/cU4LjZvo0P51q7dsUlIuq7o7F/5JpvI5cY6rqb7b7j8fOawo3KM32C5LfXrqw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.241.56.152
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737412988;
+	cv=none; b=WIfl3RZng6yYpdgxQRAYgpx9iNn4//yhJAN9M9gzM1l2ggZiGOM4+H9UCK26to3hdBcT5OYUzNj95AHkD+GgMpoiNb/115PnotLE/XfcUTfSmc/ALbLmLn3RKb4yr46zpiet36w5WVfEQx0nfA7NcjI7LwHYoQymbbXFQwHPPvyE7/f7fL4TaUjmOO3vVCiUkhUXEqEE2fCKT1q7wIV7zy0Xvi5xXFT1NEx4Nd2pIO+c8EADrJ/3cmvIrKwo1sA0jDVpjpXkCs2z0ZJ/z7LYlEAN5utp8lyMVWu0D0n5x4PQ/CVsRPyy8twg6MNY6zp4a5u0xeVEljKRIvthAD0urQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737411283; c=relaxed/relaxed;
-	bh=W1GBoGr0cNxmP2khnvKu/LnLTvDZ+w3kLFhBvCAGapk=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=fnr0Z2WxyitDOL028hOiMz11lCMU5AqnpahATLag7MSWlk/yzCWlRtrS3TSUg2msgJHiOwrFqSfm5nSdby+FiBNVdjHA/vRHEyQQNdyurrrGWbw9nQSAunkqZLu8TyFgVD5TfPoZm3KGb/pOld4+hFYtGStgdthlInZUvGA5RQaq8x5l4+TygQDeH0jsfMZS5MSuCV6TbQ8ekdO4Rwv4WcqtO8DoGA0aY+eKSH/FokFbd2heRmQrQNFwuOHlUB5ZOWpRcqipgSp2szSoRG1pvxYk/2tdICZDxtd6Mg35nTZkjhydu+VUSZw1iSfqWZDwyjCJ7YUBJw5q6kL2K6t4iA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J23hoFOp; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1737412988; c=relaxed/relaxed;
+	bh=2hh/ss2PDUT4eaNN+vK/Jl8IMH8r6uQh2wZL2yhPstY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ijVaPFuOBYPuxHgrHkLa203SGkFGzViWaa1ZPEFl7KMoAasXZEQY8J9uaaM/Tmg6c07Xvz8hnEZksfHLYLJsW8C6GS8rY7senaS/ZBaxY0+Wn1E23L8PiatpPayf71rpD5tfdTXrlSqujodSv6EQ41/e3khCg4+USdX3sYRr55hU71RmTT4XThAAYIJmrZLymX7IKgaXilVDzvCdtiHi0VxJbcUfWxOcq/tnz9MpDxAlaOBa6I5ETcvIJ+T8RJKuPSax+WVlO9BCbtYJEPWK737dH0AhlwL8zXG8wK9YuM3xbqRjj7FY4uCiKt6vd5EG5JmEnIO7WTRxwvZs19SBjw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=lb3+DeCF; dkim-atps=neutral; spf=pass (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org) smtp.mailfrom=mailbox.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=J23hoFOp;
+	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=lb3+DeCF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.152; helo=mout-p-102.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
+Received: from mout-p-102.mailbox.org (mout-p-102.mailbox.org [80.241.56.152])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcPlR0NDqz30NP
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 09:14:42 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 955FD5C5D33;
-	Mon, 20 Jan 2025 22:14:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6028C4CEDD;
-	Mon, 20 Jan 2025 22:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737411280;
-	bh=FPNR7tBW/dPlzjn1OZcp8VhyZfjwqjwr5bADwiGv0vM=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=J23hoFOpXnJW3Ax/iwnUpZkyP6q6VTHnrgJJCu324qbNYib3JnCs0IqP/qrRCoNtc
-	 wn5vel0GGLtCx1PJJ5RLJ4JZoou+/lOjKa2oUo4JTcQ1aCTyvXebQa7IXPiOYH8t4x
-	 YIt7slaS/k15AiEd947QUDEWoyV5y/TTMIJxuSazcbYIz4n/S4sGtlRTGdakYum7IH
-	 SpoVRr2vuQPPNPDbpz0z4SZ6DAxvMmN8u//TpeYRpzz56yMk1h95txFlfigbQ9pnh+
-	 zMlF9DcGAe6xZFu6XRoIE3l9cmuRAagUc/C2TsuJeBb3QuTKVZfNiRaq4xa3fVvjJp
-	 J9bBnYZ4kTFzA==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <20250120081938.2501554-1-shengjiu.wang@nxp.com>
-References: <20250120081938.2501554-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/2] ASoC: fsl: two fixes for asrc memory to memory
-Message-Id: <173741127845.104623.1779188125305683967.b4-ty@kernel.org>
-Date: Mon, 20 Jan 2025 22:14:38 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcQNC5ljPz304N
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 21 Jan 2025 09:43:05 +1100 (AEDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-102.mailbox.org (Postfix) with ESMTPS id 4YcQN34NQ4z9t1n;
+	Mon, 20 Jan 2025 23:42:59 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1737412979;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=2hh/ss2PDUT4eaNN+vK/Jl8IMH8r6uQh2wZL2yhPstY=;
+	b=lb3+DeCFeX/0IOYRU03upDMzG4bBJ9QnThmWgALeYMiMfSLs8rmtibaU1UgkboPoQNZFFz
+	z2LWq8tlfzWKB5NADY13LI4DeDXQ+9Ui/fk2VDHHU07F7UzZjEZm7AP6BPwbBzzvc/kqTU
+	7+c/ukgQ4BgL4IAOLwh6MDIXa+CvhB0klKp5YLzs39WNH4i0HgPlUqa7DTgIkqopnda9m3
+	WKR373+l7+rLDxYNRVK1RCzPLk1kqmsHfeteMcoD49CF89cwnyA0Kd8g+lRZm2Lo7dqMYr
+	YdqsWulhb2Uu/9e9rwVhOvNYeObdurw6oI8JmxVNf+582EywoMlAy7G488XP9w==
+Date: Mon, 20 Jan 2025 23:42:57 +0100
+From: Erhard Furtner <erhard_f@mailbox.org>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: Re: BUG: KASAN: vmalloc-out-of-bounds in
+ copy_to_kernel_nofault+0xd8/0x1c8 (v6.13-rc6, PowerMac G4)
+Message-ID: <20250120234257.712498c4@yea>
+In-Reply-To: <af04e91f-0f44-457e-9550-d1d49789158e@linux.ibm.com>
+References: <20250112135832.57c92322@yea>
+	<af04e91f-0f44-457e-9550-d1d49789158e@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,52 +68,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-MBO-RS-ID: 531158b55e26f6897ce
+X-MBO-RS-META: 17jeixh1yq4kwfhszjk6qkf3xdx8oki8
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 20 Jan 2025 16:19:36 +0800, Shengjiu Wang wrote:
-> 1. Fix the suspend failure for memory to peripheral function.
-> 2. Return error value for processing function.
+On Sun, 19 Jan 2025 22:06:42 +0530
+Madhavan Srinivasan <maddy@linux.ibm.com> wrote:
+
+> On 1/12/25 6:28 PM, Erhard Furtner wrote:
+> > Greetings!
+> > 
+> > I am getting this at bootup on my PowerMac G4 with a KASAN-enabled kernel 6.13-rc6:  
 > 
-> Shengjiu Wang (2):
->   ASoC: fsl_asrc_m2m: only handle pairs for m2m in the suspend
->   ASoC: fsl_asrc_m2m: return error value in asrc_m2m_device_run()
+> Sorry for the delayed response,
 > 
-> [...]
+> Are you seeing this only in this kernel or this is the recent
+> kernel you tried to boot?
 
-Applied to
+I think I didn't run a KASAN enabled 6.11 or 6.12 kernel but the reported KASAN hit is still in currently released 6.13:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+[...]
+==================================================================
+BUG: KASAN: vmalloc-out-of-bounds in copy_to_kernel_nofault+0xd8/0x1c8
+Write of size 8 at addr f1014000 by task chronyd/1301
 
-Thanks!
+CPU: 1 UID: 123 PID: 1301 Comm: chronyd Tainted: G        W          6.13.0-PMacG4 #3
+Tainted: [W]=WARN
+Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
+Call Trace:
+[c7bdf690] [c16327c8] dump_stack_lvl+0x70/0x8c (unreliable)
+[c7bdf6b0] [c0504b78] print_report+0xdc/0x504
+[c7bdf710] [c050493c] kasan_report+0xf8/0x108
+[c7bdf790] [c0505c1c] kasan_check_range+0x24/0x18c
+[c7bdf7a0] [c03fb668] copy_to_kernel_nofault+0xd8/0x1c8
+[c7bdf7c0] [c004c014] patch_instructions+0x15c/0x16c
+[c7bdf810] [c00731a8] bpf_arch_text_copy+0x60/0x7c
+[c7bdf830] [c02811f4] bpf_jit_binary_pack_finalize+0x50/0xac
+[c7bdf850] [c0073cf4] bpf_int_jit_compile+0xb30/0xdec
+[c7bdf980] [c0280420] bpf_prog_select_runtime+0x15c/0x478
+[c7bdf9d0] [c1264100] bpf_prepare_filter+0xbf8/0xc14
+[c7bdfa90] [c12684c4] bpf_prog_create_from_user+0x258/0x2b4
+[c7bdfad0] [c02711a8] do_seccomp+0x3dc/0x1890
+[c7bdfbc0] [c001d8e0] system_call_exception+0x2dc/0x420
+[c7bdff30] [c00281ac] ret_from_syscall+0x0/0x2c
+--- interrupt: c00 at 0x591274
+NIP:  00591274 LR: 00693b3c CTR: 005196c8
+REGS: c7bdff40 TRAP: 0c00   Tainted: G        W           (6.13.0-PMacG4)
+MSR:  0200f932 <VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24004422  XER: 00000000
 
-[1/2] ASoC: fsl_asrc_m2m: only handle pairs for m2m in the suspend
-      commit: d12ca6d4c31bf974ecc80e36761488f41d05d18b
-[2/2] ASoC: fsl_asrc_m2m: return error value in asrc_m2m_device_run()
-      commit: abe01a78bfc8be9cc025a73b991c4e77431de9de
+GPR00: 00000166 aff4aad0 a77fb540 00000001 00000000 01fe2500 00595858 0200f932 
+GPR08: 00000000 00001fe9 02001fc8 005196c8 2822244c 00b1fcd8 00000000 aff4bb57 
+GPR16: 00000000 00000001 00000000 00000000 00000000 00000001 00000000 00000002 
+GPR24: 00aedbb0 00000000 00000000 00000000 006d0004 01ffa060 006d7c1c 00000001 
+NIP [00591274] 0x591274
+LR [00693b3c] 0x693b3c
+--- interrupt: c00
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
+The buggy address belongs to the virtual mapping at
+ [f1014000, f1016000) created by:
+ text_area_cpu_up+0x20/0x190
 
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x77116
+flags: 0x80000000(zone=2)
+raw: 80000000 00000000 00000122 00000000 00000000 00000000 ffffffff 00000001
+raw: 00000000
+page dumped because: kasan: bad access detected
 
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
+Memory state around the buggy address:
+ f1013f00: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ f1013f80: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+>f1014000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+           ^
+ f1014080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ f1014100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+==================================================================
+Disabling lock debugging due to kernel taint
 
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
 
-Thanks,
-Mark
-
+Regards,
+Erhard
 
