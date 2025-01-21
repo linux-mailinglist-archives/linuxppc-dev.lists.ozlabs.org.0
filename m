@@ -1,40 +1,40 @@
-Return-Path: <linuxppc-dev+bounces-5463-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5464-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4999EA181F3
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 17:24:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5A8FA181FC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 17:29:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcsxL5CNbz30Vf;
-	Wed, 22 Jan 2025 03:24:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yct2k1XKlz30Vp;
+	Wed, 22 Jan 2025 03:29:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.173
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737476694;
-	cv=none; b=FXZtTj+BG4eyQrUsmZU04IW6VQ7t8pF6O56WZwE4+BG+EGw/ufs2XMjI0wbDU5OO5vB4bK8J//N4+1Llw+pe1mDl54fUPwZg83Q+44BgLlUtyq4Sron4X82ighVzc0VFuRstc6sHNjNxuf+fL1KCHPOfvoCkOYvIFTWwQ1oekoXC3ORuE7Q3Klw6HB4ZU/tuc+ucl5l1O8hUzjRjSM1HXjy2WrX7owjrvAFZdIDI3thr7RKvX3HQLbPm0f+lsIpNBWtGPZM4S2tBd4ROSiz6v2UnyRdWeKJdwlJbiBkHIuMi5hTL1Q70HkkLtQcV+2RXGBsTtyjn0EuGd/itOmAVKA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b7"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737476974;
+	cv=none; b=lXwNcR2qV7Dy7VkYWU0hOzvD9hKjDt9cc3mrlD8eDlXKoKq1hileIE//JwAsIezAFIp9KUcY3DD+RBGr1RkNHG4jbXk5kxaIcV5GCBItfmM2sRcwHKe3Rn7NIgzcvgU3tNZmf2l+HqJNzoSboj+9vpno8YO8rjBOTnL0vS/6BJSujo/jYsxfwx4r/dDAuqa9WVgZ0DGHrlCdOBN3Cp8VIEZkyMX6ExA7YcRwBDGO6BL1Ogg+TDN5NzaZMmd/LkK6+b8IHiX513bva4m0CQOX/tBcc+a9DIlDJ0YQ/yI4hhCB3rp6G1R9ZVUSfnGVwSbEEdLt2COlx4O0O8kvImxo/Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737476694; c=relaxed/relaxed;
-	bh=H6pzkPiNgYGUEzo0pWRd1g0zmrJRFWgoHspDsCsXeo0=;
+	t=1737476974; c=relaxed/relaxed;
+	bh=JHE1Ks4sha2VPulKTfL3JK8VfRv3tuso1k0l1+BbscY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lSCpApz0kQOKfpkAWFnSVsyvxTgHKpWjLg16HitjtL9d3uBhlIhF9duUOmjofST4QUJg9nnj7rYa2LK/370/gq+ZGvxS29py8YvQ9L2t5vGEfnl0GsmLaZD/I9MaAl405AmqdM3GtZN+5GNw4s+HnTZBPVqG/4nexcbGLEaa6h/VybL3ilaLDSUGPekEbQXhAeQMO7rr3mobUBcGIjQ4bJo8YZJ5U0uRzGIbZPj/gTiHpdgFRpGmgldDr3BCXVviDZSV/hekTeAJr5mo3zlEP5hfJLURbAKEXwOv9nRDqwemaXQflpgYIMggdV1scqEmb6v43kTjAEAwJCQ+fyMB5Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=95.215.58.173; helo=out-173.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZdO0uTdiXL+Pih/0u25n1b6ynSPQEqg2G2+u/m/CojC4eAw5o6Qt/+kktB8yPBfe2nZZxBeNKC0HTaOw3fNYM9jC/a+ASZuSVI3LzEOvcU2fRlkU6PJ8N0FTBSfHdJPvh6UK7RRSWpPx6T0+u++f4f/iTxUSSc/bVtn+J/c4M3udDl78GqZMEARcfvd6A3JxuVlSnZZneU8qEjzZn9errMiRzkHbbEMoNF+nmJmWDK2jUd0NNkSfyuJfgqPppB0uzE1UDYPohgdrm34p5lNrdewam7uhAxlwkO5uGQwcBQZaFfMhoOBYmjsZ2R32G+3HxAQy34WmWb04dV1/bG848Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=2001:41d0:203:375::b7; helo=out-183.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.173; helo=out-173.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-173.mta1.migadu.com (out-173.mta1.migadu.com [95.215.58.173])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b7; helo=out-183.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [IPv6:2001:41d0:203:375::b7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcsxD5xTkz30VZ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 03:24:47 +1100 (AEDT)
-Date: Tue, 21 Jan 2025 17:24:23 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yct2c3Fvtz30Ts
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 03:29:27 +1100 (AEDT)
+Date: Tue, 21 Jan 2025 17:29:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1737476668;
+	t=1737476948;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=H6pzkPiNgYGUEzo0pWRd1g0zmrJRFWgoHspDsCsXeo0=;
-	b=MRTrxH9cLSMxf51WTQhkuQO65jTuw3qwoo1tjBxJihfQOf2x5FOyehb8UWzv4SKKAzuQB5
-	rD44pG5X2+C1NjVUsr6PuOMEbUBG2/znpG7wMaPh1mM8cfAAAKGU2jRnsPvWkdT0tjU6Ya
-	UDXoiEOzDjdymvmiH/k00tiHzEWuDh8=
+	bh=JHE1Ks4sha2VPulKTfL3JK8VfRv3tuso1k0l1+BbscY=;
+	b=ThyApVdiP12DgYTi+kjvBSrSt+RXWw1HLWvA8u4utOlNQmE4yb5C1jYj6Orkv1Dp2iJeY6
+	rXmAwK6G9lbo4TBQOEmzkgkXQ6luL3C4+iz9Dxnj3EwunsaPkUpMGfXE7oNug+SLD5DSrN
+	ZWyxbw6bSnfEJir2ggCFGEDT9G1saMQ=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Andrew Jones <andrew.jones@linux.dev>
 To: Alexandru Elisei <alexandru.elisei@arm.com>
@@ -45,10 +45,11 @@ Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
 	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
 	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
 	andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 07/18] scripts: Introduce kvmtool_opts
-Message-ID: <20250121-9bef2681da529d9d41f524d3@orel>
+Subject: Re: [kvm-unit-tests PATCH v2 08/18] scripts/runtime: Detect kvmtool
+ failure in premature_failure()
+Message-ID: <20250121-ec03a2683ab979d2313e09ee@orel>
 References: <20250120164316.31473-1-alexandru.elisei@arm.com>
- <20250120164316.31473-8-alexandru.elisei@arm.com>
+ <20250120164316.31473-9-alexandru.elisei@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,110 +64,77 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250120164316.31473-8-alexandru.elisei@arm.com>
+In-Reply-To: <20250120164316.31473-9-alexandru.elisei@arm.com>
 X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 20, 2025 at 04:43:05PM +0000, Alexandru Elisei wrote:
-> In preparation for supporting kvmtool, create and pass the variable
-> 'kvmtool_opts' to the arch run script $RUNTIME_arch_run.
+On Mon, Jan 20, 2025 at 04:43:06PM +0000, Alexandru Elisei wrote:
+> kvm-unit-tests assumes that if the VMM is able to get to where it tries to
+> load the kernel, then the VMM and the configuration parameters will also
+> work for running the test. All of this is done in premature_failure().
+> 
+> Teach premature_failure() about the kvmtool's error message when it fails
+> to load the dummy kernel.
 > 
 > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 > ---
->  scripts/common.bash  |  6 ++++--
->  scripts/runtime.bash | 14 +++++++++++---
->  2 files changed, 15 insertions(+), 5 deletions(-)
+>  scripts/runtime.bash | 21 +++++++++++++++------
+>  1 file changed, 15 insertions(+), 6 deletions(-)
 > 
-> diff --git a/scripts/common.bash b/scripts/common.bash
-> index a40c28121b6a..1b5e0d667841 100644
-> --- a/scripts/common.bash
-> +++ b/scripts/common.bash
-> @@ -37,6 +37,7 @@ function for_each_unittest()
->  	local check
->  	local accel
->  	local timeout
-> +	local kvmtool_opts
->  	local rematch
->  
->  	exec {fd}<"$unittests"
-> @@ -45,7 +46,7 @@ function for_each_unittest()
->  		if [[ "$line" =~ ^\[(.*)\]$ ]]; then
->  			rematch=${BASH_REMATCH[1]}
->  			if [ -n "${testname}" ]; then
-> -				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-> +				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout" "$kvmtool_opts"
-
-It looks odd to have both qemu_opts and kvmtool_opts at the same time.
-
->  			fi
->  			testname=$rematch
->  			smp=1
-> @@ -57,6 +58,7 @@ function for_each_unittest()
->  			check=""
->  			accel=""
->  			timeout=""
-> +			kvmtool_opts=""
->  		elif [[ $line =~ ^file\ *=\ *(.*)$ ]]; then
->  			kernel=$TEST_DIR/${BASH_REMATCH[1]}
->  		elif [[ $line =~ ^smp\ *=\ *(.*)$ ]]; then
-> @@ -80,7 +82,7 @@ function for_each_unittest()
->  		fi
->  	done
->  	if [ -n "${testname}" ]; then
-> -		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-> +		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout" "$kvmtool_opts"
->  	fi
->  	exec {fd}<&-
->  }
 > diff --git a/scripts/runtime.bash b/scripts/runtime.bash
-> index a89f2d10ab78..451b5585f010 100644
+> index 451b5585f010..ee8a188b22ce 100644
 > --- a/scripts/runtime.bash
 > +++ b/scripts/runtime.bash
-> @@ -35,7 +35,7 @@ get_cmdline()
->  {
->      local kernel=$1
->  
-> -    echo "TESTNAME=$testname TIMEOUT=$timeout MACHINE=$machine ACCEL=$accel $RUNTIME_arch_run $kernel $qemu_opts"
-> +    echo "TESTNAME=$testname TIMEOUT=$timeout MACHINE=$machine ACCEL=$accel $RUNTIME_arch_run $kernel $opts"
+> @@ -12,18 +12,27 @@ extract_summary()
+>      tail -5 | grep '^SUMMARY: ' | sed 's/^SUMMARY: /(/;s/'"$cr"'\{0,1\}$/)/'
 >  }
 >  
->  skip_nodefault()
-> @@ -87,8 +87,16 @@ function run()
->      local check="${CHECK:-$8}"
->      local accel="$9"
->      local timeout="${10:-$TIMEOUT}" # unittests.cfg overrides the default
-> -
-> -    qemu_opts="-smp $smp $qemu_opts"
-> +    local kvmtool_opts="${11}"
-> +
+> -# We assume that QEMU is going to work if it tried to load the kernel
+> +# We assume that the VMM is going to work if it tried to load the kernel
+>  premature_failure()
+>  {
+>      local log
+>  
+>      log="$(eval "$(get_cmdline _NO_FILE_4Uhere_)" 2>&1)"
+>  
+> -    echo "$log" | grep "_NO_FILE_4Uhere_" |
+> -        grep -q -e "[Cc]ould not \(load\|open\) kernel" \
+> -                -e "error loading" \
+> -                -e "failed to load" &&
+> -        return 1
 > +    case "$TARGET" in
 > +    qemu)
-> +        opts="-smp $smp $qemu_opts"
+> +
+
+extra blank line here
+
+> +        echo "$log" | grep "_NO_FILE_4Uhere_" |
+> +            grep -q -e "[Cc]ould not \(load\|open\) kernel" \
+> +                    -e "error loading" \
+> +                    -e "failed to load" &&
+> +            return 1
 > +        ;;
 > +    kvmtool)
-> +        opts="--cpus $smp $kvmtool_opts"
+> +        echo "$log" | grep "Fatal: Unable to open kernel _NO_FILE_4Uhere_" &&
+> +            return 1
 > +        ;;
 > +    esac
 
-This is similar to what I was proposing with the associative array, but
-we'll only need to set a $vmm variable once with the array. If parsing
-command lines is different between the vmms then we can even add
-functions to the table
+This looks good, but could possibly become
 
-vmm_opts[qemu,func]=qemu_func
-vmm_opts[kvmtool,func]=kvmtool_func
+ eval echo "$log" | ${vmm_opts[$TARGET,premature_failure]} && return 1
 
-eval ${vmm_opts[$vmm,func]} ...
+if we got the vmm_opts route.
 
 Thanks,
 drew
 
 >  
->      if [ "${CONFIG_EFI}" == "y" ]; then
->          kernel=${kernel/%.flat/.efi}
+>      RUNTIME_log_stderr <<< "$log"
+>  
 > -- 
 > 2.47.1
 > 
