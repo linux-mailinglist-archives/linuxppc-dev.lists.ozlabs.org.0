@@ -1,80 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-5456-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5457-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0526BA180A7
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 16:05:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A27DA18155
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 16:47:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ycr9X3JN9z306d;
-	Wed, 22 Jan 2025 02:05:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ycs5Z72y9z30Kg;
+	Wed, 22 Jan 2025 02:46:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737471920;
-	cv=none; b=IXHQaFAIws0Hu4JuX3Wyi9m8M182uwX9YRevCbAh5eYuNVmTlUpa67jy79lA/KdiEMA9AjMzcCebJRAgpD4g+186/F3J9Y4w6Dh75jn+qBjLA1AlXPx3rIHAH35lp4teHVd8BxEVdgfjoWDkfeowWXf7IsIi4BZScvsR1qWa3SFm+7Fo0VotwzhUd6JueQqT6em+/YDKSvJgl92RNArb19ackhnouvV41gm38m7E2hO1N5PGmFm5xUMq+s59IXpV2tVxPQDrrfrjJIIBfOeSTppgVlJZ8wS/SEgiuFgM5ytEkgoEVpaIdB0mjOj+KwzsYRLYuaz7npFUyvLgY4BrLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::bb"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737474418;
+	cv=none; b=oKEWa16D1OkpPjWrfYi6Nl0ROWOjqyCzx08+t40tUX2nm59JvnJp3uGaDtoATypXWzhN2JNRVqP0sMbQfQkpR+xPHIHqDQ0RO98DRJHA5WN2bLGyN3fHtg1ifr5WNkxQWoEgCAV2F1PVGPt7TiZu7UQP+PoUVKbimv1PYpjeTUWYTxcNjKHtoHYow1tQHfkxWR4baUysmgVuQqpuj+FORf/xW7rZpvG0P2rGm0C5kEQKYVjBVg1xZlfGNLlPY3jxfe5jM/BNevgruTTSwnLsqvM3xOhqht4/ByIvm4iyS3Cl4sEKCsFZBl3nR8Gx53IQHUEut9L1SXIxWt+45nm2wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737471920; c=relaxed/relaxed;
-	bh=0WHdHb6F/UdUkGp/zgeU43qqnF+ZgyA8tTBJiib4Y5E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gUBw6P+OfS+iMGAvU/HNR9E8vkt0POVopfxg41EYubPvE4N1GlQ0eIX0jVVX+G+T79Peu0TiRnXs0lsyaT8copY+WaJzflaoNyzwWDdJQeBhcoyyjw3x2YXFl89FlUp/dTHCy24lNvZ78axdt1Wfo9LN8wpxLpsUf/9ns7mL3KFGHbIVYldTsz07xsJhLxE1LpH/NNHPQGtDrLJq1p5Gsw86b/SKRyJ5OXKB1+/Sn6dNRdqvBleonsCkD9IXlJF850r+YRyyL2ou7ssWMRmDPNfBms9js6i7XI833DchD+PfuSEXAwDPTQvKjn7o5BdMD3bitlJ4TP43uDyeCjxP4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mthAQY4+; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mthAQY4+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1737474418; c=relaxed/relaxed;
+	bh=udA8JggagAJP1CCzeg7Vekhu/UmA/lRvh6yXXvJFf1k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UTRdaYjm3E2qgYAmdOstys58pyKALFEKG/ZkEdQesAFgFPcYF4BggIgLZ0mKdKzHe2bfgV3dorJ/ahKQssAKoq7v9yDbhD3BVKKdRrJ7ya5FEjAUIqc2OhxcSrnmgHc7+D7K36bqUHd3Kj+HTCfhh7gxorQ6JGeFixxoY6kie46oh2xxsKI+9D2vkZzhHoRWliT0TJM1LMbc6m9vtqCRKG+YAJMv9+UkiIZQIv4QHjOzM+8HR45HARRMKJA6KgrfgAOQr2NN6WcZm6AZvPgutWocTQZpGdUdKbVbMzhgh1xHp3GipSOulNs9S5Lj4FxCNq9UNhaWUcI4ekeVH2xfgw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=2001:41d0:1004:224b::bb; helo=out-187.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::bb; helo=out-187.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-187.mta0.migadu.com (out-187.mta0.migadu.com [IPv6:2001:41d0:1004:224b::bb])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ycr9W1fyHz301Y
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 02:05:18 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50LDJKEi003049;
-	Tue, 21 Jan 2025 15:04:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=0WHdHb6F/UdUkGp/zgeU43qqnF+ZgyA8tTBJiib4Y
-	5E=; b=mthAQY4+1lxPsoCGSEykXMvMfgwTCbndnXV4EVtNUmCCmdHnu8+BEaWoY
-	b4fXI9DiQ7hGHPq+iA5uzTvarWQ1Bsb6L2yzV0cwsGlCGEBC/+4tDoCv0g0Vs6HF
-	SMbr6FOTxCgDSMgzZVYqxpCw0fAsKZaWuo9yGTkln5jAoU74opxFxkCjVSbUP8zX
-	f0sPiJo/0t/8WRMM0XXq67tnkPaMGe+5f8tMCwBK7z8xdmWhlPebOHMS3RxMWii/
-	YuDTcvpefjkf+Zi3kq/Frnc2Rj292PD3huqUO2KXoqYYdye893+qJQchmoKQpc6M
-	KP7y5gwuZjg1QtPyznk3L95L4VPTQ==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44a2dyb80r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Jan 2025 15:04:42 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50LD9Z8b019223;
-	Tue, 21 Jan 2025 15:04:41 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 448pmsbugn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 21 Jan 2025 15:04:41 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50LF4aJq57672080
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 21 Jan 2025 15:04:37 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DFFF820043;
-	Tue, 21 Jan 2025 15:04:36 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F0CF20040;
-	Tue, 21 Jan 2025 15:04:33 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.54.128])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 21 Jan 2025 15:04:32 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: akpm@linux-foundation.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>, Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>, Muchun Song <muchun.song@linux.dev>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] mm/hugetlb: bring gigantic page allocation under hugepages_supported()
-Date: Tue, 21 Jan 2025 20:34:19 +0530
-Message-ID: <20250121150419.1342794-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.47.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ycs5S1d6Qz2yxP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 02:46:49 +1100 (AEDT)
+Date: Tue, 21 Jan 2025 16:46:24 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1737474387;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=udA8JggagAJP1CCzeg7Vekhu/UmA/lRvh6yXXvJFf1k=;
+	b=wyEI24cwFn/2SwnlrYJNsedCvXcu1OErKkpuVcynU6RgbSJLXlGwdYlCavdBXZgGUQjG7v
+	7nJ7yr9z5NxYNO9Oh6Xcq6ZgaYL4DDkiGbXw9w+UDPiGpwdVz1H4QfuenjOVrwsfae4IhX
+	volbSCuXEznlwkkvWfCPgEfeJbira3U=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, david@redhat.com, 
+	pbonzini@redhat.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
+	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
+	andre.przywara@arm.com
+Subject: Re: [kvm-unit-tests PATCH v2 04/18] run_tests: Introduce unittest
+ parameter 'qemu_params'
+Message-ID: <20250121-82874afe4e52c828d21e7da2@orel>
+References: <20250120164316.31473-1-alexandru.elisei@arm.com>
+ <20250120164316.31473-5-alexandru.elisei@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,90 +62,217 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: waNMvQVPCRQmQ47C0vVOdm-GXBHxCt8K
-X-Proofpoint-ORIG-GUID: waNMvQVPCRQmQ47C0vVOdm-GXBHxCt8K
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-21_06,2025-01-21_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 clxscore=1011
- mlxscore=0 phishscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
- adultscore=0 mlxlogscore=921 spamscore=0 suspectscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501210122
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120164316.31473-5-alexandru.elisei@arm.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Despite having kernel arguments to enable gigantic hugepages, this
-provides a way for the architecture to disable gigantic hugepages on the
-fly, similar to what we do for hugepages.
+On Mon, Jan 20, 2025 at 04:43:02PM +0000, Alexandru Elisei wrote:
+> Tests for the arm and arm64 architectures can also be run with kvmtool, and
+> work is under way to have it supported by the run_tests.sh test runner. Not
+> suprisingly, kvmtool has a different syntax than qemu when configuring and
+> running a virtual machine.
+> 
+> Add a new unittest parameter, 'qemu_params', with the goal to add a similar
+> parameter for each virtual machine manager that run_tests.sh supports.
+> 
+> 'qemu_params' and 'extra_params' are interchangeable, but it is expected
+> that going forward new tests will use 'qemu_params'. A test should have
+> only one of the two parameters.
+> 
+> While we're at it, rename the variable opts to qemu_opts to match the new
+> unit configuration name, and to make it easier to distinguish from the
+> kvmtool parameters when they'll be added.
+> 
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> ---
+>  docs/unittests.txt   | 17 +++++++++-----
+>  scripts/common.bash  | 53 ++++++++++++++++++++++++++------------------
+>  scripts/runtime.bash | 10 ++++-----
+>  3 files changed, 47 insertions(+), 33 deletions(-)
+> 
+> diff --git a/docs/unittests.txt b/docs/unittests.txt
+> index dbc2c11e3b59..3e1a9e563016 100644
+> --- a/docs/unittests.txt
+> +++ b/docs/unittests.txt
+> @@ -24,9 +24,9 @@ param = value format.
+>  
+>  Available parameters
+>  ====================
+> -Note! Some parameters like smp and extra_params modify how a test is run,
+> -while others like arch and accel restrict the configurations in which the
+> -test is run.
+> +Note! Some parameters like smp and qemu_params/extra_params modify how a
+> +test is run, while others like arch and accel restrict the configurations
+> +in which the test is run.
+>  
+>  file
+>  ----
+> @@ -56,13 +56,18 @@ smp = <number>
+>  Optional, the number of processors created in the machine to run the test.
+>  Defaults to 1. $MAX_SMP can be used to specify the maximum supported.
+>  
+> -extra_params
+> -------------
+> +qemu_params
+> +-----------
+>  These are extra parameters supplied to the QEMU process. -append '...' can
+>  be used to pass arguments into the test case argv. Multiple parameters can
+>  be added, for example:
+>  
+> -extra_params = -m 256 -append 'smp=2'
+> +qemu_params = -m 256 -append 'smp=2'
+> +
+> +extra_params
+> +------------
+> +Alias for 'qemu_params', supported for compatibility purposes. Use
+> +'qemu_params' for new tests.
+>  
+>  groups
+>  ------
+> diff --git a/scripts/common.bash b/scripts/common.bash
+> index 3aa557c8c03d..a40c28121b6a 100644
+> --- a/scripts/common.bash
+> +++ b/scripts/common.bash
+> @@ -1,5 +1,28 @@
+>  source config.mak
+>  
+> +function parse_opts()
+> +{
+> +	local opts="$1"
+> +	local fd="$2"
+> +
+> +	while read -r -u $fd; do
+> +		#escape backslash newline, but not double backslash
+> +		if [[ $opts =~ [^\\]*(\\*)$'\n'$ ]]; then
+> +			if (( ${#BASH_REMATCH[1]} % 2 == 1 )); then
+> +				opts=${opts%\\$'\n'}
+> +			fi
+> +		fi
+> +		if [[ "$REPLY" =~ ^(.*)'"""'[:blank:]*$ ]]; then
+> +			opts+=${BASH_REMATCH[1]}
+> +			break
+> +		else
+> +			opts+=$REPLY$'\n'
+> +		fi
+> +	done
+> +
+> +	echo "$opts"
+> +}
+> +
+>  function for_each_unittest()
+>  {
+>  	local unittests="$1"
+> @@ -7,7 +30,7 @@ function for_each_unittest()
+>  	local testname
+>  	local smp
+>  	local kernel
+> -	local opts
+> +	local qemu_opts
+>  	local groups
+>  	local arch
+>  	local machine
+> @@ -22,12 +45,12 @@ function for_each_unittest()
+>  		if [[ "$line" =~ ^\[(.*)\]$ ]]; then
+>  			rematch=${BASH_REMATCH[1]}
+>  			if [ -n "${testname}" ]; then
+> -				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout"
+> +				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout"
+>  			fi
+>  			testname=$rematch
+>  			smp=1
+>  			kernel=""
+> -			opts=""
+> +			qemu_opts=""
+>  			groups=""
+>  			arch=""
+>  			machine=""
+> @@ -38,24 +61,10 @@ function for_each_unittest()
+>  			kernel=$TEST_DIR/${BASH_REMATCH[1]}
+>  		elif [[ $line =~ ^smp\ *=\ *(.*)$ ]]; then
+>  			smp=${BASH_REMATCH[1]}
+> -		elif [[ $line =~ ^extra_params\ *=\ *'"""'(.*)$ ]]; then
+> -			opts=${BASH_REMATCH[1]}$'\n'
+> -			while read -r -u $fd; do
+> -				#escape backslash newline, but not double backslash
+> -				if [[ $opts =~ [^\\]*(\\*)$'\n'$ ]]; then
+> -					if (( ${#BASH_REMATCH[1]} % 2 == 1 )); then
+> -						opts=${opts%\\$'\n'}
+> -					fi
+> -				fi
+> -				if [[ "$REPLY" =~ ^(.*)'"""'[:blank:]*$ ]]; then
+> -					opts+=${BASH_REMATCH[1]}
+> -					break
+> -				else
+> -					opts+=$REPLY$'\n'
+> -				fi
+> -			done
+> -		elif [[ $line =~ ^extra_params\ *=\ *(.*)$ ]]; then
+> -			opts=${BASH_REMATCH[1]}
+> +		elif [[ $line =~ ^(extra_params|qemu_params)\ *=\ *'"""'(.*)$ ]]; then
+> +			qemu_opts=$(parse_opts ${BASH_REMATCH[2]}$'\n' $fd)
+> +		elif [[ $line =~ ^(extra_params|qemu_params)\ *=\ *(.*)$ ]]; then
+> +			qemu_opts=${BASH_REMATCH[2]}
+>  		elif [[ $line =~ ^groups\ *=\ *(.*)$ ]]; then
+>  			groups=${BASH_REMATCH[1]}
+>  		elif [[ $line =~ ^arch\ *=\ *(.*)$ ]]; then
+> @@ -71,7 +80,7 @@ function for_each_unittest()
+>  		fi
+>  	done
+>  	if [ -n "${testname}" ]; then
+> -		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout"
+> +		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout"
+>  	fi
+>  	exec {fd}<&-
+>  }
+> diff --git a/scripts/runtime.bash b/scripts/runtime.bash
+> index 4b9c7d6b7c39..e5d661684ceb 100644
+> --- a/scripts/runtime.bash
+> +++ b/scripts/runtime.bash
+> @@ -34,7 +34,7 @@ premature_failure()
+>  get_cmdline()
+>  {
+>      local kernel=$1
+> -    echo "TESTNAME=$testname TIMEOUT=$timeout MACHINE=$machine ACCEL=$accel $RUNTIME_arch_run $kernel -smp $smp $opts"
+> +    echo "TESTNAME=$testname TIMEOUT=$timeout MACHINE=$machine ACCEL=$accel $RUNTIME_arch_run $kernel -smp $smp $qemu_opts"
+>  }
+>  
+>  skip_nodefault()
+> @@ -80,7 +80,7 @@ function run()
+>      local groups="$2"
+>      local smp="$3"
+>      local kernel="$4"
+> -    local opts="$5"
+> +    local qemu_opts="$5"
+>      local arch="$6"
+>      local machine="$7"
+>      local check="${CHECK:-$8}"
+> @@ -179,9 +179,9 @@ function run()
+>          echo $cmdline
+>      fi
+>  
+> -    # extra_params in the config file may contain backticks that need to be
+> -    # expanded, so use eval to start qemu.  Use "> >(foo)" instead of a pipe to
+> -    # preserve the exit status.
+> +    # qemu_params/extra_params in the config file may contain backticks that
+> +    # need to be expanded, so use eval to start qemu.  Use "> >(foo)" instead of
+> +    # a pipe to preserve the exit status.
+>      summary=$(eval "$cmdline" 2> >(RUNTIME_log_stderr $testname) \
+>                               > >(tee >(RUNTIME_log_stdout $testname $kernel) | extract_summary))
+>      ret=$?
+> -- 
+> 2.47.1
+>
 
-Components like fadump (PowerPC-specific) need this functionality to
-disable gigantic hugepages when the kernel is booted solely to collect
-the kernel core dump.
+Hmm, I'll keep reading the series, but it seems like we should be choosing
+generic names like 'extra_params' and 'opts' that we plan to use for both
+QEMU and kvmtool since they both have the concepts of "options" and "extra
+params".
 
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
-
-To evaluate the impact of this change on architectures other than
-PowerPC, I did the following analysis:
-
-For architectures where hugepages_supported() is not redefined, it
-depends on HPAGE_SHIFT, which is found to be a constant. It is mostly
-initialized to PMD_SHIFT.
-
-Architecture : HPAGE_SHIFT initialized with
-
-ARC: PMD_SHIFT (constant)
-ARM: PMD_SHIFT (constant)
-ARM64: PMD_SHIFT (constant)
-Hexagon: 22 (constant)
-LoongArch: (PAGE_SHIFT + PAGE_SHIFT - 3) (appears to be constant)
-MIPS: (PAGE_SHIFT + PAGE_SHIFT - 3) (appears to be constant)
-PARISC: PMD_SHIFT (appears to be constant)
-RISC-V: PMD_SHIFT (constant)
-SH: 16 | 18 | 20 | 22 | 26 (constant)
-SPARC: 23 (constant)
-
-So seems like this change shouldn't have any impact on above
-architectures.
-
-On the S390 and X86 architectures, hugepages_supported() is redefined,
-and I am uncertain at what point it is safe to call
-hugepages_supported().
-
----
- mm/hugetlb.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index cec4b121193f..48b42b8d26b4 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -4629,7 +4629,7 @@ static int __init hugepages_setup(char *s)
- 	 * But we need to allocate gigantic hstates here early to still
- 	 * use the bootmem allocator.
- 	 */
--	if (hugetlb_max_hstate && hstate_is_gigantic(parsed_hstate))
-+	if (hugetlb_max_hstate && hstate_is_gigantic(parsed_hstate) && hugepages_supported())
- 		hugetlb_hstate_alloc_pages(parsed_hstate);
- 
- 	last_mhp = mhp;
--- 
-2.47.1
-
+Thanks,
+drew
 
