@@ -1,77 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-5468-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5469-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE26EA18335
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 18:49:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56ACFA1860A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 21:20:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcvpM2R4bz30VZ;
-	Wed, 22 Jan 2025 04:48:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ycz9Z33vjz30Tm;
+	Wed, 22 Jan 2025 07:20:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737481739;
-	cv=none; b=alX0NEsmm0B996TNAAU9t512eVa1SXk093iSncciNH9gEgAFg+SkPL/iRK/7q2mFMytnMBLgn+tFf7aWP82nQgFf8Zd4xaR7iEjQt3tmQZLgoDIXO0QaCX1WFmgZkWfVfAID7gc5UOEOFSPWQ6wrub3Q3sSiHXad6XqtSp+AMP8lzavm/UkYX5+pHIFe7FUVfWdCgw2LeDloVN9AyJE72RP5PVGMq/WCHxgtXiPylDWSQ4F24oumPB6KLpJ5C2IPqSVXKAVGqpi5orh9JD7u8Rt+sJwxjOVg5N7A/cHkcnnP9BReSzWwF52+/pv8o7vDAG0vGfHjKXHlZiOPMZq+bw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737490850;
+	cv=none; b=be28WPHCcAP1nxYfCp4QeYotXoUQKwP9bBsR2WXEbMfsrPx34FcQBVLopKCu1jZcgfuiEmrpI7WRC9yrbrG4CirjbtCoaqKcNq/bRShS8+7A0ZYxuacvHXYKTPEIEuwZUwOtOOw7vsxkzWl7jDGNawNueLhG0UMQnJSJh+RD65aZxBde+zavsWSxqkwdpZDIdtB4aTSieuyCjvxOTCuVGG/Tn81QegOufap2Dgj2YErA/y0RxycoizoK8b4sgyWU5EGGYcDGuXkaByyeXIGVNsdQgYU8eLQxBHNJGQDGgIZumJZ2yUpWY1xUXhLeeeIeSFNTuS8mmVHp1N3W0B0tjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737481739; c=relaxed/relaxed;
-	bh=nPHxJwINg33qJd1mbQNVC4e3b4bymgn1vEGSqb1D450=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HkYy2Ebe/i6KJnEqKGRZtkKVv0G8LR6nr/E/tTqJtzGfYIH3t91L7F6aYxBx1lFUDiRMGiskrhlEGmfoGLiLQjg2qsy3qui5tO1I1lR0fXAuZ5RH/Wksz2oYDXUZ4LcX1lA9YTm/D+4FbIx6l9PDg7FbF47jdAiUk6eQzOHQCF6mvESTwK8vXBR1v3ZCexGJTfTyRYpSZfdOhq4C+SJbc0ESVKlKxM24pC3jPM0QhkWL7JAg4LliytkxTnytmblyXR+HiaTYChblMUD+wGuDwX3QwpRFieg6ejtj8bLtsxzFm2oootsdVSUZxKgVgYbentEEARowlchAieZ+VmqocA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=wey8=un=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=goodmis.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=srs0=wey8=un=goodmis.org=rostedt@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1737490850; c=relaxed/relaxed;
+	bh=OejLQBO3mNr/8E7jRFE8IOS8J52OEhDFWTIA/ZTBCvw=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=eewT8DFDuGjEjf6WiWsPMDPn8MqyeZUwstIQa4mbN/BOK09J+lC8+BBGPQ94BJ4ySU/hbI+noRgOZsjsp8ZBBzUixp1HhHXWAOync5sNL2JbsZpYenshl13OewzxYZcfhvcDny3U1KA2vATvg4oTHdNjCK7cxsHCoPKaVTCiRpwhr4Ygj2vLJhvK+Fw9Sk4dmMqYodK5mm8kzkhr1rG2I60nkVAjrScXq2nmtw9iCVWVeE4gdVkiOJZlcGRuGZRbWpDX7YUM1AWKHgc0USIYPzF7WGeDnv/oz9KJAs1YkgdGuBN7GCogDgArNQIog78UgIbSEDLI/VqaSETM/40Iyg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gq3QOgkp; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=gq3QOgkp;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcvpJ6dTbz30Tx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 04:48:56 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 62383A406C6;
-	Tue, 21 Jan 2025 17:47:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2403C4CEDF;
-	Tue, 21 Jan 2025 17:48:48 +0000 (UTC)
-Date: Tue, 21 Jan 2025 12:48:51 -0500
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Zheng Yejian <zhengyejian1@huawei.com>
-Cc: Martin Kelly <martin.kelly@crowdstrike.com>, "masahiroy@kernel.org"
- <masahiroy@kernel.org>, "ojeda@kernel.org" <ojeda@kernel.org>,
- "jpoimboe@kernel.org" <jpoimboe@kernel.org>, "pasha.tatashin@soleen.com"
- <pasha.tatashin@soleen.com>, "mhiramat@kernel.org" <mhiramat@kernel.org>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "james.clark@arm.com" <james.clark@arm.com>, "mpe@ellerman.id.au"
- <mpe@ellerman.id.au>, "akpm@linux-foundation.org"
- <akpm@linux-foundation.org>, "mingo@redhat.com" <mingo@redhat.com>,
- "nicolas@fjasle.eu" <nicolas@fjasle.eu>, "tglx@linutronix.de"
- <tglx@linutronix.de>, "christophe.leroy@csgroup.eu"
- <christophe.leroy@csgroup.eu>, "nathan@kernel.org" <nathan@kernel.org>,
- "npiggin@gmail.com" <npiggin@gmail.com>, "mark.rutland@arm.com"
- <mark.rutland@arm.com>, "hpa@zytor.com" <hpa@zytor.com>,
- "surenb@google.com" <surenb@google.com>, "peterz@infradead.org"
- <peterz@infradead.org>, "naveen.n.rao@linux.ibm.com"
- <naveen.n.rao@linux.ibm.com>, "kent.overstreet@linux.dev"
- <kent.overstreet@linux.dev>, "bp@alien8.de" <bp@alien8.de>,
- "yeweihua4@huawei.com" <yeweihua4@huawei.com>,
- "mathieu.desnoyers@efficios.com" <mathieu.desnoyers@efficios.com>,
- "mcgrof@kernel.org" <mcgrof@kernel.org>, Amit Dang
- <amit.dang@crowdstrike.com>, "linux-modules@vger.kernel.org"
- <linux-modules@vger.kernel.org>, "linux-kbuild@vger.kernel.org"
- <linux-kbuild@vger.kernel.org>, "x86@kernel.org" <x86@kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-trace-kernel@vger.kernel.org" <linux-trace-kernel@vger.kernel.org>,
- "bpf@vger.kernel.org" <bpf@vger.kernel.org>
-Subject: Re: [PATCH v2 0/5] kallsyms: Emit symbol for holes in text and fix
- weak function issue
-Message-ID: <20250121124851.2205a8b2@gandalf.local.home>
-In-Reply-To: <7266ee61-3085-74fc-2560-c62fc34c2148@huawei.com>
-References: <20240723063258.2240610-1-zhengyejian@huaweicloud.com>
-	<44353f4cd4d1cc7170d006031819550b37039dd2.camel@crowdstrike.com>
-	<364aaf7c-cdc4-4e57-bb4c-f62e57c23279@csgroup.eu>
-	<d25741d8a6f88d5a6c219fb53e8aa0bcc1fea982.camel@crowdstrike.com>
-	<1f11e3c4-e8fd-d4ac-23cd-0ab2de9c1799@huaweicloud.com>
-	<30ee9989044dad1a7083a85316d77b35f838e622.camel@crowdstrike.com>
-	<7266ee61-3085-74fc-2560-c62fc34c2148@huawei.com>
-X-Mailer: Claws Mail 3.20.0git84 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ycz9X1C66z30HP
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 07:20:45 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737490849; x=1769026849;
+  h=date:from:to:cc:subject:message-id;
+  bh=MvrSQ7j1yNwnrbtXam2td32CPUeeCtKaO/RLidCpKqA=;
+  b=gq3QOgkpNJZzOWnRa9HCvvCjc00Znt4KO81QEMMjRrNBV0WJiYneRFUO
+   6orkdpNhhua5C7IkiHXua/Fgv8bstrEhnEG2L6PJBdQcxeYmDf8bYDl1N
+   WG0tjmwBzx3qiH25l+Fyz/5duPpWkbqImsR7mIrB90Z79F7ZLci8t+e0u
+   Nau2TbKiX5A2P9AB9L+dby7Fk0CVIkRxJDgiT5tJELKVWGFuLltQaHajz
+   aTPsFsf+1ZQsij3elAfCsaXLLcsMDtTC3HkwP0OU6o9e0E6YU5w/AfSY7
+   YvOB0i+qEA+ZQn99DahOtA0KxvQrJofc9y2gqZRpSF5Nk026NUCZWJGBA
+   Q==;
+X-CSE-ConnectionGUID: L2YjMmW0ScKOcgtnewVZiw==
+X-CSE-MsgGUID: qF6WYyxZRxC+dNiqTWZH7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11322"; a="55338680"
+X-IronPort-AV: E=Sophos;i="6.13,223,1732608000"; 
+   d="scan'208";a="55338680"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Jan 2025 12:20:19 -0800
+X-CSE-ConnectionGUID: te81tfMkR+GZMOspqADTHg==
+X-CSE-MsgGUID: rc6xlrONQPObrRbtQZGh2Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="111533279"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa005.fm.intel.com with ESMTP; 21 Jan 2025 12:20:18 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1taKjP-000Yvn-2w;
+	Tue, 21 Jan 2025 20:20:15 +0000
+Date: Wed, 22 Jan 2025 04:19:20 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:next-test] BUILD SUCCESS
+ ae908b87b6bb32c170e9baf5858f2a7553cacc06
+Message-ID: <202501220409.ktyNYqyQ-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,50 +79,147 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: ae908b87b6bb32c170e9baf5858f2a7553cacc06  powerpc: increase MIN RMA size for CAS negotiation
 
-Sorry for the late reply. Forgot about this as I was focused on other end-of-year issues.
+elapsed time: 838m
 
-On Sat, 14 Dec 2024 16:37:59 +0800
-Zheng Yejian <zhengyejian1@huawei.com> wrote:
+configs tested: 126
+configs skipped: 5
 
-> The direct cause of this issue is the wrong fentry being founded by ftrace_location(),
-> following the approach of "FTRACE_MCOUNT_MAX_OFFSET", narrowing down the search range
-> and re-finding may also solve this problem, demo patch like below (not
-> fully tested):
-> 
->      diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
->      index 9b17efb1a87d..7d34320ca9d1 100644
->      --- a/kernel/trace/ftrace.c
->      +++ b/kernel/trace/ftrace.c
->      @@ -1678,8 +1678,11 @@ unsigned long ftrace_location(unsigned long ip)
->                              goto out;
->      
->                      /* map sym+0 to __fentry__ */
->      -               if (!offset)
->      +               if (!offset) {
->                              loc = ftrace_location_range(ip, ip + size - 1);
->      +                       while (loc > ip && loc - ip > FTRACE_MCOUNT_MAX_OFFSET)
->      +                               loc = ftrace_location_range(ip, loc - 1);
->      +               }
->              }
-> 
-> Steve, Peter, what do you think?
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Hmm, removing the weak functions from the __mcount_loc location should also
-solve this, as the ftrace_location_range() will not return a weak function
-if it's not part of the __mcount_loc table.
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    gcc-13.2.0
+arc                          axs103_defconfig    gcc-13.2.0
+arc                        nsimosci_defconfig    gcc-13.2.0
+arc                   randconfig-001-20250121    gcc-13.2.0
+arc                   randconfig-002-20250121    gcc-13.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-14.2.0
+arm                             mxs_defconfig    clang-20
+arm                   randconfig-001-20250121    clang-18
+arm                   randconfig-002-20250121    gcc-14.2.0
+arm                   randconfig-003-20250121    gcc-14.2.0
+arm                   randconfig-004-20250121    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250121    gcc-14.2.0
+arm64                 randconfig-002-20250121    gcc-14.2.0
+arm64                 randconfig-003-20250121    gcc-14.2.0
+arm64                 randconfig-004-20250121    clang-18
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20250121    gcc-14.2.0
+csky                  randconfig-002-20250121    gcc-14.2.0
+hexagon                          alldefconfig    clang-15
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    clang-20
+hexagon               randconfig-001-20250121    clang-19
+hexagon               randconfig-002-20250121    clang-20
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250121    gcc-12
+i386        buildonly-randconfig-002-20250121    clang-19
+i386        buildonly-randconfig-003-20250121    gcc-12
+i386        buildonly-randconfig-004-20250121    gcc-12
+i386        buildonly-randconfig-005-20250121    gcc-12
+i386        buildonly-randconfig-006-20250121    clang-19
+i386                                defconfig    clang-19
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250121    gcc-14.2.0
+loongarch             randconfig-002-20250121    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                          ath25_defconfig    clang-16
+mips                          ath79_defconfig    gcc-14.2.0
+mips                        bcm47xx_defconfig    clang-20
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250121    gcc-14.2.0
+nios2                 randconfig-002-20250121    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-14.2.0
+parisc                generic-32bit_defconfig    gcc-14.2.0
+parisc                randconfig-001-20250121    gcc-14.2.0
+parisc                randconfig-002-20250121    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-16
+powerpc               randconfig-001-20250121    clang-20
+powerpc               randconfig-002-20250121    gcc-14.2.0
+powerpc               randconfig-003-20250121    gcc-14.2.0
+powerpc                     tqm5200_defconfig    gcc-14.2.0
+powerpc64             randconfig-001-20250121    gcc-14.2.0
+powerpc64             randconfig-002-20250121    clang-20
+powerpc64             randconfig-003-20250121    clang-16
+riscv                            allmodconfig    clang-20
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-20
+riscv                               defconfig    clang-19
+riscv                 randconfig-001-20250121    gcc-14.2.0
+riscv                 randconfig-002-20250121    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    clang-15
+s390                  randconfig-001-20250121    clang-15
+s390                  randconfig-002-20250121    gcc-14.2.0
+s390                       zfcpdump_defconfig    clang-19
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                         ap325rxa_defconfig    gcc-14.2.0
+sh                                  defconfig    gcc-14.2.0
+sh                    randconfig-001-20250121    gcc-14.2.0
+sh                    randconfig-002-20250121    gcc-14.2.0
+sh                      rts7751r2d1_defconfig    gcc-14.2.0
+sh                             sh03_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250121    gcc-14.2.0
+sparc                 randconfig-002-20250121    gcc-14.2.0
+sparc64                             defconfig    gcc-14.2.0
+sparc64               randconfig-001-20250121    gcc-14.2.0
+sparc64               randconfig-002-20250121    gcc-14.2.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-18
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-20
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250121    clang-16
+um                    randconfig-002-20250121    gcc-12
+um                           x86_64_defconfig    clang-15
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250121    gcc-12
+x86_64      buildonly-randconfig-002-20250121    clang-19
+x86_64      buildonly-randconfig-003-20250121    gcc-12
+x86_64      buildonly-randconfig-004-20250121    clang-19
+x86_64      buildonly-randconfig-005-20250121    clang-19
+x86_64      buildonly-randconfig-006-20250121    gcc-12
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250121    gcc-14.2.0
+xtensa                randconfig-002-20250121    gcc-14.2.0
 
-That is, would this patchset work?
-
-  https://lore.kernel.org/all/20250102232609.529842248@goodmis.org/
-
--- Steve
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
