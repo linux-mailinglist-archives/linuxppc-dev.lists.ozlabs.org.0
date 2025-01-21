@@ -1,40 +1,40 @@
-Return-Path: <linuxppc-dev+bounces-5466-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5467-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88CFBA1823F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 17:47:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 279B8A18248
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 17:50:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YctQx6l4fz30W7;
-	Wed, 22 Jan 2025 03:47:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YctVz44vBz30W8;
+	Wed, 22 Jan 2025 03:50:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.171
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737478025;
-	cv=none; b=SyfV+4OhpYlj6++S6G7PJyhC1f+qQY2aVTVSi27sYugPI/APOWR8s8TBjYqV/nz/m8yKFJF+otTZoBb4OMow7yZwmwQEDeQaVNanyGBKYMEk78qMfFEaG2c1Di4l3vi3THCr563OHKF/bytuC0Qj+5SifRTg4HedK1nwvI2YgiWhDUDWl6XX219mZSOFUIoG6CREK+oof+amE7KQdxHvVSOEkzyOQ0hEQCvcYJBy7WmNbcBcdl99v/kvBhZS2B9fR5LbK2OhTDi8Qyd7gn9wZ5aFCxf9v244yzKxo8KsL0XBLX6AqJv1E9uBTuzN28LvYbA74XdQ+/i1h44tH82aGg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.179
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737478235;
+	cv=none; b=Rm+6fpVAO4FcKh6+W+6lDEdPI18uy7aCo12AvhumvUJBItA0d3/VHKbn6+feYIVZk5Ln+1KLFnco5iF2DTeW+/KGhvUwTn/KuIF6xuzbUeIM/LqJbhCyS9xpfndkCBeuNC4tqG//47i3uyaDpgRPTf822jgNqsQWiYU+8saN8sFFPEcPlM+5MpbG1LPkvDUABK+t5L9HyefhnymVwjx13E0CcXI42yBH4b1/4PgBaWxviZTE/BGAekPkKdKYWNziepnCysIbeFhEONQ7YmwZReXiWtLYzkBXosTJPBoTsAb4ta0CtvC674mfqYQHunWykg0FQKfFikOeaAlh59o26Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737478025; c=relaxed/relaxed;
-	bh=LMDJSTgByuHuWrF2+uScssRNOl6HgzX8LOlSQPUcRws=;
+	t=1737478235; c=relaxed/relaxed;
+	bh=9o9toXjXchxuXb1mbAx2+gmT8fvOBZnIXdfInm+D/aM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=e4Xs47szi+djrBgUL5QzRBtrBQjBsTKtuIosNAhRHHAvzxJJQrOsm+uWwaAbdRxRNWiw9udiFLLeW8ZMd1u2g4KR5n7CYcY6vqBCK05hDozpb2O6iiPLauaVWc+fxHg0ffP3UgRjJGAxltMY1fbAcXfpVsDs/cb85kwviU4fR4Sf3byYZu4dXeDY07z8/QzbiOxbPhaY0+6TDvSd61JHi/wV8/bvT+1INopcgFGxCw2/A9RqxPSB8pSaO4kYEvaSWkYmr8KcNFW8qcmADZQ8U2OIWBUlb/bUpF4kaz0gdauR/lJPT8YsI+E0tuI4iFGyHCLALyPrPQkYUdkdZRTdBw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=95.215.58.171; helo=out-171.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 Content-Type:Content-Disposition:In-Reply-To; b=iS42sgd+lKeOrwp2BweAu5GHcEsSbwTB/+xTs0Jx8OybDbITv2LUr8jQ2LR88QgSFRv3tJQM3F9fV+QST2xBB0M/bkpSIBhZSQ3aYPT6dUzSBrJvsIHwN/Z9MsOAJc6WNczeTt1P4fUuFP8EmB0Eklz6G3Q9i7pXLxkKYEIQjc2VgFOdDoOuJg68bEB3u8enGO+qMPIsMtQ+l2xXkupHl2qXcO3REAjnVXAANBsjNMyot5yhp0SHYbG2mnDy7C/9uBF1J9lykEI/w0pjDJDYD6xhHwTCdmkaQBdCC4sirENdnWULcTQwRyaVUGe9i5LevQoRvRdMRF5A9WiifbWS7g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=95.215.58.179; helo=out-179.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.171; helo=out-171.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-171.mta1.migadu.com (out-171.mta1.migadu.com [95.215.58.171])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.179; helo=out-179.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-179.mta1.migadu.com (out-179.mta1.migadu.com [95.215.58.179])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YctQq1QyBz30Vq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 03:46:57 +1100 (AEDT)
-Date: Tue, 21 Jan 2025 17:46:33 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YctVs62H0z30Vq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 03:50:29 +1100 (AEDT)
+Date: Tue, 21 Jan 2025 17:50:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1737477998;
+	t=1737478209;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LMDJSTgByuHuWrF2+uScssRNOl6HgzX8LOlSQPUcRws=;
-	b=wuIDtc2yfqgfAnYegMfah6645g08I7FlG9GU+dqPRMQ8U6LBeH9IjLof1MGjb+rxaAdz5i
-	Al49afIJSCUlxQktOJcZOoe7U8yEBBNg+SPcqQRNW71XBPUaUxkZp9xBqizTpvIqsdEqo8
-	3Kzqt2+TM67t9sZxvlZR/57kF/8p+Bw=
+	bh=9o9toXjXchxuXb1mbAx2+gmT8fvOBZnIXdfInm+D/aM=;
+	b=rtj0/bwzCyqvtrhaxqugGe2yTMMDMyQdQVt26GYW3LfnEZGr/FkaHtaK+9BBohA9Fer3GU
+	iQxCzAawmvRe5+YcIMPEJ0HfhT6HVkpz1//kiNxxGLa+cVveUDP9L5rTqnXsMZwW4m9nx1
+	34ELjNr9KI9WUusTseG9Fu9SnLCc+bY=
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Andrew Jones <andrew.jones@linux.dev>
 To: Alexandru Elisei <alexandru.elisei@arm.com>
@@ -45,11 +45,10 @@ Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
 	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
 	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
 	andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 10/18] scripts/arch-run: Add support
- for kvmtool
-Message-ID: <20250121-90381c319e835109e0515bbd@orel>
+Subject: Re: [kvm-unit-tests PATCH v2 11/18] arm/run: Add support for kvmtool
+Message-ID: <20250121-98b6da755bc353722fae5f1f@orel>
 References: <20250120164316.31473-1-alexandru.elisei@arm.com>
- <20250120164316.31473-11-alexandru.elisei@arm.com>
+ <20250120164316.31473-12-alexandru.elisei@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,184 +63,222 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250120164316.31473-11-alexandru.elisei@arm.com>
+In-Reply-To: <20250120164316.31473-12-alexandru.elisei@arm.com>
 X-Migadu-Flow: FLOW_OUT
 X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 20, 2025 at 04:43:08PM +0000, Alexandru Elisei wrote:
-> Add two new functions, search_kvmtool_binary(), which, like the name
-> suggests, searches for the location of the kvmtool binary, and
-> run_kvmtool(), which runs a test with kvmtool as the VMM.
+On Mon, Jan 20, 2025 at 04:43:09PM +0000, Alexandru Elisei wrote:
+> Teach the arm runner to use kvmtool when kvm-unit-tests has been configured
+> appropriately.
 > 
-> initrd_create() has also been modified to use the kvmtool syntax for
-> supplying an initrd, which is --initrd (two dashes instead of the single
-> dash that qemu uses).
-> 
-> arm/run does not know how to use these functions yet, but this will be
-> added in a subsequent patch.
+> The test is ran using run_test_status() because kvmtool does not have a
+> testdev device to return the test exit code, so kvm-unit-tests must always
+> parse the "EXIT: STATUS" line for the exit code.
 > 
 > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
 > ---
->  scripts/arch-run.bash | 94 +++++++++++++++++++++++++++++++++++++------
->  1 file changed, 81 insertions(+), 13 deletions(-)
+>  arm/run | 183 ++++++++++++++++++++++++++++++++++----------------------
+>  1 file changed, 110 insertions(+), 73 deletions(-)
 > 
-> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
-> index d6eaf0ee5f09..34f633cade01 100644
-> --- a/scripts/arch-run.bash
-> +++ b/scripts/arch-run.bash
-> @@ -75,16 +75,47 @@ run_qemu ()
->  	return $ret
->  }
+> diff --git a/arm/run b/arm/run
+> index 9b11feafffdd..880d5afae86d 100755
+> --- a/arm/run
+> +++ b/arm/run
+> @@ -17,77 +17,114 @@ qemu)
+>     exit 3
+>  esac
 >  
-> +run_kvmtool ()
+> -processor="$PROCESSOR"
+> +arch_run_qemu()
 > +{
-> +	local stdout errors ret sig
+> +    processor="$PROCESSOR"
 > +
-> +	initrd_create || return $?
+> +    if [ "$QEMU" ] && [ -z "$ACCEL" ] &&
+> +       [ "$HOST" = "aarch64" ] && [ "$ARCH" = "arm" ] &&
+> +       [ "$(basename $QEMU)" = "qemu-system-arm" ]; then
+> +        ACCEL="tcg"
+> +    fi
 > +
-> +	echo -n "$@"
-> +	[ "$ENVIRON_DEFAULT" = "yes" ] && echo -n " #"
-> +	echo " $INITRD"
+> +    set_qemu_accelerator || exit $?
+> +    if [ "$ACCEL" = "kvm" ]; then
+> +        QEMU_ARCH=$HOST
+> +    fi
 > +
-> +	# stdout to {stdout}, stderr to $errors and stderr
-> +	exec {stdout}>&1
-> +	"${@}" $INITRD </dev/null 2> >(tee /dev/stderr) > /dev/fd/$stdout
-> +	ret=$?
-> +	exec {stdout}>&-
+> +    qemu=$(search_qemu_binary) ||
+> +        exit $?
 > +
-> +	return $ret
+> +    if ! $qemu -machine '?' | grep -q 'ARM Virtual Machine'; then
+> +        echo "$qemu doesn't support mach-virt ('-machine virt'). Exiting."
+> +        exit 2
+> +    fi
+> +
+> +    M='-machine virt'
+> +
+> +    if [ "$ACCEL" = "kvm" ]; then
+> +        if $qemu $M,\? | grep -q gic-version; then
+> +            M+=',gic-version=host'
+> +        fi
+> +    fi
+> +
+> +    if [ "$ACCEL" = "kvm" ] || [ "$ACCEL" = "hvf" ]; then
+> +        if [ "$HOST" = "aarch64" ] || [ "$HOST" = "arm" ]; then
+> +            processor="host"
+> +            if [ "$ARCH" = "arm" ] && [ "$HOST" = "aarch64" ]; then
+> +                processor+=",aarch64=off"
+> +            fi
+> +        fi
+> +    fi
+> +
+> +    if [ "$ARCH" = "arm" ]; then
+> +        M+=",highmem=off"
+> +    fi
+> +
+> +    if ! $qemu $M -device '?' | grep -q virtconsole; then
+> +        echo "$qemu doesn't support virtio-console for chr-testdev. Exiting."
+> +        exit 2
+> +    fi
+> +
+> +    if ! $qemu $M -chardev '?' | grep -q testdev; then
+> +        echo "$qemu doesn't support chr-testdev. Exiting."
+> +        exit 2
+> +    fi
+> +
+> +    if [ "$UEFI_SHELL_RUN" != "y" ] && [ "$EFI_USE_ACPI" != "y" ]; then
+> +        chr_testdev='-device virtio-serial-device'
+> +        chr_testdev+=' -device virtconsole,chardev=ctd -chardev testdev,id=ctd'
+> +    fi
+> +
+> +    pci_testdev=
+> +    if $qemu $M -device '?' | grep -q pci-testdev; then
+> +        pci_testdev="-device pci-testdev"
+> +    fi
+> +
+> +    A="-accel $ACCEL$ACCEL_PROPS"
+> +    command="$qemu -nodefaults $M $A -cpu $processor $chr_testdev $pci_testdev"
+> +    command+=" -display none -serial stdio"
+> +    command="$(migration_cmd) $(timeout_cmd) $command"
+> +
+> +    if [ "$UEFI_SHELL_RUN" = "y" ]; then
+> +        ENVIRON_DEFAULT=n run_test_status $command "$@"
+> +    elif [ "$EFI_USE_ACPI" = "y" ]; then
+> +        run_test_status $command -kernel "$@"
+> +    else
+> +        run_qemu $command -kernel "$@"
+> +    fi
 > +}
-
-It seems like run_qemu should mostly apply to kvmtool since kvmtool could
-also terminate on a signal, like the timeout SIGALRM. Maybe we should try
-to get them to use the same thing and name it run_test()? Or at least we
-can factor out the common parts to avoid duplication.
-
 > +
->  run_test_status ()
->  {
-> -	local stdout ret
-> +	local stdout ret ret_success
->  
->  	exec {stdout}>&1
-> -	lines=$(run_qemu "$@" > >(tee /dev/fd/$stdout))
-> +
-> +	# For qemu, an exit status of 1 means that the test completed. For kvmtool,
-> +	# 0 means the same thing.
-> +	case "$TARGET" in
-> +	qemu)
-> +		ret_success=1
-> +		lines=$(run_qemu "$@" > >(tee /dev/fd/$stdout))
-> +		;;
-> +	kvmtool)
-> +		ret_success=0
-> +		lines=$(run_kvmtool "$@" > >(tee /dev/fd/$stdout))
-> +		;;
-> +	esac
->  	ret=$?
->  	exec {stdout}>&-
->  
-> -	if [ $ret -eq 1 ]; then
-> +	if [ $ret -eq $ret_success ]; then
->  		testret=$(grep '^EXIT: ' <<<"$lines" | head -n1 | sed 's/.*STATUS=\([0-9][0-9]*\).*/\1/')
->  		if [ "$testret" ]; then
->  			if [ $testret -eq 1 ]; then
-> @@ -422,6 +453,25 @@ search_qemu_binary ()
->  	export PATH=$save_path
->  }
->  
-> +search_kvmtool_binary ()
+> +arch_run_kvmtool()
 > +{
-> +	local kvmtoolcmd kvmtool
+> +    local command
 > +
-> +	for kvmtoolcmd in lkvm vm lkvm-static; do
-> +		if $kvmtoolcmd --help 2>/dev/null| grep -q 'The most commonly used'; then
-> +			kvmtool="$kvmtoolcmd"
-> +			break
-> +		fi
-> +	done
+> +    kvmtool=$(search_kvmtool_binary) ||
+> +        exit $?
 > +
-> +	if [ -z "$kvmtool" ]; then
-> +		echo "A kvmtool binary was not found." >&2
-
-Do we want to support a KVMTOOL environment variable analogous to $QEMU?
-If so we can also add the help text that search_qemu_binary() has here.
-
-> +		return 2
-> +	fi
+> +    if [ "$ACCEL" ] && [ "$ACCEL" != "kvm" ]; then
+> +        echo "kvmtool does not support $ACCEL" >&2
+> +        exit 2
+> +    fi
 > +
-> +	command -v $kvmtool
+> +    if ! kvm_available; then
+> +        echo "KVM required by kvmtool but not available on the host" >&2
+> +        exit 2
+> +    fi
+> +
+> +    command="$(timeout_cmd) $kvmtool run"
+> +    if [ "$HOST" = "aarch64" ] && [ "$ARCH" = "arm" ]; then
+> +	    run_test_status $command --kernel "$@" --aarch32
+> +    else
+> +	    run_test_status $command --kernel "$@"
+> +    fi
 > +}
-> +
->  initrd_cleanup ()
->  {
->  	rm -f $KVM_UNIT_TESTS_ENV
-> @@ -447,7 +497,18 @@ initrd_create ()
->  	fi
 >  
->  	unset INITRD
-> -	[ -f "$KVM_UNIT_TESTS_ENV" ] && INITRD="-initrd $KVM_UNIT_TESTS_ENV"
-> +	if [ ! -f "$KVM_UNIT_TESTS_ENV" ]; then
-> +		return 0
-> +	fi
-> +
-> +	case "$TARGET" in
-> +		qemu)
-> +			INITRD="-initrd $KVM_UNIT_TESTS_ENV"
-> +			;;
-> +		kvmtool)
-> +			INITRD="--initrd $KVM_UNIT_TESTS_ENV"
-> +			;;
-> +	esac
-
-vmm_opts[qemu,initrd]='-initrd'
-vmm_opts[kvmtool,initrd]='--initrd'
-
->  
->  	return 0
->  }
-> @@ -471,18 +532,25 @@ env_params ()
->  	local qemu have_qemu
->  	local _ rest
->  
-> -	qemu=$(search_qemu_binary) && have_qemu=1
-> +	env_add_params TARGET
-> +
-> +	# kvmtool's versioning has been broken since it was split from the kernel
-> +	# source.
-> +	if [ "$TARGET" = "qemu" ]; then
-> +		qemu=$(search_qemu_binary) && have_qemu=1
->  
-> -	if [ "$have_qemu" ]; then
-> -		if [ -n "$ACCEL" ] || [ -n "$QEMU_ACCEL" ]; then
-> -			[ -n "$ACCEL" ] && QEMU_ACCEL=$ACCEL
-> +		if [ "$have_qemu" ]; then
-> +			if [ -n "$ACCEL" ] || [ -n "$QEMU_ACCEL" ]; then
-> +				[ -n "$ACCEL" ] && QEMU_ACCEL=$ACCEL
-> +			fi
-> +			QEMU_VERSION_STRING="$($qemu -h | head -1)"
-> +			# Shellcheck does not see QEMU_MAJOR|MINOR|MICRO are used
-> +			# shellcheck disable=SC2034
-> +			IFS='[ .]' read -r _ _ _ QEMU_MAJOR QEMU_MINOR QEMU_MICRO rest <<<"$QEMU_VERSION_STRING"
->  		fi
-> -		QEMU_VERSION_STRING="$($qemu -h | head -1)"
-> -		# Shellcheck does not see QEMU_MAJOR|MINOR|MICRO are used
-> -		# shellcheck disable=SC2034
-> -		IFS='[ .]' read -r _ _ _ QEMU_MAJOR QEMU_MINOR QEMU_MICRO rest <<<"$QEMU_VERSION_STRING"
-> +
-> +		env_add_params QEMU_ACCEL QEMU_VERSION_STRING QEMU_MAJOR QEMU_MINOR QEMU_MICRO
->  	fi
-> -	env_add_params QEMU_ACCEL QEMU_VERSION_STRING QEMU_MAJOR QEMU_MINOR QEMU_MICRO
->  
->  	KERNEL_VERSION_STRING=$(uname -r)
->  	IFS=. read -r KERNEL_VERSION KERNEL_PATCHLEVEL rest <<<"$KERNEL_VERSION_STRING"
+> -if [ "$QEMU" ] && [ -z "$ACCEL" ] &&
+> -   [ "$HOST" = "aarch64" ] && [ "$ARCH" = "arm" ] &&
+> -   [ "$(basename $QEMU)" = "qemu-system-arm" ]; then
+> -	ACCEL="tcg"
+> -fi
+> -
+> -set_qemu_accelerator || exit $?
+> -if [ "$ACCEL" = "kvm" ]; then
+> -	QEMU_ARCH=$HOST
+> -fi
+> -
+> -qemu=$(search_qemu_binary) ||
+> -	exit $?
+> -
+> -if ! $qemu -machine '?' | grep -q 'ARM Virtual Machine'; then
+> -	echo "$qemu doesn't support mach-virt ('-machine virt'). Exiting."
+> -	exit 2
+> -fi
+> -
+> -M='-machine virt'
+> -
+> -if [ "$ACCEL" = "kvm" ]; then
+> -	if $qemu $M,\? | grep -q gic-version; then
+> -		M+=',gic-version=host'
+> -	fi
+> -fi
+> -
+> -if [ "$ACCEL" = "kvm" ] || [ "$ACCEL" = "hvf" ]; then
+> -	if [ "$HOST" = "aarch64" ] || [ "$HOST" = "arm" ]; then
+> -		processor="host"
+> -		if [ "$ARCH" = "arm" ] && [ "$HOST" = "aarch64" ]; then
+> -			processor+=",aarch64=off"
+> -		fi
+> -	fi
+> -fi
+> -
+> -if [ "$ARCH" = "arm" ]; then
+> -	M+=",highmem=off"
+> -fi
+> -
+> -if ! $qemu $M -device '?' | grep -q virtconsole; then
+> -	echo "$qemu doesn't support virtio-console for chr-testdev. Exiting."
+> -	exit 2
+> -fi
+> -
+> -if ! $qemu $M -chardev '?' | grep -q testdev; then
+> -	echo "$qemu doesn't support chr-testdev. Exiting."
+> -	exit 2
+> -fi
+> -
+> -if [ "$UEFI_SHELL_RUN" != "y" ] && [ "$EFI_USE_ACPI" != "y" ]; then
+> -	chr_testdev='-device virtio-serial-device'
+> -	chr_testdev+=' -device virtconsole,chardev=ctd -chardev testdev,id=ctd'
+> -fi
+> -
+> -pci_testdev=
+> -if $qemu $M -device '?' | grep -q pci-testdev; then
+> -	pci_testdev="-device pci-testdev"
+> -fi
+> -
+> -A="-accel $ACCEL$ACCEL_PROPS"
+> -command="$qemu -nodefaults $M $A -cpu $processor $chr_testdev $pci_testdev"
+> -command+=" -display none -serial stdio"
+> -command="$(migration_cmd) $(timeout_cmd) $command"
+> -
+> -if [ "$UEFI_SHELL_RUN" = "y" ]; then
+> -	ENVIRON_DEFAULT=n run_test_status $command "$@"
+> -elif [ "$EFI_USE_ACPI" = "y" ]; then
+> -	run_test_status $command -kernel "$@"
+> -else
+> -	run_qemu $command -kernel "$@"
+> -fi
+> +case "$TARGET" in
+> +qemu)
+> +    arch_run_qemu "$@"
+> +    ;;
+> +kvmtool)
+> +    arch_run_kvmtool "$@"
+> +    ;;
+> +esac
 > -- 
 > 2.47.1
+> 
 >
 
-Thanks,
-drew
+Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 
