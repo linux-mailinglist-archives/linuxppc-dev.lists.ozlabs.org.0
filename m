@@ -1,50 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-5458-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5459-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED8BA18169
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 16:55:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD93AA18176
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 21 Jan 2025 16:56:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcsGq1G2Lz30TM;
-	Wed, 22 Jan 2025 02:54:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YcsJP4bdgz30V3;
+	Wed, 22 Jan 2025 02:56:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737474899;
-	cv=none; b=lpvUJCuslNV3xXNI2I97g8iNfF31Wl01LcDuPzZk7TNaRTDliNBAGU7izUbFk2mxJhajIk5stXGPBE/lJJ666NjyyOH2ASlJ9TLjX32L+1ic6/nbKq+4R2LnpX87F2EUFZ/ChlWTm1s2lfOb29ZUqCKLDt9556n/4zKtCbK3hDqOewGQsSkvLAMLG4+YSwOZk+TwCaW2sPbL89Rzb43WCJ2fgYIOfOcmETRzqLjK0QtyFMaxHVh+SXq0TS6HtOozfgcdO3kPe5W9X+kbi5UMsAKOpXkvFOX24mABAjtkGLZSJOq9YvEAQmr4IVyy0x9pHOQYGbt6mI+1yheTSVL0Mw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::b6"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737474981;
+	cv=none; b=jpRJ9CjsL3Ch6GiCm9fDOBVqzhGGGjv4/NKucOFFd0jyWcW2ixcv6kFrr1Wyqv7QotJww9qzQR/6lOveY+XTeo694CPJ8ZoNKRxu56u5dhc4s6/MMIrfePzsESWsBx1EGd8SwHhLgqluHrlMBH01jQurfpJX7Fu+jgn8iFb2B85ENNircYy00sUa12nm5TBrT9cwHf0ahb35q0UNoH5idMTUWIJySAodx9JQ/qqR7hJ9B2uuKSHAvwOIM5zRSdIIjzlTS3R8CDoZwEsR28R6I7or8dmg6ojcolUJgeSRE1YQ6VysoW6F/48DBwv8V5d7mn+nEFynsQTvFr3cFTH/oA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737474899; c=relaxed/relaxed;
-	bh=ArUSzxSQCCnuHvSiGfYx4xrQo5Ix+eSihCzpfu8LsLM=;
+	t=1737474981; c=relaxed/relaxed;
+	bh=kHTOuyrf6b476FzSvoIER5fEZhvPhJ7qECQ1yaBVPL8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NyYgRsF+MqwZ8PXfJ9Mdn2GDHDQUVHsJaBdAg5nMxoC9bppE+GFq/Cqt7rVKhmZbfvToc+lbmWkC9LUyB56qcK8Hu1HgPAWFQ+4H7DzWzOaKgQJ3gPL9jYL4LBuHsb6eeyieQP0k05lj7bR6Ug7Iy2NaOTALSlbjrRwdtA+VcfwYeJnHMlamIwTW8vu3DSa0qIVzArbF3ib8qQ4V1pxtn1uqWlb+3B6BrG/jRz1jatfHw8lRI/SQrJ2MFzEZVISv7sp1yjlHbNvqbqqfnhKLjC41WB7uklT9C2c23bGJbr8eh4w0VlB8w2qYezFrjhsXflSM27LedQ7sQLG1wtvgwQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YcsGn4gKBz30TL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 02:54:56 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 653FF1063;
-	Tue, 21 Jan 2025 07:54:52 -0800 (PST)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A408B3F738;
-	Tue, 21 Jan 2025 07:54:20 -0800 (PST)
-Date: Tue, 21 Jan 2025 15:54:17 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
-	david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
-	oliver.upton@linux.dev, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests
- if not configured for qemu
-Message-ID: <Z4_DKTMeDQqsqV_6@raptor>
+	 Content-Type:Content-Disposition:In-Reply-To; b=LojeqLt8EkkPpI3aP356T/j2Z+sG3MsGrbR8KxeaGMaLjImGTl4powJByIC9UiK3uxFWuhXkF7HAog9uW9Z+MeU7Xflpb6qeetBvuJ+27yaZfDaSxJJGRgzAR8TrRgD5yUbUuZraHSP3iN+0uhDHZoL1Hyt5tsGgswclsBawp2KU23c5JUpdpszZDKqn9UKmRSEYovI0U7IUb9tB0BZ/11pmkc60xCmhtu8CqxznzuTws0eTaoSi1A2i3rNLwzv+99SpZTAK6ln7PhbXn2RbXp2K8J2nkg7Yo94FBWNPrXd9rQNhzUqBcPIlO5UZgkf/k7eEdLNXBCw54GLQdl4Txg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=2001:41d0:1004:224b::b6; helo=out-182.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::b6; helo=out-182.mta0.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [IPv6:2001:41d0:1004:224b::b6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YcsJH6XN6z30Tx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 02:56:15 +1100 (AEDT)
+Date: Tue, 21 Jan 2025 16:55:48 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1737474951;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kHTOuyrf6b476FzSvoIER5fEZhvPhJ7qECQ1yaBVPL8=;
+	b=jLVi0j6635xXGMEyTSFWna0XxMzqF2D1nptRyo0YaJbkTHBxTdhT3652Yr2iFc0Y5suHsA
+	4Ei5OyRalZhl/ixQe29WtwJT80HAtPxSaIE95vxNxB08Xo3+igSKAk/Wjly3kv8oY4/7bI
+	ptincaA2GFFdsPAgDVzzEIUHWHkOFaM=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, david@redhat.com, 
+	pbonzini@redhat.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
+	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
+	andre.przywara@arm.com, Alexandru Elisei <alexandru.elisei@gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v2 05/18] scripts: Rename run_qemu_status
+ -> run_test_status
+Message-ID: <20250121-566d55e720f59e93c88af5e4@orel>
 References: <20250120164316.31473-1-alexandru.elisei@arm.com>
- <20250120164316.31473-4-alexandru.elisei@arm.com>
- <20250121-45faf6a9a9681c7c9ece5f44@orel>
+ <20250120164316.31473-6-alexandru.elisei@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,154 +64,102 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250121-45faf6a9a9681c7c9ece5f44@orel>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <20250120164316.31473-6-alexandru.elisei@arm.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Drew,
-
-On Tue, Jan 21, 2025 at 03:48:55PM +0100, Andrew Jones wrote:
-> On Mon, Jan 20, 2025 at 04:43:01PM +0000, Alexandru Elisei wrote:
-> > Arm and arm64 support running the tests under kvmtool. Unsurprisingly,
-> > kvmtool and qemu have a different command line syntax for configuring and
-> > running a virtual machine.
-> > 
-> > On top of that, when kvm-unit-tests has been configured to run under
-> > kvmtool (via ./configure --target=kvmtool), the early UART address changes,
-> > and if then the tests are run with qemu, this warning is displayed:
-> > 
-> > WARNING: early print support may not work. Found uart at 0x9000000, but early base is 0x1000000.
-> > 
-> > At the moment, the only way to run a test under kvmtool is manually, as no
-> > script has any knowledge of how to invoke kvmtool. Also, unless one looks
-> > at the logs, it's not obvious that the test runner is using qemu to run the
-> > tests, and not kvmtool.
-> > 
-> > To avoid any confusion for unsuspecting users, refuse to run a test via the
-> > testing scripts when kvm-unit-tests has been configured for kvmtool.
-> > 
-> > There are four different ways to run a test using the test infrastructure:
-> > with run_tests.sh, by invoking arm/run or arm/efi/run with the correct
-> > parameters (only the arm directory is mentioned here because the tests can
-> > be configured for kvmtool only on arm and arm64), and by creating
-> > standalone tests. Add a check in each of these locations for the supported
-> > virtual machine manager.
-> > 
-> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> > ---
-> >  arm/efi/run             | 8 ++++++++
-> >  arm/run                 | 9 +++++++++
-> >  run_tests.sh            | 8 ++++++++
-> >  scripts/mkstandalone.sh | 8 ++++++++
-> >  4 files changed, 33 insertions(+)
-> > 
-> > diff --git a/arm/efi/run b/arm/efi/run
-> > index 8f41fc02df31..916f4c4deef6 100755
-> > --- a/arm/efi/run
-> > +++ b/arm/efi/run
-> > @@ -12,6 +12,14 @@ fi
-> >  source config.mak
-> >  source scripts/arch-run.bash
-> >  
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +    echo "$0 does not support '$TARGET'"
-> > +    exit 2
-> > +esac
-> > +
-> >  if [ -f /usr/share/qemu-efi-aarch64/QEMU_EFI.fd ]; then
-> >  	DEFAULT_UEFI=/usr/share/qemu-efi-aarch64/QEMU_EFI.fd
-> >  elif [ -f /usr/share/edk2/aarch64/QEMU_EFI.silent.fd ]; then
-> > diff --git a/arm/run b/arm/run
-> > index efdd44ce86a7..6db32cf09c88 100755
-> > --- a/arm/run
-> > +++ b/arm/run
-> > @@ -8,6 +8,15 @@ if [ -z "$KUT_STANDALONE" ]; then
-> >  	source config.mak
-> >  	source scripts/arch-run.bash
-> >  fi
-> > +
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +   echo "'$TARGET' not supported"
-> > +   exit 3
+On Mon, Jan 20, 2025 at 04:43:03PM +0000, Alexandru Elisei wrote:
+> From: Alexandru Elisei <alexandru.elisei@gmail.com>
 > 
-> I think we want exit code 2 here.
+> For the arm/arm64 architectures, kvm-unit-tests can also be run using the
+> kvmtool virtual machine manager. Rename run_qemu_status to run_test_status
+> to make it more generic, in preparation to add support for kvmtool.
+> 
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> ---
+>  arm/run               | 4 ++--
+>  powerpc/run           | 2 +-
+>  riscv/run             | 4 ++--
+>  s390x/run             | 2 +-
+>  scripts/arch-run.bash | 2 +-
+>  5 files changed, 7 insertions(+), 7 deletions(-)
+> 
+> diff --git a/arm/run b/arm/run
+> index 6db32cf09c88..9b11feafffdd 100755
+> --- a/arm/run
+> +++ b/arm/run
+> @@ -85,9 +85,9 @@ command+=" -display none -serial stdio"
+>  command="$(migration_cmd) $(timeout_cmd) $command"
+>  
+>  if [ "$UEFI_SHELL_RUN" = "y" ]; then
+> -	ENVIRON_DEFAULT=n run_qemu_status $command "$@"
+> +	ENVIRON_DEFAULT=n run_test_status $command "$@"
+>  elif [ "$EFI_USE_ACPI" = "y" ]; then
+> -	run_qemu_status $command -kernel "$@"
+> +	run_test_status $command -kernel "$@"
+>  else
+>  	run_qemu $command -kernel "$@"
+>  fi
+> diff --git a/powerpc/run b/powerpc/run
+> index 27abf1ef6a4d..9b5fbc1197ed 100755
+> --- a/powerpc/run
+> +++ b/powerpc/run
+> @@ -63,4 +63,4 @@ command="$(migration_cmd) $(timeout_cmd) $command"
+>  # to fixup the fixup below by parsing the true exit code from the output.
+>  # The second fixup is also a FIXME, because once we add chr-testdev
+>  # support for powerpc, we won't need the second fixup.
+> -run_qemu_status $command "$@"
+> +run_test_status $command "$@"
+> diff --git a/riscv/run b/riscv/run
+> index 73f2bf54dc32..2a846d361a4d 100755
+> --- a/riscv/run
+> +++ b/riscv/run
+> @@ -34,8 +34,8 @@ command+=" $mach $acc $firmware -cpu $processor "
+>  command="$(migration_cmd) $(timeout_cmd) $command"
+>  
+>  if [ "$UEFI_SHELL_RUN" = "y" ]; then
+> -	ENVIRON_DEFAULT=n run_qemu_status $command "$@"
+> +	ENVIRON_DEFAULT=n run_test_status $command "$@"
+>  else
+>  	# We return the exit code via stdout, not via the QEMU return code
+> -	run_qemu_status $command -kernel "$@"
+> +	run_test_status $command -kernel "$@"
+>  fi
+> diff --git a/s390x/run b/s390x/run
+> index 34552c2747d4..9ecfaf983a3d 100755
+> --- a/s390x/run
+> +++ b/s390x/run
+> @@ -47,4 +47,4 @@ command+=" -kernel"
+>  command="$(panic_cmd) $(migration_cmd) $(timeout_cmd) $command"
+>  
+>  # We return the exit code via stdout, not via the QEMU return code
+> -run_qemu_status $command "$@"
+> +run_test_status $command "$@"
+> diff --git a/scripts/arch-run.bash b/scripts/arch-run.bash
+> index 8643bab3b252..d6eaf0ee5f09 100644
+> --- a/scripts/arch-run.bash
+> +++ b/scripts/arch-run.bash
+> @@ -75,7 +75,7 @@ run_qemu ()
+>  	return $ret
+>  }
+>  
+> -run_qemu_status ()
+> +run_test_status ()
+>  {
+>  	local stdout ret
+>  
+> -- 
+> 2.47.1
 
-Exit code 2 is already in use in arm/run. Now that I'm looking more closely
-at it, exit code 2 is already in use in run_tests.sh, same for
-mkstandalone.sh and arm/efi/run.
-
-How about using 3 everywhere as the exit code?
-
-Also, your idea (below) to use a function to test for supported $TARGETs is
-a very good one, I'll do it in the next iteration.
+Hmm, run_qemu_status() wraps run_qemu() so it seems appropriately named,
+especially since the return value of run_qemu() has had QEMU-specific
+return codes considered. It seems we should first decouple
+run_qemu_status() from run_qemu() or to sanitize run_qemu() of anything
+QEMU-specific and rename it to run_test() at the same time.
 
 Thanks,
-Alex
-
-> 
-> > +esac
-> > +
-> >  processor="$PROCESSOR"
-> >  
-> >  if [ "$QEMU" ] && [ -z "$ACCEL" ] &&
-> > diff --git a/run_tests.sh b/run_tests.sh
-> > index 23d81b2caaa1..61480d0c05ed 100755
-> > --- a/run_tests.sh
-> > +++ b/run_tests.sh
-> > @@ -100,6 +100,14 @@ while [ $# -gt 0 ]; do
-> >      shift
-> >  done
-> >  
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +    echo "$0 does not support '$TARGET'"
-> > +    exit 2
-> > +esac
-> > +
-> >  # RUNTIME_log_file will be configured later
-> >  if [[ $tap_output == "no" ]]; then
-> >      process_test_output() { cat >> $RUNTIME_log_file; }
-> > diff --git a/scripts/mkstandalone.sh b/scripts/mkstandalone.sh
-> > index 2318a85f0706..4de97056e641 100755
-> > --- a/scripts/mkstandalone.sh
-> > +++ b/scripts/mkstandalone.sh
-> > @@ -7,6 +7,14 @@ fi
-> >  source config.mak
-> >  source scripts/common.bash
-> >  
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +    echo "'$TARGET' not supported for standlone tests"
-> > +    exit 2
-> > +esac
-> > +
-> >  temp_file ()
-> >  {
-> >  	local var="$1"
-> > -- 
-> > 2.47.1
-> >
-> 
-> I think we could put the check in a function in scripts/arch-run.bash and
-> just use the same error message for all cases.
-> 
-> Thanks,
-> drew
-> 
-> > 
-> > -- 
-> > kvm-riscv mailing list
-> > kvm-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/kvm-riscv
+drew
 
