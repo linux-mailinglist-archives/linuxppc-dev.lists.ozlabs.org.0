@@ -1,58 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-5477-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F26BA19184
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2025 13:41:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7842A191A0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 22 Jan 2025 13:44:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YdNxY14d0z2xLR;
-	Wed, 22 Jan 2025 23:41:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YdP054MnRz2yvk;
+	Wed, 22 Jan 2025 23:44:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737549713;
-	cv=none; b=PNAOEWRA3TC23JqSBQnQNGXVJ1mf9EAHKOV8JJ/Sp2jrp/K+Co0C/z7v9pFYhLknAp1ZiAWK2hmTfFk4QYTSOmYRPQAv17oarnJfyiMREDF26JUSzj9teWy/TZcQDpn9Q7GYY7hEV6zSAWeuesMThRXC3qfx7MOteus1yDa406NdBPl5xC1JQjEJ9lIN5sAwR7dJs/zFDtWUeJ+cqd3/iOxaq3cBSaim/fnhgesC/FcFl3MZMliutAi303kt3WMu8Od8bF1QllqT/9gduRC26h056tqMRw+AoR6zqHGcB2wFWMU3bLLATZ9WYXBPtpHIc1WHxH5ztWusAI0hjqBxLw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737549845;
+	cv=none; b=EzmcoleHbIx5fehicH/c9/oUvQ4/+3bScxK7wluhf9z5TtIXaN9PXZHh8GuG5fGegRw4DXKsFME03ddVAIk5FQSGnVyg8V6fz3dzKSRgJ/5QBY7jBKX3zUp3/hTyhPYjD8zjbqT/IqLCExxhmvqhNoUcfvNLEBsETcVlCXlxEMEjQ7MupQs0JDaInbAU1dIW9NRcPunuF8ND5qds9FpwVjLTgcNe2uIepZuEndx2POmvd8WbMo6c5BDkl2FvFad1xgL5Ln36ooqjRv+8k3d27CJQWqK1H6BLlCr3OvAxKdufJCecRW0Rho11OCML7vqTVmSM4sVDfcSUSeorEphSew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737549713; c=relaxed/relaxed;
-	bh=/nRt7/FOVju0HHPP7y/y/GmcikIqd0uun9LCjQjrq7E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Go5S5TmrZZvCqFMiFr1rE3eg7uQPsLZzrAmJUTpEiRv14qI8x+W85ZqjcSLpQkWFN29ihIGk2RTwsafTKQ9tOvRyBpy8HcAK6L1qQuzhYpn7APh8yZIN+e7Ad1ioqfE28A3AUkbx8El7EicZBRF6pLr7iCepu9lQoECwHsPCcdEVxAQilsgADMfDeeN/Osy66gFie5bXmYUgaLPbMPYm4AFapsSEpkm/p/mFv+qszGqBanslP5j8NO4SoiaAOD7VdB4GwhZZhauudRjHSUDNxWkaNBN/QxrOxxxC+/M4VnL6cHYT4lzNJdfZ+6PH6jS2kOoPJLgVmObJhM+mFreNhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VoyrM/KR; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1737549845; c=relaxed/relaxed;
+	bh=jh8SVQtreXAd9f2EQdtQsFo9Ny9dfUXCCYV7SLyWmpk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q5S5hxoROacAziPlAfzYEYvSvTw3JclqNHUQPgc/p/6EH0H1ABJ2VoGzMZqh8XFD/wzapMXQyw7iy9jWNMvA96NcAZ2u+x3/Tjh+a9oJvPoRRw5A7Yzv1Cute2wo39eFhUISGebN8xZm1o2pUtjxffuvKAVbmWnr0h5HA3UjWvljqxNRhXwaesdfRg3UJ5o11u+WqA/hQhshNW7GI6jgxlZzIU9arhUkcTjy5Nf5XMR1xlbl9lDyECd2K9BbDd+FH90v3bGWvnMYnwu8gPLgiNmcwmvQGSdlThu9fcb2bjOERxu8Bdw5/8aGRizmmf/lYaMQy4b52ORs8EPyBuH3Hw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pfiwbnbN; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VoyrM/KR;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=pfiwbnbN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YdNxX0y5zz2x9M
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 23:41:52 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 220FAA42532
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 12:40:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47251C4CEE5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 12:41:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737549708;
-	bh=/nRt7/FOVju0HHPP7y/y/GmcikIqd0uun9LCjQjrq7E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=VoyrM/KR3y6SyzXqcrUXIeXUzSXAukF1jTugO3Tp/XeZbDQsZz0btjWFVZexImUyA
-	 GNv9Ye0JlCb6LXyPS9Jx9MVxR+Wdtkk0Ms+qZSrA1Lr8Xe+0i9vU/ISeGtF/6vb7Vs
-	 1Uj3RovlFmNzqVfmuzQ82cCacT+Fx0ki2YqsVx1IY92F3iqqKCafCCMLWLqphwdRxg
-	 srLeLPCzyALTJw1qCRW7tcb44xO01Rx4zDtdApARN9p2pthq2z1LppbizS751cMHo9
-	 cZn++ylUYdHjeWMHwboi8qRzV/CerfY2kd1XCsOqWLze560AIlYM8svAXpyzid0N54
-	 v69z43CGgr7bQ==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-3022484d4e4so70972101fa.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 04:41:48 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVVUAzgPu8nHCRt6uW7RI7oOLTz63CNakD/nZWr5UuSCc7J4lmW7h1MuBfWQDV1GD2ifMSu2iH53FHMNV8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzDh0G8FIRyIIEh3uDO960mFL0pcxCLH4X4C6Kn5N4Sm9FqeVZM
-	G3FTZRzJtwR+iuBj0E9s7ncCsktuqwsPDvmeKEIJfHxAbT5aGPFkhRIWCSq0A1jvJwdW0Wujr0X
-	AWpsP7ilGdQ8p9oaP/ndS6Zxh6IA=
-X-Google-Smtp-Source: AGHT+IFcRSReB7hah7mapcirnp1PWu31SswN3BbR4HjBYPEG79Tzl030J0TjqkE7fYQS4xaDIi2/KgOUqh2J3fswv1A=
-X-Received: by 2002:a05:651c:2228:b0:302:4130:e19c with SMTP id
- 38308e7fff4ca-3072caa15c1mr71017091fa.19.1737549706586; Wed, 22 Jan 2025
- 04:41:46 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YdP045ZdZz2ytm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 22 Jan 2025 23:44:04 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50M2p20Y001360;
+	Wed, 22 Jan 2025 12:43:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jh8SVQ
+	treXAd9f2EQdtQsFo9Ny9dfUXCCYV7SLyWmpk=; b=pfiwbnbNUpfYBycY1VwTNy
+	hSr4TBSDrJTsSkYJHCXFmv4fU/PPJiTyY+xC2Of1N+9AHtGNW/AxJYiJP0XNXAyz
+	Mji9ydNURwOjHOri5olpv0KfzxpC0jtPYIaNgLxkdP7zhSP3hYJG3WroKgA/vMNY
+	L9f0OdqpX7mLs8LxakNSrqgVx1G7KBmHMqvS6B884xJp2BqekTFWtXzaKMXVC3d8
+	kVH4kQ1aCYH+QZFzDPKWtkaHZ3C+Lz67EIKAbW3MpAvnJBxMVlcrcrNiRdPqQDjl
+	Bn0jrvqWY/v17fl2AVThPXvmmQzIuwSeIvslfJK3pWFHwBvfQq/zmh6ur+M6WGlA
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44aduywfk3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 12:43:55 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50MBXwnN032290;
+	Wed, 22 Jan 2025 12:43:54 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 448rujr49b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 22 Jan 2025 12:43:54 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50MChlNU48497144
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 22 Jan 2025 12:43:47 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BF27020043;
+	Wed, 22 Jan 2025 12:43:47 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6EF4120040;
+	Wed, 22 Jan 2025 12:43:44 +0000 (GMT)
+Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.99.85])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 22 Jan 2025 12:43:44 +0000 (GMT)
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Avnish Chouhan <avnish@linux.ibm.com>
+Cc: mpe@ellerman.id.au, brking@linux.ibm.com, meghanaprakash@in.ibm.com,
+        sourabhjain@linux.ibm.com
+Subject: Re: [PATCH v2] powerpc: increase MIN RMA size for CAS negotiation
+Date: Wed, 22 Jan 2025 18:13:41 +0530
+Message-ID: <173754932979.1094869.8339209003148586969.b4-ty@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20241206065545.14815-1-avnish@linux.ibm.com>
+References: <20241206065545.14815-1-avnish@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,95 +86,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
- <Z4+jwDBrZNRgu85S@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com> <nslqrapp4v3rknjgtfk4cg64ha7rewrrg24aslo2e5jmxfwce5@t4chrpuk632k>
-In-Reply-To: <nslqrapp4v3rknjgtfk4cg64ha7rewrrg24aslo2e5jmxfwce5@t4chrpuk632k>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 22 Jan 2025 13:41:35 +0100
-X-Gmail-Original-Message-ID: <CAMj1kXEZPe8zk7s67SADK9wVH3cfBup-sAZSC6_pJyng9QT7aw@mail.gmail.com>
-X-Gm-Features: AbW1kvaDj3u8bGVj1m4rnYAkpiRSTpmPAB3bThAH-GyuG2Tmgw9okzkp1e58uCc
-Message-ID: <CAMj1kXEZPe8zk7s67SADK9wVH3cfBup-sAZSC6_pJyng9QT7aw@mail.gmail.com>
-Subject: Re: Re: [PATCH v2] treewide: const qualify ctl_tables where applicable
-To: Joel Granados <joel.granados@kernel.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>, =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-xe@lists.freedesktop.org, 
-	linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org, 
-	linux-serial@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev, 
-	codalist@coda.cs.cmu.edu, linux-mm@kvack.org, linux-nfs@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev, 
-	linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com, 
-	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org, 
-	Song Liu <song@kernel.org>, "Steven Rostedt (Google)" <rostedt@goodmis.org>, 
-	"Martin K. Petersen" <martin.petersen@oracle.com>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Jani Nikula <jani.nikula@intel.com>, Corey Minyard <cminyard@mvista.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: lkscvgzdttowoJ47BLZRMoq1uZAVpSHz
+X-Proofpoint-GUID: lkscvgzdttowoJ47BLZRMoq1uZAVpSHz
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-22_05,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 impostorscore=0
+ adultscore=0 priorityscore=1501 spamscore=0 lowpriorityscore=0
+ suspectscore=0 clxscore=1015 bulkscore=0 malwarescore=0 mlxlogscore=356
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501220093
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 22 Jan 2025 at 13:25, Joel Granados <joel.granados@kernel.org> wrote:
->
-> On Tue, Jan 21, 2025 at 02:40:16PM +0100, Alexander Gordeev wrote:
-> > On Fri, Jan 10, 2025 at 03:16:08PM +0100, Joel Granados wrote:
-> >
-> > Hi Joel,
-> >
-> > > Add the const qualifier to all the ctl_tables in the tree except for
-> > > watchdog_hardlockup_sysctl, memory_allocation_profiling_sysctls,
-> > > loadpin_sysctl_table and the ones calling register_net_sysctl (./net,
-> > > drivers/inifiniband dirs). These are special cases as they use a
-> > > registration function with a non-const qualified ctl_table argument or
-> > > modify the arrays before passing them on to the registration function.
-> > >
-> > > Constifying ctl_table structs will prevent the modification of
-> > > proc_handler function pointers as the arrays would reside in .rodata.
-> > > This is made possible after commit 78eb4ea25cd5 ("sysctl: treewide:
-> > > constify the ctl_table argument of proc_handlers") constified all the
-> > > proc_handlers.
-> >
-> > I could identify at least these occurences in s390 code as well:
-> Hey Alexander
->
-> Thx for bringing these to my attention. I had completely missed them as
-> the spatch only deals with ctl_tables outside functions.
->
-> Short answer:
-> These should not be included in the current patch because they are a
-> different pattern from how sysctl tables are usually used. So I will not
-> include them.
->
-> With that said, I think it might be interesting to look closer at them
-> as they seem to be complicating the proc_handler (I have to look at them
-> closer).
->
-> I see that they are defining a ctl_table struct within the functions and
-> just using the data (from the incoming ctl_table) to forward things down
-> to proc_do{u,}intvec_* functions. This is very odd and I have only seen
-> it done in order to change the incoming ctl_table (which is not what is
-> being done here).
->
-> I will take a closer look after the merge window and circle back with
-> more info. Might take me a while as I'm not very familiar with s390
-> code; any additional information on why those are being used inside the
-> functions would be helpfull.
->
+On Fri, 06 Dec 2024 12:25:45 +0530, Avnish Chouhan wrote:
+> Change RMA size from 512 MB to 768 MB which will result
+> in more RMA at boot time for PowerPC. When PowerPC LPAR use/uses vTPM,
+> Secure Boot or FADump, the 512 MB RMA memory is not sufficient for
+> booting. With this 512 MB RMA, GRUB2 run out of memory and unable to
+> load the necessary. Sometimes even usage of CDROM which requires more
+> memory for installation along with the options mentioned above troubles
+> the boot memory and result in boot failures. Increasing the RMA size
+> will resolves multiple out of memory issues observed in PowerPC.
+> 
+> [...]
 
-Using const data on the stack is not as useful, because the stack is
-always mapped writable.
+Applied to powerpc/next.
 
-Global data structures marked 'const' will be moved into an ELF
-section that is typically mapped read-only in its entirely, and so the
-data cannot be modified by writing to it directly. No such protection
-is possible for the stack, and so the constness there is only enforced
-at compile time.
+[1/1] powerpc: increase MIN RMA size for CAS negotiation
+      https://git.kernel.org/powerpc/c/ae908b87b6bb32c170e9baf5858f2a7553cacc06
+
+Thanks
 
