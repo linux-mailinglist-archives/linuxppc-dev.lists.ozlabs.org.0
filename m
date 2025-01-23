@@ -1,69 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-5530-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5531-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B9D0A1AA12
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 20:11:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1D3CA1AA74
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 20:41:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yf9Xf2yQpz30Gq;
-	Fri, 24 Jan 2025 06:11:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YfBBx0qHdz30HP;
+	Fri, 24 Jan 2025 06:41:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1033"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737659490;
-	cv=none; b=htODncKoy+kMf/jS2Osk15cV/rTbnxMmlma2Im6HzHmerW7n3FRkcEW1161TyJslpgToXrmZlVmhyY/7pMwa9Hx78VAJfjAWe0qlwob+ZJ0o+fkK5dg8u08GcCYPcokPV6VrdBPZhVa4PDuocFtBUz/WNvtkW+fngN7SPczJB0xSmJyJ7WhKblV9ew/9SXSza9bfAVD7rHa3r6SPt6vZKFTpg5cATQTiFMs6LUGFtLSXLJ5jhxvp+jqI72SDyIo5LCHDvfFfXOeWyVQzHN1OBLPbBwfKLEfG9QYoBoSemo+raRIeLyf2sPVeKnqsgapmdj0FK9ttbAeU6Bsqk/xecA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737661273;
+	cv=none; b=We2b0dNCKoaSfjOn/GXyeE7+4eb3QiVWHA7D/fp4wGGBweVJL7efttEIFOsDkWHZFOxLba4XDVTJLPFSzM2kUjauYyN48W8ZK0WmwmyhCHCjxXQ3POPofaKzgEZP97uSdCX4SEVnQ1ZFRl9ZfeBPq1lcq0as+4p0LSUYUaUjt/wKpqqQIhPw/iei+LM+JdeRrteHIDOYk8WIbFYoeQlVbVkqEusztlTm2P0QbVrgXs4WjJtFmvz/vBOHXCWpAfJedoKXvqvkvza+sK3zHL/vk45rEUWq1Q+zRVC9i1d29JlLgGwcFus8nkp/UiIU1VtAutn76XPfaW/zo1xeFNpPpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737659490; c=relaxed/relaxed;
-	bh=6JNHKj5uig/YqluTsbwA50ILrASTBtg5feg1KazBQVc=;
+	t=1737661273; c=relaxed/relaxed;
+	bh=EIZXj0NQXlFQEJN+NUiNBmBZ8xZyeEtXhJlqzjffnhQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FcDMjaqexbzLkZWjoehvQQsUoCFZJO6mWdiJi+uRQgMtuSSN8aLQtqXGgf/tOPXxjSK3ef1clv1QHPeJfNCAMUQLRe6q1TDgvK8tDRligxc+zh8jexe8/yLKna0h5WdYJwLo/0AOjKeMAF0CnW49orO9ZVeMpP6h/EBMkfok38avNSp/gSCLdFN1XYt8u4aaMZR32TjIF3HVAV/Sd67f8hGqXVlH+natoiej3Emp3or6cq8k1j2VfLn2Cxd+5gHICO8ToF9WzQr0Y/A6MC+MmS3TjawzNN73+5Dkj0S2OMce4QS3rAnumRYhVd8633Kcbvxc72j/U6hZkIevxX5Dww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GJCDHc1o; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=evgsyr@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	 To:Cc:Content-Type; b=mCxSU9qnhuHG1F4sXuOJoXLahiFmMqB07NrKMhKd1g2C1egLXeLxLRbYEj8QT599dxkF5Yqdir1cxdkuqK/bpBPWwh4NVhtgvYgsmW1SIC+MDpkY/FttzdnWquG8dBXFhieEQ3/ggG06F1OrHy4IE1eoNhycdf9DmOoAjg1bsoSCWT/AbWHpSSfMwsBwyClZD6dIZU9NxxJbYfAMasJ1en65flgsk4SJClmN5GzXHqoZWzGjTWlP+uf5WGYGvcF70QIHltA3G1PG1YbOLqZbuQ+Qahw0xSLnIlGy5XRuNFnkQiplLfRG4O4svRmpVBjXpuec93maz8SUL5HcVw5DiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GE9Gsa7i; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=GJCDHc1o;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GE9Gsa7i;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1033; helo=mail-pj1-x1033.google.com; envelope-from=evgsyr@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rafael@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yf9Xc4PG6z30DV
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 06:11:27 +1100 (AEDT)
-Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-2ee8e8e29f6so1982152a91.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 11:11:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1737659485; x=1738264285; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6JNHKj5uig/YqluTsbwA50ILrASTBtg5feg1KazBQVc=;
-        b=GJCDHc1oBEyo7sC10GAgpNzl/8IqMd5Bmg3nhjBSsBslVxbhT0OLqhMEWoKGI7c/4E
-         5Gtyt4cBGlnc+IqXjgyAlIAQVveqhi0e62u423ljym8Z0638aL/R18x20KdN9EPNOvIo
-         IznJ4obtITZSXkYVBZYuJQ+JzHlB1/TxxfVNDZIRZlR9v3aMY0E/1fVC1y2/kMJYNOy6
-         JxXpr4ng2KUo7OvZfG1PDW/MwMxtCHpNxzms5a+aziazWnZPUx0A+Z6QHshfIc5/0aG8
-         jUNZby6QpNxrP427OMTXT2L5K2SF99awxxXXxPdxgsj+TqgCQH7affELNTjiu+fgknty
-         HlEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737659485; x=1738264285;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6JNHKj5uig/YqluTsbwA50ILrASTBtg5feg1KazBQVc=;
-        b=IXmu2HpMslSWQOBxSPDt0x2oftgAa6jfomiAUxagqcZYjbMFuWMJPD9JGRDmtPieBv
-         vdpznRI2TUbGrcRQjs8bFSWO4eNTS9Jfbe7BEZppPpiBIBDqeQH0YcPDehhQLm2xSUYT
-         kHY1kcoBchUwKg2QblkRyODJg+iHTLjap/L+l7j4C2i3MhjeLVVWw2bayJEtfzBX5spJ
-         vLoN8jADzTiVvTB1vdg3mNnjV+YyzyF6x8YVL2WxyPSnu7BYOOJXh7qn/5MV/mhlZsMM
-         0t1g/JAf2Um6tXXWmOYvczQv8FmLCKQ5dAhr68DjYL/BOz5dTtuE3NlFc716b+b4eScZ
-         r9yg==
-X-Forwarded-Encrypted: i=1; AJvYcCVKyUTIgxwt8OHoEP9/cWBKEf3q4ByR6H5U29jgpyclUdSjkoGWI+2j5T40TpxsDDShWWdlJ6vx/wYYX88=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyowHJVeenkUXnVexSHP741Sm+Vr8qf45GNUyy2pyL4AmmMtIgD
-	4Z2LTUbEZebTZ3ABBED50q6VqSnN7T0Jj5HOJ+oAI+/SUjpJrctVDF22/TMP4QcNoilsB2lLWgP
-	SltWoeXjsNfmeD6y1/BnqP/Zaako=
-X-Gm-Gg: ASbGncvzFrrtX/nCXGhfCADc8O/LA9UBFjJIgRNG/l69nmmcUBEDq/m+I+G3Uf90jDx
-	yRx7hYZl34ZthRmMSFUYUKomyY/IhAbLDAqxG8SCxoHjHBLV81litz6YrRMgJAWL252OIMr5k
-X-Google-Smtp-Source: AGHT+IFD9++RFPHYhWrtVVXBxmWB1PT0sGrKkCjtHtQsGlwW0SCJyHVypMeZ6hk6fsahDmfX8TmPAnvtpwCu+xtDOBI=
-X-Received: by 2002:a17:90b:520d:b0:2ee:8e75:4ae1 with SMTP id
- 98e67ed59e1d1-2f782cbfcadmr36089264a91.21.1737659485345; Thu, 23 Jan 2025
- 11:11:25 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YfBBw0m20z30Gy
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 06:41:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9DB105C5B5A
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 19:40:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43914C4CEEF
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 19:41:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737661268;
+	bh=FzgMlZoMTVJxW0DtNfnaS6A9Ohe9wUCQbfRzCAOE11Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=GE9Gsa7iiU444KpkYxrogoBdZowGSjkyO0k7laPoPcoq6g3XxCe0poALteq4R4Zph
+	 tZ3ytakM0acv90IqA3t/Tq+HIhgvttRHrxIMc4+ftcYx59CQekJex95lkIBya9MuSj
+	 e8hgK78Mvi+bBQYrsrlD41mZ7vaA3+PkczkIp5mOMTvpFuEkiNLQOfTC7I53w3Jpp9
+	 jdf7sxICX3pGKHys55ON+N8sg3msEwZ1hAbYoGP7MqRskWyhGBaMTolzt8pF6nm7po
+	 ccEaxXFbs1MchzhtSnnv0PMPk6yc1GTQLhaCumG8Mkicq84A+N5GxqwlpPfo2bFwbT
+	 FHvlAO5Y9gebg==
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3eba559611aso380844b6e.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 11:41:08 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUeNM8FylhHvFGk47BoZB7Q3EjMman7l7pnR2hdTYvy9mY6ynp5BqddJ4NujTngkUzTDMaj5Hu+MNxVGyI=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwB8MeqLtZjOLkfTgUUqpSxuXZf1KgNeu5dfllh31utL0z1j5Aj
+	WAOwGsZ6PzZRTCcAUAtF5YjkSbtj3BdK53IDFfos/Xgtbp48eOjfcUfQNJ8JECuBZ0nknEZknWB
+	g5tQakHqa2mvIpifkLZlAjmTRxlE=
+X-Google-Smtp-Source: AGHT+IFEZLpokzQrSZWtE1aUlhzheSpv16W1XbXdM7wOE5P8c+MPFR4VPEp6oVT06Ebj/5DfcgalM7sIG87OhMAknWU=
+X-Received: by 2002:a05:6808:309c:b0:3ea:519e:cc71 with SMTP id
+ 5614622812f47-3f19fd7beb4mr15987065b6e.39.1737661267410; Thu, 23 Jan 2025
+ 11:41:07 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,76 +65,155 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250113171054.GA589@strace.io> <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
- <20250114170400.GB11820@strace.io> <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
- <20250123182815.GA20994@strace.io>
-In-Reply-To: <20250123182815.GA20994@strace.io>
-From: Eugene Syromyatnikov <evgsyr@gmail.com>
-Date: Thu, 23 Jan 2025 20:11:44 +0100
-X-Gm-Features: AWEUYZkFqnfrMLmQHHqcu4Y2mkYVWA4BZtsX9neMR1Kcef_h71o5OVO4st5cnVU
-Message-ID: <CACGkJduSVLThnZkVFc0aJWjwD5AdBPmXLvZsqy2UxEVRrLm7EA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in syscall_set_return_value()
-To: "Dmitry V. Levin" <ldv@strace.io>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Alexey Gladkov <legion@kernel.org>, 
-	Oleg Nesterov <oleg@redhat.com>, Michael Ellerman <mpe@ellerman.id.au>, Mike Frysinger <vapier@gentoo.org>, 
-	Renzo Davoli <renzo@cs.unibo.it>, Davide Berardi <berardi.dav@gmail.com>, strace-devel@lists.strace.io, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
+References: <cover.1737631669.git.viresh.kumar@linaro.org>
+In-Reply-To: <cover.1737631669.git.viresh.kumar@linaro.org>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Thu, 23 Jan 2025 20:40:56 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0gQDxb0-a5HiEa0vyWCGz01esQBy1fJ4vNXDZJ=GW1W+Q@mail.gmail.com>
+X-Gm-Features: AWEUYZmJBrMCqL-riW-i0DlJyFI1cRh2mxShaIBztS2B8ipvq-I9aavy-zqQjVc
+Message-ID: <CAJZ5v0gQDxb0-a5HiEa0vyWCGz01esQBy1fJ4vNXDZJ=GW1W+Q@mail.gmail.com>
+Subject: Re: [PATCH 00/33] cpufreq: manage common sysfs attributes from core
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Cristian Marussi <cristian.marussi@arm.com>, 
+	Fabio Estevam <festevam@gmail.com>, Florian Fainelli <florian.fainelli@broadcom.com>, 
+	Hector Martin <marcan@marcan.st>, Huacai Chen <chenhuacai@kernel.org>, 
+	Jiaxun Yang <jiaxun.yang@flygoat.com>, Jonathan Hunter <jonathanh@nvidia.com>, 
+	Kevin Hilman <khilman@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Markus Mayer <mmayer@broadcom.com>, Matthias Brugger <matthias.bgg@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>, 
+	Nicholas Piggin <npiggin@gmail.com>, Pengutronix Kernel Team <kernel@pengutronix.de>, 
+	Sascha Hauer <s.hauer@pengutronix.de>, Shawn Guo <shawnguo@kernel.org>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Sven Peter <sven@svenpeter.dev>, 
+	Thierry Reding <thierry.reding@gmail.com>, WANG Xuerui <kernel@xen0n.name>, linux-pm@vger.kernel.org, 
+	Vincent Guittot <vincent.guittot@linaro.org>, arm-scmi@vger.kernel.org, 
+	asahi@lists.linux.dev, imx@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mediatek@lists.infradead.org, 
+	linux-mips@vger.kernel.org, linux-omap@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-tegra@vger.kernel.org, 
+	loongarch@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Jan 23, 2025 at 7:28=E2=80=AFPM Dmitry V. Levin <ldv@strace.io> wro=
-te:
-> Indeed, there is an inconsistency in !trap_is_scv case.
+On Thu, Jan 23, 2025 at 12:38=E2=80=AFPM Viresh Kumar <viresh.kumar@linaro.=
+org> wrote:
 >
-> In some places such as syscall_get_error() and regs_return_value() the
-> semantics is as I described earlier: gpr[3] contains a positive ERRORCODE
-> and ccr has 0x10000000 flag set.  This semantics is a part of the ABI and
-> therefore cannot be changed.
+> Hello,
 >
-> In some other places like do_seccomp() and do_syscall_trace_enter() the
-> semantics is similar to the trap_is_scv case: gpr[3] contains a negative
-> ERRORCODE and ccr is unchanged.  In addition, system_call_exception()
-> returns the system call function return value when it is executed, and
-> gpr[3] otherwise.  The value returned by system_call_exception() is passe=
-d
-> on to syscall_exit_prepare() which performs the conversion you mentioned.
+> Most of the drivers add available and boost frequencies related attribute=
+s. This
+> patch series tries to avoid duplication and simplify driver's code by man=
+aging
+> these from core code.
 >
-> What's remarkable is that in those places that are a part of the ABI the
-> traditional semantics is kept, while in other places the implementation
-> follows the trap_is_scv-like semantics, while traditional semantics is
-> also supported there.
+> A quick search revealed that only the drivers that set the
+> policy->freq_table field, enable these attributes. Which makes sense as
+> well, since the show_available_freqs() helper works only if the
+> freq_table is present.
 >
-> The only case where I see some intersection is do_seccomp() where the
-> tracer would be able to see -ENOSYS in gpr[3].  However, the seccomp stop
-> is not the place where the tracer *reads* the system call exit status,
-> so whatever was written in gpr[3] before __secure_computing() is not
-> really relevant, consequently, selftests/seccomp/seccomp_bpf passes with
-> this patch applied as well as without it.
+> In order to simplify drivers, create the relevant sysfs files forcefully
+> from cpufreq core.
 >
-> After looking at system_call_exception() I doubt this inconsistency can b=
-e
-> easily avoided, so I don't see how this patch could be enhanced further,
-> and what else could I do with the patch besides dropping it and letting
-> !trap_is_scv case be unsupported by PTRACE_SET_SYSCALL_INFO API, which
-> would be unfortunate.
+> Pushed here:
+>
+> git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git cpufreq/core=
+-attr
 
-The semantics of r3 on syscall return (including the negatedness of
-the errno value) is documented in [1] (at least for the 64-bit case,
-but I conjecture the 32-bit one is the same, sans the lack of the v2
-ABI and scv there), so I would suggest to consider any deviation from
-that a kernel programming error to be fixed.
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
 
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree=
-/Documentation/arch/powerpc/syscall64-abi.rst?id=3Dv6.13#n30
+for the series.
 
---=20
-Eugene Syromyatnikov
-mailto:evgsyr@gmail.com
-xmpp:esyr@jabber.{ru|org}
+Thanks!
+
+> --
+> Viresh
+>
+> Viresh Kumar (33):
+>   cpufreq: Always create freq-table related sysfs file
+>   cpufreq: dt: Stop setting cpufreq_driver->attr field
+>   cpufreq: acpi: Stop setting common freq attributes
+>   cpufreq: apple: Stop setting cpufreq_driver->attr field
+>   cpufreq: bmips: Stop setting cpufreq_driver->attr field
+>   cpufreq: brcmstb: Stop setting common freq attributes
+>   cpufreq: davinci: Stop setting cpufreq_driver->attr field
+>   cpufreq: e_powersaver: Stop setting cpufreq_driver->attr field
+>   cpufreq: elanfreq: Stop setting cpufreq_driver->attr field
+>   cpufreq: imx6q: Stop setting cpufreq_driver->attr field
+>   cpufreq: kirkwood: Stop setting cpufreq_driver->attr field
+>   cpufreq: longhaul: Stop setting cpufreq_driver->attr field
+>   cpufreq: loongson: Stop setting cpufreq_driver->attr field
+>   cpufreq: mediatek: Stop setting cpufreq_driver->attr field
+>   cpufreq: omap: Stop setting cpufreq_driver->attr field
+>   cpufreq: p4: Stop setting cpufreq_driver->attr field
+>   cpufreq: pasemi: Stop setting cpufreq_driver->attr field
+>   cpufreq: pmac: Stop setting cpufreq_driver->attr field
+>   cpufreq: powernow: Stop setting cpufreq_driver->attr field
+>   cpufreq: powernv: Stop setting common freq attributes
+>   cpufreq: qcom: Stop setting cpufreq_driver->attr field
+>   cpufreq: qoriq: Stop setting cpufreq_driver->attr field
+>   cpufreq: sc520_freq: Stop setting cpufreq_driver->attr field
+>   cpufreq: scmi: Stop setting cpufreq_driver->attr field
+>   cpufreq: scpi: Stop setting cpufreq_driver->attr field
+>   cpufreq: sh: Stop setting cpufreq_driver->attr field
+>   cpufreq: spear: Stop setting cpufreq_driver->attr field
+>   cpufreq: speedstep: Stop setting cpufreq_driver->attr field
+>   cpufreq: tegra: Stop setting cpufreq_driver->attr field
+>   cpufreq: vexpress: Stop setting cpufreq_driver->attr field
+>   cpufreq: virtual: Stop setting cpufreq_driver->attr field
+>   cpufreq: Remove cpufreq_generic_attrs
+>   cpufreq: Stop checking for duplicate available/boost freq attributes
+>
+>  drivers/cpufreq/acpi-cpufreq.c         |  1 -
+>  drivers/cpufreq/apple-soc-cpufreq.c    |  8 --------
+>  drivers/cpufreq/bmips-cpufreq.c        |  1 -
+>  drivers/cpufreq/brcmstb-avs-cpufreq.c  |  1 -
+>  drivers/cpufreq/cpufreq-dt.c           |  8 --------
+>  drivers/cpufreq/cpufreq.c              | 15 +++++++++++++++
+>  drivers/cpufreq/davinci-cpufreq.c      |  1 -
+>  drivers/cpufreq/e_powersaver.c         |  1 -
+>  drivers/cpufreq/elanfreq.c             |  1 -
+>  drivers/cpufreq/freq_table.c           |  8 --------
+>  drivers/cpufreq/imx6q-cpufreq.c        |  1 -
+>  drivers/cpufreq/kirkwood-cpufreq.c     |  1 -
+>  drivers/cpufreq/longhaul.c             |  1 -
+>  drivers/cpufreq/loongson2_cpufreq.c    |  1 -
+>  drivers/cpufreq/loongson3_cpufreq.c    |  1 -
+>  drivers/cpufreq/mediatek-cpufreq-hw.c  |  1 -
+>  drivers/cpufreq/mediatek-cpufreq.c     |  1 -
+>  drivers/cpufreq/omap-cpufreq.c         |  1 -
+>  drivers/cpufreq/p4-clockmod.c          |  1 -
+>  drivers/cpufreq/pasemi-cpufreq.c       |  1 -
+>  drivers/cpufreq/pmac32-cpufreq.c       |  1 -
+>  drivers/cpufreq/pmac64-cpufreq.c       |  1 -
+>  drivers/cpufreq/powernow-k6.c          |  1 -
+>  drivers/cpufreq/powernow-k7.c          |  1 -
+>  drivers/cpufreq/powernow-k8.c          |  1 -
+>  drivers/cpufreq/powernv-cpufreq.c      |  2 --
+>  drivers/cpufreq/qcom-cpufreq-hw.c      |  7 -------
+>  drivers/cpufreq/qoriq-cpufreq.c        |  1 -
+>  drivers/cpufreq/sc520_freq.c           |  1 -
+>  drivers/cpufreq/scmi-cpufreq.c         |  8 --------
+>  drivers/cpufreq/scpi-cpufreq.c         |  1 -
+>  drivers/cpufreq/sh-cpufreq.c           |  1 -
+>  drivers/cpufreq/spear-cpufreq.c        |  1 -
+>  drivers/cpufreq/speedstep-centrino.c   |  1 -
+>  drivers/cpufreq/speedstep-ich.c        |  1 -
+>  drivers/cpufreq/speedstep-smi.c        |  1 -
+>  drivers/cpufreq/tegra186-cpufreq.c     |  1 -
+>  drivers/cpufreq/tegra194-cpufreq.c     |  1 -
+>  drivers/cpufreq/vexpress-spc-cpufreq.c |  1 -
+>  drivers/cpufreq/virtual-cpufreq.c      |  1 -
+>  include/linux/cpufreq.h                |  1 -
+>  41 files changed, 15 insertions(+), 75 deletions(-)
+>
+> --
+> 2.31.1.272.g89b43f80a514
+>
 
