@@ -1,71 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-5511-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE76A1A39F
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 12:53:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AB6DA1A3CB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 13:08:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ydzq75rxhz305Y;
-	Thu, 23 Jan 2025 22:53:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yf08B4Mcnz305m;
+	Thu, 23 Jan 2025 23:08:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737633203;
-	cv=none; b=SWH8xk/TvrGv7UGwL7CwUJLk9hi6tr6WOhk1IDoPrrCZwkKrdYgB+CkVEi+OBswRFZBrq/iQ9fITB+CCsxXbeBuYUcugUbwN04V1NdvlSFqXmjCcrKBgzQZojswBBvniBMVuNW7NrEYWts0K8uywiR4PpyPEwr8pM+o8QKVdPPlNCQMCyk9UeWI5hLm/l9G2S6y+agoGDmGefdWoG4VmmYelzIOIZqBjG5sxzwwmVESQBF0NBGGOsz9+wzA1VElHzEj1IIrfQscVQWkFIWd7PrKKoRcWbSO75lUqoe5o4TgC67ErIH1AfeRl74pIsSrzF9PMhLTNGJVbRuzrefOtOA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737634090;
+	cv=none; b=Ac/b/lyZL+DRYp61p1g6xrIniviwEu9B5NLRkvbI0Evm1a32oaFyeITW2Xpg4EKUzlHN0mo228iwdlvwhtDiTftVcVHKAwe5bvv+qzoKEC/S/V5FhZp2lo0IJSc6i3HnNl2RR7TUpSrWxrSDE6hltGNuhghECojPyzG9Jye/2BNC3MwktFjPymKVO3MxxAnQ4nqkM/ROXQrjFVD7iq5nNhNNGYsZE8dNWLqJz+NQ40exvAe9wxMfvgbSVUyGrUkIFPbooK/m+JoWEnZnVaq/1ZeIcxzn1H5wN7gyv/JiLzvwIXv4e1+gXBDxLiMKHe2azWSB3j3zM3xciz0HZsxkpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737633203; c=relaxed/relaxed;
-	bh=zYqQJ0RlScW1AWoz1ZDTT9p8Jxg1S0uJj18dKwChOVA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NfP+H47Nvd+jKsHShgMVLWv0pDmLGaw3yPphIJuCUNeMFZvr+r/HUJpar9asrZkxnHm6XLpjtoIrVQ2eqgAbabMPh+IW61yZ4FDg2ka1IP122yjfmR7GrBFlPC7tW7/Bvfa4+OEttY+TyMjJ+9HfgsIhH+UQY/zBTwhvpToaqg962gIyaDtRMfeUJH37bVNhPofKzRni/QZ10ry1TxsLCO2yIuOoYpiD1kyBtVs6SY/dnHl0A15OKg73Ud04IPGJONhjWNBVC14iSQ8UafjdP4wusqBU1FVmCh7SXuUGXu1sSbLUENJEP5n2jponocuWob0ZlEGIMtLETlnKUCKB/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ir36ju4r; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1737634090; c=relaxed/relaxed;
+	bh=k9TF4LdNoTfux9z59A4nZezKZsPHoLTSOLGWHHnHd18=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QLd3/uG1zSIhC8rtXxBpGpgAFHEOlpJVE9uzxrJwECLHkotIV2Srayjgv/NiBpGlc6AqCPvgTJeEk1MuOdai0Y7KVNteOjDWiJV2n6HG9MOzvdo6RoZzMLVRSLeIE1CS/cESmRuQXrAaD/yK4cF8j5pFfLedDsqt9YK/M+agdzLaGTQhzdtaz6KqE8v/SgtRey8fKQIa2sLazGvEt9l2PxTwIGDfcNll0bCPLgI9OlOe/ZaqNThGQIQbbBmhg359cHE/Z4WD/jMws2eeHhpm9C4z/YYS1xKaQUS8cKx8AtKXwoJkc/BajXDCdETnU0IkFZDg52c1CoPd8yHmC+5N8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YvLI/Dxj; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Ir36ju4r;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YvLI/Dxj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ydzq64JGZz305D
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 22:53:22 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N2Eprd016750;
-	Thu, 23 Jan 2025 11:53:12 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yf0894vb4z305G
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 23:08:08 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N20miY014245;
+	Thu, 23 Jan 2025 12:07:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=zYqQJ0
-	RlScW1AWoz1ZDTT9p8Jxg1S0uJj18dKwChOVA=; b=Ir36ju4rmfKT0IOBQHvOzK
-	9KX9gTl89njzpfaypAtUtOGUuJo1IvDv26jJJwJhjW1vDeXhoK3aJTAkcAQt7RNE
-	q/qddu1nrQE+jA8TeQTazWJo2AuJ6utPqc1FRFhXSo65S2UayF1MY4szPE7IzKxM
-	x3BXnguvIcgFia5IjKD1bNTJIJNVIb5NXvZ3VAlJUB/26pdxwXqpudD+R2Cbh/F/
-	mj5x/2m8Ts95NcyQNuqexjWY3u7vxsIB43OZcVNN62QcLd47he24zB3OFj4+A/Eq
-	n5VDIf+JwW88HfxOeFTYmz+lxUA051MPxfMLsMLh7ilWLkE91eRKv/1UYfsN4ELQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44b3gtvtys-1
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=k9TF4LdNoTfux9z59A4nZezKZsPHoLTSOLGWHHnHd
+	18=; b=YvLI/DxjoMwyvJPtIDiCZWPmHdFAxpsjvBGHe1WSjhjUP4Yqz+zarPkxB
+	MeD5UycDFk0oqYuga9hPrCJ8e1yJg7uAwWBJVOSR4x7mgwk+r+UftyKYEwKlZ65M
+	Dw7F/MQTG5eok/CrZHKjarXnYFvNWWRFYY6Lao2+67dphIK2u5WtFNChB5AGhtq0
+	tCTSxErB7jdvm1fA9y4YBm/SMW0eHFyS526e6HUgxwoZOBOkBd89mQ2+txWrsBbn
+	t3JznydWIF+J22/cmMB0gTioHyCP1pU3T1xQvghzfrRb4urfR9qkFxfPs85Uyy4U
+	ydXD9pFco0iVjOYS3Bcyns0i5Higw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bckyte8s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 11:53:11 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50N8P696032223;
-	Thu, 23 Jan 2025 11:53:11 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 448rujw0xx-1
+	Thu, 23 Jan 2025 12:07:59 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50NC029N017314;
+	Thu, 23 Jan 2025 12:07:59 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bckyte8q-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 11:53:10 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50NBr7UQ20709858
+	Thu, 23 Jan 2025 12:07:59 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50NAAAuk024240;
+	Thu, 23 Jan 2025 12:07:58 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448q0ydj6g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 12:07:58 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50NC7sGP33292682
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jan 2025 11:53:07 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4D7262004B;
-	Thu, 23 Jan 2025 11:53:07 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 502FE20040;
-	Thu, 23 Jan 2025 11:53:05 +0000 (GMT)
-Received: from [9.109.204.94] (unknown [9.109.204.94])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 23 Jan 2025 11:53:05 +0000 (GMT)
-Message-ID: <10b22e23-7865-424d-95d2-eeab366e7cc3@linux.ibm.com>
-Date: Thu, 23 Jan 2025 17:23:04 +0530
+	Thu, 23 Jan 2025 12:07:54 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7DC442004B;
+	Thu, 23 Jan 2025 12:07:54 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 03C6920043;
+	Thu, 23 Jan 2025 12:07:51 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.124.210.34])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu, 23 Jan 2025 12:07:50 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Thu, 23 Jan 2025 17:37:50 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, gautam@linux.ibm.com
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, kconsul@linux.ibm.com, amachhiw@linux.ibm.com
+Subject: [PATCH v3 0/6] kvm powerpc/book3s-hv: Expose Hostwide counters as perf-events
+Date: Thu, 23 Jan 2025 17:37:42 +0530
+Message-ID: <20250123120749.90505-1-vaibhav@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,292 +95,155 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 5/6] powerpc/crash: use generic crashkernel reservation
-To: Hari Bathini <hbathini@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: Andrew Morton <akpm@linux-foundation.org>, Baoquan he <bhe@redhat.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Mahesh Salgaonkar <mahesh@linux.ibm.com>
-References: <20250121115442.1278458-1-sourabhjain@linux.ibm.com>
- <20250121115442.1278458-6-sourabhjain@linux.ibm.com>
- <79ecc981-f2ac-44b0-8e36-70e9d01df3ba@linux.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <79ecc981-f2ac-44b0-8e36-70e9d01df3ba@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UKHgEB5IDP49E_JYhgJ71iMuNxcZGXEp
-X-Proofpoint-GUID: UKHgEB5IDP49E_JYhgJ71iMuNxcZGXEp
+X-Proofpoint-GUID: RBV3z6SesUUJmfH8PZnqUW3wtcNFwnLK
+X-Proofpoint-ORIG-GUID: G8xwnBqnBpg2Pv2xurdYZiJBs69R3zxP
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-01-23_05,2025-01-22_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- bulkscore=0 mlxscore=0 malwarescore=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 mlxlogscore=999 phishscore=0
- spamscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501230087
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ clxscore=1015 mlxscore=0 impostorscore=0 lowpriorityscore=0 adultscore=0
+ suspectscore=0 mlxlogscore=999 malwarescore=0 phishscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501230091
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Hari,
+Changes from v2
+Link: https://lore.kernel.org/all/20250115143948.369379-1-vaibhav@linux.ibm.com/
+* Fixed a build warning reported by kernel test robot at [4]
+* Fixed minor nit in documentation patch [Gautam]
+* Fixed a redundant branch in kvmppc_init_hostwide()  [Gautam]
+* Proposed v2 of Qemu-TCG emulation for Hostwide counters [3]
+=======
 
+This patch-series adds support for reporting Hostwide(L1-Lpar) counters via
+perf-events. With the support for running KVM Guest in a PSeries-Lpar using
+nested-APIv2 via [1], the underlying L0-PowerVM hypervisor holds some state
+information pertaining to all running L2-KVM Guests in an L1-Lpar. This
+state information is held in a pre-allocated memory thats owned by
+L0-PowerVM and is termed as Guest-Management-Area(GMA). The GMA is
+allocated per L1-LPAR and is only allocated if the lpar is KVM enabled. The
+size of this area is a fixed percentage of the memory assigned to the KVM
+enabled L1-lpar and is composed of two major components, Guest Management
+Space(Host-Heap) and Guest Page Table Management Space(Host-Pagetable).
 
-On 23/01/25 16:15, Hari Bathini wrote:
-> Hi Sourabh,
->
-> On 21/01/25 5:24 pm, Sourabh Jain wrote:
->> Commit 0ab97169aa05 ("crash_core: add generic function to do
->> reservation") added a generic function to reserve crashkernel memory.
->> So let's use the same function on powerpc and remove the
->> architecture-specific code that essentially does the same thing.
->>
->> The generic crashkernel reservation also provides a way to split the
->> crashkernel reservation into high and low memory reservations, which can
->> be enabled for powerpc in the future.
->>
->> Along with moving to the generic crashkernel reservation, the code
->> related to finding the base address for the crashkernel has been
->> separated into its own function name get_crash_base() for better
->> readability and maintainability.
->>
->> To prevent crashkernel memory from being added to iomem_resource, the
->> function arch_add_crash_res_to_iomem() has been introduced. For further
->> details on why this should not be done for the PowerPC architecture,
->> please refer to the previous commit titled "crash: let arch decide crash
->> memory export to iomem_resource.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Baoquan he <bhe@redhat.com>
->> Cc: Hari Bathini <hbathini@linux.ibm.com>
->> CC: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: kexec@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> ---
->>   arch/powerpc/Kconfig                     |  3 +
->>   arch/powerpc/include/asm/crash_reserve.h | 18 +++++
->>   arch/powerpc/include/asm/kexec.h         |  4 +-
->>   arch/powerpc/kernel/prom.c               |  2 +-
->>   arch/powerpc/kexec/core.c                | 90 ++++++++++--------------
->>   5 files changed, 63 insertions(+), 54 deletions(-)
->>   create mode 100644 arch/powerpc/include/asm/crash_reserve.h
->>
->> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
->> index db9f7b2d07bf..880d35fadf40 100644
->> --- a/arch/powerpc/Kconfig
->> +++ b/arch/powerpc/Kconfig
->> @@ -718,6 +718,9 @@ config ARCH_SUPPORTS_CRASH_HOTPLUG
->>       def_bool y
->>       depends on PPC64
->>   +config ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
->> +    def_bool CRASH_RESERVE
->> +
->>   config FA_DUMP
->>       bool "Firmware-assisted dump"
->>       depends on CRASH_DUMP && PPC64 && (PPC_RTAS || PPC_POWERNV)
->> diff --git a/arch/powerpc/include/asm/crash_reserve.h 
->> b/arch/powerpc/include/asm/crash_reserve.h
->> new file mode 100644
->> index 000000000000..f5e60721de41
->> --- /dev/null
->> +++ b/arch/powerpc/include/asm/crash_reserve.h
->> @@ -0,0 +1,18 @@
->> +/* SPDX-License-Identifier: GPL-2.0 */
->> +#ifndef _ASM_POWERPC_CRASH_RESERVE_H
->> +#define _ASM_POWERPC_CRASH_RESERVE_H
->> +
->> +/* crash kernel regions are Page size agliged */
->> +#define CRASH_ALIGN             PAGE_SIZE
->> +
->> +#ifdef CONFIG_ARCH_HAS_GENERIC_CRASHKERNEL_RESERVATION
->> +
->
->> +static inline bool arch_add_crash_res_to_iomem(void)
->> +{
->> +    return false;
->> +}
->> +#define arch_add_crash_res_to_iomem arch_add_crash_res_to_iomem
->
-> This is probably not needed if commit c40dd2f766440 can be reverted.
-> Othewise..
+The Host-Heap holds the various data-structures allocated by L0-PowerVM for
+L2-KVM Guests running in the L1-Lpar. The Host-Pagetable holds the Radix
+pagetable[2] for the L2-KVM Guest which is used by L0-PowerVM to handle
+page faults. Since the size of both of these areas is limited and fixed via
+partition boot profile, it puts an upper bound on the number of L2-KVM
+Guests that can be run in an LPAR. Also due limited size of Host-Pagetable
+area, L0-PowerVM is at times forced to perform reclaim operation on
+it. This reclaim operation is usually performed when running large number
+of L2-KVM Guests which are memory bound and increases Host-Pagetable
+utilization.
 
-Agree. Since I am reverting c40dd2f766440 in next series so I will the 
-above change.
+In light of the above its recommended to track usage of these areas to
+ensure consistent L2-KVM Guest performance. Hence this patch-series
+attempts to expose the max-size and current-usage of these areas as well as
+cumulative amount of bytes reclaimed from Host-Pagetable as perf-events
+that can be queried via perf-stat.
 
->
-> Acked-by: Hari Bathini <hbathini@linux.ibm.com>
+The patch series introduces a new 'kvm-hv' PMU which exports the
+perf-events mentioned below. Since perf-events exported represents the
+state of the whole L1-Lpar and not that of a specific L2-KVM guest hence
+the 'kvm-hv' PMU's scope is set as PERF_PMU_SCOPE_SYS_WIDE(System-Wide).
 
-Thanks for the Ack!
+New perf-events introduced
+==========================
 
-- Sourabh Jain
+* kvm-hv/host_heap/		: The currently used bytes in the
+				  Hypervisor's Guest Management Space
+				  associated with the Host Partition.
+* kvm-hv/host_heap_max/		: The maximum bytes available in the
+				  Hypervisor's Guest Management Space
+				  associated with the Host Partition.
+* kvm-hv/host_pagetable/	: The currently used bytes in the
+				  Hypervisor's Guest Page Table Management
+				  Space associated with the Host Partition.
+* kvm-hv/host_pagetable_max/	: The maximum bytes available in the
+				  Hypervisor's Guest Page Table Management
+				  Space associated with the Host Partition.
+* kvm-hv/host_pagetable_reclaim/: The amount of space in bytes that has
+				  been reclaimed due to overcommit in the
+				  Hypervisor's Guest Page Table Management
+				  Space associated with the Host Partition.
 
+Structure of this patch series
+==============================
+Start with documenting and updating the KVM nested-APIv2 hcall
+specifications for H_GUEST_GET_STATE hcall and Hostwide guest-state-buffer
+elements.
 
->
->> +#endif
->> +
->> +#endif /* _ASM_POWERPC_CRASH_RESERVE_H */
->> +
->> diff --git a/arch/powerpc/include/asm/kexec.h 
->> b/arch/powerpc/include/asm/kexec.h
->> index 270ee93a0f7d..64741558071f 100644
->> --- a/arch/powerpc/include/asm/kexec.h
->> +++ b/arch/powerpc/include/asm/kexec.h
->> @@ -113,9 +113,9 @@ int setup_new_fdt_ppc64(const struct kimage 
->> *image, void *fdt, struct crash_mem
->>     #ifdef CONFIG_CRASH_RESERVE
->>   int __init overlaps_crashkernel(unsigned long start, unsigned long 
->> size);
->> -extern void reserve_crashkernel(void);
->> +extern void arch_reserve_crashkernel(void);
->>   #else
->> -static inline void reserve_crashkernel(void) {}
->> +static inline void arch_reserve_crashkernel(void) {}
->>   static inline int overlaps_crashkernel(unsigned long start, 
->> unsigned long size) { return 0; }
->>   #endif
->>   diff --git a/arch/powerpc/kernel/prom.c b/arch/powerpc/kernel/prom.c
->> index e0059842a1c6..9ed9dde7d231 100644
->> --- a/arch/powerpc/kernel/prom.c
->> +++ b/arch/powerpc/kernel/prom.c
->> @@ -860,7 +860,7 @@ void __init early_init_devtree(void *params)
->>        */
->>       if (fadump_reserve_mem() == 0)
->>   #endif
->> -        reserve_crashkernel();
->> +        arch_reserve_crashkernel();
->>       early_reserve_mem();
->>         if (memory_limit > memblock_phys_mem_size())
->> diff --git a/arch/powerpc/kexec/core.c b/arch/powerpc/kexec/core.c
->> index 4945b33322ae..b21cfa814492 100644
->> --- a/arch/powerpc/kexec/core.c
->> +++ b/arch/powerpc/kexec/core.c
->> @@ -80,38 +80,20 @@ void machine_kexec(struct kimage *image)
->>   }
->>     #ifdef CONFIG_CRASH_RESERVE
->> -void __init reserve_crashkernel(void)
->> -{
->> -    unsigned long long crash_size, crash_base, total_mem_sz;
->> -    int ret;
->>   -    total_mem_sz = memory_limit ? memory_limit : 
->> memblock_phys_mem_size();
->> -    /* use common parsing */
->> -    ret = parse_crashkernel(boot_command_line, total_mem_sz,
->> -            &crash_size, &crash_base, NULL, NULL);
->> -    if (ret == 0 && crash_size > 0) {
->> -        crashk_res.start = crash_base;
->> -        crashk_res.end = crash_base + crash_size - 1;
->> -    }
->> -
->> -    if (crashk_res.end == crashk_res.start) {
->> -        crashk_res.start = crashk_res.end = 0;
->> -        return;
->> -    }
->> -
->> -    /* We might have got these values via the command line or the
->> -     * device tree, either way sanitise them now. */
->> -
->> -    crash_size = resource_size(&crashk_res);
->> +static unsigned long long __init get_crash_base(unsigned long long 
->> crash_base)
->> +{
->>     #ifndef CONFIG_NONSTATIC_KERNEL
->> -    if (crashk_res.start != KDUMP_KERNELBASE)
->> +    if (crash_base != KDUMP_KERNELBASE)
->>           printk("Crash kernel location must be 0x%x\n",
->>                   KDUMP_KERNELBASE);
->>   -    crashk_res.start = KDUMP_KERNELBASE;
->> +    return KDUMP_KERNELBASE;
->>   #else
->> -    if (!crashk_res.start) {
->> +    unsigned long long crash_base_align;
->> +
->> +    if (!crash_base) {
->>   #ifdef CONFIG_PPC64
->>           /*
->>            * On the LPAR platform place the crash kernel to mid of
->> @@ -123,45 +105,51 @@ void __init reserve_crashkernel(void)
->>            * kernel starts at 128MB offset on other platforms.
->>            */
->>           if (firmware_has_feature(FW_FEATURE_LPAR))
->> -            crashk_res.start = min_t(u64, ppc64_rma_size / 2, SZ_512M);
->> +            crash_base = min_t(u64, ppc64_rma_size / 2, SZ_512M);
->>           else
->> -            crashk_res.start = min_t(u64, ppc64_rma_size / 2, SZ_128M);
->> +            crash_base = min_t(u64, ppc64_rma_size / 2, SZ_128M);
->>   #else
->> -        crashk_res.start = KDUMP_KERNELBASE;
->> +        crash_base = KDUMP_KERNELBASE;
->>   #endif
->>       }
->>   -    crash_base = PAGE_ALIGN(crashk_res.start);
->> -    if (crash_base != crashk_res.start) {
->> -        printk("Crash kernel base must be aligned to 0x%lx\n",
->> -                PAGE_SIZE);
->> -        crashk_res.start = crash_base;
->> -    }
->> +    crash_base_align = PAGE_ALIGN(crash_base);
->> +    if (crash_base != crash_base_align)
->> +        pr_warn("Crash kernel base must be aligned to 0x%lx\n", 
->> PAGE_SIZE);
->>   +    return crash_base_align;
->>   #endif
->> -    crash_size = PAGE_ALIGN(crash_size);
->> -    crashk_res.end = crashk_res.start + crash_size - 1;
->> +}
->>   -    /* The crash region must not overlap the current kernel */
->> -    if (overlaps_crashkernel(__pa(_stext), _end - _stext)) {
->> -        printk(KERN_WARNING
->> -            "Crash kernel can not overlap current kernel\n");
->> -        crashk_res.start = crashk_res.end = 0;
->> +void __init arch_reserve_crashkernel(void)
->> +{
->> +    unsigned long long crash_size, crash_base, crash_end;
->> +    unsigned long long kernel_start, kernel_size;
->> +    unsigned long long total_mem_sz;
->> +    int ret;
->> +
->> +    total_mem_sz = memory_limit ? memory_limit : 
->> memblock_phys_mem_size();
->> +
->> +    /* use common parsing */
->> +    ret = parse_crashkernel(boot_command_line, total_mem_sz, 
->> &crash_size,
->> +                &crash_base, NULL, NULL);
->> +
->> +    if (ret)
->>           return;
->> -    }
->>   -    printk(KERN_INFO "Reserving %ldMB of memory at %ldMB "
->> -            "for crashkernel (System RAM: %ldMB)\n",
->> -            (unsigned long)(crash_size >> 20),
->> -            (unsigned long)(crashk_res.start >> 20),
->> -            (unsigned long)(total_mem_sz >> 20));
->> +    crash_base = get_crash_base(crash_base);
->> +    crash_end = crash_base + crash_size - 1;
->>   -    if (!memblock_is_region_memory(crashk_res.start, crash_size) ||
->> -        memblock_reserve(crashk_res.start, crash_size)) {
->> -        pr_err("Failed to reserve memory for crashkernel!\n");
->> -        crashk_res.start = crashk_res.end = 0;
->> +    kernel_start = __pa(_stext);
->> +    kernel_size = _end - _stext;
->> +
->> +    /* The crash region must not overlap the current kernel */
->> +    if ((kernel_start + kernel_size > crash_base) && (kernel_start 
->> <= crash_end)) {
->> +        pr_warn("Crash kernel can not overlap current kernel\n");
->>           return;
->>       }
->> +
->> +    reserve_crashkernel_generic(crash_size, crash_base, 0, false);
->>   }
->>     int __init overlaps_crashkernel(unsigned long start, unsigned 
->> long size)
->
+Subsequent patches add support for adding and parsing Hostwide
+guest-state-buffer elements in existing kvm-hv apiv2 infrastructure. Also
+add a kunit test case to verify correctness of the changes introduced.
+
+Next set of patches in the patch-set introduces a new PMU for kvm-hv on
+pseries named as 'kvm-hv', implement plumbing between kvm-hv module and
+initialization of this new PMU, necessary setup code in kvm-hv pmu to
+create populate and parse a guest-state-buffer holding the Hostwide
+counters returned from L0-PowerVM.
+
+The final patch in the series creates the five new perf-events which then
+leverage the kernel's perf-event infrastructure to report the Hostwide
+counters returned from L0-PowerVM to perf tool.
+
+Output
+======
+Once the patch-set is integrated, perf-stat should report the Hostwide
+counters for a kvm-enabled pseries lpar as below:
+
+$ sudo perf stat -e 'kvm-hv/host_heap/'  -e 'kvm-hv/host_heap_max/' \
+  -e 'kvm-hv/host_pagetable/' -e 'kvm-hv/host_pagetable_max/' \
+  -e 'kvm-hv/host_pagetable_reclaim/' -- sleep 0
+
+Performance counter stats for 'system wide':
+
+                 0      kvm-hv/host_heap/
+    10,995,367,936      kvm-hv/host_heap_max/
+         2,178,304      kvm-hv/host_pagetable/
+     2,147,483,648      kvm-hv/host_pagetable_max/
+                 0      kvm-hv/host_pagetable_reclaim/
+
+The patch can be tested with Qemu-TCG emulation support for Book3s-HV APIv2
+proposed at [3]. Currently with Qemu-TCG the values for all the Hostwide
+counters is reported as '0'.
+
+References
+==========
+[1] - commit 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
+[2] - "KVM in a PowerVM LPAR: A Power user guide Part II"
+      https://ibm.biz/BdGHeY
+[3] - https://lore.kernel.org/all/20250123115538.86821-1-vaibhav@linux.ibm.com
+[4] - https://lore.kernel.org/all/202501171030.3x0gqW8G-lkp@intel.com
+
+Vaibhav Jain (6):
+  powerpc: Document APIv2 KVM hcall spec for Hostwide counters
+  kvm powerpc/book3s-apiv2: Add support for Hostwide GSB elements
+  kvm powerpc/book3s-apiv2: Add kunit tests for Hostwide GSB elements
+  kvm powerpc/book3s-apiv2: Introduce kvm-hv specific PMU
+  powerpc/book3s-hv-pmu: Implement GSB message-ops for hostwide counters
+  kvm powerpc/book3s-hv-pmu: Add perf-events for Hostwide counters
+
+ Documentation/arch/powerpc/kvm-nested.rst     |  40 +-
+ arch/powerpc/include/asm/guest-state-buffer.h |  35 +-
+ arch/powerpc/include/asm/hvcall.h             |  13 +-
+ arch/powerpc/include/asm/kvm_book3s.h         |  20 +
+ arch/powerpc/kvm/Makefile                     |   6 +
+ arch/powerpc/kvm/book3s_hv.c                  |   9 +
+ arch/powerpc/kvm/book3s_hv_nestedv2.c         |   6 +
+ arch/powerpc/kvm/book3s_hv_pmu.c              | 421 ++++++++++++++++++
+ arch/powerpc/kvm/guest-state-buffer.c         |  39 ++
+ arch/powerpc/kvm/test-guest-state-buffer.c    | 210 +++++++++
+ 10 files changed, 777 insertions(+), 22 deletions(-)
+ create mode 100644 arch/powerpc/kvm/book3s_hv_pmu.c
+
+-- 
+2.48.1
 
 
