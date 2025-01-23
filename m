@@ -1,92 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-5504-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5505-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87FF8A1A325
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 12:39:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E0AA1A350
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 12:43:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YdzVl3y1Xz305c;
-	Thu, 23 Jan 2025 22:39:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YdzbN2dZbz304Z;
+	Thu, 23 Jan 2025 22:43:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737632351;
-	cv=none; b=K6ekdJ4VzV2HF/GZ54G8XhFp5UfmKNZqGVZdq5iS12g0xbE4AsUfIOWxaKtwYyu4p7KELrirSS9b8uTWqzo0Jq+p9P8DwLUxOtiL8JMYNACLLYoeJru03UbMSUor/VlUn8Kq0RRVa1lJPBGa1t+NmvUMa6gmF992cn3uLuzBEbRuSKlmXF/YWm41549WKpIHd82oM0xyqbi1dq+pmcdM95y5TV8A+qhYxWnkPnXEK5mx4dSz0slf6a6fPuSMQ5ML7NUS+otXC7WRHD1gEUwUzxmGcm7qmp2eabrB+yM0hcwjdd14vuNUS3Es8myXwFVS4LfymbgDPDMRvMFRPI1bKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737632592;
+	cv=none; b=VX/9eJSF/8Wbm4LNFBytZz+90KO48QMDTO3ozPklfnqgzWaAi4qNLXYLEA7dgpAXN16Z5XQNg/2vstSVfqHhECnkx4GjjAsa+WgYy7iF9sgIAdiLZXeEUbkWiRNWngu064SuJTQ/D+5HMytOgARIin45G3TT1I5gwUzuf69CgjTVuOQ+HufzSOl2wnA2kgctTDJ5Z+78xa3E/liTLRlZg+aHKJyELQNafWxIkNaI6iKBgIN96fEtXlbMyI3oUXXFnPNSEA2yaQmf2Q2HRN3KoLgiPGikxDS74xnMZ8CtC0J2WIVSxn6A1b7BocuoLSC+BD3rLU75BPWEo+DsS9ooqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737632351; c=relaxed/relaxed;
-	bh=NOQaZrUykuIT2nDOu/hapfD8pr24HO9XboBFcdlFf5E=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KsyC2sgfkVASIhZQZepI1/2JqRA6Tz7nDMUQxWdP3fDce/nIbF09PjvR0wq9MAC1dzv48opYMcL5OXOZtaOtMzgb5LJ4cw3Z+vX6aTnXEI+m/xS9RGCQPkrW38eXfS7F1eOh2HcznDM6IMjuQS9PY7n0F/lphX2RoGSKRF58XaXD6C5BgdXaRP3s/FMor4TmIYIxi+jMhrbBi9KajZWXiER6OZ/t2Cc9lRgZl/wqMd3Kreae6kyzRCE8Ej04gMMb8L9c/wxi+xCZ6w3+0cDqZAv6VnU/t7s2YnT9CrcYniGIuQCWZEvmUykM1YmcfepYbBgmO/pITXXctvaqUI4tqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VFnRTpxP; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+	t=1737632592; c=relaxed/relaxed;
+	bh=SkD4Cu+2FxpsUv1muMIrFGtikfbYKiUj/BMohe2/CB8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Fryu1JqmP5PVHTWu8ggP9K57GqkxELiV1/vfx8K4fv3IA633l6pBOKjaXow1r1StPpNIPri7GPpdHbWuPnO4yFjicSinpaYfzEtg+CPHWGhyh0iYE65M9e5B0JJn29RQRwF4TuSAQ0ME7+bjnAhUCPAFXogdCfLFvT4TILxW6sPbxV1a67EJXB/bknAZEH/DjmupKm6o16SeHA1Qu6DRHZhiJ7NtBQV7DaL8JMTrChibJMbUorqlzfQ/BIEh8ZHN/6XpHFcO43LBFVAb9y58bd4tPj9yN2aNhx3jchKl0LnzUsiQPB0U/9JmDt1F6O6Dxc9ydoSqg/G4c/YoqOHk7w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s+XRxBL3; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=VFnRTpxP;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s+XRxBL3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YdzVk69LVz305Y
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 22:39:10 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-2161eb95317so12520735ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 03:39:10 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737632349; x=1738237149; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NOQaZrUykuIT2nDOu/hapfD8pr24HO9XboBFcdlFf5E=;
-        b=VFnRTpxPyQL/aKycgTF+3haKBLfk7OpN0nfVxtVIObll74QJDys3x8ua8s/S4ahL7M
-         Ov4cgigu9UYTu0KQqowOpipN0d6Lh/Mo8iyGW3kXszKxBG2XbQ+Esq+OWxpaadu3GFHe
-         Q8ktEeSWc5sw4VJ1c9u/tAlYVhxozti7S6h3UbC3/5IHt+9xvezBfNpM7xkRfJS+D8F5
-         d3dP6Pca+BaeDVe3abhL3YtzRiDpZ8VDCS6nRMiqa2is8dZm8BWPMDJ+hRs81IXHMrfi
-         Wdhn3OEHS+dM69enQGBN7Ovd0PIcGlj/Ej51s9L0c9TLfcVTa9mxyXT3cgMrDHK5My9V
-         1BVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737632349; x=1738237149;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NOQaZrUykuIT2nDOu/hapfD8pr24HO9XboBFcdlFf5E=;
-        b=ealXFsM1nP5boH2Z56eSyE3DWLJNyTQhlMSBcGRSr+Cd3pM7fofoprURrJv87hKoRs
-         H+rbNMQ3hpu1x2DnWlwKOeMGE1O/bqDaeUdt8z9jd/HFrNQ7nHGrJPO26qT005UNB8w/
-         wYkMPLpYhGaVJ+7YqgCV8Ahpnt9YsicFtz86QW5ed41beJ9UrOFSgcDrZvQBADcTpPKZ
-         4BkXe7dQ/fV546+nmwTRGB+f4qqmTrvJ2P0F7qS8v95Shoc6dGNt/KysV5Hhjx+r3ciI
-         /41+qsK6S361ZUK1opWftogKYmJNoHidXo5pM58Ni+C7k8MhMnVTE2rjPP+P9MwI42xm
-         SrhA==
-X-Forwarded-Encrypted: i=1; AJvYcCVC5pi8MA4T2ziFwkJFPc68v5rtwlbcrgLj/jHIBZN8MiH59lQr3lDJtGo1qo6v5OKZ9AjtgDXO+Us1YFg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxIzDflAsF487uLUtKFiiN4MWyfJbOJTSrIkRe5I3BfUuWXOr4Q
-	aBaz3CRRNJzZjBOZZPdIs3jR9UzZq4zmbXdDRixGINwoJGa3mfGugFHqKQgl+n8=
-X-Gm-Gg: ASbGncsDBqBhAFh7KGw2zGiMno3PGCZVYgYhsIQ+y3lsugttSZ8P4/eE2AMAMrwQOwD
-	DLc1T+LZmoU/lh+tGDbg4OQiC8CmauHKKAOHR8rr3cszeCay4/H5zrQ10j6oUovZj5L2lg0CWWG
-	SyGd5gmH06ZjQe7dJRqmVPut5cTiVnojn4/EhSC5nUbIriLLNWvAW0xpEPHqAnb6do6movS38NA
-	nSMccTgSzqkdP9xastUFjvOn06OTAoIgY+C+kaa+pilR2NFYeej66MOwCOrdOF4KI5GMVgeZTpP
-	yhgakGCeYkb/1As4sA==
-X-Google-Smtp-Source: AGHT+IHIGxlnIT9W1m1496ap5CdNvSqcyAIJOYfXO5RvLWjmiK3vtYAvEomKz83J4zLXKOM8QP8JXg==
-X-Received: by 2002:a05:6a20:1596:b0:1e1:bdae:e058 with SMTP id adf61e73a8af0-1eb215ec58cmr42346024637.37.1737632349101;
-        Thu, 23 Jan 2025 03:39:09 -0800 (PST)
-Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-72dabaa39c6sm12950387b3a.160.2025.01.23.03.39.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 23 Jan 2025 03:39:08 -0800 (PST)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 20/33] cpufreq: powernv: Stop setting common freq attributes
-Date: Thu, 23 Jan 2025 17:05:56 +0530
-Message-Id: <1f5393d54b2c04206afefd521ebdf3fc03004a11.1737631669.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1737631669.git.viresh.kumar@linaro.org>
-References: <cover.1737631669.git.viresh.kumar@linaro.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YdzbM4WK3z304C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 22:43:11 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N184jH022435;
+	Thu, 23 Jan 2025 11:43:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=SkD4Cu+2FxpsUv1muMIrFGtikfbYKiUj/BMohe2/C
+	B8=; b=s+XRxBL31xmbLapvuljtjVw5WsEsBfO0u2bHeLRd+hZZFx1Y9Mjo19CsL
+	l6tmTyKa88dH9hx0u7L+HsaAERHfEB+AEt5tLNr7PoN0tltEns0jN7t+LWlfcoDA
+	XnSgss+397dg2VKaaE8H0T4zQMWpDMO5fjYxwMEOaM/s9Fo9Gv81D8fE0aqxyGuY
+	e9u/jrc4+Kk72FxCRM1v68ctnKn/2XFyUAsDQen6EH+oJM6mFUlNk3qIht6Jyf80
+	JeQoWPHNfM6laE0SQQSAIpktylY23bbv/jhFDfY/XcYwCe/OIAEeG7pBDukIq84h
+	cyePvdTgLqZUs2x25c9uMbJN1FPmQ==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bbu9am61-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 11:43:03 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50NBBTZd022449;
+	Thu, 23 Jan 2025 11:43:02 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448r4kd750-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 11:43:02 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50NBgwpI61538708
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jan 2025 11:42:58 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7B73720043;
+	Thu, 23 Jan 2025 11:42:58 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 622FE20040;
+	Thu, 23 Jan 2025 11:42:56 +0000 (GMT)
+Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.in.ibm.com (unknown [9.109.204.94])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jan 2025 11:42:56 +0000 (GMT)
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Avnish Chouhan <avnish@linux.ibm.com>,
+        Brian King <brking@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Subject: [PATCH v3 0/4] powerpc: increase MIN RMA size for CAS negotiation
+Date: Thu, 23 Jan 2025 17:12:50 +0530
+Message-ID: <20250123114254.200527-1-sourabhjain@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,33 +88,122 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: _Xcp8WwX6Mw9lso2FpmfS91yvj96GC74
+X-Proofpoint-ORIG-GUID: _Xcp8WwX6Mw9lso2FpmfS91yvj96GC74
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-23_05,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ priorityscore=1501 clxscore=1015 adultscore=0 bulkscore=0 mlxscore=0
+ suspectscore=0 malwarescore=0 impostorscore=0 lowpriorityscore=0
+ spamscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501230087
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The cpufreq core handles this now, the driver can skip setting it.
+Change RMA size from 512 MB to 768 MB which will result
+in more RMA at boot time for PowerPC. When PowerPC LPAR use/uses vTPM,
+Secure Boot or FADump, the 512 MB RMA memory is not sufficient for
+booting. With this 512 MB RMA, GRUB2 run out of memory and unable to
+load the necessary. Sometimes even usage of CDROM which requires more
+memory for installation along with the options mentioned above troubles
+the boot memory and result in boot failures. Increasing the RMA size
+will resolves multiple out of memory issues observed in PowerPC.
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/cpufreq/powernv-cpufreq.c | 2 --
- 1 file changed, 2 deletions(-)
+Due to the change in the MIN_RMA size, there is an impact on the
+additional parameter for the FADump feature in HASH MMU. The first two
+patches in this series update the memory allocation policy for the
+additional parameter in FADump for HASH MMU to mitigate that impact.
 
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index 8de759247771..0c3e907c58bc 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -388,9 +388,7 @@ static struct freq_attr cpufreq_freq_attr_cpuinfo_nominal_freq =
- #define SCALING_BOOST_FREQS_ATTR_INDEX		2
- 
- static struct freq_attr *powernv_cpu_freq_attr[] = {
--	&cpufreq_freq_attr_scaling_available_freqs,
- 	&cpufreq_freq_attr_cpuinfo_nominal_freq,
--	&cpufreq_freq_attr_scaling_boost_freqs,
- 	NULL,
- };
- 
+Patch 01/04: Exports the `MIN_RMA` so that the FADump code can access
+             it.
+Patch 02/04: Changes the memory reservation policy for the FADump
+             additional parameter in HASH MMU.
+Patch 03/04: Change MIN_RMA to 768MB
+Patch 04/04: Update fadump document to include details about the
+             additional parameter feature
+
+Note: This policy change does not impact the RADIX MMU additional
+      parameter for the FADump feature.
+
+Testing Done:  
+=============
+The patch series has been tested with the following four scenarios, and
+both the production kernel and FADump kernel boot successfully.  
+
+- Distro: RHEL 9.6
+
+1. Production Kernel: RADIX MMU
+   FADump Kernel:     RADIX MMU
+   - MIN_RMA: 768 MB
+   - RMA:     1 GB
+     - a. crashkernel: 4 GB
+     - b. crashkernel: 1 GB
+
+2. Production Kernel: HASH MMU
+   FADump Kernel:   HASH MMU
+   - MIN_RMA: 768 MB
+   - RMA:     1 GB
+     - a. crashkernel: 768 MB
+     - b. crashkernel: 1 GB
+
+
+Changelog:
+==========
+
+MIN RMA change
+---------------
+v1: https://lore.kernel.org/all/20241205101045.27069-1-avnish@linux.ibm.com/
+
+v2: https://lore.kernel.org/all/20241206065545.14815-1-avnish@linux.ibm.com/
+ - Added GRUB2 debug logs and Kernel traces.
+
+Fadump Fixes
+-------------
+v1:
+To address the FADump issue introduced due to the change in MIN_RMA, patches were sent:
+https://lore.kernel.org/all/20250120173501.1147236-1-sourabhjain@linux.ibm.com/
+
+Based on the comments on the FADump fixes patch series above, it was
+suggested that it would be better to fix the FADump issue before
+making the MIN_RMA change.
+
+Merged the FADump fixes and MIN_RMA change into a single patch series.
+-----------------------------------------------------------------------
+v3:
+ - This avoids the impact on FADump caused by the MIN_RMA change.
+ - Since the policy for FADump memory reservation for the additional
+   parameter is changing for HASH MMU, the corresponding FADump
+   documentation is also updated to reflect this change in patch 04/04.
+ - Add Reviewed-by tag
+
+Cc: Avnish Chouhan <avnish@linux.ibm.com>
+Cc: Brian King <brking@linux.ibm.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+
+Avnish Chouhan (1):
+  powerpc: increase MIN RMA size for CAS negotiation
+
+Sourabh Jain (3):
+  powerpc: export MIN RMA size
+  powerpc/fadump: fix additional param memory reservation for HASH MMU
+  Documentation/powerpc/fadump: add additional parameter feature details
+
+ Documentation/ABI/testing/sysfs-kernel-fadump |  3 ++-
+ .../arch/powerpc/firmware-assisted-dump.rst   | 22 +++++++++++++++++++
+ arch/powerpc/include/asm/prom.h               |  2 ++
+ arch/powerpc/kernel/fadump.c                  | 21 +++++++++---------
+ arch/powerpc/kernel/prom_init.c               |  2 +-
+ 5 files changed, 38 insertions(+), 12 deletions(-)
+
 -- 
-2.31.1.272.g89b43f80a514
+2.48.1
 
 
