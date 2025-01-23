@@ -1,62 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-5488-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5489-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CB71A19DCD
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 05:55:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A6BA19EA1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 07:59:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YdpXj4tqdz2yRZ;
-	Thu, 23 Jan 2025 15:55:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YdsHs2DRcz2ysZ;
+	Thu, 23 Jan 2025 17:59:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737608117;
-	cv=none; b=DuIrw4JEzOmcop1DdRtmlXjf5p2Yqc8I6XslftibzbUUwXcHx1zrR0fieYLPBCIkSx8TOBsATZQGDUrbn1SI0fEDHDQuJA0wufzdawdFUPOLOs4Izi+ppUhv7RP2AyHOVEf9NjwNbfMXqjtnJdaZaMq1prz2aSuvbW0f70crslJiwvONSfDJ90OYdiQ9ZHo0NIADK71aIDOXyfmRO+NomBcf0z6bvVUAIHXqMsBwuJ35XjJjzxBl3bRM9cQE4FyKH+hY3KpzxDNvEvQP4g825V/b2yeI6OIhW4TDWAnBVWR8XMQmdeB84rVoOVhSBZFAvDVJQ7Vkr+9jPHGPT18GrA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737615561;
+	cv=none; b=L2KgKbSI+DSSru4nRd2OjprvhH6Jo2OIPUdyMhfzIJET9hkcbFkX11/dTEfrV/y3TUtnuPxlN/sTIhU4nd6DCpRYqDCveXPqCKBAEN6oCUM4BtdRdROSHKhHg5oPI1DH995X8DSLeijTjUByeaKVQEGbvbWDcH8pqAEEJv3TbvOO7seX0pmQ+A9c8rCM3TY39GPBlHolECB5YOdcHLPVYC/kxof7Rx+WmUt83vctqWusSKJ+gSMfshoU3slAn9SSivdN+sps2huIwld2kTVVSW43haym4RBkLqejCEqSRbYGLM8gDuuzFd9IaI3V6qXX5RZQTxr1wceS7Mv22oWoRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737608117; c=relaxed/relaxed;
-	bh=F23d6xOlyWCvTN7MJbuH4BGTWiaDsNJvu5xMqAeKTFw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQKftvNCXtmV8XiKvC0TFZ01M6i3G46Wi7CftYb3NPV0ZWz3maDlAel2Bm6BqQ7ytZgNbiYDQxksH5/UQJumkoRlnBH8XtMWouQdyoA3NE1tpb7JH12ywG4GTmrae5rDp4nPBSA5JxyvEUtskiIdqZIVCj/jWfPfiVBHm0wopHTzyJN6KuE+IbeOwF1y7zWSGIBovCRKr/ick/KrbIC8dF05OVazg+Q9sgGzAFJaDSas8ZY+z8WlRdsetuanMwgCIXVy4qf79FFSNjKZHud7ejKYFO79J6lp30ozFZNl8tl+RERSplz45nQ6pUGSv6WnUBRgQtF5RWoLSSHlSXw6Sg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fjvANng0; dkim-atps=neutral; spf=none (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1737615561; c=relaxed/relaxed;
+	bh=09C30z6lETAGwwyLE74LGpasXEdfXSMBEQGvKld0Nb0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gd6zhz7VoQR4/wn62/5zWtJPeSovQFPGQl30U5SDXhbhKO/72tBPSItt8DTxW72FmyCpKDCAj0sCXNhfcRGtdt4PLr26pcX8sGj95qTFsSlOe2a3H1xbI3fZ0rWk8pEdgVnkLxuh0Xw2mqlTwY35sLoMDKx5fd2GOpo6gPDSrq4/CNNMDGOyu/aKoLbUIl2IdbCTRzkYijCkIR0Z9FCoQnoeBOBj/0sugT/rNSQDk/MhgsbqsO6iG2KGkxM48Y32aUgJ1YdYp7QzLbrwzaou35jFn1pX3D+WkkFwNGHc9ngGSuFNPQGj+VXcp6+8mWFuYpuLGwIgAQf9TShdKJ+FbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rfk8vjMd; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=fjvANng0;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Rfk8vjMd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Thu, 23 Jan 2025 15:55:14 AEDT
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=mahesh@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YdpXf6zMdz2yMD
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 15:55:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1737608115; x=1769144115;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=VHtOVhntom8BTB/HjIiTtRyLLhH4JYi4Dw+wmQMvLB8=;
-  b=fjvANng0bJSayniywkyVhGeBpje21j/R9xl3NiwHdGQKgJDV9cqu563P
-   aVZuQvosjVKqBAhDk4idOGcFuXtRFS7PLCJboM1bQW/9/aVGrVomBk1vO
-   FKqxCSCjdJ11u810l9WAEzdpAvkL+llvO6GC/lssuqxfJG5WkyITEkXpN
-   C+mf7X/ouPyg908DPVtrI/xIACsdXV7k0ZSn4aztfYzPY3qYL5MtFgcGD
-   m8BbHO7Bd0uqp4r9LS/OtlRuZ4abUoyHUWLV3VpHoE1cuirWVa2pTIds9
-   /rFZuzaEfM7Uuxhf/HIsz5zS4ByhCz2WsFtGgYf97R9mWjcRnWUHbv0kz
-   A==;
-X-CSE-ConnectionGUID: S1FQkZPZTDyzBPqz7Effdw==
-X-CSE-MsgGUID: o/OLEfmpSAuX313hgNaYLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11323"; a="37973435"
-X-IronPort-AV: E=Sophos;i="6.13,227,1732608000"; 
-   d="scan'208";a="37973435"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2025 20:54:06 -0800
-X-CSE-ConnectionGUID: ywOf4q6/SX+lRRBTyVEc0Q==
-X-CSE-MsgGUID: MJk9QptgQA6OEDkWOIVucg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="112457096"
-Received: from johunt-mobl9.ger.corp.intel.com (HELO [10.124.223.40]) ([10.124.223.40])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jan 2025 20:54:05 -0800
-Message-ID: <b109aca6-1eb2-43d2-b9c9-fb014d00bf7d@linux.intel.com>
-Date: Wed, 22 Jan 2025 20:53:48 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YdsHq6ddfz2yXY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 17:59:19 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N5NxbA026439;
+	Thu, 23 Jan 2025 06:59:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:to; s=pp1; bh=09C30z6lETAGwwyLE74LG
+	pasXEdfXSMBEQGvKld0Nb0=; b=Rfk8vjMd6mwZJn+2G7WInCrUx9NoP1oXZpVrT
+	xaRUy65JkXm6cnJdEo07PQWCkF3+obNLGo0TeARviYfumWvb6JXYUumTKeZWWCMc
+	3Cl0KD/lP6DNsPqQn5d+s4n8H2Yjxdt8HZ+prAUYufau9BprhPbdErFoVxCNVSth
+	hf6HReBaHYT6TUfp88ar/hXYmFL9hay6KbP//EvNzpZrcWmcDufKSjmt0hYSknvS
+	nbtW/dk8WKFdW4B5fzOXuO+eh8GVMxSg9cXjwiJLrH6BAy+IZ+uPfoJQUZgu9bsV
+	mgFIG1mw4WIkxEV9k7ib490rYH3Y95T6oUw4AWfw2C1cYKQjA==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bfk7rbnw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 06:59:10 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50N69hWM019330;
+	Thu, 23 Jan 2025 06:58:50 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 448pmsmexd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 06:58:50 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50N6wlGU53412292
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jan 2025 06:58:47 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 101802004B;
+	Thu, 23 Jan 2025 06:58:47 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3613820049;
+	Thu, 23 Jan 2025 06:58:45 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.109.249.184])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 23 Jan 2025 06:58:45 +0000 (GMT)
+Date: Thu, 23 Jan 2025 12:28:42 +0530
+From: Mahesh J Salgaonkar <mahesh@linux.ibm.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, Avnish Chouhan <avnish@linux.ibm.com>,
+        Brian King <brking@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Re: [PATCH 2/2] powerpc/fadump: fix additional param memory
+ reservation for HASH MMU
+Message-ID: <aewk4qyhv55jti7ctlaghckfbnd4j2ddtko5md7esa4o3mgxrk@bsjxghkfehwd>
+Reply-To: mahesh@linux.ibm.com
+References: <20250120173501.1147236-1-sourabhjain@linux.ibm.com>
+ <20250120173501.1147236-3-sourabhjain@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,236 +89,108 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] PCI/DPC: Run recovery on device that detected the
- error
-To: Shuai Xue <xueshuai@linux.alibaba.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- bhelgaas@google.com, kbusch@kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com
-References: <20241112135419.59491-1-xueshuai@linux.alibaba.com>
- <20241112135419.59491-2-xueshuai@linux.alibaba.com>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20241112135419.59491-2-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120173501.1147236-3-sourabhjain@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ivfSvp77YF_Y0peqN-SF9Uk-_zas-cq4
+X-Proofpoint-ORIG-GUID: ivfSvp77YF_Y0peqN-SF9Uk-_zas-cq4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-23_02,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=557
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1015
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501230052
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On 2025-01-20 23:05:00 Mon, Sourabh Jain wrote:
+> Commit 683eab94da75bc ("powerpc/fadump: setup additional parameters for
+> dump capture kernel") introduced the additional parameter feature in
+> fadump for HASH MMU with the understanding that GRUB does not use the
+> memory area between 640MB and 768MB for its operation.
+> 
+> However, the patch ("powerpc: increase MIN RMA size for CAS
+> negotiation") changes the MIN RMA size to 768MB, allowing GRUB to use
+> memory up to 768MB. This makes the fadump reservation for the additional
+> parameter feature for HASH MMU unreliable.
 
-On 11/12/24 5:54 AM, Shuai Xue wrote:
-> The current implementation of pcie_do_recovery() assumes that the
-> recovery process is executed on the device that detected the error.
-> However, the DPC driver currently passes the error port that experienced
-> the DPC event to pcie_do_recovery().
->
-> Use the SOURCE ID register to correctly identify the device that detected the
-> error. By passing this error device to pcie_do_recovery(), subsequent
-> patches will be able to accurately access AER status of the error device.
+I see. Please include above patch in single patch series, with this
+change as first patch.
 
-When passing the error device, I assume pcie_do_recovery() will find the
-upstream bride and run the recovery logic .
-
->
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+> 
+> To address this, adjust the memory range for the additional parameter in
+> fadump for HASH MMU. This will ensure that GRUB does not overwrite the
+> memory reserved for fadump's additional parameter in HASH MMU.
+> 
+> The new policy for the memory range for the additional parameter in HASH
+> MMU is that the first memory block must be larger than the MIN_RMA size,
+> as the bootloader can use memory up to the MIN_RMA size. The range
+> should be between MIN_RMA and the RMA size (ppc64_rma_size), and it must
+> not overlap with the fadump reserved area.
+> 
+> Cc: Avnish Chouhan <avnish@linux.ibm.com>
+> Cc: Brian King <brking@linux.ibm.com>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 > ---
+>  arch/powerpc/kernel/fadump.c | 21 +++++++++++----------
+>  1 file changed, 11 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index 4b371c738213..5831f3ec8561 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -33,6 +33,7 @@
+>  #include <asm/fadump-internal.h>
+>  #include <asm/setup.h>
+>  #include <asm/interrupt.h>
+> +#include <asm/prom.h>
+>  
+>  /*
+>   * The CPU who acquired the lock to trigger the fadump crash should
+> @@ -1764,19 +1765,19 @@ void __init fadump_setup_param_area(void)
+>  		range_end = memblock_end_of_DRAM();
+>  	} else {
+>  		/*
+> -		 * Passing additional parameters is supported for hash MMU only
+> -		 * if the first memory block size is 768MB or higher.
+> +		 * Memory range for passing additional parameters for HASH MMU
+> +		 * must meet the following conditions:
+> +		 * 1. The first memory block size must be higher than the
+> +		 *    minimum RMA (MIN_RMA) size. Bootloader can use memory
+> +		 *    up to RMA size. So it should be avoided.
+> +		 * 2. The range should be between MIN_RMA and RMA size (ppc64_rma_size)
+> +		 * 3. It must not overlap with the fadump reserved area.
+>  		 */
+> -		if (ppc64_rma_size < 0x30000000)
+> +		if (ppc64_rma_size < MIN_RMA*1024*1024)
+>  			return;
+>  
+> -		/*
+> -		 * 640 MB to 768 MB is not used by PFW/bootloader. So, try reserving
+> -		 * memory for passing additional parameters in this range to avoid
+> -		 * being stomped on by PFW/bootloader.
+> -		 */
+> -		range_start = 0x2A000000;
+> -		range_end = range_start + 0x4000000;
+> +		range_start = MIN_RMA * 1024 * 1024;
+> +		range_end = min(ppc64_rma_size, fw_dump.boot_mem_top);
 
-IMO, moving the "err_port" rename to a separate patch will make this change
-more clear.  But it is up to you.
+Please update fadump documentation which makes this restriction clear.
 
->   drivers/pci/pci.h      |  2 +-
->   drivers/pci/pcie/dpc.c | 30 ++++++++++++++++++++++++------
->   drivers/pci/pcie/edr.c | 35 ++++++++++++++++++-----------------
->   3 files changed, 43 insertions(+), 24 deletions(-)
->
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 14d00ce45bfa..0866f79aec54 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -521,7 +521,7 @@ struct rcec_ea {
->   void pci_save_dpc_state(struct pci_dev *dev);
->   void pci_restore_dpc_state(struct pci_dev *dev);
->   void pci_dpc_init(struct pci_dev *pdev);
-> -void dpc_process_error(struct pci_dev *pdev);
-> +struct pci_dev *dpc_process_error(struct pci_dev *pdev);
->   pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
->   bool pci_dpc_recovered(struct pci_dev *pdev);
->   #else
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index 2b6ef7efa3c1..62a68cde4364 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -257,10 +257,17 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
->   	return 1;
->   }
->   
-> -void dpc_process_error(struct pci_dev *pdev)
-> +/**
-> + * dpc_process_error - handle the DPC error status
+Rest looks good to me.
 
-Handling the DPC error status has nothing to do with finding
-the error source. Why not add a new helper function?
+Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-> + * @pdev: the port that experienced the containment event
-> + *
-> + * Return the device that experienced the error.
-detected the error?
-> + */
-> +struct pci_dev *dpc_process_error(struct pci_dev *pdev)
->   {
->   	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
->   	struct aer_err_info info;
-> +	struct pci_dev *err_dev = NULL;
-
-I don't think you need NULL initialization here.
-
->   
->   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
->   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
-> @@ -283,6 +290,13 @@ void dpc_process_error(struct pci_dev *pdev)
->   		 "software trigger" :
->   		 "reserved error");
->   
-> +	if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE ||
-> +	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE)
-> +		err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-> +					    PCI_BUS_NUM(source), source & 0xff);
-> +	else
-> +		err_dev = pci_dev_get(pdev);
-> +
->   	/* show RP PIO error detail information */
->   	if (pdev->dpc_rp_extensions &&
->   	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT &&
-> @@ -295,6 +309,8 @@ void dpc_process_error(struct pci_dev *pdev)
->   		pci_aer_clear_nonfatal_status(pdev);
->   		pci_aer_clear_fatal_status(pdev);
->   	}
-> +
-> +	return err_dev;
->   }
->   
->   static void pci_clear_surpdn_errors(struct pci_dev *pdev)
-> @@ -350,21 +366,23 @@ static bool dpc_is_surprise_removal(struct pci_dev *pdev)
->   
->   static irqreturn_t dpc_handler(int irq, void *context)
->   {
-> -	struct pci_dev *pdev = context;
-> +	struct pci_dev *err_port = context, *err_dev = NULL;
-
-NULL initialization is not needed.
-
->   
->   	/*
->   	 * According to PCIe r6.0 sec 6.7.6, errors are an expected side effect
->   	 * of async removal and should be ignored by software.
->   	 */
-> -	if (dpc_is_surprise_removal(pdev)) {
-> -		dpc_handle_surprise_removal(pdev);
-> +	if (dpc_is_surprise_removal(err_port)) {
-> +		dpc_handle_surprise_removal(err_port);
->   		return IRQ_HANDLED;
->   	}
->   
-> -	dpc_process_error(pdev);
-> +	err_dev = dpc_process_error(err_port);
->   
->   	/* We configure DPC so it only triggers on ERR_FATAL */
-> -	pcie_do_recovery(pdev, pci_channel_io_frozen, dpc_reset_link);
-> +	pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
-> +
-> +	pci_dev_put(err_dev);
->   
->   	return IRQ_HANDLED;
->   }
-> diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-> index e86298dbbcff..6ac95e5e001b 100644
-> --- a/drivers/pci/pcie/edr.c
-> +++ b/drivers/pci/pcie/edr.c
-> @@ -150,7 +150,7 @@ static int acpi_send_edr_status(struct pci_dev *pdev, struct pci_dev *edev,
->   
->   static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->   {
-> -	struct pci_dev *pdev = data, *edev;
-> +	struct pci_dev *pdev = data, *err_port, *err_dev = NULL;
->   	pci_ers_result_t estate = PCI_ERS_RESULT_DISCONNECT;
->   	u16 status;
->   
-> @@ -169,36 +169,36 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->   	 * may be that port or a parent of it (PCI Firmware r3.3, sec
->   	 * 4.6.13).
->   	 */
-> -	edev = acpi_dpc_port_get(pdev);
-> -	if (!edev) {
-> +	err_port = acpi_dpc_port_get(pdev);
-> +	if (!err_port) {
->   		pci_err(pdev, "Firmware failed to locate DPC port\n");
->   		return;
->   	}
->   
-> -	pci_dbg(pdev, "Reported EDR dev: %s\n", pci_name(edev));
-> +	pci_dbg(pdev, "Reported EDR dev: %s\n", pci_name(err_port));
->   
->   	/* If port does not support DPC, just send the OST */
-> -	if (!edev->dpc_cap) {
-> -		pci_err(edev, FW_BUG "This device doesn't support DPC\n");
-> +	if (!err_port->dpc_cap) {
-> +		pci_err(err_port, FW_BUG "This device doesn't support DPC\n");
->   		goto send_ost;
->   	}
->   
->   	/* Check if there is a valid DPC trigger */
-> -	pci_read_config_word(edev, edev->dpc_cap + PCI_EXP_DPC_STATUS, &status);
-> +	pci_read_config_word(err_port, err_port->dpc_cap + PCI_EXP_DPC_STATUS, &status);
->   	if (!(status & PCI_EXP_DPC_STATUS_TRIGGER)) {
-> -		pci_err(edev, "Invalid DPC trigger %#010x\n", status);
-> +		pci_err(err_port, "Invalid DPC trigger %#010x\n", status);
->   		goto send_ost;
->   	}
->   
-> -	dpc_process_error(edev);
-> -	pci_aer_raw_clear_status(edev);
-> +	err_dev = dpc_process_error(err_port);
-> +	pci_aer_raw_clear_status(err_port);
->   
->   	/*
->   	 * Irrespective of whether the DPC event is triggered by ERR_FATAL
->   	 * or ERR_NONFATAL, since the link is already down, use the FATAL
->   	 * error recovery path for both cases.
->   	 */
-> -	estate = pcie_do_recovery(edev, pci_channel_io_frozen, dpc_reset_link);
-> +	estate = pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
->   
->   send_ost:
->   
-> @@ -207,15 +207,16 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->   	 * to firmware. If not successful, send _OST(0xF, BDF << 16 | 0x81).
->   	 */
->   	if (estate == PCI_ERS_RESULT_RECOVERED) {
-> -		pci_dbg(edev, "DPC port successfully recovered\n");
-> -		pcie_clear_device_status(edev);
-> -		acpi_send_edr_status(pdev, edev, EDR_OST_SUCCESS);
-> +		pci_dbg(err_port, "DPC port successfully recovered\n");
-> +		pcie_clear_device_status(err_port);
-> +		acpi_send_edr_status(pdev, err_port, EDR_OST_SUCCESS);
->   	} else {
-> -		pci_dbg(edev, "DPC port recovery failed\n");
-> -		acpi_send_edr_status(pdev, edev, EDR_OST_FAILED);
-> +		pci_dbg(err_port, "DPC port recovery failed\n");
-> +		acpi_send_edr_status(pdev, err_port, EDR_OST_FAILED);
->   	}
->   
-> -	pci_dev_put(edev);
-> +	pci_dev_put(err_port);
-> +	pci_dev_put(err_dev);
->   }
->   
->   void pci_acpi_add_edr_notifier(struct pci_dev *pdev)
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
+Thanks,
+-Mahesh
 
 
