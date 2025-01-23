@@ -1,92 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-5518-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5519-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6411A1A3E1
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 13:08:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A645BA1A576
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 15:07:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yf08h5bsbz30MM;
-	Thu, 23 Jan 2025 23:08:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yf2pK72pqz306J;
+	Fri, 24 Jan 2025 01:07:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737634116;
-	cv=none; b=Or3qCRX1SAmq/IQ4D5ZIZsOUcFytYoRdWJDcjDwkyuYF6YtG8xds8ha1879thgZ0uHo+IR//S6Rg1E2Ex4TEjeQibTqF7dK4I3bOA9RSSXSI1U/+0Fz9zFHWoFJMiIhMmP55Gz+PyUNiNzXcKdN4i/zA8BRW3PmxVEHX8rdq5OHaLqmBrn0GRaJeZ3xzV8eSZ5HgOVFqV/U6OQzUebwi0OSl3NEJ5Oq/D9l46cK4/qWyEqZ+gsKJDhoJ4OsBjp4tEsJ2GNYGJT57Vj581+zCSmqfS3U/jn6rvVB0ILZb7BquGMQy/L4spQFeCuAl+2MpbMXFS87PDw8R3S72H10M0Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b8"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737641273;
+	cv=none; b=lm0XwHP9FSXwUZvGwg6L/8B9GA1OwCqFtwxwwfMNHBcvGnnOnfInE2MwmlLQqqldoEWkqcHfjMvOEYJhq0ShX9Ea9oV53vuY0yk4ws4NksocaUyOx1mKVTjcFVCSebRHhft5H+clCuukdeZGUUepDwG5mJTLrTHf5DcahdeG7Vk+2rrXY8h98BreVWDjGvwmzj0zYbYRjfAPEHFNySAruy5mrRQuSWlyfn/e2v6nvbva0ExLl0JPlkGsqB2PDlaMdvm5bxTVdZiBhw6HPBLKptjO7sZaSQAOJV8qEd7+XQs8XH5EWZtzPcl7ZVv4VOe/QH2W+WYW287C/1MYxuoZRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737634116; c=relaxed/relaxed;
-	bh=B1z0MHxC6gPXv4Qq0GOeux5hNdGD0JVs+IwvXZ3fbMs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JqnBAICU5iff8BOOXhoyCNyXh7oW44gvJJE5gqJVjh9tzPOL5MRngct0pCp2OfCrohjrNQgq0vUx70rmZrfhgJ5MRyuzYhPoXsarcEjh3UCkWYUC/xH5Ti8jpzkz3mUb5eYqqeZLCIS768Rs931ifX9/EgWu2k7K3fGDgJ8/f4byzbMc77Rp2LxV1FbTS7Os6npIk/elvCu69B/F58r3UvPDOOnURpIMvzJ1JUJ+4d6HdOonNW1mVoKpkcR3GJ7E93/pQC3Tmzx6QPW/NX4IMt5P/hs7nIQp+3QfrxL3CpHp9FBKTByo71G+TEGEXElOJULSvgGVsRz68BPKlZ24vg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MJQ7fJE9; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MJQ7fJE9;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1737641273; c=relaxed/relaxed;
+	bh=wiYAC4Ucxcm7KuFAC5tUIQUTt4eAoBsu+z1SGcrkjzs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MvLAExvU2osAve/eKYO+TY1fxyd/jOmsWvGQ1Mj03cwjCyeVjOC0Lbk8as7OLImwDkfDDHyWW0DQDyuOwVBTVPfJhQj1bbdiUoLIRqNxqfTBTSXAD8h6UaK59iUYr/waMFpdQXH1HRkKc+O29vQXXiwcTBbbX9p22K/JBO9zOk8HjOf0L2RNhbWP3GYBimhw6QpVlIp9TKnhn+MdDOpeK+QKNKsWfJEyTjAQ9fHOK1ioFieTJTzCwTOVA5W0e7asMwJo/3vJw6tTh8kkGUWKiGcP9WawCgYyinyCCefWwY4CSV+jwYIP05gXkJB9ijeVcaCQaq2iIC9UEqGhz+1hqA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=2001:41d0:203:375::b8; helo=out-184.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b8; helo=out-184.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-184.mta1.migadu.com (out-184.mta1.migadu.com [IPv6:2001:41d0:203:375::b8])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yf08g72mKz305G
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 23:08:35 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N7X3US028427;
-	Thu, 23 Jan 2025 12:08:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=B1z0MHxC6gPXv4Qq0
-	GOeux5hNdGD0JVs+IwvXZ3fbMs=; b=MJQ7fJE9OgPoA0Ibo7N3nErXUOg7Ptstt
-	ZStkm514VSAs4Amtu9zY6kZtYqTNqCSsjXFJNCod/RyJ6ZLisuaEO6+pEIXYroHy
-	XMqFcuVve5xooyd5/jr34N7/s3HE3uczJd1dOdF8oK+LhoQq4fm80RDNALen+uHw
-	tdw2uc20N4YI4EUnaFOhB/GxHFLMgZ3kKNr1oo5ktfI5F+iB92cl2TWu0xnfrw+Z
-	jMOKuJJycdVvgzx1eR0eIvM3A9pFlr1XqgkAdyadqlm3p05ayjJyg/stybx6ZbW+
-	xp7EIPpUUJVcJEnt+lyUleRJuTKSBVC95jXYSzwvB493Db9e9naFg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bhfph82n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 12:08:28 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50NC8H5n007904;
-	Thu, 23 Jan 2025 12:08:28 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bhfph82h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 12:08:28 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50NBBTgi022449;
-	Thu, 23 Jan 2025 12:08:27 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448r4kdae9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 23 Jan 2025 12:08:27 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50NC8N7U53870896
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 23 Jan 2025 12:08:23 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 92E2B20043;
-	Thu, 23 Jan 2025 12:08:23 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E7A0B20040;
-	Thu, 23 Jan 2025 12:08:19 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.124.210.34])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu, 23 Jan 2025 12:08:19 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Thu, 23 Jan 2025 17:38:19 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
-        sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
-        amachhiw@linux.ibm.com
-Subject: [PATCH v3 6/6] kvm powerpc/book3s-hv-pmu: Add perf-events for Hostwide counters
-Date: Thu, 23 Jan 2025 17:37:48 +0530
-Message-ID: <20250123120749.90505-7-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250123120749.90505-1-vaibhav@linux.ibm.com>
-References: <20250123120749.90505-1-vaibhav@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yf2pC34m9z305D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 01:07:45 +1100 (AEDT)
+Date: Thu, 23 Jan 2025 15:07:18 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1737641243;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wiYAC4Ucxcm7KuFAC5tUIQUTt4eAoBsu+z1SGcrkjzs=;
+	b=r41LZca+Sg/9Rc14gHPNbCgZPgDw6X/CzWbgkYZYXTZWfG9IYDtoDglUvjOpuR+psOcRFP
+	bVQkbsAuJLGvQhJcpWMAvbb5zRT6xkvAW9FFr+yMuz1EEAIFRpfQDHRFsRH80+9mTCqLQo
+	Qh+GFBQVRggjkwqI0l6xn+R27U6C8Ro=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Andrew Jones <andrew.jones@linux.dev>
+To: Alexandru Elisei <alexandru.elisei@arm.com>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, david@redhat.com, 
+	pbonzini@redhat.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
+	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
+	andre.przywara@arm.com
+Subject: Re: [kvm-unit-tests PATCH v2 12/18] scripts/runtime: Add default
+ arguments for kvmtool
+Message-ID: <20250121-16510b161f5b92ce9c5ae4e1@orel>
+References: <20250120164316.31473-1-alexandru.elisei@arm.com>
+ <20250120164316.31473-13-alexandru.elisei@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,204 +62,117 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Yhn4NkMHq-4zxrQdXJoLu8WKvmZTykrA
-X-Proofpoint-ORIG-GUID: R6AtYOAa7jNvAoqZY8mi5WQgtDo7FLh_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-23_05,2025-01-22_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 adultscore=0 malwarescore=0 bulkscore=0 priorityscore=1501
- clxscore=1015 mlxscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501230091
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250120164316.31473-13-alexandru.elisei@arm.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Update 'book3s_hv_pmu.c' to add five new perf-events mapped to the five
-Hostwide counters. Since these newly introduced perf events are at system
-wide scope and can be read from any L1-Lpar CPU, 'kvmppv_pmu's scope and
-capabilities are updated appropriately.
+On Mon, Jan 20, 2025 at 04:43:10PM +0000, Alexandru Elisei wrote:
+> kvmtool, unless told otherwise, will do its best to make sure that a kernel
+> successfully boots in a virtual machine. Among things like automatically
+> creating a rootfs, it also adds extra parameters to the kernel command
+> line. This is actively harmful to kvm-unit-tests, because some tests parse
+> the kernel command line and they will fail if they encounter the options
+> added by kvmtool.
+> 
+> Fortunately for us, kvmtool commit 5613ae26b998 ("Add --nodefaults command
+> line argument") addded the --nodefaults kvmtool parameter which disables
 
-Also introduce two new helpers. First is kvmppc_update_l0_stats() that uses
-the infrastructure introduced in previous patches to issues the
-H_GUEST_GET_STATE hcall L0-PowerVM to fetch guest-state-buffer holding the
-latest values of these counters which is then parsed and 'l0_stats'
-variable updated.
+added
 
-Second helper is kvmppc_pmu_event_update() which is called from
-'kvmppv_pmu' callbacks and uses kvmppc_update_l0_stats() to update
-'l0_stats' and the update the 'struct perf_event's event-counter.
+> all the implicit virtual machine configuration that cannot be disabled by
+> using other parameters, like modifying the kernel command line. Always use
+> --nodefaults to allow a test to run.
+> 
+> kvmtool can be too verbose when running a virtual machine, and this is
+> controlled with parameters. Add those to the default kvmtool command line
+> to reduce this verbosity to a minimum.
+> 
+> Before:
+> 
+> $ vm run arm/selftest.flat --cpus 2 --mem 256 --params "setup smp=2 mem=256"
+>   Info: # lkvm run -k arm/selftest.flat -m 256 -c 2 --name guest-5035
+> Unknown subtest
+> 
+> EXIT: STATUS=127
+>   Warning: KVM compatibility warning.
+> 	virtio-9p device was not detected.
+> 	While you have requested a virtio-9p device, the guest kernel did not initialize it.
+> 	Please make sure that the guest kernel was compiled with CONFIG_NET_9P_VIRTIO=y enabled in .config.
+>   Warning: KVM compatibility warning.
+> 	virtio-net device was not detected.
+> 	While you have requested a virtio-net device, the guest kernel did not initialize it.
+> 	Please make sure that the guest kernel was compiled with CONFIG_VIRTIO_NET=y enabled in .config.
+>   Info: KVM session ended normally.
+> 
+> After:
+> 
+> $ vm run arm/selftest.flat --nodefaults --network mode=none --loglevel=warning --cpus 2 --mem 256 --params "setup smp=2 mem=256"
 
-Some minor updates to kvmppc_pmu_{add, del, read}() to remove some debug
-scaffolding code.
+On riscv I've noticed that with --nodefaults if I don't add parameters
+with --params then kvmtool segfaults. I have to add --params "" to
+avoid it. Does that also happen on arm? Anyway, that's something we
+should fix in kvmtool rather than workaround it here.
 
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
----
-Changelog
+> PASS: selftest: setup: smp: number of CPUs matches expectation
+> INFO: selftest: setup: smp: found 2 CPUs
+> PASS: selftest: setup: mem: memory size matches expectation
+> INFO: selftest: setup: mem: found 256 MB
+> SUMMARY: 2 tests
+> 
+> EXIT: STATUS=1
+> 
+> Note that KVMTOOL_DEFAULT_OPTS can be overwritten by an environment
+> variable with the same name, but it's not documented in the help string for
+> run_tests.sh. This has been done on purpose, since overwritting
+> KVMTOOL_DEFAULT_OPTS should only be necessary for debugging or development
+> purposes.
+> 
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> ---
+>  scripts/runtime.bash | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
+> 
+> diff --git a/scripts/runtime.bash b/scripts/runtime.bash
+> index 55d58eef9c7c..abfd1e67b2ef 100644
+> --- a/scripts/runtime.bash
+> +++ b/scripts/runtime.bash
+> @@ -2,6 +2,17 @@
+>  : "${MAX_SMP:=$(getconf _NPROCESSORS_ONLN)}"
+>  : "${TIMEOUT:=90s}"
+>  
+> +# The following parameters are enabled by default when running a test with
+> +# kvmtool:
+> +# --nodefaults: suppress VM configuration that cannot be disabled otherwise
+> +#               (like modifying the supplied kernel command line). Tests that
+> +#               use the command line will fail without this parameter.
+> +# --network mode=none: do not create a network device. kvmtool tries to help the
+> +#                user by automatically create one, and then prints a warning
+> +#                when the VM terminates if the device hasn't been initialized.
+> +# --loglevel=warning: reduce verbosity
+> +: "${KVMTOOL_DEFAULT_OPTS:="--nodefaults --network mode=none --loglevel=warning"}"
+> +
+>  PASS() { echo -ne "\e[32mPASS\e[0m"; }
+>  SKIP() { echo -ne "\e[33mSKIP\e[0m"; }
+>  FAIL() { echo -ne "\e[31mFAIL\e[0m"; }
+> @@ -103,7 +114,7 @@ function run()
+>          opts="-smp $smp $qemu_opts"
+>          ;;
+>      kvmtool)
+> -        opts="--cpus $smp $kvmtool_opts"
+> +        opts="$KVMTOOL_DEFAULT_OPTS --cpus $smp $kvmtool_opts"
+>          ;;
+>      esac
+>  
+> -- 
+> 2.47.1
+>
 
-v2->v3:
-None
+Otherwise,
 
-v1->v2:
-None
----
- arch/powerpc/kvm/book3s_hv_pmu.c | 92 +++++++++++++++++++++++++++++++-
- 1 file changed, 91 insertions(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/kvm/book3s_hv_pmu.c b/arch/powerpc/kvm/book3s_hv_pmu.c
-index a4f8c37d9b39..8121ff3ca7b2 100644
---- a/arch/powerpc/kvm/book3s_hv_pmu.c
-+++ b/arch/powerpc/kvm/book3s_hv_pmu.c
-@@ -30,6 +30,11 @@
- #include "asm/guest-state-buffer.h"
- 
- enum kvmppc_pmu_eventid {
-+	KVMPPC_EVENT_HOST_HEAP,
-+	KVMPPC_EVENT_HOST_HEAP_MAX,
-+	KVMPPC_EVENT_HOST_PGTABLE,
-+	KVMPPC_EVENT_HOST_PGTABLE_MAX,
-+	KVMPPC_EVENT_HOST_PGTABLE_RECLAIM,
- 	KVMPPC_EVENT_MAX,
- };
- 
-@@ -51,8 +56,14 @@ static DEFINE_SPINLOCK(lock_l0_stats);
- /* GSB related structs needed to talk to L0 */
- static struct kvmppc_gs_msg *gsm_l0_stats;
- static struct kvmppc_gs_buff *gsb_l0_stats;
-+static struct kvmppc_gs_parser gsp_l0_stats;
- 
- static struct attribute *kvmppc_pmu_events_attr[] = {
-+	KVMPPC_PMU_EVENT_ATTR(host_heap, KVMPPC_EVENT_HOST_HEAP),
-+	KVMPPC_PMU_EVENT_ATTR(host_heap_max, KVMPPC_EVENT_HOST_HEAP_MAX),
-+	KVMPPC_PMU_EVENT_ATTR(host_pagetable, KVMPPC_EVENT_HOST_PGTABLE),
-+	KVMPPC_PMU_EVENT_ATTR(host_pagetable_max, KVMPPC_EVENT_HOST_PGTABLE_MAX),
-+	KVMPPC_PMU_EVENT_ATTR(host_pagetable_reclaim, KVMPPC_EVENT_HOST_PGTABLE_RECLAIM),
- 	NULL,
- };
- 
-@@ -61,7 +72,7 @@ static const struct attribute_group kvmppc_pmu_events_group = {
- 	.attrs = kvmppc_pmu_events_attr,
- };
- 
--PMU_FORMAT_ATTR(event, "config:0");
-+PMU_FORMAT_ATTR(event, "config:0-5");
- static struct attribute *kvmppc_pmu_format_attr[] = {
- 	&format_attr_event.attr,
- 	NULL,
-@@ -78,6 +89,79 @@ static const struct attribute_group *kvmppc_pmu_attr_groups[] = {
- 	NULL,
- };
- 
-+/*
-+ * Issue the hcall to get the L0-host stats.
-+ * Should be called with l0-stat lock held
-+ */
-+static int kvmppc_update_l0_stats(void)
-+{
-+	int rc;
-+
-+	/* With HOST_WIDE flags guestid and vcpuid will be ignored */
-+	rc = kvmppc_gsb_recv(gsb_l0_stats, KVMPPC_GS_FLAGS_HOST_WIDE);
-+	if (rc)
-+		goto out;
-+
-+	/* Parse the guest state buffer is successful */
-+	rc = kvmppc_gse_parse(&gsp_l0_stats, gsb_l0_stats);
-+	if (rc)
-+		goto out;
-+
-+	/* Update the l0 returned stats*/
-+	memset(&l0_stats, 0, sizeof(l0_stats));
-+	rc = kvmppc_gsm_refresh_info(gsm_l0_stats, gsb_l0_stats);
-+
-+out:
-+	return rc;
-+}
-+
-+/* Update the value of the given perf_event */
-+static int kvmppc_pmu_event_update(struct perf_event *event)
-+{
-+	int rc;
-+	u64 curr_val, prev_val;
-+	unsigned long flags;
-+	unsigned int config = event->attr.config;
-+
-+	/* Ensure no one else is modifying the l0_stats */
-+	spin_lock_irqsave(&lock_l0_stats, flags);
-+
-+	rc = kvmppc_update_l0_stats();
-+	if (!rc) {
-+		switch (config) {
-+		case KVMPPC_EVENT_HOST_HEAP:
-+			curr_val = l0_stats.guest_heap;
-+			break;
-+		case KVMPPC_EVENT_HOST_HEAP_MAX:
-+			curr_val = l0_stats.guest_heap_max;
-+			break;
-+		case KVMPPC_EVENT_HOST_PGTABLE:
-+			curr_val = l0_stats.guest_pgtable_size;
-+			break;
-+		case KVMPPC_EVENT_HOST_PGTABLE_MAX:
-+			curr_val = l0_stats.guest_pgtable_size_max;
-+			break;
-+		case KVMPPC_EVENT_HOST_PGTABLE_RECLAIM:
-+			curr_val = l0_stats.guest_pgtable_reclaim;
-+			break;
-+		default:
-+			rc = -ENOENT;
-+			break;
-+		}
-+	}
-+
-+	spin_unlock_irqrestore(&lock_l0_stats, flags);
-+
-+	/* If no error than update the perf event */
-+	if (!rc) {
-+		prev_val = local64_xchg(&event->hw.prev_count, curr_val);
-+		if (curr_val > prev_val)
-+			local64_add(curr_val - prev_val, &event->count);
-+	}
-+
-+	return rc;
-+}
-+
- static int kvmppc_pmu_event_init(struct perf_event *event)
- {
- 	unsigned int config = event->attr.config;
-@@ -100,15 +184,19 @@ static int kvmppc_pmu_event_init(struct perf_event *event)
- 
- static void kvmppc_pmu_del(struct perf_event *event, int flags)
- {
-+	/* Do nothing */
- }
- 
- static int kvmppc_pmu_add(struct perf_event *event, int flags)
- {
-+	if (flags & PERF_EF_START)
-+		return kvmppc_pmu_event_update(event);
- 	return 0;
- }
- 
- static void kvmppc_pmu_read(struct perf_event *event)
- {
-+	kvmppc_pmu_event_update(event);
- }
- 
- /* Return the size of the needed guest state buffer */
-@@ -291,6 +379,8 @@ static struct pmu kvmppc_pmu = {
- 	.read = kvmppc_pmu_read,
- 	.attr_groups = kvmppc_pmu_attr_groups,
- 	.type = -1,
-+	.scope = PERF_PMU_SCOPE_SYS_WIDE,
-+	.capabilities = PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_NO_INTERRUPT,
- };
- 
- int kvmppc_register_pmu(void)
--- 
-2.48.1
-
+Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
 
