@@ -1,38 +1,38 @@
-Return-Path: <linuxppc-dev+bounces-5533-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5535-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1E1DA1AC8E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 23:16:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C39CFA1ACB5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 23:35:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfFfV1qBDz301x;
-	Fri, 24 Jan 2025 09:16:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YfG491F9Rz302c;
+	Fri, 24 Jan 2025 09:35:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737670610;
-	cv=none; b=BvrsBNuHk6luXm4LurY9Jh00tLVx/pAHfWrXDyHJ3LWmU5E1wW5zZFYJOAA3ka9SXoZ3j0gfb4WE7S1sTBxlHYxrc1yH/OEL8SNcbQ1SKnMG6izLJsNQvtigFGKdPe0W8xM4EYBvf01T/npXPKZn4n7s09k9iL5gFc6rKLkh+zcxK3i+IZ+KG7HaYwaWuxGNGm22WFrNz23Z21h0TAWT9sNk0Z+ksvc7Wn/10Cwnp1hDDK7+Yx3vUc2P7YN8YdpLYKrmY4WYUD9MWvE6pKchWknheknFD/yEb1BBDAedWLXLdKhOSJlhPm5un038IqlTM2eHeO3Na7iDowXPsyvbUg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737671737;
+	cv=none; b=fzSP4IOYmqvm9nY88O9fIKRGcVZ/m5l3Tf/8d54WXnNVAS2LBzDDDIj3d6pgL8psd1gq9INngdBtfe0GsIlCf8dtKQhA3Y+2PoOwX0Z8zAa+Gdn3fc2oHbAhRgKH5/7jS55IydVa77f+opkp1QvBZF3+ylCQ6NocAyuaPr1gSdn47LYf1tL4RGM/MTG9+veYnFNp+IwgmCuGRh6apx97YWV2jzMqJOZD5EQayj8aHEih2ImF38D/OxtfdFajflDDDehE7w54+fi2MmfnLhT6ORdKps+tB99XteM4Sh00vOweA8WYiUn6beAJf9VYjMASLxT4Dq8yKKjvOUw+brTdVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737670610; c=relaxed/relaxed;
-	bh=wXuGPfBCEzRVAjsQsTdSJWhIgl+YPJoYyWbdVN5xuO8=;
+	t=1737671737; c=relaxed/relaxed;
+	bh=4NON22ZYzhqXr0rIISMj6+tpbUex/Z2CUN618aY+bzE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MlRQXjZ4jHddg70Q5HeVUMYInHoaKGN+ZQ4HrOEarooPjJC+b2m331aBdI2OuzWmW+qVtMVVanxRXe70C5gwMhtm4tLsJZUlPAqX7n93ZeBPV3C22zuFvmftf9bgFl5jZ8vSfMAToQGsah44M/yY7VzMpSEpoQMYOTjSR8akiA2W/3AveIIdK9eC+AJSf4eBnYPVDcRHuiLgmpogo9gKJ3u/XLH477eWB6Bs21TrMJ5F/ey6slDreiC5tMlNUZrJL5icVagwVMPpPRdLFP1TpjqXEfd4qpUAKnCKV/X53WOIRVlMvzh71MmCvvQtL3tnA1rnF9nt8MDaZSWwlRDEQQ==
+	 Content-Type:Content-Disposition:In-Reply-To; b=lnbmkqy3oErrtOdIR8mckgggQWdiOR6+t7f+IT0WqeUm1nsIy60yg4X49cppF54eYYm+P2kgsP43LndGcWcakFXvwnBfKKeVtpQijqFF3GrlEiZlXESVPdLWmwqgVhRwfJCvF9Rr0lLLGhMmCNQKYD95rxt0hueQUT3OxNcdtt19xHgG2ELQRWsHUidZO/Uv21YgvxOhOQDTPVdllD53nxGyjj+krxqX+ltoh3UZGoJSug7FTGnfDza7YKJg13a0OgioclDKaa0CdgY8s+o+7R00K2PURYuAqMJzPcuUlLYc6w9qd8t8WXIA+hHfrhAVvgHRj6kSCY4Bk+/4UDVHgA==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
 Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfFfT1YjHz2xmZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 09:16:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YfG482TpWz2yyT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 09:35:36 +1100 (AEDT)
 Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 4AD2072C8CC;
-	Fri, 24 Jan 2025 01:16:46 +0300 (MSK)
+	by vmicros1.altlinux.org (Postfix) with ESMTP id D2EFC72C8CC;
+	Fri, 24 Jan 2025 01:35:34 +0300 (MSK)
 Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id 365237CCB3A; Fri, 24 Jan 2025 00:16:46 +0200 (IST)
-Date: Fri, 24 Jan 2025 00:16:46 +0200
+	id C30957CCB3A; Fri, 24 Jan 2025 00:35:34 +0200 (IST)
+Date: Fri, 24 Jan 2025 00:35:34 +0200
 From: "Dmitry V. Levin" <ldv@strace.io>
-To: Eugene Syromyatnikov <evgsyr@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Alexey Gladkov <legion@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Alexey Gladkov <legion@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
+	Eugene Syromyatnikov <evgsyr@gmail.com>,
 	Mike Frysinger <vapier@gentoo.org>,
 	Renzo Davoli <renzo@cs.unibo.it>,
 	Davide Berardi <berardi.dav@gmail.com>,
@@ -43,13 +43,13 @@ Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
  syscall_set_return_value()
-Message-ID: <20250123221646.GA22814@strace.io>
+Message-ID: <20250123223534.GB22814@strace.io>
 References: <20250113171054.GA589@strace.io>
  <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
  <20250114170400.GB11820@strace.io>
  <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
  <20250123182815.GA20994@strace.io>
- <CACGkJduSVLThnZkVFc0aJWjwD5AdBPmXLvZsqy2UxEVRrLm7EA@mail.gmail.com>
+ <86079b5c-e124-489b-8136-05ae5700cb61@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,68 +62,29 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CACGkJduSVLThnZkVFc0aJWjwD5AdBPmXLvZsqy2UxEVRrLm7EA@mail.gmail.com>
+In-Reply-To: <86079b5c-e124-489b-8136-05ae5700cb61@csgroup.eu>
 X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Jan 23, 2025 at 08:11:44PM +0100, Eugene Syromyatnikov wrote:
-> On Thu, Jan 23, 2025 at 7:28 PM Dmitry V. Levin <ldv@strace.io> wrote:
-> > Indeed, there is an inconsistency in !trap_is_scv case.
-> >
-> > In some places such as syscall_get_error() and regs_return_value() the
-> > semantics is as I described earlier: gpr[3] contains a positive ERRORCODE
-> > and ccr has 0x10000000 flag set.  This semantics is a part of the ABI and
-> > therefore cannot be changed.
-> >
-> > In some other places like do_seccomp() and do_syscall_trace_enter() the
-> > semantics is similar to the trap_is_scv case: gpr[3] contains a negative
-> > ERRORCODE and ccr is unchanged.  In addition, system_call_exception()
-> > returns the system call function return value when it is executed, and
-> > gpr[3] otherwise.  The value returned by system_call_exception() is passed
-> > on to syscall_exit_prepare() which performs the conversion you mentioned.
-> >
-> > What's remarkable is that in those places that are a part of the ABI the
-> > traditional semantics is kept, while in other places the implementation
-> > follows the trap_is_scv-like semantics, while traditional semantics is
-> > also supported there.
-> >
-> > The only case where I see some intersection is do_seccomp() where the
-> > tracer would be able to see -ENOSYS in gpr[3].  However, the seccomp stop
-> > is not the place where the tracer *reads* the system call exit status,
-> > so whatever was written in gpr[3] before __secure_computing() is not
-> > really relevant, consequently, selftests/seccomp/seccomp_bpf passes with
-> > this patch applied as well as without it.
-> >
-> > After looking at system_call_exception() I doubt this inconsistency can be
-> > easily avoided, so I don't see how this patch could be enhanced further,
-> > and what else could I do with the patch besides dropping it and letting
-> > !trap_is_scv case be unsupported by PTRACE_SET_SYSCALL_INFO API, which
-> > would be unfortunate.
-> 
-> The semantics of r3 on syscall return (including the negatedness of
-> the errno value) is documented in [1] (at least for the 64-bit case,
-> but I conjecture the 32-bit one is the same, sans the lack of the v2
-> ABI and scv there), so I would suggest to consider any deviation from
-> that a kernel programming error to be fixed.
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/arch/powerpc/syscall64-abi.rst?id=v6.13#n30
+On Thu, Jan 23, 2025 at 11:07:21PM +0100, Christophe Leroy wrote:
+[...]
+> To add a bit more to the confusion, a task can be flagged with 
+> TIF_NOERROR by calling force_successful_syscall_return(), in which case 
+> even if gpr[3] contains a negative between -MAX_ERRNO and -1 the syscall 
+> will be handled as successfull hence CCR[SO] won't be set. But it seems 
+> this is not handled by syscall_set_return_value(). So what will happen 
+> with time() when approaching year 2036 for instance ?
 
-The semantics of r3 on syscall return is correct, thanks to
-syscall_exit_prepare() that performs necessary manipulations with gpr[3].
-
-What's wrong on powerpc in !trap_is_scv case is that its current
-implementation of syscall_set_return_value() follows a different semantics,
-making it unusable on syscall return.  While syscall_set_return_value() was
-used only on entering syscall via do_seccomp(), it was not a problem yet.
-It became a problem when we started to use it on syscall return, in the
-same state when its sibling syscall_get_error() is used.  Note that among
-all the architectures in the kernel tree powerpc in !trap_is_scv case is
-the only one that has this problem.  My patch is intended to address this
-without breaking anything else.
+syscall_set_return_value() takes both "int error" and "long val"
+arguments.  It doesn't and shouldn't take TIF_NOERROR into account.
+With my patch applied, when it's called by PTRACE_SET_SYSCALL_INFO
+from do_syscall_trace_leave(), it will properly update gpr[3] and ccr
+regardless of TIF_NOERROR.  If tracer wants to set an error status for
+a syscall that cannot return an error, it's up to the tracer to face the
+consequences.  Tracers can do it now via PTRACE_SETREGS* anyway.
 
 
 -- 
