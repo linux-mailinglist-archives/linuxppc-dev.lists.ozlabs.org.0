@@ -1,43 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-5490-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5491-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F924A19EAA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 08:03:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4538A1A0F5
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 10:41:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YdsNN73S7z300C;
-	Thu, 23 Jan 2025 18:03:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ydwtt1tPcz2yn2;
+	Thu, 23 Jan 2025 20:41:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.110
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737615796;
-	cv=none; b=XEezdV3hUTxnePlu5XAROeO8JNXe/9HAIlvByNiuAjE3xqwZTxy/Sw13dkhxF8Wz0O7Sd7sVbPux9mYkSpW0CLaBDzFw6rmc9tYLsLHdW1RpaYLUkwei3aiQoRDXfxdtaJ5jI31onq5209E7OYoPau0NCWVMlcTm/vIyow/jpfLVz/RvMQLWMtzAT2q0M0cC0BpTz795II6Q+pxXNGKz9y8x2CdldBIDUc3FSoTHGaR3GjNwwOqagOpG3tGVVGRK6P+Xc414FAuajsyIL87lc242ip+6KfM8OqmBvYXBTqsDAyQIyxA69UKEpTEruC8SCiMvIcGZGzZKzkXx+0AsRw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737625286;
+	cv=none; b=klqan3FyouAPrPwf8p8tUIhYgcKNekj++g4bl5/OvsQpqrwtwdBePUD7yw/TrhwBojvlMwfwHW6Q+jDxkXNy8lEv9lDMUQzIritA+UvxGiFUWYi+IVCIpdqLMUNk0Mmd0e1dRk8Y6ZyijjdqNU8TCVwDVwg3jtUlv0nk1Qomh1gXf2jzTxMLI3eh05+7MvJcxA0TQ0K300d0R70m5j1OUy6gqhsIkxUzpKOI4TlE6Hu3ZcKKaDdDyiCDzujQRRtujYIOhKAtWfx/h83EhI57JG/vWxpSf6UbsLn8/imKXgEQfjPWGK1vNaaKGvTg+Ril273Xi5U0hsJLJb6H0I5DRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737615796; c=relaxed/relaxed;
-	bh=5C8aHaYEcDBY6Hou9Ze7bldqFBZdSLiEfzvyyxIGjzc=;
+	t=1737625286; c=relaxed/relaxed;
+	bh=BkAMvBka9lz7qA1vfG9q4Q/Fh4/ZUTAlk7oKlinox1I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q5TOrrF8e/ElM+PDWCmtYrx9DfBWdyJLAG1cx5b6rIHRFXzmY16gxNQyIfSKKis0MaF53O/QIUhmxuJrFTZJgKpKHi3Y0sygAAXnJWEbFNRzzOxTZFK6Z/PvBENs0PrWG4JUK2pRpEB3eIkpMMDAMon0kAY0vEJOsjNsBOGiNrIawaZhE++l7JV5PuwcNKanHx+MzncJmgFyG1M/g7kO3sG0lp2W6lQcRJ8cJinuAaNVy9shaEvMArgKvrfsA2/aTDvLZWX+wGqTa2ERRb9sZIg9r6G3G1s45LX9GmwXKPLdjnwCw82l3dMZC2qF+d5bFgb4pckPOrYgS0kvqdMLeg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=EfKB9CtA; dkim-atps=neutral; spf=pass (client-ip=115.124.30.110; helo=out30-110.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	 In-Reply-To:Content-Type; b=g6mbmvzgM1+3YmEPEl6R9WXMWR8/uvemH65AlLqtQmAu3SkDslSgO47hBVlHthbKl9ui65gDl7ZPqAeWNhr3YRoUCOtMo2NNjsgQ+7pJDdiP/HWR/uOGSu3EHytd9VMkwA6LOGNXwrPxKHuwUVW8qYR3IFXtUYNmX0POj63HjlItHKWoovuuLcmcTcnXrfuyu+MgzR69OM4sgLTeiwH0MFVYdc3mIoloF5cwPT6o2DRVAguR6ojtcia5ypH6E2qZ6Gy4r6lhhe5KvBPFNTVJa77MRkftU0qo07vo3XoQRdJ5HtXqqFT5Gms5xMnO5GCpl1xB6FdA1DOntSP8d/gryQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TR8YmfOq; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=EfKB9CtA;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TR8YmfOq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.110; helo=out30-110.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YdsNM1LfCz2yxP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 18:03:13 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1737615789; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=5C8aHaYEcDBY6Hou9Ze7bldqFBZdSLiEfzvyyxIGjzc=;
-	b=EfKB9CtAJHZTrv9pspt/Mun9M93XBmPLOwhf+QEoWi6LId+QNL9E7Al2QhKQHNqT+L4WBBpgd4ks1Jdj96RJ7z3HJ/B1wtBorh4SNpOsWu7kb1ypwWFYXbfn2vr8N5D/9oVMDDL8rXS1O2QhO8gf7UGWNLwvHUc9SIcmpuKoxRQ=
-Received: from 30.246.161.230(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WOAkbLF_1737615785 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Thu, 23 Jan 2025 15:03:05 +0800
-Message-ID: <3199a681-a31c-40c9-8a05-89cf38cd6eb8@linux.alibaba.com>
-Date: Thu, 23 Jan 2025 15:03:03 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ydwts2m42z2yXY
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 23 Jan 2025 20:41:24 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50N5O2qT026487;
+	Thu, 23 Jan 2025 09:40:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=BkAMvB
+	ka9lz7qA1vfG9q4Q/Fh4/ZUTAlk7oKlinox1I=; b=TR8YmfOqwnRiuSaQD5JCC8
+	iRhfBLl/6sDvkevMOl/a3M1jucZ9tRLXWb9pVFZ44CHcBGP3L+9stn+N1IL2ZG7t
+	F+7IVbplzeIbftdPK6Iz3cRkMqW5ZP7uZfIuibww+rEUExGXmK1XDQnLGz0Fn/xZ
+	uzAcjDP8vy5f2UyphRlln5O63OcHsI8Ygy9BdIw1jCrnI8BbPEUZ11Ud0uUm0zgZ
+	aPOimWQbY0uk0FeWqK1iCZebJ4zvaejxIwuWOVFihr8DKNGpcgjJNH1bSTfZpQtc
+	pKLYFna5GtxFEduzAFb91D6EoE0cJECqMvypjkvg7Fd113VG5R8Z+PVShw5cBh6A
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44bfk7s3r9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 09:40:47 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50N5rm19024241;
+	Thu, 23 Jan 2025 09:40:46 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 448q0yd0qg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 23 Jan 2025 09:40:46 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50N9eg7F32768342
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 23 Jan 2025 09:40:42 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 647D02004B;
+	Thu, 23 Jan 2025 09:40:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3BC7D20043;
+	Thu, 23 Jan 2025 09:40:39 +0000 (GMT)
+Received: from [9.203.114.244] (unknown [9.203.114.244])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 23 Jan 2025 09:40:39 +0000 (GMT)
+Message-ID: <02f48a21-2dc6-457d-b8a5-bafb9dbb64c2@linux.ibm.com>
+Date: Thu, 23 Jan 2025 15:10:37 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,159 +79,118 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] PCI/DPC: Run recovery on device that detected the
- error
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com
-References: <20241112135419.59491-1-xueshuai@linux.alibaba.com>
- <20241112135419.59491-2-xueshuai@linux.alibaba.com>
- <b109aca6-1eb2-43d2-b9c9-fb014d00bf7d@linux.intel.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <b109aca6-1eb2-43d2-b9c9-fb014d00bf7d@linux.intel.com>
+Subject: Re: [PATCH] mm/hugetlb: bring gigantic page allocation under
+ hugepages_supported()
+To: Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: akpm@linux-foundation.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+        Muchun Song <muchun.song@linux.dev>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org
+References: <20250121150419.1342794-1-sourabhjain@linux.ibm.com>
+ <20250122150613.28a92438@thinkpad-T15>
+ <f6576f1c-bba3-44cc-bcb4-95318d2ece5c@linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <f6576f1c-bba3-44cc-bcb4-95318d2ece5c@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: AO_UvKkwcxoYsdky9iPtWgvMAHp3_3YT
+X-Proofpoint-ORIG-GUID: AO_UvKkwcxoYsdky9iPtWgvMAHp3_3YT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-23_04,2025-01-22_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 mlxlogscore=938
+ adultscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ spamscore=0 malwarescore=0 suspectscore=0 bulkscore=0 clxscore=1011
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501230072
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
 
-在 2025/1/23 12:53, Sathyanarayanan Kuppuswamy 写道:
+On 23/01/25 9:00 am, Sourabh Jain wrote:
+> Hello Gerald,
 > 
-> On 11/12/24 5:54 AM, Shuai Xue wrote:
->> The current implementation of pcie_do_recovery() assumes that the
->> recovery process is executed on the device that detected the error.
->> However, the DPC driver currently passes the error port that experienced
->> the DPC event to pcie_do_recovery().
+> On 22/01/25 19:36, Gerald Schaefer wrote:
+>> On Tue, 21 Jan 2025 20:34:19 +0530
+>> Sourabh Jain <sourabhjain@linux.ibm.com> wrote:
 >>
->> Use the SOURCE ID register to correctly identify the device that detected the
->> error. By passing this error device to pcie_do_recovery(), subsequent
->> patches will be able to accurately access AER status of the error device.
-> 
-> When passing the error device, I assume pcie_do_recovery() will find the
-> upstream bride and run the recovery logic .
-> 
-
-Yes, the pcie_do_recovery() will find the upstream bridge and walk bridges
-potentially AER affected.
-
+>>> Despite having kernel arguments to enable gigantic hugepages, this
+>>> provides a way for the architecture to disable gigantic hugepages on the
+>>> fly, similar to what we do for hugepages.
+>>>
+>>> Components like fadump (PowerPC-specific) need this functionality to
+>>> disable gigantic hugepages when the kernel is booted solely to collect
+>>> the kernel core dump.
+>>>
+>>> Cc: Thomas Gleixner <tglx@linutronix.de>
+>>> Cc: Ingo Molnar <mingo@redhat.com>
+>>> Cc: Borislav Petkov <bp@alien8.de>
+>>> Cc: Heiko Carstens <hca@linux.ibm.com>
+>>> Cc: Vasily Gorbik <gor@linux.ibm.com>
+>>> Cc: Muchun Song <muchun.song@linux.dev>
+>>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+>>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>>> Cc: linux-mm@kvack.org
+>>> Cc: linux-kernel@vger.kernel.org
+>>> Cc: linuxppc-dev@lists.ozlabs.org
+>>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>>> ---
+>>>
+>>> To evaluate the impact of this change on architectures other than
+>>> PowerPC, I did the following analysis:
+>>>
+>>> For architectures where hugepages_supported() is not redefined, it
+>>> depends on HPAGE_SHIFT, which is found to be a constant. It is mostly
+>>> initialized to PMD_SHIFT.
+>>>
+>>> Architecture : HPAGE_SHIFT initialized with
+>>>
+>>> ARC: PMD_SHIFT (constant)
+>>> ARM: PMD_SHIFT (constant)
+>>> ARM64: PMD_SHIFT (constant)
+>>> Hexagon: 22 (constant)
+>>> LoongArch: (PAGE_SHIFT + PAGE_SHIFT - 3) (appears to be constant)
+>>> MIPS: (PAGE_SHIFT + PAGE_SHIFT - 3) (appears to be constant)
+>>> PARISC: PMD_SHIFT (appears to be constant)
+>>> RISC-V: PMD_SHIFT (constant)
+>>> SH: 16 | 18 | 20 | 22 | 26 (constant)
+>>> SPARC: 23 (constant)
+>>>
+>>> So seems like this change shouldn't have any impact on above
+>>> architectures.
+>>>
+>>> On the S390 and X86 architectures, hugepages_supported() is redefined,
+>>> and I am uncertain at what point it is safe to call
+>>> hugepages_supported().
+>> For s390, hugepages_supported() checks EDAT1 machine flag, which is
+>> initialized long before any initcalls. So it is safe to be called
+>> here.
+> Thanks for the info.
 >>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
->> ---
+>> My common code hugetlb skills got a little rusty, but shouldn't
+>> arch_hugetlb_valid_size() already prevent getting here for gigantic
+>> hugepages, in case they are not supported? And could you not use
+>> that for your purpose?
 > 
-> IMO, moving the "err_port" rename to a separate patch will make this change
-> more clear.  But it is up to you.
-
-I see, I will add a separate patch.
-
+> Yes, handling this in arch_hugetlb_valid_size is even better. That way,
+> we can avoid initializing data structures to hold hstate, which is not
+> required anyway.
 > 
->>   drivers/pci/pci.h      |  2 +-
->>   drivers/pci/pcie/dpc.c | 30 ++++++++++++++++++++++++------
->>   drivers/pci/pcie/edr.c | 35 ++++++++++++++++++-----------------
->>   3 files changed, 43 insertions(+), 24 deletions(-)
->>
->> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
->> index 14d00ce45bfa..0866f79aec54 100644
->> --- a/drivers/pci/pci.h
->> +++ b/drivers/pci/pci.h
->> @@ -521,7 +521,7 @@ struct rcec_ea {
->>   void pci_save_dpc_state(struct pci_dev *dev);
->>   void pci_restore_dpc_state(struct pci_dev *dev);
->>   void pci_dpc_init(struct pci_dev *pdev);
->> -void dpc_process_error(struct pci_dev *pdev);
->> +struct pci_dev *dpc_process_error(struct pci_dev *pdev);
->>   pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
->>   bool pci_dpc_recovered(struct pci_dev *pdev);
->>   #else
->> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
->> index 2b6ef7efa3c1..62a68cde4364 100644
->> --- a/drivers/pci/pcie/dpc.c
->> +++ b/drivers/pci/pcie/dpc.c
->> @@ -257,10 +257,17 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
->>       return 1;
->>   }
->> -void dpc_process_error(struct pci_dev *pdev)
->> +/**
->> + * dpc_process_error - handle the DPC error status
-> 
-> Handling the DPC error status has nothing to do with finding
-> the error source. Why not add a new helper function?
+> Thanks for the review and suggestion. I will handle this in the
+> architecture-specific code.
 
-As PCIe Spec,
+Yeah, adding a check for hugetlb_disabled in arch_hugetlb_valid_size()
+should take care of things?
 
-     DPC Error Source ID - When the DPC Trigger Reason field indicates that DPC
-     was triggered due to the reception of an ERR_NONFATAL or ERR_FATAL, this
-     register contains the Requester ID of the received Message. Otherwise, the
-     value of this register is undefined.
-
-To find the error source, we need to
-
-   - check the error reason from PCI_EXP_DPC_STATUS,
-   - Identify the error device by PCI_EXP_DPC_SOURCE_ID for ERR_NONFATAL and
-     ERR_FATAL reason.
-
-The code will duplicate with dpc_process_error. Therefore, I directly reused
-dpc_process_error.
-
-> 
->> + * @pdev: the port that experienced the containment event
->> + *
->> + * Return the device that experienced the error.
-> detected the error?
-
-Will change it.
-
->> + */
->> +struct pci_dev *dpc_process_error(struct pci_dev *pdev)
->>   {
->>       u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
->>       struct aer_err_info info;
->> +    struct pci_dev *err_dev = NULL;
-> 
-> I don't think you need NULL initialization here.
-
-Will remove it.
-
-> 
->>       pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
->>       pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
->> @@ -283,6 +290,13 @@ void dpc_process_error(struct pci_dev *pdev)
->>            "software trigger" :
->>            "reserved error");
->> +    if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE ||
->> +        reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE)
->> +        err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
->> +                        PCI_BUS_NUM(source), source & 0xff);
->> +    else
->> +        err_dev = pci_dev_get(pdev);
->> +
->>       /* show RP PIO error detail information */
->>       if (pdev->dpc_rp_extensions &&
->>           reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT &&
->> @@ -295,6 +309,8 @@ void dpc_process_error(struct pci_dev *pdev)
->>           pci_aer_clear_nonfatal_status(pdev);
->>           pci_aer_clear_fatal_status(pdev);
->>       }
->> +
->> +    return err_dev;
->>   }
->>   static void pci_clear_surpdn_errors(struct pci_dev *pdev)
->> @@ -350,21 +366,23 @@ static bool dpc_is_surprise_removal(struct pci_dev *pdev)
->>   static irqreturn_t dpc_handler(int irq, void *context)
->>   {
->> -    struct pci_dev *pdev = context;
->> +    struct pci_dev *err_port = context, *err_dev = NULL;
-> 
-> NULL initialization is not needed.
-
-Will remove it.
-
-Thanks for valuable comments.
-
-Best Regards,
-Shuai
+- Hari
 
