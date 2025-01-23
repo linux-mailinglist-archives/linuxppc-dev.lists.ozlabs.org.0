@@ -1,57 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-5528-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5529-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AFFDA1A7A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 17:13:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F6BEA1A9A3
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 23 Jan 2025 19:28:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yf5b34m4Bz30Ff;
-	Fri, 24 Jan 2025 03:13:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yf8Zv1wQvz301Y;
+	Fri, 24 Jan 2025 05:28:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::bb"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737648799;
-	cv=none; b=YH3wM/9GZgx8XYXmj9jeC4GZDGqw/gTUj5vSM7uix71HM9AUhzcnhLZ28mx5k/lhTnlaHoWr51Bi5FUtJf9lR3fAsyD3KeAIH1mzETVvAXL/zL7Hotil1ABT+4zoiojGMRMqDNV+0/I7eC4KT2HjNGDbE1Va3NkScGmyGQD2dVzDjWtLJYg0IpTtCSfUhgkHvBIoqU4eZVI5M3xl3mlv5rMknyr68q5uUH1d0DWguLgNo0b7M6D07pUVNEEE/qNMR4Fc6nET47oh4NgkDiqRQoN90GaEywngBGj//Q/01X8Vjv31QI52P8IpGFLLqR02GwBOVUHZf6EfnwRZBm2pOw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737656903;
+	cv=none; b=cjJ2dlcTxCbAdXbfpb389aueHBN097SmDAw9UbVIsdU3BuTFL6IOL7+1F+puTUJTUY8KxseHp6ffdLoaLqapkjYiwkxQDTmCt4GUd4z0sMOaTlTeVGJe8Jzkh/sM9iwlfed+NCR7BvFqELtCrHURATN0NACoGBtcPOk8R/f+lQEBAMiH8SdO/Ikv/ELXmij8YGvxZGLC7ZYwHybUbATANJwuYlq4aLR38G5xvVhCzHrllUEELE53+FAUsum2dzjlzDZjODm2I9aWvrho7xmByRH2vdGcd034HHsBH24BF19+4NsEcBAFdg5DkNlr4e5ZPNklcj3tAnCAgNThBSquWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737648799; c=relaxed/relaxed;
-	bh=KVjcAL8dszFablg6zSOCb3X5h1b08qnMEWy+SAhCX+M=;
+	t=1737656903; c=relaxed/relaxed;
+	bh=yvpeRnvb0pNXqn0ZM4T7IYfRIqgxRlT3tCwhA6UGWAk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PfskHgPLOBD9J2oyL1AxvFUHn19U15i2gfahlOBUzOZXx2A1n5UodkGVe/Oe9CM68AACdFfhtN4CFUgzeLpNW3HIsdsPQnkx3XOj/quQGSvSBSCuPcUn0Sdo/J207Ml5lZKctawXZTciOjDQWUAS224aB4qjRYETVgCz6YHB5gNntltljcNUVB6IbajdT6IZDeOYGX8kVL0VpBLN+cDlx/jwFT4jrHWDaZHWi+Sy4D1IMlZiKgOlIqJmkvDgxpweY/PYF7m0zfSZ7bc3ETHRu7QMN/eRik7MZIJFphwmSem8D56DcHdeg7igJCIhKHT+lMFVnvsOwNPIXRkkpt658w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CdEfjCZ0; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::bb; helo=out-187.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=CdEfjCZ0;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::bb; helo=out-187.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [IPv6:2001:41d0:203:375::bb])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yf5b16RWFz30DX
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 03:13:17 +1100 (AEDT)
-Date: Thu, 23 Jan 2025 17:12:55 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1737648778;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KVjcAL8dszFablg6zSOCb3X5h1b08qnMEWy+SAhCX+M=;
-	b=CdEfjCZ0Emw7h2C19EyXfNIlFLFlSQXcDoTQIFOgT5XRbA1/Xz3R9t/N9SzXK6Vrvnin4X
-	thEzxRsofkjpUjgLII97kjT6y2k88hlNfM5KzQjaW1LQEg9alaJFQ1D/+bQMC7zS3QqQvt
-	Sazw3uVx63g7NHOdP/RnHLQV2SRqarU=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Andrew Jones <andrew.jones@linux.dev>
-To: Alexandru Elisei <alexandru.elisei@arm.com>
-Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, david@redhat.com, 
-	pbonzini@redhat.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org, 
-	oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
-	andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 18/18] run_tests: Enable kvmtool
-Message-ID: <20250123-30dd5e1694818e0d0228131b@orel>
-References: <20250120164316.31473-1-alexandru.elisei@arm.com>
- <20250120164316.31473-19-alexandru.elisei@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=IVfO8ISVsQv8aFE9O6u8szDJ3tw3KUnmydF1l0nOaWYGDTcha4UDTh/YlVBK8tUoH8N8VuMRfwcdymLq5PFYbTZR1OlqoNomOa8NBRcWjjHj7E90sqG3Wt4plR/ZROGKRWHaXQYlgdf+8Vccy9RnxsQ4n+tX5N5yUhjXIGMM9OJNB/8lKtKJRjXr9TiQ5vqV8W2+feENawWZAHb86i5IG3bC+UGpXfc1PSYCRhk7NVunmwIIMV7bWH9jFpWEvytdVbyLJsCDuTFvoHwNsnB3N2tUxnV4I672aVbJs27gBRNqJQgcmCl9id8jQLJPa9BhNJiCFYoM4Tzl4LAZ7aj3GQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yf8Zs0gWtz2yjV
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 05:28:19 +1100 (AEDT)
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 9C97C72C8CC;
+	Thu, 23 Jan 2025 21:28:15 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+	id 8B8237CCB3A; Thu, 23 Jan 2025 20:28:15 +0200 (IST)
+Date: Thu, 23 Jan 2025 20:28:15 +0200
+From: "Dmitry V. Levin" <ldv@strace.io>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Alexey Gladkov <legion@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Eugene Syromyatnikov <evgsyr@gmail.com>,
+	Mike Frysinger <vapier@gentoo.org>,
+	Renzo Davoli <renzo@cs.unibo.it>,
+	Davide Berardi <berardi.dav@gmail.com>,
+	strace-devel@lists.strace.io,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
+ syscall_set_return_value()
+Message-ID: <20250123182815.GA20994@strace.io>
+References: <20250113171054.GA589@strace.io>
+ <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
+ <20250114170400.GB11820@strace.io>
+ <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,138 +60,158 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250120164316.31473-19-alexandru.elisei@arm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
+X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 20, 2025 at 04:43:16PM +0000, Alexandru Elisei wrote:
-> Everything is in place to run the tests using kvmtool:
+On Mon, Jan 20, 2025 at 02:51:38PM +0100, Christophe Leroy wrote:
+> Le 14/01/2025 à 18:04, Dmitry V. Levin a écrit :
+> > On Mon, Jan 13, 2025 at 06:34:44PM +0100, Christophe Leroy wrote:
+> >> Le 13/01/2025 à 18:10, Dmitry V. Levin a écrit :
+> >>> Bring syscall_set_return_value() in sync with syscall_get_error(),
+> >>> and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
+> >>>
+> >>> This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
+> >>> syscall_set_return_value()").
+> >>
+> >> There is a clear detailed explanation in that commit of why it needs to
+> >> be done.
+> >>
+> >> If you think that commit is wrong you have to explain why with at least
+> >> the same level of details.
+> > 
+> > OK, please have a look whether this explanation is clear and detailed enough:
+> > 
+> > =======
+> > powerpc: properly negate error in syscall_set_return_value()
+> > 
+> > When syscall_set_return_value() is used to set an error code, the caller
+> > specifies it as a negative value in -ERRORCODE form.
+> > 
+> > In !trap_is_scv case the error code is traditionally stored as follows:
+> > gpr[3] contains a positive ERRORCODE, and ccr has 0x10000000 flag set.
+> > Here are a few examples to illustrate this convention.  The first one
+> > is from syscall_get_error():
+> >          /*
+> >           * If the system call failed,
+> >           * regs->gpr[3] contains a positive ERRORCODE.
+> >           */
+> >          return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
+> > 
+> > The second example is from regs_return_value():
+> >          if (is_syscall_success(regs))
+> >                  return regs->gpr[3];
+> >          else
+> >                  return -regs->gpr[3];
+> > 
+> > The third example is from check_syscall_restart():
+> >          regs->result = -EINTR;
+> >          regs->gpr[3] = EINTR;
+> >          regs->ccr |= 0x10000000;
+> > 
+> > Compared with these examples, the failure of syscall_set_return_value()
+> > to assign a positive ERRORCODE into regs->gpr[3] is clearly visible:
+> > 	/*
+> > 	 * In the general case it's not obvious that we must deal with
+> > 	 * CCR here, as the syscall exit path will also do that for us.
+> > 	 * However there are some places, eg. the signal code, which
+> > 	 * check ccr to decide if the value in r3 is actually an error.
+> > 	 */
+> > 	if (error) {
+> > 		regs->ccr |= 0x10000000L;
+> > 		regs->gpr[3] = error;
+> > 	} else {
+> > 		regs->ccr &= ~0x10000000L;
+> > 		regs->gpr[3] = val;
+> > 	}
+> > 
+> > This fix brings syscall_set_return_value() in sync with syscall_get_error()
+> > and lets upcoming ptrace/set_syscall_info selftest pass on powerpc.
+> > 
+> > Fixes: 1b1a3702a65c ("powerpc: Don't negate error in syscall_set_return_value()").
+> > =======
 > 
-> $ ./configure --target=kvmtool
-> $ make clean && make
-> $ KVMTOOL=<path/to/kvmtool> ./run_tests.sh
+> I think there is still something going wrong.
 > 
-> so enable it, and remove ERRATA_FORCE=y when configuring for kvmtool,
-> because the runner will generate and pass the correct environment to
-> kvmtool.
+> do_seccomp() sets regs->gpr[3] = -ENOSYS; by default.
 > 
-> Missing is support for EFI tests. That's because distros don't ship a
-> EDK2 binary compiled for kvmtool, and on top of that kvm-unit-tests as
-> an EFI app hasn't been tested to work with kvmtool.
+> Then it calls __secure_computing() which returns what __seccomp_filter() 
+> returns.
 > 
-> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> ---
+> In case of error, __seccomp_filter() calls syscall_set_return_value() 
+> with a negative value then returns -1
 > 
-> Should I also revert commit 35145f140442 ("arm/arm64: kvmtool: force all tests
-> to run") which introduced ERRATA_FORCE? I didn't do this now in case other
-> architectures use it/planning to use it.
+> do_seccomp() is called by do_syscall_trace_enter() which returns -1 when 
+> do_seccomp() doesn't return 0.
+> 
+> do_syscall_trace_enter() is called by system_call_exception() and 
+> returns -1, so syscall_exception() returns regs->gpr[3]
+> 
+> In entry_32.S, transfer_to_syscall, syscall_exit_prepare() is then 
+> called with the return of syscall_exception() as first parameter, which 
+> leads to:
+> 
+> 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO) && is_not_scv) {
+> 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
+> 			r3 = -r3;
+> 			regs->ccr |= 0x10000000; /* Set SO bit in CR */
+> 		}
+> 	}
+> 
+> By chance, because you have already changed the sign of gpr[3], the 
+> above test fails and nothing is done to r3, and because you have also 
+> already set regs->ccr it works.
+> 
+> But all this looks inconsistent with the fact that do_seccomp sets 
+> -ENOSYS as default value
+> 
+> Also, when do_seccomp() returns 0, do_syscall_trace_enter() check the 
+> syscall number and when it is wrong it goes to skip: which sets 
+> regs->gpr[3] = -ENOSYS;
+> 
+> So really I think it is not in line with your changes to set positive 
+> value in gpr[3].
+> 
+> Maybe your change is still correct but it needs to be handled completely 
+> in that case.
 
-We can leave ERRATA_FORCE, I use from time to time for quick testing.
+Indeed, there is an inconsistency in !trap_is_scv case.
 
-> 
->  README.md               | 15 +++++++++++++++
->  arm/run                 |  2 +-
->  configure               |  1 -
->  run_tests.sh            |  2 +-
->  scripts/mkstandalone.sh |  2 +-
->  5 files changed, 18 insertions(+), 4 deletions(-)
-> 
-> diff --git a/README.md b/README.md
-> index be07dc28a094..5e7706f02553 100644
-> --- a/README.md
-> +++ b/README.md
-> @@ -65,6 +65,9 @@ or:
->  
->  to run them all.
->  
-> +All tests can be run using QEMU. On arm and arm64, tests can also be run using
-> +kvmtool.
-> +
->  By default the runner script searches for a suitable QEMU binary in the system.
->  To select a specific QEMU binary though, specify the QEMU=path/to/binary
->  environment variable:
-> @@ -80,10 +83,22 @@ For running tests that involve migration from one QEMU instance to another
->  you also need to have the "ncat" binary (from the nmap.org project) installed,
->  otherwise the related tests will be skipped.
->  
-> +To run a test with kvmtool, please configure kvm-unit-tests accordingly first:
-> +
-> +   ./configure --arch=arm64 --target=kvmtool
-> +
-> +then run the test(s) like with QEMU above.
-> +
-> +To select a kvmtool binary, specify the KVMTOOL=path/to/binary environment
-> +variable. kvmtool supports only kvm as the accelerator.
-> +
->  ## Running the tests with UEFI
->  
->  Check [x86/efi/README.md](./x86/efi/README.md).
->  
-> +On arm and arm64, this is only supported with QEMU; kvmtool cannot run the
-> +tests under UEFI.
-> +
->  # Tests configuration file
->  
->  The test case may need specific runtime configurations, for
-> diff --git a/arm/run b/arm/run
-> index 880d5afae86d..438a2617e564 100755
-> --- a/arm/run
-> +++ b/arm/run
-> @@ -10,7 +10,7 @@ if [ -z "$KUT_STANDALONE" ]; then
->  fi
->  
->  case "$TARGET" in
-> -qemu)
-> +qemu | kvmtool)
->      ;;
->  *)
->     echo "'$TARGET' not supported"
-> diff --git a/configure b/configure
-> index 86cf1da36467..17d3d931f2c0 100755
-> --- a/configure
-> +++ b/configure
-> @@ -299,7 +299,6 @@ elif [ "$arch" = "arm" ] || [ "$arch" = "arm64" ]; then
->          arm_uart_early_addr=0x09000000
->      elif [ "$target" = "kvmtool" ]; then
->          arm_uart_early_addr=0x1000000
-> -        errata_force=1
->      else
->          echo "--target must be one of 'qemu' or 'kvmtool'!"
->          usage
-> diff --git a/run_tests.sh b/run_tests.sh
-> index d38954be9093..3921dcdcb344 100755
-> --- a/run_tests.sh
-> +++ b/run_tests.sh
-> @@ -110,7 +110,7 @@ while [ $# -gt 0 ]; do
->  done
->  
->  case "$TARGET" in
-> -qemu)
-> +qemu | kvmtool)
->      ;;
->  *)
->      echo "$0 does not support '$TARGET'"
-> diff --git a/scripts/mkstandalone.sh b/scripts/mkstandalone.sh
-> index 10abb5e191b7..16383b05adfa 100755
-> --- a/scripts/mkstandalone.sh
-> +++ b/scripts/mkstandalone.sh
-> @@ -8,7 +8,7 @@ source config.mak
->  source scripts/common.bash
->  
->  case "$TARGET" in
-> -qemu)
-> +qemu | kvmtool)
->      ;;
->  *)
->      echo "'$TARGET' not supported for standlone tests"
-> -- 
-> 2.47.1
->
+In some places such as syscall_get_error() and regs_return_value() the
+semantics is as I described earlier: gpr[3] contains a positive ERRORCODE
+and ccr has 0x10000000 flag set.  This semantics is a part of the ABI and
+therefore cannot be changed.
 
-Reviewed-by: Andrew Jones <andrew.jones@linux.dev>
+In some other places like do_seccomp() and do_syscall_trace_enter() the
+semantics is similar to the trap_is_scv case: gpr[3] contains a negative
+ERRORCODE and ccr is unchanged.  In addition, system_call_exception()
+returns the system call function return value when it is executed, and
+gpr[3] otherwise.  The value returned by system_call_exception() is passed
+on to syscall_exit_prepare() which performs the conversion you mentioned.
+
+What's remarkable is that in those places that are a part of the ABI the
+traditional semantics is kept, while in other places the implementation
+follows the trap_is_scv-like semantics, while traditional semantics is
+also supported there.
+
+The only case where I see some intersection is do_seccomp() where the
+tracer would be able to see -ENOSYS in gpr[3].  However, the seccomp stop
+is not the place where the tracer *reads* the system call exit status,
+so whatever was written in gpr[3] before __secure_computing() is not
+really relevant, consequently, selftests/seccomp/seccomp_bpf passes with
+this patch applied as well as without it.
+
+After looking at system_call_exception() I doubt this inconsistency can be
+easily avoided, so I don't see how this patch could be enhanced further,
+and what else could I do with the patch besides dropping it and letting
+!trap_is_scv case be unsupported by PTRACE_SET_SYSCALL_INFO API, which
+would be unfortunate.
+
+
+-- 
+ldv
 
