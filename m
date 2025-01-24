@@ -1,105 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-5541-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5542-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1578A1B211
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 09:58:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A2ACA1B21B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 09:59:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfWv01kSrz30NP;
-	Fri, 24 Jan 2025 19:58:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YfWvc2cWxz30NY;
+	Fri, 24 Jan 2025 19:59:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737709116;
-	cv=none; b=NNwHJAFVGf5crpupSoMkM4ntmlxIz2TAfcoHEUupi7m9UNoP7vz5nmAPKwiJaB70nXx36JSQO0FOKWpqz1Vh3b20Rl2lTAWxubbPNgehE1R6w+gAynhF7BQeR4fNcr7n5f2fxDgIsvcB+8BWYW56yTR791zm2aMlzJC79mQRnqLMYd/jeZAfWim4jJhdEKOUPGHOh/QnpLap0YDWzIEZUIuofNwd39RPb4IwHUzxJkT55kpJK5yxYEIZLdA8a11E93z407mLSnQeKYei0oIb+7ZJxcYPDgZoYypWO1+cDZup8M9j3Jp5SeXZCqzaXO/kuZvyELjz2zuA7pA+Gl6lrw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1036"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737709148;
+	cv=none; b=W24Las1VYfSlcYjxIi6mqLv+t8YhpVphWiBaYtHRdfG5N4qRo/wOR8KNl7wRD2UUA4ro6RorGPi2+66AeFBvfYBPEz8aKPuUke6oKqGktOe9fFaZI0QpS1Lff6rwyziKP7lLQAVl7FHr9WkMbY18UZIMBspQzyIogIpc1JM7ysiP4nlUeEIwZkyWGVBlqlpXJeIElntxLsVUs2PZKvUluo2Rw1n2r2F+bDx2rgezBDTSBee7+5nCLiNk5xkDHLYWZmKCY+VxUM4L6ssKciO8gqBXPGDeGGPyOEr62LObs0/ZsGgRoqAgGmFNgUxPxweWdxtbdr7ZCCzKkX/xx71KkA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737709116; c=relaxed/relaxed;
-	bh=a4AqRX4jgpQUQupuoQFqpmYTbRVzBhfX6O9GAy7aKKQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=E+KRlQCpGyXFbjVBgO/ch1g97IvqrcLiYZih4pWiknKSdhGhRYP4NQDGALGDisjaTTnrtyy1KXfHLeD2qqXq3nVHWj1sx8pVDhKbniPWJCvCxJJrcPmIRqCVWyz49a/aDNy7JKtYJlazlFhO1niovidseVXT9iau7mOYtsudJoeAqb1JdLa7NdT8n45+5DTSw2664Bjjm6H6+Udeo+Bsz/qaiiDzekXiZ5asbS7bpNNY9knbrNPQXfzurBm4ofL2e3jA9s7adQJLEi6QRXs0uMsUF9dtCGIpeL3mvS441MHmpnF7sN0opQ4v7HYQ1eJCBdnfscNTVgSVHdJS5cCNFA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=i3THtBDS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+	t=1737709148; c=relaxed/relaxed;
+	bh=XHvPLEImTEWfALntTBCPd9TKW0+oiHv2uyr8XB4xyIc=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=Hhoit9hQ7O/SzKbtiTiW9PkSnVuKxeQPvBUlx7SMX8uDmAuIGO+4a3//2eJr9z5n1zvh+eDX/UQyAK7wIkCVNi2SDqVapCrhKzPITr6RQB1FefgP9tt8BonjO+7NgVcKTyb6GjgZYOFSSgmJ8SbMvI5icYHyUKBXzygoMo9MkcpLeB15ZSrV3M+YDqgGOl62xxIyuXqi716J1sn41cWDt2qCS7yNdWDLxnYs2s3uNVvc7lpPHuRGfjd/EvdrAaSnkIRR90DLtulUoEJe/ySk8PB45HJrFymwL8FVggfiq11PXntACM1f8DZwKfW0KuX3BQ8ZWGNU9vLVTwZPdwAM4w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=dznqfBfE; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=i3THtBDS;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=dznqfBfE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::1036; helo=mail-pj1-x1036.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YfWty4lpGz30NF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 19:58:33 +1100 (AEDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-2164b662090so35949285ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 00:58:33 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YfWvb0Jpgz30NF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 19:59:06 +1100 (AEDT)
+Received: by mail-pj1-x1036.google.com with SMTP id 98e67ed59e1d1-2ef87d24c2dso2675606a91.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 00:59:06 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1737709110; x=1738313910; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=a4AqRX4jgpQUQupuoQFqpmYTbRVzBhfX6O9GAy7aKKQ=;
-        b=i3THtBDSae0sS9jtotPs0PbTcsWmkqQfsM7TY89jBaHgmlH2PDVe1t3oOUz1pp68Tc
-         JPzutEFK8da3ZETehskrYsSpYkwWce3wq8i3HhMdNU4GKkDAwtbwJsh/24Lb1AGTMo7P
-         cV7na4NHXYm84fIJjR4XdlYeE02GyReyIMyMRN7Ce/e5JmI/sM+rzakApaVqdsoX7KkT
-         LIdqJ87/I+pPdVtA0YeIPhYEev6WF0eozOfvYaeoeZmNVuP5Q4QWvaEXSxDNQVZRMlOi
-         zrJJSW2DmjyX6yL2Qy2xCLdvuMaQqSLjxDb9gnoEnBAIPewVT1r5IpEB+r6u56/sBmV6
-         uAkQ==
+        d=linaro.org; s=google; t=1737709145; x=1738313945; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XHvPLEImTEWfALntTBCPd9TKW0+oiHv2uyr8XB4xyIc=;
+        b=dznqfBfEMJP2fGnPfBakVDC0FFqjaCS1n5/Yh5qOjGEU+6ojS3Z/PwKRG08fdZIlU/
+         iV6RV3DDJh90NeNZirP+CLOVXHzzhX/GQsf02ub8+aA7+ynrYZxjwqsShTmPmkNTbgJU
+         lYkvEopXYYNXAXdoGIAjTU2e/q720+3OdNh8K/d1w8R5y3/W2Ff94ocLbF5ehpw6J9IT
+         jZ/AxewoSIKmYN9n6JbhWq3p/+St16Z4cFbaAcIKqyw10x+e0RYNEJhh76292eSD28Y+
+         23OEV3FPkZx8BK/mn+9J3yS7/exNdU6yR8LorPpIK/sRnwxTbvybjVDhFhUl7hL8sa9H
+         TNVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1737709110; x=1738313910;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a4AqRX4jgpQUQupuoQFqpmYTbRVzBhfX6O9GAy7aKKQ=;
-        b=w4dCpEn0ICjqHuNWh5J5HN+ZawxyNP2z9UWZFSqaT/0v0cs71axXZjIdiJcR+wnuSt
-         tPVGZdwQjsAF5e9oyUvZqZJnKe1dPq/mmoSbXW0oZ2mzl7vwXLUAMIOfxJrFvlajUp2+
-         DV8GOvUb/pJKfA4MSNm3/z1arQreoLRYPmUixqvdG+Ddabq29ORDDoRRjQOWi4HXCGTd
-         FAmN9RKS8ghtZN59+UM4tHKUZIvaL0vp/RA2nJFe7mg9lcW6KRxWUfGDlgK8OzvKPLVG
-         F+Y81VIQcCNieumE4OJbdvsf/C5Scl0Mb3xHaiwL+ELMEiaUYtftfLeQ6v6wdC8yBRoT
-         YK2g==
-X-Forwarded-Encrypted: i=1; AJvYcCXAZpzcoEUAIw5tPGiuCMxwgF8CenTo6Ue4r8/C6Zj2CAk9dcFNrWOh1M0g1msq/on+5ILwhIGKxrMdbPU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwUUy6BpTDzAGgGhelJz2ghCwsrnxkAWU0FeACovE/ltlqFJfVq
-	1bW13H50AS5V8IU+N+reJY/CvEVa/YCbstCSkHwS11rdABEdnMF4KW5vAi6JH9M=
-X-Gm-Gg: ASbGncsfRp8kvY/AThInbzUOoF44VepP1kkwXLaDO8YkQxRSzhIrPsbLX+Zpc9LYxI/
-	FqeIx3lOm0x1brMu9MhrG0bUrORGXtXX8R6GneZhXwaoxmYYykEucvRENzeN93psc/kd0LPlhl9
-	+jaPnqrMAySeD2P4RwS+ALW8gKvBWqBsm0VOwyMjvJpfb5waeU5LexxEafFYhsgbVOOsjVwqgeX
-	Qm9nD2Wa9C7tg0+ftiGySvfRZSsO1kUTjbr6v6X2MovWKXyGDTsZ94jHt02xm4fgSBiZBtrWGfo
-	JWLihok=
-X-Google-Smtp-Source: AGHT+IGaLv3P86dnfhfsz8clY+KvPxRH7m/1Pd0NzNkAaLxjGYIDOwn76y4qMRrSSuP3v13w1OIdqA==
-X-Received: by 2002:a17:903:320e:b0:217:9172:2ce1 with SMTP id d9443c01a7336-21c35544407mr480084755ad.22.1737709110054;
-        Fri, 24 Jan 2025 00:58:30 -0800 (PST)
+        d=1e100.net; s=20230601; t=1737709145; x=1738313945;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XHvPLEImTEWfALntTBCPd9TKW0+oiHv2uyr8XB4xyIc=;
+        b=dYOhWo2eSEC7qMwRBa+ykUOtrfEusicijesC7fY9eBusBVJKq0zD8aYZEQ9rb2tkp3
+         rQQmPvCjdFgs6cZP+vDQXzVZ3pHxXZ+dEs1oBFMye5UvMd8YEHzGsKiN5/CLaB69IX7A
+         MiolB6dsD/knnJ0ai5gzUtyizUY4DQIVvoSg3UGII6G/tpnj1DLwTncQxa7QVwExn+Pa
+         D0C7iOxKXvHIYOjnp4mXBrcQo0jTtk9FHTXXVNgkfOjlo8vnjyA3uWYF7Wix7fULum49
+         Et1U8MkcaMoPQcXtmrzET9noMEOyawl6/UXDaT19gasBnwPxJEs6aWCNtXIqtsYXmqNL
+         iDNg==
+X-Forwarded-Encrypted: i=1; AJvYcCVvhsWaoKo1h7NFV/isfV+naLgqoViKw5Ti1bUXR5t7wEGITzD4gUa7Qla6bylQcK/P8dbL14OI6P0EyfY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzF3uzHBHOE/X7CIvQYfR4Wlymd9jhW+m27tCeAdoPvIpNfG1fN
+	R5MhToKJtpHUynGQZS0kwT4xTBQSDIfbpPyZlroWSHg8pgu7qRzBe0t0YVraPXywJa5ix87JS2D
+	P
+X-Gm-Gg: ASbGncsdDvMsub1jFULbHhKs01u91Ep/P2AS8rh4VahUmULykZ/p5WllU+pa0Xi0/aF
+	P42NN5NlwZUn9MTyDKg8/HE+MzEU/X23FaNR7UIReUQ+PwnuyrLRHQyTQb8iS4Z6MSseGArFx3n
+	dcCMDXx3euZJz4Q6LzRFAgoL+blMSjVkxMZTVVTUUPe7wYWFBYy1Lw3VxuM1sC9FyQj36RlAgWv
+	zjGYMGjoedNF7tSCYrkElGnrf7V+CxdusnBaMCAm9aHDgRTGp0S3whTMTDrVbV4oK/kHzs0yj78
+	N8cTMQE=
+X-Google-Smtp-Source: AGHT+IFlPf6Y5ApV2vEgtwBRH/T2hTrMCJRbAhXXb7JfHHFFf33S6aG5dH1A+wfV/EhE0fz4W4IA+g==
+X-Received: by 2002:a17:90b:1f92:b0:2ee:db8a:29d0 with SMTP id 98e67ed59e1d1-2f782d4f3edmr36840886a91.26.1737709144725;
+        Fri, 24 Jan 2025 00:59:04 -0800 (PST)
 Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da3d9e1b2sm11621015ad.17.2025.01.24.00.58.29
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f7ffa6a725sm1258715a91.21.2025.01.24.00.59.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 24 Jan 2025 00:58:29 -0800 (PST)
+        Fri, 24 Jan 2025 00:59:04 -0800 (PST)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	Hector Martin <marcan@marcan.st>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Huang Rui <ray.huang@amd.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Sven Peter <sven@svenpeter.dev>,
 	Viresh Kumar <viresh.kumar@linaro.org>,
-	WANG Xuerui <kernel@xen0n.name>
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
 	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	arm-scmi@vger.kernel.org,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	loongarch@lists.linux.dev
-Subject: [PATCH 00/15] cpufreq: simplify boost handling
-Date: Fri, 24 Jan 2025 14:28:04 +0530
-Message-Id: <cover.1737707712.git.viresh.kumar@linaro.org>
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 10/15] cpufreq: powernv: Set .set_boost directly
+Date: Fri, 24 Jan 2025 14:28:14 +0530
+Message-Id: <9b4af20d5b415f41e866ddd8bde9cf6441c463b8.1737707712.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
+In-Reply-To: <cover.1737707712.git.viresh.kumar@linaro.org>
+References: <cover.1737707712.git.viresh.kumar@linaro.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -118,60 +107,50 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello,
-
 The boost feature can be controlled at two levels currently, driver
 level (applies to all policies) and per-policy.
 
-Currently most of the drivers enables driver level boost support from the
-per-policy ->init() callback, which isn't really efficient as that gets called
-for each policy and then there is online/offline path too where this gets done
-unnecessarily.
+Currently the driver enables driver level boost support from the
+per-policy ->init() callback, which isn't really efficient as that gets
+called for each policy and then there is online/offline path too where
+this gets done unnecessarily.
 
-Also it is possible to have a scenario where not all cpufreq policies support
-boost frequencies. And letting sysfs (or other parts of the kernel) enable boost
-feature for that policy isn't correct.
+Instead set the .set_boost field directly and always enable the boost
+support. If a policy doesn't support boost feature, the core will not
+enable it for that policy.
 
-Simplify and cleanup handling of boost to solve these issues.
+Keep the initial state of driver level boost to disabled and let the
+user enable it if required as ideally the boost frequencies must be used
+only when really required.
 
-Pushed here:
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+---
+ drivers/cpufreq/powernv-cpufreq.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/pm.git cpufreq/boost
-
-Rebased over few dependencies from PM tree, will push to the arm-cpufreq tree
-after merge window is closed.
-
-Viresh Kumar (15):
-  cpufreq: staticize cpufreq_boost_trigger_state()
-  cpufreq: Export cpufreq_boost_set_sw()
-  cpufreq: Introduce policy->boost_supported flag
-  cpufreq: acpi: Set policy->boost_supported
-  cpufreq: amd: Set policy->boost_supported
-  cpufreq: cppc: Set policy->boost_supported
-  cpufreq: Restrict enabling boost on policies with no boost frequencies
-  cpufreq: apple: Set .set_boost directly
-  cpufreq: loongson: Set .set_boost directly
-  cpufreq: powernv: Set .set_boost directly
-  cpufreq: scmi: Set .set_boost directly
-  cpufreq: dt: Set .set_boost directly
-  cpufreq: qcom: Set .set_boost directly
-  cpufreq: staticize policy_has_boost_freq()
-  cpufreq: Remove cpufreq_enable_boost_support()
-
- drivers/cpufreq/acpi-cpufreq.c      |  3 +++
- drivers/cpufreq/amd-pstate.c        |  4 ++--
- drivers/cpufreq/apple-soc-cpufreq.c | 10 +---------
- drivers/cpufreq/cppc_cpufreq.c      |  9 +--------
- drivers/cpufreq/cpufreq-dt.c        | 14 +-------------
- drivers/cpufreq/cpufreq.c           | 30 ++++++++++++-----------------
- drivers/cpufreq/freq_table.c        |  7 +++++--
- drivers/cpufreq/loongson3_cpufreq.c | 10 +---------
- drivers/cpufreq/powernv-cpufreq.c   |  5 +----
- drivers/cpufreq/qcom-cpufreq-hw.c   |  7 +------
- drivers/cpufreq/scmi-cpufreq.c      | 11 +----------
- include/linux/cpufreq.h             | 20 ++++++-------------
- 12 files changed, 35 insertions(+), 95 deletions(-)
-
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+index 0c3e907c58bc..4d3e891ff508 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -1125,7 +1125,7 @@ static int __init powernv_cpufreq_init(void)
+ 		goto out;
+ 
+ 	if (powernv_pstate_info.wof_enabled)
+-		powernv_cpufreq_driver.boost_enabled = true;
++		powernv_cpufreq_driver.set_boost = cpufreq_boost_set_sw;
+ 	else
+ 		powernv_cpu_freq_attr[SCALING_BOOST_FREQS_ATTR_INDEX] = NULL;
+ 
+@@ -1135,9 +1135,6 @@ static int __init powernv_cpufreq_init(void)
+ 		goto cleanup;
+ 	}
+ 
+-	if (powernv_pstate_info.wof_enabled)
+-		cpufreq_enable_boost_support();
+-
+ 	register_reboot_notifier(&powernv_cpufreq_reboot_nb);
+ 	opal_message_notifier_register(OPAL_MSG_OCC, &powernv_cpufreq_opal_nb);
+ 
 -- 
 2.31.1.272.g89b43f80a514
 
