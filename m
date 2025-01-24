@@ -1,43 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-5537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5538-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED45A1AE44
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 02:45:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DB52FA1AF16
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 04:34:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfLH43yBVz2yVT;
-	Fri, 24 Jan 2025 12:45:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YfNjP20cRz2yVD;
+	Fri, 24 Jan 2025 14:34:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.132
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737683120;
-	cv=none; b=MH+ve156HLkwjkR+OCgWbpxor6quW1pyfzgncJofrIj1wpkJnFy4M4FnUUV89V3971I5EOfaKOZ1wVFOeRz78dlwHcIZoE+0tlYnb3n1vF6s5tKPAAmvSyghMbW/NOmUlhrHecw14DYnh1J0cEfTtlo313Hh+zkXCZZqBpFk5IzLg7s5FCRWemWeeQpzTT0FqOOpArta1URFuSuAlvDuMmF0KgSWMIBtDs4ZSN1aRsDefp9qqoV1AVCdFT2/BrANM2GXjYz/j56GgoLO9fo2XvidkdNdWNTgv2M4xYBUcSIFV1NB5SZz/lgFOBTp+ntxjjnwSlsqsgxhfQUSL8eiBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737689689;
+	cv=none; b=JB11FgHAson69c47rNpBYoNbhSvXG53DB7Y92Wqadod0qauAzVXaBKjTCPZeyOLtx1hKhoNAPghtsJx0Qj+0ATkT+vtm1I4a2UFITcVZ7I8T5rP1UXyChKpmdSTLuDdi+4WprDtK7rQpZ9iCLsvyEty//qKidA3w/OsU45BVmpb94HGhGBykdxzpiWk+10BOz6wkATZtBcsp8CAnIhD4WulK20kDYqUdJhpJgj3fQv19gLal6MMJEaEz46Wf7NrmpwaVDYLC3EvxF9eiaISTMhJdjFwXvETuFAppFsnhLpo35iygd2wtZQ6IAmK2lsoStfDI2bzUI+c5AQq/mnXsig==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737683120; c=relaxed/relaxed;
-	bh=HefF1VgobYNw/buVdtIHwLUtKr4Okxq/b4dWX4SMuHU=;
+	t=1737689689; c=relaxed/relaxed;
+	bh=xot9VPVZvKKm3w/AZ32Tc/ApQiApX2kPs9xJ4vwR4w0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wgo90bZuB+j6D4DafPrQPDXD0B221u0fU8/jqpV/MvWeinuEp+wWEBwn3hHgeSrWeUsNICS8JFIrwVBEXJIzDaYneGPnclPZWvNV95gFAHQxGezKdkQm32bbozceBYNb+GV1t6FAJGZr97+DgK5O1f1CNy/20q5HQLDF9VtzXXl2HK89A5Gx4Z9UvzrRbRdQRo9Vafb+hjwSyml8ySULxZpUPBGnPWGDCKR5NAdLM4cG9CE13RAOrB5KwqGrTWCyD5Y9PP+61yzu45M7+p5yeSWAvUPgZnlBO+DBRY1Lf5ETPjCd36lJmsXPmpKBZvrKb+CpAszP5/omCi2CCczrmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=S95lrsda; dkim-atps=neutral; spf=pass (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	 In-Reply-To:Content-Type; b=fjKbUrQPE0pu3W6iTInHpBUoDCF3ME5k6zbxSskZFX6eV91gtK018OETaoJX1wec/9hzVZQVkOhyxI6foj9uZNi1k6KQCFJyn5qxC8T0bKCSy96z6FoFIVOkMFIB0mJgk8bMnf7LMJ/GyLkfYbqC2Ll4/jOsN25xQ5R7pGnS9FmzA1RvqpS2lhnbgmx98LysNwG2VS2YUYIrJp9sOQOHm4hm7vKPvEmdMa7Asdyei0wkq2mxIylhzyFemYG2oG0CIh8VSL7ztWBkI5vvNdCbZ3M/6/lJSxhKutPCsL6MSE6+vnta1lPk0ednf3NMV7NzyvXeDBvCrzPaSD+Wz+WSuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Df+wUUin; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=S95lrsda;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Df+wUUin;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YfLH250bCz2yLJ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 12:45:17 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1737683111; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=HefF1VgobYNw/buVdtIHwLUtKr4Okxq/b4dWX4SMuHU=;
-	b=S95lrsda3c6kBNwA4Yg7QCi5EGuYhKNO4/znNbdOjmisxp/7kBiWo3u5JaSKxitSIMNzQEpbxafc6YGlP+kW2eGL0SxO2imrL2ut5LAIoeoBZoyB4u7tSC/4xpJPwmStykIOxHUwJY51X7rpZKiMraCHXekdLFMRPZeQc93iHDk=
-Received: from 30.246.161.230(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WOCwDqx_1737683109 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 24 Jan 2025 09:45:10 +0800
-Message-ID: <9f8653ef-81e3-4ce9-9c11-78d694f2a52b@linux.alibaba.com>
-Date: Fri, 24 Jan 2025 09:45:08 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YfNjM6n4Sz2yQL
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 14:34:47 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50NMwZGx006103;
+	Fri, 24 Jan 2025 03:34:38 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=xot9VP
+	VZvKKm3w/AZ32Tc/ApQiApX2kPs9xJ4vwR4w0=; b=Df+wUUin7OmKr80/YAsX+K
+	bmqOkq12VAaarjyZbOUhqFJr22+0GlnWYwLcC8uqI6WGSFh9yPGB2ts2miZMj+A4
+	H12ekLwBKOvkoDm1SOTZx6SWE19+BQe+p9HxFEC2wvNNZ9iDPCTWUYHMQ2qeMVVI
+	mtOcoEr7OfV7LogxTOyA/Ts91saWybvfY+aO6iDEuPFDUduJ89w4cEDxHbjNZdz1
+	MKt+x8GmKEIw8S0rmrWXywKEI8GE4Fo0Al12ChmC4Ux6ZSWixMLpmqje5V+HnvZ6
+	QZCdgxbbO0ypfgyj4GzQaeRDrqup2f+stks3nS9C5J4z6ljDDVntrSNOBM6QHxzg
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44br1yk7ss-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 03:34:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50O063sN021074;
+	Fri, 24 Jan 2025 03:34:36 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 448sb1rgry-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 03:34:36 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50O3YXMA56885656
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jan 2025 03:34:33 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1C36220043;
+	Fri, 24 Jan 2025 03:34:33 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9855E20040;
+	Fri, 24 Jan 2025 03:34:31 +0000 (GMT)
+Received: from [9.109.204.94] (unknown [9.109.204.94])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 24 Jan 2025 03:34:31 +0000 (GMT)
+Message-ID: <66c70906-0ee8-4f15-82d9-411fc0d665ee@linux.ibm.com>
+Date: Fri, 24 Jan 2025 09:04:30 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,186 +79,132 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] PCI/AER: Report fatal errors of RCiEP and EP if
- link recoverd
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com
-References: <20241112135419.59491-1-xueshuai@linux.alibaba.com>
- <20241112135419.59491-3-xueshuai@linux.alibaba.com>
- <4b5230a1-26fd-4594-9daf-5df314c6b4c6@linux.intel.com>
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-In-Reply-To: <4b5230a1-26fd-4594-9daf-5df314c6b4c6@linux.intel.com>
+Subject: Re: [PATCH 2/2] powerpc/fadump: fix additional param memory
+ reservation for HASH MMU
+To: mahesh@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, Avnish Chouhan <avnish@linux.ibm.com>,
+        Brian King <brking@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <20250120173501.1147236-1-sourabhjain@linux.ibm.com>
+ <20250120173501.1147236-3-sourabhjain@linux.ibm.com>
+ <aewk4qyhv55jti7ctlaghckfbnd4j2ddtko5md7esa4o3mgxrk@bsjxghkfehwd>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <aewk4qyhv55jti7ctlaghckfbnd4j2ddtko5md7esa4o3mgxrk@bsjxghkfehwd>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -HSG-bNALQpQjMRW1ShPrvdqsnIibXew
+X-Proofpoint-ORIG-GUID: -HSG-bNALQpQjMRW1ShPrvdqsnIibXew
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-24_01,2025-01-23_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 mlxscore=0 suspectscore=0 phishscore=0 mlxlogscore=749
+ malwarescore=0 adultscore=0 clxscore=1015 lowpriorityscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501240023
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hello Mahesh,
 
 
-在 2025/1/24 04:10, Sathyanarayanan Kuppuswamy 写道:
-> Hi,
-> 
-> On 11/12/24 5:54 AM, Shuai Xue wrote:
->> The AER driver has historically avoided reading the configuration space of
->> an endpoint or RCiEP that reported a fatal error, considering the link to
->> that device unreliable. Consequently, when a fatal error occurs, the AER
->> and DPC drivers do not report specific error types, resulting in logs like:
+On 23/01/25 12:28, Mahesh J Salgaonkar wrote:
+> On 2025-01-20 23:05:00 Mon, Sourabh Jain wrote:
+>> Commit 683eab94da75bc ("powerpc/fadump: setup additional parameters for
+>> dump capture kernel") introduced the additional parameter feature in
+>> fadump for HASH MMU with the understanding that GRUB does not use the
+>> memory area between 640MB and 768MB for its operation.
 >>
->>    pcieport 0000:30:03.0: EDR: EDR event received
->>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
->>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
->>    pcieport 0000:30:03.0: AER: broadcast error_detected message
->>    nvme nvme0: frozen state error detected, reset controller
->>    nvme 0000:34:00.0: ready 0ms after DPC
->>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>> However, the patch ("powerpc: increase MIN RMA size for CAS
+>> negotiation") changes the MIN RMA size to 768MB, allowing GRUB to use
+>> memory up to 768MB. This makes the fadump reservation for the additional
+>> parameter feature for HASH MMU unreliable.
+> I see. Please include above patch in single patch series, with this
+> change as first patch.
+
+Thanks for the suggestion. I posted v3 with both patches combined:
+https://lore.kernel.org/all/20250123114254.200527-1-sourabhjain@linux.ibm.com/
+
+
+>
+>> To address this, adjust the memory range for the additional parameter in
+>> fadump for HASH MMU. This will ensure that GRUB does not overwrite the
+>> memory reserved for fadump's additional parameter in HASH MMU.
 >>
->> AER status registers are sticky and Write-1-to-clear. If the link recovered
->> after hot reset, we can still safely access AER status of the error device.
->> In such case, report fatal errors which helps to figure out the error root
->> case.
+>> The new policy for the memory range for the additional parameter in HASH
+>> MMU is that the first memory block must be larger than the MIN_RMA size,
+>> as the bootloader can use memory up to the MIN_RMA size. The range
+>> should be between MIN_RMA and the RMA size (ppc64_rma_size), and it must
+>> not overlap with the fadump reserved area.
 >>
->> After this patch, the logs like:
->>
->>    pcieport 0000:30:03.0: EDR: EDR event received
->>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
->>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
->>    pcieport 0000:30:03.0: AER: broadcast error_detected message
->>    nvme nvme0: frozen state error detected, reset controller
->>    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
->>    nvme 0000:34:00.0: ready 0ms after DPC
->>    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
->>    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
->>    nvme 0000:34:00.0:    [ 4] DLP                    (First)
->>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
->>
->> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> Cc: Avnish Chouhan <avnish@linux.ibm.com>
+>> Cc: Brian King <brking@linux.ibm.com>
+>> Cc: Hari Bathini <hbathini@linux.ibm.com>
+>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+>> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
 >> ---
->>   drivers/pci/pci.h      |  3 ++-
->>   drivers/pci/pcie/aer.c | 11 +++++++----
->>   drivers/pci/pcie/dpc.c |  2 +-
->>   drivers/pci/pcie/err.c |  9 +++++++++
->>   4 files changed, 19 insertions(+), 6 deletions(-)
+>>   arch/powerpc/kernel/fadump.c | 21 +++++++++++----------
+>>   1 file changed, 11 insertions(+), 10 deletions(-)
 >>
->> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
->> index 0866f79aec54..6f827c313639 100644
->> --- a/drivers/pci/pci.h
->> +++ b/drivers/pci/pci.h
->> @@ -504,7 +504,8 @@ struct aer_err_info {
->>       struct pcie_tlp_log tlp;    /* TLP Header */
->>   };
->> -int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
->> +int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
->> +                  bool link_healthy);
->>   void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
->>   #endif    /* CONFIG_PCIEAER */
->> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
->> index 13b8586924ea..97ec1c17b6f4 100644
->> --- a/drivers/pci/pcie/aer.c
->> +++ b/drivers/pci/pcie/aer.c
->> @@ -1200,12 +1200,14 @@ EXPORT_SYMBOL_GPL(aer_recover_queue);
->>    * aer_get_device_error_info - read error status from dev and store it to info
->>    * @dev: pointer to the device expected to have a error record
->>    * @info: pointer to structure to store the error record
->> + * @link_healthy: link is healthy or not
->>    *
->>    * Return 1 on success, 0 on error.
->>    *
->>    * Note that @info is reused among all error devices. Clear fields properly.
->>    */
->> -int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
->> +int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
->> +                  bool link_healthy)
->>   {
->>       int type = pci_pcie_type(dev);
->>       int aer = dev->aer_cap;
->> @@ -1229,7 +1231,8 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
->>       } else if (type == PCI_EXP_TYPE_ROOT_PORT ||
->>              type == PCI_EXP_TYPE_RC_EC ||
->>              type == PCI_EXP_TYPE_DOWNSTREAM ||
->> -           info->severity == AER_NONFATAL) {
->> +           info->severity == AER_NONFATAL ||
->> +           (info->severity == AER_FATAL && link_healthy)) {
->>           /* Link is still healthy for IO reads */
->>           pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
->> @@ -1258,11 +1261,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
->>       /* Report all before handle them, not to lost records by reset etc. */
->>       for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
->> -        if (aer_get_device_error_info(e_info->dev[i], e_info))
->> +        if (aer_get_device_error_info(e_info->dev[i], e_info, false))
->>               aer_print_error(e_info->dev[i], e_info);
->>       }
->>       for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
->> -        if (aer_get_device_error_info(e_info->dev[i], e_info))
->> +        if (aer_get_device_error_info(e_info->dev[i], e_info, false))
->>               handle_error_source(e_info->dev[i], e_info);
->>       }
->>   }
->> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
->> index 62a68cde4364..b3f157a00405 100644
->> --- a/drivers/pci/pcie/dpc.c
->> +++ b/drivers/pci/pcie/dpc.c
->> @@ -304,7 +304,7 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
->>           dpc_process_rp_pio_error(pdev);
->>       else if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR &&
->>            dpc_get_aer_uncorrect_severity(pdev, &info) &&
->> -         aer_get_device_error_info(pdev, &info)) {
->> +         aer_get_device_error_info(pdev, &info, false)) {
->>           aer_print_error(pdev, &info);
->>           pci_aer_clear_nonfatal_status(pdev);
->>           pci_aer_clear_fatal_status(pdev);
->> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
->> index 31090770fffc..462577b8d75a 100644
->> --- a/drivers/pci/pcie/err.c
->> +++ b/drivers/pci/pcie/err.c
->> @@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->>       struct pci_dev *bridge;
->>       pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
->>       struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
->> +    struct aer_err_info info;
->>       /*
->>        * If the error was detected by a Root Port, Downstream Port, RCEC,
->> @@ -223,6 +224,13 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->>               pci_warn(bridge, "subordinate device reset failed\n");
->>               goto failed;
->>           }
->> +
->> +        info.severity = AER_FATAL;
->> +        /* Link recovered, report fatal errors of RCiEP or EP */
->> +        if ((type == PCI_EXP_TYPE_ENDPOINT ||
->> +             type == PCI_EXP_TYPE_RC_END) &&
->> +            aer_get_device_error_info(dev, &info, true))
->> +            aer_print_error(dev, &info);
-> 
-> IMO, error device information is more like a debug info. Can we change
-> the print level of this info to debug?
+>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+>> index 4b371c738213..5831f3ec8561 100644
+>> --- a/arch/powerpc/kernel/fadump.c
+>> +++ b/arch/powerpc/kernel/fadump.c
+>> @@ -33,6 +33,7 @@
+>>   #include <asm/fadump-internal.h>
+>>   #include <asm/setup.h>
+>>   #include <asm/interrupt.h>
+>> +#include <asm/prom.h>
+>>   
+>>   /*
+>>    * The CPU who acquired the lock to trigger the fadump crash should
+>> @@ -1764,19 +1765,19 @@ void __init fadump_setup_param_area(void)
+>>   		range_end = memblock_end_of_DRAM();
+>>   	} else {
+>>   		/*
+>> -		 * Passing additional parameters is supported for hash MMU only
+>> -		 * if the first memory block size is 768MB or higher.
+>> +		 * Memory range for passing additional parameters for HASH MMU
+>> +		 * must meet the following conditions:
+>> +		 * 1. The first memory block size must be higher than the
+>> +		 *    minimum RMA (MIN_RMA) size. Bootloader can use memory
+>> +		 *    up to RMA size. So it should be avoided.
+>> +		 * 2. The range should be between MIN_RMA and RMA size (ppc64_rma_size)
+>> +		 * 3. It must not overlap with the fadump reserved area.
+>>   		 */
+>> -		if (ppc64_rma_size < 0x30000000)
+>> +		if (ppc64_rma_size < MIN_RMA*1024*1024)
+>>   			return;
+>>   
+>> -		/*
+>> -		 * 640 MB to 768 MB is not used by PFW/bootloader. So, try reserving
+>> -		 * memory for passing additional parameters in this range to avoid
+>> -		 * being stomped on by PFW/bootloader.
+>> -		 */
+>> -		range_start = 0x2A000000;
+>> -		range_end = range_start + 0x4000000;
+>> +		range_start = MIN_RMA * 1024 * 1024;
+>> +		range_end = min(ppc64_rma_size, fw_dump.boot_mem_top);
+> Please update fadump documentation which makes this restriction clear.
 
-Yes, but error device information is quite important for user to figure out the
-device status and should not been ignored. We need it in production to analysis
-server healthy.
+The v3 patch series has a patch that update fadump documentation:
+https://lore.kernel.org/all/20250123114254.200527-5-sourabhjain@linux.ibm.com/
 
-> 
->>       } else {
->>           pci_walk_bridge(bridge, report_normal_detected, &status);
->>       }
->> @@ -259,6 +267,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->>       if (host->native_aer || pcie_ports_native) {
->>           pcie_clear_device_status(dev);
->>           pci_aer_clear_nonfatal_status(dev);
->> +        pci_aer_clear_fatal_status(dev);
-> 
-> I think we clear fatal status in DPC driver, why do it again?
+>
+> Rest looks good to me.
+>
+> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
 
-DPC driver only clear fatal status for the err_port, but not the err_dev.
-err_dev and err_port are indeed easy to confuse, so I have differentiated them
-again in patch1.
+Thanks for the review and suggestion.
 
-> 
->>       }
->>       pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
-> 
+- Sourabh Jain
+
 
