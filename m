@@ -1,72 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-5551-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5552-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3CF0A1B8C2
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 16:18:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7A7BA1BC6D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 19:50:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfhK93l4Jz2yZ6;
-	Sat, 25 Jan 2025 02:18:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yfn2S1Tw7z301N;
+	Sat, 25 Jan 2025 05:50:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737731901;
-	cv=none; b=BJK/1UYoKCz/fJr3gHWA9JnsV5uEPZFUOx++If+ttZLgkoaJusG6lBqAoZWY3SgCfbNy0OP1I4phl+hGOzcBqI/BhDQsm755lb3LpFC04D5GTXmlC9Gdv9XrLYH9m8DusSew3yzmcow+Hp2G19j/M0epoySzdBEQ+aLzfhgc8vIf2I8bKWMtH4Zc08cIHJfRLI2GHWF5DZrzNiVvMazMFRagjLKfH37PwsQCKDf29Py76rF23Cv1MhTieg2CXhLxzZ0GsCaNPP5yWCVM2t4BERAhTjW6ebiAk7ucoJ57XRl5D0xYW183rer0X+mnf/aEWLqwiDEBuNRsVq67EGOnGA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737744656;
+	cv=none; b=lWsH2/XbH9TM4EzkWHZbzwTGs0PVl1QmGDrth74mZktu1hjKzOAR1lQxIzfsw4Sr1KyDRp3TR8HzR46V7VVR1OxdyZBriGFgPocjVLRwmZTPW+bi7W/+4/JoIlehJIN/CMb4OBAJhCzlmBQ10Zo1tEOxhzGRslWBgSTzER+1nOa1ovqjPWzD2ox8l/ulWsmphG6gbdoET3AzsLwAYv3E2r9nKH6iq+iiT/dLCGPi+F/7fYxaJClElMy7v37o2dk624a2KzTCWUCufqhQqwdS2kjCgq6GpJ6P1Y2tJFS8WeORSF2OvWhPCfvbh9TReojCt1KlHo2xeCT5rmpXWvm13A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737731901; c=relaxed/relaxed;
-	bh=koth07cNpOYE4qldCwXjqN8L/4yDBi/gsccX+sF8XnU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UX+JwBFkVoJGl6YzTkggEZ19a2V/Fmfe2XIo930X/AH3lmi8MPl1qBjdkD4zLSNiUEdLJw0cejswwZKaX+pW/YTb3s6LT+dzWm0dyFuCDDi/36xemsjAgn2Av6DJJGQrO51QqSEqHw30uiyj1hCXVP47qhy0RHUumMtaMubQVQyZ5Z5+6t3EWmNACo3gNTNrMsytF2ubbuPVXpQrlBgibePVJ+gzG9oAm92/hKzvLSlsfEqJGfCVYHOUiuCaLDXVB/Aqxu2umnmA0U96+BIYmLvOD7LtWNh6+pMtoPqxU4eSzlIOL2PEpvxmtyb7WHrY/DZUBUE1LHGqTaEzMZCepA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YSDLFTIS; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=legion@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1737744656; c=relaxed/relaxed;
+	bh=Z8GgqtqmMyolY5jG1Hjed+WcKhmQN74PhYCxZSVP+B8=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=R7/daPxcT3T6iyc14MMXsDnR0HhNzDk9D6wwOBnX0nfwfEPGcKo7sAcYYGqAxIAth2Qra43GS36HX+2Uk3gMN7sb2XILuuDXrZKKbW0ICwtxpi1bwM7lS4FGRxhlsaxQWWvc2Ao5DASl2qlngSuvZjLf5Yrao/5DokfopcV5FYTAlBqzryxKxspSXqc2SdbTrKKmpmduwjO7/ZQ+gMQXPcbUUHmxbSQuMLKOATOO4aC4jzCNsOPUA3+jUZCBgv+njyVJcWJLT0Fvp59k5GxNUEkJV2WBTBSIi7Ni0hxxCXQTRko87F3Tbhy45hZHpbGBE5QWNi7BEsaHtVN2j9DT+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iDxlW6nQ; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YSDLFTIS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iDxlW6nQ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=legion@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YfhK83m4Mz2yXY
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2025 02:18:20 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A13E45C579A;
-	Fri, 24 Jan 2025 15:17:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C33CC4CED2;
-	Fri, 24 Jan 2025 15:18:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737731897;
-	bh=XOF51AXxu8LwW9A2cnec0Hm6u9BrwL0xWG94hkLHoCk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YSDLFTISfbsflHaJ7QCpam6MHsy2r4ZJyxEFSNn1sOyV5xkJTFylxKntl5UvSzNM+
-	 dKCcCcGQed8XylilX/+Yz0eLtrhjK/JVTUsxTMA6M40q7rVFoRyNQT6nrKUDC3cUUc
-	 5jMo3Nc65k1yPHFn3hyRz8I9XOTALHX5gMt/oO3Lj9dLL2d+baacOuO3cIbXfjWkMX
-	 Gt1t4YSAqmDG/VqkcwRi6HWFhOMaPuKIhN/4GU/amZOL/h/REuAfAT4xb+l7sI7Xb1
-	 91nuFeKXz9c+kz3vBSMhS0+nHN3v+Go6esrQ5n1VEhse/oxPZNcMVooN56R+O81H51
-	 F0/ec06AWjY4g==
-Date: Fri, 24 Jan 2025 16:18:10 +0100
-From: Alexey Gladkov <legion@kernel.org>
-To: "Dmitry V. Levin" <ldv@strace.io>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	strace-devel@lists.strace.io,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
- syscall_set_return_value()
-Message-ID: <Z5OvMgjMd3xzx4mS@example.org>
-References: <20250113171054.GA589@strace.io>
- <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
- <20250114170400.GB11820@strace.io>
- <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
- <20250123182815.GA20994@strace.io>
- <20250123234321.GA23582@strace.io>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yfn2R2VmNz2xs7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2025 05:50:55 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50OFdVja013427;
+	Fri, 24 Jan 2025 18:50:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Z8Ggqt
+	qmMyolY5jG1Hjed+WcKhmQN74PhYCxZSVP+B8=; b=iDxlW6nQ62SXbq5JJQ61xz
+	YEP18MTBZOP6FrwSUCUYFjgtxEzcaywh7gVBFvqOPZBl388ErU1719224qNYT6d6
+	TPFv08jFb12ByBJ/uaT+HYF13sevOzoFU7SbQvn5vMhFMSWOnXIQUpY/FPZZtRxw
+	xh5oMxF+onLVa38lk9j1mjiz6sKSM+AaUKsWfePhaWL6I0GfeKDw1L3/GD/+k8p+
+	A7aoqTNdSJYMpAo5gWNvQyJGq+yOuPIXco38AF9Xo7mYqoxjhRtuKCMukW6Z3+BT
+	MaxFr2Jl8xfqKnAi5uai+a6SMglyCovOu5geOo1IJDRa3NPPYvyYQCWQUtUv/GtQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44cdptrx42-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 18:50:46 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50OIokFN029316;
+	Fri, 24 Jan 2025 18:50:46 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44cdptrx3y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 18:50:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50OG0us5019261;
+	Fri, 24 Jan 2025 18:50:45 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 448pmsw341-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 24 Jan 2025 18:50:45 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50OIogil27328954
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 24 Jan 2025 18:50:42 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E76362008A;
+	Fri, 24 Jan 2025 18:50:41 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7621D20089;
+	Fri, 24 Jan 2025 18:50:36 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.247.134])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri, 24 Jan 2025 18:50:36 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,237 +84,316 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250123234321.GA23582@strace.io>
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: [PATCH v3 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv
+ specific PMU
+From: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+In-Reply-To: <20250123120749.90505-5-vaibhav@linux.ibm.com>
+Date: Sat, 25 Jan 2025 00:20:21 +0530
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
+        amachhiw@linux.ibm.com
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <40C19755-ABE4-4E23-A75A-1F6F6DDC505A@linux.vnet.ibm.com>
+References: <20250123120749.90505-1-vaibhav@linux.ibm.com>
+ <20250123120749.90505-5-vaibhav@linux.ibm.com>
+To: Vaibhav Jain <vaibhav@linux.ibm.com>
+X-Mailer: Apple Mail (2.3818.100.11.1.3)
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: iTw0SW9kqfK8yqMAN4Q6x07KqbBYUPTh
+X-Proofpoint-GUID: aleTYd-8tAiYtCILKQeyMEzMLjBTsB3L
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-24_08,2025-01-23_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 impostorscore=0 clxscore=1011 lowpriorityscore=0
+ bulkscore=0 mlxlogscore=999 mlxscore=0 malwarescore=0 spamscore=0
+ suspectscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501240127
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 24, 2025 at 01:43:22AM +0200, Dmitry V. Levin wrote:
-> On Thu, Jan 23, 2025 at 08:28:15PM +0200, Dmitry V. Levin wrote:
-> > On Mon, Jan 20, 2025 at 02:51:38PM +0100, Christophe Leroy wrote:
-> > > Le 14/01/2025 à 18:04, Dmitry V. Levin a écrit :
-> > > > On Mon, Jan 13, 2025 at 06:34:44PM +0100, Christophe Leroy wrote:
-> > > >> Le 13/01/2025 à 18:10, Dmitry V. Levin a écrit :
-> > > >>> Bring syscall_set_return_value() in sync with syscall_get_error(),
-> > > >>> and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
-> > > >>>
-> > > >>> This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
-> > > >>> syscall_set_return_value()").
-> > > >>
-> > > >> There is a clear detailed explanation in that commit of why it needs to
-> > > >> be done.
-> > > >>
-> > > >> If you think that commit is wrong you have to explain why with at least
-> > > >> the same level of details.
-> > > > 
-> > > > OK, please have a look whether this explanation is clear and detailed enough:
-> > > > 
-> > > > =======
-> > > > powerpc: properly negate error in syscall_set_return_value()
-> > > > 
-> > > > When syscall_set_return_value() is used to set an error code, the caller
-> > > > specifies it as a negative value in -ERRORCODE form.
-> > > > 
-> > > > In !trap_is_scv case the error code is traditionally stored as follows:
-> > > > gpr[3] contains a positive ERRORCODE, and ccr has 0x10000000 flag set.
-> > > > Here are a few examples to illustrate this convention.  The first one
-> > > > is from syscall_get_error():
-> > > >          /*
-> > > >           * If the system call failed,
-> > > >           * regs->gpr[3] contains a positive ERRORCODE.
-> > > >           */
-> > > >          return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
-> > > > 
-> > > > The second example is from regs_return_value():
-> > > >          if (is_syscall_success(regs))
-> > > >                  return regs->gpr[3];
-> > > >          else
-> > > >                  return -regs->gpr[3];
-> > > > 
-> > > > The third example is from check_syscall_restart():
-> > > >          regs->result = -EINTR;
-> > > >          regs->gpr[3] = EINTR;
-> > > >          regs->ccr |= 0x10000000;
-> > > > 
-> > > > Compared with these examples, the failure of syscall_set_return_value()
-> > > > to assign a positive ERRORCODE into regs->gpr[3] is clearly visible:
-> > > > 	/*
-> > > > 	 * In the general case it's not obvious that we must deal with
-> > > > 	 * CCR here, as the syscall exit path will also do that for us.
-> > > > 	 * However there are some places, eg. the signal code, which
-> > > > 	 * check ccr to decide if the value in r3 is actually an error.
-> > > > 	 */
-> > > > 	if (error) {
-> > > > 		regs->ccr |= 0x10000000L;
-> > > > 		regs->gpr[3] = error;
-> > > > 	} else {
-> > > > 		regs->ccr &= ~0x10000000L;
-> > > > 		regs->gpr[3] = val;
-> > > > 	}
-> > > > 
-> > > > This fix brings syscall_set_return_value() in sync with syscall_get_error()
-> > > > and lets upcoming ptrace/set_syscall_info selftest pass on powerpc.
-> > > > 
-> > > > Fixes: 1b1a3702a65c ("powerpc: Don't negate error in syscall_set_return_value()").
-> > > > =======
-> > > 
-> > > I think there is still something going wrong.
-> > > 
-> > > do_seccomp() sets regs->gpr[3] = -ENOSYS; by default.
-> > > 
-> > > Then it calls __secure_computing() which returns what __seccomp_filter() 
-> > > returns.
-> > > 
-> > > In case of error, __seccomp_filter() calls syscall_set_return_value() 
-> > > with a negative value then returns -1
-> > > 
-> > > do_seccomp() is called by do_syscall_trace_enter() which returns -1 when 
-> > > do_seccomp() doesn't return 0.
-> > > 
-> > > do_syscall_trace_enter() is called by system_call_exception() and 
-> > > returns -1, so syscall_exception() returns regs->gpr[3]
-> > > 
-> > > In entry_32.S, transfer_to_syscall, syscall_exit_prepare() is then 
-> > > called with the return of syscall_exception() as first parameter, which 
-> > > leads to:
-> > > 
-> > > 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO) && is_not_scv) {
-> > > 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
-> > > 			r3 = -r3;
-> > > 			regs->ccr |= 0x10000000; /* Set SO bit in CR */
-> > > 		}
-> > > 	}
-> > > 
-> > > By chance, because you have already changed the sign of gpr[3], the 
-> > > above test fails and nothing is done to r3, and because you have also 
-> > > already set regs->ccr it works.
-> > > 
-> > > But all this looks inconsistent with the fact that do_seccomp sets 
-> > > -ENOSYS as default value
-> > > 
-> > > Also, when do_seccomp() returns 0, do_syscall_trace_enter() check the 
-> > > syscall number and when it is wrong it goes to skip: which sets 
-> > > regs->gpr[3] = -ENOSYS;
-> > > 
-> > > So really I think it is not in line with your changes to set positive 
-> > > value in gpr[3].
-> > > 
-> > > Maybe your change is still correct but it needs to be handled completely 
-> > > in that case.
-> > 
-> > Indeed, there is an inconsistency in !trap_is_scv case.
-> > 
-> > In some places such as syscall_get_error() and regs_return_value() the
-> > semantics is as I described earlier: gpr[3] contains a positive ERRORCODE
-> > and ccr has 0x10000000 flag set.  This semantics is a part of the ABI and
-> > therefore cannot be changed.
-> > 
-> > In some other places like do_seccomp() and do_syscall_trace_enter() the
-> > semantics is similar to the trap_is_scv case: gpr[3] contains a negative
-> > ERRORCODE and ccr is unchanged.  In addition, system_call_exception()
-> > returns the system call function return value when it is executed, and
-> > gpr[3] otherwise.  The value returned by system_call_exception() is passed
-> > on to syscall_exit_prepare() which performs the conversion you mentioned.
-> > 
-> > What's remarkable is that in those places that are a part of the ABI the
-> > traditional semantics is kept, while in other places the implementation
-> > follows the trap_is_scv-like semantics, while traditional semantics is
-> > also supported there.
-> > 
-> > The only case where I see some intersection is do_seccomp() where the
-> > tracer would be able to see -ENOSYS in gpr[3].  However, the seccomp stop
-> > is not the place where the tracer *reads* the system call exit status,
-> > so whatever was written in gpr[3] before __secure_computing() is not
-> > really relevant, consequently, selftests/seccomp/seccomp_bpf passes with
-> > this patch applied as well as without it.
-> > 
-> > After looking at system_call_exception() I doubt this inconsistency can be
-> > easily avoided, so I don't see how this patch could be enhanced further,
-> > and what else could I do with the patch besides dropping it and letting
-> > !trap_is_scv case be unsupported by PTRACE_SET_SYSCALL_INFO API, which
-> > would be unfortunate.
-> 
-> If you say this would bring some consistency, I can extend the patch with
-> something like this:
-> 
-> diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-> index 727ed4a14545..dda276a934fd 100644
-> --- a/arch/powerpc/kernel/ptrace/ptrace.c
-> +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-> @@ -207,7 +207,7 @@ static int do_seccomp(struct pt_regs *regs)
->  	 * syscall parameter. This is different to the ptrace ABI where
->  	 * both r3 and orig_gpr3 contain the first syscall parameter.
->  	 */
-> -	regs->gpr[3] = -ENOSYS;
-> +	syscall_set_return_value(current, regs, -ENOSYS, 0);
->  
->  	/*
->  	 * We use the __ version here because we have already checked
-> @@ -225,7 +225,7 @@ static int do_seccomp(struct pt_regs *regs)
->  	 * modify the first syscall parameter (in orig_gpr3) and also
->  	 * allow the syscall to proceed.
->  	 */
-> -	regs->gpr[3] = regs->orig_gpr3;
-> +	syscall_set_return_value(current, regs, 0, regs->orig_gpr3);
->  
->  	return 0;
->  }
-> @@ -315,7 +315,7 @@ long do_syscall_trace_enter(struct pt_regs *regs)
->  	 * If we are aborting explicitly, or if the syscall number is
->  	 * now invalid, set the return value to -ENOSYS.
->  	 */
-> -	regs->gpr[3] = -ENOSYS;
-> +	syscall_set_return_value(current, regs, -ENOSYS, 0);
->  	return -1;
->  }
->  
-> diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-> index aa17e62f3754..c921e0cb54b8 100644
-> --- a/arch/powerpc/kernel/signal.c
-> +++ b/arch/powerpc/kernel/signal.c
-> @@ -229,14 +229,8 @@ static void check_syscall_restart(struct pt_regs *regs, struct k_sigaction *ka,
->  		regs_add_return_ip(regs, -4);
->  		regs->result = 0;
->  	} else {
-> -		if (trap_is_scv(regs)) {
-> -			regs->result = -EINTR;
-> -			regs->gpr[3] = -EINTR;
-> -		} else {
-> -			regs->result = -EINTR;
-> -			regs->gpr[3] = EINTR;
-> -			regs->ccr |= 0x10000000;
-> -		}
-> +		regs->result = -EINTR;
-> +		syscall_set_return_value(current, regs, -EINTR, 0);
->  	}
->  }
 
-I'm not a powerpc expert but shouldn't be used regs->gpr[3] via a
-regs_return_value() in system_call_exception() ?
 
-notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
-{
-...
-		r0 = do_syscall_trace_enter(regs);
-		if (unlikely(r0 >= NR_syscalls))
-			return regs->gpr[3];
+> On 23 Jan 2025, at 5:37=E2=80=AFPM, Vaibhav Jain =
+<vaibhav@linux.ibm.com> wrote:
+>=20
+> Introduce a new PMU named 'kvm-hv' to report Book3s kvm-hv specific
+> performance counters. This will expose KVM-HV specific performance
+> attributes to user-space via kernel's PMU infrastructure and would =
+enable
+> users to monitor active kvm-hv based guests.
+>=20
+> The patch creates necessary scaffolding to for the new PMU callbacks =
+and
+> introduces two new exports kvmppc_{,un}register_pmu() that are called =
+from
+> kvm-hv init and exit function to perform initialize and cleanup for =
+the
+> 'kvm-hv' PMU. The patch doesn't introduce any perf-events yet, which =
+will
+> be introduced in later patches
+>=20
+> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>=20
+> ---
+> Changelog
+>=20
+> v2->v3:
+> * Fixed a build warning reported by kernel build robot.
+> Link:
+> =
+https://lore.kernel.org/oe-kbuild-all/202501171030.3x0gqW8G-lkp@intel.com
+>=20
+> v1->v2:
+> * Fixed an issue of kvm-hv not loading on baremetal kvm [Gautam]
+> ---
+> arch/powerpc/include/asm/kvm_book3s.h |  20 ++++
+> arch/powerpc/kvm/Makefile             |   6 ++
+> arch/powerpc/kvm/book3s_hv.c          |   9 ++
+> arch/powerpc/kvm/book3s_hv_pmu.c      | 133 ++++++++++++++++++++++++++
+> 4 files changed, 168 insertions(+)
+> create mode 100644 arch/powerpc/kvm/book3s_hv_pmu.c
+>=20
+> diff --git a/arch/powerpc/include/asm/kvm_book3s.h =
+b/arch/powerpc/include/asm/kvm_book3s.h
+> index e1ff291ba891..7a7854c65ebb 100644
+> --- a/arch/powerpc/include/asm/kvm_book3s.h
+> +++ b/arch/powerpc/include/asm/kvm_book3s.h
+> @@ -348,6 +348,26 @@ static inline bool kvmhv_is_nestedv1(void)
+>=20
+> #endif
+>=20
+> +/* kvm-ppc pmu registration */
+> +#if IS_ENABLED(CONFIG_KVM_BOOK3S_64_HV)
+> +#ifdef CONFIG_PERF_EVENTS
+> +int kvmppc_register_pmu(void);
+> +void kvmppc_unregister_pmu(void);
+> +
+> +#else
+> +
+> +static inline int kvmppc_register_pmu(void)
+> +{
+> + return 0;
+> +}
+> +
+> +static inline void kvmppc_unregister_pmu(void)
+> +{
+> + /* do nothing */
+> +}
+> +#endif /* CONFIG_PERF_EVENTS */
+> +#endif /* CONFIG_KVM_BOOK3S_64_HV */
+> +
+> int __kvmhv_nestedv2_reload_ptregs(struct kvm_vcpu *vcpu, struct =
+pt_regs *regs);
+> int __kvmhv_nestedv2_mark_dirty_ptregs(struct kvm_vcpu *vcpu, struct =
+pt_regs *regs);
+> int __kvmhv_nestedv2_mark_dirty(struct kvm_vcpu *vcpu, u16 iden);
+> diff --git a/arch/powerpc/kvm/Makefile b/arch/powerpc/kvm/Makefile
+> index 4bd9d1230869..7645307ff277 100644
+> --- a/arch/powerpc/kvm/Makefile
+> +++ b/arch/powerpc/kvm/Makefile
+> @@ -92,6 +92,12 @@ =
+kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) +=3D \
+> $(kvm-book3s_64-builtin-tm-objs-y) \
+> $(kvm-book3s_64-builtin-xics-objs-y)
+>=20
+> +# enable kvm_hv perf events
+> +ifdef CONFIG_PERF_EVENTS
+> +kvm-book3s_64-builtin-objs-$(CONFIG_KVM_BOOK3S_64_HANDLER) +=3D \
+> + book3s_hv_pmu.o
+> +endif
+> +
+> obj-$(CONFIG_GUEST_STATE_BUFFER_TEST) +=3D test-guest-state-buffer.o
+> endif
+>=20
+> diff --git a/arch/powerpc/kvm/book3s_hv.c =
+b/arch/powerpc/kvm/book3s_hv.c
+> index 25429905ae90..6365b8126574 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6662,6 +6662,14 @@ static int kvmppc_book3s_init_hv(void)
+> return r;
+> }
+>=20
+> + r =3D kvmppc_register_pmu();
+> + if (r =3D=3D -EOPNOTSUPP) {
+> + pr_info("KVM-HV: PMU not supported %d\n", r);
+> + } else if (r) {
+> + pr_err("KVM-HV: Unable to register PMUs %d\n", r);
+> + goto err;
+> + }
+> +
+> kvm_ops_hv.owner =3D THIS_MODULE;
+> kvmppc_hv_ops =3D &kvm_ops_hv;
+>=20
+> @@ -6676,6 +6684,7 @@ static int kvmppc_book3s_init_hv(void)
+>=20
+> static void kvmppc_book3s_exit_hv(void)
+> {
+> + kvmppc_unregister_pmu();
+> kvmppc_uvmem_free();
+> kvmppc_free_host_rm_ops();
+> if (kvmppc_radix_possible())
+> diff --git a/arch/powerpc/kvm/book3s_hv_pmu.c =
+b/arch/powerpc/kvm/book3s_hv_pmu.c
+> new file mode 100644
+> index 000000000000..8c6ed30b7654
+> --- /dev/null
+> +++ b/arch/powerpc/kvm/book3s_hv_pmu.c
+> @@ -0,0 +1,133 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Description: PMUs specific to running nested KVM-HV guests
+> + * on Book3S processors (specifically POWER9 and later).
+> + */
+> +
+> +#define pr_fmt(fmt)  "kvmppc-pmu: " fmt
 
-	} else if (unlikely(r0 >= NR_syscalls)) {
-		if (unlikely(trap_is_unsupported_scv(regs))) {
-			/* Unsupported scv vector */
-			_exception(SIGILL, regs, ILL_ILLOPC, regs->nip);
-			return regs->gpr[3];
-		}
-		return -ENOSYS;
-	}
-}
+Hi Vaibhav
 
--- 
-Rgrds, legion
+All PMU specific code is under =E2=80=9Carch/powerpc/perf in the kernel =
+source. Here since we are introducing a kvm-hv specific PMU, can we =
+please have it in arch/powerpc/perf ?
+
+Thanks
+Athira
+> +
+> +#include "asm-generic/local64.h"
+> +#include <linux/kernel.h>
+> +#include <linux/errno.h>
+> +#include <linux/ratelimit.h>
+> +#include <linux/kvm_host.h>
+> +#include <linux/gfp_types.h>
+> +#include <linux/pgtable.h>
+> +#include <linux/perf_event.h>
+> +#include <linux/spinlock_types.h>
+> +#include <linux/spinlock.h>
+> +
+> +#include <asm/types.h>
+> +#include <asm/kvm_ppc.h>
+> +#include <asm/kvm_book3s.h>
+> +#include <asm/mmu.h>
+> +#include <asm/pgalloc.h>
+> +#include <asm/pte-walk.h>
+> +#include <asm/reg.h>
+> +#include <asm/plpar_wrappers.h>
+> +#include <asm/firmware.h>
+> +
+> +enum kvmppc_pmu_eventid {
+> + KVMPPC_EVENT_MAX,
+> +};
+> +
+> +static struct attribute *kvmppc_pmu_events_attr[] =3D {
+> + NULL,
+> +};
+> +
+> +static const struct attribute_group kvmppc_pmu_events_group =3D {
+> + .name =3D "events",
+> + .attrs =3D kvmppc_pmu_events_attr,
+> +};
+> +
+> +PMU_FORMAT_ATTR(event, "config:0");
+> +static struct attribute *kvmppc_pmu_format_attr[] =3D {
+> + &format_attr_event.attr,
+> + NULL,
+> +};
+> +
+> +static struct attribute_group kvmppc_pmu_format_group =3D {
+> + .name =3D "format",
+> + .attrs =3D kvmppc_pmu_format_attr,
+> +};
+> +
+> +static const struct attribute_group *kvmppc_pmu_attr_groups[] =3D {
+> + &kvmppc_pmu_events_group,
+> + &kvmppc_pmu_format_group,
+> + NULL,
+> +};
+> +
+> +static int kvmppc_pmu_event_init(struct perf_event *event)
+> +{
+> + unsigned int config =3D event->attr.config;
+> +
+> + pr_debug("%s: Event(%p) id=3D%llu cpu=3D%x on_cpu=3D%x config=3D%u",
+> + __func__, event, event->id, event->cpu,
+> + event->oncpu, config);
+> +
+> + if (event->attr.type !=3D event->pmu->type)
+> + return -ENOENT;
+> +
+> + if (config >=3D KVMPPC_EVENT_MAX)
+> + return -EINVAL;
+> +
+> + local64_set(&event->hw.prev_count, 0);
+> + local64_set(&event->count, 0);
+> +
+> + return 0;
+> +}
+> +
+> +static void kvmppc_pmu_del(struct perf_event *event, int flags)
+> +{
+> +}
+> +
+> +static int kvmppc_pmu_add(struct perf_event *event, int flags)
+> +{
+> + return 0;
+> +}
+> +
+> +static void kvmppc_pmu_read(struct perf_event *event)
+> +{
+> +}
+> +
+> +/* L1 wide counters PMU */
+> +static struct pmu kvmppc_pmu =3D {
+> + .task_ctx_nr =3D perf_sw_context,
+> + .name =3D "kvm-hv",
+> + .event_init =3D kvmppc_pmu_event_init,
+> + .add =3D kvmppc_pmu_add,
+> + .del =3D kvmppc_pmu_del,
+> + .read =3D kvmppc_pmu_read,
+> + .attr_groups =3D kvmppc_pmu_attr_groups,
+> + .type =3D -1,
+> +};
+> +
+> +int kvmppc_register_pmu(void)
+> +{
+> + int rc =3D -EOPNOTSUPP;
+> +
+> + /* only support events for nestedv2 right now */
+> + if (kvmhv_is_nestedv2()) {
+> + /* Setup done now register the PMU */
+> + pr_info("Registering kvm-hv pmu");
+> +
+> + /* Register only if we arent already registered */
+> + rc =3D (kvmppc_pmu.type =3D=3D -1) ?
+> +     perf_pmu_register(&kvmppc_pmu, kvmppc_pmu.name,
+> +       -1) : 0;
+> + }
+> +
+> + return rc;
+> +}
+> +EXPORT_SYMBOL_GPL(kvmppc_register_pmu);
+> +
+> +void kvmppc_unregister_pmu(void)
+> +{
+> + if (kvmhv_is_nestedv2()) {
+> + if (kvmppc_pmu.type !=3D -1)
+> + perf_pmu_unregister(&kvmppc_pmu);
+> +
+> + pr_info("kvmhv_pmu unregistered.\n");
+> + }
+> +}
+> +EXPORT_SYMBOL_GPL(kvmppc_unregister_pmu);
+> --=20
+> 2.48.1
+>=20
+>=20
+>=20
 
 
