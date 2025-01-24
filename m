@@ -1,54 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-5536-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5537-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3266A1AD55
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 00:43:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED45A1AE44
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 24 Jan 2025 02:45:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfHZQ1KFzz2ynj;
-	Fri, 24 Jan 2025 10:43:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YfLH43yBVz2yVT;
+	Fri, 24 Jan 2025 12:45:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737675806;
-	cv=none; b=ffbUb253ivjozEQix9t9t5riuCEyQlhHdfNWp2T9/9BBP2JRkyIO8niLgVYayveVgzgAx9/osQDKNoqsadFB+WSU1CTyJ8AdWETZg4oTvyFWui8IbMTXZ5C2w4S+0JRgTCYWrlgJ3Ibyvb4932kVxGymua3smNxZ8P5QA84TUL9fbTWeO7qrFnPc7OHjI6vbSdA29El6JUL1IPLjf1ownxqxJCx/6W/KodmCg7gCSgNCLL15MiviTX6X9yN2WUSQn296dihH3lrCE+U5Jx0zZ51sheSAZJ/KaLyVTpibNwOzos/W4cU3SoTc9k4jveveWnNU5jjlhg0pFs0yJgg9Pg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.132
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737683120;
+	cv=none; b=MH+ve156HLkwjkR+OCgWbpxor6quW1pyfzgncJofrIj1wpkJnFy4M4FnUUV89V3971I5EOfaKOZ1wVFOeRz78dlwHcIZoE+0tlYnb3n1vF6s5tKPAAmvSyghMbW/NOmUlhrHecw14DYnh1J0cEfTtlo313Hh+zkXCZZqBpFk5IzLg7s5FCRWemWeeQpzTT0FqOOpArta1URFuSuAlvDuMmF0KgSWMIBtDs4ZSN1aRsDefp9qqoV1AVCdFT2/BrANM2GXjYz/j56GgoLO9fo2XvidkdNdWNTgv2M4xYBUcSIFV1NB5SZz/lgFOBTp+ntxjjnwSlsqsgxhfQUSL8eiBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737675806; c=relaxed/relaxed;
-	bh=hHABM21sXVImFIPkcnBEGI87bXoHCJGDVaErbT5cLh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RzqG1ZhmOjSTAhHJILTLrsUsRHB/7jsK6UZA7RB2Ab22SKAlj1qqAU7u0yQUWfs0dY6xTzKd1mKtr/42CZ4WJon1UhvLM4UFNV339MQQlZH7I4lc0hi4MQ98PKBT6Qdxci09QGCpT/NzGUtRGKBUu42re3p5V7V/EOz4UPyzWZ/6CCaFw/j5kZSkY7OleZmc8V/pFtGvl7SmrD3ndo0LAsZnpLeqQI+M1PLp8nOwFTRZngmaSQqbz4MrjD9l5+twTSHfy6yoU/fm+PJYsU4DUWpukFObdv95uo60hb+Ttd55a2v8KvFhSoWYMNkXF4Cg542Ux6MK+IgEamFFICFfsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfHZN60wlz2yLr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 10:43:24 +1100 (AEDT)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 2DB2072C8CC;
-	Fri, 24 Jan 2025 02:43:22 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id 1ABC77CCB3A; Fri, 24 Jan 2025 01:43:22 +0200 (IST)
-Date: Fri, 24 Jan 2025 01:43:22 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Alexey Gladkov <legion@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	strace-devel@lists.strace.io,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
- syscall_set_return_value()
-Message-ID: <20250123234321.GA23582@strace.io>
-References: <20250113171054.GA589@strace.io>
- <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
- <20250114170400.GB11820@strace.io>
- <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
- <20250123182815.GA20994@strace.io>
+	t=1737683120; c=relaxed/relaxed;
+	bh=HefF1VgobYNw/buVdtIHwLUtKr4Okxq/b4dWX4SMuHU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Wgo90bZuB+j6D4DafPrQPDXD0B221u0fU8/jqpV/MvWeinuEp+wWEBwn3hHgeSrWeUsNICS8JFIrwVBEXJIzDaYneGPnclPZWvNV95gFAHQxGezKdkQm32bbozceBYNb+GV1t6FAJGZr97+DgK5O1f1CNy/20q5HQLDF9VtzXXl2HK89A5Gx4Z9UvzrRbRdQRo9Vafb+hjwSyml8ySULxZpUPBGnPWGDCKR5NAdLM4cG9CE13RAOrB5KwqGrTWCyD5Y9PP+61yzu45M7+p5yeSWAvUPgZnlBO+DBRY1Lf5ETPjCd36lJmsXPmpKBZvrKb+CpAszP5/omCi2CCczrmQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=S95lrsda; dkim-atps=neutral; spf=pass (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=S95lrsda;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.132; helo=out30-132.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YfLH250bCz2yLJ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 24 Jan 2025 12:45:17 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1737683111; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=HefF1VgobYNw/buVdtIHwLUtKr4Okxq/b4dWX4SMuHU=;
+	b=S95lrsda3c6kBNwA4Yg7QCi5EGuYhKNO4/znNbdOjmisxp/7kBiWo3u5JaSKxitSIMNzQEpbxafc6YGlP+kW2eGL0SxO2imrL2ut5LAIoeoBZoyB4u7tSC/4xpJPwmStykIOxHUwJY51X7rpZKiMraCHXekdLFMRPZeQc93iHDk=
+Received: from 30.246.161.230(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WOCwDqx_1737683109 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 24 Jan 2025 09:45:10 +0800
+Message-ID: <9f8653ef-81e3-4ce9-9c11-78d694f2a52b@linux.alibaba.com>
+Date: Fri, 24 Jan 2025 09:45:08 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,214 +50,187 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com
+References: <20241112135419.59491-1-xueshuai@linux.alibaba.com>
+ <20241112135419.59491-3-xueshuai@linux.alibaba.com>
+ <4b5230a1-26fd-4594-9daf-5df314c6b4c6@linux.intel.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <4b5230a1-26fd-4594-9daf-5df314c6b4c6@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250123182815.GA20994@strace.io>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Jan 23, 2025 at 08:28:15PM +0200, Dmitry V. Levin wrote:
-> On Mon, Jan 20, 2025 at 02:51:38PM +0100, Christophe Leroy wrote:
-> > Le 14/01/2025 à 18:04, Dmitry V. Levin a écrit :
-> > > On Mon, Jan 13, 2025 at 06:34:44PM +0100, Christophe Leroy wrote:
-> > >> Le 13/01/2025 à 18:10, Dmitry V. Levin a écrit :
-> > >>> Bring syscall_set_return_value() in sync with syscall_get_error(),
-> > >>> and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
-> > >>>
-> > >>> This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
-> > >>> syscall_set_return_value()").
-> > >>
-> > >> There is a clear detailed explanation in that commit of why it needs to
-> > >> be done.
-> > >>
-> > >> If you think that commit is wrong you have to explain why with at least
-> > >> the same level of details.
-> > > 
-> > > OK, please have a look whether this explanation is clear and detailed enough:
-> > > 
-> > > =======
-> > > powerpc: properly negate error in syscall_set_return_value()
-> > > 
-> > > When syscall_set_return_value() is used to set an error code, the caller
-> > > specifies it as a negative value in -ERRORCODE form.
-> > > 
-> > > In !trap_is_scv case the error code is traditionally stored as follows:
-> > > gpr[3] contains a positive ERRORCODE, and ccr has 0x10000000 flag set.
-> > > Here are a few examples to illustrate this convention.  The first one
-> > > is from syscall_get_error():
-> > >          /*
-> > >           * If the system call failed,
-> > >           * regs->gpr[3] contains a positive ERRORCODE.
-> > >           */
-> > >          return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
-> > > 
-> > > The second example is from regs_return_value():
-> > >          if (is_syscall_success(regs))
-> > >                  return regs->gpr[3];
-> > >          else
-> > >                  return -regs->gpr[3];
-> > > 
-> > > The third example is from check_syscall_restart():
-> > >          regs->result = -EINTR;
-> > >          regs->gpr[3] = EINTR;
-> > >          regs->ccr |= 0x10000000;
-> > > 
-> > > Compared with these examples, the failure of syscall_set_return_value()
-> > > to assign a positive ERRORCODE into regs->gpr[3] is clearly visible:
-> > > 	/*
-> > > 	 * In the general case it's not obvious that we must deal with
-> > > 	 * CCR here, as the syscall exit path will also do that for us.
-> > > 	 * However there are some places, eg. the signal code, which
-> > > 	 * check ccr to decide if the value in r3 is actually an error.
-> > > 	 */
-> > > 	if (error) {
-> > > 		regs->ccr |= 0x10000000L;
-> > > 		regs->gpr[3] = error;
-> > > 	} else {
-> > > 		regs->ccr &= ~0x10000000L;
-> > > 		regs->gpr[3] = val;
-> > > 	}
-> > > 
-> > > This fix brings syscall_set_return_value() in sync with syscall_get_error()
-> > > and lets upcoming ptrace/set_syscall_info selftest pass on powerpc.
-> > > 
-> > > Fixes: 1b1a3702a65c ("powerpc: Don't negate error in syscall_set_return_value()").
-> > > =======
-> > 
-> > I think there is still something going wrong.
-> > 
-> > do_seccomp() sets regs->gpr[3] = -ENOSYS; by default.
-> > 
-> > Then it calls __secure_computing() which returns what __seccomp_filter() 
-> > returns.
-> > 
-> > In case of error, __seccomp_filter() calls syscall_set_return_value() 
-> > with a negative value then returns -1
-> > 
-> > do_seccomp() is called by do_syscall_trace_enter() which returns -1 when 
-> > do_seccomp() doesn't return 0.
-> > 
-> > do_syscall_trace_enter() is called by system_call_exception() and 
-> > returns -1, so syscall_exception() returns regs->gpr[3]
-> > 
-> > In entry_32.S, transfer_to_syscall, syscall_exit_prepare() is then 
-> > called with the return of syscall_exception() as first parameter, which 
-> > leads to:
-> > 
-> > 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO) && is_not_scv) {
-> > 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
-> > 			r3 = -r3;
-> > 			regs->ccr |= 0x10000000; /* Set SO bit in CR */
-> > 		}
-> > 	}
-> > 
-> > By chance, because you have already changed the sign of gpr[3], the 
-> > above test fails and nothing is done to r3, and because you have also 
-> > already set regs->ccr it works.
-> > 
-> > But all this looks inconsistent with the fact that do_seccomp sets 
-> > -ENOSYS as default value
-> > 
-> > Also, when do_seccomp() returns 0, do_syscall_trace_enter() check the 
-> > syscall number and when it is wrong it goes to skip: which sets 
-> > regs->gpr[3] = -ENOSYS;
-> > 
-> > So really I think it is not in line with your changes to set positive 
-> > value in gpr[3].
-> > 
-> > Maybe your change is still correct but it needs to be handled completely 
-> > in that case.
-> 
-> Indeed, there is an inconsistency in !trap_is_scv case.
-> 
-> In some places such as syscall_get_error() and regs_return_value() the
-> semantics is as I described earlier: gpr[3] contains a positive ERRORCODE
-> and ccr has 0x10000000 flag set.  This semantics is a part of the ABI and
-> therefore cannot be changed.
-> 
-> In some other places like do_seccomp() and do_syscall_trace_enter() the
-> semantics is similar to the trap_is_scv case: gpr[3] contains a negative
-> ERRORCODE and ccr is unchanged.  In addition, system_call_exception()
-> returns the system call function return value when it is executed, and
-> gpr[3] otherwise.  The value returned by system_call_exception() is passed
-> on to syscall_exit_prepare() which performs the conversion you mentioned.
-> 
-> What's remarkable is that in those places that are a part of the ABI the
-> traditional semantics is kept, while in other places the implementation
-> follows the trap_is_scv-like semantics, while traditional semantics is
-> also supported there.
-> 
-> The only case where I see some intersection is do_seccomp() where the
-> tracer would be able to see -ENOSYS in gpr[3].  However, the seccomp stop
-> is not the place where the tracer *reads* the system call exit status,
-> so whatever was written in gpr[3] before __secure_computing() is not
-> really relevant, consequently, selftests/seccomp/seccomp_bpf passes with
-> this patch applied as well as without it.
-> 
-> After looking at system_call_exception() I doubt this inconsistency can be
-> easily avoided, so I don't see how this patch could be enhanced further,
-> and what else could I do with the patch besides dropping it and letting
-> !trap_is_scv case be unsupported by PTRACE_SET_SYSCALL_INFO API, which
-> would be unfortunate.
 
-If you say this would bring some consistency, I can extend the patch with
-something like this:
 
-diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-index 727ed4a14545..dda276a934fd 100644
---- a/arch/powerpc/kernel/ptrace/ptrace.c
-+++ b/arch/powerpc/kernel/ptrace/ptrace.c
-@@ -207,7 +207,7 @@ static int do_seccomp(struct pt_regs *regs)
- 	 * syscall parameter. This is different to the ptrace ABI where
- 	 * both r3 and orig_gpr3 contain the first syscall parameter.
- 	 */
--	regs->gpr[3] = -ENOSYS;
-+	syscall_set_return_value(current, regs, -ENOSYS, 0);
- 
- 	/*
- 	 * We use the __ version here because we have already checked
-@@ -225,7 +225,7 @@ static int do_seccomp(struct pt_regs *regs)
- 	 * modify the first syscall parameter (in orig_gpr3) and also
- 	 * allow the syscall to proceed.
- 	 */
--	regs->gpr[3] = regs->orig_gpr3;
-+	syscall_set_return_value(current, regs, 0, regs->orig_gpr3);
- 
- 	return 0;
- }
-@@ -315,7 +315,7 @@ long do_syscall_trace_enter(struct pt_regs *regs)
- 	 * If we are aborting explicitly, or if the syscall number is
- 	 * now invalid, set the return value to -ENOSYS.
- 	 */
--	regs->gpr[3] = -ENOSYS;
-+	syscall_set_return_value(current, regs, -ENOSYS, 0);
- 	return -1;
- }
- 
-diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-index aa17e62f3754..c921e0cb54b8 100644
---- a/arch/powerpc/kernel/signal.c
-+++ b/arch/powerpc/kernel/signal.c
-@@ -229,14 +229,8 @@ static void check_syscall_restart(struct pt_regs *regs, struct k_sigaction *ka,
- 		regs_add_return_ip(regs, -4);
- 		regs->result = 0;
- 	} else {
--		if (trap_is_scv(regs)) {
--			regs->result = -EINTR;
--			regs->gpr[3] = -EINTR;
--		} else {
--			regs->result = -EINTR;
--			regs->gpr[3] = EINTR;
--			regs->ccr |= 0x10000000;
--		}
-+		regs->result = -EINTR;
-+		syscall_set_return_value(current, regs, -EINTR, 0);
- 	}
- }
- 
+在 2025/1/24 04:10, Sathyanarayanan Kuppuswamy 写道:
+> Hi,
+> 
+> On 11/12/24 5:54 AM, Shuai Xue wrote:
+>> The AER driver has historically avoided reading the configuration space of
+>> an endpoint or RCiEP that reported a fatal error, considering the link to
+>> that device unreliable. Consequently, when a fatal error occurs, the AER
+>> and DPC drivers do not report specific error types, resulting in logs like:
+>>
+>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>    nvme nvme0: frozen state error detected, reset controller
+>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>
+>> AER status registers are sticky and Write-1-to-clear. If the link recovered
+>> after hot reset, we can still safely access AER status of the error device.
+>> In such case, report fatal errors which helps to figure out the error root
+>> case.
+>>
+>> After this patch, the logs like:
+>>
+>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>    nvme nvme0: frozen state error detected, reset controller
+>>    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
+>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
+>>    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
+>>    nvme 0000:34:00.0:    [ 4] DLP                    (First)
+>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>
+>> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
+>> ---
+>>   drivers/pci/pci.h      |  3 ++-
+>>   drivers/pci/pcie/aer.c | 11 +++++++----
+>>   drivers/pci/pcie/dpc.c |  2 +-
+>>   drivers/pci/pcie/err.c |  9 +++++++++
+>>   4 files changed, 19 insertions(+), 6 deletions(-)
+>>
+>> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+>> index 0866f79aec54..6f827c313639 100644
+>> --- a/drivers/pci/pci.h
+>> +++ b/drivers/pci/pci.h
+>> @@ -504,7 +504,8 @@ struct aer_err_info {
+>>       struct pcie_tlp_log tlp;    /* TLP Header */
+>>   };
+>> -int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
+>> +int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
+>> +                  bool link_healthy);
+>>   void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
+>>   #endif    /* CONFIG_PCIEAER */
+>> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
+>> index 13b8586924ea..97ec1c17b6f4 100644
+>> --- a/drivers/pci/pcie/aer.c
+>> +++ b/drivers/pci/pcie/aer.c
+>> @@ -1200,12 +1200,14 @@ EXPORT_SYMBOL_GPL(aer_recover_queue);
+>>    * aer_get_device_error_info - read error status from dev and store it to info
+>>    * @dev: pointer to the device expected to have a error record
+>>    * @info: pointer to structure to store the error record
+>> + * @link_healthy: link is healthy or not
+>>    *
+>>    * Return 1 on success, 0 on error.
+>>    *
+>>    * Note that @info is reused among all error devices. Clear fields properly.
+>>    */
+>> -int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+>> +int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
+>> +                  bool link_healthy)
+>>   {
+>>       int type = pci_pcie_type(dev);
+>>       int aer = dev->aer_cap;
+>> @@ -1229,7 +1231,8 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
+>>       } else if (type == PCI_EXP_TYPE_ROOT_PORT ||
+>>              type == PCI_EXP_TYPE_RC_EC ||
+>>              type == PCI_EXP_TYPE_DOWNSTREAM ||
+>> -           info->severity == AER_NONFATAL) {
+>> +           info->severity == AER_NONFATAL ||
+>> +           (info->severity == AER_FATAL && link_healthy)) {
+>>           /* Link is still healthy for IO reads */
+>>           pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
+>> @@ -1258,11 +1261,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
+>>       /* Report all before handle them, not to lost records by reset etc. */
+>>       for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
+>> -        if (aer_get_device_error_info(e_info->dev[i], e_info))
+>> +        if (aer_get_device_error_info(e_info->dev[i], e_info, false))
+>>               aer_print_error(e_info->dev[i], e_info);
+>>       }
+>>       for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
+>> -        if (aer_get_device_error_info(e_info->dev[i], e_info))
+>> +        if (aer_get_device_error_info(e_info->dev[i], e_info, false))
+>>               handle_error_source(e_info->dev[i], e_info);
+>>       }
+>>   }
+>> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+>> index 62a68cde4364..b3f157a00405 100644
+>> --- a/drivers/pci/pcie/dpc.c
+>> +++ b/drivers/pci/pcie/dpc.c
+>> @@ -304,7 +304,7 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
+>>           dpc_process_rp_pio_error(pdev);
+>>       else if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR &&
+>>            dpc_get_aer_uncorrect_severity(pdev, &info) &&
+>> -         aer_get_device_error_info(pdev, &info)) {
+>> +         aer_get_device_error_info(pdev, &info, false)) {
+>>           aer_print_error(pdev, &info);
+>>           pci_aer_clear_nonfatal_status(pdev);
+>>           pci_aer_clear_fatal_status(pdev);
+>> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+>> index 31090770fffc..462577b8d75a 100644
+>> --- a/drivers/pci/pcie/err.c
+>> +++ b/drivers/pci/pcie/err.c
+>> @@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>>       struct pci_dev *bridge;
+>>       pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
+>>       struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
+>> +    struct aer_err_info info;
+>>       /*
+>>        * If the error was detected by a Root Port, Downstream Port, RCEC,
+>> @@ -223,6 +224,13 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>>               pci_warn(bridge, "subordinate device reset failed\n");
+>>               goto failed;
+>>           }
+>> +
+>> +        info.severity = AER_FATAL;
+>> +        /* Link recovered, report fatal errors of RCiEP or EP */
+>> +        if ((type == PCI_EXP_TYPE_ENDPOINT ||
+>> +             type == PCI_EXP_TYPE_RC_END) &&
+>> +            aer_get_device_error_info(dev, &info, true))
+>> +            aer_print_error(dev, &info);
+> 
+> IMO, error device information is more like a debug info. Can we change
+> the print level of this info to debug?
 
--- 
-ldv
+Yes, but error device information is quite important for user to figure out the
+device status and should not been ignored. We need it in production to analysis
+server healthy.
+
+> 
+>>       } else {
+>>           pci_walk_bridge(bridge, report_normal_detected, &status);
+>>       }
+>> @@ -259,6 +267,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>>       if (host->native_aer || pcie_ports_native) {
+>>           pcie_clear_device_status(dev);
+>>           pci_aer_clear_nonfatal_status(dev);
+>> +        pci_aer_clear_fatal_status(dev);
+> 
+> I think we clear fatal status in DPC driver, why do it again?
+
+DPC driver only clear fatal status for the err_port, but not the err_dev.
+err_dev and err_port are indeed easy to confuse, so I have differentiated them
+again in patch1.
+
+> 
+>>       }
+>>       pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
+> 
 
