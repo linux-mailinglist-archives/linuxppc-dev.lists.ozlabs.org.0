@@ -1,57 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-5553-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5554-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07448A1BFA6
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2025 01:25:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CB2A1BFDF
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2025 01:36:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfwSf2DMvz2ykX;
-	Sat, 25 Jan 2025 11:25:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yfwhs3Zlbz2ytQ;
+	Sat, 25 Jan 2025 11:36:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737764738;
-	cv=none; b=hKRvWNdcaMiejXpPc9rE7RLqJQSOpxOFyd1HNvidKcA1uPQ4rDpLteGKjJM/w4mO52DvH+GLwEaDyYPEDxusecyrrPgEbycbfEVdeR2TAAf4G8LXRxK7MlJY9rrVRZCSDLMXAq1aCcArxVwCbXCUpBazW+39FFitmAwz97x9OvfBSN9MFVJuNQq+KDMdLmiGpyCfPsY3uacju1/fO+3L1Aa50mLmAGLpo7dsh3F+fLDosJWUmhxBVV4AVmTDh8AvBfF4OA5kpxPWhAXANd/i4IDhSxH9IEqgAdFjFUY0Q9raenoHehZzjaNRoq3Mw7hjK+i2u/rexbvQnt2raO4VEw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737765373;
+	cv=none; b=OHGs9eJg06cq3oSn2So56JdXldNeZ792QL/k4Qhn6kL7vzcPDpDLBw2oZJtxhCVU37F5WyAnHROp2KDZwnog47Ns7ibG4oK+aPRfQ5kSMB1D1p1Eb/OXUW5LWWBgRGRoIySuj0JjmSffuEq6HgLfjkpvhRyUpd6Ggq47nYZe2gkyPZMzxDLvPYVI4STkHlwqDOJn2FKqlzJqafiGMQ+XujL16vPI+GCFCrXdARrB7BtUABBS98nW0dl+erl68yhju5i4b4upvy2ItOWSTXdfRVyTiz8PA/g2Xey9ZxPlE3k42ZhfV2u4fIopshhNyr6+3/ISN97R/VeHYxBiT3m8ww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737764738; c=relaxed/relaxed;
-	bh=J7sDKQLNok/cYmK+RDWLGEZrgZ8LgZDDQHi/q04vLDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BcwroKjwQbBkpFW+emLujC59TBrbIyjCjv57nx6+fUh/NFKvPX7Ujz5/r0WYA+y1eajt1FiF9PHGSw03R5zS09U67K79blQ/kv/mv3Syy693Ef56w4j84yayD4jjPQQxFhpVDZ78Z99y9Lya5SQZDFQq9hmibNIgQGMDfgTxkUwKgGlUUyjXNi60FLtgIXWxtRSz+rHXQPrWtcpH3R0IOU8xvyGFhSQ1NHLRVVoCoR3xo3byFJ3CvKtEyos6Z5FSxpbp/XzlGmFgO94l+bZNE8GpxzqlEG7QgamLrTn1rUGNRqJ1Q2WMogFKCYjU+g5rWWOqsDxgpxs5uiNsjhkVDQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YfwSd1Nswz2y8p
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2025 11:25:35 +1100 (AEDT)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 5CB5F72C8CC;
-	Sat, 25 Jan 2025 03:25:32 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id 2A71D7CCB3A; Sat, 25 Jan 2025 02:25:32 +0200 (IST)
-Date: Sat, 25 Jan 2025 02:25:32 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Alexey Gladkov <legion@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	strace-devel@lists.strace.io,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
- syscall_set_return_value()
-Message-ID: <20250125002531.GA2765@strace.io>
-References: <20250113171054.GA589@strace.io>
- <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
- <20250114170400.GB11820@strace.io>
- <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
- <20250123182815.GA20994@strace.io>
- <20250123234321.GA23582@strace.io>
- <Z5OvMgjMd3xzx4mS@example.org>
+	t=1737765373; c=relaxed/relaxed;
+	bh=nG99io+ek6XriclHDN3apOWOO4X88VArHephxohRvYA=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=NeprIdMnTznZhl7QsO9x4wpu7Y4eXjMGxYAMhVgSW3l5htGZea+QHRNjxgGOPQSezcJ9128Uxz7eVzl4zpX1un4IiNVhW3dat3pefme2+/DWKsiASjsmAWW1L6k/KRPkBNjix3x8Oqw2YBOziUPTQ+XG5VdmpsFe9In4f8dfkGrtO0oNOjmLfMqPPNoBxPCaaLOUxftDEDnUzEXuk1CoVP/kI0lLMPIfVJq96W7Bv19twkRK1qTtbI8ETWZbJ3wWFGv8Ft1cVdhiM2PG7cNpimfPwhjGv709iNPHUTwwmIdiIQ6oAPnaGQps2a1zZ7zli45GjsDziw5pq56tLdbAVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KDCqD0P4; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=KDCqD0P4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yfwhp6pgbz2ymg
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2025 11:36:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737765371; x=1769301371;
+  h=date:from:to:cc:subject:message-id;
+  bh=7sDKd3DTbCIFORrXPamAW+BQ25RfJk4Fkwo1yyLTEow=;
+  b=KDCqD0P4QaxjaZaZUBDkQlhNjbnC1svj6NVl3QuvcFhF1CFnwP8vnmRq
+   nt+swjXXY6RqeOe0etK/DGIwI1fPptnj4yIixoa+RTbhaa1pFqBwEMomb
+   XBAU+zi4Z0w2ivOznRemI7fVJlXGc9w9Fltl1CsA1YKrSRw6F8yIEqoz8
+   PN5/wJADoDz4x7m+s0jBpOIQQvLhWtEI5TX82bR8zm0f7IKaD8nJBBCks
+   rBAVg0ql3eKlzSxYuU2qwM/ddLdJj0IIJN1VjYscZm9/h+5FJdgmElQyW
+   SQK/W8QjPGTnIeTFUxK4oTj5iuzFMCqs84nR/ss2Iimc0FWg61bUZvr5C
+   A==;
+X-CSE-ConnectionGUID: TAPrwm+oT0yqlF26EcND8g==
+X-CSE-MsgGUID: fnJTmAUiRnu+WkQZS3ucqQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11325"; a="41977095"
+X-IronPort-AV: E=Sophos;i="6.13,232,1732608000"; 
+   d="scan'208";a="41977095"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Jan 2025 16:36:07 -0800
+X-CSE-ConnectionGUID: Hcf4EyiPQzGvYDc+Wk+Uyw==
+X-CSE-MsgGUID: FoV4LaDLQ7egETRJCG/V5A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,232,1732608000"; 
+   d="scan'208";a="108506908"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by fmviesa009.fm.intel.com with ESMTP; 24 Jan 2025 16:35:51 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tbU9N-000dJ9-1w;
+	Sat, 25 Jan 2025 00:35:49 +0000
+Date: Sat, 25 Jan 2025 08:35:18 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:next] BUILD SUCCESS
+ 17391cb2613b82f8c405570fea605af3255ff8d2
+Message-ID: <202501250812.rMlSd2Ui-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,230 +79,273 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z5OvMgjMd3xzx4mS@example.org>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 24, 2025 at 04:18:10PM +0100, Alexey Gladkov wrote:
-> On Fri, Jan 24, 2025 at 01:43:22AM +0200, Dmitry V. Levin wrote:
-> > On Thu, Jan 23, 2025 at 08:28:15PM +0200, Dmitry V. Levin wrote:
-> > > On Mon, Jan 20, 2025 at 02:51:38PM +0100, Christophe Leroy wrote:
-> > > > Le 14/01/2025 à 18:04, Dmitry V. Levin a écrit :
-> > > > > On Mon, Jan 13, 2025 at 06:34:44PM +0100, Christophe Leroy wrote:
-> > > > >> Le 13/01/2025 à 18:10, Dmitry V. Levin a écrit :
-> > > > >>> Bring syscall_set_return_value() in sync with syscall_get_error(),
-> > > > >>> and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
-> > > > >>>
-> > > > >>> This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
-> > > > >>> syscall_set_return_value()").
-> > > > >>
-> > > > >> There is a clear detailed explanation in that commit of why it needs to
-> > > > >> be done.
-> > > > >>
-> > > > >> If you think that commit is wrong you have to explain why with at least
-> > > > >> the same level of details.
-> > > > > 
-> > > > > OK, please have a look whether this explanation is clear and detailed enough:
-> > > > > 
-> > > > > =======
-> > > > > powerpc: properly negate error in syscall_set_return_value()
-> > > > > 
-> > > > > When syscall_set_return_value() is used to set an error code, the caller
-> > > > > specifies it as a negative value in -ERRORCODE form.
-> > > > > 
-> > > > > In !trap_is_scv case the error code is traditionally stored as follows:
-> > > > > gpr[3] contains a positive ERRORCODE, and ccr has 0x10000000 flag set.
-> > > > > Here are a few examples to illustrate this convention.  The first one
-> > > > > is from syscall_get_error():
-> > > > >          /*
-> > > > >           * If the system call failed,
-> > > > >           * regs->gpr[3] contains a positive ERRORCODE.
-> > > > >           */
-> > > > >          return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
-> > > > > 
-> > > > > The second example is from regs_return_value():
-> > > > >          if (is_syscall_success(regs))
-> > > > >                  return regs->gpr[3];
-> > > > >          else
-> > > > >                  return -regs->gpr[3];
-> > > > > 
-> > > > > The third example is from check_syscall_restart():
-> > > > >          regs->result = -EINTR;
-> > > > >          regs->gpr[3] = EINTR;
-> > > > >          regs->ccr |= 0x10000000;
-> > > > > 
-> > > > > Compared with these examples, the failure of syscall_set_return_value()
-> > > > > to assign a positive ERRORCODE into regs->gpr[3] is clearly visible:
-> > > > > 	/*
-> > > > > 	 * In the general case it's not obvious that we must deal with
-> > > > > 	 * CCR here, as the syscall exit path will also do that for us.
-> > > > > 	 * However there are some places, eg. the signal code, which
-> > > > > 	 * check ccr to decide if the value in r3 is actually an error.
-> > > > > 	 */
-> > > > > 	if (error) {
-> > > > > 		regs->ccr |= 0x10000000L;
-> > > > > 		regs->gpr[3] = error;
-> > > > > 	} else {
-> > > > > 		regs->ccr &= ~0x10000000L;
-> > > > > 		regs->gpr[3] = val;
-> > > > > 	}
-> > > > > 
-> > > > > This fix brings syscall_set_return_value() in sync with syscall_get_error()
-> > > > > and lets upcoming ptrace/set_syscall_info selftest pass on powerpc.
-> > > > > 
-> > > > > Fixes: 1b1a3702a65c ("powerpc: Don't negate error in syscall_set_return_value()").
-> > > > > =======
-> > > > 
-> > > > I think there is still something going wrong.
-> > > > 
-> > > > do_seccomp() sets regs->gpr[3] = -ENOSYS; by default.
-> > > > 
-> > > > Then it calls __secure_computing() which returns what __seccomp_filter() 
-> > > > returns.
-> > > > 
-> > > > In case of error, __seccomp_filter() calls syscall_set_return_value() 
-> > > > with a negative value then returns -1
-> > > > 
-> > > > do_seccomp() is called by do_syscall_trace_enter() which returns -1 when 
-> > > > do_seccomp() doesn't return 0.
-> > > > 
-> > > > do_syscall_trace_enter() is called by system_call_exception() and 
-> > > > returns -1, so syscall_exception() returns regs->gpr[3]
-> > > > 
-> > > > In entry_32.S, transfer_to_syscall, syscall_exit_prepare() is then 
-> > > > called with the return of syscall_exception() as first parameter, which 
-> > > > leads to:
-> > > > 
-> > > > 	if (unlikely(r3 >= (unsigned long)-MAX_ERRNO) && is_not_scv) {
-> > > > 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
-> > > > 			r3 = -r3;
-> > > > 			regs->ccr |= 0x10000000; /* Set SO bit in CR */
-> > > > 		}
-> > > > 	}
-> > > > 
-> > > > By chance, because you have already changed the sign of gpr[3], the 
-> > > > above test fails and nothing is done to r3, and because you have also 
-> > > > already set regs->ccr it works.
-> > > > 
-> > > > But all this looks inconsistent with the fact that do_seccomp sets 
-> > > > -ENOSYS as default value
-> > > > 
-> > > > Also, when do_seccomp() returns 0, do_syscall_trace_enter() check the 
-> > > > syscall number and when it is wrong it goes to skip: which sets 
-> > > > regs->gpr[3] = -ENOSYS;
-> > > > 
-> > > > So really I think it is not in line with your changes to set positive 
-> > > > value in gpr[3].
-> > > > 
-> > > > Maybe your change is still correct but it needs to be handled completely 
-> > > > in that case.
-> > > 
-> > > Indeed, there is an inconsistency in !trap_is_scv case.
-> > > 
-> > > In some places such as syscall_get_error() and regs_return_value() the
-> > > semantics is as I described earlier: gpr[3] contains a positive ERRORCODE
-> > > and ccr has 0x10000000 flag set.  This semantics is a part of the ABI and
-> > > therefore cannot be changed.
-> > > 
-> > > In some other places like do_seccomp() and do_syscall_trace_enter() the
-> > > semantics is similar to the trap_is_scv case: gpr[3] contains a negative
-> > > ERRORCODE and ccr is unchanged.  In addition, system_call_exception()
-> > > returns the system call function return value when it is executed, and
-> > > gpr[3] otherwise.  The value returned by system_call_exception() is passed
-> > > on to syscall_exit_prepare() which performs the conversion you mentioned.
-> > > 
-> > > What's remarkable is that in those places that are a part of the ABI the
-> > > traditional semantics is kept, while in other places the implementation
-> > > follows the trap_is_scv-like semantics, while traditional semantics is
-> > > also supported there.
-> > > 
-> > > The only case where I see some intersection is do_seccomp() where the
-> > > tracer would be able to see -ENOSYS in gpr[3].  However, the seccomp stop
-> > > is not the place where the tracer *reads* the system call exit status,
-> > > so whatever was written in gpr[3] before __secure_computing() is not
-> > > really relevant, consequently, selftests/seccomp/seccomp_bpf passes with
-> > > this patch applied as well as without it.
-> > > 
-> > > After looking at system_call_exception() I doubt this inconsistency can be
-> > > easily avoided, so I don't see how this patch could be enhanced further,
-> > > and what else could I do with the patch besides dropping it and letting
-> > > !trap_is_scv case be unsupported by PTRACE_SET_SYSCALL_INFO API, which
-> > > would be unfortunate.
-> > 
-> > If you say this would bring some consistency, I can extend the patch with
-> > something like this:
-> > 
-> > diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
-> > index 727ed4a14545..dda276a934fd 100644
-> > --- a/arch/powerpc/kernel/ptrace/ptrace.c
-> > +++ b/arch/powerpc/kernel/ptrace/ptrace.c
-> > @@ -207,7 +207,7 @@ static int do_seccomp(struct pt_regs *regs)
-> >  	 * syscall parameter. This is different to the ptrace ABI where
-> >  	 * both r3 and orig_gpr3 contain the first syscall parameter.
-> >  	 */
-> > -	regs->gpr[3] = -ENOSYS;
-> > +	syscall_set_return_value(current, regs, -ENOSYS, 0);
-> >  
-> >  	/*
-> >  	 * We use the __ version here because we have already checked
-> > @@ -225,7 +225,7 @@ static int do_seccomp(struct pt_regs *regs)
-> >  	 * modify the first syscall parameter (in orig_gpr3) and also
-> >  	 * allow the syscall to proceed.
-> >  	 */
-> > -	regs->gpr[3] = regs->orig_gpr3;
-> > +	syscall_set_return_value(current, regs, 0, regs->orig_gpr3);
-> >  
-> >  	return 0;
-> >  }
-> > @@ -315,7 +315,7 @@ long do_syscall_trace_enter(struct pt_regs *regs)
-> >  	 * If we are aborting explicitly, or if the syscall number is
-> >  	 * now invalid, set the return value to -ENOSYS.
-> >  	 */
-> > -	regs->gpr[3] = -ENOSYS;
-> > +	syscall_set_return_value(current, regs, -ENOSYS, 0);
-> >  	return -1;
-> >  }
-> >  
-> > diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
-> > index aa17e62f3754..c921e0cb54b8 100644
-> > --- a/arch/powerpc/kernel/signal.c
-> > +++ b/arch/powerpc/kernel/signal.c
-> > @@ -229,14 +229,8 @@ static void check_syscall_restart(struct pt_regs *regs, struct k_sigaction *ka,
-> >  		regs_add_return_ip(regs, -4);
-> >  		regs->result = 0;
-> >  	} else {
-> > -		if (trap_is_scv(regs)) {
-> > -			regs->result = -EINTR;
-> > -			regs->gpr[3] = -EINTR;
-> > -		} else {
-> > -			regs->result = -EINTR;
-> > -			regs->gpr[3] = EINTR;
-> > -			regs->ccr |= 0x10000000;
-> > -		}
-> > +		regs->result = -EINTR;
-> > +		syscall_set_return_value(current, regs, -EINTR, 0);
-> >  	}
-> >  }
-> 
-> I'm not a powerpc expert but shouldn't be used regs->gpr[3] via a
-> regs_return_value() in system_call_exception() ?
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+branch HEAD: 17391cb2613b82f8c405570fea605af3255ff8d2  powerpc/pseries/iommu: Don't unset window if it was never set
 
-This would ensure that system_call_exception() returns errors in -ERRORCODE
-form, which wouldn't have any practical difference given that the return
-code is passed on to syscall_exit_prepare() which performs the conversion.
+elapsed time: 1173m
 
-However, this could bring more consistency when applied along with other
-consistency-related changes.
+configs tested: 252
+configs skipped: 8
 
-I wish the people responsible for powerpc would be more specific about
-the level of consistency they are ready to maintain.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    clang-20
+alpha                            allyesconfig    gcc-14.2.0
+alpha                               defconfig    gcc-14.2.0
+arc                              alldefconfig    gcc-13.2.0
+arc                              allmodconfig    clang-18
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    clang-18
+arc                              allyesconfig    gcc-13.2.0
+arc                                 defconfig    gcc-14.2.0
+arc                        nsim_700_defconfig    gcc-13.2.0
+arc                 nsimosci_hs_smp_defconfig    gcc-13.2.0
+arc                   randconfig-001-20250124    gcc-13.2.0
+arc                   randconfig-001-20250125    gcc-13.2.0
+arc                   randconfig-002-20250124    gcc-13.2.0
+arc                   randconfig-002-20250125    gcc-13.2.0
+arm                              allmodconfig    clang-18
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    clang-18
+arm                              allyesconfig    gcc-14.2.0
+arm                         at91_dt_defconfig    clang-20
+arm                                 defconfig    gcc-14.2.0
+arm                          ep93xx_defconfig    gcc-14.2.0
+arm                   randconfig-001-20250124    clang-17
+arm                   randconfig-001-20250125    gcc-14.2.0
+arm                   randconfig-002-20250124    gcc-14.2.0
+arm                   randconfig-002-20250125    gcc-14.2.0
+arm                   randconfig-003-20250124    gcc-14.2.0
+arm                   randconfig-003-20250125    clang-18
+arm                   randconfig-004-20250124    clang-19
+arm                   randconfig-004-20250125    clang-20
+arm                          sp7021_defconfig    gcc-14.2.0
+arm                    vt8500_v6_v7_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                               defconfig    gcc-14.2.0
+arm64                 randconfig-001-20250124    clang-20
+arm64                 randconfig-001-20250125    gcc-14.2.0
+arm64                 randconfig-002-20250124    clang-20
+arm64                 randconfig-002-20250125    gcc-14.2.0
+arm64                 randconfig-003-20250124    clang-19
+arm64                 randconfig-003-20250125    gcc-14.2.0
+arm64                 randconfig-004-20250124    clang-20
+arm64                 randconfig-004-20250125    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                                defconfig    gcc-14.2.0
+csky                  randconfig-001-20250124    gcc-14.2.0
+csky                  randconfig-001-20250125    gcc-14.2.0
+csky                  randconfig-002-20250124    gcc-14.2.0
+csky                  randconfig-002-20250125    gcc-14.2.0
+hexagon                          allmodconfig    clang-20
+hexagon                           allnoconfig    clang-20
+hexagon                          allyesconfig    clang-20
+hexagon                             defconfig    gcc-14.2.0
+hexagon               randconfig-001-20250124    clang-20
+hexagon               randconfig-001-20250125    clang-20
+hexagon               randconfig-001-20250125    gcc-14.2.0
+hexagon               randconfig-002-20250124    clang-14
+hexagon               randconfig-002-20250125    clang-20
+hexagon               randconfig-002-20250125    gcc-14.2.0
+i386                             allmodconfig    clang-19
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    clang-19
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    clang-19
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250124    clang-19
+i386        buildonly-randconfig-002-20250124    clang-19
+i386        buildonly-randconfig-003-20250124    gcc-12
+i386        buildonly-randconfig-004-20250124    gcc-12
+i386        buildonly-randconfig-005-20250124    gcc-12
+i386        buildonly-randconfig-006-20250124    gcc-12
+i386                                defconfig    clang-19
+i386                  randconfig-001-20250125    clang-19
+i386                  randconfig-002-20250125    clang-19
+i386                  randconfig-003-20250125    clang-19
+i386                  randconfig-004-20250125    clang-19
+i386                  randconfig-005-20250125    clang-19
+i386                  randconfig-006-20250125    clang-19
+i386                  randconfig-007-20250125    clang-19
+i386                  randconfig-011-20250125    gcc-12
+i386                  randconfig-012-20250125    gcc-12
+i386                  randconfig-013-20250125    gcc-12
+i386                  randconfig-014-20250125    gcc-12
+i386                  randconfig-015-20250125    gcc-12
+i386                  randconfig-016-20250125    gcc-12
+i386                  randconfig-017-20250125    gcc-12
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch                           defconfig    gcc-14.2.0
+loongarch             randconfig-001-20250124    gcc-14.2.0
+loongarch             randconfig-001-20250125    gcc-14.2.0
+loongarch             randconfig-002-20250124    gcc-14.2.0
+loongarch             randconfig-002-20250125    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                                defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+microblaze                          defconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                  cavium_octeon_defconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250124    gcc-14.2.0
+nios2                 randconfig-001-20250125    gcc-14.2.0
+nios2                 randconfig-002-20250124    gcc-14.2.0
+nios2                 randconfig-002-20250125    gcc-14.2.0
+openrisc                          allnoconfig    clang-20
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-12
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    clang-20
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-12
+parisc                randconfig-001-20250124    gcc-14.2.0
+parisc                randconfig-001-20250125    gcc-14.2.0
+parisc                randconfig-002-20250124    gcc-14.2.0
+parisc                randconfig-002-20250125    gcc-14.2.0
+parisc64                            defconfig    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    clang-20
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    gcc-14.2.0
+powerpc                    gamecube_defconfig    gcc-14.2.0
+powerpc                 mpc8315_rdb_defconfig    clang-20
+powerpc                     ppa8548_defconfig    gcc-14.2.0
+powerpc               randconfig-001-20250124    gcc-14.2.0
+powerpc               randconfig-001-20250125    clang-18
+powerpc               randconfig-001-20250125    gcc-14.2.0
+powerpc               randconfig-002-20250124    gcc-14.2.0
+powerpc               randconfig-002-20250125    gcc-14.2.0
+powerpc               randconfig-003-20250124    clang-20
+powerpc               randconfig-003-20250125    gcc-14.2.0
+powerpc                     redwood_defconfig    gcc-14.2.0
+powerpc                     tqm5200_defconfig    gcc-14.2.0
+powerpc                      tqm8xx_defconfig    clang-20
+powerpc                 xes_mpc85xx_defconfig    gcc-14.2.0
+powerpc64             randconfig-001-20250124    gcc-14.2.0
+powerpc64             randconfig-001-20250125    gcc-14.2.0
+powerpc64             randconfig-002-20250124    clang-20
+powerpc64             randconfig-002-20250125    clang-20
+powerpc64             randconfig-002-20250125    gcc-14.2.0
+powerpc64             randconfig-003-20250124    clang-19
+powerpc64             randconfig-003-20250125    clang-16
+powerpc64             randconfig-003-20250125    gcc-14.2.0
+riscv                            allmodconfig    gcc-14.2.0
+riscv                             allnoconfig    clang-20
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    gcc-14.2.0
+riscv                               defconfig    gcc-12
+riscv                 randconfig-001-20250124    clang-19
+riscv                 randconfig-001-20250125    gcc-14.2.0
+riscv                 randconfig-002-20250124    gcc-14.2.0
+riscv                 randconfig-002-20250125    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-20
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    gcc-12
+s390                  randconfig-001-20250124    gcc-14.2.0
+s390                  randconfig-001-20250125    clang-19
+s390                  randconfig-001-20250125    gcc-14.2.0
+s390                  randconfig-002-20250124    clang-20
+s390                  randconfig-002-20250125    clang-20
+s390                  randconfig-002-20250125    gcc-14.2.0
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-12
+sh                    randconfig-001-20250124    gcc-14.2.0
+sh                    randconfig-001-20250125    gcc-14.2.0
+sh                    randconfig-002-20250124    gcc-14.2.0
+sh                    randconfig-002-20250125    gcc-14.2.0
+sh                           se7712_defconfig    gcc-14.2.0
+sh                           se7751_defconfig    gcc-14.2.0
+sh                        sh7785lcr_defconfig    gcc-14.2.0
+sh                            titan_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250124    gcc-14.2.0
+sparc                 randconfig-001-20250125    gcc-14.2.0
+sparc                 randconfig-002-20250124    gcc-14.2.0
+sparc                 randconfig-002-20250125    gcc-14.2.0
+sparc64                             defconfig    gcc-12
+sparc64               randconfig-001-20250124    gcc-14.2.0
+sparc64               randconfig-001-20250125    gcc-14.2.0
+sparc64               randconfig-002-20250124    gcc-14.2.0
+sparc64               randconfig-002-20250125    gcc-14.2.0
+um                               allmodconfig    clang-20
+um                                allnoconfig    clang-18
+um                                allnoconfig    clang-20
+um                               allyesconfig    clang-20
+um                               allyesconfig    gcc-12
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250124    gcc-12
+um                    randconfig-001-20250125    clang-20
+um                    randconfig-001-20250125    gcc-14.2.0
+um                    randconfig-002-20250124    clang-20
+um                    randconfig-002-20250125    gcc-11
+um                    randconfig-002-20250125    gcc-14.2.0
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250124    gcc-12
+x86_64      buildonly-randconfig-001-20250125    clang-19
+x86_64      buildonly-randconfig-002-20250124    gcc-12
+x86_64      buildonly-randconfig-002-20250125    clang-19
+x86_64      buildonly-randconfig-003-20250124    clang-19
+x86_64      buildonly-randconfig-003-20250125    clang-19
+x86_64      buildonly-randconfig-004-20250124    clang-19
+x86_64      buildonly-randconfig-004-20250125    clang-19
+x86_64      buildonly-randconfig-005-20250124    clang-19
+x86_64      buildonly-randconfig-005-20250125    clang-19
+x86_64      buildonly-randconfig-006-20250124    clang-19
+x86_64      buildonly-randconfig-006-20250125    clang-19
+x86_64                              defconfig    clang-19
+x86_64                              defconfig    gcc-11
+x86_64                                  kexec    clang-19
+x86_64                randconfig-001-20250125    clang-19
+x86_64                randconfig-002-20250125    clang-19
+x86_64                randconfig-003-20250125    clang-19
+x86_64                randconfig-004-20250125    clang-19
+x86_64                randconfig-005-20250125    clang-19
+x86_64                randconfig-006-20250125    clang-19
+x86_64                randconfig-007-20250125    clang-19
+x86_64                randconfig-008-20250125    clang-19
+x86_64                randconfig-071-20250125    clang-19
+x86_64                randconfig-072-20250125    clang-19
+x86_64                randconfig-073-20250125    clang-19
+x86_64                randconfig-074-20250125    clang-19
+x86_64                randconfig-075-20250125    clang-19
+x86_64                randconfig-076-20250125    clang-19
+x86_64                randconfig-077-20250125    clang-19
+x86_64                randconfig-078-20250125    clang-19
+x86_64                               rhel-9.4    clang-19
+x86_64                           rhel-9.4-bpf    clang-19
+x86_64                         rhel-9.4-kunit    clang-19
+x86_64                           rhel-9.4-ltp    clang-19
+x86_64                          rhel-9.4-rust    clang-19
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250124    gcc-14.2.0
+xtensa                randconfig-001-20250125    gcc-14.2.0
+xtensa                randconfig-002-20250124    gcc-14.2.0
+xtensa                randconfig-002-20250125    gcc-14.2.0
 
--- 
-ldv
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
