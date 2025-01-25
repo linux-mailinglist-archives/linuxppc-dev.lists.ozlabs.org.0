@@ -1,79 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-5557-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5558-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351A1A1C2C8
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2025 11:50:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 976F9A1C309
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2025 13:17:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YgBKK2G59z2xyG;
-	Sat, 25 Jan 2025 21:50:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YgDGV2TjCz2ymg;
+	Sat, 25 Jan 2025 23:17:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737802213;
-	cv=none; b=hPWu9/i9beBuQYyw6Uts5KCQOEZMMOXMGmUFDdZthG6FHBW74B7jQf5ZC5E8ugCe7fY+egz54ZtaMV0v4Z4xX+K9cxtHSuCuhMRqsN+H97KCF/2N5d7Cp9bo3ktXAPB8B7NVuoFDh4TO4zJCqaRxK+KDrJJNl6YJyykZxbhW7fR76NG8EBUHouGVHMsjcaaLoYlLBDy9WibCDuoXBBppuy96tO6gUU05/v/tjzLTg+3VzreCrkRMlMtO8CEmfMbjxLH/xxbNUkyBnx0Wkwd46Tw5lGnyr6WZuF7c9oWYKcwnhos98GuSESL4QfSbBu94UcEt4z9zGD4XQyCl0ic45A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737807474;
+	cv=none; b=l2+r3w+mIezdLSOetllOjK9D5kihrjwsADUxIWzpZZCWI7NTi5hewPOp6BwPpiosG5NFKO1C6GtInXbeAGwEGlOgrFFErdsYsRQs6xn17KP0SF7Bl6fAjq4Tyjdaef/qQHjuSIYHFqFmnVwvz9OXR7npYcHwH2YdxKgblIte7KIh3kXoHjKvTQzRb8Bp3A7xJ7HtKhzlyJyXZJVkvdeyy0DH153EJLBjK5mSY2iDRiJEz23deOQdGuGKxsLQB2Av3qJVmXA6Z/0JQdeQXyqZx6CR/N1bwBa6fBQJjYAPvQpm6wNmzb2sY1g2k3F1fgShtmyTf6X+860eHhNf788V4g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737802213; c=relaxed/relaxed;
-	bh=1qeCsdx1nXMpNkvJmBLEbfAYwF5/v7XSL1ummxCOsiQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VRlhg1IfPUj6MRn/WXrnlYWqDdWuBft9UAjnkgsBWse/FBQaRBQDr5Z1YS19s2x2p5cHfUOjMO+fdYQaAVj7N/C9uxvzsCs5YhmxUpYJ7+rMJXj1g9WS37tHhyB6XDjWJWJ4wYib+tMips5drUO8phMsn7CLsH49N5IEosko97FR13yDcXOQPpH3LTHW0NfOiyQr0Ox3bWMhvLMPj4Kzqq1HQpdMQJwgfBz6Wo/MEzkxzUFxdsmIL3z519RoAKr5UYt9/0pmZBBaKPejWLZYqMGHPMytpvXj2nkOBkgyxEzLGkUxzDg0QiSVd+Q1a1q6nk8/POYayPd7O8TDWBZO7w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AhnDqzu1; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1737807474; c=relaxed/relaxed;
+	bh=8jrMfuGdILhOoKzoKQIpsuvpNfN2oCaFAgeW4oP36tI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Hp+eO5RFHR3MTGp6MXFg27DMaxQz5BF/CBq/EcMNd+B/WzEPfAouHXhIBaW49gAIBgkaD7oyTSlSlAsyGVyT2Ud0CLlK2yBHCRM1aH1s7isJPx4cjk04YikZwcjPWN6vxgkO2g7vhcv3pqrPW5qksW1AVhOPKVF+S2gfKIF7iantLMYE6krIkrIJfF9R0G01sY3HOIzgx6UoN1gyee0qe2VWzI/S8z8NcdiJZmnmwjtIqrVvtXd6IeRmNA1tLacg3M8hgzrosl78LSn0woNoJK+4lZBLLslC6+qxyNdHIg4F8e+FDWX+n/v4l1TbwzHIayEuIbQV8RCsSPUUjzu15A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TzVYMUrA; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AhnDqzu1;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=TzVYMUrA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YgBKH4kVjz2xrJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2025 21:50:11 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50P20cLo012645;
-	Sat, 25 Jan 2025 10:49:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=1qeCsdx1nXMpNkvJmBLEbfAYwF5/v7XSL1ummxCOs
-	iQ=; b=AhnDqzu1mPCjHRg5qLIE2OFlIAbKJN9Ij249rrnZSbQYrAKNndEiiRrp6
-	nYvxbLH5Gzq2iCFnkwUkiYlsLrob+6pkyobIuaeBy4Z1ChBQhdsHVQhIZftIb/hY
-	QBuqSYDvfDB6s7nhJV2UoWrMHAxVcYPEQu6fwqCg5X0Uv8nUz1+MRHiBm2jZk0TT
-	ixi6s/28ED69X3FNx5URG2tssqPIkB2YR782h9u5StB2RphgfHMqsLQKEahVjsfc
-	pgRpMbEbWSH5eVSG0+3L1n4zGpf34vJHsRubyBrVxK7+UGqr9fn/nn65CmJnYDN/
-	zbGBMDEP7UagFNKgF7fh3GnI06CWQ==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44cpsy9a0e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 25 Jan 2025 10:49:59 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50PAnuEb005761;
-	Sat, 25 Jan 2025 10:49:58 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44cxhe0007-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 25 Jan 2025 10:49:58 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50PAnYfg48628158
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 25 Jan 2025 10:49:34 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A2B92008C;
-	Sat, 25 Jan 2025 10:49:34 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 355332008B;
-	Sat, 25 Jan 2025 10:49:32 +0000 (GMT)
-Received: from li-4f5ba44c-27d4-11b2-a85c-a08f5b49eada.ibm.com.com (unknown [9.43.45.180])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 25 Jan 2025 10:49:31 +0000 (GMT)
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH v3] powerpc/hugetlb: Disable gigantic hugepages if fadump is active
-Date: Sat, 25 Jan 2025 16:19:28 +0530
-Message-ID: <20250125104928.88881-1-sourabhjain@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YgDGS6XlLz2ykt
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2025 23:17:52 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1737807463;
+	bh=8jrMfuGdILhOoKzoKQIpsuvpNfN2oCaFAgeW4oP36tI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=TzVYMUrArQiqN/RZHTjtabskKvEIgUypVaRNti1ymvpR3KDM2FC0AIWU0bGl7sHHT
+	 kFFv/u/Mo8hwG7HletlNlqazr6cHpElDqZpWjf47UpskZQY5UAVHUQaWbqrpNfMz35
+	 ncJZD45crjfOZEag+/L6EGf3FFimKIDKXJSq2ZglrWwH+v55znryMpSN3IG2Gxxo8K
+	 sVr42vPG8kC8KV8EJngkLM9GkVI1JHbvtpP8zyYo5ZZPjzYinQEAaBOPTu7LpIoJmS
+	 ZsdIKVTvubMlmyKUgKoagVWXm2DY/VGxgl0Gqw8OMvDGWyhKMVk4OW78D83UhC7GTq
+	 zwZYVpB/Ye3wA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YgDGC4plDz4wj2;
+	Sat, 25 Jan 2025 23:17:39 +1100 (AEDT)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: "Dmitry V. Levin" <ldv@strace.io>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>
+Cc: Alexey Gladkov <legion@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+ Eugene Syromyatnikov <evgsyr@gmail.com>, Mike Frysinger
+ <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>, Davide Berardi
+ <berardi.dav@gmail.com>, strace-devel@lists.strace.io, Madhavan Srinivasan
+ <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao
+ <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
+ syscall_set_return_value()
+In-Reply-To: <20250123182815.GA20994@strace.io>
+References: <20250113171054.GA589@strace.io>
+ <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
+ <20250114170400.GB11820@strace.io>
+ <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
+ <20250123182815.GA20994@strace.io>
+Date: Sat, 25 Jan 2025 23:17:45 +1100
+Message-ID: <87lduzjdee.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,108 +75,181 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: s4FUNrukslx8FO3DQymueOizmITWkx96
-X-Proofpoint-GUID: s4FUNrukslx8FO3DQymueOizmITWkx96
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-25_04,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
- mlxlogscore=999 clxscore=1015 malwarescore=0 lowpriorityscore=0
- suspectscore=0 phishscore=0 bulkscore=0 impostorscore=0 priorityscore=1501
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501250075
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The fadump kernel boots with limited memory solely to collect the kernel
-core dump. Having gigantic hugepages in the fadump kernel is of no use.
-Many times, the fadump kernel encounters OOM (Out of Memory) issues if
-gigantic hugepages are allocated.
+"Dmitry V. Levin" <ldv@strace.io> writes:
+> On Mon, Jan 20, 2025 at 02:51:38PM +0100, Christophe Leroy wrote:
+>> Le 14/01/2025 =C3=A0 18:04, Dmitry V. Levin a =C3=A9crit=C2=A0:
+>> > On Mon, Jan 13, 2025 at 06:34:44PM +0100, Christophe Leroy wrote:
+>> >> Le 13/01/2025 =C3=A0 18:10, Dmitry V. Levin a =C3=A9crit=C2=A0:
+>> >>> Bring syscall_set_return_value() in sync with syscall_get_error(),
+>> >>> and let upcoming ptrace/set_syscall_info selftest pass on powerpc.
+>> >>>
+>> >>> This reverts commit 1b1a3702a65c ("powerpc: Don't negate error in
+>> >>> syscall_set_return_value()").
+>> >>
+>> >> There is a clear detailed explanation in that commit of why it needs =
+to
+>> >> be done.
+>> >>
+>> >> If you think that commit is wrong you have to explain why with at lea=
+st
+>> >> the same level of details.
+>> >=20
+>> > OK, please have a look whether this explanation is clear and detailed =
+enough:
+>> >=20
+>> > =3D=3D=3D=3D=3D=3D=3D
+>> > powerpc: properly negate error in syscall_set_return_value()
+>> >=20
+>> > When syscall_set_return_value() is used to set an error code, the call=
+er
+>> > specifies it as a negative value in -ERRORCODE form.
+>> >=20
+>> > In !trap_is_scv case the error code is traditionally stored as follows:
+>> > gpr[3] contains a positive ERRORCODE, and ccr has 0x10000000 flag set.
+>> > Here are a few examples to illustrate this convention.  The first one
+>> > is from syscall_get_error():
+>> >          /*
+>> >           * If the system call failed,
+>> >           * regs->gpr[3] contains a positive ERRORCODE.
+>> >           */
+>> >          return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
+>> >=20
+>> > The second example is from regs_return_value():
+>> >          if (is_syscall_success(regs))
+>> >                  return regs->gpr[3];
+>> >          else
+>> >                  return -regs->gpr[3];
+>> >=20
+>> > The third example is from check_syscall_restart():
+>> >          regs->result =3D -EINTR;
+>> >          regs->gpr[3] =3D EINTR;
+>> >          regs->ccr |=3D 0x10000000;
+>> >=20
+>> > Compared with these examples, the failure of syscall_set_return_value()
+>> > to assign a positive ERRORCODE into regs->gpr[3] is clearly visible:
+>> > 	/*
+>> > 	 * In the general case it's not obvious that we must deal with
+>> > 	 * CCR here, as the syscall exit path will also do that for us.
+>> > 	 * However there are some places, eg. the signal code, which
+>> > 	 * check ccr to decide if the value in r3 is actually an error.
+>> > 	 */
+>> > 	if (error) {
+>> > 		regs->ccr |=3D 0x10000000L;
+>> > 		regs->gpr[3] =3D error;
+>> > 	} else {
+>> > 		regs->ccr &=3D ~0x10000000L;
+>> > 		regs->gpr[3] =3D val;
+>> > 	}
+>> >=20
+>> > This fix brings syscall_set_return_value() in sync with syscall_get_er=
+ror()
+>> > and lets upcoming ptrace/set_syscall_info selftest pass on powerpc.
+>> >=20
+>> > Fixes: 1b1a3702a65c ("powerpc: Don't negate error in syscall_set_retur=
+n_value()").
+>> > =3D=3D=3D=3D=3D=3D=3D
+>>=20
+>> I think there is still something going wrong.
+>>=20
+>> do_seccomp() sets regs->gpr[3] =3D -ENOSYS; by default.
+>>=20
+>> Then it calls __secure_computing() which returns what __seccomp_filter()=
+=20
+>> returns.
+>>=20
+>> In case of error, __seccomp_filter() calls syscall_set_return_value()=20
+>> with a negative value then returns -1
+>>=20
+>> do_seccomp() is called by do_syscall_trace_enter() which returns -1 when=
+=20
+>> do_seccomp() doesn't return 0.
+>>=20
+>> do_syscall_trace_enter() is called by system_call_exception() and=20
+>> returns -1, so syscall_exception() returns regs->gpr[3]
+>>=20
+>> In entry_32.S, transfer_to_syscall, syscall_exit_prepare() is then=20
+>> called with the return of syscall_exception() as first parameter, which=
+=20
+>> leads to:
+>>=20
+>> 	if (unlikely(r3 >=3D (unsigned long)-MAX_ERRNO) && is_not_scv) {
+>> 		if (likely(!(ti_flags & (_TIF_NOERROR | _TIF_RESTOREALL)))) {
+>> 			r3 =3D -r3;
+>> 			regs->ccr |=3D 0x10000000; /* Set SO bit in CR */
+>> 		}
+>> 	}
+>>=20
+>> By chance, because you have already changed the sign of gpr[3], the=20
+>> above test fails and nothing is done to r3, and because you have also=20
+>> already set regs->ccr it works.
+>>=20
+>> But all this looks inconsistent with the fact that do_seccomp sets=20
+>> -ENOSYS as default value
+>>=20
+>> Also, when do_seccomp() returns 0, do_syscall_trace_enter() check the=20
+>> syscall number and when it is wrong it goes to skip: which sets=20
+>> regs->gpr[3] =3D -ENOSYS;
+>>=20
+>> So really I think it is not in line with your changes to set positive=20
+>> value in gpr[3].
+>>=20
+>> Maybe your change is still correct but it needs to be handled completely=
+=20
+>> in that case.
+>
+> Indeed, there is an inconsistency in !trap_is_scv case.
+>
+> In some places such as syscall_get_error() and regs_return_value() the
+> semantics is as I described earlier: gpr[3] contains a positive ERRORCODE
+> and ccr has 0x10000000 flag set.  This semantics is a part of the ABI and
+> therefore cannot be changed.
+>
+> In some other places like do_seccomp() and do_syscall_trace_enter() the
+> semantics is similar to the trap_is_scv case: gpr[3] contains a negative
+> ERRORCODE and ccr is unchanged.  In addition, system_call_exception()
+> returns the system call function return value when it is executed, and
+> gpr[3] otherwise.  The value returned by system_call_exception() is passed
+> on to syscall_exit_prepare() which performs the conversion you mentioned.
+>
+> What's remarkable is that in those places that are a part of the ABI the
+> traditional semantics is kept, while in other places the implementation
+> follows the trap_is_scv-like semantics, while traditional semantics is
+> also supported there.
 
-To address this, disable gigantic hugepages if fadump is active by
-returning early from arch_hugetlb_valid_size() using
-hugepages_supported(). hugepages_supported() returns false if fadump is
-active.
+scv didn't exist when the seccomp code was written so that's not really
+the right way to look at it.
 
-Returning early from arch_hugetlb_valid_size() not only disables
-gigantic hugepages but also avoids unnecessary hstate initialization for
-every hugepage size supported by the platform.
+The distinction was between the in-kernel semantic of negative
+ERRORCODE, which is used everywhere, vs the original (non-scv) syscall
+ABI which uses positive ERRORCODE and CCR.SO.
 
-kernel logs related to hugepages with this patch included:
-kernel argument passed: hugepagesz=1G hugepages=1
+The way I wrote it at the time was to try and maintain the negative
+ERRORCODE semantic in the kernel, and only flip to positive ERRORCODE
+when we actually exit to userspace.
 
-First kernel: gigantic hugepage got allocated
-==============================================
+But even back then syscall_set_return_value() needed to set CCR.SO to
+make some cases work, so it was probably the wrong design.
 
-dmesg | grep -i "hugetlb"
--------------------------
-HugeTLB: registered 1.00 GiB page size, pre-allocated 1 pages
-HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
-HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
-HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+> The only case where I see some intersection is do_seccomp() where the
+> tracer would be able to see -ENOSYS in gpr[3].  However, the seccomp stop
+> is not the place where the tracer *reads* the system call exit status,
+> so whatever was written in gpr[3] before __secure_computing() is not
+> really relevant, consequently, selftests/seccomp/seccomp_bpf passes with
+> this patch applied as well as without it.
+=20
+IIRC it is important for a tracer that blocks the syscall but doesn't
+explicitly set the return value. But it's only important that the
+default return value is syscall failure (ie. ENOSYS/-ENOSYS), the actual
+sign of the r3 value should be irrelevant to the tracer.
 
-$ cat /proc/meminfo | grep -i "hugetlb"
--------------------------------------
-Hugetlb:         1048576 kB
+If the selftest still passes then that's probably sufficient.
 
-Fadump kernel: gigantic hugepage not allocated
-===============================================
-
-dmesg | grep -i "hugetlb"
--------------------------
-[    0.000000] HugeTLB: unsupported hugepagesz=1G
-[    0.000000] HugeTLB: hugepages=1 does not follow a valid hugepagesz, ignoring
-[    0.706375] HugeTLB support is disabled!
-[    0.773530] hugetlbfs: disabling because there are no supported hugepage sizes
-
-$ cat /proc/meminfo | grep -i "hugetlb"
-----------------------------------
-<Nothing>
-
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
----
-
-Changelog:
-
-v1:
-https://lore.kernel.org/all/20250121150419.1342794-1-sourabhjain@linux.ibm.com/
-
-v2:
-https://lore.kernel.org/all/20250124103220.111303-1-sourabhjain@linux.ibm.com/
- - disable gigantic hugepage in arch code, arch_hugetlb_valid_size()
-
-v3:
- - Do not modify the initialization of the shift variable
-
----
- arch/powerpc/mm/hugetlbpage.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
-index 6b043180220a..88cfd182db4e 100644
---- a/arch/powerpc/mm/hugetlbpage.c
-+++ b/arch/powerpc/mm/hugetlbpage.c
-@@ -138,6 +138,9 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
- 	int shift = __ffs(size);
- 	int mmu_psize;
- 
-+	if (!hugepages_supported())
-+		return false;
-+
- 	/* Check that it is a page size supported by the hardware and
- 	 * that it fits within pagetable and slice limits. */
- 	if (size <= PAGE_SIZE || !is_power_of_2(size))
--- 
-2.48.1
-
+cheers
 
