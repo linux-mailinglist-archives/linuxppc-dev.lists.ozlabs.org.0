@@ -1,68 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-5560-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57710A1C30D
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2025 13:18:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F18A1C531
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 25 Jan 2025 21:48:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YgDGn72Rpz2yys;
-	Sat, 25 Jan 2025 23:18:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YgRbR6CNgz2y6G;
+	Sun, 26 Jan 2025 07:48:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737807489;
-	cv=none; b=YBAcVMxXPBErp+dyAafwnxX1CmzKYBysQVGB+7veR7ThPccx7vNVm6o0vlDYL98A7cAssaAq+LksMHRZmDU4j5pKAuyPdYTZ8PbVuw5uDCU3HVtV5IrKBDEqFsDPQIM52uvnmvN3ila6Cm8mKWhAK7Iqhh+paeaBW/7hIqDlkDOJJgtaa4ePKMurPkNnaxmkLJhaNzfdM6kvQlORCbzXg7vKSXSSWOdLdi1XiGSHK83R5/spxkEIbZGIXjyxzUtyYLczP1zyTSk6oW5Xt0gtR7u+EL2keJKAV2O3RFZdW8Zrio7jwk9ZHN/X0kYm+6kx64RCZtxjjksf6uCXeD3QRQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737838099;
+	cv=none; b=Fe+pg+dDxvfeReicjwoZIiQc4c4cpSopOqxvsHoScM4emnpps0cE5LywVMz9Y1RzS7mdXcG9RlULHq+FWfP0btUIFZnnjhmfL0r3yqJ0aSXVQKVhR3cAHoZWSaIQgdbb3SFyWm+omAjidG+220cplQr+LcbLkrKZV4gflDi0FhOxkhqLbPQ/gFZOCBD9xSpwVt1IqmPxRhafdbo+RjkRyYtvbQfN8os2d1dEF4A67baDXy55T7sRd8bBLVQTPE6n0ETYtGp5PmUnGenu3teGtoIlr3dINIvCOco1O33tDLsM/GoEiS2yIVhNFtbmyME+u9OL7HXLG90wY5hX5W3/Wg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737807489; c=relaxed/relaxed;
-	bh=ERLlPVG1lEJ+5piv0IiigUiUvltp7ufaJJs6c3as2xE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=P4ObYXFi7xnooW5bF1N+IRpHL1j0YOEvuc6mgcKxqU0D/7pbBQYmCi2IzwAci0YJHyT6OFEMRJBhNIyT+jRlg6juk8oDlpXZexAwvIHG1m5FzOfS5sh/+3y0MlQncRKfOkA1RVcIiiWMEYbSODRcHKhnIGYEymrsWZSjEi0KbycdokfPjJHrv3cdThk3tVwuwgzgfvsWHMdIxMvjvH4gwsbKcmsn67F3lJo0JlVPF2R8pymI1cIuYuXUUL7OSOPSF6gP+8HcC6AWSK8kMTNtS8U9XeYUKH8ZFYvy/Hss5MWpma6Iexk8gHz1Q4AE0dScjMPr0G2wr/MNmhTYnfuMyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m4kRzeqX; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=m4kRzeqX;
-	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YgDGn3ckNz2ykt
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 25 Jan 2025 23:18:09 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1737807481;
-	bh=ERLlPVG1lEJ+5piv0IiigUiUvltp7ufaJJs6c3as2xE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=m4kRzeqXgS6be31WXpCMul2w16MNgDr7qFDtkDEIiwi0AO892C8XIYehHpwIA2m9P
-	 tXJCEavqytSRyTgvnT2rCdpxISOSfqUkikjPHYPbkcEWADhfYG7d2NVVsWGtTARhlM
-	 7paoJustxpjLfxKLzMhHFbBVqMGzyu6MueP02hkwyowAjCADPcdn9uKeBxjpZC3Sk0
-	 KYluLrSFiaxClKykfkbaDM/utbgbpd1baCplWR5nq/eh47vuAg78BYVd22NiqiZQRj
-	 yiVQnLEpyci8wdKmV3waqffXq7V2l7uE5JJjJdZGt34XSghDzLouO72ljnBH2aTSOa
-	 0dOdySLMjdjHg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YgDGd0BwNz4wvc;
-	Sat, 25 Jan 2025 23:18:01 +1100 (AEDT)
-From: Michael Ellerman <mpe@ellerman.id.au>
-To: Alexey Gladkov <legion@kernel.org>, "Dmitry V. Levin" <ldv@strace.io>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, Oleg Nesterov
- <oleg@redhat.com>, Eugene Syromyatnikov <evgsyr@gmail.com>, Mike Frysinger
- <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>, Davide Berardi
- <berardi.dav@gmail.com>, strace-devel@lists.strace.io, Madhavan Srinivasan
- <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao
- <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
+	t=1737838099; c=relaxed/relaxed;
+	bh=NEdtOSnMElsfLJ95hek9II/MsFxdAsYi+4+DoPvZh8Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a8ZsRoDMe5tvFi98m2VNn9zQR24igoDpMpelM9ZK5uISyiIgfaxj2qrozKkDwBUhlxEUIyQgd3iFufmujA917IRcOfmUWyph9Fob/o3DcK5tuF3n3Sm/ZUO6xwHfpvbr7Hj3qbmI0jDMbtFU+OcgbDXRK1kRvbBfiitD2CEleBITiWSmWym2n4i2JlOSi2qmTl9TIY35/qJaQtKzUqJYnTOn99wbmcGXjLJwIUp3duNUyksjRp6s2nk8VtcZqc3Car2bt075YEcEkWexWZe54WsolkaQEX/n9HZ1MnOfa2MLvMlL9YlRLhdc3bquCRMN1/HmCsNN8ZlGHs9bycplcA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YgRbQ35jnz2xrJ
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jan 2025 07:48:17 +1100 (AEDT)
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id 61BEB72C8CC;
+	Sat, 25 Jan 2025 23:48:15 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+	id 4EA297CCB3A; Sat, 25 Jan 2025 22:48:15 +0200 (IST)
+Date: Sat, 25 Jan 2025 22:48:15 +0200
+From: "Dmitry V. Levin" <ldv@strace.io>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Alexey Gladkov <legion@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+	Eugene Syromyatnikov <evgsyr@gmail.com>,
+	Mike Frysinger <vapier@gentoo.org>,
+	Renzo Davoli <renzo@cs.unibo.it>,
+	Davide Berardi <berardi.dav@gmail.com>,
+	strace-devel@lists.strace.io,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
  syscall_set_return_value()
-In-Reply-To: <Z5OvMgjMd3xzx4mS@example.org>
+Message-ID: <20250125204815.GA12624@strace.io>
 References: <20250113171054.GA589@strace.io>
  <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
  <20250114170400.GB11820@strace.io>
  <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
- <20250123182815.GA20994@strace.io> <20250123234321.GA23582@strace.io>
- <Z5OvMgjMd3xzx4mS@example.org>
-Date: Sat, 25 Jan 2025 23:18:06 +1100
-Message-ID: <87ikq3jddt.fsf@mpe.ellerman.id.au>
+ <20250123182815.GA20994@strace.io>
+ <20250123234321.GA23582@strace.io>
+ <87jzajjde1.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,31 +63,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87jzajjde1.fsf@mpe.ellerman.id.au>
+X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Alexey Gladkov <legion@kernel.org> writes:
->
-...
-> I'm not a powerpc expert but shouldn't be used regs->gpr[3] via a
-> regs_return_value() in system_call_exception() ?
-
-Yes I agree.
-
-> notrace long system_call_exception(struct pt_regs *regs, unsigned long r0)
-> {
+On Sat, Jan 25, 2025 at 11:17:58PM +1100, Michael Ellerman wrote:
+> "Dmitry V. Levin" <ldv@strace.io> writes:
+> > On Thu, Jan 23, 2025 at 08:28:15PM +0200, Dmitry V. Levin wrote:
 > ...
-> 		r0 = do_syscall_trace_enter(regs);
-> 		if (unlikely(r0 >= NR_syscalls))
-> 			return regs->gpr[3];
+> >> After looking at system_call_exception() I doubt this inconsistency can be
+> >> easily avoided, so I don't see how this patch could be enhanced further,
+> >> and what else could I do with the patch besides dropping it and letting
+> >> !trap_is_scv case be unsupported by PTRACE_SET_SYSCALL_INFO API, which
+> >> would be unfortunate.
+> >
+> > If you say this would bring some consistency, I can extend the patch with
+> > something like this:
+> 
+> Yes that would improve things IMHO, with one caveat ....
+> 
+> > diff --git a/arch/powerpc/kernel/ptrace/ptrace.c b/arch/powerpc/kernel/ptrace/ptrace.c
+> > index 727ed4a14545..dda276a934fd 100644
+> > --- a/arch/powerpc/kernel/ptrace/ptrace.c
+> > +++ b/arch/powerpc/kernel/ptrace/ptrace.c
+> > @@ -207,7 +207,7 @@ static int do_seccomp(struct pt_regs *regs)
+> >  	 * syscall parameter. This is different to the ptrace ABI where
+> >  	 * both r3 and orig_gpr3 contain the first syscall parameter.
+> >  	 */
+> > -	regs->gpr[3] = -ENOSYS;
+> > +	syscall_set_return_value(current, regs, -ENOSYS, 0);
+> >  
+> >  	/*
+> >  	 * We use the __ version here because we have already checked
+> > @@ -225,7 +225,7 @@ static int do_seccomp(struct pt_regs *regs)
+> >  	 * modify the first syscall parameter (in orig_gpr3) and also
+> >  	 * allow the syscall to proceed.
+> >  	 */
+> > -	regs->gpr[3] = regs->orig_gpr3;
+> > +	syscall_set_return_value(current, regs, 0, regs->orig_gpr3);
+> 
+> This case should remain as-is. The orig_gpr3 value here is not a syscall
+> error code, it's the original r3 value, which is a syscall parameter.
 
-This is the case where we're expecting the r3 value to be a negative
-error code, to match the in-kernel semantics. But after this change it
-would be a positive error value. It is probably harmless with the
-current code structure, but that's just luck.
+I agree, but shouldn't CCR.SO be cleared somehow after it was set earlier by
+	syscall_set_return_value(current, regs, -ENOSYS, 0);
+?
 
-cheers
+
+-- 
+ldv
 
