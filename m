@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-5571-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5572-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADE4AA1CDCF
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jan 2025 20:00:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C418A1CDD5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 26 Jan 2025 20:00:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yh1772R7cz2yFB;
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yh1773Lx0z30B8;
 	Mon, 27 Jan 2025 05:59:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737917955;
-	cv=none; b=eOmp+ZQblJffdoZKL4TSLaLVG1BNhopKHZExAgLWrWEwcavzaim58ozp472dU8Y0FpSwJe1Sv+lwe7NDJbV7ekc7fhWCvMRN7PhUSMAUvRLIkXMS8OJjjJDd29AHIZpkzDfBFxZ7fPXnu+KmzWfzrGVOyTR57QDG2BarSRtJMw8HYw3mRSjH4wzSdDvckeRobZKxcc2RqKxk6a5X4qNxyeq0w+MHCy3RH6SslXUjD7IsH762R1QctucQ9d1iAOk/oUlTl6yF6fUvUyqOUx7ylTy4USpukV4F1CAGjH/hGLkXqckLvqKtW54emnVNB7Xi2xBXy/h4rCUrVQhsUHiFMA==
+	cv=none; b=Y4m+hBiKVvO0+PiuVJoGSryDPx6oEMgyTuTb0NecsKVf960446OuM8OwaSwTNkLe6LfH9MvDQIgsY0tZbpIPAQOdMQYrTBW/aTLYjHWxxYB5aHG1SdmhUlAILumwTXNWDYcZ6nisjNsIv+CQVKxj6/nEUrD1w7p2d312LVcpPfnTz+V19T2Xo/4fnQptIpFwX0eQl5oqrHYojd3oIb07+GFJGY+BsE6vxLYIRdbQ/X/F/aAU0o6tgovMFGcd3CtfO7jx8KIW8WtLbU+5RAzVcojMteFn2nkfaOE1CPsNfCgusGOllCOU17RvZxWM0tyNrjsGDs/WTDz/ccCn4I8wmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1737917955; c=relaxed/relaxed;
-	bh=9MUtoNn8DGME65VKTaUp2wcnKYHAQ36NRH5Q4F8lmUE=;
+	bh=0DWKAYelXLSVQ1KWZajlwB/mnMNG5shcnhkW52A/ugg=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Sxx41t8hIRR8WbkoXWl2k6HNm4hsbpdRbeHTVe4G7A/5D6RfZgIazC2c92AhfX2dTs9AF5cuDYiRvkYoC+Q9bqHB7RpLveUJmOHcjjihQUvHI/T+7YKjKgR2moVXGQn1OBQ7m3WwRggoavS7+tSPlgicfvuVkU5lCQEY3lUiae2VVewQzaIOAXO3HfXxnLYpXW6hkVy34QbSv2s0nvD/tn+t5WELWjw8Ha+w9+pyb3UzMXYdA56uiARfEEe/NTy1lMvWImPsZSt46PKIYFKopxaPZuX+9QjvCqcqVBjVjS/hAt3WxIGiELo50i0gyO2K5xfOv+INF5/tAO7xbV355g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VKQA9VPT; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=ERxz3AOW3MZWkr97T7YHCQO+pxiGwxi1yfc5Hkb4uRaBMwdYaPTi/HTnOSjaZbcFqb8m71g1TxunrKEdPNRRRCs7/AMcFh0egx1M+O5Ho+4jWNLQbl0ixjnf1rw9VfLQ5Ur/SNVYbERBPM7hIrPDVH9/A+9MX/xedhp63Sxkm0kjN6WCWiqsHn+7C5s173nyvbKMPDOU2j00VhqaEoqRFHeMfSeRzTyx2M7LFcn+N/v3zOALlk6lBhlliLLAeHX+FKLlIyKBFCsRTQpXWTxq1M87hgwdgy2OlxAvmNpImqeAJMMKnqouTDf65RRVptFyWudNK+Pa2vtOALBqAzSHGg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YS5bj54U; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VKQA9VPT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YS5bj54U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yh1756rw7z304C
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yh1756sgPz304N
 	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2025 05:59:13 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 175E7A4101B;
+	by nyc.source.kernel.org (Postfix) with ESMTP id 2AF20A41020;
 	Sun, 26 Jan 2025 18:57:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 11B3FC19422;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 26C1EC4AF5F;
 	Sun, 26 Jan 2025 18:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1737917946;
-	bh=r6w1TGpVSqKoSAo8UJWjBKkemEchRp94CZSpKLCcVic=;
+	bh=besDC4D0drpNlTcCMCLHyFd/qhP9T8iaGBo3K4aN2OU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=VKQA9VPTPYPBXavTlj/t8VBkruGrWrint1cIPRTVYmzKcYSkLCACJ3dkx6YFGD5aF
-	 I5j0anMoe7fWtO3sLpUNV/oYGmyZ6Pd/1IMgKDwtellO9zkx0HriAYlpGLEZ/hmMXU
-	 X9JdBEmd63a57sa6SmidOk6bIjwFXbcLPOcE4pBEEPJRcMZE8RpbPZ0R5rRqT/aSkI
-	 qLEU8dB2BSh7PNeKGe0KN7uw1wf0MLOqPex7UWVF4pcFmavGTl0z0ngohluNmDNOtz
-	 xsmoello/jN78f1HAh4FwkYSl6GQEzR0w9qf1u6Zl3fdiae50NcCD6vrAii4IvLEl2
-	 1iBMXM+cQuCOQ==
+	b=YS5bj54UueHvcLodRMthcuaK5YpHiKvBmwaJNysQBaxINp7cxgs2vtfP9bjibVfbx
+	 x8jOsI6cJRQkIcnTFpQwy9BCslxThZb07BRJcNV+PdAAIXITfMdapmRdeSKjYnPP6z
+	 oCttv3Uer5rMERkXnu5m0Wr22fY9/woe4YPpbKCGuykQ985dgzQoT8ienE4aU8pwvV
+	 e4sjx/O8A/ZrSBePnicE4GTePpk+eJwkk2nuVTjGysbd7Oy2KtPFPxmCBw51695Xve
+	 pgcR+bjc4YqV9wYcLnifUVIi3c3qPHO7jBHF+5oc8Ci+L4tQccRks8+3XYyY7dvzY7
+	 l0sbZWz5/P+PQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 05F5BC0218D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 1AEB9C02190;
 	Sun, 26 Jan 2025 18:59:06 +0000 (UTC)
 From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Sun, 26 Jan 2025 19:59:02 +0100
-Subject: [PATCH 7/9] dt-bindings: watchdog: Convert mpc8xxx-wdt binding to
+Date: Sun, 26 Jan 2025 19:59:03 +0100
+Subject: [PATCH 8/9] dt-bindings: spi: Convert Freescale SPI bindings to
  YAML
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250126-ppcyaml-v1-7-50649f51c3dd@posteo.net>
+Message-Id: <20250126-ppcyaml-v1-8-50649f51c3dd@posteo.net>
 References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
 In-Reply-To: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
 To: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
@@ -92,11 +92,11 @@ Cc: Scott Wood <oss@buserror.net>,
  linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1737917943; l=3719;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1737917943; l=6825;
  i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=INVkBCLHOPyRZgA3id7yu3YiJSlbpT9rkFYnjOPWGRw=;
- b=qIrd3NqNYsZmRHz4Bp4oEm0lNDz7AgiaFpCxd9WVkNnHgQgErhQ8oTpycy+6fz5u6+yLeokS7
- DjGnZr5OgjSAQorB4z4FQuYzKQmxCRJELg+Xp55lZMxlrTDHbra662w
+ bh=xDa2X5ix7Yz+uUKr7B2an+BkT3tqXXsRwdduIK9iWgc=;
+ b=4QCYXX3kpPGMdIqbCZvKPP/cQo3jUJcs6wRQLhb2Owtx6YTpaYDSWzkNBanZH6Dsamu4kpkge
+ fyBklNraCwfDQXDyg9Fcfu6YmzGiRTaSu2oLelsxED9beNbs3wG63u6
 X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
  pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
 X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
@@ -110,58 +110,91 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: "J. Neuschäfer" <j.ne@posteo.net>
 
-Convert mpc83xx-wdt.txt to YAML to enable automatic schema validation.
+fsl-spi.txt contains the bindings for the fsl,spi and fsl,espi
+contollers. Convert them to YAML.
 
 Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
- .../devicetree/bindings/watchdog/mpc8xxx-wdt.txt   | 25 ---------
- .../devicetree/bindings/watchdog/mpc8xxx-wdt.yaml  | 64 ++++++++++++++++++++++
- 2 files changed, 64 insertions(+), 25 deletions(-)
+ .../devicetree/bindings/spi/fsl,espi.yaml          | 56 +++++++++++++++++
+ Documentation/devicetree/bindings/spi/fsl,spi.yaml | 71 ++++++++++++++++++++++
+ Documentation/devicetree/bindings/spi/fsl-spi.txt  | 62 -------------------
+ 3 files changed, 127 insertions(+), 62 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/watchdog/mpc8xxx-wdt.txt b/Documentation/devicetree/bindings/watchdog/mpc8xxx-wdt.txt
-deleted file mode 100644
-index a384ff5b3ce8c62d813fc23d72f74e2158ff543e..0000000000000000000000000000000000000000
---- a/Documentation/devicetree/bindings/watchdog/mpc8xxx-wdt.txt
-+++ /dev/null
-@@ -1,25 +0,0 @@
--* Freescale mpc8xxx watchdog driver (For 83xx, 86xx and 8xx)
--
--Required properties:
--- compatible: Shall contain one of the following:
--	"mpc83xx_wdt" for an mpc83xx
--	"fsl,mpc8610-wdt" for an mpc86xx
--	"fsl,mpc823-wdt" for an mpc8xx
--- reg: base physical address and length of the area hosting the
--       watchdog registers.
--		On the 83xx, "Watchdog Timer Registers" area:	<0x200 0x100>
--		On the 86xx, "Watchdog Timer Registers" area:	<0xe4000 0x100>
--		On the 8xx, "General System Interface Unit" area: <0x0 0x10>
--
--Optional properties:
--- reg: additional physical address and length (4) of location of the
--       Reset Status Register (called RSTRSCR on the mpc86xx)
--		On the 83xx, it is located at offset 0x910
--		On the 86xx, it is located at offset 0xe0094
--		On the 8xx, it is located at offset 0x288
--
--Example:
--		WDT: watchdog@0 {
--		    compatible = "fsl,mpc823-wdt";
--		    reg = <0x0 0x10 0x288 0x4>;
--		};
-diff --git a/Documentation/devicetree/bindings/watchdog/mpc8xxx-wdt.yaml b/Documentation/devicetree/bindings/watchdog/mpc8xxx-wdt.yaml
+diff --git a/Documentation/devicetree/bindings/spi/fsl,espi.yaml b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
 new file mode 100644
-index 0000000000000000000000000000000000000000..c78a424388c6e30bc4656f5444e621c1b397366b
+index 0000000000000000000000000000000000000000..350275760210c5763af0c7b1e1522ccbfb97eec7
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/watchdog/mpc8xxx-wdt.yaml
-@@ -0,0 +1,64 @@
++++ b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
+@@ -0,0 +1,56 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/watchdog/mpc8xxx-wdt.yaml#
++$id: http://devicetree.org/schemas/spi/fsl,espi.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale MPC8xxx watchdog timer (For 83xx, 86xx and 8xx)
++title: Freescale eSPI (Enhanced Serial Peripheral Interface) controller
++
++maintainers:
++  - J. Neuschäfer <j.ne@posteo.net>
++
++properties:
++  compatible:
++    const: fsl,mpc8536-espi
++
++  reg:
++    maxItems: 1
++
++  interrupts: true
++
++  fsl,espi-num-chipselects:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: The number of the chipselect signals.
++
++  fsl,csbef:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Chip select assertion time in bits before frame starts
++
++  fsl,csaft:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: Chip select negation time in bits after frame ends
++
++required:
++  - compatible
++  - reg
++  - interrupts
++  - fsl,espi-num-chipselects
++
++allOf:
++  - $ref: spi-controller.yaml#
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    spi@110000 {
++        #address-cells = <1>;
++        #size-cells = <0>;
++        compatible = "fsl,mpc8536-espi";
++        reg = <0x110000 0x1000>;
++        interrupts = <53 0x2>;
++        interrupt-parent = <&mpic>;
++        fsl,espi-num-chipselects = <4>;
++        fsl,csbef = <1>;
++        fsl,csaft = <1>;
++    };
+diff --git a/Documentation/devicetree/bindings/spi/fsl,spi.yaml b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
+new file mode 100644
+index 0000000000000000000000000000000000000000..8efa971b5954a93665cb624345774f2966bb5648
+--- /dev/null
++++ b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
+@@ -0,0 +1,71 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/spi/fsl,spi.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Freescale SPI (Serial Peripheral Interface) controller
 +
 +maintainers:
 +  - J. Neuschäfer <j.ne@posteo.net>
@@ -169,56 +202,131 @@ index 0000000000000000000000000000000000000000..c78a424388c6e30bc4656f5444e621c1
 +properties:
 +  compatible:
 +    enum:
-+      - mpc83xx_wdt       # for an mpc83xx
-+      - fsl,mpc8610-wdt   # for an mpc86xx
-+      - fsl,mpc823-wdt    # for an mpc8xx
-+
-+  device_type:
-+    const: watchdog
++      - fsl,spi
++      - aeroflexgaisler,spictrl
 +
 +  reg:
-+    minItems: 1
-+    items:
-+      - description: |
-+          Base physical address and length of the area hosting the watchdog
-+          registers.
++    maxItems: 1
 +
-+          On the 83xx, "Watchdog Timer Registers" area:     <0x200 0x100>
-+          On the 86xx, "Watchdog Timer Registers" area:     <0xe4000 0x100>
-+          On the 8xx, "General System Interface Unit" area: <0x0 0x10>
++  cell-index:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      QE SPI subblock index.
++      0: QE subblock SPI1
++      1: QE subblock SPI2
 +
-+      - description: |
-+          Additional optional physical address and length (4) of location of
-+          the Reset Status Register (called RSTRSCR on the mpc86xx)
++  mode:
++    description: SPI operation mode
++    enum:
++      - cpu
++      - cpu-qe
 +
-+          On the 83xx, it is located at offset 0x910
-+          On the 86xx, it is located at offset 0xe0094
-+          On the 8xx, it is located at offset 0x288
++  interrupts: true
++
++  clock-frequency:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: input clock frequency to non FSL_SOC cores
++
++  cs-gpios: true
++
++  fsl,spisel_boot:
++    $ref: /schemas/types.yaml#/definitions/flag
++    description:
++      For the MPC8306 and MPC8309, specifies that the SPISEL_BOOT signal is used
++      as chip select for a slave device. Use reg = <number of gpios> in the
++      corresponding child node, i.e. 0 if the cs-gpios property is not present.
 +
 +required:
 +  - compatible
 +  - reg
++  - mode
++  - interrupts
 +
 +allOf:
-+  - $ref: watchdog.yaml#
++  - $ref: spi-controller.yaml#
 +
-+additionalProperties: false
++unevaluatedProperties: false
 +
 +examples:
 +  - |
-+    WDT: watchdog@0 {
-+        compatible = "fsl,mpc823-wdt";
-+        reg = <0x0 0x10 0x288 0x4>;
++    spi@4c0 {
++        cell-index = <0>;
++        compatible = "fsl,spi";
++        reg = <0x4c0 0x40>;
++        interrupts = <82 0>;
++        interrupt-parent = <&intc>;
++        mode = "cpu";
++        cs-gpios = <&gpio 18 1          // device reg=<0>
++                    &gpio 19 1>;        // device reg=<1>
 +    };
-+
-+  - |
-+    wdt: watchdog@200 {
-+        device_type = "watchdog";
-+        compatible = "mpc83xx_wdt";
-+        reg = <0x200 0x100>;
-+    };
-+
-+...
+diff --git a/Documentation/devicetree/bindings/spi/fsl-spi.txt b/Documentation/devicetree/bindings/spi/fsl-spi.txt
+deleted file mode 100644
+index 0654380eb7515d8bda80eea1486e77b939ac38d8..0000000000000000000000000000000000000000
+--- a/Documentation/devicetree/bindings/spi/fsl-spi.txt
++++ /dev/null
+@@ -1,62 +0,0 @@
+-* SPI (Serial Peripheral Interface)
+-
+-Required properties:
+-- cell-index : QE SPI subblock index.
+-		0: QE subblock SPI1
+-		1: QE subblock SPI2
+-- compatible : should be "fsl,spi" or "aeroflexgaisler,spictrl".
+-- mode : the SPI operation mode, it can be "cpu" or "cpu-qe".
+-- reg : Offset and length of the register set for the device
+-- interrupts : <a b> where a is the interrupt number and b is a
+-  field that represents an encoding of the sense and level
+-  information for the interrupt.  This should be encoded based on
+-  the information in section 2) depending on the type of interrupt
+-  controller you have.
+-- clock-frequency : input clock frequency to non FSL_SOC cores
+-
+-Optional properties:
+-- cs-gpios : specifies the gpio pins to be used for chipselects.
+-  The gpios will be referred to as reg = <index> in the SPI child nodes.
+-  If unspecified, a single SPI device without a chip select can be used.
+-- fsl,spisel_boot : for the MPC8306 and MPC8309, specifies that the
+-  SPISEL_BOOT signal is used as chip select for a slave device. Use
+-  reg = <number of gpios> in the corresponding child node, i.e. 0 if
+-  the cs-gpios property is not present.
+-
+-Example:
+-	spi@4c0 {
+-		cell-index = <0>;
+-		compatible = "fsl,spi";
+-		reg = <4c0 40>;
+-		interrupts = <82 0>;
+-		interrupt-parent = <700>;
+-		mode = "cpu";
+-		cs-gpios = <&gpio 18 1		// device reg=<0>
+-			    &gpio 19 1>;	// device reg=<1>
+-	};
+-
+-
+-* eSPI (Enhanced Serial Peripheral Interface)
+-
+-Required properties:
+-- compatible : should be "fsl,mpc8536-espi".
+-- reg : Offset and length of the register set for the device.
+-- interrupts : should contain eSPI interrupt, the device has one interrupt.
+-- fsl,espi-num-chipselects : the number of the chipselect signals.
+-
+-Optional properties:
+-- fsl,csbef: chip select assertion time in bits before frame starts
+-- fsl,csaft: chip select negation time in bits after frame ends
+-
+-Example:
+-	spi@110000 {
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		compatible = "fsl,mpc8536-espi";
+-		reg = <0x110000 0x1000>;
+-		interrupts = <53 0x2>;
+-		interrupt-parent = <&mpic>;
+-		fsl,espi-num-chipselects = <4>;
+-		fsl,csbef = <1>;
+-		fsl,csaft = <1>;
+-	};
 
 -- 
 2.48.0.rc1.219.gb6b6757d772
