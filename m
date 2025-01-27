@@ -1,59 +1,141 @@
-Return-Path: <linuxppc-dev+bounces-5598-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5599-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB23A1D5E5
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 13:26:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F284EA1D69A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 14:25:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YhSM84kF6z30CD;
-	Mon, 27 Jan 2025 23:26:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YhTgj4xKwz2ykc;
+	Tue, 28 Jan 2025 00:25:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737980772;
-	cv=none; b=QdoBOz0/MjdfI/4Bf0RRjqxHV3kGKXm0AxIAtW3ae71nEFYZQHQNEJ0+miMSjRxJPCEr2VxDMOMbHxEQ/uW3397qWzJgGRHQCT6N4HIZritTLytCBckC4L9MY2zS4UxzxhW6B2rBSB23qKS31ZQ+VmtOKvFbhASjW4apMWoeiNvHtoE/I/06zY1bM0Jf1seqzELNygMUJz/OcK76K1YtptRv3Y2rOAnZzS9cWYsZx2sh5YFXXrB6RtdUEejLdoT9+Qd7KZXDkqucV3V0TtPbgmf0eVy6/blO1xlomcP/iiqvq+tLVCsU9aMUJv5b24fSPRja68H95VAKsUAgtFvVCg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737984337;
+	cv=none; b=JUjO5r48oDwQQYXMFcuAvb/HfocudKS5Ie3pVjaH2mKWPhgGUaDBIb9ptwr4WjRkj6gfOKcroCnlb3QGO2pY+bNgFa2Ld0lyBpaTQKA4hK78L3FMANmOcmHXtxQTsLKTjZrECTHAqtJ9C8+kdiSG+4rD8xbWxsvMgBRI5JIwMo/AyIHjm3es+1731u3dV7qNpivKqQgVXl9tA2a4RhiAf34rfwnytEz6yrATFHjjulDhUFTTjXyxfNoFwwmEwKpsFfExjnnR7sPT4/j1TO9LrTJ32wWIh8AWChfaIDaZDmq5IxGIH5o4rWxAQHr091lx31jdQ4UpMyTnmCZafIPWjQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737980772; c=relaxed/relaxed;
-	bh=rMazveFjQ29d0cuBMrkHjEI+eehHzrykczQMXMwoMiM=;
+	t=1737984337; c=relaxed/relaxed;
+	bh=8zhSZmwclT1lFpSMh22BW/UMVkHqTlcnWx4Yhu83TkA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JkVFphmp8lC0Z17Mt3+dgjHtsGkvLKwlFIKug9iAXN7yaxsakKKCsuNVOYHy6O2BUwW5sItmVjL50FuXj88OGUIowZLrKyo0ExshL5qhP2YTb2Kw+JFE24QI7/rDipHdoLU0A0yrdAdA9olqZzvsoMJ4rKUPFawl3ZwgCn4OwgtFmJ55mxCACJqHf4eJ8aB6U4iIhivlR+GtMjC7IAAF2NIpgHJ8wKnScWj8gXmknY9Paxs5kdf5fOAgWTGoWs+g4HC3br4JcLFBoWvyHRaVVqS9nuyLPzbGyX9vVhwf+Z5anqtcrxUl6l6D2E74CKyltZuf/pdP1uNbkvXFn3gitw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YhSM55Sk6z309v
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2025 23:26:09 +1100 (AEDT)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 0FEC172C8CC;
-	Mon, 27 Jan 2025 15:26:07 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id DBCD57CCB3A; Mon, 27 Jan 2025 14:26:06 +0200 (IST)
-Date: Mon, 27 Jan 2025 14:26:06 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Alexey Gladkov <legion@kernel.org>, Oleg Nesterov <oleg@redhat.com>,
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rag5yNgjrijXNfFnY9p1Fd47VDQqQOe0cvawcC6tQT7bnacEs+47N0i4vJKw2QiFZ54omgLcsvDxbZjHiqEFPgQeoAcdP3XN9H8OxKcD1VryhKT0RU8hi0eLf2U6VClP5GTcbGtMGXHsw0iz6p6TirIUvDJpWz8Q9KOccYqYHMoakJmYmAShbPg2ErWrmsXasiNJCr4x4Rkq3Ujuz80GoYkcz4x2jnw/7a3ijqQ6jqn/guspwHHomhSy55JjUcV5dQ8kaHuUpFkpnH9vW2Ia4iNFNiCGycFsFwTIapvGyOXkMSlWrBCY2nLZjhkPbm6Yh/Sd2HncoSoHq/XVtORn8Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MUa7F2u4; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MUa7F2u4;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=andriy.shevchenko@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhTgg3bzKz2yV8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 00:25:32 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1737984336; x=1769520336;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=RjFj+btLOrA1I0c/0XDEPot6dd9rNyckywxmgkJzq3o=;
+  b=MUa7F2u4gGzBTL1Hu18S0pcrFArr5F669jllR0aI8h0eqVtqJC/w+JFS
+   cc2Ogap8T6RvTQA1ukseEdlWXi+U0UUojZjCU+ZqHEsHB93dSXsSVBmuX
+   r4ARIuTLyO8veyBItzT6390BB2JWWm9Wlk+u5yWJ8akm1q1BRV1C/IWCT
+   cmBaTyDaoD5DY67GbFViQWyYdSKMHWewY2DOBOz/NP2JJLhS7RjEmyMkF
+   wnV1hMA4iEceK1JA5VXpQWYz7BAD46PmB2iptwB0i6lSdNuHvRx/2I2xG
+   1MCrUW1HOsAHfcAur0xuFWov39lroIXwUb3ZEG0sUMmKOZ/6+6qS9tjVr
+   g==;
+X-CSE-ConnectionGUID: uuCHofs3QZKSKNzIe861TA==
+X-CSE-MsgGUID: SPrW4WVNQW2W2GxLubJVoQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11328"; a="42105366"
+X-IronPort-AV: E=Sophos;i="6.13,238,1732608000"; 
+   d="scan'208";a="42105366"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 05:25:22 -0800
+X-CSE-ConnectionGUID: oOw//HyuRH2sXbDiVD3/cA==
+X-CSE-MsgGUID: F7vXYkyrSx2N1gt4t3xT9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="131730368"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa002.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jan 2025 05:25:02 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@intel.com>)
+	id 1tcP6l-00000005jpm-3fIe;
+	Mon, 27 Jan 2025 15:24:55 +0200
+Date: Mon, 27 Jan 2025 15:24:55 +0200
+From: Andy Shevchenko <andriy.shevchenko@intel.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
 	Michael Ellerman <mpe@ellerman.id.au>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	strace-devel@lists.strace.io,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/7] powerpc: properly negate error in
- syscall_set_return_value()
-Message-ID: <20250127122606.GA30489@strace.io>
-References: <20250113171054.GA589@strace.io>
- <6558110c-c2cb-4aa3-9472-b3496f71ebb8@csgroup.eu>
- <20250114170400.GB11820@strace.io>
- <d249e9e2-511a-46af-bd6e-397812b67058@csgroup.eu>
- <20250123182815.GA20994@strace.io>
- <86079b5c-e124-489b-8136-05ae5700cb61@csgroup.eu>
- <20250127112023.GB29522@strace.io>
- <7e7c7659-5cf7-42e9-81d6-b91963d8c892@csgroup.eu>
- <20250127114439.GC29522@strace.io>
- <63aec56f-9ade-48d1-854b-bd72f8313a9f@csgroup.eu>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Damien Le Moal <dlemoal@kernel.org>, Jiri Kosina <jikos@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Corey Minyard <minyard@acm.org>, Peter Huewe <peterhuewe@gmx.de>,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	Tero Kristo <kristo@kernel.org>, Stephen Boyd <sboyd@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	H Hartley Sweeten <hsweeten@visionengravers.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Len Brown <lenb@kernel.org>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	John Allen <john.allen@amd.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Vinod Koul <vkoul@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Moritz Fischer <mdf@kernel.org>, Liviu Dudau <liviu.dudau@arm.com>,
+	Benjamin Tissoires <benjamin.tissoires@redhat.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Michael Hennerich <michael.hennerich@analog.com>,
+	Peter Rosin <peda@axentia.se>, Lars-Peter Clausen <lars@metafoo.de>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Markuss Broks <markuss.broks@gmail.com>,
+	Alexandre Torgue <alexandre.torgue@foss.st.com>,
+	Lee Jones <lee@kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Iyappan Subramanian <iyappan@os.amperecomputing.com>,
+	Yisen Zhuang <yisen.zhuang@huawei.com>,
+	Stanislaw Gruszka <stf_xl@wp.pl>, Kalle Valo <kvalo@kernel.org>,
+	Sebastian Reichel <sre@kernel.org>,
+	Tony Lindgren <tony@atomide.com>, Mark Brown <broonie@kernel.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Xiang Chen <chenxiang66@hisilicon.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Vaibhav Hiremath <hvaibhav.linux@gmail.com>,
+	Alex Elder <elder@kernel.org>, Jiri Slaby <jirislaby@kernel.org>,
+	Jacky Huang <ychuang3@nuvoton.com>, Helge Deller <deller@gmx.de>,
+	Christoph Hellwig <hch@lst.de>, Robin Murphy <robin.murphy@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <anna@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Takashi Iwai <tiwai@suse.com>, linuxppc-dev@lists.ozlabs.org,
+	linux-ide@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
+	linux-integrity@vger.kernel.org, linux-omap@vger.kernel.org,
+	linux-clk@vger.kernel.org, linux-pm@vger.kernel.org,
+	linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
+	linux-efi@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+	linux-fpga@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-input@vger.kernel.org, linux-i2c@vger.kernel.org,
+	linux-iio@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com,
+	linux-arm-kernel@lists.infradead.org, netdev@vger.kernel.org,
+	linux-leds@vger.kernel.org, linux-wireless@vger.kernel.org,
+	linux-rtc@vger.kernel.org, linux-scsi@vger.kernel.org,
+	linux-spi@vger.kernel.org, linux-amlogic@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-samsung-soc@vger.kernel.org, greybus-dev@lists.linaro.org,
+	linux-staging@lists.linux.dev, linux-serial@vger.kernel.org,
+	linux-usb@vger.kernel.org, linux-fbdev@vger.kernel.org,
+	iommu@lists.linux.dev, linux-trace-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, linux-hardening@vger.kernel.org,
+	linux-nfs@vger.kernel.org, linux-kbuild@vger.kernel.org,
+	alsa-devel@alsa-project.org, linux-sound@vger.kernel.org
+Subject: Re: [PATCH 00/34] address all -Wunused-const warnings
+Message-ID: <Z5eJJ199QwL0HVJT@smile.fi.intel.com>
+References: <20240403080702.3509288-1-arnd@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,86 +148,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <63aec56f-9ade-48d1-854b-bd72f8313a9f@csgroup.eu>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <20240403080702.3509288-1-arnd@kernel.org>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 27, 2025 at 01:04:27PM +0100, Christophe Leroy wrote:
+On Wed, Apr 03, 2024 at 10:06:18AM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
 > 
+> Compilers traditionally warn for unused 'static' variables, but not
+> if they are constant. The reason here is a custom for C++ programmers
+> to define named constants as 'static const' variables in header files
+> instead of using macros or enums.
 > 
-> Le 27/01/2025 à 12:44, Dmitry V. Levin a écrit :
-> > On Mon, Jan 27, 2025 at 12:36:53PM +0100, Christophe Leroy wrote:
-> >> Le 27/01/2025 à 12:20, Dmitry V. Levin a écrit :
-> >>> On Thu, Jan 23, 2025 at 11:07:21PM +0100, Christophe Leroy wrote:
-> >>> [...]
-> >>>> To add a bit more to the confusion,
-> >>>
-> >>> Looks like there is no end to it:
-> >>>
-> >>> static inline long regs_return_value(struct pt_regs *regs)
-> >>> {
-> >>>           if (trap_is_scv(regs))
-> >>>                   return regs->gpr[3];
-> >>>
-> >>>           if (is_syscall_success(regs))
-> >>>                   return regs->gpr[3];
-> >>>           else
-> >>>                   return -regs->gpr[3];
-> >>> }
-> >>>
-> >>> static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
-> >>> {
-> >>>           regs->gpr[3] = rc;
-> >>> }
-> >>>
-> >>> This doesn't look consistent, does it?
-> >>>
-> >>>
-> >>
-> >> That regs_set_return_value() looks pretty similar to
-> >> syscall_get_return_value().
-> > 
-> > Yes, but here similarities end, and differences begin.
-> > 
-> >> regs_set_return_value() documentation in asm-generic/syscall.h
-> >> explicitely says: This value is meaningless if syscall_get_error()
-> >> returned nonzero
-> >>
-> >> Is it the same with regs_set_return_value(), only meaningfull where
-> >> there is no error ?
-> > 
-> > Did you mean syscall_set_return_value?  No, it explicitly has two
-> > arguments, "int error" and "long val", so it can be used to either
-> > clear or set the error condition as specified by the caller.
+> In W=1 builds, we get warnings only static const variables in C
+> files, but not in headers, which is a good compromise, but this still
+> produces warning output in at least 30 files. These warnings are
+> almost all harmless, but also trivial to fix, and there is no
+> good reason to warn only about the non-const variables being unused.
 > 
-> Sorry, I mean syscall_get_return_value() here.
+> I've gone through all the files that I found using randconfig and
+> allmodconfig builds and created patches to avoid these warnings,
+> with the goal of retaining a clean build once the option is enabled
+> by default.
 > 
-> static inline long syscall_get_return_value(struct task_struct *task,
-> 					    struct pt_regs *regs)
-> {
-> 	return regs->gpr[3];
-> }
+> Unfortunately, there is one fairly large patch ("drivers: remove
+> incorrect of_match_ptr/ACPI_PTR annotations") that touches
+> 34 individual drivers that all need the same one-line change.
+> If necessary, I can split it up by driver or by subsystem,
+> but at least for reviewing I would keep it as one piece for
+> the moment.
 > 
-> Versus
-> 
-> static inline void regs_set_return_value(struct pt_regs *regs, unsigned 
-> long rc)
-> {
-> 	regs->gpr[3] = rc;
-> }
+> Please merge the individual patches through subsystem trees.
+> I expect that some of these will have to go through multiple
+> revisions before they are picked up, so anything that gets
+> applied early saves me from resending.
 
-The asm/syscall.h API provides two functions to obtain the return value:
-syscall_get_error() and syscall_get_return_value().  The first one is used
-to obtain the error code when the error condition is set.  When the error
-condition is not set, it returns 0.  The second function is used to obtain
-the return value when the error condition is not set.  When the error
-condition is set, its return value is undefined.
+Arnd, can you refresh this one? It seems some misses still...
+I have got 3+ 0-day reports against one of the mux drivers.
 
+https://lore.kernel.org/all/?q=adg792a.c
 
 -- 
-ldv
+With Best Regards,
+Andy Shevchenko
+
+
 
