@@ -1,85 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-5602-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5603-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 173D6A1D9BA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 16:43:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 982F9A1DAB6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 17:39:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YhXkD35ZTz2yNc;
-	Tue, 28 Jan 2025 02:43:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YhYz93r46z2yvk;
+	Tue, 28 Jan 2025 03:39:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737992580;
-	cv=none; b=nR2GpWtPWqIPu/3MVPmBbslTSeKN4skzMy1396woNFj5oCioklHnCr9gDMb0D+23rcvTuaT4ORGPvh2OXvn9uCJLLsjSKmypBph1sR3hRMYgxwbVCUB4urKoHDKKDcIjXj0Kz9UZXBx+njLYyuuVLeir0Uax9NkxEoPCU8WYYhgqkfQmUeH1kjcbgvjPiM76ZuJMfaPaIKKwGZNWBpAt+JsJJAhu2W6xXQ3zFWQjUq/U1Q+B71+LKP4qZgbztZ48g2weL4pRNIE7YmXxc6iAmMz+zwINUjsryjrvijbjhV/uXQEdQJ4GsN2/Vs0Qzmini19mMHe2YNqlx9tSVXZClw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737995957;
+	cv=none; b=ae3Eak4WX9ZB04hHWNUSa/rzXYwKKNHR51tZziOkMPNsmnBAdrbkYktNxnqMp01HCPtPBPlTqACyrUigL6ApTDKW0kfymluFcS+wQ649TAAZeVwBjyzXX1goW4kh7vox7sPfx5JyGwBDERleRDr7JKGsMQsVhJwfcI5DFKCzfzCiq8J4rcRE2x5dtNX1bhMp6XK5tpCkSXlkQ9CB8NoyRB7xiUEO8mPR1nzQZnYL/OGE9xMijCaMG01uRwwCwiWV/6Gtp9BE0ekgV0/Y1X9ISWzkOp5vkfBs8oZ7rjPCSaoERfGpoZFougifeQzcYtaMEDWzz2A4mjOmyi69O1dKQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737992580; c=relaxed/relaxed;
-	bh=754tTQ0Xv0FV1pAPiQ7XMzOqvV5Ru3eT2/4MtIxHkKc=;
+	t=1737995957; c=relaxed/relaxed;
+	bh=0kmLUKaJ3BMvvTn/QnKIriM4RQyDYfxaJMLk0iUSExE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MYwySMEkOc9yC+4ONe2t7LABZ8joGSU4TlTwh133bAmTIPaYha7s57wr7xy6zSMhJJjm25dZGBXJma/uQSh0kjtocnH9oQSKjwE0XQN3qJwVGZUtw2X4cMkl/45eiYZFpSU8lstWewCOXe1swYqQ7N+2ZlQOKneJoeFkZtznsgppzWiWaShHlnmHmn+mHc6oTwsrGzAdoxtkJDTjf8CQ0w7eQUZboLbt9SE1C/rM1Cf1UKDsjp37+SASX9Z8jtRs2iv4osiUHyuV4mKH0FrWrxchFdDWeSrR+d/MhC/8bLkyRLsn+Isv+6lvS8eEg6kCD8xurvEiqdubQO7NJKvMFQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Pyozw0ts; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=A55sJW+zrkzNWa0ERgNmmVdMJVgeNGLTFPdrdbuRGgxKOOM4EW6h9YGX0LmCACnmBiLbs6d4FNKb88aNqbhosDteuu7IY5YWf2h4CeCKjFMbfn2HHkebOYmVjeTI4MTozCdZEaLEep+bQ/HxCMqWtqyh1NpcG757KXWtnqiTp8xGL4IqPxGMhQ+qqY4k0AuxkyAQ29xe3M2yY/mpW/XhJcntveJVRPPZClBeqJCCmICFWDlkV5+GartkEzafnwLJuMw9K8YHF59ZEimkMghZTaKVgLIas3gpxq5a1b3cauammyszyrdaDtIAVn8P+wbMuS15FmuwdfYeAoW8OHOjgg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KjbXtwYy; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=casper.20170209 header.b=Pyozw0ts;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KjbXtwYy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=willy@infradead.org; receiver=lists.ozlabs.org)
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhXk7104qz2yMh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 02:42:54 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=754tTQ0Xv0FV1pAPiQ7XMzOqvV5Ru3eT2/4MtIxHkKc=; b=Pyozw0tsKLD9gp97o+N6ZbHkTo
-	Il8/2Vpa4F0aqTQ5eLNtncdojFavxqC+3hOoMyt2pPZYgpxoa7oSXp+1z19h2FwdJ9ksectEr6L5y
-	pdndzuM9IJbuYbMGyY8OnttTeia0ZsfUEQN3vE3Kvu3ywzVzVm7PiaoVN1j+XGx7cGtNMyIWcHM2K
-	IHU9EJmiTnsw2atKedPjlIYgnndG3plYffG/psV0clxoDlPsLg9vBJ8MCt7RCyZQNR2Rl4uIk2hOI
-	SGpvgckCCBw+KC2Pto4K/lzMPYNt+Lyqoqjs99RL8H5P/AQH7nlJDuMDpJ1IZ/IMsyAIp8YsG+ytq
-	PlpOQ/eA==;
-Received: from willy by casper.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1tcRG3-00000009b8r-2Zcd;
-	Mon, 27 Jan 2025 15:42:39 +0000
-Date: Mon, 27 Jan 2025 15:42:39 +0000
-From: Matthew Wilcox <willy@infradead.org>
-To: Jani Nikula <jani.nikula@intel.com>
-Cc: Joel Granados <joel.granados@kernel.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Thomas =?iso-8859-1?Q?Wei=DFschuh?= <linux@weissschuh.net>,
-	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhYz83wkBz2yGN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 03:39:16 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 059E35C1178;
+	Mon, 27 Jan 2025 16:38:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40C3C4CED2;
+	Mon, 27 Jan 2025 16:39:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1737995953;
+	bh=fmZlVwU6uR12bQbSxMQf1gRYU1EYKK1u0Z90fzYu2zc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=KjbXtwYylY77rIpZgK3aGfJ56B1/5Xw37p2eUDiAEdIfdrEuMSNA4Cm5qPP4ZRW0v
+	 NPofe0Y4Rjf9IIo9dFFq4V/yQY8fpvCThe7/ZMffHtIvOIwRUFgf09d7RS5v4mKh8k
+	 vonNl59vSBwaT8RKyBTUXlEOL0Jjo2wwyyjaE2pJrKji8YizjYv69Le9B0XMksAjl5
+	 O+jbchyBHlqeiCTTnqxadWhPuV0eI63+E53B3F8rRzs+vg7nCyQvA/Hn9SzDgbAyx2
+	 HcfPYVwKfTpHiwfJAN8b7bE1E31SKSXV9eEcsPxzf+sdAph0HPbgBYkWigadPBVumj
+	 e/W2scjh0n5wA==
+Date: Mon, 27 Jan 2025 16:39:06 +0000
+From: Will Deacon <will@kernel.org>
+To: Eliav Farber <farbere@amazon.com>
+Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, mpe@ellerman.id.au,
+	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
+	maddy@linux.ibm.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
+	aou@eecs.berkeley.edu, tglx@linutronix.de,
+	akpm@linux-foundation.org, bhe@redhat.com, hbathini@linux.ibm.com,
+	sourabhjain@linux.ibm.com, adityag@linux.ibm.com,
+	songshuaishuai@tinylab.org, takakura@valinux.co.jp,
 	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org,
-	openipmi-developer@lists.sourceforge.net,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
-	intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org,
-	linux-rdma@vger.kernel.org, linux-raid@vger.kernel.org,
-	linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org,
-	xen-devel@lists.xenproject.org, linux-aio@kvack.org,
-	linux-fsdevel@vger.kernel.org, netfs@lists.linux.dev,
-	codalist@coda.cs.cmu.edu, linux-mm@kvack.org,
-	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev,
-	fsverity@lists.linux.dev, linux-xfs@vger.kernel.org,
-	io-uring@vger.kernel.org, bpf@vger.kernel.org,
-	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
-	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com,
-	linux-security-module@vger.kernel.org, keyrings@vger.kernel.org,
-	Song Liu <song@kernel.org>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Corey Minyard <cminyard@mvista.com>
-Subject: Re: Re: Re: [PATCH v2] treewide: const qualify ctl_tables where
- applicable
-Message-ID: <Z5epb86xkHQ3BLhp@casper.infradead.org>
-References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
- <Z4+jwDBrZNRgu85S@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <nslqrapp4v3rknjgtfk4cg64ha7rewrrg24aslo2e5jmxfwce5@t4chrpuk632k>
- <CAMj1kXEZPe8zk7s67SADK9wVH3cfBup-sAZSC6_pJyng9QT7aw@mail.gmail.com>
- <f4lfo2fb7ajogucsvisfd5sg2avykavmkizr6ycsllcrco4mo3@qt2zx4zp57zh>
- <87jzag9ugx.fsf@intel.com>
+	jonnyc@amazon.com
+Subject: Re: [PATCH v6 1/2] kexec: Consolidate
+ machine_kexec_mask_interrupts() implementation
+Message-ID: <20250127163905.GC25757@willie-the-truck>
+References: <20241204142003.32859-1-farbere@amazon.com>
+ <20241204142003.32859-2-farbere@amazon.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,17 +75,120 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87jzag9ugx.fsf@intel.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20241204142003.32859-2-farbere@amazon.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 27, 2025 at 04:55:58PM +0200, Jani Nikula wrote:
-> You could have static const within functions too. You get the rodata
-> protection and function local scope, best of both worlds?
+On Wed, Dec 04, 2024 at 02:20:02PM +0000, Eliav Farber wrote:
+> Consolidate the machine_kexec_mask_interrupts implementation into a common
+> function located in a new file: kernel/irq/kexec.c. This removes duplicate
+> implementations from architecture-specific files in arch/arm, arch/arm64,
+> arch/powerpc, and arch/riscv, reducing code duplication and improving
+> maintainability.
+> 
+> The new implementation retains architecture-specific behavior for
+> CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD, which was previously implemented
+> for ARM64. When enabled (currently for ARM64), it clears the active state
+> of interrupts forwarded to virtual machines (VMs) before handling other
+> interrupt masking operations.
+> 
+> Signed-off-by: Eliav Farber <farbere@amazon.com>
+> ---
+> V5 -> V6:
+>  - Change GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD to not be user selectable.
+> 
+>  arch/arm/kernel/machine_kexec.c   | 23 ------------------
+>  arch/arm64/Kconfig                |  1 +
+>  arch/arm64/kernel/machine_kexec.c | 31 ------------------------
+>  arch/powerpc/include/asm/kexec.h  |  1 -
+>  arch/powerpc/kexec/core.c         | 22 -----------------
+>  arch/powerpc/kexec/core_32.c      |  1 +
+>  arch/riscv/kernel/machine_kexec.c | 23 ------------------
+>  include/linux/irq.h               |  3 +++
+>  kernel/irq/Kconfig                |  6 +++++
+>  kernel/irq/Makefile               |  2 +-
+>  kernel/irq/kexec.c                | 40 +++++++++++++++++++++++++++++++
+>  11 files changed, 52 insertions(+), 101 deletions(-)
+>  create mode 100644 kernel/irq/kexec.c
+> 
+> diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
+> index 80ceb5bd2680..dd430477e7c1 100644
+> --- a/arch/arm/kernel/machine_kexec.c
+> +++ b/arch/arm/kernel/machine_kexec.c
+> @@ -127,29 +127,6 @@ void crash_smp_send_stop(void)
+>  	cpus_stopped = 1;
+>  }
+>  
+> -static void machine_kexec_mask_interrupts(void)
+> -{
+> -	unsigned int i;
+> -	struct irq_desc *desc;
+> -
+> -	for_each_irq_desc(i, desc) {
+> -		struct irq_chip *chip;
+> -
+> -		chip = irq_desc_get_chip(desc);
+> -		if (!chip)
+> -			continue;
+> -
+> -		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
+> -			chip->irq_eoi(&desc->irq_data);
+> -
+> -		if (chip->irq_mask)
+> -			chip->irq_mask(&desc->irq_data);
+> -
+> -		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
+> -			chip->irq_disable(&desc->irq_data);
+> -	}
+> -}
+> -
+>  void machine_crash_shutdown(struct pt_regs *regs)
+>  {
+>  	local_irq_disable();
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index 100570a048c5..dcc3551cf6c2 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -149,6 +149,7 @@ config ARM64
+>  	select GENERIC_IDLE_POLL_SETUP
+>  	select GENERIC_IOREMAP
+>  	select GENERIC_IRQ_IPI
+> +	select GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
 
-timer_active is on the stack, so it can't be static const.
+Is this really specific to VMs? In the new code, it's just controlling
+this part of the old code:
 
-Does this really need to be cc'd to such a wide distribution list?
+> diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
+> index 82e2203d86a3..6f121a0164a4 100644
+> --- a/arch/arm64/kernel/machine_kexec.c
+> +++ b/arch/arm64/kernel/machine_kexec.c
+> @@ -207,37 +207,6 @@ void machine_kexec(struct kimage *kimage)
+>  	BUG(); /* Should never get here. */
+>  }
+>  
+> -static void machine_kexec_mask_interrupts(void)
+> -{
+> -	unsigned int i;
+> -	struct irq_desc *desc;
+> -
+> -	for_each_irq_desc(i, desc) {
+> -		struct irq_chip *chip;
+> -		int ret;
+> -
+> -		chip = irq_desc_get_chip(desc);
+> -		if (!chip)
+> -			continue;
+> -
+> -		/*
+> -		 * First try to remove the active state. If this
+> -		 * fails, try to EOI the interrupt.
+> -		 */
+> -		ret = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
+
+which is about active interrupts. Why can't that happen for the host?
+
+Will
 
