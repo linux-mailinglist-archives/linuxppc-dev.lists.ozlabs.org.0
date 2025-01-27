@@ -1,71 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-5575-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5576-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79A66A1CFBA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 04:25:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF37A1CFCB
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 04:32:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YhDMZ5M1Tz2yvs;
-	Mon, 27 Jan 2025 14:25:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YhDWc38vpz300V;
+	Mon, 27 Jan 2025 14:32:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737948346;
-	cv=none; b=dQ+ru1SMsxfLrVWSOYNFE5ibnpVKVW6cV3N/ycZJgsb4VbKXl8Sg+IiC5wKcyyZxqtllhMYSunkpuQjs2kEwKeV4zEMqP2aeFoMDrWKT0XAW7jErp1gP+MvhocPVTB3/g+4WspaxXiLeg6tsg7mnz+N3QWMH8+y2A1h5jU0zZmml7SOj1zXMUCRv6rxusXu2uHi9BncatHqYFrs4erdB8DKIwCkPXTfdDcP1mjOA5Epqqi84TMkvMnnZpqkeDyAgHmqIp5rla8vXEmg09eGJou7kNnJFLAaSo4CA55AhT4wvGoWDau9wNQKf5HCjfVbcIHaJNHroIWN66N78bWZ8Dw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737948764;
+	cv=none; b=WNICFysuZG2TSYlefaLA+9ZT2+jYJEOfSWg/rJXQUHyBuW14w1W2iI6z9AXfvhS4PcxEYZrwZJZHtKbBuEAt5xHBY+/zYzmt47vnQhmZixO740YOOacAR2hJp3auQacOpGVvan5ulb58P3edY8UtCPi2NPDjp/oSK60blUlyPQlkIvL9G+kR8bCntuoQOTKMOcxPIJleVEgGPIxGg8ZicAZ6ACZGb66XCijVZmG8yG0rqaf+YfzIaCl/pzXN54GPrq5bndlp/5yonGRGlmJhNo0tZcyyfMUQhJ00N06Dvyg67BLPo9yDvrejVRRZH/wrQSomVAaHR4kzsAlQ7VFl6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737948346; c=relaxed/relaxed;
-	bh=DaFRN6BHtPyEegbXwc84jzpqB0KhS9hwj7W19/ys0K4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ncy2nKDb67ZFX64IjogtFWSZfcNv/HpKoziZUjueI6QFLdUm9LoFxtvJq/UnIvG+dthMD+kox+qaoEmY3v32bxCMmo5B1yzpljwHHMDIVUaiSW8pmrzNJLX3Ak6n4bHfX2OgRtoCE+oEnD0tn15m0qLMvX+hOCRUiD9Ui2fIerlUf41iGxi9o9biEN0XCp8C2KMzOeyufz3ud3wjsnHfN/4qOBzTCAxYlMTaRlREmpYUyfkgj+0EAMUFf9BqkUTsMmf1tef575e/GZss/6/VIR6sDQCVWw5ef5sZLODBRMPRlMAHv4xaA5U9OBnz6Om3TyngXQD03TvzbCXyPy4QLA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o7DuZKbA; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1737948764; c=relaxed/relaxed;
+	bh=HSKBdkcHUpmfLPk161Kn0rx+ur3BhotIfl5VOt/amok=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KdTnCJnti2HTyJNfaRHXV1iWKaVXE+pQx+qvY2tQntEQMejdu4wj27qsKs2OXkt8/QGIoMZ2fgbVKU994ji4wrJQCzVIJBhXJFN4w0JN2wZYW3mNuLK4dKSaKveE5UT/L9JSFYalHEwGVkQhgvqyIze5fME/k82+weRUCnag6JCE6B/ti/J0LBNuc7YzarUbYromn7w07goyqXV7nupV145c0atptdOnYRiH20NESnuaR8dG47d8Nt9kmXAoo6rTbk4slYL3SOFRpQuVwMus+rSDR72SnnwwGJDFosR1KyeTp+EeEeT3rjzp+NDaqVFwQCiILacX8lFjck5sEZbhsg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Txjd7V/W; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=o7DuZKbA;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=Txjd7V/W;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhDMY3ngFz2xjL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2025 14:25:44 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50R19GbQ002169;
-	Mon, 27 Jan 2025 03:25:36 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=DaFRN6
-	BHtPyEegbXwc84jzpqB0KhS9hwj7W19/ys0K4=; b=o7DuZKbAks3Mm0bMPx3cpl
-	rM8EmJ3KzQFMA1gcaWYbrrYhExP90xY2QJBu9BfVEkRLGo9WjhKugr/w00/fSuDq
-	V7t0FIkqkk4sBGHj3LxhXarhvgUwPI634Cug9oRShmY+HdpaeVss996CbvSw/orv
-	QEb7kax/GVhnNbYdCzStc3JyeP1R0Q3bX7R0/gvdjn6NdJdO2zVvmhOBVoYYQJUU
-	bAot6zq+veXaUnSX85sAfojZil54J+eKHU4iTMmlInMOWHZlchaLzjsAvmaPZpp5
-	sP+U7bqWSyCnu08g/UQEobpACR+uurxZe1j7CCHg3yjigVtMs1vqiSdREm56Yy0A
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44e0798d0e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jan 2025 03:25:35 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50R0B97o018935;
-	Mon, 27 Jan 2025 03:25:35 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44dd0142v8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 27 Jan 2025 03:25:35 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50R3PVUZ45613366
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 27 Jan 2025 03:25:31 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 58E26200BB;
-	Mon, 27 Jan 2025 03:25:31 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC5A7200B9;
-	Mon, 27 Jan 2025 03:25:29 +0000 (GMT)
-Received: from [9.109.204.94] (unknown [9.109.204.94])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 27 Jan 2025 03:25:29 +0000 (GMT)
-Message-ID: <962804aa-bff5-4f19-8abb-80fd3060ba9c@linux.ibm.com>
-Date: Mon, 27 Jan 2025 08:55:28 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhDWb20Dhz2yyJ
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2025 14:32:42 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-21636268e43so85269435ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 26 Jan 2025 19:32:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1737948759; x=1738553559; darn=lists.ozlabs.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=HSKBdkcHUpmfLPk161Kn0rx+ur3BhotIfl5VOt/amok=;
+        b=Txjd7V/Wyysy0ELgl/7yR4xFLdU+RWvHZnXPKX+6G8yzCwNhwI/n0xsAqhjboPtl+O
+         JEodMpeHLzieI9Mm/VBh1JQJ7QUmEEOmqwrTHa37AYVXhzEBxwNRJc/G8fmXROslnOFo
+         qSdal80ikOBPIPbjnDhW7YpGeLAbLVEG/Y7umfboRs2j+KR56rfkSBkL6RG+y0KD/1Tt
+         ixhLdSmEM9txfy3CzPdoBGJ8bteVhGbA/CIwlnRrKtg/Yop+1SCOALQJH3va34OxnP+o
+         jLFdBq0msqDrz8CuTBgjRroDANmdma6I9a55Jjub9wCdWpGB1LW26gII30sk2tYjQI45
+         5fVQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1737948759; x=1738553559;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=HSKBdkcHUpmfLPk161Kn0rx+ur3BhotIfl5VOt/amok=;
+        b=Bvc4mOviqLswnZIrHy1OG95QKy8QzyC7bafEEsdmnwXUgOW9sIMTz/ze5AHXYACjNt
+         zYWJ0E2dl9JiW8UU9nBiktNKoa3sgpkex/8bjZJb6GIcmD3U9QE1xhm32BfOfBLVvKh5
+         13fWurEQElKIF1YPkr3iys+WFOHFuR8gjJA1Ta1ENJrMIyai/nlKUoQ7Ixz0u218Kdrb
+         7XmIvVCO8hfHz5NhjNJuV7QH4tEnvr257FVBzWxDMhCUt7gBJhRsknr1+BeyXkoKhgeE
+         wL7uUtbYCmA62eg0vf3iDhddXxGevMT8GuwYFZ6RgVRzPh2Efg3ej7paYKJJ9ShMknMZ
+         v4EQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVGR/+cT9pkXp9dc5LFbma6R2PWI/LTyfAkyUDirrYFmb/wO5uM7P61k6I/g3KgmNJdVnOyxFQMpGBEAh8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyWIv1kcurfa4iOBao7CCNbXuVZsr/VP/cF22hpmF4DHOzxle1A
+	ZDqXPNbZIpz/E71pbqHzIlNuwWBau8y4cGYPKiapB+xDsu5SSX58PsiLsxURlXQ=
+X-Gm-Gg: ASbGnctYNfGPcVBkkvdUw/cAl5Om35p7smhud6vZAca65CCE7h83zW/iKXrSSdyttEp
+	kV0SakLywhVPuFw+bph6yrvO7Yo2FVcv9Pwj6nxGafdOS92ZxPhr+VzSLfbAgJwDin3QeZpv82u
+	bqc3D9pz6qY9Xm98+7ZKM2GHuWNPxy18YpBSnCkbl0zNaQ7bNx0oXdU4BfZEyt+5VxU8L39tMSv
+	yVhqxSHPo65RJvuO+nk1siRjZjZ37vUTftim3Qjd5OzvgA1omCoATuufZNT6Lx0o6JKODrQMm9v
+	GFbCc2g=
+X-Google-Smtp-Source: AGHT+IHvgBNK3NhwKI9n5fMBriq7FLdQFhDFQyHQaZNGZxzhpW+eaG60WMmG2z8DBaIbsP1G1cn9Zg==
+X-Received: by 2002:a05:6a20:728d:b0:1db:eead:c588 with SMTP id adf61e73a8af0-1eb215ec4b9mr65731325637.29.1737948759394;
+        Sun, 26 Jan 2025 19:32:39 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-ac496bbd01esm5342591a12.71.2025.01.26.19.32.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 26 Jan 2025 19:32:38 -0800 (PST)
+Date: Mon, 27 Jan 2025 09:02:28 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>
+Cc: Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	Hector Martin <marcan@marcan.st>,
+	Huacai Chen <chenhuacai@kernel.org>, Huang Rui <ray.huang@amd.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Sven Peter <sven@svenpeter.dev>, WANG Xuerui <kernel@xen0n.name>,
+	linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>, arm-scmi@vger.kernel.org,
+	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev
+Subject: Re: [PATCH 00/15] cpufreq: simplify boost handling
+Message-ID: <20250127033228.abeqhrxoprqw5b4e@vireshk-i7>
+References: <cover.1737707712.git.viresh.kumar@linaro.org>
+ <CAJZ5v0jYSZQKkLN-TO_h0AazhHZtHgpavTnnAscLPYLmjX3LaA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,95 +108,38 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 4/4] Documentation/powerpc/fadump: add additional
- parameter feature details
-To: mahesh@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, Avnish Chouhan <avnish@linux.ibm.com>,
-        Brian King <brking@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <20250123114254.200527-1-sourabhjain@linux.ibm.com>
- <20250123114254.200527-5-sourabhjain@linux.ibm.com>
- <meqtpejxbyj447ec3l4fzh4dmcnigwrs7ptkddzu2ajctqfvru@k3cebam5uu57>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <meqtpejxbyj447ec3l4fzh4dmcnigwrs7ptkddzu2ajctqfvru@k3cebam5uu57>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RCRZJo7wAhn-hrxd01s1qTwJl6rK8RJm
-X-Proofpoint-GUID: RCRZJo7wAhn-hrxd01s1qTwJl6rK8RJm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-27_01,2025-01-23_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 adultscore=0
- clxscore=1015 malwarescore=0 suspectscore=0 bulkscore=0 priorityscore=1501
- mlxlogscore=999 mlxscore=0 phishscore=0 lowpriorityscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2411120000
- definitions=main-2501270022
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJZ5v0jYSZQKkLN-TO_h0AazhHZtHgpavTnnAscLPYLmjX3LaA@mail.gmail.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Mahesh,
+On 24-01-25, 12:05, Rafael J. Wysocki wrote:
+> On Fri, Jan 24, 2025 at 9:58 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> >
+> > Hello,
+> >
+> > The boost feature can be controlled at two levels currently, driver
+> > level (applies to all policies) and per-policy.
+> >
+> > Currently most of the drivers enables driver level boost support from the
+> > per-policy ->init() callback, which isn't really efficient as that gets called
+> > for each policy and then there is online/offline path too where this gets done
+> > unnecessarily.
+> >
+> > Also it is possible to have a scenario where not all cpufreq policies support
+> > boost frequencies. And letting sysfs (or other parts of the kernel) enable boost
+> > feature for that policy isn't correct.
+> >
+> > Simplify and cleanup handling of boost to solve these issues.
+> 
+> I guess this depends on the previous series?
 
+Yes my series and the boost related patches in your tree.
 
-On 26/01/25 17:31, Mahesh J Salgaonkar wrote:
-> On 2025-01-23 17:12:54 Thu, Sourabh Jain wrote:
->> Update the fadump document to include details about the fadump
->> additional parameter feature.
->>
->> The document includes the following:
->> - Significance of the feature
->> - How to use it
->> - Feature restrictions
->>
->> No functional changes are introduced.
->>
->> Cc: Avnish Chouhan <avnish@linux.ibm.com>
->> Cc: Brian King <brking@linux.ibm.com>
->> Cc: Hari Bathini <hbathini@linux.ibm.com>
->> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> ---
->>   Documentation/ABI/testing/sysfs-kernel-fadump |  3 ++-
->>   .../arch/powerpc/firmware-assisted-dump.rst   | 22 +++++++++++++++++++
->>   2 files changed, 24 insertions(+), 1 deletion(-)
->>
->> diff --git a/Documentation/ABI/testing/sysfs-kernel-fadump b/Documentation/ABI/testing/sysfs-kernel-fadump
->> index 2f9daa7ca55b..b64b7622e6fc 100644
->> --- a/Documentation/ABI/testing/sysfs-kernel-fadump
->> +++ b/Documentation/ABI/testing/sysfs-kernel-fadump
-> [...]
->> +-- Support for Additional Kernel Arguments in Fadump
->> +   Fadump has a feature that allows passing additional kernel arguments
->> +   to the fadump kernel. This feature was primarily designed to disable
->> +   kernel functionalities that are not required for the fadump kernel
->> +   and to reduce its memory footprint while collecting the dump.
->> +
->> +  Command to Add Additional Kernel Parameters to Fadump:
->> +  e.g.
->> +  # echo "nr_cpus=16" > /sys/kernel/fadump/bootargs_append
->> +
->> +  The above command is sufficient to add additional arguments to fadump.
->> +  An explicit service restart is not required.
->> +
->> +  Command to Retrieve the Additional Fadump Arguments:
->> +  e.g.
->> +  # cat /sys/kernel/fadump/bootargs_append
->> +
->> +Note: Additional kernel arguments for fadump with HASH MMU is only
->> +      supported if the RMA size is greater than 768 MB. If the RMA
->> +      size is less than 768 MB, the kernel does not export the
->> +      /sys/kernel/fadump/bootargs_append sysfs node.
-> Reviewed-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-
-Thanks for the review.
-
-- Sourabh Jain
+-- 
+viresh
 
