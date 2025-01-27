@@ -1,84 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-5585-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5586-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A399A1D096
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 06:09:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433F1A1D191
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 08:36:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YhGfp6xz3z305D;
-	Mon, 27 Jan 2025 16:09:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YhKxL39msz2xGY;
+	Mon, 27 Jan 2025 18:36:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737954546;
-	cv=none; b=oJErSGz7nkqeYIsNPN4Yuak4J770AGUhHa4fR3kisI9ulGguNqVksvfv/1QzBOvq9RNFb0vWnnnXstv2nYyrKemXuxIezz5ssiUk+8X59hgGwJsg69dMGX/k7IAPLeVsDRmi0FE9NXFJ9iv4IttTwN6MrTeo2wa2mQ+vf6eofXNM6t7sk5SZd+cgtcVYiSQ/C/RO+VDAU0QSF7JRy7XKE+oudz55pDdbiDj7V9r5ut76ZV3at8zQe5WMQWcbSPcsS0p6zCexDjy0RRrJWTUyTrJBTm+SdzZQ2oGrTE07OP08Gd2ZfoLE1Z/pfXmLmphZlBiVVc6HKcMz4QlcWAfjWg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737963414;
+	cv=none; b=kt2j0dWhPJ0BTYGBVhmCefGIInZ/idbBXF50GHOcUVy5q5EwOSjzfa5Rl0LgGXDU8a9o2r8wHOlXGTy0fEKCVg3nqWwhTkEUm7sNTVmakujc+btNNSP0DHONI7NCZxMWXwbzQpa2uOuKxbgTmtYHT6G8x5WmgE7x416fpEFzmZ27//in9tFgAWOtVMy05LBFAI+2zmwkeWbZOGeRQfig9S+nVtwQWMaXuOBwV7RbvXUj2U0mADqlf+1LbGEF97N+QTrxjaxSPmDHhmBMCU1oPKEVIj5n9BpQ/rOEPcadZXqvUpeDn8f1vWLo0AIX7QPLSX1NMuXmVhDYucTK/gDjRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737954546; c=relaxed/relaxed;
-	bh=RvJ8rBrk7OqINXwwnV5u0+Kf0ZKc4aA8McFH8XCmR2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lQR2uycrECgH+mc+HHuilmxDhgzvSnZ/ji9KZU6G16N45ItgCAlQFNVUzswhkeKi+rM+wWPKNZ5ovVw7CepBrP14WtqD1DMSY1L0i59GW8dKssgEe2LHnaceUzcR4h0hX3RDraMAHt7dqFOfP9CwwQopgaZ6ldHuALKXMgdKiJ8vO23hfb5zlUrEw2AjFyvRSDTx/uipU8T3ewCFZl2D5hzAgJQ/TcPcPXOsa+Z4FVWwnNbNl5rwzoWssvmvU4eerX5TF7HdsYoXQVfC3caeKEZI7+TU8dPQ9rZeBu/G29vzMi/hk5nzcmcmmmjDUh1ZJTmi87sGaDio7nb6nkJFJw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dCXssLii; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1737963414; c=relaxed/relaxed;
+	bh=Y1sCtAisinjgsZyYOat3ARot9XjKhREXWr4KiHU+0OY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=J0J/5Hjv38xJ8AZvN7fO7IQ0S5hfkyjkSeIVUjhayZvCft5aMfdKB2tv+wmcwtSmXnkMiPdBXqjhR7Lr8CshtR9foR2JB7W+z+5TrozeukPqPg8p+XOSvDlu5nkmu/ZA61clXupaU96bMmXSegWjTwRD1j3JNbxhC7zIy8rjqMmM7a7uX73Iw6qI4fUtxi9WJ8aHSNNgNoKgSrM0p2iHlJpjSvOyZWIggZZm4jFeiWn9LOn7o1Pa3GZBAMM++wMqKCCKNECD+3dXkZO46YHyvO3fXfq4jAUHAn4gyWAXgJ77wQeHiPhYN60d/OCghTUkwLr0FIk9kktxevRvfk3+nQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=coHUWty3; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=dCXssLii;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=coHUWty3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhGfn6pwhz304C
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2025 16:09:05 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 4BA01A40473;
-	Mon, 27 Jan 2025 05:07:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1EBCC4CED2;
-	Mon, 27 Jan 2025 05:09:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737954543;
-	bh=SRnaJ7NOhy1yqtMSuRpVYvCRnbZCyG9ICmKcrEhZu1c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dCXssLii/zSRuNLuQUKKGyPENsQBo8Sn5CnYY3O3FxYVAjvruFGyZ57EqKUguv/ra
-	 S1h9azhs45cKCSaEPcpsFRa1xKUdQaiOE1O3mn5BZdEeVFQfTlDF7bD3TDraPrBc+3
-	 nPr1oEW2dfuaWfsgk5bejmSntOo7SnDsTmo+1COoCYTPp06T7kKbcFbJdDA8zzvyNe
-	 x/H0vNeh34Ov9EMHHnfnz+3OUzplGfUJFvMSQcKI5nvKJbwxbMBt6ha/ffzx8jCdb9
-	 hCqZ+eanBhx2pBGe+B8aQ+DqKIv74Gk+cWfnDnM6BJFAzTM3tPgAH3xzHh4Ww7eGxN
-	 yKnd77AdR7MFA==
-Date: Sun, 26 Jan 2025 23:09:01 -0600
-From: Rob Herring <robh@kernel.org>
-To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH 8/9] dt-bindings: spi: Convert Freescale SPI bindings to
- YAML
-Message-ID: <20250127050901.GB3127337-robh@kernel.org>
-References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
- <20250126-ppcyaml-v1-8-50649f51c3dd@posteo.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhKxK0f1sz2xnS
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 27 Jan 2025 18:36:52 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50R5NnXf030643;
+	Mon, 27 Jan 2025 07:36:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Y1sCtA
+	isinjgsZyYOat3ARot9XjKhREXWr4KiHU+0OY=; b=coHUWty3XwTvwx0miFXP+A
+	ewVsB02bZltWrDPDtjvnjSZEDGZeanOsevj7SPEb2ZsjjpqPMXmCJwI8vPCUjBMA
+	Tz7jA/liTOC/ci6J0OYDjyw27xUyUec/AXDoW3d3A0xkC2OkqXnI0KC4XXblE9yi
+	lcJaP98p1sMkV6lhjIV73r3fpzoXoimZmS2qaVIEmJj0ftapdax7W9mq8FZTw9Ly
+	LPeaJ9PtPjxGrs4j8Zf/+nFCvYbVi9L0bnzTF9MNtbmXswLBnnyK987aWxRb1/km
+	0hjn9avuCSWMxC+QWaaE8u6k4Lq67UXs1pkQyAt9H0/hXC9UFVSJdP+LSdiuopNA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44e3y7rgtj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jan 2025 07:36:43 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50R7YLg7010750;
+	Mon, 27 Jan 2025 07:36:43 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44e3y7rgtf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jan 2025 07:36:43 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50R6wmgB003957;
+	Mon, 27 Jan 2025 07:36:42 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44da9s5djr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 27 Jan 2025 07:36:42 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50R7ac1X64291200
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 27 Jan 2025 07:36:38 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8966E200BF;
+	Mon, 27 Jan 2025 07:36:38 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CA11A200BC;
+	Mon, 27 Jan 2025 07:36:34 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.39.30.253])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 27 Jan 2025 07:36:34 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 27 Jan 2025 13:06:33 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
+        amachhiw@linux.ibm.com
+Subject: Re: [PATCH v3 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv
+ specific PMU
+In-Reply-To: <40C19755-ABE4-4E23-A75A-1F6F6DDC505A@linux.vnet.ibm.com>
+References: <20250123120749.90505-1-vaibhav@linux.ibm.com>
+ <20250123120749.90505-5-vaibhav@linux.ibm.com>
+ <40C19755-ABE4-4E23-A75A-1F6F6DDC505A@linux.vnet.ibm.com>
+Date: Mon, 27 Jan 2025 13:06:33 +0530
+Message-ID: <87y0ywu2ri.fsf@vajain21.in.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,178 +102,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250126-ppcyaml-v1-8-50649f51c3dd@posteo.net>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: WI0OYns2V5mRYoL7l6EzBfFQYPMiVpt5
+X-Proofpoint-GUID: OWa1752MrPhAEkRGy4X2WucZV5eKwoKE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-27_03,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 clxscore=1015
+ phishscore=0 impostorscore=0 lowpriorityscore=0 priorityscore=1501
+ suspectscore=0 bulkscore=0 mlxscore=0 mlxlogscore=616 malwarescore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2411120000 definitions=main-2501270059
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Jan 26, 2025 at 07:59:03PM +0100, J. Neuschäfer wrote:
-> fsl-spi.txt contains the bindings for the fsl,spi and fsl,espi
-> contollers. Convert them to YAML.
-> 
-> Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> ---
->  .../devicetree/bindings/spi/fsl,espi.yaml          | 56 +++++++++++++++++
->  Documentation/devicetree/bindings/spi/fsl,spi.yaml | 71 ++++++++++++++++++++++
->  Documentation/devicetree/bindings/spi/fsl-spi.txt  | 62 -------------------
->  3 files changed, 127 insertions(+), 62 deletions(-)
-> 
-> diff --git a/Documentation/devicetree/bindings/spi/fsl,espi.yaml b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..350275760210c5763af0c7b1e1522ccbfb97eec7
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
-> @@ -0,0 +1,56 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/fsl,espi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale eSPI (Enhanced Serial Peripheral Interface) controller
-> +
-> +maintainers:
-> +  - J. Neuschäfer <j.ne@posteo.net>
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,mpc8536-espi
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts: true
+Hi Athira,
 
-How many?
+Thanks for reviewing this patch series. My responses to your review
+comment inline below:
 
-> +
-> +  fsl,espi-num-chipselects:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: The number of the chipselect signals.
 
-Constraints?
+Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
 
-> +
-> +  fsl,csbef:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Chip select assertion time in bits before frame starts
+>> On 23 Jan 2025, at 5:37=E2=80=AFPM, Vaibhav Jain <vaibhav@linux.ibm.com>=
+ wrote:
+>>=20
+>> Introduce a new PMU named 'kvm-hv' to report Book3s kvm-hv specific
+<snip>
+>
+> Hi Vaibhav
+>
+> All PMU specific code is under =E2=80=9Carch/powerpc/perf in the kernel s=
+ource. Here since we are introducing a kvm-hv specific PMU, can we please h=
+ave it in arch/powerpc/perf ?
 
-Constraints?
+Is it common convention to put PMU specific code in
+arch/powerpc/perf across ppc achitecture variants ? If its there can you
+please mention the reasons behind it.
 
-> +
-> +  fsl,csaft:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: Chip select negation time in bits after frame ends
+Also the code for this PMU, will be part of kvm-hv kernel module as it
+utilizes the functionality implemented there. Moving this PMU code to
+arch/powerpc/perf will need this to be converted in yet another new
+kernel module, adding a dependency to kvm-hv module and exporting a
+bunch of functionality from kvm-hv. Which looks bit messy to me
 
-Constraints?
+<snip>
 
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - fsl,espi-num-chipselects
-> +
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi@110000 {
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        compatible = "fsl,mpc8536-espi";
-> +        reg = <0x110000 0x1000>;
-> +        interrupts = <53 0x2>;
-> +        interrupt-parent = <&mpic>;
-> +        fsl,espi-num-chipselects = <4>;
-> +        fsl,csbef = <1>;
-> +        fsl,csaft = <1>;
-> +    };
-> diff --git a/Documentation/devicetree/bindings/spi/fsl,spi.yaml b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..8efa971b5954a93665cb624345774f2966bb5648
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
-> @@ -0,0 +1,71 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/fsl,spi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale SPI (Serial Peripheral Interface) controller
-> +
-> +maintainers:
-> +  - J. Neuschäfer <j.ne@posteo.net>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,spi
-> +      - aeroflexgaisler,spictrl
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  cell-index:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      QE SPI subblock index.
-> +      0: QE subblock SPI1
-> +      1: QE subblock SPI2
-> +
-> +  mode:
-> +    description: SPI operation mode
-> +    enum:
-> +      - cpu
-> +      - cpu-qe
-> +
-> +  interrupts: true
-> +
-> +  clock-frequency:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-
-Don't need a type.
-
-> +    description: input clock frequency to non FSL_SOC cores
-> +
-> +  cs-gpios: true
-> +
-> +  fsl,spisel_boot:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      For the MPC8306 and MPC8309, specifies that the SPISEL_BOOT signal is used
-> +      as chip select for a slave device. Use reg = <number of gpios> in the
-> +      corresponding child node, i.e. 0 if the cs-gpios property is not present.
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - mode
-> +  - interrupts
-> +
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi@4c0 {
-> +        cell-index = <0>;
-> +        compatible = "fsl,spi";
-> +        reg = <0x4c0 0x40>;
-> +        interrupts = <82 0>;
-> +        interrupt-parent = <&intc>;
-> +        mode = "cpu";
-> +        cs-gpios = <&gpio 18 1          // device reg=<0>
-> +                    &gpio 19 1>;        // device reg=<1>
-> +    };
+--=20
+Cheers
+~ Vaibhav
 
