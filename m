@@ -1,66 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-5603-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5604-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 982F9A1DAB6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 17:39:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A47A8A1DBF0
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 27 Jan 2025 19:13:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YhYz93r46z2yvk;
-	Tue, 28 Jan 2025 03:39:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yhc3r0RHyz309h;
+	Tue, 28 Jan 2025 05:13:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1737995957;
-	cv=none; b=ae3Eak4WX9ZB04hHWNUSa/rzXYwKKNHR51tZziOkMPNsmnBAdrbkYktNxnqMp01HCPtPBPlTqACyrUigL6ApTDKW0kfymluFcS+wQ649TAAZeVwBjyzXX1goW4kh7vox7sPfx5JyGwBDERleRDr7JKGsMQsVhJwfcI5DFKCzfzCiq8J4rcRE2x5dtNX1bhMp6XK5tpCkSXlkQ9CB8NoyRB7xiUEO8mPR1nzQZnYL/OGE9xMijCaMG01uRwwCwiWV/6Gtp9BE0ekgV0/Y1X9ISWzkOp5vkfBs8oZ7rjPCSaoERfGpoZFougifeQzcYtaMEDWzz2A4mjOmyi69O1dKQQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738001607;
+	cv=none; b=EaPglg6H0aMC07M+SIlCnmUIXIlWika2T3TGAiIV8RlOEKw9bbQ79bT/QOZM1bGlgM19119+tH/4o+Ms+yAkUFoNGDZFEJmg46wIw+Cx3FnS5XDtFxa+afm29U6rZMrzwAlScWnvHXW6wPVn8ebIuOvpJx9ksOJGZA4lB2FexFrByPNRFZhnL8wrLQ7nhmdnc88M6UjnG4jEbXBnklAz/oh1Rh82tRGuPtS62O5Y59ieagctmiuvf8b9nH9HNTjZjJXxg9IUMqF9wYVeshbsQkuFn3+c0srQC8FFU8DPIR6D5BX5akLCPLsaXtg7SdrU6BQ8zc34sa5sbHTB+90q+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1737995957; c=relaxed/relaxed;
-	bh=0kmLUKaJ3BMvvTn/QnKIriM4RQyDYfxaJMLk0iUSExE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A55sJW+zrkzNWa0ERgNmmVdMJVgeNGLTFPdrdbuRGgxKOOM4EW6h9YGX0LmCACnmBiLbs6d4FNKb88aNqbhosDteuu7IY5YWf2h4CeCKjFMbfn2HHkebOYmVjeTI4MTozCdZEaLEep+bQ/HxCMqWtqyh1NpcG757KXWtnqiTp8xGL4IqPxGMhQ+qqY4k0AuxkyAQ29xe3M2yY/mpW/XhJcntveJVRPPZClBeqJCCmICFWDlkV5+GartkEzafnwLJuMw9K8YHF59ZEimkMghZTaKVgLIas3gpxq5a1b3cauammyszyrdaDtIAVn8P+wbMuS15FmuwdfYeAoW8OHOjgg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KjbXtwYy; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KjbXtwYy;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=will@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YhYz83wkBz2yGN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 03:39:16 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 059E35C1178;
-	Mon, 27 Jan 2025 16:38:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40C3C4CED2;
-	Mon, 27 Jan 2025 16:39:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1737995953;
-	bh=fmZlVwU6uR12bQbSxMQf1gRYU1EYKK1u0Z90fzYu2zc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KjbXtwYylY77rIpZgK3aGfJ56B1/5Xw37p2eUDiAEdIfdrEuMSNA4Cm5qPP4ZRW0v
-	 NPofe0Y4Rjf9IIo9dFFq4V/yQY8fpvCThe7/ZMffHtIvOIwRUFgf09d7RS5v4mKh8k
-	 vonNl59vSBwaT8RKyBTUXlEOL0Jjo2wwyyjaE2pJrKji8YizjYv69Le9B0XMksAjl5
-	 O+jbchyBHlqeiCTTnqxadWhPuV0eI63+E53B3F8rRzs+vg7nCyQvA/Hn9SzDgbAyx2
-	 HcfPYVwKfTpHiwfJAN8b7bE1E31SKSXV9eEcsPxzf+sdAph0HPbgBYkWigadPBVumj
-	 e/W2scjh0n5wA==
-Date: Mon, 27 Jan 2025 16:39:06 +0000
-From: Will Deacon <will@kernel.org>
-To: Eliav Farber <farbere@amazon.com>
-Cc: linux@armlinux.org.uk, catalin.marinas@arm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org,
-	maddy@linux.ibm.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
-	aou@eecs.berkeley.edu, tglx@linutronix.de,
-	akpm@linux-foundation.org, bhe@redhat.com, hbathini@linux.ibm.com,
-	sourabhjain@linux.ibm.com, adityag@linux.ibm.com,
-	songshuaishuai@tinylab.org, takakura@valinux.co.jp,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	jonnyc@amazon.com
-Subject: Re: [PATCH v6 1/2] kexec: Consolidate
- machine_kexec_mask_interrupts() implementation
-Message-ID: <20250127163905.GC25757@willie-the-truck>
-References: <20241204142003.32859-1-farbere@amazon.com>
- <20241204142003.32859-2-farbere@amazon.com>
+	t=1738001607; c=relaxed/relaxed;
+	bh=jVgRfPX4LP248o/VPa4kaq1wLi6zeDrjqxD+AD7ratA=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=IFgZcrxx2GdBaCzF4qOOc5rC3CdeJci1wl8wigwryAo6VOjzcycYtQZqNd8QndTfvBLp2B2DR2ydS1RE2zeTttb2UbEwbc68nNdbKGw7VDMNA5bbDXrns3l8NPYw679Cv89/ETjA+Orw+a1rCvYW8BV+a3tr1jOVxjU4Ikm5n7PhCap/CpTtTzMQ/nFcCBSDJ/Z11Y/byyPZOKVtqUntnPrEkmcWNLYizklaqDZexnUEgucFyDnMrH0DYCNP4zfTLGeRgCAvpVgU7e4B8pwT86OOv5f5fcXH51xbTCf6VLUC8I0TvbhSeDJ3dks4yCJsUgwEfFufS/Y1zbY7LJO6ww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
+Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yhc3p3xY6z3013
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 05:13:25 +1100 (AEDT)
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+	by vmicros1.altlinux.org (Postfix) with ESMTP id C00C172C8CC;
+	Mon, 27 Jan 2025 21:13:23 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+	id 483267CCB3A; Mon, 27 Jan 2025 20:13:23 +0200 (IST)
+Date: Mon, 27 Jan 2025 20:13:23 +0200
+From: "Dmitry V. Levin" <ldv@strace.io>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Alexey Gladkov <legion@kernel.org>,
+	Eugene Syromyatnikov <evgsyr@gmail.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	strace-devel@lists.strace.io, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] powerpc: properly negate error in
+ syscall_set_return_value() in sc case
+Message-ID: <20250127181322.GA1373@strace.io>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,120 +55,147 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241204142003.32859-2-farbere@amazon.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Dec 04, 2024 at 02:20:02PM +0000, Eliav Farber wrote:
-> Consolidate the machine_kexec_mask_interrupts implementation into a common
-> function located in a new file: kernel/irq/kexec.c. This removes duplicate
-> implementations from architecture-specific files in arch/arm, arch/arm64,
-> arch/powerpc, and arch/riscv, reducing code duplication and improving
-> maintainability.
-> 
-> The new implementation retains architecture-specific behavior for
-> CONFIG_GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD, which was previously implemented
-> for ARM64. When enabled (currently for ARM64), it clears the active state
-> of interrupts forwarded to virtual machines (VMs) before handling other
-> interrupt masking operations.
-> 
-> Signed-off-by: Eliav Farber <farbere@amazon.com>
-> ---
-> V5 -> V6:
->  - Change GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD to not be user selectable.
-> 
->  arch/arm/kernel/machine_kexec.c   | 23 ------------------
->  arch/arm64/Kconfig                |  1 +
->  arch/arm64/kernel/machine_kexec.c | 31 ------------------------
->  arch/powerpc/include/asm/kexec.h  |  1 -
->  arch/powerpc/kexec/core.c         | 22 -----------------
->  arch/powerpc/kexec/core_32.c      |  1 +
->  arch/riscv/kernel/machine_kexec.c | 23 ------------------
->  include/linux/irq.h               |  3 +++
->  kernel/irq/Kconfig                |  6 +++++
->  kernel/irq/Makefile               |  2 +-
->  kernel/irq/kexec.c                | 40 +++++++++++++++++++++++++++++++
->  11 files changed, 52 insertions(+), 101 deletions(-)
->  create mode 100644 kernel/irq/kexec.c
-> 
-> diff --git a/arch/arm/kernel/machine_kexec.c b/arch/arm/kernel/machine_kexec.c
-> index 80ceb5bd2680..dd430477e7c1 100644
-> --- a/arch/arm/kernel/machine_kexec.c
-> +++ b/arch/arm/kernel/machine_kexec.c
-> @@ -127,29 +127,6 @@ void crash_smp_send_stop(void)
->  	cpus_stopped = 1;
->  }
->  
-> -static void machine_kexec_mask_interrupts(void)
-> -{
-> -	unsigned int i;
-> -	struct irq_desc *desc;
-> -
-> -	for_each_irq_desc(i, desc) {
-> -		struct irq_chip *chip;
-> -
-> -		chip = irq_desc_get_chip(desc);
-> -		if (!chip)
-> -			continue;
-> -
-> -		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
-> -			chip->irq_eoi(&desc->irq_data);
-> -
-> -		if (chip->irq_mask)
-> -			chip->irq_mask(&desc->irq_data);
-> -
-> -		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
-> -			chip->irq_disable(&desc->irq_data);
-> -	}
-> -}
-> -
->  void machine_crash_shutdown(struct pt_regs *regs)
->  {
->  	local_irq_disable();
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 100570a048c5..dcc3551cf6c2 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -149,6 +149,7 @@ config ARM64
->  	select GENERIC_IDLE_POLL_SETUP
->  	select GENERIC_IOREMAP
->  	select GENERIC_IRQ_IPI
-> +	select GENERIC_IRQ_KEXEC_CLEAR_VM_FORWARD
+According to the Power Architecture Linux system call ABI documented in
+[1], when the syscall is made with the sc instruction, both a value and an
+error condition are returned, where r3 register contains the return value,
+and cr0.SO bit specifies the error condition.  When cr0.SO is clear, the
+syscall succeeded and r3 is the return value.  When cr0.SO is set, the
+syscall failed and r3 is the error value.  This syscall return semantics
+was implemented from the very beginning of Power Architecture on Linux,
+and syscall tracers and debuggers like strace that read or modify syscall
+return information also rely on this ABI.
 
-Is this really specific to VMs? In the new code, it's just controlling
-this part of the old code:
+r3 and cr0.SO are exposed directly via struct pt_regs where gpr[3] and
+(ccr & 0x10000000) correspond to r3 and cr0.SO, respectively.
+For example, here is an excerpt from check_syscall_restart() that assigns
+these members of struct pt_regs:
+        regs->result = -EINTR;
+        regs->gpr[3] = EINTR;
+        regs->ccr |= 0x10000000;
+In this example, the semantics of negative ERRORCODE that's being used
+virtually everywhere in generic kernel code is translated to powerpc sc
+syscall return ABI which uses positive ERRORCODE and cr0.SO bit.
 
-> diff --git a/arch/arm64/kernel/machine_kexec.c b/arch/arm64/kernel/machine_kexec.c
-> index 82e2203d86a3..6f121a0164a4 100644
-> --- a/arch/arm64/kernel/machine_kexec.c
-> +++ b/arch/arm64/kernel/machine_kexec.c
-> @@ -207,37 +207,6 @@ void machine_kexec(struct kimage *kimage)
->  	BUG(); /* Should never get here. */
->  }
->  
-> -static void machine_kexec_mask_interrupts(void)
-> -{
-> -	unsigned int i;
-> -	struct irq_desc *desc;
-> -
-> -	for_each_irq_desc(i, desc) {
-> -		struct irq_chip *chip;
-> -		int ret;
-> -
-> -		chip = irq_desc_get_chip(desc);
-> -		if (!chip)
-> -			continue;
-> -
-> -		/*
-> -		 * First try to remove the active state. If this
-> -		 * fails, try to EOI the interrupt.
-> -		 */
-> -		ret = irq_set_irqchip_state(i, IRQCHIP_STATE_ACTIVE, false);
+Also, r3 and cr0.SO are exposed indirectly via helpers.
+For example, here is an excerpt from syscall_get_error():
+        /*
+         * If the system call failed,
+         * regs->gpr[3] contains a positive ERRORCODE.
+         */
+        return (regs->ccr & 0x10000000UL) ? -regs->gpr[3] : 0;
+and here is another example, from regs_return_value():
+        if (is_syscall_success(regs))
+                return regs->gpr[3];
+        else
+                return -regs->gpr[3];
+In these examples, the powerpc sc syscall return ABI which uses positive
+ERRORCODE and cr0.SO bit is translated to the semantics of negative
+ERRORCODE that's being used virtually everywhere in generic kernel code.
 
-which is about active interrupts. Why can't that happen for the host?
+Up to a certain point in time the kernel managed to implement the powerpc
+sc syscall return ABI in all cases where struct pt_regs was exposed to user
+space.
 
-Will
+The situation changed when SECCOMP_RET_TRACE support was introduced.
+At this point the -ERRORCODE semantics that was used under the hood to
+implement seccomp on powerpc became exposed to user space.  The tracer
+handling PTRACE_EVENT_SECCOMP is not just able to observe -ENOSYS in gpr[3]
+- this is relatively harmless as at this stage there is no syscall return
+yet so the powerpc sc syscall return ABI does not apply.  What's important
+is that the tracer can change the syscall number to -1 thus making the
+syscall fail, and at this point the tracer is also able to specify the
+error value.  This has to be done in accordance with the syscall return
+ABI, however, the current implementation of do_seccomp() supports both the
+generic kernel -ERRORCODE return value ABI and the powerpc sc syscall
+return ABI, thanks to syscall_exit_prepare() that converts the former to
+the latter.  Consequently, seccomp_bpf selftest passes both with and
+without this change.
+
+Now comes the moment when PTRACE_SET_SYSCALL_INFO is going to be
+introduced.  PTRACE_SET_SYSCALL_INFO is a generic ptrace API that
+complements PTRACE_GET_SYSCALL_INFO by letting the ptracer modify
+the details of the system calls the tracee is blocked in.
+
+One of the helpers that have to be used to implement
+PTRACE_SET_SYSCALL_INFO is syscall_set_return_value().
+This helper complements other two helpers, syscall_get_error() and
+syscall_get_return_value(), that are currently used to implement
+PTRACE_GET_SYSCALL_INFO on syscall return.  When syscall_set_return_value()
+is used to set an error code, the caller specifies it as a negative value
+in -ERRORCODE format.
+
+Unfortunately, this does not work well on powerpc since commit 1b1a3702a65c
+("powerpc: Don't negate error in syscall_set_return_value()") because
+syscall_set_return_value() does not follow the powerpc sc syscall return
+ABI:
+	/*
+	 * In the general case it's not obvious that we must deal with
+	 * CCR here, as the syscall exit path will also do that for us.
+	 * However there are some places, eg. the signal code, which
+	 * check ccr to decide if the value in r3 is actually an error.
+	 */
+	if (error) {
+		regs->ccr |= 0x10000000L;
+		regs->gpr[3] = error;
+	} else {
+		regs->ccr &= ~0x10000000L;
+		regs->gpr[3] = val;
+	}
+
+The reason why this syscall_set_return_value() implementation was able to
+get away with violating the powerpc sc syscall return ABI is the following:
+Up to now, syscall_set_return_value() on powerpc could be called only from
+do_syscall_trace_enter() via do_seccomp(), there was no way it could be
+called from do_syscall_trace_leave() which is the point where tracers on
+syscall return are activated and the powerpc sc syscall return ABI has
+to be respected.
+
+Introduction of PTRACE_SET_SYSCALL_INFO necessitates a change of
+syscall_set_return_value() to comply with the powerpc sc syscall return
+ABI.  Without the change, the upcoming ptrace/set_syscall_info selftest
+fails with the following diagnostics:
+
+  # set_syscall_info.c:119:set_syscall_info:Expected exp_exit->rval (-38) == info->exit.rval (38)
+  # set_syscall_info.c:120:set_syscall_info:wait #4: PTRACE_GET_SYSCALL_INFO #2: exit stop mismatch
+
+Note that since backwards compatibility with the current implementation has
+to be provided, the kernel has to continue supporting simultaneously both
+the generic kernel -ERRORCODE return value ABI and the powerpc sc syscall
+return ABI at least for PTRACE_EVENT_SECCOMP tracers.  Consequently, since
+the point of __secure_computing() invocation and up to the point of
+conversion in syscall_exit_prepare(), gpr[3] may be set according to either
+of these two ABIs.  An attempt to address code inconsistencies in syscall
+error return handling that were introduced as a side effect of the dual
+ABI support follows in a separate patch.
+
+Link: https://www.kernel.org/doc/html/latest/arch/powerpc/syscall64-abi.html#return-value [1]
+Signed-off-by: Dmitry V. Levin <ldv@strace.io>
+Reviewed-by: Alexey Gladkov <legion@kernel.org>
+---
+ arch/powerpc/include/asm/syscall.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
+index 3dd36c5e334a..422d7735ace6 100644
+--- a/arch/powerpc/include/asm/syscall.h
++++ b/arch/powerpc/include/asm/syscall.h
+@@ -82,7 +82,11 @@ static inline void syscall_set_return_value(struct task_struct *task,
+ 		 */
+ 		if (error) {
+ 			regs->ccr |= 0x10000000L;
+-			regs->gpr[3] = error;
++			/*
++			 * In case of an error regs->gpr[3] contains
++			 * a positive ERRORCODE.
++			 */
++			regs->gpr[3] = -error;
+ 		} else {
+ 			regs->ccr &= ~0x10000000L;
+ 			regs->gpr[3] = val;
+-- 
+ldv
 
