@@ -1,49 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-5623-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5624-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37655A20C4B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 15:50:14 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7506A20C7A
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 16:03:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj7Vn3xVYz2yFQ;
-	Wed, 29 Jan 2025 01:50:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj7nz1JVdz2yN3;
+	Wed, 29 Jan 2025 02:03:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738075809;
-	cv=none; b=Jka+eDIECYHKJfhlyTnakOf1OG9fIGnhKfZFMDF/Dgcxf31UxUU4RG0XlJWMcMmyEKBOgiBehJHFpe32EFXKfW/CLyhWShBlqSFRJN35kHpmF+gW3RtT7sk3IydBiYIMT59QZm4AYNFCmJWI/RQ8wfiJuicu68EbFfHtoKICaqfm4W1ikY5b9N2Em2CitmyC2igd/IybzRQTfr2DSTg+enlVWh8XB/e/KWC22m468/CWE/4AvrzjAUKhXIooncajehucV/i361sT0W/NO7QY621Zb9+ZZCmlDC+BeG9Ao/OVfn6FUInCQGf0XLaKgP5L2UijAVf3jU7+oddIBfciiA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738076599;
+	cv=none; b=R4zqWexPY8lSeEPpLttEbApF2pWOA/QB5LItBy/hbH8t3QI9cynMpc8LwtPvjE54/43Q4oaaO1f96Aj5HYXx1MJBT7rHLo95SpvMVWhgXznw1Jou10Sl0H7WoQjvcuXQO0CHmQ0ciBQ9qG5t3Ss8uK0IxsI9AuC6x8Sk+e0hXtZa7lV+jKXOt9MB7yZb0gEh6HmH34fWJOsJ19IZiHSKqudTZ6oxYCczE+IRobQ+B2jeFmnl7VzsgDiWoe8N7Z0cbXpzyPcUnnXk2E7YqKZ0YUPLhDNKP86jZTu/KuTsTVDIsMkb3cOMcLe2nxES3cme2pYtSp6iqyTklLYP0x+aMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738075809; c=relaxed/relaxed;
-	bh=v8rx29aODKZQ/QTpLQJWlW1XvZwgL4O72zf9Ps5EtdI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=czXWEL/ZQRSsbhEsQdPWIhkjMe/59Lhr4GhEGHpD9yoOiYQE5XYI4h+GQr1Q7MEjogKi0syPEgOdaJLmWv0KFXq1ex6ku7F/DKT73CSE5vjaXcVFdK4aTzLzswLin6a1jQXJnPGzPYMx0g206uLi5dwGiOUziXlxiRnu59xpLPy9gjp9qa84Mjm3h5sWiBNOn/5ixdk4kB5ObHpk+SRSCIgacPhfPahpcMo5znVzCSFH86JMTIRLbEknwe6GJ3ui8WGAS2iRRrdZRMbo9xE0tInY/N0vOdUXyOKx4pJmryayW4dGhRCTS+XQ0hFenRWdns1+Vaq0bu/TFfx+CMOGsQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj7Vm3tRNz2xYs
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 01:50:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Yj6lr3jtZz9sSK;
-	Tue, 28 Jan 2025 15:16:24 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 0LWxEzj7XUTG; Tue, 28 Jan 2025 15:16:24 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Yj6lr2pLWz9sSH;
-	Tue, 28 Jan 2025 15:16:24 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4E9F98B76C;
-	Tue, 28 Jan 2025 15:16:24 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 4LnEuDnMqUOR; Tue, 28 Jan 2025 15:16:24 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id D63C48B763;
-	Tue, 28 Jan 2025 15:16:23 +0100 (CET)
-Message-ID: <81ee3098-1e43-4b88-975a-d223bc2338e8@csgroup.eu>
-Date: Tue, 28 Jan 2025 15:16:23 +0100
+	t=1738076599; c=relaxed/relaxed;
+	bh=EknPAdcO0/rg2+vOEP6j8OFb71hw/N9FA5gNIK4Ypps=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=ZNdaaK0l5YqiNFoP8FkZzLQ5dcPJfkzx5JE2DFJl1AGGoYSYxIeIxZENO3h+dgIB1zyTab0Vlp2FjERQfm41Pd1AMED6CZZ/65PArBgvK++CJoYJlCwnPw5QCvekIQM00hQWS71NFNIUBITRDtCc2yhXMjEsjqdewQqSpovNtmxLwtcQB5uTz8XcOvhfVau8G4bR/zkalcZytu1uoyQSH96pxuW79FwKGdaPtE91VDoo2yHecMZyKnuniyJsLx8Vr7bg8I54IDxbG1AuN3IhRq7gIvs9A9tdSmPMIGRhHlgSQsQxaMcEcpBUHshvrRQYJ0KLl3lwT6BcK/M9v6j23A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JEXsSfMv; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JEXsSfMv; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=oleg@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JEXsSfMv;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=JEXsSfMv;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=oleg@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yj7ny0YWkz2yG9
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 02:03:15 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738076590;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=EknPAdcO0/rg2+vOEP6j8OFb71hw/N9FA5gNIK4Ypps=;
+	b=JEXsSfMvjHD7BIBdSw9x+wz02mxilb+noT5+2x01GFJHleT/9/sbXLFSicw/ngGPNOOLQk
+	sljR4OreW2pjSd2TyJJ44P9G3e17PMiWf0L+Qf2/9r7rhJd1nyj9Q+C1uGINYVVZdkqkcA
+	BtPsbZYC7mHdPWFWg3ALYDsqISxh28k=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738076590;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type;
+	bh=EknPAdcO0/rg2+vOEP6j8OFb71hw/N9FA5gNIK4Ypps=;
+	b=JEXsSfMvjHD7BIBdSw9x+wz02mxilb+noT5+2x01GFJHleT/9/sbXLFSicw/ngGPNOOLQk
+	sljR4OreW2pjSd2TyJJ44P9G3e17PMiWf0L+Qf2/9r7rhJd1nyj9Q+C1uGINYVVZdkqkcA
+	BtPsbZYC7mHdPWFWg3ALYDsqISxh28k=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-658-ydiErNfsMyuFST3JLbQc6A-1; Tue,
+ 28 Jan 2025 10:03:04 -0500
+X-MC-Unique: ydiErNfsMyuFST3JLbQc6A-1
+X-Mimecast-MFC-AGG-ID: ydiErNfsMyuFST3JLbQc6A
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4D2FB18009D5;
+	Tue, 28 Jan 2025 15:03:01 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.45.226.70])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with SMTP id 1312D1800268;
+	Tue, 28 Jan 2025 15:02:55 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+	oleg@redhat.com; Tue, 28 Jan 2025 16:02:34 +0100 (CET)
+Date: Tue, 28 Jan 2025 16:02:28 +0100
+From: Oleg Nesterov <oleg@redhat.com>
+To: Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>,
+	Will Drewry <wad@chromium.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Linus Walleij <linus.walleij@linaro.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 0/4] seccomp: remove the 'sd' argument from
+ __secure_computing()
+Message-ID: <20250128150228.GA15298@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,118 +89,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Remove eieio in _memcpy_fromio
-To: Julian Vetter <julian@outer-limits.org>, Arnd Bergmann <arnd@arndb.de>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <20250128135711.1625747-1-julian@outer-limits.org>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250128135711.1625747-1-julian@outer-limits.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hello,
 
+Link to v1: https://lore.kernel.org/all/20250120134409.GA21241@redhat.com/
+Only 2/4 was changed, please see interdiff at the end.
 
-Le 28/01/2025 à 14:57, Julian Vetter a écrit :
-> Remove the eieio() calls in _memcpy_fromio, to bring its implementation
-> closer to the one from lib/iomem_copy.c. These eieio() calls don't seem
-> to be necessary, because the _memcpy_toio completely omits them. Also
-> the legacy code from ppc was not doing them.
+I've included the acks I got on 1/4, 3/4, and 4/4 (thanks!).
 
-What do you mean exactly by "legacy code" ?
+Oleg.
+---
 
-As far as I can see they were already there before commit 68a64357d15a 
-("[POWERPC] Merge 32 and 64 bits asm-powerpc/io.h"):
+ arch/mips/kernel/ptrace.c           | 20 ++-----------------
+ arch/powerpc/kernel/ptrace/ptrace.c |  2 +-
+ include/linux/seccomp.h             | 12 ++++--------
+ kernel/entry/common.c               |  2 +-
+ kernel/seccomp.c                    | 39 ++++++++++++++++++-------------------
+ 5 files changed, 27 insertions(+), 48 deletions(-)
 
--static inline void eeh_memcpy_fromio(void *dest, const volatile void 
-__iomem *src,
-+static inline void eeh_memcpy_fromio(void *dest, const
-+				     volatile void __iomem *src,
-  				     unsigned long n)
-  {
--	void *vsrc = (void __force *) src;
--	void *destsave = dest;
--	unsigned long nsave = n;
+-------------------------------------------------------------------------------
+diff --git a/include/linux/seccomp.h b/include/linux/seccomp.h
+index 6125baa96b76..9b959972bf4a 100644
+--- a/include/linux/seccomp.h
++++ b/include/linux/seccomp.h
+@@ -22,8 +22,9 @@
+ #include <linux/atomic.h>
+ #include <asm/seccomp.h>
+ 
+-#ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
+ extern int __secure_computing(void);
++
++#ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
+ static inline int secure_computing(void)
+ {
+ 	if (unlikely(test_syscall_work(SECCOMP)))
+@@ -32,7 +33,6 @@ static inline int secure_computing(void)
+ }
+ #else
+ extern void secure_computing_strict(int this_syscall);
+-static inline int __secure_computing(void) { return 0; }
+ #endif
+ 
+ extern long prctl_get_seccomp(void);
+diff --git a/kernel/seccomp.c b/kernel/seccomp.c
+index 75e293d3c1a1..4bd2eb50f77b 100644
+--- a/kernel/seccomp.c
++++ b/kernel/seccomp.c
+@@ -29,13 +29,11 @@
+ #include <linux/syscalls.h>
+ #include <linux/sysctl.h>
+ 
++#include <asm/syscall.h>
++
+ /* Not exposed in headers: strictly internal use only. */
+ #define SECCOMP_MODE_DEAD	(SECCOMP_MODE_FILTER + 1)
+ 
+-#ifdef CONFIG_HAVE_ARCH_SECCOMP_FILTER
+-#include <asm/syscall.h>
+-#endif
 -
--	__asm__ __volatile__ ("sync" : : : "memory");
--	while(n && (!EEH_CHECK_ALIGN(vsrc, 4) || !EEH_CHECK_ALIGN(dest, 4))) {
--		*((u8 *)dest) = *((volatile u8 *)vsrc);
--		__asm__ __volatile__ ("eieio" : : : "memory");
--		vsrc++;
--		dest++;
--		n--;
--	}
--	while(n > 4) {
--		*((u32 *)dest) = *((volatile u32 *)vsrc);
--		__asm__ __volatile__ ("eieio" : : : "memory");
--		vsrc += 4;
--		dest += 4;
--		n -= 4;
--	}
--	while(n) {
--		*((u8 *)dest) = *((volatile u8 *)vsrc);
--		__asm__ __volatile__ ("eieio" : : : "memory");
--		vsrc++;
--		dest++;
--		n--;
--	}
--	__asm__ __volatile__ ("sync" : : : "memory");
-+	_memcpy_fromio(dest, src, n);
-
-  	/* Look for ffff's here at dest[n].  Assume that at least 4 bytes
-  	 * were copied. Check all four bytes.
-  	 */
--	if ((nsave >= 4) &&
--		(EEH_POSSIBLE_ERROR((*((u32 *) destsave+nsave-4)), u32))) {
--		eeh_check_failure(src, (*((u32 *) destsave+nsave-4)));
--	}
-+	if (n >= 4 && EEH_POSSIBLE_ERROR(*((u32 *)(dest + n - 4)), u32))
-+		eeh_check_failure(src, *((u32 *)(dest + n - 4)));
-  }
-
-
-
-> 
-> Signed-off-by: Julian Vetter <julian@outer-limits.org>
-> ---
->   arch/powerpc/kernel/io.c | 3 ---
->   1 file changed, 3 deletions(-)
-> 
-> diff --git a/arch/powerpc/kernel/io.c b/arch/powerpc/kernel/io.c
-> index 6af535905984..81e5d54260a1 100644
-> --- a/arch/powerpc/kernel/io.c
-> +++ b/arch/powerpc/kernel/io.c
-> @@ -155,21 +155,18 @@ void _memcpy_fromio(void *dest, const volatile void __iomem *src,
->          __asm__ __volatile__ ("sync" : : : "memory");
->          while(n && (!IO_CHECK_ALIGN(vsrc, 4) || !IO_CHECK_ALIGN(dest, 4))) {
->                  *((u8 *)dest) = *((volatile u8 *)vsrc);
-> -               eieio();
->                  vsrc++;
->                  dest++;
->                  n--;
->          }
->          while(n >= 4) {
->                  *((u32 *)dest) = *((volatile u32 *)vsrc);
-> -               eieio();
->                  vsrc += 4;
->                  dest += 4;
->                  n -= 4;
->          }
->          while(n) {
->                  *((u8 *)dest) = *((volatile u8 *)vsrc);
-> -               eieio();
->                  vsrc++;
->                  dest++;
->                  n--;
-> --
-> 2.34.1
-> 
+ #ifdef CONFIG_SECCOMP_FILTER
+ #include <linux/file.h>
+ #include <linux/filter.h>
+@@ -1062,6 +1060,13 @@ void secure_computing_strict(int this_syscall)
+ 	else
+ 		BUG();
+ }
++int __secure_computing(void)
++{
++	int this_syscall = syscall_get_nr(current, current_pt_regs());
++
++	secure_computing_strict(this_syscall);
++	return 0;
++}
+ #else
+ 
+ #ifdef CONFIG_SECCOMP_FILTER
 
 
