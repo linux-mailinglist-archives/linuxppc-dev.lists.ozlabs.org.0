@@ -1,91 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-5647-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5648-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56071A20F21
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 17:50:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAED8A20FC9
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 18:52:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YjB9q08Rkz305G;
-	Wed, 29 Jan 2025 03:50:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YjCYW49Gnz304Z;
+	Wed, 29 Jan 2025 04:52:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.150
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738083038;
-	cv=none; b=lG9HmU9CDIfT6OriltpW2eKFl0kCsI1jr+EFlGEp6xLbom0J/4EMGrleLeIMQtkU5e6ym8S/MxZGq+dgMDetMNIyZQA2o73ijhE7xKi6CqkJYo0sxcEBeacSkrhzz/HvXoe8l5zJlDNlP+RvQq0fx1j+HpLRhsIxowAylHjs1iPfA7XA3mPhZftIiSMOIW1eSmw22rqA/QljgSrXeIXFFnMtb6TKRZ864ANQ5VJXVY4vVigqvwj06GFo99eK4jbLACiJ4bYu97IbezEh8NhJ4U4ftNtX83XNTCXq/YCAYFV/M2LLN4WSb4SpOj/doIiwFe7DX/HKiYLQ1qVd1RN7pQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738086767;
+	cv=none; b=Rehx5/ACha1boAUiFbs5coLrr8+1oebxLokevvdzmj6vF18gGRMowYTCcOLEzyVH6llQ81B8J7voer/L1H/n28AjeuezFLREiGRlLEm6AIQ6MGEsP10rHAimOTbXsrOn/rFGm9/tCUtjpGkL3k1jP6xE0gAnn7rrHk0UEgR9vXpsgYBxFkE8ZvDHAuhgihMrUL7KqY64tyXM4f0A32kDVddcfUXAFZSFSObwYYAkP+8EAEeKyG+j5LSQy4DsNhWsCYaYgLqrCZw4idpq+hJ5cNBYVo3GPnnSR51dv2PI7sOhU8VXAWR1SfrOjWPQKct+KJL97bX/SRMomkVaZMU6CQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738083038; c=relaxed/relaxed;
-	bh=OzTrdvDmHfPKu0sUzo1rmLrtHAI4LwDlupmzRk1iyUc=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=nO3fwtbawsCSPiJe23VA+WSQSYdewsLgvtbLyMvstBjRQjerX1/xPdXtnhDWE2yKqmznTrfE29nIHnloP6CyUaiKazKlUdupprrMT7IuZCLplrlV4mqAblIuiZsdY3NfLHO1aIgqcGV+iyNLFyMsYBEIhf+RYjqr94yeRbA/Y3EmYE7UzWr3GQSZhOTopnr5TqBi87/hEHGtxtkgLcXnJfRRjfdTtMQd4DYxitYal1qaurKW+hGq/d94Rv+BrkA3W9v9bDfYmnJWW6OVjoqZYvsg/qc3kjTGZaAcig5ORwxIuzbrbieO3FKeJIVPHJouak3Jb5QP32KFLiiVN3/xbw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Xs1MOD1h; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=blxlI+BI; dkim-atps=neutral; spf=pass (client-ip=103.168.172.150; helo=fout-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1738086767; c=relaxed/relaxed;
+	bh=4wXkeYXUQNvnJWneRbTlwwnldlqP4I+SRpXXND7XHyY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=H8PM7YoAXUzvJuhif93AdGPwQ2/D7vjIWB/4SxCm4zBac4TdYlQvky1C9VNQWtTLMlv7F+gZie3YIDUo3UIjtgMri0mm2O5MOn+hK73z5WzOIcmRdl5LOrRHvgsegUufMCu5gWDYezaTo6DVxlV13KuFJeoDhZ4TZ/PKgUxoodpZxeeLbIQmaI1jZUvba/5cS+JWeh/j4w9YY1W832vXUeVzSH2Sr4TdbYJyujaPhRS7lJhcOn7J7Tw2qAQWVKs3sqyok7s7E8Lq2qkAgeVxjMbNEOy1NpBUkemgpuMWr4aPII+AhfYVOijjajwRkOlbXDWw69NoRR8SxmeMpw8wWQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KV+9plnY; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82a; helo=mail-qt1-x82a.google.com; envelope-from=fvdl@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm2 header.b=Xs1MOD1h;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm3 header.b=blxlI+BI;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=KV+9plnY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.150; helo=fout-a7-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fout-a7-smtp.messagingengine.com (fout-a7-smtp.messagingengine.com [103.168.172.150])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82a; helo=mail-qt1-x82a.google.com; envelope-from=fvdl@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x82a.google.com (mail-qt1-x82a.google.com [IPv6:2607:f8b0:4864:20::82a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjB9l3ML3z2yDp
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 03:50:34 +1100 (AEDT)
-Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
-	by mailfout.phl.internal (Postfix) with ESMTP id 264641380B4D;
-	Tue, 28 Jan 2025 11:50:31 -0500 (EST)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-10.internal (MEProxy); Tue, 28 Jan 2025 11:50:31 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1738083031;
-	 x=1738169431; bh=OzTrdvDmHfPKu0sUzo1rmLrtHAI4LwDlupmzRk1iyUc=; b=
-	Xs1MOD1hAWlkW6H3OB6yyyInUaeIzxm0KnxqbO43608ECInLPAiYJDWeTk2ezJN9
-	Wy9fHNMoPHZFHRD5crE6iVUJkqrsfSlV835z8eSQTTOKDWJTVbYI6N6qApQt2Q5j
-	EY8SS8E0YMlKa51aEuZQcYOQvj+K+qbDeUDZfFpONS2ZzlX+qJJfeHhHjMOqqTdP
-	pvD19SE9F8/zM89KcqNg2uH3EAEe47D7U62y7pYmm5tKVRTpejVP47kBUQfqPfDS
-	kqPyKBc4GXZsZzejGEAKOj0jiokRvHEXqOIC+riop8s2SfIyH56OpYPDVV/3WJsb
-	m6tQMiMnl74Z8aeqDAjeSw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1738083031; x=
-	1738169431; bh=OzTrdvDmHfPKu0sUzo1rmLrtHAI4LwDlupmzRk1iyUc=; b=b
-	lxlI+BIK7OxBOxZOvsIwIdol/v9S4wFeSUAQgVLyQHYqjzPOO5GwoCaVi9XPwgGT
-	Wk21iOoNwT/whoBN+tJQ8neEx5lYfF87ddjHyaciJZsvHaz7NNy3rv131qpe8jPu
-	Ey82gxskXBHUL8jZ/uvmU6hubxgX5LOHESmwDWhvaLUAy7UF52VG1wxzkaxT7Z9u
-	pm4f2xJ6uEZoPf1JGjEtv62ThvCl58kYHXMQQYR4F7r2mk+9dnBAjPhQB1erX+jF
-	r7k3A/JuG/kQ9LhyApIOEqPJXvBqyDWB17dDi6UwNFqXgTognmFAn1DjvyoKss7A
-	UvG7/4DzV+Cnw5enFS1lA==
-X-ME-Sender: <xms:1gqZZ67skRZXgfTOFkizyBuYPymD1DrScfunzzp7XV8KBwGJ3DMHCQ>
-    <xme:1gqZZz42JBOgA1G0CKpaSxfr5_HaPKwHFP_k2AmT61yeu4q5PC7YYh_m2RSk8C8QP
-    7mRkHIc5aGwNjTRoIQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdeivdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdpuffr
-    tefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnth
-    hsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredtjeen
-    ucfhrhhomhepfdetrhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdrug
-    gvqeenucggtffrrghtthgvrhhnpedvhfdvkeeuudevfffftefgvdevfedvleehvddvgeej
-    vdefhedtgeegveehfeeljeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmh
-    grihhlfhhrohhmpegrrhhnugesrghrnhgusgdruggvpdhnsggprhgtphhtthhopeekpdhm
-    ohguvgepshhmthhpohhuthdprhgtphhtthhopegthhhrihhsthhophhhvgdrlhgvrhhohi
-    estghsghhrohhuphdrvghupdhrtghpthhtohepmhhpvgesvghllhgvrhhmrghnrdhiugdr
-    rghupdhrtghpthhtohepnhhpihhgghhinhesghhmrghilhdrtghomhdprhgtphhtthhope
-    hnrghvvggvnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepmhgrugguhieslhhinhhu
-    gidrihgsmhdrtghomhdprhgtphhtthhopehlihhnuhigphhptgdquggvvheslhhishhtsh
-    drohiilhgrsghsrdhorhhgpdhrtghpthhtohepjhhulhhirghnsehouhhtvghrqdhlihhm
-    ihhtshdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvg
-    hrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:1gqZZ5ckr2vTG-vcwvp8-epyz1vIxnkXV7HEbxQZtBnFd-4AYkH6tQ>
-    <xmx:1gqZZ3KqiSYizBHBhd8-cxnO_gRLNaHWt8dBrUxdMMYi5PTK-FBFMw>
-    <xmx:1gqZZ-LCG1GnbNtCDM3NIy8JlQYpCXz1D0KjHyogYJ-0WkK65y4JSw>
-    <xmx:1gqZZ4yiJ58LRHmo2T0mgUEIMk_EnGacToPml1cDrb5VawJ4Cnnvsw>
-    <xmx:1wqZZ_rLH-tTfcFc9UjOpH4eQ0cf47tR4xmpQBUDngRTUzU7hEP1oCmW>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 3C5F62220073; Tue, 28 Jan 2025 11:50:30 -0500 (EST)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjCYT4Z86z2yYq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 04:52:44 +1100 (AEDT)
+Received: by mail-qt1-x82a.google.com with SMTP id d75a77b69052e-467abce2ef9so314661cf.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 09:52:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1738086762; x=1738691562; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4wXkeYXUQNvnJWneRbTlwwnldlqP4I+SRpXXND7XHyY=;
+        b=KV+9plnYCtKfyM6VuSBed8Tsm9/D3WV0PaO8nvTo93ubgKeiIGX06wHSG4oG3S4Ssf
+         P3QKJ+ofW7oK61Qt53JTUVbF1LCBQdvQZon1pQtGhPZKqDz3/0BsyFr4GD0wtVLACope
+         ZTnQKSu5dGOINGaSScPGkCeZOF8j5jFG1Bf49hrS+F+kkvSf91qXSC8WAeyvYLBofetJ
+         AezP6j1zcOMGDz8vzp42Y8ovLsVMN+SDc6InZ9kqyWj60G9CM341+vpT8AsESofQC/f/
+         QeDeQOL8HwsK5nbBDd6Jt4aWlCOuy5brlhXcenSe9c/gskYTsaIrRA4ErZt/03h2+YBR
+         32AQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738086762; x=1738691562;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4wXkeYXUQNvnJWneRbTlwwnldlqP4I+SRpXXND7XHyY=;
+        b=blguiQtpA+Ie3edrztvVZLyBs/HtAM9YAq58q+u3JV6caBolFGr+nomZomTjdEnox/
+         rLB0ZrLiyH1TP3EYD1MdvIiL0fJJ7LHzSYtD7GAw+Xwlu8LErbk1Gfc4+mkw2+vi4h5u
+         SDEWGKOR6gHsi9XxVW+yGKa6fJuLJZ7aLDiONlhw3/IRkHjglUwvb5TGH+e0O8dHOToS
+         72C7QCA71ZHTVv+9IeixjAFB2lucVg69hC7ILtatQ9xux524QwlMejIGq+pZRywknG4z
+         pd4g+I+KEN8/uZUKMrH3HJ2SL165Bzjyl+Yulxg6G4zb8bXN9zhT4+onZ3O/UJhWKTu4
+         4G2g==
+X-Forwarded-Encrypted: i=1; AJvYcCV+cQU63kMU7Q5ETR+YSbbevXodO0y8ga/FqU1KbCNdLo4KL5AtPd3qlC+dQzEmn05ElBW5pA5fJ4zy8js=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxZtNX74DON1Oy9BraMVcWZ9Sv6Z8B4gaI7wpmArSdnOH/IG5sI
+	59+pj9o5RKd5eTkr2rwm973YXOCGdeaPTkbA1teCc9ifwWIzwESrrw/nRUYCpM5Cm70NFhC4wHo
+	FzvQ6+NQ6hV39UVzhOvvuID49M3KjBekvK30B
+X-Gm-Gg: ASbGncthgPOfYZxs15Xx/M6qBYbDoXsjJOYU2u4iL6tes9vyCoHFEuGo6F3MjRjtqFj
+	87UzkN/1wg8kX+sKcr4CazHchVS3Khu6K3AZbU/PwYrSNty8mRfjKyywCS6WwtpEXI7qNNg==
+X-Google-Smtp-Source: AGHT+IH5SmjSz0uJkIH3f8TUz8je4MRVsb+1W/hJ9Mzhc89H+uYAM57oxxGMerbdM1gg7ZUYAHpiicr8PY2piLnZ+24=
+X-Received: by 2002:a05:622a:6186:b0:466:a3ed:bde7 with SMTP id
+ d75a77b69052e-46fc55f7d43mr4507971cf.6.1738086761455; Tue, 28 Jan 2025
+ 09:52:41 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,68 +76,513 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Tue, 28 Jan 2025 17:50:09 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Julian Vetter" <julian@outer-limits.org>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>, "Naveen N Rao" <naveen@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Message-Id: <9fc9a994-b6cf-4ad9-9cec-6777dedd216d@app.fastmail.com>
-In-Reply-To: <b8496571-6c44-40ff-b03b-799fb1764447@csgroup.eu>
-References: <20250128135711.1625747-1-julian@outer-limits.org>
- <81ee3098-1e43-4b88-975a-d223bc2338e8@csgroup.eu>
- <b335d035-07a4-457d-99ea-8b7597782fd9@outer-limits.org>
- <e785c98f-4bf9-48ab-a102-dc531623b378@csgroup.eu>
- <b8496571-6c44-40ff-b03b-799fb1764447@csgroup.eu>
-Subject: Re: [PATCH] powerpc: Remove eieio in _memcpy_fromio
-Content-Type: text/plain; charset=utf-8
+References: <20250127232207.3888640-1-fvdl@google.com> <20250127232207.3888640-28-fvdl@google.com>
+ <c961cc1e-897d-4b86-b123-b12a0c27f91a@csgroup.eu>
+In-Reply-To: <c961cc1e-897d-4b86-b123-b12a0c27f91a@csgroup.eu>
+From: Frank van der Linden <fvdl@google.com>
+Date: Tue, 28 Jan 2025 09:52:30 -0800
+X-Gm-Features: AWEUYZmZVx6i-Y9H1he5YEZ5mjejVQJ6mNWAJa-9s1l0Epx1pWxFs4z2YPh-Zf4
+Message-ID: <CAPTztWa8bL06fVDP-N3s1yqMLxFZfvDvVRpn5B5YZBJ3idru9Q@mail.gmail.com>
+Subject: Re: [PATCH 27/27] mm/hugetlb: enable bootmem allocation from CMA areas
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: akpm@linux-foundation.org, muchun.song@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, yuzhao@google.com, joao.m.martins@oracle.com, 
+	roman.gushchin@linux.dev, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Jan 28, 2025, at 16:34, Christophe Leroy wrote:
-> Le 28/01/2025 =C3=A0 16:24, Christophe Leroy a =C3=A9crit=C2=A0:
->> Le 28/01/2025 =C3=A0 16:07, Julian Vetter a =C3=A9crit=C2=A0:
->>> With 'ppc' I was refering to 'include/asm-ppc/io.h'. But you're righ=
-t,
->>> when going back a bit, in the 'include/asm-powerpc/io.h' there are t=
-wo
->>> cases, one (eeh_memcpy_fromio) which does the the 'eieio', and a sec=
-ond,
->>> i.e., 'iSeries_memcpy_fromio' which does a byte-wise copy. But in the
->>> ppc code ('include/asm-ppc/io.h') there is a simple memcpy. I was
->>> referring to this one. But my description is not very clear. Sorry f=
-or=20
->>> that.
->>=20
->> But then is your change still valid ? Isn't there some corner case th=
-at=20
->> still need it ? Is it a valid argument that because memcpy_toio()=20
->> doesn't need it memcpy_fromio() doesn't need it either ?
+Hi Christophe, thanks for your comments. Replies inline below.
+
+On Tue, Jan 28, 2025 at 12:55=E2=80=AFAM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 >
-> I see that _insb(), _insw_ns() and _insl_ns() also have eieio() while=20
-> _outsb(), _outsw_ns() and _outsl_ns() don't. Why not change those as=20
-> well if you think eieio() is not needed ?
+>
+>
+> Le 28/01/2025 =C3=A0 00:22, Frank van der Linden a =C3=A9crit :
+> > If hugetlb_cma_only is enabled, we know that hugetlb pages
+> > can only be allocated from CMA. Now that there is an interface
+> > to do early reservations from a CMA area (returning memblock
+> > memory), it can be used to allocate hugetlb pages from CMA.
+> >
+> > This also allows for doing pre-HVO on these pages (if enabled).
+> >
+> > Make sure to initialize the page structures and associated data
+> > correctly. Create a flag to signal that a hugetlb page has been
+> > allocated from CMA to make things a little easier.
+> >
+> > Some configurations of powerpc have a special hugetlb bootmem
+> > allocator, so introduce a boolean arch_specific_huge_bootmem_alloc
+> > that returns true if such an allocator is present. In that case,
+> > CMA bootmem allocations can't be used, so check that function
+> > before trying.
+> >
+> > Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> > Cc: Michael Ellerman <mpe@ellerman.id.au>
+> > Cc: linuxppc-dev@lists.ozlabs.org
+> > Signed-off-by: Frank van der Linden <fvdl@google.com>
+> > ---
+> >   arch/powerpc/mm/hugetlbpage.c |   5 ++
+> >   include/linux/hugetlb.h       |   7 ++
+> >   mm/hugetlb.c                  | 135 +++++++++++++++++++++++++--------=
+-
+> >   3 files changed, 114 insertions(+), 33 deletions(-)
+> >
+> > diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpag=
+e.c
+> > index d3c1b749dcfc..e53e4b4c8ef6 100644
+> > --- a/arch/powerpc/mm/hugetlbpage.c
+> > +++ b/arch/powerpc/mm/hugetlbpage.c
+> > @@ -121,6 +121,11 @@ bool __init hugetlb_node_alloc_supported(void)
+> >   {
+> >       return false;
+> >   }
+> > +
+> > +bool __init arch_specific_huge_bootmem_alloc(struct hstate *h)
+> > +{
+> > +     return (firmware_has_feature(FW_FEATURE_LPAR) && !radix_enabled()=
+);
+> > +}
+> >   #endif
+> >
+> >
+> > diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> > index 2512463bca49..bca3052fb175 100644
+> > --- a/include/linux/hugetlb.h
+> > +++ b/include/linux/hugetlb.h
+> > @@ -591,6 +591,7 @@ enum hugetlb_page_flags {
+> >       HPG_freed,
+> >       HPG_vmemmap_optimized,
+> >       HPG_raw_hwp_unreliable,
+> > +     HPG_cma,
+> >       __NR_HPAGEFLAGS,
+> >   };
+> >
+> > @@ -650,6 +651,7 @@ HPAGEFLAG(Temporary, temporary)
+> >   HPAGEFLAG(Freed, freed)
+> >   HPAGEFLAG(VmemmapOptimized, vmemmap_optimized)
+> >   HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
+> > +HPAGEFLAG(Cma, cma)
+> >
+> >   #ifdef CONFIG_HUGETLB_PAGE
+> >
+> > @@ -678,14 +680,18 @@ struct hstate {
+> >       char name[HSTATE_NAME_LEN];
+> >   };
+> >
+> > +struct cma;
+> > +
+> >   struct huge_bootmem_page {
+> >       struct list_head list;
+> >       struct hstate *hstate;
+> >       unsigned long flags;
+> > +     struct cma *cma;
+> >   };
+> >
+> >   #define HUGE_BOOTMEM_HVO            0x0001
+> >   #define HUGE_BOOTMEM_ZONES_VALID    0x0002
+> > +#define HUGE_BOOTMEM_CMA             0x0004
+> >
+> >   bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_pa=
+ge *m);
+> >
+> > @@ -711,6 +717,7 @@ bool __init hugetlb_node_alloc_supported(void);
+> >
+> >   void __init hugetlb_add_hstate(unsigned order);
+> >   bool __init arch_hugetlb_valid_size(unsigned long size);
+> > +bool __init arch_specific_huge_bootmem_alloc(struct hstate *h);
+>
+> Why adding 'specific' in the name ? Prefixing a function name with arch_
+> is usually enough to denote an architecture specific function.
 
-I think that makes sense, even if it's beyond the scope of Julian's
-work to unify the memcpy/memset I/O helpers across architectures.
+True, yes. That should probably be arch_has_huge_bootmem_alloc, I will
+change that.
 
-I looked into the pre-2.6.12 history of arch/powerpc64 to see how
-the eieio got in there originally and found that at the time the
-string functions got added, this is what the readl() etc functions
-did. readl() itself went through a longer set of changes to end
-up with the current sync/twi/isync version, but the string functions
-were never updated again during any of the later changes.
+>
+> >   struct hstate *size_to_hstate(unsigned long size);
+> >
+> >   #ifndef HUGE_MAX_HSTATE
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 32ebde9039e2..183e8d0c2fb4 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -61,7 +61,7 @@ static struct cma *hugetlb_cma[MAX_NUMNODES];
+> >   static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdat=
+a;
+> >   #endif
+> >   static bool hugetlb_cma_only;
+> > -static unsigned long hugetlb_cma_size __initdata;
+> > +static unsigned long hugetlb_cma_size;
+>
+> Why remove __initdata ? As far as I can see it is used only in
+> hugetlb_early_cma() and hugetlb_hstate_alloc_pages() which are __init
+> functions.
 
-The bit that needs to be captured in the changelog here is that
-on all other architectures, strcpy_fromio/strcpy_toio are written
-to allow prefetching/combining/reordering, while the powerpc
-version prevents this in strcpy_fromio for apparently only history
-reasons.
+hugetlb_cma_size is now used in alloc_gigantic_folio(), which is not
+an __init function. However, you got me thinking: since
+hugetlb_cma_only is only effective when hugetlb_cma_size !=3D 0, I can
+just reset hugetlb_cma_only to false if hugetlb_cma_size =3D=3D 0 after
+parsing the commandline arguments. This will revert hugetlb_cma_size
+to __initdata, and simplifies things a bit. I'll make that change in
+v2.
+>
+> >
+> >   __initdata struct list_head huge_boot_pages[MAX_NUMNODES];
+> >   __initdata unsigned long hstate_boot_nrinvalid[HUGE_MAX_HSTATE];
+> > @@ -132,8 +132,10 @@ static void hugetlb_free_folio(struct folio *folio=
+)
+> >   #ifdef CONFIG_CMA
+> >       int nid =3D folio_nid(folio);
+> >
+> > -     if (cma_free_folio(hugetlb_cma[nid], folio))
+> > +     if (folio_test_hugetlb_cma(folio)) {
+> > +             WARN_ON(!cma_free_folio(hugetlb_cma[nid], folio));
+>
+> Is that WARN_ON() needed ? See
+> https://docs.kernel.org/process/coding-style.html#do-not-crash-the-kernel
 
-     Arnd
+Not strictly, I suppose, but if there is a CMA-allocated hugetlb
+folio, and cma_free fails, that would be a condition worthy of a
+warning, as the flag somehow got corrupted or there is an internal CMA
+error.  How about WARN_ON_ONCE?
+
+>
+>
+> >               return;
+> > +     }
+> >   #endif
+> >       folio_put(folio);
+> >   }
+> > @@ -1509,6 +1511,9 @@ static struct folio *alloc_gigantic_folio(struct =
+hstate *h, gfp_t gfp_mask,
+> >                                       break;
+> >                       }
+> >               }
+> > +
+> > +             if (folio)
+> > +                     folio_set_hugetlb_cma(folio);
+> >       }
+> >   #endif
+> >       if (!folio) {
+> > @@ -3175,6 +3180,63 @@ struct folio *alloc_hugetlb_folio(struct vm_area=
+_struct *vma,
+> >       return ERR_PTR(-ENOSPC);
+> >   }
+> >
+> > +/*
+> > + * Some architectures do their own bootmem allocation, so they can't u=
+se
+> > + * early CMA allocation. So, allow for this function to be redefined.
+> > + */
+> > +bool __init __attribute((weak))
+>
+> Can't you use __weak ?
+>
+> By the way, do we really need a weak function here ? Can't it be a
+> static inline helper that gets waived by a macro defined by the arch,
+> something like:
+>
+> #ifndef arch_huge_bootmem_alloc
+> static inline arch_huge_bootmem_alloc(struct hstate *h)
+> {
+>         return false;
+> }
+> #endif
+>
+> Then powerpc does:
+>
+> #define arch_huge_bootmem_alloc arch_huge_bootmem_alloc
+> static inline arch_huge_bootmem_alloc(struct hstate *h)
+> {
+>         return (firmware_has_feature(FW_FEATURE_LPAR) && !radix_enabled()=
+);
+> }
+>
+
+Fair enough, yeah. I used a weak symbol because that was already used
+for powerpc with alloc_bootmem_huge_page(), but I can change this one.
+
+>
+> But why is struct hstate *h parameter needed ? Seems like noone uses it.
+
+Correct - I merely extrapolated a bit and thought "well, architectures
+might have bootmem hugetlb allocators that only deal with certain
+sizes". But then again, like you say, there is currently no need for
+it. I'll remove the argument.
+
+>
+> > +arch_specific_huge_bootmem_alloc(struct hstate *h)
+> > +{
+> > +     return false;
+> > +}
+> > +
+> > +static bool __init hugetlb_early_cma(struct hstate *h)
+> > +{
+> > +     if (arch_specific_huge_bootmem_alloc(h))
+> > +             return false;
+> > +
+> > +     return (hstate_is_gigantic(h) && hugetlb_cma_size && hugetlb_cma_=
+only);
+> > +}
+> > +
+> > +static __init void *alloc_bootmem(struct hstate *h, int nid)
+> > +{
+> > +     struct huge_bootmem_page *m;
+> > +     unsigned long flags;
+> > +     struct cma *cma;
+> > +
+> > +#ifdef CONFIG_CMA
+>
+>   #ifdefs in C files should be avoided, see
+> https://docs.kernel.org/process/coding-style.html#conditional-compilation
+>
+> > +     if (hugetlb_early_cma(h)) {
+> > +             flags =3D HUGE_BOOTMEM_CMA;
+> > +             cma =3D hugetlb_cma[nid];
+> > +             m =3D cma_reserve_early(cma, huge_page_size(h));
+> > +     } else
+> > +#endif
+>
+> This kind of if/else construct in uggly, should be avoided.
+>
+
+I found this ifdef hard to avoid, sadly, I tried various ways to avoid
+it (If (IS_ENABLED(CONFIG_CMA), etc), but came up short. I'll have
+another look for v2, but short of trying to split off all CMA-related
+code in to a different file, which would definitely be out of scope
+here, it might not end up being better.
+
+> > +     {
+> > +             flags =3D 0;
+> > +             cma =3D NULL;
+> > +             m =3D memblock_alloc_try_nid_raw(huge_page_size(h),
+> > +                     huge_page_size(h), 0, MEMBLOCK_ALLOC_ACCESSIBLE, =
+nid);
+> > +     }
+> > +
+> > +     if (m) {
+> > +             /*
+> > +              * Use the beginning of the huge page to store the
+> > +              * huge_bootmem_page struct (until gather_bootmem
+> > +              * puts them into the mem_map).
+> > +              *
+> > +              * Put them into a private list first because mem_map
+> > +              * is not up yet.
+> > +              */
+> > +             INIT_LIST_HEAD(&m->list);
+> > +             list_add(&m->list, &huge_boot_pages[nid]);
+> > +             m->hstate =3D h;
+> > +             m->flags =3D flags;
+> > +             m->cma =3D cma;
+> > +     }
+> > +
+> > +     return m;
+> > +}
+> > +
+> >   int alloc_bootmem_huge_page(struct hstate *h, int nid)
+> >       __attribute__ ((weak, alias("__alloc_bootmem_huge_page")));
+> >   int __alloc_bootmem_huge_page(struct hstate *h, int nid)
+> > @@ -3184,17 +3246,14 @@ int __alloc_bootmem_huge_page(struct hstate *h,=
+ int nid)
+> >
+> >       /* do node specific alloc */
+> >       if (nid !=3D NUMA_NO_NODE) {
+> > -             m =3D memblock_alloc_try_nid_raw(huge_page_size(h), huge_=
+page_size(h),
+> > -                             0, MEMBLOCK_ALLOC_ACCESSIBLE, nid);
+> > +             m =3D alloc_bootmem(h, node);
+> >               if (!m)
+> >                       return 0;
+> >               goto found;
+> >       }
+> >       /* allocate from next node when distributing huge pages */
+> >       for_each_node_mask_to_alloc(&h->next_nid_to_alloc, nr_nodes, node=
+, &node_states[N_ONLINE]) {
+> > -             m =3D memblock_alloc_try_nid_raw(
+> > -                             huge_page_size(h), huge_page_size(h),
+> > -                             0, MEMBLOCK_ALLOC_ACCESSIBLE, node);
+> > +             m =3D alloc_bootmem(h, node);
+> >               if (m)
+> >                       break;
+> >       }
+> > @@ -3203,7 +3262,6 @@ int __alloc_bootmem_huge_page(struct hstate *h, i=
+nt nid)
+> >               return 0;
+> >
+> >   found:
+> > -
+> >       /*
+> >        * Only initialize the head struct page in memmap_init_reserved_p=
+ages,
+> >        * rest of the struct pages will be initialized by the HugeTLB
+> > @@ -3213,18 +3271,6 @@ int __alloc_bootmem_huge_page(struct hstate *h, =
+int nid)
+> >        */
+> >       memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE)=
+,
+> >               huge_page_size(h) - PAGE_SIZE);
+> > -     /*
+> > -      * Use the beginning of the huge page to store the
+> > -      * huge_bootmem_page struct (until gather_bootmem
+> > -      * puts them into the mem_map).
+> > -      *
+> > -      * Put them into a private list first because mem_map
+> > -      * is not up yet.
+> > -      */
+> > -     INIT_LIST_HEAD(&m->list);
+> > -     list_add(&m->list, &huge_boot_pages[node]);
+> > -     m->hstate =3D h;
+> > -     m->flags =3D 0;
+> >       return 1;
+> >   }
+> >
+> > @@ -3265,13 +3311,25 @@ static void __init hugetlb_folio_init_vmemmap(s=
+truct folio *folio,
+> >       prep_compound_head((struct page *)folio, huge_page_order(h));
+> >   }
+> >
+> > +static bool __init hugetlb_bootmem_page_prehvo(struct huge_bootmem_pag=
+e *m)
+> > +{
+> > +     return (m->flags & HUGE_BOOTMEM_HVO);
+>
+> Parenthesis are superflous
+>
+> > +}
+> > +
+> > +static bool __init hugetlb_bootmem_page_earlycma(struct huge_bootmem_p=
+age *m)
+> > +{
+> > +     return (m->flags & HUGE_BOOTMEM_CMA);
+>
+> Parenthesis are superflous
+>
+
+Sure, will remove them.
+
+> > +}
+> > +
+> >   /*
+> >    * memblock-allocated pageblocks might not have the migrate type set
+> >    * if marked with the 'noinit' flag. Set it to the default (MIGRATE_M=
+OVABLE)
+> > - * here.
+> > + * here, or MIGRATE_CMA if this was a page allocated through an early =
+CMA
+> > + * reservation.
+> >    *
+> > - * Note that this will not write the page struct, it is ok (and necess=
+ary)
+> > - * to do this on vmemmap optimized folios.
+> > + * In case of vmemmap optimized folios, the tail vmemmap pages are map=
+ped
+> > + * read-only, but that's ok - for sparse vmemmap this does not write t=
+o
+> > + * the page structure.
+> >    */
+> >   static void __init hugetlb_bootmem_init_migratetype(struct folio *fol=
+io,
+> >                                                         struct hstate *=
+h)
+> > @@ -3280,9 +3338,13 @@ static void __init hugetlb_bootmem_init_migratet=
+ype(struct folio *folio,
+> >
+> >       WARN_ON_ONCE(!pageblock_aligned(folio_pfn(folio)));
+> >
+> > -     for (i =3D 0; i < nr_pages; i +=3D pageblock_nr_pages)
+> > -             set_pageblock_migratetype(folio_page(folio, i),
+> > +     for (i =3D 0; i < nr_pages; i +=3D pageblock_nr_pages) {
+> > +             if (folio_test_hugetlb_cma(folio))
+> > +                     init_cma_pageblock(folio_page(folio, i));
+> > +             else
+> > +                     set_pageblock_migratetype(folio_page(folio, i),
+> >                                         MIGRATE_MOVABLE);
+> > +     }
+> >   }
+> >
+> >   static void __init prep_and_add_bootmem_folios(struct hstate *h,
+> > @@ -3319,7 +3381,7 @@ bool __init hugetlb_bootmem_page_zones_valid(int =
+nid,
+> >                                            struct huge_bootmem_page *m)
+> >   {
+> >       unsigned long start_pfn;
+> > -     bool valid;
+> > +     bool valid =3D false;
+>
+> Why do you need that, I can't see any path to reach out: without setting
+> 'valid'.
+
+True - probably a leftover from an earlier iteration, I can remove that.
+>
+> >
+> >       if (m->flags & HUGE_BOOTMEM_ZONES_VALID) {
+> >               /*
+> > @@ -3328,10 +3390,16 @@ bool __init hugetlb_bootmem_page_zones_valid(in=
+t nid,
+> >               return true;
+> >       }
+> >
+> > +     if (hugetlb_bootmem_page_earlycma(m)) {
+> > +             valid =3D cma_validate_zones(m->cma);
+> > +             goto out;
+> > +     }
+> > +
+> >       start_pfn =3D virt_to_phys(m) >> PAGE_SHIFT;
+> >
+> >       valid =3D !pfn_range_intersects_zones(nid, start_pfn,
+> >                       pages_per_huge_page(m->hstate));
+> > +out:
+> >       if (!valid)
+> >               hstate_boot_nrinvalid[hstate_index(m->hstate)]++;
+> >
+> > @@ -3360,11 +3428,6 @@ static void __init hugetlb_bootmem_free_invalid_=
+page(int nid, struct page *page,
+> >       }
+> >   }
+> >
+> > -static bool __init hugetlb_bootmem_page_prehvo(struct huge_bootmem_pag=
+e *m)
+> > -{
+> > -     return (m->flags & HUGE_BOOTMEM_HVO);
+> > -}
+> > -
+> >   /*
+> >    * Put bootmem huge pages into the standard lists after mem_map is up=
+.
+> >    * Note: This only applies to gigantic (order > MAX_PAGE_ORDER) pages=
+.
+> > @@ -3414,6 +3477,9 @@ static void __init gather_bootmem_prealloc_node(u=
+nsigned long nid)
+> >                        */
+> >                       folio_set_hugetlb_vmemmap_optimized(folio);
+> >
+> > +             if (hugetlb_bootmem_page_earlycma(m))
+> > +                     folio_set_hugetlb_cma(folio);
+> > +
+> >               list_add(&folio->lru, &folio_list);
+> >
+> >               /*
+> > @@ -3606,8 +3672,11 @@ static void __init hugetlb_hstate_alloc_pages(st=
+ruct hstate *h)
+> >   {
+> >       unsigned long allocated;
+> >
+> > -     /* skip gigantic hugepages allocation if hugetlb_cma enabled */
+> > -     if (hstate_is_gigantic(h) && hugetlb_cma_size) {
+> > +     /*
+> > +      * Skip gigantic hugepages allocation if early CMA
+> > +      * reservations are not available.
+> > +      */
+> > +     if (hstate_is_gigantic(h) && hugetlb_cma_size && !hugetlb_early_c=
+ma(h)) {
+> >               pr_warn_once("HugeTLB: hugetlb_cma is enabled, skip boot =
+time allocation\n");
+> >               return;
+> >       }
+>
 
