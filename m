@@ -1,91 +1,136 @@
-Return-Path: <linuxppc-dev+bounces-5641-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5642-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C19CA20E76
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 17:25:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 864F8A20EE4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 17:47:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj9d75Ctxz2yxP;
-	Wed, 29 Jan 2025 03:25:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YjB5Y2HP9z2xgX;
+	Wed, 29 Jan 2025 03:46:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738081547;
-	cv=none; b=Zmrg0koD800ahDK0t691Du8CdUr4utafuEpx0pPWLoN8rkFatt5OhUQlt5a9InS5NdFZ1Ycm5fAUY57JoQBoQZfLE+H8H8YpV8TaENoXbY1rBUVtBlmvh20BHkbZ8Q4YdpJ1nMh216SJ+xGMdvmYL+iCkUe+9kXFI9E5eCUpPp16C33mX93VkYJFj3zysBbdPQFXJiFhBCsoldo7fEzAGw1UgmO4PJ8PhB4MfMh4lKgn/DgGygrJGlEzSsJjPmRO0MYiWY+aWhXLKgXhPbHRizICyp0SZg5SWyQ5bPEGkoB82rJ4IX31DUdwvWUm5jjFm3G5dNmXEteyXeCkI5K7pA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b30"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738082817;
+	cv=none; b=CtQXziXLglJ44AkeFvMKfZuO3X4S34p5aaEm3G4JxOTO4EJf4UPaN4gqr+ZhW+JwDZFJGTlRPnzHCpZKug4iOZTQ1PqmyrAFa9vdJFuVPOchfhUzlvvh2vcymsg5bH4mefBpuABqUzbfM08SrsclPCAJ9FXN59qqSaJDnjsuBIJ+Ecfs0OBrcmuenvwfyoxZtOcK/RZIYsPLT6EYCI+HN0A+oGwxJk4IR7rH22ecMw3ERrtF0whBizmQzxVaWLycWcGPZOPgeRoAGgKWawtVZf7fGG6x2Xbp1sTVBkM783DvEnhiNcOAUZuABfgSw/2cpikvQ8SjDQ7voXPrDhmy0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738081547; c=relaxed/relaxed;
-	bh=Q+GzEo6xQjcCivH2uqqJkJdbnOBUjgfD/PowAlU4fmM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iEhePKhKlPvZfNLuCBvUtRJJkPFxZOnEX33hsdksV3HdGR+BF1cg0HBAH4kUIMczXKVwZ9hY7ZcYHxr7Mmzp0DE11jM/gWgomp69FDRDX6PtvCOHfM7htnKz0bdTdibsdvJRtGLxEByW8e4eQQKYRrukm0jkWPi2PmF3LWNgdmR4PVevx/zyya0plze7trAEcN1qb0rKD2EFnB9oSsDfDz6blcyraQYUtl5oyqAFbpo84nA+bXTrzAVjXSqdxlffu0tNaPuph5xSRE1BYirwPZGhdMQXiLqDsKKgO7CeB9JReylfVgGuzagCU5ICLkDrLMxsyGA8sOVOp8xTL08CsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj9d64v57z2yn2
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 03:25:46 +1100 (AEDT)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 2308C72C8CC;
-	Tue, 28 Jan 2025 19:25:45 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id 0E2917CCB3A; Tue, 28 Jan 2025 18:25:45 +0200 (IST)
-Date: Tue, 28 Jan 2025 18:25:44 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Oleg Nesterov <oleg@redhat.com>, linux-snps-arc@lists.infradead.org,
-	Rich Felker <dalias@libc.org>, Thomas Gleixner <tglx@linutronix.de>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	linux-mips@vger.kernel.org,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	"H. Peter Anvin" <hpa@zytor.com>, sparclinux@vger.kernel.org,
-	linux-hexagon@vger.kernel.org, WANG Xuerui <kernel@xen0n.name>,
-	Will Deacon <will@kernel.org>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Jonas Bonn <jonas@southpole.se>, linux-s390@vger.kernel.org,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	linux-riscv@lists.infradead.org,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	strace-devel@lists.strace.io, linux-arch@vger.kernel.org,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	Renzo Davoli <renzo@cs.unibo.it>, linux-um@lists.infradead.org,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Naveen N Rao <naveen@kernel.org>,
+	t=1738082817; c=relaxed/relaxed;
+	bh=Y7I3FQn+a3IeKpvoyXVLY346phLoqlukuEhizyoucyY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=QQCxkb8gfoI+TkFKxLkXuPUUcgSlxzkjcZur98LZbSk4S2QtuQ3j3MB2NWbcpGUQleAqv29G0ayYm9iO3DKRCT0G5twTnRpCRkSzyv/MDlvg0lW+7vXvtBMBJpU3+gteCtuhFaQaYGo8yelzZAriGA2+pp8AjxyvroMZxkH5a7tn6+oyOluPh+pEzYHm0kR2V08/yoRrz00p1rAKO0pfE3a/aLC7y//bfrIdWv2WKPQc104oIrX8DaEVfyOPRzVRud0879ipbeXdC077n/msJDvjISNPaELN/8MuW3GhMHCjnVCdsblujjki77fInu3OFpe6XGD5g+fVl0qlJz3OKQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Zmp3d5fT; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b30; helo=mail-yb1-xb30.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Zmp3d5fT;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::b30; helo=mail-yb1-xb30.google.com; envelope-from=yury.norov@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-yb1-xb30.google.com (mail-yb1-xb30.google.com [IPv6:2607:f8b0:4864:20::b30])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjB5X168Cz2x9M
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 03:46:55 +1100 (AEDT)
+Received: by mail-yb1-xb30.google.com with SMTP id 3f1490d57ef6-e53a5ff2233so10578621276.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 08:46:55 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738082812; x=1738687612; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7I3FQn+a3IeKpvoyXVLY346phLoqlukuEhizyoucyY=;
+        b=Zmp3d5fTkvIyParHG7IeQ1Xf5pxaPSG5ydxknzowyDlSx0gQiRnS98hXfoo2Tvp9tX
+         Gdr/G+p0oAvdDq6zBAQqp5b+NvKZpTpbtBh86sG/MqFPkeR5dNPhxXMM7MzPtCZ/NBat
+         7cVRZg7M61AWqMsqkBDXH3naK5KN7fD8A4mVnBjs6dm+qqdulzqb20QqVEszz41ezzLk
+         KGuiq08X7yxOm9/yyTsVVczkrvLwUf6IrKWjvBGeMGAAyruV4WNnUfRN7Ilu5rWj0cAY
+         VcdWSk1iN0REZK/cozL+bfSNw3agplh8obDFsOMlvcer7XZpALgC5Xe0n2Lnf2RA3ZEg
+         m7CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738082812; x=1738687612;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y7I3FQn+a3IeKpvoyXVLY346phLoqlukuEhizyoucyY=;
+        b=NuHZcdwbhcNQuedV8NbD5bHQ+DLwtNuHFrZJYExbjFMDohHVvreWTgQjSEyHnvrbRy
+         r1Ta5+vbnzPUf3kxyDFghvznew/+Pw0tl6zFx6xAwLe8zIMM8R0DzE1B8LW0FxYs/whF
+         MLG0mzVGflekNlf1c/yeTbeEs5E38dqFCZ82xa2s+AfQRjBKHxSrEqZLINNxqt1bgBuo
+         ivCfk6Z6E+2M1ZI6+noeG07eFXOH0C5++ER0CROZpBcn/+J4jGGWc7g2Y+K3LrtfGL2k
+         zyRyzOpfrS2SgLS7RtsVfO1W5Mp+CLNevldTOaNv/TNkwXM0miQKeavVhe7SyCoo7o84
+         M0xw==
+X-Forwarded-Encrypted: i=1; AJvYcCWPKEXTQg7r1Y3vp/JTUSRLxtM+N+yHaC/bVFql8643DJyebKK/9j84evbHlnle0ypu6Kh/HOdOTQXWH5g=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yw0GUDNsBEkpJdFOevb3+82xF8aA931yf2v8YTzzjgRnFatZr1I
+	SRsMjAwBL5oKa48NuMaJXtNEKtg08dgoNT8mbHMmkVv8SmTnHY5u
+X-Gm-Gg: ASbGncv0CmpqDNhzCX8Cop77wC+YHr+9lwWXlDoZiaE61T+O3JIHXY/wB8SiO+n6qqj
+	ggNdV2NxDYDGei/sbpAA/g24J74PHWp9b1w/2W6eql0o0EDTBlHXXS6pyPHZJkm0bi5BaPgpxtt
+	zw1NaLml6Oe9e3x6WUQ150Go35t9gtoCxbMJ/imhf5sMrc6BQ8TLcoh8QV/ZYF4gkaYws3Vck2M
+	CSITZEOvb20sCsymKA4y4paDNM44ghDJ2hm2UvzSQzk1XmBczDPmwNbbr1SurcC7R2ph07gWNTg
+	vFSBsCkbsr+YIIskqYzm6VWc0Axjnak7mZHgQQQxH+/+ta2l1xM=
+X-Google-Smtp-Source: AGHT+IFvmgf54bypeg06iXMG7R6vW3zKyn1725RIYJUIjUALciExdJNbHjTn7B/5gtx7qirVGTp6aA==
+X-Received: by 2002:a05:6902:70c:b0:e58:5a:7694 with SMTP id 3f1490d57ef6-e58005a7945mr26770575276.20.1738082811957;
+        Tue, 28 Jan 2025 08:46:51 -0800 (PST)
+Received: from localhost (c-73-224-175-84.hsd1.fl.comcast.net. [73.224.175.84])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e583b7697c9sm2098812276.16.2025.01.28.08.46.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Jan 2025 08:46:51 -0800 (PST)
+From: Yury Norov <yury.norov@gmail.com>
+To: linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org,
+	netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	linux-nvme@lists.infradead.org,
+	linux-hyperv@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-scsi@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	linux-m68k@lists.linux-m68k.org, Borislav Petkov <bp@alien8.de>,
-	loongarch@lists.linux.dev, Paul Walmsley <paul.walmsley@sifive.com>,
-	Stafford Horne <shorne@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Brian Cain <bcain@quicinc.com>, Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	linux-parisc@vger.kernel.org, linux-openrisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
 	Sven Schnelle <svens@linux.ibm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Alexey Gladkov <legion@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH v3 3/6] syscall.h: introduce syscall_set_nr()
-Message-ID: <20250128162544.GE11869@strace.io>
-References: <20250128091636.GC8601@strace.io>
- <e76df471-1346-459a-9f24-fa053d7dcbe8@csgroup.eu>
+	Haren Myneni <haren@linux.ibm.com>,
+	Rick Lindsley <ricklind@linux.ibm.com>,
+	Nick Child <nnac123@linux.ibm.com>,
+	Thomas Falcon <tlfalcon@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Keith Busch <kbusch@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Sagi Grimberg <sagi@grimberg.me>,
+	"K. Y. Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	James Smart <james.smart@broadcom.com>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Yury Norov <yury.norov@gmail.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Matt Wu <wuqiang.matt@bytedance.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Daniel Jordan <daniel.m.jordan@oracle.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Greg Kurz <groug@kaod.org>,
+	Peter Xu <peterx@redhat.com>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Hendrik Brueckner <brueckner@linux.ibm.com>
+Subject: [PATCH v2 00/13] cpumask: cleanup cpumask_next_wrap() implementation and usage
+Date: Tue, 28 Jan 2025 11:46:29 -0500
+Message-ID: <20250128164646.4009-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.43.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,107 +143,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <e76df471-1346-459a-9f24-fa053d7dcbe8@csgroup.eu>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Jan 28, 2025 at 04:13:52PM +0100, Christophe Leroy wrote:
-> Le 28/01/2025 à 10:16, Dmitry V. Levin a écrit :
-> > Similar to syscall_set_arguments() that complements
-> > syscall_get_arguments(), introduce syscall_set_nr()
-> > that complements syscall_get_nr().
-> > 
-> > syscall_set_nr() is going to be needed along with
-> > syscall_set_arguments() on all HAVE_ARCH_TRACEHOOK
-> > architectures to implement PTRACE_SET_SYSCALL_INFO API.
-> > 
-> > Signed-off-by: Dmitry V. Levin <ldv@strace.io>
-> > Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-> > Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
-> > ---
-> >   arch/arc/include/asm/syscall.h        | 11 +++++++++++
-> >   arch/arm/include/asm/syscall.h        | 24 ++++++++++++++++++++++++
-> >   arch/arm64/include/asm/syscall.h      | 16 ++++++++++++++++
-> >   arch/hexagon/include/asm/syscall.h    |  7 +++++++
-> >   arch/loongarch/include/asm/syscall.h  |  7 +++++++
-> >   arch/m68k/include/asm/syscall.h       |  7 +++++++
-> >   arch/microblaze/include/asm/syscall.h |  7 +++++++
-> >   arch/mips/include/asm/syscall.h       | 14 ++++++++++++++
-> >   arch/nios2/include/asm/syscall.h      |  5 +++++
-> >   arch/openrisc/include/asm/syscall.h   |  6 ++++++
-> >   arch/parisc/include/asm/syscall.h     |  7 +++++++
-> >   arch/powerpc/include/asm/syscall.h    | 10 ++++++++++
-> >   arch/riscv/include/asm/syscall.h      |  7 +++++++
-> >   arch/s390/include/asm/syscall.h       | 12 ++++++++++++
-> >   arch/sh/include/asm/syscall_32.h      | 12 ++++++++++++
-> >   arch/sparc/include/asm/syscall.h      | 12 ++++++++++++
-> >   arch/um/include/asm/syscall-generic.h |  5 +++++
-> >   arch/x86/include/asm/syscall.h        |  7 +++++++
-> >   arch/xtensa/include/asm/syscall.h     |  7 +++++++
-> >   include/asm-generic/syscall.h         | 14 ++++++++++++++
-> >   20 files changed, 197 insertions(+)
-> > 
-> 
-> > diff --git a/arch/arm64/include/asm/syscall.h b/arch/arm64/include/asm/syscall.h
-> > index 76020b66286b..712daa90e643 100644
-> > --- a/arch/arm64/include/asm/syscall.h
-> > +++ b/arch/arm64/include/asm/syscall.h
-> > @@ -61,6 +61,22 @@ static inline void syscall_set_return_value(struct task_struct *task,
-> >   	regs->regs[0] = val;
-> >   }
-> >   
-> > +static inline void syscall_set_nr(struct task_struct *task,
-> > +				  struct pt_regs *regs,
-> > +				  int nr)
-> > +{
-> > +	regs->syscallno = nr;
-> > +	if (nr == -1) {
-> > +		/*
-> > +		 * When the syscall number is set to -1, the syscall will be
-> > +		 * skipped.  In this case the syscall return value has to be
-> > +		 * set explicitly, otherwise the first syscall argument is
-> > +		 * returned as the syscall return value.
-> > +		 */
-> > +		syscall_set_return_value(task, regs, -ENOSYS, 0);
-> > +	}
-> > +}
-> > +
-> >   #define SYSCALL_MAX_ARGS 6
-> >   
-> >   static inline void syscall_get_arguments(struct task_struct *task,
-> 
-> > diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-> > index 521f279e6b33..7505dcfed247 100644
-> > --- a/arch/powerpc/include/asm/syscall.h
-> > +++ b/arch/powerpc/include/asm/syscall.h
-> > @@ -39,6 +39,16 @@ static inline int syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
-> >   		return -1;
-> >   }
-> >   
-> > +static inline void syscall_set_nr(struct task_struct *task, struct pt_regs *regs, int nr)
-> > +{
-> > +	/*
-> > +	 * Unlike syscall_get_nr(), syscall_set_nr() can be called only when
-> > +	 * the target task is stopped for tracing on entering syscall, so
-> > +	 * there is no need to have the same check syscall_get_nr() has.
-> > +	 */
-> > +	regs->gpr[0] = nr;
-> 
-> Doesn't the same as for ARM64 apply here as well ?
+cpumask_next_wrap() is overly complicated, comparing to it's generic
+version find_next_bit_wrap(), not mentioning it duplicates the above.
+It roots to the times when the function was used in the implementation
+of for_each_cpu_wrap() iterator. The function has 2 additional parameters
+that were used to catch loop termination condition for the iterator.
+(Although, only one is needed.)
 
-I carefully checked all affected architectures and added that
-syscall_set_return_value() call only where I think it's needed.
+Since 4fe49b3b97c262 ("lib/bitmap: introduce for_each_set_bit_wrap()
+macro"), for_each_cpu_wrap() is wired to corresponding generic
+wrapping bitmap iterator, and additional complexity of
+cpumask_next_wrap() is not needed anymore.
 
-On powerpc it's not needed with the current implementation: their
-do_seccomp() sets -ENOSYS before __secure_computing() invocation, and
-their do_syscall_trace_enter() sets -ENOSYS in case of an invalid syscall
-number.
+All existing users call cpumask_next_wrap() in a manner that makes
+it possible to turn it to a straight and simple alias to
+find_next_bit_wrap().
 
+This series replaces historical 4-parameter cpumask_next_wrap() with a
+thin 2-parameter wrapper around find_next_bit_wrap().
+
+Where it's possible to use for_each_cpu_wrap() iterator, the code is
+switched to use it because it's always preferable to use iterators over
+open loops.
+
+This series touches various scattered subsystems and To-list for the
+whole series is quite a long. To minimize noise, I send cover-letter and
+key patches #5 and 6 to every person involved. All other patches are sent
+individually to those pointed by scripts/get_maintainers.pl.
+
+I'd like to move the series with my bitmap-for-next branch as a whole.
+
+v1: https://lore.kernel.org/netdev/20241228184949.31582-1-yury.norov@gmail.com/T/
+v2:
+ - rebase on top of today's origin/master;
+ - drop #v1-10: not needed since v6.14 @ Sagi Grinberg;
+ - #2, #3: fix picking next unused CPU @ Nick Child;
+ - fix typos, cleanup comments @ Bjorn Helgaas, Alexander Gordeev;
+ - CC Christoph Hellwig for the whole series.
+
+Yury Norov (13):
+  objpool: rework objpool_pop()
+  virtio_net: simplify virtnet_set_affinity()
+  ibmvnic: simplify ibmvnic_set_queue_affinity()
+  powerpc/xmon: simplify xmon_batch_next_cpu()
+  cpumask: deprecate cpumask_next_wrap()
+  cpumask: re-introduce cpumask_next{,_and}_wrap()
+  cpumask: use cpumask_next_wrap() where appropriate
+  padata: switch padata_find_next() to using cpumask_next_wrap()
+  s390: switch stop_machine_yield() to using cpumask_next_wrap()
+  scsi: lpfc: switch lpfc_irq_rebalance() to using cpumask_next_wrap()
+  scsi: lpfc: rework lpfc_next_{online,present}_cpu()
+  PCI: hv: Switch hv_compose_multi_msi_req_get_cpu() to using
+    cpumask_next_wrap()
+  cpumask: drop cpumask_next_wrap_old()
+
+ arch/powerpc/xmon/xmon.c            |  6 +--
+ arch/s390/kernel/processor.c        |  2 +-
+ drivers/net/ethernet/ibm/ibmvnic.c  | 18 +++++---
+ drivers/net/virtio_net.c            | 12 ++---
+ drivers/pci/controller/pci-hyperv.c |  3 +-
+ drivers/scsi/lpfc/lpfc.h            | 23 +++-------
+ drivers/scsi/lpfc/lpfc_init.c       |  2 +-
+ include/linux/cpumask.h             | 69 ++++++++++++++++++++---------
+ include/linux/objpool.h             |  7 ++-
+ kernel/padata.c                     |  2 +-
+ lib/cpumask.c                       | 37 +---------------
+ 11 files changed, 81 insertions(+), 100 deletions(-)
 
 -- 
-ldv
+2.43.0
+
 
