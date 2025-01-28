@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-5621-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5622-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C490A2098F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 12:22:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF794A20A04
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 12:57:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj2vV5mB7z2yGF;
-	Tue, 28 Jan 2025 22:22:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj3h41nsYz2yDr;
+	Tue, 28 Jan 2025 22:57:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738063366;
-	cv=none; b=aRI1QfFr98sGrXSDtP2h4YgHtHXER/q+kabNgKLA41c5aHd+NNMfPG0wn8HujBcsmCQytau67R+pX0X2gTjMj3/7FnjO4uIXs224HtPAXZaGnpwtXa7vT900m/DIKO4qFZW8ACe74jB1Mr65ZGCvhaeAel1xjOh1JeoymG63cpXdjjMxpdk9iylTu55ZxCgCelda82VprjImtCpZPBhlFzvW4h3POiw02erhCArevKBJkCc1W8ne/UPvaNX+98vXUXmvzynz2nUQLyCPyWGXsLivf9fkzlK71Gak0Nb3Ytq0gJoQDBhRT+kaFtjW7bOjKvris+AbMTOALuG2VEDZww==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738065476;
+	cv=none; b=L3fh8f8IvLgyITVM4X/g6NH8CvJimzgs2pa+wH9Yv7oKR7Zc0V7cTgV1DwxlIzXrhYO345k+Wekzs6PK96ZBsq3z3zxtzBGDN+ZwP+kuFqxEHKDZfKf6L/FIhLXviSfg7lZi6N8Zxab68tsWVANotL5txeRmyMyKHophU5L9Fi7Y/Az0I98b7A6WYhum3/KOW+cWQdwVhXy/msUVOxgQ7hyrU7BrEwC/3F+0a7wk+EMBvvcdWuC72VgFdFC5gvhg0W+QSDaHkFjoSfrxGDjeiekqP9SSeimutizaKb9aYJitY+wx8cv9aCxugQQoviY64pfxYbYc2J2jL6dC/7Xu+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738063366; c=relaxed/relaxed;
-	bh=hyXa291ZiBFa2abNTHu016AfX8E2h8XxDNeXleklmPc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DMXMFQJjESdast5AJw/1kkdwFuTktzBV5bvmtOStijX+ZZUpgR7GQgRecc/JyXgWRfZRbET+LPlasa4SrPR+GdbOUkgcuphcXPyme2eeu2XwJ3kttyIfgFqib+sSZOATTGzcSXwlYmFkgXlkUUCJOSN/4g3U4sglAlSM+UrKwtSRjiTghFzqSp5lNKh+Hxy+LXvzeNBZnsRsGA1pt7/SLCbi316BSfNCtXgfL0/coisliMaGJSsuJhI2vQT6VtQSJ48kcdJ3eu0eVri6B4rAyXtXxMbqF90rXZkRSXgaehBsVqetTCk8FD0nU6K21xv3x/lM16t7P7zDcOxIEsPJAw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=foTouGKI; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=joel.granados@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1738065476; c=relaxed/relaxed;
+	bh=r7X8KGofGjzXyiXmNpCqfsbsuZB60462r6ZQo2dzXl8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hUotkhoshGstXYWqRjlwZ4z5gOpZSAIMnC2piOA3SFS08lGV5T2ng7js7w63ptXYEyC8Ti8Xr5uJ5efHdAI15/42jqNuskNLPRVEihwH2AeyxHXVQjsf2l4WcYPVJ7NOy98c9CJEA+1FidP8mNsRmd5FOYev3uZnGmLmc6+gzUz/02B0oBsLCWkVbtrgd7aInGXSQb9zrTquKmeVwD12uDjeWm0yEEXtT+E4TykVr4bQCKYH9yhdAhlts30kfbWlicGRtfgCwgf/HRdav17PSevNt2Mk77P0sOoqbGcurZrGw7FHfOnGtClkPD8KVgC9Sm6Ga6V6Ym1UrnUXqifpNA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ayYcsvup; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=foTouGKI;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ayYcsvup;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=joel.granados@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yj2vT6tRSz2y8W
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 22:22:45 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 3179E5C5D79;
-	Tue, 28 Jan 2025 11:22:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98109C4CEDF;
-	Tue, 28 Jan 2025 11:22:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738063362;
-	bh=AJfDJn9pFkPItjs+l9CjDlC33TdlTCE01Kr4mfJIOJE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=foTouGKI5Xpt6DiifiySGU1Px4B0JlxynZkL/A+4GJ+F1wUAFkM/N4G83a9sI8N06
-	 lsMHA2F0I+BGkV1h4oylhwmSeJznMzbN+UJy9qwbYRK5QlpfqNfv8Msq/ndA/iDm4I
-	 JYp3P2GR22dNEIcBnZOOATJGYPU+gMIFK9XfLLma3B24+UKToDLZL/ZLBF6bwp16qy
-	 HMKr9svtYad8MrCuOMMF5t2I0WLB8bGS9HGYMu9w94+SD6sanYCztaTmP2cubx4D+F
-	 lhSPEntAtoYhJR/j92VqRwE5MifEf7tNzvj9NQnTwv0sbHofELHMou005/QzH1lonP
-	 yczCENnq4hKEA==
-Date: Tue, 28 Jan 2025 12:22:37 +0100
-From: Joel Granados <joel.granados@kernel.org>
-To: Matthew Wilcox <willy@infradead.org>
-Cc: Jani Nikula <jani.nikula@intel.com>, Ard Biesheuvel <ardb@kernel.org>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <linux@weissschuh.net>, 
-	Kees Cook <kees@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	openipmi-developer@lists.sourceforge.net, intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org, 
-	intel-xe@lists.freedesktop.org, linux-hyperv@vger.kernel.org, linux-rdma@vger.kernel.org, 
-	linux-raid@vger.kernel.org, linux-scsi@vger.kernel.org, linux-serial@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-aio@kvack.org, linux-fsdevel@vger.kernel.org, 
-	netfs@lists.linux.dev, codalist@coda.cs.cmu.edu, linux-mm@kvack.org, 
-	linux-nfs@vger.kernel.org, ocfs2-devel@lists.linux.dev, fsverity@lists.linux.dev, 
-	linux-xfs@vger.kernel.org, io-uring@vger.kernel.org, bpf@vger.kernel.org, 
-	kexec@lists.infradead.org, linux-trace-kernel@vger.kernel.org, 
-	linux-hardening@vger.kernel.org, apparmor@lists.ubuntu.com, linux-security-module@vger.kernel.org, 
-	keyrings@vger.kernel.org, Song Liu <song@kernel.org>, 
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>, "Martin K. Petersen" <martin.petersen@oracle.com>, 
-	"Darrick J. Wong" <djwong@kernel.org>, Corey Minyard <cminyard@mvista.com>
-Subject: Re: Re: Re: Re: [PATCH v2] treewide: const qualify ctl_tables where
- applicable
-Message-ID: <u2fwibsnbfvulxj6adigla6geiafh2vuve4hcyo4vmeytwjl7p@oz6xonrq5225>
-References: <20250110-jag-ctl_table_const-v2-1-0000e1663144@kernel.org>
- <Z4+jwDBrZNRgu85S@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
- <nslqrapp4v3rknjgtfk4cg64ha7rewrrg24aslo2e5jmxfwce5@t4chrpuk632k>
- <CAMj1kXEZPe8zk7s67SADK9wVH3cfBup-sAZSC6_pJyng9QT7aw@mail.gmail.com>
- <f4lfo2fb7ajogucsvisfd5sg2avykavmkizr6ycsllcrco4mo3@qt2zx4zp57zh>
- <87jzag9ugx.fsf@intel.com>
- <Z5epb86xkHQ3BLhp@casper.infradead.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yj3h30yLlz2xH9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 22:57:54 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50S7X5hL023185;
+	Tue, 28 Jan 2025 11:57:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=r7X8KG
+	ofGjzXyiXmNpCqfsbsuZB60462r6ZQo2dzXl8=; b=ayYcsvupPRKoRP/G+OPys1
+	QycJqFRxlExFL71+Y+8MCKAm6S1eALhR9up6ADp3MbVEqBKOshE/ZYtSHJiMqyL5
+	tmr2CCEkfCgeCMaAnWbOYrn43csIYdq6hgajcdaDtRWbQQifCae0mL/R2u++ata5
+	ogooXpH9EldEpu4pukHkOVBLdOeKtWYstJ6YFhIpqIGCaRfJJaLQ0AOkyLMTdp+e
+	ulQ+nD402A07THf8Qw6jVJEamD4nKzuZvkoBm3w/O5OksjGmS1ci+dQFIEFte1+D
+	GPJqES0cmvlqnKilTldeOzX14lQd5/w2D0I5G9KrgTIM9LVcpCFyQIPrqekhN+gw
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44etxrs2p0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 11:57:45 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50SBs3oD013874;
+	Tue, 28 Jan 2025 11:57:44 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44etxrs2nw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 11:57:44 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50S88cr2012444;
+	Tue, 28 Jan 2025 11:57:43 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44dany38gc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Jan 2025 11:57:43 +0000
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50SBvg2M22282896
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Jan 2025 11:57:42 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 64A8D58055;
+	Tue, 28 Jan 2025 11:57:42 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6B5505803F;
+	Tue, 28 Jan 2025 11:57:38 +0000 (GMT)
+Received: from [9.204.206.207] (unknown [9.204.206.207])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Jan 2025 11:57:38 +0000 (GMT)
+Message-ID: <27978f31-6b66-4d4c-886b-e2bfb41d5261@linux.ibm.com>
+Date: Tue, 28 Jan 2025 17:27:36 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,38 +85,81 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z5epb86xkHQ3BLhp@casper.infradead.org>
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv
+ specific PMU
+To: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
+        amachhiw@linux.ibm.com
+References: <20250123120749.90505-1-vaibhav@linux.ibm.com>
+ <20250123120749.90505-5-vaibhav@linux.ibm.com>
+ <40C19755-ABE4-4E23-A75A-1F6F6DDC505A@linux.vnet.ibm.com>
+ <87y0ywu2ri.fsf@vajain21.in.ibm.com>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <87y0ywu2ri.fsf@vajain21.in.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: MNESt_Kp7udNeKkgSEzO62Q2Ay1u4sAz
+X-Proofpoint-GUID: ENHdIdwhxCCLeW6MK-1CsGIb68TQgiQs
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-28_04,2025-01-27_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 suspectscore=0 mlxlogscore=710
+ priorityscore=1501 phishscore=0 adultscore=0 malwarescore=0
+ lowpriorityscore=0 clxscore=1011 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2411120000 definitions=main-2501280089
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 27, 2025 at 03:42:39PM +0000, Matthew Wilcox wrote:
-> On Mon, Jan 27, 2025 at 04:55:58PM +0200, Jani Nikula wrote:
-> > You could have static const within functions too. You get the rodata
-> > protection and function local scope, best of both worlds?
+
+
+On 1/27/25 1:06 PM, Vaibhav Jain wrote:
+> Hi Athira,
 > 
-> timer_active is on the stack, so it can't be static const.
+> Thanks for reviewing this patch series. My responses to your review
+> comment inline below:
 > 
-> Does this really need to be cc'd to such a wide distribution list?
-That is a very good question. I removed 160 people from the original
-e-mail and left the ones that where previously involved with this patch
-and left all the lists for good measure. But it seems I can reduce it
-even more.
+> 
+> Athira Rajeev <atrajeev@linux.vnet.ibm.com> writes:
+> 
+>>> On 23 Jan 2025, at 5:37 PM, Vaibhav Jain <vaibhav@linux.ibm.com> wrote:
+>>>
+>>> Introduce a new PMU named 'kvm-hv' to report Book3s kvm-hv specific
+> <snip>
+>>
+>> Hi Vaibhav
+>>
+>> All PMU specific code is under “arch/powerpc/perf in the kernel source. Here since we are introducing a kvm-hv specific PMU, can we please have it in arch/powerpc/perf ?
+> 
+> Is it common convention to put PMU specific code in
+> arch/powerpc/perf across ppc achitecture variants ? If its there can you
+> please mention the reasons behind it.
+> 
 
-How about this: For these treewide efforts I just leave the people that
-are/were involved in the series and add two lists: linux-kernel and
-linux-hardening.
+My concern is about fragmentation. Would prefer to have
+the pmu code under perf folder. Secondly, we did handle
+module case for vpa-pmu.
 
-Unless someone screams, I'll try this out on my next treewide.
+Maddy
 
-Thx for the feedback
 
-Best
+> Also the code for this PMU, will be part of kvm-hv kernel module as it
+> utilizes the functionality implemented there. Moving this PMU code to
+> arch/powerpc/perf will need this to be converted in yet another new
+> kernel module, adding a dependency to kvm-hv module and exporting a
+> bunch of functionality from kvm-hv. Which looks bit messy to me
+> 
+> <snip>
+> 
 
--- 
-
-Joel Granados
 
