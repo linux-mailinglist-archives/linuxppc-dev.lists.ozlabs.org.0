@@ -1,86 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-5616-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5620-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0674A20448
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 07:14:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 631B9A20728
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 28 Jan 2025 10:20:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yhw2Z5b0Mz2xdY;
-	Tue, 28 Jan 2025 17:13:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj09y5ZBXz2ysv;
+	Tue, 28 Jan 2025 20:20:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738044806;
-	cv=none; b=FMRLWt5RswVjPPU3WE55N5UoziuPB6wr0dGtC9q6CLuD+34qPfVZVF8Ym426jSBmvxJo6xGaiLyuRSN3p2ExvCVxykILfIiyYL7/Ckemmbfh/HLcF1AtkXclwn1J2tbNRC4Tdfc2v63wtcYe0zmbye8496fAhptgk1/8sWH4hLVayknZLjpgJrDisf4J5tNGUUYWgFEOrYYtIrUFocH0JVVGSCMjn/ATKbS6D/ukUjs88mX7WIe28gSbPoBfzCZMzr0X3MM/tRJEAB8wcmYxFkdooSmMzJuI/REvCVJhOWlbBeq82MkUFMSEh21/PJvVGyaWUjqvyXcMOFWj55aG9A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738056006;
+	cv=none; b=SbWNoMQGzHxZAdQm0qzAB6QutQ6w3dJ0UG6Uyhc8lu7oHSrqRj2K09DUJylJhBqNVh68nlmcY0q59TByQJALIG1PETQhfJrHE9N8ojPepmSeElsdmtZTCTJ4CNRKHTWOEzcA85I+c+ytvBqjI5XgZxCE2HUpgonkOXA8nMx0J7lUNRgN6z2SZzLinmdVZRFFeB9BzeLQq2UlomqR+u/pnI+Bj02kSoTyxybiBfRTECs0LE/qSt/FRd9aamUVjjGBqAhp68y3ftVGrLqlrw5qHUwdKeMd+J7lFjTDYUwwGHO+LVBv66N5UrTojrMBzFmvkO1xHos4+lyEswBZ4WfYRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738044806; c=relaxed/relaxed;
-	bh=pUFgXcxTsZaDlVD8+cag65zqjHY8mB70UbNGTljqvDU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dd4B8XBvu4JWWIhXp7lWoFmV4/XFKqKPP5u2zJ0mWm4ZKWw/by/CkqE6GpxljDAnzSp3h5cgQXboFw0XacrbDK/tHP4AVqQCbtLyLirH1NkVoD4V7z+tHJB5hjqhu3kwk23MyPE5VrR8aDu7PvnzWD1z+5lufOEE0A1A0v6l1detv364q1UbSLqQZodpJrZxXnsMOhXkp5P5/hHcK72y0c1sScTvYByQXme8XC5p5BzO8JLmkpLdxWxnZb6nhVKZ+t/lK8t72uUj/yol63jWFizP6HPldxRsEWPVA8U7E0h2Qi7aQE4aFKA/cKt2FCO2NpzklhGPFGxgoGAWAu9Eiw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z6h7Bink; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Z6h7Bink;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yhw2Y4y4Yz30Pl
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 17:13:25 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50RLISaw018740;
-	Tue, 28 Jan 2025 06:13:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=pUFgXcxTsZaDlVD8+
-	cag65zqjHY8mB70UbNGTljqvDU=; b=Z6h7Bink0tyhP/9hqUsm7d5DSgocDPl+p
-	7D8gkFoPuCJR4yu1eO+DBaKIS5OqAZvI4CGyfabuuhFn4rasCCcofg04dFVfsmZI
-	ZQH1xS55edcYfZNsCWK4AmW9h4fdihRs12sTyRxsvDOhmDmRolfe9jS8tIJYLGwP
-	cir4BcH41UiC7gDNu9qFhiJR+cAVYgMxpVFa/okvrfG5B77uwfBBSk3itvJKQbGB
-	I1CY9b97xTpirt+iPTMsCgyiYhIyrb2q5BjqtH7+4xW9T7uUyZ3Wu8ImlhV7KqYy
-	nCy1P0KIhRjblsWMn9I4uspPbxtcLySpb/QqrtTIvTq56blZXFMcg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ecytb4tt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 06:13:16 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 50S6B7Qg008773;
-	Tue, 28 Jan 2025 06:13:16 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ecytb4tq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 06:13:16 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50S3eH9N003908;
-	Tue, 28 Jan 2025 06:13:15 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44da9sa2uf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 28 Jan 2025 06:13:15 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50S6DBgC40894766
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 28 Jan 2025 06:13:12 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C1E215805B;
-	Tue, 28 Jan 2025 06:13:11 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A1C158060;
-	Tue, 28 Jan 2025 06:13:10 +0000 (GMT)
-Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.33.13])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 28 Jan 2025 06:13:10 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
-        hbabu@us.ibm.com, haren@linux.ibm.com
-Subject: [PATCH v3 6/6] powerpc/pseries: Add papr-platform-dump character driver for dump retrieval
-Date: Mon, 27 Jan 2025 22:12:50 -0800
-Message-ID: <20250128061251.3718036-7-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250128061251.3718036-1-haren@linux.ibm.com>
-References: <20250128061251.3718036-1-haren@linux.ibm.com>
+	t=1738056006; c=relaxed/relaxed;
+	bh=BVyhC7QSA0G8BV/1ANXQcYrxJUmRXT/TD12BTyXAE2o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=X/AQzBTCR/FNPFKFe0/bTFLu5CqBvTeo75v828RPDT6bWQR6K8bvSBN28bF9F7MA37tJN+j5ZJd7qB9tu10o/ebT4BUMOCkpj2i6Bggs9ZdJU62x1ymYiY2/smWxc9mrw4AkvNEchXyFvhOGntXa93Wyc+0n4kRWI0LXlJjf+0OKzAGck3WFp1BuH6rCQOkAOcvxZHkdr+opGVGrvAvGNDY1uMvXmp8m6R8XmC59y3QoQSDGy+9lsXSjNqVZ+/7/JMrxvVVxF1LlR2KieXmyTLaZDBWIDrn9VwtRd2kWd6d7hk4grxF7oc51KPa+VccIP8B+ILVDXIBWU9E/YQY0aQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yj09x5NtMz2yZN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 20:20:04 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Yhzdk4zHCz9sSZ;
+	Tue, 28 Jan 2025 09:55:38 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id bUOlSg6jBUTm; Tue, 28 Jan 2025 09:55:38 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Yhzdk3m2lz9sSX;
+	Tue, 28 Jan 2025 09:55:38 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7126F8B76C;
+	Tue, 28 Jan 2025 09:55:38 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id 7ESIVIMdKw33; Tue, 28 Jan 2025 09:55:38 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BA8DE8B763;
+	Tue, 28 Jan 2025 09:55:37 +0100 (CET)
+Message-ID: <c961cc1e-897d-4b86-b123-b12a0c27f91a@csgroup.eu>
+Date: Tue, 28 Jan 2025 09:55:37 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,535 +56,426 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 27/27] mm/hugetlb: enable bootmem allocation from CMA
+ areas
+To: Frank van der Linden <fvdl@google.com>, akpm@linux-foundation.org,
+ muchun.song@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org
+Cc: yuzhao@google.com, usama.arif@bytedance.com, joao.m.martins@oracle.com,
+ roman.gushchin@linux.dev, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
+References: <20250127232207.3888640-1-fvdl@google.com>
+ <20250127232207.3888640-28-fvdl@google.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250127232207.3888640-28-fvdl@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 8vTgop8esvrJ-UOU_q_9tfqRfxh5dIOT
-X-Proofpoint-ORIG-GUID: 5vHf4OC-sfdt14zWTyWUb7EpG8WM7icg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-01-28_01,2025-01-27_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 adultscore=0 spamscore=0
- impostorscore=0 mlxscore=0 phishscore=0 mlxlogscore=999 suspectscore=0
- bulkscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2411120000 definitions=main-2501280044
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-ibm,platform-dump RTAS call in combination with writable mapping
-/dev/mem is issued to collect platform dump from the hypervisor
-and may need multiple calls to get the complete dump. The current
-implementation uses rtas_platform_dump() API provided by librtas
-library to issue these RTAS calls. But /dev/mem access by the
-user space is prohibited under system lockdown.
 
-The solution should be to restrict access to RTAS function in user
-space and provide kernel interfaces to collect dump. This patch
-adds papr-platform-dump character driver and expose standard
-interfaces such as open / ioctl/ read to user space in ways that
-are compatible with lockdown.
 
-PAPR (7.3.3.4.1 ibm,platform-dump) provides a method to obtain
-the complete dump:
-- Each dump will be identified by ID called dump tag.
-- A sequence of RTAS calls have to be issued until retrieve the
-  complete dump. The hypervisor expects the first RTAS call with
-  the sequence 0 and the subsequent calls with the sequence
-  number returned from the previous calls.
-- The hypervisor returns "dump complete" status once the complete
-  dump is retrieved. But expects one more RTAS call from the
-  partition with the NULL buffer to invalidate dump which means
-  the dump will be removed in the hypervisor.
-- Sequence of calls are allowed with different dump IDs at the
-  same time but not with the same dump ID.
+Le 28/01/2025 à 00:22, Frank van der Linden a écrit :
+> If hugetlb_cma_only is enabled, we know that hugetlb pages
+> can only be allocated from CMA. Now that there is an interface
+> to do early reservations from a CMA area (returning memblock
+> memory), it can be used to allocate hugetlb pages from CMA.
+> 
+> This also allows for doing pre-HVO on these pages (if enabled).
+> 
+> Make sure to initialize the page structures and associated data
+> correctly. Create a flag to signal that a hugetlb page has been
+> allocated from CMA to make things a little easier.
+> 
+> Some configurations of powerpc have a special hugetlb bootmem
+> allocator, so introduce a boolean arch_specific_huge_bootmem_alloc
+> that returns true if such an allocator is present. In that case,
+> CMA bootmem allocations can't be used, so check that function
+> before trying.
+> 
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Signed-off-by: Frank van der Linden <fvdl@google.com>
+> ---
+>   arch/powerpc/mm/hugetlbpage.c |   5 ++
+>   include/linux/hugetlb.h       |   7 ++
+>   mm/hugetlb.c                  | 135 +++++++++++++++++++++++++---------
+>   3 files changed, 114 insertions(+), 33 deletions(-)
+> 
+> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+> index d3c1b749dcfc..e53e4b4c8ef6 100644
+> --- a/arch/powerpc/mm/hugetlbpage.c
+> +++ b/arch/powerpc/mm/hugetlbpage.c
+> @@ -121,6 +121,11 @@ bool __init hugetlb_node_alloc_supported(void)
+>   {
+>   	return false;
+>   }
+> +
+> +bool __init arch_specific_huge_bootmem_alloc(struct hstate *h)
+> +{
+> +	return (firmware_has_feature(FW_FEATURE_LPAR) && !radix_enabled());
+> +}
+>   #endif
+>   
+>   
+> diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
+> index 2512463bca49..bca3052fb175 100644
+> --- a/include/linux/hugetlb.h
+> +++ b/include/linux/hugetlb.h
+> @@ -591,6 +591,7 @@ enum hugetlb_page_flags {
+>   	HPG_freed,
+>   	HPG_vmemmap_optimized,
+>   	HPG_raw_hwp_unreliable,
+> +	HPG_cma,
+>   	__NR_HPAGEFLAGS,
+>   };
+>   
+> @@ -650,6 +651,7 @@ HPAGEFLAG(Temporary, temporary)
+>   HPAGEFLAG(Freed, freed)
+>   HPAGEFLAG(VmemmapOptimized, vmemmap_optimized)
+>   HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
+> +HPAGEFLAG(Cma, cma)
+>   
+>   #ifdef CONFIG_HUGETLB_PAGE
+>   
+> @@ -678,14 +680,18 @@ struct hstate {
+>   	char name[HSTATE_NAME_LEN];
+>   };
+>   
+> +struct cma;
+> +
+>   struct huge_bootmem_page {
+>   	struct list_head list;
+>   	struct hstate *hstate;
+>   	unsigned long flags;
+> +	struct cma *cma;
+>   };
+>   
+>   #define HUGE_BOOTMEM_HVO		0x0001
+>   #define HUGE_BOOTMEM_ZONES_VALID	0x0002
+> +#define HUGE_BOOTMEM_CMA		0x0004
+>   
+>   bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_page *m);
+>   
+> @@ -711,6 +717,7 @@ bool __init hugetlb_node_alloc_supported(void);
+>   
+>   void __init hugetlb_add_hstate(unsigned order);
+>   bool __init arch_hugetlb_valid_size(unsigned long size);
+> +bool __init arch_specific_huge_bootmem_alloc(struct hstate *h);
 
-Expose these interfaces to user space with a /dev/papr-platform-dump
-character device using the following programming model:
+Why adding 'specific' in the name ? Prefixing a function name with arch_ 
+is usually enough to denote an architecture specific function.
 
-   int devfd = open("/dev/papr-platform-dump", O_RDONLY);
-   int fd = ioctl(devfd,PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE, &dump_id)
-	- Restrict user space to access with the same dump ID.
-          Typically we do not expect user space requests the dump
-          again for the same dump ID.
-   char *buf = malloc(size);
-   length = read(fd, buf, size);
-        - size should be minimum 1K based on PAPR and  <= 4K based
-          on RTAS work area size. It will be restrict to RTAS work
-          area size. Using 4K work area based on the current
-          implementation in librtas library
-        - Each read call issue RTAS call to get the data based on
-          the size requirement and returns bytes returned from the
-          hypervisor
-        - If the previous call returns dump complete status, the
-          next read returns 0 like EOF.
-   ret = ioctl(PAPR_PLATFORM_DUMP_IOC_INVALIDATE, &dump_id)
-	- RTAS call with NULL buffer to invalidates the dump.
+>   struct hstate *size_to_hstate(unsigned long size);
+>   
+>   #ifndef HUGE_MAX_HSTATE
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 32ebde9039e2..183e8d0c2fb4 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -61,7 +61,7 @@ static struct cma *hugetlb_cma[MAX_NUMNODES];
+>   static unsigned long hugetlb_cma_size_in_node[MAX_NUMNODES] __initdata;
+>   #endif
+>   static bool hugetlb_cma_only;
+> -static unsigned long hugetlb_cma_size __initdata;
+> +static unsigned long hugetlb_cma_size;
 
-The read API should use the file descriptor obtained from ioctl
-based on dump ID so that gets dump contents for the corresponding
-dump ID. Implemented support in librtas (rtas_platform_dump()) for
-this new ABI to support system lockdown.
+Why remove __initdata ? As far as I can see it is used only in 
+hugetlb_early_cma() and hugetlb_hstate_alloc_pages() which are __init 
+functions.
 
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- .../include/uapi/asm/papr-platform-dump.h     |  15 +
- arch/powerpc/platforms/pseries/Makefile       |   1 +
- .../platforms/pseries/papr-platform-dump.c    | 409 ++++++++++++++++++
- 3 files changed, 425 insertions(+)
- create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
- create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
+>   
+>   __initdata struct list_head huge_boot_pages[MAX_NUMNODES];
+>   __initdata unsigned long hstate_boot_nrinvalid[HUGE_MAX_HSTATE];
+> @@ -132,8 +132,10 @@ static void hugetlb_free_folio(struct folio *folio)
+>   #ifdef CONFIG_CMA
+>   	int nid = folio_nid(folio);
+>   
+> -	if (cma_free_folio(hugetlb_cma[nid], folio))
+> +	if (folio_test_hugetlb_cma(folio)) {
+> +		WARN_ON(!cma_free_folio(hugetlb_cma[nid], folio));
 
-diff --git a/arch/powerpc/include/uapi/asm/papr-platform-dump.h b/arch/powerpc/include/uapi/asm/papr-platform-dump.h
-new file mode 100644
-index 000000000000..a1d89c290dab
---- /dev/null
-+++ b/arch/powerpc/include/uapi/asm/papr-platform-dump.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _UAPI_PAPR_PLATFORM_DUMP_H_
-+#define _UAPI_PAPR_PLATFORM_DUMP_H_
-+
-+#include <asm/ioctl.h>
-+#include <asm/papr-miscdev.h>
-+
-+/*
-+ * ioctl for /dev/papr-platform-dump. Returns a platform-dump handle fd
-+ * corresponding to dump tag.
-+ */
-+#define PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE _IOW(PAPR_MISCDEV_IOC_ID, 6, __u64)
-+#define PAPR_PLATFORM_DUMP_IOC_INVALIDATE    _IOW(PAPR_MISCDEV_IOC_ID, 7, __u64)
-+
-+#endif /* _UAPI_PAPR_PLATFORM_DUMP_H_ */
-diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-index e1db61877bb9..c82c94e0a73c 100644
---- a/arch/powerpc/platforms/pseries/Makefile
-+++ b/arch/powerpc/platforms/pseries/Makefile
-@@ -4,6 +4,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
- obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
- 			   of_helpers.o rtas-work-area.o papr-sysparm.o \
- 			   papr-rtas-common.o papr-vpd.o papr-indices.o \
-+			   papr-platform-dump.o \
- 			   setup.o iommu.o event_sources.o ras.o \
- 			   firmware.o power.o dlpar.o mobility.o rng.o \
- 			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
-diff --git a/arch/powerpc/platforms/pseries/papr-platform-dump.c b/arch/powerpc/platforms/pseries/papr-platform-dump.c
-new file mode 100644
-index 000000000000..6b6c4313b300
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/papr-platform-dump.c
-@@ -0,0 +1,409 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#define pr_fmt(fmt) "papr-platform-dump: " fmt
-+
-+#include <linux/anon_inodes.h>
-+#include <linux/file.h>
-+#include <linux/fs.h>
-+#include <linux/init.h>
-+#include <linux/kernel.h>
-+#include <linux/miscdevice.h>
-+#include <asm/machdep.h>
-+#include <asm/rtas-work-area.h>
-+#include <asm/rtas.h>
-+#include <uapi/asm/papr-platform-dump.h>
-+
-+/*
-+ * Function-specific return values for ibm,platform-dump, derived from
-+ * PAPR+ v2.13 7.3.3.4.1 "ibm,platform-dump RTAS Call".
-+ */
-+#define	RTAS_IBM_PLATFORM_DUMP_COMPLETE	0	/* Complete dump retrieved. */
-+#define	RTAS_IBM_PLATFORM_DUMP_CONTINUE	1	/* Continue dump */
-+#define	RTAS_NOT_AUTHORIZED		-9002	/* Not Authorized */
-+
-+#define	RTAS_IBM_PLATFORM_DUMP_START	2 /* Linux status to start dump */
-+
-+/**
-+ * struct ibm_platform_dump_params - Parameters (in and out) for
-+ *                                              ibm,platform-dump
-+ * @work_area:		In: work area buffer for results.
-+ * @buf_length:		In: work area buffer length in bytes
-+ * @dump_tag_hi:	In: Most-significant 32 bits of a Dump_Tag representing
-+ *                      an id of the dump being processed.
-+ * @dump_tag_lo:	In: Least-significant 32 bits of a Dump_Tag representing
-+ *                      an id of the dump being processed.
-+ * @sequence_hi:	In: Sequence number in most-significant 32 bits.
-+ *                      Out: Next sequence number in most-significant 32 bits.
-+ * @sequence_lo:	In: Sequence number in Least-significant 32 bits
-+ *                      Out: Next sequence number in Least-significant 32 bits.
-+ * @bytes_ret_hi:	Out: Bytes written in most-significant 32 bits.
-+ * @bytes_ret_lo:	Out: Bytes written in Least-significant 32 bits.
-+ * @status:		Out: RTAS call status.
-+ * @list:		Maintain the list of dumps are in progress. Can
-+ *                      retrieve multiple dumps with different dump IDs at
-+ *                      the same time but not with the same dump ID. This list
-+ *                      is used to determine whether the dump for the same ID
-+ *                      is in progress.
-+ */
-+struct ibm_platform_dump_params {
-+	struct rtas_work_area	*work_area;
-+	u32			buf_length;
-+	u32			dump_tag_hi;
-+	u32			dump_tag_lo;
-+	u32			sequence_hi;
-+	u32			sequence_lo;
-+	u32			bytes_ret_hi;
-+	u32			bytes_ret_lo;
-+	s32			status;
-+	struct list_head	list;
-+};
-+
-+/*
-+ * Multiple dumps with different dump IDs can be retrieved at the same
-+ * time, but not with dame dump ID. platform_dump_list_mutex and
-+ * platform_dump_list are used to prevent this behavior.
-+ */
-+static DEFINE_MUTEX(platform_dump_list_mutex);
-+static LIST_HEAD(platform_dump_list);
-+
-+/**
-+ * rtas_ibm_platform_dump() - Call ibm,platform-dump to fill a work area
-+ * buffer.
-+ * @params: See &struct ibm_platform_dump_params.
-+ * @buf_addr: Address of dump buffer (work_area)
-+ * @buf_length: Length of the buffer in bytes (min. 1024)
-+ *
-+ * Calls ibm,platform-dump until it errors or successfully deposits data
-+ * into the supplied work area. Handles RTAS retry statuses. Maps RTAS
-+ * error statuses to reasonable errno values.
-+ *
-+ * Can request multiple dumps with different dump IDs at the same time,
-+ * but not with the same dump ID which is prevented with the check in
-+ * the ioctl code (papr_platform_dump_create_handle()).
-+ *
-+ * The caller should inspect @params.status to determine whether more
-+ * calls are needed to complete the sequence.
-+ *
-+ * Context: May sleep.
-+ * Return: -ve on error, 0 for dump complete and 1 for continue dump
-+ */
-+static int rtas_ibm_platform_dump(struct ibm_platform_dump_params *params,
-+				phys_addr_t buf_addr, u32 buf_length)
-+{
-+	u32 rets[4];
-+	s32 fwrc;
-+	int ret = 0;
-+
-+	do {
-+		fwrc = rtas_call(rtas_function_token(RTAS_FN_IBM_PLATFORM_DUMP),
-+				6, 5,
-+				rets,
-+				params->dump_tag_hi,
-+				params->dump_tag_lo,
-+				params->sequence_hi,
-+				params->sequence_lo,
-+				buf_addr,
-+				buf_length);
-+	} while (rtas_busy_delay(fwrc));
-+
-+	switch (fwrc) {
-+	case RTAS_HARDWARE_ERROR:
-+		ret = -EIO;
-+		break;
-+	case RTAS_NOT_AUTHORIZED:
-+		ret = -EPERM;
-+		break;
-+	case RTAS_IBM_PLATFORM_DUMP_CONTINUE:
-+	case RTAS_IBM_PLATFORM_DUMP_COMPLETE:
-+		params->sequence_hi = rets[0];
-+		params->sequence_lo = rets[1];
-+		params->bytes_ret_hi = rets[2];
-+		params->bytes_ret_lo = rets[3];
-+		break;
-+	default:
-+		ret = -EIO;
-+		pr_err_ratelimited("unexpected ibm,platform-dump status %d\n",
-+				fwrc);
-+		break;
-+	}
-+
-+	params->status = fwrc;
-+	return ret;
-+}
-+
-+/*
-+ * Platform dump is used with multiple RTAS calls to retrieve the
-+ * complete dump for the provided dump ID. Once the complete dump is
-+ * retrieved, the hypervisor returns dump complete status (0) for the
-+ * last RTAS call and expects the caller issues one more call with
-+ * NULL buffer to invalidate the dump so that the hypervisor can remove
-+ * the dump.
-+ *
-+ * After the specific dump is invalidated in the hypervisor, expect the
-+ * dump complete status for the new sequence - the user space initiates
-+ * new request for the same dump ID.
-+ */
-+static ssize_t papr_platform_dump_handle_read(struct file *file,
-+		char __user *buf, size_t size, loff_t *off)
-+{
-+	struct ibm_platform_dump_params *params = file->private_data;
-+	u64 total_bytes;
-+	s32 fwrc;
-+
-+	/*
-+	 * Dump already completed with the previous read calls.
-+	 * In case if the user space issues further reads, returns
-+	 * -EINVAL.
-+	 */
-+	if (!params->buf_length) {
-+		pr_warn_once("Platform dump completed for dump ID %llu\n",
-+			(u64) (((u64)params->dump_tag_hi << 32) |
-+				params->dump_tag_lo));
-+		return -EINVAL;
-+	}
-+
-+	/*
-+	 * The hypervisor returns status 0 if no more data available to
-+	 * download. The dump will be invalidated with ioctl (see below).
-+	 */
-+	if (params->status == RTAS_IBM_PLATFORM_DUMP_COMPLETE) {
-+		params->buf_length = 0;
-+		/*
-+		 * Returns 0 to the user space so that user
-+		 * space read stops.
-+		 */
-+		return 0;
-+	}
-+
-+	if (size < SZ_1K) {
-+		pr_err_once("Buffer length should be minimum 1024 bytes\n");
-+		return -EINVAL;
-+	} else if (size > params->buf_length) {
-+		/*
-+		 * Allocate 4K work area. So if the user requests > 4K,
-+		 * resize the buffer length.
-+		 */
-+		size = params->buf_length;
-+	}
-+
-+	fwrc = rtas_ibm_platform_dump(params,
-+			rtas_work_area_phys(params->work_area),
-+			size);
-+	if (fwrc < 0)
-+		return fwrc;
-+
-+	total_bytes = (u64) (((u64)params->bytes_ret_hi << 32) |
-+			params->bytes_ret_lo);
-+
-+	/*
-+	 * Kernel or firmware bug, do not continue.
-+	 */
-+	if (WARN(total_bytes > size, "possible write beyond end of work area"))
-+		return -EFAULT;
-+
-+	if (copy_to_user(buf, rtas_work_area_raw_buf(params->work_area),
-+			total_bytes))
-+		return -EFAULT;
-+
-+	return total_bytes;
-+}
-+
-+static int papr_platform_dump_handle_release(struct inode *inode,
-+					struct file *file)
-+{
-+	struct ibm_platform_dump_params *params = file->private_data;
-+
-+	if (params->work_area)
-+		rtas_work_area_free(params->work_area);
-+
-+	mutex_lock(&platform_dump_list_mutex);
-+	list_del(&params->list);
-+	mutex_unlock(&platform_dump_list_mutex);
-+
-+	kfree(params);
-+	file->private_data = NULL;
-+	return 0;
-+}
-+
-+/*
-+ * This ioctl is used to invalidate the dump assuming the user space
-+ * issue this ioctl after obtain the complete dump.
-+ * Issue the last RTAS call with NULL buffer to invalidate the dump
-+ * which means dump will be freed in the hypervisor.
-+ */
-+static long papr_platform_dump_invalidate_ioctl(struct file *file,
-+				unsigned int ioctl, unsigned long arg)
-+{
-+	struct ibm_platform_dump_params *params;
-+	u64 __user *argp = (void __user *)arg;
-+	u64 param_dump_tag, dump_tag;
-+
-+	if (ioctl != PAPR_PLATFORM_DUMP_IOC_INVALIDATE)
-+		return -ENOIOCTLCMD;
-+
-+	if (get_user(dump_tag, argp))
-+		return -EFAULT;
-+
-+	/*
-+	 * private_data is freeded during release(), so should not
-+	 * happen.
-+	 */
-+	if (!file->private_data) {
-+		pr_err("No valid FD to invalidate dump for the ID(%llu)\n",
-+				dump_tag);
-+		return -EINVAL;
-+	}
-+
-+	params = file->private_data;
-+	param_dump_tag = (u64) (((u64)params->dump_tag_hi << 32) |
-+				params->dump_tag_lo);
-+	if (dump_tag != param_dump_tag) {
-+		pr_err("Invalid dump ID(%llu) to invalidate dump\n",
-+				dump_tag);
-+		return -EINVAL;
-+	}
-+
-+	if (params->status != RTAS_IBM_PLATFORM_DUMP_COMPLETE)
-+		pr_warn("Platform dump is not complete, but requested "
-+			"to invalidate dump for ID(%llu)\n",
-+			dump_tag);
-+
-+	return rtas_ibm_platform_dump(params, 0, 0);
-+}
-+
-+static const struct file_operations papr_platform_dump_handle_ops = {
-+	.read = papr_platform_dump_handle_read,
-+	.release = papr_platform_dump_handle_release,
-+	.unlocked_ioctl	= papr_platform_dump_invalidate_ioctl,
-+};
-+
-+/**
-+ * papr_platform_dump_create_handle() - Create a fd-based handle for
-+ * reading platform dump
-+ *
-+ * Handler for PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE ioctl command
-+ * Allocates RTAS parameter struct and work area and attached to the
-+ * file descriptor for reading by user space with the multiple RTAS
-+ * calls until the dump is completed. This memory allocation is freed
-+ * when the file is released.
-+ *
-+ * Multiple dump requests with different IDs are allowed at the same
-+ * time, but not with the same dump ID. So if the user space is
-+ * already opened file descriptor for the specific dump ID, return
-+ * -EALREADY for the next request.
-+ *
-+ * @dump_tag: Dump ID for the dump requested to retrieve from the
-+ *		hypervisor
-+ *
-+ * Return: The installed fd number if successful, -ve errno otherwise.
-+ */
-+static long papr_platform_dump_create_handle(u64 dump_tag)
-+{
-+	struct ibm_platform_dump_params *params;
-+	u64 param_dump_tag;
-+	struct file *file;
-+	long err;
-+	int fd;
-+
-+	/*
-+	 * Return failure if the user space is already opened FD for
-+	 * the specific dump ID. This check will prevent multiple dump
-+	 * requests for the same dump ID at the same time. Generally
-+	 * should not expect this, but in case.
-+	 */
-+	list_for_each_entry(params, &platform_dump_list, list) {
-+		param_dump_tag = (u64) (((u64)params->dump_tag_hi << 32) |
-+					params->dump_tag_lo);
-+		if (dump_tag == param_dump_tag) {
-+			pr_err("Platform dump for ID(%llu) is already in progress\n",
-+					dump_tag);
-+			return -EALREADY;
-+		}
-+	}
-+
-+	params =  kzalloc(sizeof(struct ibm_platform_dump_params),
-+			GFP_KERNEL_ACCOUNT);
-+	if (!params)
-+		return -ENOMEM;
-+
-+	params->work_area = rtas_work_area_alloc(SZ_4K);
-+	params->buf_length = SZ_4K;
-+	params->dump_tag_hi = (u32)(dump_tag >> 32);
-+	params->dump_tag_lo = (u32)(dump_tag & 0x00000000ffffffffULL);
-+	params->status = RTAS_IBM_PLATFORM_DUMP_START;
-+
-+	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
-+	if (fd < 0) {
-+		err = fd;
-+		goto free_area;
-+	}
-+
-+	file = anon_inode_getfile("[papr-platform-dump]",
-+				&papr_platform_dump_handle_ops,
-+				(void *)params, O_RDONLY);
-+	if (IS_ERR(file)) {
-+		err = PTR_ERR(file);
-+		goto put_fd;
-+	}
-+
-+	file->f_mode |= FMODE_LSEEK | FMODE_PREAD;
-+	fd_install(fd, file);
-+
-+	list_add(&params->list, &platform_dump_list);
-+
-+	pr_info("%s (%d) initiated platform dump for dump tag %llu\n",
-+		current->comm, current->pid, dump_tag);
-+	return fd;
-+put_fd:
-+	put_unused_fd(fd);
-+free_area:
-+	rtas_work_area_free(params->work_area);
-+	kfree(params);
-+	return err;
-+}
-+
-+/*
-+ * Top-level ioctl handler for /dev/papr-platform-dump.
-+ */
-+static long papr_platform_dump_dev_ioctl(struct file *filp,
-+					unsigned int ioctl,
-+					unsigned long arg)
-+{
-+	u64 __user *argp = (void __user *)arg;
-+	u64 dump_tag;
-+	long ret;
-+
-+	if (get_user(dump_tag, argp))
-+		return -EFAULT;
-+
-+	switch (ioctl) {
-+	case PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE:
-+		mutex_lock(&platform_dump_list_mutex);
-+		ret = papr_platform_dump_create_handle(dump_tag);
-+		mutex_unlock(&platform_dump_list_mutex);
-+		break;
-+	default:
-+		ret = -ENOIOCTLCMD;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+static const struct file_operations papr_platform_dump_ops = {
-+	.unlocked_ioctl = papr_platform_dump_dev_ioctl,
-+};
-+
-+static struct miscdevice papr_platform_dump_dev = {
-+	.minor = MISC_DYNAMIC_MINOR,
-+	.name = "papr-platform-dump",
-+	.fops = &papr_platform_dump_ops,
-+};
-+
-+static __init int papr_platform_dump_init(void)
-+{
-+	if (!rtas_function_implemented(RTAS_FN_IBM_PLATFORM_DUMP))
-+		return -ENODEV;
-+
-+	return misc_register(&papr_platform_dump_dev);
-+}
-+machine_device_initcall(pseries, papr_platform_dump_init);
--- 
-2.43.5
+Is that WARN_ON() needed ? See 
+https://docs.kernel.org/process/coding-style.html#do-not-crash-the-kernel
+
+
+>   		return;
+> +	}
+>   #endif
+>   	folio_put(folio);
+>   }
+> @@ -1509,6 +1511,9 @@ static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
+>   					break;
+>   			}
+>   		}
+> +
+> +		if (folio)
+> +			folio_set_hugetlb_cma(folio);
+>   	}
+>   #endif
+>   	if (!folio) {
+> @@ -3175,6 +3180,63 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
+>   	return ERR_PTR(-ENOSPC);
+>   }
+>   
+> +/*
+> + * Some architectures do their own bootmem allocation, so they can't use
+> + * early CMA allocation. So, allow for this function to be redefined.
+> + */
+> +bool __init __attribute((weak))
+
+Can't you use __weak ?
+
+By the way, do we really need a weak function here ? Can't it be a 
+static inline helper that gets waived by a macro defined by the arch, 
+something like:
+
+#ifndef arch_huge_bootmem_alloc
+static inline arch_huge_bootmem_alloc(struct hstate *h)
+{
+	return false;
+}
+#endif
+
+Then powerpc does:
+
+#define arch_huge_bootmem_alloc arch_huge_bootmem_alloc
+static inline arch_huge_bootmem_alloc(struct hstate *h)
+{
+	return (firmware_has_feature(FW_FEATURE_LPAR) && !radix_enabled());
+}
+
+
+But why is struct hstate *h parameter needed ? Seems like noone uses it.
+
+> +arch_specific_huge_bootmem_alloc(struct hstate *h)
+> +{
+> +	return false;
+> +}
+> +
+> +static bool __init hugetlb_early_cma(struct hstate *h)
+> +{
+> +	if (arch_specific_huge_bootmem_alloc(h))
+> +		return false;
+> +
+> +	return (hstate_is_gigantic(h) && hugetlb_cma_size && hugetlb_cma_only);
+> +}
+> +
+> +static __init void *alloc_bootmem(struct hstate *h, int nid)
+> +{
+> +	struct huge_bootmem_page *m;
+> +	unsigned long flags;
+> +	struct cma *cma;
+> +
+> +#ifdef CONFIG_CMA
+
+  #ifdefs in C files should be avoided, see 
+https://docs.kernel.org/process/coding-style.html#conditional-compilation
+
+> +	if (hugetlb_early_cma(h)) {
+> +		flags = HUGE_BOOTMEM_CMA;
+> +		cma = hugetlb_cma[nid];
+> +		m = cma_reserve_early(cma, huge_page_size(h));
+> +	} else
+> +#endif
+
+This kind of if/else construct in uggly, should be avoided.
+
+> +	{
+> +		flags = 0;
+> +		cma = NULL;
+> +		m = memblock_alloc_try_nid_raw(huge_page_size(h),
+> +			huge_page_size(h), 0, MEMBLOCK_ALLOC_ACCESSIBLE, nid);
+> +	}
+> +
+> +	if (m) {
+> +		/*
+> +		 * Use the beginning of the huge page to store the
+> +		 * huge_bootmem_page struct (until gather_bootmem
+> +		 * puts them into the mem_map).
+> +		 *
+> +		 * Put them into a private list first because mem_map
+> +		 * is not up yet.
+> +		 */
+> +		INIT_LIST_HEAD(&m->list);
+> +		list_add(&m->list, &huge_boot_pages[nid]);
+> +		m->hstate = h;
+> +		m->flags = flags;
+> +		m->cma = cma;
+> +	}
+> +
+> +	return m;
+> +}
+> +
+>   int alloc_bootmem_huge_page(struct hstate *h, int nid)
+>   	__attribute__ ((weak, alias("__alloc_bootmem_huge_page")));
+>   int __alloc_bootmem_huge_page(struct hstate *h, int nid)
+> @@ -3184,17 +3246,14 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
+>   
+>   	/* do node specific alloc */
+>   	if (nid != NUMA_NO_NODE) {
+> -		m = memblock_alloc_try_nid_raw(huge_page_size(h), huge_page_size(h),
+> -				0, MEMBLOCK_ALLOC_ACCESSIBLE, nid);
+> +		m = alloc_bootmem(h, node);
+>   		if (!m)
+>   			return 0;
+>   		goto found;
+>   	}
+>   	/* allocate from next node when distributing huge pages */
+>   	for_each_node_mask_to_alloc(&h->next_nid_to_alloc, nr_nodes, node, &node_states[N_ONLINE]) {
+> -		m = memblock_alloc_try_nid_raw(
+> -				huge_page_size(h), huge_page_size(h),
+> -				0, MEMBLOCK_ALLOC_ACCESSIBLE, node);
+> +		m = alloc_bootmem(h, node);
+>   		if (m)
+>   			break;
+>   	}
+> @@ -3203,7 +3262,6 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
+>   		return 0;
+>   
+>   found:
+> -
+>   	/*
+>   	 * Only initialize the head struct page in memmap_init_reserved_pages,
+>   	 * rest of the struct pages will be initialized by the HugeTLB
+> @@ -3213,18 +3271,6 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
+>   	 */
+>   	memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE),
+>   		huge_page_size(h) - PAGE_SIZE);
+> -	/*
+> -	 * Use the beginning of the huge page to store the
+> -	 * huge_bootmem_page struct (until gather_bootmem
+> -	 * puts them into the mem_map).
+> -	 *
+> -	 * Put them into a private list first because mem_map
+> -	 * is not up yet.
+> -	 */
+> -	INIT_LIST_HEAD(&m->list);
+> -	list_add(&m->list, &huge_boot_pages[node]);
+> -	m->hstate = h;
+> -	m->flags = 0;
+>   	return 1;
+>   }
+>   
+> @@ -3265,13 +3311,25 @@ static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
+>   	prep_compound_head((struct page *)folio, huge_page_order(h));
+>   }
+>   
+> +static bool __init hugetlb_bootmem_page_prehvo(struct huge_bootmem_page *m)
+> +{
+> +	return (m->flags & HUGE_BOOTMEM_HVO);
+
+Parenthesis are superflous
+
+> +}
+> +
+> +static bool __init hugetlb_bootmem_page_earlycma(struct huge_bootmem_page *m)
+> +{
+> +	return (m->flags & HUGE_BOOTMEM_CMA);
+
+Parenthesis are superflous
+
+> +}
+> +
+>   /*
+>    * memblock-allocated pageblocks might not have the migrate type set
+>    * if marked with the 'noinit' flag. Set it to the default (MIGRATE_MOVABLE)
+> - * here.
+> + * here, or MIGRATE_CMA if this was a page allocated through an early CMA
+> + * reservation.
+>    *
+> - * Note that this will not write the page struct, it is ok (and necessary)
+> - * to do this on vmemmap optimized folios.
+> + * In case of vmemmap optimized folios, the tail vmemmap pages are mapped
+> + * read-only, but that's ok - for sparse vmemmap this does not write to
+> + * the page structure.
+>    */
+>   static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
+>   							  struct hstate *h)
+> @@ -3280,9 +3338,13 @@ static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
+>   
+>   	WARN_ON_ONCE(!pageblock_aligned(folio_pfn(folio)));
+>   
+> -	for (i = 0; i < nr_pages; i += pageblock_nr_pages)
+> -		set_pageblock_migratetype(folio_page(folio, i),
+> +	for (i = 0; i < nr_pages; i += pageblock_nr_pages) {
+> +		if (folio_test_hugetlb_cma(folio))
+> +			init_cma_pageblock(folio_page(folio, i));
+> +		else
+> +			set_pageblock_migratetype(folio_page(folio, i),
+>   					  MIGRATE_MOVABLE);
+> +	}
+>   }
+>   
+>   static void __init prep_and_add_bootmem_folios(struct hstate *h,
+> @@ -3319,7 +3381,7 @@ bool __init hugetlb_bootmem_page_zones_valid(int nid,
+>   					     struct huge_bootmem_page *m)
+>   {
+>   	unsigned long start_pfn;
+> -	bool valid;
+> +	bool valid = false;
+
+Why do you need that, I can't see any path to reach out: without setting 
+'valid'.
+
+>   
+>   	if (m->flags & HUGE_BOOTMEM_ZONES_VALID) {
+>   		/*
+> @@ -3328,10 +3390,16 @@ bool __init hugetlb_bootmem_page_zones_valid(int nid,
+>   		return true;
+>   	}
+>   
+> +	if (hugetlb_bootmem_page_earlycma(m)) {
+> +		valid = cma_validate_zones(m->cma);
+> +		goto out;
+> +	}
+> +
+>   	start_pfn = virt_to_phys(m) >> PAGE_SHIFT;
+>   
+>   	valid = !pfn_range_intersects_zones(nid, start_pfn,
+>   			pages_per_huge_page(m->hstate));
+> +out:
+>   	if (!valid)
+>   		hstate_boot_nrinvalid[hstate_index(m->hstate)]++;
+>   
+> @@ -3360,11 +3428,6 @@ static void __init hugetlb_bootmem_free_invalid_page(int nid, struct page *page,
+>   	}
+>   }
+>   
+> -static bool __init hugetlb_bootmem_page_prehvo(struct huge_bootmem_page *m)
+> -{
+> -	return (m->flags & HUGE_BOOTMEM_HVO);
+> -}
+> -
+>   /*
+>    * Put bootmem huge pages into the standard lists after mem_map is up.
+>    * Note: This only applies to gigantic (order > MAX_PAGE_ORDER) pages.
+> @@ -3414,6 +3477,9 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
+>   			 */
+>   			folio_set_hugetlb_vmemmap_optimized(folio);
+>   
+> +		if (hugetlb_bootmem_page_earlycma(m))
+> +			folio_set_hugetlb_cma(folio);
+> +
+>   		list_add(&folio->lru, &folio_list);
+>   
+>   		/*
+> @@ -3606,8 +3672,11 @@ static void __init hugetlb_hstate_alloc_pages(struct hstate *h)
+>   {
+>   	unsigned long allocated;
+>   
+> -	/* skip gigantic hugepages allocation if hugetlb_cma enabled */
+> -	if (hstate_is_gigantic(h) && hugetlb_cma_size) {
+> +	/*
+> +	 * Skip gigantic hugepages allocation if early CMA
+> +	 * reservations are not available.
+> +	 */
+> +	if (hstate_is_gigantic(h) && hugetlb_cma_size && !hugetlb_early_cma(h)) {
+>   		pr_warn_once("HugeTLB: hugetlb_cma is enabled, skip boot time allocation\n");
+>   		return;
+>   	}
 
 
