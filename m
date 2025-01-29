@@ -1,72 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-5681-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5682-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3800A21DCB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 14:22:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 083ADA21DCD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 14:22:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YjjVg20lLz2yD5;
-	Thu, 30 Jan 2025 00:22:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YjjVk3fsMz30TG;
+	Thu, 30 Jan 2025 00:22:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738156923;
-	cv=none; b=AxHut4PLmqQtpwnT8aw78bdcxACAmFoZ9pPUD0bpy3gy908jLnTgp8/15Tw+D5BQo4XFAJLWQHnnivR/rLULiue8SF8TEZ/2EH1WChypBRd+EF9KEbOmnbIRk0MSWai2a6PK0/rwcemPxa3WAAksZmEke9dSNhLycykgp77lbYjHQ8KYMUKpQT84HFm0B8LJ7EyeZGzuvQXWItogpf0ERmFBIMwG6UuFTQHN6rJVDOqaVjkhGdDmHQ438J3+3RZvsv0xFm8LZJh19xjnCEMjx0bL7E4eFL+3ApyoeGIJhXAK0vtCL2yKwyT0Hy1JxSdJIRb4gz4S9XWQb3psii4l5w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738156926;
+	cv=none; b=GF4GNPxdFvMGcmYw0ipW4ufjB8TAeDsUiM2gkR8FOvFoK4Mips3ppQaaVJNYvdODqVhF3uEIs0/AVDdog0R7m7ltKm4P1fBHnoCwGBWxALuOCqaolZxjBRFLrynFJBfLXwsH/IicWnxhxaxX8PihEjyb3PLCKjWQW7S/H3zt1ulpVErBE7I48iyZ11VyBjs2iOHJeJDpuxs/kwKvIEshRb8X6mtBG3S5hfz1Yb/5MSkovH/URjNQHnLd8OL/cweOJ5xNrSujShDt0UKYHFwJLVRUydv4vpbTRbluOWMu1s61tK6EjorMt13PrIi2GUaB8xYf/Y9qRqyD7N+tJTZfmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738156923; c=relaxed/relaxed;
-	bh=HX1TkHswfT325KOgLa+jpVFqKADYpAnjaP7bwf4ZtvQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RdPuJMSVT0Z3Tlx1VZBDD2wt9GckAE4T8HtjNcd0AtSC839o+oBgC7yOz6wnjSOEDnLO/RzU/NXoQku/pb7PqMOxdg148vwk9E8tegNfLVuaM+zyU+6U/AKnzv+FmLYGu0KIRjn+zkzrzk+U5KIhLmxtBXgDJacY4I4cRVbFCksVGpjPXdQcXUwirvXBy45I7BXPnzqyFai3uLlDnYPqZh09V5jNCjmM8Yc0BO171Z73ObiZhIp+Q0HmSf5UdHLyNyC00dLRVZ728HGObjaH0i3+p/xRdcFvL7M8Iv4QihLU9YNNMnmjhDoX3vPZab4Uqj4uTS+SqO9TU7DOem3yvw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VsJqzBxz; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1738156926; c=relaxed/relaxed;
+	bh=9kq5jxbhmUEoZM+kdlwoh7uFTPoMD9RcTIy1F/a5B80=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=X48fUN/nyhiGLZZICfhTyYqcmLk/jirFlJutSsR9Kp/TDEYjjPsmj9PNK5PbUCcPC02zch2Lbjcx0QXCblX2afX53wJRRDPX6YvNUDTRsjjSoX7ku7kpDzFNLO1CrL2kznjpblYnU1aBZTCHvg/+eZ2TE7Jx+WMMrKbfspTluvjlb4pFPjM+mqKNGg7K+VETdODohytMc4kdBB8vYddJ01dmFEggJr5jpDeYl+FNkzseJU1ybucwNXRljvqIpvHAjQa4CgSR/Jl3cX5QG4nwAm8yzlLkGk9phdglnmvEzjKApA+aXmXMmZi7Q7l1H5tVwUgjyOfH3wB+XMWOgO8xHg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QDdSWRJz; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VsJqzBxz;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=QDdSWRJz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjjVd6ZfTz2xYg
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 00:22:01 +1100 (AEDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-215770613dbso87232275ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 05:22:01 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjjVj5PQ9z30T3
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 00:22:05 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-21c2f1b610dso3509395ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 05:22:05 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738156920; x=1738761720; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=HX1TkHswfT325KOgLa+jpVFqKADYpAnjaP7bwf4ZtvQ=;
-        b=VsJqzBxzN3O1wPkRx7foBiCiUisQZaXvcOIWbYkdKv9/9BrQMNloFtWxI5ciuv8MTm
-         n6eHcQPSceKgKQdNQUBg5nfdBUZEW0dcQjXqtXdLW9JZHQCyOz2dCm4nzDJ7EVGxEobJ
-         yZQV/Bbm0p5ryDOeJiZWId6agm9/tIC14iJSUKHCA2+Ik58Nbgq08xPjz4w6w8xYCyWe
-         LptP49QuHvEgVj6j2hotCYC/vVD/dOTKIN8th6PLPdkHEeH2f19xeISqgVpEoG4v4Cvv
-         wUmRl6LBCSSKfbKJxRWVgah/TpVTzxU1ZISjQLvoCFjRprT7ndB15YovGh7NhwqSOlVZ
-         VAew==
+        d=gmail.com; s=20230601; t=1738156924; x=1738761724; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9kq5jxbhmUEoZM+kdlwoh7uFTPoMD9RcTIy1F/a5B80=;
+        b=QDdSWRJzg/XrjAHgV6FhPirN/wBb2A99x0EOh/moUlTcpam+6gE4LuWhYn2HLn9S8F
+         KxfeYm0QT6oU8F6Tt2A0j49Q3J1Msi1wJUh++i+ck8ozHwz7k3NIjdIyyBBuujWew7Dn
+         n+NDAQtraRgTf3VgoV5Pk+AW5C9/bi0OuuYueNZ19rGR2d09PNp0PoT0UOp2CZrv8n3+
+         E2aDlEkE4Vm33eBLWoBMdNshRne8QxyT5PEe03Kf9bvAQPlPkNbj/hATIYZXcG5vQpwi
+         t+oVUvJqGO2/A0cnl/NTKNw0WkTjj/24ImGEWVSC4JmWDUB1k6Qtv6PwnpjLRjOfqOtf
+         2pQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738156920; x=1738761720;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HX1TkHswfT325KOgLa+jpVFqKADYpAnjaP7bwf4ZtvQ=;
-        b=JxXQEmuM3HawsnrysX9WqkbQAu/sL50G9GxSU5JsP23cPcgc/jrGVvOLwNZgPq5NBz
-         5iPCqxcq3tQUL173bsSgHBsJfZMkB/d1dEyZ/9bXv+EgO2TnDi23BfudhsfSp/iJ7oba
-         ddYRieTGkTIiud9tuMFWuhQAQO5XK3cY1rp7df8kEubmChyGBCTK7mJ7hsmETMuOL1uB
-         kPyo0pD+oapn90Hyc4p7/9Y90iLQ7km8jE5KhBGv9+/XqDa/rZrKTSBiK6dCEwJbO9A4
-         gyYPjJ99V1EZxhadT8/bDtI/AnPBLTf5ayPHo5dv6eTV1KKWS2N6P5dUCQaTNpPJyYnq
-         qJOg==
-X-Forwarded-Encrypted: i=1; AJvYcCWb5TSdsvVQAKmqvBD010V9xzAjQBzpG8ebAZ/tdEHu+K6+aCHGj5KlUCtSvsX0qTh1+fHesFECSMR/16s=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwChrYe6Pq+Rt6dpJ8rwGdVrvszNZKDY+Lt6uqCd4rN7gEK+uvg
-	PEXDGPftwmz/600Zgf2RGdTJAbdzGWHdlNUkLY10XxxmP7p/hDkknI76Hw==
-X-Gm-Gg: ASbGncuJpwUBuc2QsXs1Jvx2V/0LjHqQW2rRS5GSifZ3xd+RnXTX4hnfxD2+HPmdz1v
-	HjgxsXOOtrZVKohycaCXA4cIGlUMuGnPOD2dQFdOUHnOkmVi1e23+WdvKgq4w+35+6+17anmShl
-	N5SyGPoKPs1ZbCRapxWCEOhLnc+LXbqmcI2orWFekrZaqj/yn18hOEDoJzEkfI+IxgYhQFzAVOC
-	sFSVsiJ2ToiFoJO278U0GnSuFDap1lzlOatJzLamlEdXUftFMtUMttGlVGkL+ifcEJ+1fM/Uzts
-	J0YxzoTBX0qtXy+yxsJ5NcjEI7O9f75rtwxBdaSFLhCLtBys1A==
-X-Google-Smtp-Source: AGHT+IGNZ+4sXAE9vj4IFlC2EXBWvLaRHv9Oiar/2blCQ1GBjBPs9Irv6Mh9HPXqMcWBqz4u+zX/7w==
-X-Received: by 2002:a17:902:e742:b0:215:a97a:c6bb with SMTP id d9443c01a7336-21dd7c65891mr47442355ad.12.1738156918464;
-        Wed, 29 Jan 2025 05:21:58 -0800 (PST)
+        d=1e100.net; s=20230601; t=1738156924; x=1738761724;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9kq5jxbhmUEoZM+kdlwoh7uFTPoMD9RcTIy1F/a5B80=;
+        b=CVuJB2pJyh3ensQZYf3EuT7h63BB3yKKhH65iOi0GS9cv9Ix2PieKB7VeIy15NHy7K
+         E/UAcBnZOOv+fX023vdMdSYl7dtt3SWtqMsPfBJ5rpZZ4cXt7m6oJBweKFCkrd2WEgTF
+         lcaYC17HFlDVIWEyysfN/fzMaiuCvjTN5alFlEKfPUbNcd/MlZR9usBn5Tr8nUji2FzD
+         l/xhMiSI7+Hbksn44LKHE+SamWmJYQ8jNWQSjpplKwT5J/Aruyxwza4FATZvCQYn1Wbe
+         ess6CRZoDOsWgD6LM1S23ctzZJ3y2DMp4RILRSwxJCvHOoq0ISs83Ci49x4T9oAspGZ3
+         7bTg==
+X-Forwarded-Encrypted: i=1; AJvYcCXRd1zSBLkclr0/DaFPzlT809LCv/RTmTyqHlVqHVkKqoRruQJTsoGciCpe7XAPK5GVnPlWx8gDv7kbVgs=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz6/OL474Vo40bFqba8lv3JxPRB6a/BCPhNEz4N/gxjygqKiZg8
+	pNba8CdaB0FrLBg6m9O/C/jGWEKMzfULMOteo2VtQFatYsI8cnYkMBM3qw==
+X-Gm-Gg: ASbGncuNJc547U1cQ7EA7o2Xyseb/tFjvsMO6doHxjI/NFwtu3oreE+/yixu8cWnLiV
+	PxYgdPxRaJzbXCJJ1DZtAsIXebKK+R1BUAtR7p5OWnvlwBdgQFQxmBThKlNsU7fAiXJrA8K/EYq
+	+BnwHCUZ4N5fNV2XfSg3/I8YisBuZSHqIIafOZqHfK6ehwtPmxbbLfMuE51b5YD+1UoczzqJPZb
+	FW1qzzPU4FYUMqQAQZ0hayowChFKfK8z5cLgpB4X5m/QnGKAFKYNcz6aQ7KpYispCVXvtyFpnyy
+	xEtTZcA59SHIm7fug4mw/76tCc+FC6nfyRwdCmq4+3uy7eIlJw==
+X-Google-Smtp-Source: AGHT+IEMR52YA8PcQua1hXYBKyOqDnOqJ1npRwUwIgFGGYZDAegRBOM92ReT/AGrlAqHY7XUAu3Pjg==
+X-Received: by 2002:a17:902:f644:b0:216:2477:e4d3 with SMTP id d9443c01a7336-21dd7df6ad3mr47961825ad.51.1738156923656;
+        Wed, 29 Jan 2025 05:22:03 -0800 (PST)
 Received: from wheely.local0.net (124-169-212-233.tpgi.com.au. [124.169.212.233])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414131esm98984085ad.157.2025.01.29.05.21.53
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da414131esm98984085ad.157.2025.01.29.05.21.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 Jan 2025 05:21:57 -0800 (PST)
+        Wed, 29 Jan 2025 05:22:03 -0800 (PST)
 From: Nicholas Piggin <npiggin@gmail.com>
 To: "Dmitry V. Levin" <ldv@strace.io>
 Cc: Nicholas Piggin <npiggin@gmail.com>,
@@ -80,10 +82,12 @@ Cc: Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH 0/2] powerpc: change syscall error return scheme
-Date: Wed, 29 Jan 2025 23:21:41 +1000
-Message-ID: <20250129132148.301937-1-npiggin@gmail.com>
+Subject: [RFC PATCH 1/2] powerpc/signal: Clean up pt_regs access
+Date: Wed, 29 Jan 2025 23:21:42 +1000
+Message-ID: <20250129132148.301937-2-npiggin@gmail.com>
 X-Mailer: git-send-email 2.47.1
+In-Reply-To: <20250129132148.301937-1-npiggin@gmail.com>
+References: <20250129132148.301937-1-npiggin@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,41 +106,86 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
+There are places in signal code that are made more readable by using a
+'regs' local variable instead of finding it from the task.
 
-I've been toying with the seccomp vs syscall return value problems, and
-wonder if something like this approach could give us a simpler alternative.
-Basically all the core code uses -errno return value, then we convert it
-to the powerpc convention at the last minute when returning.
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/powerpc/kernel/signal.c    | 11 ++++++-----
+ arch/powerpc/kernel/signal_64.c |  5 +++--
+ 2 files changed, 9 insertions(+), 7 deletions(-)
 
-This seems to pass the seccomp_bpf test cases when applied with the set
-syscall info ptrace patches
-
-https://lore.kernel.org/lkml/20250113171054.GA589@strace.io/
-
-With patch 1 of that series reverted.
-
-One concern is working out exact details of what tracers can see and
-trying to ensure it doesn't break some corner case.
-
-This could possibly be done for the other weird archs too, if it works
-out for powerpc
-
-Thanks,
-Nick
-
-Nicholas Piggin (2):
-  powerpc/signal: Clean up pt_regs access
-  powerpc/syscall: rework syscall return value handling
-
- arch/powerpc/include/asm/ptrace.h             | 13 +---
- arch/powerpc/include/asm/syscall.h            | 31 +--------
- arch/powerpc/kernel/interrupt.c               | 16 +++--
- arch/powerpc/kernel/signal.c                  | 67 ++++++++++---------
- arch/powerpc/kernel/signal_64.c               |  5 +-
- tools/testing/selftests/seccomp/seccomp_bpf.c | 16 +++++
- 6 files changed, 69 insertions(+), 79 deletions(-)
-
+diff --git a/arch/powerpc/kernel/signal.c b/arch/powerpc/kernel/signal.c
+index aa17e62f3754..193211b04805 100644
+--- a/arch/powerpc/kernel/signal.c
++++ b/arch/powerpc/kernel/signal.c
+@@ -242,6 +242,7 @@ static void check_syscall_restart(struct pt_regs *regs, struct k_sigaction *ka,
+ 
+ static void do_signal(struct task_struct *tsk)
+ {
++	struct pt_regs *regs = tsk->thread.regs;
+ 	sigset_t *oldset = sigmask_to_save();
+ 	struct ksignal ksig = { .sig = 0 };
+ 	int ret;
+@@ -251,12 +252,12 @@ static void do_signal(struct task_struct *tsk)
+ 	get_signal(&ksig);
+ 
+ 	/* Is there any syscall restart business here ? */
+-	check_syscall_restart(tsk->thread.regs, &ksig.ka, ksig.sig > 0);
++	check_syscall_restart(regs, &ksig.ka, ksig.sig > 0);
+ 
+ 	if (ksig.sig <= 0) {
+ 		/* No signal to deliver -- put the saved sigmask back */
+ 		restore_saved_sigmask();
+-		set_trap_norestart(tsk->thread.regs);
++		set_trap_norestart(regs);
+ 		return;               /* no signals delivered */
+ 	}
+ 
+@@ -275,9 +276,9 @@ static void do_signal(struct task_struct *tsk)
+ 	}
+ 
+ 	/* Re-enable the breakpoints for the signal stack */
+-	thread_change_pc(tsk, tsk->thread.regs);
++	thread_change_pc(tsk, regs);
+ 
+-	rseq_signal_deliver(&ksig, tsk->thread.regs);
++	rseq_signal_deliver(&ksig, regs);
+ 
+ 	if (is_32bit_task()) {
+         	if (ksig.ka.sa.sa_flags & SA_SIGINFO)
+@@ -288,7 +289,7 @@ static void do_signal(struct task_struct *tsk)
+ 		ret = handle_rt_signal64(&ksig, oldset, tsk);
+ 	}
+ 
+-	set_trap_norestart(tsk->thread.regs);
++	set_trap_norestart(regs);
+ 	signal_setup_done(ret, &ksig, test_thread_flag(TIF_SINGLESTEP));
+ }
+ 
+diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal_64.c
+index 86bb5bb4c143..1f0c43baeff2 100644
+--- a/arch/powerpc/kernel/signal_64.c
++++ b/arch/powerpc/kernel/signal_64.c
+@@ -748,6 +748,8 @@ SYSCALL_DEFINE0(rt_sigreturn)
+ 	sigset_t set;
+ 	unsigned long msr;
+ 
++	BUG_ON(regs != current->thread.regs);
++
+ 	/* Always make any pending restarted system calls return -EINTR */
+ 	current->restart_block.fn = do_no_restart_syscall;
+ 
+@@ -827,8 +829,7 @@ SYSCALL_DEFINE0(rt_sigreturn)
+ 		 * MSR[TS] set, but without CPU in the proper state,
+ 		 * causing a TM bad thing.
+ 		 */
+-		regs_set_return_msr(current->thread.regs,
+-				current->thread.regs->msr & ~MSR_TS_MASK);
++		regs_set_return_msr(regs, regs->msr & ~MSR_TS_MASK);
+ 		if (!user_read_access_begin(&uc->uc_mcontext, sizeof(uc->uc_mcontext)))
+ 			goto badframe;
+ 
 -- 
 2.47.1
 
