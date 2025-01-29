@@ -1,74 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-5663-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5664-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1E31A217A3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 07:14:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 82D80A217A5
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 07:21:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YjX1R3G9bz2yyC;
-	Wed, 29 Jan 2025 17:14:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YjX9X429Sz2yyR;
+	Wed, 29 Jan 2025 17:21:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738131275;
-	cv=none; b=GWIHH6D2PpzsXk8tB7EtcnqP7afDoPm+Hf1uX+/tTc5tP3X8+SBtNquWJG9PeTiqiVXQ5dlwRvZbWb8SViBeSDg2wrXbQe4cz4B8dm8tZg8FwkZ9+QUU2x63LQi28Bp4+uTI++nS9PJQng1NgZwHNHl6xLhzB+8rXXIlbHHfvwSVm/uOv7BzHcny7IEQxCDnXet/F4HH85MoQZWi1oiLfPq+Z166tt6fr/QLCwPj0W4UAYJ+qKHGe5L6x2Exvu0oLk70dMPvLA/z5Ea+/g/n30f2u7ReT60qGbcdeIHtJ3K6tfTWQEXR3m8OugUl2nxwvlR2lih8YcQaCf7sJq2Q6Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::633"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738131696;
+	cv=none; b=N9X5j5AuS39ZXJ4OgLYLclGdBp+RJ65G08K2zSD9I5g1makuXbDyIbJKpgclLEXGVd9kGCnfAPCey9hdpUVrFSxL/6duutj6sgjmCGJf2hcMpG0An/wfjga0YncZ72SalsPtX5/Kh+J1480rfD6U2pSxX6gDKLsEKgRuzhDGVla4nrLURPls16Q1eKdGVTBDchzBzYAC6GjfQdOrKPUt7oSn/0rq6vVQT0UbSO1MWvVm+n54aDW5vgqXLKt4Rqh0lJfQohljUpy/5McdzDi5l3KXjKanmm/QJgIYONsW2SLZG8QffhsU3Uf4hhhfT1dkZ4dhRRNNwpCNcy85qsP5TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738131275; c=relaxed/relaxed;
-	bh=XkmUrIUEsRWysikV6FEbJ78SxnsQkg3H6JLLeYfDd88=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To:
-	 References:In-Reply-To; b=YCJ8Na3kGGmO/cThhaxIJoheVXuNmGl7w310x1LjDcsUCdprl/4LzdoKdXLKyfA9fQ2ELqM4EF8IY2r8NRS4FDlBdRS46NMQJET+yMoHBCeJ4QL7+NDI2f8cgNcdQ9H6PW2mRh31ZDZnNESSVRPyz4PDmCbXv0YXg3tGlLY/7OU4AV2yihSAQj4diswMB8s0xBZXMkcMglho4cUEJ2T6ztfoJszSXycoCX68qj/vhzmFJJAxqdsEl3FI/Bw0ASnargyvcSlfhTfd+2ZckEERExQ+1fS/eQl9LVj7VBvj0VJKC2qAGd+ZLVoidja+iN2svEo7pz0V0Y96/tZSjlUkpA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eWt8sIgW; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1738131696; c=relaxed/relaxed;
+	bh=f+k14XdPzXMIE5MVaii+lsmbVkX+PY7+XJbHWcRVS3s=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Subject:
+	 References:In-Reply-To; b=lGqqZ5WA322iBKAHHxz5irbVI2wKjcMY7+GrIJHjxvvk6By+6DEchrmsU6UEcNQZNDwJwM/5Bi2RBZA3htxtOTy+jgBiTegHwNaPzlgawXJEuFzfmKW6GkXKHoNhy7kRAd3EEiyXagMY7CtN2ymP4yIICfUv3yN/N+FzqYf/YpyIz2FHt3PJMoDfOXbjPr6VvISIAo9r3XFmOwCNT0j8P06mr1oYQEwaCavX7EgQ/9XJHXjg+og4SxQFvx3Cni4c11Hx/ZJvsKvFOk9B70Cyt1pEaTHIPUPjaTIEuGCkPDaubuwiJaTz3A3+uNNDxamKiWfll502GhwyRLu0fbslpw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ljBJoQi6; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=eWt8sIgW;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=ljBJoQi6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::633; helo=mail-pl1-x633.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjX1Q2xQCz2yhG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 17:14:32 +1100 (AEDT)
-Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-215770613dbso82351565ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 22:14:32 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjX9W4l8Mz2yhG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 17:21:34 +1100 (AEDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-2164b1f05caso111939175ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 28 Jan 2025 22:21:34 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738131271; x=1738736071; darn=lists.ozlabs.org;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        d=gmail.com; s=20230601; t=1738131692; x=1738736492; darn=lists.ozlabs.org;
+        h=in-reply-to:references:subject:to:from:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XkmUrIUEsRWysikV6FEbJ78SxnsQkg3H6JLLeYfDd88=;
-        b=eWt8sIgWVcsU6usE0CX9oFBmIy4LSWx09RJ2R82bxvOhRVe/UOvpJzeRjtkFK8ByAk
-         NNLZ4yYdtjwybKRFoPiYUUlRKeETmBiITW8/Zlqb5HTZJGYEN/t9JRSkvcgcVh0fpfT8
-         h3Ga6n0RVozDhOHIfVBHKeCaz0t+X4wzwyavFXwqiFSOBIA0BNwsjtUcqNve36GRW1/z
-         YmV4SnykuHvaJkbCD5vV43RIcyj8v/S1ieEWK00RdtXGEzVTf5UdHK+zBxToPtv5XZsy
-         bJr+1nWz688vkFkKfIXUmPU7beUpOiSTqQzawguf5OziaTZh0ewVoRlz0QOl+VQVs5vM
-         +xtw==
+        bh=f+k14XdPzXMIE5MVaii+lsmbVkX+PY7+XJbHWcRVS3s=;
+        b=ljBJoQi66qJlhPc+kLeX7iAn2vMqUiYKnINyYNMp+DV4Avmb28XgRLl+PAPOLemDw0
+         ENbDXeWiYdUhkfmrvfpo4wNQ5NVtf4evqZN8DNxps/2JnP2cssONF652dMeUXfinVRzv
+         3jFdEGI2ePYlpaXTaCdwzCYu+8Jn9ie8XJ39MuLOkXyAeC1UDcJ31o9yUczuru3lepNw
+         xMPoaRr98zG4jDSxINAVR6reTBn3FEF12MaZ+Ynn96ch7wnV+shYvHNtBYmGHaeO8qiR
+         tazFGlUa08o+iWac/3uR7TNdUXOSfjAwiQ88QIFes0MxiraHn2JWXn/T2G2gkIUd3GG1
+         Ebzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738131271; x=1738736071;
-        h=in-reply-to:references:to:from:subject:message-id:date
+        d=1e100.net; s=20230601; t=1738131692; x=1738736492;
+        h=in-reply-to:references:subject:to:from:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=XkmUrIUEsRWysikV6FEbJ78SxnsQkg3H6JLLeYfDd88=;
-        b=T8BCLMnalBgbtZTDLRTJ8/IqiLwz2J+TWkeWazz4/Wr1NYoEht/jZ/NqXihtO8Etmb
-         NOV9gwgiPo0q+WFnFAo6EtbaVgZtBVAguSGmQP0K559+UvpDG8vEnB7CRdY9qKDvcN4l
-         gMgVKU4OAi9+dvJS9U6O5ZlbsQhYSHRKz2nYYHukR4J1cRIWLlBWJX5V6503WdGJNG3a
-         wHThGAOGJNlF7u2YlnhQpoYV/6wsze+TyEt7nqybpIIrKfdGvX31nOYqbjXU193IY04G
-         L8G/nZhWj+Y1VH2uw13w1K9ccQSPlPR7pcl50ofQ2x/RUXNGET0YwETSkE4yy74Oz/t9
-         DzTg==
-X-Forwarded-Encrypted: i=1; AJvYcCXJYxNtWrwq/X2JuMb7rFRNVUtIytJrbUVTdMO4PK1nvo4o7e8ybmOuwb98wqO6hva9dT2VZIZELR3iWHQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxNe/lqx4UflpO97/+EvBWv0oNBKr5sShNxFFF5WrYcSgG0DMwD
-	UrG1SzmtN+BRz2+nHTMyYLh3pv3Q9wYrDln47/BLrT3sVUL8A7ZY34iIeS0/
-X-Gm-Gg: ASbGncuX4nXh3n4r6+tyIZxFUcKXL/ehXqp4QaFw3ZBS4ML3hD7jr6q8af/UCCFRt4o
-	pwbwFFbDZ6zzc2hZonwGHU87LlVtqkSu0/Q/VljpUXlnJun2U+5NaMKtGW87VmvGVmJGHLVcpLh
-	HNZEx4y40aSdKxll4Z3oO9o68ASCSMURHwdXippNxM1Po6cj6iw8Ud408P7kjD8UYiGnMp+gUZH
-	SxDw+n5ci2eI6I6HbOi0q3e+yNsMMGFCT1q2Pz/1uh/rFS3qp5W3qDJbfe23w7koTuPbsZYTGdW
-	y/j0t5dQ
-X-Google-Smtp-Source: AGHT+IEnKHmq/2h61X3+c6iV5bjdl22nXSPtGSK66O167+0PUokMTx2yuwudCI6sw6jdrjIHytpgBw==
-X-Received: by 2002:a17:902:e742:b0:215:a97a:c6bb with SMTP id d9443c01a7336-21dd7c65891mr29196205ad.12.1738131270797;
-        Tue, 28 Jan 2025 22:14:30 -0800 (PST)
+        bh=f+k14XdPzXMIE5MVaii+lsmbVkX+PY7+XJbHWcRVS3s=;
+        b=jwPBfXZhaEWmRlqApdjgHn2sjyOWNRW/CeCBtWZoYwgRRAj9EdyLQTc2y3T03RAK2s
+         KJ1gXWvi7KpsiHK+nW80VnNONyclNZhzDfsJMvfMJyKYOs6WOpbBfuqQTlf30Oa8evLr
+         U6QErU+jmbBU4DCSidgMuN/RNcSilevarxF45o4OMA6xghNGRDZsxyMV3N4eAQlIZPHI
+         U8/hSY+6CDY6fv+wpU9/2UX/ZH1O6tbIv3oWMI/Mhc5zIlqA7MjflNPI86wydssUpQED
+         5z+1ttfEbnRkQZtIzvQXKuDfH5qZRE3rI2Zxbw7iPQp3k8aDwgmXmRnHVnXxtpHCgPDQ
+         1ePg==
+X-Forwarded-Encrypted: i=1; AJvYcCUQJHK9TB7+a7yjiDgByu0Quyy55n96n7aMo+FvZbe79h0DlzQE39UTcQTrs9YRgbILbXHzi5EWHYcaBwA=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywhcgjpfm1KH9WQ9skfQZm+gxYrkokNRVwg9vWQDKWxNYvXfO1S
+	AENUhROPHBIPaSPIXK63b3QNvjRhET9LaF1xPeX/PgSnZ8jWOdVpYGiyMX+Y
+X-Gm-Gg: ASbGncv9zRWYyuAPyBNXHHV/WRBdfjxIyi7aQv20u6MmNf1j21Hwl0GSxXEQpq2Yb0O
+	GcGMWvzT34WMQzZ6Ajxacq01zda7uF4bw7wYgG0fjA+i8oSV9+u6azGd5ZoNd/aTc75htrziV1u
+	a+16lqhk2ZGK4YyFeZG1OioNzBuSZ6DDUT0nULJWs0v2DOHzWcHG6xtP2+V0miYBlDS6AgrqYaf
+	j7mv1Buuor+CX9uEh/7GeetCvnUM9vKlfqm9KqW69a6LVMDs9Rx7R6NhfAsNOP4PQYwDH3fQMJC
+	8Ctu0pyY
+X-Google-Smtp-Source: AGHT+IGup1E2a0pGuLJHxumyXTkKKSkGKAHLdbzsrg0FstGF1KWSI37xnaKzzwJvU3hDjoGXTEg8mg==
+X-Received: by 2002:a17:902:d549:b0:215:a7e4:8475 with SMTP id d9443c01a7336-21dd7d64c6bmr35147085ad.24.1738131692110;
+        Tue, 28 Jan 2025 22:21:32 -0800 (PST)
 Received: from localhost ([1.146.123.110])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da3fa9b6asm91165505ad.106.2025.01.28.22.14.28
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21da4141536sm91136415ad.156.2025.01.28.22.21.30
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Jan 2025 22:14:30 -0800 (PST)
+        Tue, 28 Jan 2025 22:21:31 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,119 +83,167 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 29 Jan 2025 16:14:25 +1000
-Message-Id: <D7EC3ZZ2E3YY.5ALSOA646CK4@gmail.com>
-Subject: Re: [PATCH 4/5] powerpc: Define config option for processors
- without broadcast TLBIE
+Date: Wed, 29 Jan 2025 16:21:26 +1000
+Message-Id: <D7EC9DL1YW6K.5NFBT1W937FK@gmail.com>
 From: "Nicholas Piggin" <npiggin@gmail.com>
 To: "Paul Mackerras" <paulus@ozlabs.org>, <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 5/5] powerpc/microwatt: Add SMP support
 X-Mailer: aerc 0.19.0
 References: <Z5lfDb8wsLlmSLBZ@thinks.paulus.ozlabs.org>
- <Z5lf-OrrbRe5Q0O-@thinks.paulus.ozlabs.org>
-In-Reply-To: <Z5lf-OrrbRe5Q0O-@thinks.paulus.ozlabs.org>
+ <Z5lgTN0aA_yiETne@thinks.paulus.ozlabs.org>
+In-Reply-To: <Z5lgTN0aA_yiETne@thinks.paulus.ozlabs.org>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed Jan 29, 2025 at 8:53 AM AEST, Paul Mackerras wrote:
-> Power ISA v3.1 implementations in the Linux Compliancy Subset and
-> lower are not required to implement broadcast TLBIE, and in fact
-> Microwatt doesn't.  To avoid the need to specify "disable_tlbie" on
-> the kernel command line on SMP Microwatt systems, this defines a
-> config option that asserts that broadcast TLBIE should never be used
-> (the kernel will instead use IPIs to trigger local TLBIEs on other
-> CPUs when required).
+On Wed Jan 29, 2025 at 8:55 AM AEST, Paul Mackerras wrote:
+> This adds support for Microwatt systems with more than one core, and
+> updates the device tree for a 2-core version.  (This does not prevent
+> the kernel from running on a single-core system.)
 >
 > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+
+Well, I'm impressed you added SMP :)
+
+What happens with a 1 CPU system? Do we time out waiting for secondaries
+and continue, or is there something more graceful?
+
 > ---
->  arch/powerpc/mm/book3s64/pgtable.c       | 10 ++++++++--
->  arch/powerpc/platforms/Kconfig.cputype   | 12 ++++++++++++
->  arch/powerpc/platforms/microwatt/Kconfig |  1 +
->  3 files changed, 21 insertions(+), 2 deletions(-)
+>  arch/powerpc/boot/dts/microwatt.dts          | 34 ++++++++++++++++++--
+>  arch/powerpc/platforms/microwatt/Kconfig     |  2 +-
+>  arch/powerpc/platforms/microwatt/Makefile    |  1 +
+>  arch/powerpc/platforms/microwatt/microwatt.h |  1 +
+>  arch/powerpc/platforms/microwatt/setup.c     | 10 ++++++
+>  5 files changed, 45 insertions(+), 3 deletions(-)
 >
-> diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s6=
-4/pgtable.c
-> index 374542528080..14ee96e2a581 100644
-> --- a/arch/powerpc/mm/book3s64/pgtable.c
-> +++ b/arch/powerpc/mm/book3s64/pgtable.c
-> @@ -588,10 +588,16 @@ int pmd_move_must_withdraw(struct spinlock *new_pmd=
-_ptl,
->  }
->  #endif
-> =20
-> +#ifndef CONFIG_PPC_RADIX_NO_BROADCAST_TLBIE
-
-Hate to bikeshed, but would it be annoying to make this an affirmative
-option?
-
-> +#define DEFAULT_TLBIE_ENABLE	true
-> +#else
-> +#define DEFAULT_TLBIE_ENABLE	false
-> +#endif
+> diff --git a/arch/powerpc/boot/dts/microwatt.dts b/arch/powerpc/boot/dts/=
+microwatt.dts
+> index 6e575e841a7b..89281dc975b3 100644
+> --- a/arch/powerpc/boot/dts/microwatt.dts
+> +++ b/arch/powerpc/boot/dts/microwatt.dts
+> @@ -142,6 +142,36 @@ PowerPC,Microwatt@0 {
+>  			ibm,mmu-lpid-bits =3D <12>;
+>  			ibm,mmu-pid-bits =3D <20>;
+>  		};
 > +
->  /*
->   * Does the CPU support tlbie?
->   */
-> -bool tlbie_capable __read_mostly =3D true;
-> +bool tlbie_capable __read_mostly =3D DEFAULT_TLBIE_ENABLE;
->  EXPORT_SYMBOL(tlbie_capable);
+> +		PowerPC,Microwatt@1 {
+> +			i-cache-sets =3D <2>;
+> +			ibm,dec-bits =3D <64>;
+> +			reservation-granule-size =3D <64>;
+> +			clock-frequency =3D <100000000>;
+> +			timebase-frequency =3D <100000000>;
+> +			i-tlb-sets =3D <1>;
+> +			ibm,ppc-interrupt-server#s =3D <1>;
+> +			i-cache-block-size =3D <64>;
+> +			d-cache-block-size =3D <64>;
+> +			d-cache-sets =3D <2>;
+> +			i-tlb-size =3D <64>;
+> +			cpu-version =3D <0x990000>;
+> +			status =3D "okay";
+> +			i-cache-size =3D <0x1000>;
+> +			ibm,processor-radix-AP-encodings =3D <0x0c 0xa0000010 0x20000015 0x40=
+00001e>;
+> +			tlb-size =3D <0>;
+> +			tlb-sets =3D <0>;
+> +			device_type =3D "cpu";
+> +			d-tlb-size =3D <128>;
+> +			d-tlb-sets =3D <2>;
+> +			reg =3D <1>;
+> +			general-purpose;
+> +			64-bit;
+> +			d-cache-size =3D <0x1000>;
+> +			ibm,chip-id =3D <0>;
+> +			ibm,mmu-lpid-bits =3D <12>;
+> +			ibm,mmu-pid-bits =3D <20>;
+> +		};
+>  	};
 > =20
->  /*
-> @@ -599,7 +605,7 @@ EXPORT_SYMBOL(tlbie_capable);
->   * address spaces? tlbie may still be used for nMMU accelerators, and fo=
-r KVM
->   * guest address spaces.
->   */
-> -bool tlbie_enabled __read_mostly =3D true;
-> +bool tlbie_enabled __read_mostly =3D DEFAULT_TLBIE_ENABLE;
+>  	soc@c0000000 {
+> @@ -154,8 +184,8 @@ soc@c0000000 {
 > =20
->  static int __init setup_disable_tlbie(char *str)
->  {
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platfo=
-rms/Kconfig.cputype
-> index 1453ccc900c4..bd2a4e46ab34 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -449,6 +449,18 @@ config PPC_RADIX_MMU_DEFAULT
+>  		interrupt-controller@4000 {
+>  			compatible =3D "openpower,xics-presentation", "ibm,ppc-xicp";
+> -			ibm,interrupt-server-ranges =3D <0x0 0x1>;
+> -			reg =3D <0x4000 0x100>;
+> +			ibm,interrupt-server-ranges =3D <0x0 0x2>;
+> +			reg =3D <0x4000 0x10 0x4010 0x10>;
+>  		};
 > =20
->  	  If you're unsure, say Y.
-> =20
-> +config PPC_RADIX_NO_BROADCAST_TLBIE
-> +	depends on PPC_RADIX_MMU
-> +	help
-> +	  Power ISA v3.1 implementations in the Linux Compliancy Subset
-> +	  and lower are not required to implement broadcast TLBIE
-> +	  instructions, that is, a TLB invalidation instruction
-> +	  performed on one CPU is not required to operate on the TLBs
-> +	  in all CPUs in the system.  Instead, the kernel does an IPI
-> +	  to each relevant CPU to get it to do a local TLBIE instruction.
-> +	  Select this option to force global invalidations to be done via
-> +	  IPIs unconditionally.
-
-... when using radix MMU. Hash MMU requires broadcast TLBIE.
-
-Nitpicks aside, looks okay to me.
-
-Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
-
-> +
->  config PPC_KERNEL_PREFIXED
->  	depends on PPC_HAVE_PREFIXED_SUPPORT
->  	depends on CC_HAS_PREFIXED
+>  		ICS: interrupt-controller@5000 {
 > diff --git a/arch/powerpc/platforms/microwatt/Kconfig b/arch/powerpc/plat=
 forms/microwatt/Kconfig
-> index 5e41adadac1f..1d5cc1ae3636 100644
+> index 1d5cc1ae3636..8911ea7cf12e 100644
 > --- a/arch/powerpc/platforms/microwatt/Kconfig
 > +++ b/arch/powerpc/platforms/microwatt/Kconfig
-> @@ -7,6 +7,7 @@ config PPC_MICROWATT
->  	select PPC_ICP_NATIVE
->  	select PPC_UDBG_16550
->  	select COMMON_CLK
-> +	select PPC_RADIX_NO_BROADCAST_TLBIE
->  	help
->            This option enables support for FPGA-based Microwatt implement=
-ations.
+> @@ -1,6 +1,6 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  config PPC_MICROWATT
+> -	depends on PPC_BOOK3S_64 && !SMP
+> +	depends on PPC_BOOK3S_64
+>  	bool "Microwatt SoC platform"
+>  	select PPC_XICS
+>  	select PPC_ICS_NATIVE
+> diff --git a/arch/powerpc/platforms/microwatt/Makefile b/arch/powerpc/pla=
+tforms/microwatt/Makefile
+> index 116d6d3ad3f0..d973b2ab4042 100644
+> --- a/arch/powerpc/platforms/microwatt/Makefile
+> +++ b/arch/powerpc/platforms/microwatt/Makefile
+> @@ -1 +1,2 @@
+>  obj-y	+=3D setup.o rng.o
+> +obj-$(CONFIG_SMP) +=3D smp.o
+
+Hmm.... `git add arch/powerpc/platforms/microwatt/smp.c` ?
+
+> diff --git a/arch/powerpc/platforms/microwatt/microwatt.h b/arch/powerpc/=
+platforms/microwatt/microwatt.h
+> index 335417e95e66..891aa2800768 100644
+> --- a/arch/powerpc/platforms/microwatt/microwatt.h
+> +++ b/arch/powerpc/platforms/microwatt/microwatt.h
+> @@ -3,5 +3,6 @@
+>  #define _MICROWATT_H
 > =20
+>  void microwatt_rng_init(void);
+> +void microwatt_init_smp(void);
+> =20
+>  #endif /* _MICROWATT_H */
+> diff --git a/arch/powerpc/platforms/microwatt/setup.c b/arch/powerpc/plat=
+forms/microwatt/setup.c
+> index 97828a99780d..d966bf1f57f7 100644
+> --- a/arch/powerpc/platforms/microwatt/setup.c
+> +++ b/arch/powerpc/platforms/microwatt/setup.c
+> @@ -29,6 +29,15 @@ static int __init microwatt_populate(void)
+>  }
+>  machine_arch_initcall(microwatt, microwatt_populate);
+> =20
+> +static int __init microwatt_probe(void)
+> +{
+> +	/* Main reason for having this is to start the other CPU(s) */
+> +#ifdef CONFIG_SMP
+> +	microwatt_init_smp();
+> +#endif
+
+Could use
+
+	if (IS_ENABLED(CONFIG_SMP))
+		microwatt_init_smp();
+
+Thanks,
+Nick
+
+> +	return 1;
+> +}
+> +
+>  static void __init microwatt_setup_arch(void)
+>  {
+>  	microwatt_rng_init();
+> @@ -45,6 +54,7 @@ static void microwatt_idle(void)
+>  define_machine(microwatt) {
+>  	.name			=3D "microwatt",
+>  	.compatible		=3D "microwatt-soc",
+> +	.probe			=3D microwatt_probe,
+>  	.init_IRQ		=3D microwatt_init_IRQ,
+>  	.setup_arch		=3D microwatt_setup_arch,
+>  	.progress		=3D udbg_progress,
 
 
