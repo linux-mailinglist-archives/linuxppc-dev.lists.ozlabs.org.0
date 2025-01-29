@@ -1,53 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-5669-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5670-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED163A217F3
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 08:19:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9636A218B1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 09:13:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YjYRl5Cjyz30MR;
-	Wed, 29 Jan 2025 18:18:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YjZf768mgz2xt7;
+	Wed, 29 Jan 2025 19:13:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738135139;
-	cv=none; b=OyeZBs1vRoDU6quW/WyLozaoRt/2IyHBv/VGfofY0LtuNA84ZP0xleUC0eazqez0m2YVgibeJN0+XuXtym2knHiQDWnFfozighejvQ4iN6C2TFQAWJlROwi9G1hVx97snQ7qafPu351vZqmGksa1f4SmygF/wJRkYkTmtzqXjOAJaXMgJywVvZXLCIjnZl/kGn9cbAJxppGy0z96JPHWAZ06wp/oaISfLYg3rxFwSRYzEsEPXFkb6XCdYZJAwxS/osXI/XECc/MxdmRxm9X8d0GAGl53WzWjgDf+UaSHgXEf17rMR9Nz3uu69gybcMSJYcciyNgxvUmm5Gg6Zl9UOg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738138383;
+	cv=none; b=CjWr7pc3j05cLwnvzA6Gnt3FzUM62/qpwP6F+pUZ/y53V9cQA2vlgwOI70RVr2wwg9QYXox+Cjvhnea/OKean1C5hh7tI2W5w7Ou95cxUi78Gz8dLxIah8FmUg23JCjH+MNXJPNdjCNxQKle4LTacCuAthGh4559AVJsITyIrCYx3oVuMlH3cs+N8riwS5OcqgkTS99AaOOsif3DeImiMbJIyDqgG7baDSurBWCshNshdMXSog09DnLfUYwppBk/Fy5+j4MSHkr48qkhsRf6JOSiBgh7isqMacriRTCOYst7t3zTbU4euFJOOey2sp4yxMoUcKhIlmMFMEYB0RU1cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738135139; c=relaxed/relaxed;
-	bh=irP8nmkfLDHPhn/4WV2oljCRFLuH8gFSrvjZK3XY7tM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PAc3lCl725TkZSQMs0v+X3REmzkeDQm6bc4xPEFNRyoVXHDeaYGbEjG+QmoT7r1cEEv4RIeey2PKW+O80hLXFGH0XiwH8ws3fA/PoIJUxsyKM00tFyy4cxrs5NEOSx2ppLrZrLpxpXXD6/gin+D5JkBGPHpqfHYbCdkJfVf3H/NXlKct44ZRH5VjDUFdMy+DyG7QkFO9DkmBdaxc7SXKHjhslyPLWsCtYB8W6gCaTvVg5g9uSzO3ulgeMi6ZoyET/BgWAqo0676yUdKuuaeXDuMN6jPealyJD3Wv84hSja+SYQKBpDwpEvVpGSulGDVk1gzSVEWiP3clwqpASweRSQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=owAz95hN; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
+	t=1738138383; c=relaxed/relaxed;
+	bh=hK8c3jsYlNpEX7+mgSkiCU9qayKu6OQ/X4AlSjaHOFw=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=RXZNkffn1bVHSdlx+yMAq3gHLpeDtiVgvAEDzZnbwA6mhqfxf00KsYM2Jt9qogWnO63EvzEGr+x229WeMxp23mF5teJLKfNpgXnwSf1QWBJQ2IBxNPl2AUue0zt5RYI+AKfqG60bcahQAVL7/ftP8v7I006L6USky0ti0CEGtmXfEDz19KpFh8PGbixKdRk08M/ph8IugB2bOXGdgGnQN8BNa9L/X0S13DrnEFKm+iZlv9iAZ5wK1SiaCwVon05E8JaYwCmDV1iN4oTF31n67EkvI5mSwYvl/I6+uBy55HS6mrNzkQNZFoQGZP1HR3tLqC3oKCAtiJy16b2Pvc1u+g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UHfkgD/Y; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=owAz95hN;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=UHfkgD/Y;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=npiggin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjYRl1W4Pz30LS
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 18:18:59 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
-	s=201707; t=1738135130;
-	bh=irP8nmkfLDHPhn/4WV2oljCRFLuH8gFSrvjZK3XY7tM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=owAz95hNh231B8vCa+n+AJs7HsbJzxwSRed7Z3Sp0K9RAtGSQdNYWskRPwdaWKMz9
-	 DnKimxYSCMthOsz2RPYcTyuVEtpNOppvXFS2a2NEBsD6rMnLgPlAEfVRixcFx5tfEc
-	 P9l1YZCNlV34ezpcC1IbK+/T5kIZ20XsFMywp+dvNq+hsPucXn5dwPk7twyxNPNceR
-	 pWVDyA5hvhUguA6dO4fRlbkSvIJ831rTvccPgCo6YGU4AZzK3dvyzPgjxYdMg3DGiF
-	 cg2d+JmMaw1jjycXa9eo8c8SVoT3UZuzIHWQwCM5TJ9DzTvvP1t+xOrNGvxH3L3s2N
-	 x2QBpXglIE0PQ==
-Received: by gandalf.ozlabs.org (Postfix, from userid 1003)
-	id 4YjYRZ3829z4x3d; Wed, 29 Jan 2025 18:18:50 +1100 (AEDT)
-Date: Wed, 29 Jan 2025 18:18:54 +1100
-From: Paul Mackerras <paulus@ozlabs.org>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 2/5] powerpc/microwatt: Device-tree updates
-Message-ID: <Z5nWXtdCokYuVbXo@thinks.paulus.ozlabs.org>
-References: <Z5lfDb8wsLlmSLBZ@thinks.paulus.ozlabs.org>
- <Z5lfmZtfHD7t2IvK@thinks.paulus.ozlabs.org>
- <D7ECKPNWAU7O.39PRDJ4PIG0P9@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjZf631jvz2yyT
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 19:13:02 +1100 (AEDT)
+Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-2ef714374c0so703785a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 00:13:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1738138380; x=1738743180; darn=lists.ozlabs.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hK8c3jsYlNpEX7+mgSkiCU9qayKu6OQ/X4AlSjaHOFw=;
+        b=UHfkgD/YIXTDZY7FkZE2uzK112u1lN+j9ArB0KyLOs5khSsO+8Qvzm4PGYb5chY9eB
+         WcUpAZlu78An+jONnqJENXjVnn88Vihvs7ZfgUHtvOiXerygiCNQBCOEp+Sxlximm6vw
+         GWXeIxuaZeOCw0KU60Ztp45z8DS5Ejs1qoSBmcOCYwSR4IKCiX4pdJWDA+uvZgq+9Z7i
+         GqiXz6TIxNSYZq8gqWIq3k8wacSeoxhE9LVc+H/LettQDAiGV5V7ixwlk1Pd+lTfv3Wh
+         oFxYiGYImCQ9js2EXWJ5fovsbG+YGkzEK7AOQB5n2Im4vgDfpG4TShpglcAv7vojng54
+         gpTQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738138380; x=1738743180;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=hK8c3jsYlNpEX7+mgSkiCU9qayKu6OQ/X4AlSjaHOFw=;
+        b=g/xxbIHU3v8fTHu87J8DjMbzoBtZfpz3ZwpQUcpSTAbsRsgZ02ZK/mq9A4fSJ5zwm7
+         M1PMxpnlFINpAzAX6XFsNlKkXQXaSi9K9VpVZxukwoAKaMVEgb1FgrkzYmJ7Y5BAZerY
+         tDzyHJjh2HdyBkdtfSsU5JZoCPlH1TgjS7YPQ9b16H/t2yRcbEs/dAZubxVP+X/L3BKe
+         TrVoSnz78zsZsuEE8DaKTLKFA4YT4W/t171dZy4z1COtFZgNfSy+kkMRNShOi1lBrYs4
+         vPZSGLAjCPFFUa37ukQlQEsV3d2Zd/WUFeL3gYxWTr6BD0ubxh0DDDSE1Xmo6wID5iEa
+         +p3w==
+X-Gm-Message-State: AOJu0YzTQGM25tY1eAsATFQ1gWnKis8c5t3/WtMpzpvRQZ2XyWgSX4d3
+	koB+277N2Yvtnx5wSBXm2lzc0QcJE0cBvaS436NfhcZuDsgSZgOjd+klbw==
+X-Gm-Gg: ASbGncv8rl3SwOVHaHooyN2ODJ6aipyDHa5H9cspuddPie6g6fR5x7XZ+t/6yJ179lv
+	dlGKfWRmR75PuQdATg3eQ+U9wpMl9tYcXF95SD2575koxFSG4C4R4vuUe69klfSHVcf8FzppqJJ
+	0H046KsLMVAUphH64Dk5227D6sH/xP1InX7aNILCGWsCzEqO5VtP93yOoKH5OntRS27hZI1bIji
+	sdbHi30tWFTho2GaXaHMKWSFu/LaP3BIvOTbGDS881+8T1QXWkEqtdrinyrN6zDWEKs/eoHOEp3
+	9d98tull
+X-Google-Smtp-Source: AGHT+IEHnOBZNqtmjl+mi2C9PXem4P4ksAmCb6fb4MAFqpm9XVo5zBXAoxp/RRj0u0Yy5i+AbZYgMA==
+X-Received: by 2002:a17:90b:524b:b0:2f2:a974:1e45 with SMTP id 98e67ed59e1d1-2f83a122cc4mr3511853a91.16.1738138379910;
+        Wed, 29 Jan 2025 00:12:59 -0800 (PST)
+Received: from localhost ([1.146.123.110])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2f83bc9a038sm981198a91.7.2025.01.29.00.12.58
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 29 Jan 2025 00:12:59 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,44 +79,142 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <D7ECKPNWAU7O.39PRDJ4PIG0P9@gmail.com>
-X-Spam-Status: No, score=-0.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 29 Jan 2025 18:12:55 +1000
+Message-Id: <D7EEMQ8UULSQ.YCX4FDTAX6RP@gmail.com>
+Cc: <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH 5/5] powerpc/microwatt: Add SMP support
+From: "Nicholas Piggin" <npiggin@gmail.com>
+To: "Paul Mackerras" <paulus@ozlabs.org>
+X-Mailer: aerc 0.19.0
+References: <Z5lfDb8wsLlmSLBZ@thinks.paulus.ozlabs.org>
+ <Z5lgTN0aA_yiETne@thinks.paulus.ozlabs.org>
+ <D7EC9DL1YW6K.5NFBT1W937FK@gmail.com>
+ <Z5nRYn11vxVuGU7J@thinks.paulus.ozlabs.org>
+In-Reply-To: <Z5nRYn11vxVuGU7J@thinks.paulus.ozlabs.org>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Jan 29, 2025 at 04:36:14PM +1000, Nicholas Piggin wrote:
-> On Wed Jan 29, 2025 at 8:52 AM AEST, Paul Mackerras wrote:
-> > Microwatt now implements ISA v3.1 (SFFS compliancy subset), including
-> > prefixed instructions, scv/rfscv, and the FSCR, HFSCR, TAR, and CTRL
-> > registers.  The privileged mode of operation is now hypervisor mode
-> > and there is no privileged non-hypervisor mode; the MSR[HV] bit is
-> > forced to 1.
-> 
-> Cool. Lots of development in microwatt.
-> 
-> Come to think of it we should have put a broadcast-tlbie feature
-> in there and you wouldn't need the other patch. That can go on
-> the todo list I guess.
+On Wed Jan 29, 2025 at 4:57 PM AEST, Paul Mackerras wrote:
+> On Wed, Jan 29, 2025 at 04:21:26PM +1000, Nicholas Piggin wrote:
+>> On Wed Jan 29, 2025 at 8:55 AM AEST, Paul Mackerras wrote:
+>> > This adds support for Microwatt systems with more than one core, and
+>> > updates the device tree for a 2-core version.  (This does not prevent
+>> > the kernel from running on a single-core system.)
+>> >
+>> > Signed-off-by: Paul Mackerras <paulus@ozlabs.org>
+>>=20
+>> Well, I'm impressed you added SMP :)
+>>=20
+>> What happens with a 1 CPU system? Do we time out waiting for secondaries
+>> and continue, or is there something more graceful?
+>
+> There's a field in the SYSCON register which tells you how many cores
+> there are.  microwatt_init_smp() looks at that field and only starts
+> the CPUs that are there.
 
-I thought about doing that, but it would add complexity and I'm not
-sure it would actually have any measurable performance benefit.  When
-I saw it was optional in the ISA for LCS and below, and that the
-kernel has all the machinery for handling the cross-CPU invalidations
-via IPI, it became very much the path of least resistance to use the
-kernel machinery.
+Ah, nice.
 
-> system-call-vectored was available in ISA v3.0. Not that we do much
-> with it at the moment IIRC, but there were dreams of wiring it in for
-> compat guests. With that fixed,
+> Oops, sorry, I see that I forgot to do 'git add' on
+> arch/powerpc/platforms/microwatt/smp.c.  Here it is (I'll include it
+> properly in v2, of course):
+>
+> // SPDX-License-Identifier: GPL-2.0-or-later
+>
+> /*
+>  * SMP support functions for Microwatt
+>  * Copyright 2025 Paul Mackerras <paulus@ozlabs.org>
+>  */
+>
+> #include <linux/kernel.h>
+> #include <linux/smp.h>
+> #include <linux/io.h>
+> #include <asm/early_ioremap.h>
+> #include <asm/xics.h>
+>
+> #include "microwatt.h"
+>
+> static void __init microwatt_smp_probe(void)
+> {
+> 	xics_smp_probe();
+> }
+>
+> static void microwatt_smp_setup_cpu(int cpu)
+> {
+> 	if (cpu !=3D 0)
+> 		xics_setup_cpu();
+> }
+>
+> static struct smp_ops_t microwatt_smp_ops =3D {
+> 	.probe		=3D microwatt_smp_probe,
+> 	.message_pass	=3D NULL,		/* Use smp_muxed_ipi_message_pass */
+> 	.kick_cpu	=3D smp_generic_kick_cpu,
+> 	.setup_cpu	=3D microwatt_smp_setup_cpu,
+> };
+>
+> /* XXX get from device tree */
+> #define SYSCON_BASE	0xc0000000
 
-Interesting.  I looked in my copy of v2.07 (PowerISA_V2.07_PUBLIC.pdf)
-and it mentions rfscv in a couple of places, but has no description of
-scv or rfscv.  I'll change it to v3.0.
+#define SYSCON_LENGTH 0x100
+
+?
+
+>
+> #define SYSCON_CPU_CTRL	0x58
+>
+> void __init microwatt_init_smp(void)
+> {
+> 	volatile unsigned char __iomem *syscon;
+> 	int ncpus;
+> 	int timeout;
+>
+> 	syscon =3D early_ioremap(SYSCON_BASE, 0x100);
+
+ioremap is not up by SMP init time? I always have to
+trawl through init spaghetti to work it out. I guess it's
+early SMP init.
+
+> 	if (syscon =3D=3D NULL) {
+> 		pr_err("Failed to map SYSCON\n");
+> 		return;
+> 	}
+> 	ncpus =3D (readl(syscon + SYSCON_CPU_CTRL) >> 8) & 0xff;
+> 	if (ncpus < 2)
+> 		goto out;
+>
+> 	smp_ops =3D &microwatt_smp_ops;
+>
+> 	/*
+> 	 * Write two instructions at location 0:
+> 	 * mfspr r3, PIR
+> 	 * b __secondary_hold
+> 	 */
+> 	*(unsigned int *)KERNELBASE =3D 0x7c7ffaa6;
+> 	*(unsigned int *)(KERNELBASE+4) =3D 0x4800005c;
+
+Could move constants to PPC_INST_ ?
+
+>
+> 	/* enable the other CPUs, they start at location 0 */
+> 	writel((1ul << ncpus) - 1, syscon + SYSCON_CPU_CTRL);
+>
+> 	timeout =3D 10000;
+> 	while (!__secondary_hold_acknowledge) {
+> 		if (--timeout =3D=3D 0)
+> 			break;
+> 		barrier();
+> 	}
+>
+>  out:
+> 	early_iounmap((void *)syscon, 0x100);
+> }
+
+Looks okay otherwise.
 
 Thanks,
-Paul.
+Nick
 
