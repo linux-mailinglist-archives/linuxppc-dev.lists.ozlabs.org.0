@@ -1,92 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-5675-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5676-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A616A21A33
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 10:45:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 396FDA21AD1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 29 Jan 2025 11:14:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yjchq60dcz30Ss;
-	Wed, 29 Jan 2025 20:45:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YjdLK5v83z30Mn;
+	Wed, 29 Jan 2025 21:14:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.51 arc.chain=strato.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738143931;
-	cv=pass; b=XnTq0nwgKROQ67HVn2OtMzy0rAz10qk+fuqp3qGb64a1OCDO6hFJzli5AC6+5VuwOlPrEe2+A6BPQNBactvOVVM2Uc9rdvnKj7svEz2E8CoeqWk3sot5n7ovnvc77CLxDkDJdXu0fl6qfKw+IzwOPszdBk4s+OGx0xYXoCJTm9eIyF3jeAh3KC6Y0QdXUnyR7grQVfezSBc9GpyJhUHAElvK4umQQwrdqYoMB25Moe6DB3Q2ujLcsK2Yx+APlCgpR4yunuICSQWGiJ1BASn3SfsuQRlqO1pU/MAO1qb0uj5SZ98yOdS04MNGJgb7gU02cis6JVBLmBFiwB3syAMGkg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738143931; c=relaxed/relaxed;
-	bh=3b+Zqr6HieW55Jt4gOhnbTAk0MRxpyqhi78YbnYzbqM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=ewY3Pr3BaqOBh5awWkmbG6CBvTPOklNPxETRK8atV/1lejTA2fsTCE9DQO97M3ZWf1hN84y+ZjzbVzIuExt8Rl7XBi8D0fR1VfDklW7umQ7oD25dk1nzvBXyvSbU9FfauNofPkNcBV2BxC+bO6Mq6Ma3j7idwun4vCiQH3qPoRYhfeKrKISzInJDIGhsaK4lc51WwzMqbSgCamqJRbFklqTUlZhr9P4UMHc1zrBKKrDAgpgid8l6eu1e7dVJzscazt8IByMQdA/CouGz5XHCkyZ/r8NHGs6BQNY58wdufHRioHFTiTgBhTgnraTO32lmmCfVQWQvD0zx5dOlFS8xUw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=outer-limits.org; dkim=pass (2048-bit key; unprotected) header.d=outer-limits.org header.i=@outer-limits.org header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=aaTlBvrQ; dkim=pass header.d=outer-limits.org header.i=@outer-limits.org header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=crkXNF/X; dkim-atps=neutral; spf=pass (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=julian@outer-limits.org; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=outer-limits.org
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.2.142.161
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738145673;
+	cv=none; b=hsVopRtXnvT4pms3K2jn3tIc5TgeIxRjEDj7fon+Tv7ni4jyElwyxWyhSeJoQ1mqy+8aUp0x/E30d/JJbmnadF70n4w7rxZttLXqH6bie8DsKRjPuvIwMuc0eIDJfD7meZ8gt4QY7gbfZqolnWdyopEt5LacL2jqXNMSJYBwTTWf8nrzmvKmcGcPEH7XqjYShgneaouv/wdGoy7ZbxqpzpuPC8IlX2pC/EoyAbvrTWKCyEIr2LUEz+V5xNs3VqMUt0CUK2Gp3g25itzFxTngikpVWMMRhwjK4SgnCSVgnC5kBf14R7ZK1+ObBXth1VXsqA2zfNVvbcuPWqG1WqVRNg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1738145673; c=relaxed/relaxed;
+	bh=yigIz8jogxLpu8Oq/ClpNGnqxPIg8HGpntMDN4L9js0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YsCGvo3ICiFAEQyzZCKhlnbuQHS/eXVgRSWKPFq5hEg6riprl1dtjt7Fj5E38vTs44JFbIKRXndHNzlgLoyKuHp9ZxNKDJ2ts8IIbiE4ac20mAhE3JyRNbljdMabu6yoyRm//0KY2vkZat1p4RkKm6AGvS27QAYHKufsEl4yRH2v+I0JTgXeMCHXGI+5K2n5ZgpPishtahfpvW6DDMSxDkpV1n8eR08W51rDVL2sNMwuvXHb7xtSJmNqwMuC5rqlkAIz1SsMg/XTzLlJgm91jCdvXvaxh/c+XgDdmfgzs1wlW73p66fHMlSw1zAp3D5Zfo9V5RIlqNrS2eks/pRgQg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; dkim=fail header.d=smtpservice.net header.i=@smtpservice.net header.a=rsa-sha256 header.s=mp6320.a1-4.dyn header.b=gkaTnAKF reason="unknown key version"; dkim=pass (2048-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=s1174286 header.b=ate+PAla; dkim=pass (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=lrzTQRN3; dkim-atps=neutral; spf=pass (client-ip=103.2.142.161; helo=e2i673.smtp2go.com; envelope-from=bt.nqwyjwvs5ctmkv2=bkfa06zw9zj9=wfopqj2ku2z1dc@em1174286.fjasle.eu; receiver=lists.ozlabs.org) smtp.mailfrom=em1174286.fjasle.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outer-limits.org header.i=@outer-limits.org header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=aaTlBvrQ;
-	dkim=pass header.d=outer-limits.org header.i=@outer-limits.org header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=crkXNF/X;
+	dkim=fail reason="unknown key version" header.d=smtpservice.net header.i=@smtpservice.net header.a=rsa-sha256 header.s=mp6320.a1-4.dyn header.b=gkaTnAKF;
+	dkim=pass (2048-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=s1174286 header.b=ate+PAla;
+	dkim=pass (1024-bit key; unprotected) header.d=fjasle.eu header.i=@fjasle.eu header.a=rsa-sha256 header.s=mail header.b=lrzTQRN3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.51; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=julian@outer-limits.org; receiver=lists.ozlabs.org)
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.51])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=em1174286.fjasle.eu (client-ip=103.2.142.161; helo=e2i673.smtp2go.com; envelope-from=bt.nqwyjwvs5ctmkv2=bkfa06zw9zj9=wfopqj2ku2z1dc@em1174286.fjasle.eu; receiver=lists.ozlabs.org)
+Received: from e2i673.smtp2go.com (e2i673.smtp2go.com [103.2.142.161])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yjchm3gvRz30Q3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 20:45:26 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1738143917; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=DAwyRj3+axJ97RcksMS6tBXFfDVf9TO7ptOyzOc/eGXqjbIYX9B3uUIiaEhA67jcj6
-    K0+KT/clkppF7Hl7qSnREiRx1ByobEmbSYOCFtNfdLjp0+jvTB6T4wLjyMG4yOTIiUGv
-    TrPis/x9xgKn05ZimjuUfReIAeoDXhZHB1y+VjZfHeTQyY/nBTLlhUV6YUcmKtKdOIw7
-    VSgluCT8JkpY/DHnytrOB1vgktN6amXAUOL1TuiycyaoIIMic0pgw4+7hn2EVzKWMdr8
-    GBb5qud/joLHlyFjok16msR6mABC5qhjFChSSgDLwn9tZqjbuE0EbxMmhEZL1W5Svl8q
-    xHiw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1738143917;
-    s=strato-dkim-0002; d=strato.com;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=3b+Zqr6HieW55Jt4gOhnbTAk0MRxpyqhi78YbnYzbqM=;
-    b=kRp3bKb2b3b3LGDH3CKf8wd2nQm/RASWRovTMTExJEn30fqhLtxwpwDk7KRzu41h7B
-    j+/l7Ae94TMoer/hBwL0K9vsQtsBgWMy8Sug2E2Ddg2DbF70S5XOajaeiZBIjhtKU5vE
-    CwG5DRAVfgKwVB04Sa0pcQg4h86CuRuzB2jh9JwmudGjN7yfzGS89nK4SBFdxv24KxyT
-    VTF+2LN45w0b3mEjWona7Jzjo8jvrA3vb6GVr2mtRGJfSYEExsnpICnWMbn9QHmLL6gU
-    W3DA0hAXd/BvegVGtxsobtI/qR+DGlp86YS056n2DXqKQ/NWm8r/XopvsDD9P2EqZT7g
-    mkUg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1738143917;
-    s=strato-dkim-0002; d=outer-limits.org;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=3b+Zqr6HieW55Jt4gOhnbTAk0MRxpyqhi78YbnYzbqM=;
-    b=aaTlBvrQwo4+2Hzk6pZLuKjKa0KOUtHfDPeetbFQc1SnIVDNZj9JjuV9BKK6M14qJn
-    IvaD3whgyXDRAn7gSIF14ZmEdwMVJBiBBcx2DMEIT9cjUUhWLuTb33XRVgiSkO67kHH3
-    CHVrxIIFhmqN9l/amy5eKNk/USxnWOb8qNK3MJELObgY0StmZtBnXVUHZ77GNEaCGCBz
-    2TDvdX6pTzkuTKWkutip4g9pOQ347IlIOyGvZh/33wtsnal8Tq8ZrGdQ93baAObcH6aZ
-    crcPDhwX2lup+cTUCfjdTOlol5sIqILOyrQhpdOnOhgfdt7HqQsZyE/THZgQ0wOnZ9AJ
-    onxw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1738143917;
-    s=strato-dkim-0003; d=outer-limits.org;
-    h=Message-Id:Date:Subject:Cc:To:From:Cc:Date:From:Subject:Sender;
-    bh=3b+Zqr6HieW55Jt4gOhnbTAk0MRxpyqhi78YbnYzbqM=;
-    b=crkXNF/XMrarDkT/I6lTIAz/7UiwAxjaWX84nnKMy8pZkrhQcEZJHmrvetsMSJl7lW
-    EbNB/ZPhQokiHFvBrqAA==
-X-RZG-AUTH: ":JnkIfEGmW/AMJS6HttH4FbRVwc4dHlPLCp4e/IoHo8zEMMHAgwTfqBEHcVJSv9P5mRTGd2ImeA=="
-Received: from ws2104.lan.kalrayinc.com
-    by smtp.strato.de (RZmta 51.2.17 AUTH)
-    with ESMTPSA id J1a25110T9jGEM2
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 29 Jan 2025 10:45:16 +0100 (CET)
-From: Julian Vetter <julian@outer-limits.org>
-To: Arnd Bergmann <arnd@arndb.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Julian Vetter <julian@outer-limits.org>
-Subject: [PATCH v2] powerpc: Remove eieio() in PowerPC IO functions
-Date: Wed, 29 Jan 2025 10:45:10 +0100
-Message-Id: <20250129094510.2038339-1-julian@outer-limits.org>
-X-Mailer: git-send-email 2.34.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjdL00s2cz2xbS
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 21:14:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=smtpservice.net; s=mp6320.a1-4.dyn; x=1738146556; h=Feedback-ID:
+	X-Smtpcorp-Track:Message-ID:Subject:To:From:Date:Reply-To:Sender:
+	List-Unsubscribe:List-Unsubscribe-Post;
+	bh=yigIz8jogxLpu8Oq/ClpNGnqxPIg8HGpntMDN4L9js0=; b=gkaTnAKF4WJjlbN2DE9JXcGbgZ
+	DngbaDKhSAsDTnXhXQhxdBAJ6I3E4EhGipB9jBDgA1iqzsdBBh1juZUheOBwngGp4X1pa/zIeHwUj
+	7/Y6NlMeKO2/LKZQtNw7JlkXmupIc4lJZrl2GZMlyQQomuIcOJiWVKT0udvGmLVNoEFssZNEf+eNn
+	6VPJfLpZqjkOQnLDp02SbWCyK99z6YSBcyygvCW15PhgIp+pcIDg2lkazK3UNWYiZauKUTld+D4lo
+	qdEKTG/nHaQy51voNO/iUzq5aMm8PHfzou3idcKt3RNfMLPyTKBbVYwaUiUdTZHFg7oQFBtgWlQV3
+	506Md3yw==;
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fjasle.eu;
+ i=@fjasle.eu; q=dns/txt; s=s1174286; t=1738145656; h=from : subject :
+ to : message-id : date;
+ bh=yigIz8jogxLpu8Oq/ClpNGnqxPIg8HGpntMDN4L9js0=;
+ b=ate+PAlazPKzwKRSR4pCSLnivR3A7mPu0D7BILwOQL9NC9aLxMuSYzDp4N15j2opNHb4D
+ hcK8YZfgWMuhhKMTE53ak1EMHrTrP/wrlp1E6/dduOYV9YDBy9+3ba+bJUNHsC1fUY9LVfL
+ FPTwZVQE0kVmNmQ/YkExRCRbPdHu31kH99UisEoUJqaW1//84pL0wI/bR3tGXklFnx6+kq6
+ WBIn/8YKP5UOORE34x5XZtynSLHeW/tqlvP5LgMCQMKAJy1wXoyDUsI/8qoRPF5HrkjE+I6
+ VwQSs7XNrrtC4HhhA6l1sH4y4pfGnk+Cb89xGbg8o16CsX8l/pyPso9Lf5Nw==
+Received: from [10.139.162.187] (helo=SmtpCorp) by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.94.2-S2G) (envelope-from <nicolas@fjasle.eu>)
+ id 1td541-qt4C2u-7W; Wed, 29 Jan 2025 10:12:53 +0000
+Received: from [10.85.249.164] (helo=leknes.fjasle.eu)
+ by smtpcorp.com with esmtpsa
+ (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+ (Exim 4.97.1-S2G) (envelope-from <nicolas@fjasle.eu>)
+ id 1td540-4o5NDgrj3YX-m1RY; Wed, 29 Jan 2025 10:12:52 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fjasle.eu; s=mail;
+ t=1738145569; bh=jlWqgjHL5N7f8oGkWcnw43c2Ps30GS7ts7AWiFMaylQ=;
+ h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+ b=lrzTQRN3Tn32FaSlwxsLVco1eX3DaHzg6Z8TRjjS1WIaUVi4Si1yCo3WTUpJh8fdW
+ F+PnOhw5lYOsXu+6n/Tv5PbAbEPZUx/dTzHK5fKxW0mkUPZj8xWlai41nC0rQG6uuT
+ 9SQHPfkpisMCnTaCynW2DaO4AAk9FNYX1ise4kDE=
+Received: by leknes.fjasle.eu (Postfix, from userid 1000)
+ id 4C4DB3D90C; Wed, 29 Jan 2025 11:12:49 +0100 (CET)
+Date: Wed, 29 Jan 2025 11:12:49 +0100
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Kienan Stewart <kstewart@efficios.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>,
+ Nicolas Schier <nicolas@fjasle.org>, Nathan Chancellor <nathan@kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+ linux-kbuild@vger.kernel.org, n.schier@avm.de
+Subject: Re: [PATCH] kbuild: Add missing $(objtree) prefix to powerpc
+ crtsavres.o artifact
+Message-ID: <Z5n_Iei185SsQyLd@fjasle.eu>
+References: <20250127-buildfix-extmod-powerpc-v1-1-450012b16263@efficios.com>
+ <d0eb6abf-c0f2-4726-92ea-7d007813936d@efficios.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,83 +93,64 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=2.1 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_NONE,
-	TVD_SUBJ_WIPE_DEBT autolearn=disabled version=4.0.0
-X-Spam-Level: **
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d0eb6abf-c0f2-4726-92ea-7d007813936d@efficios.com>
+X-Operating-System: Debian GNU/Linux 12.9
+X-Smtpcorp-Track: J_iKMLViP4t8.1Rgq2UNn0V0z.dNRmlA0Ys8E
+Feedback-ID: 1174286m:1174286a9YXZ7r:1174286sjo3cYpwpr
+X-Report-Abuse: Please forward a copy of this message, including all headers,
+ to <abuse-report@smtp2go.com>
+X-Spam-Status: No, score=-0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Remove the eieio() calls in IO functions for PowerPC. While other
-architectures permit prefetching, combining, and reordering, the eieio()
-calls on PowerPC prevent such optimizations. This has only historical
-reasons, because in the early arch/powerpc64 code also readl() had these
-eieio() calls, but later went through several iterations which
-subsequently removed them. While the _memcpy_fromio and ins{b,l,w}
-functions stayed with the old implementation.
+On Tue 28 Jan 2025 10:53:42 GMT, Kienan Stewart wrote:
+> Hi,
+> 
+> I missed a few CCs, looping them in now. Apologies for the extra noise.
+> 
+> thanks,
+> kienan
+> 
+> On 1/27/25 1:47 PM, Kienan Stewart wrote:
+> > In the upstream commit 214c0eea43b2ea66bcd6467ea57e47ce8874191b
+> > ("kbuild: add $(objtree)/ prefix to some in-kernel build artifacts")
+> > artifacts required for building out-of-tree kernel modules had
+> > $(objtree) prepended to them to prepare for building in other
+> > directories.
+> > 
+> > When building external modules for powerpc,
+> > arch/powerpc/lib/crtsavres.o is required for certain
+> > configurations. This artifact is missing the prepended $(objtree).
+> > 
+> > External modules may work around this omission for v6.13 by setting MO=$KDIR.
+> > 
+> > Signed-off-by: Kienan Stewart <kstewart@efficios.com>
+> > ---
+> >   arch/powerpc/Makefile | 2 +-
+> >   1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+> > index f3804103c56ccfdb16289468397ccaea71bf721e..9933b98df69d7f7b9aaf33d36155cc61ab4460c7 100644
+> > --- a/arch/powerpc/Makefile
+> > +++ b/arch/powerpc/Makefile
+> > @@ -58,7 +58,7 @@ ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
+> >   # There is a corresponding test in arch/powerpc/lib/Makefile
+> >   KBUILD_LDFLAGS_MODULE += --save-restore-funcs
+> >   else
+> > -KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
+> > +KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
+> >   endif
+> >   ifdef CONFIG_CPU_LITTLE_ENDIAN
+> > 
+> > ---
+> > base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+> > change-id: 20250127-buildfix-extmod-powerpc-a744e1331f83
 
-Signed-off-by: Julian Vetter <julian@outer-limits.org>
----
-Changes for v2:
-- Removed eieio() calls also from other functions in io.c
-- Rephrased commit message
----
- arch/powerpc/kernel/io.c | 6 ------
- 1 file changed, 6 deletions(-)
+Thanks!
 
-diff --git a/arch/powerpc/kernel/io.c b/arch/powerpc/kernel/io.c
-index 6af535905984..d643ec4a201d 100644
---- a/arch/powerpc/kernel/io.c
-+++ b/arch/powerpc/kernel/io.c
-@@ -34,7 +34,6 @@ void _insb(const volatile u8 __iomem *port, void *buf, long count)
- 	asm volatile("sync");
- 	do {
- 		tmp = *(const volatile u8 __force *)port;
--		eieio();
- 		*tbuf++ = tmp;
- 	} while (--count != 0);
- 	asm volatile("twi 0,%0,0; isync" : : "r" (tmp));
-@@ -65,7 +64,6 @@ void _insw_ns(const volatile u16 __iomem *port, void *buf, long count)
- 	asm volatile("sync");
- 	do {
- 		tmp = *(const volatile u16 __force *)port;
--		eieio();
- 		*tbuf++ = tmp;
- 	} while (--count != 0);
- 	asm volatile("twi 0,%0,0; isync" : : "r" (tmp));
-@@ -96,7 +94,6 @@ void _insl_ns(const volatile u32 __iomem *port, void *buf, long count)
- 	asm volatile("sync");
- 	do {
- 		tmp = *(const volatile u32 __force *)port;
--		eieio();
- 		*tbuf++ = tmp;
- 	} while (--count != 0);
- 	asm volatile("twi 0,%0,0; isync" : : "r" (tmp));
-@@ -155,21 +152,18 @@ void _memcpy_fromio(void *dest, const volatile void __iomem *src,
- 	__asm__ __volatile__ ("sync" : : : "memory");
- 	while(n && (!IO_CHECK_ALIGN(vsrc, 4) || !IO_CHECK_ALIGN(dest, 4))) {
- 		*((u8 *)dest) = *((volatile u8 *)vsrc);
--		eieio();
- 		vsrc++;
- 		dest++;
- 		n--;
- 	}
- 	while(n >= 4) {
- 		*((u32 *)dest) = *((volatile u32 *)vsrc);
--		eieio();
- 		vsrc += 4;
- 		dest += 4;
- 		n -= 4;
- 	}
- 	while(n) {
- 		*((u8 *)dest) = *((volatile u8 *)vsrc);
--		eieio();
- 		vsrc++;
- 		dest++;
- 		n--;
--- 
-2.34.1
+Reviewed-by: Nicolas Schier <n.schier@avm.de>
+Tested-by: Nicolas Schier <n.schier@avm.de>
 
 
