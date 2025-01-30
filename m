@@ -1,66 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-5714-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02EF2A22FC3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2025 15:25:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E50BA23086
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2025 15:38:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YkLs35G9Dz30TS;
-	Fri, 31 Jan 2025 01:25:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YkM8w5Bnlz30Th;
+	Fri, 31 Jan 2025 01:38:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.218.50
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738247111;
-	cv=none; b=U1F1sLbstyWsW23VdQXBjNZKUEj7KyU0H5O+X+rTNTZtP7udCEg7I+lGm8FiEs/t1yXjc0qyBgcJAztei+FzVboy0kKoJy8zDj8QdF5ecX3OYl+xBQzRw0DwJJvc+uJhFqonpCp14vcr7wFD0sUvmnuEEjr0qjOr+6yMQoWkm5JYmvnR5IANXgqhZelfVSUmKsUfot3vdMy6BiuQi3Yj2r/slMetz4OqJ5iBBgcrJSaeGuX7ueYj5UzESc68GvoHjUy2iaunMlT8VIvQO3O6g9KTSXTLdxTUQ5mACWLF/Q5oEPyfjqfDWKLjqJn8mE86NC/72xle04oxPlbarD3RdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.171
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738247936;
+	cv=none; b=VSFzvyQUa5zhykDabCEHiaAdHCGkhebGqhCvqdiIEIMasIieOaWp7S+wQeLIgTeQySRdiChApX+vKrImXhq0sOcTYFl14UASuDPeqf/KogkokM2fcpHyJ/0ZPabbSi/R7THf3dqiufESFVvML808sgt+XOizxnbSXHR0QPm+pzCyWUeu7GzwI05eaG5UWNQxdR1785aKdwkblvqNPwFhzxraTgCdFOeokNE2SueQ+aDEdsUf28mpWofdho2Nr92CNciOnDqNNjWnjyGMN7EtcGs1o3LRTuT6tzyyTBx2lIwv15PcaI539mtf7XeRmYDp6G8Z0KZcTfLaPBKRXkSxqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738247111; c=relaxed/relaxed;
-	bh=3OqrPZhmeATdEa/SarwcrPzfDvhKK4nRH2GJQ3Y2/Ao=;
+	t=1738247936; c=relaxed/relaxed;
+	bh=3koQwFtsYEj+sBiSRxwOt8Kdl4P9BIA497a/eImNeSg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AJYgmMMORaU5dWvr8YXulVikA7AaHQ9R9r4RTAKo1piK7DsCVIXlpHzJNs/7bTtfCJyelpnwZcK9YPB4bgl0ANbNZnhYXrgexafEwBlBwISxP8c9fBMPdfLeCKqxMxDMriYfOPNX94OOz+vfw5hwyZGHS+VVE1lUSPQSdBdvg0usJe65RXMsNNf/9DQuMhV/xnBdDg2ZKooMmvY0riMjWNCQLHPsyHMwk/TDuNyazXBnWFwNHxnDLzfgkP56FDRW66KoB6dUNyBY9VaGkx6mAei6ThfgnzAOJEcRWBpQZfTQFgif4dqsfGC3a6AHNiXTKLFRhAUifBnqp3LtION2Vg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.218.50; helo=mail-ej1-f50.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=Ewe5zVfb5X2sV/fEuEP+tdQByVpW2qBIsTwYjueGaDAPDGd/e/NWPND6gOv7ArFD8Sv5Cw3y4SPEAjnpwVTDEhkcm76c75HqT+tcywNNC9DwBUNnWc6swc+G5NCVE35c5xioo541eU9Bjz/KOSCYaw676cZEKXFFD3kZ3GpmsYsPVObB5QJdOSnCnUqxuBvDDTDdBifFWNJODxZOWfvReZ4tsfgBBP5Raq7gZW0BVCoQlbumVRRY41oxL2mLtevLWqJPBkj/G+/nKPeJU/5i/FEblqzdoTEdKTIXbVFnp6bWf6XhPW4pYePsBletv+u5yvXF8vWf5JrRsPXVF1I1TA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.171; helo=mail-vk1-f171.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.218.50; helo=mail-ej1-f50.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.171; helo=mail-vk1-f171.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkLs15QRXz2ykT
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 01:25:09 +1100 (AEDT)
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-ab6ed8a3f6aso74495166b.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 06:25:09 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkM8v482tz30TZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 01:38:54 +1100 (AEDT)
+Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-51873e55d27so499906e0c.1
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 06:38:54 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738247101; x=1738851901;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3OqrPZhmeATdEa/SarwcrPzfDvhKK4nRH2GJQ3Y2/Ao=;
-        b=Kdebu5bCaHa8v+I37KyQ9eWW+fTLaRcpUUF6HpftsxfPrzmOD9kZ7rt4Qh35XHfVOU
-         7oLck/WCiE+uQv10Lj+rKYqmH400omZOLaZtQc0M5PKdlV9sSybqfjtazCjJqqQuawKO
-         iZfEI+x4mwGdd035dfxV+bQnaxn16j7YJhmCROfIsTTjxNwff9H7FXjdPD/4LJA25Lmw
-         GFW7c7Po5T8snPQTk0AqNIYys2+TquzI7Ns50iY6lK1AyfVcqvtCeCyngay+F5zgp19j
-         iRs61GQH2jCG2mbEaEaGNU4hBTNgyEhp8OIsCMi88oBqSzu1kqwv+u94AC5b0lXGorUc
-         NetA==
-X-Forwarded-Encrypted: i=1; AJvYcCVTkgSJ2BsJNkkUhraqfgRtBp4mfXPX70DAv3IEOa5FewTx+HJNrYkyVFcUS/Q7CVrOjggWKexTDV8boh0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwCdk0sQWNDkpn+E8eY0p8QZUPoonZOcmoJUR39ApGUyZvlWceW
-	yj0OCn1pR/Cqo3Cb0wwfVKtkLEWvD87Q2W7aGWgyjgF2f+OZ/8rr/jWLUPPjIxA=
-X-Gm-Gg: ASbGncst2wbdbHrjFS3QmJxhripsxvv8UHed3wMEH2+zhyxOyy5MWF39kDvKcq3jxtl
-	18O2Vr96yQY3i5pndWfwLAKXZaUbGMKS28dSQSTfaMqp2I2FxREwHvEuIGC6dyBHZsE28Ugu0dA
-	Vbio4v1/T6/TiJgiTcSvfIXzcCwOX6SDw8xxYudra1pAgL74zWnAfv4lU/XFR2sMIEVVbcUGizb
-	Upk9P7xXokjb2DYjzsSUsLJMlkSf8HPPz9VVCFu6suyGzM3qNQhwY+GI9/PBvFeu/5WSMubzqp8
-	20gdoZW8S67+CxvTYtOrY1UL/aUwd5sdE7G0fjN2ojM/iZxsLGszSA==
-X-Google-Smtp-Source: AGHT+IE4oAfj8JxFq63YIiP8dQ6j9x+3Cx2z587/ZWLU6zPXqOUpw2CPovDVNnBFM3BeCc/Sb2grkg==
-X-Received: by 2002:a17:907:6ea8:b0:ab6:c52c:a1cb with SMTP id a640c23a62f3a-ab6cfe12f1emr841093966b.51.1738247100745;
-        Thu, 30 Jan 2025 06:25:00 -0800 (PST)
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com. [209.85.208.41])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-ab6e47d21aasm128016066b.74.2025.01.30.06.24.59
+        d=1e100.net; s=20230601; t=1738247930; x=1738852730;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3koQwFtsYEj+sBiSRxwOt8Kdl4P9BIA497a/eImNeSg=;
+        b=FNrwYZszoDlLmD4zB1RmAy9qVW21KFkmxVY5NnldMC/Nbk7wxiDU+ksfMTOXKPpXkm
+         BanvlWF9mc8Ruey9nU0Z67xK0RfvHpmZ1LaMhJY+eJ00J9S2ch2NOHXsG/i/OtfZgvvA
+         tSe/hbEWDaQBiIubWdkJi45MRg/BSDHkFGFQ4s7wo6UYE0Daydb/dkhyFYRPr9jhKth3
+         +z5R3IO1x+6VUDImbL0M3X2dOlUIi0fjsza9SA15yZJOdk++OjyfTp8zpfyGQeNalzP/
+         zcJKYIIxVtjGzlfmE1+xfCjdxD772jtXlPTGBGN++aPjcyGzxsWIjOF9uA1xjTKLl5XC
+         xxmQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXppHu9tGldirUs0hMn6kvq/M8NJ6Y1PGSF2he8YeHB6SsiofMYY7/dYY6j8NGfHJ12bjawswKTLa7z6MY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YztEByT6lzvfz/0jmMj6dVvxenmszafaIHgtk2bNMQR9LROgOrK
+	u8PoVLzc1lXnHSZhLEUoZi763eEji8HJxa5+en2fSdcs7ETBhf5rBD+EUDJpZN0=
+X-Gm-Gg: ASbGncs+s/SJOjIo5en3V4wYGJMCamFGSYH/HaOQbGTNmavEfj2C6XCbQ/uWh5RwfZj
+	wFCa2RttmEkxUqAx5qEJGwlmCgPlTbxl/gbDnC59v3uyz2M0JmVGPfedL19qqKMzD2wYoWvYlHO
+	oWl0KDf37ADgqRQ4ohlwvm0dXPciZFGcPlX8YdlMkr9XlzCHZ1T/Ygix/HV95d8seJe0gwz6pyA
+	tYYi9cZ/rNCgfuKkNu03BU0Go9SBtNGk3SvIqW4EzAJiFFcsZtx4Bkz8DfZi0MFv8j2bMVee7dI
+	n8ES3O71LL84HZfYpIXwtR6HdNzxlL7y1JeWJT7dsptyTwwk+LQ1ow==
+X-Google-Smtp-Source: AGHT+IEHxkkncCcxfuHwQAC0HiEpKCs43QKdF5qxf7huLmgENihv8CietOcmB0rBNpehyDOiT4pdsQ==
+X-Received: by 2002:ac5:c14f:0:b0:515:20e6:7861 with SMTP id 71dfb90a1353d-51eaefd11famr2768853e0c.2.1738247930110;
+        Thu, 30 Jan 2025 06:38:50 -0800 (PST)
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-866941da213sm256016241.22.2025.01.30.06.38.49
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 06:24:59 -0800 (PST)
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5d3f65844deso1558486a12.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 06:24:59 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUe6Mticw2zCy7FiXnrL9afA0T/Kpje0ikWd3CjI/1PLU72ccDigTRNkoaUb2yAbMhzk/ucFoquezvZF4g=@lists.ozlabs.org
-X-Received: by 2002:a05:6402:40c9:b0:5d0:efaf:fb73 with SMTP id
- 4fb4d7f45d1cf-5dc5efc5baamr7107488a12.15.1738247099100; Thu, 30 Jan 2025
- 06:24:59 -0800 (PST)
+        Thu, 30 Jan 2025 06:38:49 -0800 (PST)
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4b9486a15a0so974670137.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 06:38:49 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWABwd516SyxQRqGgh1vM5wnxrdqAjGSfq2f19voKQCoiiLvUYe/hMrWYNZx94Q2FEDOw/Rw5RW++v3KR0=@lists.ozlabs.org
+X-Received: by 2002:a67:f318:0:b0:4af:d48d:5142 with SMTP id
+ ada2fe7eead31-4b9b70f3a0bmr2755704137.3.1738247929070; Thu, 30 Jan 2025
+ 06:38:49 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,156 +79,106 @@ References: <20241205-xarray-kunit-port-v1-1-ee44bc7aa201@gmail.com>
  <xf3445vgszstqfwycf5wc5owhnifxb3mny5xjjaihghqgnozmd@3h7hnifir4vu>
  <CAMuHMdVcuhzO57Qn-kcUJDM=HmkSwuheyNJPF1tx+gxRKnKZXA@mail.gmail.com>
  <mp6lnt3stfnfd74rwaza5xffh2ya5gylqnxotgrnqaqo3eh2zl@5g257jeiugfn>
- <CAMuHMdWDRLi8AE0PgfAnXundbS0hyTyovUH7yScrY7GtmYYPOQ@mail.gmail.com> <zlcagbwyskb4nkl4usbq4foc4vjcau3exp42zpfsl5b4tabr7u@o42mpfcsfygr>
-In-Reply-To: <zlcagbwyskb4nkl4usbq4foc4vjcau3exp42zpfsl5b4tabr7u@o42mpfcsfygr>
+ <CAMuHMdWDRLi8AE0PgfAnXundbS0hyTyovUH7yScrY7GtmYYPOQ@mail.gmail.com> <9636ed9d-3bfb-4dda-98dc-f945c9d53698@lucifer.local>
+In-Reply-To: <9636ed9d-3bfb-4dda-98dc-f945c9d53698@lucifer.local>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 30 Jan 2025 15:24:45 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdVUZQTgLpa9L9R117s39nEqxdGy=CJLyLQaTv_16EDhZg@mail.gmail.com>
-X-Gm-Features: AWEUYZmmaZQOtaNUMvBrswZCS49ixh1s35CzIVK-s4dUf7w23LLrATAr9KprGzw
-Message-ID: <CAMuHMdVUZQTgLpa9L9R117s39nEqxdGy=CJLyLQaTv_16EDhZg@mail.gmail.com>
+Date: Thu, 30 Jan 2025 15:38:36 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUFbhzi8J3rmyvVn7HmrxbeyoOwu97w8cnuKJxksa8iaw@mail.gmail.com>
+X-Gm-Features: AWEUYZmOwEzWB0gEceqhOwmudbYpt2s9uwC-1Re-pPG58BUZxS-FmbWZ_JWw55Q
+Message-ID: <CAMuHMdUFbhzi8J3rmyvVn7HmrxbeyoOwu97w8cnuKJxksa8iaw@mail.gmail.com>
 Subject: Re: [PATCH] xarray: port tests to kunit
-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>, akpm@linux-foundation.org, 
-	christophe.leroy@csgroup.eu, justinstitt@google.com, 
-	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev, maddy@linux.ibm.com, 
-	morbo@google.com, mpe@ellerman.id.au, nathan@kernel.org, naveen@kernel.org, 
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Sidhartha Kumar <sidhartha.kumar@oracle.com>, 
+	akpm@linux-foundation.org, christophe.leroy@csgroup.eu, 
+	justinstitt@google.com, linux-kernel@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, 
+	llvm@lists.linux.dev, maddy@linux.ibm.com, morbo@google.com, 
+	mpe@ellerman.id.au, nathan@kernel.org, naveen@kernel.org, 
 	ndesaulniers@google.com, npiggin@gmail.com, 
 	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.3 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Liam,
+Hi Lorenzo,
 
-On Thu, 30 Jan 2025 at 15:06, Liam R. Howlett <Liam.Howlett@oracle.com> wro=
-te:
-> * Geert Uytterhoeven <geert@linux-m68k.org> [250130 08:26]:
-> > On Thu, 30 Jan 2025 at 13:52, Liam R. Howlett <Liam.Howlett@oracle.com>=
- wrote:
-> > > * Geert Uytterhoeven <geert@linux-m68k.org> [250130 03:21]:
-> > > > On Wed, 29 Jan 2025 at 23:26, Liam R. Howlett <Liam.Howlett@oracle.=
-com> wrote:
-> > > > > I've never used the kunit testing of xarray and have used the use=
-rspace
-> > > > > testing instead, so I can't speak to the obscure invocation as bo=
-th
-> > > > > commands seem insanely long and obscure to me.
-> > > >
-> > > > The long and obscure command line is a red herring: a simple
-> > > > "modprobe test_xarray" is all it takes...
-> > >
-> > > That command worked before too...
-> >
-> > Exactly, great!
-> >
-> > > > > You should look at the userspace testing (that this broke) as it =
-has
-> > > > > been really useful in certain scenarios.
-> > > >
-> > > > BTW, how do I even build tools/testing/radix-tree?
-> > > > "make tools/help" doesn't show the radix-tree test.
-> > > > "make tools/all" doesn't seem to try to build it.
-> > > > Same for "make kselftest-all".
-> > >
-> > > make
-> >
-> > Where?
-> > > > BTW, how do I even build tools/testing/radix-tree?
->                                 ^^^^^^^^^^^^^^^^^^^^^^^
+On Thu, 30 Jan 2025 at 15:09, Lorenzo Stoakes
+<lorenzo.stoakes@oracle.com> wrote:
+> Having written a ton of test code, I've unfortunately encountered a lot of
+> this sort of push-back and it's HUGELY off-putting. Writing test code
+> should be ENCOURAGED not litigated against.
 
-Things like "make -C drivers/net/ethernet/" stopped working
-ca. 20y ago.
+I am not discouraging nor pushing back on any testing code (on the
+contrary, I test every single new kunit test that appears upstream).
+My apologies if I gave the impression.
 
-> > > Or look at the make file and stop guessing.  Considering how difficul=
-t
-> >
-> > There is no Makefile referencing tools/testing/radix-tree or the
-> > radix-tree subdir. That's why I asked...
-> >
-> > Oh, I am supposed to run make in tools/testing/radix-tree/?
-> > What a surprise!
-> >
-> > Which is a pain when building in a separate output directory, as you
-> > cannot just do "make -C tools/testing/radix-tree" there, but have to
-> > type the full "make -C tools/testing/radix-tree O=3D..." (and optionall=
-y
-> > ARCH=3D... and CROSS_COMPILE=3D...; oh wait, these are ignored :-( in t=
-he
-> > source directory instead...
+> The truth is far too little kernel code is tested to any degree, and this
+> is part of why.
 >
-> I'll await your patch to link all this together.  Please Cc the authors.
-
-I gave it a try for kselftests a few years ago.
-https://lore.kernel.org/all/20190114135144.26096-1-geert+renesas@glider.be
-Unfortunately only one patch was applied...
-
-> > > it is to get m68k to build, you should probably know how to read a
-> > > makefile.
-> >
-> > Like all other kernel cross-compilation? Usually you don't even have
-> > to know where your cross-compiler is living:
-> >
-> >     make ARCH=3Dm68k
+> On kunit collaboration, I attended an in-person talk at LPC on kunit
+> userland testing where it was broadly agreed that at this point in time,
+> the xarray/radix tree tests weren't really suited to the framework.
 >
-> Ignoring that I had to make a config - which asked challenging
-> questions...
+> Therefore I think the healthy means of pushing forward with integration is
+> in sensible discussion and if patches, RFC patches in collaboration with
+> authors.
 
-make ARCH=3Dm68k defconfig
+Good.
 
-> And ignoring the steps to get m68k compiler...
+> The unhealthy approach is to needle one of the biggest contributors to core
+> test code in the kernel on a thread because you don't seem to want to cd to
+> a directory and run make.
 
-apt install gcc-m68k-linux-gnu?
+My initial issue was that I could not find out where that is documented.
 
-> > > > When trying the above, and ignoring failures due to missing package=
-s
-> > > > on my host:
-> > > >   - there are several weird build errors,
-> > > >   - this doesn't play well with O=3D,
-> > > >   - lots of scary warnings when building for 32-bit,
-> > > >   - ...
-> > > >
+    $ make help
+    ...
+    Userspace tools targets:
+      use "make tools/help"
+      or  "cd tools; make help"
+
+    $ make tools/help
+    Possible targets:
+    ...
+    You can do:
+      ...
+      $ make tools/all
+
+      builds all tools.
+
+But that command does not build tools/testing/radix-tree, so I was
+completely lost.
+
+> Why is this relevant to me? I am the author of the VMA test suite, on which
+> I spent countless hours + relied heavily on Liam's work to do so, and
+> equally there you have to cd to a directory and run make.
+
+Thanks for your work!  One suggestion for improvement: tools/testing/vma
+does not seem to be built by "make tools/all" either.
+
+> But at the same time in both cases, testability of key internal components
+> is ENORMOUSLY improved and allows for REALLY exciting possibilities in test
+> coverage, really isolating functions for unit testing, enormously fast
+> iteration speed, etc. etc.
 >
-> In file included from ./include/linux/sched.h:12,
->                  from arch/m68k/kernel/asm-offsets.c:15:
-> ./arch/m68k/include/asm/current.h:7:30: error: invalid register name for =
-=E2=80=98current=E2=80=99
->     7 | register struct task_struct *current __asm__("%a2");
+> I ask you to weigh up the desire to enumerate your misgivings about the
+> testing approach used here vs. all of the above.
 
-Which compiler are you using?
+I repeat: I am not against these tests.
 
-> > > > At least the kunit tests build (and run[1] ;-) most of the time...
-> > >
-> > > Do they?  How about you break something in xarray and then try to boo=
-t
-> > > the kunit, or try to boot to load that module.
-> >
-> > If you break the kernel beyond the point of booting, you can indeed
-> > not run any test modules...
->
-> Which is extremely easy when you are changing code that runs so early in
-> the boot.
->
-> My code found a compiler issue because it's the first function that
-> returns a boolean.  This is stupid.
-
-Sorry. I don't understand this comment.
+Thanks!
 
 Gr{oetje,eeting}s,
 
                         Geert
 
---=20
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k=
-.org
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-In personal conversations with technical people, I call myself a hacker. Bu=
-t
-when I'm talking to journalists I just say "programmer" or something like t=
-hat.
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
                                 -- Linus Torvalds
 
