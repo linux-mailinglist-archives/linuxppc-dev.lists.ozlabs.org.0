@@ -1,58 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-5705-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5706-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23E5A2270A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2025 00:53:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28012A2297D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2025 09:21:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YjzWT6n84z30Ts;
-	Thu, 30 Jan 2025 10:53:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YkBnS5C4Dz2ynf;
+	Thu, 30 Jan 2025 19:21:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738194821;
-	cv=none; b=hzgyPTFr4eI5nvqTfvQASdTX8xsTLWnzTFMFN77z7qyetlu8mfljqVwgq/2AEZrcV9idjVnuLxQ3M7KF+rYYQNaRc/fe5/ix3CTnE4YTW/QaWl/SuG5X1g7l25qa2/vexLGPdW7Qr6gx8BZJ7d1XTgoOn0WLfERgn1D1HCEVEpfOYoLvCEjJR5uOTKNwAsYvCA5kShAtm+yj17bL9Bnf7VWsO8Yv3qmIUPLysWlibeXpF3F3eGRbamWZUEY2UH/0+IbVaK8OhDlCTvNq5qQ0NfZZqHXzZFwkR8vY4Qc3pj4XL1Qv85LVn7kKxteGjqmrPtTQ5Plat7nviemSb43dpQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.182
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738225292;
+	cv=none; b=P/P6QOQhlOFe7fOI94K4zIfbeaSU3lJ0FMNslUwKFq/1zmXvWdAMYQtVP1+2WM0MvSPcZ014xTz/moFTrlgYetdPMzThFDmfFiZzt7YQ3pbVjo0uNPIqCajXP/pf6GosilW9jBi2JFiUDdSsBxp7WwA6T8M4Cj7rB8kkpkMrqZ5bHocF8vogmAYUPH/BvaI4pzw+r8hQ055MFJcyf6eBtbIYpBTdYBwpfW5yNTJ7Hi15mPfTHmlCxojCciEUzmjZXVnM8TZRDCTYnto91iroH4k680pyjom+hdG3a3J73nQQDc2BB5glNx2V8F3HAuiMNBWDYV8zIfvlAqGk78OfsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738194821; c=relaxed/relaxed;
-	bh=nonW2tp2GWRJDQs4Gs0gZRACicvE5XqYe/7Yh9hyNCE=;
+	t=1738225292; c=relaxed/relaxed;
+	bh=GaD/E6PXTaDQ2QuYo/3qqTDpp2nzD7hhPFRo29uLk0A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=P7qLIAyKANPqI+BJsgcqdY/kL8K4dvpjkw8lAO/rpyha7LOIx1WQf9pc9TPVWNL+g6M1cHcqXe8nIofnTvqr/BYrtVNeFiJ/PXMOieGjdcDB+RxjzAZPJfsCfuxmsR4sjxmlXMaqwvro11cn1ogQ3MqNRsE87I4pL6Snz5SOlzejzy7v2xUaUlvaB0KM+pkymJ13cef9xH1kUO1H+5d5GhxPnGBjCm5RWCn0RdiTA1hXfx2SFMv5iUymy2CHL6WonGpC+uxgXkQIKljGh8q0XwWDoLicvp2vS0E6PloCVnIdmEqlKDCJwkKwz2UYtHX3zuAhAj5QV5bQbAjw1yPe4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eCjlRBbR; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=eCjlRBbR;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=masahiroy@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	 To:Cc:Content-Type; b=XKoIsJpgb8GvVLDShUjuWrI7MSB2HcsWmLHY85ls5FRWWH5euS8O8R8yXHMZZGV2jest/dQN1lye2YSRTstx1Fw7NX0nKtul0hcpB+v4ZGBxMbl1ZtJAPnN/iiMVlbfIBWDVRs8CGLQIQWnDBZo+z/2DGCiY7puWQODHbW/SolSPLE3KuGVvEpnp2o3R+kPGcX+xbg+jT1iNb80ARzRNHLe/LUB7IUuDzr3dTA8XjyhIvAqCOW8ZcQAqVOB8REjLfJfbOOOzFpuaub8R2wzIjCPBH2PNoYTYpIfgT7VF+irnqRcQJB4t8YW55YVbWKTttMHJseJSb2xCn8phkxLPUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.182; helo=mail-vk1-f182.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.182; helo=mail-vk1-f182.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YjzWS6QJsz30TL
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 10:53:40 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id C456C5C627C
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 23:52:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC12C4AF09
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 23:53:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738194817;
-	bh=W3PelArJwq1fwjy5hDtUm5rIO2zw2EZOKtjB8JR0kpA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=eCjlRBbRNFq96gsvYzWoVlB8syzuqg8pt0aUWrsOaA54b4Xtzi2gCgfsfrAt3l4F9
-	 ma3ImZkPvGZ/O3n+PIpYzBIS5gVM8i3f1x0NFBBRuLhqzJdcqEriCHZ7i77Div2r58
-	 3d8n7NdQX6WsLUn/EfC/3A6984zAet0iIYMrivXz2eXkgmvDvPJ1W415z/E3TywZWO
-	 alSBgkBk3QryKS7LOULHbSFfzLQfxHvK0qQigAD22ez+wPW+aO6Zq3KW4/n74GENLj
-	 wVVkRxdyicsj/1cARcleZHiNQ3pCXE+dCdrnY+4/g0Eh2qBRaz5QnjCQhnooeyhqhK
-	 /l969YuCuOJuA==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5d3dce16a3dso298314a12.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 29 Jan 2025 15:53:37 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUb0OalOYSzNHeji6zltHumjpD7SZLxno6E4Tw3nZvPuSdocoESkTcIAc5wvGJBrVqTKL/eBlwl7AkAb44=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwdWPpuyTGd/YDPqg6azbrKEiIErxld1tqCA8LKgaRyXHrOsX4v
-	ij4BMYvIMOSB/dRWlJWTWjehPS4RNPArfrwzS85nrxumJQabqfJkpRPLciszvRHGHuoPo3f+Oum
-	Dyo2XkWsVM54j3lYEG4NAnamhxw4=
-X-Google-Smtp-Source: AGHT+IF8sUXurQ+pZxlLY0wRuMVnLPTDljcE9nfm8HYJGANobLvH4QKtgwzK3u/2X4lCO2DT08QK+CXpDDLa0i8iTvE=
-X-Received: by 2002:a05:6402:34c2:b0:5d9:f0d8:22d5 with SMTP id
- 4fb4d7f45d1cf-5dc6f606260mr1046098a12.13.1738194816283; Wed, 29 Jan 2025
- 15:53:36 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkBnR1kqxz2xmZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 19:21:30 +1100 (AEDT)
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-518ae5060d4so168249e0c.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 00:21:30 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738225285; x=1738830085;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=GaD/E6PXTaDQ2QuYo/3qqTDpp2nzD7hhPFRo29uLk0A=;
+        b=xLSMFxaC7Ps7zANlniEv728BBkfFIy53OqkE/vA1N26Ax2NLKsw/hqvSSOLuYOKgbD
+         alKXTNTEBzoFQl6BzlVp4SenHwY7wr+WJ5QnRU5/pKlq9wKb/3TBRWte8WATZw3uzRbu
+         2vkkSs0IbVRnxntn9cBEcU/nPcNAkeGb3LXnnJ7+StHu/JRMFoBs3fuz2CFrTA+MG0BI
+         eubHU7LWA7z2Tl57V/z8ardsX8gMiX3mQQUHm3a9MJyys24F6WMk5muNL6WAagkJj1qW
+         Q9H46Dv0S77O3PZVReRJUTqLCioOteqy64GOTUxnwtWYHSAq10rtqqax5Yz5g2DqgLD0
+         YThg==
+X-Forwarded-Encrypted: i=1; AJvYcCVs88N6Qx14kcGreUEzzi46gITQ4sO8nS5PAvuz7X/L92Pd11J/MrVHhpotrj+jymrhVAmfFrr9Kqewffg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwWHknUwflL8NMm2YMgFWqgf5lRLSdlH2tx4Nwb+/CWN3na6p5o
+	IIHTMzZBGyIqEwQZL5fV97fIcE34LCQ09+t5ZCDZyVo5m3wZ3nYtzcO9HtO7
+X-Gm-Gg: ASbGnct2HygqfrkN6uplRo/A9ljaCk6ytuNEmCtVpgi44dPP8mdwBXnn5ICUY65sh1h
+	TB+tzjDlpYb5ZdIz4bah2b4vLZDwD14WXkgc0vRRzEmORXtUAfajuUOy5SkafNzkFoFS/Sizi6t
+	L1luvhbPJVHNyNynkNMcOii5z/NeLIwljjSqi9IXTwdQuQNEIA6TZSA9ew667gdrbjdv4m9jDPZ
+	l5iLvtfZiI64uycdqSOUTmd1RRSE1s8tVP5Qv5hReGsKucEpd7U9i7+mXfsXGp+62CX71qGY+bZ
+	co9vEyVRLaROrvIO+eClUF6cTqoYNqc2ls7lxFv0LbRxtwS6nz2GEw==
+X-Google-Smtp-Source: AGHT+IGWseB5oFGlQ7uqPfwUixIlM4uPYaBfkhFU/a31exqPoPFngmLBiOIKtHR0oPL5W4TW/KwwZg==
+X-Received: by 2002:a05:6102:2c0f:b0:4b9:c326:f998 with SMTP id ada2fe7eead31-4b9c327004fmr2054137.24.1738225285146;
+        Thu, 30 Jan 2025 00:21:25 -0800 (PST)
+Received: from mail-ua1-f43.google.com (mail-ua1-f43.google.com. [209.85.222.43])
+        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4b9baadd192sm156719137.16.2025.01.30.00.21.24
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 30 Jan 2025 00:21:24 -0800 (PST)
+Received: by mail-ua1-f43.google.com with SMTP id a1e0cc1a2514c-85b92397fe2so126524241.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 00:21:24 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUwzWcKnnYEnm/mKA6OT0eTbEAz1y7u5PXWjWsBRmOMT/r82OOx0QIJMYghMNF/fhSJEJQ1F9RqpoIyrZo=@lists.ozlabs.org
+X-Received: by 2002:a05:6102:a52:b0:4b2:7996:6ba4 with SMTP id
+ ada2fe7eead31-4b9a5266e7amr5391829137.25.1738225284361; Thu, 30 Jan 2025
+ 00:21:24 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,95 +73,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250127-buildfix-extmod-powerpc-v1-1-450012b16263@efficios.com> <d0eb6abf-c0f2-4726-92ea-7d007813936d@efficios.com>
-In-Reply-To: <d0eb6abf-c0f2-4726-92ea-7d007813936d@efficios.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 30 Jan 2025 08:52:59 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARrCVWSHobzF+FXKuD=fERBG7gmA7MfkRnnuDg55sTY2w@mail.gmail.com>
-X-Gm-Features: AWEUYZmSQjKW1lanlKGWxaJ9x16sU2tAtAIHzhvuOM0bwunSKJghx-Ry-EiJGx0
-Message-ID: <CAK7LNARrCVWSHobzF+FXKuD=fERBG7gmA7MfkRnnuDg55sTY2w@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: Add missing $(objtree) prefix to powerpc
- crtsavres.o artifact
-To: Kienan Stewart <kstewart@efficios.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Nicolas Schier <nicolas@fjasle.org>, 
-	Nathan Chancellor <nathan@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org, linux-kbuild@vger.kernel.org
+References: <20241205-xarray-kunit-port-v1-1-ee44bc7aa201@gmail.com>
+ <07cf896e-adf8-414f-a629-a808fc26014a@oracle.com> <qdq4k6323orqifgzo7pbg5vakezr3gptfdehghxsyfrhc4kwvb@d4fxbwcl4gjm>
+ <CAJ-ks9=U4PZv4NgyH8B7SbHkecGLy+M=G639hSTv-hnPySqk6w@mail.gmail.com> <xf3445vgszstqfwycf5wc5owhnifxb3mny5xjjaihghqgnozmd@3h7hnifir4vu>
+In-Reply-To: <xf3445vgszstqfwycf5wc5owhnifxb3mny5xjjaihghqgnozmd@3h7hnifir4vu>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Thu, 30 Jan 2025 09:21:12 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdVcuhzO57Qn-kcUJDM=HmkSwuheyNJPF1tx+gxRKnKZXA@mail.gmail.com>
+X-Gm-Features: AWEUYZniYx50uUBB4BKLzCpQ-mS0oONl2y__yoxAs6c6zYEzharbM-CAzfEZmbQ
+Message-ID: <CAMuHMdVcuhzO57Qn-kcUJDM=HmkSwuheyNJPF1tx+gxRKnKZXA@mail.gmail.com>
+Subject: Re: [PATCH] xarray: port tests to kunit
+To: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Sidhartha Kumar <sidhartha.kumar@oracle.com>, akpm@linux-foundation.org, 
+	christophe.leroy@csgroup.eu, justinstitt@google.com, 
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev, maddy@linux.ibm.com, 
+	morbo@google.com, mpe@ellerman.id.au, nathan@kernel.org, naveen@kernel.org, 
+	ndesaulniers@google.com, npiggin@gmail.com, 
+	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Jan 29, 2025 at 12:53=E2=80=AFAM Kienan Stewart <kstewart@efficios.=
-com> wrote:
->
-> Hi,
->
-> I missed a few CCs, looping them in now. Apologies for the extra noise.
->
-> thanks,
-> kienan
->
-> On 1/27/25 1:47 PM, Kienan Stewart wrote:
-> > In the upstream commit 214c0eea43b2ea66bcd6467ea57e47ce8874191b
-> > ("kbuild: add $(objtree)/ prefix to some in-kernel build artifacts")
-> > artifacts required for building out-of-tree kernel modules had
-> > $(objtree) prepended to them to prepare for building in other
-> > directories.
-> >
-> > When building external modules for powerpc,
-> > arch/powerpc/lib/crtsavres.o is required for certain
-> > configurations. This artifact is missing the prepended $(objtree).
-> >
-> > External modules may work around this omission for v6.13 by setting MO=
-=3D$KDIR.
-> >
-> > Signed-off-by: Kienan Stewart <kstewart@efficios.com>
+Hi Liam,
 
-Good catch, this actually got broken by 13b25489b6f8.
+On Wed, 29 Jan 2025 at 23:26, Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
+> I've never used the kunit testing of xarray and have used the userspace
+> testing instead, so I can't speak to the obscure invocation as both
+> commands seem insanely long and obscure to me.
 
+The long and obscure command line is a red herring: a simple
+"modprobe test_xarray" is all it takes...
 
+> You should look at the userspace testing (that this broke) as it has
+> been really useful in certain scenarios.
 
-Fixes: 13b25489b6f8 ("kbuild: change working directory to external
-module directory with M=3D")
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+BTW, how do I even build tools/testing/radix-tree?
+"make tools/help" doesn't show the radix-tree test.
+"make tools/all" doesn't seem to try to build it.
+Same for "make kselftest-all".
+When trying the above, and ignoring failures due to missing packages
+on my host:
+  - there are several weird build errors,
+  - this doesn't play well with O=,
+  - lots of scary warnings when building for 32-bit,
+  - ...
 
+At least the kunit tests build (and run[1] ;-) most of the time...
+
+[1] test_xarray started failing on m68k recently
+    https://lore.kernel.org/all/CAMuHMdU_bfadUO=0OZ=AoQ9EAmQPA4wsLCBqohXR+QCeCKRn4A@mail.gmail.com/
+
+Gr{oetje,eeting}s,
+
+                        Geert
 
 
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
-
-> > ---
-> >   arch/powerpc/Makefile | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> > index f3804103c56ccfdb16289468397ccaea71bf721e..9933b98df69d7f7b9aaf33d=
-36155cc61ab4460c7 100644
-> > --- a/arch/powerpc/Makefile
-> > +++ b/arch/powerpc/Makefile
-> > @@ -58,7 +58,7 @@ ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
-> >   # There is a corresponding test in arch/powerpc/lib/Makefile
-> >   KBUILD_LDFLAGS_MODULE +=3D --save-restore-funcs
-> >   else
-> > -KBUILD_LDFLAGS_MODULE +=3D arch/powerpc/lib/crtsavres.o
-> > +KBUILD_LDFLAGS_MODULE +=3D $(objtree)/arch/powerpc/lib/crtsavres.o
-> >   endif
-> >
-> >   ifdef CONFIG_CPU_LITTLE_ENDIAN
-> >
-> > ---
-> > base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
-> > change-id: 20250127-buildfix-extmod-powerpc-a744e1331f83
-> >
-> > Best regards,
->
->
-
-
---=20
-Best Regards
-Masahiro Yamada
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
