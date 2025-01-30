@@ -1,66 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-5715-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E50BA23086
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2025 15:38:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75D8FA230A9
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2025 15:54:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YkM8w5Bnlz30Th;
-	Fri, 31 Jan 2025 01:38:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YkMVf74Zwz30Tp;
+	Fri, 31 Jan 2025 01:54:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.171
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738247936;
-	cv=none; b=VSFzvyQUa5zhykDabCEHiaAdHCGkhebGqhCvqdiIEIMasIieOaWp7S+wQeLIgTeQySRdiChApX+vKrImXhq0sOcTYFl14UASuDPeqf/KogkokM2fcpHyJ/0ZPabbSi/R7THf3dqiufESFVvML808sgt+XOizxnbSXHR0QPm+pzCyWUeu7GzwI05eaG5UWNQxdR1785aKdwkblvqNPwFhzxraTgCdFOeokNE2SueQ+aDEdsUf28mpWofdho2Nr92CNciOnDqNNjWnjyGMN7EtcGs1o3LRTuT6tzyyTBx2lIwv15PcaI539mtf7XeRmYDp6G8Z0KZcTfLaPBKRXkSxqg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738248858;
+	cv=none; b=CeSlODtSlPN3VAUSNA0z6DdMhkg2/tINIlE41O8DyQwZpwbFFPIr5EH1rJdzpcVqjzRpQrRZ1+nbWLb8fsFkf7K2KCgUUl2mq8Q7VRJX6QTh9OTNiKfVW/gBbJrx0TIjV/uu4KZppTwC397+xMkcjy5vEXyJhtaspc31xij40TK2rAPt23FUp0EN4i7ftj3bkumYwhAoz+MzajIGZiH4xWvroMH6UcCKSWGi0UhQFJ5aVQ08PXYEW4cMxiTqPbXHmjlkRMrF3tgapTKoOoyfJ9yCq/fSwwEaEXO4hAax7kucpynhsA1BTmAwlTle0XKxTDh6rDck82fRhcLnQcRgow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738247936; c=relaxed/relaxed;
-	bh=3koQwFtsYEj+sBiSRxwOt8Kdl4P9BIA497a/eImNeSg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ewe5zVfb5X2sV/fEuEP+tdQByVpW2qBIsTwYjueGaDAPDGd/e/NWPND6gOv7ArFD8Sv5Cw3y4SPEAjnpwVTDEhkcm76c75HqT+tcywNNC9DwBUNnWc6swc+G5NCVE35c5xioo541eU9Bjz/KOSCYaw676cZEKXFFD3kZ3GpmsYsPVObB5QJdOSnCnUqxuBvDDTDdBifFWNJODxZOWfvReZ4tsfgBBP5Raq7gZW0BVCoQlbumVRRY41oxL2mLtevLWqJPBkj/G+/nKPeJU/5i/FEblqzdoTEdKTIXbVFnp6bWf6XhPW4pYePsBletv+u5yvXF8vWf5JrRsPXVF1I1TA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.171; helo=mail-vk1-f171.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.171; helo=mail-vk1-f171.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-f171.google.com (mail-vk1-f171.google.com [209.85.221.171])
+	t=1738248858; c=relaxed/relaxed;
+	bh=QWMw4aDNMt361EsCHVNvPU7UiHMTHVWLVcti5oKqreE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nzJbCV2bF0mg3yE8/nx/LOrV0bHiWYuGeaZCQVt1wkwXolVhAIUMUQ4wqMfJLJXwSHS2W2qo7hB38UdXpwJnBHDJUop9AZm7YMMBhkxqPXW+pA5wN43C1lyZLt2hlKCuziwiMhgxijn5dGP8ZISGOiZb9j8qbaz5kmWoeqQEn+T8Wnh+cCJ+XswIwlOq6RUyMe2vBED2oUSjlCpoxRXFKiYkEHpJ9PxY/XK7GiS6lPGEzUoxb7VaOgMhM1Vv+wFByy4LfStz0thPyfeP8dV/Tw3PX4jqWt12sqA7tT08foCnPgVtgW34iSsAL+YxrCYUBSplDTaoNFVStmTDyuMjMw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=CCHH87qT; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=r/Dszy6a; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=CCHH87qT;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=r/Dszy6a;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkM8v482tz30TZ
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 01:38:54 +1100 (AEDT)
-Received: by mail-vk1-f171.google.com with SMTP id 71dfb90a1353d-51873e55d27so499906e0c.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 06:38:54 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738247930; x=1738852730;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=3koQwFtsYEj+sBiSRxwOt8Kdl4P9BIA497a/eImNeSg=;
-        b=FNrwYZszoDlLmD4zB1RmAy9qVW21KFkmxVY5NnldMC/Nbk7wxiDU+ksfMTOXKPpXkm
-         BanvlWF9mc8Ruey9nU0Z67xK0RfvHpmZ1LaMhJY+eJ00J9S2ch2NOHXsG/i/OtfZgvvA
-         tSe/hbEWDaQBiIubWdkJi45MRg/BSDHkFGFQ4s7wo6UYE0Daydb/dkhyFYRPr9jhKth3
-         +z5R3IO1x+6VUDImbL0M3X2dOlUIi0fjsza9SA15yZJOdk++OjyfTp8zpfyGQeNalzP/
-         zcJKYIIxVtjGzlfmE1+xfCjdxD772jtXlPTGBGN++aPjcyGzxsWIjOF9uA1xjTKLl5XC
-         xxmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXppHu9tGldirUs0hMn6kvq/M8NJ6Y1PGSF2he8YeHB6SsiofMYY7/dYY6j8NGfHJ12bjawswKTLa7z6MY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YztEByT6lzvfz/0jmMj6dVvxenmszafaIHgtk2bNMQR9LROgOrK
-	u8PoVLzc1lXnHSZhLEUoZi763eEji8HJxa5+en2fSdcs7ETBhf5rBD+EUDJpZN0=
-X-Gm-Gg: ASbGncs+s/SJOjIo5en3V4wYGJMCamFGSYH/HaOQbGTNmavEfj2C6XCbQ/uWh5RwfZj
-	wFCa2RttmEkxUqAx5qEJGwlmCgPlTbxl/gbDnC59v3uyz2M0JmVGPfedL19qqKMzD2wYoWvYlHO
-	oWl0KDf37ADgqRQ4ohlwvm0dXPciZFGcPlX8YdlMkr9XlzCHZ1T/Ygix/HV95d8seJe0gwz6pyA
-	tYYi9cZ/rNCgfuKkNu03BU0Go9SBtNGk3SvIqW4EzAJiFFcsZtx4Bkz8DfZi0MFv8j2bMVee7dI
-	n8ES3O71LL84HZfYpIXwtR6HdNzxlL7y1JeWJT7dsptyTwwk+LQ1ow==
-X-Google-Smtp-Source: AGHT+IEHxkkncCcxfuHwQAC0HiEpKCs43QKdF5qxf7huLmgENihv8CietOcmB0rBNpehyDOiT4pdsQ==
-X-Received: by 2002:ac5:c14f:0:b0:515:20e6:7861 with SMTP id 71dfb90a1353d-51eaefd11famr2768853e0c.2.1738247930110;
-        Thu, 30 Jan 2025 06:38:50 -0800 (PST)
-Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com. [209.85.217.49])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-866941da213sm256016241.22.2025.01.30.06.38.49
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 30 Jan 2025 06:38:49 -0800 (PST)
-Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-4b9486a15a0so974670137.0
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 30 Jan 2025 06:38:49 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWABwd516SyxQRqGgh1vM5wnxrdqAjGSfq2f19voKQCoiiLvUYe/hMrWYNZx94Q2FEDOw/Rw5RW++v3KR0=@lists.ozlabs.org
-X-Received: by 2002:a67:f318:0:b0:4af:d48d:5142 with SMTP id
- ada2fe7eead31-4b9b70f3a0bmr2755704137.3.1738247929070; Thu, 30 Jan 2025
- 06:38:49 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkMVd2mjRz2xtK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 01:54:17 +1100 (AEDT)
+Date: Thu, 30 Jan 2025 15:54:09 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1738248850;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QWMw4aDNMt361EsCHVNvPU7UiHMTHVWLVcti5oKqreE=;
+	b=CCHH87qT5uCIW/N0OxMeFKBSmGr8veG9wkdBtfe21MGlFEiUA2HWAQlDDBWgUEPl8urxNE
+	xIQVO+cwUDhUIBrUDjYCiphdDwjKTEKezbSftd94ot2UXGTefU4+UlNO43FuvBQArVo7W3
+	GbjLvhnccAwcMnoFP+yRtfEqW/XjzE9ORstzTjVppYaaz8xQXz8+vWMyHEKWAagy0krijo
+	GMf9UH3HbkyTGf+HjBBncec9xngiXlkxIjSPhXksjfXFUfeazn1MeFAMKp6vl++H0R0VKl
+	tkFy3X8gK8UHppNiyUzQnKDi8UnzC586B6XL9wsPOovn54c7JzCrnFCvbQmf6g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1738248850;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QWMw4aDNMt361EsCHVNvPU7UiHMTHVWLVcti5oKqreE=;
+	b=r/Dszy6agS6EyceeKfZ9vueiKkyHGnMG5SYufs7wflS1KMOqNHMttXFFWzpNwdE3qiYW+v
+	A+tLzwyFgbbSmPBg==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: mpe@ellerman.id.au, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+	npiggin@gmail.com, christophe.leroy@csgroup.eu,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3 1/1] powerpc: Enable dynamic preemption
+Message-ID: <20250130145409.D_so_mR1@linutronix.de>
+References: <20250106051919.55020-1-sshegde@linux.ibm.com>
+ <20250106051919.55020-2-sshegde@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,112 +70,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20241205-xarray-kunit-port-v1-1-ee44bc7aa201@gmail.com>
- <07cf896e-adf8-414f-a629-a808fc26014a@oracle.com> <qdq4k6323orqifgzo7pbg5vakezr3gptfdehghxsyfrhc4kwvb@d4fxbwcl4gjm>
- <CAJ-ks9=U4PZv4NgyH8B7SbHkecGLy+M=G639hSTv-hnPySqk6w@mail.gmail.com>
- <xf3445vgszstqfwycf5wc5owhnifxb3mny5xjjaihghqgnozmd@3h7hnifir4vu>
- <CAMuHMdVcuhzO57Qn-kcUJDM=HmkSwuheyNJPF1tx+gxRKnKZXA@mail.gmail.com>
- <mp6lnt3stfnfd74rwaza5xffh2ya5gylqnxotgrnqaqo3eh2zl@5g257jeiugfn>
- <CAMuHMdWDRLi8AE0PgfAnXundbS0hyTyovUH7yScrY7GtmYYPOQ@mail.gmail.com> <9636ed9d-3bfb-4dda-98dc-f945c9d53698@lucifer.local>
-In-Reply-To: <9636ed9d-3bfb-4dda-98dc-f945c9d53698@lucifer.local>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Thu, 30 Jan 2025 15:38:36 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdUFbhzi8J3rmyvVn7HmrxbeyoOwu97w8cnuKJxksa8iaw@mail.gmail.com>
-X-Gm-Features: AWEUYZmOwEzWB0gEceqhOwmudbYpt2s9uwC-1Re-pPG58BUZxS-FmbWZ_JWw55Q
-Message-ID: <CAMuHMdUFbhzi8J3rmyvVn7HmrxbeyoOwu97w8cnuKJxksa8iaw@mail.gmail.com>
-Subject: Re: [PATCH] xarray: port tests to kunit
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Sidhartha Kumar <sidhartha.kumar@oracle.com>, 
-	akpm@linux-foundation.org, christophe.leroy@csgroup.eu, 
-	justinstitt@google.com, linux-kernel@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, 
-	llvm@lists.linux.dev, maddy@linux.ibm.com, morbo@google.com, 
-	mpe@ellerman.id.au, nathan@kernel.org, naveen@kernel.org, 
-	ndesaulniers@google.com, npiggin@gmail.com, 
-	Matthew Wilcox <willy@infradead.org>, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=0.2 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250106051919.55020-2-sshegde@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Lorenzo,
+On 2025-01-06 10:49:19 [+0530], Shrikanth Hegde wrote:
+> --- a/arch/powerpc/kernel/interrupt.c
+> +++ b/arch/powerpc/kernel/interrupt.c
+> @@ -25,6 +25,10 @@
+>  unsigned long global_dbcr0[NR_CPUS];
+>  #endif
+>  
+> +#if defined(CONFIG_PREEMPT_DYNAMIC) && defined(CONFIG_HAVE_PREEMPT_DYNAMIC_KEY)
+> +DEFINE_STATIC_KEY_TRUE(sk_dynamic_irqentry_exit_cond_resched);
+> +#endif
 
-On Thu, 30 Jan 2025 at 15:09, Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
-> Having written a ton of test code, I've unfortunately encountered a lot of
-> this sort of push-back and it's HUGELY off-putting. Writing test code
-> should be ENCOURAGED not litigated against.
+I am uncertain here: Do you need to DEFINE it? It is set by the sched
+core which also defines it. It should be same thing after all, right?
 
-I am not discouraging nor pushing back on any testing code (on the
-contrary, I test every single new kunit test that appears upstream).
-My apologies if I gave the impression.
+> +
+>  #ifdef CONFIG_PPC_BOOK3S_64
+>  DEFINE_STATIC_KEY_FALSE(interrupt_exit_not_reentrant);
+>  static inline bool exit_must_hard_disable(void)
+> @@ -396,7 +400,7 @@ notrace unsigned long interrupt_exit_kernel_prepare(struct pt_regs *regs)
+>  		/* Returning to a kernel context with local irqs enabled. */
+>  		WARN_ON_ONCE(!(regs->msr & MSR_EE));
+>  again:
+> -		if (IS_ENABLED(CONFIG_PREEMPTION)) {
+> +		if (preempt_model_preemptible()) {
 
-> The truth is far too little kernel code is tested to any degree, and this
-> is part of why.
->
-> On kunit collaboration, I attended an in-person talk at LPC on kunit
-> userland testing where it was broadly agreed that at this point in time,
-> the xarray/radix tree tests weren't really suited to the framework.
->
-> Therefore I think the healthy means of pushing forward with integration is
-> in sensible discussion and if patches, RFC patches in collaboration with
-> authors.
+CONFIG_HAVE_PREEMPT_DYNAMIC_KEY is the only option, right? Wouldn't
 
-Good.
+| #DEFINE need_irq_preemption() \
+|          (static_branch_unlikely(&sk_dynamic_irqentry_exit_cond_resched))
+| 
+| 	if (need_irq_preemption()) {
 
-> The unhealthy approach is to needle one of the biggest contributors to core
-> test code in the kernel on a thread because you don't seem to want to cd to
-> a directory and run make.
+be a bit smaller/ quicker? This could be a fast path ;)
 
-My initial issue was that I could not find out where that is documented.
+>  			/* Return to preemptible kernel context */
+>  			if (unlikely(read_thread_flags() & _TIF_NEED_RESCHED)) {
+>  				if (preempt_count() == 0)
+> diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+> index edf5cabe5dfd..2556fa8ec019 100644
+> --- a/arch/powerpc/kernel/traps.c
+> +++ b/arch/powerpc/kernel/traps.c
+> @@ -266,7 +266,11 @@ static int __die(const char *str, struct pt_regs *regs, long err)
+>  	printk("%s PAGE_SIZE=%luK%s%s%s%s%s%s %s\n",
+>  	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
+>  	       PAGE_SIZE / 1024, get_mmu_str(),
+> -	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
+> +	       preempt_model_none()      ? "none" :
+> +	       preempt_model_voluntary() ? "voluntary" :
+> +	       preempt_model_full()      ? "full" :
+> +	       preempt_model_lazy()      ? "lazy" :
+> +	       "",
 
-    $ make help
-    ...
-    Userspace tools targets:
-      use "make tools/help"
-      or  "cd tools; make help"
+So intend to rework this part. I have patches stashed at
+	https://git.kernel.org/pub/scm/linux/kernel/git/bigeasy/staging.git/log/?h=preemption_string
 
-    $ make tools/help
-    Possible targets:
-    ...
-    You can do:
-      ...
-      $ make tools/all
+which I didn't sent yet due to the merge window. Just a heads up ;)
 
-      builds all tools.
+>  	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
+>  	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=" __stringify(NR_CPUS)) : "",
+>  	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
 
-But that command does not build tools/testing/radix-tree, so I was
-completely lost.
-
-> Why is this relevant to me? I am the author of the VMA test suite, on which
-> I spent countless hours + relied heavily on Liam's work to do so, and
-> equally there you have to cd to a directory and run make.
-
-Thanks for your work!  One suggestion for improvement: tools/testing/vma
-does not seem to be built by "make tools/all" either.
-
-> But at the same time in both cases, testability of key internal components
-> is ENORMOUSLY improved and allows for REALLY exciting possibilities in test
-> coverage, really isolating functions for unit testing, enormously fast
-> iteration speed, etc. etc.
->
-> I ask you to weigh up the desire to enumerate your misgivings about the
-> testing approach used here vs. all of the above.
-
-I repeat: I am not against these tests.
-
-Thanks!
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Sebastian
 
