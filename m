@@ -1,65 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-5724-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5725-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A2AA2350E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 30 Jan 2025 21:26:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6178BA23831
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2025 01:22:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YkVtC0xKZz30Bd;
-	Fri, 31 Jan 2025 07:26:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ykc6P0c6Kz30Pl;
+	Fri, 31 Jan 2025 11:22:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738268803;
-	cv=none; b=DmYjSb0sWa8Tpb135nz3C7Tqzni+19al888XUhFbYaNDQSotRj6WRf7bimM6uO9PbfYxcaSeaW996rwuuu8NwNvS9PtcE5Eib42KbYPjlewmdW1Kf/M6ydHjjYfRvwUtMmZGtNLiFr+BPuButtnL7rl1izZqz5B89F5Kp1I2b3WkmZfJmi8Ua5JOhFPxgFOBr27LnOyi8lI/AZALD63T77Z1YnzdAdkd9iYY7yO9yAhLnqqFv/mgBftt55jHcVJn9ewNiODofKLeDcjq3G9sLOfwN5tH/OIA/Qw/OEr04mUTjeKISejC6OYgs1WkXzIKviydzd6IUDabDYY9GYG06w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738282957;
+	cv=none; b=EvEbg+hpZ0Mjpcrg4laxxDR8WnSbSM8ythTSp7O2nMARS90jXXdwx938bOcKYJ53eAvJK9Hfk8R5Db1p/jNKVEhD5pTmQGV/rvndvD/Go93+/fLUnnyrY7ZRyTSFq4m8YOfUZrLMd7IV4EuB5GK9MmJlF9asEXI4lgTix7bCqQXUGCtwLg7erDPvw3ONtH7P03Y9zKYQFTKBV3Ul+oCykgMFsYjympCdizQ+SUtKJcmhqo5E9+EkZnXzlwHHQ8FtcqDv2EwHZg5k0Es8JqcbtcJnSyKsoimXRfzsZGLiMPa8MXlchePdJH89AkGnswTw7p+KkPpwrDId6gHfXEoEFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738268803; c=relaxed/relaxed;
-	bh=raKStGmQ1HgcDzebMHePJVys7D0i3X8hHAKlsWuJCIA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=htfClzenyoqYQgGh9PrckAMvLxje359Gal0qsk2rUNqfp4Rgrxu6rAdmRKQoAwgKL+P0bXfqaSsI/hkr16pCtnweDKZLWfD3iQ6dzaQ1r4H2w+SRiXfIsOPHz/FUnGIsgjzXE+vL802otn2Q5BBbQBVCnhGKaVi8yuLR6laFNypxIgDc85ifev4cPWhTnvYBW+NpJi9Aa8jSnbjlpuvRYFj2upuUJ/rvH1UeeITiKKX3YisQxEwO2xHSE5wVc4g0B5XEKhkMrDvZW7/Lk81ZDGyu1dq1N/aXN2CPBLxheh/4RoMeTsRhLHEGjk76GZazmvCe4RihO5Dc884eUEtTRw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0ko0sTai; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MaqkWpfu; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	t=1738282957; c=relaxed/relaxed;
+	bh=25a30crfxY9pAb99iXNL8GYoYiONb0LKuNL8F+wyDgI=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=nG1tDO7HXufivW+bac1FFRANbRm0EWJgUk4A6U32PRVoDEnhvu/Zklimj+wL1YfJoPMPFCluLghbnWS/lijfvTCkmk17xmE8M38L/D3GRsThD4JoaHdrauurRDg97Tw3ivDUpM1lLLTjDn+O8MPApaY+8ogkP99kLk+WUv2yxpGHk5ekcA6UwBOpbtoolDKBw/qxelxjHB/XxEOHNkXW7SC0G/MV2GofKsJ9GS8fKKWR259g2bkWEarNavu6H2BWUxtnHiJw6utDPwsBLWVTed3Z40AU5EXO+3t3vW3TO9FwoTghdGIghGc0KtgdI0yFe+eCRGP3CgYwdc2x/V+D8w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=f7QIIv3I; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0ko0sTai;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MaqkWpfu;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=f7QIIv3I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkVtB2TPwz2yvj
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 07:26:42 +1100 (AEDT)
-Date: Thu, 30 Jan 2025 21:26:34 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738268796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=raKStGmQ1HgcDzebMHePJVys7D0i3X8hHAKlsWuJCIA=;
-	b=0ko0sTaiJJwaxW8bhn13GnM7LjqYjETxlX1v5/dPILw7a8h+A1dw+OPBtBgHpD3MWPMQvK
-	+7fabej8mr1u1GhgVImjjm1oI5HgPf+PvJY2UCuunyGfZvYwSOvAIYdyuuo8TVD8DpvRtQ
-	FjV/9KY14DF6G38sW2l/RJVWnyJu1rFJznFAIkAn5E9NRU3Bf/h0mT8qEoPpGiI8wAw43F
-	QIZP/i7RtljRdDPAYGxF5pezvSLzHPNXup1IUw7m1QpGkaTW/kBrD6bh+EQTgk/RH7/Bv4
-	7AJX+68opRRVXyy/F8N0SNicKhlAMUHzTJhNimmcQD7WXUmYGj2PJP1SkIF+DA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738268796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=raKStGmQ1HgcDzebMHePJVys7D0i3X8hHAKlsWuJCIA=;
-	b=MaqkWpfuGWBc1JyZ5Qgj5qBjueGmZfGBO1JQrK/JVn4QpWW3wFPIpaDe2Of2y95FyM228e
-	AZe2qZ2c0igSNVDg==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: mpe@ellerman.id.au, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
-	npiggin@gmail.com, christophe.leroy@csgroup.eu,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 1/1] powerpc: Enable dynamic preemption
-Message-ID: <20250130202634.eeb9TfkW@linutronix.de>
-References: <20250106051919.55020-1-sshegde@linux.ibm.com>
- <20250106051919.55020-2-sshegde@linux.ibm.com>
- <20250130145409.D_so_mR1@linutronix.de>
- <b73b5143-1a7f-4032-ac06-43db3bf4abea@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ykc6M6Fsxz2yYf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 11:22:34 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 9B0FAA425FB;
+	Fri, 31 Jan 2025 00:20:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 625B7C4CED2;
+	Fri, 31 Jan 2025 00:22:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1738282951;
+	bh=+0gqCmX3XNKCKW4rck9Ou6ozz0RJo/+ewAmbL7uc80A=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=f7QIIv3I+QHM9mGjQv6SP2ZPQdLBF2lqmZmTN5kKs/nxgKDJs4xmYxB1j41iQZdba
+	 zHCjewXX8KWilpdW4QIm9x1P/vWpPbsodazYEXfjpk2gzen1OEK6LP4/70PIRDVhJ7
+	 wLZr6P3WvvMBc+jWGfK6LSKfJxmVXrwhx7VezwRc=
+Date: Thu, 30 Jan 2025 16:22:30 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>, Sidhartha Kumar
+ <sidhartha.kumar@oracle.com>, christophe.leroy@csgroup.eu,
+ geert@linux-m68k.org, justinstitt@google.com, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
+ llvm@lists.linux.dev, maddy@linux.ibm.com, morbo@google.com,
+ mpe@ellerman.id.au, nathan@kernel.org, naveen@kernel.org,
+ ndesaulniers@google.com, npiggin@gmail.com, Matthew Wilcox
+ <willy@infradead.org>, linux-mm@kvack.org
+Subject: Re: [PATCH] xarray: port tests to kunit
+Message-Id: <20250130162230.168530a472df1e56ba987f75@linux-foundation.org>
+In-Reply-To: <CAJ-ks9=U4PZv4NgyH8B7SbHkecGLy+M=G639hSTv-hnPySqk6w@mail.gmail.com>
+References: <20241205-xarray-kunit-port-v1-1-ee44bc7aa201@gmail.com>
+	<07cf896e-adf8-414f-a629-a808fc26014a@oracle.com>
+	<qdq4k6323orqifgzo7pbg5vakezr3gptfdehghxsyfrhc4kwvb@d4fxbwcl4gjm>
+	<CAJ-ks9=U4PZv4NgyH8B7SbHkecGLy+M=G639hSTv-hnPySqk6w@mail.gmail.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,54 +70,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <b73b5143-1a7f-4032-ac06-43db3bf4abea@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2025-01-30 22:27:07 [+0530], Shrikanth Hegde wrote:
-> > | #DEFINE need_irq_preemption() \
-> > |          (static_branch_unlikely(&sk_dynamic_irqentry_exit_cond_resched))
-> > |
-> > | 	if (need_irq_preemption()) {
-> > 
-> > be a bit smaller/ quicker? This could be a fast path ;)
-> 
-> I am okay with either way. I did try both[1], there wasn't any significant difference,
-> hence chose a simpler one. May be system size, workload pattern might matter.
-> 
-> Let me do some more testing to see which one wins.
-> Is there any specific benchmark which might help here?
+On Wed, 29 Jan 2025 16:28:32 -0500 Tamir Duberstein <tamird@gmail.com> wrote:
 
-No idea. As per bean counting: preempt_model_preemptible() should
-resolve in two function calls + conditional in the dynamic case. This
-should be more expensive compared to a nop/ branch ;)
-But you would still need preempt_model_preemptible() for the !DYN case.
-
-> > > +	       preempt_model_voluntary() ? "voluntary" :
-> > > +	       preempt_model_full()      ? "full" :
-> > > +	       preempt_model_lazy()      ? "lazy" :
-> > > +	       "",
-> > 
-> > So intend to rework this part. I have patches stashed at
-> > 	https://git.kernel.org/pub/scm/linux/kernel/git/bigeasy/staging.git/log/?h=preemption_string
-> > 
-> > which I didn't sent yet due to the merge window. Just a heads up ;)
+> > How are grammar corrections going to the right person (but not the
+> > mailing list) while an entire conversion to kunit is not [1]?
 > 
-> Makes sense. I had seen at-least two places where this code was there, ftrace/powerpc.
-> There were way more places..
-> 
-> You want me to remove this part?
+> Very simple: the tests are not properly included in MAINTAINERS. I
+> sent https://lore.kernel.org/all/20250129-xarray-test-maintainer-v1-1-482e31f30f47@gmail.com/
+> a few minutes ago for this reason.
 
-No, just be aware.
-I don't know how this will be routed I guess we merge the sched pieces
-first and then I submit the other pieces via the relevant maintainer
-tree. In that case please be aware that all parts get removed/ replaced
-properly.
+I failed to notice that this patch didn't cc linux-mm.
 
-Sebastian
+MAINTAINERS doesn't ask people to cc linux-mm on xarray changes.
+
+linux-mm averages 130 messages/day - I think it's reasonable to believe
+that MM developers spend a few minutes a day scanning the Subject:s.
+
+This:
+
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: MAINTAINERS: include linux-mm for xarray maintenance
+Date: Thu Jan 30 04:16:20 PM PST 2025
+
+MM developers have an interest in the xarray code.
+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ MAINTAINERS |    1 +
+ 1 file changed, 1 insertion(+)
+
+--- a/MAINTAINERS~maintainers-include-linux-mm-for-xarray-maintenance
++++ a/MAINTAINERS
+@@ -25676,6 +25676,7 @@ F:	arch/x86/entry/vdso/
+ XARRAY
+ M:	Matthew Wilcox <willy@infradead.org>
+ L:	linux-fsdevel@vger.kernel.org
++L:	linux-mm@kvack.org
+ S:	Supported
+ F:	Documentation/core-api/xarray.rst
+ F:	include/linux/idr.h
+_
+
 
