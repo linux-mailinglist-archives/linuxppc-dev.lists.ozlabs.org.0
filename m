@@ -1,87 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-5748-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5749-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B106A23EEC
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2025 15:03:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CE224A23F7B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2025 16:14:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YkyKX6hqkz2yLJ;
-	Sat,  1 Feb 2025 01:03:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YkzvT0Nq8z307V;
+	Sat,  1 Feb 2025 02:14:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738332208;
-	cv=none; b=kEfSYLmodDKnwLGP5k9Wnpg/pQNK+4CiY2g/vPKjSej7l+/nyRF8HWYAe3/41nxUkLZKSxJzFnEbVOEx95GUSD+4glFBK11pkrmigzyiUmS3W3SmWP9LzRBM+GrK8QB3hPaXUxxNCDPdz02kgoOsZot7QZjq5NjQRnZi+2gLB3ptCaff+nc2EwWx4AcKQbAnurq58U6wEPNrXm+FYdvzyV768lammfpXJqufDn+hPcyH25AEvUMBvsKKBa+FvUtF2o3VIEv/P+dIk0bH4LZWLqgkI55oRjzu7qYASVIWFUM7tHsjURAI2EbMC3+6fMgyrTMjCteCxTWIULvW6zrnBQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738336469;
+	cv=none; b=QNwumJAcRHvzWH1qqsaELFlln9JhNVs9C4GIHsfC20+mgxGX0eMI3umLL67+RIrIdvQvErKPr/rc1aoPMfcbNBFFjVxM0fRl2z9R/zyOyrHcF0SkqngbwxZZdXwPjJQQOMHremS26USuMcAWh5JvaaKWZk6GyZZDpCMIyuX3vot/0ii3lUq99deci5RJUqNSJb+57Oj+N78UP7lsHgzCk4Syd0/RPMuDVXHc8UMgG3wwUc2hscQsGwtghx2AlYMO+M9neUNfN+k6tUuHQ7H2NubM4vATJw+x4bIrXtEQZBSmQrwWtPmCuGnMhZU11gLWH9sjar35Vxarvjm3fPdeeA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738332208; c=relaxed/relaxed;
-	bh=xFTui1TtNOoqCI5QawHUUAmqQyPVbfhu2Aj4ZUK2N1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GH9KxXeO5qxMZPA07mM16JEoi8gQHxmzF9IpA7JnNf8WJLONKltj/Fcxo2HseHgGbn/WeeOFreWeXMHu5l9ppETRjnZ/ZriRvlaJt3XyfKeAahHkn2El1pDYW0CCsvbZuqrznIU3vrjHbR0sjrIkV+DQgj30rybWOheusvus/XGW/lo2wWqjJjkEzD0eEksIb+KxEx0QYXgX4EU8ig7iar2WTC98PPdp81n2FDyIVqC/956KdgM5KpBSRzyXYy3VNBTvYAd8qfYCl8nD+cvhc1MXPEYS3i9EottgWizPfWEVmy5vPydw7Is0CqJpiWqU2Tt/1i4fSS1NceWhwkiadA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=U01V4Z6O; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+	t=1738336469; c=relaxed/relaxed;
+	bh=2yBr5Bj5qeKmGiR1Ad5Ti2ixvjXZWaPyUaS7vvnKuZ8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=lUHkK4DVTbsoGcbx/rGpMRl1UHbcrSpqiymOt/Pn/n9KLUewsXtQU4bHpHHmpODjIvtJZjF+eJJjHaH/6eF6ms//+eE2Dj3OaoqmKQABeAGBzzxXplA4ylEiz0cUp8hzzUfRn9c4ZuT4RpOIDk8t8D1ERlCa4XYU4FM9x9HadeR+4+TRXMf/MWDpwnOtauo4ucRDMWCsRDV/93dhay/X1Nloaclze5b+kvGZPvt2TOyPMu2Fa6hDT9r7VdZKBLwNFG7RUH1WZw8zYb6c/d/68XIrkW8hhDroy97CUzjVBUJbFPeSgYDgjRRvKI8N89J4KBDOMLgtlFcNFfCsYYC9hQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M4WVmw7r; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=U01V4Z6O;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=M4WVmw7r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkyKS6hMPz2yK7
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 01:03:21 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 5AEB4240027
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 15:03:11 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1738332192; bh=k6iepJ3khtCHe4wAP+Co9RM2WKV6wPbtel3+iGpB+ZM=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=U01V4Z6OZulu42RAyuhImUM7a4bKoe0MgxbzYtZ5Gtv3IQrM8v608XW6/eU8W1NPh
-	 0t/gSDEdIYRPW7vnEa11pXSviVtdikX48Q82whS+CWfyd0UJeXt6rBD0fzF8KVfKTX
-	 0Z03SYRn2Uu6IQP/L3bQo1aUJLI7+xN0KIfAIHVkK9eX5ItMwz6M+cxbDmy672oS74
-	 Ci1CAAuttEEzIB8kkfBe89QxG3GD24LegtRlStjnbw6LmLN0kOJgA12M6XWLDU/om0
-	 0GU6bntTsoAjFW2kCo3ZvOHG6G4u/oVw4TFTi6xdV9jF6Jo61OrWwlqWw5s5EDKsSb
-	 1HFTZr/jTX1+Q==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YkyK53T11z6v08;
-	Fri, 31 Jan 2025 15:03:05 +0100 (CET)
-Date: Fri, 31 Jan 2025 14:03:05 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Rob Herring <robh@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH 5/9] dt-bindings: dma: Convert fsl,elo*-dma bindings to
- YAML
-Message-ID: <Z5zYGdZU-IXwIuR6@probook>
-References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
- <20250126-ppcyaml-v1-5-50649f51c3dd@posteo.net>
- <20250127044735.GD3106458-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkzvS1Rtxz2yMh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 02:14:27 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 50VF1V4M013259;
+	Fri, 31 Jan 2025 15:14:18 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2yBr5B
+	j5qeKmGiR1Ad5Ti2ixvjXZWaPyUaS7vvnKuZ8=; b=M4WVmw7rQ5b3kgrBlliP3a
+	/v9OfFYzrWXIijuNQLNHamQAIH5PFfRRzW/3Gc1rjPzTtdJ1rRQ76N53ef8oSaHI
+	4bxzy3rZHOMnmG+qbvu254JNr0nefyVzC/Lx/vm8igxvh1y+Cu0x2mg0uLGT7Bzp
+	YQFuwewR7iT/xRQJxIFsNtooi+7MqfhHEfmHHoglJAagaujTyCkKegTZa+UYXTt9
+	B8N1IQpJ1p15PVWSKyfO6ONq54BpRCFPoz5EfvgS5k5xBsQZt6D9iJgOWVl8sJv5
+	GWkDtvM6gCjZ/IXWX6h3wgGRqBWqPrL5KD+fj2hR4yYtLUnlQ6etS55tzY9lXXZQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44h0t002a8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Jan 2025 15:14:18 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 50VCL8pd013864;
+	Fri, 31 Jan 2025 15:14:17 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44gf93c47w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 31 Jan 2025 15:14:17 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 50VFEEc444499246
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 31 Jan 2025 15:14:14 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4A97D2005A;
+	Fri, 31 Jan 2025 15:14:14 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9F1722004D;
+	Fri, 31 Jan 2025 15:14:12 +0000 (GMT)
+Received: from [9.43.17.5] (unknown [9.43.17.5])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 31 Jan 2025 15:14:12 +0000 (GMT)
+Message-ID: <c0ace54a-af67-4df5-a284-b96e454869a9@linux.ibm.com>
+Date: Fri, 31 Jan 2025 20:44:11 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,73 +78,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250127044735.GD3106458-robh@kernel.org>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] powerpc/fadump: fix additional param memory
+ reservation for HASH MMU
+To: Avnish Chouhan <avnish@linux.ibm.com>
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Brian King <brking@linux.ibm.com>,
+        Madhavan Srinivasan
+ <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>
+References: <20250120173501.1147236-1-sourabhjain@linux.ibm.com>
+ <20250120173501.1147236-3-sourabhjain@linux.ibm.com>
+ <6322511c-e56a-4f4c-9b13-efec018cb3a7@linux.ibm.com>
+ <773fec68e97a408de6871eb3d2c2ac61@linux.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <773fec68e97a408de6871eb3d2c2ac61@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: E4B25fP_wWhz3RzyGVI86Vg87Ag65TkM
+X-Proofpoint-ORIG-GUID: E4B25fP_wWhz3RzyGVI86Vg87Ag65TkM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-01-31_05,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 adultscore=0
+ priorityscore=1501 mlxscore=0 malwarescore=0 mlxlogscore=785
+ lowpriorityscore=0 suspectscore=0 impostorscore=0 spamscore=0 phishscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2501310115
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Jan 26, 2025 at 10:47:35PM -0600, Rob Herring wrote:
-> On Sun, Jan 26, 2025 at 07:59:00PM +0100, J. Neuschäfer wrote:
-> > The devicetree bindings for Freescale DMA engines have so far existed as
-> > a text file. This patch converts them to YAML, and specifies all the
-> > compatible strings currently in use in arch/powerpc/boot/dts.
-> > 
-> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > ---
-> >  .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 129 +++++++++++++
-> >  .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 105 +++++++++++
-> >  .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 120 ++++++++++++
-> >  .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
-> >  4 files changed, 354 insertions(+), 204 deletions(-)
-[...]
-> > +patternProperties:
-> > +  "^dma-channel@.*$":
-> > +    type: object
+
+
+On 23/01/25 7:54 pm, Avnish Chouhan wrote:
+> On 2025-01-23 15:26, Hari Bathini wrote:
+>> On 20/01/25 11:05 pm, Sourabh Jain wrote:
+>>> Commit 683eab94da75bc ("powerpc/fadump: setup additional parameters for
+>>> dump capture kernel") introduced the additional parameter feature in
+>>> fadump for HASH MMU with the understanding that GRUB does not use the
+>>> memory area between 640MB and 768MB for its operation.
+>>>
+>>> However, the patch ("powerpc: increase MIN RMA size for CAS
+>>> negotiation") changes the MIN RMA size to 768MB, allowing GRUB to use
+>>> memory up to 768MB. This makes the fadump reservation for the additional
+>>> parameter feature for HASH MMU unreliable.
+>>>
+>>> To address this, adjust the memory range for the additional parameter in
+>>> fadump for HASH MMU. This will ensure that GRUB does not overwrite the
+>>> memory reserved for fadump's additional parameter in HASH MMU.
+>>>
+>>
+>>> The new policy for the memory range for the additional parameter in HASH
+>>> MMU is that the first memory block must be larger than the MIN_RMA size,
+>>> as the bootloader can use memory up to the MIN_RMA size. The range
+>>> should be between MIN_RMA and the RMA size (ppc64_rma_size), and it must
+>>> not overlap with the fadump reserved area.
+>>
+>> IIRC, even memory above MIN_RMA is used by the bootloader except for
+>> 640MB to 768MB (assuming RMA size is >768MB). So, how does this change
+>> guarantee that the bootloader is not using memory reserved for bootargs?
+>>
+>> Avnish, earlier, bootloader was using RUNTIME_MIN_SPACE (128MB) starting
+>> top-down at 768MB earlier. With MIN_RMA changed to 768MB, is bootloader
+>> still using the concept of RUNTIME_MIN_SPACE to set aside some memory
+>> for kernel to use. If yes, where exactly is it allocating this space
+>> now? Also, rtas instantiates top-down at 768MB. Would that not have
+>> a conflict with grub allocations without RUNTIME_MIN_SPACE at 768MB?
+>>
+>> - Hari
 > 
->        additionalProperties: false
+> Hi Hari,
 
-I'll add it.
+Hi Avnish,
 
-> (The tools should have highlighted this)
+> The RUNTIME_MIN_SPACE is the space left aside by Grub is within the 
+> MIN_RMA size. Grub won't use memory beyond the MIN_RMA. With this 
+> change, we haven't changed the RUNTIME_MIN_SPACE behavior. Grub will 
+> still keep the 128 MB space in MIN_RMA for loading stock kernel and initrd.
 
-With dtschema 2024.11 installed, "make dt_binding_check
-DT_SCHEMA_FILES=fsl,elo-dma.yaml" does not highlight this.
+IIUC, you mean, 640MB to 768MB is not used by Grub even if MIN_RMA
+is at 768MB? If that is true, this change is not needed, as fadump
+could still use the memory between 640MB to 768MB, right?
+Am I missing something here..
 
-> > +
-> > +    properties:
-> > +      compatible:
-> > +        items:
-> > +          - enum:
-> > +              - fsl,mpc8315-dma-channel
-> > +              - fsl,mpc8323-dma-channel
-> > +              - fsl,mpc8347-dma-channel
-> > +              - fsl,mpc8349-dma-channel
-> > +              - fsl,mpc8360-dma-channel
-> > +              - fsl,mpc8377-dma-channel
-> > +              - fsl,mpc8378-dma-channel
-> > +              - fsl,mpc8379-dma-channel
-> > +          - const: fsl,elo-dma-channel
-> > +
-> > +      reg:
-> > +        maxItems: 1
-> > +
-> > +      cell-index:
-> > +        description: DMA channel index starts at 0.
-> > +
-> > +      interrupts: true
-> 
-> You have to define how many interrupts and what they are.
-
-Will do.
-
-(and the same for the other two files)
-
-
-Best regards,
-J. Neuschäfer
+- Hari
 
