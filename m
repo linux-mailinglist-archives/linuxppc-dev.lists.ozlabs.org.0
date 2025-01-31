@@ -1,61 +1,63 @@
-Return-Path: <linuxppc-dev+bounces-5745-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5748-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3952EA23DAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2025 13:23:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B106A23EEC
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2025 15:03:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ykw655PBdz30Vm;
-	Fri, 31 Jan 2025 23:23:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YkyKX6hqkz2yLJ;
+	Sat,  1 Feb 2025 01:03:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738326205;
-	cv=none; b=iZfMJnMKAUzhCMAOiXPBGrdt0qn3UCR1NfPF5V2O+wI9jf8C9HjmXv522k0xdPKJmoNG3YZElhLqT5B76gchy/DSSlR0ITFfd/UjbfUXUMcOG1caUD7zMqI9SgDBQgy6jXQHdq0ynca9g7hXX/cqV5ozo0xT2Lplo5sEV8ci2suNp3ypdV1LY4ywIfVTRGHMSiDXFXo5URdgNhVmIxOpWahQvKO8aSIK0BVUBN57nA7tdkprUxWMWgGicLCeFAbKBribdQ9USTd4k1RgmDRN9hclhg2QabSKn2xmk03VzvgBHWhu6j55ySECbdrkgymOQGt6xiLojRwbKhZftrvcKw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738332208;
+	cv=none; b=kEfSYLmodDKnwLGP5k9Wnpg/pQNK+4CiY2g/vPKjSej7l+/nyRF8HWYAe3/41nxUkLZKSxJzFnEbVOEx95GUSD+4glFBK11pkrmigzyiUmS3W3SmWP9LzRBM+GrK8QB3hPaXUxxNCDPdz02kgoOsZot7QZjq5NjQRnZi+2gLB3ptCaff+nc2EwWx4AcKQbAnurq58U6wEPNrXm+FYdvzyV768lammfpXJqufDn+hPcyH25AEvUMBvsKKBa+FvUtF2o3VIEv/P+dIk0bH4LZWLqgkI55oRjzu7qYASVIWFUM7tHsjURAI2EbMC3+6fMgyrTMjCteCxTWIULvW6zrnBQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738326205; c=relaxed/relaxed;
-	bh=CVrmTJqjbFMs57opB2+oT/VZnnL0V528B4LGKZGKziM=;
+	t=1738332208; c=relaxed/relaxed;
+	bh=xFTui1TtNOoqCI5QawHUUAmqQyPVbfhu2Aj4ZUK2N1E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LkiBbI9xHDJZDm6x+KoeuZWJULfeav7juNdM/W1IIltuckTEianCl71IqEcAJiTWdoaP7fClcMFHf3vm4+AeUb5HViRv933rqF0HScXvuIM99Zlz+PaEUIiSUmxZeXBOfpAAKz9O+N9XC6n2QY009+CK3sEstUcSs1UeI6b4wZpmsw/GY08v1pxyHfQJUvVW6kZxmBF8xvqOa5HD67FDats7jo8MNdJ+XhDmJs5tAPouF/+YomJNS8THVSlvcs6NSifI0FrA+05m5d3S3oRUr9TOd6b5zf7hIHpmPpuUtOW5jPw8XhR6MSbUvBqvXCIshEhyQbG3r+ERFkryEHYIbQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=ZH/QrR6C; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=GH9KxXeO5qxMZPA07mM16JEoi8gQHxmzF9IpA7JnNf8WJLONKltj/Fcxo2HseHgGbn/WeeOFreWeXMHu5l9ppETRjnZ/ZriRvlaJt3XyfKeAahHkn2El1pDYW0CCsvbZuqrznIU3vrjHbR0sjrIkV+DQgj30rybWOheusvus/XGW/lo2wWqjJjkEzD0eEksIb+KxEx0QYXgX4EU8ig7iar2WTC98PPdp81n2FDyIVqC/956KdgM5KpBSRzyXYy3VNBTvYAd8qfYCl8nD+cvhc1MXPEYS3i9EottgWizPfWEVmy5vPydw7Is0CqJpiWqU2Tt/1i4fSS1NceWhwkiadA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=U01V4Z6O; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=ZH/QrR6C;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=U01V4Z6O;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ykw626KK8z30Vl
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 23:23:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YkyKS6hMPz2yK7
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 01:03:21 +1100 (AEDT)
 Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id D8887240101
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 13:23:12 +0100 (CET)
+	by mout01.posteo.de (Postfix) with ESMTPS id 5AEB4240027
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 15:03:11 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1738326192; bh=2qfaRTO5iG5mOYJ+RvO6+d2r0hfl5IUM+PXTysg9LQQ=;
+	t=1738332192; bh=k6iepJ3khtCHe4wAP+Co9RM2WKV6wPbtel3+iGpB+ZM=;
 	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
 	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=ZH/QrR6CDzrfRyOcDdDH1yAPCkywXurHgOK68RDcFhhdhoq8xD44Fh+6uUGh+dwWw
-	 UBOzkZwnU3ddtLRTeU9gq3Ro9Pye5t/VIvS47EuiR6p52UR5Egh3g+CwT4bretriRL
-	 9P1/U02bGR2CHxLzixwpkWxHjV7Zcn5ENGNT8IMCsYNGV7EkvrLpD208SD1pV3iCbJ
-	 YJpiFVWgIAxaRW3ZJfEeJKJ2G+bPdrPU3tXn5FZ2drudvcOkXIkQH7TlekHEnIB4sg
-	 LdJzUnEBnSD/51ERodPs5mvutRoWmEeP0pN0ROgbkERvi/mrMIgITeGplhnDse7Plf
-	 4sz+RCqcxm1yg==
+	b=U01V4Z6OZulu42RAyuhImUM7a4bKoe0MgxbzYtZ5Gtv3IQrM8v608XW6/eU8W1NPh
+	 0t/gSDEdIYRPW7vnEa11pXSviVtdikX48Q82whS+CWfyd0UJeXt6rBD0fzF8KVfKTX
+	 0Z03SYRn2Uu6IQP/L3bQo1aUJLI7+xN0KIfAIHVkK9eX5ItMwz6M+cxbDmy672oS74
+	 Ci1CAAuttEEzIB8kkfBe89QxG3GD24LegtRlStjnbw6LmLN0kOJgA12M6XWLDU/om0
+	 0GU6bntTsoAjFW2kCo3ZvOHG6G4u/oVw4TFTi6xdV9jF6Jo61OrWwlqWw5s5EDKsSb
+	 1HFTZr/jTX1+Q==
 Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Ykw5h1ywDz6typ;
-	Fri, 31 Jan 2025 13:23:03 +0100 (CET)
-Date: Fri, 31 Jan 2025 12:23:03 +0000
+	by submission (posteo.de) with ESMTPSA id 4YkyK53T11z6v08;
+	Fri, 31 Jan 2025 15:03:05 +0100 (CET)
+Date: Fri, 31 Jan 2025 14:03:05 +0000
 From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Damien Le Moal <dlemoal@kernel.org>
-Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, Scott Wood <oss@buserror.net>,
+To: Rob Herring <robh@kernel.org>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Scott Wood <oss@buserror.net>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Naveen N Rao <naveen@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
@@ -74,11 +76,12 @@ Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
 	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
 	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
 	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH 2/9] dt-bindings: ata: Convert fsl,pq-sata binding to YAML
-Message-ID: <Z5zAp3X7U0oftneH@probook>
+Subject: Re: [PATCH 5/9] dt-bindings: dma: Convert fsl,elo*-dma bindings to
+ YAML
+Message-ID: <Z5zYGdZU-IXwIuR6@probook>
 References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
- <20250126-ppcyaml-v1-2-50649f51c3dd@posteo.net>
- <a9df1ae6-8779-4dc0-8f03-eda939c0e533@kernel.org>
+ <20250126-ppcyaml-v1-5-50649f51c3dd@posteo.net>
+ <20250127044735.GD3106458-robh@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,67 +97,68 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <a9df1ae6-8779-4dc0-8f03-eda939c0e533@kernel.org>
+In-Reply-To: <20250127044735.GD3106458-robh@kernel.org>
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
 	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Jan 27, 2025 at 08:22:55AM +0900, Damien Le Moal wrote:
-> On 1/27/25 03:58, J. Neuschäfer via B4 Relay wrote:
-> > From: "J. Neuschäfer" <j.ne@posteo.net>
-> > 
-> > Convert the Freescale PowerQUICC SATA controller binding from text form
-> > to YAML. The list of compatible strings reflects current usage.
+On Sun, Jan 26, 2025 at 10:47:35PM -0600, Rob Herring wrote:
+> On Sun, Jan 26, 2025 at 07:59:00PM +0100, J. Neuschäfer wrote:
+> > The devicetree bindings for Freescale DMA engines have so far existed as
+> > a text file. This patch converts them to YAML, and specifies all the
+> > compatible strings currently in use in arch/powerpc/boot/dts.
 > > 
 > > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 > > ---
-> >  .../devicetree/bindings/ata/fsl,pq-sata.yaml       | 59 ++++++++++++++++++++++
+> >  .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 129 +++++++++++++
+> >  .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 105 +++++++++++
+> >  .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 120 ++++++++++++
+> >  .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
+> >  4 files changed, 354 insertions(+), 204 deletions(-)
 [...]
-> > +description: |
-> > +  SATA nodes are defined to describe on-chip Serial ATA controllers.
-> > +  Each SATA port should have its own node.
+> > +patternProperties:
+> > +  "^dma-channel@.*$":
+> > +    type: object
 > 
-> Very unclear. The SATA nodes define ports or controllers ? Normally, a single
-> controller can have multiple ports, so the distinction is important.
+>        additionalProperties: false
 
-I'll change it to "Each SATA controller ...", see below.
+I'll add it.
 
+> (The tools should have highlighted this)
 
-> > +  cell-index:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    enum: [1, 2, 3, 4]
-> > +    description: |
-> > +      1 for controller @ 0x18000
-> > +      2 for controller @ 0x19000
-> > +      3 for controller @ 0x1a000
-> > +      4 for controller @ 0x1b000
+With dtschema 2024.11 installed, "make dt_binding_check
+DT_SCHEMA_FILES=fsl,elo-dma.yaml" does not highlight this.
+
+> > +
+> > +    properties:
+> > +      compatible:
+> > +        items:
+> > +          - enum:
+> > +              - fsl,mpc8315-dma-channel
+> > +              - fsl,mpc8323-dma-channel
+> > +              - fsl,mpc8347-dma-channel
+> > +              - fsl,mpc8349-dma-channel
+> > +              - fsl,mpc8360-dma-channel
+> > +              - fsl,mpc8377-dma-channel
+> > +              - fsl,mpc8378-dma-channel
+> > +              - fsl,mpc8379-dma-channel
+> > +          - const: fsl,elo-dma-channel
+> > +
+> > +      reg:
+> > +        maxItems: 1
+> > +
+> > +      cell-index:
+> > +        description: DMA channel index starts at 0.
+> > +
+> > +      interrupts: true
 > 
-> Are you sure these are different controllers ? Are they not different ports of
-> the same controller ? Given that the previous text description define this as
-> "controller index", I suspect these are the port offsets and you SATA nodes
-> define ports, and not controllers.
+> You have to define how many interrupts and what they are.
 
-They have no shared registers, and each instance has the same register
-set (at a different base address).
+Will do.
 
-The MPC8315E reference manual (for example) documents them as:
-
-	SATA 1 Controller—Block Base Address 0x1_8000
-	SATA 2 Controller—Block Base Address 0x1_9000
-
-(table A.24 Serial ATA (SATA) Controller)
-
-Section 15.2 Command Operation implies that each SATA controller
-supports a single port:
-
-	The SATA controller maintains a queue consisting of up to 16
-	commands. These commands can be distributed to a single attached
-	device or, if the system contains a port multiplier, over each
-	of the attached devices.
-
-So, in conclusion, I'm fairly sure "controller" is the right description.
+(and the same for the other two files)
 
 
 Best regards,
