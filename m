@@ -1,52 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-5760-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5761-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6DCA24654
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2025 02:42:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78AB6A24655
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2025 02:42:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YlFrS1M7Sz2yVb;
-	Sat,  1 Feb 2025 12:42:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YlFrX2Q6Pz3089;
+	Sat,  1 Feb 2025 12:42:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738374168;
-	cv=none; b=UjC88y2SUgiytaVKJCoOUpy3LII1TZJS89xt5xdZY479Dlw48EEwgkI3E3r2aCXIzzRgsts2OpLBlWpiQLkmb3JuxHmYYiQatlwBRq9OmM4i4Rhq1pXG1MG4suXkdJr/aMI8V7nb9ykZHC5KeEu38apAG06TP+l3h26OCH7r6zEc6XN5h3SK9DcuxuGgybeo1rZluFprbZk+70sRNc94kURpu+Fz7N6tiqBIzEJTorYx3D2vzL5YLkhRrMVJW0SgW99TqmquAulouZSfRLZmSuSPEq1ffrRND6kc+nSUePc50o7AT+00/7pWhyfrMJwaWnzhfcJ9qly3hSY8rMuiCA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738374172;
+	cv=none; b=eRCu6UoZKKMfjP9U2ZJB6+S35ARZA+4aBr+Qske8R13vogdW6W/2uX5CfN8fAqCITqoWWr8o+XfQR8bJ7CpFWSpcmMr4e4JhQq6ZcmZs5384tAEuOrSc0JruL9QXBGpUuTqtrd1qwe1PQWSakloXeryJtm9on3UF95nBwj2S87A5TJ8jRdSY7aG3MU6NOJaTEux0NtAKERYs789dtlUq3gMHtspk5KPZVD0/BYbVv4UzGUuiArpxYVfA8c6U6v0KXlAXrhJefx8HtXtdSFNcbpt1k2ZDbN37vPED6ZHS/3Rnz7cHeVtTg4hRV2JbhkFJoxx6/x4AAReig2GMECQ3Tw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738374168; c=relaxed/relaxed;
-	bh=PjLs3jHJ6gre5zEKgFB96jUHS1/DMoYPTnwMihnfenY=;
+	t=1738374172; c=relaxed/relaxed;
+	bh=jfTX5N+JozVInSGryKZii/Pu/Wo6REO7I+jxm8oFruQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LbCYQD83mKEFh/HFnB7tk2Zvzw0AeETnTDL4OQKQX6Ra6rA33puvSQDzzFD21uQNm1DiYys4naHeTRbtJdNmIUachXQ0BNSMFlcYUoICrv0yylST1RSfD3e4LfAWpKQ0in6tMCQ5nCNvfOYG59o/v16xLA9P/1ieFqULhXZ6iS8wTvenY6ECiCCKm37/eJN/WODROvKMfuQXINCIQGvwoCgIuYjyhbo6Oa7nqOAgcY9woHFKe/MeLVZliMSILW6LdNAOEhrpq1VAsuid6hnRp+12yjh9zvWHbLavFzv3KYSHeiULiT54qL7mDqem1G28Ydk4P7hJ6DZ8Ms4JUO/chw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=rMDfqEQT; dkim-atps=neutral
+	 Content-Type:Content-Disposition:In-Reply-To; b=lKuK1jufqsWDmccU+LZZJlvh9ApNcJ72fY9MSmpUbMb0J2iOdL5S6e7/b/Y/rJ1WbwMwLUdbpNJFzQadCHnR9XyAZlLRrNGddeJL4qy5FzGD6D0ZgufwMtHbZ34ZaMj6TvFaV7Jzvz1wXrFOqQycrYWfn9D1w2KPpy/SoX51McRk08lcLwH+imk8W0kFWAbKoQmgv1JSinFyLAvDKSMIHWk5YgFwuuiNDG/8BPEsnN67K4ZD6Sme5HYFOqk65IFoyXuHksuqIivyL6wQDttT3wyuuKiOOVxSsJtvLnLAYnMGWhJ7bnx3Ph/Y6LJ2T/+yutkqkY3bY8Biki5HSWStUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=B63dI5Ci; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=rMDfqEQT;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=B63dI5Ci;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YlFrQ6QbRz2yNn
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 12:42:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YlFrW6B0qz2yNn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 12:42:51 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
 	s=201707; t=1738374157;
-	bh=PjLs3jHJ6gre5zEKgFB96jUHS1/DMoYPTnwMihnfenY=;
+	bh=jfTX5N+JozVInSGryKZii/Pu/Wo6REO7I+jxm8oFruQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rMDfqEQTbWHoowk5Km8DJ1nLExKt2RpaU6RXYwyOXPkofXLC9yA8oQH/K60e143tw
-	 L5db6Yg6DU5EZjTJj97tRxRql2WAj4K0fv0N7aeyLNWtgzbBdH/zg4BZGGdFpbdOi3
-	 QLg+HmZcaoy+neKPz3cX9ux/Uj2qnhXsP8gpzvTU2RiaPrSf3VOl+ofHXYAro8lNT4
-	 r2cBuPN8pFKebfheD8GCeCHGRJiX0lC0gkq2YDg5VnWUE5SoQ2YIKrIpg7yRSh2AZS
-	 il0rrStx9polMTxM9fYVi4Ig3YGse7iHSWM+dbmvyu1b0zq/9atlZ8aOVhtjuOxTrT
-	 iKIaUu6ncOBsQ==
+	b=B63dI5CigvvVphfB6egfdH1IAUf8ujFXZ+CnYF+xHGZoSWWXi5+26JTqyZ1rCbvma
+	 TvAEDArWzNtaVz28nasH83jIUEa0vNtv8rD4eKZjSysrU/irU8rXCO7ADcQDtg1t/T
+	 jj/OWhw61TGS/+z2PDxx23rN+yHTCZXFlwHIjkH17EdvDlbm7FYbqJ5SnaYqWlNSzR
+	 KMnZSuwj9L7CGi+823e6g0iAq84/QpcqA3siw6NbB9SXd5hmArl1fu3hnKuOBv/iHq
+	 YJm3ZBFWu3lvZPj/VlS/Usf4tzekbGn9mCg7HyO3hpnHl2YTu1t8+aq602irfPaqw2
+	 mVj9ea+f/uXyw==
 Received: by gandalf.ozlabs.org (Postfix, from userid 1003)
-	id 4YlFrF4RNSz4wy9; Sat,  1 Feb 2025 12:42:37 +1100 (AEDT)
-Date: Sat, 1 Feb 2025 12:22:51 +1100
+	id 4YlFrF4VmHz4wcf; Sat,  1 Feb 2025 12:42:37 +1100 (AEDT)
+Date: Sat, 1 Feb 2025 12:41:20 +1100
 From: Paul Mackerras <paulus@ozlabs.org>
 To: Segher Boessenkool <segher@kernel.crashing.org>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH 0/5] Microwatt updates
-Message-ID: <Z513a_fdrtUgE0gE@thinks.paulus.ozlabs.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 3/5] powerpc/microwatt: Define an idle power-save function
+Message-ID: <Z517wNTEaMBINMw4@thinks.paulus.ozlabs.org>
 References: <Z5lfDb8wsLlmSLBZ@thinks.paulus.ozlabs.org>
- <20250131161343.GY20626@gate.crashing.org>
+ <Z5lfyDQbGjxYT_eF@thinks.paulus.ozlabs.org>
+ <D7EBXLB9JMZU.2T4WD5BP9C1GD@gmail.com>
+ <20250131163255.GA20626@gate.crashing.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -61,89 +63,35 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250131161343.GY20626@gate.crashing.org>
+In-Reply-To: <20250131163255.GA20626@gate.crashing.org>
 X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 31, 2025 at 10:13:43AM -0600, Segher Boessenkool wrote:
-> Hi!
+On Fri, Jan 31, 2025 at 10:32:55AM -0600, Segher Boessenkool wrote:
+> On Wed, Jan 29, 2025 at 04:06:03PM +1000, Nicholas Piggin wrote:
+> > Does wait cause MSR[EE] to be set? If not, do you need to use
+> > prep_irq_for_idle_irqsoff() here maybe?
 > 
-> On Wed, Jan 29, 2025 at 09:49:49AM +1100, Paul Mackerras wrote:
-> > This patch series updates the kernel support for the Microwatt
-> > soft-core and its implementation on FPGA systems, particularly the
-> > Digilent Arty A7-100 FPGA development board.
-> > 
-> > Microwatt now supports almost all of the features of the SFFS (Scalar
-> > Fixed-poin and Floating-point Subset) compliancy subset of Power ISA
-> > version 3.1C, including prefixed instructions and the fixed-point hash
-> > (ROP mitigation) instructions.  It is also now SMP-capable, and a
-> > dual-core system will fit on the Arty A7-100 board.
+> Assuming this does implement the standard ISA 2.03 wait instruction
+
+ISA 2.03?  I don't have a copy of 2.03.  I looked in 2.04 and the wait
+instruction there has a different extended opcode from the ISA 3.0/3.1
+wait instruction.  Why is ISA 2.03 at all relevant to anything here?
+In any case, the description of the wait instruction in 2.04 doesn't
+actually say that it waits for anything other than all previous
+instructions being finished.
+
+> (and it better), this does not do anything other than to stop fetching
+> and execution until some later event happens.
 > 
-> Congratulations!
+> What values of the WC field does uwatt implement?
 
-Thanks!
-
-> > Microwatt does not have broadcast TLB invalidations in SMP systems;
-> 
-> So it isn't *really* SMP.  Compare 603 vs. 604.  With enough software
-
-Actually, the term "SMP" is about latency to memory, indicating that
-all CPUs have access to memory with similar latency.  It doesn't say
-anything about coherency, either of memory caches or TLBs.  So yes,
-Microwatt is SMP.
-
-And for the record, the instruction and data caches are coherent,
-which is what matters to user-space.  Stuff to do with the TLB is not
-visible to user-space.  And the ISA explicitly says "TLBs are
-non-coherent caches of the HTABs and Radix Trees" (Book III section
-6.10.1).
-
-> (OS) trickery you can make some things work, but :-)  (There have been
-> many 603 multiprocessor systems as well, to draw the analogy further
-> than wanted :-) )
-
-603 was a looong time ago, I don't recall the details.
-
-Regarding broadcast TLBIEs, the protocols and mechanisms for doing
-that are known to be complex and slow in the IBM Power processors (ask
-Derek Williams about that :).  Anton found that in fact doing only
-local TLBIEs and using IPIs gave *better* performance on IBM Power
-systems than using hardware broadcast TLBIEs in many cases (the reason
-being that software knows which other CPUs might have a given TLB
-entry, often quite a small set, whereas hardware doesn't, and has to
-send the invalidation to every CPU and wait for a response from every
-CPU).  Add to that, that most other SMP-capable CPU architectures
-don't do broadcast TLB invalidations, Intel x86 for example.
-
-> > the kernel already has code to deal with this.  One of the patches in
-> > this series provides a config option to allow platforms to select
-> > unconditionally the behaviour where cross-CPU TLB invalidations are
-> > handled using inter-processor interrupts.
-> 
-> Are there plans to broadcast the (SMP cache invalidation) messages?
-
-Cache (i.e. instruction and data cache) - yes, they *are* coherent.
-More precisely, the D caches are write-through, and all I and D caches
-snoop writes to memory (including DMA writes) and invalidate any cache
-lines being written to.
-
-> Will uwatt support some real bus protocol, for example?
-
-"Real" meaning using tri-state bus drivers, like we did in the 90s? :)
-
-> Again, congrats on this great milestone!  Does this floating point
-> support do square roots as well (aka "gpopt"; does it do "gfxopt" for
-> that matter, fsel?)  fsqrt is kinda tricky to get to work fully
-> correctly :-)
-
-Yes, fsqrt and fsel are implemented in hardware, and are accurate to
-the last bit.  Also, the FPU handles denormalized values in hardware
-(both input and output) and implements all exception handling as per
-the ISA, including the trap-enabled overflow cases.  Feel free to run
-whatever tests you like and report bugs.  But we're getting a bit
-off-topic from the kernel patches. :)
+Just WC=0; for other values it's a no-op.  (Which is still arguably
+correct given that execution is allowed to resume when an
+implementation-dependent event occurs; P9 for instance just stops for
+a few microseconds, if I recall correctly, for any WC value.)
 
 Paul.
 
