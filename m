@@ -1,58 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-5759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5760-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03613A24527
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 31 Jan 2025 23:16:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D6DCA24654
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2025 02:42:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yl9GL0qSJz30B8;
-	Sat,  1 Feb 2025 09:16:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YlFrS1M7Sz2yVb;
+	Sat,  1 Feb 2025 12:42:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738361786;
-	cv=none; b=SAf22hu9MZhhH8UBqZx34HAXoQFX44ciiftHdQOvmR5g729umt0F0wjiyGycOPuknmgFdmrrhJ0jkXuETdLumPf/tOty7otljYqOoTi42Yhwms42xOuLZULnh50PTG4OZttrQNHl8l/nJjF604BTLcTM0l6F/WAz22Gi9RJXQq/CzRwnJxZyVMQ0BK+3cARXOqSjev6ZV3/SBI0L4uCQI3jK/qHCMEcayTKpnKvX8IS2hzfnWADRMVidKijXi0l+VKb2TpMxO8nNhH0rN46qrll3JYpGUbEY8Iu/q2VXwr9pia8YzaXSQHkz07U9Vj97ZH3uUW4858CCM0zLCD+SRA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738374168;
+	cv=none; b=UjC88y2SUgiytaVKJCoOUpy3LII1TZJS89xt5xdZY479Dlw48EEwgkI3E3r2aCXIzzRgsts2OpLBlWpiQLkmb3JuxHmYYiQatlwBRq9OmM4i4Rhq1pXG1MG4suXkdJr/aMI8V7nb9ykZHC5KeEu38apAG06TP+l3h26OCH7r6zEc6XN5h3SK9DcuxuGgybeo1rZluFprbZk+70sRNc94kURpu+Fz7N6tiqBIzEJTorYx3D2vzL5YLkhRrMVJW0SgW99TqmquAulouZSfRLZmSuSPEq1ffrRND6kc+nSUePc50o7AT+00/7pWhyfrMJwaWnzhfcJ9qly3hSY8rMuiCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738361786; c=relaxed/relaxed;
-	bh=FUqAimDhXKLQKXHEvNe8kEGFl5H1tY9vRFmN0faC4gk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TyeE+i5Kd3KvAGEUumtJLILn240FyxWJ3ZqRnX89Wxqazj7TjUd9QvzqGXkJAysKTRP43M8OrmSOD8hBbPmR2UQKdq4SregeCoC/XObI4W7adMapCjkNkISoT2q/tOJPydA6C6ro7Xyr1HnJwtSb9ZXnbZfy0dya3cMpLp/3R0uTwHR61TM6hWDpMXvIed3/sNfLF3eQeZ3ihur1Nb1nmJGTWniEgK8M/eB+ZvhlcNpcXE0N5OYX5vwn0eQmeW/jGp8Z6HJrKqfHj9CHdoox/kN2W/IGqV57wmeuW8LougmV6AFTjW5YUfFa9VLSVWPR1Ct5SNT9bsvHM+y7Tymzqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AtfqOBV+; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1738374168; c=relaxed/relaxed;
+	bh=PjLs3jHJ6gre5zEKgFB96jUHS1/DMoYPTnwMihnfenY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LbCYQD83mKEFh/HFnB7tk2Zvzw0AeETnTDL4OQKQX6Ra6rA33puvSQDzzFD21uQNm1DiYys4naHeTRbtJdNmIUachXQ0BNSMFlcYUoICrv0yylST1RSfD3e4LfAWpKQ0in6tMCQ5nCNvfOYG59o/v16xLA9P/1ieFqULhXZ6iS8wTvenY6ECiCCKm37/eJN/WODROvKMfuQXINCIQGvwoCgIuYjyhbo6Oa7nqOAgcY9woHFKe/MeLVZliMSILW6LdNAOEhrpq1VAsuid6hnRp+12yjh9zvWHbLavFzv3KYSHeiULiT54qL7mDqem1G28Ydk4P7hJ6DZ8Ms4JUO/chw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org; dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=rMDfqEQT; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=ozlabs.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=AtfqOBV+;
+	dkim=pass (2048-bit key; secure) header.d=ozlabs.org header.i=@ozlabs.org header.a=rsa-sha256 header.s=201707 header.b=rMDfqEQT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yl9GJ6qXGz2yyJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 09:16:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 27C2AA41F05
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 22:14:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B107C4CED1
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 22:16:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738361780;
-	bh=24W6Dps3y7DxZ6YhfkzynKPlf3swLWZxkwFai0Y3sBI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AtfqOBV+hgn5E2OvcJZHV5aNQwRoYZB/CgESGBejHG/zkhQV1sAuR0NIwBLg9xAnH
-	 NMF7ihG8arT55ilvdLTKTWJmugXTWXqCJSDlTZeS2zxMmwQFLqm8D5VukL5YR/EcBJ
-	 mghfb/3SO3dWStF5RQqNApP46SZDdaOsLZ08uuh/lqxQcZeBdoAPNo9gglpGJJlJBa
-	 6d8A+j+Z5Ei31O2xP6t7GYTdzHI8rFqRWRC6V6NAruBJpu/X9qlSJBZZtbTiSe2K0U
-	 95VqbK3A1v+Ko/GNl3nXSzntI4YcNvUJuqPzC39Twtw/FyZPNjLEwB4c+7+1U/hjuu
-	 +Zc2srHyIOMnQ==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5d3d14336f0so3767280a12.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 31 Jan 2025 14:16:20 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWNklAk6YRHGdLE+wphV2zhPNJ6ADAID81sHly287b3qa9DGdwb0EKJnMkTmW0M2v2kxtjrs0BBwxlF900=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzxoNzckNOTlEoYnySfZ2N/MKZ1kMBUcOgx9HRlNCiLA3KwD5Gz
-	LtbauSv2ib2lRmlXU9M5jbCLYK2wIBGT+RrWqJaIBWidSvcGHextMKY5ohy8D7TiTSWBPodtlAe
-	Z4Cc4HzDqN/ayxusJW9ZMKpl3VA==
-X-Google-Smtp-Source: AGHT+IG+40Vie6I5qh4Xa+hjwERq+fPWo6Sglqt6y5ghUP/X8RySc2w5nt0i3mGF0G2DQOmC/TQjR33KPq7ga7buNyY=
-X-Received: by 2002:a05:6402:2390:b0:5dc:72e1:63ee with SMTP id
- 4fb4d7f45d1cf-5dc72e1647cmr7162768a12.6.1738361778979; Fri, 31 Jan 2025
- 14:16:18 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YlFrQ6QbRz2yNn
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 12:42:46 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ozlabs.org;
+	s=201707; t=1738374157;
+	bh=PjLs3jHJ6gre5zEKgFB96jUHS1/DMoYPTnwMihnfenY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rMDfqEQTbWHoowk5Km8DJ1nLExKt2RpaU6RXYwyOXPkofXLC9yA8oQH/K60e143tw
+	 L5db6Yg6DU5EZjTJj97tRxRql2WAj4K0fv0N7aeyLNWtgzbBdH/zg4BZGGdFpbdOi3
+	 QLg+HmZcaoy+neKPz3cX9ux/Uj2qnhXsP8gpzvTU2RiaPrSf3VOl+ofHXYAro8lNT4
+	 r2cBuPN8pFKebfheD8GCeCHGRJiX0lC0gkq2YDg5VnWUE5SoQ2YIKrIpg7yRSh2AZS
+	 il0rrStx9polMTxM9fYVi4Ig3YGse7iHSWM+dbmvyu1b0zq/9atlZ8aOVhtjuOxTrT
+	 iKIaUu6ncOBsQ==
+Received: by gandalf.ozlabs.org (Postfix, from userid 1003)
+	id 4YlFrF4RNSz4wy9; Sat,  1 Feb 2025 12:42:37 +1100 (AEDT)
+Date: Sat, 1 Feb 2025 12:22:51 +1100
+From: Paul Mackerras <paulus@ozlabs.org>
+To: Segher Boessenkool <segher@kernel.crashing.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH 0/5] Microwatt updates
+Message-ID: <Z513a_fdrtUgE0gE@thinks.paulus.ozlabs.org>
+References: <Z5lfDb8wsLlmSLBZ@thinks.paulus.ozlabs.org>
+ <20250131161343.GY20626@gate.crashing.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,78 +59,91 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
- <20250126-ppcyaml-v1-5-50649f51c3dd@posteo.net> <20250127044735.GD3106458-robh@kernel.org>
- <Z5zYGdZU-IXwIuR6@probook>
-In-Reply-To: <Z5zYGdZU-IXwIuR6@probook>
-From: Rob Herring <robh@kernel.org>
-Date: Fri, 31 Jan 2025 16:16:07 -0600
-X-Gmail-Original-Message-ID: <CAL_JsqJAX1QbXvG16NV2g6DGece6KiG_V-uyKQQLA618Oq9miw@mail.gmail.com>
-X-Gm-Features: AWEUYZlhW5XoGn0HVU0ENeDHSySI0kteJDy_cGfJFvW15zruGH8F_vZTC5Jh93M
-Message-ID: <CAL_JsqJAX1QbXvG16NV2g6DGece6KiG_V-uyKQQLA618Oq9miw@mail.gmail.com>
-Subject: Re: [PATCH 5/9] dt-bindings: dma: Convert fsl,elo*-dma bindings to YAML
-To: =?UTF-8?B?Si4gTmV1c2Now6RmZXI=?= <j.ne@posteo.net>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	Scott Wood <oss@buserror.net>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, 
-	Damien Le Moal <dlemoal@kernel.org>, Niklas Cassel <cassel@kernel.org>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, "David S. Miller" <davem@davemloft.net>, 
-	Lee Jones <lee@kernel.org>, Vinod Koul <vkoul@kernel.org>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, Bjorn Helgaas <bhelgaas@google.com>, 
-	=?UTF-8?B?Si4gTmV1c2Now6RmZXI=?= <j.neuschaefer@gmx.net>, 
-	Wim Van Sebroeck <wim@linux-watchdog.org>, Guenter Roeck <linux@roeck-us.net>, 
-	Mark Brown <broonie@kernel.org>, Miquel Raynal <miquel.raynal@bootlin.com>, 
-	Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org, 
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org, 
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-mtd@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250131161343.GY20626@gate.crashing.org>
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 31, 2025 at 8:03=E2=80=AFAM J. Neusch=C3=A4fer <j.ne@posteo.net=
-> wrote:
->
-> On Sun, Jan 26, 2025 at 10:47:35PM -0600, Rob Herring wrote:
-> > On Sun, Jan 26, 2025 at 07:59:00PM +0100, J. Neusch=C3=A4fer wrote:
-> > > The devicetree bindings for Freescale DMA engines have so far existed=
- as
-> > > a text file. This patch converts them to YAML, and specifies all the
-> > > compatible strings currently in use in arch/powerpc/boot/dts.
-> > >
-> > > Signed-off-by: J. Neusch=C3=A4fer <j.ne@posteo.net>
-> > > ---
-> > >  .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 129 +++++++++++=
-++
-> > >  .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 105 +++++++++++
-> > >  .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 120 +++++++++++=
-+
-> > >  .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 -----------=
-----------
-> > >  4 files changed, 354 insertions(+), 204 deletions(-)
-> [...]
-> > > +patternProperties:
-> > > +  "^dma-channel@.*$":
-> > > +    type: object
-> >
-> >        additionalProperties: false
->
-> I'll add it.
->
-> > (The tools should have highlighted this)
->
-> With dtschema 2024.11 installed, "make dt_binding_check
-> DT_SCHEMA_FILES=3Dfsl,elo-dma.yaml" does not highlight this.
+On Fri, Jan 31, 2025 at 10:13:43AM -0600, Segher Boessenkool wrote:
+> Hi!
+> 
+> On Wed, Jan 29, 2025 at 09:49:49AM +1100, Paul Mackerras wrote:
+> > This patch series updates the kernel support for the Microwatt
+> > soft-core and its implementation on FPGA systems, particularly the
+> > Digilent Arty A7-100 FPGA development board.
+> > 
+> > Microwatt now supports almost all of the features of the SFFS (Scalar
+> > Fixed-poin and Floating-point Subset) compliancy subset of Power ISA
+> > version 3.1C, including prefixed instructions and the fixed-point hash
+> > (ROP mitigation) instructions.  It is also now SMP-capable, and a
+> > dual-core system will fit on the Arty A7-100 board.
+> 
+> Congratulations!
 
-Actually, it's the top-level 'addtionalProperties: true' that disables
-the check here. That should be false as well.
+Thanks!
 
-Rob
+> > Microwatt does not have broadcast TLB invalidations in SMP systems;
+> 
+> So it isn't *really* SMP.  Compare 603 vs. 604.  With enough software
+
+Actually, the term "SMP" is about latency to memory, indicating that
+all CPUs have access to memory with similar latency.  It doesn't say
+anything about coherency, either of memory caches or TLBs.  So yes,
+Microwatt is SMP.
+
+And for the record, the instruction and data caches are coherent,
+which is what matters to user-space.  Stuff to do with the TLB is not
+visible to user-space.  And the ISA explicitly says "TLBs are
+non-coherent caches of the HTABs and Radix Trees" (Book III section
+6.10.1).
+
+> (OS) trickery you can make some things work, but :-)  (There have been
+> many 603 multiprocessor systems as well, to draw the analogy further
+> than wanted :-) )
+
+603 was a looong time ago, I don't recall the details.
+
+Regarding broadcast TLBIEs, the protocols and mechanisms for doing
+that are known to be complex and slow in the IBM Power processors (ask
+Derek Williams about that :).  Anton found that in fact doing only
+local TLBIEs and using IPIs gave *better* performance on IBM Power
+systems than using hardware broadcast TLBIEs in many cases (the reason
+being that software knows which other CPUs might have a given TLB
+entry, often quite a small set, whereas hardware doesn't, and has to
+send the invalidation to every CPU and wait for a response from every
+CPU).  Add to that, that most other SMP-capable CPU architectures
+don't do broadcast TLB invalidations, Intel x86 for example.
+
+> > the kernel already has code to deal with this.  One of the patches in
+> > this series provides a config option to allow platforms to select
+> > unconditionally the behaviour where cross-CPU TLB invalidations are
+> > handled using inter-processor interrupts.
+> 
+> Are there plans to broadcast the (SMP cache invalidation) messages?
+
+Cache (i.e. instruction and data cache) - yes, they *are* coherent.
+More precisely, the D caches are write-through, and all I and D caches
+snoop writes to memory (including DMA writes) and invalidate any cache
+lines being written to.
+
+> Will uwatt support some real bus protocol, for example?
+
+"Real" meaning using tri-state bus drivers, like we did in the 90s? :)
+
+> Again, congrats on this great milestone!  Does this floating point
+> support do square roots as well (aka "gpopt"; does it do "gfxopt" for
+> that matter, fsel?)  fsqrt is kinda tricky to get to work fully
+> correctly :-)
+
+Yes, fsqrt and fsel are implemented in hardware, and are accurate to
+the last bit.  Also, the FPU handles denormalized values in hardware
+(both input and output) and implements all exception handling as per
+the ISA, including the trap-enabled overflow cases.  Feel free to run
+whatever tests you like and report bugs.  But we're getting a bit
+off-topic from the kernel patches. :)
+
+Paul.
 
