@@ -1,71 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-5763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9474FA2477B
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2025 08:17:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7351AA2483D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Feb 2025 11:20:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YlPG66p2qz2xk1;
-	Sat,  1 Feb 2025 18:17:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YlTKM5sJ3z2y8X;
+	Sat,  1 Feb 2025 21:20:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738394222;
-	cv=none; b=IbjhOVDUhK6HzGx5rSzybok3Qk+J7m4og6Tyq3G0pyf2AWjBPIczrJMTHH/ZyhNHjeDAg6xEymWm3JZ29D+TNkOuhwV9KhogeTaekm2pZfxBBL7yrrXES1HEkk+ekJv0Jgr6bOKIr/aOitIryyx8K/ELAH/io4d+9ZUVfe2png6Ac6x43ceviSZT0L5mIuZFf3uTcqHXwdPBDwPYFzVo27VcTvmEwwJRNP+VG92wmBWUt5/rtojjiwe0IX/QafFYho3cpA9tWONHp/0eVYhmP1AeVgmRBZCitdxpQOcMjqXqR2awWdYTA5xUC5LSfFBAxhIA4o3TTy/prUsM9olOmA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738405207;
+	cv=none; b=W1HF+e5D4WyEuUp+Rf7DBZMt26PeqQH1Pk4l2elRPPoxdWdPB2rstG2HizxVUbGFXZ27e5TM4Ulb4EtrW7MZ1wFOj1QSgD4wIsK5AOzNNqqjkhkJiY3MQfjYnG4sEvPd8ZGQvMP4faW5Sccd5AkGAHFDkkEB+JhrRzXMP1AFzvTk5XEBf/2R/esqZtNVW6hlfYAUQaeugGM4X0ArFBllXElMtjWkseIYGu/kxnr3E0KjbCuh3pVjhMpyB0ObEr00Yis2DiY8NrhJdln/+BhGjx9wrfkwl44tRPNiJ81WT2Tv+tjx1z3qzJv4ldsaeTt/a2ksViOGUWOpQOBbul1+Cg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738394222; c=relaxed/relaxed;
-	bh=D0TqJrPFaCXJx1YuFrFi+B5yfQlPzZfk7qSonBtEN+c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l4IwjaQaZ3WkeaAAl2XK0KRm2h7s4AIfuz/T3JkD/yZoZIhE56X40QWNByrJHwg9CZVNG+gg5azxW3qesg00Ho7nJsKulgnEE1Ljpbx6aY7ulVAnFIJ4vRYnmQSsxoLPeGBJTW01haQ6gExhcF5oKFwqZgAksDy003Y/nqbu9RNgTC6I6Vg7odNWp0bVJ/fywL2gZ2BdfYUk02qYI8vJC4WTPIgKgGjQsfu387cHqQ7rjlh+VwYxWjcKhmBdZr67Xzn3+fbAhWwWcSHRbWCNO0axmmy8BgrOkzVK4twNttmZK20zBuNzWWf3f2AfFkGSRTXBN+44pDsuKBBi5mUKGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGdlSk2C; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NGdlSk2C;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YlPG55nJtz2xYr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 18:17:01 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5115P2Cd023403;
-	Sat, 1 Feb 2025 07:16:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=D0TqJr
-	PFaCXJx1YuFrFi+B5yfQlPzZfk7qSonBtEN+c=; b=NGdlSk2CCbM5ZtHVxYY0su
-	oY+VLN7+m6hmEuDFS46fDLuzGlIHoLNLAtXba3nV45KEI1T8ITmUjwXxqS82ipFx
-	hAXjhzf2rNEGnCn62mnICY/PX7M8FTESnNka6ewtxJvyPJv5CqQok4RzxvHgforK
-	kXxzMwSinHjOJQxu1NdIyjYVk8g956pKcNVeCOPrn6+9jKPFUCixKt4cUNaSX3QH
-	vVfDO2JrW8jyBReVw5keuBF/4CyyfcgPEz91oDwf5K/5vvoshDYCcib9FJ6fl/Va
-	JFjnwlm1Rd37fEHSuQSqakpwJGovNIhOGz+klu6spxVjigHNxzUFeFDlw9WBfVZQ
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44hdce886b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 01 Feb 2025 07:16:48 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5115Cr40029818;
-	Sat, 1 Feb 2025 07:16:48 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44hd92rb7k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 01 Feb 2025 07:16:47 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5117GiRX37880182
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 1 Feb 2025 07:16:44 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A73620094;
-	Sat,  1 Feb 2025 07:16:44 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5713D20092;
-	Sat,  1 Feb 2025 07:16:41 +0000 (GMT)
-Received: from [9.43.103.42] (unknown [9.43.103.42])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  1 Feb 2025 07:16:41 +0000 (GMT)
-Message-ID: <e7e371cc-cb34-4ba1-8aa5-c18ec3802d9a@linux.ibm.com>
-Date: Sat, 1 Feb 2025 12:46:34 +0530
+	t=1738405207; c=relaxed/relaxed;
+	bh=eibNGPHMZYVCzevVR1+em6/IYT+Zijq4KYx20pBY2H8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JMSkyIJcJw+stayN3PS6ysJloFHHDodiGKe9LwmaBKVYwfNuOCziu6cL9ZJjeAOXu/K0edHjcB7O2ul0qm/0GiFaztX6dBynBMadxfU1Yz/Nn53WTWO3+DBq+9wE6ytIyJBy9eaCzat9nqI5lyNYrwF8nw0llRw6ib0y2PATWU23GTy2jNmIvD7ddNchxDVEyJdY7XHZUT3RDRBX/yGWg0j8j6kf85fpQO7tqb+HbliHgtwnyU9GZOng6bSYfxMYPYJnF3aiPXhQZJl+3K1TUbYCCEbsKi5YFUJlHEAp0d4BKMEV7obSDYjogzg93Kpx7oHesTs9ulvNQHBPNTqtRQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YlTKL67pFz2xX3
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Feb 2025 21:20:05 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4YlT035vgpz9sRr;
+	Sat,  1 Feb 2025 11:05:07 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 44aJXLhgEmTy; Sat,  1 Feb 2025 11:05:07 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YlT034Cr1z9sRk;
+	Sat,  1 Feb 2025 11:05:07 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7AF0B8B764;
+	Sat,  1 Feb 2025 11:05:07 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id peW_oZzE6k61; Sat,  1 Feb 2025 11:05:07 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 012D88B763;
+	Sat,  1 Feb 2025 11:05:06 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Balbir Singh <bsingharora@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Erhard Furtner <erhard_f@mailbox.org>
+Subject: [PATCH] powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC
+Date: Sat,  1 Feb 2025 11:04:36 +0100
+Message-ID: <606946a557db1b5e9771b2a6fed30af3c0bc4863.1738404206.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,81 +67,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/7] crash: Let arch decide usable memory range in
- reserved area
-To: Baoquan he <bhe@redhat.com>
-Cc: linuxppc-dev@lists.ozlabs.org, Andrew Morton <akpm@linux-foundation.org>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-References: <20250131113830.925179-1-sourabhjain@linux.ibm.com>
- <20250131113830.925179-4-sourabhjain@linux.ibm.com> <Z52hUz5/nZhzTUb4@fedora>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <Z52hUz5/nZhzTUb4@fedora>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: IxliJALJ4rLAy8ZlFpwTVM7tGofSRKlj
-X-Proofpoint-GUID: IxliJALJ4rLAy8ZlFpwTVM7tGofSRKlj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-01_02,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
- clxscore=1015 mlxscore=0 priorityscore=1501 suspectscore=0 adultscore=0
- phishscore=0 malwarescore=0 spamscore=0 lowpriorityscore=0 mlxlogscore=779
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502010059
-X-Spam-Status: No, score=-0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738404280; l=4348; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=IXLjIKMuTavW1pDWvDyywJCypmcD9yKTT9S1qkcCOu8=; b=rY99R2gmgrYtl3WBL0z/ZbNXgdPXWwU2n4XknyljHCNZEA62TfMx69RHlKBMyriw+f7SqRn7F ErzOhNC9b1hDt9UspUGPUPpSfspXDYMtUromSwgOiTb1cMfE94f4am0
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Baoquan,
+Erhard reported the following KASAN hit while booting his PowerMac G4
+with a KASAN-enabled kernel 6.13-rc6:
 
+BUG: KASAN: vmalloc-out-of-bounds in copy_to_kernel_nofault+0xd8/0x1c8
+Write of size 8 at addr f1000000 by task chronyd/1293
 
-On 01/02/25 09:52, Baoquan he wrote:
-> On 01/31/25 at 05:08pm, Sourabh Jain wrote:
->> Although the crashkernel area is reserved, on architectures like
->> PowerPC, it is possible for the crashkernel reserved area to contain
->> components like RTAS, TCE, OPAL, etc. To avoid placing kexec segments
->> over these components, PowerPC has its own set of APIs to locate holes
->> in the crashkernel reserved area.
->>
->> Add an arch hook in the generic locate mem hole APIs so that
->> architectures can handle such special regions in the crashkernel area
->> while locating memory holes for kexec segments using generic APIs.
->> With this, a lot of redundant arch-specific code can be removed, as it
->> performs the exact same job as the generic APIs.
->>
->> To keep the generic and arch-specific changes separate, the changes
->> related to moving PowerPC to use the generic APIs and the removal of
->> PowerPC-specific APIs for memory hole allocation are done in a
->> subsequent patch titled "powerpc/crash: Use generic APIs to locate
->> memory hole for kdump.
->>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Baoquan he <bhe@redhat.com>
->> Cc: Hari Bathini <hbathini@linux.ibm.com>
->> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: kexec@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
->> ---
->>   include/linux/kexec.h |  9 +++++++++
->>   kernel/kexec_file.c   | 12 ++++++++++++
->>   2 files changed, 21 insertions(+)
-> LGTM,
->
-> Acked-by: Baoquan He <bhe@redhat.com>
+CPU: 0 UID: 123 PID: 1293 Comm: chronyd Tainted: G        W          6.13.0-rc6-PMacG4 #2
+Tainted: [W]=WARN
+Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
+Call Trace:
+[c2437590] [c1631a84] dump_stack_lvl+0x70/0x8c (unreliable)
+[c24375b0] [c0504998] print_report+0xdc/0x504
+[c2437610] [c050475c] kasan_report+0xf8/0x108
+[c2437690] [c0505a3c] kasan_check_range+0x24/0x18c
+[c24376a0] [c03fb5e4] copy_to_kernel_nofault+0xd8/0x1c8
+[c24376c0] [c004c014] patch_instructions+0x15c/0x16c
+[c2437710] [c00731a8] bpf_arch_text_copy+0x60/0x7c
+[c2437730] [c0281168] bpf_jit_binary_pack_finalize+0x50/0xac
+[c2437750] [c0073cf4] bpf_int_jit_compile+0xb30/0xdec
+[c2437880] [c0280394] bpf_prog_select_runtime+0x15c/0x478
+[c24378d0] [c1263428] bpf_prepare_filter+0xbf8/0xc14
+[c2437990] [c12677ec] bpf_prog_create_from_user+0x258/0x2b4
+[c24379d0] [c027111c] do_seccomp+0x3dc/0x1890
+[c2437ac0] [c001d8e0] system_call_exception+0x2dc/0x420
+[c2437f30] [c00281ac] ret_from_syscall+0x0/0x2c
+--- interrupt: c00 at 0x5a1274
+NIP:  005a1274 LR: 006a3b3c CTR: 005296c8
+REGS: c2437f40 TRAP: 0c00   Tainted: G        W           (6.13.0-rc6-PMacG4)
+MSR:  0200f932 <VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24004422  XER: 00000000
 
-Thanks for the Ack!
+GPR00: 00000166 af8f3fa0 a7ee3540 00000001 00000000 013b6500 005a5858 0200f932
+GPR08: 00000000 00001fe9 013d5fc8 005296c8 2822244c 00b2fcd8 00000000 af8f4b57
+GPR16: 00000000 00000001 00000000 00000000 00000000 00000001 00000000 00000002
+GPR24: 00afdbb0 00000000 00000000 00000000 006e0004 013ce060 006e7c1c 00000001
+NIP [005a1274] 0x5a1274
+LR [006a3b3c] 0x6a3b3c
+--- interrupt: c00
 
-- Sourabh Jain
+The buggy address belongs to the virtual mapping at
+ [f1000000, f1002000) created by:
+ text_area_cpu_up+0x20/0x190
+
+The buggy address belongs to the physical page:
+page: refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x76e30
+flags: 0x80000000(zone=2)
+raw: 80000000 00000000 00000122 00000000 00000000 00000000 ffffffff 00000001
+raw: 00000000
+page dumped because: kasan: bad access detected
+
+Memory state around the buggy address:
+ f0ffff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ f0ffff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>f1000000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+           ^
+ f1000080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+ f1000100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
+==================================================================
+
+f8 corresponds to KASAN_VMALLOC_INVALID which means the area is not
+initialised hence not supposed to be used yet.
+
+Powerpc text patching infrastructure allocates a virtual memory area
+using get_vm_area() and flags it as VM_ALLOC. But that flag is meant
+to be used for vmalloc() and vmalloc() allocated memory is not
+supposed to be used before a call to __vmalloc_node_range() which is
+never called for that area.
+
+That went undetected until commit e4137f08816b ("mm, kasan, kmsan:
+instrument copy_from/to_kernel_nofault")
+
+The area allocated by text_area_cpu_up() is not vmalloc memory, it is
+mapped directly on demand when needed by map_kernel_page(). There is
+no VM flag corresponding to such usage, so just pass no flag. That way
+the area will be unpoisonned and usable immediately.
+
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Closes: https://lore.kernel.org/all/20250112135832.57c92322@yea/
+Fixes: 37bc3e5fd764 ("powerpc/lib/code-patching: Use alternate map for patch_instruction()")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/lib/code-patching.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index af97fbb3c257..8a378fc19074 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -108,7 +108,7 @@ static int text_area_cpu_up(unsigned int cpu)
+ 	unsigned long addr;
+ 	int err;
+ 
+-	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
++	area = get_vm_area(PAGE_SIZE, 0);
+ 	if (!area) {
+ 		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
+ 			cpu);
+-- 
+2.47.0
 
 
