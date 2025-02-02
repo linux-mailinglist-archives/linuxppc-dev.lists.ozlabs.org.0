@@ -1,81 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-5769-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5770-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C509AA24E0C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2025 13:47:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F02CA24E33
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2025 14:26:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ym8XR1nF3z2xYr;
-	Sun,  2 Feb 2025 23:47:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ym9Pc3fCsz2xrJ;
+	Mon,  3 Feb 2025 00:26:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738500423;
-	cv=none; b=TqNWNoeq0Y4hGeeA2DxtKOX5vtH/IEBAHOwNZtkHXtKqU6t4YlaGJnRRlyOUMDdLB47jq5wqGdK1VI97ga+SgkZSu6GgVWytpKDFvWd0tbEsPi12j+Ay8BYi6phTx99RBO6+QjGC3lZKf6LmUKCT7vyZH9p9m1p+ONWLckgwSu7CYxMOurrGHkxEqZEyH7BFo7Q6u/amLCUfqgvQZ34cdHo8QKYu0w0JK6EChiB6gkQ1uwA8L7Zg9S/3pjyCoGLFJk7lPoAmht8wUBTWqkUFd2DqU5jvFTGJ2lvZfXM2I23jCgHOLJlWknCPKcyIBJ0m3TYbHgLOCemvl3c5THgf5w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.241.56.151
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738502772;
+	cv=none; b=T9VzqTZz3NR9+cL/E7J+PRS3h5bdQPjvuy2/MM0eirRdRTJNVr4cIIk/ebOyRWm4eyq7pcJFmIBjvc8c/A4pG0/FFIQFVxozQmcuEBejtFxMwlcT+R5k/osTZ3ghqwCy2B4z1ZmnvrcmS1gxkUcKSbtFIGGT2iCg7Nkng+WxzSwQfQdu35Gqy9SYbJSc472GMxZP/f9mmYe9+kMTJDA1gkhuVbqhuQWX9QN6d7yhAC+6fV3cna7ckBdD1ZU12xjxEO7d/wk18MBJ9E1D/klqE0i2ZXn49i/HdGl2HkLCYSeIiSBhGIa9OyBMCr308rpXxDU3e3YjX8C+eC59EkJiCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738500423; c=relaxed/relaxed;
-	bh=yecdrhK+8+1N1ClkDyJmbXx07y6OB/18+avYea6WDFM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XuBwQ4gJumwykiEkZdJ4YVb4YrpXifyeqLsiToLn/Z0hhE6F8YFKKm0MQDCydGwh5BiqpirDLYuCDFmNK6ocwE1ksx1lCY15A4pzLWsdT5sSxW9k0so8OUROejLx1xvZ/uHSFSC7DbR8Y55DkQFK/ItsSpvbrJlAbTk3wp+jNIxF0aD4/vwwLdq1vruWVlqcQ5nxs3D9yihMT/LGB6ajdbgkDqgQhCYzvPMvMmS1pLMoqNV7lZK9AoIQIMcFAorNAvSBeiYUtH8pe6Gwv5L1UzqbL0FIBxKCtpoNXe7hP8NdJ6X81UrLCySGemyQTfuypn2W0bALpK3xEi3fnu5RQQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NJXzLTaB; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12e; helo=mail-lf1-x12e.google.com; envelope-from=kirjanov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1738502772; c=relaxed/relaxed;
+	bh=mi1XAkFXF1hJqz1PiPBnuEy+3a1mqm5DS6iO7bI70RM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=l7xfvGV8upv+nxP5FokHGOZn5oAqnkUQn3VmugFF49TN3N2PuuZMUixqw3Nd+XThkWQpxEhofXs5Q1ai7uD1RobiwJUUYn422byJhbpN6PhbfG3KH2hVJ0JnyV0/Pba+b+Mhu8cqz/yWT238vDVHFrJapnNPSeY56yQsbLWdQ1Gug3XB1YjyU3fsj+cGVlndIOpLdDFUcYVK8Zqcn3QwsN7WMQGY+mtzLQIwmFKW4r6Y/GFEO7o2kD+QnCUrexkOtYTEMGwRTPCQR3AaWtdwxycozxEJ2u05Oh8n02kHWXH4JW7yKbvYAQfKC3jGgcl9Xwl8nRk8fJ/0JDkxXCOSyQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=Es23QAOE; dkim-atps=neutral; spf=pass (client-ip=80.241.56.151; helo=mout-p-101.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org) smtp.mailfrom=mailbox.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NJXzLTaB;
+	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=Es23QAOE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::12e; helo=mail-lf1-x12e.google.com; envelope-from=kirjanov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=80.241.56.151; helo=mout-p-101.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ym8XP6pR6z2xVq
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Feb 2025 23:47:01 +1100 (AEDT)
-Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-53f757134cdso3540991e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Feb 2025 04:47:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738500417; x=1739105217; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=yecdrhK+8+1N1ClkDyJmbXx07y6OB/18+avYea6WDFM=;
-        b=NJXzLTaB/bNQt/xLIgcrF+D2Q44ldmLJimN5lOSON8+Z9kqTypxvr4JoDsat9Bibdj
-         jwO6j+quTKrf/UkeGQnpg+LW/oG0/OCdG6HIWhAl6SO95kCFtXxJoNh8L0CYmEtIuDuI
-         pEvm4trYZdc9mxWovxspxdOb1EPZi3X7Tn0xbA9UjPDbM9CmrO20hA4eOjTqWSqaQu6V
-         x6XJjsUnQ4Af6qGBu1QjrIDc3lAuM+TM5jBp7wM0CJ+e1alvd/8zeKyk7ijwFJxtgeso
-         EFl0ivL3m5fIArm9y5bwFid894DcydBJ3U6nqX+CIwtitu+QObALLv+kjJ8liY17xljk
-         aD4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738500417; x=1739105217;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=yecdrhK+8+1N1ClkDyJmbXx07y6OB/18+avYea6WDFM=;
-        b=u/jIdxXy4D6DObnh9erprQBbwPX7esenlRrC5mQl1IDKfH8/ZCgpSeM42UI5LsZhR1
-         cEKnnmbJRKpP3ryiBXhPi+O15CcGrECeyK5nDd/FdkR3wYOe31EwHdsFdSq4VEn5HsqO
-         JYMv1eFgenCWQRS/nqZ1XQnpjpI+hlVCAZw5859WCAnAEVnOzSZw0b6MKn7wE/YS5hoh
-         ev2Xy/TC515taXlur/K/EXBCbpBYEq3XNGsWdwKe8qpnOKDYgea1cyM8uo5nXBboLPJc
-         Qo68ztvw7XsMcLixJJvZ67IUAJzu6h1ZOT6/EDw7/dCGZ/du8E34WC+6nXY1QKPin6jg
-         7RAQ==
-X-Gm-Message-State: AOJu0YyX31gNeJNBJECEzxzvsfpYhNG+/ZPUvp5dQz/S+us7DrmLEfz0
-	NkF/lAtfCd+exKyMEoZSN4GhQMjDkS6Xmyp+MVewddJSFLNLSY6JTKMH8H8MKt4lAw==
-X-Gm-Gg: ASbGncuOrimxUvb0r4asSgoT5TTg1uWIP01xEfTbElfEp+sNZaKuNDwxnsQW5FYMvUF
-	MtRHfMqflUhh75xmTLASehL62xdNDig5gQcgyT+vDTV8oqzWwIsCbynMR8CtjIGs//8onK6ZuT3
-	L4rvNK9pRr6gqWJPVR/EBW5c2w1OTFJFUzqjGAy6MyMgO1Sr52mGKP9whS1wp9cVXG6Klu4k5B5
-	wcTnB6ikq0uHGBAovue63HIvKiqMC9jhmBtsV5gr+oM9zqxiLWCKa12vqsPv+76tWmNF8WjPJxE
-	qXasBAI8mmyyxiMSg6nb1zh/Dt5A
-X-Google-Smtp-Source: AGHT+IGaASLIWg4Fh2cjs3Mk0TJBUC1y5zQa6mSOI2SjLxMbGaAyATPhXWjIsAb3WBdoTtBUW98sTw==
-X-Received: by 2002:a05:6512:2316:b0:540:358d:d9b7 with SMTP id 2adb3069b0e04-543e4c3a32emr5430977e87.52.1738500416663;
-        Sun, 02 Feb 2025 04:46:56 -0800 (PST)
-Received: from hydra-ppc64.kdaintranet ([83.217.203.236])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-307a342854esm11463381fa.97.2025.02.02.04.46.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Feb 2025 04:46:55 -0800 (PST)
-From: Denis Kirjanov <kirjanov@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	benh@kernel.crashing.org,
-	Denis Kirjanov <kirjanov@gmail.com>
-Subject: [PATCH] powerpc/powermac: fix a loop in core99_usb_enable
-Date: Sun,  2 Feb 2025 07:46:40 -0500
-Message-ID: <20250202124641.2722-1-kirjanov@gmail.com>
-X-Mailer: git-send-email 2.47.2
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ym9PW22Pgz2xX3
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 00:26:05 +1100 (AEDT)
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [IPv6:2001:67c:2050:b231:465::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4Ym9PH4Wt4z9t9k;
+	Sun,  2 Feb 2025 14:25:55 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1738502755;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=mi1XAkFXF1hJqz1PiPBnuEy+3a1mqm5DS6iO7bI70RM=;
+	b=Es23QAOEM7MqzVm9d4eLlurLkM3OdM05GedLXetl2OUdnSa1lgapFFczo+bf/wIQgT7IEx
+	LpYBvhGvKA3oKhOC426HjB9BoHOKMnjEC82CoNVu9W2YYhcOSRdPH0gW2sj3qRZMlgnqhF
+	S00yPqODeFonejwiwwt4jh5x29xRAH8PEyN5RZnH/VKY2lZopbHn+E1W3+3wf2cCdJ5NF/
+	QLL0VLhI33Kj0uK8VNuJ8S/R8w4NzmGoA8umm42sOqxKxy5+kCERG+wkjBzalJ+5Za9zQ1
+	XkYcEPfAdRD52vRh9RwXJESaKoUIuVzFQFhjgwJR8SXqt3yNByWH9K8O3Aat7g==
+Date: Sun, 2 Feb 2025 14:25:52 +0100
+From: Erhard Furtner <erhard_f@mailbox.org>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Hari Bathini <hbathini@linux.ibm.com>, "Christopher M. Riedl"
+ <cmr@bluescreens.de>, "linuxppc-dev@lists.ozlabs.org"
+ <linuxppc-dev@lists.ozlabs.org>, "maddy@linux.ibm.com"
+ <maddy@linux.ibm.com>
+Subject: Re: BUG: KASAN: vmalloc-out-of-bounds in
+ copy_to_kernel_nofault+0xd8/0x1c8 (v6.13-rc6, PowerMac G4)
+Message-ID: <20250202142552.33285e7e@yea>
+In-Reply-To: <66f36cf5-37d5-4edb-a20b-4047dbe6a846@csgroup.eu>
+References: <20250112135832.57c92322@yea>
+	<af04e91f-0f44-457e-9550-d1d49789158e@linux.ibm.com>
+	<20250121220027.64b79bab@yea>
+	<f06de018-34ae-4662-8a35-1c55dff1024a@csgroup.eu>
+	<20250122002159.43b367f0@yea>
+	<ca7568ef-5032-4a80-9350-a9648b87f0b5@csgroup.eu>
+	<8acd6ef8-adf0-4694-a3e5-72ec3cf09bf1@csgroup.eu>
+	<20250201151435.48400261@yea>
+	<1ff477a4-85f6-4330-aa0c-add315abfff9@csgroup.eu>
+	<20250201165416.71e00c43@yea>
+	<66f36cf5-37d5-4edb-a20b-4047dbe6a846@csgroup.eu>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,34 +80,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-MBO-RS-ID: aa60b9fe1e9fcc1c344
+X-MBO-RS-META: i5nxqbgwiwmxy6jbn985p6c7mdjc3dj4
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Looks like we have a typo in the do-while loop
-while checking the loop condition. Fix it with the boolean OR
+On Sun, 2 Feb 2025 09:44:20 +0100
+Christophe Leroy <christophe.leroy@csgroup.eu> wrote:
 
-Signed-off-by: Denis Kirjanov <kirjanov@gmail.com>
----
- arch/powerpc/platforms/powermac/feature.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> This time the problem is a mixture of commit 465cabc97b42 
+> ("powerpc/code-patching: introduce patch_instructions()") and commit 
+> c28c15b6d28a ("powerpc/code-patching: Use temporary mm for Radix MMU") 
+> which is revealed by commit e4137f08816b ("mm, kasan, kmsan: instrument 
+> copy_from/to_kernel_nofault")
+> 
+> Commit c28c15b6d28a is inspired by commit b3fd8e83ada0 
+> ("x86/alternatives: Use temporary mm for text poking") but misses the 
+> kasan_disable_current() / kasan_enable_current() sequence.
+> 
+> Was not necessary because __patch_mem() is not instrumented. But commit 
+> 465cabc97b42 added use of copy_to_kernel_nofault() which is now 
+> instrumented.
+> 
+> The problem is that commit c28c15b6d28a makes use of a special memory 
+> area which is not kernel memory and it doesn't have any matching KASAN 
+> shadow area. And because it is located below TASK_SIZE, in addition 
+> kasan sees it as user memory.
+> 
+> Can you try the change below ?
+> 
+> diff --git a/arch/powerpc/lib/code-patching.c 
+> b/arch/powerpc/lib/code-patching.c
+> index 8a378fc19074..f84e0337cc02 100644
+> --- a/arch/powerpc/lib/code-patching.c
+> +++ b/arch/powerpc/lib/code-patching.c
+> @@ -493,7 +493,9 @@ static int __do_patch_instructions_mm(u32 *addr, u32 
+> *code, size_t len, bool rep
+> 
+>   	orig_mm = start_using_temp_mm(patching_mm);
+> 
+> +	kasan_disable_current();
+>   	err = __patch_instructions(patch_addr, code, len, repeat_instr);
+> +	kasan_enable_current();
+> 
+>   	/* context synchronisation performed by __patch_instructions */
+>   	stop_using_temp_mm(patching_mm, orig_mm);
+> 
 
-diff --git a/arch/powerpc/platforms/powermac/feature.c b/arch/powerpc/platforms/powermac/feature.c
-index d3bcfe590384..9d929fbfc46b 100644
---- a/arch/powerpc/platforms/powermac/feature.c
-+++ b/arch/powerpc/platforms/powermac/feature.c
-@@ -1174,7 +1174,7 @@ core99_usb_enable(struct device_node *node, long param, long value)
- 				mdelay(1);
- 				status0 = UN_IN(UNI_N_CLOCK_STOP_STATUS0);
- 				status1 = UN_IN(UNI_N_CLOCK_STOP_STATUS1);
--			} while ((status0 & test0) | (status1 & test1));
-+			} while ((status0 & test0) || (status1 & test1));
- 			LOCK(flags);
- 		}
- 	} else {
--- 
-2.47.2
+Thanks! With this patch applied the KASAN hit is gone and I got no further KASAN hits on my Talos II during boot. Applied both patches on top of v6.13.1.
 
+Regards,
+Erhard
 
