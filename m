@@ -1,125 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-5782-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5783-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8887A255DD
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2025 10:30:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B33C1A2565C
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2025 10:54:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ymh731yQjz2xgv;
-	Mon,  3 Feb 2025 20:30:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YmhfM0z7Tz2xt7;
+	Mon,  3 Feb 2025 20:54:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738575023;
-	cv=none; b=c7Rja48K+akCJbrkuYPTIqMjbsk/mSdr4gRm8pPhtVIwnyaeWWat4mUJiMpaz/KZyjce0DZixCeGYTNaPO/0rhkEJYO3efBvfp0PBFkSgzS1x853+EqZ6U4kOzK5OH2MWNay9qhPOqZM6TLQXpcI0f645kNnIR5w8BPUUekgiIceZhpTaT/pGeXSi+pIVTX9LOUFd9rO9e6CSoZUe4lKSBnfL58xzZh9Rcb/BhAQN04niCTER2N8EoGWUGtY2ztQDK3jXGA7NgGLQUOtmT3OsqnKRROONyDF5m/qYm6VlXNXYsUJU+GU/Ha+s+3mu6/glRwVDqwCkGIURP3V3o67aQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738576443;
+	cv=none; b=XPbQPCwd2kMqQkqsSodYOFTMggaar/+Eu6Oizy0Aj2dN5UEsAOBzyUptVf/ROyd4yNs4hwACtuRerCo4IBg9wl9h1RRC7cVXf3OrtAT3PdabfILS/fa+zYUUtqDxMhPlKD+eXPa8EgHGakCFS9OYv4go2wjaYKC1Uacu+7HjA1xJQV5Ir+6zF6eV01reB/q7T1gTwfSy01/dHtkuvkxKjFDdedc41AtsXrLuNeqFF0BAiJ9yZ6ARpVEAyfEwVKLqz4RMUmIZG7HoeapbCt+F75u8yss/yZ5C9BCbU/3PYCuwTCip4mQow5eBrm0Ucra5/TXb50vY4wAQkJrNnziXCw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738575023; c=relaxed/relaxed;
-	bh=HOOVTMKGmYfDs61vIKKu/2n6mo1Uqhrzh3Nw0X9R5us=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CPuJuVvNJkmMw3ggT/xK6JBglTLcLVDyB6hMqreEfKavxQ0r+VWoq6AfSgcQ/VrFOn3FrHT5FhIl+NF8kswsp/D4NzQlLzYw11w5nOYiOtDrYgraAdYmRntvuP21RLv8JXusjhZkUZcSkAb3+TauX9EiJUdOoP3ctCwxyTR47yz0ZyJpvjb5dUNrO7M0//hFMnKVJgkpPf/Z7vrkr0I9fs/ThfPU75Us5nqBDPeobx06IODXSIwYSWVTratZBvF/f5TKZawfRDh0fwgHZ9zeAwWJ/9gRDELNELhcJIeyzckcCozfAGIwOVlQUoj3eGLwoidBze+KsTYLvgLqjP5PdA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sc7OrPzM; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1738576443; c=relaxed/relaxed;
+	bh=oGm/bq6SKySYHYDc9Teum4UAC1vMAmPVFWHcwcmi784=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=dlrHOXVKaiywhUxKzE7XLSKVeAYtBE+ETHruFfBsvFEicLp37dTieOX73QaaEPdFDc/StVGjrPvY+b+51Gmh8OMbJSWhuZA4x1Tk0Qjn6KhbvaNWduGQzwCJ1GVtLssoErNz/zywBcueSKxVn6C8GIBm8w9k7aX4UE6turu+GMVQCCJB/o1jBdvR53Y0JldHLVZ4xulC1AjcfsKmhfaTejVcQfmIk+e4HlkaTZM47/ZaSz473UzXD9iRVthZihAVpyNc3kjcKOL7w/FYw0mceWFhdpritvd2XWcYQ5lKhfXlUzQbxHhrhCNbmiYJXo4jy+XSeuIXANzgFqwFgVXOAg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XCXSAIsz; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sc7OrPzM;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XCXSAIsz;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ymh722M7wz2xKh
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 20:30:21 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51320bgd006146;
-	Mon, 3 Feb 2025 09:29:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=HOOVTMKGmYfDs61vIKKu/2n6mo1Uqh
-	rzh3Nw0X9R5us=; b=sc7OrPzM94Qro1TPoi9WldL23dl8EhUQA0uUcOii03fm/0
-	ZWjWgFI+dUHnyykPX4KurBljs5VF0FTUDOZVPKQ0Nic1W5aixU4tXgMwUo9Ej4Sp
-	IhX2kpJQptytYHQ7XzYAy9RoZviZkDVVyjToIShTjmSz3tGfHU97EQ/GMBty3KDe
-	U7Y/o3wrR/8Po81HWdFM8acEVLigG7jG/rrAvF0q3j95Qgp65mDoim4AyXlTi4+s
-	JSs5sBEVEVSX1pC6uB3pEJ+UczNnVeDbO13pZiffvHI9SIwAVPdnyEwhgbJoiLlY
-	rEhklncisvpySSfLHaTqfnQztgOZ+zZlXlJpmmmA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jmmy9m6k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 09:29:47 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5136tpND016288;
-	Mon, 3 Feb 2025 09:29:46 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44hwxs5syv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 03 Feb 2025 09:29:46 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5139Th5c21955204
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 3 Feb 2025 09:29:43 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F9EF200D4;
-	Mon,  3 Feb 2025 09:29:43 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4A882200D3;
-	Mon,  3 Feb 2025 09:29:39 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.179.20.74])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon,  3 Feb 2025 09:29:39 +0000 (GMT)
-Date: Mon, 3 Feb 2025 10:29:37 +0100
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: "Dmitry V. Levin" <ldv@strace.io>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Oleg Nesterov <oleg@redhat.com>,
-        Alexey Gladkov <legion@kernel.org>,
-        Charlie Jenkins <charlie@rivosinc.com>,
-        Eugene Syromyatnikov <evgsyr@gmail.com>,
-        Mike Frysinger <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>,
-        Davide Berardi <berardi.dav@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Andreas Larsson <andreas@gaisler.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-        Shuah Khan <shuah@kernel.org>, strace-devel@lists.strace.io,
-        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-arch@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-api@vger.kernel.org
-Subject: Re: [PATCH v4 0/7] ptrace: introduce PTRACE_SET_SYSCALL_INFO API
-Message-ID: <Z6CMgVm8QKEMRf8L@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <20250203065849.GA14120@strace.io>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YmhfL1Qcnz2xYg
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 20:54:01 +1100 (AEDT)
+Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-21649a7bcdcso69534675ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Feb 2025 01:54:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1738576439; x=1739181239; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oGm/bq6SKySYHYDc9Teum4UAC1vMAmPVFWHcwcmi784=;
+        b=XCXSAIszNXGU7gEAXQOSROYYKeLQJlkpzS4+10O+vCrMLC25ZElMuj94L8jcZu7U/1
+         eskfqajLyDzFE90kiHvGIij7J0cEjBc5PNDre+8+0kVGHUFiZ0woqqHZRChBiCvndgXO
+         IrEueubzWPgDBCoG7PEI5QvzAtD753L7c2ennm8fI07ajtkIJYN2XOzpEemPyXsi0CHP
+         WDexIG8W0igyeWlM1Wpa3HseiaL1TOD585sjm3Dey6FvVFhZv35cmLHdjvIP+i0gSVsY
+         wJeHf2w7/rKVbfvRFUqqRzBLhzy3TwZJHLB9VAlBPtUWymEwkvMDi4VLY46JoEgGag94
+         3zEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738576439; x=1739181239;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oGm/bq6SKySYHYDc9Teum4UAC1vMAmPVFWHcwcmi784=;
+        b=tNoo9UV7cpLCsouMJhJdcgTcDSPLsQobbYKLxP1ePCaky0LlUqrBslQbPbjatPt8q6
+         D0O8cxGCQsZo/nemGEGErNuAnVGHSy6BC3A6TTgNU7PFbEvUfPB1qdRjLt4SrI/bSnKN
+         45jnppMNE95v8nLZT39AMLe9D0pZ94oLd6NOMedrjem6TfJuIJtURKUMzMncUABGEGcL
+         kV+60dfCJ+MTjRPjiFKWpjSQjEHycROMkLjbEvYMqiH0Iqe4zowsgFipTYd4+3xOOmNS
+         eAkt3YTIB0A65hVb5RgXziI3UT+WNMyTVokVQQ45pb5LftjRRFU5zAZPidsqUaRuxEvI
+         eM9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXUyh835Sy299MOeoOOfNUQjgnGbw/8FdJAb23/9l4uUvMEWfYLduII4sVw2WnsQcolDyDJ5iS2xPOSZlo=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzBtSMVAQQvA6jvKtS+9qiVSurzVLJkDOrFD4gav8thrwwmfTTf
+	DoybhDXxpBI4BzgUCKGMdo7G05bwQdjzjjyxcTxxz9wdIrEqK715JFkBxPq/b9M=
+X-Gm-Gg: ASbGncs1JZ/UPzUroWfvd+ecxgstY2n87frvfnjNwuNdH9SMaMovyZq6O9AC6zQf2EY
+	/egZp45Zes7OqsdTC1BW95RqZvuurmd+U/vWMqOApeCbsL0BUTpyA0Eb/5NlFia8C5QvkcnNCbU
+	gKzrVaJZmm2hzoSvg2DabNSMpZ5vwwta4lY40I0VcVJ0pZPrPfDm1QRPfBZaLeangRQ78PZ+Q3G
+	dllT+uGfWlielHNrT43YJlLTkhCBOlx2lqLUv7GtykeFJ5ZE674Loddo2K6dVZUe/Gj5kZPvHur
+	FAK/GwBGJlZTkxzVLA==
+X-Google-Smtp-Source: AGHT+IFwo05BiIt05ICb4MDKGKrGGWOHvgZo0+KY9Q0VF4jPxeMFSPJcZ0MPvxF/KghXhf5T9qIi1A==
+X-Received: by 2002:a17:903:947:b0:212:4c82:e3d4 with SMTP id d9443c01a7336-21dd7df2d2cmr345490545ad.46.1738576438710;
+        Mon, 03 Feb 2025 01:53:58 -0800 (PST)
+Received: from localhost ([122.172.84.139])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de33206besm71659285ad.241.2025.02.03.01.53.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Feb 2025 01:53:58 -0800 (PST)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>
+Cc: linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH V1.1 20/33] cpufreq: powernv: Stop setting common freq attributes
+Date: Mon,  3 Feb 2025 15:23:32 +0530
+Message-Id: <fa304da30d5f10e7ff069d72fb3aff2741630ca4.1738576306.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
+In-Reply-To: <1f5393d54b2c04206afefd521ebdf3fc03004a11.1737631669.git.viresh.kumar@linaro.org>
+References: <1f5393d54b2c04206afefd521ebdf3fc03004a11.1737631669.git.viresh.kumar@linaro.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -132,50 +99,50 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203065849.GA14120@strace.io>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: tAr2MtM5PWIBRxaWi6Br0hi8CNE4am_9
-X-Proofpoint-ORIG-GUID: tAr2MtM5PWIBRxaWi6Br0hi8CNE4am_9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-03_03,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 malwarescore=0
- phishscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
- lowpriorityscore=0 mlxlogscore=836 bulkscore=0 spamscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502030071
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 03, 2025 at 08:58:49AM +0200, Dmitry V. Levin wrote:
+The cpufreq core handles this now, the driver can skip setting it.
 
-Hi Dmitry,
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+---
+V1.1:
+- Drop runtime updates to freq attr.
 
-> PTRACE_SET_SYSCALL_INFO is a generic ptrace API that complements
-> PTRACE_GET_SYSCALL_INFO by letting the ptracer modify details of
-> system calls the tracee is blocked in.
-...
+ drivers/cpufreq/powernv-cpufreq.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-FWIW, I am getting these on s390:
+diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
+index ae79d909943b..0631284c4cfb 100644
+--- a/drivers/cpufreq/powernv-cpufreq.c
++++ b/drivers/cpufreq/powernv-cpufreq.c
+@@ -386,12 +386,8 @@ static ssize_t cpuinfo_nominal_freq_show(struct cpufreq_policy *policy,
+ static struct freq_attr cpufreq_freq_attr_cpuinfo_nominal_freq =
+ 	__ATTR_RO(cpuinfo_nominal_freq);
+ 
+-#define SCALING_BOOST_FREQS_ATTR_INDEX		2
+-
+ static struct freq_attr *powernv_cpu_freq_attr[] = {
+-	&cpufreq_freq_attr_scaling_available_freqs,
+ 	&cpufreq_freq_attr_cpuinfo_nominal_freq,
+-	&cpufreq_freq_attr_scaling_boost_freqs,
+ 	NULL,
+ };
+ 
+@@ -1129,8 +1125,6 @@ static int __init powernv_cpufreq_init(void)
+ 
+ 	if (powernv_pstate_info.wof_enabled)
+ 		powernv_cpufreq_driver.boost_enabled = true;
+-	else
+-		powernv_cpu_freq_attr[SCALING_BOOST_FREQS_ATTR_INDEX] = NULL;
+ 
+ 	rc = cpufreq_register_driver(&powernv_cpufreq_driver);
+ 	if (rc) {
+-- 
+2.31.1.272.g89b43f80a514
 
-# ./tools/testing/selftests/ptrace/set_syscall_info 
-TAP version 13
-1..1
-# Starting 1 tests from 1 test cases.
-#  RUN           global.set_syscall_info ...
-# set_syscall_info.c:87:set_syscall_info:Expected exp_entry->nr (-1) == info->entry.nr (65535)
-# set_syscall_info.c:88:set_syscall_info:wait #3: PTRACE_GET_SYSCALL_INFO #2: syscall nr mismatch
-# set_syscall_info: Test terminated by assertion
-#          FAIL  global.set_syscall_info
-not ok 1 global.set_syscall_info
-# FAILED: 0 / 1 tests passed.
-# Totals: pass:0 fail:1 xfail:0 xpass:0 skip:0 error:0
-
-I remember one of the earlier versions (v1 or v2) was working for me.
-
-Thanks!
 
