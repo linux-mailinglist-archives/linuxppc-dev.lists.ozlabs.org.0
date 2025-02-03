@@ -1,92 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-5783-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B33C1A2565C
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2025 10:54:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FD09A25745
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2025 11:50:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YmhfM0z7Tz2xt7;
-	Mon,  3 Feb 2025 20:54:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ymjv46GwSz2yF1;
+	Mon,  3 Feb 2025 21:50:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738576443;
-	cv=none; b=XPbQPCwd2kMqQkqsSodYOFTMggaar/+Eu6Oizy0Aj2dN5UEsAOBzyUptVf/ROyd4yNs4hwACtuRerCo4IBg9wl9h1RRC7cVXf3OrtAT3PdabfILS/fa+zYUUtqDxMhPlKD+eXPa8EgHGakCFS9OYv4go2wjaYKC1Uacu+7HjA1xJQV5Ir+6zF6eV01reB/q7T1gTwfSy01/dHtkuvkxKjFDdedc41AtsXrLuNeqFF0BAiJ9yZ6ARpVEAyfEwVKLqz4RMUmIZG7HoeapbCt+F75u8yss/yZ5C9BCbU/3PYCuwTCip4mQow5eBrm0Ucra5/TXb50vY4wAQkJrNnziXCw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738579808;
+	cv=none; b=FAGV4qI0Axq6QTw9NDKrD/4SX48YKKcc5VJsPVuxG21VfDioRN8AUNm8utWenHdRiRZRGnYeq64q8qIazRCqUWh68nEGpeTLqORXlyfY3IqfswlIvMaic4a9eImLypNPwqLB/8cRlC7jhTiFtB+YWxps7px29xkRA6cKYDkmttlKk2gyvvoieEhVg7WyizT5sLGGAO8J9hmXRQaMWCNH1lAjc2EU9CDNQdHyKwfFrB28AuzYLxobx5u5yKuY0iSWAYZBy4+JVdGc7jeTd3/4KBYs6CxOzPWmE/O14bqbag7ahPxmoORnJDp2c6Hm2Nqx27wMif7EEP93ruHxldMyFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738576443; c=relaxed/relaxed;
-	bh=oGm/bq6SKySYHYDc9Teum4UAC1vMAmPVFWHcwcmi784=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dlrHOXVKaiywhUxKzE7XLSKVeAYtBE+ETHruFfBsvFEicLp37dTieOX73QaaEPdFDc/StVGjrPvY+b+51Gmh8OMbJSWhuZA4x1Tk0Qjn6KhbvaNWduGQzwCJ1GVtLssoErNz/zywBcueSKxVn6C8GIBm8w9k7aX4UE6turu+GMVQCCJB/o1jBdvR53Y0JldHLVZ4xulC1AjcfsKmhfaTejVcQfmIk+e4HlkaTZM47/ZaSz473UzXD9iRVthZihAVpyNc3kjcKOL7w/FYw0mceWFhdpritvd2XWcYQ5lKhfXlUzQbxHhrhCNbmiYJXo4jy+XSeuIXANzgFqwFgVXOAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XCXSAIsz; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=XCXSAIsz;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2607:f8b0:4864:20::62b; helo=mail-pl1-x62b.google.com; envelope-from=viresh.kumar@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YmhfL1Qcnz2xYg
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 20:54:01 +1100 (AEDT)
-Received: by mail-pl1-x62b.google.com with SMTP id d9443c01a7336-21649a7bcdcso69534675ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Feb 2025 01:54:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1738576439; x=1739181239; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oGm/bq6SKySYHYDc9Teum4UAC1vMAmPVFWHcwcmi784=;
-        b=XCXSAIszNXGU7gEAXQOSROYYKeLQJlkpzS4+10O+vCrMLC25ZElMuj94L8jcZu7U/1
-         eskfqajLyDzFE90kiHvGIij7J0cEjBc5PNDre+8+0kVGHUFiZ0woqqHZRChBiCvndgXO
-         IrEueubzWPgDBCoG7PEI5QvzAtD753L7c2ennm8fI07ajtkIJYN2XOzpEemPyXsi0CHP
-         WDexIG8W0igyeWlM1Wpa3HseiaL1TOD585sjm3Dey6FvVFhZv35cmLHdjvIP+i0gSVsY
-         wJeHf2w7/rKVbfvRFUqqRzBLhzy3TwZJHLB9VAlBPtUWymEwkvMDi4VLY46JoEgGag94
-         3zEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738576439; x=1739181239;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oGm/bq6SKySYHYDc9Teum4UAC1vMAmPVFWHcwcmi784=;
-        b=tNoo9UV7cpLCsouMJhJdcgTcDSPLsQobbYKLxP1ePCaky0LlUqrBslQbPbjatPt8q6
-         D0O8cxGCQsZo/nemGEGErNuAnVGHSy6BC3A6TTgNU7PFbEvUfPB1qdRjLt4SrI/bSnKN
-         45jnppMNE95v8nLZT39AMLe9D0pZ94oLd6NOMedrjem6TfJuIJtURKUMzMncUABGEGcL
-         kV+60dfCJ+MTjRPjiFKWpjSQjEHycROMkLjbEvYMqiH0Iqe4zowsgFipTYd4+3xOOmNS
-         eAkt3YTIB0A65hVb5RgXziI3UT+WNMyTVokVQQ45pb5LftjRRFU5zAZPidsqUaRuxEvI
-         eM9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXUyh835Sy299MOeoOOfNUQjgnGbw/8FdJAb23/9l4uUvMEWfYLduII4sVw2WnsQcolDyDJ5iS2xPOSZlo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzBtSMVAQQvA6jvKtS+9qiVSurzVLJkDOrFD4gav8thrwwmfTTf
-	DoybhDXxpBI4BzgUCKGMdo7G05bwQdjzjjyxcTxxz9wdIrEqK715JFkBxPq/b9M=
-X-Gm-Gg: ASbGncs1JZ/UPzUroWfvd+ecxgstY2n87frvfnjNwuNdH9SMaMovyZq6O9AC6zQf2EY
-	/egZp45Zes7OqsdTC1BW95RqZvuurmd+U/vWMqOApeCbsL0BUTpyA0Eb/5NlFia8C5QvkcnNCbU
-	gKzrVaJZmm2hzoSvg2DabNSMpZ5vwwta4lY40I0VcVJ0pZPrPfDm1QRPfBZaLeangRQ78PZ+Q3G
-	dllT+uGfWlielHNrT43YJlLTkhCBOlx2lqLUv7GtykeFJ5ZE674Loddo2K6dVZUe/Gj5kZPvHur
-	FAK/GwBGJlZTkxzVLA==
-X-Google-Smtp-Source: AGHT+IFwo05BiIt05ICb4MDKGKrGGWOHvgZo0+KY9Q0VF4jPxeMFSPJcZ0MPvxF/KghXhf5T9qIi1A==
-X-Received: by 2002:a17:903:947:b0:212:4c82:e3d4 with SMTP id d9443c01a7336-21dd7df2d2cmr345490545ad.46.1738576438710;
-        Mon, 03 Feb 2025 01:53:58 -0800 (PST)
-Received: from localhost ([122.172.84.139])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-21de33206besm71659285ad.241.2025.02.03.01.53.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Feb 2025 01:53:58 -0800 (PST)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	t=1738579808; c=relaxed/relaxed;
+	bh=4iBNDdeIpxyZTzDdjOwScf+eZQp0Y1K2A5QQPlPlwHg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=deM4oh+hBLceNj3Ch32jtw2KSeUXhI/qPkgnGt8XCyHqDQrkshjv2R/3fo1LVwayC1KfxzkaMFtIPllyz0X9FplxPbBsGDHH+uzY6JRtEqlwLBZT+22OBZH7H7BlGtMZVMa9dZ9yGudYrecXfqP718dfrX8VXhrIUWfvQrPKbDV9S2i0NHQIx213xMkERsrqcITgQ2a2/jjhhbqF3VXjsQ4KzcuzRQT0/OtMXP7Am25rOOPeBHLGkJRa48NGsRFvjvoHZfaT0xTAfTyRx8oFrXTyUdLNnIks19FVmcJIsO9GCUMufywXBvsKkfCCy5x1z+PtxmmYFvGC8Oiq9LWAiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ymjv31lV0z2xk7
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 21:50:04 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Ymj6j0dnsz9sRy;
+	Mon,  3 Feb 2025 11:15:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id edW2Lj5g4zeh; Mon,  3 Feb 2025 11:15:08 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Ymj6h6dwNz9sPd;
+	Mon,  3 Feb 2025 11:15:08 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id D18508B767;
+	Mon,  3 Feb 2025 11:15:08 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id WY6UOIcsx0kV; Mon,  3 Feb 2025 11:15:08 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.202.221])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 264DE8B766;
+	Mon,  3 Feb 2025 11:15:08 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH V1.1 20/33] cpufreq: powernv: Stop setting common freq attributes
-Date: Mon,  3 Feb 2025 15:23:32 +0530
-Message-Id: <fa304da30d5f10e7ff069d72fb3aff2741630ca4.1738576306.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <1f5393d54b2c04206afefd521ebdf3fc03004a11.1737631669.git.viresh.kumar@linaro.org>
-References: <1f5393d54b2c04206afefd521ebdf3fc03004a11.1737631669.git.viresh.kumar@linaro.org>
+	Erhard Furtner <erhard_f@mailbox.org>
+Subject: [PATCH] powerpc/code-patching: Disable KASAN report during patching via temporary mm
+Date: Mon,  3 Feb 2025 11:14:57 +0100
+Message-ID: <1c05b2a1b02ad75b981cfc45927e0b4a90441046.1738577687.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,50 +66,101 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738577698; l=5368; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=wiXX7GseMnf0CAkGInhemcdG19OuOZo2Pnji6hPKJJo=; b=hnkmHRVbpIhnKdpl5axPAUioZBWcxN1JWyRbrxpkjwu6lvyUyJaWCEBngqxhR+ts6GFvgfEpT pQur9Y9R00NAisdIIFRACH/lsy4KUIPZdplQ8G65xQWZpOOTTGSVupx
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The cpufreq core handles this now, the driver can skip setting it.
+Erhard reports the following KASAN hit on Talos II (power9) with kernel 6.13:
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+[   12.028126] ==================================================================
+[   12.028198] BUG: KASAN: user-memory-access in copy_to_kernel_nofault+0x8c/0x1a0
+[   12.028260] Write of size 8 at addr 0000187e458f2000 by task systemd/1
+
+[   12.028346] CPU: 87 UID: 0 PID: 1 Comm: systemd Tainted: G                T  6.13.0-P9-dirty #3
+[   12.028408] Tainted: [T]=RANDSTRUCT
+[   12.028446] Hardware name: T2P9D01 REV 1.01 POWER9 0x4e1202 opal:skiboot-bc106a0 PowerNV
+[   12.028500] Call Trace:
+[   12.028536] [c000000008dbf3b0] [c000000001656a48] dump_stack_lvl+0xbc/0x110 (unreliable)
+[   12.028609] [c000000008dbf3f0] [c0000000006e2fc8] print_report+0x6b0/0x708
+[   12.028666] [c000000008dbf4e0] [c0000000006e2454] kasan_report+0x164/0x300
+[   12.028725] [c000000008dbf600] [c0000000006e54d4] kasan_check_range+0x314/0x370
+[   12.028784] [c000000008dbf640] [c0000000006e6310] __kasan_check_write+0x20/0x40
+[   12.028842] [c000000008dbf660] [c000000000578e8c] copy_to_kernel_nofault+0x8c/0x1a0
+[   12.028902] [c000000008dbf6a0] [c0000000000acfe4] __patch_instructions+0x194/0x210
+[   12.028965] [c000000008dbf6e0] [c0000000000ade80] patch_instructions+0x150/0x590
+[   12.029026] [c000000008dbf7c0] [c0000000001159bc] bpf_arch_text_copy+0x6c/0xe0
+[   12.029085] [c000000008dbf800] [c000000000424250] bpf_jit_binary_pack_finalize+0x40/0xc0
+[   12.029147] [c000000008dbf830] [c000000000115dec] bpf_int_jit_compile+0x3bc/0x930
+[   12.029206] [c000000008dbf990] [c000000000423720] bpf_prog_select_runtime+0x1f0/0x280
+[   12.029266] [c000000008dbfa00] [c000000000434b18] bpf_prog_load+0xbb8/0x1370
+[   12.029324] [c000000008dbfb70] [c000000000436ebc] __sys_bpf+0x5ac/0x2e00
+[   12.029379] [c000000008dbfd00] [c00000000043a228] sys_bpf+0x28/0x40
+[   12.029435] [c000000008dbfd20] [c000000000038eb4] system_call_exception+0x334/0x610
+[   12.029497] [c000000008dbfe50] [c00000000000c270] system_call_vectored_common+0xf0/0x280
+[   12.029561] --- interrupt: 3000 at 0x3fff82f5cfa8
+[   12.029608] NIP:  00003fff82f5cfa8 LR: 00003fff82f5cfa8 CTR: 0000000000000000
+[   12.029660] REGS: c000000008dbfe80 TRAP: 3000   Tainted: G                T   (6.13.0-P9-dirty)
+[   12.029735] MSR:  900000000280f032 <SF,HV,VEC,VSX,EE,PR,FP,ME,IR,DR,RI>  CR: 42004848  XER: 00000000
+[   12.029855] IRQMASK: 0
+               GPR00: 0000000000000169 00003fffdcf789a0 00003fff83067100 0000000000000005
+               GPR04: 00003fffdcf78a98 0000000000000090 0000000000000000 0000000000000008
+               GPR08: 0000000000000000 0000000000000000 0000000000000000 0000000000000000
+               GPR12: 0000000000000000 00003fff836ff7e0 c000000000010678 0000000000000000
+               GPR16: 0000000000000000 0000000000000000 00003fffdcf78f28 00003fffdcf78f90
+               GPR20: 0000000000000000 0000000000000000 0000000000000000 00003fffdcf78f80
+               GPR24: 00003fffdcf78f70 00003fffdcf78d10 00003fff835c7239 00003fffdcf78bd8
+               GPR28: 00003fffdcf78a98 0000000000000000 0000000000000000 000000011f547580
+[   12.030316] NIP [00003fff82f5cfa8] 0x3fff82f5cfa8
+[   12.030361] LR [00003fff82f5cfa8] 0x3fff82f5cfa8
+[   12.030405] --- interrupt: 3000
+[   12.030444] ==================================================================
+
+Commit c28c15b6d28a ("powerpc/code-patching: Use temporary mm for
+Radix MMU") is inspired from x86 but unlike x86 is doesn't disable
+KASAN reports during patching. This wasn't a problem at the begining
+because __patch_mem() is not instrumented.
+
+Commit 465cabc97b42 ("powerpc/code-patching: introduce
+patch_instructions()") use copy_to_kernel_nofault() to copy several
+instructions at once. But when using temporary mm the destination is
+not regular kernel memory but a kind of kernel-like memory located
+in user address space. Because it is not in kernel address space it is
+not covered by KASAN shadow memory. Since commit e4137f08816b ("mm,
+kasan, kmsan: instrument copy_from/to_kernel_nofault") KASAN reports
+bad accesses from copy_to_kernel_nofault(). Here a bad access to user
+memory is reported because KASAN detects the lack of shadow memory and
+the address is below TASK_SIZE.
+
+Do like x86 in commit b3fd8e83ada0 ("x86/alternatives: Use temporary
+mm for text poking") and disable KASAN reports during patching when
+using temporary mm.
+
+Reported-by: Erhard Furtner <erhard_f@mailbox.org>
+Close: https://lore.kernel.org/all/20250201151435.48400261@yea/
+Fixes: 465cabc97b42 ("powerpc/code-patching: introduce patch_instructions()")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
-V1.1:
-- Drop runtime updates to freq attr.
+ arch/powerpc/lib/code-patching.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
- drivers/cpufreq/powernv-cpufreq.c | 6 ------
- 1 file changed, 6 deletions(-)
-
-diff --git a/drivers/cpufreq/powernv-cpufreq.c b/drivers/cpufreq/powernv-cpufreq.c
-index ae79d909943b..0631284c4cfb 100644
---- a/drivers/cpufreq/powernv-cpufreq.c
-+++ b/drivers/cpufreq/powernv-cpufreq.c
-@@ -386,12 +386,8 @@ static ssize_t cpuinfo_nominal_freq_show(struct cpufreq_policy *policy,
- static struct freq_attr cpufreq_freq_attr_cpuinfo_nominal_freq =
- 	__ATTR_RO(cpuinfo_nominal_freq);
+diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
+index 8a378fc19074..f84e0337cc02 100644
+--- a/arch/powerpc/lib/code-patching.c
++++ b/arch/powerpc/lib/code-patching.c
+@@ -493,7 +493,9 @@ static int __do_patch_instructions_mm(u32 *addr, u32 *code, size_t len, bool rep
  
--#define SCALING_BOOST_FREQS_ATTR_INDEX		2
--
- static struct freq_attr *powernv_cpu_freq_attr[] = {
--	&cpufreq_freq_attr_scaling_available_freqs,
- 	&cpufreq_freq_attr_cpuinfo_nominal_freq,
--	&cpufreq_freq_attr_scaling_boost_freqs,
- 	NULL,
- };
+ 	orig_mm = start_using_temp_mm(patching_mm);
  
-@@ -1129,8 +1125,6 @@ static int __init powernv_cpufreq_init(void)
++	kasan_disable_current();
+ 	err = __patch_instructions(patch_addr, code, len, repeat_instr);
++	kasan_enable_current();
  
- 	if (powernv_pstate_info.wof_enabled)
- 		powernv_cpufreq_driver.boost_enabled = true;
--	else
--		powernv_cpu_freq_attr[SCALING_BOOST_FREQS_ATTR_INDEX] = NULL;
- 
- 	rc = cpufreq_register_driver(&powernv_cpufreq_driver);
- 	if (rc) {
+ 	/* context synchronisation performed by __patch_instructions */
+ 	stop_using_temp_mm(patching_mm, orig_mm);
 -- 
-2.31.1.272.g89b43f80a514
+2.47.0
 
 
