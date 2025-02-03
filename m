@@ -1,91 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-5776-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5777-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63A5BA252B3
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2025 08:00:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CFA6FA252FF
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2025 08:28:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YmcpC0KP7z2y8V;
-	Mon,  3 Feb 2025 18:00:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YmdQc2brjz2y8p;
+	Mon,  3 Feb 2025 18:28:40 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=194.107.17.57
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738566035;
-	cv=none; b=SnBFOm6NvKX+cj156sY7iLaMvvWF/XyCyv2bHD3oSF4c/8mGghq4xmIkgQfLQoRG6MlKgU+smeJkdPv/jXnnJOBR0SVQIFdmYFuR2heICo7OYD/cqigNI55OUSZRSwhn35Uousi+f5+gm9TLBT5qfrJ8fHhEP963DYTpu2a/2k1FwVqn81sR1uplBx/1z4MlSwwfOavj43ysQCzwUKJEVM4cHvczdeQ8edU34z6TCSPxJb00ZjMKnoLMFOvVXKyGhFJAJ4Fwfx+CL7qtffLrC1KYxtOn7nUbaj2XL3+SksXCLb7T9qWwIb2Tw8dd9TLRMRgYDNVcrpABPQ5M1AUXzw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738567720;
+	cv=none; b=C4WdVlh7WyPVZIxE+wb83ssy/PIivuUSkJmgBwlV5EJspKLLmCu2nUnQ89O5yTeji/IDdrTCpolnKSbASdvf3IxjRp4v+lQ15JAg55cn4gU4MtV54t13E8xvBDljVAw2Ui5zjSVHY3EsQAIbaXlYDQgpPr2MPPA7al9KVQX95EPrWO85QG0txwmQdc//khFVexZxSdwBjITn+fdXi7fQDdjtQKo+BMED+v2JTSdk6XPudpxnTtcsnDvpRIVqvJUzjkw8VONW0XlcKPFp1w80pzsqYewrTp34kq6zaYLN+WKxMIfyWoJ/QnD0OD/xI0oCLvAuEcy21BkDfR3XW9QDPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738566035; c=relaxed/relaxed;
-	bh=D5XZCp8CNcXul2H0lH0kwer2Kk7D/05DxWQFOx/wokQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=PA/1XJ8/rSe4nnLNrrHZ28lUffT872W5mU0ZkCY8hSfCGKTnTqKV635Ns3D6v7lJOvmwFz1DifeU2TpLFZMIoHrGDreiyAAY52v57aqI9F8H4tgs3v6qwgU9/xV9MHg2g/9XsKrQvrB8m2IalQm/FHXEn8Ei5ymjDZNtRJTktBXFCwgxJfN8IKXM8yyRmiB5YmnlN6RYVCZW/0ZGM/7KSbs7e5riNwEB+FDUlcUmynD5ZTIQGhp+6TmCEeEb66kv9MUJZvJjIorZpthwC0U+efuikaeJ/OM2K09jSlOYij2HBV1+9CeME2SdDBQqI/Rk2wHHdS7QpEUSu8iNL1ykaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org) smtp.mailfrom=altlinux.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=altlinux.org (client-ip=194.107.17.57; helo=vmicros1.altlinux.org; envelope-from=ldv@altlinux.org; receiver=lists.ozlabs.org)
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ymcp95sKlz2xHl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 18:00:33 +1100 (AEDT)
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id 04F2472C8FB;
-	Mon,  3 Feb 2025 10:00:32 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id D56EE7CCB3A; Mon,  3 Feb 2025 09:00:31 +0200 (IST)
-Date: Mon, 3 Feb 2025 09:00:31 +0200
-From: "Dmitry V. Levin" <ldv@strace.io>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: Oleg Nesterov <oleg@redhat.com>, Alexey Gladkov <legion@kernel.org>,
-	Charlie Jenkins <charlie@rivosinc.com>,
-	Eugene Syromyatnikov <evgsyr@gmail.com>,
-	Mike Frysinger <vapier@gentoo.org>,
-	Renzo Davoli <renzo@cs.unibo.it>,
-	Davide Berardi <berardi.dav@gmail.com>,
-	Vineet Gupta <vgupta@kernel.org>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Brian Cain <bcain@quicinc.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-	Stafford Horne <shorne@gmail.com>,
-	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
-	strace-devel@lists.strace.io, linux-snps-arc@lists.infradead.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-	linux-arch@vger.kernel.org
-Subject: [PATCH v4 4/7] syscall.h: introduce syscall_set_nr()
-Message-ID: <20250203070031.GE14120@strace.io>
+	t=1738567720; c=relaxed/relaxed;
+	bh=E5bR3jepdUkDh3/74F9w2LrEwz7edByQa0448Wox8j0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cN+rIXmko+sWPx0ek7MN3wDdLWe71PbFDwRCeWjyJMeJt5EFzngoEayVnlM2mOCXmrMaHI0kNsu9FDInyAoyhm6UUXfNLs+nn64Sn0c7vm8CZCGBveCC3kzzGEFYI4UvraQkJ6NET3eaCNd6AeFm1ygR8OqSZJSC0Uc6L365ZqQtcXcJeFQ4pjocPemh7u8bBTZRyBiiVl1ddQSB/DkBvRBxAHMfOkAdn5+yb8YTMZ0TIcnQdwPZM6r8ll6F/9WPORNYVPDD+cNOQoQKINbEhDCTOpDgKM4P2wDGq8eu63Fex8Vs/rg7I402RuSZJXPI5oYjho7b/3MRBXR3RFvKRQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=geaHWHhm; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=geaHWHhm;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YmdQb2Zw5z2y34
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 18:28:39 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51320o6g006345;
+	Mon, 3 Feb 2025 07:28:36 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=E5bR3jepdUkDh3/74F9w2LrEwz7edByQa0448Wox8
+	j0=; b=geaHWHhmGu9sbNPWOt4kJQpWpq/EqeB4tgUDOBLmXBwv9KfpKGhmUNZT9
+	cs3B3/43lObJ51dz+egfWs5jTtZ0XYBI04OLyAGx0eUs+mhVA94PkjlP57oN2pk9
+	5SjplepyjyUE/HlV2as/2ss+2/pl19hpUSxIJ5d+AR8JjODV90CFtS9xWt3ZXbZE
+	xAqPiExt+rTPulD+LAenOrOFxcQ9HbKdAO3Z9u+4ajVnvs4DLB1nuETotDx/zZLm
+	1ixqSa7u18i2k9KLuzRuxDdRSjlK6F3QOvDUAYV68D7HzY9bP6Wp0/yXIPLPxcqM
+	wZ/Ji48HULfBrTWuV7gk7qJ93lm4A==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44jmmy92yv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Feb 2025 07:28:36 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5134VBHI005277;
+	Mon, 3 Feb 2025 07:28:35 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j05jmxq0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 03 Feb 2025 07:28:35 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5137SXUV45089056
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 3 Feb 2025 07:28:33 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6ED5200BC;
+	Mon,  3 Feb 2025 07:28:33 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0887C200BD;
+	Mon,  3 Feb 2025 07:28:33 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.63.197.14])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  3 Feb 2025 07:28:32 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.63.198.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 0503360395;
+	Mon,  3 Feb 2025 18:28:30 +1100 (AEDT)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, linux-scsi@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, fbarrat@linux.ibm.com, ukrishn@linux.ibm.com,
+        clombard@linux.ibm.com, vaibhav@linux.ibm.com
+Subject: [PATCH v2 0/2] Remove cxl and cxlflash drivers
+Date: Mon,  3 Feb 2025 18:27:58 +1100
+Message-ID: <20250203072801.365551-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,464 +87,163 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250203065849.GA14120@strace.io>
-X-Spam-Status: No, score=0.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oiINUuUq5ROf8y8tvhXl8qcLJri0htfT
+X-Proofpoint-ORIG-GUID: oiINUuUq5ROf8y8tvhXl8qcLJri0htfT
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-03_02,2025-01-31_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 malwarescore=0
+ phishscore=0 impostorscore=0 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 mlxlogscore=576 bulkscore=0 spamscore=0 adultscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502030058
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Similar to syscall_set_arguments() that complements
-syscall_get_arguments(), introduce syscall_set_nr()
-that complements syscall_get_nr().
+This series removes the cxl and cxlflash drivers for IBM CAPI devices.
 
-syscall_set_nr() is going to be needed along with
-syscall_set_arguments() on all HAVE_ARCH_TRACEHOOK
-architectures to implement PTRACE_SET_SYSCALL_INFO API.
+CAPI devices have been out of production for some time, and we're not
+aware of any remaining users who are likely to want a modern kernel.
+There's almost certainly some remaining driver bugs and we don't have much
+hardware available to properly test the drivers any more. Removing these
+drivers will also mean we can get rid of a non-trivial amount of support
+code in arch/powerpc.
 
-Signed-off-by: Dmitry V. Levin <ldv@strace.io>
-Tested-by: Charlie Jenkins <charlie@rivosinc.com>
-Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
----
- arch/arc/include/asm/syscall.h        | 11 +++++++++++
- arch/arm/include/asm/syscall.h        | 24 ++++++++++++++++++++++++
- arch/arm64/include/asm/syscall.h      | 16 ++++++++++++++++
- arch/hexagon/include/asm/syscall.h    |  7 +++++++
- arch/loongarch/include/asm/syscall.h  |  7 +++++++
- arch/m68k/include/asm/syscall.h       |  7 +++++++
- arch/microblaze/include/asm/syscall.h |  7 +++++++
- arch/mips/include/asm/syscall.h       | 14 ++++++++++++++
- arch/nios2/include/asm/syscall.h      |  5 +++++
- arch/openrisc/include/asm/syscall.h   |  6 ++++++
- arch/parisc/include/asm/syscall.h     |  7 +++++++
- arch/powerpc/include/asm/syscall.h    | 10 ++++++++++
- arch/riscv/include/asm/syscall.h      |  7 +++++++
- arch/s390/include/asm/syscall.h       | 12 ++++++++++++
- arch/sh/include/asm/syscall_32.h      | 12 ++++++++++++
- arch/sparc/include/asm/syscall.h      | 12 ++++++++++++
- arch/um/include/asm/syscall-generic.h |  5 +++++
- arch/x86/include/asm/syscall.h        |  7 +++++++
- arch/xtensa/include/asm/syscall.h     |  7 +++++++
- include/asm-generic/syscall.h         | 14 ++++++++++++++
- 20 files changed, 197 insertions(+)
+Thanks to everyone who's worked on these drivers over the last decade.
 
-diff --git a/arch/arc/include/asm/syscall.h b/arch/arc/include/asm/syscall.h
-index 89c1e1736356..728d625a10f1 100644
---- a/arch/arc/include/asm/syscall.h
-+++ b/arch/arc/include/asm/syscall.h
-@@ -23,6 +23,17 @@ syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
- 		return -1;
- }
- 
-+static inline void
-+syscall_set_nr(struct task_struct *task, struct pt_regs *regs, int nr)
-+{
-+	/*
-+	 * Unlike syscall_get_nr(), syscall_set_nr() can be called only when
-+	 * the target task is stopped for tracing on entering syscall, so
-+	 * there is no need to have the same check syscall_get_nr() has.
-+	 */
-+	regs->r8 = nr;
-+}
-+
- static inline void
- syscall_rollback(struct task_struct *task, struct pt_regs *regs)
- {
-diff --git a/arch/arm/include/asm/syscall.h b/arch/arm/include/asm/syscall.h
-index 21927fa0ae2b..18b102a30741 100644
---- a/arch/arm/include/asm/syscall.h
-+++ b/arch/arm/include/asm/syscall.h
-@@ -68,6 +68,30 @@ static inline void syscall_set_return_value(struct task_struct *task,
- 	regs->ARM_r0 = (long) error ? error : val;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	if (nr == -1) {
-+		task_thread_info(task)->abi_syscall = -1;
-+		/*
-+		 * When the syscall number is set to -1, the syscall will be
-+		 * skipped.  In this case the syscall return value has to be
-+		 * set explicitly, otherwise the first syscall argument is
-+		 * returned as the syscall return value.
-+		 */
-+		syscall_set_return_value(task, regs, -ENOSYS, 0);
-+		return;
-+	}
-+	if ((IS_ENABLED(CONFIG_AEABI) && !IS_ENABLED(CONFIG_OABI_COMPAT))) {
-+		task_thread_info(task)->abi_syscall = nr;
-+		return;
-+	}
-+	task_thread_info(task)->abi_syscall =
-+		(task_thread_info(task)->abi_syscall & ~__NR_SYSCALL_MASK) |
-+		(nr & __NR_SYSCALL_MASK);
-+}
-+
- #define SYSCALL_MAX_ARGS 7
- 
- static inline void syscall_get_arguments(struct task_struct *task,
-diff --git a/arch/arm64/include/asm/syscall.h b/arch/arm64/include/asm/syscall.h
-index 76020b66286b..712daa90e643 100644
---- a/arch/arm64/include/asm/syscall.h
-+++ b/arch/arm64/include/asm/syscall.h
-@@ -61,6 +61,22 @@ static inline void syscall_set_return_value(struct task_struct *task,
- 	regs->regs[0] = val;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->syscallno = nr;
-+	if (nr == -1) {
-+		/*
-+		 * When the syscall number is set to -1, the syscall will be
-+		 * skipped.  In this case the syscall return value has to be
-+		 * set explicitly, otherwise the first syscall argument is
-+		 * returned as the syscall return value.
-+		 */
-+		syscall_set_return_value(task, regs, -ENOSYS, 0);
-+	}
-+}
-+
- #define SYSCALL_MAX_ARGS 6
- 
- static inline void syscall_get_arguments(struct task_struct *task,
-diff --git a/arch/hexagon/include/asm/syscall.h b/arch/hexagon/include/asm/syscall.h
-index 1024a6548d78..70637261817a 100644
---- a/arch/hexagon/include/asm/syscall.h
-+++ b/arch/hexagon/include/asm/syscall.h
-@@ -26,6 +26,13 @@ static inline long syscall_get_nr(struct task_struct *task,
- 	return regs->r06;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->r06 = nr;
-+}
-+
- static inline void syscall_get_arguments(struct task_struct *task,
- 					 struct pt_regs *regs,
- 					 unsigned long *args)
-diff --git a/arch/loongarch/include/asm/syscall.h b/arch/loongarch/include/asm/syscall.h
-index ff415b3c0a8e..81d2733f7b94 100644
---- a/arch/loongarch/include/asm/syscall.h
-+++ b/arch/loongarch/include/asm/syscall.h
-@@ -26,6 +26,13 @@ static inline long syscall_get_nr(struct task_struct *task,
- 	return regs->regs[11];
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->regs[11] = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/m68k/include/asm/syscall.h b/arch/m68k/include/asm/syscall.h
-index d1453e850cdd..bf84b160c2eb 100644
---- a/arch/m68k/include/asm/syscall.h
-+++ b/arch/m68k/include/asm/syscall.h
-@@ -14,6 +14,13 @@ static inline int syscall_get_nr(struct task_struct *task,
- 	return regs->orig_d0;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->orig_d0 = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/microblaze/include/asm/syscall.h b/arch/microblaze/include/asm/syscall.h
-index 5eb3f624cc59..b5b6b91fae3e 100644
---- a/arch/microblaze/include/asm/syscall.h
-+++ b/arch/microblaze/include/asm/syscall.h
-@@ -14,6 +14,13 @@ static inline long syscall_get_nr(struct task_struct *task,
- 	return regs->r12;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->r12 = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-index 2dcc1d01b405..1cd25306cc13 100644
---- a/arch/mips/include/asm/syscall.h
-+++ b/arch/mips/include/asm/syscall.h
-@@ -41,6 +41,20 @@ static inline long syscall_get_nr(struct task_struct *task,
- 	return task_thread_info(task)->syscall;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	/*
-+	 * New syscall number has to be assigned to regs[2] because
-+	 * syscall_trace_entry() loads it from there unconditionally.
-+	 *
-+	 * Consequently, if the syscall was indirect and nr != __NR_syscall,
-+	 * then after this assignment the syscall will cease to be indirect.
-+	 */
-+	task_thread_info(task)->syscall = regs->regs[2] = nr;
-+}
-+
- static inline void mips_syscall_update_nr(struct task_struct *task,
- 					  struct pt_regs *regs)
- {
-diff --git a/arch/nios2/include/asm/syscall.h b/arch/nios2/include/asm/syscall.h
-index 526449edd768..8e3eb1d689bb 100644
---- a/arch/nios2/include/asm/syscall.h
-+++ b/arch/nios2/include/asm/syscall.h
-@@ -15,6 +15,11 @@ static inline int syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
- 	return regs->r2;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task, struct pt_regs *regs, int nr)
-+{
-+	regs->r2 = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				struct pt_regs *regs)
- {
-diff --git a/arch/openrisc/include/asm/syscall.h b/arch/openrisc/include/asm/syscall.h
-index e6383be2a195..5e037d9659c5 100644
---- a/arch/openrisc/include/asm/syscall.h
-+++ b/arch/openrisc/include/asm/syscall.h
-@@ -25,6 +25,12 @@ syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
- 	return regs->orig_gpr11;
- }
- 
-+static inline void
-+syscall_set_nr(struct task_struct *task, struct pt_regs *regs, int nr)
-+{
-+	regs->orig_gpr11 = nr;
-+}
-+
- static inline void
- syscall_rollback(struct task_struct *task, struct pt_regs *regs)
- {
-diff --git a/arch/parisc/include/asm/syscall.h b/arch/parisc/include/asm/syscall.h
-index b146d0ae4c77..c11222798ab2 100644
---- a/arch/parisc/include/asm/syscall.h
-+++ b/arch/parisc/include/asm/syscall.h
-@@ -17,6 +17,13 @@ static inline long syscall_get_nr(struct task_struct *tsk,
- 	return regs->gr[20];
- }
- 
-+static inline void syscall_set_nr(struct task_struct *tsk,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->gr[20] = nr;
-+}
-+
- static inline void syscall_get_arguments(struct task_struct *tsk,
- 					 struct pt_regs *regs,
- 					 unsigned long *args)
-diff --git a/arch/powerpc/include/asm/syscall.h b/arch/powerpc/include/asm/syscall.h
-index 521f279e6b33..7505dcfed247 100644
---- a/arch/powerpc/include/asm/syscall.h
-+++ b/arch/powerpc/include/asm/syscall.h
-@@ -39,6 +39,16 @@ static inline int syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
- 		return -1;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task, struct pt_regs *regs, int nr)
-+{
-+	/*
-+	 * Unlike syscall_get_nr(), syscall_set_nr() can be called only when
-+	 * the target task is stopped for tracing on entering syscall, so
-+	 * there is no need to have the same check syscall_get_nr() has.
-+	 */
-+	regs->gpr[0] = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/riscv/include/asm/syscall.h b/arch/riscv/include/asm/syscall.h
-index 8d389ba995c8..a5281cdf2b10 100644
---- a/arch/riscv/include/asm/syscall.h
-+++ b/arch/riscv/include/asm/syscall.h
-@@ -30,6 +30,13 @@ static inline int syscall_get_nr(struct task_struct *task,
- 	return regs->a7;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->a7 = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/s390/include/asm/syscall.h b/arch/s390/include/asm/syscall.h
-index 0e3296a32e6a..db6ca55564ff 100644
---- a/arch/s390/include/asm/syscall.h
-+++ b/arch/s390/include/asm/syscall.h
-@@ -24,6 +24,18 @@ static inline long syscall_get_nr(struct task_struct *task,
- 		(regs->int_code & 0xffff) : -1;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	/*
-+	 * Unlike syscall_get_nr(), syscall_set_nr() can be called only when
-+	 * the target task is stopped for tracing on entering syscall, so
-+	 * there is no need to have the same check syscall_get_nr() has.
-+	 */
-+	regs->int_code = (regs->int_code & ~0xffff) | (nr & 0xffff);
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/sh/include/asm/syscall_32.h b/arch/sh/include/asm/syscall_32.h
-index cb51a7528384..7027d87d901d 100644
---- a/arch/sh/include/asm/syscall_32.h
-+++ b/arch/sh/include/asm/syscall_32.h
-@@ -15,6 +15,18 @@ static inline long syscall_get_nr(struct task_struct *task,
- 	return (regs->tra >= 0) ? regs->regs[3] : -1L;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	/*
-+	 * Unlike syscall_get_nr(), syscall_set_nr() can be called only when
-+	 * the target task is stopped for tracing on entering syscall, so
-+	 * there is no need to have the same check syscall_get_nr() has.
-+	 */
-+	regs->regs[3] = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/sparc/include/asm/syscall.h b/arch/sparc/include/asm/syscall.h
-index 62a5a78804c4..b0233924d323 100644
---- a/arch/sparc/include/asm/syscall.h
-+++ b/arch/sparc/include/asm/syscall.h
-@@ -25,6 +25,18 @@ static inline long syscall_get_nr(struct task_struct *task,
- 	return (syscall_p ? regs->u_regs[UREG_G1] : -1L);
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	/*
-+	 * Unlike syscall_get_nr(), syscall_set_nr() can be called only when
-+	 * the target task is stopped for tracing on entering syscall, so
-+	 * there is no need to have the same check syscall_get_nr() has.
-+	 */
-+	regs->u_regs[UREG_G1] = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/um/include/asm/syscall-generic.h b/arch/um/include/asm/syscall-generic.h
-index 2984feb9d576..bcd73bcfe577 100644
---- a/arch/um/include/asm/syscall-generic.h
-+++ b/arch/um/include/asm/syscall-generic.h
-@@ -21,6 +21,11 @@ static inline int syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
- 	return PT_REGS_SYSCALL_NR(regs);
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task, struct pt_regs *regs, int nr)
-+{
-+	PT_REGS_SYSCALL_NR(regs) = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
-index b9c249dd9e3d..c10dbb74cd00 100644
---- a/arch/x86/include/asm/syscall.h
-+++ b/arch/x86/include/asm/syscall.h
-@@ -38,6 +38,13 @@ static inline int syscall_get_nr(struct task_struct *task, struct pt_regs *regs)
- 	return regs->orig_ax;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->orig_ax = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/arch/xtensa/include/asm/syscall.h b/arch/xtensa/include/asm/syscall.h
-index f9a671cbf933..7db3b489c8ad 100644
---- a/arch/xtensa/include/asm/syscall.h
-+++ b/arch/xtensa/include/asm/syscall.h
-@@ -28,6 +28,13 @@ static inline long syscall_get_nr(struct task_struct *task,
- 	return regs->syscall;
- }
- 
-+static inline void syscall_set_nr(struct task_struct *task,
-+				  struct pt_regs *regs,
-+				  int nr)
-+{
-+	regs->syscall = nr;
-+}
-+
- static inline void syscall_rollback(struct task_struct *task,
- 				    struct pt_regs *regs)
- {
-diff --git a/include/asm-generic/syscall.h b/include/asm-generic/syscall.h
-index 0f7b9a493de7..e33fd4e783c1 100644
---- a/include/asm-generic/syscall.h
-+++ b/include/asm-generic/syscall.h
-@@ -37,6 +37,20 @@ struct pt_regs;
-  */
- int syscall_get_nr(struct task_struct *task, struct pt_regs *regs);
- 
-+/**
-+ * syscall_set_nr - change the system call a task is executing
-+ * @task:	task of interest, must be blocked
-+ * @regs:	task_pt_regs() of @task
-+ * @nr:		system call number
-+ *
-+ * Changes the system call number @task is about to execute.
-+ *
-+ * It's only valid to call this when @task is stopped for tracing on
-+ * entry to a system call, due to %SYSCALL_WORK_SYSCALL_TRACE or
-+ * %SYSCALL_WORK_SYSCALL_AUDIT.
-+ */
-+void syscall_set_nr(struct task_struct *task, struct pt_regs *regs, int nr);
-+
- /**
-  * syscall_rollback - roll back registers after an aborted system call
-  * @task:	task of interest, must be in system call exit tracing
+This series does not affect the OpenCAPI/ocxl driver, nor does it affect
+Compute Express Link (the other cxl, an amusing but unfortunate naming
+collision).
+
+v1: https://patchwork.ozlabs.org/project/linuxppc-dev/list/?series=436014&state=*
+
+v1->v2: rebase and update docs
+
+Andrew Donnellan (2):
+  cxlflash: Remove driver
+  cxl: Remove driver
+
+ .../ABI/{obsolete => removed}/sysfs-class-cxl |   55 +-
+ Documentation/arch/powerpc/cxl.rst            |  469 --
+ Documentation/arch/powerpc/cxlflash.rst       |  433 --
+ Documentation/arch/powerpc/index.rst          |    2 -
+ .../userspace-api/ioctl/ioctl-number.rst      |    4 +-
+ MAINTAINERS                                   |   21 -
+ arch/powerpc/configs/skiroot_defconfig        |    1 -
+ arch/powerpc/include/asm/copro.h              |    6 -
+ arch/powerpc/include/asm/device.h             |    3 -
+ arch/powerpc/include/asm/pnv-pci.h            |   17 -
+ arch/powerpc/mm/book3s64/hash_native.c        |   13 +-
+ arch/powerpc/mm/book3s64/hash_utils.c         |   10 +-
+ arch/powerpc/mm/book3s64/pgtable.c            |    1 -
+ arch/powerpc/mm/book3s64/slice.c              |    6 +-
+ arch/powerpc/mm/copro_fault.c                 |   12 -
+ arch/powerpc/platforms/powernv/Makefile       |    1 -
+ arch/powerpc/platforms/powernv/pci-cxl.c      |  153 -
+ arch/powerpc/platforms/powernv/pci-ioda.c     |   43 -
+ arch/powerpc/platforms/powernv/pci.c          |   61 -
+ arch/powerpc/platforms/powernv/pci.h          |    2 -
+ drivers/misc/Kconfig                          |    1 -
+ drivers/misc/Makefile                         |    1 -
+ drivers/misc/cxl/Kconfig                      |   28 -
+ drivers/misc/cxl/Makefile                     |   14 -
+ drivers/misc/cxl/api.c                        |  532 ---
+ drivers/misc/cxl/base.c                       |  126 -
+ drivers/misc/cxl/context.c                    |  362 --
+ drivers/misc/cxl/cxl.h                        | 1135 -----
+ drivers/misc/cxl/cxllib.c                     |  271 --
+ drivers/misc/cxl/debugfs.c                    |  134 -
+ drivers/misc/cxl/fault.c                      |  341 --
+ drivers/misc/cxl/file.c                       |  699 ---
+ drivers/misc/cxl/flash.c                      |  538 ---
+ drivers/misc/cxl/guest.c                      | 1208 -----
+ drivers/misc/cxl/hcalls.c                     |  643 ---
+ drivers/misc/cxl/hcalls.h                     |  200 -
+ drivers/misc/cxl/irq.c                        |  450 --
+ drivers/misc/cxl/main.c                       |  383 --
+ drivers/misc/cxl/native.c                     | 1592 -------
+ drivers/misc/cxl/of.c                         |  346 --
+ drivers/misc/cxl/pci.c                        | 2103 ---------
+ drivers/misc/cxl/sysfs.c                      |  771 ----
+ drivers/misc/cxl/trace.c                      |    9 -
+ drivers/misc/cxl/trace.h                      |  691 ---
+ drivers/misc/cxl/vphb.c                       |  309 --
+ drivers/scsi/Kconfig                          |    1 -
+ drivers/scsi/Makefile                         |    1 -
+ drivers/scsi/cxlflash/Kconfig                 |   15 -
+ drivers/scsi/cxlflash/Makefile                |    5 -
+ drivers/scsi/cxlflash/backend.h               |   48 -
+ drivers/scsi/cxlflash/common.h                |  340 --
+ drivers/scsi/cxlflash/cxl_hw.c                |  177 -
+ drivers/scsi/cxlflash/lunmgt.c                |  278 --
+ drivers/scsi/cxlflash/main.c                  | 3970 -----------------
+ drivers/scsi/cxlflash/main.h                  |  129 -
+ drivers/scsi/cxlflash/ocxl_hw.c               | 1399 ------
+ drivers/scsi/cxlflash/ocxl_hw.h               |   72 -
+ drivers/scsi/cxlflash/sislite.h               |  560 ---
+ drivers/scsi/cxlflash/superpipe.c             | 2218 ---------
+ drivers/scsi/cxlflash/superpipe.h             |  150 -
+ drivers/scsi/cxlflash/vlun.c                  | 1336 ------
+ drivers/scsi/cxlflash/vlun.h                  |   82 -
+ include/misc/cxl-base.h                       |   48 -
+ include/misc/cxl.h                            |  265 --
+ include/misc/cxllib.h                         |  129 -
+ include/uapi/misc/cxl.h                       |  156 -
+ include/uapi/scsi/cxlflash_ioctl.h            |  276 --
+ .../filesystems/statmount/statmount_test.c    |   13 +-
+ 68 files changed, 49 insertions(+), 25819 deletions(-)
+ rename Documentation/ABI/{obsolete => removed}/sysfs-class-cxl (87%)
+ delete mode 100644 Documentation/arch/powerpc/cxl.rst
+ delete mode 100644 Documentation/arch/powerpc/cxlflash.rst
+ delete mode 100644 arch/powerpc/platforms/powernv/pci-cxl.c
+ delete mode 100644 drivers/misc/cxl/Kconfig
+ delete mode 100644 drivers/misc/cxl/Makefile
+ delete mode 100644 drivers/misc/cxl/api.c
+ delete mode 100644 drivers/misc/cxl/base.c
+ delete mode 100644 drivers/misc/cxl/context.c
+ delete mode 100644 drivers/misc/cxl/cxl.h
+ delete mode 100644 drivers/misc/cxl/cxllib.c
+ delete mode 100644 drivers/misc/cxl/debugfs.c
+ delete mode 100644 drivers/misc/cxl/fault.c
+ delete mode 100644 drivers/misc/cxl/file.c
+ delete mode 100644 drivers/misc/cxl/flash.c
+ delete mode 100644 drivers/misc/cxl/guest.c
+ delete mode 100644 drivers/misc/cxl/hcalls.c
+ delete mode 100644 drivers/misc/cxl/hcalls.h
+ delete mode 100644 drivers/misc/cxl/irq.c
+ delete mode 100644 drivers/misc/cxl/main.c
+ delete mode 100644 drivers/misc/cxl/native.c
+ delete mode 100644 drivers/misc/cxl/of.c
+ delete mode 100644 drivers/misc/cxl/pci.c
+ delete mode 100644 drivers/misc/cxl/sysfs.c
+ delete mode 100644 drivers/misc/cxl/trace.c
+ delete mode 100644 drivers/misc/cxl/trace.h
+ delete mode 100644 drivers/misc/cxl/vphb.c
+ delete mode 100644 drivers/scsi/cxlflash/Kconfig
+ delete mode 100644 drivers/scsi/cxlflash/Makefile
+ delete mode 100644 drivers/scsi/cxlflash/backend.h
+ delete mode 100644 drivers/scsi/cxlflash/common.h
+ delete mode 100644 drivers/scsi/cxlflash/cxl_hw.c
+ delete mode 100644 drivers/scsi/cxlflash/lunmgt.c
+ delete mode 100644 drivers/scsi/cxlflash/main.c
+ delete mode 100644 drivers/scsi/cxlflash/main.h
+ delete mode 100644 drivers/scsi/cxlflash/ocxl_hw.c
+ delete mode 100644 drivers/scsi/cxlflash/ocxl_hw.h
+ delete mode 100644 drivers/scsi/cxlflash/sislite.h
+ delete mode 100644 drivers/scsi/cxlflash/superpipe.c
+ delete mode 100644 drivers/scsi/cxlflash/superpipe.h
+ delete mode 100644 drivers/scsi/cxlflash/vlun.c
+ delete mode 100644 drivers/scsi/cxlflash/vlun.h
+ delete mode 100644 include/misc/cxl-base.h
+ delete mode 100644 include/misc/cxl.h
+ delete mode 100644 include/misc/cxllib.h
+ delete mode 100644 include/uapi/misc/cxl.h
+ delete mode 100644 include/uapi/scsi/cxlflash_ioctl.h
+
 -- 
-ldv
+2.48.1
 
