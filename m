@@ -1,86 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-5772-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5773-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B90A25022
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Feb 2025 22:41:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ADB6A2520D
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Feb 2025 06:43:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YmNPG5L7mz2xjL;
-	Mon,  3 Feb 2025 08:41:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ymb5G4f1wz2xQD;
+	Mon,  3 Feb 2025 16:43:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.15.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738532498;
-	cv=none; b=Bf/lQQEKZQ4TNtWx93nXdnwF+oFnIQ4SbXVXf9b0DluHSpsbqB2TQQYVJgOcBK2B2pLNKM9Th+adjG89TBFND4YxaEVrJvwDtfSz58icwbVL1wIC0ixbWHiaoIiHnN9UK+3yqum7JSDtCHUd6+0OE9qu0tCsYF2E70hOa0rf/UgjJ5We+tsYjgoezM3VPlayfiMQE8rAQOXEzPK2DCnW0dMv3SjyhVv1569hcbfH4Q+dTVs1XC0Z5k+DBStmNCvQrioGugjllwSWEjYNH3oPUMdWVGY8BlXDGJDpNVkJPeFD8kzK8qx2+5gd5XdZAef3OBdzifHNGVXudppIsWwpJw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::130"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738561410;
+	cv=none; b=mFg8QN539uPMQfIGnxLq6H8rvC31SYFN0yuLtpRzK7a0dkn2786qtymmKodpPxCw5BELcSvv/Mpwa96/Gn2EZAvCju+U5HyeHovyPS5/lUGYhssFV4S/WWMQCHkpTBYRHh0/hZ/tk/drGDkv5pa6Hm8dDhz+TJUzYlJxXFP95xi3KqPtPYSinaXYeD8FOaE2FvN9r401b/SD4PIk3a+5tKZHPC0dzh9mmpa3kHhH2lekx5HSrrSlBBTOANX5OJ9Il5FpSMnUNhI9O/hz+iiMTAOuvRk25Kg+64tqyhSlFUo08TyYvnGEZVA6SLrJsiH/KAz4hYU3uMi19LUcicKZpw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738532498; c=relaxed/relaxed;
-	bh=G2eHfhQuejodnDOibyT663weFQ71Yl8E8QZl/5oxVv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MWPzAHfG604kbaL+OICQt777ir7acF9RP+x9+aDcjnibMBpigjHqWdDz/Po8g6b3gKQKvZ6RoSdMnij1SiomYcQ6g4hs8OAFGPb2B5uEfpUAFdN/XxMJe2R4OkJpjIpekYYRDEqth6xFaotdeK2p7f8twk11ev+SjE4a8WDY3HcsTwKYRC/cIPqlZezuUCClxOJ0dvkvHmbs7cn6vahLCBECOayfpvz7ATlb3bEPPvmUQ6ElL79COA2rmq7IGaKHPpFANDV1Ruj1zCqoJ+45OhkX99TNVGmylxUsYGYPA6tmEo9/OlnlgizuXKxoZmAc4jWnX+/CTOc+UsuWpWohEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; dkim=pass (2048-bit key; secure) header.d=gmx.net header.i=j.neuschaefer@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=hAShhqeY; dkim-atps=neutral; spf=pass (client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=j.neuschaefer@gmx.net; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+	t=1738561410; c=relaxed/relaxed;
+	bh=Abrmc3V+wCkg7+h5ECgKA37T7F550/MzIW2BgVmGe00=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ha2UZNbDGasYmGzRxJnh1NXhV7AkoCypwYo5fSjRbAfV1fHZ8g3pvUmRaVOk7T4gTC6FVeoq3ycPHsJV1XBp6ZLwBMwWpbcvYZSkj3yAJBuELL2V4F5PMXmH5pXvQMOJZcP5PJ2+hIE6400tKQOaJIZEMKdDX8B49qz94BRzfplwxOFUwRujpi3x9ZXCoXCMhXmFSDb0Xxovt4MNEefB9XEvsZ7gb5alaT+njdD1BzoSyHd5j57gAB/NQ1JCBSWhICCmLo03jqeDEIqRC3CeMmaRtY7JYgrNRXS8qJsmnFM9vFF87v0/i/ehjl3XpH1CkqNVQmLtfbtxkKOb3cilsw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=diS/eTnm; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org) smtp.mailfrom=sifive.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=gmx.net header.i=j.neuschaefer@gmx.net header.a=rsa-sha256 header.s=s31663417 header.b=hAShhqeY;
+	dkim=pass (2048-bit key; unprotected) header.d=sifive.com header.i=@sifive.com header.a=rsa-sha256 header.s=google header.b=diS/eTnm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.net (client-ip=212.227.15.15; helo=mout.gmx.net; envelope-from=j.neuschaefer@gmx.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 415 seconds by postgrey-1.37 at boromir; Mon, 03 Feb 2025 08:41:35 AEDT
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sifive.com (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=samuel.holland@sifive.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YmNPC6PZqz2xjK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 08:41:35 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1738532484; x=1739137284; i=j.neuschaefer@gmx.net;
-	bh=G2eHfhQuejodnDOibyT663weFQ71Yl8E8QZl/5oxVv0=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:Content-Transfer-Encoding:In-Reply-To:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=hAShhqeYRuvvqZYXkV/EWtk/QinyFoplSkD+1EKyuWt++Rik55XAfUwuPHWx42sK
-	 NY1TufVIBmRldyVZSi3Vdm4y6LF64wMWUXW02Qkh3PzVC4cylLYojSqf1iXs5p0q9
-	 lYgEDzDawIp5qgMVK39ar/ym7LN20WBo5SOZoTGLPI7qDXGEBDDaP/aWsyZ+2IcED
-	 l2DXwVi4zHKUQhziLGJFnTg4Jpu3usruWuqmYWZIsqhxKLFrHOEaTGoN0Mops6Gmx
-	 uIRB2/1pZ9YdxAHUo0ky79AxOlk8+jNM3BJpUgCchYd9cjnax2qpxRDLchYYrd2Bt
-	 00KrOXHAE5lbNEPtXw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from probook ([89.1.210.218]) by mail.gmx.net (mrgmx005
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MAfYw-1tlHAA11D6-007KTC; Sun, 02
- Feb 2025 22:33:46 +0100
-Date: Sun, 2 Feb 2025 22:33:36 +0100
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
-To: "A. Wilcox" <AWilcox@wilcox-tech.com>
-Cc: Arnd Bergmann <arnd@kernel.org>, kvm@vger.kernel.org,
-	Arnd Bergmann <arnd@arndb.de>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Alexander Graf <graf@amazon.com>, Crystal Wood <crwood@redhat.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atishp@atishpatra.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
-	Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v2 4/5] powerpc: kvm: drop 32-bit book3s
-Message-ID: <Z5_ksID8Gv_Tg5F7@probook>
-References: <20241221214223.3046298-1-arnd@kernel.org>
- <20241221214223.3046298-5-arnd@kernel.org>
- <9B9E07F0-3373-4F59-BE4C-E6C425B3C36D@Wilcox-Tech.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ymb5F3SpMz2xKd
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Feb 2025 16:43:28 +1100 (AEDT)
+Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-3cfcf8b7455so31650255ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 02 Feb 2025 21:43:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1738561406; x=1739166206; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Abrmc3V+wCkg7+h5ECgKA37T7F550/MzIW2BgVmGe00=;
+        b=diS/eTnmRFppuEjEwKNJ8Jfr0C197f405S9YlKZfA3mxyeTNfkM/If+55iF2mNQU9K
+         assMgAXKBciQA5y9ZF5v/XfTjKSq2nnv5hnyjBiOTC86TqNOzLuo9N6Go2ZIlGyMCnab
+         G3bUj5FVeQUGaEVx1eeVFyZaP8bQDRutccAHGmXLI/A5JtTrHrKlaoS14yLNllyvC17J
+         HpZ9iQ0LmLNdrh15jbn2fRJo1MQbpAcV4hhjsCjAzkupOLqvJavaQrt8YHDN7yxQqPVP
+         KXMSfrdUYn0IzRHv8XJfOvnw/vtbUBG8C65re7cGJSdLmnSCNIUzLOCMX0PJHSdxfqLY
+         2Apg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1738561406; x=1739166206;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Abrmc3V+wCkg7+h5ECgKA37T7F550/MzIW2BgVmGe00=;
+        b=mLndjoUoyzrKS3Yplm75z45+mZ/X/8XuToqnNnJiNwstDnILQbCyGGlyyzv7cPjsmy
+         YhmfPw/XESwAHL+wywmzRrrhc84TVqvYQTFfVdzw0W+oI5miuZqPFRfQrXZGdbRZbEHY
+         emV0ag8D0t3YXPgmPj0w9WZv+3+2DN5Ub8u+BeZWRqEQgLeDq11+NHP45m5FfidLvb01
+         +nQh3bnZDF08jyaGm1nOe1Qndmpyt/3KZFqbeHsKgGpKqGfgHxONgGo+gmo4Lm7JhLq8
+         RZ13nE23jEccRD39lKmYE2brxyi7B1thaIH54z5fnNf9Mm6kpRt+eDu1LuSo1Wl8N2YW
+         Xf0w==
+X-Forwarded-Encrypted: i=1; AJvYcCXVm6Arh4yhtLsF7jXCjuVQuQrTHXtmjoW0ObONhX5kdNPXL50dOvGA3Bg6NrU1VM4Z0f3d9l3g4Lc6auM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwKV7OWPkdFAWAFqfnnR/gJ9/zGx/+5Ry0zkmST8ATXrVCpMe60
+	JFnf64SMb/FSuf/RIr6ctlCwCacetSt/LkM5lvtSXDT8/MCWdMe9GRuWwDEWQ3E=
+X-Gm-Gg: ASbGncvC8E8xn2LOh3QY033FRdKCrTJFuRlWWiWdTdGHk1YAxkDAMf9pTq0xAeTTne/
+	ZjpucaSCy2P15Yz7QvDn5OcXVxfy5/1PoT1vFAWOtuppjj2oS3G2XFaTSDyEcDATAlyBbKvEPaZ
+	2qZQnOdgVM2gTYupmSdNNLvurGUyNn1H6iogQ8Wb7dEwCqoujWD2yPTYLQ6pE778MUdcmq8NxLD
+	28r0nfXnTaPckgDPLs+QF10jjypT7yUeyO1N9FMLwDh4RcJxOssVoQ1ukfA8HvVObapSn5dM7eX
+	HYo8k1ppZRcRGCGuWDq6aglXoAWH/7dtMQXLHTI=
+X-Google-Smtp-Source: AGHT+IHl4RRDfRdJ9K6Cx6v8dXThe6D880Ogx8BJ2U75l88ormi4P0wAtnHOCwaBHFLWcb6LIw7+7w==
+X-Received: by 2002:a05:6e02:1fc2:b0:3ce:78ab:dcd1 with SMTP id e9e14a558f8ab-3cffe4a7bf1mr175908815ab.19.1738561406189;
+        Sun, 02 Feb 2025 21:43:26 -0800 (PST)
+Received: from [100.64.0.1] ([165.188.116.9])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3d018c28ea5sm15310115ab.35.2025.02.02.21.43.22
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 02 Feb 2025 21:43:25 -0800 (PST)
+Message-ID: <44468c97-06e6-4bfe-930d-444ab7ead90d@sifive.com>
+Date: Sun, 2 Feb 2025 23:43:22 -0600
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,78 +83,164 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <9B9E07F0-3373-4F59-BE4C-E6C425B3C36D@Wilcox-Tech.com>
-X-Provags-ID: V03:K1:9/xKYk+mj967yFEydW37x3unDxvlzZDdriScJwSUFGFBVPwz408
- R4O7IVTtnXePPO+gVIX8jktVCSK3SLk5KSpqblHo9ocA7Uo1TTIFaSqN1IJ0B/nSnHdz+v4
- BQJUDyiTjBjastoDpF/hhIklw774C2Nk4pN/wxnwAA2nZ2/XzPYAWN671OjQUfPE/hjZF1w
- siMMlhFzAtG6iMd99XMIg==
-UI-OutboundReport: notjunk:1;M01:P0:KsFYa4kZloA=;Dyq1l2cy9rS3hjvZxMZ1ZB6C2Gc
- Z2+6OhGfV1eNmfEmR9JoJvHrqmGRL8gUS5laXPKlLx8mvbQURLJIw71MCtJZS5rSBVnlQaqvw
- vF02svj9qWtKBf3LpSusMYtdVbD9UdLLuNM4b+X9u17SGmh6Uf3BBhHW5pWG1T9vj43QFnu7s
- eb7gapSwDJqjcEZRtgdeS+hx6y33d4kl79cC04piw3coTxL/vGvBJhNxSWZen8CZRmCrBstLu
- SaPptbJcV37hWT4YQCoSNurN+ooxEKL3Q4UJzXQQPQHX6/MMBouOVQAfcyulRBPy+Dz2UKlst
- J4HpqYX8xA8oAXGR4nAE8AfBJb0W62M4LPVwY5oMQPNgENwUg+ZEeuB4ptEOEOt/DJ7troct9
- diJz+52v8V1g+kOK1GQO6OZcir83OrIHtTiAu+0mrCG6LO/jAwuBUJ0lQ5C1l0TE8rvLTlFjE
- 9Tu4J3a+lv+DA/38GRB5YbpKEVOlnEobrXFa5fnDyzQsMdHoIbWVE4W5PfyWcJRa1ZfyInlCm
- Bt+Br3tJUhZzKyAOfTraTjpdofcBZvxA79RNWbucZvhWJj5QTuG/6VvuDbO72UjLV7W1sWp18
- nflLRHs/l9TFD23RXkO6nH4g17IoKyt+Hd9HO8r24XKlqLhPBhMdAY82EbflJvOx6LHGwe8nL
- 3iLVC9HHjZeHHPkzAZ0f4d8N5NankFUESO6usmRnA/Xpv3blVeZFXoS68ST85gFntXQF/eIiw
- cq3xpGRRNcC8I8uQu5VyIBoHfBFKE5mbxmMgpoyyCfWUXGNkKq7JrfF+GuZq2g8mooJ1EL82V
- /VKedl+GIWzbAJFdnXcr31EN4ssVQMHKTHpxeae2dfYfU1nQf5lp6TADqXP6wq+FJJt7Gflu3
- FbysEMNwktZASs+7jpz75Kp+1Md0tkuRo2I6tyTAKA8Eg6MDWxdck4XSFNTxm2bHouaGF7VkB
- Iupu+6oS1QgZI4hCXQcQlMXrn0SALb58t8XEV9lqqLUvsELiRtid6enNMCfoYzVSkw+TjxJKf
- A3tCFrPBthtuhPWEK+u4D7I34uO2gEoVOLs+/O5a77SBB1p7mzVZBf0TSnkdEntsXnfoe9iuw
- a5ygfh/lwZWixMymSLq7OPHnoKYcbWlcq8lbsyk9hl+TDi6ByLDnHXO5S3j2kjCVKnjkQTFxB
- 3arR5BY1EJr2s9QJ87NE96w+rMD9b850SP8sGafW3hspVo3clANW2jCr+QiXEXrTotSQkJb5l
- EILyR8EsbICtXADfuLK79++hTl8V8W+BvZ6uGnlYX3W+FS5BsyNwR3AKJ0UMQWAWWd7rWpGuD
- J5tlSGvUlCDbVfDur+DA7Xjm99U8hdZGF3uPET6L6t6DbcC3Xe3crFIAjjxpOYMo5Wc
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/5] riscv: kvm: drop 32-bit host support
+To: Arnd Bergmann <arnd@kernel.org>, kvm@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Alexander Graf <graf@amazon.com>, Crystal Wood <crwood@redhat.com>,
+ Anup Patel <anup@brainfault.org>, Atish Patra <atishp@atishpatra.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
+ Marc Zyngier <maz@kernel.org>, "A. Wilcox" <AWilcox@Wilcox-Tech.com>,
+ linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org,
+ linux-riscv@lists.infradead.org
+References: <20241221214223.3046298-1-arnd@kernel.org>
+ <20241221214223.3046298-3-arnd@kernel.org>
+From: Samuel Holland <samuel.holland@sifive.com>
+Content-Language: en-US
+In-Reply-To: <20241221214223.3046298-3-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Dec 21, 2024 at 08:13:12PM -0600, A. Wilcox wrote:
-> On Dec 21, 2024, at 3:42=E2=80=AFPM, Arnd Bergmann <arnd@kernel.org> wro=
-te:
-> >
-> > From: Arnd Bergmann <arnd@arndb.de>
-> >
-> > Support for KVM on 32-bit Book III-s implementations was added in 2010
-> > and supports PowerMac, CHRP, and embedded platforms using the Freescal=
-e G4
-> > (mpc74xx), e300 (mpc83xx) and e600 (mpc86xx) CPUs from 2003 to 2009.
-> >
-> > Earlier 603/604/750 machines might work but would be even more limited
-> > by their available memory.
-> >
-> > The only likely users of KVM on any of these were the final Apple
-> > PowerMac/PowerBook/iBook G4 models with 2GB of RAM that were at the hi=
-gh
-> > end 20 years ago but are just as obsolete as their x86-32 counterparts=
-.
-> > The code has been orphaned since 2023.
-> >
-> > There is still a need to support 32-bit guests in order to better
-> > debug problems on ppc32 kernels. This should work in theory on both
-> > 64-bit booke and on 64-bit book3s hosts, but it would be good to
-> > confirm that this is still the case before the known working option
-> > gets removed.
-[...]
-> That said, I would like to keep the support alive for more than just
-> ppc32 kernel testing.  There are plenty of Power Macs with enough
-> memory to run some environments within KVM.  Ad=C3=A9lie=E2=80=99s new r=
-elease
-> boots a full XFCE desktop in under 300 MB RAM, so even a 1 GB machine
-> has enough memory to run AmigaOS, Mac OS 9, or another XFCE in KVM.
+Hi Arnd,
 
-FWIW, I second this. I do intend to get KVM to run on my e300-based
-board for some relatively light guests such as Mac OS 9. I suspect I
-won't be able to contribute much to the maintenance, though.
+On 2024-12-21 3:42 PM, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> KVM support on RISC-V includes both 32-bit and 64-bit host mode, but in
+> practice, all RISC-V SoCs that may use this are 64-bit:
+> 
+> As of linux-6.13, there is no mainline Linux support for any specific
+> 32-bit SoC in arch/riscv/, although the generic qemu model should work.
+> 
+> The available RV32 CPU implementations are mostly built for
+> microcontroller applications and are lacking a memory management
+> unit. There are a few CPU cores with an MMU, but those still lack the
+> hypervisor extensions needed for running KVM.
+> 
+> This is unlikely to change in the future, so remove the 32-bit host
+> code and simplify the test matrix.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/riscv/kvm/Kconfig            |   2 +-
+>  arch/riscv/kvm/aia.c              | 105 ------------------------------
+>  arch/riscv/kvm/aia_imsic.c        |  34 ----------
+>  arch/riscv/kvm/mmu.c              |   8 ---
+>  arch/riscv/kvm/vcpu_exit.c        |   4 --
+>  arch/riscv/kvm/vcpu_insn.c        |  12 ----
+>  arch/riscv/kvm/vcpu_sbi_pmu.c     |   8 ---
+>  arch/riscv/kvm/vcpu_sbi_replace.c |   4 --
+>  arch/riscv/kvm/vcpu_sbi_v01.c     |   4 --
+>  arch/riscv/kvm/vcpu_timer.c       |  20 ------
+>  10 files changed, 1 insertion(+), 200 deletions(-)
+> 
+> diff --git a/arch/riscv/kvm/Kconfig b/arch/riscv/kvm/Kconfig
+> index 0c3cbb0915ff..7405722e4433 100644
+> --- a/arch/riscv/kvm/Kconfig
+> +++ b/arch/riscv/kvm/Kconfig
+> @@ -19,7 +19,7 @@ if VIRTUALIZATION
+>  
+>  config KVM
+>  	tristate "Kernel-based Virtual Machine (KVM) support (EXPERIMENTAL)"
+> -	depends on RISCV_SBI && MMU
+> +	depends on RISCV_SBI && MMU && 64BIT
+>  	select HAVE_KVM_IRQCHIP
+>  	select HAVE_KVM_IRQ_ROUTING
+>  	select HAVE_KVM_MSI
+> diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+> index 19afd1f23537..a399a5a9af0e 100644
+> --- a/arch/riscv/kvm/aia.c
+> +++ b/arch/riscv/kvm/aia.c
+> @@ -66,33 +66,6 @@ static inline unsigned long aia_hvictl_value(bool ext_irq_pending)
+>  	return hvictl;
+>  }
+>  
+> -#ifdef CONFIG_32BIT
+> -void kvm_riscv_vcpu_aia_flush_interrupts(struct kvm_vcpu *vcpu)
+> -{
+> -	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
+> -	unsigned long mask, val;
+> -
+> -	if (!kvm_riscv_aia_available())
+> -		return;
+> -
+> -	if (READ_ONCE(vcpu->arch.irqs_pending_mask[1])) {
+> -		mask = xchg_acquire(&vcpu->arch.irqs_pending_mask[1], 0);
+> -		val = READ_ONCE(vcpu->arch.irqs_pending[1]) & mask;
+> -
+> -		csr->hviph &= ~mask;
+> -		csr->hviph |= val;
+> -	}
+> -}
+> -
+> -void kvm_riscv_vcpu_aia_sync_interrupts(struct kvm_vcpu *vcpu)
+> -{
+> -	struct kvm_vcpu_aia_csr *csr = &vcpu->arch.aia_context.guest_csr;
+> -
+> -	if (kvm_riscv_aia_available())
+> -		csr->vsieh = ncsr_read(CSR_VSIEH);
+> -}
+> -#endif
+> -
+>  bool kvm_riscv_vcpu_aia_has_interrupts(struct kvm_vcpu *vcpu, u64 mask)
+>  {
+>  	int hgei;
+> @@ -101,12 +74,6 @@ bool kvm_riscv_vcpu_aia_has_interrupts(struct kvm_vcpu *vcpu, u64 mask)
+>  	if (!kvm_riscv_aia_available())
+>  		return false;
+>  
+> -#ifdef CONFIG_32BIT
+> -	if (READ_ONCE(vcpu->arch.irqs_pending[1]) &
+> -	    (vcpu->arch.aia_context.guest_csr.vsieh & upper_32_bits(mask)))
+> -		return true;
+> -#endif
+> -
+>  	seip = vcpu->arch.guest_csr.vsie;
+>  	seip &= (unsigned long)mask;
+>  	seip &= BIT(IRQ_S_EXT);
+> @@ -128,9 +95,6 @@ void kvm_riscv_vcpu_aia_update_hvip(struct kvm_vcpu *vcpu)
+>  	if (!kvm_riscv_aia_available())
+>  		return;
+>  
+> -#ifdef CONFIG_32BIT
+> -	ncsr_write(CSR_HVIPH, vcpu->arch.aia_context.guest_csr.hviph);
+> -#endif
+>  	ncsr_write(CSR_HVICTL, aia_hvictl_value(!!(csr->hvip & BIT(IRQ_VS_EXT))));
+>  }
+>  
+> @@ -147,22 +111,10 @@ void kvm_riscv_vcpu_aia_load(struct kvm_vcpu *vcpu, int cpu)
+>  		nacl_csr_write(nsh, CSR_VSISELECT, csr->vsiselect);
+>  		nacl_csr_write(nsh, CSR_HVIPRIO1, csr->hviprio1);
+>  		nacl_csr_write(nsh, CSR_HVIPRIO2, csr->hviprio2);
+> -#ifdef CONFIG_32BIT
+> -		nacl_csr_write(nsh, CSR_VSIEH, csr->vsieh);
+> -		nacl_csr_write(nsh, CSR_HVIPH, csr->hviph);
+> -		nacl_csr_write(nsh, CSR_HVIPRIO1H, csr->hviprio1h);
+> -		nacl_csr_write(nsh, CSR_HVIPRIO2H, csr->hviprio2h);
+> -#endif
 
-Best regards,
-J. Neusch=C3=A4fer
+One minor cleanup: since this patch removes all accesses to these 32-bit-only
+high-half CSRs, the corresponding members should also be removed from struct
+kvm_vcpu_aia_csr in asm/kvm_aia.h.
+
+Regards,
+Samuel
+
 
