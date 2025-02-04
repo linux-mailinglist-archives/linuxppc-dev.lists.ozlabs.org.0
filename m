@@ -1,71 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-5795-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5796-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57FC1A26C1B
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 07:28:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 737CAA26C33
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 07:40:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnD275gClz2ygY;
-	Tue,  4 Feb 2025 17:27:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnDJG6FGJz2yRF;
+	Tue,  4 Feb 2025 17:40:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738650479;
-	cv=none; b=dTE5Q1iNFvExWiFswU8xpSZS7NAIhjdKpRCPO6rRfRbi+KltKdH0AU7447uyUueBhsl1G1L3uJgwTD6cabV8VmA/ScIUfB+byaz1bJOd9OyGkmJ48iPvlgcENmubn5tZ2Ep1NtROv81P+VwKshPsniacAZolwYjI3uoBpvizK4dPnFmrfeZlurai1l/feYlYYajLNYu3bZeh1FbeBffA+SDaOWohJW+egw7PF1gurOf3jYRciJsi+S/8ZxlEPRAA3VPSII9zW8o5IkFwEteLjS7BV3MaXEJ4qDI087G93K82MIIe8mGQtWIGlMEksOfRfLHQWbE3S5Tf+89zZyFsCw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738651214;
+	cv=none; b=b8cI3d9usKt5WfwLA4ascP369jLqxvvCUQf3dVdlGHJOoeQ3wke1A0WWu7pgpZgBaAn6w2QgXo9/gTkCqpp6mo0C8mK0pFr/DeUPh8XJr3C8D5BJjBb+j00kiaqdItETpm38Qb8KUhCLpQSrlEA9eMVlrEAGm480hmvp4hoiggNJMcxaixdQFIY8veFtbtXMDtLI06kVdUyBIw8Tm0dWHaz9aNGpaw3ea6Z86gvHt049wd8h7l0D+mYNLlEWLidr/6LJ3IYdXu5rCisDhwCIT+dWkFIQLXfYLeMG/budNOYDSYnetFQ/rZnIU3IysPgB7XZmt4w2/RU+ePEdu/6Nig==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738650479; c=relaxed/relaxed;
-	bh=aiLxudnRK1rMdHEVr3d3nVv4KIcdCuRqjEa5BWv6eVI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Une/MLYDAmgQ2iH4Yfg2Tgk/GNkJvZWTRVCMlvzM4P/xcfz8uG3hnT1ypVEzWtok4CvOf1/RXAFCWBqZybuXb01O7tt039yuMrdIBkW98dl+CExhS3dc3ya29IPNFUOMfr14kV1ghxnfX5w9NEZsVapqiPYhpTXiqjKP8dfRWBu6ck0DBRSBDgCdTDnNyk9KeYzLJp9KS4BPZv8bhRhV0zb7AbmANo1V6m80iTFVu7fi8dU6KwOQuG+NbmvB8VF9+5m1L0jB71IWWGs4H/H9oc03ehBGQ22n81jEGplWRz2Rsrp2yz6aPKyXY3N035OjW2UA/pVEMFm1DDbd0W6urQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AeNlbsWl; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1738651214; c=relaxed/relaxed;
+	bh=ndHd7fqKZ836SjKywQTYbp5/lAneBePLzgwDlcjZuXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ci+xpWpmbB1w0OX+4mixxT7JtltWOuSMSe4J7dpUrTMXpdU9wTRcJ5gxtPGpYxKG1N12vqrhpEtf12zdNqvxNtIQMKhDwMUgpBm/hNU9CWM4eWdu9wmEV8MFGobGUmNE/5ov6KRe0c2KI8fbSx05gK8BW+qSsr1P5qVSyR72MNovEyI5unAlY2uP3P/AYRYolwxqs6tKKZBviOpfR+zeCpM1aW7j7zUdMvL7sw+tsnjUAr0PuqmYbX8D7xavDAxoNP3d3DjknYB/sudOfBTwG167vCuuAhMB1BvxDSwlt5zmbreo+/7zBM/I6gr6u78F6uji86g263QxQadw3QyRkw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XcATzx6v; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=AeNlbsWl;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XcATzx6v;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=kjain@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YnD266lMWz2xs7
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 17:27:58 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51420iO7007812;
-	Tue, 4 Feb 2025 06:27:50 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YnDJF1B1Vz2yDx
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 17:40:12 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5145mB0r018213;
+	Tue, 4 Feb 2025 06:40:10 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=aiLxud
-	nRK1rMdHEVr3d3nVv4KIcdCuRqjEa5BWv6eVI=; b=AeNlbsWltsnSa+XA6Iq78a
-	wXMecbykOCcrRSh7bHPrOVEkBNeV8nFatv/gGSH87haa4OYIj25PrlBTUuVKACqt
-	romtVsken3Crmd4K2vRLV5bmNREPxqZqmUAPDVnIEX6pvCut14pwaOFj+aI9Sxji
-	jcBp1sDdtz4qnrPnnRaIUOJwcmuiodhcndKzjng5yycN2KdZi3fMlBOxHbztkTsS
-	E70/aovKIdZM3nDAoXjDsBy131cVxFtr5p7EJlZqyIEUr6+zwo4OCUqDub8LiBvZ
-	aI+C7ADKmmmvViv51lm+y/3LYBdjJUTGirSYHGlmXX9pV77Kq5FQDgCIMVNHJzIw
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44k9r0rv34-1
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=ndHd7fqKZ836SjKywQTYbp5/lAneBePLzgwDlcjZu
+	XE=; b=XcATzx6vKRBFBGERYFBSuoZIFQm3KKqI+YukK1u3DNj8UUzqy5nkbrhBr
+	cClif0BJr1+axakLlWgP2R8J1LpgM6d2X5SldP2wYd7/qJmI5dA4quC5MzhhfApn
+	5Qd5NeeFBT4Jt5d6czCcYzB5H+JeIXx2UCT8g+IkGK5NgOn5Br8i67rVOgG/EsHQ
+	kscK70zcp6BNWoX4WU1ezeECxl+ji5A3v9NJXkaCjvOlxpsjMcGV6BURZrvd1SUk
+	vk+uA1frjPZtHiUnp4QvNR2KSZlUdPD5ixuUEW/itrJ3qwGt6uKL5FBIEDKOZ6qG
+	aAsUDYbfb/AS47SBRol28MEvD8P/Q==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44k0mtbaj9-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 06:27:50 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5145i63j021477;
-	Tue, 4 Feb 2025 06:27:49 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44j0n19sy7-1
+	Tue, 04 Feb 2025 06:40:10 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5144NcI2006508;
+	Tue, 4 Feb 2025 06:40:09 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hyeka2ub-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 06:27:49 +0000
+	Tue, 04 Feb 2025 06:40:09 +0000
 Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5146RjKf51380598
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5146e3GV23003620
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Feb 2025 06:27:45 GMT
+	Tue, 4 Feb 2025 06:40:03 GMT
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 93C6E20043;
-	Tue,  4 Feb 2025 06:27:45 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id ADFB420082;
+	Tue,  4 Feb 2025 06:40:03 +0000 (GMT)
 Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5017420082;
-	Tue,  4 Feb 2025 06:27:44 +0000 (GMT)
-Received: from [9.203.114.244] (unknown [9.203.114.244])
+	by IMSVA (Postfix) with ESMTP id C2BE420043;
+	Tue,  4 Feb 2025 06:40:01 +0000 (GMT)
+Received: from li-e8dccbcc-2adc-11b2-a85c-bc1f33b9b810.ibm.com.com (unknown [9.43.13.87])
 	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Feb 2025 06:27:44 +0000 (GMT)
-Message-ID: <fdf5cec6-54ce-4042-b8a5-2560ce7dd623@linux.ibm.com>
-Date: Tue, 4 Feb 2025 11:57:39 +0530
+	Tue,  4 Feb 2025 06:40:01 +0000 (GMT)
+From: Kajol Jain <kjain@linux.ibm.com>
+To: maddy@linux.ibm.com
+Cc: atrajeev@linux.vnet.ibm.com, kjain@linux.ibm.com, disgoel@linux.ibm.com,
+        hbathini@linux.ibm.com, adubey@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        aboorvad@linux.ibm.com
+Subject: [PATCH v2 1/3] powerpc/time: Export boot_tb and log initial timebase at boot
+Date: Tue,  4 Feb 2025 12:09:46 +0530
+Message-ID: <20250204063948.643852-1-kjain@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,117 +84,74 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] powerpc/fadump: fix additional param memory
- reservation for HASH MMU
-To: Avnish Chouhan <avnish@linux.ibm.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Brian King <brking@linux.ibm.com>,
-        Madhavan Srinivasan
- <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>
-References: <20250120173501.1147236-1-sourabhjain@linux.ibm.com>
- <20250120173501.1147236-3-sourabhjain@linux.ibm.com>
- <6322511c-e56a-4f4c-9b13-efec018cb3a7@linux.ibm.com>
- <773fec68e97a408de6871eb3d2c2ac61@linux.ibm.com>
- <c0ace54a-af67-4df5-a284-b96e454869a9@linux.ibm.com>
- <a47286ca0936ea707ed2e80cd276311c@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <a47286ca0936ea707ed2e80cd276311c@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: w7EI58jMq-uaziGqe73_XtfHnrrhIeFP
-X-Proofpoint-GUID: w7EI58jMq-uaziGqe73_XtfHnrrhIeFP
+X-Proofpoint-ORIG-GUID: rCFzP46PU-pD3XSiYJrfoXNuHNKzWaZZ
+X-Proofpoint-GUID: rCFzP46PU-pD3XSiYJrfoXNuHNKzWaZZ
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-04_03,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- suspectscore=0 lowpriorityscore=0 mlxlogscore=795 phishscore=0
- clxscore=1015 adultscore=0 spamscore=0 mlxscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502040047
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
+ mlxlogscore=999 malwarescore=0 mlxscore=0 lowpriorityscore=0 bulkscore=0
+ clxscore=1015 priorityscore=1501 adultscore=0 suspectscore=0 spamscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502040051
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+From: Aboorva Devarajan <aboorvad@linux.ibm.com>
 
+- Export `boot_tb` for external use, this is useful in perf vpa-dtl
+  interface, where `boot_tb` can be used to convert raw timebase
+  values to it's relative boot timestamp.
 
-On 04/02/25 10:58 am, Avnish Chouhan wrote:
-> On 2025-01-31 20:44, Hari Bathini wrote:
->> On 23/01/25 7:54 pm, Avnish Chouhan wrote:
->>> On 2025-01-23 15:26, Hari Bathini wrote:
->>>> On 20/01/25 11:05 pm, Sourabh Jain wrote:
->>>>> Commit 683eab94da75bc ("powerpc/fadump: setup additional parameters 
->>>>> for
->>>>> dump capture kernel") introduced the additional parameter feature in
->>>>> fadump for HASH MMU with the understanding that GRUB does not use the
->>>>> memory area between 640MB and 768MB for its operation.
->>>>>
->>>>> However, the patch ("powerpc: increase MIN RMA size for CAS
->>>>> negotiation") changes the MIN RMA size to 768MB, allowing GRUB to use
->>>>> memory up to 768MB. This makes the fadump reservation for the 
->>>>> additional
->>>>> parameter feature for HASH MMU unreliable.
->>>>>
->>>>> To address this, adjust the memory range for the additional 
->>>>> parameter in
->>>>> fadump for HASH MMU. This will ensure that GRUB does not overwrite the
->>>>> memory reserved for fadump's additional parameter in HASH MMU.
->>>>>
->>>>
->>>>> The new policy for the memory range for the additional parameter in 
->>>>> HASH
->>>>> MMU is that the first memory block must be larger than the MIN_RMA 
->>>>> size,
->>>>> as the bootloader can use memory up to the MIN_RMA size. The range
->>>>> should be between MIN_RMA and the RMA size (ppc64_rma_size), and it 
->>>>> must
->>>>> not overlap with the fadump reserved area.
->>>>
->>>> IIRC, even memory above MIN_RMA is used by the bootloader except for
->>>> 640MB to 768MB (assuming RMA size is >768MB). So, how does this change
->>>> guarantee that the bootloader is not using memory reserved for 
->>>> bootargs?
->>>>
->>>> Avnish, earlier, bootloader was using RUNTIME_MIN_SPACE (128MB) 
->>>> starting
->>>> top-down at 768MB earlier. With MIN_RMA changed to 768MB, is bootloader
->>>> still using the concept of RUNTIME_MIN_SPACE to set aside some memory
->>>> for kernel to use. If yes, where exactly is it allocating this space
->>>> now? Also, rtas instantiates top-down at 768MB. Would that not have
->>>> a conflict with grub allocations without RUNTIME_MIN_SPACE at 768MB?
->>>>
->>>> - Hari
->>>
->>> Hi Hari,
->>
->> Hi Avnish,
->>
->>> The RUNTIME_MIN_SPACE is the space left aside by Grub is within the 
->>> MIN_RMA size. Grub won't use memory beyond the MIN_RMA. With this 
->>> change, we haven't changed the RUNTIME_MIN_SPACE behavior. Grub will 
->>> still keep the 128 MB space in MIN_RMA for loading stock kernel and 
->>> initrd.
->>
->> IIUC, you mean, 640MB to 768MB is not used by Grub even if MIN_RMA
->> is at 768MB? If that is true, this change is not needed, as fadump
->> could still use the memory between 640MB to 768MB, right?
->> Am I missing something here..
-> 
-> Hari,
-> 
-> No. As we are changing MIN_RMA to 768 MB, GRUB can use memory till 768 
-> MB if required.
+- Log the initial timebase at `time_init` as it is a useful
+  information which can be referred to as needed.
 
-Does that mean 'linux_rmo_save' related code in
-grub-core/kern/ieee1275/init.c is going to be dead code after this
-change. Also, does this imply, there isn't going to be any
-RUNTIME_MIN_SPACE support for linux in grub?
+Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+---
+ arch/powerpc/include/asm/time.h | 1 +
+ arch/powerpc/kernel/time.c      | 4 +++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-- Hari
+diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
+index 9bdd8080299b..b6fc5df01d53 100644
+--- a/arch/powerpc/include/asm/time.h
++++ b/arch/powerpc/include/asm/time.h
+@@ -23,6 +23,7 @@ extern u64 decrementer_max;
+ extern unsigned long tb_ticks_per_jiffy;
+ extern unsigned long tb_ticks_per_usec;
+ extern unsigned long tb_ticks_per_sec;
++extern u64 boot_tb;
+ extern struct clock_event_device decrementer_clockevent;
+ extern u64 decrementer_max;
+ 
+diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+index 0727332ad86f..6e8548f0e48f 100644
+--- a/arch/powerpc/kernel/time.c
++++ b/arch/powerpc/kernel/time.c
+@@ -137,7 +137,8 @@ EXPORT_SYMBOL_GPL(rtc_lock);
+ 
+ static u64 tb_to_ns_scale __read_mostly;
+ static unsigned tb_to_ns_shift __read_mostly;
+-static u64 boot_tb __read_mostly;
++u64 boot_tb __read_mostly;
++EXPORT_SYMBOL_GPL(boot_tb);
+ 
+ extern struct timezone sys_tz;
+ static long timezone_offset;
+@@ -943,6 +944,7 @@ void __init time_init(void)
+ 	tb_to_ns_shift = shift;
+ 	/* Save the current timebase to pretty up CONFIG_PRINTK_TIME */
+ 	boot_tb = get_tb();
++	pr_debug("%s: timebase at boot: %llu\n", __func__, (unsigned long long)boot_tb);
+ 
+ 	/* If platform provided a timezone (pmac), we correct the time */
+ 	if (timezone_offset) {
+-- 
+2.43.0
 
 
