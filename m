@@ -1,49 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-5801-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5804-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30C52A26F8E
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 11:50:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C653A270F7
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 13:06:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnKrc6hdWz2xKd;
-	Tue,  4 Feb 2025 21:50:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnMXQ18Jkz2ysX;
+	Tue,  4 Feb 2025 23:06:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738666208;
-	cv=none; b=MXi+6/7O73Wian2tiAQ5/kKqiKvVFRko7ay9OyaVINzy20WTTzPQfaQf1EueSW19j4/Ipo0/Drmpwk0NfyydtU/IKUOrYKMRv2q6mWKsFvE8jvphJy1AcHXftpY6ydqCUYzBC++RWwozAAM5aVPj7J0/SzU5OaMLsPqVuMWNnmUgoYNHmlAm1KFXFDDL9czdOiZYm2YK5H6LJ2R1K6qtQEHRxZFZKyk/wjSWDQnc7lBbWmnCxZZjQMWZfVUIs0JOATn+SiYIBSh9CpHprwux1Ca/3jFWcnZWKf0IuTAKl1pKuC2ou8JY7wvaKUzE1KjP1NceMHgVWoE9E8VuXAGi1w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738670774;
+	cv=none; b=SaUnEtkWdfo6VEbGKw3jXMgiXmI1zcO05qadKIARZ93BiGKx9tOI6tIqmvBGZWR0mdASt/u9otEq4Q/SWway8mMfErb25uzlayi5soujBIP+kTXa61gZmftEHJ3PJ44ni4uIU8gNOGpLlNfXDM2KRTkd7N3yqXVQN6kL4/rVEhT763b/fba6ot3EvysU5oSj8hTJBmKXM4VWJypqdHSbVehAZ2UUVi+XyeXS8cbGR6uQT6CDJnbgaA0f8AXtYT8KExm/1mG7StWGJ8B1cw/IkvElBQUvaKyVJUJXVBWXb9jSz2KCC/CKP8edhTUmtBxNx8nHKlLtYH1OlL2+Sk0tyg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738666208; c=relaxed/relaxed;
-	bh=NeGqeAkVd58QOieHg7z9vQ4aKrZGCj0r4/xkUB+AmGU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c6foyu1bPZBUweQAmOJ1DU5tO7L3zOef++OAHsL+EQ3VdhgLEkCxBA+yc1T8fiTZW+g+etwQxkfedvK85J7W9kdjQ/ZEPPqFDn0mX3L+ns8NokDlHLbiH6Gj1AjraroaOSou+uYDp9nWFpvSrLQlc/N4dFNx614t8FHKTJ7yFxvClxMiMkT9DFBw2Thm7HYkLb21HHUpWnCv3YBC22E15EnriY3TkNUo04Pfjb+1u5mGG4Sp5+KK5f2ZsFuwVtQXoJy7vWBXtpOioScle86p3+inW+OZLBZvbFFD1lXhdvET7XIOI8yyxZiwyKJcYe2U2Orq2NuFF0ReBcwwRIC8Jg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnKrb6gwxz2xKN
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 21:50:06 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YnKMG2FKcz9sSt;
-	Tue,  4 Feb 2025 11:28:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id nakPMojepx3o; Tue,  4 Feb 2025 11:28:10 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YnKMG1Gs0z9sSs;
-	Tue,  4 Feb 2025 11:28:10 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 072108B765;
-	Tue,  4 Feb 2025 11:28:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id NK-EmQCOU3lI; Tue,  4 Feb 2025 11:28:09 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8E9F88B763;
-	Tue,  4 Feb 2025 11:28:09 +0100 (CET)
-Message-ID: <1394492b-0e18-4b47-b5d7-3b8744eeb897@csgroup.eu>
-Date: Tue, 4 Feb 2025 11:28:09 +0100
+	t=1738670774; c=relaxed/relaxed;
+	bh=wComa0rnv3YEZ+WWCSgArmJaGL7iGg51pamsHsk6CyU=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=j0ZxHrLIql72Ko/RvvfCmETsmrBDEsZc2DjHTRvTJyEWsuVuiJnqDcZTWJFLTpPPlpPo+Bq2UHUV/ET0tuNbI3/z5WHfC5WwO9B5yNb/OS+Qw3zDIPfhGYkoG0vHAKR3tiXoDH6hIvGj/aWaT6yYa/q5klhkDFSZamzQpKurHCferhdZpPpw38yjwPv5QCM4OQ/2lM5Eo0jwQO9tt6Mz8exfqPQ4eJ14Kik0xfkf9sXuBZgIWsFcZtU4hJ0JpkuwuUD8V/WrunmITCjPOOlg70xgDXofIJOb8TQGoM+8q3O0HT0dzy3eLNmZ4f/UjzLIxr4bdVSSai+ecPZ7ZYC/Wg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zjT7Aglf; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=maYODhnL; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=zjT7Aglf;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=maYODhnL;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YnMXN1NPWz2ykf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 23:06:12 +1100 (AEDT)
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1738670765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wComa0rnv3YEZ+WWCSgArmJaGL7iGg51pamsHsk6CyU=;
+	b=zjT7AglfqW8bAJaYgQwyBQ7tphSgCxzlX591JYJNSllxJAInakXKdyvc0UBohtHNcPJHfq
+	cyQjcGE3yDfC8DzxG82hOM4BJ71L86tBCYr+4kKFaspzZlRRAgPZB3AKB0nlwFTQbmTRmz
+	e/footbcGZcY9JPUghuQrP0fnD/P7938z1x3X4ABUfimO0xiJmouGzcA/hCPFZ6YsWW+z/
+	2RdHKIm8XVnCH07Ge+/HVndG6GeM94m1RE/ccWUVQmcMiI+jgrjO7xuUI9ybFARefZYxww
+	yljSU7d4WOi5I+fJrVP1jFRh4XR18grNSJafs65dWD6qWJaCahSMLn4vAS2nCw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1738670765;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=wComa0rnv3YEZ+WWCSgArmJaGL7iGg51pamsHsk6CyU=;
+	b=maYODhnLRzvQTV4wA3qxa6VFPIVn0/4FnFJ5A1dz43kK0y03eAzMeHStiNwlZrl6MQaLJj
+	o94SkJjzgkx7PIDw==
+Subject: [PATCH v3 00/18] vDSO: Introduce generic data storage
+Date: Tue, 04 Feb 2025 13:05:32 +0100
+Message-Id: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,84 +63,223 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] powerpc/time: Export boot_tb and log initial
- timebase at boot
-To: Kajol Jain <kjain@linux.ibm.com>, maddy@linux.ibm.com
-Cc: atrajeev@linux.vnet.ibm.com, disgoel@linux.ibm.com,
- hbathini@linux.ibm.com, adubey@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, aboorvad@linux.ibm.com
-References: <20250204063948.643852-1-kjain@linux.ibm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250204063948.643852-1-kjain@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+X-B4-Tracking: v=1; b=H4sIAI0ComcC/2XMQQ6CMBCF4auQrq2ZKQKpK+9hXFA6wCSmNS02G
+ MLdLSRucPlP5n2LiBSYorgWiwiUOLJ3OcpTIbqxdQNJtrmFAnUBjSiTjV7GyQeSwQ2yhqYtbac
+ JKhB59ArU87yD90fukbffz+4n3K47hQrrI5VQguybliwaa0qjbk927yl4x/PZkti4pH5EBYjwR
+ 6hMlBV0GhttTI9HYl3XL2ZkT9vzAAAA
+X-Change-ID: 20240911-vdso-store-rng-607a3dc9e050
+To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+ Helge Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, 
+ Thomas Gleixner <tglx@linutronix.de>, 
+ Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, 
+ Frederic Weisbecker <frederic@kernel.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, 
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+ Theodore Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+ Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+ Russell King <linux@armlinux.org.uk>, Heiko Carstens <hca@linux.ibm.com>, 
+ Vasily Gorbik <gor@linux.ibm.com>, 
+ Alexander Gordeev <agordeev@linux.ibm.com>, 
+ Christian Borntraeger <borntraeger@linux.ibm.com>, 
+ Sven Schnelle <svens@linux.ibm.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Guo Ren <guoren@kernel.org>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+ linux-csky@vger.kernel.org
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738670761; l=9448;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=diey4KuX/1JIeahP2US5MbAQ+aq1EaqLaZh78/9RRnk=;
+ b=eykOiCWTO8c7BXuS/MdiVepPTNuDiqU3uNePw1rtYinpyXlJBZbYzbJBzrgNinoOGxbxkPWLy
+ CLrsNL8rqq4DQUs+K700KWIg/bSFyxb0dmG+yAQWsQlNnpbWusivgtj
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Currently each architecture defines the setup of the vDSO data page on
+its own, mostly through copy-and-paste from some other architecture.
+Extend the existing generic vDSO implementation to also provide generic
+data storage.
+This removes duplicated code and paves the way for further changes to
+the generic vDSO implementation without having to go through a lot of
+per-architecture changes.
 
+Based on v6.14-rc1 and intended to be merged through the tip tree.
 
-Le 04/02/2025 à 07:39, Kajol Jain a écrit :
-> From: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> 
-> - Export `boot_tb` for external use, this is useful in perf vpa-dtl
->    interface, where `boot_tb` can be used to convert raw timebase
->    values to it's relative boot timestamp.
+This also provides the basis for some generic vDSO reworks.
+The commits from this series and the upcoming reworks can be seen at:
+https://git.kernel.org/pub/scm/linux/kernel/git/thomas.weissschuh/linux.git/log/?h=vdso/store
 
-A modification of boot_tb can be catastrophic. I would not export it as 
-is as it doesn't need to be modified, would be better to provide it 
-through an accessor, for instance a function called get_boot_tb()
+---
+Changes in v3:
+- Rebase on v6.14-rc1
+- Fix build on riscv64-nommu
+- Link to v2: https://lore.kernel.org/r/20250110-vdso-store-rng-v2-0-350c9179bbf1@linutronix.de
 
-By the way, it is only modified by time_init() which is an __init 
-function, so boot_tb should be marked __ro_after_init instead of 
-__read_mostly, then in that case it would be more acceptable to export it.
+Changes in v2:
+- Drop __arch_get_vdso_u_timens_data() (Christophe)
+- Move to lib/vdso/ (Christophe)
+- Rename __ppc_get_vdso_u_timens_data() to
+  __arch_get_vdso_u_timens_data(), same for other hooks
+  (Christophe)
+- Fix build for architectures with time-less vDSO, like riscv32. (Conor)
+- Explicitly fix bug around x86 vclock pages
+- Link to v1: https://lore.kernel.org/r/20241216-vdso-store-rng-v1-0-f7aed1bdb3b2@linutronix.de
 
-> 
-> - Log the initial timebase at `time_init` as it is a useful
->    information which can be referred to as needed.
-> 
-> Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
-> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
-> ---
->   arch/powerpc/include/asm/time.h | 1 +
->   arch/powerpc/kernel/time.c      | 4 +++-
->   2 files changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
-> index 9bdd8080299b..b6fc5df01d53 100644
-> --- a/arch/powerpc/include/asm/time.h
-> +++ b/arch/powerpc/include/asm/time.h
-> @@ -23,6 +23,7 @@ extern u64 decrementer_max;
->   extern unsigned long tb_ticks_per_jiffy;
->   extern unsigned long tb_ticks_per_usec;
->   extern unsigned long tb_ticks_per_sec;
-> +extern u64 boot_tb;
->   extern struct clock_event_device decrementer_clockevent;
->   extern u64 decrementer_max;
->   
-> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
-> index 0727332ad86f..6e8548f0e48f 100644
-> --- a/arch/powerpc/kernel/time.c
-> +++ b/arch/powerpc/kernel/time.c
-> @@ -137,7 +137,8 @@ EXPORT_SYMBOL_GPL(rtc_lock);
->   
->   static u64 tb_to_ns_scale __read_mostly;
->   static unsigned tb_to_ns_shift __read_mostly;
-> -static u64 boot_tb __read_mostly;
-> +u64 boot_tb __read_mostly;
-> +EXPORT_SYMBOL_GPL(boot_tb);
->   
->   extern struct timezone sys_tz;
->   static long timezone_offset;
-> @@ -943,6 +944,7 @@ void __init time_init(void)
->   	tb_to_ns_shift = shift;
->   	/* Save the current timebase to pretty up CONFIG_PRINTK_TIME */
->   	boot_tb = get_tb();
-> +	pr_debug("%s: timebase at boot: %llu\n", __func__, (unsigned long long)boot_tb);
->   
->   	/* If platform provided a timezone (pmac), we correct the time */
->   	if (timezone_offset) {
+---
+Thomas Weißschuh (18):
+      x86/vdso: Fix latent bug in vclock_pages calculation
+      parisc: Remove unused symbol vdso_data
+      vdso: Introduce vdso/align.h
+      vdso: Rename included Makefile
+      vdso: Add generic time data storage
+      vdso: Add generic random data storage
+      vdso: Add generic architecture-specific data storage
+      arm64: vdso: Switch to generic storage implementation
+      riscv: vdso: Switch to generic storage implementation
+      LoongArch: vDSO: Switch to generic storage implementation
+      arm: vdso: Switch to generic storage implementation
+      s390/vdso: Switch to generic storage implementation
+      MIPS: vdso: Switch to generic storage implementation
+      powerpc/vdso: Switch to generic storage implementation
+      x86/vdso: Switch to generic storage implementation
+      x86/vdso/vdso2c: Remove page handling
+      vdso: Remove remnants of architecture-specific random state storage
+      vdso: Remove remnants of architecture-specific time storage
+
+ arch/Kconfig                                       |   4 +
+ arch/arm/include/asm/vdso.h                        |   2 +
+ arch/arm/include/asm/vdso/gettimeofday.h           |   7 +-
+ arch/arm/include/asm/vdso/vsyscall.h               |  12 +-
+ arch/arm/kernel/asm-offsets.c                      |   4 -
+ arch/arm/kernel/vdso.c                             |  34 ++----
+ arch/arm/mm/Kconfig                                |   1 +
+ arch/arm/vdso/Makefile                             |   2 +-
+ arch/arm/vdso/vdso.lds.S                           |   4 +-
+ arch/arm64/Kconfig                                 |   1 +
+ arch/arm64/include/asm/vdso.h                      |   2 +-
+ arch/arm64/include/asm/vdso/compat_gettimeofday.h  |  36 ++----
+ arch/arm64/include/asm/vdso/getrandom.h            |  12 --
+ arch/arm64/include/asm/vdso/gettimeofday.h         |  16 +--
+ arch/arm64/include/asm/vdso/vsyscall.h             |  25 +---
+ arch/arm64/kernel/vdso.c                           |  90 +-------------
+ arch/arm64/kernel/vdso/Makefile                    |   2 +-
+ arch/arm64/kernel/vdso/vdso.lds.S                  |   7 +-
+ arch/arm64/kernel/vdso32/Makefile                  |   2 +-
+ arch/arm64/kernel/vdso32/vdso.lds.S                |   7 +-
+ arch/csky/kernel/vdso/Makefile                     |   2 +-
+ arch/loongarch/Kconfig                             |   2 +
+ arch/loongarch/include/asm/vdso.h                  |   1 -
+ arch/loongarch/include/asm/vdso/arch_data.h        |  25 ++++
+ arch/loongarch/include/asm/vdso/getrandom.h        |   5 -
+ arch/loongarch/include/asm/vdso/gettimeofday.h     |  14 +--
+ arch/loongarch/include/asm/vdso/vdso.h             |  38 +-----
+ arch/loongarch/include/asm/vdso/vsyscall.h         |  17 ---
+ arch/loongarch/kernel/asm-offsets.c                |   2 +-
+ arch/loongarch/kernel/vdso.c                       |  92 +--------------
+ arch/loongarch/vdso/Makefile                       |   2 +-
+ arch/loongarch/vdso/vdso.lds.S                     |   8 +-
+ arch/loongarch/vdso/vgetcpu.c                      |  12 +-
+ arch/mips/Kconfig                                  |   1 +
+ arch/mips/include/asm/vdso/gettimeofday.h          |   9 +-
+ arch/mips/include/asm/vdso/vdso.h                  |  19 ++-
+ arch/mips/include/asm/vdso/vsyscall.h              |  14 +--
+ arch/mips/kernel/vdso.c                            |  47 +++-----
+ arch/mips/vdso/Makefile                            |   2 +-
+ arch/mips/vdso/vdso.lds.S                          |   5 +-
+ arch/parisc/include/asm/vdso.h                     |   2 -
+ arch/parisc/kernel/vdso32/Makefile                 |   2 +-
+ arch/parisc/kernel/vdso64/Makefile                 |   2 +-
+ arch/powerpc/Kconfig                               |   2 +
+ arch/powerpc/include/asm/vdso.h                    |   1 +
+ arch/powerpc/include/asm/vdso/arch_data.h          |  37 ++++++
+ arch/powerpc/include/asm/vdso/getrandom.h          |  11 +-
+ arch/powerpc/include/asm/vdso/gettimeofday.h       |  29 ++---
+ arch/powerpc/include/asm/vdso/vsyscall.h           |  13 ---
+ arch/powerpc/include/asm/vdso_datapage.h           |  44 +------
+ arch/powerpc/kernel/asm-offsets.c                  |   1 -
+ arch/powerpc/kernel/time.c                         |   2 +-
+ arch/powerpc/kernel/vdso.c                         | 115 ++----------------
+ arch/powerpc/kernel/vdso/Makefile                  |   2 +-
+ arch/powerpc/kernel/vdso/cacheflush.S              |   2 +-
+ arch/powerpc/kernel/vdso/datapage.S                |   4 +-
+ arch/powerpc/kernel/vdso/gettimeofday.S            |   4 +-
+ arch/powerpc/kernel/vdso/vdso32.lds.S              |   4 +-
+ arch/powerpc/kernel/vdso/vdso64.lds.S              |   4 +-
+ arch/powerpc/kernel/vdso/vgettimeofday.c           |  14 +--
+ arch/riscv/Kconfig                                 |   3 +-
+ arch/riscv/include/asm/vdso.h                      |   2 +-
+ .../include/asm/vdso/{time_data.h => arch_data.h}  |   8 +-
+ arch/riscv/include/asm/vdso/gettimeofday.h         |  14 +--
+ arch/riscv/include/asm/vdso/vsyscall.h             |   9 --
+ arch/riscv/kernel/sys_hwprobe.c                    |   3 +-
+ arch/riscv/kernel/vdso.c                           |  90 +-------------
+ arch/riscv/kernel/vdso/Makefile                    |   2 +-
+ arch/riscv/kernel/vdso/hwprobe.c                   |   6 +-
+ arch/riscv/kernel/vdso/vdso.lds.S                  |   7 +-
+ arch/s390/Kconfig                                  |   1 +
+ arch/s390/include/asm/vdso.h                       |   4 +-
+ arch/s390/include/asm/vdso/getrandom.h             |  12 --
+ arch/s390/include/asm/vdso/gettimeofday.h          |  15 +--
+ arch/s390/include/asm/vdso/vsyscall.h              |  20 ----
+ arch/s390/kernel/time.c                            |   6 +-
+ arch/s390/kernel/vdso.c                            |  97 +---------------
+ arch/s390/kernel/vdso32/Makefile                   |   2 +-
+ arch/s390/kernel/vdso32/vdso32.lds.S               |   7 +-
+ arch/s390/kernel/vdso64/Makefile                   |   2 +-
+ arch/s390/kernel/vdso64/vdso64.lds.S               |   8 +-
+ arch/x86/Kconfig                                   |   1 +
+ arch/x86/entry/vdso/Makefile                       |   2 +-
+ arch/x86/entry/vdso/vdso-layout.lds.S              |  10 +-
+ arch/x86/entry/vdso/vdso2c.c                       |  21 ----
+ arch/x86/entry/vdso/vdso2c.h                       |  20 ----
+ arch/x86/entry/vdso/vma.c                          | 125 ++------------------
+ arch/x86/include/asm/vdso.h                        |   6 -
+ arch/x86/include/asm/vdso/getrandom.h              |  10 --
+ arch/x86/include/asm/vdso/gettimeofday.h           |  25 +---
+ arch/x86/include/asm/vdso/vsyscall.h               |  23 +---
+ drivers/char/random.c                              |   6 +-
+ include/asm-generic/vdso/vsyscall.h                |  27 +++--
+ include/linux/align.h                              |  10 +-
+ include/linux/time_namespace.h                     |   2 -
+ include/linux/vdso_datastore.h                     |  10 ++
+ include/vdso/align.h                               |  15 +++
+ include/vdso/datapage.h                            |  74 +++++++++---
+ include/vdso/helpers.h                             |   8 +-
+ kernel/time/namespace.c                            |  12 +-
+ kernel/time/vsyscall.c                             |  19 ++-
+ lib/Makefile                                       |   2 +-
+ lib/vdso/Kconfig                                   |   5 +
+ lib/vdso/Makefile                                  |  19 +--
+ lib/vdso/Makefile.include                          |  18 +++
+ lib/vdso/datastore.c                               | 129 +++++++++++++++++++++
+ lib/vdso/getrandom.c                               |   8 +-
+ lib/vdso/gettimeofday.c                            |  74 +++++++-----
+ 108 files changed, 604 insertions(+), 1277 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20240911-vdso-store-rng-607a3dc9e050
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
 
