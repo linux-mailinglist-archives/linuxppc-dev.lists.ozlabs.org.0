@@ -1,69 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-5800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5801-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A470CA26D5F
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 09:37:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C52A26F8E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 11:50:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnGvJ0sPmz2xCj;
-	Tue,  4 Feb 2025 19:37:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnKrc6hdWz2xKd;
+	Tue,  4 Feb 2025 21:50:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738658236;
-	cv=none; b=VJ/hO1ryto9PEHAjy1tRUVTaeiyvbezULilBNGeHx3BZatOzKw3cKNRKQC5iIMDKJxNWYfOYiCxs+6hIEZ0VFpSKXe+7UYBZELwTovNOcnzp8wERXTGxT7NIIx9mjAzxQrtYo1A4RhRVK2EszKw4Ag1DHkULLc+GVY4HnUeEf8G2YI8KzI2Nkp8iYQumXat0CM+QrdKpYZqApSGipoe/iz101DfyQR2RofMxLrn6CeMN5vu3S0zc99VNFmoE8n2rOR/Ga69msWeEhxOveFYokAnGfWTxt2A/vQLiTvrfkAQr3GhwL9N9wtDPON78yMmJwwbpe+hzaC9loYkdGF3o8Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738666208;
+	cv=none; b=MXi+6/7O73Wian2tiAQ5/kKqiKvVFRko7ay9OyaVINzy20WTTzPQfaQf1EueSW19j4/Ipo0/Drmpwk0NfyydtU/IKUOrYKMRv2q6mWKsFvE8jvphJy1AcHXftpY6ydqCUYzBC++RWwozAAM5aVPj7J0/SzU5OaMLsPqVuMWNnmUgoYNHmlAm1KFXFDDL9czdOiZYm2YK5H6LJ2R1K6qtQEHRxZFZKyk/wjSWDQnc7lBbWmnCxZZjQMWZfVUIs0JOATn+SiYIBSh9CpHprwux1Ca/3jFWcnZWKf0IuTAKl1pKuC2ou8JY7wvaKUzE1KjP1NceMHgVWoE9E8VuXAGi1w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738658236; c=relaxed/relaxed;
-	bh=Z0zsa6x0YEQwMLqsOLH6anXv+hYaQEocon4Mx3gFi4o=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=ccHzi+lgjMMhvKdJcB/h3yzuoiFtzisTfI3xDg1y02XX989MEueixUyJbLXnb4NREXRjyzpIOPY8ABNoZvYvGQ4NKe5+QV38QWEWg0Pv1Dxla55Gp8GcQW1+7mlKthggGyGyHtnar7fUDxQg+N03fAf4rKbrNb9jjYuZtuGQOkORg2BXLhwuOUjDR7tL7zie/3Xg0v3y5CZklmNqRBQSfgaIEYPwZoK+8oUDCoCaMybuUUJPNcaZxf26ve9vsGCKaiZGLiNVF/ee3O330Pghipw4d+NKqBHRt7acST0TNctjI/8pyCNQwEssvlAETnekc4zhOo0pqyT0hnQsdEsKwA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GCmbbriT; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=avnish@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GCmbbriT;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=avnish@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YnGvH00HSz2xBK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 19:37:14 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5144TA76016379;
-	Tue, 4 Feb 2025 08:37:06 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Z0zsa6
-	x0YEQwMLqsOLH6anXv+hYaQEocon4Mx3gFi4o=; b=GCmbbriTcsd7PcVKiGAv5h
-	BKAV4Gq85C/uUnAZ23E4eU5yThSgvI9J9TaoxXTmsFUrgjzF/TZTeLdJPBDnoHVj
-	BcqF7in2gmP6444/fehuuEvMpmAwX587AN/E85qiooOmAd5ZDN75PA/xWruhkX0X
-	Rq7q5KSuB59AhTz2aWie3BsDta0dftj7fkmiU05zVZuM9eSzLP2gq+zMYis9Dq3V
-	hOmDi8G6sm9iMdZDFuucloNF7rTY0GRktOpR7Nj3viwlXnSMeWWnEJeR61Ysp9Ds
-	YccyHVzM2aSnxPmJKbPrresVY877bWLKV8CBBsewW9YjHh+EF8YRgGmbAEmPMb4Q
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44k02ymc74-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 08:37:06 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5148Wxu4006502;
-	Tue, 4 Feb 2025 08:37:05 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hyekag6c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 08:37:05 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5148b3fU27263650
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Feb 2025 08:37:04 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADD5358050;
-	Tue,  4 Feb 2025 08:37:03 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0F30258052;
-	Tue,  4 Feb 2025 08:37:03 +0000 (GMT)
-Received: from ltc.linux.ibm.com (unknown [9.5.196.140])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  4 Feb 2025 08:37:02 +0000 (GMT)
+	t=1738666208; c=relaxed/relaxed;
+	bh=NeGqeAkVd58QOieHg7z9vQ4aKrZGCj0r4/xkUB+AmGU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c6foyu1bPZBUweQAmOJ1DU5tO7L3zOef++OAHsL+EQ3VdhgLEkCxBA+yc1T8fiTZW+g+etwQxkfedvK85J7W9kdjQ/ZEPPqFDn0mX3L+ns8NokDlHLbiH6Gj1AjraroaOSou+uYDp9nWFpvSrLQlc/N4dFNx614t8FHKTJ7yFxvClxMiMkT9DFBw2Thm7HYkLb21HHUpWnCv3YBC22E15EnriY3TkNUo04Pfjb+1u5mGG4Sp5+KK5f2ZsFuwVtQXoJy7vWBXtpOioScle86p3+inW+OZLBZvbFFD1lXhdvET7XIOI8yyxZiwyKJcYe2U2Orq2NuFF0ReBcwwRIC8Jg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnKrb6gwxz2xKN
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 21:50:06 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4YnKMG2FKcz9sSt;
+	Tue,  4 Feb 2025 11:28:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id nakPMojepx3o; Tue,  4 Feb 2025 11:28:10 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YnKMG1Gs0z9sSs;
+	Tue,  4 Feb 2025 11:28:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 072108B765;
+	Tue,  4 Feb 2025 11:28:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id NK-EmQCOU3lI; Tue,  4 Feb 2025 11:28:09 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 8E9F88B763;
+	Tue,  4 Feb 2025 11:28:09 +0100 (CET)
+Message-ID: <1394492b-0e18-4b47-b5d7-3b8744eeb897@csgroup.eu>
+Date: Tue, 4 Feb 2025 11:28:09 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,141 +56,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Date: Tue, 04 Feb 2025 14:07:02 +0530
-From: Avnish Chouhan <avnish@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Brian King <brking@linux.ibm.com>,
-        Madhavan Srinivasan
- <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mahesh
- Salgaonkar <mahesh@linux.ibm.com>
-Subject: Re: [PATCH 2/2] powerpc/fadump: fix additional param memory
- reservation for HASH MMU
-In-Reply-To: <fdf5cec6-54ce-4042-b8a5-2560ce7dd623@linux.ibm.com>
-References: <20250120173501.1147236-1-sourabhjain@linux.ibm.com>
- <20250120173501.1147236-3-sourabhjain@linux.ibm.com>
- <6322511c-e56a-4f4c-9b13-efec018cb3a7@linux.ibm.com>
- <773fec68e97a408de6871eb3d2c2ac61@linux.ibm.com>
- <c0ace54a-af67-4df5-a284-b96e454869a9@linux.ibm.com>
- <a47286ca0936ea707ed2e80cd276311c@linux.ibm.com>
- <fdf5cec6-54ce-4042-b8a5-2560ce7dd623@linux.ibm.com>
-Message-ID: <405d82eb1ba6799b63b6ed90347d88c9@linux.ibm.com>
-X-Sender: avnish@linux.ibm.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -WPhr2r9tqOQ1BHSmx97u2bOk63a4CzC
-X-Proofpoint-ORIG-GUID: -WPhr2r9tqOQ1BHSmx97u2bOk63a4CzC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-04_04,2025-01-31_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
- impostorscore=0 bulkscore=0 mlxlogscore=821 spamscore=0 clxscore=1015
- priorityscore=1501 lowpriorityscore=0 phishscore=0 adultscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502040067
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/3] powerpc/time: Export boot_tb and log initial
+ timebase at boot
+To: Kajol Jain <kjain@linux.ibm.com>, maddy@linux.ibm.com
+Cc: atrajeev@linux.vnet.ibm.com, disgoel@linux.ibm.com,
+ hbathini@linux.ibm.com, adubey@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org, aboorvad@linux.ibm.com
+References: <20250204063948.643852-1-kjain@linux.ibm.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250204063948.643852-1-kjain@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2025-02-04 11:57, Hari Bathini wrote:
-> On 04/02/25 10:58 am, Avnish Chouhan wrote:
->> On 2025-01-31 20:44, Hari Bathini wrote:
->>> On 23/01/25 7:54 pm, Avnish Chouhan wrote:
->>>> On 2025-01-23 15:26, Hari Bathini wrote:
->>>>> On 20/01/25 11:05 pm, Sourabh Jain wrote:
->>>>>> Commit 683eab94da75bc ("powerpc/fadump: setup additional 
->>>>>> parameters for
->>>>>> dump capture kernel") introduced the additional parameter feature 
->>>>>> in
->>>>>> fadump for HASH MMU with the understanding that GRUB does not use 
->>>>>> the
->>>>>> memory area between 640MB and 768MB for its operation.
->>>>>> 
->>>>>> However, the patch ("powerpc: increase MIN RMA size for CAS
->>>>>> negotiation") changes the MIN RMA size to 768MB, allowing GRUB to 
->>>>>> use
->>>>>> memory up to 768MB. This makes the fadump reservation for the 
->>>>>> additional
->>>>>> parameter feature for HASH MMU unreliable.
->>>>>> 
->>>>>> To address this, adjust the memory range for the additional 
->>>>>> parameter in
->>>>>> fadump for HASH MMU. This will ensure that GRUB does not overwrite 
->>>>>> the
->>>>>> memory reserved for fadump's additional parameter in HASH MMU.
->>>>>> 
->>>>> 
->>>>>> The new policy for the memory range for the additional parameter 
->>>>>> in HASH
->>>>>> MMU is that the first memory block must be larger than the MIN_RMA 
->>>>>> size,
->>>>>> as the bootloader can use memory up to the MIN_RMA size. The range
->>>>>> should be between MIN_RMA and the RMA size (ppc64_rma_size), and 
->>>>>> it must
->>>>>> not overlap with the fadump reserved area.
->>>>> 
->>>>> IIRC, even memory above MIN_RMA is used by the bootloader except 
->>>>> for
->>>>> 640MB to 768MB (assuming RMA size is >768MB). So, how does this 
->>>>> change
->>>>> guarantee that the bootloader is not using memory reserved for 
->>>>> bootargs?
->>>>> 
->>>>> Avnish, earlier, bootloader was using RUNTIME_MIN_SPACE (128MB) 
->>>>> starting
->>>>> top-down at 768MB earlier. With MIN_RMA changed to 768MB, is 
->>>>> bootloader
->>>>> still using the concept of RUNTIME_MIN_SPACE to set aside some 
->>>>> memory
->>>>> for kernel to use. If yes, where exactly is it allocating this 
->>>>> space
->>>>> now? Also, rtas instantiates top-down at 768MB. Would that not have
->>>>> a conflict with grub allocations without RUNTIME_MIN_SPACE at 
->>>>> 768MB?
->>>>> 
->>>>> - Hari
->>>> 
->>>> Hi Hari,
->>> 
->>> Hi Avnish,
->>> 
->>>> The RUNTIME_MIN_SPACE is the space left aside by Grub is within the 
->>>> MIN_RMA size. Grub won't use memory beyond the MIN_RMA. With this 
->>>> change, we haven't changed the RUNTIME_MIN_SPACE behavior. Grub will 
->>>> still keep the 128 MB space in MIN_RMA for loading stock kernel and 
->>>> initrd.
->>> 
->>> IIUC, you mean, 640MB to 768MB is not used by Grub even if MIN_RMA
->>> is at 768MB? If that is true, this change is not needed, as fadump
->>> could still use the memory between 640MB to 768MB, right?
->>> Am I missing something here..
->> 
->> Hari,
->> 
->> No. As we are changing MIN_RMA to 768 MB, GRUB can use memory till 768 
->> MB if required.
+
+
+Le 04/02/2025 à 07:39, Kajol Jain a écrit :
+> From: Aboorva Devarajan <aboorvad@linux.ibm.com>
 > 
-> Does that mean 'linux_rmo_save' related code in
-> grub-core/kern/ieee1275/init.c is going to be dead code after this
-> change. Also, does this imply, there isn't going to be any
-> RUNTIME_MIN_SPACE support for linux in grub?
+> - Export `boot_tb` for external use, this is useful in perf vpa-dtl
+>    interface, where `boot_tb` can be used to convert raw timebase
+>    values to it's relative boot timestamp.
 
-No Hari, there's no change in RUNTIME_MIN_SPACE as mentioned earlier nor 
-the change leading to any dead code in grub. If we have MIN_RMA as 512 
-MB, the grub will consider RUNTIME_MIN_SPACE region within the MIN_RMA 
-as (384[512-128] to 512). And if we have MIN_RMA as 768 MB, it will be 
-(640[768-128] to 768).
+A modification of boot_tb can be catastrophic. I would not export it as 
+is as it doesn't need to be modified, would be better to provide it 
+through an accessor, for instance a function called get_boot_tb()
 
-Grub will keep the 128 MB space in MIN_RMA for loading stock kernel and 
-initrd as stated earlier.
+By the way, it is only modified by time_init() which is an __init 
+function, so boot_tb should be marked __ro_after_init instead of 
+__read_mostly, then in that case it would be more acceptable to export it.
 
-Thank you,
-Avnish Chouhan
 > 
-> - Hari
+> - Log the initial timebase at `time_init` as it is a useful
+>    information which can be referred to as needed.
+> 
+> Signed-off-by: Aboorva Devarajan <aboorvad@linux.ibm.com>
+> Signed-off-by: Kajol Jain <kjain@linux.ibm.com>
+> ---
+>   arch/powerpc/include/asm/time.h | 1 +
+>   arch/powerpc/kernel/time.c      | 4 +++-
+>   2 files changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/time.h b/arch/powerpc/include/asm/time.h
+> index 9bdd8080299b..b6fc5df01d53 100644
+> --- a/arch/powerpc/include/asm/time.h
+> +++ b/arch/powerpc/include/asm/time.h
+> @@ -23,6 +23,7 @@ extern u64 decrementer_max;
+>   extern unsigned long tb_ticks_per_jiffy;
+>   extern unsigned long tb_ticks_per_usec;
+>   extern unsigned long tb_ticks_per_sec;
+> +extern u64 boot_tb;
+>   extern struct clock_event_device decrementer_clockevent;
+>   extern u64 decrementer_max;
+>   
+> diff --git a/arch/powerpc/kernel/time.c b/arch/powerpc/kernel/time.c
+> index 0727332ad86f..6e8548f0e48f 100644
+> --- a/arch/powerpc/kernel/time.c
+> +++ b/arch/powerpc/kernel/time.c
+> @@ -137,7 +137,8 @@ EXPORT_SYMBOL_GPL(rtc_lock);
+>   
+>   static u64 tb_to_ns_scale __read_mostly;
+>   static unsigned tb_to_ns_shift __read_mostly;
+> -static u64 boot_tb __read_mostly;
+> +u64 boot_tb __read_mostly;
+> +EXPORT_SYMBOL_GPL(boot_tb);
+>   
+>   extern struct timezone sys_tz;
+>   static long timezone_offset;
+> @@ -943,6 +944,7 @@ void __init time_init(void)
+>   	tb_to_ns_shift = shift;
+>   	/* Save the current timebase to pretty up CONFIG_PRINTK_TIME */
+>   	boot_tb = get_tb();
+> +	pr_debug("%s: timebase at boot: %llu\n", __func__, (unsigned long long)boot_tb);
+>   
+>   	/* If platform provided a timezone (pmac), we correct the time */
+>   	if (timezone_offset) {
+
 
