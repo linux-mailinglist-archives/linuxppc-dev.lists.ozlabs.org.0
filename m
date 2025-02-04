@@ -1,34 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-5805-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5806-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BACDBA270F8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 13:06:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7848CA270FA
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 13:06:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnMXQ4s4jz2ytN;
-	Tue,  4 Feb 2025 23:06:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnMXS0pFKz2yvk;
+	Tue,  4 Feb 2025 23:06:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738670774;
-	cv=none; b=SwAP5sXpFKkDkUyu9kCQ6BcvLvC127+LgEUWW0E34u4tJMDvwqzfOT0GC/ZrC5f5TRawg30DNPFnPy2iTDLLAmWxzjSA0iTgJcHwmFrRBChotd0dTtr8naFJ/RRHY8J8o9F1sC/W80Rp5Dvgy/q2lXQeFWkCxXIdWJqsHKMWuz+YK2JXrIYsbzXAx0uCrZ9uOhCg7OXsWVXKpmdki5IaUJMWYSO3bt7qiBbXA6QCNwt28uou06Xoko32oh1rhn++8ZNo6IWz+i4i17rqphT1KCM22IYVLgSjOAaFynw/YbAWKanWbitb9XFVLeQgBvng8BYti34NUKrODgmqMqhc/w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738670776;
+	cv=none; b=Q0R0DvusJybBIQrZb41fTbGUD2ogo3+qtz2gzzNXEZc/aGurwScCAlHFGd3GdjgmYTNzbIM47hYJJ6mZCOg0JmH/IYLRXoq9mFdAeySvrXBMdl/EmP+Xw+5H5/kfxHKgnAY4M2Vwk1CL5A81wicJohTgjztl34VgRx3Eq/f2Us+YC3lO84VfbaghJHcSvIail9ZLUp02vZUoLQrrkws7ZB9JnTZrYKB7RxPOXt+Apk+azz8toROaUheHwkoeL8d5+C/O8RvcJsKSX4+jeT1iGpBZeqLkHMr0l1Dr3Imu5cnFB56kLb/9wlr5+WNcPqHSiKwZMntHol4SG9Yh7cGSQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738670774; c=relaxed/relaxed;
-	bh=8tzJ1joMpGHHtzyOpZkkHUWdfelYxBi+wFF4CRWn/mU=;
+	t=1738670776; c=relaxed/relaxed;
+	bh=WWzbODtLNCvv1Ul40EmzaWaPKIdRBRE82K41Ep5Egkc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EB7l74WueS5eydPRTi23gzT3/pTS+QzBKMeuTA/rUF+1fNUF+2y2hU5Jby8qqinb4tbCX2Vr16tf9Df7AhytuVD6MCXWqBXpOzIpiAIJkOcnqq+RuwjsvHfyQJiafIy1FbdrC9I8IHtGoXEGNvbV/ChhyDaEnqyb5gspxsdVcfOFUhSYu2ALpjZprMcsfO/AQ+5YK/6Bm0/teWTWX7kqyBX7g8HAZbNq2kn0UhiVa2OYCC1De2eAYL6mQMuYmklgGNZ1l4zZmMiT+3N+IdpiTyE1LjE2fwDTtbwYeBO8n1vjqjy7TBFDtTmB1JW+r/oM/EPc20Of+NDCFNanGwc/lw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=V6j2Bzb2; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=iOtKH3os; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=ozhEBQDwtqHZivypjW4ToVtlwcKy1IepXyq5rOw4J6pK6LH7y7SvToXvHo+mU/jXFbWIr3Vj3nA1cfiuxQr5CC1I1cbFn7ieM0eBiqc62qv9wTNVl1Td+t7luJ6rFcP2MAk6IfMoyhV/emD6MjX4bcgTOHAm1SiJ8woKavseu+WmORMe8ldUkN3OdMdPf5ByaWmNuGRNSQCt9eecB0tsC32ZRshGctklqkbgpgHQshBI86fyPVvmCsb6ba0cyz0IQ9BRYx2HLoH8/jo4nL5kj4yxJe9blMR66kLyDsFPDSjIFNGlNgeGwbvBMQalEYErYsnxnYuVBjVRYtTJQW4SCg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YqFvxt1Y; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=FOXwg3th; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=V6j2Bzb2;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=iOtKH3os;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=YqFvxt1Y;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=FOXwg3th;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YnMXN4SWvz2ykn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 23:06:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YnMXQ62Syz2ytT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 23:06:14 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1738670767;
@@ -36,23 +36,23 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8tzJ1joMpGHHtzyOpZkkHUWdfelYxBi+wFF4CRWn/mU=;
-	b=V6j2Bzb2DRgaHKVvoWqEOL27zB3QtKLt4Ore8/SsczLQALyCenL5OFwapQzwhVdu9y3xpS
-	cQZ+JuxIu/XEMKB1mzXgFUoT//0mHMJrlQ8TJjZwZo9zlNbx14A2PPb5aJBk1W5j89SAxb
-	EVhLcE8hXrCivq28hrHiRQ1xEfuNLDPVNINkY4d9wRgP5UaeYmhW7aAoGtrfytI/i9/+vj
-	a3kh1Nt9Zoanzv0bYnYotnou88oNxhxhBN1ygL6Zo1eAoEJkYzwj5+vPuPzCeR89CKaVSs
-	SNewuZIe/x5/y5ufhjaVUvNysR6R/QcCwwGobQLPGhS/T8V4NEahAkE7SBq+JA==
+	bh=WWzbODtLNCvv1Ul40EmzaWaPKIdRBRE82K41Ep5Egkc=;
+	b=YqFvxt1YwBR6CYaDHmxpjmsOSlXhIj2Xq9QRUU2O01AjZgAelgzTHmNrrJz/iOpy3OEE3x
+	f9zxrIJfA6bKSmteGdt4khX/C5ww2FIorQj74sIJ1eqsM5r9sfNsM/ePRzkH52T+rpgBy9
+	m2N/XOmCs2UJTWlnz2twiF+KrvEqcGUdKaCcA+ER71zSXLOid6rFLenNcbHBXP9i3Hh0Ai
+	Tzxmu8vXwY1UO/hZiBf3BP2tQtXElgz/VUXteELX+8zqjmZBXfp1dSV3IEirVF/Z0LojOf
+	SH4rydHU+/+ZAPsl7RQa924izKZy25N/1AhG2qvfOsawtxLDcOV3QX2hj2PScw==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1738670767;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8tzJ1joMpGHHtzyOpZkkHUWdfelYxBi+wFF4CRWn/mU=;
-	b=iOtKH3oskjcSYbCDgYKpSYB56t2sXU+wplGvT0jFC1YW0MQDUGoJvdNFOaiB4UvAdBeCPc
-	PMh3pscdXS1SjCCA==
-Date: Tue, 04 Feb 2025 13:05:35 +0100
-Subject: [PATCH v3 03/18] vdso: Introduce vdso/align.h
+	bh=WWzbODtLNCvv1Ul40EmzaWaPKIdRBRE82K41Ep5Egkc=;
+	b=FOXwg3thsqFQfOdU9a18O9Iaxu9WrgGvvKRSclGv/I0SKMr0BjtN1ng9gynSC5X+132eYk
+	iOcT0qGzU8wlfECw==
+Date: Tue, 04 Feb 2025 13:05:36 +0100
+Subject: [PATCH v3 04/18] vdso: Rename included Makefile
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250204-vdso-store-rng-v3-3-13a4669dfc8c@linutronix.de>
+Message-Id: <20250204-vdso-store-rng-v3-4-13a4669dfc8c@linutronix.de>
 References: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
 In-Reply-To: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
 To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
@@ -102,11 +102,11 @@ Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
  linux-csky@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738670761; l=2181;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738670761; l=8154;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=pGC6jdjVpB6TSU5BlYOrn0adCU6n5QZjbS9JPsjrItg=;
- b=OW2mHbyRnxefuX9jtydaC4QPubDcM1IK1QS/suztcpEYCSk6R4TQGGJNZXsgYPfuJtL8zaYiV
- Ee44hOKuVaIBGyEHrG4dGlROwx8aYEK2YSDNoaAJcuGYVPNnBTi2GLG
+ bh=B3n9HaVUIM0ttqAmIMKk34exnf1W/cPAoDX+ImH3r3Q=;
+ b=EPiMeazyKKiscKtnMAnyzzlWXX6Cs9adlUmAxt5p/Vrfpb8n9hcWU+BJ9PJ8TrDNrqbnuN+yW
+ E6ruDwqXnCmAjL01ZQqgNMwGhBXGHns4KCu9Ek0+Refjemr7SFyuZHO
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -114,61 +114,199 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The vDSO implementation can only include headers from the vdso/
-namespace. To enable the usage of the ALIGN() macro from the vDSO, move
-linux/align.h to vdso/align.h wholly.
-As the only dependency linux/const.h is only a wrapper around
-vdso/const.h anyways adapt that dependency.
-
-Also provide a compatibility wrapper linux/align.h.
+As the Makefile is included into other Makefiles it can not be used to
+define objects to be built from the current source directory.
+However the generic datastore will introduce such a local source file.
+Rename the included Makefile so it is clear how it is to be used and to
+make room for a regular Makefile in lib/vdso/.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- include/linux/align.h | 10 +---------
- include/vdso/align.h  | 15 +++++++++++++++
- 2 files changed, 16 insertions(+), 9 deletions(-)
+ arch/arm/vdso/Makefile                  | 2 +-
+ arch/arm64/kernel/vdso/Makefile         | 2 +-
+ arch/arm64/kernel/vdso32/Makefile       | 2 +-
+ arch/csky/kernel/vdso/Makefile          | 2 +-
+ arch/loongarch/vdso/Makefile            | 2 +-
+ arch/mips/vdso/Makefile                 | 2 +-
+ arch/parisc/kernel/vdso32/Makefile      | 2 +-
+ arch/parisc/kernel/vdso64/Makefile      | 2 +-
+ arch/powerpc/kernel/vdso/Makefile       | 2 +-
+ arch/riscv/kernel/vdso/Makefile         | 2 +-
+ arch/s390/kernel/vdso32/Makefile        | 2 +-
+ arch/s390/kernel/vdso64/Makefile        | 2 +-
+ arch/x86/entry/vdso/Makefile            | 2 +-
+ lib/vdso/{Makefile => Makefile.include} | 0
+ 14 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/include/linux/align.h b/include/linux/align.h
-index 2b4acec7b95a27b6768d48f46519abc584c94d5d..55debf105a5d610c592e5c53a4153018ea1ae2c6 100644
---- a/include/linux/align.h
-+++ b/include/linux/align.h
-@@ -2,14 +2,6 @@
- #ifndef _LINUX_ALIGN_H
- #define _LINUX_ALIGN_H
+diff --git a/arch/arm/vdso/Makefile b/arch/arm/vdso/Makefile
+index 8a306bbec4a0c4d4b6580fe88187faf9f5422eed..cb044bfd145d10b5bf840d31900aefc8a187e5bd 100644
+--- a/arch/arm/vdso/Makefile
++++ b/arch/arm/vdso/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
  
--#include <linux/const.h>
--
--/* @a is a power of 2 value */
--#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
--#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
--#define __ALIGN_MASK(x, mask)	__ALIGN_KERNEL_MASK((x), (mask))
--#define PTR_ALIGN(p, a)		((typeof(p))ALIGN((unsigned long)(p), (a)))
--#define PTR_ALIGN_DOWN(p, a)	((typeof(p))ALIGN_DOWN((unsigned long)(p), (a)))
--#define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
-+#include <vdso/align.h>
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
  
- #endif	/* _LINUX_ALIGN_H */
-diff --git a/include/vdso/align.h b/include/vdso/align.h
-new file mode 100644
-index 0000000000000000000000000000000000000000..02dd8626b5c5aa59d2ee0b15799b6e9adb343f65
---- /dev/null
-+++ b/include/vdso/align.h
-@@ -0,0 +1,15 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __VDSO_ALIGN_H
-+#define __VDSO_ALIGN_H
-+
-+#include <vdso/const.h>
-+
-+/* @a is a power of 2 value */
-+#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
-+#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
-+#define __ALIGN_MASK(x, mask)	__ALIGN_KERNEL_MASK((x), (mask))
-+#define PTR_ALIGN(p, a)		((typeof(p))ALIGN((unsigned long)(p), (a)))
-+#define PTR_ALIGN_DOWN(p, a)	((typeof(p))ALIGN_DOWN((unsigned long)(p), (a)))
-+#define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
-+
-+#endif	/* __VDSO_ALIGN_H */
+ hostprogs := vdsomunge
+ 
+diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
+index 35685c0360441ddb0e549ff0abe39cf4fce64071..5e27e46aa49674bb4d2186bcba548aa841116fa9 100644
+--- a/arch/arm64/kernel/vdso/Makefile
++++ b/arch/arm64/kernel/vdso/Makefile
+@@ -7,7 +7,7 @@
+ #
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ obj-vdso := vgettimeofday.o note.o sigreturn.o vgetrandom.o vgetrandom-chacha.o
+ 
+diff --git a/arch/arm64/kernel/vdso32/Makefile b/arch/arm64/kernel/vdso32/Makefile
+index 25a2cb6317f3592179dded21218e81036a8f67bc..f2dfdc7dc8185bc045907283b68ab18fed980312 100644
+--- a/arch/arm64/kernel/vdso32/Makefile
++++ b/arch/arm64/kernel/vdso32/Makefile
+@@ -3,7 +3,7 @@
+ # Makefile for vdso32
+ #
+ 
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ # Same as cc-*option, but using CC_COMPAT instead of CC
+ ifeq ($(CONFIG_CC_IS_CLANG), y)
+diff --git a/arch/csky/kernel/vdso/Makefile b/arch/csky/kernel/vdso/Makefile
+index 069ef0b17fe5235918a6aa13aa120857bbbf3faf..a3042287a0707a9aa5d512441311c3deffff2ceb 100644
+--- a/arch/csky/kernel/vdso/Makefile
++++ b/arch/csky/kernel/vdso/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ # Symbols present in the vdso
+ vdso-syms  += rt_sigreturn
+diff --git a/arch/loongarch/vdso/Makefile b/arch/loongarch/vdso/Makefile
+index fdde1bcd4e2663bd400dcc6becc4261b7d5dce3a..1c26147aff7018d190c49aebf6012f6780770dd2 100644
+--- a/arch/loongarch/vdso/Makefile
++++ b/arch/loongarch/vdso/Makefile
+@@ -2,7 +2,7 @@
+ # Objects to go into the VDSO.
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ obj-vdso-y := elf.o vgetcpu.o vgettimeofday.o vgetrandom.o \
+               vgetrandom-chacha.o sigreturn.o
+diff --git a/arch/mips/vdso/Makefile b/arch/mips/vdso/Makefile
+index b289b2c1b2946057c29cde8ee456b311fa25d448..fb4c493aaffa904d51f68b483ab83256a2e358e4 100644
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -2,7 +2,7 @@
+ # Objects to go into the VDSO.
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ obj-vdso-y := elf.o vgettimeofday.o sigreturn.o
+ 
+diff --git a/arch/parisc/kernel/vdso32/Makefile b/arch/parisc/kernel/vdso32/Makefile
+index 288f8b85978fb20acd5d95ca9f44edf3e6f93d6c..4ee8d17da229b2d768ec8d8633197c91526f0f94 100644
+--- a/arch/parisc/kernel/vdso32/Makefile
++++ b/arch/parisc/kernel/vdso32/Makefile
+@@ -1,5 +1,5 @@
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ KCOV_INSTRUMENT := n
+ 
+diff --git a/arch/parisc/kernel/vdso64/Makefile b/arch/parisc/kernel/vdso64/Makefile
+index bc5d9553f3112a4bcb218d6e351159b55feea17f..c63f4069170f465079e5eed7208f9f64e866b245 100644
+--- a/arch/parisc/kernel/vdso64/Makefile
++++ b/arch/parisc/kernel/vdso64/Makefile
+@@ -1,5 +1,5 @@
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ KCOV_INSTRUMENT := n
+ 
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index 0e3ed6fb199fff7ad25aadca76e3a49a283b3f94..e8824f93332610db259b303c63957436bfef4191 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -3,7 +3,7 @@
+ # List of files in the vdso, has to be asm only for now
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ obj-vdso32 = sigtramp32-32.o gettimeofday-32.o datapage-32.o cacheflush-32.o note-32.o getcpu-32.o
+ obj-vdso64 = sigtramp64-64.o gettimeofday-64.o datapage-64.o cacheflush-64.o note-64.o getcpu-64.o
+diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+index 9a1b555e87331fb288eff12470ad498199d7cf24..ad73607abc2808af2cd1aaf839b227c78d7a1769 100644
+--- a/arch/riscv/kernel/vdso/Makefile
++++ b/arch/riscv/kernel/vdso/Makefile
+@@ -2,7 +2,7 @@
+ # Copied from arch/tile/kernel/vdso/Makefile
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ # Symbols present in the vdso
+ vdso-syms  = rt_sigreturn
+ ifdef CONFIG_64BIT
+diff --git a/arch/s390/kernel/vdso32/Makefile b/arch/s390/kernel/vdso32/Makefile
+index 2c5afb88d298263a70abbe1e4f903a95c0389225..1e4ddd1a683ff84492f0f4b48d0efa00688129c2 100644
+--- a/arch/s390/kernel/vdso32/Makefile
++++ b/arch/s390/kernel/vdso32/Makefile
+@@ -2,7 +2,7 @@
+ # List of files in the vdso
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ obj-vdso32 = vdso_user_wrapper-32.o note-32.o
+ 
+ # Build rules
+diff --git a/arch/s390/kernel/vdso64/Makefile b/arch/s390/kernel/vdso64/Makefile
+index ad206f2068d8c0fa1d3319cc1f4dfd27f61d0882..d8f0df74280960cb351154a8a73b4f7fe83a9125 100644
+--- a/arch/s390/kernel/vdso64/Makefile
++++ b/arch/s390/kernel/vdso64/Makefile
+@@ -2,7 +2,7 @@
+ # List of files in the vdso
+ 
+ # Include the generic Makefile to check the built vdso.
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ obj-vdso64 = vdso_user_wrapper.o note.o vgetrandom-chacha.o
+ obj-cvdso64 = vdso64_generic.o getcpu.o vgetrandom.o
+ VDSO_CFLAGS_REMOVE := -pg $(CC_FLAGS_FTRACE) $(CC_FLAGS_EXPOLINE)
+diff --git a/arch/x86/entry/vdso/Makefile b/arch/x86/entry/vdso/Makefile
+index c9216ac4fb1eb8c1e5bc5e33b41e9e40c7924cbf..1c0072336e66177453f8bbad743c6a2ee1f1849d 100644
+--- a/arch/x86/entry/vdso/Makefile
++++ b/arch/x86/entry/vdso/Makefile
+@@ -4,7 +4,7 @@
+ #
+ 
+ # Include the generic Makefile to check the built vDSO:
+-include $(srctree)/lib/vdso/Makefile
++include $(srctree)/lib/vdso/Makefile.include
+ 
+ # Files to link into the vDSO:
+ vobjs-y := vdso-note.o vclock_gettime.o vgetcpu.o vgetrandom.o vgetrandom-chacha.o
+diff --git a/lib/vdso/Makefile b/lib/vdso/Makefile.include
+similarity index 100%
+rename from lib/vdso/Makefile
+rename to lib/vdso/Makefile.include
 
 -- 
 2.48.1
