@@ -1,80 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-5821-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5822-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFAC5A27606
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 16:36:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82573A27652
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 16:45:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnSBY3z6Yz2yb9;
-	Wed,  5 Feb 2025 02:36:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnSPp00Mnz2yYJ;
+	Wed,  5 Feb 2025 02:45:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738683365;
-	cv=none; b=Bn1N6IjJpSA2xdwudedL3I6wnm5o8rEExX3CZ6cePgb/yapmfvCskoztgUanvHdoroHQAFQItwhrbNCrsK55XhjcQhcwuHXgeoOIlnfC89Bh61S/NdH0leKKPc4Vt2RjmoJA0XKC+p8Zc9pGw+syplutLsnj0TDMFJ1b8Qphn78trCW2AyxfCEMxxK+sRiweNSIHsgKRafbgzDc8JDgBS5nzkC9mF1M7pWn8NQaf3TaBdNwyAn70PgTkwuR0TLzFLUyEU5MPbZn8Oiu/UsG+tnHKSbwGKovCfgqIQp3Qfn9oYaUj7mzeAnkalW0c2HRkocTiTRtNP6ea/ik06+U7RQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::ae"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738683949;
+	cv=none; b=bCpXNi3n9qdHBXNriEvWzJPDWLI6fOgPsyNMbRZke9wHqrd+bYwyypIvFntfOsoxgsRvwDe6EX/AkKc7/EJ2xdRrq1HayFJcWE7hUYNadXj4LtkvD0OH5eR9PKSO3AKYiHbBgDRtoQuwrZRf4pAy9faPPmW80Ebby/7UZlLaY27PGTKqvx+jKAzZ8qTyu1Yuo2AovHqQxO8bWBIyFQTFooBujJbKi0GUCWTe+qGkSo7r1bLfMx2owtXM4/dRvkjXa4KtSnIGO/Q56mK/1ndj78kODIpUvqmfEhFDyPN9i7A5dMWDaz8V4Nzpsb4g+Qq9hpVRpTWCH/CAiUJNwZiVFA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738683365; c=relaxed/relaxed;
-	bh=zXfTgOKl+DjPA2fGZqnU5gjDzW6o4ycWla1wGPd4ezU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YDHwM8Yp3XYHmgZWyYsKsWKAMbvByY3ZskdWjnovarfPyAKuW7/3tBWPC/0NpqyPRSaXzJisuuEFMK7LmsIFQx0ipr8/Ub6gMFuhbxRK5WZ3NqEijX+5jvQf6e/iXW06gAs+QtePHOjmDq4gN/G5w4R5quMssiyG31Hexi0XAI+Pk1x+VUAvPfYHJ+9hHJYqlZmb+Zp+nYE/9/eOD77hrEgw4UY3e/ZkUflJwV/n/JHhIAU5KTfIdvGqmoddIoMLhdJ04lbKRDjyVOPv0DBmu0DTNQLm+S0QllHXZbIy+C/4W2B7fRVzU0oJy8J64pNI+8u09VM5Dm+kKoY1gWiFMw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=azqw3Oa5; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=azqw3Oa5;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1738683949; c=relaxed/relaxed;
+	bh=HV8F/QPONcXmwgU3Iqo9jmtTqj8w2A6vXUojkBDn4XI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ne+fDkElckHsLt4Q5MMx+ohZPbPdquNu9mVYVUee4eldPF2IcBp4upBHcX9DaibGKaX/Yg+W5o8PWz4mR+OJYgYk/sdiq+KDpwfvm49X/tjSJ8u8nxGsVyphCj4H4K2XMpBNgY0eH6xdEB9cJVuD+4eur6WZ4Mz8CX03HSNooDdu0rb8Nyini6dMYMO3fl+p6g5iExBj1TDWZeCmPojWl5sxnvVHXLcwsONnze8HLnhOkr5iMSEQ052kbH38I8R/2jNdFcO6UV0ECLIiSY52j1WAQeyQ8LGEKjafRQnG5+uRl+ijUpAZGVwmYlRHeYyZCTybMhOGsQIG+k+n93+swg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=2001:41d0:1004:224b::ae; helo=out-174.mta0.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::ae; helo=out-174.mta0.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [IPv6:2001:41d0:1004:224b::ae])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YnSBS6Zbkz2xVq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2025 02:36:00 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514FXdmX032006;
-	Tue, 4 Feb 2025 15:35:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=zXfTgOKl+DjPA2fGZqnU5gjDzW6o4ycWla1wGPd4e
-	zU=; b=azqw3Oa5q8o1X/nBXtGEEsJNZdCTR9WQitfn0dD7G4qvSsRE+/Ef2LXQ9
-	czp+vcuR9TYje0sU+Z1Z47BoWr4telC69U6mBjaOl+MScv4I7MtwFTOJxDDAvNLj
-	BqRqxxTBag/vGXmBq/nvl3KRMp59hl2lObRizkHjhdwLuG0AlcggHqDeMOnXrbeG
-	uJnbmbxjYyscsGq71y1KvUdaDvYq+HFBaP22jU50Nh5mHQDrR7fisg2rZPw6jKlN
-	iw/xkGZYFJstDtNrZz/XF/MDtP1GUtFhybSibkp+7+zgfOGzw4eiSd8q1VaBD8S4
-	Yq83sJTBIYm4R1VMawQJLWwU7bQjQ==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44k9r0ucwx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 15:35:50 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 514CWJdI024492;
-	Tue, 4 Feb 2025 15:35:49 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxxn466k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 04 Feb 2025 15:35:49 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 514FZi6U45220110
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 4 Feb 2025 15:35:44 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 553DE20170;
-	Tue,  4 Feb 2025 15:35:44 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 98FA52016D;
-	Tue,  4 Feb 2025 15:35:30 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.39.20.128])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue,  4 Feb 2025 15:35:30 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Tue, 04 Feb 2025 21:05:29 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, kvm-ppc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>, atrajeev@linux.vnet.ibm.com,
-        kjain@linux.ibm.com, disgoel@linux.ibm.com, hbathini@linux.ibm.com,
-        adubey@linux.ibm.com, gautam@linux.ibm.com
-Subject: [PATCH] powerpc/perf: Fix ref-counting on the PMU 'vpa_pmu'
-Date: Tue,  4 Feb 2025 21:05:26 +0530
-Message-ID: <20250204153527.125491-1-vaibhav@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YnSPh0gs0z2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2025 02:45:43 +1100 (AEDT)
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1738683913;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=HV8F/QPONcXmwgU3Iqo9jmtTqj8w2A6vXUojkBDn4XI=;
+	b=IkxMHlWEOWz1bJJ4ijXGuhcWv92foF8HM/3nkXf+hNjSoQGa1geTG4kHuASkF6/j39T/Jl
+	p4dZnU8Bdw4BL8ie0B294nQzOUhbe3yNZ5cYzkxP2GBQ5lALZrGVlk09onMm9yAudmn6nN
+	5w0WLhfnLySrXyQB3ud+kUS0F6fLoL0=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"Ricardo B. Marliere" <ricardo@marliere.net>
+Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc: mpic: Use str_enabled_disabled() helper function
+Date: Tue,  4 Feb 2025 16:44:23 +0100
+Message-ID: <20250204154424.4231-2-thorsten.blum@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,65 +61,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: j8VMVzV3XjJOM6tez38eW0nLfH7Sx5HE
-X-Proofpoint-GUID: j8VMVzV3XjJOM6tez38eW0nLfH7Sx5HE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-04_07,2025-02-04_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- suspectscore=0 lowpriorityscore=0 mlxlogscore=999 phishscore=0
- clxscore=1015 adultscore=0 spamscore=0 mlxscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502040120
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Commit 176cda0619b6 ("powerpc/perf: Add perf interface to expose vpa
-counters") introduced 'vpa_pmu' to expose Book3s-HV nested APIv2 provided
-L1<->L2 context switch latency counters to L1 user-space via
-perf-events. However the newly introduced PMU named 'vpa_pmu' doesn't
-assign ownership of the PMU to the module 'vpa_pmu'. Consequently the
-module 'vpa_pmu' can be unloaded while one of the perf-events are still
-active, which can lead to kernel oops and panic of the form below on a
-Pseries-LPAR:
+Remove hard-coded strings by using the str_enabled_disabled() helper
+function.
 
-BUG: Kernel NULL pointer dereference on read at 0x00000058
-<snip>
- NIP [c000000000506cb8] event_sched_out+0x40/0x258
- LR [c00000000050e8a4] __perf_remove_from_context+0x7c/0x2b0
- Call Trace:
- [c00000025fc3fc30] [c00000025f8457a8] 0xc00000025f8457a8 (unreliable)
- [c00000025fc3fc80] [fffffffffffffee0] 0xfffffffffffffee0
- [c00000025fc3fcd0] [c000000000501e70] event_function+0xa8/0x120
-<snip>
- Kernel panic - not syncing: Aiee, killing interrupt handler!
+Use pr_debug() instead of printk(KERN_DEBUG) to silence a checkpatch
+warning.
 
-Fix this by adding the module ownership to 'vpa_pmu' so that the module
-'vpa_pmu' is ref-counted and prevented from being unloaded when perf-events
-are initialized.
-
-Fixes: 176cda0619b6 ("powerpc/perf: Add perf interface to expose vpa counters")
-Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- arch/powerpc/perf/vpa-pmu.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/sysdev/mpic.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
-index 6a5bfd2a13b5..840733468959 100644
---- a/arch/powerpc/perf/vpa-pmu.c
-+++ b/arch/powerpc/perf/vpa-pmu.c
-@@ -156,6 +156,7 @@ static void vpa_pmu_del(struct perf_event *event, int flags)
- }
+diff --git a/arch/powerpc/sysdev/mpic.c b/arch/powerpc/sysdev/mpic.c
+index d94cf36b0f65..25fc4ac91814 100644
+--- a/arch/powerpc/sysdev/mpic.c
++++ b/arch/powerpc/sysdev/mpic.c
+@@ -27,6 +27,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/pci.h>
+ #include <linux/slab.h>
++#include <linux/string_choices.h>
+ #include <linux/syscore_ops.h>
+ #include <linux/ratelimit.h>
+ #include <linux/pgtable.h>
+@@ -474,9 +475,9 @@ static void __init mpic_scan_ht_msi(struct mpic *mpic, u8 __iomem *devbase,
+ 		addr = addr | ((u64)readl(base + HT_MSI_ADDR_HI) << 32);
+ 	}
  
- static struct pmu vpa_pmu = {
-+	.module		= THIS_MODULE,
- 	.task_ctx_nr	= perf_sw_context,
- 	.name		= "vpa_pmu",
- 	.event_init	= vpa_pmu_event_init,
+-	printk(KERN_DEBUG "mpic:   - HT:%02x.%x %s MSI mapping found @ 0x%llx\n",
+-		PCI_SLOT(devfn), PCI_FUNC(devfn),
+-		flags & HT_MSI_FLAGS_ENABLE ? "enabled" : "disabled", addr);
++	pr_debug("mpic:   - HT:%02x.%x %s MSI mapping found @ 0x%llx\n",
++		 PCI_SLOT(devfn), PCI_FUNC(devfn),
++		 str_enabled_disabled(flags & HT_MSI_FLAGS_ENABLE), addr);
+ 
+ 	if (!(flags & HT_MSI_FLAGS_ENABLE))
+ 		writeb(flags | HT_MSI_FLAGS_ENABLE, base + HT_MSI_FLAGS);
 -- 
-2.48.1
+2.48.0
 
 
