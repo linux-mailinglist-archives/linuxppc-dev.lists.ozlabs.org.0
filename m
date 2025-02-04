@@ -1,89 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-5824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5825-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A250A2799A
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 19:19:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E48CA27AD4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 20:05:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnWpz4YPCz2ypP;
-	Wed,  5 Feb 2025 05:19:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnXrV2L5vz2ymg;
+	Wed,  5 Feb 2025 06:05:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738693163;
-	cv=none; b=JrTbcQBhVPcEWFG5fW7YqT+78I5q4VeDgTatmqpZK+nw997GZuyWeRYtEHI64shxQdMBuwLm26OUec3lM6+bYL80h59KjzSqXRDQ85Tgk97KiGSSSnxPDD/64rX8BkvHy0XpauoDSZr2dvOJNnkXUr2jCnan1CeU+rhgEJZZR6TKDhY/XrWlhTTVc1gAa4AbWL7wlxKISOEypz3EANcrxeFvZHN8uJRtnKJ9Oz1eJqDN8PEZ6TLh6iDLdHMNPBTIXE7Gyb5cJFk5xU8tVLuB1TD1FLy9xWPAOxnvUvpx/cCVtmGtNbaVkL0l4YFMzXMYlBVW0wtVwtqtUNjItGKc1A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738695946;
+	cv=none; b=RgGzdE0jo8XJg50d9+eHgEEx9IVWI+yJ97UQdxrSwttuv/NE1oaph1120Yuo/9P3VVUFu39l022qfB51Cac05PDHBVnWBpmdJqHH62k+XleATi/doZQyk2AyCS1dymuTMccvhPIKcmu4/y0AX2z5Ag14e/WYPVCuQS/hjuCgHoDr0gw855sLzwMl+d8N38BNkBn6l0SWnAtvVtBbvozjzIYJnHaewD/XEKHJTBpEIMDifxT7Ep7TRK+VtrhNkq6xdO9HpZhTt9/Jwnpr7+RWxeEWGDGYDMX7nYfiZFrkoYS0fDeHcBn+r4gGAphOLXhoDUBXWxF+GLVCxhaDnomnNw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738693163; c=relaxed/relaxed;
-	bh=Xmqzn85gzzPEKGzkf7GSGtxFNDzx5m/hhgDgc6UxSKY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=alW5pgOiNRl2+5AOti/uNcXEJZX8WCPL45yjfDuxnkDWq2p0UDaYlVZ7UmE08nydoFl/FcRBfHpZ+mqZRw3X9X/Gm9eXfsPrtAXI9VMOHC8Mh0t0wghrHxD2+MsPFbvzrNFIWEKr0r5tO0Ubty5kENWFyrbtykj+7jDGDpov/TLplCHT374lVZwo8sCmd2+ePX1FaRwRZ4iFNiP9e3BQrl0qvvKBEwTXKPBSNW2ButKMQXYc0OMkRIWgRFOl7KiD0CASqlTUcwStxj6qzYx/4AXb8YZXozRBQDcqN+R7IJdSd8BmZCHMbzp4qf9Ay0FgsyL4AItD62Pglf0BUXXy+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=QLuSB3Cp; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+	t=1738695946; c=relaxed/relaxed;
+	bh=VQvJsxOkh/tsDRGqgjYYqknT1lxDU/Cy3UKqu5GNj8g=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=ky3/t8Q/DIQbueUc8SG66/C0g+eRtRhDvgpgJ6BSSqRXQzdYvMp25oF97fURrt3RSm3tVJGioZe1Lyujn64Q/N5E6gt/qug4UKnp+wl3lOU+tuuuaJHZbR5wuf4f6JXOeGhaig0hggUAgfeuF+YbEQ2orsOYD0BGEufHgN9Ywp11AYDWz4YRVbNWv+HciHEH709P0H+Pb3lywMGjeowsbEK1fP6WxbcZrguxX4cahirvXAOXSrc+XFs7wlLbs7yQA34UNTS7aTA4WMInHsWfxF0cq6EfbqysdYx93yC1AwRtBaeWlkM3c1+4IUusYLmBrIEBghysrmEsLQJ+Dt68Ow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ELOM1YCg; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=QLuSB3Cp;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ELOM1YCg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=stefanb@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YnWpw43w3z2yXd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2025 05:19:18 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 78793240101
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 19:19:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1738693152; bh=TCqqBaH/6DxhhY4LxUIZxLWTUzfo7FZ0g9lCT/VEHVQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=QLuSB3Cp5wmxvy0AcnxYAbea4vAVqLHQ2qWlm36gLR16yyS9Z6v9YRiCvyp4j4gn5
-	 LgZDTviocjTkkrBZfKjqIX7HKrKmbEgZd5usiMBwfyowuAzH7n9ya5rw+1WcRG1Oim
-	 61l/YRbLQ/MuqjUeCkWoQ1kkGDN+vaSKCCpYDwnidKomCYAjqhFy+gkv+aXN4VknA6
-	 SHTFc7qSWaWjKRuglfENNnh6zyhAw0zuaTMO+sMLjEjkDm5sMj/UWLXt8eIducymRH
-	 jcDEMinpzWrqCDL2LTwSNhNU1eiDWLfNxb9bwY4wxFJwO7H3iV26supD7Xr4Uco5Zq
-	 7tomMw0Ep2Izg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YnWpc4lyZz6tw4;
-	Tue,  4 Feb 2025 19:19:03 +0100 (CET)
-Date: Tue,  4 Feb 2025 18:19:03 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Rob Herring <robh@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH 5/9] dt-bindings: dma: Convert fsl,elo*-dma bindings to
- YAML
-Message-ID: <Z6JaFxfwC0tAB4uQ@probook>
-References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
- <20250126-ppcyaml-v1-5-50649f51c3dd@posteo.net>
- <20250127044735.GD3106458-robh@kernel.org>
- <Z5zYGdZU-IXwIuR6@probook>
- <CAL_JsqJAX1QbXvG16NV2g6DGece6KiG_V-uyKQQLA618Oq9miw@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YnXrT0Jnsz2yXd
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2025 06:05:44 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 514GEm3j030548
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Feb 2025 19:05:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=VQvJsxOkh/tsDRGqgjYYqknT1lxD
+	U/Cy3UKqu5GNj8g=; b=ELOM1YCg/Pfy1q+lA/PZQLW3jA3Vvy+kF0uI37nXiM6C
+	lponycRGDWvLWGNonjvmnNoWOy+0BU06ML9/1w13GagzSMaZGjfaK8qQeE4Z0kGW
+	3HsvxhzdKi87bP4VAoVq9pADOd/1uNEIqwQhwjKS9qAlnRUvuZItYbfz6JouDliZ
+	oHDIfvGzuOCtrUB683L2M7DcfRlSUDkzUtHPeVSNqb4RKgNwzUPMajF/cm+LY4bM
+	w4aiL+ldQ0ClQeBe4cnIWXRYBTHMJaRXXz5SyXMCM89TrCN3an8Rx70dPHURtc/G
+	xPjTmQ9bgCnSPrf0MA569I7FJKZ6iROlc5dK5PI3Hw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kekp3avh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 04 Feb 2025 19:05:41 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 514IxTIe012590
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 4 Feb 2025 19:05:41 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44kekp3avd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Feb 2025 19:05:41 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 514G5Wxu024510;
+	Tue, 4 Feb 2025 19:05:40 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxxn51w2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Feb 2025 19:05:40 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 514J5bZk28705392
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Feb 2025 19:05:37 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D67CE58059;
+	Tue,  4 Feb 2025 19:05:37 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8BE4C58043;
+	Tue,  4 Feb 2025 19:05:37 +0000 (GMT)
+Received: from [9.47.158.152] (unknown [9.47.158.152])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Feb 2025 19:05:37 +0000 (GMT)
+Message-ID: <c683fcdc-38e7-4bed-8bfe-dcf6f122da6a@linux.ibm.com>
+Date: Tue, 4 Feb 2025 14:05:37 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,52 +83,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAL_JsqJAX1QbXvG16NV2g6DGece6KiG_V-uyKQQLA618Oq9miw@mail.gmail.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Cc: ritesh.list@gmail.com, masriniv@in.ibm.com
+From: Stefan Berger <stefanb@linux.ibm.com>
+Subject: kexec failing with KVM on Power8 baremetal host
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Gu_9gm3NJoFz15StCxRIZr26TVo0dhq2
+X-Proofpoint-GUID: Cux_FIUZqUb-lfqBxzv2kYKHfCzX4mXw
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-04_08,2025-02-04_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
+ adultscore=0 lowpriorityscore=0 clxscore=1011 mlxscore=0 malwarescore=0
+ spamscore=0 priorityscore=1501 phishscore=0 mlxlogscore=999 suspectscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502040140
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Jan 31, 2025 at 04:16:07PM -0600, Rob Herring wrote:
-> On Fri, Jan 31, 2025 at 8:03 AM J. Neuschäfer <j.ne@posteo.net> wrote:
-> >
-> > On Sun, Jan 26, 2025 at 10:47:35PM -0600, Rob Herring wrote:
-> > > On Sun, Jan 26, 2025 at 07:59:00PM +0100, J. Neuschäfer wrote:
-> > > > The devicetree bindings for Freescale DMA engines have so far existed as
-> > > > a text file. This patch converts them to YAML, and specifies all the
-> > > > compatible strings currently in use in arch/powerpc/boot/dts.
-> > > >
-> > > > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > > > ---
-> > > >  .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 129 +++++++++++++
-> > > >  .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 105 +++++++++++
-> > > >  .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 120 ++++++++++++
-> > > >  .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
-> > > >  4 files changed, 354 insertions(+), 204 deletions(-)
-> > [...]
-> > > > +patternProperties:
-> > > > +  "^dma-channel@.*$":
-> > > > +    type: object
-> > >
-> > >        additionalProperties: false
-> >
-> > I'll add it.
-> >
-> > > (The tools should have highlighted this)
-> >
-> > With dtschema 2024.11 installed, "make dt_binding_check
-> > DT_SCHEMA_FILES=fsl,elo-dma.yaml" does not highlight this.
-> 
-> Actually, it's the top-level 'addtionalProperties: true' that disables
-> the check here. That should be false as well.
+I bisected Linux between 6.13.0 and 6.12.0 due to failing kexec on a 
+Power8 baremetal host on 6.13.0:
 
-Noted. This did indeed help me find more errors.
+8fec58f503b296af87ffca3898965e3054f2b616 is the first bad commit
+commit 8fec58f503b296af87ffca3898965e3054f2b616
+Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Date:   Fri Oct 18 22:59:50 2024 +0530
+
+     book3s64/hash: Add kfence functionality
+
+     Now that linear map functionality of debug_pagealloc is made generic,
+     enable kfence to use this generic infrastructure.
+
+     1. Define kfence related linear map variables.
+        - u8 *linear_map_kf_hash_slots;
+        - unsigned long linear_map_kf_hash_count;
+        - DEFINE_RAW_SPINLOCK(linear_map_kf_hash_lock);
+     2. The linear map size allocated in RMA region is quite small
+        (KFENCE_POOL_SIZE >> PAGE_SHIFT) which is 512 bytes by default.
+     3. kfence pool memory is reserved using memblock_phys_alloc() which has
+        can come from anywhere.
+        (default 255 objects => ((1+255) * 2) << PAGE_SHIFT = 32MB)
+     4. The hash slot information for kfence memory gets added in linear map
+        in hash_linear_map_add_slot() (which also adds for debug_pagealloc).
+
+     Reported-by: Pavithra Prakash <pavrampu@linux.vnet.ibm.com>
+     Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+     Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+     Link: 
+https://patch.msgid.link/5c2b61941b344077a2b8654dab46efa0322af3af.1729271995.git.ritesh.list@gmail.com
+
+  arch/powerpc/include/asm/kfence.h     |   5 ---
+  arch/powerpc/mm/book3s64/hash_utils.c | 162 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++------
+  2 files changed, 149 insertions(+), 18 deletions(-)
 
 
-Best regards,
-J. Neuschäfer
+Reverting part of this patch by applying the following changes to 6.13.0 
+resolves the issue:
+
+
+diff --git a/arch/powerpc/include/asm/kfence.h 
+b/arch/powerpc/include/asm/kfence.h
+index 1f7cab58ab2c..e7981719313c 100644
+--- a/arch/powerpc/include/asm/kfence.h
++++ b/arch/powerpc/include/asm/kfence.h
+@@ -10,6 +10,7 @@
+
+  #include <linux/mm.h>
+  #include <asm/pgtable.h>
++#include <asm/mmu.h>
+
+  #ifdef CONFIG_PPC64_ELF_ABI_V1
+  #define ARCH_FUNC_PREFIX "."
+@@ -25,6 +26,10 @@ static inline void disable_kfence(void)
+
+  static inline bool arch_kfence_init_pool(void)
+  {
++#ifdef CONFIG_PPC64
++       if (!radix_enabled())
++               return false;
++#endif
+         return !kfence_disabled;
+  }
+
+
 
