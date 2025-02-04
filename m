@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-5803-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5805-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ADFBA270F5
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 13:06:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BACDBA270F8
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Feb 2025 13:06:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnMXP5WVvz2yXs;
-	Tue,  4 Feb 2025 23:06:13 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YnMXQ4s4jz2ytN;
+	Tue,  4 Feb 2025 23:06:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738670773;
-	cv=none; b=O7k6o/92zRLivhDm0l7XrbE7BukG5EYPrNDcC/8DIKL/KHV4mInO9Uu+wgtGexO+DnsGnWlfK+FWqolcnqwiAqP1dj+xo3sa+dQNHUMbH9Pw+okNjnMD7KRdsWMSeBgD0ex7TYruC/Cv9/pSvAlBzer3ygiG2Nwr3SOUe8YnwVsa83lDPHDMvfiT6O6ltD1ZzQ7xmgZF/0NmXTLeJin6/NC0K8ryOcq4U/hkxyrDx2nRk+B1yU043WODlQaRMMl3X7SYMIYKQYMgAjFJ0dM29I6qPWte0vL9UwFj40Py0pVSHlhFIY838TK1VNAbfEKjnxkLEvubmmmxJjiFtOE0EA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738670774;
+	cv=none; b=SwAP5sXpFKkDkUyu9kCQ6BcvLvC127+LgEUWW0E34u4tJMDvwqzfOT0GC/ZrC5f5TRawg30DNPFnPy2iTDLLAmWxzjSA0iTgJcHwmFrRBChotd0dTtr8naFJ/RRHY8J8o9F1sC/W80Rp5Dvgy/q2lXQeFWkCxXIdWJqsHKMWuz+YK2JXrIYsbzXAx0uCrZ9uOhCg7OXsWVXKpmdki5IaUJMWYSO3bt7qiBbXA6QCNwt28uou06Xoko32oh1rhn++8ZNo6IWz+i4i17rqphT1KCM22IYVLgSjOAaFynw/YbAWKanWbitb9XFVLeQgBvng8BYti34NUKrODgmqMqhc/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738670773; c=relaxed/relaxed;
-	bh=2wthxihBzoT1dnFItAc2o4ZVMh/ieepwsKRAe48p9bY=;
+	t=1738670774; c=relaxed/relaxed;
+	bh=8tzJ1joMpGHHtzyOpZkkHUWdfelYxBi+wFF4CRWn/mU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=U8XTPG9YwCixOoW1K6+60UozhaVZHUPA6hRUQADFEHCdN9y0IeNCtWGafEWldLJ71pVdRnQXZp8I8VT2ohtiu/0vlwyoHvK0EkF2XjEIBm74v+FOF7bC5iEghCovKKEGyZN5OhuaZDQVAhOcFcOIkYeUXYsl+gH234EpkAwHFVMRiSDylXRmV6qx7J6p8hcXQnNfLULr2Rah2N5FSeFIuwQIrAmE8DXUT0SVlgQR3G8HhdVB0+I1pOnTcEblbUqzws/ox34zSEpKSZyfXlb/pexCg+bq/J3wYpi5R25RRCEznr/m1W8tL0ynXW5qGxUKb1q87Ben+HKdqFpU9SCcjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=fHrFI9Pe; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MJ7KzPmZ; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=EB7l74WueS5eydPRTi23gzT3/pTS+QzBKMeuTA/rUF+1fNUF+2y2hU5Jby8qqinb4tbCX2Vr16tf9Df7AhytuVD6MCXWqBXpOzIpiAIJkOcnqq+RuwjsvHfyQJiafIy1FbdrC9I8IHtGoXEGNvbV/ChhyDaEnqyb5gspxsdVcfOFUhSYu2ALpjZprMcsfO/AQ+5YK/6Bm0/teWTWX7kqyBX7g8HAZbNq2kn0UhiVa2OYCC1De2eAYL6mQMuYmklgGNZ1l4zZmMiT+3N+IdpiTyE1LjE2fwDTtbwYeBO8n1vjqjy7TBFDtTmB1JW+r/oM/EPc20Of+NDCFNanGwc/lw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=V6j2Bzb2; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=iOtKH3os; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=fHrFI9Pe;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=MJ7KzPmZ;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=V6j2Bzb2;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=iOtKH3os;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YnMXN0Qw8z2yDp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 23:06:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YnMXN4SWvz2ykn
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Feb 2025 23:06:12 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1738670766;
+	s=2020; t=1738670767;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2wthxihBzoT1dnFItAc2o4ZVMh/ieepwsKRAe48p9bY=;
-	b=fHrFI9PeSGVQDCInicDuqCq2ZnIGjMK3873/V+PQnr5X9t9fbun6TN5ysjxBCEfeqVD4Dt
-	ez5H+nctl1vfMeYFnYYrcWO4r5MggVpOmcPYuf5YAGlu5BZDajUs8V6meQH7u+7yyEb46r
-	wPu31QpkBITZ6RbHtnWtFDeHFthu6z05SUaKggRwfknlcFSDfauzqDZI8f9sPs7j7N14Ly
-	nWpWN2dQdJxd8LPjT+WICA2492Ov++LcoMbQDUllzVlITS/Xr0HbXv9SHca7T5jfZEAdhG
-	E1KWm1ziUYM1PJNO5iPycPL5eTZ1CELiNi6rA61q2oxIVxMPXdq55zS20LeGGw==
+	bh=8tzJ1joMpGHHtzyOpZkkHUWdfelYxBi+wFF4CRWn/mU=;
+	b=V6j2Bzb2DRgaHKVvoWqEOL27zB3QtKLt4Ore8/SsczLQALyCenL5OFwapQzwhVdu9y3xpS
+	cQZ+JuxIu/XEMKB1mzXgFUoT//0mHMJrlQ8TJjZwZo9zlNbx14A2PPb5aJBk1W5j89SAxb
+	EVhLcE8hXrCivq28hrHiRQ1xEfuNLDPVNINkY4d9wRgP5UaeYmhW7aAoGtrfytI/i9/+vj
+	a3kh1Nt9Zoanzv0bYnYotnou88oNxhxhBN1ygL6Zo1eAoEJkYzwj5+vPuPzCeR89CKaVSs
+	SNewuZIe/x5/y5ufhjaVUvNysR6R/QcCwwGobQLPGhS/T8V4NEahAkE7SBq+JA==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1738670766;
+	s=2020e; t=1738670767;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=2wthxihBzoT1dnFItAc2o4ZVMh/ieepwsKRAe48p9bY=;
-	b=MJ7KzPmZU2E8LeznYlnKq/vha9PY3jNx99HTgP0f2P9VhbfIssqtxl82DkKaQtDUOCMn6Q
-	o26gUCkYCGaNQoDA==
-Date: Tue, 04 Feb 2025 13:05:34 +0100
-Subject: [PATCH v3 02/18] parisc: Remove unused symbol vdso_data
+	bh=8tzJ1joMpGHHtzyOpZkkHUWdfelYxBi+wFF4CRWn/mU=;
+	b=iOtKH3oskjcSYbCDgYKpSYB56t2sXU+wplGvT0jFC1YW0MQDUGoJvdNFOaiB4UvAdBeCPc
+	PMh3pscdXS1SjCCA==
+Date: Tue, 04 Feb 2025 13:05:35 +0100
+Subject: [PATCH v3 03/18] vdso: Introduce vdso/align.h
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,7 +67,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250204-vdso-store-rng-v3-2-13a4669dfc8c@linutronix.de>
+Message-Id: <20250204-vdso-store-rng-v3-3-13a4669dfc8c@linutronix.de>
 References: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
 In-Reply-To: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
 To: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
@@ -102,11 +102,11 @@ Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
  linux-csky@vger.kernel.org
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738670761; l=796;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738670761; l=2181;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=PsNObhM96Z6VJ6YO6wVJytdYn6iSqKP3WcdqNzeXQCs=;
- b=QAfcY3/tZW4aqA50xQmio/rWbqFlpjtNcyufackA9F81PDr6GzzKzTC5wnPW3aTbwI6t5a0j9
- gbeylrFoqfBBqHSqqcWJ0A/MHLXjHYHnUq841uI/Pwm8gTEiNrEobtA
+ bh=pGC6jdjVpB6TSU5BlYOrn0adCU6n5QZjbS9JPsjrItg=;
+ b=OW2mHbyRnxefuX9jtydaC4QPubDcM1IK1QS/suztcpEYCSk6R4TQGGJNZXsgYPfuJtL8zaYiV
+ Ee44hOKuVaIBGyEHrG4dGlROwx8aYEK2YSDNoaAJcuGYVPNnBTi2GLG
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -114,27 +114,61 @@ X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The symbol vdso_data is and has been unused.
-Remove it.
+The vDSO implementation can only include headers from the vdso/
+namespace. To enable the usage of the ALIGN() macro from the vDSO, move
+linux/align.h to vdso/align.h wholly.
+As the only dependency linux/const.h is only a wrapper around
+vdso/const.h anyways adapt that dependency.
+
+Also provide a compatibility wrapper linux/align.h.
 
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- arch/parisc/include/asm/vdso.h | 2 --
- 1 file changed, 2 deletions(-)
+ include/linux/align.h | 10 +---------
+ include/vdso/align.h  | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+), 9 deletions(-)
 
-diff --git a/arch/parisc/include/asm/vdso.h b/arch/parisc/include/asm/vdso.h
-index 2a2dc11b5545fc642a7ae4596dc174111433e948..5f581c1d64606b3ec8f9967efe31dd3d551adf76 100644
---- a/arch/parisc/include/asm/vdso.h
-+++ b/arch/parisc/include/asm/vdso.h
-@@ -12,8 +12,6 @@
- #define VDSO64_SYMBOL(tsk, name) ((tsk)->mm->context.vdso_base + (vdso64_offset_##name))
- #define VDSO32_SYMBOL(tsk, name) ((tsk)->mm->context.vdso_base + (vdso32_offset_##name))
+diff --git a/include/linux/align.h b/include/linux/align.h
+index 2b4acec7b95a27b6768d48f46519abc584c94d5d..55debf105a5d610c592e5c53a4153018ea1ae2c6 100644
+--- a/include/linux/align.h
++++ b/include/linux/align.h
+@@ -2,14 +2,6 @@
+ #ifndef _LINUX_ALIGN_H
+ #define _LINUX_ALIGN_H
  
--extern struct vdso_data *vdso_data;
+-#include <linux/const.h>
 -
- #endif /* __ASSEMBLY __ */
+-/* @a is a power of 2 value */
+-#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
+-#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
+-#define __ALIGN_MASK(x, mask)	__ALIGN_KERNEL_MASK((x), (mask))
+-#define PTR_ALIGN(p, a)		((typeof(p))ALIGN((unsigned long)(p), (a)))
+-#define PTR_ALIGN_DOWN(p, a)	((typeof(p))ALIGN_DOWN((unsigned long)(p), (a)))
+-#define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
++#include <vdso/align.h>
  
- /* Default link addresses for the vDSOs */
+ #endif	/* _LINUX_ALIGN_H */
+diff --git a/include/vdso/align.h b/include/vdso/align.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..02dd8626b5c5aa59d2ee0b15799b6e9adb343f65
+--- /dev/null
++++ b/include/vdso/align.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __VDSO_ALIGN_H
++#define __VDSO_ALIGN_H
++
++#include <vdso/const.h>
++
++/* @a is a power of 2 value */
++#define ALIGN(x, a)		__ALIGN_KERNEL((x), (a))
++#define ALIGN_DOWN(x, a)	__ALIGN_KERNEL((x) - ((a) - 1), (a))
++#define __ALIGN_MASK(x, mask)	__ALIGN_KERNEL_MASK((x), (mask))
++#define PTR_ALIGN(p, a)		((typeof(p))ALIGN((unsigned long)(p), (a)))
++#define PTR_ALIGN_DOWN(p, a)	((typeof(p))ALIGN_DOWN((unsigned long)(p), (a)))
++#define IS_ALIGNED(x, a)		(((x) & ((typeof(x))(a) - 1)) == 0)
++
++#endif	/* __VDSO_ALIGN_H */
 
 -- 
 2.48.1
