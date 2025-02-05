@@ -1,56 +1,94 @@
-Return-Path: <linuxppc-dev+bounces-5860-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5862-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89C5CA28742
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2025 11:01:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4865A28B24
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2025 14:03:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnwkH6vYXz2yvs;
-	Wed,  5 Feb 2025 21:01:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yp0m94xl3z2yYy;
+	Thu,  6 Feb 2025 00:03:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738749703;
-	cv=none; b=bQmY0UTMA/BQrGDBiYcEHN2Po8IQM7jIpvuSe6VPHlNa/duLGIxyKp8Bno0UVWzWv67HdpaA0owgMr934rVJ4za37XMkzV53tVWorQGiDqnmExDmAqEpP7oRsMQ6EAczF8k4b4DU5CZp5yP2K8wzXHBk8Jy5RY5lb+JuGef5uti15yhSga5miB6xfORezVixRTfW6tmOC0Pg6l0TwcPHchVbJDv0GlNBKoju4gnMAvWqF+JJqoaRqp9Ngqfqh2iNhxBwEc78HUmGMRwFOBXX5lVFgaFgNI07TAVacFPsvFynxZXJft3IgicRLsPg8/YYbEi3SwMb3Q/dQBQaYZMrGQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738760617;
+	cv=none; b=jR5TxkHGe4TgF9nn9qi3U6xmhIdoOtsHzrMzHANIGjnJe1JiikqeQkq5+Twnj68UmsQLphxH29vzDOrinq9iYd16NG9dG7SwSqUtKXjKpzkAH5SVe0vcMjM+CLHzKoK0EE6MVGDUrUHPN4lMKE7GAIlooqcQDxIIgHLOBQ4v/243OfZJovdmorjhQCsXnN6sQi2gTKR++mB9iqrnZAXfltuhg9cX0GsUMNKuTSqURkKY2skPTYH64Jnzr9b1gJoqxlOh4X9QdUXIcSgNgq0kVyMeq/V9TQInUDdDO7XxbOWH8+OZKP6HmnFrGp+Kwsc/eI25z6wjLCDsd6hsel7GJA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738749703; c=relaxed/relaxed;
-	bh=rmZQTxMDm0TWEQC6Sb4VCa8/8KLqxODBUuE5383WBS4=;
+	t=1738760617; c=relaxed/relaxed;
+	bh=l83Dw368hueJll8PyntCW0Nb5bpCWlX4zt8mq3uaKys=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=inV+xo0YkCCSFb4znOh6bE+tlMduSZnecc7/2QWGyjzkJT/EJOPMcazgaMFJDCep3x0fThTKyFqXoE/lzQ5Iz0tDSA588g8xMVjjCHMPKLe2BOM/RvwwDWqIrcokp1VII3fSefKeaOJrB49WM1JAsHSbefuzPd6aOgD1jEN5PfKaSnZyfB1ajVZ7UdTSBXe5ap8LbVUuWWqYioSpX5XSIy0BQ6YPFgo+J/+SQADfA1KIXEXR7AHBOClrpfkE1jbdPeXBE3x0+eBGOJkCTmCJzQdLYGpifzFSNyNI7e4OM1faGvMR6+WIaXBhlF17Tz0GLWNo24BFdROFED9Rk6Z9vA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=mark.rutland@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YnwkG5jwLz2yHL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Feb 2025 21:01:41 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8085111FB;
-	Wed,  5 Feb 2025 02:01:32 -0800 (PST)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 648383F5A1;
-	Wed,  5 Feb 2025 02:01:04 -0800 (PST)
-Date: Wed, 5 Feb 2025 10:01:01 +0000
-From: Mark Rutland <mark.rutland@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, steven.price@arm.com, christophe.leroy@csgroup.eu,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org
-Subject: Re: [PATCH V2] mm/ptdump: Drop GENERIC_PTDUMP
-Message-ID: <Z6M23dR5wvZKW4JE@J2N7QTR9R3>
-References: <20250205050039.1506377-1-anshuman.khandual@arm.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+lXHaGzgjUskLf+wWV9mj1Pg6PpHuBF6jVY401hWiBBS3EqbuRICORXO3BUKoS8d/viH0HOHj+Pd7DR+uSdub4v6VIH7unH//jL9eQ3DLueziyx0uQA4RBSlJGrYQ1fMCLcTx6KaYzaJRNpagE2ryKIbxEXlkM8WM042pfQfaXBSJOUXXEh7KhfzIT0tYlCQiUp5LOXyzXqR2eV0vyHP4aSveR4zj+XC6X4TF2lPXUs0M1/k7+2LDagwg/zPVnowDCh2dWVhWZW1a18rfOXujeIhE8rZQNoSrvfCNEf/y6CLxEPXD+eXVWrKdwDw8/H2KCAGwGnMWDDvsIS3dGNAA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e8xyOu9s; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e8xyOu9s; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e8xyOu9s;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=e8xyOu9s;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vgoyal@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yp0m84vbtz2yDp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 00:03:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738760610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l83Dw368hueJll8PyntCW0Nb5bpCWlX4zt8mq3uaKys=;
+	b=e8xyOu9suDOEhyW1mYGaLKcIJGBjrcqeVXECLhKDkkSK9/9WxBUmeLY8jPukXrRwHvqZUT
+	idD6vGpmfT7frs/Ir/O6HV0g1JSs8RfHN2RzPcQh65CJKBZVfWgY7/6USJxKzvuQ9EeeMS
+	5Z34rgC89sFvm/ChZyDIFZ44EbS9338=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1738760610;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=l83Dw368hueJll8PyntCW0Nb5bpCWlX4zt8mq3uaKys=;
+	b=e8xyOu9suDOEhyW1mYGaLKcIJGBjrcqeVXECLhKDkkSK9/9WxBUmeLY8jPukXrRwHvqZUT
+	idD6vGpmfT7frs/Ir/O6HV0g1JSs8RfHN2RzPcQh65CJKBZVfWgY7/6USJxKzvuQ9EeeMS
+	5Z34rgC89sFvm/ChZyDIFZ44EbS9338=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-491-1l4K9GaVMGO1d3Se1A4h_Q-1; Wed,
+ 05 Feb 2025 08:03:26 -0500
+X-MC-Unique: 1l4K9GaVMGO1d3Se1A4h_Q-1
+X-Mimecast-MFC-AGG-ID: 1l4K9GaVMGO1d3Se1A4h_Q
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5FC961801A0D;
+	Wed,  5 Feb 2025 13:03:19 +0000 (UTC)
+Received: from fedora.redhat.com (unknown [10.22.80.186])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 72B8C3000197;
+	Wed,  5 Feb 2025 13:03:15 +0000 (UTC)
+Received: by fedora.redhat.com (Postfix, from userid 1000)
+	id A724B6AA37D; Wed,  5 Feb 2025 08:03:13 -0500 (EST)
+Date: Wed, 5 Feb 2025 08:03:13 -0500
+From: Vivek Goyal <vgoyal@redhat.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, linux-mm@kvack.org,
+	alison.schofield@intel.com, lina@asahilina.net,
+	zhang.lyra@gmail.com, gerald.schaefer@linux.ibm.com,
+	vishal.l.verma@intel.com, dave.jiang@intel.com, logang@deltatee.com,
+	bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca,
+	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
+	npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
+	willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
+	linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
+	david@fromorbit.com, chenhuacai@kernel.org, kernel@xen0n.name,
+	loongarch@lists.linux.dev, Hanna Czenczek <hreitz@redhat.com>,
+	German Maglione <gmaglione@redhat.com>
+Subject: Re: [PATCH v6 01/26] fuse: Fix dax truncate/punch_hole fault path
+Message-ID: <Z6NhkR8ZEso4F-Wx@redhat.com>
+References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
+ <bfae590045c7fc37b7ccef10b9cec318012979fd.1736488799.git-series.apopple@nvidia.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,134 +103,109 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250205050039.1506377-1-anshuman.khandual@arm.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <bfae590045c7fc37b7ccef10b9cec318012979fd.1736488799.git-series.apopple@nvidia.com>
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Spam-Status: No, score=-0.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Feb 05, 2025 at 10:30:39AM +0530, Anshuman Khandual wrote:
-> GENERIC_PTDUMP does not guard any code but instead just used for platform's
-> subscription into core ptdump defined under PTDUMP_CORE, which is selected.
+On Fri, Jan 10, 2025 at 05:00:29PM +1100, Alistair Popple wrote:
+> FS DAX requires file systems to call into the DAX layout prior to unlinking
+> inodes to ensure there is no ongoing DMA or other remote access to the
+> direct mapped page. The fuse file system implements
+> fuse_dax_break_layouts() to do this which includes a comment indicating
+> that passing dmap_end == 0 leads to unmapping of the whole file.
+> 
+> However this is not true - passing dmap_end == 0 will not unmap anything
+> before dmap_start, and further more dax_layout_busy_page_range() will not
+> scan any of the range to see if there maybe ongoing DMA access to the
+> range. Fix this by passing -1 for dmap_end to fuse_dax_break_layouts()
+> which will invalidate the entire file range to
+> dax_layout_busy_page_range().
 
-Selected by what?
+Hi Alistair,
 
-> Instead use PTDUMP_CORE for platform subscription and drop GENERIC_PTDUMP.
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Marc Zyngier <maz@kernel.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Nicholas Piggin <npiggin@gmail.com>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Heiko Carstens <hca@linux.ibm.com>
-> Cc: Vasily Gorbik <gor@linux.ibm.com>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: kvmarm@lists.linux.dev
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Thanks for fixing DAX related issues for virtiofs. I am wondering how are
+you testing DAX with virtiofs. AFAIK, we don't have DAX support in Rust
+virtiofsd. C version of virtiofsd used to have out of the tree patches
+for DAX. But C version got deprecated long time ago.
+
+Do you have another implementation of virtiofsd somewhere else which
+supports DAX and allows for testing DAX related changes?
+
+Thanks
+Vivek
+
+> 
+> Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> Co-developed-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Fixes: 6ae330cad6ef ("virtiofs: serialize truncate/punch_hole and dax fault path")
+> Cc: Vivek Goyal <vgoyal@redhat.com>
+> 
 > ---
-> This patch applies on v6.14-rc1
 > 
-> Changes in V2:
+> Changes for v6:
 > 
-> - Keep arch/powerpc/Kconfig alphabetically sorted per Christophe
+>  - Original patch had a misplaced hunk due to a bad rebase.
+>  - Reworked fix based on Dan's comments.
+> ---
+>  fs/fuse/dax.c  | 1 -
+>  fs/fuse/dir.c  | 2 +-
+>  fs/fuse/file.c | 4 ++--
+>  3 files changed, 3 insertions(+), 4 deletions(-)
 > 
-> Changes in V1:
-> 
-> https://lore.kernel.org/all/20241217034807.2541349-1-anshuman.khandual@arm.com/
-> 
->  Documentation/arch/arm64/ptdump.rst       | 1 -
->  arch/arm64/Kconfig                        | 2 +-
->  arch/arm64/kvm/Kconfig                    | 3 +--
->  arch/powerpc/Kconfig                      | 2 +-
->  arch/powerpc/configs/mpc885_ads_defconfig | 1 -
->  arch/riscv/Kconfig                        | 2 +-
->  arch/s390/Kconfig                         | 2 +-
->  arch/x86/Kconfig                          | 2 +-
->  arch/x86/Kconfig.debug                    | 2 +-
->  kernel/configs/debug.config               | 1 -
->  mm/Kconfig.debug                          | 8 ++------
->  11 files changed, 9 insertions(+), 17 deletions(-)
-> 
-> diff --git a/Documentation/arch/arm64/ptdump.rst b/Documentation/arch/arm64/ptdump.rst
-> index 5dcfc5d7cddf..61ca040a885b 100644
-> --- a/Documentation/arch/arm64/ptdump.rst
-> +++ b/Documentation/arch/arm64/ptdump.rst
-> @@ -22,7 +22,6 @@ offlining of memory being accessed by the ptdump code.
->  In order to dump the kernel page tables, enable the following
->  configurations and mount debugfs::
+> diff --git a/fs/fuse/dax.c b/fs/fuse/dax.c
+> index 9abbc2f..455c4a1 100644
+> --- a/fs/fuse/dax.c
+> +++ b/fs/fuse/dax.c
+> @@ -681,7 +681,6 @@ static int __fuse_dax_break_layouts(struct inode *inode, bool *retry,
+>  			0, 0, fuse_wait_dax_page(inode));
+>  }
 >  
-> - CONFIG_GENERIC_PTDUMP=y
->   CONFIG_PTDUMP_CORE=y
->   CONFIG_PTDUMP_DEBUGFS=y
+> -/* dmap_end == 0 leads to unmapping of whole file */
+>  int fuse_dax_break_layouts(struct inode *inode, u64 dmap_start,
+>  				  u64 dmap_end)
+>  {
+> diff --git a/fs/fuse/dir.c b/fs/fuse/dir.c
+> index 0b2f856..bc6c893 100644
+> --- a/fs/fuse/dir.c
+> +++ b/fs/fuse/dir.c
+> @@ -1936,7 +1936,7 @@ int fuse_do_setattr(struct mnt_idmap *idmap, struct dentry *dentry,
+>  	if (FUSE_IS_DAX(inode) && is_truncate) {
+>  		filemap_invalidate_lock(mapping);
+>  		fault_blocked = true;
+> -		err = fuse_dax_break_layouts(inode, 0, 0);
+> +		err = fuse_dax_break_layouts(inode, 0, -1);
+>  		if (err) {
+>  			filemap_invalidate_unlock(mapping);
+>  			return err;
+> diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+> index 082ee37..cef7a8f 100644
+> --- a/fs/fuse/file.c
+> +++ b/fs/fuse/file.c
+> @@ -253,7 +253,7 @@ static int fuse_open(struct inode *inode, struct file *file)
 >  
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index fcdd0ed3eca8..1f516bed81dd 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -157,7 +157,7 @@ config ARM64
->  	select GENERIC_IRQ_SHOW_LEVEL
->  	select GENERIC_LIB_DEVMEM_IS_ALLOWED
->  	select GENERIC_PCI_IOMAP
-> -	select GENERIC_PTDUMP
-> +	select PTDUMP_CORE
->  	select GENERIC_SCHED_CLOCK
->  	select GENERIC_SMP_IDLE_THREAD
->  	select GENERIC_TIME_VSYSCALL
+>  	if (dax_truncate) {
+>  		filemap_invalidate_lock(inode->i_mapping);
+> -		err = fuse_dax_break_layouts(inode, 0, 0);
+> +		err = fuse_dax_break_layouts(inode, 0, -1);
+>  		if (err)
+>  			goto out_inode_unlock;
+>  	}
+> @@ -2890,7 +2890,7 @@ static long fuse_file_fallocate(struct file *file, int mode, loff_t offset,
+>  	inode_lock(inode);
+>  	if (block_faults) {
+>  		filemap_invalidate_lock(inode->i_mapping);
+> -		err = fuse_dax_break_layouts(inode, 0, 0);
+> +		err = fuse_dax_break_layouts(inode, 0, -1);
+>  		if (err)
+>  			goto out;
+>  	}
+> -- 
+> git-series 0.9.1
+> 
 
-This change means that the ptdump core code will be built regardless of
-whether any users are selected:
-
-  [mark@lakrids:~/src/linux]% git grep CONFIG_PTDUMP_CORE
-  Documentation/arch/arm64/ptdump.rst: CONFIG_PTDUMP_CORE=y
-  arch/arm64/include/asm/ptdump.h:#ifdef CONFIG_PTDUMP_CORE
-  arch/arm64/include/asm/ptdump.h:#endif /* CONFIG_PTDUMP_CORE */
-  arch/arm64/mm/Makefile:obj-$(CONFIG_PTDUMP_CORE)        += ptdump.o
-  arch/powerpc/mm/Makefile:obj-$(CONFIG_PTDUMP_CORE)      += ptdump/
-  arch/riscv/mm/Makefile:obj-$(CONFIG_PTDUMP_CORE) += ptdump.o
-  arch/s390/mm/Makefile:obj-$(CONFIG_PTDUMP_CORE) += dump_pagetables.o
-  arch/x86/mm/Makefile:obj-$(CONFIG_PTDUMP_CORE)  += dump_pagetables.o
-  mm/Makefile:obj-$(CONFIG_PTDUMP_CORE) += ptdump.o
-
-GENERIC_PTDUMP means "this architecture uses generic ptdump code for
-ptdump", i.e. the architecture implements all the necessary bits for
-that to work *IF* it is built.
-
-PTDUMP_CORE means "actually build the core ptdump code".
-
-If everyone uses the generic ptdump code now, maybe it's worth renaming
-GENERIC_PTDUMP to ARCH_HAS_PTDUMP or something like that, but I don't
-think this change makes sense as-is.
-
-[...]
-
-> diff --git a/kernel/configs/debug.config b/kernel/configs/debug.config
-> index 20552f163930..8aafd050b754 100644
-> --- a/kernel/configs/debug.config
-> +++ b/kernel/configs/debug.config
-> @@ -73,7 +73,6 @@ CONFIG_DEBUG_VM=y
->  CONFIG_DEBUG_VM_PGFLAGS=y
->  CONFIG_DEBUG_VM_RB=y
->  CONFIG_DEBUG_VM_VMACACHE=y
-> -CONFIG_GENERIC_PTDUMP=y
->  CONFIG_KASAN=y
->  CONFIG_KASAN_GENERIC=y
->  CONFIG_KASAN_INLINE=y
-
-I think this is wrong today, and removing it is the right thing to do.
-
-Architectures with support will select this themselves, and on
-architectures without support this either does nothing or causes a build
-failure.
-
-Mark.
 
