@@ -1,45 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-5870-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5864-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B227CA290FC
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2025 15:43:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4718DA28E54
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2025 15:11:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yp2z80vGnz3024;
-	Thu,  6 Feb 2025 01:43:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yp2Gd34D7z2ywR;
+	Thu,  6 Feb 2025 01:11:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738766596;
-	cv=none; b=SVFWFP14B/rMEW+4Ih6FjqJ9/E84Vug+RCmPF6PS2tU8oeQJb3+I+kKrIzxChOV2BKG+/5dnB6CWziTdfoUAXnWM3Ff5WiZKwh8TApa4aGXW+vl1kHJsaKufADc9DP4kG95HgQWUVkbvydiUlEuGWCkjS9TxfTYaUbnpOs51rJ+B74NRftelypa99biDNDtDqPyJUUZ9hplnVimvrZatf5fekJXHCRTPchyeLMNup4iJFf5CT6zFLPr9qwN3zc5hRnZfVf07uEaw/yzZ65Grrc8Ck9lZ7dKjdEHMai8trPKe7HZobLcetqwM39AIq4bfxp/JjcmmKaAgZ1BlZ5eVgQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738764697;
+	cv=none; b=HQDIOL93FgxJ8F61hkVhKkoT2C2g7Z7txyXSX/9cAJ1jGMKXf8MPtYUSL8TF/zEmLDKQAk0KjfqhFcpZWCSzAb1kLKLWwqLOlx+2Fry8jFVyEGXQN2ikETi9s4kBjLRWaXArneCmToKGaMabt55g5++bplmu2ESjyMLFMC52K4QPE72SlyS7biLrlVoJ005FdqIIIV/UPlT5wFLgd+PvtWke4o2LIxlcoWv14b04LM30Vaht2SL2M+ElJYQUICLf6yuUDCm5T+K0mYxdYuJimmCi0LeE1ssu+BMvSXQm36tyq2jXSXEjKzUBN+dmTY2tqsD65QBihyWAtJ851OdvNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738766596; c=relaxed/relaxed;
-	bh=o6FgTgzVzjsU+nZpD0dCrFMSbf5nat144nCqE/EpsMM=;
+	t=1738764697; c=relaxed/relaxed;
+	bh=+3u9jwQp6DYXi+I+Qmy9Asm9KgUzeu1P0QKBZqRTHBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JybyxHFt1qVZXRh/q+ht5xzIU64s7Jh4TYVbq2+BXJAnzoUjurUZ3LXmnqHrSXsvBjN33EzUdqJvbEOKBPrQCX6SNpzR27uPkDeCvbYfq9DaZnLYmf956NDQkk3UCXRQUKIDTWvKH748Qa2FbO9Wn+BYZczQBLjVOYl6/IuUf7RHoggOXgwy2aOPjoRfnup5XlVHV559QKhbQep8/82XMV0s1b/toVFPdfiXgSzBXvOc9B7aaASFBJxughL11vIdGEVUnLWF/rM5X2lizUuoDTmFicoUHh2wJFxyPyc0KFs2GaDIuG/zxHFHFY/yGBRyVvQbabujLQJ68KADdMQNCQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OSIg056H; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+	 MIME-Version; b=TYWRt6MP8hXmdDBAviAjwzvMoTqnmPXBRAe2KCM5KQNTRqRt4IXxEPT7//qPzWtKYZgB1wHvsZdLm9livK1UqMUTDhn44uKrqpJMcrAdbfK/yY8jlPfabpJ9GZNaPVTV2z+Mr4UUmBN0gxKUaqkahW/FisyuJW97U4Dk4Os5mH5BLi5XyfdWgGVdSzI4ugPKZqehvdgMQyhWOg9mRPbvhwsM9ZQozwDzN4UG2MzW4HNvLQDwfE+K8SbG9M2C+2nAONqDkn6oBDKpeJ9ZHhCcH6rrLOjf+774uOSx4Wluce38uouNjYF1zHLXmPg/Jqov+TKKZVdjZLVVP/mw/2rvqw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=tSEI9Az5; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OSIg056H;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=tSEI9Az5;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yp2z70DzKz301x
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 01:43:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yp2Gc41yYz2yHL
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 01:11:36 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 74F79A436BA;
-	Wed,  5 Feb 2025 14:41:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B23C4CEEF;
-	Wed,  5 Feb 2025 14:43:10 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id C7B36A43694;
+	Wed,  5 Feb 2025 14:09:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5DDC4CED1;
+	Wed,  5 Feb 2025 14:11:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738766591;
-	bh=mnXQQWavRensmn9TEjcYkUnd9AYGJH4sUgVhZHhUb3g=;
+	s=korg; t=1738764693;
+	bh=FyH55BMYbGrv8HcLmuHvOdnASara61BhkuyQEwsCI7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OSIg056HaWBdXVP/sYWd1Bz+vSRaa0ij/CpWrN8k9HOIxXjuE2oVGkPvdAPOntktj
-	 mszTW6Frgezk1xCKoDsk0jFhB9EEa+8ONMtjPcCHew/t/vm0Gy9VpgBcujO9D6Iq08
-	 h5+HBIKk8ymBLoBjFbye86PbX6RkQnynOZG+0CfQ=
+	b=tSEI9Az59mH6oVv6oCXN+7+HyrQqvG9C2IBrv7TNdEQ12dz89agDz61aEZ13v+T7w
+	 YMK1jIvEbgeg2ITAHbHLZIhzVicW0q+VjNFPYn4FQhKKHXWgfy/LjVzXgpKeMSN0jE
+	 KQ2IMbtQtaUiXkqNU4xY4gGornw3S5iA9fSSyAvE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -58,12 +58,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Song Liu <songliubraving@fb.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.13 290/623] perf machine: Dont ignore _etext when not a text symbol
-Date: Wed,  5 Feb 2025 14:40:32 +0100
-Message-ID: <20250205134507.325880677@linuxfoundation.org>
+Subject: [PATCH 6.6 175/393] perf machine: Dont ignore _etext when not a text symbol
+Date: Wed,  5 Feb 2025 14:41:34 +0100
+Message-ID: <20250205134426.990638038@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
-References: <20250205134456.221272033@linuxfoundation.org>
+In-Reply-To: <20250205134420.279368572@linuxfoundation.org>
+References: <20250205134420.279368572@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -85,7 +85,7 @@ X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-6.13-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -137,10 +137,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/tools/perf/util/machine.c b/tools/perf/util/machine.c
-index 27d5345d2b307..9be2f4479f525 100644
+index 7c6874804660e..e2a6facd1c4e2 100644
 --- a/tools/perf/util/machine.c
 +++ b/tools/perf/util/machine.c
-@@ -1003,7 +1003,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
+@@ -1217,7 +1217,7 @@ static int machine__get_running_kernel_start(struct machine *machine,
  
  	err = kallsyms__get_symbol_start(filename, "_edata", &addr);
  	if (err)
