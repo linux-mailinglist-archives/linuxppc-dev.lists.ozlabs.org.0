@@ -1,45 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-5869-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5870-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF704A29021
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2025 15:32:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B227CA290FC
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Feb 2025 15:43:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yp2km437cz301n;
-	Thu,  6 Feb 2025 01:32:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yp2z80vGnz3024;
+	Thu,  6 Feb 2025 01:43:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738765952;
-	cv=none; b=hW+CGnlLoWtF8dRJLE/Bp0BLEzr113lmUwX/jJ3ziaZkMwVJv8U/HXG37dWL2zVlIkEK9f7bsRpJWpZsWqRC5P3l/MF2GDv4+E19qKVVnLARqe0llbUCaa4XnxS9AHYQ5UFLnW3ejKKRl3Dw3Lf29Kje1KdXOuT7FexMVGxRX+tVXFPtvAfHZxpaz0JFWm93/03GXuQsqCZRY6csFnVpgnywUHnd+gpwS1nr97uOms0+zAeARCn8guakZ6Q2/NNJtI5r7d6oDaL+9h3Mz8olpP+Hpas3ZslkJ9Sv3Oc9VRc71X2ytB+w3AV1DtCVV279YFpz0g5oL436HL6SD7UTNQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738766596;
+	cv=none; b=SVFWFP14B/rMEW+4Ih6FjqJ9/E84Vug+RCmPF6PS2tU8oeQJb3+I+kKrIzxChOV2BKG+/5dnB6CWziTdfoUAXnWM3Ff5WiZKwh8TApa4aGXW+vl1kHJsaKufADc9DP4kG95HgQWUVkbvydiUlEuGWCkjS9TxfTYaUbnpOs51rJ+B74NRftelypa99biDNDtDqPyJUUZ9hplnVimvrZatf5fekJXHCRTPchyeLMNup4iJFf5CT6zFLPr9qwN3zc5hRnZfVf07uEaw/yzZ65Grrc8Ck9lZ7dKjdEHMai8trPKe7HZobLcetqwM39AIq4bfxp/JjcmmKaAgZ1BlZ5eVgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738765952; c=relaxed/relaxed;
-	bh=DLWeFdsIBCDsf+zlj+hs/bqANgug7c5/K20RtzlHSeU=;
+	t=1738766596; c=relaxed/relaxed;
+	bh=o6FgTgzVzjsU+nZpD0dCrFMSbf5nat144nCqE/EpsMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EjEkPxKsj1CePJQSwL/3QVoYG/nhuICzjUW2kNezgZYZKazCQaDDlbVmE64h1vlkqdQtONk458iDRuT7L2k58GE6pja/SKk0RpRa7ASTVMx3cve1FUhGPbr2/YqdlH6BWh6dYajcqY2FEleOHv7HnjAB1AED1HZkVlLjepg0WaoMfz41VjCKDVcFLzeP6TTrjxr6SGoclg/iPvyDBixrxMblbRNfOzUaDn47twcgNSyiXjKkw3ytk/8NpioLzgRTz00Ex6bUh4qruijB6xHm2GIyy7mgqxKtAUHPtNBngkZ6sLGp2Zk7X4Nbjh3CTKhbItjmvV7oLvPIHfN0LOuE2A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=kfHFbtYO; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+	 MIME-Version; b=JybyxHFt1qVZXRh/q+ht5xzIU64s7Jh4TYVbq2+BXJAnzoUjurUZ3LXmnqHrSXsvBjN33EzUdqJvbEOKBPrQCX6SNpzR27uPkDeCvbYfq9DaZnLYmf956NDQkk3UCXRQUKIDTWvKH748Qa2FbO9Wn+BYZczQBLjVOYl6/IuUf7RHoggOXgwy2aOPjoRfnup5XlVHV559QKhbQep8/82XMV0s1b/toVFPdfiXgSzBXvOc9B7aaASFBJxughL11vIdGEVUnLWF/rM5X2lizUuoDTmFicoUHh2wJFxyPyc0KFs2GaDIuG/zxHFHFY/yGBRyVvQbabujLQJ68KADdMQNCQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OSIg056H; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=kfHFbtYO;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=OSIg056H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yp2kl4ScNz2xjd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 01:32:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yp2z70DzKz301x
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 01:43:14 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 051CF5C5C32;
-	Wed,  5 Feb 2025 14:31:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D8FC4CED1;
-	Wed,  5 Feb 2025 14:32:28 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 74F79A436BA;
+	Wed,  5 Feb 2025 14:41:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48B23C4CEEF;
+	Wed,  5 Feb 2025 14:43:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1738765949;
-	bh=sgg1ktQLV5/V2rSwnYMaMJmvjkWDMlls7oM0dhDcbhA=;
+	s=korg; t=1738766591;
+	bh=mnXQQWavRensmn9TEjcYkUnd9AYGJH4sUgVhZHhUb3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kfHFbtYOA3WDuH9jfQ14Ql1+E0q9FZW66bR3nF0pjyYx9ZItcCUrV29O5gRJQ00eS
-	 ro07cHxikyK3KTcciH7tcml4Zaz4lPbvk/GTtrDQUMUrUIP5uxe+zjXGhwyldzTQIQ
-	 XEK8V/R4KVyZPs9EZW5udwsWymsil9tXgZL5+8U8=
+	b=OSIg056HaWBdXVP/sYWd1Bz+vSRaa0ij/CpWrN8k9HOIxXjuE2oVGkPvdAPOntktj
+	 mszTW6Frgezk1xCKoDsk0jFhB9EEa+8ONMtjPcCHew/t/vm0Gy9VpgBcujO9D6Iq08
+	 h5+HBIKk8ymBLoBjFbye86PbX6RkQnynOZG+0CfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -58,12 +58,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Song Liu <songliubraving@fb.com>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 270/590] perf machine: Dont ignore _etext when not a text symbol
-Date: Wed,  5 Feb 2025 14:40:25 +0100
-Message-ID: <20250205134505.603797915@linuxfoundation.org>
+Subject: [PATCH 6.13 290/623] perf machine: Dont ignore _etext when not a text symbol
+Date: Wed,  5 Feb 2025 14:40:32 +0100
+Message-ID: <20250205134507.325880677@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250205134455.220373560@linuxfoundation.org>
-References: <20250205134455.220373560@linuxfoundation.org>
+In-Reply-To: <20250205134456.221272033@linuxfoundation.org>
+References: <20250205134456.221272033@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,12 +80,12 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.13-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
