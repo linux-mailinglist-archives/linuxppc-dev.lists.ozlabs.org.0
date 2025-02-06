@@ -1,71 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-5889-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5890-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F35A2A107
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 07:39:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9797A2A17B
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 07:50:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YpSBk23BCz305v;
-	Thu,  6 Feb 2025 17:39:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YpSQl0L7sz306d;
+	Thu,  6 Feb 2025 17:50:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738822525;
-	cv=none; b=EUyEdIhQeAytBUaRGuWzVdPyVB5xJIdLYh0Kn33lTul/UghTh6Foqf7SBt5xWvpCbr5jqacecUMDtIzO2HtjPVa/0BRP79bZKbYa/C2t41E6Cc/0I+AbPYwC2JqBzW9y/THRipgq+4I2LhREdX81T8QCB2/EXFu8eJ2U/0heiyVeEoloNxnph3nAJIjs9SeWmVzWZq/gyMOFfL2MphKFnuW5o5UG9VawACqerPTRroky+6zrevJpQB1hCkXTz2FOzdp9MSZQV8VORaFkvqjzga4ow9ryEW1oCF+WxBMDo0oypDACFlwgtFhFL6zGaz+wI+Z5xG1FrNw/os+Liv2zPg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738824606;
+	cv=none; b=XiczT9dYBl2teAgv1pp85WJGHi5SvSVO9sYEh0ue6tvOw5cI7SFQADKYyv0gXCH4jRWQ9ihf/pYgOG1C8j4qwC4WUfbukmEOj8b9MLPD+5/mFVsMJ0sve6wm5TuggUTFmONv2QtsvPyZpFRrNhgTMsSN71YCnBJMU9B9+5sw9YGweQAgfMYma1T5E/TC8yBF3i7u4b+UysNQzZ0k0v8YwxzUbZIScCiFHlutgUBb5bEvzB4370z0rMs7iOBEVhkEpuf39XxGc3wQVqICigxhKMQzgN/p8MivRwmGjm799nEFoF5wQ/rE29KcBXjuLwmY+56ZCOaQr4qbfR0VXgrJXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738822525; c=relaxed/relaxed;
-	bh=3S/bL36CTDPzpi4+WxdSTgxzrSZccVW8gQKMaxVh92o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=fHodjkBq5IADAjpN/gmJL16xtlKPHKSx2/E5KFSrzynTf3LGU/Vh2UpEUdi4bQruejsyQ5qWZ8kFYkFwksXF6CXkSw5uHRV45PxLvpj+tWwsEMra+fsWssi75L8rlGyX+iVDdMTudtaVDJ4sK0EawKMoYI6GO+pmwHcRLpJVzgp/zQL7blS3/euhnMYjG3JknBDkLOJ0xyMcWedm0VdqpSFsXbHYcQNPJZX75nkfrJm7KFKwj2XAWjzDQs49gwA/5swnjn9U887yV3Zx5pSgJNizX8nWoPuYQS4kTnJzSuXVTc2fo76ptFDbWOLo6EpEjHvwYX3h0YLz0PRQlu6hPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sAvKfeNe; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sAvKfeNe;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YpRfg5W3sz2xyG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 17:15:23 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51620q8a032518
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Feb 2025 06:15:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=3S/bL3
-	6CTDPzpi4+WxdSTgxzrSZccVW8gQKMaxVh92o=; b=sAvKfeNeB5rakeN/SI+rKb
-	kfnjy6U/DBTMSIFrNQhwkjQA1wf8i+qB9s43vnYnhCV0vXzVNvSKXFq2KQDuRjhv
-	GqwlFEwvOI0HtQSKUadtUZp8iLZChB53aHDus2WcowNiEsJzPLmTdpN3ocI+dzz9
-	ZPAgDpywViMCPF2nHQMKlqb9+CsolBacR0o6inuAVBh3k5ARqlvSQLebJvNOtbfd
-	EWA8HzxLOpoYUjBDTveeRgewQzD0himJrZNp6xcj2BNJavfFPXtGtUG+2R9LC/Qs
-	ITtBhY/OIDIKlbhJIKW+/tIQpSdTBzuHtFeMuD0SJMwDZF59dEmgVrC70b36JoBw
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44mkwyrx3f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2025 06:15:19 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51631SSl016276
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 6 Feb 2025 06:15:19 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44hwxsmy38-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2025 06:15:19 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5166FICJ20644516
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Feb 2025 06:15:18 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2F1B45805E;
-	Thu,  6 Feb 2025 06:15:18 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 36ED158043;
-	Thu,  6 Feb 2025 06:15:17 +0000 (GMT)
-Received: from [9.39.20.207] (unknown [9.39.20.207])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  6 Feb 2025 06:15:16 +0000 (GMT)
-Message-ID: <71a31df1-1744-4b08-8b78-61030bef627d@linux.ibm.com>
-Date: Thu, 6 Feb 2025 11:45:15 +0530
+	t=1738824606; c=relaxed/relaxed;
+	bh=4iXOE+qqNrAMlaX2Hb8fqfBPJ+P465HiLkkNpiJgQ90=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hZfHFcjDMkDxtWBuYhoaPOUl8OFrHu21JHO37FOE85/OHI2h7OvV8RCWHRdvhL8VMNmmNt0Yjp1bYYZAH61XjRg2OIq/bogCICAVi/flXN9Kc/Os8/SuBZI8ctAFYBc8qE587yM80IaEPsD3CL/cWK7UzOY726zpN50vYCUvHf84yK7Vjn20PDxYSBOVfU64+0UuZx3lbOHt6QL6z8rMUW2ydlQURM5qgjHe/hFZNDINm1yhbfiI2vnMBpd/48TTn5y1+J3AIp0unrq28/QrL5Dgz0T1INfA1p+6T8g1uqTEPbjQvDJzLTl9ds+4kDPiB+edoQk5HwFsmGFpy9YaUg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YpSQk0K6Yz3064
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 17:50:05 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4YpRzj6B4wz9sPd;
+	Thu,  6 Feb 2025 07:30:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id neUGsg27D0lw; Thu,  6 Feb 2025 07:30:09 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YpRzj5CFcz9rvV;
+	Thu,  6 Feb 2025 07:30:09 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A716A8B76E;
+	Thu,  6 Feb 2025 07:30:09 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id rWUP8yv4uFvM; Thu,  6 Feb 2025 07:30:09 +0100 (CET)
+Received: from [192.168.202.221] (unknown [192.168.202.221])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id E10648B763;
+	Thu,  6 Feb 2025 07:30:08 +0100 (CET)
+Message-ID: <5528c76d-d8f1-41be-a742-8bafa74c24f9@csgroup.eu>
+Date: Thu, 6 Feb 2025 07:30:06 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,215 +57,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/pseries/iommu: memory notifier incorrectly adds
- TCEs for pmemory
-To: Gaurav Batra <gbatra@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-References: <20250130183854.92258-1-gbatra@linux.ibm.com>
- <5b9cb993-d4bb-45f7-a8cb-5a80c7f6f846@linux.ibm.com>
- <ba01054a-b632-4b6e-ba22-1893be368f07@linux.ibm.com>
-Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <ba01054a-b632-4b6e-ba22-1893be368f07@linux.ibm.com>
+Subject: Re: kismet: WARNING: unmet direct dependencies detected for HUGETLBFS
+ when selected by PPC_8xx
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Paul Gazzillo <paul@pgazz.com>,
+ Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+ oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ kernel test robot <lkp@intel.com>
+References: <202501240611.LDmD2nkj-lkp@intel.com>
+ <29cf621d-db67-6c5c-0dc5-ebe79edc6cc6@huawei.com>
+ <08a51873-7510-4552-9bb1-3ea7ef9fbc2d@csgroup.eu>
+ <0c0c6af5-7766-6cc0-d141-d725b84bef09@huawei.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <0c0c6af5-7766-6cc0-d141-d725b84bef09@huawei.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Lg9PJrNDm5qHXoaPJKYj2bP8gIp1s2tM
-X-Proofpoint-GUID: Lg9PJrNDm5qHXoaPJKYj2bP8gIp1s2tM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-06_01,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 bulkscore=0
- clxscore=1015 priorityscore=1501 suspectscore=0 adultscore=0
- malwarescore=0 spamscore=0 impostorscore=0 phishscore=0 lowpriorityscore=0
- mlxlogscore=999 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502060048
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
-On 2/5/25 19:28, Gaurav Batra wrote:
->
-> On 2/5/25 6:43 AM, Donet Tom wrote:
->>
->> On 1/31/25 00:08, Gaurav Batra wrote:
->>> iommu_mem_notifier() is invoked when RAM is dynamically 
->>> added/removed. This
->>> notifier call is responsible to add/remove TCEs from the Dynamic DMA 
->>> Window
->>> (DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and 
->>> not
->>> for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
->>> dynamically mapped when the device driver instructs to do so.
->>>
->>> The issue is 'daxctl' command is capable of adding pmemory as 
->>> "System RAM"
->>> after LPAR boot. The command to do so is -
->>>
->>> daxctl reconfigure-device --mode=system-ram dax0.0 --force
->>>
->>> This will dynamically add pmemory range to LPAR RAM eventually invoking
->>> iommu_mem_notifier(). The address range of pmemory is way beyond the 
->>> Max
->>> RAM that the LPAR can have. Which means, this range is beyond the DDW
->>> created for the device, at device initialization time.
->>>
->>> As a result when TCEs are pre-mapped for the pmemory range, by
->>> iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
->>> command, daxctl, to add pmemory as RAM.
->>>
->>> The solution is to not pre-map TCEs for pmemory.
->>>
->>> Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
->>> ---
->>>   arch/powerpc/include/asm/mmzone.h      |  1 +
->>>   arch/powerpc/mm/numa.c                 |  2 +-
->>>   arch/powerpc/platforms/pseries/iommu.c | 29 
->>> ++++++++++++++------------
->>>   3 files changed, 18 insertions(+), 14 deletions(-)
->>>
->>> diff --git a/arch/powerpc/include/asm/mmzone.h 
->>> b/arch/powerpc/include/asm/mmzone.h
->>> index d99863cd6cde..049152f8d597 100644
->>> --- a/arch/powerpc/include/asm/mmzone.h
->>> +++ b/arch/powerpc/include/asm/mmzone.h
->>> @@ -29,6 +29,7 @@ extern cpumask_var_t node_to_cpumask_map[];
->>>   #ifdef CONFIG_MEMORY_HOTPLUG
->>>   extern unsigned long max_pfn;
->>>   u64 memory_hotplug_max(void);
->>> +u64 hot_add_drconf_memory_max(void);
->>>   #else
->>>   #define memory_hotplug_max() memblock_end_of_DRAM()
->>>   #endif
->>> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
->>> index 3c1da08304d0..603a0f652ba6 100644
->>> --- a/arch/powerpc/mm/numa.c
->>> +++ b/arch/powerpc/mm/numa.c
->>> @@ -1336,7 +1336,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
->>>       return nid;
->>>   }
->>>   -static u64 hot_add_drconf_memory_max(void)
->>> +u64 hot_add_drconf_memory_max(void)
->>>   {
->>>       struct device_node *memory = NULL;
->>>       struct device_node *dn = NULL;
->>> diff --git a/arch/powerpc/platforms/pseries/iommu.c 
->>> b/arch/powerpc/platforms/pseries/iommu.c
->>> index 29f1a0cc59cd..abd9529a8f41 100644
->>> --- a/arch/powerpc/platforms/pseries/iommu.c
->>> +++ b/arch/powerpc/platforms/pseries/iommu.c
->>> @@ -1284,17 +1284,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
->>>     static phys_addr_t ddw_memory_hotplug_max(void)
->>>   {
->>> -    resource_size_t max_addr = memory_hotplug_max();
->>> -    struct device_node *memory;
->>> +    resource_size_t max_addr;
->>>   -    for_each_node_by_type(memory, "memory") {
->>> -        struct resource res;
->>> -
->>> -        if (of_address_to_resource(memory, 0, &res))
->>> -            continue;
->>> -
->>> -        max_addr = max_t(resource_size_t, max_addr, res.end + 1);
->>> -    }
->>> +#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
->>> +    max_addr = hot_add_drconf_memory_max();
->>> +#else
->>> +    max_addr = memblock_end_of_DRAM();
->>> +#endif
->>>         return max_addr;
->>>   }
->>> @@ -1600,7 +1596,7 @@ static bool enable_ddw(struct pci_dev *dev, 
->>> struct device_node *pdn)
->>>         if (direct_mapping) {
->>>           /* DDW maps the whole partition, so enable direct DMA 
->>> mapping */
->>> -        ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> 
->>> PAGE_SHIFT,
->>> +        ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> 
->>> PAGE_SHIFT,
->>>                           win64->value, 
->>> tce_setrange_multi_pSeriesLP_walk);
->>>           if (ret) {
->>>               dev_info(&dev->dev, "failed to map DMA window for 
->>> %pOF: %d\n",
->>> @@ -2346,11 +2342,17 @@ static int iommu_mem_notifier(struct 
->>> notifier_block *nb, unsigned long action,
->>>       struct memory_notify *arg = data;
->>>       int ret = 0;
->>>   +    /* This notifier can get called when onlining persistent 
->>> memory as well.
->>> +     * TCEs are not pre-mapped for persistent memory. Persistent 
->>> memory will
->>> +     * always be above ddw_memory_hotplug_max()
->>> +     */
->>> +
->>>       switch (action) {
->>>       case MEM_GOING_ONLINE:
->>>           spin_lock(&dma_win_list_lock);
->>>           list_for_each_entry(window, &dma_win_list, list) {
->>> -            if (window->direct) {
->>> +            if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
->>> +                ddw_memory_hotplug_max()) {
->> Hi Gaurav,
->>
->> Since the pmem_start will be greater than ddw_memory_hotplug_max(), 
->> and we have not created DDW beyond ddw_memory_hotplug_max(), we are 
->> not adding TCE for this range, right?
->>
-> That is correct
->
-Thank you.
-This looks good to me. feel free to add
 
-Tested-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Donet Tom <donettom@linux.ibm.com>
->
->> I have tested this patch on my system, and daxctl reconfigure-device 
->> is able to reconfigure PMEM to system RAM.
+Le 06/02/2025 à 03:08, Miaohe Lin a écrit :
+> On 2025/2/6 0:35, Christophe Leroy wrote:
 >>
->> ~# daxctl reconfigure-device --mode=system-ram dax1.0 --force
->> [
->>   {
->>     "chardev":"dax1.0",
->>     "size":5362417664,
->>     "target_node":4,
->>     "align":65536,
->>     "mode":"system-ram",
->>     "online_memblocks":4,
->>     "total_memblocks":4,
->>     "movable":true
->>   }
->> ]
->> reconfigured 1 device
->> ~#
->> ~# lsmem
->> RANGE                                  SIZE  STATE REMOVABLE BLOCK
->> 0x0000000000000000-0x000000697fffffff  422G online       yes 0-421
->> 0x0000040380000000-0x000004047fffffff    4G online       yes 4110-4113
 >>
->> Memory block size:         1G
->> Total online memory:     426G
->> Total offline memory:      0B
->> root@ltcden14-lp2:~#
->>
->> Thanks
->> Donet
->>>                   ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
->>>                           arg->nr_pages, window->prop);
->>>               }
->>> @@ -2362,7 +2364,8 @@ static int iommu_mem_notifier(struct 
->>> notifier_block *nb, unsigned long action,
->>>       case MEM_OFFLINE:
->>>           spin_lock(&dma_win_list_lock);
->>>           list_for_each_entry(window, &dma_win_list, list) {
->>> -            if (window->direct) {
->>> +            if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
->>> +                ddw_memory_hotplug_max()) {
->>>                   ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
->>>                           arg->nr_pages, window->prop);
->>>               }
+>> Le 05/02/2025 à 03:39, Miaohe Lin a écrit :
+>>> On 2025/1/24 6:24, kernel test robot wrote:
+>>>> tree:   https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C97f4bcfeef7147c5a46408dd465329e6%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744045189449604%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=x37VZjFG%2BB1zYyoDGgz4jIyUbSWx%2FCklH%2FgsDLGCW%2F4%3D&reserved=0 master
+>>>> head:   d0d106a2bd21499901299160744e5fe9f4c83ddb
+>>>> commit: f8142cf94d4737ea0c3baffb3b9bad8addcb9b6b hugetlb: make hugetlb depends on SYSFS or SYSCTL
+>>>> date:   2 years, 4 months ago
+>>>> config: powerpc-kismet-CONFIG_HUGETLBFS-CONFIG_PPC_8xx-0-0 (https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdownload.01.org%2F0day-ci%2Farchive%2F20250124%2F202501240611.LDmD2nkj-lkp%40intel.com%2Fconfig&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C97f4bcfeef7147c5a46408dd465329e6%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744045189465052%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=QSCbgVZFsu%2BQN1b7xDiPsikJR93kWobuPsa%2BtqG3dZA%3D&reserved=0)
+>>>> reproduce: (https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdownload.01.org%2F0day-ci%2Farchive%2F20250124%2F202501240611.LDmD2nkj-lkp%40intel.com%2Freproduce&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C97f4bcfeef7147c5a46408dd465329e6%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744045189472672%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=nT4smogT5pTgqIh7%2FCPD%2FpQsCqaBrxfN%2BtEER7l%2FyLY%3D&reserved=0)
+>>>>
+>>>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>>>> the same patch/commit), kindly add following tags
+>>>> | Reported-by: kernel test robot <lkp@intel.com>
+>>>> | Closes: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Foe-kbuild-all%2F202501240611.LDmD2nkj-lkp%40intel.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C97f4bcfeef7147c5a46408dd465329e6%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744045189480482%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=7yBcNLgmgW6BUZ55nHh%2F8fZqHGShaqGDKdotvIQ2Tl8%3D&reserved=0
 >>>
->>> base-commit: 95ec54a420b8f445e04a7ca0ea8deb72c51fe1d3
+>>> Thanks for report. Sorry for late respond. I was on my Spring Festival vacation.
+>>>
+>>>>
+>>>> kismet warnings: (new ones prefixed by >>)
+>>>>>> kismet: WARNING: unmet direct dependencies detected for HUGETLBFS when selected by PPC_8xx
+>>>>      WARNING: unmet direct dependencies detected for HUGETLBFS
+>>>>        Depends on [n]: (X86 || IA64 || SPARC64 || ARCH_SUPPORTS_HUGETLBFS [=y] || BROKEN [=n]) && (SYSFS [=n] || SYSCTL [=n])
+>>>>        Selected by [y]:
+>>>>        - PPC_8xx [=y] && <choice>
+>>>
+>>> I am a bit confused. HUGETLBFS depends on SYSFS or SYSCTL. How can it be selected while SYSFS [=n] || SYSCTL [=n]?
+>>> Or am I miss something?
+>>
+>> CONFIG_HUGETLBFS is selected by CONFIG_PPC_8xx, see commit 34536d780683 ("powerpc/8xx: Add a function to early map kernel via huge pages")
+> 
+> Thanks for your providing. But I'm saying that since HUGETLBFS depends on (SYSFS or SYSCTL), how CONFIG_PPC_8xx succeeds to select it while
+> SYSFS and SYSCTL are disabled? I'm not really familiar with Kconfig but I assume Kconfig will confirm that the dependencies are satisfied
+> before HUGETLBFS is enabled. Or am I miss something?
+
+I suggest you read https://docs.kernel.org/kbuild/kconfig-language.html
+
+Extract:
+
+Note:
+     select should be used with care. select will force a symbol to a 
+value without visiting the dependencies. By abusing select you are able 
+to select a symbol FOO even if FOO depends on BAR that is not set.
+
+Christophe
 
