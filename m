@@ -1,98 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-5917-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5918-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1354A2B3BB
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 22:06:39 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08FAFA2B50E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 23:30:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YpqR11q1xz2xfR;
-	Fri,  7 Feb 2025 08:06:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YpsHx0cM9z304f;
+	Fri,  7 Feb 2025 09:30:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738875997;
-	cv=none; b=FiLUoWe1FgrSQI+XY29wXD4YO+WjRs7M3HLzM291SVazXasjQqWv1L9NLr6oTdpiynPsM6IlrEa26H2CsRJ+AinqfW6LB5tWQ6iAeAGzGYno8dc2QqUWO+OAWDuUUYLVT8BIfHj3NeXhXUmlJvfq14vxDUN+RPIwYwaZ8/KsDY4QyawUNvYtI1OcoMi3j3pJQiCq1AQytPJKLlnXyxqcIFspgqhqaVu033G51T8SPOIq4HqqiTphvTqwtbxs5fbfDJzFazd4AFdcKcPFQq3LJEjWK5z73nphfArKcvVNIskbWkCUjfuNMFr0LZTzfbsIGwRf/dmSlu0UWNC0dqQZGA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738881037;
+	cv=none; b=dfHpUnyEFNN/YhoaM/vr1nEqfiMnJrI3l2mGvhJX1wg1x0N04Aba9yWkj/G3k6UMtJiNlDnSmTto2rkjGyRFRxFhOdmCaaOht+7cdLY1gYyryYCQZECxRC+6M+unR78TPCP9PAn9rSNfeb/Uz7eVVzeWLqMj1+aH/aJMx8OSWMkZzmEb4YOxmGpKlWhhsYAIu+YMDQyeQYm3nyPdQl9kqUybSDtTxesD6BgOjBPkZrmzLFqF/K7jxQsii+YBO98eLFWMv6y5AwVbpA+dSvereOCizaaa6haJhpGrJY2kvzTrrWRwMsLU2qfPJtQqF/freho09ytcwkQjamyLfhrvBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738875997; c=relaxed/relaxed;
-	bh=BjMZZDjHtCceqfzd+zK9UkArZCmEsWhxxeyu2AQZCbw=;
+	t=1738881037; c=relaxed/relaxed;
+	bh=ZFUHOwXtEidIbNUE0cLHRJN5mrmk4IGQ5bcCS3wZrsQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=caoJJYrlwInQT+yQoS0BykKlod40UYP7Sv/DmjXS0t0jR6jgypN2pHWLMJ0KH0CcZAjIgwvWxG2nQWyy4FZYdOpvfsi4/2Jmtcu1okwnPwWGIH01tiILhZcDZrd19kwtQJCXhqLTqspMtpAi/b0d23Sj7Z1mxO7AiuWYL0fih9SH4NAPhgvQ3kItiRhzeWElOlyhQbk1teaiOSNWlVJkBvcgKJTtd2DT93jYN5HayqHy63Gc6Ssc4Z7EgfmDSorILHkB/ypPzbbivWFdqcBmnZDQmzWzMS9Hcspt2mJ4x0leNthItWhks7YRC7yuizXOzI8aDr6mjGEOCwVZn4x6fA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OAW2cd9l; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQ/Qq5Vg+t0Tf3/xrK9i3P1faHSz5tPfw/dUuIqDuGmX02/AqSeShJEVangyYf3l9qpn3fM9tcBfnrbZipwJRs0Z+Wwt02Bl2x3PYrXoubBZNK8dGD37SzCfrarIInRn+r3jCLcX6co1q7nffzC90Md19kMWpGq2xIRD1cRwTLsTMTx6CjXdNgAlFGRMXt5mIeo9KxlHC1TBBymhjowxcYIWmWE+wH6c/DyY/wch1dodh70PLPwAXAUqDkn0b/Grf17+oFNUw7bfioXyUoKrj4n3CGHlEP1p4xu7GgBKOEg8NCzC+lRKFl6PBCnb6fYKWlUm5Z2gpbQm4j5nCWsdXg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=c5FRc5Z1; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OAW2cd9l;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=c5FRc5Z1;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102e; helo=mail-pj1-x102e.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102e.google.com (mail-pj1-x102e.google.com [IPv6:2607:f8b0:4864:20::102e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YpqQz4Nnjz2xQ8
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 08:06:34 +1100 (AEDT)
-Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2fa1e25e337so847325a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Feb 2025 13:06:34 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738875992; x=1739480792; darn=lists.ozlabs.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BjMZZDjHtCceqfzd+zK9UkArZCmEsWhxxeyu2AQZCbw=;
-        b=OAW2cd9lLMkSkVyFoKOEzlJhCWKAMx60DxDWE7bDv/EeFSN5688T8V5JHxikJLBMKE
-         oUVMIahoScXwdbDRIp7/J/w+3gJ64RJpCBWobOoz05rvgrWyrat6yXKRsQvKAvBCAQoJ
-         8y4BBR4AAq0PlO5LIQgiES3+Jyk3NJ2Wn9FU377wPVCDyfyhuYdv3Cyx1JFC+oqIH0u4
-         +Jnc8dkuqxu6nY4dAU7hYiJmzwIbiYsqXOnEsqJVJvFHY1OJcs3R8pmmJSKkgDGBjfq1
-         ejLRGc8mNAF7r1xEvRBBZPUxXGe3Z0mRxB30euGHmZMG1mQ6+A5Sa2wJTyZ+r2nYvV6+
-         CHUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738875992; x=1739480792;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BjMZZDjHtCceqfzd+zK9UkArZCmEsWhxxeyu2AQZCbw=;
-        b=aGLd1ixuqEQc/LaHC6TZrN3mPEMJn/JTP2rPJJbvQeIeiWeCBB2UU6958Rgl6Xmmkq
-         tbjo597/r34FulhAVoZWihu4FdJppf14Zd9NFwstWaN0H3Ilts+2liuN0c/MgZzb8NRZ
-         uWgaRW6f0EZXku3hMtZ0Qfp6UxzD7SvdUx8jiJS1nCEhQKUnDCMkYJdjb03c/z22PQcy
-         5vOSBqJk5IZ5pujzx8ijXPdeheQ/P1Mg4I6uoRl8lViHieCCe4Bud++k66cJG6fne7L1
-         7bGi85nXbpfM8QA1M2JCXAy4/60HeSfFttI1vw7ChiSgCLi37BwzZPvr5yGXrK6m0u9l
-         oatw==
-X-Forwarded-Encrypted: i=1; AJvYcCVnl5GPIVIct20WPc66ncAfaw79bK+KKZbQ46MYX/4R8uoSjh7SJo29Dczuo0Y7h/1pqmtbhCKAW8iEROw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Ywv8ZUxajSqJXznAqEk8E+Y9pSHeU8rULE5FaDWI6YxC2to3eUG
-	iVkPs1MV+4tXOQpzTaMUHdsSK7FsLnu3AczexXn9nw2MR51WnG9o
-X-Gm-Gg: ASbGncvY9hkX2SpYiK6WRFTnnLScczbZx90vWHY6aFmFsIrzeuSV4egT7PucqyfMypW
-	ha/j9l3//IFA/18jPeH0dmkaIt0YVjA4Nz4KdlohuU1aDGQThIkOqbKgK5JFWYVRolkoeVPAj9M
-	JJtnPKy7mAtC3pXS/cTM7LHoI9JakPe73Of6UzSTSfV6pyRwu7tAEooDhfTVzU0ahusvTr1nzpX
-	cTbNk/Tu3DrKYy+BvDhIXnYDG2oQU45lOe39Ig9GfhnwGiLF3LTy9y5aL+MtAflDhYB7dLIrYyJ
-	OSkKsdk7KgX/pgDgN2y7TferhH3A
-X-Google-Smtp-Source: AGHT+IH78/uCL9JiB7gG2UlgfTf9jp7yPy30ClKcc0/9tpp9zOrpumyNaOrCnZmQL5OMHTgXCvjCaA==
-X-Received: by 2002:a17:90b:4b8c:b0:2fa:f8d:65e7 with SMTP id 98e67ed59e1d1-2fa23f43a0emr821750a91.2.1738875992197;
-        Thu, 06 Feb 2025 13:06:32 -0800 (PST)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2fa17618064sm1089562a91.41.2025.02.06.13.06.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Feb 2025 13:06:31 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date: Thu, 6 Feb 2025 13:06:30 -0800
-From: Guenter Roeck <linux@roeck-us.net>
-To: Alistair Popple <apopple@nvidia.com>
-Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, linux-mm@kvack.org,
-	Alison Schofield <alison.schofield@intel.com>, lina@asahilina.net,
-	zhang.lyra@gmail.com, gerald.schaefer@linux.ibm.com,
-	vishal.l.verma@intel.com, dave.jiang@intel.com, logang@deltatee.com,
-	bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca,
-	catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
-	npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
-	willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
-	linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-	nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-	linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
-	david@fromorbit.com, chenhuacai@kernel.org, kernel@xen0n.name,
-	loongarch@lists.linux.dev
-Subject: Re: [PATCH v7 19/20] fs/dax: Properly refcount fs dax pages
-Message-ID: <f5e487d8-6466-442b-ae97-a7c294dc531e@roeck-us.net>
-References: <cover.472dfc700f28c65ecad7591096a1dc7878ff6172.1738709036.git-series.apopple@nvidia.com>
- <b5c33b201b9dc0131d8bb33b31661645c68bf398.1738709036.git-series.apopple@nvidia.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YpsHt2H5Dz2yD5
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 09:30:31 +1100 (AEDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id 64B28240101
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 23:30:24 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1738881024; bh=u6G1eD2kmbp6domphDX7910Spwzkgf3Yjk2DeO59O7o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=c5FRc5Z1mSvp/+GCXMNE/IhAPZJPUhNCYYX+mJ4OZDRmFYvr77ONBwgyfDjabWym8
+	 J3R7Vn6RjOIBg1T+9npW9jo/GTAlTFB6zYiZZXCtkjgjsdD3eX/321vxjixKycER4X
+	 ldhoBl66cDDVV9/S4iQpVUpCAseJDQ12l71btksfBWSO2xCPXULCHoUsmicZ/NkhXS
+	 PDFAKli6NF8+T02xOfQVnS6BPA1dz0fo3UaNgiMl6g3yz/ty5x0sZ/J1L4oQ8gLdaT
+	 IheY4kW8KHreJBW7qy3EjK2YOZ9Q57k9R58tgrFZgyC2gU0oyFUfFDACdvuHB2+5tT
+	 l2Lb9a3j+JjpA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YpsHY0mq5z9rxF;
+	Thu,  6 Feb 2025 23:30:16 +0100 (CET)
+Date: Thu,  6 Feb 2025 22:30:15 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH RFC 9/9] dt-bindings: nand: Convert fsl,elbc bindings to
+ YAML
+Message-ID: <Z6U39wKiLO2I6vrI@probook>
+References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
+ <20250126-ppcyaml-v1-9-50649f51c3dd@posteo.net>
+ <20250127-cuddly-dalmatian-of-saturation-5f1ae2@krzk-bin>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -105,58 +94,254 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b5c33b201b9dc0131d8bb33b31661645c68bf398.1738709036.git-series.apopple@nvidia.com>
-X-Spam-Status: No, score=0.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250127-cuddly-dalmatian-of-saturation-5f1ae2@krzk-bin>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Feb 05, 2025 at 09:48:16AM +1100, Alistair Popple wrote:
-> Currently fs dax pages are considered free when the refcount drops to
-> one and their refcounts are not increased when mapped via PTEs or
-> decreased when unmapped. This requires special logic in mm paths to
-> detect that these pages should not be properly refcounted, and to
-> detect when the refcount drops to one instead of zero.
+On Mon, Jan 27, 2025 at 09:37:32AM +0100, Krzysztof Kozlowski wrote:
+> On Sun, Jan 26, 2025 at 07:59:04PM +0100, J. Neuschäfer wrote:
+> > Convert the Freescale localbus controller bindings from text form to
+> > YAML. The list of compatible strings reflects current usage.
 > 
-> On the other hand get_user_pages(), etc. will properly refcount fs dax
-> pages by taking a reference and dropping it when the page is
-> unpinned.
-> 
-> Tracking this special behaviour requires extra PTE bits
-> (eg. pte_devmap) and introduces rules that are potentially confusing
-> and specific to FS DAX pages. To fix this, and to possibly allow
-> removal of the special PTE bits in future, convert the fs dax page
-> refcounts to be zero based and instead take a reference on the page
-> each time it is mapped as is currently the case for normal pages.
-> 
-> This may also allow a future clean-up to remove the pgmap refcounting
-> that is currently done in mm/gup.c.
-> 
-> Signed-off-by: Alistair Popple <apopple@nvidia.com>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> 
-> ---
-...
-> -static inline unsigned long dax_page_share_put(struct page *page)
-> +static inline unsigned long dax_folio_put(struct folio *folio)
->  {
-> -	WARN_ON_ONCE(!page->share);
-> -	return --page->share;
-> +	unsigned long ref;
-> +
-> +	if (!dax_folio_is_shared(folio))
-> +		ref = 0;
-> +	else
-> +		ref = --folio->share;
-> +
-> +	WARN_ON_ONCE(ref < 0);
+> simple-bus and 20 other compatibles you used were not present in the
+> original binding. Does above "list of compatible strings" mean you just
+> added them?
 
-Kind of unlikely for an unsigned long to ever be < 0.
+Ah, I should make this clearer:
 
-[ thanks to coverity for noticing ]
+ - by "list of compatible strings" I mean the list as it is after
+   applying the patch
+ - by "current usage" I mean what is found in arch/*/boot/dts
 
-Guenter
+> 
+> > 
+> > Changes compared to the txt version:
+> >  - removed the board-control (fsl,mpc8272ads-bcsr) node because it only
+> >    appears in this example and nowhere else
+> >  - added a new example with NAND flash
+> > 
+> > Remaining issues:
+> >  - The localbus is not really a simple-bus: Unit addresses are not simply
+> >    addresses on a memory bus. Instead, they have a format: The first cell
+> >    is a chip select number, the remaining one or two cells are bus
+> >    addresses.
+> > 
+> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > ---
+> >  .../devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml |  61 +++++++++
+> >  .../bindings/powerpc/fsl/fsl,elbc-gpcm-uio.yaml    |  55 ++++++++
+> 
+> Please split the conversion from adding new bindings. For example above
+> file and its compatible fsl,elbc-gpcm-uio was not documented in original
+> TXT.
+
+Fair point, I'll split them.
+
+> 
+> ...
+> 
+> > diff --git a/Documentation/devicetree/bindings/powerpc/fsl/fsl,elbc.yaml b/Documentation/devicetree/bindings/powerpc/fsl/fsl,elbc.yaml
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..6bbceb82c77826499abe85879e9189b18d396eea
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/powerpc/fsl/fsl,elbc.yaml
+> > @@ -0,0 +1,150 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/powerpc/fsl/fsl,elbc.yaml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Freescale Enhanced Local Bus Controller
+> 
+> What sort of bus is it? Memory bus? Then place it with others, see
+> memory directory.
+
+Yes, a memory bus controller with explicit chip-select lines, for
+various kinds of memory (flash, RAM), and possibly other peripherals.
+I'll move it to bindings/memory-controllers.
+
+> 
+> > +
+> > +maintainers:
+> > +  - J. Neuschäfer <j.ne@posteo.net>
+> > +
+> > +properties:
+> > +  $nodename:
+> > +    pattern: "^localbus@[0-9a-f]+$"
+> > +
+> > +  compatible:
+> > +    oneOf:
+> > +      - items:
+> > +          - enum:
+> > +              - fsl,mpc8313-elbc
+> > +              - fsl,mpc8315-elbc
+> > +              - fsl,mpc8377-elbc
+> > +              - fsl,mpc8378-elbc
+> > +              - fsl,mpc8379-elbc
+> > +              - fsl,mpc8536-elbc
+> > +              - fsl,mpc8569-elbc
+> > +              - fsl,mpc8572-elbc
+> > +              - fsl,p1020-elbc
+> > +              - fsl,p1021-elbc
+> > +              - fsl,p1023-elbc
+> > +              - fsl,p2020-elbc
+> > +              - fsl,p2041-elbc
+> > +              - fsl,p3041-elbc
+> > +              - fsl,p4080-elbc
+> > +              - fsl,p5020-elbc
+> > +              - fsl,p5040-elbc
+> > +          - const: fsl,elbc
+> > +          - const: simple-bus
+> > +
+> > +      - items:
+> > +          - const: fsl,mpc8272-localbus
+> > +          - const: fsl,pq2-localbus
+> > +
+> > +      - items:
+> > +          - enum:
+> > +              - fsl,mpc8247-localbus
+> > +              - fsl,mpc8248-localbus
+> > +              - fsl,mpc8360-localbus
+> > +          - const: fsl,pq2pro-localbus
+> > +          - const: simple-bus
+> > +
+> > +      - items:
+> > +          - enum:
+> > +              - fsl,mpc8540-localbus
+> > +              - fsl,mpc8544-lbc
+> > +              - fsl,mpc8544-localbus
+> > +              - fsl,mpc8548-lbc
+> > +              - fsl,mpc8548-localbus
+> > +              - fsl,mpc8560-localbus
+> > +              - fsl,mpc8568-localbus
+> > +          - const: fsl,pq3-localbus
+> > +          - const: simple-bus
+> > +
+> > +  reg:
+> > +    maxItems: 1
+> > +
+> > +  interrupts:
+> > +    maxItems: 1
+> > +
+> > +  "#address-cells":
+> > +    enum: [2, 3]
+> > +    description: |
+> > +      The first cell is the chipselect number, and the remaining cells are the
+> > +      offset into the chipselect.
+> > +
+> > +  "#size-cells":
+> > +    enum: [1, 2]
+> > +    description: |
+> > +      Either one or two, depending on how large each chipselect can be.
+> > +
+> > +  ranges:
+> > +    description: |
+> > +      Each range corresponds to a single chipselect, and covers the entire
+> > +      access window as configured.
+> > +
+> > +patternProperties:
+> > +  "^.*@.*$":
+> > +    type: object
+> 
+> And probably you need 
+
+  ?
+
+
+> > +
+> > +additionalProperties: false
+> > +
+> > +examples:
+> > +  - |
+> > +    localbus@f0010100 {
+> > +        compatible = "fsl,mpc8272-localbus",
+> > +                     "fsl,pq2-localbus";
+> > +        #address-cells = <2>;
+> > +        #size-cells = <1>;
+> > +        reg = <0xf0010100 0x40>;
+> 
+> compatible, then reg - see DTS coding style.
+
+I'll clean up the various style issues in the examples.
+(These examples are quite old, either from the old version of this
+binding or from existing dts files.)
+
+
+Best regards,
+J. Neuschäfer
+
+> 
+> > +
+> > +        ranges = <0x0 0x0 0xfe000000 0x02000000
+> > +                  0x1 0x0 0xf4500000 0x00008000
+> > +                  0x2 0x0 0xfd810000 0x00010000>;
+> > +
+> > +        flash@0,0 {
+> > +            compatible = "jedec-flash";
+> > +            reg = <0x0 0x0 0x2000000>;
+> 
+> Well, here it is correct
+> 
+> > +            bank-width = <4>;
+> > +            device-width = <1>;
+> > +        };
+> > +
+> > +        simple-periph@2,0 {
+> > +            compatible = "fsl,elbc-gpcm-uio";
+> > +            reg = <0x2 0x0 0x10000>;
+> > +            elbc-gpcm-br = <0xfd810800>;
+> > +            elbc-gpcm-or = <0xffff09f7>;
+> > +        };
+> > +    };
+> > +
+> > +  - |
+> > +    localbus@e0005000 {
+> 
+> compatible, reg
+> 
+> > +        #address-cells = <2>;
+> > +        #size-cells = <1>;
+> > +        compatible = "fsl,mpc8315-elbc", "fsl,elbc", "simple-bus";
+> > +        reg = <0xe0005000 0x1000>;
+> > +        interrupts = <77 0x8>;
+> > +        interrupt-parent = <&ipic>;
+> > +
+> > +        ranges = <0x0 0x0 0xfe000000 0x00800000
+> > +                  0x1 0x0 0xe0600000 0x00002000
+> > +                  0x2 0x0 0xf0000000 0x00020000
+> > +                  0x3 0x0 0xfa000000 0x00008000>;
+> > +
+> > +        flash@0,0 {
+> 
+> compatible, reg
+> 
+> > +            #address-cells = <1>;
+> > +            #size-cells = <1>;
+> > +            compatible = "cfi-flash";
+> > +            reg = <0x0 0x0 0x800000>;
+> > +            bank-width = <2>;
+> > +            device-width = <1>;
+> > +        };
+> > +
+> > +        nand@1,0 {
+> 
+> compatible, reg
+> 
+> > +            #address-cells = <1>;
+> > +            #size-cells = <1>;
+> > +            compatible = "fsl,mpc8315-fcm-nand",
+> > +                         "fsl,elbc-fcm-nand";
+> > +            reg = <0x1 0x0 0x2000>;
+> > +        };
+> 
+> Best regards,
+> Krzysztof
+> 
 
