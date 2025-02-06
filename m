@@ -1,42 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-5893-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5894-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E722A2A379
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 09:47:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88CB9A2A3C0
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 10:00:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YpW2Q4x9Tz2yMD;
-	Thu,  6 Feb 2025 19:47:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YpWKf4Dzmz308M;
+	Thu,  6 Feb 2025 20:00:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=37.157.195.192
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738831662;
-	cv=none; b=LAXFyimC/p34empYd922sDzOZBzt6adczmqncjzahUkUoUB/V8Nphq4OPelGKc3A3PS3C1h+5tCpp3SvAhHV+cDMIsaCvxu8nIW7Z0sE6L/AcnjfoRfkw444otOPecW7uIs/Zxblk+7gg2f3r9fvCn/sZjSW3iJWPKW24Va6ofKA34QrAlAnTQYIm0amLYwmDiv0c0+H9lJatgJlQ1yTl8vMnfbtrxkBHSnX8+bN0ckAd4/tmdp5j6r4pye5QtAcxs1I3xW2OlX3Lz39zQnO/fnb7XCJ2RFka5AKy1dGy5kWtAjNnw44DPeMmLt18jXevzUUlBiLtTVwfXetcA6JNw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738832454;
+	cv=none; b=C2ymp3xd36YUwmgFv8UP2oq4rEd9r+YzkQfmhH6/0E/+cxoDW3CO/hCSIPmN2Vpw20XFPh6qWkbWRaGyhJLeOKg+OALHTO3taKtoVA2K2Azcaj4r2DekvvBSz0TmJqo5FaDfE6Ci5cNzLQPcMEBEpFXpWOs+0Zx06pOwEpDTmfbT58qvQn8CtKBb9bXzZgfjRY4ys/kBvsX+U0XgU3AlkP3Ivbo1cmx5Uc/5TAIzk5CzM2GhMhZd1185p4YIW3wwngnK7Ut3MM8ccKdyATOLgz4Qtw30xvrjXdyRxKzZ3WWt9UuE/lP8nFlj3z5lfqiAc9un4j9DGmUphaFg1ZgsKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738831662; c=relaxed/relaxed;
-	bh=hR49c1/zEDqkj+EPGvXmXfavTt3Oe9eh0wYjGlF3y60=;
-	h=Date:From:To:Subject:Message-Id:Mime-Version:Content-Type; b=DhhOefhgPlPMRyAwK1ocUYsj7E6oceJqXMNRCtUqiocBVKiMZe6zHRv6jmH4vWUMuubIZgX+gA9oum+ZeHNLS5FNkp36PqseJz1wM16eIRmdN8ZHX6KClp0BN5fDaODgflAFVx8jm3Sc6PFBFpnEC77nqBSpZVg8iE2noGjjt6QO99s+y+IF+QXBvmnxpJIaJfgBkoxUAyN9ESMgA881JTkGTUnSxHrxEu0AUkVg2857+mXzVx0HOXf5bHvCAHODuQetuSvG0rs6NYWOQRJpFZfz/Qc3bS2NJnz/5K/0XKakfzEVB6/J33SeRzK4GYfKMCw1pUYaTr5P/tuwH434bQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=danny.cz; spf=pass (client-ip=37.157.195.192; helo=redcrew.org; envelope-from=dan@danny.cz; receiver=lists.ozlabs.org) smtp.mailfrom=danny.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=danny.cz
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=danny.cz (client-ip=37.157.195.192; helo=redcrew.org; envelope-from=dan@danny.cz; receiver=lists.ozlabs.org)
-X-Greylist: delayed 347 seconds by postgrey-1.37 at boromir; Thu, 06 Feb 2025 19:47:41 AEDT
-Received: from redcrew.org (redcrew.org [37.157.195.192])
+	t=1738832454; c=relaxed/relaxed;
+	bh=0W3hRzcMBQdJKf41pQDnaZxshPEQ4bm+jDoMRfYIhqg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SbNe0+WCT/Z6nWk7iUyfqiLVLqwjDJsVWQxxNYN0jqvTFc61S2wdnZ68myAJzembEW9cNhauZNU+LH+0lsCwh2MvHpg3pfmnqhXZRCX+ab48Gw16gh+hKn27CjC8AYsIIJO3aCFWWvXtH/fxwk/TrRjirS415wb5cx6ddW3hs1uKh0o61/sUiNpldl4eyZJfhOwmjjMKDD3Gl/80MIUS2Sg+4id0EpfTCo3t9k0zG/LMRc5HqQjzl0J8+AzspNwMKG7U3dQtrumU60RnqPB45tiL8hku79hKqEbVIwXfjobSDWHiRjBjJyfmEoXhWwZd8GyMLPTV4EczWZeabWitYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lSBQAnZ1; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lSBQAnZ1;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YpW2P1Cy4z2ydW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 19:47:41 +1100 (AEDT)
-Received: from server.danny.cz (85-71-161-19.rce.o2.cz [85.71.161.19])
-	by redcrew.org (Postfix) with ESMTP id 985A79E5
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 09:41:49 +0100 (CET)
-DKIM-Filter: OpenDKIM Filter v2.11.0 redcrew.org 985A79E5
-Received: from talos.danny.cz (talos [IPv6:2001:470:5c11:160:47df:83f6:718e:218])
-	by server.danny.cz (Postfix) with SMTP id F109215E001
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 09:41:48 +0100 (CET)
-Date: Thu, 6 Feb 2025 09:41:48 +0100
-From: Dan =?UTF-8?B?SG9yw6Fr?= <dan@danny.cz>
-To: linuxppc-dev@lists.ozlabs.org
-Subject: panic in cpufreq_online() in 6.14-rc1 on PowerNV
-Message-Id: <20250206094148.787dbdaa0580d7ed6c510709@danny.cz>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; powerpc64le-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YpWKc3hzFz2ydG
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 20:00:52 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5160vjjL001791;
+	Thu, 6 Feb 2025 09:00:48 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=0W3hRzcMBQdJKf41pQDnaZxshPEQ4b
+	m+jDoMRfYIhqg=; b=lSBQAnZ1TjhUuzZcSvVHORXuW3Fj/unhPvepG0lw4O5Yly
+	KJh1mlV4iZ6o47209ek/dkz3ZsLqu6hpNCkDQjpZdNDgfENFw45SiFcpxBUxeOtP
+	PDgN6E/XwzaqHgCCEGeugKFTnNSqt2oxDpBks3sc19uEChYZFaYRWDXkOrAoygJ+
+	q9CxQ7Qwu4v2m9ogcmn536d+hFLbjdynAPN1aE00cqMlpZ4QNEBX7SPFqofaBLMQ
+	fnl1Bq+iwfDC9YtIrAI1Jb303iC5gcJ/2whe8vbriNPkNdl272azSrYxjkFgPP4/
+	sNfBsIaQxZX6rxVboB+g928dmNYcKjDB2DQxrSvg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ma8yvrcg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Feb 2025 09:00:48 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51677j4J007127;
+	Thu, 6 Feb 2025 09:00:47 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxaywfkf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Feb 2025 09:00:47 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51690jOD26804880
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Feb 2025 09:00:45 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1FAFA2009E;
+	Thu,  6 Feb 2025 09:00:45 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 63D74200A6;
+	Thu,  6 Feb 2025 09:00:44 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.204.206.66])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  6 Feb 2025 09:00:44 +0000 (GMT)
+Date: Thu, 6 Feb 2025 14:30:40 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Dan =?utf-8?B?SG9yw6Fr?= <dan@danny.cz>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: Re: panic in cpufreq_online() in 6.14-rc1 on PowerNV
+Message-ID: <ugquf2uym6q572y2rck4h63wsd2us6jz7cepnqjpnghh6z6he3@dhdn3pvoahyf>
+References: <20250206094148.787dbdaa0580d7ed6c510709@danny.cz>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,93 +81,32 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250206094148.787dbdaa0580d7ed6c510709@danny.cz>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: gdW9Y5DLugYLlcsUl1-VfmxbZvmG7ih1
+X-Proofpoint-GUID: gdW9Y5DLugYLlcsUl1-VfmxbZvmG7ih1
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-06_02,2025-02-05_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
+ malwarescore=0 phishscore=0 mlxlogscore=613 spamscore=0 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 priorityscore=1501
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502060073
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,
+Hi Dan,
 
-I am getting a kernel panic on my Raptor Talos Power9 system after
-updating to the 6.14-rc1 kernel from 6.13. Seems reproducable every
-time, but I haven't start bisecting yet. Does it sound familiar to
-anyone?
+The fix for this was pulled yesterday[1], you can apply it
 
-...
-[    4.226443] powernv-cpufreq: cpufreq pstate min 0x63 nominal 0x30 max 0x0
-[    4.226464] powernv-cpufreq: Workload Optimized Frequency is enabled in the platform
-[    4.226662] BUG: Unable to handle kernel instruction fetch (NULL pointer?)
-[    4.226687] Faulting instruction address: 0x00000000
-[    4.226700] Oops: Kernel access of bad area, sig: 7 [#1]
-[    4.226734] LE PAGE_SIZE=64K MMU=Radix SMP NR_CPUS=2048 NUMA PowerNV
-[    4.226770] Modules linked in:
-[    4.226795] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.14.0-0.rc1.15.fc42.ppc64le #1
-[    4.226854] Hardware name: T2P9D01 REV 1.00 POWER9 0x4e1202 opal:skiboot-bc106a0 PowerNV
-[    4.226912] NIP:  0000000000000000 LR: c0000000012a57f4 CTR: 0000000000000000
-[    4.226970] REGS: c00000000cdcf610 TRAP: 0400   Not tainted  (6.14.0-0.rc1.15.fc42.ppc64le)
-[    4.227007] MSR:  9000000002089033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 84008848  XER: 00000000
-[    4.227063] CFAR: c0000000012a57f0 IRQMASK: 0
-[    4.227063] GPR00: c0000000012a57a0 c00000000cdcf8b0 c000000002474900 c000000023447000
-[    4.227063] GPR04: 0000000000000001 0000000000000000 0000000000000080 0000000000000000
-[    4.227063] GPR08: 0000000000000000 c000000003cf56c8 0000000000000001 0000000000008000
-[    4.227063] GPR12: 0000000000000000 c000000003f70000 c000000003cb39a8 c000000001d80988
-[    4.227063] GPR16: 0000000000000001 c000000001c6a4d8 c000000001c4f828 c0000000012adf70
-[    4.227063] GPR20: c000000003c30ed8 0000000000000001 0000000000000000 c0000000234474b8
-[    4.227063] GPR24: c000000023447448 c000000003c30000 c000000003f492a0 0000000000000000
-[    4.227063] GPR28: 0000000000000000 c000000003d56d60 c0000000039d4bc0 c000000023447000
-[    4.227407] NIP [0000000000000000] 0x0
-[    4.227440] LR [c0000000012a57f4] cpufreq_online+0x474/0x1250
-[    4.227478] Call Trace:
-[    4.227506] [c00000000cdcf8b0] [c0000000012a57a0] cpufreq_online+0x420/0x1250 (unreliable)
-[    4.227559] [c00000000cdcf980] [c0000000012a6710] cpufreq_add_dev+0x110/0x170
-[    4.227597] [c00000000cdcfa00] [c00000000101f858] subsys_interface_register+0x188/0x1d0
-[    4.227647] [c00000000cdcfa70] [c0000000012a0cfc] cpufreq_register_driver+0x23c/0x470
-[    4.227690] [c00000000cdcfb00] [c00000000308e894] powernv_cpufreq_init+0x910/0xa10
-[    4.227728] [c00000000cdcfc40] [c000000000010c3c] do_one_initcall+0x7c/0x3ac
-[    4.227766] [c00000000cdcfd20] [c00000000300e574] kernel_init_freeable+0x3d0/0x480
-[    4.227798] [c00000000cdcfdf0] [c000000000011320] kernel_init+0x2c/0x1bc
-[    4.227815] [c00000000cdcfe50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-[    4.227834] --- interrupt: 0 at 0x0
-[    4.227845] Code: XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX XXXXXXXX
-[    4.227919] ---[ end trace 0000000000000000 ]---
-[    4.430870] ata5: SATA link down (SStatus 0 SControl 300)
-[    4.430912] ata3: SATA link down (SStatus 0 SControl 300)
-[    4.430944] ata7: SATA link down (SStatus 0 SControl 300)
-[    4.440855] ata2: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
-[    4.440900] ata6: SATA link down (SStatus 0 SControl 300)
-[    4.440943] ata8: SATA link up 1.5 Gbps (SStatus 113 SControl 300)
-[    4.440985] ata4: SATA link down (SStatus 0 SControl 300)
-[    4.552442] ata8.00: ATAPI: MARVELL VIRTUALL, 1.09, max UDMA/66
-[    4.552596] ata8.00: configured for UDMA/66
-[    4.553499] ata2.00: ATAPI: DRW-24D5MT, 1.00, max UDMA/133
-[    4.554908] ata2.00: configured for UDMA/133
-[    4.569631] ata1: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
-[    4.569884] ata1.00: Model 'Samsung SSD 860 EVO 500GB', rev 'RVT02B6Q', applying quirks: noncqtrim zeroaftertrim noncqonati
-[    4.569986] ata1.00: supports DRM functions and may not be fully accessible
-[    4.570020] ata1.00: ATA-11: Samsung SSD 860 EVO 500GB, RVT02B6Q, max UDMA/133
-[    4.570798] ata1.00: 976773168 sectors, multi 1: LBA48 NCQ (depth 32), AA
-[    4.576809] ata1.00: Features: Trust Dev-Sleep NCQ-sndrcv
-[    4.577253] ata1.00: supports DRM functions and may not be fully accessible
-[    4.584748] ata1.00: configured for UDMA/133
-[    4.585278] scsi 0:0:0:0: Direct-Access     ATA      Samsung SSD 860  2B6Q PQ: 0 ANSI: 5
-[    4.586021] sd 0:0:0:0: Attached scsi generic sg0 type 0
-[    4.586556] ata1.00: Enabling discard_zeroes_data
-[    4.586602] sd 0:0:0:0: [sda] 976773168 512-byte logical blocks: (500 GB/466 GiB)
-[    4.586650] sd 0:0:0:0: [sda] Write Protect is off
-[    4.586698] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
-[    4.586742] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
-[    4.586854] sd 0:0:0:0: [sda] Preferred minimum I/O size 512 bytes
-[    4.587066] scsi 1:0:0:0: CD-ROM            ASUS     DRW-24D5MT       1.00 PQ: 0 ANSI: 5
-[    4.588265] ata1.00: Enabling discard_zeroes_data
-[    6.037014] pstore: backend (nvram) writing error (-1)
-[    6.037032]
-[    7.037040] note: swapper/0[1] exited with irqs disabled
-[    7.037097] Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000007
+[1] - https://lore.kernel.org/all/20250205181347.2079272-1-aboorvad@linux.ibm.com
 
-
-	Thanks,
-
-		Dan
+Thanks,
+Gautam
 
