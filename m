@@ -1,75 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-5894-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5896-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88CB9A2A3C0
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 10:00:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EB46A2A40C
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 10:20:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YpWKf4Dzmz308M;
-	Thu,  6 Feb 2025 20:00:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YpWls29Qcz309h;
+	Thu,  6 Feb 2025 20:20:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738832454;
-	cv=none; b=C2ymp3xd36YUwmgFv8UP2oq4rEd9r+YzkQfmhH6/0E/+cxoDW3CO/hCSIPmN2Vpw20XFPh6qWkbWRaGyhJLeOKg+OALHTO3taKtoVA2K2Azcaj4r2DekvvBSz0TmJqo5FaDfE6Ci5cNzLQPcMEBEpFXpWOs+0Zx06pOwEpDTmfbT58qvQn8CtKBb9bXzZgfjRY4ys/kBvsX+U0XgU3AlkP3Ivbo1cmx5Uc/5TAIzk5CzM2GhMhZd1185p4YIW3wwngnK7Ut3MM8ccKdyATOLgz4Qtw30xvrjXdyRxKzZ3WWt9UuE/lP8nFlj3z5lfqiAc9un4j9DGmUphaFg1ZgsKw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738833609;
+	cv=none; b=YNhb7eMWM2W+GVqdttkyX+Xrcc3xtfmmoPsMsXmNyUgFLfqtzLI7yIN0ZN4hoRPgmO12/Rmc4pmafXhKfaU531Bme7YhY1bVBCREffRoLMQKI5kpaocTPWCaUN7yF/Q484y+agFWpC/ix13aDQtbnRmlvQOeo9yTF/33Tw2vW+UXpE0Tf9iQciIOR4W/Koj62/Ghx7eyS6C+yZz7mCvZAD/tkhuxVMm+QUWb7T9aYEu3WLLa6rA37CrBlcvEwt1Pz5rq+8FgeEIhKU+CQUMmcYu7nIxWVn7SyzQgKYZzeUOwlrYr/AKI7lXnjCQO7Hw1SkHrvopDtRpBXUwGTESrqw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738832454; c=relaxed/relaxed;
-	bh=0W3hRzcMBQdJKf41pQDnaZxshPEQ4bm+jDoMRfYIhqg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SbNe0+WCT/Z6nWk7iUyfqiLVLqwjDJsVWQxxNYN0jqvTFc61S2wdnZ68myAJzembEW9cNhauZNU+LH+0lsCwh2MvHpg3pfmnqhXZRCX+ab48Gw16gh+hKn27CjC8AYsIIJO3aCFWWvXtH/fxwk/TrRjirS415wb5cx6ddW3hs1uKh0o61/sUiNpldl4eyZJfhOwmjjMKDD3Gl/80MIUS2Sg+4id0EpfTCo3t9k0zG/LMRc5HqQjzl0J8+AzspNwMKG7U3dQtrumU60RnqPB45tiL8hku79hKqEbVIwXfjobSDWHiRjBjJyfmEoXhWwZd8GyMLPTV4EczWZeabWitYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lSBQAnZ1; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lSBQAnZ1;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YpWKc3hzFz2ydG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 20:00:52 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5160vjjL001791;
-	Thu, 6 Feb 2025 09:00:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=0W3hRzcMBQdJKf41pQDnaZxshPEQ4b
-	m+jDoMRfYIhqg=; b=lSBQAnZ1TjhUuzZcSvVHORXuW3Fj/unhPvepG0lw4O5Yly
-	KJh1mlV4iZ6o47209ek/dkz3ZsLqu6hpNCkDQjpZdNDgfENFw45SiFcpxBUxeOtP
-	PDgN6E/XwzaqHgCCEGeugKFTnNSqt2oxDpBks3sc19uEChYZFaYRWDXkOrAoygJ+
-	q9CxQ7Qwu4v2m9ogcmn536d+hFLbjdynAPN1aE00cqMlpZ4QNEBX7SPFqofaBLMQ
-	fnl1Bq+iwfDC9YtIrAI1Jb303iC5gcJ/2whe8vbriNPkNdl272azSrYxjkFgPP4/
-	sNfBsIaQxZX6rxVboB+g928dmNYcKjDB2DQxrSvg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ma8yvrcg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Feb 2025 09:00:48 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51677j4J007127;
-	Thu, 6 Feb 2025 09:00:47 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxaywfkf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Feb 2025 09:00:47 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51690jOD26804880
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 6 Feb 2025 09:00:45 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1FAFA2009E;
-	Thu,  6 Feb 2025 09:00:45 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 63D74200A6;
-	Thu,  6 Feb 2025 09:00:44 +0000 (GMT)
-Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.ibm.com (unknown [9.204.206.66])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  6 Feb 2025 09:00:44 +0000 (GMT)
-Date: Thu, 6 Feb 2025 14:30:40 +0530
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: Dan =?utf-8?B?SG9yw6Fr?= <dan@danny.cz>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: Re: panic in cpufreq_online() in 6.14-rc1 on PowerNV
-Message-ID: <ugquf2uym6q572y2rck4h63wsd2us6jz7cepnqjpnghh6z6he3@dhdn3pvoahyf>
-References: <20250206094148.787dbdaa0580d7ed6c510709@danny.cz>
+	t=1738833609; c=relaxed/relaxed;
+	bh=YO94lj1UaMWZydPQDlCWlMYinYL+bQ87foe+RoJkJ3s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dukm8sq9UeO21w9/5fJO5k15huODbbt/Gu8A8z6OhMNOJMGrDLu0lkKkE3LBdNZft2Kn49yc3e1oQ32zBmG2TZzR4OHwchBB23WRF6p1vJexYWtK2vBDMACIOViK5Ao1KULaoEfF9WDo1IFc708Rk3ve4huMABtMB81Un3JtH+vNIOY9oAOkNgIiVFAHMEIahqDbfggaCd6Qypxs8J67IS2/x9RBpSJ4BsivNMzJlV/oEk9phdFhZTkuhDq+6e9LiujRjtRspmCnUq95GstzpXRyyREUdjKamRMj97OJdn1aIZ3VS+AStsOW171NViKvU7DfNrOBmVrdLXrMIRZ0gA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YpWlq62jkz305S
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 20:20:06 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4YpW2113VQz9sPd;
+	Thu,  6 Feb 2025 09:47:21 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id weBgdKPzt__3; Thu,  6 Feb 2025 09:47:21 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4YpW210799z9rvV;
+	Thu,  6 Feb 2025 09:47:21 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id EB5948B774;
+	Thu,  6 Feb 2025 09:47:20 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id ZfJe-ItsVFtx; Thu,  6 Feb 2025 09:47:20 +0100 (CET)
+Received: from [192.168.202.221] (unknown [192.168.202.221])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 2788C8B763;
+	Thu,  6 Feb 2025 09:47:20 +0100 (CET)
+Message-ID: <5c99458f-4a91-485f-8a35-3618a992e2e4@csgroup.eu>
+Date: Thu, 6 Feb 2025 09:47:18 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -82,31 +56,129 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250206094148.787dbdaa0580d7ed6c510709@danny.cz>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gdW9Y5DLugYLlcsUl1-VfmxbZvmG7ih1
-X-Proofpoint-GUID: gdW9Y5DLugYLlcsUl1-VfmxbZvmG7ih1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-06_02,2025-02-05_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- malwarescore=0 phishscore=0 mlxlogscore=613 spamscore=0 mlxscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502060073
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: kismet: WARNING: unmet direct dependencies detected for HUGETLBFS
+ when selected by PPC_8xx
+To: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Paul Gazzillo <paul@pgazz.com>,
+ Necip Fazil Yildiran <fazilyildiran@gmail.com>,
+ oe-kbuild-all@lists.linux.dev, linux-kernel@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Linux Memory Management List <linux-mm@kvack.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ kernel test robot <lkp@intel.com>
+References: <202501240611.LDmD2nkj-lkp@intel.com>
+ <29cf621d-db67-6c5c-0dc5-ebe79edc6cc6@huawei.com>
+ <08a51873-7510-4552-9bb1-3ea7ef9fbc2d@csgroup.eu>
+ <0c0c6af5-7766-6cc0-d141-d725b84bef09@huawei.com>
+ <5528c76d-d8f1-41be-a742-8bafa74c24f9@csgroup.eu>
+ <d6c06a9c-4d43-4528-c5d1-019f91087f30@huawei.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <d6c06a9c-4d43-4528-c5d1-019f91087f30@huawei.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Dan,
 
-The fix for this was pulled yesterday[1], you can apply it
 
-[1] - https://lore.kernel.org/all/20250205181347.2079272-1-aboorvad@linux.ibm.com
+Le 06/02/2025 à 08:12, Miaohe Lin a écrit :
+> On 2025/2/6 14:30, Christophe Leroy wrote:
+>>
+>>
+>> Le 06/02/2025 à 03:08, Miaohe Lin a écrit :
+>>> On 2025/2/6 0:35, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 05/02/2025 à 03:39, Miaohe Lin a écrit :
+>>>>> On 2025/1/24 6:24, kernel test robot wrote:
+>>>>>> tree:   https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Ftorvalds%2Flinux.git&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4568427e535f47ba6e7108dd467da005%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744227571348001%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=rpToSy%2BI2rTH5db2ST62gNZF0efdupnNQRpYevV2CRY%3D&reserved=0 master
+>>>>>> head:   d0d106a2bd21499901299160744e5fe9f4c83ddb
+>>>>>> commit: f8142cf94d4737ea0c3baffb3b9bad8addcb9b6b hugetlb: make hugetlb depends on SYSFS or SYSCTL
+>>>>>> date:   2 years, 4 months ago
+>>>>>> config: powerpc-kismet-CONFIG_HUGETLBFS-CONFIG_PPC_8xx-0-0 (https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdownload.01.org%2F0day-ci%2Farchive%2F20250124%2F202501240611.LDmD2nkj-lkp%40intel.com%2Fconfig&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4568427e535f47ba6e7108dd467da005%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744227571371397%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=27pzb6aOPaarlX2fX%2B3%2FvCp8GWwysleJoVw9L6Yrytc%3D&reserved=0)
+>>>>>> reproduce: (https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdownload.01.org%2F0day-ci%2Farchive%2F20250124%2F202501240611.LDmD2nkj-lkp%40intel.com%2Freproduce&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4568427e535f47ba6e7108dd467da005%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744227571381016%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=XEjM2tEaDz%2BINDJbCOD2ciJU24koPd9msdwNiP3lPLw%3D&reserved=0)
+>>>>>>
+>>>>>> If you fix the issue in a separate patch/commit (i.e. not just a new version of
+>>>>>> the same patch/commit), kindly add following tags
+>>>>>> | Reported-by: kernel test robot <lkp@intel.com>
+>>>>>> | Closes: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Foe-kbuild-all%2F202501240611.LDmD2nkj-lkp%40intel.com%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4568427e535f47ba6e7108dd467da005%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744227571390239%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=W%2F8GHsXQwmaG22bsTyQes1zdMG7o2aHc%2Fly%2BHO57LwI%3D&reserved=0
+>>>>>
+>>>>> Thanks for report. Sorry for late respond. I was on my Spring Festival vacation.
+>>>>>
+>>>>>>
+>>>>>> kismet warnings: (new ones prefixed by >>)
+>>>>>>>> kismet: WARNING: unmet direct dependencies detected for HUGETLBFS when selected by PPC_8xx
+>>>>>>       WARNING: unmet direct dependencies detected for HUGETLBFS
+>>>>>>         Depends on [n]: (X86 || IA64 || SPARC64 || ARCH_SUPPORTS_HUGETLBFS [=y] || BROKEN [=n]) && (SYSFS [=n] || SYSCTL [=n])
+>>>>>>         Selected by [y]:
+>>>>>>         - PPC_8xx [=y] && <choice>
+>>>>>
+>>>>> I am a bit confused. HUGETLBFS depends on SYSFS or SYSCTL. How can it be selected while SYSFS [=n] || SYSCTL [=n]?
+>>>>> Or am I miss something?
+>>>>
+>>>> CONFIG_HUGETLBFS is selected by CONFIG_PPC_8xx, see commit 34536d780683 ("powerpc/8xx: Add a function to early map kernel via huge pages")
+>>>
+>>> Thanks for your providing. But I'm saying that since HUGETLBFS depends on (SYSFS or SYSCTL), how CONFIG_PPC_8xx succeeds to select it while
+>>> SYSFS and SYSCTL are disabled? I'm not really familiar with Kconfig but I assume Kconfig will confirm that the dependencies are satisfied
+>>> before HUGETLBFS is enabled. Or am I miss something?
+>>
+>> I suggest you read https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fdocs.kernel.org%2Fkbuild%2Fkconfig-language.html&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C4568427e535f47ba6e7108dd467da005%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638744227571400924%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=UtQJlI0P7JV%2BQy0jlHFoGZ8ipnl5SzhuL1G%2Bbr0an9Y%3D&reserved=0
+> 
+> Thanks.
+> 
+>>
+>> Extract:
+>>
+>> Note:
+>>      select should be used with care. select will force a symbol to a value without visiting the dependencies. By abusing select you are able to select a symbol FOO even if FOO depends on BAR that is not set.
+> 
+> IMHO, it seems it's the use of "select" breaks the dependencies and leads to the kismet warnings. So it might be better to fix the PPC_8xx side.
 
-Thanks,
-Gautam
+
+The dependencies are wrong, I have a kernel without CONFIG_SYSFS and 
+without CONFIG_SYSCTL and hugetlbfs works perfecly well.
+
+I boot the kernel with following parameters:
+
+	hugepagesz=512k hugepages=8 hugepagesz=8M hugepages=2
+
+dmesg shows:
+
+[    0.560754] HugeTLB: registered 512 KiB page size, pre-allocated 8 pages
+[    0.567293] HugeTLB: 0 KiB vmemmap can be freed for a 512 KiB page
+[    0.593912] HugeTLB: registered 8.00 MiB page size, pre-allocated 2 pages
+[    0.600543] HugeTLB: 0 KiB vmemmap can be freed for a 8.00 MiB page
+
+
+hugetlb selftest works well:
+
+:~# ./map_hugetlb 4 19
+TAP version 13
+1..1
+# 512 kB hugepages
+# Mapping 4 Mbytes
+# Returned address is 0x77800000
+# First hex is 0
+# First hex is 10203
+ok 1 Read correct data
+# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+~# ./map_hugetlb 16 23
+TAP version 13
+1..1
+# 8192 kB hugepages
+# Mapping 16 Mbytes
+# Returned address is 0x76800000
+# First hex is 0
+# First hex is 10203
+ok 1 Read correct data
+# Totals: pass:1 fail:0 xfail:0 xpass:0 skip:0 error:0
+
+So I think your commit f8142cf94d47 ("hugetlb: make hugetlb depends on 
+SYSFS or SYSCTL") is just wrong and has to be reverted.
+
+Christophe
 
