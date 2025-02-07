@@ -1,50 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-5967-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5968-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20A5A2D15E
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2025 00:17:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287F4A2D19C
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2025 00:45:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YqVHr2k6vz30Gq;
-	Sat,  8 Feb 2025 10:17:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YqVvL3NNDz2ykc;
+	Sat,  8 Feb 2025 10:45:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738970264;
-	cv=none; b=YD2nsBCE39gwJJGW2/spTVRmV9VYH5amAcj8C/2bg+b373MD1NunTVzvayYiHZnub3IGCq+or+RIB5D+KIz6Hwr2MVG5SNF8WTQZr7yN4jpLeVIbaM7sLVM9oUqgEe8VE52+tGizST5I9lTLV0/D2QyCRGhZ6/ce+++4Q/aN1yEjHXyrDRrwyvfYMAyaPa/wcvwycQZRI6AFY2M2msd4K/IiqOkKe/OXA7YUOmkLbPo+Te53AOHEXRvMmPemp73yrf7RtuwPfUiFiURp3jpejhLAvNvynAgZFW8tFV14Q7MCakgimg3Z/OcFH1VTnn9Uf09+Phz3sUTfvR4ExjUyiw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738971902;
+	cv=none; b=hOpprq6ardul5Dn6dmbbGKzZPALgvPBXX0RBRmMDzGEPFnySAS87XbjRh5oIIFVZ/bskaa1mYqBdwyVVguzwxkSn6dUfhMbI1IvZEl/s6hxX5b5dHGfYPERV9HvkWtIblTTYjcZqQElmLi0mBsfG4GSGmT+RN1kBpNKE0MZol7eAihcCgYPuLXebfSFh76eQRdc8s/q4h4XoTCcO3pnNUvMEx7LYo57JUOO4F29G5epusYtIIKQk5A9DlzBprdnalGRbbXOA/GI6pWL+vOCUjm2GkaFb/n8DO9gMFpXBgK+qxPLRSsa9kZeGVrSBD30BFvApX+7tCaccQpSV6INNLw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738970264; c=relaxed/relaxed;
-	bh=xti1ftiq+X195EGE2ebzSiso+ZPKjIcfncIinD92KQU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QibhzDZKoR3Op9RQRZD+1B1pbB0tMBwNFYFm04PJr6H4kF5TXWHpIQeruBavvnutS3D/KCdKXC7BQUd03V4Fi8cHHyt7SWXkbOuemk2pizFAkJSr0gmc3u+U+OzmPL1MX/LViJTLZ9551QPVJ9mz29n6Gf0mwsw+4aYEMp+fW/vTBHysscyzXIrozPLUdMZbs+PfD6VROU3kMTDy2FFYR19Sa1jNjDO5/6++1MIiekcrLptKh3PBl6NeQYzZdgAw0hOALBlWZLWNRiOo+v6YO7KQNp5RzBMcum5xJ77Sz9FTRJy/kRUDt3Est0VYRzRJPrYTHUli/X9AANdnyrrABg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nvPoqqau; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1738971902; c=relaxed/relaxed;
+	bh=KJq2hHT1aLnoC06mdgPsmCYQ32dQMG7oin75hRw9mdY=;
+	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
+	 Message-Id:Subject; b=CKSm9dYphyGSGdaRQ74GyMw3Y4xn2dGHlUDnEuwEpehic/Kc+PZA0xlkI0LvJYFlFwxuK4jDQNGedWdQRYPJUFOu0/0x9eFM6BRtHJSe7yBQOgUcKzOwo2q98wE8FxzDhDAHoD+FQe0iXnapH3zvGkzLeJ6PeYn8szhOnKPQvcEdhHLx/XHs5oIdgEvVhHRzq0W7p2iX8ydA4gnL9muJEeu6whQh5vCNwubBQwjqSmIu6Y8H/rYX8UK8e2T/5fGs/oK1D7zUSvpt10MY6zJYqzeLNj2zkKdWd21utwoWy0arCkIVgo2LEeyJvBgIJtdoWP6tptrMmDROPQQRhkD76g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FcFD7E6x; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=nvPoqqau;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FcFD7E6x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=dlemoal@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqVHq5HSSz2ykc
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 10:17:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqVvK44CTz2yZN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 10:45:01 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id B85ADA43E2A;
-	Fri,  7 Feb 2025 23:15:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0028C4CEE2;
-	Fri,  7 Feb 2025 23:17:35 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 76F94A43C61;
+	Fri,  7 Feb 2025 23:43:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7666C4CED1;
+	Fri,  7 Feb 2025 23:44:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1738970260;
-	bh=uBu6t4ty0hQZKKSCZBRKb4E9WpdD1GpGMPNfBVQXDVg=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=nvPoqqaucbZ+Zi7dcFcDf19MmSlaU676cQ27+TNgNPph5SnE0OcWAbUo6mtU6XA70
-	 CRj64dcDZGAl20MNFWj5ElGlRslwwc5/82rTjSJ/eeDkPagVEXOvKsD37lz5OmauQ/
-	 BljW5xyk6RVr97YBC4nN3jG9BDk7HPMnGeR5w/afedLrOmISQIhvJXZa2NMYrUgnwM
-	 +ems6aj8tw36WCnlJU03Wieogvtqo9kWaQrsmW8KgpgFP0XAmUNUufDSjHc1B4z7ZF
-	 HP5wB6OAf2XEnk0gkYoiiGTKTKW1VOfe52a2OyomRnFgIxjFCNSp7ViFtzhQ4/rN4C
-	 MKlSVzR3S6BAg==
-Message-ID: <8de72c76-6fea-4f8a-b818-72c8de07a78c@kernel.org>
-Date: Sat, 8 Feb 2025 08:17:34 +0900
+	s=k20201202; t=1738971899;
+	bh=0OcYIgMuhOEeKZ02PL/wKdLJvCr/x2GC0bB/FCHa3js=;
+	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
+	b=FcFD7E6x/lq9R9GSbnFWQ84X6jA3wHn8MV9k9BwUEU5Jy3GduQqYEh0TAxZg84hd6
+	 U/1mtO4DOlNDyWNaUYLvCvf330mxj9hdZo3Ap9AdXSFLJzN989NVrfwM7hrblNq5Vg
+	 rBgXMw5MXP4WKs2vld+G4/TK0CCvjuFMv45Pt2rv7LGomPO/wwwhXgaUbVlAhiwJ0k
+	 FKpaEdfJWr8j/V+qutaVdWXkjF/AlONGhMFLYgFT7+ApRz3JHy5WCCZbmTdYAil683
+	 nEtQYHSdNFhl0ynU/NrzOmE9kS6c2Mv3qEwGLvCA6rIlaSL+WsaycsHH/XLRHNOch/
+	 7FrFsFlmciVrg==
+Date: Fri, 07 Feb 2025 17:44:57 -0600
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,59 +58,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/12] dt-bindings: ata: Convert fsl,pq-sata to YAML
-To: j.ne@posteo.net, devicetree@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, Krzysztof Kozlowski <krzk@kernel.org>
-Cc: imx@lists.linux.dev, Scott Wood <oss@buserror.net>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Niklas Cassel <cassel@kernel.org>,
- Herbert Xu <herbert@gondor.apana.org.au>,
- "David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
- Vinod Koul <vkoul@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>,
- =?UTF-8?Q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>,
- Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
- Bjorn Helgaas <bhelgaas@google.com>, =?UTF-8?Q?J=2E_Neusch=C3=A4fer?=
- <j.neuschaefer@gmx.net>, Wim Van Sebroeck <wim@linux-watchdog.org>,
- Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
- Miquel Raynal <miquel.raynal@bootlin.com>,
- Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>,
- linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org,
- linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org,
- linux-pci@vger.kernel.org, linux-watchdog@vger.kernel.org,
- linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org
+From: "Rob Herring (Arm)" <robh@kernel.org>
+Cc: Richard Weinberger <richard@nod.at>, linux-pci@vger.kernel.org, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Herbert Xu <herbert@gondor.apana.org.au>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Mark Brown <broonie@kernel.org>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-crypto@vger.kernel.org, 
+ imx@lists.linux.dev, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ linuxppc-dev@lists.ozlabs.org, linux-spi@vger.kernel.org, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ linux-kernel@vger.kernel.org, Miquel Raynal <miquel.raynal@bootlin.com>, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Vinod Koul <vkoul@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Niklas Cassel <cassel@kernel.org>, linux-ide@vger.kernel.org, 
+ Lorenzo Pieralisi <lpieralisi@kernel.org>, Naveen N Rao <naveen@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Damien Le Moal <dlemoal@kernel.org>, devicetree@vger.kernel.org, 
+ dmaengine@vger.kernel.org, Scott Wood <oss@buserror.net>, 
+ Guenter Roeck <linux@roeck-us.net>, "David S. Miller" <davem@davemloft.net>, 
+ Bjorn Helgaas <bhelgaas@google.com>, Conor Dooley <conor+dt@kernel.org>, 
+ linux-watchdog@vger.kernel.org, Lee Jones <lee@kernel.org>, 
+ linux-mtd@lists.infradead.org
+To: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+In-Reply-To: <20250207-ppcyaml-v2-6-8137b0c42526@posteo.net>
 References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-2-8137b0c42526@posteo.net>
-From: Damien Le Moal <dlemoal@kernel.org>
-Content-Language: en-US
-Organization: Western Digital Research
-In-Reply-To: <20250207-ppcyaml-v2-2-8137b0c42526@posteo.net>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+ <20250207-ppcyaml-v2-6-8137b0c42526@posteo.net>
+Message-Id: <173897189562.2630598.5483742714479681257.robh@kernel.org>
+Subject: Re: [PATCH v2 06/12] dt-bindings: pci: Convert fsl,mpc83xx-pcie to
+ YAML
 X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2/8/25 06:30, J. Neuschäfer via B4 Relay wrote:
-> From: "J. Neuschäfer" <j.ne@posteo.net>
+
+On Fri, 07 Feb 2025 22:30:23 +0100, J. Neuschäfer wrote:
+> Formalise the binding for the PCI controllers in the Freescale MPC8xxx
+> chip family. Information about PCI-X-specific properties was taken from
+> fsl,pci.txt. The examples were taken from mpc8315erdb.dts and
+> xpedite5200_xmon.dts.
 > 
-> Convert the Freescale PowerQUICC SATA controller binding from text form
-> to YAML. The list of compatible strings reflects current usage.
-> 
-> To clarify the description, I changed it to mention "each SATA
-> controller" instead of each port.
-> 
-> Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> ---
+> 
+> V2:
+> - merge fsl,pci.txt into fsl,mpc8xxx-pci.yaml
+> - regroup compatible strings, list single-item values in one enum
+> - trim subject line (remove "binding")
+> - fix property order to comply with dts coding style
+> ---
+>  .../devicetree/bindings/pci/fsl,mpc8xxx-pci.yaml   | 115 +++++++++++++++++++++
+>  Documentation/devicetree/bindings/pci/fsl,pci.txt  |  27 -----
+>  2 files changed, 115 insertions(+), 27 deletions(-)
+> 
 
-Acked-by: Damien Le Moal <dlemoal@kernel.org>
+My bot found errors running 'make dt_binding_check' on your patch:
 
--- 
-Damien Le Moal
-Western Digital Research
+yamllint warnings/errors:
+
+dtschema/dtc warnings/errors:
+
+
+doc reference errors (make refcheckdocs):
+Warning: Documentation/devicetree/bindings/pci/fsl,mpc8xxx-pci.yaml references a file that doesn't exist: Documentation/devicetree/bindings/pci/fsl,pci.txt
+Documentation/devicetree/bindings/pci/fsl,mpc8xxx-pci.yaml: Documentation/devicetree/bindings/pci/fsl,pci.txt
+
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250207-ppcyaml-v2-6-8137b0c42526@posteo.net
+
+The base for the series is generally the latest rc1. A different dependency
+should be noted in *this* patch.
+
+If you already ran 'make dt_binding_check' and didn't see the above
+error(s), then make sure 'yamllint' is installed and dt-schema is up to
+date:
+
+pip3 install dtschema --upgrade
+
+Please check and re-submit after running the above command yourself. Note
+that DT_SCHEMA_FILES can be set to your schema file to speed up checking
+your schema. However, it must be unset to test all examples with your schema.
+
 
