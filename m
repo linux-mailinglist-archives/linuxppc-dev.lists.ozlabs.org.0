@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-5962-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5955-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3E6CA2CF4C
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 22:31:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8320A2CF27
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 22:31:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YqRwP564nz30Wh;
-	Sat,  8 Feb 2025 08:30:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YqRwL0b2Hz2yFQ;
+	Sat,  8 Feb 2025 08:30:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738963845;
-	cv=none; b=orph9U/v4+GCGPXlWhYULHengzyBHZyWxKKdHfsh4vNSg/35UPr5wqagwOj4r19r11gL9pOSbpDhuxw62XghnHwkKPXCCHoih9Szd+61s9J+9VY92X19KeXBtW0KxVDawEDRiHdRKpPbG00aGKPMv3RdSNu9Q4G7H0cfwIGl5Po7e7FiO1tr7qN52TXkaz98daJH62pM6US5t95K6+zDnmGIIk7hsnkNKZe4RNF1Qm3Ks/ZbpVg7h1FP6QUdNaxnisdCmTftJYo4wzOLwscYwC8hAGd6kagksS6rXJ8vM+boh7qAUi88iM/jpqGBGRvLV7P0lr15FtxS8i8FNqAMXA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738963842;
+	cv=none; b=IdrSgCLtS9kGbF/2nFYKjlUjAK0Gnbv4whQ1tlIUGwwX4NNzg+p769369s34W4Yb/2j7uXwNZOA1ES1CJ3wHOdreJ5jX4GLbxLdKkEDSYASgyG74ONFoqjtsagNayjTse9dG78KaDP8m4IHyZKBlaL9Mq+VQNRtJf5kfWp8Z0j6oEvk+Mvv35H0FbJ3cS1RA1Wo2EEOGaRQkXgIez1hm4nvF/JdktwpgMR8NBLAbSxHFCQALrmHJAp0+xcF5kGAG5OOjKlNwBPymKsfZb1nF7Pxo5DmrtifE1FdSxVJvRIs+9STWJYMtChiH8C/1JMTxYw1fWhCCPnonuHQvA127mg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738963845; c=relaxed/relaxed;
-	bh=yiR9P22O/Vp2L/IKPkUbpZLe1XuIzDW/l2FtIBPEH5o=;
+	t=1738963842; c=relaxed/relaxed;
+	bh=C1tu/5juet1KGaNgRAATM9AyhBG098ayKFrHqKE9rF4=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=Cx8gemixOjgzWOf62iQ30ZCnOw6wNtIuXPvpN0t1wLeDmUMt0kH7NcBNFNDWBsq4n2lVv76Ntf7vwIjByBq9xNAw6NQ68GtHoHI5zjMtJVVJ1XBDZ9BJ5WKyas6mbQniuKxTAuI3XwfhZieq3jZVNJEdCT9cBxLV1qvGmWmkqStBl//0ssYO0RjjSvrPeNg1+8X9WNMGijALGBeHCl53Uz7sWLypB5gc10+cV0VZ7O0rHbjroMWRVoJdzz7jg8cKDy5KVzF7ZjzZYze1ohXezpuQt/dXvPQz7UPpDc29R2xD9JUdb+WpxXMQMHG9ojPRksrDq3MtQikqG/kMILdWSw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i28zZfM8; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=VMPCvjZPRgN8ClO23H4wvmwHP4aQSdSae+EW9RHMiwsW8UhhaUSqm/FyEH+4EJIeeH/PtFkRjBuFrCf/N8ClVfghDHqURtUJ4t5yLY2RDM271JHgGth9iIMW0Cn130uz7qvNpkSvBut2hzYvk4Iq4aCrnOx+XD9LmO8jb7IMnZMXwAU+pogJ2jqTq/9tENeWoQmo4d7TqOEtCHSLbVQ4SJClM9aM2QSdlCVuFCSV9m+Vgf0Temfq/b/JaaRDNPfwb2Gf2npMGBNY75VXlzNUPnfqs2mzZySaMgJZaZ6MEJtdda1jBXe9MDXWmP2IeI89yETkwYAgk66qAMexotfL8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r+KMeRO2; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=i28zZfM8;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=r+KMeRO2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqRwL51kYz30Vr
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 08:30:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqRwJ0wqXz2yjV
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 08:30:39 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 7C99FA43D31;
-	Fri,  7 Feb 2025 21:28:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id EE246C116C6;
-	Fri,  7 Feb 2025 21:30:35 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id C3C0F5C71ED;
+	Fri,  7 Feb 2025 21:29:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 09E34C4CEEA;
+	Fri,  7 Feb 2025 21:30:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1738963836;
-	bh=Ci5xwCUQ481bWNSk61RJMLFAccRf23aaI3SwK9xJpUQ=;
+	bh=uOFNITETD0zmKbVY1tEqvtZtw4tS0MsDYtMYgBvpQUI=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=i28zZfM8xUESBdEnInk3WP3orxaMwJ5e6g8GdegVzCQmi5VCvjkFa8RtL286lrcdP
-	 7TRQ1bq3+w2HxTMla1zrArYJ+lUKvhDfK9f1vzSzZZyzxKEi8KKhP37uhj8bWBrMk0
-	 Lv8RBwIc6u02FX02gS5XTPeoBzez9HZfYCHEoID0wIvGc6EpMBHXUWvhY15v0kvKTd
-	 7xfiA25YHFUsQfq0G6j9YlSiClV/auMOiBnsN+z7tfMn0PZ+DvPKagEiNSlMni52F8
-	 eyIHDSC+rtlKzyVF8jUfDfHxVyva18VYhFnsMlbFso1bknKUJQg+jWdRchv5vKIatx
-	 sgmcuIv3GUTDA==
+	b=r+KMeRO2mp7UCfQSusosLhxHCSP+Tl3hUN9W3iA8e9tj6AGD/uh406w27y/RZtUgW
+	 TSYXqdZ1wlnbl90h4vccBxrn2C7ukl0jb5rt171KsBCR+w1VUDOpUmd+RlC6Tbj/Zf
+	 MK/+U9drEsC3lmBZI+cs+sOOFaOUmOWlTeNcgNollVPxXsiKPkHIkealv3uppnhE4B
+	 ed2NDll2NWvRP+E+bpLvlPTzoQ0dnUpwqVqOR/Vxy5yddwuL6C+bxTgaMlJ09u91WE
+	 B1FBIFuMM1W0dpESr1uC0XIqKGrAeLMCKBcYJYd6J5RpWJJL3X5plHU+TW0rAzUObc
+	 u4uNS/ZK4cePA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id DCFAAC0219D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id F0799C021A1;
 	Fri,  7 Feb 2025 21:30:35 +0000 (UTC)
 From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Fri, 07 Feb 2025 22:30:25 +0100
-Subject: [PATCH v2 08/12] dt-bindings: spi: Convert Freescale SPI bindings
+Date: Fri, 07 Feb 2025 22:30:26 +0100
+Subject: [PATCH v2 09/12] dt-bindings: memory-controllers: Convert fsl,elbc
  to YAML
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -64,7 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250207-ppcyaml-v2-8-8137b0c42526@posteo.net>
+Message-Id: <20250207-ppcyaml-v2-9-8137b0c42526@posteo.net>
 References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
 In-Reply-To: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
 To: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
@@ -93,62 +93,116 @@ Cc: imx@lists.linux.dev, Scott Wood <oss@buserror.net>,
  linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738963832; l=7185;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738963832; l=7248;
  i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=1uD3omMjjy+/6f74TJNx0I7aI6w6DovpP7MGtGk/9Bg=;
- b=WA2RtOHs0KstyKDjycQrIM8JthXAMejrytAj8A2OtNw2FrV3gtgj6WUWef37q82gusfcrXwuU
- El/u4+rEpDoAHmTSEeER9GsKy+BevdfQUXwy5nrvNoHxSUEu17z+1Z5
+ bh=UUsPMHm57Ephaap7z89xxGncDuJKzZ/SrR51ew2Wo8o=;
+ b=SP2SoPnz7sX/Ya1QOpwDOxcWXA9zlfkG3idCuh890JQ1uqSz5OQPdFMGR1bPqTypBqXcMSx9W
+ eDM3n7akTwBCAgd66gXAPW1YbO0mMaJRhsL+QqAzboWDsQEFpsVWhMa
 X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
  pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
 X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
  auth_id=156
 X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 Reply-To: j.ne@posteo.net
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-Spam-Status: No, score=-5.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: "J. Neuschäfer" <j.ne@posteo.net>
 
-fsl-spi.txt contains the bindings for the fsl,spi and fsl,espi
-contollers. Convert them to YAML.
+Convert the Freescale localbus controller bindings from text form to
+YAML. The updated list of compatible strings reflects current usage
+in arch/powerpc/boot/dts/, except that many existing device trees
+erroneously specify "simple-bus" in addition to fsl,*elbc.
+
+Changes compared to the txt version:
+ - removed the board-control (fsl,mpc8272ads-bcsr) node because it only
+   appears in this example and nowhere else
+ - added a new example with NAND flash
+ - updated list of compatible strings
 
 Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
 
 V2:
-- add missing end-of-document ("...") markers
-- add missing constraints to interrupts, fsl,espi-num-chipselects,
-  fsl,csbef and fsl,csaft properties
-- remove unnecessary type from clock-frequency property
-- fix property order to comply with dts coding style
+- fix order of properties in examples, according to dts coding style
+- move to Documentation/devicetree/bindings/memory-controllers
+- clarify the commit message a tiny bit
+- remove unnecessary multiline markers (|)
+- define address format in patternProperties
+- trim subject line (remove "binding")
+- remove use of "simple-bus", because it's technically incorrect
 ---
- .../devicetree/bindings/spi/fsl,espi.yaml          | 64 +++++++++++++++++++
- Documentation/devicetree/bindings/spi/fsl,spi.yaml | 73 ++++++++++++++++++++++
- Documentation/devicetree/bindings/spi/fsl-spi.txt  | 62 ------------------
- 3 files changed, 137 insertions(+), 62 deletions(-)
+ .../bindings/memory-controllers/fsl,elbc.yaml      | 146 +++++++++++++++++++++
+ .../devicetree/bindings/powerpc/fsl/lbc.txt        |  43 ------
+ 2 files changed, 146 insertions(+), 43 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/spi/fsl,espi.yaml b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
+diff --git a/Documentation/devicetree/bindings/memory-controllers/fsl,elbc.yaml b/Documentation/devicetree/bindings/memory-controllers/fsl,elbc.yaml
 new file mode 100644
-index 0000000000000000000000000000000000000000..c504b7957dde39086ef7d7a7550d6169cf5ec407
+index 0000000000000000000000000000000000000000..7bc05e3b9ac74125e5786748df57f6cc1255a62d
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
-@@ -0,0 +1,64 @@
++++ b/Documentation/devicetree/bindings/memory-controllers/fsl,elbc.yaml
+@@ -0,0 +1,146 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/spi/fsl,espi.yaml#
++$id: http://devicetree.org/schemas/memory-controllers/fsl,elbc.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale eSPI (Enhanced Serial Peripheral Interface) controller
++title: Freescale Enhanced Local Bus Controller
 +
 +maintainers:
 +  - J. Neuschäfer <j.ne@posteo.net>
 +
 +properties:
++  $nodename:
++    pattern: "^localbus@[0-9a-f]+$"
++
 +  compatible:
-+    const: fsl,mpc8536-espi
++    oneOf:
++      - items:
++          - enum:
++              - fsl,mpc8313-elbc
++              - fsl,mpc8315-elbc
++              - fsl,mpc8377-elbc
++              - fsl,mpc8378-elbc
++              - fsl,mpc8379-elbc
++              - fsl,mpc8536-elbc
++              - fsl,mpc8569-elbc
++              - fsl,mpc8572-elbc
++              - fsl,p1020-elbc
++              - fsl,p1021-elbc
++              - fsl,p1023-elbc
++              - fsl,p2020-elbc
++              - fsl,p2041-elbc
++              - fsl,p3041-elbc
++              - fsl,p4080-elbc
++              - fsl,p5020-elbc
++              - fsl,p5040-elbc
++          - const: fsl,elbc
++
++      - items:
++          - const: fsl,mpc8272-localbus
++          - const: fsl,pq2-localbus
++
++      - items:
++          - enum:
++              - fsl,mpc8247-localbus
++              - fsl,mpc8248-localbus
++              - fsl,mpc8360-localbus
++          - const: fsl,pq2pro-localbus
++
++      - items:
++          - enum:
++              - fsl,mpc8540-localbus
++              - fsl,mpc8544-lbc
++              - fsl,mpc8544-localbus
++              - fsl,mpc8548-lbc
++              - fsl,mpc8548-localbus
++              - fsl,mpc8560-localbus
++              - fsl,mpc8568-localbus
++          - const: fsl,pq3-localbus
 +
 +  reg:
 +    maxItems: 1
@@ -156,195 +210,134 @@ index 0000000000000000000000000000000000000000..c504b7957dde39086ef7d7a7550d6169
 +  interrupts:
 +    maxItems: 1
 +
-+  fsl,espi-num-chipselects:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [ 1, 4 ]
-+    description: The number of the chipselect signals.
-+
-+  fsl,csbef:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 15
-+    description: Chip select assertion time in bits before frame starts
-+
-+  fsl,csaft:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    minimum: 0
-+    maximum: 15
-+    description: Chip select negation time in bits after frame ends
-+
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - fsl,espi-num-chipselects
-+
-+allOf:
-+  - $ref: spi-controller.yaml#
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    spi@110000 {
-+        compatible = "fsl,mpc8536-espi";
-+        reg = <0x110000 0x1000>;
-+        #address-cells = <1>;
-+        #size-cells = <0>;
-+        interrupts = <53 0x2>;
-+        interrupt-parent = <&mpic>;
-+        fsl,espi-num-chipselects = <4>;
-+        fsl,csbef = <1>;
-+        fsl,csaft = <1>;
-+    };
-+
-+...
-diff --git a/Documentation/devicetree/bindings/spi/fsl,spi.yaml b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..db65c0560c32f32324a2aaaf53c0044a4b56f3d9
---- /dev/null
-+++ b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
-@@ -0,0 +1,73 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/spi/fsl,spi.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Freescale SPI (Serial Peripheral Interface) controller
-+
-+maintainers:
-+  - J. Neuschäfer <j.ne@posteo.net>
-+
-+properties:
-+  compatible:
-+    enum:
-+      - fsl,spi
-+      - aeroflexgaisler,spictrl
-+
-+  reg:
-+    maxItems: 1
-+
-+  cell-index:
-+    $ref: /schemas/types.yaml#/definitions/uint32
-+    description: |
-+      QE SPI subblock index.
-+      0: QE subblock SPI1
-+      1: QE subblock SPI2
-+
-+  mode:
-+    description: SPI operation mode
-+    enum:
-+      - cpu
-+      - cpu-qe
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clock-frequency:
-+    description: input clock frequency to non FSL_SOC cores
-+
-+  cs-gpios: true
-+
-+  fsl,spisel_boot:
-+    $ref: /schemas/types.yaml#/definitions/flag
++  "#address-cells":
++    enum: [2, 3]
 +    description:
-+      For the MPC8306 and MPC8309, specifies that the SPISEL_BOOT signal is used
-+      as chip select for a slave device. Use reg = <number of gpios> in the
-+      corresponding child node, i.e. 0 if the cs-gpios property is not present.
++      The first cell is the chipselect number, and the remaining cells are the
++      offset into the chipselect.
 +
-+required:
-+  - compatible
-+  - reg
-+  - mode
-+  - interrupts
++  "#size-cells":
++    enum: [1, 2]
++    description:
++      Either one or two, depending on how large each chipselect can be.
 +
-+allOf:
-+  - $ref: spi-controller.yaml#
++  ranges:
++    description:
++      Each range corresponds to a single chipselect, and covers the entire
++      access window as configured.
 +
-+unevaluatedProperties: false
++patternProperties:
++  # format: name@chipselect,address
++  "^.*@[0-9a-f]+,[0-9a-f]+$":
++    type: object
++
++additionalProperties: false
 +
 +examples:
 +  - |
-+    spi@4c0 {
-+        compatible = "fsl,spi";
-+        reg = <0x4c0 0x40>;
-+        cell-index = <0>;
-+        interrupts = <82 0>;
-+        interrupt-parent = <&intc>;
-+        mode = "cpu";
-+        cs-gpios = <&gpio 18 1          // device reg=<0>
-+                    &gpio 19 1>;        // device reg=<1>
++    localbus@f0010100 {
++        compatible = "fsl,mpc8272-localbus",
++                     "fsl,pq2-localbus";
++        reg = <0xf0010100 0x40>;
++        ranges = <0x0 0x0 0xfe000000 0x02000000
++                  0x1 0x0 0xf4500000 0x00008000
++                  0x2 0x0 0xfd810000 0x00010000>;
++        #address-cells = <2>;
++        #size-cells = <1>;
++
++        flash@0,0 {
++            compatible = "jedec-flash";
++            reg = <0x0 0x0 0x2000000>;
++            bank-width = <4>;
++            device-width = <1>;
++        };
++
++        simple-periph@2,0 {
++            compatible = "fsl,elbc-gpcm-uio";
++            reg = <0x2 0x0 0x10000>;
++            elbc-gpcm-br = <0xfd810800>;
++            elbc-gpcm-or = <0xffff09f7>;
++        };
 +    };
 +
-+...
-diff --git a/Documentation/devicetree/bindings/spi/fsl-spi.txt b/Documentation/devicetree/bindings/spi/fsl-spi.txt
++  - |
++    localbus@e0005000 {
++        compatible = "fsl,mpc8315-elbc", "fsl,elbc";
++        reg = <0xe0005000 0x1000>;
++        ranges = <0x0 0x0 0xfe000000 0x00800000
++                  0x1 0x0 0xe0600000 0x00002000
++                  0x2 0x0 0xf0000000 0x00020000
++                  0x3 0x0 0xfa000000 0x00008000>;
++        #address-cells = <2>;
++        #size-cells = <1>;
++        interrupts = <77 0x8>;
++        interrupt-parent = <&ipic>;
++
++        flash@0,0 {
++            compatible = "cfi-flash";
++            reg = <0x0 0x0 0x800000>;
++            #address-cells = <1>;
++            #size-cells = <1>;
++            bank-width = <2>;
++            device-width = <1>;
++        };
++
++        nand@1,0 {
++            compatible = "fsl,mpc8315-fcm-nand",
++                         "fsl,elbc-fcm-nand";
++            reg = <0x1 0x0 0x2000>;
++            #address-cells = <1>;
++            #size-cells = <1>;
++        };
++    };
+diff --git a/Documentation/devicetree/bindings/powerpc/fsl/lbc.txt b/Documentation/devicetree/bindings/powerpc/fsl/lbc.txt
 deleted file mode 100644
-index 0654380eb7515d8bda80eea1486e77b939ac38d8..0000000000000000000000000000000000000000
---- a/Documentation/devicetree/bindings/spi/fsl-spi.txt
+index 1c80fcedebb52049721fbd61c4dd4c57133bd47c..0000000000000000000000000000000000000000
+--- a/Documentation/devicetree/bindings/powerpc/fsl/lbc.txt
 +++ /dev/null
-@@ -1,62 +0,0 @@
--* SPI (Serial Peripheral Interface)
+@@ -1,43 +0,0 @@
+-* Chipselect/Local Bus
 -
--Required properties:
--- cell-index : QE SPI subblock index.
--		0: QE subblock SPI1
--		1: QE subblock SPI2
--- compatible : should be "fsl,spi" or "aeroflexgaisler,spictrl".
--- mode : the SPI operation mode, it can be "cpu" or "cpu-qe".
--- reg : Offset and length of the register set for the device
--- interrupts : <a b> where a is the interrupt number and b is a
--  field that represents an encoding of the sense and level
--  information for the interrupt.  This should be encoded based on
--  the information in section 2) depending on the type of interrupt
--  controller you have.
--- clock-frequency : input clock frequency to non FSL_SOC cores
--
--Optional properties:
--- cs-gpios : specifies the gpio pins to be used for chipselects.
--  The gpios will be referred to as reg = <index> in the SPI child nodes.
--  If unspecified, a single SPI device without a chip select can be used.
--- fsl,spisel_boot : for the MPC8306 and MPC8309, specifies that the
--  SPISEL_BOOT signal is used as chip select for a slave device. Use
--  reg = <number of gpios> in the corresponding child node, i.e. 0 if
--  the cs-gpios property is not present.
+-Properties:
+-- name : Should be localbus
+-- #address-cells : Should be either two or three.  The first cell is the
+-                   chipselect number, and the remaining cells are the
+-                   offset into the chipselect.
+-- #size-cells : Either one or two, depending on how large each chipselect
+-                can be.
+-- ranges : Each range corresponds to a single chipselect, and cover
+-           the entire access window as configured.
 -
 -Example:
--	spi@4c0 {
--		cell-index = <0>;
--		compatible = "fsl,spi";
--		reg = <4c0 40>;
--		interrupts = <82 0>;
--		interrupt-parent = <700>;
--		mode = "cpu";
--		cs-gpios = <&gpio 18 1		// device reg=<0>
--			    &gpio 19 1>;	// device reg=<1>
--	};
+-	localbus@f0010100 {
+-		compatible = "fsl,mpc8272-localbus",
+-			   "fsl,pq2-localbus";
+-		#address-cells = <2>;
+-		#size-cells = <1>;
+-		reg = <0xf0010100 0x40>;
 -
+-		ranges = <0x0 0x0 0xfe000000 0x02000000
+-			  0x1 0x0 0xf4500000 0x00008000
+-			  0x2 0x0 0xfd810000 0x00010000>;
 -
--* eSPI (Enhanced Serial Peripheral Interface)
+-		flash@0,0 {
+-			compatible = "jedec-flash";
+-			reg = <0x0 0x0 0x2000000>;
+-			bank-width = <4>;
+-			device-width = <1>;
+-		};
 -
--Required properties:
--- compatible : should be "fsl,mpc8536-espi".
--- reg : Offset and length of the register set for the device.
--- interrupts : should contain eSPI interrupt, the device has one interrupt.
--- fsl,espi-num-chipselects : the number of the chipselect signals.
+-		board-control@1,0 {
+-			reg = <0x1 0x0 0x20>;
+-			compatible = "fsl,mpc8272ads-bcsr";
+-		};
 -
--Optional properties:
--- fsl,csbef: chip select assertion time in bits before frame starts
--- fsl,csaft: chip select negation time in bits after frame ends
--
--Example:
--	spi@110000 {
--		#address-cells = <1>;
--		#size-cells = <0>;
--		compatible = "fsl,mpc8536-espi";
--		reg = <0x110000 0x1000>;
--		interrupts = <53 0x2>;
--		interrupt-parent = <&mpic>;
--		fsl,espi-num-chipselects = <4>;
--		fsl,csbef = <1>;
--		fsl,csaft = <1>;
+-		simple-periph@2,0 {
+-			compatible = "fsl,elbc-gpcm-uio";
+-			reg = <0x2 0x0 0x10000>;
+-			elbc-gpcm-br = <0xfd810800>;
+-			elbc-gpcm-or = <0xffff09f7>;
+-		};
 -	};
 
 -- 
