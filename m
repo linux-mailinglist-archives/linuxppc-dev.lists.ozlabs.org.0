@@ -1,65 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-5935-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5936-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B65A2BEC3
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 10:07:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EEC88A2BF67
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 10:35:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yq7RB49g2z2ynj;
-	Fri,  7 Feb 2025 20:07:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yq82j52ytz30T0;
+	Fri,  7 Feb 2025 20:35:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc2:55:216:3eff:fef7:d647"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738919270;
-	cv=none; b=GvV18ZPkmiExL4tLqk66TmgvP6ytAzf6FXYnDdRxoQcZG5ECnQ93x9gmG77sagoF1utf5D/tHEggIfxWpED6mwfNPAd6Oh0NsJY+flysIR/Xim2jNueTEqcgndbFSLIml97mOi+J8u8RzfK8SqjB0i5zTT+X7idHpumWWRnd1NvoZYFM6G0U/NCBJ+JRTbNCRvjL/xeET9OIkcgneM6sBbybgPMRXcmiFoOdIELaBMupV7OJbRHhS5FbvlqnfRoEUJeUGIjeFsIs5+2D5U6v+iaXLQAfjubKExYKGnCwGl0TLaI6q/MMXiH/DecLwcK622cyoj0Uv/yk3OTDQd5HJA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.113
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738920909;
+	cv=none; b=jKxPaysakH51Yrk7HlfBlHkva16stuGlhNFgT/knL8lU6QcvvXpwqWHZ7Jd2sOYHVCXVFYTpCN5mxdTQYXq28KgvHGtfBUo5jTdEp5QM9bVGdCwaD6sT42WihJ6FU417JK5xhJ8JXy2TWfkl4tLJFxmZdLb2y6siSFUVm72kxGOl6vRK28Qe+mBFN81sBqKxiVCGmNGcChEMclUQai5acobqbShfAMSvhaxnRlO8DCqHkYfTpZDS1mtlW6h+R84vp94Ec3oUTdA8K/Nx4eKwfrFDPrHeC5MzJ+L+tYL9XTzRqQYNv8ERjXeFRqJIHqRcjjU4R7Pek1eXZf5p6KI/ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738919270; c=relaxed/relaxed;
-	bh=hzSDUsupP4uTOqsDXYCZMaqhhe2KKjplaV/6jk/uQG0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SFbQDqyHrh5DGQqRt2t+gocSBuu8iM6jmTHHpUAVfedByMX2Ix/t7eWYIH/HVOJNwHiupxPfo0khM/Ixdsk2iNQFgMmzS/ZGKhqyp7xrDTx8CTjpbdlQUSxdLXnSlWoK40Se5r2rTSicZ8N5L+CigpIu3TIN8jE26Q6m6FEZV6M03EawcMSh+mToMH8+mnaBbUKqhx/j5wkgmiOQWcjLt1sWD399WJ7sjtkjGq08AuTmf+eVBaiSebkllIK8ckiWdBg6go9rDtIqC1B06ozTD9PavCNuefltfq7zEyixrJ8PUWU8GsM5Demtm3MIinSGztKZo+86bgv/fc+sNujUGg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; dkim=pass (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=RRGFwKpI; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc2:55:216:3eff:fef7:d647; helo=perceval.ideasonboard.com; envelope-from=laurent.pinchart@ideasonboard.com; receiver=lists.ozlabs.org) smtp.mailfrom=ideasonboard.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
+	t=1738920909; c=relaxed/relaxed;
+	bh=nsVyOK7lf4dncZjmNZ83lvgaF7otJZXfXf1rIy5TN2k=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QA6peq+EVeWAImJFZxPyQbZ9uElJFz19f0WmzL4u3QYSeDeHMsutYCjar8YTM+bXaZRiXFNc+DrqdE0hihrHod/COsaFFa+0oY9xLhijFiqttzzzQlNkGt7MhmHF+A+It1IuHhVYe+m+IMUde1Pg5M7oAGFNgEah235tWr5idikWZGIANZ2DCZW2yiE/fhaSS6owXZ0HoNmukeu81H+YFzvWIW56rKsR17+JTA4xkOhycpa+lVWxgOC75Q9FS/wK+bq51uHe6Y/T9bWeKPmb1FYlXG+m6SUe1HexXwTEPdfyBGEL01NEu/xbVfqHba4bfVazfhzi92gLiB3uToMN4A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=xN6X0AaD; dkim-atps=neutral; spf=pass (client-ip=115.124.30.113; helo=out30-113.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=RRGFwKpI;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=xN6X0AaD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ideasonboard.com (client-ip=2001:4b98:dc2:55:216:3eff:fef7:d647; helo=perceval.ideasonboard.com; envelope-from=laurent.pinchart@ideasonboard.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 603 seconds by postgrey-1.37 at boromir; Fri, 07 Feb 2025 20:07:49 AEDT
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.113; helo=out30-113.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yq7R90ncnz2yVt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 20:07:49 +1100 (AEDT)
-Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
-	by perceval.ideasonboard.com (Postfix) with ESMTPSA id E4D49520;
-	Fri,  7 Feb 2025 09:56:22 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-	s=mail; t=1738918583;
-	bh=+NyYaGlH/oxOkgdXONu9qIcLVQUJc5wclZd/vJNT5yE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RRGFwKpIrzR0Q9jTkGFBT30qEgym7M/AQ9c2FHp2wHk9HxiuqfudrqPPujD3Q5uyo
-	 qO80NHWAG6pJjsJXDReutvrpGHKNHa2sBSVImL0s/FXhPojeliRKTZcOwpgqRh4J9r
-	 Q7awltRFXbTRHS1cRUc+bSQ25T1/vJucUWCB7Oy4=
-Date: Fri, 7 Feb 2025 10:57:30 +0200
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: Zhang Zekun <zhangzekun11@huawei.com>, robh@kernel.org,
-	saravanak@google.com, justin.chen@broadcom.com,
-	florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
-	kuba@kernel.org, kory.maincent@bootlin.com,
-	jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
-	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-	olteanv@gmail.com, davem@davemloft.net, taras.chornyi@plvision.eu,
-	edumazet@google.com, pabeni@redhat.com, sudeep.holla@arm.com,
-	cristian.marussi@arm.com, arm-scmi@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
-	netdev@vger.kernel.org, devicetree@vger.kernel.org,
-	chenjun102@huawei.com
-Subject: Re: [PATCH 1/9] of: Add warpper function
- of_find_node_by_name_balanced()
-Message-ID: <20250207085730.GD24886@pendragon.ideasonboard.com>
-References: <20250207013117.104205-1-zhangzekun11@huawei.com>
- <20250207013117.104205-2-zhangzekun11@huawei.com>
- <Z6XDKi_V0BZSdCeL@pengutronix.de>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yq82g6TGkz301v
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 20:35:06 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1738920903; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=nsVyOK7lf4dncZjmNZ83lvgaF7otJZXfXf1rIy5TN2k=;
+	b=xN6X0AaDFM134nZqlPaxRnASZZMaC2hMpMH3uXDA0G+P44VstETa8W97PIBU6co8ewkSCzzzsBvGlD9lL9Gdwlmfa5Aux+++wJzebNNarpEVmX2nBQWFMj/c5ZGCxINbD4E12MxxAWSSKQ30ylK2Zmu0FJ7PtW6Ysywk+YsFSzA=
+Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WOyzNCd_1738920901 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Fri, 07 Feb 2025 17:35:02 +0800
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	bhelgaas@google.com,
+	kbusch@kernel.org,
+	sathyanarayanan.kuppuswamy@linux.intel.com
+Cc: mahesh@linux.ibm.com,
+	oohall@gmail.com,
+	xueshuai@linux.alibaba.com,
+	Jonathan.Cameron@huawei.com,
+	terry.bowman@amd.com
+Subject: [PATCH v3 0/4] PCI/AER: Report fatal errors of RCiEP and EP if link recoverd
+Date: Fri,  7 Feb 2025 17:34:56 +0800
+Message-ID: <20250207093500.70885-1-xueshuai@linux.alibaba.com>
+X-Mailer: git-send-email 2.44.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,90 +63,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z6XDKi_V0BZSdCeL@pengutronix.de>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Oleksij,
+changes since v2:
+- moving the "err_port" rename to a separate patch per Sathyanarayanan
+- rewrite comments of dpc_process_error per Sathyanarayanan
+- remove NULL initialization for err_dev per Sathyanarayanan
 
-On Fri, Feb 07, 2025 at 09:24:10AM +0100, Oleksij Rempel wrote:
-> On Fri, Feb 07, 2025 at 09:31:09AM +0800, Zhang Zekun wrote:
-> > There are many drivers use of_find_node_by_name() with a not-NULL
-> > device_node pointer, and a number of callers would require a call to
-> > of_node_get() before using it. There are also some drivers who forget
-> > to call of_node_get() which would cause a ref count leak[1]. So, Add a
-> > wraper function for of_find_node_by_name(), drivers may use this function
-> > to call of_find_node_by_name() with the refcount already balanced.
-> > 
-> > [1] https://lore.kernel.org/all/20241024015909.58654-1-zhangzekun11@huawei.com/
-> 
-> Hi Zhang Zekun,
-> 
-> thank you for working on this issue!
-> 
-> First of all, let's take a step back and analyze the initial problem.
-> Everything following is only my opinion...
-> 
-> The main issue I see is that the current API - of_find_node_by_name -
-> modifies the refcount of its input by calling of_node_put(from) as part
-> of its search. Typically, a "find" function is expected to treat its
-> input as read-only. That is, when you pass an object into such a
-> function, you expect its reference count to remain unchanged unless
-> ownership is explicitly transferred. In this case, lowering the refcount
-> on the input node is counterintuitive and already lead to unexpected
-> behavior and subtle bugs.
-> 
-> To address this, the workaround introduces a wrapper function,
-> of_find_node_by_name_balanced, which first increments the input’s
-> refcount (via of_node_get()) before calling the original function. While
-> this "balances" the refcount change, the naming remains problematic from
-> my perspective. The "_balanced" suffix isn’t part of our common naming
-> conventions (traditions? :)). Most drivers expect that a function
-> starting with "find" will not alter the reference count of its input.
-> The term "balanced" doesn’t clearly convey that the input's refcount is
-> being explicitly managed - it instead obscures the underlying behavior,
-> leaving many developers confused about what guarantees the API provides.
-> 
-> In my view, a more natural solution would be to redesign the API so that
-> it doesn’t modify the input object’s refcount at all. Instead, it should
-> solely increase the refcount of the returned node (if found) for safe
-> asynchronous usage. This approach would align with established
-> conventions where "find" implies no side effects on inputs or output,
-> and a "get" indicates that the output comes with an extra reference. For
-> example, a function named of_get_node_by_name would clearly signal that
-> only the returned node is subject to a refcount increase while leaving
-> the input intact.
-> 
-> Thus, while the current workaround "balances" the reference count, it
-> doesn't address the underlying design flaw. The naming still suggests a
-> "find" function that should leave the input untouched, which isn’t the
-> case here. A redesign of the API - with both the behavior and naming
-> aligned to common expectations - would be a clearer and more robust
-> solution.
-> 
-> Nevertheless, it is only my POV, and the final decision rests with the
-> OpenFirmware framework maintainers.
+changes since v1:
+- rewrite commit log per Bjorn
+- refactor aer_get_device_error_info to reduce duplication per Keith
+- fix to avoid reporting fatal errors twice for root and downstream ports per Keith
 
-I agree overall that the naming is not optimal. Looking at the other
-patches in the series, I think at least some of them misuse
-of_find_node_by_name(). For instance, drivers/media/i2c/max9286.c calls
-the function to find a *child* node of the device's of_node named
-"i2c-mux", while of_find_node_by_name() looks at children first but will
-then walk the *whole* DT to find a named node. I haven't checked all
-patches, but other ones seem to suffer from the same misuse.
+The AER driver has historically avoided reading the configuration space of an
+endpoint or RCiEP that reported a fatal error, considering the link to that
+device unreliable. Consequently, when a fatal error occurs, the AER and DPC
+drivers do not report specific error types, resulting in logs like:
 
-Assuming that the named node those drivers are looking for is a direct
-child of the node passed as argument to of_find_node_by_name(), the
-right fix would tbe to use of_get_child_by_name(). If it's not a direct
-child, a recursive version of of_get_child_by_name() could be useful.
+   pcieport 0000:30:03.0: EDR: EDR event received
+   pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+   pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+   pcieport 0000:30:03.0: AER: broadcast error_detected message
+   nvme nvme0: frozen state error detected, reset controller
+   nvme 0000:34:00.0: ready 0ms after DPC
+   pcieport 0000:30:03.0: AER: broadcast slot_reset message
+
+AER status registers are sticky and Write-1-to-clear. If the link recovered
+after hot reset, we can still safely access AER status of the error device.
+In such case, report fatal errors which helps to figure out the error root
+case.
+
+After this patch set, the logs like:
+
+   pcieport 0000:30:03.0: EDR: EDR event received
+   pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+   pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+   pcieport 0000:30:03.0: AER: broadcast error_detected message
+   nvme nvme0: frozen state error detected, reset controller
+   pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
+   nvme 0000:34:00.0: ready 0ms after DPC
+   nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
+   nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
+   nvme 0000:34:00.0:    [ 4] DLP                    (First)
+   pcieport 0000:30:03.0: AER: broadcast slot_reset message 
+
+Shuai Xue (4):
+  PCI/DPC: Rename pdev to err_port for dpc_handler
+  PCI/EDR: Rename edev to err_port for edr_handle_event
+  PCI/DPC: Run recovery on device that detected the error
+  PCI/AER: Report fatal errors of RCiEP and EP if link recoverd
+
+ drivers/pci/pci.h      |  5 +++--
+ drivers/pci/pcie/aer.c | 11 +++++++----
+ drivers/pci/pcie/dpc.c | 31 ++++++++++++++++++++++++-------
+ drivers/pci/pcie/edr.c | 35 ++++++++++++++++++-----------------
+ drivers/pci/pcie/err.c |  9 +++++++++
+ 5 files changed, 61 insertions(+), 30 deletions(-)
 
 -- 
-Regards,
+2.39.3
 
-Laurent Pinchart
 
