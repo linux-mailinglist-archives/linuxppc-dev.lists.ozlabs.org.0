@@ -1,59 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-5939-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5941-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A718A2BF6D
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 10:35:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8733A2C054
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 11:17:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yq82m02fLz30Tm;
-	Fri,  7 Feb 2025 20:35:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yq8z23Tq6z305S;
+	Fri,  7 Feb 2025 21:17:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.133
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738920911;
-	cv=none; b=DWQTjFBIq3elPdUEiCICE1wcSInHu+uoi2McwtkrD7Zv3QUa5QYRhFOUZEE5/vnVkswl8J0R9LjtjjUL1yatDBMkkiNw7Zdzaeir9P3j0avl5Wu+0wKbjnk1E1ghsqUqeg+FVS8bwFxDtngsrIWgZ/p5DZ907IipMbTvO2R7bs5W2L9zNIkxYDrAVgGcnQyH8H1PeQP6UtTlfWuDxXK2Th19YZm1GISTF8gmMMHnzf/RX5yOTxbNY3FketuS+u7HcMRZjvvOJ3cpr2xV4hjvU9QCOb8/1Z4eo9PohxWX+SKJaK2tRvxpFhq/bPEChze7Ob9wZQvGYMS1TdptZn5rlg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1236::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738923422;
+	cv=none; b=WuYQvve53qkrSBqhoIJ/+NqC7HkaDkno0l3ej/rpPtCNbgsnWOxvoqYky8D2GQDSs0q7NiaMvukAUFP1MTRY5L/rjCxHOUJAP61+go04s4axI59JpueCtY9imtNyKDEwlEVMBQBirHhUarWYQGxWjbsQqhevLtndgnfF86Lsooa1B+HzjDdYm7R7HRM29SxKbL3/oegDixSBKM4ec1mE6ZS3fI68PazC0ix8nuz85qoDgQuldLEzv43avwyb0yjMWLZfDi+c5nPs1kNSkIPLuK4pXAtr1aD9VOd9OdwZxZo5zhcjS/OrEZvCLv4Kuta1THFwLm9W6VN0HKCrHnEgzA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738920911; c=relaxed/relaxed;
-	bh=NwDdQPdfwWB+7JbFOEZPl3JPbnbEA0g764b9H1Boi48=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BaVKXHPSUYSF2IFQHp7x4Asoqo8Rwuj/iWW7DcrM01UiIJe/2ITTRz1VU+7Wfl7HP4lgGh6yLUwDTcK3JY5Oc2vGBCwXmHIyzLLoNllRniFsQKV2shXH/6B9lvOT31j2UAJ2ElJ/7u+wCj++hBuGw+3SRFtMMzCis+tOYPp1ocacO1uPXpYcD6pKmSQAENUjBP7nH9mdiTpxp45XogSSNa11LQtVza4jpvFQRF0WQdC9Uh6Xmho+eXkYKQRCw2rcdEBFGlx78hi4t5gXk3AEeePSiy5GdNq6PuNOF7iy70LvCmz6H9eejLJKPz2I+SZoXtP/Y7yvEIVG4Yk/pXKzFg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=WZ/mHEjV; dkim-atps=neutral; spf=pass (client-ip=115.124.30.133; helo=out30-133.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=WZ/mHEjV;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.133; helo=out30-133.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	t=1738923422; c=relaxed/relaxed;
+	bh=zVqX9Hq16/SBdTp2H/rBCvE55Od/Y0deJt0gh/PTA4k=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=KP17UCB2RBl33hAeyXS4FXJh+QkPYm8r4Dlp6WKyI/yrRleIv9CySzHT4IunjYHWjDOkK/RRoeiBb5sg6qcY/IcEEjT1KbgY/kFwANqqWXAMOQLgUQ0ghSJUXPw505ycLNB94hoZiNxPvU7TSI4DNe7/WxDrljtomC7qDXd70scM+nagAs3e8sdpuBlCIB8u/Go9LAVhkioBm2FjU87YY4D9DhAlHUKNJnEMcB5vLCfQ/GpL9tYeOARU9GAkYoZvFKIAQR4aQu7VTfDibFZM/Dgu3hCKGOKMdQxFjZ/LhTV8YjBwuJQDDNSmKJutmTJ7SMmFadYaLse+IkzA5+/5eA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+d214d3087cba0d0cd96e+7838+infradead.org+dwmw2@casper.srs.infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=casper.srs.infradead.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=casper.srs.infradead.org (client-ip=2001:8b0:10b:1236::1; helo=casper.infradead.org; envelope-from=batv+d214d3087cba0d0cd96e+7838+infradead.org+dwmw2@casper.srs.infradead.org; receiver=lists.ozlabs.org)
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yq82k4VZHz30Pp
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 20:35:10 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1738920906; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=NwDdQPdfwWB+7JbFOEZPl3JPbnbEA0g764b9H1Boi48=;
-	b=WZ/mHEjVPAsKohB+TDIza+XlndjkeieWzY5rt9HiTMF/HdEv0IDXuYs3RIW9lTMVygKZU55PW1qY6lqgiE8AJnTd2am9xLOZsHiAs+jHvHkB2tyoEtbERWOuUnSSxBisftyhg8OIrlnTJP5vUkKvJk3BRL+3pXuYm5OBMgXJdCo=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WOyzNEW_1738920905 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Fri, 07 Feb 2025 17:35:06 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	bhelgaas@google.com,
-	kbusch@kernel.org,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Cc: mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	xueshuai@linux.alibaba.com,
-	Jonathan.Cameron@huawei.com,
-	terry.bowman@amd.com
-Subject: [PATCH v3 4/4] PCI/AER: Report fatal errors of RCiEP and EP if link recoverd
-Date: Fri,  7 Feb 2025 17:35:00 +0800
-Message-ID: <20250207093500.70885-5-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20250207093500.70885-1-xueshuai@linux.alibaba.com>
-References: <20250207093500.70885-1-xueshuai@linux.alibaba.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yq8yv3YG7z301v
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 21:16:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=zVqX9Hq16/SBdTp2H/rBCvE55Od/Y0deJt0gh/PTA4k=; b=JQrCMHr2BdrjS4NKrzUQ4brppT
+	UggDTJnj1TCbsw8d6uS/TP1LXzuCYCRpzvxXY3M1Udn1/rpXKT+D2yISKc9EHbbjlk1JMiwjezT0w
+	G/g1Rm0utnZUcDsOAhllHICdtEJxIYMJw/XeRN/mslhRg1XxSlNHhBbjnLxUXcGhEAIUycfIHwyAz
+	ItWZqc3X+RpAaZKfd7tucO6DvzefcQn0FPMOPsZAyCKizC/2AjVKxERO5/VgZ3Cnr4Chc1uCRoERY
+	AxTesLAbLLvoSEfjxsUL7zWXl8QA3C30qYHv/EpdvBIOHqKBDnTg+VDWbD2Y+xZaag8m8LicEjrBB
+	LIoBs9Rw==;
+Received: from 54-240-197-238.amazon.com ([54.240.197.238] helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
+	id 1tgLOp-00000007cdM-31OR;
+	Fri, 07 Feb 2025 10:15:52 +0000
+Message-ID: <0a6b88c0edd85a2ae0886e5454afea09cfcd3a24.camel@infradead.org>
+Subject: Re: [PATCH v3 00/18] vDSO: Introduce generic data storage
+From: David Woodhouse <dwmw2@infradead.org>
+To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>
+Cc: "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge
+ Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, Thomas Gleixner
+ <tglx@linutronix.de>,  Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker
+ <frederic@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Theodore
+ Ts'o <tytso@mit.edu>,  "Jason A. Donenfeld" <Jason@zx2c4.com>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Huacai Chen <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Russell King <linux@armlinux.org.uk>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,  Arnd Bergmann
+ <arnd@arndb.de>, Guo Ren <guoren@kernel.org>, linux-parisc@vger.kernel.org,
+  linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, loongarch@lists.linux.dev, 
+ linux-s390@vger.kernel.org, linux-mips@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-arch@vger.kernel.org, Nam Cao
+ <namcao@linutronix.de>, linux-csky@vger.kernel.org, "Ridoux, Julien"
+ <ridouxj@amazon.com>, "Luu, Ryan" <rluu@amazon.com>, kvm
+ <kvm@vger.kernel.org>
+Date: Fri, 07 Feb 2025 10:15:49 +0000
+In-Reply-To: <20250206110648-ec4cf3d0-0aef-4feb-a859-c69e53ab110c@linutronix.de>
+References: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
+	 <ff83dc5c91b4e46bcf2d99680ec6af250fb05b27.camel@infradead.org>
+	 <20250206110648-ec4cf3d0-0aef-4feb-a859-c69e53ab110c@linutronix.de>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-Hn9nn97uh7ZrvK5eTG4M"
+User-Agent: Evolution 3.52.3-0ubuntu1 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,159 +90,197 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-2.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The AER driver has historically avoided reading the configuration space of
-an endpoint or RCiEP that reported a fatal error, considering the link to
-that device unreliable. Consequently, when a fatal error occurs, the AER
-and DPC drivers do not report specific error types, resulting in logs like:
 
-  pcieport 0000:30:03.0: EDR: EDR event received
-  pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
-  pcieport 0000:30:03.0: DPC: ERR_FATAL detected
-  pcieport 0000:30:03.0: AER: broadcast error_detected message
-  nvme nvme0: frozen state error detected, reset controller
-  nvme 0000:34:00.0: ready 0ms after DPC
-  pcieport 0000:30:03.0: AER: broadcast slot_reset message
+--=-Hn9nn97uh7ZrvK5eTG4M
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-AER status registers are sticky and Write-1-to-clear. If the link recovered
-after hot reset, we can still safely access AER status of the error device.
-In such case, report fatal errors which helps to figure out the error root
-case.
+On Thu, 2025-02-06 at 11:59 +0100, Thomas Wei=C3=9Fschuh wrote:
+> On Thu, Feb 06, 2025 at 09:31:42AM +0000, David Woodhouse wrote:
+> > On Tue, 2025-02-04 at 13:05 +0100, Thomas Wei=C3=9Fschuh wrote:
+> > > Currently each architecture defines the setup of the vDSO data page o=
+n
+> > > its own, mostly through copy-and-paste from some other architecture.
+> > > Extend the existing generic vDSO implementation to also provide gener=
+ic
+> > > data storage.
+> > > This removes duplicated code and paves the way for further changes to
+> > > the generic vDSO implementation without having to go through a lot of
+> > > per-architecture changes.
+> > >=20
+> > > Based on v6.14-rc1 and intended to be merged through the tip tree.
+>=20
+> Note: The real answer will need to come from the timekeeping
+> maintainers, my personal two cents below.
+>=20
+> > Thanks for working on this. Is there a plan to expose the time data
+> > directly to userspace in a form which is usable *other* than by
+> > function calls which get the value of the clock at a given moment?
+>=20
+> There are no current plans that I am aware of.
+>=20
+> > For populating the vmclock device=C2=B9 we need to know the actual
+> > relationship between the hardware counter (TSC, arch timer, etc.) and
+> > real time in order to propagate that to the guest.
+> >=20
+> > I see two options for doing this:
+> >=20
+> > =C2=A01. Via userspace, exposing the vdso time data (and a notification=
+ when
+> > =C2=A0=C2=A0=C2=A0 it changes?) and letting the userspace VMM populate =
+the vmclock.
+> > =C2=A0=C2=A0=C2=A0 This is complex for x86 because of TSC scaling; in f=
+act userspace
+> > =C2=A0=C2=A0=C2=A0 doesn't currently know the precise scaling from host=
+ to guest TSC
+> > =C2=A0=C2=A0=C2=A0 so we'd have to be able to extract that from KVM.
+>=20
+> Exposing the raw vdso time data is problematic as it precludes any
+> evolution to its datastructures, like the one we are currently doing.
+>=20
+> An additional, trimmed down and stable data structure could be used.
+> But I don't think it makes sense. The vDSO is all about a stable
+> highlevel function interface on top of an unstable data interface.
+> However the vmclock needs the lowlevel data to populate its own
+> datastructure, wrapping raw data access in function calls is unnecessary.
+> If no functions are involved then the vDSO is not needed. The data can
+> be maintained separately in any other place in the kernel and accessed
+> or mapped by userspace from there.
+> Also the vDSO does not have an active notification mechanism, this would
+> probably be implemented through a filedescriptor, but then the data
+> can also be mapped through exactly that fd.
+>=20
+> > =C2=A02. In kernel, asking KVM to populate the vmclock structure much l=
+ike
+> > =C2=A0=C2=A0=C2=A0 it does other pvclocks shared with the guest. KVM/x8=
+6 already uses
+> > =C2=A0=C2=A0=C2=A0 pvclock_gtod_register_notifier() to hook changes; sh=
+ould we expand
+> > =C2=A0=C2=A0=C2=A0 on that? The problem with that notifier is that it s=
+eems to be
+> > =C2=A0=C2=A0=C2=A0 called far more frequently than I'd expect.
+>=20
+> This sounds better, especially as any custom ABI from the host kernel to
+> the VMM would look a lot like the vmclock structure anyways.
+>=20
+> Timekeeper updates are indeed very frequent, but what are the concrete
+> issues? That frequency is fine for regular vDSO data page updates,
+> updating the vmclock data page should be very similar.
+> The timekeeper core can pass context to the notifier callbacks, maybe
+> this can be used to skip some expensive steps where possible.
 
-After this patch, the logs like:
+In the context of a hypervisor with lots of guests running, that's a
+lot of pointless steal time. But it isn't just that; ISTR the result
+was also *inaccurate*.
 
-  pcieport 0000:30:03.0: EDR: EDR event received
-  pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
-  pcieport 0000:30:03.0: DPC: ERR_FATAL detected
-  pcieport 0000:30:03.0: AER: broadcast error_detected message
-  nvme nvme0: frozen state error detected, reset controller
-  pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
-  nvme 0000:34:00.0: ready 0ms after DPC
-  nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
-  nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
-  nvme 0000:34:00.0:    [ 4] DLP                    (First)
-  pcieport 0000:30:03.0: AER: broadcast slot_reset message
+I need to go back and reproduce the testing, but I think it was
+constantly adjusting the apparent rate even with no changed inputs from
+NTP. Where the number of clock counts per jiffy wasn't an integer, the
+notification would be constantly changing, for example to report 333333
+counts per jiffy for most of the time, and occasionally 333334 counts
+for a single jiffy before flipping back again. Or something like that.
 
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/pci/pci.h      |  3 ++-
- drivers/pci/pcie/aer.c | 11 +++++++----
- drivers/pci/pcie/dpc.c |  2 +-
- drivers/pci/pcie/err.c |  9 +++++++++
- 4 files changed, 19 insertions(+), 6 deletions(-)
+--=-Hn9nn97uh7ZrvK5eTG4M
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 870d2fbd6ff2..e852fa58b250 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -549,7 +549,8 @@ struct aer_err_info {
- 	struct pcie_tlp_log tlp;	/* TLP Header */
- };
- 
--int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
-+int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
-+			      bool link_healthy);
- void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
- 
- int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 508474e17183..bfb67db074f0 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1197,12 +1197,14 @@ EXPORT_SYMBOL_GPL(aer_recover_queue);
-  * aer_get_device_error_info - read error status from dev and store it to info
-  * @dev: pointer to the device expected to have a error record
-  * @info: pointer to structure to store the error record
-+ * @link_healthy: link is healthy or not
-  *
-  * Return 1 on success, 0 on error.
-  *
-  * Note that @info is reused among all error devices. Clear fields properly.
-  */
--int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
-+int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
-+			      bool link_healthy)
- {
- 	int type = pci_pcie_type(dev);
- 	int aer = dev->aer_cap;
-@@ -1226,7 +1228,8 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- 	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
- 		   type == PCI_EXP_TYPE_RC_EC ||
- 		   type == PCI_EXP_TYPE_DOWNSTREAM ||
--		   info->severity == AER_NONFATAL) {
-+		   info->severity == AER_NONFATAL ||
-+		   (info->severity == AER_FATAL && link_healthy)) {
- 
- 		/* Link is still healthy for IO reads */
- 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
-@@ -1258,11 +1261,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
- 
- 	/* Report all before handle them, not to lost records by reset etc. */
- 	for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
--		if (aer_get_device_error_info(e_info->dev[i], e_info))
-+		if (aer_get_device_error_info(e_info->dev[i], e_info, false))
- 			aer_print_error(e_info->dev[i], e_info);
- 	}
- 	for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
--		if (aer_get_device_error_info(e_info->dev[i], e_info))
-+		if (aer_get_device_error_info(e_info->dev[i], e_info, false))
- 			handle_error_source(e_info->dev[i], e_info);
- 	}
- }
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index a91440f3b118..b47d056e0ea7 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -300,7 +300,7 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
- 		dpc_process_rp_pio_error(pdev);
- 	else if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR &&
- 		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
--		 aer_get_device_error_info(pdev, &info)) {
-+		 aer_get_device_error_info(pdev, &info, false)) {
- 		aer_print_error(pdev, &info);
- 		pci_aer_clear_nonfatal_status(pdev);
- 		pci_aer_clear_fatal_status(pdev);
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index 31090770fffc..462577b8d75a 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	struct pci_dev *bridge;
- 	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
- 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
-+	struct aer_err_info info;
- 
- 	/*
- 	 * If the error was detected by a Root Port, Downstream Port, RCEC,
-@@ -223,6 +224,13 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 			pci_warn(bridge, "subordinate device reset failed\n");
- 			goto failed;
- 		}
-+
-+		info.severity = AER_FATAL;
-+		/* Link recovered, report fatal errors of RCiEP or EP */
-+		if ((type == PCI_EXP_TYPE_ENDPOINT ||
-+		     type == PCI_EXP_TYPE_RC_END) &&
-+		    aer_get_device_error_info(dev, &info, true))
-+			aer_print_error(dev, &info);
- 	} else {
- 		pci_walk_bridge(bridge, report_normal_detected, &status);
- 	}
-@@ -259,6 +267,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	if (host->native_aer || pcie_ports_native) {
- 		pcie_clear_device_status(dev);
- 		pci_aer_clear_nonfatal_status(dev);
-+		pci_aer_clear_fatal_status(dev);
- 	}
- 
- 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
--- 
-2.39.3
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI1MDIwNzEwMTU0
+OVowLwYJKoZIhvcNAQkEMSIEIERXi00+3GDk2E/p6131tegJ6jUhnrs0V9vxaiV5oZ2XMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIASTyZ34SddFoE
+ocWSro73fUQgm5VHgrWVDJcQemFDotkX4gb22kx5AhMW01xylurQU2KXW1YBEOQIrP3o8Unp//jv
+n1kL/lZCEQLr0AVvHWzJz+r9T8YOOPqhuYjKTYH7bNJRf4JCovNzSXRbz6r0HtGf8/T5L+H4YdVg
+cEvCs/NnayU/HPIJEpncwWHDx+AuOts+aQ0/GnEI0Q+xZwDfCjrAZkrlMsSDd7WAdz0wwEt2uOEL
+eIBW+5nm/AhsNZfMrvIvoMNGudPj9RQuIQkl0bIB4TTBXEeHkyyqJKn7BDoChI/IyhAo43sGyeUx
+arvfQRzzlDeynusz+WVmgHFGQuiYr5BCqxvXomKqLaBMwv1kL//ffVhlw70jvv93NcISjRnvGgyJ
+QZZ0xxvfNid8xUMEnTAG0qXP77EBjLtcRC5ZCc1XO4Td6yRL1F3/zGUrERW7Zh+hOCtXW+GBOiOQ
+NidHrdr1VlFHbRv3/Q2TLePMD1j5WZp1sViLkBGiEsPa90DkKH0Si/t+h0ah+3+ONkNPMmhF5M+l
+7U+enM1hpdV4KIKxun/YRp3rWBOan4WThApe5yvo3ZJj6+4/qUOP9olIeBZwkGhv9gvyDBOtmkcm
+east0DnR7g7xSW1IhsmWjlSxM5cXw+ENzQ9+gYLa/jGq/5j6aCTvGXjG+71FaQEAAAAAAAA=
 
+
+--=-Hn9nn97uh7ZrvK5eTG4M--
 
