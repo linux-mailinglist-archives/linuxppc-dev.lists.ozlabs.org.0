@@ -1,54 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-5958-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5960-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 304D8A2CF3A
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 22:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EF47A2CF45
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 22:31:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YqRwM4Hrkz30W9;
-	Sat,  8 Feb 2025 08:30:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YqRwN5HY3z30WQ;
+	Sat,  8 Feb 2025 08:30:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738963843;
-	cv=none; b=j3DKnsB5/mqe2btoMXZmF0MytfRdczN6NW34N/CYJXClcnP6wTbXSw1uvSPtHtTxEJ3BkBwUE2ZdilVtLxzSTt0A4og/hUuX/w24sWXpTREq5rBgCOYd/bicNiqVEd15hA7pgBIpb0pLg//dNHaPpt0e0YTwS9udZFGe5YI4VyPsx9iYgZbR5mrDlzVgNiRB/z/83oRWgT5eM82FN1tcuuV1tKTaG5yoBtuIpM/uEDBdsSdwvkdCQDZhoMmjA47AMYA6wGNMEeuYNEqq0e64CjkxLcn2OMwpnLudbIfo9wwuiBVryzeIFpqcgshSk7WmKpEVZdu/IBm+iAnvS4qC4w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738963844;
+	cv=none; b=mDkp+Ck4LxPCoQpFz9Y8SlN/9/Dnq/PVW0i5sKtDhCcpyGl83RA68hddO4DBuAtWEhhAuBse0++F7ZVZ680w+4opXTKjNmDB81z3NlhiQe4N/wiD8rBLTw4nA/J/Zobl2p16isY9KJxJxlzedQJLkgrwJ+VIqCUUQCizwhIDPYLHHck4auT1plrgD8yW7PKcdBkzh3NozQM+6MKpVX68M3sJibniqe8bmIK2YU3ng3Thn64c5RG7ES0AJwaqAyFnj7Q4/igAfYBVqKG54/+yrHPlfvJCCkdFi+LU7daAU5cwj+m7DOb7ISo/sDlbDFikIs+WN22k12Rm1Ay8lsYVuA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738963843; c=relaxed/relaxed;
-	bh=+k/JRf5Yyn3QVycUUJ57UMb1g2UcZGFkwWvnCcXMCbs=;
+	t=1738963844; c=relaxed/relaxed;
+	bh=pztGmtTVcyUwBDYNkodR5c5dTpuZSrpOZS0Tr8g95Qk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HhWC94eRZiGRgGJVbY4oYeTOZILYMUbHGjiH5XREgN5guZVBLVil1ksMu2jA0jUNgr4OlkJpEkKG3KZyQvptXzm9XpKGvtpj2ns2BuWL/yFFfifP0M4qjFcW+XJ847FnBr2h+YGeGnCdksC9uuX9HTaaWWD8RJawxKnkg+21J/XxTzvQvyfCoS8SOqZaSCmWU4egKxUmU88qxAvPs5JGFPkE93oZyoH0KoVf5IdCEOC9rnKtheWhfSPAjNj9Lz53T0ajkjCLWmyV6uKKwXIzkAfRDlkwm4EN+bybo8P/HQJfD2pbUmOrLJMA5VtnbZ793bTbP3c+EOyI66v1njPAoA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kNRibzA0; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=ennVpdaFnx6bJ0Te3vll/B+sxwL3xXpLIN90kZ2Fn/qSLYG2yGe+3kVMbWaTZaKdPSxFobrSsOnksjXohjNSWHa/JhGJSpcTJemO+0ddAmRCEZJMHSAhL3D6cs5KOghuME4MGfMgg5UsfI5n3NW5seZ/Sg20B+5WivkiROJDiAPP7fyxE9dVw/ZfyEXZBDy9seX5K/4yjbVrkA1CmIdez4g3EkwHx171RZlTN7yMmxOPlhQX+BM0zxNjsftjC+WIBdv27Fiv1DadYUVkYWTzbzg/UE24pxo0ojHMv+4qwIM/BZpS4MHfxZaOgflwcIRCRv6sQXUnV4olqmdmgBy5pw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u/C7c3zQ; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=kNRibzA0;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=u/C7c3zQ;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
 Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqRwJ19QNz2ykc
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqRwJ19zJz301v
 	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 08:30:39 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 80C41A43CF4;
+	by nyc.source.kernel.org (Postfix) with ESMTP id 7846BA43CFF;
 	Fri,  7 Feb 2025 21:28:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3DA76C4CEE6;
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 507ECC4CEEF;
 	Fri,  7 Feb 2025 21:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1738963835;
-	bh=nktEztgiNtX/g4rmdLEVKXUelw39pbboF7CNwlBd40Q=;
+	bh=5GdUYxP6p/09yhFXkJHwFVSV0BkcjuTdUuLi/3yaqlM=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=kNRibzA0sw2Sw+B0fy2zZdwXVSxYwIYmTwqT33kjPkzxWMOTJkeCi7kZ+St1dYfJ8
-	 sDsPsSvzLXHdK7tlUqACRftJt7E2CJ93vVMwrufGvdyalzrNO0up2+sN0gPyW5Bjuk
-	 bq/+royUYXCZQ7BsBSVq8+G/SZ/L5oRONDOxcJNfGwws28/ZnwBbpD0jUFXJyyMbGJ
-	 sMYQIW3/T7ibAELE7FzHc9n0ROzdEM5tdduEbXhUCz9oMQzTLKvi9eI2Rxjoc4faZN
-	 3EUy9pC3HZ8m/nDI6FWey8qNm+N1t10AJzLBMdF3s+XseMSZjzyQDjr6Z9GPXGsJgL
-	 YEZOfjytMwkow==
+	b=u/C7c3zQ9TAxCCrolYTB45QcVKM7sOpRFR/OJyUQzu7oqZxbBMut/N2C793GFJZu+
+	 vNQEkl8ot+aAqNuy9iwvDs0QSoYammyjK02qc2zmhA33QkDxlWhgRYj96bNnMLXjTT
+	 b9w7G5VhmNczUQMIjeNjIXtSiAhQAoittCrJ1Mf4rYG2OLU+WvB2Ls8Y06cSLEm/XK
+	 ssRcQWUV/X1J3a3/z2RDxxm2riLQHG6Cg6ZMD5aTBfFKDm2pX+eUj2GD206Bxn6jDd
+	 XQbePeMA52ZD/j1ZiHqyLDzuYzLiFJYp0wC6HfwaJeKnNYrhUUt1v1Fmgo+E59EA4X
+	 rW5mJJtcijgLA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2267DC0219D;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 3F804C02194;
 	Fri,  7 Feb 2025 21:30:35 +0000 (UTC)
 From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Fri, 07 Feb 2025 22:30:19 +0100
-Subject: [PATCH v2 02/12] dt-bindings: ata: Convert fsl,pq-sata to YAML
+Date: Fri, 07 Feb 2025 22:30:20 +0100
+Subject: [PATCH v2 03/12] dt-bindings: crypto: Convert fsl,sec-2.0 to YAML
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250207-ppcyaml-v2-2-8137b0c42526@posteo.net>
+Message-Id: <20250207-ppcyaml-v2-3-8137b0c42526@posteo.net>
 References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
 In-Reply-To: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
 To: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
@@ -92,11 +92,11 @@ Cc: imx@lists.linux.dev, Scott Wood <oss@buserror.net>,
  linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
  =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1738963832; l=3808;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738963832; l=9358;
  i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=UpnIOgI342qJlYPCanJVhpXk4WK6YM5Ksj/vzI9NEeg=;
- b=IMEEL81nsnb2ijBv3LXOcNNng8dQqK5mDCiPuvJw5PIblvynwYV/YQROKecYzJSMsuTEb53Rb
- z5adZJegyg5CeBejUIlBGgfzgjd8CuS7MscsQzisoYwXCU7aFBlh0dZ
+ bh=+yTRVwl3VkcYahav8JkTXEVtr2bYHRekq+nInu+cROg=;
+ b=fEk9M9rQDa1tD+jSDet5rbVxe3FcOFRrFAHu7LNTf0mTG3qF6jgn3SmfgK/yLFHsBT9pqb4SZ
+ k5YaOEc/p9aCrYatv/JAtUloZ+0YUvM6ZO651oGft59rqHlXU4tiMn+
 X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
  pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
 X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
@@ -110,57 +110,89 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: "J. Neuschäfer" <j.ne@posteo.net>
 
-Convert the Freescale PowerQUICC SATA controller binding from text form
-to YAML. The list of compatible strings reflects current usage.
+Convert the Freescale security engine (crypto accelerator) binding from
+text form to YAML. The list of compatible strings reflects what was
+previously described in prose; not all combinations occur in existing
+devicetrees.
 
-To clarify the description, I changed it to mention "each SATA
-controller" instead of each port.
-
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
 
 V2:
-- remove unnecessary multiline marker (|)
-- clarified controllers vs. ports in the description
+- several improvements suggested by Rob Herring:
+  - remove unnecessary multiline markers
+  - constrain fsl,num-channels to enum: [1,4]
+  - constrain fsl,channel-fifo-len to plausible limits
+  - constrain fsl,exec-units-mask to maximum=0xfff
 - trim subject line (remove "binding")
 ---
- .../devicetree/bindings/ata/fsl,pq-sata.yaml       | 59 ++++++++++++++++++++++
- Documentation/devicetree/bindings/ata/fsl-sata.txt | 28 ----------
- 2 files changed, 59 insertions(+), 28 deletions(-)
+ .../devicetree/bindings/crypto/fsl,sec2.0.yaml     | 142 +++++++++++++++++++++
+ .../devicetree/bindings/crypto/fsl-sec2.txt        |  65 ----------
+ 2 files changed, 142 insertions(+), 65 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/ata/fsl,pq-sata.yaml b/Documentation/devicetree/bindings/ata/fsl,pq-sata.yaml
+diff --git a/Documentation/devicetree/bindings/crypto/fsl,sec2.0.yaml b/Documentation/devicetree/bindings/crypto/fsl,sec2.0.yaml
 new file mode 100644
-index 0000000000000000000000000000000000000000..97eea11b4fbbb773487c004abbedcb7bd290605c
+index 0000000000000000000000000000000000000000..0b82f3b68b5f82e7fb52d292a623d452c1cdb059
 --- /dev/null
-+++ b/Documentation/devicetree/bindings/ata/fsl,pq-sata.yaml
-@@ -0,0 +1,59 @@
++++ b/Documentation/devicetree/bindings/crypto/fsl,sec2.0.yaml
+@@ -0,0 +1,142 @@
 +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 +%YAML 1.2
 +---
-+$id: http://devicetree.org/schemas/ata/fsl,pq-sata.yaml#
++$id: http://devicetree.org/schemas/crypto/fsl,sec2.0.yaml#
 +$schema: http://devicetree.org/meta-schemas/core.yaml#
 +
-+title: Freescale 8xxx/3.0 Gb/s SATA nodes
++title: Freescale SoC SEC Security Engines versions 1.x-2.x-3.x
 +
 +maintainers:
-+  - J. Neuschäfer <j.ne@posteo.net>
-+
-+description:
-+  SATA nodes are defined to describe on-chip Serial ATA controllers.
-+  Each SATA controller should have its own node.
++  - J. Neuschäfer <j.ne@posteo.net.
 +
 +properties:
 +  compatible:
++    description:
++      Should contain entries for this and backward compatible SEC versions,
++      high to low. Warning - SEC1 and SEC2 are mutually exclusive.
 +    oneOf:
 +      - items:
-+          - enum:
-+              - fsl,mpc8377-sata
-+              - fsl,mpc8536-sata
-+              - fsl,mpc8315-sata
-+              - fsl,mpc8379-sata
-+          - const: fsl,pq-sata
-+      - const: fsl,pq-sata-v2
++          - const: fsl,sec3.3
++          - const: fsl,sec3.1
++          - const: fsl,sec3.0
++          - const: fsl,sec2.4
++          - const: fsl,sec2.2
++          - const: fsl,sec2.1
++          - const: fsl,sec2.0
++      - items:
++          - const: fsl,sec3.1
++          - const: fsl,sec3.0
++          - const: fsl,sec2.4
++          - const: fsl,sec2.2
++          - const: fsl,sec2.1
++          - const: fsl,sec2.0
++      - items:
++          - const: fsl,sec3.0
++          - const: fsl,sec2.4
++          - const: fsl,sec2.2
++          - const: fsl,sec2.1
++          - const: fsl,sec2.0
++      - items:
++          - const: fsl,sec2.4
++          - const: fsl,sec2.2
++          - const: fsl,sec2.1
++          - const: fsl,sec2.0
++      - items:
++          - const: fsl,sec2.2
++          - const: fsl,sec2.1
++          - const: fsl,sec2.0
++      - items:
++          - const: fsl,sec2.1
++          - const: fsl,sec2.0
++      - items:
++          - const: fsl,sec2.0
++      - items:
++          - const: fsl,sec1.2
++          - const: fsl,sec1.0
++      - items:
++          - const: fsl,sec1.0
 +
 +  reg:
 +    maxItems: 1
@@ -168,65 +200,154 @@ index 0000000000000000000000000000000000000000..97eea11b4fbbb773487c004abbedcb7b
 +  interrupts:
 +    maxItems: 1
 +
-+  cell-index:
++  fsl,num-channels:
 +    $ref: /schemas/types.yaml#/definitions/uint32
-+    enum: [1, 2, 3, 4]
++    enum: [ 1, 4 ]
++    description: An integer representing the number of channels available.
++
++  fsl,channel-fifo-len:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    maximum: 100
++    description:
++      An integer representing the number of descriptor pointers each channel
++      fetch fifo can hold.
++
++  fsl,exec-units-mask:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    maximum: 0xfff
 +    description: |
-+      1 for controller @ 0x18000
-+      2 for controller @ 0x19000
-+      3 for controller @ 0x1a000
-+      4 for controller @ 0x1b000
++      The bitmask representing what execution units (EUs) are available.
++      EU information should be encoded following the SEC's Descriptor Header
++      Dword EU_SEL0 field documentation, i.e. as follows:
++
++        bit 0  = reserved - should be 0
++        bit 1  = set if SEC has the ARC4 EU (AFEU)
++        bit 2  = set if SEC has the DES/3DES EU (DEU)
++        bit 3  = set if SEC has the message digest EU (MDEU/MDEU-A)
++        bit 4  = set if SEC has the random number generator EU (RNG)
++        bit 5  = set if SEC has the public key EU (PKEU)
++        bit 6  = set if SEC has the AES EU (AESU)
++        bit 7  = set if SEC has the Kasumi EU (KEU)
++        bit 8  = set if SEC has the CRC EU (CRCU)
++        bit 11 = set if SEC has the message digest EU extended alg set (MDEU-B)
++
++      remaining bits are reserved for future SEC EUs.
++
++  fsl,descriptor-types-mask:
++    $ref: /schemas/types.yaml#/definitions/uint32
++    description: |
++      The bitmask representing what descriptors are available. Descriptor type
++      information should be encoded following the SEC's Descriptor Header Dword
++      DESC_TYPE field documentation, i.e. as follows:
++
++        bit 0  = set if SEC supports the aesu_ctr_nonsnoop desc. type
++        bit 1  = set if SEC supports the ipsec_esp descriptor type
++        bit 2  = set if SEC supports the common_nonsnoop desc. type
++        bit 3  = set if SEC supports the 802.11i AES ccmp desc. type
++        bit 4  = set if SEC supports the hmac_snoop_no_afeu desc. type
++        bit 5  = set if SEC supports the srtp descriptor type
++        bit 6  = set if SEC supports the non_hmac_snoop_no_afeu desc.type
++        bit 7  = set if SEC supports the pkeu_assemble descriptor type
++        bit 8  = set if SEC supports the aesu_key_expand_output desc.type
++        bit 9  = set if SEC supports the pkeu_ptmul descriptor type
++        bit 10 = set if SEC supports the common_nonsnoop_afeu desc. type
++        bit 11 = set if SEC supports the pkeu_ptadd_dbl descriptor type
++
++      ..and so on and so forth.
 +
 +required:
 +  - compatible
-+  - interrupts
-+  - cell-index
++  - reg
++  - fsl,num-channels
++  - fsl,channel-fifo-len
++  - fsl,exec-units-mask
++  - fsl,descriptor-types-mask
 +
-+additionalProperties: false
++unevaluatedProperties: false
 +
 +examples:
 +  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    sata@18000 {
-+        compatible = "fsl,mpc8379-sata", "fsl,pq-sata";
-+        reg = <0x18000 0x1000>;
-+        cell-index = <1>;
-+        interrupts = <44 IRQ_TYPE_LEVEL_LOW>;
-+        interrupt-parent = <&ipic>;
++    /* MPC8548E */
++    crypto@30000 {
++        compatible = "fsl,sec2.1", "fsl,sec2.0";
++        reg = <0x30000 0x10000>;
++        interrupts = <29 2>;
++        interrupt-parent = <&mpic>;
++        fsl,num-channels = <4>;
++        fsl,channel-fifo-len = <24>;
++        fsl,exec-units-mask = <0xfe>;
++        fsl,descriptor-types-mask = <0x12b0ebf>;
 +    };
-diff --git a/Documentation/devicetree/bindings/ata/fsl-sata.txt b/Documentation/devicetree/bindings/ata/fsl-sata.txt
+diff --git a/Documentation/devicetree/bindings/crypto/fsl-sec2.txt b/Documentation/devicetree/bindings/crypto/fsl-sec2.txt
 deleted file mode 100644
-index fd63bb3becc9363c520a8fd06629fdc52c4d4299..0000000000000000000000000000000000000000
---- a/Documentation/devicetree/bindings/ata/fsl-sata.txt
+index 125f155d00d052eec7d5093b5c5076cbe720417f..0000000000000000000000000000000000000000
+--- a/Documentation/devicetree/bindings/crypto/fsl-sec2.txt
 +++ /dev/null
-@@ -1,28 +0,0 @@
--* Freescale 8xxx/3.0 Gb/s SATA nodes
--
--SATA nodes are defined to describe on-chip Serial ATA controllers.
--Each SATA port should have its own node.
+@@ -1,65 +0,0 @@
+-Freescale SoC SEC Security Engines versions 1.x-2.x-3.x
 -
 -Required properties:
--- compatible        : compatible list, contains 2 entries, first is
--		 "fsl,CHIP-sata", where CHIP is the processor
--		 (mpc8315, mpc8379, etc.) and the second is
--		 "fsl,pq-sata"
--- interrupts        : <interrupt mapping for SATA IRQ>
--- cell-index        : controller index.
--                          1 for controller @ 0x18000
--                          2 for controller @ 0x19000
--                          3 for controller @ 0x1a000
--                          4 for controller @ 0x1b000
 -
--Optional properties:
--- reg               : <registers mapping>
+-- compatible : Should contain entries for this and backward compatible
+-  SEC versions, high to low, e.g., "fsl,sec2.1", "fsl,sec2.0" (SEC2/3)
+-                             e.g., "fsl,sec1.2", "fsl,sec1.0" (SEC1)
+-    warning: SEC1 and SEC2 are mutually exclusive
+-- reg : Offset and length of the register set for the device
+-- interrupts : the SEC's interrupt number
+-- fsl,num-channels : An integer representing the number of channels
+-  available.
+-- fsl,channel-fifo-len : An integer representing the number of
+-  descriptor pointers each channel fetch fifo can hold.
+-- fsl,exec-units-mask : The bitmask representing what execution units
+-  (EUs) are available. It's a single 32-bit cell. EU information
+-  should be encoded following the SEC's Descriptor Header Dword
+-  EU_SEL0 field documentation, i.e. as follows:
+-
+-	bit 0  = reserved - should be 0
+-	bit 1  = set if SEC has the ARC4 EU (AFEU)
+-	bit 2  = set if SEC has the DES/3DES EU (DEU)
+-	bit 3  = set if SEC has the message digest EU (MDEU/MDEU-A)
+-	bit 4  = set if SEC has the random number generator EU (RNG)
+-	bit 5  = set if SEC has the public key EU (PKEU)
+-	bit 6  = set if SEC has the AES EU (AESU)
+-	bit 7  = set if SEC has the Kasumi EU (KEU)
+-	bit 8  = set if SEC has the CRC EU (CRCU)
+-	bit 11 = set if SEC has the message digest EU extended alg set (MDEU-B)
+-
+-remaining bits are reserved for future SEC EUs.
+-
+-- fsl,descriptor-types-mask : The bitmask representing what descriptors
+-  are available. It's a single 32-bit cell. Descriptor type information
+-  should be encoded following the SEC's Descriptor Header Dword DESC_TYPE
+-  field documentation, i.e. as follows:
+-
+-	bit 0  = set if SEC supports the aesu_ctr_nonsnoop desc. type
+-	bit 1  = set if SEC supports the ipsec_esp descriptor type
+-	bit 2  = set if SEC supports the common_nonsnoop desc. type
+-	bit 3  = set if SEC supports the 802.11i AES ccmp desc. type
+-	bit 4  = set if SEC supports the hmac_snoop_no_afeu desc. type
+-	bit 5  = set if SEC supports the srtp descriptor type
+-	bit 6  = set if SEC supports the non_hmac_snoop_no_afeu desc.type
+-	bit 7  = set if SEC supports the pkeu_assemble descriptor type
+-	bit 8  = set if SEC supports the aesu_key_expand_output desc.type
+-	bit 9  = set if SEC supports the pkeu_ptmul descriptor type
+-	bit 10 = set if SEC supports the common_nonsnoop_afeu desc. type
+-	bit 11 = set if SEC supports the pkeu_ptadd_dbl descriptor type
+-
+-  ..and so on and so forth.
 -
 -Example:
--	sata@18000 {
--		compatible = "fsl,mpc8379-sata", "fsl,pq-sata";
--		reg = <0x18000 0x1000>;
--		cell-index = <1>;
--		interrupts = <2c 8>;
--		interrupt-parent = < &ipic >;
+-
+-	/* MPC8548E */
+-	crypto@30000 {
+-		compatible = "fsl,sec2.1", "fsl,sec2.0";
+-		reg = <0x30000 0x10000>;
+-		interrupts = <29 2>;
+-		interrupt-parent = <&mpic>;
+-		fsl,num-channels = <4>;
+-		fsl,channel-fifo-len = <24>;
+-		fsl,exec-units-mask = <0xfe>;
+-		fsl,descriptor-types-mask = <0x12b0ebf>;
 -	};
 
 -- 
