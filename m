@@ -1,123 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-5933-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5934-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9873FA2BAE4
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 06:50:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3FD9A2BDC6
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 09:24:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yq33d74Stz2yMF;
-	Fri,  7 Feb 2025 16:50:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yq6TP43QYz30JH;
+	Fri,  7 Feb 2025 19:24:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=198.175.65.16
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738907437;
-	cv=fail; b=gCgEJwdrlq9QrAIsmOoWPHSZyBzOjEbEnRXBLTUb70zCCtNZ3/7MVQnVSDcZHfF1mqspLpNRzf6nFZlax7NLU7S+IfQXXa6CbKeko6ryMUXR298djNRFmAJThIk5H86zGuF1DY2RMkUjU7fdpXtLSLnjyFJP1yNAk3CMc2LGcPfNgQmBK7XdNYrgq3suGUz3tTmMiCGHiWvCsGskufhNVjM/jaRBhQ39pwk5hZIgAN5XIuQd9DnMlaDDOT/MWeazIz4PIEm7/Wxp4bLYpcZUg8O0Jgk3SlvBjnXGo/xKeZoW5KoLAaLKt6gX2XEZOj9yzb+iLLvWgsmU3XGgJV4O+w==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738907437; c=relaxed/relaxed;
-	bh=0EiWsOWLcDQxlnadT9lgwuzJqXUL3I4GZ0XuMwCJbk8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=EZ9XJ53ynjS59vky899Iu1d6bCzprmIwUTEgbP6CSF81qGymTYoLwrW4nIH1PozSwoF121bbdHZf+y6W4bTHJkfnYT8s5xPhzpP2ROQo7TyloMmro7L/flk8Es+9nuJ/wzuDBZbvBm2DTJMs5NkH2v4IHUCTsd1YPq5Pz75q0AghR0hTLodI/RMvLkRvTRVoYgmf05lI20WmIDP5tP3urMTDqyAHQnogUzwQ6R9hjQlJUljdln/3NSUxdsG2L5XZe2/XSCSMRMjDy7zD1KhzHTmIEEN8XtrnjU7kwvMfbUrrnEq9/tb42gZld+O/qdSPv6Qm/u7pVVAI4ujXRXALIQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=f9ZO8DYb; dkim-atps=neutral; spf=pass (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=f9ZO8DYb;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.16; helo=mgamail.intel.com; envelope-from=dan.j.williams@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738916681;
+	cv=none; b=KrzdPOXr+Wu8/0fwuYFYGHy7USyBn7uXoq0qr3fvqWWNdcsbBRMzLiK6Jwv3O6FifxszME5X64SlKdfYty9tzo6W/GBWbRuUmKXGjEbh5y2+6JxyvlR1QUA3vbzWVCS+oVSv9qLKWdsejrdbeK12iEXrg47UKqk8CWduKux+w21x7jqlp07AIN+Kx8vBbiZw6plz2eDw8vM5KpIIbPndLR+LdHLWHOjj9SRLlDTIzWj/fbECE3aZcq7GmkxDDQ2W+GnSghpFKT0sefbBNgNpPacWOnaWWezvuG/xVKY63BGbdQ2hva3019aKHo6kkMhSGMeK7oNBOKeE766p9QnsjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1738916681; c=relaxed/relaxed;
+	bh=ChEKsW7bUGtSMUi0ZLck9YEHLb3Va32Z85kgd1/3Wxk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FGtcgkmL7J1s2YbPjnsg1Yn4xHK6Kg/eWaW1Esmn3/sXxWpWIu8VcJv62DoEd19H+4kygdiBfG7SivOxYJHZ2irzTK0UwvpxDpLrU0kCE0gg9d71Qa7zH8govc+Hk2q7B2bZELmI0dZHoYToV4d2hOksTO7qpD+Szj0DvGsDsAtRS3Ol8+C+Xj6sZ0GRIpYSm/iWvoF0RXT3M8x+rihZggncTQDswciNd8Bp14343T2eZMz671zN9RF6hdiV/FnCIDdwf5QuGJG8wxv7qVaeyDxWqvvgy8Ayc1bKZeJQa5pyZ6OukFSaL9qzQ2bwWpu6k2gVuzyER+Y6SvpEmbxK+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ore@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=ore@pengutronix.de; receiver=lists.ozlabs.org)
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yq33b4GFyz2xpn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 16:50:33 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738907436; x=1770443436;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=jQOQBdSmlw8h3bxQVX1Pgj50+1Vg9/Y46K4rRXG4SsI=;
-  b=f9ZO8DYbtng7XYNt1PXuHftHr/1Twl3bZBt6Pl4fTbRDltdotahfZyHa
-   LtxhqtuqRgx7+T7NF/p0DOAklDjUiGuUxMEDPkTXB5hWWqKfrldbe25Fx
-   OqfkBQA25fVV2Q9QqOorwpg8b8BdW7JBOGubbOZQcWvkwAXt43HO4XeUV
-   Fc9gJNB/pqY1AUmLtaAbXMBN8BTPDbpnbS1e0FoNcd5wPfIXxatPizKm9
-   s8LutRptXCA9Cp8wz3rbxswXerxLB7zD+/RPPMZy3RZhEor9b20dRxt+L
-   cdR6rloOD1fO7rBVxzhncYycrqQNkhOp21dfXSbymLGFiF6qXVDizex7F
-   g==;
-X-CSE-ConnectionGUID: psuEXGz0QtKA+VxhuwREWA==
-X-CSE-MsgGUID: xTyL5IqRQmipVDp3Vo7HNA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11336"; a="39671020"
-X-IronPort-AV: E=Sophos;i="6.13,266,1732608000"; 
-   d="scan'208";a="39671020"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Feb 2025 21:50:26 -0800
-X-CSE-ConnectionGUID: j19yIbo6S82PrIoRuYDvSA==
-X-CSE-MsgGUID: PlI1KR87SMOHulD7QIK2FA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,266,1732608000"; 
-   d="scan'208";a="111404337"
-Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
-  by orviesa006.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 06 Feb 2025 21:50:22 -0800
-Received: from orsmsx601.amr.corp.intel.com (10.22.229.14) by
- ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44; Thu, 6 Feb 2025 21:50:20 -0800
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.44 via Frontend Transport; Thu, 6 Feb 2025 21:50:20 -0800
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (104.47.57.171)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.44; Thu, 6 Feb 2025 21:50:20 -0800
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Q69IEK2QRXzrtIGNKCnyfSg21BraLXth/SSMuI0+4f8cHLJZcHVZEflhk+ofTlk8B1F12MplhmruSCNNPxiqJuLAtoEE+BLLIIl7kNYq5oTh5/JCPXxWlRqnL3HOlccOvWiYWpOx97e3khbEv9I0EE6+ryR4vnM0PYhfTKqE8l3O5gK6itnkeHwqr8PWLVYUDkX9oX+lwx9B2LciEknmISWLyLLnbvSmnwmHJplY6a0LBpWbZrgWKdXdG5daF3SNdXq57/+i8SaECSlifCSgK9RIN9LNivaXHMlPa8KeM495aXvmf1Kty+xbcEKRJramCO7yniEnL7+1ilxs2GbRkQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0EiWsOWLcDQxlnadT9lgwuzJqXUL3I4GZ0XuMwCJbk8=;
- b=NS/cvsMjwt5YX1OQ68WuUq8jYh1WJAakRdAHE/28NseoW/oy5eeTHx00T7ecqlfzFn8Cg/+k6oHk4u+7CwIgMvfOguA0pssxV3yi81xMMjeryLbgogagy+uLY8ZFZ/E8lnXNvU+SahA2ROW4jm8XTt5qbWqsa1PHni4NefHbiX+LP4p148NC+dmvrvrB+om8WQzFK4jfAdidBgGv+BcxyZDvMfKrI+s3PCckUc4hZGsbO6qbTnEV1i5fdSfnLtTEypJxXReIwz7XxmVV/JaErT6S92rtFphY4OwnHoz0NNAxXpgeV6oy2KAz/8uvFzLKF1ykWoQuaFo/3fq3fGBOow==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com (2603:10b6:510:256::6)
- by DM4PR11MB6020.namprd11.prod.outlook.com (2603:10b6:8:61::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8398.26; Fri, 7 Feb
- 2025 05:50:12 +0000
-Received: from PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8]) by PH8PR11MB8107.namprd11.prod.outlook.com
- ([fe80::6b05:74cf:a304:ecd8%4]) with mapi id 15.20.8422.011; Fri, 7 Feb 2025
- 05:50:12 +0000
-Date: Thu, 6 Feb 2025 21:50:07 -0800
-From: Dan Williams <dan.j.williams@intel.com>
-To: Alistair Popple <apopple@nvidia.com>, Dan Williams
-	<dan.j.williams@intel.com>
-CC: <akpm@linux-foundation.org>, <linux-mm@kvack.org>,
-	<alison.schofield@intel.com>, <lina@asahilina.net>, <zhang.lyra@gmail.com>,
-	<gerald.schaefer@linux.ibm.com>, <vishal.l.verma@intel.com>,
-	<dave.jiang@intel.com>, <logang@deltatee.com>, <bhelgaas@google.com>,
-	<jack@suse.cz>, <jgg@ziepe.ca>, <catalin.marinas@arm.com>, <will@kernel.org>,
-	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <dave.hansen@linux.intel.com>,
-	<ira.weiny@intel.com>, <willy@infradead.org>, <djwong@kernel.org>,
-	<tytso@mit.edu>, <linmiaohe@huawei.com>, <david@redhat.com>,
-	<peterx@redhat.com>, <linux-doc@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <nvdimm@lists.linux.dev>,
-	<linux-cxl@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, <linux-xfs@vger.kernel.org>,
-	<jhubbard@nvidia.com>, <hch@lst.de>, <david@fromorbit.com>,
-	<chenhuacai@kernel.org>, <kernel@xen0n.name>, <loongarch@lists.linux.dev>
-Subject: Re: [PATCH v6 21/26] fs/dax: Properly refcount fs dax pages
-Message-ID: <67a59f0f7832c_2d1e294fa@dwillia2-xfh.jf.intel.com.notmuch>
-References: <cover.11189864684e31260d1408779fac9db80122047b.1736488799.git-series.apopple@nvidia.com>
- <b2175bb80d5be44032da2e2944403d97b48e2985.1736488799.git-series.apopple@nvidia.com>
- <6785db6bdd17d_20fa294fc@dwillia2-xfh.jf.intel.com.notmuch>
- <zbvq7pr2v7zkaghxda2d3bnyt64kicyxuwart6jt5cbtm7a2tr@nkursuyanyoe>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <zbvq7pr2v7zkaghxda2d3bnyt64kicyxuwart6jt5cbtm7a2tr@nkursuyanyoe>
-X-ClientProxiedBy: MW4PR04CA0357.namprd04.prod.outlook.com
- (2603:10b6:303:8a::32) To PH8PR11MB8107.namprd11.prod.outlook.com
- (2603:10b6:510:256::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yq6TM5Yrsz301v
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 19:24:39 +1100 (AEDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tgJep-0000UF-AY; Fri, 07 Feb 2025 09:24:15 +0100
+Received: from pty.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::c5])
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tgJek-003whN-2j;
+	Fri, 07 Feb 2025 09:24:10 +0100
+Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1tgJek-001cd8-2G;
+	Fri, 07 Feb 2025 09:24:10 +0100
+Date: Fri, 7 Feb 2025 09:24:10 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Zhang Zekun <zhangzekun11@huawei.com>
+Cc: robh@kernel.org, saravanak@google.com, justin.chen@broadcom.com,
+	florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
+	kuba@kernel.org, kory.maincent@bootlin.com,
+	jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
+	laurent.pinchart+renesas@ideasonboard.com, maddy@linux.ibm.com,
+	mpe@ellerman.id.au, npiggin@gmail.com, olteanv@gmail.com,
+	davem@davemloft.net, taras.chornyi@plvision.eu, edumazet@google.com,
+	pabeni@redhat.com, sudeep.holla@arm.com, cristian.marussi@arm.com,
+	arm-scmi@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-media@vger.kernel.org, netdev@vger.kernel.org,
+	devicetree@vger.kernel.org, chenjun102@huawei.com
+Subject: Re: [PATCH 1/9] of: Add warpper function
+ of_find_node_by_name_balanced()
+Message-ID: <Z6XDKi_V0BZSdCeL@pengutronix.de>
+References: <20250207013117.104205-1-zhangzekun11@huawei.com>
+ <20250207013117.104205-2-zhangzekun11@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -130,118 +71,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH8PR11MB8107:EE_|DM4PR11MB6020:EE_
-X-MS-Office365-Filtering-Correlation-Id: ab22d13e-4f5a-4341-5321-08dd473b49b3
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?yVSj+1R3eZ1iD9fgsgAqfB80fX950Nb5qqMyrn9b12z4AG//aHIDKRzaUwRt?=
- =?us-ascii?Q?rONUGK3PGrtqqibk1BeJrtSDSg8O2Lm35EBYKqx547MudcF6LGs4VeLwSfLG?=
- =?us-ascii?Q?ZlqIKvVtDGYsDtXWUZogI/9Y2Q3JjiQ/l4efvL+GUEYHvAc9W1uplV02mAzo?=
- =?us-ascii?Q?kkePFZSD0BtSVCYQMULKwaw1AobfcRRhuaHX66zaVirX3yOn7Mr8SCtE5iAm?=
- =?us-ascii?Q?c9NQSPHRklHZbQH7ydNtd9TSUqH0IDQ61Z5lqGP1q2SgF6beB4ZAwyc0Iy5p?=
- =?us-ascii?Q?hc6WY8GE5ybGCskSdFj0QgrPVWA7l7xU0dO8PujdRR/wrMHggK+80GHa4YJM?=
- =?us-ascii?Q?y99r/s/ODiwYyGL0yFlM0Nbbqt3I1HUw/WUJSZyKx7SKLzMDL+5tD6ofrt7V?=
- =?us-ascii?Q?60kRTFlrNKlsyjrhkRkJlZJg00ECNIhmpfY+xtqGkYqS6yWpc/RWBJ66JDHD?=
- =?us-ascii?Q?3cxNudCAB1eNdGtcRBl6VKM3fm2vEQmDYcohccwm7zc7zHKQGGi+VrlZsn3o?=
- =?us-ascii?Q?MiZPQGO17xXSp+Y/sJ0b0o0eu3gjTqQkGFlsWUeIRmeSK6yDvY1CvUETqtxC?=
- =?us-ascii?Q?PT0Zps6uSKZjG/xshQqaOo9PSaU15JCrkfQNX7QSoDydW0NQs/w4C+qnSB7G?=
- =?us-ascii?Q?HhkFIFizaY7pqLNmkE1SI07QQo25FnnmqOd3u3sECTIL/qvhs8n4WW2e0DqQ?=
- =?us-ascii?Q?ImVy69up43167wINdJ6kW/Svq1rafPShLBXyjPuHx1OnFa3B2YX/545Zjf2N?=
- =?us-ascii?Q?tI73v2xsXkHGuz36slmEMmbkszPpDze3KFM3fxuBWcO87Dlr3qJV6xPSbc9T?=
- =?us-ascii?Q?nwfVrJg5mEcgGVBzEhHyqQ2raSdjhNUD9EizHFn+uG5UIJOg5cdp8HV+ffuR?=
- =?us-ascii?Q?hYUDAnB8m3vYcB4epwXccyRiNeUcFqvIBBEhiw/QX/GvsKmGEehIGq8qJihK?=
- =?us-ascii?Q?L5ZUP+Kpa2EUEgaNNzWPPCTaVSFsxdGDc/oIoGCL8AElpYIGTfKAyGu/wKer?=
- =?us-ascii?Q?4MXuCNze4KqY/wDJKXGtjCOy85IReVmN1ZE1BbQp8K1kZko1fBUhhS2Js19a?=
- =?us-ascii?Q?ehNDJuHPLrWbZ2IomA5hM/i71T2WOL+7NplXPsxRcu1rkZIXDJ1F67BlYHeR?=
- =?us-ascii?Q?301seFJd/n8gRm6rYCmhOPIuxMPA/yAKZVoQMSkcP7PGP8IlI+xVsPB8XXr4?=
- =?us-ascii?Q?ht02XyTn4ktcI0O4VgElq/8r3YgJqhF63AwWMihaYHjCV4e6XN/E1wV97gSf?=
- =?us-ascii?Q?xa5inMYnoUm8h5/p3H5t4SE0z/arp1BN3y0CsnkpWC33GKn9eo0vBt8TYUXG?=
- =?us-ascii?Q?8LAojKR0oKP6+r563dclXFOZ4UIFDcsy50DVVqheJCaHqg=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR11MB8107.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?NBIyPQTayiA6l/zPxSWr92Vqp58lGxeDfPmgtPgXn+hzkA8uNuzSEy+XY4Op?=
- =?us-ascii?Q?gEqkOBggzNB418VHk9KakqqODmI+p3tTanNSiA+pjsiICqclKTvvvggJXH3U?=
- =?us-ascii?Q?Zqc2FGBPBY51ai7FABOiP18AYCTyCviTtmSz7qZryu1HeykIqDSj5grmdQK4?=
- =?us-ascii?Q?al4hm4qzrPvSMBlgCWQDKFqpAwyyE9376nmVBVbiI5d9cImqoigXReK2+R8q?=
- =?us-ascii?Q?h66YYNGRZMNu+rlKcIHHPQXsoEqXWpkJKlreRrR4j7tQ4Su2bj9F+J2NE++P?=
- =?us-ascii?Q?RZcLlKSLFFTEzPmdgF/vKRi/jEn5Ly6d+NFZ8TbVw34u/fF92CPeh1W/Jyh+?=
- =?us-ascii?Q?/+vqF1vflSQ57l7HHZr9RXHTPWU6i3i69UvWREo4ULkGkgsR6eDVwiQ/ZW2y?=
- =?us-ascii?Q?HzZzmcGRwzJ3wRzPaRgCN/oyHuXxj8DyIQIBsMXq//pay7/Ww8q+YOSzw0M4?=
- =?us-ascii?Q?DXU0mrtJvSO9IJV6WNeeSfM0j3FlZubo+T2e7+JCrft3xCm90Qc/972oUblN?=
- =?us-ascii?Q?dD9XmlBhcHKTvgSfz/wTPZyYCLq9mbqw0Rnmsx0Um4kwD1W7zD36jhzLm10s?=
- =?us-ascii?Q?k/17RBp+0AWMq2P4hhQ5Ah1gMKtyWbLRmxOENpDhhg+LQW7N3P1S3f5KwLm/?=
- =?us-ascii?Q?zCm8dJhKzq8ulUrW8B0+4z+8XiPwGnXPxf3Xho75vD2/Lcevm0ZdgyYVnFEl?=
- =?us-ascii?Q?6kb0wciGWEV31/QZFF0UU8ycS6GhVe55DKCrUGMqN+g+wamo0cxsVhT9sS6A?=
- =?us-ascii?Q?0PNHOlXD5Xa64UdRFT4bJvshIJLabkMGm4CHNoBKg1ySR7OgrEtEd/hH7Iq5?=
- =?us-ascii?Q?l+rmhTgAYauZ9UBTHQ2Y51HwCDlaFscZJQL7ecurqdSmkbE3vNYYrLXRr9ZO?=
- =?us-ascii?Q?CTbkh8PEnulPnMr338AIsTDIrZvlq0iwb9hsIpCDkQH2V6ltE/pDAkw6FowQ?=
- =?us-ascii?Q?FULdXQ2oj0IvnVdmNe8PdLVN4IO+5OiEBY70t+8mKtsTehTxYQZlSRcIGo2g?=
- =?us-ascii?Q?npeO9ISeQ2z+YoH6ajvCJKYE7TQKIasW9Xu8sDxzTPkeyKYOZKB0334jHFce?=
- =?us-ascii?Q?YP6Pq5TUnlK4Or3aeVbsWSnjE0KWlY6MwvuQartQAT52Jl+GpjFzZZB5HWuG?=
- =?us-ascii?Q?FrkhhZRL0hyPBFz9LoLeS3G4NuOnzK0z9jLiOTPjs5Ptm9wO9mbouNU2D7/5?=
- =?us-ascii?Q?OXZDAc78eBCmC41Z1r2fCTV+TsBjDDoUGi8V9P88wzT09dSjYj8A49v/grkY?=
- =?us-ascii?Q?FtRY/IRzqbnMD+nO1Noqbb2VzrurpDxjUH4isti2+IP8bcWb//0cnKQM69wN?=
- =?us-ascii?Q?SLyo/L3yystnLqAVtqoYOHeCKR7hrGheh+3UnPw3eaQtsL3utTpwBhmYEYRK?=
- =?us-ascii?Q?3Qhzu9EQpouwkx0Od7l/irmCxWspH8nhnU9ENgu1tzuicj2cS+L0SacWElfe?=
- =?us-ascii?Q?Cxvkyszn0vcLQdpPTONZTgj3mx2nOI8biLxeM5uS4yti5goxeTc9gIHj5p3j?=
- =?us-ascii?Q?tQX5RTto24omR6vgmSsJolPS+d/Lg08y3AgMFje9l1XgIUtImKRUPzALIAge?=
- =?us-ascii?Q?po3C0KM62AM4oc8Ck28VMvKZ4cy8Ot+5Jz7NxMGw/TCmHxh3GEA2MNV3ljbx?=
- =?us-ascii?Q?Zw=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab22d13e-4f5a-4341-5321-08dd473b49b3
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR11MB8107.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Feb 2025 05:50:12.2902
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: gX2k3q7GH2A8q4DLA/2fil60owTchEVxEfMoy86QlVkux9ho6tprp7hUaO7/th+/nHNQF3sAkfCsHD3SkNckFsRy/7pHGwDBdqmJu+JLMfo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6020
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250207013117.104205-2-zhangzekun11@huawei.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: ore@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Alistair Popple wrote:
-> On Mon, Jan 13, 2025 at 07:35:07PM -0800, Dan Williams wrote:
-> > Alistair Popple wrote:
+On Fri, Feb 07, 2025 at 09:31:09AM +0800, Zhang Zekun wrote:
+> There are many drivers use of_find_node_by_name() with a not-NULL
+> device_node pointer, and a number of callers would require a call to
+> of_node_get() before using it. There are also some drivers who forget
+> to call of_node_get() which would cause a ref count leak[1]. So, Add a
+> wraper function for of_find_node_by_name(), drivers may use this function
+> to call of_find_node_by_name() with the refcount already balanced.
 > 
-> [...]
-> 
-> > ...and here is that aformentioned patch:
-> 
-> This patch is different from what you originally posted here:
-> https://yhbt.net/lore/linux-s390/172721874675.497781.3277495908107141898.stgit@dwillia2-xfh.jf.intel.com/
-> 
-> > -- 8< --
-> > Subject: dcssblk: Mark DAX broken, remove FS_DAX_LIMITED support
-> > 
-> > From: Dan Williams <dan.j.williams@intel.com>
-> > 
-> > The dcssblk driver has long needed special case supoprt to enable
-> > limited dax operation, so called CONFIG_FS_DAX_LIMITED. This mode
-> > works around the incomplete support for ZONE_DEVICE on s390 by forgoing
-> > the ability of dax-mapped pages to support GUP.
-> > 
-> > Now, pending cleanups to fsdax that fix its reference counting [1] depend on
-> > the ability of all dax drivers to supply ZONE_DEVICE pages.
-> > 
-> > To allow that work to move forward, dax support needs to be paused for
-> > dcssblk until ZONE_DEVICE support arrives. That work has been known for
-> > a few years [2], and the removal of "pte_devmap" requirements [3] makes the
-> > conversion easier.
-> > 
-> > For now, place the support behind CONFIG_BROKEN, and remove PFN_SPECIAL
-> > (dcssblk was the only user).
-> 
-> Specifically it no longer removes PFN_SPECIAL. Was this intentional? Or should I
-> really have picked up the original patch from the mailing list?
+> [1] https://lore.kernel.org/all/20241024015909.58654-1-zhangzekun11@huawei.com/
 
-I think this patch that only removes the dccsblk usage of PFN_SPECIAL is
-sufficient. Leave the rest to the pfn_t cleanup.
+Hi Zhang Zekun,
+
+thank you for working on this issue!
+
+First of all, let's take a step back and analyze the initial problem.
+Everything following is only my opinion...
+
+The main issue I see is that the current API - of_find_node_by_name -
+modifies the refcount of its input by calling of_node_put(from) as part
+of its search. Typically, a "find" function is expected to treat its
+input as read-only. That is, when you pass an object into such a
+function, you expect its reference count to remain unchanged unless
+ownership is explicitly transferred. In this case, lowering the refcount
+on the input node is counterintuitive and already lead to unexpected
+behavior and subtle bugs.
+
+To address this, the workaround introduces a wrapper function,
+of_find_node_by_name_balanced, which first increments the input’s
+refcount (via of_node_get()) before calling the original function. While
+this "balances" the refcount change, the naming remains problematic from
+my perspective. The "_balanced" suffix isn’t part of our common naming
+conventions (traditions? :)). Most drivers expect that a function
+starting with "find" will not alter the reference count of its input.
+The term "balanced" doesn’t clearly convey that the input's refcount is
+being explicitly managed - it instead obscures the underlying behavior,
+leaving many developers confused about what guarantees the API provides.
+
+In my view, a more natural solution would be to redesign the API so that
+it doesn’t modify the input object’s refcount at all. Instead, it should
+solely increase the refcount of the returned node (if found) for safe
+asynchronous usage. This approach would align with established
+conventions where "find" implies no side effects on inputs or output,
+and a "get" indicates that the output comes with an extra reference. For
+example, a function named of_get_node_by_name would clearly signal that
+only the returned node is subject to a refcount increase while leaving
+the input intact.
+
+Thus, while the current workaround "balances" the reference count, it
+doesn't address the underlying design flaw. The naming still suggests a
+"find" function that should leave the input untouched, which isn’t the
+case here. A redesign of the API - with both the behavior and naming
+aligned to common expectations - would be a clearer and more robust
+solution.
+
+Nevertheless, it is only my POV, and the final decision rests with the
+OpenFirmware framework maintainers.
+
+Best Regards,
+Oleksij
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
