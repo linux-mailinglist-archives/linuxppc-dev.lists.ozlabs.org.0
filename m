@@ -1,41 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-5942-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5943-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CE1A2C17B
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 12:29:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB2FA2C3CC
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 14:37:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YqBZF52RCz2ytT;
-	Fri,  7 Feb 2025 22:29:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YqFQF25PZz2yh2;
+	Sat,  8 Feb 2025 00:37:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.187
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738927749;
-	cv=none; b=BWM2iajhLK2NKUC0kon8awUamVs+RmehsdirX30d3Lk1WbLhVRdMcNhYDqpI513SF1YJtACSD3EYnMnZMTliOOi+7EtJwKgkmqfciFRCWz2IqX0VjHiTweK+xkMrcI26giBCh51wHf2YAUygeK7vHjbLMd3YoT3+HzTrf/zmx9MBJD6a/tKFNbUUhscLH4rmC02lIZcgy5q6+gSpy8WpCeash8YaJw7XJbAQMNyPX7fAayP1zCndX3rUbTofN+BvaXPCcXkl2fSPvCubO2xFVKTgQkl0gxLjroetlSFhG6MP3Gky7DTt/f+kHUaOhHC11PTytwoXjIxkS8YtuEeB9g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738935445;
+	cv=none; b=fDRZ+I2Cd5grSKFjB6S6fvxMGyaGhHoTVzLRACMe5OAPDS11H1QAitoxPAe/hFUs8Lc2tcHcVX/6vzTym7AdAFLCOu+E7YW83fog5km2+B5udhy/q0SbUM5YJzTfdDzNzSMe7nvHgxrRA1rxLi95xMp64NbLhtTO689lATjunSAGanpAHwAkQGPiWemIiDa2g4RmGg9S9eFW0Vk4j6OoosS5AGsI7Atj80fuiL+bc55ZX9B/+cN84/UEJm4SgncJRLZO4dEakVyUmHm5kDaDJqmiQW1fC97IsiizP+iA7kPEPUMwgoLH8gslDQ8+dRbtaxBFbMPOJaxfmdKN+FveHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738927749; c=relaxed/relaxed;
-	bh=r6HQJhQ6Uzi4wi5d/b1zbmjSS9/ruL1VUDJQxInNr9Y=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
-	 In-Reply-To:Content-Type; b=B4zNLC9w2/JIsAiSeenF3zl6aedJmKzNqnEWwXlJt3idx6LQbF7qg7HEz15GHZACjlUrGaBvAmG1uVszFsn8Y6Nl7lqrJL5b3v91pi5WENfowt8qZz2ul9lKnUXUNxp+e7QMwSGzGELxXVcDHdbLHXCTywuuXEUbql2KqVY148MNAwxg9LHsZ8E2s9Bv0JKLPy54gWyP6i8/U6sKb2HLDdISpG/2tsUW13I/bk7GbXGFzUtkAD59rso2cISNbbLGaDALuNTIJEhIktCAo5Zh3AbAMyTOjuVU5fcVS26bkpDLgmgk6d8RxoZ0+1qhtix/9s1KCw0bRBlhdOs/D6lYgA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.187; helo=szxga01-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1738935445; c=relaxed/relaxed;
+	bh=IdbOi6N0+bHgyQ08uTaIC9JomsdE+10WelxdSZmGp0A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IJ+igITDQUu78NvRJ0gFAjJjgAFs3Yf8rDl7DnFRzzJofdEjuIrwTq0K66+tjFq7IZOp3h64ej2KSAGnrIErDrVre9BHrM6rf8iiwDZ0774DPDSKuAbiU9/paGWNFBk2oqTgYD4mfI9wRZ4iZhyv0ckzSAv4lvYP+T/ub8twu2zQozVABCk2ietiWV/7AYJ3rUUERTiyOOugp3kyproBz4JIPgWDbS9DU6NwhjvQVZnql54LZGyiHw2vJ5z2WAf6zRkTyhsQ8ILUztA3ZEshrIFVBar1GzfC2qkf5Ap/olxm3ch2HdEz8T5ZHz2GeQRguPvNHcKdCzzWBch2ZI65vQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=DsxxJJur; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=DsxxJJur;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqBZD0JvHz2yGC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 22:29:05 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4YqBST5ps2z11Pm5;
-	Fri,  7 Feb 2025 19:24:09 +0800 (CST)
-Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
-	by mail.maildlp.com (Postfix) with ESMTPS id A6F821400D5;
-	Fri,  7 Feb 2025 19:28:30 +0800 (CST)
-Received: from [10.174.176.82] (10.174.176.82) by
- kwepemf500003.china.huawei.com (7.202.181.241) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 7 Feb 2025 19:28:28 +0800
-Message-ID: <80b1c21c-096b-4a11-b9d7-069c972b146a@huawei.com>
-Date: Fri, 7 Feb 2025 19:28:23 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqFQC1kKCz2y8X
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 00:37:19 +1100 (AEDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 9EA97240027
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 14:37:11 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1738935432; bh=IdbOi6N0+bHgyQ08uTaIC9JomsdE+10WelxdSZmGp0A=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=DsxxJJuriK7OP/3VAdpJyhOhoqIowUPkuVAs6bIe7RSHnrSQTmrd8/a1Pz3A6wfGk
+	 wWBvQqRkfXbmrjUzJDJ7qee4Nx96J2fYuvMUgNF9+MRVjdPg0ygKTXHWT9QUgmaEiU
+	 f2ZMTrVA6WyCwliBTXfACOYXbu5IpQAOLzMHbdyDQsMGMte9ag2XeoYgPJ11DGHzzZ
+	 YI9B9h8pkDWmEnNuaW1rDdp+sLu0MCREo5AVPVKurrL3bOGq3FkN5/yoTx5fVxFB1W
+	 AmgPoDINAPQX7MwC4V3xUd+MxEDsh65nfvE2xVC5HDdaKnXih39UhBaEcb6MnJcx47
+	 qZeYjzYclbBpg==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YqFPs4w9Pz9rxF;
+	Fri,  7 Feb 2025 14:37:05 +0100 (CET)
+Date: Fri,  7 Feb 2025 13:37:04 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	Frank Li <Frank.li@nxp.com>, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH 6/9] dt-bindings: pci: Add fsl,mpc83xx-pcie bindings
+Message-ID: <Z6YMgETdCZGMJI4i@probook>
+References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
+ <20250126-ppcyaml-v1-6-50649f51c3dd@posteo.net>
+ <Z5qx3jAFE81Ni2cJ@lizhi-Precision-Tower-5810>
+ <Z6KkBEaGTkSyWiE_@probook>
+ <689302c6-8fba-4fd1-a4b7-557cb2f8fa4d@quicinc.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,110 +95,20 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: "zhangzekun (A)" <zhangzekun11@huawei.com>
-Subject: Re: [PATCH 1/9] of: Add warpper function
- of_find_node_by_name_balanced()
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-CC: <robh@kernel.org>, <saravanak@google.com>, <justin.chen@broadcom.com>,
-	<florian.fainelli@broadcom.com>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
-	<kory.maincent@bootlin.com>, <jacopo+renesas@jmondi.org>,
-	<kieran.bingham+renesas@ideasonboard.com>,
-	<laurent.pinchart+renesas@ideasonboard.com>, <maddy@linux.ibm.com>,
-	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <olteanv@gmail.com>,
-	<davem@davemloft.net>, <taras.chornyi@plvision.eu>, <edumazet@google.com>,
-	<pabeni@redhat.com>, <sudeep.holla@arm.com>, <cristian.marussi@arm.com>,
-	<arm-scmi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
-	<devicetree@vger.kernel.org>, <chenjun102@huawei.com>
-References: <20250207013117.104205-1-zhangzekun11@huawei.com>
- <20250207013117.104205-2-zhangzekun11@huawei.com>
- <Z6XDKi_V0BZSdCeL@pengutronix.de>
-In-Reply-To: <Z6XDKi_V0BZSdCeL@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.176.82]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemf500003.china.huawei.com (7.202.181.241)
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <689302c6-8fba-4fd1-a4b7-557cb2f8fa4d@quicinc.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Thu, Feb 06, 2025 at 06:12:47PM +0530, Mukesh Kumar Savaliya wrote:
+> neat: subject: since binding is already mentioned in the prefix of the
+> subject, no need to add bindings word again.
 
-
-在 2025/2/7 16:24, Oleksij Rempel 写道:
-> On Fri, Feb 07, 2025 at 09:31:09AM +0800, Zhang Zekun wrote:
->> There are many drivers use of_find_node_by_name() with a not-NULL
->> device_node pointer, and a number of callers would require a call to
->> of_node_get() before using it. There are also some drivers who forget
->> to call of_node_get() which would cause a ref count leak[1]. So, Add a
->> wraper function for of_find_node_by_name(), drivers may use this function
->> to call of_find_node_by_name() with the refcount already balanced.
->>
->> [1] https://lore.kernel.org/all/20241024015909.58654-1-zhangzekun11@huawei.com/
-> 
-> Hi Zhang Zekun,
-> 
-> thank you for working on this issue!
-> 
-> First of all, let's take a step back and analyze the initial problem.
-> Everything following is only my opinion...
-> 
-> The main issue I see is that the current API - of_find_node_by_name -
-> modifies the refcount of its input by calling of_node_put(from) as part
-> of its search. Typically, a "find" function is expected to treat its
-> input as read-only. That is, when you pass an object into such a
-> function, you expect its reference count to remain unchanged unless
-> ownership is explicitly transferred. In this case, lowering the refcount
-> on the input node is counterintuitive and already lead to unexpected
-> behavior and subtle bugs.
-> 
-> To address this, the workaround introduces a wrapper function,
-> of_find_node_by_name_balanced, which first increments the input’s
-> refcount (via of_node_get()) before calling the original function. While
-> this "balances" the refcount change, the naming remains problematic from
-> my perspective. The "_balanced" suffix isn’t part of our common naming
-> conventions (traditions? :)). Most drivers expect that a function
-> starting with "find" will not alter the reference count of its input.
-> The term "balanced" doesn’t clearly convey that the input's refcount is
-> being explicitly managed - it instead obscures the underlying behavior,
-> leaving many developers confused about what guarantees the API provides.
-> 
-> In my view, a more natural solution would be to redesign the API so that
-> it doesn’t modify the input object’s refcount at all. Instead, it should
-> solely increase the refcount of the returned node (if found) for safe
-> asynchronous usage. This approach would align with established
-> conventions where "find" implies no side effects on inputs or output,
-> and a "get" indicates that the output comes with an extra reference. For
-> example, a function named of_get_node_by_name would clearly signal that
-> only the returned node is subject to a refcount increase while leaving
-> the input intact.
-> 
-> Thus, while the current workaround "balances" the reference count, it
-> doesn't address the underlying design flaw. The naming still suggests a
-> "find" function that should leave the input untouched, which isn’t the
-> case here. A redesign of the API - with both the behavior and naming
-> aligned to common expectations - would be a clearer and more robust
-> solution.
-> 
-> Nevertheless, it is only my POV, and the final decision rests with the
-> OpenFirmware framework maintainers.
-> 
-> Best Regards,
-> Oleksij
-
-Hi, Oleksij,
-
-Thanks for your review. I think redesign the API would be a fundamental 
-way to fix this issue, but it would cause impact for current users who 
-knows the exact functionality of of_find_node_by_name(), which need to 
-put the "from" before calling it (I can't make the assumption that all 
-of drivers calling of_find_node_by_name() with a not-NULL "from" 
-pointer, but not calling of_node_get() before is misuse). The basic idea 
-for adding a new function is try not to impact current users. For users 
-who are confused about the "_balanced" suffix,the comments of 
-of_find_node_by_name() explains why this interface exists.
-
-Thanks,
-Zekun
+Sounds reasonable, thanks
+J. Neuschäfer
 
