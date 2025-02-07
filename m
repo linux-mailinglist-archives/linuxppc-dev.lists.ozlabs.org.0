@@ -1,78 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-5952-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5953-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6799A2CDF1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 21:14:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C0BA2CF13
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 22:30:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YqQD95zf1z30Vj;
-	Sat,  8 Feb 2025 07:14:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YqRwH6Mm6z2yGk;
+	Sat,  8 Feb 2025 08:30:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738959257;
-	cv=none; b=Pu5Tp7rvkHSVwTSmZ8k/8REmzQj0Zul68gJNSJl1sYPRCjg6uj+tLDS1w/kps7eKKxQgusL+62Z4m4oHMs3a0lcwRHbDLjbUQuQ8WN9aRmUUjl8bq1KFOywqT+c7YQJxugkuoEibNLLIk7hXjgzlXbyxJQA7cag5zLgqpmI+c44ZBIW2QqznPy6gLShuYU6BQJ4oYcfU9W7jyROPTdBDA+8Aizt+kr7CDiICR14fG+kn7pSGkcw/VAmkhS37KuZyx2ltI2EAMtmXSB0puebUEcXvp8G0Wi3oTvgZXQLPVv6j5GEWuTDeVeq2i9Zwpu5daAt+FaiYTvzZKb3BrRIGeg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738963839;
+	cv=none; b=Lktpb3eZAEMCDijOgCyvDglt6o0sC24HWtzaZnZsMxCXoZVUy4YvFrG/wWAby53QS86NHwLb4xv6IHKAXk2RWnSLvJOdEv6b8C4IvxM/0rGfKlOGsbTTRPjkgXffEO/pKPdIyDpHOuWX+Z0PI3yFpE24d8VlLsCLbXn3ttP6r20krs6C8Rpn8JbG5XMTqY4DRzfl7lODUP/F26un8PT4xO9GjDYX+VkQr0R5MOR7/1gy/Z9bNOW4lLbMkCheA4xBbf2Ma/3LhxxKtrOdDpx9y1S20BqU0MtPjzTgdZW3jnsgqs0vgV2hTN5K1NowPn6XCrOR7/7KoDCkpjWD47kHKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738959257; c=relaxed/relaxed;
-	bh=YpaKh7rbh578Wr9vtfS8jY2i9lPExBpk4w9wgwq3ndY=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QPhvaARIeWD9lCF/afvWPUFlu77CXwut3jZ3YMaCfva97ZE4q4epSfCCqK9mRSn9Swg2piA/1nKb2L+wcWGBKQeHnyo/7+Q+qwmlw7XU2tpUkoucLEVMghGkuKpvHT0MzKIpB90HjCseQ7h34FmhHes16gfpblMt2JmkNKJSDJN8aUexAvsQ24fu8Mm3jsuUzi+G2LbilABtzvcCj8R6qb3btATU+xS35amPIlP4+48m2oEXyl5+wIwQpzOl4KF4puPBc6rIMpGTO8jOZs73YMHKwK/atT7aOy9xjimiiaIiyENsF/G3fnEZ5vGAok/byfrjmxME62YxkmM6KxJSpA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Qr/iC24a; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1738963839; c=relaxed/relaxed;
+	bh=+qQjjk7l3KlVD8VePXEh2IHgg5I619IL+YFIbx0qfGE=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=LyQUriUE394jUUXIHQIWjetZ9218CFqJQIvFMPpTDPu6b2EURK3pWOkTnMaERID3iN/NpTx/CDGcYhDK2dPII76lWpYad8LVUu+3numCPM+vFctt8mugNDwCEb01S7SrJohZwsUjF4sn/5RKFGDTn1WLHUkaMrZ5t2dQtahxlI0I19BWvOsKsReilAWK3HObmZqt+MMqq9+8XOvowpbQ+evfRmbeTUWagt1+y7BUYEji9B5iHhf67WU7jvLoIipp1qprHuyYHVM0AyVpVsbJ3pkV+GSoiTCLWjZ2eFFx/obDnFzZXY88vRmaotMZMQwGL7na8RAe2dsrIEZhsf5lfA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cfve54Sx; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Qr/iC24a;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=cfve54Sx;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::82b; helo=mail-qt1-x82b.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82b.google.com (mail-qt1-x82b.google.com [IPv6:2607:f8b0:4864:20::82b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqQD868Pnz30Th
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 07:14:16 +1100 (AEDT)
-Received: by mail-qt1-x82b.google.com with SMTP id d75a77b69052e-46b1d40ac6bso21013621cf.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Feb 2025 12:14:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1738959254; x=1739564054; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=YpaKh7rbh578Wr9vtfS8jY2i9lPExBpk4w9wgwq3ndY=;
-        b=Qr/iC24aHPOug6OvlTRqbwM1PNWqcWd5WI0JKFiDnd+IqK/AlfJI/iByT344yGfxkh
-         h/Qqc1wOAeWOsSSckssGBHNuHIIrq2n5Ny/xg8u2PEzUvzq0tiWLE0PJTvFErMPIQnWA
-         LejNSnp5M+vejsg8+y8O2eBKv1ur5gALd65dsj064B9eLP/9UyP+RekwGXBDkqBtCD6V
-         e+mRVTkncLoiQ//6KpzADYVxoI6PTKKeFRlDzN5zuQFLAUUrTNpmkDUBAwpdc9oo7eRU
-         8RWDfctfwtVW02vkX0y+9PaGJVXLc94qt9KySs/Q+n/OoDLoOw2M+rfu3+0ZSeftfrLm
-         Zr2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1738959254; x=1739564054;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YpaKh7rbh578Wr9vtfS8jY2i9lPExBpk4w9wgwq3ndY=;
-        b=oUH3g61d7eUiC0I7YHb5b28pHso2v7D44z3ydy9BuI/GyVEXBqzukAjnSekKKCLxau
-         eiyryhlSbwprdnULacVvJJvkzTCx1qunhhSQrafjp3L5A5bOVwjkTAmcpG/mTiGt7KTw
-         iOEMgjUTtbB4a+TCpx6l8ekhj59zXMeLwHHrTsf0ON2lhsL5X1gNIo6+y0ZaWKzdW6dq
-         cZQX/99LL1XVbG8ZzsigJ/oZyYJWR2rqkm/TdicrZFnnZW5NHCOF50NU62cdXLElnaXH
-         hixbBxV+uLJcYkDPrhzaEp6DMUKDLlZidibrcGZdxICA46lCeHOK/Co3GcC4tN0HjE+o
-         F0Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCUklYecRgz6iwEM4koBbvcuwc+OW/g817/tk7M0kRCUyILnxtSSnGQ+KmVc33qn4n7RLr+0dMGc1ZlQHtM=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzwqZ7PZLH/NscEooq3ccbljD7woVS8mxhJ1mX4QG0Vr57Z2iX+
-	vD91DLG0p2Va667jHRR10/Ai2wriSgEMnfNlRrwbi6ppvxCJjWMq
-X-Gm-Gg: ASbGncu7kwY52Jyro887LUbH27ZWMmAXKs4tcstW0Iyrrs1jJJmXTflIef4rdMlxlPP
-	dPGPajLSq0mM1+pLqj7DRmXPSvK/tTCUoqTrGnau5qgYce0Kxm/C8znKfWszDKOaKyom9M+hUdZ
-	73oZwa0NoHAXCGfxyqpsBEUPeeP2ikTZN+yU5PH4kT1/vYLDIBaNHllLimnPvDXqenrI9km5HZR
-	yz2ZAE1PVcV95KZ3r8rdE5nIfFPyZZ1F93ocVz6mGbKgayWZh/NyTu/HIJG/bPy8mj+RKLd2Km7
-	LDGsR1r78lGixOyd72BRKnJovnn/2+86nSFQLIAJsygavMoBhwLqjR+SRTlO7lIO3D/zgUg2zDN
-	8UeKCEj/Ne1SfKvP7E5LEGzr7jYS9DyE0MWo3lQ==
-X-Google-Smtp-Source: AGHT+IGoBwo35nc4DocUoBUbxW3j+EWvOCfDvSegbg6iAxErqD3LCeknyj+SdMQcaNlf7iqtV9H/CQ==
-X-Received: by 2002:ac8:5a81:0:b0:46e:2d0b:e1bf with SMTP id d75a77b69052e-4703361d0d0mr116374651cf.11.1738959253940;
-        Fri, 07 Feb 2025 12:14:13 -0800 (PST)
-Received: from 1.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa ([2600:4041:5be7:7c00:c58e:ed03:1b60:c56d])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c041e13895sm228851285a.58.2025.02.07.12.14.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Feb 2025 12:14:12 -0800 (PST)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 07 Feb 2025 15:14:04 -0500
-Subject: [PATCH 3/3] bitmap: break kunit into test cases
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqRwG4bcgz2xrb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 08:30:38 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id B0FD05C0065;
+	Fri,  7 Feb 2025 21:29:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0CBADC4CED1;
+	Fri,  7 Feb 2025 21:30:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1738963835;
+	bh=94ujvz3tk5ekjf2MZlbHHWzbwwWLaHAsa3ywPEveVtA=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=cfve54Sxfr9QBL7efbkka4gqbqtmLqDIX7fxuTzqbSgJRFcfeed3+Xr+9fKlcgoO0
+	 7SkednyYe2a+mlwJXN/glHoULVuuNp1baglH2iIOGjL+wNZ+jRBjylOQx6u0p5+ZBl
+	 dMyKW521/HplkdQ4imXzl6l6fSsYfVhNa5B42O6un/jk4TqpNh8LMY+JP6I5TeqJtI
+	 D+hMbghbT5SMbxIjdMfsO1nwhUBYR53hrYmqyIhj7ciuV4+FQgVOboC0ytQwYr68hX
+	 G4Sie13QcWfrJYErG7fN0GLjtfB3Vq/d//lMLHG1rsxBb8gSVPyyrXdt0fxq4WzU4A
+	 L30mdjjFq+xFQ==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id DE5C6C02194;
+	Fri,  7 Feb 2025 21:30:34 +0000 (UTC)
+From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
+Subject: [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT
+ bindings
+Date: Fri, 07 Feb 2025 22:30:17 +0100
+Message-Id: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,475 +63,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250207-bitmap-kunit-convert-v1-3-c520675343b6@gmail.com>
-References: <20250207-bitmap-kunit-convert-v1-0-c520675343b6@gmail.com>
-In-Reply-To: <20250207-bitmap-kunit-convert-v1-0-c520675343b6@gmail.com>
-To: David Gow <davidgow@google.com>, John Hubbard <jhubbard@nvidia.com>, 
- Andrew Morton <akpm@linux-foundation.org>, 
- Geert Uytterhoeven <geert@linux-m68k.org>, 
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAGp7pmcC/2XMQQ7CIBCF4as0sxYDVEh11XuYLuowWBItBAixa
+ bi72K3L/+Xl2yFRdJTg1u0Qqbjk/NpCnjrAZV6fxJxpDZJLxYXULATc5veL6YEjmuHRW5TQ3iG
+ SdZ9Duk+tF5eyj9sBF/Fb/40iGGeK68vVKoG9MWPwKZM/r5RhqrV+AeTPTISfAAAA
+X-Change-ID: 20250126-ppcyaml-680ccd8b3fc2
+To: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ Krzysztof Kozlowski <krzk@kernel.org>
+Cc: imx@lists.linux.dev, Scott Wood <oss@buserror.net>, 
  Madhavan Srinivasan <maddy@linux.ibm.com>, 
  Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
  Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Yury Norov <yury.norov@gmail.com>, 
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, Shuah Khan <shuah@kernel.org>, 
- Kees Cook <kees@kernel.org>
-Cc: Muhammad Usama Anjum <usama.anjum@collabora.com>, 
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+ Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, 
+ Niklas Cassel <cassel@kernel.org>, Herbert Xu <herbert@gondor.apana.org.au>, 
+ "David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>, 
+ Vinod Koul <vkoul@kernel.org>, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Wim Van Sebroeck <wim@linux-watchdog.org>, 
+ Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, 
+ Richard Weinberger <richard@nod.at>, Vignesh Raghavendra <vigneshr@ti.com>, 
+ linux-kernel@vger.kernel.org, linux-ide@vger.kernel.org, 
+ linux-crypto@vger.kernel.org, dmaengine@vger.kernel.org, 
+ linux-pci@vger.kernel.org, linux-watchdog@vger.kernel.org, 
+ linux-spi@vger.kernel.org, linux-mtd@lists.infradead.org, 
+ =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1738963832; l=3147;
+ i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
+ bh=94ujvz3tk5ekjf2MZlbHHWzbwwWLaHAsa3ywPEveVtA=;
+ b=9ApSQvdR7H4b5oYJC3cFy1ErDfu4w+UKbTU0bUdy14D+XfqSBEdTRk2y9o2+fy4Ll7XwAb/Ap
+ 0ovzTOSCrwXC+++bUZmGcEPJeGRovxiY/IKS/grKdK9HL/fa7Yy7Bo+
+X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
+ pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
+X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
+ auth_id=156
+X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+Reply-To: j.ne@posteo.net
+X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Move some tests into `bitmap_test_cases` and parameterize
-`test_bitmap_print_buf`. This gives us nicer output in the event of a
-failure.
+This is a spin-off of the series titled
+"powerpc: MPC83xx cleanup and LANCOM NWAPP2 board".
 
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+During the development of that series, it became clear that many
+devicetree bindings for Freescale MPC8xxx platforms are still in the old
+plain-text format, or don't exist at all, and in any case don't mention
+all valid compatible strings.
+
+Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 ---
- lib/bitmap_kunit.c | 182 ++++++++++++++++++++++++++---------------------------
- 1 file changed, 89 insertions(+), 93 deletions(-)
+Changes in v2:
+- rebased on v6.14-rc1
+- various style cleanups, both in YAML and in DTS examples
+- minor improvements to the commit messages
+- Link to v1: https://lore.kernel.org/r/20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net
 
-diff --git a/lib/bitmap_kunit.c b/lib/bitmap_kunit.c
-index 0605228288d6..f7b90f6d5f49 100644
---- a/lib/bitmap_kunit.c
-+++ b/lib/bitmap_kunit.c
-@@ -17,8 +17,6 @@
- static char pbl_buffer[PAGE_SIZE];
- static char print_buf[PAGE_SIZE * 2];
- 
--static struct kunit *kunittest;
--
- #define tc_err(fmt, ...) \
- 	KUNIT_FAIL(kunittest, fmt, ##__VA_ARGS__)
- 
-@@ -96,7 +94,7 @@ static const unsigned long exp3_1_0[] = {
- 
- #define expect_eq_uint(x, y)		expect_eq_ulong((unsigned int)(x), (unsigned int)(y))
- 
--static void test_zero_clear(void)
-+static void test_zero_clear(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(bmap, 1024);
- 
-@@ -125,7 +123,7 @@ static void test_zero_clear(void)
- 	expect_eq_pbl("", bmap, 1024);
- }
- 
--static void test_find_nth_bit(void)
-+static void test_find_nth_bit(struct kunit *kunittest)
- {
- 	unsigned long b, bit, cnt = 0;
- 	DECLARE_BITMAP(bmap, 64 * 3);
-@@ -166,7 +164,7 @@ static void test_find_nth_bit(void)
- 	}
- }
- 
--static void test_fill_set(void)
-+static void test_fill_set(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(bmap, 1024);
- 
-@@ -195,7 +193,7 @@ static void test_fill_set(void)
- 	expect_eq_pbl("0-1023", bmap, 1024);
- }
- 
--static void test_copy(void)
-+static void test_copy(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(bmap1, 1024);
- 	DECLARE_BITMAP(bmap2, 1024);
-@@ -234,7 +232,7 @@ static void test_copy(void)
- 	expect_eq_pbl("0-108,128-1023", bmap2, 1024);
- }
- 
--static void test_bitmap_region(void)
-+static void test_bitmap_region(struct kunit *kunittest)
- {
- 	int pos, order;
- 
-@@ -259,7 +257,7 @@ static void test_bitmap_region(void)
- 
- #define EXP2_IN_BITS	(sizeof(exp2) * 8)
- 
--static void test_replace(void)
-+static void test_replace(struct kunit *kunittest)
- {
- 	unsigned int nbits = 64;
- 	unsigned int nlongs = DIV_ROUND_UP(nbits, BITS_PER_LONG);
-@@ -300,7 +298,7 @@ static const unsigned long sg_scatter_exp[] = {
- 	BITMAP_FROM_U64(0x000000000000021aULL),
- };
- 
--static void test_bitmap_sg(void)
-+static void test_bitmap_sg(struct kunit *kunittest)
- {
- 	unsigned int nbits = 64;
- 	DECLARE_BITMAP(bmap_gather, 100);
-@@ -421,7 +419,7 @@ static const struct test_bitmap_parselist parselist_tests[] = {
- 
- };
- 
--static void test_bitmap_parselist(void)
-+static void test_bitmap_parselist(struct kunit *kunittest)
- {
- 	int i;
- 	int err;
-@@ -457,7 +455,7 @@ static void test_bitmap_parselist(void)
- 	}
- }
- 
--static void test_bitmap_printlist(void)
-+static void test_bitmap_printlist(struct kunit *kunittest)
- {
- 	unsigned long *bmap = kmalloc(PAGE_SIZE, GFP_KERNEL);
- 	char *buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-@@ -533,7 +531,7 @@ static const struct test_bitmap_parselist parse_tests[] = {
- #undef step
- };
- 
--static void test_bitmap_parse(void)
-+static void test_bitmap_parse(struct kunit *kunittest)
- {
- 	int i;
- 	int err;
-@@ -568,7 +566,7 @@ static void test_bitmap_parse(void)
- 	}
- }
- 
--static void test_bitmap_arr32(void)
-+static void test_bitmap_arr32(struct kunit *kunittest)
- {
- 	unsigned int nbits, next_bit;
- 	u32 arr[EXP1_IN_BITS / 32];
-@@ -594,7 +592,7 @@ static void test_bitmap_arr32(void)
- 	}
- }
- 
--static void test_bitmap_arr64(void)
-+static void test_bitmap_arr64(struct kunit *kunittest)
- {
- 	unsigned int nbits, next_bit;
- 	u64 arr[EXP1_IN_BITS / 64];
-@@ -626,7 +624,7 @@ static void test_bitmap_arr64(void)
- 	}
- }
- 
--static noinline void test_mem_optimisations(void)
-+static noinline void test_mem_optimisations(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(bmap1, 1024);
- 	DECLARE_BITMAP(bmap2, 1024);
-@@ -669,7 +667,7 @@ static const unsigned char clump_exp[] = {
- 	0x05,	/* non-adjacent 2 bits set */
- };
- 
--static void test_for_each_set_clump8(void)
-+static void test_for_each_set_clump8(struct kunit *kunittest)
- {
- #define CLUMP_EXP_NUMBITS 64
- 	DECLARE_BITMAP(bits, CLUMP_EXP_NUMBITS);
-@@ -691,7 +689,7 @@ static void test_for_each_set_clump8(void)
- 		expect_eq_clump8(start, CLUMP_EXP_NUMBITS, clump_exp, &clump);
- }
- 
--static void test_for_each_set_bit_wrap(void)
-+static void test_for_each_set_bit_wrap(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -716,7 +714,7 @@ static void test_for_each_set_bit_wrap(void)
- 	}
- }
- 
--static void test_for_each_set_bit(void)
-+static void test_for_each_set_bit(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -738,7 +736,7 @@ static void test_for_each_set_bit(void)
- 	expect_eq_bitmap(orig, copy, 500);
- }
- 
--static void test_for_each_set_bit_from(void)
-+static void test_for_each_set_bit_from(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -768,7 +766,7 @@ static void test_for_each_set_bit_from(void)
- 	}
- }
- 
--static void test_for_each_clear_bit(void)
-+static void test_for_each_clear_bit(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -790,7 +788,7 @@ static void test_for_each_clear_bit(void)
- 	expect_eq_bitmap(orig, copy, 500);
- }
- 
--static void test_for_each_clear_bit_from(void)
-+static void test_for_each_clear_bit_from(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -820,7 +818,7 @@ static void test_for_each_clear_bit_from(void)
- 	}
- }
- 
--static void test_for_each_set_bitrange(void)
-+static void test_for_each_set_bitrange(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -842,7 +840,7 @@ static void test_for_each_set_bitrange(void)
- 	expect_eq_bitmap(orig, copy, 500);
- }
- 
--static void test_for_each_clear_bitrange(void)
-+static void test_for_each_clear_bitrange(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -864,7 +862,7 @@ static void test_for_each_clear_bitrange(void)
- 	expect_eq_bitmap(orig, copy, 500);
- }
- 
--static void test_for_each_set_bitrange_from(void)
-+static void test_for_each_set_bitrange_from(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -894,7 +892,7 @@ static void test_for_each_set_bitrange_from(void)
- 	}
- }
- 
--static void test_for_each_clear_bitrange_from(void)
-+static void test_for_each_clear_bitrange_from(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(orig, 500);
- 	DECLARE_BITMAP(copy, 500);
-@@ -965,7 +963,7 @@ static struct test_bitmap_cut test_cut[] = {
- 	},
- };
- 
--static void test_bitmap_cut(void)
-+static void test_bitmap_cut(struct kunit *kunittest)
- {
- 	unsigned long b[5], *in = &b[1], *out = &b[0];	/* Partial overlap */
- 	int i;
-@@ -986,8 +984,14 @@ struct test_bitmap_print {
- 	unsigned long nbits;
- 	const char *mask;
- 	const char *list;
-+	const char *name;
- };
- 
-+static void param_to_desc(const struct test_bitmap_print *param, char *desc)
-+{
-+	strscpy(desc, param->name, KUNIT_PARAM_DESC_SIZE);
-+}
-+
- static const unsigned long small_bitmap[] = {
- 	BITMAP_FROM_U64(0x3333333311111111ULL),
- };
-@@ -1082,35 +1086,34 @@ static const char large_list[] = /* more than 4KB */
- 	"49,2552-2553,2556-2557\n";
- 
- static const struct test_bitmap_print test_print[] = {
--	{ small_bitmap, sizeof(small_bitmap) * BITS_PER_BYTE, small_mask, small_list },
--	{ large_bitmap, sizeof(large_bitmap) * BITS_PER_BYTE, large_mask, large_list },
-+	{ small_bitmap, sizeof(small_bitmap) * BITS_PER_BYTE, small_mask, small_list, "small" },
-+	{ large_bitmap, sizeof(large_bitmap) * BITS_PER_BYTE, large_mask, large_list, "large" },
- };
- 
--static void test_bitmap_print_buf(void)
-+KUNIT_ARRAY_PARAM(test_print, test_print, param_to_desc);
-+
-+static void test_bitmap_print_buf(struct kunit *kunittest)
- {
--	int i;
-+	int n;
- 
--	for (i = 0; i < ARRAY_SIZE(test_print); i++) {
--		const struct test_bitmap_print *t = &test_print[i];
--		int n;
-+	const struct test_bitmap_print *t = kunittest->param_value;
- 
--		n = bitmap_print_bitmask_to_buf(print_buf, t->bitmap, t->nbits,
--						0, 2 * PAGE_SIZE);
--		expect_eq_uint(strlen(t->mask) + 1, n);
--		expect_eq_str(t->mask, print_buf, n);
-+	n = bitmap_print_bitmask_to_buf(print_buf, t->bitmap, t->nbits,
-+					0, 2 * PAGE_SIZE);
-+	expect_eq_uint(strlen(t->mask) + 1, n);
-+	expect_eq_str(t->mask, print_buf, n);
- 
-+	n = bitmap_print_list_to_buf(print_buf, t->bitmap, t->nbits,
-+					0, 2 * PAGE_SIZE);
-+	expect_eq_uint(strlen(t->list) + 1, n);
-+	expect_eq_str(t->list, print_buf, n);
-+
-+	/* test by non-zero offset */
-+	if (strlen(t->list) > PAGE_SIZE) {
- 		n = bitmap_print_list_to_buf(print_buf, t->bitmap, t->nbits,
--					     0, 2 * PAGE_SIZE);
--		expect_eq_uint(strlen(t->list) + 1, n);
--		expect_eq_str(t->list, print_buf, n);
--
--		/* test by non-zero offset */
--		if (strlen(t->list) > PAGE_SIZE) {
--			n = bitmap_print_list_to_buf(print_buf, t->bitmap, t->nbits,
--						     PAGE_SIZE, PAGE_SIZE);
--			expect_eq_uint(strlen(t->list) + 1 - PAGE_SIZE, n);
--			expect_eq_str(t->list + PAGE_SIZE, print_buf, n);
--		}
-+						PAGE_SIZE, PAGE_SIZE);
-+		expect_eq_uint(strlen(t->list) + 1 - PAGE_SIZE, n);
-+		expect_eq_str(t->list + PAGE_SIZE, print_buf, n);
- 	}
- }
- 
-@@ -1118,7 +1121,7 @@ static void test_bitmap_print_buf(void)
-  * FIXME: Clang breaks compile-time evaluations when KASAN and GCOV are enabled.
-  * To workaround it, GCOV is force-disabled in Makefile for this configuration.
-  */
--static void test_bitmap_const_eval(void)
-+static void test_bitmap_const_eval(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(bitmap, BITS_PER_LONG);
- 	unsigned long initvar = BIT(2);
-@@ -1186,7 +1189,7 @@ static void test_bitmap_const_eval(void)
- /*
-  * Helper function to test bitmap_write() overwriting the chosen byte pattern.
-  */
--static void test_bitmap_write_helper(const char *pattern)
-+static void test_bitmap_write_helper(struct kunit *kunittest, const char *pattern)
- {
- 	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
- 	DECLARE_BITMAP(exp_bitmap, TEST_BIT_LEN);
-@@ -1240,7 +1243,7 @@ static void test_bitmap_write_helper(const char *pattern)
- 	}
- }
- 
--static void test_bitmap_read_write(void)
-+static void test_bitmap_read_write(struct kunit *kunittest)
- {
- 	unsigned char *pattern[3] = {"", "all:1/2", "all"};
- 	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
-@@ -1286,10 +1289,10 @@ static void test_bitmap_read_write(void)
- 	}
- 
- 	for (pi = 0; pi < ARRAY_SIZE(pattern); pi++)
--		test_bitmap_write_helper(pattern[pi]);
-+		test_bitmap_write_helper(kunittest, pattern[pi]);
- }
- 
--static void test_bitmap_read_perf(void)
-+static void test_bitmap_read_perf(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
- 	unsigned int cnt, nbits, i;
-@@ -1312,10 +1315,10 @@ static void test_bitmap_read_perf(void)
- 		}
- 	}
- 	time = ktime_get() - time;
--	kunit_info(kunittest, "Time spent in %s:\t%llu\n", __func__, time);
-+	kunit_info(kunittest, "Time spent:\t%llu\n", time);
- }
- 
--static void test_bitmap_write_perf(void)
-+static void test_bitmap_write_perf(struct kunit *kunittest)
- {
- 	DECLARE_BITMAP(bitmap, TEST_BIT_LEN);
- 	unsigned int cnt, nbits, i;
-@@ -1334,49 +1337,42 @@ static void test_bitmap_write_perf(void)
- 		}
- 	}
- 	time = ktime_get() - time;
--	kunit_info(kunittest, "Time spent in %s:\t%llu\n", __func__, time);
-+	kunit_info(kunittest, "Time spent:\t%llu\n", time);
- }
- 
- #undef TEST_BIT_LEN
- 
--static void bitmap_test(struct kunit *test)
--{
--	kunittest = test;
--
--	test_zero_clear();
--	test_fill_set();
--	test_copy();
--	test_bitmap_region();
--	test_replace();
--	test_bitmap_sg();
--	test_bitmap_arr32();
--	test_bitmap_arr64();
--	test_bitmap_parse();
--	test_bitmap_parselist();
--	test_bitmap_printlist();
--	test_mem_optimisations();
--	test_bitmap_cut();
--	test_bitmap_print_buf();
--	test_bitmap_const_eval();
--	test_bitmap_read_write();
--	test_bitmap_read_perf();
--	test_bitmap_write_perf();
--
--	test_find_nth_bit();
--	test_for_each_set_bit();
--	test_for_each_set_bit_from();
--	test_for_each_clear_bit();
--	test_for_each_clear_bit_from();
--	test_for_each_set_bitrange();
--	test_for_each_clear_bitrange();
--	test_for_each_set_bitrange_from();
--	test_for_each_clear_bitrange_from();
--	test_for_each_set_clump8();
--	test_for_each_set_bit_wrap();
--}
--
- static struct kunit_case bitmap_test_cases[] = {
--	KUNIT_CASE(bitmap_test),
-+	KUNIT_CASE(test_zero_clear),
-+	KUNIT_CASE(test_fill_set),
-+	KUNIT_CASE(test_copy),
-+	KUNIT_CASE(test_bitmap_region),
-+	KUNIT_CASE(test_replace),
-+	KUNIT_CASE(test_bitmap_sg),
-+	KUNIT_CASE(test_bitmap_arr32),
-+	KUNIT_CASE(test_bitmap_arr64),
-+	KUNIT_CASE(test_bitmap_parse),
-+	KUNIT_CASE(test_bitmap_parselist),
-+	KUNIT_CASE(test_bitmap_printlist),
-+	KUNIT_CASE(test_mem_optimisations),
-+	KUNIT_CASE(test_bitmap_cut),
-+	KUNIT_CASE_PARAM(test_bitmap_print_buf, test_print_gen_params),
-+	KUNIT_CASE(test_bitmap_const_eval),
-+	KUNIT_CASE(test_bitmap_read_write),
-+	KUNIT_CASE(test_bitmap_read_perf),
-+	KUNIT_CASE(test_bitmap_write_perf),
-+
-+	KUNIT_CASE(test_find_nth_bit),
-+	KUNIT_CASE(test_for_each_set_bit),
-+	KUNIT_CASE(test_for_each_set_bit_from),
-+	KUNIT_CASE(test_for_each_clear_bit),
-+	KUNIT_CASE(test_for_each_clear_bit_from),
-+	KUNIT_CASE(test_for_each_set_bitrange),
-+	KUNIT_CASE(test_for_each_clear_bitrange),
-+	KUNIT_CASE(test_for_each_set_bitrange_from),
-+	KUNIT_CASE(test_for_each_clear_bitrange_from),
-+	KUNIT_CASE(test_for_each_set_clump8),
-+	KUNIT_CASE(test_for_each_set_bit_wrap),
- 	{}
- };
- 
+---
+J. Neuschäfer (12):
+      dt-bindings: powerpc: Add Freescale/NXP MPC83xx SoCs
+      dt-bindings: ata: Convert fsl,pq-sata to YAML
+      dt-bindings: crypto: Convert fsl,sec-2.0 to YAML
+      dt-bindings: mfd: Convert fsl,mcu-mpc8349emitx to YAML
+      dt-bindings: dma: Convert fsl,elo*-dma to YAML
+      dt-bindings: pci: Convert fsl,mpc83xx-pcie to YAML
+      dt-bindings: watchdog: Convert mpc8xxx-wdt to YAML
+      dt-bindings: spi: Convert Freescale SPI bindings to YAML
+      dt-bindings: memory-controllers: Convert fsl,elbc to YAML
+      dt-bindings: memory-controllers: Add fsl,elbc-gpcm-uio
+      dt-bindings: nand: Add fsl,elbc-fcm-nand
+      dt-bindings: mtd: raw-nand-chip: Relax node name pattern
 
+ .../devicetree/bindings/ata/fsl,pq-sata.yaml       |  59 ++++++
+ Documentation/devicetree/bindings/ata/fsl-sata.txt |  28 ---
+ .../devicetree/bindings/crypto/fsl,sec2.0.yaml     | 142 ++++++++++++++
+ .../devicetree/bindings/crypto/fsl-sec2.txt        |  65 -------
+ .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 140 ++++++++++++++
+ .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 123 +++++++++++++
+ .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 134 ++++++++++++++
+ .../memory-controllers/fsl,elbc-gpcm-uio.yaml      |  59 ++++++
+ .../bindings/memory-controllers/fsl,elbc.yaml      | 146 +++++++++++++++
+ .../bindings/mfd/fsl,mcu-mpc8349emitx.yaml         |  53 ++++++
+ .../devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml |  68 +++++++
+ .../devicetree/bindings/mtd/raw-nand-chip.yaml     |   2 +-
+ .../devicetree/bindings/pci/fsl,mpc8xxx-pci.yaml   | 115 ++++++++++++
+ Documentation/devicetree/bindings/pci/fsl,pci.txt  |  27 ---
+ .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
+ .../bindings/powerpc/fsl/fsl,mpc83xx.yaml          |  67 +++++++
+ .../devicetree/bindings/powerpc/fsl/lbc.txt        |  43 -----
+ .../bindings/powerpc/fsl/mcu-mpc8349emitx.txt      |  17 --
+ .../devicetree/bindings/spi/fsl,espi.yaml          |  64 +++++++
+ Documentation/devicetree/bindings/spi/fsl,spi.yaml |  73 ++++++++
+ Documentation/devicetree/bindings/spi/fsl-spi.txt  |  62 -------
+ .../devicetree/bindings/watchdog/mpc8xxx-wdt.txt   |  25 ---
+ .../devicetree/bindings/watchdog/mpc8xxx-wdt.yaml  |  64 +++++++
+ 23 files changed, 1308 insertions(+), 472 deletions(-)
+---
+base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
+change-id: 20250126-ppcyaml-680ccd8b3fc2
+
+Best regards,
 -- 
-2.48.1
+J. Neuschäfer <j.ne@posteo.net>
+
 
 
