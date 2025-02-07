@@ -1,87 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-5920-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5923-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79270A2B622
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Feb 2025 23:59:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54E4FA2B880
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Feb 2025 02:56:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ypsxn0DhSz2yyD;
-	Fri,  7 Feb 2025 09:59:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ypxs80js6z30KY;
+	Fri,  7 Feb 2025 12:56:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738882796;
-	cv=none; b=QR1vOSR1HITL23iIJyqmFp3OwDGy5OUzXmJEl5cbpRoL/Pn1Cg0LU0tevH0P/OcP7pkaSglzUeGZjOnoYaKdePvGdPKEe3iUkhuTYovRDEJetAjlonrvn3bBUk8i9t74vC0qWbyUQETx/4/0VRpaTGhK7AyQXJSz3uklDVqel/F9L/2/NmvwFYk5JUoz4083K7JOp3RT1hV3Sjth1qiqJm+++jZ4uMZ2ad1iSpIVMcEmW3Ic6wOps5oRib0uOcPsjvI5F6JcL9Z+SxdRWt2WWcmQpFEbdqaU9zte6LIbnbG03BzoAU8MYSOC5d4jPAat6ezLTL4m+m7K9VDmTSA+Zg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738893372;
+	cv=none; b=SfhDVLyRTaoTUxVUh0AH4h4WRGVIRvjDEIN4tDOAVD4r8QvjYQX1xMmbHvByA5i6xNMWS+xLG1zleLjZboWSFw8qrzSnptryPOCdZc9m0dSzLhPlza2hhgOip0+pkgIrjIgrkZVuKShEJO/3+AiXuGGdYtV0aRlb/MLuMPixkcNUoAlZbo62IgNVJj10ZjL2UfIyjpCKLSWAvkU+kNYvVO7ebveV77EIqSR5gV7zSMR7lRFMjc41BETWOpSoeDDoNHfnUuCbmO9r4NjhVB3PmZrNn3RFs43MJCNl7ZmBy9vUo4zND0kcl/Iq21lRxEH8xvCT4JdInXPD/HJ9sBrrRw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738882796; c=relaxed/relaxed;
-	bh=s90gX5+H8I/eZfCumMlHuYAqyLhC5ownJOCo9+MHK6Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OFwwRQWOPKAu3d12Bjza7Bzb19AdHlaWHy6M9JOjst6pSyXkM3mtds7l4trhPnn87OMq0j2cJXQCdbQExdE62ceO/gi2uuajGF6xbgLKFoFpWHrsEWl7H3YkU44lMy/ePjIWW4UYtXuNVQwLCPek6kzxEwV/wV8Pfxj6keJzczqHSdZ03SLS4SGa+4SUdAmKhGc3Qtl90xqls+K9F86q2eJSgeN9Dg4kWuTJ8CFufLV0olIeXqLF8LQoUVmKkCuqRYq1gUaNmr5O5uycMFxyLdf7cQyDc+IS3I/mHuEjSPFSsvkTXzotZR9Zi8waCsLbvCVaXIrZa3eoLJ2FJ9T2nA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=f5fZ5dxc; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=f5fZ5dxc;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1738893372; c=relaxed/relaxed;
+	bh=F4awucZl2DzuzJKZDigazC8Wzi0Yw3TMEYzGOP5iB3k=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Fjtbf7k2zZXMj9GtmGrqW6xGk7FOVggpfcjTVL5WC035yowhs8CuQew+Jiu8PeEDrDEzMt96qVNmC6ljkNu4JnotA/NBxID+WnMHJuwWiPULpFtacXpn/C9NBZGL9386M6WVpz9FV5po+Nbmp8c7yh4cVc3+yQmYdpkP1YUTMm7xHy741LIOpyiT0FQa8ACtUK+s75k/6014QPOhABVyZ9gHFFcdx7hVTRh8AFp82LfELqmRpAEE4auVZ/FPMP8Aofq2v3+Bgw2tfwjhHM1P+0AT7bn9tglg6t1/gqAc0WYaxXzM/HV1xHN7bc/UCxIhrvHFUbil+a9PS/0zSntl6A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ypsxm03Mrz2y8X
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 09:59:55 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 70D07240103
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Feb 2025 23:59:52 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1738882792; bh=8wEjDCTuOvcktBrfjhLQ0lipXUb5sf39X+VV2LrhSa8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=f5fZ5dxc+yiDR/WQT0Po4+rbJRF/txKc1K68b+9pnLBawItBAJwI2Z+S2x4Y1a6dX
-	 3o9+6n8Ac6zOKWwBStCcVuzT4EfA0PH63bkmdao7A9yMOyDhJLdUvKZn+fvhstXL9L
-	 0eQBvnQV4jdarLr3kJ2yWQtio5/V7D4cf2HNmkQN4XUTDviSnDQU7R+xCWplMukXe9
-	 +/rP6AcoIJq9HCiegXVNIG3oaULtkuSzrOyxk3NmiwBryyj79VZfhfrWtcJpkaWkFz
-	 qbpUtlZoAlUOyOFhP/QKs6fx1h+aRBctKN8niJcY4kyyQox7dY+X47sFoQ99SfrYy8
-	 UeOGQqYnODnjQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Ypsxb3GYrz9rxD;
-	Thu,  6 Feb 2025 23:59:47 +0100 (CET)
-Date: Thu,  6 Feb 2025 22:59:43 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Frank Li <Frank.li@nxp.com>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH RFC 9/9] dt-bindings: nand: Convert fsl,elbc bindings to
- YAML
-Message-ID: <Z6U-38ONJ0F3ILCo@probook>
-References: <20250126-ppcyaml-v1-0-50649f51c3dd@posteo.net>
- <20250126-ppcyaml-v1-9-50649f51c3dd@posteo.net>
- <Z5qzMH1t7jIr39Ce@lizhi-Precision-Tower-5810>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ypxs63h2tz2yvl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Feb 2025 12:56:10 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.234])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4YpxSb3dxzz1JJdX;
+	Fri,  7 Feb 2025 09:38:23 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id C4B5D1400CA;
+	Fri,  7 Feb 2025 09:39:40 +0800 (CST)
+Received: from huawei.com (10.175.112.208) by kwepemf500003.china.huawei.com
+ (7.202.181.241) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 7 Feb
+ 2025 09:39:38 +0800
+From: Zhang Zekun <zhangzekun11@huawei.com>
+To: <robh@kernel.org>, <saravanak@google.com>, <justin.chen@broadcom.com>,
+	<florian.fainelli@broadcom.com>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
+	<o.rempel@pengutronix.de>, <kory.maincent@bootlin.com>,
+	<jacopo+renesas@jmondi.org>, <kieran.bingham+renesas@ideasonboard.com>,
+	<laurent.pinchart+renesas@ideasonboard.com>, <maddy@linux.ibm.com>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <olteanv@gmail.com>,
+	<davem@davemloft.net>, <taras.chornyi@plvision.eu>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <sudeep.holla@arm.com>, <cristian.marussi@arm.com>
+CC: <arm-scmi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <chenjun102@huawei.com>,
+	<zhangzekun11@huawei.com>
+Subject: [PATCH 0/9] Add wrapper function of_find_node_by_name_balanced()
+Date: Fri, 7 Feb 2025 09:31:08 +0800
+Message-ID: <20250207013117.104205-1-zhangzekun11@huawei.com>
+X-Mailer: git-send-email 2.22.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,58 +62,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z5qzMH1t7jIr39Ce@lizhi-Precision-Tower-5810>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.208]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Jan 29, 2025 at 06:01:04PM -0500, Frank Li wrote:
-> On Sun, Jan 26, 2025 at 07:59:04PM +0100, J. Neuschäfer wrote:
-> > Convert the Freescale localbus controller bindings from text form to
-> > YAML. The list of compatible strings reflects current usage.
-> >
-> > Changes compared to the txt version:
-> >  - removed the board-control (fsl,mpc8272ads-bcsr) node because it only
-> >    appears in this example and nowhere else
-> >  - added a new example with NAND flash
-> >
-> > Remaining issues:
-> >  - The localbus is not really a simple-bus: Unit addresses are not simply
-> >    addresses on a memory bus. Instead, they have a format: The first cell
-> >    is a chip select number, the remaining one or two cells are bus
-> >    addresses.
-> >
-> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > ---
-> >  .../devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml |  61 +++++++++
-> >  .../bindings/powerpc/fsl/fsl,elbc-gpcm-uio.yaml    |  55 ++++++++
-> >  .../devicetree/bindings/powerpc/fsl/fsl,elbc.yaml  | 150 +++++++++++++++++++++
-> >  .../devicetree/bindings/powerpc/fsl/lbc.txt        |  43 ------
-> >  4 files changed, 266 insertions(+), 43 deletions(-)
-> >
-> > diff --git a/Documentation/devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml b/Documentation/devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml
-[...]
-> > +  "#address-cells": true
-> 
-> should limit to a number set like
-> 
-> 	- const: 2
+Add wrapper function of_find_node_by_name_balanced() for drivers who
+want to call of_find_node_by_name() and have to blance the ref count
+by calling of_node_get(). For drivers who forget to call of_node_get(),
+can also utilizing of_find_node_by_name_balanced() to fix a refcount
+leak.
 
-Will do
+Zhang Zekun (9):
+  of: Add warpper function of_find_node_by_name_balanced()
+  net: bcmasp: Add missing of_node_get() before of_find_node_by_name()
+  net: pse-pd: Add missing of_node_get() before of_find_node_by_name()
+  media: max9286: Use of_find_node_by_name_balanced() to find
+    device_node
+  powerpc: Use of_find_node_by_name_balanced() to find device_node
+  net: dsa: Use of_find_node_by_name_balanced() to find device_node
+  net: dsa: hellcreek: Use of_find_node_by_name_balanced() to find
+    device_node
+  net: prestera: Use of_find_node_by_name_balanced() to find device_node
+  regulator: scmi: Use of_find_node_by_name_balanced() to find
+    device_node
 
-> > +
-> > +  "#size-cells": true
-> 
-> the same as #address-cells.
+ arch/powerpc/platforms/powermac/pic.c                 | 4 +---
+ drivers/media/i2c/max9286.c                           | 4 +---
+ drivers/net/dsa/bcm_sf2.c                             | 4 +---
+ drivers/net/dsa/hirschmann/hellcreek_ptp.c            | 3 +--
+ drivers/net/ethernet/broadcom/asp2/bcmasp.c           | 2 +-
+ drivers/net/ethernet/marvell/prestera/prestera_main.c | 3 +--
+ drivers/net/pse-pd/tps23881.c                         | 2 +-
+ drivers/regulator/scmi-regulator.c                    | 3 +--
+ include/linux/of.h                                    | 5 +++++
+ 9 files changed, 13 insertions(+), 17 deletions(-)
 
-Will do
+-- 
+2.22.0
 
-
-Thanks,
-J. Neuschäfer
 
