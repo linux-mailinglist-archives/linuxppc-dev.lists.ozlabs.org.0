@@ -1,83 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-5973-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5974-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2CCA2D332
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2025 03:47:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56D45A2D333
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2025 03:47:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YqZy62ZRLz30VY;
-	Sat,  8 Feb 2025 13:47:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YqZy766sGz30W0;
+	Sat,  8 Feb 2025 13:47:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738982862;
-	cv=none; b=B+pUWR3q2cO21xnuXNmx0x4zUd78jGdarWfrJNTsLoEUQ6/09pQxu0N679KhYRXvKlnBTKxaDFpIJWC+0hxfQ+8myLeYZPYG64KhUr1ZCTHQQKh2s9WzRQwIO+ArKrbyjWQZJWMx8mkPGHRwlkTqf/7/sYFaMbpJ/uGTZEMpHkn+JZp/lwBlwGS0JBAirK/PhH9OZ74o6lVGNlY7h7b6xM662FGDzgm+RocuDtZR+KU1EcE58E9zjV82GEWImUeEoxSw5U4gLBZy9Ajvx4cgG4f09cAs0hP2wlBm97rXMqTyKkcC3JKC8hXnmNurQ1tZq+zcbD2BdoBRs/jfRk1mQg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738982863;
+	cv=none; b=kKKeTRwnxZHLTtLLJrbGlgYkxgNNHLljAPnj1kmiq2dBnQ1Jiihzf+DCaaVna40rpviK3YR6+m6jQmDve1ndrAW779nH2TTrtz6iL2fA2ETnI7JVHdeeyjHftsGmY6BHgXcoN0fbQOoFtVyCkPbc21gFtGOuTyHrOfdg2WOsGJkkRZNRZQazKMG8cSu9PKCfXjhocCqF3Nz6EMtmN/XavOgJRl0AasHMey+Kfr5ADyOPcSiytey97IcHXaqRZ7ml3TY+xwDOHwCqS5mSFNy25QCB6A3pNuaFFxxl+P8G2xiLJA7ag1tQ9qOZyF98QFHNSm++ds9X8Ot/zc8QgrvssQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738982862; c=relaxed/relaxed;
-	bh=bOsGqfcedvpg5yYBGk9fZOSeg8eG/Zv2gD1j5w2ph04=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Tm1Ryh5xNhPWTtob0aVQjhvX8BKtzw0McDEwYLg4AwvsADRP5G0XZ8CAy2Gh7ykeSRZYjLc0Lj7BqGKx4HyIgEdxmKA/1z1ANlKGHFlJHI7iweRXZpCHJd6r7PC8wpNaYyT13c+CbZisK/MqMn3K1B7uX8vY7qbZ3z5pS4dwhbTrq7tKVNQijqGMnjLAdX4rmfoubM8S6Rn0GAiXNVVD48bwT9KhMpYk8DRF1LmIoAuRJgmA4ZE95iLlKOxWsrMM8DXuBNOkvFgd/6xigvMHbFemq22fSHmA6hB9FISsM3sCblW9nZI4ZS4RuB8o52PIGBRpOOpZy8xBBMRz/8PX+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rWoiqNR+; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1738982863; c=relaxed/relaxed;
+	bh=HY7OVpUePCnaxl+63tEjENyGCcgQS/VWEErPMuoz+bc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DWxzjckGIj0oNdXsPSfbvaW1FopN/ayK/SG1EeBlyX2ERLmF/Ph4qoiwPGPWA4QIEkHWusuf/es+dta7Fmpf55TTYs5/H53plChkFlZS8/BnsXX2wO6z5MVhRQn8JVShnhQBuISIQrd5N32mw6/vL/cnm95vZL1WVe3PvRDyhnVpkJjHUVaJmJ/iMsoLl+e+sq9umWcn93vUqgpnQI3CLDGf4o+jjeHu6VlWgdKlcI7I3btQuuDFLH+LAN99APtQk8Cgp7MNPMTLgksA+CllYMTEdZyTrZqeSUieCnfaxySFns+lHNRYfPypKkOhn5ISRrKjiC0utIQ5rhQZvbRZ0g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c1pepTJT; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rWoiqNR+;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c1pepTJT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqZy521Rgz2ypW
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 13:47:40 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5182HmZi008102;
-	Sat, 8 Feb 2025 02:47:31 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqZy61Fq5z30RG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 13:47:41 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5182KQjA019258;
+	Sat, 8 Feb 2025 02:47:34 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=bOsGqfcedvpg5yYBGk9fZOSeg8eG
-	/Zv2gD1j5w2ph04=; b=rWoiqNR+jSgmfzH9YHCBWBE/UHQTSFP8S+lftglUtrgO
-	SDJk4dlg39JLUYjJH6iXe6cX4OW+MOnlOnp7A8sVwk9EDNy+qoOmvibaj32PwXAj
-	hcyCJ0VtiF+2MlUkesPk2R9CCiRoo/mJ5u4KIgbtRipqUEBbWmRKunPR7UOT5P05
-	+V297/HtPBhrRAA5Ajfbw2UnQ1jovDcANh8P3TWAAXHAwpuepGgNCG+VLtM+4B9+
-	Nt87o7MGRMQnPWjSiO01zI7qqy3AfT6sL1UdXh+Es4kF25GGmR6AONEsDdft3RQ9
-	Qp8VmbugpG4EI0d9TLfKoL9RGAK50ZaPRQE8u6dwFw==
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HY7OVp
+	UePCnaxl+63tEjENyGCcgQS/VWEErPMuoz+bc=; b=c1pepTJT36+ezkZv8IkYLz
+	4wJkvBL8zHMgRMw0ckWlRo7JSZLR2YRofbxS+fSf+cQwOcQdKg8LyV0kHOHMv6Ru
+	rSzxKbr48Ld9kHmy/WaL3Fh8XHscILnSRcj5tro7UmXy96A7IPQxTF+Rkp8jOu3O
+	OK3JOuRnSeDZySWrJrR/58EkGA+vF/iYGr4w/1UvISsVXwSl7Bsm4pCEe1yYdUZB
+	yVTEcm8XFRM/Fs0mca28EV0gc8mQqQHqNzmkBoKd13CbvIaeS27NdY3dVO1WH2qx
+	9PeL0YG4qJkG+xPuc1NgnbcKPGyIxL4TrE0olUvgd5OY1KC6sW6Xbbq2lzcfRY3w
+	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44nx3y837f-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44nua8gnwx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Feb 2025 02:47:31 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5182lUZa028738;
-	Sat, 8 Feb 2025 02:47:30 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44nx3y837b-1
+	Sat, 08 Feb 2025 02:47:33 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5182lXct003330;
+	Sat, 8 Feb 2025 02:47:33 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44nua8gnwu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Feb 2025 02:47:30 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 517Mp7ru007192;
-	Sat, 8 Feb 2025 02:47:30 GMT
-Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxb06k5q-1
+	Sat, 08 Feb 2025 02:47:33 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 517NPcn1024510;
+	Sat, 8 Feb 2025 02:47:31 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44hxxnpfw3-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 08 Feb 2025 02:47:30 +0000
+	Sat, 08 Feb 2025 02:47:31 +0000
 Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5182lPBA18023030
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5182lSke27918970
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 8 Feb 2025 02:47:25 GMT
+	Sat, 8 Feb 2025 02:47:29 GMT
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 35D6D5805C;
-	Sat,  8 Feb 2025 02:47:26 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 8D3A658051;
+	Sat,  8 Feb 2025 02:47:28 +0000 (GMT)
 Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 52B2458051;
-	Sat,  8 Feb 2025 02:47:25 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id AB56B5805A;
+	Sat,  8 Feb 2025 02:47:27 +0000 (GMT)
 Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.139.242])
 	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  8 Feb 2025 02:47:25 +0000 (GMT)
+	Sat,  8 Feb 2025 02:47:27 +0000 (GMT)
 From: Haren Myneni <haren@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
         hbabu@us.ibm.com, haren@linux.ibm.com
-Subject: [PATCH v5 0/7] Add character devices for indices, platform-dump and physical-attestation RTAS
-Date: Fri,  7 Feb 2025 18:47:10 -0800
-Message-ID: <20250208024719.8550-1-haren@linux.ibm.com>
+Subject: [PATCH v5 1/7] powerpc/pseries: Define common functions for RTAS sequence calls
+Date: Fri,  7 Feb 2025 18:47:11 -0800
+Message-ID: <20250208024719.8550-2-haren@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20250208024719.8550-1-haren@linux.ibm.com>
+References: <20250208024719.8550-1-haren@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,136 +97,916 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: XtFj6xWHKdHChM1ESYajwdL1Wtbu7LXB
-X-Proofpoint-GUID: gEWN7xnj47PJMdvhOzlhfCACvanmWmTY
+X-Proofpoint-GUID: _lntKhSp0vSUJSIrGnDPDY3_v0dwq2JQ
+X-Proofpoint-ORIG-GUID: UiDhiJku4gVufQw3yYIyt5lhGYS6v344
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-07_11,2025-02-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
- lowpriorityscore=0 clxscore=1015 phishscore=0 priorityscore=1501
- malwarescore=0 impostorscore=0 mlxscore=0 mlxlogscore=999 suspectscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502080013
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ spamscore=0 lowpriorityscore=0 phishscore=0 clxscore=1015 bulkscore=0
+ mlxlogscore=999 impostorscore=0 priorityscore=1501 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502080017
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Several APIs such as rtas_get_indices(), rtas_get_dynamic_sensor(),
-rtas_set_dynamic_indicator(), rtas_platform_dump() and
-rtas_physical_attestation()  provided by librtas library are
-implemented in user space using rtas syscall in combination with
-writable mappings of /dev/mem. But this implementation is not
-compatible with system lockdown which prohibits /dev/mem access.
-The current kernel already provides char based driver interfaces
-for several RTAS calls such as VPD and system parameters to
-support lockdown feature.
+The RTAS call can be normal where retrieves the data form the
+hypervisor once or sequence based RTAS call which has to
+issue multiple times until the complete data is obtained. For
+some of these sequence RTAS calls, the OS should not interleave
+calls with different input until the sequence is completed.
+The data is collected for each call and copy to the buffer
+for the entire sequence during ioctl() handle and then expose
+this buffer to the user space with read() handle.
 
-This patch series adds new char based drivers, /dev/papr-indices
-for ibm,get-indices, ibm,get-dynamic-sensor-state and
-ibm,set-dynamic-indicator RTAS Calls. /dev/papr-platform-dump
-for ibm,platform-dump and /dev/papr-physical-attestation
-fir ibm,physical-attestation. Providing the similar
-open/ioctl/read interfaces to the user space as in the case of
-VPD and system parameters.
+One such sequence RTAS call is ibm,get-vpd and its support is
+already included in the current code. To add the similar support
+for other sequence based calls, move the common functions in to
+separate file and update papr_rtas_sequence struct with the
+following callbacks so that RTAS call specific code will be
+defined and executed to complete the sequence.
 
-I have made changes to librtas library to use the new kernel
-interfaces if the corresponding device entry is available.
+struct papr_rtas_sequence {
+        int error;
+        void params;
+        void (*begin) (struct papr_rtas_sequence *);
+        void (*end) (struct papr_rtas_sequence *);
+        const char * (*work) (struct papr_rtas_sequence *, size_t *);
+};
 
-This patch series has the following patches:
-powerpc/pseries: Define common functions for RTAS sequence calls
-- For some of sequence based RTAS calls, the OS should not start
-  another sequence with different input until the previous sequence
-  is completed. So the sequence should be completed during ioctl()
-  and expose the entire buffer during read(). ibm,get-indices is
-  sequence based RTAS function similar to ibm,get-vpd and we already
-  have the corresponding implementation for VPD driver. So update
-  papr_rtas_sequence struct for RTAS call specific functions and move
-  the top level sequence functions in to a separate file.
+params: Input parameters used to pass for RTAS call.
+Begin:	RTAS call specific function to initialize data
+	including work area allocation.
+End:	RTAS call specific function to free up resources
+	(free work area) after the sequence is completed.
+Work:	The actual RTAS call specific function which collects
+	the data from the hypervisor.
 
-powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
-- /dev/papr-indices driver supports ibm,get-indices,
-  ibm,get-dynamic-sensor-state and ibm,set-dynamic-indicator RTAS Calls.
-  papr-indices.h introduces 3 different ioctls for these RTAS calls and
-  the corresponding ioctl input buffer.
-
-powerpc/pseries: Add papr-indices char driver for ibm,get-indices
-- Introduce /dev/papr-indices char based driver and add support for
-  get-indices RTAS function
-
-powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
-- Update /dev/papr-indices for set-dynamic-indicator RTAS function
-
-powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
--  Update /dev/papr-indices for  get-dynamic-sensor-state RTAS function
-
-powerpc/pseries: Add papr-platform-dump character driver for dump
-   retrieval
-- Introduce /dev/papr-platform-dump char driver and adds support for
-  ibm,platform-dump. Received suggestions from the previous post as a
-  separate patch - Updated the patch with invalidating the dump using
-  a separate ioctl.
-
-powerpc/pseries: Add a char driver for papr-physical-attestation RTAS
-- Introduce /dev/papr-physical-attestation char driver to provide
-  kernel interface for ibm,physical-attestation RTAS function.
-
-Changelog:
-
-v5:
-- Return with -EINPROGRESS in papr_platform_dump_invalidate_ioctl()
-  if the complete dump is not read (Suggested by Michal Suchánek).
-
-v4:
-- Include patch "Add char driver for papr-physical-attestation RTAS"
-  in this series. ibm,physical-attestation is sequence based RTAS
-  call and the implementation is also similar to ibm,get-vpd and
-  ibm,get-indices.
-
-v3:
-- put_unused_fd() only after get_unused_fd() successful for the failure
-  case later ("Add papr-platform-dump character driver for dump
-  retrieval" patch).
-
-v2:
-- Added unlock rtas_ibm_set_dynamic_indicator_lock and
-  rtas_ibm_get_dynamic_sensor_state_lock mutex for failure cases
-  as reported by Dan Carpenter
-- Fixed build warnings for the proper function parameter descriptions
-  as reported by kernel test robot <lkp@intel.com>
-
-Haren Myneni (7):
-  powerpc/pseries: Define common functions for RTAS sequence calls
-  powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
-  powerpc/pseries: Add papr-indices char driver for ibm,get-indices
-  powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
-  powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
-  powerpc/pseries: Add papr-platform-dump character driver for dump
-    retrieval
-  powerpc/pseries: Add a char driver for physical-attestation RTAS
-
- arch/powerpc/include/asm/rtas.h               |   4 +
- arch/powerpc/include/uapi/asm/papr-indices.h  |  41 ++
- .../uapi/asm/papr-physical-attestation.h      |  31 ++
- .../include/uapi/asm/papr-platform-dump.h     |  15 +
- arch/powerpc/kernel/rtas.c                    |   8 +-
- arch/powerpc/platforms/pseries/Makefile       |   3 +-
- arch/powerpc/platforms/pseries/papr-indices.c | 488 ++++++++++++++++++
- .../platforms/pseries/papr-phy-attest.c       | 287 ++++++++++
- .../platforms/pseries/papr-platform-dump.c    | 411 +++++++++++++++
- .../platforms/pseries/papr-rtas-common.c      | 313 +++++++++++
+Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/Makefile       |   2 +-
+ .../platforms/pseries/papr-rtas-common.c      | 313 ++++++++++++++++
  .../platforms/pseries/papr-rtas-common.h      |  61 +++
- arch/powerpc/platforms/pseries/papr-vpd.c     | 350 ++-----------
- 12 files changed, 1700 insertions(+), 312 deletions(-)
- create mode 100644 arch/powerpc/include/uapi/asm/papr-indices.h
- create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
- create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
- create mode 100644 arch/powerpc/platforms/pseries/papr-indices.c
- create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
- create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
+ arch/powerpc/platforms/pseries/papr-vpd.c     | 350 +++---------------
+ 4 files changed, 418 insertions(+), 308 deletions(-)
  create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.c
  create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.h
 
+diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+index 7bf506f6b8c8..697c216b70dc 100644
+--- a/arch/powerpc/platforms/pseries/Makefile
++++ b/arch/powerpc/platforms/pseries/Makefile
+@@ -3,7 +3,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
+ 
+ obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
+ 			   of_helpers.o rtas-work-area.o papr-sysparm.o \
+-			   papr-vpd.o \
++			   papr-rtas-common.o papr-vpd.o \
+ 			   setup.o iommu.o event_sources.o ras.o \
+ 			   firmware.o power.o dlpar.o mobility.o rng.o \
+ 			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
+diff --git a/arch/powerpc/platforms/pseries/papr-rtas-common.c b/arch/powerpc/platforms/pseries/papr-rtas-common.c
+new file mode 100644
+index 000000000000..a01a4d913ead
+--- /dev/null
++++ b/arch/powerpc/platforms/pseries/papr-rtas-common.c
+@@ -0,0 +1,313 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) "papr-common: " fmt
++
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/signal.h>
++#include <linux/slab.h>
++#include <linux/file.h>
++#include <linux/fs.h>
++#include <linux/anon_inodes.h>
++#include <linux/sched/signal.h>
++#include "papr-rtas-common.h"
++
++/*
++ * Sequence based RTAS HCALL has to issue multiple times to retrieve
++ * complete data from the hypervisor. For some of these RTAS calls,
++ * the OS should not interleave calls with different input until the
++ * sequence is completed. So data is collected for these calls during
++ * ioctl handle and export to user space with read() handle.
++ * This file provides common functions needed for such sequence based
++ * RTAS calls Ex: ibm,get-vpd and ibm,get-indices.
++ */
++
++bool papr_rtas_blob_has_data(const struct papr_rtas_blob *blob)
++{
++	return blob->data && blob->len;
++}
++
++void papr_rtas_blob_free(const struct papr_rtas_blob *blob)
++{
++	if (blob) {
++		kvfree(blob->data);
++		kfree(blob);
++	}
++}
++
++/**
++ * papr_rtas_blob_extend() - Append data to a &struct papr_rtas_blob.
++ * @blob: The blob to extend.
++ * @data: The new data to append to @blob.
++ * @len:  The length of @data.
++ *
++ * Context: May sleep.
++ * Return: -ENOMEM on allocation failure, 0 otherwise.
++ */
++static int papr_rtas_blob_extend(struct papr_rtas_blob *blob,
++				const char *data, size_t len)
++{
++	const size_t new_len = blob->len + len;
++	const size_t old_len = blob->len;
++	const char *old_ptr = blob->data;
++	char *new_ptr;
++
++	new_ptr = kvrealloc(old_ptr, new_len, GFP_KERNEL_ACCOUNT);
++	if (!new_ptr)
++		return -ENOMEM;
++
++	memcpy(&new_ptr[old_len], data, len);
++	blob->data = new_ptr;
++	blob->len = new_len;
++	return 0;
++}
++
++/**
++ * papr_rtas_blob_generate() - Construct a new &struct papr_rtas_blob.
++ * @seq: work function of the caller that is called to obtain
++ *       data with the caller RTAS call.
++ *
++ * The @work callback is invoked until it returns NULL. @seq is
++ * passed to @work in its first argument on each call. When
++ * @work returns data, it should store the data length in its
++ * second argument.
++ *
++ * Context: May sleep.
++ * Return: A completely populated &struct papr_rtas_blob, or NULL on error.
++ */
++static const struct papr_rtas_blob *
++papr_rtas_blob_generate(struct papr_rtas_sequence *seq)
++{
++	struct papr_rtas_blob *blob;
++	const char *buf;
++	size_t len;
++	int err = 0;
++
++	blob  = kzalloc(sizeof(*blob), GFP_KERNEL_ACCOUNT);
++	if (!blob)
++		return NULL;
++
++	if (!seq->work)
++		return ERR_PTR(-EINVAL);
++
++
++	while (err == 0 && (buf = seq->work(seq, &len)))
++		err = papr_rtas_blob_extend(blob, buf, len);
++
++	if (err != 0 || !papr_rtas_blob_has_data(blob))
++		goto free_blob;
++
++	return blob;
++free_blob:
++	papr_rtas_blob_free(blob);
++	return NULL;
++}
++
++int papr_rtas_sequence_set_err(struct papr_rtas_sequence *seq, int err)
++{
++	/* Preserve the first error recorded. */
++	if (seq->error == 0)
++		seq->error = err;
++
++	return seq->error;
++}
++
++/*
++ * Higher-level retrieval code below. These functions use the
++ * papr_rtas_blob_* and sequence_* APIs defined above to create fd-based
++ * handles for consumption by user space.
++ */
++
++/**
++ * papr_rtas_run_sequence() - Run a single retrieval sequence.
++ * @seq:	Functions of the caller to complete the sequence
++ *
++ * Context: May sleep. Holds a mutex and an RTAS work area for its
++ *          duration. Typically performs multiple sleepable slab
++ *          allocations.
++ *
++ * Return: A populated &struct papr_rtas_blob on success. Encoded error
++ * pointer otherwise.
++ */
++static const struct papr_rtas_blob *papr_rtas_run_sequence(struct papr_rtas_sequence *seq)
++{
++	const struct papr_rtas_blob *blob;
++
++	if (seq->begin)
++		seq->begin(seq);
++
++	blob = papr_rtas_blob_generate(seq);
++	if (!blob)
++		papr_rtas_sequence_set_err(seq, -ENOMEM);
++
++	if (seq->end)
++		seq->end(seq);
++
++
++	if (seq->error) {
++		papr_rtas_blob_free(blob);
++		return ERR_PTR(seq->error);
++	}
++
++	return blob;
++}
++
++/**
++ * papr_rtas_retrieve() - Return the data blob that is exposed to
++ * user space.
++ * @seq: RTAS call specific functions to be invoked until the
++ *       sequence is completed.
++ * @param: RTAS calls specific parameters.
++ *
++ * Run sequences against @param until a blob is successfully
++ * instantiated, or a hard error is encountered, or a fatal signal is
++ * pending.
++ *
++ * Context: May sleep.
++ * Return: A fully populated data blob when successful. Encoded error
++ * pointer otherwise.
++ */
++const struct papr_rtas_blob *papr_rtas_retrieve(struct papr_rtas_sequence *seq)
++{
++	const struct papr_rtas_blob *blob;
++
++	/*
++	 * EAGAIN means the sequence returns error with a -4 (data
++	 * changed and need to start the sequence) status from RTAS calls
++	 * and we should attempt a new sequence. PAPR+ (v2.13 R1–7.3.20–5
++	 * - ibm,get-vpd, R1–7.3.17–6 - ibm,get-indices) indicates that
++	 * this should be a transient condition, not something that
++	 * happens continuously. But we'll stop trying on a fatal signal.
++	 */
++	do {
++		blob = papr_rtas_run_sequence(seq);
++		if (!IS_ERR(blob)) /* Success. */
++			break;
++		if (PTR_ERR(blob) != -EAGAIN) /* Hard error. */
++			break;
++		cond_resched();
++	} while (!fatal_signal_pending(current));
++
++	return blob;
++}
++
++/**
++ * papr_rtas_setup_file_interface - Complete the sequence and obtain
++ * the data and export to user space with fd-based handles. Then the
++ * user spave gets the data with read() handle.
++ * @seq: RTAS call specific functions to get the data.
++ * @param: RTAS call specific input parameters.
++ * @fops: RTAS call specific file operations such as read().
++ * @name: RTAS call specific char device node.
++ *
++ * Return: FD handle for consumption by user space
++ */
++long papr_rtas_setup_file_interface(struct papr_rtas_sequence *seq,
++				const struct file_operations *fops,
++				char *name)
++{
++	const struct papr_rtas_blob *blob;
++	struct file *file;
++	long ret;
++	int fd;
++
++	blob = papr_rtas_retrieve(seq);
++	if (IS_ERR(blob))
++		return PTR_ERR(blob);
++
++	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
++	if (fd < 0) {
++		ret = fd;
++		goto free_blob;
++	}
++
++	file = anon_inode_getfile(name, fops, (void *)blob, O_RDONLY);
++	if (IS_ERR(file)) {
++		ret = PTR_ERR(file);
++		goto put_fd;
++	}
++
++	file->f_mode |= FMODE_LSEEK | FMODE_PREAD;
++	fd_install(fd, file);
++	return fd;
++
++put_fd:
++	put_unused_fd(fd);
++free_blob:
++	papr_rtas_blob_free(blob);
++	return ret;
++}
++
++/**
++ * papr_rtas_sequence_should_stop() - Determine whether RTAS retrieval
++ *                                    sequence should continue.
++ * @seq: RTAS call sequence state.
++ *
++ * Examines the sequence error state and outputs of the last call to
++ * the specific RTAS to determine whether the sequence in progress
++ * should continue or stop.
++ *
++ * Return: True if the sequence has encountered an error or if all data
++ *         for this sequence has been retrieved. False otherwise.
++ */
++bool papr_rtas_sequence_should_stop(const struct papr_rtas_sequence *seq,
++				s32 status, bool init_state)
++{
++	bool done;
++
++	if (seq->error)
++		return true;
++
++	switch (status) {
++	case RTAS_SEQ_COMPLETE:
++		if (init_state)
++			done = false; /* Initial state. */
++		else
++			done = true; /* All data consumed. */
++		break;
++	case RTAS_SEQ_MORE_DATA:
++		done = false; /* More data available. */
++		break;
++	default:
++		done = true; /* Error encountered. */
++		break;
++	}
++
++	return done;
++}
++
++/*
++ * User space read to retrieve data for the corresponding RTAS call.
++ * papr_rtas_blob is filled with the data using the corresponding RTAS
++ * call sequence API.
++ */
++ssize_t papr_rtas_common_handle_read(struct file *file,
++	       char __user *buf, size_t size, loff_t *off)
++{
++	const struct papr_rtas_blob *blob = file->private_data;
++
++	/* bug: we should not instantiate a handle without any data attached. */	if (!papr_rtas_blob_has_data(blob)) {
++		pr_err_once("handle without data\n");
++		return -EIO;
++	}
++
++	return simple_read_from_buffer(buf, size, off, blob->data, blob->len);
++}
++
++int papr_rtas_common_handle_release(struct inode *inode,
++		struct file *file)
++{
++	const struct papr_rtas_blob *blob = file->private_data;
++
++	papr_rtas_blob_free(blob);
++
++	return 0;
++}
++
++loff_t papr_rtas_common_handle_seek(struct file *file, loff_t off,
++					int whence)
++{
++	const struct papr_rtas_blob *blob = file->private_data;
++
++	return fixed_size_llseek(file, off, whence, blob->len);
++}
+diff --git a/arch/powerpc/platforms/pseries/papr-rtas-common.h b/arch/powerpc/platforms/pseries/papr-rtas-common.h
+new file mode 100644
+index 000000000000..4ceabcaf4905
+--- /dev/null
++++ b/arch/powerpc/platforms/pseries/papr-rtas-common.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _ASM_POWERPC_PAPR_RTAS_COMMON_H
++#define _ASM_POWERPC_PAPR_RTAS_COMMON_H
++
++#include <linux/types.h>
++
++/*
++ * Return codes for sequence based RTAS calls.
++ * Not listed under PAPR+ v2.13 7.2.8: "Return Codes".
++ * But defined in the specific section of each RTAS call.
++ */
++#define RTAS_SEQ_COMPLETE	0 /* All data has been retrieved. */
++#define RTAS_SEQ_MORE_DATA	1 /* More data is available */
++#define RTAS_SEQ_START_OVER	-4 /* Data changed, restart call sequence. */
++
++/*
++ * Internal "blob" APIs for accumulating RTAS call results into
++ * an immutable buffer to be attached to a file descriptor.
++ */
++struct papr_rtas_blob {
++	const char *data;
++	size_t len;
++};
++
++/**
++ * struct papr_sequence - State for managing a sequence of RTAS calls.
++ * @error:  Shall be zero as long as the sequence has not encountered an error,
++ *          -ve errno otherwise. Use papr_rtas_sequence_set_err() to update.
++ * @params: Parameter block to pass to rtas_*() calls.
++ * @begin: Work area allocation and initialize the needed parameter
++ *         values passed to RTAS call
++ * @end: Free the allocated work area
++ * @work: Obtain data with RTAS call and invoke it until the sequence is
++ *        completed.
++ *
++ */
++struct papr_rtas_sequence {
++	int error;
++	void *params;
++	void (*begin)(struct papr_rtas_sequence *seq);
++	void (*end)(struct papr_rtas_sequence *seq);
++	const char *(*work)(struct papr_rtas_sequence *seq, size_t *len);
++};
++
++extern bool papr_rtas_blob_has_data(const struct papr_rtas_blob *blob);
++extern void papr_rtas_blob_free(const struct papr_rtas_blob *blob);
++extern int papr_rtas_sequence_set_err(struct papr_rtas_sequence *seq,
++		int err);
++extern const struct papr_rtas_blob *papr_rtas_retrieve(struct papr_rtas_sequence *seq);
++extern long papr_rtas_setup_file_interface(struct papr_rtas_sequence *seq,
++			const struct file_operations *fops, char *name);
++extern bool papr_rtas_sequence_should_stop(const struct papr_rtas_sequence *seq,
++				s32 status, bool init_state);
++extern ssize_t papr_rtas_common_handle_read(struct file *file,
++			char __user *buf, size_t size, loff_t *off);
++extern int papr_rtas_common_handle_release(struct inode *inode,
++					struct file *file);
++extern loff_t papr_rtas_common_handle_seek(struct file *file, loff_t off,
++					int whence);
++#endif /* _ASM_POWERPC_PAPR_RTAS_COMMON_H */
++
+diff --git a/arch/powerpc/platforms/pseries/papr-vpd.c b/arch/powerpc/platforms/pseries/papr-vpd.c
+index 1574176e3ffc..1fcc6894ea90 100644
+--- a/arch/powerpc/platforms/pseries/papr-vpd.c
++++ b/arch/powerpc/platforms/pseries/papr-vpd.c
+@@ -2,7 +2,6 @@
+ 
+ #define pr_fmt(fmt) "papr-vpd: " fmt
+ 
+-#include <linux/anon_inodes.h>
+ #include <linux/build_bug.h>
+ #include <linux/file.h>
+ #include <linux/fs.h>
+@@ -20,14 +19,7 @@
+ #include <asm/rtas-work-area.h>
+ #include <asm/rtas.h>
+ #include <uapi/asm/papr-vpd.h>
+-
+-/*
+- * Function-specific return values for ibm,get-vpd, derived from PAPR+
+- * v2.13 7.3.20 "ibm,get-vpd RTAS Call".
+- */
+-#define RTAS_IBM_GET_VPD_COMPLETE    0 /* All VPD has been retrieved. */
+-#define RTAS_IBM_GET_VPD_MORE_DATA   1 /* More VPD is available. */
+-#define RTAS_IBM_GET_VPD_START_OVER -4 /* VPD changed, restart call sequence. */
++#include "papr-rtas-common.h"
+ 
+ /**
+  * struct rtas_ibm_get_vpd_params - Parameters (in and out) for ibm,get-vpd.
+@@ -91,13 +83,14 @@ static int rtas_ibm_get_vpd(struct rtas_ibm_get_vpd_params *params)
+ 	case RTAS_INVALID_PARAMETER:
+ 		ret = -EINVAL;
+ 		break;
+-	case RTAS_IBM_GET_VPD_START_OVER:
++	case RTAS_SEQ_START_OVER:
+ 		ret = -EAGAIN;
++		pr_info_ratelimited("VPD changed during retrieval, retrying\n");
+ 		break;
+-	case RTAS_IBM_GET_VPD_MORE_DATA:
++	case RTAS_SEQ_MORE_DATA:
+ 		params->sequence = rets[0];
+ 		fallthrough;
+-	case RTAS_IBM_GET_VPD_COMPLETE:
++	case RTAS_SEQ_COMPLETE:
+ 		params->written = rets[1];
+ 		/*
+ 		 * Kernel or firmware bug, do not continue.
+@@ -118,91 +111,6 @@ static int rtas_ibm_get_vpd(struct rtas_ibm_get_vpd_params *params)
+ 	return ret;
+ }
+ 
+-/*
+- * Internal VPD "blob" APIs for accumulating ibm,get-vpd results into
+- * an immutable buffer to be attached to a file descriptor.
+- */
+-struct vpd_blob {
+-	const char *data;
+-	size_t len;
+-};
+-
+-static bool vpd_blob_has_data(const struct vpd_blob *blob)
+-{
+-	return blob->data && blob->len;
+-}
+-
+-static void vpd_blob_free(const struct vpd_blob *blob)
+-{
+-	if (blob) {
+-		kvfree(blob->data);
+-		kfree(blob);
+-	}
+-}
+-
+-/**
+- * vpd_blob_extend() - Append data to a &struct vpd_blob.
+- * @blob: The blob to extend.
+- * @data: The new data to append to @blob.
+- * @len:  The length of @data.
+- *
+- * Context: May sleep.
+- * Return: -ENOMEM on allocation failure, 0 otherwise.
+- */
+-static int vpd_blob_extend(struct vpd_blob *blob, const char *data, size_t len)
+-{
+-	const size_t new_len = blob->len + len;
+-	const size_t old_len = blob->len;
+-	const char *old_ptr = blob->data;
+-	char *new_ptr;
+-
+-	new_ptr = kvrealloc(old_ptr, new_len, GFP_KERNEL_ACCOUNT);
+-	if (!new_ptr)
+-		return -ENOMEM;
+-
+-	memcpy(&new_ptr[old_len], data, len);
+-	blob->data = new_ptr;
+-	blob->len = new_len;
+-	return 0;
+-}
+-
+-/**
+- * vpd_blob_generate() - Construct a new &struct vpd_blob.
+- * @generator: Function that supplies the blob data.
+- * @arg:       Context pointer supplied by caller, passed to @generator.
+- *
+- * The @generator callback is invoked until it returns NULL. @arg is
+- * passed to @generator in its first argument on each call. When
+- * @generator returns data, it should store the data length in its
+- * second argument.
+- *
+- * Context: May sleep.
+- * Return: A completely populated &struct vpd_blob, or NULL on error.
+- */
+-static const struct vpd_blob *
+-vpd_blob_generate(const char * (*generator)(void *, size_t *), void *arg)
+-{
+-	struct vpd_blob *blob;
+-	const char *buf;
+-	size_t len;
+-	int err = 0;
+-
+-	blob  = kzalloc(sizeof(*blob), GFP_KERNEL_ACCOUNT);
+-	if (!blob)
+-		return NULL;
+-
+-	while (err == 0 && (buf = generator(arg, &len)))
+-		err = vpd_blob_extend(blob, buf, len);
+-
+-	if (err != 0 || !vpd_blob_has_data(blob))
+-		goto free_blob;
+-
+-	return blob;
+-free_blob:
+-	vpd_blob_free(blob);
+-	return NULL;
+-}
+-
+ /*
+  * Internal VPD sequence APIs. A VPD sequence is a series of calls to
+  * ibm,get-vpd for a given location code. The sequence ends when an
+@@ -210,31 +118,14 @@ vpd_blob_generate(const char * (*generator)(void *, size_t *), void *arg)
+  * returned.
+  */
+ 
+-/**
+- * struct vpd_sequence - State for managing a VPD sequence.
+- * @error:  Shall be zero as long as the sequence has not encountered an error,
+- *          -ve errno otherwise. Use vpd_sequence_set_err() to update this.
+- * @params: Parameter block to pass to rtas_ibm_get_vpd().
+- */
+-struct vpd_sequence {
+-	int error;
+-	struct rtas_ibm_get_vpd_params params;
+-};
+-
+ /**
+  * vpd_sequence_begin() - Begin a VPD retrieval sequence.
+- * @seq:      Uninitialized sequence state.
+- * @loc_code: Location code that defines the scope of the VPD to return.
+- *
+- * Initializes @seq with the resources necessary to carry out a VPD
+- * sequence. Callers must pass @seq to vpd_sequence_end() regardless
+- * of whether the sequence succeeds.
+  *
+  * Context: May sleep.
+  */
+-static void vpd_sequence_begin(struct vpd_sequence *seq,
+-			       const struct papr_location_code *loc_code)
++static void vpd_sequence_begin(struct papr_rtas_sequence *seq)
+ {
++	struct rtas_ibm_get_vpd_params *vpd_params;
+ 	/*
+ 	 * Use a static data structure for the location code passed to
+ 	 * RTAS to ensure it's in the RMA and avoid a separate work
+@@ -242,6 +133,7 @@ static void vpd_sequence_begin(struct vpd_sequence *seq,
+ 	 */
+ 	static struct papr_location_code static_loc_code;
+ 
++	vpd_params =  (struct rtas_ibm_get_vpd_params *)seq->params;
+ 	/*
+ 	 * We could allocate the work area before acquiring the
+ 	 * function lock, but that would allow concurrent requests to
+@@ -249,14 +141,12 @@ static void vpd_sequence_begin(struct vpd_sequence *seq,
+ 	 * allocate the work area under the lock.
+ 	 */
+ 	mutex_lock(&rtas_ibm_get_vpd_lock);
+-	static_loc_code = *loc_code;
+-	*seq = (struct vpd_sequence) {
+-		.params = {
+-			.work_area = rtas_work_area_alloc(SZ_4K),
+-			.loc_code = &static_loc_code,
+-			.sequence = 1,
+-		},
+-	};
++	static_loc_code = *(struct papr_location_code *)vpd_params->loc_code;
++	vpd_params =  (struct rtas_ibm_get_vpd_params *)seq->params;
++	vpd_params->work_area = rtas_work_area_alloc(SZ_4K);
++	vpd_params->loc_code = &static_loc_code;
++	vpd_params->sequence = 1;
++	vpd_params->status = 0;
+ }
+ 
+ /**
+@@ -265,180 +155,39 @@ static void vpd_sequence_begin(struct vpd_sequence *seq,
+  *
+  * Releases resources obtained by vpd_sequence_begin().
+  */
+-static void vpd_sequence_end(struct vpd_sequence *seq)
+-{
+-	rtas_work_area_free(seq->params.work_area);
+-	mutex_unlock(&rtas_ibm_get_vpd_lock);
+-}
+-
+-/**
+- * vpd_sequence_should_stop() - Determine whether a VPD retrieval sequence
+- *                              should continue.
+- * @seq: VPD sequence state.
+- *
+- * Examines the sequence error state and outputs of the last call to
+- * ibm,get-vpd to determine whether the sequence in progress should
+- * continue or stop.
+- *
+- * Return: True if the sequence has encountered an error or if all VPD for
+- *         this sequence has been retrieved. False otherwise.
+- */
+-static bool vpd_sequence_should_stop(const struct vpd_sequence *seq)
+-{
+-	bool done;
+-
+-	if (seq->error)
+-		return true;
+-
+-	switch (seq->params.status) {
+-	case 0:
+-		if (seq->params.written == 0)
+-			done = false; /* Initial state. */
+-		else
+-			done = true; /* All data consumed. */
+-		break;
+-	case 1:
+-		done = false; /* More data available. */
+-		break;
+-	default:
+-		done = true; /* Error encountered. */
+-		break;
+-	}
+-
+-	return done;
+-}
+-
+-static int vpd_sequence_set_err(struct vpd_sequence *seq, int err)
++static void vpd_sequence_end(struct papr_rtas_sequence *seq)
+ {
+-	/* Preserve the first error recorded. */
+-	if (seq->error == 0)
+-		seq->error = err;
++	struct rtas_ibm_get_vpd_params *vpd_params;
+ 
+-	return seq->error;
++	vpd_params =  (struct rtas_ibm_get_vpd_params *)seq->params;
++	rtas_work_area_free(vpd_params->work_area);
++	mutex_unlock(&rtas_ibm_get_vpd_lock);
+ }
+ 
+ /*
+- * Generator function to be passed to vpd_blob_generate().
++ * Generator function to be passed to papr_rtas_blob_generate().
+  */
+-static const char *vpd_sequence_fill_work_area(void *arg, size_t *len)
++static const char *vpd_sequence_fill_work_area(struct papr_rtas_sequence *seq,
++						size_t *len)
+ {
+-	struct vpd_sequence *seq = arg;
+-	struct rtas_ibm_get_vpd_params *p = &seq->params;
++	struct rtas_ibm_get_vpd_params *p;
++	bool init_state;
++
++	p = (struct rtas_ibm_get_vpd_params *)seq->params;
++	init_state = (p->written == 0) ? true : false;
+ 
+-	if (vpd_sequence_should_stop(seq))
++	if (papr_rtas_sequence_should_stop(seq, p->status, init_state))
+ 		return NULL;
+-	if (vpd_sequence_set_err(seq, rtas_ibm_get_vpd(p)))
++	if (papr_rtas_sequence_set_err(seq, rtas_ibm_get_vpd(p)))
+ 		return NULL;
+ 	*len = p->written;
+ 	return rtas_work_area_raw_buf(p->work_area);
+ }
+ 
+-/*
+- * Higher-level VPD retrieval code below. These functions use the
+- * vpd_blob_* and vpd_sequence_* APIs defined above to create fd-based
+- * VPD handles for consumption by user space.
+- */
+-
+-/**
+- * papr_vpd_run_sequence() - Run a single VPD retrieval sequence.
+- * @loc_code: Location code that defines the scope of VPD to return.
+- *
+- * Context: May sleep. Holds a mutex and an RTAS work area for its
+- *          duration. Typically performs multiple sleepable slab
+- *          allocations.
+- *
+- * Return: A populated &struct vpd_blob on success. Encoded error
+- * pointer otherwise.
+- */
+-static const struct vpd_blob *papr_vpd_run_sequence(const struct papr_location_code *loc_code)
+-{
+-	const struct vpd_blob *blob;
+-	struct vpd_sequence seq;
+-
+-	vpd_sequence_begin(&seq, loc_code);
+-	blob = vpd_blob_generate(vpd_sequence_fill_work_area, &seq);
+-	if (!blob)
+-		vpd_sequence_set_err(&seq, -ENOMEM);
+-	vpd_sequence_end(&seq);
+-
+-	if (seq.error) {
+-		vpd_blob_free(blob);
+-		return ERR_PTR(seq.error);
+-	}
+-
+-	return blob;
+-}
+-
+-/**
+- * papr_vpd_retrieve() - Return the VPD for a location code.
+- * @loc_code: Location code that defines the scope of VPD to return.
+- *
+- * Run VPD sequences against @loc_code until a blob is successfully
+- * instantiated, or a hard error is encountered, or a fatal signal is
+- * pending.
+- *
+- * Context: May sleep.
+- * Return: A fully populated VPD blob when successful. Encoded error
+- * pointer otherwise.
+- */
+-static const struct vpd_blob *papr_vpd_retrieve(const struct papr_location_code *loc_code)
+-{
+-	const struct vpd_blob *blob;
+-
+-	/*
+-	 * EAGAIN means the sequence errored with a -4 (VPD changed)
+-	 * status from ibm,get-vpd, and we should attempt a new
+-	 * sequence. PAPR+ v2.13 R1–7.3.20–5 indicates that this
+-	 * should be a transient condition, not something that happens
+-	 * continuously. But we'll stop trying on a fatal signal.
+-	 */
+-	do {
+-		blob = papr_vpd_run_sequence(loc_code);
+-		if (!IS_ERR(blob)) /* Success. */
+-			break;
+-		if (PTR_ERR(blob) != -EAGAIN) /* Hard error. */
+-			break;
+-		pr_info_ratelimited("VPD changed during retrieval, retrying\n");
+-		cond_resched();
+-	} while (!fatal_signal_pending(current));
+-
+-	return blob;
+-}
+-
+-static ssize_t papr_vpd_handle_read(struct file *file, char __user *buf, size_t size, loff_t *off)
+-{
+-	const struct vpd_blob *blob = file->private_data;
+-
+-	/* bug: we should not instantiate a handle without any data attached. */
+-	if (!vpd_blob_has_data(blob)) {
+-		pr_err_once("handle without data\n");
+-		return -EIO;
+-	}
+-
+-	return simple_read_from_buffer(buf, size, off, blob->data, blob->len);
+-}
+-
+-static int papr_vpd_handle_release(struct inode *inode, struct file *file)
+-{
+-	const struct vpd_blob *blob = file->private_data;
+-
+-	vpd_blob_free(blob);
+-
+-	return 0;
+-}
+-
+-static loff_t papr_vpd_handle_seek(struct file *file, loff_t off, int whence)
+-{
+-	const struct vpd_blob *blob = file->private_data;
+-
+-	return fixed_size_llseek(file, off, whence, blob->len);
+-}
+-
+-
+ static const struct file_operations papr_vpd_handle_ops = {
+-	.read = papr_vpd_handle_read,
+-	.llseek = papr_vpd_handle_seek,
+-	.release = papr_vpd_handle_release,
++	.read = papr_rtas_common_handle_read,
++	.llseek = papr_rtas_common_handle_seek,
++	.release = papr_rtas_common_handle_release,
+ };
+ 
+ /**
+@@ -460,10 +209,9 @@ static const struct file_operations papr_vpd_handle_ops = {
+  */
+ static long papr_vpd_create_handle(struct papr_location_code __user *ulc)
+ {
++	struct rtas_ibm_get_vpd_params vpd_params = {};
++	struct papr_rtas_sequence seq = {};
+ 	struct papr_location_code klc;
+-	const struct vpd_blob *blob;
+-	struct file *file;
+-	long err;
+ 	int fd;
+ 
+ 	if (copy_from_user(&klc, ulc, sizeof(klc)))
+@@ -472,31 +220,19 @@ static long papr_vpd_create_handle(struct papr_location_code __user *ulc)
+ 	if (!string_is_terminated(klc.str, ARRAY_SIZE(klc.str)))
+ 		return -EINVAL;
+ 
+-	blob = papr_vpd_retrieve(&klc);
+-	if (IS_ERR(blob))
+-		return PTR_ERR(blob);
++	seq = (struct papr_rtas_sequence) {
++		.begin = vpd_sequence_begin,
++		.end = vpd_sequence_end,
++		.work = vpd_sequence_fill_work_area,
++	};
+ 
+-	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
+-	if (fd < 0) {
+-		err = fd;
+-		goto free_blob;
+-	}
++	vpd_params.loc_code = &klc;
++	seq.params = (void *)&vpd_params;
+ 
+-	file = anon_inode_getfile("[papr-vpd]", &papr_vpd_handle_ops,
+-				  (void *)blob, O_RDONLY);
+-	if (IS_ERR(file)) {
+-		err = PTR_ERR(file);
+-		goto put_fd;
+-	}
++	fd = papr_rtas_setup_file_interface(&seq, &papr_vpd_handle_ops,
++			"[papr-vpd]");
+ 
+-	file->f_mode |= FMODE_LSEEK | FMODE_PREAD;
+-	fd_install(fd, file);
+ 	return fd;
+-put_fd:
+-	put_unused_fd(fd);
+-free_blob:
+-	vpd_blob_free(blob);
+-	return err;
+ }
+ 
+ /*
 -- 
 2.43.5
 
