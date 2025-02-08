@@ -1,95 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-5971-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-5972-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53A75A2D299
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2025 02:26:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C3E8A2D30F
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Feb 2025 03:21:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YqY8s4fRlz30Jc;
-	Sat,  8 Feb 2025 12:26:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YqZMS49bvz30Nc;
+	Sat,  8 Feb 2025 13:21:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738978013;
-	cv=none; b=odfvOU+9Kcu+e8+NaK+M6M4SJiRa6umvBd6k1hdGlhHmmnIKQYeB6YHq/+SEjMoYFlygPQEECoR1PG7ZpCO6xaQ6zbHFqKrdGxebIr0oNU1/Vnj9i2SDIdTVm1cg8bmhrZELuWlDaNIgDQcbe6gXdFv9sJEM+nilC9z3CyaEeZX47PTX4gXpgNtdIiOBijWhi6OY7Qz/h26CUOqXtomorwu67gtavav5vR6d0jzxcAKuR3Xwi+yodHsyX0mHlW7z9UytXVVC6SId1vr8Ykmk0/J386eBJ6vXC536ILpT9OTxZNrqq8qdYSiGQst6cXJkRdcpxE+4v0NDZwkwDiV4RQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1738981268;
+	cv=none; b=c2jW16Gz7NMNi2s3ncHkUEre0jcgVM/xhEkxaOSeEy/XU8NQI8SKx9+MRlPxfSMourErbnhVyOOoyT9XSJzYMlCpebeejgrnWviLR/aWVa6HggUgFHiEKaCzkkyWr/usfvhpeqkHQK+lHR92h04kuA1avCTGDpQhlFKOwpbl5B9VIMeChxh6vgQrpNSd8leCAqE8ZqUicpVH50/xDrrIKa04dbGd+PSB/fL5b/kaLPTEyObZDJJT50RDo7VwR/LNVCsywxVLb3dbrXkqG+66GBaJo71Yq9HJQipVIFjY+HtXfzEtrfkjC8ishAuzwbDiUUkyRCALJlU9O4L0qHmejg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1738978013; c=relaxed/relaxed;
-	bh=4ZCCS5i0uJ02mZmrJ0lmanmkHP8jTq4YYxKxZR5qDyQ=;
+	t=1738981268; c=relaxed/relaxed;
+	bh=QhuxYzs6EPPLQd8hZgEhvMdJhL9zbzO3RueqpKHooa0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bPI9vawm1yVCoMRahVlEU5UGrkJVs581KKcXITeqJhsjJ4orBNcXih/eF0UV3Ud0jICJ6LFuY7i7dATYMRcx2EsORN0r4bcKLYSzcTGI25mQLPd5J+gq3+MRMfovywYX6PJFjAoUzMWKIBZgH7Fxmo2jtlotvznDbnEg6LlNTf+wiOxI3EHGerFF9vR/e8KpxpdIrNkhNwgP0/wP/ZUgOGRI3JUewFTaoLLKawnxGlCnEIqi1z1uOI/NRoaLTkJ0yoejrk3aoKZf78wVeYVCv3uOKuTYju6N0dNZvSCi+/NMdHC+M61REJ+M3RL9DCzuJtJTLsHnLqTiC+1uHc2ujg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UbloR0TA; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=YsfwhSZFMMG5V/zge+bwpEBMlsQd1QbcAqUMVEATgSf3ZPeJh19wwPZH771e1Hv1lK9Cip9os2jT96seKSSM/Mx7SESdfRQndCovZIF7+PAyUXtZOY89RDVdKZsbUpVSILcHB0x9rGwcfvayOKxiAP1CMS+WGkZ+yF8PHDq4x6VTCbWhFuFjeFExOnpz85JWfoRrIq1MNS33zBnbWAEiPgsWoiPSiKv0nx+XX6TtCdn7fbLK5t505JrfZzl5v73pdI/Mot+Tg5Ch2jom/zCh3xL9Xd4RqHaRxyclBGiSXgkvOYw6H18Od19DVExbkyRwV4QXRIeAw2HNuL95gquKEQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=A78rJooZ; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UbloR0TA;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=A78rJooZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqY8q2dD6z2yGM
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 12:26:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1738978012; x=1770514012;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=Vf+orbI0MIxZ+NdnmW8ZrODzdSpawbZ5ZYwzT7WkFHs=;
-  b=UbloR0TAxnhScRZRVENKU6HWMn+TE9nq+uwNClL7d/g2ggQUTqTUpI0P
-   v6lMQQJtZ4sqnx2pzEvAi5zI0+mgFq72XzExOi7+qCZQfq7bg2KgynLOo
-   dDqgIUT6mF/rwI0ZSBOrDrp61CAfzk8OkmkpVMP4hZSTcNTn+4xH2Cxrg
-   P9RWWojs2jUKHQWyRSUYYLpHLHuAQpICGFuIFe8/P0yuOEvwbwys2s8bz
-   l/27E3lHAqSyrLZJY5Ox1veTdOO/xWgSKFfxo7XZe1s9OmmXtoWboA2AY
-   7Aml44fv2tbaP7phGRRgpBOgFwrA0VzcM0r4SkSkGbzAO10jQlxQgzW7r
-   w==;
-X-CSE-ConnectionGUID: eRSIP0ryQ7St5BJLfkoxww==
-X-CSE-MsgGUID: ni39wSYuSPG5KUSeSPEPbA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11338"; a="50613561"
-X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; 
-   d="scan'208";a="50613561"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Feb 2025 17:26:47 -0800
-X-CSE-ConnectionGUID: 3S9sGSljQLuj0EiY8i0xug==
-X-CSE-MsgGUID: NQdROjzMTsa5FP6NHBmBrA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,268,1732608000"; 
-   d="scan'208";a="116720032"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa004.fm.intel.com with ESMTP; 07 Feb 2025 17:26:40 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tgZcD-000zM7-1v;
-	Sat, 08 Feb 2025 01:26:37 +0000
-Date: Sat, 8 Feb 2025 09:26:10 +0800
-From: kernel test robot <lkp@intel.com>
-To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= via B4 Relay <devnull+j.ne.posteo.net@kernel.org>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>
-Cc: oe-kbuild-all@lists.linux.dev, imx@lists.linux.dev,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YqZML5ZgKz2ypW
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 13:21:00 +1100 (AEDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 22AED240027
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Feb 2025 03:20:53 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1738981254; bh=X/9UQWBS5m7Ib3mDDNhFlWLQ3zPrVaQFBwT1jLZLH3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=A78rJooZN8UtN3+vX1NHzW5GxE8tztAy6ovu2FBjQcSf1io3nYqEo2OUdgj0cSrZE
+	 VrdhXd4ZP4qXBfZrgzi6QaW6wT9eeBlkiqPhxEsQHOdzxlgkeh18AIiTNcI4i+f9Co
+	 l3XGq4UzkfR7QDLqgAyXpGsC7M8JbHFHYvYKm0Kq9HfspPykKeNCwGEMlS4UK6ZpmO
+	 bKKpcemYzXNkRt2e48In5cmQAdCxY2QWz1WyBAd0GdU9tfOJ64akKLXgWn3VPUN952
+	 LHTWH0F7L3NRiUHEGq79kL+wKRk1yX5rk7zQFg1pb14Y6jxf39/8Cle2JYNi/49wzq
+	 V6T7FV87eJSfw==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YqZM431Sgz9rxL;
+	Sat,  8 Feb 2025 03:20:48 +0100 (CET)
+Date: Sat,  8 Feb 2025 02:20:47 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Mark Brown <broonie@kernel.org>
+Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
 	Scott Wood <oss@buserror.net>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Damien Le Moal <dlemoal@kernel.org>,
 	Niklas Cassel <cassel@kernel.org>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
-	Lee Jones <lee@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
 	Lorenzo Pieralisi <lpieralisi@kernel.org>,
 	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
 	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	=?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Richard Weinberger <richard@nod.at>,
 	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org
-Subject: Re: [PATCH v2 06/12] dt-bindings: pci: Convert fsl,mpc83xx-pcie to
- YAML
-Message-ID: <202502080922.nK85none-lkp@intel.com>
-References: <20250207-ppcyaml-v2-6-8137b0c42526@posteo.net>
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT
+ bindings
+Message-ID: <Z6a_f03Ct9aB7Bbn@probook>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,44 +93,39 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250207-ppcyaml-v2-6-8137b0c42526@posteo.net>
-X-Spam-Status: No, score=-2.8 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+In-Reply-To: <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Neusch�fer,
+On Fri, Feb 07, 2025 at 09:38:05PM +0000, Mark Brown wrote:
+> On Fri, Feb 07, 2025 at 10:30:17PM +0100, J. Neuschäfer via B4 Relay wrote:
+> 
+> > This is a spin-off of the series titled
+> > "powerpc: MPC83xx cleanup and LANCOM NWAPP2 board".
+> 
+> > During the development of that series, it became clear that many
+> > devicetree bindings for Freescale MPC8xxx platforms are still in the old
+> > plain-text format, or don't exist at all, and in any case don't mention
+> > all valid compatible strings.
+> 
+> What's the story with dependencies here - why is all this stuff in one
+> series?
 
-kernel test robot noticed the following build warnings:
+The patches are independent of each other, except for the four elbc/nand
+patches. They are in the same series because they came up during the
+same project and achieve similar goals, but it isn't necessary.
 
-[auto build test WARNING on 2014c95afecee3e76ca4a56956a936e23283f05b]
 
-url:    https://github.com/intel-lab-lkp/linux/commits/J-Neusch-fer-via-B4-Relay/dt-bindings-powerpc-Add-Freescale-NXP-MPC83xx-SoCs/20250208-053519
-base:   2014c95afecee3e76ca4a56956a936e23283f05b
-patch link:    https://lore.kernel.org/r/20250207-ppcyaml-v2-6-8137b0c42526%40posteo.net
-patch subject: [PATCH v2 06/12] dt-bindings: pci: Convert fsl,mpc83xx-pcie to YAML
-reproduce: (https://download.01.org/0day-ci/archive/20250208/202502080922.nK85none-lkp@intel.com/reproduce)
+> Normally I'd expect bindings conversions to be standalone.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502080922.nK85none-lkp@intel.com/
+Noted.
 
-All warnings (new ones prefixed by >>):
 
-   Warning: Documentation/arch/powerpc/cxl.rst references a file that doesn't exist: Documentation/ABI/testing/sysfs-class-cxl
->> Warning: Documentation/devicetree/bindings/pci/fsl,mpc8xxx-pci.yaml references a file that doesn't exist: Documentation/devicetree/bindings/pci/fsl,pci.txt
-   Warning: Documentation/devicetree/bindings/regulator/siliconmitus,sm5703-regulator.yaml references a file that doesn't exist: Documentation/devicetree/bindings/mfd/siliconmitus,sm5703.yaml
-   Warning: Documentation/hwmon/g762.rst references a file that doesn't exist: Documentation/devicetree/bindings/hwmon/g762.txt
-   Warning: Documentation/translations/ja_JP/SubmittingPatches references a file that doesn't exist: linux-2.6.12-vanilla/Documentation/dontdiff
-   Warning: Documentation/translations/zh_CN/admin-guide/README.rst references a file that doesn't exist: Documentation/dev-tools/kgdb.rst
-   Warning: Documentation/translations/zh_CN/dev-tools/gdb-kernel-debugging.rst references a file that doesn't exist: Documentation/dev-tools/gdb-kernel-debugging.rst
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+J. Neuschäfer
 
