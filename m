@@ -1,49 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-5998-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6000-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B70ACA2DBDE
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 10:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA1EA2DBF0
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 11:01:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrNH42tMlz2yVv;
-	Sun,  9 Feb 2025 20:50:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YrNXV4VcMz2yk7;
+	Sun,  9 Feb 2025 21:01:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739094608;
-	cv=none; b=cDZAU0VE5jhIVBWOumeNLSZUh9iOVgnyVXqFsvyb1CEzgPNABT4oxc15pblxeyBydfrvjoKn5YZ5Nv+7Uw/JLIktIykyRptehV0JxtrkQO/QdnNq8+6tYAlmB0rVHAuqcK/76+0xQCUGrAIZC3xQBoK1A1VitQM9iA8ZZPk42c9q7cuXwg5Qz3fkTSx58zsokJk0xP/QbeHPPNUa2eFYamLaKf6YXYgNaYQCHSbU1LvJ7Y2SysqDBknIKykqq7XZPdJMqpV5S4j6YJnpSSuWJZOv2eLieFSlJ+GSbdpr86xhnLmRdW4KZnGvJ4vEZ9e7ifpIQ9cA4Dm6W8l+HQP/rQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.186
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739095306;
+	cv=none; b=KMCv28VUK7Hp0U5BYnIrfR4YnQaXcrptgJEFzswVdWCAuOcJFQuvqJ97Mi8uZQbgAjYAJEkeITq31aWPXyVyZuW3qoc8AEy0txVvq3iDUZLN3cNxzs+az9eknp18I751bC3+/FC58gCbgjeTj52GdFnIT3KLAkDYfDplyTT3lqfxw1Bp6ERFWogD6yItiDWZl/xYCy6nWpbYrCf5VaibSAnJYBESZR555MK8XDhvXa4Lr0szD5NIzptrjmxZ2duSrVqLhlGIms+NmZYi4D3H2QD3VKM6cKsV8/R/ousKf1Oai21OW/53MLAQdDao6yeut4lnBCWPRbwj9zpD7Oqqsw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739094608; c=relaxed/relaxed;
-	bh=Z3bKHEYmP4NrCF3rYVJ3ZWLrLHw6gos/4l/0/P4BDng=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VR3Q8L2+AP/yI9ZfI40j8MvloD8z/UYjHPVl+nYDjP1/wEHZj/07dLJyc7s+R31omMKAxpYjttZHm8wMaZgh37q1n7IhAJiJK4qVuknrXK0u15JEZ6SWJxCi8HPGoz7U00aOJ+5c6IFy7Qb/xtremWXdShA1mOvsQkNWET6aP6P+kw0yIVPUkNET+tFVwInM2+6d7pmNU1Tfu4DJDR1fWusW3eOWmGQaCMM5CIv8/N5RAZPUx2UgdGyn0iqtfCmEcHd94XE6ZBWcVvGW7GwRD9xDxKYoCCIV9A2Sp/F2GhEwx/ffMxnfrsfnpnyT/RO0qt1TRG18anIa1A4RrNcVCg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrNH33NRmz2xmS
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Feb 2025 20:50:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4YrMpP1Dw5z9sRr;
-	Sun,  9 Feb 2025 10:28:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id DDi-BSp373Uq; Sun,  9 Feb 2025 10:28:45 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4YrMpP0PSMz9sRk;
-	Sun,  9 Feb 2025 10:28:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id F275D8B764;
-	Sun,  9 Feb 2025 10:28:44 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id lJDIllVd9YL8; Sun,  9 Feb 2025 10:28:44 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6C8D78B763;
-	Sun,  9 Feb 2025 10:28:44 +0100 (CET)
-Message-ID: <0203253b-4bda-4e66-b7e6-e74300c44c80@csgroup.eu>
-Date: Sun, 9 Feb 2025 10:28:42 +0100
+	t=1739095306; c=relaxed/relaxed;
+	bh=9cSbhneX97WdYtqTFiUpL4Xz+wowhgsJfRXIyo0XD/Q=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=N7l1QIvN/GXg74KPPe54E8I1CDUyKGughuQz+8viyU5Ksk9K20JjPi7rjIrjVh4p1m8FFEXMt3k0wxaa/kWnUftyFk1rKPBvwD4wYYf0f19Dp3+yPyQ7lxI+z/ajxoYXneBW6ubqnkkNrddEUjo7yiNxKjTdWbgoxegU0m1yCk3r0BFcfynI0bkyyrvYSJjOMDt1VQZOJXJNf+6BF2nY7ujxPXIulRUi3b4zW0HJMkhdSaQUlK0xc8j0qg808BXPx+YpyJLbv1uYsnuXdnvZhi2Nh3a2Eo33bOgMWNuWV3xd8/islvKHdoVXopNw2wJNOJZAKFIFeZ9XWu9HibtULA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=95.215.58.186; helo=out-186.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.186; helo=out-186.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 6227 seconds by postgrey-1.37 at boromir; Sun, 09 Feb 2025 21:01:40 AEDT
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrNXN5KC4z2yZ4
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Feb 2025 21:01:39 +1100 (AEDT)
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1739095279;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9cSbhneX97WdYtqTFiUpL4Xz+wowhgsJfRXIyo0XD/Q=;
+	b=sE9os2oCjn5wm8jnTVvYcVtsREUjUYFxqpeprhiDim4rUG/+AqdL+oucY7wOl6roCTG3KQ
+	vbQFdqiU1SgzVUSSV8hHxiKNbVnT0cEfKjMaB7UXMbQLmd/KSeTBzTVeUBBBTzk03hWMlY
+	puW18AQ0rIHwYhVZpFVgDNNdVqPd0qI=
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -55,70 +49,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: phy: remove unused PHY_INIT_TIMEOUT
- definitions
-To: Heiner Kallweit <hkallweit1@gmail.com>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>,
- Russell King - ARM Linux <linux@armlinux.org.uk>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <11be8192-b722-4680-9d1c-3e4323afc27f@gmail.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <11be8192-b722-4680-9d1c-3e4323afc27f@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51.11.1\))
+Subject: Re: [RESEND PATCH] fadump: Use str_yes_no() helper in
+ fadump_show_config()
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <505dcbf1-c185-4bc3-9615-041dfd6344e5@csgroup.eu>
+Date: Sun, 9 Feb 2025 11:01:06 +0100
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>,
+ Hari Bathini <hbathini@linux.ibm.com>,
+ Sourabh Jain <sourabhjain@linux.ibm.com>,
+ "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ "Aneesh Kumar K.V (IBM)" <aneesh.kumar@kernel.org>,
+ Bjorn Helgaas <bhelgaas@google.com>,
+ Baoquan He <bhe@redhat.com>,
+ linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <B65D3E24-E34B-47DA-902F-8DD338CCFE09@linux.dev>
+References: <20250209081704.2758-2-thorsten.blum@linux.dev>
+ <505dcbf1-c185-4bc3-9615-041dfd6344e5@csgroup.eu>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On 9. Feb 2025, at 10:16, Christophe Leroy wrote:
+> Le 09/02/2025 =C3=A0 09:17, Thorsten Blum a =C3=A9crit :
+>> Remove hard-coded strings by using the str_yes_no() helper function.
+>> Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+>> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+>> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+>=20
+> Any reason for resending ? Your patch is not lost, see =
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?submitter=3D89400
 
+Ah sorry, I missed this. It's sometimes hard to know the status of a
+patch when it's not in next yet.
 
-Le 08/02/2025 à 22:14, Heiner Kallweit a écrit :
-> Both identical definitions of PHY_INIT_TIMEOUT aren't used,
-> so remove them.
-
-Would be good to say when it stopped being used, ie which commit or 
-commits removed its use.
-
-Also why only remove PHY_INIT_TIMEOUT ? For instance PHY_FORCE_TIMEOUT 
-also seems to be unused. PHY_CHANGE_TIME as well.
-
-> 
-> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-> ---
->   drivers/net/ethernet/freescale/ucc_geth.h | 1 -
->   include/linux/phy.h                       | 1 -
->   2 files changed, 2 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
-> index 38789faae..03b515240 100644
-> --- a/drivers/net/ethernet/freescale/ucc_geth.h
-> +++ b/drivers/net/ethernet/freescale/ucc_geth.h
-> @@ -890,7 +890,6 @@ struct ucc_geth_hardware_statistics {
->   							   addresses */
->   
->   #define TX_TIMEOUT                              (1*HZ)
-> -#define PHY_INIT_TIMEOUT                        100000
->   #define PHY_CHANGE_TIME                         2
->   
->   /* Fast Ethernet (10/100 Mbps) */
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index 3028f8abf..9cb86666c 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -293,7 +293,6 @@ static inline long rgmii_clock(int speed)
->   	}
->   }
->   
-> -#define PHY_INIT_TIMEOUT	100000
->   #define PHY_FORCE_TIMEOUT	10
->   
->   #define PHY_MAX_ADDR	32
-
+Thanks,
+Thorsten=
 
