@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-6007-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6008-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FACA2E005
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 19:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 84CF7A2E06C
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 21:20:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrcG73JKqz2yVF;
-	Mon, 10 Feb 2025 05:50:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YrfG266Hgz2ykf;
+	Mon, 10 Feb 2025 07:20:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739127007;
-	cv=none; b=Lf2EV250qCQEuqmqnh6+k9wHcUpMMX4Av8PT6xNGEg2h7SyGb1ZFhKX9XmpoeTcZ5vs+mgiJZujrW88r8ZfOPswUeaI4HugjH9mcodVVYomGmLxUCzJehZ1IuifCK1Pcw7QO8frlXc9XcAEWiurnrraW0Ov/Ouh+ecLRukx5MmZkxkConoiU6tzbd2yzyDAt0bV+ZvYvJ8R00o3lLAXfaJLijMfMeyy/bWKmuA7SNAhhTlXmTBnnmfbBO+J5IOmnj6flYbbIqV5kRAD7ucOB+Xm67LYxUDEk7OaAwR3qkz6p1ShUqOOZj87So8oaOPrgW/ZkTBnPdu3OmAXxENDGbQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=81.19.149.120
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739126725;
+	cv=none; b=SX4bEGQK4XeWAdTr89utQg0sKUQS6Sgv5pIGALYGkIVXtZ7B/SRb7WniAQfISbTVFlRqWIZssHfmIM+cKKI0gHm+UOP9QSTL6uQIo/aph0ZZtlYD49J8KagjJ89FFAw/bB8dGbMjAXC91I/21HuvmoQ0col17c6Rc2xBI3dmga8MDP1Y1FzfporV5K+x7UMrU9nPglwiEMhbl8uJalJAeKP73Tlf6khXAQw03e/o587Sc0Bs8fpzEcyR9WvB4sRYZFdIhG4JUKDblGNNlXOB8FGSEefU4T4tSMvcAFz7jLOLw0kNQxFADsufFi3w35QCCMhbsVejZswy3MImfGwa5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739127007; c=relaxed/relaxed;
-	bh=CpONG0rbEqBNTlYB4LWJHxewj3mVx4KrNJX9G+KswfQ=;
+	t=1739126725; c=relaxed/relaxed;
+	bh=lJ0M1krCmi4eiwYD2F8NcoMHdmDqLxf3C+ZCd5NYc0s=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=S/ApSk6h9wfbmEXwSCHSmYS1IWv8UVZU7zEAi50UtKEwiezoCuAZPEogmsTiwC5A7CvSA0zwYEKZQCqDTvftoC2NhwSupppRjorBHyzGy4nx99rf2WA/i1DGM4Vy0agKdl+wAe+Qv9Qzr3IeewaCS05JA2Ryp/60E5ycCkDNmnAp9zcw4JKH9XT4FQ1GT0C57x5fzZUtqYrIP/2S2e637Ynwbo3S8ifhBOlCOd2r5E8ueHhw0kT3nOfC1t9do41d9JKycGqHp4XarWzbLlF25jbmZLXhV3Zj/KsDBKWfyTl2v4kM6aW4YHL4AM7gL+R+kp2lOUoDLGxCLbTJ9djUuA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrcG63BnZz2xl6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 05:50:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Yrc4y5BH2z9sPd;
-	Sun,  9 Feb 2025 19:42:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id ogLfoC-SXGTd; Sun,  9 Feb 2025 19:42:10 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Yrc4y4J49z9rvV;
-	Sun,  9 Feb 2025 19:42:10 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7541C8B764;
-	Sun,  9 Feb 2025 19:42:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id uy_LGgAXm037; Sun,  9 Feb 2025 19:42:10 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B5028B763;
-	Sun,  9 Feb 2025 19:42:09 +0100 (CET)
-Message-ID: <deb0d4fa-d2ec-4acc-b217-b5ebb683bf05@csgroup.eu>
-Date: Sun, 9 Feb 2025 19:42:07 +0100
+	 In-Reply-To:Content-Type; b=AfXxIJcYen65O1Rak5eQx+8Wi8y+6B4JYZ3m2TrTnRl1JtYN4bjjM3hqUZc4M4UQs95FqCynGt53kv4GW+g8VMTTqUn5ZC2DCje8iFN5pglVdB1+PtKqH+5w6k2QSV1YS7lR9NFLvl+Nzq8r2HOHvahNOGnbiUfdlG+QHcpHXdQ4V7wF4xXr4T7XtC7p3egMRZfhJTro1MgOOxocCeCalUnLS6go3oL5+cRXPfVUOoyhIkT6aL1vyaCgY/E5k7WS0ZWezkHYW/cTOvA1PAosA68dYrQNc9otVR/B/T4y/QVl3UVB1bHfGzSpSgeTC6R8f2W32kOaydUDuM07uLicNw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com; dkim=pass (1024-bit key; unprotected) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.a=rsa-sha256 header.s=dkim11 header.b=aOs0nG8i; dkim-atps=neutral; spf=pass (client-ip=81.19.149.120; helo=mx10lb.world4you.com; envelope-from=gerhard@engleder-embedded.com; receiver=lists.ozlabs.org) smtp.mailfrom=engleder-embedded.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=engleder-embedded.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=engleder-embedded.com header.i=@engleder-embedded.com header.a=rsa-sha256 header.s=dkim11 header.b=aOs0nG8i;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=engleder-embedded.com (client-ip=81.19.149.120; helo=mx10lb.world4you.com; envelope-from=gerhard@engleder-embedded.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1072 seconds by postgrey-1.37 at boromir; Mon, 10 Feb 2025 05:45:24 AEDT
+Received: from mx10lb.world4you.com (mx10lb.world4you.com [81.19.149.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yrc8h3Kptz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 05:45:24 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=engleder-embedded.com; s=dkim11; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=lJ0M1krCmi4eiwYD2F8NcoMHdmDqLxf3C+ZCd5NYc0s=; b=aOs0nG8iCgPhMu0X6frAFmWxgo
+	jsVXpuqyarFrlcNmBJ6SKf/ou9ZIxO7C0PifSq/w29e5FuYue0zFLiuDsGlb1kG0RZzSbWfH6798Y
+	FatCS9D7J9ysG95zHe4VmgErCeP4NPLAAxEd9yOPXj+FdJ3kx5hhQGzMOYXeVqzydv/o=;
+Received: from [88.117.60.28] (helo=[10.0.0.160])
+	by mx10lb.world4you.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.97.1)
+	(envelope-from <gerhard@engleder-embedded.com>)
+	id 1thC1d-000000006NR-3bxU;
+	Sun, 09 Feb 2025 19:27:26 +0100
+Message-ID: <3a94fc8d-b2de-4ccf-be41-dc9c1aed26fd@engleder-embedded.com>
+Date: Sun, 9 Feb 2025 19:27:24 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,98 +58,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 5/9] powerpc: Use preempt_model_str().
-To: Shrikanth Hegde <sshegde@linux.ibm.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- Ben Segall <bsegall@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>,
- Juri Lelli <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>,
- Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
- Thomas Gleixner <tglx@linutronix.de>,
- Valentin Schneider <vschneid@redhat.com>,
- Vincent Guittot <vincent.guittot@linaro.org>, Will Deacon <will@kernel.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org
-References: <20250203141632.440554-1-bigeasy@linutronix.de>
- <20250203141632.440554-6-bigeasy@linutronix.de>
- <65c6f60d-bb52-48bd-a02c-87ffd2a915d4@csgroup.eu>
- <20250203160103.9DikC9FJ@linutronix.de>
- <51999b8e-61c0-48b7-b744-c83d39e7f311@csgroup.eu>
- <20250204082223.6iNyq_KR@linutronix.de>
- <7b51f7de-8e4b-4766-85ca-dee24832c693@linux.ibm.com>
- <93833119-9406-4d30-aa7b-4521adb3a573@csgroup.eu>
- <936f0451-a4ee-4e14-9ce9-9cd9613fc55c@linux.ibm.com>
- <0f05c020-47e4-444d-90ab-9eb8414f4ef8@csgroup.eu>
- <b95272d4-e593-48e9-aa32-8758394f4b61@linux.ibm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <b95272d4-e593-48e9-aa32-8758394f4b61@linux.ibm.com>
+Subject: Re: [PATCH net-next] net: freescale: ucc_geth: remove unused
+ PHY_INIT_TIMEOUT and PHY_CHANGE_TIME
+To: Heiner Kallweit <hkallweit1@gmail.com>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org, Andrew Lunn <andrew+netdev@lunn.ch>,
+ Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
+ Eric Dumazet <edumazet@google.com>, David Miller <davem@davemloft.net>,
+ Simon Horman <horms@kernel.org>
+References: <62e9429b-57e0-42ec-96a5-6a89553f441d@gmail.com>
+Content-Language: en-US
+From: Gerhard Engleder <gerhard@engleder-embedded.com>
+In-Reply-To: <62e9429b-57e0-42ec-96a5-6a89553f441d@gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 7bit
+X-AV-Do-Run: Yes
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-Le 09/02/2025 à 15:38, Shrikanth Hegde a écrit :
+On 09.02.25 13:27, Heiner Kallweit wrote:
+> Both definitions are unused. Last users have been removed with:
 > 
+> 1577ecef7666 ("netdev: Merge UCC and gianfar MDIO bus drivers")
+> 728de4c927a3 ("ucc_geth: migrate ucc_geth to phylib")
 > 
-> On 2/8/25 23:25, Christophe Leroy wrote:
->>
->>
->> Le 08/02/2025 à 14:42, Shrikanth Hegde a écrit :
->>>
->>>
->>> On 2/8/25 18:25, Christophe Leroy wrote:
->>>>
->>>>
->>>> Le 08/02/2025 à 08:35, Shrikanth Hegde a écrit :
->>>>>
->>>>>
->>>>> On 2/4/25 13:52, Sebastian Andrzej Siewior wrote:
->>>>>> Use preempt_model_str() instead of manually conducting the preemption
->>>>>> model. Use pr_emerg() instead of printk() to pass a loglevel.
->>>>>
->>>>> even on powerpc, i see __die ends up calling show_regs_print_info().
->>>>> Why print it twice?
->>>>
->>>> I don't understand what you mean, what is printed twice ?
->>>>
->>>> I can't see show_regs_print_info() printing the preemption model, am 
->>>> I missing something ?
->>>>
->>>
->>> Patch 2/9 add preemption string in dump_stack_print_info.
->>>
->>> __die -> show_regs() _> show_regs_print_info() -> 
->>> dump_stack_print_info() -> init_utsname()->version, 
->>> preempt_model_str(), BUILD_ID_VAL);
->>>
->>> Wont we end up in this path?
->>
->> Indeed I missed that. You are right, we now get the information twice:
+> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+> ---
+>   drivers/net/ethernet/freescale/ucc_geth.h | 2 --
+>   1 file changed, 2 deletions(-)
 > 
-> I think we can remove it from arch specific code and rely on lib/ 
-> dump_stack?
+> diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
+> index 38789faae..84f92f638 100644
+> --- a/drivers/net/ethernet/freescale/ucc_geth.h
+> +++ b/drivers/net/ethernet/freescale/ucc_geth.h
+> @@ -890,8 +890,6 @@ struct ucc_geth_hardware_statistics {
+>   							   addresses */
+>   
+>   #define TX_TIMEOUT                              (1*HZ)
+> -#define PHY_INIT_TIMEOUT                        100000
+> -#define PHY_CHANGE_TIME                         2
+>   
+>   /* Fast Ethernet (10/100 Mbps) */
+>   #define UCC_GETH_URFS_INIT                      512	/* Rx virtual FIFO size
 
-Yes I guess so.
-
-> 
-> And similar concern of printk vs pr_warn/pr_emerg would apply to that as 
-> well i guess.
-
-Well, powerpc's show_regs() calls it with 
-show_regs_print_info(KERN_DEFAULT);
-
-And dump_stack_print_info() uses printk with log_lvl so there should be 
-no concern here.
-
-> 
->>
->> [  440.068216] BUG: Unable to handle kernel data access on write at 
->> 0xc09036fc
-
+Reviewed-by: Gerhard Engleder <gerhard@engleder-embedded.com>
 
