@@ -1,79 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-6001-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6002-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC063A2DD2E
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 12:53:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A1398A2DDA4
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 13:27:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrR183MQGz2yDt;
-	Sun,  9 Feb 2025 22:53:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YrRmX6Ry8z2xmZ;
+	Sun,  9 Feb 2025 23:27:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::62a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739101996;
-	cv=none; b=UC4hD5SKSczAABMIZrJw5VW/n2w8q+PNAw/lLF1DBkkom+ww+cgAH7bpQNiYeoJQYAvwxKLzdZiuCFwzldHjgs3Ls0mUAI3+nZABdnCqpqX1XOCufaqOCXn9P4Hc9Evno9DeX9ApWBp+9WZpN1dWcbHRSW1bymMjd7kz+xyGtP32D4AylXTwQnQrEMz8Z8b8S2jChT/9bcOOdcdYWb9WMhesvu2e8kEah1VYxVSHl3zkGUVj6G+bEu323zcBN6hMb0reSCroKfr6FC1k9ONpGqF2br5oz3Z9Jm8/adwR+HcYzuhbxFubMm/uLMfXuPGKL5J6veEQhhNEzobA9dHRDg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::633"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739104044;
+	cv=none; b=LN1gJ/BCcsVqExwHFbRWM4fB7fWU5tI2s8n29/GJiLf7LKj7X2o/N0PeuR3bY2WgBsmCIV25znoHfJNHvnEiiB+uI042Ar2WoViNHOARVOEb+J4LjFL/eScdzH+hLbvJvbge4y4RLML+28Yqjk1Hnu173PKcM8mWUPfT6Wkmh4KNh94IqR3EC9ANq/1PlAbPnR3NDCbBoY1nbQKxHoUWeyQAEa75e9vTQqJ08pXDi2Svy4pgZvCS+KA1miu008wtbQkJ7RYQxpz0Fl6RmhMxDKIyT9IyJCvWPZTozNOTpM9WQY/DmVjnldaEmXsj4NBv8kYTM+0v+MSjLwl1ZRstlQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739101996; c=relaxed/relaxed;
-	bh=jLSLghMasTDx86lV/S59OCcHiw086kUYUqJjjTP6bVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VnfTWKo4c8YKukSCgvEMJS7dHxPF1Z9pEm3sOzse8SGbXMq1ugL2HRW51o2fco2WG84pEdGemXwh6U6nwUVMAOIbbcGFX70iZohPYN28+mldbSBwm8JoyZgu2Z1srChQ1yEXwvbOz0awilKc+2qOk3n8Q3Qyfzxbm1E1KMj7T9QV49h2j9vL6xXIbZCk30rTerNW9/ma0+SZ5RrS9PyWk/awBc3PVuhDVwS8h+wldkErxcZcEhlsIh+egx4PLr32ku3vd7yK8oJZMKK6tWnRvrli1vO8VN4PlwmiQPCVjCjQYpFF7Iu8ZEXhTUVzVbHyEW7+++KcGvc+vaIfIXPN4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VfaCYuSc; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=hkallweit1@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1739104044; c=relaxed/relaxed;
+	bh=s/Q0g45wO/Vm5iLpg41l4hJpa4Tg12cuaqUPd3vVcdI=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=kpyWIzQ4Ot7LtuMYKixso83MCKLuqhTzXZO/mLvBLlhBR1xwCqKzKVEX5DxLJnlkk9T8aiFfevIsfHu+N0BR+T0UoaA1uKdK8iww+WqsCtLjK1EapECvS7rae6jeAulYVqOxnlNaUiAArR5MhZM3nFJxnjj2TOFIrahvi01CjCrnX+kYfF9rw9xLy5/dlgklicROy3kqzeWHKD1EQWa7Dr9BdpknwJsEcL2FiWp5j1v04udiCa8zwD4swdeLhVdVaAaGli0TI9vIqQjPj6t8DmCVZunzP8QlyOOGa+LU2GQG7/Wrf7ej/UfGWRNfH3/cnX46aji+Nsyk5dRwRO88zQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EQ9L3eHH; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=hkallweit1@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=VfaCYuSc;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EQ9L3eHH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::62a; helo=mail-ej1-x62a.google.com; envelope-from=hkallweit1@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::633; helo=mail-ej1-x633.google.com; envelope-from=hkallweit1@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrR163QZDz2xrb
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Feb 2025 22:53:13 +1100 (AEDT)
-Received: by mail-ej1-x62a.google.com with SMTP id a640c23a62f3a-aaf0f1adef8so639901166b.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Feb 2025 03:53:13 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrRmW2XZSz2xbS
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Feb 2025 23:27:22 +1100 (AEDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-ab78e6edb48so292032666b.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Feb 2025 04:27:22 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739101988; x=1739706788; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jLSLghMasTDx86lV/S59OCcHiw086kUYUqJjjTP6bVg=;
-        b=VfaCYuScgQeoQCKmHVH4o7ATlcwXj/T84T3+eh3sNtiMdjVBmKKL4FxkMjfua/9s2+
-         R9BHIgVaJd7poM2V3XZ4oUdXVI93vYSC2IGrGmVOc29Jxe9mUrYzX0DzHpO9ZLTkE5m4
-         C2XYBHf1VLbB4UxProNPpAtvBGYC4oLZ+FaFiZGdTZSkQWBbW23FWhcNOyABm/8XAy2V
-         4ReZHL9tHGQs+1mAeBC70XhQJPEIGsCaQQ4UyiVYsO141/HbMNBjayOEkNbqPat7XwXr
-         FeA53nj/2B+yp1G0sbajciyTMml6aOEakZ0To9dNU8MRyPavSzJOnm2jLP9BjqhxT1Vp
-         6PyA==
+        d=gmail.com; s=20230601; t=1739104039; x=1739708839; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s/Q0g45wO/Vm5iLpg41l4hJpa4Tg12cuaqUPd3vVcdI=;
+        b=EQ9L3eHHXjH2woLAS3Em6T2pMdTATlXrNdC6sgdUZ+ysgVjQDs1Cp1W2NY16NPj9O2
+         O92Zk8qH1Fd80x30deoRNjZSSgZHX3+ehMRHuVJifAm1lbLpMNkmvdnljYcj+iPIfGe5
+         v3/2YE1oqxYUmXB2Sw29HsQg7W4AXOCdIrtM86FXCHvD/lvDO9JwGfXOWFxbQjyyiX3A
+         LOgXPAP2LiVgvmbVV+bAt3n1LYdhUDU3AybsRFCWHKyk3BEa4ZiWK2cmVRnit9q1BKXH
+         wLRfgGABfkTn3H37vsuTRe3/xa+oOFoTWzTJKfihOcs89fCa44wBEfAqHrDCZQsMi+Ts
+         Nb1A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739101988; x=1739706788;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jLSLghMasTDx86lV/S59OCcHiw086kUYUqJjjTP6bVg=;
-        b=uECqiG9m7MhlpkvEMcxx9gaXvA7ZmeyLFcV/EqiivMYCvBUlwCMTO1SGpZEhNyBMGz
-         9ZXHojIyDuWYCjnwmSI3oMXe5GfSOcDftccV5isHJFOMFqd8NnN45x7J/skt3Q4KDfsO
-         L2/zpcYz13cR5yiEWXM24FV8ASX00Nj9VI9e7cmw6R/+jrZ/KFox2/lhVoWAuvtIz49J
-         iwZvdq8cocbvZ4yoN6vY2mEN7n59pvHqnHjUjkxhfRyrSSTKUwewIDHwwaIJ4fn1hg1a
-         uJfTNu1VP6ZvePC8vZA1mWwz8v9uvwrDM3+xjwfN01LDKV3bNu0jjFO1jXaAGL6ITDZG
-         XwCw==
-X-Forwarded-Encrypted: i=1; AJvYcCV7DoimBZpvwmUJFoyi2rw+njL6cxb+T4ttDYNqMBHOmHTWuHP/jjBv/MVFYlT3T1CezQHXkWa2QnKxTwk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz4kyUI+ZqnV7qJaFXP8zT0kk0U4UYBor9s4SBQ+67qU4bLZEUf
-	45Os4L7ffskN3UNlQ4x2lpYXwkRH15yGRW7hLc5ddhvUw2xzRrsy
-X-Gm-Gg: ASbGncvdCMA+GnO11IP/PmSu306LgYV8WG1R/MCHfRaxQzOSuqsyyElJnOcUKtRhdCo
-	O15oNcOba/fXGXRlssFy7gmfdSssg9eftmzu2oZ5Q/hV/OsEHUeigPMwSzM6L1t06zH3bn+hLps
-	KeASPEHFxmBl9QVpCv11SLaY7bpF+ehyrjdPneCXeiiCjsUlF1xzQWqEw/70JbZfdKPpF/a4s10
-	1gZO4r66De6o8T9OLjwMIllOS0qOIE7Aor8om1Dy2vg/mldQMmCXOmMAm5vNlDrck0HmPfSuHCP
-	52HuWtYobRG2WIOsytwgB90AJvseVh7BPYjUyS+xSckn+UCoXOCkoXFx0OW42mm/XlPj0USJW3U
-	5ew7ElPKZ83Tj31uZZep/efhh7ycCIt7JAUaqnTfQLS6wEuQCKZlZ9VfiWt0s86O0h+dnf78Uzr
-	5HtKfhGRs=
-X-Google-Smtp-Source: AGHT+IEAmRFatxs5HFZpaqxhC6KAsurPDfElH5RS0jBNWRJQo3BlU7WLnlPdq2L8wy4k2OiUDwlHUw==
-X-Received: by 2002:a17:906:f5a4:b0:ab7:b08:dab2 with SMTP id a640c23a62f3a-ab789b39591mr1133994966b.22.1739101987651;
-        Sun, 09 Feb 2025 03:53:07 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739104039; x=1739708839;
+        h=content-transfer-encoding:autocrypt:subject:from:cc:to
+         :content-language:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=s/Q0g45wO/Vm5iLpg41l4hJpa4Tg12cuaqUPd3vVcdI=;
+        b=NFkFK+uo3voXehH/MW295YssOZ17f3ZPHoFXbaAsvCYjysbNwcJyU/J/RQ8UD3spx0
+         w74MKweCkjJkMfgDxI061g4B8yqGcjO7X/sW3WxFj4E9QcGdFS6hqxCbrX1VINLI5LoJ
+         qC9G493MtAg4wFUZ4uydHLEDrXTDtk2bJrfbSYC9UJZAYvbXJ9+C1ZAZeyN5lFksYvo/
+         TP5Dyxee2egVnLttpCZ34OiaqN3KkIgEaTeevmgiAx0QpztJfE5Y+eu5ImWt+Bi4jADy
+         xDr5520PUtujUgN06bZZFUKU8Uv4vvhKQi2eEvfN51Gg2jYxPH8sZtHLQa4yHBA3uR6+
+         SutQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWjqtLcwMUGdNRL4Z2+9Lht3ah1uXuIO9UttTKRQi/pjqRpTsPxnzRlejbr6pbFfjl3v6lbkaPC4N0WfLc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyNY/Sz7rvUW0pMesbQ9B2sUctlPOFXwwmgtH7Ft1KeJrnC6qPc
+	jrDSnzc84IXTzbD4H83ZdXOVipZxts1q09ZzjJxLDGAPW2hFrDQJ
+X-Gm-Gg: ASbGncsfabtK26CPm3sZkXO5KCqT4N5zM1jGpHt7yuJqFtMFO9kNwTdHBYAtzABxENh
+	O/Ane+tevheSZAWGjK8YLHc96s+1wGY3u+fB/vH/TgHGpGJtIvRa7tgDSXDwKREm1ZPU1XhAacz
+	GCeUXXrfFb6WK1QTi0le+5NSF8mLxMV6kzjAUxN33LvGqJtx+rw5nfqJpb/XF2e8e/9uHa1lQ/7
+	KExrYleLZjahRh8kHpKZzaCFyNQj49mpJCLthbYfscSnnJvpZYudeeIEina2Yurak2lCdb0xhr9
+	qZHFyvs4u4p0bcHPlzfnMHKfk/94NcXRYFw+7h3FW512l9i+59CwB2YHkGj0V/gETdlBLJCsKdI
+	iB43P2ayK76yQcKtUqxDa6BjO4bEf6HVsBB/rEt24Egdksf3Fs4TMiLgzCHCgC5H3hKETBeVhLq
+	85ybWvh44=
+X-Google-Smtp-Source: AGHT+IEhfxVc23G9a45HCrUbZrYLCTwURq5kvHB3aPAZ0j7Kz+eR1B9m+52RTg+woKuLjm2dzMnWlw==
+X-Received: by 2002:a05:6402:210e:b0:5dc:58c8:3154 with SMTP id 4fb4d7f45d1cf-5de450800a4mr29998512a12.28.1739104039232;
+        Sun, 09 Feb 2025 04:27:19 -0800 (PST)
 Received: from ?IPV6:2a02:3100:acf0:cb00:e533:c1d0:f45f:da1c? (dynamic-2a02-3100-acf0-cb00-e533-c1d0-f45f-da1c.310.pool.telefonica.de. [2a02:3100:acf0:cb00:e533:c1d0:f45f:da1c])
-        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-ab78d5771easm489169366b.83.2025.02.09.03.53.06
+        by smtp.googlemail.com with ESMTPSA id a640c23a62f3a-ab772f48882sm667378466b.19.2025.02.09.04.27.17
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Feb 2025 03:53:07 -0800 (PST)
-Message-ID: <2257559d-6528-48c9-a2cf-b60a3a976037@gmail.com>
-Date: Sun, 9 Feb 2025 12:53:33 +0100
+        Sun, 09 Feb 2025 04:27:18 -0800 (PST)
+Message-ID: <62e9429b-57e0-42ec-96a5-6a89553f441d@gmail.com>
+Date: Sun, 9 Feb 2025 13:27:44 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,20 +85,15 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next] net: phy: remove unused PHY_INIT_TIMEOUT
- definitions
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Andrew Lunn <andrew+netdev@lunn.ch>, Paolo Abeni <pabeni@redhat.com>,
- Jakub Kicinski <kuba@kernel.org>, David Miller <davem@davemloft.net>,
- Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>,
- Andrew Lunn <andrew@lunn.ch>,
- Russell King - ARM Linux <linux@armlinux.org.uk>
-Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-References: <11be8192-b722-4680-9d1c-3e4323afc27f@gmail.com>
- <0203253b-4bda-4e66-b7e6-e74300c44c80@csgroup.eu>
 Content-Language: en-US
+To: Andrew Lunn <andrew+netdev@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+ Paolo Abeni <pabeni@redhat.com>, David Miller <davem@davemloft.net>,
+ Eric Dumazet <edumazet@google.com>, Simon Horman <horms@kernel.org>
+Cc: "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+ linuxppc-dev@lists.ozlabs.org
 From: Heiner Kallweit <hkallweit1@gmail.com>
+Subject: [PATCH net-next] net: freescale: ucc_geth: remove unused
+ PHY_INIT_TIMEOUT and PHY_CHANGE_TIME
 Autocrypt: addr=hkallweit1@gmail.com; keydata=
  xsFNBF/0ZFUBEAC0eZyktSE7ZNO1SFXL6cQ4i4g6Ah3mOUIXSB4pCY5kQ6OLKHh0FlOD5/5/
  sY7IoIouzOjyFdFPnz4Bl3927ClT567hUJJ+SNaFEiJ9vadI6vZm2gcY4ExdIevYHWe1msJF
@@ -144,58 +137,38 @@ Autocrypt: addr=hkallweit1@gmail.com; keydata=
  H/0Z53okMykVs3a8tECPHIxnre2UxKdTbCEkjkR4V6JyplTS47oWMw3zyI7zkaadfzVFBxk2
  lo/Tny+FX1Azea3Ce7oOnRUEZtWSsUidtIjmL8YUQFZYm+JUIgfRmSpMFq8JP4VH43GXpB/S
  OCrl+/xujzvoUBFV/cHKjEQYBxo+MaiQa1U54ykM2W4DnHb1UiEf5xDkFd4=
-In-Reply-To: <0203253b-4bda-4e66-b7e6-e74300c44c80@csgroup.eu>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
 	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 09.02.2025 10:28, Christophe Leroy wrote:
-> 
-> 
-> Le 08/02/2025 à 22:14, Heiner Kallweit a écrit :
->> Both identical definitions of PHY_INIT_TIMEOUT aren't used,
->> so remove them.
-> 
-> Would be good to say when it stopped being used, ie which commit or commits removed its use.
-> 
-> Also why only remove PHY_INIT_TIMEOUT ? For instance PHY_FORCE_TIMEOUT also seems to be unused. PHY_CHANGE_TIME as well.
-> 
-I stumbled just across PHY_INIT_TIMEOUT. You're right, I will include other apparently unused
-definitions as well.
+Both definitions are unused. Last users have been removed with:
 
->>
->> Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
->> ---
->>   drivers/net/ethernet/freescale/ucc_geth.h | 1 -
->>   include/linux/phy.h                       | 1 -
->>   2 files changed, 2 deletions(-)
->>
->> diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
->> index 38789faae..03b515240 100644
->> --- a/drivers/net/ethernet/freescale/ucc_geth.h
->> +++ b/drivers/net/ethernet/freescale/ucc_geth.h
->> @@ -890,7 +890,6 @@ struct ucc_geth_hardware_statistics {
->>                                  addresses */
->>     #define TX_TIMEOUT                              (1*HZ)
->> -#define PHY_INIT_TIMEOUT                        100000
->>   #define PHY_CHANGE_TIME                         2
->>     /* Fast Ethernet (10/100 Mbps) */
->> diff --git a/include/linux/phy.h b/include/linux/phy.h
->> index 3028f8abf..9cb86666c 100644
->> --- a/include/linux/phy.h
->> +++ b/include/linux/phy.h
->> @@ -293,7 +293,6 @@ static inline long rgmii_clock(int speed)
->>       }
->>   }
->>   -#define PHY_INIT_TIMEOUT    100000
->>   #define PHY_FORCE_TIMEOUT    10
->>     #define PHY_MAX_ADDR    32
-> 
---
-pw-bot: cr
+1577ecef7666 ("netdev: Merge UCC and gianfar MDIO bus drivers")
+728de4c927a3 ("ucc_geth: migrate ucc_geth to phylib")
+
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+---
+ drivers/net/ethernet/freescale/ucc_geth.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/net/ethernet/freescale/ucc_geth.h b/drivers/net/ethernet/freescale/ucc_geth.h
+index 38789faae..84f92f638 100644
+--- a/drivers/net/ethernet/freescale/ucc_geth.h
++++ b/drivers/net/ethernet/freescale/ucc_geth.h
+@@ -890,8 +890,6 @@ struct ucc_geth_hardware_statistics {
+ 							   addresses */
+ 
+ #define TX_TIMEOUT                              (1*HZ)
+-#define PHY_INIT_TIMEOUT                        100000
+-#define PHY_CHANGE_TIME                         2
+ 
+ /* Fast Ethernet (10/100 Mbps) */
+ #define UCC_GETH_URFS_INIT                      512	/* Rx virtual FIFO size
+-- 
+2.48.1
 
 
