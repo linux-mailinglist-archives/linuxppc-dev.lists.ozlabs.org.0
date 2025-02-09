@@ -1,91 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-6006-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6007-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F76A2DF8B
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 18:45:47 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FACA2E005
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Feb 2025 19:50:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrZqr3Gkqz2yLJ;
-	Mon, 10 Feb 2025 04:45:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YrcG73JKqz2yVF;
+	Mon, 10 Feb 2025 05:50:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739123144;
-	cv=none; b=GsKc7+HTRI1llYAR67z5XFqbqkeJzSkU6+53n4RBsLMMB0SYgIkRbzVgQzHMHepukBKvFyhLTTa9vrlaY09V1Nk4tf2Ej3aqdMFCXdJvX4mP6C2rk6qBGCGlYq2uh5Fj6r8BQOFzCYxOlQXf3n0i/qCt/70gvjFEEd1ixgXM3dJb/xb8wSCknJmuee/g6Jd8z++eP8YAwxQwEbQnKeHyO6cE3r2ssFp86Q0P1U+sxvesWALjLkbEfz8kBjsKonbk80uZqs5Mgyp8LaQTfO969fgseDAQL/JDAd+RSci5/xa0Pu83+UjsQoelErXUo8BAtWn7EsbjEjRWQlpWrTmb9Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739127007;
+	cv=none; b=Lf2EV250qCQEuqmqnh6+k9wHcUpMMX4Av8PT6xNGEg2h7SyGb1ZFhKX9XmpoeTcZ5vs+mgiJZujrW88r8ZfOPswUeaI4HugjH9mcodVVYomGmLxUCzJehZ1IuifCK1Pcw7QO8frlXc9XcAEWiurnrraW0Ov/Ouh+ecLRukx5MmZkxkConoiU6tzbd2yzyDAt0bV+ZvYvJ8R00o3lLAXfaJLijMfMeyy/bWKmuA7SNAhhTlXmTBnnmfbBO+J5IOmnj6flYbbIqV5kRAD7ucOB+Xm67LYxUDEk7OaAwR3qkz6p1ShUqOOZj87So8oaOPrgW/ZkTBnPdu3OmAXxENDGbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739123144; c=relaxed/relaxed;
-	bh=aKJiNvl4OtxHwe/jC/7dAguFKhAdY0zfct0XRINhm44=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TgZfrBqMIYkyIUHlQvrP4sAmhzwUa/F74ijOaap2pvF/SpnC/WMzddh6UhwFC0m9kGIof2gPMx3Go7mW5ZK1qv6JUvq+PX/hqvx6K0TTkclaAnWD/NQkvnPf8kYiQ5ekIKgd6lw5vI4fuhDgtCZjlj+56MmhmxNrSdm7mGslweIhZeolGnnffKq8RSkrdrSuukX024kSUURAMiflAMMe6+d8+9i5PhY3TKHfKB46H/Dq03llt2wiMfhi8INpSnoydutSw1qjYyiylv8bRKSGXFlSmyBcIMgV9eWUwCZSoO4SgjwSi2XkpoT5LtIUH4UlspjoojjVcTh8dGPAoHDWRQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=pFQz+Mcg; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=pFQz+Mcg;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrZql5QC3z2xjd
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 04:45:39 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id A9020240027
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Feb 2025 18:45:32 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739123132; bh=wwaN1MEN5EN7ialSuuoReLLWAW4uA92LExoXB3rQqdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=pFQz+McgXOD4SJpqS3t88fYmh0f5343D1MX9fCQZ5W5ZdV5d90NJnQIiHn4PjdCht
-	 jpzs5EMtNx/SAOBHAvluntIEwLOprerzu70UzAecNitIGH8k0ZnZrhUFsPPYt30bPa
-	 5W++llA90llvNmYGZGg6pjdtnttlirT0AnVYIO3h/V52Nxuo2QcmZfdHQ5yO7Q21SW
-	 jvIRtzOr5XZUGt9zXBs5HlCATqYCjE2JIiSc7GPY4SJyuH2VUSeO6sOP/akjsfoNL7
-	 NQWpd+m9PlYAgJGrD6+VmVwjqa+7KOvmx5tud7mokjtobj+GT1nLVBwQhE74lhhlhe
-	 V93cWZaX8J0/A==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YrZqX2D0Mz9rxK;
-	Sun,  9 Feb 2025 18:45:28 +0100 (CET)
-Date: Sun,  9 Feb 2025 17:45:27 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Krzysztof Kozlowski <krzk@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>, linux-ide@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	linux-crypto@vger.kernel.org, Vinod Koul <vkoul@kernel.org>,
-	dmaengine@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>,
-	linuxppc-dev@lists.ozlabs.org, linux-spi@vger.kernel.org,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Vignesh Raghavendra <vigneshr@ti.com>, imx@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>, Scott Wood <oss@buserror.net>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Richard Weinberger <richard@nod.at>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Lee Jones <lee@kernel.org>, linux-watchdog@vger.kernel.org,
-	devicetree@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-mtd@lists.infradead.org,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	linux-kernel@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 09/12] dt-bindings: memory-controllers: Convert
- fsl,elbc to YAML
-Message-ID: <Z6jptzP7KLxmIJeL@probook>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-9-8137b0c42526@posteo.net>
- <173897189669.2630636.11579554304003668196.robh@kernel.org>
- <Z6jlrU7EPeATjK8s@probook>
- <4c41a8e2-b097-4b95-ba0a-115dbbfc4e1a@kernel.org>
+	t=1739127007; c=relaxed/relaxed;
+	bh=CpONG0rbEqBNTlYB4LWJHxewj3mVx4KrNJX9G+KswfQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S/ApSk6h9wfbmEXwSCHSmYS1IWv8UVZU7zEAi50UtKEwiezoCuAZPEogmsTiwC5A7CvSA0zwYEKZQCqDTvftoC2NhwSupppRjorBHyzGy4nx99rf2WA/i1DGM4Vy0agKdl+wAe+Qv9Qzr3IeewaCS05JA2Ryp/60E5ycCkDNmnAp9zcw4JKH9XT4FQ1GT0C57x5fzZUtqYrIP/2S2e637Ynwbo3S8ifhBOlCOd2r5E8ueHhw0kT3nOfC1t9do41d9JKycGqHp4XarWzbLlF25jbmZLXhV3Zj/KsDBKWfyTl2v4kM6aW4YHL4AM7gL+R+kp2lOUoDLGxCLbTJ9djUuA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YrcG63BnZz2xl6
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 05:50:04 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Yrc4y5BH2z9sPd;
+	Sun,  9 Feb 2025 19:42:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id ogLfoC-SXGTd; Sun,  9 Feb 2025 19:42:10 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Yrc4y4J49z9rvV;
+	Sun,  9 Feb 2025 19:42:10 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7541C8B764;
+	Sun,  9 Feb 2025 19:42:10 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id uy_LGgAXm037; Sun,  9 Feb 2025 19:42:10 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7B5028B763;
+	Sun,  9 Feb 2025 19:42:09 +0100 (CET)
+Message-ID: <deb0d4fa-d2ec-4acc-b217-b5ebb683bf05@csgroup.eu>
+Date: Sun, 9 Feb 2025 19:42:07 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,37 +56,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 5/9] powerpc: Use preempt_model_str().
+To: Shrikanth Hegde <sshegde@linux.ibm.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ Ben Segall <bsegall@google.com>, Catalin Marinas <catalin.marinas@arm.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>, Ingo Molnar <mingo@redhat.com>,
+ Juri Lelli <juri.lelli@redhat.com>, Mel Gorman <mgorman@suse.de>,
+ Peter Zijlstra <peterz@infradead.org>, Steven Rostedt <rostedt@goodmis.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ Valentin Schneider <vschneid@redhat.com>,
+ Vincent Guittot <vincent.guittot@linaro.org>, Will Deacon <will@kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org
+References: <20250203141632.440554-1-bigeasy@linutronix.de>
+ <20250203141632.440554-6-bigeasy@linutronix.de>
+ <65c6f60d-bb52-48bd-a02c-87ffd2a915d4@csgroup.eu>
+ <20250203160103.9DikC9FJ@linutronix.de>
+ <51999b8e-61c0-48b7-b744-c83d39e7f311@csgroup.eu>
+ <20250204082223.6iNyq_KR@linutronix.de>
+ <7b51f7de-8e4b-4766-85ca-dee24832c693@linux.ibm.com>
+ <93833119-9406-4d30-aa7b-4521adb3a573@csgroup.eu>
+ <936f0451-a4ee-4e14-9ce9-9cd9613fc55c@linux.ibm.com>
+ <0f05c020-47e4-444d-90ab-9eb8414f4ef8@csgroup.eu>
+ <b95272d4-e593-48e9-aa32-8758394f4b61@linux.ibm.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <b95272d4-e593-48e9-aa32-8758394f4b61@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <4c41a8e2-b097-4b95-ba0a-115dbbfc4e1a@kernel.org>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Feb 09, 2025 at 06:30:44PM +0100, Krzysztof Kozlowski wrote:
-> On 09/02/2025 18:28, J. Neuschäfer wrote:
-> > On Fri, Feb 07, 2025 at 05:44:59PM -0600, Rob Herring (Arm) wrote:
-> >> On Fri, 07 Feb 2025 22:30:26 +0100, J. Neuschäfer wrote:
-> > [...]
-> >>>  .../bindings/memory-controllers/fsl,elbc.yaml      | 146 +++++++++++++++++++++
-> >>>  .../devicetree/bindings/powerpc/fsl/lbc.txt        |  43 ------
-> >>>  2 files changed, 146 insertions(+), 43 deletions(-)
-> > [...]
-> >> dtschema/dtc warnings/errors:
-> >> Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dtb: /example-0/localbus@f0010100/simple-periph@2,0: failed to match any schema with compatible: ['fsl,elbc-gpcm-uio']
-> >> Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dtb: /example-1/localbus@e0005000/nand@1,0: failed to match any schema with compatible: ['fsl,mpc8315-fcm-nand', 'fsl,elbc-fcm-nand']
-> >> Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dtb: /example-1/localbus@e0005000/nand@1,0: failed to match any schema with compatible: ['fsl,mpc8315-fcm-nand', 'fsl,elbc-fcm-nand']
-> > 
-> > I think this is due to how the patches are ordered in the series.
+
+
+Le 09/02/2025 à 15:38, Shrikanth Hegde a écrit :
 > 
-> If that's possible, this should be fixed, e.g.  by re-ordering the patches.
+> 
+> On 2/8/25 23:25, Christophe Leroy wrote:
+>>
+>>
+>> Le 08/02/2025 à 14:42, Shrikanth Hegde a écrit :
+>>>
+>>>
+>>> On 2/8/25 18:25, Christophe Leroy wrote:
+>>>>
+>>>>
+>>>> Le 08/02/2025 à 08:35, Shrikanth Hegde a écrit :
+>>>>>
+>>>>>
+>>>>> On 2/4/25 13:52, Sebastian Andrzej Siewior wrote:
+>>>>>> Use preempt_model_str() instead of manually conducting the preemption
+>>>>>> model. Use pr_emerg() instead of printk() to pass a loglevel.
+>>>>>
+>>>>> even on powerpc, i see __die ends up calling show_regs_print_info().
+>>>>> Why print it twice?
+>>>>
+>>>> I don't understand what you mean, what is printed twice ?
+>>>>
+>>>> I can't see show_regs_print_info() printing the preemption model, am 
+>>>> I missing something ?
+>>>>
+>>>
+>>> Patch 2/9 add preemption string in dump_stack_print_info.
+>>>
+>>> __die -> show_regs() _> show_regs_print_info() -> 
+>>> dump_stack_print_info() -> init_utsname()->version, 
+>>> preempt_model_str(), BUILD_ID_VAL);
+>>>
+>>> Wont we end up in this path?
+>>
+>> Indeed I missed that. You are right, we now get the information twice:
+> 
+> I think we can remove it from arch specific code and rely on lib/ 
+> dump_stack?
 
-Yes, I'll do that for the next iteration
+Yes I guess so.
 
+> 
+> And similar concern of printk vs pr_warn/pr_emerg would apply to that as 
+> well i guess.
 
-Best regards,
-J. Neuschäfer
+Well, powerpc's show_regs() calls it with 
+show_regs_print_info(KERN_DEFAULT);
+
+And dump_stack_print_info() uses printk with log_lvl so there should be 
+no concern here.
+
+> 
+>>
+>> [  440.068216] BUG: Unable to handle kernel data access on write at 
+>> 0xc09036fc
+
 
