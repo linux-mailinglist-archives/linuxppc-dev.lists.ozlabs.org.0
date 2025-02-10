@@ -1,71 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-6018-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6019-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2EEA2E44B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 07:45:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 65178A2E44F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 07:47:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yrw7H06xZz2yRd;
-	Mon, 10 Feb 2025 17:45:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YrwB76Rl4z2ykC;
+	Mon, 10 Feb 2025 17:47:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739169914;
-	cv=none; b=FGm/ZMj1l6i+Pix5INfijRRBxYM6rJtvk42fXjLeVPXgieQZT+PH7FKTAchsZxZkB/nK+34uqeTjsGAZIllYxQLHXT1+3SY5O+NLs0lxWprlWFTN0pG0AjIeN0bIWBaakkU1sazZWivoUGbgnYElyMsTmtfECZA1muDpB9Y9haLY738SW0KZdQrfUK3C3G+01rpgabtiaeeiQ2orEdThP3GKMKQfjE9hCKTTAGJRC9KIxb+TLouEJf6Rw2hct4MKycAsuIgAiCGFYRCY8bUDe2TDVbvxG5eRkBe6ZkwqPJFvE1XUMzdYL4Vf5y1/kLNr0CZjf8TgdkwmeeqP9QO4Eg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739170063;
+	cv=none; b=BcrU9s2ZhodWamWLu0pk3rrIM1pp8xG8ZFn3VV1faxxVza8c4wF16UwL2HK3i3UdixlJ9CRkznm8fkRXuLvu+9tYa88Px/swgxYxNCr0cAEf45x7zwkuLtFmDEA6ThuHedZEP0/BKCRULGHstTF7cuA8Q2swyJnPyKe06oCdrPdBR3/INeNhNqkMZuqi14PGgodVYr+t3RfojbaQAAJVbxP2Nef63nOyUga2mwAB/CmGg5HyEMGRWdl1bilqT+IGrPVqETICL5oqJJPcfNQXS77LNl7mvAULSFQkrJ7wtgUJefPGqEt3CPvZrBzTtjwlF1BHx5M4p4fGvnvQS4xZhQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739169914; c=relaxed/relaxed;
-	bh=f9/wScwKjsjXZBq3jdnM7R9V7UQdvD+xrlTwGEyzEiE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NQi4jB7kW9O/nVROWvXMiRd4ducSHsnSm4NTS6oK/yGh6n5NcL4p+hEWpTZW3KBkUPvzxG9V4cfqoaB04gMAPkgX5tYNOqH/TnPfMmc6yN5KZH4zi18QOTXNz5O7aibhdKL1eNZhZmbEdmr4VSZr8lKfTSCR8yBkBpepmCT4OxPa1VNnpvvIVNmeE5EsgOO4wi7QUK8WdXOi9F958QYgNOn+lm0o3HkU0mgt50HLFk6w95rHEYdVMreWrIZqZ4j8zjin3fa4vZkuk3agHwi6v0BdKQvWceo4Qbgv26gxXuQ1Jhl1d0iq9u7W+H37gldq6sblnRlAAFYYtpTiSLn3vQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FLrpXvNi; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=FLrpXvNi;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	t=1739170063; c=relaxed/relaxed;
+	bh=6ufEa8OtSz1qNEEnAUniEjc14puk0l7mCw5NN4vhm/I=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:References:
+	 In-Reply-To:Content-Type; b=XexG+4vFX109HiXrfLEjDggUYO0PMzllFUi1Z47WQapS6jqFNRuFQqTZsPKTimtqto6rwXg2lia2eP1omsl6WQ/j80Fks+8/HrilM+cV0CNEQa44UhAtsiKG1sNf0Y3L/2z8q6wp5D+xglRzKWiIuSa4iskgWP9NHNrFVz8lW1XU2XRl+YWRQWkbr5JxN0Eh/XhYwivfShBgFFBgHVqmA8ZyRiUwonaWCR7bmpRr1iBommmysFnbkM+VEOhbRZbS8G9XozD5gQLtFb2C5lp6EGBXDrRrfteYu7uVp86yE1rOwqapZJuhl4HEmXDJ/8JB/COpHVG+MP6lrGbS3zXWZw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yrw7F0Sv9z2yPG
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 17:45:12 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A17p4s023174;
-	Mon, 10 Feb 2025 06:45:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=f9/wSc
-	wKjsjXZBq3jdnM7R9V7UQdvD+xrlTwGEyzEiE=; b=FLrpXvNidoC8EXIW2A24YM
-	Mi9n1zNMqtFZ0vxPh9tansMYwxTCw0geT2sFjHRPjC9Vq2Pi9IlwWOP54KgJGtAY
-	aMAp0lp/zEE8++mJb+vpP9GEAbi/EY0IMlXmnV4WwbKFSFLbuvIrGn61LEvmK+LD
-	7djjnHghpaNNz0FQomAMpAG2/r0IKyxWhTw4ka+7RCiU1XoJ2uB9NEkqWgkusb9q
-	W55iQvrC3/dAcZpcfsh+cFbI8QriDaKXfbctHr829MAnaj3NeynmHNkKSz8qyVNC
-	8C/BX9OiUikMfFWDBqnHPvUZVqOkQg0oHXdmEgGnfw877inJ3CQCF8pbyKhHckVg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44q7h99516-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 06:45:04 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51A5Z7gN028716;
-	Mon, 10 Feb 2025 06:45:03 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pma1ckwd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 06:45:03 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51A6j0hk59638114
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Feb 2025 06:45:00 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7C40520043;
-	Mon, 10 Feb 2025 06:45:00 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D33B220040;
-	Mon, 10 Feb 2025 06:44:58 +0000 (GMT)
-Received: from [9.203.114.244] (unknown [9.203.114.244])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Feb 2025 06:44:58 +0000 (GMT)
-Message-ID: <77f3eabb-2176-4ff2-8871-61319a084af1@linux.ibm.com>
-Date: Mon, 10 Feb 2025 12:14:57 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrwB51Ch2z2yPG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 17:47:39 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Yrw5c0HCfz1ltZX;
+	Mon, 10 Feb 2025 14:43:48 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id EED2618001B;
+	Mon, 10 Feb 2025 14:47:30 +0800 (CST)
+Received: from [10.174.176.82] (10.174.176.82) by
+ kwepemf500003.china.huawei.com (7.202.181.241) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 10 Feb 2025 14:47:28 +0800
+Message-ID: <c48952c7-716c-4302-949c-2c66ea102a3e@huawei.com>
+Date: Mon, 10 Feb 2025 14:47:28 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,136 +49,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] powerpc/fadump: fix additional param memory
- reservation for HASH MMU
-To: Avnish Chouhan <avnish@linux.ibm.com>
-Cc: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Brian King <brking@linux.ibm.com>,
-        Madhavan Srinivasan
- <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>
-References: <20250120173501.1147236-1-sourabhjain@linux.ibm.com>
- <20250120173501.1147236-3-sourabhjain@linux.ibm.com>
- <6322511c-e56a-4f4c-9b13-efec018cb3a7@linux.ibm.com>
- <773fec68e97a408de6871eb3d2c2ac61@linux.ibm.com>
- <c0ace54a-af67-4df5-a284-b96e454869a9@linux.ibm.com>
- <a47286ca0936ea707ed2e80cd276311c@linux.ibm.com>
- <fdf5cec6-54ce-4042-b8a5-2560ce7dd623@linux.ibm.com>
- <405d82eb1ba6799b63b6ed90347d88c9@linux.ibm.com>
-Content-Language: en-US
-From: Hari Bathini <hbathini@linux.ibm.com>
-In-Reply-To: <405d82eb1ba6799b63b6ed90347d88c9@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: "zhangzekun (A)" <zhangzekun11@huawei.com>
+Subject: Re: [PATCH 1/9] of: Add warpper function
+ of_find_node_by_name_balanced()
+To: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+CC: Oleksij Rempel <o.rempel@pengutronix.de>, <robh@kernel.org>,
+	<saravanak@google.com>, <justin.chen@broadcom.com>,
+	<florian.fainelli@broadcom.com>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
+	<kory.maincent@bootlin.com>, <jacopo+renesas@jmondi.org>,
+	<kieran.bingham+renesas@ideasonboard.com>, <maddy@linux.ibm.com>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <olteanv@gmail.com>,
+	<davem@davemloft.net>, <taras.chornyi@plvision.eu>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <sudeep.holla@arm.com>, <cristian.marussi@arm.com>,
+	<arm-scmi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <chenjun102@huawei.com>
+References: <20250207013117.104205-1-zhangzekun11@huawei.com>
+ <20250207013117.104205-2-zhangzekun11@huawei.com>
+ <Z6XDKi_V0BZSdCeL@pengutronix.de>
+ <80b1c21c-096b-4a11-b9d7-069c972b146a@huawei.com>
+ <20250207153722.GA24886@pendragon.ideasonboard.com>
+In-Reply-To: <20250207153722.GA24886@pendragon.ideasonboard.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: oaeSj3UQ1g9t8x9WP1sN7j1yt2001P44
-X-Proofpoint-ORIG-GUID: oaeSj3UQ1g9t8x9WP1sN7j1yt2001P44
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-10_03,2025-02-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 phishscore=0 mlxscore=0
- mlxlogscore=926 clxscore=1015 malwarescore=0 impostorscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
- definitions=main-2502100053
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+X-Originating-IP: [10.174.176.82]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hi, Laurent,
 
-
-On 04/02/25 2:07 pm, Avnish Chouhan wrote:
-> On 2025-02-04 11:57, Hari Bathini wrote:
->> On 04/02/25 10:58 am, Avnish Chouhan wrote:
->>> On 2025-01-31 20:44, Hari Bathini wrote:
->>>> On 23/01/25 7:54 pm, Avnish Chouhan wrote:
->>>>> On 2025-01-23 15:26, Hari Bathini wrote:
->>>>>> On 20/01/25 11:05 pm, Sourabh Jain wrote:
->>>>>>> Commit 683eab94da75bc ("powerpc/fadump: setup additional 
->>>>>>> parameters for
->>>>>>> dump capture kernel") introduced the additional parameter feature in
->>>>>>> fadump for HASH MMU with the understanding that GRUB does not use 
->>>>>>> the
->>>>>>> memory area between 640MB and 768MB for its operation.
->>>>>>>
->>>>>>> However, the patch ("powerpc: increase MIN RMA size for CAS
->>>>>>> negotiation") changes the MIN RMA size to 768MB, allowing GRUB to 
->>>>>>> use
->>>>>>> memory up to 768MB. This makes the fadump reservation for the 
->>>>>>> additional
->>>>>>> parameter feature for HASH MMU unreliable.
->>>>>>>
->>>>>>> To address this, adjust the memory range for the additional 
->>>>>>> parameter in
->>>>>>> fadump for HASH MMU. This will ensure that GRUB does not 
->>>>>>> overwrite the
->>>>>>> memory reserved for fadump's additional parameter in HASH MMU.
->>>>>>>
->>>>>>
->>>>>>> The new policy for the memory range for the additional parameter 
->>>>>>> in HASH
->>>>>>> MMU is that the first memory block must be larger than the 
->>>>>>> MIN_RMA size,
->>>>>>> as the bootloader can use memory up to the MIN_RMA size. The range
->>>>>>> should be between MIN_RMA and the RMA size (ppc64_rma_size), and 
->>>>>>> it must
->>>>>>> not overlap with the fadump reserved area.
->>>>>>
->>>>>> IIRC, even memory above MIN_RMA is used by the bootloader except for
->>>>>> 640MB to 768MB (assuming RMA size is >768MB). So, how does this 
->>>>>> change
->>>>>> guarantee that the bootloader is not using memory reserved for 
->>>>>> bootargs?
->>>>>>
->>>>>> Avnish, earlier, bootloader was using RUNTIME_MIN_SPACE (128MB) 
->>>>>> starting
->>>>>> top-down at 768MB earlier. With MIN_RMA changed to 768MB, is 
->>>>>> bootloader
->>>>>> still using the concept of RUNTIME_MIN_SPACE to set aside some memory
->>>>>> for kernel to use. If yes, where exactly is it allocating this space
->>>>>> now? Also, rtas instantiates top-down at 768MB. Would that not have
->>>>>> a conflict with grub allocations without RUNTIME_MIN_SPACE at 768MB?
->>>>>>
->>>>>> - Hari
->>>>>
->>>>> Hi Hari,
->>>>
->>>> Hi Avnish,
->>>>
->>>>> The RUNTIME_MIN_SPACE is the space left aside by Grub is within the 
->>>>> MIN_RMA size. Grub won't use memory beyond the MIN_RMA. With this 
->>>>> change, we haven't changed the RUNTIME_MIN_SPACE behavior. Grub 
->>>>> will still keep the 128 MB space in MIN_RMA for loading stock 
->>>>> kernel and initrd.
->>>>
->>>> IIUC, you mean, 640MB to 768MB is not used by Grub even if MIN_RMA
->>>> is at 768MB? If that is true, this change is not needed, as fadump
->>>> could still use the memory between 640MB to 768MB, right?
->>>> Am I missing something here..
->>>
->>> Hari,
->>>
->>> No. As we are changing MIN_RMA to 768 MB, GRUB can use memory till 
->>> 768 MB if required.
->>
->> Does that mean 'linux_rmo_save' related code in
->> grub-core/kern/ieee1275/init.c is going to be dead code after this
->> change. Also, does this imply, there isn't going to be any
->> RUNTIME_MIN_SPACE support for linux in grub?
+> I think we all agree that of_find_node_by_name() is miused, and that it
+> shows the API isn't optimal. What we have different opinions on is how
+> to make the API less error-prone. I think adding a new
+> of_find_node_by_name_balanced() function works around the issue and
+> doesn't improve the situation much, I would argue it makes things even
+> more confusing.
 > 
-> No Hari, there's no change in RUNTIME_MIN_SPACE as mentioned earlier nor 
-> the change leading to any dead code in grub. If we have MIN_RMA as 512 
-> MB, the grub will consider RUNTIME_MIN_SPACE region within the MIN_RMA 
-> as (384[512-128] to 512). And if we have MIN_RMA as 768 MB, it will be 
-> (640[768-128] to 768).
+> We have only 20 calls to of_find_node_by_name() with a non-NULL first
+> argument in v6.14-rc1:
 > 
-> Grub will keep the 128 MB space in MIN_RMA for loading stock kernel and 
-> initrd as stated earlier.
+> arch/powerpc/platforms/chrp/pci.c:      rtas = of_find_node_by_name (root, "rtas");
+> 
+> The 'root' variable here is the result of a call to
+> 'of_find_node_by_path("/")', so I think we could pass a null pointer
+> instead to simplify things.
+> 
+> arch/powerpc/platforms/powermac/pic.c:          slave = of_find_node_by_name(master, "mac-io");
+> 
+> Here I believe of_find_node_by_name() is called to find a *child* node
+> of 'master'. of_find_node_by_name() is the wrong function for that.
+> 
+> arch/sparc/kernel/leon_kernel.c:        np = of_find_node_by_name(rootnp, "GAISLER_IRQMP");
+> arch/sparc/kernel/leon_kernel.c:                np = of_find_node_by_name(rootnp, "01_00d");
+> arch/sparc/kernel/leon_kernel.c:        np = of_find_node_by_name(nnp, "GAISLER_GPTIMER");
+> arch/sparc/kernel/leon_kernel.c:                np = of_find_node_by_name(nnp, "01_011");
+> 
+> Here too the code seems to be looking for child nodes only (but I
+> couldn't find a DT example or binding in-tree, so I'm not entirely
+> sure).
+> 
+> drivers/clk/ti/clk.c:   return of_find_node_by_name(from, tmp);
+> 
+> Usage here seems correct, the reference-count decrement is intended.
+> 
+> drivers/media/i2c/max9286.c:    i2c_mux = of_find_node_by_name(dev->of_node, "i2c-mux");
+> drivers/media/platform/qcom/venus/core.c:       enp = of_find_node_by_name(dev->of_node, node_name);
+> drivers/net/dsa/bcm_sf2.c:      ports = of_find_node_by_name(dn, "ports");
+> drivers/net/dsa/hirschmann/hellcreek_ptp.c:     leds = of_find_node_by_name(hellcreek->dev->of_node, "leds");
+> drivers/net/ethernet/broadcom/asp2/bcmasp.c:    ports_node = of_find_node_by_name(dev->of_node, "ethernet-ports");
+> drivers/net/ethernet/marvell/prestera/prestera_main.c:  ports = of_find_node_by_name(sw->np, "ports");
+> drivers/net/pse-pd/tps23881.c:  channels_node = of_find_node_by_name(priv->np, "channels");
+> drivers/regulator/scmi-regulator.c:     np = of_find_node_by_name(handle->dev->of_node, "regulators");
+> drivers/regulator/tps6594-regulator.c:          np = of_find_node_by_name(tps->dev->of_node, multi_regs[multi].supply_name);
+> 
+> Incorrect usage, as far as I understand all those drivers are looking
+> for child nodes only.
+> 
+> drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest16");
+> drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest17");
+> drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest18");
+> drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest19");
+> 
+> Here too I think only child nodes are meant to be considered.
+> 
+> of_find_node_by_name() is very much misused as most callers want to find
+> child nodes, while of_find_node_by_name() will walk the whole DT from a
+> given starting point.
+> 
+> I think the right fix here is to
+> 
+> - Replace of_find_node_by_name(root, ...) with
+>    of_find_node_by_name(NULL, ...) in arch/powerpc/platforms/chrp/pci.c
+>    (if my understanding of the code is correct).
 
-Thanks, Avnish.
-That clears it.
+For arch/powerpc/platforms/chrp/pci.c, noticing that there is a comment 
+in setup_peg2():
+  /* keep the reference to the root node */
 
-- Hari
+It might can not be convert to of_find_node_by_name(NULL, ...), and the 
+origin use of of_find_node_by_name() put the ref count which want to be 
+kept.
+
+> 
+> - Replace of_find_node_by_name() with of_get_child_by_name() in callers
+>    that need to search immediate children only (I expected that to be the
+>    majority of the above call sites)
+Since there is no enough information about these DT nodes, it would take 
+time to prove if it is OK to make such convert.
+> 
+> - If there are other callers that need to find indirect children,
+>    introduce a new of_get_child_by_name_recursive() function.
+> 
+> At that point, the only remaining caller of of_find_node_by_name()
+> (beside its usage in the for_each_node_by_name() macro) will be
+> drivers/clk/ti/clk.c, which uses the function correctly.
+> 
+> I'm tempted to then rename of_find_node_by_name() to
+> __of_find_node_by_name() to indicate it's an internal function not meant
+> to be called except in special cases. It could all be renamed to
+> __of_find_next_node_by_name() to make its behaviour clearer.
+>
+
+The actual code logic of of_find_node_by_name() is more suitable to be 
+used in a loop.So,rename of_find_node_by_name() to 
+__of_find_next_node_by_name() seems to be a good idea.
+
+Best regards,
+Zekun
+
+
 
