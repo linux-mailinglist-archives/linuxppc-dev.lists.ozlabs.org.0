@@ -1,54 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-6038-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6039-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5924A2F24E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 16:58:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6748A2F314
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 17:20:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys8P80g16z2yhG;
-	Tue, 11 Feb 2025 02:58:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys8th4MRNz3055;
+	Tue, 11 Feb 2025 03:20:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739203084;
-	cv=none; b=ozDTv3kJnrENbz3b1zItbr18VmZl2UReCjGbzei9J/00bzCExeFdL5G8u2/pKEtAF7rJg8OO7u0TpRGwbWGUOGHeQrnVa05yYVqnvJVp4Ns0R7AyUMcUG2D5HQ/2HxSxzPN0SRyU4u4vxxMbeA5lTOilXyrnjkkGfdKgPk9cVYYF61UPPMSFVwRXZu674V246waieUQ7YYBViDkMT1emdJsU1551MkVcQ+4Fx61Y+WF7r3dgoF1BvGivGM7PzEp6xnfjXNKLqRe5mnaDR8KJPf62de/7WbrcffByRJCpP3i30e04biIuUdE9rEKpResTWgARTIeP5tcCshyvbnEMcg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739204412;
+	cv=none; b=JaBDP2qLhgsjzMQouts7K21PMiJpcxunTyJz+5JA8KrPFJaR1zMGgo7LatAI8oSNtf8XNmMkMDQ2S/m7okLWpg1uKvzd00tE8wCyXHjFKOSQPrY28I6446h7HDKEmaA5spVuYmQ2KnarKjc2fdv7lXwjrZsLc/tmwdys0yYZRK2bUYmUey9EfsPB4RtR6FH8cOQkhNA9vQxIC3w1XV2w4CgJtnDh1GMcfFx1QMcU7kZyakORVlz2gUHN9+GRpXcDWv1+yAefQF/DgLl6MyJopXLNwQQXFt2qzvfU3eu6COdvmQRrnHanDS2vDvXbI16beCReIu4t0QTm/a53kScnIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739203084; c=relaxed/relaxed;
-	bh=lQ9xjXE4fQ5E3R9uQe1RdCFTA3rQo7TSFCMdjBUTzJk=;
+	t=1739204412; c=relaxed/relaxed;
+	bh=NWngG/kFcyT8WtXP/QQ25Wit1MvMYs4YLqlxYuAuRm0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYTPTFv5XhHXSTtd5GFmsBWo/rBFMig3RbpLGhEuXGFDDYxP5AhQhyyIhlf+l75CMfSfV/AQLDhjKZrgAcNXQVUPJ/t1ygK/jTl/rKrcDsoddi+mmKQzS53qE6uLL8mJCu1MFM8ZjhD3LjrX0i0g2dFLVMzkMsKDSYss8iKysnFyDCJ7VGefDma44r8xRMzXwHJ/tE0pfSmS7+AZptxqn8dqJYZbVbUtX9Xtg8VXIFCfZgBZoObRUosTYIwe7Uc+5whFBS1/EzZQJeUNo0W0D/mDlKlLTZ93z7GmQh3zj7dfcZZEB5YLfHqMtVesquz5BRnjwHzv3YetB/NrpklDZg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=CpH/G027; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=ixKB3YiF1umPbaYpnvpVgR87izncYaf/DVbJ8ZEdHm+z6cPt9DpDfxz0eoBfmF0pdficcBDj0tn4KdtGIeLFEW9VwzM7oMqaQBZM9jVbzkkDM/KMYrgbArbgtMjSB7uG7HxoPwVkbQWSza6jiU5JRI+XOloTYMfEDKIp6XMNfIkwxDqZM6IVDt91h7gz8DtPAQIoKs8Tq11iFgHd5ajU+5204rUG9/bRA4tgdSeEXda6/IAAwCbbzP3EcFEAvRmiZo4C6lSS34AnlAh8CYOT83c8OY/diNx9vj2UOWcorjEVP1BPlkjiCAO9Kq2l64gmqnY/zZWSDiJRh8zpDODgXA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O9PX+r4/; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=CpH/G027;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=O9PX+r4/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ys8P533fzz2yMh
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2025 02:57:57 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 3E821240027
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 16:57:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739203070; bh=lQ9xjXE4fQ5E3R9uQe1RdCFTA3rQo7TSFCMdjBUTzJk=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=CpH/G027oFc8oAku2cy7VEnKPS6qe/8WP69kAGkTRzkM2ro0ESq6s4Yty3aGV6Y4H
-	 LZ87v9y9ollAsDGw3QKCoPmG9HdiqyWfoHbPSoH7JyeDhOAMjyxeVRrO7Fwz8CtnF8
-	 yZ6oouhluLt+8uLBRgpqSXLtxDHoB5EWkqY0MkIwgqOIDr4QNb55+i/SM0txb5FAwS
-	 4ESJidSmnIh/raUUeuW0vjOecJT7E9zB7uQvw9dHxuT4LaLMsMjhIwIbDGV5suapmm
-	 yUYj1SeOH5/0885Sbc4ufTMKc7hAEYYPAn+XDAafKZt2HKkUzxjUcfaaXVR34DLf4M
-	 +v9zIZdSdmmNw==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Ys8Nl2HW4z9rxD;
-	Mon, 10 Feb 2025 16:57:42 +0100 (CET)
-Date: Mon, 10 Feb 2025 15:57:42 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Mark Brown <broonie@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ys8td26qRz2ypP
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2025 03:20:09 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 0B4BCA4194E;
+	Mon, 10 Feb 2025 16:18:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E92C4CED1;
+	Mon, 10 Feb 2025 16:19:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739204406;
+	bh=NWngG/kFcyT8WtXP/QQ25Wit1MvMYs4YLqlxYuAuRm0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O9PX+r4//9gugSEWU7m1K8ZM3qhMdimRiJbSiYe86/w+9bR4X4/MhCjFvOn6jCtWl
+	 vB28xXU/PEd8OdGhiVaNzDs/FBXWoLFRH4kptOE8xbXpq2qGI6a1OOZVnXI0ym83jq
+	 LnGs4AcqzboBOb0532JVxtDrX12IZ6wn//naY2MVFJBPlNYsR41f8I13OeonC84QCk
+	 69CbLAibibKHMCZuy3S8PjUceMx28EdXjIP8T0trrzPnKbKuzKWElzT2zR5LGP78Nt
+	 r0Zexk9OTbCG39S9//bUNzD+y+hVdVaV0KhwIcQGWehOvV4XsKy2wNZZpg0KLnYd2E
+	 5bjdCF+rvXDcw==
+Date: Mon, 10 Feb 2025 16:19:56 +0000
+From: Mark Brown <broonie@kernel.org>
+To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
+Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
 	Scott Wood <oss@buserror.net>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
@@ -78,11 +76,12 @@ Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
 	linux-mtd@lists.infradead.org
 Subject: Re: [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT
  bindings
-Message-ID: <Z6oh9t2QQzz17Yt6@probook>
+Message-ID: <8087f0dc-8c79-48a2-abf4-f78636c23be6@sirena.org.uk>
 References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
  <611e47da-ba87-4c21-a6b7-cf051dc88158@sirena.org.uk>
  <Z6a_f03Ct9aB7Bbn@probook>
  <0fe3416c-c3f3-44c4-a1c0-7e8262c54d4b@sirena.org.uk>
+ <Z6oh9t2QQzz17Yt6@probook>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,39 +94,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="dFkCMkVIcP+mIwAz"
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <0fe3416c-c3f3-44c4-a1c0-7e8262c54d4b@sirena.org.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+In-Reply-To: <Z6oh9t2QQzz17Yt6@probook>
+X-Cookie: A beer delayed is a beer denied.
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 10, 2025 at 12:59:35PM +0000, Mark Brown wrote:
-> On Sat, Feb 08, 2025 at 02:20:47AM +0000, J. Neusch=C3=A4fer wrote:
-> > On Fri, Feb 07, 2025 at 09:38:05PM +0000, Mark Brown wrote:
->=20
-> > > What's the story with dependencies here - why is all this stuff in one
-> > > series?
->=20
-> > The patches are independent of each other, except for the four elbc/nand
-> > patches. They are in the same series because they came up during the
-> > same project and achieve similar goals, but it isn't necessary.
->=20
-> Please don't do this, it just makes it harder to merge things since it
-> makes it look like there's cross tree merges needed when that's not the
-> case, complicating merging, and puts the entire series in everyone's
-> inbox which makes things more noisy.
 
-How should I proceed with this series, in your opinion?
-I see potential advantages (less of the issues you describe) and
-disadvantages (somewhat harder to track patches) of splitting it up
-before sending v3.
+--dFkCMkVIcP+mIwAz
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-(Outside of this series, the conclusion is clear and simple)
+On Mon, Feb 10, 2025 at 03:57:42PM +0000, J. Neusch=E4fer wrote:
+> On Mon, Feb 10, 2025 at 12:59:35PM +0000, Mark Brown wrote:
 
+> > Please don't do this, it just makes it harder to merge things since it
+> > makes it look like there's cross tree merges needed when that's not the
+> > case, complicating merging, and puts the entire series in everyone's
+> > inbox which makes things more noisy.
 
-J. Neusch=C3=A4fer
+> How should I proceed with this series, in your opinion?
+> I see potential advantages (less of the issues you describe) and
+> disadvantages (somewhat harder to track patches) of splitting it up
+> before sending v3.
+
+I'd rather that at least the SPI stuff were sent separately (well,
+ideally what you've done already is fine and it doesn't need a resend at
+all).
+
+--dFkCMkVIcP+mIwAz
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmeqJysACgkQJNaLcl1U
+h9DNKQf/fZPJSroWubfTO8FLkUiOu5OAUNqM92OSlaM82yLjpcppqTwDH2c/TMS7
+uzik6Kqwe9iL95z0VpO/SEQh2gEiVVotP2LwUfc0VHm6Mj0CYUhJVu5CFspP2PTu
+H7A2qsXCPw2ASwOg8ZA+oH0PpNAI2mBdDeb7Dii4r186WNPit5Xunpx8I+9DoEyr
+Zr6lOUeCFVfJVy6oNc7ZCQUhRljOVtlyRzPVMTpsyaMzgT22K+F+CHvQR/XatQQF
+/2ywiEFKi5u2DSNtEgro0CF6bJ4U/ZtRMGcnEq9r6RmhpAINqFJhS0dysaqOIJfS
+37TAqV/OvijdnS0RGY+GC+jyvnaoJA==
+=DC91
+-----END PGP SIGNATURE-----
+
+--dFkCMkVIcP+mIwAz--
 
