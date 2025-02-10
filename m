@@ -1,73 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-6042-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6043-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C8C5A2F5DA
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 18:51:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1D75A2F65C
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 19:05:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YsBvp4mZbz2ykn;
-	Tue, 11 Feb 2025 04:51:18 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YsCCr3YwSz2yG9;
+	Tue, 11 Feb 2025 05:05:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739209878;
-	cv=none; b=WF2K/JT8BcYB+PH+VkI2LrtPORor4FOEmErk9lpnzIC7XNS52a8eMt5MBedh5qPx4t+wLzHAEoJZcza4V97U035s1bACkILGDyvo5LV137yFIguRkNMU02z9IdB8ephVA4X9XZ3mOiWsfi7Uoptq43ixQzWcbh78gDUpupW5YMaZob0n4eg5CecphIbW8IHnGu2AMHsMYQYzLEXqNzl+uvFZzGWiTTw/KadD7MfzVZBoNWB6IOaQfWmdtpsIkOruuWfucU5CLwPr7z7fW3O9zqbijbnqYMZP5JGlxunymGtSZ7DBcqs3ai3rEY3GPBFhUOfP+Du4NhAGiyOzc+PH2g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739210712;
+	cv=none; b=QJO9+V/ZFqxgVLhVeo3M5yv44HTn3zif0R9DrBMabu1gU4neY6gOGAfTLdjrGDYNboNes4AsHxa++dV7DlsW498T1DTJZlL0cD8pCy1QORdYlFm6qIcPaS6l+YPvwfAkveTVcBW9E3jmyGN8A+X0ZGzLRiUYropLWKQjR5KiUO8azLOpDBDg5xBzHTWJq70xaQFVqA/uVEwsU8fgPG4JA09B2gVl29D5fCMTki0YcUNefdAwkfEKo2N/DCR+wDG7gPCecNs4wdwO4uL5BegT6r6pajjWzEKdig7ONu2Qi46WdUFXqv8xWruGxyeS5PlRyPFenf2A1FXHbvjnTy1fHw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739209878; c=relaxed/relaxed;
-	bh=di1cgUJ7vi7gq60tB+ybNSF+B/RZE1XBoAq+ZGSxow8=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=HxSAhzrVYo77ZoJ8sKKR1cQUCa6JGuSHcbH91IX7N015cErhpAmQ2gYRlUyUtWBG+Os5ENlFC2q7zaHSa5+tTQHcsB8wSCk91Rlr7UdLsONgT5ms3pdkust7wqynmnwPasAQCt8pH3Z35rR1h2GCJ1wdLUPgjgV14Rtf42IM7Xaei5Q4e4kxwASWXp4tvykZPcehIslFjdgv3o2VfLgdzr7mhHKBSBfa+us9bU/cUSf8hG6BFk2rCCFCvajO4BpVTvzHun6EcKQMOQbxZRwbmBtOqvNxJAfPeCs1+Ha5JraeSP8IDF7nAT/X7YAXqeLSfwtUTtZ6leeeiKfcJ+LgQQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4xd7B8W; dkim-atps=neutral; spf=pass (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=k4xd7B8W;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YsBvl6yD7z2yFK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2025 04:51:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739209876; x=1770745876;
-  h=date:from:to:cc:subject:message-id;
-  bh=O5TlHizbrv5oEqFoIrGqGA6AZGPEZoRHbzdDxFwPvbo=;
-  b=k4xd7B8WHCmlyOCtwiZdcaH4y5Y/+KPobBMrZ8D2ZWm33q/Ebc/qPyXj
-   3yfq5wSqMo2nzKyhQLidfW7SAyVfdFORbFnK6WKqBu2iI30pEszTcw7fJ
-   KwajSYeN3EhozkPpSyJm4INdsOv596iPvqzygiMlMa2wexiGfMOiqNRVR
-   q32gaYZgDBdCJGiBwp3rS9mEuAkur9MUhuMZEFgB40xMNWjxQlgd0l6Ou
-   AMNOTDG9oGcNgc73dvh4W2o/JNLF0Ru8RDea9rEgDvIqUlEIhSc3GU25U
-   TpPk9OXzgUjIX7s71wEwNwn6U3X2BlbvH0RUAcxapVWopRfmyZPgzSRmb
-   A==;
-X-CSE-ConnectionGUID: wKPzWswdTYuwlBgctj4n0Q==
-X-CSE-MsgGUID: M/VArL1iQzOx00hyLAuKDw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11341"; a="42642194"
-X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
-   d="scan'208";a="42642194"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Feb 2025 09:50:53 -0800
-X-CSE-ConnectionGUID: q+AcjOZwTGGgqSq1hdBLOw==
-X-CSE-MsgGUID: mtP1ESmfQxyfcdikcJVHrg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,275,1732608000"; 
-   d="scan'208";a="112211729"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 10 Feb 2025 09:50:52 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1thXvm-00138w-0s;
-	Mon, 10 Feb 2025 17:50:50 +0000
-Date: Tue, 11 Feb 2025 01:50:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 61bcc752d1b81fde3cae454ff20c1d3c359df500
-Message-ID: <202502110124.od2QJjaE-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	t=1739210712; c=relaxed/relaxed;
+	bh=4pyJyv38s7QVArbc9PpAQ1FGuknHhnhu04O/9fFPaTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HHLOYiSHRD4fxRQLDSDPMbZqCB3XH2v/6FLFC4YvmUs4jbtrdTCKKE0asVsYuQ3FEYDO3F8uQ4/sp7R2rvokWyBuGYzhoFBrY7PeGmfyZTpOimhENn8gJQjSHUF4S72uDL6Dn2OwfDh6iDcvghRlSg88V0BuBChhcXQL8LCqtrWkYzr0SEEXsrFQyfRR+gP2u+orGPnlyhBbrvfzdBjIorlhAb8qWRkiA7I3mlScpeIoWcvytER1L8snY56Qnx4HhLhM4OYPTrEzjxF65iFcW/iw72swZqz9Htf1XyHc5R9Bd7dP7AEcqE40QLhVfC/kZKd/b9ZwnnScJoQgwLVc5g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YsCCq28l1z2yFD
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2025 05:05:09 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id D671B1477;
+	Mon, 10 Feb 2025 10:04:58 -0800 (PST)
+Received: from arm.com (e134078.arm.com [10.1.26.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 58DAB3F58B;
+	Mon, 10 Feb 2025 10:04:32 -0800 (PST)
+Date: Mon, 10 Feb 2025 18:04:29 +0000
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+	david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
+	oliver.upton@linux.dev, suzuki.poulose@arm.com,
+	yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
+Subject: Re: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests
+ if not configured for qemu
+Message-ID: <Z6o/rbweZttGReir@arm.com>
+References: <20250120164316.31473-1-alexandru.elisei@arm.com>
+ <20250120164316.31473-4-alexandru.elisei@arm.com>
+ <20250121-45faf6a9a9681c7c9ece5f44@orel>
+ <Z6nX8YC8ZX9jFiLb@arm.com>
+ <20250210-640ff37c16a0dbccb69f08ea@orel>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,140 +58,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250210-640ff37c16a0dbccb69f08ea@orel>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 61bcc752d1b81fde3cae454ff20c1d3c359df500  powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
+Hi Drew,
 
-elapsed time: 724m
+On Mon, Feb 10, 2025 at 02:56:25PM +0100, Andrew Jones wrote:
+> On Mon, Feb 10, 2025 at 10:41:53AM +0000, Alexandru Elisei wrote:
+> > Hi Drew,
+> > 
+> > On Tue, Jan 21, 2025 at 03:48:55PM +0100, Andrew Jones wrote:
+> > > On Mon, Jan 20, 2025 at 04:43:01PM +0000, Alexandru Elisei wrote:
+> > <snip>
+> > > > ---
+> > > >  arm/efi/run             | 8 ++++++++
+> > > >  arm/run                 | 9 +++++++++
+> > > >  run_tests.sh            | 8 ++++++++
+> > > >  scripts/mkstandalone.sh | 8 ++++++++
+> > > >  4 files changed, 33 insertions(+)
+> > <snip>
+> > > > +case "$TARGET" in
+> > > > +qemu)
+> > > > +    ;;
+> > > > +*)
+> > > > +    echo "'$TARGET' not supported for standlone tests"
+> > > > +    exit 2
+> > > > +esac
+> > > 
+> > > I think we could put the check in a function in scripts/arch-run.bash and
+> > > just use the same error message for all cases.
+> > 
+> > Coming back to the series.
+> > 
+> > arm/efi/run and arm/run source scripts/arch-run.bash; run_tests.sh and
+> > scripts/mkstandalone.sh don't source scripts/arch-run.bash. There doesn't
+> > seem to be a common file that is sourced by all of them.
+> 
+> scripts/mkstandalone.sh uses arch-run.bash, see generate_test().
 
-configs tested: 119
-configs skipped: 138
+Are you referring to this bit:
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+generate_test ()
+{
+	<snip>
+        (echo "#!/usr/bin/env bash"
+         cat scripts/arch-run.bash "$TEST_DIR/run")
 
-tested configs:
-alpha                     allnoconfig    gcc-14.2.0
-arc                       allnoconfig    gcc-14.2.0
-arc           randconfig-001-20250210    clang-21
-arc           randconfig-002-20250210    clang-21
-arm                       allnoconfig    gcc-14.2.0
-arm                 bcm2835_defconfig    gcc-14.2.0
-arm                  ixp4xx_defconfig    gcc-14.2.0
-arm           randconfig-001-20250210    clang-21
-arm           randconfig-002-20250210    clang-21
-arm           randconfig-003-20250210    clang-21
-arm           randconfig-004-20250210    clang-21
-arm                     rpc_defconfig    gcc-14.2.0
-arm64                     allnoconfig    gcc-14.2.0
-arm64                       defconfig    gcc-14.2.0
-arm64         randconfig-001-20250210    clang-21
-arm64         randconfig-002-20250210    clang-21
-arm64         randconfig-003-20250210    clang-21
-arm64         randconfig-004-20250210    clang-21
-csky                     alldefconfig    gcc-14.2.0
-csky                      allnoconfig    gcc-14.2.0
-csky          randconfig-001-20250210    clang-21
-csky          randconfig-002-20250210    clang-21
-hexagon                   allnoconfig    gcc-14.2.0
-hexagon       randconfig-001-20250210    clang-21
-hexagon       randconfig-002-20250210    clang-21
-i386                     allmodconfig    clang-19
-i386                      allnoconfig    clang-19
-i386                     allyesconfig    clang-19
-i386                        defconfig    clang-19
-i386          randconfig-011-20250210    gcc-12
-i386          randconfig-012-20250210    gcc-12
-i386          randconfig-013-20250210    gcc-12
-i386          randconfig-014-20250210    gcc-12
-i386          randconfig-015-20250210    gcc-12
-i386          randconfig-016-20250210    gcc-12
-i386          randconfig-017-20250210    gcc-12
-loongarch                 allnoconfig    gcc-14.2.0
-loongarch     randconfig-001-20250210    clang-21
-loongarch     randconfig-002-20250210    clang-21
-mips                   ip30_defconfig    gcc-14.2.0
-nios2         randconfig-001-20250210    clang-21
-nios2         randconfig-002-20250210    clang-21
-openrisc                  allnoconfig    clang-21
-openrisc                    defconfig    gcc-12
-parisc                    allnoconfig    clang-21
-parisc                      defconfig    gcc-12
-parisc        randconfig-001-20250210    clang-21
-parisc        randconfig-002-20250210    clang-21
-powerpc                  allmodconfig    gcc-14.2.0
-powerpc                   allnoconfig    clang-21
-powerpc                  allyesconfig    clang-16
-powerpc               eiger_defconfig    gcc-14.2.0
-powerpc               holly_defconfig    gcc-14.2.0
-powerpc          mpc885_ads_defconfig    gcc-14.2.0
-powerpc       randconfig-001-20250210    clang-21
-powerpc       randconfig-002-20250210    clang-21
-powerpc       randconfig-003-20250210    clang-21
-powerpc       randconfig-003-20250210    gcc-14.2.0
-powerpc64     randconfig-001-20250210    clang-21
-powerpc64     randconfig-001-20250210    gcc-14.2.0
-powerpc64     randconfig-002-20250210    clang-21
-powerpc64     randconfig-002-20250210    gcc-14.2.0
-powerpc64     randconfig-003-20250210    clang-21
-powerpc64     randconfig-003-20250210    gcc-14.2.0
-riscv                     allnoconfig    clang-21
-riscv                       defconfig    gcc-12
-riscv            nommu_k210_defconfig    gcc-14.2.0
-riscv         randconfig-001-20250210    clang-16
-riscv         randconfig-002-20250210    clang-16
-s390                     allmodconfig    gcc-14.2.0
-s390                      allnoconfig    clang-21
-s390                     allyesconfig    gcc-14.2.0
-s390                        defconfig    gcc-12
-s390          randconfig-001-20250210    clang-16
-s390          randconfig-002-20250210    clang-16
-sh                       allmodconfig    gcc-14.2.0
-sh                       allyesconfig    gcc-14.2.0
-sh                          defconfig    gcc-12
-sh         kfr2r09-romimage_defconfig    gcc-14.2.0
-sh                  lboxre2_defconfig    gcc-14.2.0
-sh                  r7780mp_defconfig    gcc-14.2.0
-sh            randconfig-001-20250210    clang-16
-sh            randconfig-002-20250210    clang-16
-sh                   se7751_defconfig    gcc-14.2.0
-sparc                    allmodconfig    gcc-14.2.0
-sparc         randconfig-001-20250210    clang-16
-sparc         randconfig-002-20250210    clang-16
-sparc64                     defconfig    gcc-12
-sparc64       randconfig-001-20250210    clang-16
-sparc64       randconfig-002-20250210    clang-16
-um                        allnoconfig    clang-21
-um                          defconfig    gcc-12
-um                     i386_defconfig    gcc-12
-um            randconfig-001-20250210    clang-16
-um            randconfig-002-20250210    clang-16
-um                   x86_64_defconfig    gcc-12
-x86_64                    allnoconfig    clang-19
-x86_64                   allyesconfig    clang-19
-x86_64                      defconfig    clang-19
-x86_64                          kexec    clang-19
-x86_64        randconfig-001-20250210    clang-19
-x86_64        randconfig-002-20250210    clang-19
-x86_64        randconfig-003-20250210    clang-19
-x86_64        randconfig-004-20250210    clang-19
-x86_64        randconfig-005-20250210    clang-19
-x86_64        randconfig-006-20250210    clang-19
-x86_64        randconfig-007-20250210    clang-19
-x86_64        randconfig-008-20250210    clang-19
-x86_64        randconfig-071-20250210    gcc-12
-x86_64        randconfig-072-20250210    gcc-12
-x86_64        randconfig-073-20250210    gcc-12
-x86_64        randconfig-074-20250210    gcc-12
-x86_64        randconfig-075-20250210    gcc-12
-x86_64        randconfig-076-20250210    gcc-12
-x86_64        randconfig-077-20250210    gcc-12
-x86_64        randconfig-078-20250210    gcc-12
-x86_64                       rhel-9.4    clang-19
-xtensa        randconfig-001-20250210    clang-16
-xtensa        randconfig-002-20250210    clang-16
+I think scripts/arch-run.bash would need to be sourced for any functions defined
+there to be usable in mkstandalone.sh.
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+What I was thinking is something like this:
+
+if ! vmm_supported $TARGET; then
+	echo "$0 does not support '$TARGET'"
+	exit 2
+fi
+
+Were you thinking of something else?
+
+I think mkstandalone should error at the top level (when you do make
+standalone), and not rely on the individual scripts to error if the VMM is
+not supported. That's because I think creating the test files, booting a
+machine and copying the files only to find out that kvm-unit-tests was
+misconfigured is a pretty suboptimal experience.
+
+> run_tests.sh doesn't, but I'm not sure it needs to validate TARGET
+> since it can leave that to the lower-level scripts.
+
+I put the check in arm/run, and removed it from run_tests.sh, and this is
+what I got:
+
+$ ./run_tests.sh selftest-setup
+SKIP selftest-setup (./arm/run does not supported 'kvmtool')
+
+which looks good to me.
+
+> 
+> > 
+> > How about creating a new file in scripts (vmm.bash?) with only this
+> > function?
+> 
+> If we need a new file, then we can add one, but I'd try using
+> arch-run.bash or common.bash first.
+
+common.bash seems to work (and the name fits), so I'll give that a go.
+
+Thanks,
+Alex
 
