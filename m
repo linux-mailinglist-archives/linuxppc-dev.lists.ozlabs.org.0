@@ -1,66 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-6022-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6023-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09F7FA2E5A6
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 08:43:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 139DFA2E5D3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 08:54:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrxQB3bsJz2yNs;
-	Mon, 10 Feb 2025 18:43:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YrxgJ1jgFz2yyT;
+	Mon, 10 Feb 2025 18:54:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.217.51
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739173394;
-	cv=none; b=ZZqNkE7Ic11qK4GFXEyc7qPtr7ND3tDQklOA8K/2jGLE1fosaJcfYgfDjnvmPNC9FyodAojECZsZfYEkuvOArOdY8G8+tyN+1eeXw+LO3AvxNhCaf8b4VaMAylQUA72QOEoA6PeTbhCZy1csDT5lABOmMU3IwYq6nc7LXpq4n/kt52HP9wlgKmf5TXCiSXOjPTQgc99eWEMa2xluuz0vDfL/blroU+Wjn/l/2Ud7ezAUi6cF98ZxSiO4wu/X+NIdb23it3PAeMiSjSEzhoA6P6L2ETnuKUA49GX70nbwDzOCQimKQotNa20nV2jvTAJKhT3othUR3336CFKB0OBW3A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.222.45
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739174076;
+	cv=none; b=dwRU8dmf4RFOLa69kkV26x3rZyZkbfzhlLvir6lsn0EgymHZcR5OasCcsrujTZGkd/WzRrRBZ0xTovWrlLH6/YIEW6wnk90zK8xUtZxV8L/uSQvG4VH2lyNs4Y5H4Cps8UvD2aTbw0FQ37UOIANyNoMHpEPMzqcZq1b4/IyBqfp/diZzLM5IBtgB4RrsXwNc7X7v+g8aGR3SRuT6S6BMKgDVw7yGl4tqnurlizPyNmCOQGW5qgsYo18pinv/+XIjbjw4/GoM5ibz0qJdnT5rqoFEEWewpvqejHZ9CzywmeaXMEYp57YYaEryNzCIMUkipGjBEWoF9SipjpdEq9mtSw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739173394; c=relaxed/relaxed;
-	bh=l1HAXrO7siUncPkj5ofDqgDnxHSc+KQ8zsK7WabjOVA=;
+	t=1739174076; c=relaxed/relaxed;
+	bh=6QVuU+Pj4WW7p8VfYDhUhfStFdnghuMaJHmBwZ02Z5o=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XhNCLKyhvhbGFdDL1jsaY4nBqYn11mma4oRwCjj8cxu3NVAsuL3633NiD5O29y0UPlQ2EvQZGA9qaQDZjQYLPXtW50mOQ7yhyUcltEP2ulZDaLN6dGo4WrUSwlQ4jGDcZvXqiV3Pea5+oka6+K8cODKUJ15KzOEutTls7IVHJCI5Lw5udssf5jGtTt16QcuuTxsx14pEj5MLOcularK70sKUoNPq3pYScrTLrmuROejIn59f8ziSXs4a/q/U32DFCHh4/13yxhHdlGnXWcV5OQz6QhoFqyrasOh6umQcE+6AkyFFzkx+1EderTuP1VwdD8g44MWaZD5s/26deqIyEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.217.51; helo=mail-vs1-f51.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=WG8GA82mTOCdAi/wwVzg8JzZtW4SjWPK3OB7sO2zXSNkABayCKYWVkVmDeWlo1wASEaLLDK0v50/P4/kHnEPMEom45tyvZ690mV7hgwlIQezSduKLmrpJZbpAxQ1g/30lIexQr0vcuNk8Cr3DCwcsyRPMFuiM7b03ZwJhCnsXSgXPliw76H1/ysiiK6E9YZMvf4Ge6EAnDhKB7OzendnY1eqVP/ohAf0RShLYgUcxDK82rNWz9lwGbzmNPCFohqEqLyt2fQZKVJ1ejmaM9FnJ5oFB24Yl6tWFs8R3Qu46LRrvYJaiPR1rdKxgpipAqNLo3PCggUyQZiAMXI9Q58mzQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.222.45; helo=mail-ua1-f45.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.217.51; helo=mail-vs1-f51.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vs1-f51.google.com (mail-vs1-f51.google.com [209.85.217.51])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.222.45; helo=mail-ua1-f45.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrxQ90pTpz2xl6
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 18:43:12 +1100 (AEDT)
-Received: by mail-vs1-f51.google.com with SMTP id ada2fe7eead31-4bbc406499fso217218137.1
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Feb 2025 23:43:12 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrxgH24Vmz2ynf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 18:54:34 +1100 (AEDT)
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-8670fd79990so638250241.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Feb 2025 23:54:34 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739173389; x=1739778189;
+        d=1e100.net; s=20230601; t=1739174070; x=1739778870;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=l1HAXrO7siUncPkj5ofDqgDnxHSc+KQ8zsK7WabjOVA=;
-        b=JPoyBsm9qBpqQUq6XA3IRNlOP2ngX1RiElPDcD6xzZfL2WZvaXNfGTaL6BA6aesOXP
-         LIwb55pgCun7qV8Fnud74FgxjOytoYfCq8xCjS3sRmAL2K88CTq2TB5JwczG/jjVpdrI
-         PSStp47jwiCat89241UlepjsNzbnMfjLMkEf7a6bLhCs6nZzHx1WHF7Suf/he4TXxSzv
-         5q3GkQpH01qUUSPiMn3+Cl8BfjLxiw6mVTYpQJ6oUu5bb5RiJLDgTm3xNWr6BAMzhxh1
-         KhIBw3GOKMX1PO4vgloSqtY/954wkkcLHyrcZyD5neffy9VpymdmU9+j1Tiu/tCmWyk8
-         zsfQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX+B3EEocxkoL96WQ+WmZFAOoWDKrgb3vd4nxHifOpl9SeMU7r4Y4QdMBTUtC3Fuo4OmBhbOZFUfbuW9c0=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwcJGX/0+127NXh73SmPtGIWEDdGutamf/MrHbjz7RH5m6kXzoS
-	AxFROVrVjdp4NkyLlikpaVWXv4oS30quCNUdchf4FHpqwjHGBQy1Bmq4S24a
-X-Gm-Gg: ASbGncsEr+8r6HHkGROBW21Wd40xDd0Dp1PUCHLZkPUnrQx2Cz8ikUPmWnduDmiLnz6
-	Wd6vKkHfebxavaUJ6gvh0uHP69zSTvJ/ONZBKJuf7y1cQQzzj60uPJ9F9K0I/LrYN5rpErfCTzt
-	nI5YQR5HlWYjiJnSSQ139F95lZnjYTzeL9DB2vHHNMuMit2OzTSyLHKWSUTMVyR6y6l6jomOoN1
-	rMkiHshPW0ZbfwLVl0cFMBfZu+nPOVGb+AAHgGzR2W0i4gT/fdBDKbssF5yNDAk6AX0MQerk1B5
-	pQ2I82lmyooN4UxIN+qSB/GxInGaMKUqRGL0wh+rnlV2g/p3NDtpRg==
-X-Google-Smtp-Source: AGHT+IGkHNMz7q56DE12b2GGGBdqOrKIAoJMKKAjDncGh8g5UUayM0AWrcYrqgpJtKot3mVQ+rrloA==
-X-Received: by 2002:a05:6102:161f:b0:4ba:eb24:fb0a with SMTP id ada2fe7eead31-4baeb2503e2mr3203510137.5.1739173389247;
-        Sun, 09 Feb 2025 23:43:09 -0800 (PST)
-Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com. [209.85.217.46])
-        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-866f97d794dsm1563334241.25.2025.02.09.23.43.09
+        bh=6QVuU+Pj4WW7p8VfYDhUhfStFdnghuMaJHmBwZ02Z5o=;
+        b=PLCVwslXbW8jZqWtYx2CqD4nWf9JwnB92pgOE2Y4NSPLY7ha5yw3iNYKNxbsuJmpgY
+         /CHdHj53GNAyykQFzXo0xi+H18mJZV1JLv339Pq7LM/YgUI4sjiXMUcIrDXghEvG/nF/
+         18Q0Vwi8Otq8B3fujMeXt1syF8+J053vt4GnMaG9QZIsSIXOmOfwuu0uPxiegUOx+XLR
+         LvyIFS3Vy7vwBPCY1qNLsm0Q/Cib7xnd0SH9RKXtMRM2UcTBKbUTew9Egwfsxi0PcNM9
+         ZX921acmMDm5q3YxD+8cMWswe1t5WUYscL8/PWM8AmdptKkFKJbQwxPU1q4I93aCU3Pk
+         pfTg==
+X-Forwarded-Encrypted: i=1; AJvYcCWGKcmWBamZV1JCgjtG99UjtqLCXRsSI2rLsuVhWaZ8q16JmVPYkzVxhn4vvCjo0t6FKGmzfRKpqlY7fFg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxkK5jKKlRVQpnnFuQug48mwd/IhvhUeFOzTyb6FW0CA59XBpDx
+	8XNwzhmsfrWhkzQG23V1AQ8ipdUNblQKTCZbflMGQV7kb9CGozQ6AEHqdqHU
+X-Gm-Gg: ASbGncu37C8OmvWJ7ZoCRtbkOSTssp4/Z2vDjlIlf32D9EvVDgbEt1wDuiqBYxbxMCd
+	5uaI3Wh+MlD+qc+BBBTooL0FqXnK0aGdb6ao1mDsUMzuamcrH7+9vaJS8FWRgArdQ4xoHMN+u0p
+	55rk+i5YQ+0feM77dVTtfJtpyWnWClrhp6jOopBIcnItXdm9fubBbyL1tJ4ghaN96r0vg6rMAWF
+	3+Rf0lGxw0dXy8LDkirOQQxVu6XQl5uFiI2COjNeRqsoUfEnIDUkctTfC1WVcraJK8MujOr7SeE
+	l4rErbUR0lewxzI+VXsWOzxxPnwUwHgksO4q5esA3DYRapuhZxUCLg==
+X-Google-Smtp-Source: AGHT+IGyFB69s4dMmsA6b8fHXghQincwUsGUTnvLWnghgAz2Xw3pIENpBsrfwCyR7jWd2nz4O2drKQ==
+X-Received: by 2002:a05:6102:304e:b0:4bb:d7f0:6e65 with SMTP id ada2fe7eead31-4bbd7f06f3bmr269669137.2.1739174070313;
+        Sun, 09 Feb 2025 23:54:30 -0800 (PST)
+Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com. [209.85.217.47])
+        by smtp.gmail.com with ESMTPSA id a1e0cc1a2514c-866f97d922csm1586654241.22.2025.02.09.23.54.29
         for <linuxppc-dev@lists.ozlabs.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 09 Feb 2025 23:43:09 -0800 (PST)
-Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-4bbbab48111so336961137.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Feb 2025 23:43:09 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUjT1SSfa3PoktVAarUy9hSavKsk3RfFaC7duKUvTAPVswLXQO0djpfWZL/BqFDPs3yd+XT+1q0vVkzYng=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:c54:b0:4bb:c24b:b623 with SMTP id
- ada2fe7eead31-4bbc24bc2e1mr2033659137.19.1739173388892; Sun, 09 Feb 2025
- 23:43:08 -0800 (PST)
+        Sun, 09 Feb 2025 23:54:29 -0800 (PST)
+Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-4b68cb2abacso942540137.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 09 Feb 2025 23:54:29 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXOaOKAkzHp+T6Fb90ANxpbRomSgZ0+iC3hzhhNWRTVyLOA+hEYqAVxBbC6BGkk1D2ehmOvQY3QBIOrDbU=@lists.ozlabs.org
+X-Received: by 2002:a05:6102:41a0:b0:4ba:7b06:7e68 with SMTP id
+ ada2fe7eead31-4ba85f54226mr8216593137.23.1739174069469; Sun, 09 Feb 2025
+ 23:54:29 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,20 +73,20 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250207-bitmap-kunit-convert-v1-0-c520675343b6@gmail.com> <20250207-bitmap-kunit-convert-v1-2-c520675343b6@gmail.com>
-In-Reply-To: <20250207-bitmap-kunit-convert-v1-2-c520675343b6@gmail.com>
+References: <20250207-bitmap-kunit-convert-v1-0-c520675343b6@gmail.com> <Z6eaDuXnT_rjVSNS@thinkpad>
+In-Reply-To: <Z6eaDuXnT_rjVSNS@thinkpad>
 From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 10 Feb 2025 08:42:56 +0100
-X-Gmail-Original-Message-ID: <CAMuHMdXQ5vbhWsJgsGUny=9b4p0cvML+GkLJ=BmWnG9Q6FE78A@mail.gmail.com>
-X-Gm-Features: AWEUYZkkTrEuq6WMVMpODBTYSjpUaxRBgiMamGpu9Ed_-WnWv5jDfkFeFpfmlCY
-Message-ID: <CAMuHMdXQ5vbhWsJgsGUny=9b4p0cvML+GkLJ=BmWnG9Q6FE78A@mail.gmail.com>
-Subject: Re: [PATCH 2/3] bitmap: convert self-test to KUnit
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: David Gow <davidgow@google.com>, John Hubbard <jhubbard@nvidia.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Yury Norov <yury.norov@gmail.com>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+Date: Mon, 10 Feb 2025 08:54:16 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUsq_39kgBa8oanXeTzv44HuhS1e5MK7K2jxkVXQ7uWdw@mail.gmail.com>
+X-Gm-Features: AWEUYZm5Xr2vD3ubUCPEj8UL7Ai7XR-3LWBLYpLEYOvMDEsJZO3nw3gZxZYFUGk
+Message-ID: <CAMuHMdUsq_39kgBa8oanXeTzv44HuhS1e5MK7K2jxkVXQ7uWdw@mail.gmail.com>
+Subject: Re: [PATCH 0/3] bitmap: convert self-test to KUnit
+To: Yury Norov <yury.norov@gmail.com>
+Cc: Tamir Duberstein <tamird@gmail.com>, David Gow <davidgow@google.com>, 
+	John Hubbard <jhubbard@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
 	Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
 	Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-kernel@vger.kernel.org, 
 	linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, 
@@ -98,29 +98,51 @@ X-Spam-Status: No, score=0.1 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 7 Feb 2025 at 21:14, Tamir Duberstein <tamird@gmail.com> wrote:
-> Convert the bitmap() self-test to a KUnit test.
->
-> In the interest of keeping the patch reasonably-sized this doesn't
-> refactor the tests into proper parameterized tests - it's all one big
-> test case.
->
-> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Hi Yuri,
 
->  arch/m68k/configs/amiga_defconfig     |   1 -
->  arch/m68k/configs/apollo_defconfig    |   1 -
->  arch/m68k/configs/atari_defconfig     |   1 -
->  arch/m68k/configs/bvme6000_defconfig  |   1 -
->  arch/m68k/configs/hp300_defconfig     |   1 -
->  arch/m68k/configs/mac_defconfig       |   1 -
->  arch/m68k/configs/multi_defconfig     |   1 -
->  arch/m68k/configs/mvme147_defconfig   |   1 -
->  arch/m68k/configs/mvme16x_defconfig   |   1 -
->  arch/m68k/configs/q40_defconfig       |   1 -
->  arch/m68k/configs/sun3_defconfig      |   1 -
->  arch/m68k/configs/sun3x_defconfig     |   1 -
+On Sat, 8 Feb 2025 at 18:53, Yury Norov <yury.norov@gmail.com> wrote:
+> On Fri, Feb 07, 2025 at 03:14:01PM -0500, Tamir Duberstein wrote:
+> > On 7/27/24 12:35 AM, Shuah Khan wrote:
+> > > Please make sure you aren't taking away the ability to run these tests during
+> > > boot.
+> > >
+> > > It doesn't make sense to convert every single test especially when it
+> > > is intended to be run during boot without dependencies - not as a kunit test
+> > > but a regression test during boot.
+> > >
+> > > bitmap is one example - pay attention to the config help test - bitmap
+> > > one clearly states it runs regression testing during boot. Any test that
+> > > says that isn't a candidate for conversion.
+> > >
+> > > I am going to nack any such conversions.
+> >
+> > The crux of the argument seems to be that the config help text is taken
+> > to describe the author's intent with the fragment "at boot". I think
 
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
+IMO, "at boot" is a misnomer, as most tests can be either builtin
+or modular.
+
+> KUNIT is disabled in defconfig, at least on x86_64. It is also disabled
+> on my Ubuntu 24.04 machine. If I take your patches, I'll be unable to
+
+I think distros should start setting CONFIG_KUNIT=m.
+
+> boot-test bitmaps. Even worse, I'll be unable to build the standalone
+> test from sources as a module and load it later.
+
+If you could build the standalone test from sources as a module,
+surely you can build the converted standalone test and KUNIT itself as
+modules, and load both of them later?
+
+> Or I misunderstand it, and there's a way to build some particular KUNIT
+> test without enabling KUNIT in config and/or re-compiling the whole kernel?
+> Please teach me, if so
+>
+> Unless you give me a way to build and run the test in true
+> production environment, I'm not going with KUNITs. Sorry.
+
+FTR, this is why I've been advocating for making all tests modular, and
+for not letting any test select (possibly unwanted) extra functionality.
 
 Gr{oetje,eeting}s,
 
