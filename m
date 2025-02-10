@@ -1,69 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-6014-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6016-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CCBBA2E324
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 05:34:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF14A2E3B6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 06:37:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YrsDj055nz2xrv;
-	Mon, 10 Feb 2025 15:34:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yrtcn16rjz2yyC;
+	Mon, 10 Feb 2025 16:37:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739162084;
-	cv=none; b=gJNpcNtCs/JtPFhNPKJrMkm4cjDYxZQOXwJXtH5Mcit7Vzf5H/ZSuuNWb9QTIDGqTxXLmQnNVfKPJKGjqsl5c2U20/DnbI3WRKKMVTTa2McMNuoNjyZ+YWteq5ucr2xjOeFNEvs9O8AwS71lIAXrOxpo6YBJPNAr8B2hSZS/xzsS48iGkWCVezeOq/CmoNf0mKW4pwSxfVZlJv7Vix6a3sthtdYEMkuYZk0nXLlgpbCNxQsFCm53yC/T99/q6gajkg4VPc+P/SX492M9WCf06thpx+qwLj6MhUHRXvnp9bn741+/Wcc0K1rVDKwP3GuMzvJoG9fRVOGms3mHQbbk1g==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739162084; c=relaxed/relaxed;
-	bh=fOvPbUbMnTIgUdqmziqc+FQX9Yehx4Z55MHuSNKVBU0=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Cc:Content-Type; b=XUc7f7rf2O/cjWF2PlWhQC9vrfLjzVj/cBqejeEWdoC7pBNf9JBCvAZtbndzEPQFslLSyC57HsXhyKWbooLrkKBVkuYzvgHnSG+bK4n3Cv1ZIdfwYpRjZF1qvcl9IBzXN+3URkxGnHIMiaeZbLVWL1/IfEpeEPGw2IYqC5/pVpbzgbXnbbFgSJZaPRLDLJCq686/POo4R5GgtFFiVZxpFFcm1SdItrl3CUiUy3CABkVuA9iOEOhOt8D3CH1yvayPe/hHNQ8KMw/ZHrSLTWa48mCWHxx/KWUFnv7BbdZLEk3K+qWmP2KatdYghcL94qCrZF/DV4tgiMRpFEWkixMoRA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mz+ErOXe; dkim-atps=neutral; spf=none (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.vnet.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.vnet.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=136.143.188.112 arc.chain=zohomail.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739165833;
+	cv=pass; b=YpnC40ClEi5WekWZ+tMIxqLrg4hJiBSClFgwvCvamJHQjuG+Fmd/rZDI2lNLqjbprPRlaiI1jQhGT0qItQPJhzDGmjEl7eN0DTf3LTGk2/peN26+049FqOBLov7A9dr/gnjYiD9oKlEan7nexs2O9P6xvKQJDuVsxBpd2VowR/xMKQ/rOXRGiq2YW2ytuBZafQkFiLWusgCm0v/mZ4VUfSCfxRHgQpG7Mn/WJ9MeanCJWEU86AhIfKy7OOfV5GtpKicLfVrHYlYr1bk4nagFo4LkEYDedZPu7pnNXejA5a7a+grKkE596G/yLxCBXNYLMZz/836JqDBwOolWr38gEQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1739165833; c=relaxed/relaxed;
+	bh=LZKYeceqEF9quM6A8CMj12KwUl60fxWcDy6hwWwYScQ=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=cVED1pVahQhUXGR66M1rST9LBcPo1AYK+TaHJzJrMn7wE9WXD+s/SZ3VyhKsqmc36S7cZEjC4yQXQykXGyTk0pNn7A0nyWKbQ/NZxBSbwCGB8wu9gU9KbIgxhoPOdtIj7/YX/gkb3UiHUIEw1s9Deu73yda/6Cxq6xDUJ9WZDiWTRIZfdM70UZfcysNTv1iPhFjP4N13EQxxRP8haepx1IxS+RALWa+f54YzGzFIRRjMc52UYca3cCol+kSK2JMWBVJluYNtZiPw4Zq3cWPtFr2ZenDXr4UBPqtyrBAPklvJo5J9KnlUWDhdifUbD3v2q+2GH/KAV7J85cDqqEOj+w==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com; dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Nk8l3Yxd; dkim-atps=neutral; spf=pass (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=usama.anjum@collabora.com; receiver=lists.ozlabs.org) smtp.mailfrom=collabora.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mz+ErOXe;
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Nk8l3Yxd;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.vnet.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.vnet.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=usama.anjum@collabora.com; receiver=lists.ozlabs.org)
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YrsDg6wsvz2xgX
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 15:34:43 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51A39I7m030033;
-	Mon, 10 Feb 2025 04:34:33 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=fOvPbUbMnTIgUdqmziqc+FQX9Yeh
-	x4Z55MHuSNKVBU0=; b=mz+ErOXesXyWQEp4udBMmheDXFaL8vLD2MB03/p8N1qZ
-	7wfYzGDypnQhxAGPTeujEUPzgylFUWTJRKoYN6o2gx3dNhTuLOLPRQ+QGane/GOM
-	Ffv6S6ElNzQ6gsJkJUKB/qO8k7XtCFmzqZwaLvKZTpNPUyb0gkRuyLFpR0sc70BL
-	obCnIC08Df0yZs1JMijuPVuhM26f2l0CKf3NKv+51zWa+hxndHFNB0sX+0OUlRGU
-	4+GWPi9RXY1eq4VqanNveEZG3aUrTa33Vylk18EaFN1HpntoGb1ujocpMNPvdHSC
-	3SgzzYbUjHUQUdUCR7ESCrunlzizSlBlD/S0MxO+CQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44pr2nuagj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 04:34:33 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51A3tNsd016743;
-	Mon, 10 Feb 2025 04:34:32 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44pk3jvg9n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 10 Feb 2025 04:34:32 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51A4YWrx16187970
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 10 Feb 2025 04:34:32 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3A4BC58055;
-	Mon, 10 Feb 2025 04:34:32 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C5E958059;
-	Mon, 10 Feb 2025 04:34:31 +0000 (GMT)
-Received: from [9.61.251.80] (unknown [9.61.251.80])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 10 Feb 2025 04:34:30 +0000 (GMT)
-Message-ID: <8d1ebe64-f5df-43d4-8e4d-20f934daff45@linux.vnet.ibm.com>
-Date: Mon, 10 Feb 2025 10:04:29 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yrtcm02Csz2yvl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 16:37:11 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1739164906; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=WKmHX2b6i1OdXX89VJx3mXatPfyAW9fmZWnWbHWD+xapjDMY/0ZlWWJw9360xlc5pip1arTzhNZCJ3KE9UZgTiTD8Ddbq4yTj3AK9ZkeiUx+D1sU2ErfSXoVxUFnsJhfVAoxcb6wD4gP3i58nYnB5UhUJtx8ED9ul0FpcaiPPNg=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1739164906; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=LZKYeceqEF9quM6A8CMj12KwUl60fxWcDy6hwWwYScQ=; 
+	b=U0NHTZ783VuZXXd9HjHbxJRsFlAbc99aAOSnQyFXZnYvZ5/vlhue/xP/vQHp60ARAr5Ypk449mMqnzAWyqQDEnlkh4jrXS4JwVgFzfh0MZxDxZZaom8Ep2MEBwW9ezto/tN3Gjcgv6sROimpaFfjc6G3KY63I4VKxjWTv7vmxfM=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1739164906;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=LZKYeceqEF9quM6A8CMj12KwUl60fxWcDy6hwWwYScQ=;
+	b=Nk8l3Yxd7gQHDLc+DnKZhXLIy1UPWk7RB4/KnqK37lO0x8JQpQm1VdcOfgZQZ73e
+	sENxy1P25yej0hZVQkKxapJx5gCVWQ3938NyE1ma/FyQrjRRozwWTtsbC06Ai36v4Lf
+	TClCBHw6h+FgfFKkuRyK04nquVqVq0Ghad4nqP0A=
+Received: by mx.zohomail.com with SMTPS id 1739164903782624.1070733407311;
+	Sun, 9 Feb 2025 21:21:43 -0800 (PST)
+Message-ID: <3145dde7-0a34-4929-9ad3-45de91850580@collabora.com>
+Date: Mon, 10 Feb 2025 10:22:19 +0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,170 +63,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Content-Language: en-GB
-To: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-From: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Subject: [linux-next][next-20250207]Observing Kernel Softlock up's while
- running kselftest
-Cc: sfr@canb.auug.org.au
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: cES3qbbo26zhOCiA0BH6NgjaQKsmIJ6h
-X-Proofpoint-ORIG-GUID: cES3qbbo26zhOCiA0BH6NgjaQKsmIJ6h
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-10_02,2025-02-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=758
- spamscore=0 suspectscore=0 adultscore=0 priorityscore=1501
- lowpriorityscore=0 impostorscore=0 phishscore=0 clxscore=1011
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502100035
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+Cc: Usama.Anjum@collabora.com, linux-kernel@vger.kernel.org,
+ linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org,
+ linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 1/3] bitmap: remove _check_eq_u32_array
+To: Tamir Duberstein <tamird@gmail.com>, David Gow <davidgow@google.com>,
+ John Hubbard <jhubbard@nvidia.com>, Andrew Morton
+ <akpm@linux-foundation.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Yury Norov <yury.norov@gmail.com>,
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, Shuah Khan <shuah@kernel.org>,
+ Kees Cook <kees@kernel.org>
+References: <20250207-bitmap-kunit-convert-v1-0-c520675343b6@gmail.com>
+ <20250207-bitmap-kunit-convert-v1-1-c520675343b6@gmail.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <20250207-bitmap-kunit-convert-v1-1-c520675343b6@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ZohoMailClient: External
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Greetings!!!
+On 2/8/25 1:14 AM, Tamir Duberstein wrote:
+> This has been unused since commit 3aa56885e516 ("bitmap: replace
+> bitmap_{from,to}_u32array") in 2018. Remove it to avoid the need to port
+> it to KUnit in this series.
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-I am observing kernel soft lock up's while running kselftest on IBM 
-Power Servers.
-
-Though, I colud not reporduce this consistently, but CI has detected 
-this error twice now. Hence reporting.
-
-This error was reported firat time, while running signal component tests 
-and second time while running EEH component.
-
-linux-next/tools/testing/selftests/powerpc/signal
-
-linux-next/tools/testing/selftests/powerpc/eeh
-
-
-
-Traces:
-
-[11480.019928] watchdog: BUG: soft lockup - CPU#0 stuck for 26s! 
-[swapper/0:0]
-[11480.019935] Modules linked in: nvram(E) rpadlpar_io(E) rpaphp(E) 
-dm_mod(E) bonding(E) tls(E) nft_fib_inet(E) nft_fib_ipv4(E) 
-nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) 
-nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) 
-nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) rfkill(E) ip_set(E) 
-nf_tables(E) nfnetlink(E) hvcs(E) pseries_rng(E) hvcserver(E) 
-vmx_crypto(E) drm(E) drm_panel_orientation_quirks(E) xfs(E) lpfc(E) 
-sr_mod(E) sd_mod(E) cdrom(E) sg(E) nvmet_fc(E) ibmvscsi(E) nvmet(E) 
-ibmveth(E) scsi_transport_srp(E) nvme_fc(E) nvme_fabrics(E) bnx2x(E) 
-nvme_core(E) be2net(E) mdio(E) scsi_transport_fc(E) fuse(E) [last 
-unloaded: test_cpuidle_latency(OE)]
-[11480.019990] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Kdump: loaded 
-Tainted: G           OE      6.14.0-rc1-next-20250207 #1
-[11480.019995] Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-[11480.019996] Hardware name: IBM,8375-42A POWER9 (architected) 0x4e0202 
-0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
-[11480.019997] NIP:  c00000000003a2d0 LR: c00000000003a644 CTR: 
-c0000000002a912c
-[11480.020000] REGS: c0000003bffffb28 TRAP: 0900   Tainted: G           
-OE       (6.14.0-rc1-next-20250207)
-[11480.020002] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
-22042442  XER: 20040000
-[11480.020009] CFAR: 0000000000000000 IRQMASK: 0
-[11480.020009] GPR00: c00000000003a644 c0000003bffffb00 c000000001667500 
-c0000003bffffaf8
-[11480.020009] GPR04: c000000004062940 c0000003bffffd20 0000000000000001 
-c000000002277ca0
-[11480.020009] GPR08: 0000000000000003 0000000000000049 0000000000000000 
-0000000000002000
-[11480.020009] GPR12: c0000000002a912c c000000003000000 0000000000000000 
-0000000000000000
-[11480.020009] GPR16: 0000000000000001 0000000000000082 0000000000000001 
-0000000000000100
-[11480.020009] GPR20: 0000000004200002 0000000000000000 0000000000000000 
-0000000100110511
-[11480.020009] GPR24: 7fffffffffffffff 0000000000000001 00000003bd5a0000 
-0000000000000000
-[11480.020009] GPR28: 0000000000000002 0000000000000003 fcffffffffffffff 
-fcffffffffffffff
-[11480.020036] NIP [c00000000003a2d0] __replay_soft_interrupts+0x5c/0x22c
-[11480.020048] LR [c00000000003a644] arch_local_irq_restore+0x1a4/0x280
-[11480.020053] Call Trace:
-[11480.020054] [c0000003bffffb00] [c00000000003a358] 
-__replay_soft_interrupts+0xe4/0x22c (unreliable)
-[11480.020060] [c0000003bffffcb0] [c00000000003a644] 
-arch_local_irq_restore+0x1a4/0x280
-[11480.020064] [c0000003bffffcf0] [c0000000002a9d60] 
-tmigr_handle_remote_cpu+0x24c/0x318
-[11480.020071] [c0000003bffffda0] [c0000000002aa034] 
-tmigr_handle_remote_up+0x208/0x2d0
-[11480.020075] [c0000003bffffe10] [c0000000002a7d34] 
-__walk_groups.isra.0+0x6c/0x100
-[11480.020079] [c0000003bffffe50] [c0000000002aa2d0] 
-tmigr_handle_remote+0xf0/0x170
-[11480.020083] [c0000003bffffed0] [c0000000002876a4] 
-run_timer_softirq+0x54/0x68
-[11480.020089] [c0000003bffffef0] [c000000000179128] 
-handle_softirqs+0x148/0x3b4
-[11480.020094] [c0000003bfffffe0] [c000000000017f30] 
-do_softirq_own_stack+0x3c/0x50
-[11480.020100] [c000000002c87900] [c000000000178688] 
-__irq_exit_rcu+0x18c/0x1b4
-[11480.020102] [c000000002c87930] [c000000000179758] irq_exit+0x20/0x38
-[11480.020105] [c000000002c87950] [c00000000002b004] 
-timer_interrupt+0x128/0x300
-[11480.020108] [c000000002c879b0] [c000000000009ffc] 
-decrementer_common_virt+0x28c/0x290
-[11480.020113] --- interrupt: 900 at plpar_hcall_norets_notrace+0x18/0x2c
-[11480.020119] NIP:  c0000000000fb9d4 LR: c0000000010c2348 CTR: 
-0000000000000000
-[11480.020120] REGS: c000000002c879e0 TRAP: 0900   Tainted: G           
-OE       (6.14.0-rc1-next-20250207)
-[11480.020122] MSR:  800000000280b033 <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  
-CR: 22000248  XER: 20040000
-[11480.020129] CFAR: 0000000000000000 IRQMASK: 0
-[11480.020129] GPR00: 0000000000000000 c000000002c87c80 c000000001667500 
-0000000000000000
-[11480.020129] GPR04: 000000000000ffff 0000000000000000 0000000000000000 
-0000000000000000
-[11480.020129] GPR08: 0000000000000000 0000000000000000 80000000c7a3fc00 
-ffffffffffffffff
-[11480.020129] GPR12: 0000000000000000 c000000003000000 0000000000000000 
-0000000000000000
-[11480.020129] GPR16: 0000000000000000 0000000000000000 0000000000000000 
-0000000000000000
-[11480.020129] GPR20: 0000000000c00000 0000000000000008 0000000000000000 
-0000000000000000
-[11480.020129] GPR24: 0000000000000000 0000000000000000 00000a6adcf558a4 
-0000000000000000
-[11480.020129] GPR28: 0000000000000000 0000000000000001 c0000000022618e0 
-c0000000022618e8
-[11480.020155] NIP [c0000000000fb9d4] plpar_hcall_norets_notrace+0x18/0x2c
-[11480.020158] LR [c0000000010c2348] check_and_cede_processor+0x48/0x5c
-[11480.020162] --- interrupt: 900
-[11480.020163] [c000000002c87c80] [c00000000028a8b0] 
-__hrtimer_start_range_ns+0x160/0x2ec (unreliable)
-[11480.020168] [c000000002c87ce0] [c0000000010c2790] 
-dedicated_cede_loop+0x94/0x1a0
-[11480.020171] [c000000002c87d30] [c0000000010c1d80] 
-cpuidle_enter_state+0x3b4/0x5b4
-[11480.020174] [c000000002c87dd0] [c000000000cac55c] cpuidle_enter+0x4c/0x68
-[11480.020178] [c000000002c87e10] [c0000000001eb5b4] call_cpuidle+0x4c/0x94
-[11480.020184] [c000000002c87e30] [c0000000001f3798] 
-cpuidle_idle_call+0x164/0x240
-[11480.020188] [c000000002c87e90] [c0000000001f3974] do_idle+0x100/0x1ac
-[11480.020192] [c000000002c87ee0] [c0000000001f3ca4] 
-cpu_startup_entry+0x48/0x50
-[11480.020196] [c000000002c87f10] [c000000000011280] rest_init+0xf0/0xf4
-[11480.020199] [c000000002c87f40] [c000000002006604] 
-start_kernel+0x50c/0x5e0
-[11480.020204] [c000000002c87fe0] [c00000000000ea9c] 
-start_here_common+0x1c/0x20
-[11480.020207] Code: 71298000 408201ec 892d0933 7d2a48f8 554a07fe 
-0b0a0000 792ad7e2 0b0a0000 61290040 38610028 992d0933 480421c9 
-<60000000> 39200000 e9410130 f9210160
+> ---
+>  lib/test_bitmap.c | 28 ----------------------------
+>  1 file changed, 28 deletions(-)
+> 
+> diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
+> index 65a75d58ed9e..c83829ef557f 100644
+> --- a/lib/test_bitmap.c
+> +++ b/lib/test_bitmap.c
+> @@ -100,34 +100,6 @@ __check_eq_pbl(const char *srcfile, unsigned int line,
+>  	return true;
+>  }
+>  
+> -static bool __init
+> -__check_eq_u32_array(const char *srcfile, unsigned int line,
+> -		     const u32 *exp_arr, unsigned int exp_len,
+> -		     const u32 *arr, unsigned int len) __used;
+> -static bool __init
+> -__check_eq_u32_array(const char *srcfile, unsigned int line,
+> -		     const u32 *exp_arr, unsigned int exp_len,
+> -		     const u32 *arr, unsigned int len)
+> -{
+> -	if (exp_len != len) {
+> -		pr_warn("[%s:%u] array length differ: expected %u, got %u\n",
+> -			srcfile, line,
+> -			exp_len, len);
+> -		return false;
+> -	}
+> -
+> -	if (memcmp(exp_arr, arr, len*sizeof(*arr))) {
+> -		pr_warn("[%s:%u] array contents differ\n", srcfile, line);
+> -		print_hex_dump(KERN_WARNING, "  exp:  ", DUMP_PREFIX_OFFSET,
+> -			       32, 4, exp_arr, exp_len*sizeof(*exp_arr), false);
+> -		print_hex_dump(KERN_WARNING, "  got:  ", DUMP_PREFIX_OFFSET,
+> -			       32, 4, arr, len*sizeof(*arr), false);
+> -		return false;
+> -	}
+> -
+> -	return true;
+> -}
+> -
+>  static bool __init __check_eq_clump8(const char *srcfile, unsigned int line,
+>  				    const unsigned int offset,
+>  				    const unsigned int size,
+> 
 
 
-Regards,
-
-Venkat.
-
+-- 
+BR,
+Muhammad Usama Anjum
 
