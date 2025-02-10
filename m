@@ -1,50 +1,81 @@
-Return-Path: <linuxppc-dev+bounces-6027-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6028-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D672FA2E9CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 11:42:43 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADD20A2EA4F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 12:00:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys1PC3xx3z2yvv;
-	Mon, 10 Feb 2025 21:42:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys1nC1gQbz2yvs;
+	Mon, 10 Feb 2025 21:59:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739184159;
-	cv=none; b=AipE+NJEIBC5fWCFOxn1KAqBAz30YLRo6N0PajkzWCQDBRvlpI+vkMIXzSlfI0AcT4tNF2fsnLHfei2+nx9fkdNqbfhdMV7NhLaAkVylsLzlTQkRCKn2Su8Z4IMuqNkOqyIeB2I1zlUF2uAmuro+RgVfCd9RINB1Wu6iQCK6jTvFxdAtpGYdHMWAuC9M5Oy96G1UTYidaXoLsy19MpQRa6wPN56iKgGZD63lFmMTSQDqhpKkcX3t43GVhxV55B7lItJAORlWAGiNlpSC1nKzlUzREdjPP3UFwNK81ubC9KIfzAtzp1QKnZdQUZCcqLr2l5KUQsm2WelGji4m62ZjyQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739185199;
+	cv=none; b=Dcm8d1Zr5t41aIXHOLPbEPam5C3Tf5VwzmkGGpoLVuyudS0OztuEPkVXOMNSjVsVqKyBP/t5BAp6HGczhzAaaBpGXzRdf2Ha5S2ex1AlhNZY/MTNmffg19zwlpk7D4XF7E/zIs0LMZZ1y7b4UOsjQhdELKW9tNJY4oM+BuFVENE1Du7E66JcGEBkPQCFJxfgS6AqI7/IEpWycCqxlsyzr6OzVfSgP6QTgvHdfADtTO9a5i9HJ/WGfQ54XvDCr6wtQ6N8DD3tsA79GI1T/86GBo2itdBDwKTlLsQikGkeMm3nHgY3YjuZKn7xtcuXNU5ZNWfDvIu72x5QHc3zpvE5tQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739184159; c=relaxed/relaxed;
-	bh=D58ITBFHfzc8vxgriQAfZFb/HH8jJxVxINvWSsTKHzY=;
+	t=1739185199; c=relaxed/relaxed;
+	bh=e/71EfjX9I1EgSNmijPvfd/2Dexoeg3yU8p5Lg2VgJU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W/Jl64wV6YZrWzk24dKVb87Mr4W4WWU6IeJBf5cPzjAPGXPE4HCwXVjADj83UX0BkeaQ+Ygj3fHZwpdT8BDW+cnqs9fyhGB5xH2SRShPd4nOk1arMBV/47iU77BovCxDE3y1YI47nWXPpG2OPQgRFOIprQkCIStblazdrnqDY2Rl2HUq/W0ec0mcOaaLLz+y3/f+mjyeI4nYCLIvB0DBguIGsJXFHCeXRUa/nKZVi8j11nGjcg3H7d4lbjbR/M7RXZ0j3Bmo65PJCJOt+7ZrQ0yBHSIMjn79S5511eI3vq0QcRh4EspzO+WE55izVfPCARzM6Chn9aMi3BO5WZsWBQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys1PB0sLtz2ysf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 21:42:36 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35AA11BA8;
-	Mon, 10 Feb 2025 02:42:27 -0800 (PST)
-Received: from arm.com (unknown [10.57.76.200])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 510A33F58B;
-	Mon, 10 Feb 2025 02:41:58 -0800 (PST)
-Date: Mon, 10 Feb 2025 10:41:53 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
-	david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
-	oliver.upton@linux.dev, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests
- if not configured for qemu
-Message-ID: <Z6nX8YC8ZX9jFiLb@arm.com>
-References: <20250120164316.31473-1-alexandru.elisei@arm.com>
- <20250120164316.31473-4-alexandru.elisei@arm.com>
- <20250121-45faf6a9a9681c7c9ece5f44@orel>
+	 Content-Type:Content-Disposition:In-Reply-To; b=FniDyOuU+Z9EiNzoawgHE/5Wi4M0Bibt3PjE5aAelRpurK6+9wxOZLI3sSlXIuqsa+fYo4evsmS+vuOce/HQenBAi0UPfyB+aucGjRxMt3LlptbjYYNp7kHm5/QJxk1Qgv2l4/VYAx9QVH1QSC72o4xfsJR3vpaDk2+flz6OYLIpYQMhzW2fJ87B3Y5cJIApbgLNbjMtdjptjYfYavRdbd5XfkfqNp30Dyn+HUxJNYxsOa4aG4Qe6BTBYxhIqxdgDCg2KGjf02tGmsVNvlCMhT3SKaqXjkT36fls9pVsATRAwA1q01cm7nKp1Vb7JQAwykqVJg2NVx1UEKWlJgTqYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EzmIUaI8; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=p/PoQOLr; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=EzmIUaI8;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=p/PoQOLr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ys1n95pVpz2yvn
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 21:59:57 +1100 (AEDT)
+Date: Mon, 10 Feb 2025 11:59:49 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739185190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e/71EfjX9I1EgSNmijPvfd/2Dexoeg3yU8p5Lg2VgJU=;
+	b=EzmIUaI8e9kINUayIQcwRp9+MXEH03GkblyBVp838/g5Afftv4Q7098EEAKnegCn31DaHY
+	GEqCNwlPYYVOmGK5SmmajhhQqzOVUJ+3UsaEiiFEFAZZ/tSnOszMxBwuLOCwtO6ZVlmqDa
+	UjXjB1km6CYLIXauECZO11b20EUPyilT4FoHA+PCqYMfreI5f/ZoKmOpNOKaizKJmJbrYR
+	JEdzMqPoH3cxqs3N8Oznu/OcTbkoljftoNPiP4hI9qjg+2ZZ0CukkvOd50gr8lE8jV4UNj
+	gdXGqtosVV1pC47eH2hkKXM1Hi65w1W3T/RHkBebziGdFlopLAAM27LOTfK+3w==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739185190;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=e/71EfjX9I1EgSNmijPvfd/2Dexoeg3yU8p5Lg2VgJU=;
+	b=p/PoQOLrVzaTKUuwfSrgtlQGN0h1g9uTAdLZYP7Tj3VncGQDDUicCpE/5BXGgKk1BiSGPT
+	QtRCE73gAFwRdNAw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: Shrikanth Hegde <sshegde@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+	Ben Segall <bsegall@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>, Juri Lelli <juri.lelli@redhat.com>,
+	Mel Gorman <mgorman@suse.de>, Peter Zijlstra <peterz@infradead.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 5/9] powerpc: Use preempt_model_str().
+Message-ID: <20250210105949.b9PKqiw7@linutronix.de>
+References: <20250203141632.440554-1-bigeasy@linutronix.de>
+ <20250203141632.440554-6-bigeasy@linutronix.de>
+ <65c6f60d-bb52-48bd-a02c-87ffd2a915d4@csgroup.eu>
+ <20250203160103.9DikC9FJ@linutronix.de>
+ <51999b8e-61c0-48b7-b744-c83d39e7f311@csgroup.eu>
+ <20250204082223.6iNyq_KR@linutronix.de>
+ <7b51f7de-8e4b-4766-85ca-dee24832c693@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,55 +88,26 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250121-45faf6a9a9681c7c9ece5f44@orel>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <7b51f7de-8e4b-4766-85ca-dee24832c693@linux.ibm.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Drew,
-
-On Tue, Jan 21, 2025 at 03:48:55PM +0100, Andrew Jones wrote:
-> On Mon, Jan 20, 2025 at 04:43:01PM +0000, Alexandru Elisei wrote:
-<snip>
-> > ---
-> >  arm/efi/run             | 8 ++++++++
-> >  arm/run                 | 9 +++++++++
-> >  run_tests.sh            | 8 ++++++++
-> >  scripts/mkstandalone.sh | 8 ++++++++
-> >  4 files changed, 33 insertions(+)
-<snip>
-> > +case "$TARGET" in
-> > +qemu)
-> > +    ;;
-> > +*)
-> > +    echo "'$TARGET' not supported for standlone tests"
-> > +    exit 2
-> > +esac
+On 2025-02-08 13:05:57 [+0530], Shrikanth Hegde wrote:
 > 
-> I think we could put the check in a function in scripts/arch-run.bash and
-> just use the same error message for all cases.
-
-Coming back to the series.
-
-arm/efi/run and arm/run source scripts/arch-run.bash; run_tests.sh and
-scripts/mkstandalone.sh don't source scripts/arch-run.bash. There doesn't
-seem to be a common file that is sourced by all of them.
-
-How about creating a new file in scripts (vmm.bash?) with only this
-function?
-
-Thanks,
-Alex
-
 > 
-> Thanks,
-> drew
+> On 2/4/25 13:52, Sebastian Andrzej Siewior wrote:
+> > Use preempt_model_str() instead of manually conducting the preemption
+> > model. Use pr_emerg() instead of printk() to pass a loglevel.
 > 
-> > 
-> > -- 
-> > kvm-riscv mailing list
-> > kvm-riscv@lists.infradead.org
-> > http://lists.infradead.org/mailman/listinfo/kvm-riscv
+> even on powerpc, i see __die ends up calling show_regs_print_info().
+> Why print it twice?
+
+Thank you for noticing. I did remove it on other architectures, I
+somehow missed it here. Will remove it from from the arch code.
+
+Sebastian
 
