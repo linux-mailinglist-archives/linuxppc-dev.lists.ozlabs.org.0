@@ -1,57 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-6026-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6027-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09EC7A2E8AD
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 11:07:45 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id D672FA2E9CE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 11:42:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys0ct3spgz2yn9;
-	Mon, 10 Feb 2025 21:07:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys1PC3xx3z2yvv;
+	Mon, 10 Feb 2025 21:42:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:1004:224b::aa"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739182062;
-	cv=none; b=eHihotD0YL2mUhwlGt0gYfzZyTXnAXvsHZX9O1JVqcX0Et3GBuJUxCSXI0z91/BAn+h8z2ly9UA5TVfREA2kgDAZ/SVfghlt2IhmFWqpPC90PIf4gCkT25HCNAjAYsd5E+klSs0C4gq/ePxgfuAy0cyo6B84frtpY98/3QTysCTmw80DBp+iHul6/r4ujo5SrKb4mPZlbGQjWRpxxzDdxPjCbK04w/P/zlMMNJVsS0pLdQba4FDWLY8qHXc4M+3cozggzWJm+tr1DjbZyY7tF332UoCLlf1exV0vFk38HH1Y6LX041bo9kTW8No4/rPTV+p5lce3WCkV83aLMNuaYQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739184159;
+	cv=none; b=AipE+NJEIBC5fWCFOxn1KAqBAz30YLRo6N0PajkzWCQDBRvlpI+vkMIXzSlfI0AcT4tNF2fsnLHfei2+nx9fkdNqbfhdMV7NhLaAkVylsLzlTQkRCKn2Su8Z4IMuqNkOqyIeB2I1zlUF2uAmuro+RgVfCd9RINB1Wu6iQCK6jTvFxdAtpGYdHMWAuC9M5Oy96G1UTYidaXoLsy19MpQRa6wPN56iKgGZD63lFmMTSQDqhpKkcX3t43GVhxV55B7lItJAORlWAGiNlpSC1nKzlUzREdjPP3UFwNK81ubC9KIfzAtzp1QKnZdQUZCcqLr2l5KUQsm2WelGji4m62ZjyQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739182062; c=relaxed/relaxed;
-	bh=zzp1WaG1POUvvccWRbF+ncZqgOZGseBWxYU9NWcpXLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KjAOYSgpYnel9ECWsFYjB504cgECuYl5U3AvfzzfN3ErdVNiiajVGskzkF2MCXKoLa2FpeNTDX6g8NmuJKdGBiedAVSsrLg0kS2gaHROKBOYfo0RHHj0bkBgvfaz+/9CAvijSSU9MzaQavvd0HQl7BCn2MJCQre9awJUo/NFuocrchOJP5ect84xe2W4oX0mYTgFYRibN9rrvs1Qor+CeWtZeZIcXzPPgStMAgy1pop15+2MfS9LfNmeW5DIi5KrmhFBTA9TkvfyhMiNzxdD/SnHEd+t+u6158WaUxsDrZh6hEedZwuOxXysSVhadiKqwkdSCdSBrYqylXGXWSLAug==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c02SMLqg; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:1004:224b::aa; helo=out-170.mta0.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=c02SMLqg;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:1004:224b::aa; helo=out-170.mta0.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [IPv6:2001:41d0:1004:224b::aa])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ys0cq3NQbz2y92
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 21:07:37 +1100 (AEDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739182037;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=zzp1WaG1POUvvccWRbF+ncZqgOZGseBWxYU9NWcpXLs=;
-	b=c02SMLqgN1gpepKc/mxxuzLgp8mK9gTEhsw0r+h6m+9C5Khfrb1tengXQJT1ury1V0kCfV
-	iX3yWec4waM95BSGt5vw0CaejgZK/IFw95Q8JUgSSxPZSXQ8S62QLzfLOvGJD31v7nMzwB
-	2+h9Dfz78pYnbr9dLfA/D0K7tj/nRXs=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/mm/fault: Use str_write_read() helper function
-Date: Mon, 10 Feb 2025 11:06:46 +0100
-Message-ID: <20250210100648.1440-2-thorsten.blum@linux.dev>
+	t=1739184159; c=relaxed/relaxed;
+	bh=D58ITBFHfzc8vxgriQAfZFb/HH8jJxVxINvWSsTKHzY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=W/Jl64wV6YZrWzk24dKVb87Mr4W4WWU6IeJBf5cPzjAPGXPE4HCwXVjADj83UX0BkeaQ+Ygj3fHZwpdT8BDW+cnqs9fyhGB5xH2SRShPd4nOk1arMBV/47iU77BovCxDE3y1YI47nWXPpG2OPQgRFOIprQkCIStblazdrnqDY2Rl2HUq/W0ec0mcOaaLLz+y3/f+mjyeI4nYCLIvB0DBguIGsJXFHCeXRUa/nKZVi8j11nGjcg3H7d4lbjbR/M7RXZ0j3Bmo65PJCJOt+7ZrQ0yBHSIMjn79S5511eI3vq0QcRh4EspzO+WE55izVfPCARzM6Chn9aMi3BO5WZsWBQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys1PB0sLtz2ysf
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 21:42:36 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 35AA11BA8;
+	Mon, 10 Feb 2025 02:42:27 -0800 (PST)
+Received: from arm.com (unknown [10.57.76.200])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 510A33F58B;
+	Mon, 10 Feb 2025 02:41:58 -0800 (PST)
+Date: Mon, 10 Feb 2025 10:41:53 +0000
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
+	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
+	david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
+	oliver.upton@linux.dev, suzuki.poulose@arm.com,
+	yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
+Subject: Re: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests
+ if not configured for qemu
+Message-ID: <Z6nX8YC8ZX9jFiLb@arm.com>
+References: <20250120164316.31473-1-alexandru.elisei@arm.com>
+ <20250120164316.31473-4-alexandru.elisei@arm.com>
+ <20250121-45faf6a9a9681c7c9ece5f44@orel>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,51 +57,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250121-45faf6a9a9681c7c9ece5f44@orel>
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Remove hard-coded strings by using the str_write_read() helper function.
+Hi Drew,
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- arch/powerpc/mm/fault.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+On Tue, Jan 21, 2025 at 03:48:55PM +0100, Andrew Jones wrote:
+> On Mon, Jan 20, 2025 at 04:43:01PM +0000, Alexandru Elisei wrote:
+<snip>
+> > ---
+> >  arm/efi/run             | 8 ++++++++
+> >  arm/run                 | 9 +++++++++
+> >  run_tests.sh            | 8 ++++++++
+> >  scripts/mkstandalone.sh | 8 ++++++++
+> >  4 files changed, 33 insertions(+)
+<snip>
+> > +case "$TARGET" in
+> > +qemu)
+> > +    ;;
+> > +*)
+> > +    echo "'$TARGET' not supported for standlone tests"
+> > +    exit 2
+> > +esac
+> 
+> I think we could put the check in a function in scripts/arch-run.bash and
+> just use the same error message for all cases.
 
-diff --git a/arch/powerpc/mm/fault.c b/arch/powerpc/mm/fault.c
-index c156fe0d53c3..806c74e0d5ab 100644
---- a/arch/powerpc/mm/fault.c
-+++ b/arch/powerpc/mm/fault.c
-@@ -17,6 +17,7 @@
- #include <linux/kernel.h>
- #include <linux/errno.h>
- #include <linux/string.h>
-+#include <linux/string_choices.h>
- #include <linux/types.h>
- #include <linux/pagemap.h>
- #include <linux/ptrace.h>
-@@ -218,7 +219,7 @@ static bool bad_kernel_fault(struct pt_regs *regs, unsigned long error_code,
- 	// Read/write fault blocked by KUAP is bad, it can never succeed.
- 	if (bad_kuap_fault(regs, address, is_write)) {
- 		pr_crit_ratelimited("Kernel attempted to %s user page (%lx) - exploit attempt? (uid: %d)\n",
--				    is_write ? "write" : "read", address,
-+				    str_write_read(is_write), address,
- 				    from_kuid(&init_user_ns, current_uid()));
- 
- 		// Fault on user outside of certain regions (eg. copy_tofrom_user()) is bad
-@@ -625,7 +626,7 @@ static void __bad_page_fault(struct pt_regs *regs, int sig)
- 	case INTERRUPT_DATA_STORAGE:
- 	case INTERRUPT_H_DATA_STORAGE:
- 		pr_alert("BUG: %s on %s at 0x%08lx\n", msg,
--			 is_write ? "write" : "read", regs->dar);
-+			 str_write_read(is_write), regs->dar);
- 		break;
- 	case INTERRUPT_DATA_SEGMENT:
- 		pr_alert("BUG: %s at 0x%08lx\n", msg, regs->dar);
--- 
-2.48.0
+Coming back to the series.
 
+arm/efi/run and arm/run source scripts/arch-run.bash; run_tests.sh and
+scripts/mkstandalone.sh don't source scripts/arch-run.bash. There doesn't
+seem to be a common file that is sourced by all of them.
+
+How about creating a new file in scripts (vmm.bash?) with only this
+function?
+
+Thanks,
+Alex
+
+> 
+> Thanks,
+> drew
+> 
+> > 
+> > -- 
+> > kvm-riscv mailing list
+> > kvm-riscv@lists.infradead.org
+> > http://lists.infradead.org/mailman/listinfo/kvm-riscv
 
