@@ -1,59 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-6058-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6059-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51921A2F916
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 20:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0600A2F936
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 20:45:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YsFNV3xygz30Vn;
-	Tue, 11 Feb 2025 06:42:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YsFRz2bSgz30Vq;
+	Tue, 11 Feb 2025 06:45:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip="2a01:111:f403:2614::60f"
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739216570;
-	cv=fail; b=OY0RTiB9NLnnHWuTtYgz6h+DJvwTTQV14yvwUyzZCMf0ixwHEJ/nRrmJkYHJHoBu1VfSio9VP3wqnDvPcV8oDb+ri1jbsTuYISddjXtJ9YYcSeArPfkwuCyITl8uV8EphTamjo8WFTE+uM3Bg7M2Uv+qGHqXea+zxaH9JRZpQEomQ3OWxi+tXml43MeO8w4j/7bi+VhjMM3qenILq1e2WeolH/tSypGT0RDdW1olejhWgyklfPVQ/Z1CAZKx2cULAKjLdekEtSDeWgr9ef1gRw2AlmtlTbsM4T7n1Mabu8VT3SOY/WBhyXOeE3GS3P5eWjS0SKBVQdW7ZeqA6Inbsg==
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip="2a01:111:f403:c20f::7"
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739216751;
+	cv=fail; b=gLeDZE5WMfRVAfewjk1bCXj2ddxqiKBVAg/5/LuC5I7iibBYDTVHN5Ze79eWX6YI1n0MP06Fk0MbOSofy9QvPl7mpBXSteXcIMbCh0f7JdPDIhBpVoTyAlHihpfYC93SiupvCjptAYTv2ZO9EwfigOV7Oe8qTRPreBSO6wkpy9jwh+003s2czQ4/3XaEUw5G9zR8ZPw9mtJ3PTx2oEW2KU6h6sXMr7WAfMm4ACHAYcb8vUsbV8WpOAFGH8tdkxSTUWn00BUvHr6+gEfswXWCG1a6xOn6BX9w7Gb1bx7OOjaoqVuyi6LHdC3Xtn0bJDqv8Rgl10SHThau4hOl9b0HZA==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739216570; c=relaxed/relaxed;
-	bh=gwS2IvzYk+agrvg57v5+tnTJieufi17xHSbRYxyHCpA=;
+	t=1739216751; c=relaxed/relaxed;
+	bh=jIwMOLWH8CEjYZn27IqtkAIMntmbjS72kIFeeSKtjmM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=n81kPaAcl3vE2xZSWlp8lHW38bd6ZipTZYWCa0+ZBVILCp/lLQ182u+N8k96GuaMlRLqjHMVwHmMPghTGmAeO9SLzBZ+AcyJhZqiCLNgYoPVrmEdf3Qf9SVpLxJwZmOP3xSYMO2IPSKDd8DhZrRwZDalUOWvGdypAoM7TndvLuEC4wfrSZg3Lfid/HU6FlpTwzoVfbyyAVbCyFGXFsIFHvFiq6Qt4VgXQWwi2rR3WLs2zbwkXFDEOyvwVjBwupZO/MvpNxDk6DPG5na6lTlPnyRs8p+p119WUdMsJpqP56jBWwFjKSstGWmhyYdEgRQ8V6m6ohqS94Fq7A5kdnl4Lg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=nxp.com; dkim=fail (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=HQ2/sQrm reason="signature verification failed"; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2614::60f; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	 Content-Disposition:In-Reply-To:MIME-Version; b=I3wsiJFfCfz4fiIJRUNURASBO+3A5Z9ZuBEhbvDIt29YA+akOejaTs/CYVAPu9460VUjzbMXzQnwnozCj0Q128XvPmOmxzFu18KUxoaQDhF0mKHlkh55LaJVscaBTU2FWLx54p/c6XKX1Pd7UowvNF7AA0W/TsnJ3xDnmWx32wGJ/Konn5sWCCR+7m4rBIdB2CaKCc2EY4CKD+RZ5cldgVDKYb1Ehd558q9M6FxLj/+vKbfpcBk+KAuWwd+PcVXrRyr1cVHcvZHroQ0TPihB/QkIjnIxCsnINEg43FvfowV18QVpEC8FGYZoccVm+K/NyqUJ49RTWlUwdcnzabd2+g==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=nxp.com; dkim=fail (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P8+G2Bln reason="signature verification failed"; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c20f::7; helo=osppr02cu001.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=HQ2/sQrm;
+	dkim=fail reason="signature verification failed" (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P8+G2Bln;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2614::60f; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2060f.outbound.protection.outlook.com [IPv6:2a01:111:f403:2614::60f])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c20f::7; helo=osppr02cu001.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from OSPPR02CU001.outbound.protection.outlook.com (mail-norwayeastazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20f::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YsFNT3x3yz30Vm
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2025 06:42:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YsFRy1QZ9z2ysh
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Feb 2025 06:45:50 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=B6iMQ4I80rh7uCF4tGO7brTR9YJUTelzMCM4SLxYrFj6sh0iO0z3qj+XeSxmhky78li21fhD5LumHUr45H8vBQPObjtiCvpRlt80O8tSl+85QK7qMAvSBOlRvY8K0gQYJYbK2B/GzAlNhjDCVdUA+bSxvTu3TFDaNMA4EhqJg4v9BDnlTYpO9t3+5VrTIpcKuSL5rMdwn3AnoLUECH38o2SkwtuHSGg5mkWDbgE+8McJ9BACBUtY4SltVhgraH//lFjYx3Msaq3shHpL2aFCBwWU4iaQi5hyTOteeAXmnmt1UMsrkdLZqKy6INRI6VMAFlwEKQTZLibuijHY9zbDjQ==
+ b=l+fEP7mjTxdd95p+nB3HdlEwxToSk11GZGElidlQUG2p+GzLvT7lj00Z3QKgdhjUFHS9fuy3sf9GefSP4XIRZ3jYCBBKe++qi0qlYOBy5c2HDbJIZoRNThBL9lGMXaBaxUfN+mJhsj2xmnmSL68/ohw6h4MihqR9rGkXgKpJ9TNdLWJkTt7kV1TCZ5JXBDjNEbgQRTcJNnaQq4R+l7SRWFJgSNgRpSJecI5vLvJYnLzqYUeT1gayunZugVYAJcIncm7sgqNCmkZ+rNKe0/W6sOCtaQLVwBW+O6+w9+Y5nqGf4b8VGbO6lfIvVuSGB/OF9wbsuAh99ja7nMnK1S+JOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=udSb9xLINvOJhmnDoW1lxQUMbKH/f0qmzN5/l77ni3s=;
- b=ha9fyI82YGH909dbubsMyUH+f76K9QYLqjL/n7ag/5JQdCzjMUB7mLElRGBgl71LR0LXbElN6vF5mocLDaovUK5Eul+tXn2MDEf/Xk4gzKCtRQ8qP04akoXJXOK3sPGZBB3Kf0Pu/PZr4iqpWRql0MPclOs+G8lZQdEamEJ3ZyPhkfPpw0fioDq3nkhZLOZNOj3vZ341KOhWBQtZ3XhyJawzA8iPBnQKFdjM8ELiw28yk4ONqe87Fj9P1zEyUn867BBFSFmA0MeGSnxxSrFM7nVC/XR1Hedsw2QtWK6usICFvTyDsDJZRgjlW0bSFLxy3diiaAuQPjVRr17xp3RpvA==
+ bh=3aX2BcB6vOf9Wjj1gND2dqNRqbtLNxQeSnELHYRej1o=;
+ b=BZ9PS7E5rl5xVBcbzponjBlOpOT7Hih954j+EPYilLeflDaTqdGw1bicR/FNzKYkeuNSud1gevaHNtTrebfLP4HvbTvigpMMUMHqVheRI6X7UJWxJfZHzG2V6AUBW77kOSBw0dvZ3G+HWE3FvWWZSAQ+4rgxMeBDfS3UKXc4PJo68Rm9dta5iTZztddIvxaJBa7rz0yHxIr46YYZV+Oio26uGMfnTCn1wKntqeLiiJVREpYNF3xml1rx38yMhqDMRDbwhLkIjEUBpKuJm8dZIagsUPCq3GItk3gwYOfqSnjAZxrTshmfmFpUr71PUvHtolUgd43SDJX0U6VMtdsNAA==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=udSb9xLINvOJhmnDoW1lxQUMbKH/f0qmzN5/l77ni3s=;
- b=HQ2/sQrm1wOEhOmui1nGtin5GgyC1Kaa+3Pr4QmTSvks1rLKRR016tND3aG2mtyRwQ8qoK7VmSPYmLIoigRhFA2VGs/L7Mm+x/mCANJZTYrxq2O0cBaPAwhftXmARFgrKSnDzyUBfLCQOcUaMRG7tFzoAuVNTQUDzKmkzCP84eXp7UHoCErgqWZLMCI0hhX7/t9pukLdVFNalAVTgglcimuB3P8dq+g2+xS0xmMxtInoNyw6E9G6zNDRZEu0V5pgWoqHR+nj0FPzR8ceu6JGSeHjSgd1bWZDtRMEsOQGv14o9IS5qJjZt7s/3a9yYv6F9qeGVOdhH9O4nM/ajcMdJA==
+ bh=3aX2BcB6vOf9Wjj1gND2dqNRqbtLNxQeSnELHYRej1o=;
+ b=P8+G2Bln3Pfl49QAS/xIJmgxv2zrm2Y5ohSAdyv7BQ7k/3o2QshKLDVIPG5B2xuU5CbRFmRi2/e8kES0nR+fwymg7dT3td24garKxLJkoQnHpx1z6bOqUO0GbUnfjN8eL3qi1V8lDBFYoFIvjhugGBVNwAKxivbr3phvvbq/dI5/hseNPGcJN2QqghUkOaXLBaOWfBKJo3MUwlLnlJOiLP2Mr4JXLc+nAW0yFEaz/hEA2Nmw57WrVwoquv9POcul0O7bh2mwxC8Y6cQcC5VKMIRPXzLAdsD+ESuSx3ekTdfpAjSOFTqqzhXd9+NW2CsgsuZv+qhXo3lPA9XADFBT9Q==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
- by DB9PR04MB8122.eurprd04.prod.outlook.com (2603:10a6:10:25d::17) with
+ by PAXPR04MB9188.eurprd04.prod.outlook.com (2603:10a6:102:222::18) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.19; Mon, 10 Feb
- 2025 19:42:31 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.18; Mon, 10 Feb
+ 2025 19:45:26 +0000
 Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
  ([fe80::9126:a61e:341d:4b06%6]) with mapi id 15.20.8422.012; Mon, 10 Feb 2025
- 19:42:30 +0000
-Date: Mon, 10 Feb 2025 14:42:17 -0500
+ 19:45:26 +0000
+Date: Mon, 10 Feb 2025 14:45:13 -0500
 From: Frank Li <Frank.li@nxp.com>
 To: j.ne@posteo.net
 Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -85,17 +85,17 @@ Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
 	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
 	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
 	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 08/12] dt-bindings: spi: Convert Freescale SPI
- bindings to YAML
-Message-ID: <Z6pWmSGmyv9+bG+m@lizhi-Precision-Tower-5810>
+Subject: Re: [PATCH v2 10/12] dt-bindings: memory-controllers: Add
+ fsl,elbc-gpcm-uio
+Message-ID: <Z6pXSWQdJCS9ZXOJ@lizhi-Precision-Tower-5810>
 References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-8-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-10-8137b0c42526@posteo.net>
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250207-ppcyaml-v2-8-8137b0c42526@posteo.net>
-X-ClientProxiedBy: SJ0PR03CA0145.namprd03.prod.outlook.com
- (2603:10b6:a03:33c::30) To PAXPR04MB9642.eurprd04.prod.outlook.com
+In-Reply-To: <20250207-ppcyaml-v2-10-8137b0c42526@posteo.net>
+X-ClientProxiedBy: SJ0PR13CA0132.namprd13.prod.outlook.com
+ (2603:10b6:a03:2c6::17) To PAXPR04MB9642.eurprd04.prod.outlook.com
  (2603:10a6:102:240::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -110,334 +110,172 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DB9PR04MB8122:EE_
-X-MS-Office365-Filtering-Correlation-Id: 65a69546-eaa1-474c-f470-08dd4a0b0e9a
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|PAXPR04MB9188:EE_
+X-MS-Office365-Filtering-Correlation-Id: fdee1320-6ba8-448d-0f26-08dd4a0b7754
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|7416014|52116014|1800799024|376014|13003099007|7053199007|38350700014;
+	BCL:0;ARA:13230040|376014|7416014|52116014|366016|1800799024|7053199007|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?9yA0vf4Qa0c3AOl48u2ihjiJfevwHEIByngKmCvxiQ1pzOKUKb0FyA5I/V?=
- =?iso-8859-1?Q?tpAm8FDokHvqKB/mekrRZyAIkoqVVo4Hic5Tz9Oqqf1kkx1UnjNj5Iz+B6?=
- =?iso-8859-1?Q?nDD+N511H59Y2M95+1wj2TeDUuGLXQv9r5S229MYIaYGFAV0CpNJfORL1b?=
- =?iso-8859-1?Q?9imm5mcOmUSK9buQnhJ4Pshn6URtbnxnuw0UMz3zGzEfJh0mpkp7ZdyoRK?=
- =?iso-8859-1?Q?EpxiDUS0hYUiPtK5bd6sg4S8GbV22bJi352g7S2REvibn7m15vKAAgOa61?=
- =?iso-8859-1?Q?Aju+zIc7OVviiWl1hENrznxBsN+H+7mxNccihI59KMxBatqMUhB6vDDP9F?=
- =?iso-8859-1?Q?fkBsdqCxF7LPlhGOYETGixrHhljtEjBndF91Ny4SPr3rAegTU9eA5cIDdi?=
- =?iso-8859-1?Q?WRcIEFhhafsma3r2vJz5PSYvGMztXsdyqszttPFJJkTvwYgHy34R5RyWOy?=
- =?iso-8859-1?Q?K6xEU9riYFXSgK3CWBU24pCq8c2OB/sgq/PQjcS7z6yNuiqvU3wnU+idwh?=
- =?iso-8859-1?Q?tzcNykir2MFGSl/v86ta/L8W05lwJf76NkrYnslj/zmeWIZW8UTMuoZpqo?=
- =?iso-8859-1?Q?R8XFM3zx7gsQAZe3jVjwn1evmIz9eq9Y5lOcAKjzRt1xZ/Nk/0+UcdNrGv?=
- =?iso-8859-1?Q?Qk2EifeNUMVHsiYYH+yKw+3awyuQrEUsc8bz44Xd2eCywyi0IFi01OEAns?=
- =?iso-8859-1?Q?AHBeVIAyEBiYv1X2+5uXMtEY+lxKqxGfN4ZOVctcfAIYfG/aRqEciBsyww?=
- =?iso-8859-1?Q?JYDISdEcP5Dw4BUNqEm4Rf6W/85HVlPr/LMvn+MmGBiUJFRdEYPB2TgxFx?=
- =?iso-8859-1?Q?afrce0etvO3+f88bfeZnCvY/qPnZ5EBH1yJM9TcR/cnxzFwMNxyoMHVUA1?=
- =?iso-8859-1?Q?Rg69JQGA1MnKhnAGwUUB17Yv/2iDDr9KxBK3JtmPsBHFtCTfjWdm9zW4M0?=
- =?iso-8859-1?Q?nMEvxRUMLR8YaWr11cvCmqm7EoQyJj7QehYp/0bH8jG1zq7WZRXGn0rZrU?=
- =?iso-8859-1?Q?gOCHScyM38X7liRj8AoNgFLPQe/IeTrRokxTB6Uughm6iMyCRU59ZbDrK+?=
- =?iso-8859-1?Q?Wi3ig0OIyxM/eYBYQmq7fcwhg+I94lyPq+M225AyxQ0sOz1PRukF7g+aFG?=
- =?iso-8859-1?Q?RND4vf6dT6bfuX76l291wOrlt+qjlzPl+QOpy16zW3orTKZ9SrTOudrifM?=
- =?iso-8859-1?Q?lazpGCQ3wIdppxCICoxZo+lt9PJIjKkk2piFcxd7G/XlMQZRI6j7EuRVjb?=
- =?iso-8859-1?Q?0p5IqKz5GO2YoElW7IAR6rpZ5WiO9TGM+iftEbV9JsAzsA6kZ2QUtpbzLU?=
- =?iso-8859-1?Q?An+K4fs0OJF2qdReT5b1xwiGnbe3UINQmEGW//iRDHZTPRlf9rhsx4vQKf?=
- =?iso-8859-1?Q?mrv3sgYRZ5+Hay7LMZvizDt5cs23R6mUQuuPbtfx7TTV5zyqPBCzcXdY/a?=
- =?iso-8859-1?Q?0sdosl+7y4t8ILTB?=
+	=?iso-8859-1?Q?4QjY1hyObPLlvaBs6t48H4sNS+qTHI4vYnEVHFJUi4vbjH/lXu0f3d+sgM?=
+ =?iso-8859-1?Q?abfSFtMbZ6XBfMCNGYDwP7xSMwbU2ueM0L+RjmgzD7WSLeDNGi7veEMf44?=
+ =?iso-8859-1?Q?Cy58r3gQPVC/IAY6S9b0BWQ67GSgGpdstrh2s8D+JjMD3Y+kJBG3Z3D5Z/?=
+ =?iso-8859-1?Q?racZo/1xESrou9XHD79GjcpS4xm21vpRtryu/67txFGwR+Cl0G/Mua6C4K?=
+ =?iso-8859-1?Q?ULYnB8GX90XuTbuBl3txjgmZc3ZCicvwzIyHeGWI99ogltrlYIWaD83leN?=
+ =?iso-8859-1?Q?Zo68agg3qfirzqNW3f2xmy31YPEbs2A2XOGhWJ1lAvM020FYPFbyr2XhVu?=
+ =?iso-8859-1?Q?gjZFGxnopTky6YHT7bDuYq+msNzkOMXxqG/MaYt5BG02bcUpq5BlOcStKz?=
+ =?iso-8859-1?Q?zkx5LyEBToLZS5HpWv6X5F5qnjGPSDaT9I262SWx6TZz4Sd/UReCFBjBe2?=
+ =?iso-8859-1?Q?SN38YThogn1T3tBg2zhrOMFa2rOqjquklym4WZnTdeCVVvzlCvUz6lNR3/?=
+ =?iso-8859-1?Q?7dSXIUyG8IQDkcgEMuwbSIe+klWB7/PrndjzjH8oHX5L7NPMUSnpPtiK4o?=
+ =?iso-8859-1?Q?QUUTJh2fzO/+y34DrUrBvRx5OMOqUOcHM2WuLlvARtNtlasRIoRS79ELEe?=
+ =?iso-8859-1?Q?LuNIVNQqOkNzXEYWhFHcyHrAPyfR8dinvmfgvSP2L2DzGF7bVjzfXNLF6v?=
+ =?iso-8859-1?Q?WjDBKrrNJQ8tHogs72SsHgpo3IxOWFhEm5/AdrD00ETYgLu5tk4DGrBXeU?=
+ =?iso-8859-1?Q?p7v+qEkuZyQFori3YNL1nJmRdmKLiBdegtur8vu3zFHGRmnF2w4a/BA/LY?=
+ =?iso-8859-1?Q?AaNxinfejmpymN6hODheSphkX074cBuGfNRHGQ612DCeWAQ8QloS5QqFrt?=
+ =?iso-8859-1?Q?Km8/zgfmELtMLsbwJVrsGrLDODW+2gMC20NF0YqR/l4rGVjOrNxUeENdu8?=
+ =?iso-8859-1?Q?NwUplKh8WAU/eO1IoHi1IVdaS4aDomRT3p+gU0DYgq+on+yDf59dl/jfnS?=
+ =?iso-8859-1?Q?pSh1ZjdQ7JuUTvbjT6QSPXxuq9alSe8IQ+4/IaWV3+SY1LS+Wy+TNjJ0YD?=
+ =?iso-8859-1?Q?hrLFmwiDaILXGyGQZOPMRz9MX3+WQAoZKtVJY/DyUBv05xgL+rZaph7+b5?=
+ =?iso-8859-1?Q?keJwK0ISzyREUkwdNt/HUC2hV8MgoC14jXZ96Y6jRtkmhIUa2NoVAuC6Ei?=
+ =?iso-8859-1?Q?WERCeP3OrDxe4eUkP/4Bm7ywLL9H2cyFUy78MNidg/QnDq8lz43lliz5ml?=
+ =?iso-8859-1?Q?OK3+Z9VG1PhTueoPDtjFAtWfR4Yf1gSATQNvawZx5UD07VtFTIbHnfBUZF?=
+ =?iso-8859-1?Q?L5QMfm49g3n/3sEKtJrkfKfQtiUCizUGhOvZ8lQ7iunNzFtZfguANG3W4q?=
+ =?iso-8859-1?Q?j8YwkeBmAwVmowhiYcUvpLMLiaWdZ420k1pno+BDkfMXT1ojb/mAi/kf8X?=
+ =?iso-8859-1?Q?S3IYcWUKcI3ugQGK?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(52116014)(1800799024)(376014)(13003099007)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(52116014)(366016)(1800799024)(7053199007)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?KLJ98DmBZgXzoZK+Bh5Dp793Ualmc6JP7pmNoT5zTDeMmqqwBAhyUSPaf4?=
- =?iso-8859-1?Q?XeC7NfoCuaMjBc2x5F/DjRjC/eH2+fwSQ1iD8jyhzN0/+dGCk26LSwf6eC?=
- =?iso-8859-1?Q?po8n6vHyBtUzdvhLke1avxxaSAto7R3D7EanhgK3TmOZlsCxcH/VZItbup?=
- =?iso-8859-1?Q?eilUHyoYfTxqwUZssKSTCq7fNhFgV1xA7rzVEXepY3spjJKpgeFKdNDWVg?=
- =?iso-8859-1?Q?FBqq59TzHvWqSEPa7rBkfTeXVwzXkg4pgQm/g4mzcQ+fOt+rZB//HslPsa?=
- =?iso-8859-1?Q?mEri+fkicKi84th4zy8ZdWoDGMkJhlivmila5XlVmXxncsxA2NOzQgLd/a?=
- =?iso-8859-1?Q?7TCgVOl+BY4hHNub5BjpoBO67x8jaFtcpU/HhcsF3uRZu1o63xS7HIxHek?=
- =?iso-8859-1?Q?qYnlvnwuRlYzbI9NHTGYivztPbadO8+NJTsVoaOWkiFXPdswwZblr4GMpd?=
- =?iso-8859-1?Q?S3kabct7aF3k62HAQKLnmRIndhvMP4GvG1B4K/DuR4A7pdbmpTdsqnrTFp?=
- =?iso-8859-1?Q?eM4bkWm7OPq2wDYNFfEYRb/xuV/O7AIaZ+aQs/Ek4tw/x8adZtPGAlEUzM?=
- =?iso-8859-1?Q?cavI1p2i7Y98D7D+KmXYniEyBhVV973d0Vz04w2HVr5GlE+ueiZzEPolPW?=
- =?iso-8859-1?Q?CnOTcQwsl53bQGEJOYYXicwrqeoNWgExKFxQczMEJYolM/UKwJWcvWSfin?=
- =?iso-8859-1?Q?fRMb1wEsiCpS0tCcL3hSsrMUTQSQ8h702JoHGLsWr2idKObAauWp3Hog07?=
- =?iso-8859-1?Q?ISCu4r12R0M6/k2KByHtv6MgcklFKFghg+nkajrc0OOqiYLAUcUqnHJcym?=
- =?iso-8859-1?Q?5DcQsCa5twej3ymjYWKhQhqoc8OES/xnPHBbUefQYEn8euuj4jdB1ykVw1?=
- =?iso-8859-1?Q?sm7A75rVgWySpwixUzGbJZ0nQ9EJtWeuNb17DAIv13/NkZQO8C6MJDOUKa?=
- =?iso-8859-1?Q?BVibvx0Xb/ADeg/SBcntbF8bX9PB4hM4BS+l6GU8bhpOti8HQlMvQ+H0WS?=
- =?iso-8859-1?Q?f0kSqgtOscYEweHsrp+iGhxMbkPA0tBZ5yL+1sWBgvFiQqy/fD7zYebv9f?=
- =?iso-8859-1?Q?gy0qMs33ed6gWY6Afd46IbWCVkMgc9jqMqEyJ+q9o1alWRoFNb79x6iA/p?=
- =?iso-8859-1?Q?PDKwfIITfYNV4r+G+9uFY1rZc7IF9ZVh19upPElSIeTFf49u2rjQzELIB4?=
- =?iso-8859-1?Q?Ko9GEb3tDF1ebzvgb5qlknVK9okOHM898sNnZaMiuQEn6qDM1G5sCo8iuN?=
- =?iso-8859-1?Q?zCZzkFSOu8i7P3byms4l0qL4yc+pJHNhBBJ9gwRqOsnxhTa6D9f6CCoe9P?=
- =?iso-8859-1?Q?mCeqzBqSq5NTuYQv6970djrn4jzfhWOvIIgDDgNBIFCxJpt6/YbRT4NlUj?=
- =?iso-8859-1?Q?/gxbso3UWGT4K0Nd65zo81611MNe9uRJzKA6TB88xNU4emH+1ReK1bElEU?=
- =?iso-8859-1?Q?iBdBVhDOtC+PLv51rVhv90nYeNG26MY+esR1S4vstdUaagf4Y4QUPwyH5w?=
- =?iso-8859-1?Q?E882GKThg1uWRDyRCeR5anSrrRRS3cxBvvYDappEKlrbGSuFLnscbwO+M2?=
- =?iso-8859-1?Q?faOQGhSNm1ZxdFHyjWzfs5Tau+zyqg2tSqxr/VwJIOChtGZ3afuRX8drbz?=
- =?iso-8859-1?Q?1X3o94NdRsBDTomVj/VHKCfGWIsZnav3wj?=
+	=?iso-8859-1?Q?sknx/ZsI+MBUeoj1xnGP4b5AJhmFFmKM07GGvsi/MgOJdo+zLVSPwcKVMR?=
+ =?iso-8859-1?Q?9C7j2gGdFTDXcZ50bK2g7YHU6avoflBKDyjRuKydYcdgebVy3PnUzI7aO4?=
+ =?iso-8859-1?Q?HIRhdToCx9nhyPZ+4oyn7yt6HXJM16L1NFrvN2Wvsbf2hotAHH1orRLdVS?=
+ =?iso-8859-1?Q?HhhKEWo+cXXD/ZXoDdex24O/dK+gFOqwc2rI6x0jnsjl32zBbW+vXnfo4J?=
+ =?iso-8859-1?Q?81F7wrK2gbZnr/YV16ZdGG7D3I0Yz88Y7y31uHROa7SYV3zoBPOVNb47O9?=
+ =?iso-8859-1?Q?gHBPTKuOZgjqCdjvwie8IpcDJzIaGX6RjpywW/CO8u+mo0xKm4bFyE7sDe?=
+ =?iso-8859-1?Q?oOyNcqpP9UGg3AaG4j/uTS8kx2sFwJIBqDMWtlB4pUUneL+D6GxNzl1Fto?=
+ =?iso-8859-1?Q?fmMA4lnYsxlFXGTG/ErjY7WjXep++LZ8au1Vl87M8CZk8Fro+/sRvkipzR?=
+ =?iso-8859-1?Q?cxGkWFaM4xvD/iYtLLIJU2bbG77pxl15CP1vk+ZVaDcUAT8tW9pRvrWMqA?=
+ =?iso-8859-1?Q?xvjtqdosw7ki+4rwbvcUqlcL0mCqZAf9B1y33WHi4GGn1+FYn9knwMFz5O?=
+ =?iso-8859-1?Q?/oUAJ4lKQ3Bnm0UW9PGJW/bPV/7Hw6xCVLwtgfwNml7rzEF2OnmzdJW94z?=
+ =?iso-8859-1?Q?xA37YIQJtqi7RFcfG3havpMLBCoA3egi4P6GgX0APNzBGWaLut6RAjdpK1?=
+ =?iso-8859-1?Q?5v8iYX8IE6I3uoAPSK+QdwJQ4//DLw8uA+TvPwFx7he+cYzfV88YXdtfHF?=
+ =?iso-8859-1?Q?7xPn88vbFJwGLB96lpxIgPj7QyA1PadDc+9dmlkQ25PDoAjPwdECcv4l3k?=
+ =?iso-8859-1?Q?atXaX0wlkbQwl4BBeNm9d5yhasFzq+Qv/DQDnCWyGXxPUqaYWansXxiC2j?=
+ =?iso-8859-1?Q?FYfxofC7XM6rpFSWIvjnsLcqxR7XTmPKaS7xMITB2jGeZTAl1OHunG+0TU?=
+ =?iso-8859-1?Q?sB6TYmlSBKSol0OWTEJFb+du4iGYHNTLMabUt9wrs4JyysQv4thvqtDCax?=
+ =?iso-8859-1?Q?7FolNqqo7gfFb17b7e1K3MTirpVRIe95RyOdYnC4E5y5Uuq90OT6eAc9iz?=
+ =?iso-8859-1?Q?ilnV1MZtMnC+ZYdbR+30o3LACHkgrNssfq9m7DiWFL4Rm1XGNu1BUOAT0/?=
+ =?iso-8859-1?Q?wKM9Tnyv9taXBHv+MT4ZP1pSZLowWtLyIiKAoxzhZMqBuYpJo5Q+3c8D9L?=
+ =?iso-8859-1?Q?dqI08Wk5TubU48AT18V7OwYO8/4X56ncUExzMwRl8wKO5lJYX6vck/eYx6?=
+ =?iso-8859-1?Q?w2CAdy220x+8E/Sp7HH/1BskLE/zebf5KufIPcLl0rK6FotwYQ3G+sP8Y5?=
+ =?iso-8859-1?Q?V6r2hynhPFT3TUKu04j61oOLO/M2jUJHRe14+xDGBwfejI52yx4jsnZSPi?=
+ =?iso-8859-1?Q?jz7av8iLv4c6uiM+r7J+vf1NpNYiMZezd8VjdKG54Nm6f8YHIWWo8ko0ZR?=
+ =?iso-8859-1?Q?w5teRuQAPJ5YBwq6eORtmFnwN2ObE33lLMM7ulPuSRmDSsZmnCzCDTB7Xx?=
+ =?iso-8859-1?Q?HaY68gAmHTnKg5HGyCtbDvw7aYlY97D1CYwU8noSTrS2wZ5pbpl7+Sfuco?=
+ =?iso-8859-1?Q?KFM8PkfXF3OuZ0h4k/lHQ+dybMMh6ldTyyX23N579CC/TjVpX/gJ0k58kM?=
+ =?iso-8859-1?Q?+wSrhZSzE5Tz0=3D?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 65a69546-eaa1-474c-f470-08dd4a0b0e9a
+X-MS-Exchange-CrossTenant-Network-Message-Id: fdee1320-6ba8-448d-0f26-08dd4a0b7754
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 19:42:30.9048
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Feb 2025 19:45:26.6262
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qclN3jmrPcOO+vHarLyblmCzb7LhmIovYLe/KHkANJGyAbiSRjkZC0nf9f2poJCOpK1Euyj70COZBVVWWl4Hdw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR04MB8122
-X-Spam-Status: No, score=1.6 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_INVALID,DKIM_SIGNED,FORGED_SPF_HELO,KHOP_HELO_FCRDNS,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
-X-Spam-Level: *
+X-MS-Exchange-CrossTenant-UserPrincipalName: Bmx/MP5c9XuR3qR/gzCItCtgFZCznQqPmfPISeSr+6C8SwuboaKLOy2wUDjdrq8nn8h94UdE/9L4YKyU/IH4Tg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAXPR04MB9188
+X-Spam-Status: No, score=0.6 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_INVALID,DKIM_SIGNED,KHOP_HELO_FCRDNS,SPF_HELO_NONE,
+	T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 07, 2025 at 10:30:25PM +0100, J. Neuschäfer via B4 Relay wrote:
+On Fri, Feb 07, 2025 at 10:30:27PM +0100, J. Neuschäfer via B4 Relay wrote:
 > From: "J. Neuschäfer" <j.ne@posteo.net>
 >
-> fsl-spi.txt contains the bindings for the fsl,spi and fsl,espi
-> contollers. Convert them to YAML.
+> Formalize the binding already supported by the uio_fsl_elbc_gpcm.c
+> driver.
 >
 > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
 > ---
 >
 > V2:
-> - add missing end-of-document ("...") markers
-> - add missing constraints to interrupts, fsl,espi-num-chipselects,
->   fsl,csbef and fsl,csaft properties
-> - remove unnecessary type from clock-frequency property
-> - fix property order to comply with dts coding style
+> - split out from fsl,elbc patch
+> - add description
+> - remove "device_type" property
+> - move to bindings/memory-controllers
 > ---
->  .../devicetree/bindings/spi/fsl,espi.yaml          | 64 +++++++++++++++++++
->  Documentation/devicetree/bindings/spi/fsl,spi.yaml | 73 ++++++++++++++++++++++
->  Documentation/devicetree/bindings/spi/fsl-spi.txt  | 62 ------------------
->  3 files changed, 137 insertions(+), 62 deletions(-)
+>  .../memory-controllers/fsl,elbc-gpcm-uio.yaml      | 59 ++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
 >
-> diff --git a/Documentation/devicetree/bindings/spi/fsl,espi.yaml b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
+> diff --git a/Documentation/devicetree/bindings/memory-controllers/fsl,elbc-gpcm-uio.yaml b/Documentation/devicetree/bindings/memory-controllers/fsl,elbc-gpcm-uio.yaml
 > new file mode 100644
-> index 0000000000000000000000000000000000000000..c504b7957dde39086ef7d7a7550d6169cf5ec407
+> index 0000000000000000000000000000000000000000..381584b400a0ad98c6d9e0b38f2877d44603ed84
 > --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
-> @@ -0,0 +1,64 @@
+> +++ b/Documentation/devicetree/bindings/memory-controllers/fsl,elbc-gpcm-uio.yaml
+> @@ -0,0 +1,59 @@
 > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
 > +%YAML 1.2
 > +---
-> +$id: http://devicetree.org/schemas/spi/fsl,espi.yaml#
+> +$id: http://devicetree.org/schemas/memory-controllers/fsl,elbc-gpcm-uio.yaml#
 > +$schema: http://devicetree.org/meta-schemas/core.yaml#
 > +
-> +title: Freescale eSPI (Enhanced Serial Peripheral Interface) controller
+> +title: Userspace I/O interface for Freescale eLBC devices
+> +
+> +description:
+> +  The Freescale Enhanced Local Bus controller (eLBC) supports flexible access
+> +  to memory devices, through the General-Purpose Chip-select Machine (GPCM).
+> +  The purpose of this binding is to designate devices attached to eLBC/GPMC for
+> +  use by userspace.
 > +
 > +maintainers:
 > +  - J. Neuschäfer <j.ne@posteo.net>
 > +
 > +properties:
 > +  compatible:
-> +    const: fsl,mpc8536-espi
+> +    const: fsl,elbc-gpcm-uio
 > +
 > +  reg:
 > +    maxItems: 1
 > +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  fsl,espi-num-chipselects:
+> +  elbc-gpcm-br:
+> +    description: Base Register (BR) value to set
 > +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 1, 4 ]
-> +    description: The number of the chipselect signals.
 > +
-> +  fsl,csbef:
+> +  elbc-gpcm-or:
+> +    description: Option Register (OR) value to set
 > +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 15
-> +    description: Chip select assertion time in bits before frame starts
-> +
-> +  fsl,csaft:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 15
-> +    description: Chip select negation time in bits after frame ends
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - fsl,espi-num-chipselects
-> +
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi@110000 {
-> +        compatible = "fsl,mpc8536-espi";
-> +        reg = <0x110000 0x1000>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        interrupts = <53 0x2>;
-
-Use predefine's irq type macro.
-
-> +        interrupt-parent = <&mpic>;
-> +        fsl,espi-num-chipselects = <4>;
-> +        fsl,csbef = <1>;
-> +        fsl,csaft = <1>;
-> +    };
-> +
-> +...
-> diff --git a/Documentation/devicetree/bindings/spi/fsl,spi.yaml b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..db65c0560c32f32324a2aaaf53c0044a4b56f3d9
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/fsl,spi.yaml
-> @@ -0,0 +1,73 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/fsl,spi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale SPI (Serial Peripheral Interface) controller
-> +
-> +maintainers:
-> +  - J. Neuschäfer <j.ne@posteo.net>
-> +
-> +properties:
-> +  compatible:
-> +    enum:
-> +      - fsl,spi
-> +      - aeroflexgaisler,spictrl
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  cell-index:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    description: |
-> +      QE SPI subblock index.
-> +      0: QE subblock SPI1
-> +      1: QE subblock SPI2
-> +
-> +  mode:
-> +    description: SPI operation mode
-> +    enum:
-> +      - cpu
-> +      - cpu-qe
 > +
 > +  interrupts:
 > +    maxItems: 1
 > +
-> +  clock-frequency:
-> +    description: input clock frequency to non FSL_SOC cores
-> +
-> +  cs-gpios: true
-> +
-> +  fsl,spisel_boot:
-> +    $ref: /schemas/types.yaml#/definitions/flag
-> +    description:
-> +      For the MPC8306 and MPC8309, specifies that the SPISEL_BOOT signal is used
-> +      as chip select for a slave device. Use reg = <number of gpios> in the
-> +      corresponding child node, i.e. 0 if the cs-gpios property is not present.
+> +  uio_name:
+> +    $ref: /schemas/types.yaml#/definitions/string
 > +
 > +required:
 > +  - compatible
 > +  - reg
-> +  - mode
-> +  - interrupts
+> +  - elbc-gpcm-br
+> +  - elbc-gpcm-or
 > +
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +
-> +unevaluatedProperties: false
+> +additionalProperties: false
 > +
 > +examples:
 > +  - |
-> +    spi@4c0 {
-> +        compatible = "fsl,spi";
-> +        reg = <0x4c0 0x40>;
-> +        cell-index = <0>;
-> +        interrupts = <82 0>;
-> +        interrupt-parent = <&intc>;
-> +        mode = "cpu";
-> +        cs-gpios = <&gpio 18 1          // device reg=<0>
-> +                    &gpio 19 1>;        // device reg=<1>
-
-
-use predefine gpio level macro
-
-Frank
-
-> +    };
+> +    localbus {
+> +        #address-cells = <2>;
+> +        #size-cells = <1>;
 > +
-> +...
-> diff --git a/Documentation/devicetree/bindings/spi/fsl-spi.txt b/Documentation/devicetree/bindings/spi/fsl-spi.txt
-> deleted file mode 100644
-> index 0654380eb7515d8bda80eea1486e77b939ac38d8..0000000000000000000000000000000000000000
-> --- a/Documentation/devicetree/bindings/spi/fsl-spi.txt
-> +++ /dev/null
-> @@ -1,62 +0,0 @@
-> -* SPI (Serial Peripheral Interface)
-> -
-> -Required properties:
-> -- cell-index : QE SPI subblock index.
-> -		0: QE subblock SPI1
-> -		1: QE subblock SPI2
-> -- compatible : should be "fsl,spi" or "aeroflexgaisler,spictrl".
-> -- mode : the SPI operation mode, it can be "cpu" or "cpu-qe".
-> -- reg : Offset and length of the register set for the device
-> -- interrupts : <a b> where a is the interrupt number and b is a
-> -  field that represents an encoding of the sense and level
-> -  information for the interrupt.  This should be encoded based on
-> -  the information in section 2) depending on the type of interrupt
-> -  controller you have.
-> -- clock-frequency : input clock frequency to non FSL_SOC cores
-> -
-> -Optional properties:
-> -- cs-gpios : specifies the gpio pins to be used for chipselects.
-> -  The gpios will be referred to as reg = <index> in the SPI child nodes.
-> -  If unspecified, a single SPI device without a chip select can be used.
-> -- fsl,spisel_boot : for the MPC8306 and MPC8309, specifies that the
-> -  SPISEL_BOOT signal is used as chip select for a slave device. Use
-> -  reg = <number of gpios> in the corresponding child node, i.e. 0 if
-> -  the cs-gpios property is not present.
-> -
-> -Example:
-> -	spi@4c0 {
-> -		cell-index = <0>;
-> -		compatible = "fsl,spi";
-> -		reg = <4c0 40>;
-> -		interrupts = <82 0>;
-> -		interrupt-parent = <700>;
-> -		mode = "cpu";
-> -		cs-gpios = <&gpio 18 1		// device reg=<0>
-> -			    &gpio 19 1>;	// device reg=<1>
-> -	};
-> -
-> -
-> -* eSPI (Enhanced Serial Peripheral Interface)
-> -
-> -Required properties:
-> -- compatible : should be "fsl,mpc8536-espi".
-> -- reg : Offset and length of the register set for the device.
-> -- interrupts : should contain eSPI interrupt, the device has one interrupt.
-> -- fsl,espi-num-chipselects : the number of the chipselect signals.
-> -
-> -Optional properties:
-> -- fsl,csbef: chip select assertion time in bits before frame starts
-> -- fsl,csaft: chip select negation time in bits after frame ends
-> -
-> -Example:
-> -	spi@110000 {
-> -		#address-cells = <1>;
-> -		#size-cells = <0>;
-> -		compatible = "fsl,mpc8536-espi";
-> -		reg = <0x110000 0x1000>;
-> -		interrupts = <53 0x2>;
-> -		interrupt-parent = <&mpic>;
-> -		fsl,espi-num-chipselects = <4>;
-> -		fsl,csbef = <1>;
-> -		fsl,csaft = <1>;
-> -	};
+> +        simple-periph@2,0 {
+> +            compatible = "fsl,elbc-gpcm-uio";
+> +            reg = <0x2 0x0 0x10000>;
+> +            elbc-gpcm-br = <0xfd810800>;
+> +            elbc-gpcm-or = <0xffff09f7>;
+> +        };
+> +    };
 >
 > --
 > 2.48.0.rc1.219.gb6b6757d772
