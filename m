@@ -1,87 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-6024-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6025-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12178A2E6B9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 09:45:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EB2DA2E87F
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Feb 2025 11:03:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yryp605V6z2ynf;
-	Mon, 10 Feb 2025 19:45:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ys0X22rrhz2yPG;
+	Mon, 10 Feb 2025 21:03:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8:216:3eff:fe9d:e7b4"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739177133;
-	cv=none; b=gzfzy9B7Q16FJjCmQKCxE72lMzHyfSbx37jLGByzVc4fksGXGqrn5hGTq7AX0SV9b/ejNHcwNp1lkctdoLbK2h3FEXb+2p02nredGs7F+z6XJMdP9QLEhqwBHwkXngntRhDdZj0SkPC0TJzGqvRqLnh0Qm1Ig+8f1myG1uzHQmlEyfBJboWYSfIgnQ4vLp5ZhICEfWt5Jw5MqgQ0jBbATHoEEWWPR3RHF2LaE6xaJXkjWfXPZYs2i+PyU090ARu9z7ZEEL8DQyckh4UCqkJozKLLUPnGKtrhMwImwb30rW30jk0V3bsyI89BmwOOSBef6bA0Y8Jv/LY5aMDRjMDJdw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc2:55:216:3eff:fef7:d647"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739181810;
+	cv=none; b=djw64MzUP1T7jU5GMtXFPgaefPACy7f+iR46Ejac+qqFufSI7xlKTL8J6m6s7CZTSrKEpkj0IUzFcP1eKeEa1w2nMAXuMVIx1N42PueY01r7cGEzW8Cb2SeAIfYk2pGBaqlO8ssGN3rtJyW9noHjb/6DR9ZM/m6P1MRBqYXECRf/RZXaFyhlnpOc/vvrhvy+gPY/vmDSpuNt68SD0UCJ28NrArcRqVrZGvXUydlH1nBel2tfvNdaE+CjD8uDEXsGlQjZzYQJ2YC9gnZ+13IeRJsuBZ1inIXzrsTyvu2h6ENJ5AxaInj/pjf49ARQLPRuunna45fLs+PZ3y5D20YyWA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739177133; c=relaxed/relaxed;
-	bh=8e9TvzMvnN655dD9mW3ziQ4pedVgVTCtFygXZeQGWbI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=j1V8zGSu7PPjIPU3VMj/djQBHS8YX5DCwXYRvgSesJBmNrosGFLPj2HTIv4Ujh05QKmu75Y58+sbeHiS/FzVvJ/a5Li1pr0ewmmu6pw3YBmsmCQbpGzNp2FImiHTaJuw0j6mXbD50/ni8XhZtjXCjWrfMIt5qfNqajG5DyhjMljefOmtE1JDNR3GdQrnjWVYE0XzTqlGbIFEl9EUMfpHjvrpEmdwFe92SGl9/tm6EyqEYozaiT4CyPbVFLbkySKsNEfFKp2FjFPlvFTb2hdZhX9A5N/smzSbkRRWkUUyPhfNOVs1rPMpVu2PZ0fnNoz/cSBew8CQW8Sfjc/iH6Q6nQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZY02NguF; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
+	t=1739181810; c=relaxed/relaxed;
+	bh=IeE/Pj+Ko1GWi5jSsdwD9RfA6RVngeOOtLPit7QwMkc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nSAK+nbrrnR9YPgtvhVdLHFKJ1isLjN2cwYgdmPetLi1Uyq4etOwOpBOnr33wnd3yC6SrtVEMnsMsFypGt91tpSBq1CieJAi39UOQIpMF6sMD/MTkmYQAE5yW44/hqMxJca7ShYqeSEjEqmxxr+LFOpEyh+hbWEQVqs8r8U3Wp+Fj84efuNO6r3SLPpfanSB7fg39qm7KLCN5AB75bJ0m3CIAK1yHWL2nrnvqe2WX5E7+R0IkkRBowSYtMYokpatXHoK7jjqCDp7ZvIcv3uo7bKG9fWynmhZMSbuDIajmXTIzUc6haeCDCMXW7Ci5hOnTvRbMoclYSJqLSM53shPOg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com; dkim=pass (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=e9JIjGIb; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc2:55:216:3eff:fef7:d647; helo=perceval.ideasonboard.com; envelope-from=laurent.pinchart@ideasonboard.com; receiver=lists.ozlabs.org) smtp.mailfrom=ideasonboard.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ideasonboard.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=ZY02NguF;
+	dkim=pass (1024-bit key; unprotected) header.d=ideasonboard.com header.i=@ideasonboard.com header.a=rsa-sha256 header.s=mail header.b=e9JIjGIb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=miquel.raynal@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1077 seconds by postgrey-1.37 at boromir; Mon, 10 Feb 2025 19:45:31 AEDT
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [IPv6:2001:4b98:dc4:8:216:3eff:fe9d:e7b4])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=ideasonboard.com (client-ip=2001:4b98:dc2:55:216:3eff:fef7:d647; helo=perceval.ideasonboard.com; envelope-from=laurent.pinchart@ideasonboard.com; receiver=lists.ozlabs.org)
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [IPv6:2001:4b98:dc2:55:216:3eff:fef7:d647])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yryp370YBz2xjL
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 19:45:31 +1100 (AEDT)
-Received: from relay7-d.mail.gandi.net (relay7-d.mail.gandi.net [217.70.183.200])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 1434E582D0F
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 08:27:39 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 6E7EC441F0;
-	Mon, 10 Feb 2025 08:27:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1739176047;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8e9TvzMvnN655dD9mW3ziQ4pedVgVTCtFygXZeQGWbI=;
-	b=ZY02NguFvp2D4ou3No/QCzpfSTJ/vEq/6qT+XJ/nvm4ksYAK39lFMb0mQgDBqM0QIBRl1F
-	8lQkkIF/mc8rfl0l4flqx4G6JMtztvl8iq4f4mpGpYsw9F+0rmgop6/sp/OOfQsixdP9Hn
-	F5EBu6cuuY9MfhzpBOyfm3OiCFVmX2cf9gRlizM56NuNZNK60icbcTT+3/d+T/Unba6ad9
-	nIAJD/b54HfwpeWm89ATdYeoXB7ZO5w+IHsHy0eoz3L543OybW2v5YkqjOB1Y1pInLZonw
-	gvl82hS9MNgYZaE0ZItYKARh4AqYqBh+HH0IcpFf14eU4/gDM4YqjQJ7ekjhow==
-From: Miquel Raynal <miquel.raynal@bootlin.com>
-To: J. =?utf-8?Q?Neusch=C3=A4fer?= via B4 Relay
- <devnull+j.ne.posteo.net@kernel.org>
-Cc: devicetree@vger.kernel.org,  linuxppc-dev@lists.ozlabs.org,  Krzysztof
- Kozlowski <krzk@kernel.org>,  j.ne@posteo.net,  imx@lists.linux.dev,
-  Scott Wood <oss@buserror.net>,  Madhavan Srinivasan
- <maddy@linux.ibm.com>,  Michael Ellerman <mpe@ellerman.id.au>,  Nicholas
- Piggin <npiggin@gmail.com>,  Christophe Leroy
- <christophe.leroy@csgroup.eu>,  Naveen N Rao <naveen@kernel.org>,  Rob
- Herring <robh@kernel.org>,  Krzysztof Kozlowski <krzk+dt@kernel.org>,
-  Conor Dooley <conor+dt@kernel.org>,  Damien Le Moal <dlemoal@kernel.org>,
-  Niklas Cassel <cassel@kernel.org>,  Herbert Xu
- <herbert@gondor.apana.org.au>,  "David S. Miller" <davem@davemloft.net>,
-  Lee Jones <lee@kernel.org>,  Vinod Koul <vkoul@kernel.org>,  Lorenzo
- Pieralisi <lpieralisi@kernel.org>,  Krzysztof =?utf-8?Q?Wilczy=C5=84ski?=
- <kw@linux.com>,
-  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,  Bjorn Helgaas
- <bhelgaas@google.com>,  J. =?utf-8?Q?Neusch=C3=A4fer?=
- <j.neuschaefer@gmx.net>,  Wim Van
- Sebroeck <wim@linux-watchdog.org>,  Guenter Roeck <linux@roeck-us.net>,
-  Mark Brown <broonie@kernel.org>,  Richard Weinberger <richard@nod.at>,
-  Vignesh Raghavendra <vigneshr@ti.com>,  linux-kernel@vger.kernel.org,
-  linux-ide@vger.kernel.org,  linux-crypto@vger.kernel.org,
-  dmaengine@vger.kernel.org,  linux-pci@vger.kernel.org,
-  linux-watchdog@vger.kernel.org,  linux-spi@vger.kernel.org,
-  linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 12/12] dt-bindings: mtd: raw-nand-chip: Relax node
- name pattern
-In-Reply-To: <20250207-ppcyaml-v2-12-8137b0c42526@posteo.net> ("J.
- =?utf-8?Q?Neusch=C3=A4fer?=
-	via B4 Relay"'s message of "Fri, 07 Feb 2025 22:30:29 +0100")
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
-	<20250207-ppcyaml-v2-12-8137b0c42526@posteo.net>
-User-Agent: mu4e 1.12.7; emacs 29.4
-Date: Mon, 10 Feb 2025 09:27:22 +0100
-Message-ID: <87o6zaurv9.fsf@bootlin.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ys0X13Z3sz2y92
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Feb 2025 21:03:29 +1100 (AEDT)
+Received: from pendragon.ideasonboard.com (81-175-209-231.bb.dnainternet.fi [81.175.209.231])
+	by perceval.ideasonboard.com (Postfix) with ESMTPSA id BE35322E;
+	Mon, 10 Feb 2025 11:02:00 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+	s=mail; t=1739181720;
+	bh=DYI8FPWv2nrFA0bms9nZRqfoHZqOqiWHzVO7WBrXD7c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=e9JIjGIbxAbHFBZNoHhzMtWVU3aQ9YxlVTuCOKgJi2aq03Ua4rQA6/NKopcvO1WuG
+	 cHjfxeUHiqkeHdDEuwFrBPi5JqWzg2Kq/4BvNV1sd9vHfM8lVjcq46bd0u3vXU42pb
+	 vq62ObCJEh+arMeDvr5kTxRVUI5tnOOcDdKA4qGI=
+Date: Mon, 10 Feb 2025 12:03:07 +0200
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To: "zhangzekun (A)" <zhangzekun11@huawei.com>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, robh@kernel.org,
+	saravanak@google.com, justin.chen@broadcom.com,
+	florian.fainelli@broadcom.com, andrew+netdev@lunn.ch,
+	kuba@kernel.org, kory.maincent@bootlin.com,
+	jacopo+renesas@jmondi.org, kieran.bingham+renesas@ideasonboard.com,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	olteanv@gmail.com, davem@davemloft.net, taras.chornyi@plvision.eu,
+	edumazet@google.com, pabeni@redhat.com, sudeep.holla@arm.com,
+	cristian.marussi@arm.com, arm-scmi@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-media@vger.kernel.org,
+	netdev@vger.kernel.org, devicetree@vger.kernel.org,
+	chenjun102@huawei.com
+Subject: Re: [PATCH 1/9] of: Add warpper function
+ of_find_node_by_name_balanced()
+Message-ID: <20250210100307.GA2966@pendragon.ideasonboard.com>
+References: <20250207013117.104205-1-zhangzekun11@huawei.com>
+ <20250207013117.104205-2-zhangzekun11@huawei.com>
+ <Z6XDKi_V0BZSdCeL@pengutronix.de>
+ <80b1c21c-096b-4a11-b9d7-069c972b146a@huawei.com>
+ <20250207153722.GA24886@pendragon.ideasonboard.com>
+ <c48952c7-716c-4302-949c-2c66ea102a3e@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,33 +75,135 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdefjeehkecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephffvvefujghffgffkfggtgfgsehtqhertddtreejnecuhfhrohhmpefoihhquhgvlhcutfgrhihnrghluceomhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepffeghfejtdefieeguddukedujeektdeihfelleeuieeuveehkedvleduheeivdefnecukfhppeelvddrudekgedrleekrdekgeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeelvddrudekgedrleekrdekgedphhgvlhhopehlohgtrghlhhhoshhtpdhmrghilhhfrhhomhepmhhiqhhuvghlrdhrrgihnhgrlhessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepfeelpdhrtghpthhtohepuggvvhhnuhhllhdojhdrnhgvrdhpohhsthgvohdrnhgvtheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepuggvvhhitggvthhrvggvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugihpphgtqdguvghvsehlihhsthhsrdhoiihlrggsshdrohhrghdprhgtphhtthhopehkrhiikheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhdrnhgvsehpohhst
- hgvohdrnhgvthdprhgtphhtthhopehimhigsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepohhsshessghushgvrhhrohhrrdhnvghtpdhrtghpthhtohepmhgrugguhieslhhinhhugidrihgsmhdrtghomh
-X-GND-Sasl: miquel.raynal@bootlin.com
+Content-Disposition: inline
+In-Reply-To: <c48952c7-716c-4302-949c-2c66ea102a3e@huawei.com>
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello,
+Hi Zekun,
 
-On 07/02/2025 at 22:30:29 +01, J. Neusch=C3=A4fer via B4 Relay <devnull+j.n=
-e.posteo.net@kernel.org> wrote:
+On Mon, Feb 10, 2025 at 02:47:28PM +0800, zhangzekun (A) wrote:
+> > I think we all agree that of_find_node_by_name() is miused, and that it
+> > shows the API isn't optimal. What we have different opinions on is how
+> > to make the API less error-prone. I think adding a new
+> > of_find_node_by_name_balanced() function works around the issue and
+> > doesn't improve the situation much, I would argue it makes things even
+> > more confusing.
+> > 
+> > We have only 20 calls to of_find_node_by_name() with a non-NULL first
+> > argument in v6.14-rc1:
+> > 
+> > arch/powerpc/platforms/chrp/pci.c:      rtas = of_find_node_by_name (root, "rtas");
+> > 
+> > The 'root' variable here is the result of a call to
+> > 'of_find_node_by_path("/")', so I think we could pass a null pointer
+> > instead to simplify things.
+> > 
+> > arch/powerpc/platforms/powermac/pic.c:          slave = of_find_node_by_name(master, "mac-io");
+> > 
+> > Here I believe of_find_node_by_name() is called to find a *child* node
+> > of 'master'. of_find_node_by_name() is the wrong function for that.
+> > 
+> > arch/sparc/kernel/leon_kernel.c:        np = of_find_node_by_name(rootnp, "GAISLER_IRQMP");
+> > arch/sparc/kernel/leon_kernel.c:                np = of_find_node_by_name(rootnp, "01_00d");
+> > arch/sparc/kernel/leon_kernel.c:        np = of_find_node_by_name(nnp, "GAISLER_GPTIMER");
+> > arch/sparc/kernel/leon_kernel.c:                np = of_find_node_by_name(nnp, "01_011");
+> > 
+> > Here too the code seems to be looking for child nodes only (but I
+> > couldn't find a DT example or binding in-tree, so I'm not entirely
+> > sure).
+> > 
+> > drivers/clk/ti/clk.c:   return of_find_node_by_name(from, tmp);
+> > 
+> > Usage here seems correct, the reference-count decrement is intended.
+> > 
+> > drivers/media/i2c/max9286.c:    i2c_mux = of_find_node_by_name(dev->of_node, "i2c-mux");
+> > drivers/media/platform/qcom/venus/core.c:       enp = of_find_node_by_name(dev->of_node, node_name);
+> > drivers/net/dsa/bcm_sf2.c:      ports = of_find_node_by_name(dn, "ports");
+> > drivers/net/dsa/hirschmann/hellcreek_ptp.c:     leds = of_find_node_by_name(hellcreek->dev->of_node, "leds");
+> > drivers/net/ethernet/broadcom/asp2/bcmasp.c:    ports_node = of_find_node_by_name(dev->of_node, "ethernet-ports");
+> > drivers/net/ethernet/marvell/prestera/prestera_main.c:  ports = of_find_node_by_name(sw->np, "ports");
+> > drivers/net/pse-pd/tps23881.c:  channels_node = of_find_node_by_name(priv->np, "channels");
+> > drivers/regulator/scmi-regulator.c:     np = of_find_node_by_name(handle->dev->of_node, "regulators");
+> > drivers/regulator/tps6594-regulator.c:          np = of_find_node_by_name(tps->dev->of_node, multi_regs[multi].supply_name);
+> > 
+> > Incorrect usage, as far as I understand all those drivers are looking
+> > for child nodes only.
+> > 
+> > drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest16");
+> > drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest17");
+> > drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest18");
+> > drivers/of/unittest.c:          found = of_find_node_by_name(nd->overlay, "test-unittest19");
+> > 
+> > Here too I think only child nodes are meant to be considered.
+> > 
+> > of_find_node_by_name() is very much misused as most callers want to find
+> > child nodes, while of_find_node_by_name() will walk the whole DT from a
+> > given starting point.
+> > 
+> > I think the right fix here is to
+> > 
+> > - Replace of_find_node_by_name(root, ...) with
+> >    of_find_node_by_name(NULL, ...) in arch/powerpc/platforms/chrp/pci.c
+> >    (if my understanding of the code is correct).
+> 
+> For arch/powerpc/platforms/chrp/pci.c, noticing that there is a comment 
+> in setup_peg2():
+>   /* keep the reference to the root node */
+> 
+> It might can not be convert to of_find_node_by_name(NULL, ...), and the 
+> origin use of of_find_node_by_name() put the ref count which want to be 
+> kept.
 
-> From: "J. Neusch=C3=A4fer" <j.ne@posteo.net>
+But the reference is dropped by of_find_node_by_name(). Unless I'm
+missing something, dropping the lien
+
+	struct device_node *root = of_find_node_by_path("/");
+
+and changing
+
+	rtas = of_find_node_by_name (root, "rtas");
+
+to
+
+	rtas = of_find_node_by_name (NULL, "rtas");
+
+will not change the behaviour of the code.
+
+> > 
+> > - Replace of_find_node_by_name() with of_get_child_by_name() in callers
+> >    that need to search immediate children only (I expected that to be the
+> >    majority of the above call sites)
 >
-> In some scenarios, such as under the Freescale eLBC bus, there are raw
-> NAND chips with a unit address that has a comma in it (cs,offset).
-> Relax the $nodename pattern in raw-nand-chip.yaml to allow such unit
-> addresses.
+> Since there is no enough information about these DT nodes, it would take 
+> time to prove if it is OK to make such convert.
 
-This is super specific to this controller, I'd rather avoid that in the
-main (shared) files. I believe you can force another node name in the
-controller's binding instead?
+It will take a bit of time, yes. I'm afraid time is needed to improve
+things :-) In most cases, as DT bindings are available, it shouldn't be
+very difficult.
 
-Thanks,
-Miqu=C3=A8l
+> > 
+> > - If there are other callers that need to find indirect children,
+> >    introduce a new of_get_child_by_name_recursive() function.
+> > 
+> > At that point, the only remaining caller of of_find_node_by_name()
+> > (beside its usage in the for_each_node_by_name() macro) will be
+> > drivers/clk/ti/clk.c, which uses the function correctly.
+> > 
+> > I'm tempted to then rename of_find_node_by_name() to
+> > __of_find_node_by_name() to indicate it's an internal function not meant
+> > to be called except in special cases. It could all be renamed to
+> > __of_find_next_node_by_name() to make its behaviour clearer.
+> >
+> 
+> The actual code logic of of_find_node_by_name() is more suitable to be 
+> used in a loop.So,rename of_find_node_by_name() to 
+> __of_find_next_node_by_name() seems to be a good idea.
+
+-- 
+Regards,
+
+Laurent Pinchart
 
