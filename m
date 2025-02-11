@@ -1,61 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6106-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6107-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89859A31790
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2025 22:24:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF4D7A31869
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Feb 2025 23:14:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YsvZs0qZ3z2ykX;
-	Wed, 12 Feb 2025 08:24:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yswht3S1xz2yTy;
+	Wed, 12 Feb 2025 09:14:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739309045;
-	cv=none; b=i3ZSWjUZvcuReGVaUkLKkYQv57sSap8q1rO1m2PzOUYr9aK5jtcQL74i/4O8Dm0JyAh/l4b90o3CwSFbFWbmhhhxQ2wgtB7TnFCkoSZ2qAtWNwIshbErgqsWIwk/2HHiI6OLc6hRAGfI0cFQRP9rM4pqGo5O7laY0DYb64iCYwXR91FHkN+BorvwxViyuLMHFnyuRvBTaZ0vSPpuZaSzJsyEUzHCtEz0ytGJkJIvyj50dvr03BJi29rH6E3CWrReoMZTE/KAHpCIXXim7qxxC87P6PtyO+qN/NmEMcePtFZdUdnzPyQN9mq1EThhSEE3XEXTYzDsv2NsWnqeCHaZFg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739312062;
+	cv=none; b=nbMi5y2DPhrEGf0+zklHqddSnYuwKbjfiACKb04pn2aus3W4utb+YIyO+SYp2KyQJWYByN8+14WGX1GsxTNIw3ff9HQ17TSAHnPHm8LrnsPg6DYAALvzl22bb7ivxC9DW55/uFqV0Z5n7OP5HcN92X0fysOqtEU5J94ScZPz4XTLoiKj9wyJhqUi7+5KCgZrTA0wmTO+R9/nvcPSJhSOxjFNJ3UXpHGEf27ZHmHNAK7Cku/NVc6+Ma3vYDCs104UJaw2Koa3YxGX+WrJ1Vb36YfccdhOJn5cSGvbj9ZR3VtKEM3PosGCS3OdPn9uY9fkGpG6EqJboa2TAsuniWwNrA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739309045; c=relaxed/relaxed;
-	bh=9u7ZoSmAU5vsvWqI2s6EXx5qk860P3zWDHsuCHDDm94=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cJ/Nxz7cWI0cxBVqVwmQeYPp7btOZ2L4dDUH5NBKn5TSLipNxJD1PA7AHWCd1y9rIjwhOCgPuZggm32eTVZVoIVyzIX4UNXVf4XopHZsK9l442NpcngDZSh3BaMyuqixdu9PpPHF8ekfaHhqDXymLPtMiEyln8jAFLSwmmdw9wrBRHJz/KzaT3/BpUAP6gojeY+wXPYT+f4GtV5qTd4tEY38nbFN+TwWfIgC/bRM/yl8q2LxZ7lDplc1g0NwtLxKeTtJ1ufcZyBHxBOJn6YpU01nze8pdsKFpOeedkWG9jP9WgTOG4lFVWbV57LA79iMqFss0EEgZrzam94QvY8Zjg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Uf2LHuYq; dkim-atps=neutral; spf=none (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1739312062; c=relaxed/relaxed;
+	bh=BqokKJK2KvAP2GUucGwOrZPjzasET3BSoF5O79f06MQ=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=b47XAzcHuhJwVEJz7/+c3FD/xUBzMX1+h6SRVM9B6qzZX5hP6xGVb19HXGswSBHKQXeKd+PcAz2mDWadz05ExuP5o1KWTkgmMGS0jnNyzPksixl8AZcPuvYuYAmDiEZq2+C3+8P7UpwULfz/K9mKoxRpGrKb5UYAS4m9Zg6Evkamk6R3dlBEcRVk5B3hSPyFNKodagVdsGUVEX9yteLoA2g/UO4wTSC6oxy8NRsIZlO3Hha4vTHmjo37ocajlTNjZTMdle9NFXo3iapw/XIV2trcy9JMowXRwrCFMmtvRiUwwPuU/merE88FziRQl2/AshxqaAvGyrocTh7qS0GmOw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M0IEMcyY; dkim-atps=neutral; spf=pass (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Uf2LHuYq;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=M0IEMcyY;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=sathyanarayanan.kuppuswamy@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YsvZr0kj5z2yk3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2025 08:24:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yswhp3Bhhz2yT0
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2025 09:14:16 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739309044; x=1770845044;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=6pPNSu5khxEBFBWsc9uEcZ7LoQqrd8LuHQ1iOQbmUx8=;
-  b=Uf2LHuYq8UV9gl3lYe2OI+JJLkXpiBs3SynBLtbek3Q54PH46u2eXUSd
-   IqSOdczNRtImERq6OMm5SDckaamIHBiH72NW9MJOv42Gkzk62j9tbvQKz
-   Ue0JefL3/jtrcLgXKY8NpRocL+3/d/1ZtMklyq7gXGg9aSlsScwrGXqDR
-   x7GKybYzR5FYgUBXFSkin26P4ZvNbXRKI9W9YDAIZgcFfe5Jw836KAi9/
-   9FA+NxjxpyWrXnH19qlxxiIWkKUI69ndfEr74RKExu7R6q8h39v0+YHZI
-   IWgWVGGYKK21+BcNj3D1xpma8GjeUo4mIkQWTa5CB3bG+6HQsfLX713Hr
-   w==;
-X-CSE-ConnectionGUID: glFk79pNQc2dwOqQOY4swg==
-X-CSE-MsgGUID: EeKtJRuFQNyd8CwBt5ckMw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="39183700"
+  t=1739312059; x=1770848059;
+  h=date:from:to:cc:subject:message-id;
+  bh=80tO6bffhLsx0w/4VU+MANceSn7VbOas5xy3nz+gYB4=;
+  b=M0IEMcyY7wVaTqn5yUhYLYXZ+gXBpOh6HtFVveKM8HUSYaVm/KloQu7Z
+   Yo1kR2yrNwrAjL2ermRZ85l3Vb81HxwoD4weZSQQdTb1Dp3JbWV4W/OBr
+   k+GCEo/msV2dLuhLRTWEcDeWkSpn+6HLItTio5vykW+H7USiqAF34oKkm
+   6N5S83EJ4vI+c1VbhqPusrQ52124pU1RMEMjkvm3V9C9hhgSyJ/09uTZD
+   Z0AVZVL2egLS4auijb1AQM51wExWb9yUAYxYCln6eA/77WK1qtxOpnJ1O
+   quPY/uPBWwznmkkpVVYNSaK/9e1+F6MUO6DogErb33rkPLJfGXttqzTq8
+   Q==;
+X-CSE-ConnectionGUID: nOzD5lqVQKWaotE56ZsJtw==
+X-CSE-MsgGUID: oFQYlPXrTEyxja8uUFTy9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11342"; a="50937806"
 X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="39183700"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:24:02 -0800
-X-CSE-ConnectionGUID: X6nVqjD8SWG1wP9zerP9Cg==
-X-CSE-MsgGUID: vDvaQ1dTRTmqZ8Kg8ZeVFA==
+   d="scan'208";a="50937806"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 14:14:13 -0800
+X-CSE-ConnectionGUID: hL3LElnkQmGbTcQDyOpTjQ==
+X-CSE-MsgGUID: dflYQPihSp6Tqg/hozamnQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,278,1732608000"; 
-   d="scan'208";a="117708689"
-Received: from jdoman-desk1.amr.corp.intel.com (HELO [10.124.222.44]) ([10.124.222.44])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Feb 2025 13:24:01 -0800
-Message-ID: <c1837324-98b0-4548-893f-b14e89ced9db@linux.intel.com>
-Date: Tue, 11 Feb 2025 13:23:30 -0800
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="113528353"
+Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
+  by orviesa008.jf.intel.com with ESMTP; 11 Feb 2025 14:14:12 -0800
+Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1thyW9-0014l7-0O;
+	Tue, 11 Feb 2025 22:14:09 +0000
+Date: Wed, 12 Feb 2025 06:13:42 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:next-test] BUILD SUCCESS
+ 6aa989ab2bd0d37540c812b4270006ff794662e7
+Message-ID: <202502120636.jEuy5MS2-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,178 +79,225 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 3/4] PCI/DPC: Run recovery on device that detected the
- error
-To: Shuai Xue <xueshuai@linux.alibaba.com>, linux-pci@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- bhelgaas@google.com, kbusch@kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
- terry.bowman@amd.com
-References: <20250207093500.70885-1-xueshuai@linux.alibaba.com>
- <20250207093500.70885-4-xueshuai@linux.alibaba.com>
-Content-Language: en-US
-From: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>
-In-Reply-To: <20250207093500.70885-4-xueshuai@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
+branch HEAD: 6aa989ab2bd0d37540c812b4270006ff794662e7  powerpc/pseries/iommu: memory notifier incorrectly adds TCEs for pmemory
 
-On 2/7/25 1:34 AM, Shuai Xue wrote:
-> The current implementation of pcie_do_recovery() assumes that the
-> recovery process is executed on the device that detected the error.
-> However, the DPC driver currently passes the error port that experienced
-> the DPC event to pcie_do_recovery().
->
-> Use the SOURCE ID register to correctly identify the device that detected the
-> error. By passing this error device to pcie_do_recovery(), subsequent
-> patches will be able to accurately access AER status of the error device.
+elapsed time: 920m
 
-I also recommend adding info about the fact that pcie_do_recovery() finds
-upstream bridge to run the recovery process and hence should not observe
-any functional changes (compared to previous version)
+configs tested: 204
+configs skipped: 6
 
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
->
-> Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
-> ---
->   drivers/pci/pci.h      |  2 +-
->   drivers/pci/pcie/dpc.c | 25 +++++++++++++++++++++----
->   drivers/pci/pcie/edr.c |  7 ++++---
->   3 files changed, 26 insertions(+), 8 deletions(-)
->
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 01e51db8d285..870d2fbd6ff2 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -572,7 +572,7 @@ struct rcec_ea {
->   void pci_save_dpc_state(struct pci_dev *dev);
->   void pci_restore_dpc_state(struct pci_dev *dev);
->   void pci_dpc_init(struct pci_dev *pdev);
-> -void dpc_process_error(struct pci_dev *pdev);
-> +struct pci_dev *dpc_process_error(struct pci_dev *pdev);
->   pci_ers_result_t dpc_reset_link(struct pci_dev *pdev);
->   bool pci_dpc_recovered(struct pci_dev *pdev);
->   unsigned int dpc_tlp_log_len(struct pci_dev *dev);
-> diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-> index 1a54a0b657ae..a91440f3b118 100644
-> --- a/drivers/pci/pcie/dpc.c
-> +++ b/drivers/pci/pcie/dpc.c
-> @@ -253,10 +253,17 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
->   	return 1;
->   }
->   
-> -void dpc_process_error(struct pci_dev *pdev)
-> +/**
-> + * dpc_process_error - handle the DPC error status
-> + * @pdev: the port that experienced the containment event
-> + *
-> + * Return the device that detected the error.
-> + */
+tested configs:
+alpha                            allyesconfig    clang-21
+alpha                            allyesconfig    gcc-14.2.0
+alpha                               defconfig    gcc-14.2.0
+arc                              allmodconfig    clang-18
+arc                              allmodconfig    gcc-13.2.0
+arc                              allyesconfig    clang-18
+arc                              allyesconfig    gcc-13.2.0
+arc                                 defconfig    gcc-14.2.0
+arc                   randconfig-002-20250211    gcc-13.2.0
+arm                              allmodconfig    clang-18
+arm                              allmodconfig    gcc-14.2.0
+arm                              allyesconfig    clang-18
+arm                              allyesconfig    gcc-14.2.0
+arm                                 defconfig    gcc-14.2.0
+arm                         lpc32xx_defconfig    clang-21
+arm                          pxa910_defconfig    clang-21
+arm                   randconfig-001-20250211    gcc-14.2.0
+arm                   randconfig-003-20250211    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                               defconfig    gcc-14.2.0
+csky                                defconfig    gcc-14.2.0
+csky                  randconfig-001-20250211    gcc-14.2.0
+csky                  randconfig-001-20250212    clang-21
+csky                  randconfig-002-20250211    gcc-14.2.0
+csky                  randconfig-002-20250212    clang-21
+hexagon                          allmodconfig    clang-21
+hexagon                          allyesconfig    clang-18
+hexagon                          allyesconfig    clang-21
+hexagon                             defconfig    gcc-14.2.0
+hexagon               randconfig-001-20250211    clang-18
+hexagon               randconfig-001-20250212    clang-21
+hexagon               randconfig-002-20250211    clang-21
+hexagon               randconfig-002-20250212    clang-21
+i386                             allmodconfig    clang-19
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    clang-19
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    clang-19
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250211    gcc-12
+i386        buildonly-randconfig-001-20250212    gcc-12
+i386        buildonly-randconfig-002-20250211    gcc-12
+i386        buildonly-randconfig-002-20250212    gcc-12
+i386        buildonly-randconfig-003-20250211    gcc-12
+i386        buildonly-randconfig-003-20250212    gcc-12
+i386        buildonly-randconfig-004-20250211    gcc-12
+i386        buildonly-randconfig-004-20250212    gcc-12
+i386        buildonly-randconfig-005-20250211    gcc-12
+i386        buildonly-randconfig-005-20250212    gcc-12
+i386        buildonly-randconfig-006-20250211    clang-19
+i386        buildonly-randconfig-006-20250212    gcc-12
+i386                                defconfig    clang-19
+i386                  randconfig-001-20250212    gcc-12
+i386                  randconfig-002-20250212    gcc-12
+i386                  randconfig-003-20250212    gcc-12
+i386                  randconfig-004-20250212    gcc-12
+i386                  randconfig-005-20250212    gcc-12
+i386                  randconfig-006-20250212    gcc-12
+i386                  randconfig-007-20250212    gcc-12
+i386                  randconfig-011-20250212    gcc-12
+i386                  randconfig-012-20250212    gcc-12
+i386                  randconfig-013-20250212    gcc-12
+i386                  randconfig-014-20250212    gcc-12
+i386                  randconfig-015-20250212    gcc-12
+i386                  randconfig-016-20250212    gcc-12
+i386                  randconfig-017-20250212    gcc-12
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                           defconfig    gcc-14.2.0
+loongarch             randconfig-001-20250211    gcc-14.2.0
+loongarch             randconfig-001-20250212    clang-21
+loongarch             randconfig-002-20250211    gcc-14.2.0
+loongarch             randconfig-002-20250212    clang-21
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                                defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+microblaze                          defconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                         db1xxx_defconfig    clang-21
+nios2                             allnoconfig    gcc-14.2.0
+nios2                               defconfig    gcc-14.2.0
+nios2                 randconfig-001-20250211    gcc-14.2.0
+nios2                 randconfig-001-20250212    clang-21
+nios2                 randconfig-002-20250211    gcc-14.2.0
+nios2                 randconfig-002-20250212    clang-21
+openrisc                          allnoconfig    clang-21
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-12
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    clang-21
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-12
+parisc                randconfig-001-20250211    gcc-14.2.0
+parisc                randconfig-001-20250212    clang-21
+parisc                randconfig-002-20250211    gcc-14.2.0
+parisc                randconfig-002-20250212    clang-21
+parisc64                            defconfig    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    clang-21
+powerpc                          allyesconfig    clang-16
+powerpc                      cm5200_defconfig    clang-21
+powerpc               mpc834x_itxgp_defconfig    clang-21
+powerpc                      pcm030_defconfig    clang-21
+powerpc               randconfig-001-20250211    clang-15
+powerpc               randconfig-001-20250212    clang-21
+powerpc               randconfig-002-20250211    clang-21
+powerpc               randconfig-002-20250212    clang-21
+powerpc               randconfig-003-20250211    clang-19
+powerpc               randconfig-003-20250212    clang-21
+powerpc                        warp_defconfig    clang-21
+powerpc64             randconfig-001-20250211    clang-21
+powerpc64             randconfig-001-20250212    clang-21
+powerpc64             randconfig-002-20250211    gcc-14.2.0
+powerpc64             randconfig-002-20250212    clang-21
+powerpc64             randconfig-003-20250211    clang-17
+powerpc64             randconfig-003-20250212    clang-21
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    clang-21
+riscv                            allyesconfig    clang-21
+riscv                               defconfig    gcc-12
+riscv                 randconfig-001-20250211    gcc-14.2.0
+riscv                 randconfig-001-20250212    gcc-12
+riscv                 randconfig-002-20250211    clang-19
+riscv                 randconfig-002-20250212    gcc-12
+s390                             alldefconfig    clang-21
+s390                             allmodconfig    clang-19
+s390                             allmodconfig    gcc-14.2.0
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    gcc-12
+s390                  randconfig-001-20250211    clang-21
+s390                  randconfig-001-20250212    gcc-12
+s390                  randconfig-002-20250211    gcc-14.2.0
+s390                  randconfig-002-20250212    gcc-12
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-12
+sh                    randconfig-001-20250211    gcc-14.2.0
+sh                    randconfig-001-20250212    gcc-12
+sh                    randconfig-002-20250211    gcc-14.2.0
+sh                    randconfig-002-20250212    gcc-12
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250211    gcc-14.2.0
+sparc                 randconfig-001-20250212    gcc-12
+sparc                 randconfig-002-20250211    gcc-14.2.0
+sparc                 randconfig-002-20250212    gcc-12
+sparc64                             defconfig    gcc-12
+sparc64               randconfig-001-20250211    gcc-14.2.0
+sparc64               randconfig-001-20250212    gcc-12
+sparc64               randconfig-002-20250211    gcc-14.2.0
+sparc64               randconfig-002-20250212    gcc-12
+um                               allmodconfig    clang-21
+um                                allnoconfig    clang-21
+um                               allyesconfig    clang-21
+um                               allyesconfig    gcc-12
+um                                  defconfig    gcc-12
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250211    clang-17
+um                    randconfig-001-20250212    gcc-12
+um                    randconfig-002-20250211    clang-15
+um                    randconfig-002-20250212    gcc-12
+um                           x86_64_defconfig    gcc-12
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250211    clang-19
+x86_64      buildonly-randconfig-001-20250212    clang-19
+x86_64      buildonly-randconfig-002-20250211    gcc-12
+x86_64      buildonly-randconfig-002-20250212    clang-19
+x86_64      buildonly-randconfig-003-20250211    clang-19
+x86_64      buildonly-randconfig-003-20250212    clang-19
+x86_64      buildonly-randconfig-004-20250211    gcc-11
+x86_64      buildonly-randconfig-004-20250212    clang-19
+x86_64      buildonly-randconfig-005-20250211    clang-19
+x86_64      buildonly-randconfig-005-20250212    clang-19
+x86_64      buildonly-randconfig-006-20250211    gcc-12
+x86_64      buildonly-randconfig-006-20250212    clang-19
+x86_64                              defconfig    clang-19
+x86_64                              defconfig    gcc-11
+x86_64                randconfig-001-20250212    clang-19
+x86_64                randconfig-002-20250212    clang-19
+x86_64                randconfig-003-20250212    clang-19
+x86_64                randconfig-004-20250212    clang-19
+x86_64                randconfig-005-20250212    clang-19
+x86_64                randconfig-006-20250212    clang-19
+x86_64                randconfig-007-20250212    clang-19
+x86_64                randconfig-008-20250212    clang-19
+x86_64                randconfig-071-20250212    clang-19
+x86_64                randconfig-072-20250212    clang-19
+x86_64                randconfig-073-20250212    clang-19
+x86_64                randconfig-074-20250212    clang-19
+x86_64                randconfig-075-20250212    clang-19
+x86_64                randconfig-076-20250212    clang-19
+x86_64                randconfig-077-20250212    clang-19
+x86_64                randconfig-078-20250212    clang-19
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250211    gcc-14.2.0
+xtensa                randconfig-001-20250212    gcc-12
+xtensa                randconfig-002-20250211    gcc-14.2.0
+xtensa                randconfig-002-20250212    gcc-12
 
-Add a note about calling pci_dev_put() after using this function.
-
-> +struct pci_dev *dpc_process_error(struct pci_dev *pdev)
->   {
->   	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
->   	struct aer_err_info info;
-> +	struct pci_dev *err_dev;
->   
->   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
->   	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
-> @@ -279,6 +286,13 @@ void dpc_process_error(struct pci_dev *pdev)
->   		 "software trigger" :
->   		 "reserved error");
->   
-> +	if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_NFE ||
-> +	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_FE)
-> +		err_dev = pci_get_domain_bus_and_slot(pci_domain_nr(pdev->bus),
-> +					    PCI_BUS_NUM(source), source & 0xff);
-> +	else
-> +		err_dev = pci_dev_get(pdev);
-> +
->   	/* show RP PIO error detail information */
->   	if (pdev->dpc_rp_extensions &&
->   	    reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_IN_EXT &&
-> @@ -291,6 +305,8 @@ void dpc_process_error(struct pci_dev *pdev)
->   		pci_aer_clear_nonfatal_status(pdev);
->   		pci_aer_clear_fatal_status(pdev);
->   	}
-> +
-> +	return err_dev;
->   }
->   
->   static void pci_clear_surpdn_errors(struct pci_dev *pdev)
-> @@ -346,7 +362,7 @@ static bool dpc_is_surprise_removal(struct pci_dev *pdev)
->   
->   static irqreturn_t dpc_handler(int irq, void *context)
->   {
-> -	struct pci_dev *err_port = context;
-> +	struct pci_dev *err_port = context, *err_dev;
->   
->   	/*
->   	 * According to PCIe r6.0 sec 6.7.6, errors are an expected side effect
-> @@ -357,10 +373,11 @@ static irqreturn_t dpc_handler(int irq, void *context)
->   		return IRQ_HANDLED;
->   	}
->   
-> -	dpc_process_error(err_port);
-> +	err_dev = dpc_process_error(err_port);
->   
->   	/* We configure DPC so it only triggers on ERR_FATAL */
-> -	pcie_do_recovery(err_port, pci_channel_io_frozen, dpc_reset_link);
-> +	pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
-> +	pci_dev_put(err_dev);
->   
->   	return IRQ_HANDLED;
->   }
-> diff --git a/drivers/pci/pcie/edr.c b/drivers/pci/pcie/edr.c
-> index 521fca2f40cb..088f3e188f54 100644
-> --- a/drivers/pci/pcie/edr.c
-> +++ b/drivers/pci/pcie/edr.c
-> @@ -150,7 +150,7 @@ static int acpi_send_edr_status(struct pci_dev *pdev, struct pci_dev *edev,
->   
->   static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->   {
-> -	struct pci_dev *pdev = data, *err_port;
-> +	struct pci_dev *pdev = data, *err_port, *err_dev;
->   	pci_ers_result_t estate = PCI_ERS_RESULT_DISCONNECT;
->   	u16 status;
->   
-> @@ -190,7 +190,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->   		goto send_ost;
->   	}
->   
-> -	dpc_process_error(err_port);
-> +	err_dev = dpc_process_error(err_port);
->   	pci_aer_raw_clear_status(err_port);
->   
->   	/*
-> @@ -198,7 +198,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->   	 * or ERR_NONFATAL, since the link is already down, use the FATAL
->   	 * error recovery path for both cases.
->   	 */
-> -	estate = pcie_do_recovery(err_port, pci_channel_io_frozen, dpc_reset_link);
-> +	estate = pcie_do_recovery(err_dev, pci_channel_io_frozen, dpc_reset_link);
->   
->   send_ost:
->   
-> @@ -216,6 +216,7 @@ static void edr_handle_event(acpi_handle handle, u32 event, void *data)
->   	}
->   
->   	pci_dev_put(err_port);
-> +	pci_dev_put(err_dev);
->   }
->   
->   void pci_acpi_add_edr_notifier(struct pci_dev *pdev)
-
--- 
-Sathyanarayanan Kuppuswamy
-Linux Kernel Developer
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
