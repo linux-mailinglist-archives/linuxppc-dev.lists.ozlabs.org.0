@@ -1,84 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-6139-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6140-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30DF5A33000
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 20:44:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD106A3317B
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 22:29:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YtTKt6WVSz30Vy;
-	Thu, 13 Feb 2025 06:44:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YtWfL2fXdz2y8P;
+	Thu, 13 Feb 2025 08:29:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739389490;
-	cv=none; b=X3vFs/KzKi6fGAoapvlL+TBTU+N8zAyGdl1sdGYDc3TIhFRCKkqcvHxikCoht5Lu3nxtlo8ehu3AEBhIGFonn08XTzJcu8CQBFVcCaapA7gvBnRC5G/S67wpZ5h7Hz3+ERAfQaKnunkckzsE+Qmxcpt4na3n2VZlPKWONw1/J/JTd786gRu63AH6Fu6jlvWeDeCEM/UCVZe6PVbLCQSwQCmJNapSsGo58YwKaxL0nIIW5XCVwJ+3E1HCcLoKiwPIpZbWldMG9ppFl8av6j6QeSsnXcB5jc7gAZtCf+jQiBd83YATTkc6PJgAQVEre9BwJuHG02jQpOPkx9bJCGU2zQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739395754;
+	cv=none; b=He4RHLvUE5I7KFoXutkYpPzkOjjzvXkO/jv1wBfa9FHmVw3L3gp9lLp36zk7SecYSL2pwcmHL5cSKXWd6yav3c+tpn8jL35vA5NSSfanK7IRLGYh8dPsPJpKBws6Cvx53Jhjty1deLexjU1jLXVndRy9OZO1axWnUS2sdv6vvSoEerklRTaYKopekjsQvS4/zDILz2KbrjXibR8Ikj2C79f4Xbvuf4FFcY6Qt9mlYYF4u5gxQeETupKHn35pOw5KWtpNxphVFrxpDoRUKA6AAQpLEyL4YYZ+F4sUhKvOGntgLWoq0iQeiWY6WxjJrPzo4skJbVyFV7Jw90Cvfw16Fg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739389490; c=relaxed/relaxed;
-	bh=83/Mgh6UZ9LltSajtzxUEMRb7ehXx9tIQoYSPxwJYCs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Olo6GWRvfHOgbC5US3J6LMC5cgj6CAHAIMDFviNSmm2KFnEfx4ndy0w8ETSaYtKZl3r+r64VGqTj1E6nNbWeAjzZYYlSb6FFu5r8NLqUAMMKFjxFwFq0/18FnSNL3RQugo6o5zLhhYqECJ8d5o/bq7xphuYlpJsI+4RJA5gat2FtpwHZ6JfACuuopUC+0DPV3EIW8krD3UtaJg9SFb81XWHo9wbuMsUcT8Su3+A6HNMyDHvLrtWK6zSZ+3MOcrkP/pGrtf3yF1zm/ZndYQ5/X7vgg98NjSVB3JP14YtkSk4MB+7Zu30PrF9zUm3DY5RPTTgZKk8KUIIYBZDBPNIoqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Oj8s8rQe; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1739395754; c=relaxed/relaxed;
+	bh=K+9dSbgU9McR8AFKLVmlCnxR0A7iHdMke/X+gv/pY4k=;
+	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=JNgnyFo0y55/2+9EALhhw9bwsZqE51K15JLTox9TgrHwHoaHAc3+V9ZhkDKCj5Rb/SNd4nKC2MemR3RRSyaWHlVUN90No3yunDPDvUU8wh2lWWomMRpfvVeKuDj1kfJ/ECp8fD3V5ECelSvbf5fxlRmwAA2FjmFwtZ7IuawcLIYF9U6hJph2J64ffOrXD8T0yiKVxQaS2NaUu5ly6wDWRzQTTdOmTCVm7UjSok49yc5PmgBmajhp1CDRv9u/5QradkeWDT9UYd8HFzYWqpvSS0oA3Dt8WavaZI/zHoGqf64A/SGGGCRccI4fuRWRm0JQcCURz2s7hK8Mm0ZfhAFrnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=g25Zma8j; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Oj8s8rQe;
+	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=g25Zma8j;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtTKt2F0Jz30VJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 06:44:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtWfK0bZsz2xsd
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 08:29:12 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E4B5DA419C9;
-	Wed, 12 Feb 2025 19:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F4DC4CEDF;
-	Wed, 12 Feb 2025 19:44:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739389488;
-	bh=H2RGuJeh4p3PZLsKQKPNVcfG0Duy/0Y8WKyJ2Dp59WE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Oj8s8rQeyXI3HiYI0OHJHEumwjJXAFZetGXjJbiY2MBZzopmcHcKUK4kieSry0099
-	 qNx36t4mGK0OktWld9GOqZAbfj+DEYDz5hjoqokREJb1aTsdxd+D0cVUSAKj2jXwkb
-	 3Ikh8NfPF3xHwGEocZ2HwUUIauob/u7P6UYBy23gs43d4HX61Yu4L6kDfSazoHUPX9
-	 dknlKOu2PHYVpYSotcaWJoEHB3rHjT04kQpWWayQrdoJJH64ADn0YGdfCxkDeRfeU/
-	 NPBkKJBcXimLXoqBff+yziV//iNuFWxTlue95EVOH+6rBchwDwEvGyXEivB6zAwq2j
-	 5BkKP+eNC7jZg==
-Date: Wed, 12 Feb 2025 13:44:46 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
-Cc: Guenter Roeck <linux@roeck-us.net>, linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	=?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.neuschaefer@gmx.net>,
-	Mark Brown <broonie@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>,
-	linux-watchdog@vger.kernel.org,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-spi@vger.kernel.org, Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>, imx@lists.linux.dev,
-	linux-ide@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
-	Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	linux-mtd@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	dmaengine@vger.kernel.org, Scott Wood <oss@buserror.net>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Niklas Cassel <cassel@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Richard Weinberger <richard@nod.at>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: Re: [PATCH v2 10/12] dt-bindings: memory-controllers: Add
- fsl,elbc-gpcm-uio
-Message-ID: <173938948613.128569.16012047906715128997.robh@kernel.org>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-10-8137b0c42526@posteo.net>
+	by dfw.source.kernel.org (Postfix) with ESMTP id 624265C623C;
+	Wed, 12 Feb 2025 21:28:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A0BC4CEDF;
+	Wed, 12 Feb 2025 21:29:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1739395747;
+	bh=FNuraFRyLvUDzNAGJQHElNh8dikm+1tZHhcNvHqnA6I=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=g25Zma8jRSe+HcXS14/PzbDN2QKhvyGISAuzT2nTIcyi0tzAmRIiqNVvrNFgRTdFY
+	 7uSES7p8xqHyJhu1dnWAgQ66RboNYCKaRWkv7q9b9WRZV8cvb4OZZ1PAnjokgIQ+jB
+	 A9e3YOA0hMF/EY4DR8hYmGquvFcPFjAowGvJdhHY=
+Date: Wed, 12 Feb 2025 13:29:06 -0800
+From: Andrew Morton <akpm@linux-foundation.org>
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Yury Khrustalev <yury.khrustalev@arm.com>, Arnd Bergmann
+ <arnd@arndb.de>, linux-arch@vger.kernel.org, Kevin Brodsky
+ <kevin.brodsky@arm.com>, Joey Gouly <joey.gouly@arm.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Sandipan Das <sandipan@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+ linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
+ linux-kselftest@vger.kernel.org, nd@arm.com
+Subject: Re: [RESEND v4 0/3] mm/pkey: Add PKEY_UNRESTRICTED macro
+Message-Id: <20250212132906.fdf85ea62b3672cfc1115c09@linux-foundation.org>
+In-Reply-To: <Z6zZanGRGd15770_@arm.com>
+References: <20250113170619.484698-1-yury.khrustalev@arm.com>
+	<Z6zZanGRGd15770_@arm.com>
+X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,34 +67,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250207-ppcyaml-v2-10-8137b0c42526@posteo.net>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-6.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Wed, 12 Feb 2025 17:24:58 +0000 Catalin Marinas <catalin.marinas@arm.com> wrote:
 
-On Fri, 07 Feb 2025 22:30:27 +0100, J. Neuschäfer wrote:
-> Formalize the binding already supported by the uio_fsl_elbc_gpcm.c
-> driver.
+> On Mon, Jan 13, 2025 at 05:06:16PM +0000, Yury Khrustalev wrote:
+> > Add PKEY_UNRESTRICTED macro to mman.h and use it in selftests.
+> > 
+> > For context, this change will also allow for more consistent update of the
+> > Glibc manual which in turn will help with introducing memory protection
+> > keys on AArch64 targets.
+> [...]
+> > Yury Khrustalev (3):
+> >   mm/pkey: Add PKEY_UNRESTRICTED macro
+> >   selftests/mm: Use PKEY_UNRESTRICTED macro
+> >   selftests/powerpc: Use PKEY_UNRESTRICTED macro
+> > 
+> >  include/uapi/asm-generic/mman-common.h               | 1 +
+> >  tools/testing/selftests/mm/mseal_test.c              | 6 +++---
+> >  tools/testing/selftests/mm/pkey-helpers.h            | 3 ++-
+> >  tools/testing/selftests/mm/pkey_sighandler_tests.c   | 4 ++--
+> >  tools/testing/selftests/mm/protection_keys.c         | 2 +-
+> >  tools/testing/selftests/powerpc/include/pkeys.h      | 2 +-
+> >  tools/testing/selftests/powerpc/mm/pkey_exec_prot.c  | 2 +-
+> >  tools/testing/selftests/powerpc/mm/pkey_siginfo.c    | 2 +-
+> >  tools/testing/selftests/powerpc/ptrace/core-pkey.c   | 6 +++---
+> >  tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 6 +++---
+> >  10 files changed, 18 insertions(+), 16 deletions(-)
 > 
-> Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> ---
-> 
-> V2:
-> - split out from fsl,elbc patch
-> - add description
-> - remove "device_type" property
-> - move to bindings/memory-controllers
-> ---
->  .../memory-controllers/fsl,elbc-gpcm-uio.yaml      | 59 ++++++++++++++++++++++
->  1 file changed, 59 insertions(+)
-> 
+> Andrew, Arnd - are you ok if I take these patches through the arm64
+> tree?
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
-
+Sure.
 
