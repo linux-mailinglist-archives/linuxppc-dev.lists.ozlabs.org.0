@@ -1,59 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-6117-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6116-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A92FBA31FE1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 08:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E6BA31F73
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 07:50:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yt8pb0k4Sz2yyD;
-	Wed, 12 Feb 2025 18:20:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yt88Y5l6Yz2yZ6;
+	Wed, 12 Feb 2025 17:50:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739344806;
-	cv=none; b=Avi5uD/iPmyTkRN+VtwCXLCze/8Jjzkxv16peKLXlt0KcwkRqBo5Pk+EtnaTX1a5uvtXe99rhW/id/Ia+4Xo+u8aDSn8RLvuO+8U/u3gK3LTC/sRghJinr/fFCxZFycEn9PGryMmHB5749nEcPKEQCIHlhjyCXT3NeUaPGPF47ukoTcjeq5yEbn5XBtNryRqRNXFjplc34Qt3eb3n+q8gijizyN1e1TqL+ZBpVjdcHcOrsRavkZJQrZjbl6/wpkvRfj1VPJzkIrQkfKXiNuL820xULWSpaATPUO30olCJlxV+4uHxT3Rt3Rf2uBloq5s2XfDLeoWRoYbdyVVh0g6OA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.189
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739343037;
+	cv=none; b=ALoyZv/WPyHh3SX4muBYijAZ5HIW0Qwogz/XMJWl45YrlUq1OojNwZpcu4DX/ysMNGW6t5Vc0dzyLS/4nM8ZjMor8ThlHh5fOM3waltYFpclwfR6WG3wdr+rb0VVc3UQdQo0c0xljvGgCGJMVcSrgZa+9pCkAnmbqaq8GQh8PFvWpF38P/HsPaZkGxRgR2mBT4Hwj+m76sbNOk7Iuyyry6c8N0frGWztSJ4mpKNSDIYOHsTxdZbaXcYG3QBG6T/7qPojyKsbRd5bpqHAAtlclFknd5eYBWM8O4ftZoFawdfq2Dp6tKc4HVj9t9lt0pkM02nDYQ1g57KQejH9fFjjDQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739344806; c=relaxed/relaxed;
-	bh=yqCfJKR5FPGGLyPdfkbYRNp6Rnio57wJ9YxxZh9GbeY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gY+STPKSKBdED7OLYSrubWGZwW9WM5jaLDYq5cebaEt75bh21klNdJZLGQyZKzGzA1rKBjuRlSernHCwrdAuJL6lN+9CUgoEZQZkarVNl3htKFtkfcOzz9RZei5Ig96/mBbPG+KPEvH2pNC0NSwAxqF3rbnNwZ2r14zEQiCbkcX4Sl6EzVz191q1r3twJtJSm9D8ibEjL6EVbDeon8YSqkIfULNyFD6VSSuVdDV3+TC8ijpGfevqvfcLmxxNJvFpbF8u3wVDjBaFs01veOEHn5zIUtwbfwnK6L3Zm5vBHL/Oj0WfOSIpG83W/YRObMRVd7w3iYWw7xsuqmwwXwcWXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yt8pZ0Vq4z2yDD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2025 18:20:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Yt83s13G2z9sPd;
-	Wed, 12 Feb 2025 07:46:33 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 83R2JPrA4XVg; Wed, 12 Feb 2025 07:46:33 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Yt83s02qzz9rvV;
-	Wed, 12 Feb 2025 07:46:33 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E858C8B770;
-	Wed, 12 Feb 2025 07:46:32 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id wzoTdwFsLGnb; Wed, 12 Feb 2025 07:46:32 +0100 (CET)
-Received: from PO20335.idsi0.si.c-s.fr (unknown [10.25.207.138])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id B98A08B763;
-	Wed, 12 Feb 2025 07:46:32 +0100 (CET)
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Naveen N Rao <naveen@kernel.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Erhard Furtner <erhard_f@mailbox.org>
-Subject: [PATCH v2] powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC
-Date: Wed, 12 Feb 2025 07:46:28 +0100
-Message-ID: <06621423da339b374f48c0886e3a5db18e896be8.1739342693.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.47.0
+	t=1739343037; c=relaxed/relaxed;
+	bh=PbupaWyuGqZE+3IXKhAB1BZ69VNF1rhGN9FRRXf03L0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=ICP2YU0OIJauqoXEr2INzKiRnYaI8jApenUa73vLuyIPJ6w1srWtvFWtwz/hzqL+TEn5K5iMxgn5VzSFRX3JBkJwhrPBvUr5JVeDvFU7fighB9fu9i0zO+dJgK+P3NDtVv8AHCtFaytCIVMG+G94lboycxIvtaeYKfZjKl/Liw9E5+Kzn2IZ5+GzlbCHms1o+8fCMY3aNT9Z0T9OkwXyLx987o/wY1H43jVKGuZR66bLHIf5yjyaYTdrmczMZlqG+WLuMA/evqCDzyf6v9E5ireG8tdDUwheZ9lKwBYYMmTU3dJvYIUJV8B7lOyDhwrEqugCBydAT6Uw+C/HK25m4g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=zhangzekun11@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yt88X4CGLz2yDD
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Feb 2025 17:50:34 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Yt8522FTjzRmXD;
+	Wed, 12 Feb 2025 14:47:34 +0800 (CST)
+Received: from kwepemf500003.china.huawei.com (unknown [7.202.181.241])
+	by mail.maildlp.com (Postfix) with ESMTPS id 27CF1140258;
+	Wed, 12 Feb 2025 14:50:27 +0800 (CST)
+Received: from [10.174.176.82] (10.174.176.82) by
+ kwepemf500003.china.huawei.com (7.202.181.241) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 12 Feb 2025 14:50:25 +0800
+Message-ID: <0b195b8c-6c0c-4cf4-bcc4-ed9a5bd9c0ae@huawei.com>
+Date: Wed, 12 Feb 2025 14:50:24 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,112 +48,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739342788; l=4545; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=p3TXOgPutER088kooOwsPkLRYDwyiVT6E7Bu0WF26Tg=; b=ZwrR/v049bSg+M2ge8wLUfGPpag6/zJhkrHc7AVgLBNOGC47fYkLb5AohC9JsPKexXtASgR05 oGd+skniHlgAONLFqL40qWBk9HF5i69maFApz6cE6U4n+X4JbAmaGfs
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/9] net: bcmasp: Add missing of_node_get() before
+ of_find_node_by_name()
+To: Krzysztof Kozlowski <krzk@kernel.org>
+CC: <arm-scmi@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<linux-media@vger.kernel.org>, <netdev@vger.kernel.org>,
+	<devicetree@vger.kernel.org>, <chenjun102@huawei.com>, <robh@kernel.org>,
+	<saravanak@google.com>, <justin.chen@broadcom.com>,
+	<florian.fainelli@broadcom.com>, <andrew+netdev@lunn.ch>, <kuba@kernel.org>,
+	<o.rempel@pengutronix.de>, <kory.maincent@bootlin.com>,
+	<jacopo+renesas@jmondi.org>, <kieran.bingham+renesas@ideasonboard.com>,
+	<laurent.pinchart+renesas@ideasonboard.com>, <maddy@linux.ibm.com>,
+	<mpe@ellerman.id.au>, <npiggin@gmail.com>, <olteanv@gmail.com>,
+	<davem@davemloft.net>, <taras.chornyi@plvision.eu>, <edumazet@google.com>,
+	<pabeni@redhat.com>, <sudeep.holla@arm.com>, <cristian.marussi@arm.com>
+References: <20250207013117.104205-1-zhangzekun11@huawei.com>
+ <20250207013117.104205-3-zhangzekun11@huawei.com>
+ <cb2db0c4-6f3a-4d44-90e5-b37cbe5e66fb@kernel.org>
+From: "zhangzekun (A)" <zhangzekun11@huawei.com>
+In-Reply-To: <cb2db0c4-6f3a-4d44-90e5-b37cbe5e66fb@kernel.org>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Originating-IP: [10.174.176.82]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemf500003.china.huawei.com (7.202.181.241)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Erhard reported the following KASAN hit while booting his PowerMac G4
-with a KASAN-enabled kernel 6.13-rc6:
 
-  BUG: KASAN: vmalloc-out-of-bounds in copy_to_kernel_nofault+0xd8/0x1c8
-  Write of size 8 at addr f1000000 by task chronyd/1293
 
-  CPU: 0 UID: 123 PID: 1293 Comm: chronyd Tainted: G        W          6.13.0-rc6-PMacG4 #2
-  Tainted: [W]=WARN
-  Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
-  Call Trace:
-  [c2437590] [c1631a84] dump_stack_lvl+0x70/0x8c (unreliable)
-  [c24375b0] [c0504998] print_report+0xdc/0x504
-  [c2437610] [c050475c] kasan_report+0xf8/0x108
-  [c2437690] [c0505a3c] kasan_check_range+0x24/0x18c
-  [c24376a0] [c03fb5e4] copy_to_kernel_nofault+0xd8/0x1c8
-  [c24376c0] [c004c014] patch_instructions+0x15c/0x16c
-  [c2437710] [c00731a8] bpf_arch_text_copy+0x60/0x7c
-  [c2437730] [c0281168] bpf_jit_binary_pack_finalize+0x50/0xac
-  [c2437750] [c0073cf4] bpf_int_jit_compile+0xb30/0xdec
-  [c2437880] [c0280394] bpf_prog_select_runtime+0x15c/0x478
-  [c24378d0] [c1263428] bpf_prepare_filter+0xbf8/0xc14
-  [c2437990] [c12677ec] bpf_prog_create_from_user+0x258/0x2b4
-  [c24379d0] [c027111c] do_seccomp+0x3dc/0x1890
-  [c2437ac0] [c001d8e0] system_call_exception+0x2dc/0x420
-  [c2437f30] [c00281ac] ret_from_syscall+0x0/0x2c
-  --- interrupt: c00 at 0x5a1274
-  NIP:  005a1274 LR: 006a3b3c CTR: 005296c8
-  REGS: c2437f40 TRAP: 0c00   Tainted: G        W           (6.13.0-rc6-PMacG4)
-  MSR:  0200f932 <VEC,EE,PR,FP,ME,IR,DR,RI>  CR: 24004422  XER: 00000000
+在 2025/2/12 13:52, Krzysztof Kozlowski 写道:
+> On 07/02/2025 02:31, Zhang Zekun wrote:
+>> of_find_node_by_name() will decrease the refcount of the device_node.
+>> So, get the device_node before passing to it.
+>>
+>> Fixes: 490cb412007d ("net: bcmasp: Add support for ASP2.0 Ethernet controller")
+>> Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+>> ---
+>>   drivers/net/ethernet/broadcom/asp2/bcmasp.c | 2 +-
+>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/net/ethernet/broadcom/asp2/bcmasp.c b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+>> index a68fab1b05f0..093c8ea72af9 100644
+>> --- a/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+>> +++ b/drivers/net/ethernet/broadcom/asp2/bcmasp.c
+>> @@ -1367,7 +1367,7 @@ static int bcmasp_probe(struct platform_device *pdev)
+>>   	bcmasp_core_init(priv);
+>>   	bcmasp_core_init_filters(priv);
+>>   
+>> -	ports_node = of_find_node_by_name(dev->of_node, "ethernet-ports");
+>> +	ports_node = of_find_node_by_name_balanced(dev->of_node, "ethernet-ports");
+> 
+> Why this cannot be of_get_child_by_name()?
+> 
+> Best regards,
+> Krzysztof
 
-  GPR00: 00000166 af8f3fa0 a7ee3540 00000001 00000000 013b6500 005a5858 0200f932
-  GPR08: 00000000 00001fe9 013d5fc8 005296c8 2822244c 00b2fcd8 00000000 af8f4b57
-  GPR16: 00000000 00000001 00000000 00000000 00000000 00000001 00000000 00000002
-  GPR24: 00afdbb0 00000000 00000000 00000000 006e0004 013ce060 006e7c1c 00000001
-  NIP [005a1274] 0x5a1274
-  LR [006a3b3c] 0x6a3b3c
-  --- interrupt: c00
+Thanks for point out. After looking into 
+Documentation/devicetree/bindings/net/brcm,asp-v2.0.yaml, it should be 
+of_get_child_by_name().
 
-  The buggy address belongs to the virtual mapping at
-   [f1000000, f1002000) created by:
-   text_area_cpu_up+0x20/0x190
-
-  The buggy address belongs to the physical page:
-  page: refcount:1 mapcount:0 mapping:00000000 index:0x0 pfn:0x76e30
-  flags: 0x80000000(zone=2)
-  raw: 80000000 00000000 00000122 00000000 00000000 00000000 ffffffff 00000001
-  raw: 00000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   f0ffff00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-   f0ffff80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-  >f1000000: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-             ^
-   f1000080: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-   f1000100: f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8 f8
-  ==================================================================
-
-f8 corresponds to KASAN_VMALLOC_INVALID which means the area is not
-initialised hence not supposed to be used yet.
-
-Powerpc text patching infrastructure allocates a virtual memory area
-using get_vm_area() and flags it as VM_ALLOC. But that flag is meant
-to be used for vmalloc() and vmalloc() allocated memory is not
-supposed to be used before a call to __vmalloc_node_range() which is
-never called for that area.
-
-That went undetected until commit e4137f08816b ("mm, kasan, kmsan:
-instrument copy_from/to_kernel_nofault")
-
-The area allocated by text_area_cpu_up() is not vmalloc memory, it is
-mapped directly on demand when needed by map_kernel_page(). There is
-no VM flag corresponding to such usage, so just pass no flag. That way
-the area will be unpoisonned and usable immediately.
-
-Reported-by: Erhard Furtner <erhard_f@mailbox.org>
-Closes: https://lore.kernel.org/all/20250112135832.57c92322@yea/
-Fixes: 37bc3e5fd764 ("powerpc/lib/code-patching: Use alternate map for patch_instruction()")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-v2: Reformated commit message to avoid git dropping away everything after --- interrupt: c00
----
- arch/powerpc/lib/code-patching.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/powerpc/lib/code-patching.c b/arch/powerpc/lib/code-patching.c
-index 81c0f673eb25..f84e0337cc02 100644
---- a/arch/powerpc/lib/code-patching.c
-+++ b/arch/powerpc/lib/code-patching.c
-@@ -108,7 +108,7 @@ static int text_area_cpu_up(unsigned int cpu)
- 	unsigned long addr;
- 	int err;
- 
--	area = get_vm_area(PAGE_SIZE, VM_ALLOC);
-+	area = get_vm_area(PAGE_SIZE, 0);
- 	if (!area) {
- 		WARN_ONCE(1, "Failed to create text area for cpu %d\n",
- 			cpu);
--- 
-2.47.0
-
+Best regards,
+Zekun
 
