@@ -1,50 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-6124-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6125-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0979A32747
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 14:41:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AE11CA32749
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 14:41:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YtKGk2sTXz30Sv;
-	Thu, 13 Feb 2025 00:41:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YtKGq6q5Mz30Tc;
+	Thu, 13 Feb 2025 00:41:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739367694;
-	cv=none; b=UG21j6IAFyUdrhdE+XfXnA1WC7JcjqVeKIijR1ipSf4XQBHlY0uVoGPwCXEoDXhMPPvqaLEN6YycoA4pG3pLW8bBwPM6Ch89bI+BkODwPrBtMNsebDH+oNS3BtoPPy6kKUy+v3u29DbkaqJ4hTIAPexWyxDhsklchRcG/Gw1xTBxDbLsfzGDcp+LnDFChP2QvohsaQUFSnBa7bW3o1MnbOB8cdrZOOoo4xZtq2Vh21q+NTzVAsl7p4FSxwYcn//7FR73GfyjK2kaDpbouGERdYTG4Bw+m7lGfK/r9LIm0VPNpkOHqxrwxOK+GLAfAlLEv0Jq0WwQxw76LgU0WmHpWg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739367699;
+	cv=none; b=VBcsMhhOfcVtPAHTcCaKcLOeDpe4K5ixShtIwL33u2xjmNRstm9pfwWCTIHgDwJiNToOTUgBVc7HNScrsrWTQFBFFECkvW4C3Oq1bhI5bWPWtrShsRDKuyJKQLxO04Z5e/cO/hrQvFvvBslFDmLOCjCMwMhi7UdD9r3xZXoIcZoJ+AAI7cHqGQwRciMRu7jNVFR6gzjx5bvaCw7deMeU6/rkRIIgyW4jtmCHbzx5stWQXlnKG+Acu81Y5RfUeIYIZY6WF5ZmP3cWC0kizdkU+LHFx3lUZR8jxnswRc3/Vtuu8iePyT+j/C4bKubB68Xmxh7nOhmqdsdm3edQKlBwMA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739367694; c=relaxed/relaxed;
-	bh=OU+UqgFUofUTOtXAzuk6bHRPWf7inSpKnIXv852XwE4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=of9HDD1IpzXGXKO1rB8tTbncJUYhwvIPwt9sef5mbi6MzHYfe+JWZc831aor143i2d7FJep9CC3Wf9ThjVrpriquxCHfTxUtiMgHAdAM6e1bzg3Jen16yZYi2x9O+GTnCJRK1C7kWxMb2LItr7KYhjWsho6KR6hriG0D/yt3k4WarZAiThfgNhtpHrzAMifA4gcbfaTdXPzn5U+rLokfSK/+Spt2YD0LllzC/0IuBEes6TraGHBkUXA/Em5Nt4G6H5KyNACaQ05bNqbvp8LzxykUz48rog0B1zRkDC+ZymsdmbPMOZl4DZKlsJSO9aqci8FPMkLlcH7Vv0malrAvAg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=alexandru.elisei@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YtKGj1Qqrz3028
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 00:41:31 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8F53A12FC;
-	Wed, 12 Feb 2025 05:41:20 -0800 (PST)
-Received: from arm.com (e134078.arm.com [10.1.26.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 47B593F58B;
-	Wed, 12 Feb 2025 05:40:55 -0800 (PST)
-Date: Wed, 12 Feb 2025 13:40:51 +0000
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Andrew Jones <andrew.jones@linux.dev>
-Cc: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com,
-	frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com,
-	david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-	will@kernel.org, julien.thierry.kdev@gmail.com, maz@kernel.org,
-	oliver.upton@linux.dev, suzuki.poulose@arm.com,
-	yuzenghui@huawei.com, joey.gouly@arm.com, andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 04/18] run_tests: Introduce unittest
- parameter 'qemu_params'
-Message-ID: <Z6yk48JpsYKHwFye@arm.com>
-References: <20250120164316.31473-1-alexandru.elisei@arm.com>
- <20250120164316.31473-5-alexandru.elisei@arm.com>
- <20250121-82874afe4e52c828d21e7da2@orel>
+	t=1739367699; c=relaxed/relaxed;
+	bh=3UThOL2xYE+zlzWKKbLr4gFZbbNJ4JtHESm/nz/q22I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AcYv/KI4+X9GZCg8Ffgpn/3Udo3UQdIrfuP3QB1xWQ+ZW1IT4dJZliqZeqH9fHWe3WXeP6aqhauegWIxwEhZfe1zyzEyisstwQHOxFC3qkR1zmDK8RiL2BMmFEbRxsMiKG836wmQTKsbjVdqZZJdwSVQlL1gP+bYWWnAYfsQQanUfMjtCkkyXSnuIt2OqU+UsvjgB1w+og6qTLb5oyCrbPnsTARwuD6HYpG0b30cZGtweZ1Mg1DIjW0dCcvCUatSdUnXPkWN25tJGo5zEdw6RrETpeQVPeL8MSr8mvWoth0V6ju5tadQyrDC991UmHsSCuubC+KSRJWC/5CYoPJ+zw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ClgnAgOZ; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=SBDRBFY+; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ClgnAgOZ;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=SBDRBFY+;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=bigeasy@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtKGp4T3vz3028
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 00:41:38 +1100 (AEDT)
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739367692;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3UThOL2xYE+zlzWKKbLr4gFZbbNJ4JtHESm/nz/q22I=;
+	b=ClgnAgOZluayAnyB1UFLyha7NkY/8Mup3O1sS5jxHsgEgI+EXcNWVNEFnTW8ipslVJ9V4g
+	sez1j6BHSwZ03MAQ9291zpHbgPOhlY0WLGjHepKEi/H5N5XjPLM9eL7D/fl34VKk6MRYcE
+	IixQeOXYjmcR1aq8AqmDWkpbZIQ4qU7z5/+0TtHHtApqe0CDiEfnliWHiNtuojj+gTMFOZ
+	84aCeUpDVvs8EJDUEciHgTZNTQtgBznqoVXriqqzNMu8haecIZUyjESCQno5DR6ceVmPzP
+	NEhCd/Dtk5OJk6/VryLR1LemY2WHDUPlVwPCf967NhfY7tMgI2ftWcBXswVUQg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739367692;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3UThOL2xYE+zlzWKKbLr4gFZbbNJ4JtHESm/nz/q22I=;
+	b=SBDRBFY+144Mej09EoKLZ3XsRcwvkY47/cRyDcOBUWC8W36fRvd+UQGzh6/eCyHkEKe5X0
+	Py4nbbrIcdpEKgBg==
+To: linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev
+Cc: Ben Segall <bsegall@google.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Shrikanth Hegde <sshegde@linux.ibm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Will Deacon <will@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 5/9] powerpc: Rely on generic printing of preemption model.
+Date: Wed, 12 Feb 2025 14:41:11 +0100
+Message-ID: <20250212134115.2583667-6-bigeasy@linutronix.de>
+In-Reply-To: <20250212134115.2583667-1-bigeasy@linutronix.de>
+References: <20250212134115.2583667-1-bigeasy@linutronix.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,222 +90,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250121-82874afe4e52c828d21e7da2@orel>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Drew,
+After the first printk in __die() there is show_regs() ->
+show_regs_print_info() which prints the current
+preemption model.
 
-On Tue, Jan 21, 2025 at 04:46:24PM +0100, Andrew Jones wrote:
-> On Mon, Jan 20, 2025 at 04:43:02PM +0000, Alexandru Elisei wrote:
-> > Tests for the arm and arm64 architectures can also be run with kvmtool, and
-> > work is under way to have it supported by the run_tests.sh test runner. Not
-> > suprisingly, kvmtool has a different syntax than qemu when configuring and
-> > running a virtual machine.
-> > 
-> > Add a new unittest parameter, 'qemu_params', with the goal to add a similar
-> > parameter for each virtual machine manager that run_tests.sh supports.
-> > 
-> > 'qemu_params' and 'extra_params' are interchangeable, but it is expected
-> > that going forward new tests will use 'qemu_params'. A test should have
-> > only one of the two parameters.
-> > 
-> > While we're at it, rename the variable opts to qemu_opts to match the new
-> > unit configuration name, and to make it easier to distinguish from the
-> > kvmtool parameters when they'll be added.
-> > 
-> > Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
-> > ---
-> >  docs/unittests.txt   | 17 +++++++++-----
-> >  scripts/common.bash  | 53 ++++++++++++++++++++++++++------------------
-> >  scripts/runtime.bash | 10 ++++-----
-> >  3 files changed, 47 insertions(+), 33 deletions(-)
-> > 
-> > diff --git a/docs/unittests.txt b/docs/unittests.txt
-> > index dbc2c11e3b59..3e1a9e563016 100644
-> > --- a/docs/unittests.txt
-> > +++ b/docs/unittests.txt
-> > @@ -24,9 +24,9 @@ param = value format.
-> >  
-> >  Available parameters
-> >  ====================
-> > -Note! Some parameters like smp and extra_params modify how a test is run,
-> > -while others like arch and accel restrict the configurations in which the
-> > -test is run.
-> > +Note! Some parameters like smp and qemu_params/extra_params modify how a
-> > +test is run, while others like arch and accel restrict the configurations
-> > +in which the test is run.
-> >  
-> >  file
-> >  ----
-> > @@ -56,13 +56,18 @@ smp = <number>
-> >  Optional, the number of processors created in the machine to run the test.
-> >  Defaults to 1. $MAX_SMP can be used to specify the maximum supported.
-> >  
-> > -extra_params
-> > -------------
-> > +qemu_params
-> > +-----------
-> >  These are extra parameters supplied to the QEMU process. -append '...' can
-> >  be used to pass arguments into the test case argv. Multiple parameters can
-> >  be added, for example:
-> >  
-> > -extra_params = -m 256 -append 'smp=2'
-> > +qemu_params = -m 256 -append 'smp=2'
-> > +
-> > +extra_params
-> > +------------
-> > +Alias for 'qemu_params', supported for compatibility purposes. Use
-> > +'qemu_params' for new tests.
-> >  
-> >  groups
-> >  ------
-> > diff --git a/scripts/common.bash b/scripts/common.bash
-> > index 3aa557c8c03d..a40c28121b6a 100644
-> > --- a/scripts/common.bash
-> > +++ b/scripts/common.bash
-> > @@ -1,5 +1,28 @@
-> >  source config.mak
-> >  
-> > +function parse_opts()
-> > +{
-> > +	local opts="$1"
-> > +	local fd="$2"
-> > +
-> > +	while read -r -u $fd; do
-> > +		#escape backslash newline, but not double backslash
-> > +		if [[ $opts =~ [^\\]*(\\*)$'\n'$ ]]; then
-> > +			if (( ${#BASH_REMATCH[1]} % 2 == 1 )); then
-> > +				opts=${opts%\\$'\n'}
-> > +			fi
-> > +		fi
-> > +		if [[ "$REPLY" =~ ^(.*)'"""'[:blank:]*$ ]]; then
-> > +			opts+=${BASH_REMATCH[1]}
-> > +			break
-> > +		else
-> > +			opts+=$REPLY$'\n'
-> > +		fi
-> > +	done
-> > +
-> > +	echo "$opts"
-> > +}
-> > +
-> >  function for_each_unittest()
-> >  {
-> >  	local unittests="$1"
-> > @@ -7,7 +30,7 @@ function for_each_unittest()
-> >  	local testname
-> >  	local smp
-> >  	local kernel
-> > -	local opts
-> > +	local qemu_opts
-> >  	local groups
-> >  	local arch
-> >  	local machine
-> > @@ -22,12 +45,12 @@ function for_each_unittest()
-> >  		if [[ "$line" =~ ^\[(.*)\]$ ]]; then
-> >  			rematch=${BASH_REMATCH[1]}
-> >  			if [ -n "${testname}" ]; then
-> > -				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-> > +				$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-> >  			fi
-> >  			testname=$rematch
-> >  			smp=1
-> >  			kernel=""
-> > -			opts=""
-> > +			qemu_opts=""
-> >  			groups=""
-> >  			arch=""
-> >  			machine=""
-> > @@ -38,24 +61,10 @@ function for_each_unittest()
-> >  			kernel=$TEST_DIR/${BASH_REMATCH[1]}
-> >  		elif [[ $line =~ ^smp\ *=\ *(.*)$ ]]; then
-> >  			smp=${BASH_REMATCH[1]}
-> > -		elif [[ $line =~ ^extra_params\ *=\ *'"""'(.*)$ ]]; then
-> > -			opts=${BASH_REMATCH[1]}$'\n'
-> > -			while read -r -u $fd; do
-> > -				#escape backslash newline, but not double backslash
-> > -				if [[ $opts =~ [^\\]*(\\*)$'\n'$ ]]; then
-> > -					if (( ${#BASH_REMATCH[1]} % 2 == 1 )); then
-> > -						opts=${opts%\\$'\n'}
-> > -					fi
-> > -				fi
-> > -				if [[ "$REPLY" =~ ^(.*)'"""'[:blank:]*$ ]]; then
-> > -					opts+=${BASH_REMATCH[1]}
-> > -					break
-> > -				else
-> > -					opts+=$REPLY$'\n'
-> > -				fi
-> > -			done
-> > -		elif [[ $line =~ ^extra_params\ *=\ *(.*)$ ]]; then
-> > -			opts=${BASH_REMATCH[1]}
-> > +		elif [[ $line =~ ^(extra_params|qemu_params)\ *=\ *'"""'(.*)$ ]]; then
-> > +			qemu_opts=$(parse_opts ${BASH_REMATCH[2]}$'\n' $fd)
-> > +		elif [[ $line =~ ^(extra_params|qemu_params)\ *=\ *(.*)$ ]]; then
-> > +			qemu_opts=${BASH_REMATCH[2]}
-> >  		elif [[ $line =~ ^groups\ *=\ *(.*)$ ]]; then
-> >  			groups=${BASH_REMATCH[1]}
-> >  		elif [[ $line =~ ^arch\ *=\ *(.*)$ ]]; then
-> > @@ -71,7 +80,7 @@ function for_each_unittest()
-> >  		fi
-> >  	done
-> >  	if [ -n "${testname}" ]; then
-> > -		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-> > +		$(arch_cmd) "$cmd" "$testname" "$groups" "$smp" "$kernel" "$qemu_opts" "$arch" "$machine" "$check" "$accel" "$timeout"
-> >  	fi
-> >  	exec {fd}<&-
-> >  }
-> > diff --git a/scripts/runtime.bash b/scripts/runtime.bash
-> > index 4b9c7d6b7c39..e5d661684ceb 100644
-> > --- a/scripts/runtime.bash
-> > +++ b/scripts/runtime.bash
-> > @@ -34,7 +34,7 @@ premature_failure()
-> >  get_cmdline()
-> >  {
-> >      local kernel=$1
-> > -    echo "TESTNAME=$testname TIMEOUT=$timeout MACHINE=$machine ACCEL=$accel $RUNTIME_arch_run $kernel -smp $smp $opts"
-> > +    echo "TESTNAME=$testname TIMEOUT=$timeout MACHINE=$machine ACCEL=$accel $RUNTIME_arch_run $kernel -smp $smp $qemu_opts"
-> >  }
-> >  
-> >  skip_nodefault()
-> > @@ -80,7 +80,7 @@ function run()
-> >      local groups="$2"
-> >      local smp="$3"
-> >      local kernel="$4"
-> > -    local opts="$5"
-> > +    local qemu_opts="$5"
-> >      local arch="$6"
-> >      local machine="$7"
-> >      local check="${CHECK:-$8}"
-> > @@ -179,9 +179,9 @@ function run()
-> >          echo $cmdline
-> >      fi
-> >  
-> > -    # extra_params in the config file may contain backticks that need to be
-> > -    # expanded, so use eval to start qemu.  Use "> >(foo)" instead of a pipe to
-> > -    # preserve the exit status.
-> > +    # qemu_params/extra_params in the config file may contain backticks that
-> > +    # need to be expanded, so use eval to start qemu.  Use "> >(foo)" instead of
-> > +    # a pipe to preserve the exit status.
-> >      summary=$(eval "$cmdline" 2> >(RUNTIME_log_stderr $testname) \
-> >                               > >(tee >(RUNTIME_log_stdout $testname $kernel) | extract_summary))
-> >      ret=$?
-> > -- 
-> > 2.47.1
-> >
-> 
-> Hmm, I'll keep reading the series, but it seems like we should be choosing
-> generic names like 'extra_params' and 'opts' that we plan to use for both
-> QEMU and kvmtool since they both have the concepts of "options" and "extra
-> params".
+Remove the preempion model from the arch code.
 
-I'm afraid I don't follow you. 'qemu_params' was chosen because it uses
-qemu-specific syntax. Same for 'kvmtool_params', introduced later in the
-series. Are you referring to unittests.cfg or to something else?
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ arch/powerpc/kernel/traps.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-Thanks,
-Alex
+diff --git a/arch/powerpc/kernel/traps.c b/arch/powerpc/kernel/traps.c
+index edf5cabe5dfdb..cb8e9357383e9 100644
+--- a/arch/powerpc/kernel/traps.c
++++ b/arch/powerpc/kernel/traps.c
+@@ -263,10 +263,9 @@ static int __die(const char *str, struct pt_regs *regs=
+, long err)
+ {
+ 	printk("Oops: %s, sig: %ld [#%d]\n", str, err, ++die_counter);
+=20
+-	printk("%s PAGE_SIZE=3D%luK%s%s%s%s%s%s %s\n",
++	printk("%s PAGE_SIZE=3D%luK%s %s%s%s%s %s\n",
+ 	       IS_ENABLED(CONFIG_CPU_LITTLE_ENDIAN) ? "LE" : "BE",
+ 	       PAGE_SIZE / 1024, get_mmu_str(),
+-	       IS_ENABLED(CONFIG_PREEMPT) ? " PREEMPT" : "",
+ 	       IS_ENABLED(CONFIG_SMP) ? " SMP" : "",
+ 	       IS_ENABLED(CONFIG_SMP) ? (" NR_CPUS=3D" __stringify(NR_CPUS)) : "",
+ 	       debug_pagealloc_enabled() ? " DEBUG_PAGEALLOC" : "",
+--=20
+2.47.2
+
 
