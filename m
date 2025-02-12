@@ -1,85 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-6138-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6139-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B78CA32FF7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 20:43:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 30DF5A33000
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 20:44:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YtTJm6ckbz30VP;
-	Thu, 13 Feb 2025 06:43:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YtTKt6WVSz30Vy;
+	Thu, 13 Feb 2025 06:44:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739389432;
-	cv=none; b=KrNIka+peg6ZA5zgPdPHV4sW4Yg/3p7TcteDfK5aqA5YwoXS5ZAkyXn93J+0GhnJ7QwPK6Bi0TcrUFw8dhomwTPyCHTBkJU1YVMWmNIOkpk1N0AhW7VOGskPvSItCOSqSFOt45zmI+vXPWCsba+Nb9kyPFKLWshxYtJWjpwG3FdeRy9FMSANg0f/m4yXQp3xWE57sjVY08eg9GqIuzPv0iJFYjXJ/QcS3Q0h8FGz+zLQWg507jDkqPDSnUSusGSsfnLm6FkUNcp858pQfFi3Le+XdyfopuQHCrskDBHLN2BMnXrwTlz2TZMZConshQoOh8a0a+iZH941m3g5NgAdEA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739389490;
+	cv=none; b=X3vFs/KzKi6fGAoapvlL+TBTU+N8zAyGdl1sdGYDc3TIhFRCKkqcvHxikCoht5Lu3nxtlo8ehu3AEBhIGFonn08XTzJcu8CQBFVcCaapA7gvBnRC5G/S67wpZ5h7Hz3+ERAfQaKnunkckzsE+Qmxcpt4na3n2VZlPKWONw1/J/JTd786gRu63AH6Fu6jlvWeDeCEM/UCVZe6PVbLCQSwQCmJNapSsGo58YwKaxL0nIIW5XCVwJ+3E1HCcLoKiwPIpZbWldMG9ppFl8av6j6QeSsnXcB5jc7gAZtCf+jQiBd83YATTkc6PJgAQVEre9BwJuHG02jQpOPkx9bJCGU2zQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739389432; c=relaxed/relaxed;
-	bh=qCAz+yx++DNVS76vwD+Tb4qvtuaUA8QBkgye5L4cl9o=;
+	t=1739389490; c=relaxed/relaxed;
+	bh=83/Mgh6UZ9LltSajtzxUEMRb7ehXx9tIQoYSPxwJYCs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IsNiEz2/Fo2axmBd8THVGBDyhc05jwL4TnF0HOf/LmjmARXUhjOlivZNfMpR1U98E+jqaoJnMqHnRy2eNdrvBnuypdegxi8qM+YzxV+j6LmRwnj+99pHT20txbKyInpz60Zc/vQc3DGehZWanYch4fw2QNcvqJBDA2a6urwKjCVWw7gXMUHH43lK1jdGa9P+4kMiINPStYoVTfeQEAq5vHdoDDWz1/15DT2hyoKgPCrzy8wJ8cPj7FKKQcsEwxgQ9goa28PbH8t/2yLAeavlZUQgBDgBN1YIwpSJHhnsZaWG/6obQ1rjCfYnSvLkvanQ5oO5voCDIHy2QIlOzqxX1w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l3nluVDj; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=Olo6GWRvfHOgbC5US3J6LMC5cgj6CAHAIMDFviNSmm2KFnEfx4ndy0w8ETSaYtKZl3r+r64VGqTj1E6nNbWeAjzZYYlSb6FFu5r8NLqUAMMKFjxFwFq0/18FnSNL3RQugo6o5zLhhYqECJ8d5o/bq7xphuYlpJsI+4RJA5gat2FtpwHZ6JfACuuopUC+0DPV3EIW8krD3UtaJg9SFb81XWHo9wbuMsUcT8Su3+A6HNMyDHvLrtWK6zSZ+3MOcrkP/pGrtf3yF1zm/ZndYQ5/X7vgg98NjSVB3JP14YtkSk4MB+7Zu30PrF9zUm3DY5RPTTgZKk8KUIIYBZDBPNIoqg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Oj8s8rQe; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=l3nluVDj;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Oj8s8rQe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtTJm0bjbz30VJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 06:43:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtTKt2F0Jz30VJ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 06:44:50 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E1179A419C9;
-	Wed, 12 Feb 2025 19:42:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6EEFC4CEDF;
-	Wed, 12 Feb 2025 19:43:48 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id E4B5DA419C9;
+	Wed, 12 Feb 2025 19:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6F4DC4CEDF;
+	Wed, 12 Feb 2025 19:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739389428;
-	bh=J53gut3FCEvv7QNmL9a0iiaxDFCqQSjC2O6Ihu/AJ84=;
+	s=k20201202; t=1739389488;
+	bh=H2RGuJeh4p3PZLsKQKPNVcfG0Duy/0Y8WKyJ2Dp59WE=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=l3nluVDjmkhujiS09PDYmKWR8ZpL1NvZ673ie95nbqovNihUcry7wp4RhxDaIcW4C
-	 WzALgu8RqrEf8AEKXJa1NQN36127tWGpqtfMt+ceF8qkKxFUatwJV8mWOCXDA7c8U6
-	 5c6mvpzQn7EtvSK26FGhsTxvo9nA5pW5qx8gSDuBJ7zl/wl5WF+1A0qzlo/GtstEyq
-	 UpvxdrPQwjDAE3IeNXfcspWaobaAE2jMqkTwrZPDdD8R5k2k0xPPuMTtHZRy6guNwr
-	 J6A5CGOXSwgZePq4BouABSV8KVXF9QiPXKh5Adk1Oyuh6/Hd8f5WNo1Hpr1RY3Eam1
-	 dqgSlb5voTSKg==
-Date: Wed, 12 Feb 2025 13:43:47 -0600
-From: Rob Herring <robh@kernel.org>
+	b=Oj8s8rQeyXI3HiYI0OHJHEumwjJXAFZetGXjJbiY2MBZzopmcHcKUK4kieSry0099
+	 qNx36t4mGK0OktWld9GOqZAbfj+DEYDz5hjoqokREJb1aTsdxd+D0cVUSAKj2jXwkb
+	 3Ikh8NfPF3xHwGEocZ2HwUUIauob/u7P6UYBy23gs43d4HX61Yu4L6kDfSazoHUPX9
+	 dknlKOu2PHYVpYSotcaWJoEHB3rHjT04kQpWWayQrdoJJH64ADn0YGdfCxkDeRfeU/
+	 NPBkKJBcXimLXoqBff+yziV//iNuFWxTlue95EVOH+6rBchwDwEvGyXEivB6zAwq2j
+	 5BkKP+eNC7jZg==
+Date: Wed, 12 Feb 2025 13:44:46 -0600
+From: "Rob Herring (Arm)" <robh@kernel.org>
 To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
-Cc: devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
-	Scott Wood <oss@buserror.net>,
+Cc: Guenter Roeck <linux@roeck-us.net>, linuxppc-dev@lists.ozlabs.org,
 	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	=?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.neuschaefer@gmx.net>,
+	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>, Vinod Koul <vkoul@kernel.org>,
+	linux-watchdog@vger.kernel.org,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
 	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
 	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	devicetree@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-spi@vger.kernel.org, Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>, imx@lists.linux.dev,
+	linux-ide@vger.kernel.org, Vignesh Raghavendra <vigneshr@ti.com>,
+	Lee Jones <lee@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-crypto@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	linux-mtd@lists.infradead.org, Conor Dooley <conor+dt@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	dmaengine@vger.kernel.org, Scott Wood <oss@buserror.net>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Niklas Cassel <cassel@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 08/12] dt-bindings: spi: Convert Freescale SPI
- bindings to YAML
-Message-ID: <20250212194347.GA119448-robh@kernel.org>
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: Re: [PATCH v2 10/12] dt-bindings: memory-controllers: Add
+ fsl,elbc-gpcm-uio
+Message-ID: <173938948613.128569.16012047906715128997.robh@kernel.org>
 References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-8-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-10-8137b0c42526@posteo.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,104 +94,30 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250207-ppcyaml-v2-8-8137b0c42526@posteo.net>
+In-Reply-To: <20250207-ppcyaml-v2-10-8137b0c42526@posteo.net>
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 07, 2025 at 10:30:25PM +0100, J. Neuschäfer wrote:
-> fsl-spi.txt contains the bindings for the fsl,spi and fsl,espi
-> contollers. Convert them to YAML.
+
+On Fri, 07 Feb 2025 22:30:27 +0100, J. Neuschäfer wrote:
+> Formalize the binding already supported by the uio_fsl_elbc_gpcm.c
+> driver.
 > 
 > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 > ---
 > 
 > V2:
-> - add missing end-of-document ("...") markers
-> - add missing constraints to interrupts, fsl,espi-num-chipselects,
->   fsl,csbef and fsl,csaft properties
-> - remove unnecessary type from clock-frequency property
-> - fix property order to comply with dts coding style
+> - split out from fsl,elbc patch
+> - add description
+> - remove "device_type" property
+> - move to bindings/memory-controllers
 > ---
->  .../devicetree/bindings/spi/fsl,espi.yaml          | 64 +++++++++++++++++++
->  Documentation/devicetree/bindings/spi/fsl,spi.yaml | 73 ++++++++++++++++++++++
->  Documentation/devicetree/bindings/spi/fsl-spi.txt  | 62 ------------------
->  3 files changed, 137 insertions(+), 62 deletions(-)
+>  .../memory-controllers/fsl,elbc-gpcm-uio.yaml      | 59 ++++++++++++++++++++++
+>  1 file changed, 59 insertions(+)
 > 
-> diff --git a/Documentation/devicetree/bindings/spi/fsl,espi.yaml b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
-> new file mode 100644
-> index 0000000000000000000000000000000000000000..c504b7957dde39086ef7d7a7550d6169cf5ec407
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/spi/fsl,espi.yaml
-> @@ -0,0 +1,64 @@
-> +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/spi/fsl,espi.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: Freescale eSPI (Enhanced Serial Peripheral Interface) controller
-> +
-> +maintainers:
-> +  - J. Neuschäfer <j.ne@posteo.net>
-> +
-> +properties:
-> +  compatible:
-> +    const: fsl,mpc8536-espi
-> +
-> +  reg:
-> +    maxItems: 1
-> +
-> +  interrupts:
-> +    maxItems: 1
-> +
-> +  fsl,espi-num-chipselects:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    enum: [ 1, 4 ]
-> +    description: The number of the chipselect signals.
-> +
-> +  fsl,csbef:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 15
-> +    description: Chip select assertion time in bits before frame starts
-> +
-> +  fsl,csaft:
-> +    $ref: /schemas/types.yaml#/definitions/uint32
-> +    minimum: 0
-> +    maximum: 15
-> +    description: Chip select negation time in bits after frame ends
-> +
-> +required:
-> +  - compatible
-> +  - reg
-> +  - interrupts
-> +  - fsl,espi-num-chipselects
-> +
-> +allOf:
-> +  - $ref: spi-controller.yaml#
-> +
-> +unevaluatedProperties: false
-> +
-> +examples:
-> +  - |
-> +    spi@110000 {
-> +        compatible = "fsl,mpc8536-espi";
-> +        reg = <0x110000 0x1000>;
-> +        #address-cells = <1>;
-> +        #size-cells = <0>;
-> +        interrupts = <53 0x2>;
-> +        interrupt-parent = <&mpic>;
-
-Drop interrupt-parent. Otherwise,
 
 Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 
-> +        fsl,espi-num-chipselects = <4>;
-> +        fsl,csbef = <1>;
-> +        fsl,csaft = <1>;
-> +    };
-> +
-> +...
 
