@@ -1,47 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-6157-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6158-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE98AA34E1C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2025 19:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B492A350DF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2025 23:05:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yv4Bm4vvcz2yVD;
-	Fri, 14 Feb 2025 05:55:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yv8P709LFz302D;
+	Fri, 14 Feb 2025 09:04:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=18.9.28.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739472944;
-	cv=none; b=ifQ5lvb/dOiBhNMb/q8eodKsqcUKmh1fmB2PGtiMqiFC61UJzDbK+lrdf6zEyW96hlDxR4L/IpfpK5dXcSCMYk1ZEKfSZ/OPPZPNqQZY0wIyCTtQBdK0YZNAr26A/i52m8VMtNGBOriVkgULIZq0VG4mx+Qq97fFZ/PHml1sPpZ4nuGQNzX7NYkkEe6yVHUYTBmtkEEvvPvk8mdISmiHwF9Jowdy2bwXJHBEhCBdJ3zC6D6CHpeszoG5FzXT1PoN473NqGAwh+JEqYxQ6x5qYb0qAL5fDJngxlHZNkqMADHjlQffQcVvJW/X7jCWJlVwPN4hyRZ6tq/325psy6tH6g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739484298;
+	cv=none; b=oiCNIKrJb3pI8DHEHH/RMK7Jd+/w9jMpFLsWfZAPZAqUaeDsYT+e/k7ahtrb9sHJryoSfhnbIz7PSCNn5jkFMNW9FUMwgh6ovNZwLpjFEle6/4DdbeWTUtHB+GlzLVNa7f9ISy4dYToIZ9DPYld6itamb/yb2FlXYKrycOakJ5+QxoZLivU7Uesxm/hCJDEQFM7fJJZpZyn0P5RZF8LFqnxW2fb/qLGuT/PHD4zsIcVISmX8Yo9AG/Lj/Xm2sZfVSQT/xI+dLArkntY6M/DOWP/PGD0dAfvVUsJ4uJFiVy96/Wmq/Az0HJN0F8QpX4U1l+OIgDSnrsk+MEw9/wEtvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739472944; c=relaxed/relaxed;
-	bh=ZdrIpFUACp7gTVtMZNb7YQs5vUA8VkniobVEiwGQ6HA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TUk3C6YolzGNIy5aht7yeBLyAOUu0r1RMlbWiVKqMT/h/cZitoVOFB4gGSK3DDfDosKrfjTIlADMCSexRLytcwziLmTw+ac2Legzzufp6NzlP6jhvj7JyM7i1EagWcdpZIT43PzklEtQ6SkUWW5nG24TP1sNZt3qXWlo1t3gB0JKygmgiDu2U60qpdu0/Nifgi/nYQgIwb4IruCZgBGUqi2I+xjwgfiNhgqqXFgBIvFgsVkRURAmOz7TYlXIarZN/HYa91dsYJSBmHDl+hhvzXFlHEadQB+t7dizcblqVcsXz2ek+nLEkIcFiUj0GerpUBpv1TdVJUZJ4ADtdUjZYg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=mit.edu; spf=pass (client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu; receiver=lists.ozlabs.org) smtp.mailfrom=mit.edu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=mit.edu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mit.edu (client-ip=18.9.28.11; helo=outgoing.mit.edu; envelope-from=tytso@mit.edu; receiver=lists.ozlabs.org)
-X-Greylist: delayed 194 seconds by postgrey-1.37 at boromir; Fri, 14 Feb 2025 05:55:43 AEDT
-Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1739484298; c=relaxed/relaxed;
+	bh=v+qE3P9xh8OokJLUxy2XYJfq8LD2WVNFiQg+lJ9L/1I=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=FPKBrRQzYWx7bA9MWfhlEYvL6IMHAkW5vY19oJirT6TlRIf+yTeTIrBcvhdU9karBUknFyBDtSto0mDQewE0KMfE2LAXR4IYgZw4GQWd0MvmKWjne+LTns8nJIk1m+95NG59QaZGUOcvUAolWuZ6EEOfTA6BVEdR9Yto1xCb9cjTcUeaNRP1FJ6h2FLDXzhTjZO0w1dlCFb+vlImrv7OmvZfFGNdtj5nt1Xi68t8A6a0Y+lYYisxXMmp4g5UJzesN6xSv2LsyB4Oc+xdgi4ShGwz5SWaLRYmnG8hsw3aMAjDx+VuM19nS26IIi4tCOg99vAo+MnucWJrCoHgWR8TbQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=talKcyaI; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=talKcyaI;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yv4Bl3mYgz2yGM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 05:55:42 +1100 (AEDT)
-Received: from cwcc.thunk.org (pool-173-48-82-224.bstnma.fios.verizon.net [173.48.82.224])
-	(authenticated bits=0)
-        (User authenticated as tytso@ATHENA.MIT.EDU)
-	by outgoing.mit.edu (8.14.7/8.12.4) with ESMTP id 51DIqMsE001272
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Feb 2025 13:52:23 -0500
-Received: by cwcc.thunk.org (Postfix, from userid 15806)
-	id 6A78515C0009; Thu, 13 Feb 2025 13:52:22 -0500 (EST)
-Date: Thu, 13 Feb 2025 13:52:22 -0500
-From: "Theodore Ts'o" <tytso@mit.edu>
-To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, fstests@vger.kernel.org
-Subject: Re: [next-20250212] FStests generic/451 on EXT4 FS resulting in
- kernel OOPs
-Message-ID: <20250213185222.GA398915@mit.edu>
-References: <6f43bd29-d72b-4a39-b931-7b1b47c7cc06@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yv8P61XB6z301x
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 09:04:58 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 32FBAA420FE;
+	Thu, 13 Feb 2025 22:03:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA989C4CED1;
+	Thu, 13 Feb 2025 22:04:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739484295;
+	bh=1/WveDm/ekbxB+e2hgWNoswGMfH9BEp6P/yKiJf4W30=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=talKcyaIhuIqjTNEjZE/LJL4lAacjN+SrWguhvlv7aYxpZiEg2znEHLgZvJygvpFk
+	 iaNUgjNYGHyxc1HYl3ewtpvlmNDrHmYlwCqZFXytRQVgxtDPXlHqX5g74W1MzH3PTX
+	 7xNaQCHaSbgPzLovB0fjp/MByTd/XiDzkYBTY6DPh7TdIDmkVz7YL/hRIzOqt7kEnG
+	 Ae6TjTTO0rnZpJE9GK2HYgAKwyf9Wd9hH9bCbWvfAirWeZSRXa1msSZdXCk9TeBmT5
+	 CC4NbHkEb2TqpwY1f8kWK/QLNnToTzUqKGgASD1ZWBEI9AS33rk9N3SXE3cPXIzrpt
+	 PpfdHG9z+E+jg==
+Date: Thu, 13 Feb 2025 16:04:53 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	Karolina Stolarek <karolina.stolarek@oracle.com>,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>
+Subject: Re: [PATCH 3/4] PCI: shpchp: Cleanup logging and debug wrappers
+Message-ID: <20250213220453.GA135512@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,54 +65,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <6f43bd29-d72b-4a39-b931-7b1b47c7cc06@linux.vnet.ibm.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20241216161012.1774-4-ilpo.jarvinen@linux.intel.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Feb 13, 2025 at 11:21:22AM +0530, Venkat Rao Bagalkote wrote:
-> Greetings!!!
+On Mon, Dec 16, 2024 at 06:10:11PM +0200, Ilpo Järvinen wrote:
+> The shpchp hotplug driver defines logging wrappers ctrl_*() and another
+> set of wrappers with generic names which are just duplicates of
+> existing generic printk() wrappers. Only the former are useful to
+> preserve as they handle the controller dereferencing (the latter are
+> also unused).
 > 
-> I am observing kernel OOPs, while running FStests generic/451 on EXT4 with
-> linux-next kernel(next-20250212) on IBM Power Servers.
+> The "shpchp_debug" module parameter is used to enable debug logging.
+> The generic ability to turn on/off debug prints dynamically covers this
+> usecase already so there is no need to module specific debug handling.
+> The ctrl_dbg() wrapper also uses a low-level pci_printk() despite
+> always using KERN_DEBUG level.
 
-I'm running daily spinnner tests on the fs-next branch on the
-linux-next tree, via:
+I think it's great to get rid of the module param.  Can you include
+a hint about how users of shpchp_debug should now enable debug prints?
 
-   gce-xfstests ltm -c ext4/all,xfs/all,btrfs/all,f2fs/all -g auto --repo \
-       https://kernel.googlesource.com/pub/scm/linux/kernel/git/next/linux-next \
-       --watch fs-next
+The one I have in my notes is to set CONFIG_DYNAMIC_DEBUG=y and boot
+with 'dyndbg="file drivers/pci/* +p"'.
 
-The fs-next branch is a subset of linux-next which only has file
-system related branches.  This avoids instability caused by non-fs
-related changes.  I'm not seeing any kernel oops on today's fs-next
-running on an x86 cloud server, using a standardized config.
+> Convert ctrl_dbg() to use the pci_dbg() and remove "shpchp_debug" check
+> from it.
+> 
+> Removing the non-ctrl variants of logging wrappers and "shpchp_debug"
+> module parameter as they are no longer used.
 
-Looking at the kernel stack trace of your report, it appears that a
-linked list used by the workqueue handler (in process_one_work) had
-gotten corrupted.  This could be caused by anything (which is one of
-the reasons why I test using fs-next instead of linux-next; we didn't
-want to spend time debugging problems that aren't under our control).
+> -#define dbg(format, arg...)						\
+> -do {									\
+> -	if (shpchp_debug)						\
+> -		printk(KERN_DEBUG "%s: " format, MY_NAME, ## arg);	\
+> -} while (0)
+> -#define err(format, arg...)						\
+> -	printk(KERN_ERR "%s: " format, MY_NAME, ## arg)
+> -#define info(format, arg...)						\
+> -	printk(KERN_INFO "%s: " format, MY_NAME, ## arg)
+> -#define warn(format, arg...)						\
+> -	printk(KERN_WARNING "%s: " format, MY_NAME, ## arg)
 
-Is this something which you can easily reproduce?  If so, can you try
-seeing if it reproduces on the fs-next branch, and could you try
-bisecting the to find the guilty commit?  If this was something we
-could reproduce in my test infrastructure, the bisection could be
-trivially accomplished via:
+The above are unused, aren't they?  Can we make a separate patch to
+remove these, for ease of describing and reviewing?
 
-   gce-xfstests ltm -c ext4/4k generic/451 --repo linux-next.git \
-      --bisect-bad linux-next --bisect-good v6.14-rc1
-
-... and then wait for an e-mailed report to land in my inbox.   :-)
-
-Can you do something similar using your test infrastructure?
-
-Unfortuantely, given the stack trace, I doubt kernel developers would
-be able to do much more with your report.
-
-Thanks,
-
-					- Ted
+Bjorn
 
