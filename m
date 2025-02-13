@@ -1,61 +1,138 @@
-Return-Path: <linuxppc-dev+bounces-6140-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6141-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD106A3317B
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Feb 2025 22:29:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23489A33427
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2025 01:40:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YtWfL2fXdz2y8P;
-	Thu, 13 Feb 2025 08:29:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YtbvJ4RBHz2xyG;
+	Thu, 13 Feb 2025 11:40:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739395754;
-	cv=none; b=He4RHLvUE5I7KFoXutkYpPzkOjjzvXkO/jv1wBfa9FHmVw3L3gp9lLp36zk7SecYSL2pwcmHL5cSKXWd6yav3c+tpn8jL35vA5NSSfanK7IRLGYh8dPsPJpKBws6Cvx53Jhjty1deLexjU1jLXVndRy9OZO1axWnUS2sdv6vvSoEerklRTaYKopekjsQvS4/zDILz2KbrjXibR8Ikj2C79f4Xbvuf4FFcY6Qt9mlYYF4u5gxQeETupKHn35pOw5KWtpNxphVFrxpDoRUKA6AAQpLEyL4YYZ+F4sUhKvOGntgLWoq0iQeiWY6WxjJrPzo4skJbVyFV7Jw90Cvfw16Fg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739407244;
+	cv=none; b=IUluXtHkBFsNIzxUkfK9pslTHuZb5j1rRcGqZ4Gt6wJc/MRb3emZV6Mc8hKvJs8ZXvktKgIsBtMw68fjvLYOShOiqBrioGvWJnHnEhjYqWb6P/JyFoY8QkwXxsnlDwgmHetPOfiL5umK46N60vgF5OU76iw05ERFkgxlWuqao0sCFahZgyw4XWIZAADcvAvOF7VDEwaLTZGT04KTiQsmR/oScNl7gSegj0mmR9pZLuzn211AyNpo7p9kdt606D9lqzdcfdKR00U45ZcjHYGq3df2GDcOgKzUf02VVNLPxZLX6XGCnqjXk3gcZX/3hIj12K2796BFahCptKMKgwQBvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739395754; c=relaxed/relaxed;
-	bh=K+9dSbgU9McR8AFKLVmlCnxR0A7iHdMke/X+gv/pY4k=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=JNgnyFo0y55/2+9EALhhw9bwsZqE51K15JLTox9TgrHwHoaHAc3+V9ZhkDKCj5Rb/SNd4nKC2MemR3RRSyaWHlVUN90No3yunDPDvUU8wh2lWWomMRpfvVeKuDj1kfJ/ECp8fD3V5ECelSvbf5fxlRmwAA2FjmFwtZ7IuawcLIYF9U6hJph2J64ffOrXD8T0yiKVxQaS2NaUu5ly6wDWRzQTTdOmTCVm7UjSok49yc5PmgBmajhp1CDRv9u/5QradkeWDT9UYd8HFzYWqpvSS0oA3Dt8WavaZI/zHoGqf64A/SGGGCRccI4fuRWRm0JQcCURz2s7hK8Mm0ZfhAFrnw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=g25Zma8j; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1739407244; c=relaxed/relaxed;
+	bh=kvPsauXDyf47SKQKq4L7sX8eCJo/Sjkz/am1Ygpjog8=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Cf9G8t25kbCiO22Ui9jFvjcHZ8XnPz+2cdkNpXLb9+Ym3BXM8EgQMmJbqwgHQbOh/Ofj+Tynd99QBLR+S2YR+iVCZn6fiaUevvALdD0DExe6kpI9MFprIp2BwdS0woTeels3h2BnQ/ID4MJr/Sd4ghnIH+Uk5PT9/6v6ZR3kMEIdAGUl8YGba8XXO5Orx6xh5Nd2wbAZmjSHZAkunemIlVYbsmckgaQVWpA+vPBiNsKRVhA+7J0KCDsXsdJ+Nm797HywcgWeRgU3N04PuhVbLGI9j5WHp93WaKO8JfQYNr8lcMe6r4ZWS/bWnbZ+fFSZ8JcX4uXPh/uyEeY7wbgvZw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UEnWYm6G; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=g25Zma8j;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UEnWYm6G;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtWfK0bZsz2xsd
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 08:29:12 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 624265C623C;
-	Wed, 12 Feb 2025 21:28:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27A0BC4CEDF;
-	Wed, 12 Feb 2025 21:29:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1739395747;
-	bh=FNuraFRyLvUDzNAGJQHElNh8dikm+1tZHhcNvHqnA6I=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=g25Zma8jRSe+HcXS14/PzbDN2QKhvyGISAuzT2nTIcyi0tzAmRIiqNVvrNFgRTdFY
-	 7uSES7p8xqHyJhu1dnWAgQ66RboNYCKaRWkv7q9b9WRZV8cvb4OZZ1PAnjokgIQ+jB
-	 A9e3YOA0hMF/EY4DR8hYmGquvFcPFjAowGvJdhHY=
-Date: Wed, 12 Feb 2025 13:29:06 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Yury Khrustalev <yury.khrustalev@arm.com>, Arnd Bergmann
- <arnd@arndb.de>, linux-arch@vger.kernel.org, Kevin Brodsky
- <kevin.brodsky@arm.com>, Joey Gouly <joey.gouly@arm.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Sandipan Das <sandipan@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org, x86@kernel.org, linux-mm@kvack.org,
- linux-kselftest@vger.kernel.org, nd@arm.com
-Subject: Re: [RESEND v4 0/3] mm/pkey: Add PKEY_UNRESTRICTED macro
-Message-Id: <20250212132906.fdf85ea62b3672cfc1115c09@linux-foundation.org>
-In-Reply-To: <Z6zZanGRGd15770_@arm.com>
-References: <20250113170619.484698-1-yury.khrustalev@arm.com>
-	<Z6zZanGRGd15770_@arm.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtbvH3NpRz2xsW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 11:40:42 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CKG8FP004594;
+	Thu, 13 Feb 2025 00:39:49 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kvPsau
+	XDyf47SKQKq4L7sX8eCJo/Sjkz/am1Ygpjog8=; b=UEnWYm6GywtAWklet8Kgpk
+	ry9C4dDxYoUnjlmbMhR0g8vGlzqt9nrrYlr4pT4ZH/HFnl+aUieYO9JL0FaV0Z2X
+	wgnsvrixboTeC4h3j7FLogqEFZHRQqvix/eL8cCK2Ohx0ukW8Mgs4enLAb/QXKed
+	VHf0IriPmvQU0LL44IJypBnfxnTjiGkgyDoX6VdWGBzB420z/iDMFHPM7E6e13Cj
+	VfefLAUgEiGzBKNAz19wwzO3mdB2I/np6ENZCNvI2pgs8XbKcNCg3/flpn8DJAt/
+	g0RNpy4h0c26wxoO9h3vCnPGRgWEL2uboa5tLC5aq+yuCQ90coVWd+e2UlBVHyxA
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44rhqaefkc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 00:39:48 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51D0Yq7p011254;
+	Thu, 13 Feb 2025 00:39:47 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44rhqaefka-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 00:39:47 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51CNV6bh016749;
+	Thu, 13 Feb 2025 00:39:46 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44pk3kbmxf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 13 Feb 2025 00:39:46 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51D0diJD39125320
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 13 Feb 2025 00:39:44 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2372E20040;
+	Thu, 13 Feb 2025 00:39:44 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9747620043;
+	Thu, 13 Feb 2025 00:39:43 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.63.197.14])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 13 Feb 2025 00:39:43 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (unknown [9.36.5.210])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 0DEA2600D7;
+	Thu, 13 Feb 2025 11:39:26 +1100 (AEDT)
+Message-ID: <835f0504d85398707997b7fe96b4f1a44179ff9a.camel@linux.ibm.com>
+Subject: Re: [PATCH 0/9] Extend automarkup support for ABI symbols
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Bagas Sanjaya
+	 <bagasdotme@gmail.com>
+Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Jonathan Corbet	
+ <corbet@lwn.net>, linux-kernel@vger.kernel.org,
+        "David S. Miller"	
+ <davem@davemloft.net>,
+        Andreas Noever <andreas.noever@gmail.com>,
+        Avadhut
+ Naik	 <avadhut.naik@amd.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Eric Dumazet	 <edumazet@google.com>,
+        Hu Haowen
+ <2023002089@link.tyut.edu.cn>,
+        Lars-Peter Clausen <lars@metafoo.de>,
+        Michael Jamet <michael.jamet@intel.com>,
+        Mika Westerberg	
+ <mika.westerberg@linux.intel.com>,
+        Paolo Abeni <pabeni@redhat.com>, Sean
+ Young	 <sean@mess.org>,
+        Yanteng Si <si.yanteng@linux.dev>,
+        Yehezkel Bernat	
+ <YehezkelShB@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Michael
+ Ellerman	 <mpe@ellerman.id.au>,
+        Shrikanth Hegde <sshegde@linux.ibm.com>,
+        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+        Pawan Gupta
+ <pawan.kumar.gupta@linux.intel.com>,
+        James Morse	 <james.morse@arm.com>,
+        "Nysal Jan K.A" <nysal@linux.ibm.com>,
+        Tom Lendacky	
+ <thomas.lendacky@amd.com>,
+        Sourabh Jain <sourabhjain@linux.ibm.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Frederic Barrat
+ <fbarrat@linux.ibm.com>,
+        Madhavan Srinivasan	 <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy	
+ <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>, linux-arm-kernel@lists.infradead.org,
+        linux-iio@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-usb@vger.kernel.org, netdev@vger.kernel.org,
+        workflows@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Date: Thu, 13 Feb 2025 11:39:20 +1100
+In-Reply-To: <20250212135808.58d2f032@foz.lan>
+References: <cover.1739254867.git.mchehab+huawei@kernel.org>
+		<Z6yFG_NntQfkwYli@archie.me> <20250212135808.58d2f032@foz.lan>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,42 +144,40 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: OZ4Ih_TXKxH9HgohVnb0WeQrzyi138qF
+X-Proofpoint-GUID: _CytR_Qn18YZDyX1vFuvKdYXq73CWqPh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-12_08,2025-02-11_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 mlxscore=0
+ spamscore=0 lowpriorityscore=0 phishscore=0 suspectscore=0 adultscore=0
+ impostorscore=0 bulkscore=0 mlxlogscore=609 priorityscore=1501
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502130002
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 12 Feb 2025 17:24:58 +0000 Catalin Marinas <catalin.marinas@arm.com> wrote:
+On Wed, 2025-02-12 at 13:58 +0100, Mauro Carvalho Chehab wrote:
+> > WARNING: Documentation/ABI/testing/sysfs-class-cxl not found
+>=20
+> I need to double-check verify this one, as it didn't appear on
+> my tests. Are you getting it against docs-next or linux-next?
+>=20
 
-> On Mon, Jan 13, 2025 at 05:06:16PM +0000, Yury Khrustalev wrote:
-> > Add PKEY_UNRESTRICTED macro to mman.h and use it in selftests.
-> > 
-> > For context, this change will also allow for more consistent update of the
-> > Glibc manual which in turn will help with introducing memory protection
-> > keys on AArch64 targets.
-> [...]
-> > Yury Khrustalev (3):
-> >   mm/pkey: Add PKEY_UNRESTRICTED macro
-> >   selftests/mm: Use PKEY_UNRESTRICTED macro
-> >   selftests/powerpc: Use PKEY_UNRESTRICTED macro
-> > 
-> >  include/uapi/asm-generic/mman-common.h               | 1 +
-> >  tools/testing/selftests/mm/mseal_test.c              | 6 +++---
-> >  tools/testing/selftests/mm/pkey-helpers.h            | 3 ++-
-> >  tools/testing/selftests/mm/pkey_sighandler_tests.c   | 4 ++--
-> >  tools/testing/selftests/mm/protection_keys.c         | 2 +-
-> >  tools/testing/selftests/powerpc/include/pkeys.h      | 2 +-
-> >  tools/testing/selftests/powerpc/mm/pkey_exec_prot.c  | 2 +-
-> >  tools/testing/selftests/powerpc/mm/pkey_siginfo.c    | 2 +-
-> >  tools/testing/selftests/powerpc/ptrace/core-pkey.c   | 6 +++---
-> >  tools/testing/selftests/powerpc/ptrace/ptrace-pkey.c | 6 +++---
-> >  10 files changed, 18 insertions(+), 16 deletions(-)
-> 
-> Andrew, Arnd - are you ok if I take these patches through the arm64
-> tree?
+This is moved to obsolete/ by 5731d41af924b which was merged in rc1,
+and will be moved again to removed/ by [0].
 
-Sure.
+Andrew
+
+[0]
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20250203072801.3655=
+51-3-ajd@linux.ibm.com/
+
+--=20
+Andrew Donnellan    OzLabs, ADL Canberra
+ajd@linux.ibm.com   IBM Australia Limited
 
