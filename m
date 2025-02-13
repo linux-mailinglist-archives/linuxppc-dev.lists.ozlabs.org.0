@@ -1,71 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-6146-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6147-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3212BA337B6
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2025 07:08:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C88AA33872
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Feb 2025 08:04:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YtlB05B17z30P3;
-	Thu, 13 Feb 2025 17:08:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YtmQH0lJHz30T3;
+	Thu, 13 Feb 2025 18:04:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739426936;
-	cv=none; b=o0d2pQIfsAs1N36qVrUEdzld0z6Z5/HP5+i0ityEJcz357aPtsTpbR5zKqE52/iMUcDMvTdLiYh6fZQKcMcjx4fHjUYCR1kGjasI5IGU+akd8LeRHwp9+PbZ8+FkMuT3FRsdk+wiGLoGU/OHU0scnrBFBltBtpkUcc20nF7Chzp++bpo2MTPgddiqTYTgkvaF2azJrGc527/1VA2VtSBtsCQqBL1HSV4+Qcbq70SqAJd5JP2K72VEzYZVtnD/3FLjSlLaCG/Tc8TiuaLOdxPQbd4qBsC0Z7FAIGp3tAeJijTj6p5TwEnH6efkosuKSSo+yYZxEmms8p/bqXAjKUlsQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739426936; c=relaxed/relaxed;
-	bh=OiwmEq6vq3HX08VAFp7Aha2F21vuuzDxEfBUQinf5ZE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=KmelJgXYw+pWJ8IUp/hEDZgyT91P7SMHMurfx/ecyfPD0HEL2hY2rJmeU9vdPECLCI6uTZeCKodC1y3Ozb8o+hBK+dXADoKZvxq+hhFidzoMZ4ML14tUlZiOobGK7qU6hZ4n1j9b537X23mwG+fDTWloPErntG9OWQdJp5YiSY/241rtWqGsgLf26qx7Q480UHmdKlpc3NCpVRVTv4imTFqRDPHm+UGFL6lcDSvFDKy3bWRSQRBLc+IvBTHgRcBmH2aEEzGqsP7o4qRu2vh8ZEQO763wrJNwvAdE4dH8DUWmevo000NZNKuxsh+XC7S64MZiUZdUfY28eoS3GbzP2g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=asUaXfNW; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2614::603" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739430279;
+	cv=pass; b=ZJD890PmWGOSSXPGgxYNxaRKJ69OdCcPlglLdGWnrO8JZNz4QKvUX6espZ/n+L4Y8EtRrbsJVonBtwrywmYyzy4Ov4EShPwJgThGRDt24S4qJW1rbsmfnUm8Rqx/nwBddncZNeAlzaiTL4ygRrUbbnbGdeIF34XPRtwIIPMidZvybSDCZptNtCs5TVvTx6yaIEY8XAx7OjK+MlqRoM+Ot6PZd76BURCuSJIyE0CpDrSejJmb4geiuSOieyO+IHzQyc93GSK5tpLBFzrxKD0scrEbjZc5Y9sno0zr5bpptlmBaXFJhlS7cepIkG7CGCKy6m97yMBrqXW2MajU/qONGw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1739430279; c=relaxed/relaxed;
+	bh=r6y+kXGuLjQ6dRaqKwxAew/44MG70QD7gS8mE5NyLKs=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Ae9EHbZ4ABLrkMmcY642pEERKP+/oLqhVhrSU3YWm5oGtwNEy00a/MvSrB4U0O3s4clbnCsG5FqlOanGuku8Ybo5gCbirNwd8PHDHNdG9Cuo0bKeEF/v9s1+9aKb94LXXrarGTzUA7oa7es6J1L277WZdRZ/Yjtc1d0md9hUb1VXTTuZw3mQieXtZkWOp2lXuONlXnQD3W8KVUzej89J4OaLmCjsohtoj9mjfo4nzhwgxNpEVmJ6sI34+YoxLx9GNYYxvnp86jwKmoLvtW2fOEk2QmfaQ8ApP8OHyHBYazHV9GJNGqwqoKNzWVLB6BSXfVOoBQ4nj+N58eQzuzOrVQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V5QC1ubp; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2614::603; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=asUaXfNW;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=V5QC1ubp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2614::603; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on20603.outbound.protection.outlook.com [IPv6:2a01:111:f403:2614::603])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ytl9z58klz2xsW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 17:08:55 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51CKGBqe001067;
-	Thu, 13 Feb 2025 06:08:52 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=OiwmEq
-	6vq3HX08VAFp7Aha2F21vuuzDxEfBUQinf5ZE=; b=asUaXfNWRFTwOlCX26YE37
-	P4EYAy3Sa7LScE/pj3MqPkp0TWm2pTxvtZzAFVRcJod/L3uDpU5ObHDRR8rEsCtf
-	77zJy7j4G0MeVJeyWzdPnH8xgEkS20qiTAnf9yZU8k6sgtH/d1OUR+kCxG+KDiS7
-	0yXgSaTO7+fQCYzbbxqqldQiV5xxacaVa96L7VJlmuIRk5gfZYG6oAcHNVBtPxk4
-	O+7BwhNoVCGXQ3L/DF3tl0Tt3bCVe/DmI/yNgmpXDqGRJABSygOP/Z59D9qbXOjq
-	LHtVDBQ+Q4gl7hqwO1wzyAw5GQ7iYpej4ZrVnITQHE9qqQ+rWOWUsNGIiDTzY3Hw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44rqbpeca6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Feb 2025 06:08:51 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51D55HeI011642;
-	Thu, 13 Feb 2025 06:08:51 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pktk4gvq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 13 Feb 2025 06:08:51 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51D68njD47120766
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 13 Feb 2025 06:08:49 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B78C20043;
-	Thu, 13 Feb 2025 06:08:49 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0C7B320040;
-	Thu, 13 Feb 2025 06:08:48 +0000 (GMT)
-Received: from [9.109.204.94] (unknown [9.109.204.94])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 13 Feb 2025 06:08:47 +0000 (GMT)
-Message-ID: <8315ad38-2727-4ffa-8c72-d0c492ad6a74@linux.ibm.com>
-Date: Thu, 13 Feb 2025 11:38:47 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YtmQF2fmQz2yvq
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 18:04:37 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=opZuD1m5O5HzzDMio00aTFeGK31l+h5x8UR/zav+lCkj/UwslqSjLHZ9fC8PyculyGaUHdz4uZUrimBVc9XztueLPcoeex34p4Gi/xVk4MsuTzAaOgS0QqX/sb/uXM6CgT2CQPTneLqnN7APHPG18hzMZF7QdSTxAWlcammH4W6FirF37gnQoFcKY/jazU0cN4QLRSLnXyIMb79nXH5NrCO354DArrKEtJJg5iUPWwmjFaVSjPAIhilZ8bQdctXpEvzXwYp1WTBolGm83TBsPCetT+90FlJAvt9zvYZ87qik7gho2OUArvP5+rMLkijnzOtfFEjLQVe/+atHQ+vlZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=r6y+kXGuLjQ6dRaqKwxAew/44MG70QD7gS8mE5NyLKs=;
+ b=b6k51SXwO7I5sxl2IpVejOMtnAXhyGagWJoovZbr6v2mkRSsK2to8NpqZZKoaBFwNLtMNWOURrGEU2JvOHOyFc5DU35RPbZk+3ND2CS/zsTIddS1UogLl6kjaxCZJfW7YggU5KgK2FRH5tK6RD43V+ykigUDkl3o/2ylT5KKAhoNQa54HLfcZs72E36kx39jBmnTUI4RZwuL+vGKOL97eTle0142saL5ev5Zo2r3Bxkzn9Q+mi0rU0cJh+PqRQWfEHhV02J2Z/EEuKQrx+CqT/s5SSfO2ArNMSGiXP2bj1o8UeXqdumMIRA9aWevfHtcuigjwRHwJcfA27euOwwyOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=r6y+kXGuLjQ6dRaqKwxAew/44MG70QD7gS8mE5NyLKs=;
+ b=V5QC1ubp+2bSthIop1QIo2J2VvQI/YB6S45FBCFKiAg+15cw9BIuzNfHiLmRl+tB3rcXldJI6CIRvnPdLMYjuQs40Uk//Y43fNdkTBMYAiekG7PWdhEyXmj61Jlcw+QYrhPgsnnkJvqNq5SEp/Priew5P+K3upPbF1NieenwKe6ktiXUMvVBi84/x1DuRNwhsoennJYwvxfTdSARYFyenIkdoSh+knIx8p6vW9BkXesz+Sp7nDbaUbC0O050qcueA7EaKg4ODknCPSd7DxppPtdPUCH4GaHwFwmbfDZsXT99d7zMX1k1RLbqRf8+6QxUMWPqUUMi1tF0xyfSthT0Sg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by PA1PR04MB10674.eurprd04.prod.outlook.com (2603:10a6:102:483::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.19; Thu, 13 Feb
+ 2025 07:04:15 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891%3]) with mapi id 15.20.8445.011; Thu, 13 Feb 2025
+ 07:04:15 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2] ASoC: imx-audmix: remove cpu_mclk which is from cpu dai device
+Date: Thu, 13 Feb 2025 15:05:18 +0800
+Message-Id: <20250213070518.547375-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR04CA0016.apcprd04.prod.outlook.com
+ (2603:1096:4:197::7) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,134 +85,168 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [next-20250212] FStests generic/451 on EXT4 FS resulting in
- kernel OOPs
-To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ext4@vger.kernel.org, fstests@vger.kernel.org
-References: <6f43bd29-d72b-4a39-b931-7b1b47c7cc06@linux.vnet.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <6f43bd29-d72b-4a39-b931-7b1b47c7cc06@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: vT4tvflbSKzyiQHPl6AmQ5xspwEHvadi
-X-Proofpoint-ORIG-GUID: vT4tvflbSKzyiQHPl6AmQ5xspwEHvadi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-13_02,2025-02-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 impostorscore=0
- suspectscore=0 phishscore=0 adultscore=0 mlxscore=0 malwarescore=0
- mlxlogscore=999 lowpriorityscore=0 priorityscore=1501 bulkscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502130044
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|PA1PR04MB10674:EE_
+X-MS-Office365-Filtering-Correlation-Id: 439f8864-86b4-4809-1180-08dd4bfca095
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|376014|7416014|1800799024|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?FJkBRXTBycbsPUCwgzwbL+489Q+VXvThl5hPAr+GJpYMfVjAQb1vzTCNnhZA?=
+ =?us-ascii?Q?LgPlrTMZ5K1cWPv3nU3X0OkkZt+fZTO+fdawxZPBdQLtSSaJuBMEQLdCrYrs?=
+ =?us-ascii?Q?siy95+jRQHghEvFTvzHKcM5WFPdj7W1aPP+bVX0wQjkACdTiODNM74wm5+ZA?=
+ =?us-ascii?Q?AJCTukC7P7EYNrq9E3iD+y/QQc66LE4XKgtZ7ClIxsCMA7mTOAek39MoQ4LD?=
+ =?us-ascii?Q?4aveQhB8y0HeDoDEDQn2eAldJvMaoP0LG6rRMrB4LjcGhV4xm4OsAhEhcE7L?=
+ =?us-ascii?Q?liaR6nxmwFc81Cde9WZEWK7H6hND+wSPV5/9JpkTVyRB4RC0MMOhSBmDdULQ?=
+ =?us-ascii?Q?zma33l4adQBJPU5DONJWZzesBP+VinWWoIL27SgSrl/blIjMKwNwzH3bMZiS?=
+ =?us-ascii?Q?ondOVxh0bpLup8aU1/7DxS1gx5rYRSswoTzq4LS0i4NOi9s9FsDdFg03CvW1?=
+ =?us-ascii?Q?M/TRTcl/GPE83nwdSXnNX6OY6brq0WsBg8N2leo7FOXzSDFyUHxo13HfBxSn?=
+ =?us-ascii?Q?97KpmnR4VNUqwHIkZM0TRNIFr9sa/8WIBeMM6eJzKn2o73+5C5stSRnD2Y++?=
+ =?us-ascii?Q?w25HmrDDFrrabtgxOXOHA2XHn5JmX9HlKQoZ7j1ek0vOz93Cl/xxCQM8BnUU?=
+ =?us-ascii?Q?qmS/rAPKpP6aoX8lFePXos6mp+tAqyvO0qQh7RR3ApztPBvq+V8DHbCS0FkB?=
+ =?us-ascii?Q?I7z1Ze67I7ROy8+qXibQ5lPDF0hWHU8thXGvMCIhMqU3fBt9xY4WMbueBR6O?=
+ =?us-ascii?Q?ayZPLkKbGrD21LC75BiGhdqKwdLuq2Iro/7sHoqwRoqoed8lvtz/hbpCsmf6?=
+ =?us-ascii?Q?4r8sFoepn+V+u5kYCroJiryNLbCdEUaZ2bAD1PGCJARQ+rrY7YvqbTAVJQJQ?=
+ =?us-ascii?Q?3bfVtu7fQrdZRWTWs0PeX1iga3q8fe/605tg0EGI5lDtEgLM92GiHhA10Gyj?=
+ =?us-ascii?Q?jYIzPkqkHCon5MIKD3It0+eMg9RG5y4jz2F/g53m2sLRrORWaP1GdUXBWZe0?=
+ =?us-ascii?Q?aKdJMTCd/Xx+WO8wSZ28J9K6uVn2/GZesFcIzdXSHvOaqr1EpFMcMEYAfQhc?=
+ =?us-ascii?Q?JmZXuuhvN8dki+MJLPJ0OAf/CrsfaqI6t+mNMGFiz09M55XDwX8ge42+RYO+?=
+ =?us-ascii?Q?Nacj/v68FZ1MOPniOiT1nN0MRgXuLJ5HEiwB/BKLisO6DsHW2/DrHULeypwU?=
+ =?us-ascii?Q?N6VY2Ctm/nQNFLY70NuzcOtDWyl6y9vR1MmfjW9OynZ+0hjrFDXvoLUrq5Dy?=
+ =?us-ascii?Q?ma3G+GuxSUsITkPFlmDW/zyRWsSm8G21Va91zB3ToyawbJaebsugqLbHieKA?=
+ =?us-ascii?Q?anAh4kBJ78AJVqSYEpoI6P0NaZ510sPiFSdA8p7QMhxsKweHAbfnfmWMUcVP?=
+ =?us-ascii?Q?edSdDOO414VYoPI1jQP40vD8Irgavj4e0+eYwYim81Q7WMqAX9g520xt3U+8?=
+ =?us-ascii?Q?hYaf/82FnS7G8t3LPk/bct1k6r/HmF+RHQFCywfqMK5k1FU6bDoIeA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(376014)(7416014)(1800799024)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?yyfJL+u0tIEDPEtF1/7xJ7L8ji3kMYooOoyuHZ0zwZlW3jVWKhfybXcu9Jvz?=
+ =?us-ascii?Q?5oqpmD1jMj3Vf81lC/C+XSKoXzTcAXY/to9SeOO2TQFHXaQ9IKvqvrQ+ttKc?=
+ =?us-ascii?Q?1kGdwRMTOBuK4d9GMzDF3HsiZgihHLW+qY3xFFXpZkLvsBc4V7pllg/Mfn1H?=
+ =?us-ascii?Q?CjCsMGtPUynZPPgymDx19xTWeKni7ZYe2CWLNUwLWi5rT+3exGQI4FSL6OQg?=
+ =?us-ascii?Q?hYajBJepcFZyDdHKmimwtkvlyFQMZSUDBATeyN5zsthU5Gt9l8IIFVPfa3FX?=
+ =?us-ascii?Q?PHVoJXfGA/kgUjumHJFNvnn3p2Ym+6u3kKnu9uC1eWnDvlqxRjLK59VOS4mM?=
+ =?us-ascii?Q?BC117qpA0ryEitN/P6GB5OhnbiDY7j0MWVF8hbpEURuN06h787J74Df47tKh?=
+ =?us-ascii?Q?7gTAhENMihOBwKbcYLoCksx6GvPu7PnXbj+d5TiwYxaltuYZ1NBOVu3eGBiZ?=
+ =?us-ascii?Q?AuFhMojVHPqplXcRfNmxiJGnaV9fFNK6ZqnpXBsRpvfDGdFb33kocAOF3YLC?=
+ =?us-ascii?Q?g6dkjUA6zLDJ7psTCRSrvLSQw41JJZ3uTmgN1D55O7y655GMQzCKL+KSBJgT?=
+ =?us-ascii?Q?au9rcOTbXpko+3izPxmi1jZRAt2A7n56Im7kAmIjArEWPR7Gc7i1LKI/FUMD?=
+ =?us-ascii?Q?bF8QIFakjO+H3ywf+w75vT0oo3FZfYHGAWxJmrT6dO44SaOnfZqEVOVkg5nO?=
+ =?us-ascii?Q?lIZuhrvsIPNCCd2t0cKadC2gkt/UpaTPOjoMpB+HlJKNBnxcDH/BybDMEVZ/?=
+ =?us-ascii?Q?AU3uo3q0mNv4Segi2jCTLBxgVtZBF87JGsRzKgyD56sB67FXA7FKd8zdw/st?=
+ =?us-ascii?Q?sQ8PU/411PAUtjpKEKQUJK7B3aJD63MBiqDwyhbFX27vT8DM7nDKhtWyQN1n?=
+ =?us-ascii?Q?pEtMAX1/juwZ+ehkJIPlEMh6n1p5/LLm3dCv3BZeTT7ef4vh2LwLpREY4IvI?=
+ =?us-ascii?Q?gOI8rnQPIfsquw/Br9tWY7G5uNiaSKS1yNWSWyQnKYyZcTHi0mKRjtlI4zi6?=
+ =?us-ascii?Q?SNGyUdUqSsswxopx3mnwxL5ukujZCSRvtz/HCYK7Bj2IgtiQQPmXBzF56d/Q?=
+ =?us-ascii?Q?NJeH9ls9Gi/6MMJ5il+bGCVFLSOBBDNObYqXBbuvAkD6i0plscOMIUaxVL7t?=
+ =?us-ascii?Q?LG9xGcqFcNBek9fzHILR5F0LLmVI3+iqyceXypUjUjVqePEuKKeUi6QMtDiU?=
+ =?us-ascii?Q?EXfgWZ9bBQj0FXAz5LLvGkFqYPG5Y9EkL3zbGUZyHhnU95DJJbuT5UK0Voyk?=
+ =?us-ascii?Q?2r3rB1QuVILid0HOUkP3qRAhCnmCbGG1kRv/gR8imtIOgcXOPDMd2ZWy6/Jz?=
+ =?us-ascii?Q?u4aqQVJ9x9xzlekE+iNU38ptaCPdRv6CkObuJSLxkkHcm18AqInWEnsZYvum?=
+ =?us-ascii?Q?vcAjklKqXHacv0RAgm4sEn/KxGb7lKouRRZn/oZdnJw8zsyvwnbMtw/jPTIs?=
+ =?us-ascii?Q?N0zTkznMT5U97hLWhWQnmntolVT8DHfrKXfQXEyP3Cu1VL+HpHDLcbYxvwr6?=
+ =?us-ascii?Q?JvVrZx363tj3+8wwYabGI+8Ggsn1x3iH8VxRysO2PgoI4wFAX/tEBu3OyQ77?=
+ =?us-ascii?Q?B7DA5zetIxz4gkA+/dGyZSuNdRIeVINK1/eNiMUh?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 439f8864-86b4-4809-1180-08dd4bfca095
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Feb 2025 07:04:15.6479
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: mIWTtKyyWb30+yQt8b3NxYzzVyGAyb1jAIJmfIxfGJL9ydoEZSiRHbaOMZksiT9fmT5/e+hRkJ5y5AGEO/YscQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA1PR04MB10674
+X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Venkat,
+When defer probe happens, there may be below error:
 
-Thanks for reporting the issue.
+platform 59820000.sai: Resources present before probing
 
-I noticed that system rebooted after kernel panic.
+The cpu_mclk clock is from the cpu dai device, if it is not released,
+then the cpu dai device probe will fail for the second time.
 
-Just wondering did you configured kdump/fadump?
+The cpu_mclk is used to get rate for rate constraint, rate constraint
+may be specific for each platform, which is not necessary for machine
+driver, so remove it.
 
-Thanks,
-Sourabh Jain
+Fixes: b86ef5367761 ("ASoC: fsl: Add Audio Mixer machine driver")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+---
+changes in v2:
+- remove cpu_mclk and related constraint setting
 
+ sound/soc/fsl/imx-audmix.c | 31 -------------------------------
+ 1 file changed, 31 deletions(-)
 
-On 13/02/25 11:21, Venkat Rao Bagalkote wrote:
-> Greetings!!!
->
->
-> I am observing kernel OOPs, while running FStests generic/451 on EXT4 
-> with linux-next kernel(next-20250212) on IBM Power Servers.
->
->
-> Issue is seen on: next-20250212
->
-> Issue not seen on: next-20250210
->
->
-> Traces:
->
-> [ 2977.768678] run fstests generic/451 at 2025-02-12 16:42:14
-> [ 3001.242006] list_add double add: new=c00000000e2398c8, 
-> prev=c00000000e2398c8, next=c0000000c1f2f0b8.
-> [ 3001.242047] ------------[ cut here ]------------
-> [ 3001.242052] kernel BUG at lib/list_debug.c:35!
-> [ 3001.242059] Oops: Exception in kernel mode, sig: 5 [#1]
-> [ 3001.242065] LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=8192 NUMA pSeries
-> [ 3001.242072] Modules linked in: overlay dm_zero dm_thin_pool 
-> dm_persistent_data dm_bio_prison dm_snapshot dm_bufio dm_flakey ext4 
-> mbcache jbd2 loop dm_mod nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 
-> nft_fib nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject 
-> nft_ct nft_chain_nat nf_nat nf_conntrack bonding nf_defrag_ipv6 
-> nf_defrag_ipv4 tls ip_set rfkill nf_tables nfnetlink pseries_rng 
-> aes_gcm_p10_crypto crypto_simd vmx_crypto xfs sr_mod sd_mod cdrom sg 
-> ibmvscsi ibmveth scsi_transport_srp fuse [last unloaded: scsi_debug]
-> [ 3001.242165] CPU: 26 UID: 0 PID: 894003 Comm: kworker/u228:17 Not 
-> tainted 6.14.0-rc2-next-20250212 #1
-> [ 3001.242174] Hardware name: IBM,8375-42A POWER9 (architected) 
-> 0x4e0202 0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
-> [ 3001.242183] Workqueue: loop0 loop_workfn [loop]
-> [ 3001.242194] NIP:  c00000000090d528 LR: c00000000090d524 CTR: 
-> 00000000007088ec
-> [ 3001.242201] REGS: c0000000e5adfa70 TRAP: 0700   Not tainted 
-> (6.14.0-rc2-next-20250212)
-> [ 3001.242208] MSR:  800000000282b033 
-> <SF,VEC,VSX,EE,FP,ME,IR,DR,RI,LE>  CR: 2800024f  XER: 00000009
-> [ 3001.242229] CFAR: c000000000224238 IRQMASK: 1
-> [ 3001.242229] GPR00: c00000000090d524 c0000000e5adfd10 
-> c000000001657500 0000000000000058
-> [ 3001.242229] GPR04: c000001179a87c88 c000001179a96000 
-> c0000000e5adfb58 0000001177810000
-> [ 3001.242229] GPR08: 0000000000000027 0000000000000000 
-> 0000000000000000 0000000000000001
-> [ 3001.242229] GPR12: c000000002a49cd0 c00000000f75ff00 
-> c0000000001abf00 c0000000fda72fc0
-> [ 3001.242229] GPR16: 0000000000000000 0000000000000000 
-> 0000000000000000 0000000000000000
-> [ 3001.242229] GPR20: c000000007acbc00 0000000004208060 
-> c00000000e239880 fffffffffffffef7
-> [ 3001.242229] GPR24: 0000000000000402 c0000000924b8fc0 
-> c0000000c1f2f07c c0000000c1f2f000
-> [ 3001.242229] GPR28: c0000000c1f2f0b8 c00000000e2398c8 
-> c00000000e2398c8 c0000000c1f2f0b8
-> [ 3001.242309] NIP [c00000000090d528] 
-> __list_add_valid_or_report+0x158/0x15c
-> [ 3001.242318] LR [c00000000090d524] 
-> __list_add_valid_or_report+0x154/0x15c
-> [ 3001.242324] Call Trace:
-> [ 3001.242327] [c0000000e5adfd10] [c00000000090d524] 
-> __list_add_valid_or_report+0x154/0x15c (unreliable)
-> [ 3001.242336] [c0000000e5adfd90] [c0080000073c359c] 
-> loop_process_work+0x594/0x630 [loop]
-> [ 3001.242344] [c0000000e5adfe40] [c00000000019dc5c] 
-> process_one_work+0x1fc/0x4bc
-> [ 3001.242354] [c0000000e5adfef0] [c00000000019ebec] 
-> worker_thread+0x344/0x508
-> [ 3001.242362] [c0000000e5adff90] [c0000000001ac024] kthread+0x12c/0x14c
-> [ 3001.242370] [c0000000e5adffe0] [c00000000000df98] 
-> start_kernel_thread+0x14/0x18
-> [ 3001.242377] Code: 4b916cf9 60000000 0fe00000 7c0802a6 7c641b78 
-> 3c62ffe5 7fe6fb78 7fc5f378 386343a0 f8010090 4b916cd1 60000000 
-> <0fe00000> 3c4c00d5 38429fd4 fbe1fff8
-> [ 3001.242407] ---[ end trace 0000000000000000 ]---
-> [ 3001.284444] pstore: backend (nvram) writing error (-1)
-> [ 3001.284452]
-> [ 3002.284455] Kernel panic - not syncing: Fatal exception
-> [ 3002.431023] Rebooting in 10 seconds..
->
->
-> Regards,
->
-> Venkat.
->
->
+diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+index 231400661c90..50ecc5f51100 100644
+--- a/sound/soc/fsl/imx-audmix.c
++++ b/sound/soc/fsl/imx-audmix.c
+@@ -23,7 +23,6 @@ struct imx_audmix {
+ 	struct snd_soc_card card;
+ 	struct platform_device *audmix_pdev;
+ 	struct platform_device *out_pdev;
+-	struct clk *cpu_mclk;
+ 	int num_dai;
+ 	struct snd_soc_dai_link *dai;
+ 	int num_dai_conf;
+@@ -32,34 +31,11 @@ struct imx_audmix {
+ 	struct snd_soc_dapm_route *dapm_routes;
+ };
+ 
+-static const u32 imx_audmix_rates[] = {
+-	8000, 12000, 16000, 24000, 32000, 48000, 64000, 96000,
+-};
+-
+-static const struct snd_pcm_hw_constraint_list imx_audmix_rate_constraints = {
+-	.count = ARRAY_SIZE(imx_audmix_rates),
+-	.list = imx_audmix_rates,
+-};
+-
+ static int imx_audmix_fe_startup(struct snd_pcm_substream *substream)
+ {
+-	struct snd_soc_pcm_runtime *rtd = snd_soc_substream_to_rtd(substream);
+-	struct imx_audmix *priv = snd_soc_card_get_drvdata(rtd->card);
+ 	struct snd_pcm_runtime *runtime = substream->runtime;
+-	struct device *dev = rtd->card->dev;
+-	unsigned long clk_rate = clk_get_rate(priv->cpu_mclk);
+ 	int ret;
+ 
+-	if (clk_rate % 24576000 == 0) {
+-		ret = snd_pcm_hw_constraint_list(runtime, 0,
+-						 SNDRV_PCM_HW_PARAM_RATE,
+-						 &imx_audmix_rate_constraints);
+-		if (ret < 0)
+-			return ret;
+-	} else {
+-		dev_warn(dev, "mclk may be not supported %lu\n", clk_rate);
+-	}
+-
+ 	ret = snd_pcm_hw_constraint_minmax(runtime, SNDRV_PCM_HW_PARAM_CHANNELS,
+ 					   1, 8);
+ 	if (ret < 0)
+@@ -323,13 +299,6 @@ static int imx_audmix_probe(struct platform_device *pdev)
+ 	}
+ 	put_device(&cpu_pdev->dev);
+ 
+-	priv->cpu_mclk = devm_clk_get(&cpu_pdev->dev, "mclk1");
+-	if (IS_ERR(priv->cpu_mclk)) {
+-		ret = PTR_ERR(priv->cpu_mclk);
+-		dev_err(&cpu_pdev->dev, "failed to get DAI mclk1: %d\n", ret);
+-		return ret;
+-	}
+-
+ 	priv->audmix_pdev = audmix_pdev;
+ 	priv->out_pdev  = cpu_pdev;
+ 
+-- 
+2.34.1
 
 
