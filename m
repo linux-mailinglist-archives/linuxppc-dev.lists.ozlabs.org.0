@@ -1,58 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-6202-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6203-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6977A366FD
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 21:37:29 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36E96A367C0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 22:47:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvkPS6HQhz2yYJ;
-	Sat, 15 Feb 2025 07:37:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvlyK0zD6z2xfR;
+	Sat, 15 Feb 2025 08:47:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739565436;
-	cv=none; b=BGmIv5iYmRCUAUw252wMAHJgULnolRfkEysZzw7UD1vd5N4aM+yzHr6cLRTZlgxGgzI4AMkFfHFMEqbDvgGquSBtYa/UKD0IDYRK8ac2sLpLu5ET/A3nyOKrrdAQD0WeeMm3gI4ezkzwlRLiN26g7wEN8R73Ppv/v6RGeC59MKT+GC60uaeZz3cn55u3AwIyOiAm1Abx89Ty/e3u+qEcUfzGImSBOjjMiKXe6WkhwDvRAssTjwQ8MihAslt/rWSvYPT8hBzdEanN/WTBMlIKT+Mo/oKOv4DtXiNvRQYA7o2jyAhYBk25NYnstwd1rJgMnHVsZKpu22yL4zt56zqPsA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::134"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739569641;
+	cv=none; b=oxCpLYmtuM6k/j30pKuiZCzKK1nEh5GBDM6TezpU1BrBW1sLJkw1WwDTEc/emQlKWg+l5XNwXKmDqLJ9883n1KxsmMGFS1CdMzEVAAVRsV3A1FtlBZJ/EukMX5hZQ6alUINriigRpGogrzSQ2dKUfuB+hlqSIka9qbG6Qy1sP0Sm0Cn4NRDMlCeEfB7xByQ9bZuxYpcZJI/tb11F4eVyCFWzQ2W3V59iz4YFhpBgk+RriX/V9DytYaCbwC1GsCgi7JSgyDVWGIqLzscl18PJIzY22uwPu1ccxXpfCwUi2II0fuILIvxTp1HfSwp0lu2zrZkAJBtMQ5dRRZCxt4FESA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739565436; c=relaxed/relaxed;
-	bh=uB62k1mjkzaZvDUA6Ksm6VdxNsaub1DVxfgkG/1Y7SY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=KLIXgw+Ga9YqxZb4W4GvJg+6j1y6Rwv8CXEPq7Crd9Flb2b/C9xwUF2hGcjGQNkqZM+3vzI11UaJbLA9Jy28akkoWoeDBcYlunqfmhKx+Pp0E/Q/6QB+zWTq0CZPxCOsEHbl2855/b1pu0J7naxtAvb97s4wIWWrsA+8Do1i+YknPsQ1ObIYIHUSFP1eF6VgfYl652pb7cWYi63FObZTcgV1za3zvhWsUePLhlC2N0ru32Cbgi/L1Mwx8SjIYj5qHqRtL7bWSu7wc2nkXHXG6NjAnyvtGgMU8AO5BtmW6oQDVY3+yZHW9OG07N1sfSd/+ijGsVVixPs6GXXe7loLWw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hMdBlqwG; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1739569641; c=relaxed/relaxed;
+	bh=sPrHjyB7ZPEKXqDVTRDLXSWkXWDHoJbDt80UqOOKgaQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EZsuFvNTj3jeESiL9koaZwr1DJbRi1Z4MwgRbP07K3SI6iA7QvpfqGMAnoi+yhrAgpEn/fU79dta1M7nVbRyvjijVCjEJQcvFdsaMajlZ/+aSXWpp3Fpc2RVYyKb4A4YHkR0kvBr4sy5ADF2KPgP4Q3pp/QA7Yv9oaVCNjOF9mkzovsFJZGF3hfMnWeyw7Zc8G1Zox8z2kS+kX8Nhu92sCDrAKFA+bx16H0saqYFeqG4Gk8BJeyWd0FEUYgI5FtxlfqNjiLBhCd/hnGaFTKWSiBMtMYTLJN5FRH4V2sArR8uQBTNnHkIC9DS74GLyXsLEcEVqij15EnFfg9ffjRgkg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk; dkim=pass (1024-bit key; unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.a=rsa-sha256 header.s=google header.b=HpUymG9x; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=mail@rasmusvillemoes.dk; receiver=lists.ozlabs.org) smtp.mailfrom=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hMdBlqwG;
+	dkim=pass (1024-bit key; unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.a=rsa-sha256 header.s=google header.b=HpUymG9x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::134; helo=mail-lf1-x134.google.com; envelope-from=mail@rasmusvillemoes.dk; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x134.google.com (mail-lf1-x134.google.com [IPv6:2a00:1450:4864:20::134])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvkPR5fwQz2yXs
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 07:37:15 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id ADF695C596E;
-	Fri, 14 Feb 2025 20:36:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CB2C4CED1;
-	Fri, 14 Feb 2025 20:37:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739565432;
-	bh=/LU7fG6fgTEGf5K0K6dF6/L6VDooN37auBZ/6PWAfYU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:From;
-	b=hMdBlqwGc2H7N1TnwmMXRJNYx0EIanM22MVTDYCeJeX3jw7QlBu6+XuTTgpBrdEIO
-	 51F1leCo+ow8sLbKMoFmAsx26twOKBpYcbhtLngAxHMQgQDUNzwoACUJTx8AaqKpUc
-	 ocoRt7DK/PQ+T85TnRKutoXYL0JMLHjqzRYQnFwA6KhjMK4j6XMAVkOQQfmvf3ybhg
-	 vwB+nZ4E5XxNBAesc4x0fBj5bD+38hy85Mu4WERGSaNhtxt4XheGjw6kpo/I4bg8zJ
-	 B7QC1rV8MXrSwUTf66UxopOaM02v36cFMxhUdZAcbTtvRwzfapEtxcizzgw1d1nYVT
-	 D4U3M0tfHIPIg==
-Date: Fri, 14 Feb 2025 14:37:10 -0600
-From: Bjorn Helgaas <helgaas@kernel.org>
-To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	Karolina Stolarek <karolina.stolarek@oracle.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 4/4] PCI: Descope pci_printk() to aer_printk()
-Message-ID: <20250214203710.GA162892@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvlyG6Hvqz2ykc
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 08:47:17 +1100 (AEDT)
+Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-5452ca02bdbso936753e87.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 13:47:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1739569632; x=1740174432; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sPrHjyB7ZPEKXqDVTRDLXSWkXWDHoJbDt80UqOOKgaQ=;
+        b=HpUymG9xYIZgCoketqkFykdbu7mZwlxjVHn/pl4YxprjOxp8vYzYzAxqIjLwq9GYS6
+         jr5yOSFQuM+4Jlul+Xl9ie0nqJSelHtEptMeATT+KaNmZAdxKP9+F8dkpE+LMCSW1GWX
+         t7X1kzzWbDH2sdTNKjBETUqrWm4/e0zpT01zw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739569632; x=1740174432;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sPrHjyB7ZPEKXqDVTRDLXSWkXWDHoJbDt80UqOOKgaQ=;
+        b=nXD2D0WV2EP9COm/yjQZrpykCkLPCWN48F/mF6gTas0aAal5iada8cUWphXJi6tlep
+         Z9yXEA5GvSiBukKhmZUERM7e+xRlz0MuMnh/bGyB9ni11r6lK2SmMRYAg0xXm1k9uc4E
+         IWUIdTbGFCvtIVUYqalIRYuDXfpE2QzaQDN/AOwF7GhB69onTh3doINjcudh2jjBI8M1
+         bWfwxX74DqiC1xNUbBgqacJACsDZrIIRO0qg2XeSBs50qA6eB8mUjGJ/6eQsJIAhRbFx
+         Cd0JyNdgf9rYkeeLq407xYRbtyAmhdSU4b/URqmR1IJxyLAfd+wmI4ezUsMqKxhHtmQQ
+         r2cw==
+X-Forwarded-Encrypted: i=1; AJvYcCX4W4feCkZKPDBVXYoEr63kUtM6tBjs4Y4Egu7dQF8zvSi00V+B3I6Jk5SxnKpde83xf1rXH75Q/4E+4zw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzpQO0O50zh8Gj1akBVEk/TGUmvF2YaKEQxHvMt/4sSIEGQFwkd
+	ZRYks0Qx+x4E3825vmx5Myx1l2B4zqWp2Fj1QF9QYBpJJeS/yWv/0a4+REPso38qmb5vGZMl6vF
+	PGcLesPRVHFww0Pj8kWwAY4ZbAk6uqmegPzPtHQ==
+X-Gm-Gg: ASbGncuR4hIb7h30L6w3fGpRsgkikplwCDsOBH+qEPTgXBtpP/+Cky4dGCSvqp6MZMS
+	BKkBDU/OGWWNCCLjJT8QtqxplOlv/6OLP1afDqImMC5FYBIRg0o/Kk+QdfDs4AFCvWpHTsx5r
+X-Google-Smtp-Source: AGHT+IGZfHJGA1kl2ksp+VX8NZVZ/NtQgxO8KN5MDCBG/nThtsVDl27BgELuGsdF1JJSR2FyzMBbA6+syzVK0LhHZwU=
+X-Received: by 2002:a05:6512:6c6:b0:545:2b68:936e with SMTP id
+ 2adb3069b0e04-5452fe5c675mr368049e87.25.1739569632059; Fri, 14 Feb 2025
+ 13:47:12 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,55 +73,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <91014487-c584-af8c-9810-48291a16b643@linux.intel.com>
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+References: <20250210-printf-kunit-convert-v3-0-ee6ac5500f5e@gmail.com>
+ <Z69isDf_6Vy8gGcS@pathway.suse.cz> <Z69oxhkUzTfJ6YKi@smile.fi.intel.com> <CAJ-ks9mck4DzX+WANxKSmcN=mP9ztgwWETXLmX_F-gy=EhmLNg@mail.gmail.com>
+In-Reply-To: <CAJ-ks9mck4DzX+WANxKSmcN=mP9ztgwWETXLmX_F-gy=EhmLNg@mail.gmail.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Date: Fri, 14 Feb 2025 22:47:01 +0100
+X-Gm-Features: AWEUYZliySt2EpIgG7ZYOAvFUg1UiYEq1P2CaYZ90n2fK0WzUtLwjUi2YaJ10pw
+Message-ID: <CAKwiHFjnY-c01rvkzNRz=h=L-AxRMyUtp2G0b17akF82tAOHQg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/2] printf: convert self-test to KUnit
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Petr Mladek <pmladek@suse.com>, 
+	Arpitha Raghunandan <98.arpi@gmail.com>, David Gow <davidgow@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 14, 2025 at 01:56:47PM +0200, Ilpo Järvinen wrote:
-> On Thu, 13 Feb 2025, Bjorn Helgaas wrote:
-> > On Mon, Dec 16, 2024 at 06:10:12PM +0200, Ilpo Järvinen wrote:
-> > > include/linux/pci.h provides low-level pci_printk() interface that is
-> > > only used by AER because it needs to print the same message with
-> > > different levels depending on the error severity. No other PCI code
-> > > uses that functionality and calls pci_<level>() logging functions
-> > > directly with the appropriate level.
-> > > 
-> > > Descope pci_printk() into AER as aer_printk().
-> > > 
-> > > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-> > 
-> > I applied this patch by itself on pci/aer for v6.15.
-> > 
-> > We also have some work-in-progress on rate limiting errors, which
-> > might conflict, but this is simple and shouldn't be hard to reconcile.
+On Fri, 14 Feb 2025 at 17:53, Tamir Duberstein <tamird@gmail.com> wrote:
+>
+> On Fri, Feb 14, 2025 at 11:02=E2=80=AFAM Andy Shevchenko
+> <andriy.shevchenko@linux.intel.com> wrote:
+> >
+> > On Fri, Feb 14, 2025 at 04:35:12PM +0100, Petr Mladek wrote:
 
-> > > diff --git a/include/linux/pci.h b/include/linux/pci.h
-> > > index db9b47ce3eef..02d23e795915 100644
-> > > --- a/include/linux/pci.h
-> > > +++ b/include/linux/pci.h
-> > > @@ -2685,9 +2685,6 @@ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
-> > >  
-> > >  #include <linux/dma-mapping.h>
-> > >  
-> > > -#define pci_printk(level, pdev, fmt, arg...) \
-> > > -	dev_printk(level, &(pdev)->dev, fmt, ##arg)
-> 
-> Both shpchp and aer do use pci_printk() before this series (it seems LKP 
-> has also catched it already).
-> 
-> If you split this series into different branches, this removal of 
-> pci_printk() has to be postponed until the next kernel release (fine for 
-> me if that's what you want to do, just remove this part from this patch 
-> and perhaps adjust the commit message to say it's to prepare for removal 
-> of the pci_printk()).
+> > > I have just quickly tested this before leaving for a week.
+> > > And I am fine with the result.
+> >
 
-OK.  I dropped the pci_printk() removal for now.  I'm anticipating
-more AER changes this cycle, so I'm trying to keep those isolated.
+Thanks, Petr, for demonstrating how it looks in a failure case.
 
-Bjorn
+> > Seems reasonable to me. But I want a consensus with Rasmus.
+>
+> I have a local v4 where I've added the same enhancement as the scanf
+> patches so that assertions log the line in the top-level test.
+>
+> I'll wait for Rasmus' reply before sending.
+
+I think all my concerns are addressed, with the lines printed in case
+of error telling what is wrong and not that memcmp() evaluating to 1
+instead of 0, and with the final free-form comment including that "ran
+448 tests". If you feel that word is confusing when there's
+"obviously" only 28 "test" being done, feel free to change that to
+"did 448 checks" or "did 448 individual checks" any other better
+wording.
+
+Rasmus
 
