@@ -1,71 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6196-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6197-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ED16A36096
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 15:37:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 64CADA360B3
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 15:43:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvZQY6fGMz30Yb;
-	Sat, 15 Feb 2025 01:37:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvZYf1WSPz30dt;
+	Sat, 15 Feb 2025 01:43:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.19
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739543861;
-	cv=none; b=ft6U+hyxHX8bM17JQBrelawAjcvP4IRVTv+SCX3ON3cRy5P4ZRg7rIVniHpE6uwrSBjmLNTba0WbEmaY/eml6/rVwUeVuaZlpGNITOGwBd1Pl9tb2gZBauBJgOre0NnccGF2EFVGzmZI0yjc+zzPyqg64gOTv/Cj0RbErkiGbNFjVicHuLPHrxpnNqdkoJ3rrs8mYoxUtIDCeKgSOGomPjkXB+ZVAU/Gbt6ts3wJJ0eZaE2ZDP/Giebu0MQWZhQpZVn0alUDIREc92qn7jsiDl/83lCePH493nTkqY582mcnFIErorAwzkq2QwxTqoVWK2dBHLuefDof6iUtyzAuYg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739544230;
+	cv=none; b=CgToYDxTch0W09AwknDxVGLTSUOfbyJ4Sahal6e+BxyNr/YlXSea7L1KCTkzTTT8xICnb9xBtjy8IYOeJ5xq5ebolqWG01Vhp5pVdS7Nd9R1VptfZK89TzuqyWW4pctT24/Y9m2OTzLWYvvCSFAL+mZuv2RwCAz66sXhYwX0OuLwS2Rb72d+FBKryPPfaWj57QokbukPL9JH655NY8QFlaHSFp5QUvB0eq6RRuQ8xa5rW/kfUVaOdpZvOvES4K9e8O0jHnDUz5QdNXmq9wGgC/b2FmLwktpYXcGWPbgE2o0OlYGXG8RiH2rFKtwT8bdEd1OAwuM9MaPmNYsMs4cAzQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739543861; c=relaxed/relaxed;
-	bh=XX8/CFH+dQrmV8ZNySyD5IDDqoz1cxtcxwJul1+i4C8=;
-	h=From:Date:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=kKe8peucAFeXX313pfQObAe1CHE2pOd2+nrCEHKJATIDHqA3PmeGb4VMJP8XLtC+JJ6MAAAOfV037Gb/EnA24hcxvQA6GhwzBpXIxy4kyq9JUDiwzfoO298JyvEkJ+6m7N8OoC3rbaNvULCOLx4JE3MzNWWiYdFaULG7c7kMhk9jwcNT4aHomsHzVSAJ6lIVoP30FwSOf72UZGCF+IctjSquqgHVfaRynv84NHmHb7ciqdmX4brZLdb2ttEeWdoO/Awa6wmcIGCv3ghWn7V0OG8x+x2HyJTAynDmBCyb/WWTPIY5BKMWbhoVrUN1PLp+QTIwxKKjdu6XjGq9q0B59w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FhkCsZ8S; dkim-atps=neutral; spf=none (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+	t=1739544230; c=relaxed/relaxed;
+	bh=2R46RFBw2bl1J+ukk0Qah8+d4Igj6TzF9mpxXuFPr4o=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=haPI5vPxevoNuum1RELRaHmdjHqb9ssa8NbAfuVvrNfym+To0qVSznutv5jU5wZVjHKANpeszgyIyLW+h2cnguHUA3F/Y+3+SsybKw4ncSN6Z2/s1BWuCA9vebUFbQbP7iGAyh0U/qyY6LLBZ0rihQ/bBaEWI9Uu8mHaqGmMDA292HEG6As5YQfdW8gYayPRxnrJOKLmk7J4vssH2XV1LyoETyGQsCSdU5LCF2sILWM2rv8p+pYnHyAeBhEJ1+8NNb17eLBov0jFqmMubT6pC7xmLkEu5ENJmuWEizCe58tDpzorMXKhtGJD5S1Op2MJvBuIXS9wALvTcPHGkv1ABw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZmohm9r; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=FhkCsZ8S;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZmohm9r;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.19; helo=mgamail.intel.com; envelope-from=ilpo.jarvinen@linux.intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvZQW39RBz30XR
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 01:37:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739543860; x=1771079860;
-  h=from:date:to:cc:subject:in-reply-to:message-id:
-   references:mime-version;
-  bh=iP9rILo1pieoX7MujpuvZrfyhcl6FWNIG3xPCJe47D8=;
-  b=FhkCsZ8SuhuFD5xsOKGWALpLhgJTKljRiUO9mlToBb6u0jZVE43AUi39
-   UqsGrTOOI6bHLfcg17bQ5DVEVI7mzZz/z0+GFYzNewB1eyNftRn7eQMu2
-   8Qsu8OHK5fqnGwYEfyLfP+eBA1dfdiUq7jGnQ2+9LbPWmfZjVe6BsQh2e
-   MrVUYsuwvYhwWYhkiNAYgInGfM0Zu+MwldbCajHdEjGLBBGzRirX0p+s3
-   nX6jjh/lCozZAHVAG1GJa+qJAfscg2FiYwXCqpQLhhoer4yypnDz9We0T
-   sfNXtdssuDBQUvGMZq5P/+PoA43kSIMUKIYtBLBRKBxulOfozhEYMXtDR
-   w==;
-X-CSE-ConnectionGUID: V+j43grMQEmW9s7oVfI7Yw==
-X-CSE-MsgGUID: xX88oHobSUuk4SilhgSgfA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11345"; a="40157601"
-X-IronPort-AV: E=Sophos;i="6.13,286,1732608000"; 
-   d="scan'208";a="40157601"
-Received: from fmviesa002.fm.intel.com ([10.60.135.142])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 06:37:36 -0800
-X-CSE-ConnectionGUID: qH+p86lhRk6Y+78IEsYq6g==
-X-CSE-MsgGUID: uOBG/QX5SeO3uRT0KYLYGA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
-   d="scan'208";a="136699809"
-Received: from ijarvine-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.245.228])
-  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Feb 2025 06:37:33 -0800
-From: =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Date: Fri, 14 Feb 2025 16:37:30 +0200 (EET)
-To: Bjorn Helgaas <helgaas@kernel.org>
-cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org, 
-    Karolina Stolarek <karolina.stolarek@oracle.com>, 
-    LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
-    Oliver O'Halloran <oohall@gmail.com>
-Subject: Re: [PATCH 3/4] PCI: shpchp: Cleanup logging and debug wrappers
-In-Reply-To: <20250213220453.GA135512@bhelgaas>
-Message-ID: <582c718e-568d-7f70-aef7-b0206600d3a3@linux.intel.com>
-References: <20250213220453.GA135512@bhelgaas>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvZYd0XC4z3093
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 01:43:48 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51E5O7HJ009421;
+	Fri, 14 Feb 2025 14:43:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2R46RF
+	Bw2bl1J+ukk0Qah8+d4Igj6TzF9mpxXuFPr4o=; b=TZmohm9rLGsFB4KDMP/fIh
+	bPAqSpxVTQeDL82kq1R7NxE9GEwxJEpAR+OwHuo7fw7wOGJE2k/gZBEmhE8HCnH7
+	CHqnOVrgi1FfMM1uqakqd3rLtO5G+U69fRil3QjeAyKkgUgYVzDyBgCl8fWNYKxT
+	chV9IAmj2u7ZKaczFkZrsPwj4T01O+DJUADdST4lxGHL89K2S3yiqnk66b2tamCI
+	pl3SthzM2nGzcr1C17Dqk8AE75qb/8dUx3CSa8PfVFbg4682hMWbqHrkjWdgayo/
+	93pKunVf4up9aFSSyFy+LMBiPnJLcZrhvkVyVzfheZzar3r454uF66mejxZLTwfw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44syn82fjk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 14:43:45 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51ED1Os7011642;
+	Fri, 14 Feb 2025 14:43:45 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pktkbs4j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 14:43:45 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51EEhhEF54198764
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2025 14:43:43 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 66FB42004D;
+	Fri, 14 Feb 2025 14:43:43 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 38B2820040;
+	Fri, 14 Feb 2025 14:43:42 +0000 (GMT)
+Received: from [9.43.78.252] (unknown [9.43.78.252])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Feb 2025 14:43:41 +0000 (GMT)
+Message-ID: <afb134c7-edc1-4671-b4f8-7b8e1c8ac8f5@linux.ibm.com>
+Date: Fri, 14 Feb 2025 20:13:41 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,65 +78,129 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-872026427-1739543850=:944"
-X-Spam-Status: No, score=-2.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next-20250212] syscall kexec_file_load not available
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+To: Hari Bathini <hbathini@linux.ibm.com>,
+        Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <8e73069b-5987-4a08-b13d-13fe691092ad@linux.vnet.ibm.com>
+ <77c11ea2-f3ae-497a-aaba-f7b33f46743d@linux.ibm.com>
+ <da9b637a-962a-4a9f-a4bf-b79e6119b29c@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <da9b637a-962a-4a9f-a4bf-b79e6119b29c@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: I43TyxtIu7bvLAqvw8OLVBPySEakWY6m
+X-Proofpoint-GUID: I43TyxtIu7bvLAqvw8OLVBPySEakWY6m
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_06,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 mlxscore=0 spamscore=0 bulkscore=0
+ impostorscore=0 malwarescore=0 suspectscore=0 clxscore=1015
+ mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2501170000 definitions=main-2502140105
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+Hello,
 
---8323328-872026427-1739543850=:944
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: QUOTED-PRINTABLE
 
-On Thu, 13 Feb 2025, Bjorn Helgaas wrote:
+On 14/02/25 12:15, Sourabh Jain wrote:
+> Hello Hari,
+>
+>
+> On 14/02/25 12:02, Hari Bathini wrote:
+>>
+>>
+>> On 13/02/25 8:34 pm, Venkat Rao Bagalkote wrote:
+>>> Greetings!!!
+>>>
+>>>  From kernel next-20250210, I am observing syscall kexec_file_load 
+>>> not available, there by kdump service is failing to start.
+>>>
+>>>
+>>> Logs:
+>>>
+>>> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
+>>> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -c
+>>> Warning: append= option is not passed. Using the first kernel root 
+>>> partition
+>>> Modified cmdline: elfcorehdr=311424K root=UUID=b5b1f89c- 
+>>> d479-48b3-90e2-744a2fd05667
+>>> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
+>>> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -s
+>>> syscall kexec_file_load not available.
+>>> [root@ltc-zzci-1 ~]# kexec -v
+>>> kexec-tools 2.0.27
+>>> [root@ltc-zzci-1 ~]# uname -r
+>>> 6.14.0-rc2-next-20250212
+>>>
+>>
+>> Is the kernel built with CONFIG_KEXEC_FILE ?
+>
+> I am able to reproduce it with CONFIG_KEXEC_FILE enabled.
+>
+> Seems like there is something went wrong in next-20250210 and 
+> next-20250212.
+>
+> kexec -p --initrd=/boot/initramfs-6.14.0-rc2-next-20250210kdump.img 
+> /boot/vmlinuz-6.14.0-rc2-next-20250210 -d -s
+>
+> Try gzip decompression.
+> Try LZMA decompression.
+> [ 3375.712319] kexec_file: kernel: 00000000e539303c kernel_size: 
+> 0x2cdacf0
+> [ 3375.717022] ima: kexec measurement buffer for the loaded kernel at 
+> 0x0.
+> [ 3375.717076] kexec_elf: Loaded the kernel at 0x0
+> [ 3375.717094] kexec_elf: Loaded purgatory at 0x0
+> [ 3375.717104] Loaded the backup region at 0x0
+> [ 3375.717130] crash_core: Crash PT_LOAD ELF header. 
+> phdr=000000004720e656 vaddr=0xc000000000000000, paddr=0x0, sz=0x10000 
+> e_phnum=18 p_offset=0x0
+> [ 3375.717156] crash_core: Crash PT_LOAD ELF header. 
+> phdr=0000000005eb3f14 vaddr=0xc000000000010000, paddr=0x10000, 
+> sz=0xfff0000 e_phnum=19 p_offset=0x10000
+> [ 3375.717174] crash_core: Crash PT_LOAD ELF header. 
+> phdr=000000000ec70071 vaddr=0xc00000001ec20000, paddr=0x1ec20000, 
+> sz=0x13e0000 e_phnum=20 p_offset=0x1ec20000
+> [ 3375.717192] crash_core: Crash PT_LOAD ELF header. 
+> phdr=00000000b66c9c25 vaddr=0xc000000050000000, paddr=0x50000000, 
+> sz=0x3b0000000 e_phnum=21 p_offset=0x50000000
+> [ 3375.717215] Loaded elf core header at 0x0, bufsz=0x1000 memsz=0x80000
+> [ 3375.717229] kexec_elf: Loaded initrd at 0x0
+> [ 3375.718043] Memory node path: /memory@0
+> [ 3375.722854] kexec_elf: Loaded device tree at 0x0
+> syscall kexec_file_load not available.
+>
+> Kernel is reporting that all kexec segments are getting loaded at 0x0.
+>
+> Running kexec with strace shows that kexec_file_load system return -1 
+> EINVAL.
+>
+> kexec_file_load(3, 4, 1, "\0", KEXEC_FILE_ON_CRASH) = -1 EINVAL 
+> (Invalid argument)
+>
+> Based on the logs printed on the console and kexec_file_load return 
+> value. I am suspecting
+> kexec_file_load returned early form sanity_check_segment_list() 
+> because the segment is 0x0.
+>
+> I am investigating further to find how segment.mem for all segment is 
+> 0x0.
 
-> On Mon, Dec 16, 2024 at 06:10:11PM +0200, Ilpo J=C3=A4rvinen wrote:
-> > The shpchp hotplug driver defines logging wrappers ctrl_*() and another
-> > set of wrappers with generic names which are just duplicates of
-> > existing generic printk() wrappers. Only the former are useful to
-> > preserve as they handle the controller dereferencing (the latter are
-> > also unused).
-> >=20
-> > The "shpchp_debug" module parameter is used to enable debug logging.
-> > The generic ability to turn on/off debug prints dynamically covers this
-> > usecase already so there is no need to module specific debug handling.
-> > The ctrl_dbg() wrapper also uses a low-level pci_printk() despite
-> > always using KERN_DEBUG level.
->=20
-> I think it's great to get rid of the module param.  Can you include
-> a hint about how users of shpchp_debug should now enable debug prints?
->=20
-> The one I have in my notes is to set CONFIG_DYNAMIC_DEBUG=3Dy and boot
-> with 'dyndbg=3D"file drivers/pci/* +p"'.
 
-Sure, I'll add the info and split the change as you suggested below.
+Posted a fix upstream:
+https://lore.kernel.org/all/20250214125402.90709-1-sourabhjain@linux.ibm.com/
 
-> > Convert ctrl_dbg() to use the pci_dbg() and remove "shpchp_debug" check
-> > from it.
-> >=20
-> > Removing the non-ctrl variants of logging wrappers and "shpchp_debug"
-> > module parameter as they are no longer used.
->=20
-> > -#define dbg(format, arg...)=09=09=09=09=09=09\
-> > -do {=09=09=09=09=09=09=09=09=09\
-> > -=09if (shpchp_debug)=09=09=09=09=09=09\
-> > -=09=09printk(KERN_DEBUG "%s: " format, MY_NAME, ## arg);=09\
-> > -} while (0)
-> > -#define err(format, arg...)=09=09=09=09=09=09\
-> > -=09printk(KERN_ERR "%s: " format, MY_NAME, ## arg)
-> > -#define info(format, arg...)=09=09=09=09=09=09\
-> > -=09printk(KERN_INFO "%s: " format, MY_NAME, ## arg)
-> > -#define warn(format, arg...)=09=09=09=09=09=09\
-> > -=09printk(KERN_WARNING "%s: " format, MY_NAME, ## arg)
->=20
-> The above are unused, aren't they?  Can we make a separate patch to
-> remove these, for ease of describing and reviewing?
 
---=20
- i.
+Thanks,
+Soiurabh Jain
 
---8323328-872026427-1739543850=:944--
+
 
