@@ -1,87 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-6189-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6190-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A089A35DB7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 13:36:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F836A35DD0
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 13:43:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvWk96NrHz3blT;
-	Fri, 14 Feb 2025 23:36:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvWtz6VBzz3054;
+	Fri, 14 Feb 2025 23:43:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739536561;
-	cv=none; b=BbegJ1/29owaXjE8V2VejeKge/dAhapbjLMpzyJBkQEMQjNEKcaQxknF1V8V87994A6d8KLfS9x7sOCkOrJudaLIHh/qVyai/MyUJQpe4jEUBzJJPkrH7dSTVX7fd4/NNcmXGXwDU6VNroqnDyfQezOz7oyge8wyR0Ks0Ax0Xeidb8pJrU7zaQ2ivfVWVmLPmUGkrseVCJmctNfFzl8nHrDeaAHIQhonbxhoC+qxHX0HCvL4wlsDq/VkQKu6ugjMBsHSV25FZkbDZbuHfAQmy9Z1JQnYdkpC7vaWwfse/z+Ge/90TjQprbFFS65RfUapQFRDVmTJPJV6Ii7UDNBvew==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739537019;
+	cv=none; b=Z4PMJXRBv9eHSoifnBOV5qbXp3S/kl9R+v5I43zPjtLyy/b3Nj1MnvujewoP0lgOim8gQNk5eFuAzHigj2JROFXgn6hb5gJKblXhVFqG7XN2p2r70M4JOSlQWGdk0GNpmUBcEWWC0v+phFMFr27+RLmvmbJZfEuTt13kNJqI8r8pGMaCGjhtt9f/XfqYs3sB7fbZIMDH0ivYGLkVAX7rGtWLQrwQ+Y9baXponw01TaExRbWtMjDAB09YMlGvs88stgHhx45q16JWVHPZwWb5s5XONkcxL+NIX9CdocltWSG/Z49C3HKFc6nd60F644KKRIsbXYXrTv9UKHq71y5e6w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739536561; c=relaxed/relaxed;
-	bh=WpqZQqP8YUHbi3tkjOqTUFQ2WXaAQNg9Ucs0Z4dPMDo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iNQqTb7xIxvHV8IXO56qafPnxDZhrWLL6585mYSxbUqtAHs53RS9zvTieO2goGa9oyoo9j6ccLLE/F7LJAqVACq/bxstZIWYMBOqP65NEIqS5yB1HiSupB4V8X7X9bhVndVDW32xJ1gXdqjg20c6GdFSJc5l1Q20Dyxb9QisIgmtQSCAAp17np4TvrDryK+Kt+fq51J7UtziUas+JNcFqHOQ/XX8Vc+/bX/6h7DRR5u4QtinFI8pI7UPwEioEOP4pFici+681i+EYg7wnwRWYY2Npc2+uc6v43yWPFoOyEmPFFlyD+mo64Yw6wm/48DIo1HS7T4Ir16jj7TRQZGBQQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=GPFoCbPM; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+	t=1739537019; c=relaxed/relaxed;
+	bh=sPVBKRFS5vtWIBQdOK/9a5fQ2YYyQ1vFUi4kZgw2mjM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gsJDqDNs2mhKbQMdZPpZPnBkpP/OeKKpegJT1BuQTg8etPj6GqEB2p69e4JVz8+HlXpM35x6UQFrDgL59y8n9xD/Epe0gDvHNuQvhXZVnhBZ4dwuPGlXvXmtwwoApDrH7gH/sSENZ+645PG9UJVg7wbuZRiEJ/ATAQ+024P5DDENBNnShqSEfct5i0A/gcnY2/IUtABVXNvmKvMD1iOxteLSzuCwbzFbferbolWaQkiWBCzqtKMKrs6guZmy4FznB6DP4y0x1Db8J/la68tVx/cdpaG90hWgsLw9FgHylbyzmhZM3HopsQd2EGqDmVJQfRnYPhCyX3g/X4vITzwFfg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=epbhwH6e; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tmricht@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=GPFoCbPM;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=epbhwH6e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=tmricht@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvWk73stQz309v
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 23:35:57 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 17765240101
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 13:35:49 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1739536550; bh=DhdTMX1B/VBmrfjg4gCD28dH1z0ZeJtuCVVqdYJtLzw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=GPFoCbPMdVQTIokjgL474jofn1bmBFscmSoe8+kxWm5ko43fhMHtoJPqN2d9BIlXA
-	 dwHbP/kKZO9sJvqO6HVDajQNNQfx+akrH829Wf+wle4YXXiIpEmGGBjZllq8isQIhG
-	 9kT8097Rx9EkU5r3oG8wECEu51TaV1ElDAbMrn6BGm+NKWOci+4vgipWP0Krzpuojb
-	 d/qJ2NJEOXHLyg+vmBc72wvWhI0SG8h1wuwO21Lxsc4vJ00/3Usj/XftI/L63HBDaK
-	 kezRT9NGqPebT3yNBbINZOUu2f5wZHA7xI21Rp55wodaW11/AqqsqycjHtqd+N3VMa
-	 ATrufniylyoZg==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YvWjq1cxCz9rxG;
-	Fri, 14 Feb 2025 13:35:41 +0100 (CET)
-Date: Fri, 14 Feb 2025 12:35:41 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Frank Li <Frank.li@nxp.com>
-Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
-	Scott Wood <oss@buserror.net>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
-	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
-	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
-	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Subject: Re: [PATCH v2 05/12] dt-bindings: dma: Convert fsl,elo*-dma to YAML
-Message-ID: <Z684nUnDX4Sb98rQ@probook>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-5-8137b0c42526@posteo.net>
- <Z6pV4eauZj75+911@lizhi-Precision-Tower-5810>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvWty6mkWz2xmZ
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 23:43:38 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51EAJDIL032759;
+	Fri, 14 Feb 2025 12:43:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=sPVBKR
+	FS5vtWIBQdOK/9a5fQ2YYyQ1vFUi4kZgw2mjM=; b=epbhwH6eymYMmlGAw/eSHQ
+	b67pAv7DoAXV4VGhqSUzaaW+6kSRUc2wWrUIcJiGZEPMIHYeeCXF30JtkE5A/r/B
+	rNwQEPLvTzOv45yIE+WaZYxO/EowulsOnqDqu6MmRhIv+iro5W54Tb3LuDTlBQI1
+	LHmjB30M46u3CifnDNgIsNhePWklMlkw0934jMFyaZWkdgv6GYu3B6siwl3+Ubkz
+	/vBqsTE4JHFEmRA9w+irGLOASHt8Ql2IrYxfOoM3BLNQn6SsbeP7fcFO3kZKzWoo
+	vUVjc/xtYF7wIxu9TgMBjC8P8k0MVW4qcI1+9oEhpIZyr7u8oBo40F6CTirtcUag
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ssvab7c1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 12:43:28 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51ECIKHZ024375;
+	Fri, 14 Feb 2025 12:43:27 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ssvab7bx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 12:43:27 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51ECWUxF028687;
+	Fri, 14 Feb 2025 12:43:26 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pma235p4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 12:43:26 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51EChNpb28574460
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2025 12:43:23 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 619682005A;
+	Fri, 14 Feb 2025 12:43:23 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D49D820043;
+	Fri, 14 Feb 2025 12:43:22 +0000 (GMT)
+Received: from [9.171.39.145] (unknown [9.171.39.145])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Feb 2025 12:43:22 +0000 (GMT)
+Message-ID: <325f8f95-3fa8-47f5-a763-c8b41de700bd@linux.ibm.com>
+Date: Fri, 14 Feb 2025 13:43:22 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,173 +85,107 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/perf: Add check to tool pmu tests to ensure if the
+ event is valid
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>, acme@kernel.org,
+        jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
+        namhyung@kernel.org
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+        hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com
+References: <20250212185438.15251-1-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Thomas Richter <tmricht@linux.ibm.com>
+Organization: IBM
+In-Reply-To: <20250212185438.15251-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <Z6pV4eauZj75+911@lizhi-Precision-Tower-5810>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 8IIT3megEuEuK52r39Odwls2WutMU33b
+X-Proofpoint-ORIG-GUID: Mu3wVLarQMZdkWRtKekHc8skM2RGGba9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_05,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ adultscore=0 mlxscore=0 spamscore=0 bulkscore=0 suspectscore=0
+ malwarescore=0 lowpriorityscore=0 phishscore=0 clxscore=1011
+ impostorscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2501170000 definitions=main-2502140092
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 10, 2025 at 02:39:13PM -0500, Frank Li wrote:
-> On Fri, Feb 07, 2025 at 10:30:22PM +0100, J. Neuschäfer via B4 Relay wrote:
-> > From: "J. Neuschäfer" <j.ne@posteo.net>
-> >
-> > The devicetree bindings for Freescale DMA engines have so far existed as
-> > a text file. This patch converts them to YAML, and specifies all the
-> > compatible strings currently in use in arch/powerpc/boot/dts.
-> >
-> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > ---
-> >
-> > V2:
-> > - remove unnecessary multiline markers
-> > - fix additionalProperties to always be false
-> > - add description/maxItems to interrupts
-> > - add missing #address-cells/#size-cells properties
-> > - convert "Note on DMA channel compatible properties" to YAML by listing
-> >   fsl,ssi-dma-channel as a valid compatible value
-> > - fix property ordering in examples: compatible and reg come first
-> > - add missing newlines in examples
-> > - trim subject line (remove "bindings")
-> > ---
-> >  .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 140 ++++++++++++++
-> >  .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 123 +++++++++++++
-> >  .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 134 ++++++++++++++
-> >  .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
-> >  4 files changed, 397 insertions(+), 204 deletions(-)
-[...]
-> > +  reg:
-> > +    maxItems: 1
-> > +    description:
-> > +      DMA General Status Register, i.e. DGSR which contains status for
-> > +      all the 4 DMA channels.
+On 2/12/25 19:54, Athira Rajeev wrote:
+> "Tool PMU" tests fails on powerpc as below:
 > 
-> needn't maxItems
-> items:
->   - description: DMA ...
-
-Good point, I'll do that.
-
+>    12.1: Parsing without PMU name:
+>    --- start ---
+>    test child forked, pid 48492
+>    Using CPUID 0x00800200
+>    Attempt to add: tool/duration_time/
+>    ..after resolving event: tool/config=0x1/
+>    duration_time -> tool/duration_time/
+>    Attempt to add: tool/user_time/
+>    ..after resolving event: tool/config=0x2/
+>    user_time -> tool/user_time/
+>    Attempt to add: tool/system_time/
+>    ..after resolving event: tool/config=0x3/
+>    system_time -> tool/system_time/
+>    Attempt to add: tool/has_pmem/
+>    ..after resolving event: tool/config=0x4/
+>    has_pmem -> tool/has_pmem/
+>    Attempt to add: tool/num_cores/
+>    ..after resolving event: tool/config=0x5/
+>    num_cores -> tool/num_cores/
+>    Attempt to add: tool/num_cpus/
+>    ..after resolving event: tool/config=0x6/
+>    num_cpus -> tool/num_cpus/
+>    Attempt to add: tool/num_cpus_online/
+>    ..after resolving event: tool/config=0x7/
+>    num_cpus_online -> tool/num_cpus_online/
+>    Attempt to add: tool/num_dies/
+>    ..after resolving event: tool/config=0x8/
+>    num_dies -> tool/num_dies/
+>    Attempt to add: tool/num_packages/
+>    ..after resolving event: tool/config=0x9/
+>    num_packages -> tool/num_packages/
 > 
-> > +
-> > +  cell-index:
-> > +    $ref: /schemas/types.yaml#/definitions/uint32
-> > +    description: Controller index. 0 for controller @ 0x8100.
-> > +
-> > +  ranges: true
-> > +
-> > +  "#address-cells":
-> > +    const: 1
-> > +
-> > +  "#size-cells":
-> > +    const: 1
-> > +
-> > +  interrupts:
-> > +    maxItems: 1
-> > +    description: Controller interrupt.
+>    ---- unexpected signal (11) ----
+>    12.1: Parsing without PMU name                                      : FAILED!
 > 
-> Needn't description because no any additional informaiton.
-
-True.
-
+> Same fail is observed for "Parsing with PMU name" as well.
 > 
-> > +
-> > +required:
-> > +  - compatible
-> > +  - reg
-[...]
-> > +additionalProperties: false
+> The testcase loops through events in tool_pmu__for_each_event()
+> and access event name using "tool_pmu__event_to_str()".
+> Here tool_pmu__event_to_str returns null for "slots" event
+> and "system_tsc_freq" event. These two events are only applicable
+> for arm64 and x86 respectively. So the function tool_pmu__event_to_str()
+> skips for unsupported events and returns null. This null value is
+> causing testcase fail.
 > 
-> Need ref to dma-common.yaml?
-
-Sounds good, but I'm not sure what to do about the #dma-cells property,
-which is required by dma-common.yaml.
-
-There aren't many examples of DMA channels being explicitly declared in
-device trees. One example that I could find is the the xilinx_dma.txt
-binding:
-
-
-	axi_vdma_0: axivdma@40030000 {
-		compatible = "xlnx,axi-vdma-1.00.a";
-		#dma_cells = <1>;
-		reg = < 0x40030000 0x10000 >;
-		dma-ranges = <0x00000000 0x00000000 0x40000000>;
-		xlnx,num-fstores = <0x8>;
-		xlnx,flush-fsync = <0x1>;
-		xlnx,addrwidth = <0x20>;
-		clocks = <&clk 0>, <&clk 1>, <&clk 2>, <&clk 3>, <&clk 4>;
-		clock-names = "s_axi_lite_aclk", "m_axi_mm2s_aclk", "m_axi_s2mm_aclk",
-			      "m_axis_mm2s_aclk", "s_axis_s2mm_aclk";
-		dma-channel@40030000 {
-			compatible = "xlnx,axi-vdma-mm2s-channel";
-			interrupts = < 0 54 4 >;
-			xlnx,datawidth = <0x40>;
-		};
-		dma-channel@40030030 {
-			compatible = "xlnx,axi-vdma-s2mm-channel";
-			interrupts = < 0 53 4 >;
-			xlnx,datawidth = <0x40>;
-		};
-	};
-
-	...
-
-	vdmatest_0: vdmatest@0 {
-		compatible ="xlnx,axi-vdma-test-1.00.a";
-		dmas = <&axi_vdma_0 0
-			&axi_vdma_0 1>;
-		dma-names = "vdma0", "vdma1";
-	};
-
-It has #dma_cells (I'm sure #dma-cells was intended) on the controller.
-
-
-Another example is in arch/powerpc/boot/dts/fsl/p1022si-post.dtsi:
-
-	dma@c300 {
-		dma00: dma-channel@0 {
-			compatible = "fsl,ssi-dma-channel";
-		};
-		dma01: dma-channel@80 {
-			compatible = "fsl,ssi-dma-channel";
-		};
-	};
-
-	...
-
-	ssi@15000 {
-		compatible = "fsl,mpc8610-ssi";
-		cell-index = <0>;
-		reg = <0x15000 0x100>;
-		interrupts = <75 2 0 0>;
-		fsl,playback-dma = <&dma00>;
-		fsl,capture-dma = <&dma01>;
-		fsl,fifo-depth = <15>;
-	};
-
-
-There, the DMA channels are used directly and without additional
-information (i.e. #dma-cells = <0>, althought it isn't specified).
-
-
-> > +        dma-channel@0 {
-> > +            compatible = "fsl,mpc8349-dma-channel", "fsl,elo-dma-channel";
-> > +            reg = <0 0x80>;
-> > +            cell-index = <0>;
-> > +            interrupt-parent = <&ipic>;
-> > +            interrupts = <71 8>;
+> To address this in "Tool PMU" testcase, add a helper function
+> tool_pmu__all_event_to_str() which returns the name for all
+> events mapping to the tool_pmu_event index including the
+> skipped ones. So that even if its a skipped event, the
+> helper function helps to resolve the tool_pmu_event index to
+> its mapping event name. Update the testcase to check for null event
+> names before proceeding the test.
 > 
-> '8',  use predefine MACRO for irq type.
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
 
-Good catch, will do
+for s390:
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
 
-> 
-> Frank
+-- 
+Thomas Richter, Dept 3303, IBM s390 Linux Development, Boeblingen, Germany
+--
+IBM Deutschland Research & Development GmbH
 
-Thanks for your review!
-J. Neuschäfer
+Vorsitzender des Aufsichtsrats: Wolfgang Wendt
+
+Geschäftsführung: David Faller
+
+Sitz der Gesellschaft: Böblingen / Registergericht: Amtsgericht Stuttgart, HRB 243294
 
