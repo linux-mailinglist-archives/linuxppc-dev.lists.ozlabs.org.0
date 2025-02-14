@@ -1,35 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-6178-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6179-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6AE6A357DE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 08:26:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 06CB0A3582D
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 08:48:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvNsQ2RhCz30WS;
-	Fri, 14 Feb 2025 18:26:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvPLd3nYjz30TG;
+	Fri, 14 Feb 2025 18:48:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739518010;
-	cv=none; b=Pw7eZ0F64ZjlmEWhvte7vESy7c0OSE2Hc3FeBLR4C+0Jai2RK0TZtRLMxdGrjds7gQxvpbAXoAtJG5FFt45orki3+rR+vaDf8IZtWK35cytDGXCGqLsxGuhRfJZuaqbyxvG6gre/Z2uNbi23rlR1UfX4gP6hyz8+kaQ2NhSu8VyAWe/MdFxHSAJWIEq+vt1ojUhNc0F/ZK5t1TwKREHPxOOsDpeGwFVn/Uk1VgtkeBj6VEobZh+pX8DAuQM8FysS1shi+/3Ia0QWrwHDibGYx1f7cFG0h5HIh6sfI4GBYBhUHgBqhp+K1e+bQ7klU01c8NGcWkXfjLchig7iJtRvvw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::12b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739519321;
+	cv=none; b=hsfYITlMarW8GyJKfxHbjN1aXl/dxgWMmTuFz8ZuT3uSk2VktW8HJJVkOOm7wczlKBD6hRFxa8icAIXCXTwrxJBiufOXM8hmxwhpRXyMHDZLPbwN0Ra2caoplZZqo1dRRXAFasohBztNIrzyBeF4sovk1V04G3M971Sy7vdN2o9az+8a1ozL0LHtcIvJl/I8UHEkziKTCMACyo2P8jk7BTC/XDktBPl7kci75Wb+TBt1ikCOqEXhtYo6K/pov1oUScjljh2Fg5Kc4fQmFwLyeoCeeWk6+61nO5k2/hADUYzJweGquDkoX5pS3vUcBKfRhzpqJc2B+mms8gSzca2mfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739518010; c=relaxed/relaxed;
-	bh=zSCjFfR20TU7hwUMrS4urDZFjwQFxtUiglQqA7+Ae/0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HbW54xcCFFs2dN3nqjRcEnKI8fAiJ12tbi49VBZ8ReoATaenT8wqdGqp2H/E/iXr1OwJy2Ln4N8kRVqtwZW+J8qNiLPyMHVhi6JAgzwxHwGHn+8cptEpNCiQY6kA0PloK7BGpf+fdrBv1NGqekS/91eODBSnKbZave2FzLhCLEjtDNaYgOSxX2d2J6OqMXd/jcgjyOZS2WxHTgG0i/uu8GsoYRNikxxRmbftWls9OoITugA4qUVRtR320ct/81SbiN0VS3In1ZvznrabZtihkEIJA3CeRNYjTs9ks/bnCVrQzBDgJva62udJbc4Hqmt7mv5TA9XPsgBUf2m46pC30w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvNsP5K6mz30WL
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 18:26:49 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A2A3D113E;
-	Thu, 13 Feb 2025 23:26:38 -0800 (PST)
-Received: from [10.163.37.128] (unknown [10.163.37.128])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 57E413F58B;
-	Thu, 13 Feb 2025 23:26:08 -0800 (PST)
-Message-ID: <03b042ec-1cb7-4419-8741-c65e74e49d51@arm.com>
-Date: Fri, 14 Feb 2025 12:56:01 +0530
+	t=1739519321; c=relaxed/relaxed;
+	bh=731rFs0ET7FwAGuOR3hr8cPMl7QFrpHqNeXFCTqMoFY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=CJEQ4rtqdIhx0W4phh7XNQR+pD0UTEexM1nuZ3NgOSChe2UJbPWcTv2S+0PvY7LFzzqmsxyApAv7oJoqLoiJ4ZkqaBnKZrjQlK5H0qAe2fdgxKOCuCqQt4bNPpjWrRsXgtQkQvZQOH6gPZItdkQyuRBCHh6SdfQIdWfwZyhp8RxyDsr7CAuWzQuEv9DvPkHenZOcVl0ucCLbd6fPWGMZnYSGoSCvDLdTPKuLieJmY2uhdnKpbQ6qnhjPFLo90iuj8a6K6mFJELuRqPqTWb/oAjFrMQobdLtYTfpECYdthhHoisARG0DtWR6zfbN6PUBT21snET9x/QTteHX1b4rzlg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Pao9xUMs; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::12b; helo=mail-il1-x12b.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Pao9xUMs;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::12b; helo=mail-il1-x12b.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvPLb4zrZz30Gq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 18:48:38 +1100 (AEDT)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-3d18f97e98aso11243425ab.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Feb 2025 23:48:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739519316; x=1740124116; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=731rFs0ET7FwAGuOR3hr8cPMl7QFrpHqNeXFCTqMoFY=;
+        b=Pao9xUMskpReAKqrvh9cpKVMh8xyvi+QatSWRJVNU4Y4BHGNa/SFvC27gdDONRa+/K
+         LSG3PMrbUILkBxsh4vF57uglAfcQdF/4hgaTSTak/EHKpQcGt8DHNFQB0xrlY8D0ppwk
+         pJN9Lmkb6tBgepAFi2WYbBJzzL37dTCMKoVxoO3T7/TMvnt9DtDTw1Y7d03Zwzw7aQOo
+         VxcMGC5MoLhuByyVxD4O+8uVNPk4I4UUaQ1oeCGfmuGPkkRdjAIRzSnIcHFumEFpKYar
+         vNKpEJaKnwOqjT+gmSaY44nsxETG8mxJYh4g8XTgY2KHafB1VIlMwqz4VV8EzmDdzGY2
+         sNJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739519316; x=1740124116;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=731rFs0ET7FwAGuOR3hr8cPMl7QFrpHqNeXFCTqMoFY=;
+        b=CdL6H/aaTGASK/hvhOPHh5jkdHc4LciO+GjVzxIv7bJvctQRMkmWNvqhrf2u7pYLSI
+         7kdZ3AG8ffq4YxN7MV2CZusflKdxPE6/w6+izpppEdNmr0ISfwrSKZ7Y59L29KVHxWpX
+         7up1O/AwWPRl7ePQNbSOgiV+xfCmYX5lDa5pBs4t9Y+YawkpWBIvxP1NxGk02jDUBdsw
+         Ec9jv5tDIeLVmllX+LRevpO6no2sCe7fesLycEPq/dD1o97LY0fo63RNNIZJiHulBUsS
+         DZG3N7zIaHoSJWyM5fXQ5iwaBM6luGZu/p4Ze0PzYJ5uFrBEx2ueRjMUuIwqVitHYZPB
+         6toQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX0l2QmRi3/YWrIqvMuUrLtRc1Ffx3bYnNRmlQBFvM0ZwwrNzircIV4HXzNO9o0U22Kp8m1GqLMrjhUf+s=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyR0k/PimX9hiQWJSHie9q4ic/RLZqVCHTjNa1wtB5YqurIQZGp
+	LI166DBYZbT3SQfYHiMl5yE7cs+R4jMq1YKFUvSeU+tOiQBpnT/V+4XlJb9OQC+cu4ILXu60QXX
+	/9JhVH//vB2QsVzpeuHUvL+V5Wlk=
+X-Gm-Gg: ASbGnctnLYZJCIGsjaG3d+eYfWBpoezunRmG35yw4VkEJ0tNXXpgntYF6JCZTk7Uzp5
+	wUM3gNjb63VRv+PBSthUmoMBHoePRz8FZj6Huk2fc+6CcpX9I8tYOeH1AnOaP6tLjCJQXjzPW
+X-Google-Smtp-Source: AGHT+IE22ipUxc6uvPnQnBkwGLFiXLKEtvMmYd7z3k09O1lrpjChkZ/Hbhfrn7x//qqetG+GUnCsfUC8k47APTHaH6M=
+X-Received: by 2002:a05:6e02:3689:b0:3d0:11ff:a782 with SMTP id
+ e9e14a558f8ab-3d18c231101mr54357335ab.9.1739519315915; Thu, 13 Feb 2025
+ 23:48:35 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,70 +76,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/4] mm: Rename GENERIC_PTDUMP and PTDUMP_CORE
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Steven Price <steven.price@arm.com>, linux-mm@kvack.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Heiko Carstens <hca@linux.ibm.com>,
- Vasily Gorbik <gor@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, kvmarm@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org
-References: <20250213040934.3245750-1-anshuman.khandual@arm.com>
- <20250213040934.3245750-5-anshuman.khandual@arm.com>
- <8e75c5ff-a97b-4a6f-9c8b-ac2598eafe60@arm.com>
- <6e1201a1-60c1-40a3-951f-d603b6341a11@csgroup.eu>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <6e1201a1-60c1-40a3-951f-d603b6341a11@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+References: <20250214071747.229719-1-chancel.liu@nxp.com>
+In-Reply-To: <20250214071747.229719-1-chancel.liu@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Fri, 14 Feb 2025 15:48:24 +0800
+X-Gm-Features: AWEUYZm_evk9kNSA0Rf-nfbp1PH6GJ4BxmVu1WRP18sINX7eFOA6CuSK3yph-h8
+Message-ID: <CAA+D8AMbW=iWZ1VCWuZvE2u4EHy9FeEMgDBxpTO9XupZeyUzCA@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_sai: Rename stream name of dai driver
+To: Chancel Liu <chancel.liu@nxp.com>
+Cc: Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com, 
+	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Fri, Feb 14, 2025 at 3:18=E2=80=AFPM Chancel Liu <chancel.liu@nxp.com> w=
+rote:
+>
+> If stream names of dai driver are duplicated there'll be warnings when
+> machine driver tries to add widgets on a route:
+>
+> [    8.831335] fsl-asoc-card sound-wm8960: ASoC: sink widget CPU-Playback=
+ overwritten
+> [    8.839917] fsl-asoc-card sound-wm8960: ASoC: source widget CPU-Captur=
+e overwritten
+>
+> Use different stream names to avoid such warnings.
 
+Only this change should cause issue for imx-audmix driver.
 
-On 2/13/25 17:19, Christophe Leroy wrote:
-> 
-> 
-> Le 13/02/2025 à 12:23, Steven Price a écrit :
->> On 13/02/2025 04:09, Anshuman Khandual wrote:
->>> Platforms subscribe into generic ptdump implementation via GENERIC_PTDUMP.
->>> But generic ptdump gets enabled via PTDUMP_CORE. These configs combination
->>> is confusing as they sound very similar and does not differentiate between
->>> platform's feature subscription and feature enablement for ptdump. Rename
->>> the configs as ARCH_HAS_PTDUMP and PTDUMP making it more clear and improve
->>> readability.
->>
->> [...]
->>> diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
->>> index 77306be62e9e..db005618690b 100644
->>> --- a/arch/powerpc/configs/mpc885_ads_defconfig
->>> +++ b/arch/powerpc/configs/mpc885_ads_defconfig
->>> @@ -78,4 +78,4 @@ CONFIG_DEBUG_VM_PGTABLE=y
->>>   CONFIG_DETECT_HUNG_TASK=y
->>>   CONFIG_BDI_SWITCH=y
->>>   CONFIG_PPC_EARLY_DEBUG=y
->>> -CONFIG_GENERIC_PTDUMP=y
->>> +CONFIG_PTDUMP=y
->>
->> I'd suggest dropp this from the defconfig too, just like patch 1 dropped
->> it from debug.config.
->>
-> 
-> Thanks for spotting that.
-> 
-> That one is wrong. Was introduced by commit d210ee3fdfe8 ("powerpc/configs: Update config files for removed/renamed symbols") which aimed at fixing commit e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP") but it did it wrong.
-> 
-> It is CONFIG_PTDUMP_DEBUGFS that is wanted.
+Best regards
+Shengjiu Wang
 
-Should this replacement be done in the series or would you like it
-to be handled in powerpc later ?
+>
+> Fixes: 15c958390460 ("ASoC: fsl_sai: Add separate DAI for transmitter and=
+ receiver")
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+> ---
+>  sound/soc/fsl/fsl_sai.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index c4eb87c5d39e..9f33dd11d47f 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -994,10 +994,10 @@ static struct snd_soc_dai_driver fsl_sai_dai_templa=
+te[] =3D {
+>         {
+>                 .name =3D "sai-tx",
+>                 .playback =3D {
+> -                       .stream_name =3D "CPU-Playback",
+> +                       .stream_name =3D "SAI-Playback",
+>                         .channels_min =3D 1,
+>                         .channels_max =3D 32,
+> -                               .rate_min =3D 8000,
+> +                       .rate_min =3D 8000,
+>                         .rate_max =3D 2822400,
+>                         .rates =3D SNDRV_PCM_RATE_KNOT,
+>                         .formats =3D FSL_SAI_FORMATS,
+> @@ -1007,7 +1007,7 @@ static struct snd_soc_dai_driver fsl_sai_dai_templa=
+te[] =3D {
+>         {
+>                 .name =3D "sai-rx",
+>                 .capture =3D {
+> -                       .stream_name =3D "CPU-Capture",
+> +                       .stream_name =3D "SAI-Capture",
+>                         .channels_min =3D 1,
+>                         .channels_max =3D 32,
+>                         .rate_min =3D 8000,
+> --
+> 2.47.1
+>
 
