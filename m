@@ -1,71 +1,97 @@
-Return-Path: <linuxppc-dev+bounces-6197-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6198-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64CADA360B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 15:43:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DFAA361D5
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 16:35:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvZYf1WSPz30dt;
-	Sat, 15 Feb 2025 01:43:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yvbj54915z3blF;
+	Sat, 15 Feb 2025 02:35:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739544230;
-	cv=none; b=CgToYDxTch0W09AwknDxVGLTSUOfbyJ4Sahal6e+BxyNr/YlXSea7L1KCTkzTTT8xICnb9xBtjy8IYOeJ5xq5ebolqWG01Vhp5pVdS7Nd9R1VptfZK89TzuqyWW4pctT24/Y9m2OTzLWYvvCSFAL+mZuv2RwCAz66sXhYwX0OuLwS2Rb72d+FBKryPPfaWj57QokbukPL9JH655NY8QFlaHSFp5QUvB0eq6RRuQ8xa5rW/kfUVaOdpZvOvES4K9e8O0jHnDUz5QdNXmq9wGgC/b2FmLwktpYXcGWPbgE2o0OlYGXG8RiH2rFKtwT8bdEd1OAwuM9MaPmNYsMs4cAzQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739547321;
+	cv=none; b=fi18fwMLVBqV6MpwR1YTALFdV5mgE9avfe3AP4fKpjF05YPPUtC2XPw21vxFQ3b/p7z7EQCvWIEmLfcF/Gb7U9VUovhKz5VbDXuMXuBUkko4PU3cvEvEo1y4v0NElWz0xgQkGU+fhzcN+MfYn+EJ33JAMx4a2NNJ9FZM4p+iLy1IiMuqDeDcd4IYmTP2nxfhJn02HY7p6OnRE4lsvs5hZ5ePntygpG6w9kHMSKF/kYa6Y/3/TdngjZ/mbIKDukPc47nf5+9KlTGufJ1/JdEplH4HXHxNBWkriqbMjK3DoUAT2AybuMz3408bQwTdDkTUlDpldw4gs6HFlYFT4vCErw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739544230; c=relaxed/relaxed;
-	bh=2R46RFBw2bl1J+ukk0Qah8+d4Igj6TzF9mpxXuFPr4o=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
-	 In-Reply-To:Content-Type; b=haPI5vPxevoNuum1RELRaHmdjHqb9ssa8NbAfuVvrNfym+To0qVSznutv5jU5wZVjHKANpeszgyIyLW+h2cnguHUA3F/Y+3+SsybKw4ncSN6Z2/s1BWuCA9vebUFbQbP7iGAyh0U/qyY6LLBZ0rihQ/bBaEWI9Uu8mHaqGmMDA292HEG6As5YQfdW8gYayPRxnrJOKLmk7J4vssH2XV1LyoETyGQsCSdU5LCF2sILWM2rv8p+pYnHyAeBhEJ1+8NNb17eLBov0jFqmMubT6pC7xmLkEu5ENJmuWEizCe58tDpzorMXKhtGJD5S1Op2MJvBuIXS9wALvTcPHGkv1ABw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZmohm9r; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1739547321; c=relaxed/relaxed;
+	bh=Epi7Q+7wQY9RKlfsXwKc7BTRBEAbnD6Wjsq4fX0UxxY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bQ+uEecohg7fkYf4th5IIkvQzk8RjIt0+EG2jMi83r5NdSId7iVkgImMwpiLMF8caJdEQMvCj1o/wbBDmSrSQrY4RXfLFoZkK8M0mcWisfR45re4gbbRFOpQhvQkul1inp6vzsRRyWOKRskdciJIJ9sTyF8h2Dh2uqBhX9BmaFmUR4+oLS+S+W9cEbMZ+ICbpOClrfNn8KByqQfu+Nbo5w8zmDERgFPvH9dCM3hgcEQ+ltcxFX9hq8KBeueZH2jkdXeO5W+fGy6GJmhrhqbt2E4EFIv7a+1/z08Tx1dZHJc0kZOwAulNLYTVdSqwdr0OazN2+AiH/4+gjSFWMhTkzw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=CObuytdr; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TZmohm9r;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=CObuytdr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::630; helo=mail-ej1-x630.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvZYd0XC4z3093
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 01:43:48 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51E5O7HJ009421;
-	Fri, 14 Feb 2025 14:43:46 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2R46RF
-	Bw2bl1J+ukk0Qah8+d4Igj6TzF9mpxXuFPr4o=; b=TZmohm9rLGsFB4KDMP/fIh
-	bPAqSpxVTQeDL82kq1R7NxE9GEwxJEpAR+OwHuo7fw7wOGJE2k/gZBEmhE8HCnH7
-	CHqnOVrgi1FfMM1uqakqd3rLtO5G+U69fRil3QjeAyKkgUgYVzDyBgCl8fWNYKxT
-	chV9IAmj2u7ZKaczFkZrsPwj4T01O+DJUADdST4lxGHL89K2S3yiqnk66b2tamCI
-	pl3SthzM2nGzcr1C17Dqk8AE75qb/8dUx3CSa8PfVFbg4682hMWbqHrkjWdgayo/
-	93pKunVf4up9aFSSyFy+LMBiPnJLcZrhvkVyVzfheZzar3r454uF66mejxZLTwfw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44syn82fjk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 14:43:45 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51ED1Os7011642;
-	Fri, 14 Feb 2025 14:43:45 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44pktkbs4j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 14:43:45 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51EEhhEF54198764
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Feb 2025 14:43:43 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 66FB42004D;
-	Fri, 14 Feb 2025 14:43:43 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 38B2820040;
-	Fri, 14 Feb 2025 14:43:42 +0000 (GMT)
-Received: from [9.43.78.252] (unknown [9.43.78.252])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Feb 2025 14:43:41 +0000 (GMT)
-Message-ID: <afb134c7-edc1-4671-b4f8-7b8e1c8ac8f5@linux.ibm.com>
-Date: Fri, 14 Feb 2025 20:13:41 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yvbj439yRz2yGm
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 02:35:19 +1100 (AEDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-aaedd529ba1so265582966b.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 07:35:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1739547315; x=1740152115; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Epi7Q+7wQY9RKlfsXwKc7BTRBEAbnD6Wjsq4fX0UxxY=;
+        b=CObuytdrGf+dU4PU4rO3oOxBzTvSCc5UX06BkUIgVPK/Oy9YovyXWQjItTlWfVLhr0
+         mXoE+J95c6sncdCks24uwPYww/f9RCZvbH3oWbvkGKwe5fPvaI6EG4f4BwQNr7Hnsypu
+         /P+hYiTe4fijU0zUDSOIdMVrWrUaIoKjOzW7/4XbclnqX9o0uXmcMrQ9L9ZyzE0JuXul
+         vzMc7DnkNdXZJuLoOUisOe0fyn7irFMnQnF6w1XP5sO+fUf8TjsmJYgsbvqLDQqVqiZm
+         qJ5Nvu4KX0r6z5rKA7oQF2OmU/iOhOCk6krWd1VvNkLAI3REgHZV5YtvHM+E25M+hYNJ
+         GfPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739547315; x=1740152115;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Epi7Q+7wQY9RKlfsXwKc7BTRBEAbnD6Wjsq4fX0UxxY=;
+        b=Ob1X/OPEbPQAazwGMNlrSFi6vxdrOAR+7hti7bD9Xr2F8XpjLMN50kUl4raGFF8fOr
+         My1JYpfI9dCeydxJL9JmVN28SDCEMkBlJZaylmXb83Z05yugcgjIApTAFCGeJ35lW3m2
+         o0e+UZfwjSOZXiggz8gR2ERjPEGQJvaemiqyVCxjDjWT3CE/OedYwGGG9Fa9dOjdLcZR
+         S0wEuX++rQe2IS+87COO0gfz1dv2+0oOyGvalwdsl256q5IsCDZhuoAyV1QLN/sdhVWR
+         LRddc7/1qPFxeG4eM84dklcixpTQUgyce1P+Qm/u2e1+TOUHRtt5gHkZv/tOoZwYl+T7
+         lJKw==
+X-Forwarded-Encrypted: i=1; AJvYcCUOmdCKlMIecYgHwr/mn0w3rfY9RcAuNqDHUrC14wBuw+pKQstuoYBxYnwqNvR8IXLHY4TcVNA6mJcYXoY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwAU9T5IN5kW3LYYVh862q5IApULAAHndbSqagwRlxJQ9fcf7zA
+	EtCew2Ltomhdm83jXmQuVlULVqWHnYaEQW/F/k8dZtLYrqF17k55oMjbpx7yZ7w=
+X-Gm-Gg: ASbGncvS8L6+QkQmY3ngnrk3E6Kot+mOAcqTXWUNqHq7Ni5t6u18X/wgsjnqmZvxJhh
+	T9TmI8IO+qek0fQjuIwCt9b6wa6QG6oTFPLT/TpU3m4WLt2a1sJccbX7fblLWXZHWutKA0qsH+G
+	zjhmZlJsyt0KJYk7n1XKjYT/yaCRtKBjnIbSlh6tbjuwmlE3TBHpXxWFcHJYbg42eOnGIsS+V7j
+	UFNfJNHXJCMAr2d3CrKBEBhTGfu4hRjhnU8n+64B4FnorHkC6TOnlX3zSv7OmzsZbALdpje1lqg
+	DZWW8M89x0Kx4KhygA==
+X-Google-Smtp-Source: AGHT+IGJzwISDCnvraLVLyP20Cfh4hPSTu9kDD0t/YPlFJMdBbmRyuUpNouBSir5X0Q630+BioQj3Q==
+X-Received: by 2002:a05:6402:2387:b0:5de:d98c:3b4e with SMTP id 4fb4d7f45d1cf-5ded98c4a30mr6607100a12.21.1739547315302;
+        Fri, 14 Feb 2025 07:35:15 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5dece1d369esm3052385a12.37.2025.02.14.07.35.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 07:35:14 -0800 (PST)
+Date: Fri, 14 Feb 2025 16:35:12 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Arpitha Raghunandan <98.arpi@gmail.com>,
+	David Gow <davidgow@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v3 0/2] printf: convert self-test to KUnit
+Message-ID: <Z69isDf_6Vy8gGcS@pathway.suse.cz>
+References: <20250210-printf-kunit-convert-v3-0-ee6ac5500f5e@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,129 +104,108 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next-20250212] syscall kexec_file_load not available
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-To: Hari Bathini <hbathini@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <8e73069b-5987-4a08-b13d-13fe691092ad@linux.vnet.ibm.com>
- <77c11ea2-f3ae-497a-aaba-f7b33f46743d@linux.ibm.com>
- <da9b637a-962a-4a9f-a4bf-b79e6119b29c@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <da9b637a-962a-4a9f-a4bf-b79e6119b29c@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: I43TyxtIu7bvLAqvw8OLVBPySEakWY6m
-X-Proofpoint-GUID: I43TyxtIu7bvLAqvw8OLVBPySEakWY6m
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-14_06,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 spamscore=0 bulkscore=0
- impostorscore=0 malwarescore=0 suspectscore=0 clxscore=1015
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502140105
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250210-printf-kunit-convert-v3-0-ee6ac5500f5e@gmail.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello,
+On Mon 2025-02-10 13:23:21, Tamir Duberstein wrote:
+> This is one of just 3 remaining "Test Module" kselftests (the others
+> being bitmap and scanf), the rest having been converted to KUnit.
+> 
+> I tested this using:
+> 
+> $ tools/testing/kunit/kunit.py run --arch arm64 --make_options LLVM=1 printf
+> 
+> I have also sent out a series converting scanf[0].
+> 
+> Link: https://lore.kernel.org/all/20250204-scanf-kunit-convert-v3-0-386d7c3ee714@gmail.com/T/#u [0]
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+
+I have just quickly tested this before leaving for a week.
+And I am fine with the result.
 
 
-On 14/02/25 12:15, Sourabh Jain wrote:
-> Hello Hari,
->
->
-> On 14/02/25 12:02, Hari Bathini wrote:
->>
->>
->> On 13/02/25 8:34 pm, Venkat Rao Bagalkote wrote:
->>> Greetings!!!
->>>
->>>  From kernel next-20250210, I am observing syscall kexec_file_load 
->>> not available, there by kdump service is failing to start.
->>>
->>>
->>> Logs:
->>>
->>> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
->>> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -c
->>> Warning: append= option is not passed. Using the first kernel root 
->>> partition
->>> Modified cmdline: elfcorehdr=311424K root=UUID=b5b1f89c- 
->>> d479-48b3-90e2-744a2fd05667
->>> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
->>> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -s
->>> syscall kexec_file_load not available.
->>> [root@ltc-zzci-1 ~]# kexec -v
->>> kexec-tools 2.0.27
->>> [root@ltc-zzci-1 ~]# uname -r
->>> 6.14.0-rc2-next-20250212
->>>
->>
->> Is the kernel built with CONFIG_KEXEC_FILE ?
->
-> I am able to reproduce it with CONFIG_KEXEC_FILE enabled.
->
-> Seems like there is something went wrong in next-20250210 and 
-> next-20250212.
->
-> kexec -p --initrd=/boot/initramfs-6.14.0-rc2-next-20250210kdump.img 
-> /boot/vmlinuz-6.14.0-rc2-next-20250210 -d -s
->
-> Try gzip decompression.
-> Try LZMA decompression.
-> [ 3375.712319] kexec_file: kernel: 00000000e539303c kernel_size: 
-> 0x2cdacf0
-> [ 3375.717022] ima: kexec measurement buffer for the loaded kernel at 
-> 0x0.
-> [ 3375.717076] kexec_elf: Loaded the kernel at 0x0
-> [ 3375.717094] kexec_elf: Loaded purgatory at 0x0
-> [ 3375.717104] Loaded the backup region at 0x0
-> [ 3375.717130] crash_core: Crash PT_LOAD ELF header. 
-> phdr=000000004720e656 vaddr=0xc000000000000000, paddr=0x0, sz=0x10000 
-> e_phnum=18 p_offset=0x0
-> [ 3375.717156] crash_core: Crash PT_LOAD ELF header. 
-> phdr=0000000005eb3f14 vaddr=0xc000000000010000, paddr=0x10000, 
-> sz=0xfff0000 e_phnum=19 p_offset=0x10000
-> [ 3375.717174] crash_core: Crash PT_LOAD ELF header. 
-> phdr=000000000ec70071 vaddr=0xc00000001ec20000, paddr=0x1ec20000, 
-> sz=0x13e0000 e_phnum=20 p_offset=0x1ec20000
-> [ 3375.717192] crash_core: Crash PT_LOAD ELF header. 
-> phdr=00000000b66c9c25 vaddr=0xc000000050000000, paddr=0x50000000, 
-> sz=0x3b0000000 e_phnum=21 p_offset=0x50000000
-> [ 3375.717215] Loaded elf core header at 0x0, bufsz=0x1000 memsz=0x80000
-> [ 3375.717229] kexec_elf: Loaded initrd at 0x0
-> [ 3375.718043] Memory node path: /memory@0
-> [ 3375.722854] kexec_elf: Loaded device tree at 0x0
-> syscall kexec_file_load not available.
->
-> Kernel is reporting that all kexec segments are getting loaded at 0x0.
->
-> Running kexec with strace shows that kexec_file_load system return -1 
-> EINVAL.
->
-> kexec_file_load(3, 4, 1, "\0", KEXEC_FILE_ON_CRASH) = -1 EINVAL 
-> (Invalid argument)
->
-> Based on the logs printed on the console and kexec_file_load return 
-> value. I am suspecting
-> kexec_file_load returned early form sanity_check_segment_list() 
-> because the segment is 0x0.
->
-> I am investigating further to find how segment.mem for all segment is 
-> 0x0.
+I tried to simmulate an error.
+
+diff --git a/lib/test_printf.c b/lib/test_printf.c
+index 59dbe4f9a4cb..d2a1af31a540 100644
+--- a/lib/test_printf.c
++++ b/lib/test_printf.c
+@@ -590,7 +590,7 @@ time_and_date(void)
+ 	test("15:32:23|0119-00-04", "%ptTtr|%ptTdr", &t, &t);
+ 
+ 	test("2019-01-04 15:32:23", "%ptTs", &t);
+-	test("0119-00-04 15:32:23", "%ptTsr", &t);
++	test("0119-00-04 15:32:24", "%ptTsr", &t);
+ 	test("15:32:23|2019-01-04", "%ptTts|%ptTds", &t, &t);
+ 	test("15:32:23|0119-00-04", "%ptTtrs|%ptTdrs", &t, &t);
+ }
 
 
-Posted a fix upstream:
-https://lore.kernel.org/all/20250214125402.90709-1-sourabhjain@linux.ibm.com/
+The original result was:
+
+[  787.626709] test_printf: loaded.
+[  787.627398] test_printf: vsnprintf(buf, 256, "%ptTsr", ...) wrote '0119-00-04 15:32:23', expected '0119-00-04 15:32:24'
+[  787.628496] test_printf: kvasprintf(..., "%ptTsr", ...) returned '0119-00-04 15:32:23', expected '0119-00-04 15:32:24'
+[  787.629939] test_printf: failed 2 out of 448 tests
 
 
-Thanks,
-Soiurabh Jain
+The new output is:
+
+[  585.652278] KTAP version 1
+[  585.652675] 1..1
+[  585.653085]     KTAP version 1
+[  585.653382]     # Subtest: printf
+[  585.653702]     # module: printf_kunit
+[  585.653716]     1..28
+[  585.655223]     ok 1 test_basic
+[  585.655908]     ok 2 test_number
+[  585.656824]     ok 3 test_string
+[  585.657522]     ok 4 hash_pointer
+[  585.658547]     ok 5 null_pointer
+[  585.659572]     ok 6 error_pointer
+[  585.661057]     ok 7 invalid_pointer
+[  585.662290]     ok 8 symbol_ptr
+[  585.663390]     ok 9 kernel_ptr
+[  585.665162]     ok 10 struct_resource
+[  585.666231]     ok 11 struct_range
+[  585.667257]     ok 12 addr
+[  585.668399]     ok 13 escaped_str
+[  585.670212]     ok 14 hex_string
+[  585.671903]     ok 15 mac
+[  585.673389]     ok 16 ip4
+[  585.674886]     ok 17 ip6
+[  585.676255]     ok 18 uuid
+[  585.677875]     ok 19 dentry
+[  585.679138]     ok 20 struct_va_format
+[  585.679783]     # time_and_date: EXPECTATION FAILED at lib/printf_kunit.c:97
+               vsnprintf(buf, 256, "%ptTsr", ...) wrote '0119-00-04 15:32:23', expected '0119-00-04 15:32:24'
+[  585.680264]     # time_and_date: EXPECTATION FAILED at lib/printf_kunit.c:135
+               kvasprintf(..., "%ptTsr", ...) returned '0119-00-04 15:32:23', expected '0119-00-04 15:32:24'
+[  585.682436]     not ok 21 time_and_date
+[  585.683115]     ok 22 struct_clk
+[  585.685807]     ok 23 bitmap
+[  585.686576]     ok 24 netdev_features
+[  585.687243]     ok 25 flags
+[  585.687875]     ok 26 errptr
+[  585.688930]     ok 27 fwnode_pointer
+[  585.689544]     ok 28 fourcc_pointer
+[  585.689886]     # printf: ran 448 tests
+[  585.690215] # printf: pass:27 fail:1 skip:0 total:28
+[  585.690582] # Totals: pass:27 fail:1 skip:0 total:28
+[  585.691013] not ok 1 printf
 
 
+I still have to look at the implementation before I add an ack.
+
+And of course, I am also curious about what other reviewers think
+about it. And if this is OK for Rasmus.
+
+Best Regards,
+Petr
 
