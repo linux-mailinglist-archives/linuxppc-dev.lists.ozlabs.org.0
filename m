@@ -1,41 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6165-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6166-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A587FA3551A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 03:57:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1983BA35567
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 04:44:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvGtm1Mwxz30T1;
-	Fri, 14 Feb 2025 13:57:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvHwr4WVfz2ywC;
+	Fri, 14 Feb 2025 14:44:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.190
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739501856;
-	cv=none; b=lnDW/4BLhiarrwpNRDSz9WNnaH3wyLZr8WmDD2BLnr/cU2XFNO5/+DUzx80s0hbupiFygN6yrxwL526+lWl9M8L1ynH/+WyF2vd+dD261mGqhz3h3hdTPFmN0+AFovEYVwsVJ8DX8vgDurbwR/OpSvfrkM1Y2gTOPATdNX8CF39ZXmRT1GB/5ZwZitV2rxVNQgOzirSLbR9fSFiTRebpYtxuYQPnqUfxILyFKuH1pnf7Ie5LNqDCBGw0iaH/DA4OjYlWAFz8pAIJTClBNpGyKzsQhh3qux+lIH89DPF1VbTNclhFt5RNobGwwmPIKsTIJusOdu2DeGVxiKjQWlDm1A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739504668;
+	cv=none; b=XSFit2w87nL8dAUxamVS4eHyF0eVl1rRzFp5w6d+9V1ITOHP8XlNHIbS5r/a4TJNa8SPRNMD8/wK9BbjpX1p8rRWDnzxm62TximGtkXsOrL281PA+2B8gHCgotJ2WwQADy4VFFTjl8gE4/CnHgjRMiF71MO/ICYvxR6SVn3UGWD2cCqkZtVB+ZO2TXz5bXNErVgTAUdMilMiYwou1IhJJ6QWXSIe0BbB65G6X5G5zs2yvma8MCH3kUVzWvTN7NuR6s+IaTD3WMlx/SCd/jHTPiYMdA98MfZK3sOoDSsjqpbwsGmCFLrLy5fUigg3TifLluRauYehu3d4S01CV+cyXg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739501856; c=relaxed/relaxed;
-	bh=dAco+YwYPEGkt4T/RB6q+1KKzbs6hySE2tC8jKn0Axo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=e58u2YJsQM9Nk0M6QCUzN2bZ/39P5CWUdh85FslTPtQKlnj5IA3GsNS/SGFN38+Cc+elXrMELAb5KVbI2L0kM+6UEmbINSEfkUMJJBUB2/Lh2ymorrPxEr/DVEesbzmWTU31yNTN+aWKgdYU0sh+59qG10PLHqunXXv2ndDgdZFkmVGkd7QHYLq4vZHeznu/fcNzjn43ihIz635L+LGw9Jh2ABkS1VDWLUq4Qc1sVc/pUwmpeLWr0CwfYszXxuG2g/tdQlnEo+y7wWIFZ2AvylpyuTnIDN7oKJSpooQn8tqWCS/mE68feSSpS4NSXWr6kooKdGYKwI9Ycz1VP2MGfQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	t=1739504668; c=relaxed/relaxed;
+	bh=9MQAbGXpXA68E2ZJDNg599icK9mYCuj8iCWgPBB4/lU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=JJm7zyZ3MVA+cjXAQF/7Hy27LsrNYG4wxiHCL4qBhUf6JLBkrLV8GszjezJh/kBPCObYaGNyYZ5B82SbgM6K3evQ/imYVuzdADNiB6mTL1PynLl8+0vkInGKlzo6rWqj6QJHAdBE8S7qKGcgUH4ba5mkaJ6PScwPWrndG0jFl6CldpkwOtu0jdp7Q73B3671EoTphdtcRwLmfJe60tHhv784TKRnO7gq+FNbXK8YJUs0B7KFN4qzHdANe3/lWPT5U8pR83+PxZt7SEX9apeHN+eZCO5z46q/EwQGimMXLyHEKW6mYl/jTD6OC2Mbz5Zv4UsJ11wIDnYgwuZXFw8LPA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XBY/bmj+; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XBY/bmj+;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvGtk3L6kz30T0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 13:57:34 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YvGpC5pGcz2FdSY;
-	Fri, 14 Feb 2025 10:53:39 +0800 (CST)
-Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
-	by mail.maildlp.com (Postfix) with ESMTPS id CA35F180044;
-	Fri, 14 Feb 2025 10:57:27 +0800 (CST)
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 14 Feb 2025 10:57:25 +0800
-Message-ID: <ed9cfe20-98a6-64de-66cf-43b536035ae3@huawei.com>
-Date: Fri, 14 Feb 2025 10:57:24 +0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvHwq3WdXz2xH8
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 14:44:26 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51E219TM016465;
+	Fri, 14 Feb 2025 03:44:24 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=9MQAbG
+	XpXA68E2ZJDNg599icK9mYCuj8iCWgPBB4/lU=; b=XBY/bmj+9Q2+lbMovhuXg5
+	x4C+XB32kIvK6ZlGs/QaeECwPwVjg3qL14Gohl6abvrYSKKCj2xAne21XDv7TYwU
+	P0oVYKo01XB1xu6v2moYeh91TALS47ZqiUbCQPfwhW6JDtdtRUWnefgZ7oc8qdb7
+	OVKawYuU1aVYIWrVmjwe1FRE/SXpbQE5CnZCi+H7Si/o3fi3dhyddJwkgsZ66rdw
+	GyxAs4JSmsKnjvGvNg+Q3nrYNfG4dGPtjho0uLZnlNBUfTdL7fdUkwMoSeY8qI6s
+	+QvOKGCT8hzZT1FiQU3iRYhLsp5dRW5bOkW5uFCR6RkjThmF1A9/zeY8/w0u+qqA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44skjuu23n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 03:44:23 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51E32LQj001051;
+	Fri, 14 Feb 2025 03:44:23 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44pjknhphk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 03:44:23 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51E3iL7c38469952
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2025 03:44:21 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 335AA20043;
+	Fri, 14 Feb 2025 03:44:21 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A4F020040;
+	Fri, 14 Feb 2025 03:44:20 +0000 (GMT)
+Received: from [9.43.98.203] (unknown [9.43.98.203])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Feb 2025 03:44:19 +0000 (GMT)
+Message-ID: <bdc8c274-960e-4f66-9790-736e9bd0eb76@linux.ibm.com>
+Date: Fri, 14 Feb 2025 09:14:19 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,72 +78,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v13 5/5] arm64: introduce copy_mc_to_kernel()
- implementation
-To: Catalin Marinas <catalin.marinas@arm.com>
-CC: Mark Rutland <mark.rutland@arm.com>, Jonathan Cameron
-	<Jonathan.Cameron@huawei.com>, Mauro Carvalho Chehab
-	<mchehab+huawei@kernel.org>, Will Deacon <will@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
-	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
- Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
- Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
-	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-	<kasan-dev@googlegroups.com>, <wangkefeng.wang@huawei.com>, Guohanjun
-	<guohanjun@huawei.com>
-References: <20241209024257.3618492-1-tongtiangen@huawei.com>
- <20241209024257.3618492-6-tongtiangen@huawei.com> <Z6zX3Ro60sMH7C13@arm.com>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <Z6zX3Ro60sMH7C13@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems703-chm.china.huawei.com (10.3.19.180) To
- kwepemk500005.china.huawei.com (7.202.194.90)
-X-Spam-Status: No, score=-3.6 required=5.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next-20250212] syscall kexec_file_load not available
+To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <8e73069b-5987-4a08-b13d-13fe691092ad@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <8e73069b-5987-4a08-b13d-13fe691092ad@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: PYIGCqekOGocHD3qbqDxany28q78N8Kh
+X-Proofpoint-ORIG-GUID: PYIGCqekOGocHD3qbqDxany28q78N8Kh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_01,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 phishscore=0
+ mlxlogscore=999 lowpriorityscore=0 mlxscore=0 spamscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 malwarescore=0 adultscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2501170000
+ definitions=main-2502140024
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hello Venkat,
 
 
-在 2025/2/13 1:18, Catalin Marinas 写道:
-> On Mon, Dec 09, 2024 at 10:42:57AM +0800, Tong Tiangen wrote:
->> The copy_mc_to_kernel() helper is memory copy implementation that handles
->> source exceptions. It can be used in memory copy scenarios that tolerate
->> hardware memory errors(e.g: pmem_read/dax_copy_to_iter).
->>
->> Currently, only x86 and ppc support this helper, Add this for ARM64 as
->> well, if ARCH_HAS_COPY_MC is defined, by implementing copy_mc_to_kernel()
->> and memcpy_mc() functions.
->>
->> Because there is no caller-saved GPR is available for saving "bytes not
->> copied" in memcpy(), the memcpy_mc() is referenced to the implementation
->> of copy_from_user(). In addition, the fixup of MOPS insn is not considered
->> at present.
-> 
-> Same question as on the previous patch, can we not avoid the memcpy()
-> duplication if the only difference is entries in the exception table?
-> IIUC in patch 2 fixup_exception() even ignores the new type. The error
-> must come on the do_sea() path.
+On 13/02/25 20:34, Venkat Rao Bagalkote wrote:
+> Greetings!!!
+>
+> From kernel next-20250210, I am observing syscall kexec_file_load not 
+> available, there by kdump service is failing to start.
+>
 
-As I said in commit message, it is not normalized with the memcpy()
-because of the lack of GPR. If there is no GPR shortage problem, we can
-extract the common code of memcpy_mc() and memcpy()，The unextracted
-code is using different exception table entries.
+powerpc do have support for kexec_file_load system. Seems like there is 
+an issue.
+
+Thanks for reporting the issue.
+
+I will debug and find what went wrong with next-20250210 or the kexec 
+you used to load the kdump kernel.
 
 Thanks,
-Tong.
+Sourabh Jain
 
-> 
+>
+> Logs:
+>
+> [root@ltc-zzci-1 ~]# kexec -p 
+> --initrd=/boot/initramfs-6.14.0-rc2-next-20250212kdump.img 
+> /boot/vmlinuz-6.14.0-rc2-next-20250212 -c
+> Warning: append= option is not passed. Using the first kernel root 
+> partition
+> Modified cmdline: elfcorehdr=311424K 
+> root=UUID=b5b1f89c-d479-48b3-90e2-744a2fd05667
+> [root@ltc-zzci-1 ~]# kexec -p 
+> --initrd=/boot/initramfs-6.14.0-rc2-next-20250212kdump.img 
+> /boot/vmlinuz-6.14.0-rc2-next-20250212 -s
+> syscall kexec_file_load not available.
+> [root@ltc-zzci-1 ~]# kexec -v
+> kexec-tools 2.0.27
+> [root@ltc-zzci-1 ~]# uname -r
+> 6.14.0-rc2-next-20250212
+>
+>
+> Regards,
+>
+> Venkat.
+>
+
 
