@@ -1,70 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-6204-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6205-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CA2DA367CE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 22:52:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86035A367D2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 22:52:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yvm4B02wjz2xSZ;
-	Sat, 15 Feb 2025 08:52:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yvm4n24tFz2yvh;
+	Sat, 15 Feb 2025 08:52:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::22e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739569945;
-	cv=none; b=GaARn2C6jR0XX+ku75Y5jfu1XrDRaEV0zN8iDfUARxzZnXbzzXx4O5gprSS5beFQZmaonJk+wvo/HcWXs8f51xZv6G+DZQGz790m1gUZXTiOXJq+yvyw3eZ1pOJ7stg9QRb4xzEZYycDMfpJg3Ic1eRTlenIrZCskRoHCij0uNgjQbGXdICUNWWircFuEZ+WmJsB5xlKR59pPHGF0/8MQSVS812wyOzCGz1+aUEtCIc9VlVFwT/mOSEqvr5W7FkIQXgfXfiQ/ObYWfyJNMOPFK5g3S7wkUrBkC3odoxQ6rTYwR2dCBgiYZirLM3GVZaeUjs/YdrDDCqUVEvWO0pcLg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f2c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739569977;
+	cv=none; b=HCP7q1kNN8kSdn5sSBkOugev2ntYPQUl1PIKHXg2nbGnAG2GUTVcaYi0CeMmzPo7Mx61mqbug0tto1Pcnv/wOJjncSRP4B3pdOSIuIAby8jnVyJOtTaJIl55QG5SAqwMTGcy8JnHPAUAV8suD/icqDmFJGGwUacnz9EGmgd8k/39nSodfbeSa30mWdUEwu3ihrnW7nuEC7VbPb6qsAv+N/3VkxHtvWUupUkGwlL1DWhi5c5Dt2GhWwdsD+VgBGe81ZoFhXrlUEBR4VkjHU4oIXQ5trIJcP+vfgXdL7k2A5NWvk4p4GP9Lr5xHq2KxcACSZy3TyCAe6YtriQybS4nHg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739569945; c=relaxed/relaxed;
-	bh=JRqlyd6oGO0KdHznSNNqTI/AEXRx3zHfr08E+Px4USU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GFNWrzGnLg6ORzHFhFXK4EF4k6Ng459TzCvW1uPnursrC7GwWp3iYXvDtkI2ipJZSMh+Wv5cVWl9IRtACHlYN8XpTQT/YYgak5DuyzaXBj5UwWCJVCuu1ViL1Ko3Xp0OBD70rt/V/C2A9ydMsS/+G7jIuM0pMF1v2NJp21maZg0EF6HIrUjPAr7sOzii0x5n1i7Yi8+k+zAPj30XqJ9zmpdUHIAIQQpIlnnZ4C8jDOmxitGNuf5e1/dynDk5WmDmai+KrXJoxne4blkNB3cE6HHsMxZJhHkwS108Ix5ch1JlSPjVpqGr/oibION/fAwaC4rJGtR4RGR2jgqBK/0HyA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OfECGVHq; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	t=1739569977; c=relaxed/relaxed;
+	bh=oelTRyiq2uUQLScUvm+yzvdL+C/sBoOcsl6Ykq5dg44=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=cdAVUdq3clRMoaBWg7kyCQeTkUWyFyLi8CtNQmllxM6UoOrmV03EG0gNn5TBLAu5H096QeUiTutdaDFBsWD4+ilDcovL2mp8PMXZ9yvI0DTn6CUjVZtU9HXGlBR7tCVWXQiaoypKH4cn71X7svcR15Pn2mOAxe87ybt8OesfqkgGx2nbfpfbBIiKFD1R1TsOxSUQ+Yf/h4jC5IWjmdDkj+m9iLhQgKFH32SwZol9J1/EXFP6rr67QI93aXhrsj/UmcG/qn58z6SNtiISBLq0kqX+HFWuyPEzN+SZUmMVOv7bNywFigMxSVgerrhfmKUbg73owTj/dJZDvxYajsqviw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hlwX/UQ0; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f2c; helo=mail-qv1-xf2c.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=OfECGVHq;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=hlwX/UQ0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::22e; helo=mail-lj1-x22e.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x22e.google.com (mail-lj1-x22e.google.com [IPv6:2a00:1450:4864:20::22e])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::f2c; helo=mail-qv1-xf2c.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf2c.google.com (mail-qv1-xf2c.google.com [IPv6:2607:f8b0:4864:20::f2c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yvm48322jz2xS6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 08:52:23 +1100 (AEDT)
-Received: by mail-lj1-x22e.google.com with SMTP id 38308e7fff4ca-308e9ff235bso21753201fa.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 13:52:23 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yvm4m3N6Tz2ysX
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 08:52:56 +1100 (AEDT)
+Received: by mail-qv1-xf2c.google.com with SMTP id 6a1803df08f44-6e442b79de4so22658366d6.2
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 13:52:56 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739569940; x=1740174740; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JRqlyd6oGO0KdHznSNNqTI/AEXRx3zHfr08E+Px4USU=;
-        b=OfECGVHqgDloxsCQi4PiQmYht0bTiKJBqVqoV6pz0DnDV0VC9e3qDRsqg0gkgMtYmC
-         pGvfBJ9JCcENP3uoW0XOtCpOO0lbXm1mPgn8+4teCLuUiuJF11wRKQgDUYCZyJ0ml9gl
-         zEwWc6r0csnax3z8Ujoz3xPU1inCVibO8evw+Qk87+WnkK2g3J8ndM+enFhn+OQDScdM
-         ogmL+62ShudcuEA3DaF+lgvmu6sMuatX4Ab9PvqYkF6MuEqglSXknkKPgI8lA+P4mANX
-         Xmv/QnfAiMPzf4cBbTTpX0WnRi6Yj9krPpImsz+y5+guCYCAOswluBstbBSFDOWZ+yxV
-         uvMg==
+        d=gmail.com; s=20230601; t=1739569974; x=1740174774; darn=lists.ozlabs.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oelTRyiq2uUQLScUvm+yzvdL+C/sBoOcsl6Ykq5dg44=;
+        b=hlwX/UQ0bdwjG7GZT0gqkU5+Jn/pV+mWa0Bvdl0JTD1ECo9D07bIn+OFoltn8pjsEW
+         hk06liNJZcR+3TRS0lEgUshiuD6Inhr1WHBKNXQiElZvNsSCi13TJV6zoBcSIfySVFJj
+         Mr9f9SHXORxIHfMGbWLH0c/eXjTphsWKAHkngCfNFxdapqUVj+WJNAbPz6MYAvYW0VEv
+         oGY7ZorFiunGoGZ5+cCtcrH2piFLOvZf7LZpxtNhEUMJ3DqzzTuAhXjDRH1ZR168t0lF
+         GTHcrdjgSd+mT2C+dagV7StTHoKsbqYu7F7x3/7vqS0s0eossBSR0Mva8jj7LxcEELqw
+         A4Tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739569940; x=1740174740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JRqlyd6oGO0KdHznSNNqTI/AEXRx3zHfr08E+Px4USU=;
-        b=vLt75m1hRGIu3ML4oH6EkoVfVpRFXVkCe40HvE+ut4TpCXXng3Op+knmKQQr0b2kDL
-         0lhWvkDmh0QZcBqF6OUD/jR7KX38NbPKy7LwVAmcK5XNg4TXUe/1ick6XIkL25kwRh/b
-         hCn7V8MWoIiKNTvp8gXCzHR1fIpuTDssx4s951+1gLt0MaaJL8gRbP9JOFM4/jUPJt70
-         auctamWVagqM1Ow8Ow0SG3ruFEplDe/pW8areKRroAoOw6AJJhTJ7ZMZ2IxzaiLSh+oe
-         8/NeI/zIn7n/Vbdx5gubvfvRPkePKti79i3wYoPm/vmi0pDlmYdKrayJp1jnOq1C51oc
-         R0SA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+FC73PVEg2ytVZj3W7aZuP8pfolrz2Badq7AYr2BTX1FNzr0YXWOyiIk0+CgioxjkqPr2ALwXkKPwkaU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyKUeWsXNYkAyk4dfe8tz2y6Het450sKs3c7MihM8aZjCTpmbzf
-	19PDprOJ+O/lykLUBjf63RY0bXLr+MiBZ1B5BlLxSVgfsufdrZgfdbP3FpyVyvCGrfjLXkwhTXB
-	h80+rNhbeCwWiZ7WOlok69nC3K+g=
-X-Gm-Gg: ASbGncugcl4abycdHNpfMzIi95L57Qzbhbxv0ckVvv/rJyLCtRZJIaWG5eeQvxFqx5h
-	NrTRK3GiFiGGE+tZxYqCf054H+ADHz31DLGxqxeViHi+u9jj7me5duz+DsACExSmsSEZBQiHtMY
-	ISKKbIi0bTGjm9/7cdx2VZVRdZ6Rle6l8=
-X-Google-Smtp-Source: AGHT+IHSpHMu+d9yxfeM9fhEh2exQCFb02zAuHKSY+JxD0Uew6ExTEbIBTjpVBPP5XMmM53Pc3kzV0IcmY9YkC9NKA4=
-X-Received: by 2002:a2e:95c4:0:b0:308:ee65:7f4e with SMTP id
- 38308e7fff4ca-309279505ddmr4289291fa.0.1739569939469; Fri, 14 Feb 2025
- 13:52:19 -0800 (PST)
+        d=1e100.net; s=20230601; t=1739569974; x=1740174774;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oelTRyiq2uUQLScUvm+yzvdL+C/sBoOcsl6Ykq5dg44=;
+        b=kF27anTkCsKpdn/f2Y1XOyKX9yJ7OSyQuFnT5sJvEMwC2uYemCWf/zj3mzJn5ik/cu
+         M4eXGT3Bzx93g60ztVOTfVf9LMMhdZY8bB4RAqXX6KqDqJNRHrp7uBUA6WX95crCvRj8
+         NwV5D8usM/ahH2BRkbwGIt7j0kj4XHMUpebWvbbs9bW958WYY9r+F59fTpBQfwlvdmAf
+         f6jNgsCNeh4VvGdffcZQvhHeCAUdGafGJWkcxDBKN6py/8nXi2PZ93+W+VZeB2ODyiF3
+         ib00cvBZUtodkNsOt8a6nYrgjuOrIexs+YKyAvgQFGMnn3ZoggE6eUhcAdi0kW3OwggW
+         KpFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVc8nmqVXSceEb8kCkCUrcadpnZHD56iRyBcMHwddfhNcHAKvYo1ripi8AmPnBvtm2EGq1CmU2LxPq+T58=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz+CrxH4f5ye/ZjTGCBTJCmbid9dC11f14qwN1YkuFm5/EpI45S
+	+SCMpDi8xRozO+FbJty7MZS4Na6eurXL5XeC15g/3fJK6tSTPxrj
+X-Gm-Gg: ASbGncunVQU6wRRgeXh9pJHWxwqeG+s3ze+/7xl5m2LrIDWBSyvT3kL+bquGzR10MwC
+	0HFLCKneh0PBBYFczbCgR5OJVb6k7ZC7GkndpDIrma5EMfOI5TsNEBBYAuHx1YxEW2Yis4h9eth
+	lgeQNwYTsEOs3Wf/narv9saswGoOavvkZM6ozfIfzvzQhMkCZBul88kRp8aLOISikwm/HV1H09J
+	h8pyKpsrhQ8Ko4V+g0m+QfvK+HA86LA26nqi3ULgjqO3qhsKz7FMcGObVKgmLLQpvvrnY9GUskQ
+	8BNtjZWit4HMeYoQ9JHesA7x31Jz1f5iMOoeIQ==
+X-Google-Smtp-Source: AGHT+IF4uKo/kzj1TcgrhYbwG/5VYUbRGcDZFwUtTMQKwOkAQIIBdKv6vbbSZxzo9Ggb97riNE72Rw==
+X-Received: by 2002:a05:6214:5190:b0:6e6:617c:abb6 with SMTP id 6a1803df08f44-6e66cc7febdmr16020726d6.6.1739569973947;
+        Fri, 14 Feb 2025 13:52:53 -0800 (PST)
+Received: from [192.168.1.159] ([2600:4041:5be7:7c00:d4df:402c:65f0:87da])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-471c2af3367sm21844451cf.59.2025.02.14.13.52.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Feb 2025 13:52:52 -0800 (PST)
+From: Tamir Duberstein <tamird@gmail.com>
+Subject: [PATCH v4 0/3] printf: convert self-test to KUnit
+Date: Fri, 14 Feb 2025 16:52:38 -0500
+Message-Id: <20250214-printf-kunit-convert-v4-0-c254572f1565@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,79 +83,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250210-printf-kunit-convert-v3-0-ee6ac5500f5e@gmail.com>
- <Z69isDf_6Vy8gGcS@pathway.suse.cz> <Z69oxhkUzTfJ6YKi@smile.fi.intel.com>
- <CAJ-ks9mck4DzX+WANxKSmcN=mP9ztgwWETXLmX_F-gy=EhmLNg@mail.gmail.com> <CAKwiHFjnY-c01rvkzNRz=h=L-AxRMyUtp2G0b17akF82tAOHQg@mail.gmail.com>
-In-Reply-To: <CAKwiHFjnY-c01rvkzNRz=h=L-AxRMyUtp2G0b17akF82tAOHQg@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 14 Feb 2025 16:51:43 -0500
-X-Gm-Features: AWEUYZlIzjGDNjdcMbGasiSVuX4TBnRVStLmaQbB724z7yxjnP4i1AoyHu0JSSg
-Message-ID: <CAJ-ks9=T7JJ2W4+fDKeysQ9QOtquMHoGwYU3g8a-A2OJrgL9Sg@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] printf: convert self-test to KUnit
-To: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, Petr Mladek <pmladek@suse.com>, 
-	Arpitha Raghunandan <98.arpi@gmail.com>, David Gow <davidgow@google.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Jonathan Corbet <corbet@lwn.net>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
-	linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIACa7r2cC/3XOQQ7CIBAF0KsY1mKGAWrjynsYF0gHnai0oZVoT
+ O8u1Y0aXf5J5v1/Fz0lpl6sZneRKHPPbSzBzGfCH1zck+SmZIGAFpRWskschyCPl8iD9G3MlAY
+ ZGgMKnUPylSivXaLA1ye72ZZ84H5o0+3ZktV0fYEI5jeYlQRJPqhdbSpnGlrvz45PC9+exQRmf
+ EeWfxAsCNjlDnVdQY36G9FviII/iJ6WUOW8tQDBfiwZx/EBRqyiUEIBAAA=
+X-Change-ID: 20250131-printf-kunit-convert-fd4012aa2ec6
+To: Arpitha Raghunandan <98.arpi@gmail.com>, 
+ David Gow <davidgow@google.com>, Petr Mladek <pmladek@suse.com>, 
+ Steven Rostedt <rostedt@goodmis.org>, 
+ Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, 
+ Brendan Higgins <brendan.higgins@linux.dev>
+Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+ linuxppc-dev@lists.ozlabs.org, Tamir Duberstein <tamird@gmail.com>
+X-Mailer: b4 0.15-dev
 X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 14, 2025 at 4:47=E2=80=AFPM Rasmus Villemoes
-<linux@rasmusvillemoes.dk> wrote:
->
-> On Fri, 14 Feb 2025 at 17:53, Tamir Duberstein <tamird@gmail.com> wrote:
-> >
-> > On Fri, Feb 14, 2025 at 11:02=E2=80=AFAM Andy Shevchenko
-> > <andriy.shevchenko@linux.intel.com> wrote:
-> > >
-> > > On Fri, Feb 14, 2025 at 04:35:12PM +0100, Petr Mladek wrote:
->
-> > > > I have just quickly tested this before leaving for a week.
-> > > > And I am fine with the result.
-> > >
->
-> Thanks, Petr, for demonstrating how it looks in a failure case.
->
-> > > Seems reasonable to me. But I want a consensus with Rasmus.
-> >
-> > I have a local v4 where I've added the same enhancement as the scanf
-> > patches so that assertions log the line in the top-level test.
-> >
-> > I'll wait for Rasmus' reply before sending.
->
-> I think all my concerns are addressed, with the lines printed in case
-> of error telling what is wrong and not that memcmp() evaluating to 1
-> instead of 0, and with the final free-form comment including that "ran
-> 448 tests". If you feel that word is confusing when there's
-> "obviously" only 28 "test" being done, feel free to change that to
-> "did 448 checks" or "did 448 individual checks" any other better
-> wording.
->
-> Rasmus
+This is one of just 3 remaining "Test Module" kselftests (the others
+being bitmap and scanf), the rest having been converted to KUnit.
 
-Personally, I don't feel strongly about this wording, so I'm hewing
-close to the original:
+I tested this using:
 
-    ....
-    ok 25 flags
-    ok 26 errptr
-    ok 27 fwnode_pointer
-    ok 28 fourcc_pointer
-    # printf: ran 448 tests
-# printf: pass:28 fail:0 skip:0 total:28
-# Totals: pass:28 fail:0 skip:0 total:28
-ok 1 printf
+$ tools/testing/kunit/kunit.py run --arch arm64 --make_options LLVM=1 printf
 
-I'll send v4 momentarily. Thanks, all!
+I have also sent out a series converting scanf[0].
+
+Link: https://lore.kernel.org/all/20250204-scanf-kunit-convert-v3-0-386d7c3ee714@gmail.com/T/#u [0]
+
+Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+---
+Changes in v4:
+- Add patch "implicate test line in failure messages".
+- Rebase on linux-next, move scanf_kunit.c into lib/tests/.
+- Link to v3: https://lore.kernel.org/r/20250210-printf-kunit-convert-v3-0-ee6ac5500f5e@gmail.com
+
+Changes in v3:
+- Remove extraneous trailing newlines from failure messages.
+- Replace `pr_warn` with `kunit_warn`.
+- Drop arch changes.
+- Remove KUnit boilerplate from CONFIG_PRINTF_KUNIT_TEST help text.
+- Restore `total_tests` counting.
+- Remove tc_fail macro in last patch.
+- Link to v2: https://lore.kernel.org/r/20250207-printf-kunit-convert-v2-0-057b23860823@gmail.com
+
+Changes in v2:
+- Incorporate code review from prior work[0] by Arpitha Raghunandan.
+- Link to v1: https://lore.kernel.org/r/20250204-printf-kunit-convert-v1-0-ecf1b846a4de@gmail.com
+
+Link: https://lore.kernel.org/lkml/20200817043028.76502-1-98.arpi@gmail.com/t/#u [0]
+
+---
+Tamir Duberstein (3):
+      printf: convert self-test to KUnit
+      printf: break kunit into test cases
+      printf: implicate test line in failure messages
+
+ Documentation/core-api/printk-formats.rst   |   4 +-
+ MAINTAINERS                                 |   2 +-
+ lib/Kconfig.debug                           |  12 +-
+ lib/Makefile                                |   1 -
+ lib/tests/Makefile                          |   1 +
+ lib/{test_printf.c => tests/printf_kunit.c} | 437 ++++++++++++----------------
+ tools/testing/selftests/lib/config          |   1 -
+ tools/testing/selftests/lib/printf.sh       |   4 -
+ 8 files changed, 200 insertions(+), 262 deletions(-)
+---
+base-commit: 7b7a883c7f4de1ee5040bd1c32aabaafde54d209
+change-id: 20250131-printf-kunit-convert-fd4012aa2ec6
+
+Best regards,
+-- 
+Tamir Duberstein <tamird@gmail.com>
+
 
