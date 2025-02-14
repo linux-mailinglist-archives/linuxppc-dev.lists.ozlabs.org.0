@@ -1,73 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6184-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6167-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E85A35B58
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 11:19:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44FEDA3571F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 07:32:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvShx438lz2yk7;
-	Fri, 14 Feb 2025 21:19:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvMg65yk7z2xPc;
+	Fri, 14 Feb 2025 17:32:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.205.221.231
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739525119;
-	cv=none; b=hMfEDnOuL1oPYd27cAg4aCRD5cMolRR2aFaYodmsXjCKMaxK9tiyFygWQTnC6aopTnpKoyfmP3ZKuQop6F/j0c2S5lzO8ymmpuk/aTp7ZrvVNnseEKZb6p1mwC75sYaQE5aSwSy4notExW/PwhJ4iTyp9ZnJb/CU0JM7Obxl8Xv8N7/gp/FS8R/r/3syvoIQ52Osn0nzbli/IOe2Z0oXSTTN67AOCwcmLimzn7kufFNiINzwiOyzqhrDhtGbZBsO/HUJhVJfOLvkMWjl8k81P6WYMIXl9VHgSE/Itoi+Je5I54fPmK1k67t3IuJit1BJBsFTJWgk5gabKnhsOPRjPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739514770;
+	cv=none; b=nNZC5a3rUZW0Bq5Whgaj0kSSWJkK46Vhw4w9+XVggplSernthtQfZEYpUpfZV+s76QmaITt8ETElsjCCd4isAMDW1tOUsU0rb9mMNhurUGTjS9Wksb8db50mbKjlLiuPEVWoX3XmH/LH8mHsI8rehE0zuBfrxBQC2WVC07+wsJzYVq0Rm+zKyCNZwCuziDjInwHvKkW+wg1n2erwbWvAF/xIeCaWcT62unosMEB1w508jEoO0Dxjw9rT366UQh5Uz1yKruqaE/0vaG17mxiN9JITQ6kZyG+a4fhozVGmfrLApSh+5fa2mh7yi+QUl9VmyuQ2G+yhYl0M/x5c6+itVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739525119; c=relaxed/relaxed;
-	bh=I9tMxA0b35Ehfj2sW9QpEMSfeMBVVc4pqXPgNUSyFJI=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=IrWIMJPGj3ObF8ew45+XUCrTgS5/VfFgPKcoMrji8/VMktsn2TqYyHJve+O85217I1shKdWNOH/Z30b3fqHkuxlynNn13VT5oV0n+qsEP0SswC+q9XJ/mZtfo/XsFdRaMZ+L/Yq5cr2fMKu1mUdx8u9GwLV6zNg5EQCVKqK0vteVJoQDRuWooRI9qTFKk0KiWJzmQ9ooV7wPCgB400YQA680cLvjzoiPV5RF/Jiq8RC7TVUY0DdmUgu9LiftEu/bu+jpGkEvyDX/dx6qMmxnLtVJHe4p9pjUawvgTnHXFlGJn1uwvvRM1399B/cgFCOoaJFS4DD3ZErGAYa+qkqB4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=eRafmj4N; dkim-atps=neutral; spf=pass (client-ip=203.205.221.231; helo=out203-205-221-231.mail.qq.com; envelope-from=xiaopeitux@foxmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=foxmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+	t=1739514770; c=relaxed/relaxed;
+	bh=jN4FaQFIv+GkbRwAOYMg9naHXIwVApjxx0TVLhKgmUM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a7uxIe3zisNgrNrF6uK+vo6ZRbFXsLPl93jvpb9ivzvKL3hQqWA/hiGjB+IdBcj08AVEjMu3M5Cw5ethhAcQHRTbXZD8wI3hXE8rtlBuBHIjbGdorPIWzqrOYvYVx1kTRaDpbEoIg3UyWdGDsNP2zIPyfIvynIl6ebQ4eXnp1Rc9vSaB57a4So16Dw7dr98xFZxJeXEBgyMW03vS1+rrASOunKtIAScWpCEcO34nbSi0+aroXBLgEYWXS/lvNng/3LC3JXIe6KD5/WeoLE6nPW5u5hEDtLpK1zXGcQQsBc5tCAnSvdYbFQ134Vm/Iw2iDoT1Z1Cgztyk2i0Ndg14Cg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sramY19A; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=eRafmj4N;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sramY19A;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=foxmail.com (client-ip=203.205.221.231; helo=out203-205-221-231.mail.qq.com; envelope-from=xiaopeitux@foxmail.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 11261 seconds by postgrey-1.37 at boromir; Fri, 14 Feb 2025 20:25:16 AEDT
-Received: from out203-205-221-231.mail.qq.com (out203-205-221-231.mail.qq.com [203.205.221.231])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YvRV42XnKz30W0
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 20:25:13 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1739525108;
-	bh=I9tMxA0b35Ehfj2sW9QpEMSfeMBVVc4pqXPgNUSyFJI=;
-	h=From:To:Cc:Subject:Date;
-	b=eRafmj4Nn0RJmMZxKKCPewJukLw4FYmGssrL4xqxep+7BsoxaQaKotXThW7IoJNpm
-	 9eK53Azanu24qlIIxVoGz470KqJgBlzImZYHc+Z/BO8CSe4GequNPpCkwwdtuqbEa5
-	 Ja/yVleRS31HlB1xWfOeeh/+5PKcZhBc0Tt1SXyE=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrszb16-1.qq.com (NewEsmtp) with SMTP
-	id 2C88A6BB; Fri, 14 Feb 2025 14:11:08 +0800
-X-QQ-mid: xmsmtpt1739513468tg3oqmv9r
-Message-ID: <tencent_832FF5138D392257AC081FEE322A03C84907@qq.com>
-X-QQ-XMAILINFO: MR/iVh5QLeiehVxo+faJzMBrZMJ7TGsCOUlN4TBw/pxiWd3JxEndMuo3xdDyMB
-	 hw5nZTeA8kHAXi7hoIcWIWLCkCMSXVA1V0O/T5Y3RuToIEUY0hTdcgQb08vo3LhJXKsfC/JAvHfI
-	 dFlAWCttNdr0V4trtFUMRcXnyH964UhkOzb51/bZfoor6r0FE2f9UE5YpxX23Di25YQaAxO92CP8
-	 Iooke+oYAazomDNH/ofk9CYXzM7PWpS3LueiFgK2e4sYNBJwAD1p0ggeJ0w7cBQI5nTRJ3/FDl+p
-	 qXpgEjcHKK2keiab4mSAS8b42zMoQoPLh5J7lpAOR19p0C6Y571Ut1RFfO8Omf9nvA+1xTe6f50z
-	 aPB1LPh2k8dFdMKfrKyseGDSs9y8rruJGtcYvHKLtjdmFtirUK5ERtB3UlnFYv2JnXesFYeBqcg6
-	 BxOtiLc1Dx5wUCEWorxZxyLEzC/LBHrjr8RzA7jcElNt1TwfAcb6Ot7QEVnb38LH6O/xuJT2fNG9
-	 629mM3h7fo7+BL5hS164+RWu94Qk3xXaNtzcRQAuc9f0BCg6HlS8QrIjTUDG234gtklE/UKr/WhP
-	 te6CenuNctvR3b+WXNAmV3Tj6s1Xd63QDpNhtNd0uFf0we42I9EabA9cvuHqWxGLjmUiDinwhStd
-	 QCLf5Kk/h+n+p5AhXFoQ0xui7AhcQwkap7EAJIR6ml9cu/gelcHTcS9st2JiNamIIwMhx7GOm7Nd
-	 vPv/Gd5+/xMlLsx+zX75NAXtr/M9vb6eulH7KVYwuscVqFFqpnATGfv0X6ewFENr35Sk4CmAalXH
-	 tdvlO66UxWeQbpTOqoG5v5la1zDSixvPfW101WnC8fQgKxSgha6LOEj6Eda7axYH+zT9+V+hmbvm
-	 zDVyI7Q5g6Cd0LKk3uL36EOhC+x59LzSAecuUmSLPTAFF0p1ZEwsFo7ZHJSFBDjBMKLF2Ef1NaE3
-	 AfAvZ+qmc=
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-From: xiaopeitux@foxmail.com
-To: andrew+netdev@lunn.ch,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	netdev@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] net: freescale: ucc_geth: make ugeth_mac_ops be static
-Date: Fri, 14 Feb 2025 14:11:07 +0800
-X-OQ-MSGID: <e940237592fae0d6e8e32d6b61b4ff18724dc918.1739513279.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvMg55v2bz2xBK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 17:32:49 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51E217tZ013379;
+	Fri, 14 Feb 2025 06:32:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jN4FaQ
+	FIv+GkbRwAOYMg9naHXIwVApjxx0TVLhKgmUM=; b=sramY19AimOPPPGrbVgwjY
+	b0S+Ll/CUN8nrwKAdMEd28ssBqpswYTitlRJvm58REd1QFbVqjHvq12otrnW8M1M
+	TFc6IzmpgNP8lyYT8n6BWR8kRmp7/MqhtHxcs8JH5bV5MhNPo2esPEj3pu5p0JNz
+	H1LJlCvvBY0muFi789DfhEvLez2xPIJNLgtpzITrGQ9K/Ocx6KPAt25iqvqeNuZe
+	xLZ7oEx+TZGfOVU35fhNGAfS58Xp9370Q4G+yyudvCYnM7FZarsF5A8KOxuG+FTb
+	rA4HCffPMDX+cpVjmA7Q9FnvXMgvcFfxdBaqaoB2WXz+MlswaYjTf73uXJ3UL7hw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44svp08xbh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 06:32:46 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51E2jV9X016692;
+	Fri, 14 Feb 2025 06:32:45 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44pk3kj6mf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Feb 2025 06:32:45 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51E6WhvH41812402
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Feb 2025 06:32:43 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CB0E72004D;
+	Fri, 14 Feb 2025 06:32:43 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 77EFE20040;
+	Fri, 14 Feb 2025 06:32:42 +0000 (GMT)
+Received: from [9.43.1.221] (unknown [9.43.1.221])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Feb 2025 06:32:42 +0000 (GMT)
+Message-ID: <77c11ea2-f3ae-497a-aaba-f7b33f46743d@linux.ibm.com>
+Date: Fri, 14 Feb 2025 12:02:41 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,44 +78,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=3.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HELO_DYNAMIC_IPADDR,
-	RCVD_IN_DNSWL_NONE,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next-20250212] syscall kexec_file_load not available
+To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Cc: Sourabh Jain <sourabhjain@linux.ibm.com>
+References: <8e73069b-5987-4a08-b13d-13fe691092ad@linux.vnet.ibm.com>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <8e73069b-5987-4a08-b13d-13fe691092ad@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 8-I0An12dgEe2IHZiXdS89BwQYzIzGcq
+X-Proofpoint-GUID: 8-I0An12dgEe2IHZiXdS89BwQYzIzGcq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-14_02,2025-02-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
+ suspectscore=0 mlxscore=0 malwarescore=0 phishscore=0 spamscore=0
+ adultscore=0 mlxlogscore=854 priorityscore=1501 lowpriorityscore=0
+ bulkscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502140047
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
-X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
 
-sparse warning:
-    sparse: symbol 'ugeth_mac_ops' was not declared. Should it be
-static.
 
-Add static to fix sparse warnings.
+On 13/02/25 8:34 pm, Venkat Rao Bagalkote wrote:
+> Greetings!!!
+> 
+>  From kernel next-20250210, I am observing syscall kexec_file_load not 
+> available, there by kdump service is failing to start.
+> 
+> 
+> Logs:
+> 
+> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
+> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -c
+> Warning: append= option is not passed. Using the first kernel root 
+> partition
+> Modified cmdline: elfcorehdr=311424K root=UUID=b5b1f89c- 
+> d479-48b3-90e2-744a2fd05667
+> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
+> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -s
+> syscall kexec_file_load not available.
+> [root@ltc-zzci-1 ~]# kexec -v
+> kexec-tools 2.0.27
+> [root@ltc-zzci-1 ~]# uname -r
+> 6.14.0-rc2-next-20250212
+> 
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502141128.9HfxcdIE-lkp@intel.com/
-Fixes: 53036aa8d031 ("net: freescale: ucc_geth: phylink conversion")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
----
- drivers/net/ethernet/freescale/ucc_geth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Is the kernel built with CONFIG_KEXEC_FILE ?
 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index f47f8177a93b..c24b2f75435f 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -3408,7 +3408,7 @@ static int ucc_geth_parse_clock(struct device_node *np, const char *which,
- 	return 0;
- }
- 
--struct phylink_mac_ops ugeth_mac_ops = {
-+static struct phylink_mac_ops ugeth_mac_ops = {
- 	.mac_link_up = ugeth_mac_link_up,
- 	.mac_link_down = ugeth_mac_link_down,
- 	.mac_config = ugeth_mac_config,
--- 
-2.25.1
+- Hari
 
 
