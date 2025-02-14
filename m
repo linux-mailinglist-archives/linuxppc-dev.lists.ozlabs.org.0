@@ -1,63 +1,92 @@
-Return-Path: <linuxppc-dev+bounces-6182-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6185-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C3EEA35913
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 09:40:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D9F99A35C9F
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 12:35:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvQVK1zVhz30VV;
-	Fri, 14 Feb 2025 19:40:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvVMk2Rm2z30Tk;
+	Fri, 14 Feb 2025 22:34:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739522425;
-	cv=none; b=Fy8oEsFmY2Ac1EMgriC5UD0axGTAemchskZ8zi7vLBmSZDC486cB35ucJHz+KpEkBAlZ6zMNysGY9iCyClwGjGBJSeb9QDFNiJdL7i6iIEXwSVj416Tr1gHpfHvaBjAH1A+0fgg5XOUcl5INtmMxJGonBTff/thstCZ5oC8KyPbt1YvdaAFTj8Cbt2lGb0VH83YLkbhW407lbs8gSLzDobLNKX7f7enmof/UpAQ+vdqzyZt4LvevvViL5/+2GoCx25Wwgircxer1W+QLRB3i7MdRxtjWFgqnbg3MBqzTLIVTeDfvQUqFkE6HTxuj2GmgXZXE5Ppkerx11kjsZHnefA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739532898;
+	cv=none; b=IWO6GFpV+toeIm8zr7qXQHRj1wW/NNHKr2F3pgiYcmB70fHo0CiBqVkyAvV/MTojvEPOegX0XugQg+8TyoIDf5Evvkz1k4WKAVDj1fvF6ZkzYoqSSBeP//JuyjCyVaB3H8WIJahMMRj9NILCiC0biku+WeXql1fF3uXIJ2d6NGwZzfSDTi2T7Z0jNhVzw8be9Mmt168y3VbBb4a6oUoBGkT7wW/yt6rX1LpdODDcjSPzZfWEvrIUI7530SqRRzGjkvGxIlNyRGS9dytzhSdexh7zan4xWsWKI2NpNOVBTyAzDoMZDmrYT6HdZRWKgRBHKcLyEX1MgUtf/hTD6mM2DQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739522425; c=relaxed/relaxed;
-	bh=fVDQzYkE6ZMDTPdcEAsdWvbM3Lw9DOF/Ac6Pw6a0tsE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gwH4G0udeQiEewygvAX+C/8JkWX2uBPTH+yVNjjaay3IZBuSFV2y+8ZiYyvkMKYarHNnnWXJkd9xl1kT27Kh+rkF+5tpBZgbWjHVOIesW6csxK3DHDHGiYZnMRDElF2bMHlrWaW/DLZItafVEgGM467ltPU35643hNeLTB9RtBkQPUXvUNVNAD7JQoLqxt7+KPCjDqYPyLRH+H03lX8wN0voXt5O+fN1gbAGikCnyRXeJ3MBzLZ75WV9JGcJcnQE8Fk3i8eEXsT0ZiU4DYA7F5cJLTA6U8F5ij8ZW4TxohtyoFDRCj2su/uZEPk+bT6EWzXjk5OQsOAHkxAaxxfoOA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sxINyX1n; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1739532898; c=relaxed/relaxed;
+	bh=WWdSDqLPiHMtkC3qRBjEr7KgW5xesCDv6jmHPBIB4Zc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=ETy1frWBhi05+cmgf5jfF8lklX56QWFTRQ5G4L1Snp3/uk4ySPM/TRADKH2I6klbbSQtrarHA0EcEbDVVfp1Ky+UTLOkjY+2JaehC8ANY+g4eSMnwHIHC7gZliQOxTa+WZJRELn5Gs2ThKzP3emjMZPBI4ejA+UctOXObrTnI0xzga4TwOn1K6F1iqLasTQDLn57iRuyAd4HW5z3mB4groWjJLlep7aQ/vn/riI5hEpevtKmmfxUcFRSJaDH0Yju4sVRE5HKaais7PkMuXqR5uUNkP3NJoFsVftjZ5bvauZHv2rrlYhIcfC3En4AZ7tHBb/QQzPdFR0p1siyGawSWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0VNtTEYh; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=WFnwPIfj; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=sxINyX1n;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=0VNtTEYh;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=WFnwPIfj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=krzk@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=tglx@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvQVJ3VLZz30Gq
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 19:40:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5D31D5C58FC;
-	Fri, 14 Feb 2025 08:39:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6005C4CED1;
-	Fri, 14 Feb 2025 08:40:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739522420;
-	bh=YE4l8V3UVTEVbSPXutJ4j6Y6NMn523OYmOJG5yYkcjQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sxINyX1nsva9oK8xaDH5WHmRvU01UOW+REYlhjfVDrEpNU6+U56EAL9RwOXo95DNB
-	 7XBTBPaSi0G7m/Xs0liBIg4I+e06vkyyR2ealXUjZkTkwLZWYOF318xBUOJyytKNdF
-	 cjNehgtBM61B9JadQkJiimYpwpzWNke42cqAUXi+aM8ZVfBH7lS7n6MyywYjwwZX2D
-	 75LlyJhFchFWEMQH9boTW6UAptsFmDLqaudauFkPFIZiq1X+ADDIwL+c07xDoq0IH2
-	 SGHv/PJHYTS8VqT3p3NNcHrpIqheXwleoSgmispXJxDb32yPv7KY/7ih+J3QkYiCjQ
-	 tKz++T9bnGklw==
-Date: Fri, 14 Feb 2025 09:40:16 +0100
-From: Krzysztof Kozlowski <krzk@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, 
-	tiwai@suse.com, shawnguo@kernel.org, s.hauer@pengutronix.de, 
-	kernel@pengutronix.de, linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org, 
-	devicetree@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] ASoC: dt-bindings: imx-card: Add playback-only
- and capture-only property
-Message-ID: <20250214-honest-puzzling-bear-b8060d@krzk-bin>
-References: <20250214070533.2808496-1-shengjiu.wang@nxp.com>
- <20250214070533.2808496-2-shengjiu.wang@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvVMj3XMBz30Gq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 22:34:57 +1100 (AEDT)
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739532886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WWdSDqLPiHMtkC3qRBjEr7KgW5xesCDv6jmHPBIB4Zc=;
+	b=0VNtTEYhNZqymGENVsUmuk+rnlFfX7RSGT3Ho51Jzxq38FSlmeIElqqU148QkLgRvvbxMF
+	oARriYR4RFpth96NjMkBo5hNBkelucCuzn5JwatniL1M08uy4SKjyhCAdV/qdQ/eba99LI
+	XiEfVSgYOnLLjTtprHlvawcrkXxeqR+m8TpQcRwp+J+sEstFenL0586F5ak1q3mLy7LV6n
+	qnrektVapcPsyxUDFZn8atapF68IW+EhNarZoqS+FgcZ3nF1GslRp9zthgkNswbWYfqivE
+	2J78e9sNA7ZDPletmeb/HsB02wyQreu92A/Zp2E3TtpGj+8SwnWuzKOp2Uz71Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739532886;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WWdSDqLPiHMtkC3qRBjEr7KgW5xesCDv6jmHPBIB4Zc=;
+	b=WFnwPIfjvhMmBrrfQwvQ/cPdgZnaXQkJD4fxKY5hU7USn1NEKaf7iB28bu/zo8sPSUnwBx
+	KGOlqDpRoCYGNWAw==
+To: David Woodhouse <dwmw2@infradead.org>, Thomas =?utf-8?Q?Wei=C3=9Fschuh?=
+ <thomas.weissschuh@linutronix.de>, "James E.J. Bottomley"
+ <James.Bottomley@HansenPartnership.com>, Helge
+ Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>, Vincenzo
+ Frascino <vincenzo.frascino@arm.com>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>,
+ Andrew Morton <akpm@linux-foundation.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Theodore
+ Ts'o <tytso@mit.edu>, "Jason A. Donenfeld" <Jason@zx2c4.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui
+ <kernel@xen0n.name>, Russell King <linux@armlinux.org.uk>, Heiko Carstens
+ <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev
+ <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
+ Bogendoerfer <tsbogend@alpha.franken.de>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe
+ Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>,
+ Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Arnd Bergmann
+ <arnd@arndb.de>, Guo Ren <guoren@kernel.org>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org,
+ loongarch@lists.linux.dev, linux-s390@vger.kernel.org,
+ linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>,
+ linux-csky@vger.kernel.org, "Ridoux, Julien" <ridouxj@amazon.com>, "Luu,
+ Ryan" <rluu@amazon.com>, kvm <kvm@vger.kernel.org>
+Subject: Re: [PATCH v3 00/18] vDSO: Introduce generic data storage
+In-Reply-To: <ff83dc5c91b4e46bcf2d99680ec6af250fb05b27.camel@infradead.org>
+References: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
+ <ff83dc5c91b4e46bcf2d99680ec6af250fb05b27.camel@infradead.org>
+Date: Fri, 14 Feb 2025 12:34:44 +0100
+Message-ID: <87ed00kbe3.ffs@tglx>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -71,33 +100,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20250214070533.2808496-2-shengjiu.wang@nxp.com>
-X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 14, 2025 at 03:05:32PM +0800, Shengjiu Wang wrote:
-> diff --git a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-> index f7ad5ea2491e..86571fa930f6 100644
-> --- a/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-> +++ b/Documentation/devicetree/bindings/sound/imx-audio-card.yaml
-> @@ -46,6 +46,14 @@ patternProperties:
->          description: see tdm-slot.txt.
->          $ref: /schemas/types.yaml#/definitions/uint32
->  
-> +      playback-only:
-> +        description: link is used only for playback
-> +        $ref: /schemas/types.yaml#/definitions/flag
-> +
-> +      capture-only:
+David!
 
-Aren't these mutually exclusive? If so, you need proper schema for this.
+On Thu, Feb 06 2025 at 09:31, David Woodhouse wrote:
+> Thanks for working on this. Is there a plan to expose the time data
+> directly to userspace in a form which is usable *other* than by
+> function calls which get the value of the clock at a given moment?
+>
+> For populating the vmclock device=C2=B9 we need to know the actual
+> relationship between the hardware counter (TSC, arch timer, etc.) and
+> real time in order to propagate that to the guest.
+>
+> I see two options for doing this:
+>
+>  1. Via userspace, exposing the vdso time data (and a notification when
+>     it changes?) and letting the userspace VMM populate the vmclock.
+>     This is complex for x86 because of TSC scaling; in fact userspace
+>     doesn't currently know the precise scaling from host to guest TSC
+>     so we'd have to be able to extract that from KVM.
 
-https://lore.kernel.org/all/20230118163208.GA117919-robh@kernel.org/
+Exposing the raw data is not going to happen as we would create an ABI
+preventing any modifications to the internals. VDSO data is considered a
+fully internal (think kernel) representation and the accessor functions
+create an ABI around it. So if at all you can add a accessor function
+which exposes data to user space so that the internal data
+representation can still be modified as necessary.
 
-Best regards,
-Krzysztof
+>  2. In kernel, asking KVM to populate the vmclock structure much like
+>     it does other pvclocks shared with the guest. KVM/x86 already uses
+>     pvclock_gtod_register_notifier() to hook changes; should we expand
+>     on that? The problem with that notifier is that it seems to be
+>     called far more frequently than I'd expect.
+
+It's called once per tick to expose the continous updates to the
+conversion factors and related internal data.
+
+Thanks,
+
+        tglx
 
 
