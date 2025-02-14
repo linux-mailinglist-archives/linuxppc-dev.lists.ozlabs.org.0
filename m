@@ -1,70 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-6201-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6202-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA3C2A3647B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 18:24:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6977A366FD
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 21:37:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yvf785MGCz30W0;
-	Sat, 15 Feb 2025 04:24:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvkPS6HQhz2yYJ;
+	Sat, 15 Feb 2025 07:37:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739553876;
-	cv=none; b=dCdH3AxginJ9Mf5uUGl7yDvbrrEwERuLiiXHTiuy1YiJWt/sCVwOFcw0vTX9phOkSARPGiZkHF4n0NlCuflMQHTq0kJKy8EwqLqO3m1DGgAJHessiaxpXG3sZWPkZPTbtfbAUrexNEWHCKtb0V6byDDnCYiYbB5Bw6M18LCCEd9yGO5kStkvQRSCG6qUEhfbhJ/NBwI8bXUUnR0OIqylZmX8pmf1vLjC/wmb9F3IccBn+b1eYxTY8U0E1o7RLNk/gCT6FX4I+DCwr7Q2KSrii5ASC7wN1RwXEHmGfB0aXMUHPJ+4bfGCGVbiKeCS+uHyyGbFXAkQhnwPfNvtzQQtTw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739565436;
+	cv=none; b=BGmIv5iYmRCUAUw252wMAHJgULnolRfkEysZzw7UD1vd5N4aM+yzHr6cLRTZlgxGgzI4AMkFfHFMEqbDvgGquSBtYa/UKD0IDYRK8ac2sLpLu5ET/A3nyOKrrdAQD0WeeMm3gI4ezkzwlRLiN26g7wEN8R73Ppv/v6RGeC59MKT+GC60uaeZz3cn55u3AwIyOiAm1Abx89Ty/e3u+qEcUfzGImSBOjjMiKXe6WkhwDvRAssTjwQ8MihAslt/rWSvYPT8hBzdEanN/WTBMlIKT+Mo/oKOv4DtXiNvRQYA7o2jyAhYBk25NYnstwd1rJgMnHVsZKpu22yL4zt56zqPsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739553876; c=relaxed/relaxed;
-	bh=5YtMi32FHQ7+fawZb+ziAVgUu2Jkosuh7gVhJkARHqY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B3/jjmcXs5q573lnPbenSCtnDXHPWsGx42KoiYlqkMJyZYO2Fl1DQkMUtyowaS2Cx3Yn1fZLo0raaLoTRBdqtBlZpipMz7IG+v3Zsm/orvvpAozfDDYzQIOoz8L8PUUydGv8eKioYMz4s4lX5Bgo0gBQOFIRs74ctfWhGbV2I/jlDZQ+JBsY2kH+O1JfeWGuO0JFgGVrlhJV0E7e1z+qJmE5ISQNbmlNDKqqyhznoc+jBWFR6U+vtRaV6MaSax9MwitnM9bjNkqxSgI/hysMjSkAYTsx3uZGsNYv2y93E8t3gO4mMBaXOT3fiZ1T1ygfoARwzqDsQJLqahOKunsm4A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	t=1739565436; c=relaxed/relaxed;
+	bh=uB62k1mjkzaZvDUA6Ksm6VdxNsaub1DVxfgkG/1Y7SY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=KLIXgw+Ga9YqxZb4W4GvJg+6j1y6Rwv8CXEPq7Crd9Flb2b/C9xwUF2hGcjGQNkqZM+3vzI11UaJbLA9Jy28akkoWoeDBcYlunqfmhKx+Pp0E/Q/6QB+zWTq0CZPxCOsEHbl2855/b1pu0J7naxtAvb97s4wIWWrsA+8Do1i+YknPsQ1ObIYIHUSFP1eF6VgfYl652pb7cWYi63FObZTcgV1za3zvhWsUePLhlC2N0ru32Cbgi/L1Mwx8SjIYj5qHqRtL7bWSu7wc2nkXHXG6NjAnyvtGgMU8AO5BtmW6oQDVY3+yZHW9OG07N1sfSd/+ijGsVVixPs6GXXe7loLWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hMdBlqwG; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hMdBlqwG;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=helgaas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yvf772ZC3z2yh2
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 04:24:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvkPR5fwQz2yXs
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 07:37:15 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 30CE55C5A25;
-	Fri, 14 Feb 2025 17:23:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AF84C4CED1;
-	Fri, 14 Feb 2025 17:24:27 +0000 (UTC)
-Date: Fri, 14 Feb 2025 17:24:24 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Morse <james.morse@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com, wangkefeng.wang@huawei.com,
-	Guohanjun <guohanjun@huawei.com>
-Subject: Re: [PATCH v13 4/5] arm64: support copy_mc_[user]_highpage()
-Message-ID: <Z698SFVqHjpGeGC0@arm.com>
-References: <20241209024257.3618492-1-tongtiangen@huawei.com>
- <20241209024257.3618492-5-tongtiangen@huawei.com>
- <Z6zWSXzKctkpyH7-@arm.com>
- <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com>
+	by dfw.source.kernel.org (Postfix) with ESMTP id ADF695C596E;
+	Fri, 14 Feb 2025 20:36:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CB2C4CED1;
+	Fri, 14 Feb 2025 20:37:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739565432;
+	bh=/LU7fG6fgTEGf5K0K6dF6/L6VDooN37auBZ/6PWAfYU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=hMdBlqwGc2H7N1TnwmMXRJNYx0EIanM22MVTDYCeJeX3jw7QlBu6+XuTTgpBrdEIO
+	 51F1leCo+ow8sLbKMoFmAsx26twOKBpYcbhtLngAxHMQgQDUNzwoACUJTx8AaqKpUc
+	 ocoRt7DK/PQ+T85TnRKutoXYL0JMLHjqzRYQnFwA6KhjMK4j6XMAVkOQQfmvf3ybhg
+	 vwB+nZ4E5XxNBAesc4x0fBj5bD+38hy85Mu4WERGSaNhtxt4XheGjw6kpo/I4bg8zJ
+	 B7QC1rV8MXrSwUTf66UxopOaM02v36cFMxhUdZAcbTtvRwzfapEtxcizzgw1d1nYVT
+	 D4U3M0tfHIPIg==
+Date: Fri, 14 Feb 2025 14:37:10 -0600
+From: Bjorn Helgaas <helgaas@kernel.org>
+To: Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>
+Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
+	Karolina Stolarek <karolina.stolarek@oracle.com>,
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>, linuxppc-dev@lists.ozlabs.org,
+	LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 4/4] PCI: Descope pci_printk() to aer_printk()
+Message-ID: <20250214203710.GA162892@bhelgaas>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -80,51 +68,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+In-Reply-To: <91014487-c584-af8c-9810-48291a16b643@linux.intel.com>
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 14, 2025 at 10:49:01AM +0800, Tong Tiangen wrote:
-> 在 2025/2/13 1:11, Catalin Marinas 写道:
-> > On Mon, Dec 09, 2024 at 10:42:56AM +0800, Tong Tiangen wrote:
-> > > Currently, many scenarios that can tolerate memory errors when copying page
-> > > have been supported in the kernel[1~5], all of which are implemented by
-> > > copy_mc_[user]_highpage(). arm64 should also support this mechanism.
+On Fri, Feb 14, 2025 at 01:56:47PM +0200, Ilpo Järvinen wrote:
+> On Thu, 13 Feb 2025, Bjorn Helgaas wrote:
+> > On Mon, Dec 16, 2024 at 06:10:12PM +0200, Ilpo Järvinen wrote:
+> > > include/linux/pci.h provides low-level pci_printk() interface that is
+> > > only used by AER because it needs to print the same message with
+> > > different levels depending on the error severity. No other PCI code
+> > > uses that functionality and calls pci_<level>() logging functions
+> > > directly with the appropriate level.
 > > > 
-> > > Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
-> > > architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
-> > > __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
+> > > Descope pci_printk() into AER as aer_printk().
 > > > 
-> > > Add new helper copy_mc_page() which provide a page copy implementation with
-> > > hardware memory error safe. The code logic of copy_mc_page() is the same as
-> > > copy_page(), the main difference is that the ldp insn of copy_mc_page()
-> > > contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
-> > > main logic is extracted to copy_page_template.S. In addition, the fixup of
-> > > MOPS insn is not considered at present.
+> > > Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 > > 
-> > Could we not add the exception table entry permanently but ignore the
-> > exception table entry if it's not on the do_sea() path? That would save
-> > some code duplication.
+> > I applied this patch by itself on pci/aer for v6.15.
+> > 
+> > We also have some work-in-progress on rate limiting errors, which
+> > might conflict, but this is simple and shouldn't be hard to reconcile.
+
+> > > diff --git a/include/linux/pci.h b/include/linux/pci.h
+> > > index db9b47ce3eef..02d23e795915 100644
+> > > --- a/include/linux/pci.h
+> > > +++ b/include/linux/pci.h
+> > > @@ -2685,9 +2685,6 @@ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
+> > >  
+> > >  #include <linux/dma-mapping.h>
+> > >  
+> > > -#define pci_printk(level, pdev, fmt, arg...) \
+> > > -	dev_printk(level, &(pdev)->dev, fmt, ##arg)
 > 
-> I'm sorry, I didn't catch your point, that the do_sea() and non do_sea()
-> paths use different exception tables?
+> Both shpchp and aer do use pci_printk() before this series (it seems LKP 
+> has also catched it already).
+> 
+> If you split this series into different branches, this removal of 
+> pci_printk() has to be postponed until the next kernel release (fine for 
+> me if that's what you want to do, just remove this part from this patch 
+> and perhaps adjust the commit message to say it's to prepare for removal 
+> of the pci_printk()).
 
-No, they would have the same exception table, only that we'd interpret
-it differently depending on whether it's a SEA error or not. Or rather
-ignore the exception table altogether for non-SEA errors.
+OK.  I dropped the pci_printk() removal for now.  I'm anticipating
+more AER changes this cycle, so I'm trying to keep those isolated.
 
-> My understanding is that the
-> exception table entry problem is fine. After all, the search is
-> performed only after a fault trigger. Code duplication can be solved by
-> extracting repeated logic to a public file.
-
-If the new exception table entries are only taken into account for SEA
-errors, why do we need a duplicate copy_mc_page() function generated?
-Isn't the copy_page() and copy_mc_page() code identical (except for the
-additional labels to jump to for the exception)?
-
--- 
-Catalin
+Bjorn
 
