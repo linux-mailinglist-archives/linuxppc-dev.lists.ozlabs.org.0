@@ -1,71 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-6169-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6170-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E33DA3575E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 07:45:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F8A3A35796
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Feb 2025 08:07:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YvMxw5z8Vz30Vr;
-	Fri, 14 Feb 2025 17:45:40 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YvNQb4wL9z30Vw;
+	Fri, 14 Feb 2025 18:07:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739515540;
-	cv=none; b=oElyZCwp5R6hbIO5/78fpYfTTcKfmnrQWZ/JK2txocNhUvUV/wBb6fVHsj7+TNkW9yc8WT0iOVWZYkw13BYUVc7bdziTW2njdZ1C5IAvkri0YbXHwDUlNOEztA7O2j8GVAaiihkiRR/ra4vkCWWHjg7rl0N5OsavsQysYYMYAH+kpGd07bjAZ5adVyFDKUPaShfZIwyd04kqnLqpN0CIJbKqTfpKTmKjyRGTmyFaz8aYDLkNGMJW4i5NWl/vUXo37bJXNSVP6jUgT8c56RvNKKiW5t5bvry4F3lAjfJq/FlPO4HA2HvxtIJm5rkVFa6xjJTm4UWgYiIhYfzVRfQtzw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739515540; c=relaxed/relaxed;
-	bh=suLypsBSmE6AszeJZb1uWjabD9IlIqQQNel8XNX6nn4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=aFfuDy2nVhdbSToqWapXPO924CDj9Tk9mQMAhL/Zx/jnKlMwdMoJyZP+Vd1ZSyCpkazfmUgKVIm0cpr8UY4v8dennJG3/wSH4RpQa0nokmgbAUnLQ1V/AxiwpFEbWInbBz4szCIhDCuL8zGGUvUrNXr9r6qalIRlKwZlF0nHWJZtql8TpvtVUv4xaPdDIIVJHfV6xoJHygXnUuVzSlrjixGEWbYVC530dFArcldNShkAUALH5rUM0jUT2pXcrdU5F2DzXuHn88LkINNLHvJ/ntul6oK1GE2+EaIQX8v9UgNz93qiZYNnf4ePUcf1Y42i8rrjd+bAgoN5KxlL/uqVRg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nOzAgVgy; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:260d::62a" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739516823;
+	cv=pass; b=P17MEh97AAsexMN9reveZaeoC0Z0DkCrzZnSAK9QLIPaGw4t+KfNT3qPz1QWh9ulL4Y4ad8yqd6a0s9ljGU7Q8imFMWVPVtefq2GKyr8167pG3t9Pc7MS+y8Hz5wweWISgxLdzXk9x+42xhUsFKkSPW0YfxiFx5noPqRLSJ+303SoCeQYidd2wKL83pRlKAGbiAqcnmD6aY2Zu/j8n1ZdA8yM1MaZ9H/moI263ZY/oNfqF/gM+k0G6SpfCHKQXc6rxkQGfcb4LZjfZBkSSoNu4liSWzYmVaMShbT11TcPbwo0863vczNnAZpE4J4MbiepyeMRgq65lSufCDb5a9Klg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1739516823; c=relaxed/relaxed;
+	bh=efAk11HXN22wde0VDOjo5CKkbRMOplEvvLrZjDAgqlE=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=GdurlH0VhoXUcC6MjZZl9aY4in3W0QeCM6QqhgCAX8dGKp2Pp9fc+awS8dqWTHW11XhEkdcutKfiLOS4/FyLvXDoDF4vtopMS7KHEyA81Mhe8nSKtE+p1t4U+iAGhion1SFajmPNauMRNNorUs23HWB+gAECKSQ141oIltRbrvdzJZ/q9UVsLMwCcBFt7S0QzNIavdVo8skDOscD+662a0S2NY2u/M655gw9FkcKqoVN6XkYl3ivnfGL9hYp8RvpSQbLDJeNSp1ZwO0A9RrlvOAYc+Tc263B2Yja/sl1go9BmaVgFBdfB6jfrTiJeK+cT7hwloPAvMlaLoIVsQwE8A==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=IE6ZydhN; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:260d::62a; helo=eur03-dba-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=nOzAgVgy;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=IE6ZydhN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260d::62a; helo=eur03-dba-obe.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2062a.outbound.protection.outlook.com [IPv6:2a01:111:f403:260d::62a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvMxw0srqz301v
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 17:45:39 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51E5OUVt010341;
-	Fri, 14 Feb 2025 06:45:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=suLyps
-	BSmE6AszeJZb1uWjabD9IlIqQQNel8XNX6nn4=; b=nOzAgVgyaX+gzuT5QVtcD3
-	J98N8pL4g9Cvc8NTC/w+/GPGjrok2HnaQPUo6xkmrZELV8o6Xtb5IOz4kNIsn/Qm
-	rPyQy+JYbrBuyyOTfRY8SY3tWB1bupnp9LhSyFYNL6+iTzF95rnUJCChPxXNd60j
-	0M6JTXqJaHkya2+r8nl+TtGavUNIIx3FcWtJT5CwOGvgxGnouqoo3tBsgIRGe0DC
-	SH79efu0HdhLs93fjjCNwh6/W81FMMpSZd8TcSbmUV8Vd4lrCC7r8PiU+0YNfXWN
-	XhIvRtvDrhAd7MzenG/lBCHVhqFmhLBLhy0oq5Kr4+ShTYRpSJ46b73PLRNvlfZQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44syn80964-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 06:45:37 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51E2U3n5000978;
-	Fri, 14 Feb 2025 06:45:36 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44pjknj9ce-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Feb 2025 06:45:36 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51E6jYHk18415972
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Feb 2025 06:45:34 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 98E1E20067;
-	Fri, 14 Feb 2025 06:45:34 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 448872004F;
-	Fri, 14 Feb 2025 06:45:33 +0000 (GMT)
-Received: from [9.43.98.203] (unknown [9.43.98.203])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Feb 2025 06:45:32 +0000 (GMT)
-Message-ID: <da9b637a-962a-4a9f-a4bf-b79e6119b29c@linux.ibm.com>
-Date: Fri, 14 Feb 2025 12:15:31 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YvNQZ2f2Vz30Vs
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Feb 2025 18:07:01 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WmLtVA2RhsrFKf0hQIoiKn07hrgKvdtTc+TntlRIiDVmPasxDlbjxz9Ygy/h7Xaczhq/xUw5K4qMMIJslnRosQAxfoUrigvqJVboNV6qCY9prqAbdHi7euAr1p+zKFyV1kXNXNr6O7kaQ/nGn5zosQZZ623Myyg7oDlCELswSbuXnWVQg4ERhkLAOK980rqrk7bCKLA9L9gnbWSpHA7ZJeaDBj5GBUhq63d7nfIU0NUhDaiBOc8hSdC9Wp+/K4oSNw6+NaIqQECUL8Ctxh/KweCfcWYe8MC87x0bvGKR+LLX93VhYf6XGyEJ6jXMHc3ooE5V81Gv/zdJzzJYLWtfTA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=efAk11HXN22wde0VDOjo5CKkbRMOplEvvLrZjDAgqlE=;
+ b=ffyzXVoDdMLPAK2piQPxt9hfmON0bA6nOkso7E0GONH8rCtyntb55JC3KB+QJlKysCDRTz9O4wgo9OuT25HMAT+YW27h+9MRjflsJfI6ru7kmGvba6DvcJ4R5NtSD5fxPVc8Wl8XPk0887zXz80hWXQ64KW0w2fF6HX+wtARFMJRbzZqze8w9YJi6nyGOd0YGsBuetl3Le0XHQKaMKa5z4ecjulyGRKC4cE3VpU035BtxUzTYgrIxjK+yv/64rk5gc+NBrBoXXb7RvFNUJj8EmIvz/cbZ29o1/XjVEyjHLybG8eZ4TNPHXBcYHwlMfN3d1dzQA2fk5IN1BOh+xmy9Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=efAk11HXN22wde0VDOjo5CKkbRMOplEvvLrZjDAgqlE=;
+ b=IE6ZydhNn/KBW1xYSwj/dnpt/5iNwBJCDOFyo02yBIDLpRsJxkigPpATwEAt8anDr9iFpx1zmFK2fhr2kwxCr6e/G0KKjWHnw99YbPS2YE/Y3gk3CByQ0NAueBYsyF6JpAZ3ihU15j8HDgi8qGgMA1gDKzonApSYwgcM6Fws2XtjXlnsAvKIddOq4b4TKh1dIjTZ8mu/b/qa8VLgLM5bEdbyN3tTKR/T7h57LxKKbQT6hwa/Hu0DeriyCyvqBWS2TmB/hlMsF/B/NB0ghrHxdbNB9XRakJnckcyoQd1a/Q22ZlU8XZ6KO6CrUEUSntLjoWyXKuc6tkSkmCIbGzVyZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by AM0PR04MB7121.eurprd04.prod.outlook.com (2603:10a6:208:19a::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.17; Fri, 14 Feb
+ 2025 07:06:43 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891%3]) with mapi id 15.20.8445.011; Fri, 14 Feb 2025
+ 07:06:43 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v2 0/2] ASoC: imx-card: support playback or capture only
+Date: Fri, 14 Feb 2025 15:05:31 +0800
+Message-Id: <20250214070533.2808496-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SI2PR01CA0034.apcprd01.prod.exchangelabs.com
+ (2603:1096:4:192::9) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,116 +94,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next-20250212] syscall kexec_file_load not available
-To: Hari Bathini <hbathini@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <8e73069b-5987-4a08-b13d-13fe691092ad@linux.vnet.ibm.com>
- <77c11ea2-f3ae-497a-aaba-f7b33f46743d@linux.ibm.com>
-Content-Language: en-US
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
-In-Reply-To: <77c11ea2-f3ae-497a-aaba-f7b33f46743d@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: nuSfUP2hAdQ0LcOA-ozi6cFpn48kU42J
-X-Proofpoint-GUID: nuSfUP2hAdQ0LcOA-ozi6cFpn48kU42J
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-14_02,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0
- priorityscore=1501 lowpriorityscore=0 mlxscore=0 spamscore=0 bulkscore=0
- impostorscore=0 malwarescore=0 suspectscore=0 clxscore=1015
- mlxlogscore=999 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502140047
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|AM0PR04MB7121:EE_
+X-MS-Office365-Filtering-Correlation-Id: 664082ea-ad2d-4b23-f5c9-08dd4cc622e3
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|376014|7416014|366016|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?hbU9EDP6aCujpz1EsFmFOp6Ygv7HQfd0TPCykEOYstzpg1d9QYqKxlrFPncd?=
+ =?us-ascii?Q?ymNq8cV0VnSCXTkg6yddHcnkp+03GC4rbHmR6U6Og2Lz3akynfXeVYXQCM3t?=
+ =?us-ascii?Q?R1eCQ5ACDEF83VkXF33lte3UO9PZRIP/dPXekC6/XTDzke7P3Ba2qRsdjuos?=
+ =?us-ascii?Q?LPuVsYxijz6qJd7Kaa1fgB985VGW5ryI4qulRUWWU8jYjcemwoSj061PZhRg?=
+ =?us-ascii?Q?yWvSIOUM9qLEn46Vd6guSe/wJhfCdKI6jLMdPz/Zf3QUd9UCHSbClgik1LL3?=
+ =?us-ascii?Q?9TXmoVhXoZEXfBaIoxTKUKeOdU+/Qx8Jnw7sFreNm2Ub/AtP7OpbhQmRcq9A?=
+ =?us-ascii?Q?i5Lox9w2jW0hoeCyneA7NREzaHt6lE4oGjtdlyidYhFpewraRGI610ID2wbn?=
+ =?us-ascii?Q?1gwfjQwQB+ieGZOfDhNLSiF9ZBGqSESgxo2B6HD1IOG13i7OZ6TFIOrMqC56?=
+ =?us-ascii?Q?KCAhPtb+xqE6qOSGZ6ofUYEMkNm4+UTnzzstHHPRFmLYZO0UOKwQvLMAGEP8?=
+ =?us-ascii?Q?OBU3oPGSyzWs0vv7xw7A4ZI9aQenn5xwa/ncaYkTxaRmK7yN2PSu7ruZOmws?=
+ =?us-ascii?Q?dRdoagGmEuywxLZ+9Kr3YoWYko2g5Xud/jo2ySmQ49NbGeFbC2QDsKWSs+h6?=
+ =?us-ascii?Q?V7vynWdQnijXRFxzYirtzVz8CrUVMOqZ8kRVHdbqCI1jbEqY+l30DSpovcyG?=
+ =?us-ascii?Q?IFbl3kd/J+H1bdb61R27ae05mosTNb+T0MGtlOTRBWoPvGvevrjYmyPqDHbK?=
+ =?us-ascii?Q?aVAtEOuzODQmGg9ul/Gim+8aTOM4wUPC7O6bbBUmm2XwUx2fPBpXiZedHFbE?=
+ =?us-ascii?Q?Fx08zhaxF6Vp2uXz8dZqREOvjrK6lEoQ+EW553n3Dedghnkw7p/LALqMmcyR?=
+ =?us-ascii?Q?lZ7ZCNX+2HGOZ0roODF8cl/IjjmWnaiEbdOiocx80yT3W1Ts0TwQxdSiTpFQ?=
+ =?us-ascii?Q?RkCMepvVox1EVnXaTmrFje3cy6mneqWUbeCAq7TJSIvDblxYQG/xnOxU1lXp?=
+ =?us-ascii?Q?CEEiHy6fMgcXpHyyDki7AxzrGl3mq2YIymIgCSxA85A0RZh8CXJIotzgbvxd?=
+ =?us-ascii?Q?DO6JT1oO8d+nPWSIbpDOpVXv3UBdXjAePYXaAmBoeeKgTGORvMwOt9vELmMV?=
+ =?us-ascii?Q?8oasst0sYTuSAXPo3yy5mcXUjhJivObVNglEQ2RWPrq4VKIDJ+7MY12pOLdo?=
+ =?us-ascii?Q?KPIBCiQt64ID2pADGZuCMPjArq/xG9UnHhdgVZ2OGvfBru7k+teYrQo/89bq?=
+ =?us-ascii?Q?moNth8/VD1mFvISoA8874FttcLzksNNRPmACVc+MYdS4yja40t8VrdREbtTS?=
+ =?us-ascii?Q?edIxQE1WDqXDKAs+fM18hWMUoOTC9s7jwbkUpaeV6/CtQFuY9Z6yepNvH/C5?=
+ =?us-ascii?Q?Zy1zPdJELeJSXQKceZTQphDZbjTuv311xlO33NjCZ2ZF3jo/rR48h3dwbOQv?=
+ =?us-ascii?Q?T6z7y/nQu/y7BtZpcQ1YfJ/xs3agxVERU35YxxLRo8PH0ckPIsFr0g=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(376014)(7416014)(366016)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?a+9rP66tSgbP7yViHJwuj4l0DhleD2BEp51ZVVmae8NUzQEwXc5TNaNlKgQM?=
+ =?us-ascii?Q?0sWezDZblwxI/EJmQH+j5u5GB5do/JKEh0e+ieV16glSH18Ajtsc4mLWkVQW?=
+ =?us-ascii?Q?MKjKvV+++iz9G0A9HDbBeKJd6x4GuF4y7MfZZXs881dTbgTk3Krhyvc9/+LM?=
+ =?us-ascii?Q?L3dJxKpsGBwgCEs1h/m49pIeqWWlDPULu6Gpmy631mWheG9hL+p2/Pi1cyBf?=
+ =?us-ascii?Q?VFRj8viP+bOnsyAjWmXdIn6VJHmBm4WC0AApDt6AWkez6OBsbpqLMXTHjRLZ?=
+ =?us-ascii?Q?t8jioFVXIV9oO/fAYnfDDyDEWHynmHJ5QbVJNK5a6ON59R8GwWziHyjzH3Im?=
+ =?us-ascii?Q?7ckC1QWHp0jhKakpN2TQw4eO1nsI1YYlUU8BxDz4WFj4Xd2avAmhmczEIPlE?=
+ =?us-ascii?Q?/e8PS5W0G0e2xF9ezp88ns8bR2TdcmOGlVeXwKMIYfGgACHUJs7zL6A1y5H7?=
+ =?us-ascii?Q?0TqtObaY/+0dS4FFpZp6JfMRx2Bmb1SLD28wKZob2vHLqBzDefJsIRiuDQxN?=
+ =?us-ascii?Q?5wsVfrjxKwl/HwjbihYdDeUTnWx4tEzJ4yu1NWJjykof12UppOp7jOn9XBNX?=
+ =?us-ascii?Q?kpBjebAZzV5OpBIfivCqpodBuUyMKmxF732IKryOgLk0F++fLH4rL4L2j43B?=
+ =?us-ascii?Q?XW5fbLW+s3rAG+A2ck72elvE5t2Rl0sC7JiZaNElF2LKk1CimJy/xw9QTSpC?=
+ =?us-ascii?Q?f9hhaAM9NphC1N4/8T4GPP6Wn5O19yHIJaOz6o0VtFbQslMFoij/Wo1+LNiI?=
+ =?us-ascii?Q?1KvZkIL6eROIbpYG5HKajGco/jglMpLLh0PmEleeuBfyzfoCfkGB0v73x4+R?=
+ =?us-ascii?Q?1hGcfQ/nnx2ZT9DwXvDazf/rOFggm8R01SphsuMSxC91TmuIzbXe5/R/X+XT?=
+ =?us-ascii?Q?51Ypi4aqdiUMgq3xzL7Apjh3LDyWZM1J6v+mgHSIg8Sq9m89Cv0E5yAdBZHc?=
+ =?us-ascii?Q?sbmS78eL4lo193mXXhdZeShx1V98QdrYRcM4FW27wdxnYVXSX9Zsz8YSGj5F?=
+ =?us-ascii?Q?37e2+Lp1o3HxDkeKxE3fbFWeFMwpWgJgSSLxDW1jqYXkjXGZkmUkwYjsLrn7?=
+ =?us-ascii?Q?YlfvogJ2wYybTGU9aSGCAlv5i0Cxdxf6kLDjnGHqAp5FG+Xw9qUt+LOCvC82?=
+ =?us-ascii?Q?XwdKL/hhD2wFxzYu9xioFlQ+Wym9bAqNlkQqs4omc8XPy6aVrDeuq5qgpZkD?=
+ =?us-ascii?Q?B2TlgDLGvGiyJuE3gzncMJpELJv/qiHwS5OUXVD9ZBH1scST427hVaZulbmu?=
+ =?us-ascii?Q?CW939LzD+UDk8uA4y0sLVzKEdNOTx0mJEMB8PvEh9fDQrvKOnbboIoW0qm4M?=
+ =?us-ascii?Q?WduO51fXN4XTxZBopU8wKajkYM3EA5fFIyl8oIZj2lOaKdiWQhrID7ffagXl?=
+ =?us-ascii?Q?//v36BVYvpxwQVKkCMU3QibNfr1i5r8vJH7VMjl4AccmMlfKmjb2+bDjcu4e?=
+ =?us-ascii?Q?jvwpoZjDraPuaRo2KPGhf9vdkfz7YkIo4VqjKEtTuTCXExS8j/r0jje0qLL/?=
+ =?us-ascii?Q?pDtKLEspq12wppR+8L4RC7HfY10A+jTwmzCdKgfLC5o2pbs5y9bgUIWsI1wr?=
+ =?us-ascii?Q?h9aAw5/ALhaJGHODdKbHjFLClNeVv0dKGbU7POHv?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 664082ea-ad2d-4b23-f5c9-08dd4cc622e3
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Feb 2025 07:06:43.2570
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: PCwqSguCvItiCj/wwbG2kF9ucdrlFDCDlcDWyzbAbV+MozVtv4Wcn/45ZXrRkUcJhSZZJqFxzTnBj+BQKVaiWg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB7121
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+	T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Hari,
+Be similar to audio graph card, support playback or capture only for
+imx-audio-card.
 
+imx-card can't directly refer to audio-graph-port.yaml, because it is
+not based on 'ports'. Add playback-only and capture-only property
+directly
 
-On 14/02/25 12:02, Hari Bathini wrote:
->
->
-> On 13/02/25 8:34 pm, Venkat Rao Bagalkote wrote:
->> Greetings!!!
->>
->>  From kernel next-20250210, I am observing syscall kexec_file_load 
->> not available, there by kdump service is failing to start.
->>
->>
->> Logs:
->>
->> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
->> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -c
->> Warning: append= option is not passed. Using the first kernel root 
->> partition
->> Modified cmdline: elfcorehdr=311424K root=UUID=b5b1f89c- 
->> d479-48b3-90e2-744a2fd05667
->> [root@ltc-zzci-1 ~]# kexec -p --initrd=/boot/initramfs-6.14.0-rc2- 
->> next-20250212kdump.img /boot/vmlinuz-6.14.0-rc2-next-20250212 -s
->> syscall kexec_file_load not available.
->> [root@ltc-zzci-1 ~]# kexec -v
->> kexec-tools 2.0.27
->> [root@ltc-zzci-1 ~]# uname -r
->> 6.14.0-rc2-next-20250212
->>
->
-> Is the kernel built with CONFIG_KEXEC_FILE ?
+changes in v2:
+- wrap at 75 chars for commit messages
 
-I am able to reproduce it with CONFIG_KEXEC_FILE enabled.
+Shengjiu Wang (2):
+  ASoC: dt-bindings: imx-card: Add playback-only and capture-only
+    property
+  ASoC: imx-card: Add playback_only or capture_only support
 
-Seems like there is something went wrong in next-20250210 and next-20250212.
+ .../devicetree/bindings/sound/imx-audio-card.yaml         | 8 ++++++++
+ sound/soc/fsl/imx-card.c                                  | 5 +++++
+ 2 files changed, 13 insertions(+)
 
-kexec -p --initrd=/boot/initramfs-6.14.0-rc2-next-20250210kdump.img 
-/boot/vmlinuz-6.14.0-rc2-next-20250210 -d -s
-
-Try gzip decompression.
-Try LZMA decompression.
-[ 3375.712319] kexec_file: kernel: 00000000e539303c kernel_size: 0x2cdacf0
-[ 3375.717022] ima: kexec measurement buffer for the loaded kernel at 0x0.
-[ 3375.717076] kexec_elf: Loaded the kernel at 0x0
-[ 3375.717094] kexec_elf: Loaded purgatory at 0x0
-[ 3375.717104] Loaded the backup region at 0x0
-[ 3375.717130] crash_core: Crash PT_LOAD ELF header. 
-phdr=000000004720e656 vaddr=0xc000000000000000, paddr=0x0, sz=0x10000 
-e_phnum=18 p_offset=0x0
-[ 3375.717156] crash_core: Crash PT_LOAD ELF header. 
-phdr=0000000005eb3f14 vaddr=0xc000000000010000, paddr=0x10000, 
-sz=0xfff0000 e_phnum=19 p_offset=0x10000
-[ 3375.717174] crash_core: Crash PT_LOAD ELF header. 
-phdr=000000000ec70071 vaddr=0xc00000001ec20000, paddr=0x1ec20000, 
-sz=0x13e0000 e_phnum=20 p_offset=0x1ec20000
-[ 3375.717192] crash_core: Crash PT_LOAD ELF header. 
-phdr=00000000b66c9c25 vaddr=0xc000000050000000, paddr=0x50000000, 
-sz=0x3b0000000 e_phnum=21 p_offset=0x50000000
-[ 3375.717215] Loaded elf core header at 0x0, bufsz=0x1000 memsz=0x80000
-[ 3375.717229] kexec_elf: Loaded initrd at 0x0
-[ 3375.718043] Memory node path: /memory@0
-[ 3375.722854] kexec_elf: Loaded device tree at 0x0
-syscall kexec_file_load not available.
-
-Kernel is reporting that all kexec segments are getting loaded at 0x0.
-
-Running kexec with strace shows that kexec_file_load system return -1 
-EINVAL.
-
-kexec_file_load(3, 4, 1, "\0", KEXEC_FILE_ON_CRASH) = -1 EINVAL (Invalid 
-argument)
-
-Based on the logs printed on the console and kexec_file_load return 
-value. I am suspecting
-kexec_file_load returned early form sanity_check_segment_list() because 
-the segment is 0x0.
-
-I am investigating further to find how segment.mem for all segment is 0x0.
-
-Thanks,
-Sourabh Jain
-
-
+-- 
+2.34.1
 
 
