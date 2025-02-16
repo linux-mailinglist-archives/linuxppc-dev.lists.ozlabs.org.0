@@ -1,82 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-6221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6222-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 893DFA37635
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Feb 2025 18:13:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C0578A37636
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Feb 2025 18:13:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Ywsmy1H83z2xk1;
-	Mon, 17 Feb 2025 04:13:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Ywsmz1CJkz2xS9;
+	Mon, 17 Feb 2025 04:13:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739725986;
-	cv=none; b=CofTF6zizH5e9aSrYhjT74rCs5RLtlwO5SNmCGKuhPta3oM1txFSUf4syXIobN6Vz/K2TMd1WbjY25kZElHdAYvc3M+yCUB+ZY9UvwCbX1NdkFJXTVAIcH7st+t0D7MYwU3ZnC+oes+rgG6p6ZnINwmCNvIDNuyAXUPKuRn0J40GUUTwLGL7hfKGoziKX1F5lFA2pb2GmUnfC6prLN4Q2wLLXrMlET+Qx9edevyvIQlxDZ7reH1dmes6ot0r57LAibO5UHsd+ad3mJD7l7megp6VLpRgiviyESiMnrEDtEqhyte+6CbumBb6xWGVPXqmhYCk63Wh6vycQtRcxxH4cg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739725987;
+	cv=none; b=hBwuwQhyx+u/o9IPdqyKXifnPyjPA6WUkHKy264fCr1WvEqLTaF35qwnmsYebI2wqkJ9dJ6CoJNXAGNOXoPHxZb1RMmerCovLSwZj2pC4+jz3ZQ2qLqSlBJNVtW3ki2FO/yeJRA/x4SYpYY5VxDQhlOrwpXKkKTYC+1nE1AX421bWBLKLktehufIJ0Ajh5PVIsHbBGaDkf6M57pXb36GfP6/zA0tGG54Cr7bsam+ITGDSh6uWpNxjAibaMnRa6DxSlEvExxaegSNEu5Hg3XoxMoDZznx48/P17WU7bngTwDD3zvAJuAAKGgUWpsVz5cr/+mEKU83nBK5JPUKU2Oa6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739725986; c=relaxed/relaxed;
-	bh=OIkV3SlH4E+eHDjXACgFzGAhsHZPruKs8No4vhZJsMM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=VU10EhO01oJuHmj8aaaatUEvXwx5ZZixo38KuSoFT+axrkkU/uIJXfaePtt12PxPrgy6GCvCRCHPVnOzw+27VZEWWSRbksAVzgNRdU41k+UyMWMOJxDgBZ3eIUyS/Vi5KVeGcRA7qCMQm0YRbr6gk2fX3UCE+fV2gOtNeESaC+krAOQi4sVns6aEOHsfd2Ta9GTB13Mh+0fcB3ebOX4BSxHB5chZ+gqLEtcNRwwl08bKvXs0mA+XGFF6Qguehaz24vwi+3mnKX+YoQTcIQHgzf9GhJ6xrl+ERSxCvAeZoHQPSq7js4Xf0WwA+0Iw2g8qzyy1ox8yIRb7IR5RKR4yOQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Scg5pH5x; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1739725987; c=relaxed/relaxed;
+	bh=vhDdUtl+jTsa+1XR6nZgw4YCuPRT38pCBAucQdYNn9k=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=QYVi17GsiqzbqOmUOUEk5uMGXZcxyiea02GLBJoZT7+aS7oZIPY5Pw10LTaV8zcPkPdv+o24iG0HHY+IOFbo437ve723TGEupAdV1pgXwxt6+LK6QGWWQefBWlOof4in+7UAe3kcJBaDxznMR3UrIQttFXZWSvQTqgP4VPsH0doTgQmxuQqLZu2wfIQ8MDaga3+2lmIKSzkvz3TgPIZwUEH4Hk0zOkCjKFS01UFgDyoPLn7jA2fdnvK5UfiMvXDzW3c1TpWjd7UqVdSltxAH7WayZjK7uXQKwnVcQyDcr4sMOrM4ryrGJcAW5ZQweDiFrcuksAS40lYLQe8ZUZaS7w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PDoBEVLh; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Scg5pH5x;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PDoBEVLh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ywsmw715Rz2xS9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 04:13:04 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51GBtm1m014937;
-	Sun, 16 Feb 2025 17:12:47 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ywsmy2yhNz2yDr
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 04:13:05 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51G9odpM002219;
+	Sun, 16 Feb 2025 17:12:55 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=OIkV3SlH4E+eHDjXACgFzGAhsHZPruKs8No4vhZJs
-	MM=; b=Scg5pH5xtXzeATmK8qXVbgih3W57mC0SSLZ4f/8y7LYFFyTiWNqi4VhjL
-	TXG0igvX9IRpC9cuiNHe4AgB7+nAHKyTxSMlMFTX2T3opwimaYR4LIm31pvy3+YA
-	m1zGDb7tHb3MDCKYADyG40woFluZJbE2c16lmHN5sPeqmrum0aaSyzJ1tnZM2JuW
-	VTPUpaaAqRH0GkffdNIBV0Oz9FXM06eUk+LykMbUI1wOobT70boFyDpwri1ZMEye
-	mYBF+rhiEgZxJyjRnweyPzpi2K02HeebhgfsT5Qcc0ODJ25+ebAU31eVDWWpKaHq
-	DueM6SvtOSgrr+/BmFYRvPAcosZ1A==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=vhDdUtl+jTsa+1XR6
+	nZgw4YCuPRT38pCBAucQdYNn9k=; b=PDoBEVLhTZnfq/SWUbOUHPAihPfCo5w8i
+	Zp/y9gg+eh+mgRuX2Yeu8xa0sxA5lEK06FWOc7qnJPUm0T37eAKQghMsUtkBA0LK
+	/8fv3uOtRsta0KnlBpX1+D5J1g+ZvpK8o6+/4Y8Pt7OVaGXOnRflEjXsY7zEdPmq
+	fNVC7mbvm1A+a6am1ZEvi0btsgD+9WzisqAQOwhPDOZjxSb20z3qL899b3rLNS7u
+	m9NNNhPHXjDHp/U6hfedbXQvY5K3VXn9ieedFf3skHWvIYMB9FNZeDpe9R/5yuAx
+	+ROYrfTdpLHnlYwCLPV5jEET2uEjHgrrY9wXTRDM0/pGXuiIlgvrg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ubqnsj10-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44u9u7sy7m-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 16 Feb 2025 17:12:47 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51GHCkgR012808;
-	Sun, 16 Feb 2025 17:12:47 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ubqnsj0x-1
+	Sun, 16 Feb 2025 17:12:55 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51GHCtJj032281;
+	Sun, 16 Feb 2025 17:12:55 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44u9u7sy7j-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 16 Feb 2025 17:12:46 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51GCp9ax000498;
-	Sun, 16 Feb 2025 17:12:46 GMT
+	Sun, 16 Feb 2025 17:12:55 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51GEeAwI024871;
+	Sun, 16 Feb 2025 17:12:54 GMT
 Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u6rkjevc-1
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u7y1a6hc-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 16 Feb 2025 17:12:46 +0000
+	Sun, 16 Feb 2025 17:12:54 +0000
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51GHCglu47055324
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51GHCnlS45220146
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 16 Feb 2025 17:12:42 GMT
+	Sun, 16 Feb 2025 17:12:49 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 602CD20049;
-	Sun, 16 Feb 2025 17:12:42 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 3C0B620049;
+	Sun, 16 Feb 2025 17:12:49 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 89D4120040;
-	Sun, 16 Feb 2025 17:12:38 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 2433020040;
+	Sun, 16 Feb 2025 17:12:45 +0000 (GMT)
 Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.47.251])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 16 Feb 2025 17:12:38 +0000 (GMT)
+	Sun, 16 Feb 2025 17:12:44 +0000 (GMT)
 From: Madhavan Srinivasan <maddy@linux.ibm.com>
 To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu
 Cc: naveen.n.rao@linux.ibm.com, linuxppc-dev@lists.ozlabs.org,
         Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 1/4] powerpc/perf/core-book3s: Avoid loading platform pmu driver during dump kernel
-Date: Sun, 16 Feb 2025 22:42:23 +0530
-Message-ID: <20250216171226.432906-1-maddy@linux.ibm.com>
+Subject: [PATCH 2/4] powerpc/perf/hv-24x7: Avoid loading hv-24x7 during dump kernel
+Date: Sun, 16 Feb 2025 22:42:24 +0530
+Message-ID: <20250216171226.432906-2-maddy@linux.ibm.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250216171226.432906-1-maddy@linux.ibm.com>
+References: <20250216171226.432906-1-maddy@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,55 +94,58 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: siL-VGnGckH0ViHWVFR7cX-jb0nIamIo
-X-Proofpoint-ORIG-GUID: bgYP3vRQoKjcXY3qpHDwBN3k_V6hNgSk
+X-Proofpoint-GUID: E389GWEIiWGeJi9CAWuDKbd-DwzB41ew
+X-Proofpoint-ORIG-GUID: oSyGb8esXvE_OvASTB2iJ4lLrkSmwBXH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-16_05,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- lowpriorityscore=0 mlxscore=0 mlxlogscore=999 bulkscore=0 spamscore=0
- priorityscore=1501 suspectscore=0 malwarescore=0 adultscore=0
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2501170000 definitions=main-2502160154
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ priorityscore=1501 suspectscore=0 lowpriorityscore=0 adultscore=0
+ malwarescore=0 phishscore=0 spamscore=0 clxscore=1015 impostorscore=0
+ bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2501170000 definitions=main-2502160154
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Platform pmu driver may not be used in the dump kernel.
-Avoid loading it.
+hv-24x7 pmu driver is intended to get system-wide resourse
+metrics and may not be used during the dump kernel, avoid
+loading it
 
 Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
 ---
- arch/powerpc/perf/core-book3s.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/powerpc/perf/hv-24x7.c   | 3 +++
+ arch/powerpc/perf/hv-common.h | 2 ++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/arch/powerpc/perf/core-book3s.c b/arch/powerpc/perf/core-book3s.c
-index 2b79171ee185..9a009dff63b3 100644
---- a/arch/powerpc/perf/core-book3s.c
-+++ b/arch/powerpc/perf/core-book3s.c
-@@ -22,6 +22,8 @@
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index d400fa391c27..3a626cd8cf54 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -1698,6 +1698,9 @@ static int hv_24x7_init(void)
+ 	unsigned int pvr = mfspr(SPRN_PVR);
+ 	struct hv_perf_caps caps;
  
- #ifdef CONFIG_PPC64
- #include "internal.h"
-+#include <asm/fadump.h>
-+#include <asm/kexec.h>
- #endif
- 
- #define BHRB_MAX_ENTRIES	32
-@@ -2571,6 +2573,12 @@ static int __init init_ppc64_pmu(void)
- 		return 0;
- 	}
- 
-+	/*
-+	 * If the dump kernel is active, skip loading these drivers
-+	 */
 +	if (is_kdump_kernel() || is_fadump_active())
 +		return 0;
 +
- 	/* run through all the pmu drivers one at a time */
- 	if (!init_power5_pmu())
- 		return 0;
+ 	if (!firmware_has_feature(FW_FEATURE_LPAR)) {
+ 		pr_debug("not a virtualized system, not enabling\n");
+ 		return -ENODEV;
+diff --git a/arch/powerpc/perf/hv-common.h b/arch/powerpc/perf/hv-common.h
+index 2cce17bc321c..a4c062d2264e 100644
+--- a/arch/powerpc/perf/hv-common.h
++++ b/arch/powerpc/perf/hv-common.h
+@@ -4,6 +4,8 @@
+ 
+ #include <linux/perf_event.h>
+ #include <linux/types.h>
++#include <asm/fadump.h>
++#include <asm/kexec.h>
+ 
+ struct hv_perf_caps {
+ 	u16 version;
 -- 
 2.47.0
 
