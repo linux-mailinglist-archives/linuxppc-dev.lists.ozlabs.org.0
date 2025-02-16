@@ -1,73 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-6217-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A56BCA36E42
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Feb 2025 13:55:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F627A37563
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Feb 2025 17:06:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yw86Y6jglz2yMD;
-	Sat, 15 Feb 2025 23:55:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YwrHW3B24z2y34;
+	Mon, 17 Feb 2025 03:05:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739624149;
-	cv=none; b=Ws8Xp//oXJyy9Vq5cyaf4MnhN/VecNWisKg96IOjSBALNtz1PG087CIqR4yVtrgyYbBvaiCmC4l0h9zcjwx+jti9eFRfoxq9fvLwiTIFe+5X//X6muDpoKrEqCmSFs8fuWAX8stu7WQ1Kl5AuEoFjsNNNSB6rlha1Usrm7aELypnjAbDpPGTq2Pc/a7TnfKz9ZgR7o2FVpExCBBhTCTjPTKmGpdB+e+Sf+fDLQ9y/7/GMd9jCoHfsUeck2ErmxMMBP1MmFmbEMhjvYvvwe+YIFS+ltOqkgRYvU//2Dbi23yDVZRYRuLk8zlBQ2OtMJFCViX2xZ8IrsXG35delJF8/A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739707360;
+	cv=none; b=lexGtAtYAdLWfFuqrQ/4StPuF2syJXowP4w2+vFIDtgLXaiC1Xp3DsMUIp4vrc+JZfX+7ampFdoshdo35ip4auhJvhZ+A8f8pImeIqMQUyaBlukNHauoR4HzK/pindSRhJqkAR/r+zWF7gxpk9gF8lKcHI9gdgxAbAc3IL3R6ypSRufW+W7uctGwYdT5uS+GB73OXyVeFftqtnIsXaXWsqz9sxCq4CUM8lZl6SPNqkgLBp3a9uicS33QhdG+ppqaVAggzWvRUJkvE1TTGsKs2DXGkaJoCqwdLbcge4tM22RNmrw0xWEPF2R1nFRejiNld8aFbkfkgmPAzSgCTBQZWw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739624149; c=relaxed/relaxed;
-	bh=p467yl45oLmRGrafSN5Up+7/iD1Z2wYE7/SsbnqK1Fk=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=otDy1uk9MB31+CZ4XAiLE+iPWDgOSeGKwhbviicArVNZVADgCTlCIoGtb3yas6lkfzIUn+YR5Z0pvynGoIilslZ0mmbGiZ0SWcjy4uQ9teH1AU4MpyMi4MnOxsnzTAm8JWXukvgOgvuMYvFgGZHVZ91Hz1khMjqYj220+8rozjydw+4uB8EV9cEqTnYkzgujkgUyqN18GAHGOdSV6EsW7/0jphTveDGz4qOQEkwJpCSK0LmL3H9THc/PmBL3Xai1h62nOSDbxiMwlbfye3DbGFfEMleTV+lAl1/us2yUWHGkAzhlqv/0HuUuVGVur5ZZ9TZzLAtyujn2UjyC6+59xg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HM6uytMP; dkim-atps=neutral; spf=pass (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1739707360; c=relaxed/relaxed;
+	bh=82WigbKU8K6bF5i7jEXR0EoBUFDRYWWxYd/tjoD8mAs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C29EJjiGCe7hLPMsrB8W7sYREiSKsw/HycHEvIVAOVXmQykpOQLRb2qMemRmXKqOf4TWtqRB58dap7KD2l3rKzJh855/GaXII39EJLDGGUjh58kPaGmsldz2b9v/6d4Rht+9UbOWZNOHLM7MaHpnzm6ppVoK/i9DYwkU/OReMxDMs4Umxx+QgqDGjlnw6s39rqjK4mnpUcXMB4W3PGQc15p6amhzw12LiEJOk75Id3pkLjfdmRSPmILY16PXa5wdh7jvFKJVu0AdrxqhBiZZkLyQa94/8jU1uaUpj4KsYqpQK87oUtDA/z6ugfQCc6yYg6X/Sk/EutYdT9SEEf1fbw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WOkWgfkS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=duttaditya18@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=HM6uytMP;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=WOkWgfkS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=duttaditya18@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yw86W4bZ7z2yGC
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Feb 2025 23:55:45 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1739624148; x=1771160148;
-  h=date:from:to:cc:subject:message-id;
-  bh=94JEKl2MaZ4XuKtjoa8FgCnq7Vyq/9G1DLdKLQgs+ok=;
-  b=HM6uytMPMtBbTlV/6Co3u95qr9wZYtt+b8EiOOE3pkjVO/bAYJGi0tib
-   F2P8y0UDCtzG4EAeU4cDWwwXHkI8XHlWTwnSoXJ8sGNG8dcz62SaSuZgH
-   14AAd4wOcP1GusmqSx4nk52Byt20ovwlQOp1qeD3ZBkAmxnMb7bgbDzAf
-   7qVr81srp7IunZKaqYaRdplrGl3Q8Zwz7TPF4ZU2k7vTiP33NAHJNJvdO
-   F7DjP3z2MOetLwYbNDUCxRZHFVJ0t0A0b6kCBh8tfMPA+lFPgPa3mh1vj
-   txbOto5ZAfYlrXjylYJ1RTI2SbaqpODeHwtNUzBg1mmJidzhCfuJgIp/2
-   A==;
-X-CSE-ConnectionGUID: /sWFJHPcQj+xc1MVDaYMaQ==
-X-CSE-MsgGUID: Ey/sHqk6QXOx5ovfHjGlOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11346"; a="40505333"
-X-IronPort-AV: E=Sophos;i="6.13,288,1732608000"; 
-   d="scan'208";a="40505333"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Feb 2025 04:55:42 -0800
-X-CSE-ConnectionGUID: PatXK1dKTAySTihLzIya9g==
-X-CSE-MsgGUID: vP7rMyB7RcygBAdiTS3oAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,288,1732608000"; 
-   d="scan'208";a="113676074"
-Received: from lkp-server01.sh.intel.com (HELO d63d4d77d921) ([10.239.97.150])
-  by fmviesa007.fm.intel.com with ESMTP; 15 Feb 2025 04:55:41 -0800
-Received: from kbuild by d63d4d77d921 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tjHhr-001AoD-28;
-	Sat, 15 Feb 2025 12:55:39 +0000
-Date: Sat, 15 Feb 2025 20:55:17 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 3062e4bd79ed920c60453b56e08d3bda74513f7d
-Message-ID: <202502152011.xGCU46O1-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Ywktl2PrSz2xX3
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2025 23:02:38 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-220e6028214so53251835ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2025 04:02:38 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739707355; x=1740312155; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=82WigbKU8K6bF5i7jEXR0EoBUFDRYWWxYd/tjoD8mAs=;
+        b=WOkWgfkSFIVKXnm55EU1o4JiSD9IOWcj1xDwjNMBbXyrJncETwJmW+FZ8Wg7hlxwkO
+         levkS6PwJJJDDfIiU+BPLf5WdbBfjAnW56QzIkRjQM00gdCK9pZf86hDLRE1hIiCd4C+
+         j9lBI4hZeqc4IwI2eepQX9N71hxASaZShT/tKGWgUd1BpZegFujZG8dEIiq4NPpG/Y+4
+         3YnvPAdA2zowbBZqohqFLR7LcRJcIZQr4k1X+2ZCmlcgpSHSY4/No1ESss3WHxMsgwSg
+         UOER1D8s1KEGKkvLLyOtVx+43cRVS4L6StI+DK54/X8myAZfDRfnlgLvcFymnU1FyanW
+         wSOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739707355; x=1740312155;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=82WigbKU8K6bF5i7jEXR0EoBUFDRYWWxYd/tjoD8mAs=;
+        b=jVOgyZ7fHBWHXK8a+9sGreZQidazBT8kw7Mhuq4XAXDo6RrjGH0FvMJ5XxlsCDWLvb
+         TQuz3SL3U4bLNepcnd3aorJP7ovzUQJRM1DXtzG57GKiBpJqufGk5vcY3j7bzPKbvhZ4
+         rpihUZNybLJ53ImJDl/Qawg+HWQpd3hee+WX9Q5WrsafWRnMnZQA/BQUwSe0L0ONK0to
+         BcE6u3OIj194xZoFSHbnpwWTDcCli2F21qGFMGLsI+sG9oltCyYVzs7eZIABtkZbpbba
+         hAmMhP0SHfS9T79DSVmUV2+xhXqxVFOLKr58oo8qlTlkY6l7PI597JG6h3snHjlsxnqa
+         P2kg==
+X-Forwarded-Encrypted: i=1; AJvYcCUEZbrOGkYkczxXLPfwW+UK8KcXcgp/i9SsXbBcgVHVu4jZozsEbz7QRccZ558UXyYUswZc/p8jolIX0Sk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzQoKS40Utkxub/xzUXNGV6r3W82bknR1M1aunLMlGLDoQAygOn
+	9smEYpAV7Z8TMr2q6WN7/YhLWibJ+4ItBJGYhr65JfmNNKTAP15k
+X-Gm-Gg: ASbGnctMZFxjuRXOgUgcUhU7H3GxQdQOuTdGK/cDke+wj75RWMuiXL58rPzuSj2f6JE
+	6hd0Dj9VWSZYVoUeu1hqdJ39T1IGy3JrpiwLtbTJZWobZXCdndMSebcoSK5ck2jxX2brnEnMRfG
+	t+dmmAy741sgvSjNyyf6VJkRtAEhanwPMqS+m/83wOWvWpqVrE2Ob5AKM5KCg4iVXtIWgtjc4LI
+	sGoNgSJ/vgoQ0Z7KcIMU5qI6ch7AYf68y2RDJKAWki5wLheFQsiayT9x7kJF3cgOdoUJMIok5Xm
+	pT72KOUQ5CpyvF+mnLo=
+X-Google-Smtp-Source: AGHT+IErcCjOiHya8dVFasaPJCiSrh08Dpt+kq1hL0br1lZQvSwuAwOU/Wv3CBTQ2n9JWQBjRD9s0w==
+X-Received: by 2002:a05:6a21:6b05:b0:1ed:e7cc:ee89 with SMTP id adf61e73a8af0-1ee8cc0335fmr10408406637.26.1739707355394;
+        Sun, 16 Feb 2025 04:02:35 -0800 (PST)
+Received: from pop-os.. ([2401:4900:65bb:caef:d8d2:fa8c:9c6d:c932])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7324256896csm6181753b3a.40.2025.02.16.04.02.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 04:02:34 -0800 (PST)
+From: Aditya Dutt <duttaditya18@gmail.com>
+To: Shuah Khan <shuah@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>
+Cc: Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	cgroups@vger.kernel.org,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Aditya Dutt <duttaditya18@gmail.com>
+Subject: [PATCH] selftests: make shell scripts POSIX-compliant
+Date: Sun, 16 Feb 2025 17:32:25 +0530
+Message-Id: <20250216120225.324468-1-duttaditya18@gmail.com>
+X-Mailer: git-send-email 2.34.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,122 +94,177 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 3062e4bd79ed920c60453b56e08d3bda74513f7d  Automatic merge of 'next' into merge (2025-02-14 17:57)
+Changes include:
+- Replaced [[ ... ]] with [ ... ]
+- Replaced == with =
+- Replaced printf -v with cur=$(printf ...).
+- Replaced echo -e with printf "%b\n" ...
 
-elapsed time: 1444m
+The above mentioned are Bash/GNU extensions and are not part of POSIX.
+Using shells like dash or non-GNU coreutils may produce errors.
+They have been replaced with POSIX-compatible alternatives.
 
-configs tested: 101
-configs skipped: 1
+Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
+---
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+I have made sure to only change the files that specifically have the
+/bin/sh shebang.
+I have referred to https://mywiki.wooledge.org/Bashism for information
+on what is and what isn't POSIX-compliant.
 
-tested configs:
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20250214    gcc-13.2.0
-arc                   randconfig-001-20250215    gcc-13.2.0
-arc                   randconfig-002-20250214    gcc-13.2.0
-arc                   randconfig-002-20250215    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                              allyesconfig    gcc-14.2.0
-arm                   randconfig-001-20250214    clang-16
-arm                   randconfig-001-20250215    clang-15
-arm                   randconfig-002-20250214    gcc-14.2.0
-arm                   randconfig-002-20250215    clang-17
-arm                   randconfig-003-20250214    clang-21
-arm                   randconfig-003-20250215    gcc-14.2.0
-arm                   randconfig-004-20250214    gcc-14.2.0
-arm                   randconfig-004-20250215    gcc-14.2.0
-arm64                            allmodconfig    clang-18
-arm64                 randconfig-001-20250214    gcc-14.2.0
-arm64                 randconfig-001-20250215    clang-21
-arm64                 randconfig-002-20250214    gcc-14.2.0
-arm64                 randconfig-002-20250215    gcc-14.2.0
-arm64                 randconfig-003-20250214    gcc-14.2.0
-arm64                 randconfig-004-20250214    gcc-14.2.0
-csky                  randconfig-001-20250214    gcc-14.2.0
-csky                  randconfig-002-20250214    gcc-14.2.0
-hexagon                          allmodconfig    clang-21
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20250214    clang-21
-hexagon               randconfig-002-20250214    clang-15
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250214    gcc-12
-i386        buildonly-randconfig-002-20250214    gcc-12
-i386        buildonly-randconfig-003-20250214    clang-19
-i386        buildonly-randconfig-004-20250214    gcc-12
-i386        buildonly-randconfig-005-20250214    gcc-12
-i386        buildonly-randconfig-006-20250214    gcc-12
-i386                                defconfig    clang-19
-loongarch             randconfig-001-20250214    gcc-14.2.0
-loongarch             randconfig-002-20250214    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250214    gcc-14.2.0
-nios2                 randconfig-002-20250214    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                randconfig-001-20250214    gcc-14.2.0
-parisc                randconfig-002-20250214    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc               randconfig-001-20250214    gcc-14.2.0
-powerpc               randconfig-002-20250214    clang-18
-powerpc               randconfig-003-20250214    clang-21
-powerpc64             randconfig-001-20250214    clang-18
-powerpc64             randconfig-002-20250214    gcc-14.2.0
-powerpc64             randconfig-003-20250214    gcc-14.2.0
-riscv                             allnoconfig    gcc-14.2.0
-riscv                 randconfig-001-20250214    clang-18
-riscv                 randconfig-002-20250214    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-21
-s390                             allyesconfig    gcc-14.2.0
-s390                  randconfig-001-20250214    gcc-14.2.0
-s390                  randconfig-002-20250214    clang-19
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                    randconfig-001-20250214    gcc-14.2.0
-sh                    randconfig-002-20250214    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250214    gcc-14.2.0
-sparc                 randconfig-002-20250214    gcc-14.2.0
-sparc64               randconfig-001-20250214    gcc-14.2.0
-sparc64               randconfig-002-20250214    gcc-14.2.0
-um                               allmodconfig    clang-21
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                    randconfig-001-20250214    gcc-12
-um                    randconfig-002-20250214    clang-16
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250214    clang-19
-x86_64      buildonly-randconfig-001-20250215    gcc-12
-x86_64      buildonly-randconfig-002-20250214    clang-19
-x86_64      buildonly-randconfig-002-20250215    clang-19
-x86_64      buildonly-randconfig-003-20250214    gcc-12
-x86_64      buildonly-randconfig-003-20250215    gcc-12
-x86_64      buildonly-randconfig-004-20250214    clang-19
-x86_64      buildonly-randconfig-004-20250215    clang-19
-x86_64      buildonly-randconfig-005-20250214    gcc-12
-x86_64      buildonly-randconfig-005-20250215    clang-19
-x86_64      buildonly-randconfig-006-20250214    gcc-12
-x86_64      buildonly-randconfig-006-20250215    clang-19
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250214    gcc-14.2.0
-xtensa                randconfig-002-20250214    gcc-14.2.0
+ tools/testing/selftests/cgroup/test_cpuset_v1_hp.sh   | 10 +++++-----
+ tools/testing/selftests/kexec/kexec_common_lib.sh     |  2 +-
+ tools/testing/selftests/kexec/test_kexec_file_load.sh |  2 +-
+ tools/testing/selftests/net/veth.sh                   | 10 +++++-----
+ tools/testing/selftests/powerpc/eeh/eeh-vf-aware.sh   |  2 +-
+ tools/testing/selftests/zram/zram_lib.sh              |  2 +-
+ 6 files changed, 14 insertions(+), 14 deletions(-)
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+diff --git a/tools/testing/selftests/cgroup/test_cpuset_v1_hp.sh b/tools/testing/selftests/cgroup/test_cpuset_v1_hp.sh
+index 3f45512fb512..00416248670f 100755
+--- a/tools/testing/selftests/cgroup/test_cpuset_v1_hp.sh
++++ b/tools/testing/selftests/cgroup/test_cpuset_v1_hp.sh
+@@ -11,24 +11,24 @@ skip_test() {
+ 	exit 4 # ksft_skip
+ }
+ 
+-[[ $(id -u) -eq 0 ]] || skip_test "Test must be run as root!"
++[ $(id -u) -eq 0 ] || skip_test "Test must be run as root!"
+ 
+ # Find cpuset v1 mount point
+ CPUSET=$(mount -t cgroup | grep cpuset | head -1 | awk -e '{print $3}')
+-[[ -n "$CPUSET" ]] || skip_test "cpuset v1 mount point not found!"
++[ -n "$CPUSET" ] || skip_test "cpuset v1 mount point not found!"
+ 
+ #
+ # Create a test cpuset, put a CPU and a task there and offline that CPU
+ #
+ TDIR=test$$
+-[[ -d $CPUSET/$TDIR ]] || mkdir $CPUSET/$TDIR
++[ -d $CPUSET/$TDIR ] || mkdir $CPUSET/$TDIR
+ echo 1 > $CPUSET/$TDIR/cpuset.cpus
+ echo 0 > $CPUSET/$TDIR/cpuset.mems
+ sleep 10&
+ TASK=$!
+ echo $TASK > $CPUSET/$TDIR/tasks
+ NEWCS=$(cat /proc/$TASK/cpuset)
+-[[ $NEWCS != "/$TDIR" ]] && {
++[ $NEWCS != "/$TDIR" ] && {
+ 	echo "Unexpected cpuset $NEWCS, test FAILED!"
+ 	exit 1
+ }
+@@ -38,7 +38,7 @@ sleep 0.5
+ echo 1 > /sys/devices/system/cpu/cpu1/online
+ NEWCS=$(cat /proc/$TASK/cpuset)
+ rmdir $CPUSET/$TDIR
+-[[ $NEWCS != "/" ]] && {
++[ $NEWCS != "/" ] && {
+ 	echo "cpuset $NEWCS, test FAILED!"
+ 	exit 1
+ }
+diff --git a/tools/testing/selftests/kexec/kexec_common_lib.sh b/tools/testing/selftests/kexec/kexec_common_lib.sh
+index 641ef05863b2..b65616ea67f8 100755
+--- a/tools/testing/selftests/kexec/kexec_common_lib.sh
++++ b/tools/testing/selftests/kexec/kexec_common_lib.sh
+@@ -96,7 +96,7 @@ get_secureboot_mode()
+ 	local secureboot_mode=0
+ 	local system_arch=$(get_arch)
+ 
+-	if [ "$system_arch" == "ppc64le" ]; then
++	if [ "$system_arch" = "ppc64le" ]; then
+ 		get_ppc64_secureboot_mode
+ 		secureboot_mode=$?
+ 	else
+diff --git a/tools/testing/selftests/kexec/test_kexec_file_load.sh b/tools/testing/selftests/kexec/test_kexec_file_load.sh
+index c9ccb3c93d72..072e03c8b1c3 100755
+--- a/tools/testing/selftests/kexec/test_kexec_file_load.sh
++++ b/tools/testing/selftests/kexec/test_kexec_file_load.sh
+@@ -226,7 +226,7 @@ get_secureboot_mode
+ secureboot=$?
+ 
+ # Are there pe and ima signatures
+-if [ "$(get_arch)" == 'ppc64le' ]; then
++if [ "$(get_arch)" = 'ppc64le' ]; then
+ 	pe_signed=0
+ else
+ 	check_for_pesig
+diff --git a/tools/testing/selftests/net/veth.sh b/tools/testing/selftests/net/veth.sh
+index 6bb7dfaa30b6..e86f102f9028 100755
+--- a/tools/testing/selftests/net/veth.sh
++++ b/tools/testing/selftests/net/veth.sh
+@@ -137,7 +137,7 @@ __change_channels()
+ 	local i
+ 
+ 	while true; do
+-		printf -v cur '%(%s)T'
++		cur=$(printf '%(%s)T')
+ 		[ $cur -le $end ] || break
+ 
+ 		for i in `seq 1 $CPUS`; do
+@@ -157,7 +157,7 @@ __send_data() {
+ 	local end=$1
+ 
+ 	while true; do
+-		printf -v cur '%(%s)T'
++		cur=$(printf '%(%s)T')
+ 		[ $cur -le $end ] || break
+ 
+ 		ip netns exec $NS_SRC ./udpgso_bench_tx -4 -s 1000 -M 300 -D $BM_NET_V4$DST
+@@ -166,7 +166,7 @@ __send_data() {
+ 
+ do_stress() {
+ 	local end
+-	printf -v end '%(%s)T'
++	cur=$(printf '%(%s)T')
+ 	end=$((end + $STRESS))
+ 
+ 	ip netns exec $NS_SRC ethtool -L veth$SRC rx 3 tx 3
+@@ -198,8 +198,8 @@ do_stress() {
+ 
+ usage() {
+ 	echo "Usage: $0 [-h] [-s <seconds>]"
+-	echo -e "\t-h: show this help"
+-	echo -e "\t-s: run optional stress tests for the given amount of seconds"
++	printf "%b\n" "\t-h: show this help"
++	printf "%b\n" "\t-s: run optional stress tests for the given amount of seconds"
+ }
+ 
+ STRESS=0
+diff --git a/tools/testing/selftests/powerpc/eeh/eeh-vf-aware.sh b/tools/testing/selftests/powerpc/eeh/eeh-vf-aware.sh
+index 874c11953bb6..18fdf88936f0 100755
+--- a/tools/testing/selftests/powerpc/eeh/eeh-vf-aware.sh
++++ b/tools/testing/selftests/powerpc/eeh/eeh-vf-aware.sh
+@@ -36,7 +36,7 @@ done
+ 
+ eeh_disable_vfs
+ 
+-if [ "$tested" == 0 ] ; then
++if [ "$tested" = 0 ] ; then
+ 	echo "No VFs with EEH aware drivers found, skipping"
+ 	exit $KSELFTESTS_SKIP
+ fi
+diff --git a/tools/testing/selftests/zram/zram_lib.sh b/tools/testing/selftests/zram/zram_lib.sh
+index 21ec1966de76..923dbeb64eaf 100755
+--- a/tools/testing/selftests/zram/zram_lib.sh
++++ b/tools/testing/selftests/zram/zram_lib.sh
+@@ -37,7 +37,7 @@ kernel_gte()
+ 
+ 	if [ $kernel_major -gt $major ]; then
+ 		return 0
+-	elif [[ $kernel_major -eq $major && $kernel_minor -ge $minor ]]; then
++	elif [ $kernel_major -eq $major && $kernel_minor -ge $minor ]; then
+ 		return 0
+ 	fi
+ 
+-- 
+2.34.1
+
 
