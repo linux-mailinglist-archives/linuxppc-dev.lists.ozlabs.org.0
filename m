@@ -1,67 +1,89 @@
-Return-Path: <linuxppc-dev+bounces-6269-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6270-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBAFEA388A8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 17:04:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D5AA38950
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 17:37:44 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxSCm0z7xz2xS8;
-	Tue, 18 Feb 2025 03:04:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxSxL1PjQz30CD;
+	Tue, 18 Feb 2025 03:37:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.71.208.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739808292;
-	cv=none; b=WHjuEN+fhA4QeMSL0AV1jULlFA0Q+1mO//PrNXtgx9hRm6JI5DJRHgebJ//vxb9cTVk9PCF+u+WhPBzuifHv5kCgAageicQRxPvjzChED6X7h6c5V3SlxFAVAGPG08Mq77TUf5u2cKISUNysVwn58z7qnLz18y5/rcwg+rWfXUBJP9SMxmXbGYluHXMbd2Gee4vCRvXywWGUfd61PIMJRKVIuWrwaSEDEmr6HSxlP5f8Q+6Z5cn/Pcd1vTojmcHD3bLiI+bqdKrrYy2YhLpJCwIt4CGqeFvSHyZEoM2AkLeHabER/ukjxvpsFMV3INHtFB2J+9i3uXBSwrV4ZH7DkQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739810246;
+	cv=none; b=O3OH+ypR1uH04ToI0Sgu5DBrsJB/X/KMiAFaKyrc92C4jiCQeQNBbncwB68LFGD8TnFpT9go7ZCCBHmv1TAxwEF2rnTgaFDXzDGjsT5b4WFkgH6eJFhx6lixEX8R1lLH5ZLGU2XSbDjEiK/r5pzLmRI/Gu2DvCJyZr1gtPN3u1KEh3uDQKVZUgddYKB+0NkaOUYH6V289mIjfb2WhPsJ+8KbEvthzMLfPgRFPxEMFPi0u1IHRAS4uFQ3QFd6hcAkM/i40wbJyWeaG/dZEmfFZWrHNsOwxz16X54Z+Xwa9DZfieA08VDnEJHuUt7sAxeKzvWY32f7IDcUdS3pii5gww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739808292; c=relaxed/relaxed;
-	bh=41DYd8S5nzPKADDvgmNVKMBye2mp3t96d0S4S/5x/MU=;
-	h=Date:From:Message-ID:To:CC:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JYhFPkGhwBZ83+f5S7wO00Z04ZRGlCg4XfTzBLipZhRSnCxGethnCj0o3NG00gPsELDRUh+UFicgmR9QuPFcsXhTc8zJ+jVUhyxoQQlGRmKyIXLgfIvtA2VHkPDtw7t86fZQUnh3CGFjB0av5aTtUWjvDg2pQlfTHMfi26VMFiQt8d7bFzMM3LOGDIblR3ct79otiEUFagoadE0TB08WBUG5wEJ/KejakjHneE9lMC7CX1dV+mmIMaO7Lppr3uw07JY2h8+SmZyia0+o0VQxjU8ZNAf8ng2LeuKMyanJ0nA6P9E42Qk7qMbTZdbWRGiIyl+udAUrwEuW0jyM66lTWA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sympatico.ca; dkim=pass (2048-bit key; unprotected) header.d=sympatico.ca header.i=@sympatico.ca header.a=rsa-sha256 header.s=selector1 header.b=gz01XTzy; dkim-atps=neutral; spf=pass (client-ip=209.71.208.12; helo=cmx-mtlrgo001.bell.net; envelope-from=al.dunsmuir@sympatico.ca; receiver=lists.ozlabs.org) smtp.mailfrom=sympatico.ca
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sympatico.ca
+	t=1739810246; c=relaxed/relaxed;
+	bh=yiZt2i6xSOw8eOJOYff501csDZIGzCac6UOW2wl3hpw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TC4QIZrbsv9x05be+YNKqHpxSVP1/1OwdBNnYp2suJOz8FusKbqKysqoKwGwIXTLAIch0YQG2HzbInpUCZbLTfsUl5IRitN2HZd9fR6ThA8eFqZZklhjxeJWtBCg78uYq1AGOkqbEI05CBwdXLd5ozDU5SmvmK8bH4F1ZsaFyQmM2rtFSJN2f64nwGXA+hCK7lpB5UJN3Ir1C7iSTiCOnQbviiXyXnH+1wiRDMC+U0qWwA8W8NiAzQKqHtOglEozjUL+z+PSatL4ar/TQOIO4sjqp0AvGvuuVu4cWkPdnJZ/VV6puAUbnNL1knOV9lmvCnaCtlPmUdnHtC31N8uU0Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=G+bpUDbf; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=sympatico.ca header.i=@sympatico.ca header.a=rsa-sha256 header.s=selector1 header.b=gz01XTzy;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=G+bpUDbf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sympatico.ca (client-ip=209.71.208.12; helo=cmx-mtlrgo001.bell.net; envelope-from=al.dunsmuir@sympatico.ca; receiver=lists.ozlabs.org)
-X-Greylist: delayed 118 seconds by postgrey-1.37 at boromir; Tue, 18 Feb 2025 03:04:50 AEDT
-Received: from cmx-mtlrgo001.bell.net (mta-mtl-002.bell.net [209.71.208.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::32b; helo=mail-wm1-x32b.google.com; envelope-from=thierry.reding@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxSCk05Zsz2xPL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 03:04:49 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sympatico.ca; s=selector1; t=1739808290; 
-        bh=41DYd8S5nzPKADDvgmNVKMBye2mp3t96d0S4S/5x/MU=;
-        h=Date:From:Message-ID:To:Subject:In-Reply-To:References:MIME-Version:Content-Type;
-        b=gz01XTzy+vXowWW4auKghJgrxsyb5vuQ3qW7/MwctUIxZkT/2Kk74CUInfdXZ+WESPCeW1cwcvCFN1Zw0Xfyye7fqntc/0SlwH8dM4f2UR9ZDp6IYNtYXumzVxyhz2n/HNeJYx/hqdoJxxCXnW2OfmywzLQkvqI9C4UUzjHhnjgM6DTbX+Ser5zL3vd2gzXuVvBZKg25NcybSJ/GUEEU6uM8kPfX9M0eoAKk0J/84cksto39BuBkrNS14ZzD+xW6pfafuugpnhBA4l0VsLBQ83f0wh1Trmnx/1/PdFCmq0f+/BzV5VFfxm89A1sAVaMYKuiSThY6sNY4xD41i/PPQg==
-X-RG-SOPHOS: Clean
-X-RG-VADE-SC: 0
-X-RG-VADE: Clean
-X-Originating-IP: [76.71.36.239]
-X-RG-Env-Sender: al.dunsmuir@sympatico.ca
-X-RG-Rigid: 67ACA5AF01009087
-X-RazorGate-Vade: dmFkZTGMu6JuLVqLuz3zvC7c6OKmmoJx/rp/Y62QFXTbJQCSvND99pzidzTNP0FoNoeT+DVV8xqc/cEi0E1ntBW/hE4KCN6Y5/Ni7BTyiox9QjrVemw03MswMXHZpvAvsWBAkOZ3G6Zz7VLWHE9aDveciqCfBYF1iLLPcu30qskWnCtVh42odawXvEiks5/HOlebHKhQNnKlTJU1BEFwS519tsIPbAD0MwH5R9jHvLjFUFsHR6FdH6m44PlkEDlLcCW2r+/aueZlns20RoZH8enOhYvFxpVtXKdzuWPnhIONQOnkInmckYWGZ1lwu5jJ+PYbQTgR5kj9Vtui1jnZ/Np9zkU+ldnZD5K6ITn+XVjpSCxzNzCpwX23nGIrg+5S75VC+BkRpfAMbblt78BjS+84cxt16e2PHfT6T5iqOz2/7q6UnrAJ7Fq2pvjqJG3D4k0hrmBFudt0e6xH/aUsN/TQJt1P69E2DKWgIr+VDrtu9nP9jAF0PesKZSHNbB4w3Ho/wZScR4vp/K4LKriQfT8+HxRmp6RrX+4SOYiihZ/24VdXY9x4EjTPn2R4LX6e7bloKkykLD1Rp+mzc5GDxZz3WWVNmcCM0IMEdYUbDhKPsIn7VvSTHRWZz1Aw73BXQSd9YgVq+H1vf5IiY2LRxNlRdF/wS+rq6PUgD5mbNAxFAIQFbA
-X-RazorGate-Vade-Verdict: clean 0
-X-RazorGate-Vade-Classification: clean
-Received: from bucky.alba.lan (76.71.36.239) by cmx-mtlrgo001.bell.net (authenticated as al.dunsmuir@sympatico.ca)
-        id 67ACA5AF01009087; Mon, 17 Feb 2025 11:02:15 -0500
-Date: Mon, 17 Feb 2025 11:02:15 -0500
-From: Al Dunsmuir <al.dunsmuir@sympatico.ca>
-Message-ID: <1972812751.20250217110215@sympatico.ca>
-To: Alexandru Elisei <alexandru.elisei@arm.com>, 
- Andrew Jones <andrew.jones@linux.dev>
-CC: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
- frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, 
- david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org, 
- kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
- kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, will@kernel.org, 
- julien.thierry.kdev@gmail.com, maz@kernel.org, oliver.upton@linux.dev, 
- suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
- andre.przywara@arm.com
-Subject: Re: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests if not configured for qemu
-In-Reply-To: <Z6o/rbweZttGReir@arm.com>
-References: <20250120164316.31473-1-alexandru.elisei@arm.com> 
-  <20250120164316.31473-4-alexandru.elisei@arm.com>
-  <20250121-45faf6a9a9681c7c9ece5f44@orel> <Z6nX8YC8ZX9jFiLb@arm.com>
-  <20250210-640ff37c16a0dbccb69f08ea@orel> <Z6o/rbweZttGReir@arm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxSxJ4dcbz306S
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 03:37:23 +1100 (AEDT)
+Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4396d2e32b7so17542985e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 08:37:23 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739810240; x=1740415040; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yiZt2i6xSOw8eOJOYff501csDZIGzCac6UOW2wl3hpw=;
+        b=G+bpUDbf9tBLoY6WIUrGU5TG3uPQScoycVWtFMiFH8yS8GYTWJANu5N+2gBNPpjCB3
+         DHBRDgRIMvZTU7nAN8tuGZpK9nibp3/mgVNytSjDljBOh7qgMrwdOz6OtAvzTepeVvYL
+         t+RNZ1ktZ0y3kWHp/GIAhIgTt4HgAKFDhJ9MLY7KRVZtImqhMngCtElodfIRUz22XbI1
+         rXo3yWk9fWjAaa1R16w5Sc8YbHq9AY9mc20y7OGJoOL9tpkT19OtTRRiQhAgH8bnGwgc
+         CJNIppSKyLsL2RNIHvD813jKYbBye9xlmIIASMy0BGtWZ2qA/kuAcKESC6nQ56lCZB5u
+         laNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739810240; x=1740415040;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=yiZt2i6xSOw8eOJOYff501csDZIGzCac6UOW2wl3hpw=;
+        b=AqcRsmmRCTy+JJiAZPrD9udVnAeiXyFA633LuCeA2GZI16pzdtKmmScAumL87jc7U2
+         wQWci9ae4PfnwQiMADy4j9cNVsYrvy5q5nqLXM5XuJGEvPBOV38qS+WKGNDuOWhSzLkW
+         ENjGGaAR/HqoQudCinOGoc+MNfXljmMzxF1GxDFfgk+4/4FqificAhqiancTL6rFdZQA
+         2fEImtSFaVQqO5bJjlhJpomhiO8vY2bt6O+11tgSdLqv6HTG+FQEQJX2tvOhX0SJfrx1
+         d6MRzLyG2qQ7sxhpqm8sKebSWHF0P6zYF99RMs/MkontrHYALO+rlpF2dDXZYAALpONm
+         aRyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUp3mgSc3BCHY6DYOBFbF6r7WbJtrwa8l2uLBMipJjBADdcB3j5JZbJtDLzKZz2hZMqrYu2+xo1Bk226B8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyTrJyMYegrsxLKh4MWoAd+FowlICJj0kml+8fLw2KqdPOm7ctV
+	IGUcCMwdVO2DafzqGBLjhi1H92+ys3bAny+LHswVwXBLvVTjioIS
+X-Gm-Gg: ASbGncs5QEgsA0GUufWwd7qYCR0yrWX4q2lVXQjuTfR/PHYT0Mn9blVh4r84ap7tGmp
+	SjWRSsdWLStWowBBIoakVPR9B0cw7OvHziuazIMRu1QvPZ0qf8KrJMhtsi0XhP8b/Cl3f49Nnb2
+	mLEeJ1FLF1eLLu/egj0fBAov4tJoS576u4vL8QRWjvvhzFeBOEj72msVqQCCLqih+TO+jXWiaqg
+	9ovxS1SxnyEXBR5rDG2s2CBLwzUuD0v8wx3e/vyStKz3Xp9k2fE+O7AQEfIpcmMmwTmPQsbg1nJ
+	3z5K6kavnl7WPv0N4fXVSckMgWWl4btgFbzcMzBSUjIZglqdbcaoEIgBBnDzlx1sXjj/4YFZ4U5
+	SSlLR1uI=
+X-Google-Smtp-Source: AGHT+IFZaRz1DpftXgns+QX0TjkeJRpqUCBrHv7Z6/192+MAz8sD7WUt6O+3frJRvsZQb4k9gj7a7g==
+X-Received: by 2002:a05:600c:4f56:b0:439:3c71:16be with SMTP id 5b1f17b1804b1-4396e6f66a1mr101592005e9.13.1739810240075;
+        Mon, 17 Feb 2025 08:37:20 -0800 (PST)
+Received: from localhost (p200300e41f22a600f22f74fffe1f3a53.dip0.t-ipconnect.de. [2003:e4:1f22:a600:f22f:74ff:fe1f:3a53])
+        by smtp.gmail.com with UTF8SMTPSA id 5b1f17b1804b1-439880fbd6fsm24614705e9.18.2025.02.17.08.37.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Feb 2025 08:37:18 -0800 (PST)
+From: Thierry Reding <thierry.reding@gmail.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: x86@kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-mips@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-sh@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	linux-acpi@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/7] syscore: Pass context data to callbacks
+Date: Mon, 17 Feb 2025 17:37:06 +0100
+Message-ID: <20250217163713.211949-1-thierry.reding@gmail.com>
+X-Mailer: git-send-email 2.48.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,106 +96,157 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=2.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS autolearn=disabled
+	version=4.0.0
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello Alexandru,
+From: Thierry Reding <treding@nvidia.com>
 
-On Monday, February 10, 2025, 1:04:29 PM, you wrote:
+Hi,
 
-> Hi Drew,
+Something that's been bugging me over the years is how some drivers have
+had to adopt file-scoped variables to pass data into something like the
+syscore operations. This is often harmless, but usually leads to drivers
+not being able to deal with multiple instances, or additional frameworks
+or data structures needing to be created to handle multiple instances.
 
-> On Mon, Feb 10, 2025 at 02:56:25PM +0100, Andrew Jones wrote:
->> On Mon, Feb 10, 2025 at 10:41:53AM +0000, Alexandru Elisei wrote:
->> > Hi Drew,
->> > 
->> > On Tue, Jan 21, 2025 at 03:48:55PM +0100, Andrew Jones wrote:
->> > > On Mon, Jan 20, 2025 at 04:43:01PM +0000, Alexandru Elisei wrote:
->> > <snip>
->> > > > ---
->> > > >  arm/efi/run             | 8 ++++++++
->> > > >  arm/run                 | 9 +++++++++
->> > > >  run_tests.sh            | 8 ++++++++
->> > > >  scripts/mkstandalone.sh | 8 ++++++++
->> > > >  4 files changed, 33 insertions(+)
->> > <snip>
->> > > > +case "$TARGET" in
->> > > > +qemu)
->> > > > +    ;;
->> > > > +*)
->> > > > +    echo "'$TARGET' not supported for standlone tests"
->> > > > +    exit 2
->> > > > +esac
->> > > 
->> > > I think we could put the check in a function in scripts/arch-run.bash and
->> > > just use the same error message for all cases.
->> > 
->> > Coming back to the series.
->> > 
->> > arm/efi/run and arm/run source scripts/arch-run.bash; run_tests.sh and
->> > scripts/mkstandalone.sh don't source scripts/arch-run.bash. There doesn't
->> > seem to be a common file that is sourced by all of them.
->> 
->> scripts/mkstandalone.sh uses arch-run.bash, see generate_test().
+This series proposes to "objectify" struct syscore_ops by passing a
+pointer to struct syscore_ops to the syscore callbacks. Implementations
+of these callbacks can then make use of container_of() to get access to
+contextual data that struct syscore_ops was embedded in. This elegantly
+avoids the need for file-scoped, singleton variables, by tying syscore
+to individual instances.
 
-> Are you referring to this bit:
+Patch 1 contains the bulk of these changes. It's fairly intrusive
+because it does the conversion of the function signature all in one
+patch. An alternative would've been to introduce new callbacks such that
+these changes could be staged in. However, the amount of changes here
+are not quite numerous enough to justify that, in my opinion, and
+syscore isn't very frequently used, so the risk of another user getting
+added while this is merged is rather small. All in all I think merging
+this in one go is the simplest way.
 
-> generate_test ()
-> {
->         <snip>
->         (echo "#!/usr/bin/env bash"
->          cat scripts/arch-run.bash "$TEST_DIR/run")
+Patches 2-7 are conversions of some existing drivers to take advantage
+of this new parameter and tie the code to per-instance data.
 
-> I think scripts/arch-run.bash would need to be sourced for any functions defined
-> there to be usable in mkstandalone.sh.
+Given that the recipient list for this is huge, I'm limiting this to
+Greg (because it's at the core a... core change) and a set of larger
+lists for architectures and subsystems that are impacted.
 
-> What I was thinking is something like this:
+Thanks,
+Thierry
 
-> if ! vmm_supported $TARGET; then
->         echo "$0 does not support '$TARGET'"
->         exit 2
-> fi
+Thierry Reding (7):
+  syscore: Pass context data to callbacks
+  MIPS: Embed syscore_ops in PCI context
+  bus: mvebu-mbus: Embed syscore_ops in mbus context
+  clk: ingenic: tcu: Embed syscore_ops in TCU context
+  clk: mvebu: Embed syscore_ops in clock context
+  irqchip/irq-imx-gpcv2: Embed syscore_ops in chip context
+  soc/tegra: pmc: Derive PMC context from syscore ops
 
-> Were you thinking of something else?
+ arch/arm/mach-exynos/mcpm-exynos.c        |  4 +-
+ arch/arm/mach-exynos/suspend.c            | 14 +++---
+ arch/arm/mach-pxa/irq.c                   |  4 +-
+ arch/arm/mach-pxa/mfp-pxa2xx.c            |  4 +-
+ arch/arm/mach-pxa/mfp-pxa3xx.c            |  4 +-
+ arch/arm/mach-pxa/smemc.c                 |  4 +-
+ arch/arm/mach-s3c/irq-pm-s3c64xx.c        |  4 +-
+ arch/arm/mach-s5pv210/pm.c                |  2 +-
+ arch/arm/mach-versatile/integrator_ap.c   |  4 +-
+ arch/arm/mm/cache-b15-rac.c               |  4 +-
+ arch/loongarch/kernel/smp.c               |  4 +-
+ arch/mips/alchemy/common/dbdma.c          |  4 +-
+ arch/mips/alchemy/common/irq.c            |  8 ++--
+ arch/mips/alchemy/common/usb.c            |  4 +-
+ arch/mips/pci/pci-alchemy.c               | 28 ++++++------
+ arch/powerpc/platforms/cell/spu_base.c    |  2 +-
+ arch/powerpc/platforms/powermac/pic.c     |  4 +-
+ arch/powerpc/sysdev/fsl_lbc.c             |  4 +-
+ arch/powerpc/sysdev/fsl_pci.c             |  4 +-
+ arch/powerpc/sysdev/ipic.c                |  4 +-
+ arch/powerpc/sysdev/mpic.c                |  4 +-
+ arch/powerpc/sysdev/mpic_timer.c          |  2 +-
+ arch/sh/mm/pmb.c                          |  2 +-
+ arch/x86/events/amd/ibs.c                 |  4 +-
+ arch/x86/hyperv/hv_init.c                 |  4 +-
+ arch/x86/kernel/amd_gart_64.c             |  2 +-
+ arch/x86/kernel/apic/apic.c               |  4 +-
+ arch/x86/kernel/apic/io_apic.c            |  9 +++-
+ arch/x86/kernel/cpu/aperfmperf.c          |  6 +--
+ arch/x86/kernel/cpu/intel_epb.c           |  8 ++--
+ arch/x86/kernel/cpu/mce/core.c            |  6 +--
+ arch/x86/kernel/cpu/microcode/core.c      |  7 ++-
+ arch/x86/kernel/cpu/mtrr/legacy.c         |  4 +-
+ arch/x86/kernel/cpu/umwait.c              |  2 +-
+ arch/x86/kernel/i8237.c                   |  2 +-
+ arch/x86/kernel/i8259.c                   |  6 +--
+ arch/x86/kernel/kvm.c                     |  4 +-
+ drivers/acpi/pci_link.c                   |  2 +-
+ drivers/acpi/sleep.c                      |  4 +-
+ drivers/base/firmware_loader/main.c       |  2 +-
+ drivers/base/syscore.c                    |  8 ++--
+ drivers/bus/mvebu-mbus.c                  | 24 +++++-----
+ drivers/clk/at91/pmc.c                    |  4 +-
+ drivers/clk/imx/clk-vf610.c               |  4 +-
+ drivers/clk/ingenic/pm.c                  |  4 +-
+ drivers/clk/ingenic/tcu.c                 | 54 +++++++++++------------
+ drivers/clk/mvebu/common.c                | 25 +++++++----
+ drivers/clk/rockchip/clk-rk3288.c         |  4 +-
+ drivers/clk/samsung/clk-s5pv210-audss.c   |  4 +-
+ drivers/clk/samsung/clk.c                 |  4 +-
+ drivers/clk/tegra/clk-tegra210.c          |  4 +-
+ drivers/clocksource/timer-armada-370-xp.c |  4 +-
+ drivers/cpuidle/cpuidle-psci.c            |  4 +-
+ drivers/gpio/gpio-mxc.c                   |  4 +-
+ drivers/gpio/gpio-pxa.c                   |  4 +-
+ drivers/hv/vmbus_drv.c                    |  4 +-
+ drivers/iommu/amd/init.c                  |  4 +-
+ drivers/iommu/intel/iommu.c               |  4 +-
+ drivers/irqchip/exynos-combiner.c         |  6 ++-
+ drivers/irqchip/irq-armada-370-xp.c       |  4 +-
+ drivers/irqchip/irq-bcm7038-l1.c          |  4 +-
+ drivers/irqchip/irq-gic-v3-its.c          |  4 +-
+ drivers/irqchip/irq-i8259.c               |  4 +-
+ drivers/irqchip/irq-imx-gpcv2.c           | 33 ++++++--------
+ drivers/irqchip/irq-loongson-eiointc.c    |  4 +-
+ drivers/irqchip/irq-loongson-htpic.c      |  2 +-
+ drivers/irqchip/irq-loongson-htvec.c      |  4 +-
+ drivers/irqchip/irq-loongson-pch-lpc.c    |  4 +-
+ drivers/irqchip/irq-loongson-pch-pic.c    |  4 +-
+ drivers/irqchip/irq-mchp-eic.c            |  4 +-
+ drivers/irqchip/irq-mst-intc.c            |  4 +-
+ drivers/irqchip/irq-mtk-cirq.c            |  4 +-
+ drivers/irqchip/irq-renesas-rzg2l.c       |  4 +-
+ drivers/irqchip/irq-sa11x0.c              |  4 +-
+ drivers/irqchip/irq-sifive-plic.c         |  4 +-
+ drivers/irqchip/irq-sun6i-r.c             | 10 ++---
+ drivers/irqchip/irq-tegra.c               |  4 +-
+ drivers/irqchip/irq-vic.c                 |  4 +-
+ drivers/leds/trigger/ledtrig-cpu.c        |  6 +--
+ drivers/macintosh/via-pmu.c               |  4 +-
+ drivers/power/reset/sc27xx-poweroff.c     |  2 +-
+ drivers/sh/clk/core.c                     |  2 +-
+ drivers/sh/intc/core.c                    |  4 +-
+ drivers/soc/bcm/brcmstb/biuctrl.c         |  4 +-
+ drivers/soc/tegra/pmc.c                   |  7 ++-
+ drivers/thermal/intel/intel_hfi.c         |  4 +-
+ drivers/xen/xen-acpi-processor.c          |  2 +-
+ include/linux/syscore_ops.h               |  6 +--
+ kernel/cpu_pm.c                           |  4 +-
+ kernel/irq/generic-chip.c                 |  6 +--
+ kernel/irq/pm.c                           |  2 +-
+ kernel/printk/printk.c                    |  2 +-
+ kernel/time/sched_clock.c                 | 14 +++++-
+ kernel/time/timekeeping.c                 | 14 +++++-
+ virt/kvm/kvm_main.c                       |  6 +--
+ 95 files changed, 302 insertions(+), 267 deletions(-)
 
-> I think mkstandalone should error at the top level (when you do make
-> standalone), and not rely on the individual scripts to error if the VMM is
-> not supported. That's because I think creating the test files, booting a
-> machine and copying the files only to find out that kvm-unit-tests was
-> misconfigured is a pretty suboptimal experience.
-
->> run_tests.sh doesn't, but I'm not sure it needs to validate TARGET
->> since it can leave that to the lower-level scripts.
-
-> I put the check in arm/run, and removed it from run_tests.sh, and this is
-> what I got:
-
-> $ ./run_tests.sh selftest-setup
-> SKIP selftest-setup (./arm/run does not supported 'kvmtool')
-
-> which looks good to me.
-
-Grammar nit:  This should be
-SKIP selftest-setup (./arm/run does not support 'kvmtool')
-
-Al
-
->> 
->> > 
->> > How about creating a new file in scripts (vmm.bash?) with only this
->> > function?
->> 
->> If we need a new file, then we can add one, but I'd try using
->> arch-run.bash or common.bash first.
-
-> common.bash seems to work (and the name fits), so I'll give that a go.
-
-> Thanks,
-> Alex
-
+-- 
+2.48.1
 
 
