@@ -1,65 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-6246-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6247-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57C27A37A82
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 05:23:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64BD8A37A8E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 05:30:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yx8fb3TzXz305n;
-	Mon, 17 Feb 2025 15:23:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yx8pB703Xz3055;
+	Mon, 17 Feb 2025 15:30:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739766215;
-	cv=none; b=a/HpZxSL3XzjqFaYDX6wEGA0zmOSRuWnQzt7HGrzwp3LoQksjBkBrMJBwfRIqoBJRwfp9lj9pb1EIJ4v+72qdRwUWuJa8Qy+4poKOInOSC2v+Uq4SPhNP9a6Rs19gSTJD+6HD8DbG7iv5f+Z8rCEbW8NnjHtsbbY2kPlvUTWcxPoFSRPZD+hqT+Aq0reKKXO9YMunf3U2GdBF3EKdrhQJCP0RNh+oiO68FvPj+iAouEXYIIcvVAFnV47BD3EyVRdQv7ABV9IgWJR1epfUr+QkzCGu71BSGZ7w6IKN/3dEHi2hxDlhhCJHp4vSjIgVbbEThq1opG5QBfxLEacfJHXIA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739766215; c=relaxed/relaxed;
-	bh=Tb4ZY6lskqJxzEA8Ek2M0mPdOxC7IaDHhDDR6puPsMo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PIITPCbv+OBf9y1mrb36X9ejCpHm9Y+eDeDWEiLYJy3k9UHRTAI2Kun6wMCfENl+YZvye4ygTVXtTJMS97fQXa/LaA2Kuaeb0V9pANPqjPBk1tfT6KvU9M4KuXYMVD/qM79QsyIYAuuyeqOoGOPjaEue3jdywvzHfIXwCy4mwiTeqdBEsSUQeIW7IIzwo57zAd5oA3qB7oEO9DM0WryDsxBKbFH7OM8NuBwYcy+N+hlbmQswdb4vjf/Ytyfn4w8jeoOiG0mtNvGL2ELZh5DM6ZJ3MMACaizT1C8Y4wFWkZZFv2aNFagSZMKaEVk25auult2bFqiNJHjekJ6aT0er6A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yx8fZ5GWRz305P
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 15:23:34 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 192F91D34;
-	Sun, 16 Feb 2025 20:23:15 -0800 (PST)
-Received: from a077893.blr.arm.com (unknown [10.162.16.135])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id D3ECF3F59E;
-	Sun, 16 Feb 2025 20:22:48 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: steven.price@arm.com,
-	christophe.leroy@csgroup.eu,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Marc Zyngier <maz@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>
-Subject: [PATCH V2 5/5] mm: Rename GENERIC_PTDUMP and PTDUMP_CORE
-Date: Mon, 17 Feb 2025 09:52:20 +0530
-Message-Id: <20250217042220.32920-6-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250217042220.32920-1-anshuman.khandual@arm.com>
-References: <20250217042220.32920-1-anshuman.khandual@arm.com>
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:200a::620" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739766610;
+	cv=pass; b=jQfgMS0aqwrizBjT9ewROg3UNwHSUkb/ejIDA4FmX10IZUYsCHH9eBRledeTKR1UU2+jyPcXkYiEswChAY+bDxuuH+4ektuGG3ZY43z6ry5sP2X1VIenU6SvYBA4NWPDJI7DQdaqd8OhP1uAgzCOwWQOwkaUtjVuCY6YbadwBdcBgDuL+JKQA+f4ECsr3kZ3dnu3AWKa5g0HAsN4QqZHv9QzmX11zvGNuWz1LdeOE/GLzKUj8j84uMVhLQ4d7z3AaB8+HTixoJB8NTpLP65vLNOos6CqS5bhYT0Zw729hUiznfAHfJNuUkeo5SXAzgIGiu+kClFhP+ZJd6XBjkHvyQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1739766610; c=relaxed/relaxed;
+	bh=dGOimbpfus8MFEfxmpQbaLXermq2/GxsTg/Y4HxAweg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=fFJwPQqcQ+o3OsDMdcrx6dWkHm1EujxiOsOSjoM3pTgHFuMMXmQzFyp+7MsBK1YIR7I1E9gjIj+eidKtzvth3HEr3Oc90QT9iI4gQVk+O3j/YHxI2ZoLesTXDZUxMieUseSkldOLSG88mL6mX8/tN489oynFF/ctzdWkOdbsNP7a5NaamO43pCvu8ZJhP5sBJsz9j+klibaCWfcsEnMGji8Wb6ZV1ujD7BenKcu3jcyQpObBlh7swEv8mc7IEd/zDY/VtQQJaV390QbwlJ/YtG3gGEgiZMG8/G6pVwIoD77hXxFThkSnAxa0azb/0P35uALtZVs77qzci94lJ9UOPA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FHGXbXyO; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:200a::620; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=FHGXbXyO;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:200a::620; helo=nam12-mw2-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on20620.outbound.protection.outlook.com [IPv6:2a01:111:f403:200a::620])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yx8p915sZz304l
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 15:30:08 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AJ4M64q4wgq0t1blhS9iqj1byoVzf0LS0O2j51HC9nsaGKGbZiWd7lqpCTfvY6xK5YkYuamfsI6OZeCucztYDlTHn1oKkbKmX8kSI0N6ZS1y14ibHDqpSnjvpB6CmDRzmyFO3UCO/cmV5LhkaBtvA/Wxrj9mgGTKlxmZ7hUAr9dMgoZBQk21VgjJZnWK1Znj0iqR2aBzkBPcBo7Bkm3KcfO0Q8GUxMrbNQwbr/31sCAPhX1wVYi8LDDannnaSBYg2JN763I5IWYvL9fuEyiXouP0YslYz3HmOGTzlqHIipU585ZQLip7sjVeJ6u4UHUVTPzrpxoXxzFvRdyus+gy1g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dGOimbpfus8MFEfxmpQbaLXermq2/GxsTg/Y4HxAweg=;
+ b=P92kl42WnCYB1LP5Fk/5BTZdYrPjXQsXn9BlMpOXxzVFYH6frqxS6bkv6EuSASerg7nIfNr75+/pVPEFgCYSn6Ne7lp7aGMn5BO8ALoFIkuOGX0AOlbOFjgijljMh0LTHfQj4cxi/KJ7O1yssx6z8/Wt0LOEakzmc1cywuVlYLntWeEpYa0UVuAVLGGsYYFeqjCvP/jh5ccZ6O3PumcTRZ8Q5MagTWmRF2eZezY7wwvtRcAgDQKddNkB9iGIqDxkLgcipV0wzXkVDp52PB502L6zYEPEc4eCfl5+SIgnXDeX/pzf7xmq4mqCFVFLPXhoaiUMdgitDo69maUGuELfWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dGOimbpfus8MFEfxmpQbaLXermq2/GxsTg/Y4HxAweg=;
+ b=FHGXbXyOgMPq8FVRrgX1BDrf5xid9RarP3nlBky2+L0b1KLDZYeCOLQpBZvgY5/AWcl3d7pY99HiyP1vg+8jdUJ3CTGKhBsp4nI2uU2QmriWXVHnJrVCvBN+bLTefEolgsbpsQHKWLCHc/qPMk05GCtTj/xIRgCCaEVlmJhqDX7J52VCYruhHvPJg+SzIaB9QzBDnWiWaZO/4KnxTfCa+PCIIqF220YMnjkivw4XJOXcuaV7kaejO5frcgg453Ebk3IGsgXmJTUmBNAm33xmzq5R3JAj8C6TldJwT406l8jaiC+VZeIyQZ9nKP2YBA2qk3Gv4jozgn3WKPzPFvGlaQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ DS0PR12MB7629.namprd12.prod.outlook.com (2603:10b6:8:13e::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8445.18; Mon, 17 Feb 2025 04:29:47 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.8445.017; Mon, 17 Feb 2025
+ 04:29:47 +0000
+Date: Mon, 17 Feb 2025 15:29:40 +1100
+From: Alistair Popple <apopple@nvidia.com>
+To: David Hildenbrand <david@redhat.com>
+Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, 
+	linux-mm@kvack.org, Alison Schofield <alison.schofield@intel.com>, 
+	lina@asahilina.net, zhang.lyra@gmail.com, gerald.schaefer@linux.ibm.com, 
+	vishal.l.verma@intel.com, dave.jiang@intel.com, logang@deltatee.com, bhelgaas@google.com, 
+	jack@suse.cz, jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org, 
+	mpe@ellerman.id.au, npiggin@gmail.com, dave.hansen@linux.intel.com, 
+	ira.weiny@intel.com, willy@infradead.org, djwong@kernel.org, tytso@mit.edu, 
+	linmiaohe@huawei.com, peterx@redhat.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com, chenhuacai@kernel.org, 
+	kernel@xen0n.name, loongarch@lists.linux.dev
+Subject: Re: [PATCH v7 16/20] huge_memory: Add vmf_insert_folio_pmd()
+Message-ID: <6mmjoe27y63cfe5cycqje63gehgumod3bp7zzgvpz7qehgfuv4@uomvqgizba2m>
+References: <cover.472dfc700f28c65ecad7591096a1dc7878ff6172.1738709036.git-series.apopple@nvidia.com>
+ <9f10e88441f3cb26eff6be0c9ef5997844c8c24e.1738709036.git-series.apopple@nvidia.com>
+ <afff4368-9401-4943-b802-1b15bdcf5aaa@redhat.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afff4368-9401-4943-b802-1b15bdcf5aaa@redhat.com>
+X-ClientProxiedBy: SY6PR01CA0052.ausprd01.prod.outlook.com
+ (2603:10c6:10:e9::21) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,322 +92,156 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|DS0PR12MB7629:EE_
+X-MS-Office365-Filtering-Correlation-Id: b215f871-bd3f-4bba-65d2-08dd4f0bb584
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?6S7xwEV7PjkMlL4FYRDxK/YJYaVjHnvsqv2EFJ1iRof2wO9++oT/sZjvsNiy?=
+ =?us-ascii?Q?2QopW/hZUwlVfCOnYaU7pffoXwt15VpsKvsQfjzaiO7XQGp5V7xuV10fGwws?=
+ =?us-ascii?Q?zsHFHliiA6qzEJFHub9zwbUeov4USAQ5ddJZONIf5NFNVpFEiBNCusJJCMt1?=
+ =?us-ascii?Q?Hmej/SDQyahtdIr6HEymn6h1LXNGtYHGK+PBujTnCqIN/WjmW3q/4ahLRohX?=
+ =?us-ascii?Q?GTLS7heZh+c5qdNt806T9sJrGb/4pQQy1ihk4eWzsspJ40JT99HY5kfXXSJ4?=
+ =?us-ascii?Q?KSSXmae33XMRheOfj3o+UUUM64H8Ii9Xar/o4cuCpgyPzKBapLrVE3FM6UsN?=
+ =?us-ascii?Q?ewrynx0g8EWlrV9sj0mstOSEYXtDu3+Mk6Opj4QZEafOTkqXmJDaM8HuCyGI?=
+ =?us-ascii?Q?1L0DTChuOtpr2XC38ySvH/2r9IFOXdc9/TLJ3R2x9YPZzi2MuE+eilOxXsyB?=
+ =?us-ascii?Q?+LreZSWL5ZW/ixk1XWqzd2jf5RIhfvexWrSp5UpZKoCFvk/hSOcLBANke6o7?=
+ =?us-ascii?Q?gFXBsa+Qp/tK9zMehaNsRPR+FHWfAta7NAhvg76KtM+Q/cWrMkLnzipJQrOF?=
+ =?us-ascii?Q?bWGOdVOZ4VKHbLDB1wMplYsIN0lviDPhyCeVKYTdzp1SUHOc37tSdpooFepZ?=
+ =?us-ascii?Q?nL/n4bLALvWVjB5UYmWBvs3ramVtqTelletxBiGcu6gAzI6cWdQELJRBA0ZO?=
+ =?us-ascii?Q?O5x+r0GZlmZsTyUT5tghWhDZ9zwkg4rqW7JTipNyJQkiSRLWsAovtpP0TKuB?=
+ =?us-ascii?Q?4Xb0yU4mOWkREA+W9+mtp0a1cuCNICQiEYab9JHprLJRnY0x3g/vV9gf5/Uu?=
+ =?us-ascii?Q?/phqYD4MZ9foii8zRsR0Yh+/RKQLY+BuCDNZoUV6OMT9ThDU5POVQDhoh+yq?=
+ =?us-ascii?Q?3hbumzkQkcRXNeeTXd38GUeZNtOGFVIJWrW0Zl98M7FK+3bIZN5YakZ3gXpD?=
+ =?us-ascii?Q?4SPV9cGnyCAtoA7Cag3oYiM8JVjFH0IZ7gOP7KoZ6h/Q81KToqXa7Nopyp14?=
+ =?us-ascii?Q?YoeRqQmuuVjiUF+CnITDXcuVxj+pnvu/N3AO6GNAiTPM7U9P52FSj+tgzjqt?=
+ =?us-ascii?Q?S/r5vxsSl/FEhXFStyeWTY3w7GPERjaYg9wWiDuMag8VvjLXVznzX8m/VFdr?=
+ =?us-ascii?Q?KZw/fyakJ1mUQLwPJ0WoCj1UxbEE3nbj5KWC6yKtOhg+tYpasYCEXL+yMUjY?=
+ =?us-ascii?Q?nvC6h63aWthJWHlQWqyCU/7Z2zpYYZJofUuywYU+yThkBl5ber26t8+cKhOO?=
+ =?us-ascii?Q?+Qsq7gd49yK0+cOXHhs3g76EJgdhMFN1wsDmsSpKy3DLPGZGVojJ8J/VFS5u?=
+ =?us-ascii?Q?wZi6fHUtLy4JO0d+LXp9FhjVws9T6IUc0R/dCq5yJL7rPmFG/cj47Mo+O7sX?=
+ =?us-ascii?Q?ZxlBSawikZaogzpz64TAIIO2D+f0?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LefaUx789c/ZCYo5Ei5asWFeWZMdh6zlBMJCfAt/3vhRFA/qjAoQSiKZOqab?=
+ =?us-ascii?Q?JwGy66u822HaLuCKzEvb+vwwiluCFVw6pKO1fSw9nggLu0xu3yPWSis6EvFm?=
+ =?us-ascii?Q?vLCSJNrp6qW4Uxcn8OwnyFiYEOo0KmAAiFfKrULcjp7iEbZa4pj+vEVcSy1u?=
+ =?us-ascii?Q?TheCSjk+H/kSHlV36NZbAlSyg8nKIKMO+XsH/RadICp9wNWLDsHwEiJl8h7l?=
+ =?us-ascii?Q?v8MJKpXegjAVUx/YtDJWYMr0ss/RPq05vP+VsLyjZojdJg9gO+a68YOjplr+?=
+ =?us-ascii?Q?Gsmjdo1wn/XfZ27ys82Eh2etVWnZLB+pW0kVeTJma74aFLIlqqKQjnFRXwf6?=
+ =?us-ascii?Q?I4muHCgYjmYC1hBrVfGjqrrtNQGSybziRvbuoQbgMXqMnxWnYC8P58+hrA8+?=
+ =?us-ascii?Q?c6zRKtd+iodwu8pDryM4yfA//3IqJe/X/wL9wops1IDgkzDxpRgtftekVFty?=
+ =?us-ascii?Q?JpoBzPQnTF6sLpdKuPw0tFnomUtID6Xv3tbYf+aB1b9n7c9CTbO/+kzj9BAq?=
+ =?us-ascii?Q?wnVbM/Mls1FAnF5hf8Is7Jg4LPyOA4sNm1O9YdNnnd+ggxRSuFDc0PlY6IOR?=
+ =?us-ascii?Q?XW3Hma0naa12LqOn4Ww1ymEgKn+MKzThgQyvStU111cPTuO4LgXmz1i0INWY?=
+ =?us-ascii?Q?WIltHRKGlolVZVvt7rnPx0SoQiR/WqgYWJaRTBbm9VLRpI2NWpM2sO0IVIYS?=
+ =?us-ascii?Q?YjqeLbb7t9h3exIM7qeGXdkXQldydueO+BfocjzzIB383Bk6aiYJHBqrvMd8?=
+ =?us-ascii?Q?hnIkYg0sK9D5jD9REtXex0uB65wRb2WZc8KQQXvP2WGInMkPx45zG2H+OSAt?=
+ =?us-ascii?Q?smpHQKQkDa2SdWHSec8HUhe396UIgrR6qaGLqYspWpQlMKTqdaCDjC2BEbNP?=
+ =?us-ascii?Q?NaLWWw4sdOjrDjtTfK+8bOuC+/F5ENNzTR5p3BAot5+1KkqlCFrQFpp2DTlj?=
+ =?us-ascii?Q?X5Iq8SINOA1/TtM1zq0DplFNYvj95wXG8e4Z8rup1NWq+s678++wCPTAZapE?=
+ =?us-ascii?Q?UHc5rVAyjgurYJaOPIq05Dj6HqVevLiIEzeX+jH++zZeTzuwyhV1C//iLItG?=
+ =?us-ascii?Q?PATExwLPMXSreMVB5qMrE8IQJWJ4W0gJlhhwMP7IgmJLQUcWXjvB1HGwkkfP?=
+ =?us-ascii?Q?di59Ec1yrfEOsJ+jDtkeXAsaj0GDB1CYc69fYLblbz4S/9boClvaDVAj8RFb?=
+ =?us-ascii?Q?AEae/TP9p0YAvoN5Pn2x2r+NvlRhjZ0NgUig7sJ2pT6nwUYHprcxk276akPX?=
+ =?us-ascii?Q?miaVYx2JvMtYuE/t/Y9WcBRKGbegchmCjMqm78AVDPsw8ZBNIOfuXrVZah3t?=
+ =?us-ascii?Q?o0+2UKFC6Wd/968jqoUMnTiz8UgdQ7q1AvhZkPYQgtUEQM2I1lMwnQvajgcZ?=
+ =?us-ascii?Q?0CZte7yEnoTHPIq5/sr6px5uaqw8gH5m9Wk2p/Gl2Quvq5U0h25RoGY4a6ep?=
+ =?us-ascii?Q?zPH3QigZiB4H+lHIqGl2RlhY856LUhFNFq7oYmjtqNbXQtjnvEP7fPb2F6vS?=
+ =?us-ascii?Q?IghV2dXl8Ga+Hz5PrlpMIFTrRZjuEB4rt1mxGggkE5gimtfHKPZZ1AOeQkhA?=
+ =?us-ascii?Q?KtjBF7ResGA55oasOJKBAjQDEkWmHorWcm6eLxXt?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b215f871-bd3f-4bba-65d2-08dd4f0bb584
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 04:29:46.8465
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uHEouTfMeWI8qlCfgisPUQAP13ny3hcHQu7+Q6+8UpuCZ4IxXBKsJzyMSFXszBrdx3kJMhSr139Pac60/WfxJg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7629
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Platforms subscribe into generic ptdump implementation via GENERIC_PTDUMP.
-But generic ptdump gets enabled via PTDUMP_CORE. These configs combination
-is confusing as they sound very similar and does not differentiate between
-platform's feature subscription and feature enablement for ptdump. Rename
-the configs as ARCH_HAS_PTDUMP and PTDUMP making it more clear and improve
-readability.
+On Mon, Feb 10, 2025 at 07:45:09PM +0100, David Hildenbrand wrote:
+> On 04.02.25 23:48, Alistair Popple wrote:
+> > Currently DAX folio/page reference counts are managed differently to normal
+> > pages. To allow these to be managed the same as normal pages introduce
+> > vmf_insert_folio_pmd. This will map the entire PMD-sized folio and take
+> > references as it would for a normally mapped page.
+> > 
+> > This is distinct from the current mechanism, vmf_insert_pfn_pmd, which
+> > simply inserts a special devmap PMD entry into the page table without
+> > holding a reference to the page for the mapping.
+> > 
+> > It is not currently useful to implement a more generic vmf_insert_folio()
+> > which selects the correct behaviour based on folio_order(). This is because
+> > PTE faults require only a subpage of the folio to be PTE mapped rather than
+> > the entire folio. It would be possible to add this context somewhere but
+> > callers already need to handle PTE faults and PMD faults separately so a
+> > more generic function is not useful.
+> > 
+> > Signed-off-by: Alistair Popple <apopple@nvidia.com>
+> 
+> Nit: patch subject ;)
+> 
+> > 
+> > ---
+> > 
+> > Changes for v7:
+> > 
+> >   - Fix bad pgtable handling for PPC64 (Thanks Dan and Dave)
+> 
+> Is it? ;) insert_pfn_pmd() still doesn't consume a "pgtable_t *"
+> 
+> But maybe I am missing something ...
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-doc@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: kvmarm@lists.linux.dev
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-mm@kvack.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/arm64/Kconfig              |  2 +-
- arch/arm64/include/asm/ptdump.h |  4 ++--
- arch/arm64/kvm/Kconfig          |  4 ++--
- arch/arm64/mm/Makefile          |  2 +-
- arch/powerpc/Kconfig            |  2 +-
- arch/powerpc/mm/Makefile        |  2 +-
- arch/riscv/Kconfig              |  2 +-
- arch/riscv/mm/Makefile          |  2 +-
- arch/s390/Kconfig               |  2 +-
- arch/s390/mm/Makefile           |  2 +-
- arch/x86/Kconfig                |  2 +-
- arch/x86/Kconfig.debug          |  2 +-
- arch/x86/mm/Makefile            |  2 +-
- mm/Kconfig.debug                | 12 ++++++------
- mm/Makefile                     |  2 +-
- 15 files changed, 22 insertions(+), 22 deletions(-)
+At a high-level all I'm trying to do (perhaps badly) is pull the ptl locking one
+level up the callstack.
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index 940343beb3d4..5cf688ee01b7 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -41,6 +41,7 @@ config ARM64
- 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
- 	select ARCH_HAS_NON_OVERLAPPING_ADDRESS_SPACE
- 	select ARCH_HAS_NONLEAF_PMD_YOUNG if ARM64_HAFT
-+	select ARCH_HAS_PTDUMP
- 	select ARCH_HAS_PTE_DEVMAP
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_HW_PTE_YOUNG
-@@ -157,7 +158,6 @@ config ARM64
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_LIB_DEVMEM_IS_ALLOWED
- 	select GENERIC_PCI_IOMAP
--	select GENERIC_PTDUMP
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
-diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
-index 6cf4aae05219..b2931d1ae0fb 100644
---- a/arch/arm64/include/asm/ptdump.h
-+++ b/arch/arm64/include/asm/ptdump.h
-@@ -7,7 +7,7 @@
- 
- #include <linux/ptdump.h>
- 
--#ifdef CONFIG_PTDUMP_CORE
-+#ifdef CONFIG_PTDUMP
- 
- #include <linux/mm_types.h>
- #include <linux/seq_file.h>
-@@ -70,6 +70,6 @@ static inline void ptdump_debugfs_register(struct ptdump_info *info,
- #else
- static inline void note_page(struct ptdump_state *pt_st, unsigned long addr,
- 			     int level, u64 val) { }
--#endif /* CONFIG_PTDUMP_CORE */
-+#endif /* CONFIG_PTDUMP */
- 
- #endif /* __ASM_PTDUMP_H */
-diff --git a/arch/arm64/kvm/Kconfig b/arch/arm64/kvm/Kconfig
-index ead632ad01b4..096e45acadb2 100644
---- a/arch/arm64/kvm/Kconfig
-+++ b/arch/arm64/kvm/Kconfig
-@@ -71,8 +71,8 @@ config PTDUMP_STAGE2_DEBUGFS
- 	depends on KVM
- 	depends on DEBUG_KERNEL
- 	depends on DEBUG_FS
--	depends on GENERIC_PTDUMP
--	select PTDUMP_CORE
-+	depends on ARCH_HAS_PTDUMP
-+	select PTDUMP
- 	default n
- 	help
- 	  Say Y here if you want to show the stage-2 kernel pagetables
-diff --git a/arch/arm64/mm/Makefile b/arch/arm64/mm/Makefile
-index fc92170a8f37..c26489cf96cd 100644
---- a/arch/arm64/mm/Makefile
-+++ b/arch/arm64/mm/Makefile
-@@ -5,7 +5,7 @@ obj-y				:= dma-mapping.o extable.o fault.o init.o \
- 				   context.o proc.o pageattr.o fixmap.o
- obj-$(CONFIG_ARM64_CONTPTE)	+= contpte.o
- obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
--obj-$(CONFIG_PTDUMP_CORE)	+= ptdump.o
-+obj-$(CONFIG_PTDUMP)		+= ptdump.o
- obj-$(CONFIG_PTDUMP_DEBUGFS)	+= ptdump_debugfs.o
- obj-$(CONFIG_TRANS_TABLE)	+= trans_pgd.o
- obj-$(CONFIG_TRANS_TABLE)	+= trans_pgd-asm.o
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 424f188e62d9..6f1ae41dcf85 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -148,6 +148,7 @@ config PPC
- 	select ARCH_HAS_PHYS_TO_DMA
- 	select ARCH_HAS_PMEM_API
- 	select ARCH_HAS_PREEMPT_LAZY
-+	select ARCH_HAS_PTDUMP
- 	select ARCH_HAS_PTE_DEVMAP		if PPC_BOOK3S_64
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_SCALED_CPUTIME		if VIRT_CPU_ACCOUNTING_NATIVE && PPC_BOOK3S_64
-@@ -206,7 +207,6 @@ config PPC
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_PCI_IOMAP		if PCI
--	select GENERIC_PTDUMP
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_VDSO_TIME_NS
-diff --git a/arch/powerpc/mm/Makefile b/arch/powerpc/mm/Makefile
-index 0fe2f085c05a..8c1582b2987d 100644
---- a/arch/powerpc/mm/Makefile
-+++ b/arch/powerpc/mm/Makefile
-@@ -15,5 +15,5 @@ obj-$(CONFIG_NUMA) += numa.o
- obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
- obj-$(CONFIG_NOT_COHERENT_CACHE) += dma-noncoherent.o
- obj-$(CONFIG_PPC_COPRO_BASE)	+= copro_fault.o
--obj-$(CONFIG_PTDUMP_CORE)	+= ptdump/
-+obj-$(CONFIG_PTDUMP)		+= ptdump/
- obj-$(CONFIG_KASAN)		+= kasan/
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 7612c52e9b1e..5aef2aa4103c 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -43,6 +43,7 @@ config RISCV
- 	select ARCH_HAS_PMEM_API
- 	select ARCH_HAS_PREEMPT_LAZY
- 	select ARCH_HAS_PREPARE_SYNC_CORE_CMD
-+	select ARCH_HAS_PTDUMP
- 	select ARCH_HAS_PTE_DEVMAP if 64BIT && MMU
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_SET_DIRECT_MAP if MMU
-@@ -112,7 +113,6 @@ config RISCV
- 	select GENERIC_IRQ_SHOW_LEVEL
- 	select GENERIC_LIB_DEVMEM_IS_ALLOWED
- 	select GENERIC_PCI_IOMAP
--	select GENERIC_PTDUMP if MMU
- 	select GENERIC_SCHED_CLOCK
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL if MMU && 64BIT
-diff --git a/arch/riscv/mm/Makefile b/arch/riscv/mm/Makefile
-index cbe4d775ef56..b916a68d324a 100644
---- a/arch/riscv/mm/Makefile
-+++ b/arch/riscv/mm/Makefile
-@@ -19,7 +19,7 @@ obj-y += context.o
- obj-y += pmem.o
- 
- obj-$(CONFIG_HUGETLB_PAGE) += hugetlbpage.o
--obj-$(CONFIG_PTDUMP_CORE) += ptdump.o
-+obj-$(CONFIG_PTDUMP) += ptdump.o
- obj-$(CONFIG_KASAN)   += kasan_init.o
- 
- ifdef CONFIG_KASAN
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 9c9ec08d78c7..dd9dd2f8e673 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -96,6 +96,7 @@ config S390
- 	select ARCH_HAS_MEM_ENCRYPT
- 	select ARCH_HAS_NMI_SAFE_THIS_CPU_OPS
- 	select ARCH_HAS_PREEMPT_LAZY
-+	select ARCH_HAS_PTDUMP
- 	select ARCH_HAS_PTE_SPECIAL
- 	select ARCH_HAS_SCALED_CPUTIME
- 	select ARCH_HAS_SET_DIRECT_MAP
-@@ -163,7 +164,6 @@ config S390
- 	select GENERIC_CPU_VULNERABILITIES
- 	select GENERIC_ENTRY
- 	select GENERIC_GETTIMEOFDAY
--	select GENERIC_PTDUMP
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_VDSO_TIME_NS
-diff --git a/arch/s390/mm/Makefile b/arch/s390/mm/Makefile
-index f6c2db7a8669..9726b91fe7e4 100644
---- a/arch/s390/mm/Makefile
-+++ b/arch/s390/mm/Makefile
-@@ -9,6 +9,6 @@ obj-y		+= page-states.o pageattr.o pgtable.o pgalloc.o extable.o
- obj-$(CONFIG_CMM)		+= cmm.o
- obj-$(CONFIG_DEBUG_VIRTUAL)	+= physaddr.o
- obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
--obj-$(CONFIG_PTDUMP_CORE)	+= dump_pagetables.o
-+obj-$(CONFIG_PTDUMP)		+= dump_pagetables.o
- obj-$(CONFIG_PGSTE)		+= gmap.o
- obj-$(CONFIG_PFAULT)		+= pfault.o
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index be2c311f5118..39ecafffc7e3 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -26,6 +26,7 @@ config X86_64
- 	depends on 64BIT
- 	# Options that are inherently 64-bit kernel only:
- 	select ARCH_HAS_GIGANTIC_PAGE
-+	select ARCH_HAS_PTDUMP
- 	select ARCH_SUPPORTS_INT128 if CC_HAS_INT128
- 	select ARCH_SUPPORTS_PER_VMA_LOCK
- 	select ARCH_SUPPORTS_HUGE_PFNMAP if TRANSPARENT_HUGEPAGE
-@@ -174,7 +175,6 @@ config X86
- 	select GENERIC_IRQ_RESERVATION_MODE
- 	select GENERIC_IRQ_SHOW
- 	select GENERIC_PENDING_IRQ		if SMP
--	select GENERIC_PTDUMP
- 	select GENERIC_SMP_IDLE_THREAD
- 	select GENERIC_TIME_VSYSCALL
- 	select GENERIC_GETTIMEOFDAY
-diff --git a/arch/x86/Kconfig.debug b/arch/x86/Kconfig.debug
-index 1eb4d23cdaae..c95c3aaadf97 100644
---- a/arch/x86/Kconfig.debug
-+++ b/arch/x86/Kconfig.debug
-@@ -59,7 +59,7 @@ config EARLY_PRINTK_USB_XDBC
- config EFI_PGT_DUMP
- 	bool "Dump the EFI pagetable"
- 	depends on EFI
--	select PTDUMP_CORE
-+	select PTDUMP
- 	help
- 	  Enable this if you want to dump the EFI page table before
- 	  enabling virtual mode. This can be used to debug miscellaneous
-diff --git a/arch/x86/mm/Makefile b/arch/x86/mm/Makefile
-index 690fbf48e853..e0c99a8760ca 100644
---- a/arch/x86/mm/Makefile
-+++ b/arch/x86/mm/Makefile
-@@ -39,7 +39,7 @@ CFLAGS_fault.o := -I $(src)/../include/asm/trace
- obj-$(CONFIG_X86_32)		+= pgtable_32.o iomap_32.o
- 
- obj-$(CONFIG_HUGETLB_PAGE)	+= hugetlbpage.o
--obj-$(CONFIG_PTDUMP_CORE)	+= dump_pagetables.o
-+obj-$(CONFIG_PTDUMP)		+= dump_pagetables.o
- obj-$(CONFIG_PTDUMP_DEBUGFS)	+= debug_pagetables.o
- 
- obj-$(CONFIG_HIGHMEM)		+= highmem_32.o
-diff --git a/mm/Kconfig.debug b/mm/Kconfig.debug
-index a51a1149909a..32b65073d0cc 100644
---- a/mm/Kconfig.debug
-+++ b/mm/Kconfig.debug
-@@ -186,9 +186,9 @@ config ARCH_HAS_DEBUG_WX
- config DEBUG_WX
- 	bool "Warn on W+X mappings at boot"
- 	depends on ARCH_HAS_DEBUG_WX
--	depends on GENERIC_PTDUMP
-+	depends on ARCH_HAS_PTDUMP
- 	depends on MMU
--	select PTDUMP_CORE
-+	select PTDUMP
- 	help
- 	  Generate a warning if any W+X mappings are found at boot.
- 
-@@ -213,18 +213,18 @@ config DEBUG_WX
- 
- 	  If in doubt, say "Y".
- 
--config GENERIC_PTDUMP
-+config ARCH_HAS_PTDUMP
- 	bool
- 
--config PTDUMP_CORE
-+config PTDUMP
- 	bool
- 
- config PTDUMP_DEBUGFS
- 	bool "Export kernel pagetable layout to userspace via debugfs"
- 	depends on DEBUG_KERNEL
- 	depends on DEBUG_FS
--	depends on GENERIC_PTDUMP
--	select PTDUMP_CORE
-+	depends on ARCH_HAS_PTDUMP
-+	select PTDUMP
- 	help
- 	  Say Y here if you want to show the kernel pagetable layout in a
- 	  debugfs file. This information is only useful for kernel developers
-diff --git a/mm/Makefile b/mm/Makefile
-index 850386a67b3e..26dfecd4d396 100644
---- a/mm/Makefile
-+++ b/mm/Makefile
-@@ -138,7 +138,7 @@ obj-$(CONFIG_ZONE_DEVICE) += memremap.o
- obj-$(CONFIG_HMM_MIRROR) += hmm.o
- obj-$(CONFIG_MEMFD_CREATE) += memfd.o
- obj-$(CONFIG_MAPPING_DIRTY_HELPERS) += mapping_dirty_helpers.o
--obj-$(CONFIG_PTDUMP_CORE) += ptdump.o
-+obj-$(CONFIG_PTDUMP) += ptdump.o
- obj-$(CONFIG_PAGE_REPORTING) += page_reporting.o
- obj-$(CONFIG_IO_MAPPING) += io-mapping.o
- obj-$(CONFIG_HAVE_BOOTMEM_INFO_NODE) += bootmem_info.o
--- 
-2.25.1
+As far as I can tell the pgtable is consumed here:
 
+static int insert_pfn_pmd(struct vm_area_struct *vma, unsigned long addr,
+		pmd_t *pmd, pfn_t pfn, pgprot_t prot, bool write,
+		pgtable_t pgtable)
+
+[...]
+
+	if (pgtable) {
+		pgtable_trans_huge_deposit(mm, pmd, pgtable);
+		mm_inc_nr_ptes(mm);
+		pgtable = NULL;
+	}
+
+[...]
+
+	return 0;
+
+Now I can see I failed to clean up the useless pgtable = NULL asignment, which
+is confusing because I'm not trying to look at pgtable in the caller (ie.
+vmf_insert_pfn_pmd()/vmf_insert_folio_pmd()) to determine if it needs freeing.
+So I will remove this assignment.
+
+Instead callers just look at the return code from insert_pfn_pmd() - if there
+was an error pgtable_trans_huge_deposit(pgtable) wasn't called and if the caller
+passed a pgtable it should be freed. Otherwise if insert_pfn_pmd() succeeded
+then callers can assume the pgtable was consumed by pgtable_trans_huge_deposit()
+and therefore should not be freed.
+
+Hopefully that all makes sense, but maybe I've missed something obvious too...
+
+ - Alistair
+
+> -- 
+> Cheers,
+> 
+> David / dhildenb
+> 
 
