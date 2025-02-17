@@ -1,76 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-6283-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6269-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 707E7A38DCF
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 22:04:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DBAFEA388A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 17:04:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxZs66vw4z2xWL;
-	Tue, 18 Feb 2025 08:04:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxSCm0z7xz2xS8;
+	Tue, 18 Feb 2025 03:04:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42c"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739807311;
-	cv=none; b=Yrk4Fjbmsx3GYwTdZBX1+q/9T2qhJhHyhU6Vt9WK6Zbd2wJd1abITGbvMUHOf2nduX2esfk4JCWfM2/9YjaEuzF0lrz5xTZRTk+bM4YTymyxZNUA/Mvnkj++DOCeOZ+wHwJbGwQU2ehsxZJ5Aa+dmjsUUzsclP1+AzREmS1XASf7yC8RhAFNmDMSD5RDUuXolCbue3M6hIi9t5KOGkYN6wx5vSsYf5hcqViJqkGC/Vr1kKZmROcwyg+71FdCpCSHRx127dSSwWShex+RkUPvoyjqR+m7i6U00yA7RWkjabExDljDBSB28qY/JIMQMBdzJCkdcGmfBJZiirlG9tuQ+A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.71.208.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739808292;
+	cv=none; b=WHjuEN+fhA4QeMSL0AV1jULlFA0Q+1mO//PrNXtgx9hRm6JI5DJRHgebJ//vxb9cTVk9PCF+u+WhPBzuifHv5kCgAageicQRxPvjzChED6X7h6c5V3SlxFAVAGPG08Mq77TUf5u2cKISUNysVwn58z7qnLz18y5/rcwg+rWfXUBJP9SMxmXbGYluHXMbd2Gee4vCRvXywWGUfd61PIMJRKVIuWrwaSEDEmr6HSxlP5f8Q+6Z5cn/Pcd1vTojmcHD3bLiI+bqdKrrYy2YhLpJCwIt4CGqeFvSHyZEoM2AkLeHabER/ukjxvpsFMV3INHtFB2J+9i3uXBSwrV4ZH7DkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739807311; c=relaxed/relaxed;
-	bh=LPDghrWJkASO+zl2RLTvdn4N9sHfOOgrUhUPDIBW/kE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ONdP2GXgO09F79HJqzwYPmqDATsOSe+5Xvjva7ZY/507e9J7EAYpzGUj+VV4/CYlUXo5JSXz9izB41ELkcXEFrOBzFZihfC0u8r8DAOt4C+EIkeTOy3EZAA4mDMc6LlLLEcgVOfBbJThDU+ugGPQ9L7+BTqBgbKqc+9TYWWcD6zTzzQhKZ0OvzbIrU1L9zz4ju8JV4r5OaNWivL/Q5f16ZzDIT2XVPfbbzU+JsobsenODAlXt9P4qNMrKNZI18/BlPOl8wckX3S+gzz1919CFDnnSC6nHhqNYFK1oRHR6+d6GTxYbYuXQ8iH0KC+iV0a3ZBF/9hblhLoVqfTuwzTog==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=qkXSK3t6; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42c; helo=mail-wr1-x42c.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+	t=1739808292; c=relaxed/relaxed;
+	bh=41DYd8S5nzPKADDvgmNVKMBye2mp3t96d0S4S/5x/MU=;
+	h=Date:From:Message-ID:To:CC:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JYhFPkGhwBZ83+f5S7wO00Z04ZRGlCg4XfTzBLipZhRSnCxGethnCj0o3NG00gPsELDRUh+UFicgmR9QuPFcsXhTc8zJ+jVUhyxoQQlGRmKyIXLgfIvtA2VHkPDtw7t86fZQUnh3CGFjB0av5aTtUWjvDg2pQlfTHMfi26VMFiQt8d7bFzMM3LOGDIblR3ct79otiEUFagoadE0TB08WBUG5wEJ/KejakjHneE9lMC7CX1dV+mmIMaO7Lppr3uw07JY2h8+SmZyia0+o0VQxjU8ZNAf8ng2LeuKMyanJ0nA6P9E42Qk7qMbTZdbWRGiIyl+udAUrwEuW0jyM66lTWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sympatico.ca; dkim=pass (2048-bit key; unprotected) header.d=sympatico.ca header.i=@sympatico.ca header.a=rsa-sha256 header.s=selector1 header.b=gz01XTzy; dkim-atps=neutral; spf=pass (client-ip=209.71.208.12; helo=cmx-mtlrgo001.bell.net; envelope-from=al.dunsmuir@sympatico.ca; receiver=lists.ozlabs.org) smtp.mailfrom=sympatico.ca
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=sympatico.ca
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=qkXSK3t6;
+	dkim=pass (2048-bit key; unprotected) header.d=sympatico.ca header.i=@sympatico.ca header.a=rsa-sha256 header.s=selector1 header.b=gz01XTzy;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::42c; helo=mail-wr1-x42c.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=sympatico.ca (client-ip=209.71.208.12; helo=cmx-mtlrgo001.bell.net; envelope-from=al.dunsmuir@sympatico.ca; receiver=lists.ozlabs.org)
+X-Greylist: delayed 118 seconds by postgrey-1.37 at boromir; Tue, 18 Feb 2025 03:04:50 AEDT
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-002.bell.net [209.71.208.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxRrs4vYRz2ytT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 02:48:28 +1100 (AEDT)
-Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-38f3ea6207cso1198372f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 07:48:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1739807302; x=1740412102; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LPDghrWJkASO+zl2RLTvdn4N9sHfOOgrUhUPDIBW/kE=;
-        b=qkXSK3t6NdKHQ/zZk/8HCJIxB4/WCuxNbFsJl7IPHPwt6TSNvmKdxGPvOQmlrh4LyU
-         wGPXFNhkQHW1mHZyns8Qzot8PUuyBlFuPeQ3agoORN6o/lKWjsZfRYllAXYIWSzYrhKh
-         EdRd76dmI/XP0MkQ3ruYTQbkfw4woT+rxLOV3mNcYCainqZWZXMzyuDzoI4Nh3ILr3v6
-         l07xsjORk4Y+20PdpoocUO9uQUmVJ8zE2xtEuUEOPWx1vhOuJPwNbAOwUdK2cn2j798s
-         TO1FMWhSUjpxBEa45cVZVo6H+Hq0DxRnkg+btoXBZTdH1nIeaf/rguPasLUOzdpMQw/A
-         Tlgg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739807302; x=1740412102;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LPDghrWJkASO+zl2RLTvdn4N9sHfOOgrUhUPDIBW/kE=;
-        b=AHjCf/frv+x1UjVUYGEkM1vJWPfdgpuqBz7u9kjc61g7rFrn2d4BXeoWdfyAENDR0w
-         7heHCqBM3/D/KJi0/UMy5zvxmxFKSDVv+uDKJt9oog1YrNC5f0ih0LhvL0u0f53uSLiu
-         nfwf7IWIV+uJ/16zJORfNiyk+rskBPCWC3Khen3H2BzEAv3TRVcFKNRtH5EelYF0OJ5n
-         EQ5JB130AaGhYRmUiS5F9ApPeZELHPH0tem+D8gj7Wn1j9Iq1aRCV/7HajbFH9vhP2FZ
-         c8dQ1qsZQ4BO/DJEpRSSuBjIhu7KC/LN7pR7cwkATjLR847K+0C+4SaoY6EPGCnFmFGe
-         HL0Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVoGsCXH5Rcw7VRGJAPGHlnp6Mk+ReRYCCV1Sa4UQurvXUay6ik/qMdri0aBAMO2YoWh44RPj7war8HabQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzCVyboz3GiMr2O5IMOSBlfxE0TMoAITlTKgjmVCmKiWPBeeXUj
-	ZrznK3g4z0t/fjDJ6TO/j0xn0yAay+m5Gld5FFLdwbyNRqAowObOcOjZzoVY58M=
-X-Gm-Gg: ASbGncuPPiK3+YqZh+CIhQMkDjQdIXFuXvqktisanzo0vXzKxxQU4ajZ0AIJvJa+7bC
-	NVNO3SrwtsP8GjTd2YIs4bNQfxkhcjhH1z4XYoN0/YqhCE2OSngv+XWQeofhlfQIOZj3hMhgvAF
-	o8qZ7yGxolRg6EymWnOWW6u6BiRBSL7VrDSZqc9j6jWmIWIVr8kkDoB8ly+4Zpkq65BoPb19Wpz
-	upa1GiJlQ1wAE7A1E2Uxo663K25oG+sf60lWmplGp648ZGQwkAd8D1FdybYn48MlHgpGCh8r75W
-	dmvv0KFqFBmTObmIWnvyDzxAuA==
-X-Google-Smtp-Source: AGHT+IECdESRQYV/W+1X8h4Mc4PXA3ZTzsooOvg7iZMEiHqHLyviO+jMiRENW2nH7BAq2FLQxIJOCw==
-X-Received: by 2002:a05:6000:188c:b0:38d:b6a9:2cd2 with SMTP id ffacd0b85a97d-38f3407371emr11339096f8f.46.1739807302022;
-        Mon, 17 Feb 2025 07:48:22 -0800 (PST)
-Received: from [192.168.68.163] ([145.224.90.202])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258cccdesm12577678f8f.26.2025.02.17.07.48.20
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Feb 2025 07:48:21 -0800 (PST)
-Message-ID: <964f60e0-fe88-48c8-87c3-a6ea2f3cac6c@linaro.org>
-Date: Mon, 17 Feb 2025 15:48:20 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxSCk05Zsz2xPL
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 03:04:49 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sympatico.ca; s=selector1; t=1739808290; 
+        bh=41DYd8S5nzPKADDvgmNVKMBye2mp3t96d0S4S/5x/MU=;
+        h=Date:From:Message-ID:To:Subject:In-Reply-To:References:MIME-Version:Content-Type;
+        b=gz01XTzy+vXowWW4auKghJgrxsyb5vuQ3qW7/MwctUIxZkT/2Kk74CUInfdXZ+WESPCeW1cwcvCFN1Zw0Xfyye7fqntc/0SlwH8dM4f2UR9ZDp6IYNtYXumzVxyhz2n/HNeJYx/hqdoJxxCXnW2OfmywzLQkvqI9C4UUzjHhnjgM6DTbX+Ser5zL3vd2gzXuVvBZKg25NcybSJ/GUEEU6uM8kPfX9M0eoAKk0J/84cksto39BuBkrNS14ZzD+xW6pfafuugpnhBA4l0VsLBQ83f0wh1Trmnx/1/PdFCmq0f+/BzV5VFfxm89A1sAVaMYKuiSThY6sNY4xD41i/PPQg==
+X-RG-SOPHOS: Clean
+X-RG-VADE-SC: 0
+X-RG-VADE: Clean
+X-Originating-IP: [76.71.36.239]
+X-RG-Env-Sender: al.dunsmuir@sympatico.ca
+X-RG-Rigid: 67ACA5AF01009087
+X-RazorGate-Vade: dmFkZTGMu6JuLVqLuz3zvC7c6OKmmoJx/rp/Y62QFXTbJQCSvND99pzidzTNP0FoNoeT+DVV8xqc/cEi0E1ntBW/hE4KCN6Y5/Ni7BTyiox9QjrVemw03MswMXHZpvAvsWBAkOZ3G6Zz7VLWHE9aDveciqCfBYF1iLLPcu30qskWnCtVh42odawXvEiks5/HOlebHKhQNnKlTJU1BEFwS519tsIPbAD0MwH5R9jHvLjFUFsHR6FdH6m44PlkEDlLcCW2r+/aueZlns20RoZH8enOhYvFxpVtXKdzuWPnhIONQOnkInmckYWGZ1lwu5jJ+PYbQTgR5kj9Vtui1jnZ/Np9zkU+ldnZD5K6ITn+XVjpSCxzNzCpwX23nGIrg+5S75VC+BkRpfAMbblt78BjS+84cxt16e2PHfT6T5iqOz2/7q6UnrAJ7Fq2pvjqJG3D4k0hrmBFudt0e6xH/aUsN/TQJt1P69E2DKWgIr+VDrtu9nP9jAF0PesKZSHNbB4w3Ho/wZScR4vp/K4LKriQfT8+HxRmp6RrX+4SOYiihZ/24VdXY9x4EjTPn2R4LX6e7bloKkykLD1Rp+mzc5GDxZz3WWVNmcCM0IMEdYUbDhKPsIn7VvSTHRWZz1Aw73BXQSd9YgVq+H1vf5IiY2LRxNlRdF/wS+rq6PUgD5mbNAxFAIQFbA
+X-RazorGate-Vade-Verdict: clean 0
+X-RazorGate-Vade-Classification: clean
+Received: from bucky.alba.lan (76.71.36.239) by cmx-mtlrgo001.bell.net (authenticated as al.dunsmuir@sympatico.ca)
+        id 67ACA5AF01009087; Mon, 17 Feb 2025 11:02:15 -0500
+Date: Mon, 17 Feb 2025 11:02:15 -0500
+From: Al Dunsmuir <al.dunsmuir@sympatico.ca>
+Message-ID: <1972812751.20250217110215@sympatico.ca>
+To: Alexandru Elisei <alexandru.elisei@arm.com>, 
+ Andrew Jones <andrew.jones@linux.dev>
+CC: eric.auger@redhat.com, lvivier@redhat.com, thuth@redhat.com, 
+ frankja@linux.ibm.com, imbrenda@linux.ibm.com, nrb@linux.ibm.com, 
+ david@redhat.com, pbonzini@redhat.com, kvm@vger.kernel.org, 
+ kvmarm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org, 
+ kvm-riscv@lists.infradead.org, linux-s390@vger.kernel.org, will@kernel.org, 
+ julien.thierry.kdev@gmail.com, maz@kernel.org, oliver.upton@linux.dev, 
+ suzuki.poulose@arm.com, yuzenghui@huawei.com, joey.gouly@arm.com, 
+ andre.przywara@arm.com
+Subject: Re: [kvm-unit-tests PATCH v2 03/18] scripts: Refuse to run the tests if not configured for qemu
+In-Reply-To: <Z6o/rbweZttGReir@arm.com>
+References: <20250120164316.31473-1-alexandru.elisei@arm.com> 
+  <20250120164316.31473-4-alexandru.elisei@arm.com>
+  <20250121-45faf6a9a9681c7c9ece5f44@orel> <Z6nX8YC8ZX9jFiLb@arm.com>
+  <20250210-640ff37c16a0dbccb69f08ea@orel> <Z6o/rbweZttGReir@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,193 +74,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] tools/perf: Pick the correct dwarf die while adding probe
- point for a function
-To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
- hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com, acme@kernel.org,
- jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
- namhyung@kernel.org
-References: <20250212131949.68706-1-atrajeev@linux.vnet.ibm.com>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <20250212131949.68706-1-atrajeev@linux.vnet.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hello Alexandru,
 
+On Monday, February 10, 2025, 1:04:29 PM, you wrote:
 
-On 12/02/2025 1:19 pm, Athira Rajeev wrote:
-> Perf probe on vfs_fstatat fails as below on a powerpc system
-> 
-> ./perf probe -nf --max-probes=512 -a 'vfs_fstatat $params'
-> Segmentation fault (core dumped)
-> 
-> This is observed while running perftool-testsuite_probe testcase.
-> 
-> While running with verbose, its observed that segfault happens
-> at:
-> 
->     synthesize_probe_trace_arg ()
->     synthesize_probe_trace_command ()
->     probe_file.add_event ()
->     apply_perf_probe_events ()
->     __cmd_probe ()
->     cmd_probe ()
->     run_builtin ()
->     handle_internal_command ()
->     main ()
-> 
-> Code in synthesize_probe_trace_arg() access a null value and results in
-> segfault. Data structure which is null:
-> struct probe_trace_arg arg->value
-> 
-> We are hitting a case where arg->value is null in probe point:
-> "vfs_fstatat $params". This is happening since 'commit e896474fe485
-> ("getname_maybe_null() - the third variant of pathname copy-in")'
-> Before the commit, probe point for vfs_fstatat was getting added only
-> for one location:
-> 
-> Writing event: p:probe/vfs_fstatat _text+6345404 dfd=%gpr3:s32 filename=%gpr4:x64 stat=%gpr5:x64 flags=%gpr6:s32
-> 
-> With this change, vfs_fstatat code is inlined for other locations in the
-> code:
-> Probe point found: __do_sys_lstat64+48
-> Probe point found: __do_sys_stat64+48
-> Probe point found: __do_sys_newlstat+48
-> Probe point found: __do_sys_newstat+48
-> Probe point found: vfs_fstatat+0
-> 
-> When trying to find matching dwarf information entry (DIE)
-> from the debuginfo, the code incorrectly picks DIE which is
-> not referring to vfs_fstatat. Snippet from dwarf entry in vmlinux
-> debuginfo file.
-> 
-> The main abstract die is:
->   <1><4214883>: Abbrev Number: 147 (DW_TAG_subprogram)
->      <4214885>   DW_AT_external    : 1
->      <4214885>   DW_AT_name        : (indirect string, offset: 0x17b9f3): vfs_fstatat
-> 
-> With formal parameters:
->   <2><4214896>: Abbrev Number: 51 (DW_TAG_formal_parameter)
->      <4214897>   DW_AT_name        : dfd
->   <2><42148a3>: Abbrev Number: 23 (DW_TAG_formal_parameter)
->      <42148a4>   DW_AT_name        : (indirect string, offset: 0x8fda9): filename
->   <2><42148b0>: Abbrev Number: 23 (DW_TAG_formal_parameter)
->      <42148b1>   DW_AT_name        : (indirect string, offset: 0x16bd9c): stat
->   <2><42148bd>: Abbrev Number: 23 (DW_TAG_formal_parameter)
->      <42148be>   DW_AT_name        : (indirect string, offset: 0x39832b): flags
-> 
-> While collecting variables/parameters for a probe point, the function
-> copy_variables_cb() also looks at dwarf debug entries based on the
-> instruction address. Snippet
-> 
->          if (dwarf_haspc(die_mem, vf->pf->addr))
->                  return DIE_FIND_CB_CONTINUE;
->          else
->                  return DIE_FIND_CB_SIBLING;
-> 
-> But incase of inlined function instance for vfs_fstatat, there are two
-> entries which has the instruction address entry point as same.
-> 
-> Instance 1: which is for vfs_fstatat and DW_AT_abstract_origin points to
-> 0x4214883 (reference above for main abstract die)
-> 
-> <3><42131fa>: Abbrev Number: 59 (DW_TAG_inlined_subroutine)
->      <42131fb>   DW_AT_abstract_origin: <0x4214883>
->      <42131ff>   DW_AT_entry_pc    : 0xc00000000062b1e0
-> 
-> Instance 2: which is not for vfs_fstatat but for getname
-> 
->   <5><4213270>: Abbrev Number: 39 (DW_TAG_inlined_subroutine)
->      <4213271>   DW_AT_abstract_origin: <0x4215b6b>
->      <4213275>   DW_AT_entry_pc    : 0xc00000000062b1e0
-> 
-> But the copy_variables_cb() continues to add parameters from second
-> instance also based on the dwarf_haspc() check. This results in
-> formal parameters for getname also appended to params. But while
-> filling in the args->value for these parameters, since these args
-> are not part of dwarf with offset "42131fa". Hence value will be
-> null. This incorrect args results in segfault when value field is
-> accessed.
-> 
-> Save the Dwarf_Die which is the actual DW_TAG_subprogram as part of
-> "struct probe_finder". In copy_variables_cb(), include check to make
-> sure the DW_AT_abstract_origin points to the correct entry if the
-> dwarf_haspc() matches the instruction address.
-> 
-> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> ---
->   tools/perf/util/probe-finder.c | 21 ++++++++++++++++++---
->   tools/perf/util/probe-finder.h |  1 +
->   2 files changed, 19 insertions(+), 3 deletions(-)
-> 
-> diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
-> index 1e769b68da37..361086a7adae 100644
-> --- a/tools/perf/util/probe-finder.c
-> +++ b/tools/perf/util/probe-finder.c
-> @@ -973,6 +973,7 @@ static int probe_point_search_cb(Dwarf_Die *sp_die, void *data)
->   	pr_debug("Matched function: %s [%lx]\n", dwarf_diename(sp_die),
->   		 (unsigned long)dwarf_dieoffset(sp_die));
->   	pf->fname = fname;
-> +	memcpy(&pf->abstract_die, sp_die, sizeof(Dwarf_Die));
->   	if (pp->line) { /* Function relative line */
->   		dwarf_decl_line(sp_die, &pf->lno);
->   		pf->lno += pp->line;
-> @@ -1179,6 +1180,8 @@ static int copy_variables_cb(Dwarf_Die *die_mem, void *data)
->   	struct local_vars_finder *vf = data;
->   	struct probe_finder *pf = vf->pf;
->   	int tag;
-> +	Dwarf_Attribute attr;
-> +	Dwarf_Die var_die;
->   
->   	tag = dwarf_tag(die_mem);
->   	if (tag == DW_TAG_formal_parameter ||
-> @@ -1196,10 +1199,22 @@ static int copy_variables_cb(Dwarf_Die *die_mem, void *data)
->   		}
->   	}
->   
-> -	if (dwarf_haspc(die_mem, vf->pf->addr))
-> +	if (dwarf_haspc(die_mem, vf->pf->addr)) {
-> +		/*
-> +		 * when DW_AT_entry_pc contains instruction address,
-> +		 * also check if the DW_AT_abstract_origin of die_mem
-> +		 * points to correct die.
-> +		 */
-> +		if (dwarf_attr(die_mem, DW_AT_abstract_origin, &attr)) {
-> +			dwarf_formref_die(&attr, &var_die);
-> +			if (dwarf_dieoffset(&pf->abstract_die) != dwarf_dieoffset(&var_die))
-> +				goto out;
-> +		}
->   		return DIE_FIND_CB_CONTINUE;
-> -	else
-> -		return DIE_FIND_CB_SIBLING;
-> +	}
-> +
-> +out:
-> +	return DIE_FIND_CB_SIBLING;
->   }
->   
->   static int expand_probe_args(Dwarf_Die *sc_die, struct probe_finder *pf,
-> diff --git a/tools/perf/util/probe-finder.h b/tools/perf/util/probe-finder.h
-> index dcf6cc1e1cbe..b3039635c94e 100644
-> --- a/tools/perf/util/probe-finder.h
-> +++ b/tools/perf/util/probe-finder.h
-> @@ -63,6 +63,7 @@ struct probe_finder {
->   	const char		*fname;		/* Real file name */
->   	Dwarf_Die		cu_die;		/* Current CU */
->   	Dwarf_Die		sp_die;
-> +	Dwarf_Die		abstract_die;
->   	struct intlist		*lcache;	/* Line cache for lazy match */
->   
->   	/* For variable searching */
+> Hi Drew,
 
-Reviewed-by: James Clark <james.clark@linaro.org>
+> On Mon, Feb 10, 2025 at 02:56:25PM +0100, Andrew Jones wrote:
+>> On Mon, Feb 10, 2025 at 10:41:53AM +0000, Alexandru Elisei wrote:
+>> > Hi Drew,
+>> > 
+>> > On Tue, Jan 21, 2025 at 03:48:55PM +0100, Andrew Jones wrote:
+>> > > On Mon, Jan 20, 2025 at 04:43:01PM +0000, Alexandru Elisei wrote:
+>> > <snip>
+>> > > > ---
+>> > > >  arm/efi/run             | 8 ++++++++
+>> > > >  arm/run                 | 9 +++++++++
+>> > > >  run_tests.sh            | 8 ++++++++
+>> > > >  scripts/mkstandalone.sh | 8 ++++++++
+>> > > >  4 files changed, 33 insertions(+)
+>> > <snip>
+>> > > > +case "$TARGET" in
+>> > > > +qemu)
+>> > > > +    ;;
+>> > > > +*)
+>> > > > +    echo "'$TARGET' not supported for standlone tests"
+>> > > > +    exit 2
+>> > > > +esac
+>> > > 
+>> > > I think we could put the check in a function in scripts/arch-run.bash and
+>> > > just use the same error message for all cases.
+>> > 
+>> > Coming back to the series.
+>> > 
+>> > arm/efi/run and arm/run source scripts/arch-run.bash; run_tests.sh and
+>> > scripts/mkstandalone.sh don't source scripts/arch-run.bash. There doesn't
+>> > seem to be a common file that is sourced by all of them.
+>> 
+>> scripts/mkstandalone.sh uses arch-run.bash, see generate_test().
+
+> Are you referring to this bit:
+
+> generate_test ()
+> {
+>         <snip>
+>         (echo "#!/usr/bin/env bash"
+>          cat scripts/arch-run.bash "$TEST_DIR/run")
+
+> I think scripts/arch-run.bash would need to be sourced for any functions defined
+> there to be usable in mkstandalone.sh.
+
+> What I was thinking is something like this:
+
+> if ! vmm_supported $TARGET; then
+>         echo "$0 does not support '$TARGET'"
+>         exit 2
+> fi
+
+> Were you thinking of something else?
+
+> I think mkstandalone should error at the top level (when you do make
+> standalone), and not rely on the individual scripts to error if the VMM is
+> not supported. That's because I think creating the test files, booting a
+> machine and copying the files only to find out that kvm-unit-tests was
+> misconfigured is a pretty suboptimal experience.
+
+>> run_tests.sh doesn't, but I'm not sure it needs to validate TARGET
+>> since it can leave that to the lower-level scripts.
+
+> I put the check in arm/run, and removed it from run_tests.sh, and this is
+> what I got:
+
+> $ ./run_tests.sh selftest-setup
+> SKIP selftest-setup (./arm/run does not supported 'kvmtool')
+
+> which looks good to me.
+
+Grammar nit:  This should be
+SKIP selftest-setup (./arm/run does not support 'kvmtool')
+
+Al
+
+>> 
+>> > 
+>> > How about creating a new file in scripts (vmm.bash?) with only this
+>> > function?
+>> 
+>> If we need a new file, then we can add one, but I'd try using
+>> arch-run.bash or common.bash first.
+
+> common.bash seems to work (and the name fits), so I'll give that a go.
+
+> Thanks,
+> Alex
+
 
 
