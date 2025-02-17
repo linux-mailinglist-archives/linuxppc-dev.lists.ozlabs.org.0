@@ -1,72 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-6268-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6283-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9AEA3870A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 15:55:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 707E7A38DCF
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 22:04:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxQh04mwBz2yyD;
-	Tue, 18 Feb 2025 01:55:44 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxZs66vw4z2xWL;
+	Tue, 18 Feb 2025 08:04:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739804144;
-	cv=none; b=HxIYfAaMWy6dgxqhvJNnS9tGvCBo2dJTql1hHNput0Kh6X80SusSYZCe2oiF8fi0tQv17eC9edlmCMzccvy9atItR2GWL8442nPb8n+/djD9HkJVQrSOLlQpQGt2tX8tQufesvjrnusbw+UUNGTZHxoZB6Jh02JoGcn3fIDl0kWW5IA2ugR4N6VOfGCVuY5tpmkqiMa3uviWOnodj4XCFXUrdsKc1NC0p0hGAtOrlfELWKirD1t7Ows4tfIqIORcx1kTyzgndc0xRh1PIl18uOFE1dgdYjji/46cSTezJu0JHHImpoA01xCh+agwiwud5lHPvUGIbT1qlxHEp90WVQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739807311;
+	cv=none; b=Yrk4Fjbmsx3GYwTdZBX1+q/9T2qhJhHyhU6Vt9WK6Zbd2wJd1abITGbvMUHOf2nduX2esfk4JCWfM2/9YjaEuzF0lrz5xTZRTk+bM4YTymyxZNUA/Mvnkj++DOCeOZ+wHwJbGwQU2ehsxZJ5Aa+dmjsUUzsclP1+AzREmS1XASf7yC8RhAFNmDMSD5RDUuXolCbue3M6hIi9t5KOGkYN6wx5vSsYf5hcqViJqkGC/Vr1kKZmROcwyg+71FdCpCSHRx127dSSwWShex+RkUPvoyjqR+m7i6U00yA7RWkjabExDljDBSB28qY/JIMQMBdzJCkdcGmfBJZiirlG9tuQ+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739804144; c=relaxed/relaxed;
-	bh=+M34uV/zkct1kEAaK2pLJ3/QmCI3GfHP6imSRuJbcm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QmhCPv/66+XQlB8Qav/4s2nv7nj89ZKbZqlCPycHy4le6Alzg8MdCqgM2kMNOarrMWkgfPw9f10rPvTLcn+kfBMC4am05yqe+oObB6NzDmkHWpk/a7929AXLRrgnisseLXK+Nm/Hn8XXN1LCK/OslxMGJ3Ys2neECf43IlKRPQeQbNgH3ZNix2JDrbVUU6sCiA3Wj3I4SkhxrMxEFqec2zgDCi0uGKS2/ALNaSS9BxE/lgJhMpMVqzDaVqpEHrfViWIwJfkyeId+ZpSXskoQOdRHRmp0SHbmWeuHiNN9l/wZNJK9Hds2/uO/GQfbbUbvnVzsb0B5bOD1JB3PaDijFw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	t=1739807311; c=relaxed/relaxed;
+	bh=LPDghrWJkASO+zl2RLTvdn4N9sHfOOgrUhUPDIBW/kE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ONdP2GXgO09F79HJqzwYPmqDATsOSe+5Xvjva7ZY/507e9J7EAYpzGUj+VV4/CYlUXo5JSXz9izB41ELkcXEFrOBzFZihfC0u8r8DAOt4C+EIkeTOy3EZAA4mDMc6LlLLEcgVOfBbJThDU+ugGPQ9L7+BTqBgbKqc+9TYWWcD6zTzzQhKZ0OvzbIrU1L9zz4ju8JV4r5OaNWivL/Q5f16ZzDIT2XVPfbbzU+JsobsenODAlXt9P4qNMrKNZI18/BlPOl8wckX3S+gzz1919CFDnnSC6nHhqNYFK1oRHR6+d6GTxYbYuXQ8iH0KC+iV0a3ZBF/9hblhLoVqfTuwzTog==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org; dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=qkXSK3t6; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42c; helo=mail-wr1-x42c.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org) smtp.mailfrom=linaro.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=linaro.org header.i=@linaro.org header.a=rsa-sha256 header.s=google header.b=qkXSK3t6;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linaro.org (client-ip=2a00:1450:4864:20::42c; helo=mail-wr1-x42c.google.com; envelope-from=james.clark@linaro.org; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42c.google.com (mail-wr1-x42c.google.com [IPv6:2a00:1450:4864:20::42c])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxQgz1R1qz2yZ6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 01:55:43 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 4E9CC5C57AC;
-	Mon, 17 Feb 2025 14:55:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453CDC4CED1;
-	Mon, 17 Feb 2025 14:55:35 +0000 (UTC)
-Date: Mon, 17 Feb 2025 14:55:32 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Morse <james.morse@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com, wangkefeng.wang@huawei.com,
-	Guohanjun <guohanjun@huawei.com>
-Subject: Re: [PATCH v13 4/5] arm64: support copy_mc_[user]_highpage()
-Message-ID: <Z7NN5Pa-c5PtIbcF@arm.com>
-References: <20241209024257.3618492-1-tongtiangen@huawei.com>
- <20241209024257.3618492-5-tongtiangen@huawei.com>
- <Z6zWSXzKctkpyH7-@arm.com>
- <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com>
- <Z698SFVqHjpGeGC0@arm.com>
- <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxRrs4vYRz2ytT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 02:48:28 +1100 (AEDT)
+Received: by mail-wr1-x42c.google.com with SMTP id ffacd0b85a97d-38f3ea6207cso1198372f8f.3
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 07:48:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1739807302; x=1740412102; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LPDghrWJkASO+zl2RLTvdn4N9sHfOOgrUhUPDIBW/kE=;
+        b=qkXSK3t6NdKHQ/zZk/8HCJIxB4/WCuxNbFsJl7IPHPwt6TSNvmKdxGPvOQmlrh4LyU
+         wGPXFNhkQHW1mHZyns8Qzot8PUuyBlFuPeQ3agoORN6o/lKWjsZfRYllAXYIWSzYrhKh
+         EdRd76dmI/XP0MkQ3ruYTQbkfw4woT+rxLOV3mNcYCainqZWZXMzyuDzoI4Nh3ILr3v6
+         l07xsjORk4Y+20PdpoocUO9uQUmVJ8zE2xtEuUEOPWx1vhOuJPwNbAOwUdK2cn2j798s
+         TO1FMWhSUjpxBEa45cVZVo6H+Hq0DxRnkg+btoXBZTdH1nIeaf/rguPasLUOzdpMQw/A
+         Tlgg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739807302; x=1740412102;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=LPDghrWJkASO+zl2RLTvdn4N9sHfOOgrUhUPDIBW/kE=;
+        b=AHjCf/frv+x1UjVUYGEkM1vJWPfdgpuqBz7u9kjc61g7rFrn2d4BXeoWdfyAENDR0w
+         7heHCqBM3/D/KJi0/UMy5zvxmxFKSDVv+uDKJt9oog1YrNC5f0ih0LhvL0u0f53uSLiu
+         nfwf7IWIV+uJ/16zJORfNiyk+rskBPCWC3Khen3H2BzEAv3TRVcFKNRtH5EelYF0OJ5n
+         EQ5JB130AaGhYRmUiS5F9ApPeZELHPH0tem+D8gj7Wn1j9Iq1aRCV/7HajbFH9vhP2FZ
+         c8dQ1qsZQ4BO/DJEpRSSuBjIhu7KC/LN7pR7cwkATjLR847K+0C+4SaoY6EPGCnFmFGe
+         HL0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVoGsCXH5Rcw7VRGJAPGHlnp6Mk+ReRYCCV1Sa4UQurvXUay6ik/qMdri0aBAMO2YoWh44RPj7war8HabQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzCVyboz3GiMr2O5IMOSBlfxE0TMoAITlTKgjmVCmKiWPBeeXUj
+	ZrznK3g4z0t/fjDJ6TO/j0xn0yAay+m5Gld5FFLdwbyNRqAowObOcOjZzoVY58M=
+X-Gm-Gg: ASbGncuPPiK3+YqZh+CIhQMkDjQdIXFuXvqktisanzo0vXzKxxQU4ajZ0AIJvJa+7bC
+	NVNO3SrwtsP8GjTd2YIs4bNQfxkhcjhH1z4XYoN0/YqhCE2OSngv+XWQeofhlfQIOZj3hMhgvAF
+	o8qZ7yGxolRg6EymWnOWW6u6BiRBSL7VrDSZqc9j6jWmIWIVr8kkDoB8ly+4Zpkq65BoPb19Wpz
+	upa1GiJlQ1wAE7A1E2Uxo663K25oG+sf60lWmplGp648ZGQwkAd8D1FdybYn48MlHgpGCh8r75W
+	dmvv0KFqFBmTObmIWnvyDzxAuA==
+X-Google-Smtp-Source: AGHT+IECdESRQYV/W+1X8h4Mc4PXA3ZTzsooOvg7iZMEiHqHLyviO+jMiRENW2nH7BAq2FLQxIJOCw==
+X-Received: by 2002:a05:6000:188c:b0:38d:b6a9:2cd2 with SMTP id ffacd0b85a97d-38f3407371emr11339096f8f.46.1739807302022;
+        Mon, 17 Feb 2025 07:48:22 -0800 (PST)
+Received: from [192.168.68.163] ([145.224.90.202])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-38f258cccdesm12577678f8f.26.2025.02.17.07.48.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Feb 2025 07:48:21 -0800 (PST)
+Message-ID: <964f60e0-fe88-48c8-87c3-a6ea2f3cac6c@linaro.org>
+Date: Mon, 17 Feb 2025 15:48:20 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,66 +83,193 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/perf: Pick the correct dwarf die while adding probe
+ point for a function
+To: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+ hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com, acme@kernel.org,
+ jolsa@kernel.org, adrian.hunter@intel.com, irogers@google.com,
+ namhyung@kernel.org
+References: <20250212131949.68706-1-atrajeev@linux.vnet.ibm.com>
+Content-Language: en-US
+From: James Clark <james.clark@linaro.org>
+In-Reply-To: <20250212131949.68706-1-atrajeev@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 17, 2025 at 04:07:49PM +0800, Tong Tiangen wrote:
-> 在 2025/2/15 1:24, Catalin Marinas 写道:
-> > On Fri, Feb 14, 2025 at 10:49:01AM +0800, Tong Tiangen wrote:
-> > > 在 2025/2/13 1:11, Catalin Marinas 写道:
-> > > > On Mon, Dec 09, 2024 at 10:42:56AM +0800, Tong Tiangen wrote:
-> > > > > Currently, many scenarios that can tolerate memory errors when copying page
-> > > > > have been supported in the kernel[1~5], all of which are implemented by
-> > > > > copy_mc_[user]_highpage(). arm64 should also support this mechanism.
-> > > > > 
-> > > > > Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
-> > > > > architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
-> > > > > __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
-> > > > > 
-> > > > > Add new helper copy_mc_page() which provide a page copy implementation with
-> > > > > hardware memory error safe. The code logic of copy_mc_page() is the same as
-> > > > > copy_page(), the main difference is that the ldp insn of copy_mc_page()
-> > > > > contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
-> > > > > main logic is extracted to copy_page_template.S. In addition, the fixup of
-> > > > > MOPS insn is not considered at present.
-> > > > 
-> > > > Could we not add the exception table entry permanently but ignore the
-> > > > exception table entry if it's not on the do_sea() path? That would save
-> > > > some code duplication.
-> > > 
-> > > I'm sorry, I didn't catch your point, that the do_sea() and non do_sea()
-> > > paths use different exception tables?
-> > 
-> > No, they would have the same exception table, only that we'd interpret
-> > it differently depending on whether it's a SEA error or not. Or rather
-> > ignore the exception table altogether for non-SEA errors.
+
+
+On 12/02/2025 1:19 pm, Athira Rajeev wrote:
+> Perf probe on vfs_fstatat fails as below on a powerpc system
 > 
-> You mean to use the same exception type (EX_TYPE_KACCESS_ERR_ZERO) and
-> then do different processing on SEA errors and non-SEA errors, right?
-
-Right.
-
-> If so, some instructions of copy_page() did not add to the exception
-> table will be added to the exception table, and the original logic will
-> be affected.
+> ./perf probe -nf --max-probes=512 -a 'vfs_fstatat $params'
+> Segmentation fault (core dumped)
 > 
-> For example, if an instruction is not added to the exception table, the
-> instruction will panic when it triggers a non-SEA error. If this
-> instruction is added to the exception table because of SEA processing,
-> and then a non-SEA error is triggered, should we fix it?
+> This is observed while running perftool-testsuite_probe testcase.
+> 
+> While running with verbose, its observed that segfault happens
+> at:
+> 
+>     synthesize_probe_trace_arg ()
+>     synthesize_probe_trace_command ()
+>     probe_file.add_event ()
+>     apply_perf_probe_events ()
+>     __cmd_probe ()
+>     cmd_probe ()
+>     run_builtin ()
+>     handle_internal_command ()
+>     main ()
+> 
+> Code in synthesize_probe_trace_arg() access a null value and results in
+> segfault. Data structure which is null:
+> struct probe_trace_arg arg->value
+> 
+> We are hitting a case where arg->value is null in probe point:
+> "vfs_fstatat $params". This is happening since 'commit e896474fe485
+> ("getname_maybe_null() - the third variant of pathname copy-in")'
+> Before the commit, probe point for vfs_fstatat was getting added only
+> for one location:
+> 
+> Writing event: p:probe/vfs_fstatat _text+6345404 dfd=%gpr3:s32 filename=%gpr4:x64 stat=%gpr5:x64 flags=%gpr6:s32
+> 
+> With this change, vfs_fstatat code is inlined for other locations in the
+> code:
+> Probe point found: __do_sys_lstat64+48
+> Probe point found: __do_sys_stat64+48
+> Probe point found: __do_sys_newlstat+48
+> Probe point found: __do_sys_newstat+48
+> Probe point found: vfs_fstatat+0
+> 
+> When trying to find matching dwarf information entry (DIE)
+> from the debuginfo, the code incorrectly picks DIE which is
+> not referring to vfs_fstatat. Snippet from dwarf entry in vmlinux
+> debuginfo file.
+> 
+> The main abstract die is:
+>   <1><4214883>: Abbrev Number: 147 (DW_TAG_subprogram)
+>      <4214885>   DW_AT_external    : 1
+>      <4214885>   DW_AT_name        : (indirect string, offset: 0x17b9f3): vfs_fstatat
+> 
+> With formal parameters:
+>   <2><4214896>: Abbrev Number: 51 (DW_TAG_formal_parameter)
+>      <4214897>   DW_AT_name        : dfd
+>   <2><42148a3>: Abbrev Number: 23 (DW_TAG_formal_parameter)
+>      <42148a4>   DW_AT_name        : (indirect string, offset: 0x8fda9): filename
+>   <2><42148b0>: Abbrev Number: 23 (DW_TAG_formal_parameter)
+>      <42148b1>   DW_AT_name        : (indirect string, offset: 0x16bd9c): stat
+>   <2><42148bd>: Abbrev Number: 23 (DW_TAG_formal_parameter)
+>      <42148be>   DW_AT_name        : (indirect string, offset: 0x39832b): flags
+> 
+> While collecting variables/parameters for a probe point, the function
+> copy_variables_cb() also looks at dwarf debug entries based on the
+> instruction address. Snippet
+> 
+>          if (dwarf_haspc(die_mem, vf->pf->addr))
+>                  return DIE_FIND_CB_CONTINUE;
+>          else
+>                  return DIE_FIND_CB_SIBLING;
+> 
+> But incase of inlined function instance for vfs_fstatat, there are two
+> entries which has the instruction address entry point as same.
+> 
+> Instance 1: which is for vfs_fstatat and DW_AT_abstract_origin points to
+> 0x4214883 (reference above for main abstract die)
+> 
+> <3><42131fa>: Abbrev Number: 59 (DW_TAG_inlined_subroutine)
+>      <42131fb>   DW_AT_abstract_origin: <0x4214883>
+>      <42131ff>   DW_AT_entry_pc    : 0xc00000000062b1e0
+> 
+> Instance 2: which is not for vfs_fstatat but for getname
+> 
+>   <5><4213270>: Abbrev Number: 39 (DW_TAG_inlined_subroutine)
+>      <4213271>   DW_AT_abstract_origin: <0x4215b6b>
+>      <4213275>   DW_AT_entry_pc    : 0xc00000000062b1e0
+> 
+> But the copy_variables_cb() continues to add parameters from second
+> instance also based on the dwarf_haspc() check. This results in
+> formal parameters for getname also appended to params. But while
+> filling in the args->value for these parameters, since these args
+> are not part of dwarf with offset "42131fa". Hence value will be
+> null. This incorrect args results in segfault when value field is
+> accessed.
+> 
+> Save the Dwarf_Die which is the actual DW_TAG_subprogram as part of
+> "struct probe_finder". In copy_variables_cb(), include check to make
+> sure the DW_AT_abstract_origin points to the correct entry if the
+> dwarf_haspc() matches the instruction address.
+> 
+> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+> ---
+>   tools/perf/util/probe-finder.c | 21 ++++++++++++++++++---
+>   tools/perf/util/probe-finder.h |  1 +
+>   2 files changed, 19 insertions(+), 3 deletions(-)
+> 
+> diff --git a/tools/perf/util/probe-finder.c b/tools/perf/util/probe-finder.c
+> index 1e769b68da37..361086a7adae 100644
+> --- a/tools/perf/util/probe-finder.c
+> +++ b/tools/perf/util/probe-finder.c
+> @@ -973,6 +973,7 @@ static int probe_point_search_cb(Dwarf_Die *sp_die, void *data)
+>   	pr_debug("Matched function: %s [%lx]\n", dwarf_diename(sp_die),
+>   		 (unsigned long)dwarf_dieoffset(sp_die));
+>   	pf->fname = fname;
+> +	memcpy(&pf->abstract_die, sp_die, sizeof(Dwarf_Die));
+>   	if (pp->line) { /* Function relative line */
+>   		dwarf_decl_line(sp_die, &pf->lno);
+>   		pf->lno += pp->line;
+> @@ -1179,6 +1180,8 @@ static int copy_variables_cb(Dwarf_Die *die_mem, void *data)
+>   	struct local_vars_finder *vf = data;
+>   	struct probe_finder *pf = vf->pf;
+>   	int tag;
+> +	Dwarf_Attribute attr;
+> +	Dwarf_Die var_die;
+>   
+>   	tag = dwarf_tag(die_mem);
+>   	if (tag == DW_TAG_formal_parameter ||
+> @@ -1196,10 +1199,22 @@ static int copy_variables_cb(Dwarf_Die *die_mem, void *data)
+>   		}
+>   	}
+>   
+> -	if (dwarf_haspc(die_mem, vf->pf->addr))
+> +	if (dwarf_haspc(die_mem, vf->pf->addr)) {
+> +		/*
+> +		 * when DW_AT_entry_pc contains instruction address,
+> +		 * also check if the DW_AT_abstract_origin of die_mem
+> +		 * points to correct die.
+> +		 */
+> +		if (dwarf_attr(die_mem, DW_AT_abstract_origin, &attr)) {
+> +			dwarf_formref_die(&attr, &var_die);
+> +			if (dwarf_dieoffset(&pf->abstract_die) != dwarf_dieoffset(&var_die))
+> +				goto out;
+> +		}
+>   		return DIE_FIND_CB_CONTINUE;
+> -	else
+> -		return DIE_FIND_CB_SIBLING;
+> +	}
+> +
+> +out:
+> +	return DIE_FIND_CB_SIBLING;
+>   }
+>   
+>   static int expand_probe_args(Dwarf_Die *sc_die, struct probe_finder *pf,
+> diff --git a/tools/perf/util/probe-finder.h b/tools/perf/util/probe-finder.h
+> index dcf6cc1e1cbe..b3039635c94e 100644
+> --- a/tools/perf/util/probe-finder.h
+> +++ b/tools/perf/util/probe-finder.h
+> @@ -63,6 +63,7 @@ struct probe_finder {
+>   	const char		*fname;		/* Real file name */
+>   	Dwarf_Die		cu_die;		/* Current CU */
+>   	Dwarf_Die		sp_die;
+> +	Dwarf_Die		abstract_die;
+>   	struct intlist		*lcache;	/* Line cache for lazy match */
+>   
+>   	/* For variable searching */
 
-No, we shouldn't fix it. The exception table entries have a type
-associated. For a non-SEA error, we preserve the original behaviour even
-if we find a SEA-specific entry in the exception table. You already need
-such logic even if you duplicate the code for configurations where you
-have MC enabled.
+Reviewed-by: James Clark <james.clark@linaro.org>
 
--- 
-Catalin
 
