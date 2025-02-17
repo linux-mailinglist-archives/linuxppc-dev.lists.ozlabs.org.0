@@ -1,81 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-6255-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6256-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7D0A37C2D
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 08:28:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 183FBA37C66
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 08:39:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxDmH1DSBz30CM;
-	Mon, 17 Feb 2025 18:28:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxF1366Rvz307C;
+	Mon, 17 Feb 2025 18:39:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739777327;
-	cv=none; b=efhnZtqdPqxtye7wd8oKr3FW0UWEouQu8ba7juEOYE0UdzpbCrc2kqBAEGsWtlXRNW87MLW9dERpeBobTvNL6QvbBvZIhoVdiFgep+Tv97Hv59xRCprzaDIjxeQxVPzpP9XmsgICBiugPmLCcxMYf2Mw9ubK//76hygL9RQbmhFo3ommsQjUslj9qRHIf9R7qfWt29gUXiU1AcdX0T860RaRHX9f6zhBRdCOO6pwAQRjAGLk6rrXBf3yzm3HKyks3yypsw/Lux/+xoSmAFIsEnNPyRiwAt6D3wl8mo5GUPIXRa0ow6e2wKFgFJAZEFSV9BEwIZZIBvz+rZrM6+nd3w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739777991;
+	cv=none; b=Eo2yL6xNly1A/7xCaJXzrPkp+WUPGrNLnbVfMOqa1EC1C9BMV6EJB3uvmvGfkHjXCGzsuxs0/kfXVtStr/6t/LsBBVKUAo1QgTTKtFUiuB0Cef/PqjMteeRtGMPTrrMKDGFS6V9evxUIOsF2tIHteVNpi2ShBBTDIIAhVc2iJj5RcoAGGrLu/Pr+wPVDqHBI17aHhh3oo03HUfiIVXR+ug1Nu4XYZ6l9QAbjSNwPak2mXQSmoOurXvnIDut4rfY+XDxOIXlLQCjinKopiPmuQZF2eOxc7zD736Lmt/8+zCqQrqMnu3S+T63s2/q5zmmSZAmVLW59ZhsorK0SRAMGQg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739777327; c=relaxed/relaxed;
-	bh=BmuujJrlEtsa28iiVv2mkIJHMAJNx2VywnPp4P9PpDw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LvDG+QwQ/wbLnLXRjb7Ao4mPQwD6s/6qNQFafEADoD7L8ETFWPrYTFrSnHJPR30ujQgyqq392YABhr+iy3gOx6OIPD99Nz3Q1H0qs5PlpeyzzAb5UYPWnGHDv1Kk7d3xUoPEA5BfK3DiW5jj+0hzeNz22wJwCXveI6YnJfm6H1NnRcdkYLOXZgE0uW8injARipmoOL8mQXJgC1PVFdqTydu62VWgpBbWhkH9mQLsKkNzrnKDssHaxks5EDBb1bIPV9YB6qfe9MyQT6Zy355n/EFKKbIegoxGwwiiPHIUelqVMjtLe6KcCpPPO/zVDIdgDHCEcP3/z6XxnmXt5f3eaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iUa81xvy; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1739777991; c=relaxed/relaxed;
+	bh=7E7dYykXYQTWjl7/oNXyhreXroGqUk/4p813PlASVtw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WLc31BZnnleQND1YbNPq9BmwrKpPD/Z7fv5/VKLKGfG24Fu5/UijX9FCXDPNM012vIU8RwbVYg21Hykw8BQl6o8iYb6OeraLlDBJv91wPMErQRx40mtbgjjCnf8OGXJ6yaqT2BGu8V0p3DYKZ/U3tvTEEVT8p6wacYWxQKD7RwfLJF5EZRdJue6dYCVTry0ex6Az4oyrvFcrsg/TPQPkr2+Trl5i/yRyMWRJCtHdmWZknaKMke1ilBq/T7fAALL3djri3hqomQxdW+SyVlBeIhkRst1AjPYQH2xkg2PYDajiodYx8nLd8dNRpv2yM4cC5vkLAHrYIfDEnWWkWzjJug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=sJDfWOJv; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=vSe2WVK+; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iUa81xvy;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=sJDfWOJv;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=vSe2WVK+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxDmG2dmSz2xs7
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 18:28:46 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51H20g1r012535;
-	Mon, 17 Feb 2025 07:28:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=BmuujJ
-	rlEtsa28iiVv2mkIJHMAJNx2VywnPp4P9PpDw=; b=iUa81xvytRsYyjYxfDKkbf
-	uapd/O+VKUJyGYypTQu4geF7NYFGyBbONc1gPorjEwEnhelaPgrrlm7ugxjk7cza
-	Bvs61+NjhbVB4AF+3/++ZtQAhG8MXc5WXOxUyV+LXdzljPIZvTHhYma24gckt2zo
-	YVhg4CeuyKbTNBkBTNnYm2XB5JEoG8CH8jPwFGGc9P7cLqHn+7bDpGLMuNpp4fz0
-	ruGPa2QH7g6Afy536sJH+WG3dVxaYwNx2Zizelx3jrfsX9Mk6IiOqyPHqwCRgMqC
-	VA8FwhUBgStMBGdJikaB2+rovyas3aX4+qs/OgfuuNYvAPuKY3DWyajtyIyw9b0g
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44uuy014gq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 07:28:37 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51H3YVMA001603;
-	Mon, 17 Feb 2025 07:28:37 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u5myn416-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 07:28:37 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51H7SXa344433724
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Feb 2025 07:28:33 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6910B20043;
-	Mon, 17 Feb 2025 07:28:33 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 381102004B;
-	Mon, 17 Feb 2025 07:28:29 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.79.72])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Feb 2025 07:28:28 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org, Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Avnish Chouhan <avnish@linux.ibm.com>, Brian King <brking@linux.ibm.com>,
-        Hari Bathini <hbathini@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Subject: Re: [PATCH v3 0/4] powerpc: increase MIN RMA size for CAS negotiation
-Date: Mon, 17 Feb 2025 12:58:26 +0530
-Message-ID: <173977700762.476837.9019101116767050524.b4-ty@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250123114254.200527-1-sourabhjain@linux.ibm.com>
-References: <20250123114254.200527-1-sourabhjain@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YxF125Jxhz306l
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 18:39:50 +1100 (AEDT)
+From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1739777983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7E7dYykXYQTWjl7/oNXyhreXroGqUk/4p813PlASVtw=;
+	b=sJDfWOJvq4GycCxYqIkiTLc8aY/PzbqNTkooQaYTu3EmQz+l9f3iNBO1g7cceXZSa73Sm/
+	TQ3rUbzZLqKfCJ/eSdnKxfBJsd1lnDTt5iznJXqEQYmiXVF/M0VLbioYPhFWMaymlzuMcU
+	ufbxUGm67cOIoFMeiOn7p7abkAiPbcghJ1UuwmDINMWluF5CiP3gtvGMhY2dXIoQnkesPG
+	yuOEv64v0YzhdjUcLDbsRsEMQ8z025K2Y6A7t73PyhtUczxUltINV/0dy90lclnO55ekrZ
+	jYxcENAjulDYpVOwByIjbppUSFocs12HIcAi5iyNPFn0nR9nvGyVUn9YOelahw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1739777983;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=7E7dYykXYQTWjl7/oNXyhreXroGqUk/4p813PlASVtw=;
+	b=vSe2WVK+48Fz505c7SK7kBOBcb8hoevySXg7GjkGjgQ2R6L1LkuS2fJgXZuNgpbk4wYA4q
+	hm8DGiINCIt44XBA==
+Date: Mon, 17 Feb 2025 08:39:41 +0100
+Subject: [PATCH] powerpc: Don't use %pK through printk
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,44 +64,99 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: NE4Z8PdlDo1x0q_rrC0jKAKE6YTAXC-5
-X-Proofpoint-ORIG-GUID: NE4Z8PdlDo1x0q_rrC0jKAKE6YTAXC-5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-17_03,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- impostorscore=0 lowpriorityscore=0 mlxlogscore=558 spamscore=0
- adultscore=0 phishscore=0 suspectscore=0 priorityscore=1501 malwarescore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502170060
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Message-Id: <20250217-restricted-pointers-powerpc-v1-1-32c6bff63c9a@linutronix.de>
+X-B4-Tracking: v=1; b=H4sIALznsmcC/x3MQQqDMBBG4avIrBswIUbtVUoXEn91NjHMhFoQ7
+ 25w977NO0khDKV3c5Lgx8p7qrCvhuI2pRWG52pyretaZ3sj0CIcC2aTd04FojUOSI5msXbogx+
+ DD57qIQsW/j/3z/e6bpZHth5tAAAA
+X-Change-ID: 20250217-restricted-pointers-powerpc-f11876496464
+To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+ Oliver O'Halloran <oohall@gmail.com>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1739777983; l=2981;
+ i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
+ bh=kjiQYrE6V+TzqI5qEPcFJIH5Y9ABiiapfv4xGeGSJXc=;
+ b=lHxXcgUcaE7rXQGVPGeozmCBwXxrozW0Hai4AkmlmfMCXeSu/N6xT2aqcBV0XUlieHx4rhUuN
+ i+vEPM0aO78Aq59Xz6NY0YdnQ+rbBOq9cb0FcKWNthu+BjwhR8i5ie1
+X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
+ pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 23 Jan 2025 17:12:50 +0530, Sourabh Jain wrote:
-> Change RMA size from 512 MB to 768 MB which will result
-> in more RMA at boot time for PowerPC. When PowerPC LPAR use/uses vTPM,
-> Secure Boot or FADump, the 512 MB RMA memory is not sufficient for
-> booting. With this 512 MB RMA, GRUB2 run out of memory and unable to
-> load the necessary. Sometimes even usage of CDROM which requires more
-> memory for installation along with the options mentioned above troubles
-> the boot memory and result in boot failures. Increasing the RMA size
-> will resolves multiple out of memory issues observed in PowerPC.
-> 
-> [...]
+Restricted pointers ("%pK") are not meant to be used through printk().
+It can unintentionally expose security sensitive, raw pointer values.
 
-Applied to powerpc/next.
+Use regular pointer formatting instead.
 
-[1/4] powerpc: export MIN RMA size
-      https://git.kernel.org/powerpc/c/0bdd7ff5b830fadc18254399d6340cdaa4271527
-[2/4] powerpc/fadump: fix additional param memory reservation for HASH MMU
-      https://git.kernel.org/powerpc/c/b7bb460624570e8169eaaa55f7a410fda1bc0c2b
-[3/4] powerpc: increase MIN RMA size for CAS negotiation
-      https://git.kernel.org/powerpc/c/fdc44538d57caf4e96f57d5f0d0c89c4aa079f94
-[4/4] Documentation/powerpc/fadump: add additional parameter feature details
-      https://git.kernel.org/powerpc/c/61c403b5d000b46b8703595ea16533d0cb2a2911
+Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+---
+ arch/powerpc/kernel/eeh_driver.c | 2 +-
+ arch/powerpc/perf/hv-24x7.c      | 8 ++++----
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-Thanks
+diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
+index 7efe04c68f0fe3fb1c3c13d97d58e79e47cf103b..10ce6b3bd3b7c54f91544ae7f7fd3f32a51ee09a 100644
+--- a/arch/powerpc/kernel/eeh_driver.c
++++ b/arch/powerpc/kernel/eeh_driver.c
+@@ -907,7 +907,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+ 		/* FIXME: Use the same format as dump_stack() */
+ 		pr_err("EEH: Call Trace:\n");
+ 		for (i = 0; i < pe->trace_entries; i++)
+-			pr_err("EEH: [%pK] %pS\n", ptrs[i], ptrs[i]);
++			pr_err("EEH: [%p] %pS\n", ptrs[i], ptrs[i]);
+ 
+ 		pe->trace_entries = 0;
+ 	}
+diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
+index d400fa391c2765cf201ee4dc754007e655cc74ca..f6d734431b1dcdfec3b9205c3b48577b4fc26b53 100644
+--- a/arch/powerpc/perf/hv-24x7.c
++++ b/arch/powerpc/perf/hv-24x7.c
+@@ -713,12 +713,12 @@ static ssize_t catalog_event_len_validate(struct hv_24x7_event_data *event,
+ 	ev_len = be16_to_cpu(event->length);
+ 
+ 	if (ev_len % 16)
+-		pr_info("event %zu has length %zu not divisible by 16: event=%pK\n",
++		pr_info("event %zu has length %zu not divisible by 16: event=%p\n",
+ 				event_idx, ev_len, event);
+ 
+ 	ev_end = (__u8 *)event + ev_len;
+ 	if (ev_end > end) {
+-		pr_warn("event %zu has .length=%zu, ends after buffer end: ev_end=%pK > end=%pK, offset=%zu\n",
++		pr_warn("event %zu has .length=%zu, ends after buffer end: ev_end=%p > end=%p, offset=%zu\n",
+ 				event_idx, ev_len, ev_end, end,
+ 				offset);
+ 		return -1;
+@@ -726,14 +726,14 @@ static ssize_t catalog_event_len_validate(struct hv_24x7_event_data *event,
+ 
+ 	calc_ev_end = event_end(event, end);
+ 	if (!calc_ev_end) {
+-		pr_warn("event %zu has a calculated length which exceeds buffer length %zu: event=%pK end=%pK, offset=%zu\n",
++		pr_warn("event %zu has a calculated length which exceeds buffer length %zu: event=%p end=%p, offset=%zu\n",
+ 			event_idx, event_data_bytes, event, end,
+ 			offset);
+ 		return -1;
+ 	}
+ 
+ 	if (calc_ev_end > ev_end) {
+-		pr_warn("event %zu exceeds its own length: event=%pK, end=%pK, offset=%zu, calc_ev_end=%pK\n",
++		pr_warn("event %zu exceeds its own length: event=%p, end=%p, offset=%zu, calc_ev_end=%p\n",
+ 			event_idx, event, ev_end, offset, calc_ev_end);
+ 		return -1;
+ 	}
+
+---
+base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
+change-id: 20250217-restricted-pointers-powerpc-f11876496464
+
+Best regards,
+-- 
+Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+
 
