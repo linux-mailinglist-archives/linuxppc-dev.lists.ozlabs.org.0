@@ -1,87 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-6278-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6279-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7253CA389D1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 17:44:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F0DBA38B68
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 19:44:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxT4y6ysjz30T2;
-	Tue, 18 Feb 2025 03:44:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxWlY34g9z30Lt;
+	Tue, 18 Feb 2025 05:44:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1032"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739810642;
-	cv=none; b=NYULw1ZzI4+41gBYYQllEZ0EaUpU7PT0BnYDyEZt40cJzlmr+Cn//jMpojsD7th+NbsCVxadwlrsS5dqQhtoSWU++dAlcd2dDMzxR8P124L7r31Jj7ewnRHic40/vcGkymeIUnb8cSkJeJhusvQJq0NAMXkmCpYSru7T7YpqlKgog5OXVdyq7bwQnL2Urt/POHTGwg5ls2sbO+2naITsYJiAwgdGLJoSCvtyq/PhgGp/kOhv0kUKrJiHBtGDOgWGYff92lTP0JpEd09KIRlhf1vquJmqN9IgMXsVUh2IQBtl2RbaH1b6MWHdIacwPlDklAtATb6DEXG0T++vA5fIqg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739817849;
+	cv=none; b=h5PvhkuYyZjo6iYLzLzVgbkD45k1f0XWZxLzEyBHat7Y0eOm1EBE3oBD9FE9qUJ9x+bflv/BBY+GpJ7nbDGpluNQXzpqTK3nkA12SxKajRz5Qprnj/JuTxmBcNC16jBWSWpes1uLo6421P/sSbzUa9s41WzSAQ02hftTz2aF+qtoGhK1+gL7zDU+iK4miwC8DPl2dE9Ok1+mkL3n/SMy1pkInBaaROaHVO2iulZ8iq8bz8iiC8abEtijqdkFTbypx3y/6OjqIllr6Y1JHL/E7QVFQvCAiWbUDKPgOZcaPoYbA4C27+TU4DMQMRiawZ+VcSudoxgyQIu7FBnrjfAq+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739810642; c=relaxed/relaxed;
-	bh=QeeiiJberKqp+MSuQnxPBfH4/FsnHt7yucRyT35nN7k=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=npXVmrEGw72tzd6KxcxhNMr6nOE6kQg9QkzXr8uwuSeFfWSErG5r6U4ENnBZCd9CZzFjlxnGs7ZJXlo3tcgofBmmyPhq3kuf0wTESJWhgPLnPKhkQi8sAW8XD37yo33zCuRvJRkwXapFbSobwl0OXoPdbn0uvZZHR+YkeCstAxMLflG9CRVblhI12ATNMRl4Ft2ebMYAzue5XkJjwG3BgW4aX9DTVwf9SoE8uL2ep9NLmm3KjpLOQc4it31q5KF1laBA0Iy/EJTbtGk2c1n1lYbNAgXzlJLWn/rIEwTWUKkt8vO183NKSacPSa6LmFGXnPifmJA7pZZkqSmh20lv4w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PL3oCXcL; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=eleanor15x@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1739817849; c=relaxed/relaxed;
+	bh=IA1QjAXNHFplXg7TW1xpDtEk6dhaArWVx3VID0I6rNw=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=ogCF85gL6Qm2LDOZ79PJGDVe2yIqpd9jf0pZNlgp6+91bmrslpGsGJsGS/RgeZosTWu0pmSitAvagjIBTPcQ2xIPJtZutfzYSeOAnHEfrKu5Px4WyyRHnW4NsdHMurJZC1QxPU6shtSfhBFZgP4xCN6oQ+3QAtt258vQj0bBi5JCQnbmwxwgiYajZNy1a44AzTfQ4g9ApHYJG09/VH09sDD2nsrn7WDsBQUHTYSp+bmM+QxMEwFrL3p1fTHsVU6WjbgaUY7093ksBK6cIn6WASBEfG81rtcGvEofmiAs4vTw52Ei3h5d/+CBqS+2sCoNeqHqtm2Kmbd4s5BKEvadWA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KFthJztF; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PL3oCXcL;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KFthJztF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1032; helo=mail-pj1-x1032.google.com; envelope-from=eleanor15x@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxT4y1PbLz30Sv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 03:44:01 +1100 (AEDT)
-Received: by mail-pj1-x1032.google.com with SMTP id 98e67ed59e1d1-2fa48404207so9157860a91.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 08:44:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1739810639; x=1740415439; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=QeeiiJberKqp+MSuQnxPBfH4/FsnHt7yucRyT35nN7k=;
-        b=PL3oCXcL0078dgp1muGuz/xQ8hyzzJxZMLnvKO2bYn2h+E0DYFr+K53VESxmo7pkRo
-         UjZFxUKKHiQ9O3mmgAsbuwvZPPmTwiL+oGpcDmFwczooFoVpqUq1Lmi9snPiwY/LJqbr
-         J6o1AUj5bCS/YyqyR9/AcoePROuPsZIIqnNp0UyadanfmovdPtuPMD91IA3aGVNXhmWi
-         hi4nJLybveVkEC+rqXqAgCKaPplxPWoJT3k9uQBxMKkgCxL7DrYz7O3x7HTj1Ui6Vu+h
-         xbDwH0ZmcY+db90Fk235OAZA9tAn1QB9J5akYcgS3hUOzH6zgvulGYvlMkVAvsBmpJae
-         wDAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739810639; x=1740415439;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QeeiiJberKqp+MSuQnxPBfH4/FsnHt7yucRyT35nN7k=;
-        b=L2aaSN7q5pG0NRMqNEfcT9aNUtL1/j32YQr30kp+pN6kMzb2calgwxQXJgtZqlx5ZO
-         ltdhmsExWXWG1JC2nUerecnG79qKPncMII5tiaiudGk9v99HYfR0if2k0PgKuoj7jDtr
-         YyZrWtpGwEsphrcLPDZ76q1fio1rsUsKbwCDdcHuNrkM9aiiScf1GYNPxsUQx7WwwkGV
-         pkxYXZFEYNXoMMPoH9aIMqhq5hcDYmA2lZ18Weg55Gw8+IkyXb7aadrZf0wylsgxYNTa
-         ZXnzN2XZXXAo14oZBU4F6nTVwN+t/X20/sSZQNgfoC6FSDTM+lNWofqKj0AHfPxiyXQm
-         DQKA==
-X-Gm-Message-State: AOJu0YyaT9ZaZHoTJYiyUG8jIc6D9T1hhcwVOLCJc14H811z+IZxbrus
-	Im4jgs5KfTdA9o/XV1CX+Sfncyf6KKuw3z0dnlxsiCjpSoUHu9wq
-X-Gm-Gg: ASbGnct1M7Fqyccf35sMCc9URFdnlqAA2MnK77oP/tvkgcAGn+NrTdZoAnyxEDDEQiG
-	9qqtBcsvcgtQBFtt1AFcLKziqIZyTPHG42c1gsKcpVrGRgznLmH1DI8/F9lnnDWwJmpjccxZOeQ
-	b1O3hVSKUONzGns11STSQEoxJBI1mdbq++PYy8f0O7rT5F+h45UEIKZqhTIcE4oZznoKePI32iZ
-	ipz/hU6bJsXm6ZSqHUMS+M84/C3tS0/Z+4JRt/CazPwTVJY4/WeohrKC1ZBKYJlnCcw8O53R1bP
-	Pi6X8+R3PYvW4xrYxqhV
-X-Google-Smtp-Source: AGHT+IEKsuo9K4p+TFMgWRMBmU7I0H/gBvBPtsGGOeSrqFEODTqFS6pZ4ey3eyKwXgZdE/5vDqzimA==
-X-Received: by 2002:a17:90b:3c04:b0:2fa:2252:f43c with SMTP id 98e67ed59e1d1-2fc411509a1mr14228429a91.34.1739810638732;
-        Mon, 17 Feb 2025 08:43:58 -0800 (PST)
-Received: from eleanor-wkdl.. ([140.116.96.203])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-220d534906csm73910315ad.52.2025.02.17.08.43.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2025 08:43:58 -0800 (PST)
-From: Yu-Chun Lin <eleanor15x@gmail.com>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	naveen@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	visitorckw@gmail.com,
-	jserv@ccns.ncku.edu.tw,
-	Yu-Chun Lin <eleanor15x@gmail.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH RESEND] powerpc: Fix compiler warning by guarding with '__powerpc64__'
-Date: Tue, 18 Feb 2025 00:43:52 +0800
-Message-ID: <20250217164352.3123729-1-eleanor15x@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxWlX3F1yz3028
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 05:44:08 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5AC0B5C1191;
+	Mon, 17 Feb 2025 18:43:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570FCC4CED1;
+	Mon, 17 Feb 2025 18:44:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739817845;
+	bh=dV93L79L/EJzP+RF+w+k3xJqs1D4NxYiFfOC+ntR1lQ=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=KFthJztFOonyf+7cJTSBqJ4kLkQ0nwXNiWa1gOYgGT+StO18jK5k+0UuuBuWllbwR
+	 lLmwMC1/+12VMdA0LZLrqNXMHKrJfiOPjpzPF2NjqfXQsYqWdWzlAOUwBsQL0aowMG
+	 uYMIwKOB26kEUWHFwBmuqucBFEbWTkk3IRDkVLqYcuciaSrgBbmOtjh38SCHomsp49
+	 opyelrIIr9PbXNNzn/mIevCihve0jqyTDW4Vw0R+REALzqGCCETTAqNCg4j4a368e7
+	 9Q8n7TpKi89X3JmcIeulOLok8lFJWr6PhVdCv6MLgmSoYuKlpsl7Ai69WQv9TcSR+E
+	 yMgbj3l/VSDnA==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE691380AAD5;
+	Mon, 17 Feb 2025 18:44:36 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.14-3 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <69e279d8-55f1-4196-b208-27487bb70dd4@linux.ibm.com>
+References: <69e279d8-55f1-4196-b208-27487bb70dd4@linux.ibm.com>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <69e279d8-55f1-4196-b208-27487bb70dd4@linux.ibm.com>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.14-3
+X-PR-Tracked-Commit-Id: d262a192d38e527faa5984629aabda2e0d1c4f54
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6186bdd120eccf4ca44fcba8967fc59ea50b11b8
+Message-Id: <173981787519.3511401.2200436694018059876.pr-tracker-bot@kernel.org>
+Date: Mon, 17 Feb 2025 18:44:35 +0000
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Christophe Leroy <christophe.leroy@csgroup.eu>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, Naveen N Rao <naveen@kernel.org>, LKML <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,72 +75,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-As reported by the kernel test robot, the following error occurs:
+The pull request you sent on Mon, 17 Feb 2025 15:40:00 +0530:
 
-   arch/powerpc/lib/sstep.c: In function 'analyse_instr':
->> arch/powerpc/lib/sstep.c:1172:28: warning: variable 'suffix' set but not used [-Wunused-but-set-variable]
-    1172 |         unsigned int word, suffix;
-         |                            ^~~~~~
-   arch/powerpc/lib/sstep.c:1168:38: warning: variable 'rc' set but not used [-Wunused-but-set-variable]
-    1168 |         unsigned int opcode, ra, rb, rc, rd, spr, u;
-         |                                      ^~
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.14-3
 
-These variables are now conditionally defined with the '__powerpc64__'
-macro to ensure they are only used when applicable.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6186bdd120eccf4ca44fcba8967fc59ea50b11b8
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501100247.gEmkqu8j-lkp@intel.com/
-Signed-off-by: Yu-Chun Lin <eleanor15x@gmail.com>
----
- arch/powerpc/lib/sstep.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+Thank you!
 
-diff --git a/arch/powerpc/lib/sstep.c b/arch/powerpc/lib/sstep.c
-index ac3ee19531d8..eea8653464e7 100644
---- a/arch/powerpc/lib/sstep.c
-+++ b/arch/powerpc/lib/sstep.c
-@@ -1354,15 +1354,21 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- #ifdef CONFIG_PPC64
- 	unsigned int suffixopcode, prefixtype, prefix_r;
- #endif
--	unsigned int opcode, ra, rb, rc, rd, spr, u;
-+	unsigned int opcode, ra, rb, rd, spr, u;
- 	unsigned long int imm;
- 	unsigned long int val, val2;
- 	unsigned int mb, me, sh;
--	unsigned int word, suffix;
-+	unsigned int word;
-+#ifdef __powerpc64__
-+	unsigned int suffix;
-+	unsigned int rc;
-+#endif
- 	long ival;
- 
- 	word = ppc_inst_val(instr);
-+#ifdef __powerpc64__
- 	suffix = ppc_inst_suffix(instr);
-+#endif
- 
- 	op->type = COMPUTE;
- 
-@@ -1480,7 +1486,9 @@ int analyse_instr(struct instruction_op *op, const struct pt_regs *regs,
- 	rd = (word >> 21) & 0x1f;
- 	ra = (word >> 16) & 0x1f;
- 	rb = (word >> 11) & 0x1f;
-+#ifdef __powerpc64__
- 	rc = (word >> 6) & 0x1f;
-+#endif
- 
- 	switch (opcode) {
- #ifdef __powerpc64__
 -- 
-2.43.0
-
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
