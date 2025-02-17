@@ -1,55 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-6256-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6257-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 183FBA37C66
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 08:39:56 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E47DA37CC5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 09:08:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxF1366Rvz307C;
-	Mon, 17 Feb 2025 18:39:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxFdY5LGcz304l;
+	Mon, 17 Feb 2025 19:08:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739777991;
-	cv=none; b=Eo2yL6xNly1A/7xCaJXzrPkp+WUPGrNLnbVfMOqa1EC1C9BMV6EJB3uvmvGfkHjXCGzsuxs0/kfXVtStr/6t/LsBBVKUAo1QgTTKtFUiuB0Cef/PqjMteeRtGMPTrrMKDGFS6V9evxUIOsF2tIHteVNpi2ShBBTDIIAhVc2iJj5RcoAGGrLu/Pr+wPVDqHBI17aHhh3oo03HUfiIVXR+ug1Nu4XYZ6l9QAbjSNwPak2mXQSmoOurXvnIDut4rfY+XDxOIXlLQCjinKopiPmuQZF2eOxc7zD736Lmt/8+zCqQrqMnu3S+T63s2/q5zmmSZAmVLW59ZhsorK0SRAMGQg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.190
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739779681;
+	cv=none; b=OCkLjOsW1Ftm8tT/qw0txTAwsbJt+yJm/ABKFDGg3Ia5IkUH0tlhBE6+gk8KXPn/U/rOZec164HbV4Xk8wuPQGwVTg4hXA4U29rTBNiSll2PqkUZ4hmoc7LOIHp1ZkYOmsq1CbgLdJaAkWBKE6To4WF7q3Q6euF3aEH9wVM25B4ZRo7f1CTl4s9WxAC8fhP3jdRN17f+mhE53k/+6wUT/0z7kMafi+/T42ZZ3tUw/e3XWvb9vhizdnYeT2IRUWxnZ3LFlfbokcZsjEWyIFl1QDalSaovVyv+D4infvLw5kf96G+JZg+u0ETf1gE8jhukmFQ7Ya7+PbelrzRqqb4P/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739777991; c=relaxed/relaxed;
-	bh=7E7dYykXYQTWjl7/oNXyhreXroGqUk/4p813PlASVtw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=WLc31BZnnleQND1YbNPq9BmwrKpPD/Z7fv5/VKLKGfG24Fu5/UijX9FCXDPNM012vIU8RwbVYg21Hykw8BQl6o8iYb6OeraLlDBJv91wPMErQRx40mtbgjjCnf8OGXJ6yaqT2BGu8V0p3DYKZ/U3tvTEEVT8p6wacYWxQKD7RwfLJF5EZRdJue6dYCVTry0ex6Az4oyrvFcrsg/TPQPkr2+Trl5i/yRyMWRJCtHdmWZknaKMke1ilBq/T7fAALL3djri3hqomQxdW+SyVlBeIhkRst1AjPYQH2xkg2PYDajiodYx8nLd8dNRpv2yM4cC5vkLAHrYIfDEnWWkWzjJug==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=sJDfWOJv; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=vSe2WVK+; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=sJDfWOJv;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=vSe2WVK+;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1739779681; c=relaxed/relaxed;
+	bh=qcLmadiNH84yKe/L4JYojk3Qejz7s9KQF2cXf3WqfYU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=QUfbD7ijFGpYmQLT41PTj8nLJCIE+Wtgw/+h6zRNWMwQnrwU3/oNU70CmmKSmzxJj6Nkwce9vpHO0hQH5DKcGGubPa8crnBeytvwn6FKLzOtBAUKla8SV+d1PTyWLW2dZ2DVOuFNLAmUqyMM9CfL2uKDt5+KOv4ZINf5GUMNL5RaTrOHlj4SJflPoYD+irMudOjc5ZMQyS9JIb8mEqgssKtTTQldgCB7wUZKqLt0dCytF7OZM3rtREA8x9qM7KIJd0dvB+OLfDZZfDdjuvuCGXXajnxLm00liUq8jmCbLCXSpw0MVAoPTwaYObHyeiT4EPimRn84QxSKJynutWx3YQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4YxF125Jxhz306l
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 18:39:50 +1100 (AEDT)
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1739777983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7E7dYykXYQTWjl7/oNXyhreXroGqUk/4p813PlASVtw=;
-	b=sJDfWOJvq4GycCxYqIkiTLc8aY/PzbqNTkooQaYTu3EmQz+l9f3iNBO1g7cceXZSa73Sm/
-	TQ3rUbzZLqKfCJ/eSdnKxfBJsd1lnDTt5iznJXqEQYmiXVF/M0VLbioYPhFWMaymlzuMcU
-	ufbxUGm67cOIoFMeiOn7p7abkAiPbcghJ1UuwmDINMWluF5CiP3gtvGMhY2dXIoQnkesPG
-	yuOEv64v0YzhdjUcLDbsRsEMQ8z025K2Y6A7t73PyhtUczxUltINV/0dy90lclnO55ekrZ
-	jYxcENAjulDYpVOwByIjbppUSFocs12HIcAi5iyNPFn0nR9nvGyVUn9YOelahw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1739777983;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=7E7dYykXYQTWjl7/oNXyhreXroGqUk/4p813PlASVtw=;
-	b=vSe2WVK+48Fz505c7SK7kBOBcb8hoevySXg7GjkGjgQ2R6L1LkuS2fJgXZuNgpbk4wYA4q
-	hm8DGiINCIt44XBA==
-Date: Mon, 17 Feb 2025 08:39:41 +0100
-Subject: [PATCH] powerpc: Don't use %pK through printk
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxFdX0Z5Gz302c
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 19:07:57 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4YxFXw2mFXz2JYY6;
+	Mon, 17 Feb 2025 16:04:00 +0800 (CST)
+Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
+	by mail.maildlp.com (Postfix) with ESMTPS id 765EE1A0188;
+	Mon, 17 Feb 2025 16:07:52 +0800 (CST)
+Received: from [10.174.179.234] (10.174.179.234) by
+ kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Mon, 17 Feb 2025 16:07:50 +0800
+Message-ID: <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com>
+Date: Mon, 17 Feb 2025 16:07:49 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,101 +48,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v13 4/5] arm64: support copy_mc_[user]_highpage()
+To: Catalin Marinas <catalin.marinas@arm.com>
+CC: Mark Rutland <mark.rutland@arm.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, Mauro Carvalho Chehab
+	<mchehab+huawei@kernel.org>, Will Deacon <will@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
+ Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+	<kasan-dev@googlegroups.com>, <wangkefeng.wang@huawei.com>, Guohanjun
+	<guohanjun@huawei.com>
+References: <20241209024257.3618492-1-tongtiangen@huawei.com>
+ <20241209024257.3618492-5-tongtiangen@huawei.com> <Z6zWSXzKctkpyH7-@arm.com>
+ <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com> <Z698SFVqHjpGeGC0@arm.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
+In-Reply-To: <Z698SFVqHjpGeGC0@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250217-restricted-pointers-powerpc-v1-1-32c6bff63c9a@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIALznsmcC/x3MQQqDMBBG4avIrBswIUbtVUoXEn91NjHMhFoQ7
- 25w977NO0khDKV3c5Lgx8p7qrCvhuI2pRWG52pyretaZ3sj0CIcC2aTd04FojUOSI5msXbogx+
- DD57qIQsW/j/3z/e6bpZHth5tAAAA
-X-Change-ID: 20250217-restricted-pointers-powerpc-f11876496464
-To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
- Oliver O'Halloran <oohall@gmail.com>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1739777983; l=2981;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=kjiQYrE6V+TzqI5qEPcFJIH5Y9ABiiapfv4xGeGSJXc=;
- b=lHxXcgUcaE7rXQGVPGeozmCBwXxrozW0Hai4AkmlmfMCXeSu/N6xT2aqcBV0XUlieHx4rhUuN
- i+vEPM0aO78Aq59Xz6NY0YdnQ+rbBOq9cb0FcKWNthu+BjwhR8i5ie1
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+X-Originating-IP: [10.174.179.234]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemk500005.china.huawei.com (7.202.194.90)
+X-Spam-Status: No, score=-1.3 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Restricted pointers ("%pK") are not meant to be used through printk().
-It can unintentionally expose security sensitive, raw pointer values.
 
-Use regular pointer formatting instead.
 
-Link: https://lore.kernel.org/lkml/20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023@linutronix.de/
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
----
- arch/powerpc/kernel/eeh_driver.c | 2 +-
- arch/powerpc/perf/hv-24x7.c      | 8 ++++----
- 2 files changed, 5 insertions(+), 5 deletions(-)
+在 2025/2/15 1:24, Catalin Marinas 写道:
+> On Fri, Feb 14, 2025 at 10:49:01AM +0800, Tong Tiangen wrote:
+>> 在 2025/2/13 1:11, Catalin Marinas 写道:
+>>> On Mon, Dec 09, 2024 at 10:42:56AM +0800, Tong Tiangen wrote:
+>>>> Currently, many scenarios that can tolerate memory errors when copying page
+>>>> have been supported in the kernel[1~5], all of which are implemented by
+>>>> copy_mc_[user]_highpage(). arm64 should also support this mechanism.
+>>>>
+>>>> Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
+>>>> architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
+>>>> __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
+>>>>
+>>>> Add new helper copy_mc_page() which provide a page copy implementation with
+>>>> hardware memory error safe. The code logic of copy_mc_page() is the same as
+>>>> copy_page(), the main difference is that the ldp insn of copy_mc_page()
+>>>> contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
+>>>> main logic is extracted to copy_page_template.S. In addition, the fixup of
+>>>> MOPS insn is not considered at present.
+>>>
+>>> Could we not add the exception table entry permanently but ignore the
+>>> exception table entry if it's not on the do_sea() path? That would save
+>>> some code duplication.
+>>
+>> I'm sorry, I didn't catch your point, that the do_sea() and non do_sea()
+>> paths use different exception tables?
+> 
+> No, they would have the same exception table, only that we'd interpret
+> it differently depending on whether it's a SEA error or not. Or rather
+> ignore the exception table altogether for non-SEA errors.
 
-diff --git a/arch/powerpc/kernel/eeh_driver.c b/arch/powerpc/kernel/eeh_driver.c
-index 7efe04c68f0fe3fb1c3c13d97d58e79e47cf103b..10ce6b3bd3b7c54f91544ae7f7fd3f32a51ee09a 100644
---- a/arch/powerpc/kernel/eeh_driver.c
-+++ b/arch/powerpc/kernel/eeh_driver.c
-@@ -907,7 +907,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
- 		/* FIXME: Use the same format as dump_stack() */
- 		pr_err("EEH: Call Trace:\n");
- 		for (i = 0; i < pe->trace_entries; i++)
--			pr_err("EEH: [%pK] %pS\n", ptrs[i], ptrs[i]);
-+			pr_err("EEH: [%p] %pS\n", ptrs[i], ptrs[i]);
- 
- 		pe->trace_entries = 0;
- 	}
-diff --git a/arch/powerpc/perf/hv-24x7.c b/arch/powerpc/perf/hv-24x7.c
-index d400fa391c2765cf201ee4dc754007e655cc74ca..f6d734431b1dcdfec3b9205c3b48577b4fc26b53 100644
---- a/arch/powerpc/perf/hv-24x7.c
-+++ b/arch/powerpc/perf/hv-24x7.c
-@@ -713,12 +713,12 @@ static ssize_t catalog_event_len_validate(struct hv_24x7_event_data *event,
- 	ev_len = be16_to_cpu(event->length);
- 
- 	if (ev_len % 16)
--		pr_info("event %zu has length %zu not divisible by 16: event=%pK\n",
-+		pr_info("event %zu has length %zu not divisible by 16: event=%p\n",
- 				event_idx, ev_len, event);
- 
- 	ev_end = (__u8 *)event + ev_len;
- 	if (ev_end > end) {
--		pr_warn("event %zu has .length=%zu, ends after buffer end: ev_end=%pK > end=%pK, offset=%zu\n",
-+		pr_warn("event %zu has .length=%zu, ends after buffer end: ev_end=%p > end=%p, offset=%zu\n",
- 				event_idx, ev_len, ev_end, end,
- 				offset);
- 		return -1;
-@@ -726,14 +726,14 @@ static ssize_t catalog_event_len_validate(struct hv_24x7_event_data *event,
- 
- 	calc_ev_end = event_end(event, end);
- 	if (!calc_ev_end) {
--		pr_warn("event %zu has a calculated length which exceeds buffer length %zu: event=%pK end=%pK, offset=%zu\n",
-+		pr_warn("event %zu has a calculated length which exceeds buffer length %zu: event=%p end=%p, offset=%zu\n",
- 			event_idx, event_data_bytes, event, end,
- 			offset);
- 		return -1;
- 	}
- 
- 	if (calc_ev_end > ev_end) {
--		pr_warn("event %zu exceeds its own length: event=%pK, end=%pK, offset=%zu, calc_ev_end=%pK\n",
-+		pr_warn("event %zu exceeds its own length: event=%p, end=%p, offset=%zu, calc_ev_end=%p\n",
- 			event_idx, event, ev_end, offset, calc_ev_end);
- 		return -1;
- 	}
+You mean to use the same exception type (EX_TYPE_KACCESS_ERR_ZERO) and
+then do different processing on SEA errors and non-SEA errors, right?
 
----
-base-commit: 0ad2507d5d93f39619fc42372c347d6006b64319
-change-id: 20250217-restricted-pointers-powerpc-f11876496464
+If so, some instructions of copy_page() did not add to the exception
+table will be added to the exception table, and the original logic will
+be affected.
 
-Best regards,
--- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+For example, if an instruction is not added to the exception table, the
+instruction will panic when it triggers a non-SEA error. If this
+instruction is added to the exception table because of SEA processing,
+and then a non-SEA error is triggered, should we fix it?
 
+Thanks,
+Tong.
+
+> 
+>> My understanding is that the
+>> exception table entry problem is fine. After all, the search is
+>> performed only after a fault trigger. Code duplication can be solved by
+>> extracting repeated logic to a public file.
+> 
+> If the new exception table entries are only taken into account for SEA
+> errors, why do we need a duplicate copy_mc_page() function generated?
+> Isn't the copy_page() and copy_mc_page() code identical (except for the
+> additional labels to jump to for the exception)?
+> 
 
