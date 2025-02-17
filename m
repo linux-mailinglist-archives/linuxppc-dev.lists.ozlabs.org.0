@@ -1,70 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-6238-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6231-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6101FA37A41
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 04:59:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97517A379A8
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 03:18:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yx86F4Lprz2yyC;
-	Mon, 17 Feb 2025 14:59:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yx5tf0kNyz2xYl;
+	Mon, 17 Feb 2025 13:18:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=203.205.221.236
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739757319;
-	cv=none; b=KgAazKxAwjsAh2ruqpxmJeVAsY+pnK5ZjruV7bdC5q0NAQ/bj3PMn8ft2LXEbVehnXK34PiNvkBY/cLSvtH5ZFk7ccVFkC1va+4RsDrGOofc2R9ixduJ2HHHeLzU9nJvYr0I4Hs3N6vp+Ukk4wGba6//j9qBkt3J/qZKG/iiIc6WMIP1PR8dHVjW9xPw7ApuYJ5cyKxfYlbBFt7HQ8d0rk2PP4KunMxSG+cIpl1copGJ5wJ59f0Mo/sjQ4I+D2ct9Mlx3B+HVRB/CzzcKHG9VIl50kvQTrtGKWFet3UWtil41aRjJw5f3/8Lsrr3d6EJZrnDqVNOp/suz6a8+FWozA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739757319; c=relaxed/relaxed;
-	bh=pP07imU1yRZo5VJuVB+0B4Te8JSt7A3ydHeyAZRXe2k=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=Minueft5hxJ/GEqItuRhzlqBVVA/+IRV02ICAqxYlN2UyUrodM5drucSZ83v4dtcbFOtvW5f6MGz9d4fbbRZG5JFd+i52mEfrBKwCwom6jW1e8+fg+jbyiFxxlZKGNDzgKJ3FHUocToSf9KYdCjwuN/8TwvImrAY5GF9uw3HKZxg/d0jK1zzKjQ7kZw3UTl/fhuI9WLoma7tyrS8BhNAx9Hk/+nsuVwhWNuVHhLSb23n/BInqZHV/fQY4ZfAmJaL0tCNAx84LwaDA1T4Jk+3IZ7T4DfLTySRZWtLL9MlT+VnE6ozOfKAsWzP7HFCsuEqE79wsMqxMPa4iejYP/OXaA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=pNNlbVgE; dkim-atps=neutral; spf=pass (client-ip=203.205.221.236; helo=out203-205-221-236.mail.qq.com; envelope-from=xiaopeitux@foxmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=foxmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c200::4" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739758730;
+	cv=pass; b=hiSJln8erw1qVUnOI18RuI/i4s53/hV2XhqJXxcPdTxlDs4fKcJl3zA8bo2gfOIZ6KJiqS8cTNqu/3Q65G09oNhGBHDkwLanbEaxjma9GDYkFfl9Ra+nCtfOov7hWmeRqkdzJv9SX5Irqv78Uu4V05dNdBFSzNQv3VpMhibi13cwKyXrkC6OgUXNjlZu4ek2yhFgKr6/yf2gv60i55tqeTjyQCOy42mVB3gdB2Lq1YET4MW9jNJ6PXC/K1hmLBJCuExeeDXrZFZxO8pQpXf0AkuJZ71Swx2JFfXXtEA++3idS/L5kAvcort3KthLN6URpXrGuBU1JVVxH6ebL1c8yA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1739758730; c=relaxed/relaxed;
+	bh=3cz9kwKRS++UQKst6A6+3R7KQGyt7TUxPHjEH87CLm0=;
+	h=From:To:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Y9vXbp0oEA1y2ixjowcUJGPvG5eXfDF5gXLhfxtQ6sPWbH0FVkcNCErMjGRDIznsO2xrzNobrqiDTsqxatRU/d1pC2iljdkTrKywSObPtbdRVdovneSznWbgM16M9wVquBddfqnonDmRWjTrV0RquDw2dV7N4vfylTh1Eh6xjC8+XursGOPVOawBZRaj80+7HVW0bc2Fx+z/gbjc19LLpDGiyq1tiq5e0rohJAT9mdV/wIAu7WkvbgFGRyJvdjzljZ28AuIXBkTDyUXT/hzP/WhkK74AVu3u1Fe7XK5yUYymVb/9QM3vgQ3LJwsT0JNzwD4sN9cP0CyCiOwO2Mk7bA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=aZzw8bzr; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c200::4; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=foxmail.com header.i=@foxmail.com header.a=rsa-sha256 header.s=s201512 header.b=pNNlbVgE;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=aZzw8bzr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=foxmail.com (client-ip=203.205.221.236; helo=out203-205-221-236.mail.qq.com; envelope-from=xiaopeitux@foxmail.com; receiver=lists.ozlabs.org)
-Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c200::4; helo=duzpr83cu001.outbound.protection.outlook.com; envelope-from=shengjiu.wang@nxp.com; receiver=lists.ozlabs.org)
+Received: from DUZPR83CU001.outbound.protection.outlook.com (mail-northeuropeazlp170130004.outbound.protection.outlook.com [IPv6:2a01:111:f403:c200::4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Yx5MR43Mvz2xGp
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 12:55:14 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1739757311;
-	bh=pP07imU1yRZo5VJuVB+0B4Te8JSt7A3ydHeyAZRXe2k=;
-	h=From:To:Cc:Subject:Date;
-	b=pNNlbVgEHt4FWo2ScIqCW/lkTqbg64dUkldXuud2ba574XFTSLbzLwkifCEwOl7y9
-	 lw6U3sAN4frX15304bcD6wlhX1z/GcSe6pSFXuaV2YlLUpC+h8/4/lq4igHMw2k8To
-	 PVN2yUY53PaBX54kDtBWmQWPEWOamZpp6ETqIwN4=
-Received: from localhost.localdomain ([116.128.244.169])
-	by newxmesmtplogicsvrszc13-0.qq.com (NewEsmtp) with SMTP
-	id 75F9AABE; Mon, 17 Feb 2025 09:29:31 +0800
-X-QQ-mid: xmsmtpt1739755771trd9me21x
-Message-ID: <tencent_30122FBA93E93911578208176E68AA00C807@qq.com>
-X-QQ-XMAILINFO: M0yQCYO1Pk4BQK9MwsPiXqLGdYYZSCLOPPfcpbnW81QswNSiwoPu1fQRPn7F4g
-	 Mydr584M1QsAx8p9vJW2dNlaGgSs9qjxzUQoqGMgEXOKNDptenroPhnIdT7wOUzWwiCRjhyfexyk
-	 TfYjGCNFByNDY6+DQ68CGxbWvmgRgPbVmxef1Yh3jlTSixjrFchIAGSh6SaHI14zkLLM3m5I+/Kh
-	 ZQbL6/7GqFUrphyQwokQVvJkqsh1oRCKJz6klboLy/nEMeQhd7Q4icPHtOy4bXoMvMHrq6pfGkWg
-	 ImYQA7TkTp+/IVwx8k7vJLN2yRL6HAj/DXjzr3oao5WcMkc12OFmm8OY4fIffYrNtNpl6Yg5WLzz
-	 yk6y0BkDvpFi7hN2FllxQ2WHuWFl1fi29fC2vi2XKycICaR17lRkskAhDBE3F9Mk0wglksHagyU6
-	 FB8NjSuJzycDlj2INNuygQBkdFTwRj9ApcHaLMyasP1Iqd0hGrKRd9OUTodpMSAlZkF1NBEXH1Nv
-	 ymbMLU2prsmupp2Rq3wqCkA9aupjiejnS7QaUy5VO0grngJJoZfWJyeSRJMC8WLVHE1vigZ91ez2
-	 GYHGccGvDCW5WpLW2fIPGSX+7Uoc4NMhNZqCUXfFbvAAgNmdsc3EuyphnzemUi6UrI7BDRxUSZ++
-	 lOPyhTidGDJ5IrDdHWly5ByE4VPXNT7coAzK9926lFvsy8MqYS0sRTdCaC4MyYUxzH7zmYDcf+99
-	 qMVY3fT7gcmgRUEqxaoKA0k/oGVrQwB1dessQJ4A34X93QMKQNxPZZxwyHNNtOG8GCxOD7kxnQAZ
-	 CxwEIzKlVS5C/c6TRERMAQ6SK1XRdzsEmR1Fgy8XwJ1vp9gFSZscNiZeUNHdDtVK30/1s14ouo4J
-	 p8EheVKqazUI0RO3xJHOSNook+sCdapEXcuTDEjTslQlXx1l866VpYw4r9KxpXXx9ty88vwRblqw
-	 S3aqY4Miq4Snich5DAvT97+HhukaXt526TtBBLBgJIAq9yfTIGlw==
-X-QQ-XMRINFO: NyFYKkN4Ny6FSmKK/uo/jdU=
-From: xiaopeitux@foxmail.com
-To: andrew+netdev@lunn.ch,
-	maxime.chevallier@bootlin.com,
-	netdev@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yx5td2Hpkz2xYg
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 13:18:48 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=b20tYbCnXS0jbLJ0DV59uIRBFK3Yh7oe1Qr78hZ4EVTp3+nsLMLrDZ4FmgPM9+gUdmx1XG6q+echv1gbUYVwKYhwlJyqK9Sgw4syQureLSROoVpLCBhrawYGN8BBUtIOuE2DAGRrnrAhCVY9RH5YU4EzthTyU3tpSg4D5sH7OBRwviLwh+CZH/DeHHd0zHzTew3MpsuK5oH0bvmTYto65H1/0tC4f1q2XHlnR/BjIBCUjd8Ytxpx8Qt6gbltXG1osrvIUbk9dWU6geRt5SzvTriivBCcjkahks/aQgBq4qKdDAhWle+agg8719N7xcESQbfy2aEYblnwMbPwlLHlJg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3cz9kwKRS++UQKst6A6+3R7KQGyt7TUxPHjEH87CLm0=;
+ b=c/Bbx4M/9HROlIL8QkZ69WZsSc6M74ox6HQ8fjc9eLr1zdKU8G0KOUiCCSMmeya0+gJM9NHWZop/uCEtnyC4faCjnmhVI44MEjNBtNBI8XPzNDxlVeB99EPwqUEFcz3nz8JKItiisxQdhWcxdC33NZn/EQPm6mWUjjomlbY/laJFBYFlmsVMOJwccdT4mHn8dmcnCcL0GLZhD2/uy8cOCNpxf28BYjbMYfzqTN56sNj9pCj3BVCdJOcyYuvhvZhkuS9LEKgZPNPAJ1ZngZC3g+Vkgd4coeUcPsutMBjVuUy08YnSqOFmSyJ946mKXVS8xv7vEiMM52zoSJtk9HTJSQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3cz9kwKRS++UQKst6A6+3R7KQGyt7TUxPHjEH87CLm0=;
+ b=aZzw8bzr8qXdspszpL/vUzU8C52DwqscZY/ws9dmrSGmTGs4/Jp6NMOGB9vldqGi+L3yG8WR6+gu4Pg6VLytMd3jH0PrwA2ZAB3u7je7UnCoB7x0P6E605z/JGSwJufw4F+/TodDpA3yiqX0Ojpg72/fP9aXS32RJdzTfGMcYxOOM0ikX4OOuUljisLV0lQK5Xtu9Hv2/D9UO/yjoPiMg4L33tO3OTyW2rJxK3UawouvYu19xWHbKdsSwXuprI0BaL7KQV9ig4sg0ZIQ3kTHHG6VqlWRJzrR7SByqyk8puaL2VprHSz/hRtAdNHkBKN39B2T9rtMr/HkcwuA8JoMkw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com (2603:10a6:208:191::20)
+ by DBBPR04MB7865.eurprd04.prod.outlook.com (2603:10a6:10:1e2::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.18; Mon, 17 Feb
+ 2025 02:18:25 +0000
+Received: from AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891]) by AM0PR04MB7044.eurprd04.prod.outlook.com
+ ([fe80::7be0:296:768c:e891%3]) with mapi id 15.20.8445.017; Mon, 17 Feb 2025
+ 02:18:25 +0000
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
+To: shengjiu.wang@gmail.com,
+	Xiubo.Lee@gmail.com,
+	festevam@gmail.com,
+	nicoleotsuka@gmail.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	shawnguo@kernel.org,
+	s.hauer@pengutronix.de,
+	kernel@pengutronix.de,
+	linux-sound@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH V2] net: freescale: ucc_geth: make ugeth_mac_ops be static const
-Date: Mon, 17 Feb 2025 09:29:30 +0800
-X-OQ-MSGID: <05ccd0ec9dda47a7bb26b78ef41fea2f2ce675c8.1739755552.git.xiaopei01@kylinos.cn>
-X-Mailer: git-send-email 2.25.1
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	robh@kernel.org,
+	krzk+dt@kernel.org,
+	conor+dt@kernel.org,
+	devicetree@vger.kernel.org
+Subject: [PATCH v3 0/2] ASoC: imx-card: support playback or capture only
+Date: Mon, 17 Feb 2025 10:17:13 +0800
+Message-Id: <20250217021715.284951-1-shengjiu.wang@nxp.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG2PR02CA0103.apcprd02.prod.outlook.com
+ (2603:1096:4:92::19) To AM0PR04MB7044.eurprd04.prod.outlook.com
+ (2603:10a6:208:191::20)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,48 +94,109 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=3.4 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HELO_DYNAMIC_IPADDR,
-	RCVD_IN_DNSWL_NONE,RDNS_DYNAMIC,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Level: ***
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0PR04MB7044:EE_|DBBPR04MB7865:EE_
+X-MS-Office365-Filtering-Correlation-Id: e0d5107c-fde3-45f4-56eb-08dd4ef95b2e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|1800799024|366016|52116014|376014|921020|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?G8MT9BKGj4o0V8W5y1DLBGElX9kMxcXrVxJsI9Jg0mAa1eBWTWUSi95OnVAq?=
+ =?us-ascii?Q?zfIyjtAFVsMSY78qkcz7p0IOUKkqoVf8Uh2M6/BBOuEXXK6Rn+5ia+Gz8nPE?=
+ =?us-ascii?Q?CTJlnjErL6Jrj9VGtbn9H8ZDbk1MBfuHxZfeQBsUCE47T/nJDuOxcaxCjO/j?=
+ =?us-ascii?Q?AqQIahxTwbsHtwue+i2kAbzmB4DatnAb6DfUYaaFTsTqbjkZv0Mj9hQdAYJE?=
+ =?us-ascii?Q?L205IQyyGegqnVHANELualhG5dL5lZJjn6Wn18iz6cpNiQgZNKcgM6LrF+6z?=
+ =?us-ascii?Q?n/po4eBZiuXEEHlYFVMavYUBjfaiOTg6/FNHykPudxAk7QzxAFlMOov24QU8?=
+ =?us-ascii?Q?G0PNjNpzT2WzpPN8T/q8oe7GGmyXsiOz6uAfOMdW4sacBX7Kwt+YHflYJ5vQ?=
+ =?us-ascii?Q?H5PinBDPZFFypv6tGXeiZegdWYn0MT26piD9hlwv/E09WEWmSA0rkXqlnOAv?=
+ =?us-ascii?Q?HQeCm3HQD9obA4nw+tmy6IdMvl7yZlwFlxoX3woT2CnuZKQpDA8m4lTjhg8n?=
+ =?us-ascii?Q?iHTJ6fwowvi6fM1Ul3N1A9wKdBs3tyRZ+cYh5/y7tFa7RftKnbscyAJtbsCk?=
+ =?us-ascii?Q?uMxjMyA/lP8V09RoCyzlMwzcon5dqNzkebxDwaKHEVDvCzUi3LTGpXTk9tp4?=
+ =?us-ascii?Q?YyME7u5AhTgTw1jUUNzJ34hyw8v7ZEJIr6HlpYHcCu/9f+4WioyXmOgUSA5a?=
+ =?us-ascii?Q?rF8zB+7wVwtFyhCZpPLje8YU6zbSBsEQjUsKDmecq+A7UjSNvTU0Iq1F7JyG?=
+ =?us-ascii?Q?aisLaIR+u378vB/DCtqmMynkofKxVXJnE8unowpx+MEUXWiCPJbpLQWZuvrj?=
+ =?us-ascii?Q?t9LcRo3qXSYsOZwOV7fUZiqcPYSUhrmV+yvxVkb/hMMTVGMC7wQj7T7WHXFV?=
+ =?us-ascii?Q?iRh9sjDlKEe1FK3YxFIBBIv5lx7SR3D+i96/utcBHiEv+wWQrozsgygMXeOq?=
+ =?us-ascii?Q?/l0JDRkNNxebp3YmvKQjD2xs8Ne2fBOGdT7mCCbSmqY54JfDgMRBBz/OAjQc?=
+ =?us-ascii?Q?H74hxR6bU+Ks7kLvgJEzHzLcZq1Rfk7PtxfaLwwk93SxzJ57WNlOgtddhDK4?=
+ =?us-ascii?Q?jTQkfm9xV0z/Mpzu1KbZtfzlCz7PLLj39v42qNUyoftvH3q5cJKnnUVqpxnW?=
+ =?us-ascii?Q?ciatDmpKyUG1BE6tyAy88Qw+tYTHOiQ5sEp/w7EiInRiyo2rqyo+rptYUqgf?=
+ =?us-ascii?Q?M8KxHkXEBfuWkkjokWRpQi0gIzy7S+e6waCu0g6IOrJcBsuWt8HYFIka7PbK?=
+ =?us-ascii?Q?94/dbncdChpqxoDE/EPs3Jq5mArJo86seZr06YzqMUeOlMgJhZwMiK+A2ICv?=
+ =?us-ascii?Q?tx07TGVgImeCY7EQx+OCUxzJs9e3pYKF7JuaAaX/HYi2yjQ3NbbCdaw8BFWo?=
+ =?us-ascii?Q?rcGcoEPIA7xGAP4S1SQ2d3Ws50clWT33ZrrA/WqZKaQv5qv8nNJ6vvuhwGAx?=
+ =?us-ascii?Q?5aisSHZAZ9FeAsF1wchy7sMpsgnlJ+hoIYB0mIOddSbMHUoRYdIb6Q=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM0PR04MB7044.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(366016)(52116014)(376014)(921020)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?fAiGg/kwoZa9qrOeC0hqPB4/PlLbuxdvAOEXnvipCo5g/2vR7UM6pwD8BCRN?=
+ =?us-ascii?Q?Ov14//OWQWQOt2RwX6LkZyLCc+OsllMqRZlGvoF9hEqxNgis1Yt/xqRaG09J?=
+ =?us-ascii?Q?PfJ5svSA0W+77AS2qyjkh+sVEICEg6nKCv+NlqRc7NzAbkg2zH8hMZQRhyUP?=
+ =?us-ascii?Q?Z9VuFQTpyjl73e8AdA1UTEjRfdyqzjaf+i5xLbkFEnub0MX0rim6nAtW2BgU?=
+ =?us-ascii?Q?M1fSIYP1558TR4VLXGIXVtBtPuEWm3kBWFFroGZkrzQ0j6z0OXV5uy9dLqN8?=
+ =?us-ascii?Q?W5uVj60ecqf48a3bO15b20woufOoCBM9XbLwji4Q7d9MoFeJ1JFM6TtR6+Pu?=
+ =?us-ascii?Q?7MpVgssJPQRmjZv/zYkWrZXtFz1N4xzC7UpPaXe7HFNgT9Tdb81Lgs68RcBk?=
+ =?us-ascii?Q?mhPQ+5AP4hsDhvSshUCgvGf/Eet5G5x2dmm2xxOE5yBFySiuL2WW+pyTUwqv?=
+ =?us-ascii?Q?50mlJgGL9Jp+lm14gt2ebqNJ0inFeuILBLo8AF2gpboARgKABv2plP/cuOqb?=
+ =?us-ascii?Q?8kTAwmfPftv9WeGHiXSmYKGKjc/urnJI/giQSnnVl3YyD3jS9LjhT+VkshGw?=
+ =?us-ascii?Q?U7XXbW/mFp/V173YlUfOgFjckyQfE57HUk/dyaLl2MOcH36g4tY+qcB0IQPd?=
+ =?us-ascii?Q?eJ2XK0oknJFj4b+ei2/9rUX3pmwfstW/bNypk/+Rj41/x+AKEuRfhZLtk2qu?=
+ =?us-ascii?Q?wSUd/ou59/OUMt6BxFuI+7jbkVkwae1Sqw2W7Wpz/wVXbgINzdz13x2yB6xn?=
+ =?us-ascii?Q?WwDDEB+ID66lPH8EesRjFP0G/avCuvk430yRBvNUgVYO5ulU7uxX8nBmNFsH?=
+ =?us-ascii?Q?fuBSCZGLo3vUnaQd7/8LJTWDLamBH87MlzRnSW7I/R+RT0bxuPzXcY4VcqUq?=
+ =?us-ascii?Q?Lm2ljyRPX5+LiMOBdu0yc1OguXGk0iOJohWTE4i8wKAbl6KO9/T/W6wvRTPi?=
+ =?us-ascii?Q?uyBeViq4qGm04AyKalAiEc4fbSbF5f2f35zo/kT8myWkWXkV8dqAuhmnirpA?=
+ =?us-ascii?Q?wwKof/reAD92iLJAwGNMBIa+OmpXRvoL/r07Lk0V3V1vwPCd8vcoLXMgyWQG?=
+ =?us-ascii?Q?MGbH5C/2+57oD+K8prb1SxhoSXym3HCp+ZC9N0PbLXIidsio/69cq4KzCttW?=
+ =?us-ascii?Q?G6DUxqxvtyv/0k9isgt0esjKDdaAUkkULnTzbM/oalcomdu9o8YqY6ns8XfX?=
+ =?us-ascii?Q?FuZChqs6Vo1BOKPbI/C+Adj13JpObkdVk/xb+I6nEUTQL963EjB7LcB/xYb1?=
+ =?us-ascii?Q?L5SNgoKy8e/zIrbn8ph72fHo3rkgNQFu4Z+D45dvwaPXuo9TM/qKveBs5fBk?=
+ =?us-ascii?Q?bz3GkhOhuL1YVaNgmUa6FYRI26x1zsBKhBpI+nn2BD3jdPXK4tqxwOZW6kqn?=
+ =?us-ascii?Q?L+O/IH/Rc45YAOVybcgP43UtrwrFmTW1adogiauAAWFJ4xXSzJiEOv++A2no?=
+ =?us-ascii?Q?EwOCTm0Wue0ZZuXnX9U8m/G1/RZgyrapGRQVqYZYzKprWKFWfNBgzPQkdlp5?=
+ =?us-ascii?Q?CF/MS/czPTVnXEHGB4N+n31vKrViMxa2aTuAlebOLHkMpd9eQmsogRMO6Msv?=
+ =?us-ascii?Q?7WJ7RrSE0k2dPROUNY3yJY+FekTGhMezSpKgATkQ?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0d5107c-fde3-45f4-56eb-08dd4ef95b2e
+X-MS-Exchange-CrossTenant-AuthSource: AM0PR04MB7044.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Feb 2025 02:18:24.9390
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Fgm2iGA4e8ECHtec44S5Pp5ncTpw8GLdU6f0mnpUbcSBxdKZQeQ9CNIYD6t7sM2vVN6CnvtQRi2U13vPklWKNg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB7865
+X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+Be similar to audio graph card, support playback or capture only for
+imx-audio-card.
 
-sparse warning:
-    sparse: symbol 'ugeth_mac_ops' was not declared. Should it be
-static.
+imx-card can't directly refer to audio-graph-port.yaml, because it is
+not based on 'ports'. Add playback-only and capture-only property
+directly
 
-Add static to fix sparse warnings and add const. phylink_create() will
-accept a const struct.
+changes in v3:
+- add mutually exclusive expression
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502141128.9HfxcdIE-lkp@intel.com/
-Fixes: 53036aa8d031 ("net: freescale: ucc_geth: phylink conversion")
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+changes in v2:
+- wrap at 75 chars for commit messages
 
-changlog:
-V2:change to add 'const' suggestion from Andrew Lunn's review.
----
- drivers/net/ethernet/freescale/ucc_geth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Shengjiu Wang (2):
+  ASoC: dt-bindings: imx-card: Add playback-only and capture-only
+    property
+  ASoC: imx-card: Add playback_only or capture_only support
 
-diff --git a/drivers/net/ethernet/freescale/ucc_geth.c b/drivers/net/ethernet/freescale/ucc_geth.c
-index f47f8177a93b..ed4f57701485 100644
---- a/drivers/net/ethernet/freescale/ucc_geth.c
-+++ b/drivers/net/ethernet/freescale/ucc_geth.c
-@@ -3408,7 +3408,7 @@ static int ucc_geth_parse_clock(struct device_node *np, const char *which,
- 	return 0;
- }
- 
--struct phylink_mac_ops ugeth_mac_ops = {
-+static const struct phylink_mac_ops ugeth_mac_ops = {
- 	.mac_link_up = ugeth_mac_link_up,
- 	.mac_link_down = ugeth_mac_link_down,
- 	.mac_config = ugeth_mac_config,
+ .../devicetree/bindings/sound/imx-audio-card.yaml  | 14 ++++++++++++++
+ sound/soc/fsl/imx-card.c                           |  5 +++++
+ 2 files changed, 19 insertions(+)
+
 -- 
-2.25.1
+2.34.1
 
 
