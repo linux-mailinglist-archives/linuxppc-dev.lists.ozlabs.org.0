@@ -1,60 +1,87 @@
-Return-Path: <linuxppc-dev+bounces-6236-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6239-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8CCCA379D9
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 03:42:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E4CCA37A46
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 05:03:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yx6Q11bpSz2yxP;
-	Mon, 17 Feb 2025 13:42:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yx8Br3q1jz2yys;
+	Mon, 17 Feb 2025 15:03:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.97
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739760152;
-	cv=none; b=jfcn7Su7ZcFf59I80ZRuj3YX2oonPtDow/c1LDvl14DgivnsNf/ThdSGDw30X7aaPLlwe5Uj2BVPRBnT4L8XfHY/OzuEAQkDIX+XwHbe+UQvDBzlFhQCFk2qVRgzLsgkwxRs3VqIXTlMVNscZa6PeHGrofJBqc7TjYaM7OWT5vtcjYnEnK6YIvi5AquAfc97pmQZy7RAPdqOLzT0erqG1QrOCf21YdJOzlzFh+oMruCkIQ/YaMQqoGRBP9fon9mRD2rncia02rTOfzKTQYcIQ2001DVJgK2fHGZ0MRtYFTTbPqYEXymt+WcoavJVHbM6SiE8Hednq6Pqh4riboRiKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739761253;
+	cv=none; b=lJZ+U8ZPlNV3jrByIh2HJnKoB1OXY9gNOL02mhm4LlhujKBJMVGF+C8yrqg5UZQiXK4mONSekII0DbFqARZB+ZiqRhVL+GyJt+X4keeO7oduHeLVYbmUnh4p7wv56gOlmyu9EmrRJpqUrjPEa6tk1fpi27NDY7Gd34ugHOc0UAzWGBSKT9O8zgwVGuSlrxspe08cJo/egQaLXGWiVaeXuqILAh8GPu3bzDDLqrksZX9QeIPNpm2DmvLeo+33efQQLkvxBzIYZ33WCbwnFPeeZInVGobKLvdKWzIkd7MmRukLHKz4ZEJPq4NqwF2Ptb6Nra6ItqxpmYyWD/EwEpdA6g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739760152; c=relaxed/relaxed;
-	bh=EsTzvn9sAqOfuNe2IfnTEyGdjTW3CA2dmeyuPIDjTPY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dweUnDrePxjgA3d5+J2Tdh8HnafJ1DccRzns6qxqAnnLGElAKwSmaAs7UHdnam2EoEdOKvLkElf16t8dz2e+RirMY9eSp/aD6R5YUHVL/VFmSA6P09oqzUkz8zMX8KWJKmdv0I5DAPksrG4uQuPx1mErDQHheXrcdhef2Ot0ZuaiLInXZg44/ilZscdLeDSTkzcjP/ETCAKbotH2YZ1nq3je+jd7uXmD3wOZbz1zIxqZRqLDcRVe4Z2MCxSLEL3UNMCgZU0WRVAfO4r1WGv/eNSGxPsXsdzQluS8NDMLgXm7aP3HkX475NjtfAVMa1GGBC8bM+Jscw23HxmUj8YUBQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Se8OLfCs; dkim-atps=neutral; spf=pass (client-ip=115.124.30.97; helo=out30-97.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+	t=1739761253; c=relaxed/relaxed;
+	bh=RM9oXdBZNW/iQqyTSg1FXsRacwBHB2wVEo55z428eLA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JM1o7u1tWNgBz28WCv7w4JaDBVsnHkDaBx1ox7Kp5e88d8GIpMQlFcoWkqgU3F7dpCrzNzKXRwhc1ULWHygLVJ1rLOj+laSrKY3IG9GzMTqthWWPlaO2Pm72Ce3psYQY3+iR4B1YVd5Q5xXztYfYgnUWF8Y9Y9zTaLoQE9rJX21O/fHn2BQQ2D7YZKBCkJswzbDmwPv0aPZ/X16owubr+gQcF8rCl3q7zuNq4Eo7EKM5W55HjRHEilSbVs0G6ffn4t5QPiBmCxp8DZkmQbC04IBH/MWd8wlpjVlvMmWBu5iz2lUIhbLTJbhL7kbfUowMXakeUQZHTl24w7T7J/nkwA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EAP7NY3b; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=liuhangbin@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=Se8OLfCs;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=EAP7NY3b;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.97; helo=out30-97.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-97.freemail.mail.aliyun.com (out30-97.freemail.mail.aliyun.com [115.124.30.97])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=liuhangbin@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yx6Py2s3Vz2yyC
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 13:42:29 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1739760146; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=EsTzvn9sAqOfuNe2IfnTEyGdjTW3CA2dmeyuPIDjTPY=;
-	b=Se8OLfCsA9ECKNcJh8bonZaN9ROtC1xn3OBtaVJ9ucTTKzDcA9KfmZBr6pnLNzhn3ufMZ/dGjaPGlL1oNi3x6LmTZjlVs543IgtaDcECyEti2ksuviood1wfvS/yk68r8tF/G2s+Pbefx6yPx75fR7eWeF7jGI3llB0QnCJwzSI=
-Received: from localhost.localdomain(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WPYBR3X_1739760144 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 17 Feb 2025 10:42:25 +0800
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	bhelgaas@google.com,
-	kbusch@kernel.org,
-	sathyanarayanan.kuppuswamy@linux.intel.com
-Cc: mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	xueshuai@linux.alibaba.com,
-	Jonathan.Cameron@huawei.com,
-	terry.bowman@amd.com,
-	tianruidong@linux.alibaba.com
-Subject: [PATCH v4 3/3] PCI/AER: Report fatal errors of RCiEP and EP if link recoverd
-Date: Mon, 17 Feb 2025 10:42:18 +0800
-Message-ID: <20250217024218.1681-4-xueshuai@linux.alibaba.com>
-X-Mailer: git-send-email 2.44.0
-In-Reply-To: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
-References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yx6q82QxCz2yyC
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 14:00:51 +1100 (AEDT)
+Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-2fa5af6d743so5838447a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Feb 2025 19:00:51 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1739761249; x=1740366049; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RM9oXdBZNW/iQqyTSg1FXsRacwBHB2wVEo55z428eLA=;
+        b=EAP7NY3bzX5y0TOCicelahd4tSdA56YBFCOWByxmQv5X/tY1uUR9IVEbAqF7QR/OAK
+         xEh+TTsozmJFE/pKmFAQSXtqcY23h204C3bn8Qc0ZcIm/kOH+IwuYIZr9lQT+RxjBFPV
+         exRx2/BIbPJOQAWQBxArx9AO+L6XeJyUBNT7wyn/e8dNTK/brT5E/H2seTrFxwn8vEtH
+         baW0QLma6vRDubiwsR6OYLbLCv/KVSMfobqXEBHv1WqDFluFEtSpaph6vvOxQcqyzrVI
+         42wZTVjDhW/hwa0lxaQqT4hgug4Im9gwW532hbRGgCRttCwir+oQTAg4mvauy4QRlSNI
+         V56Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739761249; x=1740366049;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RM9oXdBZNW/iQqyTSg1FXsRacwBHB2wVEo55z428eLA=;
+        b=EBApooLMG0yTjEl3J3XM/TNbrsHxkMR5+Qer27vR+ipswD2CKPZ0fNI3MUmrtY15b4
+         Suau+2/juFaYWrYwvBFVaIPfic9SSpFwrupLY3P+/pgFpDo6aDpG7F6JeC/omH0I1p3f
+         zybkiD0EU8Z3cl1YxfsP6HxwSq4DOoOMbUotKX/eMdWuIFJV4DwJerUGz4/1T7Kbs9hi
+         7VciGDXsYYVSsx1OwWb+hdQWCLrV1kagvVRqegq+BdIXtxtb+NvabjhlfxY5QdHTjDeT
+         SyZHqE5FF/sZNOV+Ud33gvcqKAT/EGDNfzg8OeWoFGx8RscYtf8VVvMUjIOkSrxarAbZ
+         XsLA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZo2rBYEckYW3+kZFqDmBxLiw6m3xU/Vmq52NTOpKBhBbz53QpUNMp0rhIHZGVZVp1W8lxitR590zsR20=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzdG1PymZMdCgBRnsYwqlaVzcHIBe0SHZKJrfIVG78tQLkJoICV
+	RT8T+pFU3wjTxtDxnaHevRoVC8V/rDOZVsN6g6CN74HZMfZkhhdy
+X-Gm-Gg: ASbGncsA9Op8uvx9FiB2zul1ZnJHCUV7P6cw0mN1eTz7lk9KgOhrYGZMM3dPl8DYYON
+	mjn2aWvTXCyREP53j1qF/d+7q3PpfWPQR+eHtSdTV6Hd6uHLvjNpW0obYNcYjrWWcE6W+8wYVcY
+	oCgVkEEIIg5A1zA/MYDWfHqgXkyL1MPC6VjB5qXs3qlnqbs4FErQZY/ZQCwGOH96UA/Rj7OBc+0
+	Jawr8U1g4avfCoovoY1hddOHnjOLHn9RE6FG1cqlEGLUyxLgyyevr3kFbO3zWK7le5TRcoG9hMh
+	SfL+1og/H7RCGMsve0nu
+X-Google-Smtp-Source: AGHT+IFlbZXzjTjaiCfw7RWv2kRvgfxitjDjmHfqC8UYJCSB2hhBiRs+ip/IcfoDod4m+VWndDNKwQ==
+X-Received: by 2002:a05:6a00:244e:b0:71e:21:d2d8 with SMTP id d2e1a72fcca58-7326179d668mr14480366b3a.7.1739761248651;
+        Sun, 16 Feb 2025 19:00:48 -0800 (PST)
+Received: from fedora ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-73265678abasm3272624b3a.27.2025.02.16.19.00.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 16 Feb 2025 19:00:47 -0800 (PST)
+Date: Mon, 17 Feb 2025 03:00:40 +0000
+From: Hangbin Liu <liuhangbin@gmail.com>
+To: Tejun Heo <tj@kernel.org>
+Cc: Aditya Dutt <duttaditya18@gmail.com>, Shuah Khan <shuah@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	cgroups@vger.kernel.org, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] selftests: make shell scripts POSIX-compliant
+Message-ID: <Z7KmWNNIsXCnhiax@fedora>
+References: <20250216120225.324468-1-duttaditya18@gmail.com>
+ <Z7IOR2UNzjy7cQA7@slm.duckdns.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,159 +94,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z7IOR2UNzjy7cQA7@slm.duckdns.org>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The AER driver has historically avoided reading the configuration space of
-an endpoint or RCiEP that reported a fatal error, considering the link to
-that device unreliable. Consequently, when a fatal error occurs, the AER
-and DPC drivers do not report specific error types, resulting in logs like:
+On Sun, Feb 16, 2025 at 06:11:51AM -1000, Tejun Heo wrote:
+> On Sun, Feb 16, 2025 at 05:32:25PM +0530, Aditya Dutt wrote:
+> > Changes include:
+> > - Replaced [[ ... ]] with [ ... ]
+> > - Replaced == with =
+> > - Replaced printf -v with cur=$(printf ...).
+> > - Replaced echo -e with printf "%b\n" ...
+> > 
+> > The above mentioned are Bash/GNU extensions and are not part of POSIX.
+> > Using shells like dash or non-GNU coreutils may produce errors.
+> > They have been replaced with POSIX-compatible alternatives.
+> 
+> Maybe just update them to use /bin/bash instead? There haven't been a lot of
+> reports of actual breakges and a lot of existing tests are using /bin/bash
+> already.
 
-  pcieport 0000:30:03.0: EDR: EDR event received
-  pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
-  pcieport 0000:30:03.0: DPC: ERR_FATAL detected
-  pcieport 0000:30:03.0: AER: broadcast error_detected message
-  nvme nvme0: frozen state error detected, reset controller
-  nvme 0000:34:00.0: ready 0ms after DPC
-  pcieport 0000:30:03.0: AER: broadcast slot_reset message
++1
 
-AER status registers are sticky and Write-1-to-clear. If the link recovered
-after hot reset, we can still safely access AER status of the error device.
-In such case, report fatal errors which helps to figure out the error root
-case.
-
-After this patch, the logs like:
-
-  pcieport 0000:30:03.0: EDR: EDR event received
-  pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
-  pcieport 0000:30:03.0: DPC: ERR_FATAL detected
-  pcieport 0000:30:03.0: AER: broadcast error_detected message
-  nvme nvme0: frozen state error detected, reset controller
-  pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
-  nvme 0000:34:00.0: ready 0ms after DPC
-  nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
-  nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
-  nvme 0000:34:00.0:    [ 4] DLP                    (First)
-  pcieport 0000:30:03.0: AER: broadcast slot_reset message
-
-Signed-off-by: Shuai Xue <xueshuai@linux.alibaba.com>
----
- drivers/pci/pci.h      |  3 ++-
- drivers/pci/pcie/aer.c | 11 +++++++----
- drivers/pci/pcie/dpc.c |  2 +-
- drivers/pci/pcie/err.c |  9 +++++++++
- 4 files changed, 19 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-index 870d2fbd6ff2..e852fa58b250 100644
---- a/drivers/pci/pci.h
-+++ b/drivers/pci/pci.h
-@@ -549,7 +549,8 @@ struct aer_err_info {
- 	struct pcie_tlp_log tlp;	/* TLP Header */
- };
- 
--int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
-+int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
-+			      bool link_healthy);
- void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
- 
- int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
-diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-index 508474e17183..bfb67db074f0 100644
---- a/drivers/pci/pcie/aer.c
-+++ b/drivers/pci/pcie/aer.c
-@@ -1197,12 +1197,14 @@ EXPORT_SYMBOL_GPL(aer_recover_queue);
-  * aer_get_device_error_info - read error status from dev and store it to info
-  * @dev: pointer to the device expected to have a error record
-  * @info: pointer to structure to store the error record
-+ * @link_healthy: link is healthy or not
-  *
-  * Return 1 on success, 0 on error.
-  *
-  * Note that @info is reused among all error devices. Clear fields properly.
-  */
--int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
-+int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info,
-+			      bool link_healthy)
- {
- 	int type = pci_pcie_type(dev);
- 	int aer = dev->aer_cap;
-@@ -1226,7 +1228,8 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
- 	} else if (type == PCI_EXP_TYPE_ROOT_PORT ||
- 		   type == PCI_EXP_TYPE_RC_EC ||
- 		   type == PCI_EXP_TYPE_DOWNSTREAM ||
--		   info->severity == AER_NONFATAL) {
-+		   info->severity == AER_NONFATAL ||
-+		   (info->severity == AER_FATAL && link_healthy)) {
- 
- 		/* Link is still healthy for IO reads */
- 		pci_read_config_dword(dev, aer + PCI_ERR_UNCOR_STATUS,
-@@ -1258,11 +1261,11 @@ static inline void aer_process_err_devices(struct aer_err_info *e_info)
- 
- 	/* Report all before handle them, not to lost records by reset etc. */
- 	for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
--		if (aer_get_device_error_info(e_info->dev[i], e_info))
-+		if (aer_get_device_error_info(e_info->dev[i], e_info, false))
- 			aer_print_error(e_info->dev[i], e_info);
- 	}
- 	for (i = 0; i < e_info->error_dev_num && e_info->dev[i]; i++) {
--		if (aer_get_device_error_info(e_info->dev[i], e_info))
-+		if (aer_get_device_error_info(e_info->dev[i], e_info, false))
- 			handle_error_source(e_info->dev[i], e_info);
- 	}
- }
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index ea3ea989afa7..2d3dd831b755 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -303,7 +303,7 @@ struct pci_dev *dpc_process_error(struct pci_dev *pdev)
- 		dpc_process_rp_pio_error(pdev);
- 	else if (reason == PCI_EXP_DPC_STATUS_TRIGGER_RSN_UNCOR &&
- 		 dpc_get_aer_uncorrect_severity(pdev, &info) &&
--		 aer_get_device_error_info(pdev, &info)) {
-+		 aer_get_device_error_info(pdev, &info, false)) {
- 		aer_print_error(pdev, &info);
- 		pci_aer_clear_nonfatal_status(pdev);
- 		pci_aer_clear_fatal_status(pdev);
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index 31090770fffc..462577b8d75a 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -196,6 +196,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	struct pci_dev *bridge;
- 	pci_ers_result_t status = PCI_ERS_RESULT_CAN_RECOVER;
- 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
-+	struct aer_err_info info;
- 
- 	/*
- 	 * If the error was detected by a Root Port, Downstream Port, RCEC,
-@@ -223,6 +224,13 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 			pci_warn(bridge, "subordinate device reset failed\n");
- 			goto failed;
- 		}
-+
-+		info.severity = AER_FATAL;
-+		/* Link recovered, report fatal errors of RCiEP or EP */
-+		if ((type == PCI_EXP_TYPE_ENDPOINT ||
-+		     type == PCI_EXP_TYPE_RC_END) &&
-+		    aer_get_device_error_info(dev, &info, true))
-+			aer_print_error(dev, &info);
- 	} else {
- 		pci_walk_bridge(bridge, report_normal_detected, &status);
- 	}
-@@ -259,6 +267,7 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	if (host->native_aer || pcie_ports_native) {
- 		pcie_clear_device_status(dev);
- 		pci_aer_clear_nonfatal_status(dev);
-+		pci_aer_clear_fatal_status(dev);
- 	}
- 
- 	pci_walk_bridge(bridge, pci_pm_runtime_put, NULL);
--- 
-2.39.3
-
+Hangbin
 
