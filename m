@@ -1,78 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-6282-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6268-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE51FA38DCB
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 22:01:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9AEA3870A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 15:55:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxZpM3H67z2xxy;
-	Tue, 18 Feb 2025 08:01:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxQh04mwBz2yyD;
+	Tue, 18 Feb 2025 01:55:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739795165;
-	cv=none; b=Jyoo/JyiyvAE7Fh+8syrkFYV+C/kFetaRLWGPeVCezQqPMKOSAg9V1mYYdhegV+2R9HYQ9g2xgtpiR5KefQV08D5Hn9DmkST31qzl5IRpIEWs6+nyrALMFhP+VvVdl2qOEizMWfWvI/8K4E1pwKF/ORc/OFIxZMJsKWzeC70nY6PQ0uhDErp7BEa9g/5vPUBKeJeHkUkgTQl/PZ3vxLevslICGsHwxJLSrIft1SUOHwR1ZpPvZmiq9qwqT77HqJYr2CRNpV4s2gdUmVyQkvpWhEb2yp5IFVwF7eRx5XdVR+ZjnwohEc0L+RGzKjoBUY7O+hnbQa+0rj+Ekr6B8Fpaw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739804144;
+	cv=none; b=HxIYfAaMWy6dgxqhvJNnS9tGvCBo2dJTql1hHNput0Kh6X80SusSYZCe2oiF8fi0tQv17eC9edlmCMzccvy9atItR2GWL8442nPb8n+/djD9HkJVQrSOLlQpQGt2tX8tQufesvjrnusbw+UUNGTZHxoZB6Jh02JoGcn3fIDl0kWW5IA2ugR4N6VOfGCVuY5tpmkqiMa3uviWOnodj4XCFXUrdsKc1NC0p0hGAtOrlfELWKirD1t7Ows4tfIqIORcx1kTyzgndc0xRh1PIl18uOFE1dgdYjji/46cSTezJu0JHHImpoA01xCh+agwiwud5lHPvUGIbT1qlxHEp90WVQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739795165; c=relaxed/relaxed;
-	bh=4VKw9C3nSKpJ7C5bxloJo4w3wslMmJAucN4BmnqbP54=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=B1hmBRFwn80RAvTuSk9EZO5oEPd5ZULR5vWKGIOCdepFD16SKPSf8wFNcK5xc/BTmJPuBnOYPUR75S05cUb72CDKrdR3/CX1uGBZhaemFL+oUTkDTNP8HDbmRTx2oZI/aPikQSv0czS3d8m0uaPozb0R95StE6O/STXGI7XpXWfJutIQLPu097BU4z4OfyUdffZhIBrQqcMcCy/UCquCrtplcLOv1+WhR4sixZc4Mn8qKsFajq8ZROL/e4Ub3ZxPVc/jDDGbAFp94PRyzYb7Xs3Qg2kI/+Imz2cdZYLhaO0PXIN25h7GSzN0J8wG3Wx+fCPb365Rp90o5Uo+6wLCbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i4uV4dI3; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i4uV4dI3;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1739804144; c=relaxed/relaxed;
+	bh=+M34uV/zkct1kEAaK2pLJ3/QmCI3GfHP6imSRuJbcm8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QmhCPv/66+XQlB8Qav/4s2nv7nj89ZKbZqlCPycHy4le6Alzg8MdCqgM2kMNOarrMWkgfPw9f10rPvTLcn+kfBMC4am05yqe+oObB6NzDmkHWpk/a7929AXLRrgnisseLXK+Nm/Hn8XXN1LCK/OslxMGJ3Ys2neECf43IlKRPQeQbNgH3ZNix2JDrbVUU6sCiA3Wj3I4SkhxrMxEFqec2zgDCi0uGKS2/ALNaSS9BxE/lgJhMpMVqzDaVqpEHrfViWIwJfkyeId+ZpSXskoQOdRHRmp0SHbmWeuHiNN9l/wZNJK9Hds2/uO/GQfbbUbvnVzsb0B5bOD1JB3PaDijFw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxMMK1jqdz2yG9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 23:26:04 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51H7WkFp025556;
-	Mon, 17 Feb 2025 12:25:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=4VKw9C
-	3nSKpJ7C5bxloJo4w3wslMmJAucN4BmnqbP54=; b=i4uV4dI3s8Fmjw/CzlQYVo
-	TjngvZBpbpmCnkcS4IrF5tajkdipB66h6zJSOL8WKW12G4Os7rI6ZAoWvu8yDir3
-	q3xhbrK/zqIy3UQ5wFaA9jTPw7p1Z0a0nP1HylMkHQLD6X/l/nai4K1bB3CZEbeA
-	X52hcXDkeTZrm5HGh07nixN6DmqMRGId1n+LWCqbvdlgfz+k2OYN1+ZtSvd3BA43
-	LiZQDLpbeqUsU0/6fZ2Xg3ttUieXKrRHtWnwdLLqJHZzmej/EtzRSH+YDnBYOJ9t
-	VtCO9cyESyRu0DhEqVNt4d0B/84WYeUQi25NuIvJHcQv0e5ZOf0Smumyf6cCqlmw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44v0tp1c7e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 12:25:58 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51HCFxUf011215;
-	Mon, 17 Feb 2025 12:25:57 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44v0tp1c7d-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 12:25:57 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51H8U3WO003891;
-	Mon, 17 Feb 2025 12:25:57 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44u68np148-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 12:25:56 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51HCPrgF53674490
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Feb 2025 12:25:53 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4820320043;
-	Mon, 17 Feb 2025 12:25:53 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 556DF20040;
-	Mon, 17 Feb 2025 12:25:47 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.241.34])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 17 Feb 2025 12:25:46 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxQgz1R1qz2yZ6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 01:55:43 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4E9CC5C57AC;
+	Mon, 17 Feb 2025 14:55:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 453CDC4CED1;
+	Mon, 17 Feb 2025 14:55:35 +0000 (UTC)
+Date: Mon, 17 Feb 2025 14:55:32 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Tong Tiangen <tongtiangen@huawei.com>
+Cc: Mark Rutland <mark.rutland@arm.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	James Morse <james.morse@arm.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Dmitry Vyukov <dvyukov@google.com>,
+	Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Alexander Potapenko <glider@google.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
+	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	kasan-dev@googlegroups.com, wangkefeng.wang@huawei.com,
+	Guohanjun <guohanjun@huawei.com>
+Subject: Re: [PATCH v13 4/5] arm64: support copy_mc_[user]_highpage()
+Message-ID: <Z7NN5Pa-c5PtIbcF@arm.com>
+References: <20241209024257.3618492-1-tongtiangen@huawei.com>
+ <20241209024257.3618492-5-tongtiangen@huawei.com>
+ <Z6zWSXzKctkpyH7-@arm.com>
+ <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com>
+ <Z698SFVqHjpGeGC0@arm.com>
+ <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,214 +78,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH] tools/perf: Add check to tool pmu tests to ensure if the
- event is valid
-From: Athira Rajeev <atrajeev@linux.ibm.com>
-In-Reply-To: <Z61oWlOoyF0BKwYV@google.com>
-Date: Mon, 17 Feb 2025 17:55:33 +0530
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Jiri Olsa <jolsa@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, linux-perf-users@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com,
-        kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
-        hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <BCC6464B-C112-4C00-B58D-62F4B1EB0F46@linux.ibm.com>
-References: <20250212185438.15251-1-atrajeev@linux.vnet.ibm.com>
- <Z61oWlOoyF0BKwYV@google.com>
-To: Namhyung Kim <namhyung@kernel.org>, Thomas Richter <tmricht@linux.ibm.com>,
-        James Clark <james.clark@linaro.org>
-X-Mailer: Apple Mail (2.3776.700.51)
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: Ms6mcnvRpME2DgEE77fwcaGEbwsiqXxN
-X-Proofpoint-ORIG-GUID: 0hoxVe_OD-FkEb30E07nK7le8zWycRKe
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-17_05,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- mlxscore=0 priorityscore=1501 lowpriorityscore=0 clxscore=1015
- phishscore=0 impostorscore=0 mlxlogscore=999 malwarescore=0 adultscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502170105
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com>
+X-Spam-Status: No, score=-0.6 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Mon, Feb 17, 2025 at 04:07:49PM +0800, Tong Tiangen wrote:
+> 在 2025/2/15 1:24, Catalin Marinas 写道:
+> > On Fri, Feb 14, 2025 at 10:49:01AM +0800, Tong Tiangen wrote:
+> > > 在 2025/2/13 1:11, Catalin Marinas 写道:
+> > > > On Mon, Dec 09, 2024 at 10:42:56AM +0800, Tong Tiangen wrote:
+> > > > > Currently, many scenarios that can tolerate memory errors when copying page
+> > > > > have been supported in the kernel[1~5], all of which are implemented by
+> > > > > copy_mc_[user]_highpage(). arm64 should also support this mechanism.
+> > > > > 
+> > > > > Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
+> > > > > architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
+> > > > > __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
+> > > > > 
+> > > > > Add new helper copy_mc_page() which provide a page copy implementation with
+> > > > > hardware memory error safe. The code logic of copy_mc_page() is the same as
+> > > > > copy_page(), the main difference is that the ldp insn of copy_mc_page()
+> > > > > contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
+> > > > > main logic is extracted to copy_page_template.S. In addition, the fixup of
+> > > > > MOPS insn is not considered at present.
+> > > > 
+> > > > Could we not add the exception table entry permanently but ignore the
+> > > > exception table entry if it's not on the do_sea() path? That would save
+> > > > some code duplication.
+> > > 
+> > > I'm sorry, I didn't catch your point, that the do_sea() and non do_sea()
+> > > paths use different exception tables?
+> > 
+> > No, they would have the same exception table, only that we'd interpret
+> > it differently depending on whether it's a SEA error or not. Or rather
+> > ignore the exception table altogether for non-SEA errors.
+> 
+> You mean to use the same exception type (EX_TYPE_KACCESS_ERR_ZERO) and
+> then do different processing on SEA errors and non-SEA errors, right?
 
+Right.
 
-> On 13 Feb 2025, at 9:04=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> =
-wrote:
->=20
-> On Thu, Feb 13, 2025 at 12:24:38AM +0530, Athira Rajeev wrote:
->> "Tool PMU" tests fails on powerpc as below:
->>=20
->>   12.1: Parsing without PMU name:
->>   --- start ---
->>   test child forked, pid 48492
->>   Using CPUID 0x00800200
->>   Attempt to add: tool/duration_time/
->>   ..after resolving event: tool/config=3D0x1/
->>   duration_time -> tool/duration_time/
->>   Attempt to add: tool/user_time/
->>   ..after resolving event: tool/config=3D0x2/
->>   user_time -> tool/user_time/
->>   Attempt to add: tool/system_time/
->>   ..after resolving event: tool/config=3D0x3/
->>   system_time -> tool/system_time/
->>   Attempt to add: tool/has_pmem/
->>   ..after resolving event: tool/config=3D0x4/
->>   has_pmem -> tool/has_pmem/
->>   Attempt to add: tool/num_cores/
->>   ..after resolving event: tool/config=3D0x5/
->>   num_cores -> tool/num_cores/
->>   Attempt to add: tool/num_cpus/
->>   ..after resolving event: tool/config=3D0x6/
->>   num_cpus -> tool/num_cpus/
->>   Attempt to add: tool/num_cpus_online/
->>   ..after resolving event: tool/config=3D0x7/
->>   num_cpus_online -> tool/num_cpus_online/
->>   Attempt to add: tool/num_dies/
->>   ..after resolving event: tool/config=3D0x8/
->>   num_dies -> tool/num_dies/
->>   Attempt to add: tool/num_packages/
->>   ..after resolving event: tool/config=3D0x9/
->>   num_packages -> tool/num_packages/
->>=20
->>   ---- unexpected signal (11) ----
->>   12.1: Parsing without PMU name                                      =
-: FAILED!
->>=20
->> Same fail is observed for "Parsing with PMU name" as well.
->>=20
->> The testcase loops through events in tool_pmu__for_each_event()
->> and access event name using "tool_pmu__event_to_str()".
->> Here tool_pmu__event_to_str returns null for "slots" event
->> and "system_tsc_freq" event. These two events are only applicable
->> for arm64 and x86 respectively. So the function =
-tool_pmu__event_to_str()
->> skips for unsupported events and returns null. This null value is
->> causing testcase fail.
->>=20
->> To address this in "Tool PMU" testcase, add a helper function
->> tool_pmu__all_event_to_str() which returns the name for all
->> events mapping to the tool_pmu_event index including the
->> skipped ones. So that even if its a skipped event, the
->> helper function helps to resolve the tool_pmu_event index to
->> its mapping event name. Update the testcase to check for null event
->> names before proceeding the test.
->>=20
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
->=20
-> Please take a look at:
-> =
-https://lore.kernel.org/r/20250212163859.1489916-1-james.clark@linaro.org
->=20
-> Thanks,
-> Namhyung
+> If so, some instructions of copy_page() did not add to the exception
+> table will be added to the exception table, and the original logic will
+> be affected.
+> 
+> For example, if an instruction is not added to the exception table, the
+> instruction will panic when it triggers a non-SEA error. If this
+> instruction is added to the exception table because of SEA processing,
+> and then a non-SEA error is triggered, should we fix it?
 
-Hi,
+No, we shouldn't fix it. The exception table entries have a type
+associated. For a non-SEA error, we preserve the original behaviour even
+if we find a SEA-specific entry in the exception table. You already need
+such logic even if you duplicate the code for configurations where you
+have MC enabled.
 
-Sure thanks for the fix James
-
-Thomas,
-Thanks for testing this patch.  But James already fixed this with a =
-different patch and it is part of perf-tools-next
-=
-https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/c=
-ommit/?h=3Dperf-tools-next&id=3D615ec00b06f78912c370b372426190768402a5b9
-
-Please test with latest perf-tools-next=20
-
-Thanks
-Athira
-
->=20
->> ---
->> tools/perf/tests/tool_pmu.c | 12 ++++++++++++
->> tools/perf/util/tool_pmu.c  | 17 +++++++++++++++++
->> tools/perf/util/tool_pmu.h  |  1 +
->> 3 files changed, 30 insertions(+)
->>=20
->> diff --git a/tools/perf/tests/tool_pmu.c =
-b/tools/perf/tests/tool_pmu.c
->> index 187942b749b7..e468e5fb3c73 100644
->> --- a/tools/perf/tests/tool_pmu.c
->> +++ b/tools/perf/tests/tool_pmu.c
->> @@ -19,6 +19,18 @@ static int do_test(enum tool_pmu_event ev, bool =
-with_pmu)
->> return TEST_FAIL;
->> }
->>=20
->> + /*
->> +  * if tool_pmu__event_to_str returns NULL, Check if the event is
->> +  * valid for the platform.
->> +  * Example:
->> +  * slots event is only on arm64.
->> +  * system_tsc_freq event is only on x86.
->> +  */
->> + if (!tool_pmu__event_to_str(ev) && =
-tool_pmu__skip_event(tool_pmu__all_event_to_str(ev))) {
->> + ret =3D TEST_OK;
->> + goto out;
->> + }
->> +
->> if (with_pmu)
->> snprintf(str, sizeof(str), "tool/%s/", tool_pmu__event_to_str(ev));
->> else
->> diff --git a/tools/perf/util/tool_pmu.c b/tools/perf/util/tool_pmu.c
->> index 3a68debe7143..572422797f6e 100644
->> --- a/tools/perf/util/tool_pmu.c
->> +++ b/tools/perf/util/tool_pmu.c
->> @@ -60,6 +60,15 @@ int tool_pmu__num_skip_events(void)
->> return num;
->> }
->>=20
->> +/*
->> + * tool_pmu__event_to_str returns only supported event names.
->> + * For events which are supposed to be skipped in the platform,
->> + * return NULL
->> + *
->> + * tool_pmu__all_event_to_str returns the name for all
->> + * events mapping to the tool_pmu_event index including the
->> + * skipped ones.
->> + */
->> const char *tool_pmu__event_to_str(enum tool_pmu_event ev)
->> {
->> if ((ev > TOOL_PMU__EVENT_NONE && ev < TOOL_PMU__EVENT_MAX) &&
->> @@ -69,6 +78,14 @@ const char *tool_pmu__event_to_str(enum =
-tool_pmu_event ev)
->> return NULL;
->> }
->>=20
->> +const char *tool_pmu__all_event_to_str(enum tool_pmu_event ev)
->> +{
->> + if (ev > TOOL_PMU__EVENT_NONE && ev < TOOL_PMU__EVENT_MAX)
->> + return tool_pmu__event_names[ev];
->> +
->> + return NULL;
->> +}
->> +
->> enum tool_pmu_event tool_pmu__str_to_event(const char *str)
->> {
->> int i;
->> diff --git a/tools/perf/util/tool_pmu.h b/tools/perf/util/tool_pmu.h
->> index a60184859080..da76808ae71e 100644
->> --- a/tools/perf/util/tool_pmu.h
->> +++ b/tools/perf/util/tool_pmu.h
->> @@ -30,6 +30,7 @@ enum tool_pmu_event {
->> for ((ev) =3D TOOL_PMU__EVENT_DURATION_TIME; (ev) < =
-TOOL_PMU__EVENT_MAX; ev++)
->>=20
->> const char *tool_pmu__event_to_str(enum tool_pmu_event ev);
->> +const char *tool_pmu__all_event_to_str(enum tool_pmu_event ev);
->> enum tool_pmu_event tool_pmu__str_to_event(const char *str);
->> bool tool_pmu__skip_event(const char *name);
->> int tool_pmu__num_skip_events(void);
->> --=20
->> 2.43.5
-
-
+-- 
+Catalin
 
