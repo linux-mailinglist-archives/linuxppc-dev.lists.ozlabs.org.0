@@ -1,76 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-6262-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6263-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AA3AA37F72
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 11:10:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51289A37FE3
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Feb 2025 11:22:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxJLp65dRz2ytQ;
-	Mon, 17 Feb 2025 21:10:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxJcN5lRbz30J8;
+	Mon, 17 Feb 2025 21:22:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739787026;
-	cv=none; b=KO1tx538nCshMt9Gp+Hg7nlkb1m1owi4/gZQii9FOS2f9wqtPCKTuGkR/VwOwy0RiIl6Nn1zq2+S0ZWpKSKIT9qFKpDhVhoOJmQFxu8J0KGjNWu8z/dhm/UjKzNHn4hFW4eANi31OluteD/ltz5VWngmKnkQbkjNlPzLdwftTRjiQOVJPbdIcgNvPNTNBd6s1Rj32fbHcKk5D3RkY+67dzBg7cU71E5RJeXbzyBQEBHuAhutJrAKUQfXXRf5lO5L91xl5tJ2a8SDCmpFjpG8CyFnVJ5E5oWq5Tpd2E8ck2HifhgJH/KL3QV1yQHm507xswg92zFjgiw3TriRlrofMQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739787732;
+	cv=none; b=PYgmK9DIqJ96Ef0wF9ILcu9yvIUGhsBX8to1WcGp1+JBwttIc0UzYIbY34YsBJLPna0UAtMLKq9p/SsJyUHKzsCK8tbZHqvgkYMNNAppvcaIyHqunMbA5LB7IRrr4Bo6Nt/Nw4u19cFd9ldHyUUMCVatdrbS2enbYikUugixEkQu52Wms1skj+sc3i33ZPzugEtPvPzu1xwij9R+X2neqxYLLV3OUNR4bG933Su0sXJyB0YoggBlRhuC65gjkboWkzDC22Q7ZPiFzbm6H7e2VdY3cU4PUFOqNohGKzkeKjgeivFPqHGonXHHhgGatrpitQuaPKAiuWyT8/P9qCh6nw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739787026; c=relaxed/relaxed;
-	bh=6jHh/eg/sf7lgfStktsSnH72e62mzF8yRmqmIg5gknE=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=TI01sdROP4OQrtoqiLIu6Ui0x+nZCYqlSES0dZYAVB+ibnXU7B5jILVtxPuNHpWBfM5LJHL+8tEthZp9+XHdNPgqDMy+wuZpVsAR6I2qRtgFvgJQ4koT4e4htk0dK8AXAwgQBbZrgy3zIeJBiQBAX0ha3TVJaSiLQfPx8Y26820W7soMZ2ZK0sq5JRtdmDwDumOfHXQbrP9iK5ZA0HovC4fff/hK1INo0HzWdRrip9ZmnlrVYfeiosyzqUA42bYkE3mRf6MqAMW9Ios18S74l6VOs8OOyDsmuPuPAXrxJwq6qKBM3zIQ0+uUAmlBwv+FJN57mOAI+6WxcTMIy9NKYg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MlMZzFG/; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1739787732; c=relaxed/relaxed;
+	bh=zhBfujmQzIaxtI47HYD4ign05XCFB5c7QtBDmhkRVQw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fde7Iyuym+XxUriMpmBNh0e72ok1VREx0ZT7sMYEm7Kuq/OnW05UVc0seYmdPL1dIXLHsx8PxqLGOWkNuldmm9spYDv9rSB/fIu5fQ2y6oIrt947uUhv1zX3uCffCGewXo9uq2SWw1Gxzzo28fzw/dgUQXF/U/B1LViDixb/Mp0EnwERfdeDe02TPYnGI7Y0cEvpljREpau9Mp9C7iYt7JBfe5V9kAFuFnMnHBN2Ypk/vYHWfJIBBWzWmoecWekAUWJwfrVnSVCbS8EqL1y8KKNPFmRXbu6r40RYVAC3OFhYOAo1t+gVCar/fMHqb5fwc2niXruX5vUtZMiFKUzBnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=OcunxjnO; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MlMZzFG/;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=OcunxjnO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxJLm6dLLz2ynj
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 21:10:24 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51GLj4kX022143;
-	Mon, 17 Feb 2025 10:10:10 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=6jHh/eg/sf7lgfStktsSnH72e62m
-	zF8yRmqmIg5gknE=; b=MlMZzFG/+5D1DjTPP/+rafFKNnI8vydVyEIajJAZTDck
-	juyeTzZVU2V6FeLMjjd44zAcWKxryyNAhAQWoIQsFKlBVEQ2fsh1PZvwQjyFGdj8
-	IXQIRSr4ry1yrKzsTDA6lP1yYjvzbu/6iL7P7IkK3JsQSwHz6URplklr5bZXNBwR
-	xWJPllTcO4JSfUE/XmiqH8qKEQvL33bCOynncaqJ4mQADYT1/PHPNOlzt8Rl370S
-	kTwd6dPv5Jb7s0PGVAVEd9yUnj39g4gZABlFIrZjM2DFhXAOEiXa5Hn3tHf6cUat
-	FHXgT9uBP5vPCca53fccZGfNnkuARloOMPfN3dHR8Q==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ujutkfj8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 10:10:09 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51HA4Vm6007378;
-	Mon, 17 Feb 2025 10:10:09 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44ujutkfj4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 10:10:09 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51H684u4024851;
-	Mon, 17 Feb 2025 10:10:08 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u7y1d7r3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Feb 2025 10:10:08 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51HAA8EA27656818
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Feb 2025 10:10:08 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E56405805D;
-	Mon, 17 Feb 2025 10:10:07 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 48A815805A;
-	Mon, 17 Feb 2025 10:10:03 +0000 (GMT)
-Received: from [9.43.79.72] (unknown [9.43.79.72])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Feb 2025 10:10:02 +0000 (GMT)
-Message-ID: <69e279d8-55f1-4196-b208-27487bb70dd4@linux.ibm.com>
-Date: Mon, 17 Feb 2025 15:40:00 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxJcK2vVgz2yyD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 21:22:05 +1100 (AEDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 764A7240028
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Feb 2025 11:21:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1739787719; bh=jMs/nQgZnmKABPkw9jqt7Jfzzk1OWmU8OV/13GG2QpU=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=OcunxjnORlls5HLQbw14IA4MVC0/PZttQcN6Xb1njtYLh9w3V2EzoXxfu1MbezZOa
+	 igGczDarQ/HAUaLFutWSSVZmdEUTnRAvvfR4P29OCnKFzGDj486rRUdkvaH84i6NBo
+	 UtVpi15+ffpeSxsw3G6Oqlzj3zI0D1KYiw/3TmXPUi6gTvtiqgj/cZnkaLv/OUhc1E
+	 fsfgehBww1B2wODO2LaG6+zR8u0MupCI7OX6eePtCGNrHO9DmG7c5+355HtJddRiI9
+	 /P2b99by5o6+cqPVP5GNceuHNR2zkqz2Mw/VyF9apCBj1axPsoJPrTYEN9rsaqNlEj
+	 BgJ/ZZr20v4Ug==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4YxJc00sngz9rxD;
+	Mon, 17 Feb 2025 11:21:51 +0100 (CET)
+Date: Mon, 17 Feb 2025 10:21:51 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Miquel Raynal <miquel.raynal@bootlin.com>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= via B4 Relay <devnull+j.ne.posteo.net@kernel.org>,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	Krzysztof Kozlowski <krzk@kernel.org>, imx@lists.linux.dev,
+	Scott Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	"David S. Miller" <davem@davemloft.net>, Lee Jones <lee@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Guenter Roeck <linux@roeck-us.net>, Mark Brown <broonie@kernel.org>,
+	Richard Weinberger <richard@nod.at>,
+	Vignesh Raghavendra <vigneshr@ti.com>, linux-kernel@vger.kernel.org,
+	linux-ide@vger.kernel.org, linux-crypto@vger.kernel.org,
+	dmaengine@vger.kernel.org, linux-pci@vger.kernel.org,
+	linux-watchdog@vger.kernel.org, linux-spi@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Subject: Re: [PATCH v2 12/12] dt-bindings: mtd: raw-nand-chip: Relax node
+ name pattern
+Message-ID: <Z7MNv4NX8dSztdsP@probook>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-12-8137b0c42526@posteo.net>
+ <87o6zaurv9.fsf@bootlin.com>
+ <Z7Iqir-qaZDt6tsx@probook>
+ <87tt8svrxf.fsf@bootlin.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,85 +97,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Naveen N Rao <naveen@kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.14-3 tag
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: GPVrRolAU3OOIHdfuEcsbo7CUaNMf6GT
-X-Proofpoint-GUID: ZTnJ_PKjlrpf0bSvmQ-zA2Yerwm3cq_Z
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-17_04,2025-02-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 impostorscore=0
- adultscore=0 priorityscore=1501 clxscore=1015 mlxlogscore=712
- malwarescore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502170088
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87tt8svrxf.fsf@bootlin.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+On Mon, Feb 17, 2025 at 10:31:08AM +0100, Miquel Raynal wrote:
+> Hello,
+> 
+> >> > In some scenarios, such as under the Freescale eLBC bus, there are raw
+> >> > NAND chips with a unit address that has a comma in it (cs,offset).
+> >> > Relax the $nodename pattern in raw-nand-chip.yaml to allow such unit
+> >> > addresses.
+> >> 
+> >> This is super specific to this controller, I'd rather avoid that in the
+> >> main (shared) files. I believe you can force another node name in the
+> >> controller's binding instead?
+> >
+> > It's a bit tricky. AFAICS, when I declare a node name pattern in my
+> > specific binding in addition to the generic binding, the result is that
+> > both of them apply, so I can't relax stricter requirements:
+> >
+> > # raw-nand-chip.yaml
+> > properties:
+> >   $nodename:
+> >     pattern: "^nand@[a-f0-9]$"
+> >
+> > # fsl,elbc-fcm-nand.yaml
+> > properties:
+> >   $nodename:
+> >     pattern: "^nand@[a-f0-9](,[0-9a-f]*)?$"
+> 
+> Well, I guess this is creating a second possible node name.
+> 
+> > # dtc
+> > /.../fsl,elbc-fcm-nand.example.dtb:
+> > nand@1,0: $nodename:0: 'nand@1,0' does not match '^nand@[a-f0-9]$'
+> >         from schema $id:
+> > 	http://devicetree.org/schemas/mtd/fsl,elbc-fcm-nand.yaml#
+> 
+> What about fixing the DT instead?
 
-Hi Linus,
+In this particular context under the Freescale eLBC ("enhanced Local Bus
+Controller"), nand@1,0 makes complete sense, because it refers to chip
+select 1, offset 0. The eLBC binding (which has existed without YAML
+formalization for a long time) specifies that each device address
+includes a chip select and a base address under that CS.
 
-Please pull couple of powerpc fixes for 6.14:
+The alternative of spelling it as nand@100000000 makes readability
+strictly worse (IMO).
 
-The following changes since commit a64dcfb451e254085a7daee5fe51bf22959d52d3:
+Due to the conflicting requirements of keeping compatibility with
+historic device trees and complying with modern DT conventions,
+I'm already ignoring a validation warning from dtc, which suggests to
+use nand@100000000 instead of nand@1,0 because the eLBC bus has
+historically been specified with compatible = ..., "simple-bus",
+so I guess the fsl,elbc-fcm-nand binding can't be perfect anyway.
 
-  Linux 6.14-rc2 (2025-02-09 12:45:03 -0800)
-
-are available in the git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.14-3
-
-for you to fetch changes up to d262a192d38e527faa5984629aabda2e0d1c4f54:
-
-  powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC (2025-02-12 14:38:13 +0530)
-
-- ------------------------------------------------------------------
-powerpc fixes for 6.14 #3
-
- - Couple of patches to fix KASAN fail during boot
- - Fix to avoid warnings/errors when building with 4k page size
-
-Thanks to: Christophe Leroy, Ritesh Harjani (IBM), Erhard Furtner
-
-- ------------------------------------------------------------------
-Christophe Leroy (3):
-      powerpc/code-patching: Disable KASAN report during patching via temporary mm
-      powerpc/64s: Rewrite __real_pte() and __rpte_to_hidx() as static inline
-      powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC
+In any case, I'll drop this patch during further development.
 
 
- arch/powerpc/include/asm/book3s/64/hash-4k.h | 12 ++++++++++--
- arch/powerpc/lib/code-patching.c             |  4 +++-
- 2 files changed, 13 insertions(+), 3 deletions(-)
------BEGIN PGP SIGNATURE-----
+Thank you for your inputs,
 
-iQIzBAEBCAAdFiEEqX2DNAOgU8sBX3pRpnEsdPSHZJQFAmezCewACgkQpnEsdPSH
-ZJR/SA//eL0vRKOOGIHZ1g/uvV4D0HbtsJUObG97tpZXoNirTypba1/qMRxyqghu
-d4GKKesibMexUPEICxHyy6hJb7V5cfVTWCqOy1CZg2jVs3QVclxVifHJDcW4oW2D
-yCoaT23cMjht47QKXSgmQTqUHgKhLzyb575iQfx8EMDUXMT8UEsXF7GekhISGPNq
-JySzN2j4/1229gYni22ta24lzxWwfSZX8xNLrDQ8JuAa0+JqCA4Yh6PM2WMohmYj
-Y+5GQIMz7UpuPkdfdcsjmg/pyyGI/dC0ZAof/x3nHkn1rZfJ+T/HSeV2Zt2Aq8mq
-o/qb+KtA+H+8J97158pxQQ24loJ5AYmYy5qwV20DRJCJrU5VFMxow46ZBzl1c6sw
-FZ/TO/Vjc8keAnJQgRaW6cr4a7ojTHxuj25h0etH+c2BjSu0XZhiLJYlqFW5pYIA
-rCPiEk7IkAEz37jQpGREaxNxFiolHcKkl4A8+Tr0YC3Nr4lrSqcqsjpWA7pGhYTR
-zikZUMPkqYJYJRXPeOrQreLiuZaZwRY9EpwKVMI8TCNhhSkFRSneQNVMcdaKM95T
-R4xuOwgDfhVjyv+XMwqMHxuCyk7M8fZxK2ikslB23s2LmYWoB0rePG0MRuIcUk7L
-hlboeCTGwmbt1E48APU3PtAoK5NedCoUcbA3Zb/gNRCXioeUFSg=
-=cSvh
------END PGP SIGNATURE-----
+J. Neuschäfer
 
