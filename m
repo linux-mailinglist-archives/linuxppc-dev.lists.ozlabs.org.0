@@ -1,78 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-6309-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6310-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E24F3A39348
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 06:58:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8479EA3942C
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 08:54:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yxpk735G3z305P;
-	Tue, 18 Feb 2025 16:58:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxsH94rxzz2xGC;
+	Tue, 18 Feb 2025 18:54:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739858335;
-	cv=none; b=hmeO/JJaYhv1nbJj+iifGgg2eXLynwtgSBewz+YU8qM2UJ0wOt1tnDdyVmll1V1RxeuXrS+FOCb+du8b7oxKLjWutUa4pJTjAguhNOY4MbC/p15yr8pCuyFMhdDMdEIJ4NgABnjihoYNn0QS4XA1JUMiQFYmoUW7QzsH4jYIe/gby9I/NN28WdKq8yD12h9CrP2EvbNlcacu5RvrHbwEYNJkbqoBBB/u/5KdNpA80s9S0aU4IfcPHgYiYhi7DFpPpKDrzZ+ST5PG5E7CZ8ZZPg9vPbm7TwbafVTB8MFHBk5lbB8VDRitcbvuR0DrIVVCyL8Fc33T0gGhH0qS1THQzw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739865253;
+	cv=none; b=LFhrHkGcPoxqdHGKTUR1kMRsNcyQoBbJ6e/pd//8hUX+Y6ddl91W4KvM5gsk0InuVzoliRbysTn1hqDCi9u0FB5HA2oLv+IrxtGeAUwUABBqzc5XKImdKaPN2kyoBz+1uWS65bBMU4tJi7oHEjfaipp1zxi0/+JeZHNPSnS2SAlM1ek/mX4DJQP91WNSCize0qqudXmS806nUmTI/pGGGY/UI+qg5JIoyKgW7SNdizXO1+bW6V9LE8M5mThQd3xq+TzXdbjM60Ho+YKVijzVDF1gdn45IOcsW5VVlnL221Sp1EuGi5aMzRmu1cdYgHcw5tkZ1L/5Fe5It98lRkmVSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739858335; c=relaxed/relaxed;
-	bh=tjVxHI8p+Dwo9AwyLlaVxDg1pLMBBHhFN5oRVlEBrGk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TfE/8Ak6OE6rehtD0gcn6Byv6nDN0C6cAldhQfZGsy5pxVVDCF50qTBwCyG3PY4qPWw7Nyfvh8yMuWC6czxQOXzQgRDQmqNfeXzHoOspI/jI1HTD4p7b7JxuuZ+GXtDu3TUoTPkRbDgYaWN5VHPUbk+DZs4opC8ihaavO7FwLWzaMSTVJpPX/s0XJNcb+OJT10WmPcLp9aFVt0uJSA+77O/mgcKP2FZA9licnh9mVqupTQJXaBW7LU4Q3bhGSxdPjueDNCKSVb2u/Fwoot8baQfcYh1u7JrpWjj02K1f0cAHvQ3IONbwrW6pVYHe712dvQnSEaxYwwklTgVXt8ybgQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oRHY3T2D; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1739865253; c=relaxed/relaxed;
+	bh=d7bHl0ooLxFSzjEUZAaPsWHsj5Dt6Ubf1dAYLGBp6pQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=d6gaE3YSZCxUYRdifO4EI4V4ROgN/qDk0ukLL96ZxH538Zw5wUGlHI2wbixyQ1Kma8MWxl+Tk32oJ8Sfk1a4urpdMHUv8kDOSMFUNd7iVj8u5UQ1BpeFd/iMDoxoTr4VuZdOOct9MdqE7OtwRAHo19RSwx6iw/g4KrR44eJ+wdpA0xs7X7qDa8qXBqanlDJhgm8GNIbg5k0NVEx9bSyF60Np0D8UnGZFA2mJYweSD13lwGKNfJk5hOyqBWJzxTTXNJBMCGaKLXlySVINA7juac4Nayv2L5Kth1ZQpx8oVDdn3AhWgB7pLo/iPBsojuR6IHWOrKlx9mzCVOPM2Jlctg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PPsDCYXe; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5g5XYrVZ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PPsDCYXe; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5g5XYrVZ; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=oRHY3T2D;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PPsDCYXe;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5g5XYrVZ;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=PPsDCYXe;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=5g5XYrVZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yxpk63mzrz2yVF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 16:58:54 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51HFddcH020021;
-	Tue, 18 Feb 2025 05:58:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=tjVxHI
-	8p+Dwo9AwyLlaVxDg1pLMBBHhFN5oRVlEBrGk=; b=oRHY3T2Dro3K+EtlSRLH1t
-	nl5+cJln+aLYxg2mqCQsCwdP8O8mG6+YjHd6krlclOVnCxoPI0rMtXAGYtvotECz
-	lTyTEdJynzeBFwuocgeb2nKN80cntn+EN/Vy25M30be1uS4hM8TL7+LQBIcrv16t
-	wt+JX2GydVxGdfBk0Cyip3ubfIstDVvEsPSWXiqxXSRU1SFKugIned4ihBSp6Dc/
-	0/afxTEODdBbZbquZztZBF3/jZiaXuM2YFk8uK/maKj+s3yhHAkmJ34z8+WduRIK
-	uDKdPl7vkEhF6Fy98VvDAYyjcLklKR/JQnb4CmmEpZ50JCFTe/uhatQ1Hx2vPMCw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44v7xub15p-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 05:58:44 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51I5pjSO003681;
-	Tue, 18 Feb 2025 05:58:44 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44v7xub15k-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 05:58:44 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51I52mgT008148;
-	Tue, 18 Feb 2025 05:58:43 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u58thqv9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 05:58:43 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51I5wfH330933560
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Feb 2025 05:58:41 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9BB0720043;
-	Tue, 18 Feb 2025 05:58:41 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 05AFB20040;
-	Tue, 18 Feb 2025 05:58:39 +0000 (GMT)
-Received: from [9.124.222.120] (unknown [9.124.222.120])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Feb 2025 05:58:38 +0000 (GMT)
-Message-ID: <cc6996cc-c5c1-429d-ade0-9978b859f207@linux.ibm.com>
-Date: Tue, 18 Feb 2025 11:28:38 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YxsH801YSz2xBb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 18:54:11 +1100 (AEDT)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 5E54F21160;
+	Tue, 18 Feb 2025 07:54:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1739865244; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d7bHl0ooLxFSzjEUZAaPsWHsj5Dt6Ubf1dAYLGBp6pQ=;
+	b=PPsDCYXeUSsNDKWv4y90uj2vZdDSQrsaIyIPThIXp1rg3V4Exd1i7qTev+o9zh2uDCSJ66
+	OelCcm5ItOHQqW1IapYXvbtpfA46V0ZDoTMSnoGLrSrJZfR8SaMoUG/ibs7IQnZ6CybUWk
+	+5YCI3Ma2ojogyPhh6CWq/tnJhIbmlQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1739865244;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d7bHl0ooLxFSzjEUZAaPsWHsj5Dt6Ubf1dAYLGBp6pQ=;
+	b=5g5XYrVZagb7mg9gJiByPE5IU70wlyqEirYOjDaQqamW7rkm5QbeURmiHU+wfAG3eXecAJ
+	CjcMdlC6zmGgL4BQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1739865244; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d7bHl0ooLxFSzjEUZAaPsWHsj5Dt6Ubf1dAYLGBp6pQ=;
+	b=PPsDCYXeUSsNDKWv4y90uj2vZdDSQrsaIyIPThIXp1rg3V4Exd1i7qTev+o9zh2uDCSJ66
+	OelCcm5ItOHQqW1IapYXvbtpfA46V0ZDoTMSnoGLrSrJZfR8SaMoUG/ibs7IQnZ6CybUWk
+	+5YCI3Ma2ojogyPhh6CWq/tnJhIbmlQ=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1739865244;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=d7bHl0ooLxFSzjEUZAaPsWHsj5Dt6Ubf1dAYLGBp6pQ=;
+	b=5g5XYrVZagb7mg9gJiByPE5IU70wlyqEirYOjDaQqamW7rkm5QbeURmiHU+wfAG3eXecAJ
+	CjcMdlC6zmGgL4BQ==
+Date: Tue, 18 Feb 2025 08:54:03 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Vitaly Chikunov <vt@altlinux.org>,
+	Abhishek Dubey <dubeyabhishek777@gmail.com>,
+	Yonghong Song <yonghong.song@linux.dev>
+Subject: Re: [PATCH 1/1] powerpc: use __clang__ instead of CONFIG_CC_IS_CLANG
+Message-ID: <Z7Q8m4131_7K44qn@kitsune.suse.cz>
+References: <20250218044802.17302-1-shung-hsi.yu@suse.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,174 +103,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH v2 0/3] sched/fair: introduce new scheduler group type
- group_parked
-To: Tobias Huschle <huschle@linux.ibm.com>, linux-kernel@vger.kernel.org
-Cc: mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
-        vschneid@redhat.com, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org
-References: <20250217113252.21796-1-huschle@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20250217113252.21796-1-huschle@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: Swk8pcBcXOq8yXLxc2f4gxkz7F_GouNO
-X-Proofpoint-GUID: Lka8UfRi4Fvf0hl-0fYnSZi1AmeqmgsS
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-18_01,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
- clxscore=1015 lowpriorityscore=0 phishscore=0 priorityscore=1501
- spamscore=0 adultscore=0 impostorscore=0 bulkscore=0 malwarescore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502180039
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218044802.17302-1-shung-hsi.yu@suse.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-8.30 / 50.00];
+	REPLY(-4.00)[];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	RCVD_COUNT_ZERO(0.00)[0];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	MISSING_XM_UA(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[lists.ozlabs.org,vger.kernel.org,ellerman.id.au,linux.ibm.com,gmail.com,csgroup.eu,kernel.org,google.com,kernel.crashing.org,altlinux.org,linux.dev];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,kitsune.suse.cz:helo,kitsune.suse.cz:mid]
+X-Spam-Score: -8.30
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hello,
 
+how does this happen?
 
-On 2/17/25 17:02, Tobias Huschle wrote:
-> Changes to v1
+On Tue, Feb 18, 2025 at 12:48:01PM +0800, Shung-Hsi Yu wrote:
+> Due to include chain (below), powerpc's asm-compat.h is part of UAPI,
+> thus it should use the __clang__ macro to directly detect whether Clang
+> is used rather then relying on the kernel config setting. The later is
+> unreliable because the userspace tools that uses UAPI may be compile
+> with a different compiler than the one used for the kernel, leading to
+> incorrect constrain selection (see link for an example of such).
 > 
-> parked vs idle
-> - parked CPUs are now never considered to be idle
-> - a scheduler group is now considered parked iff there are parked CPUs
->    and there are no idle CPUs, i.e. all non parked CPUs are busy or there
->    are only parked CPUs. A scheduler group with parked tasks can be
->    considered to not be parked, if it has idle CPUs which can pick up
->    the parked tasks.
-> - idle_cpu_without always returns that the CPU will not be idle if the
->    CPU is parked
-> 
-> active balance, no_hz, queuing
-> - should_we_balance always returns true if a scheduler groups contains
->    a parked CPU and that CPU has a running task
-> - stopping the tick on parked CPUs is now prevented in sched_can_stop_tick
->    if a task is running
-> - tasks are being prevented to be queued on parked CPUs in ttwu_queue_cond
-> 
-> cleanup
-> - removed duplicate checks for parked CPUs
-> 
-> CPU capacity
-> - added a patch which removes parked cpus and their capacity from
->    scheduler statistics
-> 
-> 
-> Original description:
-> 
-> Adding a new scheduler group type which allows to remove all tasks
-> from certain CPUs through load balancing can help in scenarios where
-> such CPUs are currently unfavorable to use, for example in a
-> virtualized environment.
-> 
-> Functionally, this works as intended. The question would be, if this
-> could be considered to be added and would be worth going forward
-> with. If so, which areas would need additional attention?
-> Some cases are referenced below.
-> 
-> The underlying concept and the approach of adding a new scheduler
-> group type were presented in the Sched MC of the 2024 LPC.
-> A short summary:
-> 
-> Some architectures (e.g. s390) provide virtualization on a firmware
-> level. This implies, that Linux kernels running on such architectures
-> run on virtualized CPUs.
-> 
-> Like in other virtualized environments, the CPUs are most likely shared
-> with other guests on the hardware level. This implies, that Linux
-> kernels running in such an environment may encounter 'steal time'. In
-> other words, instead of being able to use all available time on a
-> physical CPU, some of said available time is 'stolen' by other guests.
-> 
-> This can cause side effects if a guest is interrupted at an unfavorable
-> point in time or if the guest is waiting for one of its other virtual
-> CPUs to perform certain actions while those are suspended in favour of
-> another guest.
-> 
-> Architectures, like arch/s390, address this issue by providing an
-> alternative classification for the CPUs seen by the Linux kernel.
-> 
-> The following example is arch/s390 specific:
-> In the default mode (horizontal CPU polarization), all CPUs are treated
-> equally and can be subject to steal time equally.
-> In the alternate mode (vertical CPU polarization), the underlying
-> firmware hypervisor assigns the CPUs, visible to the guest, different
-> types, depending on how many CPUs the guest is entitled to use. Said
-> entitlement is configured by assigning weights to all active guests.
-> The three CPU types are:
->      - vertical high   : On these CPUs, the guest has always highest
->                          priority over other guests. This means
->                          especially that if the guest executes tasks on
->                          these CPUs, it will encounter no steal time.
->      - vertical medium : These CPUs are meant to cover fractions of
->                          entitlement.
->      - vertical low    : These CPUs will have no priority when being
->                          scheduled. This implies especially, that while
->                          all other guests are using their full
->                          entitlement, these CPUs might not be ran for a
->                          significant amount of time.
-> 
-> As a consequence, using vertical lows while the underlying hypervisor
-> experiences a high load, driven by all defined guests, is to be avoided.
-> 
-> In order to consequently move tasks off of vertical lows, introduce a
-> new type of scheduler groups: group_parked.
-> Parked implies, that processes should be evacuated as fast as possible
-> from these CPUs. This implies that other CPUs should start pulling tasks
-> immediately, while the parked CPUs should refuse to pull any tasks
-> themselves.
-> Adding a group type beyond group_overloaded achieves the expected
-> behavior. By making its selection architecture dependent, it has
-> no effect on architectures which will not make use of that group type.
-> 
-> This approach works very well for many kinds of workloads. Tasks are
-> getting migrated back and forth in line with changing the parked
-> state of the involved CPUs.
-> 
-> There are a couple of issues and corner cases which need further
-> considerations:
-> - rt & dl:      Realtime and deadline scheduling require some additional
->                  attention.
+>   include/uapi/linux/ptrace.h
+>   arch/powerpc/include/asm/ptrace.h
 
-I think we need to address atleast rt, there would be some non percpu 
-kworker threads which need to move out of parked cpus.
+There is arch/powerpc/include/uapi/asm/ptrace.h
 
-> - ext:          Probably affected as well. Needs some conceptional
->                  thoughts first.
-> - raciness:     Right now, there are no synchronization efforts. It needs
->                  to be considered whether those might be necessary or if
->                  it is alright that the parked-state of a CPU might change
->                  during load-balancing.
-> 
-> Patches apply to tip:sched/core
-> 
-> The s390 patch serves as a simplified implementation example.
+and if the installed header is used this is what should be included.
 
+That does no include other asm headers.
 
-Gave it a try on powerpc with the debugfs file. it works for 
-sched_normal tasks.
+Thanks
 
-> 
-> Tobias Huschle (3):
->    sched/fair: introduce new scheduler group type group_parked
->    sched/fair: adapt scheduler group weight and capacity for parked CPUs
->    s390/topology: Add initial implementation for selection of parked CPUs
-> 
->   arch/s390/include/asm/smp.h    |   2 +
->   arch/s390/kernel/smp.c         |   5 ++
->   include/linux/sched/topology.h |  19 ++++++
->   kernel/sched/core.c            |  13 ++++-
->   kernel/sched/fair.c            | 104 ++++++++++++++++++++++++++++-----
->   kernel/sched/syscalls.c        |   3 +
->   6 files changed, 130 insertions(+), 16 deletions(-)
-> 
+Michal
 
+>   arch/powerpc/include/asm/paca.h
+>   arch/powerpc/include/asm/atomic.h
+>   arch/powerpc/include/asm/asm-compat.h
+> 
+> Link: https://github.com/iovisor/bcc/issues/5172
+> Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+> ---
+>  arch/powerpc/include/asm/asm-compat.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/asm-compat.h b/arch/powerpc/include/asm/asm-compat.h
+> index f48e644900a2..34f8740909a9 100644
+> --- a/arch/powerpc/include/asm/asm-compat.h
+> +++ b/arch/powerpc/include/asm/asm-compat.h
+> @@ -37,7 +37,7 @@
+>  #define STDX_BE	stringify_in_c(stdbrx)
+>  #endif
+>  
+> -#ifdef CONFIG_CC_IS_CLANG
+> +#ifdef __clang__
+>  #define DS_FORM_CONSTRAINT "Z<>"
+>  #else
+>  #define DS_FORM_CONSTRAINT "YZ<>"
+> -- 
+> 2.48.1
+> 
 
