@@ -1,67 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-6325-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6330-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5980BA3A51B
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 19:17:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FBFBA3AA47
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 22:00:51 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yy76n1b6Qz2yjb;
-	Wed, 19 Feb 2025 05:17:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YyBkn2M3fz2xmZ;
+	Wed, 19 Feb 2025 08:00:49 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::64a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739902673;
-	cv=none; b=knnpUueNwHjUgixkv1Nxr45yNkd9IxZrINAeP4g7fvn4/W7Z70h5Op3MDrd14PeO6WXW+q+N3Q0K8HjFeyw3w3vHScaVfq2ythxgZn7FwYP+lyDITeAJAaY6ZHtI/98PuPssAM/jQFB+EdsN02gmlVJNa/QybnSvbCX1l13lpz/PFYxXA3l71zbi5ATz4uRC4uW+vVPl21Rt++Ul3lfpqHY6g2OzEWofg7yqyphZY4w7cd1cv4jP53tf3c9uJZScM02qxyBjyW/XuTqirUQeay+K7sRkyayGudVHSF4ZvbSlHZJOz2o91IQ+8rL11OhrnV0uDrIqGhHqrKuywyaU3Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739889614;
+	cv=none; b=LAYdNUNjhuMJJNVsIG5oAQcAhtu8IB9it+A+6baCsYF/8Exk/lcybj+arByuhP6xHztD0mAM2gkfnsI+LmaQtEn88xG4KOyN/J75hGKdZaUiHeE/c5BCjGN/sAF83gvE1i5Y31vgFu1NzxTizgBe4oeNkGzxPG6Ne+LcoRikgYZ6OsdTKoDZBYl96gMvHY5syEuPAaV7nusIrN7ZzlQbUNatbUpPqUTjWCT5ifjmeZXaY2WMZZZVVgImPTPEzVrD6pN0AUmhgZSb0+RkbLWsLgmt6WO8dDoqj+KcwxV6qFbX1F/LBlp6I7aRNjSlYZlgkwntHax2ESSA2/7LbVlmWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739902673; c=relaxed/relaxed;
-	bh=RAaWg9KYrhZaw2brRcaZF018Jxd4YVbeijwcOr2BboU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EWuISsXtpJiorgMNJq1h7v4d2+Y5Zue7RZhqr1ZfEj1s5WM8+BCvcqD5I3Nqc1pKFHYTsFe6UkwXhkAAa24okRKoDeABQOpTIkQpGQqxSZaqQIfsOLLJC9CJ70phkK2YnzHOdHLSJxZd+mMvNIuULOGRyHSfW8pEFMFte6vXZdZfYgb7Iq1YqFgkZ2onN/Nl/nWWM50pzv6jIJcMXFu5UnIe1UYAxrsSGdC0p/Bes8lBKWnICe42Uvq8YaLpDLYHFBczZ6W75NCeUzfAR4sCTwANFIJ13rvMpkpL82o8xc0ZV6eP9pFgiQrB6S32yltK4jKDkj+Pu+Xc0/7JpQ6GoQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=S8XzPIVs; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3y860zwqkdiajzhpksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--fvdl.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--fvdl.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1739889614; c=relaxed/relaxed;
+	bh=1vEbQVEvY33MQ8JZYlhhCrcWVIZrhpGKv0i/epMiBoE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jt5Q5+vA1k3HQ4ijQrkj7tW5oJE+SejAtmX9Pxan4vmBg8pl6ni5gah0G8wWfaoQQvmygNjyWKzGbrnthUiAKv5/dFKuCIm0lkKlDzPfcDs6ixMHo1Hp+pOPPlRmWj4qeocSxT6m63Lp4S9yIcYJge6X3SZeqqzG4S2DV3xv+J9Y32OZpNIusbBbmy32lDak/b6x49VFPcm+ChE8rwjUwQCKqZgtwd0238lTtJ6nCtNBoT2A9ikygFxkT4wiFo+baFdyRrU0dKYUzLBAxDQtlqfKLTYvWCKF3kekm339RtuWs5WxmyXRZ4YDjPknfyHxY8SXQ4snAgW7H9G4nYDwdQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aOjZYJi/; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=hawk@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=S8XzPIVs;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aOjZYJi/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--fvdl.bounces.google.com (client-ip=2607:f8b0:4864:20::64a; helo=mail-pl1-x64a.google.com; envelope-from=3y860zwqkdiajzhpksskpi.gsqpmry1ttg-hizpmwxw.s3pefw.svk@flex--fvdl.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x64a.google.com (mail-pl1-x64a.google.com [IPv6:2607:f8b0:4864:20::64a])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=hawk@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yy76l6hTWz2yhD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 05:17:51 +1100 (AEDT)
-Received: by mail-pl1-x64a.google.com with SMTP id d9443c01a7336-22126a488d7so56756165ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 10:17:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1739902668; x=1740507468; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAaWg9KYrhZaw2brRcaZF018Jxd4YVbeijwcOr2BboU=;
-        b=S8XzPIVstmUtAWQVsizcUqBd5hj5VaPvG1qrGPWihNOYknzEt04uOlradgAuN4TLJ9
-         nl6YqL7WMRXKFPTCchTjk/FUj+Ym2bTiffHtFSdgF6eXIDio/dnx6agRkoI3GUCwYtK1
-         HCG2VykT4VLZtgyGO/maGBCGbJaneynK+ox1rqAoCbZg68vHypeUq/r+oK/2KuDiJrzF
-         SCTqbPo3+mQbOh3OwWTa/UdI4/ohZVCtUf10x99h6sZQ4keA/aijtdfkd26ONzSevMZh
-         2Gd8RMuZyE5aU0IddbmWzBjIjyxou2YyxxCXojEiYYsjDe6Znb1EOYsKS7+R5FUJoaOt
-         g7xQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1739902668; x=1740507468;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAaWg9KYrhZaw2brRcaZF018Jxd4YVbeijwcOr2BboU=;
-        b=B4stkKRj+gD0ubluWTvmkcr2kCfubqJ4VblNh2vjOWHm1z7WNTc7tZhbOcWKympVdy
-         m8Md0imlLsg6XO4XeLCa6mhCjhn3t1ZpuA1S9TggkI4T2Jb5o63M5dsA0rCEtIfS6rSa
-         a+7F0rSjoPoqNoPAzNK0KLqdGpJCm3ZiV+qCXSVV2bv8OyMiur/57YiRYhr8giSC1NRt
-         zYso+HLP+Lqq63WaR2dcl7S1yVPsAoguzyANcDvEJ1sCLnioEVKpfFTjm1c+LyX0tCJ6
-         61jsJ4Qh+k2TgqsQlf7o3NPKAR4VODtl5pGpu+3zoAvDStxVG+gxqZwO1qUzmsElq24o
-         SMhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHxmGxeWg2Mf21zDNNchHXe6bNjOInpwVzx0j1u3qLfoMzxQDBbu3wBM7WkcxJ4yWqU7q4CZsgxyvA9ME=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwoGyZOLHCWCDUBmqq/9vk4dPg9ZrUaURs0/W60o2neklVQb03M
-	TDIlJagT8mnr314U4axQkNLlMoKx8YKg/LovRq8anmEHz5Gblannq7/y9q7om0JeVE9o2w==
-X-Google-Smtp-Source: AGHT+IFTowpNXmQaQo2ZlNPe3XcaUbY9NeJGdz1k0h7kWZZVby74hjlLnGRqAtEkQUq9LQ1hBIGCheef
-X-Received: from pfaz25.prod.google.com ([2002:aa7:91d9:0:b0:730:7485:6b59])
- (user=fvdl job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:198c:b0:732:2484:e0ce
- with SMTP id d2e1a72fcca58-732618c1cf1mr20924088b3a.17.1739902667774; Tue, 18
- Feb 2025 10:17:47 -0800 (PST)
-Date: Tue, 18 Feb 2025 18:16:54 +0000
-In-Reply-To: <20250218181656.207178-1-fvdl@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yy2Hd0NmDz2yvs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 01:40:12 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 270535C5F47;
+	Tue, 18 Feb 2025 14:39:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C47C4CEE2;
+	Tue, 18 Feb 2025 14:40:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739889610;
+	bh=93gRKWZ9sWNKKYWRsAOLp1himHRHtqXLZ4xduD7iumM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=aOjZYJi/6jxu4Wz33SZbEiDWRMpgYqj3t0BN62YsObgYRi+v5V9vcmuMdPn000Zmj
+	 CA0qpDJt1s5PD0ZGde96Vi3mcgbXduXyw/UeSCOffLH8RaX1cR6D/zGc7Io8xIth4q
+	 gqC1psROg4g1BA35r/vYrjpUzbUGGvxKS5y74xgOW82Wzjz3h/XwellFHpOglTH8Mu
+	 8FurJJf6AeW2FIOLgCHwmjfGDaxPANXZW7/sM4wvs1QkivBLlcKjKcOiDi+d+w6BcE
+	 la/Yjh5/uLoQz0Z2VK8Geb2DR3SemWh+3x0vQLYr24JuDxpXa0uJBOHKiXYzjuFgbQ
+	 RQpddGOIfMLtw==
+Message-ID: <3e6505a4-ba21-4dd6-8ad2-8e0ef8846fc3@kernel.org>
+Date: Tue, 18 Feb 2025 15:40:05 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,395 +56,202 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250218181656.207178-1-fvdl@google.com>
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250218181656.207178-27-fvdl@google.com>
-Subject: [PATCH v4 26/27] mm/hugetlb: enable bootmem allocation from CMA areas
-From: Frank van der Linden <fvdl@google.com>
-To: akpm@linux-foundation.org, muchun.song@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org
-Cc: yuzhao@google.com, usamaarif642@gmail.com, joao.m.martins@oracle.com, 
-	roman.gushchin@linux.dev, Frank van der Linden <fvdl@google.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc/pseries/iommu: Wait until all TCEs are
+ unmapped before deleting DDW
+To: Gaurav Batra <gbatra@linux.ibm.com>, maddy@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, brking@linux.vnet.ibm.com,
+ mpe@ellerman.id.au, iommu@lists.linux.dev, ilias.apalodimas@linaro.org,
+ Netdev <netdev@vger.kernel.org>, Yunsheng Lin <linyunsheng@huawei.com>,
+ Jakub Kicinski <kuba@kernel.org>, Mina Almasry <almasrymina@google.com>
+References: <20250213171051.63748-1-gbatra@linux.ibm.com>
+Content-Language: en-US
+From: Jesper Dangaard Brouer <hawk@kernel.org>
+In-Reply-To: <20250213171051.63748-1-gbatra@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-If hugetlb_cma_only is enabled, we know that hugetlb pages
-can only be allocated from CMA. Now that there is an interface
-to do early reservations from a CMA area (returning memblock
-memory), it can be used to allocate hugetlb pages from CMA.
+Cc. netdev and Yunsheng Lin
 
-This also allows for doing pre-HVO on these pages (if enabled).
-
-Make sure to initialize the page structures and associated data
-correctly. Create a flag to signal that a hugetlb page has been
-allocated from CMA to make things a little easier.
-
-Some configurations of powerpc have a special hugetlb bootmem
-allocator, so introduce a boolean arch_specific_huge_bootmem_alloc
-that returns true if such an allocator is present. In that case,
-CMA bootmem allocations can't be used, so check that function
-before trying.
-
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Frank van der Linden <fvdl@google.com>
----
- arch/powerpc/include/asm/book3s/64/hugetlb.h |   6 +
- include/linux/hugetlb.h                      |  17 ++
- mm/hugetlb.c                                 | 168 ++++++++++++++-----
- 3 files changed, 152 insertions(+), 39 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/book3s/64/hugetlb.h b/arch/powerpc/include/asm/book3s/64/hugetlb.h
-index f0bba9c5f9c3..bb786694dd26 100644
---- a/arch/powerpc/include/asm/book3s/64/hugetlb.h
-+++ b/arch/powerpc/include/asm/book3s/64/hugetlb.h
-@@ -94,4 +94,10 @@ static inline int check_and_get_huge_psize(int shift)
- 	return mmu_psize;
- }
- 
-+#define arch_has_huge_bootmem_alloc arch_has_huge_bootmem_alloc
-+
-+static inline bool arch_has_huge_bootmem_alloc(void)
-+{
-+	return (firmware_has_feature(FW_FEATURE_LPAR) && !radix_enabled());
-+}
- #endif
-diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-index 2512463bca49..6c6546b54934 100644
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -591,6 +591,7 @@ enum hugetlb_page_flags {
- 	HPG_freed,
- 	HPG_vmemmap_optimized,
- 	HPG_raw_hwp_unreliable,
-+	HPG_cma,
- 	__NR_HPAGEFLAGS,
- };
- 
-@@ -650,6 +651,7 @@ HPAGEFLAG(Temporary, temporary)
- HPAGEFLAG(Freed, freed)
- HPAGEFLAG(VmemmapOptimized, vmemmap_optimized)
- HPAGEFLAG(RawHwpUnreliable, raw_hwp_unreliable)
-+HPAGEFLAG(Cma, cma)
- 
- #ifdef CONFIG_HUGETLB_PAGE
- 
-@@ -678,14 +680,18 @@ struct hstate {
- 	char name[HSTATE_NAME_LEN];
- };
- 
-+struct cma;
-+
- struct huge_bootmem_page {
- 	struct list_head list;
- 	struct hstate *hstate;
- 	unsigned long flags;
-+	struct cma *cma;
- };
- 
- #define HUGE_BOOTMEM_HVO		0x0001
- #define HUGE_BOOTMEM_ZONES_VALID	0x0002
-+#define HUGE_BOOTMEM_CMA		0x0004
- 
- bool hugetlb_bootmem_page_zones_valid(int nid, struct huge_bootmem_page *m);
- 
-@@ -823,6 +829,17 @@ static inline pte_t arch_make_huge_pte(pte_t entry, unsigned int shift,
- }
- #endif
- 
-+#ifndef arch_has_huge_bootmem_alloc
-+/*
-+ * Some architectures do their own bootmem allocation, so they can't use
-+ * early CMA allocation.
-+ */
-+static inline bool arch_has_huge_bootmem_alloc(void)
-+{
-+	return false;
-+}
-+#endif
-+
- static inline struct hstate *folio_hstate(struct folio *folio)
- {
- 	VM_BUG_ON_FOLIO(!folio_test_hugetlb(folio), folio);
-diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-index 0b483c466656..664ccaaa717a 100644
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -131,8 +131,10 @@ static void hugetlb_free_folio(struct folio *folio)
- #ifdef CONFIG_CMA
- 	int nid = folio_nid(folio);
- 
--	if (cma_free_folio(hugetlb_cma[nid], folio))
-+	if (folio_test_hugetlb_cma(folio)) {
-+		WARN_ON_ONCE(!cma_free_folio(hugetlb_cma[nid], folio));
- 		return;
-+	}
- #endif
- 	folio_put(folio);
- }
-@@ -1508,6 +1510,9 @@ static struct folio *alloc_gigantic_folio(struct hstate *h, gfp_t gfp_mask,
- 					break;
- 			}
- 		}
-+
-+		if (folio)
-+			folio_set_hugetlb_cma(folio);
- 	}
- #endif
- 	if (!folio) {
-@@ -3174,6 +3179,86 @@ struct folio *alloc_hugetlb_folio(struct vm_area_struct *vma,
- 	return ERR_PTR(-ENOSPC);
- }
- 
-+static bool __init hugetlb_early_cma(struct hstate *h)
-+{
-+	if (arch_has_huge_bootmem_alloc())
-+		return false;
-+
-+	return (hstate_is_gigantic(h) && hugetlb_cma_only);
-+}
-+
-+static __init void *alloc_bootmem(struct hstate *h, int nid, bool node_exact)
-+{
-+	struct huge_bootmem_page *m;
-+	unsigned long flags;
-+	struct cma *cma;
-+	int listnode = nid;
-+
-+#ifdef CONFIG_CMA
-+	if (hugetlb_early_cma(h)) {
-+		flags = HUGE_BOOTMEM_CMA;
-+		cma = hugetlb_cma[nid];
-+		m = cma_reserve_early(cma, huge_page_size(h));
-+		if (!m) {
-+			int node;
-+
-+			if (node_exact)
-+				return NULL;
-+			for_each_online_node(node) {
-+				cma = hugetlb_cma[node];
-+				if (!cma || node == nid)
-+					continue;
-+				m = cma_reserve_early(cma, huge_page_size(h));
-+				if (m) {
-+					listnode = node;
-+					break;
-+				}
-+			}
-+		}
-+	} else
-+#endif
-+	{
-+		flags = 0;
-+		cma = NULL;
-+		if (node_exact)
-+			m = memblock_alloc_exact_nid_raw(huge_page_size(h),
-+				huge_page_size(h), 0,
-+				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+		else {
-+			m = memblock_alloc_try_nid_raw(huge_page_size(h),
-+				huge_page_size(h), 0,
-+				MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+			/*
-+			 * For pre-HVO to work correctly, pages need to be on
-+			 * the list for the node they were actually allocated
-+			 * from. That node may be different in the case of
-+			 * fallback by memblock_alloc_try_nid_raw. So,
-+			 * extract the actual node first.
-+			 */
-+			if (m)
-+				listnode = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
-+		}
-+	}
-+
-+	if (m) {
-+		/*
-+		 * Use the beginning of the huge page to store the
-+		 * huge_bootmem_page struct (until gather_bootmem
-+		 * puts them into the mem_map).
-+		 *
-+		 * Put them into a private list first because mem_map
-+		 * is not up yet.
-+		 */
-+		INIT_LIST_HEAD(&m->list);
-+		list_add(&m->list, &huge_boot_pages[listnode]);
-+		m->hstate = h;
-+		m->flags = flags;
-+		m->cma = cma;
-+	}
-+
-+	return m;
-+}
-+
- int alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	__attribute__ ((weak, alias("__alloc_bootmem_huge_page")));
- int __alloc_bootmem_huge_page(struct hstate *h, int nid)
-@@ -3183,22 +3268,15 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
- 
- 	/* do node specific alloc */
- 	if (nid != NUMA_NO_NODE) {
--		m = memblock_alloc_exact_nid_raw(huge_page_size(h), huge_page_size(h),
--				0, MEMBLOCK_ALLOC_ACCESSIBLE, nid);
-+		m = alloc_bootmem(h, node, true);
- 		if (!m)
- 			return 0;
- 		goto found;
- 	}
-+
- 	/* allocate from next node when distributing huge pages */
- 	for_each_node_mask_to_alloc(&h->next_nid_to_alloc, nr_nodes, node, &node_states[N_ONLINE]) {
--		m = memblock_alloc_try_nid_raw(
--				huge_page_size(h), huge_page_size(h),
--				0, MEMBLOCK_ALLOC_ACCESSIBLE, node);
--		/*
--		 * Use the beginning of the huge page to store the
--		 * huge_bootmem_page struct (until gather_bootmem
--		 * puts them into the mem_map).
--		 */
-+		m = alloc_bootmem(h, node, false);
- 		if (!m)
- 			return 0;
- 		goto found;
-@@ -3216,21 +3294,6 @@ int __alloc_bootmem_huge_page(struct hstate *h, int nid)
- 	memblock_reserved_mark_noinit(virt_to_phys((void *)m + PAGE_SIZE),
- 		huge_page_size(h) - PAGE_SIZE);
- 
--	/*
--	 * Put them into a private list first because mem_map is not up yet.
--	 *
--	 * For pre-HVO to work correctly, pages need to be on the list for
--	 * the node they were actually allocated from. That node may be
--	 * different in the case of fallback by memblock_alloc_try_nid_raw.
--	 * So, extract the actual node first.
--	 */
--	if (nid == NUMA_NO_NODE)
--		node = early_pfn_to_nid(PHYS_PFN(virt_to_phys(m)));
--
--	INIT_LIST_HEAD(&m->list);
--	list_add(&m->list, &huge_boot_pages[node]);
--	m->hstate = h;
--	m->flags = 0;
- 	return 1;
- }
- 
-@@ -3271,13 +3334,25 @@ static void __init hugetlb_folio_init_vmemmap(struct folio *folio,
- 	prep_compound_head((struct page *)folio, huge_page_order(h));
- }
- 
-+static bool __init hugetlb_bootmem_page_prehvo(struct huge_bootmem_page *m)
-+{
-+	return m->flags & HUGE_BOOTMEM_HVO;
-+}
-+
-+static bool __init hugetlb_bootmem_page_earlycma(struct huge_bootmem_page *m)
-+{
-+	return m->flags & HUGE_BOOTMEM_CMA;
-+}
-+
- /*
-  * memblock-allocated pageblocks might not have the migrate type set
-  * if marked with the 'noinit' flag. Set it to the default (MIGRATE_MOVABLE)
-- * here.
-+ * here, or MIGRATE_CMA if this was a page allocated through an early CMA
-+ * reservation.
-  *
-- * Note that this will not write the page struct, it is ok (and necessary)
-- * to do this on vmemmap optimized folios.
-+ * In case of vmemmap optimized folios, the tail vmemmap pages are mapped
-+ * read-only, but that's ok - for sparse vmemmap this does not write to
-+ * the page structure.
-  */
- static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
- 							  struct hstate *h)
-@@ -3286,9 +3361,13 @@ static void __init hugetlb_bootmem_init_migratetype(struct folio *folio,
- 
- 	WARN_ON_ONCE(!pageblock_aligned(folio_pfn(folio)));
- 
--	for (i = 0; i < nr_pages; i += pageblock_nr_pages)
--		set_pageblock_migratetype(folio_page(folio, i),
-+	for (i = 0; i < nr_pages; i += pageblock_nr_pages) {
-+		if (folio_test_hugetlb_cma(folio))
-+			init_cma_pageblock(folio_page(folio, i));
-+		else
-+			set_pageblock_migratetype(folio_page(folio, i),
- 					  MIGRATE_MOVABLE);
-+	}
- }
- 
- static void __init prep_and_add_bootmem_folios(struct hstate *h,
-@@ -3334,10 +3413,16 @@ bool __init hugetlb_bootmem_page_zones_valid(int nid,
- 		return true;
- 	}
- 
-+	if (hugetlb_bootmem_page_earlycma(m)) {
-+		valid = cma_validate_zones(m->cma);
-+		goto out;
-+	}
-+
- 	start_pfn = virt_to_phys(m) >> PAGE_SHIFT;
- 
- 	valid = !pfn_range_intersects_zones(nid, start_pfn,
- 			pages_per_huge_page(m->hstate));
-+out:
- 	if (!valid)
- 		hstate_boot_nrinvalid[hstate_index(m->hstate)]++;
- 
-@@ -3366,11 +3451,6 @@ static void __init hugetlb_bootmem_free_invalid_page(int nid, struct page *page,
- 	}
- }
- 
--static bool __init hugetlb_bootmem_page_prehvo(struct huge_bootmem_page *m)
--{
--	return (m->flags & HUGE_BOOTMEM_HVO);
--}
--
- /*
-  * Put bootmem huge pages into the standard lists after mem_map is up.
-  * Note: This only applies to gigantic (order > MAX_PAGE_ORDER) pages.
-@@ -3420,14 +3500,21 @@ static void __init gather_bootmem_prealloc_node(unsigned long nid)
- 			 */
- 			folio_set_hugetlb_vmemmap_optimized(folio);
- 
-+		if (hugetlb_bootmem_page_earlycma(m))
-+			folio_set_hugetlb_cma(folio);
-+
- 		list_add(&folio->lru, &folio_list);
- 
- 		/*
- 		 * We need to restore the 'stolen' pages to totalram_pages
- 		 * in order to fix confusing memory reports from free(1) and
- 		 * other side-effects, like CommitLimit going negative.
-+		 *
-+		 * For CMA pages, this is done in init_cma_pageblock
-+		 * (via hugetlb_bootmem_init_migratetype), so skip it here.
- 		 */
--		adjust_managed_page_count(page, pages_per_huge_page(h));
-+		if (!folio_test_hugetlb_cma(folio))
-+			adjust_managed_page_count(page, pages_per_huge_page(h));
- 		cond_resched();
- 	}
- 
-@@ -3612,8 +3699,11 @@ static void __init hugetlb_hstate_alloc_pages(struct hstate *h)
- {
- 	unsigned long allocated;
- 
--	/* skip gigantic hugepages allocation if hugetlb_cma enabled */
--	if (hstate_is_gigantic(h) && hugetlb_cma_size) {
-+	/*
-+	 * Skip gigantic hugepages allocation if early CMA
-+	 * reservations are not available.
-+	 */
-+	if (hstate_is_gigantic(h) && hugetlb_cma_size && !hugetlb_early_cma(h)) {
- 		pr_warn_once("HugeTLB: hugetlb_cma is enabled, skip boot time allocation\n");
- 		return;
- 	}
--- 
-2.48.1.601.g30ceb7b040-goog
-
+On 13/02/2025 18.10, Gaurav Batra wrote:
+> Some of the network drivers, like Mellanox, use core linux page_pool APIs
+> to manage DMA buffers. These page_pool APIs cache DMA buffers with
+> infrequent map/unmap calls for DMA mappings, thus increasing performance.
+> 
+> When a device is initialized, the drivers makes a call to the page_pool API
+> to create a DMA buffer pool. Hence forth DMA buffers are allocated and
+> freed from this pool by the driver. The DMA map/unmap is done by the core
+> page_pool infrastructure.
+> 
+> These DMA buffers could be allocated for RX/TX buffer rings for the device
+> or could be in-process by the network stack.
+> 
+> When a network device is closed, driver will release all DMA mapped
+> buffers. All the DMA buffers allocated to the RX/TX rings are released back
+> to the page_pool by the driver. Some of the DMA mapped buffers could still
+> be allocated and in-process by the network stack.
+> 
+> DMA buffers that are relased by the Network driver are synchronously
+> unmapped by the page_pool APIs. But, DMA buffers that are passed to the
+> network stack and still in-process are unmapped later asynchronously by the
+> page_pool infrastructure.
+> 
+> This asynchronous unmapping of the DMA buffers, by the page_pool, can lead
+> to issues when a network device is dynamically removed in PowerPC
+> architecture.  When a network device is DLPAR removed, the driver releases
+> all the mapped DMA buffers and stops using the device. Driver returns
+> successfully. But, at this stage there still could be mapped DMA buffers
+> which are in-process by the network stack.
+> 
+> DLPAR code proceeds to remove the device from the device tree, deletes
+> Dynamic DMA Window (DDW) and associated IOMMU tables. DLPAR of the device
+> succeeds.
+> 
+> Later, when network stack release some of the DMA buffers, page_pool
+> proceeds to unmap them. The page_pool relase path calls into PowerPC TCE
+> management to release the TCE. This is where the LPAR OOPses since the DDW
+> and associated resources for the device are already free'ed.
+> 
+> This issue was exposed during (Live Partition Migration) LPM from a Power9
+> to Power10 machine with HNV configuration. The bonding device is Virtual
+> Ethernet with SR-IOV. During LPM, I/O is switched from SR-IOV to passive
+> Virtual Ethernet and DLPAR remove of SR-IOV is initiated. This lead to the
+> above mentioned scenario.
+> 
+> It is possible to hit this issue by just Dynamically removing SR-IOV device
+> which is under heavy I/O load, a scenario where some of the mapped DMA
+> buffers are in-process somewhere in the network stack and not mapped to the
+> RX/TX ring of the device.
+> 
+> The issue is only encountered when TCEs are dynamically managed. In this
+> scenario map/unmap of TCEs goes into the PowerPC TCE management path as and
+> when DMA bufffers are mapped/unmaped and accesses DDW resources. When RAM
+> is directly mapped during device initialization, this dynamic TCE
+> management is by-passed and LPAR doesn't OOPses.
+> 
+> Solution:
+> 
+> During DLPAR remove of the device, before deleting the DDW and associated
+> resources, check to see if there are any outstanding TCEs. If there are
+> outstanding TCEs, sleep for 50ms and check again, until all the TCEs are
+> unmapped.
+> 
+> Once all the TCEs are unmapped, DDW is removed and DLPAR succeeds. This
+> ensures there will be no reference to the DDW after it is deleted.
+> 
+> Here is the stack for reference
+> 
+> [ 3610.403820] tce_freemulti_pSeriesLP: 48 callbacks suppressed
+> [ 3610.403833] tce_freemulti_pSeriesLP: plpar_tce_stuff failed
+> [ 3610.403869]  rc      = -4
+> [ 3610.403872]  index   = 0x70000016
+> [ 3610.403876]  limit     = 0x1
+> [ 3610.403879]  tce       = 0x80000061ee00000
+> [ 3610.403882]  pgshift = 0x10
+> [ 3610.403884]  npages  = 0x1
+> [ 3610.403887]  tbl     = 000000003a6a2145
+> [ 3610.403912] CPU: 86 PID: 97129 Comm: kworker/86:2 Kdump: loaded Tainted: G            E        6.4.0-623164-default #1 SLE15-SP6 763d454e096eda7d91355fd5b171013052d83ed3
+> [ 3610.403928] Hardware name: IBM,9080-M9S POWER9 (raw) 0x4e2101 0xf000005 of:IBM,FW950.80 (VH950_131) hv:phyp pSeries
+> [ 3610.403937] Workqueue: events page_pool_release_retry
+> [ 3610.404003] Call Trace:
+> [ 3610.404006] [c000055034e6bb30] [c000000000f63108] dump_stack_lvl+0x6c/0x9c (unreliable)
+> [ 3610.404039] [c000055034e6bb60] [c000000000101258] tce_freemulti_pSeriesLP+0x1e8/0x1f0
+> [ 3610.404070] [c000055034e6bbf0] [c00000000005d248] __iommu_free+0x118/0x220
+> [ 3610.404086] [c000055034e6bc80] [c00000000005d4e8] iommu_free+0x28/0x70
+> [ 3610.404106] [c000055034e6bcb0] [c00000000005c4b4] dma_iommu_unmap_page+0x24/0x40
+> [ 3610.404113] [c000055034e6bcd0] [c00000000024b56c] dma_unmap_page_attrs+0x1ac/0x1e0
+> [ 3610.404139] [c000055034e6bd30] [c000000000cfa178] page_pool_return_page+0x58/0x1b0
+> [ 3610.404146] [c000055034e6bd60] [c000000000cfb7bc] page_pool_release+0x10c/0x270^
+> [ 3610.404152] [c000055034e6be00] [c000000000cfbb2c] page_pool_release_retry+0x2c/0x110
+> [ 3610.404159] [c000055034e6be70] [c00000000018e294] process_one_work+0x314/0x620
+> [ 3610.404173] [c000055034e6bf10] [c00000000018ee88] worker_thread+0x78/0x620
+> [ 3610.404179] [c000055034e6bf90] [c00000000019b958] kthread+0x148/0x150
+> [ 3610.404188] [c000055034e6bfe0] [c00000000000ded8] start_kernel_thread+0x14/0x18
+> 
+> Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+> ---
+>   arch/powerpc/kernel/iommu.c            | 22 ++++++++++++++++++++--
+>   arch/powerpc/platforms/pseries/iommu.c |  8 ++++----
+>   2 files changed, 24 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/iommu.c b/arch/powerpc/kernel/iommu.c
+> index 76381e14e800..af7511a8f480 100644
+> --- a/arch/powerpc/kernel/iommu.c
+> +++ b/arch/powerpc/kernel/iommu.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/types.h>
+>   #include <linux/slab.h>
+>   #include <linux/mm.h>
+> +#include <linux/delay.h>
+>   #include <linux/spinlock.h>
+>   #include <linux/string.h>
+>   #include <linux/dma-mapping.h>
+> @@ -803,6 +804,7 @@ bool iommu_table_in_use(struct iommu_table *tbl)
+>   static void iommu_table_free(struct kref *kref)
+>   {
+>   	struct iommu_table *tbl;
+> +	unsigned long start_time;
+>   
+>   	tbl = container_of(kref, struct iommu_table, it_kref);
+>   
+> @@ -817,8 +819,24 @@ static void iommu_table_free(struct kref *kref)
+>   	iommu_debugfs_del(tbl);
+>   
+>   	/* verify that table contains no entries */
+> -	if (iommu_table_in_use(tbl))
+> -		pr_warn("%s: Unexpected TCEs\n", __func__);
+> +	start_time = jiffies;
+> +	while (iommu_table_in_use(tbl)) {
+> +		int sec;
+> +
+> +		pr_info("%s: Unexpected TCEs, wait for 50ms\n", __func__);
+> +		msleep(50);
+> +
+> +		/* Come out of the loop if we have already waited for 120 seconds
+> +		 * for the TCEs to be free'ed. TCE are being free'ed
+> +		 * asynchronously by some DMA buffer management API - like
+> +		 * page_pool.
+> +		 */
+> +		sec = (s32)((u32)jiffies - (u32)start_time) / HZ;
+> +		if (sec >= 120) {
+> +			pr_warn("%s: TCEs still mapped even after 120 seconds\n", __func__);
+> +			break;
+> +		}
+> +	}
+>   
+>   	/* free bitmap */
+>   	vfree(tbl->it_map);
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 534cd159e9ab..925494b6fafb 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -2390,6 +2390,10 @@ static int iommu_reconfig_notifier(struct notifier_block *nb, unsigned long acti
+>   
+>   	switch (action) {
+>   	case OF_RECONFIG_DETACH_NODE:
+> +		if (pci && pci->table_group)
+> +			iommu_pseries_free_group(pci->table_group,
+> +					np->full_name);
+> +
+>   		/*
+>   		 * Removing the property will invoke the reconfig
+>   		 * notifier again, which causes dead-lock on the
+> @@ -2400,10 +2404,6 @@ static int iommu_reconfig_notifier(struct notifier_block *nb, unsigned long acti
+>   		if (remove_dma_window_named(np, false, DIRECT64_PROPNAME, true))
+>   			remove_dma_window_named(np, false, DMA64_PROPNAME, true);
+>   
+> -		if (pci && pci->table_group)
+> -			iommu_pseries_free_group(pci->table_group,
+> -					np->full_name);
+> -
+>   		spin_lock(&dma_win_list_lock);
+>   		list_for_each_entry(window, &dma_win_list, list) {
+>   			if (window->device == np) {
+> 
+> base-commit: 6e4436539ae182dc86d57d13849862bcafaa4709
 
