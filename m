@@ -1,97 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6318-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6324-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07A6A39E55
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 15:11:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 829DDA3A278
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 17:20:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yy1f432xYz304s;
-	Wed, 19 Feb 2025 01:11:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yy4WV68MMz305S;
+	Wed, 19 Feb 2025 03:20:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739887868;
-	cv=none; b=B2yIMXv9Xudr6bD523GICFMRgGeY1ODRZO1pajx1rjTAMoKWp5GFwQlhmayJO5rK9Cv9qU+pTYWbEyIo/22stmYX/0CMErtDuiv4cFe7NKQdV75Jm70X2L30ZN7ebJkomp+9McYlTydySV6nzft+gBJUEQUn9B42Pm5qiFT7jW1NcQYpg0VvsAgDHkssBLTUYW8gbIDJVD6rpvS6qw9NsmRjhAb6Of5BM1LgmzuD7r5u8T3xkadk+V29TjCbLq2RmXxl+aKM/Nz1OOmeegICgPbdMMBX86WLbkM9mW/nKlMhSCgqRlQqPiqMaXY+cvwxJ5yEXwFu9BqgDg6VzmRAag==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739895638;
+	cv=none; b=ofq5D5LsuzDGApl0eBiMr4l0NDpFc6cM/hvOzu/XvSqhYXBONzmgenOiV95kQ1ssKKXwFHHUJy+e7C78DUgsvwhNp8vu5Vuy3KnGWOqyVg/54FTDJyFhN/zxKWakywC+buoUtwtxeDhbCCD/VBumKt8py+vFqqDiMfTe57QjNnrHt58FCj7oGRY4PbxncabtPUAA3dqyAtt4m1UNLRt68pePihAtM1FLpfdUqOBw7sqvqHOTZbz6qqsD9lPMrTD0DeAhEYfgVOZxmAvgXaYDCn7auKb2kB/gAOp07OROCO7pEtIVNzwA29qCCVborSHifrWsKbSMOchY3p+zGM60Bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739887868; c=relaxed/relaxed;
-	bh=x9KAvFKzoCjfbssZ2GysCMFj7HXNV5bEADEv9sZWwHY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K34wgC+bd0eJO4IO9zuYv3Q2HN+tQ9hWipM3RxKt6uEcfVOMsKmlrzNbdS4n3xrHJM84a0uR2ZbZPyUMOENt32RElrDVShLPBzYXjmL1wJk4Sy0ya01FlxdU/qLbLcvt4sccjiYoU7uOrSBVmdXGQpmxXqV2fNTMaBk0fR7Hrm05POfj1B0ky4VpDGibNQBTM289MoC9i1tB5A2AZTjxsyLXsZd5NI2+5z5AUwjZ8xY9Eo4VepbpLkWH8rt2F/ppGeuCPKtSdA7wXTRPjA2YCQJMqnUvFZfPDWxKxrw6EdwrpDVTp4NB+Y4AgAfID7p/mB7FOV+t5I82C39gmrdDJg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XNlZveZW; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1739895638; c=relaxed/relaxed;
+	bh=PuNEgfrlM/gT6Dlk5ijFDMfGLfFnWNWypU33Y24JHlk=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=WVPxmxYf015PXlP8hUNxWyzXg80hpwKimMpyRrwH3pwfmt3cFwX6ay71oeVMi+Brz2GKz+prEhmhbFa5NB1P+xdk6vAB/4+GKCN8YKcFvTXZMB4WAqcvUniwTshSjtll7BTFoB1nNURW39BnYgXQks3ce+5bJt1hA5DcEAice0V02fQQ8YKTf3sC5u2qAS1yi8Z0ucQ6mL5OoeDya1dkAZfvd74BMc4JxuXIBELs6VI2SpLiGt42BIR7j2uUvyWq1NF8K2COgFBbrJjIHtSx1JHr5PidRhbtqPKG+U/6bnMSyHDe/NW8rTRVULXXiG7tfqoy2cO6Y6a4NZzbH76wUQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AeZnAlWC; dkim-atps=neutral; spf=pass (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=XNlZveZW;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=AeZnAlWC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yy1f14vp4z2ytT
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 01:11:05 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51I7XE6j009948;
-	Tue, 18 Feb 2025 14:10:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=x9KAvFKzoCjfbssZ2GysCMFj7HXNV5
-	bEADEv9sZWwHY=; b=XNlZveZW32fHmU0ddBApqaOqtFZDf8IR5z1DqsQMtRfphg
-	K0jhbKsEILXQlkcPwIpAf+unobXxVF3cj2sTKBs9s/B/HemVTZFF+putk7q6bqc5
-	o5lsLhZGssUvXwE3a6UJi5vawuJvEPE32taooF1BG5F1QwYASgOmt8UT7MktwcIT
-	wsYqI21auwNMpwsx2oLhQovtRSaDTOYaAyxPBNmFuvy3U6BtRKybPIfZw0yheq9/
-	BkmX9VFCKPz6TE0IcJ2rjptMpaJFjvoDHePTYkinN8PKfSwmuVAzVfGt6f0RCk2p
-	Ar2DReYsVvuBPU+vOwUTCYDvOn/16XkDsjW18ALw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vnwphur2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 14:10:51 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51IE2GbP014750;
-	Tue, 18 Feb 2025 14:10:50 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44vnwphuqt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 14:10:50 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51ID5E57008155;
-	Tue, 18 Feb 2025 14:10:50 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44u58tkqbr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Feb 2025 14:10:49 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51IEAkZ719792266
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Feb 2025 14:10:46 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5A2A72004B;
-	Tue, 18 Feb 2025 14:10:46 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 411CE20043;
-	Tue, 18 Feb 2025 14:10:43 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com (unknown [9.124.223.231])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 18 Feb 2025 14:10:43 +0000 (GMT)
-Date: Tue, 18 Feb 2025 19:40:38 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM
- guests
-Message-ID: <20250218193759.261b658a-40-amachhiw@linux.ibm.com>
-Mail-Followup-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Shivaprasad G Bhat <sbhat@linux.ibm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20250129094033.2265211-1-amachhiw@linux.ibm.com>
- <8734gdqky4.fsf@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yy4WS4B1Zz2yh2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 03:20:34 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1739895636; x=1771431636;
+  h=date:from:to:cc:subject:message-id;
+  bh=usDIvTraO2QgWAuurg4XaFy8qCBRhrJoi6aIKiIATBI=;
+  b=AeZnAlWCvvJM722NL5WYkqBdexbRXb95x866Oy5XypjVNIdIpaiPNU9C
+   vQ9H+jQZNGKtUPYqoXht7Jv2nnWfrs/NVUbaMC62G5UKdaOYB9FVqJKiG
+   x2hB74q4HrzMrMtRJxjUhRzSpC/A5kwQaAIdC1OVBjBoqGuXSiWEMyGZ4
+   xUqOlOSasRw4QZMsstjmKGvxZm47rbM6mVfOnnBceTg/OU6jMFUxLMbrl
+   pTL5Q+Lcuo436YFG2m4aozdCDptsk1atnv4HMb2NpUSv2y7XqkY799ETA
+   TB7zdXjL+ZxYU+jnbq4RXTR45Dj88w0vSibv6XD8BB+Uy+VQpIrBWa5Qt
+   g==;
+X-CSE-ConnectionGUID: 9YDx6/toSwqR5mqnMysL2Q==
+X-CSE-MsgGUID: 9n7wcifmQnKXLTbJBoX36Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11348"; a="50813172"
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
+   d="scan'208";a="50813172"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Feb 2025 08:20:31 -0800
+X-CSE-ConnectionGUID: hbaJHkIVQyCMUADPd8+Ngw==
+X-CSE-MsgGUID: qb+ldK8gS0iLKC/5By6i3Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,296,1732608000"; 
+   d="scan'208";a="114175695"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa009.jf.intel.com with ESMTP; 18 Feb 2025 08:20:30 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tkQKh-0000ht-1i;
+	Tue, 18 Feb 2025 16:20:27 +0000
+Date: Wed, 19 Feb 2025 00:20:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ 956c5a532ca99463143d340261c0046bbe359e75
+Message-ID: <202502190002.90PRKIJ7-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -103,133 +79,126 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8734gdqky4.fsf@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 5FtYUAbJXnLQacYSRs_w_gQgikmOfhs4
-X-Proofpoint-ORIG-GUID: RGFuLxK2PqGqaA5i6nsKd9j9s8CwlIjw
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-18_06,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_spam_definite policy=outbound score=100 priorityscore=1501
- spamscore=100 mlxlogscore=-999 impostorscore=0 lowpriorityscore=0
- malwarescore=0 phishscore=0 mlxscore=100 adultscore=0 suspectscore=0
- bulkscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2501170000 definitions=main-2502180106
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Ritesh,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 956c5a532ca99463143d340261c0046bbe359e75  Automatic merge of 'master' into merge (2025-02-17 20:37)
 
-Thanks for reviewing the patch. My response is inline:
+elapsed time: 1446m
 
-On 2025/02/17 09:30 AM, Ritesh Harjani (IBM) wrote:
-> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> 
-> > Currently on book3s-hv, the capability KVM_CAP_SPAPR_TCE_VFIO is only
-> > available for KVM Guests running on PowerNV and not for the KVM guests
-> > running on pSeries hypervisors. This prevents a pSeries L2 guest from
-> > leveraging the in-kernel acceleration for H_PUT_TCE_INDIRECT and
-> > H_STUFF_TCE hcalls that results in slow startup times for large memory
-> > guests.
-> >
-> > Fix this by enabling the CAP_SPAPR_TCE_VFIO on the pSeries hosts as well
-> > for the nested PAPR guests. With the patch, booting an L2 guest with
-> > 128G memory results in an average improvement of 11% in the startup
-> > times.
-> >
-> > Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > ---
-> > Changes since v1:
-> >     * Addressed review comments from Ritesh
-> >     * v1: https://lore.kernel.org/all/20250109132053.158436-1-amachhiw@linux.ibm.com/
-> 
-> Thanks Amit for v2. However we still didn't answer one important
-> question regarding the context / background of this patch asked here [2]
-> 
-> [2]: https://lore.kernel.org/linuxppc-dev/87r059vpmi.fsf@gmail.com/
-> 
-> <copy paste from v1>
->     IIUC it was said here [1] that this capability is not available on
->     pSeries, hence it got removed. Could you please give a background on
->     why this can be enabled now for pSeries? Was there any additional
->     support added for this? 
->     [1]:
->     https://lore.kernel.org/linuxppc-dev/20181214052910.23639-2-sjitindarsingh@gmail.com/
-> 
->     ... Ohh thinking back a little, are you saying that after the patch...
->     f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
->     ...we can bring back this capability for kvm guest running on pseries
->     as well. Because all underlying issues in using VFIO on pseries were
->     fixed. Is this understanding correct? 
-> 
+configs tested: 105
+configs skipped: 2
 
-Yes, your understanding is correct.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-> 
-> Please also update the commit message with the required context of why we can
-> enable this capability now while it was explicitely marked as disabled
-> earlier in [1].
-> 
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    gcc-13.2.0
+arc                   randconfig-001-20250218    gcc-13.2.0
+arc                   randconfig-002-20250218    gcc-13.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-14.2.0
+arm                   randconfig-001-20250218    gcc-14.2.0
+arm                   randconfig-002-20250218    gcc-14.2.0
+arm                   randconfig-003-20250218    gcc-14.2.0
+arm                   randconfig-004-20250218    clang-21
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250218    clang-21
+arm64                 randconfig-002-20250218    clang-21
+arm64                 randconfig-003-20250218    gcc-14.2.0
+arm64                 randconfig-004-20250218    clang-16
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20250218    gcc-14.2.0
+csky                  randconfig-002-20250218    gcc-14.2.0
+hexagon                          allmodconfig    clang-21
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-18
+hexagon               randconfig-001-20250218    clang-17
+hexagon               randconfig-002-20250218    clang-21
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250218    gcc-12
+i386        buildonly-randconfig-002-20250218    gcc-12
+i386        buildonly-randconfig-003-20250218    gcc-12
+i386        buildonly-randconfig-004-20250218    clang-19
+i386        buildonly-randconfig-005-20250218    clang-19
+i386        buildonly-randconfig-006-20250218    gcc-12
+i386                                defconfig    clang-19
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250218    gcc-14.2.0
+loongarch             randconfig-002-20250218    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250218    gcc-14.2.0
+nios2                 randconfig-002-20250218    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                randconfig-001-20250218    gcc-14.2.0
+parisc                randconfig-002-20250218    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-16
+powerpc               randconfig-001-20250218    gcc-14.2.0
+powerpc               randconfig-002-20250218    gcc-14.2.0
+powerpc               randconfig-003-20250218    clang-21
+powerpc64             randconfig-001-20250218    gcc-14.2.0
+powerpc64             randconfig-002-20250218    clang-16
+powerpc64             randconfig-003-20250218    clang-18
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-21
+riscv                 randconfig-001-20250218    gcc-14.2.0
+riscv                 randconfig-002-20250218    clang-21
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                  randconfig-001-20250218    clang-21
+s390                  randconfig-002-20250218    clang-15
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                    randconfig-001-20250218    gcc-14.2.0
+sh                    randconfig-002-20250218    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250218    gcc-14.2.0
+sparc                 randconfig-002-20250218    gcc-14.2.0
+sparc64               randconfig-001-20250218    gcc-14.2.0
+sparc64               randconfig-002-20250218    gcc-14.2.0
+um                               allmodconfig    clang-21
+um                                allnoconfig    clang-18
+um                               allyesconfig    gcc-12
+um                    randconfig-001-20250218    clang-21
+um                    randconfig-002-20250218    gcc-11
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250218    clang-19
+x86_64      buildonly-randconfig-002-20250218    gcc-12
+x86_64      buildonly-randconfig-003-20250218    clang-19
+x86_64      buildonly-randconfig-004-20250218    gcc-12
+x86_64      buildonly-randconfig-005-20250218    clang-19
+x86_64      buildonly-randconfig-006-20250218    clang-19
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250218    gcc-14.2.0
+xtensa                randconfig-002-20250218    gcc-14.2.0
 
-Sure, I'll update the patch description and send a v3 soon.
-
-> But looks good otherwise. With that addressed in the commit message,
-> please feel free to add - 
-> 
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> 
-
-Thanks!
-
-~ Amit
-
-> -ritesh
-> 
-> >
-> >  arch/powerpc/kvm/powerpc.c | 5 +----
-> >  1 file changed, 1 insertion(+), 4 deletions(-)
-> >
-> > diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-> > index ce1d91eed231..a7138eb18d59 100644
-> > --- a/arch/powerpc/kvm/powerpc.c
-> > +++ b/arch/powerpc/kvm/powerpc.c
-> > @@ -543,26 +543,23 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
-> >  		r = !hv_enabled;
-> >  		break;
-> >  #ifdef CONFIG_KVM_MPIC
-> >  	case KVM_CAP_IRQ_MPIC:
-> >  		r = 1;
-> >  		break;
-> >  #endif
-> >
-> >  #ifdef CONFIG_PPC_BOOK3S_64
-> >  	case KVM_CAP_SPAPR_TCE:
-> > +		fallthrough;
-> >  	case KVM_CAP_SPAPR_TCE_64:
-> > -		r = 1;
-> > -		break;
-> >  	case KVM_CAP_SPAPR_TCE_VFIO:
-> > -		r = !!cpu_has_feature(CPU_FTR_HVMODE);
-> > -		break;
-> >  	case KVM_CAP_PPC_RTAS:
-> >  	case KVM_CAP_PPC_FIXUP_HCALL:
-> >  	case KVM_CAP_PPC_ENABLE_HCALL:
-> >  #ifdef CONFIG_KVM_XICS
-> >  	case KVM_CAP_IRQ_XICS:
-> >  #endif
-> >  	case KVM_CAP_PPC_GET_CPU_CHAR:
-> >  		r = 1;
-> >  		break;
-> >  #ifdef CONFIG_KVM_XIVE
-> >
-> > base-commit: 6d61a53dd6f55405ebcaea6ee38d1ab5a8856c2c
-> > -- 
-> > 2.48.1
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
