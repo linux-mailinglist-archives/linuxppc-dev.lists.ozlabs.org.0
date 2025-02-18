@@ -1,74 +1,52 @@
-Return-Path: <linuxppc-dev+bounces-6326-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6327-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A361A3A7DC
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 20:43:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795ACA3A8DA
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 21:27:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yy90t4Jb9z2ysv;
-	Wed, 19 Feb 2025 06:42:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YyB0L6tm4z2ykT;
+	Wed, 19 Feb 2025 07:27:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739907774;
-	cv=none; b=RDVy5Q2RaG9OTQv27J8RiN50cZUSN/j4FgvLvixNcDbJ3iN7gN1Fxd2VNHJ776LTUIVO83h7B+ZGG2GlY5bwOHo8X/RgpPARux8Dti9wsfFWgR0spEBOlMr87Ahr2a/6nX/MkN+ZseSd2bOotYU6w7zeH5dcAopYQkDSX7fB4rsbqmB8WZWBlJayvV8r53CtUvSPDm0yzk78qPkJfI0PO6C64JLMclCna26cUp+s9H06brcsVVflz2aLsJnlmh2fBNv5pDPSUzir8wmXveYY0smEamp95hzSUQh09DXNIQ/EZZe2gedFYLOdWVqS+mIeQeDRIY4LnXkAbjPTVIwdDw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=158.69.130.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739910450;
+	cv=none; b=USVgyjzuxboXiGWvDQq6Ny5yo7UwXs5l1gWQhLNI1VUxNK3+8+mDb/CiMWROa3iWXjqSbYlGrz/od9XlCwdnRcXkSjLpTz/kf+NB6WSdjKs5AFuiwvwIhQo6fE0hIq5G7J8+tsXYESluWWgjBXjMaYxMycUpzzUC5l4hxHkEqJnIEPF8H4kPPGm6sATY452RnNYgHgTZC5p836DVGxhQ/+6trxCA7Fhxqv6QHg0bqWVjyQnLWUh8NhkoybQNdd3FuFcC7iFfUmV3aZKmeBvD+QE0GREPABkoMlwWlPLh6z8lxw9n4HcT6saqSsQsdpWrlU6ZColrKBPTHS4WOG4roA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739907774; c=relaxed/relaxed;
-	bh=l0OefYp6gIJsoBkqWu85YVPRb1yh3g60mRPL0+SvOSs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=alH0IlGzabxAo1dlZDknlr24vDK1RWE5Zs9dwS1/1Dq/VeoLmV3lmK+83BqTjbqthC04EfbWlsQXRzpou1r2zhosydDF3TF1OgENnsOMGY3d2Wz4Mo6OnnRG5eGaylKZHogaI6MwXzVwc6/DOn+baygBP6CFoNc5EBzVuE18KdT8qpvASa7of385Wf8YPUeZNwuoL358F7jn28LVQax10Hv0B/0LC7x6U+HIGvHhFi9kPw3osEcvMejJvHGARm+0HEAeVeCQh94wWHMIqM3dLo4ZYzvIiC7/aI8y/TP855NlsKUGCt4ApcYLHSIXYRYimZxDjyH8exPpew7OZBAsEQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	t=1739910450; c=relaxed/relaxed;
+	bh=5deE5hyg68WB5WdR/ckHbJZNDxaZSHbkdIPpKN/Jf44=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=hkskC+/6XgaWR7GWhdA8UdlgkNLZDG6QonCpqYkCXqNw00DtJ/bDjLPK4cqFLANLyCntZFbK/Fih6FZ5GGcOPwLwYd4SgajeotPsgPA/PsqCyw1f3ts8yoz/clAU1ac3FUlecjYJROqyi5vfLX7DJPCj6HX8rjNbG0VonjoSME3ZrmDwjDRoEpmT5gvzmYgXIp4A4T7H06VO8T/FEoevgZVuYX6Rs1a4zWYi5yNUOvUrq6sTUsh5MXoE7gUy37PBLtwSP7Cy8vfGPcf9KhJLZGSENzXLQXNTCrvPA41OVGEYMT37ilc2QqmirwqilL1jjI1SyyDgZ83odeAg8AGhMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com; dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=XFz2QqZG; dkim-atps=neutral; spf=pass (client-ip=158.69.130.18; helo=smtpout.efficios.com; envelope-from=kstewart@efficios.com; receiver=lists.ozlabs.org) smtp.mailfrom=efficios.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=efficios.com header.i=@efficios.com header.a=rsa-sha256 header.s=smtpout1 header.b=XFz2QqZG;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=efficios.com (client-ip=158.69.130.18; helo=smtpout.efficios.com; envelope-from=kstewart@efficios.com; receiver=lists.ozlabs.org)
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yy90s0pQZz2ygQ
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 06:42:53 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E0790A414A0;
-	Tue, 18 Feb 2025 19:41:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 637C7C4CEE2;
-	Tue, 18 Feb 2025 19:42:44 +0000 (UTC)
-Date: Tue, 18 Feb 2025 19:42:42 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Morse <james.morse@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com, wangkefeng.wang@huawei.com,
-	Guohanjun <guohanjun@huawei.com>
-Subject: Re: [PATCH v13 4/5] arm64: support copy_mc_[user]_highpage()
-Message-ID: <Z7TisqB5qCIF5nYI@arm.com>
-References: <20241209024257.3618492-1-tongtiangen@huawei.com>
- <20241209024257.3618492-5-tongtiangen@huawei.com>
- <Z6zWSXzKctkpyH7-@arm.com>
- <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com>
- <Z698SFVqHjpGeGC0@arm.com>
- <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com>
- <Z7NN5Pa-c5PtIbcF@arm.com>
- <3b181285-2ff3-b77a-867b-725f38ea86d3@huawei.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyB0K2XdRz2yh2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 07:27:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+	s=smtpout1; t=1739910441;
+	bh=YVI5exqhXtTK6AnQzPNoWRQDD3V/AhCHKs/nyX3bdIg=;
+	h=From:Date:Subject:To:Cc:From;
+	b=XFz2QqZGXPNEBUB9cMN1Yi/BFhCh/ELD75YfUtW7mq13eBDBc+NSXT40rme2mIGjW
+	 SP+qAbHTq5/Lr/a6lKdRKxl2xry2ZEOE/YCNqRXBlZPGvs5/nnMgT9/44/plzNLojc
+	 mWdqj/WYxMyW+PxZGEnMTCVGvtObgaHO8wY29NEceOHhubsd0othXg98p1UglBFUJZ
+	 5b+KxgHbkLSszBF9CO34djoKEGtrrNvgp6+Pjpgmml8UV945ZKFw8nxV6mmcOi5Ztz
+	 0G/PnyS44l5q2As9sqRvEKQ8ZBYsbaZP3ny0fEC1StVHl44KvSzTi1qawoIV0nJ5lJ
+	 a9aTDkakeoEAA==
+Received: from smtpout01.internal.efficios.com (96-127-217-162.qc.cable.ebox.net [96.127.217.162])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4YyB091DLFzwhg;
+	Tue, 18 Feb 2025 15:27:21 -0500 (EST)
+Received: from laptop-kstewart.internal.efficios.com (laptop-kstewart.internal.efficios.com [172.16.0.60])
+	by smtpout01.internal.efficios.com (Postfix) with ESMTP id DEA352A4B6;
+	Tue, 18 Feb 2025 15:27:20 -0500 (EST)
+From: Kienan Stewart <kstewart@efficios.com>
+Date: Tue, 18 Feb 2025 15:26:39 -0500
+Subject: [PATCH v2] kbuild: Add missing $(objtree) prefix to powerpc
+ crtsavres.o artifact
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,59 +59,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3b181285-2ff3-b77a-867b-725f38ea86d3@huawei.com>
-X-Spam-Status: No, score=-0.6 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250218-buildfix-extmod-powerpc-v2-1-1e78fcf12b56@efficios.com>
+X-B4-Tracking: v=1; b=H4sIAP7stGcC/4WNTQ6CMBCFr0Jm7Rim5ce48h6GBZSpTCK0aRExh
+ LtbuYDL7+W9720QOQhHuGYbBF4kipsSqFMGZminB6P0iUHlqsxJ1di95NlbWZHXeXQ9evfm4A2
+ 2dVEwaU32oiGtfeDUOsz3JvEgcXbhcxwt9Ev/OxdCwqLMU6mjSlX6xtaKERfPxo3Q7Pv+BYxLi
+ nrBAAAA
+X-Change-ID: 20250127-buildfix-extmod-powerpc-a744e1331f83
+To: Masahiro Yamada <masahiroy@kernel.org>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>
+Cc: linux-build@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org, Nicolas Schier <n.schier@avm.de>, 
+ Kienan Stewart <kstewart@efficios.com>
+X-Mailer: b4 0.14.2
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Feb 18, 2025 at 07:51:10PM +0800, Tong Tiangen wrote:
-> > > > > 在 2025/2/13 1:11, Catalin Marinas 写道:
-> > > > > > On Mon, Dec 09, 2024 at 10:42:56AM +0800, Tong Tiangen wrote:
-> > > > > > > Currently, many scenarios that can tolerate memory errors when copying page
-> > > > > > > have been supported in the kernel[1~5], all of which are implemented by
-> > > > > > > copy_mc_[user]_highpage(). arm64 should also support this mechanism.
-> > > > > > > 
-> > > > > > > Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
-> > > > > > > architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
-> > > > > > > __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
-> > > > > > > 
-> > > > > > > Add new helper copy_mc_page() which provide a page copy implementation with
-> > > > > > > hardware memory error safe. The code logic of copy_mc_page() is the same as
-> > > > > > > copy_page(), the main difference is that the ldp insn of copy_mc_page()
-> > > > > > > contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
-> > > > > > > main logic is extracted to copy_page_template.S. In addition, the fixup of
-> > > > > > > MOPS insn is not considered at present.
-> > > > > > 
-> > > > > > Could we not add the exception table entry permanently but ignore the
-> > > > > > exception table entry if it's not on the do_sea() path? That would save
-> > > > > > some code duplication.
-[...]
-> So we need another way to distinguish the different processing of the
-> same exception type on SEA and non-SEA path.
+In the upstream commit 214c0eea43b2ea66bcd6467ea57e47ce8874191b
+("kbuild: add $(objtree)/ prefix to some in-kernel build artifacts")
+artifacts required for building out-of-tree kernel modules had
+$(objtree) prepended to them to prepare for building in other
+directories.
 
-Distinguishing whether the fault is SEA or non-SEA is already done by
-the exception handling you are adding. What we don't have though is
-information about whether the caller invoked copy_highpage() or
-copy_mc_highpage(). That's where the code duplication comes in handy.
+When building external modules for powerpc,
+arch/powerpc/lib/crtsavres.o is required for certain
+configurations. This artifact is missing the prepended $(objtree).
 
-It's a shame we need to duplicate identical functions just to have
-different addresses to look up in the exception table. We are also short
-of caller saved registers to track this information (e.g. an extra
-argument to those functions that the exception handler interprets).
+Fixes: 13b25489b6f8 ("kbuild: change working directory to external module directory with M=")
+Acked-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nicolas Schier <n.schier@avm.de>
+Tested-by: Nicolas Schier <n.schier@avm.de>
+Signed-off-by: Kienan Stewart <kstewart@efficios.com>
+---
+Changes in v2:
+- Added Review-by/Tested-by/Fixes/Acked-By
+- Removed mention of possible work-around for external modules (while
+the build will pass, `make modules_install` will fail)
+- Link to v1: https://lore.kernel.org/r/20250127-buildfix-extmod-powerpc-v1-1-450012b16263@efficios.com
+---
+ arch/powerpc/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I need to think a bit more, we could in theory get the arm64 memcpy_mc()
-to return an error code depending on what type of fault it got (e.g.
--EHWPOISON for SEA, -EFAULT for non-SEA). copy_mc_highpage() would
-interpret this one and panic if -EFAULT. But we lose some fault details
-we normally get on a faulty access like some of the registers.
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index f3804103c56ccfdb16289468397ccaea71bf721e..9933b98df69d7f7b9aaf33d36155cc61ab4460c7 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -58,7 +58,7 @@ ifeq ($(CONFIG_PPC64)$(CONFIG_LD_IS_BFD),yy)
+ # There is a corresponding test in arch/powerpc/lib/Makefile
+ KBUILD_LDFLAGS_MODULE += --save-restore-funcs
+ else
+-KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
++KBUILD_LDFLAGS_MODULE += $(objtree)/arch/powerpc/lib/crtsavres.o
+ endif
+ 
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
 
-Well, maybe the simples is still to keep the function duplication. I'll
-have another look at the series tomorrow.
+---
+base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+change-id: 20250127-buildfix-extmod-powerpc-a744e1331f83
 
+Best regards,
 -- 
-Catalin
+Kienan Stewart <kstewart@efficios.com>
+
 
