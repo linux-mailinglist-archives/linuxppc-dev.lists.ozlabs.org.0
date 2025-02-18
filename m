@@ -1,145 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-6311-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6312-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15E2EA397C5
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 10:57:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7068EA398A0
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 11:20:49 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yxw1S3wzBz2yyx;
-	Tue, 18 Feb 2025 20:57:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxwXG721lz301v;
+	Tue, 18 Feb 2025 21:20:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2614::60a" arc.chain="microsoft.com:microsoft.com"
-ARC-Seal: i=3; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739872652;
-	cv=pass; b=Yc0ynVZf/wB2T9woEBJC6aOa6mjLd8P3irBX/QPbxmp6VYyyfNMKkNc3kFejAmEhYo1rMJmNhh2V3pft1IogIKG7pEOPaRninDB05X2eSB7DK2oLF9ifBHo2zhKN4yW/P1EKncWKqIZV68onV83wbManZCj+1E+uGAjGbndIcgHZA3cqDce9rICTHpyrD94veRrWjQxv6GXYti08fp1N9eHs9oEbYGjItBgkstne4mmeL6wNdYl+1z8RrCWpDQf0guJ+p3TjVAvJyMRLtxSk4usaacgWjujgL+eMkp4yCoLpbjGYhpCKJedrxQTKeCc8cIjMZRjFteNoWbgM4YStpg==
-ARC-Message-Signature: i=3; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739872652; c=relaxed/relaxed;
-	bh=g66rGXUQGYyuS2Eo+qkj4zV3LVGZaz+edNogDzi9nzo=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LTs4ANCyA6mg9v2qamzge8wpS/QR3Sl9a03TmNpbQ9LqLRpfjaRHlfeqXk1C7cZuPOST6nbzAwoyMg91kW7AWOD8C7mfY9aEBKz4zRa/fUOHTS1PfdUMfu2/yua4lu/BkQ/KPEGLbqKbfWu+OmVsO2oae9BDAHDUXjZ7fPb9WL/2LbqQEaRia7JE1TjOU3Usj0+6fAx5T56kRLIsuOxyN1UA2LpJAz04nlnPowl+rtOWMgr5GI8gPsLeYQKj2T512RyLyYwB5OX/maBm12T1zJUe00EZeaHfYfuI11PKs6jt+IqlrkI9uuOrXyeY34hNt27wVRX0L1DwZKYXxL82wQ==
-ARC-Authentication-Results: i=3; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; dkim=pass (1024-bit key; unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=c/qx+bLN; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=c/qx+bLN; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2614::60a; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739874046;
+	cv=none; b=dnI2B+N6w2UioJUgN7XUYgsGvl0fZkNuKdKjWYkaOB40n2A5cDradERrx62ZS8zPAEfxHjopLVwEe1/rP6ENfPDN6hQzTGHJSTTUdHgVZUXb+U5rduKd94xRu1KOtK3sf93Dl2Af5GgCf94Bq+2K85ftwWpH3vUQxBF8DHKqLUZSwQ5/R/xF6iwpalLzrmSsOChxSIP2jtfY5DGdYlK9iVdk6i+yqrHak+SJxDP//WuVMcNg+0DGWw8k1dWGSbfgnhAIh1Z7fbnqiP0HO/PuXDu51leGo4ejN8NjI/5ubUM1/cm0OghKnibze/ILCUBFB2+857PNS9dVo5NgBcNKGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1739874046; c=relaxed/relaxed;
+	bh=2r5AiMxQjq1sd+o+Rmtsx/P6xrudqQVoFRbDkudClOQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GpZzqbuMWtxxA0V2yRpI94B0zwiW8mMFq2vyOM6A5INp0wTY3QBvmSiTNjWKejk1s966uIg/q+cHZnM8+d4usA5KtGX6+/aPG6Nz229UrHVlB1RVU9GIbkfR6/oyunjtzePA533N8YjjkAD4Yo5yhU7lzzZJnnEZRujvF1DmS88uGv1XdMybHPKEP96hff23aGi5745jcZo8pYrS+GVUzNdqWkBN8u6pz9vRhiJ3oxgE+jXHAWtxtB4DbIAv3R7usMkR3ViypuhtFkJDfX8xKHy07Gn6673/bKH6mQuXmUvlWtzJVm8Rygi+xz0p8VScefSlUi9mviml00jGKGnFDw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=c/qx+bLN;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=c/qx+bLN;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=2a01:111:f403:2614::60a; helo=eur05-db8-obe.outbound.protection.outlook.com; envelope-from=yury.khrustalev@arm.com; receiver=lists.ozlabs.org)
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2060a.outbound.protection.outlook.com [IPv6:2a01:111:f403:2614::60a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yxw1Q0hzJz2yyJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 20:57:28 +1100 (AEDT)
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=C8Ytv4EN3/QEGsqbItqJtgDXSeivX1eJERBQ4zjlloGDwPnHe7vPuzy6lM6ak8b7C/4DgaRHl0NuH/okXEd+R6QnLbviz4vR61kaeRDyPy40l9oi150jWBE7qbZnEN8ef4JilqSDbaXifLfWxaY9DW4f37CNDutxYT7khKi2VgbUE6KjYSZyoVpL8PgMQRgkvlTtrVd9M49+wu2bEeLHJPq9T0DGJllsCL1HQChG09M6XpUmyANvtZyNveiARchCNswMUjmls3mp1GgP5rggVM/e/PZNqkEgAuXYk66xmbQaV6xu6oOVTpR+zZq2Bi2O2/OgXJm70ZAftk9c13HP7Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g66rGXUQGYyuS2Eo+qkj4zV3LVGZaz+edNogDzi9nzo=;
- b=GGTVyoSbqq0dicR0R97KIDw/2IlJnEgT+df9SMI3ecnpAC8SkPTsDLa/0leD0lFdHEKnI3Q63kiPXMc7oR0UIaUfQ9loU4dmLhjRqau0CzBKtde1SVYO2jZ2X81bTGrzlacOZyp4NNrQVwmn9js9fem8SBgKnvA5G4eWPDiHoLPcLXDpV99zkcqcx7lT9fmz9YNXGvWKZoUfzsYSHFuYaNnbbtReokNYGCMYJ7+1IqytEn/OdH167XUQ+7duuVWEBVqp35s5AgkI3dvm2n2ughWz8EL4Wx2QonDsQyU/MxbppKB906q0nHeny83B0Nbe25wDcL5Bh1sgYWMVVTYGYw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=pass (sender ip is
- 63.35.35.123) smtp.rcpttodomain=lists.ozlabs.org smtp.mailfrom=arm.com;
- dmarc=pass (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=pass (signature was verified) header.d=arm.com; arc=pass (0 oda=0
- ltdi=1)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g66rGXUQGYyuS2Eo+qkj4zV3LVGZaz+edNogDzi9nzo=;
- b=c/qx+bLNr4jrVxLOMBnVPTpugQ4xn9bvJq/xwJf63SzEAlCj0AfbRqLA5xf8Emdo5+1SecA8MUkX8qcdnohbeIW4CVTPKLhq+m23M5B91pk5XHB/nYg+mw4/NPwb2iMXVmY9ZzYCNKiaI9MmGxIcouHRA5YsVcNQLPB29kMGnYo=
-Received: from AS9PR06CA0483.eurprd06.prod.outlook.com (2603:10a6:20b:49b::8)
- by PAWPR08MB8960.eurprd08.prod.outlook.com (2603:10a6:102:340::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.14; Tue, 18 Feb
- 2025 09:57:08 +0000
-Received: from AMS1EPF0000004A.eurprd04.prod.outlook.com
- (2603:10a6:20b:49b:cafe::5f) by AS9PR06CA0483.outlook.office365.com
- (2603:10a6:20b:49b::8) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.17 via Frontend Transport; Tue,
- 18 Feb 2025 09:57:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 63.35.35.123)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Pass (protection.outlook.com: domain of arm.com designates
- 63.35.35.123 as permitted sender) receiver=protection.outlook.com;
- client-ip=63.35.35.123; helo=64aa7808-outbound-1.mta.getcheckrecipient.com;
- pr=C
-Received: from 64aa7808-outbound-1.mta.getcheckrecipient.com (63.35.35.123) by
- AMS1EPF0000004A.mail.protection.outlook.com (10.167.16.134) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8466.11
- via Frontend Transport; Tue, 18 Feb 2025 09:57:07 +0000
-Received: ("Tessian outbound 4fd325905615:v567"); Tue, 18 Feb 2025 09:57:06 +0000
-X-CheckRecipientChecked: true
-X-CR-MTA-CID: 7c466d3c344f8571
-X-TessianGatewayMetadata: ZVu9O+5+SCETLaQVGQnm9J/e8lYP1K1MHeX18ZDZphmXlFU4/rC1A/hcGyDlEvaVW2z0fm26Kh4uerMtlPzm6j0pbcMiJ5cqtpe616vrhPEktC+X2uACQNCCSqxSm4U7LQGchsGvQAQXPdlns5p0DA==
-X-CR-MTA-TID: 64aa7808
-Received: from L783cfa010d18.1
-	by 64aa7808-outbound-1.mta.getcheckrecipient.com id 0F570B93-EAF7-4E84-86BD-D35F3CFBCEC4.1;
-	Tue, 18 Feb 2025 09:56:59 +0000
-Received: from AS8PR03CU001.outbound.protection.outlook.com
-    by 64aa7808-outbound-1.mta.getcheckrecipient.com with ESMTPS id L783cfa010d18.1
-    (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384);
-    Tue, 18 Feb 2025 09:56:59 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=azfghCHKiirEDsUYuV1OD/xdaPIc4QUlYnWw/LYwvOjMKQc3mqqf5QiK594+P0DRIZESaLK4NN+Ee4sjbGogNT3yyz4GbH+KLLpxiJuSXsKZuOUCRi78jAAr1Hp6J27nt6z0XT+j0cA/+4j1rgEv+ZhqOXsQEtG7+EWXAm2JNAoPGoBGGxJVUScU5WpiLdyvEpxEHa/NeV+BXG2nTWa13vsS2y3vTYlBYkXfITi70YvLsDhiJufw+YRdYNGnGX1YTgjAhVYU0A2LJjwDeY9w2Tug9p8OqNAjrfYwZkMTRrhfURRkD/5OaTBXh9bB06ZM1P8lo0nn3hSgcmtnsy54lg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g66rGXUQGYyuS2Eo+qkj4zV3LVGZaz+edNogDzi9nzo=;
- b=bWZXju5genozlyQo6ySmUpEsoid/rEMopSYJEb6QUssagzHZ+5qHa7rLQIsVaGlyHyi6OCS89iCoHIpvk5Qnqw/zG2TnmrFO6XDc6dxnA7MczHkIYYIzQk5Kvs+wd0RIq45qXwY8dx1cNcDhcoSLGGwMM8QZI2/XP4p2yLi+sMKLwvXQZM9+f+ELaEXfgLSEQE/r0yj+cL7xeAw8jOlGDgjLkDgiUKONVo9qoawOvI/Se6TOzHlmnqI5ZkyyDAnR9pSAe1HSVGcpPtoR1GnCFsjF4g3lhf3xOuBOuw4jple542UaIwheIhHXGxT+HSjTvQNoKM71+irsURpgZWGZgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
- 172.205.89.229) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=arm.com;
- dmarc=fail (p=none sp=none pct=100) action=none header.from=arm.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=g66rGXUQGYyuS2Eo+qkj4zV3LVGZaz+edNogDzi9nzo=;
- b=c/qx+bLNr4jrVxLOMBnVPTpugQ4xn9bvJq/xwJf63SzEAlCj0AfbRqLA5xf8Emdo5+1SecA8MUkX8qcdnohbeIW4CVTPKLhq+m23M5B91pk5XHB/nYg+mw4/NPwb2iMXVmY9ZzYCNKiaI9MmGxIcouHRA5YsVcNQLPB29kMGnYo=
-Received: from PA7P264CA0362.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:37c::28)
- by DB9PR08MB7422.eurprd08.prod.outlook.com (2603:10a6:10:371::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Tue, 18 Feb
- 2025 09:56:49 +0000
-Received: from AMS1EPF0000004B.eurprd04.prod.outlook.com
- (2603:10a6:102:37c:cafe::1a) by PA7P264CA0362.outlook.office365.com
- (2603:10a6:102:37c::28) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8445.19 via Frontend Transport; Tue,
- 18 Feb 2025 09:56:49 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 172.205.89.229)
- smtp.mailfrom=arm.com; dkim=none (message not signed)
- header.d=none;dmarc=fail action=none header.from=arm.com;
-Received-SPF: Fail (protection.outlook.com: domain of arm.com does not
- designate 172.205.89.229 as permitted sender)
- receiver=protection.outlook.com; client-ip=172.205.89.229;
- helo=nebula.arm.com;
-Received: from nebula.arm.com (172.205.89.229) by
- AMS1EPF0000004B.mail.protection.outlook.com (10.167.16.136) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8466.11 via Frontend Transport; Tue, 18 Feb 2025 09:56:48 +0000
-Received: from AZ-NEU-EX03.Arm.com (10.251.24.31) by AZ-NEU-EX06.Arm.com
- (10.240.25.134) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 18 Feb
- 2025 09:56:48 +0000
-Received: from AZ-NEU-EX05.Arm.com (10.240.25.133) by AZ-NEU-EX03.Arm.com
- (10.251.24.31) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Tue, 18 Feb
- 2025 09:56:47 +0000
-Received: from arm.com (10.1.32.37) by mail.arm.com (10.240.25.133) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39 via Frontend
- Transport; Tue, 18 Feb 2025 09:56:46 +0000
-Date: Tue, 18 Feb 2025 09:56:45 +0000
-From: Yury Khrustalev <yury.khrustalev@arm.com>
-To: Catalin Marinas <catalin.marinas@arm.com>
-CC: <linux-arch@vger.kernel.org>, Will Deacon <will@kernel.org>, Arnd Bergmann
-	<arnd@arndb.de>, Kevin Brodsky <kevin.brodsky@arm.com>, Joey Gouly
-	<joey.gouly@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, Sandipan Das
-	<sandipan@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-arm-kernel@lists.infradead.org>,
-	<x86@kernel.org>, <linux-mm@kvack.org>, <linux-kselftest@vger.kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, <nd@arm.com>
-Subject: Re: [RESEND v4 0/3] mm/pkey: Add PKEY_UNRESTRICTED macro
-Message-ID: <Z7RZXef1LqE0_lMf@arm.com>
-References: <20250113170619.484698-1-yury.khrustalev@arm.com>
- <173982794521.4020985.15838989967891150260.b4-ty@arm.com>
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YxwXF4gG8z301n
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 21:20:44 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C93C613D5;
+	Tue, 18 Feb 2025 02:20:31 -0800 (PST)
+Received: from a077893.arm.com (unknown [10.163.37.233])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A36363F6A8;
+	Tue, 18 Feb 2025 02:20:04 -0800 (PST)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-parisc@vger.kernel.org,
+	linux-csky@vger.kernel.org,
+	linux-mips@vger.kernel.org,
+	linux-s390@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-sh@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: [PATCH] mm/ioremap: Pass pgprot_t to ioremap_prot() instead of unsigned long
+Date: Tue, 18 Feb 2025 15:49:54 +0530
+Message-Id: <20250218101954.415331-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -152,129 +60,645 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <173982794521.4020985.15838989967891150260.b4-ty@arm.com>
-X-EOPAttributedMessage: 1
-X-MS-TrafficTypeDiagnostic:
-	AMS1EPF0000004B:EE_|DB9PR08MB7422:EE_|AMS1EPF0000004A:EE_|PAWPR08MB8960:EE_
-X-MS-Office365-Filtering-Correlation-Id: d189dbbe-071b-44af-7acf-08dd50029ae8
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|7416014|1800799024|376014|82310400026|36860700013|13003099007;
-X-Microsoft-Antispam-Message-Info-Original:
- =?us-ascii?Q?AIlgGOO3RTw7jxHPhdW3RqRyZCNSlgMrzpBV7Hshcz6wpHqOvGtR927zJ9Sf?=
- =?us-ascii?Q?D52zi1U/B5aJdQpxLdty2XZ3kSaVDoXncqTd/nw3baxDwfxsnQfpt5pnBBOB?=
- =?us-ascii?Q?uGFo3QsYUwO2EvkJ9FQ7jT24YwvzjkHNX7DZXvNwCPE4mLEa68P5KSu9m06+?=
- =?us-ascii?Q?MMOOjgxT9AxhCGyavBWYr7Tpk9ay0YXIE4akSmy/5XPm2EjGdVIe7MukY+s5?=
- =?us-ascii?Q?CSpUvW8wnKbnV/+oRlDof0yaHu7ZhkYYcTLcYObeJXSo1pGULK2h2d9gtKwx?=
- =?us-ascii?Q?3DyPJku96R2ivQ5v+R1NAYNg+pCGbi9ktlRagsLvtxVsgxCwaa173WQ8Htam?=
- =?us-ascii?Q?PykaLHOjy3tZua1eI0HjtyBjrmJkYjkTE/f5Ehe60GcC77FhQQnYyStsjLEG?=
- =?us-ascii?Q?3oKSuBYByPGqKB4+3QLRvvs5Jqv3Gkqc9+lh3+PawWyJBoQuLJf4YoReG2mH?=
- =?us-ascii?Q?hr823vRy99rLFkcPQQScd1RgXiStBbtsKfVFF+CYXRXlxRnRseG7lZNPcAJe?=
- =?us-ascii?Q?MlWNqIUnbXJTL/20H4jcTHtouoaeOsH1qCUhdnHwd3Akrgz8yn+pL4nClwHe?=
- =?us-ascii?Q?DCOakFGEu2DD25cDclWTpxK2GzatWP7ltiPfcIV294f6MfoMI87l8Auw13g0?=
- =?us-ascii?Q?hchdqTyaT4K4xiviRdria4447DaEHvMqm/idnM+JI5N/hahpCxQB15Wp7rO3?=
- =?us-ascii?Q?/2v8F0pSEfUd7h/kvFtohivrpfvm15dlCzar9WIwqaUcOESl9emUN4jw3P9Y?=
- =?us-ascii?Q?4kBV5SeGVZQHJtMMhLSYsW+KkXwzh+nO39pAPls8oLw53dTkBNsALvJ3LZ1p?=
- =?us-ascii?Q?qTq1wPuJkd2ecc27cHkIjqDVoulzkcYOYXJZ7FhYhmaU7ja0o5avI0z1x+kG?=
- =?us-ascii?Q?LU/PAlNnQxuhbiEAbQjXO6P2Ur1mnKx+4DZtaY5WwuggrEMC24a0qRkDBZfl?=
- =?us-ascii?Q?fbWjNJxoqX4+0lBFNl9LB5NHRmU6Q6I/R6BGRJeOCdUygiAfGZD8zogyLnsZ?=
- =?us-ascii?Q?dv3fn+gdiB3vxEoKDBgFIDSbWqp5GwrxsyuzyndTv4N1oPsH4qxylztcOvTu?=
- =?us-ascii?Q?0diE1W1CN6mhkc14c8jugM5BVbBMSlLW7VUOdWIPVcRS+y4dSs9im5Mbp95l?=
- =?us-ascii?Q?I1rO0525HxrEaSLSdmeAQ+GyIwSnuVz4CpaLSUg/BogWlqxG+zclei9hZxUI?=
- =?us-ascii?Q?5VX5yPiGLVup24ouKahnH5jWy6Q+Ef2pp0AoWU5nV3wac6f+VkO/9yEnFKUw?=
- =?us-ascii?Q?BszRQBOhf+XKupUR5uEwxr/sXbKULzK3lr0L4YiK2qLFhDhWUieT2HfwBw7k?=
- =?us-ascii?Q?f91XX78A4E51A4oOkwNjQ+fZUf/gjBayBK5iNO8wygAPoRQQ/CqNqUbxfs9q?=
- =?us-ascii?Q?vw5SBT5IHlc+Y6BeXSsiXbt6cTVRradGNBkIDBtvdsYdcfNXrCJIWASrzMVx?=
- =?us-ascii?Q?paWzU+CWloelRS+WU4l5XffStoNQYbQt?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:172.205.89.229;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:nebula.arm.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(82310400026)(36860700013)(13003099007);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB9PR08MB7422
-X-MS-Exchange-SkipListedInternetSender:
- ip=[2603:10a6:102:37c::28];domain=PA7P264CA0362.FRAP264.PROD.OUTLOOK.COM
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- AMS1EPF0000004A.eurprd04.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	a0b6e54f-f525-48fd-e885-08dd50028fd2
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|35042699022|36860700013|14060799003;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?FLzzL8RoE6B/2bTKErbY7YPzuXfnXVW3cgA4BWWNQafKhKOQa+rig42UCumI?=
- =?us-ascii?Q?BUw6YOlhBg2laypAjCvvvaL7+TIXPg13ycmen7AvFLtLUZ0bVN6QEIrRb458?=
- =?us-ascii?Q?lU/iqP4lcSz/8y7FjgEYNX6qsmZ4tpo1VcS34DHEsPIXZG3BAqm5/BiWpSLf?=
- =?us-ascii?Q?XvGUyCeu3SlJiby4t3zg1sBcn4WpbhpDVem8Pevvs0YHmvgzxYF+pe3QU/04?=
- =?us-ascii?Q?7sTvpB5eYLExhl1a+PIFhHwEXsEtJdnkUGV0+Uh+CpWXevYWEkARMrwUZI42?=
- =?us-ascii?Q?tmASYGwcYeKqnyf9PkIJWc8WZqbo6vvqRbkCaEJYflsKv8OOySpjMgVvF7ea?=
- =?us-ascii?Q?Ee7fQXi+PnHyFm05YREUP0KdB32g65/DASzmGlBNdv2gWpbYlDC1IVHu54zb?=
- =?us-ascii?Q?tI54VkF6QYtqtVdnctPdBDcb5urNejfW7betec4yxUtEmWXUISAHqXnBiOfl?=
- =?us-ascii?Q?Qd8sKMRy0/qDrfn+FprjvrcvYgd4zTMW+ODeQrlRmpH7T0s71ZxXTm6/6FYP?=
- =?us-ascii?Q?O+B9DhIR1DyPuA98LWI11ZODJ8d+9Z9oalJJ5maXNNR6qdZND0jw3555UNSi?=
- =?us-ascii?Q?noQardAY2JtIw5T6z5hF/5Af38ty1cBo854JOr50LBPrbNhCruhPsDWccapC?=
- =?us-ascii?Q?M7ItrZpoulTm6SUtaf6f3ymKjykZz4Gufa/Qqq723h3HTrYArZWmqXto/YEU?=
- =?us-ascii?Q?BRjYA9vHWCxnY9yGJgXl3HnQwdxmBfMtCQQv405GleRvAwdP62jee7UY8h26?=
- =?us-ascii?Q?NYqGWkSRKBZwh+3iQddERnT5WPOQwuZlXovfOAT7Oj5KdpDoJ/d2r+OzKmYY?=
- =?us-ascii?Q?BB5Ci2s1odFEAXin8BX8maEbJk4S/f4ATihRiZEgGUYXO95kjHtjXBoBYmqE?=
- =?us-ascii?Q?cQNjkv+ySNdfB6Uoo+1RwD7z7HOTFVz6/Mx4O/CNoX3TTcRu8dtNL1kjqEsx?=
- =?us-ascii?Q?JKJU45VQvm0U35xUpBEJgWW64F1qBGnUlWC3hNHNc6ALvo5q3A6VX7v9ISl4?=
- =?us-ascii?Q?I3byILJp7iGXT/0X/TBWKSYDeh4NgHKal4/uG0P1N/Qb6BqzIaaBmXfkmfEm?=
- =?us-ascii?Q?DisDbmaOr8jd9nMi3I1BuTjgdOKDFhUdbQNfEHp1O0RWd5bV6/ffOHpb9i6c?=
- =?us-ascii?Q?yoq+QzuUHHr9GoEGkrfOxFvxVLbZVMr1W6dQ8yWGhS4Uq611xOns0IG5wUoS?=
- =?us-ascii?Q?9ua2pApiP+E4zi9YZooyziAYvmIGh4wY0mOK5ihvJEIHcn4OSDwhy2xJV0Pf?=
- =?us-ascii?Q?rdpRYFCtKb44qq1KnxCXo00etfBrIqpYHIA6JteOWc3kOkqWLQMFmgYKq3Yb?=
- =?us-ascii?Q?1CA6vugb6fUqmoFowsWDuXW2ZpK+49AoMo8OBdicmL1qce6x8SKCSAHzfYxl?=
- =?us-ascii?Q?Z383RPIzP7KHb3TNgY1pl6TzRnGpXK9iFwNZThaFcJPfym1ch2SH13fpo5h1?=
- =?us-ascii?Q?+7bc5HGfsKc0Wt882XGDaYKBHQKrT/p+?=
-X-Forefront-Antispam-Report:
-	CIP:63.35.35.123;CTRY:IE;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:64aa7808-outbound-1.mta.getcheckrecipient.com;PTR:64aa7808-outbound-1.mta.getcheckrecipient.com;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(35042699022)(36860700013)(14060799003);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 Feb 2025 09:57:07.5093
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: d189dbbe-071b-44af-7acf-08dd50029ae8
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[63.35.35.123];Helo=[64aa7808-outbound-1.mta.getcheckrecipient.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF0000004A.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAWPR08MB8960
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
-	SPF_PASS,UNPARSEABLE_RELAY autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.2 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 17, 2025 at 09:33:10PM +0000, Catalin Marinas wrote:
-> On Mon, 13 Jan 2025 17:06:16 +0000, Yury Khrustalev wrote:
-> > Add PKEY_UNRESTRICTED macro to mman.h and use it in selftests.
-> > 
-> > For context, this change will also allow for more consistent update of the
-> > Glibc manual which in turn will help with introducing memory protection
-> > keys on AArch64 targets.
-> > 
-> > Applies to 5bc55a333a2f (tag: v6.13-rc7).
-> > 
-> > [...]
-> 
-> Applied to arm64 (for-next/pkey_unrestricted), thanks!
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-Thank you!
+ioremap_prot() currently accepts pgprot_val parameter as an unsigned long,
+thus implicitly assuming that pgprot_val and pgprot_t could never be bigger
+than unsigned long. But this assumption soon will not be true on arm64 when
+using D128 pgtables. In 128 bit page table configuration, unsigned long is
+64 bit, but pgprot_t is 128 bit.
 
-Kind regards,
-Yury
+Passing platform abstracted pgprot_t argument is better as compared to size
+based data types. Let's change the parameter to directly pass pgprot_t like
+another similar helper generic_ioremap_prot().
 
-> 
-> [1/3] mm/pkey: Add PKEY_UNRESTRICTED macro
->       https://git.kernel.org/arm64/c/6d61527d931b
-> [2/3] selftests/mm: Use PKEY_UNRESTRICTED macro
->       https://git.kernel.org/arm64/c/3809cefe93f6
-> [3/3] selftests/powerpc: Use PKEY_UNRESTRICTED macro
->       https://git.kernel.org/arm64/c/00894c3fc917
-> 
-> -- 
-> Catalin
-> 
+Without this change in place, D128 configuration does not work on arm64 as
+the top 64 bits gets silently stripped when passing the protection value to
+this function.
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-arch@vger.kernel.org
+Cc: loongarch@lists.linux.dev
+Cc: linux-sh@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Co-developed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+This patch applies on v6.14-rc3 and has been tested on arm64 platform.
+Although it builds on multiple platforms here.
+
+ arch/arc/mm/ioremap.c               |  6 ++----
+ arch/arm64/include/asm/io.h         |  6 +++---
+ arch/arm64/kernel/acpi.c            |  2 +-
+ arch/arm64/mm/ioremap.c             |  3 +--
+ arch/csky/include/asm/io.h          |  2 +-
+ arch/loongarch/include/asm/io.h     | 10 +++++-----
+ arch/mips/include/asm/io.h          |  8 ++++----
+ arch/mips/mm/ioremap.c              |  4 ++--
+ arch/mips/mm/ioremap64.c            |  4 ++--
+ arch/parisc/include/asm/io.h        |  2 +-
+ arch/parisc/mm/ioremap.c            |  4 ++--
+ arch/powerpc/include/asm/io.h       |  2 +-
+ arch/powerpc/mm/ioremap.c           |  4 ++--
+ arch/powerpc/platforms/ps3/spu.c    |  4 ++--
+ arch/riscv/include/asm/io.h         |  2 +-
+ arch/riscv/kernel/acpi.c            |  2 +-
+ arch/s390/include/asm/io.h          |  4 ++--
+ arch/s390/pci/pci.c                 |  4 ++--
+ arch/sh/boards/mach-landisk/setup.c |  2 +-
+ arch/sh/boards/mach-lboxre2/setup.c |  2 +-
+ arch/sh/boards/mach-sh03/setup.c    |  2 +-
+ arch/sh/include/asm/io.h            |  2 +-
+ arch/sh/mm/ioremap.c                |  3 +--
+ arch/x86/include/asm/io.h           |  2 +-
+ arch/x86/mm/ioremap.c               |  4 ++--
+ arch/xtensa/include/asm/io.h        |  6 +++---
+ arch/xtensa/mm/ioremap.c            |  4 ++--
+ include/asm-generic/io.h            |  4 ++--
+ mm/ioremap.c                        |  4 ++--
+ mm/memory.c                         |  6 +++---
+ 30 files changed, 55 insertions(+), 59 deletions(-)
+
+diff --git a/arch/arc/mm/ioremap.c b/arch/arc/mm/ioremap.c
+index b07004d53267..fd8897a0e52c 100644
+--- a/arch/arc/mm/ioremap.c
++++ b/arch/arc/mm/ioremap.c
+@@ -32,7 +32,7 @@ void __iomem *ioremap(phys_addr_t paddr, unsigned long size)
+ 		return (void __iomem *)(u32)paddr;
+ 
+ 	return ioremap_prot(paddr, size,
+-			    pgprot_val(pgprot_noncached(PAGE_KERNEL)));
++			    pgprot_noncached(PAGE_KERNEL));
+ }
+ EXPORT_SYMBOL(ioremap);
+ 
+@@ -44,10 +44,8 @@ EXPORT_SYMBOL(ioremap);
+  * might need finer access control (R/W/X)
+  */
+ void __iomem *ioremap_prot(phys_addr_t paddr, size_t size,
+-			   unsigned long flags)
++			   pgprot_t prot)
+ {
+-	pgprot_t prot = __pgprot(flags);
+-
+ 	/* force uncached */
+ 	return generic_ioremap_prot(paddr, size, pgprot_noncached(prot));
+ }
+diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
+index 76ebbdc6ffdd..9b96840fb979 100644
+--- a/arch/arm64/include/asm/io.h
++++ b/arch/arm64/include/asm/io.h
+@@ -270,9 +270,9 @@ int arm64_ioremap_prot_hook_register(const ioremap_prot_hook_t hook);
+ #define _PAGE_IOREMAP PROT_DEVICE_nGnRE
+ 
+ #define ioremap_wc(addr, size)	\
+-	ioremap_prot((addr), (size), PROT_NORMAL_NC)
++	ioremap_prot((addr), (size), __pgprot(PROT_NORMAL_NC))
+ #define ioremap_np(addr, size)	\
+-	ioremap_prot((addr), (size), PROT_DEVICE_nGnRnE)
++	ioremap_prot((addr), (size), __pgprot(PROT_DEVICE_nGnRnE))
+ 
+ /*
+  * io{read,write}{16,32,64}be() macros
+@@ -293,7 +293,7 @@ static inline void __iomem *ioremap_cache(phys_addr_t addr, size_t size)
+ 	if (pfn_is_map_memory(__phys_to_pfn(addr)))
+ 		return (void __iomem *)__phys_to_virt(addr);
+ 
+-	return ioremap_prot(addr, size, PROT_NORMAL);
++	return ioremap_prot(addr, size, __pgprot(PROT_NORMAL));
+ }
+ 
+ /*
+diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
+index e6f66491fbe9..b9a66fc146c9 100644
+--- a/arch/arm64/kernel/acpi.c
++++ b/arch/arm64/kernel/acpi.c
+@@ -379,7 +379,7 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+ 				prot = __acpi_get_writethrough_mem_attribute();
+ 		}
+ 	}
+-	return ioremap_prot(phys, size, pgprot_val(prot));
++	return ioremap_prot(phys, size, prot);
+ }
+ 
+ /*
+diff --git a/arch/arm64/mm/ioremap.c b/arch/arm64/mm/ioremap.c
+index 6cc0b7e7eb03..10e246f11271 100644
+--- a/arch/arm64/mm/ioremap.c
++++ b/arch/arm64/mm/ioremap.c
+@@ -15,10 +15,9 @@ int arm64_ioremap_prot_hook_register(ioremap_prot_hook_t hook)
+ }
+ 
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-			   unsigned long prot)
++			   pgprot_t pgprot)
+ {
+ 	unsigned long last_addr = phys_addr + size - 1;
+-	pgprot_t pgprot = __pgprot(prot);
+ 
+ 	/* Don't allow outside PHYS_MASK */
+ 	if (last_addr & ~PHYS_MASK)
+diff --git a/arch/csky/include/asm/io.h b/arch/csky/include/asm/io.h
+index ed53f0b47388..536d3bf32ff1 100644
+--- a/arch/csky/include/asm/io.h
++++ b/arch/csky/include/asm/io.h
+@@ -36,7 +36,7 @@
+  */
+ #define ioremap_wc(addr, size) \
+ 	ioremap_prot((addr), (size), \
+-		(_PAGE_IOREMAP & ~_CACHE_MASK) | _CACHE_UNCACHED)
++		__pgprot((_PAGE_IOREMAP & ~_CACHE_MASK) | _CACHE_UNCACHED))
+ 
+ #include <asm-generic/io.h>
+ 
+diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
+index e77a56eaf906..eaff72b38dc8 100644
+--- a/arch/loongarch/include/asm/io.h
++++ b/arch/loongarch/include/asm/io.h
+@@ -23,9 +23,9 @@ extern void __init early_iounmap(void __iomem *addr, unsigned long size);
+ #ifdef CONFIG_ARCH_IOREMAP
+ 
+ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
+-					 unsigned long prot_val)
++					 pgprot_t prot)
+ {
+-	switch (prot_val & _CACHE_MASK) {
++	switch (pgprot_val(prot) & _CACHE_MASK) {
+ 	case _CACHE_CC:
+ 		return (void __iomem *)(unsigned long)(CACHE_BASE + offset);
+ 	case _CACHE_SUC:
+@@ -38,7 +38,7 @@ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
+ }
+ 
+ #define ioremap(offset, size)		\
+-	ioremap_prot((offset), (size), pgprot_val(PAGE_KERNEL_SUC))
++	ioremap_prot((offset), (size), PAGE_KERNEL_SUC)
+ 
+ #define iounmap(addr) 			((void)(addr))
+ 
+@@ -55,10 +55,10 @@ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
+  */
+ #define ioremap_wc(offset, size)	\
+ 	ioremap_prot((offset), (size),	\
+-		pgprot_val(wc_enabled ? PAGE_KERNEL_WUC : PAGE_KERNEL_SUC))
++		     wc_enabled ? PAGE_KERNEL_WUC : PAGE_KERNEL_SUC)
+ 
+ #define ioremap_cache(offset, size)	\
+-	ioremap_prot((offset), (size), pgprot_val(PAGE_KERNEL))
++	ioremap_prot((offset), (size), PAGE_KERNEL)
+ 
+ #define mmiowb() wmb()
+ 
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 0bddb568af7c..4dacf40ebefd 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -126,7 +126,7 @@ static inline unsigned long isa_virt_to_bus(volatile void *address)
+ }
+ 
+ void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
+-		unsigned long prot_val);
++			   pgprot_t prot);
+ void iounmap(const volatile void __iomem *addr);
+ 
+ /*
+@@ -141,7 +141,7 @@ void iounmap(const volatile void __iomem *addr);
+  * address.
+  */
+ #define ioremap(offset, size)						\
+-	ioremap_prot((offset), (size), _CACHE_UNCACHED)
++	ioremap_prot((offset), (size), __pgprot(_CACHE_UNCACHED))
+ 
+ /*
+  * ioremap_cache -	map bus memory into CPU space
+@@ -159,7 +159,7 @@ void iounmap(const volatile void __iomem *addr);
+  * memory-like regions on I/O busses.
+  */
+ #define ioremap_cache(offset, size)					\
+-	ioremap_prot((offset), (size), _page_cachable_default)
++	ioremap_prot((offset), (size), __pgprot(_page_cachable_default))
+ 
+ /*
+  * ioremap_wc     -   map bus memory into CPU space
+@@ -180,7 +180,7 @@ void iounmap(const volatile void __iomem *addr);
+  * _CACHE_UNCACHED option (see cpu_probe() method).
+  */
+ #define ioremap_wc(offset, size)					\
+-	ioremap_prot((offset), (size), boot_cpu_data.writecombine)
++	ioremap_prot((offset), (size), __pgprot(boot_cpu_data.writecombine))
+ 
+ #if defined(CONFIG_CPU_CAVIUM_OCTEON)
+ #define war_io_reorder_wmb()		wmb()
+diff --git a/arch/mips/mm/ioremap.c b/arch/mips/mm/ioremap.c
+index d8243d61ef32..c6c4576cd4a8 100644
+--- a/arch/mips/mm/ioremap.c
++++ b/arch/mips/mm/ioremap.c
+@@ -44,9 +44,9 @@ static int __ioremap_check_ram(unsigned long start_pfn, unsigned long nr_pages,
+  * ioremap_prot gives the caller control over cache coherency attributes (CCA)
+  */
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, unsigned long size,
+-		unsigned long prot_val)
++			   pgprot_t prot)
+ {
+-	unsigned long flags = prot_val & _CACHE_MASK;
++	unsigned long flags = pgprot_val(prot) & _CACHE_MASK;
+ 	unsigned long offset, pfn, last_pfn;
+ 	struct vm_struct *area;
+ 	phys_addr_t last_addr;
+diff --git a/arch/mips/mm/ioremap64.c b/arch/mips/mm/ioremap64.c
+index 15e7820d6a5f..acc03ba20098 100644
+--- a/arch/mips/mm/ioremap64.c
++++ b/arch/mips/mm/ioremap64.c
+@@ -3,9 +3,9 @@
+ #include <ioremap.h>
+ 
+ void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
+-		unsigned long prot_val)
++			   pgprot_t prot)
+ {
+-	unsigned long flags = prot_val & _CACHE_MASK;
++	unsigned long flags = pgprot_val(prot) & _CACHE_MASK;
+ 	u64 base = (flags == _CACHE_UNCACHED ? IO_BASE : UNCAC_BASE);
+ 	void __iomem *addr;
+ 
+diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
+index 3143cf29ce27..04b783e2a6d1 100644
+--- a/arch/parisc/include/asm/io.h
++++ b/arch/parisc/include/asm/io.h
+@@ -131,7 +131,7 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
+ 		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
+ 
+ #define ioremap_wc(addr, size)  \
+-	ioremap_prot((addr), (size), _PAGE_IOREMAP)
++	ioremap_prot((addr), (size), __pgprot(_PAGE_IOREMAP))
+ 
+ #define pci_iounmap			pci_iounmap
+ 
+diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
+index fd996472dfe7..0b65c4b3baee 100644
+--- a/arch/parisc/mm/ioremap.c
++++ b/arch/parisc/mm/ioremap.c
+@@ -14,7 +14,7 @@
+ #include <linux/mm.h>
+ 
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-			   unsigned long prot)
++			   pgprot_t prot)
+ {
+ #ifdef CONFIG_EISA
+ 	unsigned long end = phys_addr + size - 1;
+@@ -41,6 +41,6 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+ 		}
+ 	}
+ 
+-	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
++	return generic_ioremap_prot(phys_addr, size, prot);
+ }
+ EXPORT_SYMBOL(ioremap_prot);
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index fd92ac450169..0436cdc7cfcc 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -895,7 +895,7 @@ void __iomem *ioremap_wt(phys_addr_t address, unsigned long size);
+ 
+ void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
+ #define ioremap_cache(addr, size) \
+-	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
++	ioremap_prot((addr), (size), PAGE_KERNEL)
+ 
+ #define iounmap iounmap
+ 
+diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
+index 7b0afcabd89f..0d6615620ada 100644
+--- a/arch/powerpc/mm/ioremap.c
++++ b/arch/powerpc/mm/ioremap.c
+@@ -41,9 +41,9 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
+ 	return __ioremap_caller(addr, size, prot, caller);
+ }
+ 
+-void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
++void __iomem *ioremap_prot(phys_addr_t addr, size_t size, pgprot_t prot)
+ {
+-	pte_t pte = __pte(flags);
++	pte_t pte = __pte(pgprot_val(prot));
+ 	void *caller = __builtin_return_address(0);
+ 
+ 	/* writeable implies dirty for kernel addresses */
+diff --git a/arch/powerpc/platforms/ps3/spu.c b/arch/powerpc/platforms/ps3/spu.c
+index 4a2520ec6d7f..61b37c9400b2 100644
+--- a/arch/powerpc/platforms/ps3/spu.c
++++ b/arch/powerpc/platforms/ps3/spu.c
+@@ -190,10 +190,10 @@ static void spu_unmap(struct spu *spu)
+ static int __init setup_areas(struct spu *spu)
+ {
+ 	struct table {char* name; unsigned long addr; unsigned long size;};
+-	unsigned long shadow_flags = pgprot_val(pgprot_noncached_wc(PAGE_KERNEL_RO));
+ 
+ 	spu_pdata(spu)->shadow = ioremap_prot(spu_pdata(spu)->shadow_addr,
+-					      sizeof(struct spe_shadow), shadow_flags);
++					      sizeof(struct spe_shadow),
++					      pgprot_noncached_wc(PAGE_KERNEL_RO));
+ 	if (!spu_pdata(spu)->shadow) {
+ 		pr_debug("%s:%d: ioremap shadow failed\n", __func__, __LINE__);
+ 		goto fail_ioremap;
+diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
+index 1c5c641075d2..0536846db9b6 100644
+--- a/arch/riscv/include/asm/io.h
++++ b/arch/riscv/include/asm/io.h
+@@ -137,7 +137,7 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
+ 
+ #ifdef CONFIG_MMU
+ #define arch_memremap_wb(addr, size)	\
+-	((__force void *)ioremap_prot((addr), (size), _PAGE_KERNEL))
++	((__force void *)ioremap_prot((addr), (size), __pgprot(_PAGE_KERNEL)))
+ #endif
+ 
+ #endif /* _ASM_RISCV_IO_H */
+diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
+index 2fd29695a788..3f6d5a6789e8 100644
+--- a/arch/riscv/kernel/acpi.c
++++ b/arch/riscv/kernel/acpi.c
+@@ -305,7 +305,7 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
+ 		}
+ 	}
+ 
+-	return ioremap_prot(phys, size, pgprot_val(prot));
++	return ioremap_prot(phys, size, prot);
+ }
+ 
+ #ifdef CONFIG_PCI
+diff --git a/arch/s390/include/asm/io.h b/arch/s390/include/asm/io.h
+index fc9933a743d6..82f1043a4fc3 100644
+--- a/arch/s390/include/asm/io.h
++++ b/arch/s390/include/asm/io.h
+@@ -33,9 +33,9 @@ void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr);
+ #define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL)
+ 
+ #define ioremap_wc(addr, size)  \
+-	ioremap_prot((addr), (size), pgprot_val(pgprot_writecombine(PAGE_KERNEL)))
++	ioremap_prot((addr), (size), pgprot_writecombine(PAGE_KERNEL))
+ #define ioremap_wt(addr, size)  \
+-	ioremap_prot((addr), (size), pgprot_val(pgprot_writethrough(PAGE_KERNEL)))
++	ioremap_prot((addr), (size), pgprot_writethrough(PAGE_KERNEL))
+ 
+ static inline void __iomem *ioport_map(unsigned long port, unsigned int nr)
+ {
+diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
+index 88f72745fa59..9fdcd733d40e 100644
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -255,7 +255,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
+ }
+ 
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-			   unsigned long prot)
++			   pgprot_t prot)
+ {
+ 	/*
+ 	 * When PCI MIO instructions are unavailable the "physical" address
+@@ -265,7 +265,7 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+ 	if (!static_branch_unlikely(&have_mio))
+ 		return (void __iomem *)phys_addr;
+ 
+-	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
++	return generic_ioremap_prot(phys_addr, size, prot);
+ }
+ EXPORT_SYMBOL(ioremap_prot);
+ 
+diff --git a/arch/sh/boards/mach-landisk/setup.c b/arch/sh/boards/mach-landisk/setup.c
+index 2c44b94f82fb..1b3f43c3ac46 100644
+--- a/arch/sh/boards/mach-landisk/setup.c
++++ b/arch/sh/boards/mach-landisk/setup.c
+@@ -58,7 +58,7 @@ static int __init landisk_devices_setup(void)
+ 	/* open I/O area window */
+ 	paddrbase = virt_to_phys((void *)PA_AREA5_IO);
+ 	prot = PAGE_KERNEL_PCC(1, _PAGE_PCC_IO16);
+-	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, pgprot_val(prot));
++	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, prot);
+ 	if (!cf_ide_base) {
+ 		printk("allocate_cf_area : can't open CF I/O window!\n");
+ 		return -ENOMEM;
+diff --git a/arch/sh/boards/mach-lboxre2/setup.c b/arch/sh/boards/mach-lboxre2/setup.c
+index 20d01b430f2a..e95bde207adb 100644
+--- a/arch/sh/boards/mach-lboxre2/setup.c
++++ b/arch/sh/boards/mach-lboxre2/setup.c
+@@ -53,7 +53,7 @@ static int __init lboxre2_devices_setup(void)
+ 	paddrbase = virt_to_phys((void*)PA_AREA5_IO);
+ 	psize = PAGE_SIZE;
+ 	prot = PAGE_KERNEL_PCC(1, _PAGE_PCC_IO16);
+-	cf0_io_base = (u32)ioremap_prot(paddrbase, psize, pgprot_val(prot));
++	cf0_io_base = (u32)ioremap_prot(paddrbase, psize, prot);
+ 	if (!cf0_io_base) {
+ 		printk(KERN_ERR "%s : can't open CF I/O window!\n" , __func__ );
+ 		return -ENOMEM;
+diff --git a/arch/sh/boards/mach-sh03/setup.c b/arch/sh/boards/mach-sh03/setup.c
+index 3901b6031ad5..5c9312f334d3 100644
+--- a/arch/sh/boards/mach-sh03/setup.c
++++ b/arch/sh/boards/mach-sh03/setup.c
+@@ -75,7 +75,7 @@ static int __init sh03_devices_setup(void)
+ 	/* open I/O area window */
+ 	paddrbase = virt_to_phys((void *)PA_AREA5_IO);
+ 	prot = PAGE_KERNEL_PCC(1, _PAGE_PCC_IO16);
+-	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, pgprot_val(prot));
++	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, prot);
+ 	if (!cf_ide_base) {
+ 		printk("allocate_cf_area : can't open CF I/O window!\n");
+ 		return -ENOMEM;
+diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
+index cf5eab840d57..531ec49b878d 100644
+--- a/arch/sh/include/asm/io.h
++++ b/arch/sh/include/asm/io.h
+@@ -299,7 +299,7 @@ unsigned long long poke_real_address_q(unsigned long long addr,
+ #define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL_NOCACHE)
+ 
+ #define ioremap_cache(addr, size)  \
+-	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
++	ioremap_prot((addr), (size), PAGE_KERNEL)
+ #endif /* CONFIG_MMU */
+ 
+ #include <asm-generic/io.h>
+diff --git a/arch/sh/mm/ioremap.c b/arch/sh/mm/ioremap.c
+index 33d20f34560f..5bbde53fb32d 100644
+--- a/arch/sh/mm/ioremap.c
++++ b/arch/sh/mm/ioremap.c
+@@ -73,10 +73,9 @@ __ioremap_29bit(phys_addr_t offset, unsigned long size, pgprot_t prot)
+ #endif /* CONFIG_29BIT */
+ 
+ void __iomem __ref *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-				 unsigned long prot)
++				 pgprot_t pgprot)
+ {
+ 	void __iomem *mapped;
+-	pgprot_t pgprot = __pgprot(prot);
+ 
+ 	mapped = __ioremap_trapped(phys_addr, size);
+ 	if (mapped)
+diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
+index ed580c7f9d0a..0794936ec187 100644
+--- a/arch/x86/include/asm/io.h
++++ b/arch/x86/include/asm/io.h
+@@ -170,7 +170,7 @@ extern void __iomem *ioremap_uc(resource_size_t offset, unsigned long size);
+ #define ioremap_uc ioremap_uc
+ extern void __iomem *ioremap_cache(resource_size_t offset, unsigned long size);
+ #define ioremap_cache ioremap_cache
+-extern void __iomem *ioremap_prot(resource_size_t offset, unsigned long size, unsigned long prot_val);
++extern void __iomem *ioremap_prot(resource_size_t offset, unsigned long size,  pgprot_t prot);
+ #define ioremap_prot ioremap_prot
+ extern void __iomem *ioremap_encrypted(resource_size_t phys_addr, unsigned long size);
+ #define ioremap_encrypted ioremap_encrypted
+diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
+index 38ff7791a9c7..d501f0871aa5 100644
+--- a/arch/x86/mm/ioremap.c
++++ b/arch/x86/mm/ioremap.c
+@@ -440,10 +440,10 @@ void __iomem *ioremap_cache(resource_size_t phys_addr, unsigned long size)
+ EXPORT_SYMBOL(ioremap_cache);
+ 
+ void __iomem *ioremap_prot(resource_size_t phys_addr, unsigned long size,
+-				unsigned long prot_val)
++			   pgprot_t prot)
+ {
+ 	return __ioremap_caller(phys_addr, size,
+-				pgprot2cachemode(__pgprot(prot_val)),
++				pgprot2cachemode(prot),
+ 				__builtin_return_address(0), false);
+ }
+ EXPORT_SYMBOL(ioremap_prot);
+diff --git a/arch/xtensa/include/asm/io.h b/arch/xtensa/include/asm/io.h
+index 934e58399c8c..7cdcc2deab3e 100644
+--- a/arch/xtensa/include/asm/io.h
++++ b/arch/xtensa/include/asm/io.h
+@@ -29,7 +29,7 @@
+  * I/O memory mapping functions.
+  */
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-			   unsigned long prot);
++			   pgprot_t prot);
+ #define ioremap_prot ioremap_prot
+ #define iounmap iounmap
+ 
+@@ -40,7 +40,7 @@ static inline void __iomem *ioremap(unsigned long offset, unsigned long size)
+ 		return (void*)(offset-XCHAL_KIO_PADDR+XCHAL_KIO_BYPASS_VADDR);
+ 	else
+ 		return ioremap_prot(offset, size,
+-			pgprot_val(pgprot_noncached(PAGE_KERNEL)));
++				    pgprot_noncached(PAGE_KERNEL));
+ }
+ #define ioremap ioremap
+ 
+@@ -51,7 +51,7 @@ static inline void __iomem *ioremap_cache(unsigned long offset,
+ 	    && offset - XCHAL_KIO_PADDR < XCHAL_KIO_SIZE)
+ 		return (void*)(offset-XCHAL_KIO_PADDR+XCHAL_KIO_CACHED_VADDR);
+ 	else
+-		return ioremap_prot(offset, size, pgprot_val(PAGE_KERNEL));
++		return ioremap_prot(offset, size, PAGE_KERNEL);
+ 
+ }
+ #define ioremap_cache ioremap_cache
+diff --git a/arch/xtensa/mm/ioremap.c b/arch/xtensa/mm/ioremap.c
+index 8ca660b7ab49..26f238fa9d0d 100644
+--- a/arch/xtensa/mm/ioremap.c
++++ b/arch/xtensa/mm/ioremap.c
+@@ -11,12 +11,12 @@
+ #include <asm/io.h>
+ 
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-			   unsigned long prot)
++			   pgprot_t prot)
+ {
+ 	unsigned long pfn = __phys_to_pfn((phys_addr));
+ 	WARN_ON(pfn_valid(pfn));
+ 
+-	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
++	return generic_ioremap_prot(phys_addr, size, prot);
+ }
+ EXPORT_SYMBOL(ioremap_prot);
+ 
+diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+index a5cbbf3e26ec..402020b23423 100644
+--- a/include/asm-generic/io.h
++++ b/include/asm-generic/io.h
+@@ -1111,7 +1111,7 @@ void __iomem *generic_ioremap_prot(phys_addr_t phys_addr, size_t size,
+ 				   pgprot_t prot);
+ 
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-			   unsigned long prot);
++			   pgprot_t prot);
+ void iounmap(volatile void __iomem *addr);
+ void generic_iounmap(volatile void __iomem *addr);
+ 
+@@ -1120,7 +1120,7 @@ void generic_iounmap(volatile void __iomem *addr);
+ static inline void __iomem *ioremap(phys_addr_t addr, size_t size)
+ {
+ 	/* _PAGE_IOREMAP needs to be supplied by the architecture */
+-	return ioremap_prot(addr, size, _PAGE_IOREMAP);
++	return ioremap_prot(addr, size, __pgprot(_PAGE_IOREMAP));
+ }
+ #endif
+ #endif /* !CONFIG_MMU || CONFIG_GENERIC_IOREMAP */
+diff --git a/mm/ioremap.c b/mm/ioremap.c
+index 3e049dfb28bd..c36dd9f62fd5 100644
+--- a/mm/ioremap.c
++++ b/mm/ioremap.c
+@@ -50,9 +50,9 @@ void __iomem *generic_ioremap_prot(phys_addr_t phys_addr, size_t size,
+ 
+ #ifndef ioremap_prot
+ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
+-			   unsigned long prot)
++			   pgprot_t prot)
+ {
+-	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
++	return generic_ioremap_prot(phys_addr, size, prot);
+ }
+ EXPORT_SYMBOL(ioremap_prot);
+ #endif
+diff --git a/mm/memory.c b/mm/memory.c
+index 539c0f7c6d54..76e35979cbc0 100644
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -6636,7 +6636,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 			void *buf, int len, int write)
+ {
+ 	resource_size_t phys_addr;
+-	unsigned long prot = 0;
++	pgprot_t prot = __pgprot(0);
+ 	void __iomem *maddr;
+ 	int offset = offset_in_page(addr);
+ 	int ret = -EINVAL;
+@@ -6646,7 +6646,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ retry:
+ 	if (follow_pfnmap_start(&args))
+ 		return -EINVAL;
+-	prot = pgprot_val(args.pgprot);
++	prot = args.pgprot;
+ 	phys_addr = (resource_size_t)args.pfn << PAGE_SHIFT;
+ 	writable = args.writable;
+ 	follow_pfnmap_end(&args);
+@@ -6661,7 +6661,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
+ 	if (follow_pfnmap_start(&args))
+ 		goto out_unmap;
+ 
+-	if ((prot != pgprot_val(args.pgprot)) ||
++	if ((pgprot_val(prot) != pgprot_val(args.pgprot)) ||
+ 	    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
+ 	    (writable != args.writable)) {
+ 		follow_pfnmap_end(&args);
+-- 
+2.25.1
+
 
