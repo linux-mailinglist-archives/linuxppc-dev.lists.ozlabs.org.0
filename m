@@ -1,53 +1,121 @@
-Return-Path: <linuxppc-dev+bounces-6312-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6313-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7068EA398A0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 11:20:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C679A39979
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Feb 2025 11:47:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxwXG721lz301v;
-	Tue, 18 Feb 2025 21:20:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yxx700NWTz301n;
+	Tue, 18 Feb 2025 21:47:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739874046;
-	cv=none; b=dnI2B+N6w2UioJUgN7XUYgsGvl0fZkNuKdKjWYkaOB40n2A5cDradERrx62ZS8zPAEfxHjopLVwEe1/rP6ENfPDN6hQzTGHJSTTUdHgVZUXb+U5rduKd94xRu1KOtK3sf93Dl2Af5GgCf94Bq+2K85ftwWpH3vUQxBF8DHKqLUZSwQ5/R/xF6iwpalLzrmSsOChxSIP2jtfY5DGdYlK9iVdk6i+yqrHak+SJxDP//WuVMcNg+0DGWw8k1dWGSbfgnhAIh1Z7fbnqiP0HO/PuXDu51leGo4ejN8NjI/5ubUM1/cm0OghKnibze/ILCUBFB2+857PNS9dVo5NgBcNKGg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739875643;
+	cv=none; b=HI1w/tudTGu2PeEDTUHWWQTBEPzIDJuZqGs0PF6U8HC/IzT3bacdSRQP7l/p7Sf5oq4ZxUc4BuWeh9g1bKqYL2eifaPwhbbhD8+MhhuG6zc5wWVhpb+mz6F48ZylIoHpNhSw1VxGA5k491ffPx2FS2WaNe25zwoT3wxyyKryTcqIMOQP0MUWUwEMB0oJganv4wUDWvoGs72jpg0pu00yysl1P+NTJSLz+7yMrK9DKiCiemWR7Vv+MLylkOfB5IVH+Qm4H8YhNnI6lxtE1GwMgF5xsDWaNo4jpI2XbT5vcgm/5rKaxRUFA0lUUL/suWai6iC6WoxdEjfJM4IqnP8tnQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739874046; c=relaxed/relaxed;
-	bh=2r5AiMxQjq1sd+o+Rmtsx/P6xrudqQVoFRbDkudClOQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GpZzqbuMWtxxA0V2yRpI94B0zwiW8mMFq2vyOM6A5INp0wTY3QBvmSiTNjWKejk1s966uIg/q+cHZnM8+d4usA5KtGX6+/aPG6Nz229UrHVlB1RVU9GIbkfR6/oyunjtzePA533N8YjjkAD4Yo5yhU7lzzZJnnEZRujvF1DmS88uGv1XdMybHPKEP96hff23aGi5745jcZo8pYrS+GVUzNdqWkBN8u6pz9vRhiJ3oxgE+jXHAWtxtB4DbIAv3R7usMkR3ViypuhtFkJDfX8xKHy07Gn6673/bKH6mQuXmUvlWtzJVm8Rygi+xz0p8VScefSlUi9mviml00jGKGnFDw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YxwXF4gG8z301n
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 21:20:44 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C93C613D5;
-	Tue, 18 Feb 2025 02:20:31 -0800 (PST)
-Received: from a077893.arm.com (unknown [10.163.37.233])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id A36363F6A8;
-	Tue, 18 Feb 2025 02:20:04 -0800 (PST)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: Ryan Roberts <ryan.roberts@arm.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-snps-arc@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-parisc@vger.kernel.org,
-	linux-csky@vger.kernel.org,
-	linux-mips@vger.kernel.org,
-	linux-s390@vger.kernel.org,
-	linux-arch@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-sh@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: [PATCH] mm/ioremap: Pass pgprot_t to ioremap_prot() instead of unsigned long
-Date: Tue, 18 Feb 2025 15:49:54 +0530
-Message-Id: <20250218101954.415331-1-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
+	t=1739875643; c=relaxed/relaxed;
+	bh=QXcsnJi++Pk2cLSeIniLPbmOjSFdWLOhirfJFMOIji8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=gBoeQcRmk00Jc8MbzvDpt3cZa9UKFG/xO3k0RgiVv7x8NquuWfRh+XOviRL8nG+6CwPgt+bR0/zZ9JgroZ7gs5fqeEB5DjS+sSbExcYxJXWLKk/ytc7KFfRplfkzdkfJFqIX/mcWNMYeZNovw1pukkCpUn6nLmCfhYmbSsOo6HSEEBouHu7FNGeoWp58vHhs4SQK3pA2wT1oOkta7woxNx7XSYkE1YgqFUWfcTsgU7APrFgbcEPWQFSvsYphdt8O9/sSUqDouH59zEn78/icXRkNcLSqN4NmrXjSPgXmSdu0gVnD+D8Y/dE5rN1IIyTQe9WVQRl6BOm+BBT6PzQRVw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OiaG3eyU; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jJe8DcAC; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=aalbersh@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=OiaG3eyU;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=jJe8DcAC;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=aalbersh@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yxx6y6bRbz2yh2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 21:47:20 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739875637;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QXcsnJi++Pk2cLSeIniLPbmOjSFdWLOhirfJFMOIji8=;
+	b=OiaG3eyUSy3xNUJozvEyoz3Z+ekKAhVkg2M7HPpIoC8GnLOJbwSIwnddq6x/9gIecfp7lS
+	OyO2mFfn5y5647L4wi+ojtGOD5fKFpPNJ3QUbYVGBgHw7OEB3B7ybXKos7sDWXUMqM3U08
+	8SGWtmyin/pNJSzJ1AiXyVtmnZ5cOQ4=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1739875638;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QXcsnJi++Pk2cLSeIniLPbmOjSFdWLOhirfJFMOIji8=;
+	b=jJe8DcACn91zhcTfA884zCJZWz3fFoOTCtn1T28Jq4CiwyF4ITdUAE/vkpR4Btj9fYAI8a
+	rEMdd180wf/IJwvLO9b742Zd49bI63GOI1Yon/3jy9tmyah7DLgDLUE6upX9C1mBVJMiHk
+	0yMwNcS0mR2APS251lHUHrzmB3t31Kc=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-450-U7SNQwgkNb2VPqhHcpXLXg-1; Tue, 18 Feb 2025 05:47:16 -0500
+X-MC-Unique: U7SNQwgkNb2VPqhHcpXLXg-1
+X-Mimecast-MFC-AGG-ID: U7SNQwgkNb2VPqhHcpXLXg_1739875635
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-abb9d1c8113so180940066b.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Feb 2025 02:47:16 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739875635; x=1740480435;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QXcsnJi++Pk2cLSeIniLPbmOjSFdWLOhirfJFMOIji8=;
+        b=f+rGPLMp3+c6j2gG9hJRiKxsa/ZC7YS57Q4ZadvNSLBFpKdtYYYkUwnuQmpUHuS9pV
+         oUGX4FcBLZcx7eHwOohZeXfMHvLQs4tJ8UNDg3yAB/Gn65x2hIBoH3MoUPNs4/Qzwbox
+         wpSVursREJV1dUWWh9wvpw/yPaYkWWxfkrHX78kyYYPMxCM5BV3VmFHoQZgpdyy3AL+8
+         fF4d+0R6SN1inNRL398H90kMgVwUuByNUREhF3vuEALXytyJ3WGrY+lyxy/K8M+v1eVE
+         wmm2BOJbcTCemP83s7ckglGut9AETXX1NLF5MLj5AaF1GzDc2xMz4GfuqjI8nwPvQ1lT
+         O1eQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHVWZIwm4uiXnpHrsrlKdC/hFAUA7m3TygMNpSlBT/YeQp6xlONYlkQd7OD2wVkakX9nUVRXXcS6ALMt0=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxAR5UBPsjsPqIomuoCj4voJ3dLn9ljEtD3XIJwuM78VxhFFpAP
+	kS7hgClg+9tp41k1Y/qDbC616a3QLEHYeZUy2y5yYb6st19TDjfa/oJhLQxWlr79/dPNeuq+Xtt
+	HiZ4YCNJLaBir29rIhZqJBEfpd/RscLqWPpRWEsA6THh1MewL7LZdP+Qq5PYXLg==
+X-Gm-Gg: ASbGncvM6gXvc+2I41TWg+YHtTS0K8tWc58fN98uAu8L/7rdlF8LYhLKGE8dMhonXfo
+	oUfaH6nF4zeKpomcdGu6Xjzpr4wbx42wTV2NDkbauuIcoB95v36TPy7TtixJGpE2QdfzHupmf0s
+	9oWctD5O0Ku+xvo4rmVjecL6m5LMVD5FAk+eIehLjirRKUEVM4QpCbV6p9eiKlWKTI4ROG0jEls
+	YaX62PQN84AcnVa/oeR4B+CKWHLHDdghXd+WzA38AuVH3UpfzWq/470PCdMhsR7NK26LNPUEOT/
+	feqFxo0qfAv6Ax41VxBc9kfq
+X-Received: by 2002:a17:906:3184:b0:ab7:6a57:1778 with SMTP id a640c23a62f3a-abb7053f377mr1167623066b.0.1739875634878;
+        Tue, 18 Feb 2025 02:47:14 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IEDjqWGIxqhirP2hcY9y7A0p1iwbTQ22rYd9pDxOrA5JKHBlOYhOa+YID2cSPLhQPLwqXpUMA==
+X-Received: by 2002:a17:906:3184:b0:ab7:6a57:1778 with SMTP id a640c23a62f3a-abb7053f377mr1167615866b.0.1739875634345;
+        Tue, 18 Feb 2025 02:47:14 -0800 (PST)
+Received: from thinky (ip-217-030-074-039.aim-net.cz. [217.30.74.39])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-abb8915db0dsm506373166b.145.2025.02.18.02.47.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Feb 2025 02:47:13 -0800 (PST)
+Date: Tue, 18 Feb 2025 11:47:12 +0100
+From: Andrey Albershteyn <aalbersh@redhat.com>
+To: Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	Arnd Bergmann <arnd@arndb.de>
+Cc: linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v3] fs: introduce getfsxattrat and setfsxattrat syscalls
+Message-ID: <65zr3fsrgum6gutsengfxz7sm3re4scyc7hqzbf63gmiz4oud2@czuvkmks3c2j>
+References: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,645 +128,353 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.2 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS autolearn=disabled
+In-Reply-To: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: F7DYKsmuxP4elB4hbCXXSwryYOF82__YAviQjoWMg8M_1739875635
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+Got more comments below with private mail:
 
-ioremap_prot() currently accepts pgprot_val parameter as an unsigned long,
-thus implicitly assuming that pgprot_val and pgprot_t could never be bigger
-than unsigned long. But this assumption soon will not be true on arm64 when
-using D128 pgtables. In 128 bit page table configuration, unsigned long is
-64 bit, but pgprot_t is 128 bit.
+On 2025-02-11 18:22:47, Andrey Albershteyn wrote:
+> From: Andrey Albershteyn <aalbersh@redhat.com>
+> 
+> Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
+> extended attributes/flags. The syscalls take parent directory fd and
+> path to the child together with struct fsxattr.
+> 
+> This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
+> that file don't need to be open as we can reference it with a path
+> instead of fd. By having this we can manipulated inode extended
+> attributes not only on regular files but also on special ones. This
+> is not possible with FS_IOC_FSSETXATTR ioctl as with special files
+> we can not call ioctl() directly on the filesystem inode using fd.
+> 
+> This patch adds two new syscalls which allows userspace to get/set
+> extended inode attributes on special files by using parent directory
+> and a path - *at() like syscall.
+> 
+> Also, as vfs_fileattr_set() is now will be called on special files
+> too, let's forbid any other attributes except projid and nextents
+> (symlink can have an extent).
+> 
+> CC: linux-api@vger.kernel.org
+> CC: linux-fsdevel@vger.kernel.org
+> CC: linux-xfs@vger.kernel.org
+> Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
+> ---
+> v1:
+> https://lore.kernel.org/linuxppc-dev/20250109174540.893098-1-aalbersh@kernel.org/
+> 
+> Previous discussion:
+> https://lore.kernel.org/linux-xfs/20240520164624.665269-2-aalbersh@redhat.com/
+> 
+> XFS has project quotas which could be attached to a directory. All
+> new inodes in these directories inherit project ID set on parent
+> directory.
+> 
+> The project is created from userspace by opening and calling
+> FS_IOC_FSSETXATTR on each inode. This is not possible for special
+> files such as FIFO, SOCK, BLK etc. Therefore, some inodes are left
+> with empty project ID. Those inodes then are not shown in the quota
+> accounting but still exist in the directory. Moreover, in the case
+> when special files are created in the directory with already
+> existing project quota, these inode inherit extended attributes.
+> This than leaves them with these attributes without the possibility
+> to clear them out. This, in turn, prevents userspace from
+> re-creating quota project on these existing files.
+> ---
+> Changes in v3:
+> - Remove unnecessary "dfd is dir" check as it checked in user_path_at()
+> - Remove unnecessary "same filesystem" check
+> - Use CLASS() instead of directly calling fdget/fdput
+> - Link to v2: https://lore.kernel.org/r/20250122-xattrat-syscall-v2-1-5b360d4fbcb2@kernel.org
+> ---
+>  arch/alpha/kernel/syscalls/syscall.tbl      |  2 +
+>  arch/arm/tools/syscall.tbl                  |  2 +
+>  arch/arm64/tools/syscall_32.tbl             |  2 +
+>  arch/m68k/kernel/syscalls/syscall.tbl       |  2 +
+>  arch/microblaze/kernel/syscalls/syscall.tbl |  2 +
+>  arch/mips/kernel/syscalls/syscall_n32.tbl   |  2 +
+>  arch/mips/kernel/syscalls/syscall_n64.tbl   |  2 +
+>  arch/mips/kernel/syscalls/syscall_o32.tbl   |  2 +
+>  arch/parisc/kernel/syscalls/syscall.tbl     |  2 +
+>  arch/powerpc/kernel/syscalls/syscall.tbl    |  2 +
+>  arch/s390/kernel/syscalls/syscall.tbl       |  2 +
+>  arch/sh/kernel/syscalls/syscall.tbl         |  2 +
+>  arch/sparc/kernel/syscalls/syscall.tbl      |  2 +
+>  arch/x86/entry/syscalls/syscall_32.tbl      |  2 +
+>  arch/x86/entry/syscalls/syscall_64.tbl      |  2 +
+>  arch/xtensa/kernel/syscalls/syscall.tbl     |  2 +
+>  fs/inode.c                                  | 75 +++++++++++++++++++++++++++++
+>  fs/ioctl.c                                  | 16 +++++-
+>  include/linux/fileattr.h                    |  1 +
+>  include/linux/syscalls.h                    |  4 ++
+>  include/uapi/asm-generic/unistd.h           |  8 ++-
+>  21 files changed, 133 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+> index c59d53d6d3f3490f976ca179ddfe02e69265ae4d..4b9e687494c16b60c6fd6ca1dc4d6564706a7e25 100644
+> --- a/arch/alpha/kernel/syscalls/syscall.tbl
+> +++ b/arch/alpha/kernel/syscalls/syscall.tbl
+> @@ -506,3 +506,5 @@
+>  574	common	getxattrat			sys_getxattrat
+>  575	common	listxattrat			sys_listxattrat
+>  576	common	removexattrat			sys_removexattrat
+> +577	common	getfsxattrat			sys_getfsxattrat
+> +578	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+> index 49eeb2ad8dbd8e074c6240417693f23fb328afa8..66466257f3c2debb3e2299f0b608c6740c98cab2 100644
+> --- a/arch/arm/tools/syscall.tbl
+> +++ b/arch/arm/tools/syscall.tbl
+> @@ -481,3 +481,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/arm64/tools/syscall_32.tbl b/arch/arm64/tools/syscall_32.tbl
+> index 69a829912a05eb8a3e21ed701d1030e31c0148bc..9c516118b154811d8d11d5696f32817430320dbf 100644
+> --- a/arch/arm64/tools/syscall_32.tbl
+> +++ b/arch/arm64/tools/syscall_32.tbl
+> @@ -478,3 +478,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+> index f5ed71f1910d09769c845c2d062d99ee0449437c..159476387f394a92ee5e29db89b118c630372db2 100644
+> --- a/arch/m68k/kernel/syscalls/syscall.tbl
+> +++ b/arch/m68k/kernel/syscalls/syscall.tbl
+> @@ -466,3 +466,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+> index 680f568b77f2cbefc3eacb2517f276041f229b1e..a6d59ee740b58cacf823702003cf9bad17c0d3b7 100644
+> --- a/arch/microblaze/kernel/syscalls/syscall.tbl
+> +++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+> @@ -472,3 +472,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+> index 0b9b7e25b69ad592642f8533bee9ccfe95ce9626..cfe38fcebe1a0279e11751378d3e71c5ec6b6569 100644
+> --- a/arch/mips/kernel/syscalls/syscall_n32.tbl
+> +++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+> @@ -405,3 +405,5 @@
+>  464	n32	getxattrat			sys_getxattrat
+>  465	n32	listxattrat			sys_listxattrat
+>  466	n32	removexattrat			sys_removexattrat
+> +467	n32	getfsxattrat			sys_getfsxattrat
+> +468	n32	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+> index c844cd5cda620b2809a397cdd6f4315ab6a1bfe2..29a0c5974d1aa2f01e33edc0252d75fb97abe230 100644
+> --- a/arch/mips/kernel/syscalls/syscall_n64.tbl
+> +++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+> @@ -381,3 +381,5 @@
+>  464	n64	getxattrat			sys_getxattrat
+>  465	n64	listxattrat			sys_listxattrat
+>  466	n64	removexattrat			sys_removexattrat
+> +467	n64	getfsxattrat			sys_getfsxattrat
+> +468	n64	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+> index 349b8aad1159f404103bd2057a1e64e9bf309f18..6c00436807c57c492ba957fcd59af1202231cf80 100644
+> --- a/arch/mips/kernel/syscalls/syscall_o32.tbl
+> +++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+> @@ -454,3 +454,5 @@
+>  464	o32	getxattrat			sys_getxattrat
+>  465	o32	listxattrat			sys_listxattrat
+>  466	o32	removexattrat			sys_removexattrat
+> +467	o32	getfsxattrat			sys_getfsxattrat
+> +468	o32	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+> index d9fc94c869657fcfbd7aca1d5f5abc9fae2fb9d8..b3578fac43d6b65167787fcc97d2d09f5a9828e7 100644
+> --- a/arch/parisc/kernel/syscalls/syscall.tbl
+> +++ b/arch/parisc/kernel/syscalls/syscall.tbl
+> @@ -465,3 +465,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+> index d8b4ab78bef076bd50d49b87dea5060fd8c1686a..808045d82c9465c3bfa96b15947546efe5851e9a 100644
+> --- a/arch/powerpc/kernel/syscalls/syscall.tbl
+> +++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+> @@ -557,3 +557,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+> index e9115b4d8b635b846e5c9ad6ce229605323723a5..78dfc2c184d4815baf8a9e61c546c9936d58a47c 100644
+> --- a/arch/s390/kernel/syscalls/syscall.tbl
+> +++ b/arch/s390/kernel/syscalls/syscall.tbl
+> @@ -469,3 +469,5 @@
+>  464  common	getxattrat		sys_getxattrat			sys_getxattrat
+>  465  common	listxattrat		sys_listxattrat			sys_listxattrat
+>  466  common	removexattrat		sys_removexattrat		sys_removexattrat
+> +467  common	getfsxattrat		sys_getfsxattrat		sys_getfsxattrat
+> +468  common	setfsxattrat		sys_setfsxattrat		sys_setfsxattrat
+> diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+> index c8cad33bf250ea110de37bd1407f5a43ec5e38f2..d5a5c8339f0ed25ea07c4aba90351d352033c8a0 100644
+> --- a/arch/sh/kernel/syscalls/syscall.tbl
+> +++ b/arch/sh/kernel/syscalls/syscall.tbl
+> @@ -470,3 +470,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+> index 727f99d333b304b3db0711953a3d91ece18a28eb..817dcd8603bcbffc47f3f59aa3b74b16486453d0 100644
+> --- a/arch/sparc/kernel/syscalls/syscall.tbl
+> +++ b/arch/sparc/kernel/syscalls/syscall.tbl
+> @@ -512,3 +512,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+> index 4d0fb2fba7e208ae9455459afe11e277321d9f74..b4842c027c5d00c0236b2ba89387c5e2267447bd 100644
+> --- a/arch/x86/entry/syscalls/syscall_32.tbl
+> +++ b/arch/x86/entry/syscalls/syscall_32.tbl
+> @@ -472,3 +472,5 @@
+>  464	i386	getxattrat		sys_getxattrat
+>  465	i386	listxattrat		sys_listxattrat
+>  466	i386	removexattrat		sys_removexattrat
+> +467	i386	getfsxattrat		sys_getfsxattrat
+> +468	i386	setfsxattrat		sys_setfsxattrat
+> diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+> index 5eb708bff1c791debd6cfc5322583b2ae53f6437..b6f0a7236aaee624cf9b484239a1068085a8ffe1 100644
+> --- a/arch/x86/entry/syscalls/syscall_64.tbl
+> +++ b/arch/x86/entry/syscalls/syscall_64.tbl
+> @@ -390,6 +390,8 @@
+>  464	common	getxattrat		sys_getxattrat
+>  465	common	listxattrat		sys_listxattrat
+>  466	common	removexattrat		sys_removexattrat
+> +467	common	getfsxattrat		sys_getfsxattrat
+> +468	common	setfsxattrat		sys_setfsxattrat
+>  
+>  #
+>  # Due to a historical design error, certain syscalls are numbered differently
+> diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+> index 37effc1b134eea061f2c350c1d68b4436b65a4dd..425d56be337d1de22f205ac503df61ff86224fee 100644
+> --- a/arch/xtensa/kernel/syscalls/syscall.tbl
+> +++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+> @@ -437,3 +437,5 @@
+>  464	common	getxattrat			sys_getxattrat
+>  465	common	listxattrat			sys_listxattrat
+>  466	common	removexattrat			sys_removexattrat
+> +467	common	getfsxattrat			sys_getfsxattrat
+> +468	common	setfsxattrat			sys_setfsxattrat
+> diff --git a/fs/inode.c b/fs/inode.c
+> index 6b4c77268fc0ecace4ac78a9ca777fbffc277f4a..b2dddd9db4fabaf67a6cbf541a86978b290411ec 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -23,6 +23,9 @@
+>  #include <linux/rw_hint.h>
+>  #include <linux/seq_file.h>
+>  #include <linux/debugfs.h>
+> +#include <linux/syscalls.h>
+> +#include <linux/fileattr.h>
+> +#include <linux/namei.h>
+>  #include <trace/events/writeback.h>
+>  #define CREATE_TRACE_POINTS
+>  #include <trace/events/timestamp.h>
+> @@ -2953,3 +2956,75 @@ umode_t mode_strip_sgid(struct mnt_idmap *idmap,
+>  	return mode & ~S_ISGID;
+>  }
+>  EXPORT_SYMBOL(mode_strip_sgid);
+> +
+> +SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
+> +		struct fsxattr __user *, fsx, unsigned int, at_flags)
+> +{
+> +	CLASS(fd, dir)(dfd);
+> +	struct fileattr fa;
+> +	struct path filepath;
+> +	int error;
+> +	unsigned int lookup_flags = 0;
+> +
+> +	if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
+> +		return -EINVAL;
+> +
+> +	if (at_flags & AT_SYMLINK_FOLLOW)
+> +		lookup_flags |= LOOKUP_FOLLOW;
+> +
+> +	if (at_flags & AT_EMPTY_PATH)
+> +		lookup_flags |= LOOKUP_EMPTY;
+> +
+> +	if (fd_empty(dir))
+> +		return -EBADF;
+> +
+> +	error = user_path_at(dfd, filename, lookup_flags, &filepath);
+> +	if (error)
+> +		return error;
+> +
+> +	error = vfs_fileattr_get(filepath.dentry, &fa);
 
-Passing platform abstracted pgprot_t argument is better as compared to size
-based data types. Let's change the parameter to directly pass pgprot_t like
-another similar helper generic_ioremap_prot().
+vfs_fileattr_get() returns ENOIOCTLCMD, where EOPNOTSUPP is more
+appropriate
 
-Without this change in place, D128 configuration does not work on arm64 as
-the top 64 bits gets silently stripped when passing the protection value to
-this function.
+> +	if (!error)
+> +		error = copy_fsxattr_to_user(&fa, fsx);
+> +
+> +	path_put(&filepath);
+> +	return error;
+> +}
+> +
+> +SYSCALL_DEFINE4(setfsxattrat, int, dfd, const char __user *, filename,
+> +		struct fsxattr __user *, fsx, unsigned int, at_flags)
+		^ can be const
+> +{
+> +	CLASS(fd, dir)(dfd);
+> +	struct fileattr fa;
+> +	struct path filepath;
+> +	int error;
+> +	unsigned int lookup_flags = 0;
+> +
+> +	if ((at_flags & ~(AT_SYMLINK_FOLLOW | AT_EMPTY_PATH)) != 0)
+> +		return -EINVAL;
+> +
+> +	if (at_flags & AT_SYMLINK_FOLLOW)
+> +		lookup_flags |= LOOKUP_FOLLOW;
+> +
+> +	if (at_flags & AT_EMPTY_PATH)
+> +		lookup_flags |= LOOKUP_EMPTY;
+> +
+> +	if (fd_empty(dir))
+> +		return -EBADF;
+> +
+> +	if (copy_fsxattr_from_user(&fa, fsx))
+> +		return -EFAULT;
+> +
+> +	error = user_path_at(dfd, filename, lookup_flags, &filepath);
+> +	if (error)
+> +		return error;
+> +
+> +	error = mnt_want_write(filepath.mnt);
+> +	if (!error) {
+> +		error = vfs_fileattr_set(file_mnt_idmap(fd_file(dir)),
+> +					 filepath.dentry, &fa);
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-snps-arc@lists.infradead.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-parisc@vger.kernel.org
-Cc: linux-csky@vger.kernel.org
-Cc: linux-mips@vger.kernel.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-arch@vger.kernel.org
-Cc: loongarch@lists.linux.dev
-Cc: linux-sh@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Co-developed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
-This patch applies on v6.14-rc3 and has been tested on arm64 platform.
-Although it builds on multiple platforms here.
+same here with returned error
 
- arch/arc/mm/ioremap.c               |  6 ++----
- arch/arm64/include/asm/io.h         |  6 +++---
- arch/arm64/kernel/acpi.c            |  2 +-
- arch/arm64/mm/ioremap.c             |  3 +--
- arch/csky/include/asm/io.h          |  2 +-
- arch/loongarch/include/asm/io.h     | 10 +++++-----
- arch/mips/include/asm/io.h          |  8 ++++----
- arch/mips/mm/ioremap.c              |  4 ++--
- arch/mips/mm/ioremap64.c            |  4 ++--
- arch/parisc/include/asm/io.h        |  2 +-
- arch/parisc/mm/ioremap.c            |  4 ++--
- arch/powerpc/include/asm/io.h       |  2 +-
- arch/powerpc/mm/ioremap.c           |  4 ++--
- arch/powerpc/platforms/ps3/spu.c    |  4 ++--
- arch/riscv/include/asm/io.h         |  2 +-
- arch/riscv/kernel/acpi.c            |  2 +-
- arch/s390/include/asm/io.h          |  4 ++--
- arch/s390/pci/pci.c                 |  4 ++--
- arch/sh/boards/mach-landisk/setup.c |  2 +-
- arch/sh/boards/mach-lboxre2/setup.c |  2 +-
- arch/sh/boards/mach-sh03/setup.c    |  2 +-
- arch/sh/include/asm/io.h            |  2 +-
- arch/sh/mm/ioremap.c                |  3 +--
- arch/x86/include/asm/io.h           |  2 +-
- arch/x86/mm/ioremap.c               |  4 ++--
- arch/xtensa/include/asm/io.h        |  6 +++---
- arch/xtensa/mm/ioremap.c            |  4 ++--
- include/asm-generic/io.h            |  4 ++--
- mm/ioremap.c                        |  4 ++--
- mm/memory.c                         |  6 +++---
- 30 files changed, 55 insertions(+), 59 deletions(-)
-
-diff --git a/arch/arc/mm/ioremap.c b/arch/arc/mm/ioremap.c
-index b07004d53267..fd8897a0e52c 100644
---- a/arch/arc/mm/ioremap.c
-+++ b/arch/arc/mm/ioremap.c
-@@ -32,7 +32,7 @@ void __iomem *ioremap(phys_addr_t paddr, unsigned long size)
- 		return (void __iomem *)(u32)paddr;
- 
- 	return ioremap_prot(paddr, size,
--			    pgprot_val(pgprot_noncached(PAGE_KERNEL)));
-+			    pgprot_noncached(PAGE_KERNEL));
- }
- EXPORT_SYMBOL(ioremap);
- 
-@@ -44,10 +44,8 @@ EXPORT_SYMBOL(ioremap);
-  * might need finer access control (R/W/X)
-  */
- void __iomem *ioremap_prot(phys_addr_t paddr, size_t size,
--			   unsigned long flags)
-+			   pgprot_t prot)
- {
--	pgprot_t prot = __pgprot(flags);
--
- 	/* force uncached */
- 	return generic_ioremap_prot(paddr, size, pgprot_noncached(prot));
- }
-diff --git a/arch/arm64/include/asm/io.h b/arch/arm64/include/asm/io.h
-index 76ebbdc6ffdd..9b96840fb979 100644
---- a/arch/arm64/include/asm/io.h
-+++ b/arch/arm64/include/asm/io.h
-@@ -270,9 +270,9 @@ int arm64_ioremap_prot_hook_register(const ioremap_prot_hook_t hook);
- #define _PAGE_IOREMAP PROT_DEVICE_nGnRE
- 
- #define ioremap_wc(addr, size)	\
--	ioremap_prot((addr), (size), PROT_NORMAL_NC)
-+	ioremap_prot((addr), (size), __pgprot(PROT_NORMAL_NC))
- #define ioremap_np(addr, size)	\
--	ioremap_prot((addr), (size), PROT_DEVICE_nGnRnE)
-+	ioremap_prot((addr), (size), __pgprot(PROT_DEVICE_nGnRnE))
- 
- /*
-  * io{read,write}{16,32,64}be() macros
-@@ -293,7 +293,7 @@ static inline void __iomem *ioremap_cache(phys_addr_t addr, size_t size)
- 	if (pfn_is_map_memory(__phys_to_pfn(addr)))
- 		return (void __iomem *)__phys_to_virt(addr);
- 
--	return ioremap_prot(addr, size, PROT_NORMAL);
-+	return ioremap_prot(addr, size, __pgprot(PROT_NORMAL));
- }
- 
- /*
-diff --git a/arch/arm64/kernel/acpi.c b/arch/arm64/kernel/acpi.c
-index e6f66491fbe9..b9a66fc146c9 100644
---- a/arch/arm64/kernel/acpi.c
-+++ b/arch/arm64/kernel/acpi.c
-@@ -379,7 +379,7 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
- 				prot = __acpi_get_writethrough_mem_attribute();
- 		}
- 	}
--	return ioremap_prot(phys, size, pgprot_val(prot));
-+	return ioremap_prot(phys, size, prot);
- }
- 
- /*
-diff --git a/arch/arm64/mm/ioremap.c b/arch/arm64/mm/ioremap.c
-index 6cc0b7e7eb03..10e246f11271 100644
---- a/arch/arm64/mm/ioremap.c
-+++ b/arch/arm64/mm/ioremap.c
-@@ -15,10 +15,9 @@ int arm64_ioremap_prot_hook_register(ioremap_prot_hook_t hook)
- }
- 
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot)
-+			   pgprot_t pgprot)
- {
- 	unsigned long last_addr = phys_addr + size - 1;
--	pgprot_t pgprot = __pgprot(prot);
- 
- 	/* Don't allow outside PHYS_MASK */
- 	if (last_addr & ~PHYS_MASK)
-diff --git a/arch/csky/include/asm/io.h b/arch/csky/include/asm/io.h
-index ed53f0b47388..536d3bf32ff1 100644
---- a/arch/csky/include/asm/io.h
-+++ b/arch/csky/include/asm/io.h
-@@ -36,7 +36,7 @@
-  */
- #define ioremap_wc(addr, size) \
- 	ioremap_prot((addr), (size), \
--		(_PAGE_IOREMAP & ~_CACHE_MASK) | _CACHE_UNCACHED)
-+		__pgprot((_PAGE_IOREMAP & ~_CACHE_MASK) | _CACHE_UNCACHED))
- 
- #include <asm-generic/io.h>
- 
-diff --git a/arch/loongarch/include/asm/io.h b/arch/loongarch/include/asm/io.h
-index e77a56eaf906..eaff72b38dc8 100644
---- a/arch/loongarch/include/asm/io.h
-+++ b/arch/loongarch/include/asm/io.h
-@@ -23,9 +23,9 @@ extern void __init early_iounmap(void __iomem *addr, unsigned long size);
- #ifdef CONFIG_ARCH_IOREMAP
- 
- static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
--					 unsigned long prot_val)
-+					 pgprot_t prot)
- {
--	switch (prot_val & _CACHE_MASK) {
-+	switch (pgprot_val(prot) & _CACHE_MASK) {
- 	case _CACHE_CC:
- 		return (void __iomem *)(unsigned long)(CACHE_BASE + offset);
- 	case _CACHE_SUC:
-@@ -38,7 +38,7 @@ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
- }
- 
- #define ioremap(offset, size)		\
--	ioremap_prot((offset), (size), pgprot_val(PAGE_KERNEL_SUC))
-+	ioremap_prot((offset), (size), PAGE_KERNEL_SUC)
- 
- #define iounmap(addr) 			((void)(addr))
- 
-@@ -55,10 +55,10 @@ static inline void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
-  */
- #define ioremap_wc(offset, size)	\
- 	ioremap_prot((offset), (size),	\
--		pgprot_val(wc_enabled ? PAGE_KERNEL_WUC : PAGE_KERNEL_SUC))
-+		     wc_enabled ? PAGE_KERNEL_WUC : PAGE_KERNEL_SUC)
- 
- #define ioremap_cache(offset, size)	\
--	ioremap_prot((offset), (size), pgprot_val(PAGE_KERNEL))
-+	ioremap_prot((offset), (size), PAGE_KERNEL)
- 
- #define mmiowb() wmb()
- 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 0bddb568af7c..4dacf40ebefd 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -126,7 +126,7 @@ static inline unsigned long isa_virt_to_bus(volatile void *address)
- }
- 
- void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
--		unsigned long prot_val);
-+			   pgprot_t prot);
- void iounmap(const volatile void __iomem *addr);
- 
- /*
-@@ -141,7 +141,7 @@ void iounmap(const volatile void __iomem *addr);
-  * address.
-  */
- #define ioremap(offset, size)						\
--	ioremap_prot((offset), (size), _CACHE_UNCACHED)
-+	ioremap_prot((offset), (size), __pgprot(_CACHE_UNCACHED))
- 
- /*
-  * ioremap_cache -	map bus memory into CPU space
-@@ -159,7 +159,7 @@ void iounmap(const volatile void __iomem *addr);
-  * memory-like regions on I/O busses.
-  */
- #define ioremap_cache(offset, size)					\
--	ioremap_prot((offset), (size), _page_cachable_default)
-+	ioremap_prot((offset), (size), __pgprot(_page_cachable_default))
- 
- /*
-  * ioremap_wc     -   map bus memory into CPU space
-@@ -180,7 +180,7 @@ void iounmap(const volatile void __iomem *addr);
-  * _CACHE_UNCACHED option (see cpu_probe() method).
-  */
- #define ioremap_wc(offset, size)					\
--	ioremap_prot((offset), (size), boot_cpu_data.writecombine)
-+	ioremap_prot((offset), (size), __pgprot(boot_cpu_data.writecombine))
- 
- #if defined(CONFIG_CPU_CAVIUM_OCTEON)
- #define war_io_reorder_wmb()		wmb()
-diff --git a/arch/mips/mm/ioremap.c b/arch/mips/mm/ioremap.c
-index d8243d61ef32..c6c4576cd4a8 100644
---- a/arch/mips/mm/ioremap.c
-+++ b/arch/mips/mm/ioremap.c
-@@ -44,9 +44,9 @@ static int __ioremap_check_ram(unsigned long start_pfn, unsigned long nr_pages,
-  * ioremap_prot gives the caller control over cache coherency attributes (CCA)
-  */
- void __iomem *ioremap_prot(phys_addr_t phys_addr, unsigned long size,
--		unsigned long prot_val)
-+			   pgprot_t prot)
- {
--	unsigned long flags = prot_val & _CACHE_MASK;
-+	unsigned long flags = pgprot_val(prot) & _CACHE_MASK;
- 	unsigned long offset, pfn, last_pfn;
- 	struct vm_struct *area;
- 	phys_addr_t last_addr;
-diff --git a/arch/mips/mm/ioremap64.c b/arch/mips/mm/ioremap64.c
-index 15e7820d6a5f..acc03ba20098 100644
---- a/arch/mips/mm/ioremap64.c
-+++ b/arch/mips/mm/ioremap64.c
-@@ -3,9 +3,9 @@
- #include <ioremap.h>
- 
- void __iomem *ioremap_prot(phys_addr_t offset, unsigned long size,
--		unsigned long prot_val)
-+			   pgprot_t prot)
- {
--	unsigned long flags = prot_val & _CACHE_MASK;
-+	unsigned long flags = pgprot_val(prot) & _CACHE_MASK;
- 	u64 base = (flags == _CACHE_UNCACHED ? IO_BASE : UNCAC_BASE);
- 	void __iomem *addr;
- 
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index 3143cf29ce27..04b783e2a6d1 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -131,7 +131,7 @@ static inline void gsc_writeq(unsigned long long val, unsigned long addr)
- 		       _PAGE_ACCESSED | _PAGE_NO_CACHE)
- 
- #define ioremap_wc(addr, size)  \
--	ioremap_prot((addr), (size), _PAGE_IOREMAP)
-+	ioremap_prot((addr), (size), __pgprot(_PAGE_IOREMAP))
- 
- #define pci_iounmap			pci_iounmap
- 
-diff --git a/arch/parisc/mm/ioremap.c b/arch/parisc/mm/ioremap.c
-index fd996472dfe7..0b65c4b3baee 100644
---- a/arch/parisc/mm/ioremap.c
-+++ b/arch/parisc/mm/ioremap.c
-@@ -14,7 +14,7 @@
- #include <linux/mm.h>
- 
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot)
-+			   pgprot_t prot)
- {
- #ifdef CONFIG_EISA
- 	unsigned long end = phys_addr + size - 1;
-@@ -41,6 +41,6 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
- 		}
- 	}
- 
--	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
-+	return generic_ioremap_prot(phys_addr, size, prot);
- }
- EXPORT_SYMBOL(ioremap_prot);
-diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
-index fd92ac450169..0436cdc7cfcc 100644
---- a/arch/powerpc/include/asm/io.h
-+++ b/arch/powerpc/include/asm/io.h
-@@ -895,7 +895,7 @@ void __iomem *ioremap_wt(phys_addr_t address, unsigned long size);
- 
- void __iomem *ioremap_coherent(phys_addr_t address, unsigned long size);
- #define ioremap_cache(addr, size) \
--	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
-+	ioremap_prot((addr), (size), PAGE_KERNEL)
- 
- #define iounmap iounmap
- 
-diff --git a/arch/powerpc/mm/ioremap.c b/arch/powerpc/mm/ioremap.c
-index 7b0afcabd89f..0d6615620ada 100644
---- a/arch/powerpc/mm/ioremap.c
-+++ b/arch/powerpc/mm/ioremap.c
-@@ -41,9 +41,9 @@ void __iomem *ioremap_coherent(phys_addr_t addr, unsigned long size)
- 	return __ioremap_caller(addr, size, prot, caller);
- }
- 
--void __iomem *ioremap_prot(phys_addr_t addr, size_t size, unsigned long flags)
-+void __iomem *ioremap_prot(phys_addr_t addr, size_t size, pgprot_t prot)
- {
--	pte_t pte = __pte(flags);
-+	pte_t pte = __pte(pgprot_val(prot));
- 	void *caller = __builtin_return_address(0);
- 
- 	/* writeable implies dirty for kernel addresses */
-diff --git a/arch/powerpc/platforms/ps3/spu.c b/arch/powerpc/platforms/ps3/spu.c
-index 4a2520ec6d7f..61b37c9400b2 100644
---- a/arch/powerpc/platforms/ps3/spu.c
-+++ b/arch/powerpc/platforms/ps3/spu.c
-@@ -190,10 +190,10 @@ static void spu_unmap(struct spu *spu)
- static int __init setup_areas(struct spu *spu)
- {
- 	struct table {char* name; unsigned long addr; unsigned long size;};
--	unsigned long shadow_flags = pgprot_val(pgprot_noncached_wc(PAGE_KERNEL_RO));
- 
- 	spu_pdata(spu)->shadow = ioremap_prot(spu_pdata(spu)->shadow_addr,
--					      sizeof(struct spe_shadow), shadow_flags);
-+					      sizeof(struct spe_shadow),
-+					      pgprot_noncached_wc(PAGE_KERNEL_RO));
- 	if (!spu_pdata(spu)->shadow) {
- 		pr_debug("%s:%d: ioremap shadow failed\n", __func__, __LINE__);
- 		goto fail_ioremap;
-diff --git a/arch/riscv/include/asm/io.h b/arch/riscv/include/asm/io.h
-index 1c5c641075d2..0536846db9b6 100644
---- a/arch/riscv/include/asm/io.h
-+++ b/arch/riscv/include/asm/io.h
-@@ -137,7 +137,7 @@ __io_writes_outs(outs, u64, q, __io_pbr(), __io_paw())
- 
- #ifdef CONFIG_MMU
- #define arch_memremap_wb(addr, size)	\
--	((__force void *)ioremap_prot((addr), (size), _PAGE_KERNEL))
-+	((__force void *)ioremap_prot((addr), (size), __pgprot(_PAGE_KERNEL)))
- #endif
- 
- #endif /* _ASM_RISCV_IO_H */
-diff --git a/arch/riscv/kernel/acpi.c b/arch/riscv/kernel/acpi.c
-index 2fd29695a788..3f6d5a6789e8 100644
---- a/arch/riscv/kernel/acpi.c
-+++ b/arch/riscv/kernel/acpi.c
-@@ -305,7 +305,7 @@ void __iomem *acpi_os_ioremap(acpi_physical_address phys, acpi_size size)
- 		}
- 	}
- 
--	return ioremap_prot(phys, size, pgprot_val(prot));
-+	return ioremap_prot(phys, size, prot);
- }
- 
- #ifdef CONFIG_PCI
-diff --git a/arch/s390/include/asm/io.h b/arch/s390/include/asm/io.h
-index fc9933a743d6..82f1043a4fc3 100644
---- a/arch/s390/include/asm/io.h
-+++ b/arch/s390/include/asm/io.h
-@@ -33,9 +33,9 @@ void unxlate_dev_mem_ptr(phys_addr_t phys, void *addr);
- #define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL)
- 
- #define ioremap_wc(addr, size)  \
--	ioremap_prot((addr), (size), pgprot_val(pgprot_writecombine(PAGE_KERNEL)))
-+	ioremap_prot((addr), (size), pgprot_writecombine(PAGE_KERNEL))
- #define ioremap_wt(addr, size)  \
--	ioremap_prot((addr), (size), pgprot_val(pgprot_writethrough(PAGE_KERNEL)))
-+	ioremap_prot((addr), (size), pgprot_writethrough(PAGE_KERNEL))
- 
- static inline void __iomem *ioport_map(unsigned long port, unsigned int nr)
- {
-diff --git a/arch/s390/pci/pci.c b/arch/s390/pci/pci.c
-index 88f72745fa59..9fdcd733d40e 100644
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -255,7 +255,7 @@ resource_size_t pcibios_align_resource(void *data, const struct resource *res,
- }
- 
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot)
-+			   pgprot_t prot)
- {
- 	/*
- 	 * When PCI MIO instructions are unavailable the "physical" address
-@@ -265,7 +265,7 @@ void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
- 	if (!static_branch_unlikely(&have_mio))
- 		return (void __iomem *)phys_addr;
- 
--	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
-+	return generic_ioremap_prot(phys_addr, size, prot);
- }
- EXPORT_SYMBOL(ioremap_prot);
- 
-diff --git a/arch/sh/boards/mach-landisk/setup.c b/arch/sh/boards/mach-landisk/setup.c
-index 2c44b94f82fb..1b3f43c3ac46 100644
---- a/arch/sh/boards/mach-landisk/setup.c
-+++ b/arch/sh/boards/mach-landisk/setup.c
-@@ -58,7 +58,7 @@ static int __init landisk_devices_setup(void)
- 	/* open I/O area window */
- 	paddrbase = virt_to_phys((void *)PA_AREA5_IO);
- 	prot = PAGE_KERNEL_PCC(1, _PAGE_PCC_IO16);
--	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, pgprot_val(prot));
-+	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, prot);
- 	if (!cf_ide_base) {
- 		printk("allocate_cf_area : can't open CF I/O window!\n");
- 		return -ENOMEM;
-diff --git a/arch/sh/boards/mach-lboxre2/setup.c b/arch/sh/boards/mach-lboxre2/setup.c
-index 20d01b430f2a..e95bde207adb 100644
---- a/arch/sh/boards/mach-lboxre2/setup.c
-+++ b/arch/sh/boards/mach-lboxre2/setup.c
-@@ -53,7 +53,7 @@ static int __init lboxre2_devices_setup(void)
- 	paddrbase = virt_to_phys((void*)PA_AREA5_IO);
- 	psize = PAGE_SIZE;
- 	prot = PAGE_KERNEL_PCC(1, _PAGE_PCC_IO16);
--	cf0_io_base = (u32)ioremap_prot(paddrbase, psize, pgprot_val(prot));
-+	cf0_io_base = (u32)ioremap_prot(paddrbase, psize, prot);
- 	if (!cf0_io_base) {
- 		printk(KERN_ERR "%s : can't open CF I/O window!\n" , __func__ );
- 		return -ENOMEM;
-diff --git a/arch/sh/boards/mach-sh03/setup.c b/arch/sh/boards/mach-sh03/setup.c
-index 3901b6031ad5..5c9312f334d3 100644
---- a/arch/sh/boards/mach-sh03/setup.c
-+++ b/arch/sh/boards/mach-sh03/setup.c
-@@ -75,7 +75,7 @@ static int __init sh03_devices_setup(void)
- 	/* open I/O area window */
- 	paddrbase = virt_to_phys((void *)PA_AREA5_IO);
- 	prot = PAGE_KERNEL_PCC(1, _PAGE_PCC_IO16);
--	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, pgprot_val(prot));
-+	cf_ide_base = ioremap_prot(paddrbase, PAGE_SIZE, prot);
- 	if (!cf_ide_base) {
- 		printk("allocate_cf_area : can't open CF I/O window!\n");
- 		return -ENOMEM;
-diff --git a/arch/sh/include/asm/io.h b/arch/sh/include/asm/io.h
-index cf5eab840d57..531ec49b878d 100644
---- a/arch/sh/include/asm/io.h
-+++ b/arch/sh/include/asm/io.h
-@@ -299,7 +299,7 @@ unsigned long long poke_real_address_q(unsigned long long addr,
- #define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL_NOCACHE)
- 
- #define ioremap_cache(addr, size)  \
--	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
-+	ioremap_prot((addr), (size), PAGE_KERNEL)
- #endif /* CONFIG_MMU */
- 
- #include <asm-generic/io.h>
-diff --git a/arch/sh/mm/ioremap.c b/arch/sh/mm/ioremap.c
-index 33d20f34560f..5bbde53fb32d 100644
---- a/arch/sh/mm/ioremap.c
-+++ b/arch/sh/mm/ioremap.c
-@@ -73,10 +73,9 @@ __ioremap_29bit(phys_addr_t offset, unsigned long size, pgprot_t prot)
- #endif /* CONFIG_29BIT */
- 
- void __iomem __ref *ioremap_prot(phys_addr_t phys_addr, size_t size,
--				 unsigned long prot)
-+				 pgprot_t pgprot)
- {
- 	void __iomem *mapped;
--	pgprot_t pgprot = __pgprot(prot);
- 
- 	mapped = __ioremap_trapped(phys_addr, size);
- 	if (mapped)
-diff --git a/arch/x86/include/asm/io.h b/arch/x86/include/asm/io.h
-index ed580c7f9d0a..0794936ec187 100644
---- a/arch/x86/include/asm/io.h
-+++ b/arch/x86/include/asm/io.h
-@@ -170,7 +170,7 @@ extern void __iomem *ioremap_uc(resource_size_t offset, unsigned long size);
- #define ioremap_uc ioremap_uc
- extern void __iomem *ioremap_cache(resource_size_t offset, unsigned long size);
- #define ioremap_cache ioremap_cache
--extern void __iomem *ioremap_prot(resource_size_t offset, unsigned long size, unsigned long prot_val);
-+extern void __iomem *ioremap_prot(resource_size_t offset, unsigned long size,  pgprot_t prot);
- #define ioremap_prot ioremap_prot
- extern void __iomem *ioremap_encrypted(resource_size_t phys_addr, unsigned long size);
- #define ioremap_encrypted ioremap_encrypted
-diff --git a/arch/x86/mm/ioremap.c b/arch/x86/mm/ioremap.c
-index 38ff7791a9c7..d501f0871aa5 100644
---- a/arch/x86/mm/ioremap.c
-+++ b/arch/x86/mm/ioremap.c
-@@ -440,10 +440,10 @@ void __iomem *ioremap_cache(resource_size_t phys_addr, unsigned long size)
- EXPORT_SYMBOL(ioremap_cache);
- 
- void __iomem *ioremap_prot(resource_size_t phys_addr, unsigned long size,
--				unsigned long prot_val)
-+			   pgprot_t prot)
- {
- 	return __ioremap_caller(phys_addr, size,
--				pgprot2cachemode(__pgprot(prot_val)),
-+				pgprot2cachemode(prot),
- 				__builtin_return_address(0), false);
- }
- EXPORT_SYMBOL(ioremap_prot);
-diff --git a/arch/xtensa/include/asm/io.h b/arch/xtensa/include/asm/io.h
-index 934e58399c8c..7cdcc2deab3e 100644
---- a/arch/xtensa/include/asm/io.h
-+++ b/arch/xtensa/include/asm/io.h
-@@ -29,7 +29,7 @@
-  * I/O memory mapping functions.
-  */
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot);
-+			   pgprot_t prot);
- #define ioremap_prot ioremap_prot
- #define iounmap iounmap
- 
-@@ -40,7 +40,7 @@ static inline void __iomem *ioremap(unsigned long offset, unsigned long size)
- 		return (void*)(offset-XCHAL_KIO_PADDR+XCHAL_KIO_BYPASS_VADDR);
- 	else
- 		return ioremap_prot(offset, size,
--			pgprot_val(pgprot_noncached(PAGE_KERNEL)));
-+				    pgprot_noncached(PAGE_KERNEL));
- }
- #define ioremap ioremap
- 
-@@ -51,7 +51,7 @@ static inline void __iomem *ioremap_cache(unsigned long offset,
- 	    && offset - XCHAL_KIO_PADDR < XCHAL_KIO_SIZE)
- 		return (void*)(offset-XCHAL_KIO_PADDR+XCHAL_KIO_CACHED_VADDR);
- 	else
--		return ioremap_prot(offset, size, pgprot_val(PAGE_KERNEL));
-+		return ioremap_prot(offset, size, PAGE_KERNEL);
- 
- }
- #define ioremap_cache ioremap_cache
-diff --git a/arch/xtensa/mm/ioremap.c b/arch/xtensa/mm/ioremap.c
-index 8ca660b7ab49..26f238fa9d0d 100644
---- a/arch/xtensa/mm/ioremap.c
-+++ b/arch/xtensa/mm/ioremap.c
-@@ -11,12 +11,12 @@
- #include <asm/io.h>
- 
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot)
-+			   pgprot_t prot)
- {
- 	unsigned long pfn = __phys_to_pfn((phys_addr));
- 	WARN_ON(pfn_valid(pfn));
- 
--	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
-+	return generic_ioremap_prot(phys_addr, size, prot);
- }
- EXPORT_SYMBOL(ioremap_prot);
- 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index a5cbbf3e26ec..402020b23423 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -1111,7 +1111,7 @@ void __iomem *generic_ioremap_prot(phys_addr_t phys_addr, size_t size,
- 				   pgprot_t prot);
- 
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot);
-+			   pgprot_t prot);
- void iounmap(volatile void __iomem *addr);
- void generic_iounmap(volatile void __iomem *addr);
- 
-@@ -1120,7 +1120,7 @@ void generic_iounmap(volatile void __iomem *addr);
- static inline void __iomem *ioremap(phys_addr_t addr, size_t size)
- {
- 	/* _PAGE_IOREMAP needs to be supplied by the architecture */
--	return ioremap_prot(addr, size, _PAGE_IOREMAP);
-+	return ioremap_prot(addr, size, __pgprot(_PAGE_IOREMAP));
- }
- #endif
- #endif /* !CONFIG_MMU || CONFIG_GENERIC_IOREMAP */
-diff --git a/mm/ioremap.c b/mm/ioremap.c
-index 3e049dfb28bd..c36dd9f62fd5 100644
---- a/mm/ioremap.c
-+++ b/mm/ioremap.c
-@@ -50,9 +50,9 @@ void __iomem *generic_ioremap_prot(phys_addr_t phys_addr, size_t size,
- 
- #ifndef ioremap_prot
- void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
--			   unsigned long prot)
-+			   pgprot_t prot)
- {
--	return generic_ioremap_prot(phys_addr, size, __pgprot(prot));
-+	return generic_ioremap_prot(phys_addr, size, prot);
- }
- EXPORT_SYMBOL(ioremap_prot);
- #endif
-diff --git a/mm/memory.c b/mm/memory.c
-index 539c0f7c6d54..76e35979cbc0 100644
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -6636,7 +6636,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
- 			void *buf, int len, int write)
- {
- 	resource_size_t phys_addr;
--	unsigned long prot = 0;
-+	pgprot_t prot = __pgprot(0);
- 	void __iomem *maddr;
- 	int offset = offset_in_page(addr);
- 	int ret = -EINVAL;
-@@ -6646,7 +6646,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
- retry:
- 	if (follow_pfnmap_start(&args))
- 		return -EINVAL;
--	prot = pgprot_val(args.pgprot);
-+	prot = args.pgprot;
- 	phys_addr = (resource_size_t)args.pfn << PAGE_SHIFT;
- 	writable = args.writable;
- 	follow_pfnmap_end(&args);
-@@ -6661,7 +6661,7 @@ int generic_access_phys(struct vm_area_struct *vma, unsigned long addr,
- 	if (follow_pfnmap_start(&args))
- 		goto out_unmap;
- 
--	if ((prot != pgprot_val(args.pgprot)) ||
-+	if ((pgprot_val(prot) != pgprot_val(args.pgprot)) ||
- 	    (phys_addr != (args.pfn << PAGE_SHIFT)) ||
- 	    (writable != args.writable)) {
- 		follow_pfnmap_end(&args);
 -- 
-2.25.1
+- Andrey
 
 
