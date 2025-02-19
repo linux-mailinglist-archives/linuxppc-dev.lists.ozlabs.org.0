@@ -1,86 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-6354-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6356-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF5F9A3C609
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 18:22:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71869A3C754
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 19:24:37 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YyjrH1MbHz2yk3;
-	Thu, 20 Feb 2025 04:22:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YylD22TT5z30TK;
+	Thu, 20 Feb 2025 05:24:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=78.133.224.34
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739985743;
-	cv=none; b=SgpGkDgfffitN5JneTaJq9c+Zm/kp/fGtjlg4YA+O4b6LNAyCZSE0WfMtgUgxCauDIaVnWOcIU3llusJQK4+nuHJUYlveQuIDw/0L0mFbMpGgM4VM9xuGxRAtzvbg7JSZZiKQaUH2HLBHL5kvVovY2OOGbeGpok/Ob9lYwmqa+wGlnWyACQpG+AYZxZH+bVvJaH+CCBYK1r9bX4D6jaJPP5cjd4fRzZtGsnqI5Ef0mNIa+rubiB0L1ZP7G1hVyLk0SuyV9HNQR44Hf9Xr97jjv+0eBTR9q1RM17D+gQqk/SczEiAFjvFfjO4h7pZ5rujCwLasg4lOsbqCnveO3vFrA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739989474;
+	cv=none; b=kC2qyAVIoFzNe/RqHHCdd5H7nGMcug0N9mQa5UiwHiExHhe19XY4v5gC3fpKZntLfqzQxv+FUm48u8PTM8ZV0tFNk6w2anNAVzEyM3zJDRfIiqya+Gx2+2Yu7STL4JYchnt82GQNsHCw8/TXJezL/g8i5Fnl/fSgk4Ca+/fr5zMsoisS/bqAUSSrUzp/1aCQUcCrU8QT0WNdftkXk2JPESGZ78Pg3AJ9lW0qrexhgdrbKpiNwF6GwnsUEFMQB4sz4Xizj7XOS4BpZg8AWme7Ro5z2UzymyRFE5zUTi9xfo3XWckFCyIlo+E1eB41+iKJRWyx3absENs7iiszjtJ8MA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739985743; c=relaxed/relaxed;
-	bh=dFxe56y64fz2EeT0c2Pu85pRgsY04A3JsiBl9id3tQc=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=Yj6vwpHMu2mc7ciRMHHbmpYXUIIsR4LeJCuWRpRVjUwF/AaB1Yj4eO1LdxJ5wUbTQxxq/vmR6tDY4T66LjUUxMKbFNmqM2usH7BuDIXgog7n9GI8yhz7Vtio4iqRSd4YzUt4Mt2hPQDcDojo9TCy07gjB5MTpb1J25oK4RbCee5H4hc7GRVwMlfdYSMGwer8kwiSRjAag2FPJRoa4YFrRGA21mk+n+vkuH6YhQF93mdzG75K430U1AskKEFsPyZsBEjukAPvaYpkOm2CLhjPWgws/FSlYe3gyMSa0ZIv/IE8QKqpwXUbyjcHY/tiXJFI/XWsTSXZ81GjHff/cfm5sA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org) smtp.mailfrom=orcam.me.uk
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org)
-X-Greylist: delayed 387 seconds by postgrey-1.37 at boromir; Thu, 20 Feb 2025 04:22:22 AEDT
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YyjrG0WQnz2yPG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 04:22:22 +1100 (AEDT)
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-	id 247399200B3; Wed, 19 Feb 2025 18:16:05 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by angie.orcam.me.uk (Postfix) with ESMTP id 1E09592009E;
-	Wed, 19 Feb 2025 17:16:05 +0000 (GMT)
-Date: Wed, 19 Feb 2025 17:16:05 +0000 (GMT)
-From: "Maciej W. Rozycki" <macro@orcam.me.uk>
-To: "Dmitry V. Levin" <ldv@strace.io>
-cc: Andrew Morton <akpm@linux-foundation.org>, Oleg Nesterov <oleg@redhat.com>, 
-    Alexey Gladkov <legion@kernel.org>, 
-    Eugene Syromyatnikov <evgsyr@gmail.com>, 
-    Charlie Jenkins <charlie@rivosinc.com>, Helge Deller <deller@gmx.de>, 
-    Mike Frysinger <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>, 
-    Davide Berardi <berardi.dav@gmail.com>, Vineet Gupta <vgupta@kernel.org>, 
-    Russell King <linux@armlinux.org.uk>, 
-    Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-    Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
-    WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-    Michal Simek <monstr@monstr.eu>, 
-    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-    Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
-    Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
-    Stafford Horne <shorne@gmail.com>, 
-    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
-    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-    Christophe Leroy <christophe.leroy@csgroup.eu>, 
-    Naveen N Rao <naveen@kernel.org>, 
-    Madhavan Srinivasan <maddy@linux.ibm.com>, 
-    Paul Walmsley <paul.walmsley@sifive.com>, 
-    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-    Alexander Gordeev <agordeev@linux.ibm.com>, 
-    Christian Borntraeger <borntraeger@linux.ibm.com>, 
-    Sven Schnelle <svens@linux.ibm.com>, 
-    Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-    "David S. Miller" <davem@davemloft.net>, 
-    Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, 
-    Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-    Johannes Berg <johannes@sipsolutions.net>, 
-    Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-    Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-    Arnd Bergmann <arnd@arndb.de>, strace-devel@lists.strace.io, 
-    linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org, 
-    linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org, 
-    loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-    linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-    linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-    linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-    linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-    linux-um@lists.infradead.org, linux-arch@vger.kernel.org
-Subject: Re: [PATCH v6 3/6] syscall.h: introduce syscall_set_nr()
-In-Reply-To: <20250217091034.GD18175@strace.io>
-Message-ID: <alpine.DEB.2.21.2502191658530.65342@angie.orcam.me.uk>
-References: <20250217091034.GD18175@strace.io>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+	t=1739989474; c=relaxed/relaxed;
+	bh=Tc+VeXjlTAwwrtnPlPEPhysS6dXeCJBQj/i87ILgP/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d7Q/KquEfUuJRlGdEz4J+uXLMEWGfDx/d6HZzqDWKDyfQM+l7DDhHWJNkm/yNj/cRLEnf079EVJA0BFHkjhKrkd3IScAElRuDpMGMFDoytbNTdztMIHp7tJtrwUiYSmsxJ2jv/SAa/AlqBgtJUgkZ0DwY7//BQAeQlM45G0DPftzYX/cs+qqfdvH5tnAR1txH5qcFzF5IVcmHn8/KCKG9UR6aSWHtyokM9ygRm6x4WGaoqQTonAkhTB2kGw7mU7N/ws6vbOQXLncotYRcZxZzTyh8g93zaPZKJdbYIYQYXF5knlRPkH4FmV2vphTQba3xTHNbVKCBQBVGn5YH2VPLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YfocSNg/; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YfocSNg/;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YylD12VjWz2yFB
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 05:24:33 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id CEC915C5C45;
+	Wed, 19 Feb 2025 18:23:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ACC3C4CEE0;
+	Wed, 19 Feb 2025 18:24:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1739989469;
+	bh=IweyEzHVugUZRfF2BC17ceLBJxhhb+nfKN/4JWYuPNo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=YfocSNg/nuCK5LdQF7MglpbQVv42eWvN2zezEudFgrSUsQW4AbTtaROP1eL8CftyQ
+	 nsG4zrsleyoIGoU+mFwHuYEGqBzFszKwi37PMutZj9o4uhDjZhZ2NiOv5skkbPqh6q
+	 GXgtZl4SCb/ZJRaTj4CpL1Op0hPnK5TYR5P1oa/xrhCXGQzDWAnv+Nt8Mvqd1/Rmaw
+	 CxPlSwUc6yZeIhrS/5BywE0/UQOB02wDVQ240Jy7YiscmC/P2jg0Adj7GmqyeopAbD
+	 92YYQovjY2HnoD4jc9842Bay59Xx3GwSH4xFmBKocxfSGVTHlnpZLuJJtFcxiZ0Gay
+	 sAGAlwX0Vhstw==
+From: Eric Biggers <ebiggers@kernel.org>
+To: linux-crypto@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	netdev@vger.kernel.org,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v3 10/19] crypto: nx - use the new scatterwalk functions
+Date: Wed, 19 Feb 2025 10:23:32 -0800
+Message-ID: <20250219182341.43961-11-ebiggers@kernel.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250219182341.43961-1-ebiggers@kernel.org>
+References: <20250219182341.43961-1-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,49 +71,231 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.2 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 17 Feb 2025, Dmitry V. Levin wrote:
+From: Eric Biggers <ebiggers@google.com>
 
-> diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
-> index ea050b23d428..b956b015641c 100644
-> --- a/arch/mips/include/asm/syscall.h
-> +++ b/arch/mips/include/asm/syscall.h
-> @@ -41,6 +41,20 @@ static inline long syscall_get_nr(struct task_struct *task,
->  	return task_thread_info(task)->syscall;
->  }
->  
-> +static inline void syscall_set_nr(struct task_struct *task,
-> +				  struct pt_regs *regs,
-> +				  int nr)
-> +{
-> +	/*
-> +	 * New syscall number has to be assigned to regs[2] because
-> +	 * syscall_trace_entry() loads it from there unconditionally.
+- In nx_walk_and_build(), use scatterwalk_start_at_pos() instead of a
+  more complex way to achieve the same result.
 
- That label is called `trace_a_syscall' in arch/mips/kernel/scall64-o32.S 
-instead.  To bring some order and avoid an inaccuracy here should the odd 
-one be matched to the other three?
+- Also in nx_walk_and_build(), use the new functions scatterwalk_next()
+  which consolidates scatterwalk_clamp() and scatterwalk_map(), and use
+  scatterwalk_done_src() which consolidates scatterwalk_unmap(),
+  scatterwalk_advance(), and scatterwalk_done().  Remove unnecessary
+  code that seemed to be intended to advance to the next sg entry, which
+  is already handled by the scatterwalk functions.
 
-> +	 *
-> +	 * Consequently, if the syscall was indirect and nr != __NR_syscall,
-> +	 * then after this assignment the syscall will cease to be indirect.
-> +	 */
-> +	task_thread_info(task)->syscall = regs->regs[2] = nr;
-> +}
-> +
->  static inline void mips_syscall_update_nr(struct task_struct *task,
->  					  struct pt_regs *regs)
->  {
+  Note that nx_walk_and_build() does not actually read or write the
+  mapped virtual address, and thus it is misusing the scatter_walk API.
+  It really should just access the scatterlist directly.  This patch
+  does not try to address this existing issue.
 
- Otherwise:
+- In nx_gca(), use memcpy_from_sglist() instead of a more complex way to
+  achieve the same result.
 
-Reviewed-by: Maciej W. Rozycki <macro@orcam.me.uk>
+- In various functions, replace calls to scatterwalk_map_and_copy() with
+  memcpy_from_sglist() or memcpy_to_sglist() as appropriate.  Note that
+  this eliminates the confusing 'out' argument (which this driver had
+  tried to work around by defining the missing constants for it...)
 
-for this part, thank you!
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
+---
+ drivers/crypto/nx/nx-aes-ccm.c | 16 ++++++----------
+ drivers/crypto/nx/nx-aes-gcm.c | 17 ++++++-----------
+ drivers/crypto/nx/nx.c         | 31 +++++--------------------------
+ drivers/crypto/nx/nx.h         |  3 ---
+ 4 files changed, 17 insertions(+), 50 deletions(-)
 
-  Maciej
+diff --git a/drivers/crypto/nx/nx-aes-ccm.c b/drivers/crypto/nx/nx-aes-ccm.c
+index c843f4c6f684d..56a0b3a67c330 100644
+--- a/drivers/crypto/nx/nx-aes-ccm.c
++++ b/drivers/crypto/nx/nx-aes-ccm.c
+@@ -215,17 +215,15 @@ static int generate_pat(u8                   *iv,
+ 	 */
+ 	if (b1) {
+ 		memset(b1, 0, 16);
+ 		if (assoclen <= 65280) {
+ 			*(u16 *)b1 = assoclen;
+-			scatterwalk_map_and_copy(b1 + 2, req->src, 0,
+-					 iauth_len, SCATTERWALK_FROM_SG);
++			memcpy_from_sglist(b1 + 2, req->src, 0, iauth_len);
+ 		} else {
+ 			*(u16 *)b1 = (u16)(0xfffe);
+ 			*(u32 *)&b1[2] = assoclen;
+-			scatterwalk_map_and_copy(b1 + 6, req->src, 0,
+-					 iauth_len, SCATTERWALK_FROM_SG);
++			memcpy_from_sglist(b1 + 6, req->src, 0, iauth_len);
+ 		}
+ 	}
+ 
+ 	/* now copy any remaining AAD to scatterlist and call nx... */
+ 	if (!assoclen) {
+@@ -339,13 +337,12 @@ static int ccm_nx_decrypt(struct aead_request   *req,
+ 	spin_lock_irqsave(&nx_ctx->lock, irq_flags);
+ 
+ 	nbytes -= authsize;
+ 
+ 	/* copy out the auth tag to compare with later */
+-	scatterwalk_map_and_copy(priv->oauth_tag,
+-				 req->src, nbytes + req->assoclen, authsize,
+-				 SCATTERWALK_FROM_SG);
++	memcpy_from_sglist(priv->oauth_tag, req->src, nbytes + req->assoclen,
++			   authsize);
+ 
+ 	rc = generate_pat(iv, req, nx_ctx, authsize, nbytes, assoclen,
+ 			  csbcpb->cpb.aes_ccm.in_pat_or_b0);
+ 	if (rc)
+ 		goto out;
+@@ -463,13 +460,12 @@ static int ccm_nx_encrypt(struct aead_request   *req,
+ 		processed += to_process;
+ 
+ 	} while (processed < nbytes);
+ 
+ 	/* copy out the auth tag */
+-	scatterwalk_map_and_copy(csbcpb->cpb.aes_ccm.out_pat_or_mac,
+-				 req->dst, nbytes + req->assoclen, authsize,
+-				 SCATTERWALK_TO_SG);
++	memcpy_to_sglist(req->dst, nbytes + req->assoclen,
++			 csbcpb->cpb.aes_ccm.out_pat_or_mac, authsize);
+ 
+ out:
+ 	spin_unlock_irqrestore(&nx_ctx->lock, irq_flags);
+ 	return rc;
+ }
+diff --git a/drivers/crypto/nx/nx-aes-gcm.c b/drivers/crypto/nx/nx-aes-gcm.c
+index 4a796318b4306..b7fe2de96d962 100644
+--- a/drivers/crypto/nx/nx-aes-gcm.c
++++ b/drivers/crypto/nx/nx-aes-gcm.c
+@@ -101,20 +101,17 @@ static int nx_gca(struct nx_crypto_ctx  *nx_ctx,
+ 		  u8                    *out,
+ 		  unsigned int assoclen)
+ {
+ 	int rc;
+ 	struct nx_csbcpb *csbcpb_aead = nx_ctx->csbcpb_aead;
+-	struct scatter_walk walk;
+ 	struct nx_sg *nx_sg = nx_ctx->in_sg;
+ 	unsigned int nbytes = assoclen;
+ 	unsigned int processed = 0, to_process;
+ 	unsigned int max_sg_len;
+ 
+ 	if (nbytes <= AES_BLOCK_SIZE) {
+-		scatterwalk_start(&walk, req->src);
+-		scatterwalk_copychunks(out, &walk, nbytes, SCATTERWALK_FROM_SG);
+-		scatterwalk_done(&walk, SCATTERWALK_FROM_SG, 0);
++		memcpy_from_sglist(out, req->src, 0, nbytes);
+ 		return 0;
+ 	}
+ 
+ 	NX_CPB_FDM(csbcpb_aead) &= ~NX_FDM_CONTINUATION;
+ 
+@@ -389,23 +386,21 @@ static int gcm_aes_nx_crypt(struct aead_request *req, int enc,
+ 	} while (processed < nbytes);
+ 
+ mac:
+ 	if (enc) {
+ 		/* copy out the auth tag */
+-		scatterwalk_map_and_copy(
+-			csbcpb->cpb.aes_gcm.out_pat_or_mac,
++		memcpy_to_sglist(
+ 			req->dst, req->assoclen + nbytes,
+-			crypto_aead_authsize(crypto_aead_reqtfm(req)),
+-			SCATTERWALK_TO_SG);
++			csbcpb->cpb.aes_gcm.out_pat_or_mac,
++			crypto_aead_authsize(crypto_aead_reqtfm(req)));
+ 	} else {
+ 		u8 *itag = nx_ctx->priv.gcm.iauth_tag;
+ 		u8 *otag = csbcpb->cpb.aes_gcm.out_pat_or_mac;
+ 
+-		scatterwalk_map_and_copy(
++		memcpy_from_sglist(
+ 			itag, req->src, req->assoclen + nbytes,
+-			crypto_aead_authsize(crypto_aead_reqtfm(req)),
+-			SCATTERWALK_FROM_SG);
++			crypto_aead_authsize(crypto_aead_reqtfm(req)));
+ 		rc = crypto_memneq(itag, otag,
+ 			    crypto_aead_authsize(crypto_aead_reqtfm(req))) ?
+ 		     -EBADMSG : 0;
+ 	}
+ out:
+diff --git a/drivers/crypto/nx/nx.c b/drivers/crypto/nx/nx.c
+index 010e87d9da36b..dd95e5361d88c 100644
+--- a/drivers/crypto/nx/nx.c
++++ b/drivers/crypto/nx/nx.c
+@@ -151,44 +151,23 @@ struct nx_sg *nx_walk_and_build(struct nx_sg       *nx_dst,
+ 				unsigned int        start,
+ 				unsigned int       *src_len)
+ {
+ 	struct scatter_walk walk;
+ 	struct nx_sg *nx_sg = nx_dst;
+-	unsigned int n, offset = 0, len = *src_len;
++	unsigned int n, len = *src_len;
+ 	char *dst;
+ 
+ 	/* we need to fast forward through @start bytes first */
+-	for (;;) {
+-		scatterwalk_start(&walk, sg_src);
+-
+-		if (start < offset + sg_src->length)
+-			break;
+-
+-		offset += sg_src->length;
+-		sg_src = sg_next(sg_src);
+-	}
+-
+-	/* start - offset is the number of bytes to advance in the scatterlist
+-	 * element we're currently looking at */
+-	scatterwalk_advance(&walk, start - offset);
++	scatterwalk_start_at_pos(&walk, sg_src, start);
+ 
+ 	while (len && (nx_sg - nx_dst) < sglen) {
+-		n = scatterwalk_clamp(&walk, len);
+-		if (!n) {
+-			/* In cases where we have scatterlist chain sg_next
+-			 * handles with it properly */
+-			scatterwalk_start(&walk, sg_next(walk.sg));
+-			n = scatterwalk_clamp(&walk, len);
+-		}
+-		dst = scatterwalk_map(&walk);
++		dst = scatterwalk_next(&walk, len, &n);
+ 
+ 		nx_sg = nx_build_sg_list(nx_sg, dst, &n, sglen - (nx_sg - nx_dst));
+-		len -= n;
+ 
+-		scatterwalk_unmap(dst);
+-		scatterwalk_advance(&walk, n);
+-		scatterwalk_done(&walk, SCATTERWALK_FROM_SG, len);
++		scatterwalk_done_src(&walk, dst, n);
++		len -= n;
+ 	}
+ 	/* update to_process */
+ 	*src_len -= len;
+ 
+ 	/* return the moved destination pointer */
+diff --git a/drivers/crypto/nx/nx.h b/drivers/crypto/nx/nx.h
+index 2697baebb6a35..e1b4b6927bec3 100644
+--- a/drivers/crypto/nx/nx.h
++++ b/drivers/crypto/nx/nx.h
+@@ -187,9 +187,6 @@ extern struct shash_alg nx_shash_aes_xcbc_alg;
+ extern struct shash_alg nx_shash_sha512_alg;
+ extern struct shash_alg nx_shash_sha256_alg;
+ 
+ extern struct nx_crypto_driver nx_driver;
+ 
+-#define SCATTERWALK_TO_SG	1
+-#define SCATTERWALK_FROM_SG	0
+-
+ #endif
+-- 
+2.48.1
+
 
