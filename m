@@ -1,55 +1,51 @@
-Return-Path: <linuxppc-dev+bounces-6347-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6349-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FE1FA3BCA1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 12:21:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AFE9A3BD77
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 12:52:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YyYr603rlz30Nc;
-	Wed, 19 Feb 2025 22:21:42 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YyZWH015Tz2yRM;
+	Wed, 19 Feb 2025 22:52:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::ac"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739964101;
-	cv=none; b=ZsUrzNT9rusnxoCAng1MuHrEEzo3mQ/8ytIIQLnnicJK12BdIRyZO00I+YoGZ6e6qg44wKJ/+lrSPrprJvVm4Gzp0t02PpE9QROAH56BUvWHW137dhoTAxeJoMC1ySLV699/Y3gn+xLjX1DYDqpytlBM8EC8qCrR16/ejyN1w9nlMQkWSIPiiRMms4Fn1jcrXOwzsqJ3vnANh5pbY4JFuvbmoaiC0DBWkeI4F6SVtbasCjDAc4xStK3DVfsJRkRgLN2KCP0JHr5hWFAUntfevNzmv7qLbplsyxYXJK56EH7qyXC3ZHvspZ+nUycNED+BmBEnuG7TgijWSXmwVa7xIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739965930;
+	cv=none; b=ZPw2uGqcwi3LP7XCA8NFMqmgcibJYieVJoqrrn1H6iHWDV7EV5sJd98c2/dBcAGWL7dSA+OfZhEKKW5XvuAqhAa3Me4+7RMn38thhkEqgbz71uzoNE4zGcNQGDDzw47WPbNbmEOH79GfydETu3UAA26NqIJhZKXKpUjdLfdcyoq0ZoVqWLkcIqMUTZ3X/X+/4qnUcd/3F6MU0rqpcyOIbVU6qTw4d6IPjX5zYNHoZNEgVfJAy0Cg+ULJVjxYHKLvwtFOQ/fHNEjMnayoi5xgBFSMy4KtPKUIqwrkYZPE/It0/FIFI6BGC33uZY9DvuNRrjLGnZC7aXhD5LNLWsyPdg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739964101; c=relaxed/relaxed;
-	bh=VbnfYpgjWkRFEHyP0AjeLJC9trz2T52WuBKfYylRL1Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oC/0RVXJI9bVv7Donyhn3NHHYymjrc+DbtzO/BEJn54koi1vd4KtFn3KIjCPWGV7TlRXSbKBnxn3YHsdxk1r/A79uEZTXG052HYdA/lGRVSbK43ZZRwpqKxJnEocO3UqQpP4RWpMVjkSusGWw0GkNfGGnthR+6rboEziXmgu4dnkuKcmIFMzqT6tV+o+gyQyNdV5gqay/h5XMm40Y7LxdrHcAhUyuwVROj0dnqCXP46Jp8DgQlAy77k4RBAjlHIEaE9doCkrZbRN9hwYuzTHoTZjR7kDlRALUW8clTF6FFx9k/LYg4TTlO5RnNjFLkixGCuVS0s70950NDsn0Sin/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ELOE7ZeY; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::ac; helo=out-172.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=ELOE7ZeY;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::ac; helo=out-172.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-172.mta1.migadu.com (out-172.mta1.migadu.com [IPv6:2001:41d0:203:375::ac])
+	t=1739965930; c=relaxed/relaxed;
+	bh=teFEEY27X3Zb4o9qYoLcaC3DWikKd25qT1PCi5W3oTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FC1Ejpvf1Tq/4LkRgp4iL61ABa+yI6UpLEkoQ1yxb7Kbo73on3ZcyYKEq75q2dUp/9m2O2RkF/OpRVxP1aeasLYTZIA4b20T5sium53SA+40rBdq2/AvAgwzMBc+EUr1b3BFgobplVC4AALWw2JORvyXu4DnKrabgW7pVSA0toOO4aDF0v6WNh1NArRNePAVnFQLVehXbKhSvjJ6dkk7Qv/wbDFODa+Tg3omhp7pjd4PwSsqdZ75bT//QGgNvHTmTAr96RRYR88qP2Ak+x04ANfX/WtvqyfQrI+lkh8sTzoLzmqAklc4XOWAXW6E61F0aKhtcj8KwzkdCmqVcRRcnw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyYr51GSmz2x9N
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 22:21:40 +1100 (AEDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1739964079;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=VbnfYpgjWkRFEHyP0AjeLJC9trz2T52WuBKfYylRL1Q=;
-	b=ELOE7ZeYVBe7n7GTsLUiWA+YpQPM0B19luO+whrKKrz/ZSizg3ZAkrD05CqAR1J/E7fiSx
-	aNp9dJO3S8tyZ+R4/OFCMvox/ut6fRs7hq+jgOCn/6TGx9b7tiWRM5mZw2kbiObtZjp5V0
-	SXCFFkX0523/vbML2Rq3ae9+sfeUdj0=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	=?UTF-8?q?Ricardo=20B=2E=20Marli=C3=A8re?= <ricardo@marliere.net>,
-	Thorsten Blum <thorsten.blum@linux.dev>
-Cc: linuxppc-dev@lists.ozlabs.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyZWF5Dblz2xFm
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 22:52:09 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 3E51DA41E00;
+	Wed, 19 Feb 2025 11:50:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C01EC4CED1;
+	Wed, 19 Feb 2025 11:52:03 +0000 (UTC)
+Date: Wed, 19 Feb 2025 11:52:01 +0000
+From: Catalin Marinas <catalin.marinas@arm.com>
+To: Anshuman Khandual <anshuman.khandual@arm.com>
+Cc: linux-mm@kvack.org, Ryan Roberts <ryan.roberts@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-snps-arc@lists.infradead.org, linux-riscv@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
+	linux-csky@vger.kernel.org, linux-mips@vger.kernel.org,
+	linux-s390@vger.kernel.org, linux-arch@vger.kernel.org,
+	loongarch@lists.linux.dev, linux-sh@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH] powerpc: mpic: Use str_enabled_disabled() helper function
-Date: Wed, 19 Feb 2025 12:20:52 +0100
-Message-ID: <20250219112053.3352-2-thorsten.blum@linux.dev>
+Subject: Re: [PATCH] mm/ioremap: Pass pgprot_t to ioremap_prot() instead of
+ unsigned long
+Message-ID: <Z7XF4Y3FIbSrSP9u@arm.com>
+References: <20250218101954.415331-1-anshuman.khandual@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,52 +58,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218101954.415331-1-anshuman.khandual@arm.com>
+X-Spam-Status: No, score=1.9 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS
+	autolearn=disabled version=4.0.0
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Remove hard-coded strings by using the str_enabled_disabled() helper
-function.
+On Tue, Feb 18, 2025 at 03:49:54PM +0530, Anshuman Khandual wrote:
+> From: Ryan Roberts <ryan.roberts@arm.com>
+> 
+> ioremap_prot() currently accepts pgprot_val parameter as an unsigned long,
+> thus implicitly assuming that pgprot_val and pgprot_t could never be bigger
+> than unsigned long. But this assumption soon will not be true on arm64 when
+> using D128 pgtables. In 128 bit page table configuration, unsigned long is
+> 64 bit, but pgprot_t is 128 bit.
+> 
+> Passing platform abstracted pgprot_t argument is better as compared to size
+> based data types. Let's change the parameter to directly pass pgprot_t like
+> another similar helper generic_ioremap_prot().
+> 
+> Without this change in place, D128 configuration does not work on arm64 as
+> the top 64 bits gets silently stripped when passing the protection value to
+> this function.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linux-csky@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-arch@vger.kernel.org
+> Cc: loongarch@lists.linux.dev
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+> Co-developed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 
-Use pr_debug() instead of printk(KERN_DEBUG) to silence a checkpatch
-warning.
+For arm64:
 
-Reviewed-by: Ricardo B. Marlière <ricardo@marliere.net>
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- arch/powerpc/sysdev/mpic.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/arch/powerpc/sysdev/mpic.c b/arch/powerpc/sysdev/mpic.c
-index d94cf36b0f65..25fc4ac91814 100644
---- a/arch/powerpc/sysdev/mpic.c
-+++ b/arch/powerpc/sysdev/mpic.c
-@@ -27,6 +27,7 @@
- #include <linux/spinlock.h>
- #include <linux/pci.h>
- #include <linux/slab.h>
-+#include <linux/string_choices.h>
- #include <linux/syscore_ops.h>
- #include <linux/ratelimit.h>
- #include <linux/pgtable.h>
-@@ -474,9 +475,9 @@ static void __init mpic_scan_ht_msi(struct mpic *mpic, u8 __iomem *devbase,
- 		addr = addr | ((u64)readl(base + HT_MSI_ADDR_HI) << 32);
- 	}
- 
--	printk(KERN_DEBUG "mpic:   - HT:%02x.%x %s MSI mapping found @ 0x%llx\n",
--		PCI_SLOT(devfn), PCI_FUNC(devfn),
--		flags & HT_MSI_FLAGS_ENABLE ? "enabled" : "disabled", addr);
-+	pr_debug("mpic:   - HT:%02x.%x %s MSI mapping found @ 0x%llx\n",
-+		 PCI_SLOT(devfn), PCI_FUNC(devfn),
-+		 str_enabled_disabled(flags & HT_MSI_FLAGS_ENABLE), addr);
- 
- 	if (!(flags & HT_MSI_FLAGS_ENABLE))
- 		writeb(flags | HT_MSI_FLAGS_ENABLE, base + HT_MSI_FLAGS);
--- 
-2.48.1
-
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
