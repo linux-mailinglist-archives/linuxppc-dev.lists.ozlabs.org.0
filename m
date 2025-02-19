@@ -1,52 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-6335-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6336-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19756A3AF6E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 03:20:20 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 158F6A3B070
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 05:47:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YyKqP005fz2yVV;
-	Wed, 19 Feb 2025 13:20:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YyP4d3YYqz2ynf;
+	Wed, 19 Feb 2025 15:46:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739931616;
-	cv=none; b=nk8MS6TQkF5OzgmuRDwnb8TdUvGWQBZKa59RO5U+rVTkwz0JVsmZxSb2zce748k1ed3buYq6mo2ReUiXKkdXnOMwC0wgBLDgIeusVnTjSGwLyby8YdTIliRUg+81XTFk6ZIjyUzyJkgOeMB++5Hxy/AOyws6Ou0aNsKyYSJA5U5ucAppFZx+V9PaBDiZMBt8Zauu/l5CZcAbW1PgRSUgubwqsuvRWfWH1zGKD/qI+nFoszWkDQBCnjBlxt5gPQed+LSnSv8j2e7pIrKna4I7jIKBSvKzeT9KJf+qXoS8JEZtFjlZJ3OnvgEA8FfzDBmXSRl4frGxs93gi94KR41rPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739940417;
+	cv=none; b=YtWvE5gSeoiURHRLiumzVH+svH6Xnk99fJyNnom3SOqZ7wpoRAp1OI/sUpfZVt0Lx+QU+y1DzeymIbTAAnMeYgb9R5r2qft8QvtAXMhL8kjt7bekplryOah1vy8RqnpVaZ5MY6Y0+dtdRi1n/U7TRQB1JkGt16jRlb9Mu43y8MosRhDQLWnSHN1MLsNDPpwPxdB4+DLa7B6aEEPrWUiTfInbihtqdvLc40QGWS1Fi02GjnOEJ0MSSFV3DGF16xZUi4lJCpfS7YxrMbS4fjzFCxU10hej1RWK1FRYzhLu3TG7zWtaxVFU4RrTDyco7scxZMvFRmp8CcwqkjMgsuJNDw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739931616; c=relaxed/relaxed;
-	bh=DD0XCY8zGH6GkNF/UcgysF3Ct23WytYoV+nWp3swWbs=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=VtPlBBYYWDkQzrZzRxBX6pJf1kk3qEyvaIgFZecNTEgZMyAio9u4wjnnk9xJg2mPHhsM1uZGtCqIM1m3zYHk81bB86SkIOjU2FXAOy+fx2Fcc38YEUrhwwbwxYUqXjmktU8dYZFgf97cYtBCetfYF0Q9fAlgWOJF5HkotbzM5xTwPgL6ijN4y/nNqUtw6aPCTeiDhinpkrdCIuKlbzKcx+qLiXy4Va1sD1LRirC5PCuQmYruxHaF0DrVtt0OQzNlCBpg4Ab/MuspnBJuMPFEeMvntBWZI7OxukJQtz/cEMuaOOQg+9DPwlWBvurp7uN97U+NY0pqgUF0Hr5Cv6I0Qg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Il+Dr8Nd; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1739940417; c=relaxed/relaxed;
+	bh=XekwQr8YCb0pbm4CorUNPNZ3w1nUoLOAQbycB5NoNXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=EI6t7RsST/zYTT4BVnjOMnxyrh+NBmjT4kjYWN0tVlR0vuRV3ILTepfJShSroLahcKfwQO3EjjXsrAX0YbbSd4jzRQwEa00lYhj9CMeu67olO5ssWHYjawyUQWqzn8T3ax7R4z43nzg4MpMXUNWWNvltKtbIqMZPxwmMUt051eJ3WF5FvU601PKEIQFIFlbbqBtrY1nUkDaE8J+pre0P1JOEQ/27yVyXVhGZLhHLbIA/aMIpwJ7Dlylt+Qt0goPZ9XF2rups4uwXvTEYZTPd0E5Wil0eBFWPA5ECd6xLCNbeGsins80rmQXXXsYCGh34eRUAjlthw5pTAxzHiXXx3g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Vnuyl/CN; dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Il+Dr8Nd;
+	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=Vnuyl/CN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyKqN14Gtz2xpn
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 13:20:16 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id AA06EA41E73;
-	Wed, 19 Feb 2025 02:18:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54185C4CEE6;
-	Wed, 19 Feb 2025 02:20:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1739931613;
-	bh=0CyhWYhXDBlIB6Qh2fGk05QwoUJ2RZHUJnVpXYQBqwA=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Il+Dr8NdQfuUvY05MSV16sGLzKBHYhg5eedR3VJUC86DKgwUa6I/u/M5UDnlyjy96
-	 NVs47Xuw1omZ38o7OqU5rciKOcxMbl9LU2lWrvaXrCkVJz4SwOvvz5ZdAQJYkKz/NU
-	 qX8bBCER6rY9i7cry7egoRFiV2OgVwqk4aENNLiMahdD70JMKw1bLrXi9H6g+YqzPj
-	 PlaxE75+x17PTDSK34ObHjjM4DbvwXlkBIU8xyaFzaPMsLhm71DwbgjpKrdpQn4Kio
-	 58bGbXAWjL5Aob34zatKTdMnPwWE/u33ruZqjS5FncXv5YIZe4HxDMdygRWSilMcod
-	 +6TzwcGpM3DnQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EAFBC380AAE9;
-	Wed, 19 Feb 2025 02:20:44 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyP4Z0L0rz2ym2
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 15:46:54 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1739940410;
+	bh=XekwQr8YCb0pbm4CorUNPNZ3w1nUoLOAQbycB5NoNXc=;
+	h=Date:From:To:Cc:Subject:From;
+	b=Vnuyl/CNJswHJOlbW3d+MLv/S2qqYR6gssIaWa07/r7rJ82N+XZPdork0di6jgsD4
+	 KsAd3SR9LK0pY0+wYM08r3inRJnpww/qw7JwMlR7TKxxr/Pa9e0ncU+CgiHvaxQUI/
+	 v9uAiakPCSCHUoTBwf9Y+1QA3kOEED0TlMPqruTloHjmtgyBmq0t+bN0QkPu3kM8oc
+	 5wKWXX+62GtrrliyasPQbaPfvQNhWMQwAUyFRGtDKbuFzEJuMm1HCQ6OBo6MalbbXe
+	 ej1JU1vGzxKqI8p/j3gC8nxEfEliD9p2A2Lll0BoEQ/rUMoXAuxS6kWLGji3c++8z5
+	 aao8/zFXlZisQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4YyP4V2fwGz4wyw;
+	Wed, 19 Feb 2025 15:46:50 +1100 (AEDT)
+Date: Wed, 19 Feb 2025 15:46:49 +1100
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>, PowerPC <linuxppc-dev@lists.ozlabs.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>, Linux Kernel Mailing List
+ <linux-kernel@vger.kernel.org>, Linux Next Mailing List
+ <linux-next@vger.kernel.org>
+Subject: linux-next: build warning after merge of the powerpc tree
+Message-ID: <20250219154649.49986660@canb.auug.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,49 +63,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH V2] net: freescale: ucc_geth: make ugeth_mac_ops be static
- const
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <173993164374.106119.1367597441437405463.git-patchwork-notify@kernel.org>
-Date: Wed, 19 Feb 2025 02:20:43 +0000
-References: <tencent_30122FBA93E93911578208176E68AA00C807@qq.com>
-In-Reply-To: <tencent_30122FBA93E93911578208176E68AA00C807@qq.com>
-To: None <xiaopeitux@foxmail.com>
-Cc: andrew+netdev@lunn.ch, maxime.chevallier@bootlin.com,
- netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, xiaopei01@kylinos.cn, lkp@intel.com
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: multipart/signed; boundary="Sig_/NtBZPH9F=N4wEx8F/5CNzl.";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello:
+--Sig_/NtBZPH9F=N4wEx8F/5CNzl.
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-This patch was applied to netdev/net-next.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+Hi all,
 
-On Mon, 17 Feb 2025 09:29:30 +0800 you wrote:
-> From: Pei Xiao <xiaopei01@kylinos.cn>
-> 
-> sparse warning:
->     sparse: symbol 'ugeth_mac_ops' was not declared. Should it be
-> static.
-> 
-> Add static to fix sparse warnings and add const. phylink_create() will
-> accept a const struct.
-> 
-> [...]
+After merging the powerpc tree, today's linux-next build (htmldocs)
+produced this warning:
 
-Here is the summary with links:
-  - [V2] net: freescale: ucc_geth: make ugeth_mac_ops be static const
-    https://git.kernel.org/netdev/net-next/c/9faaaef27c5d
+WARNING: Documentation/ABI/testing/sysfs-class-cxl not found
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+Introduced by commit
 
+  5731d41af924 ("cxl: Deprecate driver")
 
+The reference is from Documentation/arch/powerpc/cxl.rst
+
+I don't know why this has appeared just now.
+
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/NtBZPH9F=N4wEx8F/5CNzl.
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAme1YjkACgkQAVBC80lX
+0GzAaAgAmjS6vD5Tf7lCgqVn9U2EBtbI4ZNqLS8aqs6sxgEODJcqe34KW2dqkbn+
+vhmzKA0EGk+TUSmKoDMhhYOB5lSEw/ZOJkTMf5jKC2R5vGI5HA5cqMoWU4J8u7be
+GQeXslBDusNFHoOo8lah9vHFGeUy8mdSqUpEwg1zf8DOE//VfITPM9jJqlRKg938
+bejSBCOKNAMuw9n1gTIGjuR3DU0z0rzGrp5n9UGzl0zQY84w8yntm/6XuAA34nTt
+0wSIUbCIxVGYH2/fPUc3nlKuIXoOWOwysl4ZlU5M64WVtpj0hH1TnHavmblLR8Zy
+HkpJtwMx1jd0sI3IVS7pOMk1se1Keg==
+=+i6K
+-----END PGP SIGNATURE-----
+
+--Sig_/NtBZPH9F=N4wEx8F/5CNzl.--
 
