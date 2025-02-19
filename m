@@ -1,78 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6343-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6344-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04706A3B2F7
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 09:00:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A5BA3B77A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 10:15:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YyTMv49wkz30CN;
-	Wed, 19 Feb 2025 19:00:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YyW2W6B8gz30ML;
+	Wed, 19 Feb 2025 20:15:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739952027;
-	cv=none; b=DClbPlQ1zWG5uuIZrlVZzSR6mFregeFzz9wXC6teSs+EjKEzVh49bDFgut/Y8lx46F/DiI+4tkK68tHdl5r+lIW9JuVJx2S6SY3yAm4O+PEb6dTI/y0OTeTAeUBnRrC/qYun/yq/s+kw4pj/34aaduH6wE0N08UbZF2noj0uOV4wYF/m6QvXbtOs3StUvYnW4nXhqrpVzp6go6ZJEHprOYz4FWpGnD5HVrQw6zvk2TaeFkBP9jOv1BGpnKIoVvsBQkSEbWbQ1KgMdZqJTkVEZ9JT719aUN7RK+qZuuz8o/s7QIoewwBKY+GI43adpplY6MPDWJ0iciXIJ6OSmtGxhg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739956531;
+	cv=none; b=dXs9JPmt2/Kv0h61XhBBoQubCkgXvq0L/tW+IE7cboe1xXbiCMUI2XZsPpHoVuvLWi82bChLNbf5GcV1nIJOZkpnPUy/f3l5zH/8xZ5QDhAT1t0DVoEBN1VmnSIuLYEEkXhVbj+Y6HuhXJX9iY87pQdUv7yvjBZgoolfcv13BdGdWF51I0eypNVJXxVhRrxPGaDrnLiKl5Z6wPF1aB/Ij+njqDIQhPi3FoZN2POZ2WUxqsrd7qjx0JRnUbBrZbwaHKcHn/d2pZOUSk6Jf7UeCxe93VlyFtfEK96kmtIw2Dgq2AbgKIer+tmor3PrzhbfHXCLzpnt2qntm90yJH8GgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739952027; c=relaxed/relaxed;
-	bh=ejfOtpj+exSth/ZFyiK/cHQMe5GVKIP/KuhULowI8is=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XnzcYHVFSGBgTUIStICdstZ/zAyYu/98ef/TBHFVpshqJBsUTva8IN/cxUpKuYRmaUAS61AbyCbGqqpQjZ2HrqEMtO/0+pHftsfJbRIPRWmOdzaee4VWBSVpqRqcyrt6excjQS8vQLU3mJPJC2wHpOXlNNQz1bSDyEdBFi9ILGo8Xd6n93J/aQo/jj3IeBKNUNtU71ZG9Yvb6FAxQYy9ggbjjzkRGJPDf/DSmEoM9/Xt4OriN8ryP89BG6rFb2nspEzputfCqnTGOSiBZkshoGfJsAGeS4Ij4KTILtCZIQVqMgIRaFVoIcHXrcGduvmOFZhLn4+G1SJ2OLveOkpLdA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sdJT9w06; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1739956531; c=relaxed/relaxed;
+	bh=KNA7uCX8taPxQB3NnGpDZ2C+lpLCK8GHBKWNUfMBbx0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=CbXJyqUov6flW4HbHIA1cQDb0pGfcPCa4K59l/x9HK/P8jcL7CNe9mKwg1Mt0KsIUyaT1O9Dvwg/gWVGk2WiOv2DFooN/QhAupwlV5b6Bda/6velTQ0Tq3/ITeCTviY46jg4Bm474+2K0R9KMmIma5KjyQleya7VLAJ5AQWDDAE21zuh/Tu6h70Pyd1dDdG54DbYi6gJpIFbbGzIVIVcSB9SJZPuKVrk8B40dHUeKz3hhYCA+3B1mnBkcNElmhBjgNbTXYTXniNKIV/UbCeOg0aBh8JTm0l+1mEi1W5VczLQsfP/9YBze6fGGFGiy+b+kfyeBLFyyl1iBzhgblQ4uQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Y8TRMQcE; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sdJT9w06;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=Y8TRMQcE;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyTMt46j4z2yGk
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 19:00:25 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51J75B8a005303;
-	Wed, 19 Feb 2025 08:00:14 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ejfOtp
-	j+exSth/ZFyiK/cHQMe5GVKIP/KuhULowI8is=; b=sdJT9w06RiKt4fmZ42IqQA
-	WxfdIf4gqVL0gj5JRjOmOpR4+Wi/cqRqEL1E6s94BR1nv+jckIUYngTEDQXpB7te
-	geIpMoTdPpe7hcQSkeY0MbsnU0QUGCUDA6rpdemO+JxdnhrXbJ97E/KSDN5Q2C3X
-	m55ThXuS+QFWcEKi4hCBUgITcwaNGejGVFwYCyqBrO4eJVsbFqcJNi5rlkqjKx+l
-	4Pso89RclLPbiPzcDEu2L7o2UNdX0lzJ6DWv7gcIEH/GP9Y2S0/vaqYomjXXAy6Z
-	wK0jYc7VbuzsgT/KbAZKg+JtvN9onOhWmVi2NIZgrss2mrilTIncw95BLSATV7YQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44w65097yk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 08:00:14 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51J7xE3b006847;
-	Wed, 19 Feb 2025 08:00:14 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44w65097ye-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 08:00:14 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51J704B3005826;
-	Wed, 19 Feb 2025 08:00:13 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44w02xawrg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 08:00:13 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51J80CuQ64029038
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Feb 2025 08:00:12 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AEFD95806F;
-	Wed, 19 Feb 2025 08:00:11 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 51F3358056;
-	Wed, 19 Feb 2025 08:00:05 +0000 (GMT)
-Received: from [9.43.108.86] (unknown [9.43.108.86])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Feb 2025 08:00:04 +0000 (GMT)
-Message-ID: <d5734fe3-813f-4c8b-9ead-3089d3af6274@linux.ibm.com>
-Date: Wed, 19 Feb 2025 13:30:01 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyW2T49t2z2yvn
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 20:15:28 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id AB8C75C4672;
+	Wed, 19 Feb 2025 09:14:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156F1C4CEE6;
+	Wed, 19 Feb 2025 09:15:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1739956525;
+	bh=CsTBlu4PxzMm58+7iDpVQaMfkefep16Cd8DGhQ3z9z0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Y8TRMQcELYUxVdPvJ5lCUInj7sehoS/tSEJHfwcgDlEQPwtucx3AA+KBVFj1bOx7d
+	 xuDoCnYn0UHEI29pXCaKs5+wJTVIPUq0deaPX4q5qcZ0y5RBjuES/3cDmerKfl79HM
+	 5nBe1SaYkDKv0EKvPyg3TaD2mCXTdekq+9UOcRJg=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 207/578] module: Extend the preempt disabled section in dereference_symbol_descriptor().
+Date: Wed, 19 Feb 2025 09:23:31 +0100
+Message-ID: <20250219082701.205158327@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250219082652.891560343@linuxfoundation.org>
+References: <20250219082652.891560343@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,81 +80,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] cxl: Fix cross-reference in documentation and add
- deprecation warning
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: fbarrat@linux.ibm.com, sfr@canb.auug.org.au, linux-next@vger.kernel.org,
-        mchehab+huawei@kernel.org, corbet@lwn.net, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>
-References: <20250219064807.175107-1-ajd@linux.ibm.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20250219064807.175107-1-ajd@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: ZpWv9r_k4_BcWUijIIygROr8keycnyVP
-X-Proofpoint-GUID: 9iddCGeetMERc6TtA9Qm1KYvDJrgEslg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-19_03,2025-02-18_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=695 spamscore=0
- impostorscore=0 suspectscore=0 mlxscore=0 clxscore=1011 bulkscore=0
- adultscore=0 phishscore=0 lowpriorityscore=0 malwarescore=0
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502190062
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+6.1-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
+[ Upstream commit a145c848d69f9c6f32008d8319edaa133360dd74 ]
+
+dereference_symbol_descriptor() needs to obtain the module pointer
+belonging to pointer in order to resolve that pointer.
+The returned mod pointer is obtained under RCU-sched/ preempt_disable()
+guarantees and needs to be used within this section to ensure that the
+module is not removed in the meantime.
+
+Extend the preempt_disable() section to also cover
+dereference_module_function_descriptor().
+
+Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descriptor()")
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250108090457.512198-2-bigeasy@linutronix.de
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/kallsyms.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
+index 0cd33be7142ad..6d10bd2b9e0fe 100644
+--- a/include/linux/kallsyms.h
++++ b/include/linux/kallsyms.h
+@@ -57,10 +57,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
+ 
+ 	preempt_disable();
+ 	mod = __module_address((unsigned long)ptr);
+-	preempt_enable();
+ 
+ 	if (mod)
+ 		ptr = dereference_module_function_descriptor(mod, ptr);
++	preempt_enable();
+ #endif
+ 	return ptr;
+ }
+-- 
+2.39.5
 
 
-On 2/19/25 12:18 PM, Andrew Donnellan wrote:
-> commit 5731d41af924 ("cxl: Deprecate driver") labelled the cxl driver as
-> deprecated and moved the ABI documentation to the obsolete/ subdirectory,
-> but didn't update cxl.rst, causing a warning once ff7ff6eb4f809 ("docs:
-> media: Allow creating cross-references for RC ABI") was merged.
-> 
-> Fix the cross-reference, and also add a deprecation warning.
-> 
-> Fixes: 5731d41af924 ("cxl: Deprecate driver")
-> Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
-> Signed-off-by: Andrew Donnellan <ajd@linux.ibm.com>
-> 
-> ---
-> 
-> Maddy: can we take this by powerpc-fixes?
-
-Yes. Will take this via powerpc-fixes
-
-Maddy
-
-> ---
->  Documentation/arch/powerpc/cxl.rst | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/arch/powerpc/cxl.rst b/Documentation/arch/powerpc/cxl.rst
-> index d2d77057610e..778adda740d2 100644
-> --- a/Documentation/arch/powerpc/cxl.rst
-> +++ b/Documentation/arch/powerpc/cxl.rst
-> @@ -18,6 +18,7 @@ Introduction
->      both access system memory directly and with the same effective
->      addresses.
->  
-> +    **This driver is deprecated and will be removed in a future release.**
->  
->  Hardware overview
->  =================
-> @@ -453,7 +454,7 @@ Sysfs Class
->  
->      A cxl sysfs class is added under /sys/class/cxl to facilitate
->      enumeration and tuning of the accelerators. Its layout is
-> -    described in Documentation/ABI/testing/sysfs-class-cxl
-> +    described in Documentation/ABI/obsolete/sysfs-class-cxl
->  
->  
->  Udev rules
 
 
