@@ -1,83 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-6353-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6355-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A427CA3C4D0
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 17:22:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A488A3C60A
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 18:22:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YyhVg0pf4z2ywS;
-	Thu, 20 Feb 2025 03:22:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YyjrH495gz30Tc;
+	Thu, 20 Feb 2025 04:22:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739982123;
-	cv=none; b=Ys76bjig6PUFJLcUB1+GvroyaHXCzSPPLwJxPfCrZYXRLU0XS5wBQaZBO5TNd6QypZi1l0nsBhDgBE+h2bDSOQabCpTCvvOm/WWw34lzlUkUMYVr5RcDry9JMKncKG1u8lepRc8rd9qeMztekyGrPEL44bkxonBeHy6oOcjuNHyD5QwDIzOisRTRP9LiRKV0tP4mKb7ExlxLWluic1TeVLCxYcJkUI15uqnDJgX1MNIOIte4QJamNsbDlSMf7BbjLZSMeQd/CgmzFz9KLsPm+AnhX5Cy3excN6ZaeFFoVDbj/XucMmHBiLWdrzsXaHphLvXWQyB6vqKJzqedHWr4pQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=78.133.224.34
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739985743;
+	cv=none; b=VIcOQ/9sBIb429uiCWLMj5MWJWOUdCwpIJ2UpMRYKHSnTGEO3yWB9hACEd27NpuI2xN2gYdhVvUY1lhaoJdRcvXf5XOn9nQUX3Oy0k2V1CwB8OJ+4D2mOwAb/nVn4L1i9tnQ06uAiszlPJ3q6kLvkbEnON03YVExpKHZzF6y7aCWJjoW9noKeDwGQCczWSLoXVxwCRx8w8SfKl+KSRgzhmljMfCVHuTuZeHdJob4iADhLWNy4wcww1/3/Zim4LS1QOPaEAhdJRNnLx+UuVZbOq2mCSbEkxAXC04LeX3vKBBXoAxRt+Mxmo+/zbfJAClbuCWq+nTROp8tFbYF7NuvOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739982123; c=relaxed/relaxed;
-	bh=sI0uUTF74a9oWRxqSrmo4ISZh1Osp1/CDwnWs/YQ0zM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=g0OPeX7k3B8xWjUZPG1lLSPkX0YVzm5ekZxLhBAN5d3wMbZTFi/fMYDdnhVeR5nHm8+6BIxgTbhGpf6riPrEc3JzP1uetA0Zxexxo2BtkeWN98GpUgGfwSoN0D0YN6iu1X709Vwj6i5H3Xix7yToAeG0hGoKE8cYsSawfvSwC6ujr/7+eT7L6NE965T8lfp3RgSoV+8DmwTS0ua1dutKPBipg1gDzuppMOzBpT4VWXmVFsmhfpMdG+Ocu66UiJw9QPO0oMIW4xvuSDFfxSlYtC57gnvUrDQzTo8eOukzQ7l8vE1b4HJKK2YAL4W54L4fZZqv615deifd2SZkoJ6P+Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DLTpdiiQ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DLTpdiiQ;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YyhVf1lG4z2yFQ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 03:22:01 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51JFv3cq022138;
-	Wed, 19 Feb 2025 16:21:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=sI0uUTF74a9oWRxqSrmo4ISZh1Osp1/CDwnWs/YQ0
-	zM=; b=DLTpdiiQpwwp3xjUKSlN677fA0avcR0Qs5hD+YYfcGKOAwyXjHygGYHxj
-	sIFv9O8nB4e+QBgIImwQFkYNMxfwCKcV6sHy0mtok7PpCgu3LPuaNj8H4UnKKtw6
-	yhTcTGMv72LmnVMwaBn+ABwOGL7q5g10H1wxwQOkNUe27H7P00wHGVUXxMVM6RTI
-	F3Shu8qV9cElhml5KmAz+7K8TWf1lGBeoQlCivqSvdjizr/+7e4CftyL2h8G9oBH
-	xn9TiIt2RREOtkOVn/afN3S5xFs32Jn6O3KtKhhEZVU6c8UPYrfUju4RwHKQGfr9
-	xMUxWzJdD4w/tNTo0+8vGRNnkcJ5w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44wahjtsj1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 16:21:48 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51JG3ltR006774;
-	Wed, 19 Feb 2025 16:21:47 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44wahjtshx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 16:21:47 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51JE8Go4009721;
-	Wed, 19 Feb 2025 16:21:46 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44w03y50fc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Feb 2025 16:21:46 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51JGLh2l46203154
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Feb 2025 16:21:43 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3176520043;
-	Wed, 19 Feb 2025 16:21:43 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 46C8B20040;
-	Wed, 19 Feb 2025 16:21:40 +0000 (GMT)
-Received: from li-2fa77bcc-2701-11b2-a85c-cd621c23b6bd.ibm.com (unknown [9.39.30.196])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Feb 2025 16:21:40 +0000 (GMT)
-From: Sathvika Vasireddy <sv@linux.ibm.com>
-To: jpoimboe@kernel.org, peterz@infradead.org, christophe.leroy@csgroup.eu,
-        npiggin@gmail.com, maddy@linux.ibm.com
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        llvm@lists.linux.dev, sv@linux.ibm.com
-Subject: [RFC PATCH] objtool: Skip unannotated intra-function call warning for bl+mflr pattern
-Date: Wed, 19 Feb 2025 21:50:14 +0530
-Message-ID: <20250219162014.10334-1-sv@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
+	t=1739985743; c=relaxed/relaxed;
+	bh=gEkT7V5bHZlQHVx/rA/V2tGzlFsI8wT7ieOHryQ3i9Y=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=nzG97LCzKmD1P5jlbYYVJOv1CVVe9FKjzYSMgqrhL+/XyGp7vhs4rUzRcIbo/L1snG+lp1O5cVHjhaHLqRQwk5RFaS1mbb5iKx8Sc2r6uiERANcsHKfEM1F3phIhqhHP4DKSvhxiRsfWWBtlu5cMN88JeRbKw5uBGXkR2rUQ5MFUAtURulN4fV1c79YrVTfLj21H3j5eqjfz7tH+e4ELgWvJcCbXEiFJkwoA01a9vtufBbcodPvY4hhIUlkEijClhSxjeozSBSe+K6yVfd8J/nrGM3hhw+VMZUBhXiaAIn8zy7kJWetkgmGT1Trggut7RpXFFaDyLg0H/K7OZDVi1w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org) smtp.mailfrom=orcam.me.uk
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org)
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YyjrG1Pb5z2yRD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 04:22:22 +1100 (AEDT)
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 7D21992009C; Wed, 19 Feb 2025 18:15:48 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by angie.orcam.me.uk (Postfix) with ESMTP id 7875792009B;
+	Wed, 19 Feb 2025 17:15:48 +0000 (GMT)
+Date: Wed, 19 Feb 2025 17:15:48 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: "Dmitry V. Levin" <ldv@strace.io>
+cc: Andrew Morton <akpm@linux-foundation.org>, Oleg Nesterov <oleg@redhat.com>, 
+    Alexey Gladkov <legion@kernel.org>, 
+    Eugene Syromyatnikov <evgsyr@gmail.com>, 
+    Charlie Jenkins <charlie@rivosinc.com>, Helge Deller <deller@gmx.de>, 
+    Mike Frysinger <vapier@gentoo.org>, Renzo Davoli <renzo@cs.unibo.it>, 
+    Davide Berardi <berardi.dav@gmail.com>, Vineet Gupta <vgupta@kernel.org>, 
+    Russell King <linux@armlinux.org.uk>, Will Deacon <will@kernel.org>, 
+    Guo Ren <guoren@kernel.org>, Brian Cain <bcain@quicinc.com>, 
+    Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+    Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+    Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+    Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+    Stafford Horne <shorne@gmail.com>, 
+    "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, 
+    Madhavan Srinivasan <maddy@linux.ibm.com>, 
+    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+    Christophe Leroy <christophe.leroy@csgroup.eu>, 
+    Naveen N Rao <naveen@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+    Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+    Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+    Alexander Gordeev <agordeev@linux.ibm.com>, 
+    Christian Borntraeger <borntraeger@linux.ibm.com>, 
+    Sven Schnelle <svens@linux.ibm.com>, 
+    Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+    John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+    "David S. Miller" <davem@davemloft.net>, 
+    Andreas Larsson <andreas@gaisler.com>, Richard Weinberger <richard@nod.at>, 
+    Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+    Johannes Berg <johannes@sipsolutions.net>, 
+    Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+    Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+    Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+    Arnd Bergmann <arnd@arndb.de>, strace-devel@lists.strace.io, 
+    linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org, 
+    linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+    linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev, 
+    linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+    linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+    linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+    linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+    linux-um@lists.infradead.org, linux-arch@vger.kernel.org
+Subject: Re: [PATCH v6 2/6] syscall.h: add syscall_set_arguments()
+In-Reply-To: <20250217091020.GC18175@strace.io>
+Message-ID: <alpine.DEB.2.21.2502191642590.65342@angie.orcam.me.uk>
+References: <20250217091020.GC18175@strace.io>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -90,69 +89,174 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -0nfzOLk-iSmRiDMV3cAGQnVUQrMFrCG
-X-Proofpoint-ORIG-GUID: lsAzIwV9z7swoBTplC0ojbBe2RyPnvvE
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-19_07,2025-02-19_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- spamscore=0 clxscore=1011 priorityscore=1501 mlxlogscore=944
- lowpriorityscore=0 impostorscore=0 malwarescore=0 bulkscore=0 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502190124
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Architectures like PowerPC use a pattern where the compiler generates a
-branch-and-link (bl) instruction that targets the very next instruction,
-followed by loading the link register (mflr) later. This pattern appears
-in the code like:
+On Mon, 17 Feb 2025, Dmitry V. Levin wrote:
 
- bl .+4
- li r5,0
- mflr r30
+> This function is going to be needed on all HAVE_ARCH_TRACEHOOK
+> architectures to implement PTRACE_SET_SYSCALL_INFO API.
+> 
+> This partially reverts commit 7962c2eddbfe ("arch: remove unused
+> function syscall_set_arguments()") by reusing some of old
+> syscall_set_arguments() implementations.
+> 
+> Signed-off-by: Dmitry V. Levin <ldv@strace.io>
+> Tested-by: Charlie Jenkins <charlie@rivosinc.com>
+> Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
+> Acked-by: Helge Deller <deller@gmx.de> # parisc
+> ---
+>  arch/arc/include/asm/syscall.h        | 14 +++++++++++
+>  arch/arm/include/asm/syscall.h        | 13 ++++++++++
+>  arch/arm64/include/asm/syscall.h      | 13 ++++++++++
+>  arch/csky/include/asm/syscall.h       | 13 ++++++++++
+>  arch/hexagon/include/asm/syscall.h    |  7 ++++++
+>  arch/loongarch/include/asm/syscall.h  |  8 ++++++
+>  arch/mips/include/asm/syscall.h       | 32 ++++++++++++++++++++++++
+>  arch/nios2/include/asm/syscall.h      | 11 ++++++++
+>  arch/openrisc/include/asm/syscall.h   |  7 ++++++
+>  arch/parisc/include/asm/syscall.h     | 12 +++++++++
+>  arch/powerpc/include/asm/syscall.h    | 10 ++++++++
+>  arch/riscv/include/asm/syscall.h      |  9 +++++++
+>  arch/s390/include/asm/syscall.h       |  9 +++++++
+>  arch/sh/include/asm/syscall_32.h      | 12 +++++++++
+>  arch/sparc/include/asm/syscall.h      | 10 ++++++++
+>  arch/um/include/asm/syscall-generic.h | 14 +++++++++++
+>  arch/x86/include/asm/syscall.h        | 36 +++++++++++++++++++++++++++
+>  arch/xtensa/include/asm/syscall.h     | 11 ++++++++
+>  include/asm-generic/syscall.h         | 16 ++++++++++++
+>  19 files changed, 257 insertions(+)
+> 
+> diff --git a/arch/arc/include/asm/syscall.h b/arch/arc/include/asm/syscall.h
+> index 9709256e31c8..89c1e1736356 100644
+> --- a/arch/arc/include/asm/syscall.h
+> +++ b/arch/arc/include/asm/syscall.h
+> @@ -67,6 +67,20 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
+>  	}
+>  }
+>  
+> +static inline void
+> +syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+> +		      unsigned long *args)
+> +{
+> +	unsigned long *inside_ptregs = &regs->r0;
+> +	unsigned int n = 6;
+> +	unsigned int i = 0;
+> +
+> +	while (n--) {
+> +		*inside_ptregs = args[i++];
+> +		inside_ptregs--;
+> +	}
+> +}
+> +
+>  static inline int
+>  syscall_get_arch(struct task_struct *task)
+>  {
+> diff --git a/arch/arm/include/asm/syscall.h b/arch/arm/include/asm/syscall.h
+> index fe4326d938c1..21927fa0ae2b 100644
+> --- a/arch/arm/include/asm/syscall.h
+> +++ b/arch/arm/include/asm/syscall.h
+> @@ -80,6 +80,19 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>  	memcpy(args, &regs->ARM_r0 + 1, 5 * sizeof(args[0]));
+>  }
+>  
+> +static inline void syscall_set_arguments(struct task_struct *task,
+> +					 struct pt_regs *regs,
+> +					 const unsigned long *args)
+> +{
+> +	memcpy(&regs->ARM_r0, args, 6 * sizeof(args[0]));
+> +	/*
+> +	 * Also copy the first argument into ARM_ORIG_r0
+> +	 * so that syscall_get_arguments() would return it
+> +	 * instead of the previous value.
+> +	 */
+> +	regs->ARM_ORIG_r0 = regs->ARM_r0;
+> +}
+> +
+>  static inline int syscall_get_arch(struct task_struct *task)
+>  {
+>  	/* ARM tasks don't change audit architectures on the fly. */
+> diff --git a/arch/arm64/include/asm/syscall.h b/arch/arm64/include/asm/syscall.h
+> index ab8e14b96f68..76020b66286b 100644
+> --- a/arch/arm64/include/asm/syscall.h
+> +++ b/arch/arm64/include/asm/syscall.h
+> @@ -73,6 +73,19 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>  	memcpy(args, &regs->regs[1], 5 * sizeof(args[0]));
+>  }
+>  
+> +static inline void syscall_set_arguments(struct task_struct *task,
+> +					 struct pt_regs *regs,
+> +					 const unsigned long *args)
+> +{
+> +	memcpy(&regs->regs[0], args, 6 * sizeof(args[0]));
+> +	/*
+> +	 * Also copy the first argument into orig_x0
+> +	 * so that syscall_get_arguments() would return it
+> +	 * instead of the previous value.
+> +	 */
+> +	regs->orig_x0 = regs->regs[0];
+> +}
+> +
+>  /*
+>   * We don't care about endianness (__AUDIT_ARCH_LE bit) here because
+>   * AArch64 has the same system calls both on little- and big- endian.
+> diff --git a/arch/csky/include/asm/syscall.h b/arch/csky/include/asm/syscall.h
+> index 0de5734950bf..30403f7a0487 100644
+> --- a/arch/csky/include/asm/syscall.h
+> +++ b/arch/csky/include/asm/syscall.h
+> @@ -59,6 +59,19 @@ syscall_get_arguments(struct task_struct *task, struct pt_regs *regs,
+>  	memcpy(args, &regs->a1, 5 * sizeof(args[0]));
+>  }
+>  
+> +static inline void
+> +syscall_set_arguments(struct task_struct *task, struct pt_regs *regs,
+> +		      const unsigned long *args)
+> +{
+> +	memcpy(&regs->a0, args, 6 * sizeof(regs->a0));
+> +	/*
+> +	 * Also copy the first argument into orig_x0
+                                                  ^
+ Typo here, s/orig_x0/orig_a0/; see below.
 
-Objtool currently warns about this as an "unannotated intra-function
-call" because find_call_destination() fails to find any symbol at the
-target offset. Add a check to skip the warning when a branch targets
-the immediate next instruction in the same function.
+> +	 * so that syscall_get_arguments() would return it
+> +	 * instead of the previous value.
+> +	 */
+> +	regs->orig_a0 = regs->a0;
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202502180818.XnFdv8I8-lkp@intel.com/
-Signed-off-by: Sathvika Vasireddy <sv@linux.ibm.com>
----
- tools/objtool/check.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ Also:
 
-diff --git a/tools/objtool/check.c b/tools/objtool/check.c
-index 753dbc4f8198..3f7cf2c917b5 100644
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1613,6 +1613,7 @@ static struct symbol *find_call_destination(struct section *sec, unsigned long o
-  */
- static int add_call_destinations(struct objtool_file *file)
- {
-+	struct instruction *next_insn;
- 	struct instruction *insn;
- 	unsigned long dest_off;
- 	struct symbol *dest;
-@@ -1625,6 +1626,11 @@ static int add_call_destinations(struct objtool_file *file)
- 		reloc = insn_reloc(file, insn);
- 		if (!reloc) {
- 			dest_off = arch_jump_destination(insn);
-+
-+			next_insn = next_insn_same_func(file, insn);
-+			if (next_insn && dest_off == next_insn->offset)
-+				continue;
-+
- 			dest = find_call_destination(insn->sec, dest_off);
- 
- 			add_call_dest(file, insn, dest, false);
--- 
-2.39.3
+> diff --git a/arch/mips/include/asm/syscall.h b/arch/mips/include/asm/syscall.h
+> index 056aa1b713e2..ea050b23d428 100644
+> --- a/arch/mips/include/asm/syscall.h
+> +++ b/arch/mips/include/asm/syscall.h
+> @@ -120,6 +137,21 @@ static inline void syscall_get_arguments(struct task_struct *task,
+>  		mips_get_syscall_arg(args++, task, regs, i++);
+>  }
+>  
+> +static inline void syscall_set_arguments(struct task_struct *task,
+> +					 struct pt_regs *regs,
+> +					 unsigned long *args)
+> +{
+> +	unsigned int i = 0;
+> +	unsigned int n = 6;
+> +
+> +	/* O32 ABI syscall() */
+> +	if (mips_syscall_is_indirect(task, regs))
+> +		i++;
 
+-- given MIPS syscall_set_nr() implementation in 3/6 this conditional is 
+supposed to never be true.  Should it be BUG_ON() or discarded entirely?
+
+> +
+> +	while (n--)
+> +		mips_set_syscall_arg(args++, task, regs, i++);
+> +}
+> +
+>  extern const unsigned long sys_call_table[];
+>  extern const unsigned long sys32_call_table[];
+>  extern const unsigned long sysn32_call_table[];
+
+  Maciej
 
