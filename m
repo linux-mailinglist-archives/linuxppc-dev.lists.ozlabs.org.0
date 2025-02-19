@@ -1,47 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-6358-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6357-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 757AEA3CA73
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 21:55:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23613A3CA32
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Feb 2025 21:41:33 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YypZ26hgZz30TQ;
-	Thu, 20 Feb 2025 07:55:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YypG23WBSz2yvn;
+	Thu, 20 Feb 2025 07:41:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=140.211.166.183
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739974504;
-	cv=none; b=QJ0TcrYvvn/nr3efZr+ii8DMXGGVd5jH29Bk0zS34tijHVQOnRkYUt4VZZwZ7MwBl/Szj7LZbeTRoS5JdEb/5YLZpTtcTSQlF4mvqtbGncbAkquELdw7ElcLihVnNRUP9XjCYwYp+q/0j7Of6tjMCn2Vtjz2P4Vg2Yof0x7ToC7Gf0MWQu24Q/yEXyMgn2iAhhzp+zx/Pf18SHMbAGDhzxsvRdIBDYw2PFaWlLodZb723Aa1ipd6qjC68HEbpPyXHZTnTYn+zaPd13sIaMnPTPGVGu06M+l1jfeVVywSBI7yEi6OLxb463Xc1O+vcbm9ieCmPSHEEPeALezBW0Z0WQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::12a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1739997690;
+	cv=none; b=PcvgQpm5cKIzO8oHTFd8N4yrQV1NXUEioB5NZzCFM2Oxx5cwlMxlXu+2qOGWwEee4aiGHinhpff3yrb3al1ZBePXBRcEulVWZpmbs6gtpPQNGSKLH3jDS+mzeGK50oN0FgNClRvS2tur2FUssgob18Ke/q8E0/pKDy62ZbC0evJE9I1ekQfpG6DmxM+7035XUUz5bpV3IXQ5HoNF6t71B8lb0gsh2fxTQom0qLrHDcVYvRM34nse4tH1LX8M+DgFJ3+quGoT9uyg33WYM2dCLRh67SQeScCOMmsyG54f8I9zgtGs2OWPdnBM6rJ0WYFBaRhUokc7xCvOJI+CIYsJ1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1739974504; c=relaxed/relaxed;
-	bh=CIMKBpM/otj/+4OgQScDBpEp7jJhRHbiXbYzvPVbUbQ=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:MIME-Version:
-	 Content-Type; b=ep6thB8AhkOK/BCMaVVBgWde6MzTLXj4v74xvZ1syu+L0wa7Ew1HL0PE+97txtnmnnoHAgfmpRaByRsxIApRkwRz/NK/eTiEaDFTNklahRcAUEEGgPX7gDDxvwadZfhJFCxrshjt4OqV25jJ2wVhat7BXsgiKovnC1pYdWMsSCZT22bxMhE6sTI1QnkGHWyEs6aJc0val8/O8pLmuMAykT644ogxampH1kww2gm/OBVS721zARByU+TD/UC3os4XKDhBXuYJp6cBnhdkEgtvr8NibiHBwiLPRgfBLUHY9GLF78h609tDnVAvBwwLOO1/FClpKTCAumNcaVdFj/Wleg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gentoo.org; spf=pass (client-ip=140.211.166.183; helo=smtp.gentoo.org; envelope-from=sam@gentoo.org; receiver=lists.ozlabs.org) smtp.mailfrom=gentoo.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gentoo.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gentoo.org (client-ip=140.211.166.183; helo=smtp.gentoo.org; envelope-from=sam@gentoo.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 487 seconds by postgrey-1.37 at boromir; Thu, 20 Feb 2025 01:15:02 AEDT
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [140.211.166.183])
+	t=1739997690; c=relaxed/relaxed;
+	bh=uQWKjia1YEhq+PMd/nXG3fmWx8U4DeTtcDG7C2yzBs0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PcNZfwaQfAx7Q+aJE4NJqESnZf4BShNm5mOWb2M65uemgkXetB3mMWfPYu3A2jQn98cw8CoJIwR0i4fMfrg1AKlLDzoKZw2N5erXjVAOzBEnRobLSFeWZxHMSCfAC7FE69y0VGH6lPbmpfkYQGXNZEA93UwtyF85bPW4XM8+rg18R2gbrwYRayvR5ZaWxpLdRiTYbcCm75lOnj5vA01CbSDqj8ihpcdY/tLLP7Gk4FAWUqcZWU48GnsgXC5OQtJiLZlGjUv8OWXkvp3T/ub6EJpT8rC9IXKOi6zPI1Hb/3LoZIfQJxJBZgznMx7ZM7QOZPmlloyvxBXHsZJKTeF8Og==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk; dkim=pass (1024-bit key; unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.a=rsa-sha256 header.s=google header.b=ZvuWomky; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=mail@rasmusvillemoes.dk; receiver=lists.ozlabs.org) smtp.mailfrom=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=rasmusvillemoes.dk
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=rasmusvillemoes.dk header.i=@rasmusvillemoes.dk header.a=rsa-sha256 header.s=google header.b=ZvuWomky;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=rasmusvillemoes.dk (client-ip=2a00:1450:4864:20::12a; helo=mail-lf1-x12a.google.com; envelope-from=mail@rasmusvillemoes.dk; receiver=lists.ozlabs.org)
+Received: from mail-lf1-x12a.google.com (mail-lf1-x12a.google.com [IPv6:2a00:1450:4864:20::12a])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yydh66h5Wz2ywS
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 01:15:02 +1100 (AEDT)
-Received: from mop.sam.mop (unknown [82.8.138.118])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sam)
-	by smtp.gentoo.org (Postfix) with ESMTPSA id BD261343050;
-	Wed, 19 Feb 2025 14:06:42 +0000 (UTC)
-From: Sam James <sam@gentoo.org>
-To: linmag7@gmail.com
-Cc: arnd@arndb.de,chris@zankel.net,dinguyen@kernel.org,glaubitz@physik.fu-berlin.de,ink@unseen.parts,jcmvbkbc@gmail.com,kees@kernel.org,linux-alpha@vger.kernel.org,linux-arm-kernel@lists.infradead.org,linux-csky@vger.kernel.org,linux-hexagon@vger.kernel.org,linux-kernel@vger.kernel.org,linux-m68k@lists.linux-m68k.org,linux-mips@vger.kernel.org,linux-openrisc@vger.kernel.org,linux-parisc@vger.kernel.org,linux-riscv@lists.infradead.org,linux-s390@vger.kernel.org,linux-sh@vger.kernel.org,linux-snps-arc@lists.infradead.org,linux-um@lists.infradead.org,linuxppc-dev@lists.ozlabs.org,loongarch@lists.linux.dev,mattst88@gmail.com,monstr@monstr.eu,richard.henderson@linaro.org,sparclinux@vger.kernel.org,x86@kernel.org
-Subject: Re: [PATCH v2 1/1] mm: pgtable: fix pte_swp_exclusive
-In-Reply-To: <20250218175735.19882-2-linmag7@gmail.com>
-Organization: Gentoo
-User-Agent: mu4e 1.12.7; emacs 31.0.50
-Date: Wed, 19 Feb 2025 14:06:40 +0000
-Message-ID: <87cyfejafj.fsf@gentoo.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YypG03nYmz2yhD
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 07:41:27 +1100 (AEDT)
+Received: by mail-lf1-x12a.google.com with SMTP id 2adb3069b0e04-5461a485aa2so230292e87.2
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Feb 2025 12:41:27 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rasmusvillemoes.dk; s=google; t=1739997683; x=1740602483; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=uQWKjia1YEhq+PMd/nXG3fmWx8U4DeTtcDG7C2yzBs0=;
+        b=ZvuWomky14kmGUzKi9yZVwT6pcnc3i8NdnLhkizfIsw+otKAy5cdQ63aNcQ7tJptrW
+         DmF37cUUHCIGW2LPClvcgpMrVjdaYvlh/dOzTggOUQ9D3yeOvWTnTCyKwRLLkPkltVsq
+         d8e8FCDMn/MBJrrQ9P3smU5zwXWrUNIE9RpLo=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1739997683; x=1740602483;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uQWKjia1YEhq+PMd/nXG3fmWx8U4DeTtcDG7C2yzBs0=;
+        b=XBda8IzPbeeZdfMBlBZ0ms419IrxOgHdm4+ZqX7gPvFp2z1nTKI28Cwl9B0NuvbG7m
+         ltU9Ch1f4gFKmRBreHg+0pEWhHGR7KrBHQvUcvMDbItZg/HMkAZ4gxSvElw94HxWstSi
+         UkhlEExosrBLgqdBatIP/1DoYNEzV8tu0S6wktvzjmuX0KaLWiZOyxaFxbtA9oMmNGIl
+         sANzjy5N8Xq+oRX/Xvd9H065g55vm/O8eSMlBTSN+oo5C6nQC64XjRDE7mRsfeWGwI+p
+         Nd1dZ7Ekv9C9H5ntsXhXQNrB/KKyaAZ18TanLu8KSLF/2FWIQeXew/vpu3dEOio9uICi
+         0vZg==
+X-Forwarded-Encrypted: i=1; AJvYcCX5i6JJukl2GPqk3VSDilX0+f6akEgn5d587yVRHRmNH3ffCcgPYu9WhY0zgZ/HLWiSvsf8e8MQd4/Ci1U=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz/0kheAlo9d09DtOZOY8rrXo5thDUitxb1rdTf1rBqcxMnrVBx
+	uQwvmlLUfOXHm5KSfruNGRUwkfOrzMcUvsOdxrnKsuieN124DQclwGn2TN6RApCYxn7rPScUgD0
+	5kr9nflAqCLMk2cHCDjsp0Av5rwnYvKWegBzeTA==
+X-Gm-Gg: ASbGncsRWPzFyYEKKIkVemTMD2F015gTjuh6BM98ZIqT8PlyL+KQuRBoPfqTgOVO+X0
+	tfVZcL3NBsMDTO8pyET+3NhkCfb6feapPZnyJ27nEKX8rZEsJYYJpbY5P/3q5yeNR/3mCjBAU
+X-Google-Smtp-Source: AGHT+IENNNpeaMlkD/fiQQAYZ6iJNFdOYrpRNg7fkEna3OdCDK3VAQtFcLuzSuMXXgumt+4ZaeEHehD2gwq2A0TLKZo=
+X-Received: by 2002:a05:6512:2398:b0:545:ee3:f3c7 with SMTP id
+ 2adb3069b0e04-5462eef4e56mr2154420e87.30.1739997682815; Wed, 19 Feb 2025
+ 12:41:22 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,19 +72,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=0.0 required=5.0 tests=RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+References: <20250214-printf-kunit-convert-v4-0-c254572f1565@gmail.com> <20250214-printf-kunit-convert-v4-3-c254572f1565@gmail.com>
+In-Reply-To: <20250214-printf-kunit-convert-v4-3-c254572f1565@gmail.com>
+From: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Date: Wed, 19 Feb 2025 21:41:11 +0100
+X-Gm-Features: AWEUYZnPvEz-Qu0Q_eOs4K3mND8N5X48foEj8aBLKco5JWWCbd2AeY_UnbAb5oM
+Message-ID: <CAKwiHFh52-_ssWjC3wdtZ=92AHAw7grnDugZpmf7T962VQrEbQ@mail.gmail.com>
+Subject: Re: [PATCH v4 3/3] printf: implicate test line in failure messages
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Arpitha Raghunandan <98.arpi@gmail.com>, David Gow <davidgow@google.com>, 
+	Petr Mladek <pmladek@suse.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Sergey Senozhatsky <senozhatsky@chromium.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Lovely cleanup and a great suggestion from Al.
+On Fri, 14 Feb 2025 at 22:53, Tamir Duberstein <tamird@gmail.com> wrote:
+>
+> This improves the failure output by pointing to the failing line at the
+> top level of the test, e.g.:
+>       # test_number: EXPECTATION FAILED at lib/printf_kunit.c:103
+>   lib/printf_kunit.c:167: vsnprintf(buf, 256, "%#-12x", ...) wrote '0x1234abcd  ', expected '0x1234abce  '
+>       # test_number: EXPECTATION FAILED at lib/printf_kunit.c:142
+>   lib/printf_kunit.c:167: kvasprintf(..., "%#-12x", ...) returned '0x1234abcd  ', expected '0x1234abce  '
+>
 
-Reviewed-by: Sam James <sam@gentoo.org>
+Actually, I'm not sure that is an improvement as-is, with the two
+different line numbers being printed. It takes some thought to
+recognize which one is relevant and which one is not.
 
-I'd suggest adding a:
-Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Can't we have a variant of KUNIT_FAIL that allows one to pass the
+file/line info when the caller has better info than the location of
+the KUNIT_FAIL itself?
 
-thanks,
-sam
+>  static void __printf(5, 0)
+> -do_test(struct kunit *kunittest, int bufsize, const char *expect, int elen,
+> -       const char *fmt, va_list ap)
+> +do_test(struct kunit *kunittest, const char *file, const int line, int bufsize, const char *expect,
+> +       int elen, const char *fmt, va_list ap)
+
+This can't be right, the __printf attribute must be updated accordingly.
+
+Rasmus
 
