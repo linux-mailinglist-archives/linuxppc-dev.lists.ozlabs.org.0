@@ -1,90 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-6362-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98069A3D19E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2025 08:01:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E536FA3D40A
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2025 10:01:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yz40r3vwPz2xsW;
-	Thu, 20 Feb 2025 18:01:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yz6gH4SbBz30Gq;
+	Thu, 20 Feb 2025 20:00:59 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740034860;
-	cv=none; b=fYb+jrN34Z6TJ4HYT8ibSypjeglVUhj9um/xxoYMHpHUPTUshl9jBiUXvSF0EzKYUknU0/4h19BYCfmAOWfnFSlQrvEJXhNuXC3iE0rTteNRg+TbFXFINDuCIisDuCSgc0ACohc0XdoGmPzvvclq+Vkd3PihxX2Igy+N3pBXgg6GVvJj2M6BpnjwzyNrBi3/Kb7gHHqYA+GL69RUV2uulILknLt5NF+t43xAfQh09hj31fsLb0K42lgWhMY5M8FlVDd8vjc4hfw12KEutgpebowqlT8fP/F8qpExML6yz6P9u02lVyWs8qwoVNvyNA27tkg9DOpO9tgWlxsrc0eKIg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::130"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740042059;
+	cv=none; b=m3wDsOHoHyTMXhEUYWq2M/IhtWJoXg3LtkeKXfulH1x5W1elOsxc47ryGFFLDYXADW+W1mUZK3lbjInXCAyGoL1lN5I36XMBkMohr4QSyQrNyESwgvATBV8aPc7YL24J1CV4M/BXHOaFclw2F+AQiJ6jym7WCImr0BT8xqRF4xHyMsPnnfaJHXXz1lHNBiZsilb+fdRxoJ2XU8Qam3E4LiP9V62yR+ntewnmYwofXxwO4IZPoNbWk14xGBVL4Gn5jcfZdo8dLJDl1qgAxWdfDR1hkY3Gtgvzo0Kanzt+KP/XAjYXyEmmQBi4nirqYo2f/tTVcFngYIHEM4OMS9garQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740034860; c=relaxed/relaxed;
-	bh=lPt69rKuvv9+NCGD8OAkzDm7GM0h21bKMRLPsWMDjVY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JirdN5EufuLvXT6pxUfwWjVtwiP4ORk/2nWZFPHbVPGlGfXomFvOTb1dNrqO1leQLbYkU6E74qEDLuLDbjATlrXUuL1YYEUtBa6/oaNaxawkZYtGGv3h36WjDDeg3vn17BHxfyRQC1wG9Rij03vI60KPDfNJV+QmSsRPB3xMcMnpjcIg011RFdlaAeTc3IHSIlqOD/L5ib/pWViWqoZ+Ogni7R6024o6XOrzyYhFt+qzLPZzmBUqHP/nFGFglZh4sPLy5JsapWIdmY38parB1q2+kRID8Jy89Wlc5c7IHfBvXv6vjD/f8fBGCW0wmWB1NuztMb3dXvo3mEp53K3cfQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HsefP4gf; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1740042059; c=relaxed/relaxed;
+	bh=pBGc9kjWvcTT8TmY8LuieFVJI4yuvG9ph/k+PfRmzSM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OwH8enyergsBiYAALxjQW3DaLgqVqELmzA7PQHaMX+9jDeJggEtwyAGQ1KLJ0KSDozKdTCo6WKldZN87SRZP6hBucZ3fEspJE8ffqJ8cc9/ZglI0/ogR8apSWTjxEDXO+jJih9gT4ZntnR5qxorqnf/sgz8K5T6MTm7cumG3ZX1MHVFohUElD7uX5h8Z+scG8T2OIYXVyIYyTTCGwBfwUqoIr5AkVnJCLDenl8/rqw1eYibweoXxckKJOA2azETU1ah4+ArxmeiPs+zAhHni3sNtVPeSU80mCadEsBJ7nT/mGrwzsyB3R7guUFQWNpsHbSXdv1CZBZKKssaccO5vxQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lR3SHEGN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HsefP4gf;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lR3SHEGN;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=amachhiw@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yz40q1jmtz2xs7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 18:00:58 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51K2BvTY002825;
-	Thu, 20 Feb 2025 07:00:38 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=lPt69rKuvv9+NCGD8OAkzDm7GM0h21bKMRLPsWMDj
-	VY=; b=HsefP4gf6il1DjGFBZin6LCuxk181MkgHZByNum4534Vqothh0w3HSQ7Z
-	xGbrXZ+4yrgybdJ4HBJNbTE5h7Ebe4hUcOznSIIDaNhJ82XAdhhzAjp7ZgF22Clt
-	p9NfHCUucWzrfpCfEzwe/HEoWMwszxapSJHil4ZckinlX67/vxpcd8I3+/HVIxfv
-	SPBBfXs9b5n9VUZ/F1Owo4PvZbAQbq9LmJdJL5LaQANw7eio79vy2LxNANCZ9ZbN
-	lmTv5vz2JN2Qiw36HtfsArHlu+JayE/d9wPUusDTcL+EFWnstkdrQivoYgcgvJ9y
-	9UYBRuzUgC5BHJUVklegU3pdaBkRg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44wb0nwyda-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Feb 2025 07:00:38 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51K6xogn020491;
-	Thu, 20 Feb 2025 07:00:37 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44wb0nwyd7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Feb 2025 07:00:37 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51K4PuuY029303;
-	Thu, 20 Feb 2025 07:00:36 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44w024gj84-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 20 Feb 2025 07:00:36 +0000
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51K70WMt22676004
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Feb 2025 07:00:32 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A4E372004F;
-	Thu, 20 Feb 2025 07:00:32 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 482B72004B;
-	Thu, 20 Feb 2025 07:00:29 +0000 (GMT)
-Received: from li-e7e2bd4c-2dae-11b2-a85c-bfd29497117c.ibm.com.com (unknown [9.39.28.11])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 20 Feb 2025 07:00:29 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, kvm-ppc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, kvm@vger.kernel.org,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [PATCH v3] KVM: PPC: Enable CAP_SPAPR_TCE_VFIO on pSeries KVM guests
-Date: Thu, 20 Feb 2025 12:30:02 +0530
-Message-ID: <20250220070002.1478849-1-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yz6gG0YDfz2y92
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 20:00:56 +1100 (AEDT)
+Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-3d284b9734fso6171125ab.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 01:00:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740042053; x=1740646853; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pBGc9kjWvcTT8TmY8LuieFVJI4yuvG9ph/k+PfRmzSM=;
+        b=lR3SHEGNg8HFSm+wiSdDKIWQjZLpn0j3GENJu3BFzC6GUg+aw6a8m8f6EGbs5N0o4b
+         bkHNT2MRKp6UEIvGrxL8R5yfcUcEhvXXUSERIhGrYnJqGJDMiPSg2CfOy1zTXaOQzdRI
+         PtLH4WbxAmahCrSYvLowgOUBryxBRcvI1JDH6cmJvD1uFW2OI+GhubH6zT8xzYApDaoe
+         oDxfxwodx94yElPoAEj3HJbKeQFPiTwLJ/PliF3DBJtKg2fZl4LcHQAj2Kz23DBAPwCb
+         uEQ/oVgb/5lTs3wCghdnKsCOhZyYdt9cwnq2ecQ3Wmo7xIOfjDLn9FH7lteMSDJsbY4o
+         34Eg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740042053; x=1740646853;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pBGc9kjWvcTT8TmY8LuieFVJI4yuvG9ph/k+PfRmzSM=;
+        b=Xw5dHutj98h1VlO/CSK5ORZ7/EziL/wykUTkxQ8pMysHqWFwEcbo6HvjkNNzTGjVXm
+         UnhLK0jXZlXX4Kqn2yZPghf4vetvJZmLFnQ6LxsL/ns3MwXraara7RKvAZ6bR+jnXF+4
+         0EiI1tfzTrbn8IHroORgrFm+q98nngnAY6+D8ajkwH2LEk++n1kqFRrgJNZp0B0VuVb2
+         pI1Wwft9+rm5nDDRJLNPIh6L2x4/vSxOMcfzxHZSHn8XZvEtogi6MSdCj8wvJXH4CvtR
+         HWBqTyhb8YiIxdNj5QuLwh4YKteBuYn1RZt2oehAfbHrAecqZMUg492XS1swZ8ORzRbk
+         Yi1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVAiy5GyRcvA5qvYOO7/vP+H/5btjePIxG31OF/g3E38YUfk9S/bRavh3kMmSgt4tHKfQS3YZuiYJETAa4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yz1GOLxw5qoRKMjqahVuYRWjdVE4W2k+nV5LspmVNQkPOaWHHw4
+	xPAQW8ubbO3CFm5UMzUSv6RxqPCeCXJZW/fRxyfwzggMrqP6tiOs9KJ1VCf51Faxkv5tQf8+bel
+	7k6IqGbET1qv08yPgdxUGnx9VwTE=
+X-Gm-Gg: ASbGnctVx4iuwxTXp2+bTivyJIpBP29ip5K0va8cp4gAbaAesLMC9f71tD5Xo+z9m5b
+	moP3iER+uwwZGhSovq4NZtOP0z+T3M/F2CUlEjLVk2wGV9i4MqqSm1mUBAET4sipCC33nqOrj
+X-Google-Smtp-Source: AGHT+IG7gp55gI6T7N19LupIXyNXuZGTOg7Z9WUU+BixH82XpixCePwY1tGVPmmyOmTvSK8jIL5m5WxoGCqGVuGTA9A=
+X-Received: by 2002:a92:c26c:0:b0:3d2:b72d:a507 with SMTP id
+ e9e14a558f8ab-3d2c25f4dcbmr17357385ab.19.1740042053529; Thu, 20 Feb 2025
+ 01:00:53 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,90 +76,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 91L33-gR5hBeTyVHntnM3867vAk8s8XE
-X-Proofpoint-GUID: HWCx8eFMycYN1YG9S8kraIezKXqDnxey
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-20_02,2025-02-20_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 mlxlogscore=939
- malwarescore=0 lowpriorityscore=0 mlxscore=0 phishscore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 bulkscore=0 adultscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502200049
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <20250217010437.258621-1-chancel.liu@nxp.com>
+In-Reply-To: <20250217010437.258621-1-chancel.liu@nxp.com>
+From: Shengjiu Wang <shengjiu.wang@gmail.com>
+Date: Thu, 20 Feb 2025 17:00:40 +0800
+X-Gm-Features: AWEUYZnC1Oj7Zc6v49m8gK1mM0DpiY64mpQR7L7KBjSe2s7uidTWDyh3xmP5pP0
+Message-ID: <CAA+D8ANJR7rVo5e8jA5wk=rZmoPpJS-=9qZw9s2aSWadzWPEmg@mail.gmail.com>
+Subject: Re: [PATCH v3] ASoC: fsl: Rename stream name of SAI DAI driver
+To: Chancel Liu <chancel.liu@nxp.com>
+Cc: Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com, 
+	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com, 
+	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-sound@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Currently on book3s-hv, the capability KVM_CAP_SPAPR_TCE_VFIO is only
-available for KVM Guests running on PowerNV and not for the KVM guests
-running on pSeries hypervisors. This prevents a pSeries L2 guest from
-leveraging the in-kernel acceleration for H_PUT_TCE_INDIRECT and
-H_STUFF_TCE hcalls that results in slow startup times for large memory
-guests.
+On Mon, Feb 17, 2025 at 9:05=E2=80=AFAM Chancel Liu <chancel.liu@nxp.com> w=
+rote:
+>
+> If stream names of DAI driver are duplicated there'll be warnings when
+> machine driver tries to add widgets on a route:
+>
+> [    8.831335] fsl-asoc-card sound-wm8960: ASoC: sink widget CPU-Playback=
+ overwritten
+> [    8.839917] fsl-asoc-card sound-wm8960: ASoC: source widget CPU-Captur=
+e overwritten
+>
+> Use different stream names to avoid such warnings.
+> DAI names in AUDMIX are also updated accordingly.
+>
+> Fixes: 15c958390460 ("ASoC: fsl_sai: Add separate DAI for transmitter and=
+ receiver")
+> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
 
-Support for VFIO on pSeries was restored in commit f431a8cde7f1
-("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries"),
-making it possible to re-enable this capability on pSeries hosts.
+Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
 
-This change enables KVM_CAP_SPAPR_TCE_VFIO for nested PAPR guests on
-pSeries, while maintaining the existing behavior on PowerNV. Booting an
-L2 guest with 128GB of memory shows an average 11% improvement in
-startup time.
-
-Fixes: f431a8cde7f1 ("powerpc/iommu: Reimplement the iommu_table_group_ops for pSeries")
-Cc: stable@vger.kernel.org
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
----
-Changes since v2:
-    * Updated the patch description
-    * v2: https://lore.kernel.org/all/20250129094033.2265211-1-amachhiw@linux.ibm.com/
-Changes since v1:
-    * Addressed review comments from Ritesh
-    * v1: https://lore.kernel.org/all/20250109132053.158436-1-amachhiw@linux.ibm.com/
-
- arch/powerpc/kvm/powerpc.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/arch/powerpc/kvm/powerpc.c b/arch/powerpc/kvm/powerpc.c
-index ce1d91eed231..a7138eb18d59 100644
---- a/arch/powerpc/kvm/powerpc.c
-+++ b/arch/powerpc/kvm/powerpc.c
-@@ -543,26 +543,23 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 		r = !hv_enabled;
- 		break;
- #ifdef CONFIG_KVM_MPIC
- 	case KVM_CAP_IRQ_MPIC:
- 		r = 1;
- 		break;
- #endif
- 
- #ifdef CONFIG_PPC_BOOK3S_64
- 	case KVM_CAP_SPAPR_TCE:
-+		fallthrough;
- 	case KVM_CAP_SPAPR_TCE_64:
--		r = 1;
--		break;
- 	case KVM_CAP_SPAPR_TCE_VFIO:
--		r = !!cpu_has_feature(CPU_FTR_HVMODE);
--		break;
- 	case KVM_CAP_PPC_RTAS:
- 	case KVM_CAP_PPC_FIXUP_HCALL:
- 	case KVM_CAP_PPC_ENABLE_HCALL:
- #ifdef CONFIG_KVM_XICS
- 	case KVM_CAP_IRQ_XICS:
- #endif
- 	case KVM_CAP_PPC_GET_CPU_CHAR:
- 		r = 1;
- 		break;
- #ifdef CONFIG_KVM_XIVE
-
-base-commit: 6537cfb395f352782918d8ee7b7f10ba2cc3cbf2
--- 
-2.48.1
-
+Best regards
+Shengjiu Wang
+> ---
+> - changes in v3
+> Squash two fix patches in one commit
+>
+>  sound/soc/fsl/fsl_sai.c    | 6 +++---
+>  sound/soc/fsl/imx-audmix.c | 4 ++--
+>  2 files changed, 5 insertions(+), 5 deletions(-)
+>
+> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+> index c4eb87c5d39e..9f33dd11d47f 100644
+> --- a/sound/soc/fsl/fsl_sai.c
+> +++ b/sound/soc/fsl/fsl_sai.c
+> @@ -994,10 +994,10 @@ static struct snd_soc_dai_driver fsl_sai_dai_templa=
+te[] =3D {
+>         {
+>                 .name =3D "sai-tx",
+>                 .playback =3D {
+> -                       .stream_name =3D "CPU-Playback",
+> +                       .stream_name =3D "SAI-Playback",
+>                         .channels_min =3D 1,
+>                         .channels_max =3D 32,
+> -                               .rate_min =3D 8000,
+> +                       .rate_min =3D 8000,
+>                         .rate_max =3D 2822400,
+>                         .rates =3D SNDRV_PCM_RATE_KNOT,
+>                         .formats =3D FSL_SAI_FORMATS,
+> @@ -1007,7 +1007,7 @@ static struct snd_soc_dai_driver fsl_sai_dai_templa=
+te[] =3D {
+>         {
+>                 .name =3D "sai-rx",
+>                 .capture =3D {
+> -                       .stream_name =3D "CPU-Capture",
+> +                       .stream_name =3D "SAI-Capture",
+>                         .channels_min =3D 1,
+>                         .channels_max =3D 32,
+>                         .rate_min =3D 8000,
+> diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
+> index 50ecc5f51100..dac5d4ddacd6 100644
+> --- a/sound/soc/fsl/imx-audmix.c
+> +++ b/sound/soc/fsl/imx-audmix.c
+> @@ -119,8 +119,8 @@ static const struct snd_soc_ops imx_audmix_be_ops =3D=
+ {
+>  static const char *name[][3] =3D {
+>         {"HiFi-AUDMIX-FE-0", "HiFi-AUDMIX-FE-1", "HiFi-AUDMIX-FE-2"},
+>         {"sai-tx", "sai-tx", "sai-rx"},
+> -       {"AUDMIX-Playback-0", "AUDMIX-Playback-1", "CPU-Capture"},
+> -       {"CPU-Playback", "CPU-Playback", "AUDMIX-Capture-0"},
+> +       {"AUDMIX-Playback-0", "AUDMIX-Playback-1", "SAI-Capture"},
+> +       {"SAI-Playback", "SAI-Playback", "AUDMIX-Capture-0"},
+>  };
+>
+>  static int imx_audmix_probe(struct platform_device *pdev)
+> --
+> 2.47.1
+>
 
