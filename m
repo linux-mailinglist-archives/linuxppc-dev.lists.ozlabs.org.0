@@ -1,69 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6363-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6364-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E536FA3D40A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2025 10:01:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 826CEA3D42D
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2025 10:08:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Yz6gH4SbBz30Gq;
-	Thu, 20 Feb 2025 20:00:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Yz6qd0482z30QJ;
+	Thu, 20 Feb 2025 20:08:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::130"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740042059;
-	cv=none; b=m3wDsOHoHyTMXhEUYWq2M/IhtWJoXg3LtkeKXfulH1x5W1elOsxc47ryGFFLDYXADW+W1mUZK3lbjInXCAyGoL1lN5I36XMBkMohr4QSyQrNyESwgvATBV8aPc7YL24J1CV4M/BXHOaFclw2F+AQiJ6jym7WCImr0BT8xqRF4xHyMsPnnfaJHXXz1lHNBiZsilb+fdRxoJ2XU8Qam3E4LiP9V62yR+ntewnmYwofXxwO4IZPoNbWk14xGBVL4Gn5jcfZdo8dLJDl1qgAxWdfDR1hkY3Gtgvzo0Kanzt+KP/XAjYXyEmmQBi4nirqYo2f/tTVcFngYIHEM4OMS9garQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.13
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740042492;
+	cv=none; b=Khik8q0/XE7BDzIRANTGwyu2nthZ2DVXK496kU4/2v/+L9vjDZOKsbltf7mFY2Uh5N+FTRVMDhyWOgU9BDXhnwtDFQlBXXwZw6yuS2fu7phOaD2Ur297xSQhwhDuXnD3oyM13rjeNfwhzFFT152hPtH3DPCC2HB+lx2Yn6TD1Lw53rhzhbPpR36cCAy9gnPwBcqM7Hmnm4MWkKaEcPAxh4mnFDnwh+Nj6DAIt1mUoUJcNocL7Kw06Y2k5Y7yezWVR0mXbigr/QlltJcbM+KRsOqHgndHJ2fyXNDNg6bGVuR6lEGUKcTxnQA+5xnGjQhEJiwl8A5BD9ulKK5e8WzPpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740042059; c=relaxed/relaxed;
-	bh=pBGc9kjWvcTT8TmY8LuieFVJI4yuvG9ph/k+PfRmzSM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OwH8enyergsBiYAALxjQW3DaLgqVqELmzA7PQHaMX+9jDeJggEtwyAGQ1KLJ0KSDozKdTCo6WKldZN87SRZP6hBucZ3fEspJE8ffqJ8cc9/ZglI0/ogR8apSWTjxEDXO+jJih9gT4ZntnR5qxorqnf/sgz8K5T6MTm7cumG3ZX1MHVFohUElD7uX5h8Z+scG8T2OIYXVyIYyTTCGwBfwUqoIr5AkVnJCLDenl8/rqw1eYibweoXxckKJOA2azETU1ah4+ArxmeiPs+zAhHni3sNtVPeSU80mCadEsBJ7nT/mGrwzsyB3R7guUFQWNpsHbSXdv1CZBZKKssaccO5vxQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lR3SHEGN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1740042492; c=relaxed/relaxed;
+	bh=+OGqItYPt93ufjm/4p/1UobstHtnMhZ7BgDtTODsMxM=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=itsk3ag/uKP8+rYhPOq/atmQWSrMUdgqdPj4gOh4xYFWPKRloTrCaN+CJNCezkbbekrzW9FZBbK6hH27RQDKku9TwZzrOG3r15m+8gE8Yd7oR69OSN/86pDr+BN4kc8S3AwdG3mQuv+01t0DkWBjUgPXYseA2ntc3zAFG7bjR9GhHN0erLAgCo36zN2yVgBumHnyTiEEksyn0GfGk/TQHIm3emUd1U2r8ydjGPWjCsQZGiWvOwffrFM2Y1jYhXW7RLf5py9WDjj21Ngt56ePQk7SvV+pAY9SxyjfMpom3p3eMhZJ8ltExPduFQ0n1u465tep11S2PDIuuZpNJrEUaA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XkEBvqBm; dkim-atps=neutral; spf=pass (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=lR3SHEGN;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=XkEBvqBm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::130; helo=mail-il1-x130.google.com; envelope-from=shengjiu.wang@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-il1-x130.google.com (mail-il1-x130.google.com [IPv6:2607:f8b0:4864:20::130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.13; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yz6gG0YDfz2y92
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 20:00:56 +1100 (AEDT)
-Received: by mail-il1-x130.google.com with SMTP id e9e14a558f8ab-3d284b9734fso6171125ab.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 01:00:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1740042053; x=1740646853; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pBGc9kjWvcTT8TmY8LuieFVJI4yuvG9ph/k+PfRmzSM=;
-        b=lR3SHEGNg8HFSm+wiSdDKIWQjZLpn0j3GENJu3BFzC6GUg+aw6a8m8f6EGbs5N0o4b
-         bkHNT2MRKp6UEIvGrxL8R5yfcUcEhvXXUSERIhGrYnJqGJDMiPSg2CfOy1zTXaOQzdRI
-         PtLH4WbxAmahCrSYvLowgOUBryxBRcvI1JDH6cmJvD1uFW2OI+GhubH6zT8xzYApDaoe
-         oDxfxwodx94yElPoAEj3HJbKeQFPiTwLJ/PliF3DBJtKg2fZl4LcHQAj2Kz23DBAPwCb
-         uEQ/oVgb/5lTs3wCghdnKsCOhZyYdt9cwnq2ecQ3Wmo7xIOfjDLn9FH7lteMSDJsbY4o
-         34Eg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740042053; x=1740646853;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pBGc9kjWvcTT8TmY8LuieFVJI4yuvG9ph/k+PfRmzSM=;
-        b=Xw5dHutj98h1VlO/CSK5ORZ7/EziL/wykUTkxQ8pMysHqWFwEcbo6HvjkNNzTGjVXm
-         UnhLK0jXZlXX4Kqn2yZPghf4vetvJZmLFnQ6LxsL/ns3MwXraara7RKvAZ6bR+jnXF+4
-         0EiI1tfzTrbn8IHroORgrFm+q98nngnAY6+D8ajkwH2LEk++n1kqFRrgJNZp0B0VuVb2
-         pI1Wwft9+rm5nDDRJLNPIh6L2x4/vSxOMcfzxHZSHn8XZvEtogi6MSdCj8wvJXH4CvtR
-         HWBqTyhb8YiIxdNj5QuLwh4YKteBuYn1RZt2oehAfbHrAecqZMUg492XS1swZ8ORzRbk
-         Yi1g==
-X-Forwarded-Encrypted: i=1; AJvYcCVAiy5GyRcvA5qvYOO7/vP+H/5btjePIxG31OF/g3E38YUfk9S/bRavh3kMmSgt4tHKfQS3YZuiYJETAa4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yz1GOLxw5qoRKMjqahVuYRWjdVE4W2k+nV5LspmVNQkPOaWHHw4
-	xPAQW8ubbO3CFm5UMzUSv6RxqPCeCXJZW/fRxyfwzggMrqP6tiOs9KJ1VCf51Faxkv5tQf8+bel
-	7k6IqGbET1qv08yPgdxUGnx9VwTE=
-X-Gm-Gg: ASbGnctVx4iuwxTXp2+bTivyJIpBP29ip5K0va8cp4gAbaAesLMC9f71tD5Xo+z9m5b
-	moP3iER+uwwZGhSovq4NZtOP0z+T3M/F2CUlEjLVk2wGV9i4MqqSm1mUBAET4sipCC33nqOrj
-X-Google-Smtp-Source: AGHT+IG7gp55gI6T7N19LupIXyNXuZGTOg7Z9WUU+BixH82XpixCePwY1tGVPmmyOmTvSK8jIL5m5WxoGCqGVuGTA9A=
-X-Received: by 2002:a92:c26c:0:b0:3d2:b72d:a507 with SMTP id
- e9e14a558f8ab-3d2c25f4dcbmr17357385ab.19.1740042053529; Thu, 20 Feb 2025
- 01:00:53 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Yz6qZ4Ct8z2y92
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 20:08:09 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740042491; x=1771578491;
+  h=date:from:to:cc:subject:message-id;
+  bh=PzM7Fk0pTS/dsYYgR3bCVmRF5u2Fao5QJWpMvvwQ9x0=;
+  b=XkEBvqBmCMEEx6N9L84B0HzRKB4fWmEI1ZJV+aITdw+cIGnOn6aAUyJF
+   MDeKqRLjQWoErQWQsUbc2yA7Lyr9WRGv5dN6ANugeWC+1sljD6B9sUlih
+   EEJB4H7DaWCUfagNNASIhmgrfuM8jOGaa103DhYZ9wFv71nEqVINv0mPT
+   UmupiYsCZd85C3K1aLhSPpKfxEUkRbkOT2wgxHqOaPSg9co5V/DYMY297
+   AnW4G3dn6jrugvKG6yjxGSAW+tbnBhYo1A8xcit6D4IJ/SL14eSxfJ2Qt
+   PbuYGip9OsOfkVJMY9QBSi8iS0J23pvi6tsvehTKkIoiRuujMTJ7efQgo
+   w==;
+X-CSE-ConnectionGUID: w4dDmQqeSnOhm8haTxO1zg==
+X-CSE-MsgGUID: SRbTRvOFSIe9VW4JYEHb5g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11350"; a="43642231"
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="43642231"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Feb 2025 01:08:06 -0800
+X-CSE-ConnectionGUID: G1jVAQktQ+mt65kEKTo+rQ==
+X-CSE-MsgGUID: gpYZJXuLS5GN5G69pr4ysA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,301,1732608000"; 
+   d="scan'208";a="119920243"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa003.jf.intel.com with ESMTP; 20 Feb 2025 01:08:06 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tl2XG-00044v-24;
+	Thu, 20 Feb 2025 09:07:59 +0000
+Date: Thu, 20 Feb 2025 17:07:08 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ eff2eb592efd73f00590d578c3d6021f604df62c
+Message-ID: <202502201702.vRo8eTXo-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,101 +79,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-References: <20250217010437.258621-1-chancel.liu@nxp.com>
-In-Reply-To: <20250217010437.258621-1-chancel.liu@nxp.com>
-From: Shengjiu Wang <shengjiu.wang@gmail.com>
-Date: Thu, 20 Feb 2025 17:00:40 +0800
-X-Gm-Features: AWEUYZnC1Oj7Zc6v49m8gK1mM0DpiY64mpQR7L7KBjSe2s7uidTWDyh3xmP5pP0
-Message-ID: <CAA+D8ANJR7rVo5e8jA5wk=rZmoPpJS-=9qZw9s2aSWadzWPEmg@mail.gmail.com>
-Subject: Re: [PATCH v3] ASoC: fsl: Rename stream name of SAI DAI driver
-To: Chancel Liu <chancel.liu@nxp.com>
-Cc: Xiubo.Lee@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com, 
-	lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-sound@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 17, 2025 at 9:05=E2=80=AFAM Chancel Liu <chancel.liu@nxp.com> w=
-rote:
->
-> If stream names of DAI driver are duplicated there'll be warnings when
-> machine driver tries to add widgets on a route:
->
-> [    8.831335] fsl-asoc-card sound-wm8960: ASoC: sink widget CPU-Playback=
- overwritten
-> [    8.839917] fsl-asoc-card sound-wm8960: ASoC: source widget CPU-Captur=
-e overwritten
->
-> Use different stream names to avoid such warnings.
-> DAI names in AUDMIX are also updated accordingly.
->
-> Fixes: 15c958390460 ("ASoC: fsl_sai: Add separate DAI for transmitter and=
- receiver")
-> Signed-off-by: Chancel Liu <chancel.liu@nxp.com>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: eff2eb592efd73f00590d578c3d6021f604df62c  cxl: Fix cross-reference in documentation and add deprecation warning
 
-Acked-by: Shengjiu Wang <shengjiu.wang@gmail.com>
+elapsed time: 1446m
 
-Best regards
-Shengjiu Wang
-> ---
-> - changes in v3
-> Squash two fix patches in one commit
->
->  sound/soc/fsl/fsl_sai.c    | 6 +++---
->  sound/soc/fsl/imx-audmix.c | 4 ++--
->  2 files changed, 5 insertions(+), 5 deletions(-)
->
-> diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-> index c4eb87c5d39e..9f33dd11d47f 100644
-> --- a/sound/soc/fsl/fsl_sai.c
-> +++ b/sound/soc/fsl/fsl_sai.c
-> @@ -994,10 +994,10 @@ static struct snd_soc_dai_driver fsl_sai_dai_templa=
-te[] =3D {
->         {
->                 .name =3D "sai-tx",
->                 .playback =3D {
-> -                       .stream_name =3D "CPU-Playback",
-> +                       .stream_name =3D "SAI-Playback",
->                         .channels_min =3D 1,
->                         .channels_max =3D 32,
-> -                               .rate_min =3D 8000,
-> +                       .rate_min =3D 8000,
->                         .rate_max =3D 2822400,
->                         .rates =3D SNDRV_PCM_RATE_KNOT,
->                         .formats =3D FSL_SAI_FORMATS,
-> @@ -1007,7 +1007,7 @@ static struct snd_soc_dai_driver fsl_sai_dai_templa=
-te[] =3D {
->         {
->                 .name =3D "sai-rx",
->                 .capture =3D {
-> -                       .stream_name =3D "CPU-Capture",
-> +                       .stream_name =3D "SAI-Capture",
->                         .channels_min =3D 1,
->                         .channels_max =3D 32,
->                         .rate_min =3D 8000,
-> diff --git a/sound/soc/fsl/imx-audmix.c b/sound/soc/fsl/imx-audmix.c
-> index 50ecc5f51100..dac5d4ddacd6 100644
-> --- a/sound/soc/fsl/imx-audmix.c
-> +++ b/sound/soc/fsl/imx-audmix.c
-> @@ -119,8 +119,8 @@ static const struct snd_soc_ops imx_audmix_be_ops =3D=
- {
->  static const char *name[][3] =3D {
->         {"HiFi-AUDMIX-FE-0", "HiFi-AUDMIX-FE-1", "HiFi-AUDMIX-FE-2"},
->         {"sai-tx", "sai-tx", "sai-rx"},
-> -       {"AUDMIX-Playback-0", "AUDMIX-Playback-1", "CPU-Capture"},
-> -       {"CPU-Playback", "CPU-Playback", "AUDMIX-Capture-0"},
-> +       {"AUDMIX-Playback-0", "AUDMIX-Playback-1", "SAI-Capture"},
-> +       {"SAI-Playback", "SAI-Playback", "AUDMIX-Capture-0"},
->  };
->
->  static int imx_audmix_probe(struct platform_device *pdev)
-> --
-> 2.47.1
->
+configs tested: 128
+configs skipped: 5
+
+The following configs have been built successfully.
+More configs may be tested in the coming days.
+
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+alpha                               defconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-13.2.0
+arc                               allnoconfig    gcc-13.2.0
+arc                              allyesconfig    gcc-13.2.0
+arc                                 defconfig    gcc-13.2.0
+arc                   randconfig-001-20250219    gcc-13.2.0
+arc                   randconfig-002-20250219    gcc-13.2.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-17
+arm                              allyesconfig    gcc-14.2.0
+arm                                 defconfig    clang-21
+arm                           imxrt_defconfig    clang-19
+arm                        mvebu_v7_defconfig    clang-15
+arm                         nhk8815_defconfig    clang-21
+arm                   randconfig-001-20250219    gcc-14.2.0
+arm                   randconfig-002-20250219    clang-17
+arm                   randconfig-003-20250219    clang-15
+arm                   randconfig-004-20250219    gcc-14.2.0
+arm                           u8500_defconfig    gcc-14.2.0
+arm                       versatile_defconfig    gcc-14.2.0
+arm                        vexpress_defconfig    gcc-14.2.0
+arm64                            allmodconfig    clang-18
+arm64                             allnoconfig    gcc-14.2.0
+arm64                               defconfig    gcc-14.2.0
+arm64                 randconfig-001-20250219    clang-21
+arm64                 randconfig-002-20250219    gcc-14.2.0
+arm64                 randconfig-003-20250219    gcc-14.2.0
+arm64                 randconfig-004-20250219    gcc-14.2.0
+csky                              allnoconfig    gcc-14.2.0
+csky                                defconfig    gcc-14.2.0
+csky                  randconfig-001-20250219    gcc-14.2.0
+csky                  randconfig-002-20250219    gcc-14.2.0
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-18
+hexagon                             defconfig    clang-21
+hexagon               randconfig-001-20250219    clang-14
+hexagon               randconfig-002-20250219    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250219    clang-19
+i386        buildonly-randconfig-002-20250219    clang-19
+i386        buildonly-randconfig-003-20250219    gcc-12
+i386        buildonly-randconfig-004-20250219    clang-19
+i386        buildonly-randconfig-005-20250219    clang-19
+i386        buildonly-randconfig-006-20250219    gcc-12
+i386                                defconfig    clang-19
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250219    gcc-14.2.0
+loongarch             randconfig-002-20250219    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                                defconfig    gcc-14.2.0
+m68k                       m5249evb_defconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                          defconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250219    gcc-14.2.0
+nios2                 randconfig-002-20250219    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-14.2.0
+parisc                randconfig-001-20250219    gcc-14.2.0
+parisc                randconfig-002-20250219    gcc-14.2.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc               randconfig-001-20250219    clang-15
+powerpc               randconfig-002-20250219    clang-17
+powerpc               randconfig-003-20250219    gcc-14.2.0
+powerpc                     tqm8555_defconfig    gcc-14.2.0
+powerpc64             randconfig-001-20250219    gcc-14.2.0
+powerpc64             randconfig-002-20250219    gcc-14.2.0
+powerpc64             randconfig-003-20250219    gcc-14.2.0
+riscv                             allnoconfig    gcc-14.2.0
+riscv                               defconfig    clang-19
+riscv                 randconfig-001-20250219    clang-21
+riscv                 randconfig-002-20250219    gcc-14.2.0
+s390                             allmodconfig    clang-19
+s390                              allnoconfig    clang-21
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    clang-15
+s390                  randconfig-001-20250219    clang-18
+s390                  randconfig-002-20250219    clang-21
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-14.2.0
+sh                        dreamcast_defconfig    gcc-14.2.0
+sh                    randconfig-001-20250219    gcc-14.2.0
+sh                    randconfig-002-20250219    gcc-14.2.0
+sh                          rsk7203_defconfig    gcc-14.2.0
+sh                           sh2007_defconfig    gcc-14.2.0
+sh                   sh7770_generic_defconfig    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250219    gcc-14.2.0
+sparc                 randconfig-002-20250219    gcc-14.2.0
+sparc64                             defconfig    gcc-14.2.0
+sparc64               randconfig-001-20250219    gcc-14.2.0
+sparc64               randconfig-002-20250219    gcc-14.2.0
+um                               allmodconfig    clang-21
+um                                allnoconfig    clang-18
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-21
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250219    clang-21
+um                    randconfig-002-20250219    clang-21
+um                           x86_64_defconfig    clang-15
+x86_64                            allnoconfig    clang-19
+x86_64                           allyesconfig    clang-19
+x86_64      buildonly-randconfig-001-20250219    gcc-12
+x86_64      buildonly-randconfig-002-20250219    clang-19
+x86_64      buildonly-randconfig-003-20250219    gcc-12
+x86_64      buildonly-randconfig-004-20250219    clang-19
+x86_64      buildonly-randconfig-005-20250219    gcc-12
+x86_64      buildonly-randconfig-006-20250219    clang-19
+x86_64                              defconfig    gcc-11
+xtensa                           alldefconfig    gcc-14.2.0
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250219    gcc-14.2.0
+xtensa                randconfig-002-20250219    gcc-14.2.0
+xtensa                    xip_kc705_defconfig    gcc-14.2.0
+
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
