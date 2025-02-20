@@ -1,61 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-6369-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6370-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AC8A3DAFE
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2025 14:13:57 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE9EBA3E3FB
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Feb 2025 19:34:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YzDH43JrJz30Tm;
-	Fri, 21 Feb 2025 00:13:52 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YzMNx1FH3z2yWK;
+	Fri, 21 Feb 2025 05:34:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740057232;
-	cv=none; b=T25uL3Qon+ppCWvm1Aq/BJbFvfnznYsLHn4sZA23k5/tgAH6IpOJ/Uz+/+kSo0wVh1Wt2BIrHG+Hm6BE5AHoE9wD7wivZ4yW8+n/g7cE3ZztLKJ/+tOMHDSSBzHltL+uNW27UGaAkon+nGcppGoPMEvGKjYJUjOi4NrmcC73+mUlKaE4rV5fqKcFtUos7Fg+qRoK7tw11i/rFEwa1kfevj9kFNAIz5Dty+2hmebopmAAJXKz1suhIx35nyxF32x/iqOxUZzW2dx7jBg1j4FoNvjwdeGi8/cqyGFdhugNpM8Ym/gj1I0uipEztWFzndRTwxQoEzN6Z1vhb6pzOHz7LQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740076465;
+	cv=none; b=PF5NoAxCKKubUEgp4O4WfZ6MxFqA8DajJM6cD1DdFQ04ijq8p/m5seicDAIK8EVrZaX9hbJEGROS0h5Jp89DalVXx4eoJ2LQtgkGBnYyF9ZcP/nvViYmwu9+YaLf93d3yAvL4uexcz2vMKNyQmVh5UdTdl//zSH+8GUVfTgCayn61F9zs/K+gAM761onfIShG6+dONA6wJ/LpIGKVIO/6cWe17dHgdsL2tkYuhNLsOao9mlNguVrtR4D+hpOAgl9BCekeEu3l7OYv+A7dhyrAI/MJXrzLKieDfox67k1i1VOv+yFLgKtuuHAgjBzMtGjJXbZHFYglsQ4CXI30xiwlw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740057232; c=relaxed/relaxed;
-	bh=eCW1aNnWqb/8IdIvy8tGaFtwvEUt9emvGnFkbfHDHw0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SE5yfaep2t0esFul85+Zwdpw45Ab3YByCZPOAhhrgVFrSQ+YK636O8q8Ekyrc+4rdU+2weAw2aLyzMZIv0gKseMSFzDNTRHv/hj/gSthTeRS1r+ekCAPH/A2Etl9wEOsZ+gP1Ln/qYLffw7cZXbuR2HplWtCwebdZm2dc6M58XsILFBa+kf42PXgisvUrt0Gh1PMRQYkOCJ0XceQsJ/0vPZSnTAxlBxBocBnJH506wQdYitM5rORVt6J5pdRx5cbcE6iDE4aVqEqYMli8eddQZRrvcuPcSE4aCvNq3gvIQ0ZKFlmoirn327JYCackPYw+HdwkaafLAHlvncPU9FKgA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=eFsd9nWv; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+	t=1740076465; c=relaxed/relaxed;
+	bh=FcxwqKCj7AI2VdyyanA1j8RnG7hQzzrm45++xUtPV78=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=XMKjCkMLcH9DEDsYXntL/6kdwJCpsIGc4xZHF3yweGzpS3Mcp5YWvhEaEHy+BVU3/zWO7vtI7Fszxa+ZIn/c22Q5dYDwpglL1+UYbQtiCarurRW+a3j1vW6StzFzn7ScJhzqeYwTHj/bKPzu6GnG1MIeWIqEPz2hwXXFQVxzUP9aY+LfPvaqragCq916NQWCKVmFZXsXrrFKiRne47M0X6AxftXTnSkDYXRHCyzOLgU4e554wXokVvcb/miDxcdJcoQzGoJ3hLl+c+ZEeYaFEu/U6xtY/2yvr0hUjI7DpUEI+75wqHqvZDp8XlIJRmvrnvzp9dnhanVVb2bIPQ3mEQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GxmdfoZg; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=eFsd9nWv;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GxmdfoZg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=gerald.schaefer@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YzDH15cTXz30TH
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2025 00:13:46 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout02.posteo.de (Postfix) with ESMTPS id 87CAE240101
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Feb 2025 14:13:40 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1740057220; bh=zgle9CkTdgmTkE8vQAPkindwi88AxR8vCiCMOn6LD7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=eFsd9nWvXJX3p7Juqu2She/EHq8UFMWm+ZDyTBQgu8l3vcr46U8YctQGoaxNyXqPX
-	 om67Mv6ceGxhTw9qC6CyjAIAdrKZvCwZNCXm9w3QAk5lvfR1cwwlVfKSoaRYSlItdy
-	 3/ZmVtw8REzp6j5y4hbVx+XCqfsyJP/K9QbddZMrp1K0cdMTjQ+PkBhMhbOOMX3HCK
-	 Q1hX6QxVhzhksmBe+3aJe4L0jkOresYkdaR3CU5wNIK2AjTjd+3/V5XYdIXvrBdQ0n
-	 a2E876V/G+dPrGfUlN2I7fNSjCF6k0A3hLKnfxwnYJxNSWYkV2sawzWvtVjaZzsJ3Q
-	 YNvWsKb0r7MNQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4YzDGn6MP7z6tvk;
-	Thu, 20 Feb 2025 14:13:37 +0100 (CET)
-Date: Thu, 20 Feb 2025 13:13:37 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: j.ne@posteo.net
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/fsl_lbc: Explicitly populate bus
-Message-ID: <Z7cqgbullhR47Bb-@probook>
-References: <20250209-localbus-v1-1-efcd780153a0@posteo.net>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YzMNw2tQGz2xy0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2025 05:34:24 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51KH1cvh029326;
+	Thu, 20 Feb 2025 18:33:41 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=FcxwqK
+	Cj7AI2VdyyanA1j8RnG7hQzzrm45++xUtPV78=; b=GxmdfoZgDml6SEejBGbeZ+
+	Y77j8DNOaz2mXRpM6AbAAxSet/c5sdfX/1F+tPUMHMSeX6v5qqnHjyZe/MPG8HLb
+	QSM8SuFAYSIdcRkhO600xhqJEswznyYSspSBjplVbNhzQYWlzN49L/Hm5O0+2Hr6
+	sgUKjsIO4Xyf9Aw1vOEh3fsdtvpk1bTuxU/L6UK2X9xS1211KKdtQr/bUyb18CiU
+	p4CL3V0cC4kVkNzTOpw6ADR6na+EWrdSRTGaB3UfMctLCsaYEYOlmNRKk66melyb
+	2rgHDW+6aPz3ncY3WbeRWlD9fmzwXTPGPuunqBnEAgu0duw9YNa9vhRSMxbCmsuQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44wx78kust-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 18:33:40 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51KISnU6023517;
+	Thu, 20 Feb 2025 18:33:40 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 44wx78kusk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 18:33:40 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51KIMhXj027077;
+	Thu, 20 Feb 2025 18:33:38 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44w025bjes-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 20 Feb 2025 18:33:38 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51KIXbFU59965808
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Feb 2025 18:33:37 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0DE4220043;
+	Thu, 20 Feb 2025 18:33:37 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6433720040;
+	Thu, 20 Feb 2025 18:33:36 +0000 (GMT)
+Received: from thinkpad-T15 (unknown [9.152.212.30])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 20 Feb 2025 18:33:36 +0000 (GMT)
+Date: Thu, 20 Feb 2025 19:33:34 +0100
+From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+To: Alistair Popple <apopple@nvidia.com>
+Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, linux-mm@kvack.org,
+        Alison Schofield <alison.schofield@intel.com>, lina@asahilina.net,
+        zhang.lyra@gmail.com, vishal.l.verma@intel.com, dave.jiang@intel.com,
+        logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca,
+        catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au,
+        npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com,
+        willy@infradead.org, djwong@kernel.org, tytso@mit.edu,
+        linmiaohe@huawei.com, david@redhat.com, peterx@redhat.com,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
+        linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
+        david@fromorbit.com, chenhuacai@kernel.org, kernel@xen0n.name,
+        loongarch@lists.linux.dev, vgoyal@redhat.com, stefanha@redhat.com
+Subject: Re: [PATCH v8 20/20] device/dax: Properly refcount device dax pages
+ when mapping
+Message-ID: <20250220193334.0f7f4071@thinkpad-T15>
+In-Reply-To: <9d9d33b418dd1aab9323203488305085389f62c1.1739850794.git-series.apopple@nvidia.com>
+References: <cover.a782e309b1328f961da88abddbbc48e5b4579021.1739850794.git-series.apopple@nvidia.com>
+	<9d9d33b418dd1aab9323203488305085389f62c1.1739850794.git-series.apopple@nvidia.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,83 +108,141 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250209-localbus-v1-1-efcd780153a0@posteo.net>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: zuIWejWRNtbRCsuLFOLDp6zAMkoHhC6z
+X-Proofpoint-ORIG-GUID: y5u7NXx-QaNlJj2myfsdElRbcx1OeQjd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-20_08,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 phishscore=0 malwarescore=0 mlxscore=0 clxscore=1011
+ spamscore=0 suspectscore=0 mlxlogscore=999 lowpriorityscore=0 bulkscore=0
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502200128
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, Feb 09, 2025 at 10:58:50PM +0100, J. Neuschäfer via B4 Relay wrote:
-> From: "J. Neuschäfer" <j.ne@posteo.net>
-> 
-> Historically, devicetree nodes representing the Freescale Enhanced
-> Local Bus Controller (eLBC) have compatible strings such as:
-> 
->     compatible = "fsl,mpc8313-elbc", "fsl,elbc", "simple-bus";
-> 
-> The "simple-bus" string causes the bus to be populated, and the memory
-> devices contained within it to be discovered. The eLBC bus (as
-> represented in device trees) differs from a simple-bus in a few ways,
-> though:
-> 
->  - Addresses are not simple/linear: The first cell of an address is a
->    chip select, the second is an linear address within the space thus
->    selected. Representing 1,0 as 100000000, for example, would decrease
->    readability[1].
->  - It is expected that the devices on a simple-bus "can be accessed
->    directly without additional configuration required"[2], but the eLBC
->    needs some configuration.
-> 
-> To accommodate devicetrees that declare an eLBC without "simple-bus",
-> explicitly populate the bus in the eLBC driver.
-> 
-> [1]: dtc makes such a suggestion opon encountering an eLBC
-> [2]: Quoting the Devicetree Specification Release v0.3
-> 
-> Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> ---
+On Tue, 18 Feb 2025 14:55:36 +1100
+Alistair Popple <apopple@nvidia.com> wrote:
 
-Due to advice from Crystal Wood and Rob Herring[1], I reached the
-conclusion that this patch is not necessary.
-
-[1]: https://lore.kernel.org/lkml/Z7ILej_AJYot_wKP@probook/
-
->  arch/powerpc/sysdev/fsl_lbc.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/sysdev/fsl_lbc.c b/arch/powerpc/sysdev/fsl_lbc.c
-> index 217cea150987df1e1b5c6dbf9e9a1607dd5ce49b..2007ced997fcf0c7059e5b780893b530764dc8b2 100644
-> --- a/arch/powerpc/sysdev/fsl_lbc.c
-> +++ b/arch/powerpc/sysdev/fsl_lbc.c
-> @@ -20,6 +20,7 @@
->  #include <linux/of.h>
->  #include <linux/of_address.h>
->  #include <linux/of_irq.h>
-> +#include <linux/of_platform.h>
->  #include <linux/slab.h>
->  #include <linux/sched.h>
->  #include <linux/platform_device.h>
-> @@ -336,7 +337,7 @@ static int fsl_lbc_ctrl_probe(struct platform_device *dev)
->  	/* Enable interrupts for any detected events */
->  	out_be32(&fsl_lbc_ctrl_dev->regs->lteir, LTEIR_ENABLE);
+[...]
+> diff --git a/mm/memremap.c b/mm/memremap.c
+> index 9a8879b..532a52a 100644
+> --- a/mm/memremap.c
+> +++ b/mm/memremap.c
+> @@ -460,11 +460,10 @@ void free_zone_device_folio(struct folio *folio)
+>  {
+>  	struct dev_pagemap *pgmap = folio->pgmap;
 >  
-> -	return 0;
-> +	return devm_of_platform_populate(&dev->dev);
+> -	if (WARN_ON_ONCE(!pgmap->ops))
+> -		return;
+> -
+> -	if (WARN_ON_ONCE(pgmap->type != MEMORY_DEVICE_FS_DAX &&
+> -			 !pgmap->ops->page_free))
+> +	if (WARN_ON_ONCE((!pgmap->ops &&
+> +			  pgmap->type != MEMORY_DEVICE_GENERIC) ||
+> +			 (pgmap->ops && !pgmap->ops->page_free &&
+> +			  pgmap->type != MEMORY_DEVICE_FS_DAX)))
+
+Playing around with dcssblk, adding devm_memremap_pages() and
+pgmap.type = MEMORY_DEVICE_FS_DAX, similar to the other two existing
+FS_DAX drivers drivers/nvdimm/pmem.c and fs/fuse/virtio_fs.c, I hit
+this warning when executing binaries from DAX-mounted fs.
+
+I do not set up pgmap->ops, similar to fs/fuse/virtio_fs.c, and I don't see
+why they would be needed here anyway, at least for MEMORY_DEVICE_FS_DAX.
+drivers/nvdimm/pmem.c does set up pgmap->ops, but only ->memory_failure,
+which is still good enough to not trigger the warning here, probably just
+by chance.
+
+Now I wonder:
+1) What is this check / warning good for, when this function only ever
+   calls pgmap->ops->page_free(), but not for MEMORY_DEVICE_FS_DAX and
+   not for MEMORY_DEVICE_GENERIC (the latter only after this patch)?
+2) Is the warning also seen for virtio DAX mappings (added Vivek and
+   Stefan on CC)? No pgmap->ops set up there, so I would guess "yes",
+   and already before this series, with the old check / warning.
+3) Could this be changed to only check / warn if pgmap->ops (or maybe
+   rather pgmap->ops->page_free) is not set up, but not for
+   MEMORY_DEVICE_GENERIC and MEMORY_DEVICE_FS_DAX where this is not
+   being called?
+4) Or is there any reason why pgmap->ops would be required for
+   MEMORY_DEVICE_FS_DAX?
+
+Apart from the warning, we would also miss out on the
+wake_up_var(&folio->page) in the MEMORY_DEVICE_FS_DAX case, when no
+pgmap->ops was set up. IIUC, even before this change / series (i.e.
+for virtio DAX only, since dcssblk was not using ZONE_DEVICE before,
+and pmem seems to work by chance because they have ops->memory_failure).
+
+>  		return;
 >  
->  err1:
->  	free_irq(fsl_lbc_ctrl_dev->irq[0], fsl_lbc_ctrl_dev);
-> 
-> ---
-> base-commit: 7ccde445dddcca030cd6ed66974bb80915ad9dd5
-> change-id: 20250209-localbus-94a6ebb04c12
-> 
-> Best regards,
-> -- 
-> J. Neuschäfer <j.ne@posteo.net>
-> 
-> 
+>  	mem_cgroup_uncharge(folio);
+> @@ -494,7 +493,8 @@ void free_zone_device_folio(struct folio *folio)
+>  	 * zero which indicating the page has been removed from the file
+>  	 * system mapping.
+>  	 */
+> -	if (pgmap->type != MEMORY_DEVICE_FS_DAX)
+> +	if (pgmap->type != MEMORY_DEVICE_FS_DAX &&
+> +	    pgmap->type != MEMORY_DEVICE_GENERIC)
+>  		folio->mapping = NULL;
+>  
+>  	switch (pgmap->type) {
+> @@ -509,7 +509,6 @@ void free_zone_device_folio(struct folio *folio)
+>  		 * Reset the refcount to 1 to prepare for handing out the page
+>  		 * again.
+>  		 */
+> -		pgmap->ops->page_free(folio_page(folio, 0));
+
+Ok, this is probably the reason why you adjusted the check above, since
+no more pgmap->ops needed for MEMORY_DEVICE_GENERIC.
+Still, the MEMORY_DEVICE_FS_DAX case also does not seem to need
+pgmap->ops, and at least the existing virtio DAX should already be
+affected, and of course future dcssblk DAX.
+
+But maybe that should be addressed in a separate patch, since your changes
+here seem consistent, and not change or worsen anything wrt !pgmap->ops
+and MEMORY_DEVICE_FS_DAX.
+
+>  		folio_set_count(folio, 1);
+>  		break;
+>  
+
+For reference, this is call trace I see when I hit the warning:
+
+[  283.567945] ------------[ cut here ]------------
+[  283.567947] WARNING: CPU: 12 PID: 878 at mm/memremap.c:436 free_zone_device_folio+0x6e/0x140
+[  283.567959] Modules linked in:
+[  283.567963] CPU: 12 UID: 0 PID: 878 Comm: ls Not tainted 6.14.0-rc3-next-20250220-00012-gd072dabf62e8-dirty #44
+[  283.567968] Hardware name: IBM 3931 A01 704 (z/VM 7.4.0)
+[  283.567971] Krnl PSW : 0704d00180000000 000001ec0548b44a (free_zone_device_folio+0x72/0x140)
+[  283.567978]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
+[  283.567982] Krnl GPRS: 0000000000000038 0000000000000000 0000000000000003 000001ec06cc42e8
+[  283.567986]            00000004cc38e400 0000000000000000 0000000000000003 0000000093eacd00
+[  283.567990]            000000009a68413f 0000016614010940 000000009553a640 0000016614010940
+[  283.567994]            0000000000000000 0000000000000000 000001ec0548b416 0000016c05da3bf8
+[  283.568004] Krnl Code: 000001ec0548b43e: a70e0003		chi	%r0,3
+                          000001ec0548b442: a7840006		brc	8,000001ec0548b44e
+                         #000001ec0548b446: af000000		mc	0,0
+                         >000001ec0548b44a: a7f4005f		brc	15,000001ec0548b508
+                          000001ec0548b44e: c00400000008	brcl	0,000001ec0548b45e
+                          000001ec0548b454: b904002b		lgr	%r2,%r11
+                          000001ec0548b458: c0e5001dcd84	brasl	%r14,000001ec05844f60
+                          000001ec0548b45e: 9101b01f		tm	31(%r11),1
+[  283.568035] Call Trace:
+[  283.568038]  [<000001ec0548b44a>] free_zone_device_folio+0x72/0x140 
+[  283.568042] ([<000001ec0548b416>] free_zone_device_folio+0x3e/0x140)
+[  283.568045]  [<000001ec057a4c1c>] wp_page_copy+0x34c/0x6e0 
+[  283.568050]  [<000001ec057ac640>] __handle_mm_fault+0x220/0x4d0 
+[  283.568054]  [<000001ec057ac97e>] handle_mm_fault+0x8e/0x160 
+[  283.568057]  [<000001ec054ca006>] do_exception+0x1a6/0x450 
+[  283.568061]  [<000001ec06264992>] __do_pgm_check+0x132/0x1e0 
+[  283.568065]  [<000001ec0627057e>] pgm_check_handler+0x11e/0x170 
+[  283.568069] Last Breaking-Event-Address:
+[  283.568070]  [<000001ec0548b428>] free_zone_device_folio+0x50/0x140
+[  283.568074] ---[ end trace 0000000000000000 ]---
 
