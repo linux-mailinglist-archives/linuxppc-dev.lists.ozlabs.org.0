@@ -1,76 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-6376-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1114BA3FD0A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2025 18:12:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441FEA3FE5E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2025 19:11:42 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YzxX665Kzz30TH;
-	Sat, 22 Feb 2025 04:12:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YzyrC71Sbz2ygY;
+	Sat, 22 Feb 2025 05:11:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.125.25.12
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740150530;
-	cv=none; b=LMbZrU7Yf0mIIhjreP1X/PFwgSGSlQspHmx/YaLVFRslxl9FDNUo/bh5ZDIWUFKicf4fEquG2jEBWmJM+j9x+Z9v+cSLxdG2aUsB1GXST3M3wkPezE8NvniSaHobsdWLYtKNJu64A+q67X1qJjPVCALWwWXaoGjZ24GpYRFB61LuXWIOzP57lDkK2XqL8Wsh0vlWbByoY9z7C2I+WfLUtQ6c/LVa2xvNEUJ6a4MRIv/LBIZOakCEP5HPZPR7mI+qqh5ugUifMQVlfSIW6vjKc0v9XMhsWX0QaNHbNbX5vpMG2aVgQ8nXjgZuhe23vXAbTHS0sFkKrWOjHDA8QcslKQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740161499;
+	cv=none; b=MtD9mWkfWz4Q1+CZaNp+0j8fmHW5a1CTjE8uf1B73p1YFlG9gTlPsDirPgqR1zcmy9Dimd9O1+wFOYS3i/3jw1PNGVOA9flisOZYCIU6WyYG64ru2qLiOKJXKx+IsFcwhmtO1AvpatjwcvgEZ3yU3/P+TMpUsZU3K/SeKodPT8+o1CKFsNiofWdfzQMmzebveoYpMrc1cnMocd1/+AT7RGFTTEK5ubh4+K74bqqJVtiUwMS6pvd6KSyXvnKPZoYpd+Cv/cT8cfBNQn1qMlZnmZk/QnYHSaf18bHRdsHqiruhHfg55cOIKRy9uHch1WjVE794NT4RxkHjG40lQKbPew==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740150530; c=relaxed/relaxed;
-	bh=HAdXvLK8vfW//A0RH2Z8Vgvri1ljkOe8we8oEw/BRJo=;
+	t=1740161499; c=relaxed/relaxed;
+	bh=lRaQkBii7AFzlNmca3yr6UEA0SpTBQX8CWMC9rU9YXc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BAlDQicLUqBjR6EBr10LYDZY6I/F08qkOQZlTu5S6TzurZAQSggk+DR3a7bXyQN3Jlt/STTTzKnA7eCpyh82Y3PqqUv3v0Dm1oQ814a6hpg5wm5pIaOm8YRvRwoM2G8O9IC8LYgG/HDp60sraGVOI+bMS/QHG/DqkJW/S2ijblWRq1wIseZXoqJ1h3tJwB5urCPM+ImQcONZVabKYI+3B8IWBpT9DYqckNHpuHRYz4KNz8fyCZ8cRqS6gN3cNn5dZ44Rq3yVTjNsZMvACzSXeSiIWmDzCEFaThKVjiqvT8+6G0O7C5EOOlSN2PkfhdgX0ihNhkNSMBPcBsoCl0iyBA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=digikod.net; dkim=pass (1024-bit key; secure) header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=gNAhgefJ; dkim-atps=neutral; spf=pass (client-ip=185.125.25.12; helo=smtp-190c.mail.infomaniak.ch; envelope-from=mic@digikod.net; receiver=lists.ozlabs.org) smtp.mailfrom=digikod.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=digikod.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=bCk/pNN0i+ydR30ATKvUOMT1QtoIq5BS5p8kqHoa6kauqA7XI2TrHsydtqoq+AEULgSP7KQWlfmPLV+1TIhUJ7D5EwLU7l2Wsd8gaFhq12zeWLC6F3DeyCPoC5Qp9AgkFl1K4hEawaTaeMm6xwACyD+oyz3pKNyt4DnlXF2DNfCvdt54zMrJvEGh7XjdnAfMUfcBvhZqMuV+Lhz8bLbePgiie6b6g7vgh5iVYMnsz7461swijdKodhM0k/+Zr82+BsPBZeNtaesQeAXNPWoJeTSJGKqbs9nzaNHskoUkvb1sTzyjpAAzkkXKxiaeRTZYD0wqtN9tWe//BG34JiXwFA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=twbwQNrI; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=djwong@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; secure) header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=gNAhgefJ;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=twbwQNrI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=digikod.net (client-ip=185.125.25.12; helo=smtp-190c.mail.infomaniak.ch; envelope-from=mic@digikod.net; receiver=lists.ozlabs.org)
-Received: from smtp-190c.mail.infomaniak.ch (smtp-190c.mail.infomaniak.ch [185.125.25.12])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=djwong@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YztnC0xFXz2x9N
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2025 02:08:43 +1100 (AEDT)
-Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
-	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Yztn21Cvqzp7v;
-	Fri, 21 Feb 2025 16:08:38 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
-	s=20191114; t=1740150518;
-	bh=HAdXvLK8vfW//A0RH2Z8Vgvri1ljkOe8we8oEw/BRJo=;
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YzyrC0V9pz2yVG
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2025 05:11:39 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 6C5DD5C1041;
+	Fri, 21 Feb 2025 18:10:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C591C4CED6;
+	Fri, 21 Feb 2025 18:11:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740161496;
+	bh=Q5rq+xEARHuJUUCQ4+qMB09sJq9Ogw0gx0NFBabFv8Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gNAhgefJNSQqmpn1R7GjmCDcL8sBVj9Jy8ELxGlJDuSkOcQnFPususm4DJtyM7z3K
-	 N5uOW38hzFreoU0UXhfBHpXriYHLasoIWkBI7w0rFt5bmnCxNP0I8oGntObZgmF0Jy
-	 3Dxnzo71DVTvLCBMWTvR36ekCTxZrE3oQm+YSPuM=
-Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Yztmx6Tb2zB0s;
-	Fri, 21 Feb 2025 16:08:33 +0100 (CET)
-Date: Fri, 21 Feb 2025 16:08:33 +0100
-From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
-To: Andrey Albershteyn <aalbersh@redhat.com>, 
-	Paul Moore <paul@paul-moore.com>
-Cc: Richard Henderson <richard.henderson@linaro.org>, 
-	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
-	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-xfs@vger.kernel.org
+	b=twbwQNrI8NBky7gxEQz1Sp9afJgdr6HMvf9vBHDGlKfl2W61C+ajw5DQvd0yARdzx
+	 6IqK6Dta/AzKAOg+oZCOuzfhqfYJNoM1PU06w/jz41Vt+iBFPeOZsr7WDKfEcVHOd+
+	 wRMx0kuj0pmY5GVmHB8Ln/wHSn266MnENVFcYyj0SE7LpvoYjMypvZIjvBoa2Y2F1d
+	 Z2mJvJVKolFfz0xIV4hpOeFKvnRi0A/C5cUbEnjCP6XeNE5iQtLrSknKeA8Tv16I4/
+	 DoBR2WPKBAsUg1Z5A45KC7jb6AS2qE8O2CvXsjhXKHa8ui8jr+NLK37hsdDvyP+y5Q
+	 ajxDXXxKA16RQ==
+Date: Fri, 21 Feb 2025 10:11:35 -0800
+From: "Darrick J. Wong" <djwong@kernel.org>
+To: Andrey Albershteyn <aalbersh@redhat.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
+	Max Filippov <jcmvbkbc@gmail.com>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
+	=?iso-8859-1?Q?Micka=EBl_Sala=FCn?= <mic@digikod.net>,
+	=?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-xfs@vger.kernel.org
 Subject: Re: [PATCH v3] fs: introduce getfsxattrat and setfsxattrat syscalls
-Message-ID: <20250221.ahB8jei2Chie@digikod.net>
+Message-ID: <20250221181135.GW21808@frogsfrogsfrogs>
 References: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -84,20 +104,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
-X-Infomaniak-Routing: alpha
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
-
-It looks security checks are missing.  With IOCTL commands, file
-permissions are checked at open time, but with these syscalls the path
-is only resolved but no specific access seems to be checked (except
-inode_owner_or_capable via vfs_fileattr_set).
 
 On Tue, Feb 11, 2025 at 06:22:47PM +0100, Andrey Albershteyn wrote:
 > From: Andrey Albershteyn <aalbersh@redhat.com>
@@ -177,7 +190,7 @@ On Tue, Feb 11, 2025 at 06:22:47PM +0100, Andrey Albershteyn wrote:
 >  21 files changed, 133 insertions(+), 3 deletions(-)
 > 
 
-[...]
+<cut to the syscall definitions>
 
 > diff --git a/fs/inode.c b/fs/inode.c
 > index 6b4c77268fc0ecace4ac78a9ca777fbffc277f4a..b2dddd9db4fabaf67a6cbf541a86978b290411ec 100644
@@ -200,6 +213,13 @@ On Tue, Feb 11, 2025 at 06:22:47PM +0100, Andrey Albershteyn wrote:
 > +
 > +SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
 > +		struct fsxattr __user *, fsx, unsigned int, at_flags)
+
+Should the kernel require userspace to pass the size of the fsx buffer?
+That way we avoid needing to rev the interface when we decide to grow
+the structure.
+
+--D
+
 > +{
 > +	CLASS(fd, dir)(dfd);
 > +	struct fileattr fa;
@@ -222,9 +242,6 @@ On Tue, Feb 11, 2025 at 06:22:47PM +0100, Andrey Albershteyn wrote:
 > +	error = user_path_at(dfd, filename, lookup_flags, &filepath);
 > +	if (error)
 > +		return error;
-
-security_inode_getattr() should probably be called here.
-
 > +
 > +	error = vfs_fileattr_get(filepath.dentry, &fa);
 > +	if (!error)
@@ -264,9 +281,6 @@ security_inode_getattr() should probably be called here.
 > +
 > +	error = mnt_want_write(filepath.mnt);
 > +	if (!error) {
-
-security_inode_setattr() should probably be called too.
-
 > +		error = vfs_fileattr_set(file_mnt_idmap(fd_file(dir)),
 > +					 filepath.dentry, &fa);
 > +		mnt_drop_write(filepath.mnt);
@@ -310,6 +324,60 @@ security_inode_setattr() should probably be called too.
 >  }
 >  
 > diff --git a/include/linux/fileattr.h b/include/linux/fileattr.h
-
-[...]
+> index 47c05a9851d0600964b644c9c7218faacfd865f8..8598e94b530b8b280a2697eaf918dd60f573d6ee 100644
+> --- a/include/linux/fileattr.h
+> +++ b/include/linux/fileattr.h
+> @@ -34,6 +34,7 @@ struct fileattr {
+>  };
+>  
+>  int copy_fsxattr_to_user(const struct fileattr *fa, struct fsxattr __user *ufa);
+> +int copy_fsxattr_from_user(struct fileattr *fa, struct fsxattr __user *ufa);
+>  
+>  void fileattr_fill_xflags(struct fileattr *fa, u32 xflags);
+>  void fileattr_fill_flags(struct fileattr *fa, u32 flags);
+> diff --git a/include/linux/syscalls.h b/include/linux/syscalls.h
+> index c6333204d45130eb022f6db460eea34a1f6e91db..3134d463d9af64c6e78adb37bff4b91f77b5305f 100644
+> --- a/include/linux/syscalls.h
+> +++ b/include/linux/syscalls.h
+> @@ -371,6 +371,10 @@ asmlinkage long sys_removexattrat(int dfd, const char __user *path,
+>  asmlinkage long sys_lremovexattr(const char __user *path,
+>  				 const char __user *name);
+>  asmlinkage long sys_fremovexattr(int fd, const char __user *name);
+> +asmlinkage long sys_getfsxattrat(int dfd, const char __user *filename,
+> +				 struct fsxattr *fsx, unsigned int at_flags);
+> +asmlinkage long sys_setfsxattrat(int dfd, const char __user *filename,
+> +				 struct fsxattr *fsx, unsigned int at_flags);
+>  asmlinkage long sys_getcwd(char __user *buf, unsigned long size);
+>  asmlinkage long sys_eventfd2(unsigned int count, int flags);
+>  asmlinkage long sys_epoll_create1(int flags);
+> diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+> index 88dc393c2bca38c0fa1b3fae579f7cfe4931223c..50be2e1007bc2779120d05c6e9512a689f86779c 100644
+> --- a/include/uapi/asm-generic/unistd.h
+> +++ b/include/uapi/asm-generic/unistd.h
+> @@ -850,8 +850,14 @@ __SYSCALL(__NR_listxattrat, sys_listxattrat)
+>  #define __NR_removexattrat 466
+>  __SYSCALL(__NR_removexattrat, sys_removexattrat)
+>  
+> +/* fs/inode.c */
+> +#define __NR_getfsxattrat 467
+> +__SYSCALL(__NR_getfsxattrat, sys_getfsxattrat)
+> +#define __NR_setfsxattrat 468
+> +__SYSCALL(__NR_setfsxattrat, sys_setfsxattrat)
+> +
+>  #undef __NR_syscalls
+> -#define __NR_syscalls 467
+> +#define __NR_syscalls 469
+>  
+>  /*
+>   * 32 bit systems traditionally used different
+> 
+> ---
+> base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
+> change-id: 20250114-xattrat-syscall-6a1136d2db59
+> 
+> Best regards,
+> -- 
+> Andrey Albershteyn <aalbersh@kernel.org>
+> 
+> 
 
