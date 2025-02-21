@@ -1,80 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-6375-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6376-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D444CA3FAC7
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2025 17:20:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1114BA3FD0A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Feb 2025 18:12:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4YzwMP1GDJz30TC;
-	Sat, 22 Feb 2025 03:20:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4YzxX665Kzz30TH;
+	Sat, 22 Feb 2025 04:12:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip="2a01:111:f403:2416::618"
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740154801;
-	cv=fail; b=R54C3/iCy6MnD06R5j3S6GcGWqsQKdmWRP1pnzfGzV306fIJ89wGFx0X2P+eL5JOhP67vy/ibnk25GVXk8F202Jmj1bPmwucBCNoZJBtoR3PhAPhEj9oh04A7hCG5HjH2MNi0xV67jLPjL5N2huUApk6XrrdTKuwzMHe042FuHLN6/8u5K0G4MW9LjIwoBEYYTUppMnItJ5SEtQRvO7wV9gvvpIf8Nk2ToN85WcCwwboF704fX1tKIJdRGRKX3dWu8VsYibEJjrE3AKQSE7zBEhMKXPMiDEVRQ0s0AuTACb4jDdgQosKCax3Ho4b0XpatGIasmDKCr0hEdXHnT9aiQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740154801; c=relaxed/relaxed;
-	bh=8fpzD1F//SXCq3/HWaVdHqMBFP4YNlZqkrDdcEl3RaQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=MGJ3AXn3ULH/9NhSTAGyqk1omxXG9PM7r914p4ZkSj3CPJfpraqkEUXS60vkla12YUdt5Fh5KaTLrrL4RM/iuQA3QDguYiuinASjDl35QVhqaoipGiYNv+npt3DZf7BYukTB1sQfQhjhDqtOYZohE+EwVjSzYbxZ12ZCNZpLNcx9h+ctk7zyG9f3zIl+qCo1NBcnmqMqAkoBMJgLqobi97zD/L9I0aYAy1h4TII7oNv6NkT2PyyLP/4EtqorT7Cm8JDVwMio1aizsC+XIVheAhIG10k2obrrgd5SaqStULq7Y6/Ns5krtfl0ttPsMuCNokoAEEmXdiQWEhIKKJ8DEQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; dkim=fail (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WRM37q1U reason="signature verification failed"; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2416::618; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org) smtp.mailfrom=amd.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.125.25.12
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740150530;
+	cv=none; b=LMbZrU7Yf0mIIhjreP1X/PFwgSGSlQspHmx/YaLVFRslxl9FDNUo/bh5ZDIWUFKicf4fEquG2jEBWmJM+j9x+Z9v+cSLxdG2aUsB1GXST3M3wkPezE8NvniSaHobsdWLYtKNJu64A+q67X1qJjPVCALWwWXaoGjZ24GpYRFB61LuXWIOzP57lDkK2XqL8Wsh0vlWbByoY9z7C2I+WfLUtQ6c/LVa2xvNEUJ6a4MRIv/LBIZOakCEP5HPZPR7mI+qqh5ugUifMQVlfSIW6vjKc0v9XMhsWX0QaNHbNbX5vpMG2aVgQ8nXjgZuhe23vXAbTHS0sFkKrWOjHDA8QcslKQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1740150530; c=relaxed/relaxed;
+	bh=HAdXvLK8vfW//A0RH2Z8Vgvri1ljkOe8we8oEw/BRJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BAlDQicLUqBjR6EBr10LYDZY6I/F08qkOQZlTu5S6TzurZAQSggk+DR3a7bXyQN3Jlt/STTTzKnA7eCpyh82Y3PqqUv3v0Dm1oQ814a6hpg5wm5pIaOm8YRvRwoM2G8O9IC8LYgG/HDp60sraGVOI+bMS/QHG/DqkJW/S2ijblWRq1wIseZXoqJ1h3tJwB5urCPM+ImQcONZVabKYI+3B8IWBpT9DYqckNHpuHRYz4KNz8fyCZ8cRqS6gN3cNn5dZ44Rq3yVTjNsZMvACzSXeSiIWmDzCEFaThKVjiqvT8+6G0O7C5EOOlSN2PkfhdgX0ihNhkNSMBPcBsoCl0iyBA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=digikod.net; dkim=pass (1024-bit key; secure) header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=gNAhgefJ; dkim-atps=neutral; spf=pass (client-ip=185.125.25.12; helo=smtp-190c.mail.infomaniak.ch; envelope-from=mic@digikod.net; receiver=lists.ozlabs.org) smtp.mailfrom=digikod.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=digikod.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=fail reason="signature verification failed" (1024-bit key; unprotected) header.d=amd.com header.i=@amd.com header.a=rsa-sha256 header.s=selector1 header.b=WRM37q1U;
+	dkim=pass (1024-bit key; secure) header.d=digikod.net header.i=@digikod.net header.a=rsa-sha256 header.s=20191114 header.b=gNAhgefJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=amd.com (client-ip=2a01:111:f403:2416::618; helo=nam11-co1-obe.outbound.protection.outlook.com; envelope-from=yazen.ghannam@amd.com; receiver=lists.ozlabs.org)
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on20618.outbound.protection.outlook.com [IPv6:2a01:111:f403:2416::618])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=digikod.net (client-ip=185.125.25.12; helo=smtp-190c.mail.infomaniak.ch; envelope-from=mic@digikod.net; receiver=lists.ozlabs.org)
+Received: from smtp-190c.mail.infomaniak.ch (smtp-190c.mail.infomaniak.ch [185.125.25.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4YzwMM0L3sz2xgv
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2025 03:19:58 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GBF+DUI4k9b1/VzgWBUZTV1k+LjgHZ9NK1THY4JWcRNDsGeNpKVjWmX2fxm0DLFxJNvUbWPqLoqcSwSDuRWXCAdr2M2SLYiuMztamlBABMSSV3KkJNiI9/F8aStWGGcr4yzSBsjZftzWVJ44q70m3ODd3O9KL9OTAVZCKEeQ20y+grWaTYt2i5GE6haIyIxBxdVFFaXptUXBeEkCVhdO4ruZmUr9zNe9cp7hXpLjstc9Gdw/j2CAAJlKMTXNJNBdr92g7h+KncnjS8hsAriGp1b1yzVsIKb47demo4SMCTiHLw9KAOUOW8HXNB+gC2cXoBQXkg7ZWbvbHj8wz5RmNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0O1ce0fHexLux+jQu0Y/ywp1Thx3ahKW28fi/jkDbcM=;
- b=yfZQt8V3LqVYsR2FZ91mJz6DvEvIHQtcG3i5ysx892YYQGZWuyv7WXhqP7Gw6EV4rMAQUkgUFbQV0X/ToQC8V7wOqJ8LrPbOkU8N++Zxe188vRuOOwjrqDS7SeHqV4bASUBjTpxY6T1ExzxjOnA5DwSF/aXqrC4bPuHYDqmrawcFdtRZTtdaUOoAAIpPFrkiL0XGodgX2zQ5xHyLePqPN/HmRHfAuU/wHih/UKeTf+RnDv0qlqxSy1H57n8EzdqSgUEiqjUr359BLbRL0HHMJM5ZrUyAVqe4JJKN8ZnLyIwo3U2gxLGNbeIbbrDGqGZyhQrS1CIwVGo/9byTzfNhkg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0O1ce0fHexLux+jQu0Y/ywp1Thx3ahKW28fi/jkDbcM=;
- b=WRM37q1UJgieAF5d7v0wRAKm31wQ+wPVRkeSy/CNE31obGgt+aODfFbvCAzhnDqq3IutpgMeOsR8Egg4NRqx8YbJV7E6KuD/SlXz4QKJEQ7qH+SnraFKE4HG0tyy+hMp26hcfUe/S0JPY0qKDxPCQNguqvGLDMWOx5EQCW+uvwg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com (2603:10b6:8:a4::7) by
- PH7PR12MB5853.namprd12.prod.outlook.com (2603:10b6:510:1d4::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8445.19; Fri, 21 Feb
- 2025 16:19:36 +0000
-Received: from DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f]) by DM4PR12MB6373.namprd12.prod.outlook.com
- ([fe80::12f7:eff:380b:589f%5]) with mapi id 15.20.8466.015; Fri, 21 Feb 2025
- 16:19:36 +0000
-Date: Fri, 21 Feb 2025 11:19:26 -0500
-From: Yazen Ghannam <yazen.ghannam@amd.com>
-To: Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc: Bjorn Helgaas <bhelgaas@google.com>, linux-pci@vger.kernel.org,
-	Lukas Wunner <lukas@wunner.de>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Tony Luck <tony.luck@intel.com>, Borislav Petkov <bp@alien8.de>,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-edac@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] PCI: Handle TLP Log in Flit mode
-Message-ID: <20250221161926.GB926653@yaz-khff2.amd.com>
-References: <20250207161836.2755-1-ilpo.jarvinen@linux.intel.com>
- <20250207161836.2755-3-ilpo.jarvinen@linux.intel.com>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250207161836.2755-3-ilpo.jarvinen@linux.intel.com>
-X-ClientProxiedBy: MN0P220CA0012.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:208:52e::35) To DM4PR12MB6373.namprd12.prod.outlook.com
- (2603:10b6:8:a4::7)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4YztnC0xFXz2x9N
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2025 02:08:43 +1100 (AEDT)
+Received: from smtp-3-0001.mail.infomaniak.ch (unknown [IPv6:2001:1600:4:17::246c])
+	by smtp-3-3000.mail.infomaniak.ch (Postfix) with ESMTPS id 4Yztn21Cvqzp7v;
+	Fri, 21 Feb 2025 16:08:38 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=digikod.net;
+	s=20191114; t=1740150518;
+	bh=HAdXvLK8vfW//A0RH2Z8Vgvri1ljkOe8we8oEw/BRJo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gNAhgefJNSQqmpn1R7GjmCDcL8sBVj9Jy8ELxGlJDuSkOcQnFPususm4DJtyM7z3K
+	 N5uOW38hzFreoU0UXhfBHpXriYHLasoIWkBI7w0rFt5bmnCxNP0I8oGntObZgmF0Jy
+	 3Dxnzo71DVTvLCBMWTvR36ekCTxZrE3oQm+YSPuM=
+Received: from unknown by smtp-3-0001.mail.infomaniak.ch (Postfix) with ESMTPA id 4Yztmx6Tb2zB0s;
+	Fri, 21 Feb 2025 16:08:33 +0100 (CET)
+Date: Fri, 21 Feb 2025 16:08:33 +0100
+From: =?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>
+To: Andrey Albershteyn <aalbersh@redhat.com>, 
+	Paul Moore <paul@paul-moore.com>
+Cc: Richard Henderson <richard.henderson@linaro.org>, 
+	Matt Turner <mattst88@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, 
+	Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
+	linux-xfs@vger.kernel.org
+Subject: Re: [PATCH v3] fs: introduce getfsxattrat and setfsxattrat syscalls
+Message-ID: <20250221.ahB8jei2Chie@digikod.net>
+References: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,154 +84,232 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR12MB6373:EE_|PH7PR12MB5853:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5dde43a8-d3cf-4ee0-6e31-08dd529388a0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|1800799024|376014|366016|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?iso-8859-1?Q?hoOcyiqhiVsSPS74fjmtN8+g4eIiCPIGS9ZSJ6jYzbkFjBoDxp48gb2Jfe?=
- =?iso-8859-1?Q?1md++DKhqWH72gCdIAG0aGkvKwzme1JSFXmykn9m9MqBp8CK5EdG051c8E?=
- =?iso-8859-1?Q?Ibvo5S22uO7MiZEgb+dqZYbMKqG4XM8AIVs2060i8yZDcBEiOuvUwUDZAh?=
- =?iso-8859-1?Q?H9MlpkPIQo4SRXhE4afptlVOW4cRKrbhis1isUwbb1oCgCMuAFWEKd/HTy?=
- =?iso-8859-1?Q?QAgeAyTOPZdXtT19iPCbE7fjfF0SMnJMOHsOglzGietDNMQ+3zjEvs6zc1?=
- =?iso-8859-1?Q?nWJZnoSB/+ko7c7Po43zB3MHKCDyYbyK8HyIb+Opl5g24EnuoAAp6YabqU?=
- =?iso-8859-1?Q?k2NSGo+nbaVvandcs1O3hHvDvwzf+yRuN0SeOx0fZaHBvHHgcz4pS2hhj9?=
- =?iso-8859-1?Q?/skye0jd/c7Sg5Or9Y2gTd8Y2LlT8nHrd4uGH6wjtf8YTAc3oQ80YghNJI?=
- =?iso-8859-1?Q?8LIn4/wnygcXf1guZRSuZ5hRbQc5i4bVqJ9weNO++h0u52Zyerm+BMLBR+?=
- =?iso-8859-1?Q?4B0ZeS/1hbex0ZBrp5tjUTWcvwOi7nJM4e4cIBxnhQ//OEmqPHPmxgwdjB?=
- =?iso-8859-1?Q?+0350i0Z51mU9hTqjWUPQ13xOuEBAJdDK70H3yVtUAnkYD6PDuaeAHmtB+?=
- =?iso-8859-1?Q?J4ahCRPtCTJTyLBaf4ejsNBXLdo0bLYPWqFnGrPaquP6g5LI8gytwBdVNN?=
- =?iso-8859-1?Q?ts/ho0LBmW1owv78wcNI3xL5XaowlkY8s2TMCErDD3jBD5kokNAjjo4vM4?=
- =?iso-8859-1?Q?KidB9LeStkrEdWHUdbJQP3REDLE6uBq6saPa2c4l6xTCHi+E0+V+uPG0lv?=
- =?iso-8859-1?Q?FKx3fwPhVvoN6klTEYOSU9yu7Joqva3mPcS53BUgfA+hDZvBKagTOzTHKp?=
- =?iso-8859-1?Q?2A/59T+SG35GZbUJ+7S5LDSSGI3ICuiGF97NYFskhSXUCrnx87/kGckhM6?=
- =?iso-8859-1?Q?ONFGCq/FbTVMdGpbfcEUXtFqLW9IfSJOucgi0Q/JqrRso1xQJWmxgRukfh?=
- =?iso-8859-1?Q?Tm/YaWKbPVGstYwUpuXmuTzHOMUVcx9j6QR3xo6w/CLLpqFj8Jhn+mSjVp?=
- =?iso-8859-1?Q?oIkqKRRhs88jwcuEY2j0/2Ge4kYw1kwPDgwORGG7oLI56QDkiDTwtRMIao?=
- =?iso-8859-1?Q?nwTLKAfSFBVPZnIntkLBJ8pCUlytV7kKUo7dzORUT/OP2Fb+Caoyg2gLay?=
- =?iso-8859-1?Q?Xlx1Ai7DUCNV2LJtquMMwAx2Fmv442cZWU5/n+xgfJWa2nb+w3b95t/d93?=
- =?iso-8859-1?Q?FXO3z5l/R/4PtOcFsAwBCt5rdV7fuN3/wnKi8KV3NtAemHQpSRdX9Iieim?=
- =?iso-8859-1?Q?8XsL2GEZUDFpsjdMPGGjTWVmQTrMkjOWoY5aSra+g87zHnKOCf3EnW/HeO?=
- =?iso-8859-1?Q?19vysNyvjryzrv/9xPz5xqcslH4fkXYxjlRWWK54pUHeDxOt39NmxKKdhW?=
- =?iso-8859-1?Q?syfbSPu8fCB58tRe?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM4PR12MB6373.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?iso-8859-1?Q?63k+sYPIehsYoBlurwwVac4tBjnDUSgZ89lx5oMqFIm2hoEiXhVHEX56Lk?=
- =?iso-8859-1?Q?hBdoqkqWMvKnGaLTjWxYLOARfnTQNkxVm6PKgeddOEg6pmT+rfHLbF+8BW?=
- =?iso-8859-1?Q?y1LLHKGrb3WKTJJdnMs7lci1GDJkwkavgOW7GgJ8qzvfLWjcpSBisQ6JEu?=
- =?iso-8859-1?Q?VeWatLMdwMe48iyT2XEBMCqq3m1TMOkYw+6DaRfFS46uk/cHFyRleoKypT?=
- =?iso-8859-1?Q?7D0yrbjnZHis29VE7wdSeIisvetVq8M4CVFauG4gf4+kkBdUXgOgydjqBb?=
- =?iso-8859-1?Q?Z5Z6bSyeoH9JS+mOoLhZxGhEH6t1+kl/yjwGgJ58+rGOdq8OZikF743NCM?=
- =?iso-8859-1?Q?6uSD4rfmmj07A/vrZN8q8Epez3LDw2cvNLspgDGbuvM2jVLC0fwRTSyT3/?=
- =?iso-8859-1?Q?H3rNLD5uBElfFTgRKNvgG6ag3JlmHOi2+ffuYkXmzMgEEUxqitzf3BwjnB?=
- =?iso-8859-1?Q?8iIopiMhnyNUHLTGgGQd3lgTxToZEVZ8PvMC3GR9y1c4vGjaktdsMgxJHw?=
- =?iso-8859-1?Q?d0lcJbO06s+zpIxeIWCZvcD1i2gzskWgnNoEn6PPkzrlZLK7skFV5WfkYK?=
- =?iso-8859-1?Q?U2S9GzdOL3ej8acPo2GDBhVSunMfV1zj+PbzUX/vYKqtz+r2uO51ffng1d?=
- =?iso-8859-1?Q?TuY76P8WXYjmjDOpWImVK0vBJM4ybmWz5nLIZhjUR3ykgtgPTNY7Af6YVe?=
- =?iso-8859-1?Q?LlsWxWZBYj8C1n5eNfTMrtMRXCQREWTCHKJSb6m29riJi3o2DF3/sbiS2C?=
- =?iso-8859-1?Q?hR8N4XBSISlk6D46J6V0pdGGKvw/gpZE/5rs2p/L7n8Sr3mt3nt5u+swYN?=
- =?iso-8859-1?Q?w7T4VP4v0u86m1+B/ge4RlkFW66ifdGPBGg9pIYnWwFlfahMYMfo6H7Qci?=
- =?iso-8859-1?Q?J2qliqlvwAw8Xy+b4aSjoVE5DZ/M6plbMHvhO6m6E1XFw45BBcWpUXd3zI?=
- =?iso-8859-1?Q?W70rrtplmWNSBWHPoq81QHG2yKG2wA2aB9+bYVDdwDwJJsMbHWobpnrmm2?=
- =?iso-8859-1?Q?tozmq0NSGB1whbs4bUfWlqISTjPd7wDzDobNb1LeeHtqMi9T5/dz2uuCKc?=
- =?iso-8859-1?Q?ZxkZOzQ5phWXIu5eo9PBlrza3tE4OSXXELjU+/OD7QJWUNueMRHYjrpiT7?=
- =?iso-8859-1?Q?x5/HOZJcRAtBXu+Cavx7SksZRRuDLUIs7gZsKvC5ACq6GFQJ5E6vsgjJKf?=
- =?iso-8859-1?Q?VO0YCb1p0Kqrb4+2EnQFy2pPwBgbax4hpusRoJDlxSVbWc8iLDvQ6ZVj1M?=
- =?iso-8859-1?Q?rsZ26I6RarkjegXxGhS4m7NPMqkrMVTdK28dYMLUK0Sd/JrIiNbaxKEU1F?=
- =?iso-8859-1?Q?LsqZ86A3L41sLyJdM8KKQTnHjXYUW/Bdhtc1BfLNe9eloTOOHbWAjRjxPR?=
- =?iso-8859-1?Q?bbqOKTHFgbP3/XdTqBKr8jWESvF7p0L7f06ckV7qzc+NRphdOLPTpSXly+?=
- =?iso-8859-1?Q?kj31gNTVIn+iodxMB01t9in3rc8rW7NJtHR/T0acmSWxPn7KKwCIqIPRTT?=
- =?iso-8859-1?Q?uUK6CP/CqfNzr8Vk4T31xHdbYaUQwzguF2i39AIYvKkotCbJYW5Adh/sFf?=
- =?iso-8859-1?Q?vjY+XSO3eA9OvBklto7HlI+czSf+EmLjqRdwukZUQoUXZwR3IE8GwiYAl2?=
- =?iso-8859-1?Q?VSbNoWM0pl35IkOnMxgeQZlZ58xHoOoGVP?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5dde43a8-d3cf-4ee0-6e31-08dd529388a0
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR12MB6373.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Feb 2025 16:19:36.4822
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /FokNinZcver/6wC5RhvtK2x1UyR7jm2gx+zk69TzuxIGrZ3Q7RrDkcocAuguYnLmWdc+jrWWdbt0InBMT85KQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB5853
-X-Spam-Status: No, score=0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_INVALID,DKIM_SIGNED,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
+X-Infomaniak-Routing: alpha
+X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 07, 2025 at 06:18:36PM +0200, Ilpo Järvinen wrote:
-> Flit mode introduced in PCIe r6.0 alters how the TLP Header Log is
-> presented through AER and DPC Capability registers. The TLP Prefix Log
-> Register is not present with Flit mode and the register becomes
-> extension for TLP Header Log (PCIe r6.1 secs 7.8.4.12 & 7.9.14.13).
+It looks security checks are missing.  With IOCTL commands, file
+permissions are checked at open time, but with these syscalls the path
+is only resolved but no specific access seems to be checked (except
+inode_owner_or_capable via vfs_fileattr_set).
+
+On Tue, Feb 11, 2025 at 06:22:47PM +0100, Andrey Albershteyn wrote:
+> From: Andrey Albershteyn <aalbersh@redhat.com>
 > 
-> Adapt pcie_read_tlp_log() and struct pcie_tlp_log to read and store
-> also the extended TLP Header Log when the link is in Flit mode. As
-> Prefix Log and Extended TLP Header are not present at the same time,
-> C union can be used.
+> Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
+> extended attributes/flags. The syscalls take parent directory fd and
+> path to the child together with struct fsxattr.
 > 
-> Determining whether the error occurred while the Link was in Flit mode
-> is bit complicated. In case of AER, Advanced Error Capabilities and
-> Control Register directly tells whether the error was logged in Flit
-> mode or not (PCIe r6.1 sec 7.8.4.7). DPC Capability (PCIe r6.1 sec
-> 7.9.14), unfortunately, does not contain the same information.
+> This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
+> that file don't need to be open as we can reference it with a path
+> instead of fd. By having this we can manipulated inode extended
+> attributes not only on regular files but also on special ones. This
+> is not possible with FS_IOC_FSSETXATTR ioctl as with special files
+> we can not call ioctl() directly on the filesystem inode using fd.
 > 
-> Unlike AER, the DPC capability does not provide way to discern whether
-> the error was logged in Flit mode (this is confirmed by PCI WG to be an
-> oversight in the spec). DPC will bring link down immediately following
-> an error, which make it impossible to acquire the Flit mode status
-> directly from the Link Status 2 register because Flit Mode Status is
-> only set in certain Link states (PCIe r6.1 sec 7.5.3.20). As a
-> workaround, use the flit_mode value stored into the struct pci_bus.
+> This patch adds two new syscalls which allows userspace to get/set
+> extended inode attributes on special files by using parent directory
+> and a path - *at() like syscall.
 > 
-> Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+> Also, as vfs_fileattr_set() is now will be called on special files
+> too, let's forbid any other attributes except projid and nextents
+> (symlink can have an extent).
+> 
+> CC: linux-api@vger.kernel.org
+> CC: linux-fsdevel@vger.kernel.org
+> CC: linux-xfs@vger.kernel.org
+> Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
 > ---
->  drivers/pci/pci.h             |  3 +-
->  drivers/pci/pcie/aer.c        |  1 +
->  drivers/pci/pcie/dpc.c        | 18 +++++++++--
->  drivers/pci/pcie/tlp.c        | 56 ++++++++++++++++++++++++-----------
->  include/linux/aer.h           | 12 ++++++--
->  include/ras/ras_event.h       | 12 ++++----
->  include/uapi/linux/pci_regs.h |  6 +++-
->  7 files changed, 77 insertions(+), 31 deletions(-)
+> v1:
+> https://lore.kernel.org/linuxppc-dev/20250109174540.893098-1-aalbersh@kernel.org/
 > 
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index 9c6a4a980678..07cc9be6f80b 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -554,7 +554,8 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info);
->  void aer_print_error(struct pci_dev *dev, struct aer_err_info *info);
+> Previous discussion:
+> https://lore.kernel.org/linux-xfs/20240520164624.665269-2-aalbersh@redhat.com/
+> 
+> XFS has project quotas which could be attached to a directory. All
+> new inodes in these directories inherit project ID set on parent
+> directory.
+> 
+> The project is created from userspace by opening and calling
+> FS_IOC_FSSETXATTR on each inode. This is not possible for special
+> files such as FIFO, SOCK, BLK etc. Therefore, some inodes are left
+> with empty project ID. Those inodes then are not shown in the quota
+> accounting but still exist in the directory. Moreover, in the case
+> when special files are created in the directory with already
+> existing project quota, these inode inherit extended attributes.
+> This than leaves them with these attributes without the possibility
+> to clear them out. This, in turn, prevents userspace from
+> re-creating quota project on these existing files.
+> ---
+> Changes in v3:
+> - Remove unnecessary "dfd is dir" check as it checked in user_path_at()
+> - Remove unnecessary "same filesystem" check
+> - Use CLASS() instead of directly calling fdget/fdput
+> - Link to v2: https://lore.kernel.org/r/20250122-xattrat-syscall-v2-1-5b360d4fbcb2@kernel.org
+> ---
+>  arch/alpha/kernel/syscalls/syscall.tbl      |  2 +
+>  arch/arm/tools/syscall.tbl                  |  2 +
+>  arch/arm64/tools/syscall_32.tbl             |  2 +
+>  arch/m68k/kernel/syscalls/syscall.tbl       |  2 +
+>  arch/microblaze/kernel/syscalls/syscall.tbl |  2 +
+>  arch/mips/kernel/syscalls/syscall_n32.tbl   |  2 +
+>  arch/mips/kernel/syscalls/syscall_n64.tbl   |  2 +
+>  arch/mips/kernel/syscalls/syscall_o32.tbl   |  2 +
+>  arch/parisc/kernel/syscalls/syscall.tbl     |  2 +
+>  arch/powerpc/kernel/syscalls/syscall.tbl    |  2 +
+>  arch/s390/kernel/syscalls/syscall.tbl       |  2 +
+>  arch/sh/kernel/syscalls/syscall.tbl         |  2 +
+>  arch/sparc/kernel/syscalls/syscall.tbl      |  2 +
+>  arch/x86/entry/syscalls/syscall_32.tbl      |  2 +
+>  arch/x86/entry/syscalls/syscall_64.tbl      |  2 +
+>  arch/xtensa/kernel/syscalls/syscall.tbl     |  2 +
+>  fs/inode.c                                  | 75 +++++++++++++++++++++++++++++
+>  fs/ioctl.c                                  | 16 +++++-
+>  include/linux/fileattr.h                    |  1 +
+>  include/linux/syscalls.h                    |  4 ++
+>  include/uapi/asm-generic/unistd.h           |  8 ++-
+>  21 files changed, 133 insertions(+), 3 deletions(-)
+> 
+
+[...]
+
+> diff --git a/fs/inode.c b/fs/inode.c
+> index 6b4c77268fc0ecace4ac78a9ca777fbffc277f4a..b2dddd9db4fabaf67a6cbf541a86978b290411ec 100644
+> --- a/fs/inode.c
+> +++ b/fs/inode.c
+> @@ -23,6 +23,9 @@
+>  #include <linux/rw_hint.h>
+>  #include <linux/seq_file.h>
+>  #include <linux/debugfs.h>
+> +#include <linux/syscalls.h>
+> +#include <linux/fileattr.h>
+> +#include <linux/namei.h>
+>  #include <trace/events/writeback.h>
+>  #define CREATE_TRACE_POINTS
+>  #include <trace/events/timestamp.h>
+> @@ -2953,3 +2956,75 @@ umode_t mode_strip_sgid(struct mnt_idmap *idmap,
+>  	return mode & ~S_ISGID;
+>  }
+>  EXPORT_SYMBOL(mode_strip_sgid);
+> +
+> +SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
+> +		struct fsxattr __user *, fsx, unsigned int, at_flags)
+> +{
+> +	CLASS(fd, dir)(dfd);
+> +	struct fileattr fa;
+> +	struct path filepath;
+> +	int error;
+> +	unsigned int lookup_flags = 0;
+> +
+> +	if ((at_flags & ~(AT_SYMLINK_NOFOLLOW | AT_EMPTY_PATH)) != 0)
+> +		return -EINVAL;
+> +
+> +	if (at_flags & AT_SYMLINK_FOLLOW)
+> +		lookup_flags |= LOOKUP_FOLLOW;
+> +
+> +	if (at_flags & AT_EMPTY_PATH)
+> +		lookup_flags |= LOOKUP_EMPTY;
+> +
+> +	if (fd_empty(dir))
+> +		return -EBADF;
+> +
+> +	error = user_path_at(dfd, filename, lookup_flags, &filepath);
+> +	if (error)
+> +		return error;
+
+security_inode_getattr() should probably be called here.
+
+> +
+> +	error = vfs_fileattr_get(filepath.dentry, &fa);
+> +	if (!error)
+> +		error = copy_fsxattr_to_user(&fa, fsx);
+> +
+> +	path_put(&filepath);
+> +	return error;
+> +}
+> +
+> +SYSCALL_DEFINE4(setfsxattrat, int, dfd, const char __user *, filename,
+> +		struct fsxattr __user *, fsx, unsigned int, at_flags)
+> +{
+> +	CLASS(fd, dir)(dfd);
+> +	struct fileattr fa;
+> +	struct path filepath;
+> +	int error;
+> +	unsigned int lookup_flags = 0;
+> +
+> +	if ((at_flags & ~(AT_SYMLINK_FOLLOW | AT_EMPTY_PATH)) != 0)
+> +		return -EINVAL;
+> +
+> +	if (at_flags & AT_SYMLINK_FOLLOW)
+> +		lookup_flags |= LOOKUP_FOLLOW;
+> +
+> +	if (at_flags & AT_EMPTY_PATH)
+> +		lookup_flags |= LOOKUP_EMPTY;
+> +
+> +	if (fd_empty(dir))
+> +		return -EBADF;
+> +
+> +	if (copy_fsxattr_from_user(&fa, fsx))
+> +		return -EFAULT;
+> +
+> +	error = user_path_at(dfd, filename, lookup_flags, &filepath);
+> +	if (error)
+> +		return error;
+> +
+> +	error = mnt_want_write(filepath.mnt);
+> +	if (!error) {
+
+security_inode_setattr() should probably be called too.
+
+> +		error = vfs_fileattr_set(file_mnt_idmap(fd_file(dir)),
+> +					 filepath.dentry, &fa);
+> +		mnt_drop_write(filepath.mnt);
+> +	}
+> +
+> +	path_put(&filepath);
+> +	return error;
+> +}
+> diff --git a/fs/ioctl.c b/fs/ioctl.c
+> index 638a36be31c14afc66a7fd6eb237d9545e8ad997..dc160c2ef145e4931d625f1f93c2a8ae7f87abf3 100644
+> --- a/fs/ioctl.c
+> +++ b/fs/ioctl.c
+> @@ -558,8 +558,7 @@ int copy_fsxattr_to_user(const struct fileattr *fa, struct fsxattr __user *ufa)
+>  }
+>  EXPORT_SYMBOL(copy_fsxattr_to_user);
 >  
->  int pcie_read_tlp_log(struct pci_dev *dev, int where, int where2,
-> -		      unsigned int tlp_len, struct pcie_tlp_log *log);
-> +		      unsigned int tlp_len, bool flit,
-> +		      struct pcie_tlp_log *log);
->  unsigned int aer_tlp_log_len(struct pci_dev *dev, u32 aercc);
->  void pcie_print_tlp_log(const struct pci_dev *dev,
->  			const struct pcie_tlp_log *log, const char *pfx);
-> diff --git a/drivers/pci/pcie/aer.c b/drivers/pci/pcie/aer.c
-> index 508474e17183..9c3e8299ad50 100644
-> --- a/drivers/pci/pcie/aer.c
-> +++ b/drivers/pci/pcie/aer.c
-> @@ -1245,6 +1245,7 @@ int aer_get_device_error_info(struct pci_dev *dev, struct aer_err_info *info)
->  			pcie_read_tlp_log(dev, aer + PCI_ERR_HEADER_LOG,
->  					  aer + PCI_ERR_PREFIX_LOG,
->  					  aer_tlp_log_len(dev, aercc),
-> +					  aercc & PCI_ERR_CAP_TLP_LOG_FLIT,
->  					  &info->tlp);
->  		}
->  	}
+> -static int copy_fsxattr_from_user(struct fileattr *fa,
+> -				  struct fsxattr __user *ufa)
+> +int copy_fsxattr_from_user(struct fileattr *fa, struct fsxattr __user *ufa)
+>  {
+>  	struct fsxattr xfa;
+>  
+> @@ -646,6 +645,19 @@ static int fileattr_set_prepare(struct inode *inode,
+>  	if (fa->fsx_cowextsize == 0)
+>  		fa->fsx_xflags &= ~FS_XFLAG_COWEXTSIZE;
+>  
+> +	/*
+> +	 * The only use case for special files is to set project ID, forbid any
+> +	 * other attributes
+> +	 */
+> +	if (!(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode))) {
+> +		if (fa->fsx_xflags & ~FS_XFLAG_PROJINHERIT)
+> +			return -EINVAL;
+> +		if (!S_ISLNK(inode->i_mode) && fa->fsx_nextents)
+> +			return -EINVAL;
+> +		if (fa->fsx_extsize || fa->fsx_cowextsize)
+> +			return -EINVAL;
+> +	}
+> +
+>  	return 0;
+>  }
+>  
+> diff --git a/include/linux/fileattr.h b/include/linux/fileattr.h
 
-It seems Linux does not support "Multiple Error Handling", correct? We
-save the TLP logs once for each device, and the user will need to know
-that these are just for the "First" error, right?
-
-Thanks,
-Yazen
+[...]
 
