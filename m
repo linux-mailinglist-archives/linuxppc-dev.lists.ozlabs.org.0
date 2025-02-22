@@ -1,67 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-6387-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6389-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7F94A404DB
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Feb 2025 02:45:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA618A40659
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Feb 2025 09:24:00 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z08vy3wggz2yb9;
-	Sat, 22 Feb 2025 12:45:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z0Klf2kpdz2xPc;
+	Sat, 22 Feb 2025 19:23:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740188734;
-	cv=none; b=MUvp9Z5hiNg0S7FWCOFQHUZYBNM/ukSrZLhpnWNRz5zCGafMfJnJ+4GxA+0PyUExuqBdDLc9jSJ5aLMBiEs/K34GQ8xxrgRzDh6d6S1WZFEi9tS46hD2zHRT/UXKh3m69669i/z9+0rGGzjMAAOvBoCnO5nGu6gN9YOog86+QMuOAnkiEqNrTnU/vLwKTgwwRkCIKAyQlyrr1rhIlTSwdCoPzH9DFj+YSsx2QXfuGPKyBg7J7ElMNRQf06lQiWDxwvi2ApGQQnz+9mBh44dFrBZ8oSb97PBQPzVMz/Kw3DpNlQl8k1MjMpMJh2eS1NPhMRFnklg9iju+xevprQeKkw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=89.208.246.23
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740212638;
+	cv=none; b=ldf24XoyHYgYkG3coDYnNj/QQQ1RG0VEZSxRnaI6RbPBVZoM8FzsVUeO/FyTLURxcSvTV+Sv9iVtIi3VzNyBk6FhiS1Nvl0VHXUNYyVyMJQG2kqMsV9VviKAOcnHDRPbl1/dN3U2biiGpjPcbuvptxzWX2OizFRxmAgIojlXVczzDHUVy+007omjUGG16CUN3NeLjOQnXE2NmoIwxB5cNqB8y/OZvaQ1hpQ+gRozs5bInxJ+T3AX+OkzpHTWDOXKTGfoDaDjyyd3aAQ3HQQp2RPh1gvElP8Wr242dRnaidlAFDkz6KUFCVy8Y3P4UndeEeCwwqu1+FW/XyFuC5Hw5g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740188734; c=relaxed/relaxed;
-	bh=pmPD/HrfnLi2sNsvWl/3G9VECFjeZEVyXK4whWeoIMg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=XRLQeRx0k/fc1uAVUAQRtyFiKTKnqlsOqOYfDfI4I4VdZsQ5zaaAGTOOUvXJc0YveGcaGahq7/I1xzg38EmQ4yZXBd9559daMJg17FsRgaIGQCN+DT4oITL7iZQZ2VBB3AlD35ys261utNmBACHISczG/S++F37ovevRwgdQ4Ycnm0frSY3ZM47DmrQOgwBlHK/qqOjUMOl1jzymfZRdbdnMPQ0dcb99V5Xcm4ofBrsxb88lFMdECpRXIZlfxkgKC0UGY/Q4d+ht6nW7q9tp3Dn6bmKlmnFKvwnjM1VZsSOnWvdsP+XbcE+71BXCLYQ4JEzgA35CdeDOkjQ+PpCHFQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Kj9dfw9k; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3osy5zwykdloxjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1740212638; c=relaxed/relaxed;
+	bh=DRrg6c2K4XleizbMWxPQXWBwaxmuiY1RcYb2d/6rATA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=oP5NkwJqALgMeBHTmHiCoH7aXr0CFurygMSRGND3F+GBRidTjs+vY1IGf7csv8YcaWQdNCDOMPPXSXymxkObiXj8EvJqTOCU9KeTsVyHT6XxeATBKeJKaBFZI7Ycmx4EgOMtNnKHRPFwV0cboyEtRYGGb2HZY7NWjjJ7qp8YP4VTcBiLOvECPHP2iJTLnKqLX4skZ4l+HKND5XbrryZiI6hUEL2DU087j7+ib+VY0BMPxIQTvDajf0G6cFWeeHr1z+bI045DUzQf7Y67PJf5pR7hTbsUd1WQ4IdsVJdh63uL1693OQwt5M0D6hy+Vs3U4IpAHOtzEtl23YyyBVJtVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xry111.site; dkim=pass (1024-bit key; unprotected) header.d=xry111.site header.i=@xry111.site header.a=rsa-sha256 header.s=default header.b=mxCULzsF; dkim-atps=neutral; spf=pass (client-ip=89.208.246.23; helo=xry111.site; envelope-from=xry111@xry111.site; receiver=lists.ozlabs.org) smtp.mailfrom=xry111.site
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=xry111.site
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Kj9dfw9k;
+	dkim=pass (1024-bit key; unprotected) header.d=xry111.site header.i=@xry111.site header.a=rsa-sha256 header.s=default header.b=mxCULzsF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3osy5zwykdloxjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=xry111.site (client-ip=89.208.246.23; helo=xry111.site; envelope-from=xry111@xry111.site; receiver=lists.ozlabs.org)
+Received: from xry111.site (xry111.site [89.208.246.23])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z08vw4ysfz2y34
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2025 12:45:31 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-2fc1c3b3dc7so5285120a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Feb 2025 17:45:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740188729; x=1740793529; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pmPD/HrfnLi2sNsvWl/3G9VECFjeZEVyXK4whWeoIMg=;
-        b=Kj9dfw9k6aXTSkWPZEFRmKFEQTQE1RizfekUj2dNtxfqMWg4AFj0G+8SvGmFi/fSgb
-         YgOKPmQhecmYPVzifHFsWlf9I+J8U0yCbadE8YyNYytW+wF1Uan5Qex7OfiBdgIKnpUP
-         qEl322GPHh1GXs8DLg84R2ncnsj7RFwGZjlnJf6UCnicVUY6gX5RZs05qJihQm6fcgEf
-         b3zlgJSw41OWBwI+iywMB8gqKA2P8GbR39uZxBryVQM2oyyVYv8+y4Qc3s3asuArSKOG
-         v46xu0bnRwxFogiS8MxMuTA1t1ud5pmeLLx4dJF8o8jFkzSFTWWV4wwchzJp/cXwM4yF
-         CbpQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740188729; x=1740793529;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pmPD/HrfnLi2sNsvWl/3G9VECFjeZEVyXK4whWeoIMg=;
-        b=RukOC2IRS/epcxqRaDX9O8bjYt5X6Us6+GLm3mmMOVUQ1voughhOKxSmqD8RPbaUQX
-         OXu1XFV+mb5q/e/YOso84xMERSLiP9OoSqgvARznZ8zLdNQPCx9TD8iLzplulQpjrh+8
-         rYvpG3ypo6GDNND9/0mUQ7NW91duB3amCkn04LN4+3gEgWQtTdjj+xb6KVlJGwWKpw+I
-         NP+RiS6ToIvDGjOvjdTRzteVeWwSSFZbbyVHeMcumWJmD14CV0RwYTG/FgEWnXBALMlm
-         mBXkxadIqA6qq5WyjsZlaeH2bQJECEpG+ObfpBLdL1MSez/FVNL81ECdTeNTkcQbcndO
-         DWtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEKDTTyzu22mlTcs+e1YGUzVPjknRgw4enYnREgSCSTv2Ssd/PT5vvwNb33In9YB7KGeDtgqbXNMQPUEs=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwIZ5p/qrDccQY5U2nq8tFlHZuAVJ2JIyrxPT64vAM8jc/sKk40
-	aiiK/mGZVx/zLGvs1PGOj03YI2DhzE61f04B/9YlEn8gYTQSGZnswbWJhNAq5+QzVuZf+ybDNyq
-	3eg==
-X-Google-Smtp-Source: AGHT+IEPuNW28N5AWxvZ/P27xQeUcG6Q4FhSwmpHrm/jYaK7EtGafhEp4dzKNdq68R9j0yTESbwMkERjcQs=
-X-Received: from pjboe12.prod.google.com ([2002:a17:90b:394c:b0:2fa:1fac:2695])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1344:b0:2fc:a3b7:10a2
- with SMTP id 98e67ed59e1d1-2fce78cb879mr10231690a91.17.1740188729538; Fri, 21
- Feb 2025 17:45:29 -0800 (PST)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 21 Feb 2025 17:45:26 -0800
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z0Kld35pjz2xPL
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Feb 2025 19:23:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=xry111.site;
+	s=default; t=1740212245;
+	bh=DRrg6c2K4XleizbMWxPQXWBwaxmuiY1RcYb2d/6rATA=;
+	h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+	b=mxCULzsFy+M3Qz7kr+B8TCoUHkY61qs2EE21/SAsu8dCHPwCpct2pFOvu969Ocl3s
+	 3+0fwJi5iyByd1gTd2oOzNAEQ95uFEOfVlBckNfGH7F/RK4jwrEEYd2KAgG0N9p3fA
+	 JVJPoQThpV2zdJoTWKqL1tfqPnfiS+++Jpwg52AY=
+Received: from [127.0.0.1] (unknown [IPv6:2001:470:683e::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature ECDSA (secp384r1) server-digest SHA384)
+	(Client did not present a certificate)
+	(Authenticated sender: xry111@xry111.site)
+	by xry111.site (Postfix) with ESMTPSA id 391F8676C9;
+	Sat, 22 Feb 2025 03:17:18 -0500 (EST)
+Message-ID: <1adbf1603237b654a2948ae13692c6b6db0ab7eb.camel@xry111.site>
+Subject: Re: [PATCH v3 09/18] riscv: vdso: Switch to generic storage
+ implementation
+From: Xi Ruoyao <xry111@xry111.site>
+To: Thomas =?ISO-8859-1?Q?Wei=DFschuh?= <thomas.weissschuh@linutronix.de>, 
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>, Helge
+ Deller <deller@gmx.de>, Andy Lutomirski <luto@kernel.org>,  Thomas Gleixner
+ <tglx@linutronix.de>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+ Anna-Maria Behnsen	 <anna-maria@linutronix.de>, Frederic Weisbecker
+ <frederic@kernel.org>,  Andrew Morton <akpm@linux-foundation.org>, Catalin
+ Marinas <catalin.marinas@arm.com>, Will Deacon	 <will@kernel.org>, Theodore
+ Ts'o <tytso@mit.edu>, "Jason A. Donenfeld"	 <Jason@zx2c4.com>, Paul
+ Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt	 <palmer@dabbelt.com>,
+ Albert Ou <aou@eecs.berkeley.edu>, Huacai Chen	 <chenhuacai@kernel.org>,
+ WANG Xuerui <kernel@xen0n.name>, Russell King	 <linux@armlinux.org.uk>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik	 <gor@linux.ibm.com>,
+ Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, Thomas
+ Bogendoerfer	 <tsbogend@alpha.franken.de>, Michael Ellerman
+ <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Naveen N Rao	 <naveen@kernel.org>, Madhavan
+ Srinivasan <maddy@linux.ibm.com>, Ingo Molnar	 <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen	 <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,  Arnd Bergmann	
+ <arnd@arndb.de>, Guo Ren <guoren@kernel.org>
+Cc: linux-parisc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	loongarch@lists.linux.dev, linux-s390@vger.kernel.org, 
+	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
+	linux-csky@vger.kernel.org
+Date: Sat, 22 Feb 2025 16:17:16 +0800
+In-Reply-To: <20250204-vdso-store-rng-v3-9-13a4669dfc8c@linutronix.de>
+References: <20250204-vdso-store-rng-v3-0-13a4669dfc8c@linutronix.de>
+	 <20250204-vdso-store-rng-v3-9-13a4669dfc8c@linutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.54.3 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,747 +91,414 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.48.1.601.g30ceb7b040-goog
-Message-ID: <20250222014526.2302653-1-seanjc@google.com>
-Subject: [RFC kvm-unit-tests PATCH] lib: Use __ASSEMBLER__ instead of __ASSEMBLY__
-From: Sean Christopherson <seanjc@google.com>
-To: Andrew Jones <andrew.jones@linux.dev>, Laurent Vivier <lvivier@redhat.com>, 
-	Thomas Huth <thuth@redhat.com>
-Cc: kvmarm@lists.linux.dev, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Convert all non-x86 #ifdefs from __ASSEMBLY__ to __ASSEMBLER__, and remove
-all manual __ASSEMBLY__ #defines.  __ASSEMBLY_ was inherited blindly from
-the Linux kernel, and must be manually defined, e.g. through build rules
-or with the aforementioned explicit #defines in assembly code.
+On Tue, 2025-02-04 at 13:05 +0100, Thomas Wei=C3=9Fschuh wrote:
+> The generic storage implementation provides the same features as the
+> custom one. However it can be shared between architectures, making
+> maintenance easier.
+>=20
+> Co-developed-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Signed-off-by: Thomas Wei=C3=9Fschuh <thomas.weissschuh@linutronix.de>
 
-__ASSEMBLER__ on the other hand is automatically defined by the compiler
-when preprocessing assembly, i.e. doesn't require manually #defines for
-the code to function correctly.
+I made a RISC-V vDSO getrandom implementation on top of this and it
+works fine.  I'll submit it when this is merged.
 
-Ignore x86, as x86 doesn't actually rely on __ASSEMBLY__ at the moment,
-and is undergoing a parallel cleanup.
+Tested-by: Xi Ruoyao <xry111@xry111.site>
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
+> ---
+> =C2=A0arch/riscv/Kconfig=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 3 +-
+> =C2=A0arch/riscv/include/asm/vdso.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0 |=C2=A0 2 +-
+> =C2=A0.../include/asm/vdso/{time_data.h =3D> arch_data.h}=C2=A0 |=C2=A0 8=
+ +-
+> =C2=A0arch/riscv/include/asm/vdso/gettimeofday.h=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0 | 14 +---
+> =C2=A0arch/riscv/include/asm/vdso/vsyscall.h=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=A0 9 ---
+> =C2=A0arch/riscv/kernel/sys_hwprobe.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0 |=C2=A0 3 +-
+> =C2=A0arch/riscv/kernel/vdso.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 | 90 +------------
+> ---------
+> =C2=A0arch/riscv/kernel/vdso/hwprobe.c=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+ |=C2=A0 6 +-
+> =C2=A0arch/riscv/kernel/vdso/vdso.lds.S=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 |=C2=
+=A0 7 +-
+> =C2=A09 files changed, 18 insertions(+), 124 deletions(-)
+>=20
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index
+> 7612c52e9b1e35607f1dd4603a596416d3357a71..aa8ea53186c04ad68582255f74b0
+> 9a0605fe8368 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -53,7 +53,7 @@ config RISCV
+> =C2=A0	select ARCH_HAS_SYSCALL_WRAPPER
+> =C2=A0	select ARCH_HAS_TICK_BROADCAST if
+> GENERIC_CLOCKEVENTS_BROADCAST
+> =C2=A0	select ARCH_HAS_UBSAN
+> -	select ARCH_HAS_VDSO_TIME_DATA
+> +	select ARCH_HAS_VDSO_ARCH_DATA if GENERIC_VDSO_DATA_STORE
+> =C2=A0	select ARCH_KEEP_MEMBLOCK if ACPI
+> =C2=A0	select ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE	if 64BIT &&
+> MMU
+> =C2=A0	select ARCH_OPTIONAL_KERNEL_RWX if ARCH_HAS_STRICT_KERNEL_RWX
+> @@ -116,6 +116,7 @@ config RISCV
+> =C2=A0	select GENERIC_SCHED_CLOCK
+> =C2=A0	select GENERIC_SMP_IDLE_THREAD
+> =C2=A0	select GENERIC_TIME_VSYSCALL if MMU && 64BIT
+> +	select GENERIC_VDSO_DATA_STORE if MMU
+> =C2=A0	select GENERIC_VDSO_TIME_NS if HAVE_GENERIC_VDSO
+> =C2=A0	select HARDIRQS_SW_RESEND
+> =C2=A0	select HAS_IOPORT if MMU
+> diff --git a/arch/riscv/include/asm/vdso.h
+> b/arch/riscv/include/asm/vdso.h
+> index
+> f891478829a52c41e06240f67611694cc28197d9..c130d8100232cbe50e52e35eb418
+> e354bd114cb7 100644
+> --- a/arch/riscv/include/asm/vdso.h
+> +++ b/arch/riscv/include/asm/vdso.h
+> @@ -14,7 +14,7 @@
+> =C2=A0 */
+> =C2=A0#ifdef CONFIG_MMU
+> =C2=A0
+> -#define __VVAR_PAGES=C2=A0=C2=A0=C2=A0 2
+> +#define __VDSO_PAGES=C2=A0=C2=A0=C2=A0 4
+> =C2=A0
+> =C2=A0#ifndef __ASSEMBLY__
+> =C2=A0#include <generated/vdso-offsets.h>
+> diff --git a/arch/riscv/include/asm/vdso/time_data.h
+> b/arch/riscv/include/asm/vdso/arch_data.h
+> similarity index 71%
+> rename from arch/riscv/include/asm/vdso/time_data.h
+> rename to arch/riscv/include/asm/vdso/arch_data.h
+> index
+> dfa65228999bed41dfd6c5e36cb678e1e055eec8..da57a3786f7a53c866fc00948826
+> b4a2d839940f 100644
+> --- a/arch/riscv/include/asm/vdso/time_data.h
+> +++ b/arch/riscv/include/asm/vdso/arch_data.h
+> @@ -1,12 +1,12 @@
+> =C2=A0/* SPDX-License-Identifier: GPL-2.0 */
+> -#ifndef __RISCV_ASM_VDSO_TIME_DATA_H
+> -#define __RISCV_ASM_VDSO_TIME_DATA_H
+> +#ifndef __RISCV_ASM_VDSO_ARCH_DATA_H
+> +#define __RISCV_ASM_VDSO_ARCH_DATA_H
+> =C2=A0
+> =C2=A0#include <linux/types.h>
+> =C2=A0#include <vdso/datapage.h>
+> =C2=A0#include <asm/hwprobe.h>
+> =C2=A0
+> -struct arch_vdso_time_data {
+> +struct vdso_arch_data {
+> =C2=A0	/* Stash static answers to the hwprobe queries when all CPUs
+> are selected. */
+> =C2=A0	__u64 all_cpu_hwprobe_values[RISCV_HWPROBE_MAX_KEY + 1];
+> =C2=A0
+> @@ -14,4 +14,4 @@ struct arch_vdso_time_data {
+> =C2=A0	__u8 homogeneous_cpus;
+> =C2=A0};
+> =C2=A0
+> -#endif /* __RISCV_ASM_VDSO_TIME_DATA_H */
+> +#endif /* __RISCV_ASM_VDSO_ARCH_DATA_H */
+> diff --git a/arch/riscv/include/asm/vdso/gettimeofday.h
+> b/arch/riscv/include/asm/vdso/gettimeofday.h
+> index
+> ba3283cf7accaa93a38512d2c17eda0eefde0612..29164f84f93cec6e28251e6a0adf
+> bc341ac88241 100644
+> --- a/arch/riscv/include/asm/vdso/gettimeofday.h
+> +++ b/arch/riscv/include/asm/vdso/gettimeofday.h
+> @@ -69,7 +69,7 @@ int clock_getres_fallback(clockid_t _clkid, struct
+> __kernel_timespec *_ts)
+> =C2=A0#endif /* CONFIG_GENERIC_TIME_VSYSCALL */
+> =C2=A0
+> =C2=A0static __always_inline u64 __arch_get_hw_counter(s32 clock_mode,
+> -						 const struct
+> vdso_data *vd)
+> +						 const struct
+> vdso_time_data *vd)
+> =C2=A0{
+> =C2=A0	/*
+> =C2=A0	 * The purpose of csr_read(CSR_TIME) is to trap the system
+> into
+> @@ -79,18 +79,6 @@ static __always_inline u64
+> __arch_get_hw_counter(s32 clock_mode,
+> =C2=A0	return csr_read(CSR_TIME);
+> =C2=A0}
+> =C2=A0
+> -static __always_inline const struct vdso_data
+> *__arch_get_vdso_data(void)
+> -{
+> -	return _vdso_data;
+> -}
+> -
+> -#ifdef CONFIG_TIME_NS
+> -static __always_inline
+> -const struct vdso_data *__arch_get_timens_vdso_data(const struct
+> vdso_data *vd)
+> -{
+> -	return _timens_data;
+> -}
+> -#endif
+> =C2=A0#endif /* !__ASSEMBLY__ */
+> =C2=A0
+> =C2=A0#endif /* __ASM_VDSO_GETTIMEOFDAY_H */
+> diff --git a/arch/riscv/include/asm/vdso/vsyscall.h
+> b/arch/riscv/include/asm/vdso/vsyscall.h
+> index
+> e8a9c4b53c0c9f4744196eed800b21f3918d1040..1140b54b4bc8278d7a322036cd9f
+> 84f71258f246 100644
+> --- a/arch/riscv/include/asm/vdso/vsyscall.h
+> +++ b/arch/riscv/include/asm/vdso/vsyscall.h
+> @@ -6,15 +6,6 @@
+> =C2=A0
+> =C2=A0#include <vdso/datapage.h>
+> =C2=A0
+> -extern struct vdso_data *vdso_data;
+> -
+> -static __always_inline struct vdso_data
+> *__riscv_get_k_vdso_data(void)
+> -{
+> -	return vdso_data;
+> -}
+> -
+> -#define __arch_get_k_vdso_data __riscv_get_k_vdso_data
+> -
+> =C2=A0/* The asm-generic header needs to be included after the definition=
+s
+> above */
+> =C2=A0#include <asm-generic/vdso/vsyscall.h>
+> =C2=A0
+> diff --git a/arch/riscv/kernel/sys_hwprobe.c
+> b/arch/riscv/kernel/sys_hwprobe.c
+> index
+> bcd3b816306c22df62f60ad044f4ae58f7dad4d1..04a4e549551284bb3340673eb76a
+> 2e7bd457025e 100644
+> --- a/arch/riscv/kernel/sys_hwprobe.c
+> +++ b/arch/riscv/kernel/sys_hwprobe.c
+> @@ -450,8 +450,7 @@ static int do_riscv_hwprobe(struct riscv_hwprobe
+> __user *pairs,
+> =C2=A0
+> =C2=A0static int __init init_hwprobe_vdso_data(void)
+> =C2=A0{
+> -	struct vdso_data *vd =3D __arch_get_k_vdso_data();
+> -	struct arch_vdso_time_data *avd =3D &vd->arch_data;
+> +	struct vdso_arch_data *avd =3D vdso_k_arch_data;
+> =C2=A0	u64 id_bitsmash =3D 0;
+> =C2=A0	struct riscv_hwprobe pair;
+> =C2=A0	int key;
+> diff --git a/arch/riscv/kernel/vdso.c b/arch/riscv/kernel/vdso.c
+> index
+> 3ca3ae4277e187e790a8bf513a9e80d8b6290bb2..cc2895d1fbc2fe752b3edc94f4e2
+> 8a6a8fca7a3b 100644
+> --- a/arch/riscv/kernel/vdso.c
+> +++ b/arch/riscv/kernel/vdso.c
+> @@ -13,20 +13,11 @@
+> =C2=A0#include <linux/err.h>
+> =C2=A0#include <asm/page.h>
+> =C2=A0#include <asm/vdso.h>
+> -#include <linux/time_namespace.h>
+> +#include <linux/vdso_datastore.h>
+> =C2=A0#include <vdso/datapage.h>
+> =C2=A0#include <vdso/vsyscall.h>
+> =C2=A0
+> -enum vvar_pages {
+> -	VVAR_DATA_PAGE_OFFSET,
+> -	VVAR_TIMENS_PAGE_OFFSET,
+> -	VVAR_NR_PAGES,
+> -};
+> -
+> -#define VVAR_SIZE=C2=A0 (VVAR_NR_PAGES << PAGE_SHIFT)
+> -
+> -static union vdso_data_store vdso_data_store __page_aligned_data;
+> -struct vdso_data *vdso_data =3D vdso_data_store.data;
+> +#define VVAR_SIZE=C2=A0 (VDSO_NR_PAGES << PAGE_SHIFT)
+> =C2=A0
+> =C2=A0struct __vdso_info {
+> =C2=A0	const char *name;
+> @@ -79,78 +70,6 @@ static void __init __vdso_init(struct __vdso_info
+> *vdso_info)
+> =C2=A0	vdso_info->cm->pages =3D vdso_pagelist;
+> =C2=A0}
+> =C2=A0
+> -#ifdef CONFIG_TIME_NS
+> -struct vdso_data *arch_get_vdso_data(void *vvar_page)
+> -{
+> -	return (struct vdso_data *)(vvar_page);
+> -}
+> -
+> -static const struct vm_special_mapping rv_vvar_map;
+> -
+> -/*
+> - * The vvar mapping contains data for a specific time namespace, so
+> when a task
+> - * changes namespace we must unmap its vvar data for the old
+> namespace.
+> - * Subsequent faults will map in data for the new namespace.
+> - *
+> - * For more details see timens_setup_vdso_data().
+> - */
+> -int vdso_join_timens(struct task_struct *task, struct time_namespace
+> *ns)
+> -{
+> -	struct mm_struct *mm =3D task->mm;
+> -	struct vm_area_struct *vma;
+> -	VMA_ITERATOR(vmi, mm, 0);
+> -
+> -	mmap_read_lock(mm);
+> -
+> -	for_each_vma(vmi, vma) {
+> -		if (vma_is_special_mapping(vma, &rv_vvar_map))
+> -			zap_vma_pages(vma);
+> -	}
+> -
+> -	mmap_read_unlock(mm);
+> -	return 0;
+> -}
+> -#endif
+> -
+> -static vm_fault_t vvar_fault(const struct vm_special_mapping *sm,
+> -			=C2=A0=C2=A0=C2=A0=C2=A0 struct vm_area_struct *vma, struct
+> vm_fault *vmf)
+> -{
+> -	struct page *timens_page =3D find_timens_vvar_page(vma);
+> -	unsigned long pfn;
+> -
+> -	switch (vmf->pgoff) {
+> -	case VVAR_DATA_PAGE_OFFSET:
+> -		if (timens_page)
+> -			pfn =3D page_to_pfn(timens_page);
+> -		else
+> -			pfn =3D sym_to_pfn(vdso_data);
+> -		break;
+> -#ifdef CONFIG_TIME_NS
+> -	case VVAR_TIMENS_PAGE_OFFSET:
+> -		/*
+> -		 * If a task belongs to a time namespace then a
+> namespace
+> -		 * specific VVAR is mapped with the
+> VVAR_DATA_PAGE_OFFSET and
+> -		 * the real VVAR page is mapped with the
+> VVAR_TIMENS_PAGE_OFFSET
+> -		 * offset.
+> -		 * See also the comment near
+> timens_setup_vdso_data().
+> -		 */
+> -		if (!timens_page)
+> -			return VM_FAULT_SIGBUS;
+> -		pfn =3D sym_to_pfn(vdso_data);
+> -		break;
+> -#endif /* CONFIG_TIME_NS */
+> -	default:
+> -		return VM_FAULT_SIGBUS;
+> -	}
+> -
+> -	return vmf_insert_pfn(vma, vmf->address, pfn);
+> -}
+> -
+> -static const struct vm_special_mapping rv_vvar_map =3D {
+> -	.name=C2=A0=C2=A0 =3D "[vvar]",
+> -	.fault =3D vvar_fault,
+> -};
+> -
+> =C2=A0static struct vm_special_mapping rv_vdso_map __ro_after_init =3D {
+> =C2=A0	.name=C2=A0=C2=A0 =3D "[vdso]",
+> =C2=A0	.mremap =3D vdso_mremap,
+> @@ -196,7 +115,7 @@ static int __setup_additional_pages(struct
+> mm_struct *mm,
+> =C2=A0	unsigned long vdso_base, vdso_text_len, vdso_mapping_len;
+> =C2=A0	void *ret;
+> =C2=A0
+> -	BUILD_BUG_ON(VVAR_NR_PAGES !=3D __VVAR_PAGES);
+> +	BUILD_BUG_ON(VDSO_NR_PAGES !=3D __VDSO_PAGES);
+> =C2=A0
+> =C2=A0	vdso_text_len =3D vdso_info->vdso_pages << PAGE_SHIFT;
+> =C2=A0	/* Be sure to map the data page */
+> @@ -208,8 +127,7 @@ static int __setup_additional_pages(struct
+> mm_struct *mm,
+> =C2=A0		goto up_fail;
+> =C2=A0	}
+> =C2=A0
+> -	ret =3D _install_special_mapping(mm, vdso_base, VVAR_SIZE,
+> -		(VM_READ | VM_MAYREAD | VM_PFNMAP), &rv_vvar_map);
+> +	ret =3D vdso_install_vvar_mapping(mm, vdso_base);
+> =C2=A0	if (IS_ERR(ret))
+> =C2=A0		goto up_fail;
+> =C2=A0
+> diff --git a/arch/riscv/kernel/vdso/hwprobe.c
+> b/arch/riscv/kernel/vdso/hwprobe.c
+> index
+> a158c029344f60c022e7565757ff44df7e3d89e5..2ddeba6c68dda09b0249117fd06a
+> 5d249f3b0abd 100644
+> --- a/arch/riscv/kernel/vdso/hwprobe.c
+> +++ b/arch/riscv/kernel/vdso/hwprobe.c
+> @@ -16,8 +16,7 @@ static int riscv_vdso_get_values(struct
+> riscv_hwprobe *pairs, size_t pair_count,
+> =C2=A0				 size_t cpusetsize, unsigned long
+> *cpus,
+> =C2=A0				 unsigned int flags)
+> =C2=A0{
+> -	const struct vdso_data *vd =3D __arch_get_vdso_data();
+> -	const struct arch_vdso_time_data *avd =3D &vd->arch_data;
+> +	const struct vdso_arch_data *avd =3D &vdso_u_arch_data;
+> =C2=A0	bool all_cpus =3D !cpusetsize && !cpus;
+> =C2=A0	struct riscv_hwprobe *p =3D pairs;
+> =C2=A0	struct riscv_hwprobe *end =3D pairs + pair_count;
+> @@ -51,8 +50,7 @@ static int riscv_vdso_get_cpus(struct riscv_hwprobe
+> *pairs, size_t pair_count,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 size_t cpusetsize, unsigned=
+ long
+> *cpus,
+> =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 unsigned int flags)
+> =C2=A0{
+> -	const struct vdso_data *vd =3D __arch_get_vdso_data();
+> -	const struct arch_vdso_time_data *avd =3D &vd->arch_data;
+> +	const struct vdso_arch_data *avd =3D &vdso_u_arch_data;
+> =C2=A0	struct riscv_hwprobe *p =3D pairs;
+> =C2=A0	struct riscv_hwprobe *end =3D pairs + pair_count;
+> =C2=A0	unsigned char *c =3D (unsigned char *)cpus;
+> diff --git a/arch/riscv/kernel/vdso/vdso.lds.S
+> b/arch/riscv/kernel/vdso/vdso.lds.S
+> index
+> cbe2a179331d2511a8b4a26c06383e46131661b1..8e86965a8aae4d7c5a36d0f26026
+> cd1c8680b339 100644
+> --- a/arch/riscv/kernel/vdso/vdso.lds.S
+> +++ b/arch/riscv/kernel/vdso/vdso.lds.S
+> @@ -4,15 +4,14 @@
+> =C2=A0 */
+> =C2=A0#include <asm/page.h>
+> =C2=A0#include <asm/vdso.h>
+> +#include <vdso/datapage.h>
+> =C2=A0
+> =C2=A0OUTPUT_ARCH(riscv)
+> =C2=A0
+> =C2=A0SECTIONS
+> =C2=A0{
+> -	PROVIDE(_vdso_data =3D . - __VVAR_PAGES * PAGE_SIZE);
+> -#ifdef CONFIG_TIME_NS
+> -	PROVIDE(_timens_data =3D _vdso_data + PAGE_SIZE);
+> -#endif
+> +	VDSO_VVAR_SYMS
+> +
+> =C2=A0	. =3D SIZEOF_HEADERS;
+> =C2=A0
+> =C2=A0	.hash		: { *(.hash) }			:text
+>=20
 
-Completely untested.  This is essentially a "rage" patch after spending
-way, way too much time trying to understand why I couldn't include some
-__ASSEMBLY__ protected headers in x86 assembly files.
- 
- arm/cstart.S                | 1 -
- arm/cstart64.S              | 1 -
- lib/arm/asm/arch_gicv3.h    | 4 ++--
- lib/arm/asm/assembler.h     | 2 +-
- lib/arm/asm/gic-v2.h        | 4 ++--
- lib/arm/asm/gic-v3.h        | 4 ++--
- lib/arm/asm/gic.h           | 4 ++--
- lib/arm/asm/page.h          | 4 ++--
- lib/arm/asm/ptrace.h        | 4 ++--
- lib/arm/asm/sysreg.h        | 4 ++--
- lib/arm/asm/thread_info.h   | 4 ++--
- lib/arm/asm/timer.h         | 4 ++--
- lib/arm64/asm/arch_gicv3.h  | 4 ++--
- lib/arm64/asm/assembler.h   | 2 +-
- lib/arm64/asm/page.h        | 4 ++--
- lib/arm64/asm/processor.h   | 4 ++--
- lib/arm64/asm/ptrace.h      | 4 ++--
- lib/arm64/asm/sysreg.h      | 4 ++--
- lib/asm-generic/page.h      | 4 ++--
- lib/auxinfo.h               | 2 +-
- lib/libcflat.h              | 4 ++--
- lib/libfdt/fdt.h            | 2 +-
- lib/linux/compiler.h        | 4 ++--
- lib/linux/const.h           | 2 +-
- lib/powerpc/asm/hcall.h     | 4 ++--
- lib/powerpc/asm/processor.h | 4 ++--
- lib/powerpc/asm/rtas.h      | 4 ++--
- lib/ppc64/asm/page.h        | 4 ++--
- lib/ppc64/asm/ptrace.h      | 4 ++--
- lib/ppc64/asm/vpa.h         | 4 ++--
- lib/riscv/asm/bug.h         | 2 +-
- lib/riscv/asm/csr.h         | 4 ++--
- lib/riscv/asm/page.h        | 4 ++--
- lib/riscv/asm/sbi.h         | 4 ++--
- lib/riscv/setjmp.S          | 1 -
- powerpc/cstart64.S          | 1 -
- riscv/sbi-asm.S             | 1 -
- 37 files changed, 58 insertions(+), 63 deletions(-)
-
-diff --git a/arm/cstart.S b/arm/cstart.S
-index 29961c37..60c135fb 100644
---- a/arm/cstart.S
-+++ b/arm/cstart.S
-@@ -5,7 +5,6 @@
-  *
-  * This work is licensed under the terms of the GNU LGPL, version 2.
-  */
--#define __ASSEMBLY__
- #include <auxinfo.h>
- #include <asm/assembler.h>
- #include <asm/thread_info.h>
-diff --git a/arm/cstart64.S b/arm/cstart64.S
-index b480a552..dd0cce4b 100644
---- a/arm/cstart64.S
-+++ b/arm/cstart64.S
-@@ -5,7 +5,6 @@
-  *
-  * This work is licensed under the terms of the GNU GPL, version 2.
-  */
--#define __ASSEMBLY__
- #include <auxinfo.h>
- #include <asm/asm-offsets.h>
- #include <asm/assembler.h>
-diff --git a/lib/arm/asm/arch_gicv3.h b/lib/arm/asm/arch_gicv3.h
-index 45b60968..0acb22b4 100644
---- a/lib/arm/asm/arch_gicv3.h
-+++ b/lib/arm/asm/arch_gicv3.h
-@@ -8,7 +8,7 @@
- #ifndef _ASMARM_ARCH_GICV3_H_
- #define _ASMARM_ARCH_GICV3_H_
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <libcflat.h>
- #include <asm/sysreg.h>
- #include <asm/barrier.h>
-@@ -61,5 +61,5 @@ static inline u64 gicv3_read_typer(const volatile void __iomem *addr)
- 	return val;
- }
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_ARCH_GICV3_H_ */
-diff --git a/lib/arm/asm/assembler.h b/lib/arm/asm/assembler.h
-index 4200252d..5158de8c 100644
---- a/lib/arm/asm/assembler.h
-+++ b/lib/arm/asm/assembler.h
-@@ -4,7 +4,7 @@
-  * arch/arm/mm/proc-v7.S.
-  */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #error "Only include this from assembly code"
- #endif
- 
-diff --git a/lib/arm/asm/gic-v2.h b/lib/arm/asm/gic-v2.h
-index ff11afb1..f58d8b6d 100644
---- a/lib/arm/asm/gic-v2.h
-+++ b/lib/arm/asm/gic-v2.h
-@@ -17,7 +17,7 @@
- #define GICC_ENABLE			0x1
- #define GICC_IAR_INT_ID_MASK		0x3ff
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <cpumask.h>
- 
- struct gicv2_data {
-@@ -38,5 +38,5 @@ extern void gicv2_write_eoir(u32 irqstat);
- extern void gicv2_ipi_send_single(int irq, int cpu);
- extern void gicv2_ipi_send_mask(int irq, const cpumask_t *dest);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_GIC_V2_H_ */
-diff --git a/lib/arm/asm/gic-v3.h b/lib/arm/asm/gic-v3.h
-index a1cc62a2..85520e3e 100644
---- a/lib/arm/asm/gic-v3.h
-+++ b/lib/arm/asm/gic-v3.h
-@@ -66,7 +66,7 @@
- 
- #include <asm/arch_gicv3.h>
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <cpumask.h>
- #include <asm/setup.h>
- #include <asm/processor.h>
-@@ -153,5 +153,5 @@ static inline u64 mpidr_uncompress(u32 compressed)
- 
- #define gicv3_lpi_get_config(intid) (gicv3_data.lpi_prop[LPI_OFFSET(intid)])
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_GIC_V3_H_ */
-diff --git a/lib/arm/asm/gic.h b/lib/arm/asm/gic.h
-index dc8cc18c..e6ba77e4 100644
---- a/lib/arm/asm/gic.h
-+++ b/lib/arm/asm/gic.h
-@@ -46,7 +46,7 @@
- #define PPI(irq)			((irq) + 16)
- #define SPI(irq)			((irq) + GIC_FIRST_SPI)
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <cpumask.h>
- 
- enum gic_irq_state {
-@@ -88,5 +88,5 @@ void gic_irq_set_clr_enable(int irq, bool enable);
- #define gic_enable_irq(irq) gic_irq_set_clr_enable(irq, true)
- #define gic_disable_irq(irq) gic_irq_set_clr_enable(irq, false)
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_GIC_H_ */
-diff --git a/lib/arm/asm/page.h b/lib/arm/asm/page.h
-index 8eb4a883..f2847e98 100644
---- a/lib/arm/asm/page.h
-+++ b/lib/arm/asm/page.h
-@@ -12,7 +12,7 @@
- #define PAGE_SIZE		(_AC(1,UL) << PAGE_SHIFT)
- #define PAGE_MASK		(~(PAGE_SIZE-1))
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #define PAGE_ALIGN(addr)	ALIGN(addr, PAGE_SIZE)
- 
-@@ -49,5 +49,5 @@ extern unsigned long __phys_to_virt(phys_addr_t addr);
- 
- extern void *__ioremap(phys_addr_t phys_addr, size_t size);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_PAGE_H_ */
-diff --git a/lib/arm/asm/ptrace.h b/lib/arm/asm/ptrace.h
-index 02bb2ccb..6f6a7a41 100644
---- a/lib/arm/asm/ptrace.h
-+++ b/lib/arm/asm/ptrace.h
-@@ -52,7 +52,7 @@
- #define PSR_IT_MASK	0x0600fc00	/* If-Then execution state mask */
- #define PSR_ENDIAN_MASK	0x00000200	/* Endianness state mask */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <libcflat.h>
- 
- struct pt_regs {
-@@ -100,5 +100,5 @@ static inline unsigned long regs_get_register(struct pt_regs *regs,
- 	return *(unsigned long *)((unsigned long)regs + offset);
- }
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_PTRACE_H_ */
-diff --git a/lib/arm/asm/sysreg.h b/lib/arm/asm/sysreg.h
-index 96843386..7827f8ea 100644
---- a/lib/arm/asm/sysreg.h
-+++ b/lib/arm/asm/sysreg.h
-@@ -38,7 +38,7 @@
- #define CR_AFE	(1 << 29)	/* Access flag enable			*/
- #define CR_TE	(1 << 30)	/* Thumb exception enable		*/
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <libcflat.h>
- 
- #define __ACCESS_CP15(CRn, Op1, CRm, Op2)			\
-@@ -60,6 +60,6 @@
- 
- #define __write_sysreg(v, r, w, c, t)   asm volatile(w " " c : : "r" ((t)(v)))
- #define write_sysreg(v, ...)            __write_sysreg(v, __VA_ARGS__)
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- 
- #endif /* _ASMARM_SYSREG_H_ */
-diff --git a/lib/arm/asm/thread_info.h b/lib/arm/asm/thread_info.h
-index eaa72582..be5a060b 100644
---- a/lib/arm/asm/thread_info.h
-+++ b/lib/arm/asm/thread_info.h
-@@ -22,7 +22,7 @@
- #define THREAD_ALIGNMENT	THREAD_SIZE
- #endif
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <asm/processor.h>
- #include <alloc.h>
- 
-@@ -73,5 +73,5 @@ static inline struct thread_info *current_thread_info(void)
- 
- extern void thread_info_init(struct thread_info *ti, unsigned int flags);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_THREAD_INFO_H_ */
-diff --git a/lib/arm/asm/timer.h b/lib/arm/asm/timer.h
-index aaf839fc..fd8f7796 100644
---- a/lib/arm/asm/timer.h
-+++ b/lib/arm/asm/timer.h
-@@ -10,7 +10,7 @@
- #define ARCH_TIMER_CTL_IMASK   (1 << 1)
- #define ARCH_TIMER_CTL_ISTATUS (1 << 2)
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- struct timer_state {
- 	struct {
-@@ -29,5 +29,5 @@ extern struct timer_state __timer_state;
- 
- void timer_save_state(void);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM_TIMER_H_ */
-diff --git a/lib/arm64/asm/arch_gicv3.h b/lib/arm64/asm/arch_gicv3.h
-index fdee4de1..3ea3ce9e 100644
---- a/lib/arm64/asm/arch_gicv3.h
-+++ b/lib/arm64/asm/arch_gicv3.h
-@@ -10,7 +10,7 @@
- 
- #include <asm/sysreg.h>
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <libcflat.h>
- #include <asm/barrier.h>
-@@ -54,5 +54,5 @@ static inline void gicv3_write_grpen1(u32 val)
- 
- #define gicv3_read_typer(c) readq(c)
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM64_ARCH_GICV3_H_ */
-diff --git a/lib/arm64/asm/assembler.h b/lib/arm64/asm/assembler.h
-index aa8c65a2..388cf09a 100644
---- a/lib/arm64/asm/assembler.h
-+++ b/lib/arm64/asm/assembler.h
-@@ -8,7 +8,7 @@
-  * Copyright (C) 2012 ARM Ltd.
-  */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #error "Only include this from assembly code"
- #endif
- 
-diff --git a/lib/arm64/asm/page.h b/lib/arm64/asm/page.h
-index d0fac6ea..c0b723e9 100644
---- a/lib/arm64/asm/page.h
-+++ b/lib/arm64/asm/page.h
-@@ -37,7 +37,7 @@
- #define PGTABLE_LEVELS \
- 	(((VA_BITS - PAGE_SHIFT) + ((PAGE_SHIFT - 3) - 1)) / (PAGE_SHIFT - 3))
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #define PAGE_ALIGN(addr)	ALIGN(addr, PAGE_SIZE)
- 
-@@ -74,5 +74,5 @@ extern unsigned long __phys_to_virt(phys_addr_t addr);
- 
- extern void *__ioremap(phys_addr_t phys_addr, size_t size);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM64_PAGE_H_ */
-diff --git a/lib/arm64/asm/processor.h b/lib/arm64/asm/processor.h
-index e5b0ad10..32ddc1b3 100644
---- a/lib/arm64/asm/processor.h
-+++ b/lib/arm64/asm/processor.h
-@@ -6,7 +6,7 @@
-  * This work is licensed under the terms of the GNU LGPL, version 2.
-  */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <asm/ptrace.h>
- #include <asm/esr.h>
- #include <asm/sysreg.h>
-@@ -173,5 +173,5 @@ static inline bool system_supports_rndr(void)
- 	return ((id_aa64isar0_el1 >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf) != 0;
- }
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM64_PROCESSOR_H_ */
-diff --git a/lib/arm64/asm/ptrace.h b/lib/arm64/asm/ptrace.h
-index ccb38dc6..1949f097 100644
---- a/lib/arm64/asm/ptrace.h
-+++ b/lib/arm64/asm/ptrace.h
-@@ -48,7 +48,7 @@
- #define PSR_x		0x0000ff00	/* Extension            */
- #define PSR_c		0x000000ff	/* Control              */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <libcflat.h>
- 
- struct user_pt_regs {
-@@ -95,5 +95,5 @@ struct pt_regs {
- #define fast_interrupts_enabled(regs) \
- 	(!((regs)->pstate & PSR_F_BIT))
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMARM64_PTRACE_H_ */
-diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
-index f214a4f0..2b76aed9 100644
---- a/lib/arm64/asm/sysreg.h
-+++ b/lib/arm64/asm/sysreg.h
-@@ -13,7 +13,7 @@
- #define sys_reg(op0, op1, crn, crm, op2) \
- 	((((op0)&3)<<19)|((op1)<<16)|((crn)<<12)|((crm)<<8)|((op2)<<5))
- 
--#ifdef __ASSEMBLY__
-+#ifdef __ASSEMBLER__
- 	.irp	num,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30
- 	.equ	.L__reg_num_x\num, \num
- 	.endr
-@@ -71,7 +71,7 @@ asm(
- "	.inst	0xd5000000|(\\sreg)|(.L__reg_num_\\rt)\n"
- "	.endm\n"
- );
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #define ID_AA64ISAR0_EL1_RNDR_SHIFT	60
- 
-diff --git a/lib/asm-generic/page.h b/lib/asm-generic/page.h
-index 2ed77f4c..74f4751a 100644
---- a/lib/asm-generic/page.h
-+++ b/lib/asm-generic/page.h
-@@ -15,7 +15,7 @@
- #define PAGE_SIZE		(_AC(1,UL) << PAGE_SHIFT)
- #define PAGE_MASK		(~(PAGE_SIZE-1))
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #define PAGE_ALIGN(addr)	ALIGN(addr, PAGE_SIZE)
- 
-@@ -26,6 +26,6 @@
- #define virt_to_pfn(kaddr)	(__pa(kaddr) >> PAGE_SHIFT)
- #define pfn_to_virt(pfn)	__va((pfn) << PAGE_SHIFT)
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- 
- #endif /* _ASM_GENERIC_PAGE_H_ */
-diff --git a/lib/auxinfo.h b/lib/auxinfo.h
-index a46a1e6f..877f13d8 100644
---- a/lib/auxinfo.h
-+++ b/lib/auxinfo.h
-@@ -7,7 +7,7 @@
- 
- #define AUXINFO_MMU_OFF (1 << 0)
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- struct auxinfo {
- 	const char *progname;
- 	unsigned long flags;
-diff --git a/lib/libcflat.h b/lib/libcflat.h
-index b4110b9e..261f7486 100644
---- a/lib/libcflat.h
-+++ b/lib/libcflat.h
-@@ -20,7 +20,7 @@
- #ifndef _LIBCFLAT_H_
- #define _LIBCFLAT_H_
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <linux/compiler.h>
- #include <stdarg.h>
-@@ -155,7 +155,7 @@ do {									\
- void binstr(unsigned long x, char out[BINSTR_SZ]);
- void print_binstr(unsigned long x);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- 
- #define SZ_256			(1 << 8)
- #define SZ_4K			(1 << 12)
-diff --git a/lib/libfdt/fdt.h b/lib/libfdt/fdt.h
-index f2e68807..57fe5663 100644
---- a/lib/libfdt/fdt.h
-+++ b/lib/libfdt/fdt.h
-@@ -7,7 +7,7 @@
-  * Copyright 2012 Kim Phillips, Freescale Semiconductor.
-  */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- struct fdt_header {
- 	fdt32_t magic;			 /* magic word FDT_MAGIC */
-diff --git a/lib/linux/compiler.h b/lib/linux/compiler.h
-index bf3313bd..8e62aae0 100644
---- a/lib/linux/compiler.h
-+++ b/lib/linux/compiler.h
-@@ -6,7 +6,7 @@
- #ifndef __LINUX_COMPILER_H
- #define __LINUX_COMPILER_H
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #define GCC_VERSION (__GNUC__ * 10000           \
- 		     + __GNUC_MINOR__ * 100     \
-@@ -121,5 +121,5 @@ static __always_inline void __write_once_size(volatile void *p, void *res, int s
- 	__u.__val;					\
- })
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* !__LINUX_COMPILER_H */
-diff --git a/lib/linux/const.h b/lib/linux/const.h
-index f622fa85..c92ba549 100644
---- a/lib/linux/const.h
-+++ b/lib/linux/const.h
-@@ -12,7 +12,7 @@
-  * leave it unchanged in asm.
-  */
- 
--#if defined(__ASSEMBLY__) || defined(__ASSEMBLER__)
-+#ifdef __ASSEMBLER__
- #define _AC(X,Y)	X
- #define _AT(T,X)	X
- #define __ASM_STR(X)	X
-diff --git a/lib/powerpc/asm/hcall.h b/lib/powerpc/asm/hcall.h
-index 3b44dd20..642e4aa7 100644
---- a/lib/powerpc/asm/hcall.h
-+++ b/lib/powerpc/asm/hcall.h
-@@ -34,7 +34,7 @@
- #define KVMPPC_HCALL_BASE	0xf000
- #define KVMPPC_H_RTAS		(KVMPPC_HCALL_BASE + 0x0)
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- /*
-  * hcall_have_broken_sc1 checks if we're on a host with a broken sc1.
-  * Returns 0 if we're not.
-@@ -49,5 +49,5 @@ extern int hcall_have_broken_sc1(void);
-  */
- extern unsigned long hcall(unsigned long nr, ...);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMPOWERPC_HCALL_H_ */
-diff --git a/lib/powerpc/asm/processor.h b/lib/powerpc/asm/processor.h
-index 9609c9c6..153126fe 100644
---- a/lib/powerpc/asm/processor.h
-+++ b/lib/powerpc/asm/processor.h
-@@ -5,10 +5,10 @@
- #include <asm/ptrace.h>
- #include <asm/reg.h>
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- void handle_exception(int trap, void (*func)(struct pt_regs *, void *), void *);
- void do_handle_exception(struct pt_regs *regs);
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- extern bool host_is_tcg;
- extern bool host_is_kvm;
-diff --git a/lib/powerpc/asm/rtas.h b/lib/powerpc/asm/rtas.h
-index 364bf935..989b21bd 100644
---- a/lib/powerpc/asm/rtas.h
-+++ b/lib/powerpc/asm/rtas.h
-@@ -6,7 +6,7 @@
-  * This work is licensed under the terms of the GNU LGPL, version 2.
-  */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <libcflat.h>
- 
-@@ -27,7 +27,7 @@ extern int rtas_call_unlocked(struct rtas_args *args, int token, int nargs, int
- 
- extern void rtas_power_off(void);
- extern void rtas_stop_self(void);
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #define RTAS_MSR_MASK 0xfffffffffffffffe
- 
-diff --git a/lib/ppc64/asm/page.h b/lib/ppc64/asm/page.h
-index c497d86b..4a7ac9ec 100644
---- a/lib/ppc64/asm/page.h
-+++ b/lib/ppc64/asm/page.h
-@@ -24,7 +24,7 @@
- #endif
- #define PAGE_MASK		(~(PAGE_SIZE-1))
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #define PAGE_ALIGN(addr)	ALIGN(addr, PAGE_SIZE)
- 
-@@ -61,5 +61,5 @@ extern unsigned long __phys_to_virt(phys_addr_t addr);
- 
- extern void *__ioremap(phys_addr_t phys_addr, size_t size);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMPPC64_PAGE_H_ */
-diff --git a/lib/ppc64/asm/ptrace.h b/lib/ppc64/asm/ptrace.h
-index db263a59..133ad2f9 100644
---- a/lib/ppc64/asm/ptrace.h
-+++ b/lib/ppc64/asm/ptrace.h
-@@ -4,7 +4,7 @@
- #define KERNEL_REDZONE_SIZE	288
- #define STACK_FRAME_OVERHEAD    112     /* size of minimum stack frame */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #include <asm/reg.h>
- 
-@@ -36,6 +36,6 @@ static inline void regs_advance_insn(struct pt_regs *regs)
- #define STACK_INT_FRAME_SIZE    (sizeof(struct pt_regs) + \
- 				 STACK_FRAME_OVERHEAD + KERNEL_REDZONE_SIZE)
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #endif /* _ASMPPC64_PTRACE_H_ */
-diff --git a/lib/ppc64/asm/vpa.h b/lib/ppc64/asm/vpa.h
-index 11dde018..2afa3fff 100644
---- a/lib/ppc64/asm/vpa.h
-+++ b/lib/ppc64/asm/vpa.h
-@@ -4,7 +4,7 @@
-  * This work is licensed under the terms of the GNU LGPL, version 2.
-  */
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- struct vpa {
- 	uint32_t	descriptor;
-@@ -57,6 +57,6 @@ struct vpa {
- 	uint8_t		reserved10[96];
- };
- 
--#endif /* __ASSEMBLY__ */
-+#endif /* __ASSEMBLER__ */
- 
- #endif /* _ASMPOWERPC_VPA_H_ */
-diff --git a/lib/riscv/asm/bug.h b/lib/riscv/asm/bug.h
-index a6f4136b..8a24e0f4 100644
---- a/lib/riscv/asm/bug.h
-+++ b/lib/riscv/asm/bug.h
-@@ -2,7 +2,7 @@
- #ifndef _ASMRISCV_BUG_H_
- #define _ASMRISCV_BUG_H_
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- static inline void bug(void)
- {
-diff --git a/lib/riscv/asm/csr.h b/lib/riscv/asm/csr.h
-index 16f5ddd7..c7fc87a9 100644
---- a/lib/riscv/asm/csr.h
-+++ b/lib/riscv/asm/csr.h
-@@ -56,7 +56,7 @@
- 
- #define IP_TIP			IE_TIE
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- #define csr_swap(csr, val)					\
- ({								\
-@@ -118,5 +118,5 @@
- 				: "memory");			\
- })
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMRISCV_CSR_H_ */
-diff --git a/lib/riscv/asm/page.h b/lib/riscv/asm/page.h
-index 07b482f7..26f6b8ab 100644
---- a/lib/riscv/asm/page.h
-+++ b/lib/riscv/asm/page.h
-@@ -2,7 +2,7 @@
- #ifndef _ASMRISCV_PAGE_H_
- #define _ASMRISCV_PAGE_H_
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- 
- typedef unsigned long pgd_t;
- typedef unsigned long pte_t;
-@@ -14,7 +14,7 @@ typedef unsigned long pteval_t;
- #define __pte(x)		((pte_t)(x))
- #define __pgprot(x)		((pgprot_t)(x))
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- 
- #include <asm-generic/page.h>
- 
-diff --git a/lib/riscv/asm/sbi.h b/lib/riscv/asm/sbi.h
-index 98a9b097..2af1208a 100644
---- a/lib/riscv/asm/sbi.h
-+++ b/lib/riscv/asm/sbi.h
-@@ -12,7 +12,7 @@
- #define SBI_ERR_ALREADY_STARTED		-7
- #define SBI_ERR_ALREADY_STOPPED		-8
- 
--#ifndef __ASSEMBLY__
-+#ifndef __ASSEMBLER__
- #include <cpumask.h>
- 
- enum sbi_ext_id {
-@@ -92,5 +92,5 @@ struct sbiret sbi_send_ipi_broadcast(void);
- struct sbiret sbi_set_timer(unsigned long stime_value);
- long sbi_probe(int ext);
- 
--#endif /* !__ASSEMBLY__ */
-+#endif /* !__ASSEMBLER__ */
- #endif /* _ASMRISCV_SBI_H_ */
-diff --git a/lib/riscv/setjmp.S b/lib/riscv/setjmp.S
-index 38b0f1ca..7d3fa9ab 100644
---- a/lib/riscv/setjmp.S
-+++ b/lib/riscv/setjmp.S
-@@ -1,5 +1,4 @@
- /* SPDX-License-Identifier: GPL-2.0 */
--#define __ASSEMBLY__
- #include <asm/asm.h>
- 
- .section .text
-diff --git a/powerpc/cstart64.S b/powerpc/cstart64.S
-index b4eb7069..86dfc7fc 100644
---- a/powerpc/cstart64.S
-+++ b/powerpc/cstart64.S
-@@ -5,7 +5,6 @@
-  *
-  * This work is licensed under the terms of the GNU LGPL, version 2.
-  */
--#define __ASSEMBLY__
- #include <asm/hcall.h>
- #include <asm/ppc_asm.h>
- #include <asm/rtas.h>
-diff --git a/riscv/sbi-asm.S b/riscv/sbi-asm.S
-index 923c2cec..f4185496 100644
---- a/riscv/sbi-asm.S
-+++ b/riscv/sbi-asm.S
-@@ -4,7 +4,6 @@
-  *
-  * Copyright (C) 2024, James Raphael Tiovalen <jamestiotio@gmail.com>
-  */
--#define __ASSEMBLY__
- #include <asm/asm.h>
- #include <asm/csr.h>
- 
-
-base-commit: f77fb696cfd0e4a5562cdca189be557946bf522f
--- 
-2.48.1.601.g30ceb7b040-goog
-
+--=20
+Xi Ruoyao <xry111@xry111.site>
+School of Aerospace Science and Technology, Xidian University
 
