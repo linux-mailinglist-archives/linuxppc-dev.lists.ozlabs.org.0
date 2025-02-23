@@ -1,59 +1,62 @@
-Return-Path: <linuxppc-dev+bounces-6396-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6397-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 029E3A4118E
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Feb 2025 21:28:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 717FCA41257
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 00:48:11 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1Fnd4QJhz2yt0;
-	Mon, 24 Feb 2025 07:28:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1LCX4xycz2ytN;
+	Mon, 24 Feb 2025 10:48:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.170
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740342533;
-	cv=none; b=gb2N2dkWWv4bX7BnfDSoUX2oYNhNChfu2Nhv6gKY9a2YoRjPFImTNRKCNr1Ru+Zzhb1njkbA5VsmMjK8pou4DsiRY1A5J02rzLNFU/2a8RcND5+wcXzJlDjSVnuOUU+ZuLuwgBwdzj9g2v4Z7cP+wc8xaxRHY4mX3uKm7PV/AEIsyP1r86t+hWkI2bfoGEHkO1+ycrGLCVHNAutMEoI/a5BugB+ngzg2M9rwMfVXNHL/82vB2vAahc882Hjh52AL3lflweXq/7JLoQpsG8Hw3kFiF8tfo4Ot9z/g4OIGAT00MizCgpt1kWpCioE4Bmb5x7s2rrn1NrZ1v5LcmY8tOQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=165.227.176.147
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740354488;
+	cv=none; b=oMlJ0F+yWSrD0xz1tZC755hDWBfqvKJY7UszAAh80s2i6EicCz27HRdAvbMu2Rz1Pp947ZLHPOlRk8D8Shnb9B1UTswhHSQ/f9VTs7g8VIs5jmTbJbZohmhG++YR9jM8A7i5GAQNSua545AT/YO1GQWTPtHGE7bLRbtzUMPMkRfqmmkrlEfwVgxJtoQuqvDXOdq7nfaWcYccMUcTx0L8gBrN8MnprixG7QexxWElJ0matMc/93yY0ha4wUEHjxWgttpYUx0y+LMkS6qm5UGLQOqMTRT8bvTfmotMOc1ED10XZ1RYTJqotz3tjJ/q45rI4xZOJIOzMuAZRpjd+P0VwA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740342533; c=relaxed/relaxed;
-	bh=+zTJ3hkU+s+DVpC9GLX4g3ZeOAZuzC6afimUtBs/oto=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CWUE/zKGI/De9RbBzV+gFsNPf8j1mbQJoMuaCyV5AQttH6qk33AqV2fTJqOsUdKrH/jjsuMd5afYcSPu8Ue0R083QReETLNne0fxNOjQS4DV0lTDV+lUbcWMhXOXoLirflkMG8C5l8RVBnUJ9hn2tMB4TuTl+ePW9inn+C/3eUEqibv5YkCuC9ZMQymWSlt3IBNsGbXh+lgsrfk2X/uxqBbhU2tzZfUq2h6lHjDfQzjrrDF8jB2ebfpdxsdfVP8dKJFkBYimY1cJo1lwdgNR69Lz4m1JoQTPH2VKuYV9yaiolN702V2z9dlEdCCGMguImOypQhfGGwbvEDw0pUsS9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lmnsaeOC; dkim-atps=neutral; spf=pass (client-ip=95.215.58.170; helo=out-170.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+	t=1740354488; c=relaxed/relaxed;
+	bh=ESEjuP0qNKG7M31LDxN5dSH9PUQiZX8A161LNfHK2gs=;
+	h=Date:From:To:Cc:Message-ID:References:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To:Subject; b=CpSgQFgI6Fvr74/qQHj1x9vFuVplpXYns9oTYXYyyKyHKQhGetALdsSYMFKI/5s56XJzUNMegsjpDcjOwD8IKj8SrwxjThmbSePyWgwD1cg0e3aliHNN3p+sk97Z2PfSwpZhoD+cmtR8/8g74adj6KzijyZCcX8ra9Nrl6RiIX5HyaXAvuzhVTfTpamAT2ncmw2Y1Y2BTJEToBOL+E4MATCGQzIFpq1xMrjuPGq/04z+Qax3nzceyiRyAvdNdC69HE/OlycoE9YtndksA92DnCXedWvziSOdbU+mmY/qu98C0+xq8/gzN87eiIEZ3iY3U0PUfwdl95wBSn5f5e2bMA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=buserror.net; dkim=pass (2048-bit key; unprotected) header.d=buserror.net header.i=@buserror.net header.a=rsa-sha256 header.s=rsa_sel header.b=1+v+ww0e; dkim-atps=neutral; spf=pass (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=lists.ozlabs.org) smtp.mailfrom=buserror.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=buserror.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=lmnsaeOC;
+	dkim=pass (2048-bit key; unprotected) header.d=buserror.net header.i=@buserror.net header.a=rsa-sha256 header.s=rsa_sel header.b=1+v+ww0e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.170; helo=out-170.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-170.mta1.migadu.com (out-170.mta1.migadu.com [95.215.58.170])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=buserror.net (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=lists.ozlabs.org)
+Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1FnZ3FXWz2yn4
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 07:28:49 +1100 (AEDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1740342508;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=+zTJ3hkU+s+DVpC9GLX4g3ZeOAZuzC6afimUtBs/oto=;
-	b=lmnsaeOC9S8BAtthK/cic5Jq9HPDXa7zl2UuyMUWHwgbLUPq7Cs05LchrCjy2DEn+6dRch
-	LEfwgj8nAy2sRTzEzDjvqVQRFs9KyO+6XM07cqypLKtDxuaocjVK85fEZNZS14V+kfK3l5
-	9r3CN++W2BpuMHOKh2M1vd1M7PQeyYo=
-From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Herve Codina <herve.codina@bootlin.com>,
-	Shengjiu Wang <shengjiu.wang@gmail.com>,
-	Xiubo Li <Xiubo.Lee@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Nicolin Chen <nicoleotsuka@gmail.com>,
-	Liam Girdwood <lgirdwood@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.com>
-Cc: Thorsten Blum <thorsten.blum@linux.dev>,
-	linux-sound@vger.kernel.org,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1LCW1xB8z2ysW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 10:48:07 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=buserror.net; s=rsa_sel; h=Subject:In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
+	Content-ID:Content-Description;
+	bh=ESEjuP0qNKG7M31LDxN5dSH9PUQiZX8A161LNfHK2gs=; b=1+v+ww0eli53gNR6dEhBDOqi2B
+	mrW7UtVHR4Yzh81YhZxcdbGJtdQbX0Wu/Ew7/1BUBebZUQQ8ArhhfBhL/GJ0C1qpVgStWr8RVCCMk
+	5GjYDXmpB2WORXvs59CtqCoEoNWh+fxUYKMgEsuxU7LV9qRHumXtRtcbpHRb61IuAQ/ildErwsOAH
+	FJyH0AnNYosXBzEa8H9KKSFQM3sQ0+8qXyzLk8KIPl1Zb7H+jvVMtD6XvhIgW+7dEPA8EtsmFO/jE
+	/4gfAdWIyG1k5Utcfe66gKke/O3HjMVSXUFscRPdrWWMViDr399GxelCcOF1PMttz5jRwigl2yYHE
+	PoRjdYtQ==;
+Received: from oss by baldur.buserror.net with local (Exim 4.96)
+	(envelope-from <oss@buserror.net>)
+	id 1tmLfR-00ELyd-2y;
+	Sun, 23 Feb 2025 17:45:50 -0600
+Date: Sun, 23 Feb 2025 17:45:49 -0600
+From: Crystal Wood <oss@buserror.net>
+To: Rob Herring <robh@kernel.org>
+Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] ASoC: fsl: fsl_qmc_audio: Remove unnecessary bool conversions
-Date: Sun, 23 Feb 2025 21:27:41 +0100
-Message-ID: <20250223202741.1916-2-thorsten.blum@linux.dev>
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
+	linux-mtd@lists.infradead.org
+Message-ID: <Z7uzLeXiXIdVYNM5@buserror.net>
+References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
+ <20250207-ppcyaml-v2-9-8137b0c42526@posteo.net>
+ <Z6kQpuQf5m-bXTyt@buserror.net>
+ <20250210215324.GA1040564-robh@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,43 +69,70 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.9 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250210215324.GA1040564-robh@kernel.org>
+X-SA-Exim-Connect-IP: <locally generated>
+X-SA-Exim-Rcpt-To: robh@kernel.org, j.ne@posteo.net, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org
+X-SA-Exim-Mail-From: oss@buserror.net
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
+Subject: Re: [PATCH v2 09/12] dt-bindings: memory-controllers: Convert
+ fsl,elbc to YAML
+X-SA-Exim-Version: 4.2.1 (built Wed, 06 Jul 2022 17:57:39 +0000)
+X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 
-Remove unnecessary bool conversions and simplify the code.
+On Mon, Feb 10, 2025 at 03:53:24PM -0600, Rob Herring wrote:
+> Generally, if a bus has control registers or resources like clocks, then 
+> we tend not to call them 'simple-bus'. And '"specific-bus", 
+> "simple-bus"' gives some problems around what driver if any do you 
+> bind to. 
 
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
----
- sound/soc/fsl/fsl_qmc_audio.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Isn't the general idea that you bind to the first one in the list that
+you have a driver for, since it goes from most to least specific?
 
-diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
-index e257b8adafe0..b2979290c973 100644
---- a/sound/soc/fsl/fsl_qmc_audio.c
-+++ b/sound/soc/fsl/fsl_qmc_audio.c
-@@ -892,7 +892,7 @@ static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *
- 		qmc_soc_dai_driver->playback.channels_max = count > 1 ? count : nb_tx_ts;
- 	}
- 	qmc_soc_dai_driver->playback.formats = qmc_audio_formats(nb_tx_ts,
--								 count > 1 ? true : false);
-+								 count > 1);
- 
- 	qmc_soc_dai_driver->capture.channels_min = 0;
- 	qmc_soc_dai_driver->capture.channels_max = 0;
-@@ -901,7 +901,7 @@ static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *
- 		qmc_soc_dai_driver->capture.channels_max = count > 1 ? count : nb_rx_ts;
- 	}
- 	qmc_soc_dai_driver->capture.formats = qmc_audio_formats(nb_rx_ts,
--								count > 1 ? true : false);
-+								count > 1);
- 
- 	qmc_soc_dai_driver->playback.rates = snd_pcm_rate_to_rate_bit(tx_fs_rate);
- 	qmc_soc_dai_driver->playback.rate_min = tx_fs_rate;
--- 
-2.48.1
+> If you have chip selects, then you have config registers for those. 
+> Not really "simple" if you ask me. That being said, you could keep 
+> 'simple-bus' here. I would tend to err on making the schema match the 
+> actual .dts rather than updating the .dts files on older platforms like 
+> these.
 
+By that definition I wonder how much truly qualifies.  Even with
+IMMR/CCSR, firmware needs to at least set the base register (which is
+itself inside CCSR, so there's no way to avoid relying on knowledge of
+what the firmware did, except on 8xx).  Though I acknowledge that eLBC is
+a stretch, with FCM and UPM being exceptions.  FCM didn't exist in the
+original LBC, and UPM was... kind of considered a fringe use case
+until someone hooked NAND up to it.  :-P
+
+The point back then wasn't that such registers don't exist, but that the
+OS can use the devices without having to care.  But of course, there's
+subjectivity there about what the OS might care about (e.g. UPM).
+
+FWIW, on these chips (especially the later ones) there were all sorts of
+things (in general, not specifically LBC-related) that firmware had to
+set up to present a coherent system to the OS.  Not all the choices made
+there were great, but if we tried to describe all the gory details from
+the start I'm sure we would have made an even bigger mess of it.
+
+> > For non-NAND devices this bus generally meets the definition of "an
+> > internal I/O bus that cannot be probed for devices" where "devices on the
+> > bus can be accessed directly without additional configuration
+> > required".  NAND flash is an exception, but those devices have
+> > compatibles that are specific to the bus controller.
+> 
+> NAND bindings have evolved quite a bit if you haven't been paying 
+> attention.
+
+I haven't, as I acknowledged... but I was describing how eLBC does it,
+and just meant that we're not binding to drivers that don't know about
+the bus in that case.  The NAND control registers are part of eLBC/IFC,
+not a separate block (the reg in the NAND node itself is just the SRAM
+used as a buffer).  I'm not sure what that would be expected to look like
+these days.
+
+-Crystal
 
