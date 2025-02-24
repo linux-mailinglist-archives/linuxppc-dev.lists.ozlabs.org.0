@@ -1,59 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-6411-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A509CA41F2E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 13:36:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 442AFA4205A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 14:20:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1gFT6ktlz2ypP;
-	Mon, 24 Feb 2025 23:35:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1hDQ6SbSz3041;
+	Tue, 25 Feb 2025 00:20:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1:d65d:64ff:fe57:4e05"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740400557;
-	cv=none; b=iDxILF1mYKxWyhNplTnuS87uiZlz330I3HW0Lrun2laTUTVulM822ex9ocL6N+gG9PQshyQkBXNiyVMksK3SEccn7JmqapxAMCYKWOuBe1Pgiw7theVaLeORlo/diUKCqqr88TNVW/ThzjBCcJ2oDOVmhzKjfixCIEB9gSI9RZSuz9LipFl+1s4GaQG2ymljib0GCG53NVICgX8WGB0uNXaQySiIonsKsYgKh6+S5xiTRKkb6kkj3oS7iDkwy5HmHjY+GChxbMHRixK0I5eeNZkMZlE4HByrX6wbFu2ct6dIutgOj30A2u+A8nSlXzsgk1R1kcC3ZYlMK+2JHarnSw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740403206;
+	cv=none; b=WdcOIRu8JObfSyD5oYS8GhlMYgdRT+/qZ8GqPFUS0Lj/HuhF29XpqNu9Rw21CtP30oKxFqgngYNWMqNHpbdee/fgcNKola4IOpasdHe41RqyH247moJNVQoD/BWb//7a04I3tHt+Gaz/ndNiBTNrhfGoCYPm1QtVtJ0N5MzJPzSxrk7FKP/TxX0ok4GlEOHk+Z2t9R/LgXV5VadkQ8t9g7qvq0u2U6pMClYcAwEWC1Wn/d3fSQ0onA/gGY8R+HnR8YkYV9MCuyOExgZDMTCCZbtkseNLHhc9JxZkbGRevtvLy58RRf7u5UprqS0rDCCNmUjlr/udfUI9vsN1MvYUkQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740400557; c=relaxed/relaxed;
-	bh=KjNIYWV63wd2ETJVPJjYoHVaRj09KcDEXGN6j/BKYZs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UUSW5lzr54p4qi/OT2nkzQBJzKwWgE1Hlc+96bSiOa+aRx8SiWbRPNv3sIe49D0Hn0ACJ21dfUCboOjWiEAaMKiURos1UerXbESh37Amxd2hIzDTWO9fVfESQtJrvlbg39f4ZRsWTvlgHtyK/PaeXC6kbgrUfgJ5K645AQnHgHBuxWaK3H1Cw97u1YDOX3wz6oqjmEcP//pbsYUZn+Ch4OzJ7M/GJOtXAo7oSEsnY5nuyfo08VKCgWQyBAvdo4zas9g0tzgz3E/Uox4uMAixixAqdum/o7e1DkFnWSwEFf/fWx5YOZD0WZ/JYKPQCCujQZiKUQgH19NyM+G4b8Whaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1gFL5ZBXz2yRM
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 23:35:50 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=KjNIYWV63wd2ETJVPJjYoHVaRj09KcDEXGN6j/BKYZs=; b=CiPkSzWklbhO7mPKl1Jriapzi/
-	h9ZxgOOaJCqDCX7rY6o0B7nUEflSjApS0qhasUcWF4BOkhJEwhaYfuv99XToeUmJQw2+kR6W5WrhW
-	OwHnhVNyz53GmSNgcjiXOMIlxaXMZ0jwdb4zAwnzMZ4zeug+JEniisIxMNgEmiqKuCkxUOCf72gjQ
-	oTHbKpc43qi+xEsISsUdjmrcR0JdWeEOh3E9X9GVJYKXcwRew5f16ANwoYvi3KnMMjz5NxnyR5eZs
-	Kaqfcp2voEqtm9ZcyMIA26TvS5hyeuZL36CiNSnC/JxZQm22QlYAxSDZQwcmduj7p2AXViJBxosAl
-	/Ur+1niw==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tmXgO-00000003Bsx-0elI;
-	Mon, 24 Feb 2025 12:35:36 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id B45A4300164; Mon, 24 Feb 2025 13:35:34 +0100 (CET)
-Date: Mon, 24 Feb 2025 13:35:34 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Sathvika Vasireddy <sv@linux.ibm.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, christophe.leroy@csgroup.eu,
-	npiggin@gmail.com, maddy@linux.ibm.com,
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	llvm@lists.linux.dev
-Subject: Re: [RFC PATCH] objtool: Skip unannotated intra-function call
- warning for bl+mflr pattern
-Message-ID: <20250224123534.GB17456@noisy.programming.kicks-ass.net>
-References: <20250219162014.10334-1-sv@linux.ibm.com>
- <20250220195940.ely2l2fpsozd2tuv@jpoimboe>
- <4bea75bc-d3f6-4972-b644-f9b5a4e8bb77@linux.ibm.com>
+	t=1740403206; c=relaxed/relaxed;
+	bh=b2y2730+h5olY2zTaKSJ67hSsFoYftDZKsP50Yz3aC4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gtaitZnNkalbGkhl592JJUKybYVbZRmGD9wStvYC50Res4DzMUjFKxwB7tzTPc+9nWM3MbqleYm9prbxLiPEpEk7gC3HX7S5LBnwZslN59LkG3rvtB1cAijhILPCZAYIzCWuFWsvpvvxuW4HRHektD/kjp9fKwl1PXm2l6Ye006/+WxyIwW32iQuBF9PdCVSqRCFtzRoYA3aC8e2wCRSan2EuWHTdNchWvWb7mEEorSo89+hgduajEKO0/JfCdkAT7apQmN4pte8cD11/De9L02fB107rqqhOMn3Lrcf1K19Q4c7ierG3Fn8Vmwu1T9ZtDQy3yw/KNyIJAAUbfBc5g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1hDQ0j5Mz303d
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 00:20:05 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Z1gjd65vLz9sST;
+	Mon, 24 Feb 2025 13:56:53 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id 8FR8LrDFc0wQ; Mon, 24 Feb 2025 13:56:53 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z1gjd5FVWz9sSR;
+	Mon, 24 Feb 2025 13:56:53 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9D6D38B765;
+	Mon, 24 Feb 2025 13:56:53 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id u3om1-aGR3l0; Mon, 24 Feb 2025 13:56:53 +0100 (CET)
+Received: from [10.25.207.138] (unknown [10.25.207.138])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6BB268B763;
+	Mon, 24 Feb 2025 13:56:53 +0100 (CET)
+Message-ID: <f872c2ef-4adc-4daa-aa12-769e3108abc8@csgroup.eu>
+Date: Mon, 24 Feb 2025 13:56:53 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -66,22 +56,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4bea75bc-d3f6-4972-b644-f9b5a4e8bb77@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RESEND PATCH] powerpc: mpic: Use str_enabled_disabled() helper
+ function
+To: Thorsten Blum <thorsten.blum@linux.dev>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, =?UTF-8?Q?Ricardo_B=2E_Marli=C3=A8re?=
+ <ricardo@marliere.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20250219112053.3352-2-thorsten.blum@linux.dev>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <20250219112053.3352-2-thorsten.blum@linux.dev>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Feb 21, 2025 at 02:20:41PM +0530, Sathvika Vasireddy wrote:
+Hi,
 
-> Also, just out of curiosity, how does x86 do it? Does it not use a branch to
-> next instruction approach?
+Le 19/02/2025 à 12:20, Thorsten Blum a écrit :
+> Remove hard-coded strings by using the str_enabled_disabled() helper
+> function.
+> 
+> Use pr_debug() instead of printk(KERN_DEBUG) to silence a checkpatch
+> warning.
+> 
+> Reviewed-by: Ricardo B. Marlière <ricardo@marliere.net>
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
 
-x86_64 can use LEA like:
 
-  #define _THIS_IP_ ({ unsigned long __here; asm ("lea 0(%%rip), %0" : "=r" (__here)); __here; })
+When you resend a patch, please tell why here (below the ---) so that we 
+know the reason.
 
-32bit needs to call a function, read the stack value and return.
+At the time being I have several duplicated patches from you and I don't 
+know what to do with them which one to keep and which one to drop.
+
+The list is here:
+
+https://patchwork.ozlabs.org/project/linuxppc-dev/list/?submitter=89400
+
+>   arch/powerpc/sysdev/mpic.c | 7 ++++---
+>   1 file changed, 4 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/powerpc/sysdev/mpic.c b/arch/powerpc/sysdev/mpic.c
+> index d94cf36b0f65..25fc4ac91814 100644
+> --- a/arch/powerpc/sysdev/mpic.c
+> +++ b/arch/powerpc/sysdev/mpic.c
+> @@ -27,6 +27,7 @@
+>   #include <linux/spinlock.h>
+>   #include <linux/pci.h>
+>   #include <linux/slab.h>
+> +#include <linux/string_choices.h>
+>   #include <linux/syscore_ops.h>
+>   #include <linux/ratelimit.h>
+>   #include <linux/pgtable.h>
+> @@ -474,9 +475,9 @@ static void __init mpic_scan_ht_msi(struct mpic *mpic, u8 __iomem *devbase,
+>   		addr = addr | ((u64)readl(base + HT_MSI_ADDR_HI) << 32);
+>   	}
+>   
+> -	printk(KERN_DEBUG "mpic:   - HT:%02x.%x %s MSI mapping found @ 0x%llx\n",
+> -		PCI_SLOT(devfn), PCI_FUNC(devfn),
+> -		flags & HT_MSI_FLAGS_ENABLE ? "enabled" : "disabled", addr);
+> +	pr_debug("mpic:   - HT:%02x.%x %s MSI mapping found @ 0x%llx\n",
+> +		 PCI_SLOT(devfn), PCI_FUNC(devfn),
+> +		 str_enabled_disabled(flags & HT_MSI_FLAGS_ENABLE), addr);
+>   
+>   	if (!(flags & HT_MSI_FLAGS_ENABLE))
+>   		writeb(flags | HT_MSI_FLAGS_ENABLE, base + HT_MSI_FLAGS);
+
 
