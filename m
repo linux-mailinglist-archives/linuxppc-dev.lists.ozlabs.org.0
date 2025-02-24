@@ -1,62 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6397-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6398-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717FCA41257
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 00:48:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED10DA4145E
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 05:04:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1LCX4xycz2ytN;
-	Mon, 24 Feb 2025 10:48:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1RvC6JyJz2yDD;
+	Mon, 24 Feb 2025 15:04:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=165.227.176.147
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740354488;
-	cv=none; b=oMlJ0F+yWSrD0xz1tZC755hDWBfqvKJY7UszAAh80s2i6EicCz27HRdAvbMu2Rz1Pp947ZLHPOlRk8D8Shnb9B1UTswhHSQ/f9VTs7g8VIs5jmTbJbZohmhG++YR9jM8A7i5GAQNSua545AT/YO1GQWTPtHGE7bLRbtzUMPMkRfqmmkrlEfwVgxJtoQuqvDXOdq7nfaWcYccMUcTx0L8gBrN8MnprixG7QexxWElJ0matMc/93yY0ha4wUEHjxWgttpYUx0y+LMkS6qm5UGLQOqMTRT8bvTfmotMOc1ED10XZ1RYTJqotz3tjJ/q45rI4xZOJIOzMuAZRpjd+P0VwA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740369863;
+	cv=none; b=Xk8gpn2CLO+wTKJghONkBRFXVWTQpuIGcqA+7/v/VbV6MU+6YlP8GQaS+yl6FhzB4GBaaCs+l5U1R2f6j+sbyIG/wG/2N1ebSSWVbqbo6UkC/KQHjTu0avV3WikbaoQlvjMI5l99ypqJong7XxgCgd4pc/Yp+y9lvEWztrd0Z98JvjdoCEnjg4ECemAbHbOvhsY646comsm3BSajPv5spHMRcriB2zh/dFxA1A0RUikStlhrKjX5Sb5+NAeGg2fTs2jkLTL8LlS+PJj2W3Oo8StrjT/9w9z5r8KOPyqV0bgS1VGtYkBBtR9XGCJngfkNrkVv4+Gsc/tz+daCQ05zrQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740354488; c=relaxed/relaxed;
-	bh=ESEjuP0qNKG7M31LDxN5dSH9PUQiZX8A161LNfHK2gs=;
-	h=Date:From:To:Cc:Message-ID:References:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To:Subject; b=CpSgQFgI6Fvr74/qQHj1x9vFuVplpXYns9oTYXYyyKyHKQhGetALdsSYMFKI/5s56XJzUNMegsjpDcjOwD8IKj8SrwxjThmbSePyWgwD1cg0e3aliHNN3p+sk97Z2PfSwpZhoD+cmtR8/8g74adj6KzijyZCcX8ra9Nrl6RiIX5HyaXAvuzhVTfTpamAT2ncmw2Y1Y2BTJEToBOL+E4MATCGQzIFpq1xMrjuPGq/04z+Qax3nzceyiRyAvdNdC69HE/OlycoE9YtndksA92DnCXedWvziSOdbU+mmY/qu98C0+xq8/gzN87eiIEZ3iY3U0PUfwdl95wBSn5f5e2bMA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=buserror.net; dkim=pass (2048-bit key; unprotected) header.d=buserror.net header.i=@buserror.net header.a=rsa-sha256 header.s=rsa_sel header.b=1+v+ww0e; dkim-atps=neutral; spf=pass (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=lists.ozlabs.org) smtp.mailfrom=buserror.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=buserror.net
+	t=1740369863; c=relaxed/relaxed;
+	bh=QA+G5Y0Ly6q5ukERsuKlOuO69CiJToynV4zbvufSnbw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=WhuhdcDa+NtUw1cJVgt4oS8T/7scVgVU/20icHB6L5KMVZL0+lwdxnqmtBsrnt4QWhBTDsec/LfK417Pf6Dd95y290rPkbuBap1qb+rtHTsrHIzH9aL9jpdCWosJmlVK5Yo+LHqoa7EH8jqwt4OYrwhnJZa51BSxz78r26UUBKYmHnXMpIzjSzqs1HdcjpXXFEYBQs+LykvE1iAvDpJjbe5jvTszUSq+lD6rGzeNDHyB0Gp6gqp4Sjnmz40+/1pnULRV2+qsSmdCREBzPVCA7f0MJ72jv+k7eTiRmkC+eqMljCE6A/hWaacPrAYHHTUynow/OFngSBhn513u4pq70Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=flaMjfNV; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=buserror.net header.i=@buserror.net header.a=rsa-sha256 header.s=rsa_sel header.b=1+v+ww0e;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=flaMjfNV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=buserror.net (client-ip=165.227.176.147; helo=baldur.buserror.net; envelope-from=oss@buserror.net; receiver=lists.ozlabs.org)
-Received: from baldur.buserror.net (baldur.buserror.net [165.227.176.147])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1LCW1xB8z2ysW
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 10:48:07 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=buserror.net; s=rsa_sel; h=Subject:In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Cc:To:From:Date:Reply-To:Content-Transfer-Encoding:
-	Content-ID:Content-Description;
-	bh=ESEjuP0qNKG7M31LDxN5dSH9PUQiZX8A161LNfHK2gs=; b=1+v+ww0eli53gNR6dEhBDOqi2B
-	mrW7UtVHR4Yzh81YhZxcdbGJtdQbX0Wu/Ew7/1BUBebZUQQ8ArhhfBhL/GJ0C1qpVgStWr8RVCCMk
-	5GjYDXmpB2WORXvs59CtqCoEoNWh+fxUYKMgEsuxU7LV9qRHumXtRtcbpHRb61IuAQ/ildErwsOAH
-	FJyH0AnNYosXBzEa8H9KKSFQM3sQ0+8qXyzLk8KIPl1Zb7H+jvVMtD6XvhIgW+7dEPA8EtsmFO/jE
-	/4gfAdWIyG1k5Utcfe66gKke/O3HjMVSXUFscRPdrWWMViDr399GxelCcOF1PMttz5jRwigl2yYHE
-	PoRjdYtQ==;
-Received: from oss by baldur.buserror.net with local (Exim 4.96)
-	(envelope-from <oss@buserror.net>)
-	id 1tmLfR-00ELyd-2y;
-	Sun, 23 Feb 2025 17:45:50 -0600
-Date: Sun, 23 Feb 2025 17:45:49 -0600
-From: Crystal Wood <oss@buserror.net>
-To: Rob Herring <robh@kernel.org>
-Cc: j.ne@posteo.net, devicetree@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
-	linux-mtd@lists.infradead.org
-Message-ID: <Z7uzLeXiXIdVYNM5@buserror.net>
-References: <20250207-ppcyaml-v2-0-8137b0c42526@posteo.net>
- <20250207-ppcyaml-v2-9-8137b0c42526@posteo.net>
- <Z6kQpuQf5m-bXTyt@buserror.net>
- <20250210215324.GA1040564-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1Rv94sCtz2xdg
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 15:04:20 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O2EoXs023371;
+	Mon, 24 Feb 2025 04:04:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=QA+G5Y
+	0Ly6q5ukERsuKlOuO69CiJToynV4zbvufSnbw=; b=flaMjfNVfNbmbXxnQkRqlH
+	tBzqy8TXPZiO3LV0xL9PYaRkYIHM/bQ/pjv989oM5HCJh/3MToSOgt/Htwsf9zuw
+	jrjxAiHswHXq1Jec8R701/ntSXgY8hfDi4Iv2wtGIHFDc9kMURHZSu2IyoCzqe/+
+	MkaZBl0keyOVT/BEhsh96dXBA8duE7wSroufVISb+M27/3mmE5aO7yAGU6DAn6FH
+	m4QI2bsXfiEAN/XEg240nvXkPHtWhhAnVsv8tXmQYcgvBdAYSPKbn4VdaOlrxjwe
+	LptYRS3+LfzJ3UbSfgWY5JuJ2LuDEVeh+rHzEr2xVQ6DRJQTSeyXxzOwjTAV0A9g
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450cta0vh3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Feb 2025 04:04:07 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51O1rab9027376;
+	Mon, 24 Feb 2025 04:04:06 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yum1mu4c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 24 Feb 2025 04:04:06 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51O442Eg35717736
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 24 Feb 2025 04:04:02 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D33202004E;
+	Mon, 24 Feb 2025 04:04:02 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 716D020040;
+	Mon, 24 Feb 2025 04:04:01 +0000 (GMT)
+Received: from [9.109.204.94] (unknown [9.109.204.94])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 24 Feb 2025 04:04:01 +0000 (GMT)
+Message-ID: <d392bf6d-da3b-429a-8686-b602601573c0@linux.ibm.com>
+Date: Mon, 24 Feb 2025 09:34:00 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,70 +78,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250210215324.GA1040564-robh@kernel.org>
-X-SA-Exim-Connect-IP: <locally generated>
-X-SA-Exim-Rcpt-To: robh@kernel.org, j.ne@posteo.net, devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu, naveen@kernel.org, linux-kernel@vger.kernel.org, linux-mtd@lists.infradead.org
-X-SA-Exim-Mail-From: oss@buserror.net
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] powerpc/hugetlb: Disable gigantic hugepages if fadump
+ is active
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Hari Bathini <hbathini@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linuxppc-dev@lists.ozlabs.org
+References: <20250128043358.163372-1-sourabhjain@linux.ibm.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <20250128043358.163372-1-sourabhjain@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: oYtH7ekzXUigsczXl9QUH6HeZT7dpv4p
+X-Proofpoint-ORIG-GUID: oYtH7ekzXUigsczXl9QUH6HeZT7dpv4p
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-24_01,2025-02-20_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=999
+ lowpriorityscore=0 mlxscore=0 impostorscore=0 suspectscore=0 adultscore=0
+ spamscore=0 priorityscore=1501 clxscore=1015 phishscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2502240027
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
-X-Spam-Level: 
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
-Subject: Re: [PATCH v2 09/12] dt-bindings: memory-controllers: Convert
- fsl,elbc to YAML
-X-SA-Exim-Version: 4.2.1 (built Wed, 06 Jul 2022 17:57:39 +0000)
-X-SA-Exim-Scanned: Yes (on baldur.buserror.net)
 
-On Mon, Feb 10, 2025 at 03:53:24PM -0600, Rob Herring wrote:
-> Generally, if a bus has control registers or resources like clocks, then 
-> we tend not to call them 'simple-bus'. And '"specific-bus", 
-> "simple-bus"' gives some problems around what driver if any do you 
-> bind to. 
+Hello Maddy,
 
-Isn't the general idea that you bind to the first one in the list that
-you have a driver for, since it goes from most to least specific?
+Any feedback on this patch?
 
-> If you have chip selects, then you have config registers for those. 
-> Not really "simple" if you ask me. That being said, you could keep 
-> 'simple-bus' here. I would tend to err on making the schema match the 
-> actual .dts rather than updating the .dts files on older platforms like 
-> these.
+Thanks,
+Sourabh Jain
 
-By that definition I wonder how much truly qualifies.  Even with
-IMMR/CCSR, firmware needs to at least set the base register (which is
-itself inside CCSR, so there's no way to avoid relying on knowledge of
-what the firmware did, except on 8xx).  Though I acknowledge that eLBC is
-a stretch, with FCM and UPM being exceptions.  FCM didn't exist in the
-original LBC, and UPM was... kind of considered a fringe use case
-until someone hooked NAND up to it.  :-P
 
-The point back then wasn't that such registers don't exist, but that the
-OS can use the devices without having to care.  But of course, there's
-subjectivity there about what the OS might care about (e.g. UPM).
+On 28/01/25 10:03, Sourabh Jain wrote:
+> The fadump kernel boots with limited memory solely to collect the kernel
+> core dump. Having gigantic hugepages in the fadump kernel is of no use.
+> Many times, the fadump kernel encounters OOM (Out of Memory) issues if
+> gigantic hugepages are allocated.
+>
+> To address this, disable gigantic hugepages if fadump is active by
+> returning early from arch_hugetlb_valid_size() using
+> hugepages_supported(). When fadump is active, the global variable
+> hugetlb_disabled is set to true, which is later used by the
+> PowerPC-specific hugepages_supported() function to determine hugepage
+> support.
+>
+> Returning early from arch_hugetlb_vali_size() not only disables
+> gigantic hugepages but also avoids unnecessary hstate initialization for
+> every hugepage size supported by the platform.
+>
+> kernel logs related to hugepages with this patch included:
+> kernel argument passed: hugepagesz=1G hugepages=1
+>
+> First kernel: gigantic hugepage got allocated
+> ==============================================
+>
+> dmesg | grep -i "hugetlb"
+> -------------------------
+> HugeTLB: registered 1.00 GiB page size, pre-allocated 1 pages
+> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+> HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+> HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+>
+> $ cat /proc/meminfo | grep -i "hugetlb"
+> -------------------------------------
+> Hugetlb:         1048576 kB
+>
+> Fadump kernel: gigantic hugepage not allocated
+> ===============================================
+>
+> dmesg | grep -i "hugetlb"
+> -------------------------
+> [    0.000000] HugeTLB: unsupported hugepagesz=1G
+> [    0.000000] HugeTLB: hugepages=1 does not follow a valid hugepagesz, ignoring
+> [    0.706375] HugeTLB support is disabled!
+> [    0.773530] hugetlbfs: disabling because there are no supported hugepage sizes
+>
+> $ cat /proc/meminfo | grep -i "hugetlb"
+> ----------------------------------
+> <Nothing>
+>
+> Cc: Hari Bathini <hbathini@linux.ibm.com>
+> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+> Cc: Mahesh Salgaonkar <mahesh@linux.ibm.com>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+> ---
+> Changelog:
+>
+> v1:
+> https://lore.kernel.org/all/20250121150419.1342794-1-sourabhjain@linux.ibm.com/
+>
+> v2:
+> https://lore.kernel.org/all/20250124103220.111303-1-sourabhjain@linux.ibm.com/
+>   - disable gigantic hugepage in arch code, arch_hugetlb_valid_size()
+>
+> v3:
+> https://lore.kernel.org/all/20250125104928.88881-1-sourabhjain@linux.ibm.com/
+>   - Do not modify the initialization of the shift variable
+>
+> v4:
+> - Update commit message to include how hugepages_supported() detects
+>    hugepages support when fadump is active
+> - Add Reviewed-by tag
+> - NO functional change
+>
+> ---
+>   arch/powerpc/mm/hugetlbpage.c | 3 +++
+>   1 file changed, 3 insertions(+)
+>
+> diff --git a/arch/powerpc/mm/hugetlbpage.c b/arch/powerpc/mm/hugetlbpage.c
+> index 6b043180220a..88cfd182db4e 100644
+> --- a/arch/powerpc/mm/hugetlbpage.c
+> +++ b/arch/powerpc/mm/hugetlbpage.c
+> @@ -138,6 +138,9 @@ bool __init arch_hugetlb_valid_size(unsigned long size)
+>   	int shift = __ffs(size);
+>   	int mmu_psize;
+>   
+> +	if (!hugepages_supported())
+> +		return false;
+> +
+>   	/* Check that it is a page size supported by the hardware and
+>   	 * that it fits within pagetable and slice limits. */
+>   	if (size <= PAGE_SIZE || !is_power_of_2(size))
 
-FWIW, on these chips (especially the later ones) there were all sorts of
-things (in general, not specifically LBC-related) that firmware had to
-set up to present a coherent system to the OS.  Not all the choices made
-there were great, but if we tried to describe all the gory details from
-the start I'm sure we would have made an even bigger mess of it.
-
-> > For non-NAND devices this bus generally meets the definition of "an
-> > internal I/O bus that cannot be probed for devices" where "devices on the
-> > bus can be accessed directly without additional configuration
-> > required".  NAND flash is an exception, but those devices have
-> > compatibles that are specific to the bus controller.
-> 
-> NAND bindings have evolved quite a bit if you haven't been paying 
-> attention.
-
-I haven't, as I acknowledged... but I was describing how eLBC does it,
-and just meant that we're not binding to drivers that don't know about
-the bus in that case.  The NAND control registers are part of eLBC/IFC,
-not a separate block (the reg in the NAND node itself is just the SRAM
-used as a buffer).  I'm not sure what that would be expected to look like
-these days.
-
--Crystal
 
