@@ -1,76 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-6416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6417-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DAC6A42037
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 14:16:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C862FA42039
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 14:16:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1h7l0Kbmz304C;
-	Tue, 25 Feb 2025 00:16:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1h7v0kDZz307C;
+	Tue, 25 Feb 2025 00:16:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740402963;
-	cv=none; b=X8TOoADTwVpCFdniMPdlkQWj1YfFH9R7FuNHRRTcZzmJ4dVe7XJ7lfoGccIcCDjJjmbw6pIp4UNU1rRywsAOnfboGx9Yd5Fcs5eFv1XVirUevTOMdTip1zzQuTQdJf38FKp3kItUNrPl+Si/8IRF28wQnIShT6N77wboEFjdSXdUofTl+1MFeeS3ByLEhpGQttybO4VBaWyaubtAheEIhAlCB8u5vlsW5h7DVJ3Ue5B9V291nZsAi0K+lYOs723Dfg5/Ov4DpQfQ3dvpIK++mwy0cEaSuPHApHX60nzl4VTkkUeiuub40zYjZcxxYQjFcFP7WV6jQF/c6MGzixSy0g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740402971;
+	cv=none; b=C40vBZIMMMbwLcwSj7xwQsVCChUADISGYnxQX/Ubk0bFQcR1+MPHTXMz/II2FglSZeWVx07G/7/kRCetL+jiXXSx6HsgW6Zax0BYh14UNIj2RsOksnOT0oWYYoZSbp2+wCcy3uLaQQeR6tgF8zzOAQlsWjx3vqWNsJ1RbBn6JFr1YoAwP2FMNrzS1tkd3DfsYbXo/syfm253lPiQ+LnunwfrvYd9RQVWAZe8/V8UVxkyNXVyImGMWP8gSZV1CWEs73F+EbOv02x0hHECOfzVFxB5f4mDxLukDFAMSh2KBNhQz3SMEmgmubJ2lFsAG9Lsq8pt1kRQYQmDkb09CwYn3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740402963; c=relaxed/relaxed;
-	bh=L4TcdNzf27r6Y6SG0gqkiX72gveUOLt4LyPyMfVrxX4=;
+	t=1740402971; c=relaxed/relaxed;
+	bh=ivPT11LlTFu/lL+TENMjxZGFwjW0ydLf7h/6x3BmqwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3RG/3VOythLki8neAaXumBz26MJ/OKdlmyw+00TkBZj3D5Nzcl9fKZm6t7I5PN1pi6eCpogH4NnPit3cmshHRvi89Zn35TwAIY/mUjx3hK2koUdj89VHVD6BmARthWTzPOC92Ba1Q+1oHNinzwS0gom3/4eCTxJegN3NhlJk1V0O3XCsPErlPHLQAd7RQADn+89LTXJxlg40JxJi44DhaBZmniVuNild1EhWMOhDqBZff1JkXMMvaxOtdVKVy+vaSF7i+uCfsIpav5D1w92BYqIfUs+dzSjcUZYDQCHivjar3yaYMoJnZnBymhqqrUjHpntK3Oc+gaeCM3/Kh7F5Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZSFtzWuZ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=G2hMq2nNbJFy1xmVKe2fWW+ygdF5C5ASq0s7q0dpkif26DizbSMyViHjny+Ncy+5DATXGPdRXXqtN0w2lwiQuNf5VuPPZhYmdnLDvMOJ5N3L7GIglevH/MUz2TtAVcEdUQfc1G0WXEMfn+eCzAQBoi0yDMe1FLsooBLk5lugukd8TrFeoyUF4I2hvwhlSUA/j6cZcu8FDP+1iE+s3bzX+UrCAbl+Xr7p1WIr1HCrJsQRIlODpSzPxNSlrR69MoqC5gyryTGCPGJtq6Q9K2VuxOvauoX/n2mfhjfJlR4D7M0W4tlhzp/AxBuenFOya2Sfetetm29iPEE/iYS9gCo5wA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UIu5zHyy; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ZSFtzWuZ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UIu5zHyy;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1h7k0w4Jz305m
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 00:16:01 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O6Q837021002;
-	Mon, 24 Feb 2025 13:15:53 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1h7t1m6jz306x
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 00:16:10 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O7Wvt4006316;
+	Mon, 24 Feb 2025 13:15:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=L4TcdNzf27r6Y6SG0
-	gqkiX72gveUOLt4LyPyMfVrxX4=; b=ZSFtzWuZa6RPM1lq108HzwRE53J1xtXDI
-	uq35qAYLFL547usG+vwtaDB2xHnOI1b7HieLDs5LEJoCPAWMetKnF26tbURvq5P/
-	OSI7OuQ52gWWiaoS1w6+JT+RZmpxm0pfSpkC3E6/WX/3GdNVfIYWBHvtWy0jytl7
-	GkNnIQQSaJtDukj3O/6phximOWMcuwWvjTlBuZRycvjXpe2hYLrvgPtpyI8E0VP2
-	47c7bbO9/b8jPaPk+0oW5+UHb23SH7drDJRL+Z4n+71bOvdtsu8a2EI7lKRokItb
-	6GuPL5zGuNrj4I0E5vlS8/S4xY4lXuxh6xWKE8c9277+vQ4qnsjfQ==
+	:mime-version:references:subject:to; s=pp1; bh=ivPT11LlTFu/lL+TE
+	NMjxZGFwjW0ydLf7h/6x3BmqwQ=; b=UIu5zHyyQ7xlusDcCpZ17vxULkhXxoTNe
+	LGm5WRp5i3WPpvwGM3r3ViEzI00UTgjRk9Vux5bze6b43carEyAbCgr4ecblXS3+
+	uhTR+/98t9CVlsu2igk+h/AxN1VTaoOft2YetIuIX60WonZFyEaI/J0NVqw4egmb
+	unSSmBchrFZmqhl38q+exo9oIr/fnHtR5Y/Rp9ZVr54uY4pEMf2w87JovcCilSY8
+	hAxbWgJD6Nkm+brWaVpBFQzgzdJYQeLcRi5560jkznSZ2AOFRg4IzCjy222p0VM6
+	aRdoMIetJMX4QrAa0tKz8AVKxKgDfDbQAGFHg5/5kvMo5Uz/H2y6g==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450kg69pvh-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450mfp1eqs-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Feb 2025 13:15:53 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51ODDDrl025483;
-	Mon, 24 Feb 2025 13:15:53 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450kg69pvf-1
+	Mon, 24 Feb 2025 13:15:59 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51ODDQZG030955;
+	Mon, 24 Feb 2025 13:15:58 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450mfp1eqp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Feb 2025 13:15:53 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51O9Yl3f002588;
-	Mon, 24 Feb 2025 13:15:52 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yu4jey6y-1
+	Mon, 24 Feb 2025 13:15:58 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51OD7c0Q026990;
+	Mon, 24 Feb 2025 13:15:58 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44ytdk754r-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Feb 2025 13:15:52 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51ODFmKq11141522
+	Mon, 24 Feb 2025 13:15:58 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51ODFslp12976410
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Feb 2025 13:15:48 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C111920043;
-	Mon, 24 Feb 2025 13:15:48 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A457120040;
-	Mon, 24 Feb 2025 13:15:44 +0000 (GMT)
+	Mon, 24 Feb 2025 13:15:54 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6DFE620043;
+	Mon, 24 Feb 2025 13:15:54 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2BA5E20040;
+	Mon, 24 Feb 2025 13:15:50 +0000 (GMT)
 Received: from vaibhav?linux.ibm.com (unknown [9.124.210.32])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 24 Feb 2025 13:15:44 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 24 Feb 2025 18:45:43 +0530
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 24 Feb 2025 13:15:49 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 24 Feb 2025 18:45:49 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
         kvm-ppc@vger.kernel.org
@@ -81,9 +81,9 @@ Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
         Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
         sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
         amachhiw@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: [PATCH v4 3/6] kvm powerpc/book3s-apiv2: Add kunit tests for Hostwide GSB elements
-Date: Mon, 24 Feb 2025 18:45:17 +0530
-Message-ID: <20250224131522.77104-4-vaibhav@linux.ibm.com>
+Subject: [PATCH v4 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv specific PMU
+Date: Mon, 24 Feb 2025 18:45:18 +0530
+Message-ID: <20250224131522.77104-5-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250224131522.77104-1-vaibhav@linux.ibm.com>
 References: <20250224131522.77104-1-vaibhav@linux.ibm.com>
@@ -101,316 +101,244 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: if33v_24muB-EYyUi5CDi_MYmhwKNFfv
-X-Proofpoint-GUID: 4n8RTdK3q_lzJQa4RQaVzosgDZKtx_iK
+X-Proofpoint-ORIG-GUID: LwT7Mcu480ZOKrXrD5c5ieNf0QnudYo4
+X-Proofpoint-GUID: -AGYJWSJPXi-gKl-3NNwAn_hl7LF7XLB
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-24_05,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- malwarescore=0 mlxlogscore=999 impostorscore=0 clxscore=1015 phishscore=0
- priorityscore=1501 spamscore=0 bulkscore=0 mlxscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 bulkscore=0
+ priorityscore=1501 mlxlogscore=999 lowpriorityscore=0 mlxscore=0
+ suspectscore=0 impostorscore=0 phishscore=0 adultscore=0 spamscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502100000 definitions=main-2502240095
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Update 'test-guest-state-buffer.c' to add two new KUNIT test cases for
-validating correctness of changes to Guest-state-buffer management
-infrastructure for adding support for Hostwide GSB elements.
+Introduce a new PMU named 'kvm-hv' inside a new module named 'kvm-hv-pmu'
+to report Book3s kvm-hv specific performance counters. This will expose
+KVM-HV specific performance attributes to user-space via kernel's PMU
+infrastructure and would enableusers to monitor active kvm-hv based guests.
 
-The newly introduced test test_gs_hostwide_msg() checks if the Hostwide
-elements can be set and parsed from a Guest-state-buffer. The second kunit
-test test_gs_hostwide_counters() checks if the Hostwide GSB elements can be
-send to the L0-PowerVM hypervisor via the H_GUEST_SET_STATE hcall and
-ensures that the returned guest-state-buffer has all the 5 Hostwide stat
-counters present.
-
-Below is the KATP test report with the newly added KUNIT tests:
-
-KTAP version 1
-    # Subtest: guest_state_buffer_test
-    # module: test_guest_state_buffer
-    1..7
-    ok 1 test_creating_buffer
-    ok 2 test_adding_element
-    ok 3 test_gs_bitmap
-    ok 4 test_gs_parsing
-    ok 5 test_gs_msg
-    ok 6 test_gs_hostwide_msg
-    # test_gs_hostwide_counters: Guest Heap Size=0 bytes
-    # test_gs_hostwide_counters: Guest Heap Size Max=10995367936 bytes
-    # test_gs_hostwide_counters: Guest Page-table Size=2178304 bytes
-    # test_gs_hostwide_counters: Guest Page-table Size Max=2147483648 bytes
-    # test_gs_hostwide_counters: Guest Page-table Reclaim Size=0 bytes
-    ok 7 test_gs_hostwide_counters
- # guest_state_buffer_test: pass:7 fail:0 skip:0 total:7
- # Totals: pass:7 fail:0 skip:0 total:7
- ok 1 guest_state_buffer_test
+The patch creates necessary scaffolding to for the new PMU callbacks and
+introduces the new kernel module name 'kvm-hv-pmu' which is built with
+CONFIG_KVM_BOOK3S_HV_PMU. The patch doesn't introduce any perf-events yet,
+which will be introduced in later patches
 
 Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+
 ---
 Changelog
 
 v3->v4:
-* Force skip of kunit test 'test_gs_hostwide_counters' on baremetal kvm-hv
-as it was causing a kernel exception.
+* Introduced a new kernel module named 'kmv-hv-pmu' to host the new PMU
+instead of building the as part of KVM-HV module. [ Maddy ]
+* Moved the code from arch/powerpc/kvm to arch/powerpc/perf [ Atheera ]
+* Added a new config named KVM_BOOK3S_HV_PMU to arch/powerpc/kvm/Kconfig
 
 v2->v3:
-None
+* Fixed a build warning reported by kernel build robot.
+Link:
+https://lore.kernel.org/oe-kbuild-all/202501171030.3x0gqW8G-lkp@intel.com
 
 v1->v2:
-None
+* Fixed an issue of kvm-hv not loading on baremetal kvm [Gautam]
 ---
- arch/powerpc/kvm/test-guest-state-buffer.c | 214 +++++++++++++++++++++
- 1 file changed, 214 insertions(+)
+ arch/powerpc/kvm/Kconfig       |  13 ++++
+ arch/powerpc/perf/Makefile     |   2 +
+ arch/powerpc/perf/kvm-hv-pmu.c | 138 +++++++++++++++++++++++++++++++++
+ 3 files changed, 153 insertions(+)
+ create mode 100644 arch/powerpc/perf/kvm-hv-pmu.c
 
-diff --git a/arch/powerpc/kvm/test-guest-state-buffer.c b/arch/powerpc/kvm/test-guest-state-buffer.c
-index bfd225329a18..5ccca306997a 100644
---- a/arch/powerpc/kvm/test-guest-state-buffer.c
-+++ b/arch/powerpc/kvm/test-guest-state-buffer.c
-@@ -5,6 +5,7 @@
- #include <kunit/test.h>
+diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+index dbfdc126bf14..5f0ce19e7e27 100644
+--- a/arch/powerpc/kvm/Kconfig
++++ b/arch/powerpc/kvm/Kconfig
+@@ -83,6 +83,7 @@ config KVM_BOOK3S_64_HV
+ 	depends on KVM_BOOK3S_64 && PPC_POWERNV
+ 	select KVM_BOOK3S_HV_POSSIBLE
+ 	select KVM_GENERIC_MMU_NOTIFIER
++	select KVM_BOOK3S_HV_PMU
+ 	select CMA
+ 	help
+ 	  Support running unmodified book3s_64 guest kernels in
+@@ -171,6 +172,18 @@ config KVM_BOOK3S_HV_NESTED_PMU_WORKAROUND
+ 	  those buggy L1s which saves the L2 state, at the cost of performance
+ 	  in all nested-capable guest entry/exit.
  
- #include <asm/guest-state-buffer.h>
++config KVM_BOOK3S_HV_PMU
++	tristate "Hypervisor Perf events for KVM Book3s-HV"
++	depends on KVM_BOOK3S_64_HV && HV_PERF_CTRS
++	help
++	  Enable Book3s-HV Hypervisor Perf events PMU named 'kvm-hv'. These
++	  Perf events give an overview of hypervisor performance overall
++	  instead of a specific guests. Currently the PMU reports
++	  L0-Hypervisor stats on a kvm-hv enabled PSeries LPAR like:
++	  * Total/Used Guest-Heap
++	  * Total/Used Guest Page-table Memory
++	  * Total amount of Guest Page-table Memory reclaimed
++
+ config KVM_BOOKE_HV
+ 	bool
+ 
+diff --git a/arch/powerpc/perf/Makefile b/arch/powerpc/perf/Makefile
+index ac2cf58d62db..7f53fcb7495a 100644
+--- a/arch/powerpc/perf/Makefile
++++ b/arch/powerpc/perf/Makefile
+@@ -18,6 +18,8 @@ obj-$(CONFIG_HV_PERF_CTRS) += hv-24x7.o hv-gpci.o hv-common.o
+ 
+ obj-$(CONFIG_VPA_PMU) += vpa-pmu.o
+ 
++obj-$(CONFIG_KVM_BOOK3S_HV_PMU) += kvm-hv-pmu.o
++
+ obj-$(CONFIG_PPC_8xx) += 8xx-pmu.o
+ 
+ obj-$(CONFIG_PPC64)		+= $(obj64-y)
+diff --git a/arch/powerpc/perf/kvm-hv-pmu.c b/arch/powerpc/perf/kvm-hv-pmu.c
+new file mode 100644
+index 000000000000..c154f54e09e2
+--- /dev/null
++++ b/arch/powerpc/perf/kvm-hv-pmu.c
+@@ -0,0 +1,138 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Description: PMUs specific to running nested KVM-HV guests
++ * on Book3S processors (specifically POWER9 and later).
++ */
++
++#define pr_fmt(fmt)  "kvmppc-pmu: " fmt
++
++#include "asm-generic/local64.h"
++#include <linux/kernel.h>
++#include <linux/errno.h>
++#include <linux/ratelimit.h>
++#include <linux/kvm_host.h>
++#include <linux/gfp_types.h>
++#include <linux/pgtable.h>
++#include <linux/perf_event.h>
++#include <linux/spinlock_types.h>
++#include <linux/spinlock.h>
++
++#include <asm/types.h>
 +#include <asm/kvm_ppc.h>
- 
- static void test_creating_buffer(struct kunit *test)
- {
-@@ -141,6 +142,16 @@ static void test_gs_bitmap(struct kunit *test)
- 		i++;
- 	}
- 
-+	for (u16 iden = KVMPPC_GSID_L0_GUEST_HEAP;
-+	     iden <= KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM; iden++) {
-+		kvmppc_gsbm_set(&gsbm, iden);
-+		kvmppc_gsbm_set(&gsbm1, iden);
-+		KUNIT_EXPECT_TRUE(test, kvmppc_gsbm_test(&gsbm, iden));
-+		kvmppc_gsbm_clear(&gsbm, iden);
-+		KUNIT_EXPECT_FALSE(test, kvmppc_gsbm_test(&gsbm, iden));
-+		i++;
++#include <asm/kvm_book3s.h>
++#include <asm/mmu.h>
++#include <asm/pgalloc.h>
++#include <asm/pte-walk.h>
++#include <asm/reg.h>
++#include <asm/plpar_wrappers.h>
++#include <asm/firmware.h>
++
++enum kvmppc_pmu_eventid {
++	KVMPPC_EVENT_MAX,
++};
++
++static struct attribute *kvmppc_pmu_events_attr[] = {
++	NULL,
++};
++
++static const struct attribute_group kvmppc_pmu_events_group = {
++	.name = "events",
++	.attrs = kvmppc_pmu_events_attr,
++};
++
++PMU_FORMAT_ATTR(event, "config:0");
++static struct attribute *kvmppc_pmu_format_attr[] = {
++	&format_attr_event.attr,
++	NULL,
++};
++
++static struct attribute_group kvmppc_pmu_format_group = {
++	.name = "format",
++	.attrs = kvmppc_pmu_format_attr,
++};
++
++static const struct attribute_group *kvmppc_pmu_attr_groups[] = {
++	&kvmppc_pmu_events_group,
++	&kvmppc_pmu_format_group,
++	NULL,
++};
++
++static int kvmppc_pmu_event_init(struct perf_event *event)
++{
++	unsigned int config = event->attr.config;
++
++	pr_debug("%s: Event(%p) id=%llu cpu=%x on_cpu=%x config=%u",
++		 __func__, event, event->id, event->cpu,
++		 event->oncpu, config);
++
++	if (event->attr.type != event->pmu->type)
++		return -ENOENT;
++
++	if (config >= KVMPPC_EVENT_MAX)
++		return -EINVAL;
++
++	local64_set(&event->hw.prev_count, 0);
++	local64_set(&event->count, 0);
++
++	return 0;
++}
++
++static void kvmppc_pmu_del(struct perf_event *event, int flags)
++{
++}
++
++static int kvmppc_pmu_add(struct perf_event *event, int flags)
++{
++	return 0;
++}
++
++static void kvmppc_pmu_read(struct perf_event *event)
++{
++}
++
++/* L1 wide counters PMU */
++static struct pmu kvmppc_pmu = {
++	.module = THIS_MODULE,
++	.task_ctx_nr = perf_sw_context,
++	.name = "kvm-hv",
++	.event_init = kvmppc_pmu_event_init,
++	.add = kvmppc_pmu_add,
++	.del = kvmppc_pmu_del,
++	.read = kvmppc_pmu_read,
++	.attr_groups = kvmppc_pmu_attr_groups,
++	.type = -1,
++};
++
++static int __init kvmppc_register_pmu(void)
++{
++	int rc = -EOPNOTSUPP;
++
++	/* only support events for nestedv2 right now */
++	if (kvmhv_is_nestedv2()) {
++		/* Setup done now register the PMU */
++		pr_info("Registering kvm-hv pmu");
++
++		/* Register only if we arent already registered */
++		rc = (kvmppc_pmu.type == -1) ?
++			     perf_pmu_register(&kvmppc_pmu, kvmppc_pmu.name,
++					       -1) : 0;
 +	}
 +
- 	for (u16 iden = KVMPPC_GSID_RUN_INPUT; iden <= KVMPPC_GSID_VPA;
- 	     iden++) {
- 		kvmppc_gsbm_set(&gsbm, iden);
-@@ -309,12 +320,215 @@ static void test_gs_msg(struct kunit *test)
- 	kvmppc_gsm_free(gsm);
- }
- 
-+/* Test data struct for hostwide/L0 counters */
-+struct kvmppc_gs_msg_test_hostwide_data {
-+	u64 guest_heap;
-+	u64 guest_heap_max;
-+	u64 guest_pgtable_size;
-+	u64 guest_pgtable_size_max;
-+	u64 guest_pgtable_reclaim;
-+};
-+
-+static size_t test_hostwide_get_size(struct kvmppc_gs_msg *gsm)
-+
-+{
-+	size_t size = 0;
-+	u16 ids[] = {
-+		KVMPPC_GSID_L0_GUEST_HEAP,
-+		KVMPPC_GSID_L0_GUEST_HEAP_MAX,
-+		KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE,
-+		KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE_MAX,
-+		KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM
-+	};
-+
-+	for (int i = 0; i < ARRAY_SIZE(ids); i++)
-+		size += kvmppc_gse_total_size(kvmppc_gsid_size(ids[i]));
-+	return size;
++	return rc;
 +}
 +
-+static int test_hostwide_fill_info(struct kvmppc_gs_buff *gsb,
-+				   struct kvmppc_gs_msg *gsm)
++static void __exit kvmppc_unregister_pmu(void)
 +{
-+	struct kvmppc_gs_msg_test_hostwide_data *data = gsm->data;
++	if (kvmhv_is_nestedv2()) {
++		if (kvmppc_pmu.type != -1)
++			perf_pmu_unregister(&kvmppc_pmu);
 +
-+	if (kvmppc_gsm_includes(gsm, KVMPPC_GSID_L0_GUEST_HEAP))
-+		kvmppc_gse_put_u64(gsb, KVMPPC_GSID_L0_GUEST_HEAP,
-+				   data->guest_heap);
-+	if (kvmppc_gsm_includes(gsm, KVMPPC_GSID_L0_GUEST_HEAP_MAX))
-+		kvmppc_gse_put_u64(gsb, KVMPPC_GSID_L0_GUEST_HEAP_MAX,
-+				   data->guest_heap_max);
-+	if (kvmppc_gsm_includes(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE))
-+		kvmppc_gse_put_u64(gsb, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE,
-+				   data->guest_pgtable_size);
-+	if (kvmppc_gsm_includes(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE_MAX))
-+		kvmppc_gse_put_u64(gsb, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE_MAX,
-+				   data->guest_pgtable_size_max);
-+	if (kvmppc_gsm_includes(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM))
-+		kvmppc_gse_put_u64(gsb, KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM,
-+				   data->guest_pgtable_reclaim);
-+
-+	return 0;
++		pr_info("kvmhv_pmu unregistered.\n");
++	}
 +}
 +
-+static int test_hostwide_refresh_info(struct kvmppc_gs_msg *gsm,
-+				      struct kvmppc_gs_buff *gsb)
-+{
-+	struct kvmppc_gs_parser gsp = { 0 };
-+	struct kvmppc_gs_msg_test_hostwide_data *data = gsm->data;
-+	struct kvmppc_gs_elem *gse;
-+	int rc;
-+
-+	rc = kvmppc_gse_parse(&gsp, gsb);
-+	if (rc < 0)
-+		return rc;
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_HEAP);
-+	if (gse)
-+		data->guest_heap = kvmppc_gse_get_u64(gse);
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_HEAP_MAX);
-+	if (gse)
-+		data->guest_heap_max = kvmppc_gse_get_u64(gse);
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE);
-+	if (gse)
-+		data->guest_pgtable_size = kvmppc_gse_get_u64(gse);
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE_MAX);
-+	if (gse)
-+		data->guest_pgtable_size_max = kvmppc_gse_get_u64(gse);
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM);
-+	if (gse)
-+		data->guest_pgtable_reclaim = kvmppc_gse_get_u64(gse);
-+
-+	return 0;
-+}
-+
-+static struct kvmppc_gs_msg_ops gs_msg_test_hostwide_ops = {
-+	.get_size = test_hostwide_get_size,
-+	.fill_info = test_hostwide_fill_info,
-+	.refresh_info = test_hostwide_refresh_info,
-+};
-+
-+static void test_gs_hostwide_msg(struct kunit *test)
-+{
-+	struct kvmppc_gs_msg_test_hostwide_data test_data = {
-+		.guest_heap = 0xdeadbeef,
-+		.guest_heap_max = ~0ULL,
-+		.guest_pgtable_size = 0xff,
-+		.guest_pgtable_size_max = 0xffffff,
-+		.guest_pgtable_reclaim = 0xdeadbeef,
-+	};
-+	struct kvmppc_gs_msg *gsm;
-+	struct kvmppc_gs_buff *gsb;
-+
-+	gsm = kvmppc_gsm_new(&gs_msg_test_hostwide_ops, &test_data, GSM_SEND,
-+			     GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsm);
-+
-+	gsb = kvmppc_gsb_new(kvmppc_gsm_size(gsm), 0, 0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsb);
-+
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_HEAP);
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_HEAP_MAX);
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE);
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE_MAX);
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM);
-+
-+	kvmppc_gsm_fill_info(gsm, gsb);
-+
-+	memset(&test_data, 0, sizeof(test_data));
-+
-+	kvmppc_gsm_refresh_info(gsm, gsb);
-+	KUNIT_EXPECT_EQ(test, test_data.guest_heap, 0xdeadbeef);
-+	KUNIT_EXPECT_EQ(test, test_data.guest_heap_max, ~0ULL);
-+	KUNIT_EXPECT_EQ(test, test_data.guest_pgtable_size, 0xff);
-+	KUNIT_EXPECT_EQ(test, test_data.guest_pgtable_size_max, 0xffffff);
-+	KUNIT_EXPECT_EQ(test, test_data.guest_pgtable_reclaim, 0xdeadbeef);
-+
-+	kvmppc_gsm_free(gsm);
-+}
-+
-+/* Test if the H_GUEST_GET_STATE for hostwide counters works */
-+static void test_gs_hostwide_counters(struct kunit *test)
-+{
-+	struct kvmppc_gs_msg_test_hostwide_data test_data;
-+	struct kvmppc_gs_parser gsp = { 0 };
-+
-+	struct kvmppc_gs_msg *gsm;
-+	struct kvmppc_gs_buff *gsb;
-+	struct kvmppc_gs_elem *gse;
-+	int rc;
-+
-+	if (!kvmhv_on_pseries())
-+		kunit_skip(test, "This test need a kmv-hv guest");
-+
-+	gsm = kvmppc_gsm_new(&gs_msg_test_hostwide_ops, &test_data, GSM_SEND,
-+			     GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsm);
-+
-+	gsb = kvmppc_gsb_new(kvmppc_gsm_size(gsm), 0, 0, GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, gsb);
-+
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_HEAP);
-+
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_HEAP_MAX);
-+
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE);
-+
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE_MAX);
-+
-+	kvmppc_gsm_include(gsm, KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM);
-+
-+	kvmppc_gsm_fill_info(gsm, gsb);
-+
-+	/* With HOST_WIDE flags guestid and vcpuid will be ignored */
-+	rc = kvmppc_gsb_recv(gsb, KVMPPC_GS_FLAGS_HOST_WIDE);
-+	KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+	/* Parse the guest state buffer is successful */
-+	rc = kvmppc_gse_parse(&gsp, gsb);
-+	KUNIT_ASSERT_EQ(test, rc, 0);
-+
-+	/* Parse the GSB and get the counters */
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_HEAP);
-+	KUNIT_ASSERT_NOT_NULL_MSG(test, gse, "L0 Heap counter missing");
-+	kunit_info(test, "Guest Heap Size=%llu bytes",
-+		   kvmppc_gse_get_u64(gse));
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_HEAP_MAX);
-+	KUNIT_ASSERT_NOT_NULL_MSG(test, gse, "L0 Heap counter max missing");
-+	kunit_info(test, "Guest Heap Size Max=%llu bytes",
-+		   kvmppc_gse_get_u64(gse));
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE);
-+	KUNIT_ASSERT_NOT_NULL_MSG(test, gse, "L0 page-table size missing");
-+	kunit_info(test, "Guest Page-table Size=%llu bytes",
-+		   kvmppc_gse_get_u64(gse));
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_PGTABLE_SIZE_MAX);
-+	KUNIT_ASSERT_NOT_NULL_MSG(test, gse, "L0 page-table size-max missing");
-+	kunit_info(test, "Guest Page-table Size Max=%llu bytes",
-+		   kvmppc_gse_get_u64(gse));
-+
-+	gse = kvmppc_gsp_lookup(&gsp, KVMPPC_GSID_L0_GUEST_PGTABLE_RECLAIM);
-+	KUNIT_ASSERT_NOT_NULL_MSG(test, gse, "L0 page-table reclaim size missing");
-+	kunit_info(test, "Guest Page-table Reclaim Size=%llu bytes",
-+		   kvmppc_gse_get_u64(gse));
-+
-+	kvmppc_gsm_free(gsm);
-+	kvmppc_gsb_free(gsb);
-+}
-+
- static struct kunit_case guest_state_buffer_testcases[] = {
- 	KUNIT_CASE(test_creating_buffer),
- 	KUNIT_CASE(test_adding_element),
- 	KUNIT_CASE(test_gs_bitmap),
- 	KUNIT_CASE(test_gs_parsing),
- 	KUNIT_CASE(test_gs_msg),
-+	KUNIT_CASE(test_gs_hostwide_msg),
-+	KUNIT_CASE(test_gs_hostwide_counters),
- 	{}
- };
- 
++module_init(kvmppc_register_pmu);
++module_exit(kvmppc_unregister_pmu);
++MODULE_DESCRIPTION("KVM PPC Book3s-hv PMU");
++MODULE_AUTHOR("Vaibhav Jain <vaibhav@linux.ibm.com>");
++MODULE_LICENSE("GPL");
 -- 
 2.48.1
 
