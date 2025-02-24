@@ -1,67 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-6422-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6421-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CAC6FA421CE
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 14:48:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 558D9A421CC
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 14:48:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1hsZ5f0sz2yPG;
-	Tue, 25 Feb 2025 00:48:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1hsX6JCZz2ysh;
+	Tue, 25 Feb 2025 00:48:48 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8:216:3eff:fe9d:e7b4"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740404930;
-	cv=none; b=Jx6JXkmoWap1j5My/0TqX9YDXjAP/2B5wnMLkAZXrhV4E2kkJ2BFLVFFekG8olalMQGPp0WV0u3829Mw5F86hCkKdHwVwO2HCZdPs6tl3oHrp1oeflXjNN+Pe6loV0D0nzQPPGPrgK7EaYxrWMxH9nvBHeVHNvESFD8QJNhl4AfsIukquqRVlbqNgWafJKkwAzPQOmhLTxhqnCnV1NUZXT2LZQyxjAopBw7YL0z4xER/C/X0FnQPTP/zXSRv4mXtvTFyzvAy6EJ3OHZQjrBajczceseQtM00kJkgTAqHpY155h1w1OZQZldOv1Z4c5WNku8ssPGzR18e643xCun4Uw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740404928;
+	cv=none; b=OpQVpv4bAD9Iio0Y/+h/0ooxQUXCBeL3dVxrDe6IMsLB6YsglwKAt4DughZ4vXdmf0znv2zxkjPoeRIWuLVW2qWC6blo1fNa3cb/fTwCM41kAjtfIb3VH77j9rn0f1Rny1yWuODfvBnMjnw0szX76Fii1XF9BNFqwmh7HBMgn3DzboMnQX0sqVCg8+w+ZLM7gq33Jy7W7gu3lqZ1HSBBLJTClldSgS9xzG9avSIZew01wSlX+7zNIZC4riZooTnY7t35osS2mmn886h2kRNj+dLsXrCOWe83vf/DYcmri/xa/UYm7OeLffqcJjVJVZrRyCyYe6h1PT5OZUYvQZldTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740404930; c=relaxed/relaxed;
-	bh=cIagspXsyAvHsd8swjUvOQxymK0QzUmAeQhYVXlxXmw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bdkEHaJnoYmWPV5gi4fIo41btshA6P4VN8vv5CA8zQE4M2xkQANCzCJG+WSZxUgK3nS/VJuzv0JAlShyMuwnw+9/rlp4a9T9mQu10/6eH6QiEkwdcQcuOjWd7rsP/73klI8hi+kN+oW4JZGc2hbIBS8yfKxDybDYO09q9BbprDtrons0vuPDzkmnmGCZ8e8LWJXnoMPI7DCpclaHrGFVBnx8IsRsJTWqe5+09Mam/ACK8PXnynl7soYFHDQAA0xzOeWJ7WFIgwnB2fKNF3EVM1t05ZUlVNJAmD3NCe7/aGoqHt5cE1osVaOKP5jl4HKy4u3EHNpnzfoJHY2T1uGUNA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=bkRLBWZS; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=bkRLBWZS;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 899 seconds by postgrey-1.37 at boromir; Tue, 25 Feb 2025 00:48:48 AEDT
-Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [IPv6:2001:4b98:dc4:8:216:3eff:fe9d:e7b4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1hsX6kXbz3050
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 00:48:48 +1100 (AEDT)
-Received: from relay5-d.mail.gandi.net (relay5-d.mail.gandi.net [IPv6:2001:4b98:dc4:8::225])
-	by mslow3.mail.gandi.net (Postfix) with ESMTP id 962C658648C
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 13:33:49 +0000 (UTC)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 5874E432EB;
-	Mon, 24 Feb 2025 13:33:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1740404018;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cIagspXsyAvHsd8swjUvOQxymK0QzUmAeQhYVXlxXmw=;
-	b=bkRLBWZSZYwEnqDK+klu7rd0l1E+6IiG/EYUYbESdAfhkj4M9ALlTJHtr+pVyFDLerKsE/
-	T1hopPA/Z0C32ITyH4ZsnAWWStf9Bpeyx2lXc+mvhad48M4ewoWgz7gZI2oG6TgsE3k+Sd
-	98JOcpeli4mW61IPIk8R4h+AvcFEzVKQbtp9S4hp4l0qvqhNsJm8VXZMqdGi0vfnTE4XSg
-	Nh9cOR7gZ/e0+9Rgw6KF05mjQv4hBr1iclFE18TVDRfwt+b6CCmKgMajR5bofvM6vNmcss
-	My0CYfv4Gl0NhQFesREjV+1ixiwIf0wkPDsC0oIAeGSmrd9hEKAWWwYConETxA==
-Date: Mon, 24 Feb 2025 14:33:36 +0100
-From: Herve Codina <herve.codina@bootlin.com>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Shengjiu Wang <shengjiu.wang@gmail.com>, Xiubo Li <Xiubo.Lee@gmail.com>,
- Fabio Estevam <festevam@gmail.com>, Nicolin Chen <nicoleotsuka@gmail.com>,
- Liam Girdwood <lgirdwood@gmail.com>, Mark Brown <broonie@kernel.org>,
- Jaroslav Kysela <perex@perex.cz>, Takashi Iwai <tiwai@suse.com>,
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ASoC: fsl: fsl_qmc_audio: Remove unnecessary bool
- conversions
-Message-ID: <20250224143336.75fe1e10@bootlin.com>
-In-Reply-To: <20250223202741.1916-2-thorsten.blum@linux.dev>
-References: <20250223202741.1916-2-thorsten.blum@linux.dev>
-Organization: Bootlin
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
+	t=1740404928; c=relaxed/relaxed;
+	bh=pDq4bowWlNtsbGxlMOQr0ORJvI5CIykp22503yzMS2g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HKPkqjuovDnKJ7aTQ7DWc9wLhsu5uLmGfKsfSgubQ6oRMrpjz2RjK9YBvQrtooTJxn23JVfsKcdG6xamE77vc8xa8mAx0nc7RdGtZsjJPzEX2IthDKd1wJa848NIjGbt507KvwkCI2Meh4iMg3iLt+yv5t8PF0Xe55jf+dQDBpKDVrC6xjxoGt3GH/lsEWMx3RCR454Xc6evweOsW5ZPQkkadxbUpjnEwKHe1nBbCW6SMd2Vqz7k5NS9eMAEJ136YX+BjCAHWzG6dwp/SvNEt9RLg31xBz267N35O8B0dvwSyb4XgVvUpm9uwBN5jyxRO11B7wl03gro4Xw3gEMusA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1hsX0HlCz2yPG
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 00:48:46 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 990B31515;
+	Mon, 24 Feb 2025 05:48:30 -0800 (PST)
+Received: from [10.163.40.148] (unknown [10.163.40.148])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 716D33F5A1;
+	Mon, 24 Feb 2025 05:48:07 -0800 (PST)
+Message-ID: <acc7eb95-a0d2-4f35-96a8-7a370cc1eff6@arm.com>
+Date: Mon, 24 Feb 2025 19:18:02 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,35 +42,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 2/5] arch/powerpc: Drop GENERIC_PTDUMP from
+ mpc885_ads_defconfig
+To: Christophe Leroy <christophe.leroy@csgroup.eu>, linux-mm@kvack.org
+Cc: steven.price@arm.com, Andrew Morton <akpm@linux-foundation.org>,
+ Mark Rutland <mark.rutland@arm.com>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>
+References: <20250217042220.32920-1-anshuman.khandual@arm.com>
+ <20250217042220.32920-3-anshuman.khandual@arm.com>
+ <93e96586-13a2-4800-9dc7-5b35177a328e@csgroup.eu>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <93e96586-13a2-4800-9dc7-5b35177a328e@csgroup.eu>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-GND-State: clean
-X-GND-Score: -100
-X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdejkeeludcutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepfffhvfevuffkjghfohfogggtgfesthekredtredtjeenucfhrhhomhepjfgvrhhvvgcuvehoughinhgruceohhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmqeenucggtffrrghtthgvrhhnpeeviefffeegiedtleelieeghfejleeuueevkeevteegffehledtkeegudeigffgvdenucfkphepledtrdekledrudeifedruddvjeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeeltddrkeelrdduieefrdduvdejpdhhvghloheplhhotggrlhhhohhsthdpmhgrihhlfhhrohhmpehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdpnhgspghrtghpthhtohepuddvpdhrtghpthhtohepthhhohhrshhtvghnrdgslhhumheslhhinhhugidruggvvhdprhgtphhtthhopehshhgvnhhgjhhiuhdrfigrnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepighiuhgsohdrnfgvvgesghhmrghilhdrtghomhdprhgtphhtthhopehfvghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehnihgtohhlvghothhsuhhkrgesghhmrghilhdrtghomhdprhgtphhtthhop
- ehlghhirhgufihoohgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvrhgvgiesphgvrhgvgidrtgii
-X-GND-Sasl: herve.codina@bootlin.com
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sun, 23 Feb 2025 21:27:41 +0100
-Thorsten Blum <thorsten.blum@linux.dev> wrote:
 
-> Remove unnecessary bool conversions and simplify the code.
+
+On 2/24/25 17:34, Christophe Leroy wrote:
 > 
-> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-> ---
->  sound/soc/fsl/fsl_qmc_audio.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
-> index e257b8adafe0..b2979290c973 100644
-> --- a/sound/soc/fsl/fsl_qmc_audio.c
-> +++ b/sound/soc/fsl/fsl_qmc_audio.c
+> Le 17/02/2025 à 05:22, Anshuman Khandual a écrit :
+>> GENERIC_PTDUMP gets selected on powerpc explicitly and hence can be dropped
+>> off from mpc885_ads_defconfig.
+>>
+>> Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+>> Cc: Michael Ellerman <mpe@ellerman.id.au>
+>> Cc: Nicholas Piggin <npiggin@gmail.com>
+>> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+>> Cc: linuxppc-dev@lists.ozlabs.org
+>> Cc: linux-kernel@vger.kernel.org
+>> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> ---
+>> Just wondering - Should CONFIG_PTDUMP_DEBUGFS be added instead ?
+> 
+> Yes please do that as a fix to commit e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
 
-Acked-by: Herve Codina <herve.codina@bootlin.com>
+Sure, does the following updated commit message look okay ?
 
-Best regards,
-Hervé
+arch/powerpc: Drop GENERIC_PTDUMP from mpc885_ads_defconfig
+
+GENERIC_PTDUMP gets selected on powerpc explicitly and hence can be dropped
+off from mpc885_ads_defconfig. Just add CONFIG_PTDUMP_DEBUGFS instead.
+
+Fixes: e084728393a5 ("powerpc/ptdump: Convert powerpc to GENERIC_PTDUMP")
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+
+> 
+>>
+>>   arch/powerpc/configs/mpc885_ads_defconfig | 1 -
+>>   1 file changed, 1 deletion(-)
+>>
+>> diff --git a/arch/powerpc/configs/mpc885_ads_defconfig b/arch/powerpc/configs/mpc885_ads_defconfig
+>> index 77306be62e9e..ea6f836407d2 100644
+>> --- a/arch/powerpc/configs/mpc885_ads_defconfig
+>> +++ b/arch/powerpc/configs/mpc885_ads_defconfig
+>> @@ -78,4 +78,3 @@ CONFIG_DEBUG_VM_PGTABLE=y
+>>   CONFIG_DETECT_HUNG_TASK=y
+>>   CONFIG_BDI_SWITCH=y
+>>   CONFIG_PPC_EARLY_DEBUG=y
+>> -CONFIG_GENERIC_PTDUMP=y
+> 
 
