@@ -1,75 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-6413-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6414-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82FB5A42029
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 14:15:50 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93ED9A42030
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 14:15:56 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1h7R62Xtz303B;
-	Tue, 25 Feb 2025 00:15:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1h7Y40g1z304s;
+	Tue, 25 Feb 2025 00:15:53 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740402947;
-	cv=none; b=kD5sBIqkLfaki64o3Sv9ZpH40fbUhQIL9Tq8ya3TYEEgx/bVKYWLi2BCnQ+AZqzapGbFrdyewuYeZPesj8jCdWojtapjOIL5cj5hUUXFEQmpyNDaArVpadk9yZkQ/X0QsMKg4nO7MIEs7LxGa8Gm8FsrAlZrJmud/MyLqXU9oEy6dsR8P0aThgxvcesZogfqZIihinX5P/ZibB5OwylyW+4x0zsEALmz8mepQlgszQuuISDJK91iDWdqckOB2c+pEpVaMrUw16u8asSq0z/TaO+F/fNUYRW0j8z9oeBOhUTUTbIfrSJvaRBLMAvg/AeM4BveqeHoE8zrlBOUnAiUuw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740402953;
+	cv=none; b=I79MwAx2ZOJFxq/4xp/YAE+tKrQ4krQ4UiqNeQdAsPRPinVRHSjuovHPg+/Ygt2O6SPrgCrtCxWkHXJt7+34MHcofgLIx/Ff9xGtrh/fD2uP+VLVxWfFazLns1+/CoudwYUTlnL8yPcDCkkfNY3XFbMOnE5kjxa4IBQC64fqoHpJ4CtgO+Zk0aBg427zE7fujBpb/D7XCwhtZGTurQeSyDRr9G7Z64xJ7PI8sEupOWuUI6bUBBIXox8Cz5Zs6Kalr8ffguV+3jPfiUiELrKdP0eaFsdg5qdlj+CXxCcMlb1IMTqsOicYMBhs5dwJzaR0e6zoEO7ynFDTWr4wWW2a2A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740402947; c=relaxed/relaxed;
-	bh=DK+EbFfcxQhbmSMryt9imagThUzLKYVHVA9zC4GRY/E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AcZ/j+dCCFgs58neNy9emu7kjg002l45PQgz4+dQS5zcuilyLafB7FujYkfYcE6IlvRTLUaNHHe70MqyiHdbtgc5s2zCaaugVNR9QX57WeaDmgVpnVMXQLEx6n1GI7xJnCqx7PA5QJoHsS7BlkdGyU4y7M21yyMRDZaJ1qFqkhy+pcHKHXKYIzMnGJVUr5onf1+j30sX2eoTAsQipxBpR+JqkFeUo1blzxkLfGPzzKtg3deEqmGWT5KcoczPe/6GJ9o642Bn/1NTr80DimgN3WNCdFNNRIOcM7dErghEUu1D++D2j2VM0YEwf39FbhTcwnQDEljoXtTvsTFy3uLROw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DYXfU5ow; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1740402953; c=relaxed/relaxed;
+	bh=Brg9f0gFk+YRpmjs+z2a4fs20M2McnUvJojPWBxOg8Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=btJBQPf8hTzPBOyJJghgCgjhpbrU+EN6XhDXVGkzRaMxjzIifLl7mKPPzoofqiYixFIhZrXkqL+7k3Ce/9ETvH0TFge1RHlBhiw80NzdtM8Fa1Hi9ymWhz8ztjQb4u/vDwBWS1cnipgs1Cbo9z7oCaoN1oLbOcf6O0GpsMmRz9v6QDCCUCGUPR62CumD3KhXF0ktKESjRTtdsM0ZrAZr2A1ftNUDUPfRUnZi6yLXi0QpkBxD5m1dQr8jDD0k4WRQnbi5jnXkseyeL+JJgoi+G7hqZcPE54bGYIBaJECgdOfITG6jpgjk9UEVAD9gG2/BTvbXGNE/caI2Fwvb4lJc3A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PLI52Z8H; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DYXfU5ow;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PLI52Z8H;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1h7Q5gtnz302c
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 00:15:46 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51O5O6YB012144;
-	Mon, 24 Feb 2025 13:15:38 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1h7X57kYz302c
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 00:15:52 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OD6X6g013044;
+	Mon, 24 Feb 2025 13:15:43 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=DK+EbFfcxQhbmSMryt9imagThUzLKYVHVA9zC4GRY
-	/E=; b=DYXfU5owqK307lhbaIrwg1swpZgjyJo1hjGDnvxFPSJZwDxt77chKJ7pG
-	YrNSbIcr7jazZbikReVH3CAU1OH00XXSJOJM83DjeCeYW3fkKrHpq274gpTo9xCt
-	3vwIo+I4UGDRolh0LcZbehvy2Rn4tPNqj/K66+GxmhQ0GJ4aJFeNWQo7ztMqg1P5
-	lnSMNXtUlmYBpLoefASijiEa54JFaDcAkmG2jt14+ArYxsuiOI+MRfx/C6Lebret
-	l3zc79kkKndzPlkdJxynO2QbaS2ekL0/T/TT/bzvMj+1zOz2Th/+mRJVEPjtZlP7
-	b53DFm9C/2ey5Oe976ogzBVzOryOw==
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=Brg9f0gFk+YRpmjs+
+	z2a4fs20M2McnUvJojPWBxOg8Q=; b=PLI52Z8H7B5mfm1fYklKSfn5AQVha++51
+	Lc9I2qpwcUsDlI9+7UZAP+qY41dz+O5TQ4v2BGIy1vHcmguuUoJgdYYQkA1eYbp4
+	LjuRUnfbnL3VIBhfbjBQIOQ9tGW8gJdGkQpnNSq8a6MBBf6Xpd8V9RFKd1eEznEX
+	9YCXnmytB2nAaD52/l70Wnp4jOum9ML5uulDYMgmIARBdZMS3gm5QLlrcoecXC0Y
+	SxEZAp9zJmFUP5MLqdzJ4O+fBKCpcDdZIbQGUp2c0C8iVRIAktbNbJiXB4SysTKk
+	4a8WLWs+Yi5Kx5r9qRs30rstkxzeEZgwYvBtyfiwjDtUiCRwy1nNg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450jk81xs4-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450fm02gng-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Feb 2025 13:15:37 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51OD4pP9006177;
-	Mon, 24 Feb 2025 13:15:37 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450jk81xru-1
+	Mon, 24 Feb 2025 13:15:42 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51ODFg4a005678;
+	Mon, 24 Feb 2025 13:15:42 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 450fm02gnd-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Feb 2025 13:15:37 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51OC76Q8026269;
-	Mon, 24 Feb 2025 13:15:35 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswn78jt-1
+	Mon, 24 Feb 2025 13:15:42 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51OA8Ort027376;
+	Mon, 24 Feb 2025 13:15:41 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yum1puh2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 24 Feb 2025 13:15:35 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51ODFWVe10944816
+	Mon, 24 Feb 2025 13:15:41 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51ODFcno56230384
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 24 Feb 2025 13:15:32 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EEEE12004B;
-	Mon, 24 Feb 2025 13:15:31 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA51920040;
-	Mon, 24 Feb 2025 13:15:27 +0000 (GMT)
+	Mon, 24 Feb 2025 13:15:38 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DFF982004B;
+	Mon, 24 Feb 2025 13:15:37 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4F3C620040;
+	Mon, 24 Feb 2025 13:15:33 +0000 (GMT)
 Received: from vaibhav?linux.ibm.com (unknown [9.124.210.32])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 24 Feb 2025 13:15:27 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 24 Feb 2025 18:45:26 +0530
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Mon, 24 Feb 2025 13:15:33 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 24 Feb 2025 18:45:32 +0530
 From: Vaibhav Jain <vaibhav@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
         kvm-ppc@vger.kernel.org
@@ -79,11 +80,14 @@ Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
         Nicholas Piggin <npiggin@gmail.com>,
         Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
         sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
-        amachhiw@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: [PATCH v4 0/6] kvm powerpc/book3s-hv: Expose Hostwide counters as perf-events
-Date: Mon, 24 Feb 2025 18:45:14 +0530
-Message-ID: <20250224131522.77104-1-vaibhav@linux.ibm.com>
+        amachhiw@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
+        linux-doc@vger.kernel.org, Bagas Sanjaya <bagasdotme@gmail.com>
+Subject: [PATCH v4 1/6] powerpc: Document APIv2 KVM hcall spec for Hostwide counters
+Date: Mon, 24 Feb 2025 18:45:15 +0530
+Message-ID: <20250224131522.77104-2-vaibhav@linux.ibm.com>
 X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250224131522.77104-1-vaibhav@linux.ibm.com>
+References: <20250224131522.77104-1-vaibhav@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,153 +102,113 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: UyHQHyWQipd433kMt39Tv0yveKhLKCxH
-X-Proofpoint-GUID: pubqu-O1gKG7CZOqvQBys_x50UvgvieI
+X-Proofpoint-ORIG-GUID: M3Aa98DSh3-x9YdSQ1SNJdL1Rqr67K46
+X-Proofpoint-GUID: _fU_MH-0DYwgDDtGE8v8VGT8qtTieLbN
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-24_05,2025-02-24_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 priorityscore=1501 impostorscore=0 suspectscore=0
- malwarescore=0 spamscore=0 clxscore=1015 mlxlogscore=999 mlxscore=0
- bulkscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 adultscore=0
+ lowpriorityscore=0 suspectscore=0 spamscore=0 priorityscore=1501
+ mlxlogscore=999 impostorscore=0 malwarescore=0 bulkscore=0 clxscore=1015
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502100000 definitions=main-2502240095
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Changes from v3
-Link: https://lore.kernel.org/all/20250123120749.90505-1-vaibhav@linux.ibm.com/
-* Moved the new 'kvm-hv' pmu code to a separate module named 'kvm-hv-pmu'
-* Fixed a kunit test code crash that happened when run on kvm-hv on
-  bare-metal.
-* Minor changes to the 'kvm-hv' pmu code / patch descriptions as its now
-  built as a kernel module.
-=======
+Update kvm-nested APIv2 documentation to include five new
+Guest-State-Elements to fetch the hostwide counters. These counters are
+per L1-Lpar and indicate the amount of Heap/Page-table memory allocated,
+available and Page-table memory reclaimed for all L2-Guests active
+instances
 
-This patch-series adds support for reporting Hostwide(L1-Lpar) counters via
-perf-events in a new kernel module named 'kvm-hv-pmu'. With the support for
-running KVM Guest in a PSeries-Lpar using nested-APIv2 via [1], the
-underlying L0-PowerVM hypervisor holds some state information pertaining to
-all running L2-KVM Guests in an L1-Lpar. This state information is held in
-a pre-allocated memory thats owned by L0-PowerVM and is termed as
-Guest-Management-Area(GMA). The GMA is allocated per L1-LPAR and is only
-allocated if the lpar is KVM enabled. The size of this area is a fixed
-percentage of the memory assigned to the KVM enabled L1-lpar and is
-composed of two major components, Guest Management Space(Host-Heap) and
-Guest Page Table Management Space(Host-Pagetable).
+Cc: linux-doc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Reviewed-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-The Host-Heap holds various data-structures allocated by L0-PowerVM for
-L2-KVM Guests running in the L1-Lpar. The Host-Pagetable holds the Radix
-pagetable[2] for the L2-KVM Guest which is used by L0-PowerVM to handle
-page faults. Since the size of both of these areas is limited and fixed via
-partition boot profile, it puts an upper bound on the number of L2-KVM
-Guests that can be run in an LPAR. Also due limited size of Host-Pagetable
-area, L0-PowerVM is at times forced to perform reclaim operation on
-it. This reclaim operation is usually performed when running large number
-of L2-KVM Guests which are memory bound and increases Host-Pagetable
-utilization.
+---
+Changelog
+v3->v4:
+* Added reviewed by [ Bagas Sanjaya ]
 
-In light of the above its recommended to track usage of these areas to
-ensure consistent L2-KVM Guest performance. Hence this patch-series
-attempts to expose the max-size and current-usage of these areas as well as
-cumulative amount of bytes reclaimed from Host-Pagetable as perf-events
-that can be queried via perf-stat.
+v2->v3:
+* Minor reword for the cumulative reclaim counter [ Gautam ]
 
-The patch series introduces a new 'kvm-hv' PMU that hosted in a new kernel
-module named 'kvm-hv-pmu' which exports the perf-events mentioned
-below. Since perf-events exported represents the state of the whole L1-Lpar
-and not that of a specific L2-KVM guest hence the 'kvm-hv' PMU's scope is
-set as PERF_PMU_SCOPE_SYS_WIDE(System-Wide).
+v1->v2:
+* Reworded section on GSID [Gautam]
+---
+ Documentation/arch/powerpc/kvm-nested.rst | 40 +++++++++++++++++------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-New perf-events introduced
-==========================
-
-* kvm-hv/host_heap/		: The currently used bytes in the
-				  Hypervisor's Guest Management Space
-				  associated with the Host Partition.
-* kvm-hv/host_heap_max/		: The maximum bytes available in the
-				  Hypervisor's Guest Management Space
-				  associated with the Host Partition.
-* kvm-hv/host_pagetable/	: The currently used bytes in the
-				  Hypervisor's Guest Page Table Management
-				  Space associated with the Host Partition.
-* kvm-hv/host_pagetable_max/	: The maximum bytes available in the
-				  Hypervisor's Guest Page Table Management
-				  Space associated with the Host Partition.
-* kvm-hv/host_pagetable_reclaim/: The amount of space in bytes that has
-				  been reclaimed due to overcommit in the
-				  Hypervisor's Guest Page Table Management
-				  Space associated with the Host Partition.
-
-Structure of this patch series
-==============================
-Start with documenting and updating the KVM nested-APIv2 hcall
-specifications for H_GUEST_GET_STATE hcall and Hostwide guest-state-buffer
-elements.
-
-Subsequent patches add support for adding and parsing Hostwide
-guest-state-buffer elements in existing kvm-hv apiv2 infrastructure. Also
-add a kunit test case to verify correctness of the changes introduced.
-
-Next set of patches in the patch-set introduces a new PMU (kvm-hv) and
-kernel module (kvm-hv-pmu), implements plumbing in the kvm-hv-pmu module to
-create populate and parse a guest-state-buffer holding the Hostwide
-counters returned from L0-PowerVM.
-
-The final patch in the series creates the five new perf-events which then
-leverage the kernel's perf-event infrastructure to report the Hostwide
-counters returned from L0-PowerVM to perf tool.
-
-Output
-======
-Once the patch-set is integrated, perf-stat should report the Hostwide
-counters for a kvm-enabled pseries lpar with kvm-hv-pmu module loaded as
-below:
-
-$ sudo perf stat -e 'kvm-hv/host_heap/'  -e 'kvm-hv/host_heap_max/' \
-  -e 'kvm-hv/host_pagetable/' -e 'kvm-hv/host_pagetable_max/' \
-  -e 'kvm-hv/host_pagetable_reclaim/' -- sleep 0
-
-Performance counter stats for 'system wide':
-
-                 0      kvm-hv/host_heap/
-    10,995,367,936      kvm-hv/host_heap_max/
-         2,178,304      kvm-hv/host_pagetable/
-     2,147,483,648      kvm-hv/host_pagetable_max/
-                 0      kvm-hv/host_pagetable_reclaim/
-
-The patch can be tested with Qemu-TCG emulation support for Book3s-HV APIv2
-proposed at [3]. Currently with Qemu-TCG the values for all the Hostwide
-counters is reported as '0'.
-
-References
-==========
-[1] - commit 19d31c5f1157 ("KVM: PPC: Add support for nestedv2 guests")
-[2] - "KVM in a PowerVM LPAR: A Power user guide Part II"
-      https://ibm.biz/BdGHeY
-[3] - https://lore.kernel.org/all/20250221155449.530645-1-vaibhav@linux.ibm.com
-
-Vaibhav Jain (6):
-  powerpc: Document APIv2 KVM hcall spec for Hostwide counters
-  kvm powerpc/book3s-apiv2: Add support for Hostwide GSB elements
-  kvm powerpc/book3s-apiv2: Add kunit tests for Hostwide GSB elements
-  kvm powerpc/book3s-apiv2: Introduce kvm-hv specific PMU
-  powerpc/kvm-hv-pmu: Implement GSB message-ops for hostwide counters
-  powerpc/kvm-hv-pmu: Add perf-events for Hostwide counters
-
- Documentation/arch/powerpc/kvm-nested.rst     |  40 +-
- arch/powerpc/include/asm/guest-state-buffer.h |  35 +-
- arch/powerpc/include/asm/hvcall.h             |  13 +-
- arch/powerpc/kvm/Kconfig                      |  13 +
- arch/powerpc/kvm/book3s_hv_nestedv2.c         |   6 +
- arch/powerpc/kvm/guest-state-buffer.c         |  39 ++
- arch/powerpc/kvm/test-guest-state-buffer.c    | 214 +++++++++
- arch/powerpc/perf/Makefile                    |   2 +
- arch/powerpc/perf/kvm-hv-pmu.c                | 436 ++++++++++++++++++
- 9 files changed, 776 insertions(+), 22 deletions(-)
- create mode 100644 arch/powerpc/perf/kvm-hv-pmu.c
-
+diff --git a/Documentation/arch/powerpc/kvm-nested.rst b/Documentation/arch/powerpc/kvm-nested.rst
+index 5defd13cc6c1..574592505604 100644
+--- a/Documentation/arch/powerpc/kvm-nested.rst
++++ b/Documentation/arch/powerpc/kvm-nested.rst
+@@ -208,13 +208,9 @@ associated values for each ID in the GSB::
+       flags:
+          Bit 0: getGuestWideState: Request state of the Guest instead
+            of an individual VCPU.
+-         Bit 1: takeOwnershipOfVcpuState Indicate the L1 is taking
+-           over ownership of the VCPU state and that the L0 can free
+-           the storage holding the state. The VCPU state will need to
+-           be returned to the Hypervisor via H_GUEST_SET_STATE prior
+-           to H_GUEST_RUN_VCPU being called for this VCPU. The data
+-           returned in the dataBuffer is in a Hypervisor internal
+-           format.
++         Bit 1: getHostWideState: Request stats of the Host. This causes
++           the guestId and vcpuId parameters to be ignored and attempting
++           to get the VCPU/Guest state will cause an error.
+          Bits 2-63: Reserved
+       guestId: ID obtained from H_GUEST_CREATE
+       vcpuId: ID of the vCPU pass to H_GUEST_CREATE_VCPU
+@@ -406,9 +402,10 @@ the partition like the timebase offset and partition scoped page
+ table information.
+ 
+ +--------+-------+----+--------+----------------------------------+
+-|   ID   | Size  | RW | Thread | Details                          |
+-|        | Bytes |    | Guest  |                                  |
+-|        |       |    | Scope  |                                  |
++|   ID   | Size  | RW |(H)ost  | Details                          |
++|        | Bytes |    |(G)uest |                                  |
++|        |       |    |(T)hread|                                  |
++|        |       |    |Scope   |                                  |
+ +========+=======+====+========+==================================+
+ | 0x0000 |       | RW |   TG   | NOP element                      |
+ +--------+-------+----+--------+----------------------------------+
+@@ -434,6 +431,29 @@ table information.
+ |        |       |    |        |- 0x8 Table size.                 |
+ +--------+-------+----+--------+----------------------------------+
+ | 0x0007-|       |    |        | Reserved                         |
++| 0x07FF |       |    |        |                                  |
+++--------+-------+----+--------+----------------------------------+
++| 0x0800 | 0x08  | R  |   H    | Current usage in bytes of the    |
++|        |       |    |        | L0's Guest Management Space      |
++|        |       |    |        | for an L1-Lpar.                  |
+++--------+-------+----+--------+----------------------------------+
++| 0x0801 | 0x08  | R  |   H    | Max bytes available in the       |
++|        |       |    |        | L0's Guest Management Space for  |
++|        |       |    |        | an L1-Lpar                       |
+++--------+-------+----+--------+----------------------------------+
++| 0x0802 | 0x08  | R  |   H    | Current usage in bytes of the    |
++|        |       |    |        | L0's Guest Page Table Management |
++|        |       |    |        | Space for an L1-Lpar             |
+++--------+-------+----+--------+----------------------------------+
++| 0x0803 | 0x08  | R  |   H    | Max bytes available in the L0's  |
++|        |       |    |        | Guest Page Table Management      |
++|        |       |    |        | Space for an L1-Lpar             |
+++--------+-------+----+--------+----------------------------------+
++| 0x0804 | 0x08  | R  |   H    | Cumulative Reclaimed bytes from  |
++|        |       |    |        | L0 Guest's Page Table Management |
++|        |       |    |        | Space due to overcommit          |
+++--------+-------+----+--------+----------------------------------+
++| 0x0805-|       |    |        | Reserved                         |
+ | 0x0BFF |       |    |        |                                  |
+ +--------+-------+----+--------+----------------------------------+
+ | 0x0C00 | 0x10  | RW |   T    |Run vCPU Input Buffer:            |
 -- 
 2.48.1
 
