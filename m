@@ -1,49 +1,47 @@
-Return-Path: <linuxppc-dev+bounces-6431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6432-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AF11A42B08
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 19:20:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 551A8A42C12
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 19:54:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1ptf2ss6z2ygS;
-	Tue, 25 Feb 2025 05:20:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1qfk4lRkz2ynf;
+	Tue, 25 Feb 2025 05:54:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740421210;
-	cv=none; b=G6TEVmaoPZZL19/im4UfsXPOkxpQQXDYVhEGaJde2jgg0fTx6m2MSOl41YUKXg7ykftfUGdOzplTjNsBsxqrcfNsJPkh2bfyGJWV87JsoFOPkZ/yyMsOdQFxBqg5+NZJnEXQb3PyqPjCCNDC4kh7+kUIz10PwekojUw+mZj7KuDxUIMrqhIWSGIocWuKbuXT89izr4BhOTW5JucQdOdq1J3xvmIU9gIMRdv1YTFlZTXz0n3xEFUvlgT8+eLhfSO63Wi7Gpmo1t1Dx0SPAtmnUMWtC2QN5puWUjuYXIJvWnG7/L9nfr2rl5JvQ7j6+cN1PJXOv1KmemekXwklQWOv1A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=78.133.224.34
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740423294;
+	cv=none; b=e/s2Rxv4RfneNIVHqnSppvo8GG6kZDrmetzrcpp80V+PAvX1hC3+Zb7kD0dM3wxUvkLA2iY5ZzhaIkSEhDzpzpMkeuDoO9vPiobEo86AGqNq9su4fjKz/VtdqWnAa/C76aWG4NqUBZknO3igaL7NXTzxPked7dRLWc4g1NZfk/YYzcy+dKb4ZW1vmygMIO0LjLwBEf5JD++e7ZCX8ZK6cKRi1LfeFL4aCsBpn3tK06F1Wen6KBHNQfFNOgRfzruCjOLl0FtnnEtyUtw84NmoVAlkNedtu+xNGySOuvwTobq6+xhMLEPkZlBGWOmWD1UFYG+nBWmFuGfPE14P/UdQzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740421210; c=relaxed/relaxed;
-	bh=5DnUoNZOJ4QFKZvnAOY1DwAqPl6/CskqQTehwJMpBt8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bLW8XTrGsNiyGjZBAIt9pI1ppK7f1ZEF/hGu9LieYQjHgHfSPZKGacQ67ZQBLPOzmclIq+tKVyDclwIulEIgbTLkS/6hTOcBAipnizUWZi0SUrFzqubcNhkc5z9HkvhWrAFDpYnfkaW+mJUgOi2KTTprmWELWuvzB22mwcG9d3rRJ6xmwQ0Xco6mperIhGDn0f2QTKkq8O+rBxqf2HPILOvhHaSo/4WbrR6TMebvHiyWBhIdN8qAfM3DN/HWrQS/WCqoo0QEo/wQA3MKnqD/9c1eZ4UiPrVXUcbHiSdmn65FzNXqidQo7T5GH9BcPROQzL5ItuCyP0zteQE7crAb7A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1ptZ3Pl6z2ygR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 05:20:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Z1pKK5Fkrz9sSH;
-	Mon, 24 Feb 2025 18:54:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id L0MKA8qxQct2; Mon, 24 Feb 2025 18:54:45 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z1pKK4Vknz9sSC;
-	Mon, 24 Feb 2025 18:54:45 +0100 (CET)
+	t=1740423294; c=relaxed/relaxed;
+	bh=YluMPzkYsTnXYqs2SbRVlhdYZTHxCY54jT1aZdmybgE=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=dQLAryiGksYSeRkTn1BjAGAalzQCwMtu8ANzK/0cb/KKYeORtJJBVxdSvtgDxW5CkEKFyusp9tj/jfIHIpwltMH/bVOoTKTUbLV0cbhnP/0A2XXcNazN4pOIIHwF9PxOJyNXgmQhj3QimWmYkpebLyfhkwPe3lkFd4KhvW3Dj5gugpd7k0LyYvU5JHY0o959TQ/W6WhGPM+O6rqKNxsfP7EIo8/WPKSYVZ+x8g2jhqlQvBQTtynhNAGeTSLWYpr9ZueRnZCFoDNTVVPYJVjdP8Asx0oKwDFHLANbb/yGmAEjD3IG+zmLd52dZUmLQqyf8SJDVfwKqD6C26Qr1Pfwzg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk; spf=none (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org) smtp.mailfrom=orcam.me.uk
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=orcam.me.uk
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=orcam.me.uk (client-ip=78.133.224.34; helo=angie.orcam.me.uk; envelope-from=macro@orcam.me.uk; receiver=lists.ozlabs.org)
+Received: from angie.orcam.me.uk (angie.orcam.me.uk [78.133.224.34])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1qfj3PNlz2yk3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 05:54:51 +1100 (AEDT)
+Received: by angie.orcam.me.uk (Postfix, from userid 500)
+	id 6D16692009C; Mon, 24 Feb 2025 19:54:47 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 887038B780;
-	Mon, 24 Feb 2025 18:54:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id xx2jkbRBAbLX; Mon, 24 Feb 2025 18:54:45 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 1F34B8B77C;
-	Mon, 24 Feb 2025 18:54:45 +0100 (CET)
-Message-ID: <9435789c-cd05-4ec1-bcef-42d81fd87053@csgroup.eu>
-Date: Mon, 24 Feb 2025 18:54:44 +0100
+	by angie.orcam.me.uk (Postfix) with ESMTP id 5F97F92009B;
+	Mon, 24 Feb 2025 18:54:47 +0000 (GMT)
+Date: Mon, 24 Feb 2025 18:54:47 +0000 (GMT)
+From: "Maciej W. Rozycki" <macro@orcam.me.uk>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>
+cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>, 
+    Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
+    Oliver O'Halloran <oohall@gmail.com>, 
+    Madhavan Srinivasan <maddy@linux.ibm.com>, 
+    Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+    Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+    linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc: Don't use %pK through printk
+In-Reply-To: <ffd5dd44-babc-480a-b1bc-61bd7ff1e920@csgroup.eu>
+Message-ID: <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
+References: <20250217-restricted-pointers-powerpc-v1-1-32c6bff63c9a@linutronix.de> <ffd5dd44-babc-480a-b1bc-61bd7ff1e920@csgroup.eu>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,68 +54,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] objtool: Skip unannotated intra-function call warning
- for bl+mflr pattern
-To: Peter Zijlstra <peterz@infradead.org>,
- Sathvika Vasireddy <sv@linux.ibm.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, npiggin@gmail.com,
- maddy@linux.ibm.com, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, llvm@lists.linux.dev
-References: <20250219162014.10334-1-sv@linux.ibm.com>
- <20250220195940.ely2l2fpsozd2tuv@jpoimboe>
- <4bea75bc-d3f6-4972-b644-f9b5a4e8bb77@linux.ibm.com>
- <20250224162542.GE11590@noisy.programming.kicks-ass.net>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250224162542.GE11590@noisy.programming.kicks-ass.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_NONE
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Mon, 24 Feb 2025, Christophe Leroy wrote:
 
-
-Le 24/02/2025 à 17:25, Peter Zijlstra a écrit :
-> On Fri, Feb 21, 2025 at 02:20:41PM +0530, Sathvika Vasireddy wrote:
+> > Restricted pointers ("%pK") are not meant to be used through printk().
+> > It can unintentionally expose security sensitive, raw pointer values.
+> > 
+> > Use regular pointer formatting instead.
+> > 
+> > Link:
+> > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023%40linutronix.de%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C75a852a0fef54fa43a3608dd4f263f45%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638753747883689862%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=aUgq6pXb1ySaQ6e%2FdyM09jfc4MNLE71Njw0%2FnCg%2F6VU%3D&reserved=0
+> > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 > 
->>>> @@ -1625,6 +1626,11 @@ static int add_call_destinations(struct objtool_file *file)
->>>>    		reloc = insn_reloc(file, insn);
->>>>    		if (!reloc) {
->>>>    			dest_off = arch_jump_destination(insn);
->>>> +
->>>> +			next_insn = next_insn_same_func(file, insn);
->>>> +			if (next_insn && dest_off == next_insn->offset)
->>>> +				continue;
->>>> +
->>> This won't work on x86, where an intra-function call is converted to a
->>> stack-modifying JUMP.  So this should probably be checked in an
->>> arch-specific function.
->>
->> Thanks for letting me know, I'll introduce arch_skip_call_warning() to
->> handle architecture specific cases in the next patch I send.
+> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > 
-> Can't you detect this pattern in decode and simpy not emit the call
-> instruction?
-> 
+> > ---
+> >   arch/powerpc/kernel/eeh_driver.c | 2 +-
+> >   arch/powerpc/perf/hv-24x7.c      | 8 ++++----
+> >   2 files changed, 5 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/arch/powerpc/kernel/eeh_driver.c
+> > b/arch/powerpc/kernel/eeh_driver.c
+> > index
+> > 7efe04c68f0fe3fb1c3c13d97d58e79e47cf103b..10ce6b3bd3b7c54f91544ae7f7fd3f32a51ee09a
+> > 100644
+> > --- a/arch/powerpc/kernel/eeh_driver.c
+> > +++ b/arch/powerpc/kernel/eeh_driver.c
+> > @@ -907,7 +907,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+> >   		/* FIXME: Use the same format as dump_stack() */
+> >   		pr_err("EEH: Call Trace:\n");
+> >   		for (i = 0; i < pe->trace_entries; i++)
+> > -			pr_err("EEH: [%pK] %pS\n", ptrs[i], ptrs[i]);
+> > +			pr_err("EEH: [%p] %pS\n", ptrs[i], ptrs[i]);
+> >     		pe->trace_entries = 0;
+> >   	}
 
-Yes we can, simply do:
+ But shouldn't this be using `%px' then instead?  It would be sad if all 
+the address information from error reports such as below:
 
-diff --git a/tools/objtool/arch/powerpc/decode.c 
-b/tools/objtool/arch/powerpc/decode.c
-index 53b55690f320..4f9b1715caf1 100644
---- a/tools/objtool/arch/powerpc/decode.c
-+++ b/tools/objtool/arch/powerpc/decode.c
-@@ -55,7 +55,7 @@ int arch_decode_instruction(struct objtool_file *file, 
-const struct section *sec
+EEH: Call Trace:
+EEH: [000000008985bc3b] __eeh_send_failure_event+0x78/0x150
+EEH: [000000008c4c5782] eeh_dev_check_failure+0x388/0x6b0
+EEH: [000000001fb766c1] eeh_check_failure+0x98/0x100
+EEH: [000000004b9af8c6] dfx_port_read_long+0xb0/0x130 [defxx]
+EEH: [00000000e23999c1] dfx_interrupt+0x80/0x8c0 [defxx]
+EEH: [00000000c7884fb7] __handle_irq_event_percpu+0x9c/0x2f0
+EEH: [000000008d4e9afd] handle_irq_event_percpu+0x44/0xc0
+EEH: [000000008c39ece4] handle_irq_event+0x74/0xc0
+EEH: [00000000d85114a9] handle_fasteoi_irq+0xd4/0x220
+EEH: [00000000a692ef4e] generic_handle_irq+0x54/0x80
+EEH: [00000000a6db243b] __do_irq+0x68/0x200
+EEH: [0000000040ccff9e] call_do_irq+0x14/0x24
+EEH: [00000000e8e9ddf7] do_IRQ+0x78/0xd0
+EEH: [0000000031916539] replay_soft_interrupts+0x180/0x370
+EEH: [000000001b7e5728] arch_local_irq_restore+0x48/0xc0
+EEH: [00000000088691b7] cpuidle_enter_state+0x108/0x560
+EEH: [00000000e6e26f30] cpuidle_enter+0x50/0x70
+EEH: [000000007c26474c] call_cpuidle+0x4c/0x80
+EEH: [0000000036b8a2fc] do_idle+0x360/0x3b0
+EEH: [0000000048702083] cpu_startup_entry+0x38/0x40
+EEH: [00000000d3b1fb8d] start_secondary+0x62c/0x660
+EEH: [0000000041a9a815] start_secondary_prolog+0x10/0x14
 
-  	switch (opcode) {
-  	case 18: /* b[l][a] */
--		if ((ins & 3) == 1) /* bl */
-+		if ((ins & 3) == 1 && ins != 0x48000005) /* bl but not bl .+4*/
-  			typ = INSN_CALL;
+was suddenly lost from the kernel log, the access to which unprivileged 
+users can be denied if so desired according to the site policy.  Whereas 
+running the kernel such as to have all output from plain `%p' exposed just 
+to cope with this proposed change, now that seems like a security risk.
 
-  		imm = ins & 0x3fffffc;
-
+  Maciej
 
