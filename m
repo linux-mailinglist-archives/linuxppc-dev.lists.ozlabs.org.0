@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-6441-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6442-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3155FA4315F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 00:56:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 505CFA43161
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 00:56:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1yL42trCz30Tx;
-	Tue, 25 Feb 2025 10:55:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1yL628bwz30VY;
+	Tue, 25 Feb 2025 10:55:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740441356;
-	cv=none; b=iShDOqyMNt/c+4neQO5ra2h6gDDSnwM03fqYqCvieRa+MPQDeJrZa0/LOb4pjWb/xSd/sJTcvrSEv1cK54E6/7sE+F5Ec7RWPyRRMfjtcCyWpZtmMveChD2lDGqfNE34RyTlyGwlKoIJmUw8T7pYISWanv1ljRSEH2904rPEANdO0eo76Hk+QbSr64VFYZAmHlEG7apNx04tgmJNopZyZ7ncJd3uZigD8tKbdgQSxktI43JhkHoPQqZaVTHVNsVIGQ0J2TmXVl18aLA376tT7yGbTR75y02xjhil+S6mO1JXBufEKwLAa8/+WP+CFhrq/YII30sg1UPQCOngzDGoUQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740441358;
+	cv=none; b=ggnQLDHOVwS0n0I/SDgEgnjNrj0Sat+hDRby1b8w+vBFowQITAQ7M612Nnitxqjle0x39KCqCCJPXwgJAragDd5j+C8bq82Vj2FDiCI2AbTKPDzX4ueLGWLwQwOxiKhgXPboPNqA6oTva7SM6CYQozDFg3vB+ZeZMgiqCc5rc/Jc6d8V/xCj4EMb4mJAW9DiBqTy6q52uNtgX65tqzH5qWN7vsOfs9YfPV1tyT4PY3coSS7rlSI2QuXtkIOzpSkANzJ1Ipv+/8iM+bbnDnWcNSxAzj2ButN2NRRQEcQPtTnahzz5JqzeXSJzuY2mhKrJz6o7SB+gkjlsRCv3+JSuOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740441356; c=relaxed/relaxed;
-	bh=gY5t+lA+xCJMUFRKRfvQdv+q8kOSitFuxy9rKD2JbVY=;
+	t=1740441358; c=relaxed/relaxed;
+	bh=TJTgZNhYY30nXxMYJRDXX1rx/rqsWdUW6nwlsEZr+Zo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nS+Qor5Vai66Ig+Rj2TzaUcVBlTbOqnDxoWGkK8OVgiQDYdhuFQjBGbRTiClTlwcth/DIKPAEy0qBjwb/R6vLpsNzeqJzU3LHA/gp6EDXGWlvgDaV3o4i3G2wMW/ABkDj9Pf+w3xak5ppGF/GwcmCqqRu6kMdGiWQMv+fa0YpHIppvpBxCQzcTrB8gHxQJm27K1/cdhbtA32+BqTdcsWkHVuNhHqarfrc9Jnbhq6StySBsxRGDZnoZ/KT/sIfln963s+2bkd2aiYi6qxo8MMJxNw92xfywpG9EzxlFdUN1GEeIeNkEnpxUYlbmj64cMFWkrgBfhRQSYavsi/m5V3rg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=CzQFAXfe; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3cge9zwykdfebxt62vz77z4x.v75416dg88v-wxe41bcb.7i4tub.7az@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+	 To:Cc:Content-Type; b=Hxehk7ODYrK5cgd+sa3BIMKIY/5Gi+6zgbCIwGqI+GQPKxlA6F4O308/glBoLsm8V2CH2rPZJXJdT2R2Q/eGR0MLDBahSB8dSBms9anX+YuSHfeqLKE2DDH4f5giLLbTB7xqWwfElPdVZ3X4GO4A6fRkWs8kSrffpAe2IB+m4ZVJ3IrSILRHU+hvG+LfneRX7wH0BQ49Vor58aovEIiIZTPTh6Nh2fR0gnWn4VJwxPiECSZ3PY5MY24/FTXoenBEWdM2B2uhorx9fgHEpXG0sqDmwC6+4JQTmy8UBko0P3mtSwJMbkzzBY1yy4LXc9tJnJ/U/NojhFzrUSyMg+sQnA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=aAIw7hNK; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3cwe9zwykdficyu73w08805y.w86527eh99w-xyf52cdc.8j5uvc.8b0@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=CzQFAXfe;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=aAIw7hNK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3cge9zwykdfebxt62vz77z4x.v75416dg88v-wxe41bcb.7i4tub.7az@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3cwe9zwykdficyu73w08805y.w86527eh99w-xyf52cdc.8j5uvc.8b0@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1yL35qN1z30T6
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 10:55:55 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-2fc1a4c150bso9599759a91.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 15:55:55 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1yL54Nmzz30T6
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 10:55:57 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-220bf94cb40so74652445ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 15:55:57 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740441354; x=1741046154; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1740441356; x=1741046156; darn=lists.ozlabs.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=gY5t+lA+xCJMUFRKRfvQdv+q8kOSitFuxy9rKD2JbVY=;
-        b=CzQFAXfeXTx3wS0XsZ5PIg9zGs0HOUTBkj4gPZe2oL8idT40HRNJ3AZEfbUH5VpQUy
-         xAinQeCrPoIc+LBI+BRza3sqqmdFsFnTa9kEukAkVYKrAvymJp1SyzqZFV97aKEjdui6
-         srKAg0KenOuKKrFfVsFmIlBLOWU5Zs+sUg2mWBtusO9XtqhMo0rv9eTm2npids3aiPBs
-         FupWCypfxkIL5ef3kJazguVc8ZpPKm8Q1eKYW5jSJhM0nCqCjKxVsZCQLvETkP1KEUPM
-         BfUEMC/VzZ3ti3pYetrAMkyyrAPMmhjcj02e262tGbV0cZcJaellOnK/j4APP3ZnBgbh
-         N3lg==
+        bh=TJTgZNhYY30nXxMYJRDXX1rx/rqsWdUW6nwlsEZr+Zo=;
+        b=aAIw7hNKVo6//IRdPesVXHGHZ3to2YEV5EnxCMOydsgcrPwBRJso8L7ifAjiHh50a0
+         vCGst9YMS7ODW/a0hsRrL9ho8jcid4frZmxBlMheJdVpcxw+uYogYoV5pYNzRd4uOk8I
+         /Y1W3vTIZEmi93AOPnYvEiW6xMB/IL0IuJn8fPFBhW1xzJN6MiVucy4uTdk20X6DMkf2
+         SmguakNlJH9xu43Q/NAqbl2ALinb8KFjPO/GQzN1b2xSKtYOsSxmNDv0BbjN+PBxilHm
+         UkLxQWQGATw9uBOhihA646AjtNndDrRyJzXINE1SIlvuPX8elMgCmXVJHxE6Bk4A5t0p
+         qlhA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740441354; x=1741046154;
+        d=1e100.net; s=20230601; t=1740441356; x=1741046156;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=gY5t+lA+xCJMUFRKRfvQdv+q8kOSitFuxy9rKD2JbVY=;
-        b=VdmGgXwGEV1tE0kPIXb/q5+lQtVEhExGQ1R4W08wBYFHmULQXydEnt/ZXCmTY0pLbz
-         Mrb8Jlxl0q+M2sC3DnCDPbEsPE67PhhlRFkkcH3q7H2r9cSZh4EBwATaJ754Wo363ILs
-         W6NhsPFfpCRT8wdfXkp4Q+J7txl9PPvPYQnhAFwNW1uLcXDt7BgWor9i+KdafU/Irgi8
-         EojPqtbSPY56N4E2wB3pOgb6PeSXNly1DEsjcDP3EMvMcYovCrhCoa5X4Rx4TESah+6H
-         sev4mW2y1qykvzUbGkvut//i6taA+/4C0Jmbtj0cy/LQhGtJjlSlDsPXBKsNL9Fdx+xI
-         Ss5g==
-X-Forwarded-Encrypted: i=1; AJvYcCWVMjy6y6/efufCAcCD8+Ws6wt4RNB3lMBAaZaVzK7yrARad5GCNuNE20SmLTKSygehaWLe9yfH14qnFxo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzUFaSVBcWLKLMIcoV7Du/SysSMMmnVJSvLDj3WgpeqvyDVITFS
-	y9M+Cdph+JFL0bNf6acjJktUSx7rU4jT1mUJXT59cFowMq8H8JpwaHJ/WOh/C/8gKZRJxlvXCIM
-	bEA==
-X-Google-Smtp-Source: AGHT+IG7Oktdw38sVEoOW4Tvh6JQ9psvOsFz+B6sIudCx6XDJiW/lrg1jUS4SL5IEqUCfnyPdnnvHXtLVtU=
-X-Received: from pfbgc10.prod.google.com ([2002:a05:6a00:62ca:b0:730:7648:7a74])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a27:b0:1ee:d6a7:e332
- with SMTP id adf61e73a8af0-1eef3d5aabamr27634032637.26.1740441354199; Mon, 24
- Feb 2025 15:55:54 -0800 (PST)
+        bh=TJTgZNhYY30nXxMYJRDXX1rx/rqsWdUW6nwlsEZr+Zo=;
+        b=FYBlObCThxIPgSPTTUFbkRtMVWXRUcxK+dShRxPEq//9aDrnsGBIjPoCxOKzBncajH
+         C94v4BnmAKbPPrbu+ERsK0ZQZ6DdESHkDi3TUcL1qYN+3a95lUiXls0rDpxmXNqmG6gA
+         oPpnJ/T8ctV1ql3y9gkQ3C2NbWMfF8N0dYAbKaNrjfoMvSGWU9K4XysIf+3JdbvMNzoW
+         jSZxFf1XoLesXyc3uxdnBwM5LOWvVCYM00i2IQ7qMLpAclMzZGkd1jW79So3shV0JFcf
+         tjzILp4dvVHrCraD1tiBfEN4Y1sS07TjvTPL1aceKbWEyLbzCS+tvcxjfILvHWqmV4VG
+         R4Fg==
+X-Forwarded-Encrypted: i=1; AJvYcCV2zi+Je1k380GE2ck9Fq/su7gE650DPf9ZQpFYRiOmYsdwh4ERzDHhvRaJv3IAncqMSQa4G1+AEMoDHSU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx5snba0dNTA3fx0786WseUBAgfa9RQmLLckbD7LGV2UIwJpOBv
+	+i2G4Be8ztDcTl/WQvHVAKalu2Dsi3YbHyZ4tObbXtOmfv0glOHcBqeytj1gPzf2DHq6AkIoTyI
+	gKA==
+X-Google-Smtp-Source: AGHT+IHgthprmvsK7rAfh+PsqOM1pat7xQuGm72FmKpfdI+qTOt1cCxKN5aFSZszJT1EFJi9jy4pNoVXfJY=
+X-Received: from pfbig2.prod.google.com ([2002:a05:6a00:8b82:b0:730:7c03:35e1])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1947:b0:732:623e:2bdc
+ with SMTP id d2e1a72fcca58-73426c84885mr24369761b3a.2.1740441355733; Mon, 24
+ Feb 2025 15:55:55 -0800 (PST)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Mon, 24 Feb 2025 15:55:40 -0800
+Date: Mon, 24 Feb 2025 15:55:41 -0800
 In-Reply-To: <20250224235542.2562848-1-seanjc@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -79,8 +79,8 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
 References: <20250224235542.2562848-1-seanjc@google.com>
 X-Mailer: git-send-email 2.48.1.658.g4767266eb4-goog
-Message-ID: <20250224235542.2562848-6-seanjc@google.com>
-Subject: [PATCH 5/7] KVM: x86: Unload MMUs during vCPU destruction, not before
+Message-ID: <20250224235542.2562848-7-seanjc@google.com>
+Subject: [PATCH 6/7] KVM: x86: Fold guts of kvm_arch_sync_events() into kvm_arch_pre_destroy_vm()
 From: Sean Christopherson <seanjc@google.com>
 To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
@@ -103,89 +103,56 @@ X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-When destroying a VM, unload a vCPU's MMUs as part of normal vCPU freeing,
-instead of as a separate prepratory action.  Unloading MMUs ahead of time
-is a holdover from commit 7b53aa565084 ("KVM: Fix vcpu freeing for guest
-smp"), which "fixed" a rather egregious flaw where KVM would attempt to
-free *all* MMU pages when destroying a vCPU.
+Fold the guts of kvm_arch_sync_events() into kvm_arch_pre_destroy_vm(), as
+the kvmclock and PIT background workers only need to be stopped before
+destroying vCPUs (to avoid accessing vCPUs as they are being freed); it's
+a-ok for them to be running while the VM is visible on the global vm_list.
 
-At the time, KVM would spin on all MMU pages in a VM when free a single
-vCPU, and so would hang due to the way KVM pins and zaps root pages
-(roots are invalidated but not freed if they are pinned by a vCPU).
+Note, the PIT also needs to be stopped before IRQ routing is freed
+(because KVM's IRQ routing is garbage and assumes there is always non-NULL
+routing).
 
-  static void free_mmu_pages(struct kvm_vcpu *vcpu)
-  {
-        struct kvm_mmu_page *page;
-
-        while (!list_empty(&vcpu->kvm->active_mmu_pages)) {
-                page = container_of(vcpu->kvm->active_mmu_pages.next,
-                                    struct kvm_mmu_page, link);
-                kvm_mmu_zap_page(vcpu->kvm, page);
-        }
-        free_page((unsigned long)vcpu->mmu.pae_root);
-  }
-
-Now that KVM doesn't try to free all MMU pages when destroying a single
-vCPU, there's no need to unpin roots prior to destroying a vCPU.
-
-Note!  While KVM mostly destroys all MMUs before calling
-kvm_arch_destroy_vm() (see commit f00be0cae4e6 ("KVM: MMU: do not free
-active mmu pages in free_mmu_pages()")), unpinning MMU roots during vCPU
-destruction will unfortunately trigger remote TLB flushes, i.e. will try
-to send requests to all vCPUs.
-
-Happily, thanks to commit 27592ae8dbe4 ("KVM: Move wiping of the kvm->vcpus
-array to common code"), that's a non-issue as freed vCPUs are naturally
-skipped by xa_for_each_range(), i.e. by kvm_for_each_vcpu().  Prior to that
-commit, KVM x86 rather stupidly freed vCPUs one-by-one, and _then_
-nullified them, one-by-one.  I.e. triggering a VM-wide request would hit a
-use-after-free.
+Opportunistically add comments to explain why KVM stops/frees certain
+assets early.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 15 +++------------
- 1 file changed, 3 insertions(+), 12 deletions(-)
+ arch/x86/kvm/x86.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 9978ed4c0917..a61dbd1f0d01 100644
+index a61dbd1f0d01..ea445e6579f1 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -12374,6 +12374,9 @@ void kvm_arch_vcpu_destroy(struct kvm_vcpu *vcpu)
- {
- 	int idx;
+@@ -12772,9 +12772,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
  
-+	kvm_clear_async_pf_completion_queue(vcpu);
-+	kvm_mmu_unload(vcpu);
-+
- 	kvmclock_reset(vcpu);
- 
- 	kvm_x86_call(vcpu_free)(vcpu);
-@@ -12767,17 +12770,6 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 	return ret;
- }
- 
--static void kvm_unload_vcpu_mmus(struct kvm *kvm)
--{
--	unsigned long i;
--	struct kvm_vcpu *vcpu;
--
--	kvm_for_each_vcpu(i, vcpu, kvm) {
--		kvm_clear_async_pf_completion_queue(vcpu);
--		kvm_mmu_unload(vcpu);
--	}
--}
--
  void kvm_arch_sync_events(struct kvm *kvm)
  {
- 	cancel_delayed_work_sync(&kvm->arch.kvmclock_sync_work);
-@@ -12882,7 +12874,6 @@ void kvm_arch_destroy_vm(struct kvm *kvm)
- 		__x86_set_memory_region(kvm, TSS_PRIVATE_MEMSLOT, 0, 0);
- 		mutex_unlock(&kvm->slots_lock);
- 	}
--	kvm_unload_vcpu_mmus(kvm);
- 	kvm_destroy_vcpus(kvm);
- 	kvm_x86_call(vm_destroy)(kvm);
- 	kvm_free_msr_filter(srcu_dereference_check(kvm->arch.msr_filter, &kvm->srcu, 1));
+-	cancel_delayed_work_sync(&kvm->arch.kvmclock_sync_work);
+-	cancel_delayed_work_sync(&kvm->arch.kvmclock_update_work);
+-	kvm_free_pit(kvm);
++
+ }
+ 
+ /**
+@@ -12855,6 +12853,17 @@ EXPORT_SYMBOL_GPL(__x86_set_memory_region);
+ 
+ void kvm_arch_pre_destroy_vm(struct kvm *kvm)
+ {
++	/*
++	 * Stop all background workers and kthreads before destroying vCPUs, as
++	 * iterating over vCPUs in a different task while vCPUs are being freed
++	 * is unsafe, i.e. will lead to use-after-free.  The PIT also needs to
++	 * be stopped before IRQ routing is freed.
++	 */
++	cancel_delayed_work_sync(&kvm->arch.kvmclock_sync_work);
++	cancel_delayed_work_sync(&kvm->arch.kvmclock_update_work);
++
++	kvm_free_pit(kvm);
++
+ 	kvm_mmu_pre_destroy_vm(kvm);
+ }
+ 
 -- 
 2.48.1.658.g4767266eb4-goog
 
