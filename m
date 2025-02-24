@@ -1,66 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-6435-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6436-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83D16A42F97
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Feb 2025 22:56:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 528F7A43155
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 00:55:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1vhC64xTz2ydW;
-	Tue, 25 Feb 2025 08:56:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z1yL030Hnz30Ns;
+	Tue, 25 Feb 2025 10:55:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.208.41
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740433770;
-	cv=none; b=BDVK11G6Lacaa3XHRMjMWCcGNyVJs+UREkI2T8NDtBX22CFuvKRNy+SSjbth8sSfUX2RMqhkIH+rKv7HGjaVvJ9XCiGnfFmve94bdObjFGc6tMcGnLAP+fVoLxs/uBi5j5dlXoEalZaLrRyXcAMg3v6n0uKVGQ9tj0nvZe0Ju8G6qeG+g4tKZUgY02gaQ/1Gw3kEqJYBr6V23Qma22V83npC/2kdA0KUJMhBV/fpY1VoHhR95dZcq84jdosWPYmk6Hy/NAvsljigFnPgb5YUYbpcmoXHtTarkm/mm1QnygcxJOrnNCilxdlmWjhI+/txN89XvL8Zwxin5FTaSPUnrw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740441352;
+	cv=none; b=Gnp6LwYo+yvJHEUlD8QF/rh8oUjL5+fn7O2uaUFRADfVE/j9aMG5XQapxmEK6KmONuV49Zgp3EzfzCB9G8zrfMLggIx3psuSz8QCtLVkUvZA8t9uzrONBts5vWt60TrRga1mMaGqjWkdUq7sPq+DhCuPcndor6tI37MIBEWKpxgXvHyO3Oiu5sz6vvF8Jft/DkiBxZIvLB2f2AfMaak1svZXXiSinax7lMppUE4W6VGHTqCX8RCBCVYnToNUXHytfDCMh89piUW0z+qdPIbl57JU8TX+cewriKA9VSEEBfNSBipH5cMaxl9dPqpDFbPbXCzfVTKXsOm+uBldYcEotg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740433770; c=relaxed/relaxed;
-	bh=P47b/dtjhtFriTT7t5XplkIRw7292i/HwH3cMz65lgM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LPxW6X54/N0qmD2DYgHu9ocL/T1caiPI33YkK5WLd2rzNwb5VvKPkezo5UO5O2OcZiGMsdjMxBgOwp8UXmR/cwPNF/HpDorUkaqYcMKKMx3JWiXkwwr7kkAyn8bEJR1TM518vd8ekG4MXXjpgvpJRqYyWHK7o9WGH42KjzfoXv8jzfV4dnD+AV52j1jRdWDBx9vD2k078kNvGbe8iijC3Aufc1/ot5mHyrluX+vrc6Yalm/FC/dqlNkCVyFZYMfeVlcgKPqt3tXbl54XvX3etcE3SGAUlKQCcTN/HxdQ7j8j+udoTdj+syv2ks2xT7Anlh88vlQdiULIIQz47wj3IA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass (client-ip=209.85.208.41; helo=mail-ed1-f41.google.com; envelope-from=ngompa13@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=gompa.dev
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.208.41; helo=mail-ed1-f41.google.com; envelope-from=ngompa13@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
+	t=1740441352; c=relaxed/relaxed;
+	bh=G4yv5E3Df19Io1ieaPGo0Ai9BtJpUzyQSBdyF3aMs18=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ki+QPFJTkHRGkPMxSehPBPmoGvsCFJ4e25bLt1Ow7OJRx+5OzCiDh2iSSObesTNpLnIr9ZcCg66gkzKbLJRTw7XMJi4RnIVcQEDocKCyOLs+feQyoH+/iayv6Vlbkp2GYmwKxoZe8X5EGrHmg8sdc96HrFcKN8eZteOGnxHkKGcW5FQAZ/Lew/8n25vQ4C7EArRj33dXQWh4Rb6x/GpRRRlp5UTtbXz+dnsYSSpzyq+r1G1TnTGWRcujJyJSp7gQWgW7XlRS05gpqY6swDJ61NhPkJ7is6A4vAjv5Q1epmbfzYf3Z8FE9azA4hSVBtgqnvPczDnRFhHW8essk2OEow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=doQjWl2/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3aqe9zwykdeg2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=doQjWl2/;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=3aqe9zwykdeg2okxtmqyyqvo.mywvsx47zzm-no5vs232.y9vkl2.y1q@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1vX852dtz2xy0
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 08:49:27 +1100 (AEDT)
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-5dec817f453so8149732a12.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 13:49:27 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740433764; x=1741038564;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z1yKy5tgJz2yRd
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 10:55:50 +1100 (AEDT)
+Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-2fc2b258e82so10783367a91.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 15:55:50 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1740441345; x=1741046145; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P47b/dtjhtFriTT7t5XplkIRw7292i/HwH3cMz65lgM=;
-        b=p4j4tiJYL5Xd5vy2cScMJdQ6Dw8cRhSx78F1gnetz0b9GuL1rck7HDXRYEJpHlUQdn
-         zlrvBWYVKYMgvO9JpL1ZqsO8z7d9RvG9y0++nRmZwn6ZwcQcvpMjdKQUL54V+CdnJhj9
-         +HgKmgCGkjH3r8SaP+fjdKy88WVidb7OBmAd9YY1Btygt14FvVW+URf84uqQG9xgHts5
-         vkSAfxDmymVCGEQoIh8uR542K6sC5slROeb+Z350js2ti7SdhP8psrD2aXIIQQK84qOD
-         E4oKeGJaO6uJHyTQUvj/Tt1omnJCCd/4i4X3WVmQGXer/ttspcnSomalCs0OzqDAFDZV
-         nhTg==
-X-Forwarded-Encrypted: i=1; AJvYcCWMS3TLrSidgcJavjsT2Knih/aX5LTCAN/FpY3uWwYHeIlVg790L6uRjG6/xTvelXKduQZ0xKpJUxNC1eg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy4UYd2a4LPDaiw9ZmYPx/SwLPydKVHQHDX22Me3rQfX8fzLlFj
-	g3mTdnOdeb+JBbkfAErqwy/oyeJ1ftBPXZg//7qES1njPJwqj44M8wcq9OaxaKU=
-X-Gm-Gg: ASbGncsCIwZo1Kr/oGk1M5zjEfN7lh016qHdNth9+0p8BxSXyF7memG8XzmdlDQB1iv
-	qBXYx0M/jfPXOCD+kX9GWLkh5NlsoglrQJYn8dQQVESm60cHwIlDyDGgaFB5kB7VOp+FNd1UCgp
-	2c5W785/8EmcZkdCb6brEVjuGlrNsuTE6Ka/nlZXYY51WTV4odgjfsAq/NzYRyEBkHVXJ702nco
-	BIN1yXUjfZV6A7Hs7yreW7ahV8LwVVOGtqxHBRRg9R13JZ/KrQMsvqQdwrz0P6EuKtCt+/rf0tN
-	BUaGBTvFzCSVNyKnvxZopdp4z0/K/zDq16snXGNKziuFgiyJq5sy0QBo
-X-Google-Smtp-Source: AGHT+IH/u6xXkMbURtI0Bi7gZipVZHfAl8hLXnT21pP5N2ecHqudtq1q6M/PhIxwjQHOxxy0qNA59w==
-X-Received: by 2002:a05:6402:2682:b0:5de:dd31:1fad with SMTP id 4fb4d7f45d1cf-5e0b70cd051mr14906224a12.6.1740433763518;
-        Mon, 24 Feb 2025 13:49:23 -0800 (PST)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5e460ff84cdsm191922a12.60.2025.02.24.13.49.21
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 24 Feb 2025 13:49:22 -0800 (PST)
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-abb8d63b447so633072766b.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 13:49:21 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXgsLeoEy5qUY1PZGQOV3bEtAWZaMM+mXZtCA+hHVnjY/SpbMgz8vrrs3EzUDoSBXS0ujQlkZ9bExMhzrU=@lists.ozlabs.org
-X-Received: by 2002:a17:906:308c:b0:ab7:ec7c:89e4 with SMTP id
- a640c23a62f3a-abc09a0a2c1mr1144051266b.21.1740433761758; Mon, 24 Feb 2025
- 13:49:21 -0800 (PST)
+        bh=G4yv5E3Df19Io1ieaPGo0Ai9BtJpUzyQSBdyF3aMs18=;
+        b=doQjWl2/VGNUqD/T21Oa06j+DG6tX6y4LvKxfuyBhbCuEZrbvzmgvgu9Vy+ZcnfWoR
+         +qP/xiHpz+gtXA/vtlY/yImkVJR4afbsAxHTBJzkH2YvZNTYh26XiSrgMtu+Nnr4YL+x
+         F63FmOiiIsHpt4hFR3/B7QKB2mgLWLOHNsbnzR/ci7irkEZPP5h8amMP3UpPEkvxl66k
+         DAhZQXEhk0RzjZ2T8lT7i0diqSpJ4JZcgp1OFfjylh4Vy9NxxfE3MNbocvrfAG5UAEUE
+         S+IXrUELuQwk7wnTzek33jnAomWwxd2+lbNtDWCCxT4N1NAT5Bs2692VFdd4vIiMSrmV
+         LqTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740441345; x=1741046145;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=G4yv5E3Df19Io1ieaPGo0Ai9BtJpUzyQSBdyF3aMs18=;
+        b=dCAdcCNGaaQXlbhFmR5en69iXb1SPUEoPvA9GCUxXuNJp5rI58UN3VEPCuvJhsp0dw
+         caNA21E+RgxfOPXhkBudn+mNla/4lgPFH2jMRha2BWCnNv5AIgQIgKTXIW0aaIRDg/li
+         zdtHci+wGa0epLJDDRfQyTKGuKdlPJK3ks2/e8PMjvYlCFtpWdr04w21pQerDZFUlUkT
+         0smK6jViJ78hQovxrGcTZLcpJhDDx6jcB5diCE1BcQvuQFGr/hx9xkZIcVjoXYu2K5g4
+         uU36LGqMgSFll0t5ydD2Y3txQRVrIvqJp0Js2Jcl877ULXkjkJrkXviWIG7B7jKQQV93
+         SHrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXPjIO+1B6SzmfLGTGf3AoCabO1AABjLwFF8eyTlYJmzLLfhuvUYBlUfoVf8453qbx9G6VtJI16ms39pMg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Ywxg9u0tNjd0yO7LmL48U0VtuZH4MaMfG0LfkHLE38GetYUaGR0
+	JvlcdVYsPc/rBl/cMlo6QRw7kJigBY1kQ4Oqr3btlc03RFExQ2faodf9I2emWaqIpL11WodkF1x
+	4Qw==
+X-Google-Smtp-Source: AGHT+IF6C3DtzvfIloHEkiuLmfsYJNF5ywoI3G+Dg7xZ6ws28dsFaD6h16rXeHiPC/2N2WbxQdNYNz9BqGc=
+X-Received: from pjbsd8.prod.google.com ([2002:a17:90b:5148:b0:2ea:5613:4d5d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5292:b0:2ee:7c65:ae8e
+ with SMTP id 98e67ed59e1d1-2fce77a638fmr26853663a91.11.1740441345356; Mon, 24
+ Feb 2025 15:55:45 -0800 (PST)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Mon, 24 Feb 2025 15:55:35 -0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,77 +73,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-References: <20250222-pasemi-fixes-v1-0-d7ea33d50c5e@svenpeter.dev>
-In-Reply-To: <20250222-pasemi-fixes-v1-0-d7ea33d50c5e@svenpeter.dev>
-From: Neal Gompa <neal@gompa.dev>
-Date: Mon, 24 Feb 2025 16:48:44 -0500
-X-Gmail-Original-Message-ID: <CAEg-Je_qBWhfdzdgR=uxjR6kCM-p-N6OvhOyjG_YpWfc9C-kUQ@mail.gmail.com>
-X-Gm-Features: AWEUYZnTgmy8Wh3cNs6Z5TiDd6mBDwseYtK_5ZJpLXo_D79Innf9WD-b_IfXjLU
-Message-ID: <CAEg-Je_qBWhfdzdgR=uxjR6kCM-p-N6OvhOyjG_YpWfc9C-kUQ@mail.gmail.com>
-Subject: Re: [PATCH 0/4] Apple/PASemi i2c error recovery fixes
-To: sven@svenpeter.dev
-Cc: Janne Grunau <j@jannau.net>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Hector Martin <marcan@marcan.st>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.48.1.658.g4767266eb4-goog
+Message-ID: <20250224235542.2562848-1-seanjc@google.com>
+Subject: [PATCH 0/7] KVM: x86: nVMX IRQ fix and VM teardown cleanups
+From: Sean Christopherson <seanjc@google.com>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-mips@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, kvm-riscv@lists.infradead.org, 
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	Aaron Lewis <aaronlewis@google.com>, Jim Mattson <jmattson@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Isaku Yamahata <isaku.yamahata@intel.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.3 required=5.0 tests=FREEMAIL_ENVFROM_END_DIGIT,
-	FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Feb 22, 2025 at 8:38=E2=80=AFAM Sven Peter via B4 Relay
-<devnull+sven.svenpeter.dev@kernel.org> wrote:
->
-> Hi,
->
-> This series adds a few fixes/improvements to the error recovery for
-> Apple/PASemi i2c controllers.
-> The patches have been in our downstream tree and were originally used
-> to debug a rare glitch caused by clock strechting but are useful in
-> general. We haven't seen the controller misbehave since adding these.
->
-> Best,
->
-> Sven
->
-> Signed-off-by: Sven Peter <sven@svenpeter.dev>
-> ---
-> Hector Martin (3):
->       i2c: pasemi: Improve error recovery
->       i2c: pasemi: Enable the unjam machine
->       i2c: pasemi: Log bus reset causes
->
-> Sven Peter (1):
->       i2c: pasemi: Add registers bits and switch to BIT()
->
->  drivers/i2c/busses/i2c-pasemi-core.c | 121 ++++++++++++++++++++++++++---=
-------
->  1 file changed, 92 insertions(+), 29 deletions(-)
-> ---
-> base-commit: 2014c95afecee3e76ca4a56956a936e23283f05b
-> change-id: 20250220-pasemi-fixes-916cb77404ba
->
-> Best regards,
-> --
-> Sven Peter <sven@svenpeter.dev>
->
->
->
+This was _supposed_ to be a tiny one-off patch to fix a nVMX bug where KVM
+fails to detect that, after nested VM-Exit, L1 has a pending IRQ (or NMI).
+But because x86's nested teardown flows are garbage (KVM simply forces a
+nested VM-Exit to put the vCPU back into L1), that simple fix snowballed.
 
-LGTM.
+The immediate issue is that checking for a pending interrupt accesses the
+legacy PIC, and x86's kvm_arch_destroy_vm() currently frees the PIC before
+destroying vCPUs, i.e. checking for IRQs during the forced nested VM-Exit
+results in a NULL pointer deref (or use-after-free if KVM didn't nullify
+the PIC pointer).  That's patch 1.
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
+Patch 2 is the original nVMX fix.
+
+The remaining patches attempt to bring a bit of sanity to x86's VM
+teardown code, which has accumulated a lot of cruft over the years.  E.g.
+KVM currently unloads each vCPU's MMUs in a separate operation from
+destroying vCPUs, all because when guest SMP support was added, KVM had a
+kludgy MMU teardown flow that broken when a VM had more than one 1 vCPU.
+And that oddity lived on, for 18 years...
+
+Sean Christopherson (7):
+  KVM: x86: Free vCPUs before freeing VM state
+  KVM: nVMX: Process events on nested VM-Exit if injectable IRQ or NMI
+    is pending
+  KVM: Assert that a destroyed/freed vCPU is no longer visible
+  KVM: x86: Don't load/put vCPU when unloading its MMU during teardown
+  KVM: x86: Unload MMUs during vCPU destruction, not before
+  KVM: x86: Fold guts of kvm_arch_sync_events() into
+    kvm_arch_pre_destroy_vm()
+  KVM: Drop kvm_arch_sync_events() now that all implementations are nops
+
+ arch/arm64/include/asm/kvm_host.h     |  2 --
+ arch/loongarch/include/asm/kvm_host.h |  1 -
+ arch/mips/include/asm/kvm_host.h      |  1 -
+ arch/powerpc/include/asm/kvm_host.h   |  1 -
+ arch/riscv/include/asm/kvm_host.h     |  2 --
+ arch/s390/include/asm/kvm_host.h      |  1 -
+ arch/x86/kvm/vmx/nested.c             | 11 +++++++
+ arch/x86/kvm/x86.c                    | 42 ++++++++++-----------------
+ include/linux/kvm_host.h              |  1 -
+ virt/kvm/kvm_main.c                   |  9 +++++-
+ 10 files changed, 34 insertions(+), 37 deletions(-)
 
 
+base-commit: fed48e2967f402f561d80075a20c5c9e16866e53
+-- 
+2.48.1.658.g4767266eb4-goog
 
---=20
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
 
