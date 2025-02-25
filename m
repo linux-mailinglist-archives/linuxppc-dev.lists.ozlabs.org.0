@@ -1,87 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-6459-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6460-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05782A43D77
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 12:24:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B859CA43DB4
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 12:32:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z2FcY0HYPz30VZ;
-	Tue, 25 Feb 2025 22:24:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z2Fnc1GSVz30Vj;
+	Tue, 25 Feb 2025 22:32:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740482668;
-	cv=none; b=Qi7cj5W7PTCvK7Gq+5JbrNtTldd0hleXQhGDgDppvQ/5F2D2m8y1YnxC89Zh+4ypRZKC4D6pyScaUYLUXYtlJfgJPq/vkYY33rNngXoSo3aIlstZRvV8eA5AJZz12vBMOZ/QVJn3fbBdiNJF+uuKo2CoQW5+IobWwSsEfChES5qUoSk5jvXpMn19p+Lz+6tvMFkt/ZkYzqnGeP0pOlacsp6iYBT+TGbKfOQuq0GZXcx5dLmBRZ+5QBr/knrMfs3h1hmWiIkrOQFG1qo8bzyjLGBPxWShLBBPsTP57x9xO0HsjcsYtQ8USRDy7cPzX0R23kJZqdvu8NDuVgPtVf+HHQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740483140;
+	cv=none; b=D6Hc7PxIOavA0Y9gl499g+Bf0zxUTtEUDd3T0/TLsAirFVvmtbFthJ4Y7kvhQokBBfhfuca6TSRWqVVNXpe8R9DbSoiiW6wLfsPFWuoSvXBKYkUwtjd0g3clbRmzwoPYF/xvpVOzM9dHtg/62J0ayYZXV/HsnO6JMQdtf7LiVX8E+IUZ5je1ikuL/U5HTx9U+gcgXLlQ6m7jl0lRlUUJx7x5GSqoNsZ2DZAN2o/eczgAp/hgGA7/ASVGt9IgErbJzwG6YJBJ70o3nhsRVWRJ0ha9FqAWz+Z3XBvQ/1bAOZ0UXJ7o1palr8Xf6V5N8GTD0ZrLaEvNiGb3OEOH99Yb7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740482668; c=relaxed/relaxed;
-	bh=SE36g/5H7+HyXqPmkQDAM7/o/R9eF2nmZlquxTi5q8s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hcmgoCxoX17Co7VqI5LmDS+2+hkYxRstxSOvKVMk4UZN84+QoA+XWlY60kXbcDFfZgYTcYf56oDlbmBQ1nlFpe+ZRe59Qm9O9lCiPgk8gi6ungU0iVskJ8DZenrW12TnzfF7DB5mw7fet2AOJKaI0KlC0nURfqNzWBFIx/JoJjgIb2twZtlGfeHaI3oxMtv1sTZzUxu1MizT/KfkSDYa6YXvS3BWVS14BWP4/buoEGP1SwnKl/9Ug1LDbE3L80JmYyoiOjtiPgTDaplpw04L//qcd+hoFRagQV2swxzCr0nSZcyGOUIDSfyrCVpAqtJUMslrIJiKuV/4+NpfYLic0A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vLIeKOVd; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1740483140; c=relaxed/relaxed;
+	bh=KOwvuY0CgjqpsCL+QoA3s0182moYZeyhuRB4GmTf/uw=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=cYRFBMrasRaz1DiPBRdKnvyvCk2kU2493JYuuNHuqTrNuHk0gi5FzOFzm8tdz3JKOyR82R9tfdbifNQD5qx9Z/LOvBbnSwVaRnvjXb5bZ6ix8bOSTx5yQkzstJ3AwECJcL2ddLKQnTba9BQiESJs5Mn+N2vr3Yc0OY8DPO737VsPxMQUyTnRxKOrm8Ozk5dZrHS5MuwNuSCEGG9QBHWoeMl+SgxNiJrkzyskt96qciQ8MThLlrN+gn6zaLj8dKQtK6xbh1fZzhByfkZzzQKC97zGfS8tplnEJf7F83h+SeWtpnjdttdYCZVuAbewNR7zzJHetklxFKW6ySoWS5WKug==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c2nz6E2S; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=vLIeKOVd;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c2nz6E2S;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z2FcW5Cm3z2ykX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 22:24:27 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 3ADC761236;
-	Tue, 25 Feb 2025 11:24:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD844C4CEDD;
-	Tue, 25 Feb 2025 11:24:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740482662;
-	bh=MirNTPbQz5gTjaQC01Jw/a2iTl1/yY+daEIYiEzXuYM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vLIeKOVdl8nhID+IyQy/esaTBoDcVsF3QQztySqida1uICinzlhoj8QrYH5VNi1Zf
-	 LNuuXA5KuPmkBWu4ExDD1p1M2aXjH+B35LyRNknPuvEzQYNScpGDI8RXjTNkKGknCp
-	 jCNxf9GkTGXJSIuatGoUkyHppwxOFV2ejI5mpXRC52caYLhTsMSbMGBST2IhBn+M3M
-	 mzrrmgcnR0Kp4cA5VvZZwbQ5dJl0BOPvqadxjR0uEGafKVLu8lEMs9f2ZJPYLAaI0K
-	 ny41ZtFz6WkWycL/51GTpx4UYutgKXLvLXllVJKuaysCABLLzDTr29YIhJKQQM6yZG
-	 r+5f5Pg20iqmA==
-Date: Tue, 25 Feb 2025 12:24:08 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Amir Goldstein <amir73il@gmail.com>, 
-	Andrey Albershteyn <aalbersh@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
-	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
-	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S . Miller" <davem@davemloft.net>, 
-	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
-	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
-	Linux-Arch <linux-arch@vger.kernel.org>, linux-xfs@vger.kernel.org, 
-	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, Theodore Ts'o <tytso@mit.edu>
-Subject: Re: [PATCH v3] fs: introduce getfsxattrat and setfsxattrat syscalls
-Message-ID: <20250225-testfahrt-seilwinde-64e6f44c01ce@brauner>
-References: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
- <20250221181135.GW21808@frogsfrogsfrogs>
- <CAOQ4uxgyYBFqkq6cQsso4LxJsPJ4uECOdskXmz-nmGhhV5BQWg@mail.gmail.com>
- <20250224-klinke-hochdekoriert-3f6be89005a8@brauner>
- <6b51ffa2-9d67-4466-865e-e703c1243352@app.fastmail.com>
- <20250225-strom-kopflos-32062347cd13@brauner>
- <3c860dc0-ba8d-4324-b286-c160b7d8d2c4@app.fastmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z2FnZ6tlHz30Vb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 22:32:18 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51OMnHwv013022;
+	Tue, 25 Feb 2025 11:32:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=KOwvuY0CgjqpsCL+QoA3s0182moYZeyhuRB4GmTf/
+	uw=; b=c2nz6E2SScqWRGBOpiEhGr8NCGLF8kGaHuC935w7BVCMXD7lPxDBuU98I
+	bhUkXsdyN41FQSpesn3jjV1cIYXCOkKxvT6W/0DDZ4NIUwpGHP1UOFIlDZHMlVuf
+	CEQcy/43AHi949JQYAEEpUiUpZ/ahLh57+RqG1KEzRD3BFSipC1PUN7ZhsvmjnoH
+	5rRaSyfkwwEacNzkbFXIwnTnBr/+tbdGWmC9L+AsMm95tw34/X3GWxzAXOry4OeR
+	WERqwP3SdANenhJJEWpJJQjP7om4khhBF9rxnfjtFuh6vHsKkwkPZmkQTvMZCW31
+	3F9IcZw7bw5WIx97wYTLcLrpU6/IA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4511waax5e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Feb 2025 11:32:13 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51PBU3W0001490;
+	Tue, 25 Feb 2025 11:32:12 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4511waax5d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Feb 2025 11:32:12 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51PAlsAm026964;
+	Tue, 25 Feb 2025 11:32:11 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44ytdkch4u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Feb 2025 11:32:11 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51PBW7kU58130746
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Feb 2025 11:32:07 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 54E9320043;
+	Tue, 25 Feb 2025 11:32:07 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F2BA020040;
+	Tue, 25 Feb 2025 11:32:00 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.61.248.206])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 25 Feb 2025 11:32:00 +0000 (GMT)
+From: Athira Rajeev <atrajeev@linux.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, atrajeev@linux.ibm.com, kjain@linux.ibm.com,
+        disgoel@linux.vnet.ibm.com, hbathini@linux.vnet.ibm.com,
+        Aditya.Bodkhe1@ibm.com, Tejas.Manhas1@ibm.com
+Subject: [PATCH] tools/perf: Use perf_tool__init() to initialize default values in builtin trace
+Date: Tue, 25 Feb 2025 17:01:57 +0530
+Message-Id: <20250225113157.28836-1-atrajeev@linux.ibm.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,52 +92,72 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3c860dc0-ba8d-4324-b286-c160b7d8d2c4@app.fastmail.com>
-X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: tmyErrajOq3rnIFzvNbrZGWkNGgSrovL
+X-Proofpoint-ORIG-GUID: A2aA0qkMZcXtBKRKqnx0Bzl0kiey4Dg4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-25_04,2025-02-25_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999 mlxscore=0
+ malwarescore=0 spamscore=0 impostorscore=0 lowpriorityscore=0
+ priorityscore=1501 bulkscore=0 suspectscore=0 phishscore=0 clxscore=1015
+ adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502250081
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Feb 25, 2025 at 11:40:51AM +0100, Arnd Bergmann wrote:
-> On Tue, Feb 25, 2025, at 11:22, Christian Brauner wrote:
-> > On Tue, Feb 25, 2025 at 09:02:04AM +0100, Arnd Bergmann wrote:
-> >> On Mon, Feb 24, 2025, at 12:32, Christian Brauner wrote:
-> >> 
-> >> The ioctl interface relies on the existing behavior, see
-> >> 0a6eab8bd4e0 ("vfs: support FS_XFLAG_COWEXTSIZE and get/set of
-> >> CoW extent size hint") for how it was previously extended
-> >> with an optional flag/word. I think that is fine for the syscall
-> >> as well, but should be properly documented since it is different
-> >> from how most syscalls work.
-> >
-> > If we're doing a new system call I see no reason to limit us to a
-> > pre-existing structure or structure layout.
-> 
-> Obviously we could create a new structure, but I also see no
-> reason to do so. The existing ioctl interface was added in
-> in 2002 as part of linux-2.5.35 with 16 bytes of padding, half
-> of which have been used so far.
-> 
-> If this structure works for another 23 years before we run out
-> of spare bytes, I think that's good enough. Building in an
-> incompatible way to handle potential future contents would
-> just make it harder to use for any userspace that wants to
-> use the new syscalls but still needs a fallback to the
-> ioctl version.
+Perf trace on perf.data fails as below:
 
-The fact that this structure has existed since the dawn of time doesn't
-mean it needs to be retained when adding a completely new system call.
+	./perf trace record -- sleep 1
+	./perf trace -i perf.data
+	perf: Segmentation fault
+	Segmentation fault (core dumped)
 
-People won't mix both. They either switch to the new interface because
-they want to get around the limitations of the old interface or they
-keep using the old interface and the associated workarounds.
+Backtrace pointed to :
+	?? ()
+	perf_session.process_user_event ()
+	reader.read_event ()
+	perf_session.process_events ()
+	cmd_trace ()
+	run_builtin ()
+	handle_internal_command ()
+	main ()
 
-In another thread they keep arguing about new extensions for Windows
-that are going to be added to the ioctl interface and how to make it fit
-into this. That just shows that it's very hard to predict from the
-amount of past changes how many future changes are going to happen. And
-if an interface is easy to extend it might well invite new changes that
-people didn't want to or couldn't make using the old interface.
+Further debug pointed that, segmentation fault happens when
+trying to access id_index. Code snippet:
+
+	case PERF_RECORD_ID_INDEX:
+		err = tool->id_index(session, event);
+
+Since 'commit 15d4a6f41d72 ("perf tool: Remove
+perf_tool__fill_defaults()")', perf_tool__fill_defaults is
+removed. All tools are initialized using perf_tool__init()
+prior to use. But in builtin-trace, perf_tool__init is not
+used and hence the defaults are not initialized. Use
+perf_tool__init() in perf trace to handle the initialization.
+
+Reported-by: Tejas Manhas <Tejas.Manhas1@ibm.com>
+Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+---
+ tools/perf/builtin-trace.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+index f55a8a6481f2..092c5f6404ba 100644
+--- a/tools/perf/builtin-trace.c
++++ b/tools/perf/builtin-trace.c
+@@ -4589,6 +4589,7 @@ static int trace__replay(struct trace *trace)
+ 	struct evsel *evsel;
+ 	int err = -1;
+ 
++	perf_tool__init(&trace->tool, /*ordered_events=*/true);
+ 	trace->tool.sample	  = trace__process_sample;
+ 	trace->tool.mmap	  = perf_event__process_mmap;
+ 	trace->tool.mmap2	  = perf_event__process_mmap2;
+-- 
+2.43.5
+
 
