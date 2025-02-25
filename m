@@ -1,68 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-6454-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6456-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87EDBA43743
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 09:19:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C8A6A43B49
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 11:22:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z29W0629bz30TJ;
-	Tue, 25 Feb 2025 19:19:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z2DF83h0wz30DL;
+	Tue, 25 Feb 2025 21:22:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740471564;
-	cv=none; b=oPWh2a5KPuZ7qoI/04mSOOBpk9cVa3P3tQ4UoeHoSFJ+rU8TdlPty0o+IUslCJ//+mKAyyqlanj0hLSOQH1Mw+s4KjbCq1P55kCCJ50lsXMtkOp5IORaYRDoJ1JD5H/oMoeCMx4kp4whGGxyvdV7isgsKtgzHC8fDF4CP2nPDWEA16j6ny+JMykivOEDOvECoqSoz+L6X4f/HxDvfE9WaNMg+nGZDYdXKOKWUWndzd7b59/iLNEs0K1EBdudQBEb751+9jDgrzgkcs3gaOqgXw9NwLBNL3AIx5WgTuWxZwHrfz2aVkqQ74ujh1G7AtE9jnae9DkItb+c5EJjzsFnRw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740478956;
+	cv=none; b=GZP2mWAFTD36Lg2nijf+aPyZocb3aQfstZ0PpTT141Pa942AmnCrclyjleMUjmMm2EQQ2pFGvfDUq1uL0R4yToJ0RrP2G9oJSX7IMlKVu9BNfMB11RFVq6hoNmQd5ocNxI9h2E/HfCD070fFoxXy7530h0UexLRFvvUoSyKMaIybNb4u4sVcVe5nGwPwanvQN8lUs3NYYJvSwmuOVmcoApe73Y8jpz7OaommI+Mrgt3OzQIwcLqInMy53+ouZd5zWIULP2S8M7bcOVBFXke4im9yAogiUhdInydTYXc3nNpWGiCmv+drKH6c6rINWZFeFOmylXEQ5IOdQmNRQBR81g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740471564; c=relaxed/relaxed;
-	bh=MbmGE3lh0+rEmbWN8ci1bBU7IZ/e52tY6v25JTl98TM=;
+	t=1740478956; c=relaxed/relaxed;
+	bh=9joJ5lAMoQVd6/QxOHtknGOH3Jwd7fDHmxdMpAvs0mc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LOveoE8uLbcpYyj6LEb7C7m2rIO3IcuGAWTWlyLYFyKf7d3xjdCCNH/tvV+o1fKeY+S+8lCJSFt2403ch2vZXfD4Y68rSQSLWkFLfo5PlC5Qq67NfEzql7wrXB9vcvkkb8TK6Da0gk6eGGijH/cA3gdcPYup7Yx161NFyJH0gHXPBYZ6aQo19p8KGFZQ7bg5/SpzAmFvQpoT2UZbR9+FBgEeMuk9jcTqFDPG3J4AZw0uXLLQFhVs37dd2ZXxmlYObVlsrm9GfnlLRBK7mQ2+18BBM2x4+j0BW4119LR6eWIuwcUoSu3qBttGtBpbNTtgGR5EQRioQSnGp6JeOPcP1w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ETY/Jcws; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Yj/d7+Wa; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=Hgec/bMQHPlcEfdczju3r9Pp8Q8yqJRqAP9SEvtr4u2AIf21bnAHXmOqVa1ZDsnzA2eOob88QdfrKtWJB41O+nwJautYSPhPoU2ieIfEefi+A/sQnyjuagfV+MReEX7oO8m1eAn3iEvga5KhMdgpNIab8ZG4sIrM8luRW5jxgL8IboF3/WSuPO671bMuetZaa5Gf9K1yfARMvsk9eP81i0iWwrLW60/uu4fsZZDYbm1Hr/BDedLrGWLk8KFE2BuicfRnGcgKQogwYq5EXVpIw6L9etFSUnV40CSzH5DbrCko9HiD6rqdbhI5TLnaO66DHn5lfWZ5Rngs9auI5oLtfg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QLdVe9QX; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=ETY/Jcws;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=Yj/d7+Wa;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=QLdVe9QX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=brauner@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Z29Vz1b1nz30PF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 19:19:23 +1100 (AEDT)
-Date: Tue, 25 Feb 2025 09:19:17 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1740471557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MbmGE3lh0+rEmbWN8ci1bBU7IZ/e52tY6v25JTl98TM=;
-	b=ETY/Jcws9iN3+iLmGHdsECVEC/bWqYwDEohdXe6fxA892cgHkwXS7icb1PQeuoVKI59psh
-	eoTksaQAK5djqOSCwXRwWNNogSiJ7PxurzkYnu59biBWMxXs85kaJK0SllNrYjNDGL64zo
-	GgkXWWqYVYkvGCGg6oZD6D1Pc7otPqvnI6o/z5FnMIjAJB1DCPG3OU19ROmedbt2MeTjRg
-	Zy3EJVVADe12/dsB/+ZhbjRnvLbero2PYougZQ+LOpODV60hTdoF6jGTsPWWBTmb0VWSvC
-	d2TiRTxmhCBR3TuCHtu286U6dkktd1qvIxu2IgwKzI5gTWcwyJ4UMEUFlASa5A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1740471557;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MbmGE3lh0+rEmbWN8ci1bBU7IZ/e52tY6v25JTl98TM=;
-	b=Yj/d7+WaDLF6XW2kHzohhFYpb9iUmVk+7t86CnWvVyGepa1QkW/dgDwRIe4OuQh5EOdLxg
-	12fyjzKLV50iXxDg==
-From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>, 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z2DF73tWfz3048
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 21:22:35 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 722FF6126A;
+	Tue, 25 Feb 2025 10:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F22EC4CEDD;
+	Tue, 25 Feb 2025 10:22:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740478952;
+	bh=5HOkE2YqQG0nj7GKm31VM9cru6617nBuKvCY1GMnDrc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QLdVe9QX36ZATBZopGaFS7xncV75FrVifGUmO8YFcq0fsqRsaJ22u5r4/RZQOJ3Sp
+	 yMEl/oKfTZihFmWVtEKikhl/HfJsgdlkCrNq55W9eyV/njTytIaMD9k7zFgv1x4TaI
+	 I2IADYz/CQiWBy3kUYdqd4/6a+d9wa1OJ63tEswPaPSmhJ9mvyvjSLPOfrMnC+lJSK
+	 LaosnjwljP1fU1QllOJcPmhDfG/AbY9BKKl5qhnGon0GvGM+IMN1WKFPOeumOwG/Tb
+	 8wfL7+oJ4DopnrX8olKXaLI8joRoQgVk7Ykgfi+0FSJvIaTDPVShiCTVbRLd3HNrPp
+	 6XmUqt0gTmi9g==
+Date: Tue, 25 Feb 2025 11:22:17 +0100
+From: Christian Brauner <brauner@kernel.org>
+To: Arnd Bergmann <arnd@arndb.de>
+Cc: Amir Goldstein <amir73il@gmail.com>, 
+	Andrey Albershteyn <aalbersh@redhat.com>, "Darrick J. Wong" <djwong@kernel.org>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	"James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
 	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc: Don't use %pK through printk
-Message-ID: <20250225091250-eac544ad-4e5b-47f7-83fc-5212c720483a@linutronix.de>
-References: <20250217-restricted-pointers-powerpc-v1-1-32c6bff63c9a@linutronix.de>
- <ffd5dd44-babc-480a-b1bc-61bd7ff1e920@csgroup.eu>
- <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, 
+	Vasily Gorbik <gor@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Sven Schnelle <svens@linux.ibm.com>, 
+	Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, "David S . Miller" <davem@davemloft.net>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, 
+	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>, =?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>, 
+	linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org, 
+	Linux-Arch <linux-arch@vger.kernel.org>, linux-xfs@vger.kernel.org, 
+	Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>, Theodore Ts'o <tytso@mit.edu>
+Subject: Re: [PATCH v3] fs: introduce getfsxattrat and setfsxattrat syscalls
+Message-ID: <20250225-strom-kopflos-32062347cd13@brauner>
+References: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
+ <20250221181135.GW21808@frogsfrogsfrogs>
+ <CAOQ4uxgyYBFqkq6cQsso4LxJsPJ4uECOdskXmz-nmGhhV5BQWg@mail.gmail.com>
+ <20250224-klinke-hochdekoriert-3f6be89005a8@brauner>
+ <6b51ffa2-9d67-4466-865e-e703c1243352@app.fastmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,93 +92,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+In-Reply-To: <6b51ffa2-9d67-4466-865e-e703c1243352@app.fastmail.com>
+X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 24, 2025 at 06:54:47PM +0000, Maciej W. Rozycki wrote:
-> On Mon, 24 Feb 2025, Christophe Leroy wrote:
+On Tue, Feb 25, 2025 at 09:02:04AM +0100, Arnd Bergmann wrote:
+> On Mon, Feb 24, 2025, at 12:32, Christian Brauner wrote:
+> > On Fri, Feb 21, 2025 at 08:15:24PM +0100, Amir Goldstein wrote:
+> >> On Fri, Feb 21, 2025 at 7:13â€¯PM Darrick J. Wong <djwong@kernel.org> wrote:
 > 
-> > > Restricted pointers ("%pK") are not meant to be used through printk().
-> > > It can unintentionally expose security sensitive, raw pointer values.
-> > > 
-> > > Use regular pointer formatting instead.
-> > > 
-> > > Link:
-> > > https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023%40linutronix.de%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C75a852a0fef54fa43a3608dd4f263f45%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638753747883689862%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=aUgq6pXb1ySaQ6e%2FdyM09jfc4MNLE71Njw0%2FnCg%2F6VU%3D&reserved=0
-> > > Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-> > 
-> > Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > 
-> > > ---
-> > >   arch/powerpc/kernel/eeh_driver.c | 2 +-
-> > >   arch/powerpc/perf/hv-24x7.c      | 8 ++++----
-> > >   2 files changed, 5 insertions(+), 5 deletions(-)
-> > > 
-> > > diff --git a/arch/powerpc/kernel/eeh_driver.c
-> > > b/arch/powerpc/kernel/eeh_driver.c
-> > > index
-> > > 7efe04c68f0fe3fb1c3c13d97d58e79e47cf103b..10ce6b3bd3b7c54f91544ae7f7fd3f32a51ee09a
-> > > 100644
-> > > --- a/arch/powerpc/kernel/eeh_driver.c
-> > > +++ b/arch/powerpc/kernel/eeh_driver.c
-> > > @@ -907,7 +907,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
-> > >   		/* FIXME: Use the same format as dump_stack() */
-> > >   		pr_err("EEH: Call Trace:\n");
-> > >   		for (i = 0; i < pe->trace_entries; i++)
-> > > -			pr_err("EEH: [%pK] %pS\n", ptrs[i], ptrs[i]);
-> > > +			pr_err("EEH: [%p] %pS\n", ptrs[i], ptrs[i]);
-> > >     		pe->trace_entries = 0;
-> > >   	}
+> >> > > @@ -23,6 +23,9 @@
+> >> > >  #include <linux/rw_hint.h>
+> >> > >  #include <linux/seq_file.h>
+> >> > >  #include <linux/debugfs.h>
+> >> > > +#include <linux/syscalls.h>
+> >> > > +#include <linux/fileattr.h>
+> >> > > +#include <linux/namei.h>
+> >> > >  #include <trace/events/writeback.h>
+> >> > >  #define CREATE_TRACE_POINTS
+> >> > >  #include <trace/events/timestamp.h>
+> >> > > @@ -2953,3 +2956,75 @@ umode_t mode_strip_sgid(struct mnt_idmap *idmap,
+> >> > >       return mode & ~S_ISGID;
+> >> > >  }
+> >> > >  EXPORT_SYMBOL(mode_strip_sgid);
+> >> > > +
+> >> > > +SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
+> >> > > +             struct fsxattr __user *, fsx, unsigned int, at_flags)
+> >> >
+> >> > Should the kernel require userspace to pass the size of the fsx buffer?
+> >> > That way we avoid needing to rev the interface when we decide to grow
+> >> > the structure.
+> >
+> > Please version the struct by size as we do for clone3(),
+> > mount_setattr(), listmount()'s struct mnt_id_req, sched_setattr(), all
+> > the new xattrat*() system calls and a host of others. So laying out the
+> > struct 64bit and passing a size alongside it.
+> >
+> > This is all handled by copy_struct_from_user() and copy_struct_to_user()
+> > so nothing to reinvent. And it's easy to copy from existing system
+> > calls.
 > 
->  But shouldn't this be using `%px' then instead?  It would be sad if all 
-> the address information from error reports such as below:
+> I don't think that works in this case, because 'struct fsxattr'
+> is an existing structure that is defined with a fixed size of
+> 28 bytes. If we ever need more than 8 extra bytes, then the
+> existing ioctl commands are also broken.
 > 
-> EEH: Call Trace:
-> EEH: [000000008985bc3b] __eeh_send_failure_event+0x78/0x150
-> EEH: [000000008c4c5782] eeh_dev_check_failure+0x388/0x6b0
-> EEH: [000000001fb766c1] eeh_check_failure+0x98/0x100
-> EEH: [000000004b9af8c6] dfx_port_read_long+0xb0/0x130 [defxx]
-> EEH: [00000000e23999c1] dfx_interrupt+0x80/0x8c0 [defxx]
-> EEH: [00000000c7884fb7] __handle_irq_event_percpu+0x9c/0x2f0
-> EEH: [000000008d4e9afd] handle_irq_event_percpu+0x44/0xc0
-> EEH: [000000008c39ece4] handle_irq_event+0x74/0xc0
-> EEH: [00000000d85114a9] handle_fasteoi_irq+0xd4/0x220
-> EEH: [00000000a692ef4e] generic_handle_irq+0x54/0x80
-> EEH: [00000000a6db243b] __do_irq+0x68/0x200
-> EEH: [0000000040ccff9e] call_do_irq+0x14/0x24
-> EEH: [00000000e8e9ddf7] do_IRQ+0x78/0xd0
-> EEH: [0000000031916539] replay_soft_interrupts+0x180/0x370
-> EEH: [000000001b7e5728] arch_local_irq_restore+0x48/0xc0
-> EEH: [00000000088691b7] cpuidle_enter_state+0x108/0x560
-> EEH: [00000000e6e26f30] cpuidle_enter+0x50/0x70
-> EEH: [000000007c26474c] call_cpuidle+0x4c/0x80
-> EEH: [0000000036b8a2fc] do_idle+0x360/0x3b0
-> EEH: [0000000048702083] cpu_startup_entry+0x38/0x40
-> EEH: [00000000d3b1fb8d] start_secondary+0x62c/0x660
-> EEH: [0000000041a9a815] start_secondary_prolog+0x10/0x14
+> Replacing fsxattr with an extensible structure of the same contents
+> would work, but I feel that just adds more complication for little
+> gain.
 > 
-> was suddenly lost from the kernel log, the access to which unprivileged 
-> users can be denied if so desired according to the site policy.  Whereas 
-> running the kernel such as to have all output from plain `%p' exposed just 
-> to cope with this proposed change, now that seems like a security risk.
+> On the other hand, there is an open question about how unknown
+> flags and fields in this structure. FS_IOC_FSSETXATTR/FS_IOC_FSGETXATTR
+> treats them as optional and just ignores anything it doesn't
+> understand, while copy_struct_from_user() would treat any unknown
+> but set bytes as -E2BIG.
+> 
+> The ioctl interface relies on the existing behavior, see
+> 0a6eab8bd4e0 ("vfs: support FS_XFLAG_COWEXTSIZE and get/set of
+> CoW extent size hint") for how it was previously extended
+> with an optional flag/word. I think that is fine for the syscall
+> as well, but should be properly documented since it is different
+> from how most syscalls work.
 
-Your point makes sense.
-*But* the addresses in your example are already hashed,
-as indicated by the all-zero upper 32 bits.
-By default, when kptr_restrict is set to 0, %pK behaves the same as %p.
-The same happened for a bunch of other architectures and nobody seems
-to have noticed in the past.
-The symbol-relative pointers or pointer formats designed for backtraces,
-as notes by Christophe, seem to be enough.
-
-But personally I'm also fine with using %px, as my goal is to remove the
-error-prone and confusing %pK.
-
-Thomas
+If we're doing a new system call I see no reason to limit us to a
+pre-existing structure or structure layout.
 
