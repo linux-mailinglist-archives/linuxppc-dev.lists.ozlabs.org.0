@@ -1,70 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-6445-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6446-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FFEA4332E
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 03:38:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 610BBA43514
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 07:20:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z21xJ1H68z30CL;
-	Tue, 25 Feb 2025 13:38:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z26sL3rXMz2yvv;
+	Tue, 25 Feb 2025 17:20:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::b2a"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740451092;
-	cv=none; b=WKpqR6SbxiTCP5EePTeAaymwOQ3OYmVtNZJeMfMYteLeQlGJsdge5sMnLsTtP5EBehuQYW3TE9WdB4IzoZlLu0oZRrtBNgd9m5XU80lKd9Sh35WaE+agxxxImvVMg7DSEQC66beOqJ7wfJM0f2wgzA3bZzFp77DbeSiuyhRWzqGqwYvNtt2ziwKvFOxT7U+82TBYsgpuhk3cL3zmmKShREc0+yBDTVPucDaKcV7aLCoHqc0ljqTmAQXhy/p2+aQgkimkvDNNKsYxKbch69Iu8wQSChQGQvN7bBH5va72JAA/Rr+J7ADM1vFoX7w9Q7EpWOw3BgaCxdgp3PDMHxaJCQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740464406;
+	cv=none; b=lwmcOYjdpNaCuVXGShNj9WPq1zrk5PzKKzic7+KkXNOrmHVpTzNdPrwdzU1b49zaa4WzTRIB+565vxN5OQaRlNikADZ/1aZ+MPoDFU9ZT6nwHbxBP7tt/CMzBJ5AAU+OkhAocN6KxH6VZLR7x/A+kOmvEQsBUEvCWWnFLHTKRalLPRBCDYedwoyo/RovImT01vlY1c8U+CC7gvdPvqf5TgvoDrHd6UrcD584WHbvxAqOj0hrJd0K+7U166Quu4qN163a4CFXQkU6g+gLZZWsMQEJyLu+k8+3GynP9QM5gygSUYnNceTAECTZVJlhKq+gXKK8+2X/9cUmFgdg+8idow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740451092; c=relaxed/relaxed;
-	bh=UqK9lSPHR3oAe986F8iXqkMz9AYMYHr6QgwL+NcZdiU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GpvixPawEUN9AaoaaHK68zP++RH5GZqKL1YVZ1flQkIyydbq08ktqrFRVrfCPcHbx530IBP+j3COm5QJ4CPKPfgBtifhJ3gLL5156IWlD5P/YBj7GLonVXS8q/UjhAZHVLiayagZEuLSQm6TVecijxx+bjwElMcBxwVSoTAnTgsmUeP9X78hP+vUYtqLF6wBYurvseHrYuRZKOm/lVOR4yX9EgPS6Dfccn597/K4Vnl/spAxEcz6+vn0+c4ToEWPtml/9bfeLwT4pwtrHH2jB6RyzrL2foPDb+2nNWb7XzusFdsQxm4B5LPMh6xyNcFPwfC3pc6xL2LIbYGsXnAztg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=C+SK2OH/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org) smtp.mailfrom=paul-moore.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=paul-moore.com header.i=@paul-moore.com header.a=rsa-sha256 header.s=google header.b=C+SK2OH/;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=paul-moore.com (client-ip=2607:f8b0:4864:20::b2a; helo=mail-yb1-xb2a.google.com; envelope-from=paul@paul-moore.com; receiver=lists.ozlabs.org)
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z21xG65lWz300C
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 13:38:09 +1100 (AEDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-e3978c00a5aso3701947276.1
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Feb 2025 18:38:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore.com; s=google; t=1740451087; x=1741055887; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UqK9lSPHR3oAe986F8iXqkMz9AYMYHr6QgwL+NcZdiU=;
-        b=C+SK2OH/Zcco2tg+ZHh2V3/jwOGPUcH4QKHZCj/SXu84i04NYdaheBCtxJZphWtG+b
-         Y+xDFFBVGzI/fZlPfJQHKe9l5tyavO87aYNz9VaVY1x4hrfMzgWGode4wvGrPl7M+8EC
-         IabLkI6naDPfjf89jBjXqcnmi9euM643b/Gg3SrS+h7eXYY9oq7ck9osSABuXzU0U8+h
-         cerd3S7YTdaObueEUrNUZ951uSSdcHpVbcfa2clXm/8oTt8fFHTowtc6wPjUfohsQFkC
-         FKmLEiW4Yq5AS5nKQoo2ztOv5n7SYAvhvKtkIXlssFVqMgSAsw8ZbqQhvskB8botNgDx
-         7jkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740451087; x=1741055887;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UqK9lSPHR3oAe986F8iXqkMz9AYMYHr6QgwL+NcZdiU=;
-        b=E1wHjkO8T0eql2GsGeGFL/NNB9jo+ZCCUE6T0SyQWF1CgUepRg0xoYFVg+12Jx3/J1
-         sD5Mc4Cs3of2FcwoIH/eEqfrJLrVH5zVrL4QOZj6MDS40mZcu3A2Z/SIxdOcFCC4tRiB
-         ar+6YIZNOF8Owle84nKk4vedBTVzxU22kHNCHjHVU4c5XtzcOY5R6K7tKTneud6VJ+qQ
-         0I8IQgKHhcIEj0VXdqpxQpq5kn4lC9pBUTtz0ROAYVSjIJDq4+5kLI8YyxPeq93Swceq
-         7+C5+Jbo7Tnac5YAstfmsEoMBhhjgauWoyxgSygcGsySkEgGxGjOOLzXpgwgHR26nANC
-         /jYw==
-X-Forwarded-Encrypted: i=1; AJvYcCWSXxOuOD25UnWphewECmc+tgKxy9GlRYrYbFdPdLjv9Z46GMZrte/F/9goJE93fOUuYZRRyBemrcMsZ5c=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyXoHGyDT4xS03iJX3O9wzBm1dym/o8KDYft4JkrQ89Lxftc6iz
-	92rWQg050BEwzVNg+UviWzh8GUH+hPa6g+I//y6erPlIGR6M6OTQYobueEHnauiEYY8A5+29qY+
-	CLxkeotk5Um8GxXL95MtQo/ScXvDXNbsSm2QW
-X-Gm-Gg: ASbGncsJaH3i/LdbyynEbfRDyIBwX81PckTYTxs/KZNiXiBJVxhK8FjuVuQ2mS9SDwO
-	0HM/lUn+3WcX1gBYrWw94jpakYhNuS4vxmSODe+RxVJgZPwYDzBvM52pXUzYwA7LkQDa3hIscsD
-	OThHVnt4M=
-X-Google-Smtp-Source: AGHT+IFEtqZjFjUUtEoV6clplX0tg01lvFBOsWs6wVdmIF0VuIZ0SAwc4zHx33tyK9MjmhuD5ygseR4l9mjGvJrZ59E=
-X-Received: by 2002:a05:6902:270a:b0:e57:3c46:fc86 with SMTP id
- 3f1490d57ef6-e607a56713bmr1172129276.48.1740451087319; Mon, 24 Feb 2025
- 18:38:07 -0800 (PST)
+	t=1740464406; c=relaxed/relaxed;
+	bh=vjHAsXQ5IQJ+/42mm4aDJJxzQUZsJTSwLQCYASozxz4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Bu0RKRwDD3S1tdERYVsTaQF9uJLu1DQhEhaeizDkIsXgS6JxWe01sLUSObJGSD6NiREpig3ZL19B8YBiJhVJOA8wOmJW6jqT+68IakKQVvdHxQYQFQ7Thq3oVw5grpA4C6yCMjjMvJJu1FM7qoVRX/AEzMVboG1hrYtmiBYyf9RHMFPCyXiMG4Mz+85+luc6GN9AkwD3wIxjTTDUMajNJNcUwJRdAOApZboGj3A5uZwwawf9XVUuWaykfb0L10E8lEMYK71kUPVoBRDrD0Ov6kq22ohR6UaZ7+/qOOuzBzpGqqVpdGZ6XOwRt6fc1deK/N65y4bHwJDdDuD6UEsmMQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z26sK3v1mz2ysX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 17:20:04 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Z26Nj44jNz9sSH;
+	Tue, 25 Feb 2025 06:58:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id elWzm5hk9ksV; Tue, 25 Feb 2025 06:58:45 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z26Nj2zRWz9sS8;
+	Tue, 25 Feb 2025 06:58:45 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 422BB8B780;
+	Tue, 25 Feb 2025 06:58:45 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id k1t4mJHItepu; Tue, 25 Feb 2025 06:58:45 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id A74F38B77C;
+	Tue, 25 Feb 2025 06:58:44 +0100 (CET)
+Message-ID: <a7a135c9-c65b-48a8-a3a8-6aa98afe77d0@csgroup.eu>
+Date: Tue, 25 Feb 2025 06:58:44 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,123 +56,109 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
- <20250221.ahB8jei2Chie@digikod.net> <jvo6uj7ro5czlo5ukw3vtf5mpqgrbuksqq4j63s2i6gwrjpz4m@kghpcqyi7gwb>
-In-Reply-To: <jvo6uj7ro5czlo5ukw3vtf5mpqgrbuksqq4j63s2i6gwrjpz4m@kghpcqyi7gwb>
-From: Paul Moore <paul@paul-moore.com>
-Date: Mon, 24 Feb 2025 21:37:56 -0500
-X-Gm-Features: AQ5f1JrNItPBrIagfKvZGb3Z7zpj-znT5mFIJQvEadvcpFUdxtbR_1MPSlEQmag
-Message-ID: <CAHC9VhRrs=W4JtuphkADPVG9MX8jxQLfmC9=2taj+cfZgNOt3Q@mail.gmail.com>
-Subject: Re: [PATCH v3] fs: introduce getfsxattrat and setfsxattrat syscalls
-To: Andrey Albershteyn <aalbersh@redhat.com>
-Cc: =?UTF-8?B?TWlja2HDq2wgU2FsYcO8bg==?= <mic@digikod.net>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>, Michal Simek <monstr@monstr.eu>, 
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>, 
-	=?UTF-8?Q?G=C3=BCnther_Noack?= <gnoack@google.com>, 
-	Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-security-module@vger.kernel.org, 
-	linux-api@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-xfs@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc: Don't use %pK through printk
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+ Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+ Oliver O'Halloran <oohall@gmail.com>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ linux-kernel@vger.kernel.org
+References: <20250217-restricted-pointers-powerpc-v1-1-32c6bff63c9a@linutronix.de>
+ <ffd5dd44-babc-480a-b1bc-61bd7ff1e920@csgroup.eu>
+ <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Feb 24, 2025 at 11:00=E2=80=AFAM Andrey Albershteyn <aalbersh@redha=
-t.com> wrote:
-> On 2025-02-21 16:08:33, Micka=C3=ABl Sala=C3=BCn wrote:
-> > It looks security checks are missing.  With IOCTL commands, file
-> > permissions are checked at open time, but with these syscalls the path
-> > is only resolved but no specific access seems to be checked (except
-> > inode_owner_or_capable via vfs_fileattr_set).
 
-...
 
-> > On Tue, Feb 11, 2025 at 06:22:47PM +0100, Andrey Albershteyn wrote:
+Le 24/02/2025 à 19:54, Maciej W. Rozycki a écrit :
+> ***ATTENTION, Sopra Steria Group cannot confirm the identity of this email sender (SPF record failure). This might be a fake email from an attacker, if you have any doubts report and delete the email.***
+> 
+> ***ATTENTION, Sopra Steria Group ne peut pas confirmer l’identité de l’émetteur de ce message (SPF record failure). Il pourrait s’agir d’un faux message, à détruire si vous avez un doute ***
+> 
+> On Mon, 24 Feb 2025, Christophe Leroy wrote:
+> 
+>>> Restricted pointers ("%pK") are not meant to be used through printk().
+>>> It can unintentionally expose security sensitive, raw pointer values.
+>>>
+>>> Use regular pointer formatting instead.
+>>>
+>>> Link:
+>>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023%40linutronix.de%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C9079ef2ec60e4717ec8e08dd5504b718%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638760200949886583%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=d2QCtnssTlVmKOKR57rui%2Fq73UsAAoZrim%2FABaz5IFs%3D&reserved=0
+>>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+>>
+>> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+>>
+>>> ---
+>>>    arch/powerpc/kernel/eeh_driver.c | 2 +-
+>>>    arch/powerpc/perf/hv-24x7.c      | 8 ++++----
+>>>    2 files changed, 5 insertions(+), 5 deletions(-)
+>>>
+>>> diff --git a/arch/powerpc/kernel/eeh_driver.c
+>>> b/arch/powerpc/kernel/eeh_driver.c
+>>> index
+>>> 7efe04c68f0fe3fb1c3c13d97d58e79e47cf103b..10ce6b3bd3b7c54f91544ae7f7fd3f32a51ee09a
+>>> 100644
+>>> --- a/arch/powerpc/kernel/eeh_driver.c
+>>> +++ b/arch/powerpc/kernel/eeh_driver.c
+>>> @@ -907,7 +907,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
+>>>              /* FIXME: Use the same format as dump_stack() */
+>>>              pr_err("EEH: Call Trace:\n");
+>>>              for (i = 0; i < pe->trace_entries; i++)
+>>> -                   pr_err("EEH: [%pK] %pS\n", ptrs[i], ptrs[i]);
+>>> +                   pr_err("EEH: [%p] %pS\n", ptrs[i], ptrs[i]);
+>>>                      pe->trace_entries = 0;
+>>>      }
+> 
+>   But shouldn't this be using `%px' then instead?  It would be sad if all
+> the address information from error reports such as below:
+> 
+> EEH: Call Trace:
+> EEH: [000000008985bc3b] __eeh_send_failure_event+0x78/0x150
+> EEH: [000000008c4c5782] eeh_dev_check_failure+0x388/0x6b0
+> EEH: [000000001fb766c1] eeh_check_failure+0x98/0x100
+> EEH: [000000004b9af8c6] dfx_port_read_long+0xb0/0x130 [defxx]
+> EEH: [00000000e23999c1] dfx_interrupt+0x80/0x8c0 [defxx]
+> EEH: [00000000c7884fb7] __handle_irq_event_percpu+0x9c/0x2f0
+> EEH: [000000008d4e9afd] handle_irq_event_percpu+0x44/0xc0
+> EEH: [000000008c39ece4] handle_irq_event+0x74/0xc0
+> EEH: [00000000d85114a9] handle_fasteoi_irq+0xd4/0x220
+> EEH: [00000000a692ef4e] generic_handle_irq+0x54/0x80
+> EEH: [00000000a6db243b] __do_irq+0x68/0x200
+> EEH: [0000000040ccff9e] call_do_irq+0x14/0x24
+> EEH: [00000000e8e9ddf7] do_IRQ+0x78/0xd0
+> EEH: [0000000031916539] replay_soft_interrupts+0x180/0x370
+> EEH: [000000001b7e5728] arch_local_irq_restore+0x48/0xc0
+> EEH: [00000000088691b7] cpuidle_enter_state+0x108/0x560
+> EEH: [00000000e6e26f30] cpuidle_enter+0x50/0x70
+> EEH: [000000007c26474c] call_cpuidle+0x4c/0x80
+> EEH: [0000000036b8a2fc] do_idle+0x360/0x3b0
+> EEH: [0000000048702083] cpu_startup_entry+0x38/0x40
+> EEH: [00000000d3b1fb8d] start_secondary+0x62c/0x660
+> EEH: [0000000041a9a815] start_secondary_prolog+0x10/0x14
+> 
+> was suddenly lost from the kernel log, the access to which unprivileged
+> users can be denied if so desired according to the site policy.  Whereas
+> running the kernel such as to have all output from plain `%p' exposed just
+> to cope with this proposed change, now that seems like a security risk.
 
-...
+The purpose of hashed addresses is to avoid kernel addresses to leak to 
+the kernel log. Here you have function names, if you get real function 
+addresses at the same time, then you know everything about kernel 
+addresses and for instance KASLR becomes just pointless.
 
-> > > +SYSCALL_DEFINE4(setfsxattrat, int, dfd, const char __user *, filenam=
-e,
-> > > +           struct fsxattr __user *, fsx, unsigned int, at_flags)
-> > > +{
-> > > +   CLASS(fd, dir)(dfd);
-> > > +   struct fileattr fa;
-> > > +   struct path filepath;
-> > > +   int error;
-> > > +   unsigned int lookup_flags =3D 0;
-> > > +
-> > > +   if ((at_flags & ~(AT_SYMLINK_FOLLOW | AT_EMPTY_PATH)) !=3D 0)
-> > > +           return -EINVAL;
-> > > +
-> > > +   if (at_flags & AT_SYMLINK_FOLLOW)
-> > > +           lookup_flags |=3D LOOKUP_FOLLOW;
-> > > +
-> > > +   if (at_flags & AT_EMPTY_PATH)
-> > > +           lookup_flags |=3D LOOKUP_EMPTY;
-> > > +
-> > > +   if (fd_empty(dir))
-> > > +           return -EBADF;
-> > > +
-> > > +   if (copy_fsxattr_from_user(&fa, fsx))
-> > > +           return -EFAULT;
-> > > +
-> > > +   error =3D user_path_at(dfd, filename, lookup_flags, &filepath);
-> > > +   if (error)
-> > > +           return error;
-> > > +
-> > > +   error =3D mnt_want_write(filepath.mnt);
-> > > +   if (!error) {
-> >
-> > security_inode_setattr() should probably be called too.
->
-> Aren't those checks for something different - inode attributes
-> ATTR_*?
-> (sorry, the naming can't be more confusing)
->
-> Looking into security_inode_setattr() it seems to expect struct
-> iattr, which works with inode attributes (mode, time, uid/gid...).
-> These new syscalls work with filesystem inode extended flags/attributes
-> FS_XFLAG_* in fsxattr->fsx_xflags. Let me know if I missing
-> something here
+By the way, why do you need the addresses at all in addition to function 
+names ? When I look at x86 dump stack, they only print function name, 
+using %pBb
 
-A valid point.  While these are two different operations, with
-different structs/types, I suspect that most LSMs will consider them
-to be roughly equivalent from an access control perspective, which is
-why I felt the existing security_inode_{set,get}attr() hooks seemed
-appropriate.  However, there likely is value in keeping the ATTR and
-FSX operations separate; those LSMs that wish to treat them the same
-can easily do so in their respective LSM callbacks.
-
-With all this in mind, I think it probably makes sense to create two
-new LSM hooks, security_inode_{get,set}fsxattr().  The get hook should
-probably be placed inside vfs_fileattr_get() just before the call to
-the inode's fileattr_get() method, and the set hook should probably be
-placed inside vfs_fileattr_set(), inside the inode lock and after a
-successful call to fileattr_set_prepare().
-
-Does that sound better to everyone?
-
---=20
-paul-moore.com
+Christophe
 
