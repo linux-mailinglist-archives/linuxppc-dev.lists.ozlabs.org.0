@@ -1,49 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-6446-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6448-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 610BBA43514
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 07:20:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 51589A4352D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 07:25:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z26sL3rXMz2yvv;
-	Tue, 25 Feb 2025 17:20:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z26zp6WLmz30Sw;
+	Tue, 25 Feb 2025 17:25:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740464406;
-	cv=none; b=lwmcOYjdpNaCuVXGShNj9WPq1zrk5PzKKzic7+KkXNOrmHVpTzNdPrwdzU1b49zaa4WzTRIB+565vxN5OQaRlNikADZ/1aZ+MPoDFU9ZT6nwHbxBP7tt/CMzBJ5AAU+OkhAocN6KxH6VZLR7x/A+kOmvEQsBUEvCWWnFLHTKRalLPRBCDYedwoyo/RovImT01vlY1c8U+CC7gvdPvqf5TgvoDrHd6UrcD584WHbvxAqOj0hrJd0K+7U166Quu4qN163a4CFXQkU6g+gLZZWsMQEJyLu+k8+3GynP9QM5gygSUYnNceTAECTZVJlhKq+gXKK8+2X/9cUmFgdg+8idow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.190
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740464742;
+	cv=none; b=inpLrgvr/jC9vP44UI+EQe+cVR5lOXWAqw8pbpidMXw0lHgSuMZx9q4rSvvR3W00qQejkFNmVvoZOfHB9KR8DJDIO4G3bMaKhmr3BeZSKh5R1Mtd66GQEXmcGnzzV8CCrxe4/41on++H6dLIjnS4jGRufIPR/mHvxOZZ0wfhOpD0lQEuknt0oYUVW2s3CKX5r34ovDScFQNpE6tNal0jC36dHJEh7bbtCyAx9c4oyBQS+OCY6kWhAHcgZhjLuGGpyzFaNNlDD6c3gO5hat3DVF7/m8zLYJYdnTl8z6b1IeK/UtHmid9zgV8P+0acATkz61GB6RRmCgueBJIFDMq+Cw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740464406; c=relaxed/relaxed;
-	bh=vjHAsXQ5IQJ+/42mm4aDJJxzQUZsJTSwLQCYASozxz4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Bu0RKRwDD3S1tdERYVsTaQF9uJLu1DQhEhaeizDkIsXgS6JxWe01sLUSObJGSD6NiREpig3ZL19B8YBiJhVJOA8wOmJW6jqT+68IakKQVvdHxQYQFQ7Thq3oVw5grpA4C6yCMjjMvJJu1FM7qoVRX/AEzMVboG1hrYtmiBYyf9RHMFPCyXiMG4Mz+85+luc6GN9AkwD3wIxjTTDUMajNJNcUwJRdAOApZboGj3A5uZwwawf9XVUuWaykfb0L10E8lEMYK71kUPVoBRDrD0Ov6kq22ohR6UaZ7+/qOOuzBzpGqqVpdGZ6XOwRt6fc1deK/N65y4bHwJDdDuD6UEsmMQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z26sK3v1mz2ysX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 17:20:04 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Z26Nj44jNz9sSH;
-	Tue, 25 Feb 2025 06:58:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id elWzm5hk9ksV; Tue, 25 Feb 2025 06:58:45 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z26Nj2zRWz9sS8;
-	Tue, 25 Feb 2025 06:58:45 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 422BB8B780;
-	Tue, 25 Feb 2025 06:58:45 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id k1t4mJHItepu; Tue, 25 Feb 2025 06:58:45 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id A74F38B77C;
-	Tue, 25 Feb 2025 06:58:44 +0100 (CET)
-Message-ID: <a7a135c9-c65b-48a8-a3a8-6aa98afe77d0@csgroup.eu>
-Date: Tue, 25 Feb 2025 06:58:44 +0100
+	t=1740464742; c=relaxed/relaxed;
+	bh=s3508VUXvao7RjemhYDAO/CTcFT7kcPYoLQummb5BwQ=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Lm1jjZBwTpJ4quAaPj+2KxrlxWm3bYhj58I8uo/q3ptFLoWwx9opORuUmVf0Fw5+z2rmJrBCR8ILrd0u7hp8gWKJFLx8MOunLxLmMHK0jOWHiRM/MuXqv6jwkRUa6tDfxwEFaSvn1ym4WbCQ5d3cTXxkQrVrsGWW9r04NJkvhP+21i9cFJrfiprCr5OcY2/VoV8X1FiGr0mGUl5odqlV5KPGdG4KrDc/2w3calX7SCqkv8vYm4Zlg6TOPZzjWd1mT+KlH7UvcJgXdGHRGJbqDfVkIBZwwHRNCqLVTPgb68NwLHTZaZQ4KuMTvkPJubAoBl6ViOL4CdoNUkklF9poSw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=guohanjun@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=guohanjun@huawei.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1004 seconds by postgrey-1.37 at boromir; Tue, 25 Feb 2025 17:25:41 AEDT
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z26zn114Dz2ysX
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 17:25:37 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4Z26Xl21DTz21nvV;
+	Tue, 25 Feb 2025 14:05:43 +0800 (CST)
+Received: from dggpemf500002.china.huawei.com (unknown [7.185.36.57])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5F8381402CA;
+	Tue, 25 Feb 2025 14:08:47 +0800 (CST)
+Received: from [10.174.178.247] (10.174.178.247) by
+ dggpemf500002.china.huawei.com (7.185.36.57) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 25 Feb 2025 14:08:46 +0800
+Subject: Re: [PATCH v11 3/4] arm64: topology: Support SMT control on ACPI
+ based system
+To: Yicong Yang <yangyicong@huawei.com>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <sudeep.holla@arm.com>, <tglx@linutronix.de>,
+	<peterz@infradead.org>, <mpe@ellerman.id.au>,
+	<linux-arm-kernel@lists.infradead.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <pierre.gondois@arm.com>,
+	<dietmar.eggemann@arm.com>
+CC: <linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
+	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
+	<linuxarm@huawei.com>, <yangyicong@hisilicon.com>, <xuwei5@huawei.com>,
+	<sshegde@linux.ibm.com>
+References: <20250218141018.18082-1-yangyicong@huawei.com>
+ <20250218141018.18082-4-yangyicong@huawei.com>
+From: Hanjun Guo <guohanjun@huawei.com>
+Message-ID: <92193a09-271e-895e-f77f-d3952bdfdf49@huawei.com>
+Date: Tue, 25 Feb 2025 14:08:45 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:68.0) Gecko/20100101
+ Thunderbird/68.6.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,109 +68,164 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc: Don't use %pK through printk
-To: "Maciej W. Rozycki" <macro@orcam.me.uk>
-Cc: =?UTF-8?Q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
- Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
- Oliver O'Halloran <oohall@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
- Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org
-References: <20250217-restricted-pointers-powerpc-v1-1-32c6bff63c9a@linutronix.de>
- <ffd5dd44-babc-480a-b1bc-61bd7ff1e920@csgroup.eu>
- <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20250218141018.18082-4-yangyicong@huawei.com>
+Content-Type: text/plain; charset="utf-8"; format=flowed
+Content-Language: en-GB
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.174.178.247]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ dggpemf500002.china.huawei.com (7.185.36.57)
+X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On 2025/2/18 22:10, Yicong Yang wrote:
+> From: Yicong Yang <yangyicong@hisilicon.com>
+> 
+> For ACPI we'll build the topology from PPTT and we cannot directly
+> get the SMT number of each core. Instead using a temporary xarray
+> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
+> and SMT information of the first core in its heterogeneous CPU cluster
+> when building the topology. Then we can know the largest SMT number
+> in the system. If a homogeneous system's using ACPI 6.2 or later,
+> all the CPUs should be under the root node of PPTT. There'll be
+> only one entry in the xarray and all the CPUs in the system will
+> be assumed identical.
+> 
+> The core's SMT control provides two interface to the users [1]:
+> 1) enable/disable SMT by writing on/off
+> 2) enable/disable SMT by writing thread number 1/max_thread_number
+> 
+> If a system have more than one SMT thread number the 2) may
+> not handle it well, since there're multiple thread numbers in the
+> system and 2) only accept 1/max_thread_number. So issue a warning
+> to notify the users if such system detected.
+> 
+> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
+> 
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> ---
+>   arch/arm64/kernel/topology.c | 66 ++++++++++++++++++++++++++++++++++++
+>   1 file changed, 66 insertions(+)
+> 
+> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+> index 1a2c72f3e7f8..6eba1ac091ee 100644
+> --- a/arch/arm64/kernel/topology.c
+> +++ b/arch/arm64/kernel/topology.c
+> @@ -15,8 +15,10 @@
+>   #include <linux/arch_topology.h>
+>   #include <linux/cacheinfo.h>
+>   #include <linux/cpufreq.h>
+> +#include <linux/cpu_smt.h>
+>   #include <linux/init.h>
+>   #include <linux/percpu.h>
+> +#include <linux/xarray.h>
+>   
+>   #include <asm/cpu.h>
+>   #include <asm/cputype.h>
+> @@ -37,17 +39,28 @@ static bool __init acpi_cpu_is_threaded(int cpu)
+>   	return !!is_threaded;
+>   }
+>   
+> +struct cpu_smt_info {
+> +	unsigned int thread_num;
+> +	int core_id;
+> +};
+> +
+>   /*
+>    * Propagate the topology information of the processor_topology_node tree to the
+>    * cpu_topology array.
+>    */
+>   int __init parse_acpi_topology(void)
+>   {
+> +	unsigned int max_smt_thread_num = 0;
+> +	struct cpu_smt_info *entry;
+> +	struct xarray hetero_cpu;
+> +	unsigned long hetero_id;
+>   	int cpu, topology_id;
+>   
+>   	if (acpi_disabled)
+>   		return 0;
+>   
+> +	xa_init(&hetero_cpu);
+> +
+>   	for_each_possible_cpu(cpu) {
+>   		topology_id = find_acpi_cpu_topology(cpu, 0);
+>   		if (topology_id < 0)
+> @@ -57,6 +70,34 @@ int __init parse_acpi_topology(void)
+>   			cpu_topology[cpu].thread_id = topology_id;
+>   			topology_id = find_acpi_cpu_topology(cpu, 1);
+>   			cpu_topology[cpu].core_id   = topology_id;
+> +
+> +			/*
+> +			 * In the PPTT, CPUs below a node with the 'identical
+> +			 * implementation' flag have the same number of threads.
+> +			 * Count the number of threads for only one CPU (i.e.
+> +			 * one core_id) among those with the same hetero_id.
+> +			 * See the comment of find_acpi_cpu_topology_hetero_id()
+> +			 * for more details.
+> +			 *
+> +			 * One entry is created for each node having:
+> +			 * - the 'identical implementation' flag
+> +			 * - its parent not having the flag
+> +			 */
+> +			hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
+> +			entry = xa_load(&hetero_cpu, hetero_id);
+> +			if (!entry) {
+> +				entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+> +				WARN_ON_ONCE(!entry);
+> +
+> +				if (entry) {
+> +					entry->core_id = topology_id;
+> +					entry->thread_num = 1;
+> +					xa_store(&hetero_cpu, hetero_id,
+> +						 entry, GFP_KERNEL);
+> +				}
+> +			} else if (entry->core_id == topology_id) {
+> +				entry->thread_num++;
+> +			}
+>   		} else {
+>   			cpu_topology[cpu].thread_id  = -1;
+>   			cpu_topology[cpu].core_id    = topology_id;
+> @@ -67,6 +108,31 @@ int __init parse_acpi_topology(void)
+>   		cpu_topology[cpu].package_id = topology_id;
+>   	}
+>   
+> +	/*
+> +	 * This should be a short loop depending on the number of heterogeneous
+> +	 * CPU clusters. Typically on a homogeneous system there's only one
+> +	 * entry in the XArray.
+> +	 */
+> +	xa_for_each(&hetero_cpu, hetero_id, entry) {
+> +		if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
+> +			pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
+> +
+> +		max_smt_thread_num = max(max_smt_thread_num, entry->thread_num);
+> +		xa_erase(&hetero_cpu, hetero_id);
+> +		kfree(entry);
+> +	}
+> +
+> +	/*
+> +	 * Notify the CPU framework of the SMT support. Initialize the
+> +	 * max_smt_thread_num to 1 if no SMT support detected. A thread
+> +	 * number of 1 can be handled by the framework so we don't need
+> +	 * to check max_smt_thread_num to see we support SMT or not.
+> +	 */
+> +	if (!max_smt_thread_num)
+> +		max_smt_thread_num = 1;
+> +
+> +	cpu_smt_set_num_threads(max_smt_thread_num, max_smt_thread_num);
+> +	xa_destroy(&hetero_cpu);
+>   	return 0;
+>   }
+>   #endif
 
+Looks good to me,
 
-Le 24/02/2025 à 19:54, Maciej W. Rozycki a écrit :
-> ***ATTENTION, Sopra Steria Group cannot confirm the identity of this email sender (SPF record failure). This might be a fake email from an attacker, if you have any doubts report and delete the email.***
-> 
-> ***ATTENTION, Sopra Steria Group ne peut pas confirmer l’identité de l’émetteur de ce message (SPF record failure). Il pourrait s’agir d’un faux message, à détruire si vous avez un doute ***
-> 
-> On Mon, 24 Feb 2025, Christophe Leroy wrote:
-> 
->>> Restricted pointers ("%pK") are not meant to be used through printk().
->>> It can unintentionally expose security sensitive, raw pointer values.
->>>
->>> Use regular pointer formatting instead.
->>>
->>> Link:
->>> https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Flkml%2F20250113171731-dc10e3c1-da64-4af0-b767-7c7070468023%40linutronix.de%2F&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C9079ef2ec60e4717ec8e08dd5504b718%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638760200949886583%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=d2QCtnssTlVmKOKR57rui%2Fq73UsAAoZrim%2FABaz5IFs%3D&reserved=0
->>> Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
->>
->> Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>
->>> ---
->>>    arch/powerpc/kernel/eeh_driver.c | 2 +-
->>>    arch/powerpc/perf/hv-24x7.c      | 8 ++++----
->>>    2 files changed, 5 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/powerpc/kernel/eeh_driver.c
->>> b/arch/powerpc/kernel/eeh_driver.c
->>> index
->>> 7efe04c68f0fe3fb1c3c13d97d58e79e47cf103b..10ce6b3bd3b7c54f91544ae7f7fd3f32a51ee09a
->>> 100644
->>> --- a/arch/powerpc/kernel/eeh_driver.c
->>> +++ b/arch/powerpc/kernel/eeh_driver.c
->>> @@ -907,7 +907,7 @@ void eeh_handle_normal_event(struct eeh_pe *pe)
->>>              /* FIXME: Use the same format as dump_stack() */
->>>              pr_err("EEH: Call Trace:\n");
->>>              for (i = 0; i < pe->trace_entries; i++)
->>> -                   pr_err("EEH: [%pK] %pS\n", ptrs[i], ptrs[i]);
->>> +                   pr_err("EEH: [%p] %pS\n", ptrs[i], ptrs[i]);
->>>                      pe->trace_entries = 0;
->>>      }
-> 
->   But shouldn't this be using `%px' then instead?  It would be sad if all
-> the address information from error reports such as below:
-> 
-> EEH: Call Trace:
-> EEH: [000000008985bc3b] __eeh_send_failure_event+0x78/0x150
-> EEH: [000000008c4c5782] eeh_dev_check_failure+0x388/0x6b0
-> EEH: [000000001fb766c1] eeh_check_failure+0x98/0x100
-> EEH: [000000004b9af8c6] dfx_port_read_long+0xb0/0x130 [defxx]
-> EEH: [00000000e23999c1] dfx_interrupt+0x80/0x8c0 [defxx]
-> EEH: [00000000c7884fb7] __handle_irq_event_percpu+0x9c/0x2f0
-> EEH: [000000008d4e9afd] handle_irq_event_percpu+0x44/0xc0
-> EEH: [000000008c39ece4] handle_irq_event+0x74/0xc0
-> EEH: [00000000d85114a9] handle_fasteoi_irq+0xd4/0x220
-> EEH: [00000000a692ef4e] generic_handle_irq+0x54/0x80
-> EEH: [00000000a6db243b] __do_irq+0x68/0x200
-> EEH: [0000000040ccff9e] call_do_irq+0x14/0x24
-> EEH: [00000000e8e9ddf7] do_IRQ+0x78/0xd0
-> EEH: [0000000031916539] replay_soft_interrupts+0x180/0x370
-> EEH: [000000001b7e5728] arch_local_irq_restore+0x48/0xc0
-> EEH: [00000000088691b7] cpuidle_enter_state+0x108/0x560
-> EEH: [00000000e6e26f30] cpuidle_enter+0x50/0x70
-> EEH: [000000007c26474c] call_cpuidle+0x4c/0x80
-> EEH: [0000000036b8a2fc] do_idle+0x360/0x3b0
-> EEH: [0000000048702083] cpu_startup_entry+0x38/0x40
-> EEH: [00000000d3b1fb8d] start_secondary+0x62c/0x660
-> EEH: [0000000041a9a815] start_secondary_prolog+0x10/0x14
-> 
-> was suddenly lost from the kernel log, the access to which unprivileged
-> users can be denied if so desired according to the site policy.  Whereas
-> running the kernel such as to have all output from plain `%p' exposed just
-> to cope with this proposed change, now that seems like a security risk.
+Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
 
-The purpose of hashed addresses is to avoid kernel addresses to leak to 
-the kernel log. Here you have function names, if you get real function 
-addresses at the same time, then you know everything about kernel 
-addresses and for instance KASLR becomes just pointless.
-
-By the way, why do you need the addresses at all in addition to function 
-names ? When I look at x86 dump stack, they only print function name, 
-using %pBb
-
-Christophe
+Thanks
+Hanjun
 
