@@ -1,87 +1,123 @@
-Return-Path: <linuxppc-dev+bounces-6447-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6449-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC5BA43523
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 07:24:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40242A435F3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Feb 2025 08:10:19 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z26xw1ZY1z3024;
-	Tue, 25 Feb 2025 17:24:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z27zC2SJsz30Pl;
+	Tue, 25 Feb 2025 18:10:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2405::602" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740464644;
-	cv=pass; b=gOYazTMek28YdOy5mRtAtl86ZUjBUKOvHuAZz0YaU/JtLw8kixRiheOszlc74MKWiverbZzGMzyfiz3tq9dXk1rcVXUp35zV4JvL+xAKVhy70yW1AHdLw8TZjofItEfoNg8slh3JdsW53Zm1mHoXVD8yVMX884TtHXUxTRMT5MHmdrq52hwro0LmLorsNz55CJIrfmxgc/Ug0c2oms3xgtC6UXWKwR+at/xymiZeHCLAClGAdmoiYz3aVK2IUoUhIgQPp/EXppI9pRD0DGr9/sgzeTlF0qxxarJLsaf+H66GCBMTkcjNwmuTncP/vLupnTJj5MpATC51bEJwzD3pgA==
+Authentication-Results: lists.ozlabs.org; arc=fail smtp.remote-ip=192.198.163.18
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740467415;
+	cv=fail; b=jdlPcz2iy0u6I/7uwd7aKJ0KT4bRtxyJ3RKn+/DsV88xjD/gXsbMlXgqcuJR4NWp/Or4dr8Zwun6me69x/u7QZaQbVx0GZrX5T2M59MZKbSWPUWjSp0iK7aVUWHappaa0n/5++GUh/adn1f0K5eMDBJrhq68Noxft/xrXgWKWuMyaocsvJpU01ApGif7KGfqbgSSEBB7LpMqnwUy03D53cshs8cbxElrVWc3BmyuVw3kQGzeteBU05sFex7QdnBI+fgRJHGiELRUfeiQB1AK3cmgzXOtcriJQnKMHLZ+/AV3sonDaaCoqkOj9PnM6zzdgTDt+Rum8EuLHylKwJNC2A==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740464644; c=relaxed/relaxed;
-	bh=PAQDT6oY5OcgdSN1C7jHGCMlq8FGau1ZD6szWSbL8XY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=j/QTo5vab1GiIGmMC7+DzfVA7JntkTqEsXOR5fL/cpXbGKZQgoL49JEexHDz41jjOLFunnatQ0RJvKzLZti+T5wYdnCJLuWrId5nmMU22YWbo0Y51HB40XLeUSDHF1PvMZb7JejPlNDVwISlHIqycFyw+yR7SP/E75S9MpD91qx3AWXwK1bFOZTHt054+SVGlOo9ftfnz7F4x2P0nUEfgzfoJLxdA3AOkmHjJYZ7fWqJ0UahtqHpq5fJf8Do4w/5Yh4aTvV2maYf25dUNHvBgbnvjGsllcRVsguSrmduYhB2m0x6pZrYqpUR8XbmbU9O+u/CGik300l9veSlJXsZJg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YGSkuknc; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2405::602; helo=nam02-dm3-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+	t=1740467415; c=relaxed/relaxed;
+	bh=SMcg7oV1LXKpFEumlGiY2hKhy5CGBtvnnB2HEmDiGfE=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ejsKPzJHzs7J7MXLjherogCHRWl5QoPXAQa9TLXkj4RrpdITL1k57+FxQA6XNasgWF+5+oV9cmlLkkp0QBJ6iEcpXvbtQB7LF/k5PmzZVCFGUzrQXrjurqdXAejy+MuKtoMv5gKnL6/JkwEYONZcnli4D0TWiuXOZamOmOSmLZkT0gSgrPf3Z2D8xeX0VyDsHX7OTYr2Q7/gpLkEIGBiEwLI7yaAA7w3LWMeA2I/BOw2FHgNmLeXrzpbYlth02GtQaK01QoYFbgA7wOUuZsTXD3Ip8dRotaqEr/Vfagvx4MfeNlTdi+Ad4xRNbG0vgTqOCMQ19B9HKapN0/ZkBQ1xg==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NVxuUvek; dkim-atps=neutral; spf=pass (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=yan.y.zhao@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=YGSkuknc;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=NVxuUvek;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2405::602; helo=nam02-dm3-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (mail-dm3nam02on20602.outbound.protection.outlook.com [IPv6:2a01:111:f403:2405::602])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=yan.y.zhao@intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 63 seconds by postgrey-1.37 at boromir; Tue, 25 Feb 2025 18:10:12 AEDT
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z26xt3dxvz2ysX
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 17:24:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z27z86X4mz2ym2
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 18:10:12 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740467413; x=1772003413;
+  h=date:from:to:cc:subject:message-id:reply-to:references:
+   in-reply-to:mime-version;
+  bh=eTKW4tIj/TRozU+6PY5F6bbQAl+0TY6LvDgVxjRH2iM=;
+  b=NVxuUvekutsJHgi+z8NjfnFidyNkzOVRxuu4BdCvjnkLWQ5qJhwZRRUl
+   9Zr9BO/+JMpKsLq2MGzpxJ1ptwKzf3lZULoVpuVY2nC4ZekEahcV66alD
+   TdWN0+LBhocBhkxOQcJS8+aWihtcGopXx5ZCNuQbNdSNOI0prDz5YnLXu
+   MfsL6gTZY2FeJA+AOuuIznLd0hrbFcnPi34xWs5FvMsZI1zBHNaaDzVbt
+   QZB/hflu89d7A+Gbdn09geh03b0e24V/tzayj83STeDtg3BqY0924EjDa
+   ssaZPc7+87MAQJUIP0WoLCDh0rH9hrGD5+5LlxNl6lFt3mnTnnsIZIHGC
+   Q==;
+X-CSE-ConnectionGUID: 5AjROM9iSP2wFG2oyRG/Pg==
+X-CSE-MsgGUID: 48TzQiVlTK22LHVlZm0UCA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11355"; a="40494796"
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
+   d="scan'208";a="40494796"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Feb 2025 23:09:04 -0800
+X-CSE-ConnectionGUID: hl0N50cyScCx0qmFJdRd1A==
+X-CSE-MsgGUID: pOYuvs0uSj60P8N/F5CYJQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,313,1732608000"; 
+   d="scan'208";a="121398313"
+Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
+  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 24 Feb 2025 23:09:04 -0800
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.44; Mon, 24 Feb 2025 23:09:03 -0800
+Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.14 via Frontend Transport; Mon, 24 Feb 2025 23:09:03 -0800
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.43) by
+ edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.44; Mon, 24 Feb 2025 23:09:02 -0800
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=s1yLYXOtg5B4M6A1Lp5qqMIZkEZxe6utMO3hX7MI9rQw4d14hekNyjcNRr/Rz/qSx5biWJEJpHv8/lY4k6qGpG4aeJFY7hczDb4b2dUrzukjeSBzT7yfquTB1W9C5RetR8BWkK3MQsldyLvmq5fferYIlasGIrwGFFlC6PyK3Km3TWD+zGcINfG/pJKwDqLmgYFhf2NCAk2VgXhGg9uBleLQ7kfOdFpMReiaIqAxPqr66jQyhs4LqLqsWWfr2e4ZI2pzyGarVVTm+K09kosH5c6YRWYy7+VRANslAedCkFIe19TC5py9YnSn2NHsQDAlA1dTtsZZ373ryCr6hEnkpw==
+ b=VuAUjOU3BNEwz+lEczWn5mcBVF7o4zS9H/kq4VnhpqoPZFeHorMxSAykniqKJArlHba1af5AfoFruNCWoM6bbMLNmTVIIHM/Kj4wVA1mnfbSTtdA0D5b8xIZH5vFsnNBflU6+s30wgbmqfzFCCUGhSS9opFYPOu0X14j3ELcb/8MeQyGM7XOHc0kRX1hbtWMZwXY7JVbiJ0ELveH651W4gjDNeNpB2C2MOsFGhcz8jkKPniPnnAUNzXLR9fSnxhttP7V2rhDYlaL+85kraD41M4MKn+gwjjP854Lr0KfCZI4JAODapWYMInWzwsGUn9mMiQVoBkiiJ1EIHErFoZWog==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=PAQDT6oY5OcgdSN1C7jHGCMlq8FGau1ZD6szWSbL8XY=;
- b=WpynXwWUEz9McvmL48J+3VPSvVuRmZ8VRMPLzfGOEtj8n5q9YxCAJ7vueOtyD2y/RLS/lXrAiSRE5VaCsnIgIsGtdsTOQka/MZHFP6SPKaNbzOBtxmqR5pLHiDM6oye8rUc4bxu2RymMVkRQq3978+a4iyAUv3KoSzbYwA6oBM98/NGQM+yoGxi1l3yPT/4W8iQCTwtEB2ck3ZL4YGPYKjNzRJq78zOIq1pTscBuRcswsXXjyhOwtXnHHzC0BfWRgR9rBOD75gTkt6CfX9WK8R34H2tx2VIQ4XnVVJBWzGAL53vG1soCCebi+/pLyU8sR1ea5G/fa9g3FcwWCRKajw==
+ bh=SMcg7oV1LXKpFEumlGiY2hKhy5CGBtvnnB2HEmDiGfE=;
+ b=btgTtbW7n4RcQaYjQYPN5ddmtwtaYzwUUu5hcpSZ04X3noT2UW6b6tgW0AYP8aD/YUj5j+wV/40O5HuRVy2v7u9UTAqQiHbD1kCU+8himR8Ovs2iZIUFX5SSux2g2jnHkTGrYtqabmcnMGwGdIexwkakU6epmEWhPNCgnbKvVvzUNbTtqAtYQpkerCtjoEcpCV9CyUO8Fx5wEw/6RpdOOM/LuYGIn+xZ0lpPKBeCY3OWrKxZ65eIso0eYWLDSqds+n1w8MMoMAvwXzHt7hxWCbVS5x69Eej66Eo7NRErX2kitOEj+EwIsFG1n+yvghcTnnGl9drOuDrB3G5T9qfw/g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=PAQDT6oY5OcgdSN1C7jHGCMlq8FGau1ZD6szWSbL8XY=;
- b=YGSkukncqxbaaCWA1UlkVkYpVnXJGY2F0ZQEYHeLRwAmFP9h1O6nUuoUvcjifwgRpEhY3QwqbZgBF3hBqz1KKhWYfrlOdDCf1lU41OIMRhBOO+YUqiGJzeqDNHNhp35Ljdi2yOwyu0G+BsSr7/O0a506AjaRjpvZNjhvsfdxd4AK2AXK8UgJwvTrvreFPmttrFFvSNiVJ2keZ8YeC2V8fayFG1rb7DbB8aN4TG3KLvAuEHEvVGD3835mYQbOhUcMlgCvOHsyRVBoEPEHw2G4qjItUKcU1feKFl4RwFn2IBS1NEDe3ronfq8Wp0Hkxt+BrWZuyaMSNWNL6xbEv7y53g==
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
 Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
- SA0PR12MB7076.namprd12.prod.outlook.com (2603:10b6:806:2d5::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.20; Tue, 25 Feb
- 2025 06:23:40 +0000
-Received: from DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
- ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.8489.018; Tue, 25 Feb 2025
- 06:23:40 +0000
-Date: Tue, 25 Feb 2025 17:23:35 +1100
-From: Alistair Popple <apopple@nvidia.com>
-To: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: akpm@linux-foundation.org, dan.j.williams@intel.com, 
-	linux-mm@kvack.org, Alison Schofield <alison.schofield@intel.com>, 
-	lina@asahilina.net, zhang.lyra@gmail.com, vishal.l.verma@intel.com, 
-	dave.jiang@intel.com, logang@deltatee.com, bhelgaas@google.com, jack@suse.cz, 
-	jgg@ziepe.ca, catalin.marinas@arm.com, will@kernel.org, mpe@ellerman.id.au, 
-	npiggin@gmail.com, dave.hansen@linux.intel.com, ira.weiny@intel.com, 
-	willy@infradead.org, djwong@kernel.org, tytso@mit.edu, linmiaohe@huawei.com, 
-	david@redhat.com, peterx@redhat.com, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linuxppc-dev@lists.ozlabs.org, nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, linux-xfs@vger.kernel.org, 
-	jhubbard@nvidia.com, hch@lst.de, david@fromorbit.com, chenhuacai@kernel.org, 
-	kernel@xen0n.name, loongarch@lists.linux.dev, vgoyal@redhat.com, 
-	stefanha@redhat.com
-Subject: Re: [PATCH v8 20/20] device/dax: Properly refcount device dax pages
- when mapping
-Message-ID: <asvyejblo43qscvoqv5wpbpdhrjyf6o2tmj2qait2dmqpj7jnw@eqihgijwrkf5>
-References: <cover.a782e309b1328f961da88abddbbc48e5b4579021.1739850794.git-series.apopple@nvidia.com>
- <9d9d33b418dd1aab9323203488305085389f62c1.1739850794.git-series.apopple@nvidia.com>
- <20250220193334.0f7f4071@thinkpad-T15>
-Content-Type: text/plain; charset=us-ascii
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com (2603:10b6:8:71::6) by
+ CH2PR11MB8777.namprd11.prod.outlook.com (2603:10b6:610:283::6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8489.18; Tue, 25 Feb 2025 07:08:59 +0000
+Received: from DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca]) by DS7PR11MB5966.namprd11.prod.outlook.com
+ ([fe80::e971:d8f4:66c4:12ca%4]) with mapi id 15.20.8466.016; Tue, 25 Feb 2025
+ 07:08:59 +0000
+Date: Tue, 25 Feb 2025 15:07:36 +0800
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan
+	<maddy@linux.ibm.com>, Anup Patel <anup@brainfault.org>, Paul Walmsley
+	<paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+	<aou@eecs.berkeley.edu>, Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda
+	<imbrenda@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	<linux-arm-kernel@lists.infradead.org>, <kvmarm@lists.linux.dev>,
+	<kvm@vger.kernel.org>, <loongarch@lists.linux.dev>,
+	<linux-mips@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+	<kvm-riscv@lists.infradead.org>, <linux-riscv@lists.infradead.org>,
+	<linux-kernel@vger.kernel.org>, Aaron Lewis <aaronlewis@google.com>, "Jim
+ Mattson" <jmattson@google.com>, Rick P Edgecombe
+	<rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>, Isaku Yamahata
+	<isaku.yamahata@intel.com>
+Subject: Re: [PATCH 3/7] KVM: Assert that a destroyed/freed vCPU is no longer
+ visible
+Message-ID: <Z71sOEu7/ewnWZU2@yzhao56-desk.sh.intel.com>
+Reply-To: Yan Zhao <yan.y.zhao@intel.com>
+References: <20250224235542.2562848-1-seanjc@google.com>
+ <20250224235542.2562848-4-seanjc@google.com>
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-In-Reply-To: <20250220193334.0f7f4071@thinkpad-T15>
-X-ClientProxiedBy: SYCPR01CA0011.ausprd01.prod.outlook.com
- (2603:10c6:10:31::23) To CY8PR12MB7705.namprd12.prod.outlook.com
- (2603:10b6:930:84::9)
+In-Reply-To: <20250224235542.2562848-4-seanjc@google.com>
+X-ClientProxiedBy: SI2PR02CA0051.apcprd02.prod.outlook.com
+ (2603:1096:4:196::10) To DS7PR11MB5966.namprd11.prod.outlook.com
+ (2603:10b6:8:71::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,237 +131,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SA0PR12MB7076:EE_
-X-MS-Office365-Filtering-Correlation-Id: 48137162-3acb-403f-f57b-08dd5564f17a
+X-MS-TrafficTypeDiagnostic: DS7PR11MB5966:EE_|CH2PR11MB8777:EE_
+X-MS-Office365-Filtering-Correlation-Id: b7115154-ea32-41f4-6f38-08dd556b46cb
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|366016|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?kDiscbIc/TMogWEkacpAxOKtdhbNbYxh96mc6yJp19O4KnLokDdHidMTCtnT?=
- =?us-ascii?Q?w3f+p7hyBvExy1BfviNNWCL+CzaU6AFYWImW/wiVjAvBDW8Bp5ET5jzsU6EA?=
- =?us-ascii?Q?pYTIFC9AONL8E0YuBROYP4+N4RsWGugbzCXH0ih4Q1dOhC8Mz6Fz0+cHN4mW?=
- =?us-ascii?Q?B4Vz/KVFO4Ye/9YDykiLQ01YCrBKwHLGQug3GLngTgKTJcVssLuUpHZ05AeE?=
- =?us-ascii?Q?pXULbQEO68LnEPDaqnyP2uKb6deLvKVpErbMff81wqWmKR6jip2LCXESAiQ0?=
- =?us-ascii?Q?Uy+pFePe4u+4UEqKFUykeWokvNfpAHI9aJyg+faFnympp4Xy4KN3N6oozcrG?=
- =?us-ascii?Q?Ku82SjiqqDJVWNzgZ0q8GmmYTuzcI2qsvWiPckfQjLNpIz0NP85iaEOAsDlp?=
- =?us-ascii?Q?nOabidojdPfvgKZG3VaNptzI3ix+133QYaVlNsFeN5YaLdf+FJfqewCnX94e?=
- =?us-ascii?Q?CgYM6ups/SClDbXzsGLbYKUGQx6TCnpVBNzYEcgNi9E2i4pIs82LqxhPdmyy?=
- =?us-ascii?Q?5rTXnNuuVSafoyNsVNeiGU8w/JK+yS/XsvtJrg62DC1VH7xTDFDOanF6iW0/?=
- =?us-ascii?Q?h6IxN3k6/4NVoivIBkho0eDmKhKIzoVmoqMRyVpOPfchFTshTl48mFwICvOW?=
- =?us-ascii?Q?l/ahe5mfTUstzFjtwkgiqL9CyCMstSaaIghRgCXCd6ASCLVP8ae+rel1yb+P?=
- =?us-ascii?Q?pCFT8vSpmdOEgOnO0pRXishocoCBZO6eX1f6eKyQ5OPPY62Txqt+gSN1xExj?=
- =?us-ascii?Q?tcRm0M2vxvUX62oyKND4axY8RkEMLPZ4fRj9VmWsjR9Ohuw6DlJSwzQrLc98?=
- =?us-ascii?Q?JBd7CzqW/+Y7DYbGAEHrzktpjBI9FGI+m/JxePjKDUCfh2aWbpUzB7V6Eif8?=
- =?us-ascii?Q?yDoPdvbYCNCJPYbzALHHeauItW5E1co+kw1ljnzJ4qSoZ/wbB6+rcZTTEiL0?=
- =?us-ascii?Q?xbcCdi9CmV5h5LxDZbnnj4WC44nT6Vve2iTgJNQkfl9YmNmeX3ovY2KFij57?=
- =?us-ascii?Q?CIi+OqCczgUJvIQY1I9LQyAj1FYT58DfLTHAai6Chmjf9+8c74jEoKrSnnvl?=
- =?us-ascii?Q?M7ppF2P/l6hGNS4lErzTAdlPM9RdbHZfcRBcm4w1/sGvb6gXUndTtdREgyLt?=
- =?us-ascii?Q?KQ0kX77kTfgG1Lu63Pr1fyuItxPW5/Rm4i5iVbLysSEaiBuul2fTlUae1fei?=
- =?us-ascii?Q?ae0+7aMbibEsSpt6Hqwyw3NBfxG4qj9huDteHiuti6amvmj7zqtFkSC5du49?=
- =?us-ascii?Q?XZKQbWi/nJqkhASkJpjGYx3sxL22uEyutWtWXhUQoh6XH2n2NEIJ7KTQ53Kz?=
- =?us-ascii?Q?MdrrlGTqx7RF82N9qL1NuAdNEhX3XNoXJaNyzCmV6dL0ZOfldvhOqnTyYz78?=
- =?us-ascii?Q?LREjKyhaOv/tcpCRJ9fkWEcprx10?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024|7053199007;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?NNOpC3XG3aV5NG3Scy++IW05X2Frah4OjNFzgpiHW1pgoxathH2IyFCJOol/?=
+ =?us-ascii?Q?l5A2JC+R5dHfsL65olFA+tdvQE4r8PGMOS7Ju31vhrgZkZ9ehsK8VK4aatYv?=
+ =?us-ascii?Q?V39w8rQYnVjvN4DHdQ3IsjV5HbCDMOAgoQMJS/WzlC5mJ3cTAqdpu5oL1YZX?=
+ =?us-ascii?Q?820Be08zrpbD3Jk4DgTYYZIsCasA0Kbyl1RaTFaiNH/gMlUjmfkq+sOt8lvy?=
+ =?us-ascii?Q?C2/5uPFNKKpk2vYU7HTpsVvUpu5grrd236HkXB6QIM6j6i0phYmdOLW+rOlA?=
+ =?us-ascii?Q?JIMc7yd3fzqXyAYOR9mK/lGn3V3NSt8m6Z2TSYaYJaBhS8etsrGvgzA4/vHL?=
+ =?us-ascii?Q?UOb0FdIWys9AA+sda4isNxULMYm/xlzJKmnoNsgOQ1DtZqls2ZenEPucsj5l?=
+ =?us-ascii?Q?KS/4EDs28/Z4yyUKR51DfPTequdMoh7uImnNi25J9DvqPDYrOlaFFHayyQ4L?=
+ =?us-ascii?Q?Wqut3iNHk9gGmlaGLDDuFVOle+V2CeeJakfHZOG4gc9A9BWcPmxtjlOYnuE4?=
+ =?us-ascii?Q?69UFCrvIv+JgIz8hpWUoaLQCWjaUD7oEe3k6+xcNrxYlEZtfWgJ6Ibft8k2L?=
+ =?us-ascii?Q?ao9nWn7nQNt8BO+2HBCskGD0qmLPZxDv6PNa1R08qmynV3OZB1vrfNirfZPf?=
+ =?us-ascii?Q?+Kha8EaTzySU5YO9ENwA+SyYxirh+RMXtSDi565UuDCEESOXJY3pH6uDXZIp?=
+ =?us-ascii?Q?OCJz6nfGUclzikUCBELtP1AoA8sEyscjQLyQV6jJ03xXYr0nh6ZMX2wLTyX3?=
+ =?us-ascii?Q?FWjjc6YE4gdak/3K36yeAWohAgvMGun+p+Un1lTxL9+vAKknEdgCDKWBV46t?=
+ =?us-ascii?Q?pzcYxrWynJBFUCWrEnk+NBCnjFkYkCGI8iKNR7ZKR4VhqSuk4OxSO0CfKYb0?=
+ =?us-ascii?Q?/Tux+CqTPchiUHjy2GntWgexracKq8r6GEZ56OfrPZqKwcinPh3r6efHN3BD?=
+ =?us-ascii?Q?g+gNTObBuaWrfe4wRGieBGUvQHphALaldeCxDNtzIs5NhY0aaVB67kJQ3vP2?=
+ =?us-ascii?Q?G6J9+tPp2FeNCWtyc8NBWgZeZpdvf6S6bUkbjZQE4Mr1I6bOBGVSdGRFLiYv?=
+ =?us-ascii?Q?PFv+xUNQjJYOmE2qxisQ8YjR91VELEm420xYsDjgkBBptXMYpFA6JL8srFey?=
+ =?us-ascii?Q?M/DDp7IkeqBEMvIX6WU6AHoc8kMUcj3uQxu+yIPOdoq34wSjAh4NCnzwBXQG?=
+ =?us-ascii?Q?5Tw6eixuaoe9BLFvv5b09gGtrb8bncmuCkv3uJgr2LKLLFg+vryLXc30UmVB?=
+ =?us-ascii?Q?hVYvLcWjDlqHKc+qUv7eXa33S1fZMe6tWCBlFmC5n3K2z9zJ4AjRfojKUgcv?=
+ =?us-ascii?Q?5t97Eh7a4mX9Fwj5YKJfg14xIl1Oyb2GeMXqWMfuC1Xvg/RrXNTvA4zG0gZ8?=
+ =?us-ascii?Q?/fl+gvMHzMYaITfbfxEbljqbWFYF?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR11MB5966.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?K0BHBbo7rHv2DIee0rRFwnef7NRpc+gqFBM57jl9TQ89zJCnPpAvx4fmcMe7?=
- =?us-ascii?Q?w3QpklRHkdk5UuNemsco0/OQ19W35o4FVN26YycpRoXkrhq62KFIcymEgjfa?=
- =?us-ascii?Q?cOGEY/5Qi0tBwXkamKABLYPFFDxNBjWfTAr2DySPiLjlml8kK65ukFrR1c92?=
- =?us-ascii?Q?5YcoqdgUWQO06xnm7j2P2+T5odXDt4Awp7UPm7+xN6yxY2+EIW9N8KhmX0pS?=
- =?us-ascii?Q?MEULP7gKZ5LvL0DIZegK6ABIccYQZG1vGJCpPvFnASDmzcnWHoVv2RCMJNMJ?=
- =?us-ascii?Q?t5S7tybhejJFETpnSaCyELqFWCkeAsJP6i2hW/xhXuQEU2vTR/JfaImnJGya?=
- =?us-ascii?Q?YhSUYArrsvg4VdWEHbY5QMgmnx7NGMz5gG8Aw7ZkL34bjPoCccaLVuO59EzW?=
- =?us-ascii?Q?d2CmVOgnFH11LzAE7dXH0x+cDafGQl5b9HUruBa6Qf0MWD8vMi3B6onfk04P?=
- =?us-ascii?Q?3+zCIlHkViklwinjgcMfE7fEyHAzJo1tb3OtBhcs9F19k65m5aSviqyOSfcw?=
- =?us-ascii?Q?kSI982tQ5Pn80jGCM/Wswe1Jquxe/577+5k7hn5pIhsiTp53/qR3xyimeCnP?=
- =?us-ascii?Q?OWNvlmLLOY2ZuvhPdUCNSK3fG1NWY48ju3Wrx+PuuZB1VJKTOeKqPwB85znU?=
- =?us-ascii?Q?CbqdTZ7s4wLc7aJ/VH1hNRbfwhb9Ib558iZ65O/IBkfO8xiwmo/Jc0cLhY05?=
- =?us-ascii?Q?W6ZJEkyuLqN10zdcKzAkph4EcPWtb3sufX3SkO0zK3ZcPIMTUtTJldxOICVC?=
- =?us-ascii?Q?UhuIEUJHY9mjyIQsnmnnMncrQ25xMEydBZNDtXyaXW/zQTA/wbb8Ar+1vhIr?=
- =?us-ascii?Q?BwldMrt/y3GdLiMyx5pOP+qxhvWMnPx3obfurtF3f6sLyiZ4VJuHz/yru1Ey?=
- =?us-ascii?Q?oWrtlZIpU46KBzjSG6LXDrgvI2feP3T1uhvJM5oYtp3NOo84+9lvxz+DWbhC?=
- =?us-ascii?Q?9tlH9HjzoqruEWIMv2rSEfEkVRXOoBYn+IQQ7h83wN9Xo1Q5TbEsLLloeSbs?=
- =?us-ascii?Q?8kLOlMyT5FwVRWdx9Hj3pK3puG2a8ZiratQealwVUZuQtkvsT3dpO7GBVTTw?=
- =?us-ascii?Q?Jyw7KcUszKm2dz++WnLegKlhl/uxjg21gBAJQG994va7lViCqLa5ZACj7gS9?=
- =?us-ascii?Q?T3k5HI/0TmSSpGOO/Mxc50hXBGCifh96aYRUsk6E+oANJpAtGo90cUbMs1WW?=
- =?us-ascii?Q?ZE2uKkyHMKYURjx5kXEkCBWqF4hjR81VLnKzcDLSwOq5I7ar0Kr6VyOlhI9X?=
- =?us-ascii?Q?INx+mY3EcIR8LTVMdpXufYOZX8Kqmv1mIBJUFlvzqtbIjYi2fEYqpwU6AiYA?=
- =?us-ascii?Q?rl4xW4RqGFjtZ/cpDNXLGJ0O3w9JpHDOnxlVMEgHtllo754ZOSvkXDwT4WAo?=
- =?us-ascii?Q?60kkYbxrM6cxwzLV7sKUBt13czLVbECpbQ7Jt2k8eE+/2dw6+Hl0BZ5WXpPl?=
- =?us-ascii?Q?UsWfWR/6HYQfpzKGFjsjqiO+/NDROEYZSsoVG69DZOkJE2SXEkknvXe2UfV+?=
- =?us-ascii?Q?F4HSlCvys0StzVVnbDPX1mQvrszaajCLWoJOs1hFW7OW+uex3rKWqivj0HUa?=
- =?us-ascii?Q?4iTa1iFsx/QBZRwAuOm8bllr990DP9ahSYWNIZow?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 48137162-3acb-403f-f57b-08dd5564f17a
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR12MB7705.namprd12.prod.outlook.com
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?7J1miUGVZAH/kHXubyQ4DNTdbAvP6CGGafgIvapufRQHwoOw5S3Wosk+pTEJ?=
+ =?us-ascii?Q?MdH/jxKtCkVfh5nobxWyBbiKcNm5jalMH3fRkYTD6kBpB6Fh+Ohd1rQN3p/W?=
+ =?us-ascii?Q?NUptsJp0TtuNy6jBn5Gi/DcB8Mp39cZd04cgO8wBPaT8JjZ/XYqB/X9uUP5h?=
+ =?us-ascii?Q?XnTmDVBhlcGDTCOaYlMYsRHZHekVO4wQCoqhRZg+VCeLz3IXnEPv1uv3UkwH?=
+ =?us-ascii?Q?YTOaGkngLVar9RmR1ONhTbcDqPaqeflnSSegjw2k/tpUXfJ4/jncPEn2B6qt?=
+ =?us-ascii?Q?S6F8/q2dWwClhkH84Feymy8RJ/R74FiAth7B+wrtxTLKkg4NYai02OA2hEmv?=
+ =?us-ascii?Q?Mfxv226mIvn6FHqcqHqKgROKX+I0i2i8zyWSfrcPJ3wEJqdSArfzS/GXsAji?=
+ =?us-ascii?Q?6J2rHIHsWYGyc1a1qRIJ6i2KR3t3P6gPH2KJeU6i9RH5YGpVhTwn5YD39p51?=
+ =?us-ascii?Q?CHnzSv4TNKul5sOngdp/F79MZddTVvqHDwdwWjGv4Ur4S6FcQvBBsFzIvpT7?=
+ =?us-ascii?Q?708+phKGxjRSzA+iV89JBN5KUFccLCuitR3jTEet3MSCfMcYU0OJ9iksq0wM?=
+ =?us-ascii?Q?OtkRcY6WxlOMyFLacXSyjrlaO7Yviyauqkwtg1EBwEeA5wDp88ZI4ZnQxMF7?=
+ =?us-ascii?Q?BZi2lh/Eq0FWwVf/3ajvQKl+GOFvpnmamjXF75vInwDvUyfAE5vLcF5Qq636?=
+ =?us-ascii?Q?Lzy+zA7UAfujSoMCglrd3q+zJnC76AaL/qowMXf30thWGhUeuuOedZaty6y4?=
+ =?us-ascii?Q?cv72mw2lQO+szcLsadrw+sZ59twIl25utQCAcayJP/BofC+ovsPmCKILknLH?=
+ =?us-ascii?Q?R1XTTIHBMHrSaGgdPjWoThm+kumG9zeaDc6L5d74uya9ur+5rPzQrlcL8uWd?=
+ =?us-ascii?Q?9VCPYuOIuXME+UGFx1ZJyX95B2afIC6/0ZZ2BT7bHbg2HgpEVYZstzBhXDAF?=
+ =?us-ascii?Q?LBKZcRSoxtkTCpLH0pUD6q4qO8KsPGRYsN+yU1cdMzA8TIUHx5GbypPmo812?=
+ =?us-ascii?Q?mpBXRy3dV4gMyKl6g4bf/345O+Ypfuef8y5VzCivj4IAlLzV7SBx3+RAaBgc?=
+ =?us-ascii?Q?8WRKb6StoLJXtsEN8fV2jG5nJu7qJofsXWOXpiQNdz7zAvarFqnDagfFp9mT?=
+ =?us-ascii?Q?TeE1ZTLgp9QpSJEuaguVkXE8ANyESEwzS6LttLj5x4nGwb/CpIKsAnuC05dQ?=
+ =?us-ascii?Q?koBmDcQq9aTfPPQTJLAGm7QYT0K6h8nBYVsxnT4kHW6BWLShvoHd7+9gBII9?=
+ =?us-ascii?Q?4Yw2XT2R2pRK5G83vaziWszCeBwb0LVLHHlbfDZD2pLiYq6jnitdeJpOoOVD?=
+ =?us-ascii?Q?1Eo4TmE30cjJ22uiBh4eV0FLpLw1DCZ//c/eRDTLYkIYoSrQTPsv/pZ+6hg7?=
+ =?us-ascii?Q?W8dodXkx8/FNTjWRFtA/exuTGsKTR/mIYeAJL2457/xtISxbfQog+38II9Nu?=
+ =?us-ascii?Q?ECaESGll+CsIzAWkmBDsWw+MT+G4WjbHXP+I8LKm0ceU2FuWkU/ulV/Xrh11?=
+ =?us-ascii?Q?dAV/VEqJbDiWMO27Lt6kxWVJLz8S9hW2SjwjgWpwEkKsO6XBYQ8t2o7XmbLA?=
+ =?us-ascii?Q?FnTmzGqPXHzSF9XapWxhgatdGZm52bil+brXstjf?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: b7115154-ea32-41f4-6f38-08dd556b46cb
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR11MB5966.namprd11.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 06:23:39.9737
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Feb 2025 07:08:59.5466
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: /PvPd10RDT7xwb8wqf3VkLsOrCUbeBkIIS0HqmXND10Eu9MB6pPYaQ8vaTHqBQJyVuZClzFdhbVUurl2uMrCZw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7076
-X-Spam-Status: No, score=-0.4 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+X-MS-Exchange-CrossTenant-UserPrincipalName: Gm6KSgUaiPOqhmWPyuhNptHBci3vufBKWkhCUqaIhlJIfW0tRLSgHrpcqOleYUx1AtM6/jrSkN7eyQFRI8gNLA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH2PR11MB8777
+X-OriginatorOrg: intel.com
+X-Spam-Status: No, score=-2.7 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, Feb 20, 2025 at 07:33:34PM +0100, Gerald Schaefer wrote:
-> On Tue, 18 Feb 2025 14:55:36 +1100
-> Alistair Popple <apopple@nvidia.com> wrote:
+On Mon, Feb 24, 2025 at 03:55:38PM -0800, Sean Christopherson wrote:
+> After freeing a vCPU, assert that it is no longer reachable, and that
+> kvm_get_vcpu() doesn't return garbage or a pointer to some other vCPU.
+> While KVM obviously shouldn't be attempting to access a freed vCPU, it's
+> all too easy for KVM to make a VM-wide request, e.g. via KVM_BUG_ON() or
+> kvm_flush_remote_tlbs().
 > 
-> [...]
-> > diff --git a/mm/memremap.c b/mm/memremap.c
-> > index 9a8879b..532a52a 100644
-> > --- a/mm/memremap.c
-> > +++ b/mm/memremap.c
-> > @@ -460,11 +460,10 @@ void free_zone_device_folio(struct folio *folio)
-> >  {
-> >  	struct dev_pagemap *pgmap = folio->pgmap;
-> >  
-> > -	if (WARN_ON_ONCE(!pgmap->ops))
-> > -		return;
-> > -
-> > -	if (WARN_ON_ONCE(pgmap->type != MEMORY_DEVICE_FS_DAX &&
-> > -			 !pgmap->ops->page_free))
-> > +	if (WARN_ON_ONCE((!pgmap->ops &&
-> > +			  pgmap->type != MEMORY_DEVICE_GENERIC) ||
-> > +			 (pgmap->ops && !pgmap->ops->page_free &&
-> > +			  pgmap->type != MEMORY_DEVICE_FS_DAX)))
+> Alternatively, KVM could short-circuit problematic paths if the VM's
+> refcount has gone to zero, e.g. in kvm_make_all_cpus_request(), or KVM
+> could try disallow making global requests during teardown.  But given that
+> deleting the vCPU from the array Just Works, adding logic to the requests
+> path is unnecessary, and trying to make requests illegal during teardown
+> would be a fool's errand.
 > 
-> Playing around with dcssblk, adding devm_memremap_pages() and
-> pgmap.type = MEMORY_DEVICE_FS_DAX, similar to the other two existing
-> FS_DAX drivers drivers/nvdimm/pmem.c and fs/fuse/virtio_fs.c, I hit
-> this warning when executing binaries from DAX-mounted fs.
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  virt/kvm/kvm_main.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 > 
-> I do not set up pgmap->ops, similar to fs/fuse/virtio_fs.c, and I don't see
-> why they would be needed here anyway, at least for MEMORY_DEVICE_FS_DAX.
-> drivers/nvdimm/pmem.c does set up pgmap->ops, but only ->memory_failure,
-> which is still good enough to not trigger the warning here, probably just
-> by chance.
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index 201c14ff476f..991e8111e88b 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -489,6 +489,14 @@ void kvm_destroy_vcpus(struct kvm *kvm)
+>  	kvm_for_each_vcpu(i, vcpu, kvm) {
+>  		kvm_vcpu_destroy(vcpu);
+>  		xa_erase(&kvm->vcpu_array, i);
+> +
+> +		/*
+> +		 * Assert that the vCPU isn't visible in any way, to ensure KVM
+> +		 * doesn't trigger a use-after-free if destroying vCPUs results
+> +		 * in VM-wide request, e.g. to flush remote TLBs when tearing
+> +		 * down MMUs, or to mark the VM dead if a KVM_BUG_ON() fires.
+> +		 */
+> +		WARN_ON_ONCE(xa_load(&kvm->vcpu_array, i) || kvm_get_vcpu(kvm, i));
+As xa_erase() says "After this function returns, loading from @index will return
+%NULL", is this checking of xa_load() necessary?
 
-Yes, I think so. And you can guess which driver I've done all my testing
-with.
-
-> Now I wonder:
-> 1) What is this check / warning good for, when this function only ever
->    calls pgmap->ops->page_free(), but not for MEMORY_DEVICE_FS_DAX and
->    not for MEMORY_DEVICE_GENERIC (the latter only after this patch)?
-> 2) Is the warning also seen for virtio DAX mappings (added Vivek and
->    Stefan on CC)? No pgmap->ops set up there, so I would guess "yes",
->    and already before this series, with the old check / warning.
-
-Right, I simply updated the warning to reflect what should have been
-happening prior to this change. However looking again I don't think
-free_zone_device_folio() is ever called for MEMORY_DEVICE_FS_DAX pages. Instead
-put_devmap_managed_folio_refs() would have returned false and cause most paths
-to skip calling free_zone_device_folio().
-
-The only path that doesn't do that appears to be `folio_put()`. That probably
-should also be calling put_devmap_managed_folio_refs(), I'm not sure why it
-doesn't.
-
-> 3) Could this be changed to only check / warn if pgmap->ops (or maybe
->    rather pgmap->ops->page_free) is not set up, but not for
->    MEMORY_DEVICE_GENERIC and MEMORY_DEVICE_FS_DAX where this is not
->    being called?
-
-Oh I think I know what actually happened. Earlier versions of my patch series
-did define a pgmap->ops->page_free() callback for MEMORY_DEVICE_FS_DAX but
-review comments suggested I just do all the was required directly in the switch
-statement. Obviously I forgot to update the check when I removed the need
-for pgmap->ops->page_free and having pgmap->ops->memory_failure defined was
-sufficient to (accidentally) get past the check.
-
-So yeah, the check is wrong. It shouldn't require pgmap->ops to be defined for
-MEMORY_DEVICE_FS_DAX or MEMORY_DEVICE_GENERIC.
-
-> 4) Or is there any reason why pgmap->ops would be required for
->    MEMORY_DEVICE_FS_DAX?
-
-Nope.
-
-> Apart from the warning, we would also miss out on the
-> wake_up_var(&folio->page) in the MEMORY_DEVICE_FS_DAX case, when no
-> pgmap->ops was set up. IIUC, even before this change / series (i.e.
-> for virtio DAX only, since dcssblk was not using ZONE_DEVICE before,
-> and pmem seems to work by chance because they have ops->memory_failure).
-
-See __put_devmap_managed_folio_refs() - the wake_up_var() was there to intercept
-the 2->1 refcount transition. Now the wake_up_var() needs to happen on 1->0,
-hence why it got moved to free_zone_device_page().
-
-> >  		return;
-> >  
-> >  	mem_cgroup_uncharge(folio);
-> > @@ -494,7 +493,8 @@ void free_zone_device_folio(struct folio *folio)
-> >  	 * zero which indicating the page has been removed from the file
-> >  	 * system mapping.
-> >  	 */
-> > -	if (pgmap->type != MEMORY_DEVICE_FS_DAX)
-> > +	if (pgmap->type != MEMORY_DEVICE_FS_DAX &&
-> > +	    pgmap->type != MEMORY_DEVICE_GENERIC)
-> >  		folio->mapping = NULL;
-> >  
-> >  	switch (pgmap->type) {
-> > @@ -509,7 +509,6 @@ void free_zone_device_folio(struct folio *folio)
-> >  		 * Reset the refcount to 1 to prepare for handing out the page
-> >  		 * again.
-> >  		 */
-> > -		pgmap->ops->page_free(folio_page(folio, 0));
-> 
-> Ok, this is probably the reason why you adjusted the check above, since
-> no more pgmap->ops needed for MEMORY_DEVICE_GENERIC.
-> Still, the MEMORY_DEVICE_FS_DAX case also does not seem to need
-> pgmap->ops, and at least the existing virtio DAX should already be
-> affected, and of course future dcssblk DAX.
-> 
-> But maybe that should be addressed in a separate patch, since your changes
-> here seem consistent, and not change or worsen anything wrt !pgmap->ops
-> and MEMORY_DEVICE_FS_DAX.
-
-Nah, I think the check is wrong and needs fixing here.
-
-> >  		folio_set_count(folio, 1);
-> >  		break;
-> >  
-> 
-> For reference, this is call trace I see when I hit the warning:
-
-Well thanks for testing this and for posting these results.
-
-> [  283.567945] ------------[ cut here ]------------
-> [  283.567947] WARNING: CPU: 12 PID: 878 at mm/memremap.c:436 free_zone_device_folio+0x6e/0x140
-> [  283.567959] Modules linked in:
-> [  283.567963] CPU: 12 UID: 0 PID: 878 Comm: ls Not tainted 6.14.0-rc3-next-20250220-00012-gd072dabf62e8-dirty #44
-> [  283.567968] Hardware name: IBM 3931 A01 704 (z/VM 7.4.0)
-> [  283.567971] Krnl PSW : 0704d00180000000 000001ec0548b44a (free_zone_device_folio+0x72/0x140)
-> [  283.567978]            R:0 T:1 IO:1 EX:1 Key:0 M:1 W:0 P:0 AS:3 CC:1 PM:0 RI:0 EA:3
-> [  283.567982] Krnl GPRS: 0000000000000038 0000000000000000 0000000000000003 000001ec06cc42e8
-> [  283.567986]            00000004cc38e400 0000000000000000 0000000000000003 0000000093eacd00
-> [  283.567990]            000000009a68413f 0000016614010940 000000009553a640 0000016614010940
-> [  283.567994]            0000000000000000 0000000000000000 000001ec0548b416 0000016c05da3bf8
-> [  283.568004] Krnl Code: 000001ec0548b43e: a70e0003		chi	%r0,3
->                           000001ec0548b442: a7840006		brc	8,000001ec0548b44e
->                          #000001ec0548b446: af000000		mc	0,0
->                          >000001ec0548b44a: a7f4005f		brc	15,000001ec0548b508
->                           000001ec0548b44e: c00400000008	brcl	0,000001ec0548b45e
->                           000001ec0548b454: b904002b		lgr	%r2,%r11
->                           000001ec0548b458: c0e5001dcd84	brasl	%r14,000001ec05844f60
->                           000001ec0548b45e: 9101b01f		tm	31(%r11),1
-> [  283.568035] Call Trace:
-> [  283.568038]  [<000001ec0548b44a>] free_zone_device_folio+0x72/0x140 
-> [  283.568042] ([<000001ec0548b416>] free_zone_device_folio+0x3e/0x140)
-> [  283.568045]  [<000001ec057a4c1c>] wp_page_copy+0x34c/0x6e0 
-> [  283.568050]  [<000001ec057ac640>] __handle_mm_fault+0x220/0x4d0 
-> [  283.568054]  [<000001ec057ac97e>] handle_mm_fault+0x8e/0x160 
-> [  283.568057]  [<000001ec054ca006>] do_exception+0x1a6/0x450 
-> [  283.568061]  [<000001ec06264992>] __do_pgm_check+0x132/0x1e0 
-> [  283.568065]  [<000001ec0627057e>] pgm_check_handler+0x11e/0x170 
-> [  283.568069] Last Breaking-Event-Address:
-> [  283.568070]  [<000001ec0548b428>] free_zone_device_folio+0x50/0x140
-> [  283.568074] ---[ end trace 0000000000000000 ]---
+>  	}
+>  
+>  	atomic_set(&kvm->online_vcpus, 0);
+> -- 
+> 2.48.1.658.g4767266eb4-goog
 > 
 
