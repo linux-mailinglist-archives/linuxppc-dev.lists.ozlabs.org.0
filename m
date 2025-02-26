@@ -1,76 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-6479-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6480-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AB0A45438
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2025 04:59:38 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF00A45490
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2025 05:34:45 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z2ghl5XMnz309h;
-	Wed, 26 Feb 2025 14:59:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z2hTG3LG4z30Vm;
+	Wed, 26 Feb 2025 15:34:42 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740542375;
-	cv=none; b=PpRQDW6WP7FQ46hsYa4FyHc4qsDbVDzmB++SD1+0AwTIIaGo/P3vT8AJvkuidTw+B9mmjK88jHMZZoCpVF7zQmlqmYBWTGVOkj0sqOFpKYGImEMF6ZnDXLfX3lX6x3YhC3HPw++xhngwIMW3LvDjKaV4MfKGUICYdl3uyOhJ0aJPkwD/Hc3/Kccbnj79FYF81EuXsEDDj/dCVzi1gzGfmIJDhf48iJeDIL/03fgA4VGuplghMDY5rKcNZ3+EEegA7FNRVcKcL586GC6aUdawbuWo6XCd5FD9fKyRoALs1k2peL/7FHKo7RglHISZOYit/4rU38gmJINpIrVhKXae/w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740544482;
+	cv=none; b=OkzAO8zb7bpy9SN4SwdgM9puGqbg6BxZtGQjyZELOAtQAmO1SDABnepUSO8qPDtZPB0koRZoNvU9699a/LsSmT8gmHHk3KTs9CfnKV9FkACLCg2JFyUVdwiNaDKwfav48/lRtcod0xd4JR6YEm7PMya9GHx+lJa3jNHo+LphP7nA3+CvdB/ENwqAvDi81DbI2lbHHouXaCdNJZOQggug8g1eKdUjx0SmdfPxOu9FV9jphStyMSEIPCm3KcEDUg31x5H1EhIumNm8B6tTgyKw7V/jA1JU9VCk3MYKkx+zOAILhdwQMxmLji/jzRS/+CUkERQWWp2u/UXkL2JF8WPwXw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740542375; c=relaxed/relaxed;
-	bh=lbb2EYaTqrYLW/hbRhQ7MvoeKzpm8rT2BSNrqeTkGZc=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=M1NimaPjiiMiNs3AFvDnmsuQMzYjgjEmnO7V7ueI+9Q+U+r4qvsX4O9kXY6smyuN6dKpyFulpN3sjrn6qpOxXLrd+uJNDOTGyAwEhhgdruS+gQYgrCaLfJoZFUWVh1b/LTHc2rEzh0dsuyG4Lu7D2zG/WZbx4y9Pq7xoZ5catrImO2gou6m5PzbIm8huXg2fyz2djzaP4cN6p3tqPLXBSatU0olyiNviYOFBoWNagGRYq84nzeTLmbfqMdYfUTMjQKS8zg2VpSwofJh7eyhtVlGx5+YkKIKX89YPiUlGBc6BBTqjdRfNRtUKIOi0sZJ/gY7AvSMlQtTvkFY2XyJNpg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ITac/vdw; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1740544482; c=relaxed/relaxed;
+	bh=7tedU9NDUsqrSOi+PebCz+3rT3C4hD1EkQke716E/+w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LC+DkBbPVvtMFIV3OPsGcHJ7WiD/bOUjKwUZPTRGnGjxbgWlwT7GEC2K75ZzFAibXHVU33VL7TGRwejs/5dZYCJYUqqJF1e3q2ZUrn8YNgUuYWTBMLj5I6BUWyuwR0rB6anLvOUCuRyta14r5KMWVfK/VseoL1+BU+8azjW8gE1D6rmGxI0EIIl0WyVe4VTWSbXANryw120ScznF1TsvxhT/Aj5bn5eVl2sUY9wxOwCivi+K2DXem8B4XM2JJ7yZ53SbCVNt60d+dQUsRpCqs/AWrmC4osOZdie216Kthzkr2t/+EEwsqIL6HljnoiFW0LaSCJ2wk0qPrH1oClo3ZQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PSXE/WT9; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ITac/vdw;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PSXE/WT9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z2ghk5W8Hz3028
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2025 14:59:34 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q1kqMD028572;
-	Wed, 26 Feb 2025 03:59:19 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z2hTF2g5fz30Vg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2025 15:34:40 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q1nWSN032358;
+	Wed, 26 Feb 2025 04:34:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=lbb2EYaTqrYLW/hbRhQ7MvoeKzpm
-	8rT2BSNrqeTkGZc=; b=ITac/vdweHEqKLHUFprLC0DoifcdK2JatGG02ZwLT6B2
-	7YsNXlvQqQgCQAQgJ6Z/gEMOKyo9ojkHylfHmijgXYNAxKKfMHej3oSP+4YpsV6l
-	D2i1jDxAUWne+OG0uRqvW1bpOIvUGkBKt9VqcjxZACZV0tPA8g3vcYX15sxnU+xi
-	sB/eZVfxWN+Tw5jysFUm+r6RXuWdBPSUIA+pP9k7SQRRN1TMaFhBObY9a+gT/rop
-	FGMoYXh5O3plMJMgmHZpJl1POhKNkGn6gD2tcM62DN8TfN9UYJjh0C4iKmRtLPjw
-	+u26Qjwl9K1IROSy3tHiAPURgw8JwvYGdSHV5JzsGw==
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=7tedU9NDUsqrSOi+PebCz+3rT3C4hD1EkQke716E/
+	+w=; b=PSXE/WT9AYaJ6DOQSkTOMKvJyQzw41pVZCXMooSMoXfBQuRlprSFri7bp
+	pI3hnW5dRprxnQT1WofTyNUBfGzoNVRUk/e0+UPyIIXGjl6tIHUQ6mXFU+CDF7IR
+	ZamTfAIIxX9UxqeTrIOc0/5C8JGsFTs838HrcCPAkMRUBRlsgA8okQtg8biGrWL3
+	yOIOlYV2upZuPqopPo6pqjF3sbrzEIdYspb/XtTF6F7wexxpst1EvJnZFy84QhoL
+	zFRUo1DdcIuuWTs881dyIzZRKDovzY2au2/FgIl3OOQREZi3eYFq9VwRxTuba2Ih
+	lwJxe5Xsi4GfTz0sUYg/raR+8AORA==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451q5m8xug-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451q5j93w2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 03:59:18 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51Q3xIQ2023050;
-	Wed, 26 Feb 2025 03:59:18 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451q5m8xtt-1
+	Wed, 26 Feb 2025 04:34:36 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51Q4YaNY031773;
+	Wed, 26 Feb 2025 04:34:36 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451q5j93w1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 03:59:18 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q08TD6026354;
-	Wed, 26 Feb 2025 03:59:02 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswngma6-1
+	Wed, 26 Feb 2025 04:34:36 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q3ERe8012491;
+	Wed, 26 Feb 2025 04:34:34 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44ys9ygys1-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Feb 2025 03:59:02 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51Q3x2CD21234144
+	Wed, 26 Feb 2025 04:34:34 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51Q4YUm418284818
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Feb 2025 03:59:02 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A0245805F;
-	Wed, 26 Feb 2025 03:59:02 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E9D4658043;
-	Wed, 26 Feb 2025 03:58:55 +0000 (GMT)
-Received: from [9.43.65.188] (unknown [9.43.65.188])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 26 Feb 2025 03:58:55 +0000 (GMT)
-Message-ID: <8ce77d4d-cd19-472b-a526-0c80feb2b028@linux.ibm.com>
-Date: Wed, 26 Feb 2025 09:28:52 +0530
+	Wed, 26 Feb 2025 04:34:31 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D291F2004B;
+	Wed, 26 Feb 2025 04:34:30 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D9C0C20040;
+	Wed, 26 Feb 2025 04:34:29 +0000 (GMT)
+Received: from ltczz402-lp1.aus.stglabs.ibm.com (unknown [9.40.194.31])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 26 Feb 2025 04:34:29 +0000 (GMT)
+From: Donet Tom <donettom@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Ritesh Harjani <ritesh.list@gmail.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+        Donet Tom <donettom@linux.ibm.com>
+Subject: [PATCH] book3s64/radix : Align section vmemmap start address to PAGE_SIZE
+Date: Tue, 25 Feb 2025 22:34:26 -0600
+Message-ID: <20250226043426.224494-1-donettom@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,84 +90,95 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andrew Donnellan <ajd@linux.ibm.com>,
-        Bagas Sanjaya
- <bagasdotme@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.14-4 tag
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 0y8MZNw5xkoeLVax816qcmv3mZpeSElb
-X-Proofpoint-ORIG-GUID: SZz9kxXELDzWkYv7JjrGO4rsdSsu0lR-
+X-Proofpoint-GUID: AxWna98M9pNDc1aVhj0p_dLCna93W769
+X-Proofpoint-ORIG-GUID: 38HTTc-eoC5oTg3433LvBSgNuvYEC7lE
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-02-25_08,2025-02-25_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
- priorityscore=1501 impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0
- suspectscore=0 mlxlogscore=679 mlxscore=0 lowpriorityscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502260029
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ mlxlogscore=999 phishscore=0 adultscore=0 clxscore=1015 bulkscore=0
+ priorityscore=1501 mlxscore=0 spamscore=0 lowpriorityscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502260033
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
------BEGIN PGP SIGNED MESSAGE-----
-Hash: SHA256
+A vmemmap altmap is a device-provided region used to provide
+backing storage for struct pages. For each namespace, the altmap
+should belong to that same namespace. If the namespaces are
+created unaligned, there is a chance that the section vmemmap
+start address could also be unaligned. If the section vmemmap
+start address is unaligned, the altmap page allocated from the
+current namespace might be used by the previous namespace also.
+During the free operation, since the altmap is shared between two
+namespaces, the previous namespace may detect that the page does
+not belong to its altmap and incorrectly assume that the page is a
+normal page. It then attempts to free the normal page, which leads
+to a kernel crash.
 
-Hi Linus,
+In this patch, we are aligning the section vmemmap start address
+to PAGE_SIZE. After alignment, the start address will not be
+part of the current namespace, and a normal page will be allocated
+for the vmemmap mapping of the current section. For the remaining
+sections, altmaps will be allocated. During the free operation,
+the normal page will be correctly freed.
 
-Please pull powerpc fix for 6.14:
+Without this patch
+==================
+NS1 start               NS2 start
+ _________________________________________________________
+|         NS1               |            NS2              |
+ ---------------------------------------------------------
+| Altmap| Altmap | .....|Altmap| Altmap | ...........
+|  NS1  |  NS1   |      | NS2  |  NS2   |
 
-The following changes since commit d262a192d38e527faa5984629aabda2e0d1c4f54:
+In the above scenario, NS1 and NS2 are two namespaces. The vmemmap
+for NS1 comes from Altmap NS1, which belongs to NS1, and the
+vmemmap for NS2 comes from Altmap NS2, which belongs to NS2.
 
-  powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC (2025-02-12 14:38:13 +0530)
+The vmemmap start for NS2 is not aligned, so Altmap NS2 is shared
+by both NS1 and NS2. During the free operation in NS1, Altmap NS2
+is not part of NS1's altmap, causing it to attempt to free an
+invalid page.
 
-are available in the git repository at:
+With this patch
+===============
+NS1 start               NS2 start
+ _________________________________________________________
+|         NS1               |            NS2              |
+ ---------------------------------------------------------
+| Altmap| Altmap | .....| Normal | Altmap | Altmap |.......
+|  NS1  |  NS1   |      |  Page  |  NS2   |  NS2   |
 
-  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.14-4
+If the vmemmap start for NS2 is not aligned then we are allocating
+a normal page. NS1 and NS2 vmemmap will be freed correctly.
 
-for you to fetch changes up to eff2eb592efd73f00590d578c3d6021f604df62c:
+Fixes: 368a0590d954("powerpc/book3s64/vmemmap: switch radix to use a different vmemmap handling function")
+Co-developed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+---
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-  cxl: Fix cross-reference in documentation and add deprecation warning (2025-02-19 13:33:58 +0530)
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 311e2112d782..b22d5f6147d2 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -1120,6 +1120,8 @@ int __meminit radix__vmemmap_populate(unsigned long start, unsigned long end, in
+ 	pmd_t *pmd;
+ 	pte_t *pte;
+ 
++	start = ALIGN_DOWN(start, PAGE_SIZE);
++
+ 	for (addr = start; addr < end; addr = next) {
+ 		next = pmd_addr_end(addr, end);
+ 
+-- 
+2.43.5
 
-- ------------------------------------------------------------------
-powerpc fix for 6.14 #4
-
- - Fix for cross-reference in documentation and deprecation warning
-
-Thanks to: Andrew Donnellan, Bagas Sanjaya
-
-- ------------------------------------------------------------------
-Andrew Donnellan (1):
-      cxl: Fix cross-reference in documentation and add deprecation warning
-
-
- Documentation/arch/powerpc/cxl.rst | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
------BEGIN PGP SIGNATURE-----
-
-iQIzBAEBCAAdFiEEqX2DNAOgU8sBX3pRpnEsdPSHZJQFAme+kI4ACgkQpnEsdPSH
-ZJTRHg//cAiqHzzrYX9jErT/3QGrvjRLIUUSlZxXKnS1pObH1IjryIR+KXVh6Jsh
-IKuKRFtWGIiffX829hd7kwfVQ15T5iK0dIR4q2kFxWf4x6Znd1AUyVjrUTiGzs/R
-iP3JMItipD/q3uFfdJR/Dy0H4oV8/F+53g++m9EteZErBLvYjutq53mq9d40Teiw
-K+n21GVToZ5sHafILA9wRrj1MzkWhzFqZl84s9SV2ReBCTYSx2KixWXWFNLf4dvJ
-ynFPJIka1x3IZB4Lv6GlwxgRkUT3YMSrcMEKd4s2kWrPRxTBKd4Rvo6OjoGWleV8
-C7IunJtSABJDXuSAKq6S0cF0cvDbs6E8nMJEXjYwFKgNL0OWVBa38YEsSuVXndcy
-YdROZtHEjx9vNK+APpLZSaDD6TcShqCICgSccWSLFKssdsL0//ZRn7M1VKsqJ2La
-3RvXl5I1Uf7hxGAE/O4nfATW0SrYNUrXU4b4uSAnEBGzDI6Ot73XE+UXEao4y2bH
-c97IthhClqW3WD+mV/+3jFArK6QatEls4lsK6TqKYLdTjfaLTHdzs/SYkt9SYT1u
-XMfhDy5eg5WjjyxAQGbhuF+yu/Ljws+uRuALIalGpLCL/KFI8wsaaOYBKRLtt4Yl
-gSdsNDRFP4AJFZVwEM1ypC/xQ0uSU76LSsdcareljrzkrgiDi/8=
-=7YO9
------END PGP SIGNATURE-----
 
