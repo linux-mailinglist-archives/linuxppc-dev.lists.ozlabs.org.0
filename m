@@ -1,68 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-6478-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6479-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82538A4516F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2025 01:27:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97AB0A45438
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2025 04:59:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z2b0C3Nw6z30Vl;
-	Wed, 26 Feb 2025 11:27:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z2ghl5XMnz309h;
+	Wed, 26 Feb 2025 14:59:35 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1049"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740529659;
-	cv=none; b=VHo+YhMCECAUPfFFAtzz2zua7+eAe8Wc9dXz/c6ncTf7VpYlQ2dFX0P8hjJJZylHT2nN2H4argsFx2IvvOXNe12LH0+GzS7+/HXbr3XuUx0B4Ui4XtNMjlgYOQdPToBD/Kmqvf2WnUjZjqhgq3pluVSvQu8bY+I/F2u5wOLF3iOqYyehtKwaaGJL2iDPcbpXtT1QYG+oPMX+9awYj57PcBN0BNTn6Jq4iiDiopapCRX0Tjp01/Tvrey+pulq9/g/vxiqVQM7vkrxePRdiVEskIHm0kIIB0PW3dY0aQ1DESAidF3u9mA63EjsJvnrlCfT8vPeKsNNg7jG+TjWpQPZ0A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740542375;
+	cv=none; b=PpRQDW6WP7FQ46hsYa4FyHc4qsDbVDzmB++SD1+0AwTIIaGo/P3vT8AJvkuidTw+B9mmjK88jHMZZoCpVF7zQmlqmYBWTGVOkj0sqOFpKYGImEMF6ZnDXLfX3lX6x3YhC3HPw++xhngwIMW3LvDjKaV4MfKGUICYdl3uyOhJ0aJPkwD/Hc3/Kccbnj79FYF81EuXsEDDj/dCVzi1gzGfmIJDhf48iJeDIL/03fgA4VGuplghMDY5rKcNZ3+EEegA7FNRVcKcL586GC6aUdawbuWo6XCd5FD9fKyRoALs1k2peL/7FHKo7RglHISZOYit/4rU38gmJINpIrVhKXae/w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740529659; c=relaxed/relaxed;
-	bh=HAdIv23vtdyhU1Wievr5YncZEjjI/nIoxYj3wcoEoAc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RoFM7l4eeqVUp8yDJxQ+AZt9jlY/JxxetGYWYIL5Gzf9M5G1bpTD2DfJ8O3IUKSuoxax1RC6lX+rTKRPappVvqJvwgJF28GUb5BgUqBcVqH0gHUBFKOJlBIwWhq3WeI7Hjz+leOPUUqHvWBuMn+cvqGhJsOI0O0v+6EGrlnPC3NYEOUqWRab5/xO/ij4rep1GTFQ8UEHgyoPSzehtma7QDHrRYSbP4lu3SVGMNlj4xaaYsU1N3mK6+jRhsxExyaokNhr3VC6NMHqBbvqX0kO30U3j0HFSf2OB7cZkvZSFnOpNVTlpfA9fMzDkchMRdJWh1QElqjA9f4BO+/7pAlxFw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=EkIguID5; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=39v--zwykdpimyuhdwaiiafy.wigfchorjjw-xypfcmnm.itfuvm.ila@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+	t=1740542375; c=relaxed/relaxed;
+	bh=lbb2EYaTqrYLW/hbRhQ7MvoeKzpm8rT2BSNrqeTkGZc=;
+	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=M1NimaPjiiMiNs3AFvDnmsuQMzYjgjEmnO7V7ueI+9Q+U+r4qvsX4O9kXY6smyuN6dKpyFulpN3sjrn6qpOxXLrd+uJNDOTGyAwEhhgdruS+gQYgrCaLfJoZFUWVh1b/LTHc2rEzh0dsuyG4Lu7D2zG/WZbx4y9Pq7xoZ5catrImO2gou6m5PzbIm8huXg2fyz2djzaP4cN6p3tqPLXBSatU0olyiNviYOFBoWNagGRYq84nzeTLmbfqMdYfUTMjQKS8zg2VpSwofJh7eyhtVlGx5+YkKIKX89YPiUlGBc6BBTqjdRfNRtUKIOi0sZJ/gY7AvSMlQtTvkFY2XyJNpg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ITac/vdw; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=EkIguID5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ITac/vdw;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::1049; helo=mail-pj1-x1049.google.com; envelope-from=39v--zwykdpimyuhdwaiiafy.wigfchorjjw-xypfcmnm.itfuvm.ila@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z2b094vGSz2y33
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2025 11:27:36 +1100 (AEDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-2fc1eadf5a8so13254879a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Feb 2025 16:27:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1740529653; x=1741134453; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HAdIv23vtdyhU1Wievr5YncZEjjI/nIoxYj3wcoEoAc=;
-        b=EkIguID5CyngDR6gwY24t2kPewqz0F5JoZY/5Z/hAk4O/8UfLMFAGjIZj5R7BY0oQA
-         gVsZIcuIPTo6fj7SqWa4K4nyYd+jS4VyjxI/SDTs4N7yuDXOfvp/NmHT2ngkrpRXFXjZ
-         s+yMvrM1bozkvW+BEF21iKw0M/w24drnmhjB1LRDMn6BYsx8nozXIGRzdkRtpBTd9R7+
-         xSxGAHLgJcoCX6nkk09IsLRsNtR9wtckfRCgapUsp6+LdpNZXQCSfdc1I/3QTlFoCOAq
-         AELQZQZrZj69jKaOlvlzWNvqpfowyrsgmo+f4abhoyF2uFXISNtKeD8HdcoqNWbWUjqh
-         eS4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740529653; x=1741134453;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HAdIv23vtdyhU1Wievr5YncZEjjI/nIoxYj3wcoEoAc=;
-        b=cFXK8tV14UUtLITfqpQHOQ1LyuP4tFGs01geUq2KpDYvJKmW7CiuNNPjIHkwbl/g8/
-         NmcuDBCn8oh1un65b21OuexzCUS2PmMzkAaMEQcLCmIHqVNSAXtj8UviAjkZD3GykcDv
-         G+w/JTipU7PXdsOM+g/oUYBJEAPmzp10inuwB17xeso2md0M17lWB2QQrJwdyMOMNFeS
-         xMenFHe8GVlwPvjvOyoqwRTVAsAbe2Z/vc/EyI4bwQUEZEmsOr+QOXJt9V8rTjKjOHEh
-         l6iM7T2SiHfX+65ZR576D3IRbUOzh95FarpbcF3YEy+Q3Tzn8k6yPFF1e4g/OOUkWZrd
-         PvFw==
-X-Forwarded-Encrypted: i=1; AJvYcCXHHrwriIs844man0I4XDPZwGcyq3kYa7ER6gKBtY9bN3NyGUrpBybYyVMVbceS9hTqvdf+NnBx7LunAfA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwenRh4iTqqwAxFDUlXW8HHLuEIzzwafe2WeWyeC4n+JWJqddsw
-	ucu/fYXbO4+Th2HGrWbx+i5wodENMzoX9/1IRfffBLctA8ZBaKufKaDnQKV13+C89mUgtu+ruBA
-	2ZA==
-X-Google-Smtp-Source: AGHT+IHOUZMQJO44VDHKi6ofhJ07QZ2dZ6izn0Wyr9X1ZaSMCJ5d0/qSAVcldTsRp+dWt1bBYLTGrWWvHEg=
-X-Received: from pjbsb8.prod.google.com ([2002:a17:90b:50c8:b0:2d8:8340:8e46])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5483:b0:2ee:f076:20f1
- with SMTP id 98e67ed59e1d1-2fe7e218ab9mr2765842a91.0.1740529653271; Tue, 25
- Feb 2025 16:27:33 -0800 (PST)
-Date: Tue, 25 Feb 2025 16:27:32 -0800
-In-Reply-To: <6475f9c7-304a-4e0b-8000-3dc5c8e718e9@redhat.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z2ghk5W8Hz3028
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2025 14:59:34 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q1kqMD028572;
+	Wed, 26 Feb 2025 03:59:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=lbb2EYaTqrYLW/hbRhQ7MvoeKzpm
+	8rT2BSNrqeTkGZc=; b=ITac/vdweHEqKLHUFprLC0DoifcdK2JatGG02ZwLT6B2
+	7YsNXlvQqQgCQAQgJ6Z/gEMOKyo9ojkHylfHmijgXYNAxKKfMHej3oSP+4YpsV6l
+	D2i1jDxAUWne+OG0uRqvW1bpOIvUGkBKt9VqcjxZACZV0tPA8g3vcYX15sxnU+xi
+	sB/eZVfxWN+Tw5jysFUm+r6RXuWdBPSUIA+pP9k7SQRRN1TMaFhBObY9a+gT/rop
+	FGMoYXh5O3plMJMgmHZpJl1POhKNkGn6gD2tcM62DN8TfN9UYJjh0C4iKmRtLPjw
+	+u26Qjwl9K1IROSy3tHiAPURgw8JwvYGdSHV5JzsGw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451q5m8xug-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 03:59:18 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51Q3xIQ2023050;
+	Wed, 26 Feb 2025 03:59:18 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451q5m8xtt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 03:59:18 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51Q08TD6026354;
+	Wed, 26 Feb 2025 03:59:02 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswngma6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 26 Feb 2025 03:59:02 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51Q3x2CD21234144
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 26 Feb 2025 03:59:02 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1A0245805F;
+	Wed, 26 Feb 2025 03:59:02 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E9D4658043;
+	Wed, 26 Feb 2025 03:58:55 +0000 (GMT)
+Received: from [9.43.65.188] (unknown [9.43.65.188])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 26 Feb 2025 03:58:55 +0000 (GMT)
+Message-ID: <8ce77d4d-cd19-472b-a526-0c80feb2b028@linux.ibm.com>
+Date: Wed, 26 Feb 2025 09:28:52 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,51 +82,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250224235542.2562848-1-seanjc@google.com> <20250224235542.2562848-2-seanjc@google.com>
- <6475f9c7-304a-4e0b-8000-3dc5c8e718e9@redhat.com>
-Message-ID: <Z75f9GuA9NfKo37c@google.com>
-Subject: Re: [PATCH 1/7] KVM: x86: Free vCPUs before freeing VM state
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
-	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Anup Patel <anup@brainfault.org>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, 
-	Claudio Imbrenda <imbrenda@linux.ibm.com>, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Aaron Lewis <aaronlewis@google.com>, 
-	Jim Mattson <jmattson@google.com>, Yan Zhao <yan.y.zhao@intel.com>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Kai Huang <kai.huang@intel.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andrew Donnellan <ajd@linux.ibm.com>,
+        Bagas Sanjaya
+ <bagasdotme@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: [GIT PULL] Please pull powerpc/linux.git powerpc-6.14-4 tag
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 0y8MZNw5xkoeLVax816qcmv3mZpeSElb
+X-Proofpoint-ORIG-GUID: SZz9kxXELDzWkYv7JjrGO4rsdSsu0lR-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-25_08,2025-02-25_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 bulkscore=0 adultscore=0 malwarescore=0
+ suspectscore=0 mlxlogscore=679 mlxscore=0 lowpriorityscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502260029
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Feb 26, 2025, Paolo Bonzini wrote:
-> On 2/25/25 00:55, Sean Christopherson wrote:
-> > Free vCPUs before freeing any VM state, as both SVM and VMX may access
-> > VM state when "freeing" a vCPU that is currently "in" L2, i.e. that needs
-> > to be kicked out of nested guest mode.
-> > 
-> > Commit 6fcee03df6a1 ("KVM: x86: avoid loading a vCPU after .vm_destroy was
-> > called") partially fixed the issue, but for unknown reasons only moved the
-> > MMU unloading before VM destruction.  Complete the change, and free all
-> > vCPU state prior to destroying VM state, as nVMX accesses even more state
-> > than nSVM.
-> 
-> I applied this to kvm-coco-queue, I will place it in kvm/master too unless
-> you shout.
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
 
-Depends on what "this" is :-)
+Hi Linus,
 
-My plan/hope is to land patches 1 and 2 in 6.14, i.e. in kvm/master, but the
-rest are firmly 6.15 IMO.  And based on Yan's feedback, I'm planning on adding a
-few more cleanups (though I think they're fully additive, i.e. can go on top).
+Please pull powerpc fix for 6.14:
+
+The following changes since commit d262a192d38e527faa5984629aabda2e0d1c4f54:
+
+  powerpc/code-patching: Fix KASAN hit by not flagging text patching area as VM_ALLOC (2025-02-12 14:38:13 +0530)
+
+are available in the git repository at:
+
+  https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.14-4
+
+for you to fetch changes up to eff2eb592efd73f00590d578c3d6021f604df62c:
+
+  cxl: Fix cross-reference in documentation and add deprecation warning (2025-02-19 13:33:58 +0530)
+
+- ------------------------------------------------------------------
+powerpc fix for 6.14 #4
+
+ - Fix for cross-reference in documentation and deprecation warning
+
+Thanks to: Andrew Donnellan, Bagas Sanjaya
+
+- ------------------------------------------------------------------
+Andrew Donnellan (1):
+      cxl: Fix cross-reference in documentation and add deprecation warning
+
+
+ Documentation/arch/powerpc/cxl.rst | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCAAdFiEEqX2DNAOgU8sBX3pRpnEsdPSHZJQFAme+kI4ACgkQpnEsdPSH
+ZJTRHg//cAiqHzzrYX9jErT/3QGrvjRLIUUSlZxXKnS1pObH1IjryIR+KXVh6Jsh
+IKuKRFtWGIiffX829hd7kwfVQ15T5iK0dIR4q2kFxWf4x6Znd1AUyVjrUTiGzs/R
+iP3JMItipD/q3uFfdJR/Dy0H4oV8/F+53g++m9EteZErBLvYjutq53mq9d40Teiw
+K+n21GVToZ5sHafILA9wRrj1MzkWhzFqZl84s9SV2ReBCTYSx2KixWXWFNLf4dvJ
+ynFPJIka1x3IZB4Lv6GlwxgRkUT3YMSrcMEKd4s2kWrPRxTBKd4Rvo6OjoGWleV8
+C7IunJtSABJDXuSAKq6S0cF0cvDbs6E8nMJEXjYwFKgNL0OWVBa38YEsSuVXndcy
+YdROZtHEjx9vNK+APpLZSaDD6TcShqCICgSccWSLFKssdsL0//ZRn7M1VKsqJ2La
+3RvXl5I1Uf7hxGAE/O4nfATW0SrYNUrXU4b4uSAnEBGzDI6Ot73XE+UXEao4y2bH
+c97IthhClqW3WD+mV/+3jFArK6QatEls4lsK6TqKYLdTjfaLTHdzs/SYkt9SYT1u
+XMfhDy5eg5WjjyxAQGbhuF+yu/Ljws+uRuALIalGpLCL/KFI8wsaaOYBKRLtt4Yl
+gSdsNDRFP4AJFZVwEM1ypC/xQ0uSU76LSsdcareljrzkrgiDi/8=
+=7YO9
+-----END PGP SIGNATURE-----
 
