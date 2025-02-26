@@ -1,58 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-6516-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6517-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49FA1A46B6E
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2025 20:53:27 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89ED8A46DD0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2025 22:46:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z34sJ3kyfz3bpL;
-	Thu, 27 Feb 2025 06:53:24 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z37MQ6Tgdz301N;
+	Thu, 27 Feb 2025 08:46:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04::f03c:95ff:fe5e:7468"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740599604;
-	cv=none; b=SMMBa+9awCP5GFUs06JgSXBVxVEopzJY2Gk0HAm+n4dSRxiv6jGeTL6nTMPjPQz+AJhPv2TAFC3RhgfMqgrm3GPdQGMTiaO64UEOtitdwxmC4Cy7IGXlaL7+O1To1h0D9CVPjGRFsvgE4ypZ5QkGPhNqfXV740pMSCq8nnpa466S+bpfy3rcUHX8BHDzEyBJ6jjZUISmV3RGlCwioCQu5Rahlp/RMIGiG3s/WBSpSwiiGT2F7zLzSOxQJq+F0y1iZekWlx8tX+o3Lh9Q0+j12e4z8QJr0clvCx42BYKtSjvWz1f25d6aRx51DMIMkORI5dbq7ibSQOgdxeo82E5hfA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740606370;
+	cv=none; b=ATzScOEhXT8dq5CBMGvDJw39PIPBrKb71ZmY6ECVTxZhHtgqQJG+xtY/ROzN0fMCH/7FJX6t9HADVaMSqq5jXR+wkOwGKG5zFOQJK4RrKN8/R3jNhMYNWxLOV5LvvAzzhJ8L4RcNmEIQuqcuOXOPyMWyLxqJba04sKYlzznc6ykd4ixGTB3vnaRdxy0Ev7ux0wnpV+9UfQbieudPZxRn4IxG3luX2iPKCLs0botZJfYqDp1XUhYPNUG2dmaR5PTj7OpkAYB5QM0Nyveh4eQZJYx9xKIINJSu3k/dzRNVeURpNgJJsPU2bd32QnuKTZBTpZhnXD7qS7BOZORgq0T8Bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740599604; c=relaxed/relaxed;
-	bh=fbRXJvyiNGHNXBtM/hN/gX4zQBAPErfK0AysQSoWyaI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QygHaALaV/0FnBWDPrvOkFrevDTCUiROzfQaTw8FDEXDe869hPPGHMEDZFwYkCLZBSbHfSvyV8Ry8P5dkn+2byDa9W2LytnrcGywI20kGp6E+tn7KcPGEVPDIKwo+wSa8HDYInNFlgpFoIDqhaxyhujc67vEVkaNfRd9DxifI0/GrwiJblw2/l7Im7rxLyvpm++q4czksQ9wWOZSLdOycuWEmJ4yeETnjGSkL48DZispzFXHGFaWYRNMSWbzxcezhQziHv4L5jA1EZ1C4R3CvgTBZ7/zIbnMa5xqYJxJ/gA+GhwVHTmnRz6XFOTD2XpFXumS+OodgK1OvktGtYwm7Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com; spf=pass (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=cmarinas@kernel.org; receiver=lists.ozlabs.org)
+	t=1740606370; c=relaxed/relaxed;
+	bh=/SR+mxPRpQk4l80ELYMmMSnDaUZ8hf1bdNpzWJhDT5Q=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=HPXuZm/Fe0zQWAUNCC8NCsXyNnPE2Dom9yFMsOO5CprMt6y82nzPlm53DULf6Ce+BREb5T2gcsJ9viRDCkgqMrfzHW7g3UAfXdvHHRnM7aNHbXKV03u6k5ROr3+y3+3DBrgPtU6WlvKz/3kQd8em0x1Tx6mQJWm3gZ24T8uovZUJ5MFTtxfjlNS1YXaTW7ySpNshI9bxKFp0jE7w5TSIe5eL0kd7qYKDQIU5DKe7OJ7cNLw4Zwfc3C9DuiR1ewaSEuoW+OpKORgDLCPoytdfq21o4PUDMUNEvruUPPhcr17HS6+wBKpdhgkUyz7ceNRJQi6Ew2P1v96iMb/n1rmaVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o5LBJcCF; dkim-atps=neutral; spf=pass (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=o5LBJcCF;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=pr-tracker-bot@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04::f03c:95ff:fe5e:7468])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z34sH5Wn5z3bnx
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 06:53:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z37ML1b9Rz2yn9
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 08:46:06 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 71699611F1;
-	Wed, 26 Feb 2025 19:53:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52EDBC4CED6;
-	Wed, 26 Feb 2025 19:53:17 +0000 (UTC)
-Date: Wed, 26 Feb 2025 19:53:15 +0000
-From: Catalin Marinas <catalin.marinas@arm.com>
-To: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org, Will Deacon <will@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>, Marc Zyngier <maz@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>
-Subject: Re: [PATCH V3 5/5] mm: Rename GENERIC_PTDUMP and PTDUMP_CORE
-Message-ID: <Z79xK3xJWm0vH5jH@arm.com>
-References: <20250226122404.1927473-1-anshuman.khandual@arm.com>
- <20250226122404.1927473-6-anshuman.khandual@arm.com>
+	by tor.source.kernel.org (Postfix) with ESMTP id BF37561155;
+	Wed, 26 Feb 2025 21:45:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57DA2C4CED6;
+	Wed, 26 Feb 2025 21:46:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740606363;
+	bh=NvvKpkGJzKdBmVdSHKvQeCudG/o+fIuupyMwACZw6HI=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=o5LBJcCFBqyCoA++2jNtm3R0cIbpiA4fvf6SgVlzLtdQ+asVhSB7LKMvYjT1x13hE
+	 VLND1A5cbzE61RfdFL271EGHoPI5cHHimkTypQQRWvWKAHBuNU1IXtFfpVmxgXpZZs
+	 PiOy97pkX8staCy2dVhKTH/D+OALpguRyVdkDOh5uQh8b6qpvpqa/QAQgJra8Vp+0E
+	 xsIjPjAVdB9aYbCrXqseiIDQ0LWXtTeqUPKcAYyB9vK9VQBSLdYPTJzcPK8NBHv8c/
+	 yURKRRh/KD9iasb7yv+y05D6zGQQaZsDEdGMUtrhQpE/e779gd2tp13OqBx1IMAWRh
+	 QJPP5D02QL28Q==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 71720380CFE5;
+	Wed, 26 Feb 2025 21:46:36 +0000 (UTC)
+Subject: Re: [GIT PULL] Please pull powerpc/linux.git powerpc-6.14-4 tag
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <8ce77d4d-cd19-472b-a526-0c80feb2b028@linux.ibm.com>
+References: <8ce77d4d-cd19-472b-a526-0c80feb2b028@linux.ibm.com>
+X-PR-Tracked-List-Id: <linuxppc-dev.lists.ozlabs.org>
+X-PR-Tracked-Message-Id: <8ce77d4d-cd19-472b-a526-0c80feb2b028@linux.ibm.com>
+X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.14-4
+X-PR-Tracked-Commit-Id: eff2eb592efd73f00590d578c3d6021f604df62c
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 5c76a2e4baae7a3f76ad2cdaef5c59871bcfb2b6
+Message-Id: <174060639499.856033.7692007895567117596.pr-tracker-bot@kernel.org>
+Date: Wed, 26 Feb 2025 21:46:34 +0000
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Andrew Donnellan <ajd@linux.ibm.com>, Bagas Sanjaya <bagasdotme@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, LKML <linux-kernel@vger.kernel.org>, "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,30 +75,17 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226122404.1927473-6-anshuman.khandual@arm.com>
-X-Spam-Status: No, score=0.0 required=5.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Feb 26, 2025 at 05:54:04PM +0530, Anshuman Khandual wrote:
-> diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
-> index 6cf4aae05219..b2931d1ae0fb 100644
-> --- a/arch/arm64/include/asm/ptdump.h
-> +++ b/arch/arm64/include/asm/ptdump.h
-> @@ -7,7 +7,7 @@
->  
->  #include <linux/ptdump.h>
->  
-> -#ifdef CONFIG_PTDUMP_CORE
-> +#ifdef CONFIG_PTDUMP
+The pull request you sent on Wed, 26 Feb 2025 09:28:52 +0530:
 
-Do we need this #ifdef at all? I haven't tried but usually, if the
-feature is not enabled, the header file on its own should be harmless.
+> https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git tags/powerpc-6.14-4
 
-For arm64:
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/5c76a2e4baae7a3f76ad2cdaef5c59871bcfb2b6
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
 
