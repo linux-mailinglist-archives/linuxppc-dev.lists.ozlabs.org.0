@@ -1,61 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-6518-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6519-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F2F4A46E4F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Feb 2025 23:14:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3942A46FD0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 01:07:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z380b3jMXz30Vn;
-	Thu, 27 Feb 2025 09:14:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3BV41wZzz2xPL;
+	Thu, 27 Feb 2025 11:07:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:67c:2050:0:465::201"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740608095;
-	cv=none; b=Vl1FpiMdB2dHvXs34LNbSDA5I3YzletBfp5HmhExJ0p5L7MpYLPkoFRBylFmvajnn6gXt7wRzfHlUQkUmzscIEknnV4/P0QA24BC2M/WAD8EcLWDzApFwGBu2KBmkqxFkqsAi/utfYdfuCJbULdWrdvyYNoN0RK51HImoC9L143/DFAe9jtLYghNfQ0kdyF/0vFVY7ZOgA0djXgUTJfXaUYqqMG0beI2aUUKa2CVUCWLmL86ro5dEEeOb2F//ojlZds0HXIc/bT36fCkZpHOjzwZ+qog5gyg2tt/KeZHSIS2ZCYRp0TgNVnKdoF+b4nF1NB/vwPRvTb2xvEw9ig2eQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740614828;
+	cv=none; b=mHBpsjimX2k2RzUJenn6728PpBm8yIqJTw+syx9/yGj83q/iRf3cStA519TO/MXzW/fQOMpIAUosr+ArcRZHIy72yE+xqxPSqAcTs589VEVecxN726gbQLR0hINZwOMuDyGwhgmpOkr9Rm6EsSGYpBN0xpNq0xMYbWe3lixahcVMasYQy2/WQiF9pVTHBBmhQLkrjxqPTwEcUGGLw4WxlBl9frAJgYQu8r79bkSzVM8fC2hISUVuAoOevDmXFvAk7NyXFA5OIl0OjBm2jMGSsAAGrWk1TWTRl675yErRdKEO90VNMTaXD3+7zKVpSk7TzbduDPuHiu2sd2WyAoyCIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740608095; c=relaxed/relaxed;
-	bh=4ZWsQZVcLDQu4UyI4Ncn4OWU1oO2DUa0oKEX3wnEkjM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eisrk+J5HtyUJgKrbLVPvfvVtLnyRwNvefs4NEbIDUPrHZhTDS6QN3xD9NQEj57T4c4Bl9re0SbitxsEJ6+/OiUcK4i6/fKawDlGsb6z01gs73KksQ+74VJML/loAK9ypFNS04974Ox8r4ht7keQVJ1eQ72PkhAJVs6yhLutu1SaJVP+Of3xwJKHdRcAOWhCAROKtv3f3GcRleJuu5CoKuPTOM67KOJTPwQmn0RsQL0S+lnEZv5PI29Jr7Dk7XbOJo1Hx09mesl3SsZTWWMPYVx9gjLATpmWLi3a5j6/Gqcfmm9wPkJCb9NJwP+ejrpT2eTFJqW1gEraoqn8NQNuPA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=fA1hsg/J; dkim-atps=neutral; spf=pass (client-ip=2001:67c:2050:0:465::201; helo=mout-p-201.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org) smtp.mailfrom=mailbox.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=mailbox.org header.i=@mailbox.org header.a=rsa-sha256 header.s=mail20150812 header.b=fA1hsg/J;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=mailbox.org (client-ip=2001:67c:2050:0:465::201; helo=mout-p-201.mailbox.org; envelope-from=erhard_f@mailbox.org; receiver=lists.ozlabs.org)
-Received: from mout-p-201.mailbox.org (mout-p-201.mailbox.org [IPv6:2001:67c:2050:0:465::201])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z380Y4jfxz30QJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 09:14:50 +1100 (AEDT)
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [IPv6:2001:67c:2050:b231:465::102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-p-201.mailbox.org (Postfix) with ESMTPS id 4Z380K6bVfz9sW5;
-	Wed, 26 Feb 2025 23:14:41 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
-	t=1740608081;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4ZWsQZVcLDQu4UyI4Ncn4OWU1oO2DUa0oKEX3wnEkjM=;
-	b=fA1hsg/JAhApvdVQdBIoRrVaY7MSzb4ZF4DE1iLI+I9ir8W8fVb6Vv9eDZr4lZSK2lQ18K
-	+m4LVX9WZCb0b0a7qMi1fYCW+UYDA+mVnZqPm+7Akdj5Z2tiaALGIdvMbkQtAtctEPmy6/
-	BuJecjMd8GYuxVw4992cxTkidlgOIY5JYDX58xvXRNxK4L0PplqDcwOXsFFAhGxhbiKHCG
-	nc5hobDDvFtdK9o0N6P0z8sD6ER1oWNqFaIKX1TfsToo1MlCNzyQ5CR17kjXg613U4T7z/
-	/Wx8civUnv1ziRmlVO0vVjXxhmjiWUGzXuryzmOS88MSyeKVlbbbUOYcNEY/8w==
-Date: Wed, 26 Feb 2025 23:14:18 +0100
-From: Erhard Furtner <erhard_f@mailbox.org>
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: Re: Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0 on
- G5/G4 (kernel 6.13-rc3)
-Message-ID: <20250226231418.1df533c6@yea>
-In-Reply-To: <87jzbqpnd9.fsf@mpe.ellerman.id.au>
-References: <20241219000749.6836d610@yea>
-	<87jzbqpnd9.fsf@mpe.ellerman.id.au>
+	t=1740614828; c=relaxed/relaxed;
+	bh=XAQJ9hVbCH22Qcmgm3BpIe9og2DlEBB/bE11Ejk0MI0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EweAhJg7w2duL8vmu+WF3lIZbPi4St9r6bXlXS9p/Iz4NM0qu3dhpwnssk50BRRjJLeR+PC+K4/f+sHImH5mkDjmP1axeGSF+gUoj/P3dH0zIFPuwe+OiIIeM3LU5FFarrDEf97vZ1j2zc104iuot5gi1F/TO4Qd5rdNhxF16R7xWNnnZHx94a7pusfAkvfyV3unci2SFXD7JEM3D8h4izlduLcXj1PJi1o0/Qa/2USOR36526td4JjBy9XndrDCPTI+dPUGD/nbRJQBZ2E/6A294l4kCuYctvdOsdibl3hWgcriZ28YozHeGC0KE5Ly47KG0hJZgEQq7mfJAE85vg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3BV25hrsz2x9T
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 11:07:04 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5564812FC;
+	Wed, 26 Feb 2025 16:06:48 -0800 (PST)
+Received: from [10.163.39.237] (unknown [10.163.39.237])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F2DD63F5A1;
+	Wed, 26 Feb 2025 16:06:25 -0800 (PST)
+Message-ID: <39986b7d-7a82-4f28-9289-5620a2bec2b5@arm.com>
+Date: Thu, 27 Feb 2025 05:36:25 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,58 +42,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V3 5/5] mm: Rename GENERIC_PTDUMP and PTDUMP_CORE
+To: Catalin Marinas <catalin.marinas@arm.com>
+Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>, kvmarm@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+ Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+ Marc Zyngier <maz@kernel.org>, Michael Ellerman <mpe@ellerman.id.au>,
+ Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>
+References: <20250226122404.1927473-1-anshuman.khandual@arm.com>
+ <20250226122404.1927473-6-anshuman.khandual@arm.com>
+ <Z79xK3xJWm0vH5jH@arm.com>
+Content-Language: en-US
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+In-Reply-To: <Z79xK3xJWm0vH5jH@arm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-MBO-RS-META: smqrx9z7eiexes3bar8ph3xe4rth91wi
-X-MBO-RS-ID: 4d4a2b2e80ea233cd26
-X-Spam-Status: No, score=-0.8 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,
-	URI_HEX autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, 23 Dec 2024 23:58:26 +1100
-Michael Ellerman <mpe@ellerman.id.au> wrote:
+ 
 
-> Erhard Furtner <erhard_f@mailbox.org> writes:
-> > Greetings!
-> >
-> > I am aware there is commit cf89c9434af122f28a3552e6f9cc5158c33ce50a
-> > (already merged in v6.13-rc3) which fixes some of the "Missing
-> > '#size-cells' errors" but there is more:
-> >
-> > ------------[ cut here ]------------
-> > hub 3-0:1.0: USB hub found
-> > Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0  
+On 2/27/25 01:23, Catalin Marinas wrote:
+> On Wed, Feb 26, 2025 at 05:54:04PM +0530, Anshuman Khandual wrote:
+>> diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
+>> index 6cf4aae05219..b2931d1ae0fb 100644
+>> --- a/arch/arm64/include/asm/ptdump.h
+>> +++ b/arch/arm64/include/asm/ptdump.h
+>> @@ -7,7 +7,7 @@
+>>  
+>>  #include <linux/ptdump.h>
+>>  
+>> -#ifdef CONFIG_PTDUMP_CORE
+>> +#ifdef CONFIG_PTDUMP
 > 
-> Something like below might fix it.
-> 
-> cheers
-> 
-> 
-> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
-> index 8e776ba39497..462ee36ef891 100644
-> --- a/arch/powerpc/kernel/prom_init.c
-> +++ b/arch/powerpc/kernel/prom_init.c
-> @@ -2898,11 +2898,11 @@ static void __init fixup_device_tree_pmac(void)
->  	char type[8];
->  	phandle node;
->  
-> -	// Some pmacs are missing #size-cells on escc nodes
-> +	// Some pmacs are missing #size-cells on escc & i2s nodes
->  	for (node = 0; prom_next_node(&node); ) {
->  		type[0] = '\0';
->  		prom_getprop(node, "device_type", type, sizeof(type));
-> -		if (prom_strcmp(type, "escc"))
-> +		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
->  			continue;
->  
->  		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
-> 
+> Do we need this #ifdef at all? I haven't tried but usually, if the
+> feature is not enabled, the header file on its own should be harmless.
 
-The fix works on my PowerMac G4 DP. And there is also https://patchwork.ozlabs.org/project/linuxppc-dev/patch/875xmizl6a.fsf@igel.home/ which seems to be the same patch.
+With or without the #ifdef CONFIG_PTDUMP in place here, this does not cause
+any build warnings even without CONFIG_PTDUMP enabled. But dropping #ifdef
+while renaming the config option itself, might have caused unrelated code
+churn. So probably if required we could drop this later on.
 
-But as of kernel v6.14-rc3 none of these is included. Could one of these patches be upstreamed?
-
-Regards,
-Erhard
+> 
+> For arm64:
+> 
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 
