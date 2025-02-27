@@ -1,73 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-6525-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6527-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2429A47564
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 06:51:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A2A4DA4760B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 07:42:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3L7Z74fkz30VX;
-	Thu, 27 Feb 2025 16:51:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3MGf0PxBz30TQ;
+	Thu, 27 Feb 2025 17:42:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.8
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740635498;
-	cv=none; b=bsUaQMj56Whpgy/A8pnVBSGrXDlYIL/BuNASorWk51AwZ8cr5cbqAwRmvJvyamGxag1rWF4rjLEO8SO9io+LWW77eJWLB7vHNNTopmr5eTQgezTyA+Mqxa4KO+UR002ZSTJMwF48mOCXIZCm/DYLKSkLnr8Gm4ioegwHBz8VrJUCVhYPAbQPh8jNAZTFfqVi+EWphJ6xj5y9MqT4Vf/wx9kw0UyhJAnV8aU45ws/NLZVa8RE+1Kl0C6kdhihkGoqyarCWc+z4OdwfF9FDxx6INi+z90LkuLKDp+yi86Ue3Bop9FJvSjJlKoEjZttwdHmUIbcrEHqIVnupDm7UFMHMQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740638569;
+	cv=none; b=k0VEYO3/DwcwWl+AtCp3xVR7O/LlPEPdOLdkxb6LjbodDl2PJX+driVWmaO3ks8+HGlu7w9LUoeK6Cm6GGL72Yl5+F37kqo/g2L2JfSUAzkMJt35Ru2m3XfMDQt3yhZNxX/E0d5li/XyTm4HENHHyRwCfnR7g19fN++AmFCJWNlDUKJG6oBKcwnPwOf+xI9blvSpasTe3nDMbpONuVup9Yue+SFwlyfRqa6VFLgC/0AVbGbSpOn4GGiDA9/flNfwtCxJmEd04t/yvwnCHmQrz+1uPzQpbu3PPuIZ2G0duihTj6jOe09kzpwF6qAXUAkZ2DE+o3FxDSR4Fw6qL78nqQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740635498; c=relaxed/relaxed;
-	bh=JmLQWzRGi1eC7gBtzxRGyCMM2upjUogEp+lE9PF3tVE=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=g8dJhmL22YMF1OL/4+t5i7Y9bmf41TrIdnb8KkD4V+1k+OEu/+JvHapMr/t+J5vFIrumB2CPS22bZlRHjVmFIRlZ68EsqzFigzh8H9eNZLgK2zk9cCN7Rh4graWNlO804oQYX6hQQyzhI/fI5Fm1B3zPM44haWRVIcuF0yiQ9JJiZtkhAONM5ePTyFNW4eHCV1ADfc/z/5JZYHT2tpF5TerN7ZTiYMBovy+4yT+o6JZWjgX//nzfpyGHKwQjQnn3B8CgtgVR/YXF9enSjx6o+OFjP+ZtfVKVRIG6DBzxpaLOwMOieSxyLCJx6KY09N/R9dRnU1QgHvCemv2lcbvTPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MBb7emgh; dkim-atps=neutral; spf=pass (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1740638569; c=relaxed/relaxed;
+	bh=H9SI1+oJDfsMLTWjY6/U9vD0lCb8L5OiNWbgs890E8s=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=aeB3bkL8mQvM9Vz/HdS09YMgGhv4qxlBaG3n3PPzRBVZEjaPbcqiqODQlSMUUf0wtGhGhzEsjRGcDp+c9ITvmeaifTKwHG6m1iITxz3IZbXZ7aiEBXlscqsV6tx/WybMBIcsR/m9HoEWdxHYXDz/+6givBGvo04uoVw9hubH/iyR7PCsHRmgnX0Bxrenr1yPBOcWwZ62j01PEJxvIGoWU8POhAfHfFBC90GMmTLALMb3V+Ehn1k0HftdSpht3M7gEiaZDdzqbo8lRmR+kG9WNh8ErILi/qoaQp9huQ/zKY9Ufut7nhRWReUh0Fm5wmJI1fKZm+SHxCpHviOrApUlmQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Uenec+//; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MBb7emgh;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Uenec+//;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.8; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3L7X1lSnz308M
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 16:51:34 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740635496; x=1772171496;
-  h=date:from:to:cc:subject:message-id;
-  bh=wXanCcG/I78HiZtvA7wUfulDNlnBzyTHe3X4CKAUzyA=;
-  b=MBb7emghQ+271fmmOx4CGoWtacIiaIq/Lw4ZnR6S5EOzyLAM8v7aMBHP
-   99IQQ0+20jo5Hz0rhY8X1xlvNti9J6RRrZ/c24ZZOX3/nafow7VfOtWTm
-   /1lA2Qbbg16dWecMq+DzLW8Bk0NY1269u6KQWh2XJliR32T64YIBRhDfC
-   LKXbbH976pjP9SEK8vEEgFfipEcw4+6I2St8Gr54G73Ot07+V6ZSNKfCp
-   T/I23y1rsdFv7GadsXXJu1/L60FJ036F35j9qdHL8zRBpun4RxWIw2ZoG
-   2AZvs0SInTyCsWXNkiRKLbbjUwRF7J6jLR0XLuokLp3OaKYHQrUcIW39Y
-   Q==;
-X-CSE-ConnectionGUID: bUYfeBS9TZ2nbug66Ojskw==
-X-CSE-MsgGUID: NPT7aA9DTLqa84a38uGILQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11357"; a="59045989"
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
-   d="scan'208";a="59045989"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Feb 2025 21:51:31 -0800
-X-CSE-ConnectionGUID: TxfB2IFET0WP3Y00swAwdA==
-X-CSE-MsgGUID: /NS8YtDzSS2eU5InV1VOVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,319,1732608000"; 
-   d="scan'208";a="122036100"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 26 Feb 2025 21:51:30 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tnWnw-000CvC-20;
-	Thu, 27 Feb 2025 05:51:28 +0000
-Date: Thu, 27 Feb 2025 13:50:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:merge] BUILD SUCCESS
- 09a81ff40389097f77adca9788309080ba91178e
-Message-ID: <202502271327.xLPXYPQ1-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3MGd0gvsz2ykZ
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 17:42:48 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51QMoAdK015625;
+	Thu, 27 Feb 2025 06:42:42 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=H9SI1+
+	oJDfsMLTWjY6/U9vD0lCb8L5OiNWbgs890E8s=; b=Uenec+//xOhh+BekPA169c
+	TfTKio8+cgV/N6Uw+FW54JBEFy/nEmwlRxiHGxRGG4qQcqlkepQO7gjBdQOAzsAK
+	Vno4jcBnJttaqx3bAf5x0X+nc7dIzTVo1+KtYvXY/hO5GJ5oDdJQOyHr3wudeBZ0
+	jVfYxe4pq2tc6bld2aJDsdNGNwL0ndgTtkFWB+M+UKbMUlfn/cHotF5LGzNnBL3U
+	3cUM3swLk7lTNMZTP2QiTYsc0igiZk9nuqu76b0NI5aoAojM0+PuFFbu2/JQGfML
+	/fTasuh4pIh/KAkHXU/yD6n21PbWPb05iEC+QOPt/2gt2XGsgwlLmimFTyzjb6kg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 452c3a1mpa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Feb 2025 06:42:41 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 51R6cr0h018209;
+	Thu, 27 Feb 2025 06:42:41 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 452c3a1mp8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Feb 2025 06:42:41 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51R4CPVB012918;
+	Thu, 27 Feb 2025 06:42:40 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 44yrwsyckh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Feb 2025 06:42:40 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51R6gZxQ47645096
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Feb 2025 06:42:35 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 272B020043;
+	Thu, 27 Feb 2025 06:42:35 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B602B20040;
+	Thu, 27 Feb 2025 06:42:29 +0000 (GMT)
+Received: from smtpclient.apple (unknown [9.61.240.191])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 27 Feb 2025 06:42:29 +0000 (GMT)
+Content-Type: text/plain;
+	charset=utf-8
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,104 +84,110 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH] tools/perf: Use perf_tool__init() to initialize default
+ values in builtin trace
+From: Athira Rajeev <atrajeev@linux.ibm.com>
+In-Reply-To: <Z7-0DuisrMHyscDj@google.com>
+Date: Thu, 27 Feb 2025 12:12:03 +0530
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ian Rogers <irogers@google.com>,
+        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Kajol Jain <kjain@linux.ibm.com>,
+        Disha Goel <disgoel@linux.vnet.ibm.com>, hbathini@linux.vnet.ibm.com,
+        Aditya.Bodkhe1@ibm.com, Tejas Manhas <Tejas.Manhas1@ibm.com>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <C898BD11-D2E7-4338-9549-53B4C71785FE@linux.ibm.com>
+References: <20250225113157.28836-1-atrajeev@linux.ibm.com>
+ <Z7-0DuisrMHyscDj@google.com>
+To: Namhyung Kim <namhyung@kernel.org>
+X-Mailer: Apple Mail (2.3776.700.51)
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: NCHJplYS_bXwzLP8ThDerHmU9vQzQvL2
+X-Proofpoint-ORIG-GUID: X2LXOH1ic3JfI6O-n28jlq9TrtRZpBFE
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-27_03,2025-02-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ priorityscore=1501 malwarescore=0 suspectscore=0 phishscore=0
+ mlxlogscore=999 clxscore=1015 adultscore=0 spamscore=0 lowpriorityscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502270048
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
-branch HEAD: 09a81ff40389097f77adca9788309080ba91178e  Automatic merge of 'next' into merge (2025-02-26 10:09)
 
-elapsed time: 1449m
 
-configs tested: 83
-configs skipped: 1
+> On 27 Feb 2025, at 6:08=E2=80=AFAM, Namhyung Kim <namhyung@kernel.org> =
+wrote:
+>=20
+> On Tue, Feb 25, 2025 at 05:01:57PM +0530, Athira Rajeev wrote:
+>> Perf trace on perf.data fails as below:
+>>=20
+>> ./perf trace record -- sleep 1
+>> ./perf trace -i perf.data
+>> perf: Segmentation fault
+>> Segmentation fault (core dumped)
+>>=20
+>> Backtrace pointed to :
+>> ?? ()
+>> perf_session.process_user_event ()
+>> reader.read_event ()
+>> perf_session.process_events ()
+>> cmd_trace ()
+>> run_builtin ()
+>> handle_internal_command ()
+>> main ()
+>>=20
+>> Further debug pointed that, segmentation fault happens when
+>> trying to access id_index. Code snippet:
+>>=20
+>> case PERF_RECORD_ID_INDEX:
+>> err =3D tool->id_index(session, event);
+>>=20
+>> Since 'commit 15d4a6f41d72 ("perf tool: Remove
+>> perf_tool__fill_defaults()")', perf_tool__fill_defaults is
+>> removed. All tools are initialized using perf_tool__init()
+>> prior to use. But in builtin-trace, perf_tool__init is not
+>> used and hence the defaults are not initialized. Use
+>> perf_tool__init() in perf trace to handle the initialization.
+>=20
+> Thanks for fixing this.  I can reproduce the problem and confirmed =
+this
+> patch fixed it.
+>=20
+> Thanks,
+> Namhyung
+Thanks Namhyung for checking the patch
 
-The following configs have been built successfully.
-More configs may be tested in the coming days.
+Athira
+>=20
+>>=20
+>> Reported-by: Tejas Manhas <Tejas.Manhas1@ibm.com>
+>> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+>> ---
+>> tools/perf/builtin-trace.c | 1 +
+>> 1 file changed, 1 insertion(+)
+>>=20
+>> diff --git a/tools/perf/builtin-trace.c b/tools/perf/builtin-trace.c
+>> index f55a8a6481f2..092c5f6404ba 100644
+>> --- a/tools/perf/builtin-trace.c
+>> +++ b/tools/perf/builtin-trace.c
+>> @@ -4589,6 +4589,7 @@ static int trace__replay(struct trace *trace)
+>> struct evsel *evsel;
+>> int err =3D -1;
+>>=20
+>> + perf_tool__init(&trace->tool, /*ordered_events=3D*/true);
+>> trace->tool.sample   =3D trace__process_sample;
+>> trace->tool.mmap   =3D perf_event__process_mmap;
+>> trace->tool.mmap2   =3D perf_event__process_mmap2;
+>> --=20
+>> 2.43.5
 
-tested configs:
-alpha                            allnoconfig    gcc-14.2.0
-alpha                           allyesconfig    gcc-14.2.0
-arc                             alldefconfig    gcc-13.2.0
-arc                             allmodconfig    gcc-13.2.0
-arc                              allnoconfig    gcc-13.2.0
-arc                             allyesconfig    gcc-13.2.0
-arc                  randconfig-001-20250226    gcc-13.2.0
-arc                  randconfig-002-20250226    gcc-13.2.0
-arm                             allmodconfig    gcc-14.2.0
-arm                              allnoconfig    clang-17
-arm                             allyesconfig    gcc-14.2.0
-arm                  randconfig-001-20250226    gcc-14.2.0
-arm                  randconfig-002-20250226    clang-21
-arm                  randconfig-003-20250226    gcc-14.2.0
-arm                  randconfig-004-20250226    gcc-14.2.0
-arm64                            allnoconfig    gcc-14.2.0
-arm64                randconfig-001-20250226    gcc-14.2.0
-arm64                randconfig-002-20250226    gcc-14.2.0
-arm64                randconfig-003-20250226    clang-21
-arm64                randconfig-004-20250226    gcc-14.2.0
-csky                             allnoconfig    gcc-14.2.0
-csky                 randconfig-001-20250226    gcc-14.2.0
-csky                 randconfig-002-20250226    gcc-14.2.0
-hexagon                         allmodconfig    clang-21
-hexagon                          allnoconfig    clang-21
-hexagon                         allyesconfig    clang-18
-hexagon              randconfig-001-20250226    clang-21
-hexagon              randconfig-002-20250226    clang-21
-i386       buildonly-randconfig-001-20250226    gcc-12
-i386       buildonly-randconfig-002-20250226    gcc-12
-i386       buildonly-randconfig-003-20250226    gcc-12
-i386       buildonly-randconfig-004-20250226    clang-19
-i386       buildonly-randconfig-005-20250226    gcc-12
-i386       buildonly-randconfig-006-20250226    gcc-12
-loongarch                       allmodconfig    gcc-14.2.0
-loongarch                        allnoconfig    gcc-14.2.0
-loongarch            randconfig-001-20250226    gcc-14.2.0
-loongarch            randconfig-002-20250226    gcc-14.2.0
-m68k                            allmodconfig    gcc-14.2.0
-m68k                            allyesconfig    gcc-14.2.0
-nios2                randconfig-001-20250226    gcc-14.2.0
-nios2                randconfig-002-20250226    gcc-14.2.0
-openrisc                         allnoconfig    gcc-14.2.0
-parisc                           allnoconfig    gcc-14.2.0
-parisc               randconfig-001-20250226    gcc-14.2.0
-parisc               randconfig-002-20250226    gcc-14.2.0
-powerpc                          allnoconfig    gcc-14.2.0
-powerpc              randconfig-001-20250226    gcc-14.2.0
-powerpc              randconfig-002-20250226    clang-18
-powerpc              randconfig-003-20250226    clang-21
-powerpc64            randconfig-001-20250226    clang-18
-powerpc64            randconfig-002-20250226    gcc-14.2.0
-powerpc64            randconfig-003-20250226    gcc-14.2.0
-riscv                            allnoconfig    gcc-14.2.0
-riscv                randconfig-001-20250226    clang-18
-riscv                randconfig-002-20250226    gcc-14.2.0
-s390                            allmodconfig    clang-19
-s390                             allnoconfig    clang-15
-s390                            allyesconfig    gcc-14.2.0
-s390                 randconfig-001-20250226    gcc-14.2.0
-s390                 randconfig-002-20250226    clang-15
-sh                              allmodconfig    gcc-14.2.0
-sh                              allyesconfig    gcc-14.2.0
-sh                   randconfig-001-20250226    gcc-14.2.0
-sh                   randconfig-002-20250226    gcc-14.2.0
-sparc                           allmodconfig    gcc-14.2.0
-sparc                randconfig-001-20250226    gcc-14.2.0
-sparc                randconfig-002-20250226    gcc-14.2.0
-sparc64              randconfig-001-20250226    gcc-14.2.0
-sparc64              randconfig-002-20250226    gcc-14.2.0
-um                              allmodconfig    clang-21
-um                               allnoconfig    clang-18
-um                              allyesconfig    gcc-12
-um                   randconfig-001-20250226    clang-18
-um                   randconfig-002-20250226    gcc-12
-x86_64     buildonly-randconfig-001-20250226    clang-19
-x86_64     buildonly-randconfig-002-20250226    clang-19
-x86_64     buildonly-randconfig-003-20250226    gcc-12
-x86_64     buildonly-randconfig-004-20250226    clang-19
-x86_64     buildonly-randconfig-005-20250226    gcc-12
-x86_64     buildonly-randconfig-006-20250226    gcc-12
-xtensa               randconfig-001-20250226    gcc-14.2.0
-xtensa               randconfig-002-20250226    gcc-14.2.0
 
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
 
