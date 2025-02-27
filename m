@@ -1,138 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-6534-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6535-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C745A4807A
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 15:05:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EAB1A480CF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 15:20:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3Y5s6SHdz3bnc;
-	Fri, 28 Feb 2025 01:05:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3YQH4Z3dz30Vr;
+	Fri, 28 Feb 2025 01:20:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:d107::" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740665153;
-	cv=pass; b=Tidfh4tsn57oVrhA89sMoSHaOiFTySmrAg9A3nnbEBXiQ7eyGh1Z2s85fpa1+HFjEwukS2Brz5MLOdhPzaKzQeV4x2J6JwtKomudr3ceKi5mo6VKfpSxClxoJEEZ3mII8FgXPfbdMRyfKqMmA9JiB9mifPxwmFa8Ud1JADCzeHDN8vcNDFBZuJWv/3gE+DhX3NMfYQWdTOc5dWLbIQo7XT6xRD3c7ynv+Xtm3gvCd1ds6YRb70exeBanZXaLvvfvdmK3vdj18PS4/rCgU7QwurCNX81x+oqOWpYjUefEMgyRs4IuvLxGcXEzburP+dDLHhgh6jJYTtROonmiicbbPg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740665153; c=relaxed/relaxed;
-	bh=6Seryzj7idZ+/2THZlV8BCWd+fKqDA0sKVr2S9MZx9g=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=ZKTve3gsuVNptc32X3Askz5yYjrXsKKr0SbwVKVsjcHpKEJ8Mq4borcu7jjT9nb9L6ektdKqaGJZFcAf5A/UH7wQQx1tImslmwUsf3VUlBGQMQhEFCtl0dyXywTOdsHj30Z8deiz2IC7kpnlTRtZFe+b/Ebyoc5T1RmGohPbQ/lOtBv7luG4SES3sZTCQRmbHJ/IpsydLOIB7I6rb49oEXlB+zLGkAkwmBq+xGTCL2ckMBultq0hZw7559n+cySHn7voWP3GTJM+dsXBaUxhBuGuGqe6z+iKqjMlJcNuAakRWen0of9gvES0kFcRNskTfCu2frZOL/a+OUv/qKNl8A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=outlook.com; dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=gSQJrwNh; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:d107::; helo=dm1pr04cu001.outbound.protection.outlook.com; envelope-from=mhklinux@outlook.com; receiver=lists.ozlabs.org) smtp.mailfrom=outlook.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=outlook.com header.i=@outlook.com header.a=rsa-sha256 header.s=selector1 header.b=gSQJrwNh;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=outlook.com (client-ip=2a01:111:f403:d107::; helo=dm1pr04cu001.outbound.protection.outlook.com; envelope-from=mhklinux@outlook.com; receiver=lists.ozlabs.org)
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazolkn190100000.outbound.protection.outlook.com [IPv6:2a01:111:f403:d107::])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3Y5r2xZqz3blF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2025 01:05:52 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GNYbBXCm72a8Y1+bArgpMf45bV9UAf9sY1Vg7+KQdPAGaKSx+hXAPMxxFYyRb8i/9wNGeuAWj23r0oNm/FqtIyTErId2mz5dnvAVR9RRPPhjVD1Lg+2as9BoWZ3b0gl6DztX+dsU7gl6JJG/4OGSx4CRBuRMwNQ3KX6PWVY57FHFya++h5eseZYKxnSPeXq3s81OCRY4kCB29ElX5x6eGCu+FRazBLDPlaVbCNOfTvs41t7OFUFlu1rE4t46msIsolkn52OeMPEqGRiC8TMaQ3+jfMA9n3cKmEBC+xAf86iFbhLWP473UfGH1PPeulXqYC9LI/lvdp9ik5pwlSeNfA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6Seryzj7idZ+/2THZlV8BCWd+fKqDA0sKVr2S9MZx9g=;
- b=UHoihX5hHQPZ/ml/SdL3H5mKXeAZN4vQ1myQcO9kVJ98wBi89OqHf0U/kVHrE04a17S3T9lRdbHWudJdeqwVR1lYRKSmwRGY1I4i1m3QKPOX+eYF3AJsk5nXu439/SnVKCoLVCBbd0QPkePiQo2hUB0FsudoH4jLK+BTwynHm2bsDzL+skx7F4bhDuLcx73p4NWJFntk/Ety+nz51oTdwzDqfNTl5Wnr9SLLbf5QaRqqWYJ+wAIw3BqXP2GX+BZqN0kKLpH3rWB86Oo6qXXvQFx36RTdvTtNc2ag8ILMJpu//4eo9o94NVao9Ovmc17cZXF4L/olbm2nBVpSary/jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6Seryzj7idZ+/2THZlV8BCWd+fKqDA0sKVr2S9MZx9g=;
- b=gSQJrwNhC0VtUh62+TtnCwWjNIkz9Ad0fuRwMSG7DWw16KXrzdaijMrkOpPFfV3W9jOBEMkYBbmTZvu4Sg7nCl3tG96DK8XxSvfFi74icIK5pzlZFlZ01Fb0WmqmUEiRtISUGCLBBkYMTHtXtcnwMEo49VVX2HqnVn8b6377u4t1SFLf0f6FCTHSC+jrJzNqwggcmBioCATu4OcmrqW/NL5KeP3Vf9uhGRbsOsGDoMloLge2qEkAhXsIJZpSg/5cKMh/g/NElpC2zOIV1RjGjdZFTHeLqVuXxcAbUxeBOPTOmvdmVrUsoYZh2BDKeVlOiWIOJzyBxP/tvAo/C4DF/Q==
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com (2603:10b6:805:33::23)
- by DM6PR02MB6541.namprd02.prod.outlook.com (2603:10b6:5:20b::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.19; Thu, 27 Feb
- 2025 14:05:29 +0000
-Received: from SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df]) by SN6PR02MB4157.namprd02.prod.outlook.com
- ([fe80::cedd:1e64:8f61:b9df%3]) with mapi id 15.20.8466.020; Thu, 27 Feb 2025
- 14:05:28 +0000
-From: Michael Kelley <mhklinux@outlook.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Stephen Rothwell
-	<sfr@canb.auug.org.au>, Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-CC: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>, Kees Cook
-	<kees@kernel.org>
-Subject: RE: [next-20250226]Build Failure
-Thread-Topic: [next-20250226]Build Failure
-Thread-Index: AQHbiLMFbXX/ZR+7zEKes5eJ8toCr7NaXxYAgACYQQCAADa1UA==
-Date: Thu, 27 Feb 2025 14:05:28 +0000
-Message-ID:
- <SN6PR02MB4157A0C1B4F85D8A289E5CE9D4CD2@SN6PR02MB4157.namprd02.prod.outlook.com>
-References: <adbe8dd1-a725-4811-ae7e-76fe770cf096@linux.vnet.ibm.com>
- <20250227123804.5dd71cef@canb.auug.org.au>
- <14193c98-fb30-4ee8-a19a-fe85d1230d74@csgroup.eu>
-In-Reply-To: <14193c98-fb30-4ee8-a19a-fe85d1230d74@csgroup.eu>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SN6PR02MB4157:EE_|DM6PR02MB6541:EE_
-x-ms-office365-filtering-correlation-id: 0bbe6cd6-fc92-4e97-d6d9-08dd5737ca65
-x-microsoft-antispam:
- BCL:0;ARA:14566002|461199028|8060799006|19110799003|15080799006|8062599003|440099028|102099032|3412199025;
-x-microsoft-antispam-message-info:
- =?utf-8?B?Vi9wZFdNY0VqM3dVRTJ4SUdtNDhCbW9MMTNIY05tbG1TNHpucEpiY2xCRTlG?=
- =?utf-8?B?VHJUWG9SSFpKcmI4ME5ycHhHQlpmS2R6clFrTjVHQnhGSUhreE8ydlgydnRs?=
- =?utf-8?B?QlQ1MXR1T21aZE9EcnV4R1AycFFrUVhOL1IrTHhGN0dKWTI4ZDRoMzl0SWM3?=
- =?utf-8?B?SUd0TC9zTktHaGorNXc4NnFkbnNsWFV4M2pVTU9NSE1UT2FMN2RwTTBrNzlo?=
- =?utf-8?B?U3kybi9YZW5PWEE2WFBhbFpQb2oyeFlmMTU3VDVtNGNueWJnYkgyaEp2b2M2?=
- =?utf-8?B?UGsxa2Z4RXVYS1VDME5RbjRTVjlyaDJvWXZPSThrYUhXR0Voc1FROFhGL1Bh?=
- =?utf-8?B?NHRMVjFmakw5MlRSSk9sSW0wY3ZBUXhucjRuWElRWmtFUTNvOWdBdnhSclFi?=
- =?utf-8?B?bUkxWk1oVkdTQ2R1amExVVBqbHBBcUlYc2J2MGN2MDVPOWVYZVNIQ2NCZ3RU?=
- =?utf-8?B?b3dwckxOdWdBVmxsRkh2RXp4YldtTXNQNkNxdVJMdjViUzRXZ1J6ZUxmQ3N0?=
- =?utf-8?B?dVhvMEFPS2p4c0huUmc5SzNwTFQ2RHhla1pFYmVONUFHNy9xNjFEUjdpWFNm?=
- =?utf-8?B?aUxKZVpRUG43eEJwTHBibU5oWXJZZTY0ZVdFME1tU3FzRytiRzhwNTRMSkJH?=
- =?utf-8?B?bTZrOVc1MDRQK0Niemo2cm1GYTZjWHMxVDJFSkt3SDJFd253eHEwcUYwSFdN?=
- =?utf-8?B?ay9pbzYrUWtZV2pURTl6dklibTNkdHJlQVFCK0M4TlAxdG9VSmV4dmU4VDhZ?=
- =?utf-8?B?SEhVdUZscndZVG1sUmNoeWtudk0zRWEzMDFaU01uNGpLNzlZWUhVbE1WZk8r?=
- =?utf-8?B?UWVseDZIMTNqVXh2WEFsaDJyZnJmeEFvQmFoTFU3UmlLUkM5UzJ3d3lwbXVz?=
- =?utf-8?B?YitMaStyMkd6YmxiNVg1UjFRTzBVdGtnR1U4RWluN1ZaWXcvQyt0R09uS040?=
- =?utf-8?B?bHRKbk9qS2MvZTJ0a2tzVzNESXJTdG9rZUttbXNwTUpkQ25JbTVrcWNZbkVW?=
- =?utf-8?B?MjBoVG0xbmhpVk5ack5xY2hDSXhvQlBVWEoxVENVVWFYRW1NNlV2amk1V1hG?=
- =?utf-8?B?dFhkZkJ6elpDdEQwZHVGYW1SZGZ3eGFMU0phVWp0ODJaNXVwYzY3U0pVZEFv?=
- =?utf-8?B?V0VhZUJieVpyVUgzeExYRmMrbFFEZkpGMU5WTlNqQTV0NHMwUFFXRlRlWUF0?=
- =?utf-8?B?blpuNjdvdTNaWUp3Y3BsN1VIVEZmeXVUQWQ5M3pKYThHTkJKRzV5ay82Ty9L?=
- =?utf-8?B?R1BXbmtTaGZmcXNGTHBuc3hIOXcxY3AvZjc5NmUvZFlpcHBDdHV0bXUzd3NG?=
- =?utf-8?B?azdkUk5wRzJac3FpQ29jTlZkR3pMcUF6YXpJTGp2V0xxWEVtK0hrRWZCRnl1?=
- =?utf-8?Q?jHdPoEcF3eGC6Rm3U9qDWFpVCAYTGFrI=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?M3U3aCs0QWppeVpBZFZlMUNKRTJFd05kVk5PZDlZaXVkUmlrNkF6czVXeE9B?=
- =?utf-8?B?djJ1Wk5zMVZFNFVoTkphK3dKNXlWTjBDcW9iK01zUHJDYm5hNkwrWlpvNHdh?=
- =?utf-8?B?ek5XOTBURlVGQ05WSkFscUdKS1dhRXlpQ0lEM3FsckMyOW1WY3hzKzZMaTdx?=
- =?utf-8?B?bVpacm1CQzREeVErUlhZSGV3cGVSamZZc0Y2QjU0Y2xkVUNWUjZMSXExTVc1?=
- =?utf-8?B?eVUzQnNBdllidnR5L3BTVFVrWDhxbzRkQ25FbHNpSXNtTzRoT1V0cUhwWEFK?=
- =?utf-8?B?bFZ1alpSc0YyVVpUYUlxRjBlL2gxL3Z3NVF0MWxiTGZrMnVQUnNoU1Z3QU52?=
- =?utf-8?B?Z3BnbVlicVJHRXlqbk9ianNyMGZ4TnFDYmVVK1RtanRCMTd6dGhyS05QeTNu?=
- =?utf-8?B?NFN6dlhzTG9Lbk9SQXMwbHM3QkhkTGloSENPQmpnS1Y0d25lekRYMUYyUWJD?=
- =?utf-8?B?VWtHUUxzRVJQVXJZeWJnc09yeWVKQml5WDNaSkRZTlNyNUxVMys1V3NwbUZF?=
- =?utf-8?B?UEdKeVoyU0NxRWRDZWNRN2RuRER2dWtiQytNeUJ3MEhJc0ttWExVSmVCeGJq?=
- =?utf-8?B?dmozckp4NHZkUkZtV1JvQk55NlJyQ1JqR1pOK04wL2ZMMTlXcmh3Z2lZc3Qv?=
- =?utf-8?B?SGRQcW1XZ0N5VDhmTStFUzl1c0dLc1FCQTRha0xwSkxwU3gwcWJ5NUNaa2U3?=
- =?utf-8?B?Z1ZWNFNoZ1FTNmdCTWFOSHdkdW1PREFSS2FkOWlUeExJeDlkUjlpbzdYaXBV?=
- =?utf-8?B?a21sTGdhbkVjcTJSMHhQOFFiOWRyamFWRG9GcTJEdUZPcUtLSTNKSkF1Y1pC?=
- =?utf-8?B?eGpKNDhRdTdHT0J5TmNlbko3d2ZUYTJTZFQzNDVLdjJlaUZqRlBTb2k5WUUz?=
- =?utf-8?B?WUNBbkg1WHhoK1RzQ1B6MS9RU0dyeW8xVlZnaHZYM0t5VGlBUC9NS04xcEcz?=
- =?utf-8?B?bjdOS2tCRFVkNlBxeEtXWk5Rb1ptTHB4OWNhYUN2S0lMU1JUaTF0bmsybHMv?=
- =?utf-8?B?a1BVVGwyTy81cXcwWVk0bWhwRVM1aS9tMUFCbjI1TEljMzlGQTFuSDZYMVlV?=
- =?utf-8?B?M2ZTL1QrQ0pDNm12bjNWT1R3VzhhRy9mQ1dYekcrSStQcTBVZURERzZEMU4v?=
- =?utf-8?B?N0xKUFpkUmlnZldIYXpzU3dZbFVNa3puMVZaRm5nY2JtaXE2VThLUFlnamhN?=
- =?utf-8?B?NEM2ZXk3ZytUamVzODBaQWRNcTEyU0xQTzFyT2tWbmVrampqcXFqV2VXb3BD?=
- =?utf-8?B?Y21NdE9NMjRRZkNxYzJzbzZlcFQwRTl6TERKRlBoU0d4U2JiamtXWmNxanR0?=
- =?utf-8?B?NWMzdUdVU1U3MmJ4cmc4UkVmNFV5QnFtdnEwYXl3Q3ZJd3BIRGJoMk5CL2Iz?=
- =?utf-8?B?VGQyelhEVjVlZ3liWXYrM0N4L3hOWUZMalBZTU1hNzlEOUJUZytwRnFENm5s?=
- =?utf-8?B?RXY5c1g2eTRWdlN0ejAzYnBuVU80NEpCaFpTeVhTVkdXNTVxcHpUVVAwaWIr?=
- =?utf-8?B?Q3lGMTBZdVdpa25vWUVYbEtCOW9wUXZvYlJpNDFNUnpwVEIyZzZVdlZnRUZZ?=
- =?utf-8?B?QWx1Z2JRd1VCcldiMUFFUzlDK3dvd3RiZldMYzBuanBrK25XWCttNzlZUjBD?=
- =?utf-8?Q?GXxEs2SyNqfCoAeASHdDN1Abcc/skZqwbbtRdEftUlUs=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740666007;
+	cv=none; b=S2fb5XTTj32/VXOhIeFaujwstlJK63k6TWosLc7FyUaazpey5eoTnFvtdqXH61iVeq+aog0LpPs4vtrxpgtBKJMPacSBZWXuuYD4ovJPOQymvRHB+ARd8XlUOLEsRdFKAUa+zqUa5U3cEiVbM3oAkszQlEHqG8A6ymgGzUHnyLZm2UBKmNfWi5C7laT1vgq7hdQqHKUS2Arlv5AAnvWYuniWqNftGlX/GV9F1Laxwb95Rb68zZuZ0VELAZkkzYq0i4KoQ7LLYQtxddzdj/qGofm3J/UGNKh2kLwcemrXkF/DNbZhlKqlgu+f+PB8dgdWqOcIxepDalWFqfI8kNVw2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1740666007; c=relaxed/relaxed;
+	bh=lLkF4cglL1B4U957UQIoskZzgCUjpXQItpbexnwwJ74=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AzvL3gLK6+hiMO+Iccm6Yc+3+t9MLeSNuv0M6/m4mxs9sxseabk3+QciZu8M40P8xOCbChDpsxEY27E2E24EsalWp7TY4f2yPjct4AXB6cKXrHeWIJ/A2Yyl2GrFbB8im4L4+dbklR1GAtbelG5ONP2nTmN3GFaFpZ/OXUrgaCPPhXHl0NoNwA32e3mrZPPChDVRv7ilNHjinZckyS8v3TGrcvTflkeCe5pWpIWVbB2h05jTobhAPnLPDiU1nO1oeChKMcvfjsaALpHj5gHKN8/+geMI3LTLmLLQUOg1ndqxsTYJ0aZjUYSwrZadCFhT0SU0J8WAaA5eboc3iK6aKw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3YQF3wLhz2yFB
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2025 01:20:04 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Z3Y843xhSz9sSN;
+	Thu, 27 Feb 2025 15:07:48 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id FP5Z442qQhRv; Thu, 27 Feb 2025 15:07:48 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z3Y842nk2z9sSC;
+	Thu, 27 Feb 2025 15:07:48 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4C49D8B78B;
+	Thu, 27 Feb 2025 15:07:48 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id cZKqapAsXdTe; Thu, 27 Feb 2025 15:07:48 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id AE4CE8B77C;
+	Thu, 27 Feb 2025 15:07:47 +0100 (CET)
+Message-ID: <be7782a1-5e92-46c1-a315-c1edbd0746d9@csgroup.eu>
+Date: Thu, 27 Feb 2025 15:07:47 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -145,279 +56,343 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SN6PR02MB4157.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0bbe6cd6-fc92-4e97-d6d9-08dd5737ca65
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Feb 2025 14:05:28.6472
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR02MB6541
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [next-20250226]Build Failure
+To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+ Stephen Rothwell <sfr@canb.auug.org.au>, Kees Cook <kees@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <adbe8dd1-a725-4811-ae7e-76fe770cf096@linux.vnet.ibm.com>
+ <20250227123804.5dd71cef@canb.auug.org.au>
+ <14193c98-fb30-4ee8-a19a-fe85d1230d74@csgroup.eu>
+ <cdd5dc55-4674-40fa-80d3-f6a6688c0d97@linux.vnet.ibm.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <cdd5dc55-4674-40fa-80d3-f6a6688c0d97@linux.vnet.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-RnJvbTogQ2hyaXN0b3BoZSBMZXJveSA8Y2hyaXN0b3BoZS5sZXJveUBjc2dyb3VwLmV1PiBTZW50
-OiBUaHVyc2RheSwgRmVicnVhcnkgMjcsIDIwMjUgMjo0MyBBTQ0KPiANCj4gTGUgMjcvMDIvMjAy
-NSDDoCAwMjozOCwgU3RlcGhlbiBSb3Rod2VsbCBhIMOpY3JpdMKgOg0KPiA+IEhpIFZlbmthdCwN
-Cj4gPg0KPiA+IENDIEtlZXMgQ29vayBmb3IgYWR2aWNlLiAgVGhpcyBpcyBhIHJlc3VsdCBvZiB0
-aGUgdGVzdHMgYWRkZWQgaW4gY29tbWl0DQo+ID4NCj4gPiAgICBiYmViMzhiODQ4N2EgKCJzdHJp
-bmcuaDogVmFsaWRhdGUgbWVtdG9zdHIqKCkvc3RydG9tZW0qKCkgYXJndW1lbnRzIG1vcmUgY2Fy
-ZWZ1bGx5IikNCj4gPg0KPiA+IGZyb20gdGhlIGtzcHAgdHJlZS4NCj4gPg0KPiA+IEkgbm90ZSB0
-aGF0IHRoZSBjb21tZW50IGFib3V0IG1lbXRvc3RyKCkgc2F5cyAiQ29weSBhIHBvc3NpYmx5DQo+
-ID4gbm9uLU5VTC10ZXJtIHN0cmluZyIuDQo+IA0KPiBDYW4geW91IHRlbGwgbW9yZSBhYm91dCB5
-b3VyIGNvbmZpZyBhbmQgeW91ciBlbnZpcm9ubWVudCA/DQo+IA0KPiBJIGp1c3QgdGVzdGVkIHdp
-dGggcHBjNjRfZGVmY29uZmlnIGFuZCBwcGM2NGxlX2RlZmNvbmZpZywgd2l0aCBnY2MgMTIuNCwN
-Cj4gZ2NjIDEzLjIgYW5kIGdjYyAxNC4yIGFuZCBkaWRuJ3QgZ2V0IHRoYXQgYnVpbGQgZXJyb3Iu
-DQo+IA0KPiBDaHJpc3RvcGhlDQoNCkZXSVcsIEkgc2VlIHRoZSBzYW1lIGJ1aWxkIGZhaWx1cmVz
-IHJlbGF0ZWQgdG8gX19tdXN0X2JlX25vbmNzdHIoKQ0Kd2hlbiBidWlsZGluZyBuYXRpdmVseSBv
-biB4ODYgYW5kIG9uIGFybTY0LiBJbiBib3RoIGNhc2VzLCBpdCdzIGFuDQpVYnVudHUgMjAuMDQg
-aW5zdGFsbGF0aW9uIHdpdGggZ2NjIDkuNC4wIGFuZCBiaW51dGlscyAyLjM0LiAgDQoNCk1pY2hh
-ZWwNCg0KPiANCj4gPg0KPiA+IE9uIFRodSwgMjcgRmViIDIwMjUgMDY6MzA6MTIgKzA1MzAgVmVu
-a2F0IFJhbyBCYWdhbGtvdGUNCj4gPHZlbmthdDg4QGxpbnV4LnZuZXQuaWJtLmNvbT4gd3JvdGU6
-DQo+ID4+DQo+ID4+IEkgYW0gc2VlaW5nIGJ1aWxkIGZhaWx1cmVzIHdpdGgga2VybmVsIG5leHQt
-MjAyNTAyMjYsIG9uIElCTSBQb3dlcjggc3lzdGVtcy4NCj4gPj4NCj4gPj4gRmFpbHVyZXM6DQo+
-ID4+DQo+ID4+IEluIGZpbGUgaW5jbHVkZWQgZnJvbSAuL2luY2x1ZGUvYXNtLWdlbmVyaWMvZGl2
-NjQuaDoyNywNCj4gPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmcm9tIC4v
-YXJjaC9wb3dlcnBjL2luY2x1ZGUvZ2VuZXJhdGVkL2FzbS9kaXY2NC5oOjEsDQo+ID4+ICAgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJvbSAuL2luY2x1ZGUvbGludXgvbWF0aC5o
-OjYsDQo+ID4+ICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJvbSAuL2luY2x1
-ZGUvbGludXgvbWF0aDY0Lmg6NiwNCj4gPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoCBmcm9tIC4vaW5jbHVkZS9saW51eC90aW1lLmg6NiwNCj4gPj4gICDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBmcm9tIGZzL2V4dDQvZmlsZS5jOjIyOg0KPiA+PiBmcy9leHQ0
-L2ZpbGUuYzogSW4gZnVuY3Rpb24gJ2V4dDRfc2FtcGxlX2xhc3RfbW91bnRlZCc6DQo+ID4+IC4v
-aW5jbHVkZS9saW51eC9jb21waWxlci5oOjE5Nzo2MjogZXJyb3I6IHN0YXRpYyBhc3NlcnRpb24g
-ZmFpbGVkOiAibXVzdCBiZSBub24tQy1zdHJpbmcNCj4gKG5vdCBOVUwtdGVybWluYXRlZCkiDQo+
-ID4+ICAgwqAjZGVmaW5lIF9fQlVJTERfQlVHX09OX1pFUk9fTVNHKGUsIG1zZykgKChpbnQpc2l6
-ZW9mKHN0cnVjdCB7X1N0YXRpY19hc3NlcnQoIShlKSwNCj4gbXNnKTt9KSkNCj4gPj4gXn5+fn5+
-fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLmg6MjI2OjI6IG5vdGU6IGlu
-IGV4cGFuc2lvbiBvZiBtYWNybw0KPiAnX19CVUlMRF9CVUdfT05fWkVST19NU0cnDQo+ID4+ICAg
-wqAgX19CVUlMRF9CVUdfT05fWkVST19NU0coIV9faXNfbm9uY3N0cihwKSwgXA0KPiA+PiAgIMKg
-IF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+IC4vaW5jbHVkZS9saW51eC9zdHJpbmcuaDo0
-MTg6Njogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvICdfX211c3RfYmVfbm9uY3N0cicNCj4g
-Pj4gICDCoMKgwqDCoMKgIF9fbXVzdF9iZV9ub25jc3RyKGRlc3QpICvCoCBcDQo+ID4+ICAgwqDC
-oMKgwqDCoCBefn5+fn5+fn5+fn5+fn5+fg0KPiA+PiBmcy9leHQ0L2ZpbGUuYzo4Njk6Mjogbm90
-ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvICdzdHJ0b21lbV9wYWQnDQo+ID4+ICAgwqAgc3RydG9t
-ZW1fcGFkKHNiaS0+c19lcy0+c19sYXN0X21vdW50ZWQsIGNwLCAwKTsNCj4gPj4gICDCoCBefn5+
-fn5+fn5+fn4NCj4gPj4gSW4gZmlsZSBpbmNsdWRlZCBmcm9tIC4vaW5jbHVkZS9saW51eC9idWls
-ZF9idWcuaDo1LA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZyb20g
-Li9pbmNsdWRlL2xpbnV4L2NvbnRhaW5lcl9vZi5oOjUsDQo+ID4+ICAgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqAgZnJvbSAuL2luY2x1ZGUvbGludXgvbGlzdC5oOjUsDQo+ID4+ICAg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJvbSAuL2luY2x1ZGUvbGludXgvbW9k
-dWxlLmg6MTIsDQo+ID4+ICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJvbSBk
-cml2ZXJzL21lc3NhZ2UvZnVzaW9uL21wdHNhcy5jOjQ2Og0KPiA+PiBkcml2ZXJzL21lc3NhZ2Uv
-ZnVzaW9uL21wdHNhcy5jOiBJbiBmdW5jdGlvbiAnbXB0c2FzX2V4cF9yZXBtYW51ZmFjdHVyZV9p
-bmZvJzoNCj4gPj4gLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLmg6MTk3OjYyOiBlcnJvcjogc3Rh
-dGljIGFzc2VydGlvbiBmYWlsZWQ6ICJtdXN0IGJlIG5vbi1DLXN0cmluZw0KPiAobm90IE5VTC10
-ZXJtaW5hdGVkKSINCj4gPj4gICDCoCNkZWZpbmUgX19CVUlMRF9CVUdfT05fWkVST19NU0coZSwg
-bXNnKSAoKGludClzaXplb2Yoc3RydWN0IHtfU3RhdGljX2Fzc2VydCghKGUpLA0KPiBtc2cpO30p
-KQ0KPiA+PiBefn5+fn5+fn5+fn5+fg0KPiA+PiAuL2luY2x1ZGUvbGludXgvY29tcGlsZXIuaDoy
-MjY6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvDQo+ICdfX0JVSUxEX0JVR19PTl9aRVJP
-X01TRycNCj4gPj4gICDCoCBfX0JVSUxEX0JVR19PTl9aRVJPX01TRyghX19pc19ub25jc3RyKHAp
-LCBcDQo+ID4+ICAgwqAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xp
-bnV4L3N0cmluZy5oOjQ2ODoyNjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvICdfX211c3Rf
-YmVfbm9uY3N0cicNCj4gPj4gICDCoCBjb25zdCBzaXplX3QgX3NyY19sZW4gPSBfX211c3RfYmVf
-bm9uY3N0cihzcmMpICvCoCBcDQo+ID4+ICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgXn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gZHJpdmVycy9tZXNz
-YWdlL2Z1c2lvbi9tcHRzYXMuYzoyOTY4OjM6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyAn
-bWVtdG9zdHInDQo+ID4+ICAgwqDCoCBtZW10b3N0cihlZGV2LT52ZW5kb3JfaWQsIG1hbnVmYWN0
-dXJlX3JlcGx5LT52ZW5kb3JfaWQpOw0KPiA+PiAgIMKgwqAgXn5+fn5+fn4NCj4gPj4gLi9pbmNs
-dWRlL2xpbnV4L2NvbXBpbGVyLmg6MTk3OjYyOiBlcnJvcjogc3RhdGljIGFzc2VydGlvbiBmYWls
-ZWQ6ICJtdXN0IGJlIG5vbi1DLXN0cmluZw0KPiAobm90IE5VTC10ZXJtaW5hdGVkKSINCj4gPj4g
-ICDCoCNkZWZpbmUgX19CVUlMRF9CVUdfT05fWkVST19NU0coZSwgbXNnKSAoKGludClzaXplb2Yo
-c3RydWN0IHtfU3RhdGljX2Fzc2VydCghKGUpLA0KPiBtc2cpO30pKQ0KPiA+PiBefn5+fn5+fn5+
-fn5+fg0KPiA+PiAuL2luY2x1ZGUvbGludXgvY29tcGlsZXIuaDoyMjY6Mjogbm90ZTogaW4gZXhw
-YW5zaW9uIG9mIG1hY3JvDQo+ICdfX0JVSUxEX0JVR19PTl9aRVJPX01TRycNCj4gPj4gICDCoCBf
-X0JVSUxEX0JVR19PTl9aRVJPX01TRyghX19pc19ub25jc3RyKHApLCBcDQo+ID4+ICAgwqAgXn5+
-fn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4L3N0cmluZy5oOjQ2ODoy
-Njogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvICdfX211c3RfYmVfbm9uY3N0cicNCj4gPj4g
-ICDCoCBjb25zdCBzaXplX3QgX3NyY19sZW4gPSBfX211c3RfYmVfbm9uY3N0cihzcmMpICvCoCBc
-DQo+ID4+ICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgXn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gZHJpdmVycy9tZXNzYWdlL2Z1c2lvbi9tcHRzYXMu
-YzoyOTY5OjM6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyAnbWVtdG9zdHInDQo+ID4+ICAg
-wqDCoCBtZW10b3N0cihlZGV2LT5wcm9kdWN0X2lkLCBtYW51ZmFjdHVyZV9yZXBseS0+cHJvZHVj
-dF9pZCk7DQo+ID4+ICAgwqDCoCBefn5+fn5+fg0KPiA+PiAuL2luY2x1ZGUvbGludXgvY29tcGls
-ZXIuaDoxOTc6NjI6IGVycm9yOiBzdGF0aWMgYXNzZXJ0aW9uIGZhaWxlZDogIm11c3QgYmUgbm9u
-LUMtc3RyaW5nDQo+IChub3QgTlVMLXRlcm1pbmF0ZWQpIg0KPiA+PiAgIMKgI2RlZmluZSBfX0JV
-SUxEX0JVR19PTl9aRVJPX01TRyhlLCBtc2cpICgoaW50KXNpemVvZihzdHJ1Y3Qge19TdGF0aWNf
-YXNzZXJ0KCEoZSksDQo+IG1zZyk7fSkpDQo+ID4+IF5+fn5+fn5+fn5+fn5+DQo+ID4+IC4vaW5j
-bHVkZS9saW51eC9jb21waWxlci5oOjIyNjoyOiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8N
-Cj4gJ19fQlVJTERfQlVHX09OX1pFUk9fTVNHJw0KPiA+PiAgIMKgIF9fQlVJTERfQlVHX09OX1pF
-Uk9fTVNHKCFfX2lzX25vbmNzdHIocCksIFwNCj4gPj4gICDCoCBefn5+fn5+fn5+fn5+fn5+fn5+
-fn5+fg0KPiA+PiAuL2luY2x1ZGUvbGludXgvc3RyaW5nLmg6NDY4OjI2OiBub3RlOiBpbiBleHBh
-bnNpb24gb2YgbWFjcm8gJ19fbXVzdF9iZV9ub25jc3RyJw0KPiA+PiAgIMKgIGNvbnN0IHNpemVf
-dCBfc3JjX2xlbiA9IF9fbXVzdF9iZV9ub25jc3RyKHNyYykgK8KgIFwNCj4gPj4gICDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBefn5+fn5+fn5+fn5+
-fn5+fg0KPiA+PiBkcml2ZXJzL21lc3NhZ2UvZnVzaW9uL21wdHNhcy5jOjI5NzA6Mzogbm90ZTog
-aW4gZXhwYW5zaW9uIG9mIG1hY3JvICdtZW10b3N0cicNCj4gPj4gICDCoMKgIG1lbXRvc3RyKGVk
-ZXYtPnByb2R1Y3RfcmV2LCBtYW51ZmFjdHVyZV9yZXBseS0+cHJvZHVjdF9yZXYpOw0KPiA+PiAg
-IMKgwqAgXn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLmg6MTk3OjYyOiBl
-cnJvcjogc3RhdGljIGFzc2VydGlvbiBmYWlsZWQ6ICJtdXN0IGJlIG5vbi1DLXN0cmluZw0KPiAo
-bm90IE5VTC10ZXJtaW5hdGVkKSINCj4gPj4gICDCoCNkZWZpbmUgX19CVUlMRF9CVUdfT05fWkVS
-T19NU0coZSwgbXNnKSAoKGludClzaXplb2Yoc3RydWN0IHtfU3RhdGljX2Fzc2VydCghKGUpLA0K
-PiBtc2cpO30pKQ0KPiA+PiBefn5+fn5+fn5+fn5+fg0KPiA+PiAuL2luY2x1ZGUvbGludXgvY29t
-cGlsZXIuaDoyMjY6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvDQo+ICdfX0JVSUxEX0JV
-R19PTl9aRVJPX01TRycNCj4gPj4gICDCoCBfX0JVSUxEX0JVR19PTl9aRVJPX01TRyghX19pc19u
-b25jc3RyKHApLCBcDQo+ID4+ICAgwqAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9p
-bmNsdWRlL2xpbnV4L3N0cmluZy5oOjQ2ODoyNjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3Jv
-ICdfX211c3RfYmVfbm9uY3N0cicNCj4gPj4gICDCoCBjb25zdCBzaXplX3QgX3NyY19sZW4gPSBf
-X211c3RfYmVfbm9uY3N0cihzcmMpICvCoCBcDQo+ID4+ICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgXn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gZHJp
-dmVycy9tZXNzYWdlL2Z1c2lvbi9tcHRzYXMuYzoyOTczOjQ6IG5vdGU6IGluIGV4cGFuc2lvbiBv
-ZiBtYWNybyAnbWVtdG9zdHInDQo+ID4+ICAgwqDCoMKgIG1lbXRvc3RyKGVkZXYtPmNvbXBvbmVu
-dF92ZW5kb3JfaWQsDQo+ID4+ICAgwqDCoMKgIF5+fn5+fn5+DQo+ID4+IG1ha2VbNF06ICoqKiBb
-c2NyaXB0cy9NYWtlZmlsZS5idWlsZDoyMDM6IGZzL2V4dDQvZmlsZS5vXSBFcnJvciAxDQo+ID4+
-IG1ha2VbM106ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5idWlsZDo0NjE6IGZzL2V4dDRdIEVycm9y
-IDINCj4gPj4gbWFrZVszXTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4NCj4g
-Pj4gSW4gZmlsZSBpbmNsdWRlZCBmcm9tIC4vaW5jbHVkZS9saW51eC9hcnJheV9zaXplLmg6NSwN
-Cj4gPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmcm9tIC4vaW5jbHVkZS9s
-aW51eC9rZXJuZWwuaDoxNiwNCj4gPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oCBmcm9tIGRyaXZlcnMvc2NzaS9tcHQzc2FzL21wdDNzYXNfYmFzZS5jOjQ2Og0KPiA+PiBkcml2
-ZXJzL3Njc2kvbXB0M3Nhcy9tcHQzc2FzX2Jhc2UuYzogSW4gZnVuY3Rpb24gJ19iYXNlX2Rpc3Bs
-YXlfaW9jX2NhcGFiaWxpdGllcyc6DQo+ID4+IC4vaW5jbHVkZS9saW51eC9jb21waWxlci5oOjE5
-Nzo2MjogZXJyb3I6IHN0YXRpYyBhc3NlcnRpb24gZmFpbGVkOiAibXVzdCBiZSBub24tQy1zdHJp
-bmcNCj4gKG5vdCBOVUwtdGVybWluYXRlZCkiDQo+ID4+ICAgwqAjZGVmaW5lIF9fQlVJTERfQlVH
-X09OX1pFUk9fTVNHKGUsIG1zZykgKChpbnQpc2l6ZW9mKHN0cnVjdCB7X1N0YXRpY19hc3NlcnQo
-IShlKSwNCj4gbXNnKTt9KSkNCj4gPj4gXn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xp
-bnV4L2NvbXBpbGVyLmg6MjI2OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0KPiAnX19C
-VUlMRF9CVUdfT05fWkVST19NU0cnDQo+ID4+ICAgwqAgX19CVUlMRF9CVUdfT05fWkVST19NU0co
-IV9faXNfbm9uY3N0cihwKSwgXA0KPiA+PiAgIMKgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+
-ID4+IC4vaW5jbHVkZS9saW51eC9zdHJpbmcuaDo0Njg6MjY6IG5vdGU6IGluIGV4cGFuc2lvbiBv
-ZiBtYWNybyAnX19tdXN0X2JlX25vbmNzdHInDQo+ID4+ICAgwqAgY29uc3Qgc2l6ZV90IF9zcmNf
-bGVuID0gX19tdXN0X2JlX25vbmNzdHIoc3JjKSArwqAgXA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIF5+fn5+fn5+fn5+fn5+fn5+DQo+
-ID4+IGRyaXZlcnMvc2NzaS9tcHQzc2FzL21wdDNzYXNfYmFzZS5jOjQ3OTg6Mjogbm90ZTogaW4g
-ZXhwYW5zaW9uIG9mIG1hY3JvICdtZW10b3N0cicNCj4gPj4gICDCoCBtZW10b3N0cihkZXNjLCBp
-b2MtPm1hbnVfcGcwLkNoaXBOYW1lKTsNCj4gPj4gICDCoCBefn5+fn5+fg0KPiA+PiBJbiBmaWxl
-IGluY2x1ZGVkIGZyb20gLi9pbmNsdWRlL2xpbnV4L2J1aWxkX2J1Zy5oOjUsDQo+ID4+ICAgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJvbSAuL2luY2x1ZGUvbGludXgvY29udGFp
-bmVyX29mLmg6NSwNCj4gPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmcm9t
-IC4vaW5jbHVkZS9saW51eC9saXN0Lmg6NSwNCj4gPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBmcm9tIC4vaW5jbHVkZS9saW51eC9tb2R1bGUuaDoxMiwNCj4gPj4gICDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBmcm9tIGRyaXZlcnMvc2NzaS9tcHQzc2FzL21w
-dDNzYXNfdHJhbnNwb3J0LmM6NDU6DQo+ID4+IGRyaXZlcnMvc2NzaS9tcHQzc2FzL21wdDNzYXNf
-dHJhbnNwb3J0LmM6IEluIGZ1bmN0aW9uDQo+ICdfdHJhbnNwb3J0X2V4cGFuZGVyX3JlcG9ydF9t
-YW51ZmFjdHVyZSc6DQo+ID4+IC4vaW5jbHVkZS9saW51eC9jb21waWxlci5oOjE5Nzo2MjogZXJy
-b3I6IHN0YXRpYyBhc3NlcnRpb24gZmFpbGVkOiAibXVzdCBiZSBub24tQy1zdHJpbmcNCj4gKG5v
-dCBOVUwtdGVybWluYXRlZCkiDQo+ID4+ICAgwqAjZGVmaW5lIF9fQlVJTERfQlVHX09OX1pFUk9f
-TVNHKGUsIG1zZykgKChpbnQpc2l6ZW9mKHN0cnVjdCB7X1N0YXRpY19hc3NlcnQoIShlKSwNCj4g
-bXNnKTt9KSkNCj4gPj4gXn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4L2NvbXBp
-bGVyLmg6MjI2OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0KPiAnX19CVUlMRF9CVUdf
-T05fWkVST19NU0cnDQo+ID4+ICAgwqAgX19CVUlMRF9CVUdfT05fWkVST19NU0coIV9faXNfbm9u
-Y3N0cihwKSwgXA0KPiA+PiAgIMKgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+IC4vaW5j
-bHVkZS9saW51eC9zdHJpbmcuaDo0Njg6MjY6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyAn
-X19tdXN0X2JlX25vbmNzdHInDQo+ID4+ICAgwqAgY29uc3Qgc2l6ZV90IF9zcmNfbGVuID0gX19t
-dXN0X2JlX25vbmNzdHIoc3JjKSArwqAgXA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIF5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+IGRyaXZl
-cnMvc2NzaS9tcHQzc2FzL21wdDNzYXNfdHJhbnNwb3J0LmM6NDYxOjM6IG5vdGU6IGluIGV4cGFu
-c2lvbiBvZiBtYWNybw0KPiAnbWVtdG9zdHInDQo+ID4+ICAgwqDCoCBtZW10b3N0cihlZGV2LT52
-ZW5kb3JfaWQsIG1hbnVmYWN0dXJlX3JlcGx5LT52ZW5kb3JfaWQpOw0KPiA+PiAgIMKgwqAgXn5+
-fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLmg6MTk3OjYyOiBlcnJvcjogc3Rh
-dGljIGFzc2VydGlvbiBmYWlsZWQ6ICJtdXN0IGJlIG5vbi1DLXN0cmluZw0KPiAobm90IE5VTC10
-ZXJtaW5hdGVkKSINCj4gPj4gICDCoCNkZWZpbmUgX19CVUlMRF9CVUdfT05fWkVST19NU0coZSwg
-bXNnKSAoKGludClzaXplb2Yoc3RydWN0IHtfU3RhdGljX2Fzc2VydCghKGUpLA0KPiBtc2cpO30p
-KQ0KPiA+PiBefn5+fn5+fn5+fn5+fg0KPiA+PiAuL2luY2x1ZGUvbGludXgvY29tcGlsZXIuaDoy
-MjY6Mjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvDQo+ICdfX0JVSUxEX0JVR19PTl9aRVJP
-X01TRycNCj4gPj4gICDCoCBfX0JVSUxEX0JVR19PTl9aRVJPX01TRyghX19pc19ub25jc3RyKHAp
-LCBcDQo+ID4+ICAgwqAgXn5+fn5+fn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xp
-bnV4L3N0cmluZy5oOjQ2ODoyNjogbm90ZTogaW4gZXhwYW5zaW9uIG9mIG1hY3JvICdfX211c3Rf
-YmVfbm9uY3N0cicNCj4gPj4gICDCoCBjb25zdCBzaXplX3QgX3NyY19sZW4gPSBfX211c3RfYmVf
-bm9uY3N0cihzcmMpICvCoCBcDQo+ID4+ICAgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqAgXn5+fn5+fn5+fn5+fn5+fn4NCj4gPj4gZHJpdmVycy9zY3Np
-L21wdDNzYXMvbXB0M3Nhc190cmFuc3BvcnQuYzo0NjI6Mzogbm90ZTogaW4gZXhwYW5zaW9uIG9m
-IG1hY3JvDQo+ICdtZW10b3N0cicNCj4gPj4gICDCoMKgIG1lbXRvc3RyKGVkZXYtPnByb2R1Y3Rf
-aWQsIG1hbnVmYWN0dXJlX3JlcGx5LT5wcm9kdWN0X2lkKTsNCj4gPj4gICDCoMKgIF5+fn5+fn5+
-DQo+ID4+IC4vaW5jbHVkZS9saW51eC9jb21waWxlci5oOjE5Nzo2MjogZXJyb3I6IHN0YXRpYyBh
-c3NlcnRpb24gZmFpbGVkOiAibXVzdCBiZSBub24tQy1zdHJpbmcNCj4gKG5vdCBOVUwtdGVybWlu
-YXRlZCkiDQo+ID4+ICAgwqAjZGVmaW5lIF9fQlVJTERfQlVHX09OX1pFUk9fTVNHKGUsIG1zZykg
-KChpbnQpc2l6ZW9mKHN0cnVjdCB7X1N0YXRpY19hc3NlcnQoIShlKSwNCj4gbXNnKTt9KSkNCj4g
-Pj4gXn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLmg6MjI2OjI6
-IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0KPiAnX19CVUlMRF9CVUdfT05fWkVST19NU0cn
-DQo+ID4+ICAgwqAgX19CVUlMRF9CVUdfT05fWkVST19NU0coIV9faXNfbm9uY3N0cihwKSwgXA0K
-PiA+PiAgIMKgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+IC4vaW5jbHVkZS9saW51eC9z
-dHJpbmcuaDo0Njg6MjY6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyAnX19tdXN0X2JlX25v
-bmNzdHInDQo+ID4+ICAgwqAgY29uc3Qgc2l6ZV90IF9zcmNfbGVuID0gX19tdXN0X2JlX25vbmNz
-dHIoc3JjKSArwqAgXA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgIF5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+IGRyaXZlcnMvc2NzaS9tcHQz
-c2FzL21wdDNzYXNfdHJhbnNwb3J0LmM6NDYzOjM6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNy
-bw0KPiAnbWVtdG9zdHInDQo+ID4+ICAgwqDCoCBtZW10b3N0cihlZGV2LT5wcm9kdWN0X3Jldiwg
-bWFudWZhY3R1cmVfcmVwbHktPnByb2R1Y3RfcmV2KTsNCj4gPj4gICDCoMKgIF5+fn5+fn5+DQo+
-ID4+IC4vaW5jbHVkZS9saW51eC9jb21waWxlci5oOjE5Nzo2MjogZXJyb3I6IHN0YXRpYyBhc3Nl
-cnRpb24gZmFpbGVkOiAibXVzdCBiZSBub24tQy1zdHJpbmcNCj4gKG5vdCBOVUwtdGVybWluYXRl
-ZCkiDQo+ID4+ICAgwqAjZGVmaW5lIF9fQlVJTERfQlVHX09OX1pFUk9fTVNHKGUsIG1zZykgKChp
-bnQpc2l6ZW9mKHN0cnVjdCB7X1N0YXRpY19hc3NlcnQoIShlKSwNCj4gbXNnKTt9KSkNCj4gPj4g
-Xn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4L2NvbXBpbGVyLmg6MjI2OjI6IG5v
-dGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0KPiAnX19CVUlMRF9CVUdfT05fWkVST19NU0cnDQo+
-ID4+ICAgwqAgX19CVUlMRF9CVUdfT05fWkVST19NU0coIV9faXNfbm9uY3N0cihwKSwgXA0KPiA+
-PiAgIMKgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+IC4vaW5jbHVkZS9saW51eC9zdHJp
-bmcuaDo0Njg6MjY6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyAnX19tdXN0X2JlX25vbmNz
-dHInDQo+ID4+ICAgwqAgY29uc3Qgc2l6ZV90IF9zcmNfbGVuID0gX19tdXN0X2JlX25vbmNzdHIo
-c3JjKSArwqAgXA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIF5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+IGRyaXZlcnMvc2NzaS9tcHQzc2Fz
-L21wdDNzYXNfdHJhbnNwb3J0LmM6NDY2OjQ6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0K
-PiAnbWVtdG9zdHInDQo+ID4+ICAgwqDCoMKgIG1lbXRvc3RyKGVkZXYtPmNvbXBvbmVudF92ZW5k
-b3JfaWQsDQo+ID4+ICAgwqDCoMKgIF5+fn5+fn5+DQo+ID4+IG1ha2VbNV06ICoqKiBbc2NyaXB0
-cy9NYWtlZmlsZS5idWlsZDoyMDM6IGRyaXZlcnMvc2NzaS9tcHQzc2FzL21wdDNzYXNfdHJhbnNw
-b3J0Lm9dDQo+IEVycm9yIDENCj4gPj4gbWFrZVs1XTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNo
-ZWQgam9icy4uLi4NCj4gPj4gbWFrZVs1XTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjIw
-MzogZHJpdmVycy9tZXNzYWdlL2Z1c2lvbi9tcHRzYXMub10gRXJyb3IgMQ0KPiA+PiBtYWtlWzRd
-OiAqKiogW3NjcmlwdHMvTWFrZWZpbGUuYnVpbGQ6NDYxOiBkcml2ZXJzL21lc3NhZ2UvZnVzaW9u
-XSBFcnJvciAyDQo+ID4+IG1ha2VbM106ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5idWlsZDo0NjE6
-IGRyaXZlcnMvbWVzc2FnZV0gRXJyb3IgMg0KPiA+PiBtYWtlWzNdOiAqKiogV2FpdGluZyBmb3Ig
-dW5maW5pc2hlZCBqb2JzLi4uLg0KPiA+PiBtYWtlWzVdOiAqKiogW3NjcmlwdHMvTWFrZWZpbGUu
-YnVpbGQ6MjAzOiBkcml2ZXJzL3Njc2kvbXB0M3Nhcy9tcHQzc2FzX2Jhc2Uub10gRXJyb3IgMQ0K
-PiA+PiBJbiBmaWxlIGluY2x1ZGVkIGZyb20gLi9pbmNsdWRlL2xpbnV4L2FycmF5X3NpemUuaDo1
-LA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGZyb20gLi9pbmNsdWRl
-L2xpbnV4L2tlcm5lbC5oOjE2LA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIGZyb20gZHJpdmVycy9zY3NpL3FsYTJ4eHgvcWxhX2RlZi5oOjksDQo+ID4+ICAgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZnJvbSBkcml2ZXJzL3Njc2kvcWxhMnh4eC9xbGFf
-bXIuYzo2Og0KPiA+PiBkcml2ZXJzL3Njc2kvcWxhMnh4eC9xbGFfbXIuYzogSW4gZnVuY3Rpb24g
-J3FsYWZ4MDBfZnhfZGlzYyc6DQo+ID4+IC4vaW5jbHVkZS9saW51eC9jb21waWxlci5oOjE5Nzo2
-MjogZXJyb3I6IHN0YXRpYyBhc3NlcnRpb24gZmFpbGVkOiAibXVzdCBiZSBub24tQy1zdHJpbmcN
-Cj4gKG5vdCBOVUwtdGVybWluYXRlZCkiDQo+ID4+ICAgwqAjZGVmaW5lIF9fQlVJTERfQlVHX09O
-X1pFUk9fTVNHKGUsIG1zZykgKChpbnQpc2l6ZW9mKHN0cnVjdCB7X1N0YXRpY19hc3NlcnQoIShl
-KSwNCj4gbXNnKTt9KSkNCj4gPj4gXn5+fn5+fn5+fn5+fn4NCj4gPj4gLi9pbmNsdWRlL2xpbnV4
-L2NvbXBpbGVyLmg6MjI2OjI6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybw0KPiAnX19CVUlM
-RF9CVUdfT05fWkVST19NU0cnDQo+ID4+ICAgwqAgX19CVUlMRF9CVUdfT05fWkVST19NU0coIV9f
-aXNfbm9uY3N0cihwKSwgXA0KPiA+PiAgIMKgIF5+fn5+fn5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+
-IC4vaW5jbHVkZS9saW51eC9zdHJpbmcuaDo0Njg6MjY6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBt
-YWNybyAnX19tdXN0X2JlX25vbmNzdHInDQo+ID4+ICAgwqAgY29uc3Qgc2l6ZV90IF9zcmNfbGVu
-ID0gX19tdXN0X2JlX25vbmNzdHIoc3JjKSArwqAgXA0KPiA+PiAgIMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIF5+fn5+fn5+fn5+fn5+fn5+DQo+ID4+
-IGRyaXZlcnMvc2NzaS9xbGEyeHh4L3FsYV9tci5jOjE5MTI6Mzogbm90ZTogaW4gZXhwYW5zaW9u
-IG9mIG1hY3JvICdtZW10b3N0cicNCj4gPj4gICDCoMKgIG1lbXRvc3RyKHZoYS0+aHctPm1vZGVs
-X251bWJlciwgcGluZm8tPm1vZGVsX251bSk7DQo+ID4+ICAgwqDCoCBefn5+fn5+fg0KPiA+PiAu
-L2luY2x1ZGUvbGludXgvY29tcGlsZXIuaDoxOTc6NjI6IGVycm9yOiBzdGF0aWMgYXNzZXJ0aW9u
-IGZhaWxlZDogIm11c3QgYmUgbm9uLUMtc3RyaW5nDQo+IChub3QgTlVMLXRlcm1pbmF0ZWQpIg0K
-PiA+PiAgIMKgI2RlZmluZSBfX0JVSUxEX0JVR19PTl9aRVJPX01TRyhlLCBtc2cpICgoaW50KXNp
-emVvZihzdHJ1Y3Qge19TdGF0aWNfYXNzZXJ0KCEoZSksDQo+IG1zZyk7fSkpDQo+ID4+IF5+fn5+
-fn5+fn5+fn5+DQo+ID4+IC4vaW5jbHVkZS9saW51eC9jb21waWxlci5oOjIyNjoyOiBub3RlOiBp
-biBleHBhbnNpb24gb2YgbWFjcm8NCj4gJ19fQlVJTERfQlVHX09OX1pFUk9fTVNHJw0KPiA+PiAg
-IMKgIF9fQlVJTERfQlVHX09OX1pFUk9fTVNHKCFfX2lzX25vbmNzdHIocCksIFwNCj4gPj4gICDC
-oCBefn5+fn5+fn5+fn5+fn5+fn5+fn5+fg0KPiA+PiAuL2luY2x1ZGUvbGludXgvc3RyaW5nLmg6
-NDY4OjI2OiBub3RlOiBpbiBleHBhbnNpb24gb2YgbWFjcm8gJ19fbXVzdF9iZV9ub25jc3RyJw0K
-PiA+PiAgIMKgIGNvbnN0IHNpemVfdCBfc3JjX2xlbiA9IF9fbXVzdF9iZV9ub25jc3RyKHNyYykg
-K8KgIFwNCj4gPj4gICDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoCBefn5+fn5+fn5+fn5+fn5+fg0KPiA+PiBkcml2ZXJzL3Njc2kvcWxhMnh4eC9xbGFf
-bXIuYzoxOTEzOjM6IG5vdGU6IGluIGV4cGFuc2lvbiBvZiBtYWNybyAnbWVtdG9zdHInDQo+ID4+
-ICAgwqDCoCBtZW10b3N0cih2aGEtPmh3LT5tb2RlbF9kZXNjLCBwaW5mby0+bW9kZWxfZGVzY3Jp
-cHRpb24pOw0KPiA+PiAgIMKgwqAgXn5+fn5+fn4NCj4gPj4gbWFrZVs1XTogKioqIFtzY3JpcHRz
-L01ha2VmaWxlLmJ1aWxkOjIwMzogZHJpdmVycy9zY3NpL3FsYTJ4eHgvcWxhX21yLm9dIEVycm9y
-IDENCj4gPj4gbWFrZVs1XTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4NCj4g
-Pj4gbWFrZVsyXTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjQ2MTogZnNdIEVycm9yIDIN
-Cj4gPj4gbWFrZVsyXTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQgam9icy4uLi4NCj4gPj4g
-bWFrZVs0XTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjQ2MTogZHJpdmVycy9zY3NpL21w
-dDNzYXNdIEVycm9yIDINCj4gPj4gbWFrZVs0XTogKioqIFdhaXRpbmcgZm9yIHVuZmluaXNoZWQg
-am9icy4uLi4NCj4gPj4gbWFrZVs0XTogKioqIFtzY3JpcHRzL01ha2VmaWxlLmJ1aWxkOjQ2MTog
-ZHJpdmVycy9zY3NpL3FsYTJ4eHhdIEVycm9yIDINCj4gPj4gbWFrZVszXTogKioqIFtzY3JpcHRz
-L01ha2VmaWxlLmJ1aWxkOjQ2MTogZHJpdmVycy9zY3NpXSBFcnJvciAyDQo+ID4+IG1ha2VbMl06
-ICoqKiBbc2NyaXB0cy9NYWtlZmlsZS5idWlsZDo0NjE6IGRyaXZlcnNdIEVycm9yIDINCj4gPj4g
-bWFrZVsxXTogKioqIFsvcm9vdC9saW51eC1uZXh0L01ha2VmaWxlOjE5ODk6IC5dIEVycm9yIDIN
-Cj4gPj4gbWFrZTogKioqIFtNYWtlZmlsZToyNTE6IF9fc3ViLW1ha2VdIEVycm9yIDINCj4gPg0K
-PiANCg0K
+
+
+Le 27/02/2025 à 14:47, Venkat Rao Bagalkote a écrit :
+> Hello,
+> 
+> 
+> Attached is the .config file.
+> 
+> This is being run on IBM Power8 system in PowerVM mode, as a full system 
+> LPAR.
+
+Ah ok so you are using a quite old version of GCC, that is GCC 8.5
+
+I get the same problem when building ppc64_defconfig with GCC 8.5
+
+Kees, can you have a look ?
+
+Regards
+Christophe
+
+> 
+> Regards,
+> 
+> Venkat.
+> 
+> On 27/02/25 4:13 pm, Christophe Leroy wrote:
+>>
+>>
+>> Le 27/02/2025 à 02:38, Stephen Rothwell a écrit :
+>>> Hi Venkat,
+>>>
+>>> CC Kees Cook for advice.  This is a result of the tests added in commit
+>>>
+>>>    bbeb38b8487a ("string.h: Validate memtostr*()/strtomem*() 
+>>> arguments more carefully")
+>>>
+>>> from the kspp tree.
+>>>
+>>> I note that the comment about memtostr() says "Copy a possibly
+>>> non-NUL-term string".
+>>
+>> Can you tell more about your config and your environment ?
+>>
+>> I just tested with ppc64_defconfig and ppc64le_defconfig, with gcc 
+>> 12.4, gcc 13.2 and gcc 14.2 and didn't get that build error.
+>>
+>> Christophe
+>>
+>>>
+>>> On Thu, 27 Feb 2025 06:30:12 +0530 Venkat Rao Bagalkote 
+>>> <venkat88@linux.vnet.ibm.com> wrote:
+>>>>
+>>>> I am seeing build failures with kernel next-20250226, on IBM Power8 
+>>>> systems.
+>>>>
+>>>> Failures:
+>>>>
+>>>> In file included from ./include/asm-generic/div64.h:27,
+>>>>                    from ./arch/powerpc/include/generated/asm/div64.h:1,
+>>>>                    from ./include/linux/math.h:6,
+>>>>                    from ./include/linux/math64.h:6,
+>>>>                    from ./include/linux/time.h:6,
+>>>>                    from fs/ext4/file.c:22:
+>>>> fs/ext4/file.c: In function 'ext4_sample_last_mounted':
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:418:6: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>         __must_be_noncstr(dest) +  \
+>>>>         ^~~~~~~~~~~~~~~~~
+>>>> fs/ext4/file.c:869:2: note: in expansion of macro 'strtomem_pad'
+>>>>     strtomem_pad(sbi->s_es->s_last_mounted, cp, 0);
+>>>>     ^~~~~~~~~~~~
+>>>> In file included from ./include/linux/build_bug.h:5,
+>>>>                    from ./include/linux/container_of.h:5,
+>>>>                    from ./include/linux/list.h:5,
+>>>>                    from ./include/linux/module.h:12,
+>>>>                    from drivers/message/fusion/mptsas.c:46:
+>>>> drivers/message/fusion/mptsas.c: In function 
+>>>> 'mptsas_exp_repmanufacture_info':
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/message/fusion/mptsas.c:2968:3: note: in expansion of macro 
+>>>> 'memtostr'
+>>>>      memtostr(edev->vendor_id, manufacture_reply->vendor_id);
+>>>>      ^~~~~~~~
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/message/fusion/mptsas.c:2969:3: note: in expansion of macro 
+>>>> 'memtostr'
+>>>>      memtostr(edev->product_id, manufacture_reply->product_id);
+>>>>      ^~~~~~~~
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/message/fusion/mptsas.c:2970:3: note: in expansion of macro 
+>>>> 'memtostr'
+>>>>      memtostr(edev->product_rev, manufacture_reply->product_rev);
+>>>>      ^~~~~~~~
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/message/fusion/mptsas.c:2973:4: note: in expansion of macro 
+>>>> 'memtostr'
+>>>>       memtostr(edev->component_vendor_id,
+>>>>       ^~~~~~~~
+>>>> make[4]: *** [scripts/Makefile.build:203: fs/ext4/file.o] Error 1
+>>>> make[3]: *** [scripts/Makefile.build:461: fs/ext4] Error 2
+>>>> make[3]: *** Waiting for unfinished jobs....
+>>>> In file included from ./include/linux/array_size.h:5,
+>>>>                    from ./include/linux/kernel.h:16,
+>>>>                    from drivers/scsi/mpt3sas/mpt3sas_base.c:46:
+>>>> drivers/scsi/mpt3sas/mpt3sas_base.c: In function 
+>>>> '_base_display_ioc_capabilities':
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/scsi/mpt3sas/mpt3sas_base.c:4798:2: note: in expansion of 
+>>>> macro 'memtostr'
+>>>>     memtostr(desc, ioc->manu_pg0.ChipName);
+>>>>     ^~~~~~~~
+>>>> In file included from ./include/linux/build_bug.h:5,
+>>>>                    from ./include/linux/container_of.h:5,
+>>>>                    from ./include/linux/list.h:5,
+>>>>                    from ./include/linux/module.h:12,
+>>>>                    from drivers/scsi/mpt3sas/mpt3sas_transport.c:45:
+>>>> drivers/scsi/mpt3sas/mpt3sas_transport.c: In function 
+>>>> '_transport_expander_report_manufacture':
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/scsi/mpt3sas/mpt3sas_transport.c:461:3: note: in expansion 
+>>>> of macro 'memtostr'
+>>>>      memtostr(edev->vendor_id, manufacture_reply->vendor_id);
+>>>>      ^~~~~~~~
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/scsi/mpt3sas/mpt3sas_transport.c:462:3: note: in expansion 
+>>>> of macro 'memtostr'
+>>>>      memtostr(edev->product_id, manufacture_reply->product_id);
+>>>>      ^~~~~~~~
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/scsi/mpt3sas/mpt3sas_transport.c:463:3: note: in expansion 
+>>>> of macro 'memtostr'
+>>>>      memtostr(edev->product_rev, manufacture_reply->product_rev);
+>>>>      ^~~~~~~~
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/scsi/mpt3sas/mpt3sas_transport.c:466:4: note: in expansion 
+>>>> of macro 'memtostr'
+>>>>       memtostr(edev->component_vendor_id,
+>>>>       ^~~~~~~~
+>>>> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/mpt3sas/ 
+>>>> mpt3sas_transport.o] Error 1
+>>>> make[5]: *** Waiting for unfinished jobs....
+>>>> make[5]: *** [scripts/Makefile.build:203: drivers/message/fusion/ 
+>>>> mptsas.o] Error 1
+>>>> make[4]: *** [scripts/Makefile.build:461: drivers/message/fusion] 
+>>>> Error 2
+>>>> make[3]: *** [scripts/Makefile.build:461: drivers/message] Error 2
+>>>> make[3]: *** Waiting for unfinished jobs....
+>>>> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/mpt3sas/ 
+>>>> mpt3sas_base.o] Error 1
+>>>> In file included from ./include/linux/array_size.h:5,
+>>>>                    from ./include/linux/kernel.h:16,
+>>>>                    from drivers/scsi/qla2xxx/qla_def.h:9,
+>>>>                    from drivers/scsi/qla2xxx/qla_mr.c:6:
+>>>> drivers/scsi/qla2xxx/qla_mr.c: In function 'qlafx00_fx_disc':
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/scsi/qla2xxx/qla_mr.c:1912:3: note: in expansion of macro 
+>>>> 'memtostr'
+>>>>      memtostr(vha->hw->model_number, pinfo->model_num);
+>>>>      ^~~~~~~~
+>>>> ./include/linux/compiler.h:197:62: error: static assertion failed: 
+>>>> "must be non-C-string (not NUL-terminated)"
+>>>>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct 
+>>>> {_Static_assert(!(e), msg);}))
+>>>> ^~~~~~~~~~~~~~
+>>>> ./include/linux/compiler.h:226:2: note: in expansion of macro 
+>>>> '__BUILD_BUG_ON_ZERO_MSG'
+>>>>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
+>>>>     ^~~~~~~~~~~~~~~~~~~~~~~
+>>>> ./include/linux/string.h:468:26: note: in expansion of macro 
+>>>> '__must_be_noncstr'
+>>>>     const size_t _src_len = __must_be_noncstr(src) +  \
+>>>>                             ^~~~~~~~~~~~~~~~~
+>>>> drivers/scsi/qla2xxx/qla_mr.c:1913:3: note: in expansion of macro 
+>>>> 'memtostr'
+>>>>      memtostr(vha->hw->model_desc, pinfo->model_description);
+>>>>      ^~~~~~~~
+>>>> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/qla2xxx/ 
+>>>> qla_mr.o] Error 1
+>>>> make[5]: *** Waiting for unfinished jobs....
+>>>> make[2]: *** [scripts/Makefile.build:461: fs] Error 2
+>>>> make[2]: *** Waiting for unfinished jobs....
+>>>> make[4]: *** [scripts/Makefile.build:461: drivers/scsi/mpt3sas] Error 2
+>>>> make[4]: *** Waiting for unfinished jobs....
+>>>> make[4]: *** [scripts/Makefile.build:461: drivers/scsi/qla2xxx] Error 2
+>>>> make[3]: *** [scripts/Makefile.build:461: drivers/scsi] Error 2
+>>>> make[2]: *** [scripts/Makefile.build:461: drivers] Error 2
+>>>> make[1]: *** [/root/linux-next/Makefile:1989: .] Error 2
+>>>> make: *** [Makefile:251: __sub-make] Error 2
+>>>
+>>
+>>
+
 
