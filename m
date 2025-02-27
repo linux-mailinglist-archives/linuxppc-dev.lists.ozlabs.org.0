@@ -1,71 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-6524-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6526-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B49DA47396
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 04:30:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42BF3A4757C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 06:54:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3H0b53gRz2yvk;
-	Thu, 27 Feb 2025 14:30:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3LBL4x1Fz3bkP;
+	Thu, 27 Feb 2025 16:54:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740627023;
-	cv=none; b=SZLEEUu+q3wHk4B3gveM5Ll+9oNvU31u1XcUiO1qUdXvysr6N7U7gegtYizdEOE4mQZUTOJWv+Tnhb3XYACICMC+xlecEjycnZHR7ZFWiYE7FoUTxeWnED0O6yWEsCQF1nyhm6A0Qo6wF6Cky3xUMUG06DCjfxcDEywnyrr0LhbFFjva2MBtm5lcy8cjuBSsLFzZ9aERGoptaSQ4G7sRSqC8ry/xRYy0YBtVUF78nbTRq0BjsFEGjeqPVrDe/antfuBd9n8WEhsxjDbaiC5b02rJ9fTPYNAySR3QeFhVJkFvpHts5cIyUiwVpZajAudWWQmQ038RR0s3eo1efbw11A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::630"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740635642;
+	cv=none; b=IHwooxN0qIkkPNg9Jg2gYATm6YjV4K/3fKKmXQpyAzedD2dmaKrSi0guNwYtrqJX7rF9VNHInS3O+56LDm+8yjxsiJBOw97KgT9M1zKIA+wbYNEZ+olFJo31QrprdMhYTV9KLtTbpbZQfEbQ3O75GDTaT8nbPywnqdOxow+aWdEZVPm8matKT9trXvgcJwnXqReAY+Iiob/su+7MKRHONipxXkAyvkrAQKtrxtOcwKcMfw4yhycyafL5Vg8K52vKaYqvkTCV93TTOyyZXmx3LGl8WMQWdvpSfxiJVnQQT4OECDZbwT4C5ehIPvfCvyx7C9kSzG/kppW5EeSAc6szXQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740627023; c=relaxed/relaxed;
-	bh=M6THhD7s68JM3b5ClFD5Y/5q6feae9N06KpBUw2vPU4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ERQlXGlK5Yvdj2mvLc4ekDv7eEsc5UG/wCMcJA7GE/1PIsOWciii6KHQZ7x28bMV5zQHtgCCry2bNcoulvNEPAzg5uscrIn6LHHu8CpyhepO7gbOEtxRHQf39x7RuKu45JOAADF+kpZ8LXtYDL5CKmindVqaptBAxZ4pMzXi6q7P4fipd41i3EO7Mad3IxTOTNOML8+pvXrvE0TCr0mJrJdpAUnDmtzuo1mq8TkGRN3ZqVrdzBTJ8K1xqS1OTiMWdXuSd9lt8vEPeAo63z/R0jsQ6eKrC7Vj2YEjZRukvVFG74TeBN1LcOZHEDvg67tKQn63rVofc6oLhHSsXjRt+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G79nmhUI; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1740635642; c=relaxed/relaxed;
+	bh=YrozK6muBnnSK/vqbZyb6UtsaWvVoC7UahMZm38fFc8=;
+	h=From:To:Subject:In-Reply-To:Date:Message-ID:References; b=ACDPxqvttQtrCvGEsgIQR3MhEWUf7370CFm3usdWdAXn7X+pLAf9NIzw64eN4INNxAVQbrZKqVFJ7TwRq5QnikJnyBVEtxRzIcMwE9E+G2rwl4iixdTLf3YDyoXBv54+iQoGc6YcVTKS+l5avgx2iobGCC6xUo+T3wABFDbfTgRWJBvWDLxSvJfMxDbs0Ni/hCM2JughgWX3rLw2B/6Vtm+m8JZt+r7ZuEe8Ve+2pOQDPvuznHGrWTqh9rU3cbJuSKNv/meVsOOfvCBpW7xOG0KYI1/dY01st/ZB4mLHuZA79vqvqvNwq+oWdJedpTcmW1AGeHfp3tlOWpVMWAW+hQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=c3S5bAf7; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G79nmhUI;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=c3S5bAf7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::630; helo=mail-pl1-x630.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3H0Z61nSz2ygR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 14:30:22 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51R2XIZ4022241;
-	Thu, 27 Feb 2025 03:30:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=M6THhD
-	7s68JM3b5ClFD5Y/5q6feae9N06KpBUw2vPU4=; b=G79nmhUIC3gf9Rj5MtDN1W
-	0wG+ALnW0K7f1o9L9H+5AYDzZxJI5YFHXtJ2f2bzNGzdcZVtJ6VbtKcNfl6k8X1c
-	8fR3o7UVo2/2G5dlDLGCnxlFoSLOok8WjrHIqj0ustYIR9RmSmr6aUcbog/UbIrl
-	ts+kmg81s2DEHUqCBxCIcFzybEHHlZsjlIRjUWnfTbEv8Sr0rSDzN+qp5REM+53f
-	kILqgw3qa4KT2k6ixyGWmiDnD2iVLG9QpqzStPi6jQSEwGAdSFPNWQhb+tmVt5xv
-	49tsvHN052hr9cbcop0tTyGs2F/3ERa9HtVGRHTsg/qPdvR7Vk5XN2koUL3ecbkQ
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451vs85shq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Feb 2025 03:30:13 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51R20i2K026280;
-	Thu, 27 Feb 2025 03:30:12 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswnpesd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 27 Feb 2025 03:30:12 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51R3UBqE15925838
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 27 Feb 2025 03:30:12 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E35B15805D;
-	Thu, 27 Feb 2025 03:30:11 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 701F85805C;
-	Thu, 27 Feb 2025 03:30:09 +0000 (GMT)
-Received: from [9.43.105.242] (unknown [9.43.105.242])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 27 Feb 2025 03:30:08 +0000 (GMT)
-Message-ID: <7f795152-9d03-4f89-bfb6-125eb6e33873@linux.ibm.com>
-Date: Thu, 27 Feb 2025 09:00:06 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3LBK2MWmz308M
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 16:54:00 +1100 (AEDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-220e989edb6so13187035ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Feb 2025 21:54:00 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1740635638; x=1741240438; darn=lists.ozlabs.org;
+        h=references:message-id:date:in-reply-to:subject:to:from:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YrozK6muBnnSK/vqbZyb6UtsaWvVoC7UahMZm38fFc8=;
+        b=c3S5bAf7CYCO2l9t/LHPSyfQcuf6AWYdgD3NGVP4MKaGiTpYbgukegMmCr8hJwRVkP
+         IKf3EGUlSrqlM/Kr2bMMA4ItIbVAWgevAg34eJfQDBtpVOZly0MPnkQwFrw0ft9LIIpc
+         aYoAkIehmz31+XeNTZKH1cRbeq069GZWw04AP3KgNgEiHXh8Zg2LW9sdRkhX9hC/QHhW
+         fcnhXelCq7DXQc2QIZAz03KNKPhNQ9ZxnwNv7NmAdvmXXIkRhgEb+Na4ogEhT/U/65zx
+         9ff49++K9swWIGNrfx6VMSDU7PQQRbkiN90sxBzG0UgHCdNG9d5TDfbn6PpiXnnP6qKS
+         42iQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1740635638; x=1741240438;
+        h=references:message-id:date:in-reply-to:subject:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YrozK6muBnnSK/vqbZyb6UtsaWvVoC7UahMZm38fFc8=;
+        b=xLvF4BAc5XCvFWuROFpiGqq9Zg97i2kGNtw24xkc6gCvgaEtUQRI/oqwdYM9X7Pqce
+         Y8HcfGWGcb8CMk1rqLtO2AYYBwv4Pd2gNlePyaEHjXqttof8NtnF3pgypxhgCCB7Klf5
+         tsb2UnzIJghfgTvg8erOcKOkz11H8QkQg2WzuUbPfpr6E0sbCVbvqTmqfOABBH6WxsSw
+         x50zcHseHr0F5j/qHdBNUT64C3hnP5t/TZAXJxhzJSkzfGU79UfgPUyP6M1Bv4f1Mh1V
+         /L2x/ChbsL3Gt5RPBoV/yaXlq9IRGKHycdXv9+opdhKkk7tRVYh1Sre/92R91m51cI9K
+         r5wg==
+X-Forwarded-Encrypted: i=1; AJvYcCX9oY4RyMOXHUvhDqcYRUsRZsSM204wnzNEaKLQKdl4XkT+5ucWgGZdBAxVa8uST+OnRu0Uis6EZ17c3Iw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzdM6wX0OWSMayCEVv1GYwAhhpmATdRwibJvkCWuqMd0Qw/+w3Z
+	vi1Zh5KrOjfVa0WMB2GXSo9KHdnXR/sVaZmTw8Kn8omoTqyS7QiQ
+X-Gm-Gg: ASbGncs5wYisuQXA+lUUAkaMKd9/WCjXExLIaAtp9K3GvkNOm9+KPFCsPoPwRpf/qsq
+	HRtlKefWbyrVQSz0qhfoNCjG51YYs4vZsh+Enmg/INwM7xh1+CGMieTexY1KDuY8j1awmbbpwh2
+	a6KvMpKMRlTYu8jVqyrpeDBGbnzWo5eyOR+m5Y6VuVBcKppsziMK623n2RIqYOJoQZj1ANSND52
+	c6W6ZaM+8WmPB6zeL1JHcgkJqzs78Zv1t1mX09zvQvSh7a0thp/bJ+lBDpJ6CKISNSZ7PU/h949
+	8NWZFmnTVE7Z4/thGw==
+X-Google-Smtp-Source: AGHT+IGDIphXOr6QSC8xBH3+yMUFnOxlZcey8Pon7vJa/cyU0xoygzvMJRrOLIgdCCQhffZiJsb+1Q==
+X-Received: by 2002:a05:6a21:10e:b0:1ee:d860:61eb with SMTP id adf61e73a8af0-1f0fc89a19dmr17422776637.39.1740635637550;
+        Wed, 26 Feb 2025 21:53:57 -0800 (PST)
+Received: from dw-tp ([171.76.86.27])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-aee7dec414esm530652a12.62.2025.02.26.21.53.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Feb 2025 21:53:56 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Erhard Furtner <erhard_f@mailbox.org>, linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+Subject: Re: vmalloc_node_range for size 4198400 failed: Address range restricted to 0xf1000000 - 0xf5110000 (kernel 6.14-rc4, ppc32)
+In-Reply-To: <20250227013431.11d1adb7@yea>
+Date: Thu, 27 Feb 2025 10:42:44 +0530
+Message-ID: <87y0xsotrn.fsf@gmail.com>
+References: <20250227013431.11d1adb7@yea>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,88 +88,127 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0 on
- G5/G4 (kernel 6.13-rc3)
-To: Erhard Furtner <erhard_f@mailbox.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc: linuxppc-dev@lists.ozlabs.org
-References: <20241219000749.6836d610@yea> <87jzbqpnd9.fsf@mpe.ellerman.id.au>
- <20250226231418.1df533c6@yea>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20250226231418.1df533c6@yea>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kAqNX2okQ9MiFQEvQ6TuIFmbFdnBDJpj
-X-Proofpoint-GUID: kAqNX2okQ9MiFQEvQ6TuIFmbFdnBDJpj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-02-27_01,2025-02-26_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- phishscore=0 suspectscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
- mlxlogscore=851 spamscore=0 mlxscore=0 malwarescore=0 adultscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2502270025
-X-Spam-Status: No, score=-0.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URI_HEX
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+
+Erhard Furtner <erhard_f@mailbox.org> writes:
+
+> Greetings!
+>
+> At boot with a KASAN-enabled v6.14-rc4 kernel on my PowerMac G4 DP I get:
+>
+> [...]
+> vmalloc_node_range for size 4198400 failed: Address range restricted to 0xf1000000 - 0xf5110000
+> swapon: vmalloc error: size 4194304, vm_struct allocation failed, mode:0xdc0(GFP_KERNEL|__GFP_ZERO), nodemask=(null),cpuset=openrc.swap,mems_allowed=0
+
+Did we exhaust the vmalloc area completely?
 
 
+> CPU: 0 UID: 0 PID: 870 Comm: swapon Tainted: G        W          6.14.0-rc4-PMacG4 #6
+> Tainted: [W]=WARN
+> Hardware name: PowerMac3,6 7455 0x80010303 PowerMac
+> Call Trace:
+> [f2ffb9d0] [c14cfd88] dump_stack_lvl+0x70/0x8c (unreliable)
+> [f2ffb9f0] [c04fb9b8] warn_alloc+0x154/0x2b8
+> [f2ffbab0] [c04de94c] __vmalloc_node_range_noprof+0x154/0x958
+> [f2ffbb80] [c04df23c] __vmalloc_node_noprof+0xec/0xf4
+> [f2ffbbc0] [c0558524] swap_cgroup_swapon+0x70/0x198
+> [f2ffbbf0] [c051e8d8] sys_swapon+0x1838/0x3624
+> [f2ffbce0] [c001e574] system_call_exception+0x2dc/0x420
 
-On 2/27/25 3:44 AM, Erhard Furtner wrote:
-> On Mon, 23 Dec 2024 23:58:26 +1100
-> Michael Ellerman <mpe@ellerman.id.au> wrote:
-> 
->> Erhard Furtner <erhard_f@mailbox.org> writes:
->>> Greetings!
->>>
->>> I am aware there is commit cf89c9434af122f28a3552e6f9cc5158c33ce50a
->>> (already merged in v6.13-rc3) which fixes some of the "Missing
->>> '#size-cells' errors" but there is more:
->>>
->>> ------------[ cut here ]------------
->>> hub 3-0:1.0: USB hub found
->>> Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0  
->>
->> Something like below might fix it.
->>
->> cheers
->>
->>
->> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
->> index 8e776ba39497..462ee36ef891 100644
->> --- a/arch/powerpc/kernel/prom_init.c
->> +++ b/arch/powerpc/kernel/prom_init.c
->> @@ -2898,11 +2898,11 @@ static void __init fixup_device_tree_pmac(void)
->>  	char type[8];
->>  	phandle node;
->>  
->> -	// Some pmacs are missing #size-cells on escc nodes
->> +	// Some pmacs are missing #size-cells on escc & i2s nodes
->>  	for (node = 0; prom_next_node(&node); ) {
->>  		type[0] = '\0';
->>  		prom_getprop(node, "device_type", type, sizeof(type));
->> -		if (prom_strcmp(type, "escc"))
->> +		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
->>  			continue;
->>  
->>  		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
->>
-> 
-> The fix works on my PowerMac G4 DP. And there is also https://patchwork.ozlabs.org/project/linuxppc-dev/patch/875xmizl6a.fsf@igel.home/ which seems to be the same patch.
-> 
-Sorry, missed it. I will add the above patch to -next.
+Since only the swapon failed, I think you might still have the console
+up right? So this is mostly a vmalloc allocation failure report?
 
-Maddy
 
-> But as of kernel v6.14-rc3 none of these is included. Could one of these patches be upstreamed?
-> 
+> [f2ffbf30] [c00291ac] ret_from_syscall+0x0/0x2c
+> --- interrupt: c00 at 0x2612ec
+> NIP:  002612ec LR: 00534108 CTR: 001e8310
+> REGS: f2ffbf40 TRAP: 0c00   Tainted: G        W           (6.14.0-rc4-PMacG4)
+> MSR:  0000d032 <EE,PR,ME,IR,DR,RI>  CR: 24002444  XER: 00000000
+>
+> GPR00: 00000057 afe3ef20 a7a95540 01b2bdd0 00000000 24002444 fe5ff7e1 00247c24 
+> GPR08: 0000d032 0000fa89 01b2d568 001e8310 24002448 0054fe14 02921154 00000000 
+> GPR16: 00000000 00534b50 afe3f0ac afe3f0b0 00000000 00000000 0055001c afe3f0d0 
+> GPR24: afe3f0b0 00000003 00000000 00001000 01b2bdd0 00000002 005579ec 01b2d570 
+> NIP [002612ec] 0x2612ec
+> LR [00534108] 0x534108
+> --- interrupt: c00
+> Mem-Info:
+> active_anon:1989 inactive_anon:0 isolated_anon:0
+>  active_file:6407 inactive_file:5879 isolated_file:0
+>  unevictable:0 dirty:0 writeback:0
+>  slab_reclaimable:1538 slab_unreclaimable:22927
+>  mapped:2753 shmem:107 pagetables:182
+>  sec_pagetables:0 bounce:0
+>  kernel_misc_reclaimable:0
+>  free:433110 free_pcp:472 free_cma:0
+> Node 0 active_anon:7972kB inactive_anon:0kB active_file:25652kB inactive_file:23496kB unevictable:0kB isolated(anon):0kB isolated(file):0kB mapped:10908kB dirty:0kB writeback:0kB shmem:464kB writeback_tmp:0kB kernel_stack:1568kB pagetables:724kB sec_pagetables:0kB all_unreclaimable? no
+> DMA free:591772kB boost:0kB min:3380kB low:4224kB high:5068kB reserved_highatomic:0KB active_anon:0kB inactive_anon:0kB active_file:4kB inactive_file:11056kB unevictable:0kB writepending:0kB present:786432kB managed:716492kB mlocked:0kB bounce:0kB free_pcp:1680kB local_pcp:1180kB free_cma:0kB
+> lowmem_reserve[]: 0 0 1184 0
+> DMA: 127*4kB (UE) 66*8kB (UME) 37*16kB (UE) 78*32kB (UME) 10*64kB (UE) 4*128kB (UME) 3*256kB (UM) 6*512kB (UM) 5*1024kB (ME) 4*2048kB (M) 139*4096kB (M) = 591772kB
+> 12404 total pagecache pages
+> 0 pages in swap cache
+> Free swap  = 0kB
+> Total swap = 0kB
+> 524288 pages RAM
+> 327680 pages HighMem/MovableOnly
+> 42061 pages reserved
+
+Though above are mainly the physical mem info printed, but vmalloc can
+also fail sometimes (e.g. this report), it is nice if we can print how
+much of vmalloc space is free out of vmalloc total in show_mem() here.
+
+Maybe linux-mm can tell if we should add this diff change for future?
+
+diff --git a/mm/show_mem.c b/mm/show_mem.c
+index 43afb56abbd3..b3af59fced02 100644
+--- a/mm/show_mem.c
++++ b/mm/show_mem.c
+@@ -14,6 +14,7 @@
+ #include <linux/mmzone.h>
+ #include <linux/swap.h>
+ #include <linux/vmstat.h>
++#include <linux/vmalloc.h>
+
+ #include "internal.h"
+ #include "swap.h"
+@@ -416,6 +417,8 @@ void __show_mem(unsigned int filter, nodemask_t *nodemask, int max_zone_idx)
+        printk("%lu pages RAM\n", total);
+        printk("%lu pages HighMem/MovableOnly\n", highmem);
+        printk("%lu pages reserved\n", reserved);
++       printk("%lu pages Vmalloc Total\n", (unsigned long)VMALLOC_TOTAL >> PAGE_SHIFT);
++       printk("%lu pages Vmalloc Used\n", vmalloc_nr_pages());
+ #ifdef CONFIG_CMA
+        printk("%lu pages cma reserved\n", totalcma_pages);
+ #endif
+
+
+But meanwhile below data can give more details about the vmalloc area.
+
+1. cat /proc/vmallocinfo   
+2. cat /proc/meminfo       
+
+
+-ritesh
+
+> Memory allocations:
+>     85.3 MiB     6104 mm/slub.c:2423 func:alloc_slab_page
+>     38.5 MiB     9862 mm/readahead.c:187 func:ractl_alloc_folio
+>     9.47 MiB     2425 mm/filemap.c:1970 func:__filemap_get_folio
+>     7.96 MiB     2037 mm/kasan/shadow.c:304 func:kasan_populate_vmalloc_pte
+>     7.87 MiB     2125 mm/execmem.c:44 func:execmem_vmalloc
+>     5.01 MiB     1283 mm/memory.c:1063 func:folio_prealloc
+>     4.00 MiB        1 fs/btrfs/zstd.c:366 [btrfs] func:zstd_alloc_workspace
+>     3.86 MiB      247 lib/stackdepot.c:627 func:stack_depot_save_flags
+>     3.62 MiB      412 mm/slub.c:2425 func:alloc_slab_page
+>     3.09 MiB    18430 fs/kernfs/dir.c:624 func:__kernfs_new_node
+> couldn't allocate enough memory for swap_cgroup
+> swap_cgroup can be disabled by swapaccount=0 boot option
+> [...]
+>
+
+> Does only happen with CONFIG_KASAN_INLINE=y but not with CONFIG_KASAN_OUTLINE=y.
+>
+> Kernel .config attached.
+>
 > Regards,
 > Erhard
-> 
-
 
