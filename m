@@ -1,49 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-6530-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6531-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E51F7A47AC9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 11:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 61A91A47B96
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 12:14:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3Slz4R6jz2yYy;
-	Thu, 27 Feb 2025 21:50:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3THs4ZVJz2yb9;
+	Thu, 27 Feb 2025 22:14:17 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740653407;
-	cv=none; b=XpmuePQjUEB4bP8YWU/4tcpOu26BkvqeQDHYp5v4P+dtIfp3wtQf184/HGtsu7kthOrOHcyzAvM0mU5DkQ190MXvHXObuiLujylWdPqiV1gC4cZdPAE6RPk3RgXxgJjjmguUHFGG+RM2zlx/y31InGIGRvWwutJx3W5nZ0eAn8xosjuXnNKWznUA65FYx+uFPrkVCA8pSXkiElV9+PGPZpG8yvCh2CYyhdbnknta4OP2bto8w7uMkF8ZlsH4cejVtfhc8sSw45N7k6Pj6yfY4ki66ljE97jqN7pTWZKnfdVpKskn4vX2IWCwuYWwnjwaDaMZPKew18fE88M0wMTZJA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740654857;
+	cv=none; b=kjTOfuwS1ZWqlgSb/Zpczp7DZuRepjiFJqAsIOE2CGAKyvibkut6dR0DvmDrfFnsHt0K310Nl5bJI3Onhit9ARpFXKBRuy28FNhZeWlqxwcM0fmcv0gXnTN0gTjs9r+0jVzxSx5JT7WkZw0KYZi8jbCZFpBeN7BewmfWdtNPPhvpzMLYN59gcnbi0FcV8pxmRFT70VCwPJi824stXQg6LkFmbNw/dZ1vVloznLCXuAB969wSf8505JmxhFahnriQttMc/fb//ed5DSqjMLtPKsYUd7KFy4jApYXqXNDgygqh/KWI+Vr6AfnYxjDHmDyAjgN67g58sYN2QNzTjFwilg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740653407; c=relaxed/relaxed;
-	bh=yuwie6UgUYgbdWj3ObAAw8OX/5bsDY/8GyuMjg/A6+4=;
+	t=1740654857; c=relaxed/relaxed;
+	bh=Xs5+klIHUgwyyyEQRPQsx98Pc5etma9f9hiPcjrGdko=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FAOhMVfnMM8R1uFoSpkTJs4n5co30ZIrNMhztZoR6gprAWSdVNMlm98eCToiX4QK8iUVY8jfnADIgu8UqUoVNAN1IT4w7el95pncEKhQwv+TdLy9b8wChDSgnzgAkThIDlocKqdDPo7puX/6/lg9cOvpkZatgFVd2LdFzNcMlFl75TnLHjwoK0ifLyFPjjoe97aSDFL0SnAi5Gm3BrTHJB0a/9qcoL1xRZPlkLpK0DH3frWwYGfAG4XKMy1M6aUuAVCDo6m9ADyIYhBWdJcYKRG2hi0K50Musqfg15BPrB4DKYN+GMlBN8BneJTjxaU12xFtiUF2v2qa0g1EcKDM3Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3Sly25QZz2yD8
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 21:50:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Z3Sbn5St3z9sSL;
-	Thu, 27 Feb 2025 11:43:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id C4gdvXulG1Jk; Thu, 27 Feb 2025 11:43:01 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z3Sbn4H0wz9sSK;
-	Thu, 27 Feb 2025 11:43:01 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 821678B78B;
-	Thu, 27 Feb 2025 11:43:01 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 6TaA5rIuABxG; Thu, 27 Feb 2025 11:43:01 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E0CF28B77C;
-	Thu, 27 Feb 2025 11:43:00 +0100 (CET)
-Message-ID: <14193c98-fb30-4ee8-a19a-fe85d1230d74@csgroup.eu>
-Date: Thu, 27 Feb 2025 11:43:00 +0100
+	 In-Reply-To:Content-Type; b=ZNMVbsiJWp1lYiDhmL1eBQ1J9mHQ2BMLh1Uq0NTP7PL1FWjRDg7Y+bbJK2q82j7DPk0BUPjGMUxjptVRJUe233VdYqbM8qqS/I1oJ+OnjQCEAp4mzWmc6VDJVUIRvWLezRPg/2Ht3r+b/Y/SpJhf5TwXtqnpQCZ5t+oY0+/sB3iNCqwyGbMb1MNAsR0zq9CAl+QBkbWqO31lDRQpetawOG0Ufwlxeuoxl5kJQYVcJwC1S6DJ38LdthXVTyC1NiK3no+23hRtXYHRwa8xj0HSJrNial87g5cAafARa+hw87H5yYx8pAIZXHZAi5xnbwBbTRTWft/UBAGWB+TZZurAKA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=ryan.roberts@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3THq2pq7z2yD8
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 22:14:13 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B356E2C1C;
+	Thu, 27 Feb 2025 03:13:56 -0800 (PST)
+Received: from [10.57.85.134] (unknown [10.57.85.134])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6FF103F6A8;
+	Thu, 27 Feb 2025 03:13:31 -0800 (PST)
+Message-ID: <16863478-2195-435e-a899-559df097bc59@arm.com>
+Date: Thu, 27 Feb 2025 11:13:29 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,243 +43,154 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [next-20250226]Build Failure
-To: Stephen Rothwell <sfr@canb.auug.org.au>,
- Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- Kees Cook <kees@kernel.org>
-References: <adbe8dd1-a725-4811-ae7e-76fe770cf096@linux.vnet.ibm.com>
- <20250227123804.5dd71cef@canb.auug.org.au>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <20250227123804.5dd71cef@canb.auug.org.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Subject: Re: [PATCH v7 7/8] execmem: add support for cache of large ROX pages
+Content-Language: en-GB
+To: Mike Rapoport <rppt@kernel.org>, Andrew Morton
+ <akpm@linux-foundation.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Dev Jain <dev.jain@arm.com>
+Cc: Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+ Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Christoph Hellwig <hch@infradead.org>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Dave Hansen <dave.hansen@linux.intel.com>, Dinh Nguyen
+ <dinguyen@kernel.org>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+ Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Johannes Berg <johannes@sipsolutions.net>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Kent Overstreet <kent.overstreet@linux.dev>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Mark Rutland <mark.rutland@arm.com>, Masami Hiramatsu <mhiramat@kernel.org>,
+ Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>,
+ Oleg Nesterov <oleg@redhat.com>, Palmer Dabbelt <palmer@dabbelt.com>,
+ Peter Zijlstra <peterz@infradead.org>, Richard Weinberger <richard@nod.at>,
+ Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+ Stafford Horne <shorne@gmail.com>, Steven Rostedt <rostedt@goodmis.org>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Thomas Gleixner <tglx@linutronix.de>, Uladzislau Rezki <urezki@gmail.com>,
+ Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+ bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-mm@kvack.org,
+ linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+ linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+ linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+ linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+ sparclinux@vger.kernel.org, x86@kernel.org
+References: <20241023162711.2579610-1-rppt@kernel.org>
+ <20241023162711.2579610-8-rppt@kernel.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <20241023162711.2579610-8-rppt@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Hi Mike,
+
+Drive by review comments below...
 
 
-Le 27/02/2025 à 02:38, Stephen Rothwell a écrit :
-> Hi Venkat,
+On 23/10/2024 17:27, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 > 
-> CC Kees Cook for advice.  This is a result of the tests added in commit
+> Using large pages to map text areas reduces iTLB pressure and improves
+> performance.
 > 
->    bbeb38b8487a ("string.h: Validate memtostr*()/strtomem*() arguments more carefully")
+> Extend execmem_alloc() with an ability to use huge pages with ROX
+> permissions as a cache for smaller allocations.
 > 
-> from the kspp tree.
+> To populate the cache, a writable large page is allocated from vmalloc with
+> VM_ALLOW_HUGE_VMAP, filled with invalid instructions and then remapped as
+> ROX.
 > 
-> I note that the comment about memtostr() says "Copy a possibly
-> non-NUL-term string".
+> The direct map alias of that large page is exculded from the direct map.
+> 
+> Portions of that large page are handed out to execmem_alloc() callers
+> without any changes to the permissions.
+> 
+> When the memory is freed with execmem_free() it is invalidated again so
+> that it won't contain stale instructions.
+> 
+> An architecture has to implement execmem_fill_trapping_insns() callback
+> and select ARCH_HAS_EXECMEM_ROX configuration option to be able to use
+> the ROX cache.
+> 
+> The cache is enabled on per-range basis when an architecture sets
+> EXECMEM_ROX_CACHE flag in definition of an execmem_range.
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> Tested-by: kdevops <kdevops@lists.linux.dev>
+> ---
 
-Can you tell more about your config and your environment ?
+[...]
 
-I just tested with ppc64_defconfig and ppc64le_defconfig, with gcc 12.4, 
-gcc 13.2 and gcc 14.2 and didn't get that build error.
+> +
+> +static int execmem_cache_populate(struct execmem_range *range, size_t size)
+> +{
+> +	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> +	unsigned long start, end;
+> +	struct vm_struct *vm;
+> +	size_t alloc_size;
+> +	int err = -ENOMEM;
+> +	void *p;
+> +
+> +	alloc_size = round_up(size, PMD_SIZE);
+> +	p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
 
-Christophe
+Shouldn't this be passing PAGE_KERNEL_ROX? Otherwise I don't see how the
+allocated memory is ROX? I don't see any call below where you change the permission.
 
-> 
-> On Thu, 27 Feb 2025 06:30:12 +0530 Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com> wrote:
->>
->> I am seeing build failures with kernel next-20250226, on IBM Power8 systems.
->>
->> Failures:
->>
->> In file included from ./include/asm-generic/div64.h:27,
->>                    from ./arch/powerpc/include/generated/asm/div64.h:1,
->>                    from ./include/linux/math.h:6,
->>                    from ./include/linux/math64.h:6,
->>                    from ./include/linux/time.h:6,
->>                    from fs/ext4/file.c:22:
->> fs/ext4/file.c: In function 'ext4_sample_last_mounted':
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:418:6: note: in expansion of macro '__must_be_noncstr'
->>         __must_be_noncstr(dest) +  \
->>         ^~~~~~~~~~~~~~~~~
->> fs/ext4/file.c:869:2: note: in expansion of macro 'strtomem_pad'
->>     strtomem_pad(sbi->s_es->s_last_mounted, cp, 0);
->>     ^~~~~~~~~~~~
->> In file included from ./include/linux/build_bug.h:5,
->>                    from ./include/linux/container_of.h:5,
->>                    from ./include/linux/list.h:5,
->>                    from ./include/linux/module.h:12,
->>                    from drivers/message/fusion/mptsas.c:46:
->> drivers/message/fusion/mptsas.c: In function 'mptsas_exp_repmanufacture_info':
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/message/fusion/mptsas.c:2968:3: note: in expansion of macro 'memtostr'
->>      memtostr(edev->vendor_id, manufacture_reply->vendor_id);
->>      ^~~~~~~~
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/message/fusion/mptsas.c:2969:3: note: in expansion of macro 'memtostr'
->>      memtostr(edev->product_id, manufacture_reply->product_id);
->>      ^~~~~~~~
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/message/fusion/mptsas.c:2970:3: note: in expansion of macro 'memtostr'
->>      memtostr(edev->product_rev, manufacture_reply->product_rev);
->>      ^~~~~~~~
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/message/fusion/mptsas.c:2973:4: note: in expansion of macro 'memtostr'
->>       memtostr(edev->component_vendor_id,
->>       ^~~~~~~~
->> make[4]: *** [scripts/Makefile.build:203: fs/ext4/file.o] Error 1
->> make[3]: *** [scripts/Makefile.build:461: fs/ext4] Error 2
->> make[3]: *** Waiting for unfinished jobs....
->> In file included from ./include/linux/array_size.h:5,
->>                    from ./include/linux/kernel.h:16,
->>                    from drivers/scsi/mpt3sas/mpt3sas_base.c:46:
->> drivers/scsi/mpt3sas/mpt3sas_base.c: In function '_base_display_ioc_capabilities':
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/scsi/mpt3sas/mpt3sas_base.c:4798:2: note: in expansion of macro 'memtostr'
->>     memtostr(desc, ioc->manu_pg0.ChipName);
->>     ^~~~~~~~
->> In file included from ./include/linux/build_bug.h:5,
->>                    from ./include/linux/container_of.h:5,
->>                    from ./include/linux/list.h:5,
->>                    from ./include/linux/module.h:12,
->>                    from drivers/scsi/mpt3sas/mpt3sas_transport.c:45:
->> drivers/scsi/mpt3sas/mpt3sas_transport.c: In function '_transport_expander_report_manufacture':
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/scsi/mpt3sas/mpt3sas_transport.c:461:3: note: in expansion of macro 'memtostr'
->>      memtostr(edev->vendor_id, manufacture_reply->vendor_id);
->>      ^~~~~~~~
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/scsi/mpt3sas/mpt3sas_transport.c:462:3: note: in expansion of macro 'memtostr'
->>      memtostr(edev->product_id, manufacture_reply->product_id);
->>      ^~~~~~~~
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/scsi/mpt3sas/mpt3sas_transport.c:463:3: note: in expansion of macro 'memtostr'
->>      memtostr(edev->product_rev, manufacture_reply->product_rev);
->>      ^~~~~~~~
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/scsi/mpt3sas/mpt3sas_transport.c:466:4: note: in expansion of macro 'memtostr'
->>       memtostr(edev->component_vendor_id,
->>       ^~~~~~~~
->> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/mpt3sas/mpt3sas_transport.o] Error 1
->> make[5]: *** Waiting for unfinished jobs....
->> make[5]: *** [scripts/Makefile.build:203: drivers/message/fusion/mptsas.o] Error 1
->> make[4]: *** [scripts/Makefile.build:461: drivers/message/fusion] Error 2
->> make[3]: *** [scripts/Makefile.build:461: drivers/message] Error 2
->> make[3]: *** Waiting for unfinished jobs....
->> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/mpt3sas/mpt3sas_base.o] Error 1
->> In file included from ./include/linux/array_size.h:5,
->>                    from ./include/linux/kernel.h:16,
->>                    from drivers/scsi/qla2xxx/qla_def.h:9,
->>                    from drivers/scsi/qla2xxx/qla_mr.c:6:
->> drivers/scsi/qla2xxx/qla_mr.c: In function 'qlafx00_fx_disc':
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/scsi/qla2xxx/qla_mr.c:1912:3: note: in expansion of macro 'memtostr'
->>      memtostr(vha->hw->model_number, pinfo->model_num);
->>      ^~~~~~~~
->> ./include/linux/compiler.h:197:62: error: static assertion failed: "must be non-C-string (not NUL-terminated)"
->>    #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
->> ^~~~~~~~~~~~~~
->> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
->>     __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->>     ^~~~~~~~~~~~~~~~~~~~~~~
->> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_noncstr'
->>     const size_t _src_len = __must_be_noncstr(src) +  \
->>                             ^~~~~~~~~~~~~~~~~
->> drivers/scsi/qla2xxx/qla_mr.c:1913:3: note: in expansion of macro 'memtostr'
->>      memtostr(vha->hw->model_desc, pinfo->model_description);
->>      ^~~~~~~~
->> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/qla2xxx/qla_mr.o] Error 1
->> make[5]: *** Waiting for unfinished jobs....
->> make[2]: *** [scripts/Makefile.build:461: fs] Error 2
->> make[2]: *** Waiting for unfinished jobs....
->> make[4]: *** [scripts/Makefile.build:461: drivers/scsi/mpt3sas] Error 2
->> make[4]: *** Waiting for unfinished jobs....
->> make[4]: *** [scripts/Makefile.build:461: drivers/scsi/qla2xxx] Error 2
->> make[3]: *** [scripts/Makefile.build:461: drivers/scsi] Error 2
->> make[2]: *** [scripts/Makefile.build:461: drivers] Error 2
->> make[1]: *** [/root/linux-next/Makefile:1989: .] Error 2
->> make: *** [Makefile:251: __sub-make] Error 2
-> 
+Given the range has the pgprot in it, you could just drop passing the pgprot
+explicitly here and have execmem_vmalloc() use range->pgprot directly?
+
+Thanks,
+Ryan
+
+> +	if (!p)
+> +		return err;
+> +
+> +	vm = find_vm_area(p);
+> +	if (!vm)
+> +		goto err_free_mem;
+> +
+> +	/* fill memory with instructions that will trap */
+> +	execmem_fill_trapping_insns(p, alloc_size, /* writable = */ true);
+> +
+> +	start = (unsigned long)p;
+> +	end = start + alloc_size;
+> +
+> +	vunmap_range(start, end);
+> +
+> +	err = execmem_set_direct_map_valid(vm, false);
+> +	if (err)
+> +		goto err_free_mem;
+> +
+> +	err = vmap_pages_range_noflush(start, end, range->pgprot, vm->pages,
+> +				       PMD_SHIFT);
+> +	if (err)
+> +		goto err_free_mem;
+> +
+> +	err = execmem_cache_add(p, alloc_size);
+> +	if (err)
+> +		goto err_free_mem;
+> +
+> +	return 0;
+> +
+> +err_free_mem:
+> +	vfree(p);
+> +	return err;
+> +}
+
+[...]
 
 
