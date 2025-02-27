@@ -1,57 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6523-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6524-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF430A4714E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 02:38:16 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B49DA47396
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 04:30:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3DWB4VGmz307q;
-	Thu, 27 Feb 2025 12:38:14 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3H0b53gRz2yvk;
+	Thu, 27 Feb 2025 14:30:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740620294;
-	cv=none; b=Cx+VmnbKUbhoJiUPeVsVuvzaAwImI2EaGRPTcb72VnQxPo6nTjsxs60LBzCaGQBhXejlNdLeis8NXcDSNXeCZiXFExybm0UWqekAoS96IGHlF3i8GDJMNwgkL8Kww+F5FLk5GgkcXEJ2RtUu4yUe1dsG6nTxaHsq/a0hrvjhwW7Fj+hAYMwQ7x5pYEvXIXuMPHBJ08elQOx8XTKL3/bd/vS7G995ZHdGFIlcQ9RJ7Y3CmbtNlGcyLwwtBEOxYaishRUFn/i1/BvAcfzIsXf0cFZlnf5KeojRjUsAW8NBCEf/Q7SspgLQXDv1ADxvLpgIS9+pyvcTweb+EusUqsnE3w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740627023;
+	cv=none; b=SZLEEUu+q3wHk4B3gveM5Ll+9oNvU31u1XcUiO1qUdXvysr6N7U7gegtYizdEOE4mQZUTOJWv+Tnhb3XYACICMC+xlecEjycnZHR7ZFWiYE7FoUTxeWnED0O6yWEsCQF1nyhm6A0Qo6wF6Cky3xUMUG06DCjfxcDEywnyrr0LhbFFjva2MBtm5lcy8cjuBSsLFzZ9aERGoptaSQ4G7sRSqC8ry/xRYy0YBtVUF78nbTRq0BjsFEGjeqPVrDe/antfuBd9n8WEhsxjDbaiC5b02rJ9fTPYNAySR3QeFhVJkFvpHts5cIyUiwVpZajAudWWQmQ038RR0s3eo1efbw11A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740620294; c=relaxed/relaxed;
-	bh=z9DAWos27Q06IuDaa4M0Viia0I6M9BgZYbFd4xPj7os=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ABF61EquCm6I9lqMchSDGAi7P/LMaAuSY8FWeLjrDYZqq/sb5tENFzquC9YIT8kZFUMBgvPwrru9ELx9Nd83CG16RD6w/e4vqxolJqySZG9n19jt3lFh9zZABy1lcSbGVvQtFh868jI1nmBm7aE6+NjGHwtCYCw8tTYBu1lt9Mz4oxewMaguiS/MJhWoNTNKie70XVXn1Qu69QhcqhG+5wOdmdxDh7Z3ifbGYsi96JnWDxvxIcd4jbRnOq2Eq27VCzjMcp172is4oQFJEA1XtsjxEhcd5YgRvu8CFSG4Y4udnFG52XkZW4favXA/D8GFBSA/xsIzRvHtyln3+D21+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=hmrDqXOH; dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+	t=1740627023; c=relaxed/relaxed;
+	bh=M6THhD7s68JM3b5ClFD5Y/5q6feae9N06KpBUw2vPU4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ERQlXGlK5Yvdj2mvLc4ekDv7eEsc5UG/wCMcJA7GE/1PIsOWciii6KHQZ7x28bMV5zQHtgCCry2bNcoulvNEPAzg5uscrIn6LHHu8CpyhepO7gbOEtxRHQf39x7RuKu45JOAADF+kpZ8LXtYDL5CKmindVqaptBAxZ4pMzXi6q7P4fipd41i3EO7Mad3IxTOTNOML8+pvXrvE0TCr0mJrJdpAUnDmtzuo1mq8TkGRN3ZqVrdzBTJ8K1xqS1OTiMWdXuSd9lt8vEPeAo63z/R0jsQ6eKrC7Vj2YEjZRukvVFG74TeBN1LcOZHEDvg67tKQn63rVofc6oLhHSsXjRt+A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G79nmhUI; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.a=rsa-sha256 header.s=201702 header.b=hmrDqXOH;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G79nmhUI;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3DW72Tncz2yvs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 12:38:11 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
-	s=201702; t=1740620286;
-	bh=z9DAWos27Q06IuDaa4M0Viia0I6M9BgZYbFd4xPj7os=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=hmrDqXOHkgsssj53WYqWoYqxhlLc10soLYugSfq+dyj3ngu3g3a823IYRsgrjFGTi
-	 O2NNkQZBxsHNyr/i4hu14+ePucnIDTje1XzBcqDsoW16X666Pvu7DaKsBRH25vpkFm
-	 anDgBDxc24RSrMW/z7CmgtvworqIztAQrEGAdniPqxI6JyZzTbldd1/9+7pg0IgbDE
-	 OtGAG99zzX/zs7BHFczCfl6yrBzlShYUHy3CYfq3XBzbwuY2Z3tLF6Bb8F4Un/o8/P
-	 IKa7ESDHpAgrRfakKIY2Zpj/GGGDlzyoRu6dNB/o/n05cpog4SDXh+q5g6rb+XWjFl
-	 u/wmW3z9ihwVg==
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4Z3DW21qqvz4x1V;
-	Thu, 27 Feb 2025 12:38:06 +1100 (AEDT)
-Date: Thu, 27 Feb 2025 12:38:04 +1100
-From: Stephen Rothwell <sfr@canb.auug.org.au>
-To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Kees Cook
- <kees@kernel.org>
-Subject: Re: [next-20250226]Build Failure
-Message-ID: <20250227123804.5dd71cef@canb.auug.org.au>
-In-Reply-To: <adbe8dd1-a725-4811-ae7e-76fe770cf096@linux.vnet.ibm.com>
-References: <adbe8dd1-a725-4811-ae7e-76fe770cf096@linux.vnet.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3H0Z61nSz2ygR
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Feb 2025 14:30:22 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 51R2XIZ4022241;
+	Thu, 27 Feb 2025 03:30:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=M6THhD
+	7s68JM3b5ClFD5Y/5q6feae9N06KpBUw2vPU4=; b=G79nmhUIC3gf9Rj5MtDN1W
+	0wG+ALnW0K7f1o9L9H+5AYDzZxJI5YFHXtJ2f2bzNGzdcZVtJ6VbtKcNfl6k8X1c
+	8fR3o7UVo2/2G5dlDLGCnxlFoSLOok8WjrHIqj0ustYIR9RmSmr6aUcbog/UbIrl
+	ts+kmg81s2DEHUqCBxCIcFzybEHHlZsjlIRjUWnfTbEv8Sr0rSDzN+qp5REM+53f
+	kILqgw3qa4KT2k6ixyGWmiDnD2iVLG9QpqzStPi6jQSEwGAdSFPNWQhb+tmVt5xv
+	49tsvHN052hr9cbcop0tTyGs2F/3ERa9HtVGRHTsg/qPdvR7Vk5XN2koUL3ecbkQ
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 451vs85shq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Feb 2025 03:30:13 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 51R20i2K026280;
+	Thu, 27 Feb 2025 03:30:12 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswnpesd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 27 Feb 2025 03:30:12 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 51R3UBqE15925838
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 27 Feb 2025 03:30:12 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E35B15805D;
+	Thu, 27 Feb 2025 03:30:11 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 701F85805C;
+	Thu, 27 Feb 2025 03:30:09 +0000 (GMT)
+Received: from [9.43.105.242] (unknown [9.43.105.242])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 27 Feb 2025 03:30:08 +0000 (GMT)
+Message-ID: <7f795152-9d03-4f89-bfb6-125eb6e33873@linux.ibm.com>
+Date: Thu, 27 Feb 2025 09:00:06 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -64,357 +78,87 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; boundary="Sig_/7puLdNAfr4chsrb23DmAgsy";
- protocol="application/pgp-signature"; micalg=pgp-sha256
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+User-Agent: Mozilla Thunderbird
+Subject: Re: Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0 on
+ G5/G4 (kernel 6.13-rc3)
+To: Erhard Furtner <erhard_f@mailbox.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+References: <20241219000749.6836d610@yea> <87jzbqpnd9.fsf@mpe.ellerman.id.au>
+ <20250226231418.1df533c6@yea>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <20250226231418.1df533c6@yea>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: kAqNX2okQ9MiFQEvQ6TuIFmbFdnBDJpj
+X-Proofpoint-GUID: kAqNX2okQ9MiFQEvQ6TuIFmbFdnBDJpj
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-02-27_01,2025-02-26_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ phishscore=0 suspectscore=0 priorityscore=1501 impostorscore=0 bulkscore=0
+ mlxlogscore=851 spamscore=0 mlxscore=0 malwarescore=0 adultscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2502270025
+X-Spam-Status: No, score=-0.6 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URI_HEX
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
---Sig_/7puLdNAfr4chsrb23DmAgsy
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
 
-Hi Venkat,
 
-CC Kees Cook for advice.  This is a result of the tests added in commit
+On 2/27/25 3:44 AM, Erhard Furtner wrote:
+> On Mon, 23 Dec 2024 23:58:26 +1100
+> Michael Ellerman <mpe@ellerman.id.au> wrote:
+> 
+>> Erhard Furtner <erhard_f@mailbox.org> writes:
+>>> Greetings!
+>>>
+>>> I am aware there is commit cf89c9434af122f28a3552e6f9cc5158c33ce50a
+>>> (already merged in v6.13-rc3) which fixes some of the "Missing
+>>> '#size-cells' errors" but there is more:
+>>>
+>>> ------------[ cut here ]------------
+>>> hub 3-0:1.0: USB hub found
+>>> Missing '#size-cells' in /ht@0,f2000000/pci@8/mac-io@7/i2s@0  
+>>
+>> Something like below might fix it.
+>>
+>> cheers
+>>
+>>
+>> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+>> index 8e776ba39497..462ee36ef891 100644
+>> --- a/arch/powerpc/kernel/prom_init.c
+>> +++ b/arch/powerpc/kernel/prom_init.c
+>> @@ -2898,11 +2898,11 @@ static void __init fixup_device_tree_pmac(void)
+>>  	char type[8];
+>>  	phandle node;
+>>  
+>> -	// Some pmacs are missing #size-cells on escc nodes
+>> +	// Some pmacs are missing #size-cells on escc & i2s nodes
+>>  	for (node = 0; prom_next_node(&node); ) {
+>>  		type[0] = '\0';
+>>  		prom_getprop(node, "device_type", type, sizeof(type));
+>> -		if (prom_strcmp(type, "escc"))
+>> +		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
+>>  			continue;
+>>  
+>>  		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+>>
+> 
+> The fix works on my PowerMac G4 DP. And there is also https://patchwork.ozlabs.org/project/linuxppc-dev/patch/875xmizl6a.fsf@igel.home/ which seems to be the same patch.
+> 
+Sorry, missed it. I will add the above patch to -next.
 
-  bbeb38b8487a ("string.h: Validate memtostr*()/strtomem*() arguments more =
-carefully")
+Maddy
 
-from the kspp tree.
+> But as of kernel v6.14-rc3 none of these is included. Could one of these patches be upstreamed?
+> 
+> Regards,
+> Erhard
+> 
 
-I note that the comment about memtostr() says "Copy a possibly
-non-NUL-term string".
-
-On Thu, 27 Feb 2025 06:30:12 +0530 Venkat Rao Bagalkote <venkat88@linux.vne=
-t.ibm.com> wrote:
->
-> I am seeing build failures with kernel next-20250226, on IBM Power8 syste=
-ms.
->=20
-> Failures:
->=20
-> In file included from ./include/asm-generic/div64.h:27,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./arch/powerpc/include/generated/asm/div64.h:=
-1,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/math.h:6,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/math64.h:6,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/time.h:6,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from fs/ext4/file.c:22:
-> fs/ext4/file.c: In function 'ext4_sample_last_mounted':
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:418:6: note: in expansion of macro '__must_be_no=
-ncstr'
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 __must_be_noncstr(dest) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ^~~~~~~~~~~~~~~~~
-> fs/ext4/file.c:869:2: note: in expansion of macro 'strtomem_pad'
->  =C2=A0 strtomem_pad(sbi->s_es->s_last_mounted, cp, 0);
->  =C2=A0 ^~~~~~~~~~~~
-> In file included from ./include/linux/build_bug.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/container_of.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/list.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/module.h:12,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from drivers/message/fusion/mptsas.c:46:
-> drivers/message/fusion/mptsas.c: In function 'mptsas_exp_repmanufacture_i=
-nfo':
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/message/fusion/mptsas.c:2968:3: note: in expansion of macro 'memt=
-ostr'
->  =C2=A0=C2=A0 memtostr(edev->vendor_id, manufacture_reply->vendor_id);
->  =C2=A0=C2=A0 ^~~~~~~~
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/message/fusion/mptsas.c:2969:3: note: in expansion of macro 'memt=
-ostr'
->  =C2=A0=C2=A0 memtostr(edev->product_id, manufacture_reply->product_id);
->  =C2=A0=C2=A0 ^~~~~~~~
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/message/fusion/mptsas.c:2970:3: note: in expansion of macro 'memt=
-ostr'
->  =C2=A0=C2=A0 memtostr(edev->product_rev, manufacture_reply->product_rev);
->  =C2=A0=C2=A0 ^~~~~~~~
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/message/fusion/mptsas.c:2973:4: note: in expansion of macro 'memt=
-ostr'
->  =C2=A0=C2=A0=C2=A0 memtostr(edev->component_vendor_id,
->  =C2=A0=C2=A0=C2=A0 ^~~~~~~~
-> make[4]: *** [scripts/Makefile.build:203: fs/ext4/file.o] Error 1
-> make[3]: *** [scripts/Makefile.build:461: fs/ext4] Error 2
-> make[3]: *** Waiting for unfinished jobs....
-> In file included from ./include/linux/array_size.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/kernel.h:16,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from drivers/scsi/mpt3sas/mpt3sas_base.c:46:
-> drivers/scsi/mpt3sas/mpt3sas_base.c: In function '_base_display_ioc_capab=
-ilities':
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/scsi/mpt3sas/mpt3sas_base.c:4798:2: note: in expansion of macro '=
-memtostr'
->  =C2=A0 memtostr(desc, ioc->manu_pg0.ChipName);
->  =C2=A0 ^~~~~~~~
-> In file included from ./include/linux/build_bug.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/container_of.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/list.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/module.h:12,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from drivers/scsi/mpt3sas/mpt3sas_transport.c:45:
-> drivers/scsi/mpt3sas/mpt3sas_transport.c: In function '_transport_expande=
-r_report_manufacture':
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/scsi/mpt3sas/mpt3sas_transport.c:461:3: note: in expansion of mac=
-ro 'memtostr'
->  =C2=A0=C2=A0 memtostr(edev->vendor_id, manufacture_reply->vendor_id);
->  =C2=A0=C2=A0 ^~~~~~~~
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/scsi/mpt3sas/mpt3sas_transport.c:462:3: note: in expansion of mac=
-ro 'memtostr'
->  =C2=A0=C2=A0 memtostr(edev->product_id, manufacture_reply->product_id);
->  =C2=A0=C2=A0 ^~~~~~~~
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/scsi/mpt3sas/mpt3sas_transport.c:463:3: note: in expansion of mac=
-ro 'memtostr'
->  =C2=A0=C2=A0 memtostr(edev->product_rev, manufacture_reply->product_rev);
->  =C2=A0=C2=A0 ^~~~~~~~
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/scsi/mpt3sas/mpt3sas_transport.c:466:4: note: in expansion of mac=
-ro 'memtostr'
->  =C2=A0=C2=A0=C2=A0 memtostr(edev->component_vendor_id,
->  =C2=A0=C2=A0=C2=A0 ^~~~~~~~
-> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/mpt3sas/mpt3sas_tr=
-ansport.o] Error 1
-> make[5]: *** Waiting for unfinished jobs....
-> make[5]: *** [scripts/Makefile.build:203: drivers/message/fusion/mptsas.o=
-] Error 1
-> make[4]: *** [scripts/Makefile.build:461: drivers/message/fusion] Error 2
-> make[3]: *** [scripts/Makefile.build:461: drivers/message] Error 2
-> make[3]: *** Waiting for unfinished jobs....
-> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/mpt3sas/mpt3sas_ba=
-se.o] Error 1
-> In file included from ./include/linux/array_size.h:5,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from ./include/linux/kernel.h:16,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from drivers/scsi/qla2xxx/qla_def.h:9,
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0 from drivers/scsi/qla2xxx/qla_mr.c:6:
-> drivers/scsi/qla2xxx/qla_mr.c: In function 'qlafx00_fx_disc':
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/scsi/qla2xxx/qla_mr.c:1912:3: note: in expansion of macro 'memtos=
-tr'
->  =C2=A0=C2=A0 memtostr(vha->hw->model_number, pinfo->model_num);
->  =C2=A0=C2=A0 ^~~~~~~~
-> ./include/linux/compiler.h:197:62: error: static assertion failed: "must =
-be non-C-string (not NUL-terminated)"
->  =C2=A0#define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Stat=
-ic_assert(!(e), msg);}))
-> ^~~~~~~~~~~~~~
-> ./include/linux/compiler.h:226:2: note: in expansion of macro '__BUILD_BU=
-G_ON_ZERO_MSG'
->  =C2=A0 __BUILD_BUG_ON_ZERO_MSG(!__is_noncstr(p), \
->  =C2=A0 ^~~~~~~~~~~~~~~~~~~~~~~
-> ./include/linux/string.h:468:26: note: in expansion of macro '__must_be_n=
-oncstr'
->  =C2=A0 const size_t _src_len =3D __must_be_noncstr(src) +=C2=A0 \
->  =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0 ^~~~~~~~~~~~~~~~~
-> drivers/scsi/qla2xxx/qla_mr.c:1913:3: note: in expansion of macro 'memtos=
-tr'
->  =C2=A0=C2=A0 memtostr(vha->hw->model_desc, pinfo->model_description);
->  =C2=A0=C2=A0 ^~~~~~~~
-> make[5]: *** [scripts/Makefile.build:203: drivers/scsi/qla2xxx/qla_mr.o] =
-Error 1
-> make[5]: *** Waiting for unfinished jobs....
-> make[2]: *** [scripts/Makefile.build:461: fs] Error 2
-> make[2]: *** Waiting for unfinished jobs....
-> make[4]: *** [scripts/Makefile.build:461: drivers/scsi/mpt3sas] Error 2
-> make[4]: *** Waiting for unfinished jobs....
-> make[4]: *** [scripts/Makefile.build:461: drivers/scsi/qla2xxx] Error 2
-> make[3]: *** [scripts/Makefile.build:461: drivers/scsi] Error 2
-> make[2]: *** [scripts/Makefile.build:461: drivers] Error 2
-> make[1]: *** [/root/linux-next/Makefile:1989: .] Error 2
-> make: *** [Makefile:251: __sub-make] Error 2
-
---=20
-Cheers,
-Stephen Rothwell
-
---Sig_/7puLdNAfr4chsrb23DmAgsy
-Content-Type: application/pgp-signature
-Content-Description: OpenPGP digital signature
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAme/wfwACgkQAVBC80lX
-0GzL9Af/U/CJEELhbzkzdLWIY0plJ0XZ+R+ww2HwFW1pLUVcllV4PGRIf9kz9yzY
-0RR19gqcx07Fo4j5FvZdRJJ39necHqyKtla3ErO1IQsc1KQ/fTUejQuNPhtjWQY+
-m0W3B20+Y+vDy3XuWk59drD2BvDO2g9j5C9lO+6DQueS3eaDzIruLZUBp41HqLzV
-hN69eC8b4lBsBnhOv2lWV+fFOIDweJmu8i4BMEHZx1VqXxybnGdek+vwrW33/XZc
-qdGZSJMKjfaOu3XfOWxfVXRCYar7l+Oy5SVH0Duf+UzbIgmMk4hO5t4fXOxMBPLI
-raROl9gOI4ZjhpxopeduWSYuYDsBjQ==
-=dZN8
------END PGP SIGNATURE-----
-
---Sig_/7puLdNAfr4chsrb23DmAgsy--
 
