@@ -1,35 +1,53 @@
-Return-Path: <linuxppc-dev+bounces-6571-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6572-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07042A49822
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 12:12:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8806FA49B0A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 14:54:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z45Ch4yh3z3bsY;
-	Fri, 28 Feb 2025 22:12:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z48pb42sPz3bsK;
+	Sat,  1 Mar 2025 00:54:47 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740741168;
-	cv=none; b=GL7TzYVtX1XfnydDqR9ReDC8pwNwk5biHvGDXsGhA7xVWDgEXqfp4SjplqCkLKfGIdbHTd48b20LT75kAcfegC8MmsY+oi3QWuf/EV+UF+dsW1t2fLmaAVhuSbBW9AYMWPydIJSlKqGt+SEoSm3JQzmeiYbdDzOjAOrOo/DpKT+3HuJhoA315qaTghlRw0QuUuzDfhoaD8IXYqb19L2BpluGRCJTWf+tLRQoAlkyGry4ZpBMQagbTJg6L+jqTrU1kO+VA2yBAYmVLgJeRHs4zgDeeitcb2q7QXM/QCYx2YWRXh9q0PrwNkMh1VydiGTeRNGWXomWpaNZcpfso1K59A==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740750887;
+	cv=none; b=mTcImZUoeubtsAqONB/BlYje3KmJpAUkXbyDBQw6uZiR2U+Xjyn3+y3lUcdNQNy3AV9l1N4b3mRiqrB/mk0EFE4pUjG+3LOqT4Cy0H5edqsdDDg/F17wJXsFkwVWodABEwZYbSISJhKyRTna8cLWGFIJKXdsH4jtztRCq2oJezNy3kkSjEfy991DlnqwVdCmDXDmpJjJexXfWNnnC7SukARI+qcjs1xd+P9q6dXK78q+eXgSBiMyKI3148ebKJBhY8hMbTbQco99b63nP0cuB4DqAcZEONUfJ09iARwQ7o+tM11h5GJjG+atT9I0kpVo84XrZ6ZL9YwNOANsoflNIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740741168; c=relaxed/relaxed;
-	bh=VsbgSY0KdK4WCEQoWD7P7DX8QHItEdhrghN3ri4wOyw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=abHgk+RFyZWK2ZRU9kJ5bYrnyCsfN8BQVtaWiYxci/nklgVNlASyTxbupa71OTDR8Iy79WFTm9T6JfPCAPAHp136TCodK6xctKkhK4S9gtG/7QprcoSNjIUZ/9Fqh4mG4EOueD+VreoYzkeEHefRLsbCIF9+FXts3HGEbglNsBHpbTRDF1JPqj41y7moo33TzYYI8xCTlYMp7gd6rMTacv99mHjqeXPifUe7eZ0oglZ609cDl3hPhbLTDbUz8GqK1vxFm3OHl5droASZDIlfkSi//PuJGHQcsmYIB5Sfbw4WGzMuyFsKyiIYPzNjdnD+sYVQZuyPkVlpcVBiejOX2w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dietmar.eggemann@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+	t=1740750887; c=relaxed/relaxed;
+	bh=+4sW+yDnGognoqpVpy7Utn+T6JhTFSZnyd9HvUFB7qk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y6Gq+ZkSdysLCI6WYrdb6P5/16bAeD7xWBQhYt8snSq4F7OiBfO40/S3AoB54tbkBEoy/J1+YzqGMT/CMXMvOyZVVk6jf9UyYdg+vW7ACnODDrojLnjoLq6Otak34d0lfUPKMDnqYUSl/ZJJYSzyoKTGzmD/V/OFuevDRg6AgiOdjgaqE7npCr+LeIfNRjGDZ4WimnbveKb5rV14eEg20EtfpkavbiGZtNlBpm5VKsCF3dBd/bi/GLt5hCqb2K1Bz+D2aGIAFmKNdbvxp+WOh0Q/ZrP70ZRtb+b5lxilhvvfZmP3UnBdbFTGrNTKK+MlSf9smvqtq+UVVN5RueQRtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=sudeep.holla@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=dietmar.eggemann@arm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=sudeep.holla@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z45Ch07MDz2xGC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2025 22:12:47 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z48pY3f25z3brB
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Mar 2025 00:54:43 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4566D1063;
-	Fri, 28 Feb 2025 03:12:32 -0800 (PST)
-Received: from [192.168.178.115] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 92FD63F673;
-	Fri, 28 Feb 2025 03:12:12 -0800 (PST)
-Message-ID: <df9784c3-c2ea-4bac-839a-2b7de0a81aac@arm.com>
-Date: Fri, 28 Feb 2025 12:12:02 +0100
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8DCFE1515;
+	Fri, 28 Feb 2025 05:54:26 -0800 (PST)
+Received: from bogus (e133711.arm.com [10.1.196.55])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 281E33F6A8;
+	Fri, 28 Feb 2025 05:54:07 -0800 (PST)
+Date: Fri, 28 Feb 2025 13:54:04 +0000
+From: Sudeep Holla <sudeep.holla@arm.com>
+To: Yicong Yang <yangyicong@huawei.com>
+Cc: <catalin.marinas@arm.com>, <will@kernel.org>, <tglx@linutronix.de>,
+	Sudeep Holla <sudeep.holla@arm.com>, <peterz@infradead.org>,
+	<mpe@ellerman.id.au>, <linux-arm-kernel@lists.infradead.org>,
+	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+	<pierre.gondois@arm.com>, <dietmar.eggemann@arm.com>,
+	<linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
+	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>,
+	<rafael@kernel.org>, <jonathan.cameron@huawei.com>,
+	<prime.zeng@hisilicon.com>, <linuxarm@huawei.com>,
+	<yangyicong@hisilicon.com>, <xuwei5@huawei.com>,
+	<guohanjun@huawei.com>, <sshegde@linux.ibm.com>
+Subject: Re: [PATCH v11 1/4] cpu/SMT: Provide a default
+ topology_is_primary_thread()
+Message-ID: <Z8G__C7n4zwje2MW@bogus>
+References: <20250218141018.18082-1-yangyicong@huawei.com>
+ <20250218141018.18082-2-yangyicong@huawei.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,66 +60,96 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 0/4] Support SMT control on arm64
-To: Yicong Yang <yangyicong@huawei.com>, catalin.marinas@arm.com,
- will@kernel.org, sudeep.holla@arm.com, tglx@linutronix.de,
- peterz@infradead.org, mpe@ellerman.id.au,
- linux-arm-kernel@lists.infradead.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, pierre.gondois@arm.com
-Cc: linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, morten.rasmussen@arm.com, msuchanek@suse.de,
- gregkh@linuxfoundation.org, rafael@kernel.org, jonathan.cameron@huawei.com,
- prime.zeng@hisilicon.com, linuxarm@huawei.com, yangyicong@hisilicon.com,
- xuwei5@huawei.com, guohanjun@huawei.com, sshegde@linux.ibm.com
-References: <20250218141018.18082-1-yangyicong@huawei.com>
-From: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Content-Language: en-US
-In-Reply-To: <20250218141018.18082-1-yangyicong@huawei.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250218141018.18082-2-yangyicong@huawei.com>
 X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 18/02/2025 15:10, Yicong Yang wrote:
+On Tue, Feb 18, 2025 at 10:10:15PM +0800, Yicong Yang wrote:
 > From: Yicong Yang <yangyicong@hisilicon.com>
 > 
-> The core CPU control framework supports runtime SMT control which
-> is not yet supported on arm64. Besides the general vulnerabilities
-> concerns we want this runtime control on our arm64 server for:
+> Currently if architectures want to support HOTPLUG_SMT they need to
+> provide a topology_is_primary_thread() telling the framework which
+> thread in the SMT cannot offline. However arm64 doesn't have a
+> restriction on which thread in the SMT cannot offline, a simplest
+> choice is that just make 1st thread as the "primary" thread. So
+> just make this as the default implementation in the framework and
+> let architectures like x86 that have special primary thread to
+> override this function (which they've already done).
 > 
-> - better single CPU performance in some cases
-> - saving overall power consumption
+> There's no need to provide a stub function if !CONFIG_SMP or
+> !CONFIG_HOTPLUG_SMT. In such case the testing CPU is already
+> the 1st CPU in the SMT so it's always the primary thread.
 > 
-> This patchset implements it in the following aspects:
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+> ---
+> Pre questioned in v9 [1] whether this works on architectures not using
+> CONFIG_GENERIC_ARCH_TOPOLOGY, See [2] for demonstration hacking on LoongArch
+> VM and this also works. Architectures should use this on their own situation.
+> [1] https://lore.kernel.org/linux-arm-kernel/427bd639-33c3-47e4-9e83-68c428eb1a7d@arm.com/
+> [2] https://lore.kernel.org/linux-arm-kernel/a5690fee-3019-f26c-8bad-1d95e388e877@huawei.com/
 > 
-> - Provides a default topology_is_primary_thread()
-> - support retrieve SMT thread number on OF based system
-> - support retrieve SMT thread number on ACPI based system
-> - select HOTPLUG_SMT for arm64
-> 
-> Tests has been done on our ACPI based arm64 server and on ACPI/OF
-> based QEMU VMs.
-
-[...]
-
-> Yicong Yang (4):
->   cpu/SMT: Provide a default topology_is_primary_thread()
->   arch_topology: Support SMT control for OF based system
->   arm64: topology: Support SMT control on ACPI based system
->   arm64: Kconfig: Enable HOTPLUG_SMT
-> 
->  arch/arm64/Kconfig                  |  1 +
->  arch/arm64/kernel/topology.c        | 66 +++++++++++++++++++++++++++++
 >  arch/powerpc/include/asm/topology.h |  1 +
 >  arch/x86/include/asm/topology.h     |  2 +-
->  drivers/base/arch_topology.c        | 27 ++++++++++++
->  include/linux/topology.h            | 22 ++++++++++
->  6 files changed, 118 insertions(+), 1 deletion(-)
+>  include/linux/topology.h            | 22 ++++++++++++++++++++++
+>  3 files changed, 24 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/include/asm/topology.h b/arch/powerpc/include/asm/topology.h
+> index 16bacfe8c7a2..da15b5efe807 100644
+> --- a/arch/powerpc/include/asm/topology.h
+> +++ b/arch/powerpc/include/asm/topology.h
+> @@ -152,6 +152,7 @@ static inline bool topology_is_primary_thread(unsigned int cpu)
+>  {
+>  	return cpu == cpu_first_thread_sibling(cpu);
+>  }
+> +#define topology_is_primary_thread topology_is_primary_thread
+>  
+>  static inline bool topology_smt_thread_allowed(unsigned int cpu)
+>  {
+> diff --git a/arch/x86/include/asm/topology.h b/arch/x86/include/asm/topology.h
+> index ec134b719144..6c79ee7c0957 100644
+> --- a/arch/x86/include/asm/topology.h
+> +++ b/arch/x86/include/asm/topology.h
+> @@ -229,11 +229,11 @@ static inline bool topology_is_primary_thread(unsigned int cpu)
+>  {
+>  	return cpumask_test_cpu(cpu, cpu_primary_thread_mask);
+>  }
+> +#define topology_is_primary_thread topology_is_primary_thread
+>  
+>  #else /* CONFIG_SMP */
+>  static inline int topology_phys_to_logical_pkg(unsigned int pkg) { return 0; }
+>  static inline int topology_max_smt_threads(void) { return 1; }
+> -static inline bool topology_is_primary_thread(unsigned int cpu) { return true; }
+>  static inline unsigned int topology_amd_nodes_per_pkg(void) { return 1; }
+>  #endif /* !CONFIG_SMP */
+>  
+> diff --git a/include/linux/topology.h b/include/linux/topology.h
+> index 52f5850730b3..b3aba443c4eb 100644
+> --- a/include/linux/topology.h
+> +++ b/include/linux/topology.h
+> @@ -240,6 +240,28 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
+>  }
+>  #endif
+>  
+> +#ifndef topology_is_primary_thread
+> +
+> +#define topology_is_primary_thread topology_is_primary_thread
+> +
+> +static inline bool topology_is_primary_thread(unsigned int cpu)
+> +{
+> +	/*
+> +	 * On SMT hotplug the primary thread of the SMT won't be disabled.
 
-With the review comments on the individual patches [0-3]/4:
+I may be misunderstanding the term "SMT hotplug" above. For me it is
+comparable with logical CPU hotplug, so the above statement may be
+misleading. IIUC, what you mean above is if SMT is disabled, the
+primary thread will always remain enabled/active. Does that make sense
+or am I missing something ?
 
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-
+--
+Regards,
+Sudeep
 
