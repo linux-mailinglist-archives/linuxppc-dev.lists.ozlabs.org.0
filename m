@@ -1,129 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6583-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6584-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2256FA4A478
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 21:59:42 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA91FA4A47B
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 22:01:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4LDq32SLz3bqy;
-	Sat,  1 Mar 2025 07:59:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4LGs3g6lz2xrv;
+	Sat,  1 Mar 2025 08:01:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:d408::" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740755252;
-	cv=pass; b=Ve0cnh8G/aF7IyRolimoZJpwfXxuhymWRbbcJnfGb4ziUVjdR0t0hOAXZNU7IogpM/xMC/WxlbzVW7emONccireRtOlHGwo7/x4Mz04pgVM+eZXXRv2tz/8O4lvVoqxAsaAnZ47Q8E47t8k7lr+5HWEXnN3CjzMJSiqiKbS18WeH4YoBd0VM2mqXoRrDB0bGJN93ajFD3SNZ7ja3h28ABK9G+u6EA/VaB/pH5RbcXKRcSBiwFP+8NhmINSAJ0JcW7xaShUh3VUgHHb+aUcjph2KqlHloJguvuY0R69QcqDXoTU8jdDEmxBKCElH5swu6hxgbLNp5kDBf4T/eoizQ5Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740755252; c=relaxed/relaxed;
-	bh=vO8RLkdun0eu2LcrZP+WAPRoXCAQErF/+P2JF4H7XFU=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=TeTRwtYffQAm/EbE58n1IXlqlriznQXLCiTZein82dfhF8Jy8Ze3REXU+fWdhOPUBeKElwNHj/P01/XktU2V2Ji99KH12BfBsqLVAGTGyHKX+Yy0O6klHYCPt7WVpS24d4+gG2NLVO57nIqkBFva6i3vXrxeN8qyx2bjOnzoW8KW3BiTEMP8GxLkralF4y1HwIHbUwEJ6jp1RiOVxArIDIkvjJtALIP9E2J2GCSMQjmlf4ExUX1885pbg7b34y2yHPHSc5WblvpL1oS7sji/0PGBuN2STa30A1tSjkayqDti5gvuygZnG7mwgauVfQBIcdiMVI3xQN0/U/X/jT4AiA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=live.com; dkim=pass (2048-bit key; unprotected) header.d=live.com header.i=@live.com header.a=rsa-sha256 header.s=selector1 header.b=GRmiFAA2; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:d408::; helo=ma0pr01cu009.outbound.protection.outlook.com; envelope-from=gargaditya08@live.com; receiver=lists.ozlabs.org) smtp.mailfrom=live.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b6"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740757347;
+	cv=none; b=TuGzE0uuoQef5qxJlaCRI9xeaTlkGQYAlbRKoye+YuabfWo7b1HrJkVOqfh3wJljFJN8UadBfwvnpu9Vlb0DlHoCWOv3ENFo4MIh3xMWTb99kpmOtBMs9RNfccEgx27U2dzAizaseti8SMbZmHmLkOhpWDhcgFMTUWh77iFgWTVPUOaBWYl4GpFi7GCooz3da7Wosrh5BFZQIp32EtEqHSlNvS/PLVTHbelVd6B3j3qf132bHPx1iLG0nEyMb8XkDxRbiCw8hUseT06FHydSXT9cbppP7KDkW9oP3mPqK+UBCYdEUIvDUrxUBkvuFxzNiePTi5TukqOTxnmfbYmmNQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1740757347; c=relaxed/relaxed;
+	bh=n9eLJrzvCc/jZ3rhdLc/8pJEkV1JMKG56goBetbpxb4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bIEZjA0JTEbo5uU0SMC5++hBshGKmaE3/gh6LbCuc8qQXf7JTuk7LTRTUASgY/ehPs/z72t5CQRGh8y9a+ZjsAAj4S7WWeehW4PFQ6wBCDYxyM6i8WeXRaez3z/YxWClKLBY33iC8HNgyFNnqQtJCcv7YCzsrl/XTDyqQ7CmsoDnrUCZtWHGDBgoiUJT3uHGbcpQOEq+TeWrpocGgdKvNbSrQHVLrGpWPhodwzLogrn6bh37UlmE34juwaz4zlFS/u4Bh17Z3uxnZe/9jlqWSQDVF2PUnJmxh3fu3Cae7peNw3q42eEB78oMJx0wez1GewXxa8tJLJ3KjEy9JKHtiA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vKo+YcgI; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::b6; helo=out-182.mta1.migadu.com; envelope-from=yosry.ahmed@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=live.com header.i=@live.com header.a=rsa-sha256 header.s=selector1 header.b=GRmiFAA2;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=vKo+YcgI;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=live.com (client-ip=2a01:111:f403:d408::; helo=ma0pr01cu009.outbound.protection.outlook.com; envelope-from=gargaditya08@live.com; receiver=lists.ozlabs.org)
-Received: from MA0PR01CU009.outbound.protection.outlook.com (mail-southindiaazolkn190100000.outbound.protection.outlook.com [IPv6:2a01:111:f403:d408::])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b6; helo=out-182.mta1.migadu.com; envelope-from=yosry.ahmed@linux.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 527 seconds by postgrey-1.37 at boromir; Sat, 01 Mar 2025 02:42:23 AEDT
+Received: from out-182.mta1.migadu.com (out-182.mta1.migadu.com [IPv6:2001:41d0:203:375::b6])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4BQV4vsfz3brN
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Mar 2025 02:07:30 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=kFMZcSzek8aJBxRkEpSskIyag8j9rfAA68KAECpvymBlkmzEpF1HIUSIwLf9XYZxF66/a9+yJW27N0A49vvCLUrkKxqGxZog+wTKj7aJCCi31MI9+6QtAzGOh6pZ9I8zHAKHFgtWU3cZp7wQj3z8drwRoWJMVDk6yPBA7yWSlXt9fFIG/illli3niMIGIxpP/P4J9i2s6jlpazOV1eNhGxnxPLOCfss3SmBy8o+gYmgVZxITBIAwMXemPY6p9J9wBHWbOeHxguuC3XhRGWBCwhIlhJWzGyI2eJarQs4Sa6uIKR2HA209OwSTRXZkT5hc8pY5v0+hhAinUYaGLLikAQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=vO8RLkdun0eu2LcrZP+WAPRoXCAQErF/+P2JF4H7XFU=;
- b=RRe6JLJkVmiSuVQyp1PD8xTiri9PQnJTYxa1iT+gx7n1xCDxFOlI/TNpd1IHG/t12WnteVf/F1+LQMps/XAU/wxZFW8q/HZvy3qEZgqpIyYBGd+1AfvGZ1JI8rEF8NFMDCxAptzLXOr1thVz2wo6UNIUf5lDLu38h4uZMwcD942WKXKH/1Uv4OgFveou1DZVqR2vpa2Acvq/QbinVN/m0v4LfPNMaFxNhu0ZiGeHh02orevfTEDwZDkMIZr4kDfbN0HZw0y/Vs7HtVobSzI6uOkvDIbBVkPLBgGe3tJ0VqJGyxT/4jVT4iWIgdLMpa6BYJbJjSvMacromG/1RURpsA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=vO8RLkdun0eu2LcrZP+WAPRoXCAQErF/+P2JF4H7XFU=;
- b=GRmiFAA2bJG1tbwb/5d2kmibPJFM195fgz/Vq6P3GHZXnc0G5ywEuXGMOh9B/TtcRVeUJeh+vqbVet4105uvMW3z4Be0d0OTW0HMUTDjy7LO7WeZac2nX9ppeQ7y80R4S6Ntv60tWcXHupnEStWrqeF6ael7f9illtOvLcOK8ScP6TUFpK0Ptxzn4CjOQPeFwqlt00HBktIWAOkQuDII6MXymv+PVJpJ8cBRsYGuDXvuR03+Gq3xJBuLHivo2enR59o9GwTdBCdNxnF2GDcLA79KQON+gif0Y9IcvFX76i6o1UohkbNNsKYQi/nvxYXnojiq1LH8q9MsLPW7AxpBNQ==
-Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:f7::14)
- by PN0PR01MB6153.INDPRD01.PROD.OUTLOOK.COM (2603:1096:c01:76::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.23; Fri, 28 Feb
- 2025 15:07:03 +0000
-Received: from PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::324:c085:10c8:4e77]) by PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
- ([fe80::324:c085:10c8:4e77%7]) with mapi id 15.20.8489.021; Fri, 28 Feb 2025
- 15:07:03 +0000
-From: Aditya Garg <gargaditya08@live.com>
-To: "castet.matthieu@free.fr" <castet.matthieu@free.fr>, "stf_xl@wp.pl"
-	<stf_xl@wp.pl>, "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"b-liu@ti.com" <b-liu@ti.com>, "johan@kernel.org" <johan@kernel.org>,
-	"heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
-	"valentina.manea.m@gmail.com" <valentina.manea.m@gmail.com>,
-	"shuah@kernel.org" <shuah@kernel.org>, "i@zenithal.me" <i@zenithal.me>
-CC: "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Subject: [PATCH] usb: replace strcpy() with strscpy()
-Thread-Topic: [PATCH] usb: replace strcpy() with strscpy()
-Thread-Index: AQHbifJs1uyH9jYjVk6FIi4JiLsd3A==
-Date: Fri, 28 Feb 2025 15:07:03 +0000
-Message-ID: <DEF7EF73-12C4-4F30-BC14-DD829F0C6884@live.com>
-Accept-Language: en-IN, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PN3PR01MB9597:EE_|PN0PR01MB6153:EE_
-x-ms-office365-filtering-correlation-id: 2d9a01dd-062f-4e2c-c460-08dd58098ef5
-x-microsoft-antispam:
- BCL:0;ARA:14566002|8062599003|7092599003|19110799003|461199028|8060799006|15080799006|10035399004|102099032|4302099013|3412199025|440099028|41001999003|1602099012;
-x-microsoft-antispam-message-info:
- =?us-ascii?Q?8+zY0U6PvzkxuWDFHyUxV6Bhug7TAccwP11H/fpMq/VybUTAGqwxqT5w+AXZ?=
- =?us-ascii?Q?jDocq8Po9tr4MHCTLpgQE076hFfkhIQvU5nqdT3oibC45Z/Vvg623hTRTEeu?=
- =?us-ascii?Q?QJlPWL/FZVLA643KoaHKeZ7X9C1W/YpmcbOrVRtcPU0mldHMDfwlDtL8dUIb?=
- =?us-ascii?Q?gtvdF8t9nMuFCbp5TgZU/MXI+QyoqaY7CGIE//Q8tzO94wfCG7cJXOAsqDcq?=
- =?us-ascii?Q?fdG8m35GDMze8mmGZr3W08HRrPo438zrepByEd9dW8UZ0BOzvLQJBS7KLQsH?=
- =?us-ascii?Q?D4fEzC3U7F2dCHEHtp4gOPMJblpsbXoOfnJy+8/ztEo2uafcXBpi2AMhyM2j?=
- =?us-ascii?Q?fzeW8jlpbAgEa9NDkr/WnQen2s7wkH5flHlFg2Av5PEyjexSL/8UF3ZRLovR?=
- =?us-ascii?Q?8ShkHcS95iGS3kw1ypL+/A10i6K4fql/wdl9KriK4XRvdH5DVJf8B1g2WnjX?=
- =?us-ascii?Q?E39mICYuj9jiiidsMhaj2SjjrJtwtQJkW2esFFZ0Dx0KI5SoaUEKIgy70EEK?=
- =?us-ascii?Q?HjCKSvEx1ugi204pZlP/uRmhLu2Wjv77QDCOYsUOgxU/ASz+sh/3Lifltcyh?=
- =?us-ascii?Q?9Z2rLrNC7wnCxlbL4zR5W+uaMQ2NzmhSHnsUdlaX29v8s7jWK+psh9EZJTVk?=
- =?us-ascii?Q?CWIZ8ULASkBuJNHxpNQbFRbIMcRt+yWqwdMAlE1P6sDaMcPumskPah/BlN5y?=
- =?us-ascii?Q?dodGHnLLw6KlcsGbi8+UkK7aQXh0r+k/IqricTDUO3n/HKE5KWtH+8czBlR1?=
- =?us-ascii?Q?hQLXMu7N+82Zfk73kMux3VwG2axYjb58UnZBSscXGUXpKJRT1A7T8bnbfuOr?=
- =?us-ascii?Q?61xFad+bfarYB5frrOsl/9FG6D9WEwekKm6Fmmr3+0olK6urw8to1fzoA+f4?=
- =?us-ascii?Q?BqXMTIUKykjH0472WXtjyMYXz2YEseijlplfwBNXJP1keuuhCVGC0XZpdU+u?=
- =?us-ascii?Q?I3VxAX6zfZTiA+p8o2SYacebwl+ugiTTKKMnvF/2g9/Maas1XUlZvT3EYcdR?=
- =?us-ascii?Q?tKR+L+P0YcSbk/Ap5fteK19v/PHN9GI34Qcx7XvEWlbrO8da68aeDHzCK0Cj?=
- =?us-ascii?Q?pzyz/S/7oQphjyjhg3ToB72DC624Yt5c33CyNK0KMhA5qozZNlKezrZp8Wnc?=
- =?us-ascii?Q?ewL0haTLhwk//TbtESBA6xaD6kNCokM3hVMBFSE7/4j9ytnWLUDbElb5pg3L?=
- =?us-ascii?Q?DyQ/r///F1XbE7bHJjbb6KeXf5mgru2+zS9chw=3D=3D?=
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?EhqK9gI7v8VrKbc5lhagEsMklnAupFwmDuWuGlZfTczObznSWI0jT7o3+Gsw?=
- =?us-ascii?Q?+wp2J4Wg9EHFvLHvQQ8jJGZ6/wvbBvbDN91LW801uwvfJJQRMKGfuwofllPA?=
- =?us-ascii?Q?aK5elFlAUtcGwDb8gYcUTJyH6LBeAfIj7SOWuEMi+nfLDj/xDa2KuCfEbLPf?=
- =?us-ascii?Q?BG7zfrLXivWgDsqbpP87fxXVnIQBVzxm3QfXq2Wn9NLEnNA8fanPk88OnI8r?=
- =?us-ascii?Q?ry1U8vYeQBCpav83D7HG94trhPe/+mlzaQjnDDmZYtI3WzoL8rVEOeyjX+BC?=
- =?us-ascii?Q?COMeUPPlw58bMVQF8evKaeOhmLOTSluj2CECIQKqVBaplWOxDPPdF65TYlWG?=
- =?us-ascii?Q?ekaXnf3UsVEvRzxsrPX58MdlU4o6Pcrg2XIoKks23SllhImL96OwZg/znHI/?=
- =?us-ascii?Q?no2zc0Fambra8Lb5Dvo0yvvrOUUrhmJPajTgm3cxTza6gwph2vJQHtmDrY86?=
- =?us-ascii?Q?pV5TTcuhck6385YeetthT6vCvUbZ/ci7HfUI4yDu+cQJTUAl14LO48vP2cZ2?=
- =?us-ascii?Q?deKj3lmvcJWau0vnog/s8EVgv/ASeBoKovUrX/o6MrAbrv3YJnwyNs6KUspJ?=
- =?us-ascii?Q?c2/sX5Bp1bqX8OxYQRCyF4E5ZLonxuWrV9MMxcifcqmwty2tATCPgsmTusRd?=
- =?us-ascii?Q?VtzrFAD3arfGUhG8UcB8m3824XoR47g9QbRKUi1aCNLYuaQf1xugmnGn95ov?=
- =?us-ascii?Q?bjuQ9Aaa1/ikgFjdygcqWgLOBZE1pj8B8UyjnxlvG3xKyBFCKHbGY/KkOIaL?=
- =?us-ascii?Q?Dn9hpU+5HkABCwp7RnqKpemNyIGdECCo9J5KOKqfshT/8PhPWbir94bCURzK?=
- =?us-ascii?Q?zl5CTa+HLe+DmSMqCECr4rInQRo9cyQ4QcRiluf3xFghzxXglFhq1ciS84mD?=
- =?us-ascii?Q?V2RGIK9+oIr2JP9Bm3Pq920FEmmtlDULB0FPuVSP2eCqpVBG8f1qU9qferwO?=
- =?us-ascii?Q?xLnyH317yXm5L4wwGrkGf6wjp6F4d5snThuKXT2ISlaxexZvL4EnIGRP0nt2?=
- =?us-ascii?Q?ium7+jx27k9QPnJPhKteJy1sKLEcPCP05H/zqdaGsAvwH6qUrUY8u6AaslcO?=
- =?us-ascii?Q?4N6MBwWkxBvDOTSilT2IZB8rztAfuOxW15EMZLQnvBx48djezASoujsI4kdL?=
- =?us-ascii?Q?4jvxloZO3hPdxxL5J1od9703myrpRJcepgkLNK7HaKEt/KQtUzC3fl77nFGe?=
- =?us-ascii?Q?+gw3SZ9hBzgNA95RYmDEZDOyg8BnDh2gcSoLZfmqx567oHQpqi99lBrn12BH?=
- =?us-ascii?Q?TlAmjXSkAYUOm6AnrElZ7VYBtMc2AdzLrb8AtZbJJCTZHXWjbJPonftu43Ke?=
- =?us-ascii?Q?3gUwKNdsBQXe1yO0wiD4sIWv?=
-Content-Type: text/plain; charset="us-ascii"
-Content-ID: <09541ADC0F9B5C41B643ADE5EBE726B0@INDPRD01.PROD.OUTLOOK.COM>
-Content-Transfer-Encoding: quoted-printable
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4CBl5jjMz3bqP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Mar 2025 02:42:23 +1100 (AEDT)
+Date: Fri, 28 Feb 2025 15:32:54 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1740756788;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=n9eLJrzvCc/jZ3rhdLc/8pJEkV1JMKG56goBetbpxb4=;
+	b=vKo+YcgI7v6lDON+yTHR9woNAvbankK+1SDMyOP89t52IYlLrAIepafV5H3+8AgeYWL/pp
+	TS1LqRGd7URb1EH84E98UhU8R08SptbuJvlIbJ9mZtK4wuupGbI0JiYANqWOM+DDaj9sTC
+	yy53IqVA9z5qtTyqinZcyR4dcB12SbQ=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org
+Subject: Re: [PATCH RFC v2 25/29] mm: asi: Restricted execution fore
+ bare-metal processes
+Message-ID: <Z8HXJnhMPFPyDJW5@google.com>
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+ <20250110-asi-rfc-v2-v2-25-8419288bc805@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -136,249 +80,354 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-OriginatorOrg: sct-15-20-7719-20-msonline-outlook-ae5c4.templateTenant
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2d9a01dd-062f-4e2c-c460-08dd58098ef5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2025 15:07:03.2287
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PN0PR01MB6153
-X-Spam-Status: No, score=0.1 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-	FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,SPF_HELO_PASS,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250110-asi-rfc-v2-v2-25-8419288bc805@google.com>
+X-Migadu-Flow: FLOW_OUT
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-From: Aditya Garg <gargaditya08@live.com>
+(Trimming the CC list as my email server refuses the number of CCs)
 
-The strcpy() function has been deprecated and replaced with strscpy().
-This patch shall replace it in the whole USB tree.
+On Fri, Jan 10, 2025 at 06:40:51PM +0000, Brendan Jackman wrote:
+> Now userspace gets a restricted address space too. The critical section
+> begins on exit to userspace and ends when it makes a system call.
+> Other entries from userspace just interrupt the critical section via
+> asi_intr_enter().
+> 
+> The reason why system calls have to actually asi_relax() (i.e. fully
+> terminate the critical section instead of just interrupting it) is that
+> system calls are the type of kernel entry that can lead to transition
+> into a _different_ ASI domain, namely the KVM one: it is not supported
+> to transition into a different domain while a critical section exists
+> (i.e. while asi_state.target is not NULL), even if it has been paused by
+> asi_intr_enter() (i.e. even if asi_state.intr_nest_depth is nonzero) -
+> there must be an asi_relax() between any two asi_enter()s.
+> 
+> The restricted address space for bare-metal tasks naturally contains the
+> entire userspace address region, although the task's own memory is still
+> missing from the direct map.
+> 
+> This implementation creates new userspace-specific APIs for asi_init(),
+> asi_destroy() and asi_enter(), which seems a little ugly, maybe this
+> suggest a general rework of these APIs given that the "generic" version
+> only has one caller. For RFC code this seems good enough though.
+> 
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> ---
+>  arch/x86/include/asm/asi.h   |  8 ++++++--
+>  arch/x86/mm/asi.c            | 49 ++++++++++++++++++++++++++++++++++++++++----
+>  include/asm-generic/asi.h    |  9 +++++++-
+>  include/linux/entry-common.h | 11 ++++++++++
+>  init/main.c                  |  2 ++
+>  kernel/entry/common.c        |  1 +
+>  kernel/fork.c                |  4 +++-
+>  7 files changed, 76 insertions(+), 8 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/asi.h b/arch/x86/include/asm/asi.h
+> index e925d7d2cfc85bca8480c837548654e7a5a7009e..c3c1a57f0147ae9bd11d89c8bf7c8a4477728f51 100644
+> --- a/arch/x86/include/asm/asi.h
+> +++ b/arch/x86/include/asm/asi.h
+> @@ -140,19 +140,23 @@ DECLARE_PER_CPU_ALIGNED(struct asi *, curr_asi);
+>  
+>  void asi_check_boottime_disable(void);
+>  
+> -void asi_init_mm_state(struct mm_struct *mm);
+> +int asi_init_mm_state(struct mm_struct *mm);
+>  
+>  int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_policy);
+> +void asi_init_userspace_class(void);
+>  void asi_uninit_class(enum asi_class_id class_id);
+>  const char *asi_class_name(enum asi_class_id class_id);
+>  
+>  int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_asi);
+>  void asi_destroy(struct asi *asi);
+> +void asi_destroy_userspace(struct mm_struct *mm);
+>  void asi_clone_user_pgtbl(struct mm_struct *mm, pgd_t *pgdp);
+>  
+>  /* Enter an ASI domain (restricted address space) and begin the critical section. */
+>  void asi_enter(struct asi *asi);
+>  
+> +void asi_enter_userspace(void);
+> +
+>  /*
+>   * Leave the "tense" state if we are in it, i.e. end the critical section. We
+>   * will stay relaxed until the next asi_enter.
+> @@ -294,7 +298,7 @@ void asi_handle_switch_mm(void);
+>   */
+>  static inline bool asi_maps_user_addr(enum asi_class_id class_id)
+>  {
+> -	return false;
+> +	return class_id == ASI_CLASS_USERSPACE;
+>  }
+>  
+>  #endif /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
+> diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
+> index 093103c1bc2677c81d68008aca064fab53b73a62..1e9dc568e79e8686a4dbf47f765f2c2535d025ec 100644
+> --- a/arch/x86/mm/asi.c
+> +++ b/arch/x86/mm/asi.c
+> @@ -25,6 +25,7 @@ const char *asi_class_names[] = {
+>  #if IS_ENABLED(CONFIG_KVM)
+>  	[ASI_CLASS_KVM] = "KVM",
+>  #endif
+> +	[ASI_CLASS_USERSPACE] = "userspace",
+>  };
+>  
+>  DEFINE_PER_CPU_ALIGNED(struct asi *, curr_asi);
+> @@ -67,6 +68,32 @@ int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_po
+>  }
+>  EXPORT_SYMBOL_GPL(asi_init_class);
+>  
+> +void __init asi_init_userspace_class(void)
+> +{
+> +	static struct asi_taint_policy policy = {
+> +		/*
+> +		 * Prevent going to userspace with sensitive data potentially
+> +		 * left in sidechannels by code running in the unrestricted
+> +		 * address space, or another MM. Note we don't check for guest
+> +		 * data here. This reflects the assumption that the guest trusts
+> +		 * its VMM (absent fancy HW features, which are orthogonal).
+> +		 */
+> +		.protect_data = ASI_TAINT_KERNEL_DATA | ASI_TAINT_OTHER_MM_DATA,
+> +		/*
+> +		 * Don't go into userspace with control flow state controlled by
+> +		 * other processes, or any KVM guest the process is running.
+> +		 * Note this bit is about protecting userspace from other parts
+> +		 * of the system, while data_taints is about protecting other
+> +		 * parts of the system from the guest.
+> +		 */
+> +		.prevent_control = ASI_TAINT_GUEST_CONTROL | ASI_TAINT_OTHER_MM_CONTROL,
+> +		.set = ASI_TAINT_USER_CONTROL | ASI_TAINT_USER_DATA,
+> +	};
+> +	int err = asi_init_class(ASI_CLASS_USERSPACE, &policy);
+> +
+> +	WARN_ON(err);
+> +}
+> +
+>  void asi_uninit_class(enum asi_class_id class_id)
+>  {
+>  	if (!boot_cpu_has(X86_FEATURE_ASI))
+> @@ -385,7 +412,8 @@ int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_
+>  	int err = 0;
+>  	uint i;
+>  
+> -	*out_asi = NULL;
+> +	if (out_asi)
+> +		*out_asi = NULL;
+>  
+>  	if (!boot_cpu_has(X86_FEATURE_ASI))
+>  		return 0;
+> @@ -424,7 +452,7 @@ int asi_init(struct mm_struct *mm, enum asi_class_id class_id, struct asi **out_
+>  exit_unlock:
+>  	if (err)
+>  		__asi_destroy(asi);
+> -	else
+> +	else if (out_asi)
+>  		*out_asi = asi;
+>  
+>  	__asi_init_user_pgds(mm, asi);
+> @@ -515,6 +543,12 @@ static __always_inline void maybe_flush_data(struct asi *next_asi)
+>  	this_cpu_and(asi_taints, ~ASI_TAINTS_DATA_MASK);
+>  }
+>  
+> +void asi_destroy_userspace(struct mm_struct *mm)
+> +{
+> +	VM_BUG_ON(!asi_class_initialized(ASI_CLASS_USERSPACE));
+> +	asi_destroy(&mm->asi[ASI_CLASS_USERSPACE]);
+> +}
+> +
+>  noinstr void __asi_enter(void)
+>  {
+>  	u64 asi_cr3;
+> @@ -584,6 +618,11 @@ noinstr void asi_enter(struct asi *asi)
+>  }
+>  EXPORT_SYMBOL_GPL(asi_enter);
+>  
+> +noinstr void asi_enter_userspace(void)
+> +{
+> +	asi_enter(&current->mm->asi[ASI_CLASS_USERSPACE]);
+> +}
+> +
+>  noinstr void asi_relax(void)
+>  {
+>  	if (static_asi_enabled()) {
+> @@ -633,13 +672,15 @@ noinstr void asi_exit(void)
+>  }
+>  EXPORT_SYMBOL_GPL(asi_exit);
+>  
+> -void asi_init_mm_state(struct mm_struct *mm)
+> +int asi_init_mm_state(struct mm_struct *mm)
+>  {
+>  	if (!boot_cpu_has(X86_FEATURE_ASI))
+> -		return;
+> +		return 0;
+>  
+>  	memset(mm->asi, 0, sizeof(mm->asi));
+>  	mutex_init(&mm->asi_init_lock);
+> +
+> +	return asi_init(mm, ASI_CLASS_USERSPACE, NULL);
 
-Link: https://github.com/KSPP/linux/issues/88
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
----
- drivers/usb/atm/ueagle-atm.c           |  2 +-
- drivers/usb/gadget/configfs.c          |  2 +-
- drivers/usb/gadget/function/f_midi2.c  |  6 +++---
- drivers/usb/gadget/function/u_serial.c |  2 +-
- drivers/usb/gadget/udc/fsl_qe_udc.c    |  2 +-
- drivers/usb/gadget/udc/fsl_udc_core.c  |  2 +-
- drivers/usb/gadget/udc/snps_udc_core.c |  2 +-
- drivers/usb/musb/musb_core.c           |  2 +-
- drivers/usb/serial/ti_usb_3410_5052.c  | 16 ++++++++--------
- drivers/usb/typec/tcpm/tcpm.c          |  6 +++---
- drivers/usb/usbip/vhci_sysfs.c         |  2 +-
- 11 files changed, 22 insertions(+), 22 deletions(-)
+I think this call here is problematic. This can be called from
+asi_global_init().
 
-diff --git a/drivers/usb/atm/ueagle-atm.c b/drivers/usb/atm/ueagle-atm.c
-index cd0f7b4bd..04f114d0f 100644
---- a/drivers/usb/atm/ueagle-atm.c
-+++ b/drivers/usb/atm/ueagle-atm.c
-@@ -1571,7 +1571,7 @@ static void cmvs_file_name(struct uea_softc *sc, char=
- *const cmv_name, int ver)
- 	} else
- 		file =3D cmv_file[sc->modem_index];
-=20
--	strcpy(cmv_name, FW_DIR);
-+	strscpy(cmv_name, FW_DIR);
- 	strlcat(cmv_name, file, UEA_FW_NAME_MAX);
- 	if (ver =3D=3D 2)
- 		strlcat(cmv_name, ".v2", UEA_FW_NAME_MAX);
-diff --git a/drivers/usb/gadget/configfs.c b/drivers/usb/gadget/configfs.c
-index fba2a56da..0c80a4011 100644
---- a/drivers/usb/gadget/configfs.c
-+++ b/drivers/usb/gadget/configfs.c
-@@ -129,7 +129,7 @@ static int usb_string_copy(const char *s, char **s_copy=
-)
- 		if (!str)
- 			return -ENOMEM;
- 	}
--	strcpy(str, s);
-+	strscpy(str, s);
- 	if (str[ret - 1] =3D=3D '\n')
- 		str[ret - 1] =3D '\0';
- 	*s_copy =3D str;
-diff --git a/drivers/usb/gadget/function/f_midi2.c b/drivers/usb/gadget/fun=
-ction/f_midi2.c
-index 12e866fb3..72d034e78 100644
---- a/drivers/usb/gadget/function/f_midi2.c
-+++ b/drivers/usb/gadget/function/f_midi2.c
-@@ -1542,9 +1542,9 @@ static int f_midi2_create_card(struct f_midi2 *midi2)
- 		return err;
- 	midi2->card =3D card;
-=20
--	strcpy(card->driver, "f_midi2");
--	strcpy(card->shortname, "MIDI 2.0 Gadget");
--	strcpy(card->longname, "MIDI 2.0 Gadget");
-+	strscpy(card->driver, "f_midi2");
-+	strscpy(card->shortname, "MIDI 2.0 Gadget");
-+	strscpy(card->longname, "MIDI 2.0 Gadget");
-=20
- 	id =3D 0;
- 	for (i =3D 0; i < midi2->num_eps; i++) {
-diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/fu=
-nction/u_serial.c
-index 36fff45e8..053b1f2a0 100644
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -1054,7 +1054,7 @@ static int gs_console_init(struct gs_port *port)
- 	if (!cons)
- 		return -ENOMEM;
-=20
--	strcpy(cons->console.name, "ttyGS");
-+	strscpy(cons->console.name, "ttyGS");
- 	cons->console.write =3D gs_console_write;
- 	cons->console.device =3D gs_console_device;
- 	cons->console.flags =3D CON_PRINTBUFFER;
-diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/f=
-sl_qe_udc.c
-index aacfde063..b12d2441c 100644
---- a/drivers/usb/gadget/udc/fsl_qe_udc.c
-+++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
-@@ -2410,7 +2410,7 @@ static int qe_ep_config(struct qe_udc *udc, unsigned =
-char pipe_num)
- 	struct qe_ep *ep =3D &udc->eps[pipe_num];
-=20
- 	ep->udc =3D udc;
--	strcpy(ep->name, ep_name[pipe_num]);
-+	strscpy(ep->name, ep_name[pipe_num]);
- 	ep->ep.name =3D ep_name[pipe_num];
-=20
- 	if (pipe_num =3D=3D 0) {
-diff --git a/drivers/usb/gadget/udc/fsl_udc_core.c b/drivers/usb/gadget/udc=
-/fsl_udc_core.c
-index 4dea8bc30..eb64aa96c 100644
---- a/drivers/usb/gadget/udc/fsl_udc_core.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_core.c
-@@ -2321,7 +2321,7 @@ static int struct_ep_setup(struct fsl_udc *udc, unsig=
-ned char index,
- 	struct fsl_ep *ep =3D &udc->eps[index];
-=20
- 	ep->udc =3D udc;
--	strcpy(ep->name, name);
-+	strscpy(ep->name, name);
- 	ep->ep.name =3D ep->name;
-=20
- 	ep->ep.ops =3D &fsl_ep_ops;
-diff --git a/drivers/usb/gadget/udc/snps_udc_core.c b/drivers/usb/gadget/ud=
-c/snps_udc_core.c
-index 1f8a99d2a..ad12b5c16 100644
---- a/drivers/usb/gadget/udc/snps_udc_core.c
-+++ b/drivers/usb/gadget/udc/snps_udc_core.c
-@@ -3151,7 +3151,7 @@ int udc_probe(struct udc *dev)
- 			 tmp, dev->phys_addr, dev->chiprev,
- 			 (dev->chiprev =3D=3D UDC_HSA0_REV) ?
- 			 "A0" : "B1");
--		strcpy(tmp, UDC_DRIVER_VERSION_STRING);
-+		strscpy(tmp, UDC_DRIVER_VERSION_STRING);
- 		if (dev->chiprev =3D=3D UDC_HSA0_REV) {
- 			dev_err(dev->dev, "chip revision is A0; too old\n");
- 			retval =3D -ENODEV;
-diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
-index 7f349f5e7..b3a943eca 100644
---- a/drivers/usb/musb/musb_core.c
-+++ b/drivers/usb/musb/musb_core.c
-@@ -1600,7 +1600,7 @@ static int musb_core_init(u16 musb_type, struct musb =
-*musb)
- 	/* log core options (read using indexed model) */
- 	reg =3D musb_read_configdata(mbase);
-=20
--	strcpy(aInfo, (reg & MUSB_CONFIGDATA_UTMIDW) ? "UTMI-16" : "UTMI-8");
-+	strscpy(aInfo, (reg & MUSB_CONFIGDATA_UTMIDW) ? "UTMI-16" : "UTMI-8");
- 	if (reg & MUSB_CONFIGDATA_DYNFIFO) {
- 		strcat(aInfo, ", dyn FIFOs");
- 		musb->dyn_fifo =3D true;
-diff --git a/drivers/usb/serial/ti_usb_3410_5052.c b/drivers/usb/serial/ti_=
-usb_3410_5052.c
-index a0c244bc7..50d76205b 100644
---- a/drivers/usb/serial/ti_usb_3410_5052.c
-+++ b/drivers/usb/serial/ti_usb_3410_5052.c
-@@ -1605,29 +1605,29 @@ static int ti_download_firmware(struct ti_device *t=
-dev)
- 		if (le16_to_cpu(dev->descriptor.idVendor) =3D=3D MTS_VENDOR_ID) {
- 			switch (le16_to_cpu(dev->descriptor.idProduct)) {
- 			case MTS_CDMA_PRODUCT_ID:
--				strcpy(buf, "mts_cdma.fw");
-+				strscpy(buf, "mts_cdma.fw");
- 				break;
- 			case MTS_GSM_PRODUCT_ID:
--				strcpy(buf, "mts_gsm.fw");
-+				strscpy(buf, "mts_gsm.fw");
- 				break;
- 			case MTS_EDGE_PRODUCT_ID:
--				strcpy(buf, "mts_edge.fw");
-+				strscpy(buf, "mts_edge.fw");
- 				break;
- 			case MTS_MT9234MU_PRODUCT_ID:
--				strcpy(buf, "mts_mt9234mu.fw");
-+				strscpy(buf, "mts_mt9234mu.fw");
- 				break;
- 			case MTS_MT9234ZBA_PRODUCT_ID:
--				strcpy(buf, "mts_mt9234zba.fw");
-+				strscpy(buf, "mts_mt9234zba.fw");
- 				break;
- 			case MTS_MT9234ZBAOLD_PRODUCT_ID:
--				strcpy(buf, "mts_mt9234zba.fw");
-+				strscpy(buf, "mts_mt9234zba.fw");
- 				break;			}
- 		}
- 		if (buf[0] =3D=3D '\0') {
- 			if (tdev->td_is_3410)
--				strcpy(buf, "ti_3410.fw");
-+				strscpy(buf, "ti_3410.fw");
- 			else
--				strcpy(buf, "ti_5052.fw");
-+				strscpy(buf, "ti_5052.fw");
- 		}
- 		status =3D request_firmware(&fw_p, buf, &dev->dev);
- 	}
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 6bf1a22c7..461240086 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -710,7 +710,7 @@ static void _tcpm_log(struct tcpm_port *port, const cha=
-r *fmt, va_list args)
-=20
- 	if (tcpm_log_full(port)) {
- 		port->logbuffer_head =3D max(port->logbuffer_head - 1, 0);
--		strcpy(tmpbuffer, "overflow");
-+		strscpy(tmpbuffer, "overflow");
- 	}
-=20
- 	if (port->logbuffer_head < 0 ||
-@@ -813,10 +813,10 @@ static void tcpm_log_source_caps(struct tcpm_port *po=
-rt)
- 					  pdo_pps_apdo_max_voltage(pdo),
- 					  pdo_pps_apdo_max_current(pdo));
- 			else
--				strcpy(msg, "undefined APDO");
-+				strscpy(msg, "undefined APDO");
- 			break;
- 		default:
--			strcpy(msg, "undefined");
-+			strscpy(msg, "undefined");
- 			break;
- 		}
- 		tcpm_log(port, " PDO %d: type %d, %s",
-diff --git a/drivers/usb/usbip/vhci_sysfs.c b/drivers/usb/usbip/vhci_sysfs.=
-c
-index d5865460e..4d6be26db 100644
---- a/drivers/usb/usbip/vhci_sysfs.c
-+++ b/drivers/usb/usbip/vhci_sysfs.c
-@@ -463,7 +463,7 @@ static void set_status_attr(int id)
-=20
- 	status =3D status_attrs + id;
- 	if (id =3D=3D 0)
--		strcpy(status->name, "status");
-+		strscpy(status->name, "status");
- 	else
- 		snprintf(status->name, MAX_STATUS_NAME+1, "status.%d", id);
- 	status->attr.attr.name =3D status->name;
---=20
-2.43.0
+An example is:
 
+start_kernel()
+poking_init()
+mm_alloc()
+mm_init()
+asi_init_mm_state()
+
+But the same also happen through dup_mm(), for example:
+
+kernel_thread()
+kernel_clone()
+copy_process()
+copy_mm()
+dup_mm()
+
+asi_global_init() is called later from do_initcalls() (run in a kthread
+by kernel_init()). In this case, asi_init() copies the kernel PGDs from
+asi_global_nonsensitive_pgd, but those PGDs won't be initialized yet.
+
+It could be fine for the current code because all these threads created
+during init never enter userspace, but I am not sure if that's always
+true. It also makes me a bit nervous to have partially initialized ASI
+domains hanging around.
+
+I'd rather we either:
+- Move asi_global_init() earlier, but we have to be careful not to move
+  it too early before some of the mappings it clones are created (or
+  before we can make allocations). In this case, we should also add a
+  warning in asi_init() in case the code changes and it is ever called
+  before asi_global_init().
+
+- Explicitly avoid calling asi_init_mm_state() or asi_init() in these
+  cases. This may be easy-ish in the case of kthreads, but for things
+  like poking_init() we would need to plump more context through.
+  Alternatively we can just make asi_init() a noop if asi_global_init()
+  isn't called yet, but the silent failure makes me a bit worried too.
+
+>  }
+>  
+>  void asi_handle_switch_mm(void)
+> diff --git a/include/asm-generic/asi.h b/include/asm-generic/asi.h
+> index d103343292fad567dcd73e45e986fb3974e59898..c93f9e779ce1fa61e3df7835f5ab744cce7d667b 100644
+> --- a/include/asm-generic/asi.h
+> +++ b/include/asm-generic/asi.h
+> @@ -15,6 +15,7 @@ enum asi_class_id {
+>  #if IS_ENABLED(CONFIG_KVM)
+>  	ASI_CLASS_KVM,
+>  #endif
+> +	ASI_CLASS_USERSPACE,
+>  	ASI_MAX_NUM_CLASSES,
+>  };
+>  static_assert(order_base_2(X86_CR3_ASI_PCID_BITS) <= ASI_MAX_NUM_CLASSES);
+> @@ -37,8 +38,10 @@ int asi_init_class(enum asi_class_id class_id,
+>  
+>  static inline void asi_uninit_class(enum asi_class_id class_id) { }
+>  
+> +static inline void asi_init_userspace_class(void) { }
+> +
+>  struct mm_struct;
+> -static inline void asi_init_mm_state(struct mm_struct *mm) { }
+> +static inline int asi_init_mm_state(struct mm_struct *mm) { return 0; }
+>  
+>  static inline int asi_init(struct mm_struct *mm, enum asi_class_id class_id,
+>  			   struct asi **out_asi)
+> @@ -48,8 +51,12 @@ static inline int asi_init(struct mm_struct *mm, enum asi_class_id class_id,
+>  
+>  static inline void asi_destroy(struct asi *asi) { }
+>  
+> +static inline void asi_destroy_userspace(struct mm_struct *mm) { }
+> +
+>  static inline void asi_enter(struct asi *asi) { }
+>  
+> +static inline void asi_enter_userspace(void) { }
+> +
+>  static inline void asi_relax(void) { }
+>  
+>  static inline bool asi_is_relaxed(void) { return true; }
+> diff --git a/include/linux/entry-common.h b/include/linux/entry-common.h
+> index 1e50cdb83ae501467ecc30ee52f1379d409f962e..f04c4c038556f84ddf3bc09b6c1dd22a9dbd2f6b 100644
+> --- a/include/linux/entry-common.h
+> +++ b/include/linux/entry-common.h
+> @@ -191,6 +191,16 @@ static __always_inline long syscall_enter_from_user_mode(struct pt_regs *regs, l
+>  {
+>  	long ret;
+>  
+> +	/*
+> +	 * End the ASI critical section for userspace. Syscalls are the only
+> +	 * place this happens - all other entry from userspace is handled via
+> +	 * ASI's interrupt-tracking. The reason syscalls are special is that's
+> +	 * where it's possible to switch to another ASI domain within the same
+> +	 * task (i.e. KVM_RUN), an asi_relax() is required here in case of an
+> +	 * upcoming asi_enter().
+> +	 */
+> +	asi_relax();
+> +
+>  	enter_from_user_mode(regs);
+>  
+>  	instrumentation_begin();
+> @@ -355,6 +365,7 @@ static __always_inline void exit_to_user_mode_prepare(struct pt_regs *regs)
+>   */
+>  static __always_inline void exit_to_user_mode(void)
+>  {
+> +
+>  	instrumentation_begin();
+>  	trace_hardirqs_on_prepare();
+>  	lockdep_hardirqs_on_prepare();
+> diff --git a/init/main.c b/init/main.c
+> index c4778edae7972f512d5eefe8400075ac35a70d1c..d19e149d385e8321d2f3e7c28aa75802af62d09c 100644
+> --- a/init/main.c
+> +++ b/init/main.c
+> @@ -953,6 +953,8 @@ void start_kernel(void)
+>  	/* Architectural and non-timekeeping rng init, before allocator init */
+>  	random_init_early(command_line);
+>  
+> +	asi_init_userspace_class();
+> +
+>  	/*
+>  	 * These use large bootmem allocations and must precede
+>  	 * initalization of page allocator
+> diff --git a/kernel/entry/common.c b/kernel/entry/common.c
+> index 5b6934e23c21d36a3238dc03e391eb9e3beb4cfb..874254ed5958d62eaeaef4fe3e8c02e56deaf5ed 100644
+> --- a/kernel/entry/common.c
+> +++ b/kernel/entry/common.c
+> @@ -218,6 +218,7 @@ __visible noinstr void syscall_exit_to_user_mode(struct pt_regs *regs)
+>  	__syscall_exit_to_user_mode_work(regs);
+>  	instrumentation_end();
+>  	exit_to_user_mode();
+> +	asi_enter_userspace();
+>  }
+>  
+>  noinstr void irqentry_enter_from_user_mode(struct pt_regs *regs)
+> diff --git a/kernel/fork.c b/kernel/fork.c
+> index bb73758790d08112265d398b16902ff9a4c2b8fe..54068d2415939b92409ca8a45111176783c6acbd 100644
+> --- a/kernel/fork.c
+> +++ b/kernel/fork.c
+> @@ -917,6 +917,7 @@ void __mmdrop(struct mm_struct *mm)
+>  	/* Ensure no CPUs are using this as their lazy tlb mm */
+>  	cleanup_lazy_tlbs(mm);
+>  
+> +	asi_destroy_userspace(mm);
+>  	WARN_ON_ONCE(mm == current->active_mm);
+>  	mm_free_pgd(mm);
+>  	destroy_context(mm);
+> @@ -1297,7 +1298,8 @@ static struct mm_struct *mm_init(struct mm_struct *mm, struct task_struct *p,
+>  	if (mm_alloc_pgd(mm))
+>  		goto fail_nopgd;
+>  
+> -	asi_init_mm_state(mm);
+> +	if (asi_init_mm_state(mm))
+> +		goto fail_nocontext;
+>  
+>  	if (init_new_context(p, mm))
+>  		goto fail_nocontext;
+> 
+> -- 
+> 2.47.1.613.gc27f4b7a9f-goog
+> 
 
