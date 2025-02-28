@@ -1,80 +1,109 @@
-Return-Path: <linuxppc-dev+bounces-6542-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6543-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 717C9A4885E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 27 Feb 2025 19:58:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4D11A48F2A
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 04:31:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3gb24kzlz3brC;
-	Fri, 28 Feb 2025 05:58:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z3tzj0Qmwz2ygY;
+	Fri, 28 Feb 2025 14:31:45 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740682686;
-	cv=none; b=Gc9TSUGz6RyYodGUhO4At1vKKZ+QBLDVMSoiH7aQF4Slvy7FDGLTM9+6pL+618dOad7M2WOPqEt8w6Y7mvGFBDDGx7QkM+rVoNeu9CzMUtHNgoPaxCSCWKuCmtfNWiaEk/V7x5s3YyhV82urmiqBndEpUXNL5HBv0WGTS6ECaU1Gkk0b+StmN5i7HShEV04r1c/vQCo7NQEsk+6WwMJZ0AvYzJdcCVnrnFBJOoh7RDX0Q6YphPuFlvSryCc+T/KsQZ2KSN0jVx3QKShQpyBYI27KIicKoUbyVg+6Iv3I8CLCs400P9b9D6Oo6jqpk0sX/iUnEnvhH1x16ZKaZ13ofQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740682686; c=relaxed/relaxed;
-	bh=2A1aUnY+uPPYhYhaCo/xteiPx4qKbFXOoQTpLhSaaHM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Z9uenHz+WiHnkvv3/r0vniBJzzzbQbyDBybU6MNpqS9fyWoIU8y5hMeAMBhdtUbq5tZoRFbKa6gectSjeft2PrZ+trsT1ElZNsJbG/7Zi9lSnVtoZHwISurOmyvsw7n4a6C94CaR3+UqJ4H3hB39hhs0XBXfCHSprRTVXsxe9JTbaRFIQq+n2PANgO8UEHnfVtroI5ZL+K4L1oZ5Mm6jUNkj11FCXFfl52AWtr26FyLdUMO6gsPiScxgWtaM2568mMG+IrcmtcNIPajb+kNTEGAYKIWjsUhap2mCmFR5h0pz+hPF3BhyMpIu2LFqSG7pXSWexqjMuggHIxZw28B6Ww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MHZuAM/z; dkim-atps=neutral; spf=pass (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2413::60a" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740713504;
+	cv=pass; b=OOmaQIpFPdUqD+yXf387WBYfwlPyeRAJsSPw/6C254spvxZHOIzF5fITKdsRybSTUuhPWlh7T7SVCoP+dz+ck00rH1VnC22UlRXE2uzTn5Yt0pPGTmmW3luSxgdIYSgj/vRiD1pHAC5QN65oA3WHFind1WReoVpZb8OElb5JRp5qhgIrTCGLQz88CC9DlJiXH1QUaFAAYFg9cpH1u2c/q3CWr5mgIxJmRZtYnXB3y0RCaSj9oO/v0sHMsl+GyOTt/EcpsM/wgn+b3sYtjksncjkuCznrfuWgNs11Y7/wscYZ1TaHc7aDGHufCBkj15JS7IWfmidf1WliZnKydSOe/w==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1740713504; c=relaxed/relaxed;
+	bh=kDWQqBCKRnZ+Jdrmk+pgS/S7V8wCHFG9mj0EFgLS0B8=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=MytwZvAIrlwlkgNjkFtl9zRMtZX/clOlWDNGHGOBnQ8RE/geMgqW6cR3+usEXUNE9hZS2a28p208i5F9vEx3Lx74rojBVQXTdcQuXCzw6NsKmmsrc915aJNdjIP9zSdFS6vU8YAoOC/TGL18OcoTpxQq1gTcVpIJxm0/6x0Q9tQkI/WUwgeRRSi3YSxoVz+y0FSzA7LtXETcHtJMuDIfKbz9DvMGnZAdgQw1qvX+Kf7YC3zwABYAqW4pJl30qf+mJ+SRyvJN19pWEROR1BA/JaqaGONwurCLEwNYi5dmrW6UxlvtyTs/X0d2fN5pBLPjz+qEpTrzRpG6549XJC3D2Q==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Ies1Q2a2; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2413::60a; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org) smtp.mailfrom=nvidia.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=MHZuAM/z;
+	dkim=pass (2048-bit key; unprotected) header.d=Nvidia.com header.i=@Nvidia.com header.a=rsa-sha256 header.s=selector2 header.b=Ies1Q2a2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nvidia.com (client-ip=2a01:111:f403:2413::60a; helo=nam10-dm6-obe.outbound.protection.outlook.com; envelope-from=apopple@nvidia.com; receiver=lists.ozlabs.org)
+Received: from NAM10-DM6-obe.outbound.protection.outlook.com (mail-dm6nam10on2060a.outbound.protection.outlook.com [IPv6:2a01:111:f403:2413::60a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3gb05Kgcz3bqs
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2025 05:58:02 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740682685; x=1772218685;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=YDxplo6/yUUqQJnXZQYQKrL+F9KSK94+hXUMdYhYX2Y=;
-  b=MHZuAM/zokzm+34enoFimfoiOYkhs+IGqKP2cU2tJoySLYpiGWcnBQ6n
-   ++Wnfqs+ADKOVlG9xSoHApZD4T1sX+79cRKFNMyZJlzfzpd6G4E2sg+Tl
-   2oG+MYTUe1n4qHOqXLtJj70RyMa8036Uplr62YLo6MardIMOo3kngF0Oi
-   I+08UCavuDDbfwnz+u9xlHCgKBXnzvlvC16w2ZGdoWFjc79RAN6X+eOVG
-   rMr2wnTRF+YotC3i8iMXwKk04QVkjiZrWy8YFVPxh3bX2LyldyVI4/X2a
-   f7BW/Ar2pg7sv+q+nDXFHaX3x7FgZZkUG7Vt2A7WbtfOrBdUtSPhdkV1K
-   A==;
-X-CSE-ConnectionGUID: SuXRSxedQ6aA62yMAUB+6w==
-X-CSE-MsgGUID: DXJP98/NRzmFCAyKeww9Rw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11314"; a="53002990"
-X-IronPort-AV: E=Sophos;i="6.12,310,1728975600"; 
-   d="scan'208";a="53002990"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Feb 2025 10:58:00 -0800
-X-CSE-ConnectionGUID: pduxVrnNRw6rr4V5IP2CaA==
-X-CSE-MsgGUID: wIOTKHxhR626VhQaKeWzUQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,320,1732608000"; 
-   d="scan'208";a="122128314"
-Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by orviesa004.jf.intel.com with ESMTP; 27 Feb 2025 10:57:56 -0800
-Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tnj50-000Du0-0o;
-	Thu, 27 Feb 2025 18:57:54 +0000
-Date: Fri, 28 Feb 2025 02:57:20 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vaibhav Jain <vaibhav@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org, kvm-ppc@vger.kernel.org
-Cc: Paul Gazzillo <paul@pgazz.com>,
-	Necip Fazil Yildiran <fazilyildiran@gmail.com>,
-	oe-kbuild-all@lists.linux.dev, Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
-	sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
-	amachhiw@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv
- specific PMU
-Message-ID: <202502280218.Jdd4jjlZ-lkp@intel.com>
-References: <20250224131522.77104-5-vaibhav@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z3tzg35Qlz2yYq
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 28 Feb 2025 14:31:42 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=OCxypE8HES5kzkFXnafDxN0XnYy5wDf3XunK6xQU/hPvp4MUqhpeJkx6DYxCcA0vovqptKafmtwU+RXTZP0REgs9P2h9/3jZ8YsLtxj7cHLvNBT+EPFIbGlJb9+o9jlfGeO+dJxbSTuz0OWXZvTbwhEUkFu4fGE6GTW7S8l6/ACjMy6T4fgI8Tb/uM4eBPBl4BpjpH0JRB9wR3HSzjdj5V7x8o4hg6KcKxeNlc9nZt7QxDaAKnpdTiswTrv3YMUIsouz6Ixfe+a+hhK0UnpOw4BpFa+4Z5J2JeoaIyjcT+orE+zwFfIFMufEZCVOhMzBRiuaY2awfeeQcIBVrRD96g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kDWQqBCKRnZ+Jdrmk+pgS/S7V8wCHFG9mj0EFgLS0B8=;
+ b=fxbrTYvf6bnqEhG8kI1WMsJZY6B96wPgE8pP8s0a8xELE/oRiTxO1E5De9wYghqEkgzFvWSrGpFFGaf2eNrCrqFoG1CueLm2hGv+WsyubKwMPoKMgFmM4hOXSJdYkg4eoc5+WtJ1K0iigc83JteB03yAY+nK1A1+eSHo/W8CjJcTdC7mG7xCoa1k12nSOwLuUCBoc/WQxxGs6evWxcTS32hBOPyYS1r8704qTcwbsIJkHkGTiKOWiiKVzIZofKRtAkTqLjfnHdtYPvorEyP6iaaEgZPt449vaxtgRnRi3LNKuKOo+z2Ejfk4hVJ3DjDteOFZaJmuQNLhKdx6kLaW+A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kDWQqBCKRnZ+Jdrmk+pgS/S7V8wCHFG9mj0EFgLS0B8=;
+ b=Ies1Q2a2qBsY5IITIrGxysyjOtNrc9xEXqHLYGuAfJuBqRQ0NGNBUEKrqv7VUegL+tY+dHoSCHOoKRa7xJmcDz65gioSTCm6hKZkEUePUip888hzprsCtsI8ZXQEemqAfnDd2Nu8sVH6JSL95hXpVWX/HJgLSh0tRtWDS922Eiql9y2RMXn4tZxZGRIDWM8iP9dbMupSz+SqD+LSQSLXGF27BSCxkgoCf37bOMyUaNGO4iEH+5XCyBtJQMgLTJ2x5bggWycmqSMsbHrhGsjnk9Jw7Hk6CErbW4aSL239wvTkRYooOQoFVXxA/y4wZjG2HlA6ERG22fgkRmpHBvSIdA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com (2603:10b6:8:130::6) by
+ SJ2PR12MB7991.namprd12.prod.outlook.com (2603:10b6:a03:4d1::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.22; Fri, 28 Feb
+ 2025 03:31:22 +0000
+Received: from DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe]) by DS0PR12MB7726.namprd12.prod.outlook.com
+ ([fe80::953f:2f80:90c5:67fe%7]) with mapi id 15.20.8489.018; Fri, 28 Feb 2025
+ 03:31:21 +0000
+From: Alistair Popple <apopple@nvidia.com>
+To: akpm@linux-foundation.org,
+	dan.j.williams@intel.com,
+	linux-mm@kvack.org
+Cc: Alistair Popple <apopple@nvidia.com>,
+	Alison Schofield <alison.schofield@intel.com>,
+	lina@asahilina.net,
+	zhang.lyra@gmail.com,
+	gerald.schaefer@linux.ibm.com,
+	vishal.l.verma@intel.com,
+	dave.jiang@intel.com,
+	logang@deltatee.com,
+	bhelgaas@google.com,
+	jack@suse.cz,
+	jgg@ziepe.ca,
+	catalin.marinas@arm.com,
+	will@kernel.org,
+	mpe@ellerman.id.au,
+	npiggin@gmail.com,
+	dave.hansen@linux.intel.com,
+	ira.weiny@intel.com,
+	willy@infradead.org,
+	djwong@kernel.org,
+	tytso@mit.edu,
+	linmiaohe@huawei.com,
+	david@redhat.com,
+	peterx@redhat.com,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org,
+	nvdimm@lists.linux.dev,
+	linux-cxl@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	linux-xfs@vger.kernel.org,
+	jhubbard@nvidia.com,
+	hch@lst.de,
+	david@fromorbit.com,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name,
+	loongarch@lists.linux.dev
+Subject: [PATCH v9 00/20] fs/dax: Fix ZONE_DEVICE page reference counts
+Date: Fri, 28 Feb 2025 14:30:55 +1100
+Message-ID: <cover.8068ad144a7eea4a813670301f4d2a86a8e68ec4.1740713401.git-series.apopple@nvidia.com>
+X-Mailer: git-send-email 2.45.2
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SYBPR01CA0066.ausprd01.prod.outlook.com
+ (2603:10c6:10:2::30) To DS0PR12MB7726.namprd12.prod.outlook.com
+ (2603:10b6:8:130::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,45 +116,300 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250224131522.77104-5-vaibhav@linux.ibm.com>
-X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR12MB7726:EE_|SJ2PR12MB7991:EE_
+X-MS-Office365-Filtering-Correlation-Id: 139bdb55-16f0-4482-dcce-08dd57a85ee5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?RI4adiv3czHZt47A4SjSF62O+iRXr7Q5S+3mBcV0syPmL0mUR1Fv6HpXWHDv?=
+ =?us-ascii?Q?m0dzTuFsE1+1f+8uXm1EjjNBhKVl1N/5paYIsAg76Gk4R2m9S2utepmyC6Zc?=
+ =?us-ascii?Q?rlVBXYiYg7Qazy8stOZgS2hrb+308YrOnfMAseeYNzPFENFuAqGwmETfFdR6?=
+ =?us-ascii?Q?tZWTgncmcEpW4nLdoMyhMVxODXLEP8t3x2r2v9zL6dBJsSD759MAaw3Iso5q?=
+ =?us-ascii?Q?gtfGYBA4Lo1ceMxdAPjr5pl+G6xdljcpawbu0Pz2rzHLoEnz2TKbZ2gWm56p?=
+ =?us-ascii?Q?Ep7pnddtrdniBK85lXFf4RRWSdJrvqLMJ8cARyTMfQT/CM47nl/8PKqjDNY6?=
+ =?us-ascii?Q?AkkOb6cC6948GizZ0Qa5fPJwXQCBu86ZaTVL7rcaoXSMYFHi+L4ZXTt6DDK+?=
+ =?us-ascii?Q?Lqr9HKTrg5LXFmVGhbL41zHtO/SAuJjyVz0VkaLlt60ZV6FByqFquiA/C4sm?=
+ =?us-ascii?Q?cXh3rKgGGfsC8euQuQL01g7G6H1KJWdO/wIo07SqRswlqWNEGQC8mL3FBGzV?=
+ =?us-ascii?Q?nGUY3pzuDD7s0UJUlF6TldAXfP/5Np+MpPqztzeMNI52gcCRhnZk0h5L6LdM?=
+ =?us-ascii?Q?tehlOC3xj6a/hvvzZdRVxwqWGKbUn/SdbOkFEdZEM9IsN/Qb+J5hmYcK8M0w?=
+ =?us-ascii?Q?2wve86fQqOTIeaTH1MDTmdGMn0tkeX3QG3iqZ1jhkYZGbic5LCGWKChJtteR?=
+ =?us-ascii?Q?mAsLdR3cwkXLW0fVd5BDPJWhYKX485az8dC34AUD8Dzx+tjwI3K4dHyYIE/0?=
+ =?us-ascii?Q?sI1FTXPXDv8YYd6/PCCakP+NDgCIr/K1bfByvChcIGOAszmePx5dbcsN1z0u?=
+ =?us-ascii?Q?nDJA66M4CPkzYC4duwdJgTNFzM4ngmLjClF9BLrZcIh8c49NsupaAe6g/Mu7?=
+ =?us-ascii?Q?1D928hjAuq5TlAonZNEi0jo35QeDNJf0/vzO8skuBfWGrHReDNs9nQFKTJOb?=
+ =?us-ascii?Q?GdXmodkik1Y3yZF2p39oj2kGb8zfagJPXFuUVlJBbrtKjGagfZzh+OgdnwJe?=
+ =?us-ascii?Q?+M70ttD9BWr7HJpKIbJmxV7uLY2a78aVKiQxytBms4rqBhh5cSEb4wco3LYN?=
+ =?us-ascii?Q?n9QHRbHIstenHEpKyPwb2DwBAR9eiDjAwpmUpXpFbhZYFCjhsh7eSKt0K+6T?=
+ =?us-ascii?Q?eLMzm/ckwxW1K2ihRzUb6KsSX/ia74rtT+VNyWv05nV9VQrUS2O4d9gRraqE?=
+ =?us-ascii?Q?Je9MIrFCVGfRgyflIN0LmEHj6yBEQIH4qNRh3bbDRrPBWKwPFBV6NXBQyIdP?=
+ =?us-ascii?Q?dSUCAfSq/qVoIvzAxRf5ZDBiF8ih+PfAsMjc007bSBe+JUETgUZciRTXU3J9?=
+ =?us-ascii?Q?UxgiqDpn+zooPei9p6KMr0qiwOOm9Qejpj8Vif3Socgnmgqdu39wlkQ+/tqz?=
+ =?us-ascii?Q?GmIeaRjuqy15Mh4smCr6f8XiIn7i?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR12MB7726.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WvlEG8pXb7TgActbR6oRY3kf14HIEwsWY6q9TamfAxpVk3JyXyqcOfUvhFW8?=
+ =?us-ascii?Q?e8bJ19oTrWWxlM0PsJv2k8yqImMHuM/3jEiuAup5D4OPATtn5GziS6kiSONm?=
+ =?us-ascii?Q?4NItOROe+YHJTbJturBI0/7j9R0HlX3qrpL3vPkWxRQYQctoOESpXtXK6hhW?=
+ =?us-ascii?Q?ypdBEPkC/2pArMgMJcO5BGR5BwkrB+A7/9SiuQyjo58jFQpICxAFK2GSqBoM?=
+ =?us-ascii?Q?GyC5c1QrNauKAvQSM23yIEM1Xplme5bj/ZQ+Tfe7SSWeBQySW3egTxdxI0ct?=
+ =?us-ascii?Q?0W+gcLLwSvH8LEyW91y9UGhoYZGMVd2euLl3PUZ6mymHFyDtct917D6FsEmR?=
+ =?us-ascii?Q?hYMVqc9xZPpC3swEVXle07wNUvYwZQXikIUGidlKteRDUqim1gQjPmkEQp4j?=
+ =?us-ascii?Q?ospUtKyAi6oWUvnUfJpnaLohpI3qfY/OByd1dGCRubR3Dv4at1g5hY0Hnj83?=
+ =?us-ascii?Q?Uvp3kRWfVT9wobtGxpvpdc5c7uw8g5tPQ1LLhfnOZykXPZDLOHSod4rTk9k+?=
+ =?us-ascii?Q?QyAAgPOauI1zhS68wMBQ3ZP6lZDWIowrYnMTHDxb4J+wlPc2eaehD5UXqDFt?=
+ =?us-ascii?Q?ceRLYUSDWTjVO7K/ESXjoGA+gM23FIhJPwf1kQdS2QALmhCE+2labIyytuF5?=
+ =?us-ascii?Q?54e+51Pl6k/RqMBQedJ0KtZo7aiM4VMrtL6t7dsawGVyhFpK/EgdrScT25Qr?=
+ =?us-ascii?Q?1aWD8o5R41kJwX3fTWGUBwZHcuEJX1y1vO1BQjJDwTKpY+wzrt58lGlyExKN?=
+ =?us-ascii?Q?BBzLLTZyRLdicCrNqnY0O1wyy4PosIWVfpCafFCzRvwgr1MVq+ElRr3MicIO?=
+ =?us-ascii?Q?gujxaoJecY65ozfEM1fd2npubS0Qm+EwiNUww5laKo028e2KlyrxoPAlu+vv?=
+ =?us-ascii?Q?fp2OXwerBTLZAmaj8NldRLpiJZYjHjLB4c88o84NdSVB31hiBP6AiKv7HDR4?=
+ =?us-ascii?Q?pm+cjFwfH/7xOeybivv7Y0Kpp67YEKtwwkRZx9K19cwK6HmdoAbSJe9tvbFh?=
+ =?us-ascii?Q?81WMCHutTWOW4DMKwhM3D/xz0GhiiUH/vD/lmHYBIPR+JKk1FCSUbfWsSVCj?=
+ =?us-ascii?Q?KtzNmT5e2cbbtsmCl7f4ZpaSeDfmtW/GDcgPGjLfyhucqDnMWxHQxDROie6E?=
+ =?us-ascii?Q?SyZwzmiDFeaKCGjq21dKbk0KNxqbFiTaEH0asrYEClrpiCLXGLK+OJt2/eua?=
+ =?us-ascii?Q?n1eoR2PwXi56s7UYIsnMJOEB91EpCQj6a0p3qDP4hVQ5ZYcvCOVQcV7XvnKR?=
+ =?us-ascii?Q?/AXEygS8cAmLQ6vblfdJXiZY/ILCFypu7apmOJ1IlnQYmInr6lgGJrcrjD//?=
+ =?us-ascii?Q?qj+mdlmokieCvpeDVFm0DFKZih6fPvU6Nmlnf4ekWbDCE0qlCEVO+7vps5lJ?=
+ =?us-ascii?Q?bY07Yeziy3rhpeSX1whdaq31H+wP20c15hXY//cpROnBHWVdlFjgfpIWcml9?=
+ =?us-ascii?Q?N7O0pufOG0ocJqpvC/Dv2hOT9lm/Mx61yY8Z6Rh98UcmcN9ojKCDYm8TDhjl?=
+ =?us-ascii?Q?qMehWjhXSWTc3xi1h6uEzw4lbOUkfNrfm5XUpcPxnLuKNWVSeHDwLgPxotnc?=
+ =?us-ascii?Q?3rZBCJU3UxhniKEoBU5ENUc5U/JkY90xACENShpj?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 139bdb55-16f0-4482-dcce-08dd57a85ee5
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR12MB7726.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Feb 2025 03:31:21.7670
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: VhU/0TIQzfpHPoSDuoOO5ka4oudI/P93YSZqrXt6yNFLvPA6gVI1N9lyIZSdDfZ4UZkpaWi/lDwvYuhuELxa6w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB7991
+X-Spam-Status: No, score=-0.4 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+	SPF_HELO_PASS,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Vaibhav,
+Main updates since v8:
 
-kernel test robot noticed the following build warnings:
+ - Fixed reading of bad pgmap in migrate_vma_collect_pmd() as reported/fixed
+   by Balbir.
 
-[auto build test WARNING on powerpc/fixes]
-[also build test WARNING on kvm/queue kvm/next powerpc/topic/ppc-kvm linus/master v6.14-rc4 next-20250227]
-[cannot apply to powerpc/next kvm/linux-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+ - Fixed bad warnings generated in free_zone_device_folio() when pgmap->ops
+   isn't defined, even if it's not required to be. As reported by Gerald.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Vaibhav-Jain/powerpc-Document-APIv2-KVM-hcall-spec-for-Hostwide-counters/20250224-211903
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes
-patch link:    https://lore.kernel.org/r/20250224131522.77104-5-vaibhav%40linux.ibm.com
-patch subject: [PATCH v4 4/6] kvm powerpc/book3s-apiv2: Introduce kvm-hv specific PMU
-config: powerpc-kismet-CONFIG_KVM_BOOK3S_HV_PMU-CONFIG_KVM_BOOK3S_64_HV-0-0 (https://download.01.org/0day-ci/archive/20250228/202502280218.Jdd4jjlZ-lkp@intel.com/config)
-reproduce: (https://download.01.org/0day-ci/archive/20250228/202502280218.Jdd4jjlZ-lkp@intel.com/reproduce)
+Main updates since v7:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202502280218.Jdd4jjlZ-lkp@intel.com/
+ - Rebased on current akpm/mm-unstable in order to fix conflicts with
+   https://lore.kernel.org/linux-mm/20241216155408.8102-1-willy@infradead.org/
+   as requested by Andrew.
 
-kismet warnings: (new ones prefixed by >>)
->> kismet: WARNING: unmet direct dependencies detected for KVM_BOOK3S_HV_PMU when selected by KVM_BOOK3S_64_HV
-   WARNING: unmet direct dependencies detected for KVM_BOOK3S_HV_PMU
-     Depends on [n]: VIRTUALIZATION [=y] && KVM_BOOK3S_64_HV [=y] && HV_PERF_CTRS [=n]
-     Selected by [y]:
-     - KVM_BOOK3S_64_HV [=y] && VIRTUALIZATION [=y] && KVM_BOOK3S_64 [=y] && PPC_POWERNV [=y]
+ - Collected Ack'ed/Reviewed by
 
+ - Cleaned up a unnecessary and confusing assignment to pgtable.
+
+ - Other minor reworks suggested by David Hildenbrand
+
+Main updates since v6:
+
+ - Clean ups and fixes based on feedback from David and Dan.
+
+ - Rebased from next-20241216 to v6.14-rc1. No conflicts.
+
+ - Dropped the PTE bit removals and clean-ups - will post this as a
+   separate series to be merged after this one as Dan wanted it split
+   up more and this series is already too big.
+
+Main updates since v5:
+
+ - Reworked patch 1 based on Dan's feedback.
+
+ - Fixed build issues on PPC and when CONFIG_PGTABLE_HAS_HUGE_LEAVES
+   is no defined.
+
+ - Minor comment formatting and documentation fixes.
+
+ - Remove PTE_DEVMAP definitions from Loongarch which were added since
+   this series was initially written.
+
+Main updates since v4:
+
+ - Removed most of the devdax/fsdax checks in fs/proc/task_mmu.c. This
+   means smaps/pagemap may contain DAX pages.
+
+ - Fixed rmap accounting of PUD mapped pages.
+
+ - Minor code clean-ups.
+
+Main updates since v3:
+
+ - Rebased onto next-20241216. The rebase wasn't too difficult, but in
+   the interests of getting this out sooner for Andrew to look at as
+   requested by him I have yet to extensively build/run test this
+   version of the series.
+
+ - Fixed a bunch of build breakages reported by John Hubbard and the
+   kernel test robot due to various combinations of CONFIG options.
+
+ - Split the rmap changes into a separate patch as suggested by David H.
+
+ - Reworded the description for the P2PDMA change.
+
+Main updates since v2:
+
+ - Rename the DAX specific dax_insert_XXX functions to vmf_insert_XXX
+   and have them pass the vmf struct.
+
+ - Separate out the device DAX changes.
+
+ - Restore the page share mapping counting and associated warnings.
+
+ - Rework truncate to require file-systems to have previously called
+   dax_break_layout() to remove the address space mapping for a
+   page. This found several bugs which are fixed by the first half of
+   the series. The motivation for this was initially to allow the FS
+   DAX page-cache mappings to hold a reference on the page.
+
+   However that turned out to be a dead-end (see the comments on patch
+   21), but it found several bugs and I think overall it is an
+   improvement so I have left it here.
+
+Device and FS DAX pages have always maintained their own page
+reference counts without following the normal rules for page reference
+counting. In particular pages are considered free when the refcount
+hits one rather than zero and refcounts are not added when mapping the
+page.
+
+Tracking this requires special PTE bits (PTE_DEVMAP) and a secondary
+mechanism for allowing GUP to hold references on the page (see
+get_dev_pagemap). However there doesn't seem to be any reason why FS
+DAX pages need their own reference counting scheme.
+
+By treating the refcounts on these pages the same way as normal pages
+we can remove a lot of special checks. In particular pXd_trans_huge()
+becomes the same as pXd_leaf(), although I haven't made that change
+here. It also frees up a valuable SW define PTE bit on architectures
+that have devmap PTE bits defined.
+
+It also almost certainly allows further clean-up of the devmap managed
+functions, but I have left that as a future improvment. It also
+enables support for compound ZONE_DEVICE pages which is one of my
+primary motivators for doing this work.
+
+Signed-off-by: Alistair Popple <apopple@nvidia.com>
+Tested-by: Alison Schofield <alison.schofield@intel.com>
+
+---
+
+Cc: lina@asahilina.net
+Cc: zhang.lyra@gmail.com
+Cc: gerald.schaefer@linux.ibm.com
+Cc: dan.j.williams@intel.com
+Cc: vishal.l.verma@intel.com
+Cc: dave.jiang@intel.com
+Cc: logang@deltatee.com
+Cc: bhelgaas@google.com
+Cc: jack@suse.cz
+Cc: jgg@ziepe.ca
+Cc: catalin.marinas@arm.com
+Cc: will@kernel.org
+Cc: mpe@ellerman.id.au
+Cc: npiggin@gmail.com
+Cc: dave.hansen@linux.intel.com
+Cc: ira.weiny@intel.com
+Cc: willy@infradead.org
+Cc: djwong@kernel.org
+Cc: tytso@mit.edu
+Cc: linmiaohe@huawei.com
+Cc: david@redhat.com
+Cc: peterx@redhat.com
+Cc: linux-doc@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: nvdimm@lists.linux.dev
+Cc: linux-cxl@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-ext4@vger.kernel.org
+Cc: linux-xfs@vger.kernel.org
+Cc: jhubbard@nvidia.com
+Cc: hch@lst.de
+Cc: david@fromorbit.com
+Cc: chenhuacai@kernel.org
+Cc: kernel@xen0n.name
+Cc: loongarch@lists.linux.dev
+
+Alistair Popple (19):
+  fuse: Fix dax truncate/punch_hole fault path
+  fs/dax: Return unmapped busy pages from dax_layout_busy_page_range()
+  fs/dax: Don't skip locked entries when scanning entries
+  fs/dax: Refactor wait for dax idle page
+  fs/dax: Create a common implementation to break DAX layouts
+  fs/dax: Always remove DAX page-cache entries when breaking layouts
+  fs/dax: Ensure all pages are idle prior to filesystem unmount
+  fs/dax: Remove PAGE_MAPPING_DAX_SHARED mapping flag
+  mm/gup: Remove redundant check for PCI P2PDMA page
+  mm/mm_init: Move p2pdma page refcount initialisation to p2pdma
+  mm: Allow compound zone device pages
+  mm/memory: Enhance insert_page_into_pte_locked() to create writable mappings
+  mm/memory: Add vmf_insert_page_mkwrite()
+  mm/rmap: Add support for PUD sized mappings to rmap
+  mm/huge_memory: Add vmf_insert_folio_pud()
+  mm/huge_memory: Add vmf_insert_folio_pmd()
+  mm/gup: Don't allow FOLL_LONGTERM pinning of FS DAX pages
+  fs/dax: Properly refcount fs dax pages
+  device/dax: Properly refcount device dax pages when mapping
+
+Dan Williams (1):
+  dcssblk: Mark DAX broken, remove FS_DAX_LIMITED support
+
+ Documentation/filesystems/dax.rst      |   1 +-
+ drivers/dax/device.c                   |  15 +-
+ drivers/gpu/drm/nouveau/nouveau_dmem.c |   3 +-
+ drivers/nvdimm/pmem.c                  |   4 +-
+ drivers/pci/p2pdma.c                   |  19 +-
+ drivers/s390/block/Kconfig             |  12 +-
+ drivers/s390/block/dcssblk.c           |  27 +-
+ fs/dax.c                               | 365 +++++++++++++++++++-------
+ fs/ext4/inode.c                        |  18 +-
+ fs/fuse/dax.c                          |  30 +--
+ fs/fuse/dir.c                          |   2 +-
+ fs/fuse/file.c                         |   4 +-
+ fs/fuse/virtio_fs.c                    |   3 +-
+ fs/xfs/xfs_inode.c                     |  31 +--
+ fs/xfs/xfs_inode.h                     |   2 +-
+ fs/xfs/xfs_super.c                     |  12 +-
+ include/linux/dax.h                    |  28 ++-
+ include/linux/huge_mm.h                |   4 +-
+ include/linux/memremap.h               |  17 +-
+ include/linux/migrate.h                |   4 +-
+ include/linux/mm.h                     |  36 +---
+ include/linux/mm_types.h               |  16 +-
+ include/linux/mmzone.h                 |  12 +-
+ include/linux/page-flags.h             |   6 +-
+ include/linux/rmap.h                   |  15 +-
+ lib/test_hmm.c                         |   3 +-
+ mm/gup.c                               |  14 +-
+ mm/hmm.c                               |   2 +-
+ mm/huge_memory.c                       | 170 ++++++++++--
+ mm/internal.h                          |   2 +-
+ mm/memory-failure.c                    |   6 +-
+ mm/memory.c                            |  69 ++++-
+ mm/memremap.c                          |  60 ++--
+ mm/migrate_device.c                    |  18 +-
+ mm/mlock.c                             |   2 +-
+ mm/mm_init.c                           |  23 +-
+ mm/rmap.c                              |  67 ++++-
+ mm/swap.c                              |   2 +-
+ mm/truncate.c                          |  16 +-
+ 39 files changed, 810 insertions(+), 330 deletions(-)
+
+base-commit: b2a64caeafad6e37df1c68f878bfdd06ff14f4ec
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+git-series 0.9.1
 
