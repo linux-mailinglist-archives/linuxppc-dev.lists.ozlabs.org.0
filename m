@@ -1,53 +1,101 @@
-Return-Path: <linuxppc-dev+bounces-6573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6574-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48E3EA49B0B
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 14:55:10 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A06D6A49B14
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 14:56:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z48pz6zvzz3btZ;
-	Sat,  1 Mar 2025 00:55:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z48rF1PzGz3bsZ;
+	Sat,  1 Mar 2025 00:56:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740750907;
-	cv=none; b=Tir3uE+vBye2vMTIwA/s0PRi18wXxvhGsJUSwN+NjYD5uFIZQDCB7aPKHdyLI1PPuLTZKqLRKDM4df60VkBBEZVD9M+pflPL1m4U8+QRSu5hqaX41P45ThR8gF8ooPPsmuURru9NL/gvUecYmFfFYiMNjoIZg8Ra+dWabvBxyP/OdPVvmOairnKandxSj4sNnKnXD/6VGcKJjacfzj7er83HLO5Ha2rwh42btQFbVv+QkQZl9V9CYdydpC8eexUHkNYnTzmlQD6wPRpPx5i5rtgYNszTVS5lBiOAuVSxfbZYIpeaCMyS+K818X/o4YWz1kin3niyvWWaym6dIP1oow==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04::f03c:95ff:fe5e:7468"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740750973;
+	cv=none; b=ejkrDwcAknzFWmouhHHAc1LNHCt6JExG7yzi4Q9bXyvWd/nWVfv/gd+Xuik33GhYzNkAYMGUHl4vPrvzTd7Nx92Xo8U/ppUJ5D3gW08e4tU3QQiCMAuGP0vyOKDXsfdogZfekiGpp6Da9arKqCfNiFQm4LUL/jXLC1IXdg87dbaF4SbK63kcWOtn6Qr2t3HoN6qenGEOUPVAFLNKy6k0mVvO5675Y/8KKOwnYyrr6d5prk9tp5TdQI118qqd9mJiAb0/XnYK8aF+RYmGppgC9QXlpafAxUo+DLIl27oyCYDkGb5R1Fg0T4gFhCdP5jZSpn8YYLlgX0SUBPt96M+qCQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740750907; c=relaxed/relaxed;
-	bh=KXYQggls7iQ/CGxbgV/nuZrfJBX6N+DsglBC9T4cwg4=;
+	t=1740750973; c=relaxed/relaxed;
+	bh=K5dC4M0uKWanXMtJeRUcRRbAkI8ByFAAwVDEOW9S+3k=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BY+g/zW1aB8/NtjqOao740eNTcVqNb1O50uxJB7yLIiJDP7k7SObTVhaP1kauWFb87YxVdsu+tK5lOJHKBeM++QL2mZPzKAjbLgBTe0SNeDzBfz0GXvxfGUAlrhwhBTVnazRei9Nb8Bw+5SE8qG+8G8zH2UAiBF3ct4lhf26Nd0ZcajGY9mdEFXMO9LoHtWPQzKm0w8bAb3iapKYoo3YEE0z8moGkR6jrweT55y74KECAVbuhOUaJ8w9dXZwmP0IqVVG1TfSH24EsN4Lwpe7Qf9IDBs2jwPBT0MDupWWpMK+qr29AOpRTFn792Hh0k0ikNce1f1tNS/UlN28R5pBHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=sudeep.holla@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=sudeep.holla@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z48pz17prz3btX
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Mar 2025 00:55:07 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4DACD1688;
-	Fri, 28 Feb 2025 05:54:51 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DF7283F6A8;
-	Fri, 28 Feb 2025 05:54:31 -0800 (PST)
-Date: Fri, 28 Feb 2025 13:54:29 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Yicong Yang <yangyicong@huawei.com>
-Cc: <catalin.marinas@arm.com>, <will@kernel.org>, <tglx@linutronix.de>,
-	Sudeep Holla <sudeep.holla@arm.com>, <peterz@infradead.org>,
-	<mpe@ellerman.id.au>, <linux-arm-kernel@lists.infradead.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<pierre.gondois@arm.com>, <dietmar.eggemann@arm.com>,
-	<linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
-	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>,
-	<rafael@kernel.org>, <jonathan.cameron@huawei.com>,
-	<prime.zeng@hisilicon.com>, <linuxarm@huawei.com>,
-	<yangyicong@hisilicon.com>, <xuwei5@huawei.com>,
-	<guohanjun@huawei.com>, <sshegde@linux.ibm.com>
-Subject: Re: [PATCH v11 2/4] arch_topology: Support SMT control for OF based
- system
-Message-ID: <Z8HAFftf7rAdc_MC@bogus>
-References: <20250218141018.18082-1-yangyicong@huawei.com>
- <20250218141018.18082-3-yangyicong@huawei.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GmxlvJebYT2/AvRyt0MeJmCSF8XBmUGE05d90+Gmp2GLOlQrbERWkqn3OzTlakwb6FhOQ9P0UoEig6PfbpqKsVykufjImN4SzF+/Apu3EVxyadn1c8NC2IYpr2hBvnQpinHdxalvKyDuK/BbInwHU/ztdgPUFdkVLtvsrfUIHCzJIXPySmaxn5sKIpvP7j73eewiySix71qaarQQ6l/sRPdlrVRv4zIz4ExFSz7pO1X+9LK9hTOkQczebdR68mgCdYAueP7STH2MAvd8f7CSWAq/SCuMyoZqUx7UI6816Ae/5G8myHtt1NQC49AioVgqJbBy25U+geYKggQLk3NiGA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NnH7vM73; dkim-atps=neutral; spf=pass (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=NnH7vM73;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04::f03c:95ff:fe5e:7468])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z48rC2gHjz3bsQ
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Mar 2025 00:56:11 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 05E9A61F51;
+	Fri, 28 Feb 2025 13:56:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8EA8C4CEE2;
+	Fri, 28 Feb 2025 13:55:48 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1740750968;
+	bh=1IRowyiOxlD3aJXg1mzDgOLSKDvuTpO5rwTj3G6RUt0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NnH7vM73Zjpr8yZOH5QgfgQiSw0pmBWJwyV6oH4lnUx6KcNNLgBYYJulfb/SOKw4i
+	 Zkm3msW661FidfCoi/ar4s+MKouda8UuOKQJVozVEXvAvSibmI7k9WxUPFNYkImrpm
+	 nMJqrfmWsggXRbny/dSvcLd6O/w5mYI7U35gabE5OMAnP119A+B9Z9gcS1udwYaPDT
+	 haSivt5w98I2lC6hpiCjEl3HQRzpovHqj3M+6AQ/d9NOf1QW57gfgkHOWFS4Y8Iwt4
+	 dVExS2M99VzccMzDPnxcN2Fshmin/V/WHUi6c8awMapcLOMc4QlOWwdQMyM3HZ2OR4
+	 n0uklzJCb+JTQ==
+Date: Fri, 28 Feb 2025 15:55:38 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+	Luis Chamberlain <mcgrof@kernel.org>, Dev Jain <dev.jain@arm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+	Brian Cain <bcain@quicinc.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+	Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>, Oleg Nesterov <oleg@redhat.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Russell King <linux@armlinux.org.uk>, Song Liu <song@kernel.org>,
+	Stafford Horne <shorne@gmail.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Vineet Gupta <vgupta@kernel.org>, Will Deacon <will@kernel.org>,
+	bpf@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linux-mips@vger.kernel.org, linux-mm@kvack.org,
+	linux-modules@vger.kernel.org, linux-openrisc@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+	linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-trace-kernel@vger.kernel.org, linux-um@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org, loongarch@lists.linux.dev,
+	sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH v7 7/8] execmem: add support for cache of large ROX pages
+Message-ID: <Z8HAWu4zQFeg19KR@kernel.org>
+References: <20241023162711.2579610-1-rppt@kernel.org>
+ <20241023162711.2579610-8-rppt@kernel.org>
+ <16863478-2195-435e-a899-559df097bc59@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -62,102 +110,122 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250218141018.18082-3-yangyicong@huawei.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <16863478-2195-435e-a899-559df097bc59@arm.com>
+X-Spam-Status: No, score=0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_XBL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Feb 18, 2025 at 10:10:16PM +0800, Yicong Yang wrote:
-> From: Yicong Yang <yangyicong@hisilicon.com>
-> 
-> On building the topology from the devicetree, we've already
-> gotten the SMT thread number of each core. Update the largest
-> SMT thread number and enable the SMT control by the end of
-> topology parsing.
-> 
-> The core's SMT control provides two interface to the users [1]:
-> 1) enable/disable SMT by writing on/off
-> 2) enable/disable SMT by writing thread number 1/max_thread_number
-> 
-> If a system have more than one SMT thread number the 2) may
-> not handle it well, since there're multiple thread numbers in the
-> system and 2) only accept 1/max_thread_number. So issue a warning
-> to notify the users if such system detected.
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
-> 
-> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
-> ---
->  drivers/base/arch_topology.c | 27 +++++++++++++++++++++++++++
->  1 file changed, 27 insertions(+)
-> 
-> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
-> index 3ebe77566788..23f425a9d77a 100644
-> --- a/drivers/base/arch_topology.c
-> +++ b/drivers/base/arch_topology.c
-> @@ -11,6 +11,7 @@
->  #include <linux/cleanup.h>
->  #include <linux/cpu.h>
->  #include <linux/cpufreq.h>
-> +#include <linux/cpu_smt.h>
->  #include <linux/device.h>
->  #include <linux/of.h>
->  #include <linux/slab.h>
-> @@ -506,6 +507,10 @@ core_initcall(free_raw_capacity);
->  #endif
->  
->  #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
-> +
-> +/* Maximum SMT thread number detected used to enable the SMT control */
-> +static unsigned int max_smt_thread_num;
-> +
->  /*
->   * This function returns the logic cpu number of the node.
->   * There are basically three kinds of return values:
-> @@ -565,6 +570,16 @@ static int __init parse_core(struct device_node *core, int package_id,
->  		i++;
->  	} while (1);
->  
-> +	/*
-> +	 * If max_smt_thread_num has been initialized and doesn't match
-> +	 * the thread number of this entry, then the system has
-> +	 * heterogeneous SMT topology.
-> +	 */
-> +	if (max_smt_thread_num && max_smt_thread_num != i)
-> +		pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
-> +
+Hi Ryan,
 
-May be we need to make it more conditional as we may have to support
-systems with few cores that are single threaded ? I think Dietmar's
-comment is about that.
+On Thu, Feb 27, 2025 at 11:13:29AM +0000, Ryan Roberts wrote:
+> Hi Mike,
+> 
+> Drive by review comments below...
+> 
+> 
+> On 23/10/2024 17:27, Mike Rapoport wrote:
+> > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > 
+> > Using large pages to map text areas reduces iTLB pressure and improves
+> > performance.
+> > 
+> > Extend execmem_alloc() with an ability to use huge pages with ROX
+> > permissions as a cache for smaller allocations.
+> > 
+> > To populate the cache, a writable large page is allocated from vmalloc with
+> > VM_ALLOW_HUGE_VMAP, filled with invalid instructions and then remapped as
+> > ROX.
+> > 
+> > The direct map alias of that large page is exculded from the direct map.
+> > 
+> > Portions of that large page are handed out to execmem_alloc() callers
+> > without any changes to the permissions.
+> > 
+> > When the memory is freed with execmem_free() it is invalidated again so
+> > that it won't contain stale instructions.
+> > 
+> > An architecture has to implement execmem_fill_trapping_insns() callback
+> > and select ARCH_HAS_EXECMEM_ROX configuration option to be able to use
+> > the ROX cache.
+> > 
+> > The cache is enabled on per-range basis when an architecture sets
+> > EXECMEM_ROX_CACHE flag in definition of an execmem_range.
+> > 
+> > Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> > Reviewed-by: Luis Chamberlain <mcgrof@kernel.org>
+> > Tested-by: kdevops <kdevops@lists.linux.dev>
+> > ---
+> 
+> [...]
+> 
+> > +
+> > +static int execmem_cache_populate(struct execmem_range *range, size_t size)
+> > +{
+> > +	unsigned long vm_flags = VM_ALLOW_HUGE_VMAP;
+> > +	unsigned long start, end;
+> > +	struct vm_struct *vm;
+> > +	size_t alloc_size;
+> > +	int err = -ENOMEM;
+> > +	void *p;
+> > +
+> > +	alloc_size = round_up(size, PMD_SIZE);
+> > +	p = execmem_vmalloc(range, alloc_size, PAGE_KERNEL, vm_flags);
+> 
+> Shouldn't this be passing PAGE_KERNEL_ROX? Otherwise I don't see how the
+> allocated memory is ROX? I don't see any call below where you change the permission.
 
-> +	max_smt_thread_num = max_t(unsigned int, max_smt_thread_num, i);
-> +
->  	cpu = get_cpu_for_node(core);
->  	if (cpu >= 0) {
->  		if (!leaf) {
-> @@ -677,6 +692,18 @@ static int __init parse_socket(struct device_node *socket)
->  	if (!has_socket)
->  		ret = parse_cluster(socket, 0, -1, 0);
->  
-> +	/*
-> +	 * Notify the CPU framework of the SMT support. Initialize the
-> +	 * max_smt_thread_num to 1 if no SMT support detected or failed
-> +	 * to parse the topology. A thread number of 1 can be handled by
-> +	 * the framework so we don't need to check max_smt_thread_num to
-> +	 * see we support SMT or not.
-> +	 */
-> +	if (!max_smt_thread_num || ret)
-> +		max_smt_thread_num = 1;
-> +
+The memory is allocated RW, filled with invalid instructions, unammped in
+vmalloc space, removed from the direct map and then mapped as ROX in
+vmalloc address space.
+ 
+> Given the range has the pgprot in it, you could just drop passing the pgprot
+> explicitly here and have execmem_vmalloc() use range->pgprot directly?
 
-For the failed parsing of topology, reset_cpu_topology() gets called.
-I suggest resetting max_smt_thread_num to 1 belongs there.
+Here range->prprot and the prot passed to vmalloc are different.
+ 
+> Thanks,
+> Ryan
+> 
+> > +	if (!p)
+> > +		return err;
+> > +
+> > +	vm = find_vm_area(p);
+> > +	if (!vm)
+> > +		goto err_free_mem;
+> > +
+> > +	/* fill memory with instructions that will trap */
+> > +	execmem_fill_trapping_insns(p, alloc_size, /* writable = */ true);
+> > +
+> > +	start = (unsigned long)p;
+> > +	end = start + alloc_size;
+> > +
+> > +	vunmap_range(start, end);
+> > +
+> > +	err = execmem_set_direct_map_valid(vm, false);
+> > +	if (err)
+> > +		goto err_free_mem;
+> > +
+> > +	err = vmap_pages_range_noflush(start, end, range->pgprot, vm->pages,
+> > +				       PMD_SHIFT);
+> > +	if (err)
+> > +		goto err_free_mem;
+> > +
+> > +	err = execmem_cache_add(p, alloc_size);
+> > +	if (err)
+> > +		goto err_free_mem;
+> > +
+> > +	return 0;
+> > +
+> > +err_free_mem:
+> > +	vfree(p);
+> > +	return err;
+> > +}
+> 
+> [...]
+> 
 
-And if you start with max_smt_thread_num, we don't need to update it to
-1 explicitly here. So I would like to get rid of above check completely.
-
---
-Regards,
-Sudeep
+-- 
+Sincerely yours,
+Mike.
 
