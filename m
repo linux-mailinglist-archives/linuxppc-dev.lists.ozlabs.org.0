@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-6577-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6578-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF4B1A4A02A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 18:20:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E1DE6A4A0C2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 28 Feb 2025 18:46:25 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4FN51H4Bz3brR;
-	Sat,  1 Mar 2025 04:20:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4Fxp1bZlz3bsm;
+	Sat,  1 Mar 2025 04:46:22 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04::f03c:95ff:fe5e:7468"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740763237;
-	cv=none; b=ca0lwN0BNmdhjCBuSFhTpgXQ4bm83ddUmhSHxi4q2Gb+o2ofqonzC8VOBUy+3akOTHb1ZPNk+L75ivQ+S1knb6q7TVS1+SthhJInUEnwffokvF31nqiudo0qRo3YFUxg7hMMp3l7gF/pKcM81POYpjvgcOeDGyfCB6Q7WuSQIE+WTrT7HyOggG0okVp6isesttrZWEV1+NY8mvffqxilQ8Id34enx+apZkZFod7gdpgn0oXtka21P2v50t26JwuteInoWk9ziCX2fwsjvF0kX64MPRDvsn+75wY8ddVXBp6DMq1wgXRvdWGGhLdTtoVDnjHCKYkWRzfOmymfLsPnqA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740764782;
+	cv=none; b=N2XyFY56sgxvfFGA2ygsMhV5ZpTOHl2hKdvy532Z73Md76GU8Z5pGqlYEimCoexQ/lFQyWohd81NgQjU2Jqwn8e3cNlD0U6s1KX1Kjfd+mNEmUubh7EkluEHO8sMN4XE7caM+NLO5Nqo7jAy1dE5f+RIO8kOTIcAAZcplOahvH37oAk2525w+wN8p1/dsRlnmUagrBzajvyBp4n6cgkFBZ2F3m7wCrgsueXFlVSk7tkqXzYeR7H4YkjQiCKUHA+1+pecD36v+sZ9QKfCrhVNBakahM2m2YUNtZvVdG5CMWXc5gSUGQLRnPeyQSmUqV9fGFdA/W83POFAnOc4VvUhEA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740763237; c=relaxed/relaxed;
-	bh=CGQcVRwFuirPyfnGMh5tc+DKMPg4EtRPDaHtIqeTFQk=;
+	t=1740764782; c=relaxed/relaxed;
+	bh=4Sdh3Tm5/FXaDLnZuBzXHN7eaYLYDv6a0scCcvv6Y/Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=omQbzaQw1ScJ6E6UlKt0QADhLBRKYx28wUYKRTaZ9YLp3c+MBaNnmRVBX1aT6kaOoZshIhZxDIBnrTCv3tHZFO1yakMsh/X2wVw5W3p5im+SCkZB1bvJ93xjGtX20lJO5yFsun/zf2YDtT72oP/MtsG3FR0qCufzVkxAVsZ0rqw3x/pT/Ow5AebCdTkjHyeoePeccvO5zX7gb+T3iYTsuystcwzDY2AZsF4SiTQZP5wfvycW+PuoA5qaofd9jbPP59BE87m4UPu7dMsvEqiChT4VlFUiHTMKf6jBzygQ1aHeSI65hHKyzYXfScIm9AzKxusWlWXLL5FpUlPNxoZraw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OtFwe0hG; dkim-atps=neutral; spf=pass (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=P7+mjRbeVpWBn9m9RQVn6Uz5TuJCgAMG4h7hS3p6gE35PjPbQJCXRd93CqmyBm1fRMcRoiRc+DmP5bFk/zJUvGuH3XD6GtkzSKCGp+uXNnXWHJj9iSQ9zuxgafxhcgXymbDDy+lAO/ZkRYbAZinuWdlzqQEXjuk/obSXGe2qnary631njeXsPrVHPFuZIDTCaVGqE+xrlpSC/jveU7BVWh9CWjOSpHK3t4fu7/kzmKnq2mIgEFBWt5ycqaZHMSu6JdLEEzbsqtLXE4WYuRnyFWFopCJ5w4b6HuYkfW4M/BwH2jz1+X2FrO08AiJ5DamS2mDciv1Elp2qD9UI55ajMg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hlrBtcqS; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=OtFwe0hG;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hlrBtcqS;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04::f03c:95ff:fe5e:7468])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4FN41Hx6z3bm3
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Mar 2025 04:20:36 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4Fxn3fPWz3bsP
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  1 Mar 2025 04:46:21 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id ADEDB61FAB;
-	Fri, 28 Feb 2025 17:20:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8553C4CED6;
-	Fri, 28 Feb 2025 17:20:32 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id E5BD35C6363;
+	Fri, 28 Feb 2025 17:44:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7123AC4CED6;
+	Fri, 28 Feb 2025 17:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740763232;
-	bh=lbId641pLt0nD6Sl9SeGqbylnJgYsHkSPQi/Fyz3UyE=;
+	s=k20201202; t=1740764778;
+	bh=DLV7axteULbZaaTMbZ0+lYVh+GxofeyhMw8FK1VhIUg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=OtFwe0hGUoY/0RJlx+Aq7QYaX7Ay1qEz8ujSJnAtZP/rwKtzm2nbr/jTFAfopNYoP
-	 8N1CVQ09kPBRlKGlNsgcFAKpZqm3hpKi8v9d+aheuuCORmLQoV58wnTwZ8uerqPnpe
-	 WpppPbhMjCMXs0PkGeDcNy2FEfaG4bH0KUkdMlL1gBaTjm9Hzk2K+TT3+BAX12b6DZ
-	 XYmTv3H6ZQPrciBPX2E5wftLHIWpTsJD9Zaua/SWd2ZZEOBIYawjhfj5BSFVvaynL2
-	 jJRSCn2k5BEkpTOBQ0fUwajfjq0cQyvOEVJfIkjG8eVuXXvEkJgchTWCLMHSQKWQKr
-	 4BiT+Rhj3/fOw==
-Date: Fri, 28 Feb 2025 09:20:30 -0800
+	b=hlrBtcqS2iHOxk7/P06xwufWZBPQ3yIyBjjLEqELpFvcrRdCiLzkqJpxP36wl+P56
+	 CX/KOCAIveJq0g7KipRj80JwwzAcys9bK+bDGc4Vpy6WHhJqx6+BTtX0u5jB9fQMhU
+	 AljTEsS+lTAwqGnUL3jZK2JPvRKQyPt0lzhxvBMqbeWyPsjJHC9Mo/ym2J5kliN4ee
+	 8MlGXK2pn/Y3eI4fuknyibez3fpdYOzI10DDZRfR9X44ESgr07wV/HO3Cg6V39SvPd
+	 esGje86iCiMXRgW0Eb2xu5elXeuwCdeUYLKQIWUQ7islEGHumwGmT85nwLzZ/nuP+C
+	 ih1KzaYWEWGbw==
+Date: Fri, 28 Feb 2025 09:46:15 -0800
 From: Kees Cook <kees@kernel.org>
 To: Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc: Michael Kelley <mhklinux@outlook.com>,
@@ -52,7 +52,7 @@ Cc: Michael Kelley <mhklinux@outlook.com>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Subject: Re: [next-20250226]Build Failure
-Message-ID: <202502280920.583F8CD5F@keescook>
+Message-ID: <202502280943.6558CAE@keescook>
 References: <adbe8dd1-a725-4811-ae7e-76fe770cf096@linux.vnet.ibm.com>
  <20250227123804.5dd71cef@canb.auug.org.au>
  <14193c98-fb30-4ee8-a19a-fe85d1230d74@csgroup.eu>
@@ -74,8 +74,8 @@ Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 In-Reply-To: <c68287f7-ad00-46fc-a92e-06e0c9074139@csgroup.eu>
-X-Spam-Status: No, score=0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_XBL,SPF_HELO_NONE,
+X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
@@ -110,11 +110,27 @@ On Thu, Feb 27, 2025 at 03:15:35PM +0100, Christophe Leroy wrote:
 > > 
 > 
 > Looks like I get that problem only with GCC 8.5 and GCC 9.5.
-> 
+
+Okay, I've figured this out, and sent an updated patch:
+https://lore.kernel.org/lkml/20250228174130.it.875-kees@kernel.org
+
+This matches what you found, namely:
+
 > I don't get it with gcc 10.3 nor 11.3 nor 12.4 nor 13.2 nor 14.2
+
+These have both nonstring and __builtin_has_attribute()
+
 > I don't get it either with gcc 5.5 or 7.5
 
-I will investigate! Sorry for the trouble.
+These have neither.
+
+The problem was in the span of time when nonstring got introduced, but
+__builtin_has_attribute() hadn't been yet (GCC 8 and 9). I had accounted
+for having neither, but not for missing one. :|
+
+Thank you all for helping debug this!
+
+-Kees
 
 -- 
 Kees Cook
