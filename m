@@ -1,64 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-6592-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6593-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F37AA4AD6D
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Mar 2025 19:50:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFDF0A4AD85
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Mar 2025 20:34:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4vJn4j8yz2yyJ;
-	Sun,  2 Mar 2025 05:50:01 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4wHT0KRJz2yGM;
+	Sun,  2 Mar 2025 06:33:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740855001;
-	cv=none; b=kql8PM6t7aHluDYD4l2AW1sCTR4+ZzDKIDUqSigo6EBECbx6enXR38S1IEXmyke9bMZEe3JMIfpkSC1upkcamyr5AodPFqiS+wi2MXjc+oFGTtjJoE1fELpX/bObJ7GObFn2MKbEHVmLGx1z4U0Bl6pAVmZ+JMZCil/CK1RxM9aRXRXPLROhR98L+T88Sr5B5piPF9bPD/CVYrq4l6YhhNzoWUvkgn8MncO+wWJFicJeED2cQER9Rtc8FNGSUrocrsZBt2oDiqEoLK/zQS7n+de2JSblD3oNvsu0eQ4MqQHKZNTVokKR+c+DXE4YhcbD9C0S+K6FkJpi4us7AyLb4A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.17
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740857636;
+	cv=none; b=avQmpznW8Dg+Zp2Uk5Oz2OzouYLbDDTua/5Mtnb6f+odQv4bnU8WtCOzBfJ8IMlr9lDkxXjzdH+1eAtN59IKqV2otWmQXdsad4FtpOYQraJ8Yod98rnxkEOXDz6s3QlcRs60EaZhEeij7oeieN6iiOFlQEeOkc1p02p26s4dtU5ear6C5yF33YpaEVK/lF+9jpfOuJM3Ruvpnq/MAi2k3NzfzhDoSPLLKL2RnfCZo8PayrzJd97SfHLiDNrrT4MsVBI0aFzznkw6O3nTnobIZUkYIxtSy9hWlhFUNyeURGRU1UKGX9Gxj29n6+8xOq9hMPd79ZYmUNDxIHjJ6t2S0w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740855001; c=relaxed/relaxed;
-	bh=hm1qBip7ZdfjnEU5ZwBqqHatooTae60ucPvblgaQl78=;
+	t=1740857636; c=relaxed/relaxed;
+	bh=OWv17gsxtxjrqbPYZn+im3QnpeRgohNnDH8L/hw+Zkg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=To5cC2uFIwpR0ac3C/Xh3S6ErMlJ9OXwqglGl8hJNCpGbWn918WYlfrdd8LDW91eKoaiSOJqSY0SrYs5oco9jGp2Tojq8h/oCLl7PtrcAR8yQWGqEsj9uUpp/CByItqCj/+efMdIBYMWh2kGRWlcbnD5/6EBOUcl26Z+sADXpe5Kh27Q14lLHe1jAHYqpd2HXX+jiWpCUPMAeznS4B5GaMy/NDMLkZNdKAvvdrA4gtrnrd/LzytgWY+jfkQBhNumez0M1lERkko8EA0TdmCkBw73ig+aMB417Tl3PG07fN3nKBK+EGZxio+kQ22lSsHVxW52zN/l1lI3YRzO1HUUjA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GD4vkJNU; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=IVHr7wE2VWKlzB9U5vZUppK5PqyNgrK+TPJqdcvIWf+JKZRX/9RsZXCe90vZ+IoRbXOk5sKVI8E5yPeLOmivZ6ItnHD71P2ZZDURYs0XwSptK/IzD2GAEfUrhHS8AZzk6PqGd/aGpS+DTcAgO/LZLmo6VxKliS9huJ9NA37OKINAYzPY0rVL3TMQ8kUYc45bMN5MOD6rmC1MZmk7yLXkQFrBEcyW3+8fSwg9v5GbRQpah6S1rjA0DvEkHypfPJDgaypi95+6+521nfZ+qfEDRUaVpGAr3Wzvh7MwlxkrnLxFsMn82eO/i8Ju2++/1whbcA5GB+qDWYiaeA6J9UqQYw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J+z1JHTa; dkim-atps=neutral; spf=pass (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GD4vkJNU;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=J+z1JHTa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.17; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4vJl1DnNz2yt0
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Mar 2025 05:49:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4wHP4rnkz2xtt
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Mar 2025 06:33:51 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1740855000; x=1772391000;
+  t=1740857635; x=1772393635;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=IrOfUSH1K4Wm6o+tYeM48yWS/v2GxQKug3+bX3bY5FY=;
-  b=GD4vkJNUdJ+OSRdGyD9hSUiqC5yxJE2YgpDEIg4guUTEfSgQ9B6UNOjn
-   FdpnguCKyzJju+bnsHJusUAabw7kRZclK20ZtRrTXp3BbLg0E3oLjLoYU
-   T6nCx1z7h1qCePnoE6jI1iLy1HOOv/Yx2p8xLE2p9ugrd/zy62asCLf9y
-   mGAds1MBzkKi+oAgKcrxe+gnSsJMrolLVa31WAHamsoL1uu00Ir6P0YU5
-   c6NoIewATiz2oWq4UbRfi1hbDlwCt5iIkN8v2oesjDHFVhDnr++7G8D4i
-   4raxXkZRVhahzrPK7uqUt7C+D2hyvLN9ckUJW4mFBku+xnIMRWwIOUXFj
-   A==;
-X-CSE-ConnectionGUID: ykjQPrZUTYqhnpTSZFh/tw==
-X-CSE-MsgGUID: HkP1ZBw2SbeQszq12ThZFg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="45416194"
-X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
-   d="scan'208";a="45416194"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 10:49:54 -0800
-X-CSE-ConnectionGUID: wWza1SZPTz+XF7JHCbsrcg==
-X-CSE-MsgGUID: iL/GJJIYQ8m57G17eAFtBg==
+  bh=7+mfL4nxARIzg/D/ViQ6SzXLcJloibEqmI0+Ez6F/mQ=;
+  b=J+z1JHTaReLhxgVHWz1weZAYIXbKAys5X0VZ2cnfWQOOqE6NwCr3hRZV
+   rzfsEXYm0vq2aIzQfd7ZguYIQWQkDy5LojqmwI0cOqkhhDBBc5YuFG0kr
+   FmuqWFY7KBhaYU8K70zgb0w+KA8R6+udTEHw6F9URa+LXeZIkM4iBFIwF
+   QRWCVOwKPnrlEsntT6B5Dr71DngIc9dZwXO/pDyhwfVvpwxiWB9hZ3a3q
+   FIqNQ9uoTpXAit8RrqKJIiVzSYLQTdJlxMnBm31XgzBwKczZL1ubYE5go
+   9V92jmlDRrMh2ophlf82CHtwJw7IOKc1ljvB+Ca+VwC1llvOQjbNhcUpW
+   w==;
+X-CSE-ConnectionGUID: yrnb20wZSiW8IPckenMkOA==
+X-CSE-MsgGUID: BUKQs9NLTpS/sqKPel/pQw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="41795454"
+X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
+   d="scan'208";a="41795454"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 11:33:49 -0800
+X-CSE-ConnectionGUID: qXHbsIC+TFKyonvg+JVwgQ==
+X-CSE-MsgGUID: FktDV3sVTmOk2XPuR4o6BQ==
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
-   d="scan'208";a="122762859"
+X-IronPort-AV: E=Sophos;i="6.13,326,1732608000"; 
+   d="scan'208";a="117414106"
 Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
-  by fmviesa004.fm.intel.com with ESMTP; 01 Mar 2025 10:49:50 -0800
+  by fmviesa006.fm.intel.com with ESMTP; 01 Mar 2025 11:33:45 -0800
 Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
 	(envelope-from <lkp@intel.com>)
-	id 1toRuG-000GaG-1A;
-	Sat, 01 Mar 2025 18:49:48 +0000
-Date: Sun, 2 Mar 2025 02:49:36 +0800
+	id 1toSac-000Gbm-2W;
+	Sat, 01 Mar 2025 19:33:36 +0000
+Date: Sun, 2 Mar 2025 03:33:09 +0800
 From: kernel test robot <lkp@intel.com>
 To: Aditya Garg <gargaditya08@live.com>,
 	"castet.matthieu@free.fr" <castet.matthieu@free.fr>,
@@ -70,12 +70,12 @@ To: Aditya Garg <gargaditya08@live.com>,
 	"valentina.manea.m@gmail.com" <valentina.manea.m@gmail.com>,
 	"shuah@kernel.org" <shuah@kernel.org>,
 	"i@zenithal.me" <i@zenithal.me>
-Cc: oe-kbuild-all@lists.linux.dev,
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
 	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
 	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
 	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
 Subject: Re: [PATCH] usb: replace strcpy() with strscpy()
-Message-ID: <202503020226.3yStuXZ8-lkp@intel.com>
+Message-ID: <202503020319.Lj7EYfWc-lkp@intel.com>
 References: <DEF7EF73-12C4-4F30-BC14-DD829F0C6884@live.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -111,55 +111,73 @@ url:    https://github.com/intel-lab-lkp/linux/commits/Aditya-Garg/usb-replace-s
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
 patch link:    https://lore.kernel.org/r/DEF7EF73-12C4-4F30-BC14-DD829F0C6884%40live.com
 patch subject: [PATCH] usb: replace strcpy() with strscpy()
-config: csky-randconfig-002-20250302 (https://download.01.org/0day-ci/archive/20250302/202503020226.3yStuXZ8-lkp@intel.com/config)
-compiler: csky-linux-gcc (GCC) 14.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503020226.3yStuXZ8-lkp@intel.com/reproduce)
+config: arm-qcom_defconfig (https://download.01.org/0day-ci/archive/20250302/202503020319.Lj7EYfWc-lkp@intel.com/config)
+compiler: clang version 17.0.6 (https://github.com/llvm/llvm-project 6009708b4367171ccdbf4b5905cb6a803753fe18)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503020319.Lj7EYfWc-lkp@intel.com/reproduce)
 
 If you fix the issue in a separate patch/commit (i.e. not just a new version of
 the same patch/commit), kindly add following tags
 | Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503020226.3yStuXZ8-lkp@intel.com/
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503020319.Lj7EYfWc-lkp@intel.com/
 
 All errors (new ones prefixed by >>):
 
-   In file included from include/linux/build_bug.h:5,
-                    from include/linux/container_of.h:5,
-                    from include/linux/list.h:5,
-                    from include/linux/module.h:12,
-                    from drivers/usb/atm/ueagle-atm.c:15:
-   drivers/usb/atm/ueagle-atm.c: In function 'cmvs_file_name':
->> include/linux/compiler.h:197:62: error: static assertion failed: "must be array"
-     197 | #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
-         |                                                              ^~~~~~~~~~~~~~
-   include/linux/compiler.h:202:33: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
-     202 | #define __must_be_array(a)      __BUILD_BUG_ON_ZERO_MSG(!__is_array(a), \
-         |                                 ^~~~~~~~~~~~~~~~~~~~~~~
-   include/linux/string.h:80:47: note: in expansion of macro '__must_be_array'
-      80 |         sized_strscpy(dst, src, sizeof(dst) + __must_be_array(dst) +    \
-         |                                               ^~~~~~~~~~~~~~~
-   include/linux/args.h:25:24: note: in expansion of macro '__strscpy0'
+>> drivers/usb/gadget/configfs.c:132:2: error: static assertion failed due to requirement '!(!(!__builtin_types_compatible_p(char *, char *)))': must be array
+     132 |         strscpy(str, s);
+         |         ^~~~~~~~~~~~~~~
+   include/linux/string.h:114:2: note: expanded from macro 'strscpy'
+     114 |         CONCATENATE(__strscpy, COUNT_ARGS(__VA_ARGS__))(dst, src, __VA_ARGS__)
+         |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/args.h:26:27: note: expanded from macro 'CONCATENATE'
+      26 | #define CONCATENATE(a, b) __CONCAT(a, b)
+         |                           ^
+   include/linux/args.h:25:24: note: expanded from macro '__CONCAT'
       25 | #define __CONCAT(a, b) a ## b
          |                        ^
-   include/linux/args.h:26:27: note: in expansion of macro '__CONCAT'
-      26 | #define CONCATENATE(a, b) __CONCAT(a, b)
-         |                           ^~~~~~~~
-   include/linux/string.h:114:9: note: in expansion of macro 'CONCATENATE'
-     114 |         CONCATENATE(__strscpy, COUNT_ARGS(__VA_ARGS__))(dst, src, __VA_ARGS__)
-         |         ^~~~~~~~~~~
-   drivers/usb/atm/ueagle-atm.c:1574:9: note: in expansion of macro 'strscpy'
-    1574 |         strscpy(cmv_name, FW_DIR);
-         |         ^~~~~~~
+   note: (skipping 1 expansions in backtrace; use -fmacro-backtrace-limit=0 to see all)
+   include/linux/string.h:80:40: note: expanded from macro '__strscpy0'
+      80 |         sized_strscpy(dst, src, sizeof(dst) + __must_be_array(dst) +    \
+         |                                               ^~~~~~~~~~~~~~~~~~~~
+   include/linux/compiler.h:202:28: note: expanded from macro '__must_be_array'
+     202 | #define __must_be_array(a)      __BUILD_BUG_ON_ZERO_MSG(!__is_array(a), \
+         |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     203 |                                                         "must be array")
+         |                                                         ~~~~~~~~~~~~~~~~
+   include/linux/compiler.h:197:77: note: expanded from macro '__BUILD_BUG_ON_ZERO_MSG'
+     197 | #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
+         |                                                                             ^~~~
+   1 error generated.
 
 
-vim +197 include/linux/compiler.h
+vim +132 drivers/usb/gadget/configfs.c
 
-230fa253df6352 Christian Borntraeger 2014-11-25  193  
-cb7380de9e4cbc Kees Cook             2025-02-05  194  #ifdef __CHECKER__
-cb7380de9e4cbc Kees Cook             2025-02-05  195  #define __BUILD_BUG_ON_ZERO_MSG(e, msg) (0)
-cb7380de9e4cbc Kees Cook             2025-02-05  196  #else /* __CHECKER__ */
-cb7380de9e4cbc Kees Cook             2025-02-05 @197  #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
-cb7380de9e4cbc Kees Cook             2025-02-05  198  #endif /* __CHECKER__ */
-cb7380de9e4cbc Kees Cook             2025-02-05  199  
+   112	
+   113	static int usb_string_copy(const char *s, char **s_copy)
+   114	{
+   115		int ret;
+   116		char *str;
+   117		char *copy = *s_copy;
+   118	
+   119		ret = strlen(s);
+   120		if (ret > USB_MAX_STRING_LEN)
+   121			return -EOVERFLOW;
+   122		if (ret < 1)
+   123			return -EINVAL;
+   124	
+   125		if (copy) {
+   126			str = copy;
+   127		} else {
+   128			str = kmalloc(USB_MAX_STRING_WITH_NULL_LEN, GFP_KERNEL);
+   129			if (!str)
+   130				return -ENOMEM;
+   131		}
+ > 132		strscpy(str, s);
+   133		if (str[ret - 1] == '\n')
+   134			str[ret - 1] = '\0';
+   135		*s_copy = str;
+   136		return 0;
+   137	}
+   138	
 
 -- 
 0-DAY CI Kernel Test Service
