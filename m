@@ -1,84 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-6591-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6592-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EF2CA4AD52
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Mar 2025 19:24:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F37AA4AD6D
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  1 Mar 2025 19:50:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4tkd2wsxz305G;
-	Sun,  2 Mar 2025 05:23:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z4vJn4j8yz2yyJ;
+	Sun,  2 Mar 2025 05:50:01 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740853433;
-	cv=none; b=FdgLav+13BnEqQJ8Ek0OzakYYdsxffR/GZGmn8qNRx1g5htK9gO3qubYyWmLjezpfoGway+XdBvSNgAgaICkoHxG2fa3mX2v0ryHFAyohoWK+ygN2yMbpTYZUA2XVZWhR2zrSA3nyNbMjznH/kVQDBpcKzq9+hV0wBrB+csLc8vNq3bR712jsvIWhTbk6lEwYjr5yCFmzVexucsuGewyof7TupydjgbMut3qJGNEidwtjcIUnkuyY30mi/jnEdglKjJjdu2ajfnTlkYPviTBtJLoJT4RAlrEXXtPoCtZOQEIAqklG1OHsnfut8dHLDBjuu+k8rX0H1o2b7yMxSCtrQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740855001;
+	cv=none; b=kql8PM6t7aHluDYD4l2AW1sCTR4+ZzDKIDUqSigo6EBECbx6enXR38S1IEXmyke9bMZEe3JMIfpkSC1upkcamyr5AodPFqiS+wi2MXjc+oFGTtjJoE1fELpX/bObJ7GObFn2MKbEHVmLGx1z4U0Bl6pAVmZ+JMZCil/CK1RxM9aRXRXPLROhR98L+T88Sr5B5piPF9bPD/CVYrq4l6YhhNzoWUvkgn8MncO+wWJFicJeED2cQER9Rtc8FNGSUrocrsZBt2oDiqEoLK/zQS7n+de2JSblD3oNvsu0eQ4MqQHKZNTVokKR+c+DXE4YhcbD9C0S+K6FkJpi4us7AyLb4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740853433; c=relaxed/relaxed;
-	bh=/xIetWcIKBU2rBDxAmKfjJgKcO5RDy4zcjXkQm9qSBk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egn2AEtn0875jcSuwRoAez5HtbofkdOsaTUl6OMXjpMmSQRCVCWv+7Bl+B64H1kder6QgBQv7SAVLOZO27y4CeeZCkzCfCEcVcXnAWnL/4IVXECxfteGMGh8SYJh/6I9c9ioHIhsoQv4N7ytiGjvF0Pq2XjXANAoIGyFDGqNE84vatLsiJVmUWJxR38Aea0zk0LVGjIm7J9t5sxyNgsbjm9XuLlCzo0WiC/SLEiaeDUQrN1xJkkgGIPiX7GqF/LdB8n9BrtegT6lRKnOhHWZdbG23kdwiJumZpi5s5yux3K/nu5kaPOCksbbHMsg8N3vZRo7HLbPioPxAy0jxObekg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cUgzvPiQ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1740855001; c=relaxed/relaxed;
+	bh=hm1qBip7ZdfjnEU5ZwBqqHatooTae60ucPvblgaQl78=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=To5cC2uFIwpR0ac3C/Xh3S6ErMlJ9OXwqglGl8hJNCpGbWn918WYlfrdd8LDW91eKoaiSOJqSY0SrYs5oco9jGp2Tojq8h/oCLl7PtrcAR8yQWGqEsj9uUpp/CByItqCj/+efMdIBYMWh2kGRWlcbnD5/6EBOUcl26Z+sADXpe5Kh27Q14lLHe1jAHYqpd2HXX+jiWpCUPMAeznS4B5GaMy/NDMLkZNdKAvvdrA4gtrnrd/LzytgWY+jfkQBhNumez0M1lERkko8EA0TdmCkBw73ig+aMB417Tl3PG07fN3nKBK+EGZxio+kQ22lSsHVxW52zN/l1lI3YRzO1HUUjA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GD4vkJNU; dkim-atps=neutral; spf=pass (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=cUgzvPiQ;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=GD4vkJNU;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4tkc56cwz2yGM
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Mar 2025 05:23:52 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 521FJ31P013804;
-	Sat, 1 Mar 2025 18:23:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=/xIetWcIKBU2rBDxA
-	mKfjJgKcO5RDy4zcjXkQm9qSBk=; b=cUgzvPiQr7ESAa9LHiQR2CGvfDtWiYTiU
-	m3jCOxip1RpTJgS0+Ju2oC3gBOspryC+yIhKhdEJcinL741Emir7HEMN3BvhJnAd
-	tFDqu1PQg7tLz93E5VmxWQqMqYgZ7FodueZcXfmOIna2PygbYb5o6lZhk35yWE1w
-	UqG7Hk+YlD/X70WIKcJLDl19WkwTqUMVkFjAPw1HuMf0pQnpowVJG0wazzPK202p
-	Jw6Qu8YNXcM49y8ajQKOG08lKufa4WoDlaxLjd3g9eyak0GZ6E7q+MVLJNBY5LAK
-	d0TDKhCklmIKXUqGwsmrDtTfIR6uJiRG0zEOYLJSlc2XV8RHlBovQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 454291108u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 01 Mar 2025 18:23:43 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 521INhUY003963;
-	Sat, 1 Mar 2025 18:23:43 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 454291108a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 01 Mar 2025 18:23:43 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 521EeDjU026287;
-	Sat, 1 Mar 2025 18:23:42 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 44yswp4wvd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 01 Mar 2025 18:23:42 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 521INeMc22479244
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 1 Mar 2025 18:23:40 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1AB0620043;
-	Sat,  1 Mar 2025 18:23:40 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CAD0A20040;
-	Sat,  1 Mar 2025 18:23:36 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.ibm.com.com (unknown [9.43.6.12])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sat,  1 Mar 2025 18:23:36 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu
-Cc: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH v2 4/4] powerpc/perf/vpa-pmu: Avoid loading vpa-pmu driver during dump kernel
-Date: Sat,  1 Mar 2025 23:53:10 +0530
-Message-ID: <20250301182310.6832-4-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20250301182310.6832-1-maddy@linux.ibm.com>
-References: <20250301182310.6832-1-maddy@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z4vJl1DnNz2yt0
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Mar 2025 05:49:57 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740855000; x=1772391000;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=IrOfUSH1K4Wm6o+tYeM48yWS/v2GxQKug3+bX3bY5FY=;
+  b=GD4vkJNUdJ+OSRdGyD9hSUiqC5yxJE2YgpDEIg4guUTEfSgQ9B6UNOjn
+   FdpnguCKyzJju+bnsHJusUAabw7kRZclK20ZtRrTXp3BbLg0E3oLjLoYU
+   T6nCx1z7h1qCePnoE6jI1iLy1HOOv/Yx2p8xLE2p9ugrd/zy62asCLf9y
+   mGAds1MBzkKi+oAgKcrxe+gnSsJMrolLVa31WAHamsoL1uu00Ir6P0YU5
+   c6NoIewATiz2oWq4UbRfi1hbDlwCt5iIkN8v2oesjDHFVhDnr++7G8D4i
+   4raxXkZRVhahzrPK7uqUt7C+D2hyvLN9ckUJW4mFBku+xnIMRWwIOUXFj
+   A==;
+X-CSE-ConnectionGUID: ykjQPrZUTYqhnpTSZFh/tw==
+X-CSE-MsgGUID: HkP1ZBw2SbeQszq12ThZFg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="45416194"
+X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
+   d="scan'208";a="45416194"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Mar 2025 10:49:54 -0800
+X-CSE-ConnectionGUID: wWza1SZPTz+XF7JHCbsrcg==
+X-CSE-MsgGUID: iL/GJJIYQ8m57G17eAFtBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.13,325,1732608000"; 
+   d="scan'208";a="122762859"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by fmviesa004.fm.intel.com with ESMTP; 01 Mar 2025 10:49:50 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1toRuG-000GaG-1A;
+	Sat, 01 Mar 2025 18:49:48 +0000
+Date: Sun, 2 Mar 2025 02:49:36 +0800
+From: kernel test robot <lkp@intel.com>
+To: Aditya Garg <gargaditya08@live.com>,
+	"castet.matthieu@free.fr" <castet.matthieu@free.fr>,
+	"stf_xl@wp.pl" <stf_xl@wp.pl>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"b-liu@ti.com" <b-liu@ti.com>,
+	"johan@kernel.org" <johan@kernel.org>,
+	"heikki.krogerus@linux.intel.com" <heikki.krogerus@linux.intel.com>,
+	"valentina.manea.m@gmail.com" <valentina.manea.m@gmail.com>,
+	"shuah@kernel.org" <shuah@kernel.org>,
+	"i@zenithal.me" <i@zenithal.me>
+Cc: oe-kbuild-all@lists.linux.dev,
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
+Subject: Re: [PATCH] usb: replace strcpy() with strscpy()
+Message-ID: <202503020226.3yStuXZ8-lkp@intel.com>
+References: <DEF7EF73-12C4-4F30-BC14-DD829F0C6884@live.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,61 +89,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: meYX_3Sd2CEAnUpyz6g2ycRHQSrD2cgU
-X-Proofpoint-ORIG-GUID: ctMOyW9zdyiu7Oa4LoV6Ap8wqTikBuPY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1057,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-01_07,2025-02-28_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 adultscore=0 priorityscore=1501 lowpriorityscore=0
- malwarescore=0 mlxscore=0 bulkscore=0 clxscore=1015 spamscore=0
- phishscore=0 mlxlogscore=999 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502100000 definitions=main-2503010145
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DEF7EF73-12C4-4F30-BC14-DD829F0C6884@live.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-vpa-pmu driver is used to collect latency metrics for host to guest
-or guest to host context switches in a PowerVM KVM guest scenario.
-These are enabled using CONFIG_VPA_PMU and when these are compiled
-as built-in, add check for kdump and fadump kernel to avoids
-loading them, since there are no commandline option to disable them.
+Hi Aditya,
 
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
-Changelog v1:
-- Added more details to commmit message
+kernel test robot noticed the following build errors:
 
- arch/powerpc/perf/vpa-pmu.c | 5 +++++
- 1 file changed, 5 insertions(+)
+[auto build test ERROR on usb/usb-testing]
+[also build test ERROR on usb/usb-next usb/usb-linus johan-usb-serial/usb-next johan-usb-serial/usb-linus linus/master v6.14-rc4 next-20250228]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-diff --git a/arch/powerpc/perf/vpa-pmu.c b/arch/powerpc/perf/vpa-pmu.c
-index 6a5bfd2a13b5..f7f72b976c1d 100644
---- a/arch/powerpc/perf/vpa-pmu.c
-+++ b/arch/powerpc/perf/vpa-pmu.c
-@@ -10,6 +10,8 @@
- #include <linux/perf_event.h>
- #include <asm/kvm_ppc.h>
- #include <asm/kvm_book3s_64.h>
-+#include <asm/fadump.h>
-+#include <asm/kexec.h>
- 
- #define MODULE_VERS "1.0"
- #define MODULE_NAME "pseries_vpa_pmu"
-@@ -183,6 +185,9 @@ static int __init pseries_vpa_pmu_init(void)
- 	if (!firmware_has_feature(FW_FEATURE_LPAR) || is_kvm_guest())
- 		return -ENODEV;
- 
-+	if (is_kdump_kernel() || is_fadump_active())
-+		return 0;
-+
- 	perf_pmu_register(&vpa_pmu, vpa_pmu.name, -1);
- 	pr_info("Virtual Processor Area PMU registered.\n");
- 
+url:    https://github.com/intel-lab-lkp/linux/commits/Aditya-Garg/usb-replace-strcpy-with-strscpy/20250228-230839
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
+patch link:    https://lore.kernel.org/r/DEF7EF73-12C4-4F30-BC14-DD829F0C6884%40live.com
+patch subject: [PATCH] usb: replace strcpy() with strscpy()
+config: csky-randconfig-002-20250302 (https://download.01.org/0day-ci/archive/20250302/202503020226.3yStuXZ8-lkp@intel.com/config)
+compiler: csky-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503020226.3yStuXZ8-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503020226.3yStuXZ8-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   In file included from include/linux/build_bug.h:5,
+                    from include/linux/container_of.h:5,
+                    from include/linux/list.h:5,
+                    from include/linux/module.h:12,
+                    from drivers/usb/atm/ueagle-atm.c:15:
+   drivers/usb/atm/ueagle-atm.c: In function 'cmvs_file_name':
+>> include/linux/compiler.h:197:62: error: static assertion failed: "must be array"
+     197 | #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
+         |                                                              ^~~~~~~~~~~~~~
+   include/linux/compiler.h:202:33: note: in expansion of macro '__BUILD_BUG_ON_ZERO_MSG'
+     202 | #define __must_be_array(a)      __BUILD_BUG_ON_ZERO_MSG(!__is_array(a), \
+         |                                 ^~~~~~~~~~~~~~~~~~~~~~~
+   include/linux/string.h:80:47: note: in expansion of macro '__must_be_array'
+      80 |         sized_strscpy(dst, src, sizeof(dst) + __must_be_array(dst) +    \
+         |                                               ^~~~~~~~~~~~~~~
+   include/linux/args.h:25:24: note: in expansion of macro '__strscpy0'
+      25 | #define __CONCAT(a, b) a ## b
+         |                        ^
+   include/linux/args.h:26:27: note: in expansion of macro '__CONCAT'
+      26 | #define CONCATENATE(a, b) __CONCAT(a, b)
+         |                           ^~~~~~~~
+   include/linux/string.h:114:9: note: in expansion of macro 'CONCATENATE'
+     114 |         CONCATENATE(__strscpy, COUNT_ARGS(__VA_ARGS__))(dst, src, __VA_ARGS__)
+         |         ^~~~~~~~~~~
+   drivers/usb/atm/ueagle-atm.c:1574:9: note: in expansion of macro 'strscpy'
+    1574 |         strscpy(cmv_name, FW_DIR);
+         |         ^~~~~~~
+
+
+vim +197 include/linux/compiler.h
+
+230fa253df6352 Christian Borntraeger 2014-11-25  193  
+cb7380de9e4cbc Kees Cook             2025-02-05  194  #ifdef __CHECKER__
+cb7380de9e4cbc Kees Cook             2025-02-05  195  #define __BUILD_BUG_ON_ZERO_MSG(e, msg) (0)
+cb7380de9e4cbc Kees Cook             2025-02-05  196  #else /* __CHECKER__ */
+cb7380de9e4cbc Kees Cook             2025-02-05 @197  #define __BUILD_BUG_ON_ZERO_MSG(e, msg) ((int)sizeof(struct {_Static_assert(!(e), msg);}))
+cb7380de9e4cbc Kees Cook             2025-02-05  198  #endif /* __CHECKER__ */
+cb7380de9e4cbc Kees Cook             2025-02-05  199  
+
 -- 
-2.47.0
-
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
