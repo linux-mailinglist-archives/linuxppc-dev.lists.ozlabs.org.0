@@ -1,105 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6600-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6601-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7F7A4B17E
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Mar 2025 13:20:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32D77A4B186
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Mar 2025 13:22:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5Lcn2w8Vz30DL;
-	Sun,  2 Mar 2025 23:20:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5Lfj5kKDz30RK;
+	Sun,  2 Mar 2025 23:22:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740918025;
-	cv=none; b=VB17NRiJGgQpIL+PWDvEoo+MIu5gvnaLl7111oixg/TkH/iew1CN2ZU3iJtpp7rNxVxlTPfC4J6zRj91yOVunPuCz5sSI7jviqcb0YTjGlsCzG8RswYSx1j+aPYRb3JwL+DVyoAu9Z5J53KjbVfUjFJBcRby1/mUA3wOqovrWRAWhrHfylEe8LOGyMFp5WMpRsQlbTWKwugW7CTdkTY/fi58al9wO+JygY8cfOJvDzCeVUvHqxOgsqLDWlL8XNBAlRJxGoKAFoRe+0igcHfpiVa9jh4N+idJHyFL2nRTL+jjDrIC9Ahi4TMPvJj2GuTIQMdC5E9hcNubTtmPucTvvA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.7
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740918125;
+	cv=none; b=hp16vRHbNRUeh6KGL1NL3pEWv0Qc47ImOrGaohaJ7zRl2u0IsyVxTp9YHeDBXEXXjYtDPfFcZNPJT0xNv9WZWzjifcrBD8QxIlaS9QoPTc22BQXeU3Bm3q7dZuuurFdZA4kzrY6P6nS1SPhRnfBOwRaK31xkaKRxWjCPDXhaH9vGZRRvLARnYEAdVhA+Iu6H/7an1hZCgwtV1HwOMoOUhuhiA0Qt9ZMomh+Q92/iOOks0YngUPlN9FC01SP/uO/odx9K8bgA7PHwWbQS6v7V+9O+f/cHr5NjqlXHXTzMi24UFxvGMwhmeQRL7s62yKBTKvf4iTkCB/enUg2IlZ0FGQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740918025; c=relaxed/relaxed;
-	bh=Kggp4qq1oHZMwscIlbhqm14Uxt2ylE6WHblAlrPWuxQ=;
+	t=1740918125; c=relaxed/relaxed;
+	bh=iCw2iAGQNbionFP+vEf9G+6TlzxpygBnweapx5ssfds=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N8dGOlpYFKQQgul/HhkUBXXfGYEtRKmrfoBf67PXqmVcS4XUggizwHBGUsByij4u5hbpZGQ7nJUy+nPed/D7H5rzKY6seWFE0vtahqeteYLP55hIyyG34To10LW7ckqRocM7mMFziwhZCwzhBVygUD3fU3yHBg6trIvhKaK7QYofBQTwjIhmHXnjqFbPI3gxE/3rM9+9xg3rwXZirCCObFcPiyh1yq7iMFhno0H3BcrJznPxvI1kGXAiKoBmLCzJPz3qUDbdWU4i/nbSybV7JWKk8qBkdFpyXrF3bN/wVl8ajrmzu/pG4EoSRz54Un24oEQkWX5R06kLeeOHyUCSyw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XLAcy+qL; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZQbWUEMKr4XcDVUM423tyvSDbc7mRe/5nF8UNlCdhrhj0d5YcxlLpZqkTWbyISnVShpd2q9Of4Sz0eBRvQyHvniZYeclvA5N4Ll1doWNG+OIZxIdlHPB8XuRyFaRYDXH5a+kGhO/HqYOkiyjWxQ/tH/iukApC6xJYzed4fnjy3gt6Xe1UA2WR5zqnXVtRHkps7iVFebfJCcSva7dDbtoA2AlTBDwSsmCp4Pv+4eu2CnZBd0IrPTc3NO2nWR6UFO9rs1MdhADyqkSqyrz4dKC3a7raP9ao6zxjmqgz6pIfPvts7iRBlBkMO2VzzTi+0VTfKpuD9hOX4gRHPHBk7BL5A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Hiz3S4Nf; dkim-atps=neutral; spf=pass (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=XLAcy+qL;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Hiz3S4Nf;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=pali@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.7; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5Lcm2DHFz2yvv
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Mar 2025 23:20:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5B3DC5C5592;
-	Sun,  2 Mar 2025 12:18:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69891C4CED6;
-	Sun,  2 Mar 2025 12:20:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1740918021;
-	bh=g6N4TpIZBNJ6Fua7mVfbapNWidlbTbgUQQkGOYDnX5w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XLAcy+qLxtnm5pMuivx8y1wbx2whPxwRO/rtRwHb3XGTBqVLv3H+H+3nfqpeiVTcs
-	 Z8lfoi1AD8UU6wierd4zqGyjqm2XgDBTFpyi1W0HUpAccz8CZZfwoap8XIs48kX6CM
-	 f65c3R0PoNN+S8rIzp2IT3MHFOrvriGPG50wn0FSzq7G1E9xIH+fomhG3PH0clazK/
-	 cuQYFYDwhpmUVesZZFvWCIXQxzNrG6is9mG/+Ao0tNiCJG7f9Ytj2Gp9KWDRZSVXNh
-	 idBB961t1iIPDDhfJ52Qjsy9qgiCACyIbivPMIRAKk58il9vU7ldji9EtwFN/hvYOm
-	 zwPxA25FKE5uQ==
-Received: by pali.im (Postfix)
-	id A4C237B3; Sun,  2 Mar 2025 13:20:07 +0100 (CET)
-Date: Sun, 2 Mar 2025 13:20:07 +0100
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Andrey Albershteyn <aalbersh@redhat.com>
-Cc: Amir Goldstein <amir73il@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org, linux-xfs@vger.kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: Re: [PATCH v3] fs: introduce getfsxattrat and setfsxattrat syscalls
-Message-ID: <20250302122007.4oxtugidf4vxx3vy@pali>
-References: <20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org>
- <20250221181135.GW21808@frogsfrogsfrogs>
- <CAOQ4uxgyYBFqkq6cQsso4LxJsPJ4uECOdskXmz-nmGhhV5BQWg@mail.gmail.com>
- <ihkez5xfcuocis7cmipvts2vxnfan2ub5kcpvsrnzm37glwnax@nxp72byvetye>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5Lfg2mJCz30Kg
+	for <linuxppc-dev@lists.ozlabs.org>; Sun,  2 Mar 2025 23:22:01 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1740918124; x=1772454124;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=Wzb+4pU9ZdQc6+4ohAFUv71ZHfQ1Fd1f9jz7upZaoq8=;
+  b=Hiz3S4Nf0Fi5H5dc2bFR+6axUsA31LCPdcJoPq1yGHon6VMbQwJVmlj9
+   wcGmgQhi2+HCjG5FW7ZrGdG9Ayue/oKtTpucZbMUgNx/2rm2LUD3IHdJe
+   dowCKvR1nfB+rwz1vSxa0lvYSb3nbeFuHquepHCSVVM+PmsZkW6GnEKLP
+   Lw48gYpPAWefiur8df55jedjgVP6edI/3wY4kdudQND65EXjFt80wAkFC
+   URpdcF/odnDuxjjbXvmzXUomCZikRJ/yK4XZHWM+5EuRI4spvA6LwgTTH
+   GFXysBGS3MFvd8GVMbKqRIAe4dABAJGBpexsgyijjFpfli4kbqPhzWdiF
+   w==;
+X-CSE-ConnectionGUID: 0tU8ihKpTQiVSpuxwwAShQ==
+X-CSE-MsgGUID: 6vt3m6qtT5ids0prLU5P7w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11360"; a="67169530"
+X-IronPort-AV: E=Sophos;i="6.13,327,1732608000"; 
+   d="scan'208";a="67169530"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Mar 2025 04:21:59 -0800
+X-CSE-ConnectionGUID: qorzma/WRtaeiCrnZqDR6w==
+X-CSE-MsgGUID: dmb2fraNSLS5/23ECwns9A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="118664369"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 02 Mar 2025 04:21:57 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1toiKB-000HJi-2m;
+	Sun, 02 Mar 2025 12:21:43 +0000
+Date: Sun, 2 Mar 2025 20:20:39 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au,
+	npiggin@gmail.com, christophe.leroy@csgroup.eu
+Cc: oe-kbuild-all@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH v2 2/4] powerpc/perf/hv-24x7: Avoid loading hv-24x7
+ during dump kernel
+Message-ID: <202503021908.Ed1gO0Gi-lkp@intel.com>
+References: <20250301182310.6832-2-maddy@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,178 +80,112 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ihkez5xfcuocis7cmipvts2vxnfan2ub5kcpvsrnzm37glwnax@nxp72byvetye>
-User-Agent: NeoMutt/20180716
-X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+In-Reply-To: <20250301182310.6832-2-maddy@linux.ibm.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Friday 28 February 2025 09:30:38 Andrey Albershteyn wrote:
-> On 2025-02-21 20:15:24, Amir Goldstein wrote:
-> > On Fri, Feb 21, 2025 at 7:13 PM Darrick J. Wong <djwong@kernel.org> wrote:
-> > >
-> > > On Tue, Feb 11, 2025 at 06:22:47PM +0100, Andrey Albershteyn wrote:
-> > > > From: Andrey Albershteyn <aalbersh@redhat.com>
-> > > >
-> > > > Introduce getfsxattrat and setfsxattrat syscalls to manipulate inode
-> > > > extended attributes/flags. The syscalls take parent directory fd and
-> > > > path to the child together with struct fsxattr.
-> > > >
-> > > > This is an alternative to FS_IOC_FSSETXATTR ioctl with a difference
-> > > > that file don't need to be open as we can reference it with a path
-> > > > instead of fd. By having this we can manipulated inode extended
-> > > > attributes not only on regular files but also on special ones. This
-> > > > is not possible with FS_IOC_FSSETXATTR ioctl as with special files
-> > > > we can not call ioctl() directly on the filesystem inode using fd.
-> > > >
-> > > > This patch adds two new syscalls which allows userspace to get/set
-> > > > extended inode attributes on special files by using parent directory
-> > > > and a path - *at() like syscall.
-> > > >
-> > > > Also, as vfs_fileattr_set() is now will be called on special files
-> > > > too, let's forbid any other attributes except projid and nextents
-> > > > (symlink can have an extent).
-> > > >
-> > > > CC: linux-api@vger.kernel.org
-> > > > CC: linux-fsdevel@vger.kernel.org
-> > > > CC: linux-xfs@vger.kernel.org
-> > > > Signed-off-by: Andrey Albershteyn <aalbersh@redhat.com>
-> > > > ---
-> > > > v1:
-> > > > https://lore.kernel.org/linuxppc-dev/20250109174540.893098-1-aalbersh@kernel.org/
-> > > >
-> > > > Previous discussion:
-> > > > https://lore.kernel.org/linux-xfs/20240520164624.665269-2-aalbersh@redhat.com/
-> > > >
-> > > > XFS has project quotas which could be attached to a directory. All
-> > > > new inodes in these directories inherit project ID set on parent
-> > > > directory.
-> > > >
-> > > > The project is created from userspace by opening and calling
-> > > > FS_IOC_FSSETXATTR on each inode. This is not possible for special
-> > > > files such as FIFO, SOCK, BLK etc. Therefore, some inodes are left
-> > > > with empty project ID. Those inodes then are not shown in the quota
-> > > > accounting but still exist in the directory. Moreover, in the case
-> > > > when special files are created in the directory with already
-> > > > existing project quota, these inode inherit extended attributes.
-> > > > This than leaves them with these attributes without the possibility
-> > > > to clear them out. This, in turn, prevents userspace from
-> > > > re-creating quota project on these existing files.
-> > > > ---
-> > > > Changes in v3:
-> > > > - Remove unnecessary "dfd is dir" check as it checked in user_path_at()
-> > > > - Remove unnecessary "same filesystem" check
-> > > > - Use CLASS() instead of directly calling fdget/fdput
-> > > > - Link to v2: https://lore.kernel.org/r/20250122-xattrat-syscall-v2-1-5b360d4fbcb2@kernel.org
-> > > > ---
-> > > >  arch/alpha/kernel/syscalls/syscall.tbl      |  2 +
-> > > >  arch/arm/tools/syscall.tbl                  |  2 +
-> > > >  arch/arm64/tools/syscall_32.tbl             |  2 +
-> > > >  arch/m68k/kernel/syscalls/syscall.tbl       |  2 +
-> > > >  arch/microblaze/kernel/syscalls/syscall.tbl |  2 +
-> > > >  arch/mips/kernel/syscalls/syscall_n32.tbl   |  2 +
-> > > >  arch/mips/kernel/syscalls/syscall_n64.tbl   |  2 +
-> > > >  arch/mips/kernel/syscalls/syscall_o32.tbl   |  2 +
-> > > >  arch/parisc/kernel/syscalls/syscall.tbl     |  2 +
-> > > >  arch/powerpc/kernel/syscalls/syscall.tbl    |  2 +
-> > > >  arch/s390/kernel/syscalls/syscall.tbl       |  2 +
-> > > >  arch/sh/kernel/syscalls/syscall.tbl         |  2 +
-> > > >  arch/sparc/kernel/syscalls/syscall.tbl      |  2 +
-> > > >  arch/x86/entry/syscalls/syscall_32.tbl      |  2 +
-> > > >  arch/x86/entry/syscalls/syscall_64.tbl      |  2 +
-> > > >  arch/xtensa/kernel/syscalls/syscall.tbl     |  2 +
-> > > >  fs/inode.c                                  | 75 +++++++++++++++++++++++++++++
-> > > >  fs/ioctl.c                                  | 16 +++++-
-> > > >  include/linux/fileattr.h                    |  1 +
-> > > >  include/linux/syscalls.h                    |  4 ++
-> > > >  include/uapi/asm-generic/unistd.h           |  8 ++-
-> > > >  21 files changed, 133 insertions(+), 3 deletions(-)
-> > > >
-> > >
-> > > <cut to the syscall definitions>
-> > >
-> > > > diff --git a/fs/inode.c b/fs/inode.c
-> > > > index 6b4c77268fc0ecace4ac78a9ca777fbffc277f4a..b2dddd9db4fabaf67a6cbf541a86978b290411ec 100644
-> > > > --- a/fs/inode.c
-> > > > +++ b/fs/inode.c
-> > > > @@ -23,6 +23,9 @@
-> > > >  #include <linux/rw_hint.h>
-> > > >  #include <linux/seq_file.h>
-> > > >  #include <linux/debugfs.h>
-> > > > +#include <linux/syscalls.h>
-> > > > +#include <linux/fileattr.h>
-> > > > +#include <linux/namei.h>
-> > > >  #include <trace/events/writeback.h>
-> > > >  #define CREATE_TRACE_POINTS
-> > > >  #include <trace/events/timestamp.h>
-> > > > @@ -2953,3 +2956,75 @@ umode_t mode_strip_sgid(struct mnt_idmap *idmap,
-> > > >       return mode & ~S_ISGID;
-> > > >  }
-> > > >  EXPORT_SYMBOL(mode_strip_sgid);
-> > > > +
-> > > > +SYSCALL_DEFINE4(getfsxattrat, int, dfd, const char __user *, filename,
-> > > > +             struct fsxattr __user *, fsx, unsigned int, at_flags)
-> > >
-> > > Should the kernel require userspace to pass the size of the fsx buffer?
-> > > That way we avoid needing to rev the interface when we decide to grow
-> > > the structure.
-> > >
-> > 
-> > This makes sense to me, but I see that Andreas proposed other ways,
-> > as long as we have a plan on how to extend the struct if we need more space.
-> > 
-> > Andrey, I am sorry to bring this up in v3, but I would like to request
-> > two small changes before merging this API.
-> > 
-> > This patch by Pali [1] adds fsx_xflags_mask for the filesystem to
-> > report the supported set of xflags.
-> > 
-> > It was argued that we can make this change with the existing ioctl,
-> > because it is not going to break xfs_io -c lsattr/chattr, which is fine,
-> > but I think that we should merge the fsx_xflags_mask change along
-> > with getfsxattrat() which is a new UAPI.
-> > 
-> > The second request is related to setfsxattrat().
-> > With current FS_IOC_FSSETXATTR, IIUC, xfs ignores unsupported
-> > fsx_xflags. I think this needs to be fixed before merging setfsxattrat().
-> > It's ok that a program calling FS_IOC_FSSETXATTR will not know
-> > if unsupported flags will be ignored, because that's the way it is,
-> > but I think that setfsxattrat() must return -EINVAL for trying to
-> > set unsupported xflags.
-> > 
-> > As I explained in [2] I think it is fine if FS_IOC_FSSETXATTR
-> > will also start returning -EINVAL for unsupported flags, but I would
-> > like setfsxattrat() to make that a guarantee.
-> > 
-> > There was an open question, what does fsx_xflags_mask mean
-> > for setfsxattrat() - it is a mask like in inode_set_flags() as Andreas
-> > suggested? I think that would be a good idea.
-> > 
-> > Thanks,
-> > Amir.
-> > 
-> > [1] https://lore.kernel.org/linux-fsdevel/20250216164029.20673-4-pali@kernel.org/
-> > [2] https://lore.kernel.org/linux-fsdevel/CAOQ4uxjwQJiKAqyjEmKUnq-VihyeSsxyEy2F+J38NXwrAXurFQ@mail.gmail.com/
-> > 
-> 
-> I'm fine with making Pali's patchset a dependency for this syscall,
-> as if vfs_fileattr_set() will start returning EINVAL on unsupported
-> flags this syscall will pass it through (ioctls will need to ignore
-> it). And as these syscalls use fsxattr anyway the fsx_xflags_mask
-> field will be here.
-> 
-> -- 
-> - Andrey
-> 
+Hi Madhavan,
 
-Hello Andrey, if I understand correctly then it is needed for new
-setfsxattrat() call to return EINVAL on any unsupported flags since
-beginning.
+kernel test robot noticed the following build errors:
 
-Then I could extend it for new flags without breaking backward
-or forward compatibility of the setfsxattrat() call.
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/fixes linus/master v6.14-rc4 next-20250228]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Madhavan-Srinivasan/powerpc-perf-hv-24x7-Avoid-loading-hv-24x7-during-dump-kernel/20250302-022531
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20250301182310.6832-2-maddy%40linux.ibm.com
+patch subject: [PATCH v2 2/4] powerpc/perf/hv-24x7: Avoid loading hv-24x7 during dump kernel
+config: powerpc64-randconfig-001-20250302 (https://download.01.org/0day-ci/archive/20250302/202503021908.Ed1gO0Gi-lkp@intel.com/config)
+compiler: powerpc64-linux-gcc (GCC) 14.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250302/202503021908.Ed1gO0Gi-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503021908.Ed1gO0Gi-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   arch/powerpc/perf/hv-24x7.c: In function 'hv_24x7_init':
+>> arch/powerpc/perf/hv-24x7.c:1701:13: error: implicit declaration of function 'is_kdump_kernel' [-Wimplicit-function-declaration]
+    1701 |         if (is_kdump_kernel() || is_fadump_active())
+         |             ^~~~~~~~~~~~~~~
+
+
+vim +/is_kdump_kernel +1701 arch/powerpc/perf/hv-24x7.c
+
+  1693	
+  1694	static int hv_24x7_init(void)
+  1695	{
+  1696		int r;
+  1697		unsigned long hret;
+  1698		unsigned int pvr = mfspr(SPRN_PVR);
+  1699		struct hv_perf_caps caps;
+  1700	
+> 1701		if (is_kdump_kernel() || is_fadump_active())
+  1702			return 0;
+  1703	
+  1704		if (!firmware_has_feature(FW_FEATURE_LPAR)) {
+  1705			pr_debug("not a virtualized system, not enabling\n");
+  1706			return -ENODEV;
+  1707		}
+  1708	
+  1709		/* POWER8 only supports v1, while POWER9 only supports v2. */
+  1710		if (PVR_VER(pvr) == PVR_POWER8 || PVR_VER(pvr) == PVR_POWER8E ||
+  1711		    PVR_VER(pvr) == PVR_POWER8NVL)
+  1712			interface_version = 1;
+  1713		else {
+  1714			interface_version = 2;
+  1715	
+  1716			/* SMT8 in POWER9 needs to aggregate result elements. */
+  1717			if (threads_per_core == 8)
+  1718				aggregate_result_elements = true;
+  1719		}
+  1720	
+  1721		hret = hv_perf_caps_get(&caps);
+  1722		if (hret) {
+  1723			pr_debug("could not obtain capabilities, not enabling, rc=%ld\n",
+  1724					hret);
+  1725			return -ENODEV;
+  1726		}
+  1727	
+  1728		hv_page_cache = kmem_cache_create("hv-page-4096", 4096, 4096, 0, NULL);
+  1729		if (!hv_page_cache)
+  1730			return -ENOMEM;
+  1731	
+  1732		/* sampling not supported */
+  1733		h_24x7_pmu.capabilities |= PERF_PMU_CAP_NO_INTERRUPT;
+  1734	
+  1735		r = create_events_from_catalog(&event_group.attrs,
+  1736					   &event_desc_group.attrs,
+  1737					   &event_long_desc_group.attrs);
+  1738	
+  1739		if (r)
+  1740			return r;
+  1741	
+  1742		/* init cpuhotplug */
+  1743		r = hv_24x7_cpu_hotplug_init();
+  1744		if (r)
+  1745			return r;
+  1746	
+  1747		r = perf_pmu_register(&h_24x7_pmu, h_24x7_pmu.name, -1);
+  1748		if (r)
+  1749			return r;
+  1750	
+  1751		read_24x7_sys_info();
+  1752	
+  1753		return 0;
+  1754	}
+  1755	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
