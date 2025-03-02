@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-6603-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6604-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFFF3A4B29C
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Mar 2025 16:33:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CA420A4B29D
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Mar 2025 16:34:12 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5QvM6x4Jz303B;
-	Mon,  3 Mar 2025 02:33:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5QwL3VbJz3048;
+	Mon,  3 Mar 2025 02:34:10 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.12.242.25
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740929599;
-	cv=none; b=TNux2fM6N+nS2foDktXOa1wJhC+8OyCP4Xh2mXq9vismy+OWFyMOelS3Ng3tbgYXv5Bbz+gFG1v31i4V1KCGF/MdIjYOGCyw3herW2YyA8qNAzSA7Mn854TovfjblVfeSOISJxn1A4gRkJ0dhpyhYjDsWM0t+Xo2IeItjta9nj1cRsqnJUXv2zMdYXiIhCndX1RxbIlFfA2VT1ysL7kTSJINQPej+BsqIIpeYL+onDOPxP6M8NyFol0tHn32VFHFrswQoLTk4d5hBV1XI7vM8bdj1Wj7J16GC1mjt9xpzd2H9hX7QjKEHAIxUmsRXIcUQTMekz8CC/1rCKIT9cUcYA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.12.242.26
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740929650;
+	cv=none; b=gBuqgHLVQ79ojxweQzRdD3YKaOiCtHDInhABCDeqFtsOplHqVp31fkFSIeM1LtE/OItR4UWENBR0S/NeTgrEBR6bnlre1tZsUjSmJBCok6cBZTIf8sA4Kp8T87VghbaATR77/u/Nr136gTcp5xLHRN91wF0IDCs4OcOgstx17KMaCVTMzHwe9vXbY7e2bw035WQh1f+WQfIDnla0OnArqIUOAdfzW2pmEf8KD0hoC+/hHU9nMfBPcZ2qyWdTvd2xVSGy+YGAKEUww+m1fk5nGIeOlh7M8ucosmL3nmLYzOT1cS51xWUTZPJpX+BjvkVVDzX625It063YEx6P8EH+kA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740929599; c=relaxed/relaxed;
-	bh=7m8X2HCaZAYsFWSmtyiQM+IwxWQ2FTT2RuVDQw5Wmz8=;
+	t=1740929650; c=relaxed/relaxed;
+	bh=KMpJ1cgSZnZMApMOU4s4omcRGFI4bQ1HNYVgjZASNXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M+Dy04rl0AJ4UUJf0zR1FQhaod0TBjdh+rR1SXEXAYP9H4Jp8DTxYdze5RaRVH0ODm4+PM8u12TDhqsx8m5Oktfk80DIuQJ4hl6ecZuUlJ9Xak70bgqokYfZrM1DERlRaL9H4FHxMsz9rhUG61uTBXxvCFZLZOAgtbpD++fq5x6DLbeVx6/7Pf/Mt/Z3+UdiPZlonGaItVG6iJVomcrfd40lphnEf55IptlUrkFwxRTfMZNYd8FMqFzoq8LftKqzibVbwYdhDiBZU8Y5JJ5qnKNE1wWs8f+HyIM/Epy3x51bsocBPVd7eumZDBHqCeg5hYMS9+BPy9E5ezFDFcxRQw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=MBsne84T; dkim-atps=neutral; spf=pass (client-ip=80.12.242.25; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org) smtp.mailfrom=wanadoo.fr
+	 MIME-Version; b=Lgg8fdi+awTCnXa63uGG82lOFmUNiIcrk3CKgHR/Z0Tr/pfVbFENl4TU6b3Srw9q0S+RaAlzrjSaUyyL5v+q7u1iYLQ2HiZmv9xjhl9RMc1QMHTML/tYscIzDUcVBIVp890jlf9kujN0jQ/FquHNIc1QOxbdhgan/HFsY1d9uMBSUMaJ3lDclHx1gIMOVHnwoBOmMa9erEKkk0sqWaX85JPYS4M9NBszFKdjeLN1yOX16ET2q4Dy+Wdnn6be+QXUD5/khSkhrCCutWEdKApx/MnNwm+GA3i7nafvD3Hq/QCWm71w9uA+d7O8QoHoij3EbADfwn0iN4a9gZ7cyOrmRA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=Dx0/ybMq; dkim-atps=neutral; spf=pass (client-ip=80.12.242.26; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org) smtp.mailfrom=wanadoo.fr
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=MBsne84T;
+	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=Dx0/ybMq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.25; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
-Received: from smtp.smtpout.orange.fr (smtp-25.smtpout.orange.fr [80.12.242.25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.26; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
+Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5QvM1FPQz2xGF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 02:33:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5QwK4zbTz2xGF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 02:34:09 +1100 (AEDT)
 Received: from fedora.home ([90.11.132.44])
 	by smtp.orange.fr with ESMTPA
-	id okmqtJVk70yWRokn4t9OHq; Sun, 02 Mar 2025 15:59:39 +0100
+	id okmqtJVk70yWRokn6t9OJ1; Sun, 02 Mar 2025 15:59:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1740927579;
-	bh=7m8X2HCaZAYsFWSmtyiQM+IwxWQ2FTT2RuVDQw5Wmz8=;
+	s=t20230301; t=1740927581;
+	bh=KMpJ1cgSZnZMApMOU4s4omcRGFI4bQ1HNYVgjZASNXo=;
 	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=MBsne84TkdsRHqfUbFe5BPJjnldQEWEA9Xqy7Wj9R4KQIbAr0rCx+jYiaYT7AxYNX
-	 Z0GJnimiD/aK+L0gL5zooz1nui+83vDbVo3Nigiw1VpJdLi81Uc7hVzUBjHWyMBNtR
-	 6e9SKa2/dbQQ0kwBex9GVNIjf8gJav/HFX+feV8ydI5pUULz1piZ9Gk8jAuLcbDeii
-	 /cTrSbyjlD5/QmVKVd+BmjTlneUUTcjDw7vBjlFfR7jMq649WE2fuvM+DjX1zsmN63
-	 zLJKvpSWLyLMrGhm87gKpNC+22QrfbBUl8lPYnLAtoEB95Vcqt4fm6ywQ385Pul4D5
-	 4G/gkDfIBzcyw==
+	b=Dx0/ybMqwXj8mbrXBHEK6pjr9gGi0LI4qtj1udzo9LebLiYUEKhR/IgPOG24dEoDK
+	 NOIYY2bkElFeMi2bSqs4/EFCCw/gpEQ3g1jT6Mb2xQlxMZmBTGo0Ofu5OtDD1y6w4C
+	 fEcfOBYRKV53Ji6SqTgbCSGVyshsgKXRCJVBEXY9Ycj719ran9PVo92lb6wJig9xPW
+	 6rVY+E5CHdfrG0/yl95P6J9CbGOrOmcQqF60QKIHFOuQza5S/xR2vKmw9v2Jf/rc/A
+	 JxRFbkpP0e1ORq8zuo0i+vRnEFfBKWtIpQ1e6bd6Vdj9w4b5x4A97CsoVm7HcNpzwm
+	 m8aS0h8jNJxyw==
 X-ME-Helo: fedora.home
 X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 02 Mar 2025 15:59:39 +0100
+X-ME-Date: Sun, 02 Mar 2025 15:59:41 +0100
 X-ME-IP: 90.11.132.44
 From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 To: maddy@linux.ibm.com,
@@ -55,9 +55,9 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	linux-kernel@vger.kernel.org,
 	kernel-janitors@vger.kernel.org,
 	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 1/2] powerpc: gpio_mdio: Use devm_mdiobus_alloc_size()
-Date: Sun,  2 Mar 2025 15:59:15 +0100
-Message-ID: <2d02da3bebb2273782e535201cc9512f3cdbccab.1740926808.git.christophe.jaillet@wanadoo.fr>
+Subject: [PATCH 2/2] powerpc: gpio_mdio: Use devm_of_mdiobus_register()
+Date: Sun,  2 Mar 2025 15:59:16 +0100
+Message-ID: <639cf94e5b5f0f9532b65a34844165b889934d52.1740926808.git.christophe.jaillet@wanadoo.fr>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <cover.1740926808.git.christophe.jaillet@wanadoo.fr>
 References: <cover.1740926808.git.christophe.jaillet@wanadoo.fr>
@@ -80,99 +80,59 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Use mdiobus_alloc_size() instead of a hand written mdiobus_alloc() +
-kzalloc().
+Use devm_of_mdiobus_register() in order to remove the now empty .remove()
+function.
 
-This is less verbose and more robust. It also reduces memory fragmentation
-and saves a few bytes of memory.
-
-While at it, switch to devm_mdiobus_alloc_size() for extra simplification.
+Doing so dev_set_drvdata() is now also unneeded. Remove it as well.
 
 Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 ---
 This patch is compile tested only.
-
-Some memory is saved because pahole states, on a x86_64,  that:
-
-struct mii_bus {
-	...
-	/* size: 3640, cachelines: 57, members: 23 */
-	/* sum members: 3633, holes: 2, sum holes: 7 */
-	/* member types with holes: 3, total: 4, bit paddings: 1, total: 1 bit */
-	/* paddings: 1, sum paddings: 3 */
-	/* forced alignments: 1, forced holes: 1, sum forced holes: 4 */
-	/* last cacheline: 56 bytes */
-}
-
-Because of the way allocation works, 4096 bytes are allocated. When
-mdiobus_alloc_size() is used, struct gpio_priv fits in this "wasted" space
-and so is available "for free".
 ---
- arch/powerpc/platforms/pasemi/gpio_mdio.c | 26 +++++------------------
- 1 file changed, 5 insertions(+), 21 deletions(-)
+ arch/powerpc/platforms/pasemi/gpio_mdio.c | 15 +--------------
+ 1 file changed, 1 insertion(+), 14 deletions(-)
 
 diff --git a/arch/powerpc/platforms/pasemi/gpio_mdio.c b/arch/powerpc/platforms/pasemi/gpio_mdio.c
-index e4538d471256..2c54f5f063b7 100644
+index 2c54f5f063b7..6712ccb84c0a 100644
 --- a/arch/powerpc/platforms/pasemi/gpio_mdio.c
 +++ b/arch/powerpc/platforms/pasemi/gpio_mdio.c
-@@ -213,15 +213,11 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
- 	const unsigned int *prop;
- 	int err;
+@@ -234,10 +234,8 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
+ 	priv->mdio_pin = *prop;
  
--	err = -ENOMEM;
--	priv = kzalloc(sizeof(struct gpio_priv), GFP_KERNEL);
--	if (!priv)
--		goto out;
+ 	new_bus->parent = dev;
+-	dev_set_drvdata(dev, new_bus);
 -
--	new_bus = mdiobus_alloc();
--
-+	new_bus = devm_mdiobus_alloc_size(dev, sizeof(*priv));
- 	if (!new_bus)
--		goto out_free_priv;
-+		return -ENOMEM;
-+
-+	priv = new_bus->priv;
+-	err = of_mdiobus_register(new_bus, np);
  
- 	new_bus->name = "pasemi gpio mdio bus";
- 	new_bus->read = &gpio_mdio_read;
-@@ -230,7 +226,6 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
- 
- 	prop = of_get_property(np, "reg", NULL);
- 	snprintf(new_bus->id, MII_BUS_ID_SIZE, "%x", *prop);
--	new_bus->priv = priv;
- 
- 	prop = of_get_property(np, "mdc-pin", NULL);
- 	priv->mdc_pin = *prop;
-@@ -246,17 +241,10 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
++	err = devm_of_mdiobus_register(dev, new_bus, np);
  	if (err != 0) {
  		pr_err("%s: Cannot register as MDIO bus, err %d\n",
  				new_bus->name, err);
--		goto out_free_irq;
-+		return err;
- 	}
- 
+@@ -247,16 +245,6 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
  	return 0;
--
--out_free_irq:
--	kfree(new_bus);
--out_free_priv:
--	kfree(priv);
--out:
--	return err;
  }
  
- 
-@@ -267,10 +255,6 @@ static void gpio_mdio_remove(struct platform_device *dev)
- 	mdiobus_unregister(bus);
- 
- 	dev_set_drvdata(&dev->dev, NULL);
 -
--	kfree(bus->priv);
--	bus->priv = NULL;
--	mdiobus_free(bus);
- }
- 
+-static void gpio_mdio_remove(struct platform_device *dev)
+-{
+-	struct mii_bus *bus = dev_get_drvdata(&dev->dev);
+-
+-	mdiobus_unregister(bus);
+-
+-	dev_set_drvdata(&dev->dev, NULL);
+-}
+-
  static const struct of_device_id gpio_mdio_match[] =
+ {
+ 	{
+@@ -269,7 +257,6 @@ MODULE_DEVICE_TABLE(of, gpio_mdio_match);
+ static struct platform_driver gpio_mdio_driver =
+ {
+ 	.probe		= gpio_mdio_probe,
+-	.remove		= gpio_mdio_remove,
+ 	.driver = {
+ 		.name = "gpio-mdio-bitbang",
+ 		.of_match_table = gpio_mdio_match,
 -- 
 2.48.1
 
