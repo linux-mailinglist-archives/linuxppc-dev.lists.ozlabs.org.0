@@ -1,34 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-6637-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6635-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 799E1A4BDC2
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 12:13:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99DCDA4BDBE
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 12:13:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5x3B3pH0z3c6Z;
-	Mon,  3 Mar 2025 22:11:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5x2w3tF5z3bwf;
+	Mon,  3 Mar 2025 22:11:36 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741000310;
-	cv=none; b=kg6vn9u/tijdQL7vroCNKTp4f3gAYE8vy+rRhGrMYjg24Er2chkTYsCJWqPQ/VSyRjzd0kAgjPls/FD1eSTsC/vsq2oTp+xLea8XFfl9ekrNjG6E2Zj/kS3ubLSwop+4Te9lBtoE62eJgjokE5TMvOWCq19EZ6dJT+zsQrAAYK03X0ldIzTrZ8ZIOCZJfquyKecjvlVJWEKpTYGfnvu+yy6/qO1aRbLZSCjXr3TDlsEIAkN3Ol2SAgPJ4f8JnQU7eKYxraUi+y91qX1Ax+IeCrmSZQOk7LmpS+1GJrZrM0ToWhxzzar68dn6FqJtm4CddLiv6SC2O7IcYpoH5r1DDg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741000296;
+	cv=none; b=hhFqXbRhjzPWql/NT9hrRHbha/py/+hqzCwuqR9ufNlzu01Eq4FRMXbH/+fG6AL08U+LjHNtLkozzpzRgAFp2ZaMOGlQqLbIIVAORDrVRZBXAnaeHOevSL7oB5tTQ3hfSK4XKkjf4PhZqcmgEQODC3Un8qDZGcbOG1H68QgLrlg99Vk6s4fdoAmcO6PPoI5Dl6a5tu9NuzH6e1utcx5gKoeWow8POqIvvGvErwCif1WXKnxTgYHl70xd8suiJDtAKcDFVJdk762+g9EWbUcgoZvxizv58Pfe/TBFhU/hXJVIYwgCZ9Ys7HIHrjAEtsIlM8a9BxVjZSkAgIm09lViTg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741000310; c=relaxed/relaxed;
-	bh=XReqk4Aen4MK7eX+VauyjHHk/TSJRy2pW2Es7/MoImA=;
+	t=1741000296; c=relaxed/relaxed;
+	bh=rgB3LhMqOZ+YBkO0ZZD/ZAGt3jgrVFlcoSgeSBFrG1A=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=PEfB0im+3mB+Ooo0MpV1w2lZsDtdPaf6FqbLRQOWU35/bigvkz/XKSJH7AKuq451d+KM8p+oti9Iqswn92O5MQbhMaXqtW9f2dx4ngbSnRo/PiLdQsxq57N3jUPgGhPWorRZowPbfPTn74AxWLrFeJERHZ8KACy6ySIFLnPpQ7uGat+Bf4DDBo2UDI9AQB5SxRUcWE9DMtuI4xpj763VeTjmti1iZvB5M8oMszR+wEI1MjOVuFoAX2laIQa9zozsCCmVHuvaOcVBwpMTz9oisLgzMxw106jFXQ9UAHv4XpGfm6eEbWWbTT5F1+I9531UsptJrX1MHCkSFq4Z5KvxcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=LmV6BZNb; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=cidttnyv; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=E7DEPHwNkCIncwaeQgLXobx4tys1+myQPC+aGgaErDVY8Jpn1A+t5qEqISziCG7waIyYMJrhDUpsYDiuySpZFZ+2nmv1ejYPwV46S103wZcrDf2ROed+78ROZ4eUCAxlJXU6Tmtdtluh0zJJlaSMFlfJQcLnkgOFOlVY7H9LwLynRY1pMc5TyCZpjPzKvhwY98Vqfe6NqAMgt1tsUDa9vK50VbMDWbBj5sHjVxLvQpLfp7y4YokGKCcZg0YL0R/LK1NFoqzAV5/paUJ8NyZ/KiuAIdKehcupiSwpqFpDRtRquuqvUpEEZxYcjBfbbW2KeRiHVC4YzziUweFQgIy3Sg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=UbCusKeg; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1fOvo9r/; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=LmV6BZNb;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=cidttnyv;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=UbCusKeg;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1fOvo9r/;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Z5x391Ss2z30W9
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 22:11:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Z5x2v3C08z30W0
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 22:11:35 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1741000276;
@@ -36,24 +36,23 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XReqk4Aen4MK7eX+VauyjHHk/TSJRy2pW2Es7/MoImA=;
-	b=LmV6BZNbIbXd82Wfm/N0Wga1F48N9yW7wFH/MNP3apM4AwlfaJ7UUHoH2G4jLcqgfirUrZ
-	bMP3czVab7xcpYSGXAX1FZ4kPenS3TNCt1QPC1+/65AjmrupUTH2OkrYPIkTvMJ4RM2SSB
-	aG0aNqkFKEeAthWGMNFfp6c7yY+Rc5JhcNDkJHE/eZ4CbsNp5XLEkoTvG7IdD8+h+VJDbc
-	BQEJ6RY3Sgdsk8Tl1u242U/4fhoyOVyyrQu0swEnzDkSNQ6xj9/6AYQdkbStOA9gup6WlA
-	PVQh/RK/KrAdDcgCtKpxNlo2yFx2L7e37BmhphP0xIh5qB8jobwZWf/dOkGROQ==
+	bh=rgB3LhMqOZ+YBkO0ZZD/ZAGt3jgrVFlcoSgeSBFrG1A=;
+	b=UbCusKegiY4htXtXb6cmiKpgLftrm8OW6HF0kY4SBA0xVA6X8uBoNc4HcYBYgf3qB7EKjy
+	0vnRhbCV99EGmEO9CIOQU5AdcQcMfSuVz/5cfuOEsSLtkpmIdb9tmSJn0nh1ZOEYvHWBXd
+	x5ohKq3YewG7wcBF2kCJNgLCwTZ1D8/+mkjUHVAlRsJkask5JVQkRUpUXvBwP5yhscXqaz
+	XCh3Z8GjDsSWj8I/uJ8qzqf1Kvs1B2NRxSEdIpg0gcMkgu4ew/f79wpGOjeFlZX68JF+W3
+	yzEpHQhM86wPsh+PyaBRXS68MAr6198hI5WbIhM1S9V/TuYtYWMg1LfvvT3P/A==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741000276;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XReqk4Aen4MK7eX+VauyjHHk/TSJRy2pW2Es7/MoImA=;
-	b=cidttnyvEBhkcKoxcdejbdB8UW6sNnz6bQlRh0g3VIer+5ywzsJPGAUmJBCSkVPa5eIktN
-	EbTm/ptslRomsQAQ==
-Date: Mon, 03 Mar 2025 12:11:16 +0100
-Subject: [PATCH 14/19] time/namespace: Prepare introduction of struct
- vdso_clock
+	bh=rgB3LhMqOZ+YBkO0ZZD/ZAGt3jgrVFlcoSgeSBFrG1A=;
+	b=1fOvo9r/qH+GjFBoFmV4Mq1GTv7uo31luHW62OlEVNNKdplS0DAqHgugpnuoBkmS+FSCDn
+	OTxv7inUt8L/yyCQ==
+Date: Mon, 03 Mar 2025 12:11:17 +0100
+Subject: [PATCH 15/19] x86/vdso: Prepare introduction of struct vdso_clock
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +67,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250303-vdso-clock-v1-14-c1b5c69a166f@linutronix.de>
+Message-Id: <20250303-vdso-clock-v1-15-c1b5c69a166f@linutronix.de>
 References: <20250303-vdso-clock-v1-0-c1b5c69a166f@linutronix.de>
 In-Reply-To: <20250303-vdso-clock-v1-0-c1b5c69a166f@linutronix.de>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
@@ -90,11 +89,11 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
  linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741000267; l=3143;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741000267; l=3053;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=rvrB9ifBvRXgxwLjfAy8fiQwFAt4ofAQmLlLCatQ/ko=;
- b=00VGODDgq5LMqN9LKjPqKVX6bcYBv+gb9Z2V8XxONuiiNC44yja15un2b1lmnwgWBadX1tPE6
- zsfhL+2AmkJCVPhjZEGt7SQCB6rqlcljig5snI8lxOHkljl8bO6qj8y
+ bh=xyNISseLOTNZW4PPjUER0EQo8UUOOyYEKCLROc72ytc=;
+ b=0qWgzjrxn8OGxXIBksBvp9I3CDmpmtrU83qA8jyzdK/S89J9zVZl5lnjSVCXoSYPOtqJjB5z6
+ Eds45EkmeVCCIxtaR0ZY0XAX3AF9MFiqoAGHbKfXMXIBaSvGGgd69bM
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -118,67 +117,64 @@ Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- kernel/time/namespace.c | 18 ++++++++++--------
- 1 file changed, 10 insertions(+), 8 deletions(-)
+ arch/x86/include/asm/vdso/gettimeofday.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
-index f02430a73be8f081618792c8968bf0c112c54505..09bc4fb39f24ccdaa1e6e7f7238660a4f2a63b54 100644
---- a/kernel/time/namespace.c
-+++ b/kernel/time/namespace.c
-@@ -165,26 +165,26 @@ static struct timens_offset offset_from_ts(struct timespec64 off)
-  *     HVCLOCK
-  *     VVAR
-  *
-- * The check for vdso_time_data->clock_mode is in the unlikely path of
-+ * The check for vdso_clock->clock_mode is in the unlikely path of
-  * the seq begin magic. So for the non-timens case most of the time
-  * 'seq' is even, so the branch is not taken.
-  *
-  * If 'seq' is odd, i.e. a concurrent update is in progress, the extra check
-- * for vdso_time_data->clock_mode is a non-issue. The task is spin waiting for the
-+ * for vdso_clock->clock_mode is a non-issue. The task is spin waiting for the
-  * update to finish and for 'seq' to become even anyway.
-  *
-- * Timens page has vdso_time_data->clock_mode set to VDSO_CLOCKMODE_TIMENS which
-+ * Timens page has vdso_clock->clock_mode set to VDSO_CLOCKMODE_TIMENS which
-  * enforces the time namespace handling path.
+diff --git a/arch/x86/include/asm/vdso/gettimeofday.h b/arch/x86/include/asm/vdso/gettimeofday.h
+index edec796832e08b73d6d58bda6408957048f4e80e..9e52cc46e1da99114312d85b34ae52e539dac9b6 100644
+--- a/arch/x86/include/asm/vdso/gettimeofday.h
++++ b/arch/x86/include/asm/vdso/gettimeofday.h
+@@ -261,7 +261,7 @@ static inline u64 __arch_get_hw_counter(s32 clock_mode,
+ 	return U64_MAX;
+ }
+ 
+-static inline bool arch_vdso_clocksource_ok(const struct vdso_time_data *vd)
++static inline bool arch_vdso_clocksource_ok(const struct vdso_clock *vc)
+ {
+ 	return true;
+ }
+@@ -300,34 +300,34 @@ static inline bool arch_vdso_cycles_ok(u64 cycles)
+  * declares everything with the MSB/Sign-bit set as invalid. Therefore the
+  * effective mask is S64_MAX.
   */
--static void timens_setup_vdso_clock_data(struct vdso_time_data *vdata,
-+static void timens_setup_vdso_clock_data(struct vdso_clock *vc,
- 					 struct time_namespace *ns)
+-static __always_inline u64 vdso_calc_ns(const struct vdso_time_data *vd, u64 cycles, u64 base)
++static __always_inline u64 vdso_calc_ns(const struct vdso_clock *vc, u64 cycles, u64 base)
  {
--	struct timens_offset *offset = vdata->offset;
-+	struct timens_offset *offset = vc->offset;
- 	struct timens_offset monotonic = offset_from_ts(ns->offsets.monotonic);
- 	struct timens_offset boottime = offset_from_ts(ns->offsets.boottime);
+-	u64 delta = cycles - vd->cycle_last;
++	u64 delta = cycles - vc->cycle_last;
  
--	vdata->seq			= 1;
--	vdata->clock_mode		= VDSO_CLOCKMODE_TIMENS;
-+	vc->seq				= 1;
-+	vc->clock_mode			= VDSO_CLOCKMODE_TIMENS;
- 	offset[CLOCK_MONOTONIC]		= monotonic;
- 	offset[CLOCK_MONOTONIC_RAW]	= monotonic;
- 	offset[CLOCK_MONOTONIC_COARSE]	= monotonic;
-@@ -220,6 +220,7 @@ static void timens_set_vvar_page(struct task_struct *task,
- 				struct time_namespace *ns)
- {
- 	struct vdso_time_data *vdata;
-+	struct vdso_clock *vc;
- 	unsigned int i;
+ 	/*
+ 	 * Negative motion and deltas which can cause multiplication
+ 	 * overflow require special treatment. This check covers both as
+-	 * negative motion is guaranteed to be greater than @vd::max_cycles
++	 * negative motion is guaranteed to be greater than @vc::max_cycles
+ 	 * due to unsigned comparison.
+ 	 *
+ 	 * Due to the MSB/Sign-bit being used as invalid marker (see
+ 	 * arch_vdso_cycles_ok() above), the effective mask is S64_MAX, but that
+ 	 * case is also unlikely and will also take the unlikely path here.
+ 	 */
+-	if (unlikely(delta > vd->max_cycles)) {
++	if (unlikely(delta > vc->max_cycles)) {
+ 		/*
+ 		 * Due to the above mentioned TSC wobbles, filter out
+ 		 * negative motion.  Per the above masking, the effective
+ 		 * sign bit is now bit 62.
+ 		 */
+ 		if (delta & (1ULL << 62))
+-			return base >> vd->shift;
++			return base >> vc->shift;
  
- 	if (ns == &init_time_ns)
-@@ -236,9 +237,10 @@ static void timens_set_vvar_page(struct task_struct *task,
+ 		/* Handle multiplication overflow gracefully */
+-		return mul_u64_u32_add_u64_shr(delta & S64_MAX, vd->mult, base, vd->shift);
++		return mul_u64_u32_add_u64_shr(delta & S64_MAX, vc->mult, base, vc->shift);
+ 	}
  
- 	ns->frozen_offsets = true;
- 	vdata = page_address(ns->vvar_page);
-+	vc = vdata;
+-	return ((delta * vd->mult) + base) >> vd->shift;
++	return ((delta * vc->mult) + base) >> vc->shift;
+ }
+ #define vdso_calc_ns vdso_calc_ns
  
- 	for (i = 0; i < CS_BASES; i++)
--		timens_setup_vdso_clock_data(&vdata[i], ns);
-+		timens_setup_vdso_clock_data(&vc[i], ns);
- 
- out:
- 	mutex_unlock(&offset_lock);
 
 -- 
 2.48.1
