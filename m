@@ -1,70 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-6648-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6649-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 655EFA4C2A9
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 15:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42245A4C2B2
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 15:03:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z60nj4nhgz2xX3;
-	Tue,  4 Mar 2025 01:00:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z60s42d38z2yQl;
+	Tue,  4 Mar 2025 01:03:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741010425;
-	cv=none; b=LURjoy3d2ALWwjIzmP+56ND+2tbwh/XLeEY9e3wrDRsbTez0WI3hxnkj8mzpL8oOBWGkthXmXqp5+ga+Rhzbg2R5zvgie7si806XQN0hH5RVDR8kjQUQDb4fA20GLJ1vRlYe3kAAx8iEaNc3QjYQWE7yw5R+NH/15DpWELgptLKKrsOi2mYs25LUiB2Yb/4Mp9VkW0xTcGLGKh9JbjONV981XjpDKVes6W7aW769u15Vl45aLYr2zWXZsqt2hC9dk+hywH+bz9VXBHmzg+E/aAxxq+kDDpQLGcXbTVGPC06fdPe2JmvovmKzzVc3NBXF6Wrvvw16oWduoZ6xfZBjMw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741010599;
+	cv=none; b=o37Q4lUit0laN2TKtiWHOML+rrwnFR4NGMR1F7BKtRZ/SAui5SEMY9GlsG47Ctx4Cu+R6pbJ2V0ifOj5tBixXRmtSbbkQFBPWeWfgc17av6A3fkDiDBlF/9+DD6U4tH27H5oWoRlbRsTtc7ZKtjPZ37kiCv3UNFjKnWAqCV1A44rE6WC4f5/J8fOdReC8g53roCc3WqBeoWVzdHrh0YZwFYJ9hZAkm7XrSvFcrW52CtE7MJqbf3SyDQphyrUgXC2E31dnlChIDKqB0p1z88PTMO090yPN+x+8S412UHtUH1uF/H3eYkdHSTMHcUXNsERuPf5hYv6hPsRB0azJ0OMTA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741010425; c=relaxed/relaxed;
-	bh=26REjzN2pCHBTgrgK8lb2ROww5O4wc/uS6T8Q9tL0N8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WlkugvmzOroDe/qHyd6U4fZy2QnIuXEN2RSjbyvAHx3qCMP4i6V0bmLnSARVxfpXSttxe5SuE35xtydnkC4LjlDlqhTudsDsEsogf4PsYWyAkDnFBdRWCEH4Wew8rIvzib8EpClCNlQMJJ+uQ1vUUXFHQEtk4bHkvKvF01k3eI4xuW+kJSIvJaZcuu6ZffHSuXHo9CPJjFFWflJIPUmder7Jewbqhgdkhe2aiBcYRjMG+ZXscI8mITvGA3q8dDB9I1YqMzrUpmZdH65hD7e1lJ8COytKF3YyaaSU1+jX/WGs3t6QzhR9U3hzyFsfkLFLaNwqO4b/a2zYfslGleTMdw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LDE7Vziq; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LDE7Vziq;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1741010599; c=relaxed/relaxed;
+	bh=P7gGiZwjzyL+/+VA6we4MZXQRYxqsjECLv81vWaVcmo=;
+	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=QNEWwsgm/vNU6TFTDMjJpXXKjSCMyXyTrU0pCejKXmgQ8bRF839a3TQEXL6O+RPZJ0Wu1L9h8zSzNGxqaMnFfirg6Y7e2eMskM/kq1RlxzppbKKxah/Z05Gk1S9KqhPxU58uP0CJaGDTsKpePPmgagcJ+9743IxaZa+fAq4lqK0h2RfkEoXr/Pq89CIKfugpB4r0g6EnQ2CkP8j2c43C3jTSgvcBqeKYqMdH2+Kll/EO9tB4RiIMI5qRXJ8dsAPUEViuU+r3VwoRmMZMmDzpbnc5IKie/ZKjgQp3fehslnaLOOAPClMVFSeG+s6z/vObrMc7I2cM/DNIWDzesdZRTg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z60nh5j04z2y92
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 01:00:24 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 2FA2B5C566B;
-	Mon,  3 Mar 2025 13:58:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78C4AC4CED6;
-	Mon,  3 Mar 2025 14:00:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741010422;
-	bh=Kp+dH75fRkj4Yg2B/u14qSdnyXfV1851mjVlG/eyDkU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LDE7VziqE8Z5eAcLy1ADJtkYPvmnQ1FWgShTdhPsi0Jp00/5H4ih7eFkudyTpV6Ey
-	 vzUekJexEEcxmdtofMzZn68/GabGTmMLoyDmPxm2kdElEPPLV3qZha5Aib/AxkKR7v
-	 m/mOgM3NliygKNSm4cdkNZYbDU4CUHy7o2nUsiBNydIculfOZE9XJX6vA2Cx8O7TEs
-	 nqGWAiDj2LY2VHmrB5jeTqSMkAWpR8/oVe9f3U39KoH0vSV+sGksApEvY4YbqOUYgD
-	 MEbgvDOyAHF9gVrkOu+yiC5BM/+QxMgNexT3mwUVWIsR0RWjNldR9e1Z2gFqBmOcaC
-	 wYe+elLtbMKhQ==
-Date: Mon, 3 Mar 2025 08:00:21 -0600
-From: Rob Herring <robh@kernel.org>
-To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
-Cc: Richard Weinberger <richard@nod.at>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Conor Dooley <conor+dt@kernel.org>, linux-kernel@vger.kernel.org,
-	Crystal Wood <oss@buserror.net>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	devicetree@vger.kernel.org, Frank Li <Frank.Li@nxp.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-mtd@lists.infradead.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 2/3] dt-bindings: nand: Add fsl,elbc-fcm-nand
-Message-ID: <20250303140021.GA1732495-robh@kernel.org>
-References: <20250226-ppcyaml-elbc-v3-0-a90ed71da838@posteo.net>
- <20250226-ppcyaml-elbc-v3-2-a90ed71da838@posteo.net>
- <174059551678.3319332.12055848852503108874.robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z60s15jjRz2xgp
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 01:03:15 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Z60lz518fz1ltYp;
+	Mon,  3 Mar 2025 21:58:55 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id C0B1318001B;
+	Mon,  3 Mar 2025 22:03:05 +0800 (CST)
+Received: from [10.67.121.177] (10.67.121.177) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Mon, 3 Mar 2025 22:03:04 +0800
+CC: <dave.hansen@linux.intel.com>, <bp@alien8.de>, <mingo@redhat.com>,
+	<linux-arm-kernel@lists.infradead.org>, <mpe@ellerman.id.au>,
+	<peterz@infradead.org>, <tglx@linutronix.de>, <will@kernel.org>,
+	<catalin.marinas@arm.com>, <yangyicong@hisilicon.com>,
+	<linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
+	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
+	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>,
+	<sshegde@linux.ibm.com>
+Subject: Re: [PATCH v11 2/4] arch_topology: Support SMT control for OF based
+ system
+To: Dietmar Eggemann <dietmar.eggemann@arm.com>, <sudeep.holla@arm.com>,
+	<pierre.gondois@arm.com>
+References: <20250218141018.18082-1-yangyicong@huawei.com>
+ <20250218141018.18082-3-yangyicong@huawei.com>
+ <8a9aedef-08d7-445f-9b67-85e74ec6bd50@arm.com>
+From: Yicong Yang <yangyicong@huawei.com>
+Message-ID: <21e74021-fb68-0003-f0f4-7f54dd674b9d@huawei.com>
+Date: Mon, 3 Mar 2025 22:03:04 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,69 +68,155 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <174059551678.3319332.12055848852503108874.robh@kernel.org>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+In-Reply-To: <8a9aedef-08d7-445f-9b67-85e74ec6bd50@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.121.177]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
+X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Feb 26, 2025 at 12:45:17PM -0600, Rob Herring (Arm) wrote:
+On 2025/2/28 19:11, Dietmar Eggemann wrote:
+> On 18/02/2025 15:10, Yicong Yang wrote:
+>> From: Yicong Yang <yangyicong@hisilicon.com>
+>>
+>> On building the topology from the devicetree, we've already
+>> gotten the SMT thread number of each core. Update the largest
+>> SMT thread number and enable the SMT control by the end of
+>> topology parsing.
+>>
+>> The core's SMT control provides two interface to the users [1]:
+>> 1) enable/disable SMT by writing on/off
+>> 2) enable/disable SMT by writing thread number 1/max_thread_number
 > 
-> On Wed, 26 Feb 2025 18:01:41 +0100, J. Neuschäfer wrote:
-> > Formalize the binding already supported by the fsl_elbc_nand.c driver
-> > and used in several device trees in arch/powerpc/boot/dts/.
-> > 
-> > raw-nand-chip.yaml is referenced in order to accommodate situations in
-> > which the ECC parameters settings are set in the device tree. One such
-> > example is in arch/powerpc/boot/dts/turris1x.dts:
-> > 
-> > 	/* MT29F2G08ABAEAWP:E NAND */
-> > 	nand@1,0 {
-> > 		compatible = "fsl,p2020-fcm-nand", "fsl,elbc-fcm-nand";
-> > 		reg = <0x1 0x0 0x00040000>;
-> > 		nand-ecc-mode = "soft";
-> > 		nand-ecc-algo = "bch";
-> > 
-> > 		partitions { ... };
-> > 	};
-> > 
-> > Reviewed-by: Frank Li <Frank.Li@nxp.com>
-> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > ---
-> > 
-> > V3:
-> > - remove unnecessary #address/size-cells from nand node in example
-> > - add Frank Li's review tag
-> > - add missing end of document marker (...)
-> > - explain choice to reference raw-nand-chip.yaml
-> > 
-> > V2:
-> > - split out from fsl,elbc binding patch
-> > - constrain #address-cells and #size-cells
-> > - add a general description
-> > - use unevaluatedProperties=false instead of additionalProperties=false
-> > - fix property order to comply with dts coding style
-> > - include raw-nand-chip.yaml instead of nand-chip.yaml
-> > ---
-> >  .../devicetree/bindings/mtd/fsl,elbc-fcm-nand.yaml | 68 ++++++++++++++++++++++
-> >  1 file changed, 68 insertions(+)
-> > 
+> 1/max_thread_number stands for '1 or max_thread_number', right ?
 > 
-> My bot found errors running 'make dt_binding_check' on your patch:
+> Aren't the two interfaces:
 > 
-> yamllint warnings/errors:
+> (a) /sys/devices/system/cpu/smt/active
+> (b) /sys/devices/system/cpu/smt/control
 > 
-> dtschema/dtc warnings/errors:
-> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/mtd/fsl,elbc-fcm-nand.example.dtb: nand@1,0: $nodename:0: 'nand@1,0' does not match '^nand@[a-f0-9]$'
-> 	from schema $id: http://devicetree.org/schemas/mtd/fsl,elbc-fcm-nand.yaml#
+> and you write 1) or 2) (or 'forceoff') into (b)?
 
-Drop the unit address in raw-nand-chip.yaml. So: 
+yes you're correct. "active" is a RO file for status only so not for this interface.
+Let me explicitly mention the /sys/devices/system/cpu/smt/control here in the commit.
 
-properties:
-  $nodename:
-    pattern: "^nand@"
+> 
+>> If a system have more than one SMT thread number the 2) may
+> 
+> s/have/has
+> 
+>> not handle it well, since there're multiple thread numbers in the
+> 
+> multiple thread numbers other than 1, right?
+
+according to the pr_warn_once() we implemented below it also includes the case
+where the system have one type of SMT cores and non-SMT cores (the thread number is 1):
+- 1 thread
+- X (!= 1) threads
+
+Discussion made in [1] and I thought we have agreement (hope I understood correctly)
+that all the asymmetric cases need to notify. Do you and Sudeep think we should not
+warn in such case?
+
+[1] https://lore.kernel.org/linux-arm-kernel/10082e64-b00a-a30b-b9c5-1401a54f6717@huawei.com/
+
+> 
+>> system and 2) only accept 1/max_thread_number. So issue a warning
+>> to notify the users if such system detected.
+> 
+> This paragraph seems to be about heterogeneous systems. Maybe mention this?
+> 
+> Heterogeneous system with SMT only on a subset of cores (like Intel
+> Hybrid): This one works (N threads per core with N=1 and N=2) just fine.
+> 
+> But on Arm64 (default) we would still see:
+> 
+> [0.075782] Heterogeneous SMT topology is partly supported by SMT control
+> 
+
+more clearer, will add it. Thanks.
+
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
+>>
+>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>> ---
+>>  drivers/base/arch_topology.c | 27 +++++++++++++++++++++++++++
+>>  1 file changed, 27 insertions(+)
+>>
+>> diff --git a/drivers/base/arch_topology.c b/drivers/base/arch_topology.c
+>> index 3ebe77566788..23f425a9d77a 100644
+>> --- a/drivers/base/arch_topology.c
+>> +++ b/drivers/base/arch_topology.c
+>> @@ -11,6 +11,7 @@
+>>  #include <linux/cleanup.h>
+>>  #include <linux/cpu.h>
+>>  #include <linux/cpufreq.h>
+>> +#include <linux/cpu_smt.h>
+>>  #include <linux/device.h>
+>>  #include <linux/of.h>
+>>  #include <linux/slab.h>
+>> @@ -506,6 +507,10 @@ core_initcall(free_raw_capacity);
+>>  #endif
+>>  
+>>  #if defined(CONFIG_ARM64) || defined(CONFIG_RISCV)
+>> +
+>> +/* Maximum SMT thread number detected used to enable the SMT control */
+> 
+> maybe shorter ?
+> 
+> /* used to enable SMT control */
+> 
+
+sure.
+
+>> +static unsigned int max_smt_thread_num;
+>> +
+>>  /*
+>>   * This function returns the logic cpu number of the node.
+>>   * There are basically three kinds of return values:
+>> @@ -565,6 +570,16 @@ static int __init parse_core(struct device_node *core, int package_id,
+>>  		i++;
+>>  	} while (1);
+>>  
+>> +	/*
+>> +	 * If max_smt_thread_num has been initialized and doesn't match
+>> +	 * the thread number of this entry, then the system has
+>> +	 * heterogeneous SMT topology.
+>> +	 */
+>> +	if (max_smt_thread_num && max_smt_thread_num != i)
+>> +		pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
+>> +
+>> +	max_smt_thread_num = max_t(unsigned int, max_smt_thread_num, i);
+>> +
+>>  	cpu = get_cpu_for_node(core);
+>>  	if (cpu >= 0) {
+>>  		if (!leaf) {
+>> @@ -677,6 +692,18 @@ static int __init parse_socket(struct device_node *socket)
+>>  	if (!has_socket)
+>>  		ret = parse_cluster(socket, 0, -1, 0);
+>>  
+>> +	/*
+>> +	 * Notify the CPU framework of the SMT support. Initialize the
+>> +	 * max_smt_thread_num to 1 if no SMT support detected or failed
+>> +	 * to parse the topology. A thread number of 1 can be handled by
+>> +	 * the framework so we don't need to check max_smt_thread_num to
+>> +	 * see we support SMT or not.
+> 
+> Not sure whether the last sentence is needed here?
+> 
+
+We always need to call cpu_smt_set_num_threads() to notify the framework
+of the thread number even if SMT is not supported. In which case the
+thread number is 1 but the framework can handle this well. I worry readers
+may get confused for notifying a thread number of 1 so add this comment this.
+
+Will get rid of this if thought redundant.
+
+Thanks.
+
 
 
