@@ -1,66 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-6604-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6605-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA420A4B29D
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  2 Mar 2025 16:34:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC71A4B5F1
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 03:03:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5QwL3VbJz3048;
-	Mon,  3 Mar 2025 02:34:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5htw5fFcz30Qk;
+	Mon,  3 Mar 2025 13:03:52 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=80.12.242.26
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740929650;
-	cv=none; b=gBuqgHLVQ79ojxweQzRdD3YKaOiCtHDInhABCDeqFtsOplHqVp31fkFSIeM1LtE/OItR4UWENBR0S/NeTgrEBR6bnlre1tZsUjSmJBCok6cBZTIf8sA4Kp8T87VghbaATR77/u/Nr136gTcp5xLHRN91wF0IDCs4OcOgstx17KMaCVTMzHwe9vXbY7e2bw035WQh1f+WQfIDnla0OnArqIUOAdfzW2pmEf8KD0hoC+/hHU9nMfBPcZ2qyWdTvd2xVSGy+YGAKEUww+m1fk5nGIeOlh7M8ucosmL3nmLYzOT1cS51xWUTZPJpX+BjvkVVDzX625It063YEx6P8EH+kA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740967432;
+	cv=none; b=k97BrK1kldsz6n+uxKss5SmC4mFs7YbJ8+t3Ir4TuDVv7WrgfYSCXs9I7VeyD/9SI97Vf6lJKz8XNX4DVs92cgPbXQMQmhC53M3BFlPKR80/GY2wWuIExXDyH0X/ypNM8ilioDp7KMLyX5ujnelFjWswc9GinzokoyedQ5tR63H5kdE9jTmg/g9yKA3Zw5w3/gdbAtngQSxNQiwvJwp5agPsrgaj5zPNgCAoguQY3XyDMMaIB3ppIDiA+dnHPDleFiDQgOVpX9VRYIcTxrVMtSEIGL6hqczZgeIwv53xapYBPSodTorELiqxvf2B7czYxWEstDzhgWW0bSsXMBemaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740929650; c=relaxed/relaxed;
-	bh=KMpJ1cgSZnZMApMOU4s4omcRGFI4bQ1HNYVgjZASNXo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lgg8fdi+awTCnXa63uGG82lOFmUNiIcrk3CKgHR/Z0Tr/pfVbFENl4TU6b3Srw9q0S+RaAlzrjSaUyyL5v+q7u1iYLQ2HiZmv9xjhl9RMc1QMHTML/tYscIzDUcVBIVp890jlf9kujN0jQ/FquHNIc1QOxbdhgan/HFsY1d9uMBSUMaJ3lDclHx1gIMOVHnwoBOmMa9erEKkk0sqWaX85JPYS4M9NBszFKdjeLN1yOX16ET2q4Dy+Wdnn6be+QXUD5/khSkhrCCutWEdKApx/MnNwm+GA3i7nafvD3Hq/QCWm71w9uA+d7O8QoHoij3EbADfwn0iN4a9gZ7cyOrmRA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=Dx0/ybMq; dkim-atps=neutral; spf=pass (client-ip=80.12.242.26; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org) smtp.mailfrom=wanadoo.fr
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+	t=1740967432; c=relaxed/relaxed;
+	bh=ovJU3Q9h8hU/G3fkOoZ1jgiNl8W2k7s8Lwa5u8Ka3Hk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GAkJ3xCpmWKvvyRU3JJffJV/l2xMHm3LMFH5YEL6HfQtwIwfSxRfCanULlZ8lCm+YwQBETvRRLLBSDQQ7rx3ee3KjnXCz27FKUi6XFs/+Nu/Rn+K6KjALiTAZfwKR1ZxDM6od578jLs45F/8bNSV7COKiVaRpO5B1jJsR1Jhxk0mtwOg7oC90CdKlfGJQ4sj1UXUMoN3txJk4tIW9fyELQWreumy+8OKrLUZq6XeX0K+bM+FLQJu07Kq8CKTYlLYllu8dZL9oZiQnzCI6kyfD3rFW103mf+4toBW17QKXMlvsWXtZhPgDfQnjw27AuXlnfz1OURCNs9WfZW2U2w5yQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=k+Sk2+6n; dkim-atps=neutral; spf=pass (client-ip=115.124.30.130; helo=out30-130.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=wanadoo.fr header.i=@wanadoo.fr header.a=rsa-sha256 header.s=t20230301 header.b=Dx0/ybMq;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=k+Sk2+6n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=wanadoo.fr (client-ip=80.12.242.26; helo=smtp.smtpout.orange.fr; envelope-from=christophe.jaillet@wanadoo.fr; receiver=lists.ozlabs.org)
-Received: from smtp.smtpout.orange.fr (smtp-26.smtpout.orange.fr [80.12.242.26])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.130; helo=out30-130.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5QwK4zbTz2xGF
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 02:34:09 +1100 (AEDT)
-Received: from fedora.home ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id okmqtJVk70yWRokn6t9OJ1; Sun, 02 Mar 2025 15:59:41 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1740927581;
-	bh=KMpJ1cgSZnZMApMOU4s4omcRGFI4bQ1HNYVgjZASNXo=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=Dx0/ybMqwXj8mbrXBHEK6pjr9gGi0LI4qtj1udzo9LebLiYUEKhR/IgPOG24dEoDK
-	 NOIYY2bkElFeMi2bSqs4/EFCCw/gpEQ3g1jT6Mb2xQlxMZmBTGo0Ofu5OtDD1y6w4C
-	 fEcfOBYRKV53Ji6SqTgbCSGVyshsgKXRCJVBEXY9Ycj719ran9PVo92lb6wJig9xPW
-	 6rVY+E5CHdfrG0/yl95P6J9CbGOrOmcQqF60QKIHFOuQza5S/xR2vKmw9v2Jf/rc/A
-	 JxRFbkpP0e1ORq8zuo0i+vRnEFfBKWtIpQ1e6bd6Vdj9w4b5x4A97CsoVm7HcNpzwm
-	 m8aS0h8jNJxyw==
-X-ME-Helo: fedora.home
-X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
-X-ME-Date: Sun, 02 Mar 2025 15:59:41 +0100
-X-ME-IP: 90.11.132.44
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-To: maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	npiggin@gmail.com,
-	christophe.leroy@csgroup.eu,
-	naveen@kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	kernel-janitors@vger.kernel.org,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Subject: [PATCH 2/2] powerpc: gpio_mdio: Use devm_of_mdiobus_register()
-Date: Sun,  2 Mar 2025 15:59:16 +0100
-Message-ID: <639cf94e5b5f0f9532b65a34844165b889934d52.1740926808.git.christophe.jaillet@wanadoo.fr>
-X-Mailer: git-send-email 2.48.1
-In-Reply-To: <cover.1740926808.git.christophe.jaillet@wanadoo.fr>
-References: <cover.1740926808.git.christophe.jaillet@wanadoo.fr>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5htt2vD3z30CF
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 13:03:49 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1740967425; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ovJU3Q9h8hU/G3fkOoZ1jgiNl8W2k7s8Lwa5u8Ka3Hk=;
+	b=k+Sk2+6noQgM5yirscYZfq4vG/G8hZCO3SPVJm3K2kDP7xNEqgQGvhHHLRVSF9tNHzHu3Tsn0tRd3LMVnCWRr3SmgGG7e8arB5JVIaFL/Qx8iThi1z1dvnu+8NxW2ihben8tzw8/TmAj8mG72AMLh7/SoJPOAyT9tvB5WJiEKg0=
+Received: from 30.246.161.128(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WQWfcKP_1740967421 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 03 Mar 2025 10:03:42 +0800
+Message-ID: <8c7b0cbf-fc93-4d97-b388-bfd0f13e404b@linux.alibaba.com>
+Date: Mon, 3 Mar 2025 10:03:41 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,67 +50,93 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 0/3] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+To: linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org,
+ sathyanarayanan.kuppuswamy@linux.intel.com
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+ terry.bowman@amd.com, tianruidong@linux.alibaba.com
+References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+In-Reply-To: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Use devm_of_mdiobus_register() in order to remove the now empty .remove()
-function.
 
-Doing so dev_set_drvdata() is now also unneeded. Remove it as well.
 
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
----
-This patch is compile tested only.
----
- arch/powerpc/platforms/pasemi/gpio_mdio.c | 15 +--------------
- 1 file changed, 1 insertion(+), 14 deletions(-)
+在 2025/2/17 10:42, Shuai Xue 写道:
+> changes since v3:
+> - squash patch 1 and 2 into one patch per Sathyanarayanan
+> - add comments note for dpc_process_error per Sathyanarayanan
+> - pick up Reviewed-by tag from Sathyanarayanan
+> 
+> changes since v2:
+> - moving the "err_port" rename to a separate patch per Sathyanarayanan
+> - rewrite comments of dpc_process_error per Sathyanarayanan
+> - remove NULL initialization for err_dev per Sathyanarayanan
+> 
+> changes since v1:
+> - rewrite commit log per Bjorn
+> - refactor aer_get_device_error_info to reduce duplication per Keith
+> - fix to avoid reporting fatal errors twice for root and downstream ports per Keith
+> 
+> The AER driver has historically avoided reading the configuration space of an
+> endpoint or RCiEP that reported a fatal error, considering the link to that
+> device unreliable. Consequently, when a fatal error occurs, the AER and DPC
+> drivers do not report specific error types, resulting in logs like:
+> 
+>     pcieport 0000:30:03.0: EDR: EDR event received
+>     pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>     pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>     pcieport 0000:30:03.0: AER: broadcast error_detected message
+>     nvme nvme0: frozen state error detected, reset controller
+>     nvme 0000:34:00.0: ready 0ms after DPC
+>     pcieport 0000:30:03.0: AER: broadcast slot_reset message
+> 
+> AER status registers are sticky and Write-1-to-clear. If the link recovered
+> after hot reset, we can still safely access AER status of the error device.
+> In such case, report fatal errors which helps to figure out the error root
+> case.
+> 
+> After this patch set, the logs like:
+> 
+>     pcieport 0000:30:03.0: EDR: EDR event received
+>     pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>     pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>     pcieport 0000:30:03.0: AER: broadcast error_detected message
+>     nvme nvme0: frozen state error detected, reset controller
+>     pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
+>     nvme 0000:34:00.0: ready 0ms after DPC
+>     nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
+>     nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
+>     nvme 0000:34:00.0:    [ 4] DLP                    (First)
+>     pcieport 0000:30:03.0: AER: broadcast slot_reset message
+> 
+> Shuai Xue (3):
+>    PCI/DPC: Clarify naming for error port in DPC Handling
+>    PCI/DPC: Run recovery on device that detected the error
+>    PCI/AER: Report fatal errors of RCiEP and EP if link recoverd
+> 
+>   drivers/pci/pci.h      |  5 +++--
+>   drivers/pci/pcie/aer.c | 11 +++++++----
+>   drivers/pci/pcie/dpc.c | 34 +++++++++++++++++++++++++++-------
+>   drivers/pci/pcie/edr.c | 35 ++++++++++++++++++-----------------
+>   drivers/pci/pcie/err.c |  9 +++++++++
+>   5 files changed, 64 insertions(+), 30 deletions(-)
+> 
 
-diff --git a/arch/powerpc/platforms/pasemi/gpio_mdio.c b/arch/powerpc/platforms/pasemi/gpio_mdio.c
-index 2c54f5f063b7..6712ccb84c0a 100644
---- a/arch/powerpc/platforms/pasemi/gpio_mdio.c
-+++ b/arch/powerpc/platforms/pasemi/gpio_mdio.c
-@@ -234,10 +234,8 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
- 	priv->mdio_pin = *prop;
- 
- 	new_bus->parent = dev;
--	dev_set_drvdata(dev, new_bus);
--
--	err = of_mdiobus_register(new_bus, np);
- 
-+	err = devm_of_mdiobus_register(dev, new_bus, np);
- 	if (err != 0) {
- 		pr_err("%s: Cannot register as MDIO bus, err %d\n",
- 				new_bus->name, err);
-@@ -247,16 +245,6 @@ static int gpio_mdio_probe(struct platform_device *ofdev)
- 	return 0;
- }
- 
--
--static void gpio_mdio_remove(struct platform_device *dev)
--{
--	struct mii_bus *bus = dev_get_drvdata(&dev->dev);
--
--	mdiobus_unregister(bus);
--
--	dev_set_drvdata(&dev->dev, NULL);
--}
--
- static const struct of_device_id gpio_mdio_match[] =
- {
- 	{
-@@ -269,7 +257,6 @@ MODULE_DEVICE_TABLE(of, gpio_mdio_match);
- static struct platform_driver gpio_mdio_driver =
- {
- 	.probe		= gpio_mdio_probe,
--	.remove		= gpio_mdio_remove,
- 	.driver = {
- 		.name = "gpio-mdio-bitbang",
- 		.of_match_table = gpio_mdio_match,
--- 
-2.48.1
 
+Hi, All,
+
+Gentle ping.
+
+Thanks.
+Shuai
 
