@@ -1,62 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-6645-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6646-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EF17A4C131
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 14:04:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8823CA4C213
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 14:35:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5zYG5Z8Gz30WB;
-	Tue,  4 Mar 2025 00:04:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z60FM6MVGz2xS6;
+	Tue,  4 Mar 2025 00:35:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741007074;
-	cv=none; b=DZitCCn4mTvvaI3wXBC3xoFAAeIDpe/kqzo8BuHo6kcmBonhAhkziCuyjKKP++X+PrNnifNudmaMw2hDA90VsHI+wBuKtSbMgIUa8UP5ztEm9rPMxB7y5pkH/WvWGgcbKVQKiY7AwYU/Zr4SGIbrwVaM2xXMmNTCJf1aSBqT8/y6XndSzHeLI+wRFqbCR+jZMH/xyY49kA5i06yD2Ep9kzQ2GbWAOFxlLO9SyDLybZpv/SCQzKc+RzfDwOV2cf/v3CyldRO6It+BUxs4ryuHUYU3R/Z4N00EzoGrQ2qhDabfsGAJAsUryxYTvVr518ezqyolqzXdABid+dHo1ttnJw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.189
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741008951;
+	cv=none; b=DjFJyaYuI+bTMDL+WeCQ3UdPdG9GOnE4wnU7zfoVVUdQ/pCTQhV2hch+xcBbd00NuUCYydLZbj6Cygp5/IStuVuRviiuQ3uSsSWkdSDl6vddRTfUzBkfoYcktnUNupRzC2ZSKGa4Z/1frtuBeUjVIIdEnzXSiiLn2f1EUm8zFgJxDjhYrgLYFh3GMlCvXzZeh1ujWmXdzW5XEv1oJkXVvfMr6SbBLg8dN43gDQ0Tu81Xil7NIvVYKiotaqb/SAyf5DvJD9aKTavHNt4Qxcf71M00Cl3UczZkKrCbW5AHPStijzcoqXI9XPcdvQOQdc4hf3cdgFa6JOZM9gjOlt5aWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741007074; c=relaxed/relaxed;
-	bh=ytQRahAGQVSCO159XmRgKkX3+/eMGItsL9NJsSQf7Ic=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hZD50eri+CedQt8rb8I17qmejMEJTIHDi83nSZyebwad70hiFn1b0g8ryCDIz4UaUNJtP3oi5EYkzz4hW4hdWTpqdgV8SQX5G/qapD/fAOD6Bck3G2q+PR9C3m1/3SEegSHTXd48R2j8GDhFSbem8xomFaexuDS9OVYtuGnSQ+TLmsktD7gwuzFrgGnc4VR5tDy62h84dSpP20Qda4S7Oz2PrYKjdY5gDDVgUaNaXpuRZjUbcYm7Owfu/zkhjnDYCvWdYdUwf6topcjeAcTlbPnOGO+63sm3b1W73E5aC/seUPT/ji45S8rQshP4fYFK+AXxRJiRekiTvVQjZPts9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GgPH6cRE; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=GgPH6cRE;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	t=1741008951; c=relaxed/relaxed;
+	bh=+NvbYf7uxpFxnfAxigPzbutqxrbeU3zLcuZDwWkiTBE=;
+	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=J5xNItDczUIeQEef6kfJ7QsTdFk1eZKJlN21+FQ92BWFt015ZzJwfF+4WStKv9kpamcjozVR/IszV9Rc2hIYXb7bLJLcHO0hvXX9/l5d/esVQ1iqgby0klcXydlkxL9EnX1wINqwJe8XWIOS/7+s+NNCgGlAWWLnKxK4LFBvZ12JhXRqYFGdFgxVMMFqxl3NdvowoiqxNe75dbiQv9MT1hCoIMkr6iC/wkXRYkW9VUGfQ/TpAUvz1rF5R8bgaKv4BXjGRjOHKAEC61wMwKOPR9udtD+NCzA8e2PR4e+dXAmlRadZLjVOCRUZq+1un0i18c/VazryvTqwsYsy2+GfzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5zYG1CBVz30VZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 00:04:34 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id A8B5E5C5876;
-	Mon,  3 Mar 2025 13:02:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04FA3C4CEE6;
-	Mon,  3 Mar 2025 13:04:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741007072;
-	bh=MJ1eWiZF1zNkmxOw5SUe/EJwnqJlYPHJ1CHEJLkZExk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GgPH6cRERh1HMBBuEM2ytiHoxcEIyQ8WHaLHvhXD58EXv078Ru8hCw/x65dwmTBP4
-	 FnFXmWLTsOU2oI4ghoXEh/wKW6v0/L48r4z67qBYN6A3oQgbrEwpSlrM8fUdueHRWm
-	 7i6xuao04uAPUVg51r9+Da3fmNWu0+Ba3hDEJWB9NoTvSSbXmsmKSHfXjPJwj5sCQS
-	 ZVwRqbXN2/6xym99sAr/ifjoVnDgXVFKOvgx2jKJ/+wu1R4g/glb6BqWV38wtbCTVR
-	 d+vB32cooXYt02OsyvInT9tfzxmHwfMrTt3bBR5MRTAwQuAO9dD2pTBBP6zar3cWI4
-	 yIDrZdw9lr/ow==
-Date: Mon, 3 Mar 2025 07:04:30 -0600
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Shengjiu Wang <shengjiu.wang@nxp.com>
-Cc: tiwai@suse.com, Xiubo.Lee@gmail.com, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org, lgirdwood@gmail.com,
-	krzk+dt@kernel.org, broonie@kernel.org, perex@perex.cz,
-	shengjiu.wang@gmail.com, linuxppc-dev@lists.ozlabs.org,
-	conor+dt@kernel.org, nicoleotsuka@gmail.com, festevam@gmail.com,
-	linux-sound@vger.kernel.org
-Subject: Re: [PATCH 3/4] ASoC: dt-bindings: fsl,audmix: make 'dais' property
- to be optional
-Message-ID: <174100706937.1425909.3592597206519179445.robh@kernel.org>
-References: <20250226100508.2352568-1-shengjiu.wang@nxp.com>
- <20250226100508.2352568-4-shengjiu.wang@nxp.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z60FL3MNDz2xMQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 00:35:47 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.88.194])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4Z609V2G7zz9wF9;
+	Mon,  3 Mar 2025 21:32:30 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id 6A48E14037B;
+	Mon,  3 Mar 2025 21:35:37 +0800 (CST)
+Received: from [10.67.121.177] (10.67.121.177) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Mon, 3 Mar 2025 21:35:36 +0800
+CC: <yangyicong@hisilicon.com>, <linuxppc-dev@lists.ozlabs.org>,
+	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
+	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
+	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>,
+	<sshegde@linux.ibm.com>
+Subject: Re: [PATCH v11 1/4] cpu/SMT: Provide a default
+ topology_is_primary_thread()
+To: Dietmar Eggemann <dietmar.eggemann@arm.com>, <catalin.marinas@arm.com>,
+	<will@kernel.org>, <sudeep.holla@arm.com>, <tglx@linutronix.de>,
+	<peterz@infradead.org>, <mpe@ellerman.id.au>,
+	<linux-arm-kernel@lists.infradead.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <pierre.gondois@arm.com>
+References: <20250218141018.18082-1-yangyicong@huawei.com>
+ <20250218141018.18082-2-yangyicong@huawei.com>
+ <e3607ed0-bdf5-4fef-8731-b81fae649312@arm.com>
+From: Yicong Yang <yangyicong@huawei.com>
+Message-ID: <af8d364e-a5e0-decb-4463-fd6b7c54a0d9@huawei.com>
+Date: Mon, 3 Mar 2025 21:35:35 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,26 +67,54 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250226100508.2352568-4-shengjiu.wang@nxp.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <e3607ed0-bdf5-4fef-8731-b81fae649312@arm.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.67.121.177]
+X-ClientProxiedBy: dggems702-chm.china.huawei.com (10.3.19.179) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
+X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-On Wed, 26 Feb 2025 18:05:07 +0800, Shengjiu Wang wrote:
-> Make 'dais' property to be optional. When there is no 'dais' property,
-> driver won't register the card, dts should have audio graph card node
-> for linking this device.
+On 2025/2/28 19:10, Dietmar Eggemann wrote:
+> On 18/02/2025 15:10, Yicong Yang wrote:
+>> From: Yicong Yang <yangyicong@hisilicon.com>
 > 
-> Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-> ---
->  Documentation/devicetree/bindings/sound/fsl,audmix.yaml | 1 -
->  1 file changed, 1 deletion(-)
+> [...]
+> 
+>> diff --git a/include/linux/topology.h b/include/linux/topology.h
+>> index 52f5850730b3..b3aba443c4eb 100644
+>> --- a/include/linux/topology.h
+>> +++ b/include/linux/topology.h
+>> @@ -240,6 +240,28 @@ static inline const struct cpumask *cpu_smt_mask(int cpu)
+>>  }
+>>  #endif
+>>  
+>> +#ifndef topology_is_primary_thread
+>> +
+>> +#define topology_is_primary_thread topology_is_primary_thread
+>> +
+>> +static inline bool topology_is_primary_thread(unsigned int cpu)
+>> +{
+>> +	/*
+>> +	 * On SMT hotplug the primary thread of the SMT won't be disabled.
+>> +	 * Architectures do have a special primary thread (e.g. x86) need
+>> +	 * to override this function. Otherwise just make the first thread
+>> +	 * in the SMT as the primary thread.
+>> +	 *
+>> +	 * The sibling cpumask of an offline CPU contains always the CPU
+>> +	 * itself for architectures using CONFIG_GENERIC_ARCH_TOPOLOGY.
+>> +	 * Other architectures should use this depend on their own
+>> +	 * situation.
+> 
+> This sentence is hard to get. Do you want to say that other
+> architectures (CONFIG_GENERIC_ARCH_TOPOLOGY or
+> !CONFIG_GENERIC_ARCH_TOPOLOGY) have to check whether they can use this
+> default implementation or have to override it?
 > 
 
-Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+yes exactly, will improve the comments. thanks.
 
 
