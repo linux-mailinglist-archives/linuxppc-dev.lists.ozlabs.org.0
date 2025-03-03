@@ -1,35 +1,72 @@
-Return-Path: <linuxppc-dev+bounces-6616-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6617-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BED44A4BB62
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 10:56:58 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA426A4BD76
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 12:08:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5vNl60Z1z2ynL;
-	Mon,  3 Mar 2025 20:56:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5wzC4WwWz30VJ;
+	Mon,  3 Mar 2025 22:08:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740995815;
-	cv=none; b=l6QrLw2dEJjPwb/TR5IuFqZLTNAKqMziq6/RqIAuXfoy+Vt1adtILsiYG03UBv0c1LLCBoZkWR3IKqNl+wJb802HKLnUhEeOv5cos+HXMrIaBlO2hVo1A64OD20sCKByOjW7KPToJNTyedYTqjZNkcv0A+ESCEHfrCn2PkIWw+0QflAjWHncOW5zomA4BqIUN6aHfNcPal7HMh+z09GJ+gabeqSeutJmPez6vXlDm2QPRdA/csmPhIPNU0tD7XwAekflh5zfp6r49Kfy5aL14zyQjS75chwQtIGtRZStRvTiXdlTxye7DxyzqgoXQ8J3pzV1Jysr8GvA/uIlwVaHIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741000103;
+	cv=none; b=VB6Ux7i8HnKngyWK9px1fyysFHqpmztRkza90+KVpSSnI75Aq8x76B3XDaEtUN7GACF543xce3syZArnoPdcrL3i2YqnoCWZSXWtpKWRsFCZalEeCUNVXV4KtT0zKh9NNXar5B4pvzSpigCD8Dixi8LValkxi/kFQQkylNBmYAJEmVTXrI+MmXKlk9PNBliwTL8SF8+C+lWQqShDeqAdxWyOlIy3RiitcPvT4sXQp2w/m6eMdN77oIWt2Wd00idPABvXjX8a2BSqe7bDN/rbVCttxVEUhvQUX5S+oQAuyZHrZFBGRVObD2yprfeKKf8YeCkeMHi+v260thTBxaBwuQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740995815; c=relaxed/relaxed;
-	bh=lV8UTJCMsRq0l7Fp6O6xY5D76Ntv+8GETQYNeaUcv0c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=X8vKp71WolhHaoa7AL4ImxBsud2m4Naw4JXjSXX0oDJ+7j7Ikg+K9IulibcnPMe2xtwB0jrM2Ac0p7GzlUyaGiFwWNM12VKi0+PiRlAVsqDEJbtWqqobhDb26cfUnCalwH1w0yKsUyarmoOo6XeKj9Pp6kvzdhkkyND8FRzjNUnnzuIMCo4pl0QyG2FLwOg4cb5Qcoxj/4y2FB78FGBSiON13pwOHqyYY1Yk+vQ2ujXBtdt42WxD1rLV6jfp5QgHqt8sycmcqKyWopJNDXtg8Uh/ZOySVoM2yMD3HeaQRqvFcIc50pL+DJLVjA2xXrN28BCClWv6yCy0CajdEbPleg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5vNk4lVBz2yQl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 20:56:53 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E78F6113E;
-	Mon,  3 Mar 2025 01:56:34 -0800 (PST)
-Received: from [192.168.1.12] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 797EA3F66E;
-	Mon,  3 Mar 2025 01:56:15 -0800 (PST)
-Message-ID: <a52972c7-aadd-4a77-a292-057fa5f8372d@arm.com>
-Date: Mon, 3 Mar 2025 10:56:12 +0100
+	t=1741000103; c=relaxed/relaxed;
+	bh=L1D+CnraKUZCvWBX2D//PKQHKSwg0AKuuuoMcb0rgws=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=F8Nq98xaLV5qb97mVbzNw/Rc3bIXEZG9UrJchhzdLLI9c5HFqxsFET8iCHI7Zt+Fu1h6qyuH5oGbHJFmHTL0D8QSEygv9tSC9JQ5sSHFD2stN3cBnHS6K+WSZBx0tTwAoE1tQS3mc3wQfrvgO+fC6baETWSUBiDI87+l0aRX/S5L2qLYOoGpGff446XWX9Tpq7Tat02wVUOo1lFRGAqt0B3x9P9FK6ZJ38z5fcn2SKgTy3FnrMLrLklm9v5lLAk3ItRqlRWyIudOVeYFcQCwH3eiO2sBy3p/gG3cIPjaP1iPHG8jtLi8n3ZGFXEtnDZ1/9o5c8JD2d10AwNlA5MMlA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=WY3Bcvwq; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=weIS7mWu; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=WY3Bcvwq;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=weIS7mWu;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Z5wz960Z6z30Tq
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 22:08:21 +1100 (AEDT)
+Date: Mon, 3 Mar 2025 12:08:11 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1741000095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1D+CnraKUZCvWBX2D//PKQHKSwg0AKuuuoMcb0rgws=;
+	b=WY3BcvwqJfY3+izuTEss/XpsgEDHLEaBomUNon3BENJfcWrR9vFNFyQh+HE0Ng0LU3VJOV
+	cLOhtw/pgT7QEX5+3fnLR+WZEgEEcg3m057qcuRhitc8b9EcjiVXxSGEPipOy8QaGULV1n
+	FMbP+++SB7bbOd7OkE0/sSp4nfRb0wC4D7ObJZEGhDxnn4HFPIo8zIjBr/GQxQbrg2xuvt
+	5WE3Frj635yzpVKORmTTpXTuUOjDnfpWeDu2kxbXbUTDFlKe+gziyLP4TogcUvzKudOl5W
+	3x7WOYHzmQj0qAjeL1jcBmDr20VHXPT/KIhn4zIP8CiDsVlxRfYPzTlnFhKPRA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1741000095;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=L1D+CnraKUZCvWBX2D//PKQHKSwg0AKuuuoMcb0rgws=;
+	b=weIS7mWuYbNKbYzEpacOGd7w6cmMf55sMrM4/Mj2I5nQ/q7V+crriNXkCP2mUClA/2cbkK
+	328REvnkCOCCwFDQ==
+From: Thomas =?utf-8?Q?Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
+To: "Maciej W. Rozycki" <macro@orcam.me.uk>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Oliver O'Halloran <oohall@gmail.com>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] powerpc: Don't use %pK through printk
+Message-ID: <20250303115007-beb39d5b-71f5-458a-82fe-9e82c9ab720e@linutronix.de>
+References: <20250217-restricted-pointers-powerpc-v1-1-32c6bff63c9a@linutronix.de>
+ <ffd5dd44-babc-480a-b1bc-61bd7ff1e920@csgroup.eu>
+ <alpine.DEB.2.21.2502241840360.65342@angie.orcam.me.uk>
+ <20250225091250-eac544ad-4e5b-47f7-83fc-5212c720483a@linutronix.de>
+ <alpine.DEB.2.21.2502251654370.65342@angie.orcam.me.uk>
+ <20250226105757-e935ee3e-f70d-4e0e-83bb-61307722a186@linutronix.de>
+ <alpine.DEB.2.21.2502281957310.12637@angie.orcam.me.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,208 +79,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 3/4] arm64: topology: Support SMT control on ACPI
- based system
-To: Sudeep Holla <sudeep.holla@arm.com>
-Cc: Yicong Yang <yangyicong@huawei.com>, catalin.marinas@arm.com,
- will@kernel.org, tglx@linutronix.de, peterz@infradead.org,
- mpe@ellerman.id.au, linux-arm-kernel@lists.infradead.org, mingo@redhat.com,
- bp@alien8.de, dave.hansen@linux.intel.com, dietmar.eggemann@arm.com,
- linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- morten.rasmussen@arm.com, msuchanek@suse.de, gregkh@linuxfoundation.org,
- rafael@kernel.org, jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
- linuxarm@huawei.com, yangyicong@hisilicon.com, xuwei5@huawei.com,
- guohanjun@huawei.com, sshegde@linux.ibm.com
-References: <20250218141018.18082-1-yangyicong@huawei.com>
- <20250218141018.18082-4-yangyicong@huawei.com> <Z8HAkZiHYRjj97M7@bogus>
- <336e9c4e-cd9c-4449-ba7b-60ee8774115d@arm.com>
- <20250228190641.q23vd53aaw42tcdi@bogus>
-Content-Language: en-US
-From: Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <20250228190641.q23vd53aaw42tcdi@bogus>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <alpine.DEB.2.21.2502281957310.12637@angie.orcam.me.uk>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-On 2/28/25 20:06, Sudeep Holla wrote:
-> On Fri, Feb 28, 2025 at 06:51:16PM +0100, Pierre Gondois wrote:
->>
->>
->> On 2/28/25 14:56, Sudeep Holla wrote:
->>> On Tue, Feb 18, 2025 at 10:10:17PM +0800, Yicong Yang wrote:
->>>> From: Yicong Yang <yangyicong@hisilicon.com>
->>>>
->>>> For ACPI we'll build the topology from PPTT and we cannot directly
->>>> get the SMT number of each core. Instead using a temporary xarray
->>>> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
->>>> and SMT information of the first core in its heterogeneous CPU cluster
->>>> when building the topology. Then we can know the largest SMT number
->>>> in the system. If a homogeneous system's using ACPI 6.2 or later,
->>>> all the CPUs should be under the root node of PPTT. There'll be
->>>> only one entry in the xarray and all the CPUs in the system will
->>>> be assumed identical.
->>>>
->>>> The core's SMT control provides two interface to the users [1]:
->>>> 1) enable/disable SMT by writing on/off
->>>> 2) enable/disable SMT by writing thread number 1/max_thread_number
->>>>
->>>> If a system have more than one SMT thread number the 2) may
->>>> not handle it well, since there're multiple thread numbers in the
->>>> system and 2) only accept 1/max_thread_number. So issue a warning
->>>> to notify the users if such system detected.
->>>>
->>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
->>>>
->>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->>>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
->>>> ---
->>>>    arch/arm64/kernel/topology.c | 66 ++++++++++++++++++++++++++++++++++++
->>>>    1 file changed, 66 insertions(+)
->>>>
->>>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
->>>> index 1a2c72f3e7f8..6eba1ac091ee 100644
->>>> --- a/arch/arm64/kernel/topology.c
->>>> +++ b/arch/arm64/kernel/topology.c
->>>> @@ -15,8 +15,10 @@
->>>>    #include <linux/arch_topology.h>
->>>>    #include <linux/cacheinfo.h>
->>>>    #include <linux/cpufreq.h>
->>>> +#include <linux/cpu_smt.h>
->>>>    #include <linux/init.h>
->>>>    #include <linux/percpu.h>
->>>> +#include <linux/xarray.h>
->>>>    #include <asm/cpu.h>
->>>>    #include <asm/cputype.h>
->>>> @@ -37,17 +39,28 @@ static bool __init acpi_cpu_is_threaded(int cpu)
->>>>    	return !!is_threaded;
->>>>    }
->>>> +struct cpu_smt_info {
->>>> +	unsigned int thread_num;
->>>> +	int core_id;
->>>> +};
->>>> +
->>>>    /*
->>>>     * Propagate the topology information of the processor_topology_node tree to the
->>>>     * cpu_topology array.
->>>>     */
->>>>    int __init parse_acpi_topology(void)
->>>>    {
->>>> +	unsigned int max_smt_thread_num = 0;
->>>> +	struct cpu_smt_info *entry;
->>>> +	struct xarray hetero_cpu;
->>>> +	unsigned long hetero_id;
->>>>    	int cpu, topology_id;
->>>>    	if (acpi_disabled)
->>>>    		return 0;
->>>> +	xa_init(&hetero_cpu);
->>>> +
->>>>    	for_each_possible_cpu(cpu) {
->>>>    		topology_id = find_acpi_cpu_topology(cpu, 0);
->>>>    		if (topology_id < 0)
->>>> @@ -57,6 +70,34 @@ int __init parse_acpi_topology(void)
->>>>    			cpu_topology[cpu].thread_id = topology_id;
->>>>    			topology_id = find_acpi_cpu_topology(cpu, 1);
->>>>    			cpu_topology[cpu].core_id   = topology_id;
->>>> +
->>>> +			/*
->>>> +			 * In the PPTT, CPUs below a node with the 'identical
->>>> +			 * implementation' flag have the same number of threads.
->>>> +			 * Count the number of threads for only one CPU (i.e.
->>>> +			 * one core_id) among those with the same hetero_id.
->>>> +			 * See the comment of find_acpi_cpu_topology_hetero_id()
->>>> +			 * for more details.
->>>> +			 *
->>>> +			 * One entry is created for each node having:
->>>> +			 * - the 'identical implementation' flag
->>>> +			 * - its parent not having the flag
->>>> +			 */
->>>> +			hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
->>>> +			entry = xa_load(&hetero_cpu, hetero_id);
->>>> +			if (!entry) {
->>>> +				entry = kzalloc(sizeof(*entry), GFP_KERNEL);
->>>> +				WARN_ON_ONCE(!entry);
->>>> +
->>>> +				if (entry) {
->>>> +					entry->core_id = topology_id;
->>>> +					entry->thread_num = 1;
->>>> +					xa_store(&hetero_cpu, hetero_id,
->>>> +						 entry, GFP_KERNEL);
->>>> +				}
->>>> +			} else if (entry->core_id == topology_id) {
->>>> +				entry->thread_num++;
->>>> +			}
->>>>    		} else {
->>>>    			cpu_topology[cpu].thread_id  = -1;
->>>>    			cpu_topology[cpu].core_id    = topology_id;
->>>> @@ -67,6 +108,31 @@ int __init parse_acpi_topology(void)
->>>>    		cpu_topology[cpu].package_id = topology_id;
->>>>    	}
->>>> +	/*
->>>> +	 * This should be a short loop depending on the number of heterogeneous
->>>> +	 * CPU clusters. Typically on a homogeneous system there's only one
->>>> +	 * entry in the XArray.
->>>> +	 */
->>>> +	xa_for_each(&hetero_cpu, hetero_id, entry) {
->>>> +		if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
->>>> +			pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
->>>
->>> Ditto as previous patch about handling no threaded cores with threaded cores
->>> in the system. I am not sure if that is required but just raising it here.
->>>
->>>> +
->>>> +		max_smt_thread_num = max(max_smt_thread_num, entry->thread_num);
->>>> +		xa_erase(&hetero_cpu, hetero_id);
->>>> +		kfree(entry);
->>>> +	}
->>>> +
->>>> +	/*
->>>> +	 * Notify the CPU framework of the SMT support. Initialize the
->>>> +	 * max_smt_thread_num to 1 if no SMT support detected. A thread
->>>> +	 * number of 1 can be handled by the framework so we don't need
->>>> +	 * to check max_smt_thread_num to see we support SMT or not.
->>>> +	 */
->>>> +	if (!max_smt_thread_num)
->>>> +		max_smt_thread_num = 1;
->>>> +
->>>
->>> Ditto as previous patch, can get rid if it is default 1.
->>>
->>
->> On non-SMT platforms, not calling cpu_smt_set_num_threads() leaves
->> cpu_smt_num_threads uninitialized to UINT_MAX:
->>
->> smt/active:0
->> smt/control:-1
->>
->> If cpu_smt_set_num_threads() is called:
->> active:0
->> control:notsupported
->>
->> So it might be slightly better to still initialize max_smt_thread_num.
->>
+On Fri, Feb 28, 2025 at 08:15:02PM +0000, Maciej W. Rozycki wrote:
+> On Wed, 26 Feb 2025, Thomas Weißschuh wrote:
 > 
-> Sure, what I meant is to have max_smt_thread_num set to 1 by default is
-> that is what needed anyways and the above code does that now.
+> > > > By default, when kptr_restrict is set to 0, %pK behaves the same as %p.
+> > > > The same happened for a bunch of other architectures and nobody seems
+> > > > to have noticed in the past.
+> > > > The symbol-relative pointers or pointer formats designed for backtraces,
+> > > > as notes by Christophe, seem to be enough.
+> > > 
+> > >  I do hope so.
+> > 
+> > As mentioned before, personally I am fine with using %px here.
 > 
-> Why not start with initialised to 1 instead ?
-> Of course some current logic needs to change around testing it for zero.
+>  Glad to hear!
 > 
+> > The values are in the register dumps anyways and security sensitive deployments
+> > will panic on WARN(), making the information disclosure useless.
+> 
+>  And even more so, I wasn't aware of this feature.  But this code doesn't 
+> make use of the WARN() facility, it just prints at the heightened KERN_ERR 
+> priority.
 
-I think there would still be a way to check against the default value.
-If we have:
-unsigned int max_smt_thread_num = 1;
+Indeed, I got confused with some other patches where WARN() is used mostly.
+This makes it a bit murkier.
 
-then on a platform with 2 threads, the detection condition would trigger:
-xa_for_each(&hetero_cpu, hetero_id, entry) {
-     if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)     <---- (entry->thread_num=2) and (max_smt_thread_num=1)
-         pr_warn_once("Heterogeneous SMT topology is partly
-                       supported by SMT control\n");
+> > > > But personally I'm also fine with using %px, as my goal is to remove the
+> > > > error-prone and confusing %pK.
+> > > 
+> > >  It's clear that `%pK' was meant to restrict access to /proc files and the 
+> > > like that may be accessible by unprivileged users:
+> > 
+> > Then let's stop abusing it. For something that is clear, it is
+> > misunderstood very often.
+> 
+>  Absolutely, I haven't questioned the removal of `%pK', but the switch to 
+> `%p' rather than `%px' specifically for this single hunk of your patch.
 
-so we would need an additional variable:
-bool is_initialized = false;
+Sure. It would be great if one of the maintainers could confirm this preference.
+
+> > > "
+> > > kptr_restrict
+> > > =============
+> > > 
+> > > This toggle indicates whether restrictions are placed on
+> > > exposing kernel addresses via ``/proc`` and other interfaces.
+> > > "
+> > > 
+> > > and not the kernel log, the information in which may come from rare events 
+> > > that are difficult to trigger and hard to recover via other means.  Sigh. 
+> > > Once you've got access to the kernel log, you may as well wipe the system 
+> > > or do any other harm you might like.
+> > 
+> > As I understand it, both the security and printk maintainers don't want the
+> > kernel log in general to be security sensitive and restricted.
+> > My goal here is not to push site-specific policy into the kernel but make life
+> > easier for kernel developers by removing the confusing and error-prone %pK
+> > altogether.
+> 
+>  Let me ask a different question then: is your approach to bulk-switch all 
+> instances of `%pK' to `%p' as the safe default and let other people figure 
+> out afterwards whether a different conversion specifier ought to be used 
+> instead on a case-by-case basis and then follow up with another patch, or 
+> will you consider these alternatives right away?
+
+I am considering on a case-by-case basis. But mostly the decision is that %p is
+enough, because by default %pK has been the same as %p anyways.
+Also the current wave of replacements does not touch valid users of %pK.
+They will stay and later be replaced with a new and better API.
+
+> > Security is only one aspect.
+> 
+>  I think it's important enough though for us to ensure we don't compromise 
+> it by chance.
+
+Agreed.
 
