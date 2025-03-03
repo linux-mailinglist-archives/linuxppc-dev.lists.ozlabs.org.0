@@ -1,34 +1,34 @@
-Return-Path: <linuxppc-dev+bounces-6636-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6632-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D80BA4BDC0
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 12:13:31 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D62BDA4BDB7
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 12:13:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5x3B1W7fz30WT;
-	Mon,  3 Mar 2025 22:11:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5x2l57g3z3brP;
+	Mon,  3 Mar 2025 22:11:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:51c0:0:12e:550::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741000310;
-	cv=none; b=juMfh8q2wCp0xz5NyqeMrWyrWnwx3+1Rg0+aPNkS15GDOlHg3w8Fe4Rvij4JfqfN11i1VkyOhQiOWTUt2VgEU9ggIjq4tZPPdikxHR9QD11ZmyrTuULtc7y58Km8ByvSyn4qPsRmM/FYHSnArUy2TAgLlm0QM1IgRcjJMggO64G+teQyRWcsbYcFdUp7adnsHUvj7ndeA8FdEVQKWMm4XXivCOpdS39+vxeOVUi9AGLlFZvzkJISMDwrT5AqHXo/zAqz0kLZn7KDp6FXJ7tagDvsom9w3Pvcg3qGNxuAcyInnw4699UKtqF06HeK9wrusxp+2tR2YQbbnqY8r+/VQA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=193.142.43.55
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741000287;
+	cv=none; b=TUniK/l84BX3wVRAGpgJDBHd/c1mcMcNW0RUi8ebhVJMoPdFOUOVoyKmjHaZnLLnL4N0Z2MQKGVtgNoP02Enm3ifPX1jRbELOhReDBvYaysToRo6vShsgWEd4DfAdjSa0MDIodXmoyNpuQA/MyB5JRe3ryaEx4kXmf5SCh4HTGfjm29K7iIkewQD1vxFRUN97G5oOl3pRFJozUt1FjhumUkdvoaW6zHEs9gGgdT5JzGq5LFmW4s5dzr++t+VFl/L1fflz3NxebnytL68QP5siPFDM/JHFKGjC+UjRSOzP2riciVhfqnghrUluUmeoIhSP7lAZsTdlhR1fs0vZFKYOA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741000310; c=relaxed/relaxed;
-	bh=AJv8sbi30FpTvlQDBkPTmpk9/XqdhxgUpv0PpOkXPOI=;
+	t=1741000287; c=relaxed/relaxed;
+	bh=TfUaF9ZM/sDC2742hKCsP1ynzqPjDFo3SoemEN7MXiw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=YGp1RQropguk8YvrhNsfeKN6hbTfTtqjD6Q0UDPDvW7pk+yG3RyuANcw2MpTDw9mT/ag2Nn1njp0wkJpJe00XH6TJiv0v5xDrs0716hZEKOBXRoxdXlXT3TrsKSDnJX2JZNLpPrdAyiR/CidV52agP9SKpyNp+UlT3H9aPPxsJDGsxhdYyj+UDp/KrG0Nof8+iXpa0doFFGFjLAKQe8Gb+nxq5b7iuhv/Majrx1WiXjqY6U6AqwvoHhmD6yu0kcU4s74bveRmw6zXWAzOa0mtGHLfpcAG6iP9myJvV8rlBMUYJuxxou1Z3NS4orq2QxPis6Vs+u60UGV44C7APysJw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=DPMhc5St; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1+KAwjf8; dkim-atps=neutral; spf=pass (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
+	 In-Reply-To:To:Cc; b=eNqt/RNT/WyI2/kJmHqNDWm7/+siwbXf/Hpdpz7PYde0otplnBZECwtzKfrxi7zAt5nfxXkY5WKZNvfqfcZatWyLsGd/8iMRTc2E9lC7Rb5pfhgqh87X1QscZ/X5z7eeKPchf1kCwdanrCLH61JPXFq2MGDN4Ntjw/f8Q2fsCbTRHFE0KupiIgcB4nzxuqnl1RVLrlJv61VViBeUi4TPoYeFjukpDl/GUw5EfJOcQ8AsJatoWVtEqUMD/l/i6jXYTXhQdwais3xZpzaCp20//Z9v+3ROttPBVYphgxQ9o6yXx3X5M8z3uUm32GGsy25aCxGQjIdVbfLYTNPKeJBBTw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rsLn/M4m; dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+G7CPOXa; dkim-atps=neutral; spf=pass (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=linutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=DPMhc5St;
-	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=1+KAwjf8;
+	dkim=pass (2048-bit key; secure) header.d=linutronix.de header.i=@linutronix.de header.a=rsa-sha256 header.s=2020 header.b=rsLn/M4m;
+	dkim=pass header.d=linutronix.de header.i=@linutronix.de header.a=ed25519-sha256 header.s=2020e header.b=+G7CPOXa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=2a0a:51c0:0:12e:550::1; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linutronix.de (client-ip=193.142.43.55; helo=galois.linutronix.de; envelope-from=t-8ch@linutronix.de; receiver=lists.ozlabs.org)
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Z5x390Lvhz30W0
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 22:11:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with UTF8SMTPS id 4Z5x2k5XSmz30dt
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 22:11:26 +1100 (AEDT)
 From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020; t=1741000275;
@@ -36,24 +36,24 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AJv8sbi30FpTvlQDBkPTmpk9/XqdhxgUpv0PpOkXPOI=;
-	b=DPMhc5St6/iBg0Y6tqofShmyTKuwKq3vvfQL17Fv17cL5576zmzU/q8wwATt065xdTEIe0
-	H5/lUJEkDJb4Dnot8oim8ONpHiXn4rxkl4ZKuUNIRZf1yoBxWK3e3fFVIHF4t5DYt+Pta1
-	WjEaK2yuyJ7lEyiV/TYAsOZNVCsiQO5Xend1W+CLKTyAaVSTMUdP1qYL2R4vusXlk+lUxC
-	Wz6VPs7+syo2CcYwbmSbLSbcCRq+/ECmxtW8MdBwpiNShdz4AC/P1mN0h6oa7FsU54kOh6
-	fzTsvsJNKNKPJWpfL0/vFFAWVvQz2jAywdZxbsnCOt1EFdsExTkIMvIy5evpAg==
+	bh=TfUaF9ZM/sDC2742hKCsP1ynzqPjDFo3SoemEN7MXiw=;
+	b=rsLn/M4m3C8C47//EcdlpS0gXuo2S8wQBjDlujUkeS/RnT2e7kEu1ZpPQLBhJPnl5F5Dmx
+	Bnz9W6RvqO+XSj3gXinEcZXHTpjXZbuevhvVGl0N2jdGn/+Tig4flR6nR/JGTxB9/cyvYn
+	eP2uKi7alGTLQIjYf+iG6izSyMtWFfHgpfTidXcTJL+QBX26d7SIb2ZkMVVy9cVLS/75qJ
+	SSHpkxYM79/XNYhRRZbdx8weq1qxLRdEz+P/dzOcM918QM7Xn6IxyB1uOJQv4tBq0chmKS
+	Z4cp3An4kPROpJxzqRvLsLIFdgmSIZomtmy7D4kFiX784zgsUt/5hgwfGEmaqQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
 	s=2020e; t=1741000275;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=AJv8sbi30FpTvlQDBkPTmpk9/XqdhxgUpv0PpOkXPOI=;
-	b=1+KAwjf81amAe8EFn1H/1U+g2iwu7oBX2L4PER3y+YH1TmvAt1mLk0jvbLUY5cZe+V6lBa
-	XrUyykEgLplRiQAg==
-Date: Mon, 03 Mar 2025 12:11:14 +0100
-Subject: [PATCH 12/19] vdso/vsyscall: Prepare introduction of struct
- vdso_clock
+	bh=TfUaF9ZM/sDC2742hKCsP1ynzqPjDFo3SoemEN7MXiw=;
+	b=+G7CPOXa/ZWNxu6fthMtPvHWjD/eNSSKNL+q0WW80iJGWJhuVfvM0Ibxa4KTEM0uLK5NDu
+	Ntj+12tjKCTbUGCQ==
+Date: Mon, 03 Mar 2025 12:11:15 +0100
+Subject: [PATCH 13/19] vdso/namespace: Rename timens_setup_vdso_data() to
+ reflect new vdso_clock struct
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-Message-Id: <20250303-vdso-clock-v1-12-c1b5c69a166f@linutronix.de>
+Message-Id: <20250303-vdso-clock-v1-13-c1b5c69a166f@linutronix.de>
 References: <20250303-vdso-clock-v1-0-c1b5c69a166f@linutronix.de>
 In-Reply-To: <20250303-vdso-clock-v1-0-c1b5c69a166f@linutronix.de>
 To: Andy Lutomirski <luto@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
@@ -90,11 +90,11 @@ Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
  linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org, 
  linux-arch@vger.kernel.org, Nam Cao <namcao@linutronix.de>, 
  =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741000267; l=5035;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741000267; l=2585;
  i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=TGrYgHBDC1ym/D0u89FhQ1yXA+RjazyIG5JtuCcOFIQ=;
- b=O0ykrjovG/rAJm0nxuT72171DFtNpYj28xh5+v7YJoR1artjVb5TWt8ayEA+4+1DaKgw1KXq4
- S4wO7RvQ76JASNE0pYEgVClwArWHVorrse27BBdxE3CW+jNIThljxoa
+ bh=deY68vPxYVkoFnSlPdJ3pbtph7Y53gSWK99Jd8i7ioE=;
+ b=qUFMIhhMLCqTE6c0fsVZpLM2srZkxcqqjDXZ3u3EzqbyA9lpIiErtiIS89RMGeKHwKrCWS4y9
+ zvNwoxlkRFFDJzuFefrTwdqSIzx82VtsLrum1h7uvLyVZbiQfvPmRLS
 X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
  pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
@@ -106,11 +106,12 @@ From: Anna-Maria Behnsen <anna-maria@linutronix.de>
 
 To support multiple PTP clocks, the VDSO data structure needs to be
 reworked. All clock specific data will end up in struct vdso_clock and in
-struct vdso_time_data there will be array of it. By now, vdso_clock is
-simply a define which maps vdso_clock to vdso_time_data.
+struct vdso_time_data there will be array of it.
 
-To prepare for the rework of the data structures, replace the struct
-vdso_time_data pointer with struct vdso_clock pointer whenever applicable.
+For time namespace, vdso_time_data needs to be set up. But this is only the
+clock related part of the vdso_data thats requires this setup. To reflect
+the future struct vdso_clock, rename timens_setup_vdso_data() to
+timns_setup_vdso_clock_data().
 
 No functional change.
 
@@ -118,110 +119,47 @@ Signed-off-by: Anna-Maria Behnsen <anna-maria@linutronix.de>
 Signed-off-by: Nam Cao <namcao@linutronix.de>
 Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 ---
- kernel/time/vsyscall.c | 40 +++++++++++++++++++++-------------------
- 1 file changed, 21 insertions(+), 19 deletions(-)
+ kernel/time/namespace.c | 6 +++---
+ lib/vdso/datastore.c    | 2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/time/vsyscall.c b/kernel/time/vsyscall.c
-index 418192296ef7dd3c1772d50f129e7838883cf00c..dd85b41a70bee7decbd943c35197c091916ee4c7 100644
---- a/kernel/time/vsyscall.c
-+++ b/kernel/time/vsyscall.c
-@@ -18,25 +18,26 @@
- static inline void update_vdso_time_data(struct vdso_time_data *vdata, struct timekeeper *tk)
+diff --git a/kernel/time/namespace.c b/kernel/time/namespace.c
+index 12f55aa539adbc11cce4055f519dbeca8a73320c..f02430a73be8f081618792c8968bf0c112c54505 100644
+--- a/kernel/time/namespace.c
++++ b/kernel/time/namespace.c
+@@ -176,8 +176,8 @@ static struct timens_offset offset_from_ts(struct timespec64 off)
+  * Timens page has vdso_time_data->clock_mode set to VDSO_CLOCKMODE_TIMENS which
+  * enforces the time namespace handling path.
+  */
+-static void timens_setup_vdso_data(struct vdso_time_data *vdata,
+-				   struct time_namespace *ns)
++static void timens_setup_vdso_clock_data(struct vdso_time_data *vdata,
++					 struct time_namespace *ns)
  {
- 	struct vdso_timestamp *vdso_ts;
-+	struct vdso_clock *vc = vdata;
- 	u64 nsec, sec;
+ 	struct timens_offset *offset = vdata->offset;
+ 	struct timens_offset monotonic = offset_from_ts(ns->offsets.monotonic);
+@@ -238,7 +238,7 @@ static void timens_set_vvar_page(struct task_struct *task,
+ 	vdata = page_address(ns->vvar_page);
  
--	vdata[CS_HRES_COARSE].cycle_last	= tk->tkr_mono.cycle_last;
-+	vc[CS_HRES_COARSE].cycle_last	= tk->tkr_mono.cycle_last;
- #ifdef CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
--	vdata[CS_HRES_COARSE].max_cycles	= tk->tkr_mono.clock->max_cycles;
-+	vc[CS_HRES_COARSE].max_cycles	= tk->tkr_mono.clock->max_cycles;
- #endif
--	vdata[CS_HRES_COARSE].mask		= tk->tkr_mono.mask;
--	vdata[CS_HRES_COARSE].mult		= tk->tkr_mono.mult;
--	vdata[CS_HRES_COARSE].shift		= tk->tkr_mono.shift;
--	vdata[CS_RAW].cycle_last		= tk->tkr_raw.cycle_last;
-+	vc[CS_HRES_COARSE].mask		= tk->tkr_mono.mask;
-+	vc[CS_HRES_COARSE].mult		= tk->tkr_mono.mult;
-+	vc[CS_HRES_COARSE].shift	= tk->tkr_mono.shift;
-+	vc[CS_RAW].cycle_last		= tk->tkr_raw.cycle_last;
- #ifdef CONFIG_GENERIC_VDSO_OVERFLOW_PROTECT
--	vdata[CS_RAW].max_cycles		= tk->tkr_raw.clock->max_cycles;
-+	vc[CS_RAW].max_cycles		= tk->tkr_raw.clock->max_cycles;
- #endif
--	vdata[CS_RAW].mask			= tk->tkr_raw.mask;
--	vdata[CS_RAW].mult			= tk->tkr_raw.mult;
--	vdata[CS_RAW].shift			= tk->tkr_raw.shift;
-+	vc[CS_RAW].mask			= tk->tkr_raw.mask;
-+	vc[CS_RAW].mult			= tk->tkr_raw.mult;
-+	vc[CS_RAW].shift		= tk->tkr_raw.shift;
+ 	for (i = 0; i < CS_BASES; i++)
+-		timens_setup_vdso_data(&vdata[i], ns);
++		timens_setup_vdso_clock_data(&vdata[i], ns);
  
- 	/* CLOCK_MONOTONIC */
--	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_MONOTONIC];
-+	vdso_ts		= &vc[CS_HRES_COARSE].basetime[CLOCK_MONOTONIC];
- 	vdso_ts->sec	= tk->xtime_sec + tk->wall_to_monotonic.tv_sec;
- 
- 	nsec = tk->tkr_mono.xtime_nsec;
-@@ -54,7 +55,7 @@ static inline void update_vdso_time_data(struct vdso_time_data *vdata, struct ti
- 	nsec	+= (u64)tk->monotonic_to_boot.tv_nsec << tk->tkr_mono.shift;
- 
- 	/* CLOCK_BOOTTIME */
--	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_BOOTTIME];
-+	vdso_ts		= &vc[CS_HRES_COARSE].basetime[CLOCK_BOOTTIME];
- 	vdso_ts->sec	= sec;
- 
- 	while (nsec >= (((u64)NSEC_PER_SEC) << tk->tkr_mono.shift)) {
-@@ -64,12 +65,12 @@ static inline void update_vdso_time_data(struct vdso_time_data *vdata, struct ti
- 	vdso_ts->nsec	= nsec;
- 
- 	/* CLOCK_MONOTONIC_RAW */
--	vdso_ts		= &vdata[CS_RAW].basetime[CLOCK_MONOTONIC_RAW];
-+	vdso_ts		= &vc[CS_RAW].basetime[CLOCK_MONOTONIC_RAW];
- 	vdso_ts->sec	= tk->raw_sec;
- 	vdso_ts->nsec	= tk->tkr_raw.xtime_nsec;
- 
- 	/* CLOCK_TAI */
--	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_TAI];
-+	vdso_ts		= &vc[CS_HRES_COARSE].basetime[CLOCK_TAI];
- 	vdso_ts->sec	= tk->xtime_sec + (s64)tk->tai_offset;
- 	vdso_ts->nsec	= tk->tkr_mono.xtime_nsec;
- }
-@@ -78,6 +79,7 @@ void update_vsyscall(struct timekeeper *tk)
+ out:
+ 	mutex_unlock(&offset_lock);
+diff --git a/lib/vdso/datastore.c b/lib/vdso/datastore.c
+index e227fbbcb79694f9a40606ac864f52cf1fdbfcf4..4e350f56ace335b7ebca8af7663b5731fae27334 100644
+--- a/lib/vdso/datastore.c
++++ b/lib/vdso/datastore.c
+@@ -109,7 +109,7 @@ struct vm_area_struct *vdso_install_vvar_mapping(struct mm_struct *mm, unsigned
+  * non-root time namespace. Whenever a task changes its namespace, the VVAR
+  * page tables are cleared and then they will be re-faulted with a
+  * corresponding layout.
+- * See also the comment near timens_setup_vdso_data() for details.
++ * See also the comment near timens_setup_vdso_clock_data() for details.
+  */
+ int vdso_join_timens(struct task_struct *task, struct time_namespace *ns)
  {
- 	struct vdso_time_data *vdata = vdso_k_time_data;
- 	struct vdso_timestamp *vdso_ts;
-+	struct vdso_clock *vc = vdata;
- 	s32 clock_mode;
- 	u64 nsec;
- 
-@@ -85,21 +87,21 @@ void update_vsyscall(struct timekeeper *tk)
- 	vdso_write_begin(vdata);
- 
- 	clock_mode = tk->tkr_mono.clock->vdso_clock_mode;
--	vdata[CS_HRES_COARSE].clock_mode	= clock_mode;
--	vdata[CS_RAW].clock_mode		= clock_mode;
-+	vc[CS_HRES_COARSE].clock_mode	= clock_mode;
-+	vc[CS_RAW].clock_mode		= clock_mode;
- 
- 	/* CLOCK_REALTIME also required for time() */
--	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_REALTIME];
-+	vdso_ts		= &vc[CS_HRES_COARSE].basetime[CLOCK_REALTIME];
- 	vdso_ts->sec	= tk->xtime_sec;
- 	vdso_ts->nsec	= tk->tkr_mono.xtime_nsec;
- 
- 	/* CLOCK_REALTIME_COARSE */
--	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_REALTIME_COARSE];
-+	vdso_ts		= &vc[CS_HRES_COARSE].basetime[CLOCK_REALTIME_COARSE];
- 	vdso_ts->sec	= tk->xtime_sec;
- 	vdso_ts->nsec	= tk->tkr_mono.xtime_nsec >> tk->tkr_mono.shift;
- 
- 	/* CLOCK_MONOTONIC_COARSE */
--	vdso_ts		= &vdata[CS_HRES_COARSE].basetime[CLOCK_MONOTONIC_COARSE];
-+	vdso_ts		= &vc[CS_HRES_COARSE].basetime[CLOCK_MONOTONIC_COARSE];
- 	vdso_ts->sec	= tk->xtime_sec + tk->wall_to_monotonic.tv_sec;
- 	nsec		= tk->tkr_mono.xtime_nsec >> tk->tkr_mono.shift;
- 	nsec		= nsec + tk->wall_to_monotonic.tv_nsec;
 
 -- 
 2.48.1
