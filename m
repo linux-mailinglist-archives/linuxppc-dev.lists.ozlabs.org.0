@@ -1,96 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-6615-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6616-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AD3A4BA19
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 09:58:36 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED44A4BB62
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 10:56:58 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5t5K6kdwz2ynR;
-	Mon,  3 Mar 2025 19:58:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5vNl60Z1z2ynL;
+	Mon,  3 Mar 2025 20:56:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740992309;
-	cv=none; b=QfWxN8Mp67bbWNKJqvk/KHh4h2sfHbw584p7+rgOH/XjpEx2ryCnr99s3tMAyr3gdZ105XZyWB40h/1TG9wxqqrBvRJv4VrT2JkuSz02pdiGp4JE9E1gHtb/TbGFF5MF7XgyMySIVsiADgGb0M5H8O2mA0VdsbV+cKc4Bi0MTEv27uUtZVin+jHOTTqk4hm2gRItGSRQCHSy5PyPEoqWCPN1GEoPjI/sh6vWHGBSMh9YBH67F+hyml3pM4qmP6dvSKMEKd0WbbVLt10ysQkaHFmjLktMl1MBEs6KWOyGZ5oCqvSft/wu5xXDTm6wh94TiqNMLYGuyshwO1VzSVyNxQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1740995815;
+	cv=none; b=l6QrLw2dEJjPwb/TR5IuFqZLTNAKqMziq6/RqIAuXfoy+Vt1adtILsiYG03UBv0c1LLCBoZkWR3IKqNl+wJb802HKLnUhEeOv5cos+HXMrIaBlO2hVo1A64OD20sCKByOjW7KPToJNTyedYTqjZNkcv0A+ESCEHfrCn2PkIWw+0QflAjWHncOW5zomA4BqIUN6aHfNcPal7HMh+z09GJ+gabeqSeutJmPez6vXlDm2QPRdA/csmPhIPNU0tD7XwAekflh5zfp6r49Kfy5aL14zyQjS75chwQtIGtRZStRvTiXdlTxye7DxyzqgoXQ8J3pzV1Jysr8GvA/uIlwVaHIw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1740992309; c=relaxed/relaxed;
-	bh=yhKA0PWZzkHsCkSvRw6WIRSjH0fQoXRBt2BANeFnGaI=;
+	t=1740995815; c=relaxed/relaxed;
+	bh=lV8UTJCMsRq0l7Fp6O6xY5D76Ntv+8GETQYNeaUcv0c=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dgJvQdcMboAA2ux4igUIGW9UtNtt8yaz6N7QETm6l1CpHGLDDY7myGq+EMV3H0jgi0XaL3O9cWEMMsbBlJJ6o+K/CNUDn3ZvjzEy7UTj0dExHJEFSgpjUkQcM7894wi/49JP2NNaoRm2DIJmYMHToPM11uTgGllXu+eD+xkYOC24AZYYtZ+J+p09MZntg7Y0ySrMLjBgXBwHvDnadPo2zf+kRAAIC1Of3yXQZLgfS/ntZq28VT8+81h+Q1bySrPK36qyvvM3z3YeXfC7u2ZMbrQex7Xha58tka1kmhlkhL43D6oB35ujl5L8IkS5C2t5BJmb1JWL0CiHMAnFQCO7VA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FlLTRNph; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FlLTRNph; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FlLTRNph;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=FlLTRNph;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=david@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z5t5J5368z2yQl
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 19:58:26 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740992301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yhKA0PWZzkHsCkSvRw6WIRSjH0fQoXRBt2BANeFnGaI=;
-	b=FlLTRNphcbOuuY9Lk+b+bJ3bQi0912o4Xn3MpyCyRB2nHnJSy8lH/5o+MnVUXN4l8gEXN8
-	zG+HB87chsKAO4Rzy2BRyu//4Fo1oEVSfXmopwGYxnmWSUYpafB8U9Th3dlj1BgpcjgGED
-	Dt8lli1sskf9ONOHdFPu/eu+JD0DBu8=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1740992301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yhKA0PWZzkHsCkSvRw6WIRSjH0fQoXRBt2BANeFnGaI=;
-	b=FlLTRNphcbOuuY9Lk+b+bJ3bQi0912o4Xn3MpyCyRB2nHnJSy8lH/5o+MnVUXN4l8gEXN8
-	zG+HB87chsKAO4Rzy2BRyu//4Fo1oEVSfXmopwGYxnmWSUYpafB8U9Th3dlj1BgpcjgGED
-	Dt8lli1sskf9ONOHdFPu/eu+JD0DBu8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-683-XN4cY2LcNqyAsd-Jg8LTOA-1; Mon, 03 Mar 2025 03:58:19 -0500
-X-MC-Unique: XN4cY2LcNqyAsd-Jg8LTOA-1
-X-Mimecast-MFC-AGG-ID: XN4cY2LcNqyAsd-Jg8LTOA_1740992299
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-3910876fce0so600187f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 03 Mar 2025 00:58:19 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1740992299; x=1741597099;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=yhKA0PWZzkHsCkSvRw6WIRSjH0fQoXRBt2BANeFnGaI=;
-        b=iLeoRg2gvDuiJASpFPP7XB6P5AKZRrKmVbSEfVvTuueM1GWPCOId6MmRWc+TEnf/GY
-         lrm4IpfKQDGyVbg2Oo24DIRONZqsmskJiZhzeA+5Nxf8XAzRvvCCNcZbSwgbzXuRkWuz
-         3MjkKf51bk9b0asT+vi+Mlx8PxaR5QrR6qiScy59PNasXf6LzdlApipLreb01MpbAi+u
-         vDmeRr551of9gEN7rB5WfFg8omEKLlAz6VIQzkIYvGWOIriQZzE/8ZFYgx7ih4HjKzGj
-         kbIbECGrqPCVR5IKpVeGQWi2GKjLhKG2yHrSzH9w2l0hsKdUDRrtoXXy6bStU3MNp+eM
-         Eftg==
-X-Forwarded-Encrypted: i=1; AJvYcCW33xbaZeqYFYEV4V8BBLkj0O9nGJXYjnDcPTVuEx0cNZl8KRIM2SIiUHhGsvuGcCgXH1Fd0uXtS33EBwU=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yw3gzR7c4ZTLLPqV9UBme4MyM+/1DnuYua4/8gQyDRgeP90juuY
-	lt+secD3Za8SbQsWRgqxyIM5wxCdJhS79guJzs/w8Bj/b7ortm8Tcg7oY5NNcBy/ugOyHiymdXw
-	Geki+5A0LKkDK9g17G0iprmFx+OLC+pZOMtRNzGay2Z10sVJWHWsRU6ENS13IUpc=
-X-Gm-Gg: ASbGncvLGZOBz0QHMEcJKg9j/S1gOqtHh4TSrt3U//GWhsYexNiIIc5aow35fjJ0j7n
-	VN5u2Yj/QyW3EcVw/oP3IZpgf33QUZBpy8PUaU1X4G9BwJTSA32ds7A+txKBY9hvhCNAjR0j0ad
-	sC7ooarlkHuypuPmvVeAoPpUpUVzstKHVNg/4bYxhnO9TTCymxcgjDnihjbK2CEH6BL4pMtB/vt
-	U+XOb7teiOgKCxHeGub5ACVAWiuo/esEz1rRrcQLIJxWD2Wl+s69aUM4crsHf5HIDon893yLCZV
-	j++vfecz0PW4+pqw2l9TVRL0/4Wx3w/v7mh9Pevsau+z2zyjsP+C1+WEgg+/imbWJa9R7oYF4KE
-	m+zXRXaxfvkl3c7NBOCbBbP9oKZAqH4wRSfSVuvNxX7k=
-X-Received: by 2002:a5d:59ae:0:b0:391:10f9:f3a1 with SMTP id ffacd0b85a97d-39110f9f4ffmr1082147f8f.35.1740992298655;
-        Mon, 03 Mar 2025 00:58:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IHrOB8TUQnl8FpqKRAFyy2zHk+Etq0hy84HKx7V6iLK+hyXpCu8bZkk/epZdl6ibKYIEl0N0g==
-X-Received: by 2002:a5d:59ae:0:b0:391:10f9:f3a1 with SMTP id ffacd0b85a97d-39110f9f4ffmr1082091f8f.35.1740992298255;
-        Mon, 03 Mar 2025 00:58:18 -0800 (PST)
-Received: from ?IPV6:2003:cb:c734:9600:af27:4326:a216:2bfb? (p200300cbc7349600af274326a2162bfb.dip0.t-ipconnect.de. [2003:cb:c734:9600:af27:4326:a216:2bfb])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-390e485e61csm13948947f8f.98.2025.03.03.00.58.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 03 Mar 2025 00:58:17 -0800 (PST)
-Message-ID: <964e8991-44c0-4ff7-91cc-033ed7c09835@redhat.com>
-Date: Mon, 3 Mar 2025 09:58:15 +0100
+	 In-Reply-To:Content-Type; b=X8vKp71WolhHaoa7AL4ImxBsud2m4Naw4JXjSXX0oDJ+7j7Ikg+K9IulibcnPMe2xtwB0jrM2Ac0p7GzlUyaGiFwWNM12VKi0+PiRlAVsqDEJbtWqqobhDb26cfUnCalwH1w0yKsUyarmoOo6XeKj9Pp6kvzdhkkyND8FRzjNUnnzuIMCo4pl0QyG2FLwOg4cb5Qcoxj/4y2FB78FGBSiON13pwOHqyYY1Yk+vQ2ujXBtdt42WxD1rLV6jfp5QgHqt8sycmcqKyWopJNDXtg8Uh/ZOySVoM2yMD3HeaQRqvFcIc50pL+DJLVjA2xXrN28BCClWv6yCy0CajdEbPleg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z5vNk4lVBz2yQl
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  3 Mar 2025 20:56:53 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E78F6113E;
+	Mon,  3 Mar 2025 01:56:34 -0800 (PST)
+Received: from [192.168.1.12] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 797EA3F66E;
+	Mon,  3 Mar 2025 01:56:15 -0800 (PST)
+Message-ID: <a52972c7-aadd-4a77-a292-057fa5f8372d@arm.com>
+Date: Mon, 3 Mar 2025 10:56:12 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -104,108 +43,207 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 19/20] fs/dax: Properly refcount fs dax pages
-To: Alistair Popple <apopple@nvidia.com>, akpm@linux-foundation.org,
- dan.j.williams@intel.com, linux-mm@kvack.org
-Cc: Alison Schofield <alison.schofield@intel.com>, lina@asahilina.net,
- zhang.lyra@gmail.com, gerald.schaefer@linux.ibm.com,
- vishal.l.verma@intel.com, dave.jiang@intel.com, logang@deltatee.com,
- bhelgaas@google.com, jack@suse.cz, jgg@ziepe.ca, catalin.marinas@arm.com,
- will@kernel.org, mpe@ellerman.id.au, npiggin@gmail.com,
- dave.hansen@linux.intel.com, ira.weiny@intel.com, willy@infradead.org,
- djwong@kernel.org, tytso@mit.edu, linmiaohe@huawei.com, peterx@redhat.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
- nvdimm@lists.linux.dev, linux-cxl@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
- linux-xfs@vger.kernel.org, jhubbard@nvidia.com, hch@lst.de,
- david@fromorbit.com, chenhuacai@kernel.org, kernel@xen0n.name,
- loongarch@lists.linux.dev
-References: <cover.8068ad144a7eea4a813670301f4d2a86a8e68ec4.1740713401.git-series.apopple@nvidia.com>
- <c7d886ad7468a20452ef6e0ddab6cfe220874e7c.1740713401.git-series.apopple@nvidia.com>
-From: David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat
-In-Reply-To: <c7d886ad7468a20452ef6e0ddab6cfe220874e7c.1740713401.git-series.apopple@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: J3_Z6j8Xft2KvtsOZv4aPqPyBgqhBgvhtEPizPS-g9E_1740992299
-X-Mimecast-Originator: redhat.com
+Subject: Re: [PATCH v11 3/4] arm64: topology: Support SMT control on ACPI
+ based system
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Yicong Yang <yangyicong@huawei.com>, catalin.marinas@arm.com,
+ will@kernel.org, tglx@linutronix.de, peterz@infradead.org,
+ mpe@ellerman.id.au, linux-arm-kernel@lists.infradead.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, dietmar.eggemann@arm.com,
+ linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ morten.rasmussen@arm.com, msuchanek@suse.de, gregkh@linuxfoundation.org,
+ rafael@kernel.org, jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
+ linuxarm@huawei.com, yangyicong@hisilicon.com, xuwei5@huawei.com,
+ guohanjun@huawei.com, sshegde@linux.ibm.com
+References: <20250218141018.18082-1-yangyicong@huawei.com>
+ <20250218141018.18082-4-yangyicong@huawei.com> <Z8HAkZiHYRjj97M7@bogus>
+ <336e9c4e-cd9c-4449-ba7b-60ee8774115d@arm.com>
+ <20250228190641.q23vd53aaw42tcdi@bogus>
 Content-Language: en-US
+From: Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <20250228190641.q23vd53aaw42tcdi@bogus>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
-> -static inline unsigned long dax_folio_share_put(struct folio *folio)
-> +static inline unsigned long dax_folio_put(struct folio *folio)
->   {
-> -	return --folio->page.share;
-> +	unsigned long ref;
-> +	int order, i;
-> +
-> +	if (!dax_folio_is_shared(folio))
-> +		ref = 0;
-> +	else
-> +		ref = --folio->share;
-> +
 
-It would still be good to learn how this non-atomic update here is safe 
-(@Dan?), but that's independent of this series.
+On 2/28/25 20:06, Sudeep Holla wrote:
+> On Fri, Feb 28, 2025 at 06:51:16PM +0100, Pierre Gondois wrote:
+>>
+>>
+>> On 2/28/25 14:56, Sudeep Holla wrote:
+>>> On Tue, Feb 18, 2025 at 10:10:17PM +0800, Yicong Yang wrote:
+>>>> From: Yicong Yang <yangyicong@hisilicon.com>
+>>>>
+>>>> For ACPI we'll build the topology from PPTT and we cannot directly
+>>>> get the SMT number of each core. Instead using a temporary xarray
+>>>> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
+>>>> and SMT information of the first core in its heterogeneous CPU cluster
+>>>> when building the topology. Then we can know the largest SMT number
+>>>> in the system. If a homogeneous system's using ACPI 6.2 or later,
+>>>> all the CPUs should be under the root node of PPTT. There'll be
+>>>> only one entry in the xarray and all the CPUs in the system will
+>>>> be assumed identical.
+>>>>
+>>>> The core's SMT control provides two interface to the users [1]:
+>>>> 1) enable/disable SMT by writing on/off
+>>>> 2) enable/disable SMT by writing thread number 1/max_thread_number
+>>>>
+>>>> If a system have more than one SMT thread number the 2) may
+>>>> not handle it well, since there're multiple thread numbers in the
+>>>> system and 2) only accept 1/max_thread_number. So issue a warning
+>>>> to notify the users if such system detected.
+>>>>
+>>>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
+>>>>
+>>>> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+>>>> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+>>>> ---
+>>>>    arch/arm64/kernel/topology.c | 66 ++++++++++++++++++++++++++++++++++++
+>>>>    1 file changed, 66 insertions(+)
+>>>>
+>>>> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
+>>>> index 1a2c72f3e7f8..6eba1ac091ee 100644
+>>>> --- a/arch/arm64/kernel/topology.c
+>>>> +++ b/arch/arm64/kernel/topology.c
+>>>> @@ -15,8 +15,10 @@
+>>>>    #include <linux/arch_topology.h>
+>>>>    #include <linux/cacheinfo.h>
+>>>>    #include <linux/cpufreq.h>
+>>>> +#include <linux/cpu_smt.h>
+>>>>    #include <linux/init.h>
+>>>>    #include <linux/percpu.h>
+>>>> +#include <linux/xarray.h>
+>>>>    #include <asm/cpu.h>
+>>>>    #include <asm/cputype.h>
+>>>> @@ -37,17 +39,28 @@ static bool __init acpi_cpu_is_threaded(int cpu)
+>>>>    	return !!is_threaded;
+>>>>    }
+>>>> +struct cpu_smt_info {
+>>>> +	unsigned int thread_num;
+>>>> +	int core_id;
+>>>> +};
+>>>> +
+>>>>    /*
+>>>>     * Propagate the topology information of the processor_topology_node tree to the
+>>>>     * cpu_topology array.
+>>>>     */
+>>>>    int __init parse_acpi_topology(void)
+>>>>    {
+>>>> +	unsigned int max_smt_thread_num = 0;
+>>>> +	struct cpu_smt_info *entry;
+>>>> +	struct xarray hetero_cpu;
+>>>> +	unsigned long hetero_id;
+>>>>    	int cpu, topology_id;
+>>>>    	if (acpi_disabled)
+>>>>    		return 0;
+>>>> +	xa_init(&hetero_cpu);
+>>>> +
+>>>>    	for_each_possible_cpu(cpu) {
+>>>>    		topology_id = find_acpi_cpu_topology(cpu, 0);
+>>>>    		if (topology_id < 0)
+>>>> @@ -57,6 +70,34 @@ int __init parse_acpi_topology(void)
+>>>>    			cpu_topology[cpu].thread_id = topology_id;
+>>>>    			topology_id = find_acpi_cpu_topology(cpu, 1);
+>>>>    			cpu_topology[cpu].core_id   = topology_id;
+>>>> +
+>>>> +			/*
+>>>> +			 * In the PPTT, CPUs below a node with the 'identical
+>>>> +			 * implementation' flag have the same number of threads.
+>>>> +			 * Count the number of threads for only one CPU (i.e.
+>>>> +			 * one core_id) among those with the same hetero_id.
+>>>> +			 * See the comment of find_acpi_cpu_topology_hetero_id()
+>>>> +			 * for more details.
+>>>> +			 *
+>>>> +			 * One entry is created for each node having:
+>>>> +			 * - the 'identical implementation' flag
+>>>> +			 * - its parent not having the flag
+>>>> +			 */
+>>>> +			hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
+>>>> +			entry = xa_load(&hetero_cpu, hetero_id);
+>>>> +			if (!entry) {
+>>>> +				entry = kzalloc(sizeof(*entry), GFP_KERNEL);
+>>>> +				WARN_ON_ONCE(!entry);
+>>>> +
+>>>> +				if (entry) {
+>>>> +					entry->core_id = topology_id;
+>>>> +					entry->thread_num = 1;
+>>>> +					xa_store(&hetero_cpu, hetero_id,
+>>>> +						 entry, GFP_KERNEL);
+>>>> +				}
+>>>> +			} else if (entry->core_id == topology_id) {
+>>>> +				entry->thread_num++;
+>>>> +			}
+>>>>    		} else {
+>>>>    			cpu_topology[cpu].thread_id  = -1;
+>>>>    			cpu_topology[cpu].core_id    = topology_id;
+>>>> @@ -67,6 +108,31 @@ int __init parse_acpi_topology(void)
+>>>>    		cpu_topology[cpu].package_id = topology_id;
+>>>>    	}
+>>>> +	/*
+>>>> +	 * This should be a short loop depending on the number of heterogeneous
+>>>> +	 * CPU clusters. Typically on a homogeneous system there's only one
+>>>> +	 * entry in the XArray.
+>>>> +	 */
+>>>> +	xa_for_each(&hetero_cpu, hetero_id, entry) {
+>>>> +		if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
+>>>> +			pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
+>>>
+>>> Ditto as previous patch about handling no threaded cores with threaded cores
+>>> in the system. I am not sure if that is required but just raising it here.
+>>>
+>>>> +
+>>>> +		max_smt_thread_num = max(max_smt_thread_num, entry->thread_num);
+>>>> +		xa_erase(&hetero_cpu, hetero_id);
+>>>> +		kfree(entry);
+>>>> +	}
+>>>> +
+>>>> +	/*
+>>>> +	 * Notify the CPU framework of the SMT support. Initialize the
+>>>> +	 * max_smt_thread_num to 1 if no SMT support detected. A thread
+>>>> +	 * number of 1 can be handled by the framework so we don't need
+>>>> +	 * to check max_smt_thread_num to see we support SMT or not.
+>>>> +	 */
+>>>> +	if (!max_smt_thread_num)
+>>>> +		max_smt_thread_num = 1;
+>>>> +
+>>>
+>>> Ditto as previous patch, can get rid if it is default 1.
+>>>
+>>
+>> On non-SMT platforms, not calling cpu_smt_set_num_threads() leaves
+>> cpu_smt_num_threads uninitialized to UINT_MAX:
+>>
+>> smt/active:0
+>> smt/control:-1
+>>
+>> If cpu_smt_set_num_threads() is called:
+>> active:0
+>> control:notsupported
+>>
+>> So it might be slightly better to still initialize max_smt_thread_num.
+>>
+> 
+> Sure, what I meant is to have max_smt_thread_num set to 1 by default is
+> that is what needed anyways and the above code does that now.
+> 
+> Why not start with initialised to 1 instead ?
+> Of course some current logic needs to change around testing it for zero.
+> 
 
-Staring at it, I would have thought we have to us an atomic_t here.
+I think there would still be a way to check against the default value.
+If we have:
+unsigned int max_smt_thread_num = 1;
 
-Acked-by: David Hildenbrand <david@redhat.com>
+then on a platform with 2 threads, the detection condition would trigger:
+xa_for_each(&hetero_cpu, hetero_id, entry) {
+     if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)     <---- (entry->thread_num=2) and (max_smt_thread_num=1)
+         pr_warn_once("Heterogeneous SMT topology is partly
+                       supported by SMT control\n");
 
--- 
-Cheers,
-
-David / dhildenb
-
+so we would need an additional variable:
+bool is_initialized = false;
 
