@@ -1,60 +1,65 @@
-Return-Path: <linuxppc-dev+bounces-6653-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6654-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A23C3A4C3AB
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 15:42:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8414A4C60F
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  3 Mar 2025 17:05:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z61kg2GWwz30Yb;
-	Tue,  4 Mar 2025 01:42:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z63YQ1R3wz3bgV;
+	Tue,  4 Mar 2025 03:04:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.188
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741012971;
-	cv=none; b=BBtnW/6oO5kjZyCFZuzLsubiunfYUIL1urNLjGmO22G+x99mNkaPp2e5eQXNciCHN8uDKc/uiyHntzZb8UIZZlrjQq4425v334fcxIx04Z4pXRcvUN8+S1dV7J31W2588CxViFJvy+p7SdXSf7wfIkBZR1zlMWutPfySq7ie6P3+/JR1vmGCQAtb4eHPOG+qCqIFR+4TBRS9aXoGf9RS/jdl6nz7ZvFO0HNWIGeQD0HdflZKPJw/jM/Vwpr/CJ7wsK2fahvrxPy+yyhbSDNNUnuj/owqRnGbTz6V2+Ar8J1ldoNROjEMKKgrYA/Yku0kGabKuZmL7SWRfX6z5iX+yQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04::f03c:95ff:fe5e:7468"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741009327;
+	cv=none; b=jFJ/LFzCWOrtATWMcCs2N4Xubd/TaqqJNxJJ6AnQwdc28L14DAW07+DZpnvQ7cYyOmrrXDfn3PWhQ2eGXl6okdXy151B0O0B9+bR/UbhpXBhGk5plf3RQznH6FaUISHGK80YhAnOZ0UrD+xgoOLl+LOzIA9iAzSJ4x9d7gNy0n8JideQepv2Vyol1vqiA/VP+hxgR3upaGLv1PkMkde7myTCytODaDZ9l44lcWn29QPOOdMgdxVzjlw6lK2fs0UsgC6H/oWo3Qad/+pu8Ul8Xxk3ttN68ZnaRiLgbSrOxXqR75LBUEsKr971Mm7p85Gn2QJAPwBZHbb0xdHMEPGeQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741012971; c=relaxed/relaxed;
-	bh=3EZS2ejN/6IHQgzRU3+5eiINWlW/7ry7xdj6V0o4hnM=;
-	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=kEvZv49H4X3LUHi5R+RoICnEHo2+fQV5RD15FVuLnd0vGvw3j/NArF3Jg6U7xCV0MAu9DshWSylm9vbVsUuCZhwS2XUwFmmpA0EuliHUQeEXccdzg3O6t1SnbtGoqeiL8S/joC19ryOlDGhvKqrmnEdtG7BpGbazJsz5jF0nINuN63J1V+S9Z0+EnBw4CsPASVzkJoIqXHam2QFt5I/RSLOX3B19108nNRI6gQOiNoN0pjuN0rsiJhx1gPUj6L4h5CmcPJLmDAUzslAFufh/l5zK0wM3n4X3WmQ+UAImVDd2Is25RlkrHFnIFRhxui7l7l5Yq/EyfhumGbDnk3BtEw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1741009327; c=relaxed/relaxed;
+	bh=ejv1eC/zaiZJNsI2RPyFhIf+L8KNg8vO/s9DJl1mCto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=L1A8GzSr5HesK9PuhatJBgv2464AiPYVkp76GlMjFeM3lxrbRh55IS+L72aNFtdAgRJNC5EMjecOTiFJvpEr+qcs6D4yN2bD3Ij9Kr5eARwY2wYS08XTLUHhm7UrMrgcUsnYuhvtUKWhaEQcdnOTweip5eNdFZr2wk8y7ZOB31neqGTY9ns1hP6KRpWcNfr+UHGImvSN0ZhPCsROgfapcSVMGQkQoiaHtdEKVy5HxntdOvm3kEUdZ4cvuD9/2prJ6bjeRyhfZmbPlrbRTHB5NVdscoYAIHHUhW1Lk9zRg5u8oO7hOxlN0q97RgCZlw9w+gqdkKWV31ZiwpnP3nIjxg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k7aarzRr; dkim-atps=neutral; spf=pass (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=k7aarzRr;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04::f03c:95ff:fe5e:7468; helo=tor.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04::f03c:95ff:fe5e:7468])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z61kZ3XSKz30WS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 01:42:46 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Z61fM48jHzCs7q;
-	Mon,  3 Mar 2025 22:39:07 +0800 (CST)
-Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id 7A0071401F0;
-	Mon,  3 Mar 2025 22:42:36 +0800 (CST)
-Received: from [10.67.121.177] (10.67.121.177) by
- kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Mon, 3 Mar 2025 22:42:35 +0800
-CC: <catalin.marinas@arm.com>, <will@kernel.org>, <sudeep.holla@arm.com>,
-	<tglx@linutronix.de>, <peterz@infradead.org>, <mpe@ellerman.id.au>,
-	<linux-arm-kernel@lists.infradead.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <pierre.gondois@arm.com>,
-	<dietmar.eggemann@arm.com>, <yangyicong@hisilicon.com>,
-	<linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
-	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
-	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
-	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <sshegde@linux.ibm.com>
-Subject: Re: [PATCH v11 3/4] arm64: topology: Support SMT control on ACPI
- based system
-To: Hanjun Guo <guohanjun@huawei.com>
-References: <20250218141018.18082-1-yangyicong@huawei.com>
- <20250218141018.18082-4-yangyicong@huawei.com>
- <92193a09-271e-895e-f77f-d3952bdfdf49@huawei.com>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <5f56d0fc-7ca8-cc52-9747-aec981e42bdc@huawei.com>
-Date: Mon, 3 Mar 2025 22:42:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z60NZ3bk6z2y92
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 00:42:06 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 5E85461206;
+	Mon,  3 Mar 2025 13:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0938C4CED6;
+	Mon,  3 Mar 2025 13:42:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741009322;
+	bh=vrDxbcIJQqkSw75KhA73NGqZilboXIjAwfnFMaIawGI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=k7aarzRrmLRsznWXpkijE8LUo25+hran6IjEWQuaXLrYb1b+NIPc1PFI8034OPHIe
+	 OUOmb1DUuiaYiaDQ7Lo4x1pm3b6YTqdDxrl7lOOgOVWkmCTfCmF2rYgQm/ufqMAvYZ
+	 /tdYJhy3fcNeC/ipdmAopssOdyqlYRj1OFY64lr8SazI6kYSqpIbdBQ1B8kiNuqhMc
+	 IGgRiIHXYzK3uNjCwRwqdO3yYfV1VOfSoFMfGk+iU8ZTkqgdgRdcz2dN8O/KGtsnkX
+	 +L3KCuL6YuHgke59P7VXrbYFqqHQVen5yT7a3Bzkx2rh1ayMvsy9fDETax5XZv3Zff
+	 jS/b5faWidrjA==
+Date: Mon, 3 Mar 2025 07:42:00 -0600
+From: Rob Herring <robh@kernel.org>
+To: =?iso-8859-1?Q?J=2E_Neusch=E4fer?= <j.ne@posteo.net>
+Cc: Conor Dooley <conor+dt@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	dmaengine@vger.kernel.org, Crystal Wood <oss@buserror.net>,
+	linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH v3] dt-bindings: dma: Convert fsl,elo*-dma to YAML
+Message-ID: <20250303134200.GA1710704-robh@kernel.org>
+References: <20250226-ppcyaml-dma-v3-1-79ce3133569f@posteo.net>
+ <174059099427.2999773.4836262903761680275.robh@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,161 +72,73 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <92193a09-271e-895e-f77f-d3952bdfdf49@huawei.com>
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.121.177]
-X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
- kwepemd200014.china.huawei.com (7.221.188.8)
-X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+In-Reply-To: <174059099427.2999773.4836262903761680275.robh@kernel.org>
+X-Spam-Status: No, score=3.9 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,RCVD_IN_XBL,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2025/2/25 14:08, Hanjun Guo wrote:
-> On 2025/2/18 22:10, Yicong Yang wrote:
->> From: Yicong Yang <yangyicong@hisilicon.com>
->>
->> For ACPI we'll build the topology from PPTT and we cannot directly
->> get the SMT number of each core. Instead using a temporary xarray
->> to record the heterogeneous information (from ACPI_PPTT_ACPI_IDENTICAL)
->> and SMT information of the first core in its heterogeneous CPU cluster
->> when building the topology. Then we can know the largest SMT number
->> in the system. If a homogeneous system's using ACPI 6.2 or later,
->> all the CPUs should be under the root node of PPTT. There'll be
->> only one entry in the xarray and all the CPUs in the system will
->> be assumed identical.
->>
->> The core's SMT control provides two interface to the users [1]:
->> 1) enable/disable SMT by writing on/off
->> 2) enable/disable SMT by writing thread number 1/max_thread_number
->>
->> If a system have more than one SMT thread number the 2) may
->> not handle it well, since there're multiple thread numbers in the
->> system and 2) only accept 1/max_thread_number. So issue a warning
->> to notify the users if such system detected.
->>
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/ABI/testing/sysfs-devices-system-cpu#n542
->>
->> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
->> Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
->> ---
->>   arch/arm64/kernel/topology.c | 66 ++++++++++++++++++++++++++++++++++++
->>   1 file changed, 66 insertions(+)
->>
->> diff --git a/arch/arm64/kernel/topology.c b/arch/arm64/kernel/topology.c
->> index 1a2c72f3e7f8..6eba1ac091ee 100644
->> --- a/arch/arm64/kernel/topology.c
->> +++ b/arch/arm64/kernel/topology.c
->> @@ -15,8 +15,10 @@
->>   #include <linux/arch_topology.h>
->>   #include <linux/cacheinfo.h>
->>   #include <linux/cpufreq.h>
->> +#include <linux/cpu_smt.h>
->>   #include <linux/init.h>
->>   #include <linux/percpu.h>
->> +#include <linux/xarray.h>
->>     #include <asm/cpu.h>
->>   #include <asm/cputype.h>
->> @@ -37,17 +39,28 @@ static bool __init acpi_cpu_is_threaded(int cpu)
->>       return !!is_threaded;
->>   }
->>   +struct cpu_smt_info {
->> +    unsigned int thread_num;
->> +    int core_id;
->> +};
->> +
->>   /*
->>    * Propagate the topology information of the processor_topology_node tree to the
->>    * cpu_topology array.
->>    */
->>   int __init parse_acpi_topology(void)
->>   {
->> +    unsigned int max_smt_thread_num = 0;
->> +    struct cpu_smt_info *entry;
->> +    struct xarray hetero_cpu;
->> +    unsigned long hetero_id;
->>       int cpu, topology_id;
->>         if (acpi_disabled)
->>           return 0;
->>   +    xa_init(&hetero_cpu);
->> +
->>       for_each_possible_cpu(cpu) {
->>           topology_id = find_acpi_cpu_topology(cpu, 0);
->>           if (topology_id < 0)
->> @@ -57,6 +70,34 @@ int __init parse_acpi_topology(void)
->>               cpu_topology[cpu].thread_id = topology_id;
->>               topology_id = find_acpi_cpu_topology(cpu, 1);
->>               cpu_topology[cpu].core_id   = topology_id;
->> +
->> +            /*
->> +             * In the PPTT, CPUs below a node with the 'identical
->> +             * implementation' flag have the same number of threads.
->> +             * Count the number of threads for only one CPU (i.e.
->> +             * one core_id) among those with the same hetero_id.
->> +             * See the comment of find_acpi_cpu_topology_hetero_id()
->> +             * for more details.
->> +             *
->> +             * One entry is created for each node having:
->> +             * - the 'identical implementation' flag
->> +             * - its parent not having the flag
->> +             */
->> +            hetero_id = find_acpi_cpu_topology_hetero_id(cpu);
->> +            entry = xa_load(&hetero_cpu, hetero_id);
->> +            if (!entry) {
->> +                entry = kzalloc(sizeof(*entry), GFP_KERNEL);
->> +                WARN_ON_ONCE(!entry);
->> +
->> +                if (entry) {
->> +                    entry->core_id = topology_id;
->> +                    entry->thread_num = 1;
->> +                    xa_store(&hetero_cpu, hetero_id,
->> +                         entry, GFP_KERNEL);
->> +                }
->> +            } else if (entry->core_id == topology_id) {
->> +                entry->thread_num++;
->> +            }
->>           } else {
->>               cpu_topology[cpu].thread_id  = -1;
->>               cpu_topology[cpu].core_id    = topology_id;
->> @@ -67,6 +108,31 @@ int __init parse_acpi_topology(void)
->>           cpu_topology[cpu].package_id = topology_id;
->>       }
->>   +    /*
->> +     * This should be a short loop depending on the number of heterogeneous
->> +     * CPU clusters. Typically on a homogeneous system there's only one
->> +     * entry in the XArray.
->> +     */
->> +    xa_for_each(&hetero_cpu, hetero_id, entry) {
->> +        if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)
->> +            pr_warn_once("Heterogeneous SMT topology is partly supported by SMT control\n");
->> +
->> +        max_smt_thread_num = max(max_smt_thread_num, entry->thread_num);
->> +        xa_erase(&hetero_cpu, hetero_id);
->> +        kfree(entry);
->> +    }
->> +
->> +    /*
->> +     * Notify the CPU framework of the SMT support. Initialize the
->> +     * max_smt_thread_num to 1 if no SMT support detected. A thread
->> +     * number of 1 can be handled by the framework so we don't need
->> +     * to check max_smt_thread_num to see we support SMT or not.
->> +     */
->> +    if (!max_smt_thread_num)
->> +        max_smt_thread_num = 1;
->> +
->> +    cpu_smt_set_num_threads(max_smt_thread_num, max_smt_thread_num);
->> +    xa_destroy(&hetero_cpu);
->>       return 0;
->>   }
->>   #endif
+On Wed, Feb 26, 2025 at 11:29:54AM -0600, Rob Herring (Arm) wrote:
 > 
-> Looks good to me,
+> On Wed, 26 Feb 2025 16:57:17 +0100, J. Neusch�fer wrote:
+> > The devicetree bindings for Freescale DMA engines have so far existed as
+> > a text file. This patch converts them to YAML, and specifies all the
+> > compatible strings currently in use in arch/powerpc/boot/dts.
+> > 
+> > Signed-off-by: J. Neusch�fer <j.ne@posteo.net>
+> > ---
+> > I considered referencing dma-controller.yaml, but that requires
+> > the #dma-cells property (via dma-common.yaml), and I'm now sure which
+> > value it should have, if any. Therefore I did not reference
+> > dma-controller.yaml.
+> > 
+> > V3:
+> > - split out as a single patch
+> > - restructure "description" definitions to use "items:" as much as possible
+> > - remove useless description of interrupts in fsl,elo3-dma
+> > - rename DMA controller nodes to dma-controller@...
+> > - use IRQ_TYPE_* constants in examples
+> > - define unit address format for DMA channel nodes
+> > - drop interrupts-parent properties from examples
+> > 
+> > V2:
+> > - part of series [PATCH v2 00/12] YAML conversion of several Freescale/PowerPC DT bindings
+> >   Link: https://lore.kernel.org/lkml/20250207-ppcyaml-v2-5-8137b0c42526@posteo.net/
+> > - remove unnecessary multiline markers
+> > - fix additionalProperties to always be false
+> > - add description/maxItems to interrupts
+> > - add missing #address-cells/#size-cells properties
+> > - convert "Note on DMA channel compatible properties" to YAML by listing
+> >   fsl,ssi-dma-channel as a valid compatible value
+> > - fix property ordering in examples: compatible and reg come first
+> > - add missing newlines in examples
+> > - trim subject line (remove "bindings")
+> > ---
+> >  .../devicetree/bindings/dma/fsl,elo-dma.yaml       | 137 ++++++++++++++
+> >  .../devicetree/bindings/dma/fsl,elo3-dma.yaml      | 125 +++++++++++++
+> >  .../devicetree/bindings/dma/fsl,eloplus-dma.yaml   | 132 +++++++++++++
+> >  .../devicetree/bindings/powerpc/fsl/dma.txt        | 204 ---------------------
+> >  4 files changed, 394 insertions(+), 204 deletions(-)
+> > 
 > 
-> Reviewed-by: Hanjun Guo <guohanjun@huawei.com>
+> My bot found errors running 'make dt_binding_check' on your patch:
 > 
+> yamllint warnings/errors:
+> 
+> dtschema/dtc warnings/errors:
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,elo-dma.example.dtb: dma-controller@82a8: '#dma-cells' is a required property
+> 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,eloplus-dma.example.dtb: dma-controller@21300: '#dma-cells' is a required property
+> 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
+> /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,elo3-dma.example.dtb: dma-controller@100300: '#dma-cells' is a required property
+> 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
 
-Thanks a lot for taking a look :)
+Just stick with 'dma' for node name as that's what .dts files are using 
+and 'dma-controller' is reserved for users of DMA provider binding.
 
-
+Rob
 
