@@ -1,68 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-6686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9689A4DF40
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 14:29:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7EC7A4E04D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 15:11:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6c3810s7z30Vb;
-	Wed,  5 Mar 2025 00:29:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6czX0jsQz3bm3;
+	Wed,  5 Mar 2025 01:11:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741094948;
-	cv=none; b=G7ZNGNDQzPT28EdkwjSYmGdNqkWRWOnYS5HMQ1ltL7Jw8rJD3quouPwNMjXCSWGMEyF6OoMF6zk/EwxCqfCEd2xFaVPWjGIY0EpfStBn//S7cHZF5Vaz2KpE2Mu68ec9/0zRp5gcCRxUPL1MO49wHyqTLP3znFBN4mY3dhjpfO6VYoUtgnmt6cfOvLJkLIu1S2/oR9nksQuScKV5q6czX4F+/sc63dnbwhRjZ5iM5xhsrbbgIvk5qK63HjLb8m9Mc+GFCtibVZwNfwclNTkt1KPaWnAs+S9eVn81chWIcnrn3+zcb6qgKW/WCWeeugBwttlHBiM6V5Ju8eYA1fTAVw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741097464;
+	cv=none; b=Kp6nTBg6bato+YoIVv4C+1rl1hxbdTuEm3djBXAEjuE2QQiiXlD7O8FM4K7yv22QE+dxT6pPpscy5LrdAzrTgF+SaQweIsA7ZRkd/oM7uiGoxsSlXOlERzj0xcgzIE4LwoXn/sjOfS4xRCnTC4X/4R0rTSZpgl1nSsMZ2dsd1k7pkqyxzL9gC7gmH0qm4UvKn61De1WrUk5i1k4R8jmYfOZ/BXAW8X6sXrS28geAu12SOP4PTvQkL5F0sSKd2MlbHY/pTazILiCd6XrHlbbvu0GmSE/WYGNmAuySv0btFj6u+RUjTQ9G065mdxJ9u9XTbr5anHueROTIDSrnxT1/4w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741094948; c=relaxed/relaxed;
-	bh=Vlie2s6A3W2NoubPXYvVeaREA7BeWoMmTyq0pjCXtwI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O4TS3bTCq7nmSX9TbgIR8/b7TfukIDjqHf4KMyr4r7fwiLPbyh4m9B5Wi48qDfm4K6TlnoydySIKdDEuzBqxKuzyZSovHWEBkc8V+YIfzXJ3W/DOeGpZtkMAX/iz7/C2x0MVCjJR0kTJ/vrba4/7RlpWhO4G5eNsFuLw0VTPcsBzocVSo3kK+KJCCemWXFtTIcQrH9mq6lfDQnrKdoAbFF1n1C3/mS2xwSdFAzNugRYpjkh2bKqd1K/scI17PZzysRGBrWaGW2k9ivhEUCe4SvBDMJCN9BKFTM88opq7VAp5fON3+DM7Kii+BNqL+5IncpAO6fpgfoKQcqnhvryQcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=R3RhzeRj; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=R3RhzeRj;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
-Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1741097464; c=relaxed/relaxed;
+	bh=Cz7IA69OFA9tHcBAPSVOCjGmnTTL7mvde1OZORF4svs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=DlGUYTxuqf4VQSNYORZC8qLwR7UBvQVJpn/gUFJrs50KxfFzjHK21/ayoUK7S57bOb6iNU3lqgvxVBUB4dAk3bhgNpPqW8CsV6NLRIokO9NWd45TcEtmoB8VUxbvkQcURCRSTjYIaTkiqmeGlMBAH7RSVB8Ub+E2YVQB6qP3GnkT6BNHGfN+q6PEWgOjNJ4uzHX3xQquaEmHvwSq/9CuLoSkj9XTqvUdql0sxDAf7fV/XZDmXtPmoRYpGGvdMHJL+VUduLoEYUBEOQz8P5R6n0d4CyrPoQZJKnzNpqcqyHQ45O0PtChdefW1qPTLRrFJrM8uHP3/ibp8KD9zEGKZ9A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6c346YQbz2yDH
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 00:29:01 +1100 (AEDT)
-Received: from submission (posteo.de [185.67.36.169]) 
-	by mout01.posteo.de (Postfix) with ESMTPS id 148E924002A
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 14:28:54 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
-	t=1741094935; bh=GPsFfWzJ45kkPKaIC8bUVtCSlM7aVHTBZr1/4Ads9no=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:Content-Transfer-Encoding:From;
-	b=R3RhzeRjfiKl8RRpGtbiWddCgwW2TygfsbPeT/fMdBGDodRsnGd3NDBXVd5wKFA8r
-	 HTizIctUmqdlhL5uXdQX9vTAOerQAOzGcQLj3X2i/um8I+V8wf2Yj7l7qWk1LVJegM
-	 Jkb+YIMoWdTceuTfyWDy6UQg7CLiSOBbyB+Wtn8mRWj8l+RPfB2CIkGMBdircWoj5u
-	 JhviOeZ1uxUg0CoTg0KOiRm4uPqPLctJVkUyodvpBeuZnH/TieWJzRE19ExAsBYcUZ
-	 rIfEj+6zSvANeG4TQe++b303hdEMBe9GViZquyu7qWFS1r25tLBUsab4yCJGBF5MNp
-	 mzlMxqP68d3DQ==
-Received: from customer (localhost [127.0.0.1])
-	by submission (posteo.de) with ESMTPSA id 4Z6c2r19WLz9rxF;
-	Tue,  4 Mar 2025 14:28:52 +0100 (CET)
-Date: Tue,  4 Mar 2025 13:28:51 +0000
-From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-To: Rob Herring <robh@kernel.org>
-Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	dmaengine@vger.kernel.org, Crystal Wood <oss@buserror.net>,
-	linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>, devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Naveen N Rao <naveen@kernel.org>
-Subject: Re: [PATCH v3] dt-bindings: dma: Convert fsl,elo*-dma to YAML
-Message-ID: <Z8cAE0L3qnPHWLCR@probook>
-References: <20250226-ppcyaml-dma-v3-1-79ce3133569f@posteo.net>
- <174059099427.2999773.4836262903761680275.robh@kernel.org>
- <20250303134200.GA1710704-robh@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6czV3B96z30Vq
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 01:10:59 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Z6ctR2c3Gz1ltZw;
+	Tue,  4 Mar 2025 22:06:39 +0800 (CST)
+Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
+	by mail.maildlp.com (Postfix) with ESMTPS id B226C1A0188;
+	Tue,  4 Mar 2025 22:10:50 +0800 (CST)
+Received: from [10.174.179.234] (10.174.179.234) by
+ kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 4 Mar 2025 22:10:48 +0800
+Message-ID: <2c1fa758-c292-aefb-f6e2-cab41f592568@huawei.com>
+Date: Tue, 4 Mar 2025 22:10:47 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,42 +48,94 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v13 4/5] arm64: support copy_mc_[user]_highpage()
+To: Catalin Marinas <catalin.marinas@arm.com>
+CC: Mark Rutland <mark.rutland@arm.com>, Jonathan Cameron
+	<Jonathan.Cameron@huawei.com>, Mauro Carvalho Chehab
+	<mchehab+huawei@kernel.org>, Will Deacon <will@kernel.org>, Andrew Morton
+	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
+	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
+ Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
+	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
+ Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
+	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>,
+	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+	<kasan-dev@googlegroups.com>, <wangkefeng.wang@huawei.com>, Guohanjun
+	<guohanjun@huawei.com>
+References: <20241209024257.3618492-1-tongtiangen@huawei.com>
+ <20241209024257.3618492-5-tongtiangen@huawei.com> <Z6zWSXzKctkpyH7-@arm.com>
+ <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com> <Z698SFVqHjpGeGC0@arm.com>
+ <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com> <Z7NN5Pa-c5PtIbcF@arm.com>
+ <3b181285-2ff3-b77a-867b-725f38ea86d3@huawei.com> <Z7TisqB5qCIF5nYI@arm.com>
+From: Tong Tiangen <tongtiangen@huawei.com>
+In-Reply-To: <Z7TisqB5qCIF5nYI@arm.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20250303134200.GA1710704-robh@kernel.org>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Originating-IP: [10.174.179.234]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ kwepemk500005.china.huawei.com (7.202.194.90)
+X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Mon, Mar 03, 2025 at 07:42:00AM -0600, Rob Herring wrote:
-> On Wed, Feb 26, 2025 at 11:29:54AM -0600, Rob Herring (Arm) wrote:
-> > 
-> > On Wed, 26 Feb 2025 16:57:17 +0100, J. Neuschäfer wrote:
-> > > The devicetree bindings for Freescale DMA engines have so far existed as
-> > > a text file. This patch converts them to YAML, and specifies all the
-> > > compatible strings currently in use in arch/powerpc/boot/dts.
-> > > 
-> > > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
-> > > ---
-[...]
-> > dtschema/dtc warnings/errors:
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,elo-dma.example.dtb: dma-controller@82a8: '#dma-cells' is a required property
-> > 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,eloplus-dma.example.dtb: dma-controller@21300: '#dma-cells' is a required property
-> > 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
-> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,elo3-dma.example.dtb: dma-controller@100300: '#dma-cells' is a required property
-> > 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
-> 
-> Just stick with 'dma' for node name as that's what .dts files are using 
-> and 'dma-controller' is reserved for users of DMA provider binding.
-> 
-> Rob
+Hi,Catalin:
 
-Ok, makes sense.
+Kindly ping ...
 
-Thanks,
-J. Neuschäfer
+Thanks.:)
+
+在 2025/2/19 3:42, Catalin Marinas 写道:
+> On Tue, Feb 18, 2025 at 07:51:10PM +0800, Tong Tiangen wrote:
+>>>>>> 在 2025/2/13 1:11, Catalin Marinas 写道:
+>>>>>>> On Mon, Dec 09, 2024 at 10:42:56AM +0800, Tong Tiangen wrote:
+>>>>>>>> Currently, many scenarios that can tolerate memory errors when copying page
+>>>>>>>> have been supported in the kernel[1~5], all of which are implemented by
+>>>>>>>> copy_mc_[user]_highpage(). arm64 should also support this mechanism.
+>>>>>>>>
+>>>>>>>> Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
+>>>>>>>> architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
+>>>>>>>> __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
+>>>>>>>>
+>>>>>>>> Add new helper copy_mc_page() which provide a page copy implementation with
+>>>>>>>> hardware memory error safe. The code logic of copy_mc_page() is the same as
+>>>>>>>> copy_page(), the main difference is that the ldp insn of copy_mc_page()
+>>>>>>>> contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
+>>>>>>>> main logic is extracted to copy_page_template.S. In addition, the fixup of
+>>>>>>>> MOPS insn is not considered at present.
+>>>>>>>
+>>>>>>> Could we not add the exception table entry permanently but ignore the
+>>>>>>> exception table entry if it's not on the do_sea() path? That would save
+>>>>>>> some code duplication.
+> [...]
+>> So we need another way to distinguish the different processing of the
+>> same exception type on SEA and non-SEA path.
+> 
+> Distinguishing whether the fault is SEA or non-SEA is already done by
+> the exception handling you are adding. What we don't have though is
+> information about whether the caller invoked copy_highpage() or
+> copy_mc_highpage(). That's where the code duplication comes in handy.
+> 
+> It's a shame we need to duplicate identical functions just to have
+> different addresses to look up in the exception table. We are also short
+> of caller saved registers to track this information (e.g. an extra
+> argument to those functions that the exception handler interprets).
+> 
+> I need to think a bit more, we could in theory get the arm64 memcpy_mc()
+> to return an error code depending on what type of fault it got (e.g.
+> -EHWPOISON for SEA, -EFAULT for non-SEA). copy_mc_highpage() would
+> interpret this one and panic if -EFAULT. But we lose some fault details
+> we normally get on a faulty access like some of the registers.
+> 
+> Well, maybe the simples is still to keep the function duplication. I'll
+> have another look at the series tomorrow.
+> 
 
