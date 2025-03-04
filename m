@@ -1,128 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-6676-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6662-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C90FA4D5B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 09:05:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CE88A4D4F4
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 08:39:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6SsY61vcz30Vw;
-	Tue,  4 Mar 2025 19:05:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6SHx0b0Gz30Sv;
+	Tue,  4 Mar 2025 18:39:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2406:e500:4440:2::72e" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741074081;
-	cv=pass; b=AdiNeFBbSaCzxf4MI1IO0+Grs6B/HJglvKjrJThj9+D5oI0wFHfz7OHQabNu3+k8Hbs1VlqCfgyL/DUADSC/vjSLJUdBV4q55hveZX+ufLuHhNfruXJ3b6bO9sSMbxk12sXgB4U6WhBj9xHBmaeMt59GyVcwTK3LfQeJHyEydFnbASmn1GrV8nYv1TaOXbBYiIhlpjDLFbakYQ+MC1W9B4NMuBdH69CZkylu4ZdfMP6iV2acUVgd/G+JTi5JzuUZ1eFQGT0XK4rFtqq0KAeGhfze8Ouq5LTywsuYI4GdZjB2mOPGQ2B9dWhUqhLOghtIrJcql07uumRabDJQVT0ySg==
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2607::609" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741073981;
+	cv=pass; b=KuXIezkPGrucPQ+I5aY6jyk0zDcLlLEzlqpKf9laKTPEF265U5KKONP33WKzthcnH87OgB2iq3v2BUM9upQ4KGLK2kaxwFKYDLkUEjLwN06CgfPcO8EHwXyI1Wl5gOKQIOgOnsZZNcEKM/aSRWhlqQCua5cyHiW2fsXAT71GTc1bWPF0/Lj6LckgSi3e5YN51/lLblNiLpc8D0wBCVV2NdTQiFKUtkm/3Az9nTvj8nTMj+qtDvt6Okb0TVmX7L7qOPBVyoBDevEWRZYPO8x9FLvop+UuOies9AZlymKbcQ3UAfkdKnGLsUHoous1V8RpLWsgR4mJQuNYOw5vpzwAUw==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741074081; c=relaxed/relaxed;
-	bh=Crv9CQ4Ux9sMJKasrKodGTKeVvSHxTIJp+VaSJowfdI=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=GRZv9rO7lP6DDXsBwEoBnwxT1Q+9/eAAk/0dz51pc/MLG0q9Bnr08MPuhCEUCze7Kczs1fggPrv6cNTKnYQYgky55dyb1cXqrvbFI+ziY167U+W5iV+gKlpqq3Ns8/Ve03cnWQImVhQfQ/XpnpaGevfeIa6mKtPnAxa9ByXTvIY5s5+8Fen28DR/M+4o4ZdmSBr8+Ys3X6iwbsLpSMFbN6pFZWbsU08Ahp3DUKQCGTvC6mlb8AVibIycyY9Ifo+XH9AMEfTuGjkKjIw9NmrWxGwn99lZFzREjJbEo0HGM6LzHe/fOm1ODdSo1N/E0zyEgQutElXbUjYkz0jniuElXg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=enflame-tech.com; dkim=pass (1024-bit key; unprotected) header.d=Enflame.partner.onmschina.cn header.i=@Enflame.partner.onmschina.cn header.a=rsa-sha256 header.s=selector1-Enflame-partner-onmschina-cn header.b=Raa+L0IP; dkim-atps=neutral; spf=pass (client-ip=2406:e500:4440:2::72e; helo=chn02-bjs-obe.outbound.protection.partner.outlook.cn; envelope-from=dio.sun@enflame-tech.com; receiver=lists.ozlabs.org) smtp.mailfrom=enflame-tech.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=enflame-tech.com
+	t=1741073981; c=relaxed/relaxed;
+	bh=lPyIXos3ru6W5Ck1g8ZM9pY1oR/pp9JPZqcgi4Buli4=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=mX0wRsIaNb2rxKMc6geBgYgG0YlIHIhvxPAvKgPMnqTqPiKSLs8Ks8z8AVsQf8lWFbck/S+yW71RXn/cw8GoC4sJPEAEEg/FPa22knuQUtmP1MRnRko0sa0waysIGfNOais2APiEjqgwToK97aRTBWN9p36ARXWjuiAdAkTCZqJUIhmOXu+qwbyOVj0MH3YYHwF/GZ0TnStIm7INiPw2Cl1kL10sktJDc1ABrgVFEwOGC17VNPzsuCrc2WyvmdIEc2fa4geYQj/W8zCRxPmqwfsNdQmOnmRsnfq8n/RPhiYnRtOmSbMgGSurVt8wN1zwf/dtEu2x1eicYRfDfkG4qw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=EZCnznAm; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2607::609; helo=eur02-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=Enflame.partner.onmschina.cn header.i=@Enflame.partner.onmschina.cn header.a=rsa-sha256 header.s=selector1-Enflame-partner-onmschina-cn header.b=Raa+L0IP;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=EZCnznAm;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=enflame-tech.com (client-ip=2406:e500:4440:2::72e; helo=chn02-bjs-obe.outbound.protection.partner.outlook.cn; envelope-from=dio.sun@enflame-tech.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 2024 seconds by postgrey-1.37 at boromir; Tue, 04 Mar 2025 18:41:17 AEDT
-Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02on2072e.outbound.protection.partner.outlook.cn [IPv6:2406:e500:4440:2::72e])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2607::609; helo=eur02-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on20609.outbound.protection.outlook.com [IPv6:2a01:111:f403:2607::609])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6SKn2LK0z30VZ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 18:41:15 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DmwmqHZk6PPD+KS3e1ivy1Zu4E/Lga7053bBCVFxRsYFeCbHygGTU/Cjb2l/jV4LM9NvxhD71pVST0nieI7qn/9W/uDnTGmn+WT0VbrlkAqzsUHIrvgYMtWBydEvci0ZC3gG1gUP24S6oQmG5fGvcQXKH1YezWsGMcoLRZfi/SsPWdlyyXT4EZX+RP28UPhavrHYx0lcAnCyccG8515lUS4QSoZna2QGAG2pgDnmaC948gO9kDbDqnm2oozBOIFlgqguWptD2uui18gegz1J9i7G76hhHzIfmNzQqmWv4GGM6TRDGFjLddxHnLApcM9NY8LTMROPD4Ge95RSgFCO/g==
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6SHv1dDwz2ytT
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 18:39:38 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WGTFghF+CNqKWOUvTJhz+DUlDQZdX3e9kCECxboP0we0YptewdO9lZW8Xk7EcM22wTkz5FK+f/lMyVzWUmVCJ65LxPb9AOV61QsBRy79ver0Jgis82nuhgVY1nvvZJsxZhGVCmTkTL84JSGKiEOkUBBS09YeGZJbMsFEBZ4RyuGAlwhSHjzHjKGbsL+KYmH5UdQ6uj97mQ09hbkGVGsybHmZ9HHQP70c/9i7iAzrK32dQr+MzekQwEcrKY2Rh7GnBrbsy2ka7LGsI7UBgWgX9EWjEow4uvscPsOkTXbrVL4CjHlTt/vsvTTOWx3Y/F0QFvzxiaafrnnUjAwOBsp0oA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
+ s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Crv9CQ4Ux9sMJKasrKodGTKeVvSHxTIJp+VaSJowfdI=;
- b=DwPNT5jfX0tKtigZoOcKnRWa1ZvRdweAhjHnSom7kKP510N/PMm+xJE/4bQbpp5uDohyuYiilps0IJWHd/2/c1GKS4X9ufk1CmHzWj4X5LVT08lzsOkMwQjNTKXkiXZrBNcuxFt3VQkYkxDo3tZ4cnfzQk5s3qaKGowCFxeW1XdwCxOZvMJvGtcygVpe3+iH7CrZr3YCNVWC5Fa1K8IP5zwzhl7o5wCEcE8NKYdTaaxyH9Ybr5Yl2X6aPRkZ9xkDutP5e/g8xPndPKT1i6GXt8WLTE/kqJ2p1ymsAGqZNZ00BrpSe9KlYS86ih19E+DNS3FfRWuBuGRUlCn0kXesug==
+ bh=lPyIXos3ru6W5Ck1g8ZM9pY1oR/pp9JPZqcgi4Buli4=;
+ b=ey5fp2N/jQlVEHc7+Pogv5yQEgleAzykeWEiG+pVjBMBN/XKGrkyRB8XrxoRISYupGEN+8Nle6mS9b0+YKKio5ZTeiBldi7b3Ni+gyzgkR+uqb72ilvntmZCI6VUTWPKWMUIdypr1olEyDCQrQo37XRBC2A/S1v9jcYBOmwW/hGXR5NOOitX7ByaBe033UHDsEM63qqjfjrc7R6xdr0MQiUwFnQ1oSYJqfXcx8LbPBGe/C2rxjkV2asRfhue7xu3urkm0/K/VkLmsmolWmGLtfc+KkgqxzY9123KNW2SiRgYsbymXWBRc0lztnl/qN7Sgl0g1qyNxCgix7IWerRcSQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=enflame-tech.com; dmarc=pass action=none
- header.from=enflame-tech.com; dkim=pass header.d=enflame-tech.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=Enflame.partner.onmschina.cn; s=selector1-Enflame-partner-onmschina-cn;
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Crv9CQ4Ux9sMJKasrKodGTKeVvSHxTIJp+VaSJowfdI=;
- b=Raa+L0IPMI5MUapjQ3nzfhFP8jI+MKHrT3aaNuUDbVEMr+hziu6ej7qg8R+Tbea/4rRs7f00YU2A2TjedLm3KPtCVfCYwy8HjgiUMMBGqQWAISm9Tarmet75R/mBV9uhGV/tWRS3TIOA8xPWakRn1QMdBT3G1yLbJ4pFJegYNGg=
-Received: from BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:14::23) by BJXPR01MB0839.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c211:1a::12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8466.11; Tue, 4 Mar
- 2025 07:07:05 +0000
-Received: from BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn
- ([fe80::5b17:45cb:d82e:e7b9]) by
- BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn ([fe80::5b17:45cb:d82e:e7b9%6])
- with mapi id 15.20.8489.028; Tue, 4 Mar 2025 07:07:05 +0000
-From: =?gb2312?B?y+/A+7HzX0Rpbw==?= <dio.sun@enflame-tech.com>
-To: "mahesh@linux.ibm.com" <mahesh@linux.ibm.com>, "oohall@gmail.com"
-	<oohall@gmail.com>, "bhelgaas@google.com" <bhelgaas@google.com>,
-	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-	"linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-CC: =?gb2312?B?wt6wsl9Bbg==?= <an.luo@enflame-tech.com>,
-	=?gb2312?B?uvq7tF9GZXJuYW5kbw==?= <fernando.hu@enflame-tech.com>,
-	=?gb2312?B?zuLwqe6jX0JpbGw=?= <bill.wu@enflame-tech.com>,
-	=?gb2312?B?zfX2zl9YaW4=?= <xin.wang@enflame-tech.com>
-Subject: [PATCH] AER: PCIE CTO recovery handle fix
-Thread-Topic: [PATCH] AER: PCIE CTO recovery handle fix
-Thread-Index: AduM0OzqFOcTufgFSYi2gnnVja5sWw==
-Date: Tue, 4 Mar 2025 07:07:05 +0000
-Message-ID:
- <BJXPR01MB0614C01A9523786117B1F1CBCEC8A@BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn>
-Accept-Language: en-US
-Content-Language: zh-CN
-X-MS-Has-Attach: yes
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=enflame-tech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BJXPR01MB0614:EE_|BJXPR01MB0839:EE_
-x-ms-office365-filtering-correlation-id: 0cc6d9d8-3a93-4b91-5979-08dd5aeb2b96
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|41320700013|366016|38070700018|4053099003;
-x-microsoft-antispam-message-info:
- U+IbM/Jpfaz3k1AvqHODlJGb4V5DJXxhQVmZ7Ezf26QHLNzAVZuSv16hiuraGKERf/JKetm2+3VRY5OEB8as78SlkW2q0sb985FMpadveC0VRgSGy13PKEV3mKfLni7ObYug4nEeBODCOr8ZAqrRFtq/Znq2GTFJIoDD1ny6zqgJemYN5qbJwJ1AO7+4iXIiPimeUyhe4Qf7/H5qqBb+xValYDLvIYZnXqERKHIsMLoSQtYvpdfFR06hO+sg/TUWRKfI1IyT2E+97t7Xo62ggXCCVqnNhaTrmBBbO4WonGglWv6alzyweuhaMOe+dr+vMQKMq3QWKuzQWzOIKHxkr6FkBCMURjLcMzXWAHWxu76t12PjqXAr1qr1cBACgml76NZCHNMfRJFYa+m2LOEdZqs0cbNCNXkFsmohnXcyGsq7+GuKVQgGGFsohSPANP/jxZEcl4htXorhBpPi/drjaMPbX4w50hab5tMxueB3B2FqIBmismbnpEforzixOv9CDJwodNIKa3wTYFD+Uamhoi1EuiEOH8S3nsTraWsTl/ttGXknGRtIGtpHmBPW7sEbGeBsmifCL2Oja8g+/t6cZQ==
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:zh-cn;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(41320700013)(366016)(38070700018)(4053099003);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?gb2312?B?KzFScVBhREtma1FBRlZBemx6NzVPSzhuRnFvditKcGxQLzQ4NjRLUWxRdDRJ?=
- =?gb2312?B?S3MveWd4ZTNQZWxncStOdU93SnRVL0xncVpiRDhXL2M0Mjd2aGpaVmFnTmNL?=
- =?gb2312?B?c2JXdGkzTTJqcXRldEFWWndYUTBCM0hpRUh6LzVyczdPTWFlaWZoeWVjV1Fs?=
- =?gb2312?B?eWx1MFRHNmIyNFJrK1M4OGNoRkZMUWJWTmhqdytKVTZjWEo3UzNOWjBsdUVm?=
- =?gb2312?B?SVdwRCtObzJjcjE0RWdhVDhWTnZXcmpSMEVRQkFXMkxPL2VacmNOZXNiUTVV?=
- =?gb2312?B?TEt6QVFjTE0wUlZMK1lOOXRmVzEybTVaY3RVdlFJR3ppVzZlOFdzY3ZvMG1n?=
- =?gb2312?B?YkNCbXg0RWUwUU5jbWx6UE9maHpnSUVjbHE2NVdkOGxVMnVWYWhlc01Pd1Fi?=
- =?gb2312?B?TDk3T09xWHFveWJTZnUxOUptTWpzYjlHaWZHOVM4bWVPTVVvZHpINFAzZ3BX?=
- =?gb2312?B?RFBVY3R2UWkxeTV6MlBjMU5Qa3JGSVdXdERQRUpXRkMyZm05eWdoUlpYRDAx?=
- =?gb2312?B?aStNUzgwT0xMNGZ1UzU3REgrby9EYjB5cThqU0JCVVEwUmxGclFHMHRqemtq?=
- =?gb2312?B?OUxsTGhlL0YxZG9qTXB6TWFvcWFna3pEZFJNVUNqUTZuUEJBaVZUdG1hTzJk?=
- =?gb2312?B?MVQzK3c2SUdwMWZxeW10MzBQS1VzWUluWkorNk0vazRhNnRVZVl2Zm1BYk9w?=
- =?gb2312?B?bktUWllJWGZkbFN5Q3YyNHFrN0w2K2lMTXYrR2Jtb1VTZXI3T2hBMGppbmRF?=
- =?gb2312?B?VkhGNjNyZjdyZ0h3SnlZME84VnJvbGJRc1BZZkljY3pMR3RJbUhDS2RCZXRX?=
- =?gb2312?B?M1JHRnpUY0pJeE5PTDMyRjJTNlQybStSZVg5NFIrTm5VY1NOenNacGZXL09n?=
- =?gb2312?B?VllTUlJEK1dVM0pFSy9FVkd1WS9TNkl5elRGTlY2YXVVRzI3UHJFQ1pUa0lT?=
- =?gb2312?B?RjQ2Q3pOMmdVdGM4WDBIaE1hQWMrdERQNFpadnNORzVQK2FlZkZCdnZrUlBL?=
- =?gb2312?B?TlFMa2JJZDZzVFZ0VzhNYnZkZjBTYUwvR1hCN0czSFFXVXdqNStlUWswdWUz?=
- =?gb2312?B?UDhRV2ZRUGp0ZTFtd2daWjR3RE5SMmFGWkE5NkFEZjE5bWxMcUs4NkMrTEhU?=
- =?gb2312?B?dkc0bTFWeUY3aTUrMEZSQmthNnhvdG1maUh5T25XLzM2NTZnVnlPUXRYTUZv?=
- =?gb2312?B?dTNZbkk3U0xqcVBpNFRaT3pLbXF5b0J4RFB4bktZVmllN2dxZ2lmVVR5WUpw?=
- =?gb2312?B?WXBIUmlkYXpUY2xoRi9rMkl6TkkxTVppZUU3dEYzblZuL0F6Q1p4aHJib0NK?=
- =?gb2312?B?VUhyaHVwK3B4Y3d6L2hUV3NQMW9wOXZzMnR0SndINlV1UkpxMkFNQ3JCeWh4?=
- =?gb2312?B?dExTNE5YdmsxVElXKzQ4cDhqSzlVa3d4MEFXbWZWQ1UvaWVhdERUVnFMYUlN?=
- =?gb2312?B?T0VVZ2ltd3gwb0U1bzBxd0dnZ2dpZVhtcXprdG1STGNOMVNEcmk5ZytSYWhi?=
- =?gb2312?B?M2o3V2wza2ZOdlJhZHBXNWtBL0FjcG5SSEJNcEQvS3ZrQWdHMGthYjJJRDdM?=
- =?gb2312?B?Tk5PUWhqbkJnc0doVXFEL2xScDdyNUIzN1RicnM4VUJacFJ3a24rSVdCcVY1?=
- =?gb2312?B?aWRYLytaQ2tRYUw4dEhtK05TZ2hURmlSOFFxNGxtSC9ZRnhSdFQwQ2piUTU2?=
- =?gb2312?B?QVI2V2o1YkZjK1JHSlBxOUplZ3VjS3dJcXIvdFQvQ3p5djhyOHhDakVuZEpn?=
- =?gb2312?B?TjN0TlZRRkhHYTdFTkh1V09RSkt5N1pUdU5ha1NLMDErK1JUbzBHUHV6VHNF?=
- =?gb2312?B?WG52Vmo0cStYNU9VSEdWQzFTVDV4UTkzOXNBekxuU1R6RnB3WWNJaDRaMzQ4?=
- =?gb2312?B?Z0RnNHVpa2ZseXZMc2RmMU0zU2RhSHV0c2gvZFFlS3dGeG53MDlGZWwwK3pq?=
- =?gb2312?B?MGxjZi9Jb1NUakVKVEhqYmVTYnhkQUdUL1drSFIydi9FTGg5S1laaUpJY2Jo?=
- =?gb2312?B?VkJkT3VySTRCRndkMnZBL0VxbXFCY1VtR2FoYlEra1hQMEU1QUo3ZHNjdCt2?=
- =?gb2312?B?YkZHNjc3S0JYTDNDaFJkRDZ2dE5PVHFXbUljYTJiR0N5QWhoME9RWDY2RjVw?=
- =?gb2312?Q?sovXvFtrNYA4jEQbp0xZAaWQ0?=
-Content-Type: multipart/mixed;
-	boundary="_002_BJXPR01MB0614C01A9523786117B1F1CBCEC8ABJXPR01MB0614CHNP_"
+ bh=lPyIXos3ru6W5Ck1g8ZM9pY1oR/pp9JPZqcgi4Buli4=;
+ b=EZCnznAm5KQMrMyNQO811+9DpPpdoqopRzDVdyBTdxeKnwcBRs/rKz39zNQj3SOx8pQCN9MJUzfsPIy/BpSOoj6gM62Oz7PYmWdoDFiLUfWIPv1iWQzDjhJUCs67/r+CWLq2jqBBOxh3TEMCDDrlNQRsMMjruIDEDaMp89KW2EE7llISwsXqwsR1Ds4kBvSrzKJltP2LadZ+cptSsG/6nr49T3nXHWdKh0nSuusJyFPF661EuBlWEfUODzQIbL7H61QqGumy53pMTdjR5GtJ23SNPK1vehe1xW8xxe9UKHSMUgxOWUFVBBAIVH8j3Ijp0gvP6cmSR9e3Dij2xDio/Q==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by VI2PR04MB11171.eurprd04.prod.outlook.com (2603:10a6:800:29a::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8422.11; Tue, 4 Mar
+ 2025 07:39:18 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8466.020; Tue, 4 Mar 2025
+ 07:39:18 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: claudiu.manoil@nxp.com,
+	vladimir.oltean@nxp.com,
+	xiaoning.wang@nxp.com,
+	andrew+netdev@lunn.ch,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com
+Cc: christophe.leroy@csgroup.eu,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	imx@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH v3 net-next 00/13] Add more feautues for ENETC v4 - round 2
+Date: Tue,  4 Mar 2025 15:21:48 +0800
+Message-Id: <20250304072201.1332603-1-wei.fang@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: SG3P274CA0007.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:be::19)
+ To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -135,125 +87,164 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-OriginatorOrg: enflame-tech.com
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|VI2PR04MB11171:EE_
+X-MS-Office365-Filtering-Correlation-Id: 59ae4fc9-1cc2-41ce-5234-08dd5aefabc0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|52116014|366016|1800799024|376014|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?2z0p7Y92gmxxi/fIO2O6ikxnX6ldbug23e3tvZMTBnbiCTzbGUY/Sb/iWkeU?=
+ =?us-ascii?Q?OZwY1O7AcHtm+Ch43FD4jRSBi9rneb/OcJi0peDCA/WBAO1nS893bPvxoJfF?=
+ =?us-ascii?Q?NDERH/3xG44A3ka81j98/lzam5HNcTh0HRnoH/0+YldVi0cqLwWI5ZgURYVB?=
+ =?us-ascii?Q?ptUo0x6NYQG9riACBXwSWJUUcL2m1MZfNaTWRb6Y+vci/oQYVRHWguCCt16b?=
+ =?us-ascii?Q?e9rh8PaOyjkWlJdZm2xOPtiNJGRtNC5BF1vXjQMPbEZ34HcFR4LBBJ1bUClz?=
+ =?us-ascii?Q?FomvurqZNnFTGsdAQt/Fl+/qJBy+r4BplnOdUMfaJV7nIP/Y/55zLK1nKP2K?=
+ =?us-ascii?Q?aKkD6ZlSoV2PuzNAC5V2FHb7+YiLdZM/RlS/RWnTOGigg5eDb0lcKFYjaKBu?=
+ =?us-ascii?Q?jB5bqIPwo+aevyf1DM9Dv+a86f+ojQhHJ93wcuZ0RtNme+LRBjqzp8PEPNyt?=
+ =?us-ascii?Q?g1vr6FGJV4tPBnNrBRxljcrvhwE6i8olaCHSZqNl7KsLBnsouCoz5yhQhESy?=
+ =?us-ascii?Q?2h51CyrLqK0nETJymdWGQkokfCISWmu0/CR5z2slMGWj5L7ZzL96SkFq2NzR?=
+ =?us-ascii?Q?LGX7HZUcSfy1k7DcTuQQ9N2o4DYbDnjYitZP1Br7HKhekqWb/BHLG1bmxZbn?=
+ =?us-ascii?Q?6b5GkYMEsTd+Nv7C1fSN2uU3DqiGnkwuANV+ukTeeBJEKIk4VWU5/2X521Bp?=
+ =?us-ascii?Q?CEPQtknS/rBsap8SiZFoshdWz0wiNoQOY6WGF//A2wKI3lzgcZCofntT6Ore?=
+ =?us-ascii?Q?Yt8O8JMrzadfINKXtNeUCa69iZrG0kyVPL6sTDhD9tBJs+Pwnqn5ZtJIyBj0?=
+ =?us-ascii?Q?hdEV+/3suxC+Xrj/w819oL62swU5r9qIcei/7nA5uNoraL5fjsJp03g31wya?=
+ =?us-ascii?Q?8cgJAlX7b457El8bj4YQZTripurA3fDRQ10Ya5Dj0X6BczWRle9pE7UDnd2Q?=
+ =?us-ascii?Q?kw5zGLqw472xvztflRaFgVBl3m4O6VU+OLb28LRXYKJo7KcvE+HDdyzAWjGB?=
+ =?us-ascii?Q?VharK0nY7SdKQ5atfayc+KZdz0KkaqDQmqyJUKq/yWnrl1a+YL7ugu+RigsV?=
+ =?us-ascii?Q?2Tn3o7QcWIREQMpUtmQsigPp3CzJfnYQsNoe/eWnqEInn+uGZxc4WaDFhPUP?=
+ =?us-ascii?Q?S9K8I5TbRQeWa/XDtCHY1+rZz6eQjZtrJBwvIoWsw1b+gV8mjUt+6QQeeddB?=
+ =?us-ascii?Q?ZaNCfGAiMGdjYsU+MhTLWSOBXPHsqp+5q5OM7+PHtCQ1fYW0pMo0F+B8+GAo?=
+ =?us-ascii?Q?WUtmymqsgsv3lGZq98jnX6xqt6G8dgSAQ5Yf0W1Ux8sd9myCLjapqtAVZuBF?=
+ =?us-ascii?Q?06l1sPHla0PvqI4e94lQhga+1MTXWjtc+ArMeyajXXYJhU/sZ03EeG6Qzprk?=
+ =?us-ascii?Q?P3a2dIp81xKdEFRRKZPZjP6ybL7Tbl8Bc9mEXgkE1BGMExaqSF2UAw/AlCVX?=
+ =?us-ascii?Q?UjlHlutsfiXAgkZrIcGmgN3esYT0LHdQnnZZ2qk2u0tAveqSMi4PUw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(52116014)(366016)(1800799024)(376014)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?KJlFIDqSbU2w7fjLnw4eZbzZKWXX6f+26zyUDmmObraQq/nwED2lWHLy62l4?=
+ =?us-ascii?Q?KVmQscwwC0VmRkOQebX6Opp5H12uU6LSzznr0e0R7e/Qyn6qSu8MNkVgQS1K?=
+ =?us-ascii?Q?mPRU375s1BUnbN7WoaMcy7bQSXdSJ5UNp9mHLVft1tF76tPiOZoCrB8JTLTO?=
+ =?us-ascii?Q?KobfOAkvTm1rdt/7AzKlwRVbtnJ9v1Q3DFr6+MDZtTvs66Xx6GmXIRRtLgLj?=
+ =?us-ascii?Q?FCYpXlFWio0PjLMR5X/GfO/jjbp1D6OgQ7Ofezt4fspAWrdxYHesmCHBwqnm?=
+ =?us-ascii?Q?L9Aa9Mum2dLHvgDynhheXN7DNLezXBHj05RvtRoU62/0RXOZt9+4dldQqMp8?=
+ =?us-ascii?Q?VVcimV6v/dZi3h8H8X46YuYitCOfsuN9Msma3ORWHHp1Zo3SIIGmqTwNuPg9?=
+ =?us-ascii?Q?SMS6bG0+ooCKUocztndwVPvpR6AlorMdCmPfjBl2Zxj7C5XhzvcDPQjh1ULP?=
+ =?us-ascii?Q?XQOwo+72aNZsRJeY8M1bw5YL0jB49g0oQBiz1l3Ys7Exe1+gq9keZdCk7hI8?=
+ =?us-ascii?Q?+g7PQuD649eiRx5hQ3geRDEVyHKEiqwfEtuIuh3jBNGzFp4MknjcHHSKXmSN?=
+ =?us-ascii?Q?Rz6Hj+R8WYaZoRrhb9KNAVBk98vGIFdWUiP21Qu5GD1SNVGZOiOiTyy9hZec?=
+ =?us-ascii?Q?RuwabgC4NHACeLs4J7nHDk99IldM+a/M15dXtldg1oxpPkTIg81uOyknUqk6?=
+ =?us-ascii?Q?OY+q0adwycBt4yfUqbTdsKVfz3TfbuHqdB2BmMbn+l9hP4aJc+EiS0UP1XfM?=
+ =?us-ascii?Q?9G0l3u6HxPN/XkRgP1x/5+vTVL3jBwnBywRBASQMFdynnLzGBO9stwPnEEZu?=
+ =?us-ascii?Q?S65+vhObdgKm6YeOVmJt6moCd5byCM5S71WRMhMgAI920cYRElktKMtqpOQE?=
+ =?us-ascii?Q?Wl3Bk1zR6M07KNEr8jPerfMiLtmhyVz8YnHC9SyVNjJeoKPn7OV9JAsScZA/?=
+ =?us-ascii?Q?6nH8kXx4BxFKZ2sh+h6zJYDlVc2cwn2COx/jJpoIUkAhExOKLhvztq7JWm4N?=
+ =?us-ascii?Q?TizWzJzJDpVZtcsXtFGUb4NCMoE4Qj9RZUTG3nm8BsMagxIS9EoLquqNUfWJ?=
+ =?us-ascii?Q?Ah1P/zvAxhqg3fWklG2b6HUJF9nYQqUB+/lZ9fjMK0/zXy/7R1FPvnLMGl4a?=
+ =?us-ascii?Q?wBHBeymd9xZPMAykThg3VmCqBxfxqq0FRVKHFm0CcRsxQyEGoe/iAo7a4Gqe?=
+ =?us-ascii?Q?frcIMonxuHcTpn08xLMKmSkdI/hqtOVw7R6T2D6GcTNmq0tv/iSW3q/m09Hy?=
+ =?us-ascii?Q?nsf+qUourRpwhiJxlowlYj60V++0+Dm0vMVWuArDLxQyJ5FNhEWA3gimGooZ?=
+ =?us-ascii?Q?uzMa4p5pUtntmls7pJ0psElIT5eMm6aPuyQf+slOlXIHc2eRio8bssrsphuH?=
+ =?us-ascii?Q?RAvxASXzwcTtwRpG47SDhq11BlVUjmrl9E3NNatoAQzcXRO3NIYh/XTIYhx/?=
+ =?us-ascii?Q?HFgg1FX3upV3o+M78F4+hIG1zlRi4RzH+CfsyI/5cm9cJcfHhYxeW/OvvG8A?=
+ =?us-ascii?Q?8d6qqWrSiLEXvD5MLMjfMWAbdHfrzoo+jsd7t2KtuvyZ/8GI9C/kJxreVDQc?=
+ =?us-ascii?Q?yyG+W1pePMLsuPDEcXk291W5ziFukWUJsjODBfsD?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 59ae4fc9-1cc2-41ce-5234-08dd5aefabc0
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BJXPR01MB0614.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0cc6d9d8-3a93-4b91-5979-08dd5aeb2b96
-X-MS-Exchange-CrossTenant-originalarrivaltime: 04 Mar 2025 07:07:05.1547
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Mar 2025 07:39:18.4037
  (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 39d6d270-c813-4e78-90db-1de0de08f579
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: hrQlK+uEmGpSwK4sVzsbdrgIlgkCu20h9sRQAQEvRfLMi+QApQsuQF++ZH9y+rfVS5bXXqGuv+kf9wb0425070AiWujvVQK9HZfaueZ1/rw=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BJXPR01MB0839
-X-Spam-Status: No, score=0.0 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: z0ZAsTOrlr/VPMrl/WZFTfk1DBXHJ/yWII2ZYvUxjW9B79tEH+62rAT3qG6SFTux6TBBXlrE+GitVaY4/wqfZg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI2PR04MB11171
+X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
---_002_BJXPR01MB0614C01A9523786117B1F1CBCEC8ABJXPR01MB0614CHNP_
-Content-Type: text/plain; charset="gb2312"
-Content-Transfer-Encoding: base64
+This patch set adds the following features.
+1. Compared with ENETC v1, the formats of tables and command BD of ENETC
+v4 have changed significantly, and the two are not compatible. Therefore,
+in order to support the NETC Table Management Protocol (NTMP) v2.0, we
+introduced the netc-lib driver and added support for MAC address filter
+table and RSS table.
+2. Add MAC filter and VLAN filter support for i.MX95 ENETC PF.
+3. Add RSS support for i.MX95 ENETC PF.
+4. Add loopback support for i.MX95 ENETC PF.
 
-W0VYVEVSTkFMIEVNQUlMXQ0KDQpGcm9tIDVmYzdiMWE5ZTBmMGJjZmExNDA2OGM2MzU4MDE5ZWQx
-ZTNmZmM2YzYgTW9uIFNlcCAxNyAwMDowMDowMCAyMDAxDQpGcm9tOiAiZGlvLnN1biIgPGRpby5z
-dW5AZW5mbGFtZS10ZWNoLmNvbT4NCkRhdGU6IFdlZCwgMjYgRmViIDIwMjUgMDg6NTQ6NDkgKzAw
-MDANClN1YmplY3Q6IFtQQVRDSF0gQUVSOiBQQ0lFIENUTyByZWNvdmVyeSBoYW5kbGUgZml4DQoN
-CiAtIE5vbi1mYXRhbCBQQ0llIENUTyBpcyByZXBvcnR0ZWQgdG8gUENJRSBSQyBhbmQgaXQgd2ls
-bCBiZSBjb252ZXJ0dGVkIHRvDQogICBBZHZOb25GYXRhbEVyciBhdXRvbWF0aWNhbGx5DQogLSBh
-Y2NvcmRpbmcgdG8gUENJRSBTUEVDIDYuMi4zLjIuNC40IFJlcXVlc3RlciB3aXRoIENvbXBsZXRp
-b24gVGltZW91dCgNCiAgIElmIHRoZSBzZXZlcml0eSBvZiB0aGUgQ1RPIGlzIG5vbi1mYXRhbCwg
-YW5kIHRoZSBSZXF1ZXN0ZXIgZWxlY3RzIHRvDQogICBhdHRlbXB0IHJlY292ZXJ5IGJ5IGlzc3Vp
-bmcgYSBuZXcgcmVxdWVzdCwgdGhlIFJlcXVlc3RlciBtdXN0DQogICBmaXJzdCBoYW5kbGUgdGhl
-IGN1cnJlY250IGVycm9yIGNhc2UgYXMgYW4gQWR2aXNvcnkgTm9uLUZhdGFsIEVycm9yLikuDQog
-LSBDdXJyZW50IEtlcm5lbCBjb2RlIGRvZXMgbm90aGluZyB3aGVuIHJlY2VpdmluZyBhbiBBZHZO
-b25GYXRhbEVycigNCiAgIENvcnJlY3RhYmxlIEVycm9yKSBhbmQgdGhlIGRldmljZSBkcml2ZXIg
-aGFzIG5vIGNoYW5jZSB0byBoYW5kbGUgdGhpcw0KICAgZXJyb3IuDQogLSBVbmRlciB0aGlzIHNp
-dHVhdGlvbiwgc29tZXRpbWVzIHN5c3RlbSB3aWxsIGhhbmcgd2hlbiBtb3JlDQogICBBZHZOb25G
-YXRhbEVyciBjb21pbmcuDQoNClNpZ25lZC1vZmYtYnk6IGRpby5zdW4gPGRpby5zdW5AZW5mbGFt
-ZS10ZWNoLmNvbT4NCi0tLQ0KZHJpdmVycy9wY2kvcGNpZS9hZXIuYyB8IDE2ICsrKysrKysrKysr
-KysrKy0NCiAxIGZpbGUgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygrKSwgMSBkZWxldGlvbigtKQ0K
-DQpkaWZmIC0tZ2l0IGEvZHJpdmVycy9wY2kvcGNpZS9hZXIuYyBiL2RyaXZlcnMvcGNpL3BjaWUv
-YWVyLmMNCmluZGV4IDUwODQ3NGUxNzE4My4uNWRkYzk5MGM2ZjQyIDEwMDY0NA0KLS0tIGEvZHJp
-dmVycy9wY2kvcGNpZS9hZXIuYw0KKysrIGIvZHJpdmVycy9wY2kvcGNpZS9hZXIuYw0KQEAgLTEx
-NTQsNyArMTE1NCwyMSBAQCBzdGF0aWMgdm9pZCBhZXJfcmVjb3Zlcl93b3JrX2Z1bmMoc3RydWN0
-IHdvcmtfc3RydWN0ICp3b3JrKQ0KICAgICAgICAgICAgICAgIGdoZXNfZXN0YXR1c19wb29sX3Jl
-Z2lvbl9mcmVlKCh1bnNpZ25lZCBsb25nKWVudHJ5LnJlZ3MsDQogICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHNpemVvZihzdHJ1Y3QgYWVyX2NhcGFiaWxpdHlfcmVn
-cykpOw0KDQotICAgICAgICAgICAgICAgaWYgKGVudHJ5LnNldmVyaXR5ID09IEFFUl9OT05GQVRB
-TCkNCisgICAgICAgICAgICAgICBpZiAoZW50cnkuc2V2ZXJpdHkgPT0gQUVSX0NPUlJFQ1RBQkxF
-KSB7DQorICAgICAgICAgICAgICAgICAgICAgICBpZiAoZW50cnkucmVncy0+Y29yX3N0YXR1cyAm
-IFBDSV9FUlJfQ09SX0FEVl9ORkFUKSB7DQorICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-IHBjaV9lcnIocGRldiwgIiUwNHg6JTAyeDolMDJ4OiV4IGFkdmlzb3J5IG5vbi1mYXRhbCBlcnJv
-clxuIiwNCisgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGVu
-dHJ5LmRvbWFpbiwgZW50cnkuYnVzLCBQQ0lfU0xPVChlbnRyeS5kZXZmbiksDQorICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBQQ0lfRlVOQyhlbnRyeS5kZXZm
-bikpOw0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBpZiAoZW50cnkucmVncy0+dW5j
-b3Jfc3RhdHVzICYgUENJX0VSUl9VTkNfQ09NUF9USU1FKSB7DQorICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgcGNpX2VycihwZGV2LCAiJTA0eDolMDJ4OiUwMng6JXggY29t
-cGxldGlvbiB0aW1lb3V0XG4iLA0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICBlbnRyeS5kb21haW4sIGVudHJ5LmJ1cywNCisgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgUENJX1NMT1QoZW50
-cnkuZGV2Zm4pLA0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICBQQ0lfRlVOQyhlbnRyeS5kZXZmbikpOw0KKyAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgIHBjaWVfZG9fcmVjb3ZlcnkocGRldiwgcGNpX2NoYW5uZWxfaW9f
-ZnJvemVuLA0KKyAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIGFlcl9yb290X3Jlc2V0KTsNCisgICAgICAgICAgICAg
-ICAgICAgICAgICAgICAgICAgfQ0KKyAgICAgICAgICAgICAgICAgICAgICAgfQ0KKyAgICAgICAg
-ICAgICAgIH0gZWxzZSBpZiAoZW50cnkuc2V2ZXJpdHkgPT0gQUVSX05PTkZBVEFMKQ0KICAgICAg
-ICAgICAgICAgICAgICAgICAgcGNpZV9kb19yZWNvdmVyeShwZGV2LCBwY2lfY2hhbm5lbF9pb19u
-b3JtYWwsDQogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFlcl9yb290
-X3Jlc2V0KTsNCiAgICAgICAgICAgICAgICBlbHNlIGlmIChlbnRyeS5zZXZlcml0eSA9PSBBRVJf
-RkFUQUwpDQotLQ0KMi4zNy4zDQoNCg==
+---
+v1 Link: https://lore.kernel.org/imx/20250103060610.2233908-1-wei.fang@nxp.com/
+v2 changes
+1. Change NTMP_FILL_CRD() and NTMP_FILL_CRD_EID to functions
+2. Fix the compile warning in enetc4_pf.c
+v2 Link: https://lore.kernel.org/imx/20250113082245.2332775-1-wei.fang@nxp.com/
+v3 changes
+1. Rename ntmp_formats.h to ntmp_private.h, becuase in addition to
+   defining some table formats, some macros and function declarations
+   will be added to this header file in the future
+2. Add struct ntmp_dma_buf, so refactor ntmp_alloc_data_mem() and
+   ntmp_free_data_mem() accordingly
+3. Add the setting for cache attributes of command BD Ring in
+   enetc4_setup_cbdr()
+4. Remove __free() and scoped_guard() from patch "net: enetc: add MAC
+   filter for i.MX95 ENETC PF", as these cleanup APIs are discouraged
+   within networking drivers.
+5. Remove patch "net: enetc: make enetc_set_rxfh() and enetc_get_rxfh()
+   reusable" in v2, and add enetc_set_rss_key() and enetc_get_rss_key()
+   instead of adding .set_rss_key() and .get_rss_key() to enetc_pf_ops
+6. Separate patch " net: enetc: check if the RSS hfunc is toeplitz" from
+   patch "net: enetc: add RSS support for i.MX95 ENETC PF"
+---
 
---_002_BJXPR01MB0614C01A9523786117B1F1CBCEC8ABJXPR01MB0614CHNP_
-Content-Type: application/octet-stream;
-	name="0001-AER-PCIE-CTO-recovery-handle-fix.patch"
-Content-Description: 0001-AER-PCIE-CTO-recovery-handle-fix.patch
-Content-Disposition: attachment;
-	filename="0001-AER-PCIE-CTO-recovery-handle-fix.patch"; size=2116;
-	creation-date="Tue, 04 Mar 2025 07:06:36 GMT";
-	modification-date="Tue, 04 Mar 2025 07:07:05 GMT"
-Content-Transfer-Encoding: base64
+Wei Fang (13):
+  net: enetc: add initial netc-lib driver to support NTMP
+  net: enetc: add command BD ring support for i.MX95 ENETC
+  net: enetc: move generic MAC filterng interfaces to enetc-core
+  net: enetc: add MAC filter for i.MX95 ENETC PF
+  net: enetc: add debugfs interface to dump MAC filter
+  net: enetc: add RSS support for i.MX95 ENETC PF
+  net: enetc: check if the RSS hfunc is toeplitz
+  net: enetc: enable RSS feature by default
+  net: enetc: move generic VLAN filter interfaces to enetc-core
+  net: enetc: move generic VLAN hash filter functions to
+    enetc_pf_common.c
+  net: enetc: add VLAN filtering support for i.MX95 ENETC PF
+  net: enetc: add loopback support for i.MX95 ENETC PF
+  MAINTAINERS: add new file ntmp.h to ENETC driver
 
-RnJvbSA1ZmM3YjFhOWUwZjBiY2ZhMTQwNjhjNjM1ODAxOWVkMWUzZmZjNmM2IE1vbiBTZXAgMTcg
-MDA6MDA6MDAgMjAwMQpGcm9tOiAiZGlvLnN1biIgPGRpby5zdW5AZW5mbGFtZS10ZWNoLmNvbT4K
-RGF0ZTogV2VkLCAyNiBGZWIgMjAyNSAwODo1NDo0OSArMDAwMApTdWJqZWN0OiBbUEFUQ0hdIEFF
-UjogUENJRSBDVE8gcmVjb3ZlcnkgaGFuZGxlIGZpeAoKIC0gTm9uLWZhdGFsIFBDSWUgQ1RPIGlz
-IHJlcG9ydHRlZCB0byBQQ0lFIFJDIGFuZCBpdCB3aWxsIGJlIGNvbnZlcnR0ZWQgdG8KICAgQWR2
-Tm9uRmF0YWxFcnIgYXV0b21hdGljYWxseQogLSBhY2NvcmRpbmcgdG8gUENJRSBTUEVDIDYuMi4z
-LjIuNC40IFJlcXVlc3RlciB3aXRoIENvbXBsZXRpb24gVGltZW91dCgKICAgSWYgdGhlIHNldmVy
-aXR5IG9mIHRoZSBDVE8gaXMgbm9uLWZhdGFsLCBhbmQgdGhlIFJlcXVlc3RlciBlbGVjdHMgdG8K
-ICAgYXR0ZW1wdCByZWNvdmVyeSBieSBpc3N1aW5nIGEgbmV3IHJlcXVlc3QsIHRoZSBSZXF1ZXN0
-ZXIgbXVzdAogICBmaXJzdCBoYW5kbGUgdGhlIGN1cnJlY250IGVycm9yIGNhc2UgYXMgYW4gQWR2
-aXNvcnkgTm9uLUZhdGFsIEVycm9yLikuCiAtIEN1cnJlbnQgS2VybmVsIGNvZGUgZG9lcyBub3Ro
-aW5nIHdoZW4gcmVjZWl2aW5nIGFuIEFkdk5vbkZhdGFsRXJyKAogICBDb3JyZWN0YWJsZSBFcnJv
-cikgYW5kIHRoZSBkZXZpY2UgZHJpdmVyIGhhcyBubyBjaGFuY2UgdG8gaGFuZGxlIHRoaXMKICAg
-ZXJyb3IuCiAtIFVuZGVyIHRoaXMgc2l0dWF0aW9uLCBzb21ldGltZXMgc3lzdGVtIHdpbGwgaGFu
-ZyB3aGVuIG1vcmUKICAgQWR2Tm9uRmF0YWxFcnIgY29taW5nLgoKU2lnbmVkLW9mZi1ieTogZGlv
-LnN1biA8ZGlvLnN1bkBlbmZsYW1lLXRlY2guY29tPgotLS0KIGRyaXZlcnMvcGNpL3BjaWUvYWVy
-LmMgfCAxNiArKysrKysrKysrKysrKystCiAxIGZpbGUgY2hhbmdlZCwgMTUgaW5zZXJ0aW9ucygr
-KSwgMSBkZWxldGlvbigtKQoKZGlmZiAtLWdpdCBhL2RyaXZlcnMvcGNpL3BjaWUvYWVyLmMgYi9k
-cml2ZXJzL3BjaS9wY2llL2Flci5jCmluZGV4IDUwODQ3NGUxNzE4My4uNWRkYzk5MGM2ZjQyIDEw
-MDY0NAotLS0gYS9kcml2ZXJzL3BjaS9wY2llL2Flci5jCisrKyBiL2RyaXZlcnMvcGNpL3BjaWUv
-YWVyLmMKQEAgLTExNTQsNyArMTE1NCwyMSBAQCBzdGF0aWMgdm9pZCBhZXJfcmVjb3Zlcl93b3Jr
-X2Z1bmMoc3RydWN0IHdvcmtfc3RydWN0ICp3b3JrKQogCQlnaGVzX2VzdGF0dXNfcG9vbF9yZWdp
-b25fZnJlZSgodW5zaWduZWQgbG9uZyllbnRyeS5yZWdzLAogCQkJCQkgICAgc2l6ZW9mKHN0cnVj
-dCBhZXJfY2FwYWJpbGl0eV9yZWdzKSk7CiAKLQkJaWYgKGVudHJ5LnNldmVyaXR5ID09IEFFUl9O
-T05GQVRBTCkKKwkJaWYgKGVudHJ5LnNldmVyaXR5ID09IEFFUl9DT1JSRUNUQUJMRSkgeworCQkJ
-aWYgKGVudHJ5LnJlZ3MtPmNvcl9zdGF0dXMgJiBQQ0lfRVJSX0NPUl9BRFZfTkZBVCkgeworCQkJ
-CXBjaV9lcnIocGRldiwgIiUwNHg6JTAyeDolMDJ4OiV4IGFkdmlzb3J5IG5vbi1mYXRhbCBlcnJv
-clxuIiwKKwkJCQkJCWVudHJ5LmRvbWFpbiwgZW50cnkuYnVzLCBQQ0lfU0xPVChlbnRyeS5kZXZm
-biksCisJCQkJCQlQQ0lfRlVOQyhlbnRyeS5kZXZmbikpOworCQkJCWlmIChlbnRyeS5yZWdzLT51
-bmNvcl9zdGF0dXMgJiBQQ0lfRVJSX1VOQ19DT01QX1RJTUUpIHsKKwkJCQkJcGNpX2VycihwZGV2
-LCAiJTA0eDolMDJ4OiUwMng6JXggY29tcGxldGlvbiB0aW1lb3V0XG4iLAorCQkJCQkJCWVudHJ5
-LmRvbWFpbiwgZW50cnkuYnVzLAorCQkJCQkJCVBDSV9TTE9UKGVudHJ5LmRldmZuKSwKKwkJCQkJ
-CQlQQ0lfRlVOQyhlbnRyeS5kZXZmbikpOworCQkJCQlwY2llX2RvX3JlY292ZXJ5KHBkZXYsIHBj
-aV9jaGFubmVsX2lvX2Zyb3plbiwKKwkJCQkJCQkJCSBhZXJfcm9vdF9yZXNldCk7CisJCQkJfQor
-CQkJfQorCQl9IGVsc2UgaWYgKGVudHJ5LnNldmVyaXR5ID09IEFFUl9OT05GQVRBTCkKIAkJCXBj
-aWVfZG9fcmVjb3ZlcnkocGRldiwgcGNpX2NoYW5uZWxfaW9fbm9ybWFsLAogCQkJCQkgYWVyX3Jv
-b3RfcmVzZXQpOwogCQllbHNlIGlmIChlbnRyeS5zZXZlcml0eSA9PSBBRVJfRkFUQUwpCi0tIAoy
-LjM3LjMKCg==
+ MAINTAINERS                                   |   1 +
+ drivers/net/ethernet/freescale/enetc/Kconfig  |  11 +
+ drivers/net/ethernet/freescale/enetc/Makefile |   4 +
+ drivers/net/ethernet/freescale/enetc/enetc.c  | 103 +++-
+ drivers/net/ethernet/freescale/enetc/enetc.h  |  59 +-
+ .../ethernet/freescale/enetc/enetc4_debugfs.c |  93 +++
+ .../ethernet/freescale/enetc/enetc4_debugfs.h |  20 +
+ .../net/ethernet/freescale/enetc/enetc4_hw.h  |  12 +
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 529 +++++++++++++++++-
+ .../net/ethernet/freescale/enetc/enetc_cbdr.c |  69 ++-
+ .../ethernet/freescale/enetc/enetc_ethtool.c  |  76 ++-
+ .../net/ethernet/freescale/enetc/enetc_hw.h   |   6 +
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 124 +---
+ .../net/ethernet/freescale/enetc/enetc_pf.h   |  30 +-
+ .../freescale/enetc/enetc_pf_common.c         |  46 +-
+ .../freescale/enetc/enetc_pf_common.h         |   2 +
+ .../net/ethernet/freescale/enetc/enetc_vf.c   |  19 +-
+ drivers/net/ethernet/freescale/enetc/ntmp.c   | 458 +++++++++++++++
+ .../ethernet/freescale/enetc/ntmp_private.h   |  67 +++
+ include/linux/fsl/ntmp.h                      | 178 ++++++
+ 20 files changed, 1716 insertions(+), 191 deletions(-)
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_debugfs.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/enetc4_debugfs.h
+ create mode 100644 drivers/net/ethernet/freescale/enetc/ntmp.c
+ create mode 100644 drivers/net/ethernet/freescale/enetc/ntmp_private.h
+ create mode 100644 include/linux/fsl/ntmp.h
 
---_002_BJXPR01MB0614C01A9523786117B1F1CBCEC8ABJXPR01MB0614CHNP_--
+-- 
+2.34.1
+
 
