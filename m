@@ -1,49 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-6687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6686-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64974A4DFA8
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 14:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B9689A4DF40
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 14:29:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6cWL6Hmdz3bm7;
-	Wed,  5 Mar 2025 00:50:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6c3810s7z30Vb;
+	Wed,  5 Mar 2025 00:29:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741096206;
-	cv=none; b=eV7u8t1cjcpnuB6sy3HXm5LvReHXwQ8yzmKFp5a1E4+KxAuZWKYAjLuJdTMMJF5c5T8/0JCvl88iVbN/GWW3mdz2Fuoe1sl2pWwkMQ9V4SMnjtnqGOq52rOvQOGerMHoeSdygOk7L30vyztKkjKEyiN3tQ3IG1rWxv3rUYhdHTfdyQSeXh6jAlATajPC1M7nndKJtkk6akbdhOnlQiA15Wzp7MjRjY0eOSk2dhnWTG3/nm95gW6DzdPZnGsivQkhNE1RkHCfHyx+V8RUSbnKw6DckMW80tF8++u27xmbmxOalqFOaeY6uOQowxGwWOUc0hFLqQy3aSUg9CJBT/OqcA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741094948;
+	cv=none; b=G7ZNGNDQzPT28EdkwjSYmGdNqkWRWOnYS5HMQ1ltL7Jw8rJD3quouPwNMjXCSWGMEyF6OoMF6zk/EwxCqfCEd2xFaVPWjGIY0EpfStBn//S7cHZF5Vaz2KpE2Mu68ec9/0zRp5gcCRxUPL1MO49wHyqTLP3znFBN4mY3dhjpfO6VYoUtgnmt6cfOvLJkLIu1S2/oR9nksQuScKV5q6czX4F+/sc63dnbwhRjZ5iM5xhsrbbgIvk5qK63HjLb8m9Mc+GFCtibVZwNfwclNTkt1KPaWnAs+S9eVn81chWIcnrn3+zcb6qgKW/WCWeeugBwttlHBiM6V5Ju8eYA1fTAVw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741096206; c=relaxed/relaxed;
-	bh=7Gl5fsHD8F9rci1vAnSiIjcux58pHd7tin4dj8VYgTI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=FEsbLEQbcoI6sH7oMeetlrkt1kWRgCzDWNDQa6hOgvJC3WpUA3BePjCUFNMKPCJSs4lUzIDVmFWLM0hBjD/A0U0WkoAGswcsZmlxlx8r8skFDGQl841rQzt0XdrAIZeIfZKJbLJo/MbGoQa/d+eSECfqttmlu3CP60KSiZ5JPELaEk//AM6/Ov0KJpMIYpiFlwbN5uGGnUnRrgXZkVRwE4w2x0hKvdYK5sZk9AS6zkdu5dQm0I3FECl+etI1CznWNh+S+Yhi4YCGYOKO6dQl4sctTFqLYvN4Dq/zgXNy2+IZkl4k3VhZu1Z3xpKyG8JIO3RIiziSE+neIl37VEyfIw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6cWL0G9Rz3bm3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 00:50:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Z6bhm0yR2z9stP;
-	Tue,  4 Mar 2025 14:13:12 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id YcyFsAqofisI; Tue,  4 Mar 2025 14:13:12 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z6bhl0DH6z9stN;
-	Tue,  4 Mar 2025 14:13:11 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id E8E568B773;
-	Tue,  4 Mar 2025 14:13:10 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id ZqHAXFnBttdT; Tue,  4 Mar 2025 14:13:10 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 7DAE08B763;
-	Tue,  4 Mar 2025 14:13:10 +0100 (CET)
-Message-ID: <a8336412-7b66-447e-9a90-1a376960cd4c@csgroup.eu>
-Date: Tue, 4 Mar 2025 14:13:09 +0100
+	t=1741094948; c=relaxed/relaxed;
+	bh=Vlie2s6A3W2NoubPXYvVeaREA7BeWoMmTyq0pjCXtwI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O4TS3bTCq7nmSX9TbgIR8/b7TfukIDjqHf4KMyr4r7fwiLPbyh4m9B5Wi48qDfm4K6TlnoydySIKdDEuzBqxKuzyZSovHWEBkc8V+YIfzXJ3W/DOeGpZtkMAX/iz7/C2x0MVCjJR0kTJ/vrba4/7RlpWhO4G5eNsFuLw0VTPcsBzocVSo3kK+KJCCemWXFtTIcQrH9mq6lfDQnrKdoAbFF1n1C3/mS2xwSdFAzNugRYpjkh2bKqd1K/scI17PZzysRGBrWaGW2k9ivhEUCe4SvBDMJCN9BKFTM88opq7VAp5fON3+DM7Kii+BNqL+5IncpAO6fpgfoKQcqnhvryQcQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=R3RhzeRj; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=R3RhzeRj;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6c346YQbz2yDH
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 00:29:01 +1100 (AEDT)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id 148E924002A
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 14:28:54 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1741094935; bh=GPsFfWzJ45kkPKaIC8bUVtCSlM7aVHTBZr1/4Ads9no=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=R3RhzeRjfiKl8RRpGtbiWddCgwW2TygfsbPeT/fMdBGDodRsnGd3NDBXVd5wKFA8r
+	 HTizIctUmqdlhL5uXdQX9vTAOerQAOzGcQLj3X2i/um8I+V8wf2Yj7l7qWk1LVJegM
+	 Jkb+YIMoWdTceuTfyWDy6UQg7CLiSOBbyB+Wtn8mRWj8l+RPfB2CIkGMBdircWoj5u
+	 JhviOeZ1uxUg0CoTg0KOiRm4uPqPLctJVkUyodvpBeuZnH/TieWJzRE19ExAsBYcUZ
+	 rIfEj+6zSvANeG4TQe++b303hdEMBe9GViZquyu7qWFS1r25tLBUsab4yCJGBF5MNp
+	 mzlMxqP68d3DQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Z6c2r19WLz9rxF;
+	Tue,  4 Mar 2025 14:28:52 +0100 (CET)
+Date: Tue,  4 Mar 2025 13:28:51 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Rob Herring <robh@kernel.org>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	dmaengine@vger.kernel.org, Crystal Wood <oss@buserror.net>,
+	linuxppc-dev@lists.ozlabs.org, Nicholas Piggin <npiggin@gmail.com>,
+	Vinod Koul <vkoul@kernel.org>, devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Naveen N Rao <naveen@kernel.org>
+Subject: Re: [PATCH v3] dt-bindings: dma: Convert fsl,elo*-dma to YAML
+Message-ID: <Z8cAE0L3qnPHWLCR@probook>
+References: <20250226-ppcyaml-dma-v3-1-79ce3133569f@posteo.net>
+ <174059099427.2999773.4836262903761680275.robh@kernel.org>
+ <20250303134200.GA1710704-robh@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,198 +75,42 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Build Warnings at arch/powerpc/
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- linux-kernel@vger.kernel.org, Stephen Rothwell <sfr@canb.auug.org.au>,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <8c4c3fc2-2bd7-4148-af68-2f504d6119e0@linux.ibm.com>
- <47aa8b75-96b6-4e37-bb62-ad758b414076@linux.ibm.com>
- <8ba544e7-cf2a-4807-a056-683115805721@csgroup.eu>
- <bfcce9ce-bc26-4088-8d27-0797fc0d22d3@linux.ibm.com>
- <fe937273-d81a-4f6c-9eba-b96b711b4644@linux.ibm.com>
- <988cb994-d8b1-4688-b926-66507ebe90df@linux.ibm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <988cb994-d8b1-4688-b926-66507ebe90df@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+In-Reply-To: <20250303134200.GA1710704-robh@kernel.org>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,
+	RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-
-
-Le 04/03/2025 à 14:03, Venkat Rao Bagalkote a écrit :
-> [Vous ne recevez pas souvent de courriers de venkat88@linux.ibm.com. 
-> Découvrez pourquoi ceci est important à https://aka.ms/ 
-> LearnAboutSenderIdentification ]
+On Mon, Mar 03, 2025 at 07:42:00AM -0600, Rob Herring wrote:
+> On Wed, Feb 26, 2025 at 11:29:54AM -0600, Rob Herring (Arm) wrote:
+> > 
+> > On Wed, 26 Feb 2025 16:57:17 +0100, J. Neuschäfer wrote:
+> > > The devicetree bindings for Freescale DMA engines have so far existed as
+> > > a text file. This patch converts them to YAML, and specifies all the
+> > > compatible strings currently in use in arch/powerpc/boot/dts.
+> > > 
+> > > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > > ---
+[...]
+> > dtschema/dtc warnings/errors:
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,elo-dma.example.dtb: dma-controller@82a8: '#dma-cells' is a required property
+> > 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,eloplus-dma.example.dtb: dma-controller@21300: '#dma-cells' is a required property
+> > 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
+> > /builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/dma/fsl,elo3-dma.example.dtb: dma-controller@100300: '#dma-cells' is a required property
+> > 	from schema $id: http://devicetree.org/schemas/dma/dma-controller.yaml#
 > 
-> On 04/03/25 6:08 pm, Madhavan Srinivasan wrote:
->>
->> On 3/4/25 4:58 PM, Madhavan Srinivasan wrote:
->>>
->>> On 3/4/25 2:26 PM, Christophe Leroy wrote:
->>>>
->>>> Le 04/03/2025 à 07:13, Madhavan Srinivasan a écrit :
->>>>>
->>>>> On 3/4/25 10:42 AM, Venkat Rao Bagalkote wrote:
->>>>>> Greetings!!
->>>>>>
->>>>>>
->>>>>> Observing build warnings with linux-next and powerpc repo's. Issue 
->>>>>> is currently not seen on mainline yet.
->>>>>>
->>>>>> PPC Repo: https://eur01.safelinks.protection.outlook.com/? 
->>>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fpowerpc%2Flinux.git&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C6e17cc771a204b2998b508dd5b1cf2cf%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638766902127463526%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=f0ubC0BiY%2Fw2XLfXcX955JKhJ%2BRkUmTUVO4fV%2F%2F4v2Y%3D&reserved=0 merge branch
->>>>>>
->>>>>> PPC Kernel Version: 6.14.0-rc4-g1304f486dbf1
->>>>>> next Repo: https://eur01.safelinks.protection.outlook.com/? 
->>>>>> url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fnext%2Flinux-next.git&data=05%7C02%7Cchristophe.leroy%40csgroup.eu%7C6e17cc771a204b2998b508dd5b1cf2cf%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638766902127477000%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=GSDtRBQ35owCeEpjMMCNiJw3iizdrUPQcHznop2BLeQ%3D&reserved=0 master branch
->>>>>>
->>>>>> next Kernel Version: 6.14.0-rc5-next-20250303
->>>>>>
->>>>>>
->>>>>> On linux-next kernel issue got introduced b/w next-20250227 and 
->>>>>> next-20250303
->>>>>>
->>>>>>
->>>>>> Build Warnings:
->>>>>>
->>>>>> arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: 
->>>>>> objtool: .text+0xe84: intra_function_call not a direct call
->>>>>> arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c: 
->>>>>> unannotated intra-function call
->>>>>> arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: 
->>>>>> intra_function_call not a direct call
->>>>>>
->>>>>>
->>>>> Can you please specific the compiler and compiler version you found 
->>>>> this issue with
->>>>>
->>>> Can you also tell which defconfig you are using or provide your .config
->>>>
->>>> It might also be helpfull if you can provide a disassembly of the 
->>>> three file.o around the warned address.
->>> I could recreate the issue with gcc 11.4.1 20231218 with today's 
->>> linux-next (but could not recreate with gcc 14 or gcc 11.3.0)
->>>
->>> (20d5c66e1810 (HEAD -> master, tag: next-20250304, origin/master, 
->>> origin/HEAD) Add linux-next specific files for 20250304)
->>>
->>> warning for one of the switch.S file :
->>>
->>>    CC      arch/powerpc/kernel/syscalls.o
->>>    AS      arch/powerpc/kernel/switch.o
->>> arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: 
->>> intra_function_call not a direct call
->> I guess this is becos, for bl .+4, we recently added in the 
->> arch_decode_instruction (decode.c) to set the type as INSN_OTHER
->>
->>          case 18: /* b[l][a] */
->>                  if (ins == 0x48000005)  /* bl .+4 */
->>                          typ = INSN_OTHER;
->>
->> Which I think is the issue here, changing it to INSN_CALL from 
->> INSN_OTHER fixes the warning
->>
->> diff --git a/tools/objtool/arch/powerpc/decode.c b/tools/objtool/arch/ 
->> powerpc/decode.c
->> index 26d5050424a9..ffd63a61a585 100644
->> --- a/tools/objtool/arch/powerpc/decode.c
->> +++ b/tools/objtool/arch/powerpc/decode.c
->> @@ -56,7 +56,7 @@ int arch_decode_instruction(struct objtool_file 
->> *file, const struct section *sec
->>          switch (opcode) {
->>          case 18: /* b[l][a] */
->>                  if (ins == 0x48000005)  /* bl .+4 */
->> -                       typ = INSN_OTHER;
->> +                       typ = INSN_CALL;
->>                  else if (ins & 1)       /* bl[a] */
->>                          typ = INSN_CALL;
->>                  else            /* b[a] */
->>
->>
->> Maddy
->>
-> Maddy,
+> Just stick with 'dma' for node name as that's what .dts files are using 
+> and 'dma-controller' is reserved for users of DMA provider binding.
 > 
-> I changed the code manually and gave it a try. The Proposed fix,
-> partially fixes the issue. It gets rid of two of the warnings, but below
-> warning still persists.
+> Rob
 
-It fixes the issue for you but will reintroduce the issue with clang.
+Ok, makes sense.
 
-The real fix is to remove the ANNOTATE_INTRA_FUNCTION_CALL in:
-
-arch/powerpc/kernel/switch.S:42:        ANNOTATE_INTRA_FUNCTION_CALL
-arch/powerpc/kvm/book3s_hv_rmhandlers.S:1527:   ANNOTATE_INTRA_FUNCTION_CALL
-arch/powerpc/kvm/book3s_hv_rmhandlers.S:1534:   ANNOTATE_INTRA_FUNCTION_CALL
-
-Can you give it a try ?
-
-For the last one, can you provide an assembly dump ? You get it with 
-"objtool -dr arch/powerpc/crypto/ghashp8-ppc.o"
-
-Also can you tell which defconfig you use or provide your .config if not 
-standard one ?
-
-Christophe
-
-
-> 
-> arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c:
-> unannotated intra-function call
-> 
->>>    CC      arch/powerpc/kernel/irq.o
->>>    CC      arch/powerpc/kernel/align.o
->>>    CC      arch/powerpc/kernel/signal_64.o
->>>
->>> Objdump of switch.o:
->>> arch/powerpc/kernel/switch.o:     file format elf64-powerpcle
->>>
->>> Disassembly of section .text:
->>>
->>> 0000000000000000 <flush_branch_caches>:
->>>         0:   a6 02 28 7d     mflr    r9
->>>         4:   05 00 00 48     bl      8 <flush_branch_caches+0x8>
->>>         8:   05 00 00 48     bl      c <flush_branch_caches+0xc>
->>>         c:   05 00 00 48     bl      10 <flush_branch_caches+0x10>
->>>        10:   05 00 00 48     bl      14 <flush_branch_caches+0x14>
->>>        14:   05 00 00 48     bl      18 <flush_branch_caches+0x18>
->>>        18:   05 00 00 48     bl      1c <flush_branch_caches+0x1c>
->>>        1c:   05 00 00 48     bl      20 <flush_branch_caches+0x20>
->>>        20:   05 00 00 48     bl      24 <flush_branch_caches+0x24>
->>>        24:   05 00 00 48     bl      28 <flush_branch_caches+0x28>
->>>        28:   05 00 00 48     bl      2c <flush_branch_caches+0x2c>
->>>
->>>
->>> arch/powerpc/kernel/switch.S failing src section:
->>>
->>> .balign 32
->>> .global flush_branch_caches
->>> flush_branch_caches:
->>>          /* Save LR into r9 */
->>>          mflr    r9
->>>
->>>          // Flush the link stack
->>>          .rept 64
->>>          ANNOTATE_INTRA_FUNCTION_CALL
->>>          bl      .+4
->>>          .endr
->>>          b       1f
->>>          nops    6
->>>
->>> Maddy
->>>
->>>
->>>> Christophe
->>>
->>
-> Regards,
-> 
-> Venkat.
-> 
-
+Thanks,
+J. Neuschäfer
 
