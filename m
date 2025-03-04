@@ -1,60 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6680-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6681-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AE60A4D9B4
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 11:03:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AFA3A4DC92
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 12:29:03 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6WTT4rKgz3bkP;
-	Tue,  4 Mar 2025 21:03:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6YNX3mz9z2xdb;
+	Tue,  4 Mar 2025 22:29:00 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741082589;
-	cv=none; b=Bpg+DOuSUAO5kcjaKInHNV9Bu2YhwSGeMQwxvR51IDm6M1Vd4lE7dC/+hJ0mBCPiGdHmEFyHb4CZpCY/72RfStLMMLdpbQ84Bah1Uv8skEWBsqoTo9Eb/aaxQqcOcgnMuoJ7RPfh4iyCJr6ursSdCbDZDuOWDcW/q/DZ7Qntt9PbWT65GTxYTzpsr5wUVhHZocl8CK5YPIuAHAxSh8JrNuWu27do3J9Ky71xekhh21t4EXVg7HzuueVFztOJRZM5tTwslltAOcdTMIVnPCo8mTC+C3piYEmW7gko6Exb2mCvpMj/+fPQG+XeerFzIUCHNXCfnoKdftNRTsBD+xGDmg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741087740;
+	cv=none; b=R8GQ78QYESs4C8/OjGvtCh+jjUOzesQSOHUloCbi7mJ5WaYVCzKiDMOey0PxwivqbyyXJ3ADc93sHbamfoIx8gKAyAl7807zbMsR3ODB8DHlKMceoSUbN/JvpTIuiOzawcTUZF9mwQwYYUJi30jpZ5Vl4SUCLSgpoYyojwspZCA20ecSVQlca2rzwnnNccdPFgmu3GvQ5uKILhZ44HIxwCEOnpE1V+lCUKMj+U3Ky0T6+ZAatWtgCZS6FUZy07OXWJtcm6eaJZ70ZThgjkNalvzMkzf6msI8egHRst2arW07GoG3Ig8yf6iADcrynUPqEqvHKU5yMHAvpPH7nJ94Ow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741082589; c=relaxed/relaxed;
-	bh=QTH1Bq/PxKSr1gUXalyKFsKG5IYts2vm06lCPnwHDEY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dsZTZVtjarMqOFlZpI9Zq/HSRIKktIaPTts9JRCDWg474ndXVHrrhWZm/E1OPd4gbMuPSUfK3qk+rsXeUJ/iAio/3bCZwlIyprurnJvZ14TTwB8+vehr2n2Ba86piDGswCF4B1xpIKZtZbsIxxnHXR2QiHKkLQ+T3RUjQIURxOAU36XaUChtL0/9+WHa2iGoP8bOdEzuA786pi5AgIenhCGgYF9PKpTMKdcOQIM6eKl/kih1BOuE+ORaw3EyKMk33tMsJOiWdiSJcoE1tUR1EL5w8HfxlZ/iZ7+J05uM4pgSwK+6aKocdHB4ExdmJeAZI4RasFKe5gZFf9e4lNqwVA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=sudeep.holla@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=sudeep.holla@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6WTS6R0lz2xdL
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 21:03:08 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 25F28FEC;
-	Tue,  4 Mar 2025 02:02:51 -0800 (PST)
-Received: from bogus (e133711.arm.com [10.1.196.55])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2C0923F5A1;
-	Tue,  4 Mar 2025 02:02:33 -0800 (PST)
-Date: Tue, 4 Mar 2025 10:02:30 +0000
-From: Sudeep Holla <sudeep.holla@arm.com>
-To: Pierre Gondois <pierre.gondois@arm.com>
-Cc: Yicong Yang <yangyicong@huawei.com>, <yangyicong@hisilicon.com>,
-	Sudeep Holla <sudeep.holla@arm.com>, <catalin.marinas@arm.com>,
-	<will@kernel.org>, <tglx@linutronix.de>, <peterz@infradead.org>,
-	<mpe@ellerman.id.au>, <linux-arm-kernel@lists.infradead.org>,
-	<mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-	<dietmar.eggemann@arm.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>,
-	<morten.rasmussen@arm.com>, <msuchanek@suse.de>,
-	<gregkh@linuxfoundation.org>, <rafael@kernel.org>,
-	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
-	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>,
-	<sshegde@linux.ibm.com>
-Subject: Re: [PATCH v11 3/4] arm64: topology: Support SMT control on ACPI
- based system
-Message-ID: <Z8bPtsO7dEV0lq2M@bogus>
-References: <20250218141018.18082-1-yangyicong@huawei.com>
- <20250218141018.18082-4-yangyicong@huawei.com>
- <Z8HAkZiHYRjj97M7@bogus>
- <336e9c4e-cd9c-4449-ba7b-60ee8774115d@arm.com>
- <20250228190641.q23vd53aaw42tcdi@bogus>
- <a52972c7-aadd-4a77-a292-057fa5f8372d@arm.com>
- <Z8WPiOweOjFZqTwN@bogus>
- <32e572d6-dedd-d8a3-13be-6de02303a64d@huawei.com>
- <2fdea4f6-db98-4dc7-947f-e19ee54d2c3c@arm.com>
+	t=1741087740; c=relaxed/relaxed;
+	bh=HB09KYDfr5AgqHYVGRS5BenMKUM+GUnC0qmbOWI8zsE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Q3+sCBguIMDS6VG1eCnYkPKz/PBHeqUya4EQMlbOtOT11hWzEiI152flYpqgrtO6FHFN8m8Tu3DigBNdVE0obm2LkSJhjAwZwf1vFYt0UyUO2ZGuiHknh8J3K8Y2K5VOA0PVxxdjK7OTFb66s02hOVqLp/y4JE+8rguG7pjgGLBI4IGrLfyb2VeBKqVReRYPt5UVGyy8cjDHMUN4TPFviSEbhgpsqBzShe5NXqPlUAGcgEb5F/9UtBI7uCbvQLtgYkTtDV4tP+8YyKkyikcPSeCEP9Hy3HA+8LyCKyk1djXZBvTUUpR1D4zsbmpn/qdjOxnNjPfEzge8HMEuowCTkg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VV4St/cn; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VV4St/cn;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6YNW59ssz2x9M
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  4 Mar 2025 22:28:58 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5243jgqn021527;
+	Tue, 4 Mar 2025 11:28:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HB09KY
+	Dfr5AgqHYVGRS5BenMKUM+GUnC0qmbOWI8zsE=; b=VV4St/cndBGXFGGeVBHVkn
+	sHXAoyQSNdhnPwWhZCHthEhRCWMGwgUkSKY+Dw4t7iTxqtcAxQVssyC74o+yxid6
+	S4dTKYRMK288aoF0gUNsxOu9rf9Mkk2axONd/AfCH0NG1QkILAlYs3W4eFdhOFuR
+	LriJ0LOAsd4PhTugYpTMiuM8vsuIcCbGWEQmjkmUKJxq7+xkcRcZFMKml3Al3thZ
+	kC8GurlOj17jrXqRbsed/PN3Qxiu0UV1ymEaHdCyUepe8xzSU/7Dsvkg45UBWe0s
+	flMaEBZ4RPjCtLkrStCxFAvPk39MWXwYz8rVb4T6vHvwgDMbmZTgxbwz8GCrqfjw
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 455sw7j4eg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Mar 2025 11:28:43 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5249VsZb025044;
+	Tue, 4 Mar 2025 11:28:42 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 454f91vny8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 04 Mar 2025 11:28:42 +0000
+Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 524BSf1127329098
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 4 Mar 2025 11:28:41 GMT
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 68B3A5805A;
+	Tue,  4 Mar 2025 11:28:41 +0000 (GMT)
+Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3EB8358051;
+	Tue,  4 Mar 2025 11:28:37 +0000 (GMT)
+Received: from [9.43.105.169] (unknown [9.43.105.169])
+	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  4 Mar 2025 11:28:36 +0000 (GMT)
+Message-ID: <bfcce9ce-bc26-4088-8d27-0797fc0d22d3@linux.ibm.com>
+Date: Tue, 4 Mar 2025 16:58:34 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,77 +78,129 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2fdea4f6-db98-4dc7-947f-e19ee54d2c3c@arm.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: Build Warnings at arch/powerpc/
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <8c4c3fc2-2bd7-4148-af68-2f504d6119e0@linux.ibm.com>
+ <47aa8b75-96b6-4e37-bb62-ad758b414076@linux.ibm.com>
+ <8ba544e7-cf2a-4807-a056-683115805721@csgroup.eu>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <8ba544e7-cf2a-4807-a056-683115805721@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: F-gHy7AAVCittyDFXVYiNSidux3HVXLP
+X-Proofpoint-GUID: F-gHy7AAVCittyDFXVYiNSidux3HVXLP
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-04_05,2025-03-03_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 mlxlogscore=999 mlxscore=0 adultscore=0 bulkscore=0
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015 spamscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503040097
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, Mar 04, 2025 at 09:25:02AM +0100, Pierre Gondois wrote:
->
->
-> On 3/3/25 15:40, Yicong Yang wrote:
-> > On 2025/3/3 19:16, Sudeep Holla wrote:
-> > > On Mon, Mar 03, 2025 at 10:56:12AM +0100, Pierre Gondois wrote:
-> > > > On 2/28/25 20:06, Sudeep Holla wrote:
-> > > > > > >
-> > > > > > > Ditto as previous patch, can get rid if it is default 1.
-> > > > > > >
-> > > > > >
-> > > > > > On non-SMT platforms, not calling cpu_smt_set_num_threads() leaves
-> > > > > > cpu_smt_num_threads uninitialized to UINT_MAX:
-> > > > > >
-> > > > > > smt/active:0
-> > > > > > smt/control:-1
-> > > > > >
-> > > > > > If cpu_smt_set_num_threads() is called:
-> > > > > > active:0
-> > > > > > control:notsupported
-> > > > > >
-> > > > > > So it might be slightly better to still initialize max_smt_thread_num.
-> > > > > >
-> > > > >
-> > > > > Sure, what I meant is to have max_smt_thread_num set to 1 by default is
-> > > > > that is what needed anyways and the above code does that now.
-> > > > >
-> > > > > Why not start with initialised to 1 instead ?
-> > > > > Of course some current logic needs to change around testing it for zero.
-> > > > >
-> > > >
-> > > > I think there would still be a way to check against the default value.
-> > > > If we have:
-> > > > unsigned int max_smt_thread_num = 1;
-> > > >
-> > > > then on a platform with 2 threads, the detection condition would trigger:
-> > > > xa_for_each(&hetero_cpu, hetero_id, entry) {
-> > > >      if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)     <---- (entry->thread_num=2) and (max_smt_thread_num=1)
-> > > >          pr_warn_once("Heterogeneous SMT topology is partly
-> > > >                        supported by SMT control\n");
-> > > >
-> > > > so we would need an additional variable:
-> > > > bool is_initialized = false;
-> > >
-> > > Sure, we could do that or skip the check if max_smt_thread_num == 1 ?
-> > >
-> > > I mean
-> > > 	if (entry->thread_num != max_smt_thread_num && max_smt_thread_num != 1)
-> > >
->
-> I think it will be problematic if we parse:
-> - first a CPU with 1 thread
-> - then a CPU with 2 threads
->
-> in that case we should detect the 'Heterogeneous SMT topology',
-> but we cannot because we don't know whether max_smt_thread_num=1
-> because 1 is the default value or we found a CPU with one thread.
 
-Right, but as per Dietmar's and my previous response, it may be a valid
-case. See latest response from Dietmar which is explicitly requesting
-support for this. It may need some special handling if we decide to support
-that.
 
---
-Regards,
-Sudeep
+On 3/4/25 2:26 PM, Christophe Leroy wrote:
+> 
+> 
+> Le 04/03/2025 à 07:13, Madhavan Srinivasan a écrit :
+>>
+>>
+>> On 3/4/25 10:42 AM, Venkat Rao Bagalkote wrote:
+>>> Greetings!!
+>>>
+>>>
+>>> Observing build warnings with linux-next and powerpc repo's. Issue is currently not seen on mainline yet.
+>>>
+>>> PPC Repo: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fpowerpc%2Flinux.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C8e0f8501f09c48dbb43608dd5ae3c9bf%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638766656585342184%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=e5BrJzcrtlITkLF31KltGExQ5Qe8fDVTMV6VfR4w9o8%3D&reserved=0 merge branch
+>>>
+>>> PPC Kernel Version: 6.14.0-rc4-g1304f486dbf1
+>>> next Repo: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Fgit.kernel.org%2Fpub%2Fscm%2Flinux%2Fkernel%2Fgit%2Fnext%2Flinux-next.git&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7C8e0f8501f09c48dbb43608dd5ae3c9bf%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638766656585355246%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=meQyZfB75HhJFCL6AX93slsyVwnogGPYFabDXl%2FLzDA%3D&reserved=0 master branch
+>>>
+>>> next Kernel Version: 6.14.0-rc5-next-20250303
+>>>
+>>>
+>>> On linux-next kernel issue got introduced b/w next-20250227 and next-20250303
+>>>
+>>>
+>>> Build Warnings:
+>>>
+>>> arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool: .text+0xe84: intra_function_call not a direct call
+>>> arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c: unannotated intra-function call
+>>> arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: intra_function_call not a direct call
+>>>
+>>>
+>>
+>> Can you please specific the compiler and compiler version you found this issue with
+>>
+> 
+> Can you also tell which defconfig you are using or provide your .config
+> 
+> It might also be helpfull if you can provide a disassembly of the three file.o around the warned address.
+
+I could recreate the issue with gcc 11.4.1 20231218 with today's linux-next (but could not recreate with gcc 14 or gcc 11.3.0)
+
+(20d5c66e1810 (HEAD -> master, tag: next-20250304, origin/master, origin/HEAD) Add linux-next specific files for 20250304)
+
+warning for one of the switch.S file :
+
+  CC      arch/powerpc/kernel/syscalls.o
+  AS      arch/powerpc/kernel/switch.o
+arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: intra_function_call not a direct call
+  CC      arch/powerpc/kernel/irq.o
+  CC      arch/powerpc/kernel/align.o
+  CC      arch/powerpc/kernel/signal_64.o
+
+Objdump of switch.o:
+arch/powerpc/kernel/switch.o:     file format elf64-powerpcle
+
+Disassembly of section .text:
+
+0000000000000000 <flush_branch_caches>:
+       0:	a6 02 28 7d 	mflr    r9
+       4:	05 00 00 48 	bl      8 <flush_branch_caches+0x8>
+       8:	05 00 00 48 	bl      c <flush_branch_caches+0xc>
+       c:	05 00 00 48 	bl      10 <flush_branch_caches+0x10>
+      10:	05 00 00 48 	bl      14 <flush_branch_caches+0x14>
+      14:	05 00 00 48 	bl      18 <flush_branch_caches+0x18>
+      18:	05 00 00 48 	bl      1c <flush_branch_caches+0x1c>
+      1c:	05 00 00 48 	bl      20 <flush_branch_caches+0x20>
+      20:	05 00 00 48 	bl      24 <flush_branch_caches+0x24>
+      24:	05 00 00 48 	bl      28 <flush_branch_caches+0x28>
+      28:	05 00 00 48 	bl      2c <flush_branch_caches+0x2c>
+
+
+arch/powerpc/kernel/switch.S failing src section:
+
+.balign 32
+.global flush_branch_caches
+flush_branch_caches:
+        /* Save LR into r9 */
+        mflr    r9
+
+        // Flush the link stack
+        .rept 64
+        ANNOTATE_INTRA_FUNCTION_CALL
+        bl      .+4
+        .endr
+        b       1f
+        nops    6
+
+Maddy 
+
+
+> 
+> Christophe
+
 
