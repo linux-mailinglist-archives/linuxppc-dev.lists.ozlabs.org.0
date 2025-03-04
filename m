@@ -1,41 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-6688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6693-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7EC7A4E04D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 15:11:06 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEEFFA4E263
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 16:08:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6czX0jsQz3bm3;
-	Wed,  5 Mar 2025 01:11:04 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6fFc1MQ7z3bmf;
+	Wed,  5 Mar 2025 02:08:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.191
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741097464;
-	cv=none; b=Kp6nTBg6bato+YoIVv4C+1rl1hxbdTuEm3djBXAEjuE2QQiiXlD7O8FM4K7yv22QE+dxT6pPpscy5LrdAzrTgF+SaQweIsA7ZRkd/oM7uiGoxsSlXOlERzj0xcgzIE4LwoXn/sjOfS4xRCnTC4X/4R0rTSZpgl1nSsMZ2dsd1k7pkqyxzL9gC7gmH0qm4UvKn61De1WrUk5i1k4R8jmYfOZ/BXAW8X6sXrS28geAu12SOP4PTvQkL5F0sSKd2MlbHY/pTazILiCd6XrHlbbvu0GmSE/WYGNmAuySv0btFj6u+RUjTQ9G065mdxJ9u9XTbr5anHueROTIDSrnxT1/4w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741100900;
+	cv=none; b=K8i+dUBfrNvsAZuD+s5gfQHIjGJL6rCQpGVkITk/fYOmO0tCvq4x8YXPSEpBQyH4EwA/LOBM5MWtJvPXkyzgykBSzaWoWj0Si7wJFkPjvlCTQUMGsUvXcTjexe+NvoTvQw1DdFGr4ssUfQtHRbLz3WzUif3fHiz9B+VroefjdlQn24Zyuw2g74EII0N4UutzyNnH10rxOs6NGQfh297gWNidK7E+mTMRY18uW/6gP20EdUvZff8FOggtrVnCym1dmiJVRPP3WyXAkyKDeby3nOICuy+dzhXG9dUJZtZKqKiPrcPVdEWvSe9Y9vkpUbeZyOpbuEo3dcEKBAQ8gHykBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741097464; c=relaxed/relaxed;
-	bh=Cz7IA69OFA9tHcBAPSVOCjGmnTTL7mvde1OZORF4svs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=DlGUYTxuqf4VQSNYORZC8qLwR7UBvQVJpn/gUFJrs50KxfFzjHK21/ayoUK7S57bOb6iNU3lqgvxVBUB4dAk3bhgNpPqW8CsV6NLRIokO9NWd45TcEtmoB8VUxbvkQcURCRSTjYIaTkiqmeGlMBAH7RSVB8Ub+E2YVQB6qP3GnkT6BNHGfN+q6PEWgOjNJ4uzHX3xQquaEmHvwSq/9CuLoSkj9XTqvUdql0sxDAf7fV/XZDmXtPmoRYpGGvdMHJL+VUduLoEYUBEOQz8P5R6n0d4CyrPoQZJKnzNpqcqyHQ45O0PtChdefW1qPTLRrFJrM8uHP3/ibp8KD9zEGKZ9A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.191; helo=szxga05-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6czV3B96z30Vq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 01:10:59 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.163.17])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4Z6ctR2c3Gz1ltZw;
-	Tue,  4 Mar 2025 22:06:39 +0800 (CST)
-Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
-	by mail.maildlp.com (Postfix) with ESMTPS id B226C1A0188;
-	Tue,  4 Mar 2025 22:10:50 +0800 (CST)
-Received: from [10.174.179.234] (10.174.179.234) by
- kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 4 Mar 2025 22:10:48 +0800
-Message-ID: <2c1fa758-c292-aefb-f6e2-cab41f592568@huawei.com>
-Date: Tue, 4 Mar 2025 22:10:47 +0800
+	t=1741100900; c=relaxed/relaxed;
+	bh=wFyw6zs1wiokhsxk0eiZ5by191gbkb1G0Meaen/UrR8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gyHvawpxBLIW07A7rAYhj5W85tHWXuYftx86cgy+5ocMqtQFSUIpVFQ9laF1omVCx8ZuOrFRr1U6xrTfbWP3A//nLb3dOi7WGfCeW9jZQMSeX/ZDox6pIWIHF7UodI3KOjWNmx2SdXHmQW/k89O/VTJK/mN05FlXQT2zRs5uVNyoXVtn5Itg0XOdliAOFX3IjOnQV71LWngOXiirveJFcpYELlAb8gqTt2Nqf/apooVGmo43k03SUaVPi/OnKQm8bjpnJw81cqrpZe01KxeoUDomzikh3LN1JCqAHsLUZZiG1HYM8sBcGUYG/dpYvWpVNdknwU5qChbGaCt8RyHJLw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=pierre.gondois@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6fFZ6ls1z3bmN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 02:08:17 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DCA88FEC;
+	Tue,  4 Mar 2025 07:07:56 -0800 (PST)
+Received: from [192.168.1.12] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E1B983F66E;
+	Tue,  4 Mar 2025 07:07:37 -0800 (PST)
+Message-ID: <153df413-9989-42fe-b574-598ff0fa9716@arm.com>
+Date: Tue, 4 Mar 2025 16:07:35 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -48,94 +42,108 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH v13 4/5] arm64: support copy_mc_[user]_highpage()
-To: Catalin Marinas <catalin.marinas@arm.com>
-CC: Mark Rutland <mark.rutland@arm.com>, Jonathan Cameron
-	<Jonathan.Cameron@huawei.com>, Mauro Carvalho Chehab
-	<mchehab+huawei@kernel.org>, Will Deacon <will@kernel.org>, Andrew Morton
-	<akpm@linux-foundation.org>, James Morse <james.morse@arm.com>, Robin Murphy
-	<robin.murphy@arm.com>, Andrey Konovalov <andreyknvl@gmail.com>, Dmitry
- Vyukov <dvyukov@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Alexander Potapenko
-	<glider@google.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, Aneesh
- Kumar K.V <aneesh.kumar@kernel.org>, "Naveen N. Rao"
-	<naveen.n.rao@linux.ibm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Madhavan Srinivasan <maddy@linux.ibm.com>,
-	<linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>,
-	<linuxppc-dev@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
-	<kasan-dev@googlegroups.com>, <wangkefeng.wang@huawei.com>, Guohanjun
-	<guohanjun@huawei.com>
-References: <20241209024257.3618492-1-tongtiangen@huawei.com>
- <20241209024257.3618492-5-tongtiangen@huawei.com> <Z6zWSXzKctkpyH7-@arm.com>
- <69955002-c3b1-459d-9b42-8d07475c3fd3@huawei.com> <Z698SFVqHjpGeGC0@arm.com>
- <e1d2affb-5c6b-00b5-8209-34bbca36f96b@huawei.com> <Z7NN5Pa-c5PtIbcF@arm.com>
- <3b181285-2ff3-b77a-867b-725f38ea86d3@huawei.com> <Z7TisqB5qCIF5nYI@arm.com>
-From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <Z7TisqB5qCIF5nYI@arm.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- kwepemk500005.china.huawei.com (7.202.194.90)
-X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 3/4] arm64: topology: Support SMT control on ACPI
+ based system
+To: Sudeep Holla <sudeep.holla@arm.com>
+Cc: Yicong Yang <yangyicong@huawei.com>, yangyicong@hisilicon.com,
+ catalin.marinas@arm.com, will@kernel.org, tglx@linutronix.de,
+ peterz@infradead.org, mpe@ellerman.id.au,
+ linux-arm-kernel@lists.infradead.org, mingo@redhat.com, bp@alien8.de,
+ dave.hansen@linux.intel.com, dietmar.eggemann@arm.com,
+ linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ morten.rasmussen@arm.com, msuchanek@suse.de, gregkh@linuxfoundation.org,
+ rafael@kernel.org, jonathan.cameron@huawei.com, prime.zeng@hisilicon.com,
+ linuxarm@huawei.com, xuwei5@huawei.com, guohanjun@huawei.com,
+ sshegde@linux.ibm.com
+References: <20250218141018.18082-1-yangyicong@huawei.com>
+ <20250218141018.18082-4-yangyicong@huawei.com> <Z8HAkZiHYRjj97M7@bogus>
+ <336e9c4e-cd9c-4449-ba7b-60ee8774115d@arm.com>
+ <20250228190641.q23vd53aaw42tcdi@bogus>
+ <a52972c7-aadd-4a77-a292-057fa5f8372d@arm.com> <Z8WPiOweOjFZqTwN@bogus>
+ <32e572d6-dedd-d8a3-13be-6de02303a64d@huawei.com>
+ <2fdea4f6-db98-4dc7-947f-e19ee54d2c3c@arm.com> <Z8bPtsO7dEV0lq2M@bogus>
+Content-Language: en-US
+From: Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <Z8bPtsO7dEV0lq2M@bogus>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi,Catalin:
 
-Kindly ping ...
 
-Thanks.:)
-
-在 2025/2/19 3:42, Catalin Marinas 写道:
-> On Tue, Feb 18, 2025 at 07:51:10PM +0800, Tong Tiangen wrote:
->>>>>> 在 2025/2/13 1:11, Catalin Marinas 写道:
->>>>>>> On Mon, Dec 09, 2024 at 10:42:56AM +0800, Tong Tiangen wrote:
->>>>>>>> Currently, many scenarios that can tolerate memory errors when copying page
->>>>>>>> have been supported in the kernel[1~5], all of which are implemented by
->>>>>>>> copy_mc_[user]_highpage(). arm64 should also support this mechanism.
+On 3/4/25 11:02, Sudeep Holla wrote:
+> On Tue, Mar 04, 2025 at 09:25:02AM +0100, Pierre Gondois wrote:
+>>
+>>
+>> On 3/3/25 15:40, Yicong Yang wrote:
+>>> On 2025/3/3 19:16, Sudeep Holla wrote:
+>>>> On Mon, Mar 03, 2025 at 10:56:12AM +0100, Pierre Gondois wrote:
+>>>>> On 2/28/25 20:06, Sudeep Holla wrote:
 >>>>>>>>
->>>>>>>> Due to mte, arm64 needs to have its own copy_mc_[user]_highpage()
->>>>>>>> architecture implementation, macros __HAVE_ARCH_COPY_MC_HIGHPAGE and
->>>>>>>> __HAVE_ARCH_COPY_MC_USER_HIGHPAGE have been added to control it.
+>>>>>>>> Ditto as previous patch, can get rid if it is default 1.
 >>>>>>>>
->>>>>>>> Add new helper copy_mc_page() which provide a page copy implementation with
->>>>>>>> hardware memory error safe. The code logic of copy_mc_page() is the same as
->>>>>>>> copy_page(), the main difference is that the ldp insn of copy_mc_page()
->>>>>>>> contains the fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR, therefore, the
->>>>>>>> main logic is extracted to copy_page_template.S. In addition, the fixup of
->>>>>>>> MOPS insn is not considered at present.
 >>>>>>>
->>>>>>> Could we not add the exception table entry permanently but ignore the
->>>>>>> exception table entry if it's not on the do_sea() path? That would save
->>>>>>> some code duplication.
-> [...]
->> So we need another way to distinguish the different processing of the
->> same exception type on SEA and non-SEA path.
+>>>>>>> On non-SMT platforms, not calling cpu_smt_set_num_threads() leaves
+>>>>>>> cpu_smt_num_threads uninitialized to UINT_MAX:
+>>>>>>>
+>>>>>>> smt/active:0
+>>>>>>> smt/control:-1
+>>>>>>>
+>>>>>>> If cpu_smt_set_num_threads() is called:
+>>>>>>> active:0
+>>>>>>> control:notsupported
+>>>>>>>
+>>>>>>> So it might be slightly better to still initialize max_smt_thread_num.
+>>>>>>>
+>>>>>>
+>>>>>> Sure, what I meant is to have max_smt_thread_num set to 1 by default is
+>>>>>> that is what needed anyways and the above code does that now.
+>>>>>>
+>>>>>> Why not start with initialised to 1 instead ?
+>>>>>> Of course some current logic needs to change around testing it for zero.
+>>>>>>
+>>>>>
+>>>>> I think there would still be a way to check against the default value.
+>>>>> If we have:
+>>>>> unsigned int max_smt_thread_num = 1;
+>>>>>
+>>>>> then on a platform with 2 threads, the detection condition would trigger:
+>>>>> xa_for_each(&hetero_cpu, hetero_id, entry) {
+>>>>>       if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)     <---- (entry->thread_num=2) and (max_smt_thread_num=1)
+>>>>>           pr_warn_once("Heterogeneous SMT topology is partly
+>>>>>                         supported by SMT control\n");
+>>>>>
+>>>>> so we would need an additional variable:
+>>>>> bool is_initialized = false;
+>>>>
+>>>> Sure, we could do that or skip the check if max_smt_thread_num == 1 ?
+>>>>
+>>>> I mean
+>>>> 	if (entry->thread_num != max_smt_thread_num && max_smt_thread_num != 1)
+>>>>
+>>
+>> I think it will be problematic if we parse:
+>> - first a CPU with 1 thread
+>> - then a CPU with 2 threads
+>>
+>> in that case we should detect the 'Heterogeneous SMT topology',
+>> but we cannot because we don't know whether max_smt_thread_num=1
+>> because 1 is the default value or we found a CPU with one thread.
 > 
-> Distinguishing whether the fault is SEA or non-SEA is already done by
-> the exception handling you are adding. What we don't have though is
-> information about whether the caller invoked copy_highpage() or
-> copy_mc_highpage(). That's where the code duplication comes in handy.
-> 
-> It's a shame we need to duplicate identical functions just to have
-> different addresses to look up in the exception table. We are also short
-> of caller saved registers to track this information (e.g. an extra
-> argument to those functions that the exception handler interprets).
-> 
-> I need to think a bit more, we could in theory get the arm64 memcpy_mc()
-> to return an error code depending on what type of fault it got (e.g.
-> -EHWPOISON for SEA, -EFAULT for non-SEA). copy_mc_highpage() would
-> interpret this one and panic if -EFAULT. But we lose some fault details
-> we normally get on a faulty access like some of the registers.
-> 
-> Well, maybe the simples is still to keep the function duplication. I'll
-> have another look at the series tomorrow.
-> 
+> Right, but as per Dietmar's and my previous response, it may be a valid
+> case. See latest response from Dietmar which is explicitly requesting
+> support for this. It may need some special handling if we decide to support
+> that.
+
+Ah ok, right indeed.
+For heterogeneous SMT platforms, the 'smt/control' file is able to accept
+on/off/forceoff strings. But providing the max #count of threads as an integer would
+be wrong if the CPU doesn't have this #count of threads.
+
+Initially the idea was to just warn that support might be needed for heterogeneous
+SMT platforms, and let whoever would have such platform solve this case, but just
+disabling the integer interface in this case would solve the issue generically.
 
