@@ -1,46 +1,46 @@
-Return-Path: <linuxppc-dev+bounces-6714-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6716-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F932A4F159
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 00:20:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE78BA4F15B
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 00:20:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6s952W5nz30MZ;
-	Wed,  5 Mar 2025 10:20:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6s996Krsz3btX;
+	Wed,  5 Mar 2025 10:20:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741130409;
-	cv=none; b=JiLM4W8bNTwqTGjmuC5g0wqOFRDPBtnT6KxiMMIoAen1oyFz8Tk7YLJoeUOMwZ7BSvCBJm2z74jNgpwSOOWy0OSWglVW29e0BM8gRyZQot2sOZt9q5zR6sn4uerjIhzlYNYws4CzvYVzr9tFHhIuElH0z7QsoVlwo6LMGz2AD9p0eGuG6y7VnYxbu6OE3CVNYIw28xHTmBpl4M2PbQm7GeEtFDhLNmfKUxb90u0m0hKsOzDY34ThJ1PX5uwJBGdiHCd2+BJ0Ua0/H6JnjNDuAwwHK8/XrxDI1VDdKDgvSxq1y3HEzpsX4IEj+nbslWQ+5Z0Pa3PWMxtL2POLtTmd8w==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741130413;
+	cv=none; b=gy63H7FwMuQYNVKfR1Wqy0vVFI4ndo//JRtECwR1uF0/RTDgWFe8O3ITnzrCRV21OoOwCf4llfVSfQJaFrne2Kcx6UGW/OckkWm6xN+XPGstcMs1nhN5dwxNeREG7Fw28ELBM+Vt0xMkX7FbQtDwvGr63cAqRnL7/WasQxZ3w5l467Zoy8XWkTRMVVNhkLghvp/9KEobgYKMTGI2WK++beMr9qADNWG1aJ1O7anEHNVsf/PWNLQqBLYo1MScaiNXOl4AOIQodds5pdWKKDXQUuvOHFteJ+B9nWGfkrfVSf+QoTKbbN3cj6ocmSWMAxIdeT9z/pW9RcD43AWT/SZZbg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741130409; c=relaxed/relaxed;
-	bh=JwpDBeI+IBaM4JIxtPwiTBJufLD0nCE73cepz9zAt08=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y513OLw/aYkqaXrlQrAHC/9D+g5vYgxjY1AF55gLMN2FH9edM9nRs9JCSDDsrmtezgVgejS0SNDTm4Lw+5Hb5u0NbEfGgePiEoE4EO5+6zu1/inw/+a90sDkBNMhRaXN+gl6OD3r1zdp4C23xyiVCdbxu1Xm4hQSwIgBW8EV5jWyuRhrXfP0ycmTW4H1ZaVYqLupjwZeX8FFNoNPjoC6H/vMnR03RrSdW0I+Ff+7qcaJ8qXFg9pTKHRJtSnzCu78Q21BywZLQG+ttXoa+4HjICdLZz8C0CplQgH64R19Dgeg3nwZih+jxn2QlZPy/OkpBFAi96rO3aXkWTSEVlK6qQ==
+	t=1741130413; c=relaxed/relaxed;
+	bh=Nbw6yIg7e5jUPWkVanOP1Ree1vKFbJwEEf4jA24zjxk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R5EnnGGOSQT7fj8UjxT+xvMmyPE0aWHagQeyKkGOnfPyi5xnkQFzNHWqReyFuIkP4p5mb7URTpPGl7sc3tdk0mRC2LUXG+mgO3d6dkBucATNTqfaPckbf7RPAqKimG3It2NjtpCuc66ZfKCyOxUpATK8pPxsmWyXAk+WmX0jjMvGb5yJRRVfSBpdImn3/PUOqRxm9A99nQoaYoFEXo9cxZjKYsipgCdaZSe9dWGxUq33Z0hWh6rfkCW1jLeu4kx5xHl4A9IvR1mLgHjs9mYlSi5AcaPIvoU7dS2qxBSm0wdYFbHcv/ayiOfwVOJggraBR3S6wpIlU30J5xyMX7cyNQ==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6s942vT8z30Kg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 10:20:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6s992JPlz309v
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 10:20:13 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4Z6rjw6nlzz9stH;
-	Wed,  5 Mar 2025 00:00:04 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4Z6rkH4Tpfz9stK;
+	Wed,  5 Mar 2025 00:00:23 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id BLfibhs76Dlw; Wed,  5 Mar 2025 00:00:04 +0100 (CET)
+	with ESMTP id Vg8UFazMBaqu; Wed,  5 Mar 2025 00:00:23 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z6rjv31DTz9stG;
-	Wed,  5 Mar 2025 00:00:03 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z6rkH3gmRz9stJ;
+	Wed,  5 Mar 2025 00:00:23 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 537F88B776;
-	Wed,  5 Mar 2025 00:00:03 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 68B398B776;
+	Wed,  5 Mar 2025 00:00:23 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id A0eNGyMj1i94; Wed,  5 Mar 2025 00:00:03 +0100 (CET)
+	with ESMTP id WgqhTFqhzL8T; Wed,  5 Mar 2025 00:00:23 +0100 (CET)
 Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.202.221])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 70FCA8B763;
-	Wed,  5 Mar 2025 00:00:02 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 6A6868B763;
+	Wed,  5 Mar 2025 00:00:22 +0100 (CET)
 From: Christophe Leroy <christophe.leroy@csgroup.eu>
 To: Michael Ellerman <mpe@ellerman.id.au>,
 	Nicholas Piggin <npiggin@gmail.com>,
@@ -48,10 +48,11 @@ To: Michael Ellerman <mpe@ellerman.id.au>,
 	Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
 	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH] powerpc: Fix address calculation in clear_utlb_entry()
-Date: Tue,  4 Mar 2025 23:59:56 +0100
-Message-ID: <e7ef54814c5341f201bee89aa401b5ab20164af6.1741128988.git.christophe.leroy@csgroup.eu>
+	linuxppc-dev@lists.ozlabs.org,
+	Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [PATCH] powerpc: Fix 'intra_function_call not a direct call' warning
+Date: Wed,  5 Mar 2025 00:00:19 +0100
+Message-ID: <88876fb4e412203452e57d1037a1341cf15ccc7b.1741128981.git.christophe.leroy@csgroup.eu>
 X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
@@ -65,50 +66,67 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1741129197; l=1214; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=zj/1hg648gPj2/H3MIvqSLwL5kgx31RsIUiX/gZMNZI=; b=9R4+xIsE5RbZ7e//sO6xPodl1H9aLYMmhkehdnx/c98wFnoNGl6DsVCXQ31j+Ofnli45EUKzC Jxv4xV0nXrrBre25Jwmd4k9ocgYsDz2urrKguoXJLjyh7ucKQmAodPU
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741129219; l=2054; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=mhbNOqeaG3cayoZ0G+PBgg4dwi61tzwTHcEUa12auuE=; b=7N9scikoa+Nrpe1ZRdjcL9gPR/Fv9oP706Utkehsb5jpMtETPsmWna7UeuR2WrRZqNzuzxEPV Yl2xUJ9+RvLDFWnUJcyDqZ4beL9CAl/sTxFcq+8ZuShM/FEjsmx0abA
 X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-In relocatable.S, function clear_utlb_entry() goes into real mode. To
-do so, it has to calculate the physical address based on the virtual
-address. To get the virtual address it used 'bl' which is problematic
-(see commit XXX). In addition, the calculation is done on a bad address,
-which may lead to unexpected behaviour.
+The following build warning have been reported:
 
-Fix it by re-writing the code so that is goes via another path which
-is based 'bcl 20,31,.+4' which is the right instruction to use for that.
+  arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool: .text+0xe84: intra_function_call not a direct call
+  arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: intra_function_call not a direct call
 
+This happens due to commit bb7f054f4de2 ("objtool/powerpc: Add support
+for decoding all types of uncond branches") because that commit decodes
+'bl .+4' as a normal instruction because that instruction is used by
+clang instead of 'bcl 20,31,+.4' for relocatable code.
+
+The solution is simply to remove the ANNOTATE_INTRA_FUNCTION_CALL
+annotation now that the instruction is not seen as a function call
+anymore.
+
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Closes: https://lore.kernel.org/all/8c4c3fc2-2bd7-4148-af68-2f504d6119e0@linux.ibm.com
+Fixes: bb7f054f4de2 ("objtool/powerpc: Add support for decoding all types of uncond branches")
 Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 ---
- arch/powerpc/kexec/relocate_32.S | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ arch/powerpc/kernel/switch.S            | 1 -
+ arch/powerpc/kvm/book3s_hv_rmhandlers.S | 2 --
+ 2 files changed, 3 deletions(-)
 
-diff --git a/arch/powerpc/kexec/relocate_32.S b/arch/powerpc/kexec/relocate_32.S
-index 104c9911f406..dd86e338307d 100644
---- a/arch/powerpc/kexec/relocate_32.S
-+++ b/arch/powerpc/kexec/relocate_32.S
-@@ -348,16 +348,13 @@ write_utlb:
- 	rlwinm	r10, r24, 0, 22, 27
+diff --git a/arch/powerpc/kernel/switch.S b/arch/powerpc/kernel/switch.S
+index 608c0ce7cec6..59e3ee99db0e 100644
+--- a/arch/powerpc/kernel/switch.S
++++ b/arch/powerpc/kernel/switch.S
+@@ -39,7 +39,6 @@ flush_branch_caches:
  
- 	cmpwi	r10, PPC47x_TLB0_4K
--	bne	0f
- 	li	r10, 0x1000			/* r10 = 4k */
+ 	// Flush the link stack
+ 	.rept 64
 -	ANNOTATE_INTRA_FUNCTION_CALL
--	bl	1f
-+	beq	0f
+ 	bl	.+4
+ 	.endr
+ 	b	1f
+diff --git a/arch/powerpc/kvm/book3s_hv_rmhandlers.S b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+index ea7ad200b330..83f7504349d2 100644
+--- a/arch/powerpc/kvm/book3s_hv_rmhandlers.S
++++ b/arch/powerpc/kvm/book3s_hv_rmhandlers.S
+@@ -1524,14 +1524,12 @@ kvm_flush_link_stack:
  
--0:
- 	/* Defaults to 256M */
- 	lis	r10, 0x1000
+ 	/* Flush the link stack. On Power8 it's up to 32 entries in size. */
+ 	.rept 32
+-	ANNOTATE_INTRA_FUNCTION_CALL
+ 	bl	.+4
+ 	.endr
  
--	bcl	20,31,$+4
-+0:	bcl	20,31,$+4
- 1:	mflr	r4
- 	addi	r4, r4, (2f-1b)			/* virtual address  of 2f */
- 
+ 	/* And on Power9 it's up to 64. */
+ BEGIN_FTR_SECTION
+ 	.rept 32
+-	ANNOTATE_INTRA_FUNCTION_CALL
+ 	bl	.+4
+ 	.endr
+ END_FTR_SECTION_IFSET(CPU_FTR_ARCH_300)
 -- 
 2.47.0
 
