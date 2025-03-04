@@ -1,61 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-6713-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6714-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3132CA4ED28
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  4 Mar 2025 20:21:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F932A4F159
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 00:20:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6lsJ62bFz3064;
-	Wed,  5 Mar 2025 06:21:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6s952W5nz30MZ;
+	Wed,  5 Mar 2025 10:20:09 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741116068;
-	cv=none; b=VQc7Wfc/AElO6xjnpbVT6t8OOk5o3PAPaOGlRFaRUrr5UNPVVGIZzKnXdieOAMeO6b9bPhGkVGkMes3mYJoEw7bS1lsFcz9rJjdYRMBfTLDs/tTpwIyCcB1kUieWV1GNWhV0e+v/tYS/RoDnMwnY0VoYLwf15KctNJYeCXtX6M4zQwATo406SOxaIJwTv7IV8ggrBmJL6RHqYQDeZisFCQM3ouiHywuxg8FlH13rrmBSjqHonhlYCELnOLEwNeGDNQyM7c18ZUqV1Lrb3k5C/e2ncULKXM4OEpb1Dl8QSo//sjhRzDN0TteLycndIlvP1JiIxInYs1PouUynr5IJLw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741130409;
+	cv=none; b=JiLM4W8bNTwqTGjmuC5g0wqOFRDPBtnT6KxiMMIoAen1oyFz8Tk7YLJoeUOMwZ7BSvCBJm2z74jNgpwSOOWy0OSWglVW29e0BM8gRyZQot2sOZt9q5zR6sn4uerjIhzlYNYws4CzvYVzr9tFHhIuElH0z7QsoVlwo6LMGz2AD9p0eGuG6y7VnYxbu6OE3CVNYIw28xHTmBpl4M2PbQm7GeEtFDhLNmfKUxb90u0m0hKsOzDY34ThJ1PX5uwJBGdiHCd2+BJ0Ua0/H6JnjNDuAwwHK8/XrxDI1VDdKDgvSxq1y3HEzpsX4IEj+nbslWQ+5Z0Pa3PWMxtL2POLtTmd8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741116068; c=relaxed/relaxed;
-	bh=EOUe41nNaraed/bS3CQ2oKxUIWxkxK9Qof0n7Sjen4I=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Pp6KIdmGQq/H26dV5IgXkCEfB79YDFlT86mlL7gZQMVOz/J/zfc5MHxs81Tx+D7XOqUDTsmckXV/kwRx3B0/d+YkffBvAnqOsK1rtmhkYOpD2E1juwAin2EMA3XPsCooWvZ8ERAx6a+bPxJIf34WqflRRI+97/+/M9UzxRAk0SEy3vlp/gwfHPFI11ABDMGpWFPunYKBuY5JOehydv5nOrOGCTXU1Okda5cNXbRQTCsUdDCA8wLa5P+VLpqlBsExOk6Y61HOS5IJoUxZtRb6rp5Nls7QU5k0ZC6lNqutb5dCngfTJr43x4+xnu01lptOJPzrCoTtRl3RkebMnS1tyQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IViO4f30; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IViO4f30;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z6lsG4CxGz302c
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 06:21:06 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 58E2BA459FC;
-	Tue,  4 Mar 2025 19:15:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13915C4CEE5;
-	Tue,  4 Mar 2025 19:21:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741116063;
-	bh=6MnWChvdZA4s+8fxB0dv8vXGdMG4i5FgUOx+TUcX3rE=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=IViO4f30mVkst2x3qHPFh8izeOtVaw7uz++VewyC1C4wRjjXNjkPpsvdbCKPh5a7p
-	 LqeXcwXMOBn+5V4SsCSDB4zkQJ/L06PEH92xc657CrC1OKTP0fjMViud/W7PWug3Xt
-	 yPOn3BPv2+hsD5y6O5mAh1cC1VOX6ZQIyvHn4ZXfS6Y8NQDAnYA5VViId/1CcZpwmk
-	 KMW67znwGXnZVSH7YKBEcvgHahVyteVyEVvjBoYk73cF2M5BlW/FWFAhYsheUY2uyD
-	 pM4hhX+5F+r32BkLurL55YngI2/BkcGNpQ0ySuBcL2f2C3OvYIZP5suiuVfTftmCRz
-	 6WUb34kNPuMlQ==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org, 
- conor+dt@kernel.org, devicetree@vger.kernel.org, 
- Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <20250226100508.2352568-1-shengjiu.wang@nxp.com>
-References: <20250226100508.2352568-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH 0/4] ASoC: fsl_audmix: support audio graph card for
- audmix
-Message-Id: <174111606081.246439.10804205280595861731.b4-ty@kernel.org>
-Date: Tue, 04 Mar 2025 19:21:00 +0000
+	t=1741130409; c=relaxed/relaxed;
+	bh=JwpDBeI+IBaM4JIxtPwiTBJufLD0nCE73cepz9zAt08=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Y513OLw/aYkqaXrlQrAHC/9D+g5vYgxjY1AF55gLMN2FH9edM9nRs9JCSDDsrmtezgVgejS0SNDTm4Lw+5Hb5u0NbEfGgePiEoE4EO5+6zu1/inw/+a90sDkBNMhRaXN+gl6OD3r1zdp4C23xyiVCdbxu1Xm4hQSwIgBW8EV5jWyuRhrXfP0ycmTW4H1ZaVYqLupjwZeX8FFNoNPjoC6H/vMnR03RrSdW0I+Ff+7qcaJ8qXFg9pTKHRJtSnzCu78Q21BywZLQG+ttXoa+4HjICdLZz8C0CplQgH64R19Dgeg3nwZih+jxn2QlZPy/OkpBFAi96rO3aXkWTSEVlK6qQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
+Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z6s942vT8z30Kg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 10:20:05 +1100 (AEDT)
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+	by localhost (Postfix) with ESMTP id 4Z6rjw6nlzz9stH;
+	Wed,  5 Mar 2025 00:00:04 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id BLfibhs76Dlw; Wed,  5 Mar 2025 00:00:04 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4Z6rjv31DTz9stG;
+	Wed,  5 Mar 2025 00:00:03 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 537F88B776;
+	Wed,  5 Mar 2025 00:00:03 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+	with ESMTP id A0eNGyMj1i94; Wed,  5 Mar 2025 00:00:03 +0100 (CET)
+Received: from PO20335.idsi0.si.c-s.fr (unknown [192.168.202.221])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 70FCA8B763;
+	Wed,  5 Mar 2025 00:00:02 +0100 (CET)
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+To: Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] powerpc: Fix address calculation in clear_utlb_entry()
+Date: Tue,  4 Mar 2025 23:59:56 +0100
+Message-ID: <e7ef54814c5341f201bee89aa401b5ab20164af6.1741128988.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,58 +65,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-1b0d6
-X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1741129197; l=1214; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=zj/1hg648gPj2/H3MIvqSLwL5kgx31RsIUiX/gZMNZI=; b=9R4+xIsE5RbZ7e//sO6xPodl1H9aLYMmhkehdnx/c98wFnoNGl6DsVCXQ31j+Ofnli45EUKzC Jxv4xV0nXrrBre25Jwmd4k9ocgYsDz2urrKguoXJLjyh7ucKQmAodPU
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 26 Feb 2025 18:05:04 +0800, Shengjiu Wang wrote:
-> Change 'dais' property to be optional, that fsl_audmix device can be
-> linked with SAI device by audio graph card.
-> 
-> Shengjiu Wang (4):
->   ASoC: dt-bindings: fsl,sai: Document audio graph port
->   ASoC: dt-bindings: fsl,audmix: Document audio graph port
->   ASoC: dt-bindings: fsl,audmix: make 'dais' property to be optional
->   ASoC: fsl_audmix: register card device depends on 'dais' property
-> 
-> [...]
+In relocatable.S, function clear_utlb_entry() goes into real mode. To
+do so, it has to calculate the physical address based on the virtual
+address. To get the virtual address it used 'bl' which is problematic
+(see commit XXX). In addition, the calculation is done on a bad address,
+which may lead to unexpected behaviour.
 
-Applied to
+Fix it by re-writing the code so that is goes via another path which
+is based 'bcl 20,31,.+4' which is the right instruction to use for that.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+---
+ arch/powerpc/kexec/relocate_32.S | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-Thanks!
-
-[1/4] ASoC: dt-bindings: fsl,sai: Document audio graph port
-      commit: abcb9a1fd89144536f3ef604f700e94424867366
-[2/4] ASoC: dt-bindings: fsl,audmix: Document audio graph port
-      commit: 5fee78e517ce0765def9387659fc56a1d5532c60
-[3/4] ASoC: dt-bindings: fsl,audmix: make 'dais' property to be optional
-      commit: 597acf1a04bede55e3ad8a7922bba286c11112d3
-[4/4] ASoC: fsl_audmix: register card device depends on 'dais' property
-      commit: 294a60e5e9830045c161181286d44ce669f88833
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
+diff --git a/arch/powerpc/kexec/relocate_32.S b/arch/powerpc/kexec/relocate_32.S
+index 104c9911f406..dd86e338307d 100644
+--- a/arch/powerpc/kexec/relocate_32.S
++++ b/arch/powerpc/kexec/relocate_32.S
+@@ -348,16 +348,13 @@ write_utlb:
+ 	rlwinm	r10, r24, 0, 22, 27
+ 
+ 	cmpwi	r10, PPC47x_TLB0_4K
+-	bne	0f
+ 	li	r10, 0x1000			/* r10 = 4k */
+-	ANNOTATE_INTRA_FUNCTION_CALL
+-	bl	1f
++	beq	0f
+ 
+-0:
+ 	/* Defaults to 256M */
+ 	lis	r10, 0x1000
+ 
+-	bcl	20,31,$+4
++0:	bcl	20,31,$+4
+ 1:	mflr	r4
+ 	addi	r4, r4, (2f-1b)			/* virtual address  of 2f */
+ 
+-- 
+2.47.0
 
 
