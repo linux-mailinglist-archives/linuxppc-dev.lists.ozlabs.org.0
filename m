@@ -1,21 +1,21 @@
-Return-Path: <linuxppc-dev+bounces-6727-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA1CA4FC73
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 11:42:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A155A4FD11
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 12:03:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z78Jw6RKnz3bmk;
-	Wed,  5 Mar 2025 21:42:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z78mT3JsKz3bsJ;
+	Wed,  5 Mar 2025 22:03:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741171376;
-	cv=none; b=FFT6LcNlx8D/4M/AYDZUZIUg1IwuE0kdSXucTw7e5jXSMjLsun9M3ZSiucEWeyIpMT6uGT298em4ehe/teMi4nOHBxmZw8WW0CY2MlgpTEY1PXzLSZ768HwA/e7NkEnhlvLG55B0OMlOUQQiMoNExF7GteNU/9q9R+YrRKr0zers9leCl9K7FNRyhvfgy7cxv8YhoTZzk8alQD8aKIOHQlRx2syHoaqZyE7YluATTmH0eU4hE2VNZ7cPFTNNGzRjdPjXmGMshbxWkw1Ke1HoRMAmZRThJdiYP3IEmj35vqbcRaDfAFktwh3tiLOIp7sfyMm4aqEBQhlARh15lgk3VA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741172601;
+	cv=none; b=Eb0VMrFnJst0peW3gwtak4mhBxeNYt6/XC6m7gkxtIQmiMzLbunE+bmBTSFmZ8qVVgIOncrH61YgVPU9vPm1Qsu7NP1TUxY4h8EdE7c0Mf3DoIjmoCRVpkq9YiWtqe4TBtV0l27f5FBjZ1EHcz2Ofcx18a4awLytf3yVSw08olyu4vCJzm7DWV1IyjYtyTwGHbuFNlpUXxfL14StFZvHXoOZoZpRFW83ojeSCjPwBmAL7+DOYV+z0lB7Tanv/FB2livgDthl9RgWXz0hcwQHxCw34HUQx+EXlg7B77iubXlm1ByCvrPU+ke9hqAk/TXac2sv7ok7DZZmK11pTTHhcA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741171376; c=relaxed/relaxed;
-	bh=WT6ieFhN3zQWbuV/hXGfdLrRZ8QauOz6+gPkTZ+qxhY=;
+	t=1741172601; c=relaxed/relaxed;
+	bh=XYwUJolyoOPbR7D8nnIUzaN6rOxA1WavGxSIMheTrQc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TkYRN/ZqUTosw8FsuvrjeynjPoImMtzOPpkezfOe56E/2vPrKXjwltluj8S3XTBKngJn/BNiqQzB/6cnq3+/IoDaurjeIwkb6+cmSSSvZyIrJNaA9UQhagmoTdR8Eym4VO9EgfxnyZrp6jbjmb3UebM5q4wbm+YCBECs/KDS9i6fZmwnjxSHGmcAxVPiOGMYH/DAchdu8QRetow/VmQjnzukaIQCD5YMfneQY0bdfZrkKoJkD5yOOrbyYl/dUgEOQ2Wct7IWXbcm17/6gtzXBYvTFXr2jd2Pe15sYb0hemI6p8NObqvS4gYA5AnV5OMAR0IJ/ghz2CWiX2OmfTCK0w==
+	 In-Reply-To:Content-Type; b=MIgYxMiSWui0pLtBtV/xGc8810fz46Vc8YMJeyOoqHVK95/+cjbnqYUubAsrd9ua964LJd8FEVvEW1qa7td4snHS38eTmDZ7AgBfZ49rTAOFv2G8z7KFL/MO7ATKMJZ0Xgbihjhn0aOKEBW9G+IGjy8xW3PTsocS/W1Z6A+ExfE5u6v3HCkj/GCINUWynqbncWvGrPgnNmZwkIBSfkddxsvoy01xXQYgaCiNHQLxQZGAcNT4OLsTI0dpeFs2ygQVgih56lwRVNAc50JgduVmdW4MfW/HjqQnY1EYwoiArKQGZZTku4E4xrVtwDR7DCVHxwKpSs/yM0rW6KMwk1IHjw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org)
@@ -23,14 +23,14 @@ Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de 
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z78Jw2DCmz3bqq
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 21:42:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z78mS39YMz3brx
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 22:03:20 +1100 (AEDT)
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tpmCM-00054k-Ob; Wed, 05 Mar 2025 11:41:58 +0100
-Message-ID: <43fb0965-04b7-41dc-ae3f-54676eefdbb5@pengutronix.de>
-Date: Wed, 5 Mar 2025 11:41:49 +0100
+	id 1tpmVq-0008LI-3s; Wed, 05 Mar 2025 12:02:06 +0100
+Message-ID: <7ac2b8db-22c7-4168-b1b7-4f9f0ab10531@pengutronix.de>
+Date: Wed, 5 Mar 2025 12:01:53 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,29 +44,62 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] Add stop_on_panic support for watchdog
-To: George Cherian <george.cherian@marvell.com>, linux@roeck-us.net,
- wim@linux-watchdog.org, jwerner@chromium.org, evanbenn@chromium.org,
- kabel@kernel.org, krzk@kernel.org, mazziesaccount@gmail.com,
- thomas.richard@bootlin.com, lma@chromium.org, bleung@chromium.org,
- support.opensource@diasemi.com, shawnguo@kernel.org, s.hauer@pengutronix.de,
- kernel@pengutronix.de, festevam@gmail.com, andy@kernel.org,
- paul@crapouillou.net, alexander.usyskin@intel.com, andreas.werner@men.de,
- daniel@thingy.jp, romain.perier@gmail.com, avifishman70@gmail.com,
- tmaimon77@gmail.com, tali.perry1@gmail.com, venture@google.com,
- yuenn@google.com, benjaminfair@google.com, maddy@linux.ibm.com,
- mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
- naveen@kernel.org, mwalle@kernel.org, xingyu.wu@starfivetech.com,
- ziv.xu@starfivetech.com, hayashi.kunihiko@socionext.com, mhiramat@kernel.org
-Cc: chrome-platform@lists.linux.dev, linux-watchdog@vger.kernel.org,
- imx@lists.linux.dev, patches@opensource.cirrus.com,
- openbmc@lists.ozlabs.org, linux-mips@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v4 1/2] watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
+To: George Cherian <gcherian@marvell.com>,
+ "linux@roeck-us.net" <linux@roeck-us.net>
+Cc: "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
+ "jwerner@chromium.org" <jwerner@chromium.org>,
+ "evanbenn@chromium.org" <evanbenn@chromium.org>,
+ "krzk@kernel.org" <krzk@kernel.org>,
+ "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>,
+ "thomas.richard@bootlin.com" <thomas.richard@bootlin.com>,
+ "lma@chromium.org" <lma@chromium.org>,
+ "bleung@chromium.org" <bleung@chromium.org>,
+ "support.opensource@diasemi.com" <support.opensource@diasemi.com>,
+ "shawnguo@kernel.org" <shawnguo@kernel.org>,
+ "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
+ "kernel@pengutronix.de" <kernel@pengutronix.de>,
+ "festevam@gmail.com" <festevam@gmail.com>, "andy@kernel.org"
+ <andy@kernel.org>, "paul@crapouillou.net" <paul@crapouillou.net>,
+ "alexander.usyskin@intel.com" <alexander.usyskin@intel.com>,
+ "andreas.werner@men.de" <andreas.werner@men.de>,
+ "daniel@thingy.jp" <daniel@thingy.jp>,
+ "romain.perier@gmail.com" <romain.perier@gmail.com>,
+ "avifishman70@gmail.com" <avifishman70@gmail.com>,
+ "tmaimon77@gmail.com" <tmaimon77@gmail.com>,
+ "tali.perry1@gmail.com" <tali.perry1@gmail.com>,
+ "venture@google.com" <venture@google.com>,
+ "yuenn@google.com" <yuenn@google.com>,
+ "benjaminfair@google.com" <benjaminfair@google.com>,
+ "maddy@linux.ibm.com" <maddy@linux.ibm.com>,
+ "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
+ "npiggin@gmail.com" <npiggin@gmail.com>,
+ "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
+ "naveen@kernel.org" <naveen@kernel.org>,
+ "mwalle@kernel.org" <mwalle@kernel.org>,
+ "xingyu.wu@starfivetech.com" <xingyu.wu@starfivetech.com>,
+ "ziv.xu@starfivetech.com" <ziv.xu@starfivetech.com>,
+ "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
+ "mhiramat@kernel.org" <mhiramat@kernel.org>,
+ "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-arm-kernel@lists.infradead.org"
+ <linux-arm-kernel@lists.infradead.org>,
+ "chrome-platform@lists.linux.dev" <chrome-platform@lists.linux.dev>,
+ "imx@lists.linux.dev" <imx@lists.linux.dev>,
+ "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+ "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
+ "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+ "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>,
+ =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
+ Pengutronix Kernel Team <kernel@pengutronix.de>
 References: <20250305101025.2279951-1-george.cherian@marvell.com>
+ <20250305101025.2279951-2-george.cherian@marvell.com>
+ <irmewriceyzxr6jvbiao5vqrvelpftbjalmheodx5w63zi6k2y@dg3wlvs6zryd>
+ <PH8PR18MB538122CE6706872B8A836A94C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
 Content-Language: en-US
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20250305101025.2279951-1-george.cherian@marvell.com>
+In-Reply-To: <PH8PR18MB538122CE6706872B8A836A94C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
@@ -78,111 +111,32 @@ X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 Hi George,
+Hi Guenter,
 
-On 05.03.25 11:10, George Cherian wrote:
-> This series adds a new kernel command line option to watchdog core to
-> stop the watchdog on panic. This is useul in certain systems which prevents
-> successful loading of kdump kernel due to watchdog reset.
+On 05.03.25 11:34, George Cherian wrote:
+>> why is armada_37xx_wdt also here?
+>> The stop function in that driver may not sleep.
+> Marek,
 > 
-> Some of the watchdog drivers stop function could sleep. For such
-> drivers the stop_on_panic is not valid as the notifier callback happens
-> in atomic context. Introduce WDIOF_STOP_MAYSLEEP flag to watchdog_info
-> options to indicate whether the stop function would sleep.
+> Thanks for reviewing.
+> Since the stop function has a regmap_write(), I thought it might sleep.
+> Now that you pointed it out, I assume that it is an MMIO based regmap being used for armada.
+> I will update the same in the next version
 
-Did you consider having a reset_on_panic instead, which sets a user-specified
-timeout on panic? This would make the mechanism useful also for watchdogs
-that can't be disabled and would protect against system lock up:
-Consider a memory-corruption bug (perhaps externally via DMA), which partially
-overwrites both main and kdump kernel. With a disabled watchdog, the system
-may not be able to recover on its own.
+Failure to add WDIOF_STOP_MAYSLEEP when it's needed can lead to
+kernel hanging. Failure to add an alternative WDIOF_STOP_ATOMIC
+would lead to the kernel option being a no-op.
 
-If you did consider it, what made you decide against it?
+I think a no-op stop_on_panic (or reset_on_panic) is a saner default.
 
-Thanks,
+Cheers,
 Ahmad
 
 > 
+>>
+>> Marek
 > 
-> Changelog:
-> v1 -> v2
-> - Remove the per driver flag setting option
-> - Take the parameter via kernel command-line parameter to watchdog_core.
-> 
-> v2 -> v3
-> - Remove the helper function watchdog_stop_on_panic() from watchdog.h.
-> - There are no users for this. 
-> 
-> v3 -> v4
-> - Since the panic notifier is in atomic context, watchdog functions
->   which sleep can't be called. 
-> - Add an options flag WDIOF_STOP_MAYSLEEP to indicate whether stop
->   function sleeps.
-> - Simplify the stop_on_panic kernel command line parsing.
-> - Enable the panic notiffier only if the watchdog stop function doesn't
->   sleep
-> 
-> George Cherian (2):
->   watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
->   drivers: watchdog: Add support for panic notifier callback
-> 
->  drivers/watchdog/advantech_ec_wdt.c |  3 ++-
->  drivers/watchdog/arm_smc_wdt.c      |  3 ++-
->  drivers/watchdog/armada_37xx_wdt.c  |  2 +-
->  drivers/watchdog/asm9260_wdt.c      |  2 +-
->  drivers/watchdog/bcm47xx_wdt.c      |  3 ++-
->  drivers/watchdog/bd9576_wdt.c       |  2 +-
->  drivers/watchdog/bd96801_wdt.c      |  2 +-
->  drivers/watchdog/cgbc_wdt.c         |  2 +-
->  drivers/watchdog/cros_ec_wdt.c      |  5 ++++-
->  drivers/watchdog/da9052_wdt.c       |  3 ++-
->  drivers/watchdog/da9055_wdt.c       |  4 +++-
->  drivers/watchdog/da9062_wdt.c       |  4 +++-
->  drivers/watchdog/da9063_wdt.c       |  4 +++-
->  drivers/watchdog/db8500_wdt.c       |  5 ++++-
->  drivers/watchdog/dw_wdt.c           |  5 +++--
->  drivers/watchdog/f71808e_wdt.c      |  3 ++-
->  drivers/watchdog/gpio_wdt.c         |  2 +-
->  drivers/watchdog/i6300esb.c         |  5 ++++-
->  drivers/watchdog/imx_sc_wdt.c       |  2 +-
->  drivers/watchdog/intel-mid_wdt.c    |  5 ++++-
->  drivers/watchdog/it87_wdt.c         |  5 ++++-
->  drivers/watchdog/jz4740_wdt.c       |  5 ++++-
->  drivers/watchdog/kempld_wdt.c       |  3 ++-
->  drivers/watchdog/lenovo_se10_wdt.c  |  5 ++++-
->  drivers/watchdog/max77620_wdt.c     |  5 ++++-
->  drivers/watchdog/mei_wdt.c          |  3 ++-
->  drivers/watchdog/menf21bmc_wdt.c    |  4 +++-
->  drivers/watchdog/mlx_wdt.c          |  2 +-
->  drivers/watchdog/msc313e_wdt.c      |  5 ++++-
->  drivers/watchdog/npcm_wdt.c         |  3 ++-
->  drivers/watchdog/omap_wdt.c         |  5 ++++-
->  drivers/watchdog/pm8916_wdt.c       |  5 +++--
->  drivers/watchdog/pseries-wdt.c      |  2 +-
->  drivers/watchdog/rave-sp-wdt.c      |  5 ++++-
->  drivers/watchdog/renesas_wdt.c      |  7 ++++--
->  drivers/watchdog/retu_wdt.c         |  5 ++++-
->  drivers/watchdog/rn5t618_wdt.c      |  6 +++--
->  drivers/watchdog/rzg2l_wdt.c        |  5 ++++-
->  drivers/watchdog/rzv2h_wdt.c        |  5 ++++-
->  drivers/watchdog/shwdt.c            |  6 +++--
->  drivers/watchdog/sl28cpld_wdt.c     |  5 ++++-
->  drivers/watchdog/softdog.c          |  5 ++++-
->  drivers/watchdog/sp805_wdt.c        |  5 ++++-
->  drivers/watchdog/starfive-wdt.c     |  3 ++-
->  drivers/watchdog/stpmic1_wdt.c      |  5 ++++-
->  drivers/watchdog/ts4800_wdt.c       |  5 ++++-
->  drivers/watchdog/twl4030_wdt.c      |  5 ++++-
->  drivers/watchdog/uniphier_wdt.c     |  3 ++-
->  drivers/watchdog/w83627hf_wdt.c     |  5 ++++-
->  drivers/watchdog/watchdog_core.c    | 35 +++++++++++++++++++++++++++++
->  drivers/watchdog/wm831x_wdt.c       |  5 ++++-
->  drivers/watchdog/wm8350_wdt.c       |  5 ++++-
->  drivers/watchdog/xen_wdt.c          |  5 ++++-
->  drivers/watchdog/ziirave_wdt.c      |  5 ++++-
->  include/linux/watchdog.h            |  2 ++
->  include/uapi/linux/watchdog.h       |  1 +
->  56 files changed, 198 insertions(+), 58 deletions(-)
-> 
+> -George
 
 
 -- 
