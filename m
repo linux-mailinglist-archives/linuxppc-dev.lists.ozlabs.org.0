@@ -1,36 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6733-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A155A4FD11
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 12:03:24 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28777A4FD39
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 12:08:35 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z78mT3JsKz3bsJ;
-	Wed,  5 Mar 2025 22:03:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z78tS5jKGz3btj;
+	Wed,  5 Mar 2025 22:08:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741172601;
-	cv=none; b=Eb0VMrFnJst0peW3gwtak4mhBxeNYt6/XC6m7gkxtIQmiMzLbunE+bmBTSFmZ8qVVgIOncrH61YgVPU9vPm1Qsu7NP1TUxY4h8EdE7c0Mf3DoIjmoCRVpkq9YiWtqe4TBtV0l27f5FBjZ1EHcz2Ofcx18a4awLytf3yVSw08olyu4vCJzm7DWV1IyjYtyTwGHbuFNlpUXxfL14StFZvHXoOZoZpRFW83ojeSCjPwBmAL7+DOYV+z0lB7Tanv/FB2livgDthl9RgWXz0hcwQHxCw34HUQx+EXlg7B77iubXlm1ByCvrPU+ke9hqAk/TXac2sv7ok7DZZmK11pTTHhcA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741170703;
+	cv=none; b=QvQd2VXSvqKFsAp488Fb5vMntKkPjxjCSQy7hqR2d0I/hbtuU0/X5H3NM2Wjz10k+dgU5xlgrmMlGi9UnWXjl0XiNI3LRJx2aFpd/icMDXIopB0HnHevLCMZ2a708/VM/udOC5tkIEIKFAQ6WfQOIoSknmxT1Cv+OEIm95N1GrwmSQp/8uoG7mCBP52lJc8LpwA/DVq7Oqvn/AMyNDCqqV0TGbaTIjhFE0wTO0C4zDFPy1GoPwfMO+VSHjHLuhV0ZSwgpymhPvGAY6drfJstq3eBST+bVdCWWUPj2ZfUUEofzVfLo6XgGAStJOOn2N5Q/wFTQjYEjE4vmjPIgNjwtw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741172601; c=relaxed/relaxed;
-	bh=XYwUJolyoOPbR7D8nnIUzaN6rOxA1WavGxSIMheTrQc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MIgYxMiSWui0pLtBtV/xGc8810fz46Vc8YMJeyOoqHVK95/+cjbnqYUubAsrd9ua964LJd8FEVvEW1qa7td4snHS38eTmDZ7AgBfZ49rTAOFv2G8z7KFL/MO7ATKMJZ0Xgbihjhn0aOKEBW9G+IGjy8xW3PTsocS/W1Z6A+ExfE5u6v3HCkj/GCINUWynqbncWvGrPgnNmZwkIBSfkddxsvoy01xXQYgaCiNHQLxQZGAcNT4OLsTI0dpeFs2ygQVgih56lwRVNAc50JgduVmdW4MfW/HjqQnY1EYwoiArKQGZZTku4E4xrVtwDR7DCVHxwKpSs/yM0rW6KMwk1IHjw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1741170703; c=relaxed/relaxed;
+	bh=1QcG68X2dThxXn08oi0mv/sMSvoU2vw3JRxKH+1IpVA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EyX7hxgQ2c4rYRqAAJzpRjCWDy15Q3BC3ITbbvApSNGiSJes1zGX/2gDA8ucEXtfnS5E4v0ie5boWWdJMMfVfwAcLScmp2ek9K5OPr7U6CuSfuPAHidWLkS8C4lGOjI5/d7YBw19iURxhUVLR/6wLdKW3JBd0nkdYIN+qM/PuA63mWjojfaW2bacyFctLI9iHmVnv3JJh90BrbpmpM8ndtjxq0Cv/SLoAa8arrJ6H9QwIA4njE1r/WtWvQJVairp75aLHRAGfZuH2AUH8nn4DtPdhoQjqUSygUQw3eXT615nwyp6klb3yzIzaTzY/MMZ8+psN11JscC5ck0lJBbIqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org; spf=softfail (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andy@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=fail (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org; spf=softfail (domain owner discourages use of this host) smtp.mailfrom=kernel.org (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=andy@kernel.org; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z78mS39YMz3brx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 22:03:20 +1100 (AEDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tpmVq-0008LI-3s; Wed, 05 Mar 2025 12:02:06 +0100
-Message-ID: <7ac2b8db-22c7-4168-b1b7-4f9f0ab10531@pengutronix.de>
-Date: Wed, 5 Mar 2025 12:01:53 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z783x6pSsz30XR;
+	Wed,  5 Mar 2025 21:31:41 +1100 (AEDT)
+X-CSE-ConnectionGUID: Ef8UzhJZS6SQSqLMYME2Lg==
+X-CSE-MsgGUID: GRTxDFPMT9SztimAcp/a+A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="64567011"
+X-IronPort-AV: E=Sophos;i="6.14,222,1736841600"; 
+   d="scan'208";a="64567011"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 02:30:36 -0800
+X-CSE-ConnectionGUID: WDkYJmSHT0OrYH3RzlgbQw==
+X-CSE-MsgGUID: ttOP2cH/SDKXIxbe3IsO4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="122783306"
+Received: from smile.fi.intel.com ([10.237.72.58])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 02:30:26 -0800
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andy@kernel.org>)
+	id 1tpm18-0000000HNpF-00A7;
+	Wed, 05 Mar 2025 12:30:22 +0200
+Date: Wed, 5 Mar 2025 12:30:21 +0200
+From: Andy Shevchenko <andy@kernel.org>
+To: George Cherian <george.cherian@marvell.com>
+Cc: linux@roeck-us.net, wim@linux-watchdog.org, jwerner@chromium.org,
+	evanbenn@chromium.org, kabel@kernel.org, krzk@kernel.org,
+	mazziesaccount@gmail.com, thomas.richard@bootlin.com,
+	lma@chromium.org, bleung@chromium.org,
+	support.opensource@diasemi.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de, festevam@gmail.com,
+	paul@crapouillou.net, alexander.usyskin@intel.com,
+	andreas.werner@men.de, daniel@thingy.jp, romain.perier@gmail.com,
+	avifishman70@gmail.com, tmaimon77@gmail.com, tali.perry1@gmail.com,
+	venture@google.com, yuenn@google.com, benjaminfair@google.com,
+	maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+	christophe.leroy@csgroup.eu, naveen@kernel.org, mwalle@kernel.org,
+	xingyu.wu@starfivetech.com, ziv.xu@starfivetech.com,
+	hayashi.kunihiko@socionext.com, mhiramat@kernel.org,
+	linux-watchdog@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	chrome-platform@lists.linux.dev, imx@lists.linux.dev,
+	linux-mips@vger.kernel.org, openbmc@lists.ozlabs.org,
+	linuxppc-dev@lists.ozlabs.org, patches@opensource.cirrus.com
+Subject: Re: [PATCH v4 1/2] watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
+Message-ID: <Z8gnvXQ9OMXoq9Fz@smile.fi.intel.com>
+References: <20250305101025.2279951-1-george.cherian@marvell.com>
+ <20250305101025.2279951-2-george.cherian@marvell.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,105 +80,34 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
-To: George Cherian <gcherian@marvell.com>,
- "linux@roeck-us.net" <linux@roeck-us.net>
-Cc: "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
- "jwerner@chromium.org" <jwerner@chromium.org>,
- "evanbenn@chromium.org" <evanbenn@chromium.org>,
- "krzk@kernel.org" <krzk@kernel.org>,
- "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>,
- "thomas.richard@bootlin.com" <thomas.richard@bootlin.com>,
- "lma@chromium.org" <lma@chromium.org>,
- "bleung@chromium.org" <bleung@chromium.org>,
- "support.opensource@diasemi.com" <support.opensource@diasemi.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>, "andy@kernel.org"
- <andy@kernel.org>, "paul@crapouillou.net" <paul@crapouillou.net>,
- "alexander.usyskin@intel.com" <alexander.usyskin@intel.com>,
- "andreas.werner@men.de" <andreas.werner@men.de>,
- "daniel@thingy.jp" <daniel@thingy.jp>,
- "romain.perier@gmail.com" <romain.perier@gmail.com>,
- "avifishman70@gmail.com" <avifishman70@gmail.com>,
- "tmaimon77@gmail.com" <tmaimon77@gmail.com>,
- "tali.perry1@gmail.com" <tali.perry1@gmail.com>,
- "venture@google.com" <venture@google.com>,
- "yuenn@google.com" <yuenn@google.com>,
- "benjaminfair@google.com" <benjaminfair@google.com>,
- "maddy@linux.ibm.com" <maddy@linux.ibm.com>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "npiggin@gmail.com" <npiggin@gmail.com>,
- "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
- "naveen@kernel.org" <naveen@kernel.org>,
- "mwalle@kernel.org" <mwalle@kernel.org>,
- "xingyu.wu@starfivetech.com" <xingyu.wu@starfivetech.com>,
- "ziv.xu@starfivetech.com" <ziv.xu@starfivetech.com>,
- "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>,
- "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linux-arm-kernel@lists.infradead.org"
- <linux-arm-kernel@lists.infradead.org>,
- "chrome-platform@lists.linux.dev" <chrome-platform@lists.linux.dev>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>,
- =?UTF-8?Q?Marek_Beh=C3=BAn?= <kabel@kernel.org>,
- Pengutronix Kernel Team <kernel@pengutronix.de>
-References: <20250305101025.2279951-1-george.cherian@marvell.com>
- <20250305101025.2279951-2-george.cherian@marvell.com>
- <irmewriceyzxr6jvbiao5vqrvelpftbjalmheodx5w63zi6k2y@dg3wlvs6zryd>
- <PH8PR18MB538122CE6706872B8A836A94C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <PH8PR18MB538122CE6706872B8A836A94C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250305101025.2279951-2-george.cherian@marvell.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+X-Spam-Status: No, score=-1.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_SOFTFAIL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi George,
-Hi Guenter,
+On Wed, Mar 05, 2025 at 10:10:24AM +0000, George Cherian wrote:
+> A new option flag is added to watchdog_info. This helps the watchdog
+> core to check whether stop functions would sleep or not.
+> The option flags of individual drivers are also updated accordingly.
 
-On 05.03.25 11:34, George Cherian wrote:
->> why is armada_37xx_wdt also here?
->> The stop function in that driver may not sleep.
-> Marek,
-> 
-> Thanks for reviewing.
-> Since the stop function has a regmap_write(), I thought it might sleep.
-> Now that you pointed it out, I assume that it is an MMIO based regmap being used for armada.
-> I will update the same in the next version
+...
 
-Failure to add WDIOF_STOP_MAYSLEEP when it's needed can lead to
-kernel hanging. Failure to add an alternative WDIOF_STOP_ATOMIC
-would lead to the kernel option being a no-op.
+>  	.options =	WDIOF_SETTIMEOUT |
+>  			WDIOF_MAGICCLOSE |
+> -			WDIOF_KEEPALIVEPING,
+> +			WDIOF_KEEPALIVEPING |
+> +			WDIOF_STOP_MAYSLEEP,
 
-I think a no-op stop_on_panic (or reset_on_panic) is a saner default.
-
-Cheers,
-Ahmad
-
-> 
->>
->> Marek
-> 
-> -George
-
+You may heavily reduce this change if you squeeze the new option just before
+the last one. Currently it's a lot of unneeded churn that makes review a bit
+harder (each needs to be carefully checked for the correctness).
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+With Best Regards,
+Andy Shevchenko
+
+
 
