@@ -1,87 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-6745-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6746-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10F41A502C3
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 15:54:37 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCDFBA50378
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 16:29:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7FvG58LSz3btZ;
-	Thu,  6 Mar 2025 01:54:34 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7GgS098bz3c5W;
+	Thu,  6 Mar 2025 02:29:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741186474;
-	cv=none; b=GkTAMs8/kZRVrJpNM7TGmFgvPfaj9u+YULyjz1oySM3PucZhqy4LZnpg/Kr9gf4/fV92KTikyk45YpcPXzUeeJAuJ5aDh4lehgZK9KQxpoAYCukhIwiFV2vkaps6XCdpR8uNQBge2Vpk/Keca2gKv1Mz34zI7KGC41J/vAawD07ajJKGDJ6wCusPrp4mVr+tRuAjcm/qgpjWLe3BfNdkVerH/yU4EvfiyG++s0p7rJ89/+3pximpP5t1+hIfog4e5CZAkS7BYJGDeavjX8KtW44zRkWLh3SDdEIUQHjOEBp6G8G6QZu2i7FGl62ae9xua6luXm7EcWP/NJYZtuq49A==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.21
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741188563;
+	cv=none; b=fOyd/zIxoklHqPVVftGzh7Lt6tgaopQEZmHzM+4Hyr9TdoIUqfb522PdFjLLGFv/XX34hvbg5QuLwgWAkdwg182qcNEes9dBd91PW8rQEqZ2mcPuAo0BJjQnQTeMcoRtI5CfMq6EgPOsaGvha9pFlL5b/TAUq7+xHD4pHEOCHrZU5H53+xMbzxaM0EwF37WM4LybV9UMsWNdMBAmG5imZAWY3mC6OWzsf6gi8HoCDA4P8ulfnMe459wyOF1shPgtey9QpUGE8jOFmoiGFu9yOqXZHy6PqZ7FXz6hfESkG9Y017dD1lu1nvTu8HYcIrYUlpnag9uoqd8UsKpeofm+iA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741186474; c=relaxed/relaxed;
-	bh=Cox8z8lPi8h9WF637SHJRl9fGGbJ29Arrtfjq01tB+8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SCDGMLuOLrcaH2nOn7U4zGVGbIJddVK77qX/laFqNr9QBk0crCVX+9QL0WcyoOujw4qV4eATo9Fqio9l0JckcqEN8x9VXp6dRsmad0igXejCcsgCU3jpxAf0kx3NPhRP87lfHTIWK50auH5zHdCX/8Kb6n/pG9/jrHSAOuvmITss4nvmGhkxsCJXF5CZRV+DMzIemaYXEH5LFd53LnzneKpLtBETrDM8f9wzEUAs8ZSYP+4IfsaPavesTD85kKfXKtY9/gGRcfXOKEC05RJOmSO+Sb25BamUjBAQPHQiubfDx6CkfwY4yplAvYq0qfBS7tv8wVJ78RziHxWMCI6jIg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=APVgjoA4; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=APVgjoA4; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1741188563; c=relaxed/relaxed;
+	bh=5QdVZDT79DfdSF1GXZ6K9ChcbKQE0Jar6pMlDySpAs0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=E/tFhqwp4J5sbNIMxoqAE2yEy1VlsELXGqFOvfZj46pmm4iD/ML/F/p1ZcUwqIVscgBpHUTVzU4JnYRCkfAQ70QoMEadYoS4WC952J+SUOloRACjCy+bV2+rS1SDl67wYDnv+XRYOh6KdUjkwfqbYSYG5jO8VGBsS01a4Gszl5HvYkq0JR76gs2YQ+89WnwbMiJYSs8/JxqHcmx2t/LtApn5ZPSpV3h/H3fUFBuyRvofHofYAhgZpQJOewYFaHjV+HLt19ZcczdUU5dA+rEpuRZI/VViAuq8IDFpgwiU6XGGnb1nHy9Umcnddx55iRkidQhYb98RyCHgKnwxSASaaQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xx1dMPoj; dkim-atps=neutral; spf=pass (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=APVgjoA4;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=APVgjoA4;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=Xx1dMPoj;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pbonzini@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.21; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7FvD454Wz2yPG
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 01:54:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741186466;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cox8z8lPi8h9WF637SHJRl9fGGbJ29Arrtfjq01tB+8=;
-	b=APVgjoA4jgGfgoOa6BL+k/bfXU9e7ZIdg14+zqorDSVpV4a8kBNd+ObnySMGJfX3uKWh+Z
-	o6DRYUSBeayIs1xJgOBcyakavxgYym6OuqiEKlSPOLb9rt+fhO+XQt6pPartkX7zVD7Sbc
-	B4xluKxR2SEiN/kuIVIqKmW1k4lHFVI=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741186466;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Cox8z8lPi8h9WF637SHJRl9fGGbJ29Arrtfjq01tB+8=;
-	b=APVgjoA4jgGfgoOa6BL+k/bfXU9e7ZIdg14+zqorDSVpV4a8kBNd+ObnySMGJfX3uKWh+Z
-	o6DRYUSBeayIs1xJgOBcyakavxgYym6OuqiEKlSPOLb9rt+fhO+XQt6pPartkX7zVD7Sbc
-	B4xluKxR2SEiN/kuIVIqKmW1k4lHFVI=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-629-t9Mnhn0ANlq0fc7b3A4WZg-1; Wed, 05 Mar 2025 09:54:25 -0500
-X-MC-Unique: t9Mnhn0ANlq0fc7b3A4WZg-1
-X-Mimecast-MFC-AGG-ID: t9Mnhn0ANlq0fc7b3A4WZg_1741186464
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-390ddebcbd1so4107422f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Mar 2025 06:54:24 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741186459; x=1741791259;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Cox8z8lPi8h9WF637SHJRl9fGGbJ29Arrtfjq01tB+8=;
-        b=b+LX365BTnSFfKNAoqQMJirGev1tmbk2QhYaeynabKvQpWpHMDofuT+kMr0DgRRDnH
-         aCo+bwkd2uQszdDp4jLdjbSj4FNL8YBUP+lhhI4Blrnvyq0vQXlNfTD/8zUvJoVXlT1q
-         2De39+H/G0rmuWfudkEy9g7gH+3LaM1s/N/rCKbscdopUR5LVrfE76LeJ34ZKT8peap6
-         7wS3oQsDjQmrdrII3elor6XSFr07K5T5ae5xFCmdY03DgdWTzwTXQZA4fKp5NYDx9VTn
-         SSwDObm8cC1CBz0Yfsra1z0+hhB63auwAZpuyrSIULJjEXnxcNiL7loo2oTBMM/SKiiE
-         0tBw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmsLj32w8/M45ngME1p5c7Rs0BgmabKitrp0nVU8n/wPeHivzwdKG4uwUdT/ETcBJ8Y/A7lzP+s0uC6Pg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxEw3EbtJ4wioWicUIKRaAbZRtj2vXsKMmMYomid7hBPtONcgl5
-	+BRvzzqnUEtOZ3Gai+rPvd3mNPCImYbyA0VFE4flOxE1NruAtJYPMGKtiTYZqCS1+cURaSDvLix
-	vtK9MrbjH5O9s9prhH7raTBg73vp2yv7UwX4wOvIn97poJYDVlzp1+sy7Gkvqr+qRpUZW0/2oW1
-	kdyzUCUQUeUWudLgANUgXFEECgV0Z3rak4Q4Repg==
-X-Gm-Gg: ASbGncvx8ax4ZblNToI61JbcAZD8oh5Tw6a3cPAM910FBaNqp0/7F7I1iU9lEDPXnOu
-	+Qmb5Ld5mXeLmg+tlOzv83pfUEI3fVCc+to+MgPcHa8xjM5lHIZFPZtQ10M/XvHMBJX6ISaco
-X-Received: by 2002:a05:6000:136f:b0:390:e1c5:fe2 with SMTP id ffacd0b85a97d-3911f7bac6bmr2620729f8f.38.1741186458845;
-        Wed, 05 Mar 2025 06:54:18 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IE4PvVuGKTxjn5+5ksdqhrhoFlLx86CRmMyFCnvhKsn1bSfHEsAqd2/zQT4R+Gyx1q0iDsSyD24ytNHcUzKCCU=
-X-Received: by 2002:a05:6000:136f:b0:390:e1c5:fe2 with SMTP id
- ffacd0b85a97d-3911f7bac6bmr2620699f8f.38.1741186458470; Wed, 05 Mar 2025
- 06:54:18 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7GgP2hDZz3c1Q
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 02:29:18 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741188562; x=1772724562;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=brd6qryqI2OqJ10VAvgsstU48fVOEBGewa4UW9hHXTM=;
+  b=Xx1dMPojwIaIAihFI4hRiNN6uI4zVPW5QTAmJyogcRJcWxmHiSFcvk1S
+   Sm/k1mVuJayh414klL27bXzhBR050JwyvXJBQJzbadldi680Cr9VaJwuB
+   00QbX9O8ZNMe/40tIn8ghmpZSUMlcikFMBIwzv8tvhchYYy9+gT7h9Bj6
+   VwzPMyrqbLSJV441n76Yw1+P+F8PVPryvYq09LAY6v++a6qjvaXCRN6we
+   3WyGbT3ba0ZxuDA82KHTNh3SCpI5Ko6zDKD+mDvv3TnO+s9yiwJtWtLb5
+   oB2NkGJdcNWyryhy9KT4wefJdvcWcLxnsYy3fj0hxypTHI+LiLjLBi3Fy
+   w==;
+X-CSE-ConnectionGUID: JDmdu/GTQhq3hghV4XdIiA==
+X-CSE-MsgGUID: AF1EadwxTMSM6+s5Yk3D+g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11363"; a="42064429"
+X-IronPort-AV: E=Sophos;i="6.14,223,1736841600"; 
+   d="scan'208";a="42064429"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Mar 2025 07:29:15 -0800
+X-CSE-ConnectionGUID: pndPWfs6QyOmC1DOheMvlg==
+X-CSE-MsgGUID: 7knxXuWqScyOLLQ9jGacrg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.12,224,1728975600"; 
+   d="scan'208";a="119640346"
+Received: from lkp-server02.sh.intel.com (HELO 76cde6cc1f07) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 05 Mar 2025 07:29:12 -0800
+Received: from kbuild by 76cde6cc1f07 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1tpqgG-000L9W-3A;
+	Wed, 05 Mar 2025 15:29:08 +0000
+Date: Wed, 5 Mar 2025 23:29:03 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au,
+	npiggin@gmail.com, christophe.leroy@csgroup.eu
+Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
+	linuxppc-dev@lists.ozlabs.org,
+	Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [PATCH v2 1/4] powerpc/perf/core-book3s: Avoid loading platform
+ pmu driver during dump kernel
+Message-ID: <202503052346.eTbppObo-lkp@intel.com>
+References: <20250301182310.6832-1-maddy@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,109 +81,88 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250112095527.434998-4-pbonzini@redhat.com> <DDEA8D1B-0A0F-4CF3-9A73-7762FFEFD166@xenosoft.de>
- <2025030516-scoured-ethanol-6540@gregkh>
-In-Reply-To: <2025030516-scoured-ethanol-6540@gregkh>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 5 Mar 2025 15:54:06 +0100
-X-Gm-Features: AQ5f1Jq9Q6hjcyw1JQehTB9dj5tz1yQanFW326sta5ahk4Wq43oLtxt1PyaZ6q4
-Message-ID: <CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com>
-Subject: Re: [Kernel 6.12.17] [PowerPC e5500] KVM HV compilation error
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Christian Zigotzky <chzigotzky@xenosoft.de>, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, seanjc@google.com, linuxppc-dev@lists.ozlabs.org, 
-	regressions@lists.linux.dev, Trevor Dickinson <rtd2@xtra.co.nz>, 
-	mad skateman <madskateman@gmail.com>, hypexed@yahoo.com.au, 
-	Darren Stevens <darren@stevens-zone.net>, Sasha Levin <sashal@kernel.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 73BRbRP-cBWSpK8dqmMhovHGn9qIGGGTkZRnzUUXo74_1741186464
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.3 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,TRACKER_ID
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250301182310.6832-1-maddy@linux.ibm.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Mar 5, 2025 at 3:19=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org>=
- wrote:
-> On Wed, Mar 05, 2025 at 03:14:13PM +0100, Christian Zigotzky wrote:
-> > Hi All,
-> >
-> > The stable long-term kernel 6.12.17 cannot compile with KVM HV support =
-for e5500 PowerPC machines anymore.
-> >
-> > Bug report: https://github.com/chzigotzky/kernels/issues/6
-> >
-> > Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/=
-x5000_defconfig
-> >
-> > Error messages:
-> >
-> > arch/powerpc/kvm/e500_mmu_host.c: In function 'kvmppc_e500_shadow_map':
-> > arch/powerpc/kvm/e500_mmu_host.c:447:9: error: implicit declaration of =
-function '__kvm_faultin_pfn' [-Werror=3Dimplicit-function-declaration]
-> >    pfn =3D __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
-> >          ^~~~~~~~~~~~~~~~~
-> >   CC      kernel/notifier.o
-> > arch/powerpc/kvm/e500_mmu_host.c:500:2: error: implicit declaration of =
-function 'kvm_release_faultin_page'; did you mean 'kvm_read_guest_page'? [-=
-Werror=3Dimplicit-function-declaration]
-> >   kvm_release_faultin_page(kvm, page, !!ret, writable);
-> >
-> > After that, I compiled it without KVM HV support.
-> >
-> > Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/=
-e5500_defconfig
-> >
-> > Please check the error messages.
->
-> Odd, what commit caused this problem?
+Hi Madhavan,
 
-48fe216d7db6b651972c1c1d8e3180cd699971b0
+kernel test robot noticed the following build errors:
 
-> Any hint as to what commit is missing to fix it?
+[auto build test ERROR on powerpc/next]
+[also build test ERROR on powerpc/fixes linus/master v6.14-rc5 next-20250305]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-A big-ass 90 patch series. __kvm_faultin_pfn and
-kvm_release_faultin_page were introduced in 6.13, as part of a big
-revamp of how KVM does page faults on all architectures.
+url:    https://github.com/intel-lab-lkp/linux/commits/Madhavan-Srinivasan/powerpc-perf-hv-24x7-Avoid-loading-hv-24x7-during-dump-kernel/20250302-022531
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20250301182310.6832-1-maddy%40linux.ibm.com
+patch subject: [PATCH v2 1/4] powerpc/perf/core-book3s: Avoid loading platform pmu driver during dump kernel
+config: powerpc64-randconfig-001-20250305 (https://download.01.org/0day-ci/archive/20250305/202503052346.eTbppObo-lkp@intel.com/config)
+compiler: clang version 19.1.7 (https://github.com/llvm/llvm-project cd708029e0b2869e80abe31ddb175f7c35361f90)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250305/202503052346.eTbppObo-lkp@intel.com/reproduce)
 
-Just revert all this crap and apply the version that I've just sent
-(https://lore.kernel.org/stable/20250305144938.212918-1-pbonzini@redhat.com=
-/):
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503052346.eTbppObo-lkp@intel.com/
 
-commit 48fe216d7db6b651972c1c1d8e3180cd699971b0
-    KVM: e500: always restore irqs
+All errors (new ones prefixed by >>):
 
-commit 833f69be62ac366b5c23b4a6434389e470dd5c7f
-    KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults
-    Message-ID: <20241010182427.1434605-55-seanjc@google.com>
-    Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
+>> arch/powerpc/perf/core-book3s.c:2599:6: error: call to undeclared function 'is_kdump_kernel'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+    2599 |         if (is_kdump_kernel() || is_fadump_active())
+         |             ^
+   1 error generated.
 
-commit f2623aec7fdc2675667042c85f87502c9139c098
-    KVM: PPC: e500: Mark "struct page" pfn accessed before dropping mmu_loc=
-k
-    Message-ID: <20241010182427.1434605-54-seanjc@google.com>
-    Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
 
-commit dec857329fb9a66a5bce4f9db14c97ef64725a32
-    KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()
-    Message-ID: <20241010182427.1434605-53-seanjc@google.com>
-    Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
+vim +/is_kdump_kernel +2599 arch/powerpc/perf/core-book3s.c
 
-And this, ladies and gentlemen, is why I always include the apparently
-silly Message-ID trailer. Don't you just love how someone, whether
-script or human, cherry picked patches 53-55 without even wondering
-what was in the 52 before. I'm not sure if it'd be worse for it to be
-a human or a script... because if it's a script, surely the same level
-of sophistication could have been put into figuring out whether the
-thing even COMPILES.
+  2587	
+  2588	static int __init init_ppc64_pmu(void)
+  2589	{
+  2590		if (cpu_has_feature(CPU_FTR_HVMODE) && pmu_override) {
+  2591			pr_warn("disabling perf due to pmu_override= command line option.\n");
+  2592			on_each_cpu(do_pmu_override, NULL, 1);
+  2593			return 0;
+  2594		}
+  2595	
+  2596		/*
+  2597		 * If the dump kernel is active, skip loading these drivers
+  2598		 */
+> 2599		if (is_kdump_kernel() || is_fadump_active())
+  2600			return 0;
+  2601	
+  2602		/* run through all the pmu drivers one at a time */
+  2603		if (!init_power5_pmu())
+  2604			return 0;
+  2605		else if (!init_power5p_pmu())
+  2606			return 0;
+  2607		else if (!init_power6_pmu())
+  2608			return 0;
+  2609		else if (!init_power7_pmu())
+  2610			return 0;
+  2611		else if (!init_power8_pmu())
+  2612			return 0;
+  2613		else if (!init_power9_pmu())
+  2614			return 0;
+  2615		else if (!init_power10_pmu())
+  2616			return 0;
+  2617		else if (!init_power11_pmu())
+  2618			return 0;
+  2619		else if (!init_ppc970_pmu())
+  2620			return 0;
+  2621		else
+  2622			return init_generic_compat_pmu();
+  2623	}
+  2624	early_initcall(init_ppc64_pmu);
+  2625	
 
-Sasha, this wins the prize for most ridiculous automatic backport
-ever. Please stop playing maintainer if you can't be bothered to read
-the commit messages for random stuff that you apply.
-
-Paolo
-
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
