@@ -1,36 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-6740-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15AD5A4FE8F
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 13:24:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BFA9A4FFC1
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 14:12:48 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7BZZ3Zvzz3bsY;
-	Wed,  5 Mar 2025 23:24:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7Cdl24lVz3byh;
+	Thu,  6 Mar 2025 00:12:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741177494;
-	cv=none; b=VYkHL4akYgN1SlhKvOtm2KwD00tNytTDo1UGSgz4TXwSemuT+QIOPCGUUzmS8wcgrz73F3Ziqt7SXLKaWVJ1/WpsPK46sP/CpwxgJgyI2I3n8YFFrZM7qNSHGWBPyBXfmYRgv1Mt3MlM3QT1tUIY4g1g0UrJFUAOvtI0IMe/QTVmciCLyxH7bhIyEwPnok9/ItLzmIkCizFBiZPfGILXjozezfOdAlNW56Us5fPqJ7ZZ13YVbr9+57jnGpmhTaMMmvKc18aLax+Ptdh7TKd+2usQ7vVtoC+gMCfxzStl+S9w5eTrz6V+orBlKwWhT40Oz+lc73qKjowZRMuIt77NCw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82d"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741180363;
+	cv=none; b=Yy4rfS134TJGVN+YBenBjJac9idcb5mkpF7hdkkfKXzeahvs3lkSbtnD/9rSSHpFfo+uZjW5wNngIQwMA7wOCMeb5LczXuqlh16sTqnPtQKfFjkWRvSxp6VRdhy2St/BYd7jWAjJsrtSTbYyv1vTxlLvH1CCdIC3KfkMnk+xZWzjMFqDFoJILTEVb+htiHSi07kHsLBF5/08RrROOju7+t/cMIwmmGT/GQCOoc7Jfu3mxnCHo679uW94sb17aHow78hArBSLsWGBuwu2+CwQj8gtYmrYkeofEjZ+jjeGq7/RKi8YGZMOAyjzeWPbRHSDoHLuW1rYpC/r2J6Ht3mR3w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741177494; c=relaxed/relaxed;
-	bh=7el1H3kNjC3GqBp3gAlaE1RMtntkaK90fH2GSElWevs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eYnWc00R30y1bgaX8CCNHhYi7Zs+AoAEELFvCL1Iwauw4G0lCaYQ0QAHG3+LuwF8Bhz0pyz1BaMfCrahg49CvQkzHu1RHC6S8Ph+RO3eKb+1QPGCVf+qivloTGzE0lHiA6gbZvFcnHucQf/HEfuFqti0+5ghWJZlrGxq9KbaWUlLaBhSKFyHRLI0PMvISVpV/KVKSEBCAnm4xDChuiYNQShZ8D+kl97DQ4IXS52lGbecAEZvsd0vr1tsuiucsRvgyRjDma6Bl+U3vUIQQsc8UX5yEg9UxNOZGLrTIr999vBi1klSwWilu6KnzqyhVq1qHOKgLvMjFlX6/Iv4s/h4gg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+	t=1741180363; c=relaxed/relaxed;
+	bh=iOdrgfnKDo0adnIeWCzGbGdt+czcdG3OGWY151PLQj4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RofNzo/RfRrPr799kU4Zt4mVls1f+d+jq+ZaJbSQ5eOy2oZQkA3zz9xoq8Al7ps6zFFvMWgv7A98tiYt+/+3fe72QudK8uATrL+HGUceP2EVoYKg1cm8Fujfm3qiSjDsT44cn1E+tzr8nZWfbQqBlZgKIGNg4cs8FKNhuKsK1gwS2z4TdGPWXpvxVHz95ynu4g/7D1m6mg0erCAWNJTc5Jbfq/j2JUzr2Xkm2ROoStUVM18uFvevhiUpMcOBS41du7vlf8itGVe5RQMEfqcRrCfX8GDEnYFUe/7Srxv06YViclPzZUJT6wA25xlPzGG8jnVliNITeq5WtcOnNXj9DQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Jd8mwCZ6; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=jackmanb@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Jd8mwCZ6;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=jackmanb@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7BZY0JC9z3brx
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 23:24:51 +1100 (AEDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tpnn2-00021N-8w; Wed, 05 Mar 2025 13:23:56 +0100
-Message-ID: <f6eccbe2-b0cd-4f9e-99e0-82003a00fe5e@pengutronix.de>
-Date: Wed, 5 Mar 2025 13:23:46 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7Cdj3j5Kz3bxH
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 00:12:40 +1100 (AEDT)
+Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-4750a85a0ddso210781cf.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Mar 2025 05:12:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741180358; x=1741785158; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=iOdrgfnKDo0adnIeWCzGbGdt+czcdG3OGWY151PLQj4=;
+        b=Jd8mwCZ6pTfXmlDqsdsKpTc1Znz9gaNGOn7ykMjFxAqsEtQkOhvmPDTupUjiu1048O
+         PO6/1rpMLGs0arKrtmm2SqaYAQXiOhI725zbfAeh5k0NSZDqfBoLH1JwoH5SFjtF3GWs
+         Z7J3ZvMcBfYnac3oSQpyONk8/Ggw0sZfCOYRe+YHat2ZfInVFfys07QYd9cqkLeicZl/
+         MgAN5f5d1aba6xHgcrTj4aFeqcuL6hXlu5l9Ms31irkmCfuFeL7ReECWwE8J/SveWTBW
+         DIDJwd/2tP973oLF+IwFMVwjOR4btD4GpHV0KJR1Qfk8RLu1RS8I2TrVKkrytmsIctT5
+         bHHA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741180358; x=1741785158;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iOdrgfnKDo0adnIeWCzGbGdt+czcdG3OGWY151PLQj4=;
+        b=d76DkarRG4n0I9Y/XquTCfthDPMxTvNkrvTO8oPBJG5eie2djvYe4o6djwre3x6LNj
+         7N+CxMjzq+6zHqwJ4qvIY7qTZXfhnQZZRBFQOhPwFRmvIBOoG4ZdLmosSONH4xdwOCnE
+         mCxnbo1Yxg3ZNtJ8h2G4xy+Ginw1WaskWOehrbtPPQTbKTlna5P05KDulBGIu0CFgPQQ
+         4VDCO0smdC6AECkWUvP2tPgqohoq25sweZr8MUJhzwGmQSq4yPCb7b5PbsRX5VfqZAPP
+         VKuOwIR1c3DFnOaVAusKqa0oejgp64PAvTEhKe1QaUOG8FYzcC7dQUDTtdUlP3bOfmGg
+         pDHg==
+X-Forwarded-Encrypted: i=1; AJvYcCW1QE7noKlBXLunbpePB+fqRJEqCxUzeLvLjqao/E+uFPMxONWYpKQfxVIMZziPbqjOHBpcoUtlemDLexc=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxcwmOud+QJDZtAmJe+Qb4EX1j6JkarykwErXm9drYmzPIh/dO3
+	uYxXbqp5wmoIPQUYudAczveULfhYmbySRhkpPzIbL7P99HIlW/VHzxc/TX2L8uT31jEIacaPXg2
+	fzZfCZile9e2EAiwRqvC16uosMRO0OBU9EGJP
+X-Gm-Gg: ASbGnctVHNHkJmZcCIfn/LUYKWUvxBpKwPdZk3DHewxWCfIhIkix0M8kk6VB08Jbnk/
+	Hz8QzDegLdHZJQIH73ATLfM6VRqR8kHeLPsToJitNU5WumP8Kk6LigcRUmnXh/vwDnxmeTVlEXq
+	A/2Hl6xdytCrr6GKmR10emsdIMmyghQR1OlzEXev27R9kTVnao5wMcYaMB
+X-Google-Smtp-Source: AGHT+IFIn6b7M1PNu9NZZ9KBzOuRO4deZPOixhL9M73rMvQkDHUtfUtYPha+8DdwHlmaLHcT+urAybKKpNAnQK1YFdU=
+X-Received: by 2002:a05:622a:110b:b0:471:f560:27dc with SMTP id
+ d75a77b69052e-4750cae2127mr2406081cf.27.1741180357471; Wed, 05 Mar 2025
+ 05:12:37 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -43,161 +76,147 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 0/2] Add stop_on_panic support for watchdog
-To: George Cherian <gcherian@marvell.com>,
- "linux@roeck-us.net" <linux@roeck-us.net>,
- "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
- "jwerner@chromium.org" <jwerner@chromium.org>,
- "evanbenn@chromium.org" <evanbenn@chromium.org>,
- "kabel@kernel.org" <kabel@kernel.org>, "krzk@kernel.org" <krzk@kernel.org>,
- "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>,
- "thomas.richard@bootlin.com" <thomas.richard@bootlin.com>,
- "lma@chromium.org" <lma@chromium.org>,
- "bleung@chromium.org" <bleung@chromium.org>,
- "support.opensource@diasemi.com" <support.opensource@diasemi.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>, "andy@kernel.org"
- <andy@kernel.org>, "paul@crapouillou.net" <paul@crapouillou.net>,
- "alexander.usyskin@intel.com" <alexander.usyskin@intel.com>,
- "andreas.werner@men.de" <andreas.werner@men.de>,
- "daniel@thingy.jp" <daniel@thingy.jp>,
- "romain.perier@gmail.com" <romain.perier@gmail.com>,
- "avifishman70@gmail.com" <avifishman70@gmail.com>,
- "tmaimon77@gmail.com" <tmaimon77@gmail.com>,
- "tali.perry1@gmail.com" <tali.perry1@gmail.com>,
- "venture@google.com" <venture@google.com>,
- "yuenn@google.com" <yuenn@google.com>,
- "benjaminfair@google.com" <benjaminfair@google.com>,
- "maddy@linux.ibm.com" <maddy@linux.ibm.com>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "npiggin@gmail.com" <npiggin@gmail.com>,
- "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
- "naveen@kernel.org" <naveen@kernel.org>,
- "mwalle@kernel.org" <mwalle@kernel.org>,
- "xingyu.wu@starfivetech.com" <xingyu.wu@starfivetech.com>,
- "ziv.xu@starfivetech.com" <ziv.xu@starfivetech.com>,
- "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>
-Cc: "chrome-platform@lists.linux.dev" <chrome-platform@lists.linux.dev>,
- "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20250305101025.2279951-1-george.cherian@marvell.com>
- <43fb0965-04b7-41dc-ae3f-54676eefdbb5@pengutronix.de>
- <PH8PR18MB53817EC09B918852B78DF3AAC5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
- <28d0ea70-db7a-40e7-aac9-86808320f252@pengutronix.de>
- <PH8PR18MB5381B857859C6413392DD007C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <PH8PR18MB5381B857859C6413392DD007C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+ <20250110-asi-rfc-v2-v2-2-8419288bc805@google.com> <Z8K2B3WJoICVbDj3@kernel.org>
+In-Reply-To: <Z8K2B3WJoICVbDj3@kernel.org>
+From: Brendan Jackman <jackmanb@google.com>
+Date: Wed, 5 Mar 2025 14:12:25 +0100
+X-Gm-Features: AQ5f1JrEWoe__i5J-gwzMxiuWZ9pJYk4XLPMWAQuPYUSu5vOhjZQNejm22RSyYE
+Message-ID: <CA+i-1C06Sunj0BmFON=MbWBK6ZDt_=K4P3BHChRBYyxXqEkQ2g@mail.gmail.com>
+Subject: Re: [PATCH RFC v2 02/29] x86: Create CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
+	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
+	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
+	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
+	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, Chris Zankel <chris@zankel.net>, 
+	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	Andrew Morton <akpm@linux-foundation.org>, Juri Lelli <juri.lelli@redhat.com>, 
+	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
+	Valentin Schneider <vschneid@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
+	Christoph Hellwig <hch@infradead.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
+	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org, 
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
+	Junaid Shahid <junaids@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hello George,
+On Sat, Mar 01, 2025 at 09:23:51AM +0200, Mike Rapoport wrote:
+> Hi Brendan,
+>
+> On Fri, Jan 10, 2025 at 06:40:28PM +0000, Brendan Jackman wrote:
+> > Currently a nop config. Keeping as a separate commit for easy review of
+> > the boring bits. Later commits will use and enable this new config.
+> >
+> > This config is only added for non-UML x86_64 as other architectures do
+> > not yet have pending implementations. It also has somewhat artificial
+> > dependencies on !PARAVIRT and !KASAN which are explained in the Kconfig
+> > file.
+> >
+> > Co-developed-by: Junaid Shahid <junaids@google.com>
+> > Signed-off-by: Junaid Shahid <junaids@google.com>
+> > Signed-off-by: Brendan Jackman <jackmanb@google.com>
+> > ---
+> >  arch/alpha/include/asm/Kbuild      |  1 +
+> >  arch/arc/include/asm/Kbuild        |  1 +
+> >  arch/arm/include/asm/Kbuild        |  1 +
+> >  arch/arm64/include/asm/Kbuild      |  1 +
+> >  arch/csky/include/asm/Kbuild       |  1 +
+> >  arch/hexagon/include/asm/Kbuild    |  1 +
+> >  arch/loongarch/include/asm/Kbuild  |  3 +++
+> >  arch/m68k/include/asm/Kbuild       |  1 +
+> >  arch/microblaze/include/asm/Kbuild |  1 +
+> >  arch/mips/include/asm/Kbuild       |  1 +
+> >  arch/nios2/include/asm/Kbuild      |  1 +
+> >  arch/openrisc/include/asm/Kbuild   |  1 +
+> >  arch/parisc/include/asm/Kbuild     |  1 +
+> >  arch/powerpc/include/asm/Kbuild    |  1 +
+> >  arch/riscv/include/asm/Kbuild      |  1 +
+> >  arch/s390/include/asm/Kbuild       |  1 +
+> >  arch/sh/include/asm/Kbuild         |  1 +
+> >  arch/sparc/include/asm/Kbuild      |  1 +
+> >  arch/um/include/asm/Kbuild         |  2 +-
+> >  arch/x86/Kconfig                   | 14 ++++++++++++++
+> >  arch/xtensa/include/asm/Kbuild     |  1 +
+> >  include/asm-generic/asi.h          |  5 +++++
+> >  22 files changed, 41 insertions(+), 1 deletion(-)
+>
+> I don't think this all is needed. You can put asi.h with stubs used outside
+> of arch/x86 in include/linux and save you the hassle of updating every
+> architecture.
 
-On 05.03.25 13:15, George Cherian wrote:
->> On 05.03.25 12:28, George Cherian wrote:
->>>> that can't be disabled and would protect against system lock up: 
->>>> Consider a memory-corruption bug (perhaps externally via DMA), which partially
->>>> overwrites both main and kdump kernel. With a disabled watchdog, the system
->>>> may not be able to recover on its own.
->>>
->>> Yes, that is the reason why the kernel command-line is optional and by default it is set to zero.
->>> So that in cases if you have a corrupted kdump kernel then watchdog kicks in.
->>
->> The existing option isn't enough for the kdump kernel use case.
->> If we (i.e. you) are going to do something about it, wouldn't it be
->> better to have a solution that's applicable to a wider number of
->> watchdog devices?
-> 
-> I need a slight clarification here. 
-> 1. reset_on_panic takes the number of seconds to be reloaded to watchdog HW, so that it initiates a 
-> watchdog reset after the specified timeout, if kdump kernel fails to boot or hung while booting.
+...
 
-Yes.
+> If you expect other architectures might implement ASI the config would better
+> fit into init/Kconfig or mm/Kconfig and in arch/x86/Kconfig will define
+> ARCH_HAS_MITIGATION_ADDRESS_SPACE_ISOLATION.
 
-> 2. in case reset_on_panic = 0 then it behaves like stop_on_panic=1.
-> Is this what you meant?
+...
 
-Alternatively, reset_on_panic = 0 could also mean stopping the watchdog as
-you do now. I haven't thought though yet what would make the most sense.
+> > +++ b/include/asm-generic/asi.h
+> > @@ -0,0 +1,5 @@
+> > +/* SPDX-License-Identifier: GPL-2.0 */
+> > +#ifndef __ASM_GENERIC_ASI_H
+> > +#define __ASM_GENERIC_ASI_H
+> > +
+> > +#endif
+>
+> IMHO it should be include/linux/asi.h, with something like
+>
+> #infdef __LINUX_ASI_H
+> #define __LINUX_ASI_H
+>
+> #ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
+>
+> #include <asm/asi.h>
+>
+> #else /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
+>
+> /* stubs for functions used outside arch/ */
+>
+> #endif /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
+>
+> #endif /* __LINUX_ASI_H */
 
-> I would let Guenter comment on this approach.
-
-+1.
-
->> If you are serious with the watchdog use, you'll want to use the watchdog to
->> monitor kernel startup as well. If the bootloader can set a watchdog timeout
->> just before starting the kernel and it doesn't expire before the kernel watchdog
->> driver takes over, why can't we do the same just before starting the dumpkernel?
-> 
-> Yes, in an ideal world with ideal HW. But there are HW with issues which cannot have large
-> enough Watchdog time. Such HW would boot from FW to kernel without watchdog enabled.
-> And stop_on_panic does the similar for kdump kernel too.
-
-Yes, but there is likely more kinds of watchdog devices that can not be disabled,
-so it makes sense to have a solution that is more broadly applicable from the get-go.
-
-Cheers,
-Ahmad
-
-> 
-> -George
->>
->> Thanks,
->> Ahmad
->>
->>
->>>
->>> Thanks,
->>> Ahmad
->>>
->>>>
->>>>
->>> Changelog:
->>> v1 -> v2
->>> - Remove the per driver flag setting option
->>> - Take the parameter via kernel command-line parameter to watchdog_core.
->>>
->>> v2 -> v3
->>> - Remove the helper function watchdog_stop_on_panic() from watchdog.h.
->>> - There are no users for this. 
->>>
->>> v3 -> v4
->>> - Since the panic notifier is in atomic context, watchdog functions
->>>   which sleep can't be called. 
->>> - Add an options flag WDIOF_STOP_MAYSLEEP to indicate whether stop
->>>   function sleeps.
->>> - Simplify the stop_on_panic kernel command line parsing.
->>> - Enable the panic notiffier only if the watchdog stop function doesn't
->>>   sleep
->>>
->>> George Cherian (2):
->>>   watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
->>>   drivers: watchdog: Add support for panic notifier callback
->>
->> - George
-> 
-> 
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Thanks Mike! That does indeed look way tidier. I'll try to adopt it.
 
