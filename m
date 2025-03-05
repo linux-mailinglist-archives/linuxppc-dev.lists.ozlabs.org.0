@@ -1,228 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-6748-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6747-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA48AA50CD7
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 21:51:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45FA5A50B6E
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 20:26:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7Pq765l7z3bsM;
-	Thu,  6 Mar 2025 07:51:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7Mwb0bf9z2yN3;
+	Thu,  6 Mar 2025 06:26:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=67.231.156.173 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741176973;
-	cv=pass; b=S4baM6z9Hu0CC7ShkYQ7h3O9fpcxBMP87XSNqrLnZoTCcpbBVQL75nt3GiOA+c6A0e4Un/sbQgNDT1yaMeSV1sVtMGeJddkv+qcPvl7oWAsDfgUlPpGHyXM0KiE5VALJbG4z/1Fl2tcnu8mf5lPF/eZfRlsZ3s5Vh0Z7++mbMerMWC96cC3OkOLntlVwjpQ+EI98jx+9toVgQT0eIExI5wYPnE7JLRybWcAmrfQABT5oZtODb4vt/Ti/rxkfdiKaDsugzRtvZT8MwtmOWkBNCuzeX6fbtxZQiUXNUoLwGBFTcunVO5SgSqSMsIkSn458rAeS3ERY3+0EiCIE24Z9Zg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741176973; c=relaxed/relaxed;
-	bh=49+QmkZtLSZ0oKiLEaYNjcmqnadhNmVcnXF5/JLFgBc=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=UiRZpeRANTk+D5Y4NrZyxX1x/q1x82FKbnJwe2aZLfpzZM2DMwRrUnA8LU2CeSTSW0EZvbkdvVXWjaBtxVrnAbCyhiRsREimzk6Q2X3fquvy8s8HumLYGv8ybO67pXR5PYAZt6CncKvQgEazBYylKyZAIa5WRgSnPFp9CW4rDPnadQIW90GRoAshIVv6n4Fp9U2d3tsyMw+fovvwUiBzynTlpM2f4UPdZZOak7Sos7Bw9urw3aVb84TTojnKND9YCswGsrKTuNQ2pVbliurism0o9raqLSbsDEfCr3FhSTyNpXX7Urx3EuqmmhjMmnvcEGfEci+oQQkswnckMGRdsA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=marvell.com; dkim=pass (1024-bit key; unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=VniUezU8; dkim-atps=neutral; spf=pass (client-ip=67.231.156.173; helo=mx0b-0016f401.pphosted.com; envelope-from=gcherian@marvell.com; receiver=lists.ozlabs.org) smtp.mailfrom=marvell.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::636"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741202767;
+	cv=none; b=h2i+9lss6Ejl91wUPMQAhTUxZZoZjpdiBSLGVO4enQZqYKk/lgJYKsj27KLA/pDeN84mzgrRsfCjD+pj+/xWrF8Yqqwj2nW4H6pewrJ3xiqFQQekxOhajAXYfKD8hHpziEewDRaj0/JDvajx9xjBaXlv1zv2OvzXITT92aExE397mZdDhrtSU9eig4lUN/kqM7HBSimnleXGkBbLU73T9fLTABeWWpqccpzhNO0/zsv0PRYHbFjv/xJeVdaKEvWhAcWVnMR48Iy4fuAa4vVqW1Zz+n26fMMGGM3C/4vp5bha4Rgd3DykT7DkfiDLCQTCghIjSuJZ/DHNkQipN4Tu6w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1741202767; c=relaxed/relaxed;
+	bh=NasVXF4uKOvoN13fiWrcNIMp9E/I/C5YbxMF6ggp/Wk=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
+	 MIME-version:Content-type; b=HcQ1YAKdUrv/jZoWbt+2Cxk6GiajbwIHPXMT5SCelGRQPyAPJ/1Qi6dFsxIUe8ZmEnU2AJ774Z9lgyoQnGdF/x1Pn5DOqMyzR8l7JRbZ7MZsP+z8xePQZyhbaEckPTblZbn2rC2NSDBpeOmjTa5+ai+3mLCevKSNZapscO2lF3Wy9JPRN1vxtiX3qY5BPPrbqEXBwaQlzW8TA3Nt5Tv+jN7GRyZ5bBSvo883gigtSA/bKkpLOOxF4Atji9bPnz6BkziPThukaJsfqZuy6dFdybzfelJtKsZTK6neqIDfvBFflf9AlsGFY9DMVZzaM8fuKojg1l8PG5V4elAqjvhFQw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TYaRecTP; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=VniUezU8;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=TYaRecTP;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=marvell.com (client-ip=67.231.156.173; helo=mx0b-0016f401.pphosted.com; envelope-from=gcherian@marvell.com; receiver=lists.ozlabs.org)
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::636; helo=mail-pl1-x636.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x636.google.com (mail-pl1-x636.google.com [IPv6:2607:f8b0:4864:20::636])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7BNX30thz3brd
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 23:16:11 +1100 (AEDT)
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 525BOvFo030834;
-	Wed, 5 Mar 2025 04:15:33 -0800
-Received: from nam04-bn8-obe.outbound.protection.outlook.com (mail-bn8nam04lp2049.outbound.protection.outlook.com [104.47.74.49])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 456nqeg2k0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 05 Mar 2025 04:15:33 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=sDa+krfUIerxxGncc81FcRXHl8h7aaZBHv7996sA6D+vu+xdCsNFzqG+uqqNSnaRccS8nx5EZnlYs5KH8PueOxXl/+tYSOWFH0eJNdQNCKv7UNPwMrZWfjQrEvGPB33OP1UZZxd89Rf5sOnr+UhkDO1VVehkdNXHgp69Z9jwLMIINzaVedUeNVFOC4ZGGCsmEKgCB5i+QxsfIDBq5STmU/pY8hsf9qZnANog6+Kh0Mg6+VkhpYwkUUhDGGaFEL6kXSRPoOV13Ol1z3fatkzWH2WlKoTZknC+NHybok/u3j8QZrBER4+Dl+lNDPa2HEh5wMubTf1qH3tJkkcNZRkZ6g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=49+QmkZtLSZ0oKiLEaYNjcmqnadhNmVcnXF5/JLFgBc=;
- b=d6DbMxvpiV2/oG0gTzIZEIoWUSRy7x0t7GGkY7dMXLkFK6uN6HY8gR0UO23EHbMbodvghBPTCVpc51Ux9apjwbtXAvWppNhY3/f3SoiTzNtsW60mA2QB5YNo8FPAZIRYKVZozMNTHp93+kL7eQRJ/kMwm3vhcGIH+0xo67DCv6jNOtpYOalA00TsgS8LoJtyMAHRM4ejll9GodNjtK9l6xFZz/JeRP5eL6Vj5cIWm+JjG5giQugi4sQesQqRfShlXp6R4f3jwEs/HXH2D14An6mDk35ryOIUfgIS645kAQKZy+H71HWTSL1124vqM41noBqz8Kyvgr3MxxIyTjfrzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=49+QmkZtLSZ0oKiLEaYNjcmqnadhNmVcnXF5/JLFgBc=;
- b=VniUezU8L62L/2dR2Ycop2eSP9PQ5NBJdLkq7NzuJ5BFxdmCw1AqGg7STd9D5zGalqlnWMpdZl5CmO33vZaUW/5XXqhKxFsy+UgdqzUK6WowjFnKsIGhImwsI0o+XcgLiNJe3u+7eLc3REhfp7ahhGlnYmsBpLlQqHkpjbCv6IM=
-Received: from PH8PR18MB5381.namprd18.prod.outlook.com (2603:10b6:510:254::16)
- by CH0PR18MB5507.namprd18.prod.outlook.com (2603:10b6:610:191::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.16; Wed, 5 Mar
- 2025 12:15:29 +0000
-Received: from PH8PR18MB5381.namprd18.prod.outlook.com
- ([fe80::79aa:7ee4:516e:200a]) by PH8PR18MB5381.namprd18.prod.outlook.com
- ([fe80::79aa:7ee4:516e:200a%6]) with mapi id 15.20.8511.017; Wed, 5 Mar 2025
- 12:15:29 +0000
-From: George Cherian <gcherian@marvell.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        "linux@roeck-us.net"
-	<linux@roeck-us.net>,
-        "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
-        "jwerner@chromium.org" <jwerner@chromium.org>,
-        "evanbenn@chromium.org"
-	<evanbenn@chromium.org>,
-        "kabel@kernel.org" <kabel@kernel.org>,
-        "krzk@kernel.org" <krzk@kernel.org>,
-        "mazziesaccount@gmail.com"
-	<mazziesaccount@gmail.com>,
-        "thomas.richard@bootlin.com"
-	<thomas.richard@bootlin.com>,
-        "lma@chromium.org" <lma@chromium.org>,
-        "bleung@chromium.org" <bleung@chromium.org>,
-        "support.opensource@diasemi.com"
-	<support.opensource@diasemi.com>,
-        "shawnguo@kernel.org"
-	<shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "festevam@gmail.com"
-	<festevam@gmail.com>,
-        "andy@kernel.org" <andy@kernel.org>,
-        "paul@crapouillou.net" <paul@crapouillou.net>,
-        "alexander.usyskin@intel.com"
-	<alexander.usyskin@intel.com>,
-        "andreas.werner@men.de"
-	<andreas.werner@men.de>,
-        "daniel@thingy.jp" <daniel@thingy.jp>,
-        "romain.perier@gmail.com" <romain.perier@gmail.com>,
-        "avifishman70@gmail.com"
-	<avifishman70@gmail.com>,
-        "tmaimon77@gmail.com" <tmaimon77@gmail.com>,
-        "tali.perry1@gmail.com" <tali.perry1@gmail.com>,
-        "venture@google.com"
-	<venture@google.com>,
-        "yuenn@google.com" <yuenn@google.com>,
-        "benjaminfair@google.com" <benjaminfair@google.com>,
-        "maddy@linux.ibm.com"
-	<maddy@linux.ibm.com>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "npiggin@gmail.com" <npiggin@gmail.com>,
-        "christophe.leroy@csgroup.eu"
-	<christophe.leroy@csgroup.eu>,
-        "naveen@kernel.org" <naveen@kernel.org>,
-        "mwalle@kernel.org" <mwalle@kernel.org>,
-        "xingyu.wu@starfivetech.com"
-	<xingyu.wu@starfivetech.com>,
-        "ziv.xu@starfivetech.com"
-	<ziv.xu@starfivetech.com>,
-        "hayashi.kunihiko@socionext.com"
-	<hayashi.kunihiko@socionext.com>,
-        "mhiramat@kernel.org" <mhiramat@kernel.org>
-CC: "chrome-platform@lists.linux.dev" <chrome-platform@lists.linux.dev>,
-        "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
-        "imx@lists.linux.dev" <imx@lists.linux.dev>,
-        "patches@opensource.cirrus.com"
-	<patches@opensource.cirrus.com>,
-        "linux-mips@vger.kernel.org"
-	<linux-mips@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH v4 0/2] Add stop_on_panic support for watchdog
-Thread-Topic: [PATCH v4 0/2] Add stop_on_panic support for watchdog
-Thread-Index: AQHbjchIB0FTJOHUHku2YJ3rGogN8A==
-Date: Wed, 5 Mar 2025 12:15:28 +0000
-Message-ID:
- <PH8PR18MB5381B857859C6413392DD007C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
-References: <20250305101025.2279951-1-george.cherian@marvell.com>
- <43fb0965-04b7-41dc-ae3f-54676eefdbb5@pengutronix.de>
- <PH8PR18MB53817EC09B918852B78DF3AAC5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
- <28d0ea70-db7a-40e7-aac9-86808320f252@pengutronix.de>
-In-Reply-To: <28d0ea70-db7a-40e7-aac9-86808320f252@pengutronix.de>
-Accept-Language: en-US, en-IN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR18MB5381:EE_|CH0PR18MB5507:EE_
-x-ms-office365-filtering-correlation-id: 28e52802-9b42-4cca-44b7-08dd5bdf6b2a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018|921020;
-x-microsoft-antispam-message-info:
- =?utf-8?B?UHlWNjhVYmNQbWNIUkd2bm5uOGtKdmJxUUdvMEJzaGhmQjJCMHQwb1lESjk3?=
- =?utf-8?B?ajArN0hxdTdsdkdZNjJIaGZhUjhib0RDdERlbnhxYnVqNHcxeWhFSlRyNlZw?=
- =?utf-8?B?WTd0Wno2Q2YwSm9CNWVqSlljVjZadE9MQ0MzUmc2UGVEcEVqQXM2TWxJeExL?=
- =?utf-8?B?R1VkcW96Y2pjMFdBS09YYWI2MDJZNkhYajFJV01lVXpTSkZ6Z1E4VHRMSERQ?=
- =?utf-8?B?UFZNUEVXK1BOd1Rvam51Y3RrSk1SNmR3VE9ZV0R5bThzNFJEMHd1NkVJaVFL?=
- =?utf-8?B?Z3ZlcjJlMFRvaGpqRGpwbUVVanFqU0VLOEVBa3VJKzA4ZWdVTWVxWU8yTVBh?=
- =?utf-8?B?MXdFMkh1cGpEZUdrQVZNdjcvLzluN0RycHhiODZtQ0x0by9yMnFLZWZOY3dy?=
- =?utf-8?B?Mk9QRVJGN0ZkUi9DTjZUbjNuNDZ2NkkxQnF0NUw5WTVPMDdQTnhWTm5KMTAy?=
- =?utf-8?B?L3lKOE94ekh0RTBPS2gvaEo4em5xb2NaUHp3N2YzRUtTdG1WY1gzSHE5a0Vl?=
- =?utf-8?B?ODJGT1o1cjgwYUZrY2I5OG9YUlIrd3ZXbGIweXpCWUVGeXNNaGlzM3VMUlRW?=
- =?utf-8?B?ajQwTk0wSVZDMnBueFZMZXh2TGZXZVZyVi9xRjNzNGwySU80TFp2UlFyNHdV?=
- =?utf-8?B?eDArWW5XWlRkUG1kOFN0bDFsOGR2eHdRVXg1RUYxTWdjaEt3VzRTd3NIck1V?=
- =?utf-8?B?bjN1dzFzTU5EMGh2MjVFKzFxbFRUemNTT2lPcFczaENyeEkyNU5EUDlNU3Nk?=
- =?utf-8?B?dWZxZ3VLaHRHUjVYbUlLTXhIU3dhS3BweHFxR0p2SWNWVHlERTdFbThZVEZ3?=
- =?utf-8?B?YTZuOFAxM21sTndIcWpyMDFxSHFVQjI4d2FzQmRmaTNjUUlMSEpMUHl1TWRB?=
- =?utf-8?B?a09uM1htU0hSRWNXdzMzZzhIN01DZGhYNWZVS0FvRThOa0xQbVdldFNLandl?=
- =?utf-8?B?cTl4Yysyc0NPRTR1TStsNkc1aU1iblJRRFc5b1ptemQzb3ljZlNLZ3hwbjJt?=
- =?utf-8?B?dmdoS1JGZjcwRm1hdklUc3lZZVE0cmhZT3p1d2JXVDRjdlBvTEVuNEgrSmw2?=
- =?utf-8?B?ZGMyOGV3SERMYnRIRzZZU1JkQThMUVpHU2tITERZRlU0Rkhwbzc0cEJoREM5?=
- =?utf-8?B?ckoyYkoyL2ZzNHNHdGl5RjZBOVJJNEk0K3ByZmlIOTFRMVFlZ2N6dFVMcGV6?=
- =?utf-8?B?Y1JVYmRqTjg1T29JS3BPc21DK1VpQ1N0akI2S0g5cm00ZmJjNlcrcUpHemFP?=
- =?utf-8?B?aU0wblBvTi8rbDZCSC83V1RmaTZZUUd5M2dMZm5uQy8wUkZuWjFYSHJ6RC9M?=
- =?utf-8?B?WjVBaVA3bHU2K28rNDNlcVJ4VnczUHpXNk5NaTRvVE1VdC9oNXlaQWNFZVhp?=
- =?utf-8?B?c3NscHlOdnVnbVdIVEFqbWxvUkFHTUpjbmdmTzZMRWVxYUFraEFMbFB4NXVp?=
- =?utf-8?B?N0xTTjUvYnJLTENtbHByMFhlZnozb3hpNlZSQmh1UUMzT2NWM0lxangzTXRs?=
- =?utf-8?B?bkJ3WlJKNm1MUVJabXlHRHFzdC9KM1hTTUVnMkpyQmdmZFh4c1lqWXR2OEZt?=
- =?utf-8?B?VE9vczFTNklpRjRnUFBCNVBtcnlmSDErZ2l6TjFrcmtSSXplc2VIQ2xmdE9v?=
- =?utf-8?B?UkJvZW1Rb3R4TFF1ZGdCRkw4azdHQ00vOFZjWXFXcHpab2U3cEpvcU1FNHFL?=
- =?utf-8?B?QjQ5RGJUVGlMRytqSElMZzJ2Mmg5REZFQlV6dWpSSXBNOG5VNTJUc3EzWlFY?=
- =?utf-8?B?K2JaVGF6bElVVDFGWHIwT0grdXQ4MGdlamdEZEdUNE1vR0M2Q24wOWxHUmdz?=
- =?utf-8?B?dlZUZGwwQjg1YTAxODVHdHNJbWVaRk90S2liM0ZDK1IySHFYeHRlN2laQTZy?=
- =?utf-8?B?c2NGeWlVdFFyZkNZT0FwU2IzenBCQlo0TEFDajVROWNnQkE9PQ==?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR18MB5381.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018)(921020);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?MHk0bnN4UDZNNzRGOVlqeXFXdnpLd3FJVXdkTWtGUFNKMEw2dVU4cko5KzE0?=
- =?utf-8?B?d2FoZjFWUUYydE5ibVdncU1BdThJaUFTZjB1M2JUOHRZazhMT0hEc1loME1D?=
- =?utf-8?B?Skk5SDIrTk9MamdQd0haMUtHS091aDg2QzM2aUdEd1JKTUtNUVNTY2gzalBJ?=
- =?utf-8?B?L24wVGNLVmxpU1dveE51V1dhVGlxY0dUZGxIcSt1bGt2c1ZWMXNLb1loK1Jw?=
- =?utf-8?B?K2E5QXBFM1hHd1R6UXZNMzhWdzZ0dC82aXpwSkRoalR3aXZ1OFFSd293cFJN?=
- =?utf-8?B?Vlluc25SVHRpTXpHT1JiTzJldUNqTmlsdmJHckZmVDA1azZjTWUrSTFiT0Jv?=
- =?utf-8?B?NS80d0tuTnVzY0FveHYrTGUzYjYxUHdQU0U0d1JNSG80dnN3ZVBta3FhKzV5?=
- =?utf-8?B?QnJYQ3VScEx1dlpmbEhFVkxzb2thN1NqVER0T2QwT2pBbVdNZTZVbDg0Qnp0?=
- =?utf-8?B?dnNsSHJBRnVZaDIvU1k1ZzhuTWRabE9KTWdNTjFUdWdTM0l2Umc0ZkE2MzJu?=
- =?utf-8?B?eXRuY25Kbnk5LzV5amhBRTBISjUyU0JLd0RWWUJSZ1k4R1Vrbm9aNTNmVjVK?=
- =?utf-8?B?Zlkrb25Ea2RWbmxxMUQ5ajY5Y1N2aFpoZm01WXd1citRSzhORFg3b1p1dVA1?=
- =?utf-8?B?RWxUM2ZNajZBL1JVaTVTalpqeXU1cHVZcDNJMkxoTjBZQU1jcFRjcFN3bTRx?=
- =?utf-8?B?c3ZJdTZaRE5MMHc5MC9BU2FiTTZpanBNRUgrYUZCZXRiRkZYanZOTFhtZTdU?=
- =?utf-8?B?b3dsSnp4OHdjamN0NmNxV3c5NzZ5N1ErSVd1dG9RWjhtVFJKQkZ0ZTRmTGZp?=
- =?utf-8?B?UjlrTkFrbFUyd1ZUdUpRbGR2TXkzVHlPSFVrN3ZCakpyeThWZzNRVHN2cVJp?=
- =?utf-8?B?VEh6aVY5Qk1LUHVNUjFyUk54QVUxeDM3cHM1NmUxU2g4SlJBaEVPUmcxSTJR?=
- =?utf-8?B?OGd2aURxMkpjRmxRaHdUVkUzUmw4ZkxtNGpZcWk2SjFYVVp6WFRKZ0ZtMmJn?=
- =?utf-8?B?dUZsYU9IY0doN0JrcFNqcW1TZS9Wcnp4T0hJcnYzVGVTSFhtT1FsNlVYbStu?=
- =?utf-8?B?VGJ0ditWLzFLOEgyV3JGQkFscXhoUVFFZGJtckRZdFNWZ1c0M1QwaUlmWU8w?=
- =?utf-8?B?SVlGcDczUkpSSG5CNXdLT0ZSYUNZbGlOMDVyWkFEaTBYVFFZU3BueDhkdWUy?=
- =?utf-8?B?VWx6ZXRVSkFMM05SaEVUMUFlMU5ENkgzUHplVkZFeC9UdlVKVXdRV1ZRemVG?=
- =?utf-8?B?V0xiSEdGRjBJQ2RJS2k2b3hzSDBveVVIRHV0dXVkTVE2WWRaWGhqSy8rK0Zy?=
- =?utf-8?B?bVJ5Y0h4RC9YMUNPaWdWMHVxdjh6MVlxYUVzcHhkZy9QS2J4RGxCWlQ1OGRj?=
- =?utf-8?B?VXk5WVlXRUs1eUJoSHNMKzRIQUM0cmtuVzMzYUxlWUNWeWdEbTdSNjZxMVF2?=
- =?utf-8?B?TFR2TFI0OUNaay83cFk1bzBkNGhjTEpUeUdJSk9UOTJKU0ZIRHZRY1oyaGtY?=
- =?utf-8?B?VUlweDFWTXhYVkc3RlB4RTEwaTRSV0plYWFNY3N3Rkk4bUdBZkdxd09SendK?=
- =?utf-8?B?anVBYVZId2ZjbVh3KzRob2VSd2plazRVQ0huTGQvMlFQMWZyZzZQOW1OeExv?=
- =?utf-8?B?Z2xmMkpNQk5ZM1dXb3hhaXZKOEtQWHpzZ3NnSVRqNU4vS0U3b0txN0s5Qlpi?=
- =?utf-8?B?U21BNzB6VEdYbitEVmhiYTNRaWxjVk9mb1JJMytOMERIS0FOeTNHQjNvcEk2?=
- =?utf-8?B?Q1FGbHdQUmtEaU5hZWloODVqcnduekNDVC9uUjZ2Tm1QbmlTSThEUExCbDdJ?=
- =?utf-8?B?cHNSRVNtZGFZQWJmRW51WEtvZ0VCQUNkTjVVTHZaMGZBWmlFSFlYVXBwbGpV?=
- =?utf-8?B?ZlZCOTBVZ0xycWJBWGdCd0RyLzk1Vkp2ajhzZ3gxdVJOVUhRUnJWMjdabG5I?=
- =?utf-8?B?Nm9aMTdLRjU0ZFVvb3NIaXJ6SmhNYUlFM3JYemFCVnE4ZkttaVZFNzA4aXRr?=
- =?utf-8?B?WVZUZ05zNnEyWnRsMmVCclpsL1RKMmo0NEVsc1IyMlBNTytDUWxuN2pOSGhH?=
- =?utf-8?B?RFJsZEZzakxWQy8xTWNHYlpRbmx4a3pzSGdVY1lsN2lQTXNhdWR6M3ViNTFh?=
- =?utf-8?Q?8iiRE4+uBEzYGs1+JGqleXNtI?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7MwX4Y2Cz2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 06:26:03 +1100 (AEDT)
+Received: by mail-pl1-x636.google.com with SMTP id d9443c01a7336-223f4c06e9fso20627095ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Mar 2025 11:26:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741202761; x=1741807561; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NasVXF4uKOvoN13fiWrcNIMp9E/I/C5YbxMF6ggp/Wk=;
+        b=TYaRecTPqYPppmmKATINgQsGmY63z9jegnAxvjnTWjisTnpYV01ouoa42/V+n1DGmB
+         esmA6Rn5I43p0K03jJxYWEDyiMtwO4pUR0jSFXxmu36BagYa05G7GjxQLAXLGtiVOY1l
+         lkZIvGpycpkPX8a4gZzF0G2TxR6wYXJuN5tBPi9sY4HMOO/6IQ1WlygQXHkCGhSKZslw
+         4/m8SmI+AYBFTk1TjrcuVzIdKx6vKCIWl+WXzPUrKfl8UpMD2pXv9CedyUDiWlpC/KuM
+         sR4CkZvDXCm23LrSAVC9IgvEeMk62ZuRbuQG9JaKGfjWPqqI39DPmYwlZE9mt2jZaXGe
+         wNvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741202761; x=1741807561;
+        h=content-transfer-encoding:mime-version:references:message-id:date
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NasVXF4uKOvoN13fiWrcNIMp9E/I/C5YbxMF6ggp/Wk=;
+        b=asIrcJjRsu049czgvEIhRPHUWTZdt3RlsH5AYJ38HpWU/QFdKrZExjoN60DDMnhhTy
+         rEvuS6hVWqKlquZ+fTwszJIFYpvFi79YxcRHCZwvT6mKtuW3G40MRgVqMjoJ7qciRjxC
+         dSLtCJzpN9V6Y2PGpDbd6m6p4V+tHearL2Z2iN90UHHNutAmihznbv0OIFcsMFQ4pgG3
+         +ZRQAPprPb0+5GyxBG5F1U4MfiAkhtxGh896Zw7gritzhLtCvZMjtuVbTueVKgc8ljnm
+         Hgd4/zZMxTs29MAbQfkD6KxWrCUox/eSrHfPy7QR0gI7NJREGEqe7wWPYQ94wHNbaEfa
+         I3cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsY9eW6zjly2SHxbzOc6bMJ+iKNpYqatkUezWC2WH4DvhplJBkWsXqFHoo2LKtuvvutmozBqA6GMaBoKw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxtTj5Ru4zKSmqo+9QdhuEo1o8bnjA/eCm8B2JnX99H2GE0VG26
+	LjCj3yGaAQbbIUIMTLLvWuuYZP38i/kQxCKw2yrMGv8oa3IoKAYa
+X-Gm-Gg: ASbGncur2dcYVBJlx3FUALSjZmbT2LDVUfojFN03E6gb3ydRAghgTbyELsLj/Zbzepg
+	7sa+ef4TN0PuWG6oSRwfIt3+rr50ewS87W1fywHTxVfDM6CYg0a/I4WTD1S4L1Cb5zOjAloDfpg
+	HyGQ0QT6NENiYKGsFUYW75HJn05ZKAffbqROMCbS3ZPHKKpEmxm2jByam7g8ZOZia8staUqM6Nh
+	oriroOW3BjzUWZNPF0vkXFyMDubygcpZPnGZiUsHjTwuHm2X98sq/79Irw152hzAFBIpHaPgSv1
+	6WfpFNq5y2/joE6t4gO1KyNbZeKynqtL0VnVkQ==
+X-Google-Smtp-Source: AGHT+IEK6yhmENU+EM0wz6B9LTSfJimsqoiLC8xs8GC9ajBjvoON+cd+4EbVa0CCk4gQOmg+Skhmwg==
+X-Received: by 2002:a17:902:fc8e:b0:21f:6546:9adc with SMTP id d9443c01a7336-224094115c8mr9358005ad.13.1741202761107;
+        Wed, 05 Mar 2025 11:26:01 -0800 (PST)
+Received: from dw-tp ([171.76.80.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-223501f9d96sm116850675ad.54.2025.03.05.11.25.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 05 Mar 2025 11:26:00 -0800 (PST)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Hari Bathini <hbathini@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, Mahesh Salgaonkar <mahesh@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: Re: [PATCH v4] powerpc/hugetlb: Disable gigantic hugepages if fadump is active
+In-Reply-To: <0a6a29f2-e7a9-4c51-8ab4-3e2c33843d1c@linux.ibm.com>
+Date: Thu, 06 Mar 2025 00:47:51 +0530
+Message-ID: <877c5370dc.fsf@gmail.com>
+References: <20250128043358.163372-1-sourabhjain@linux.ibm.com> <87h64cgct3.fsf@gmail.com> <84a2ab12-e24a-4bd6-b562-e3154d1aa258@linux.ibm.com> <87frjttmt7.fsf@gmail.com> <0a6a29f2-e7a9-4c51-8ab4-3e2c33843d1c@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -234,113 +88,232 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR18MB5381.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 28e52802-9b42-4cca-44b7-08dd5bdf6b2a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 05 Mar 2025 12:15:29.0106
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: /fW9PyKYJ/CurlAPeYjepl0pqiHtwQCO9evMIQ2jPBVO2IQy/4MPJ5SAmkKpkli7VoFvysBDIxDz2hAjb/sd1w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH0PR18MB5507
-X-Proofpoint-ORIG-GUID: xcBlEfwT47bHArSHsw0UFToDTZthj9E9
-X-Proofpoint-GUID: xcBlEfwT47bHArSHsw0UFToDTZthj9E9
-X-Authority-Analysis: v=2.4 cv=Wr/RMcfv c=1 sm=1 tr=0 ts=67c84065 cx=c_pps a=VLWBoSTBoww685Dj7+Q0uQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Vs1iUdzkB0EA:10 a=-AAbraWEqlQA:10 a=bGNZPXyTAAAA:8 a=nkFVMVAWg0sdIH7E3NIA:9 a=QEXdDO2ut3YA:10 a=yL4RfsBhuEsimFDS2qtJ:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-05_04,2025-03-05_01,2024-11-22_01
-X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+MIME-version: 1.0
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MALFORMED_FREEMAIL,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-SGkgQWhtYWQsDQoNCj5IaSBHZW9yZ2UsDQo+DQo+T24gMDUuMDMuMjUgMTI6MjgsIEdlb3JnZSBD
-aGVyaWFuIHdyb3RlOg0KPiBIaSBBaG1hZCwNCj4+PiBIaSBHZW9yZ2UsDQo+Pj4gT24gMDUuMDMu
-MjUgMTE6MTAsIEdlb3JnZSBDaGVyaWFuIHdyb3RlOg0KPj4+PiBUaGlzIHNlcmllcyBhZGRzIGEg
-bmV3IGtlcm5lbCBjb21tYW5kIGxpbmUgb3B0aW9uIHRvIHdhdGNoZG9nIGNvcmUgdG8NCj4+Pj4g
-c3RvcCB0aGUgd2F0Y2hkb2cgb24gcGFuaWMuIFRoaXMgaXMgdXNldWwgaW4gY2VydGFpbiBzeXN0
-ZW1zIHdoaWNoIHByZXZlbnRzDQo+Pj4+IHN1Y2Nlc3NmdWwgbG9hZGluZyBvZiBrZHVtcCBrZXJu
-ZWwgZHVlIHRvIHdhdGNoZG9nIHJlc2V0Lg0KPj4+Pg0KPj4+PiBTb21lIG9mIHRoZSB3YXRjaGRv
-ZyBkcml2ZXJzIHN0b3AgZnVuY3Rpb24gY291bGQgc2xlZXAuIEZvciBzdWNoDQo+Pj4+IGRyaXZl
-cnMgdGhlIHN0b3Bfb25fcGFuaWMgaXMgbm90IHZhbGlkIGFzIHRoZSBub3RpZmllciBjYWxsYmFj
-ayBoYXBwZW5zDQo+Pj4+IGluIGF0b21pYyBjb250ZXh0LiBJbnRyb2R1Y2UgV0RJT0ZfU1RPUF9N
-QVlTTEVFUCBmbGFnIHRvIHdhdGNoZG9nX2luZm8NCj4+Pj4gb3B0aW9ucyB0byBpbmRpY2F0ZSB3
-aGV0aGVyIHRoZSBzdG9wIGZ1bmN0aW9uIHdvdWxkIHNsZWVwLg0KPj4+DQo+Pj4gRGlkIHlvdSBj
-b25zaWRlciBoYXZpbmcgYSByZXNldF9vbl9wYW5pYyBpbnN0ZWFkLCB3aGljaCBzZXRzIGEgdXNl
-ci1zcGVjaWZpZWQNCj4+PiB0aW1lb3V0IG9uIHBhbmljPyBUaGlzIHdvdWxkIG1ha2UgdGhlIG1l
-Y2hhbmlzbSB1c2VmdWwgYWxzbyBmb3Igd2F0Y2hkb2dzDQo+PiANCj4+IC9wcm9jL3N5cy9rZXJu
-ZWwvcGFuaWMgYWxyZWFkeSBwcm92aWRlcyB0aGF0IHN1cHBvcnQuIFlvdSBtYXkgZWNobyBhIG5v
-bi16ZXJvIHZhbHVlIA0KPj4gYW5kIHRoZSBzeXN0ZW0gdHJpZXMgZm9yIGEgc29mdCByZWJvb3Qg
-YWZ0ZXIgdGhvc2UgbWFueSBzZWNvbmRzLiBCdXQgdGhpcyBkb2Vzbid0IGhhcHBlbiANCj4+IGlu
-IGNhc2Ugb2YgYSBrZHVtcCBrZXJuZWwgbG9hZCBhZnRlciBwYW5pYy4NCj4NCj5UaGUgdGltZW91
-dCBzcGVjaWZpZWQgdG8gdGhlIFdhdGNoZG9nIHJlc2V0X29uX3BhbmljIG9wdGlvbiB3b3VsZCBi
-ZSBwcm9ncmFtbWVkIGludG8NCj50aGUgYWN0aXZlIHdhdGNoZG9ncyBhbmQgbm90IGJlIHVzZWQg
-dG8gdHJpZ2dlciBhIHNvZnR3YXJlLWluZHVjZWQgcmVib290LiANClllcy4NCj4NCj4+PiB0aGF0
-IGNhbid0IGJlIGRpc2FibGVkIGFuZCB3b3VsZCBwcm90ZWN0IGFnYWluc3Qgc3lzdGVtIGxvY2sg
-dXA6IA0KPj4+IENvbnNpZGVyIGEgbWVtb3J5LWNvcnJ1cHRpb24gYnVnIChwZXJoYXBzIGV4dGVy
-bmFsbHkgdmlhIERNQSksIHdoaWNoIHBhcnRpYWxseQ0KPj4+IG92ZXJ3cml0ZXMgYm90aCBtYWlu
-IGFuZCBrZHVtcCBrZXJuZWwuIFdpdGggYSBkaXNhYmxlZCB3YXRjaGRvZywgdGhlIHN5c3RlbQ0K
-Pj4+IG1heSBub3QgYmUgYWJsZSB0byByZWNvdmVyIG9uIGl0cyBvd24uDQo+PiANCj4+IFllcywg
-dGhhdCBpcyB0aGUgcmVhc29uIHdoeSB0aGUga2VybmVsIGNvbW1hbmQtbGluZSBpcyBvcHRpb25h
-bCBhbmQgYnkgZGVmYXVsdCBpdCBpcyBzZXQgdG8gemVyby4NCj4+IFNvIHRoYXQgaW4gY2FzZXMg
-aWYgeW91IGhhdmUgYSBjb3JydXB0ZWQga2R1bXAga2VybmVsIHRoZW4gd2F0Y2hkb2cga2lja3Mg
-aW4uDQo+DQo+VGhlIGV4aXN0aW5nIG9wdGlvbiBpc24ndCBlbm91Z2ggZm9yIHRoZSBrZHVtcCBr
-ZXJuZWwgdXNlIGNhc2UuDQo+SWYgd2UgKGkuZS4geW91KSBhcmUgZ29pbmcgdG8gZG8gc29tZXRo
-aW5nIGFib3V0IGl0LCB3b3VsZG4ndCBpdCBiZQ0KPmJldHRlciB0byBoYXZlIGEgc29sdXRpb24g
-dGhhdCdzIGFwcGxpY2FibGUgdG8gYSB3aWRlciBudW1iZXIgb2YNCj53YXRjaGRvZyBkZXZpY2Vz
-Pw0KDQpJIG5lZWQgYSBzbGlnaHQgY2xhcmlmaWNhdGlvbiBoZXJlLiANCjEuIHJlc2V0X29uX3Bh
-bmljIHRha2VzIHRoZSBudW1iZXIgb2Ygc2Vjb25kcyB0byBiZSByZWxvYWRlZCB0byB3YXRjaGRv
-ZyBIVywgc28gdGhhdCBpdCBpbml0aWF0ZXMgYSANCndhdGNoZG9nIHJlc2V0IGFmdGVyIHRoZSBz
-cGVjaWZpZWQgdGltZW91dCwgaWYga2R1bXAga2VybmVsIGZhaWxzIHRvIGJvb3Qgb3IgaHVuZyB3
-aGlsZSBib290aW5nLg0KMi4gaW4gY2FzZSByZXNldF9vbl9wYW5pYyA9IDAgdGhlbiBpdCBiZWhh
-dmVzIGxpa2Ugc3RvcF9vbl9wYW5pYz0xLg0KSXMgdGhpcyB3aGF0IHlvdSBtZWFudD8NCg0KSSB3
-b3VsZCBsZXQgR3VlbnRlciBjb21tZW50IG9uIHRoaXMgYXBwcm9hY2guDQo+Pj4gSWYgeW91IGRp
-ZCBjb25zaWRlciBpdCwgd2hhdCBtYWRlIHlvdSBkZWNpZGUgYWdhaW5zdCBpdD8NCj4+IHdhdGNo
-ZG9nLnN0b3Bfb25fcGFuaWM9MSBpcyBzcGVjaWZpY2FsbHkgZm9yIHN5c3RlbXMgd2hpY2ggY2Fu
-J3QgYm9vdCBhIGtkdW1wIGtlcm5lbCBkdWUgdG8gdGhlIGZhY3QgDQo+PiB0aGF0IHRoZSBrZHVt
-cCBrZXJuZWwgZ2V0cyBhIHdhdGNoZG9nIHJlc2V0IHdoaWxlIGJvb3RpbmcsIG1heSBiZSBkdWUg
-dG8gYSBzaG9ydGVyIHdhdGNoZG9nIHRpbWUuDQo+PiBGb3IgZWc6IGEgMzItYml0IHdhdGNoZG9n
-IGRvd24gY291bnRlciBydW5uaW5nIGF0IDFHSHouDQo+PiByZXNldF9vbl9wYW5pYyBjYW4gZ3Vh
-cmFudGVlIG9ubHkgdGhlIGxhcmdlc3Qgd2F0Y2hkb2cgdGltZW91dCBzdXBwb3J0ZWQgYnkgSFcs
-IA0KPj4gc2luY2UgdGhlcmUgaXMgbm8gb25lIHRvIHBpbmcgdGhlIHdhdGNoZG9nLg0KDQo+SWYg
-eW91IGFyZSBzZXJpb3VzIHdpdGggdGhlIHdhdGNoZG9nIHVzZSwgeW91J2xsIHdhbnQgdG8gdXNl
-IHRoZSB3YXRjaGRvZyB0bw0KPm1vbml0b3Iga2VybmVsIHN0YXJ0dXAgYXMgd2VsbC4gSWYgdGhl
-IGJvb3Rsb2FkZXIgY2FuIHNldCBhIHdhdGNoZG9nIHRpbWVvdXQNCj5qdXN0IGJlZm9yZSBzdGFy
-dGluZyB0aGUga2VybmVsIGFuZCBpdCBkb2Vzbid0IGV4cGlyZSBiZWZvcmUgdGhlIGtlcm5lbCB3
-YXRjaGRvZw0KPmRyaXZlciB0YWtlcyBvdmVyLCB3aHkgY2FuJ3Qgd2UgZG8gdGhlIHNhbWUganVz
-dCBiZWZvcmUgc3RhcnRpbmcgdGhlIGR1bXBrZXJuZWw/DQoNClllcywgaW4gYW4gaWRlYWwgd29y
-bGQgd2l0aCBpZGVhbCBIVy4gQnV0IHRoZXJlIGFyZSBIVyB3aXRoIGlzc3VlcyB3aGljaCBjYW5u
-b3QgaGF2ZSBsYXJnZQ0KZW5vdWdoIFdhdGNoZG9nIHRpbWUuIFN1Y2ggSFcgd291bGQgYm9vdCBm
-cm9tIEZXIHRvIGtlcm5lbCB3aXRob3V0IHdhdGNoZG9nIGVuYWJsZWQuDQpBbmQgc3RvcF9vbl9w
-YW5pYyBkb2VzIHRoZSBzaW1pbGFyIGZvciBrZHVtcCBrZXJuZWwgdG9vLg0KDQotR2VvcmdlDQo+
-DQo+VGhhbmtzLA0KPkFobWFkDQo+DQo+IA0KPj4NCj4+IFRoYW5rcywNCj4+IEFobWFkDQo+Pg0K
-Pj4+DQo+Pj4NCj4+IENoYW5nZWxvZzoNCj4+IHYxIC0+IHYyDQo+PiAtIFJlbW92ZSB0aGUgcGVy
-IGRyaXZlciBmbGFnIHNldHRpbmcgb3B0aW9uDQo+PiAtIFRha2UgdGhlIHBhcmFtZXRlciB2aWEg
-a2VybmVsIGNvbW1hbmQtbGluZSBwYXJhbWV0ZXIgdG8gd2F0Y2hkb2dfY29yZS4NCj4+DQo+PiB2
-MiAtPiB2Mw0KPj4gLSBSZW1vdmUgdGhlIGhlbHBlciBmdW5jdGlvbiB3YXRjaGRvZ19zdG9wX29u
-X3BhbmljKCkgZnJvbSB3YXRjaGRvZy5oLg0KPj4gLSBUaGVyZSBhcmUgbm8gdXNlcnMgZm9yIHRo
-aXMuIA0KPj4NCj4+IHYzIC0+IHY0DQo+PiAtIFNpbmNlIHRoZSBwYW5pYyBub3RpZmllciBpcyBp
-biBhdG9taWMgY29udGV4dCwgd2F0Y2hkb2cgZnVuY3Rpb25zDQo+PiAgIHdoaWNoIHNsZWVwIGNh
-bid0IGJlIGNhbGxlZC4gDQo+PiAtIEFkZCBhbiBvcHRpb25zIGZsYWcgV0RJT0ZfU1RPUF9NQVlT
-TEVFUCB0byBpbmRpY2F0ZSB3aGV0aGVyIHN0b3ANCj4+ICAgZnVuY3Rpb24gc2xlZXBzLg0KPj4g
-LSBTaW1wbGlmeSB0aGUgc3RvcF9vbl9wYW5pYyBrZXJuZWwgY29tbWFuZCBsaW5lIHBhcnNpbmcu
-DQo+PiAtIEVuYWJsZSB0aGUgcGFuaWMgbm90aWZmaWVyIG9ubHkgaWYgdGhlIHdhdGNoZG9nIHN0
-b3AgZnVuY3Rpb24gZG9lc24ndA0KPj4gICBzbGVlcA0KPj4NCj4+IEdlb3JnZSBDaGVyaWFuICgy
-KToNCj4+ICAgd2F0Y2hkb2c6IEFkZCBhIG5ldyBmbGFnIFdESU9GX1NUT1BfTUFZU0xFRVANCj4+
-ICAgZHJpdmVyczogd2F0Y2hkb2c6IEFkZCBzdXBwb3J0IGZvciBwYW5pYyBub3RpZmllciBjYWxs
-YmFjaw0KPiANCj4gLSBHZW9yZ2UNCg0KDQotLSANClBlbmd1dHJvbml4IGUuSy4gICAgICAgICAg
-ICAgICAgICAgICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8DQpTdGV1ZXJ3
-YWxkZXIgU3RyLiAyMSAgICAgICAgICAgICAgICAgICAgICAgfCBodHRwczovL3VybGRlZmVuc2Uu
-cHJvb2Zwb2ludC5jb20vdjIvdXJsP3U9aHR0cC0zQV9fd3d3LnBlbmd1dHJvbml4LmRlXyZkPUR3
-SUNhUSZjPW5LaldlYzJiNlIwbU95UGF6N3h0ZlEmcj1ucGdUU2dIclVTTG1YcEJaSktWaGswbEVf
-WE52dFZEbDhaQTJ6QnZCcVB3Jm09RGYzSjNaUmdhN1h4Y2dVZEpPcVlWTUotQUxYNWpDM2VpSUk0
-WWhzQWRDNXBZaHIxeHdjcWJ6aEl5Nk1DRXF3cyZzPXliZ2x3LVdLNFZHRThnSEdOd01yQzFfVmxp
-T3Y3MnBqRExFSW05RkZfZEUmZT0gIHwNCjMxMTM3IEhpbGRlc2hlaW0sIEdlcm1hbnkgICAgICAg
-ICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8DQpBbXRzZ2VyaWNodCBI
-aWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1
-NTUgfA0K
+Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+
+> Hello Ritesh,
+>
+>
+> On 04/03/25 10:27, Ritesh Harjani (IBM) wrote:
+>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>>
+>>> Hello Ritesh,
+>>>
+>>> Thanks for the review.
+>>>
+>>> On 02/03/25 12:05, Ritesh Harjani (IBM) wrote:
+>>>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>>>>
+>>>>> The fadump kernel boots with limited memory solely to collect the kernel
+>>>>> core dump. Having gigantic hugepages in the fadump kernel is of no use.
+>>>> Sure got it.
+>>>>
+>>>>> Many times, the fadump kernel encounters OOM (Out of Memory) issues if
+>>>>> gigantic hugepages are allocated.
+>>>>>
+>>>>> To address this, disable gigantic hugepages if fadump is active by
+>>>>> returning early from arch_hugetlb_valid_size() using
+>>>>> hugepages_supported(). When fadump is active, the global variable
+>>>>> hugetlb_disabled is set to true, which is later used by the
+>>>>> PowerPC-specific hugepages_supported() function to determine hugepage
+>>>>> support.
+>>>>>
+>>>>> Returning early from arch_hugetlb_vali_size() not only disables
+>>>>> gigantic hugepages but also avoids unnecessary hstate initialization for
+>>>>> every hugepage size supported by the platform.
+>>>>>
+>>>>> kernel logs related to hugepages with this patch included:
+>>>>> kernel argument passed: hugepagesz=1G hugepages=1
+>>>>>
+>>>>> First kernel: gigantic hugepage got allocated
+>>>>> ==============================================
+>>>>>
+>>>>> dmesg | grep -i "hugetlb"
+>>>>> -------------------------
+>>>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 1 pages
+>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+>>>>> HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+>>>>>
+>>>>> $ cat /proc/meminfo | grep -i "hugetlb"
+>>>>> -------------------------------------
+>>>>> Hugetlb:         1048576 kB
+>>>> Was this tested with patch [1] in your local tree?
+>>>>
+>>>> [1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=d629d7a8efc33
+>>>>
+>>>> IIUC, this patch [1] disables the boot time allocation of hugepages.
+>>>> Isn't it also disabling the boot time allocation for gigantic huge pages
+>>>> passed by the cmdline params like hugepagesz=1G and hugepages=2 ?
+>>> Yes, I had the patch [1] in my tree.
+>>>
+>>> My understanding is that gigantic pages are allocated before normal huge
+>>> pages.
+>>>
+>>> In hugepages_setup() in hugetlb.c, we have:
+>>>
+>>>       if (hugetlb_max_hstate && hstate_is_gigantic(parsed_hstate))
+>>>           hugetlb_hstate_alloc_pages(parsed_hstate);
+>>>
+>>> I believe the above code allocates memory for gigantic pages, and
+>>> hugetlb_init() is
+>>> called later because it is a subsys_initcall.
+>>>
+>>> So, by the time the kernel reaches hugetlb_init(), the gigantic pages
+>>> are already
+>>> allocated. Isn't that right?
+>>>
+>>> Please let me know your opinion.
+>> Yes, you are right. We are allocating hugepages from memblock, however
+>> this isn't getting advertized anywhere. i.e. there is no way one can
+>> know from any user interface on whether hugepages were allocated or not.
+>> i.e. for fadump kernel when hugepagesz= and hugepages= params are
+>> passed, though it will allocate gigantic pages, it won't advertize this
+>> in meminfo or anywhere else. This was adding the confusion when I tested
+>> this (which wasn't clear from the commit msg either).
+>>
+>> And I guess this is happening during fadump kernel because of our patch
+>> [1], which added a check to see whether hugetlb_disabled is true in
+>> hugepages_supported(). Due to this hugetlb_init() is now not doing the
+>> rest of the initialization for those gigantic pages which were allocated
+>> due to cmdline options from hugepages_setup().
+>>
+>> [1]: https://lore.kernel.org/linuxppc-dev/20241202054310.928610-1-sourabhjain@linux.ibm.com/
+>>
+>> Now as we know from below that fadump can set hugetlb_disabled call in early_setup().
+>> i.e. fadump can mark hugetlb_disabled to true in
+>> early_setup() -> early_init_devtree() -> fadump_reserve_mem()
+>>
+>> And hugepages_setup() and hugepagesz_setup() gets called late in
+>> start_kernel() -> parse_args()
+>>
+>>
+>> And we already check for hugepages_supported() in all necessary calls in
+>> mm/hugetlb.c. So IMO, this check should go in mm/hugetlb.c in
+>> hugepagesz_setup() and hugepages_setup(). Because otherwise every arch
+>> implementation will end up duplicating this by adding
+>> hugepages_supported() check in their arch implementation of
+>> arch_hugetlb_valid_size().
+>>
+>> e.g. references of hugepages_supported() checks in mm/hugetlb.c
+>>
+>> mm/hugetlb.c hugetlb_show_meminfo_node 4959 if (!hugepages_supported())
+>> mm/hugetlb.c hugetlb_report_node_meminfo 4943 if (!hugepages_supported())
+>> mm/hugetlb.c hugetlb_report_meminfo 4914 if (!hugepages_supported())
+>> mm/hugetlb.c hugetlb_overcommit_handler 4848 if (!hugepages_supported())
+>> mm/hugetlb.c hugetlb_sysctl_handler_common 4809 if (!hugepages_supported())
+>> mm/hugetlb.c hugetlb_init 4461 if (!hugepages_supported()) {
+>> mm/hugetlb.c dissolve_free_hugetlb_folios 2211 if (!hugepages_supported())
+>> fs/hugetlbfs/inode.c init_hugetlbfs_fs 1604 if (!hugepages_supported()) {
+>>
+>>
+>> Let me also see the history on why this wasn't done earlier though...
+>>
+>> ... Oh actually there is more history to this. See [2]. We already had
+>> hugepages_supported() check in hugepages_setup() and other places
+>> earlier which was removed to fix some other problem in ppc ;)
+>>
+>> [2]: https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c2833a5bf75b3657c4dd20b3709c8c702754cb1f
+>>
+>>
+>> Hence I believe this needs a wider cleanup than just fixing it for our
+>> arch. I see there is a patch series already fixing these code paths,
+>> which is also cleaning up the path of gigantic hugepage allocation in
+>> hugepages_setup(). I think it is in mm-unstable branch too. Can we
+>> please review & test that to make sure that the fadump usecase of
+>> disabling hugepages & gigantic are getting covered properly?
+>>
+>> [3]: https://lore.kernel.org/all/20250228182928.2645936-1-fvdl@google.com/
+>
+> I evaluated the patch series [3] for the fadump issue, and here are my 
+> observations:
+>
+> Currently, the patch series [3] does not fix the issue I am trying to 
+> address with this patch.
+>
+> With patch series [3] applied, I see the following logs when booting the 
+> fadump kernel with
+> hugepagesz=1G hugepages=1
+> |
+> |
+> With just Patch series [3]:
+> ------------------------------------
+>
+> kdump:/# dmesg | grep -i HugeTLB
+> [    0.000000] HugeTLB: allocating 10 of page size 1.00 GiB failed.  
+> Only allocated 9 hugepages.
+> [    0.405964] HugeTLB support is disabled!
+> [    0.409162] HugeTLB: huge pages not supported, ignoring associated 
+> command-line parameters
+> [    0.437740] hugetlbfs: disabling because there are no supported 
+> hugepage sizes
+>
+> One good thing is that the kernel now at least reports the gigantic 
+> pages allocated, which was
+> not the case before. I think patch series [3] introduced that improvement.
+>
+> Now, on top of patch series [3], I applied this fix, and the kernel 
+> prints the following logs:
+>
+> Patch series [3] + this fix:
+> ------------------------------------
+>
+> [    0.000000] HugeTLB: unsupported hugepagesz=1G
+> [    0.000000] HugeTLB: hugepages=10 does not follow a valid hugepagesz, 
+> ignoring
+> [    0.366158] HugeTLB support is disabled!
+> [    0.398004] hugetlbfs: disabling because there are no supported 
+> hugepage sizes
+>
+> With these logs, one can clearly identify what is happening.
+>
+> What are your thoughts on this fix now?
+>
+> Do you still think handling this in generic code is better?
+
+I believe so yes (unless we have a valid reason for not doing that).
+hugepages_supported() is an arch specific call. If you see the prints
+above what we are essentially saying is that this is not a valid
+hugepagesz. But that's not the case really right. What it should just
+reflect is that the hugepages support is disabled. 
+
+That being said, I will have to go and look into that series to suggest,
+where in that path it should use hugepages_supported() arch call to see
+if the hugepages are supported or not before initializing. And hopefully
+as you suggested since our cmdline parsing problem was already solved,
+it should not be a problem in using hugepages_supported() during cmdline
+parsing phase.
+But let me check that series and get back.
+
+
+> Given that I was already advised to handle things in arch
+> code. [4]
+>
+> Or should we keep it this way?
+> One advantage handling things in arch_hugetlb_valid_size() is that it helps
+> avoid populating hstates since it is not required anyway. I am not claiming
+> that it is not possible in generic code.
+
+IMO, even adding hugepages_supported() check at the right place should avoid
+populating hstates too. But let's confirm that.
+
+-ritesh
+
+>
+> Thoughts?
+>
+> Thanks,
+> Sourabh Jain
+>
+>
+> [3]: https://lore.kernel.org/all/20250228182928.2645936-1-fvdl@google.com/
+> [4]: https://lore.kernel.org/all/20250122150613.28a92438@thinkpad-T15/
 
