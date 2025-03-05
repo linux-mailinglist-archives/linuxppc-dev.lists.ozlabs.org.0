@@ -1,36 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-6736-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6737-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0C7A4FDDF
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 12:40:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23E0AA4FE06
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 12:52:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z79bJ1mDBz3bt2;
-	Wed,  5 Mar 2025 22:40:28 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z79sL3L8fz3btR;
+	Wed,  5 Mar 2025 22:52:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a0a:edc0:2:b01:1d::104"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741174827;
-	cv=none; b=oy/DrknekUzm9sp7PsnWbnJkXBUAGVzd+Z51guuzF2Jk0PvBbrPcKD8nNvOiqsjJxpHVEtok8MgT61+5QWCKtWVp/pT0hP62rJiL0yKlaz/ojkXVfyt3Fo/4WZ6UJQdyojkjRkWBrz31p5D1OqwgYB1lbE97e35/Pn5fvRYBc0eNNEDOTOGqyRmQQjt4pR5l9xXqIO8QFVSlJ1T+Ens5EGW3joSx8PdHcybNzdeUlakYL8sErayAtID5v2gDSCOK2DIWC0oH2nYk+3cLEa35qxA1orT7yGRBPlTaZL7VQNlBa1HCRBM/W1Vj7lPt8goQG/k4jtwuFWk+A5TaBPTQRQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741175558;
+	cv=none; b=T5ozdxt0oCNAixC7fljlJOeWxo8dcM/i4lL63Qxb4weVLZ+HlgSW09bsXGxOUGAKOz99QbsU8SFOht4MGTuKFDj7B+NtL9aB0PX2E4W2C8F3kLOceA6tL931QiWL659a3KN3tF5blf1rrOeE+GYiXfUg+7CSNjkHFTzzsGIWGMmhkRbMDRfvjiqiHczz3Tc/xS8yHZS2GruJxgR8MA7/jLYz4tHMfi5FaHdjPxIVFfd64ztJNzaHrvDl6GacAsnRIhivaURYfHLFalI1ko2e3glLE7JsH4y1iOYJLC8ds+S6FdlCadncsKrrm5g4bogxQt5RTC6sPa26h2KT/VAA4A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741174827; c=relaxed/relaxed;
-	bh=cw3XxnLHNZ3/+eN3jxwlLiOsY4HaGwfk0dlunI0m4sE=;
+	t=1741175558; c=relaxed/relaxed;
+	bh=CmWgwMXAI84JfO12Ie7NIZL1K4VwQJz7DUej6aLPSqs=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YndaTaZ3JpKDuSXExStZL3qyAKM4nPHJrjLkzH2DKr+spmgywTOaoc/HWFBlsEG9WLp/Nd46r8Dak6ee7kbKbvY3DokwVAnSCJe1BJrMonZfWsd/0g6uGEGdijJtOl62cDu7biiMQiglF1qKh2QcUCk4owYXvxRBTwfYWxC3jnc3G5zLryGrAeSNdH5ZScI1ASND+Ab0FgRZ9Q8+IBxuvZNQK2U2h4mA7zFP5cPFQ2ghDsEbVpzJO6AJsoCAc9FzxuBW86HSbem43eSFiZzyP/rFxLHxt6SySMQx5VRhyx/rKaEdzefbm5fEArQu6Bfw4xErbhZXyeaKdJO5v8ZxuA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org) smtp.mailfrom=pengutronix.de
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=pengutronix.de (client-ip=2a0a:edc0:2:b01:1d::104; helo=metis.whiteo.stw.pengutronix.de; envelope-from=a.fatoum@pengutronix.de; receiver=lists.ozlabs.org)
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 In-Reply-To:Content-Type; b=mQ5ALNbENzqXPWJjcQrbTi4nM8BLZWq148NvzhF9StaIS3ZmazsZ44fj54hLooUKRnPG830ZBwefCNMq1YuU1irhY2jjmD5+lgR9yZDoEeXGkJnU4uXxD3eWgyGF/VVao+LQ3flbxIkC9vSm36SIQe0OCZH3JiJQzwU2Z4Js8uISOsfWaJ44n0CwAdw+V6cRSUvJRvmiKMXKv8dbZopeZMRqqcDly2Th1ISV6FVKVlK/UYd5mKH2ezzk+vNjNFuyYK7a2CBlhpRnWXGwHAOkcP4al7DC6pszYc/5nZfUmiQXJKEFo0ByjFfnUC/PiLMBOX3OCrB5AzvmcykMKTfJ6w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rLAHfDGZ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rLAHfDGZ;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z79bH0YB0z3bsY
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 22:40:27 +1100 (AEDT)
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1tpn64-0004on-HO; Wed, 05 Mar 2025 12:39:32 +0100
-Message-ID: <28d0ea70-db7a-40e7-aac9-86808320f252@pengutronix.de>
-Date: Wed, 5 Mar 2025 12:39:27 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z79sK2j1Tz3bsY
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 22:52:36 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5259XmAN026572;
+	Wed, 5 Mar 2025 11:52:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=CmWgwM
+	XAI84JfO12Ie7NIZL1K4VwQJz7DUej6aLPSqs=; b=rLAHfDGZkwKrfWu7cSHGEO
+	JBlPAVr3bH9BUgE/ODLJqeqdax4XdwHW5ewmiwQD4ro7ba42WFh+VqEnzj2/0YkN
+	lhIh2+hcpVjfG2jNVpiMYlTv4IZI3COxV2ccaDV9BLfVdjHSgQQd6DClNaf9pGXL
+	1HQ5x9LCznEUL+wg6raJtAb41Ch+XljOEswJuf6rzty/WAvIfldd3ANIZfLkCA7O
+	daLFxZQ52OLWtkm6OUmJHKyGx4LD8C25JcDvzeUTB0Mc9of4if2N8pVlce4L3FX+
+	aeDcmGyyda0P7YGnxQpt5DgCUR2DCOZ81FvXUjkU/88pN8PYV3G/dya4wxpe/avQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4568x538gu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 11:52:30 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 525BnsG6018282;
+	Wed, 5 Mar 2025 11:52:30 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4568x538gk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 11:52:30 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5258hciC020928;
+	Wed, 5 Mar 2025 11:52:29 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 454esk29qf-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 11:52:29 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 525BqPq365798506
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Mar 2025 11:52:25 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 876E458050;
+	Wed,  5 Mar 2025 11:52:26 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1C08F5805F;
+	Wed,  5 Mar 2025 11:52:22 +0000 (GMT)
+Received: from [9.204.204.161] (unknown [9.204.204.161])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Mar 2025 11:52:21 +0000 (GMT)
+Message-ID: <569fed73-20f7-4f54-bcdd-67fa9357aa1d@linux.ibm.com>
+Date: Wed, 5 Mar 2025 17:22:20 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -44,157 +86,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [EXTERNAL] Re: [PATCH v4 0/2] Add stop_on_panic support for
- watchdog
-To: George Cherian <gcherian@marvell.com>,
- "linux@roeck-us.net" <linux@roeck-us.net>,
- "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
- "jwerner@chromium.org" <jwerner@chromium.org>,
- "evanbenn@chromium.org" <evanbenn@chromium.org>,
- "kabel@kernel.org" <kabel@kernel.org>, "krzk@kernel.org" <krzk@kernel.org>,
- "mazziesaccount@gmail.com" <mazziesaccount@gmail.com>,
- "thomas.richard@bootlin.com" <thomas.richard@bootlin.com>,
- "lma@chromium.org" <lma@chromium.org>,
- "bleung@chromium.org" <bleung@chromium.org>,
- "support.opensource@diasemi.com" <support.opensource@diasemi.com>,
- "shawnguo@kernel.org" <shawnguo@kernel.org>,
- "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
- "kernel@pengutronix.de" <kernel@pengutronix.de>,
- "festevam@gmail.com" <festevam@gmail.com>, "andy@kernel.org"
- <andy@kernel.org>, "paul@crapouillou.net" <paul@crapouillou.net>,
- "alexander.usyskin@intel.com" <alexander.usyskin@intel.com>,
- "andreas.werner@men.de" <andreas.werner@men.de>,
- "daniel@thingy.jp" <daniel@thingy.jp>,
- "romain.perier@gmail.com" <romain.perier@gmail.com>,
- "avifishman70@gmail.com" <avifishman70@gmail.com>,
- "tmaimon77@gmail.com" <tmaimon77@gmail.com>,
- "tali.perry1@gmail.com" <tali.perry1@gmail.com>,
- "venture@google.com" <venture@google.com>,
- "yuenn@google.com" <yuenn@google.com>,
- "benjaminfair@google.com" <benjaminfair@google.com>,
- "maddy@linux.ibm.com" <maddy@linux.ibm.com>,
- "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
- "npiggin@gmail.com" <npiggin@gmail.com>,
- "christophe.leroy@csgroup.eu" <christophe.leroy@csgroup.eu>,
- "naveen@kernel.org" <naveen@kernel.org>,
- "mwalle@kernel.org" <mwalle@kernel.org>,
- "xingyu.wu@starfivetech.com" <xingyu.wu@starfivetech.com>,
- "ziv.xu@starfivetech.com" <ziv.xu@starfivetech.com>,
- "hayashi.kunihiko@socionext.com" <hayashi.kunihiko@socionext.com>,
- "mhiramat@kernel.org" <mhiramat@kernel.org>
-Cc: "chrome-platform@lists.linux.dev" <chrome-platform@lists.linux.dev>,
- "linux-watchdog@vger.kernel.org" <linux-watchdog@vger.kernel.org>,
- "imx@lists.linux.dev" <imx@lists.linux.dev>,
- "patches@opensource.cirrus.com" <patches@opensource.cirrus.com>,
- "openbmc@lists.ozlabs.org" <openbmc@lists.ozlabs.org>,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
- "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
-References: <20250305101025.2279951-1-george.cherian@marvell.com>
- <43fb0965-04b7-41dc-ae3f-54676eefdbb5@pengutronix.de>
- <PH8PR18MB53817EC09B918852B78DF3AAC5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <PH8PR18MB53817EC09B918852B78DF3AAC5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH 2/2] tools/perf/powerpc: Use return code from
+ disasm_line__parse
+Content-Language: en-GB
+To: Athira Rajeev <atrajeev@linux.ibm.com>, acme@kernel.org, jolsa@kernel.org,
+        adrian.hunter@intel.com, irogers@google.com, namhyung@kernel.org
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, kjain@linux.ibm.com, disgoel@linux.vnet.ibm.com,
+        hbathini@linux.vnet.ibm.com, Aditya.Bodkhe1@ibm.com,
+        Tejas.Manhas1@ibm.com
+References: <20250304154114.62093-1-atrajeev@linux.ibm.com>
+ <20250304154114.62093-2-atrajeev@linux.ibm.com>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20250304154114.62093-2-atrajeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:900:1d::77
-X-SA-Exim-Mail-From: a.fatoum@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: linuxppc-dev@lists.ozlabs.org
-X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: n6wKdJOmpaRpc6VNUbLl-5KBdDuxofiJ
+X-Proofpoint-ORIG-GUID: QwBWc00gfUCfNTo0Y7X4NxJ_KdEEMXUt
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-05_04,2025-03-05_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 spamscore=0
+ lowpriorityscore=0 adultscore=0 phishscore=0 mlxlogscore=999
+ suspectscore=0 impostorscore=0 priorityscore=1501 malwarescore=0
+ bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503050093
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi George,
+I was able to reproduce the issue without this patch.
 
-On 05.03.25 12:28, George Cherian wrote:
-> Hi Ahmad,
->> Hi George,
->> On 05.03.25 11:10, George Cherian wrote:
->>> This series adds a new kernel command line option to watchdog core to
->>> stop the watchdog on panic. This is useul in certain systems which prevents
->>> successful loading of kdump kernel due to watchdog reset.
->>>
->>> Some of the watchdog drivers stop function could sleep. For such
->>> drivers the stop_on_panic is not valid as the notifier callback happens
->>> in atomic context. Introduce WDIOF_STOP_MAYSLEEP flag to watchdog_info
->>> options to indicate whether the stop function would sleep.
->>
->> Did you consider having a reset_on_panic instead, which sets a user-specified
->> timeout on panic? This would make the mechanism useful also for watchdogs
-> 
-> /proc/sys/kernel/panic already provides that support. You may echo a non-zero value 
-> and the system tries for a soft reboot after those many seconds. But this doesn't happen 
-> in case of a kdump kernel load after panic.
+Applied this patch on next-20250227 kernel and tested the patch and 
+issue is fixed.
 
-The timeout specified to the Watchdog reset_on_panic option would be programmed into
-the active watchdogs and not be used to trigger a software-induced reboot.
+Please add below tag.
 
->> that can't be disabled and would protect against system lock up: 
->> Consider a memory-corruption bug (perhaps externally via DMA), which partially
->> overwrites both main and kdump kernel. With a disabled watchdog, the system
->> may not be able to recover on its own.
-> 
-> Yes, that is the reason why the kernel command-line is optional and by default it is set to zero.
-> So that in cases if you have a corrupted kdump kernel then watchdog kicks in.
+Tested-By: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 
-The existing option isn't enough for the kdump kernel use case.
-If we (i.e. you) are going to do something about it, wouldn't it be
-better to have a solution that's applicable to a wider number of
-watchdog devices?
-
->> If you did consider it, what made you decide against it?
-> watchdog.stop_on_panic=1 is specifically for systems which can't boot a kdump kernel due to the fact 
-> that the kdump kernel gets a watchdog reset while booting, may be due to a shorter watchdog time.
-> For eg: a 32-bit watchdog down counter running at 1GHz.
-> reset_on_panic can guarantee only the largest watchdog timeout supported by HW, 
-> since there is no one to ping the watchdog.
-
-If you are serious with the watchdog use, you'll want to use the watchdog to
-monitor kernel startup as well. If the bootloader can set a watchdog timeout
-just before starting the kernel and it doesn't expire before the kernel watchdog
-driver takes over, why can't we do the same just before starting the dumpkernel?
-
-Thanks,
-Ahmad
-
- 
->>
->> Thanks,
->> Ahmad
->>
->>>
->>>
->> Changelog:
->> v1 -> v2
->> - Remove the per driver flag setting option
->> - Take the parameter via kernel command-line parameter to watchdog_core.
->>
->> v2 -> v3
->> - Remove the helper function watchdog_stop_on_panic() from watchdog.h.
->> - There are no users for this. 
->>
->> v3 -> v4
->> - Since the panic notifier is in atomic context, watchdog functions
->>   which sleep can't be called. 
->> - Add an options flag WDIOF_STOP_MAYSLEEP to indicate whether stop
->>   function sleeps.
->> - Simplify the stop_on_panic kernel command line parsing.
->> - Enable the panic notiffier only if the watchdog stop function doesn't
->>   sleep
->>
->> George Cherian (2):
->>   watchdog: Add a new flag WDIOF_STOP_MAYSLEEP
->>   drivers: watchdog: Add support for panic notifier callback
-> 
-> - George
-
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+On 04/03/25 9:11 pm, Athira Rajeev wrote:
+> In disasm_line__parse_powerpc() , return code from function
+> disasm_line__parse() is ignored. This will result in bad results
+> if the disasm_line__parse fails to disasm the line. Use
+> the return code to fix this.
+>
+> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+> ---
+>   tools/perf/util/disasm.c | 5 +++--
+>   1 file changed, 3 insertions(+), 2 deletions(-)
+>
+> diff --git a/tools/perf/util/disasm.c b/tools/perf/util/disasm.c
+> index a53e8c4e5bca..8f0eb56c6fc6 100644
+> --- a/tools/perf/util/disasm.c
+> +++ b/tools/perf/util/disasm.c
+> @@ -976,6 +976,7 @@ static int disasm_line__parse_powerpc(struct disasm_line *dl, struct annotate_ar
+>   	char *tmp_raw_insn, *name_raw_insn = skip_spaces(line);
+>   	char *name = skip_spaces(name_raw_insn + RAW_BYTES);
+>   	int disasm = 0;
+> +	int ret = 0;
+>   
+>   	if (args->options->disassembler_used)
+>   		disasm = 1;
+> @@ -984,7 +985,7 @@ static int disasm_line__parse_powerpc(struct disasm_line *dl, struct annotate_ar
+>   		return -1;
+>   
+>   	if (disasm)
+> -		disasm_line__parse(name, namep, rawp);
+> +		ret = disasm_line__parse(name, namep, rawp);
+>   	else
+>   		*namep = "";
+>   
+> @@ -998,7 +999,7 @@ static int disasm_line__parse_powerpc(struct disasm_line *dl, struct annotate_ar
+>   	if (disasm)
+>   		dl->raw.raw_insn = be32_to_cpu(dl->raw.raw_insn);
+>   
+> -	return 0;
+> +	return ret;
+>   }
+>   
+>   static void annotation_line__init(struct annotation_line *al,
 
