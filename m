@@ -1,65 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-6723-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6724-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB542A4F96B
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 10:01:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4BD8A4F973
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 10:03:08 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z764D6lkjz30Ss;
-	Wed,  5 Mar 2025 20:01:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z765k3Bvmz30WR;
+	Wed,  5 Mar 2025 20:03:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.188
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741165308;
-	cv=none; b=gXPkK/oul6bEvs+BdNyBSavp+NteErySjN7WHA/zU8I5UBlHxHz+9WmOiJoMRM6oGKV6y6yRDyWiuRAFbSZPD3U7GVbzgHU/5rx/uef01Nc4Zxe1/wSuRCfsAIKD4Y3xVbvJZmbC/hywpmTswZM/4CaxmPxlVG3Vt7COotwVOw5TsoUO52YmMvtqsFJupH5bkWh6qKAi5rgqEzoHwXQqZKMjzxpgd66FO63QfXORSxeRWaIerBacN0AqAkK4yfhOzvu9mZFU4joK52GX+acSn+pTWiHz0fIcEgQJWw2hRwChqp8UDG8dqoKLGrVdFxPSke4lmVWYfSJRV3HychhXFg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741165386;
+	cv=none; b=jTmknspIxNSMwyoYaQhfjySeq+wf/XHa7GcS/+EwxTMSa9uJph57PdIgqGTGgshT+VzNyk9oOMHxKFzWUCRwU6reyg5vSrWieUznpPhhWQwRj1/5vKaHSMtLk84PgR35psDb2wQv/uCYPD+AVfpW6DorZcBKy6EgUF8ediUCZPuLCXbQxBXI0dhlZ6LEMyDfHv5KpwwWF9yuJfRZEsQXmHc4Hu9J/Toh0VSqMkuG7Pw0ojxfUxwudSliqBRmRXwZ2MACccbmma+xWN1w9kJE2MEJUAqishPIjsDH1gd1cV04tzBfPrptbUHQBFhIZGjrwXvut0ZnFfxsySCx1GW2SA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741165308; c=relaxed/relaxed;
-	bh=pxfxYDlE9uxBTGbJBMJTZoCrTBiodMsWCa8ppowizpA=;
-	h=CC:Subject:To:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=X5AykK7+tPkp2fl7GoXMK3bZ9ICx1EGpKk5/pXTNC+wKAt3SVgg6nUdp3s8k6bg/q8SflkDDitkrd3B4mhdjtQEE3G0sBVV8wUQEYDsF1+BZ8Bx3usZlZyvCVS9haOLkqfuWlpjxRML0PuZ29W5r/tDfzuTYQgPWygTmZ7mtAyFg0XVyH1Nn+JIrXfLoTwssXDc2PP5Ma7CNhd8+l4wD+gbOctYWqD5GYhYNelGqrVWgubNqcN6YT3gVdVmL/RPbkemjR5tLai1jYtDkUA0AQzSKZRr1DxtqLvLaxu9SsrZZgg2YsnuGv4CEsCL+yf8hsmz188Tj902MYfoxgA+MLA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.188; helo=szxga02-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+	t=1741165386; c=relaxed/relaxed;
+	bh=n1z2e9mVbdazKv/D+7yQN/ZVbR7ipkcxFW+oD3l7Rjw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GY8jczaAMFH4kycphIs1yzgJMAlgX6sAJ9O4NSNo7fMVUm7SbnD8hYxN7vMhsO+29P+N5iRwGf3Q19WLuWcW6CWvHlPlwrwkJP3yONriY3YXzUt3WaCjY0MBWViAb8bMP0aJV3yn7k+lhUX1MEe/D4+HyIP6m7ig+keSVYVBEJrkeJmCz0p1Z8J9IkFIg3l+LxKPspdgGfII9fbAaoxDIlqMFJ2lMs9Rtggie7cPIxrH4BfJtieEuFhW7Fb+S7rx8ndA1cwFF9m+sPy7Syv6LGtNPLmhCiw6Gg912COODrgNSJTM3U78GZyvMGiDvEeth8euhfGtBeWqVgtzbLKTyQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=idXzb7jg; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=idXzb7jg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gautam@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z76494sfjz30CF
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 20:01:43 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.163.174])
-	by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4Z75zz0DvVzCs97;
-	Wed,  5 Mar 2025 16:58:07 +0800 (CST)
-Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
-	by mail.maildlp.com (Postfix) with ESMTPS id B769814022D;
-	Wed,  5 Mar 2025 17:01:36 +0800 (CST)
-Received: from [10.67.121.177] (10.67.121.177) by
- kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1258.34; Wed, 5 Mar 2025 17:01:35 +0800
-CC: <yangyicong@hisilicon.com>, <catalin.marinas@arm.com>, <will@kernel.org>,
-	<tglx@linutronix.de>, <peterz@infradead.org>, <mpe@ellerman.id.au>,
-	<linux-arm-kernel@lists.infradead.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <linuxppc-dev@lists.ozlabs.org>,
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
-	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
-	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
-	<linuxarm@huawei.com>, <xuwei5@huawei.com>, <guohanjun@huawei.com>,
-	<sshegde@linux.ibm.com>
-Subject: Re: [PATCH v11 3/4] arm64: topology: Support SMT control on ACPI
- based system
-To: Pierre Gondois <pierre.gondois@arm.com>, Sudeep Holla
-	<sudeep.holla@arm.com>, <dietmar.eggemann@arm.com>
-References: <20250218141018.18082-1-yangyicong@huawei.com>
- <20250218141018.18082-4-yangyicong@huawei.com> <Z8HAkZiHYRjj97M7@bogus>
- <336e9c4e-cd9c-4449-ba7b-60ee8774115d@arm.com>
- <20250228190641.q23vd53aaw42tcdi@bogus>
- <a52972c7-aadd-4a77-a292-057fa5f8372d@arm.com> <Z8WPiOweOjFZqTwN@bogus>
- <32e572d6-dedd-d8a3-13be-6de02303a64d@huawei.com>
- <2fdea4f6-db98-4dc7-947f-e19ee54d2c3c@arm.com> <Z8bPtsO7dEV0lq2M@bogus>
- <153df413-9989-42fe-b574-598ff0fa9716@arm.com>
-From: Yicong Yang <yangyicong@huawei.com>
-Message-ID: <86e32fb3-0ff5-f4f0-3d44-222e63b5a69f@huawei.com>
-Date: Wed, 5 Mar 2025 17:01:34 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z765j2xNQz30CF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  5 Mar 2025 20:03:05 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5258fDFP008325;
+	Wed, 5 Mar 2025 09:02:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=n1z2e9mVbdazKv/D+7yQN/ZVbR7ipkcxFW+oD3l7R
+	jw=; b=idXzb7jgXBXuYsVeJaUSaDwesp7bkOuVKlFflWDLVQE0v3VlGp4pMrW/K
+	A8ba3gCk4MOS4Avf9JhpocEc7A5EZsvAdcf+UN2izFKnplbH5s8W8RKbZ8+DWlc5
+	5WiWygaRdYk75hWB9z9Gilv7+GZe3QJgZZs2VaF/HYZKp0KKWCYMYsoBaO7JpL1X
+	tj9i3UZ54p+awFkROvBWeOfi4UrfTkJvn6Uewo6Bg+Aj1si0xo3ZJEHVG3Ar35Ve
+	ohD+ufGw8rwbiBTobeiwnXYrHA7zJzjokErbPyUMpMIfC98QESyIokSCBNx/SKJf
+	zdZos9SL0L5HGny92XYHJcH0OdUlw==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4568ppahp9-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 09:02:46 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5258vqXG029793;
+	Wed, 5 Mar 2025 09:02:46 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4568ppahp6-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 09:02:45 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5257gU36013776;
+	Wed, 5 Mar 2025 09:02:45 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 454e2ksvth-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 05 Mar 2025 09:02:45 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52592fPf24773228
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 5 Mar 2025 09:02:41 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5396820040;
+	Wed,  5 Mar 2025 09:02:41 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8AD1A20043;
+	Wed,  5 Mar 2025 09:02:39 +0000 (GMT)
+Received: from li-c6426e4c-27cf-11b2-a85c-95d65bc0de0e.in.ibm.com (unknown [9.204.206.66])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  5 Mar 2025 09:02:39 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, naveen@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, vaibhav@linux.ibm.com
+Subject: [PATCH] powerpc/pseries/msi: Avoid reading PCI device registers in reduced power states
+Date: Wed,  5 Mar 2025 14:32:36 +0530
+Message-ID: <20250305090237.294633-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.47.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -72,97 +90,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-In-Reply-To: <153df413-9989-42fe-b574-598ff0fa9716@arm.com>
-Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.67.121.177]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
- kwepemd200014.china.huawei.com (7.221.188.8)
-X-Spam-Status: No, score=-2.4 required=5.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: XMEYmXGLWR-uqDp97woI17Cud8XvfrSk
+X-Proofpoint-ORIG-GUID: qBkNYmHN-zrEB8W6tWAMSOdOUG5YmdZY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-05_03,2025-03-05_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 phishscore=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015 malwarescore=0
+ mlxscore=0 impostorscore=0 adultscore=0 priorityscore=1501 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503050071
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 2025/3/4 23:07, Pierre Gondois wrote:
-> 
-> 
-> On 3/4/25 11:02, Sudeep Holla wrote:
->> On Tue, Mar 04, 2025 at 09:25:02AM +0100, Pierre Gondois wrote:
->>>
->>>
->>> On 3/3/25 15:40, Yicong Yang wrote:
->>>> On 2025/3/3 19:16, Sudeep Holla wrote:
->>>>> On Mon, Mar 03, 2025 at 10:56:12AM +0100, Pierre Gondois wrote:
->>>>>> On 2/28/25 20:06, Sudeep Holla wrote:
->>>>>>>>>
->>>>>>>>> Ditto as previous patch, can get rid if it is default 1.
->>>>>>>>>
->>>>>>>>
->>>>>>>> On non-SMT platforms, not calling cpu_smt_set_num_threads() leaves
->>>>>>>> cpu_smt_num_threads uninitialized to UINT_MAX:
->>>>>>>>
->>>>>>>> smt/active:0
->>>>>>>> smt/control:-1
->>>>>>>>
->>>>>>>> If cpu_smt_set_num_threads() is called:
->>>>>>>> active:0
->>>>>>>> control:notsupported
->>>>>>>>
->>>>>>>> So it might be slightly better to still initialize max_smt_thread_num.
->>>>>>>>
->>>>>>>
->>>>>>> Sure, what I meant is to have max_smt_thread_num set to 1 by default is
->>>>>>> that is what needed anyways and the above code does that now.
->>>>>>>
->>>>>>> Why not start with initialised to 1 instead ?
->>>>>>> Of course some current logic needs to change around testing it for zero.
->>>>>>>
->>>>>>
->>>>>> I think there would still be a way to check against the default value.
->>>>>> If we have:
->>>>>> unsigned int max_smt_thread_num = 1;
->>>>>>
->>>>>> then on a platform with 2 threads, the detection condition would trigger:
->>>>>> xa_for_each(&hetero_cpu, hetero_id, entry) {
->>>>>>       if (entry->thread_num != max_smt_thread_num && max_smt_thread_num)     <---- (entry->thread_num=2) and (max_smt_thread_num=1)
->>>>>>           pr_warn_once("Heterogeneous SMT topology is partly
->>>>>>                         supported by SMT control\n");
->>>>>>
->>>>>> so we would need an additional variable:
->>>>>> bool is_initialized = false;
->>>>>
->>>>> Sure, we could do that or skip the check if max_smt_thread_num == 1 ?
->>>>>
->>>>> I mean
->>>>>     if (entry->thread_num != max_smt_thread_num && max_smt_thread_num != 1)
->>>>>
->>>
->>> I think it will be problematic if we parse:
->>> - first a CPU with 1 thread
->>> - then a CPU with 2 threads
->>>
->>> in that case we should detect the 'Heterogeneous SMT topology',
->>> but we cannot because we don't know whether max_smt_thread_num=1
->>> because 1 is the default value or we found a CPU with one thread.
->>
->> Right, but as per Dietmar's and my previous response, it may be a valid
->> case. See latest response from Dietmar which is explicitly requesting
->> support for this. It may need some special handling if we decide to support
->> that.
-> 
-> Ah ok, right indeed.
-> For heterogeneous SMT platforms, the 'smt/control' file is able to accept
-> on/off/forceoff strings. But providing the max #count of threads as an integer would
-> be wrong if the CPU doesn't have this #count of threads.
-> 
-> Initially the idea was to just warn that support might be needed for heterogeneous
-> SMT platforms, and let whoever would have such platform solve this case, but just
-> disabling the integer interface in this case would solve the issue generically.
-> 
+When a system is being suspended to RAM, the PCI devices are also
+suspended and the PPC code ends up calling pseries_msi_compose_msg() and
+this triggers the BUG_ON() in __pci_read_msi_msg() because the device at
+this point is in reduced power state. In reduced power state, the memory
+mapped registers of the PCI device are not accessible.
 
-ok so let's regard the asymmetric platform as a valid case as suggested (also mentioned
-by Dietmar on another thread) and remove the check here. Will update and test.
+To replicate the bug:
+1. Make sure deep sleep is selected
+	# cat /sys/power/mem_sleep
+	s2idle [deep]
 
-Thanks.
+2. Make sure console is not suspended (so that dmesg logs are visible)
+	echo N > /sys/module/printk/parameters/console_suspend
+
+3. Suspend the system
+	echo mem > /sys/power/state
+
+To fix this behaviour, read the cached msi message of the device when the
+device is not in PCI_D0 power state instead of touching the hardware.
+
+Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+---
+ arch/powerpc/platforms/pseries/msi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/platforms/pseries/msi.c b/arch/powerpc/platforms/pseries/msi.c
+index fdc2f7f38dc9..458d95c8c755 100644
+--- a/arch/powerpc/platforms/pseries/msi.c
++++ b/arch/powerpc/platforms/pseries/msi.c
+@@ -525,7 +525,12 @@ static struct msi_domain_info pseries_msi_domain_info = {
+ 
+ static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
+ {
+-	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
++	struct pci_dev *dev = msi_desc_to_pci_dev(irq_data_get_msi_desc(data));
++
++	if (dev->current_state == PCI_D0)
++		__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
++	else
++		get_cached_msi_msg(data->irq, msg);
+ }
+ 
+ static struct irq_chip pseries_msi_irq_chip = {
+-- 
+2.47.0
 
 
