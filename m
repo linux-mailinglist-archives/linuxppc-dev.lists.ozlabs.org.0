@@ -1,69 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-6741-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6743-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BFA9A4FFC1
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 14:12:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC45A501B0
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  5 Mar 2025 15:20:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7Cdl24lVz3byh;
-	Thu,  6 Mar 2025 00:12:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7F855F0gz3c1w;
+	Thu,  6 Mar 2025 01:20:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::82d"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741180363;
-	cv=none; b=Yy4rfS134TJGVN+YBenBjJac9idcb5mkpF7hdkkfKXzeahvs3lkSbtnD/9rSSHpFfo+uZjW5wNngIQwMA7wOCMeb5LczXuqlh16sTqnPtQKfFjkWRvSxp6VRdhy2St/BYd7jWAjJsrtSTbYyv1vTxlLvH1CCdIC3KfkMnk+xZWzjMFqDFoJILTEVb+htiHSi07kHsLBF5/08RrROOju7+t/cMIwmmGT/GQCOoc7Jfu3mxnCHo679uW94sb17aHow78hArBSLsWGBuwu2+CwQj8gtYmrYkeofEjZ+jjeGq7/RKi8YGZMOAyjzeWPbRHSDoHLuW1rYpC/r2J6Ht3mR3w==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741180363; c=relaxed/relaxed;
-	bh=iOdrgfnKDo0adnIeWCzGbGdt+czcdG3OGWY151PLQj4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RofNzo/RfRrPr799kU4Zt4mVls1f+d+jq+ZaJbSQ5eOy2oZQkA3zz9xoq8Al7ps6zFFvMWgv7A98tiYt+/+3fe72QudK8uATrL+HGUceP2EVoYKg1cm8Fujfm3qiSjDsT44cn1E+tzr8nZWfbQqBlZgKIGNg4cs8FKNhuKsK1gwS2z4TdGPWXpvxVHz95ynu4g/7D1m6mg0erCAWNJTc5Jbfq/j2JUzr2Xkm2ROoStUVM18uFvevhiUpMcOBS41du7vlf8itGVe5RQMEfqcRrCfX8GDEnYFUe/7Srxv06YViclPzZUJT6wA25xlPzGG8jnVliNITeq5WtcOnNXj9DQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Jd8mwCZ6; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=jackmanb@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=85.215.255.54 arc.chain=strato.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741184437;
+	cv=pass; b=WeRR/Q29DPN58XoAGGM2VX+mnhMx6a1YsYDUOW3ENuRJuI8o6JzjPm6vVCngGtTjBFwnZM7/Q1kyI1ecniKKimYkui9UWnyF23QeLQq2/jkQnoEC2ggEJgSEHIsgH3Fm1ZfoVLdsSXZ7Uzzq7xjFaGbowMFNkP1nsXbGjhQ53SW+UoI8EY9A3ecaYoKE/g04UZyCWQoopscHEzP3BlchdJrEflgzqYUQ49Rmut6Iaulbd1LJfn579fKEsgqy9cLfruTX49TgC24WJkaU8E+fQJ3J+OalfUXRto9nO6936lX2qBn2hIMsZrrzZuNVDpakWKMrzC4asJNGsbseZ9+rwA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1741184437; c=relaxed/relaxed;
+	bh=XG+agOvW8ppEzopPxKXPNXl9FwqxrC3qL6otfZY6Dvg=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=okHx46iZEz1kux1pi+yenSYllYNKLJZoQdRoFlgH3G4Kc0l/VJfWiRcAIZEHP9pQnsIx3wkCsJWw1yxPslS9Y93RrxiGMFmBxkcD8A1qoTOSTczS8uqEh31hn7qEiLjxz4cjUxHRqqxHYGaVoYf6y/owytWPN4g6Wj7vOlL6+OjP1LvbKJd2Wj8tXkZcPYk/Kn823DfrW8yCnxfjXyNFpBN5ODrh2RzLbIonlC1wlx628TuZ1lF1DiTA+BldB0HPf/NhP7Pc391E19eJURRA0ibmZigwnqmloxrKbs/3aKGTNZZx5bjK07wvhwKa56LPLqBGDd7LzTjOg3tHBUCHUQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de; dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=fUhr+fZd; dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=VEbEw3V/; dkim-atps=neutral; spf=pass (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org) smtp.helo=mo4-p01-ob.smtp.rzone.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=xenosoft.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Jd8mwCZ6;
+	dkim=pass (2048-bit key; unprotected) header.d=xenosoft.de header.i=@xenosoft.de header.a=rsa-sha256 header.s=strato-dkim-0002 header.b=fUhr+fZd;
+	dkim=pass header.d=xenosoft.de header.i=@xenosoft.de header.a=ed25519-sha256 header.s=strato-dkim-0003 header.b=VEbEw3V/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::82d; helo=mail-qt1-x82d.google.com; envelope-from=jackmanb@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=mo4-p01-ob.smtp.rzone.de (client-ip=85.215.255.54; helo=mo4-p01-ob.smtp.rzone.de; envelope-from=chzigotzky@xenosoft.de; receiver=lists.ozlabs.org)
+X-Greylist: delayed 359 seconds by postgrey-1.37 at boromir; Thu, 06 Mar 2025 01:20:33 AEDT
+Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7Cdj3j5Kz3bxH
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 00:12:40 +1100 (AEDT)
-Received: by mail-qt1-x82d.google.com with SMTP id d75a77b69052e-4750a85a0ddso210781cf.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 05 Mar 2025 05:12:40 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1741180358; x=1741785158; darn=lists.ozlabs.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=iOdrgfnKDo0adnIeWCzGbGdt+czcdG3OGWY151PLQj4=;
-        b=Jd8mwCZ6pTfXmlDqsdsKpTc1Znz9gaNGOn7ykMjFxAqsEtQkOhvmPDTupUjiu1048O
-         PO6/1rpMLGs0arKrtmm2SqaYAQXiOhI725zbfAeh5k0NSZDqfBoLH1JwoH5SFjtF3GWs
-         Z7J3ZvMcBfYnac3oSQpyONk8/Ggw0sZfCOYRe+YHat2ZfInVFfys07QYd9cqkLeicZl/
-         MgAN5f5d1aba6xHgcrTj4aFeqcuL6hXlu5l9Ms31irkmCfuFeL7ReECWwE8J/SveWTBW
-         DIDJwd/2tP973oLF+IwFMVwjOR4btD4GpHV0KJR1Qfk8RLu1RS8I2TrVKkrytmsIctT5
-         bHHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741180358; x=1741785158;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=iOdrgfnKDo0adnIeWCzGbGdt+czcdG3OGWY151PLQj4=;
-        b=d76DkarRG4n0I9Y/XquTCfthDPMxTvNkrvTO8oPBJG5eie2djvYe4o6djwre3x6LNj
-         7N+CxMjzq+6zHqwJ4qvIY7qTZXfhnQZZRBFQOhPwFRmvIBOoG4ZdLmosSONH4xdwOCnE
-         mCxnbo1Yxg3ZNtJ8h2G4xy+Ginw1WaskWOehrbtPPQTbKTlna5P05KDulBGIu0CFgPQQ
-         4VDCO0smdC6AECkWUvP2tPgqohoq25sweZr8MUJhzwGmQSq4yPCb7b5PbsRX5VfqZAPP
-         VKuOwIR1c3DFnOaVAusKqa0oejgp64PAvTEhKe1QaUOG8FYzcC7dQUDTtdUlP3bOfmGg
-         pDHg==
-X-Forwarded-Encrypted: i=1; AJvYcCW1QE7noKlBXLunbpePB+fqRJEqCxUzeLvLjqao/E+uFPMxONWYpKQfxVIMZziPbqjOHBpcoUtlemDLexc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxcwmOud+QJDZtAmJe+Qb4EX1j6JkarykwErXm9drYmzPIh/dO3
-	uYxXbqp5wmoIPQUYudAczveULfhYmbySRhkpPzIbL7P99HIlW/VHzxc/TX2L8uT31jEIacaPXg2
-	fzZfCZile9e2EAiwRqvC16uosMRO0OBU9EGJP
-X-Gm-Gg: ASbGnctVHNHkJmZcCIfn/LUYKWUvxBpKwPdZk3DHewxWCfIhIkix0M8kk6VB08Jbnk/
-	Hz8QzDegLdHZJQIH73ATLfM6VRqR8kHeLPsToJitNU5WumP8Kk6LigcRUmnXh/vwDnxmeTVlEXq
-	A/2Hl6xdytCrr6GKmR10emsdIMmyghQR1OlzEXev27R9kTVnao5wMcYaMB
-X-Google-Smtp-Source: AGHT+IFIn6b7M1PNu9NZZ9KBzOuRO4deZPOixhL9M73rMvQkDHUtfUtYPha+8DdwHlmaLHcT+urAybKKpNAnQK1YFdU=
-X-Received: by 2002:a05:622a:110b:b0:471:f560:27dc with SMTP id
- d75a77b69052e-4750cae2127mr2406081cf.27.1741180357471; Wed, 05 Mar 2025
- 05:12:37 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7F815N14z3c1Q
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 01:20:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1741184065; cv=none;
+    d=strato.com; s=strato-dkim-0002;
+    b=CWDaimXSwk1sUD60tEP0N53EtqW1F95Qgk/sD3IZShhOFHvPeXIYxB3HtC1O/ITF+B
+    V5vGlTsRd8Nb60t++0cAhO7qLZhlbmllEoCYZcAzwwuYIsEojFoW9rzaFbzPdhxSPmBb
+    jhJT2kQ+MT3HyP/bUME3ARa/FI5FYtmj3fyq9+S8dnmD8Mkb1/sm7nr8i0Cm6pcMryVQ
+    rIHeNo/9MggU1Dduuvo6m4/P66bePfKRC+KEYO1BPq6IIUeCjJ3ea72np6nPhRpa+gGa
+    kMwbXI+UhsEINWsgAMJMipg7yTMEyNJnZYuLBi4W14KqrjvAReGSCCq27gpQXWemYnd0
+    p9uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1741184065;
+    s=strato-dkim-0002; d=strato.com;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=XG+agOvW8ppEzopPxKXPNXl9FwqxrC3qL6otfZY6Dvg=;
+    b=KGgVBEjIz52vYzYAPtj1IaG+RFhJaIx6Xr8IZEgvMZ6ZyP8Ub+rsGSUusZYo+GrvOe
+    PIF4ynLeSI9C5yV8nuD6i/fEf8TRWoNGV7f84X0gv3IpZFZJCfDw+WgLla/YXGc2mfUN
+    YdynFpiRDuQi0MERFBCLdnRGq84MmaibU/Vehxa9QyVevVTFwO1vEINFkXy8w6O4324X
+    kNv5ato72i+9vb2iIH1+IRbxPi4kpBdPLRjtvzQZcnyZQIiQdRTYO9B9ccE1qwZzLNWO
+    TT8/0oQe4CYVJ+Xz08Li9Aom4utxR4fHn6153q2KSPtL4vXahQHpKsMuwugtIyyQOsHH
+    6jWA==
+ARC-Authentication-Results: i=1; strato.com;
+    arc=none;
+    dkim=none
+X-RZG-CLASS-ID: mo01
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1741184065;
+    s=strato-dkim-0002; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=XG+agOvW8ppEzopPxKXPNXl9FwqxrC3qL6otfZY6Dvg=;
+    b=fUhr+fZdAUFqeeHI5Oj6gCyIZ7DKOIF0Si4KnTCNnzDVy/1E8xwUVCXQp1G26IkPBd
+    cfmQGQtt8FycM9BYf5ascZy1JarpwGoYg70a3AC7yH0LvcC3ERGRm6Mw3NgBUoZQA0O3
+    1pgDlE3ykIgrNB3huyq0B6wQ+MyvEES+eqen6b9lyL0ReoaQPs1ht8EpKBDL8aR3SJQh
+    z/S5WgovSOd5FVK5IZtR6gHgT5r9o3tk9v0tnEk1wUDOmlhzLXb/OOwHBbhRqD3Zg9P9
+    OSbPtfHXtmDdQoEJmslHtSHsujSBL18ekSj/Ci+KcRIf3gdqmFjr16MEAYf0MiB3/K97
+    x+mg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1741184065;
+    s=strato-dkim-0003; d=xenosoft.de;
+    h=To:In-Reply-To:Cc:References:Message-Id:Date:Subject:From:Cc:Date:
+    From:Subject:Sender;
+    bh=XG+agOvW8ppEzopPxKXPNXl9FwqxrC3qL6otfZY6Dvg=;
+    b=VEbEw3V/vVNB/Bx0MOVubiCRR4pqIA9VSi92Emrv6RNVDNnP12qsPKxZLFuko8ZQGL
+    KgfkUAqhQ14RVHRvioCA==
+X-RZG-AUTH: ":L2QefEenb+UdBJSdRCXu93KJ1bmSGnhMdmOod1DhGN0rBVhd9dFr6KxrfO5Oh7V7VZrgs3iXAXqZnhDuuhhnGfQQmpdNZeQ5Fv1TtRo="
+Received: from smtpclient.apple
+    by smtp.strato.de (RZmta 51.3.0 AUTH)
+    with ESMTPSA id e2a9e4125EEO3YE
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
+	(Client did not present a certificate);
+    Wed, 5 Mar 2025 15:14:24 +0100 (CET)
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: quoted-printable
+From: Christian Zigotzky <chzigotzky@xenosoft.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -75,148 +92,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-2-8419288bc805@google.com> <Z8K2B3WJoICVbDj3@kernel.org>
-In-Reply-To: <Z8K2B3WJoICVbDj3@kernel.org>
-From: Brendan Jackman <jackmanb@google.com>
-Date: Wed, 5 Mar 2025 14:12:25 +0100
-X-Gm-Features: AQ5f1JrEWoe__i5J-gwzMxiuWZ9pJYk4XLPMWAQuPYUSu5vOhjZQNejm22RSyYE
-Message-ID: <CA+i-1C06Sunj0BmFON=MbWBK6ZDt_=K4P3BHChRBYyxXqEkQ2g@mail.gmail.com>
-Subject: Re: [PATCH RFC v2 02/29] x86: Create CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Richard Henderson <richard.henderson@linaro.org>, Matt Turner <mattst88@gmail.com>, 
-	Vineet Gupta <vgupta@kernel.org>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>, 
-	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Geert Uytterhoeven <geert@linux-m68k.org>, 
-	Michal Simek <monstr@monstr.eu>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>, 
-	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, Stafford Horne <shorne@gmail.com>, 
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>, Helge Deller <deller@gmx.de>, 
-	Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Paul Walmsley <paul.walmsley@sifive.com>, 
-	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
-	Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
-	Sven Schnelle <svens@linux.ibm.com>, Yoshinori Sato <ysato@users.sourceforge.jp>, 
-	Rich Felker <dalias@libc.org>, John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
-	"David S. Miller" <davem@davemloft.net>, Andreas Larsson <andreas@gaisler.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, Chris Zankel <chris@zankel.net>, 
-	Max Filippov <jcmvbkbc@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
-	Andrew Morton <akpm@linux-foundation.org>, Juri Lelli <juri.lelli@redhat.com>, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>, 
-	Valentin Schneider <vschneid@redhat.com>, Uladzislau Rezki <urezki@gmail.com>, 
-	Christoph Hellwig <hch@infradead.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Arnaldo Carvalho de Melo <acme@kernel.org>, 
-	Namhyung Kim <namhyung@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
-	linux-trace-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	kvm@vger.kernel.org, linux-efi@vger.kernel.org, 
-	Junaid Shahid <junaids@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-15.7 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
-	SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-	autolearn=disabled version=4.0.0
+Mime-Version: 1.0 (1.0)
+Subject: [Kernel 6.12.17] [PowerPC e5500] KVM HV compilation error
+Date: Wed, 5 Mar 2025 15:14:13 +0100
+Message-Id: <DDEA8D1B-0A0F-4CF3-9A73-7762FFEFD166@xenosoft.de>
+References: <20250112095527.434998-4-pbonzini@redhat.com>
+Cc: Trevor Dickinson <rtd2@xtra.co.nz>,
+ mad skateman <madskateman@gmail.com>, hypexed@yahoo.com.au,
+ Darren Stevens <darren@stevens-zone.net>
+In-Reply-To: <20250112095527.434998-4-pbonzini@redhat.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, seanjc@google.com, linuxppc-dev@lists.ozlabs.org,
+ regressions@lists.linux.dev, Greg KH <greg@kroah.com>
+X-Mailer: iPhone Mail (22D72)
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_PASS,SPF_NONE autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Sat, Mar 01, 2025 at 09:23:51AM +0200, Mike Rapoport wrote:
-> Hi Brendan,
->
-> On Fri, Jan 10, 2025 at 06:40:28PM +0000, Brendan Jackman wrote:
-> > Currently a nop config. Keeping as a separate commit for easy review of
-> > the boring bits. Later commits will use and enable this new config.
-> >
-> > This config is only added for non-UML x86_64 as other architectures do
-> > not yet have pending implementations. It also has somewhat artificial
-> > dependencies on !PARAVIRT and !KASAN which are explained in the Kconfig
-> > file.
-> >
-> > Co-developed-by: Junaid Shahid <junaids@google.com>
-> > Signed-off-by: Junaid Shahid <junaids@google.com>
-> > Signed-off-by: Brendan Jackman <jackmanb@google.com>
-> > ---
-> >  arch/alpha/include/asm/Kbuild      |  1 +
-> >  arch/arc/include/asm/Kbuild        |  1 +
-> >  arch/arm/include/asm/Kbuild        |  1 +
-> >  arch/arm64/include/asm/Kbuild      |  1 +
-> >  arch/csky/include/asm/Kbuild       |  1 +
-> >  arch/hexagon/include/asm/Kbuild    |  1 +
-> >  arch/loongarch/include/asm/Kbuild  |  3 +++
-> >  arch/m68k/include/asm/Kbuild       |  1 +
-> >  arch/microblaze/include/asm/Kbuild |  1 +
-> >  arch/mips/include/asm/Kbuild       |  1 +
-> >  arch/nios2/include/asm/Kbuild      |  1 +
-> >  arch/openrisc/include/asm/Kbuild   |  1 +
-> >  arch/parisc/include/asm/Kbuild     |  1 +
-> >  arch/powerpc/include/asm/Kbuild    |  1 +
-> >  arch/riscv/include/asm/Kbuild      |  1 +
-> >  arch/s390/include/asm/Kbuild       |  1 +
-> >  arch/sh/include/asm/Kbuild         |  1 +
-> >  arch/sparc/include/asm/Kbuild      |  1 +
-> >  arch/um/include/asm/Kbuild         |  2 +-
-> >  arch/x86/Kconfig                   | 14 ++++++++++++++
-> >  arch/xtensa/include/asm/Kbuild     |  1 +
-> >  include/asm-generic/asi.h          |  5 +++++
-> >  22 files changed, 41 insertions(+), 1 deletion(-)
->
-> I don't think this all is needed. You can put asi.h with stubs used outside
-> of arch/x86 in include/linux and save you the hassle of updating every
-> architecture.
+Hi All,
 
-...
+The stable long-term kernel 6.12.17 cannot compile with KVM HV support for e=
+5500 PowerPC machines anymore.
 
-> If you expect other architectures might implement ASI the config would better
-> fit into init/Kconfig or mm/Kconfig and in arch/x86/Kconfig will define
-> ARCH_HAS_MITIGATION_ADDRESS_SPACE_ISOLATION.
+Bug report: https://github.com/chzigotzky/kernels/issues/6
 
-...
+Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/x5000=
+_defconfig
 
-> > +++ b/include/asm-generic/asi.h
-> > @@ -0,0 +1,5 @@
-> > +/* SPDX-License-Identifier: GPL-2.0 */
-> > +#ifndef __ASM_GENERIC_ASI_H
-> > +#define __ASM_GENERIC_ASI_H
-> > +
-> > +#endif
->
-> IMHO it should be include/linux/asi.h, with something like
->
-> #infdef __LINUX_ASI_H
-> #define __LINUX_ASI_H
->
-> #ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
->
-> #include <asm/asi.h>
->
-> #else /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
->
-> /* stubs for functions used outside arch/ */
->
-> #endif /* CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION */
->
-> #endif /* __LINUX_ASI_H */
+Error messages:
 
-Thanks Mike! That does indeed look way tidier. I'll try to adopt it.
+arch/powerpc/kvm/e500_mmu_host.c: In function 'kvmppc_e500_shadow_map':
+arch/powerpc/kvm/e500_mmu_host.c:447:9: error: implicit declaration of funct=
+ion '__kvm_faultin_pfn' [-Werror=3Dimplicit-function-declaration]
+   pfn =3D __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
+         ^~~~~~~~~~~~~~~~~
+  CC      kernel/notifier.o
+arch/powerpc/kvm/e500_mmu_host.c:500:2: error: implicit declaration of funct=
+ion 'kvm_release_faultin_page'; did you mean 'kvm_read_guest_page'? [-Werror=
+=3Dimplicit-function-declaration]
+  kvm_release_faultin_page(kvm, page, !!ret, writable);
+
+After that, I compiled it without KVM HV support.
+
+Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/e5500=
+_defconfig
+
+Please check the error messages.
+
+Thanks,
+Christian=
+
 
