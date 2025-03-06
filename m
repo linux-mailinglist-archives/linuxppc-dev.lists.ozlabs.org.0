@@ -1,81 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-6753-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6754-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2219BA544CA
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 09:26:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9678CA544E3
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 09:30:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7jDg07nWz2ywR;
-	Thu,  6 Mar 2025 19:26:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7jKj6B0mz30XR;
+	Thu,  6 Mar 2025 19:30:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2418::70e" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741249570;
-	cv=pass; b=NnUHXUYg+dp7RmcVlA7FLNxgMqJp3XBgX1gSRSxHitMyiJuODAbpjeLOv2P/JY0mtrA99O2hSHcooc8ncj85jPAx5EpuE7Mn1U4Hj8ynRVqJ/2GeNWUjNyZD8pmORfBhKQ8EglqV55JXj0K+W9G9S54gVgZVIbNFiBMZe7c77w8uPCi8pUXWsl01R7wZt760lNKuNDZrGCJsZp9a3U8kRvqqjQi1566A3E6sKpyBdgdGWj8+epGMS/P0/vtqnAWorq9DmFd3Ktj5qaps75Ov/Bs22JtTOwbHAuZz+Xu0aCXPDSAeHxA62ZPgndxDZJgDD80N53ZJdZBZOIzPq41EQQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741249570; c=relaxed/relaxed;
-	bh=i0P7NccziBOUUmC2+DaG2gBw5lU5pUc9xnppio5Qvvo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=JvDZI7n1tTBuhU8aMByLBYIsAj8Y38vBAyi14Ga5pR+BCKTWmp48zrf9Qof6GKqJeq6xDH57GoqJEjlCmlswzmAVLVQV7YZxdDLo2Bt094PPJvDzzacfWgCUf+EqMTSZfV5AIJnDXaG57Klp7ajiOQ0R+JsJa5V6xNEh+Kkj1tJZym9ZDI8/QxOkTw/15YqSh/xqW/Kyb5L7Gjnbjp74NFGWYM7ZUia7fh/nx2+GFz55DGT2oaVIsRJchSzpZbkeAR/LWwW6tjsCMw5bDaU5qMynNlUSeAFzu/wlVrbaH+jWqOSRGpF/O1UlqdquM8rxX3NwVt34wFNKybezepU42A==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=corigine.com; dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=I1763klR; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2418::70e; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=bijie.xu@nephogine.com; receiver=lists.ozlabs.org) smtp.mailfrom=nephogine.com
-Authentication-Results: lists.ozlabs.org; dmarc=fail (p=none dis=none) header.from=corigine.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741249833;
+	cv=none; b=mAT4tgRc9FmS75935X+H4zUfKkDwachezXbhDnGpJxjk5423TnoC5VX502pFXktPFM58YnkM9icUeZ1uexb8f5wT3802mh07D6vbpDGj6JirMeg9JaYJckg/CHMyhjOAguOXSoHkt7M1LfG7I3gE1IaoCqSRr62uBya5c9SBnq0CYTegGP2vMxH8rZvJq16D7YVLck4mfbBKT9A5VCawmV9ZC/QvXo8RCDKKjuhZAlv6d5t/jNuTR55EGUZTowdMmJbuFXg1peFwg/4x6IoPFk3Fdwvaq+n8SWH7xK4v6LQhODwL/KgewEF3DcKprQ1ICxmApFUGITzkWzDhxeMDgw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1741249833; c=relaxed/relaxed;
+	bh=MhdCmdaagBXagtz+sml/ydwew1v0pyy+uaX/mGhsdO0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ZQBwsGNp3XDwg6Ku42nRaxolMLu2MHIcJcZigKEe1hgd8rMVH9xcIuGcRZuedty3WyVs5ofGKWml0/qIifPDaUMf8879bZnKPliaKXx575jtg2HVm0EqQVS2QIWGw8E6ybKTP08Ll+6LtnkuWp2jDC/zHB0mJCrYBpIlouhplpksGzwkC7PwLs0YyQc1AJ9zMQPwv1hHtSxPxxiK0Odr+5R7dt4cGRpzpKHnFx0sIBPNny2qje9hyKjvcqBCbzuSUZSqFWCQ6NRa7WnF/ntGdOiqo2d4kHjwOzmbrAeeqZQH/sCnCNfnkV+PkSZYbTfVoBQdqN7EHQQGH83GnWjNdQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GMAgBlYe; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=corigine.onmicrosoft.com header.i=@corigine.onmicrosoft.com header.a=rsa-sha256 header.s=selector2-corigine-onmicrosoft-com header.b=I1763klR;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=GMAgBlYe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=nephogine.com (client-ip=2a01:111:f403:2418::70e; helo=nam12-bn8-obe.outbound.protection.outlook.com; envelope-from=bijie.xu@nephogine.com; receiver=lists.ozlabs.org)
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2070e.outbound.protection.outlook.com [IPv6:2a01:111:f403:2418::70e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sourabhjain@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7jDb1WJJz2yvs
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 19:26:06 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=x7DA6LInxRlRmofIwAYcQSN1eva0pQ5ugK6BsY/YwVTvYPLKxhA8eNwiInd7DRxeU50Z4QXXudcxPwJyrDtPR3F+B4ArpLzDkRNU1rDKLY40BHJIJLEXyTQ/BpD9N1e9k/X4oc+VxQfF2hqg1h6nkokiMX968w78uiX+KjTcOeTjIzOaP7yEVYHSmqQW+DZPJA5qEOBqC5viLDn180dg3bg9oA3DEOZScxTuvuVsFN48AjFB0uI9mbmApksyO5HgY9cI1ruT2mGMPMpHVUzqYVxk6ve7+vulrdXVMlVSWzJCOEsYx20FIxabIeRrJvEZRpVvEIlqFrJ9J3QqbrFiHA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=i0P7NccziBOUUmC2+DaG2gBw5lU5pUc9xnppio5Qvvo=;
- b=ScuUMupcRAuoJHxJEy0XFBOod7b3u6uOpPmjPEV6TCkO4G8xKgCkU6wEthIBdbKki+CTCAf1gEneyJwXrqyMnudhFfeMPqPRS5bz9xqlAaVWEREmR7dg71uBm0lCTOatGdE2g4+XaeaS1t9lDaO0NSA5BVSqF0jDQSPbnfzW0CvVcJT58FVSnF5lmJ3AGiGxQxMyo6rKmAUlFQsd+d9Ohr9Jr3br742rytcN3UZAebQ/NezY2IJI666OoGX4x4PFIqzkue+Jzc80uEWiMH1i77S5E/8soypIbB1drd5JMqJcPJPeWhRPbvcs9Dr7ZwHBrUe5nq9Zy/EIJX9fnpKvww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nephogine.com; dmarc=pass action=none header.from=corigine.com;
- dkim=pass header.d=corigine.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=corigine.onmicrosoft.com; s=selector2-corigine-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=i0P7NccziBOUUmC2+DaG2gBw5lU5pUc9xnppio5Qvvo=;
- b=I1763klRL/iDhD+cc2z9H3UTe+Qy9aaCP3zmAQ5Qb5ipaFlspLaxAdeAyFwUGIRfHEZDF98cEXnUXfG1xXz4uzuVd10pNkquyE8jr9786Pak+vjaSTMWQLgSNzAJ4tBAEP4NdWc4qgFbLZu4SWuY3E1gExMPQFFkingLrjndoYQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=corigine.com;
-Received: from SJ2PR13MB6402.namprd13.prod.outlook.com (2603:10b6:a03:556::19)
- by DM4PR13MB5906.namprd13.prod.outlook.com (2603:10b6:8:4c::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8489.29; Thu, 6 Mar
- 2025 08:25:46 +0000
-Received: from SJ2PR13MB6402.namprd13.prod.outlook.com
- ([fe80::b60f:7bf:db6b:5bba]) by SJ2PR13MB6402.namprd13.prod.outlook.com
- ([fe80::b60f:7bf:db6b:5bba%4]) with mapi id 15.20.8511.017; Thu, 6 Mar 2025
- 08:25:46 +0000
-From: Bijie Xu <bijie.xu@corigine.com>
-To: helgaas@kernel.org
-Cc: bhelgaas@google.com,
-	bijie.xu@corigine.com,
-	karolina.stolarek@oracle.com,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	mahesh@linux.ibm.com,
-	oohall@gmail.com,
-	pandoh@google.com
-Subject: Re: [PATCH] PCI/AER: Add kernel.aer_print_skip_mask to control aer log
-Date: Thu,  6 Mar 2025 16:25:32 +0800
-Message-Id: <20250306082532.92696-1-bijie.xu@corigine.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250304232230.GA264709@bhelgaas>
-References: <20250304232230.GA264709@bhelgaas>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SG2PR01CA0169.apcprd01.prod.exchangelabs.com
- (2603:1096:4:28::25) To SJ2PR13MB6402.namprd13.prod.outlook.com
- (2603:10b6:a03:556::19)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7jKh5h6Bz2yvs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 19:30:32 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5263lSg3025300;
+	Thu, 6 Mar 2025 08:30:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=MhdCmd
+	aagBXagtz+sml/ydwew1v0pyy+uaX/mGhsdO0=; b=GMAgBlYeYl3oPFxg1jrgnp
+	MKi0/n9Tv2HOwJsVXo8E/hYk9672aCAoA1hN/MBqzxLlaUYGatlIojFtTT/LFX/M
+	eVWqyDPj8e2osAdfd/kWhe1F9w53JOChXs80EnRu6h3A5MZrEQYye/OAMB9AXfE3
+	wt/Qx+OEkjvEViGoDE7EvBNyhU5qD/xwhqezOqiPjO0RktYh5OjTdDyatz9fkTTG
+	glvVI1lcLhEGf+6bfa1yNStsKNu2/v1g6yoPQZEnrCZkQAveKrma1ZIbF/OJBzp0
+	t+whA5uDzHSed9CC5YrAr+W+1qTIatGrtcDbTIAwiWE3TU3fRMrADUELBXYEfY5w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4574391654-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Mar 2025 08:30:21 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5268SNCn003813;
+	Thu, 6 Mar 2025 08:30:20 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4574391650-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Mar 2025 08:30:20 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5265CeIg009038;
+	Thu, 6 Mar 2025 08:30:19 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 454cxyqrwc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 06 Mar 2025 08:30:19 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5268UFhP59638046
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 6 Mar 2025 08:30:15 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 65E1720043;
+	Thu,  6 Mar 2025 08:30:15 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B599D20040;
+	Thu,  6 Mar 2025 08:30:13 +0000 (GMT)
+Received: from [9.109.204.94] (unknown [9.109.204.94])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  6 Mar 2025 08:30:13 +0000 (GMT)
+Message-ID: <633240dd-30d9-468b-baed-aae456184411@linux.ibm.com>
+Date: Thu, 6 Mar 2025 14:00:12 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,102 +85,270 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SJ2PR13MB6402:EE_|DM4PR13MB5906:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6f7dd09c-4390-45d0-b16d-08dd5c887e17
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|52116014|376014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?xEdReFMKHCpBYwToWPq1ixkAOSEX7tLIwr8ggg2UKuZWa0rmZ/0tWhDKcmYX?=
- =?us-ascii?Q?uKtLO6L/kgklHZu8LrjMZS+WJGzp7w4BnCnm5elblJFElawUfXqWXqzWbLDH?=
- =?us-ascii?Q?zCBoiNN9SFQGrJcuwIKvRe2vVUHEKSYNeORYqoPW4Y4L2z1R8aCgSGDWNMz3?=
- =?us-ascii?Q?UJoXSFUSobl5gat6rtK2Io2uVdoj15LjCAuid0U1NiLbWOA3l3OT8CjmRy3X?=
- =?us-ascii?Q?HOvld6FJjRFZjkFWSTZBQYOozYBqfNn2j42IaymYG6Ta1ogvVy2iop0qgoJS?=
- =?us-ascii?Q?Ujmve4Zu5lOVDASocfhl+HHYwMAbzS9cOc6epeTD0/6AJDTSvtPgp6xQ7T/H?=
- =?us-ascii?Q?taYRy9vrMcmm1DWEJAZACNfkS3RLGKLyQMxzKNgVanMLRwYmJJoHhlyo2l4M?=
- =?us-ascii?Q?qZi4jlckipcoJH68rd26GfgrWqV2zvYghzUPD+kMHjqZfABcZ/UPDopsXtFX?=
- =?us-ascii?Q?Copx4SLLMnyJae8crLqPPDN/ahXj1geLy1jjiYKp+dC17fog2y2mYRIcphkI?=
- =?us-ascii?Q?9EksJ39zFAWBhmjUw/XNt7qe79GAOKzJIQ+nmxQSac8iHwce6KncYvJaZRZ+?=
- =?us-ascii?Q?IUmjFyLOQEvN9JWJNZr64RvvWeLePYOuDPNI5ewIZqd0cG+mvWMJLRANB0+A?=
- =?us-ascii?Q?jLGSEtAiFWMpNU7GuSPpYGBd6PfVT9oujJXvXxLJcoLWUqpY/ljs49/9+/iL?=
- =?us-ascii?Q?+MpPWfJASWorCg5dg4scyn0WatCtb5Q6ave9CMkhPU02ShfhjtsSTHt7HCR6?=
- =?us-ascii?Q?TneaYGrA4O1x0QqjAI2Z1UY09CbOVbfrnRgdAUisfag0xvdwzVdbCf2OQ9jy?=
- =?us-ascii?Q?CVlJYmkggg55DAp+a2PGz3YMeQ+WOTFEktKBIvQnGHum+jOKoXruat8nc5Ve?=
- =?us-ascii?Q?C05ouh5TY9X/EcYncbROSDd1NXvcipg0P8yAFTcvqH8x/7WuPELgob99+/YS?=
- =?us-ascii?Q?O2Yj1v2i8zI3ForbFVyclL0grUMN3uiXIwF8UKWgbgxTGkLAqli3uwpRPWWp?=
- =?us-ascii?Q?cO6Lx2Wg45raJc+FV55FebvWN+ycrk/jOQzPnVGpZ4He/B0ExzOZ6+ez7VAs?=
- =?us-ascii?Q?NAl28x1+rEKi5SzWfPQ45w6XBkSldiKqosMqf5/f2iEu77NUd+wHAWPq5hGC?=
- =?us-ascii?Q?0UnGBHXLDx3TkN7Cz4vpIWQZChsSlvd68W9JrtGqMDrLbAvc/kNcl64wRlYj?=
- =?us-ascii?Q?kw33ryuUTLedlDjoKeRHvjDBSPcPpp7DsH+DsiR+dWUMs6uAYgWbzys9P9n7?=
- =?us-ascii?Q?aYdBEbpjti+L0UAZXi2rRXXT5o+Puobzhd+viWsv1Y3AkZLTnbO9glNvvqks?=
- =?us-ascii?Q?7PNMxX9e0o693SsCvUa3/1eVGYM3YCx2O0AgNGd/u9j0lHNXojnI1MlWeBK/?=
- =?us-ascii?Q?xDyVx+9PQArkCm8rG2mbaUlo0p2VGD2a3qdLOq1KKcsTm16r4WkNJI4i7EJT?=
- =?us-ascii?Q?mwz3yLVZKKjD0cizLnwGQlKNo9S8dv/M?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ2PR13MB6402.namprd13.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(52116014)(376014)(38350700014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?bqpvA4K81NN9hFEugn/0hBn0bP4acUhM5GrXyNeE5PE/ETVZfSpW3/1wm/+N?=
- =?us-ascii?Q?HAeeVcK9GN9XinAWHq+tO+jmCmz8UObWU5ETCgxJvBWHtmd9ZKul/l8P9bWx?=
- =?us-ascii?Q?7gRnqDn2Rl/uSBTu8KnrqZTsfpQo5PzWCOXnrQ0I3NBEYezjBbWjJby6yaT1?=
- =?us-ascii?Q?evdfFo8nlzw4GRc5s1yBErgtBPprgVViPfNng6tO+3QS9CJ3Sq9b92e+UrT/?=
- =?us-ascii?Q?y8eOyDI+yYLcx5Vp1kxjSgFGfuRaFvk1+c1YbGlzwYHqhse1vdwvbhN5gOen?=
- =?us-ascii?Q?i6Kwc/jVjNNWbxruoXjM2dPH2Ujd3V3UKV2XtR/Y7D3jHU1iYYa4TG2K+iSU?=
- =?us-ascii?Q?hbJ/XN1zjG7AS876rVfDm+WGWQPFZfUkTQnV7LDcZfF38qX9wcajWz4bBdt0?=
- =?us-ascii?Q?J6gYRMRVg54HiSTAh3jfupYroFgUqoXDOMEmSv9H4V3SeboZDDpQclZnuCTz?=
- =?us-ascii?Q?HvTbed03I+2Xk+pCuWIHKoAjp8/uP+qCo7xwuzgcRB96LOWMvuWmkd+NJEX6?=
- =?us-ascii?Q?HIHQl0ALm8GANIgE4oV+nvYlrZdfyaTOTyjBSjXmKHJH7FOSJyA/7NRwQGHG?=
- =?us-ascii?Q?zyNkZr2HVw1XXh52RICKMWpEoPzFw3IV2IFHlB/2r1wbu2cD+budPvKouoQ6?=
- =?us-ascii?Q?TM2Y/m8bcnkWPMVMj7znN2i0xeoEsJRLXm55g6sdz3pHFvdMziOdUZz2Vl2o?=
- =?us-ascii?Q?5PeUyUgsO+EdsoGTKEXlze67yFex1eVDeo7vISZvJCAOdKEaKN+1es6n2X1j?=
- =?us-ascii?Q?WjgcI+3VizRbpBBMkWYzd9Misiq2lo9/8Q53y8u+SLBG7uov1uX/CFYIQF0f?=
- =?us-ascii?Q?YLwZA1wv184iLAhsOxYXO12CzwZ0zmEHc8kx3fK2u3TNqxXvs4ZRecKNjZkW?=
- =?us-ascii?Q?+qD0oo68bBRnbVypqdD0AE3TifK5NTG6vhJswWgi8Nqd6e4KzJx/FSIIo0m1?=
- =?us-ascii?Q?KYat84jYT9ceserIVDug99gFIMGDCiyc5vIL0hediTRBmIUEx05N27qd2E9H?=
- =?us-ascii?Q?LjoijLhH70/cNZxg6ISG2DQ4kM1UAQo4rAogqo5u+sLO/8BKjfHr8Uq//FKY?=
- =?us-ascii?Q?VyB0PQ/BDK8yYRZHmjjDytdYqyoLqkYXIlxxv3gIq4whYmwt6IPAyiSB4Vpb?=
- =?us-ascii?Q?H3i1S8oKEXFnI3j5M+ZQ6A/7gLQbwbMAGDwFI57WvgrBnN1tqC2FfAVAfM87?=
- =?us-ascii?Q?wpkHhxuNJMuoiV9D2x6Kc90cwRtHiVbvGVV3iP8P5d9U/J/734LZ55V6nKSh?=
- =?us-ascii?Q?m+bGfnxMaZyxq6Wcd8WWNMOST1dzwgMBVOEq3OVTQrrJ2WSl2GshAzORwJ1b?=
- =?us-ascii?Q?ls1Rx9mFkqL72SFX05XVolDNvt6B31q1dm20YRzgtz9a5aa3AHP3mqFG8FFQ?=
- =?us-ascii?Q?4YWwG7xge7jUyqwiPKZThczbmkQ/a9Q0JQMSU8wpWFGLkchoq+tuQ9FrSKCG?=
- =?us-ascii?Q?UUCEauRVIbQ9PQ9JTvqHQYrd9KbNhoTpbBD8DX1yE3xTPcwkH5rG2vejrSP3?=
- =?us-ascii?Q?a+ACioZ2LEOfmwrJ63c3F92JxNZ35V+URgm3L1E8Ar/fKANpYy7/7Q9Thlfw?=
- =?us-ascii?Q?IKXUvAYrn3iEBxhq5ffkGZQ6ONEj2mz2NvhH6XLs?=
-X-OriginatorOrg: corigine.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6f7dd09c-4390-45d0-b16d-08dd5c887e17
-X-MS-Exchange-CrossTenant-AuthSource: SJ2PR13MB6402.namprd13.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Mar 2025 08:25:46.0197
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: fe128f2c-073b-4c20-818e-7246a585940c
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: qrg02B/GcQMrsHdMchAT+qs9D78vwAxBh4eQ7UnDy9TlDaXlKn0awe4s5wTXw8z8oFXjKodqSFFY/XMgnyIRSg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR13MB5906
-X-Spam-Status: No, score=0.0 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4] powerpc/hugetlb: Disable gigantic hugepages if fadump
+ is active
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+        linuxppc-dev@lists.ozlabs.org
+Cc: Hari Bathini <hbathini@linux.ibm.com>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>
+References: <20250128043358.163372-1-sourabhjain@linux.ibm.com>
+ <87h64cgct3.fsf@gmail.com>
+ <84a2ab12-e24a-4bd6-b562-e3154d1aa258@linux.ibm.com>
+ <87frjttmt7.fsf@gmail.com>
+ <0a6a29f2-e7a9-4c51-8ab4-3e2c33843d1c@linux.ibm.com>
+ <877c5370dc.fsf@gmail.com>
+Content-Language: en-US
+From: Sourabh Jain <sourabhjain@linux.ibm.com>
+In-Reply-To: <877c5370dc.fsf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4sJSFd4P3KyW0Q-ZlFOAtp9B7lnp1dYa
+X-Proofpoint-ORIG-GUID: oOLIYrrZk7E9FymJZtnVX4lisjqGGmhi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-06_03,2025-03-06_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
+ lowpriorityscore=0 spamscore=0 phishscore=0 clxscore=1015 mlxscore=0
+ malwarescore=0 adultscore=0 mlxlogscore=999 priorityscore=1501 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503060063
+X-Spam-Status: No, score=0.0 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tue, 4 Mar 2025 17:22:30 -0600, Bjorn Helgaas wrote:
-> Can you take a look at this and see if it's going the right direction
-> for you, or if it needs extensions to do what you need?
-Thanks for your suggestion. I've taken sometime to review that patch you suggested. 
-It solves part of the problem. And it can set ratelimit on a single device, which
-is good. 
 
-But this patch solves the problem in a different way. 
 
-1. Some users are very nervous to notice this kind of error logs. This patch can
-give them an option to disable these logs entirely on the whole system level 
-instead of just set a ratelimit on a specific device.
 
-2. The sysctl configuration can be persisted after a system reboot. Users may dislike
-these AER logs appearing again after a system reboot.
+On 06/03/25 00:47, Ritesh Harjani (IBM) wrote:
+> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>
+>> Hello Ritesh,
+>>
+>>
+>> On 04/03/25 10:27, Ritesh Harjani (IBM) wrote:
+>>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>>>
+>>>> Hello Ritesh,
+>>>>
+>>>> Thanks for the review.
+>>>>
+>>>> On 02/03/25 12:05, Ritesh Harjani (IBM) wrote:
+>>>>> Sourabh Jain <sourabhjain@linux.ibm.com> writes:
+>>>>>
+>>>>>> The fadump kernel boots with limited memory solely to collect the kernel
+>>>>>> core dump. Having gigantic hugepages in the fadump kernel is of no use.
+>>>>> Sure got it.
+>>>>>
+>>>>>> Many times, the fadump kernel encounters OOM (Out of Memory) issues if
+>>>>>> gigantic hugepages are allocated.
+>>>>>>
+>>>>>> To address this, disable gigantic hugepages if fadump is active by
+>>>>>> returning early from arch_hugetlb_valid_size() using
+>>>>>> hugepages_supported(). When fadump is active, the global variable
+>>>>>> hugetlb_disabled is set to true, which is later used by the
+>>>>>> PowerPC-specific hugepages_supported() function to determine hugepage
+>>>>>> support.
+>>>>>>
+>>>>>> Returning early from arch_hugetlb_vali_size() not only disables
+>>>>>> gigantic hugepages but also avoids unnecessary hstate initialization for
+>>>>>> every hugepage size supported by the platform.
+>>>>>>
+>>>>>> kernel logs related to hugepages with this patch included:
+>>>>>> kernel argument passed: hugepagesz=1G hugepages=1
+>>>>>>
+>>>>>> First kernel: gigantic hugepage got allocated
+>>>>>> ==============================================
+>>>>>>
+>>>>>> dmesg | grep -i "hugetlb"
+>>>>>> -------------------------
+>>>>>> HugeTLB: registered 1.00 GiB page size, pre-allocated 1 pages
+>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 1.00 GiB page
+>>>>>> HugeTLB: registered 2.00 MiB page size, pre-allocated 0 pages
+>>>>>> HugeTLB: 0 KiB vmemmap can be freed for a 2.00 MiB page
+>>>>>>
+>>>>>> $ cat /proc/meminfo | grep -i "hugetlb"
+>>>>>> -------------------------------------
+>>>>>> Hugetlb:         1048576 kB
+>>>>> Was this tested with patch [1] in your local tree?
+>>>>>
+>>>>> [1]: https://web.git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?id=d629d7a8efc33
+>>>>>
+>>>>> IIUC, this patch [1] disables the boot time allocation of hugepages.
+>>>>> Isn't it also disabling the boot time allocation for gigantic huge pages
+>>>>> passed by the cmdline params like hugepagesz=1G and hugepages=2 ?
+>>>> Yes, I had the patch [1] in my tree.
+>>>>
+>>>> My understanding is that gigantic pages are allocated before normal huge
+>>>> pages.
+>>>>
+>>>> In hugepages_setup() in hugetlb.c, we have:
+>>>>
+>>>>        if (hugetlb_max_hstate && hstate_is_gigantic(parsed_hstate))
+>>>>            hugetlb_hstate_alloc_pages(parsed_hstate);
+>>>>
+>>>> I believe the above code allocates memory for gigantic pages, and
+>>>> hugetlb_init() is
+>>>> called later because it is a subsys_initcall.
+>>>>
+>>>> So, by the time the kernel reaches hugetlb_init(), the gigantic pages
+>>>> are already
+>>>> allocated. Isn't that right?
+>>>>
+>>>> Please let me know your opinion.
+>>> Yes, you are right. We are allocating hugepages from memblock, however
+>>> this isn't getting advertized anywhere. i.e. there is no way one can
+>>> know from any user interface on whether hugepages were allocated or not.
+>>> i.e. for fadump kernel when hugepagesz= and hugepages= params are
+>>> passed, though it will allocate gigantic pages, it won't advertize this
+>>> in meminfo or anywhere else. This was adding the confusion when I tested
+>>> this (which wasn't clear from the commit msg either).
+>>>
+>>> And I guess this is happening during fadump kernel because of our patch
+>>> [1], which added a check to see whether hugetlb_disabled is true in
+>>> hugepages_supported(). Due to this hugetlb_init() is now not doing the
+>>> rest of the initialization for those gigantic pages which were allocated
+>>> due to cmdline options from hugepages_setup().
+>>>
+>>> [1]: https://lore.kernel.org/linuxppc-dev/20241202054310.928610-1-sourabhjain@linux.ibm.com/
+>>>
+>>> Now as we know from below that fadump can set hugetlb_disabled call in early_setup().
+>>> i.e. fadump can mark hugetlb_disabled to true in
+>>> early_setup() -> early_init_devtree() -> fadump_reserve_mem()
+>>>
+>>> And hugepages_setup() and hugepagesz_setup() gets called late in
+>>> start_kernel() -> parse_args()
+>>>
+>>>
+>>> And we already check for hugepages_supported() in all necessary calls in
+>>> mm/hugetlb.c. So IMO, this check should go in mm/hugetlb.c in
+>>> hugepagesz_setup() and hugepages_setup(). Because otherwise every arch
+>>> implementation will end up duplicating this by adding
+>>> hugepages_supported() check in their arch implementation of
+>>> arch_hugetlb_valid_size().
+>>>
+>>> e.g. references of hugepages_supported() checks in mm/hugetlb.c
+>>>
+>>> mm/hugetlb.c hugetlb_show_meminfo_node 4959 if (!hugepages_supported())
+>>> mm/hugetlb.c hugetlb_report_node_meminfo 4943 if (!hugepages_supported())
+>>> mm/hugetlb.c hugetlb_report_meminfo 4914 if (!hugepages_supported())
+>>> mm/hugetlb.c hugetlb_overcommit_handler 4848 if (!hugepages_supported())
+>>> mm/hugetlb.c hugetlb_sysctl_handler_common 4809 if (!hugepages_supported())
+>>> mm/hugetlb.c hugetlb_init 4461 if (!hugepages_supported()) {
+>>> mm/hugetlb.c dissolve_free_hugetlb_folios 2211 if (!hugepages_supported())
+>>> fs/hugetlbfs/inode.c init_hugetlbfs_fs 1604 if (!hugepages_supported()) {
+>>>
+>>>
+>>> Let me also see the history on why this wasn't done earlier though...
+>>>
+>>> ... Oh actually there is more history to this. See [2]. We already had
+>>> hugepages_supported() check in hugepages_setup() and other places
+>>> earlier which was removed to fix some other problem in ppc ;)
+>>>
+>>> [2]: https://web.git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c2833a5bf75b3657c4dd20b3709c8c702754cb1f
+>>>
+>>>
+>>> Hence I believe this needs a wider cleanup than just fixing it for our
+>>> arch. I see there is a patch series already fixing these code paths,
+>>> which is also cleaning up the path of gigantic hugepage allocation in
+>>> hugepages_setup(). I think it is in mm-unstable branch too. Can we
+>>> please review & test that to make sure that the fadump usecase of
+>>> disabling hugepages & gigantic are getting covered properly?
+>>>
+>>> [3]: https://lore.kernel.org/all/20250228182928.2645936-1-fvdl@google.com/
+>> I evaluated the patch series [3] for the fadump issue, and here are my
+>> observations:
+>>
+>> Currently, the patch series [3] does not fix the issue I am trying to
+>> address with this patch.
+>>
+>> With patch series [3] applied, I see the following logs when booting the
+>> fadump kernel with
+>> hugepagesz=1G hugepages=1
+>> |
+>> |
+>> With just Patch series [3]:
+>> ------------------------------------
+>>
+>> kdump:/# dmesg | grep -i HugeTLB
+>> [    0.000000] HugeTLB: allocating 10 of page size 1.00 GiB failed.
+>> Only allocated 9 hugepages.
+>> [    0.405964] HugeTLB support is disabled!
+>> [    0.409162] HugeTLB: huge pages not supported, ignoring associated
+>> command-line parameters
+>> [    0.437740] hugetlbfs: disabling because there are no supported
+>> hugepage sizes
+>>
+>> One good thing is that the kernel now at least reports the gigantic
+>> pages allocated, which was
+>> not the case before. I think patch series [3] introduced that improvement.
+>>
+>> Now, on top of patch series [3], I applied this fix, and the kernel
+>> prints the following logs:
+>>
+>> Patch series [3] + this fix:
+>> ------------------------------------
+>>
+>> [    0.000000] HugeTLB: unsupported hugepagesz=1G
+>> [    0.000000] HugeTLB: hugepages=10 does not follow a valid hugepagesz,
+>> ignoring
+>> [    0.366158] HugeTLB support is disabled!
+>> [    0.398004] hugetlbfs: disabling because there are no supported
+>> hugepage sizes
+>>
+>> With these logs, one can clearly identify what is happening.
+>>
+>> What are your thoughts on this fix now?
+>>
+>> Do you still think handling this in generic code is better?
+> I believe so yes (unless we have a valid reason for not doing that).
+> hugepages_supported() is an arch specific call. If you see the prints
+> above what we are essentially saying is that this is not a valid
+> hugepagesz. But that's not the case really right. What it should just
+> reflect is that the hugepages support is disabled.
 
-Regards,
-Bijie Xu
+Yeah better to just print hugetlb support is disabled.
+
+>
+> That being said, I will have to go and look into that series to suggest,
+> where in that path it should use hugepages_supported() arch call to see
+> if the hugepages are supported or not before initializing. And hopefully
+> as you suggested since our cmdline parsing problem was already solved,
+> it should not be a problem in using hugepages_supported() during cmdline
+> parsing phase.
+> But let me check that series and get back.
+>
+>
+>> Given that I was already advised to handle things in arch
+>> code. [4]
+>>
+>> Or should we keep it this way?
+>> One advantage handling things in arch_hugetlb_valid_size() is that it helps
+>> avoid populating hstates since it is not required anyway. I am not claiming
+>> that it is not possible in generic code.
+> IMO, even adding hugepages_supported() check at the right place should avoid
+> populating hstates too. But let's confirm that.
+
+Agree I will explore that.
+
+Thanks,
+Sourabh Jain
+
+>
+> -ritesh
+>
+>> Thoughts?
+>>
+>> Thanks,
+>> Sourabh Jain
+>>
+>>
+>> [3]: https://lore.kernel.org/all/20250228182928.2645936-1-fvdl@google.com/
+>> [4]: https://lore.kernel.org/all/20250122150613.28a92438@thinkpad-T15/
+
 
