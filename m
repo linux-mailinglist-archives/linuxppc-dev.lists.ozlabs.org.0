@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-6772-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6773-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 093B4A55580
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 19:52:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 532B4A55589
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 19:52:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7z7H5Pcjz3c9M;
-	Fri,  7 Mar 2025 05:52:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7z7Y05rSz3c9k;
+	Fri,  7 Mar 2025 05:52:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741287147;
-	cv=none; b=SWZBUtTUI7HMaaN9BbuGzq+cK+KuSlbmzfM6RXvhIBb4x/yGzbaJTzWOhNTHQyHdM+XzrJFi0VTZ2BvZXS5q8eghwfJEQAiGIQE64CpRkyh3l2wKivc9tNTQycggXyLAM1aPvkiMsrnuiROwXAEOlD1LVQYwcp0hDClRKDda49mr+woLFGgo49s7J/0v5VUuPwC3lM6AkOeeKlN9RCSsE2Skw2hK9lTv8FInz8U6c6zsUND7rR6ZbkMmLFEi6kZtgoJE8MXj4ReQkUCMO8+s6Z1DLdhySiysLQ2C402QpQO28aCo7IAem1JL5w3o5Gx/gAviyypXHgQSsYOr4xZcCA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741287160;
+	cv=none; b=G8l0Vjf3aR4fDJZ82BVN+8u/Ebvcmf1Lv2BPFJIozpGRJjYqRTKcaBc6oYPAOlNju45vKiTwIUokRoWGU7ibXazqcEhA4uGoBahtiF51vXuvI8xXuivWbIp4hRtYA+CGdtbS/jWEvXHrLmdi7jMzKlcvvuOU4lVL3EvrUrjlg3fkeKVVN6iOByBv/HsXnFEOT0GFGGBtypTn6TUitFoCNxfZWSOEO2yuIfioUd8BpvDMeYL8PPhSg6jFyn7yJXysIWQ5PDCgIdmUtEQAtf3z1KmPSC8AOWt7RBXmCuGGq1T1PjWimiEUYK+sQ7n2LiozF+fCD93w8LCD9TLZ19mABw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741287147; c=relaxed/relaxed;
-	bh=HLWO0CMiutRC/UaFKgn3zaOpEPV2sObAb62rg+W+5EI=;
+	t=1741287160; c=relaxed/relaxed;
+	bh=f/Tjv7nZ1RGU38sSJe49qG5HH8eeGxe0gmVd2kGHllo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XjtllPtvVKqk+Zn/pMIozHTlLRS330ZASxvfOYB6X7n6UVkeyKTPpU+AvxFUQKh7E8YjfdtW42lI8UVrh5KB4RyM2f2g/KB2rBYdEXHv3meiyEDFDNGphOj1kTaHOzLvgX4C8/j2g6eT0uBo6PrYAAenJA2uYrBByQW+NrO21IaEO4bzHW/oOsUOB/ozxakVR1ejs1dWbkeTLpGO0jnwtwtwKMjlFPVUC+eaW60SMKBc52vl8xDXFOaTqGYHXnFOQarxdOXry2QZQBu/sHTtIeTqNOTcRdqnMiVINad2vutvCqe2xWDJ2CngWVfb/aW44+Z4olJzt17YYshd+TmwuA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FJgzrjTO; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=PXEKThLDlL5CBia0zYJs1GjF6QjAl5FnNxaBazbnhWOPmGCVhSPtPrAsIWCgRXeLcD/68Ilq44J5F4dkwbCQewKZNJV477GK5d+QHaqCzLW1ZCix/rFUbJbD7gvA7AlQ7KwFWem3vA0t9PqWSK+lIFo3pcCOp1lyK7fDZotgiNTATvD4wsE3oyHq38cgwZ8tcGawIPhIRW4fx5fKGbiW/LgaLokOFTzzfu7NgrHYDFI9MRAb38B9hqerapz8alzLxuvbhq4p4GYFYJMT4FwYSMPHTEfh1r3SwL9D4B7uLU1I5wwD6UcTQ2KFe7PqJ7E/34Fz6PfaGtrPJ6AWZCCcyA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=siKQU+HD; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FJgzrjTO;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=siKQU+HD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7z7G6z2Sz3c9D
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 05:52:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7z7X0wypz2yyR
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 05:52:40 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 1905E5C18B4;
-	Thu,  6 Mar 2025 18:50:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DB2C4CEED;
-	Thu,  6 Mar 2025 18:52:11 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 66E49A44F0F;
+	Thu,  6 Mar 2025 18:47:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1376FC4CEE0;
+	Thu,  6 Mar 2025 18:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741287144;
-	bh=3f2PL8+tvQz4kqOX8BsTM2Qrh30qjoJp6oFsaw3/420=;
+	s=k20201202; t=1741287157;
+	bh=nkBe6+9DINra8ChNyXeYcesTu6mPwjeTN1yq3Y1szbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJgzrjTO4LydJP8HiTJaetkeA9l5AEBKpAM8oOldJjnfSIsNdxHDVWTJYA8ZW+ytA
-	 Gf6Qv2JH04v1Wv5MZqueKxNSDjn1bvxaES2Ur7agOMyA+oM/cLmVu4Wp52ZWKRFePe
-	 sZyd0sVUs0txtZvPxmVDHQsORFcZRvNQnvfx4g/W2wHxnoZ7VhRd//aSxKK7XJStTy
-	 sdd79C0Ssrv//n3N6cBDLeTrdB9KhSWEEtBzpAV84qCSM/2NMoenGBapXQxwZet7HJ
-	 ldS9H0hKMEZgcYfgJnMdk4vJpeeALhqApfWyBsF4pj+idRDR4fcjmG4H92j5rE85ME
-	 PX/YLB7CaLEzw==
+	b=siKQU+HDCfw0PGVcuQLowpSBXONSMtUVdFxiCr/6hU+NHY+VBHRlc1vAUMT5hpJZB
+	 PiVwReKljb7dtz57q/YhNgC/pOTwxkZOQVhOO7p43ve+TVnLWWN7d0SfMwaPKZXUnC
+	 kE9KWupqvpjakTaBQB38YsWY/YDt6tkSLuS44omo3I/wMLF2pVop/8yqmSFOQUynyz
+	 OAbvzs0UwLJMMvu3PP28iy00klBtAdZ7IDinGxb0rWjVk4O5ozTiq+E/5xe7lZMfHj
+	 qz1b46GsbuZHpSH/b+emJTc8g80OT8hpp/EeqCWWu0ZThETTwxlc70LZLmOMcV9Az+
+	 ArY7HhgOILFsA==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -101,9 +101,9 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [PATCH 03/13] hexagon: move initialization of init_mm.context init to paging_init()
-Date: Thu,  6 Mar 2025 20:51:13 +0200
-Message-ID: <20250306185124.3147510-4-rppt@kernel.org>
+Subject: [PATCH 04/13] MIPS: consolidate mem_init() for NUMA machines
+Date: Thu,  6 Mar 2025 20:51:14 +0200
+Message-ID: <20250306185124.3147510-5-rppt@kernel.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250306185124.3147510-1-rppt@kernel.org>
 References: <20250306185124.3147510-1-rppt@kernel.org>
@@ -120,53 +120,86 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-This will help with pulling out memblock_free_all() to the generic
-code and reducing code duplication in arch::mem_init().
+Both MIPS systems that support numa (loongsoon3 and sgi-ip27) have
+identical mem_init() for NUMA case.
+
+Move that into arch/mips/mm/init.c and drop duplicate per-machine
+definitions.
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/hexagon/mm/init.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ arch/mips/loongson64/numa.c      | 7 -------
+ arch/mips/mm/init.c              | 7 +++++++
+ arch/mips/sgi-ip27/ip27-memory.c | 9 ---------
+ 3 files changed, 7 insertions(+), 16 deletions(-)
 
-diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
-index 3458f39ca2ac..508bb6a8dcc9 100644
---- a/arch/hexagon/mm/init.c
-+++ b/arch/hexagon/mm/init.c
-@@ -59,14 +59,6 @@ void __init mem_init(void)
- 	 *  To-Do:  someone somewhere should wipe out the bootmem map
- 	 *  after we're done?
- 	 */
--
--	/*
--	 * This can be moved to some more virtual-memory-specific
--	 * initialization hook at some point.  Set the init_mm
--	 * descriptors "context" value to point to the initial
--	 * kernel segment table's physical address.
--	 */
--	init_mm.context.ptbase = __pa(init_mm.pgd);
+diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
+index 8388400d052f..95d5f553ce19 100644
+--- a/arch/mips/loongson64/numa.c
++++ b/arch/mips/loongson64/numa.c
+@@ -164,13 +164,6 @@ void __init paging_init(void)
+ 	free_area_init(zones_size);
  }
  
- void sync_icache_dcache(pte_t pte)
-@@ -103,6 +95,12 @@ static void __init paging_init(void)
+-void __init mem_init(void)
+-{
+-	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
+-	memblock_free_all();
+-	setup_zero_pages();	/* This comes from node 0 */
+-}
+-
+ /* All PCI device belongs to logical Node-0 */
+ int pcibus_to_node(struct pci_bus *bus)
+ {
+diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
+index 4583d1a2a73e..3db6082c611e 100644
+--- a/arch/mips/mm/init.c
++++ b/arch/mips/mm/init.c
+@@ -482,6 +482,13 @@ void __init mem_init(void)
+ 				0x80000000 - 4, KCORE_TEXT);
+ #endif
+ }
++#else  /* CONFIG_NUMA */
++void __init mem_init(void)
++{
++	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
++	memblock_free_all();
++	setup_zero_pages();	/* This comes from node 0 */
++}
+ #endif /* !CONFIG_NUMA */
  
- 	free_area_init(max_zone_pfn);  /*  sets up the zonelists and mem_map  */
+ void free_init_pages(const char *what, unsigned long begin, unsigned long end)
+diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
+index 1963313f55d8..2b3e46e2e607 100644
+--- a/arch/mips/sgi-ip27/ip27-memory.c
++++ b/arch/mips/sgi-ip27/ip27-memory.c
+@@ -406,8 +406,6 @@ void __init prom_meminit(void)
+ 	}
+ }
  
-+	/*
-+	 * Set the init_mm descriptors "context" value to point to the
-+	 * initial kernel segment table's physical address.
-+	 */
-+	init_mm.context.ptbase = __pa(init_mm.pgd);
-+
- 	/*
- 	 * Start of high memory area.  Will probably need something more
- 	 * fancy if we...  get more fancy.
+-extern void setup_zero_pages(void);
+-
+ void __init paging_init(void)
+ {
+ 	unsigned long zones_size[MAX_NR_ZONES] = {0, };
+@@ -416,10 +414,3 @@ void __init paging_init(void)
+ 	zones_size[ZONE_NORMAL] = max_low_pfn;
+ 	free_area_init(zones_size);
+ }
+-
+-void __init mem_init(void)
+-{
+-	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
+-	memblock_free_all();
+-	setup_zero_pages();	/* This comes from node 0 */
+-}
 -- 
 2.47.2
 
