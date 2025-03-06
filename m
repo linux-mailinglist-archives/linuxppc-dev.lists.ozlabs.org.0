@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-6771-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6772-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09C9EA55573
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 19:52:19 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 093B4A55580
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 19:52:30 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7z745GMZz3c8n;
-	Fri,  7 Mar 2025 05:52:16 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7z7H5Pcjz3c9M;
+	Fri,  7 Mar 2025 05:52:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741287136;
-	cv=none; b=hD+JqcDKC1JgAKPFDwCQG4zZYHwsobz7/cRPe87uK/8kqWC5Z51mf6yOK/gJ/RPBf9rAuSuUvWPg+WkyQ5YOpRpKHMSY4B2JDs8nMoGSJQVMnsFboK5elInNm/gJm5mrzUmm8gwlXVHDOF+i0RtTa101wSG3dBqY62JPcZwn82kASP+XvyKf9RYJOhpfdrofVzAPSMCicBwBfwonE2CerJhOIYxA7MMmnFyvJD5hzm17y5C91J8/rIaM/KOjcuXq42ZbesfjScp7BvDf+JO5MINcraIwV7/PW6SBH7kpvBNqWQ2MxeBCoB0ByclQjfxa5/azuSDwrxi5feAr4gxpeA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741287147;
+	cv=none; b=SWZBUtTUI7HMaaN9BbuGzq+cK+KuSlbmzfM6RXvhIBb4x/yGzbaJTzWOhNTHQyHdM+XzrJFi0VTZ2BvZXS5q8eghwfJEQAiGIQE64CpRkyh3l2wKivc9tNTQycggXyLAM1aPvkiMsrnuiROwXAEOlD1LVQYwcp0hDClRKDda49mr+woLFGgo49s7J/0v5VUuPwC3lM6AkOeeKlN9RCSsE2Skw2hK9lTv8FInz8U6c6zsUND7rR6ZbkMmLFEi6kZtgoJE8MXj4ReQkUCMO8+s6Z1DLdhySiysLQ2C402QpQO28aCo7IAem1JL5w3o5Gx/gAviyypXHgQSsYOr4xZcCA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741287136; c=relaxed/relaxed;
-	bh=+ade8eAKcDIFtXQJgshQWuspJvzYLQoG9wyU5NjeFQQ=;
+	t=1741287147; c=relaxed/relaxed;
+	bh=HLWO0CMiutRC/UaFKgn3zaOpEPV2sObAb62rg+W+5EI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP8tmOEj1qLlYWHzMW+ABu6Ery71QxhmaIZcsLFH9kZ1e3+9UaOrNgkThbHOzaJu4cCHQM/DtCNr51yXhHnVsWUPLNsJi6p2+o/468SB3mzH1xyp+OwJ+Qy+H1OfbhBI/TmriL382U/5DwbCGapDOApQL2A3/RDb9ssHsFkw/sgaVB5+YCgiPwhVZdVmZy+tKJIopaCbwHa0WhCyZ+GyG05iVGK1mgJbQ3ewHFSW96SDuRQI12vsIiwqTorp+fzoPl7EG/YkFoJzwey7WcqPcMoFmCRx6vmCv5PENCojV2hyYQmeehBqhUqJ1+RizrvUKhPJa0ETcSYayaisUZscrw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jV0L4MxA; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=XjtllPtvVKqk+Zn/pMIozHTlLRS330ZASxvfOYB6X7n6UVkeyKTPpU+AvxFUQKh7E8YjfdtW42lI8UVrh5KB4RyM2f2g/KB2rBYdEXHv3meiyEDFDNGphOj1kTaHOzLvgX4C8/j2g6eT0uBo6PrYAAenJA2uYrBByQW+NrO21IaEO4bzHW/oOsUOB/ozxakVR1ejs1dWbkeTLpGO0jnwtwtwKMjlFPVUC+eaW60SMKBc52vl8xDXFOaTqGYHXnFOQarxdOXry2QZQBu/sHTtIeTqNOTcRdqnMiVINad2vutvCqe2xWDJ2CngWVfb/aW44+Z4olJzt17YYshd+TmwuA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FJgzrjTO; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jV0L4MxA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=FJgzrjTO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7z731Q32z3c8b
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 05:52:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7z7G6z2Sz3c9D
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 05:52:26 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id ECBF95C58B7;
-	Thu,  6 Mar 2025 18:49:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5485C4CEEC;
-	Thu,  6 Mar 2025 18:51:58 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1905E5C18B4;
+	Thu,  6 Mar 2025 18:50:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7DB2C4CEED;
+	Thu,  6 Mar 2025 18:52:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741287131;
-	bh=8AVATLG9lzmcQcx5E69jKjTsUN+LZvQn92lo4/jx/sQ=;
+	s=k20201202; t=1741287144;
+	bh=3f2PL8+tvQz4kqOX8BsTM2Qrh30qjoJp6oFsaw3/420=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jV0L4MxA7ZLOPXJ7CzvIBhifnvQ3cLfWLbGX9Kpq+TJV+I4pYEortTLjsgEQ+JgOz
-	 MJeD/6kqeK3kbbbLebIrILdKUS+MINmZ+/B/sNOxLIGg7XbVwZV42EgAZnZAp6YA9n
-	 29WDsIsPmNqboWrzBZPQWiBq4xZoUqUHc5X/w6ZGtfzGGa8bFcwxmZypQhUi8SVeUt
-	 4+S4ZR8z1jIcZBlvxst+95F7MqZZIvNp+reY2KbX5iWIXdOVrbfew191sYutRBEayR
-	 2jUlJelZWwvqGeLBlQ86aq/GxBuU3JetL31MovldgywY/67riRZKdTJu068ZWyNYvD
-	 NqjbY0mINjozA==
+	b=FJgzrjTO4LydJP8HiTJaetkeA9l5AEBKpAM8oOldJjnfSIsNdxHDVWTJYA8ZW+ytA
+	 Gf6Qv2JH04v1Wv5MZqueKxNSDjn1bvxaES2Ur7agOMyA+oM/cLmVu4Wp52ZWKRFePe
+	 sZyd0sVUs0txtZvPxmVDHQsORFcZRvNQnvfx4g/W2wHxnoZ7VhRd//aSxKK7XJStTy
+	 sdd79C0Ssrv//n3N6cBDLeTrdB9KhSWEEtBzpAV84qCSM/2NMoenGBapXQxwZet7HJ
+	 ldS9H0hKMEZgcYfgJnMdk4vJpeeALhqApfWyBsF4pj+idRDR4fcjmG4H92j5rE85ME
+	 PX/YLB7CaLEzw==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -101,9 +101,9 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [PATCH 02/13] csky: move setup_initrd() to setup.c
-Date: Thu,  6 Mar 2025 20:51:12 +0200
-Message-ID: <20250306185124.3147510-3-rppt@kernel.org>
+Subject: [PATCH 03/13] hexagon: move initialization of init_mm.context init to paging_init()
+Date: Thu,  6 Mar 2025 20:51:13 +0200
+Message-ID: <20250306185124.3147510-4-rppt@kernel.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250306185124.3147510-1-rppt@kernel.org>
 References: <20250306185124.3147510-1-rppt@kernel.org>
@@ -120,147 +120,53 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-5.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Memory used by initrd should be reserved as soon as possible before
-there any memblock allocations that might overwrite that memory.
-
-This will also help with pulling out memblock_free_all() to the generic
+This will help with pulling out memblock_free_all() to the generic
 code and reducing code duplication in arch::mem_init().
 
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/csky/kernel/setup.c | 43 ++++++++++++++++++++++++++++++++++++++++
- arch/csky/mm/init.c      | 43 ----------------------------------------
- 2 files changed, 43 insertions(+), 43 deletions(-)
+ arch/hexagon/mm/init.c | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/arch/csky/kernel/setup.c b/arch/csky/kernel/setup.c
-index fe715b707fd0..e0d6ca86ea8c 100644
---- a/arch/csky/kernel/setup.c
-+++ b/arch/csky/kernel/setup.c
-@@ -12,6 +12,45 @@
- #include <asm/mmu_context.h>
- #include <asm/pgalloc.h>
+diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
+index 3458f39ca2ac..508bb6a8dcc9 100644
+--- a/arch/hexagon/mm/init.c
++++ b/arch/hexagon/mm/init.c
+@@ -59,14 +59,6 @@ void __init mem_init(void)
+ 	 *  To-Do:  someone somewhere should wipe out the bootmem map
+ 	 *  after we're done?
+ 	 */
+-
+-	/*
+-	 * This can be moved to some more virtual-memory-specific
+-	 * initialization hook at some point.  Set the init_mm
+-	 * descriptors "context" value to point to the initial
+-	 * kernel segment table's physical address.
+-	 */
+-	init_mm.context.ptbase = __pa(init_mm.pgd);
+ }
  
-+#ifdef CONFIG_BLK_DEV_INITRD
-+static void __init setup_initrd(void)
-+{
-+	unsigned long size;
-+
-+	if (initrd_start >= initrd_end) {
-+		pr_err("initrd not found or empty");
-+		goto disable;
-+	}
-+
-+	if (__pa(initrd_end) > PFN_PHYS(max_low_pfn)) {
-+		pr_err("initrd extends beyond end of memory");
-+		goto disable;
-+	}
-+
-+	size = initrd_end - initrd_start;
-+
-+	if (memblock_is_region_reserved(__pa(initrd_start), size)) {
-+		pr_err("INITRD: 0x%08lx+0x%08lx overlaps in-use memory region",
-+		       __pa(initrd_start), size);
-+		goto disable;
-+	}
-+
-+	memblock_reserve(__pa(initrd_start), size);
-+
-+	pr_info("Initial ramdisk at: 0x%p (%lu bytes)\n",
-+		(void *)(initrd_start), size);
-+
-+	initrd_below_start_ok = 1;
-+
-+	return;
-+
-+disable:
-+	initrd_start = initrd_end = 0;
-+
-+	pr_err(" - disabling initrd\n");
-+}
-+#endif
-+
- static void __init csky_memblock_init(void)
- {
- 	unsigned long lowmem_size = PFN_DOWN(LOWMEM_LIMIT - PHYS_OFFSET_OFFSET);
-@@ -40,6 +79,10 @@ static void __init csky_memblock_init(void)
- 		max_low_pfn = min_low_pfn + sseg_size;
- 	}
+ void sync_icache_dcache(pte_t pte)
+@@ -103,6 +95,12 @@ static void __init paging_init(void)
  
-+#ifdef CONFIG_BLK_DEV_INITRD
-+	setup_initrd();
-+#endif
+ 	free_area_init(max_zone_pfn);  /*  sets up the zonelists and mem_map  */
+ 
++	/*
++	 * Set the init_mm descriptors "context" value to point to the
++	 * initial kernel segment table's physical address.
++	 */
++	init_mm.context.ptbase = __pa(init_mm.pgd);
 +
- 	max_zone_pfn[ZONE_NORMAL] = max_low_pfn;
- 
- 	mmu_init(min_low_pfn, max_low_pfn);
-diff --git a/arch/csky/mm/init.c b/arch/csky/mm/init.c
-index bde7cabd23df..ab51acbc19b2 100644
---- a/arch/csky/mm/init.c
-+++ b/arch/csky/mm/init.c
-@@ -42,45 +42,6 @@ unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)]
- 						__page_aligned_bss;
- EXPORT_SYMBOL(empty_zero_page);
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--static void __init setup_initrd(void)
--{
--	unsigned long size;
--
--	if (initrd_start >= initrd_end) {
--		pr_err("initrd not found or empty");
--		goto disable;
--	}
--
--	if (__pa(initrd_end) > PFN_PHYS(max_low_pfn)) {
--		pr_err("initrd extends beyond end of memory");
--		goto disable;
--	}
--
--	size = initrd_end - initrd_start;
--
--	if (memblock_is_region_reserved(__pa(initrd_start), size)) {
--		pr_err("INITRD: 0x%08lx+0x%08lx overlaps in-use memory region",
--		       __pa(initrd_start), size);
--		goto disable;
--	}
--
--	memblock_reserve(__pa(initrd_start), size);
--
--	pr_info("Initial ramdisk at: 0x%p (%lu bytes)\n",
--		(void *)(initrd_start), size);
--
--	initrd_below_start_ok = 1;
--
--	return;
--
--disable:
--	initrd_start = initrd_end = 0;
--
--	pr_err(" - disabling initrd\n");
--}
--#endif
--
- void __init mem_init(void)
- {
- #ifdef CONFIG_HIGHMEM
-@@ -92,10 +53,6 @@ void __init mem_init(void)
- #endif
- 	high_memory = (void *) __va(max_low_pfn << PAGE_SHIFT);
- 
--#ifdef CONFIG_BLK_DEV_INITRD
--	setup_initrd();
--#endif
--
- 	memblock_free_all();
- 
- #ifdef CONFIG_HIGHMEM
+ 	/*
+ 	 * Start of high memory area.  Will probably need something more
+ 	 * fancy if we...  get more fancy.
 -- 
 2.47.2
 
