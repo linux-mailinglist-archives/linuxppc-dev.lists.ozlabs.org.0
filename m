@@ -1,82 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-6784-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6785-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37E6FA558A5
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 22:20:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2625CA55987
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 23:17:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z82Pk1K82z3054;
-	Fri,  7 Mar 2025 08:20:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z83hN3L5jz3c7S;
+	Fri,  7 Mar 2025 09:17:56 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741296010;
-	cv=none; b=IHwzPU6SkU6tqvd3a3vzEwY43PKqlq48D9FTYA3XrfM39OiWGhu8+m7NwSY1KAji8ocvgoanFRZQJ7b9kS+xccvqg0OwpgZvFXKuNyuq0icCkQjuv2nYcmll4BAaISBUmGGt7qaI9KP9DMSSxpro841E0DLC20zwreh+/GM04edGWnDkfSWQp8QzYPd+fd+V+iXeIQu/40V3wtWCHYj6NdQydyegVCFyaQQFuL6Vf60rurLSGwPuVE66AqbzfGHxfvOiVrwbKhhKWy705Us3B+uuv/2NS89cPM+qVllr8QcrZb/wZPFn7q+mOJxqXboVYHawxaszCyWdTPw6KnjBPA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::649"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741299476;
+	cv=none; b=Z7z5Tupi8Sy5WFYVajGGjvOKJ2agUBmFh0Lmt1Lzw8K3JGz5n/HmjRWPNFvPJRvJF4tc0YkNOZc1NIWtTP5Bv9+FpT3mt8bhyK4/wgBZgTgP8Xq8H71hDPO/AcUQYcdpYlnrEGxdrneZswvJQeVC4SygHyIAU2yyZ0+y2ErMkdbj52UDO3DrDdc8Y6X4iUmDsk88U+7h1hh6jeoKr0ZmWB6wMyAsOLd1xeSC4HVI1hCIuaXRfZTdqdwdi2W8snPkFDTyPX2HT1c8mySX4RFLA1UT8WRFQ3L0yqIfVgkRWIawuPzdfrZE63dubrBXc9XTnIKGeXYgURgy18LErdK6Eg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741296010; c=relaxed/relaxed;
-	bh=S+WgGZZwuy6dcxKu6tQ5X7wRFZYCKjuZRXphT7j3y4s=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=DwqQpvf0gbQbn2Hpyw3nBdxvUGMV5UfJGyLzokggFCZhcppbG81Bjy4w1WKzXV96BrEs/HpH1p5n1law80/WQOUc8zjRYVGi7ifT1L8UZ25NVWUsd54YY2sCGZcqI6DGT5lF0WY6D6MDSuxYNlKRgP0zMvzjGgj/aR6s0ljdrgd7I/4MjdfNxHTwl6BNTIj1vWuj7AH2Pf37SmPNzaQWlxBtu5GWwdTah8XQlkxy2CK8TTvUV8IwJ8ofTDzow90iaA7qYI2lK1AFkhR53uqvK3LDLX+Zwdgd4CSbr1Icm3XIh+blafp89Z6ml1930E8o5k0UQzH6SInrnQbsKTi0JA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=fCD2eitP; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linux-foundation.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+	t=1741299476; c=relaxed/relaxed;
+	bh=1fVM2KE3EoOsuu2EWcqC1HC9DuBoPNNqkucuTCqqHCw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fDDSK8b3n3eQ4onlHxurKdbwLXvG81oI38dhlDO+a+iu1W8VCdVxRBCbRm0tqlCPyZlFlOhchxGwbX9EENoaURnXSSPbhrddnO+pEhvLYbUjc7Yn+spkuWkfu7P6pI6z48BWmbxLWf2IxxVA09hXuOjxsg1cZG2nIxPnZ+Wab6625w8NpteSYxf7oFv19Bp30Z90j1RaShentImsiNH0+bfvLqrOCEE7I2COJK4L1gRzqi9/e1MTd/H94feKa9a9pQEs9WRYl8/siKAnpXFx8Ic7O1XKoLtar6evHTlLCU3bGYu4V8HamtGsYYnbjljYBQwu+BDHigwepYo8HVfDWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Vmvkzw1/; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3dx_kzwykdloxjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux-foundation.org header.i=@linux-foundation.org header.a=rsa-sha256 header.s=korg header.b=fCD2eitP;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=Vmvkzw1/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux-foundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=akpm@linux-foundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--seanjc.bounces.google.com (client-ip=2607:f8b0:4864:20::649; helo=mail-pl1-x649.google.com; envelope-from=3dx_kzwykdloxjfsohlttlqj.htrqnsz2uuh-ij0qnxyx.t4qfgx.twl@flex--seanjc.bounces.google.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z82Ph6vWMz2yhG
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 08:20:08 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id E60865C57C8;
-	Thu,  6 Mar 2025 21:17:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9335C4CEE0;
-	Thu,  6 Mar 2025 21:20:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1741296005;
-	bh=cZDw6Poc4BDrQ+UyFQkoa8sDIiciZub+M7TYHo89aq4=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=fCD2eitPTHFzv+QGanXjZD4bENnmRFCyuGnOvEmFo3oZUyxfGbz0e9/waUKJcay/B
-	 ulqAAqZ8fT7ST4z1YZd+B5XSm85iLoKo7BN7tD3KTLECZ4zAMHYgvB+TmrABW752ri
-	 sqVT0tKHdBGtciAetPrknw/7LiV2aVP98DL5X7zA=
-Date: Thu, 6 Mar 2025 13:20:03 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>, Andreas Larsson
- <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann
- <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>, Brian Cain
- <bcain@kernel.org>, Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, "David S. Miller" <davem@davemloft.net>,
- Dinh Nguyen <dinguyen@kernel.org>, Geert Uytterhoeven
- <geert@linux-m68k.org>, Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>, Helge
- Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, Johannes Berg
- <johannes@sipsolutions.net>, John Paul Adrian Glaubitz
- <glaubitz@physik.fu-berlin.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
- Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
- Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>,
- Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>,
- Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>,
- Stafford Horne <shorne@gmail.com>, Thomas Bogendoerfer
- <tsbogend@alpha.franken.de>, Thomas Gleixner <tglx@linutronix.de>, Vasily
- Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, Will Deacon
- <will@kernel.org>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
- linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
- linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
- linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
-Subject: Re: [PATCH 00/13] arch, mm: reduce code duplication in mem_init()
-Message-Id: <20250306132003.0066f109dae75f74711f9432@linux-foundation.org>
-In-Reply-To: <20250306185124.3147510-1-rppt@kernel.org>
-References: <20250306185124.3147510-1-rppt@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z83hM0wDnz30Tf
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 09:17:54 +1100 (AEDT)
+Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-223d86b4df0so33348315ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Mar 2025 14:17:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1741299472; x=1741904272; darn=lists.ozlabs.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1fVM2KE3EoOsuu2EWcqC1HC9DuBoPNNqkucuTCqqHCw=;
+        b=Vmvkzw1/wrAtKXhUdtEJM4kQFwAO8TpACTWa2UEMlo/LvKuLFypbFwR0sHWTsgARry
+         5BPztWGziRlLRWpJZjAq2NOV/vTBxYalowomSWo9N32h0SXuVx4VMCCiGRClKw5TxjJ+
+         rmo7nxSuIoNk7Goz+k7JgASn1EQzj4h5aoQ7Qtrs6tbHNefdt59R4zQbeQ4JRH1xQHTf
+         mHYCchKhfkfnbq4wqIlZz8r2ZsFgFQT+3zRt1mT2F0eO82GFmiyLYgyobPF+88Xy1blb
+         9GmdcNmHzn/Dfh4RPnuqMwh3TiTQImKJC9z7oOOovYN8bI2Qklt5TUHtRJN3i8UzRcd5
+         4BnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741299472; x=1741904272;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1fVM2KE3EoOsuu2EWcqC1HC9DuBoPNNqkucuTCqqHCw=;
+        b=cIoefUGPpWlUpcEi+2j6K59pzSoiGG/XosUr6zwW6ncKkILXdKBu1M2Dm9/IYKIq5/
+         8+WUMmISU76kxdE6fTH7DYd6uSxN+TyVFjHhoByH0IkH6PdzKgsNpG62H2vXTZFE3y9F
+         fVGv6usizQobYyLUd2uIcmaLIdFv+te1mbzbCX8OmMUaUVhkiOrjuR95qAqSPmQTlKPN
+         Nm1ZzJ0RUki+HKIIIoU/sCYDvfGO4lfi0Clf86RfX2hpO7mgXjG7Rl7oI95fhLgOWY8O
+         DnMwSC31ECTGIsrmggRUdnGN96KBsSjHUjLFAc4/qwRTvIyfnk3IgtH4om3T6vR+/o+b
+         UcCA==
+X-Forwarded-Encrypted: i=1; AJvYcCUYcaMkBpZPLNGbs8emjZMN5bi6xdGA35AbSp49cDZkH9Pbc4yFMBN1yuJeRDVDKtbQfVQWWYR/jSE6Crk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yyx4N/jB+RAQyG+Ad0pVcAPhrF5K6sP6354mDo8qwbDO866B/Zi
+	cXW+0JW7vOE+QUGg9upT08qhMc/x52r2Sd2rGtLoTphXqFqcscghQKx9RumyVLCiKj++n3KZfik
+	REA==
+X-Google-Smtp-Source: AGHT+IHj9hf+RSGnxoRCsNAWfapX74dbG0cv1fVCIplmAgCoqTHkKkEEOlwzNxPnN2S64GQaJbv4Oc/F+lY=
+X-Received: from pfjg21.prod.google.com ([2002:a05:6a00:b95:b0:736:415f:3d45])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b4a:b0:736:a8db:93b8
+ with SMTP id d2e1a72fcca58-736aa9b3970mr1923671b3a.3.1741299471981; Thu, 06
+ Mar 2025 14:17:51 -0800 (PST)
+Date: Thu, 6 Mar 2025 14:17:50 -0800
+In-Reply-To: <a10378eb-4bff-488c-86f7-b4fec20feb6a@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,23 +75,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+References: <20250222014526.2302653-1-seanjc@google.com> <a10378eb-4bff-488c-86f7-b4fec20feb6a@redhat.com>
+Message-ID: <Z8ofDmVbhjfLVwQD@google.com>
+Subject: Re: [RFC kvm-unit-tests PATCH] lib: Use __ASSEMBLER__ instead of __ASSEMBLY__
+From: Sean Christopherson <seanjc@google.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: Andrew Jones <andrew.jones@linux.dev>, Laurent Vivier <lvivier@redhat.com>, kvmarm@lists.linux.dev, 
+	kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	kvm-riscv@lists.infradead.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-7.6 required=5.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu,  6 Mar 2025 20:51:10 +0200 Mike Rapoport <rppt@kernel.org> wrote:
-
-> Every architecture has implementation of mem_init() function and some
-> even more than one. All these release free memory to the buddy
-> allocator, most of them set high_memory to the end of directly
-> addressable memory and many of them set max_mapnr for FLATMEM case.
+On Thu, Mar 06, 2025, Thomas Huth wrote:
+> On 22/02/2025 02.45, Sean Christopherson wrote:
+> > Convert all non-x86 #ifdefs from __ASSEMBLY__ to __ASSEMBLER__, and remove
+> > all manual __ASSEMBLY__ #defines.  __ASSEMBLY_ was inherited blindly from
+> > the Linux kernel, and must be manually defined, e.g. through build rules
+> > or with the aforementioned explicit #defines in assembly code.
+> > 
+> > __ASSEMBLER__ on the other hand is automatically defined by the compiler
+> > when preprocessing assembly, i.e. doesn't require manually #defines for
+> > the code to function correctly.
+> > 
+> > Ignore x86, as x86 doesn't actually rely on __ASSEMBLY__ at the moment,
+> > and is undergoing a parallel cleanup.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> > 
+> > Completely untested.  This is essentially a "rage" patch after spending
+> > way, way too much time trying to understand why I couldn't include some
+> > __ASSEMBLY__ protected headers in x86 assembly files.
 > 
-> These patches pull the commonalities into the generic code and refactor
-> some of the mem_init() implementations so that many of them can be just
-> dropped.
+> Thanks, applied (after fixing the spot that Andrew mentioned and another one
+> that has been merged in between)!
+> 
+> BTW, do you happen to know why the kernel uses __ASSEMBLY__ and not
+> __ASSEMBLER__? Just grown historically, or is there a real reason?
 
-Thanks, I added this series to mm.git.
+AFAICT, it's purely historical.
 
