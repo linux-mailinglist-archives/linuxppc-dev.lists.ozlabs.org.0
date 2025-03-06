@@ -1,94 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-6763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6764-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D85D3A54DD1
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 15:30:25 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADCF5A54E00
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 15:42:31 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7sJl1Ss7z3brR;
-	Fri,  7 Mar 2025 01:30:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7sZs097sz3bx0;
+	Fri,  7 Mar 2025 01:42:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741271415;
-	cv=none; b=n9oQK+7qw6eTd2L5oOk6VAiwuZbhUw4QqiGFR0gt50BE5A/HBh4AiI2XWVVfrPAZqgeEB2Cs2Fndmwo1fo9gO3gtCzuq3+3bbAAevBd/Ner8lbygjY/+1VKO6ETakXh6Iw7lH2AJoEXYoRmvV59oJ4a5qvS3/E06eYFk2dUqK8exM5IyFamoFt50MfGgIsoAhC518NRD7P+bamNqs3u7RAQ5LZXUxENtrNDjzASjScITYiRgy8f08xL2Fi4EQTcUzV8vOoqW0sd+nhw/hrz5s+kQQBeTs/Cr6FN3QsAUdiwgayFWPzj52LRdJ7Yak5actM08kOnNG1quRFDhyZEcCw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::230"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741272148;
+	cv=none; b=fBmOWhRc55JlcYNWrGsRSgBUGdvdVKYIXb+PnSRX5gl65qKRaUS6znnpBRw3gxy0/mQ2dLrrL4mZboLpPU5XfPw0qHA42X25OhYbq9VcQTifDknxHCUdjW9yCz4REU+5HS87VSFCAVmR23Eqny/w00/nt8uAJ58ryM3fezFFH7Mbas10jfKfUKto6QQ9TP9ASW4RAixyqZuYHKX5lmSw21XBG71biEjtjg4rRrasdjTIZU2bC5a3P3AO4u+Kg1T7WsTTPwntVA53Ax4QsWkIRDl2lvkg3AxTbLjWUbI57nToGRCOl6n25aiAcuO8+78qQzn/iJUztoWB9czWK6mDIA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741271415; c=relaxed/relaxed;
-	bh=+s8Sa65V/9ddeKgx8N3fRnLsd8R6GrlW9UDyXRKo1Ek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SVTemD4LGctkYjTnCM8CqffCBiuvMhglTv91UMKxongiKh3f+Su3DkaVl/quZYDXOTyYl43/57t/BkAw5UVdUxdmu1M4KyV/jHddA2x8wxqtYzDWAOTuY7S7ip4ksqsOFfX1EG61jajZUn/LCmvDIylNEdhGi1ELgSEXDN21pmuX3vzsTYBQsvWj4NF9AghRb/A8MPiPtt0D2vwH82+MuL8unZoFtY8zG2ggKYqGv2bMsLW5hbsboCwJzOY29kZbCwiugp+zcjci8mREKo1weTDYKuaixl8Yox9a+/YRpJrb/JckWU/UjUmkDNmzMJ+tg4TY9iyZmkiPsq8xFkkO2Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XjBe8UUJ; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XjBe8UUJ; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+	t=1741272148; c=relaxed/relaxed;
+	bh=VCk+JJxMuH+7Xc7MK7xCQnQ/UASRlAowqMx07w+Zybg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B+xhiVijQR2V1w/Rvgp8JcV2nIi6BcTrGwlMEw8+jzF9UL4sRrTFwY0t+r3Be001Z4vdA+tGYX6VBkDasewGAWj4YH8pdLNrL/Blbmwi6UcN1EM1qQ7s3MdbqhCFiueKzBmgebtD1eH2kG0EDfVzfHE2SeZsOULqpzVtR0MWTLYfPdeoRv83d8yIwQI0gHDe/yBP2xcShxG0s7J7zyrH+g0mq1phPPHFnF0jBwlI4+9O17zIOHsbTR1G+aKNAlDpabJpNpumLr1+bUzv/J9kasxq7Cz+jQf4S/hVZOFQOcMy+burza09fyM63N+tikGCXJi+H22WhUIgd5l5RWIReQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PBovpeFC; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::230; helo=mail-lj1-x230.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XjBe8UUJ;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=XjBe8UUJ;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=PBovpeFC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::230; helo=mail-lj1-x230.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x230.google.com (mail-lj1-x230.google.com [IPv6:2a00:1450:4864:20::230])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7sJk0cNnz30Tf
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 01:30:12 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741271409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+s8Sa65V/9ddeKgx8N3fRnLsd8R6GrlW9UDyXRKo1Ek=;
-	b=XjBe8UUJ8RqJvat1obarkYZqrO6JL3qGQD19sUSlw14DZubPyjrurYPzmCKFc26ab4PG1s
-	Gop52hKu0ipLguSno/C9scWfkrck7PIi25qVgT646GsE+p/omON8UaY2kFOP2zznazvU7p
-	8mmrEFqgLLCet/X8CKvq2ZA7P/GLtNc=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1741271409;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+s8Sa65V/9ddeKgx8N3fRnLsd8R6GrlW9UDyXRKo1Ek=;
-	b=XjBe8UUJ8RqJvat1obarkYZqrO6JL3qGQD19sUSlw14DZubPyjrurYPzmCKFc26ab4PG1s
-	Gop52hKu0ipLguSno/C9scWfkrck7PIi25qVgT646GsE+p/omON8UaY2kFOP2zznazvU7p
-	8mmrEFqgLLCet/X8CKvq2ZA7P/GLtNc=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-477-a8uvzWN7MuiJf-ezRba4YQ-1; Thu, 06 Mar 2025 09:29:53 -0500
-X-MC-Unique: a8uvzWN7MuiJf-ezRba4YQ-1
-X-Mimecast-MFC-AGG-ID: a8uvzWN7MuiJf-ezRba4YQ_1741271392
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-3912a0439afso290991f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Mar 2025 06:29:53 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7sZp6G3Fz3bwX
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 01:42:25 +1100 (AEDT)
+Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-30615661f98so7378911fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Mar 2025 06:42:25 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741272142; x=1741876942; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VCk+JJxMuH+7Xc7MK7xCQnQ/UASRlAowqMx07w+Zybg=;
+        b=PBovpeFCLuWjsCp+DQKdeyaaBu79rOeGpKBMhqwvpVVupk3jOGNcuN1kC+sN+s2Q5h
+         EhmGYD962r3B0SyMTlTreePSA7b3dCkk4KQnhXyZGuwQufiF2YaYGMVBVrAt1qBezUjO
+         8Dkl3PJrcdob8NV9h/E2XeiBWMyfIEnZ2IfNKHooaSHZTDG3P5FRxClTy4V1Od8ThEqt
+         DzU3k6wWYgdP5qQytabWb69/Dc4is3t9883YB6Qv4FPdAP3k3DYastzpRKfmj3fY7ncP
+         Z8uSkTG6CL+Ldks0tGtRQSrhKl1nh0fz6oN9c1YNBERelvTSCEnvWZzGziJRpySGOtmQ
+         JFOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741271392; x=1741876192;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+s8Sa65V/9ddeKgx8N3fRnLsd8R6GrlW9UDyXRKo1Ek=;
-        b=dSvnfT0COtVbAIELP3FUFpB7vbwbLOr1RTXD9qahayOm1nBgpfYlsvPUoVSerDR9+2
-         MaIKl5Xts5l0abJ4SdMDN53yzZRnyAVYFs/0ydB4HvwRovjGv6xa3naPVD8XJ5Octpxm
-         XO7zhQC8l79zhRyvIJWypUlO9Ov/kqmixCu6F3073qrctff4fYKf7oCUYdBR1vHmp6Ns
-         n2k3srwi8nhHmceLxNLOYY/41ie8PYM8STARewU4UR45OEDwE9tfxI/MM/m+U1selcyc
-         3YR9qgOzp3id2xUjbORIrPZjYXAo3YYsFY1j2sVmaZXqcddXiOnEpBiqTTLHaBErTwni
-         HsLw==
-X-Forwarded-Encrypted: i=1; AJvYcCXGPZon2r3lDFn1W5ohc6+OiDfEJAAaOqjayHGnNm8PIg9GBEDB5Zs31BMq6i8tA6DdILn80jBGz9kGzrw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yzchg7J/CH/17VJPFjFjiQuoUjTSg6YU07LK2CUjgFHnjPTH3mi
-	4mOn1Pf5kBqqhZK4zbCNLZSf69yQsSvE+i463VwzjniV/Q0epf1pZ1KuDYc5Dgfz6rc3YPE5Uad
-	2bGK5nn3t1zji0KMu4RmNG78ssgonVVauOWX27VZMhYxNuX60eNa6EmplC8ld3Ag=
-X-Gm-Gg: ASbGnctNYAq4lekHH15LhfqtUYu2Z6+sipV0UEI/0pOBpq754LXboY4STVeoD+1BvYP
-	k/Ax7d8DvuZgYYClNq0B9aoO1nf91AKuvPeHlOsRrQSctYkjEHv6XTTReaAaBW7hQfiP2WRnPw9
-	/3UshjvMwcEk8q6rUh0senur22Atg6LHdGyg7haZ9YzckmOdn7Ub3OlLF6KQLppWQykeU0lH1Da
-	ilWk57ZxxqLbI5ZZQARf0G+OEWV9hnTwQl1m1PbH4p2RtR+G7d0UnK4qmxvdsM6TRZB5y1BEiUy
-	KGapCtGvcCqS4O4dbRaFZWkIzz7V6G+K2X7kvlFLYxNqqQ==
-X-Received: by 2002:a5d:47c3:0:b0:391:300f:7474 with SMTP id ffacd0b85a97d-391300f7814mr755623f8f.18.1741271391435;
-        Thu, 06 Mar 2025 06:29:51 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IFmNrvNwgj8JP10FUTkFjkayzhqglMLbK2EPOM2dy9cPE1fLkIBgeqVz0hx1d6bSuhoE5j+XQ==
-X-Received: by 2002:a5d:47c3:0:b0:391:300f:7474 with SMTP id ffacd0b85a97d-391300f7814mr755608f8f.18.1741271391040;
-        Thu, 06 Mar 2025 06:29:51 -0800 (PST)
-Received: from [192.168.88.253] (146-241-81-153.dyn.eolo.it. [146.241.81.153])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3912c102e01sm2234126f8f.93.2025.03.06.06.29.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 Mar 2025 06:29:50 -0800 (PST)
-Message-ID: <03492277-b7e8-4cd1-b92e-699ee0d7dc85@redhat.com>
-Date: Thu, 6 Mar 2025 15:29:49 +0100
+        d=1e100.net; s=20230601; t=1741272142; x=1741876942;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VCk+JJxMuH+7Xc7MK7xCQnQ/UASRlAowqMx07w+Zybg=;
+        b=xU3Rfz3VlYkeNGdz8E2t10ZjfKIt/Z0/JIBIMDwwi0w3OVgtVC5Gtlq+86iTiEV6vG
+         5VrcMBIXID2coIKU8avLbeI/5H3WTsZhG1rlQtrC1WHLIER1o2MVl4mxPex6xSeEcceV
+         7IkmxIj2+xGIBO/wBiTqja3HlgdtR8yLyLJ8WoLZamO1PMY3Vyo21fZAhDxhISHXmJkO
+         tbkOld9/Mnsd2Nh+XH5cNLHlP4/LJr/xMaofrOjQ1PeNFnOT5zx3kLRFBtJL8fQ/eeL+
+         QCdgvjfxZK/g71QXcbgXgl4teAlZj1+ts5iJblNJUQFfh94WkrXE6QNcnGyjOfZmijxo
+         K64A==
+X-Forwarded-Encrypted: i=1; AJvYcCUIyFpJVzZUnJNbYVqZAFThng2rCA4nm0XVbN6WJ9a87RUDTqfvWtv+KjLecI2VmqOm7uqqFLNWBd5bCt8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxN2M2ArZmVAVMESu7fMMcDB956wG2WaZ9QeEiMrFvBIONKYLXG
+	XbPK/OJTpqlA/+L0U0pqQhbxuitTH+Oc9bZz66aDqey2LA2SP46PkV9+IEFWqmfPtI0PhIXova4
+	WuU5POsu22xhC6OdphF2cF+v30kk=
+X-Gm-Gg: ASbGncv7o+14LEGCn0Og7tSC2gJkN9nl+sdhqwuEzc4je5/wa/xLVdRF4DemuYKYrYM
+	pBQP4WS3/YWtId0zcFPGwJuXTUcCnXEojevlZP/BYcIZFCZOH/oRqewHRbfiExOfaIu7wrVex8p
+	R+lgRWvVqVUMha/98hJgkscbiEypVyjn+90kMosgs4/A==
+X-Google-Smtp-Source: AGHT+IGOs0tm+vlePSriOvo4exloY4uff5hQyhMGSFCdw9I6NO0PFz3l856QvBjOCsMzUglvlxiovip4pW93x04X3AQ=
+X-Received: by 2002:a2e:a78a:0:b0:306:1524:4a65 with SMTP id
+ 38308e7fff4ca-30bd7a5453bmr26242801fa.20.1741272141974; Thu, 06 Mar 2025
+ 06:42:21 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,55 +77,76 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 net-next 04/13] net: enetc: add MAC filter for i.MX95
- ENETC PF
-To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org
-Cc: christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20250304072201.1332603-1-wei.fang@nxp.com>
- <20250304072201.1332603-5-wei.fang@nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250304072201.1332603-5-wei.fang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: XhKw9_vNbSznsbQT5VF9SvL6FyW3xDx5HbMx-nAEBAY_1741271392
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <20250221-printf-kunit-convert-v5-0-5db840301730@gmail.com>
+ <20250221-printf-kunit-convert-v5-1-5db840301730@gmail.com>
+ <Z8mUH0comOCpycpK@pathway.suse.cz> <CAJ-ks9nFSzRXFauavzSWhvhr2Rou7qqkWi_LZ=4e1Tyr4_bn3g@mail.gmail.com>
+In-Reply-To: <CAJ-ks9nFSzRXFauavzSWhvhr2Rou7qqkWi_LZ=4e1Tyr4_bn3g@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Thu, 6 Mar 2025 09:41:44 -0500
+X-Gm-Features: AQ5f1JpJWKoqf6Ad0yhsZAI6HTLS5t2uCBoOGMRrpWewZnGmz7aTZFflUPyKXMo
+Message-ID: <CAJ-ks9nDLGvzZ+NDAJsk2Hy1=hsCzayg4-65gk60T_WJZzOUzA@mail.gmail.com>
+Subject: Re: [PATCH v5 1/3] printf: convert self-test to KUnit
+To: Petr Mladek <pmladek@suse.com>
+Cc: Arpitha Raghunandan <98.arpi@gmail.com>, David Gow <davidgow@google.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>, Sergey Senozhatsky <senozhatsky@chromium.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Jonathan Corbet <corbet@lwn.net>, Geert Uytterhoeven <geert@linux-m68k.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Brendan Higgins <brendan.higgins@linux.dev>, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On 3/4/25 8:21 AM, Wei Fang wrote:
-> +static void enetc_mac_list_del_matched_entries(struct enetc_pf *pf, u16 si_bit,
-> +					       struct enetc_mac_addr *mac,
-> +					       int mac_cnt)
-> +{
-> +	struct enetc_mac_list_entry *entry;
-> +	int i;
-> +
-> +	for (i = 0; i < mac_cnt; i++) {
-> +		entry = enetc_mac_list_lookup_entry(pf, mac[i].addr);
-> +		if (entry) {
-> +			entry->si_bitmap &= ~si_bit;
-> +			if (!entry->si_bitmap) {
+On Thu, Mar 6, 2025 at 9:25=E2=80=AFAM Tamir Duberstein <tamird@gmail.com> =
+wrote:
+>
+> On Thu, Mar 6, 2025 at 7:25=E2=80=AFAM Petr Mladek <pmladek@suse.com> wro=
+te:
+> >
+> > On Fri 2025-02-21 15:34:30, Tamir Duberstein wrote:
+> > > Convert the printf() self-test to a KUnit test.
+> > >
+> > > [...]
+> > >
+>
+> > 2. What was the motivation to remove the trailing '\n', please?
+> >
+> >    It actually makes a difference from the printk() POV. Messages witho=
+ut
+> >    the trailing '\n' are _not_ flushed to the console until another
+> >    message is added. The reason is that they might still be appended
+> >    by pr_cont(). And printk() emits only complete lines to the
+> >    console.
+> >
+> >    In general, messages should include the trailing '\n' unless the
+> >    code wants to append something later or the trailing '\n' is
+> >    added by another layer of the code. It does not seem to be this case=
+.
+> >
+> >
+> > >                       bufsize, fmt, ret, elen);
+> > > -             return 1;
+> > > +             return;
+> > >       }
+> >
+> > [...]
+>
+> I noticed in my testing that the trailing \n didn't change the test
+> output, but I didn't know the details you shared about the trailing
+> \n. I'll restore them, unless we jump straight to the KUNIT macros per
+> the discussion above.
 
-
-Minor nit: here and elsewhere you could reduce the level of indentation
-restructoring the code as:
-
-		if (!entry)
-			continue;
-
-		entry->si_bitmap &= ~si_bit;
-		if (entry->si_bitmap)
-			continue;
-/P
-
+Ah, I forgot that `tc_fail` already delegates to KUNIT_FAIL. This was
+the reason I removed the trailing newlines -- there is a mix of
+present and absent trailing newlines in KUNIT_* macros, and it's not
+clear to me what the correct thing is. For instance, the examples in
+Documentation/dev-tools/kunit/{start,usage}.rst omit the trailing newlines.
 
