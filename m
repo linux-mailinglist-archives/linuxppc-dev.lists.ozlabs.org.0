@@ -1,238 +1,98 @@
-Return-Path: <linuxppc-dev+bounces-6758-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6759-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49AB1A54A83
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 13:19:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8B1DA54A9E
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  6 Mar 2025 13:25:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7pPb4j5cz2yvs;
-	Thu,  6 Mar 2025 23:19:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z7pXT2KSdz3bsm;
+	Thu,  6 Mar 2025 23:25:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=67.231.156.173 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741263555;
-	cv=pass; b=g9wzVM3N53BuLIr4i2reY7hd9kdH1af8krxxhRfL8ip6ekQcQPPsttQERZ/VyQAiiKJdsnRlZ4TvBu1kqe3jdKcJy4CZGVCumVwz9cFOGdqELYzewD29mTZ6fx+LHcsVfMrJhNHqwqf5QsjYUvSLMrCK2yP2F+TXc5jbtDFqIwnaYW6KQvfVaJFLGhTSY6tN1UxVe/DbdajkfKXZo/cmxFVt4dFuyPylDoV+3KXuoUxgVc2SW6O8fuLvQnbvxVHrBjZ1i3/Q63imp9re7yNhIZfdtQnYG4Vih+sJlvM46a+hSzjjEaYyTPYZt2bZyEY4G1dEyegPPOQj+7yMxotcag==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741263555; c=relaxed/relaxed;
-	bh=bI/vYfHoBjGHBnR4sO0HMWmgaNemblj2cfNLpZclL4w=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=XXzu8xohycGXfQGivqzbevSSqIQYqZ5roagPKOxgoX1iZwt0HqJGdHZlXdYoZFGl565XEEw0abQEp+9rfjR/8OjHOYFBDf3X9wIVhEotY7pAO90bySqsl4HZ430m03uYaairgmqEzcoA6w1yQx2ObL19uJ4qPzcDrF5JoqHkyR5hzrRXJy3fj2aubDfm+xXv7ZJBHwxXw3v2oYi9n5MdJhsv0ENmslp1eN+cNIrhtHUhF5RwLSFKbOdnGWuVAitf3mnsBPenh2PBXUemnHBIJGzjTs8DEB0ORRGNFp/44JiY/RfrxZhvEk6eGIYnZArjiBXSRcsE/g0r4vjF7WsiSQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=marvell.com; dkim=pass (1024-bit key; unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=CpLzMJKp; dkim-atps=neutral; spf=pass (client-ip=67.231.156.173; helo=mx0b-0016f401.pphosted.com; envelope-from=gcherian@marvell.com; receiver=lists.ozlabs.org) smtp.mailfrom=marvell.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=marvell.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::32a"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741263913;
+	cv=none; b=iVBO0JjDPDHTrSjch4jCDVrgozKWwhAF2L2SDfbP8MB/OG2f9eDPdMlelvH9gijeT2Zr9DSIHcPJROW3+VEIxkxML8GRBRwAwKwVHL998tXdgil4y7O8ynXNCxIWQhc+d3KmYgnlXnwf5YsQ3YqSdFE/OiqEdZ3Bos7CShniT47P+62O7/UK05vcOsEBeDEFaqvFEMNkWEa7YzZMHjk7AxA4DNp9tdtwJS+AxtSPL7yGU8wWI2ROAEGrpe6tHP8h91A6E3CNlNXH60VB8ym2rRs3UFSOIRDrMNKz50SUB0wzU9lEIwyi/WMkcpNHQcsyDFrHaXd7gfrifWMup2Jhxw==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1741263913; c=relaxed/relaxed;
+	bh=nIwcoBN/hkEYZ3G8KOPMnrmKGBBnfRqx2ozDCVdFctQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jX5tX1PDS3gg39npWU+kKwSzqE0TvyrTXV7FYSGHImXK11fH4j7ZoQIvx2jWJMKaegPlY8xEd02c21Pw8wfnY2e5kW5yELk5TKiCX4RUQTy4DU9VpSgEa5eWz5UKE0cPq3YKT8T6dKxvq9eaGnEC4LpZ52RXREHBUg/7gaQrka6YjZO6rZxAm5WeGcoHmC4gruwPDc92Imq07Ionlyt7um/4JR4csuBxY4XsWF0veZPkL4Niph7PaC06xbRURYhTXIvAS2jLEGEz+xrzW+ZeTLxi5CwdAEZltRFt8CqqOPcV+svxjSBolD4UPvKhazKbzZWdj91EBZfXTVd8FtZjnQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Eeyqd3/e; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=marvell.com header.i=@marvell.com header.a=rsa-sha256 header.s=selector1 header.b=CpLzMJKp;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=Eeyqd3/e;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=marvell.com (client-ip=67.231.156.173; helo=mx0b-0016f401.pphosted.com; envelope-from=gcherian@marvell.com; receiver=lists.ozlabs.org)
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::32a; helo=mail-wm1-x32a.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7pPZ18TQz2yjV;
-	Thu,  6 Mar 2025 23:19:13 +1100 (AEDT)
-Received: from pps.filterd (m0431383.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5269IOJi018197;
-	Thu, 6 Mar 2025 04:18:23 -0800
-Received: from nam02-bn1-obe.outbound.protection.outlook.com (mail-bn1nam02lp2044.outbound.protection.outlook.com [104.47.51.44])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 4578y689n9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 06 Mar 2025 04:18:22 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=h6yQFiNhuWUqSEHgQXloSAqFUc2ZzFVkbXGoUALV6EL+OjoOlvZpNZBO1ONa0H4JQNaxymW5/GZZOUAMCeNPF6Oy5Rp1eMPuaRTAShg0H1v77aIktLIOtv8dmU7r3hk3yG7z6uxTic54bAIADOEJi98CTnwvZcMCNomf6ikXnxgP6yXxkrEvlZZmocxl81To/lIxkZjv1085XDD0LUx/ejdFP1aTmdqS+5Q16LaHXz2ngjo7juytMvikvgYslHwhMLm6rh1uL7QnwTxTLEDrPBQ8RvcVwcy6xJh4QwIdDr+5TTeX3UxI5H40+k0yKOhUkATbDRFgJsaK1sR8iZDOYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bI/vYfHoBjGHBnR4sO0HMWmgaNemblj2cfNLpZclL4w=;
- b=HfWApH4T0biLN+ezAd2RFnTYTLCldnAqQLseVcggHllzGMURIWFSBv4PFcD743H289XMf8QrOrfp6jgZvGMUTgZyvNkaW8kMIb20Zvu+KWn2kM9I6ER+GnEZXW/DuGW6WHdJgs6THK2lmj/a7GJjM1PIaEAb1XM7A4ghM3lR3vUb/2TYV27K40X2aT2fSx2qO1eGp/8ZjQdsRYIzJ0ItTixQDzCQcPF39Y13oUcR4PWOme1ohXCLUVa9nwtxu8lPuBqcWPwO6ke3wjI2UpvmySTdkmHqAKNyOGWq8ju9wxeWqVdLXo0LTyDFVWsF6LTgZCOQdksYKdilNhdE00MOvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=marvell.com; dmarc=pass action=none header.from=marvell.com;
- dkim=pass header.d=marvell.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bI/vYfHoBjGHBnR4sO0HMWmgaNemblj2cfNLpZclL4w=;
- b=CpLzMJKp/nnxT9DuwDf+zVFgb5DZOol+QKz24bGez/Usc3IC3i0i71cbC1PDV6VPJe6fnj8vfq048yR7ac8DEo3hXejX9mySwAJjc6cdxylx6THjyunQOmXvoPHgwxPbBTD8lEzLA9C5YR19T1vlfjQYHKqAVuZocuxhzhLq+68=
-Received: from PH8PR18MB5381.namprd18.prod.outlook.com (2603:10b6:510:254::16)
- by LV8PR18MB5853.namprd18.prod.outlook.com (2603:10b6:408:229::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.17; Thu, 6 Mar
- 2025 12:18:20 +0000
-Received: from PH8PR18MB5381.namprd18.prod.outlook.com
- ([fe80::79aa:7ee4:516e:200a]) by PH8PR18MB5381.namprd18.prod.outlook.com
- ([fe80::79aa:7ee4:516e:200a%6]) with mapi id 15.20.8511.017; Thu, 6 Mar 2025
- 12:18:20 +0000
-From: George Cherian <gcherian@marvell.com>
-To: Guenter Roeck <linux@roeck-us.net>, Ahmad Fatoum <a.fatoum@pengutronix.de>
-CC: "wim@linux-watchdog.org" <wim@linux-watchdog.org>,
-        "jwerner@chromium.org"
-	<jwerner@chromium.org>,
-        "evanbenn@chromium.org" <evanbenn@chromium.org>,
-        "krzk@kernel.org" <krzk@kernel.org>,
-        "mazziesaccount@gmail.com"
-	<mazziesaccount@gmail.com>,
-        "thomas.richard@bootlin.com"
-	<thomas.richard@bootlin.com>,
-        "lma@chromium.org" <lma@chromium.org>,
-        "bleung@chromium.org" <bleung@chromium.org>,
-        "support.opensource@diasemi.com"
-	<support.opensource@diasemi.com>,
-        "shawnguo@kernel.org"
-	<shawnguo@kernel.org>,
-        "s.hauer@pengutronix.de" <s.hauer@pengutronix.de>,
-        "kernel@pengutronix.de" <kernel@pengutronix.de>,
-        "festevam@gmail.com"
-	<festevam@gmail.com>,
-        "andy@kernel.org" <andy@kernel.org>,
-        "paul@crapouillou.net" <paul@crapouillou.net>,
-        "alexander.usyskin@intel.com"
-	<alexander.usyskin@intel.com>,
-        "andreas.werner@men.de"
-	<andreas.werner@men.de>,
-        "daniel@thingy.jp" <daniel@thingy.jp>,
-        "romain.perier@gmail.com" <romain.perier@gmail.com>,
-        "avifishman70@gmail.com"
-	<avifishman70@gmail.com>,
-        "tmaimon77@gmail.com" <tmaimon77@gmail.com>,
-        "tali.perry1@gmail.com" <tali.perry1@gmail.com>,
-        "venture@google.com"
-	<venture@google.com>,
-        "yuenn@google.com" <yuenn@google.com>,
-        "benjaminfair@google.com" <benjaminfair@google.com>,
-        "maddy@linux.ibm.com"
-	<maddy@linux.ibm.com>,
-        "mpe@ellerman.id.au" <mpe@ellerman.id.au>,
-        "npiggin@gmail.com" <npiggin@gmail.com>,
-        "christophe.leroy@csgroup.eu"
-	<christophe.leroy@csgroup.eu>,
-        "naveen@kernel.org" <naveen@kernel.org>,
-        "mwalle@kernel.org" <mwalle@kernel.org>,
-        "xingyu.wu@starfivetech.com"
-	<xingyu.wu@starfivetech.com>,
-        "ziv.xu@starfivetech.com"
-	<ziv.xu@starfivetech.com>,
-        "hayashi.kunihiko@socionext.com"
-	<hayashi.kunihiko@socionext.com>,
-        "mhiramat@kernel.org"
-	<mhiramat@kernel.org>,
-        "linux-watchdog@vger.kernel.org"
-	<linux-watchdog@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-        "chrome-platform@lists.linux.dev"
-	<chrome-platform@lists.linux.dev>,
-        "imx@lists.linux.dev"
-	<imx@lists.linux.dev>,
-        "linux-mips@vger.kernel.org"
-	<linux-mips@vger.kernel.org>,
-        "openbmc@lists.ozlabs.org"
-	<openbmc@lists.ozlabs.org>,
-        "linuxppc-dev@lists.ozlabs.org"
-	<linuxppc-dev@lists.ozlabs.org>,
-        "patches@opensource.cirrus.com"
-	<patches@opensource.cirrus.com>,
-        =?utf-8?B?TWFyZWsgQmVow7pu?=
-	<kabel@kernel.org>
-Subject: RE: [EXTERNAL] Re: [PATCH v4 1/2] watchdog: Add a new flag
- WDIOF_STOP_MAYSLEEP
-Thread-Topic: [EXTERNAL] Re: [PATCH v4 1/2] watchdog: Add a new flag
- WDIOF_STOP_MAYSLEEP
-Thread-Index: AQHbjbo52JxREBNQ6UqbD0W7rj3cQ7NkYIyAgADZCACAAKNX8A==
-Date: Thu, 6 Mar 2025 12:18:20 +0000
-Message-ID:
- <PH8PR18MB53812FCAE180303E5D434275C5CA2@PH8PR18MB5381.namprd18.prod.outlook.com>
-References: <20250305101025.2279951-1-george.cherian@marvell.com>
- <20250305101025.2279951-2-george.cherian@marvell.com>
- <irmewriceyzxr6jvbiao5vqrvelpftbjalmheodx5w63zi6k2y@dg3wlvs6zryd>
- <PH8PR18MB538122CE6706872B8A836A94C5CB2@PH8PR18MB5381.namprd18.prod.outlook.com>
- <7ac2b8db-22c7-4168-b1b7-4f9f0ab10531@pengutronix.de>
- <28a711e5-b2cb-4d5f-bb78-259a01cd4bcc@roeck-us.net>
-In-Reply-To: <28a711e5-b2cb-4d5f-bb78-259a01cd4bcc@roeck-us.net>
-Accept-Language: en-US, en-IN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PH8PR18MB5381:EE_|LV8PR18MB5853:EE_
-x-ms-office365-filtering-correlation-id: 20f72153-0aed-48b4-5191-08dd5ca8fb8e
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|366016|376014|7416014|1800799024|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?d05Jb0xrdUdSTDhwVVlPWitVcUNFSkhPUU8vRERmMksxNFAvWk1NNk5LTm1O?=
- =?utf-8?B?MWtQU21raENXeHRzUW5XdkJSSWZCMTVMaXFYZHd3RFdDRHFLUGQ2eHozMytv?=
- =?utf-8?B?RSs5T29uZ1V6SVNsRjdoUDhIQW1xVVVod1Q3eDhibEpRenhlcy8zUGh6cWpN?=
- =?utf-8?B?RkFrWmY5M0dIV0J2dDNoUHBONkk4eVE1Mktpd2RwWDNVd01wamN4VDlsN29q?=
- =?utf-8?B?Y3hXZVRtV2h5Z2U4UGNPSjFhWDRpRUVkY0t0VStid0xMVU1NRlhod3dNUGZG?=
- =?utf-8?B?OGZUNEhRZURmUU1yeEFIbmU5dVZTTGNkUUc1clBBK0tqUzlSVUUzZVZWTVZn?=
- =?utf-8?B?N3h0UC9MWXAwVFVFRFdQU2pDMmZFRjE2aGdKeFNDMHhTUkxSWDNsYmZ0T25h?=
- =?utf-8?B?T1lZNXpYa1BseEgxSGNKbmRkT01yZk1WWCtya1MzdmFiR2xDbkhJVHJYZWpP?=
- =?utf-8?B?bmp0TGRwNEthVVdDOEppZzRZcStyRVFadWhSQUtiNDNzck5GZjZDc0JmSk9K?=
- =?utf-8?B?ck05OTJxRGkxTnUyejk4ZHdGbndjN3U2dkRGUWpJYlYwUllDSTRPNlRhM2tz?=
- =?utf-8?B?NmdDaUFRVHRWS1Z1YzgwVDhrN1JURXVLRTlvZDY0ZkZ5NFRvV29MVXllc01v?=
- =?utf-8?B?eWFqNjNxMENmVUlqUENvV05lbENoRTBtTmRQeFlxWUhYaWh1aVhrLzRGOVUw?=
- =?utf-8?B?YVBXdTVKUTFvUWtjOTM5VVBtTnZlNEhTd2MzSHBsV1lkdDdEbXVDYmJwdkJI?=
- =?utf-8?B?NUV6MUlvNmRmd3RWK09lWVBQQ0twQ2JjQ0dzaDFIdTVEVXRua1Z1ZW00NHoy?=
- =?utf-8?B?ZWp4Q1VlYm43M2xrRlpabjdQeWNPdWpNbnVmOENxS1k3U2E4RUQwL0FaOCs3?=
- =?utf-8?B?R1E1T2tPcDh6ekQwZS9NWDdlbExwS05sSmNYZ1VVUmM2NDRiQ3A5TWtkSmhD?=
- =?utf-8?B?UUw4bXVlMWtRdEVCU0g3N2E2U1lGOVpDMjJpTGlUdThsRDVxbFFyK3hoVGEy?=
- =?utf-8?B?N2hYbXd2MXkxZ2d2bzRIOUU4TlBGTjJ4V2I2d1daVmdiVktyNkYvcTJmOWJl?=
- =?utf-8?B?SWovenc4MXZ1YmlqTU5LMldla3FoV25RT01URzZSTm1wa0NyVkFiQ1RJeWxJ?=
- =?utf-8?B?WnB5MVlZbUp6OU1XOXdwRTAzSXlDQ3YyTzNjc04zT2Zuc2YwUSt5QSt0ZDlY?=
- =?utf-8?B?UUkvRWc0dGtBQStvZVUyUERZaXJoRUlwZDdrRTdtQXZ2bTg1Z2hQdC9xcnhm?=
- =?utf-8?B?R051NHNKTzc4aHRweWxwZDlOdGdKdnNLcll0ZVh1R2tpSjNBcW1YcTBpQkUx?=
- =?utf-8?B?OUR3YllKelE3dXpCTWFoS1VkMFVwa0NWNUpzVkU2L0hsZk1UL1Q0ZjYvem0r?=
- =?utf-8?B?Wm9SYS9yU2pkUytUc1Y0eFJIaEt3cjZ6cFFmdFI1ZkVyWFpJeDFMYjE0K1pW?=
- =?utf-8?B?eVhnQlNzUHZ6K3pUWjRtbzdRMTN3WktqYXZJUmJHckpGKytLaEgweDNYNWxO?=
- =?utf-8?B?cThnR252MDdNME56WXplOUdBVXQ4WHVRTTdEaWFWSklpdnNuTkV0OVVuSzVX?=
- =?utf-8?B?dW9lVFFhUk5mK2E4RDY5R1RaZDBCV0g3MzRMYytHaWE1TDdlTGoxSXhFaW5m?=
- =?utf-8?B?UUwwZ0dSTUtPc3FGeE9ZeGZaZTlhZWpQMUhncCsyK2hqZ0lMTlpNVTRFbjJS?=
- =?utf-8?B?OFMyWTV6QmFwTnVqeU0rMllFNDBpK1k4THZRcElGQnI1dVYwd1hNckhhTnd6?=
- =?utf-8?B?WXNBc2YxYVpkT2FoZFM2azdwTExIanNDSGJXQU9Tb1l4MDg4ZVNDVHZ0Zjgv?=
- =?utf-8?B?NkxCcTZLanllWElveHF5c0w3Yks4V0VQeWZ6dGN5aFpDUzhjNDJmUTRpZTJW?=
- =?utf-8?B?VFJwZGFhdTdLQXRDS3hMaGRDVDhJeWtPQmk4YzVpVFRTQTNMbUlIQU1OWmJO?=
- =?utf-8?Q?TRRupLogl27sN9WenKxRhVGeQJLw26dR?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH8PR18MB5381.namprd18.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?ZE1rVWZyTm53QnZGbXVyMThZRXlBQ3NXM0dDbXcrRXpUa29scmVYYjIrajND?=
- =?utf-8?B?a1lVTExOLzhuZjgyemtHRmRKdWplcUF5ajI0b08rM3VTdW9rQ2EzSUdyQTh6?=
- =?utf-8?B?ZDRCc0p1VlJpOXJZbkNNWmxuZU4yWm4wOU1Kd2pTVG1zb2dyNUNJTFpJYUVX?=
- =?utf-8?B?S29ycFJOS0lhVWgwbFpYaFdlZnh0U2JSVUs0UFJvZk5pMDFRVzJXTFk4V25h?=
- =?utf-8?B?S0NKWnZlRC9qS3lWRXN4Ry9hb2tDckxmeFo0QTdTd0NYc1hUMFZPcklsMUY4?=
- =?utf-8?B?WklnTTN3TzJOQUVnSjFjLzIxK3lhbTlJWTdKYWxSbzFod2dLN2R6U01vdEh5?=
- =?utf-8?B?VFREUWpGR3FJVFRmVXp6TzJmZzh1dHJUR1hlY2RIWGlpM1dzYituR3BVL2Fa?=
- =?utf-8?B?U0xUeWRNQ3JoZjdWUnhzc2FYZkVidnJraUNNVEg0QkJydGxpTCtsZDk3YUdU?=
- =?utf-8?B?VG9VbzZUWlY4VHlOaUVqRE9LV3FxQzhZakl2VzExRC9Wd3FvNTFvYjFoT1U1?=
- =?utf-8?B?NmEvYmQ2cjUzUmJUbHZ6L0FwNEJZQVJHZmpsMEh1T0lzckduVmZqTVp3WkxS?=
- =?utf-8?B?Y1dEME0wWEZ3Q1FtV3BhMXI2eGhBN3VMbm8yYXVKZWhENmhzdWJGUkNocEcv?=
- =?utf-8?B?blhuNk5ySFE5bHE2OVBBeGduM1ZpKy9Jb1hXQW0xYmxZanp2NVZ1N1VWZjgr?=
- =?utf-8?B?Z0J0TjVQRk9JWjdUM3ZnS2MxSFQySmw3QWRhMXV5ZlFkeXVRTDVRNXA2T1ZH?=
- =?utf-8?B?T1Fhd3luM2tRU0JhZjNhVWhuaHJoWDluODZSYmgrOWQ5THVIUEVPVTdkM2Fm?=
- =?utf-8?B?UjB6V2Z5dzJMdWhiK3hvZDBISHU2b2lnbzVFRUZQYm1XSEhpMnFsVFQ2K1Mz?=
- =?utf-8?B?WlpUa3d3WWJBM25LMy9teHYxMnlOUlFFMWpCZDNlbVpEcFlzSVlDOHk3Nk9L?=
- =?utf-8?B?TzZCaW1YMXo3ditvUWwyTEJWRkdRdUNUWGk5ZktQMWJCSVFHUUppWjMrYzZI?=
- =?utf-8?B?cWRmOVNlY1JGQVQvK0laNDE2TUlkVGVwalVmcTZFQnBaaUZEN213eFMvOERN?=
- =?utf-8?B?R3FSWmVWUG1oS1llelhycTV4cnBweGlZc3k1K2M1eTZhMW5qRVZjU1A1NUR5?=
- =?utf-8?B?TkoxQnBNaHhzL2x1bS96dmVLd2hhZGo4K3c4SDFCU2JXbTRINlFub2RBaS9v?=
- =?utf-8?B?ZTFpR25EY0ZkMGNXU0F2N0hDQTJneEFRMTFlcjZEK0EreGZla3lTZmVZaUlZ?=
- =?utf-8?B?MlkwUDhlWmYyMXByS0N3eElJTHNoNVFUTnZtcmJzemZKeVk2cFg1Wk9kNlBF?=
- =?utf-8?B?REo2RCtFd04xckI3dW0wcHdaWURZSXBtdTdhZ3YwLy8yVG44dnBnc1FtaWZQ?=
- =?utf-8?B?cm0ydWJoVGhORTE1QWYzT1pxS2ZoUkpPVk1TVUFjaGMxK2UxM3Q1bVl0a3la?=
- =?utf-8?B?Snk0OVE0MUlNWEIxTy83UmxsVWpwQ2hGOHBPaXhBWmJ5TVVFQkhYOHdoV25h?=
- =?utf-8?B?aW4xVlA4N1Npb0pDdDMzbHFvaHBITW9YTzhoK3BnbFBtd3V2cWlNZHkvZjVZ?=
- =?utf-8?B?SUd0blp6TGxsek1RU3B0b3hBcGhsY3JVcWFLcksva0tSZmcrVmtSYm5EUHc0?=
- =?utf-8?B?UmZGTnhjK0lIL054OTB3WmYwTTRWZXFTN0VmOFRZTjZRc2hKQStidG15M1ZN?=
- =?utf-8?B?cVhaL3ZoZ2Rqdkp2T2lSTTg5MjE0K0dFeXRScG1JTi82TkowQnNZUXpYL2hY?=
- =?utf-8?B?cDJ5R0lUTysxRXpZQUJNTE1vYWp3bkx4R0NBRHBGN21obFM5OXBOeTk3cy9M?=
- =?utf-8?B?aEh5VTMxdjJIcHpSWURoMEk5eUE5ekZHUFdmTlRGRVBpY1Zyb3BvM0NUcnJB?=
- =?utf-8?B?dW15YjR1d3hlM1NuVEdlanBMQW9QaG9WT1dPR2R0MUF2RFpmMkVzcFZtcDVl?=
- =?utf-8?B?YlF6bjdxTFVZZVEvdlA0TzFOUFhZcWU5bnBSSklJYm5BeExkYUllOExpY1dZ?=
- =?utf-8?B?eTFOU2pBRVF1ZE9pLzhXVm1qSjAyLzRHNnI3aXpxK3ZKUG5uYWs3SWtnb1d5?=
- =?utf-8?B?TUhTL0R4WW5rZ1ZtQ3ROYzVMV3ZVMWFrdTlNVGRCczlVNDJDNW1YeHl3V1RP?=
- =?utf-8?Q?Ji37Y6tOFOkdNzRl75KFXzYxN?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z7pXR1y8gz3bqs
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  6 Mar 2025 23:25:10 +1100 (AEDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-43948f77f1aso3469255e9.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 06 Mar 2025 04:25:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1741263905; x=1741868705; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=nIwcoBN/hkEYZ3G8KOPMnrmKGBBnfRqx2ozDCVdFctQ=;
+        b=Eeyqd3/eafs6KF0k5i3ktdzI+TqeikTEP677oA/ekxttLMAoVvIdVQY8rUPe8TsE0G
+         grJCfnHkSXkV692R9cciuGWXogdDXZWHLyEIvflL5MZCNNGCSsW29Gp8jXyNmThsHyiP
+         FY4aia/tCfNRmtMQUf6baotYwxFoeM9vUaXIRUS/X9ntJ3cxFt9AF2p8CozDviR57/0D
+         FYJyCtsMZb2GacgJq1OI3dLdqCf2xsCbScb+w5Ay/wQ/2Rz+vMZjom2Y/Y2WAWP07B8O
+         KN1yLAmcooOypzdBIyPxjn79kuXQZScaEw1m/IuP1xrgRs/wJ1MZmRvLz+1FawjMkn0i
+         TNNw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741263905; x=1741868705;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nIwcoBN/hkEYZ3G8KOPMnrmKGBBnfRqx2ozDCVdFctQ=;
+        b=OHSJF4HbOCZbc+rhDOxDb9lbkPyGcdmhNrnA4r8dUlfTjZwtCaMunsOgsoQRhqBjpP
+         Hex7zMU2PzX0E4bt3ZE48tON7Q1Cd+crap3kGpV4Qbe3aBErnrTNy41DH1iQ9D3EP9Xj
+         odclpKbVJwEZ0Wc4RUTsGHNJC2NxiICwMLLnj+LMx5V5F9B2kud/xrYxxgPkco2j8txs
+         CmWVjs6Ul6QTqUgxSkGQPCkrzHUz9XBdoAV9LCbHuVfhGbxFNSl3u6hFxKn2winDpMjh
+         L+hr0fJgrqNf1cc4G6h0B0Bh36p56PYYWcL3s3xLDlpmUJ36foJpvndEBhpY4jr0JQAh
+         OhCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW8D2hYAT8+n/rhCvNbSZ+uIagNx1HwTXiWSGz/K45eTWkjEFCiwN5r5JxED5I17inA48IgzT3mtsf25GM=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzDlIn/e6J+7mYu2L42pft2wTR7Csh7KUjAKnlqvTJagKl14dbO
+	tkTEp2BpyJ4MBU4WlN+5xuAKeliDKzrQ1DomW0aNi2qXLEIZquD4t5SnF1WKZIw=
+X-Gm-Gg: ASbGnctxm1UjYbVilzohUEe++WuSarikoVKdzCMSbk/hi4soNQxbYNP/jDSZkFpFZvk
+	tvIDOc+vxNutjm8eDbFgQlwLPJXb+DP6DBZJOmnlCFG+/9GYGv+BzteDaO0m1pE8TYWmC6FF9Z9
+	fD7afMErDUAQk8JjtDoswwaP5CprhcKsDnR17YYb1QGFviMVeuvoiLJF2c2JkyVT9+4ePUG/hVj
+	0HTZnUPAyiiNSOm05y7wRrSkXilqdDAwwSEO4YlxGXnRIumhA6El9By/mWxQLMu6RsLLIkxZyFE
+	5ZJ6bN/nw2krzYgVYwE8rTy4geLUmwnZ+6WaGLhowXYan1c=
+X-Google-Smtp-Source: AGHT+IG009jfgS7Y1rNm77MEBAZpvk+csfOSyOFqNcxON1KmaThlFkX95r4263wttZgsIJhefyFJoA==
+X-Received: by 2002:a05:600c:548f:b0:43b:c0fa:f9bc with SMTP id 5b1f17b1804b1-43bd29c75famr57031165e9.12.1741263905515;
+        Thu, 06 Mar 2025 04:25:05 -0800 (PST)
+Received: from pathway.suse.cz ([176.114.240.130])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd947544sm18165635e9.35.2025.03.06.04.25.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Mar 2025 04:25:05 -0800 (PST)
+Date: Thu, 6 Mar 2025 13:25:03 +0100
+From: Petr Mladek <pmladek@suse.com>
+To: Tamir Duberstein <tamird@gmail.com>
+Cc: Arpitha Raghunandan <98.arpi@gmail.com>,
+	David Gow <davidgow@google.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v5 1/3] printf: convert self-test to KUnit
+Message-ID: <Z8mUH0comOCpycpK@pathway.suse.cz>
+References: <20250221-printf-kunit-convert-v5-0-5db840301730@gmail.com>
+ <20250221-printf-kunit-convert-v5-1-5db840301730@gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -245,57 +105,238 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-OriginatorOrg: marvell.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PH8PR18MB5381.namprd18.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20f72153-0aed-48b4-5191-08dd5ca8fb8e
-X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Mar 2025 12:18:20.0658
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 70e1fb47-1155-421d-87fc-2e58f638b6e0
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: rudFcUnxiUsNfQpV0naMCAjbfaKYLwXR4k4Tm+bzbTZNLavH2SmpraUmWLD79Bi9KuvvPY2lpA69o6yE8r3oMg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR18MB5853
-X-Authority-Analysis: v=2.4 cv=cesormDM c=1 sm=1 tr=0 ts=67c9928e cx=c_pps a=E4Q64eWPmlOcdHW0GAz4hQ==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=Vs1iUdzkB0EA:10 a=-AAbraWEqlQA:10 a=-m1FPHAAd9JJ1ULUGqgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-GUID: KtKfxDEsJWiJiI3yg4oTp4dNVTMAtHun
-X-Proofpoint-ORIG-GUID: KtKfxDEsJWiJiI3yg4oTp4dNVTMAtHun
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-06_05,2025-03-06_01,2024-11-22_01
-X-Spam-Status: No, score=-0.9 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250221-printf-kunit-convert-v5-1-5db840301730@gmail.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-SGkgR3VlbnRlciwNCg0KSSBhbSBzdW1tYXJpemluZyB0aGUgdG9waWNzIHdlIGRpc2N1c3NlZCBp
-biBtdWx0aXBsZSB0aHJlYWRzIGhlcmUuDQoNCj4+T24gMy81LzI1IDAzOjAxLCBBaG1hZCBGYXRv
-dW0gd3JvdGU6DQo+PiBIaSBHZW9yZ2UsDQo+PiBIaSBHdWVudGVyLA0KPj4gDQo+PiBPbiAwNS4w
-My4yNSAxMTozNCwgR2VvcmdlIENoZXJpYW4gd3JvdGU6DQo+Pj4+IHdoeSBpcyBhcm1hZGFfMzd4
-eF93ZHQgYWxzbyBoZXJlPw0KPj4+PiBUaGUgc3RvcCBmdW5jdGlvbiBpbiB0aGF0IGRyaXZlciBt
-YXkgbm90IHNsZWVwLg0KPj4+IE1hcmVrLA0KPj4+DQo+Pj4gVGhhbmtzIGZvciByZXZpZXdpbmcu
-DQo+Pj4gU2luY2UgdGhlIHN0b3AgZnVuY3Rpb24gaGFzIGEgcmVnbWFwX3dyaXRlKCksIEkgdGhv
-dWdodCBpdCBtaWdodCBzbGVlcC4NCj4+PiBOb3cgdGhhdCB5b3UgcG9pbnRlZCBpdCBvdXQsIEkg
-YXNzdW1lIHRoYXQgaXQgaXMgYW4gTU1JTyBiYXNlZCByZWdtYXAgYmVpbmcgdXNlZCBmb3IgYXJt
-YWRhLg0KPj4+IEkgd2lsbCB1cGRhdGUgdGhlIHNhbWUgaW4gdGhlIG5leHQgdmVyc2lvbg0KPj4g
-DQo+PiBGYWlsdXJlIHRvIGFkZCBXRElPRl9TVE9QX01BWVNMRUVQIHdoZW4gaXQncyBuZWVkZWQg
-Y2FuIGxlYWQgdG8NCj4+IGtlcm5lbCBoYW5naW5nLiBGYWlsdXJlIHRvIGFkZCBhbiBhbHRlcm5h
-dGl2ZSBXRElPRl9TVE9QX0FUT01JQw0KPj4gd291bGQgbGVhZCB0byB0aGUga2VybmVsIG9wdGlv
-biBiZWluZyBhIG5vLW9wLg0KPj4gDQo+PiBJIHRoaW5rIGEgbm8tb3Agc3RvcF9vbl9wYW5pYyAo
-b3IgcmVzZXRfb25fcGFuaWMpIGlzIGEgc2FuZXIgZGVmYXVsdC4NCj4+IA0KPg0KPkFncmVlZC4g
-QWxzbywgSSBsaWtlIFdESU9GX1NUT1BfQVRPTUlDIG1vcmUgdGhhbiB0aGUgV0RJT0ZfU1RPUF9O
-T1NMRUVQDQo+SSBoYWQgc3VnZ2VzdGVkIGluIG15IG90aGVyIHJlc3BvbnNlLg0KDQoxLiBJbnN0
-ZWFkIG9mIGJsYWNrbGlzdGluZyBkcml2ZXJzIGFzIFdESU9GX1NUT1BfTUFZU0xFRVAsIHRoZSBv
-cHRpb24gd2lsbCBhbiBvcHQtaW4uDQoyLiBUaGlzIG1heSBub3QgYmUgV0RJT0ZfU1RPUF9BT01J
-QywgaW5zdGVhZCB3b3VsZCBiZSBhIGdlbmVyaWMgZmxhZyBub3QgbGltaXRlZCB0byBTVE9QDQog
-ICAgb3BlcmF0aW9uLiBNYXkgYmUgV0RJT0ZfT1BTX0FUT01JQyAoT1BTIGluY2x1ZGUgLSAuc3Rh
-cnQsIC5zdG9wLCAuc2V0X3RpbWVvdXQsIC5waW5nKQ0KMy4gUmVtb3ZlIHRoZSBrZXJuZWwgY29t
-bWFuZCBsaW5lIG9wdGlvbiAoc3RvcF9vbl9wYW5pYykgYW5kIGhhdmUgYSBnZW5lcmljIHJlc2V0
-X29uX3BhbmljLg0KNC4gcmVzZXRfb25fcGFuaWM9NjAgKGJ5IGRlZmF1bHQgKSAgbWVhbmluZyBv
-biBhIHBhbmljIHRoZSB3ZG9nIHRpbWVvdXQgaXMgdXBkYXRlZCB0byA2MHNlYw0KICAgICBvciB0
-aGUgY2xhbXBfdChyZXNldF9vbl9wYW5pYywgbWluLCBtYXhfaHdfaGVhcnRiZWF0X21zKS4NCjUu
-IGlmIHJlc2V0X29uX3BhbmljPTAsIGl0IG1lYW5zIHRoZSB3YXRjaGRvZyBpcyBzdG9wcGVkIG9u
-IHBhbmljLg0KNi4gQWxsIG9mIHRoZXNlIHRvIGJlIGRvbmUgYnkgZGVmYXVsdCBmcm9tIHBhbmlj
-IGhhbmRsZXIgaW5jYXNlIG9mIGEgY29uZmlndXJlZCBrZHVtcCBrZXJuZWwuDQoNCi1HZW9yZ2UN
-Cg0KPg0KPlRoYW5rcywNCj5HdWVudGVyDQoNCg==
+On Fri 2025-02-21 15:34:30, Tamir Duberstein wrote:
+> Convert the printf() self-test to a KUnit test.
+> 
+> In the interest of keeping the patch reasonably-sized this doesn't
+> refactor the tests into proper parameterized tests - it's all one big
+> test case.
+> 
+> Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> ---
+>  Documentation/core-api/printk-formats.rst   |   4 +-
+>  MAINTAINERS                                 |   2 +-
+>  lib/Kconfig.debug                           |  12 +-
+>  lib/Makefile                                |   1 -
+>  lib/tests/Makefile                          |   1 +
+>  lib/{test_printf.c => tests/printf_kunit.c} | 188 +++++++++++++++-------------
+>  tools/testing/selftests/lib/config          |   1 -
+>  tools/testing/selftests/lib/printf.sh       |   4 -
+>  8 files changed, 117 insertions(+), 96 deletions(-)
+> 
+> diff --git a/Documentation/core-api/printk-formats.rst b/Documentation/core-api/printk-formats.rst
+> index ecccc0473da9..4bdc394e86af 100644
+> --- a/Documentation/core-api/printk-formats.rst
+> +++ b/Documentation/core-api/printk-formats.rst
+> @@ -661,7 +661,7 @@ Do *not* use it from C.
+>  Thanks
+>  ======
+>  
+> -If you add other %p extensions, please extend <lib/test_printf.c> with
+> -one or more test cases, if at all feasible.
+> +If you add other %p extensions, please extend <lib/tests/printf_kunit.c>
+> +with one or more test cases, if at all feasible.
+>  
+>  Thank you for your cooperation and attention.
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index f076360ce3c6..b051ccf6b276 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -25510,8 +25510,8 @@ R:	Sergey Senozhatsky <senozhatsky@chromium.org>
+>  S:	Maintained
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/printk/linux.git
+>  F:	Documentation/core-api/printk-formats.rst
+> -F:	lib/test_printf.c
+>  F:	lib/test_scanf.c
+> +F:	lib/tests/printf_kunit.c
+>  F:	lib/vsprintf.c
+>  
+>  VT1211 HARDWARE MONITOR DRIVER
+> diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
+> index 7ddbfdacf895..d2b15f633227 100644
+> --- a/lib/Kconfig.debug
+> +++ b/lib/Kconfig.debug
+> @@ -2436,6 +2436,15 @@ config ASYNC_RAID6_TEST
+>  config TEST_HEXDUMP
+>  	tristate "Test functions located in the hexdump module at runtime"
+>  
+> +config PRINTF_KUNIT_TEST
+> +	tristate "KUnit test printf() family of functions at runtime" if !KUNIT_ALL_TESTS
+> +	depends on KUNIT
+> +	default KUNIT_ALL_TESTS
+> +	help
+> +	  Enable this option to test the printf functions at runtime.
+> +
+> +	  If unsure, say N.
+> +
+>  config STRING_KUNIT_TEST
+>  	tristate "KUnit test string functions at runtime" if !KUNIT_ALL_TESTS
+>  	depends on KUNIT
+> @@ -2449,9 +2458,6 @@ config STRING_HELPERS_KUNIT_TEST
+>  config TEST_KSTRTOX
+>  	tristate "Test kstrto*() family of functions at runtime"
+>  
+> -config TEST_PRINTF
+> -	tristate "Test printf() family of functions at runtime"
+> -
+>  config TEST_SCANF
+>  	tristate "Test scanf() family of functions at runtime"
+>  
+> diff --git a/lib/Makefile b/lib/Makefile
+> index 961aef91d493..f31e6a3100ba 100644
+> --- a/lib/Makefile
+> +++ b/lib/Makefile
+> @@ -77,7 +77,6 @@ obj-$(CONFIG_TEST_RHASHTABLE) += test_rhashtable.o
+>  obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_keys.o
+>  obj-$(CONFIG_TEST_STATIC_KEYS) += test_static_key_base.o
+>  obj-$(CONFIG_TEST_DYNAMIC_DEBUG) += test_dynamic_debug.o
+> -obj-$(CONFIG_TEST_PRINTF) += test_printf.o
+>  obj-$(CONFIG_TEST_SCANF) += test_scanf.o
+>  
+>  obj-$(CONFIG_TEST_BITMAP) += test_bitmap.o
+> diff --git a/lib/tests/Makefile b/lib/tests/Makefile
+> index 8961fbcff7a4..183c6a838a5d 100644
+> --- a/lib/tests/Makefile
+> +++ b/lib/tests/Makefile
+> @@ -30,6 +30,7 @@ obj-$(CONFIG_LINEAR_RANGES_TEST) += test_linear_ranges.o
+>  obj-$(CONFIG_MEMCPY_KUNIT_TEST) += memcpy_kunit.o
+>  CFLAGS_overflow_kunit.o = $(call cc-disable-warning, tautological-constant-out-of-range-compare)
+>  obj-$(CONFIG_OVERFLOW_KUNIT_TEST) += overflow_kunit.o
+> +obj-$(CONFIG_PRINTF_KUNIT_TEST) += printf_kunit.o
+>  obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
+>  obj-$(CONFIG_SLUB_KUNIT_TEST) += slub_kunit.o
+>  obj-$(CONFIG_TEST_SORT) += test_sort.o
+> diff --git a/lib/test_printf.c b/lib/tests/printf_kunit.c
+> similarity index 87%
+> rename from lib/test_printf.c
+> rename to lib/tests/printf_kunit.c
+> index 59dbe4f9a4cb..287bbfb61148 100644
+> --- a/lib/test_printf.c
+> +++ b/lib/tests/printf_kunit.c
+> @@ -3,9 +3,7 @@
+>   * Test cases for printf facility.
+>   */
+>  
+> -#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+> -
+> -#include <linux/init.h>
+> +#include <kunit/test.h>
+>  #include <linux/kernel.h>
+>  #include <linux/module.h>
+>  #include <linux/printk.h>
+> @@ -25,8 +23,6 @@
+>  
+>  #include <linux/property.h>
+>  
+> -#include "../tools/testing/selftests/kselftest_module.h"
+> -
+>  #define BUF_SIZE 256
+>  #define PAD_SIZE 16
+>  #define FILL_CHAR '$'
+> @@ -37,12 +33,17 @@
+>  	block \
+>  	__diag_pop();
+>  
+> -KSTM_MODULE_GLOBALS();
+> +static unsigned int total_tests;
+> +
+> +static char *test_buffer;
+> +static char *alloced_buffer;
+> +
+> +static struct kunit *kunittest;
+>  
+> -static char *test_buffer __initdata;
+> -static char *alloced_buffer __initdata;
+> +#define tc_fail(fmt, ...) \
+> +	KUNIT_FAIL(kunittest, fmt, ##__VA_ARGS__)
+>  
+> -static int __printf(4, 0) __init
+> +static void __printf(4, 0)
+>  do_test(int bufsize, const char *expect, int elen,
+>  	const char *fmt, va_list ap)
+>  {
+> @@ -57,52 +58,50 @@ do_test(int bufsize, const char *expect, int elen,
+>  	va_end(aq);
+>  
+>  	if (ret != elen) {
+> -		pr_warn("vsnprintf(buf, %d, \"%s\", ...) returned %d, expected %d\n",
+> +		tc_fail("vsnprintf(buf, %d, \"%s\", ...) returned %d, expected %d",
+
+1. It looks a bit strange that the 1st patch replaces pr_warn() with
+   tc_fail() which hides KUNIT_FAIL().
+
+   And the 2nd patch replaces tc_fail() with KUNIT_FAIL().
+
+   It looks like a non-necessary churn.
+
+   It would be better to avoid the temporary "tc_fail" and swith to
+   KUNIT_FAIL() already in this patch.
+
+   I did not find any comment about this in the earier versions of the
+   patchset.
+
+   Is it just a result of the evolution of the patchset or
+   is there any motivation for this?
+
+
+2. What was the motivation to remove the trailing '\n', please?
+
+   It actually makes a difference from the printk() POV. Messages without
+   the trailing '\n' are _not_ flushed to the console until another
+   message is added. The reason is that they might still be appended
+   by pr_cont(). And printk() emits only complete lines to the
+   console.
+
+   In general, messages should include the trailing '\n' unless the
+   code wants to append something later or the trailing '\n' is
+   added by another layer of the code. It does not seem to be this case.
+
+
+>  			bufsize, fmt, ret, elen);
+> -		return 1;
+> +		return;
+>  	}
+
+[...]
+
+> @@ -842,13 +836,15 @@ test_pointer(void)
+>  	fourcc_pointer();
+>  }
+>  
+> -static void __init selftest(void)
+> +static void printf_test(struct kunit *test)
+>  {
+>  	alloced_buffer = kmalloc(BUF_SIZE + 2*PAD_SIZE, GFP_KERNEL);
+>  	if (!alloced_buffer)
+>  		return;
+
+I would use here:
+
+	KUNIT_ASSERT_NOT_NULL(test, alloced_buffer);
+
+And move the same change for the other kmalloc() location from
+the 2nd patch.
+
+
+>  	test_buffer = alloced_buffer + PAD_SIZE;
+>  
+> +	kunittest = test;
+> +
+>  	test_basic();
+>  	test_number();
+>  	test_string();
+
+
+Otherwise, it looks good to me.
+
+Best Regards,
+Petr
 
