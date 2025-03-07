@@ -1,59 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-6799-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B54D9A56375
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 10:19:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F3EA56395
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 10:21:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8LM62nZcz2xQ6;
-	Fri,  7 Mar 2025 20:18:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8LPh556Bz3btk;
+	Fri,  7 Mar 2025 20:21:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::b7"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741339138;
-	cv=none; b=m4TPfs12Ga0d2CtlCb3HPthlOsdwDFhj91BDyTJt4Gy5zal3IWWZW1Qt2k6zzJc/okS8M9vS0c/wrzgE5+mV+FbHaoz5TlHSB7W7KSRjq9KxP3cnnazIF1b8NTFTUmQ6nvcBdhkyKBczPsulunVuV2wYWaCtzsAwDuJ6cvM89dCpiQ49uhO2iIdFmn7aU/I15nKFVrbsSKsR5q83OrRnNQdAw1C8OHAAaAe3ADU4nk9JUBoXPlP0Dj3UGzbMRV7+sut+AXuhj/Wv8EXutwTwHlQVsaMqA6RC8JyBXLcEzbth/aLAY4U7AHAAQYHveEY0IAdSlUan38bg6ZjoKbZndg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741339272;
+	cv=none; b=DAoAJ5sQYkt8Qv3JWCydbZO/MlEG3MOCsD1pkCuzcH30tUkMa2ccvtoKNBsRxoMUbSP5B18rLJQQxeKE9xBmjN3dmiZEPj80uW6AnEoZmg4IZMlKq9bpp5hWQzDr3oVeV9md0JpStOsU+cjEu/FcOZhCt9rlt+h2X8n1qjnMCriE1OVOCAjcZOBsaJiPHbQiwnh3xvfiW9jvtejLS0WNQQsdT3FQ1Z38SCNhCJOviTmfMZlV0i4XUJT4yYgqqoDpIcSlmiBWMLRzzuAvqVTPLWaERqe9QusXZhl/zmMwV3AhqleTxiEjYB37R53NMV8GmIesd2UhJPi6DEqVNh1JBw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741339138; c=relaxed/relaxed;
-	bh=y2FBvybRQ7hGNDuactnNvnWlcdQr0dcjdCw8K+WSDT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=E6lll1F9N/vFTqxqvW3yxxs1tR4X6GZV1xfPnkunpS9bzBPpqCUgjOWVldii9ki12Or2pjRlgeO+a1oxx3yXRuM/KNuSi7Bj8cTr/3k2K1yBtSsNf/8qjLqtklAIH8YtyWlYTk81sAnU/NM+1AD/jrh1SJeh7A+gmJknd6Za26kEYFOsVwV2FiWi7t31UlltbYzuSssdy5qrnNUt+RosMlXq36/cC/dWP5eW7qb/T0G2WB/3xwJKE/gH3St+zB3Ux66TGZ9DWBYxzRW94v33bfh9UWYi+GS6649tPzBJ/YC288ZkoV0JKYYPIcMOPZ6Mx8ejXVXSUsxotdJNfoic+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v/um14Qj; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::b7; helo=out-183.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+	t=1741339272; c=relaxed/relaxed;
+	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P/MyfYI9AFSdrisCmlXU5tZR+Oxo33Nss/8P3bGtaf25ADs2Ll8IsJz88VudwOx820DVeQIEiw7vVI1Ly5XCOVDfDk+XjNIHDi9IYMTtt8u6fKSreBjoFdUd2Rr/oQxWppf4jHAOHwpMm36XEzyG+Ko2UG1LV8gIe8vD78qr25WmOXswxLlaa9ZeMjDCh0g0jl6pYKZiVAjUiv5PwBKAOEKafeflyh0/nuyqxvXeCx/hvI8fS8n0C0DPkL+vEkuRbPQ2Tk/NWWLYQK8nzWA1k/aR+/il6vXkXHpVLAiIBASnnpc2XNXilQgxYzD7opq6PYC+eflpbws6WDiJaSzXcQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=v/um14Qj;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::b7; helo=out-183.mta1.migadu.com; envelope-from=andrew.jones@linux.dev; receiver=lists.ozlabs.org)
-Received: from out-183.mta1.migadu.com (out-183.mta1.migadu.com [IPv6:2001:41d0:203:375::b7])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8LM36Rsvz2x9g
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 20:18:55 +1100 (AEDT)
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1741339111;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=y2FBvybRQ7hGNDuactnNvnWlcdQr0dcjdCw8K+WSDT8=;
-	b=v/um14QjntUhD9/+RjAPoAqg5hVIFWfCDpaGuI3rZaVkVpnzjZ4cpDc2xZ3mkeysr6W9z2
-	xbw+4yumPwu7bH4NmlPTKPqXmnDnAh2JsHoY5L/yMVAZYEQMBt0P+TSM4mxRcP6MI3jdoT
-	lkxLHe4Zyn/2jMILuyMorKlQiFsHWWQ=
-From: Andrew Jones <andrew.jones@linux.dev>
-To: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	kvm-riscv@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org
-Cc: pbonzini@redhat.com,
-	thuth@redhat.com,
-	alexandru.elisei@arm.com,
-	eric.auger@redhat.com,
-	lvivier@redhat.com,
-	frankja@linux.ibm.com,
-	imbrenda@linux.ibm.com,
-	nrb@linux.ibm.com
-Subject: [kvm-unit-tests PATCH v2] Makefile: Use CFLAGS in cc-option
-Date: Fri,  7 Mar 2025 10:18:29 +0100
-Message-ID: <20250307091828.57933-2-andrew.jones@linux.dev>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8LPd5fl5z2xdn
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 20:21:09 +1100 (AEDT)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	by smtp-out1.suse.de (Postfix) with ESMTP id 2AADC21197;
+	Fri,  7 Mar 2025 09:21:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741339262; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
+	b=1dwYROUq+tvV2eJNdDehJTD3S8Mg8iIqQHJ3ioPN3AVogznUpSCpO6ZtH+oWL066noalfX
+	xg+qa+17RdjGoPBv2Pls58PMi7cK/6MQdyAFSNLRZoZ/IFL7DWvg5WSXUFX0vxTrStjWE1
+	/P0J1aTftRCxUhkU7SRASBcnmS+sqHk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741339262;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
+	b=8poSsgS5heeqVir9dYeGzPbKeDduyiKEb0mhfyqn3tEnpjtzE2cIw5cYlsY95p9/fWLD3D
+	Wkoh/BSRAoPrgRBw==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1741339262; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
+	b=1dwYROUq+tvV2eJNdDehJTD3S8Mg8iIqQHJ3ioPN3AVogznUpSCpO6ZtH+oWL066noalfX
+	xg+qa+17RdjGoPBv2Pls58PMi7cK/6MQdyAFSNLRZoZ/IFL7DWvg5WSXUFX0vxTrStjWE1
+	/P0J1aTftRCxUhkU7SRASBcnmS+sqHk=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1741339262;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
+	b=8poSsgS5heeqVir9dYeGzPbKeDduyiKEb0mhfyqn3tEnpjtzE2cIw5cYlsY95p9/fWLD3D
+	Wkoh/BSRAoPrgRBw==
+From: Michal Suchanek <msuchanek@suse.de>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: Michal Suchanek <msuchanek@suse.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] powerpc/boot: Fix build with gcc 15
+Date: Fri,  7 Mar 2025 10:20:52 +0100
+Message-ID: <20250307092055.21986-1-msuchanek@suse.de>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,63 +92,56 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+X-Spam-Score: -2.80
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.de,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,fjasle.eu,google.com,vger.kernel.org];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com]
+X-Spam-Level: 
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-When cross compiling with clang we need to specify the target in
-CFLAGS and cc-option will fail to recognize target-specific options
-without it. Add CFLAGS to the CC invocation in cc-option.
+Similar to x86 the ppc boot code does not build with GCC 15.
 
-The introduction of the realmode_bits variable is necessary to
-avoid make failing to build x86 due to CFLAGS referencing itself.
+Copy the fix from
+commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
 
-Signed-off-by: Andrew Jones <andrew.jones@linux.dev>
+Signed-off-by: Michal Suchanek <msuchanek@suse.de>
 ---
-v2:
- - Fixed x86 builds with the realmode_bits variable
+ arch/powerpc/boot/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
- Makefile            | 2 +-
- x86/Makefile.common | 3 ++-
- 2 files changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 78352fced9d4..9dc5d2234e2a 100644
---- a/Makefile
-+++ b/Makefile
-@@ -21,7 +21,7 @@ DESTDIR := $(PREFIX)/share/kvm-unit-tests/
- 
- # cc-option
- # Usage: OP_CFLAGS+=$(call cc-option, -falign-functions=0, -malign-functions=0)
--cc-option = $(shell if $(CC) -Werror $(1) -S -o /dev/null -xc /dev/null \
-+cc-option = $(shell if $(CC) $(CFLAGS) -Werror $(1) -S -o /dev/null -xc /dev/null \
-               > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi ;)
- 
- libcflat := lib/libcflat.a
-diff --git a/x86/Makefile.common b/x86/Makefile.common
-index 0b7f35c8de85..e97464912e28 100644
---- a/x86/Makefile.common
-+++ b/x86/Makefile.common
-@@ -98,6 +98,7 @@ tests-common = $(TEST_DIR)/vmexit.$(exe) $(TEST_DIR)/tsc.$(exe) \
- ifneq ($(CONFIG_EFI),y)
- tests-common += $(TEST_DIR)/realmode.$(exe) \
- 		$(TEST_DIR)/la57.$(exe)
-+realmode_bits := $(if $(call cc-option,-m16,""),16,32)
+diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
+index 1ff6ad4f6cd2..e6b35699c049 100644
+--- a/arch/powerpc/boot/Makefile
++++ b/arch/powerpc/boot/Makefile
+@@ -33,6 +33,7 @@ else
  endif
  
- test_cases: $(tests-common) $(tests)
-@@ -108,7 +109,7 @@ $(TEST_DIR)/realmode.elf: $(TEST_DIR)/realmode.o
- 	$(LD) -m elf_i386 -nostdlib -o $@ \
- 	      -T $(SRCDIR)/$(TEST_DIR)/realmode.lds $^
- 
--$(TEST_DIR)/realmode.o: bits = $(if $(call cc-option,-m16,""),16,32)
-+$(TEST_DIR)/realmode.o: bits = $(realmode_bits)
- 
- $(TEST_DIR)/access_test.$(bin): $(TEST_DIR)/access.o
- 
+ ifdef CONFIG_PPC64_BOOT_WRAPPER
++BOOTTARGETFLAGS	+= -std=gnu11
+ BOOTTARGETFLAGS	+= -m64
+ BOOTTARGETFLAGS	+= -mabi=elfv2
+ ifdef CONFIG_PPC64_ELF_ABI_V2
 -- 
-2.48.1
+2.47.1
 
 
