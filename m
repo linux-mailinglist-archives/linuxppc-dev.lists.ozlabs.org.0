@@ -1,84 +1,119 @@
-Return-Path: <linuxppc-dev+bounces-6800-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6801-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F3EA56395
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 10:21:15 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94262A56C04
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 16:29:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8LPh556Bz3btk;
-	Fri,  7 Mar 2025 20:21:12 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8VZH5V0Cz2yPG;
+	Sat,  8 Mar 2025 02:29:11 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741339272;
-	cv=none; b=DAoAJ5sQYkt8Qv3JWCydbZO/MlEG3MOCsD1pkCuzcH30tUkMa2ccvtoKNBsRxoMUbSP5B18rLJQQxeKE9xBmjN3dmiZEPj80uW6AnEoZmg4IZMlKq9bpp5hWQzDr3oVeV9md0JpStOsU+cjEu/FcOZhCt9rlt+h2X8n1qjnMCriE1OVOCAjcZOBsaJiPHbQiwnh3xvfiW9jvtejLS0WNQQsdT3FQ1Z38SCNhCJOviTmfMZlV0i4XUJT4yYgqqoDpIcSlmiBWMLRzzuAvqVTPLWaERqe9QusXZhl/zmMwV3AhqleTxiEjYB37R53NMV8GmIesd2UhJPi6DEqVNh1JBw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741361351;
+	cv=none; b=VcDx02ncJTd3/VWmQKcXh7MkpjeOEu1mNz3Yyd/+M4g1RpwgWqWQ/gz4xahkWHopv8/Bl2HdfEXEF6V9h5qsaLmKcccT4B7qM/UU+3UbxjmNJfVfENShzBVvVp/sEr5FkgHTkpLBlpaweflJNxCAdQcV5JtulA1HyT/VBHxP/BuEiIIlZwSRo0cs+462A0SfrdVt3aXQgZYVy5zXtLd3xQBgoX9ezC5Z0EqNX9AbThcxOIqLuaz9ETx+9NIND1fOI7HGC6Mn8sATooshy0d/IS7VSeOnMluhQnVdfj5bicxC2L5tpn+gLzoRh8TWDu+fFXYQM/v3OzitmXI1hysGmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741339272; c=relaxed/relaxed;
-	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=P/MyfYI9AFSdrisCmlXU5tZR+Oxo33Nss/8P3bGtaf25ADs2Ll8IsJz88VudwOx820DVeQIEiw7vVI1Ly5XCOVDfDk+XjNIHDi9IYMTtt8u6fKSreBjoFdUd2Rr/oQxWppf4jHAOHwpMm36XEzyG+Ko2UG1LV8gIe8vD78qr25WmOXswxLlaa9ZeMjDCh0g0jl6pYKZiVAjUiv5PwBKAOEKafeflyh0/nuyqxvXeCx/hvI8fS8n0C0DPkL+vEkuRbPQ2Tk/NWWLYQK8nzWA1k/aR+/il6vXkXHpVLAiIBASnnpc2XNXilQgxYzD7opq6PYC+eflpbws6WDiJaSzXcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1741361351; c=relaxed/relaxed;
+	bh=Y0KvhWxi6k4smjT1a6uHtK0WLe6VaKHOV2hSoWFI5bI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l980yZppEOqAl0WwUvpZ400x+EUKk3qbihLS3c2HRE9K0hHm2wb4AHQPnsjtqt1Xpwmm4L+warXKJBbzZtRJXIDrtP7uZFrjVrSFb/q9S9H3LJeJKXl80MC6Mr9wuOr3uZLa3IopXm6ye3sJpNmyp+Dz14ovM4eoSGp/h5RCm1bIDqz6plqL8AxoNPziH1V9wRXemZnk4TvxnaEWMCoEqeMEWKOV+rurIQ38xSMl7IwNLrYUsBueCxg1CN1L4DXjlVI0KqqfRK9RwIE/YLLLcmsQrCPCKtZ3cXzkw9bf0oyPCsHJI/t6kzk0JrRcODcr6HT1JAfqr4UhHmlgdPdxSA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qKQQC8sC; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=1dwYROUq;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=8poSsgS5;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qKQQC8sC;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8LPd5fl5z2xdn
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 20:21:09 +1100 (AEDT)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	by smtp-out1.suse.de (Postfix) with ESMTP id 2AADC21197;
-	Fri,  7 Mar 2025 09:21:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741339262; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
-	b=1dwYROUq+tvV2eJNdDehJTD3S8Mg8iIqQHJ3ioPN3AVogznUpSCpO6ZtH+oWL066noalfX
-	xg+qa+17RdjGoPBv2Pls58PMi7cK/6MQdyAFSNLRZoZ/IFL7DWvg5WSXUFX0vxTrStjWE1
-	/P0J1aTftRCxUhkU7SRASBcnmS+sqHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741339262;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
-	b=8poSsgS5heeqVir9dYeGzPbKeDduyiKEb0mhfyqn3tEnpjtzE2cIw5cYlsY95p9/fWLD3D
-	Wkoh/BSRAoPrgRBw==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741339262; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
-	b=1dwYROUq+tvV2eJNdDehJTD3S8Mg8iIqQHJ3ioPN3AVogznUpSCpO6ZtH+oWL066noalfX
-	xg+qa+17RdjGoPBv2Pls58PMi7cK/6MQdyAFSNLRZoZ/IFL7DWvg5WSXUFX0vxTrStjWE1
-	/P0J1aTftRCxUhkU7SRASBcnmS+sqHk=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741339262;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kqxqcPqwKkwzQqSoeNGsuK4t8y7YgkAyzT+CFhOL+Xw=;
-	b=8poSsgS5heeqVir9dYeGzPbKeDduyiKEb0mhfyqn3tEnpjtzE2cIw5cYlsY95p9/fWLD3D
-	Wkoh/BSRAoPrgRBw==
-From: Michal Suchanek <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Michal Suchanek <msuchanek@suse.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] powerpc/boot: Fix build with gcc 15
-Date: Fri,  7 Mar 2025 10:20:52 +0100
-Message-ID: <20250307092055.21986-1-msuchanek@suse.de>
-X-Mailer: git-send-email 2.47.1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8VZG5gQnz2yDk
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Mar 2025 02:29:09 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 527E3AWH028905;
+	Fri, 7 Mar 2025 15:28:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Y0KvhWxi6k4smjT1a6uHtK0WLe6VaK
+	HOV2hSoWFI5bI=; b=qKQQC8sCg9pR0Rgf2U4SjNR+davwX5FjEufMomgRsB00fg
+	zyRoTfxYxXh4Y8vuiZOJjrJtRUBqHxyVXsqcdfStADiDsVoEhvGXke2IzKBOI/hb
+	WiESqINaMWZlctFARnqnvnWiPTNBO/qTgrLVOx+veNXvwWI6SMXfFRzUxY07Dh9Y
+	p4E9rDCnukHT+Y6EVG26BlOZ16mHO3x7KhgMU6qM64BlKcUlVNv2REetqaorOfxE
+	Hv9tuR0tLZlF0MsbPIllc5+326ZsUeYtZPM3HYRousN2gYIQuhJdn4OFhBw8Ldam
+	BqYL6oneEKifef2Z24hvK1SLIU1JVnxU0/X7HqUg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45827p8e9e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Mar 2025 15:28:26 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 527FOGZe009112;
+	Fri, 7 Mar 2025 15:28:26 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45827p8e9b-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Mar 2025 15:28:25 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 527CW0hk013724;
+	Fri, 7 Mar 2025 15:28:24 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 454e2m7eh2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Mar 2025 15:28:24 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 527FSKc034669078
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Mar 2025 15:28:20 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4BC592004D;
+	Fri,  7 Mar 2025 15:28:20 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6CBC420040;
+	Fri,  7 Mar 2025 15:28:17 +0000 (GMT)
+Received: from osiris (unknown [9.171.2.237])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Fri,  7 Mar 2025 15:28:17 +0000 (GMT)
+Date: Fri, 7 Mar 2025 16:28:15 +0100
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Andreas Larsson <andreas@gaisler.com>,
+        Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+        Huacai Chen <chenhuacai@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+        Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 07/13] s390: make setup_zero_pages() use memblock
+Message-ID: <20250307152815.9880Gbd-hca@linux.ibm.com>
+References: <20250306185124.3147510-1-rppt@kernel.org>
+ <20250306185124.3147510-8-rppt@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,57 +126,46 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -2.80
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.de,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,fjasle.eu,google.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250306185124.3147510-8-rppt@kernel.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: A6EZhWyKm6a7TATSJL5pnfOrX3P29DY0
+X-Proofpoint-GUID: Cc95RTw9axkwgZElLQM4IM54NfQR-ck-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-07_06,2025-03-06_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ impostorscore=0 bulkscore=0 clxscore=1011 spamscore=0 mlxlogscore=334
+ malwarescore=0 lowpriorityscore=0 phishscore=0 adultscore=0 suspectscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503070115
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Similar to x86 the ppc boot code does not build with GCC 15.
+On Thu, Mar 06, 2025 at 08:51:17PM +0200, Mike Rapoport wrote:
+> From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> 
+> Allocating the zero pages from memblock is simpler because the memory is
+> already reserved.
+> 
+> This will also help with pulling out memblock_free_all() to the generic
+> code and reducing code duplication in arch::mem_init().
+> 
+> Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+> ---
+>  arch/s390/mm/init.c | 14 +++-----------
+>  1 file changed, 3 insertions(+), 11 deletions(-)
 
-Copy the fix from
-commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+Acked-by: Heiko Carstens <hca@linux.ibm.com>
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
- arch/powerpc/boot/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+> -	empty_zero_page = __get_free_pages(GFP_KERNEL | __GFP_ZERO, order);
+> +	empty_zero_page = (unsigned long)memblock_alloc(PAGE_SIZE << order, order);
+>  	if (!empty_zero_page)
+>  		panic("Out of memory in setup_zero_pages");
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 1ff6ad4f6cd2..e6b35699c049 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -33,6 +33,7 @@ else
- endif
- 
- ifdef CONFIG_PPC64_BOOT_WRAPPER
-+BOOTTARGETFLAGS	+= -std=gnu11
- BOOTTARGETFLAGS	+= -m64
- BOOTTARGETFLAGS	+= -mabi=elfv2
- ifdef CONFIG_PPC64_ELF_ABI_V2
--- 
-2.47.1
-
+This could have been converted to memblock_alloc_or_panic(), but I
+guess this can also be done at a later point in time.
 
