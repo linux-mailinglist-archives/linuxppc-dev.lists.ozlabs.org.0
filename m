@@ -1,101 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-6803-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6804-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA36DA56CE7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 17:01:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11368A56D3B
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 17:11:17 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8WH75kVvz3c8Y;
-	Sat,  8 Mar 2025 03:01:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8WVp20bNz30LS;
+	Sat,  8 Mar 2025 03:11:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42e"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741363267;
-	cv=none; b=Bzx49JPhcY+utTvZ4kZeUkIu8ehoHQLYQvW7tSeR9nicc3IifuVXAt2ZFv5PUBTsYYBVPIrXceeeQ7EL31jp5a4yXLDGPB6E4EDqg25WLis78IDSqn0vJP+8lg0s6yi7t6pHrRKnnvrfUlHHJHMSvzOIKsWxGd0V5k9v5L3s8h4ALvmdUAoh1/zGIqlVEu2TvSizsxAXvSS5Q/2o2E2SMRawtZGt3u0YrK2s3Iozd5G5yf/xprDk2xQv9vOHNdbdc2YzyrIYtg9wh6WtIz8H4vN8fJCWLHhfcgW/FSQjgPMb5kcmDaSsVjzyt3cnroEz60hoEdPmydLwsYs6TG3jtg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741363874;
+	cv=none; b=R+frjah3FyyKAJVTRX2CSOQc1/lRPhZoigP9M74tNKD1IRVrYWEookcO+P20SPeQelhNWkT4TvWDa4f3V3UYPmFxZLsWHqD5Oxe5Q4ZH6n3Z6gk7nBy4I4bXOr3BhNL+Hca6iHw87hOp9appvfQ3lyFzpYpzzyuIWYIUnEu+JDvkOzZ0LhjjlidmmMIOEiAvKG7BWzKWMzo7B9yILjNYqVOCb7iKUGUZDiBinY7hRepKkT8kpYR1BPffM3Nts7YdxGCd/Ucq8+EY85c+xADYQekwTXKFv0Mm2rLey3iFHB2kwUZVj+Wie95eNfiKZWiCmx9N0wDxj0Ez/D9uQf1lZg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741363267; c=relaxed/relaxed;
-	bh=B0Iktfq0DR02GmBsXbOGq/r2zfQq6D1ECaT1ooK1s1o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ooi2uV3EG9oq5poXcrz+WzifPlZVUI+YvsVidh4mnkOi42UwzYa1B20U8RDYzJKS1bj3CMdxNYfCzevnJR3Tp1jkIDi1V99GY/1eSns4LUU4NWEJ60Idpn4hrGNDFo9T1H/dXxg38WlhgOoy8hsi8g7L6f5b4TTXmIUbFS96KjZ6OxDq1JjQ4RnOm0ftXyQx6RzaDJUZW4SBFjAOxKqbRArSztQpA754r/bS4U08CUSW4gkqW9L5+r94C7L1tL1McPQhKPPInrwfMMnF9JcRrWwayy8XlOqgmVJQOOm4K5A9+0RPov+3BrL3I0gTQX1p9HYdOJnzTR2wYUvE+cVp+A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=XIF05AMB; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+	t=1741363874; c=relaxed/relaxed;
+	bh=klJsLymPMc04xnEdPRc0l/MJfXbZqUAJfHS12YwZ6tw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hDLBe+8HBEpByCPY352GpeSXSFXBDFB8w/FKb18TSOGprZqhXydYgbVGmDGIvUF/reYlFlHBzcgPt2HWI56CPgO3xSJVAWU9wOTaAJihzcQqkX4e4YGoncbMNjGpoyqPBR1EmqtF0gbjeb8ZavPISwEzj+KDTqqkxa4gBy4W3qtc2nKS3gU74zkTTnwa0yj7Moo8EbbRu4bGOpL3gQNiT7KjTevLKwMFLS+A6kBfnFOcm4gFKp08Y0Gy1QUnSZ5fteRs77S4zh4qejyhBCGeOkEYQHdDZXsddVPAmlZb5zp0tsqGXDF4Kh6fOTNauUcsboigPpeIS5ERCL2/Yb9rfA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Na8j3e5C; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=XIF05AMB;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Na8j3e5C;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::42e; helo=mail-wr1-x42e.google.com; envelope-from=pmladek@suse.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8WH60tmHz30T0
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Mar 2025 03:01:05 +1100 (AEDT)
-Received: by mail-wr1-x42e.google.com with SMTP id ffacd0b85a97d-390f69f8083so1723603f8f.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Mar 2025 08:01:05 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1741363262; x=1741968062; darn=lists.ozlabs.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=B0Iktfq0DR02GmBsXbOGq/r2zfQq6D1ECaT1ooK1s1o=;
-        b=XIF05AMBIiu4mUOZGD/Z9XD4vyo12/B5bqFJnSVFTcoJJGIc0tbVRsS6hqdr2RwVVo
-         DAI7+J6PrJrnQNGNsaiC83+nOqTk9qi4pkVU2XHSlzXWQ3IvS8neea3Pnaae9GzbgC+X
-         X48APj26Elt5INN/WMU3KLw/bsPtkf0/7V2VTJv3rmL43W8L6ky1y4ukhK7+xNWaAV7E
-         6Y3Ao6shqKXVAh04im5JuXfIA4E83Eg6/MbeHmjRjkOr9zNTgiMA0abo/dILgs2WKsan
-         cjrl2ASXgIMOgDLoZYo7b0+agcpNFiay0OpMUToJPyNMmF/N9oXeR1BY03wf2et7u6Zh
-         xkoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741363262; x=1741968062;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=B0Iktfq0DR02GmBsXbOGq/r2zfQq6D1ECaT1ooK1s1o=;
-        b=WOdTnqib62xLqZeVGnQlsQfUwOZwqFdSlSACx/xah50EkoVmIHQznp8PoSBaw9CFX7
-         1xUlXgGgp0IU4k5ZBJxW50KO+UhlN4LZ/rJl29yYxyPXNFBmoVhbKwAJ6eTKZwH9FMsr
-         aAR1nRBJ0WH2OHaD4uuhJ+Zl0e5ePcilICErYKs2Obe2DbIt0HFqnY6PLFt9s7Wv5U8c
-         QhMEOkoBz5QVHPMZciPbSweQQ23a43NkwJkMZTUGWdZ4mEHGQeoWDVaIKWZuCbvHTo41
-         Mg79O2jtzWxnNJG6WGbmMsuLBfYBQE5LBdK7xDevEUX8vMX4pddKbBYS/mVnib8lTpRe
-         jQrw==
-X-Forwarded-Encrypted: i=1; AJvYcCUU/dlI2y/cSvPxPYI/ch+FyWcZdw7myhsSCv/qZRc0k7WihqghF4Ky4ARblqf6j3BKIK0zC6WZwj0+6zY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwFGzYLm40LMFk9yAXhXmenVW2mX4/5mc22W0mWmwV9NuUGww+Y
-	ay8dp61LqYyXO49V8t4kW4BHY4h1jJiE6jaKsCH5s2n76xgh2wVv8zQ8sRuY4bg=
-X-Gm-Gg: ASbGncvx/cHaJfv4jbXg/dwrVxAC4bPk4X+rVVWDgZ7e73kGrE+HfrykHvDqFo+1YdH
-	5XWrlgp+aOfAMeLmdAlDeFnaCZ5T4Te8JYG4X0wq7IaA7xx8MmBPYrEpYO91I9IkwM6LpyoVEqi
-	gXqkla3H2OS3D6ZqYbCkw/8Pe+VGWX2XoiKHs4tPtdzqvx+g3AFMiJUxu1t1zjkD/iGz6HYDlD7
-	0mujuTRlOKI+9NAZoYVuYWMbXbyAG89QWYJ2ihdKVtaWpjRYg8933Y1uLazXEF0IuleBX7YFQ5m
-	Gf5U0RqInT4a+LCiozN29uNO489td1XnprU30NbMtCY0zSw=
-X-Google-Smtp-Source: AGHT+IGwC5RdI2D2x8Mf/1yhLk8SnYyj3NhjKRRM+PHR4SpMZigqBSsZD7IJQFmATNxMAv0Q3Kbu9Q==
-X-Received: by 2002:a05:6000:4185:b0:38d:e572:4dc2 with SMTP id ffacd0b85a97d-39132d98d2cmr2269618f8f.40.1741363260299;
-        Fri, 07 Mar 2025 08:01:00 -0800 (PST)
-Received: from pathway.suse.cz ([176.114.240.130])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43bdd8da473sm54801455e9.18.2025.03.07.08.00.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 08:00:59 -0800 (PST)
-Date: Fri, 7 Mar 2025 17:00:58 +0100
-From: Petr Mladek <pmladek@suse.com>
-To: Tamir Duberstein <tamird@gmail.com>
-Cc: Arpitha Raghunandan <98.arpi@gmail.com>,
-	David Gow <davidgow@google.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v5 1/3] printf: convert self-test to KUnit
-Message-ID: <Z8sYOm4qovtdOSI7@pathway.suse.cz>
-References: <20250221-printf-kunit-convert-v5-0-5db840301730@gmail.com>
- <20250221-printf-kunit-convert-v5-1-5db840301730@gmail.com>
- <Z8mUH0comOCpycpK@pathway.suse.cz>
- <CAJ-ks9nFSzRXFauavzSWhvhr2Rou7qqkWi_LZ=4e1Tyr4_bn3g@mail.gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8WVl0pLvz301n
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Mar 2025 03:11:10 +1100 (AEDT)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 527CSHMm009808;
+	Fri, 7 Mar 2025 16:11:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=klJsLymPMc04xnEdPRc0l/MJfXbZqUAJfHS12YwZ6
+	tw=; b=Na8j3e5CaXjOJkO17rc7lW9IaAymIeRLpOEMS3Bl4C60YwdpfvEPe75Fd
+	0i7uEiQA2S8fMZk0zNY8/Ad1PRFVTyevSZ0PiJYa5jHihsA5F8G06P4AQKYgZ+1m
+	xjY3GQ6grhl1Aez5nNH8EuCDM3HRlygYQkeqdmPm3UyRGRCHgh6xsRX/xw9TtCUb
+	wHb/kv4Faio2MiJhH/It1NHF2DhDc2vQuUDD5FuuuM4yvpVVusJnOKV+tRd0HZoH
+	PdWK5FC9upFWq1jTzYgwwQAMazd0j8kW4hRP6nvdZrs+4yL5dSQn9sbfYxJdQyoi
+	jMFPL1Lxg3Qa4Iqo+NnEw+0EWMOYg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4580u2s5ff-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Mar 2025 16:11:00 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 527Fkgc8026168;
+	Fri, 7 Mar 2025 16:10:59 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4580u2s5fe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Mar 2025 16:10:59 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 527Diu0L020788;
+	Fri, 7 Mar 2025 16:10:58 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 454eskfd0n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 07 Mar 2025 16:10:58 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 527GAt3423134496
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 7 Mar 2025 16:10:55 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3A25D2004B;
+	Fri,  7 Mar 2025 16:10:55 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4097520043;
+	Fri,  7 Mar 2025 16:10:54 +0000 (GMT)
+Received: from ltcden14-lp2.aus.stglabs.ibm.com (unknown [9.53.174.194])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Mar 2025 16:10:54 +0000 (GMT)
+From: Donet Tom <donettom@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: Ritesh Harjani <ritesh.list@gmail.com>,
+        "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+        Donet Tom <donettom@linux.ibm.com>
+Subject: [PATCH v2 1/2] book3s64/radix: Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
+Date: Fri,  7 Mar 2025 10:10:35 -0600
+Message-ID: <8231763344223c193e3452eab0ae8ea966aff466.1741363120.git.donettom@linux.ibm.com>
+X-Mailer: git-send-email 2.47.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -108,93 +90,55 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJ-ks9nFSzRXFauavzSWhvhr2Rou7qqkWi_LZ=4e1Tyr4_bn3g@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: w8ytE_AiIkfflPk6p3FXPjZZ_o-PprJQ
+X-Proofpoint-GUID: hHNG7cmHnWnbgYsZw9MEy0nv-Bmhyoz4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-07_06,2025-03-06_04,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
+ spamscore=0 impostorscore=0 malwarescore=0 mlxscore=0 mlxlogscore=962
+ lowpriorityscore=0 clxscore=1015 priorityscore=1501 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503070118
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu 2025-03-06 09:25:43, Tamir Duberstein wrote:
-> On Thu, Mar 6, 2025 at 7:25 AM Petr Mladek <pmladek@suse.com> wrote:
-> >
-> > On Fri 2025-02-21 15:34:30, Tamir Duberstein wrote:
-> > > Convert the printf() self-test to a KUnit test.
-> > >
-> > > In the interest of keeping the patch reasonably-sized this doesn't
-> > > refactor the tests into proper parameterized tests - it's all one big
-> > > test case.
-> > >
-> > > --- a/lib/test_printf.c
-> > > +++ b/lib/tests/printf_kunit.c
-> > > @@ -57,52 +58,50 @@ do_test(int bufsize, const char *expect, int elen,
-> > >       va_end(aq);
-> > >
-> > >       if (ret != elen) {
-> > > -             pr_warn("vsnprintf(buf, %d, \"%s\", ...) returned %d, expected %d\n",
-> > > +             tc_fail("vsnprintf(buf, %d, \"%s\", ...) returned %d, expected %d",
-> >
-> > 1. It looks a bit strange that the 1st patch replaces pr_warn() with
-> >    tc_fail() which hides KUNIT_FAIL().
-> >
-> >    And the 2nd patch replaces tc_fail() with KUNIT_FAIL().
-> >
-> >    It looks like a non-necessary churn.
-> >
-> >    It would be better to avoid the temporary "tc_fail" and swith to
-> >    KUNIT_FAIL() already in this patch.
-> >
-> >    I did not find any comment about this in the earier versions of the
-> >    patchset.
-> >
-> >    Is it just a result of the evolution of the patchset or
-> >    is there any motivation for this?
-> 
-> The motivation was to keep the width of the macro the same in this
-> first patch for ease of review, particularly in the 7 instances where
-> the invocation wraps to a second line. If you prefer I go straight to
-> KUNIT_FAIL, I can make that change.
+From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 
-I see. It might have been useful when the patch removed the trailing '\n'.
-But you are going to add it back. So there won't be any hidden change.
-So I would prefer to go straight to KUNIT_FAIL().
+Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
 
-> > > @@ -842,13 +836,15 @@ test_pointer(void)
-> > >       fourcc_pointer();
-> > >  }
-> > >
-> > > -static void __init selftest(void)
-> > > +static void printf_test(struct kunit *test)
-> > >  {
-> > >       alloced_buffer = kmalloc(BUF_SIZE + 2*PAD_SIZE, GFP_KERNEL);
-> > >       if (!alloced_buffer)
-> > >               return;
-> >
-> > I would use here:
-> >
-> >         KUNIT_ASSERT_NOT_NULL(test, alloced_buffer);
-> >
-> > And move the same change for the other kmalloc() location from
-> > the 2nd patch.
-> 
-> I didn't do that here because I was trying to keep this patch as small
-> as possible, and I wrote that in the commit message.
-> 
-> As for using KUNIT_ASSERT_NOT_NULL here, that would have to change
-> back to an error return in the 2nd patch because this code moves into
-> `suite_init`, which is called with `struct kunit_suite` rather than
-> `struct kunit_test`, and KUnit assertion macros do not work with the
-> former (and for good reason, because failures in suite setup cannot be
-> attributed to a particular test case).
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Donet Tom <donettom@linux.ibm.com>
+---
+ arch/powerpc/mm/book3s64/radix_pgtable.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-I see. KUNIT_ASSERT_NOT_NULL() can't be used in the .suite_exit() callback.
+diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
+index 311e2112d782..bd6916419472 100644
+--- a/arch/powerpc/mm/book3s64/radix_pgtable.c
++++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
+@@ -976,7 +976,7 @@ int __meminit radix__vmemmap_create_mapping(unsigned long start,
+ 	return 0;
+ }
+ 
+-
++#ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
+ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+ {
+ 	if (radix_enabled())
+@@ -984,6 +984,7 @@ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
+ 
+ 	return false;
+ }
++#endif
+ 
+ int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
+ 				unsigned long addr, unsigned long next)
+-- 
+2.47.1
 
-> So I'd prefer to leave this as is.
-
-I agree to leave this as is.
-
-Best Regards,
-Petr
 
