@@ -1,78 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6792-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6793-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72539A56109
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 07:41:51 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC39FA5615E
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 08:02:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8Gsm5508z309v;
-	Fri,  7 Mar 2025 17:41:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8HKn05Vqz30gC;
+	Fri,  7 Mar 2025 18:02:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741329708;
-	cv=none; b=avhfrI3yuPNoq0se6DUhNViXVDc/QueCAUEIWmFocGofwUMg04dTEfnskhlUWiIgqofsktok7Uk11+lzk3R2t4cqrI40y8L2+QWwIagV/gNwJuf0KI+0spMVwHgIGANB9x24IpWj/4PUdjEhVXmVx8TfIoLnK2ZmxIyKjSUT/2HDwnTCp5FBJfxNUROnDZ5T3n02Cv1DGSJ8eb8HNVEoR1nBXihQacZrMuyTcGR0y+OSU616khrPrQ6v6onXOR8+/895ojyIbGiCDzJKB4QNJB2QKRCyHdqo6lWNQwUbl3K8yQT/4D/D7t8EuWwzJZCXcGYIn6AhZjGVJsLz3x6qMQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741330956;
+	cv=none; b=DFHLzFIRPMklUU2J/7etK+n6P1rB2+qHGpypzJxltzCkvdHexRDbWAFLKnjJz7WUGGtKOCRHx0raoO63ef21p2z7uNn4/ZLRjBH3TuVz4kvItqrFIFzww3DWOnzCSqnO+eD/9/b1B07YQVGgD3O9jnmPfOWjwPrxx3+ZczZimYtFBDRMOCg5pQRfG817+Ufq52ft4xIEaTHgR/8Jgy0HVzLqWOAL/nraHZxIjXxaDsVlN7cwMimIq0Op2TQkal0iZsUJMWNpGRuFcBi0olScGTilYGsbm1TgxHfPBMPs0fcsi8XBAeLdNcg6XmCPdfAkBig2z8PmoGjoLbRiaGRxpQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741329708; c=relaxed/relaxed;
-	bh=9OjahQcgZi++ijgqmfRadPtCPfSKoh0ixUrNfyNobDs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ipin5OQmxReWqpSKruOBCyTb+KGfirrbnB3n/FBvnqo0WbwQ8+YaCm9tQeyaCBz/CIu7XmD8AJu9m1wKZvQeoScjmKrGV/dorsBbvL47WxEsNyEtfttEAHHG0ENrgiuqCff0aqy8nw+diqMS7bhVsRAONDnRvFNcAjCISNYgpMtbGSn/ydlbMeGU6U+saNAukIuFyc2w7cH5QVtTB+bdicCytm36epnTEM9SQolQOeFgmtrgEqF2Xs2i+m2Tgspu6C9oSfMQ75sEKlfvdmqzRf4Ie5+T7PcN9Q4jB5RU+J279s0aFGMgPmZe4IZ6uS68d/Th921coAKYqjcg540YYg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V7QYVY0O; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1741330956; c=relaxed/relaxed;
+	bh=jeU+yfjHIAyalVv5PYmp3OMyddzcHlq2oCYLvb5VDjI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=Z0PCoyZP0BTNnqDIZL0A06b2FnH2l5kYDw/WBfiFli8eOgdwk8rrBGYFfn5D87qOFxb9sNvFGqBW+8uke2Mp+cmU5qb3I0ctb2bw8jlzNn14N+B74H8BUeD+cmzD53JsFnYh445uRuVeqnClcKRIE2u7DsNQB73+EjQKExjpeSmt7NNY96UXzH3hGdZoOd7Eu+B3e0x2dc+cYCE4me4njat81aI+KaFRKXJdl34cyyVQ0fpF3BkbX8O2ahy4d56JCiezRlfEHxOA+b0RbNLBjUIzpB1FujcoZfq5eyEyddZrDhCQU03na/R1A017iMOSgx6v4alJSiGpdhjGxiSaQA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YqaQ1Jb8; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=V7QYVY0O;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=YqaQ1Jb8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=donettom@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8Gsk3kLGz305G
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 17:41:46 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8HKm0vxVz30T0
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  7 Mar 2025 18:02:35 +1100 (AEDT)
 Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52764aNQ011757;
-	Fri, 7 Mar 2025 06:41:41 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=9OjahQ
-	cgZi++ijgqmfRadPtCPfSKoh0ixUrNfyNobDs=; b=V7QYVY0Od/yy7rcd3+6DH9
-	mJ+41PxbgsywBEWe37AVEjWpQ2kCJwCkTWqEPH/Z0+c/ucGD+Y8q2bo9/KonMQrF
-	zIlD68KRbqeaCdGZEdFV8afDrL0MEOKD1BWz8AM9kbXU/GWkNGicVEML1sHqEbC5
-	qNWzb2UJ7yVT1Xw+URKWFjqovkcCOcXz+BrCWdgma7TOKlAaoE23h/io4tRn8XyL
-	4j7Qw1WuoQg5YPwnSXmILC//m01DZgdB+wf6p7A0iuqdjAcW0mNYatsDHkqqh7MW
-	E4/X2ZggWdjmBOIQTn3CMi9vG9KdFzcrLFQo46dhvpB8qktnebhQtSCg/aen8e9A
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 526KpgCS011863;
+	Fri, 7 Mar 2025 07:02:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=jeU+yf
+	jHIAyalVv5PYmp3OMyddzcHlq2oCYLvb5VDjI=; b=YqaQ1Jb8/lglByMRcE0b+/
+	oGli+3zkecBORCblg323nwZtDRrh7fOBhcD37c5zZNmv6cmOyVFlaLLEw9/GfVq/
+	4sfLz9NgsCBmhhTfW01Bm5gE9vBEC6P7Ja71KvSoCfZxRC35C0tjEZrkxX2feEfT
+	M7RxmG6XmWq+EwzuZkk1GTftI76LcSGtKNZOx/5x0rZB0WcJyPQ9E/7QplySKcH9
+	E2c9lfUX8RFCpSrA4v8RsHQQUGihkzViRKBtojU1iOL0FzArPtGVZU5jRziTy3PM
+	oThyynm6q32SQ66mABsnrC/W7/MVwDnVaD2mJtbt112+YMAabiKIYG9e5FSKsEsw
 	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 457k45a45p-1
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 457k45a6tw-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Mar 2025 06:41:41 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5276e8hi000481;
-	Fri, 7 Mar 2025 06:41:40 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 457k45a45n-1
+	Fri, 07 Mar 2025 07:02:22 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5275YvAw020846;
+	Fri, 7 Mar 2025 07:02:22 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 454djnwc5g-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Mar 2025 06:41:40 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52732bTp020794;
-	Fri, 7 Mar 2025 06:41:40 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 454eskcxaj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 07 Mar 2025 06:41:40 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5276fdob38601286
+	Fri, 07 Mar 2025 07:02:22 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52772LJn26673916
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 7 Mar 2025 06:41:39 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1C6625805A;
-	Fri,  7 Mar 2025 06:41:39 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8BC6B58051;
-	Fri,  7 Mar 2025 06:41:37 +0000 (GMT)
-Received: from [9.124.218.124] (unknown [9.124.218.124])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  7 Mar 2025 06:41:37 +0000 (GMT)
-Message-ID: <38858370-c94d-454f-a0b6-ead242f18baf@linux.ibm.com>
-Date: Fri, 7 Mar 2025 12:11:35 +0530
+	Fri, 7 Mar 2025 07:02:21 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 46BFA58518;
+	Fri,  7 Mar 2025 07:02:21 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C671E58519;
+	Fri,  7 Mar 2025 07:02:17 +0000 (GMT)
+Received: from [9.43.103.133] (unknown [9.43.103.133])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  7 Mar 2025 07:02:17 +0000 (GMT)
+Message-ID: <7d61512d-6dd1-4c09-b408-67bc16340237@linux.ibm.com>
+Date: Fri, 7 Mar 2025 12:32:14 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,130 +79,128 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] book3s64/radix : Align section vmemmap start address to
- PAGE_SIZE
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org
-Cc: Ritesh Harjani <ritesh.list@gmail.com>
-References: <20250226043426.224494-1-donettom@linux.ibm.com>
- <yq5aeczexo5w.fsf@kernel.org>
- <d4b3fdbc-645f-4a43-bd9c-d29f4e4dacbc@linux.ibm.com>
- <yq5amsdyssr0.fsf@kernel.org>
+Subject: Re: PowerPC: sleftests/powerpc fails to compile linux-next
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <3267ea6e-5a1a-4752-96ef-8351c912d386@linux.ibm.com>
 Content-Language: en-US
-From: Donet Tom <donettom@linux.ibm.com>
-In-Reply-To: <yq5amsdyssr0.fsf@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <3267ea6e-5a1a-4752-96ef-8351c912d386@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9R-KoC0FuPN0ciX8d4V9lHjNO1xjFTLd
-X-Proofpoint-GUID: kU-CxtekRxAwZzSH2ZkQHsNMITJi85VH
+X-Proofpoint-ORIG-GUID: fSRNlexL2JJzyspuwUc5HpsP1bq2uuXT
+X-Proofpoint-GUID: fSRNlexL2JJzyspuwUc5HpsP1bq2uuXT
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-07_02,2025-03-06_04,2024-11-22_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 malwarescore=0
- mlxlogscore=914 mlxscore=0 adultscore=0 clxscore=1015 impostorscore=0
+ mlxlogscore=999 mlxscore=0 adultscore=0 clxscore=1015 impostorscore=0
  priorityscore=1501 suspectscore=0 bulkscore=0 lowpriorityscore=0
  phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503070044
+ engine=8.19.0-2502100000 definitions=main-2503070048
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
-On 3/6/25 9:41 AM, Aneesh Kumar K.V wrote:
-> Donet Tom <donettom@linux.ibm.com> writes:
->
->> On 3/3/25 18:32, Aneesh Kumar K.V wrote:
->>> Donet Tom <donettom@linux.ibm.com> writes:
->>>
->>>> A vmemmap altmap is a device-provided region used to provide
->>>> backing storage for struct pages. For each namespace, the altmap
->>>> should belong to that same namespace. If the namespaces are
->>>> created unaligned, there is a chance that the section vmemmap
->>>> start address could also be unaligned. If the section vmemmap
->>>> start address is unaligned, the altmap page allocated from the
->>>> current namespace might be used by the previous namespace also.
->>>> During the free operation, since the altmap is shared between two
->>>> namespaces, the previous namespace may detect that the page does
->>>> not belong to its altmap and incorrectly assume that the page is a
->>>> normal page. It then attempts to free the normal page, which leads
->>>> to a kernel crash.
->>>>
->>>> In this patch, we are aligning the section vmemmap start address
->>>> to PAGE_SIZE. After alignment, the start address will not be
->>>> part of the current namespace, and a normal page will be allocated
->>>> for the vmemmap mapping of the current section. For the remaining
->>>> sections, altmaps will be allocated. During the free operation,
->>>> the normal page will be correctly freed.
->>>>
->>>> Without this patch
->>>> ==================
->>>> NS1 start               NS2 start
->>>>    _________________________________________________________
->>>> |         NS1               |            NS2              |
->>>>    ---------------------------------------------------------
->>>> | Altmap| Altmap | .....|Altmap| Altmap | ...........
->>>> |  NS1  |  NS1   |      | NS2  |  NS2   |
->>>>
->>>                               ^^^ this should be allocated in ram?
->>>
->> Yes, it should be allocated from RAM. However, in the current
->> implementation, an altmap page gets allocated. This is because the
->> NS2 vmemmap section's start address is unaligned. There is an
->> altmap_cross_boundary() check. Here, from the vmemmap section
->> start, we identify the namespace start and check if the namespace start
->> is within the boundary. Since it is within the boundary, it returns false,
->> causing an altmap page to be allocated. During the PTE update, the
->> vmemmap start address is aligned down to PAGE_SIZE, and the PTE is
->> updated. As a result, the altmap page is shared between the current
->> and previous namespaces.
->>
->> If we had aligned the vmemmap start address, the
->> altmap_cross_boundary() function would return true because the
->> vmemmap section's start address belongs to the previous
->> namespace. Therefore normal page gets allocated. During the
->> PTE set operation, since the address is already aligned, the
->> PTE will updated.
->>
-> So the nvdimm driver should ensure that alignment right? I assume other things
-> will also require that to be properly aligned.?
 
-  #cat /proc/iomem
-00000000-63ffffffff : System RAM
-40340000000-403401fffff : namespace1.0
-40340200000-403a0ffffff : dax1.0
-403a1000000-403a11fffff : namespace1.1
-403a1200000-40401ffffff : dax1.1
-40402000000-404021fffff : namespace1.2
-40402200000-40462ffffff : dax1.2
-40463000000-404631fffff : namespace1.3
-40463200000-404c3ffffff : dax1.3
-  #
+On 3/6/25 10:30 PM, Venkat Rao Bagalkote wrote:
+> Greetings!!
+> 
+> I see selftests/powerpc fails to compile on next-20250306.
+> 
+> This error has been introduced in next-20250218. Make is successful on next-20250217.
+> 
+> 
+> Attached is the .config used.
+> 
+> 
+> If you fix this, please add below tag.
+> 
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> 
+> 
+> Errors:
+> 
+> make -C powerpc/
+> make: Entering directory '/root/venkat/linux-next/tools/testing/selftests/powerpc'
+> Makefile:60: warning: overriding recipe for target 'emit_tests'
+> ../lib.mk:182: warning: ignoring old recipe for target 'emit_tests'
+> BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/alignment; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C alignment all
+> make[1]: Nothing to be done for 'all'.
+> BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/benchmarks; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C benchmarks all
+> make[1]: Nothing to be done for 'all'.
+> BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/cache_shape; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C cache_shape all
+> make[1]: Nothing to be done for 'all'.
+> BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/copyloops; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C copyloops all
+> make[1]: Nothing to be done for 'all'.
+> BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/dexcr; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C dexcr all
+> make[1]: Nothing to be done for 'all'.
+> BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/dscr; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C dscr all
+> make[1]: Nothing to be done for 'all'.
+> BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/mm; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C mm all
+>   CC       pkey_exec_prot
+> In file included from pkey_exec_prot.c:18:
+> /root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h: In function ‘pkeys_unsupported’:
+> /root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h:96:34: error: ‘PKEY_UNRESTRICTED’ undeclared (first use in this function)
+>    96 |         pkey = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
+>       |                                  ^~~~~~~~~~~~~~~~~
 
-I have created 4 namespaces with a size of 1552M. As you can see, the 
-start of
-namespace1.0 is 1G aligned, while namespace1.1, namespace1.2, and 
-namespace1.3
-are not 1G aligned. If I had created the namespace with a size of 1536M 
-(1.5G), then
-all the namespaces would have started 1G aligned.
+Commit 6d61527d931ba ('mm/pkey: Add PKEY_UNRESTRICTED macro') added a macro PKEY_UNRESTRICTED to handle implicit literal
+value of 0x0 (which is "unrestricted"). belore patch add the same to powerpc/mm selftest.
 
-I believe that based on the size we are requesting, the namespaces 
-alignments are
-being created. They do not always need to be 1G aligned.
+Can you try with this patch to check whether it fixes the build break for you
 
-Now, if we calculate the vmemmap start for namespace1.1..
 
-Phy start - 0x403a1000000
-pfn start - 0x403a1000000 / PAGE_SIZE = 0x403a100
+diff --git a/tools/testing/selftests/powerpc/include/pkeys.h b/tools/testing/selftests/powerpc/include/pkeys.h
+index c6d4063dd4f6..d6deb6ffa1b9 100644
+--- a/tools/testing/selftests/powerpc/include/pkeys.h
++++ b/tools/testing/selftests/powerpc/include/pkeys.h
+@@ -24,6 +24,9 @@
+ #undef PKEY_DISABLE_EXECUTE
+ #define PKEY_DISABLE_EXECUTE   0x4
+ 
++#undef PKEY_UNRESTRICTED
++#define PKEY_UNRESTRICTED      0x0
++
+ /* Older versions of libc do not define this */
+ #ifndef SEGV_PKUERR
+ #define SEGV_PKUERR    4
 
-vmemmap start = 0xc00c000000000000 + (0x403a100 * 0x40)
-                           =0xC00C000100E84000
 
-This address is not page aligned. This will trigger this issue.
+Maddy
 
->
-> -aneesh
+
+
+> /root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h:96:34: note: each undeclared identifier is reported only once for each function it appears in
+> pkey_exec_prot.c: In function ‘segv_handler’:
+> pkey_exec_prot.c:75:53: error: ‘PKEY_UNRESTRICTED’ undeclared (first use in this function)
+>    75 |                         pkey_set_rights(fault_pkey, PKEY_UNRESTRICTED);
+>       | ^~~~~~~~~~~~~~~~~
+> make[1]: *** [../../lib.mk:222: /root/venkat/linux-next/tools/testing/selftests/powerpc/mm/pkey_exec_prot] Error 1
+>   CC       pkey_siginfo
+> In file included from pkey_siginfo.c:22:
+> /root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h: In function ‘pkeys_unsupported’:
+> /root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h:96:34: error: ‘PKEY_UNRESTRICTED’ undeclared (first use in this function)
+>    96 |         pkey = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
+>       |                                  ^~~~~~~~~~~~~~~~~
+> /root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h:96:34: note: each undeclared identifier is reported only once for each function it appears in
+> pkey_siginfo.c: In function ‘segv_handler’:
+> pkey_siginfo.c:86:39: error: ‘PKEY_UNRESTRICTED’ undeclared (first use in this function)
+>    86 |                 pkey_set_rights(pkey, PKEY_UNRESTRICTED);
+>       |                                       ^~~~~~~~~~~~~~~~~
+> make[1]: *** [../../lib.mk:222: /root/venkat/linux-next/tools/testing/selftests/powerpc/mm/pkey_siginfo] Error 1
+> make[1]: Target 'all' not remade because of errors.
+> make: *** [Makefile:40: mm] Error 2
+> make: Leaving directory '/root/venkat/linux-next/tools/testing/selftests/powerpc'
+> 
+> 
+> Regards,
+> 
+> Venkat.
+
 
