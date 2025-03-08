@@ -1,70 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-6823-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6824-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16356A57A43
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Mar 2025 13:52:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4691AA57A46
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Mar 2025 13:53:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z932g3H0lz309h;
-	Sat,  8 Mar 2025 23:52:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z934B059bz30CB;
+	Sat,  8 Mar 2025 23:53:30 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::236"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741438331;
-	cv=none; b=BG4/kssiNgP8BKWdpeGbH81lnT/+ofmvyrvuryYcj8KFPn0SSt+iVnPxapPCoFKrvIE5Rk7EzTX7MvV728nEuTmccDrge19ZwGvhr5Iq5TjdMrDHjdtWqxnOwiUjRYj5bFJc0vZkudJnTNyIlazI6GnNu9wFdZ/oDSBanVv+5aDotk1gxFg1+gz8XaZl1kXbl5wA1qtt+u/oN9hBGJRekWkEdQCzFNMUT431ImZ2JdgaXm8KZREbtTf73TsAyX4tDwjDBcg+LWG7gzD7yMRoLPhRTz/3qXJAU2J8F3ElO4XQ+IfsiMZ1fLgvbwfROtU5GvhEBWKeZuBA5IszcNwvYA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::231"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741438409;
+	cv=none; b=jQFn/NI/B6gRftKcMalHJUD1mkwadorqh1lTcYgr7SewLiS7Auv+C1Lmfpr7bYqFNa2xgeQ/luxUFirW623liHn/qJmmjlVSYoLxxML6rRGqKgt9ackDFQ+Mp+76iv3Tdg9Povlb5wJUwuU8sW5JmJYiiwtCPBGbUFJcMBRk3OwNLOCuRLyCW2KHG0fWeHRrSqOKk8LV2G63Ju+p1LWchZys2snRVm7AiIoFxU3xeWLZ7ca2xk7xF0uK9OO0hclkN7/ddBVUFed6e5UXkh5s7OqtMGS3tInytD1QHYKeyBr7UYlyG3tzLo9Xd30I5JYehJyJRMW2LJ8rla3UQRDekw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741438331; c=relaxed/relaxed;
-	bh=ljcSe8icqYARGbv2/xhAvm/DCpz0wTGWoW545h+pz7A=;
+	t=1741438409; c=relaxed/relaxed;
+	bh=1sfeeTT7Gmak9LSwhS1Ra7os+FPKWlJywEkinY+5Hwo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Yb9TWiA21XJh7JXWd8/Pk6Kr8S1VBcadZlgfEdgGRMMfP4Pok0aIigF6D7lTLp28ruugrId2ADtRnR0zdaM7fL59L0u5ZdJlxku3WgDwOgx+K16Z1PCCRBorkwoG3QngSzR2rc/eVpiqppb1Xjyf8ZYxSmuRp/k9b3TimwVHcMKiGka3GUwwwy20PD+Bt0D0tv1tVen81olhc2NKCnJsnNme8maZBbGPatN0QsfO12F9QP2jDV4A9Ts/uK/7+hc06z2rFn4H9qRIForLSv1VeC2lh7x8o8xSoeojVAe34obfA2xxPol0/KB4GSlUU/2hg6kOHOOtJySvG5QokhNO5g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jrIu4oPR; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::236; helo=mail-lj1-x236.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=U1GGjwXqcdMhHBtJ++5sCG19/pSuSSx9yKljLp8zls/2pCKN4BqAOalH0tyjXJaaKVBlt82OAXBDWdeD02toJhQ70tyzkL9m221IVtH9O511kiAH76+1OzMbqFfUEof0UI6o5WANhb6e+HW1dcYnb9aU4STwe2lTrRRqWEoek1JQqFyzi7nCciO9wdoGtBcXw3ESM+aOTPruUeqXz3YH82ptwNTxRlFKD2VwT57xh2leAlsr0OOGlxYlVSQ3AHadHiftGmVOlyenflbByM/YH6dyS9lHpa1Jq+bNBY9chCAUNDUi1qXXUTVjgY050s3jVja3kPlgX1Qu4DmRxnCU/A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Kbkd2VKr; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::231; helo=mail-lj1-x231.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jrIu4oPR;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Kbkd2VKr;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::236; helo=mail-lj1-x236.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::231; helo=mail-lj1-x231.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x231.google.com (mail-lj1-x231.google.com [IPv6:2a00:1450:4864:20::231])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z932d4htpz305n
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Mar 2025 23:52:09 +1100 (AEDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-30beef77634so12369001fa.3
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Mar 2025 04:52:08 -0800 (PST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z934906qpz305n
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Mar 2025 23:53:28 +1100 (AEDT)
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-30761be8fa8so29183431fa.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 08 Mar 2025 04:53:28 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741438324; x=1742043124; darn=lists.ozlabs.org;
+        d=gmail.com; s=20230601; t=1741438406; x=1742043206; darn=lists.ozlabs.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ljcSe8icqYARGbv2/xhAvm/DCpz0wTGWoW545h+pz7A=;
-        b=jrIu4oPRhecm+n0CbdWQPnChtcsO3kix/pzrQmkCH0cm3snfHpedXycUNfGEk6jcVR
-         WQPrNKg4vCfqkdho6tgh0lK61MLJRgdpxp06FCEiVtTIKT0Ek3di4KL9N6IQg8Xhz9iY
-         bgk5pXp4wdlotDLChU7v2TOKiITMb9u11obXDj7VD0+CRx3DOayAtyUkYAu4onWcF/i0
-         4bdGdMYR4YuJRDs64iK8oC8ykKeXkSHNC5ubM1IYS85GRhF+aDz8CNzF1DsXdm8dO9GY
-         5AsdyF5KXw+BLjPEMLmzBDugNpb432sBC/0cLKOtYrSkz27xjOtbp1H/c40aO8bptSHn
-         OVLg==
+        bh=1sfeeTT7Gmak9LSwhS1Ra7os+FPKWlJywEkinY+5Hwo=;
+        b=Kbkd2VKr5jjlUS0C2oZ+UcOJRSeQO9msAPGif7/JV9T7L4O/j/cygi6zWQ7URWkM/o
+         9WjsJdrzE5k6joxcK9FWyeA3QH5qp+i3cGeCsEOIIlS6N39xbTINQ/f/1DZmDrVm3k3S
+         y+haTxglTuDCvQoNrDIC+YLYNU/OQTn77nfdDNn7H6qhb7Rnu9R7TFrZdOaofHO+3g70
+         vH/QnW8EZzjzqBloVRL+x05SzP+x1Lf4KT6O67IEEo1oSEAHacvVFMPTBdS/jpTKYO0C
+         nIUYA/egQx56E5qKvfs4XnPccCRlXn9dIBv1bCa6chF+OqDmuM7by8z3tW5jLfqN/s9h
+         rAIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741438324; x=1742043124;
+        d=1e100.net; s=20230601; t=1741438406; x=1742043206;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ljcSe8icqYARGbv2/xhAvm/DCpz0wTGWoW545h+pz7A=;
-        b=tW6LN8QjdU8yVhPQh+PAttoHURAQ0bYdPskJBO3yLHM2t5QFpwPx0ppXpP24qmL3po
-         CZScrqkYCbgAT+XuoZHrB/kRU3H2E7qINng9ET6yuJzXVQ/TlKPMZG+Xh9GaTJHyTq/m
-         K99LwbZ3ujDV4Il8/6v94wMnaog/VaLpAYCO+KyIMqdsfvLXrx4RfyCcM4lErmltLW2I
-         tU2EhZ17H49N/gn9SKgnIlQypDD/A06z+GGNXycuHk02z4JeJIwCvvf1w/dW/gcVD/Qe
-         yMoragWRULgEk9SzT3KT3c7zOBtKKWrykGOvBBiA957teJ6bQ1P086zxhCcT5kW7kHHa
-         sf9g==
-X-Forwarded-Encrypted: i=1; AJvYcCUXCcUEIe3h/wthxEo1ph6xT3xIbqlwYLtGNQNGtb+WVvNjntL00bdhBoFVevmknmNF5nlxSuLJsL8R6+A=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxomK4ZWwXiqsOrBdITWAAFjWR0RXeufX+JuAJi9N22XWdJYCxp
-	LDibjbFnjPlytiYvp0FPBlsh+CX9dGP9X0IICPYUcYbWJYJws+CYmkSa1MrPOrPwq+G5luO6NPw
-	08yV9wVHVyA7tZlehNK3Qzn+UMeo=
-X-Gm-Gg: ASbGncvJm0Qzc/m1phY3wbYQtgjgld6Dni+DU8B6o9nnfK74ad6bsQdrbyqM3dFUtaE
-	GsnflVR4u9/ih55X8hK0jzaQAT7x2so9D1cdEcKGkCfVXYrdkcw1dQNTsJoYEvBNv3nNiKBRfeg
-	QH41SXheJmm6QJSBMrARioUbznJsZudeHrL8DHTqMFmEjrWBcoEoBseHdRHu5Q
-X-Google-Smtp-Source: AGHT+IHdstqcViUgKKVj/dxOVnnCRmRtk0n+Jmb8EXvBPRxEstCxyV8oevucwu1Qdxz344u8wFGVHkGcozJRwQRyjxo=
-X-Received: by 2002:a2e:a495:0:b0:30b:aabf:fc4 with SMTP id
- 38308e7fff4ca-30bf4535ca8mr20702861fa.21.1741438323386; Sat, 08 Mar 2025
- 04:52:03 -0800 (PST)
+        bh=1sfeeTT7Gmak9LSwhS1Ra7os+FPKWlJywEkinY+5Hwo=;
+        b=jFN+KRCHWDDrZS9gdF6LwRm9NqFSg919ODqqSepO0jBVvMS9hf8+xmpvcowc/kJ8rR
+         hOhHtyvgptLx7GtOW/T7TfcvJDVRveNOSdAc21XF4gTwXxKiiyiirvKdIuYYgHz9YRwn
+         hn99brsBEjnQn/BJZDxtGoxpVk5jtYXYGT3RSZaVfwALcl1hVJ2MTq3hUb5RD130rw/G
+         kTbCji6z7sgTo+J5iqewkkgsJvfSVBWL8uSrtQnPYBbaLIOFa0RcZFd2WNHSSNxEcjQo
+         dA+q3INPOXCc9D/juQh1RHkcAQY1KeiPla+DFVaUMyZiDIIUdD78upQecwJDt4tRyfLI
+         Apkg==
+X-Forwarded-Encrypted: i=1; AJvYcCX2crlj0iDdNBoY1Diux7qlhcg1Gcnmef0DfgfE2ObzFhAeMflxq3UTqZMVrnMbmQrQt2Vi219Xn8NTud8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzMm0gOiiiPe6k4bkm3H5XMcuBhqYxbHVq6FpYOXhqfoc/IIuHO
+	jNTX/YeoJm1GDtz5wOSZFq7t/2vKE8iMrPW5KPgfneNkX9OSVewma8JMQQkl4dsIXmXWTvTmqug
+	Fk6bNya/rBZLMxGMVxDTTr+l9m7Y=
+X-Gm-Gg: ASbGncvs0Ne/7SCCd/ppKyK7qj5YDSzlY3UvRkErKaCnNTVX8Sx751RDq48dEPzku9w
+	FJlPytx8u5BxB3fwp98e0wC51Yi5w9s7+BRRMeWk4x45wEQXGjak9r9rX7rtnhT51yKCRc00uRw
+	GqKVAZyDjV5saSkwSdeM+PrefnvZfbNDqGY++CFhSLnHnybAeYvSlXUjQxcVsCgY2gq6OGewY=
+X-Google-Smtp-Source: AGHT+IGBc+05qVuuXjaeI2ZzjZWIrRA4Fj6//dVvSffSqc3+iAQQVbEHM/psLC4ti7AS6LxNuas3m+DVljjO7VA71i0=
+X-Received: by 2002:a2e:a58b:0:b0:30b:8e06:86a3 with SMTP id
+ 38308e7fff4ca-30bf452d9c5mr25912651fa.16.1741438405382; Sat, 08 Mar 2025
+ 04:53:25 -0800 (PST)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,12 +77,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250307-printf-kunit-convert-v6-0-4d85c361c241@gmail.com> <202503072046.34DAF614E6@keescook>
-In-Reply-To: <202503072046.34DAF614E6@keescook>
+References: <20250307-printf-kunit-convert-v6-0-4d85c361c241@gmail.com>
+ <202503072046.34DAF614E6@keescook> <CAJ-ks9kTO-u+Wqp0K-vdMLAs08fBeoovSeb_pGkMjSHFnBKysA@mail.gmail.com>
+In-Reply-To: <CAJ-ks9kTO-u+Wqp0K-vdMLAs08fBeoovSeb_pGkMjSHFnBKysA@mail.gmail.com>
 From: Tamir Duberstein <tamird@gmail.com>
-Date: Sat, 8 Mar 2025 07:51:27 -0500
-X-Gm-Features: AQ5f1JrzFDCikkubFSehWJW1k-o-BEpIkGHx4XfrgD5nfeGf55hOd06bCk68tB8
-Message-ID: <CAJ-ks9kTO-u+Wqp0K-vdMLAs08fBeoovSeb_pGkMjSHFnBKysA@mail.gmail.com>
+Date: Sat, 8 Mar 2025 07:52:49 -0500
+X-Gm-Features: AQ5f1Jo-nlWUK8722g4g1onlCZtycc6IeZsxrVSNnIky0DEy506UFGHSg9dFWWw
+Message-ID: <CAJ-ks9=zHBmOApsqa=UZcKtg1cH0tp34Kt9_5AEJ7vzwt2QeOA@mail.gmail.com>
 Subject: Re: [PATCH v6 0/3] printf: convert self-test to KUnit
 To: Kees Cook <kees@kernel.org>
 Cc: Arpitha Raghunandan <98.arpi@gmail.com>, David Gow <davidgow@google.com>, 
@@ -104,37 +105,44 @@ X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Mar 7, 2025 at 11:49=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
+On Sat, Mar 8, 2025 at 7:51=E2=80=AFAM Tamir Duberstein <tamird@gmail.com> =
+wrote:
 >
-> On Fri, Mar 07, 2025 at 05:08:55PM -0500, Tamir Duberstein wrote:
-> > This is one of just 3 remaining "Test Module" kselftests (the others
-> > being bitmap and scanf), the rest having been converted to KUnit.
+> On Fri, Mar 7, 2025 at 11:49=E2=80=AFPM Kees Cook <kees@kernel.org> wrote=
+:
 > >
-> > I tested this using:
+> > On Fri, Mar 07, 2025 at 05:08:55PM -0500, Tamir Duberstein wrote:
+> > > This is one of just 3 remaining "Test Module" kselftests (the others
+> > > being bitmap and scanf), the rest having been converted to KUnit.
+> > >
+> > > I tested this using:
+> > >
+> > > $ tools/testing/kunit/kunit.py run --arch arm64 --make_options LLVM=
+=3D1 printf
+> > >
+> > > I have also sent out a series converting scanf[0].
+> > >
+> > > Link: https://lore.kernel.org/all/20250204-scanf-kunit-convert-v3-0-3=
+86d7c3ee714@gmail.com/T/#u [0]
+> > >
+> > > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
+> > > ---
+> > > Changes in v6:
+> > > - Use __printf correctly on `__test`. (Petr Mladek)
+> > > - Rebase on linux-next.
 > >
-> > $ tools/testing/kunit/kunit.py run --arch arm64 --make_options LLVM=3D1=
- printf
+> > Thanks for doing this!
 > >
-> > I have also sent out a series converting scanf[0].
-> >
-> > Link: https://lore.kernel.org/all/20250204-scanf-kunit-convert-v3-0-386=
-d7c3ee714@gmail.com/T/#u [0]
-> >
-> > Signed-off-by: Tamir Duberstein <tamird@gmail.com>
-> > ---
-> > Changes in v6:
-> > - Use __printf correctly on `__test`. (Petr Mladek)
-> > - Rebase on linux-next.
+> > If Petr, Rasmus, Andy, and/or others Ack this I can carry it in my
+> > "lib/ kunit tests move to lib/tests/" tree, as that's where all the
+> > infrastructure in lib/tests/ exists.
 >
-> Thanks for doing this!
->
-> If Petr, Rasmus, Andy, and/or others Ack this I can carry it in my
-> "lib/ kunit tests move to lib/tests/" tree, as that's where all the
-> infrastructure in lib/tests/ exists.
+> I think the plan is to take it through the printk tree. We're still
+> working on it, here's v6:
+> https://lore.kernel.org/all/20250307-printf-kunit-convert-v6-0-4d85c361c2=
+41@gmail.com/
+> where I've rebased and put the test in lib/tests.
 
-I think the plan is to take it through the printk tree. We're still
-working on it, here's v6:
-https://lore.kernel.org/all/20250307-printf-kunit-convert-v6-0-4d85c361c241=
-@gmail.com/
-where I've rebased and put the test in lib/tests.
+Whoops, this is already the v6 thread! Does the layout here look correct to=
+ you?
 
