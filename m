@@ -1,78 +1,154 @@
-Return-Path: <linuxppc-dev+bounces-6816-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6817-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B51FAA574C1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  7 Mar 2025 23:10:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A48A57798
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  8 Mar 2025 03:06:10 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8gSq4JQ5z3cWd;
-	Sat,  8 Mar 2025 09:10:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z8mjB20W1z3c78;
+	Sat,  8 Mar 2025 13:06:06 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::736"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741385403;
-	cv=none; b=F3ir0nR4fgav1Ei17CZumEjZCjRV7Kv34ZhHzvSv8WifjxkndTJaj+xB4a7XEEvxvGQAvxkOMzm+h4rX8wOdnrmzy4daVsvsVIiV2KvbY5LiT7NyWnh6tvqMcqj7Klo1thbKQQQhlR/uHm/M3Az4xa5Het6F/zsiwD2uspIkM//C8SxCc+stIEX4zCDSWLLWffhJYjJGBsRQkF/IWhimS3dvLcCvmXxh2RoX+LcKu310W9hZJTlw4T7Lakg7H/t0gG21v3kV9IGBfP0zxL470jm2HEPqhEjggbkwlVKp78xF4nkENNQK2qU45X+QuhKD57sVUdeNfbe+nHuxr7pugg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741385403; c=relaxed/relaxed;
-	bh=67u4yKx69wt0LUt2XYoCDntO5OlMzTpGLsqyjTaA95c=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=HtRwrOUfWJbHGyjgLB6cJhVjwtq/DmZ4h5paaTxwpJAL7ywo4cDxUSp+EVS+2tarnyeIsrH7YPanhudcl41yMJYOVyAFIy3Q0HUBkw3Ctt+nYDDlVtz4UX1Ea/ERCuUuokzSV9s+M0AFfkIghAXfc22ZWap7RJ8TOF7xFA4ldqpMKdn/pkWjyWxxky8rodtxIxfwLhmkhV/t3RkH3EbdbvoymEVZQGh8XaZyR0gTun9VlonmNndE0ukGAsj+o1Dx8QLH73LVQHU+nfzuhH5LDvfK/9SYUAf4Xc+QyBe7dikcvfnSskyQXrXbHpPgMZLNcioXDlq820mJEAnqrKKWdw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jVAW4esD; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::736; helo=mail-qk1-x736.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:c20a::7" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741399566;
+	cv=pass; b=EQ6v0CjulUHuYaCPcxD1BPursLYqF3m7KzHXJHbMs/NNZU5X9eJbfncrpxUl9hFPlFqsw+/ZrYfz5DKb16BvQwOhlmke9Wg1HgqnbEMBH9w5GedwVaId6hmJhHEB4bsfLzh+Jon1ITZlYhQGwclB1tusvrc5bjxFNcL310rqWkfUcxn3Yp8mpUsEcoDBIWV3KBGoBsLQFDfYtSTi72vRua2WCffOMRdAIBV1Gs5438LVz04/P+vGV4lhDBjQ3E2F81pWgrAAC9vw1TMTNvnkwML5jVXvIn2XD1yDJ0S21UOG9tMY9aArzHk4YdYzKPBXqc7tTWt2hh1qfgDgvBGDqA==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1741399566; c=relaxed/relaxed;
+	bh=e2PtgFb6B6Nsje0z6HDmc1vvWNo0dV1VutTqdYOm1NE=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LFkkTxgG9erSbj0vo/2l7Y8VwCZbOm1trixIyLSdeqfkb2rBU6wrXyblQsnV7w+QOENS4TAXin1qoWenFPJ4hMW9+auLzRZKbJ9AppC4NPgBvoTbUkaoZnNWa7/dCuKPdHSj38kNQfV8oPmvbWQ11+aN/j6fMg1Z0B9d8A1c08UegLEJMpzT6F6ojo2fazLd047LaPXD0VbvuyCHfGyeJUgBFKESwccpWw8WpIVd3znjiDTDXKxF4AZ9gNMxmnHJs+mzMFb/8fmDj/0VHlaMEBDx9DmeVun6TiBEZshfBElO0ikdgx17VvYNY+G/igXlOBS10700x0nT4q93dDwQ2Q==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=FVrXrqgu; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:c20a::7; helo=pa4pr04cu001.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=jVAW4esD;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=FVrXrqgu;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::736; helo=mail-qk1-x736.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:c20a::7; helo=pa4pr04cu001.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazlp170130007.outbound.protection.outlook.com [IPv6:2a01:111:f403:c20a::7])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8gSn668fz3cW8
-	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Mar 2025 09:10:01 +1100 (AEDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-7c3d591e50aso256109085a.0
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 07 Mar 2025 14:10:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741385399; x=1741990199; darn=lists.ozlabs.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=67u4yKx69wt0LUt2XYoCDntO5OlMzTpGLsqyjTaA95c=;
-        b=jVAW4esDnRwzaPnzx3qcf5pPQP930VO7U6X67jO5/bg2sIfs7XMdzwtRYVKf1unWNn
-         oRDggM/K5U3ZEawPiRkKiboBZn58icjeEY55jUuGzIaTdcgJJsTfY7qDJR9wXjeH/i2a
-         znGbgNb5SPt+4vq2FXlJ88IdW+1Wq6KO8SDZhmZV9pvN6RtsYB7LbNSxj7qOiQcHfa8F
-         GDf2DV3MWG65ZgLo6HiSljmdzRfJGla6kvMzEUxrtk5P0NbYPOL4NRGyBWJDI+/ioEnP
-         wmFq9x002NGB73gPQ5erRNBp4Q/Aq3DGQx/LBChsr7XP1AQuibPaMk0k9RVwoFOy4KJF
-         TUMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741385399; x=1741990199;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=67u4yKx69wt0LUt2XYoCDntO5OlMzTpGLsqyjTaA95c=;
-        b=OfJlOZu8niNMoCEPKjYPyssdCNyNvguLUEhmF7YJv6syVYH295Wto5ZjhGGOWZNXmP
-         uE2MW7RTY65vje7TLQLuPNQ/8jWCeILK5fu1cSk1J6/gIQafN/LPTbpCvOUXWLuOTZfX
-         bnvxe6FeGhKbHM/f4s0ywBgZgxVAeLYef5vTp5/ucXIhbPVvy17eLQS7B9uhs7RSYfvw
-         sAABttZTXZUcggaBsYQI8o5aIF5w1yWhlyQ7Ia+De6896boD9sQyr++o+LMUIdgjhNsr
-         o9clhnMyRQ8Pd6e1IFEZF/Z9yDWiKFufKtVewUNnaEQ4FAMYF+O7jVQ6ENm2azywmKxy
-         l8/w==
-X-Forwarded-Encrypted: i=1; AJvYcCXFIOYjNMMhxLp8wchEqwP0pIYmeMJl5YDAAR62qjdBroNluWyjaI82N7GKGEvWgAcyTO5HDLQjhnbu3Cw=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxQeUTMcTcQXdU1e10W3WiDQONgxFzRos+noH9ZJu8p0vGB7E/6
-	F4isx3NAjDZSk3BAzwHH23KXYSkrTsA1Khzu8CUEIppx5dvX60DKMtRs9M8r+2I=
-X-Gm-Gg: ASbGncvIj3viXMOKA2OO96REifHHSirf2y84MNlXZrgGsEdJKFrm/uVMjgHSyqBwYNc
-	FSqqWk7fI9ESXNL5FtLDex1gs1ftoaV2+AH+IDOiOvkruClZ/fqhCIU1JfJGx+ATbfpUKPz2FGX
-	Mwbp1h+kS9M2Nzv3liDI/OpP4+G7bF+ZH52Hf2wnul3YFW++M1LbUNLLt7n8uHVdVtYXX8vYxYB
-	tFDMJV//hg7L3bwRFyWQMWCDV6h7U+6+Jx/A9sn5IZzOUsj9Nf8/Omw+8G0uAKlskKT0ALTQfm9
-	YN0+jBbMob1mwcXG5wItSR15zBBmDhP4iDrkp3QuW2RMp0vYRNfcCEvXHsISpO4xCvhhv3CPwoT
-	S
-X-Google-Smtp-Source: AGHT+IEai4ZR+GPg9IqBNC11z36R1pgnxaE5azU4DgOMhWO/Agxa1FtzDoKPPOy7rPFAxzIZLqbVOw==
-X-Received: by 2002:a05:620a:6501:b0:7c3:9cdd:55a3 with SMTP id af79cd13be357-7c4e1679b53mr826383785a.9.1741385399513;
-        Fri, 07 Mar 2025 14:09:59 -0800 (PST)
-Received: from 1.0.0.127.in-addr.arpa ([2600:4041:5be7:7c00:f0dd:49a0:8ab6:b3b6])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7c3e533a095sm295001385a.3.2025.03.07.14.09.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Mar 2025 14:09:58 -0800 (PST)
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Fri, 07 Mar 2025 17:08:58 -0500
-Subject: [PATCH v6 3/3] printf: implicate test line in failure messages
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z8mj503DSz304x
+	for <linuxppc-dev@lists.ozlabs.org>; Sat,  8 Mar 2025 13:06:00 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=VodN8Y76iZyL8wzqlYvXBLHDiV9SKplWRvaO+ds6cOz1ZmctDZvSH5LAgM+EoLcUiTN9qwdGd7QHyWm7Tf+lr2BhNr+8gVcFqr632UcoNg09A+mqaM0XxpgAY36P+dAm1/vJ944qEUqcGRabq7nTBo/xPanvkS26nMfR+2/0V3WZBIxef1mbXrUNq6lNCCxqzYq1Fr5zHyrbhr09EtSgZlCnb3L3UNRdvYFURMCL29Cktk4EuFSeGhCjtjjSWXuPuyLhhaDushjA8nk3+Txtrow+xeQi+iW8c+FbhFcHV5BpOidpSEW8Mf1UvGw2PXzdBu0jcsU8tJ8t5eNpByC/TA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e2PtgFb6B6Nsje0z6HDmc1vvWNo0dV1VutTqdYOm1NE=;
+ b=BU2IiRdfzMmyfSN6+aLw7Xv+6Qd1adJwMy8XkodN3CbdjHZzfTbWPeD7yXKADrh9a2uh5fWhd3iBClZT7sx82FXBdDtr32vnD29TQp3fGyg8QjPDuysGZsN5YeNhnIjI/W9Lycq4WXHsIv5pMRk1wCkdmE7h6Xzm/qNrVO2KYX/7YeEBE2kjxfgI4pphdfDa8zVPUhUWue/hgpSU8fqKgDtqwvLdgX8cR3hR3llhsHsFk6Clfm/NyImktf18DOuqOxmALklyVu0gv1dHYtQLLmaWQCQvQF1Q3kwH0KQTbW/k924RTjoYJeOP6r16JomxPcnltvyprWhp4BcUIIJkXA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e2PtgFb6B6Nsje0z6HDmc1vvWNo0dV1VutTqdYOm1NE=;
+ b=FVrXrqgu64l0DByk0AVVLgmPJWFD/azs6SNJWOZad8pu+l9guOXhE6tqGdLAoaZFgQL63zM0l5dyJNVIObYws6PblBG/HViPOt3CIEXfs1Iicot6ZPlge7zb3Rh2QM4aTKkrQTJe5RZkWkvXumi0MHotAJnSzOJcpL5Etf4r2vnQA67qRDEYiVIPtQ5v4RcHeMEjaEnamV7xYKQ2LQCdTzsJTZVEfD+YdtKS0qhad8Vwtj9DGSrUYS08oN/TrWrpKH9rqGsB6M0gA/J+z0fRFmHLbL3Se48PQtCC7rdNuEMvg4ffhazSNosGZCTnBTJnp5gtDcwUqjbqchRnci/mKA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM9PR04MB7668.eurprd04.prod.outlook.com (2603:10a6:20b:2dd::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.20; Sat, 8 Mar
+ 2025 02:05:36 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8511.017; Sat, 8 Mar 2025
+ 02:05:36 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Vladimir Oltean
+	<vladimir.oltean@nxp.com>, Clark Wang <xiaoning.wang@nxp.com>,
+	"andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>, "davem@davemloft.net"
+	<davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
+	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v3 net-next 01/13] net: enetc: add initial netc-lib driver
+ to support NTMP
+Thread-Topic: [PATCH v3 net-next 01/13] net: enetc: add initial netc-lib
+ driver to support NTMP
+Thread-Index: AQHbjNiMrmwkTzPG206zUiHxDe17mbNmtIkAgAAxcACAAZzhYA==
+Date: Sat, 8 Mar 2025 02:05:35 +0000
+Message-ID:
+ <PAXPR04MB8510771650890E8B7395B2DA88D42@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250304072201.1332603-1-wei.fang@nxp.com>
+	<20250304072201.1332603-2-wei.fang@nxp.com>
+ <20250306142842.476db52c@kernel.org>
+ <PAXPR04MB85107A1E5990FBB63F12C3B888D52@PAXPR04MB8510.eurprd04.prod.outlook.com>
+In-Reply-To:
+ <PAXPR04MB85107A1E5990FBB63F12C3B888D52@PAXPR04MB8510.eurprd04.prod.outlook.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM9PR04MB7668:EE_
+x-ms-office365-filtering-correlation-id: 4b63c16b-4bf4-4eb6-e821-08dd5de5b744
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|376014|7416014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?rvb23W07Mos5lUeDZstJUfiTns7O5ZqVmq+HwOcztePtunzfoXOKxV0oTe9h?=
+ =?us-ascii?Q?Hanrh4TRAbkM5+uqgQI35+8ai4CQ892EyFfQCYiaeIy6CkLsl4p8F07kiXok?=
+ =?us-ascii?Q?1ojT93fwU2uRX457EmpE14jd5xalCG64LIdkQKkwP6Jn209Ahb2rm8947wSN?=
+ =?us-ascii?Q?QUxqnrYk3OYhNSFkehIYukOCmtzUd5rBIIxUMX65YdZzY2ijtDbtdlmHrSmu?=
+ =?us-ascii?Q?9HwDMD4P/50HzY77RCMnQQBTyqovQwakuoOrvntg67XfekM1XVWuFmNQkXF/?=
+ =?us-ascii?Q?+WIO0Q2eqcXwsRnN4u2uhb0lrLjcmgpJs4uXEbuQIZWYlqKdjDaFt/C/BFoL?=
+ =?us-ascii?Q?XVW5ARvgepSxvfygJ2HGI0z6lDI1QBgFOeiffXbjutHL7PMZHVRuPjSojy8h?=
+ =?us-ascii?Q?om4RpmA7GbowHWEbhSiWFKj5fJRdZ02G/34aaAHIKiw0qG+LDyhVgLdx0vRJ?=
+ =?us-ascii?Q?wd9DkLFjHl2Z6RMVT6DwgQ+1Ua9k9Pe10VOgihiyvsBt9Fh1pyf8AoS/cEII?=
+ =?us-ascii?Q?uAlo2qaS/fm6kuTvV6l43rEIB5yqFhPsqkC2RFhYGz1q8L1w1tVM6ensvMhr?=
+ =?us-ascii?Q?4IxMQMZpgUmg6W7yycv8LgF4aGtJ25BowmdZc103lMfNUkeYTIxLmkuNF3R/?=
+ =?us-ascii?Q?fRxaE+XEx0ZEAayCREAnXLs5uyBgnL5xFkOu9OPVt4EGaWSQKdaR3Xb7uhzy?=
+ =?us-ascii?Q?IY5xz0g1HOyuWAF18bCeikf8MgAML4LTuKZA3vtYYDTIqgl+WhAMJGzCOQVX?=
+ =?us-ascii?Q?WUf6ziShDDmS0BKI35jg3cJXh38DtdJ2ov2T96lyKrqg2Xkoq2YA5YfAcE6C?=
+ =?us-ascii?Q?CLAvz4sNsVgXgVYnOOwVkh4AtW2VhHtxjJzAS/4iB23KLlRL8Hf5LxeHMt2B?=
+ =?us-ascii?Q?zwOxIiHvNlEbTFwV2aWuapU9fh1aU87MYwym8960BuDuVdu6eL9zcq1KkRob?=
+ =?us-ascii?Q?cZeMB7amFTEjfGGRzbYsh+bJGuO5gEzAXLmBU1x98+lOB0HgUYd9ROUOQ4cn?=
+ =?us-ascii?Q?Ip3jXj6Qoy9Kr2gz3JUtzA1bBPPn5CbYcz6XMyxf7LJgn/ZUrbKduKxajBt2?=
+ =?us-ascii?Q?U5DvL+SguzbZ6uq1EzzOyZtDf8w2DC8oqOQPBXSvSMp8yOWI24unUK6Yz2Gw?=
+ =?us-ascii?Q?q89Tzc45qlHPwu7hhgpl+YFzNHXNSgmTnHtDcTGfqw83VTrbSjisIc0F+Tf3?=
+ =?us-ascii?Q?paxYq50R5PKMD6+U48xleb6cS0eNTZw7UCDXha5sPmFcetCLsjRt+FAsaTJf?=
+ =?us-ascii?Q?79lq6/5xBXbIMFHn/QZd/GWFsmxSl1MNbJtmZi5lQVlp01BEQiEoEFWQEbcx?=
+ =?us-ascii?Q?7wY2mfL4Bhc9Hsesdb/vfeOXgF8D4A1y+6XkJ76xmRsS3ya7gmXw1syc1fPG?=
+ =?us-ascii?Q?37yO2gjsW7DhEf1VP4irIHqfKxMTpXIGxz6OnPaO6hna1OWHX92o9SUCf+YW?=
+ =?us-ascii?Q?mxOOHEd77ZlPa9MQoTgpHJBzjCzj952o?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?uLJ596OwPwJQJADAct7Q+a5yd4gpilvyj0RjzEW5d6xI3MZ1aLgrLAnYLFY+?=
+ =?us-ascii?Q?/sX7cvRFBZUbPYQ2OeI29BQv7CB4j+SBpegOHwKaeAoafLeIJAOBkfrTVu1T?=
+ =?us-ascii?Q?wYLojGcjfun/cuxrUrET2GdaJAKMBS9Iqbg3QZUJzn7cS6Ymr/PQjJpqk5Us?=
+ =?us-ascii?Q?J0MRXwPZLOrJV3i/BZ0ZJNxj/6ANdhEpAIYRaf6nyL4EMzFO+2MWGAyVrCQi?=
+ =?us-ascii?Q?eZCQSIP0r02BbI29QUrY0g8A4IF3fCfcj+c4Sy4RYmTEw0Jl6LWrcuob7xmh?=
+ =?us-ascii?Q?Qb/x3X1v/N97YG9RzV8YlcRSP9bLG+wxyMovimDZGKkis6LxQ0ZLJVJRGzSN?=
+ =?us-ascii?Q?PqXL7vO9XA9UYhaPHRNoKJ+c03Fatt30oWxMcy+CMHdFfIRnQ9Y4iSlNXWlj?=
+ =?us-ascii?Q?CZLRnOAmyhzr3qI3+8qGIcTDmowLedH5yNy54+DxsP0Z5F5EjdLRGriV3esY?=
+ =?us-ascii?Q?ZyT5eXtLLbunNm396WymX3NaMzkP0bLG3lIg9tkl9U4yu0Y/5v2vWnSn6GWr?=
+ =?us-ascii?Q?AGHyBqH65DIpaJu9RgkicgEXfBzxjnbZewCuNJvcGjoIbSXPVjpJVD0XkzTx?=
+ =?us-ascii?Q?/CHPfnhXyp7iYYzrRynE8YrJy9TX3YNjjdTAw9M+ncvi4bQKxF3mmaX/avXz?=
+ =?us-ascii?Q?6gxSbNCS6odnkYDtkHx++ZUc0OUSgpXn6QJCN6hIa1gwZeowpJYoSEwgg6NJ?=
+ =?us-ascii?Q?toV00TZ3VUT1b0Bw+xTf4wWHnZczmZBUYrHrafQUDtQV+XX8DYoSeYDb/C9E?=
+ =?us-ascii?Q?p2kHbEZmhFNRZ4pxMpbou8V6D9oErubEWBLnSs6AxQdbcyExxTy/5rVKrE0B?=
+ =?us-ascii?Q?Cl6IRmuhZGWD2kvhS6llvASvXGEvDgg7bsdRDEAPos2rmRzkp7CtdxAZMK6f?=
+ =?us-ascii?Q?dVmQ9UwxO5Fjtgflx6Pq9cml74xRHpfAgBRxJ1/vXv/gRcOq3lmW8XOV03lG?=
+ =?us-ascii?Q?oAofRot7HzYtowHVK7+WpIbsBNHp034siNqpxw4ALaRbGeMVjzZoSjMNQn/H?=
+ =?us-ascii?Q?cDkxA5OACXUAatOra4HG9yyi7gtvJEV435BM9z/TEGiHUuhbQaDy6wvvEKMy?=
+ =?us-ascii?Q?V8C7JbcRCMo0zCP/wN5cbNiC+/jB7fJmWNbP6/9KUY7FA3mliAKiwOrHL6Ng?=
+ =?us-ascii?Q?WNegSNthSlwlch2//wDgB8noLgQMskicZMX93/urqGNKqEcyJQmaFwtEK1+9?=
+ =?us-ascii?Q?cqs7+PnJ1sPa+l6ElN6NeDDf9vWaJgnB9qsIs6G6bwM8vBkOJnOazGlFfqFF?=
+ =?us-ascii?Q?D14qR461N8YBwtDS9WMjTpzSLfbS1UcWQ6BavceZrrS6Cj4F3EbhYcZBe9ml?=
+ =?us-ascii?Q?vVreVZAYi/hyAwWeLGi0K8XDNMnkoBdbF2oe/IiK72J6wVuIOZycu19b6I3f?=
+ =?us-ascii?Q?17bXgorLMVMh6OthIf65AD8G//6Bh6aR8Mpi+GiBnPSo8BE1vp6ZrtCgFtsA?=
+ =?us-ascii?Q?IJ5/DgztE0dcWceAVCLq2PjIT7/syeOp9hLpyviL6zz9qz/2ff870LL4W5EC?=
+ =?us-ascii?Q?/TfFu57rApDZSeU90+VoOjSMqJd2i0LOrGoxAuvB+xikTZX2wYdoEIV9eg4m?=
+ =?us-ascii?Q?j+lbAa8CeL4WVNTsiUY=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,196 +161,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20250307-printf-kunit-convert-v6-3-4d85c361c241@gmail.com>
-References: <20250307-printf-kunit-convert-v6-0-4d85c361c241@gmail.com>
-In-Reply-To: <20250307-printf-kunit-convert-v6-0-4d85c361c241@gmail.com>
-To: Arpitha Raghunandan <98.arpi@gmail.com>, 
- David Gow <davidgow@google.com>, Petr Mladek <pmladek@suse.com>, 
- Steven Rostedt <rostedt@goodmis.org>, 
- Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
- Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
- Jonathan Corbet <corbet@lwn.net>, Geert Uytterhoeven <geert@linux-m68k.org>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, 
- Brendan Higgins <brendan.higgins@linux.dev>
-Cc: linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
- linux-doc@vger.kernel.org, linux-m68k@lists.linux-m68k.org, 
- linuxppc-dev@lists.ozlabs.org, workflows@vger.kernel.org, 
- Tamir Duberstein <tamird@gmail.com>
-X-Mailer: b4 0.15-dev
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4b63c16b-4bf4-4eb6-e821-08dd5de5b744
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Mar 2025 02:05:35.9994
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: TFems3hoJLgJ3d0gZJxEgaHsiPVl3NcXLJqLyjU3HncN9QGnuv2YU5pr5t77EmKUp++F+aRkc7DYAcPGUUz16A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7668
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
+	T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-This improves the failure output by pointing to the failing line at the
-top level of the test, e.g.:
-      # test_number: EXPECTATION FAILED at lib/printf_kunit.c:103
-  lib/printf_kunit.c:167: vsnprintf(buf, 256, "%#-12x", ...) wrote '0x1234abcd  ', expected '0x1234abce  '
-      # test_number: EXPECTATION FAILED at lib/printf_kunit.c:142
-  lib/printf_kunit.c:167: kvasprintf(..., "%#-12x", ...) returned '0x1234abcd  ', expected '0x1234abce  '
+> > On Tue,  4 Mar 2025 15:21:49 +0800 Wei Fang wrote:
+> > > +config NXP_NETC_LIB
+> > > +	tristate "NETC Library"
+> >
+> > Remove the string after "tristate", the user should not be prompted
+> > to make a choice for this, since the consumers "select" this config
+> > directly.
+> >
+>=20
+> Okay, I will remove it.
+>=20
+> > > +	help
+> > > +	  This module provides common functionalities for both ENETC and NE=
+TC
+> > > +	  Switch, such as NETC Table Management Protocol (NTMP) 2.0,
+> common
+> > tc
+> > > +	  flower and debugfs interfaces and so on.
+> > > +
+> > > +	  If compiled as module (M), the module name is nxp-netc-lib.
+> >
+> > Not sure if the help makes sense for an invisible symbol either.
+>=20
+> Yes, I think it can also be removed. Thanks.
+> >
+> > >  config FSL_ENETC
+> > >  	tristate "ENETC PF driver"
+> > >  	depends on PCI_MSI
+> > > @@ -40,6 +50,7 @@ config NXP_ENETC4
+> > >  	select FSL_ENETC_CORE
+> > >  	select FSL_ENETC_MDIO
+> > >  	select NXP_ENETC_PF_COMMON
+> > > +	select NXP_NETC_LIB
+> > >  	select PHYLINK
+> > >  	select DIMLIB
+> > >  	help
+> >
+> > > +#pragma pack(1)
+> >
+> > please don't blindly pack all structs, only if they are misaligned
+> > or will otherwise have holes.
+>=20
+> Because these structures are in hardware buffer format and need
+> to be aligned, so for convenience, I simply used pack(1). You are right,
+> I should use pack() for structures with holes. Thanks.
+> >
+> > > +#if IS_ENABLED(CONFIG_NXP_NETC_LIB)
+> >
+> > why the ifdef, all callers select the config option
+>=20
+> hm..., there are some interfaces of netc-lib are used in common .c files
+> in downstream, so I used "ifdef" in downstream. Now for the upstream,
+> I'm going to separate them from the common .c files. So yes, we can
+> remove it now.
 
-Signed-off-by: Tamir Duberstein <tamird@gmail.com>
----
- lib/tests/printf_kunit.c | 60 ++++++++++++++++++++++++++----------------------
- 1 file changed, 33 insertions(+), 27 deletions(-)
-
-diff --git a/lib/tests/printf_kunit.c b/lib/tests/printf_kunit.c
-index dd373cb9036a..2c9f6170bacd 100644
---- a/lib/tests/printf_kunit.c
-+++ b/lib/tests/printf_kunit.c
-@@ -38,9 +38,9 @@ static unsigned int total_tests;
- static char *test_buffer;
- static char *alloced_buffer;
- 
--static void __printf(5, 0)
--do_test(struct kunit *kunittest, int bufsize, const char *expect, int elen,
--	const char *fmt, va_list ap)
-+static void __printf(7, 0)
-+do_test(struct kunit *kunittest, const char *file, const int line, int bufsize, const char *expect,
-+	int elen, const char *fmt, va_list ap)
- {
- 	va_list aq;
- 	int ret, written;
-@@ -53,20 +53,24 @@ do_test(struct kunit *kunittest, int bufsize, const char *expect, int elen,
- 	va_end(aq);
- 
- 	if (ret != elen) {
--		KUNIT_FAIL(kunittest, "vsnprintf(buf, %d, \"%s\", ...) returned %d, expected %d\n",
--			   bufsize, fmt, ret, elen);
-+		KUNIT_FAIL(kunittest,
-+			   "%s:%d: vsnprintf(buf, %d, \"%s\", ...) returned %d, expected %d\n",
-+			   file, line, bufsize, fmt, ret, elen);
- 		return;
- 	}
- 
- 	if (memchr_inv(alloced_buffer, FILL_CHAR, PAD_SIZE)) {
--		KUNIT_FAIL(kunittest, "vsnprintf(buf, %d, \"%s\", ...) wrote before buffer\n",
--			   bufsize, fmt);
-+		KUNIT_FAIL(kunittest,
-+			   "%s:%d: vsnprintf(buf, %d, \"%s\", ...) wrote before buffer\n",
-+			   file, line, bufsize, fmt);
- 		return;
- 	}
- 
- 	if (!bufsize) {
- 		if (memchr_inv(test_buffer, FILL_CHAR, BUF_SIZE + PAD_SIZE)) {
--			KUNIT_FAIL(kunittest, "vsnprintf(buf, 0, \"%s\", ...) wrote to buffer\n", fmt);
-+			KUNIT_FAIL(kunittest,
-+				   "%s:%d: vsnprintf(buf, 0, \"%s\", ...) wrote to buffer\n",
-+				   file, line, fmt);
- 		}
- 		return;
- 	}
-@@ -74,34 +78,36 @@ do_test(struct kunit *kunittest, int bufsize, const char *expect, int elen,
- 	written = min(bufsize-1, elen);
- 	if (test_buffer[written]) {
- 		KUNIT_FAIL(kunittest,
--			   "vsnprintf(buf, %d, \"%s\", ...) did not nul-terminate buffer\n",
--			   bufsize, fmt);
-+			   "%s:%d: vsnprintf(buf, %d, \"%s\", ...) did not nul-terminate buffer\n",
-+			   file, line, bufsize, fmt);
- 		return;
- 	}
- 
- 	if (memchr_inv(test_buffer + written + 1, FILL_CHAR, bufsize - (written + 1))) {
- 		KUNIT_FAIL(kunittest,
--			   "vsnprintf(buf, %d, \"%s\", ...) wrote beyond the nul-terminator\n",
--			   bufsize, fmt);
-+			   "%s:%d: vsnprintf(buf, %d, \"%s\", ...) wrote beyond the nul-terminator\n",
-+			   file, line, bufsize, fmt);
- 		return;
- 	}
- 
- 	if (memchr_inv(test_buffer + bufsize, FILL_CHAR, BUF_SIZE + PAD_SIZE - bufsize)) {
--		KUNIT_FAIL(kunittest, "vsnprintf(buf, %d, \"%s\", ...) wrote beyond buffer\n",
--			   bufsize, fmt);
-+		KUNIT_FAIL(kunittest,
-+			   "%s:%d: vsnprintf(buf, %d, \"%s\", ...) wrote beyond buffer\n",
-+			   file, line, bufsize, fmt);
- 		return;
- 	}
- 
- 	if (memcmp(test_buffer, expect, written)) {
- 		KUNIT_FAIL(kunittest,
--			   "vsnprintf(buf, %d, \"%s\", ...) wrote '%s', expected '%.*s'\n",
--			   bufsize, fmt, test_buffer, written, expect);
-+			   "%s:%d: vsnprintf(buf, %d, \"%s\", ...) wrote '%s', expected '%.*s'\n",
-+			   file, line, bufsize, fmt, test_buffer, written, expect);
- 		return;
- 	}
- }
- 
--static void __printf(4, 5)
--__test(struct kunit *kunittest, const char *expect, int elen, const char *fmt, ...)
-+static void __printf(6, 7)
-+__test(struct kunit *kunittest, const char *file, const int line, const char *expect, int elen,
-+	const char *fmt, ...)
- {
- 	va_list ap;
- 	int rand;
-@@ -109,8 +115,8 @@ __test(struct kunit *kunittest, const char *expect, int elen, const char *fmt, .
- 
- 	if (elen >= BUF_SIZE) {
- 		KUNIT_FAIL(kunittest,
--			   "error in test suite: expected length (%d) >= BUF_SIZE (%d). fmt=\"%s\"\n",
--			   elen, BUF_SIZE, fmt);
-+			   "%s:%d: error in test suite: expected length (%d) >= BUF_SIZE (%d). fmt=\"%s\"\n",
-+			   file, line, elen, BUF_SIZE, fmt);
- 		return;
- 	}
- 
-@@ -122,19 +128,19 @@ __test(struct kunit *kunittest, const char *expect, int elen, const char *fmt, .
- 	 * enough and 0), and then we also test that kvasprintf would
- 	 * be able to print it as expected.
- 	 */
--	do_test(kunittest, BUF_SIZE, expect, elen, fmt, ap);
-+	do_test(kunittest, file, line, BUF_SIZE, expect, elen, fmt, ap);
- 	rand = get_random_u32_inclusive(1, elen + 1);
- 	/* Since elen < BUF_SIZE, we have 1 <= rand <= BUF_SIZE. */
--	do_test(kunittest, rand, expect, elen, fmt, ap);
--	do_test(kunittest, 0, expect, elen, fmt, ap);
-+	do_test(kunittest, file, line, rand, expect, elen, fmt, ap);
-+	do_test(kunittest, file, line, 0, expect, elen, fmt, ap);
- 
- 	p = kvasprintf(GFP_KERNEL, fmt, ap);
- 	if (p) {
- 		total_tests++;
- 		if (memcmp(p, expect, elen+1)) {
- 			KUNIT_FAIL(kunittest,
--				   "kvasprintf(..., \"%s\", ...) returned '%s', expected '%s'\n",
--				   fmt, p, expect);
-+				   "%s:%d: kvasprintf(..., \"%s\", ...) returned '%s', expected '%s'\n",
-+				   file, line, fmt, p, expect);
- 		}
- 		kfree(p);
- 	}
-@@ -142,7 +148,7 @@ __test(struct kunit *kunittest, const char *expect, int elen, const char *fmt, .
- }
- 
- #define test(expect, fmt, ...)					\
--	__test(kunittest, expect, strlen(expect), fmt, ##__VA_ARGS__)
-+	__test(kunittest, __FILE__, __LINE__, expect, strlen(expect), fmt, ##__VA_ARGS__)
- 
- static void
- test_basic(struct kunit *kunittest)
-@@ -153,7 +159,7 @@ test_basic(struct kunit *kunittest)
- 	test("", &nul);
- 	test("100%", "100%%");
- 	test("xxx%yyy", "xxx%cyyy", '%');
--	__test(kunittest, "xxx\0yyy", 7, "xxx%cyyy", '\0');
-+	__test(kunittest, __FILE__, __LINE__, "xxx\0yyy", 7, "xxx%cyyy", '\0');
- }
- 
- static void
-
--- 
-2.48.1
-
+Sorry, I misread the header file. The ifdef in ntmp.h is needed because
+the interfaces in this header file will be used by the enetc-core and
+enetc-vf drivers. For the ENETC v1 (LS1028A platform), it will not select
+NXP_NETC_LIB.
 
