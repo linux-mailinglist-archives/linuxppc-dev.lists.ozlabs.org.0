@@ -1,69 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-6829-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6830-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D943CA58414
-	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Mar 2025 13:38:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2ED3A58888
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  9 Mar 2025 22:39:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Z9fhW5rB3z2yVT;
-	Sun,  9 Mar 2025 23:38:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Z9thn0pNrz2yRd;
+	Mon, 10 Mar 2025 08:39:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741523915;
-	cv=none; b=em/HfEJTkOlAbbJ4CcRK/ZAz02EJMMhw833NO1YOLKpfgvPihZqHIP9xLqOYxev5QtNCT5vygAdlbZUvEXH3HL8FApQp3c5rKBEK2Z/a6vZ3/gPVoUAWmancBt6dmJF5FHv/XN5Cea/yz9PsjoEWy54QRhbN6bZoKR8TlKAMBIBHZUK3POpnG6sJu1ogafnOyO5a9U1AKpHOliR6aCvUtzC4Oe2iBbVAiZiuDik+BLm2dhXS1QtEhYMaTq6C/Y0LyMkXwH9b/qjSuNKizaNnAUsrXhzSrVSgkyRxMbjxS/KTaV+mCQZlVz8XK+4k1LV5fWkiPrkIw2vXmB4AI7tQTw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741556376;
+	cv=none; b=hm5aXUW6kTJ56UyTamCemWvzxMEpV+uwpUe0y/Z+oIFtKlVWe2823aQAgF0hULr5HiTAvF8G1qdLIXr4HhrgYf/nqe/wHwtWZwr8lPKSWvS4tU2RkylcvNjlSZmzE60cyxOq8fZYLbjm0E8zD1nfo+oawLaSbzNw98YdYt3JyojI3HgfSmkibjf/Fr4l9FWEmyp8fmbiR/EjycxUJ+/eg6EdLsIlL/GekQ73TuWVMdT97zKoyjhAkAntAylRDyC+x9U5e1exU+pRRc0R6HXUYrjAL/deJQrWkYuTNXhEcPt4XcIReFWEeQ4uIwGEjsKoXiSRs8JD4R2NgVscnNupaA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741523915; c=relaxed/relaxed;
-	bh=z25u1C5IboR8ljLK34Hmmh2M2r05ibUTuM8VlpKwCyI=;
-	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=cP2zmlFE4ZPfY4vZ8qnx8V/iOtctJ8j5ME0ZyaZTh9D8MMqVIouxUWrKFa93YO1Jxv6HbYnqkXQukgay4/ICqJ3o3TCldp+VsUptgHjzASBzCRZMGtbEioFKkyld/DbeZUSaUDV26RF0rZwFCsKoMQuNvvwWhKAEyffGkckZE6reoIT6MJBpwfK1jc2tfAroNTVtzXwKzOp3juvDt5orM7qJc2YdLOI9sZyF7NuoANd4pmuPd/D2YoN01zWin/TgL6myRKpVmPLkWUEedNCbRrYhcyiXHnklS4ZaZU9dM0mLz93KEmiRZJdOcsOvXBqbgs+ltn+t2RT2rjmDf2iVNg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=esymyqcV; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1741556376; c=relaxed/relaxed;
+	bh=88MPnvnGLEFTXyHBPmfRuzVhqzQhXra5tDXK8kGpt90=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WGs+9riOhF+mtG7I3BPiYnu5lHoDxZvYcReWk5ntYaSYXLboVpQxplqvbwlMoJLd21L3g8gv3tylBQ+oXoSQah1mhFEMLXo0XqxOs8DkX6oDhE/5NEd7BuAQi5lMbQq7AYTPYPQF/Reksz91vQG4WKGu7SYAcoS5tziO9Ovde7o1lFvOpTrQd0NLd/rBMIt5R8K/j5WQ3nLDXRTg4ES78iiPBItqgQ9jAUwRc3jXqjMcSd4PuXAUiZQCewMmD4DKMzMnV8SCaXVcWgYS5s6HANWW9pqbT37tlBzaex2Z0uagA+nRG4eGIEKyk6rF9AHa6sDrMtM6BqasE3XavNUlGw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=D4V7nIMl; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=esymyqcV;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=D4V7nIMl;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z9fhT6xb9z2yMD
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  9 Mar 2025 23:38:33 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 529BhLlW007842;
-	Sun, 9 Mar 2025 12:38:20 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=z25u1C5IboR8ljLK34Hmmh2M2r05
-	ibUTuM8VlpKwCyI=; b=esymyqcVSn1f6sCXHool+WBm5UIVWJi1eSHnUPUs/jnO
-	k+dTF0pWL4AOxhhg/UIF1ZQ6OuhWdLsGB8BnKQghmyN81rKTqnypEtEqzA0GB/3m
-	/uuRviDeoSLo9GWB77XVdne7rJhGowpYGM6OTJs7iT6UjThIdN2fz67Q1CgKDM0w
-	NjTZiHeiLEtwmn2/73bh2COMz3+WdAHpCVhXGcw7lQtz/mLwA4xj4cFJNiSrtxZN
-	x6Qc/AHzhSCMPMX1F8WV+pYe5RUBTqivEe4moyc8ojzAW09c7IY6rWXv+v7Ei2r0
-	kYdKp7145T2T1H0CyR5Ir11BT0EL/MA6GV/PE8ZCuA==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 458wa4j250-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Z9thl12Ztz2yMh
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Mar 2025 08:39:34 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5293jslj022728;
+	Sun, 9 Mar 2025 21:39:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=88MPnvnGLEFTXyHBPmfRuzVhqzQh
+	Xra5tDXK8kGpt90=; b=D4V7nIMlRAJNeW7zHQu2HDdaL3ne2rEdCd2oTybkuFP4
+	cwsAiZYccVsy2EFDafYJxrD5KHWq2b15AqnGxY7i/Q7QdCOpBmGUorKIm+fW7Aa2
+	lsfcRA6oDFfllTgtcsbqq5pHJqgSsAvVgSnt0nhEo5sPLEYfTrl8e34uVSDkKWT6
+	iBo/GY2LkFGTCpEGebS2DFxdjMduiFSly7x3GN8OEtbsxbDQfIXsCewRm923Elig
+	sX8yyK+CX2vKgHtWR5gRb0xJbVL4VUPb656zC17CFVGjMlty/ta+Fq25ocj4evYD
+	sBTAFuWgvh2Iuk+uI0U0SxCMlVCKL1lUL1D/442+cA==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4593c8tjyb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Mar 2025 12:38:20 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5299cF9X006991;
-	Sun, 9 Mar 2025 12:38:19 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45907st85j-1
+	Sun, 09 Mar 2025 21:39:26 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 529LdQk1027595;
+	Sun, 9 Mar 2025 21:39:26 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4593c8tjy8-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 09 Mar 2025 12:38:19 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 529CcJ0p23790280
+	Sun, 09 Mar 2025 21:39:26 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 529LL2JN027544;
+	Sun, 9 Mar 2025 21:39:25 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4591qkbhtw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 09 Mar 2025 21:39:25 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 529LdLFg63832430
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 9 Mar 2025 12:38:19 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0E3235805D;
-	Sun,  9 Mar 2025 12:38:19 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 782AA58052;
-	Sun,  9 Mar 2025 12:38:17 +0000 (GMT)
-Received: from [9.61.254.32] (unknown [9.61.254.32])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sun,  9 Mar 2025 12:38:17 +0000 (GMT)
-Message-ID: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
-Date: Sun, 9 Mar 2025 18:08:16 +0530
+	Sun, 9 Mar 2025 21:39:21 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B150158056;
+	Sun,  9 Mar 2025 21:39:21 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D7FFB5803F;
+	Sun,  9 Mar 2025 21:39:20 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.54.66])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  9 Mar 2025 21:39:20 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
+        hbabu@us.ibm.com, haren@linux.ibm.com, sv@linux.ibm.com
+Subject: [PATCH v7 0/7] Add character devices for indices, platform-dump and physical-attestation RTAS
+Date: Sun,  9 Mar 2025 14:39:08 -0700
+Message-ID: <20250309213916.762116-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,65 +90,149 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-GB
-To: Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [linux-next-20250307] Build Failure
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: y3GgWXzXuzgdO767rWyEK9Pzx6fEmJNT
-X-Proofpoint-ORIG-GUID: y3GgWXzXuzgdO767rWyEK9Pzx6fEmJNT
+X-Proofpoint-ORIG-GUID: zcA1CvH2pHgu_AzYw4ezdYl8TA4y5gDs
+X-Proofpoint-GUID: uem40mGWjv8g3YLfMsfpRCQ0dFOA-DHe
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-09_05,2025-03-07_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 impostorscore=0
- suspectscore=0 mlxscore=0 bulkscore=0 phishscore=0 priorityscore=1501
- malwarescore=0 adultscore=0 lowpriorityscore=0 clxscore=1015
- mlxlogscore=689 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503090100
+ definitions=2025-03-09_08,2025-03-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ mlxlogscore=999 priorityscore=1501 lowpriorityscore=0 mlxscore=0
+ impostorscore=0 bulkscore=0 clxscore=1015 spamscore=0 malwarescore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503090176
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Greetings!!,
+Several APIs such as rtas_get_indices(), rtas_get_dynamic_sensor(),
+rtas_set_dynamic_indicator(), rtas_platform_dump() and
+rtas_physical_attestation()  provided by librtas library are
+implemented in user space using rtas syscall in combination with
+writable mappings of /dev/mem. But this implementation is not
+compatible with system lockdown which prohibits /dev/mem access.
+The current kernel already provides char based driver interfaces
+for several RTAS calls such as VPD and system parameters to
+support lockdown feature.
 
-I see linux-next-20250307 fails to build on IBM Power9 and Power10 servers.
+This patch series adds new char based drivers, /dev/papr-indices
+for ibm,get-indices, ibm,get-dynamic-sensor-state and
+ibm,set-dynamic-indicator RTAS Calls. /dev/papr-platform-dump
+for ibm,platform-dump and /dev/papr-physical-attestation
+fir ibm,physical-attestation. Providing the similar
+open/ioctl/read interfaces to the user space as in the case of
+VPD and system parameters.
 
+I have made changes to librtas library to use the new kernel
+interfaces if the corresponding device entry is available.
 
-Errors:
+This patch series has the following patches:
+powerpc/pseries: Define common functions for RTAS sequence calls
+- For some of sequence based RTAS calls, the OS should not start
+  another sequence with different input until the previous sequence
+  is completed. So the sequence should be completed during ioctl()
+  and expose the entire buffer during read(). ibm,get-indices is
+  sequence based RTAS function similar to ibm,get-vpd and we already
+  have the corresponding implementation for VPD driver. So update
+  papr_rtas_sequence struct for RTAS call specific functions and move
+  the top level sequence functions in to a separate file.
 
-In file included from ^[[01m^[[K<command-line>^[[m^[[K:
-^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K ^[[01;31m^[[Kfatal 
-error: ^[[m^[[Kuuid/uuid.h: No such file or directory
-    11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
-       |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
-compilation terminated.
-make[4]: *** [usr/include/Makefile:85: usr/include/cxl/features.hdrtest] 
-Error 1
-make[3]: *** [scripts/Makefile.build:461: usr/include] Error 2
-make[2]: *** [scripts/Makefile.build:461: usr] Error 2
-make[2]: *** Waiting for unfinished jobs....
-arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: 
-intra_function_call not a direct call
-arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c: 
-unannotated intra-function call
-arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool: .text+0xe84: 
-intra_function_call not a direct call
-make[1]: *** [/home/linux_src/linux/Makefile:1997: .] Error 2
-make: *** [Makefile:251: __sub-make] Error 2
+powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+- /dev/papr-indices driver supports ibm,get-indices,
+  ibm,get-dynamic-sensor-state and ibm,set-dynamic-indicator RTAS Calls.
+  papr-indices.h introduces 3 different ioctls for these RTAS calls and
+  the corresponding ioctl input buffer.
 
-Please add below tag, if you happen to fix this issue.
+powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+- Introduce /dev/papr-indices char based driver and add support for
+  get-indices RTAS function
 
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+- Update /dev/papr-indices for set-dynamic-indicator RTAS function
 
+powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+-  Update /dev/papr-indices for  get-dynamic-sensor-state RTAS function
 
-Regards,
+powerpc/pseries: Add papr-platform-dump character driver for dump
+   retrieval
+- Introduce /dev/papr-platform-dump char driver and adds support for
+  ibm,platform-dump. Received suggestions from the previous post as a
+  separate patch - Updated the patch with invalidating the dump using
+  a separate ioctl.
 
-Venkat.
+powerpc/pseries: Add a char driver for papr-physical-attestation RTAS
+- Introduce /dev/papr-physical-attestation char driver to provide
+  kernel interface for ibm,physical-attestation RTAS function.
+
+Changelog:
+v7:
+- Pass the proper next value to the subsequent RTAS calls for the
+  get-indices sequence RTAS. 
+  (Vasireddy Sathvika found this bug).
+ 
+v6:
+- Define the proper command ID for PAPR_PHY_ATTEST_IOC_HANDLE ioctl
+- Update ioctls description in ioctl-number.rst.
+
+v5:
+- Return with -EINPROGRESS in papr_platform_dump_invalidate_ioctl()
+  if the complete dump is not read (Suggested by Michal Suchánek).
+
+v4:
+- Include patch "Add char driver for papr-physical-attestation RTAS"
+  in this series. ibm,physical-attestation is sequence based RTAS
+  call and the implementation is also similar to ibm,get-vpd and
+  ibm,get-indices.
+
+v3:
+- put_unused_fd() only after get_unused_fd() successful for the failure
+  case later ("Add papr-platform-dump character driver for dump
+  retrieval" patch).
+
+v2:
+- Added unlock rtas_ibm_set_dynamic_indicator_lock and
+  rtas_ibm_get_dynamic_sensor_state_lock mutex for failure cases
+  as reported by Dan Carpenter
+- Fixed build warnings for the proper function parameter descriptions
+  as reported by kernel test robot <lkp@intel.com>
+
+Haren Myneni (7):
+  powerpc/pseries: Define common functions for RTAS sequence calls
+  powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+  powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+  powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+  powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+  powerpc/pseries: Add papr-platform-dump character driver for dump
+    retrieval
+  powerpc/pseries: Add a char driver for physical-attestation RTAS
+
+ .../userspace-api/ioctl/ioctl-number.rst      |   6 +
+ arch/powerpc/include/asm/rtas.h               |   4 +
+ arch/powerpc/include/uapi/asm/papr-indices.h  |  41 ++
+ .../uapi/asm/papr-physical-attestation.h      |  31 ++
+ .../include/uapi/asm/papr-platform-dump.h     |  15 +
+ arch/powerpc/kernel/rtas.c                    |   8 +-
+ arch/powerpc/platforms/pseries/Makefile       |   3 +-
+ arch/powerpc/platforms/pseries/papr-indices.c | 489 ++++++++++++++++++
+ .../platforms/pseries/papr-phy-attest.c       | 287 ++++++++++
+ .../platforms/pseries/papr-platform-dump.c    | 411 +++++++++++++++
+ .../platforms/pseries/papr-rtas-common.c      | 313 +++++++++++
+ .../platforms/pseries/papr-rtas-common.h      |  61 +++
+ arch/powerpc/platforms/pseries/papr-vpd.c     | 350 ++-----------
+ 13 files changed, 1707 insertions(+), 312 deletions(-)
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-indices.h
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
+ create mode 100644 arch/powerpc/platforms/pseries/papr-indices.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.h
+
+-- 
+2.43.5
 
 
