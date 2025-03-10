@@ -1,60 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6855-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6856-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83440A59A8A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Mar 2025 16:59:44 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDDDBA5A0A5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Mar 2025 18:52:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBM656jcQz2yGM;
-	Tue, 11 Mar 2025 02:59:41 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBPbq1R1sz30Tk;
+	Tue, 11 Mar 2025 04:52:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741622381;
-	cv=none; b=FJlFRjmQHRjsJeynatJJXJXLfrmefgkNPWNTX2NJiAteW4+NtWfG3ZDlkHa6WMwimZ7XDH9xfjH5k9PBx6C1/YFXbEHa2eDG88PLLCmBLGwYCq7DKLkcTdBti6OP77ZCXCzGIC4wi0ba6mwuRzjmQKUTF/GR+uVxc0beeg9gw29YahtGrib5MnEokasFxQ1YSOw2NM8cq0v6farEMn6f3HVQqzPR4rRWW4VvaGO1vaT+dMAeh16x4ltUcIFyviFjwLmTUsoMdnlJ/U99e4uuGMhF6Lfz+UrzGa6P2/23skZUiz3Yc6JZeQ3RYnjif37d9OYRcFIO+AyI28EPqi7cMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741629127;
+	cv=none; b=kQDwIZAbIbIAV0IVcKnpruSIaJeQ/suvjPLqEaNtF90pxJ98f73fnsx2BUpxIvLf+/mU19/wETSl2BIxoVWbuWwZoMtGRAIKOoWtnjQs0ji1Ys3SCLqt7CCI8nwI4VxLgWnBG4/HuKLLyFKFXJu0nSFG1Jj47CW2C8/i31cJGSGT2vEeXzzhVnxNSfHO+UtVD21n6eOT1UCYfi1ZxDKnK5RlMkOVHA6UtaZrBWIIZ+jaqs5JJPfOTAgtnrOwTcgtLzQeX5U1hLLwdSXIvkN48PFURr4FIoDTMcc6HJdpxkLLEZvi/8NAQU6/ExytjsJuVdbkwruOpxM4CJ06SDWthg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741622381; c=relaxed/relaxed;
-	bh=ssMm746WYWcwhSr4IQzen7+TUL2c00C8Q2y0frDsabY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UiV25FF6BbqY1BEsFIuEoYS2SwgtXOmPHuf9sYbJr2Doe2qyXncRBz2fCk7+AyMPqYqCK/Q0iD9YrjgbM5Qe79RT8NFh7vXwoaxNRHXyoLOljCZEv1FTOfx9LBRTk7oPvEnNutUaRKRYSlY9WJCl0CJ6DIdeqBDSrNVaFusxVRUTu3s/puRO1eJ+UqHq1tVhonAlgf/NC7n4ADjg8QlpAlQ5BbpEvPwCe9N7rJ4lij6VxHEQxV3gDXw4MZIIcT+nKI7/cJYOpkATFrTxHutHLYk1eCvua9YoJ8y3iw0q2brHdk6q62wuXnstubrBsZJRNsR2s+uZ9Gz01ouceqUzaw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=YOUgLza4; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+	t=1741629127; c=relaxed/relaxed;
+	bh=58EyGn6oXyJA4euueOhQGd0RSCr644tjsgxpCjQxyNc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=NcatpJ4STl5DBM1UZ+kIDwAvaxMu0IjGsY0NjA5DPRfGk/R/3IKCpBn2MxkQImw9oXnqKjIZF4RfQKXMqWz86rLbBw0JhrVom0Kro3WTD0UX66Mfds1zRj/Qc6Tu2+vhBr8WH7ca9NQg54EijwkCDY2z3UvkKHwOo/mlF0cptqg5eG5M2YQBQ+xaaospTZKk4M79qR0zQ6dEc/pQr55xZbKw3Ad0zXfdU2BBMhbBcYvsbqhyAqy7Rvu6n21dcEyRj5laAU8ceFHOQDgrbGERtK7wPE2dkJ9C6fWryZ+4K9xpleL74YNKamm8ImvREzCdoUIUjNleQeo6k6+D0wFS9g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VjVgSea9; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=YOUgLza4;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=VjVgSea9;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBM64592pz2yFK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 02:59:39 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBPbn5Jc1z30Sy
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 04:52:04 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 6001E5C6815;
-	Mon, 10 Mar 2025 15:57:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A90DC4CEE5;
-	Mon, 10 Mar 2025 15:59:37 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 5F6785C543B;
+	Mon, 10 Mar 2025 17:49:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F64FC4CEE5;
+	Mon, 10 Mar 2025 17:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741622377;
-	bh=EBdiWtBZsjV9l+VD6FfbfKEnQna0Mj2l44kwBSBVKVw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YOUgLza46P+/1QH9sbANY82RHUhPdqOJu4QkvdUBxKxUlNlmfMRRQCzEeAYrgvzAm
-	 I9BYaiDUn0P4flP+/zRB9yWcUmo2wYk2M+XbkcHJzfcHIx5Nfef82dLJ3Km1iGpppm
-	 qpSvQAlP78Vpl7w4GTjhKHQoqq+A8/8Qx2dIvDaA=
-Date: Mon, 10 Mar 2025 16:59:30 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	regressions@lists.linux.dev, Trevor Dickinson <rtd2@xtra.co.nz>,
-	mad skateman <madskateman@gmail.com>, hypexed@yahoo.com.au,
-	Darren Stevens <darren@stevens-zone.net>
-Subject: Re: [Kernel 6.12.17] [PowerPC e5500] KVM HV compilation error
-Message-ID: <2025031024-dreamt-engulf-087b@gregkh>
-References: <20250112095527.434998-4-pbonzini@redhat.com>
- <DDEA8D1B-0A0F-4CF3-9A73-7762FFEFD166@xenosoft.de>
- <2025030516-scoured-ethanol-6540@gregkh>
- <Z8hlXzQZwVEH11fB@google.com>
+	s=korg; t=1741629120;
+	bh=N2V31bh7gpu64eKY1HB6O+qJjlQOufIsfaFh1DeRKBI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VjVgSea9kYxA86vQyOj0wjDpKqv2b27tXO+ksrKudUT1JnqGPUjvLDuen6OZo5sMq
+	 q0x30d5GKG+SLj/ahBHwpGhv5l37GaSsiEwiQU7xHImgYeE2g9T5ZeN/csrDI8VFBh
+	 oqGaaEE2fKEcm6yZpzrEh9AYj2N5qj5c8f+Z62zU=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	"James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Helge Deller <deller@gmx.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+	linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Petr Pavlu <petr.pavlu@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 153/620] module: Extend the preempt disabled section in dereference_symbol_descriptor().
+Date: Mon, 10 Mar 2025 17:59:59 +0100
+Message-ID: <20250310170551.643802978@linuxfoundation.org>
+X-Mailer: git-send-email 2.48.1
+In-Reply-To: <20250310170545.553361750@linuxfoundation.org>
+References: <20250310170545.553361750@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,72 +80,69 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Z8hlXzQZwVEH11fB@google.com>
-X-Spam-Status: No, score=-5.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, Mar 05, 2025 at 06:53:19AM -0800, Sean Christopherson wrote:
-> On Wed, Mar 05, 2025, Greg KH wrote:
-> > On Wed, Mar 05, 2025 at 03:14:13PM +0100, Christian Zigotzky wrote:
-> > > Hi All,
-> > > 
-> > > The stable long-term kernel 6.12.17 cannot compile with KVM HV support for e5500 PowerPC machines anymore.
-> > > 
-> > > Bug report: https://github.com/chzigotzky/kernels/issues/6
-> > > 
-> > > Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/x5000_defconfig
-> > > 
-> > > Error messages:
-> > > 
-> > > arch/powerpc/kvm/e500_mmu_host.c: In function 'kvmppc_e500_shadow_map':
-> > > arch/powerpc/kvm/e500_mmu_host.c:447:9: error: implicit declaration of function '__kvm_faultin_pfn' [-Werror=implicit-function-declaration]
-> > >    pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
-> > >          ^~~~~~~~~~~~~~~~~
-> > >   CC      kernel/notifier.o
-> > > arch/powerpc/kvm/e500_mmu_host.c:500:2: error: implicit declaration of function 'kvm_release_faultin_page'; did you mean 'kvm_read_guest_page'? [-Werror=implicit-function-declaration]
-> > >   kvm_release_faultin_page(kvm, page, !!ret, writable);
-> > > 
-> > > After that, I compiled it without KVM HV support.
-> > > 
-> > > Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/e5500_defconfig
-> > > 
-> > > Please check the error messages.
-> > 
-> > Odd, what commit caused this problem?  Any hint as to what commit is
-> > missing to fix it?
-> 
-> 833f69be62ac.  It most definitely should be reverted.  The "dependency" for commit
-> 87ecfdbc699c ("KVM: e500: always restore irqs") is a superficial code conflict.
-> 
-> Oof.  The same buggy patch was queue/proposed for all stable trees from 5.4 onward,
-> but it look like it only landed in 6.1, 6.6, and 6.12.  I'll send reverts.
-> 
-> commit 833f69be62ac366b5c23b4a6434389e470dd5c7f
-> Author:     Sean Christopherson <seanjc@google.com>
-> AuthorDate: Thu Oct 10 11:23:56 2024 -0700
-> Commit:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> CommitDate: Mon Feb 17 10:04:56 2025 +0100
-> 
->     KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults
->     
->     [ Upstream commit 419cfb983ca93e75e905794521afefcfa07988bb ]
->     
->     Convert PPC e500 to use __kvm_faultin_pfn()+kvm_release_faultin_page(),
->     and continue the inexorable march towards the demise of
->     kvm_pfn_to_refcounted_page().
->     
->     Signed-off-by: Sean Christopherson <seanjc@google.com>
->     Tested-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
->     Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->     Message-ID: <20241010182427.1434605-55-seanjc@google.com>
->     Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
-All now reverted, sorry about that.
+------------------
 
-greg k-h
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+
+[ Upstream commit a145c848d69f9c6f32008d8319edaa133360dd74 ]
+
+dereference_symbol_descriptor() needs to obtain the module pointer
+belonging to pointer in order to resolve that pointer.
+The returned mod pointer is obtained under RCU-sched/ preempt_disable()
+guarantees and needs to be used within this section to ensure that the
+module is not removed in the meantime.
+
+Extend the preempt_disable() section to also cover
+dereference_module_function_descriptor().
+
+Fixes: 04b8eb7a4ccd9 ("symbol lookup: introduce dereference_symbol_descriptor()")
+Cc: James E.J. Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Helge Deller <deller@gmx.de>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20250108090457.512198-2-bigeasy@linutronix.de
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ include/linux/kallsyms.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
+index eae9f423bd648..0f73f69e64035 100644
+--- a/include/linux/kallsyms.h
++++ b/include/linux/kallsyms.h
+@@ -66,10 +66,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
+ 
+ 	preempt_disable();
+ 	mod = __module_address((unsigned long)ptr);
+-	preempt_enable();
+ 
+ 	if (mod)
+ 		ptr = dereference_module_function_descriptor(mod, ptr);
++	preempt_enable();
+ #endif
+ 	return ptr;
+ }
+-- 
+2.39.5
+
+
+
 
