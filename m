@@ -1,90 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-6843-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6844-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7BD9A58E5C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Mar 2025 09:40:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32EA7A5908A
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Mar 2025 10:59:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZB9Mk0zvsz2yjb;
-	Mon, 10 Mar 2025 19:40:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBC6p5gZqz305P;
+	Mon, 10 Mar 2025 20:59:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741596050;
-	cv=none; b=BNmyLV1qTV3h9PGI+5MUWidwxoYZgtBHPGilu4sMeqmYKg/WzSYc/2cXn0oe7cBfwzTDWeh04oeQdIDJzoCztom8T+/A8nNkkm3yr6RFp2UIceEIJAOgJyHr0bgqYuM0l2XeQbL4BFfpUyQBh9rAYgpgURvVotlmEz3zjbwEb2K3LKx7EjXJo9/kU7MnAF3o//DCWNaG/DF+DO+i80Ohwq1X5Vs5zb9OvIFUHSmd/TzO5OeIHRwNtjm2ZFhkfqhnLubd9xtmIo5FTi1mXBuI9WTRvPbg3jw5jj7RAiwRVYXU+R/rnQ/wiFzs56+s8Pw7jwF2/cvMG6BgQJdyeadvQQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741600786;
+	cv=none; b=h4Uprwutlp9Wq2uqDtnTivaDnpFDMZbBeNDeYy1yFI+dFVJbSg/3I14S5c8yvEY328D211B/QGC7kTuw4BYybvtqPkZZzGexzDbUS4kFcOsg01qAFfhZfVhNZG6Ga6xNqMsjxrNJpikQvVWiDIXJJsUXJNd10ABMzjhGVJys+/ne4oGET3IcqUgCtQ4THdeyLcPdMoSoYVS/wipDaOnqucUD3pKRHMD3GEyXMMXg4x2fn7TXAGYXOEfhEmgkEs6g1U+77wUpp2YdFMapEA4Ek9zplYqzsaUpZm/5K17w+/lfnZE5KT1gPbX1fbI9RLscmm4Cgx/jHv/ZHzO5R2k9Gg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741596050; c=relaxed/relaxed;
-	bh=mTErlNHYltRpOX8C1wmUnBsAoRxLsP2r7CcqnO1N75E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N9BdmH+NxXdOA1NVcVrj29XaolXJJxb5CEud1dDCl1szRIUJ6K8s2Oac75aJRbmpztxVsSXElwBLzM23/ThkXvVOsP1EcbRWW567Pi1JOqXVdAHzcbp/02QrCIbvarayLDtBufVnoRxw83PtzHRws5Un8eRTx5S3umbBGy/3A4j/bJE4uC2Pph9R47y/t1KlxRQirKOZv3JPCLnHR+0lqRV4sSp19+dTFX0MH2vSG2/9HTo11l+wHenMkbB3hiMXjLPmP7jZ6HeFQ/o+58Vn0DC1hIkPSP5aVcrXGOvd/nYaTLY5U/65fPsQ+QBOo+Z9RaO7YaLyWc+KhmrX5hsLsQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CEsT3FM0; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FJTg7RCm; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CEsT3FM0; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FJTg7RCm; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CEsT3FM0;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FJTg7RCm;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=CEsT3FM0;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=FJTg7RCm;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZB9Mg6M9rz2yMD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Mar 2025 19:40:47 +1100 (AEDT)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 32B02210F3;
-	Mon, 10 Mar 2025 08:40:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741596044; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mTErlNHYltRpOX8C1wmUnBsAoRxLsP2r7CcqnO1N75E=;
-	b=CEsT3FM0Za7//x1kKU0c5sW3deok+Be9FaWxLRqFBtEugUe3w/b9dMr1Yby6lvy0tjr+q9
-	iGnJKEVdfalcF0uxLP/QpxDShGD+MTW1VArmWtZCp66XfhcCiPMo0jwplCIhfZabXCFxHR
-	EskGy2I2Cnpb0g4vE+bQc5OqaNVSLPM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741596044;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mTErlNHYltRpOX8C1wmUnBsAoRxLsP2r7CcqnO1N75E=;
-	b=FJTg7RCm0Sd0oTuAHmR4U53BvFU59JBvHUi9N/EmilDwODzDuIZIZeV18DenRzbB9WVf5n
-	6emD59HI9/9rRyAg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1741596044; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mTErlNHYltRpOX8C1wmUnBsAoRxLsP2r7CcqnO1N75E=;
-	b=CEsT3FM0Za7//x1kKU0c5sW3deok+Be9FaWxLRqFBtEugUe3w/b9dMr1Yby6lvy0tjr+q9
-	iGnJKEVdfalcF0uxLP/QpxDShGD+MTW1VArmWtZCp66XfhcCiPMo0jwplCIhfZabXCFxHR
-	EskGy2I2Cnpb0g4vE+bQc5OqaNVSLPM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1741596044;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=mTErlNHYltRpOX8C1wmUnBsAoRxLsP2r7CcqnO1N75E=;
-	b=FJTg7RCm0Sd0oTuAHmR4U53BvFU59JBvHUi9N/EmilDwODzDuIZIZeV18DenRzbB9WVf5n
-	6emD59HI9/9rRyAg==
-Date: Mon, 10 Mar 2025 09:40:43 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	t=1741600786; c=relaxed/relaxed;
+	bh=usxpGZ2JIapOfM0P0HHDXpsbI77WvhT/gkt231dPbVg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nAaUD65948q7bfNXRieoHfqptc61McX6f+jSXCS414M80yznLtq2M6nZYDEGV06DxEHujcxB0Fowe8bJtClw752SLvxq+0P4BT7Ewnnhfp0Qdsv0iMthPUpMe3eZveKUtGh8Fsg/x19ngAIpJ6Igzj2lbfxDuv2uZEVZAKLLJVtd+RAGYmS8FynnDivpRdsk99vj5aiDE7TD0Obkwdl2gJZb7kbKcctfI18LjZdQc9jCVQol2GJ8aYRE38w+Vfk1V3yLXuDW+29lcmQL+8/lrM8I/MUkvQf/L0MptWHqf9xKrtF2X7wEds9z6/WH2wpvmZjgEcVSCGwg3SYfd1aZdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBC6n4RpSz2ykX
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Mar 2025 20:59:44 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4AD8515A1;
+	Mon, 10 Mar 2025 02:59:23 -0700 (PDT)
+Received: from a077893.arm.com (unknown [10.163.42.69])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 59DE33F673;
+	Mon, 10 Mar 2025 02:59:04 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Bjorn Helgaas <bhelgaas@google.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] powerpc/boot: Fix build with gcc 15
-Message-ID: <Z86liwlwP5WvrEkw@kitsune.suse.cz>
-References: <20250307092055.21986-1-msuchanek@suse.de>
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org
+Subject: [RFC 0/2] mm/ptdump: Drop assumption that pxd_val() is u64
+Date: Mon, 10 Mar 2025 15:29:00 +0530
+Message-Id: <20250310095902.390664-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,68 +63,71 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250307092055.21986-1-msuchanek@suse.de>
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	MISSING_XM_UA(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,fjasle.eu,google.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email]
-X-Spam-Level: 
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Mar 07, 2025 at 10:20:52AM +0100, Michal Suchanek wrote:
-> Similar to x86 the ppc boot code does not build with GCC 15.
-> 
-> Copy the fix from
-> commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
-> 
-> Signed-off-by: Michal Suchanek <msuchanek@suse.de>
-> ---
->  arch/powerpc/boot/Makefile | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-> index 1ff6ad4f6cd2..e6b35699c049 100644
-> --- a/arch/powerpc/boot/Makefile
-> +++ b/arch/powerpc/boot/Makefile
-> @@ -33,6 +33,7 @@ else
->  endif
->  
->  ifdef CONFIG_PPC64_BOOT_WRAPPER
-> +BOOTTARGETFLAGS	+= -std=gnu11
+Last argument passed down in note_page() is u64 assuming pxd_val() returned
+value (all page table levels) is 64 bit - which might not be the case going
+ahead when D128 page tables is enabled on arm64 platform. Besides pxd_val()
+is very platform specific and its type should not be assumed in generic MM.
 
-I suppose this should be above the ifdef, not below. I build only 64S
-but I expect any other platforms that build boot code will be equally
-affected.
+This series splits note_page() into individual page table level specific
+callbacks which accepts corresponding pxd_t page table entry as an argument
+instead and later all subscribing platforms could derive pxd_val() from the
+entries as required and proceed as before.
 
-Thanks
+Page table entry's value, mask and protection are represented with pteval_t
+not u64 that has been assumed while dumping the page table entries on arm64
+platform. Replace such u64 instances with pteval_t instead as expected.
 
-Michal
+This series has been lightly tested on arm64 platform but it does build on
+other relevant platforms (v6.14-rc5).
 
->  BOOTTARGETFLAGS	+= -m64
->  BOOTTARGETFLAGS	+= -mabi=elfv2
->  ifdef CONFIG_PPC64_ELF_ABI_V2
-> -- 
-> 2.47.1
-> 
+Some questions:
+
+- Is there a better method to address this problem than splitting current
+  note_page() into multiple call backs as proposed here ?
+
+- This replaces note_page(st, 0, -1, 0) with note_page_pte(st, 0, pte_zero)
+  Is that problematic ? Does level = -1 has got a special meaning ? Should
+  level = -1 case be handled differently possibly via a separate callback ?
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+Anshuman Khandual (2):
+  mm/ptdump: Split note_page() into level specific callbacks
+  arm64/ptdump: Replace u64 with pteval_t
+
+ arch/arm64/include/asm/ptdump.h | 22 ++++++++++++-----
+ arch/arm64/mm/ptdump.c          | 41 ++++++++++++++++++++++++++++---
+ arch/powerpc/mm/ptdump/ptdump.c | 37 ++++++++++++++++++++++++++--
+ arch/riscv/mm/ptdump.c          | 37 ++++++++++++++++++++++++++--
+ arch/s390/mm/dump_pagetables.c  | 37 ++++++++++++++++++++++++++--
+ arch/x86/mm/dump_pagetables.c   | 31 +++++++++++++++++++++++-
+ include/linux/ptdump.h          |  7 ++++--
+ mm/ptdump.c                     | 43 +++++++++++++++++++++++++--------
+ 8 files changed, 226 insertions(+), 29 deletions(-)
+
+-- 
+2.25.1
+
 
