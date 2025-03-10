@@ -1,82 +1,61 @@
-Return-Path: <linuxppc-dev+bounces-6853-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6854-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D654CA5979E
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Mar 2025 15:32:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BCD41A599D6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 10 Mar 2025 16:22:43 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBK9f1NVcz3064;
-	Tue, 11 Mar 2025 01:32:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBLHK1rkCz2yGN;
+	Tue, 11 Mar 2025 02:22:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::1029"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741617158;
-	cv=none; b=FHqe358R2JET8vUiYu0bXK0ci8TRSTkGUcdGuLBwwciTJbEjlR4TQ365C5C3WnfdbRvwhHhJHKKlD5QHkEyNEcLMHUBHQzmK4JKjifGDpvk95Fl1pNj76fve056lHyiBxY24vx2OoFAVj46dpwRRhFbH6xO9+cusdNF3bJy95EwtVsrb78IuV99TBsVn+aE3HLcq7cdHj5FXt+rnZkt0xw+QL+HM18KWwo9qQ16eUaLiGccVkm17m1ncSmGvZ2NNtDt+1hfe4AKbDFBtXlxzkFM2khBPAsOkwj/mgS2IPNjHD6janZB3mkxEwuOyOeO4kgCi7koIGpyaXD/Y4EtYHQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741620157;
+	cv=none; b=kQzwNvy6J/fnkrCO4ro6vErXqMgIVZp62pAH/wwH6KegwDblhNFQojS77EW0fb7OHvDGrTKUrcZYpecKD5AcW8YE1gQdu6hfkb/G/20jLU/zYSmulr4ro83lEARMwCZ1Jgh48oN6d25sSPkB8aXSQa89NKz+QZ6KkhYGl9KXzF2xZ9VWE6igErGM9txS38TLU9rBtRd8/hJkKmtG1r8iowh3cku5nTY1MhSgU08WsCSwopltThgoYmsjZB8lShYPOQyqkd+/BV2rMo8xhD+M97EMluNTBd3Ii7K/rGm1s1wP2+fXb9fB8n4LtH40xYdJMYc47hY8TCh4OXkv564Urg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741617158; c=relaxed/relaxed;
-	bh=M5EHfeR58iUCT85lfmCt4OlAJ+pC71abO03PZrejgSk=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References:
-	 MIME-version:Content-type; b=Jrv3OlIqvWiY128cdNFzOCmap6tbHERmwnddbNI4uLUFiX4rJ+zVRx6G4a/H55sTbH2clBVFa23zg2cjxmjkNe8EZliA/wpENTv4QnTJWNju90j4Sl7wZ9WGnt+gSLYY03Xla6i0all04NGRFBlTzWbhgRhhxKe3ZH47Af7lBwRQTQelYjI0pwE5dLuT9tIdFNn3xywyt4XrLCjO2lDXHXfKs3Zn5fggNQyw2/x3oyiJBC5Aur+PkED1qg8l5CzL8iBNgEYUfj/HuL1FiKlcTxPrMTMXo/RaaOirIgjzLG4f3luhvACzSAJtBPNpAiU/TklPmW2OpISw3glrvvWSmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LdVkIk2f; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1741620157; c=relaxed/relaxed;
+	bh=aXwb/P4Ku6eDPMk2pbmZpPw1yewSlAjqYRu9xo/BIxw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JILbig2YinEBE8zT/bLSmPpKI29Rfk+PMH/pNGwJd7WKvisDX+wdCIL29R53RHDalp5FJSQYGOv76ZTIdZEOimoIOSSEW7mYjo+/buNgiB4oxs4cFhhsTPjzrl8vZZ6SesKiZmHDNAJVOEOMx5+isHVpx/Ea4glv1k9qaI5LAyoWNIQh47trzxX+cseIDKOmGnrmBWTFv+oDs8bjFWn7l3h47CG2jQQb1iNHXPgAd5tQFG5L7JV6hsbXCGp00EILppC+1P87zVMmWthEbS6UddpMmPQJOayDIjEQKEdMax9Y36ykhRt4WrxJI66LjRs0Nu/9CQIeiysF9IosQ/BEww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0FHpWcWc; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=LdVkIk2f;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=0FHpWcWc;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::1029; helo=mail-pj1-x1029.google.com; envelope-from=ritesh.list@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBK9c6JcTz2yRF
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 01:32:35 +1100 (AEDT)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-2feb867849fso6528281a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 10 Mar 2025 07:32:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1741617153; x=1742221953; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=M5EHfeR58iUCT85lfmCt4OlAJ+pC71abO03PZrejgSk=;
-        b=LdVkIk2fI4BqI5ALaG0jxONgCSJpK5qzwyGC6tSNLP+1uJp4begmddFYuCSVHuzQw6
-         MDbUgiTGa6aPS3FVO0KOVu+aJcaycSs58k7QSKwIrUMNwZZIOVKmnWOob4ErSM1dPF3m
-         OkaT7TVlkdxNq64ZTSKQnj3Lf+EpmpDmy7ew8UnolQAFW+wsp3PZO5cJg5SiQH4c9J+D
-         6SVUXmyQOhTAVlq/GLOYXs3fCCikx5pTHwbxPWkg53FNS93AVJZo/5JR2DXizjvL62MH
-         uwdtEcXOBenBApDK8t/lywINa2/XA5bC9fnf+6igkJzi8xg8Y2IgBfVB6h/hWtN/GcUE
-         g1oA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1741617153; x=1742221953;
-        h=content-transfer-encoding:mime-version:references:message-id:date
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=M5EHfeR58iUCT85lfmCt4OlAJ+pC71abO03PZrejgSk=;
-        b=Tt1fFFXFvwWvZjvBlctqIFXWtNqo9Yyr4xb3iL+o/CEcjD8JamAVA5q36AkdGmhjq0
-         EzrFYg1kF29DCjp6jmvRg98XEJFL5zHIC2K+0oWXat1o2EfzGcoUVJXxjeAoq4KN1vxJ
-         aAuCynqyyhi7jSsqrI330yTJ4KbhGdnlnpEx75sWnOWFr42CO75t5O/p835T188/gIp2
-         8SQHmD59CP5NuBOjmZj3CzPdG8q1SMZpiIqUoXrYYkCD031RIygHHRuX7Px+5fMYad9E
-         fyxVWbGdqquNlEXTGHp/3U1kFqyONjofn5og+f94tn4gDMgYCKOEdr833Xp2pXWYVkYW
-         V60g==
-X-Forwarded-Encrypted: i=1; AJvYcCWLB/t1FZs+dbhDCucfbHQAaSTtC17pnjH/fjZiUc711DNzW++zngDLxf1+kBhfYIvsithdNKrLUiyhz1g=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy0tcrbPGJhiMdNzsDYCjEiD3qQM9PuGSlOzLzdf+95lpuaA7O7
-	XjfuV1KK9spfz6ttuL4bs586aonMWnsvWpfHqy0yMmXjzPuPC0aN
-X-Gm-Gg: ASbGncu5N5df7+DQVOBNffTd56DvfkdXmY9MR2gyXYoqAWgyi4n5dATgHG9Y+NDoPJN
-	bf8kOfa5L/5Lh8GOzqbRRONCYClChdLUR8xhO8ICU/IoO4csgFHQPxzmW9Y//iA2HtqK/7MMsy7
-	QX+pjqJWeXsTdRcX5sbwXlL/HssS2NCkimdaNs4t1FJBrNAAEUUOzPl9i7LuUSDZpuWceh00n54
-	TCoE033IKFkJSFaYXXa+gNm/aH2hZSDfc19FZsyyO8kcsoo6lf9FLbYnkiqR1ZKTWAnayJG7esu
-	E9+qHwNyyNPhAqzT5YQJvSr1kGP02DFUrMk=
-X-Google-Smtp-Source: AGHT+IH4f9IHfsIEEZscpelwTwSJsSLVPeyfrluG+UnwRMODV88LsiDkTqQnD7xZryJnxEFuwbiVRA==
-X-Received: by 2002:a17:90b:17c3:b0:2ff:4bac:6fba with SMTP id 98e67ed59e1d1-2ff7cf0b067mr21785757a91.24.1741617152904;
-        Mon, 10 Mar 2025 07:32:32 -0700 (PDT)
-Received: from dw-tp ([171.76.82.7])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2ff6933990csm8005318a91.10.2025.03.10.07.32.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 10 Mar 2025 07:32:32 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>, Donet Tom <donettom@linux.ibm.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>
-Subject: Re: [PATCH v3 1/2] book3s64/radix: Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
-In-Reply-To: <0a885183-0e83-458b-b2a7-94c7386fed99@csgroup.eu>
-Date: Mon, 10 Mar 2025 19:49:06 +0530
-Message-ID: <875xkh55ph.fsf@gmail.com>
-References: <8231763344223c193e3452eab0ae8ea966aff466.1741609795.git.donettom@linux.ibm.com> <0a885183-0e83-458b-b2a7-94c7386fed99@csgroup.eu>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBLHH6YV3z2yGF
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 02:22:35 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 0532F5C6789;
+	Mon, 10 Mar 2025 15:20:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2056DC4CEE5;
+	Mon, 10 Mar 2025 15:22:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1741620152;
+	bh=Cv8m8jD7+RmPJkCj57aD0CpR1gxtDVWyCmNb4E+uGhU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0FHpWcWc7Qca61uQIH2Govy451NTIDVUxX2ga1F597qu9+ST0RzvlJXxvR0B48iFj
+	 ofDf9PKmqRIuNmNpOjue02Gp0jrJ7v6bu+qrUShfMnC+4g3aTQAt3WRjNG3Apc6tpV
+	 8mTflCuUbscJQpbTB2nbZKty+F5JMvp5PEU3hadk=
+Date: Mon, 10 Mar 2025 16:22:29 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Christian Zigotzky <chzigotzky@xenosoft.de>,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	seanjc@google.com, linuxppc-dev@lists.ozlabs.org,
+	regressions@lists.linux.dev, Trevor Dickinson <rtd2@xtra.co.nz>,
+	mad skateman <madskateman@gmail.com>, hypexed@yahoo.com.au,
+	Darren Stevens <darren@stevens-zone.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [Kernel 6.12.17] [PowerPC e5500] KVM HV compilation error
+Message-ID: <2025031053-define-calamity-8115@gregkh>
+References: <20250112095527.434998-4-pbonzini@redhat.com>
+ <DDEA8D1B-0A0F-4CF3-9A73-7762FFEFD166@xenosoft.de>
+ <2025030516-scoured-ethanol-6540@gregkh>
+ <CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,74 +67,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-version: 1.0
-Content-type: text/plain; charset=utf-8
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MALFORMED_FREEMAIL,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+In-Reply-To: <CABgObfb5U9zwTQBPkPB=mKu-vMrRspPCm4wfxoQpB+SyAnb5WQ@mail.gmail.com>
+X-Spam-Status: No, score=-5.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+On Wed, Mar 05, 2025 at 03:54:06PM +0100, Paolo Bonzini wrote:
+> On Wed, Mar 5, 2025 at 3:19 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > On Wed, Mar 05, 2025 at 03:14:13PM +0100, Christian Zigotzky wrote:
+> > > Hi All,
+> > >
+> > > The stable long-term kernel 6.12.17 cannot compile with KVM HV support for e5500 PowerPC machines anymore.
+> > >
+> > > Bug report: https://github.com/chzigotzky/kernels/issues/6
+> > >
+> > > Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/x5000_defconfig
+> > >
+> > > Error messages:
+> > >
+> > > arch/powerpc/kvm/e500_mmu_host.c: In function 'kvmppc_e500_shadow_map':
+> > > arch/powerpc/kvm/e500_mmu_host.c:447:9: error: implicit declaration of function '__kvm_faultin_pfn' [-Werror=implicit-function-declaration]
+> > >    pfn = __kvm_faultin_pfn(slot, gfn, FOLL_WRITE, NULL, &page);
+> > >          ^~~~~~~~~~~~~~~~~
+> > >   CC      kernel/notifier.o
+> > > arch/powerpc/kvm/e500_mmu_host.c:500:2: error: implicit declaration of function 'kvm_release_faultin_page'; did you mean 'kvm_read_guest_page'? [-Werror=implicit-function-declaration]
+> > >   kvm_release_faultin_page(kvm, page, !!ret, writable);
+> > >
+> > > After that, I compiled it without KVM HV support.
+> > >
+> > > Kernel config: https://github.com/chzigotzky/kernels/blob/6_12/configs/e5500_defconfig
+> > >
+> > > Please check the error messages.
+> >
+> > Odd, what commit caused this problem?
+> 
+> 48fe216d7db6b651972c1c1d8e3180cd699971b0
+> 
+> > Any hint as to what commit is missing to fix it?
+> 
+> A big-ass 90 patch series. __kvm_faultin_pfn and
+> kvm_release_faultin_page were introduced in 6.13, as part of a big
+> revamp of how KVM does page faults on all architectures.
+> 
+> Just revert all this crap and apply the version that I've just sent
+> (https://lore.kernel.org/stable/20250305144938.212918-1-pbonzini@redhat.com/):
+> 
+> commit 48fe216d7db6b651972c1c1d8e3180cd699971b0
+>     KVM: e500: always restore irqs
+> 
+> commit 833f69be62ac366b5c23b4a6434389e470dd5c7f
+>     KVM: PPC: e500: Use __kvm_faultin_pfn() to handle page faults
+>     Message-ID: <20241010182427.1434605-55-seanjc@google.com>
+>     Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
+> 
+> commit f2623aec7fdc2675667042c85f87502c9139c098
+>     KVM: PPC: e500: Mark "struct page" pfn accessed before dropping mmu_lock
+>     Message-ID: <20241010182427.1434605-54-seanjc@google.com>
+>     Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
+> 
+> commit dec857329fb9a66a5bce4f9db14c97ef64725a32
+>     KVM: PPC: e500: Mark "struct page" dirty in kvmppc_e500_shadow_map()
+>     Message-ID: <20241010182427.1434605-53-seanjc@google.com>
+>     Stable-dep-of: 87ecfdbc699c ("KVM: e500: always restore irqs")
+> 
+> And this, ladies and gentlemen, is why I always include the apparently
+> silly Message-ID trailer. Don't you just love how someone, whether
+> script or human, cherry picked patches 53-55 without even wondering
+> what was in the 52 before. I'm not sure if it'd be worse for it to be
+> a human or a script... because if it's a script, surely the same level
+> of sophistication could have been put into figuring out whether the
+> thing even COMPILES.
+> 
+> Sasha, this wins the prize for most ridiculous automatic backport
+> ever. Please stop playing maintainer if you can't be bothered to read
+> the commit messages for random stuff that you apply.
 
-> Le 10/03/2025 à 13:44, Donet Tom a écrit :
->> From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
->> 
->> Fix compile errors when CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP=n
->
-> I don't understand your patch.
->
-> As far as I can see, CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP is selected 
-> when CONFIG_PPC_RADIX_MMU is selected, and radix_pgtable.o is built only 
-> when CONFIG_PPC_RADIX_MMU is selected. So when radix_pgtable.o is built 
-> CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP will always be selected.
->
-> Can you clarify what the problem is ?
->
+Sasha, I thought we weren't taking any kvm patches that were not
+explicitly tagged for stable?  The filter list says that...
 
-You are right CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP always gets enabled
-by default for radix mmu. However, when we forcefully wanted to test the
-!vmemmap_can_optimize() path in radix, we forcefully removed the support
-of ARCH_WANT_OPTIMIZE_DAX_VMEMMAP from arch/powerpc/Kconfig (by making
-the kernel change). That is when we were facing the compilation errors
-due to duplicate definition of vmemmap_can_optimize(). 
+Anyway, let me go revert these, thanks for the report.
 
-The other one is defined in include/linux/mm.h under #ifdef
-CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP and #else.
+thanks,
 
-So it is only a good to have patch.
-
--ritesh
-
-> Christophe
->
->> 
->> Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->> Signed-off-by: Donet Tom <donettom@linux.ibm.com>
->> ---
->>   arch/powerpc/mm/book3s64/radix_pgtable.c | 3 ++-
->>   1 file changed, 2 insertions(+), 1 deletion(-)
->> 
->> diff --git a/arch/powerpc/mm/book3s64/radix_pgtable.c b/arch/powerpc/mm/book3s64/radix_pgtable.c
->> index 311e2112d782..bd6916419472 100644
->> --- a/arch/powerpc/mm/book3s64/radix_pgtable.c
->> +++ b/arch/powerpc/mm/book3s64/radix_pgtable.c
->> @@ -976,7 +976,7 @@ int __meminit radix__vmemmap_create_mapping(unsigned long start,
->>   	return 0;
->>   }
->>   
->> -
->> +#ifdef CONFIG_ARCH_WANT_OPTIMIZE_DAX_VMEMMAP
->>   bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->>   {
->>   	if (radix_enabled())
->> @@ -984,6 +984,7 @@ bool vmemmap_can_optimize(struct vmem_altmap *altmap, struct dev_pagemap *pgmap)
->>   
->>   	return false;
->>   }
->> +#endif
->>   
->>   int __meminit vmemmap_check_pmd(pmd_t *pmdp, int node,
->>   				unsigned long addr, unsigned long next)
+greg k-h
 
