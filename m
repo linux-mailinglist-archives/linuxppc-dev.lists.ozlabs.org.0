@@ -1,86 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-6922-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6924-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E977A5D2BA
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 23:52:03 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9ACCA5D32E
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Mar 2025 00:36:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZC8Bl5M9bz3btT;
-	Wed, 12 Mar 2025 09:51:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZC9BN1MdGz2yVV;
+	Wed, 12 Mar 2025 10:36:12 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741733487;
-	cv=none; b=SeOgTBSmYdJPclbfO67trKidrb/eJd/XhSzkEQpvgEqMlH8KJGGJl+xAq5PEn3F/9QwZPE3lfurR0wRIO9UUIpF6Wn4Xjuqu+u7/pFgvc8jcZjtb7aAsG1HDQxaR13ijKqlY649+9egaXy1Oyt6z5HmXhnFz3YxCBRd8EWar9LOXuPIOft8XHd1iKFV1AnRyjCeySOOZvHg4qDNNh+7zP7IGSH4KJfQWp5gL4aNADTQYjyL52rJmrwM0HZzWzAW8X04eUqkkVps1MkC3kbF/7UkafM8A0zgyH+5xRyrR5O23WrvZYmTrHNA3Qxl55uRcsBI1yH4YS4anHxyhhq+9yQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.176
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741736172;
+	cv=none; b=USiTgtiRzzgzd7Uku/g2YgqW+SaLGhabcDsXSpiN1T4SN9uZM/c1Nat6fKZyEX0Qklk9f8qfq+nBUBEJN/21WafWlRyvo7iFaVMH2AuWx24dnHxG6cvq7htZvq0osZxUlOlBkBpiCPL7GOGyZ+7rr9xdgBNnZjLE/eJBfN+Ow04ZjhkVRfCLf9sJh1vzr62t7LDeBnpx8ChH9jcBHH4GPM7FbZi7xT+MJVzau2e0pdup8llrKognIsVzP94Kf+jZcgh4QlbsapeBbOw3lGcc8ruqNVfDhOPuLUoCNj4x6lfS7IKcsiaK7syTauvQOMihXV2EHcWNFPt+SkSxqhUyWQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741733487; c=relaxed/relaxed;
-	bh=TUE2q9wVX91a4UX4h0Urj8Yamb2GQjzEIw8D7vVbJic=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lC+L4Rkufi7OAxySmg/k434zwq/gqk4HRuEfXocdXlqcyGo6r+jmlpNZYMW9rSMp4gXE6MdnlEBLNzx+G3MtaE/S+KWqDfU4++wfnFmYAJi9aYdpdhBpr8DK9Czz6+SBKiHmrTyDdFn5448lphY3mY38qPQd8AfAg6H2l+Qe5PmaOFeL9W6LAacXujoymhVeGk7zczR7IMhiKrrG4nzOkJVsU9S8NQhryZPnBJwdTcrehN1C7nQJLapOJWrGaZwetIQSYvhvuwNwVdJAOM0VEIyVi6PV0MwrDj1JC3WSI/8OVQdmO9pbH6p0Mj6f+IaBGfChNp+IiB/LWjRnoOdsPw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=najn9kGq; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=najn9kGq;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1741736172; c=relaxed/relaxed;
+	bh=OJ/N6RDNJhsKkhEU6U2fwKdV9v3px1FNP1P5wQQOOck=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=BtKuUcnTX6ZXzs6PRYifuOC5bjiws3PAMmc+eNGEyJ/XQX0zCrfAJubTHZNs1Yswhszwg5DsYNEN8PfDRYimA7JVQCJrzDY7h9PO5uOTbUh8DWe4n89hi3Yz4Wv91itgrJQZTJlZ8Lj+8vb4aER/+klImvUhg45cdXVHCecYMQfJfpStq1a7Nr8xhnRLgw8snQqxBOgjq5qSzW6CsLIQxgFkM92CJRBFGaZtVvos0hsQ9GkkS/cvUPVFdCznPH+K0RntfOYzjeqo2DEzHIfSzydMPg2T4PjEKTcrb1wbLuqUhnrDwliF+YJvH+jywenYaBWLsQJVNDoM29+1ag2hPg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.176; helo=mail-vk1-f176.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.176; helo=mail-vk1-f176.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-vk1-f176.google.com (mail-vk1-f176.google.com [209.85.221.176])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZC8Bk52Ntz3bx0
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 09:51:26 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BKcREj004736;
-	Tue, 11 Mar 2025 22:51:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=TUE2q9wVX91a4UX4h
-	0Urj8Yamb2GQjzEIw8D7vVbJic=; b=najn9kGq0qMTaKBdTPk/LVIAAL9tV6Vb0
-	ciIEll/hWMp3UGDbmC6OvlRXcmhougSF+Ahgk7QIYy41bzs674e5+6ArivUawzHh
-	LlidS5qrmH/3cY/AJsA7UXgKyEuBULJyYKrsbih2T6EJXAU+2F9cB/4yhZmuMith
-	Z3pZyeOgK9PDRwfwH5PSathnA7sYDvi5/jcpsU0OpZ0IjDZtR7N/rsuzSXknfAlk
-	6I4xVoM6B61fEADX3tFjxAK3fUjogwg/kIq5+zdZHLSchJqj/YvlYh5wP0r2gP6M
-	++25DRu8AHflZEdua+3MIJoe7aQhkEk+M+hq/VXj8mbfrHcbIxs3w==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avcyrfgn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 22:51:18 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52BMmu04004496;
-	Tue, 11 Mar 2025 22:51:18 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avcyrfgk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 22:51:18 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52BMJ7o9026010;
-	Tue, 11 Mar 2025 22:51:17 GMT
-Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atsp903w-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 22:51:17 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52BMpDsh15270530
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 22:51:13 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9AA8258059;
-	Tue, 11 Mar 2025 22:51:13 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A06F58058;
-	Tue, 11 Mar 2025 22:51:12 +0000 (GMT)
-Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.74.78])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Mar 2025 22:51:11 +0000 (GMT)
-From: Haren Myneni <haren@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
-        hbabu@us.ibm.com, haren@linux.ibm.com, sv@linux.ibm.com
-Subject: [PATCH v8 7/7] powerpc/pseries: Add a char driver for physical-attestation RTAS
-Date: Tue, 11 Mar 2025 15:50:48 -0700
-Message-ID: <20250311225049.146783-8-haren@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20250311225049.146783-1-haren@linux.ibm.com>
-References: <20250311225049.146783-1-haren@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZC9BK55pNz2yMF
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 10:36:09 +1100 (AEDT)
+Received: by mail-vk1-f176.google.com with SMTP id 71dfb90a1353d-524038ba657so355313e0c.0
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 16:36:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741736166; x=1742340966;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=OJ/N6RDNJhsKkhEU6U2fwKdV9v3px1FNP1P5wQQOOck=;
+        b=msfNlGSR48BNrjp0Fj9QxqmVGryvGbiEpNtF7hgaSgOpogxWs2LPkaFKPFXOMSSe/0
+         dddt0POehwPn5PAXhRpBOLe0h596/xMIdinVA6r8OlfXy+wHDbLNrnmD/SC/8atDMXkZ
+         JgQ9JDBa8NxH7iVlJU/M2oU0Lz0hXVbKSzy4rEioc/gWzek6mDRnGGwyZc7ugaHLlXpJ
+         I/5gp14TQvkv7rUZhABelip2U/S7PhIlUzq6sXPbuPqVm75dNuGrek5uEjfK3OH+XkKB
+         uJuS1tNfBqB2cPS9596GcXqM0U9YKccOeNS930IcjZ91+vzMWiupcvsgRGp7M9ZeGxeP
+         cOaQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXUfP94mC9/ejw0Epu/Kgd7ZFpk2KwOPF7l5WWp9nx9Nm926JLYgO4igATqKTCi2DT+toMD1rh7SVd4GFU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yx8tUEEbrjqL6aUs15ITEWL5xe4n5nrC1yNkFvBtOVeKzLEY2P0
+	jXywrSwE9Drutoeu4urdVAEF0PkzYyTc2zh24G+bdxq56U2kyxhazDhQN898
+X-Gm-Gg: ASbGncv654LfaLl1fr6uEMMSkWiYMzgUxnyROvN14gXluMCRI90PTiQVFMvLL/6oS6M
+	RSmDnIjzDZbBtqm2HpW1fmL/JvHHgniFfaFdSxZ/CJ+ZKbtEyCopa2gkjfsOmoWDPr2yBBkDs7z
+	PeEeMLoJWjHQMl6Wp0Fg/u1Lx7nZsq7cSyuG+ZBiRgft1MIuhyzyEzCHokG8B8z4b+mr9G2Zcri
+	jbMQLuq5CCGWoELiTrw5rkCKMKXI67yGJn8RnLQWpaQAUzzqyd5S7WFR1S4ome5vX0VBE0pT7lh
+	R30a6VabXbXkDyYxmuIl/L99kWzC0FogaYwRdp/kRrUvQ+NXwkgkebnBobzwZ43tuq3ESaO+unV
+	Chci+XkK2oHI=
+X-Google-Smtp-Source: AGHT+IGX6wsIBMl8paB3scmRQSEtjIZ4rQbQzeA8XaXAFKDwVy0Vzx7bvUkysvs+lJkA9fpBJZEN0g==
+X-Received: by 2002:a05:6122:1d07:b0:50d:39aa:7881 with SMTP id 71dfb90a1353d-524194aa47cmr4407547e0c.0.1741729303165;
+        Tue, 11 Mar 2025 14:41:43 -0700 (PDT)
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com. [209.85.221.181])
+        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-523d8cbd59esm1924952e0c.47.2025.03.11.14.41.43
+        for <linuxppc-dev@lists.ozlabs.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 11 Mar 2025 14:41:43 -0700 (PDT)
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-5240a432462so228714e0c.1
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 14:41:43 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW1N9dpHVDfoXhV+DCfI7QCx44oFAGx5k9+wpc9AZ5OsXkCqsvik8xxs4h93t6A/fOxglH/8Dml30uK7VU=@lists.ozlabs.org
+X-Received: by 2002:a05:6122:489c:b0:523:e4c6:dddb with SMTP id
+ 71dfb90a1353d-52419478380mr4380371e0c.0.1741729302782; Tue, 11 Mar 2025
+ 14:41:42 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,460 +74,92 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: -zMRZ0qZ6w9Y7HnttVfIuPukeXOa-rHz
-X-Proofpoint-ORIG-GUID: Fe4wnvmxVmG8cEZDy5mzJ30hJ_Gvt8h5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-11_07,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 mlxlogscore=999
- malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503110147
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+References: <20250306185124.3147510-1-rppt@kernel.org> <20250306185124.3147510-11-rppt@kernel.org>
+ <cee346ec-5fa5-4d0b-987b-413ee585dbaa@sirena.org.uk> <Z9Cl8JKkRGhaRrgM@kernel.org>
+ <5e40219b-f149-4e0f-aa10-c09fa183945e@sirena.org.uk>
+In-Reply-To: <5e40219b-f149-4e0f-aa10-c09fa183945e@sirena.org.uk>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
+Date: Tue, 11 Mar 2025 22:41:28 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdUGnBeo69NkYsv35YHp6H9GJSu-hoES2A8_0WhpX1zFhQ@mail.gmail.com>
+X-Gm-Features: AQ5f1Jp2UP71Gi3RsrYhaKY-FGNeXSzj4L3BI-snK3mtBDJzZMW7SrRY1lIN6cU
+Message-ID: <CAMuHMdUGnBeo69NkYsv35YHp6H9GJSu-hoES2A8_0WhpX1zFhQ@mail.gmail.com>
+Subject: Re: [PATCH 10/13] arch, mm: set high_memory in free_area_init()
+To: Mark Brown <broonie@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Alexander Gordeev <agordeev@linux.ibm.com>, 
+	Andreas Larsson <andreas@gaisler.com>, Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"David S. Miller" <davem@davemloft.net>, Dinh Nguyen <dinguyen@kernel.org>, 
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>, Guo Ren <guoren@kernel.org>, 
+	Heiko Carstens <hca@linux.ibm.com>, Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+	Johannes Berg <johannes@sipsolutions.net>, 
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <monstr@monstr.eu>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Richard Weinberger <richard@nod.at>, Russell King <linux@armlinux.org.uk>, 
+	Stafford Horne <shorne@gmail.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+	Thomas Gleixner <tglx@linutronix.de>, Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>, 
+	Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
+	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
+	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
+	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
+	x86@kernel.org, Mike Rapoport <rppt@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.0 required=5.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-The RTAS call ibm,physical-attestation is used to retrieve
-information about the trusted boot state of the firmware and
-hypervisor on the system, and also Trusted Platform Modules (TPM)
-data if the system is TCG 2.0 compliant.
+Hi Mark,
 
-This RTAS interface expects the caller to define different command
-structs such as RetrieveTPMLog, RetrievePlatformCertificat and etc,
-in a work area with a maximum size of 4K bytes and the response
-buffer will be returned in the same work area.
+On Tue, 11 Mar 2025 at 22:33, Mark Brown <broonie@kernel.org> wrote:
+> On Tue, Mar 11, 2025 at 11:06:56PM +0200, Mike Rapoport wrote:
+> > On Tue, Mar 11, 2025 at 05:51:06PM +0000, Mark Brown wrote:
+> > > This patch appears to be causing breakage on a number of 32 bit arm
+> > > platforms, including qemu's virt-2.11,gic-version=3.  Affected platforms
+> > > die on boot with no output, a bisect with qemu points at this commit and
+> > > those for physical platforms appear to be converging on the same place.
+>
+> > Can you share how this can be reproduced with qemu?
+>
+> https://lava.sirena.org.uk/scheduler/job/1184953
+>
+> Turns out it's actually producing output on qemu:
+>
+> [    0.000000] Booting Linux on physical CPU 0x0
+> [    0.000000] Linux version 6.14.0-rc6-next-20250311 (tuxmake@tuxmake) (arm-linux-gnueabihf-gcc (Debian 13.3.0-5) 13.3.0, GNU ld (GNU Binutils for Debian) 2.43.1) #1 SMP @1741691801
+> [    0.000000] CPU: ARMv7 Processor [414fc0f0] revision 0 (ARMv7), cr=10c5387d
+> [    0.000000] CPU: div instructions available: patching division code
+> [    0.000000] CPU: PIPT / VIPT nonaliasing data cache, PIPT instruction cache
+> [    0.000000] OF: fdt: Machine model: linux,dummy-virt
+> [    0.000000] random: crng init done
+> [    0.000000] earlycon: pl11 at MMIO 0x09000000 (options '')
+> [    0.000000] printk: legacy bootconsole [pl11] enabled
+> [    0.000000] Memory policy: Data cache writealloc
+> [    0.000000] efi: UEFI not found.
+> [    0.000000] cma: Reserved 64 MiB at 0x00000000
+>
+> - I'd only been sampling the logs for the physical platforms, none of
+> which had shown anything.
 
-The current implementation of this RTAS function is in the user
-space but allocation of the work area is restricted with the system
-lockdown. So this patch implements this RTAS function in the kernel
-and expose to the user space with open/ioctl/read interfaces.
+Hangs that early need "earlycon", which the qemu boot above does have.
 
-PAPR (2.13+ 21.3 ibm,physical-attestation) defines RTAS function:
-- Pass the command struct to obtain the response buffer for the
-  specific command.
-- This RTAS function is sequence RTAS call and has to issue RTAS
-  call multiple times to get the complete response buffer (max 64K).
-  The hypervisor expects the first RTAS call with the sequence 1 and
-  the subsequent calls with the sequence number returned from the
-  previous calls.
+Gr{oetje,eeting}s,
 
-Expose these interfaces to user space with a
-/dev/papr-physical-attestation character device using the following
-programming model:
+                        Geert
 
- int devfd = open("/dev/papr-physical-attestation");
- int fd = ioctl(devfd, PAPR_PHY_ATTEST_IOC_HANDLE,
-                      struct papr_phy_attest_io_block);
- - The user space defines the command struct and requests the
-   response for any command.
- - Obtain the complete response buffer and returned the buffer as
-   blob to the command specific FD.
- size = read(fd, buf, len);
- - Can retrieve the response buffer once or multiple times until the
-   end of BLOB buffer.
-
-Implemented this new kernel ABI support in librtas library for
-system lockdown
-
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
----
- .../userspace-api/ioctl/ioctl-number.rst      |   2 +
- arch/powerpc/include/asm/rtas.h               |   1 +
- .../uapi/asm/papr-physical-attestation.h      |  31 ++
- arch/powerpc/kernel/rtas.c                    |   2 +-
- arch/powerpc/platforms/pseries/Makefile       |   2 +-
- .../platforms/pseries/papr-phy-attest.c       | 288 ++++++++++++++++++
- 6 files changed, 324 insertions(+), 2 deletions(-)
- create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
- create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
-
-diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
-index 1b661436aa7c..504d059970d4 100644
---- a/Documentation/userspace-api/ioctl/ioctl-number.rst
-+++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
-@@ -367,6 +367,8 @@ Code  Seq#    Include File                                           Comments
-                                                                      <mailto:linuxppc-dev>
- 0xB2  06-07 arch/powerpc/include/uapi/asm/papr-platform-dump.h       powerpc/pseries Platform Dump API
-                                                                      <mailto:linuxppc-dev>
-+0xB2  08  arch/powerpc/include/uapi/asm/papr-physical-attestation.h  powerpc/pseries Physical Attestation API
-+                                                                     <mailto:linuxppc-dev>
- 0xB3  00     linux/mmc/ioctl.h
- 0xB4  00-0F  linux/gpio.h                                            <mailto:linux-gpio@vger.kernel.org>
- 0xB5  00-0F  uapi/linux/rpmsg.h                                      <mailto:linux-remoteproc@vger.kernel.org>
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index fcd822f0e1d7..75fa0293c508 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -518,6 +518,7 @@ extern struct mutex rtas_ibm_get_vpd_lock;
- extern struct mutex rtas_ibm_get_indices_lock;
- extern struct mutex rtas_ibm_set_dynamic_indicator_lock;
- extern struct mutex rtas_ibm_get_dynamic_sensor_state_lock;
-+extern struct mutex rtas_ibm_physical_attestation_lock;
- 
- #define GLOBAL_INTERRUPT_QUEUE 9005
- 
-diff --git a/arch/powerpc/include/uapi/asm/papr-physical-attestation.h b/arch/powerpc/include/uapi/asm/papr-physical-attestation.h
-new file mode 100644
-index 000000000000..ea746837bb9a
---- /dev/null
-+++ b/arch/powerpc/include/uapi/asm/papr-physical-attestation.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+#ifndef _UAPI_PAPR_PHYSICAL_ATTESTATION_H_
-+#define _UAPI_PAPR_PHYSICAL_ATTESTATION_H_
-+
-+#include <linux/types.h>
-+#include <asm/ioctl.h>
-+#include <asm/papr-miscdev.h>
-+
-+#define PAPR_PHYATTEST_MAX_INPUT 4084 /* Max 4K buffer: 4K-12 */
-+
-+/*
-+ * Defined in PAPR 2.13+ 21.6 Attestation Command Structures.
-+ * User space pass this struct and the max size should be 4K.
-+ */
-+struct papr_phy_attest_io_block {
-+	__u8 version;
-+	__u8 command;
-+	__u8 TCG_major_ver;
-+	__u8 TCG_minor_ver;
-+	__be32 length;
-+	__be32 correlator;
-+	__u8 payload[PAPR_PHYATTEST_MAX_INPUT];
-+};
-+
-+/*
-+ * ioctl for /dev/papr-physical-attestation. Returns a attestation
-+ * command fd handle
-+ */
-+#define PAPR_PHY_ATTEST_IOC_HANDLE _IOW(PAPR_MISCDEV_IOC_ID, 8, struct papr_phy_attest_io_block)
-+
-+#endif /* _UAPI_PAPR_PHYSICAL_ATTESTATION_H_ */
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index a4848e7f248e..d097007fb80b 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -93,7 +93,7 @@ struct rtas_function {
-  */
- static DEFINE_MUTEX(rtas_ibm_activate_firmware_lock);
- static DEFINE_MUTEX(rtas_ibm_lpar_perftools_lock);
--static DEFINE_MUTEX(rtas_ibm_physical_attestation_lock);
-+DEFINE_MUTEX(rtas_ibm_physical_attestation_lock);
- DEFINE_MUTEX(rtas_ibm_get_vpd_lock);
- DEFINE_MUTEX(rtas_ibm_get_indices_lock);
- DEFINE_MUTEX(rtas_ibm_set_dynamic_indicator_lock);
-diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
-index c82c94e0a73c..dec45d0cdc2e 100644
---- a/arch/powerpc/platforms/pseries/Makefile
-+++ b/arch/powerpc/platforms/pseries/Makefile
-@@ -4,7 +4,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
- obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
- 			   of_helpers.o rtas-work-area.o papr-sysparm.o \
- 			   papr-rtas-common.o papr-vpd.o papr-indices.o \
--			   papr-platform-dump.o \
-+			   papr-platform-dump.o papr-phy-attest.o \
- 			   setup.o iommu.o event_sources.o ras.o \
- 			   firmware.o power.o dlpar.o mobility.o rng.o \
- 			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
-diff --git a/arch/powerpc/platforms/pseries/papr-phy-attest.c b/arch/powerpc/platforms/pseries/papr-phy-attest.c
-new file mode 100644
-index 000000000000..1907f2411567
---- /dev/null
-+++ b/arch/powerpc/platforms/pseries/papr-phy-attest.c
-@@ -0,0 +1,288 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#define pr_fmt(fmt) "papr-phy-attest: " fmt
-+
-+#include <linux/build_bug.h>
-+#include <linux/file.h>
-+#include <linux/fs.h>
-+#include <linux/init.h>
-+#include <linux/lockdep.h>
-+#include <linux/kernel.h>
-+#include <linux/miscdevice.h>
-+#include <linux/signal.h>
-+#include <linux/slab.h>
-+#include <linux/string.h>
-+#include <linux/string_helpers.h>
-+#include <linux/uaccess.h>
-+#include <asm/machdep.h>
-+#include <asm/rtas-work-area.h>
-+#include <asm/rtas.h>
-+#include <uapi/asm/papr-physical-attestation.h>
-+#include "papr-rtas-common.h"
-+
-+/**
-+ * struct rtas_phy_attest_params - Parameters (in and out) for
-+ * ibm,physical-attestation.
-+ *
-+ * @cmd:  In: Caller-provided attestation command buffer. Must be
-+ *        RTAS-addressable.
-+ * @work_area: In: Caller-provided work area buffer for attestation
-+ *             command structure
-+ *             Out: Caller-provided work area buffer for the response
-+ * @cmd_len:   In: Caller-provided attestation command structure
-+ *             length
-+ * @sequence:  In: Sequence number. Out: Next sequence number.
-+ * @written:   Out: Bytes written by ibm,physical-attestation to
-+ *             @work_area.
-+ * @status:    Out: RTAS call status.
-+ */
-+struct rtas_phy_attest_params {
-+	struct papr_phy_attest_io_block cmd;
-+	struct rtas_work_area *work_area;
-+	u32 cmd_len;
-+	u32 sequence;
-+	u32 written;
-+	s32 status;
-+};
-+
-+/**
-+ * rtas_physical_attestation() - Call ibm,physical-attestation to
-+ * fill a work area buffer.
-+ * @params: See &struct rtas_phy_attest_params.
-+ *
-+ * Calls ibm,physical-attestation until it errors or successfully
-+ * deposits data into the supplied work area. Handles RTAS retry
-+ * statuses. Maps RTAS error statuses to reasonable errno values.
-+ *
-+ * The caller is expected to invoke rtas_physical_attestation()
-+ * multiple times to retrieve all the data for the provided
-+ * attestation command. Only one sequence should be in progress at
-+ * any time; starting a new sequence will disrupt any sequence
-+ * already in progress. Serialization of attestation retrieval
-+ * sequences is the responsibility of the caller.
-+ *
-+ * The caller should inspect @params.status to determine whether more
-+ * calls are needed to complete the sequence.
-+ *
-+ * Context: May sleep.
-+ * Return: -ve on error, 0 otherwise.
-+ */
-+static int rtas_physical_attestation(struct rtas_phy_attest_params *params)
-+{
-+	struct rtas_work_area *work_area;
-+	s32 fwrc, token;
-+	u32 rets[2];
-+	int ret;
-+
-+	work_area = params->work_area;
-+	token = rtas_function_token(RTAS_FN_IBM_PHYSICAL_ATTESTATION);
-+	if (token == RTAS_UNKNOWN_SERVICE)
-+		return -ENOENT;
-+
-+	lockdep_assert_held(&rtas_ibm_physical_attestation_lock);
-+
-+	do {
-+		fwrc = rtas_call(token, 3, 3, rets,
-+				 rtas_work_area_phys(work_area),
-+				 params->cmd_len,
-+				 params->sequence);
-+	} while (rtas_busy_delay(fwrc));
-+
-+	switch (fwrc) {
-+	case RTAS_HARDWARE_ERROR:
-+		ret = -EIO;
-+		break;
-+	case RTAS_INVALID_PARAMETER:
-+		ret = -EINVAL;
-+		break;
-+	case RTAS_SEQ_MORE_DATA:
-+		params->sequence = rets[0];
-+		fallthrough;
-+	case RTAS_SEQ_COMPLETE:
-+		params->written = rets[1];
-+		/*
-+		 * Kernel or firmware bug, do not continue.
-+		 */
-+		if (WARN(params->written > rtas_work_area_size(work_area),
-+			 "possible write beyond end of work area"))
-+			ret = -EFAULT;
-+		else
-+			ret = 0;
-+		break;
-+	default:
-+		ret = -EIO;
-+		pr_err_ratelimited("unexpected ibm,get-phy_attest status %d\n", fwrc);
-+		break;
-+	}
-+
-+	params->status = fwrc;
-+	return ret;
-+}
-+
-+/*
-+ * Internal physical-attestation sequence APIs. A physical-attestation
-+ * sequence is a series of calls to get ibm,physical-attestation
-+ * for a given attestation command. The sequence ends when an error
-+ * is encountered or all data for the attestation command has been
-+ * returned.
-+ */
-+
-+/**
-+ * phy_attest_sequence_begin() - Begin a response data for attestation
-+ * command retrieval sequence.
-+ * @seq: user specified parameters for RTAS call from seq struct.
-+ *
-+ * Context: May sleep.
-+ */
-+static void phy_attest_sequence_begin(struct papr_rtas_sequence *seq)
-+{
-+	struct rtas_phy_attest_params *param;
-+
-+	/*
-+	 * We could allocate the work area before acquiring the
-+	 * function lock, but that would allow concurrent requests to
-+	 * exhaust the limited work area pool for no benefit. So
-+	 * allocate the work area under the lock.
-+	 */
-+	mutex_lock(&rtas_ibm_physical_attestation_lock);
-+	param =  (struct rtas_phy_attest_params *)seq->params;
-+	param->work_area = rtas_work_area_alloc(SZ_4K);
-+	memcpy(rtas_work_area_raw_buf(param->work_area), &param->cmd,
-+			param->cmd_len);
-+	param->sequence = 1;
-+	param->status = 0;
-+}
-+
-+/**
-+ * phy_attest_sequence_end() - Finalize a attestation command
-+ * response retrieval sequence.
-+ * @seq: Sequence state.
-+ *
-+ * Releases resources obtained by phy_attest_sequence_begin().
-+ */
-+static void phy_attest_sequence_end(struct papr_rtas_sequence *seq)
-+{
-+	struct rtas_phy_attest_params *param;
-+
-+	param =  (struct rtas_phy_attest_params *)seq->params;
-+	rtas_work_area_free(param->work_area);
-+	mutex_unlock(&rtas_ibm_physical_attestation_lock);
-+	kfree(param);
-+}
-+
-+/*
-+ * Generator function to be passed to papr_rtas_blob_generate().
-+ */
-+static const char *phy_attest_sequence_fill_work_area(struct papr_rtas_sequence *seq,
-+						size_t *len)
-+{
-+	struct rtas_phy_attest_params *p;
-+	bool init_state;
-+
-+	p = (struct rtas_phy_attest_params *)seq->params;
-+	init_state = (p->written == 0) ? true : false;
-+
-+	if (papr_rtas_sequence_should_stop(seq, p->status, init_state))
-+		return NULL;
-+	if (papr_rtas_sequence_set_err(seq, rtas_physical_attestation(p)))
-+		return NULL;
-+	*len = p->written;
-+	return rtas_work_area_raw_buf(p->work_area);
-+}
-+
-+static const struct file_operations papr_phy_attest_handle_ops = {
-+	.read = papr_rtas_common_handle_read,
-+	.llseek = papr_rtas_common_handle_seek,
-+	.release = papr_rtas_common_handle_release,
-+};
-+
-+/**
-+ * papr_phy_attest_create_handle() - Create a fd-based handle for
-+ * reading the response for the given attestation command.
-+ * @ulc: Attestation command in user memory; defines the scope of
-+ *       data for the attestation command to retrieve.
-+ *
-+ * Handler for PAPR_PHYSICAL_ATTESTATION_IOC_CREATE_HANDLE ioctl
-+ * command. Validates @ulc and instantiates an immutable response
-+ * "blob" for attestation command. The blob is attached to a file
-+ * descriptor for reading by user space. The memory backing the blob
-+ * is freed when the file is released.
-+ *
-+ * The entire requested response buffer for the attestation command
-+ * retrieved by this call and all necessary RTAS interactions are
-+ * performed before returning the fd to user space. This keeps the
-+ * read handler simple and ensures that kernel can prevent
-+ * interleaving ibm,physical-attestation call sequences.
-+ *
-+ * Return: The installed fd number if successful, -ve errno otherwise.
-+ */
-+static long papr_phy_attest_create_handle(struct papr_phy_attest_io_block __user *ulc)
-+{
-+	struct rtas_phy_attest_params *params;
-+	struct papr_rtas_sequence seq = {};
-+	int fd;
-+
-+	/*
-+	 * Freed in phy_attest_sequence_end().
-+	 */
-+	params =  kzalloc(sizeof(*params), GFP_KERNEL_ACCOUNT);
-+	if (!params)
-+		return -ENOMEM;
-+
-+	if (copy_from_user(&params->cmd, ulc,
-+			sizeof(struct papr_phy_attest_io_block)))
-+		return -EFAULT;
-+
-+	params->cmd_len = be32_to_cpu(params->cmd.length);
-+	seq = (struct papr_rtas_sequence) {
-+		.begin = phy_attest_sequence_begin,
-+		.end = phy_attest_sequence_end,
-+		.work = phy_attest_sequence_fill_work_area,
-+	};
-+
-+	seq.params = (void *)params;
-+
-+	fd = papr_rtas_setup_file_interface(&seq,
-+			&papr_phy_attest_handle_ops,
-+			"[papr-physical-attestation]");
-+
-+	return fd;
-+}
-+
-+/*
-+ * Top-level ioctl handler for /dev/papr-physical-attestation.
-+ */
-+static long papr_phy_attest_dev_ioctl(struct file *filp, unsigned int ioctl, unsigned long arg)
-+{
-+	void __user *argp = (__force void __user *)arg;
-+	long ret;
-+
-+	switch (ioctl) {
-+	case PAPR_PHY_ATTEST_IOC_HANDLE:
-+		ret = papr_phy_attest_create_handle(argp);
-+		break;
-+	default:
-+		ret = -ENOIOCTLCMD;
-+		break;
-+	}
-+	return ret;
-+}
-+
-+static const struct file_operations papr_phy_attest_ops = {
-+	.unlocked_ioctl = papr_phy_attest_dev_ioctl,
-+};
-+
-+static struct miscdevice papr_phy_attest_dev = {
-+	.minor = MISC_DYNAMIC_MINOR,
-+	.name = "papr-physical-attestation",
-+	.fops = &papr_phy_attest_ops,
-+};
-+
-+static __init int papr_phy_attest_init(void)
-+{
-+	if (!rtas_function_implemented(RTAS_FN_IBM_PHYSICAL_ATTESTATION))
-+		return -ENODEV;
-+
-+	return misc_register(&papr_phy_attest_dev);
-+}
-+machine_device_initcall(pseries, papr_phy_attest_init);
 -- 
-2.43.5
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
 
