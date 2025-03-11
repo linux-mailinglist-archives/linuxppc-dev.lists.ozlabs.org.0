@@ -1,45 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-6901-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6899-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC05A5C634
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 16:22:55 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 853AEA5C497
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 16:06:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZByF91pcjz3brr;
-	Wed, 12 Mar 2025 02:22:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBxsx6fBxz3brB;
+	Wed, 12 Mar 2025 02:06:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741706573;
-	cv=none; b=FNw3feGxlMKn3qVPU58+u7ZCDqP5dRxGhjfixnqdTe6Jcvo2p7ViW2fYdHigdHelxKDTrUbQpgnoMMgp6lQFD+Vpa1BqXr3c3iUP4mTE1vXopZZR+0kwbt3tofUgx9KkA0VecxqvC2tzyhGOiCtRc+BshmVrFtyJ3jAuppGm+rWRH+G2sjNGJPNf3ehQqZGSZHc7w/+Q1ZrQ3j+r2JeqqJjKGTwUki78etNzBhtZiGgk3yoyzLdgzaYGklLOsIigGm/tmiOrfSMvOfOxaRZ4pMd3ZxEkT4JwVZqKNwUmoZxKbcCsvutV02rpNPLdnWVEHuM/5Mk0uzJ3XkV01US3zw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741705573;
+	cv=none; b=f5N/N53Ik1Q5iG99T4vx6lTfR0XWT0/DjvF5AIBlfOOWM7BGeKNNzBZevVFQXN4j+NrAAFh6LyP0mEY30MqxXXUbSZ1b6BW/bblNekNvmovxdDQQEGNWLdYWiAWjGfvwM5421vLJbqM9xcua8B2m1FkRk1gRsJGzjH1aPKebzOn4+vNWstfF8OJJFAlKiM2nyf5LmRsjb2u6jAlfvYSv+wVYqsdZ6pJwccmdFqvk69mbXvlaiJAuygqD2fS7fcMRNbQ0GZsUqziJCGQscHwKfACKB5sG/uMPZGvb5ABr22Z1csKuCV+G/5IT2knhE5CZj/mjmNY83wSsyLMM3nC7Ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741706573; c=relaxed/relaxed;
-	bh=HGAutUtIvxKzxSVKu9oB+j1rVsqi2SI2kep7Hxb7vo0=;
+	t=1741705573; c=relaxed/relaxed;
+	bh=3ZERqBXdmzo1DqNbqnk/OjvO9FMTT2lMrUpjT1gRZbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lmllcvEmefRGZoPdEVMt2loJC9bkacEkdzWfd/Ozvb6qnTaTAYIU3tkGfPaOt5R5dy5ljuifeBSkladWMfw8bC5vdyFOMGXqct5SQSnvAR/PQQYJrjEvtkSSnttWfocT+Dk/q1bE9W90DzIivc8SzPf36kMaVrQhgGz/zuPe9CWxY7ennwwyTz6DLHDPL7mZAHDa9MB/ECzPj/jaZCxuPA8nP8VhiBizr2YGWCUBFG2ds82zZNA91CKYZV1Ni15yipjo3FLMmLwwLvGOOHYxdEulqCWXZOMqvpkwItAW8VosMFn9l8ChR5kq0nk3mSPC/+9iVy5l4wDV//rzRp6grw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=sqczCio5; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
+	 MIME-Version; b=i6a5QjM7kHwOUB044zXxLQxxYy9F5yw1Y098pYmlG3HgZfF1kDtWcM9/uvWvTQ09PxYB2HK2DzM0ddyhl6xhS4u3z2ArECb5BG9wDCwu7JZwz0ynBu6KN9WUs6jlujuPIWuoHBGiPPfj4DZw9MY76DspkfW/ThxNK4SkghPu8BrKvw+OperDeHrG67cuM47RetJ5pmGoPBwYiCX8eXdV73h2RVIQqemHVxnGTcM5uctZOeES5eqeidEfLCcEgGEj1uWM3y0BgVqEHnVmx3k9Qtqj/h9PzEuON05EjEVnBtKMkj5I6FkVjHM28L+6g+67aJZ34qTYa2vSMRhyBhkwzw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=oBaIM/Bq; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org) smtp.mailfrom=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=sqczCio5;
+	dkim=pass (1024-bit key; unprotected) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.a=rsa-sha256 header.s=korg header.b=oBaIM/Bq;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linuxfoundation.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=gregkh@linuxfoundation.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZByF818Pjz2y8p
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 02:22:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBxss4gW3z2yvs
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 02:06:08 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id EDA3FA459E9;
-	Tue, 11 Mar 2025 15:17:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 211B0C4CEE9;
-	Tue, 11 Mar 2025 15:22:47 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 1DCE35C6482;
+	Tue, 11 Mar 2025 15:03:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09A29C4CEEA;
+	Tue, 11 Mar 2025 15:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1741706567;
-	bh=jfMEqxbgBdGVFnDs5yBPsyLQMCEa4P3jCJ3E8KJALXM=;
+	s=korg; t=1741705564;
+	bh=teU+hXn+Myk6jvRF7qkBDarMFZ6al5Sl9daMvda9Ukc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sqczCio5r9m2UZMc3/94eL8/4pL5AZylZtpcmriDK3TwQDOpZNIHZ5uoA+uuoXwjW
-	 GxXyIwryu94tXGKJU6V4Vgk05yqx/UEoO8dw9Af6Fg1H4DOShfV2Vl9YQ8auvPlG3d
-	 mHHH+ujbGLo9aG5YkFuNwkRtSEXVsn6YpakBLGOU=
+	b=oBaIM/Bqfh8/3MNUYVgxrIQJEhr6ZPeS/8BCrv5G8DdiayVywmIXTJkn3lDUoqxmj
+	 6aX6/T6KHlZSvrLWCxCEqBK5qan1qguUumpD6WriYfqMGhYKZV8hqSWJGyxW/yxriR
+	 Z4t6MvD1DXxlaQGpnFhBVM9cg4JtTijjp9QflCoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -59,12 +59,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Petr Pavlu <petr.pavlu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 093/462] module: Extend the preempt disabled section in dereference_symbol_descriptor().
-Date: Tue, 11 Mar 2025 15:55:59 +0100
-Message-ID: <20250311145802.027766156@linuxfoundation.org>
+Subject: [PATCH 5.4 059/328] module: Extend the preempt disabled section in dereference_symbol_descriptor().
+Date: Tue, 11 Mar 2025 15:57:09 +0100
+Message-ID: <20250311145717.241367846@linuxfoundation.org>
 X-Mailer: git-send-email 2.48.1
-In-Reply-To: <20250311145758.343076290@linuxfoundation.org>
-References: <20250311145758.343076290@linuxfoundation.org>
+In-Reply-To: <20250311145714.865727435@linuxfoundation.org>
+References: <20250311145714.865727435@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -81,12 +81,12 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
+X-Spam-Status: No, score=-5.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -125,7 +125,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
-index 430f1cefbb9e1..ea2eb5fe83a3c 100644
+index 1f96ce2b47df1..d84b677c728a9 100644
 --- a/include/linux/kallsyms.h
 +++ b/include/linux/kallsyms.h
 @@ -63,10 +63,10 @@ static inline void *dereference_symbol_descriptor(void *ptr)
