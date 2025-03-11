@@ -1,58 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-6861-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6862-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0C16A5B8B0
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 06:56:30 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32028A5B8B3
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 06:56:38 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBjgW481Hz3041;
-	Tue, 11 Mar 2025 16:56:23 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBjgY2pfqz3bm3;
+	Tue, 11 Mar 2025 16:56:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2613::613" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741672583;
-	cv=pass; b=JKw8r8pcQlwpB2p0/q+ckEar0oHCKMoc1fUAqoD7pJVgWRR0WefpZSC1z+VexeQWl9dxLn+/SMvWRhT5tnlxQ3UGRgqeRu0Xqef2lUfJb7G1SoXcAtgBbCayEWfcBtunpunBXP3LehgRKcxJNUfDZhZsTu7S9nn094urcXZTt9TUyI3elriA2c7BvW+McE/WmEhOJgnagqDtS8IlPIgfKcziZFg8h+qTpm7ogfvpM0HnHYa2zD5jHAeq1MqNHT5/S/F0gvCtxzvBOR0re6/Mske27LHRCUBbtwkIHQKbfuX0U26V6yELkjSMBSouHXPQqb6YGJYbNkykYpo7Pi8KSg==
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741672585;
+	cv=pass; b=Vv6n7Y6dLA0xUx2sAruj74EdPq4b79VCgvbRMFt/wsR7f+JuoNmiQyWXGZuwGAoC0I4ionZvOp3xQwAGPFwDAke78U1t2VZefs3QOVgsNI9ow9QGP7axA/1da/ujE3VTsCeRDvvNoU2z4tfKGqQHXD82ROe/VL32tvEYnjerL0Jg0JR6j8eFOtDm8XNHuq/22eUXEZ+N3wHc2b0Vc3iLohjyUIzBfX1arEKZ81Pz44Uns5RL46EPrxe9dBfOPYisQd3tTFxfyFaaceOQIYxXlsRdtXoLPZZ8v5IerRMEXMZ1PyYqQMGH7LmYSvB2ljWQKrFQjgJFaNRH/5CGuFBaQg==
 ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741672583; c=relaxed/relaxed;
-	bh=Ne9GhrWITawFbAd5TlUj9Nv9T64HFosRkWXJrNmVVng=;
+	t=1741672585; c=relaxed/relaxed;
+	bh=pVu1LEIcqch9GsCvEkaQD5P/yYCQ+BiFa0HGY+97HpY=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IaQzdZ6R/eTR+ush3lYB3DShJ/cs2ZWPYbQgPO28I4eoAlLsbAWASxGTYanmjZWalZegsm36uIkikxMdtXTEf9QX2RVVz47SBH9ZC3iLR0ywJmqbWi/7OfIw/WOLb/bu8eW4JMdYsg5sRzRbL4ysaoLeleucVgVW135YmWms3mrA76fhYW7DgQ+Aex0sRmORI39ciIsbp2u3rr1XKw1zu0CfVZiiKOby9lpPLIuklD+CEb0vo1TxRRJLeptIxraKkcGSzDKDTMG73cfAEp5pA6lZ7KDv+T+7f/SFe0Ketil4FynYSagLXXlUjEexZoY4LN23NUcWQ2q8YhOr4yRUCg==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=hxnKuHdm; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2613::613; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+	 Content-Type:MIME-Version; b=d4G89gIKOKELIWl/2GvYoSQ159yLbur37Mtrb6VBVm0JGZnzZArQR9xwYO6JxmFgSIsPLyLPQZAMbzdRG7vefNSI2zj6Aag/QqA1BeiBRPQJvHzxAA2FkF0H7/EKtQ3BkRLGW4xGtkzTFn8e095t5Y6au5iVNMuOB4dSpLvaVoupkCUOcHlCv83mZ9LPs5dfRdjtgfhqYxwZ3IeAxNRL0IkFp1pWxsRit6QTwemPaHl51S3QknH1p02OT2ckY51Qn8JArSvKEPheSGStQY5UB/zplZ9bgWD2wVm0ASdjIX2yaUYYRxyQ7w/DXPSZu+3hoztFwF/J/niFGyurhi8UwQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=md/aCscd; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2613::613; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=hxnKuHdm;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=md/aCscd;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::613; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
 Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20613.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::613])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBjgT1RXtz3bm3
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 16:56:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBjgW616Jz3bmQ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 16:56:23 +1100 (AEDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=rswBpnVGXt1TrtS/t/ZSfE0HWJ1uqK3YLaJkM9EsVxPjStVaKzSsMrf+3nZKyrZWE4qu4bvg2fgiH9UOGXfn8ybxJ4h1cqYPSGvfp/tr2kWIxjFShUCH/+oM8KFQQDJNXmrMLnhjsurUSPtN64riWCvDNwDFBJBofBWsmjuP/2SLyuQ0kRlwLXUO720DdQW1C8D2J/sp2PltgChmIXXps8yQ2jz8z5Fe5+2Mjai2f6Tmqjaxwi9H6MBW3t/DzXEUd9VkovtegbgBNnllucFD00Wnuwm0ILp49L1K1mm/RM/L7vzksLZJznvG1FPyWoVmmW5nOBvR5TYpPOSPDwyR7A==
+ b=umppbLZRsZwNQ6ZB8nzwwxOtyH/JQxUEn9WlyAbiuwOks/6DSM7nMFKMxSz5+1oruTHpvU8zeT1+wY4f1EtHKE3YAcDduZZDZj89Dbia14xGf4bHfLzcZ4oayCRqdx9u6RmaAwcH3H9XDol3QtRIpXHRzx8I7sI8bkvn9w9LKWkdhlaSH+7o61mPbyIyEWqI6ko/gqQgmlT4u0MASckkKGZmnOIeT7CFGylYQAGBOCKJ5IMLVrefV/QxyWvkXqO+1bF7Mg4KlsUQ0fFLcdhOU3tcclWaTxKIog03AXsTl10TQJr+99DPAfrXuiewTm9VTCPubh6yVu9f2ef6iPGp1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Ne9GhrWITawFbAd5TlUj9Nv9T64HFosRkWXJrNmVVng=;
- b=BQYHlA/WwjCW+pCvT00USW+Jv8rAMiN3dxULLJLX0mOjj9pfP/H3IE/CEOFBlDbIoexix+/7C/u5eMV2wT7gSUr/M2g7iQF9Falt+n8CKWKFqgH8wLdbcox0tXPQTt9Tluh8+VLlGYLhNpF3SIlLEEwjYmIvSSFfmTt/DPxCbufMe+6mV2u8LUgpbWp3zqznvtlU/ctB5f/johYn0vzn9JGh7F9Bf5Opau2Hv6MxVbcGOjBbFQwGjjkJ31XggU3nD0j6WIHYhhkuiGjOtHcD37abSZw91uQ35LB2qAL2EV+vnyDp5ZgymO9bFI5Le7Tarz/SlIQEJu5Gz+VGpz94VQ==
+ bh=pVu1LEIcqch9GsCvEkaQD5P/yYCQ+BiFa0HGY+97HpY=;
+ b=J2KiTSZix89J0isdo0cunaJNEDNqq3ecQ7ZdgzbvvWM0asheTlgPRr02McNrUD7YeNmXSv3dpiFM+oOOsfeEPDTVvedGNLxv9Xnrc/b873V9+VisUDhPLyt/Uw4zeTWe6CTbtondrC0eTPGB0Ly1UHu0rMdh0yFcU4eFJRX5yaujvMO6VL5P1nkNxo1o5pTXcrpkDpLXanoCN6SBBdrVgv5dnquEP1MZQOiGvpqIXKLrrMMi7Ei5I7SmOXOAL01NN2yKqezoY+j1aIoJdkDuARlQ9MnRXqKm+ET5l7I4fxNytBR+NktUTA9tHXRpQbsZAr/K1f65XX91XSxwU9mMRQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
  header.d=nxp.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Ne9GhrWITawFbAd5TlUj9Nv9T64HFosRkWXJrNmVVng=;
- b=hxnKuHdmUKBFgWn7lt4JRLgJKwHP0KrbUmT7rqmQct+t4FaBSmqHKKTysAKLWAcZ6DQOJEfsaA2FFIBvxYHZQSQPjpWC1blfVjtvfI9t3vrR0NiI1/F6fhVxbY3RjnNCsOeZGEXcrSDjG5qEqtAf9JBIKGBtsoBfmzaD8seaYtQnUzUYIhS+h8P7vdH7iIGyZCV7qkY5IimmoL2gGVd/l1ByxmNDG1wCzl0q2zGS6qB7753T3Xqdv1Yi1y41+CSGbHZJMLom8x5dRtXsbdzoPjTuRt//xgUBmlv6WppQ1BLRP9xringIEGaMSTRcuVG7h/QSfng4crQuDs2X0JL66A==
+ bh=pVu1LEIcqch9GsCvEkaQD5P/yYCQ+BiFa0HGY+97HpY=;
+ b=md/aCscdtbdrHApgDyZbAheofH2ydKGpBEryCHpLxO9GiWRB2jwbNbTarGm1VrIk8Alh608016wMGCxOSAkAGFmMPsXmc8ggv4/4lalhnu9hOQf1vGni7voOW1ZDb/GVooo+EGz/QwaJvD28GodyWHRZerDdmnBzko66R/HJcxBShW0HFU/PPJAqspVqnUJyzDAfoS8ZH8HV3a2zZLlupyaAK33aqA510IpY24f7xGVchBfJlvm2yxTBLMnQ9XSPZlhGWxjRbY43b/jJLqJlaYBog0iREiCO97EdMkNhyIt0FHST7I1CsPYux+83j3sOXXsKjv8hH77x+LuWEPGZyA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nxp.com;
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
  by GV1PR04MB10941.eurprd04.prod.outlook.com (2603:10a6:150:201::8) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8511.27; Tue, 11 Mar
- 2025 05:56:09 +0000
+ 2025 05:56:13 +0000
 Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
  ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8511.026; Tue, 11 Mar 2025
- 05:56:09 +0000
+ 05:56:13 +0000
 From: Wei Fang <wei.fang@nxp.com>
 To: claudiu.manoil@nxp.com,
 	vladimir.oltean@nxp.com,
@@ -68,14 +68,14 @@ Cc: christophe.leroy@csgroup.eu,
 	imx@lists.linux.dev,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH v4 net-next 01/14] net: enetc: add initial netc-lib driver to support NTMP
-Date: Tue, 11 Mar 2025 13:38:17 +0800
-Message-Id: <20250311053830.1516523-2-wei.fang@nxp.com>
+Subject: [PATCH v4 net-next 02/14] net: enetc: add command BD ring support for i.MX95 ENETC
+Date: Tue, 11 Mar 2025 13:38:18 +0800
+Message-Id: <20250311053830.1516523-3-wei.fang@nxp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20250311053830.1516523-1-wei.fang@nxp.com>
 References: <20250311053830.1516523-1-wei.fang@nxp.com>
+Content-Type: text/plain; charset=y
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-ClientProxiedBy: SGBP274CA0011.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::23)
  To PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -92,870 +92,466 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GV1PR04MB10941:EE_
-X-MS-Office365-Filtering-Correlation-Id: c142e8d4-edfa-4dfc-d62f-08dd60616b19
+X-MS-Office365-Filtering-Correlation-Id: d1367b58-4652-43c6-5128-08dd60616e2e
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|366016|376014|52116014|7416014|38350700014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?SymWSzMZx9LT24lQh9zalVMEi0/28TDcufV2CF88eAy/xcQpQCVAPrcyvGdm?=
- =?us-ascii?Q?kVskUZsxvsCojIcNSaf9fqYUp2xdQUg9CrVAa7jEMmVX7RdU9453MHks6IOS?=
- =?us-ascii?Q?qufK6zMRDQjypieTvHXEQQPC9pfJaXk4VNV8k9Hzf1Mi8SBgYxW8ZtuaRnRr?=
- =?us-ascii?Q?VPL82AT4+ZOuxA36LCBtWFTg8iPi6O6pdskgS0smYsCdWQ20ki2I1O2TnRSS?=
- =?us-ascii?Q?8punHJOkOGxHAIyXv2mFAiXnKwlKuugIU3TK1LrZne1sSc5cp0PnoiXMRB6w?=
- =?us-ascii?Q?lNaTvqShXg7Nai4BfC8ZxfB2XnLEOBkfMm/1t5yOMbusciWvuRRVPoZ3+Bqe?=
- =?us-ascii?Q?K9gjVJ+NYlIxguVpHMuOcSnY5lbg/WaBEs4BOsSdLX4fGEz/umhsS1Tjx8Kw?=
- =?us-ascii?Q?0uFJaP8F3cG2etb6s5xssV32MqA4r4htkRv6WhvRcGpVEQN6YnqQYeJO5m27?=
- =?us-ascii?Q?YpM+M4ymXSYLxF/At9TgnUPjoXpKokxzJpQ0kJWTJwhxyQZfBWehwfNbMggb?=
- =?us-ascii?Q?pAUFwyS8Z6IMOwYcYI0bkM/hGCZ0gegee/O2Kd/v+GxpUh/Tfm6Mgl9QJVUO?=
- =?us-ascii?Q?kuv/IYAZK2d7790gl+ioxpKVP9eZviD8jSnDRnwqZ5s7ChBNQswiPbATsHcv?=
- =?us-ascii?Q?Jx4JBMhHa62Fyn1S99tA/9veP28KgqB6m7RjhthrXVpsu0O32kWooYT+zKc2?=
- =?us-ascii?Q?c2SGqFytW5pkzgE64ZulOR4mNBep7vvNxgR1Mog7zfMY/G/rMUAWtiWqrx5G?=
- =?us-ascii?Q?dvhB9i29F8vhoKkXKevY+OKtv7m7uOZlq7hAvJke/nHtcPsugCkak2zJXl+1?=
- =?us-ascii?Q?8yPEMVD7W/b1ICtczM36ZtjCf5974gI1u1a4gDFZs6jTJnRnXbdYqbtFZT3J?=
- =?us-ascii?Q?h709Jp3ls/kX278eCLgiHSxYmBQphnYQhpcJFY4glMYpIxv2MTSb3wLPTnFr?=
- =?us-ascii?Q?tEEFrhtACE6WWfxZ4eJor8VzoVLsKnCCwNO3Bxi6V5XYYJOdEZUicNJ/NBQY?=
- =?us-ascii?Q?nP6menQifeQYQ1Y+UEsNM4v0zk5Cix6hub/HPc0QXTiAM+0g9Do/5KnwOnd9?=
- =?us-ascii?Q?407Fc9gNPjpPYcqRDcjMChG+92MxABN4t++e+bdl7JYrjNquZfacVzZDBQX1?=
- =?us-ascii?Q?ahLpIX3sH06JpT9RL3vIBVhcRHRAj1y10k7cYokgYIC+eTuOJIhA21cs/xRJ?=
- =?us-ascii?Q?kN2QMJxE0Nx/3MUFWShEoUYTjbXhCTP6bu/erE8DB6WnDZkmIct1xH3Ogirx?=
- =?us-ascii?Q?Iyfec+jyGbrezVqHNAHMlCkRjg6lm6NoG9+ITJ6fscj57xfXzRRbxZvj/aoF?=
- =?us-ascii?Q?lJQaOKLYs+bgdOhoLNWQtElGXlbEnE+bYyEuy5dvkE1o9Gu0tV8HibQesFGL?=
- =?us-ascii?Q?4bKxVZo3vN0rD8VJIO6+bD6LO44VdLrRkWhivpFngMRe0zPFdGK9QSY+5JiI?=
- =?us-ascii?Q?qdY6f9yHC12Y+CX8eUHEztx40Ax19sRr?=
+	=?us-ascii?Q?d1UjrwJ15uCt2nDcZ10VroOBgwaEkagLeyjlkEiBDsLygo1IJcgymPNIQJdI?=
+ =?us-ascii?Q?Qn2DHZnr6zMK1vihSpa8zryz1VlKP6Wvqm32Nrmiuy2d9YtownHDHq097p0F?=
+ =?us-ascii?Q?n5OWB1YgEuWzbjjxv7sgweHf2t2OYc4D3uz+1ED1VzipKachWutP2TOHMK1Y?=
+ =?us-ascii?Q?DyM42Cw3c8nwMZYtXxOD6ryb00QWPTXEcRi0NWMaAhG8Oj7bWs9VuKuAWJFT?=
+ =?us-ascii?Q?bFKLb4oybfmF//eIWEVME/cbLdaSxlLTcSp8GomTp//U4Da+dXuh9NNdPLbh?=
+ =?us-ascii?Q?R3lNnZ2lBizEMQ2oqmErYX0ew19xkFxXb91JvdLmdlOKz9rSKX/qdSszp3pP?=
+ =?us-ascii?Q?NM6zQX23Rh+PmZV+JlJZUxxsLUtZkBVN3xyugKfLlj1R9AG97rnme/Ht61Vp?=
+ =?us-ascii?Q?YTWVyvGG+OttYtCM9IJvL7FPQgeYpkd/kXuHfGLcp0V9x0u07Qht7Xt0PshT?=
+ =?us-ascii?Q?rYp95lgFwTblAW/MPBO0qcaHAeHFy67t3eCCGn7ujYZkxTg9DQN0gqTKiqm5?=
+ =?us-ascii?Q?pUzHHQL5dI+EoGWtR12NuwqnJs55duF8B2nmodqnwzz/+Qe1bM5b4nyPyffL?=
+ =?us-ascii?Q?P1qLuV4GzqhdKHUP83RGcFr95I9xKWS0V2cKhBlj2IGpbf3a+sRAOXcLozXa?=
+ =?us-ascii?Q?ldOdnxjfCNYlD1sUxXDbI3HiNUa9Bx5EuHilHOw6/8EXd5GGWhc2rU5RAW0p?=
+ =?us-ascii?Q?Nlb+f2ZA/oiNzPUy/Hc2bkBcXc9sQVcCM+I5lV3lrO33lMlO0u2M1/c5hwQZ?=
+ =?us-ascii?Q?xhwkTYfwPF5JZplRbo2M60ooInWxG5vINFIxkJjCX9SpX4dB8plVWWGjWURN?=
+ =?us-ascii?Q?mzn9IVr0eJEX1yRi7EttC8LN4mNz4di6dktHQei5S90CkS48+15vK2EqybLz?=
+ =?us-ascii?Q?gtgN/KK7KS5kNkweT6Fwn6lXjlVSXkmcRUiNu5u+DyrR7DK7GbbkCGAVZvlF?=
+ =?us-ascii?Q?Xn6rOIskgJW8SQ5dx+oOA2TM9QNjAysLyOuvsrCbqAZPq2MxB7l4L2SJO0PW?=
+ =?us-ascii?Q?vCgCtVMjuJZKY0IihyeqbCI5vA80ILI8O/v/M4cZzefv6eCOPeqgDbY8l7Kp?=
+ =?us-ascii?Q?yyPirm0cgOqoTU3wdU1b1B2KYiuhnj/5HNvmEAVgZpEobB+fWQa7u1SQoAW/?=
+ =?us-ascii?Q?oL9PI9Liz7HnOJta34ZhKhepNdvjE0gCnwvdDMY16GYAmrXyqnLcjteFWpqC?=
+ =?us-ascii?Q?3E45i68q7HAMPRwfqIWD+d7wZmEKjEdxyrE3gN16GOPherykWUD5uQi9x+Nn?=
+ =?us-ascii?Q?ReQUxlhpNgEpm6AT6tWr2kmoRqxtFqUnQISFV5G6LwlCOIu6KQP9bHWe6bif?=
+ =?us-ascii?Q?M7chDx22bMRwhPTjr3s/c0eLEQXwg7vpVpQMVcYeSQ/lljjeublmk28ZXzrI?=
+ =?us-ascii?Q?Wup1vA5IXJ4l0iCezinSfCs0dINroUsG5AVs5bU9xNgp1g3CvjcfDd5obois?=
+ =?us-ascii?Q?r6FKQ5U/jBfadZ2nGOGqLZz2SxeQObIw?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(52116014)(7416014)(38350700014);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Cioax01AJNt6dIgVvZ8XQxIjUcQ82jTZ0Ub4YjbUJjBUXFheBwDNwzm+I1hm?=
- =?us-ascii?Q?XqWbWYlbY6l1Gk1mflguY6rALQM1kRcbGoPSk6eWmOc6C/dwT7zsbJaRwixS?=
- =?us-ascii?Q?gzkK+xGumCVwu0LSczTi9MEMxUOwocJtOTjvfO/In5QtmFBqbj7JaGASmU5+?=
- =?us-ascii?Q?Bn+Htu9Mf418xOH2Z43Wdg6FdUgf/3So4mBFrS1qnqlWI7X0I1N1lHVBJdBj?=
- =?us-ascii?Q?5K68efcdkdculqfZGjyHBBJ5XIoYNrRKFgo4NmhDlaBJv99t2Bzpcwmzir2Z?=
- =?us-ascii?Q?AEQaVA9xqamlH0vwEoeZA4PEzT1wiM5nsFdrI7GcuNbAkN/MjG6ojcJXNwEZ?=
- =?us-ascii?Q?cJLjHxxF9hwY3Ini2o9ISPRoQOtv4c0AEfDurOP4ppp/ZuZ+X6lpxgKuOEHT?=
- =?us-ascii?Q?SVToVIbLvbYQyscB9zSCHy9mCyGxOHSk0ab2+u6movPoKmOnu09DoHheCZIl?=
- =?us-ascii?Q?z8/vGwcpfmLGt6UiAj5V2Gzkt5IYluoCzpdKNpsV3IZbHWDkPrEBG8VHSe8X?=
- =?us-ascii?Q?Ty1y9n4R3As5dvlItUWX3FOHH/SrTQRrLGJ3XpwxISlzx+Y2LJro13jXc2fK?=
- =?us-ascii?Q?bT9HL7i9t8Be+EBLUQL4Mu4XaQHPxNFvWXuyShhejdOdJy3isW9A36PTA94j?=
- =?us-ascii?Q?zPk1pVKa8bQX6vyFIhnBkJwNZXObJLT2L16V47AY5kbTYdvHW5ova1O3iIrx?=
- =?us-ascii?Q?JJ/X6dxxPWBkWyW6IX9RgtP8cQB2znvznd7HSuuXpVtp6ZKU3/71uoWZx6/F?=
- =?us-ascii?Q?UpuTKGU6nKfNaR212vnOYxaoDs0w/kpmWu5aDTkpA4679KN4ronCeUeomiCc?=
- =?us-ascii?Q?LZjmm5i2dRB1H2QlrqsB/NBGyR4hhX9KD0ACSa5964WhdtEvuwQ8QACPIpyT?=
- =?us-ascii?Q?PYKNgdm45Ih5WewkFwT7jtJ7oi/VjSYatsi1dS9Snpsu21tVsdUFbfWBIkMV?=
- =?us-ascii?Q?MA91/gbAVdpipgfjbYtkBONDC4HKCmBei+Z0DAbA9X35gyNPxlwuj24AgPOW?=
- =?us-ascii?Q?Gca44uwGDLfN+MBQKQWyjxvih8H7h0baKMzHvGYDYw4zKsJHZyG3SX5V/wlX?=
- =?us-ascii?Q?AVWfLuGT2wCq8V7aPFJt8iBtsEWQ6K+oS9b3y2jOVDHVdMoai1iwpjlSXI0W?=
- =?us-ascii?Q?PsEyqiYZ3veoy6yiHyCSqkIjnjT/q9bp671dnlhDMUlq5l1BDjR29zIh77xz?=
- =?us-ascii?Q?F0FNu6JJP9HmXcz49/mMraDMMOnmEE4g2O7EPhGP7eQJOCKyK/kQQhVc8kce?=
- =?us-ascii?Q?P3eSiY+jMJtBfx5Mn+MiPrr1hyBRcCP36IjOcT2Hpv+OQKeIV7wSE03gYEmV?=
- =?us-ascii?Q?6pLFx8oRhbqKLl6bxu4AibxKkwQV+ZEg3Jsa6IWQbz6qhR8TQv9eGa/qpsmX?=
- =?us-ascii?Q?MhUJsfDoqobajNwW7dIweZL/6I5BpYnN8UYkQhYsDta1wQYbITKwGXoPoyFF?=
- =?us-ascii?Q?L1OkzdDS6oBwN7VOIARUmJpLI/Sn4oIo70Ujev8MgX0WzAHV0jTstl6Paq7o?=
- =?us-ascii?Q?ovBY6sqZk0l5R5mp6mdbjJySiLN4vX6c89/tkHSdmJwKx9sfuDR2/7dbnCuQ?=
- =?us-ascii?Q?U6xFhiZqRXKz87UuUV99G7SpB0XB3s87rqpJkeaH?=
+	=?us-ascii?Q?vjneFSht9x08VFS4hufNykgUsCBjrr5zQG5Fok9pTXBUWjPn+pMF+okQgjHm?=
+ =?us-ascii?Q?I+1CQ8zNtT/XYt8N/FQiJPvoW5jaOTu901SdKog3M5bQ3Hwvx0ECYR6sr3yq?=
+ =?us-ascii?Q?LfCk/aEjDl4l0hcGMlZRgGUXWgVSihaVgS+IIKdSBOFXoyuM7AbBgLsCe67d?=
+ =?us-ascii?Q?6M5XbotH9w3z5qfkj0d8CsPN4vNtuZ11omdPH3Gwl2FMa+dHfy1Ug9F+D6CE?=
+ =?us-ascii?Q?i/jiVuUpGCOyADY02L17Vg+21euFmNZFILTm5JTDSFvevLufBsREBhPafcfk?=
+ =?us-ascii?Q?OlNzp8zFyP36IzxfeNbQkMacIIv9PUm73d0kuXtQe09vyzMppfntitrvGPT/?=
+ =?us-ascii?Q?91lJUYGuVqoFpMRsjmQfzzRWwpGV68uYWQpC3HGdXUKTG3eL+SKT1KH7rsrT?=
+ =?us-ascii?Q?uiSAiO1sENajq9iT7CehSaULEjr2oDu3zExmH63TsP9u/H4hW5RJgn1ycARk?=
+ =?us-ascii?Q?HoXie4r0+fFz1h7mQqHMGhZDBtX8BLvbhzlCcAqIMdW03HTnpIIFKfJDIkoW?=
+ =?us-ascii?Q?LD/wWOEKaZQ1TlgMnIYwwRWKlxJPgNpuDSX9g+aWl8vrJ8jf5MJJv8jbbNNa?=
+ =?us-ascii?Q?XUMoAMQIEQE7/vnZKr9cq/STBRs9lfQ3xgmcayuP0CuOtwcYUuXQ7mJZTU1o?=
+ =?us-ascii?Q?MEGg84t/p1I+6snqTMd+ytqkuhEIYVhkvCL95ccz6Dy/rmPWrSoWvOKYw94/?=
+ =?us-ascii?Q?ZTRLaTL9Y4gyhGXtWUMmQNVOYgC4lIntrjR29mHpaSf3sx4euP+4YVXwKJ9/?=
+ =?us-ascii?Q?gYO3ewN3zlwW9m41jcosOcb3Fl+D9icqpUN18NzbyTdx4wOrZBPbcP/IMr6i?=
+ =?us-ascii?Q?9xlJB2/pjzA7WkW3XiesnD9srAEfp1K7HIJFS/8CgYOhj14KocvFX+YrVz0H?=
+ =?us-ascii?Q?sAR/tcojSbnMuGT5pZaPvrTQhA7MVASAAgdtZYP8PwQZpgLkNEqXRngFl9L5?=
+ =?us-ascii?Q?mp/cx0t4o2ezd4dFopTFgvI34QktICS89Vby9DNyrRYF2WuesfAK9izEVRk0?=
+ =?us-ascii?Q?YlebHr5+Q4e44muzq8FJsqnbrKd7maWo4IK+ESolLd/jIHmWhwlrfcvsYTU6?=
+ =?us-ascii?Q?BSnspv5CTD/pUAnH27FSHATMEHgfgSWZCK2iGnLrfK5ZELyx1C7e/m7ySGWg?=
+ =?us-ascii?Q?Ldf2TudPS4WvpkJNo8wdl5IJ5eIAUm720GPZIZ6mPGMeLj/Rtl3RCWEjk9+u?=
+ =?us-ascii?Q?MVCxuegPQ5q0eyT3NyRtCitDwKCxYiuIEnDy5Itx6Mbxuj/rBLDF3J+Ac3Ws?=
+ =?us-ascii?Q?SvlOj2RLnGmUv4MMx9sGnwZd//VAT3bcUdWvp3zGcW8XrfNN0LylfIufJDET?=
+ =?us-ascii?Q?SqKiWtkdrwHH5kcj7lB9UXJYgTkay2phE4HfwAFLwmNKpCTHlLwA9UKLfh8D?=
+ =?us-ascii?Q?/TsTqlPrWGiR7K7naxiGVriGlI1wt21aXcpX3Mr41UBnuNh7QPm6l4612Jic?=
+ =?us-ascii?Q?Dh1Vd+XV0NdcCWrR/EvL2liCNNRBeXR6XAaTW+D0nGHxBvZu3La1Qi4uIram?=
+ =?us-ascii?Q?wOAAJPVtotaanXj7qRKw3UbUjIa3feL8UdchJkNpUwuiJ0LoB/f5U6sPUusL?=
+ =?us-ascii?Q?nOj0SP7ZFwFSXhUImgqnNjXsIN2JaDscbpPwdmYK?=
 X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c142e8d4-edfa-4dfc-d62f-08dd60616b19
+X-MS-Exchange-CrossTenant-Network-Message-Id: d1367b58-4652-43c6-5128-08dd60616e2e
 X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2025 05:56:09.2166
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Mar 2025 05:56:13.7069
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: +rqDWYtaj85dXNtV3EdUh3Gu4cxVOdIdjCRYGUCLm3DqVjDD1uq6ar+ngMQOsBiaaRxY+eHommc+mnehR8R19w==
+X-MS-Exchange-CrossTenant-UserPrincipalName: b/OpnJU7G+XSO6vdfD/CCDQPNLMCt1H261+A7+2yL8y+pej1tt1KVnecYn6WBjmHm8yUt66GG0kvslwMfKNexQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10941
 X-Spam-Status: No, score=0.8 required=5.0 tests=ARC_SIGNED,ARC_VALID,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
 	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Some NETC functionality is controlled using control messages sent to the
-hardware using BD ring interface with 32B descriptor similar to transmit
-BD ring used on ENETC. This BD ring interface is referred to as command
-BD ring. It is used to configure functionality where the underlying
-resources may be shared between different entities or being too large to
-configure using direct registers. Therefore, a messaging protocol called
-NETC Table Management Protocol (NTMP) is provided for exchanging
-configuration and management information between the software and the
-hardware using the command BD ring interface.
+The command BD ring is used to configure functionality where the
+underlying resources may be shared between different entities or being
+too large to configure using direct registers (such as lookup tables).
 
-For i.MX95, NTMP has been upgraded to version 2.0, which is incompatible
-with LS1028A, because the message formats have been changed. Therefore,
-add the netc-lib driver to support NTMP 2.0 to operate various tables.
-Note that, only MAC address filter table and RSS table are supported at
-the moment. More tables will be supported in subsequent patches.
-
-It is worth mentioning that the purpose of the netc-lib driver is to
-provide some NTMP-based generic interfaces for ENETC and NETC Switch
-drivers. Currently, it only supports the configurations of some tables.
-Interfaces such as tc flower and debugfs will be added in the future.
+Because the command BD and table formats of i.MX95 and LS1028A are very
+different, the software processing logic is also different. In order to
+ensure driver compatibility, struct enetc_si_ops is introduced. This
+structure defines some hooks shared by VSI and PSI. Different hardware
+driver will register different hooks, For example, setup_cbdr() is used
+to initialize the command BD ring, and teardown_cbdr() is used to free
+the command BD ring.
 
 Signed-off-by: Wei Fang <wei.fang@nxp.com>
 ---
- drivers/net/ethernet/freescale/enetc/Kconfig  |   8 +
- drivers/net/ethernet/freescale/enetc/Makefile |   3 +
- drivers/net/ethernet/freescale/enetc/ntmp.c   | 458 ++++++++++++++++++
- .../ethernet/freescale/enetc/ntmp_private.h   |  63 +++
- include/linux/fsl/ntmp.h                      | 174 +++++++
- 5 files changed, 706 insertions(+)
- create mode 100644 drivers/net/ethernet/freescale/enetc/ntmp.c
- create mode 100644 drivers/net/ethernet/freescale/enetc/ntmp_private.h
- create mode 100644 include/linux/fsl/ntmp.h
+ drivers/net/ethernet/freescale/enetc/enetc.h  | 27 +++++++--
+ .../net/ethernet/freescale/enetc/enetc4_pf.c  | 47 +++++++++++++++-
+ .../net/ethernet/freescale/enetc/enetc_cbdr.c | 55 +++++++++++++++++--
+ .../net/ethernet/freescale/enetc/enetc_pf.c   | 13 +++--
+ .../net/ethernet/freescale/enetc/enetc_vf.c   | 13 +++--
+ 5 files changed, 136 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/Kconfig b/drivers/net/ethernet/freescale/enetc/Kconfig
-index 6c2779047dcd..c8efbb6f2055 100644
---- a/drivers/net/ethernet/freescale/enetc/Kconfig
-+++ b/drivers/net/ethernet/freescale/enetc/Kconfig
-@@ -15,6 +15,13 @@ config NXP_ENETC_PF_COMMON
- 
- 	  If compiled as module (M), the module name is nxp-enetc-pf-common.
- 
-+config NXP_NETC_LIB
-+	tristate
-+	help
-+	  This module provides common functionalities for both ENETC and NETC
-+	  Switch, such as NETC Table Management Protocol (NTMP) 2.0, common tc
-+	  flower and debugfs interfaces and so on.
-+
- config FSL_ENETC
- 	tristate "ENETC PF driver"
- 	depends on PCI_MSI
-@@ -40,6 +47,7 @@ config NXP_ENETC4
- 	select FSL_ENETC_CORE
- 	select FSL_ENETC_MDIO
- 	select NXP_ENETC_PF_COMMON
-+	select NXP_NETC_LIB
- 	select PHYLINK
- 	select DIMLIB
- 	help
-diff --git a/drivers/net/ethernet/freescale/enetc/Makefile b/drivers/net/ethernet/freescale/enetc/Makefile
-index 6fd27ee4fcd1..707a68e26971 100644
---- a/drivers/net/ethernet/freescale/enetc/Makefile
-+++ b/drivers/net/ethernet/freescale/enetc/Makefile
-@@ -6,6 +6,9 @@ fsl-enetc-core-y := enetc.o enetc_cbdr.o enetc_ethtool.o
- obj-$(CONFIG_NXP_ENETC_PF_COMMON) += nxp-enetc-pf-common.o
- nxp-enetc-pf-common-y := enetc_pf_common.o
- 
-+obj-$(CONFIG_NXP_NETC_LIB) += nxp-netc-lib.o
-+nxp-netc-lib-y := ntmp.o
-+
- obj-$(CONFIG_FSL_ENETC) += fsl-enetc.o
- fsl-enetc-y := enetc_pf.o
- fsl-enetc-$(CONFIG_PCI_IOV) += enetc_msg.o
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp.c b/drivers/net/ethernet/freescale/enetc/ntmp.c
-new file mode 100644
-index 000000000000..df10f2f310c1
---- /dev/null
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp.c
-@@ -0,0 +1,458 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
-+/*
-+ * NETC NTMP (NETC Table Management Protocol) 2.0 Library
-+ * Copyright 2025 NXP
-+ */
-+
-+#include <linux/dma-mapping.h>
-+#include <linux/fsl/netc_global.h>
-+#include <linux/iopoll.h>
-+
-+#include "ntmp_private.h"
-+
-+#define NETC_CBDR_TIMEOUT		1000 /* us */
-+#define NETC_CBDR_MR_EN			BIT(31)
-+
-+#define NTMP_BASE_ADDR_ALIGN		128
-+#define NTMP_DATA_ADDR_ALIGN		32
-+
-+/* Define NTMP Table ID */
-+#define NTMP_MAFT_ID			1
-+#define NTMP_RSST_ID			3
-+
-+/* Generic Update Actions for most tables */
-+#define NTMP_GEN_UA_CFGEU		BIT(0)
-+#define NTMP_GEN_UA_STSEU		BIT(1)
-+
-+#define NTMP_ENTRY_ID_SIZE		4
-+#define RSST_ENTRY_NUM			64
-+#define RSST_STSE_DATA_SIZE(n)		((n) * 8)
-+#define RSST_CFGE_DATA_SIZE(n)		(n)
-+
-+int netc_setup_cbdr(struct device *dev, int cbd_num,
-+		    struct netc_cbdr_regs *regs,
-+		    struct netc_cbdr *cbdr)
-+{
-+	size_t size;
-+
-+	size = cbd_num * sizeof(union netc_cbd) + NTMP_BASE_ADDR_ALIGN;
-+	cbdr->addr_base = dma_alloc_coherent(dev, size, &cbdr->dma_base,
-+					     GFP_KERNEL);
-+	if (!cbdr->addr_base)
-+		return -ENOMEM;
-+
-+	cbdr->dma_size = size;
-+	cbdr->bd_num = cbd_num;
-+	cbdr->regs = *regs;
-+
-+	/* The base address of the Control BD Ring must be 128 bytes aligned */
-+	cbdr->dma_base_align =  ALIGN(cbdr->dma_base,  NTMP_BASE_ADDR_ALIGN);
-+	cbdr->addr_base_align = PTR_ALIGN(cbdr->addr_base,
-+					  NTMP_BASE_ADDR_ALIGN);
-+
-+	cbdr->next_to_clean = 0;
-+	cbdr->next_to_use = 0;
-+	spin_lock_init(&cbdr->ring_lock);
-+
-+	/* Step 1: Configure the base address of the Control BD Ring */
-+	netc_write(cbdr->regs.bar0, lower_32_bits(cbdr->dma_base_align));
-+	netc_write(cbdr->regs.bar1, upper_32_bits(cbdr->dma_base_align));
-+
-+	/* Step 2: Configure the producer index register */
-+	netc_write(cbdr->regs.pir, cbdr->next_to_clean);
-+
-+	/* Step 3: Configure the consumer index register */
-+	netc_write(cbdr->regs.cir, cbdr->next_to_use);
-+
-+	/* Step4: Configure the number of BDs of the Control BD Ring */
-+	netc_write(cbdr->regs.lenr, cbdr->bd_num);
-+
-+	/* Step 5: Enable the Control BD Ring */
-+	netc_write(cbdr->regs.mr, NETC_CBDR_MR_EN);
-+
-+	return 0;
-+}
-+EXPORT_SYMBOL_GPL(netc_setup_cbdr);
-+
-+void netc_teardown_cbdr(struct device *dev, struct netc_cbdr *cbdr)
-+{
-+	/* Disable the Control BD Ring */
-+	netc_write(cbdr->regs.mr, 0);
-+	dma_free_coherent(dev, cbdr->dma_size, cbdr->addr_base,
-+			  cbdr->dma_base);
-+	memset(cbdr, 0, sizeof(*cbdr));
-+}
-+EXPORT_SYMBOL_GPL(netc_teardown_cbdr);
-+
-+static int netc_get_free_cbd_num(struct netc_cbdr *cbdr)
-+{
-+	return (cbdr->next_to_clean - cbdr->next_to_use - 1 +
-+		cbdr->bd_num) % cbdr->bd_num;
-+}
-+
-+static union netc_cbd *netc_get_cbd(struct netc_cbdr *cbdr, int index)
-+{
-+	return &((union netc_cbd *)(cbdr->addr_base_align))[index];
-+}
-+
-+static void netc_clean_cbdr(struct netc_cbdr *cbdr)
-+{
-+	union netc_cbd *cbd;
-+	int i;
-+
-+	i = cbdr->next_to_clean;
-+	while (netc_read(cbdr->regs.cir) != i) {
-+		cbd = netc_get_cbd(cbdr, i);
-+		memset(cbd, 0, sizeof(*cbd));
-+		i = (i + 1) % cbdr->bd_num;
-+	}
-+
-+	cbdr->next_to_clean = i;
-+}
-+
-+static struct netc_cbdr *netc_select_cbdr(struct netc_cbdrs *cbdrs)
-+{
-+	int i;
-+
-+	for (i = 0; i < cbdrs->cbdr_num; i++) {
-+		if (spin_is_locked(&cbdrs->ring[i].ring_lock))
-+			continue;
-+
-+		return &cbdrs->ring[i];
-+	}
-+
-+	return &cbdrs->ring[smp_processor_id() % cbdrs->cbdr_num];
-+}
-+
-+static int netc_xmit_ntmp_cmd(struct netc_cbdrs *cbdrs, union netc_cbd *cbd)
-+{
-+	union netc_cbd *cur_cbd;
-+	struct netc_cbdr *cbdr;
-+	int i, err;
-+	u16 status;
-+	u32 val;
-+
-+	if (cbdrs->cbdr_num == 1)
-+		cbdr = &cbdrs->ring[0];
-+	else
-+		cbdr = netc_select_cbdr(cbdrs);
-+
-+	spin_lock_bh(&cbdr->ring_lock);
-+
-+	if (unlikely(!netc_get_free_cbd_num(cbdr)))
-+		netc_clean_cbdr(cbdr);
-+
-+	i = cbdr->next_to_use;
-+	cur_cbd = netc_get_cbd(cbdr, i);
-+	*cur_cbd = *cbd;
-+
-+	/* Update producer index of both software and hardware */
-+	i = (i + 1) % cbdr->bd_num;
-+	cbdr->next_to_use = i;
-+	dma_wmb();
-+	netc_write(cbdr->regs.pir, i);
-+
-+	err = read_poll_timeout_atomic(netc_read, val, val == i,
-+				       10, NETC_CBDR_TIMEOUT, true,
-+				       cbdr->regs.cir);
-+	if (unlikely(err))
-+		goto cbdr_unlock;
-+
-+	dma_rmb();
-+	/* Get the writeback command BD, because the caller may need
-+	 * to check some other fields of the response header.
-+	 */
-+	*cbd = *cur_cbd;
-+
-+	/* Check the writeback error status */
-+	status = le16_to_cpu(cbd->resp_hdr.error_rr) & NTMP_RESP_ERROR;
-+	if (unlikely(status)) {
-+		err = -EIO;
-+		dev_err(cbdrs->dma_dev, "Command BD error: 0x%04x\n", status);
-+	}
-+
-+	netc_clean_cbdr(cbdr);
-+	dma_wmb();
-+
-+cbdr_unlock:
-+	spin_unlock_bh(&cbdr->ring_lock);
-+
-+	return err;
-+}
-+
-+static int ntmp_alloc_data_mem(struct ntmp_dma_buf *data, void **buf_align)
-+{
-+	void *buf;
-+
-+	buf = dma_alloc_coherent(data->dev, data->size + NTMP_DATA_ADDR_ALIGN,
-+				 &data->dma, GFP_ATOMIC);
-+	if (!buf)
-+		return -ENOMEM;
-+
-+	data->buf = buf;
-+	*buf_align = PTR_ALIGN(buf, NTMP_DATA_ADDR_ALIGN);
-+
-+	return 0;
-+}
-+
-+static void ntmp_free_data_mem(struct ntmp_dma_buf *data)
-+{
-+	dma_free_coherent(data->dev, data->size + NTMP_DATA_ADDR_ALIGN,
-+			  data->buf, data->dma);
-+}
-+
-+static void ntmp_fill_request_headr(union netc_cbd *cbd, dma_addr_t dma,
-+				    int len, int table_id, int cmd,
-+				    int access_method)
-+{
-+	dma_addr_t dma_align;
-+
-+	memset(cbd, 0, sizeof(*cbd));
-+	dma_align = ALIGN(dma, NTMP_DATA_ADDR_ALIGN);
-+	cbd->req_hdr.addr = cpu_to_le64(dma_align);
-+	cbd->req_hdr.len = cpu_to_le32(len);
-+	cbd->req_hdr.cmd = cmd;
-+	cbd->req_hdr.access_method = FIELD_PREP(NTMP_ACCESS_METHOD,
-+						access_method);
-+	cbd->req_hdr.table_id = table_id;
-+	cbd->req_hdr.ver_cci_rr = FIELD_PREP(NTMP_HDR_VERSION,
-+					     NTMP_HDR_VER2);
-+	/* For NTMP version 2.0 or later version */
-+	cbd->req_hdr.npf = cpu_to_le32(NTMP_NPF);
-+}
-+
-+static void ntmp_fill_crd(struct common_req_data *crd,
-+			  u8 tblv, u8 qa, u16 ua)
-+{
-+	crd->update_act = cpu_to_le16(ua);
-+	crd->tblv_qact = NTMP_TBLV_QACT(tblv, qa);
-+}
-+
-+static void ntmp_fill_crd_eid(struct ntmp_req_by_eid *rbe, u8 tblv,
-+			      u8 qa, u16 ua, u32 entry_id)
-+{
-+	ntmp_fill_crd(&rbe->crd, tblv, qa, ua);
-+	rbe->entry_id = cpu_to_le32(entry_id);
-+}
-+
-+static int ntmp_delete_entry_by_id(struct netc_cbdrs *cbdrs, int tbl_id,
-+				   u8 tbl_ver, u32 entry_id, u32 req_len,
-+				   u32 resp_len)
-+{
-+	struct ntmp_dma_buf data = {.dev = cbdrs->dma_dev};
-+	struct ntmp_req_by_eid *req;
-+	union netc_cbd cbd;
-+	u32 len;
-+	int err;
-+
-+	if (entry_id == NTMP_NULL_ENTRY_ID)
-+		return 0;
-+
-+	/* If the req_len is 0, indicates the requested length is the
-+	 * standard length.
-+	 */
-+	if (!req_len)
-+		req_len = sizeof(*req);
-+
-+	data.size = req_len >= resp_len ? req_len : resp_len;
-+	err = ntmp_alloc_data_mem(&data, (void **)&req);
-+	if (err)
-+		return err;
-+
-+	ntmp_fill_crd_eid(req, tbl_ver, 0, 0, entry_id);
-+	len = NTMP_LEN(req_len, resp_len);
-+	ntmp_fill_request_headr(&cbd, data.dma, len, tbl_id,
-+				NTMP_CMD_DELETE, NTMP_AM_ENTRY_ID);
-+
-+	err = netc_xmit_ntmp_cmd(cbdrs, &cbd);
-+	if (err)
-+		dev_err(cbdrs->dma_dev, "Delete table (id: %d) entry failed: %d",
-+			tbl_id, err);
-+
-+	ntmp_free_data_mem(&data);
-+
-+	return err;
-+}
-+
-+static int ntmp_query_entry_by_id(struct netc_cbdrs *cbdrs, int tbl_id,
-+				  u32 len, struct ntmp_req_by_eid *req,
-+				  dma_addr_t dma, bool compare_eid)
-+{
-+	struct device *dev = cbdrs->dma_dev;
-+	struct common_resp_query *resp;
-+	int cmd = NTMP_CMD_QUERY;
-+	union netc_cbd cbd;
-+	u32 entry_id;
-+	int err;
-+
-+	entry_id = le32_to_cpu(req->entry_id);
-+	if (le16_to_cpu(req->crd.update_act))
-+		cmd = NTMP_CMD_QU;
-+
-+	/* Request header */
-+	ntmp_fill_request_headr(&cbd, dma, len, tbl_id,
-+				cmd, NTMP_AM_ENTRY_ID);
-+
-+	err = netc_xmit_ntmp_cmd(cbdrs, &cbd);
-+	if (err) {
-+		dev_err(dev, "Query table (id: %d) entry failed: %d\n",
-+			tbl_id, err);
-+		return err;
-+	}
-+
-+	/* For a few tables, the first field of its response data is not
-+	 * entry_id, so directly return success.
-+	 */
-+	if (!compare_eid)
-+		return 0;
-+
-+	resp = (struct common_resp_query *)req;
-+	if (unlikely(le32_to_cpu(resp->entry_id) != entry_id)) {
-+		dev_err(dev, "Table (id: %d) query EID:0x%0x, response EID:0x%x\n",
-+			tbl_id, entry_id, le32_to_cpu(resp->entry_id));
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
-+int ntmp_maft_add_entry(struct netc_cbdrs *cbdrs, u32 entry_id,
-+			struct maft_entry_data *maft)
-+{
-+	struct ntmp_dma_buf data = {.dev = cbdrs->dma_dev};
-+	struct maft_req_add *req;
-+	union netc_cbd cbd;
-+	int err;
-+
-+	data.size = sizeof(*req);
-+	err = ntmp_alloc_data_mem(&data, (void **)&req);
-+	if (err)
-+		return err;
-+
-+	/* Set mac address filter table request data buffer */
-+	ntmp_fill_crd_eid(&req->rbe, cbdrs->tbl.maft_ver, 0, 0, entry_id);
-+	req->keye = maft->keye;
-+	req->cfge = maft->cfge;
-+
-+	ntmp_fill_request_headr(&cbd, data.dma, NTMP_LEN(data.size, 0),
-+				NTMP_MAFT_ID, NTMP_CMD_ADD,
-+				NTMP_AM_ENTRY_ID);
-+	err = netc_xmit_ntmp_cmd(cbdrs, &cbd);
-+	if (err)
-+		dev_err(cbdrs->dma_dev, "Add MAFT entry failed (%d)", err);
-+
-+	ntmp_free_data_mem(&data);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(ntmp_maft_add_entry);
-+
-+int ntmp_maft_query_entry(struct netc_cbdrs *cbdrs, u32 entry_id,
-+			  struct maft_entry_data *maft)
-+{
-+	struct ntmp_dma_buf data = {.dev = cbdrs->dma_dev};
-+	struct maft_resp_query *resp;
-+	struct ntmp_req_by_eid *req;
-+	u32 req_len = sizeof(*req);
-+	int err;
-+
-+	if (entry_id == NTMP_NULL_ENTRY_ID)
-+		return -EINVAL;
-+
-+	data.size = sizeof(*resp);
-+	err = ntmp_alloc_data_mem(&data, (void **)&req);
-+	if (err)
-+		return err;
-+
-+	ntmp_fill_crd_eid(req, cbdrs->tbl.maft_ver, 0, 0, entry_id);
-+	err = ntmp_query_entry_by_id(cbdrs, NTMP_MAFT_ID,
-+				     NTMP_LEN(req_len, data.size),
-+				     req, data.dma, true);
-+	if (err)
-+		goto end;
-+
-+	resp = (struct maft_resp_query *)req;
-+	maft->keye = resp->keye;
-+	maft->cfge = resp->cfge;
-+
-+end:
-+	ntmp_free_data_mem(&data);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(ntmp_maft_query_entry);
-+
-+int ntmp_maft_delete_entry(struct netc_cbdrs *cbdrs, u32 entry_id)
-+{
-+	return ntmp_delete_entry_by_id(cbdrs, NTMP_MAFT_ID,
-+				       cbdrs->tbl.maft_ver,
-+				       entry_id, 0, 0);
-+}
-+EXPORT_SYMBOL_GPL(ntmp_maft_delete_entry);
-+
-+int ntmp_rsst_query_or_update_entry(struct netc_cbdrs *cbdrs, u32 *table,
-+				    int count, bool query)
-+{
-+	struct ntmp_dma_buf data = {.dev = cbdrs->dma_dev};
-+	struct rsst_req_update *requ;
-+	struct ntmp_req_by_eid *req;
-+	union netc_cbd cbd;
-+	int err, i;
-+	u32 len;
-+
-+	if (count != RSST_ENTRY_NUM)
-+		/* HW only takes in a full 64 entry table */
-+		return -EINVAL;
-+
-+	if (query)
-+		data.size = NTMP_ENTRY_ID_SIZE + RSST_STSE_DATA_SIZE(count) +
-+			    RSST_CFGE_DATA_SIZE(count);
-+	else
-+		data.size = struct_size(requ, groups, count);
-+
-+	err = ntmp_alloc_data_mem(&data, (void **)&req);
-+	if (err)
-+		return err;
-+
-+	/* Set the request data buffer */
-+	if (query) {
-+		ntmp_fill_crd_eid(req, cbdrs->tbl.rsst_ver, 0, 0, 0);
-+		len = NTMP_LEN(sizeof(*req), data.size);
-+		ntmp_fill_request_headr(&cbd, data.dma, len, NTMP_RSST_ID,
-+					NTMP_CMD_QUERY, NTMP_AM_ENTRY_ID);
-+	} else {
-+		requ = (struct rsst_req_update *)req;
-+		ntmp_fill_crd_eid(&requ->rbe, cbdrs->tbl.rsst_ver, 0,
-+				  NTMP_GEN_UA_CFGEU | NTMP_GEN_UA_STSEU, 0);
-+		for (i = 0; i < count; i++)
-+			requ->groups[i] = (u8)(table[i]);
-+
-+		len = NTMP_LEN(data.size, 0);
-+		ntmp_fill_request_headr(&cbd, data.dma, len, NTMP_RSST_ID,
-+					NTMP_CMD_UPDATE, NTMP_AM_ENTRY_ID);
-+	}
-+
-+	err = netc_xmit_ntmp_cmd(cbdrs, &cbd);
-+	if (err) {
-+		dev_err(cbdrs->dma_dev, "%s RSS table entry failed (%d)",
-+			query ? "Query" : "Update", err);
-+		goto end;
-+	}
-+
-+	if (query) {
-+		u8 *group = (u8 *)req;
-+
-+		group += NTMP_ENTRY_ID_SIZE + RSST_STSE_DATA_SIZE(count);
-+		for (i = 0; i < count; i++)
-+			table[i] = group[i];
-+	}
-+
-+end:
-+	ntmp_free_data_mem(&data);
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(ntmp_rsst_query_or_update_entry);
-+
-+MODULE_DESCRIPTION("NXP NETC Library");
-+MODULE_LICENSE("Dual BSD/GPL");
-diff --git a/drivers/net/ethernet/freescale/enetc/ntmp_private.h b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-new file mode 100644
-index 000000000000..45e4d083ab0a
---- /dev/null
-+++ b/drivers/net/ethernet/freescale/enetc/ntmp_private.h
-@@ -0,0 +1,63 @@
-+/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
-+/*
-+ * NTMP table request and response data buffer formats
-+ * Copyright 2025 NXP
-+ */
-+
-+#ifndef __NTMP_PRIVATE_H
-+#define __NTMP_PRIVATE_H
-+
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index 4ad4eb5c5a74..4ff0957e69be 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -8,6 +8,7 @@
+ #include <linux/dma-mapping.h>
+ #include <linux/skbuff.h>
+ #include <linux/ethtool.h>
 +#include <linux/fsl/ntmp.h>
+ #include <linux/if_vlan.h>
+ #include <linux/phylink.h>
+ #include <linux/dim.h>
+@@ -266,6 +267,19 @@ struct enetc_platform_info {
+ 	const struct enetc_drvdata *data;
+ };
+ 
++struct enetc_si;
 +
-+struct ntmp_dma_buf {
-+	struct device *dev;
-+	size_t size;
-+	void *buf;
-+	dma_addr_t dma;
++/*
++ * This structure defines the some common hooks for ENETC PSI and VSI.
++ * In addition, since VSI only uses the struct enetc_si as its private
++ * driver data, so this structure also define some hooks specifically
++ * for VSI. For VSI-specific hooks, the format is ‘vf_*()’.
++ */
++struct enetc_si_ops {
++	int (*setup_cbdr)(struct enetc_si *si);
++	void (*teardown_cbdr)(struct enetc_si *si);
 +};
 +
-+struct common_req_data {
-+	__le16 update_act;
-+	u8 dbg_opt;
-+	u8 tblv_qact;
-+#define NTMP_QUERY_ACT		GENMASK(3, 0)
-+#define NTMP_TBL_VER		GENMASK(7, 0)
-+#define NTMP_TBLV_QACT(v, a)	(FIELD_PREP(NTMP_TBL_VER, (v)) | \
-+				 ((a) & NTMP_QUERY_ACT))
+ /* PCI IEP device data */
+ struct enetc_si {
+ 	struct pci_dev *pdev;
+@@ -274,7 +288,10 @@ struct enetc_si {
+ 
+ 	struct net_device *ndev; /* back ref. */
+ 
+-	struct enetc_cbdr cbd_ring;
++	union {
++		struct enetc_cbdr cbd_ring; /* Only ENETC 1.0 */
++		struct ntmp_priv ntmp; /* ENETC 4.1 and later */
++	};
+ 
+ 	int num_rx_rings; /* how many rings are available in the SI */
+ 	int num_tx_rings;
+@@ -284,6 +301,7 @@ struct enetc_si {
+ 	u16 revision;
+ 	int hw_features;
+ 	const struct enetc_drvdata *drvdata;
++	const struct enetc_si_ops *ops;
+ };
+ 
+ #define ENETC_SI_ALIGN	32
+@@ -490,9 +508,10 @@ void enetc_mm_link_state_update(struct enetc_ndev_priv *priv, bool link);
+ void enetc_mm_commit_preemptible_tcs(struct enetc_ndev_priv *priv);
+ 
+ /* control buffer descriptor ring (CBDR) */
+-int enetc_setup_cbdr(struct device *dev, struct enetc_hw *hw, int bd_count,
+-		     struct enetc_cbdr *cbdr);
+-void enetc_teardown_cbdr(struct enetc_cbdr *cbdr);
++int enetc_setup_cbdr(struct enetc_si *si);
++void enetc_teardown_cbdr(struct enetc_si *si);
++int enetc4_setup_cbdr(struct enetc_si *si);
++void enetc4_teardown_cbdr(struct enetc_si *si);
+ int enetc_set_mac_flt_entry(struct enetc_si *si, int index,
+ 			    char *mac_addr, int si_map);
+ int enetc_clear_mac_flt_entry(struct enetc_si *si, int index);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+index 73ac8c6afb3a..63001379f0a0 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+@@ -260,6 +260,23 @@ static void enetc4_configure_port(struct enetc_pf *pf)
+ 	enetc4_enable_trx(pf);
+ }
+ 
++static int enetc4_init_ntmp_priv(struct enetc_si *si)
++{
++	struct ntmp_priv *ntmp = &si->ntmp;
++
++	ntmp->dev_type = NETC_DEV_ENETC;
++
++	/* For ENETC 4.1, all table versions are 0 */
++	memset(&ntmp->cbdrs.tbl, 0, sizeof(ntmp->cbdrs.tbl));
++
++	return si->ops->setup_cbdr(si);
++}
++
++static void enetc4_free_ntmp_priv(struct enetc_si *si)
++{
++	si->ops->teardown_cbdr(si);
++}
++
+ static int enetc4_pf_init(struct enetc_pf *pf)
+ {
+ 	struct device *dev = &pf->si->pdev->dev;
+@@ -272,11 +289,22 @@ static int enetc4_pf_init(struct enetc_pf *pf)
+ 		return err;
+ 	}
+ 
++	err = enetc4_init_ntmp_priv(pf->si);
++	if (err) {
++		dev_err(dev, "Failed to init CBDR\n");
++		return err;
++	}
++
+ 	enetc4_configure_port(pf);
+ 
+ 	return 0;
+ }
+ 
++static void enetc4_pf_free(struct enetc_pf *pf)
++{
++	enetc4_free_ntmp_priv(pf->si);
++}
++
+ static const struct net_device_ops enetc4_ndev_ops = {
+ 	.ndo_open		= enetc_open,
+ 	.ndo_stop		= enetc_close,
+@@ -688,6 +716,11 @@ static void enetc4_pf_netdev_destroy(struct enetc_si *si)
+ 	free_netdev(ndev);
+ }
+ 
++static const struct enetc_si_ops enetc4_psi_ops = {
++	.setup_cbdr = enetc4_setup_cbdr,
++	.teardown_cbdr = enetc4_teardown_cbdr,
 +};
 +
-+struct common_resp_query {
-+	__le32 entry_id;
-+};
+ static int enetc4_pf_probe(struct pci_dev *pdev,
+ 			   const struct pci_device_id *ent)
+ {
+@@ -712,6 +745,7 @@ static int enetc4_pf_probe(struct pci_dev *pdev,
+ 				     "Couldn't map PF only space\n");
+ 
+ 	si->revision = enetc_get_ip_revision(&si->hw);
++	si->ops = &enetc4_psi_ops;
+ 	err = enetc_get_driver_data(si);
+ 	if (err)
+ 		return dev_err_probe(dev, err,
+@@ -728,14 +762,25 @@ static int enetc4_pf_probe(struct pci_dev *pdev,
+ 
+ 	enetc_get_si_caps(si);
+ 
+-	return enetc4_pf_netdev_create(si);
++	err = enetc4_pf_netdev_create(si);
++	if (err)
++		goto err_netdev_create;
 +
-+struct common_resp_nq {
-+	__le32 status;
-+};
++	return 0;
 +
-+/* Generic structure for request data by entry ID  */
-+struct ntmp_req_by_eid {
-+	struct common_req_data crd;
-+	__le32 entry_id;
-+};
++err_netdev_create:
++	enetc4_pf_free(pf);
 +
-+/* MAC Address Filter Table Request Data Buffer Format of Add action */
-+struct maft_req_add {
-+	struct ntmp_req_by_eid rbe;
-+	struct maft_keye_data keye;
-+	struct maft_cfge_data cfge;
-+};
-+
-+/* MAC Address Filter Table Response Data Buffer Format of Query action */
-+struct maft_resp_query {
-+	__le32 entry_id;
-+	struct maft_keye_data keye;
-+	struct maft_cfge_data cfge;
-+};
-+
-+/* RSS Table Request Data Buffer Format of Update action */
-+struct rsst_req_update {
-+	struct ntmp_req_by_eid rbe;
-+	u8 groups[];
-+};
-+
-+#endif
-diff --git a/include/linux/fsl/ntmp.h b/include/linux/fsl/ntmp.h
-new file mode 100644
-index 000000000000..fe15e394c4a4
---- /dev/null
-+++ b/include/linux/fsl/ntmp.h
-@@ -0,0 +1,174 @@
-+/* SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause) */
-+/* Copyright 2025 NXP */
-+#ifndef __NETC_NTMP_H
-+#define __NETC_NTMP_H
-+
-+#include <linux/bitops.h>
-+#include <linux/if_ether.h>
-+
-+#define NTMP_NULL_ENTRY_ID		0xffffffffU
-+#define NETC_CBDR_BD_NUM		256
-+
-+union netc_cbd {
-+	struct {
-+		__le64 addr;
-+		__le32 len;
-+#define NTMP_RESP_LEN		GENMASK(19, 0)
-+#define NTMP_REQ_LEN		GENMASK(31, 20)
-+#define NTMP_LEN(req, resp)	(FIELD_PREP(NTMP_REQ_LEN, (req)) | \
-+				((resp) & NTMP_RESP_LEN))
-+		u8 cmd;
-+#define NTMP_CMD_DELETE		BIT(0)
-+#define NTMP_CMD_UPDATE		BIT(1)
-+#define NTMP_CMD_QUERY		BIT(2)
-+#define NTMP_CMD_ADD		BIT(3)
-+#define NTMP_CMD_QD		(NTMP_CMD_QUERY | NTMP_CMD_DELETE)
-+#define NTMP_CMD_QU		(NTMP_CMD_QUERY | NTMP_CMD_UPDATE)
-+#define NTMP_CMD_AU		(NTMP_CMD_ADD | NTMP_CMD_UPDATE)
-+#define NTMP_CMD_AQ		(NTMP_CMD_ADD | NTMP_CMD_QUERY)
-+#define NTMP_CMD_AQU		(NTMP_CMD_AQ | NTMP_CMD_UPDATE)
-+		u8 access_method;
-+#define NTMP_ACCESS_METHOD	GENMASK(7, 4)
-+#define NTMP_AM_ENTRY_ID	0
-+#define NTMP_AM_EXACT_KEY	1
-+#define NTMP_AM_SEARCH		2
-+#define NTMP_AM_TERNARY_KEY	3
-+		u8 table_id;
-+		u8 ver_cci_rr;
-+#define NTMP_HDR_VERSION	GENMASK(5, 0)
-+#define NTMP_HDR_VER2		2
-+#define NTMP_CCI		BIT(6)
-+#define NTMP_RR			BIT(7)
-+		__le32 resv[3];
-+		__le32 npf;
-+#define NTMP_NPF		BIT(15)
-+	} req_hdr;	/* NTMP Request Message Header Format */
-+
-+	struct {
-+		__le32 resv0[3];
-+		__le16 num_matched;
-+		__le16 error_rr;
-+#define NTMP_RESP_ERROR		GENMASK(11, 0)
-+#define NTMP_RESP_RR		BIT(15)
-+		__le32 resv1[4];
-+	} resp_hdr; /* NTMP Response Message Header Format */
-+};
-+
-+struct maft_keye_data {
-+	u8 mac_addr[ETH_ALEN];
-+	__le16 resv;
-+};
-+
-+struct maft_cfge_data {
-+	__le16 si_bitmap;
-+	__le16 resv;
-+};
-+
-+struct netc_cbdr_regs {
-+	void __iomem *pir;
-+	void __iomem *cir;
-+	void __iomem *mr;
-+
-+	void __iomem *bar0;
-+	void __iomem *bar1;
-+	void __iomem *lenr;
-+};
-+
-+struct netc_tbl_vers {
-+	u8 maft_ver;
-+	u8 rsst_ver;
-+};
-+
-+struct netc_cbdr {
++	return err;
+ }
+ 
+ static void enetc4_pf_remove(struct pci_dev *pdev)
+ {
+ 	struct enetc_si *si = pci_get_drvdata(pdev);
++	struct enetc_pf *pf = enetc_si_priv(si);
+ 
+ 	enetc4_pf_netdev_destroy(si);
++	enetc4_pf_free(pf);
+ }
+ 
+ static const struct pci_device_id enetc4_pf_id_table[] = {
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+index 20bfdf7fb4b4..4e5125331d7b 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+@@ -3,10 +3,12 @@
+ 
+ #include "enetc.h"
+ 
+-int enetc_setup_cbdr(struct device *dev, struct enetc_hw *hw, int bd_count,
+-		     struct enetc_cbdr *cbdr)
++int enetc_setup_cbdr(struct enetc_si *si)
+ {
+-	int size = bd_count * sizeof(struct enetc_cbd);
++	int size = ENETC_CBDR_DEFAULT_SIZE * sizeof(struct enetc_cbd);
++	struct enetc_cbdr *cbdr = &si->cbd_ring;
++	struct device *dev = &si->pdev->dev;
++	struct enetc_hw *hw = &si->hw;
+ 
+ 	cbdr->bd_base = dma_alloc_coherent(dev, size, &cbdr->bd_dma_base,
+ 					   GFP_KERNEL);
+@@ -23,7 +25,7 @@ int enetc_setup_cbdr(struct device *dev, struct enetc_hw *hw, int bd_count,
+ 	cbdr->next_to_clean = 0;
+ 	cbdr->next_to_use = 0;
+ 	cbdr->dma_dev = dev;
+-	cbdr->bd_count = bd_count;
++	cbdr->bd_count = ENETC_CBDR_DEFAULT_SIZE;
+ 
+ 	cbdr->pir = hw->reg + ENETC_SICBDRPIR;
+ 	cbdr->cir = hw->reg + ENETC_SICBDRCIR;
+@@ -46,13 +48,45 @@ int enetc_setup_cbdr(struct device *dev, struct enetc_hw *hw, int bd_count,
+ }
+ EXPORT_SYMBOL_GPL(enetc_setup_cbdr);
+ 
+-void enetc_teardown_cbdr(struct enetc_cbdr *cbdr)
++int enetc4_setup_cbdr(struct enetc_si *si)
+ {
+-	int size = cbdr->bd_count * sizeof(struct enetc_cbd);
++	struct netc_cbdrs *cbdrs = &si->ntmp.cbdrs;
++	struct device *dev = &si->pdev->dev;
++	struct enetc_hw *hw = &si->hw;
 +	struct netc_cbdr_regs regs;
 +
-+	int bd_num;
-+	int next_to_use;
-+	int next_to_clean;
++	cbdrs->cbdr_num = 1;
++	cbdrs->cbdr_size = NETC_CBDR_BD_NUM;
++	cbdrs->dma_dev = dev;
++	cbdrs->ring = devm_kcalloc(dev, cbdrs->cbdr_num,
++				   sizeof(struct netc_cbdr), GFP_KERNEL);
++	if (!cbdrs->ring)
++		return -ENOMEM;
 +
-+	int dma_size;
-+	void *addr_base;
-+	void *addr_base_align;
-+	dma_addr_t dma_base;
-+	dma_addr_t dma_base_align;
++	/* set CBDR cache attributes */
++	enetc_wr(hw, ENETC_SICAR2,
++		 ENETC_SICAR_RD_COHERENT | ENETC_SICAR_WR_COHERENT);
 +
-+	spinlock_t ring_lock; /* Avoid race condition */
++	regs.pir = hw->reg + ENETC_SICBDRPIR;
++	regs.cir = hw->reg + ENETC_SICBDRCIR;
++	regs.mr = hw->reg + ENETC_SICBDRMR;
++	regs.bar0 = hw->reg + ENETC_SICBDRBAR0;
++	regs.bar1 = hw->reg + ENETC_SICBDRBAR1;
++	regs.lenr = hw->reg + ENETC_SICBDRLENR;
++
++	return netc_setup_cbdr(dev, cbdrs->cbdr_size, &regs, cbdrs->ring);
++}
++EXPORT_SYMBOL_GPL(enetc4_setup_cbdr);
++
++void enetc_teardown_cbdr(struct enetc_si *si)
++{
++	struct enetc_cbdr *cbdr = &si->cbd_ring;
++	int size;
+ 
+ 	/* disable ring */
+ 	enetc_wr_reg(cbdr->mr, 0);
+ 
++	size = cbdr->bd_count * sizeof(struct enetc_cbd);
+ 	dma_free_coherent(cbdr->dma_dev, size, cbdr->bd_base,
+ 			  cbdr->bd_dma_base);
+ 	cbdr->bd_base = NULL;
+@@ -60,6 +94,15 @@ void enetc_teardown_cbdr(struct enetc_cbdr *cbdr)
+ }
+ EXPORT_SYMBOL_GPL(enetc_teardown_cbdr);
+ 
++void enetc4_teardown_cbdr(struct enetc_si *si)
++{
++	struct netc_cbdrs *cbdrs = &si->ntmp.cbdrs;
++
++	netc_teardown_cbdr(cbdrs->dma_dev, cbdrs->ring);
++	cbdrs->dma_dev = NULL;
++}
++EXPORT_SYMBOL_GPL(enetc4_teardown_cbdr);
++
+ static void enetc_clean_cbdr(struct enetc_cbdr *ring)
+ {
+ 	struct enetc_cbd *dest_cbd;
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_pf.c b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+index 203862ec1114..a214749a4af6 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_pf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_pf.c
+@@ -939,6 +939,11 @@ static int enetc_pf_register_with_ierb(struct pci_dev *pdev)
+ 	return enetc_ierb_register_pf(ierb_pdev, pdev);
+ }
+ 
++static const struct enetc_si_ops enetc_psi_ops = {
++	.setup_cbdr = enetc_setup_cbdr,
++	.teardown_cbdr = enetc_teardown_cbdr,
 +};
 +
-+struct netc_cbdrs {
-+	int cbdr_num;	/* number of control BD ring */
-+	int cbdr_size;	/* number of BDs per control BD ring */
-+	struct device *dma_dev;
-+	struct netc_cbdr *ring;
-+	struct netc_tbl_vers tbl;
+ static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+ {
+ 	struct enetc_si *si;
+@@ -957,6 +962,7 @@ static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+ 		goto out_pci_remove;
+ 	}
+ 
++	si->ops = &enetc_psi_ops;
+ 	si->revision = enetc_get_ip_revision(&si->hw);
+ 	err = enetc_get_driver_data(si);
+ 	if (err) {
+@@ -964,8 +970,7 @@ static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+ 		goto out_pci_remove;
+ 	}
+ 
+-	err = enetc_setup_cbdr(&pdev->dev, &si->hw, ENETC_CBDR_DEFAULT_SIZE,
+-			       &si->cbd_ring);
++	err = si->ops->setup_cbdr(si);
+ 	if (err)
+ 		goto out_pci_remove;
+ 
+@@ -984,7 +989,7 @@ static struct enetc_si *enetc_psi_create(struct pci_dev *pdev)
+ 	return si;
+ 
+ out_teardown_cbdr:
+-	enetc_teardown_cbdr(&si->cbd_ring);
++	si->ops->teardown_cbdr(si);
+ out_pci_remove:
+ 	enetc_pci_remove(pdev);
+ out:
+@@ -995,7 +1000,7 @@ static void enetc_psi_destroy(struct pci_dev *pdev)
+ {
+ 	struct enetc_si *si = pci_get_drvdata(pdev);
+ 
+-	enetc_teardown_cbdr(&si->cbd_ring);
++	si->ops->teardown_cbdr(si);
+ 	enetc_pci_remove(pdev);
+ }
+ 
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc_vf.c b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+index 3768752b6008..d7d9a720069b 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc_vf.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_vf.c
+@@ -162,6 +162,11 @@ static void enetc_vf_netdev_setup(struct enetc_si *si, struct net_device *ndev,
+ 	enetc_load_primary_mac_addr(&si->hw, ndev);
+ }
+ 
++static const struct enetc_si_ops enetc_vsi_ops = {
++	.setup_cbdr = enetc_setup_cbdr,
++	.teardown_cbdr = enetc_teardown_cbdr,
 +};
 +
-+enum netc_dev_type {
-+	NETC_DEV_ENETC,
-+	NETC_DEV_SWITCH
-+};
-+
-+struct ntmp_priv {
-+	enum netc_dev_type dev_type;
-+	struct netc_cbdrs cbdrs;
-+};
-+
-+struct maft_entry_data {
-+	struct maft_keye_data keye;
-+	struct maft_cfge_data cfge;
-+};
-+
-+#if IS_ENABLED(CONFIG_NXP_NETC_LIB)
-+int netc_setup_cbdr(struct device *dev, int cbd_num,
-+		    struct netc_cbdr_regs *regs,
-+		    struct netc_cbdr *cbdr);
-+void netc_teardown_cbdr(struct device *dev, struct netc_cbdr *cbdr);
-+
-+/* NTMP APIs */
-+int ntmp_maft_add_entry(struct netc_cbdrs *cbdrs, u32 entry_id,
-+			struct maft_entry_data *maft);
-+int ntmp_maft_query_entry(struct netc_cbdrs *cbdrs, u32 entry_id,
-+			  struct maft_entry_data *maft);
-+int ntmp_maft_delete_entry(struct netc_cbdrs *cbdrs, u32 entry_id);
-+int ntmp_rsst_query_or_update_entry(struct netc_cbdrs *cbdrs,
-+				    u32 *table, int count, bool query);
-+#else
-+static inline int netc_setup_cbdr(struct device *dev, int cbd_num,
-+				  struct netc_cbdr_regs *regs,
-+				  struct netc_cbdr *cbdr)
-+{
-+	return 0;
-+}
-+
-+static inline void netc_teardown_cbdr(struct device *dev,
-+				      struct netc_cbdr *cbdr)
-+{
-+}
-+
-+static inline int ntmp_maft_add_entry(struct netc_cbdrs *cbdrs, u32 entry_id,
-+				      struct maft_entry_data *maft)
-+{
-+	return 0;
-+}
-+
-+static inline int ntmp_maft_query_entry(struct netc_cbdrs *cbdrs, u32 entry_id,
-+					struct maft_entry_data *maft)
-+{
-+	return 0;
-+}
-+
-+static inline int ntmp_maft_delete_entry(struct netc_cbdrs *cbdrs, u32 entry_id)
-+{
-+	return 0;
-+}
-+
-+static inline int ntmp_rsst_query_or_update_entry(struct netc_cbdrs *cbdrs,
-+						  u32 *table, int count,
-+						  bool query)
-+{
-+	return 0;
-+}
-+
-+#endif
-+
-+#endif
+ static int enetc_vf_probe(struct pci_dev *pdev,
+ 			  const struct pci_device_id *ent)
+ {
+@@ -176,6 +181,7 @@ static int enetc_vf_probe(struct pci_dev *pdev,
+ 
+ 	si = pci_get_drvdata(pdev);
+ 	si->revision = ENETC_REV_1_0;
++	si->ops = &enetc_vsi_ops;
+ 	err = enetc_get_driver_data(si);
+ 	if (err) {
+ 		dev_err_probe(&pdev->dev, err,
+@@ -198,8 +204,7 @@ static int enetc_vf_probe(struct pci_dev *pdev,
+ 
+ 	enetc_init_si_rings_params(priv);
+ 
+-	err = enetc_setup_cbdr(priv->dev, &si->hw, ENETC_CBDR_DEFAULT_SIZE,
+-			       &si->cbd_ring);
++	err = si->ops->setup_cbdr(si);
+ 	if (err)
+ 		goto err_setup_cbdr;
+ 
+@@ -235,7 +240,7 @@ static int enetc_vf_probe(struct pci_dev *pdev,
+ err_alloc_msix:
+ 	enetc_free_si_resources(priv);
+ err_alloc_si_res:
+-	enetc_teardown_cbdr(&si->cbd_ring);
++	si->ops->teardown_cbdr(si);
+ err_setup_cbdr:
+ 	si->ndev = NULL;
+ 	free_netdev(ndev);
+@@ -256,7 +261,7 @@ static void enetc_vf_remove(struct pci_dev *pdev)
+ 	enetc_free_msix(priv);
+ 
+ 	enetc_free_si_resources(priv);
+-	enetc_teardown_cbdr(&si->cbd_ring);
++	si->ops->teardown_cbdr(si);
+ 
+ 	free_netdev(si->ndev);
+ 
 -- 
 2.34.1
 
