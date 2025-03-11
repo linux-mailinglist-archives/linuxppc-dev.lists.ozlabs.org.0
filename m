@@ -1,86 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6883-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6884-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0591FA5BAF6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 09:42:13 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D281A5BB0D
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 09:47:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBnLm1lr6z3bmy;
-	Tue, 11 Mar 2025 19:42:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBnT55Sytz3bmk;
+	Tue, 11 Mar 2025 19:47:37 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741682528;
-	cv=none; b=P2gsIrStWUeSQq02nNh5oJxxzZWLdua0Hof5SKSriv+u8rAfIOt5D7L6cGPCOwn+4barXsVVUC2JT7qPgpJbgmk2LcbIXf/Kpb42QUGhqz1BVOMpa2ZFIjxJBHCHJMIudeET1WPzCRWzHqX9bxdS6jhaEJpu9w+27+0niDxqWrN8VBuNP2tHMoSo9e5V7ZvaDvuXXm/rJQNG+dG99qrV4VcdLSiPs0Yy+8w4MtBZJG/DRCZzTqz2ddvO6+SZn+0bBIO/K+Z7xh2HPa4Wm3d9qbienQxoq8SJwHNxJfkji9SDbkxIj44DxhxfphyiYgD+coNfnxEWpdHcW2Grse7Irw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741682857;
+	cv=none; b=M25L1k2jIabahn96jcv4zhr1bzBwlRQ0roXrvvkSXXbFzJ6MGpiQTyFk3DRZ9E5UvVTZtqF1VAYbcC6m3kE72xaWJCPnQ5+ipSy3JjkMo2GKHG+WoUcGF62tjPxYKJngjUm/GlJYx6UO5oi45NQ81S431DyYZ0txYmYpwKbqskbdTdDQ2Wno3NwEcm8YdiMygPoqDVDV88Ejaioxc+wLXuOOWLuGVZz7UGGHsZoFZcebSK6nhAEKjpkuOoaKOHW9G5fcTc5GUaF9Ei5p8lcVDuIPUOnghu9RwHb2gs4YCdpLYaJ2f9zu19ExmmhYzAqPtaflPaPT46JA8YJemmWypg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741682528; c=relaxed/relaxed;
-	bh=R7l+S7unw8HaDq3ycvl5vpv+2cv+Okn+aN2afRCN2Hs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IdQkGQEaIAi9Wyhh7/BTd/hL7Ia6NC1+PAlsj1aAz0S65BGYQt2qpO6kzdJE2FZ0jJck1JtYUbZ5S589el8MVjpgnQDXeaSQaSe/tiE6axUR1d/sz/1C2J7Mc5UhMXx349keLHkeJgAEdBq8xk+XCPQ7bjO/gZm3QKNSleyQY6oH2xZXEI0D4U2jFlbIvg9NNJmsAjeVlYUj9yJLgDLMtjST6r8twGdTrCMV9YFklJBZrKpRDXwL+xwcbtUiYr8e4pZE7OL0KO7LMJ+J5CMf2uABvUQReiNhkdtsA7C7ROFTQzq152WI5l+WyGqUz9nY0yE3M0/slI8qoCBD5IOAMw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MRSacfzG; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1741682857; c=relaxed/relaxed;
+	bh=1NEJHKreQRf8TYmEQtw7jBiV5M3M/i95+kR0z4U2GWs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=nWgGThy9LqqbrUl7RL5j6Uh8bgH2BvkwGUwZF4lCIO9xkvM8qFv7nwFqRVvRupnbfUtGhyLCML/q0wHYN0fvicD6RXvAlHgHecJR9tjJZFTH6v2E5V5Y8cYJYAB0tBtPKb7KjchdY2T3pETFM369fk5UU00SIo9UP7jyUSrRjrsafq9SZFSQaKOmTtyC3a0i3qIp2rL84a3lDtfT5sjNw0D+haQglRhnnzs5PjSUastn5j0KWrWyauZvlWRuvg9SZl0hRYVJoeuNaZfz6I8a+g+xq6zAq95nZmwb6S4GdmyhyMv8uSuxjDz4wKnIwEWE5Ka2IxupJnen/QdgiXP3+w==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BBI+eHOG; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MRSacfzG;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BBI+eHOG;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBnLl0tlkz3bmk
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 19:42:06 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52AKFblq016033;
-	Tue, 11 Mar 2025 08:41:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=R7l+S7unw8HaDq3ycvl5vpv+2cv+
-	Okn+aN2afRCN2Hs=; b=MRSacfzGOrk8njYP7aTBskXEB51mu73CoEhJVkDYsQ/A
-	KtFVUoKch8E394WpLPC/T9eRnQxX7joEfxf6ebHwy2SxCAS8jCYvOSNh/0xJUO1R
-	vPwDmdWLLjYPVFj98jaqoTvbpHVcM6BSgkSVsV2PLuzQuyXhZ2xuAkliJ/fH0GXp
-	Ay9uBz4KSRBEgd7i2DR7RNsbYvVv0z4F1dAPOEl/6Pc8u6/OJ10YsNaWNRf88gxW
-	3aUmBbDBTA2uNl6CDaB/zgrPgucDpxrgWfoqBzG5EvmCELMjyiFpelDBouXf54q0
-	W4W8m0ZR/hGzi+J7MwnEeihxvYDO9ky+Y9l323dzsA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45a1gp4uj3-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBnT446nLz2ywR
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 19:47:36 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B3kLgU002214;
+	Tue, 11 Mar 2025 08:47:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=1NEJHK
+	reQRf8TYmEQtw7jBiV5M3M/i95+kR0z4U2GWs=; b=BBI+eHOGNAdwr6qQjjtnvN
+	F9apyS7pbjUVj4tLXH2Ov0+FR9y4prd+DOulP8HPqihzMIhtHUoAR5qVzQ9ge104
+	l1eRef/NyCLWlV31EFWsphLAqwMKQ0XEHrib9N7GV/I+djWbUzXoXlBpwsspo3Lm
+	vKuiYVsqtZOu5Z87r+AXfZg4N9hqwXd2+FM2REqmb11qf/X8qPiyV0BL0+IcscsU
+	RRQ4MO/jdsLBD3J9zQ07rg1LmydHH2XvEi+8HRNVTs1SNn04u95Kw6rLJECKEeU6
+	AyK9ikY2tV30Zhi4ZCqrLPwcs+YOWJDG328y0DnwOGRXkN+nG+//eGhwEXnvbFVw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45adjb1cvq-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 08:41:41 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52B8CLRd007304;
-	Tue, 11 Mar 2025 08:41:41 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45a1gp4uj0-1
+	Tue, 11 Mar 2025 08:47:25 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B7Y4Bp014527;
+	Tue, 11 Mar 2025 08:47:24 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4592ekay60-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 08:41:41 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B6ei2x027566;
-	Tue, 11 Mar 2025 08:41:39 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4591qkk508-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 08:41:39 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52B8fZqN36307332
+	Tue, 11 Mar 2025 08:47:24 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52B8lNWm5243588
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 08:41:35 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF4F720049;
-	Tue, 11 Mar 2025 08:41:35 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1395020040;
-	Tue, 11 Mar 2025 08:41:33 +0000 (GMT)
-Received: from li-c439904c-24ed-11b2-a85c-b284a6847472.in.ibm.com (unknown [9.204.206.207])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Mar 2025 08:41:32 +0000 (GMT)
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-To: catalin.marinas@arm.com, shuah@kernel.org
-Cc: mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        naveen@kernel.org, yury.khrustalev@arm.com,
-        linux-arm-kernel@lists.infradead.org, linux-kselftest@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: [PATCH] selftest/powerpc/mm/pkey: fix build-break introduced by commit 00894c3fc917
-Date: Tue, 11 Mar 2025 14:11:29 +0530
-Message-ID: <20250311084129.39308-1-maddy@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+	Tue, 11 Mar 2025 08:47:23 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7241258062;
+	Tue, 11 Mar 2025 08:47:23 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7E32858045;
+	Tue, 11 Mar 2025 08:47:21 +0000 (GMT)
+Received: from [9.204.206.207] (unknown [9.204.206.207])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Mar 2025 08:47:21 +0000 (GMT)
+Message-ID: <5cd65d1f-37ea-4051-82ea-e6879bfc288a@linux.ibm.com>
+Date: Tue, 11 Mar 2025 14:17:20 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -93,69 +78,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next-20250307] Build Failure
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+References: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: XjiArt6L0DCuKkUNmeos7SdNVMkgrYU4
-X-Proofpoint-ORIG-GUID: SRAKZlZkEm18QLdCEcWQrintl1Z8lLK1
+X-Proofpoint-ORIG-GUID: 58Ph_biZIyZmFrfEOkZx5D3hQ7fGbute
+X-Proofpoint-GUID: 58Ph_biZIyZmFrfEOkZx5D3hQ7fGbute
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-11_01,2025-03-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1011
- mlxlogscore=631 suspectscore=0 spamscore=0 impostorscore=0 bulkscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503110057
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=976
+ spamscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 suspectscore=0
+ adultscore=0 phishscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503110057
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Build break was reported in the powerpc mailing list for next-20250218 with below errors
 
-make[1]: Nothing to be done for 'all'.
-BUILD_TARGET=/root/venkat/linux-next/tools/testing/selftests/powerpc/mm; mkdir -p $BUILD_TARGET; make OUTPUT=$BUILD_TARGET -k -C mm all
-  CC       pkey_exec_prot
-In file included from pkey_exec_prot.c:18:
-/root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h: In function ‘pkeys_unsupported’:
-/root/venkat/linux-next/tools/testing/selftests/powerpc/include/pkeys.h:96:34: error: ‘PKEY_UNRESTRICTED’ undeclared (first use in this function)
-   96 |         pkey = sys_pkey_alloc(0, PKEY_UNRESTRICTED);
-      |                                  ^~~~~~~~~~~~~~~~~
 
-https://lore.kernel.org/all/20250113170619.484698-2-yury.khrustalev@arm.com/ patchset
-has been queued to arm64/for-next/pkey_unrestricted which is causing a build break
-in the selftest/powerpc builds.
+On 3/9/25 6:08 PM, Venkat Rao Bagalkote wrote:
+> Greetings!!,
+> 
+> I see linux-next-20250307 fails to build on IBM Power9 and Power10 servers.
+> 
+> 
+> Errors:
+> 
+> In file included from ^[[01m^[[K<command-line>^[[m^[[K:
+> ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or directory
+>    11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
+>       |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
+> compilation terminated.
+> make[4]: *** [usr/include/Makefile:85: usr/include/cxl/features.hdrtest] Error 1
+> make[3]: *** [scripts/Makefile.build:461: usr/include] Error 2
+> make[2]: *** [scripts/Makefile.build:461: usr] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+> arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: intra_function_call not a direct call
+> arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c: unannotated intra-function call
+> arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool: .text+0xe84: intra_function_call not a direct call
+> make[1]: *** [/home/linux_src/linux/Makefile:1997: .] Error 2
+> make: *** [Makefile:251: __sub-make] Error 2
+> 
+> Please add below tag, if you happen to fix this issue.
+> 
 
-Commit 6d61527d931ba ("mm/pkey: Add PKEY_UNRESTRICTED macro") added a macro
-PKEY_UNRESTRICTED to handle implicit literal value of 0x0 (which is "unrestricted").
-Add the same to selftest/powerpc/pkeys.h to fix the reported build break.
+Fixes has been posted to handle these errors 
 
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/lkml/3267ea6e-5a1a-4752-96ef-8351c912d386@linux.ibm.com/T/
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
----
-Catalin, can you take this fix via arm64/for-next/pkey_unrestricted?
-Patch applies clean on top of arm64/for-next/pkey_unrestricted
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/88876fb4e412203452e57d1037a1341cf15ccc7b.1741128981.git.christophe.leroy@csgroup.eu/
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/7aa7eb73fe6bc95ac210510e22394ca0ae227b69.1741128786.git.christophe.leroy@csgroup.eu/
 
- tools/testing/selftests/powerpc/include/pkeys.h | 3 +++
- 1 file changed, 3 insertions(+)
+and these are already part of powerpc/next-test, will be moved to powerpc/next soon
 
-diff --git a/tools/testing/selftests/powerpc/include/pkeys.h b/tools/testing/selftests/powerpc/include/pkeys.h
-index c6d4063dd4f6..d6deb6ffa1b9 100644
---- a/tools/testing/selftests/powerpc/include/pkeys.h
-+++ b/tools/testing/selftests/powerpc/include/pkeys.h
-@@ -24,6 +24,9 @@
- #undef PKEY_DISABLE_EXECUTE
- #define PKEY_DISABLE_EXECUTE	0x4
- 
-+#undef PKEY_UNRESTRICTED
-+#define PKEY_UNRESTRICTED	0x0
-+
- /* Older versions of libc do not define this */
- #ifndef SEGV_PKUERR
- #define SEGV_PKUERR	4
--- 
-2.48.1
+Maddy
+
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> 
+> 
+> Regards,
+> 
+> Venkat.
+> 
+> 
 
 
