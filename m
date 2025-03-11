@@ -1,71 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-6884-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6885-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D281A5BB0D
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 09:47:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA964A5BBFE
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 10:22:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBnT55Sytz3bmk;
-	Tue, 11 Mar 2025 19:47:37 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBpFl2c4Fz2yDr;
+	Tue, 11 Mar 2025 20:22:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741682857;
-	cv=none; b=M25L1k2jIabahn96jcv4zhr1bzBwlRQ0roXrvvkSXXbFzJ6MGpiQTyFk3DRZ9E5UvVTZtqF1VAYbcC6m3kE72xaWJCPnQ5+ipSy3JjkMo2GKHG+WoUcGF62tjPxYKJngjUm/GlJYx6UO5oi45NQ81S431DyYZ0txYmYpwKbqskbdTdDQ2Wno3NwEcm8YdiMygPoqDVDV88Ejaioxc+wLXuOOWLuGVZz7UGGHsZoFZcebSK6nhAEKjpkuOoaKOHW9G5fcTc5GUaF9Ei5p8lcVDuIPUOnghu9RwHb2gs4YCdpLYaJ2f9zu19ExmmhYzAqPtaflPaPT46JA8YJemmWypg==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741682857; c=relaxed/relaxed;
-	bh=1NEJHKreQRf8TYmEQtw7jBiV5M3M/i95+kR0z4U2GWs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=nWgGThy9LqqbrUl7RL5j6Uh8bgH2BvkwGUwZF4lCIO9xkvM8qFv7nwFqRVvRupnbfUtGhyLCML/q0wHYN0fvicD6RXvAlHgHecJR9tjJZFTH6v2E5V5Y8cYJYAB0tBtPKb7KjchdY2T3pETFM369fk5UU00SIo9UP7jyUSrRjrsafq9SZFSQaKOmTtyC3a0i3qIp2rL84a3lDtfT5sjNw0D+haQglRhnnzs5PjSUastn5j0KWrWyauZvlWRuvg9SZl0hRYVJoeuNaZfz6I8a+g+xq6zAq95nZmwb6S4GdmyhyMv8uSuxjDz4wKnIwEWE5Ka2IxupJnen/QdgiXP3+w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BBI+eHOG; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=136.143.188.112 arc.chain=zohomail.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741679789;
+	cv=pass; b=btVVoPMIQfDWU7NOaOrercLRo5qINC/Lypi/fJ9obb81jXV2bySWJYTmATJJ0WMTCnfOClBgIDAwq+8RaanMUV/AUx/jkKep73eG0aoKfHI+K6lsk3/06IoTQTeklFDTZPX05xl0WaVUfmFnkYPAEEVmyhPUeyfGKLNEFvv96Q9p3kct4VrVagb9VwGUrDNWvXk+JN2LbDzGvolTlf780IUpY3IXJyPDZmUExMr64zc8t7Lui7hVWDbcbUlFYbRRaZGa8NTxXBod+OASN6EEeGzZ2Y0rg+k3VQehtszWNomAtxjvSlEZxiEADPB4cka35Kmw2aRHKZETGvTu1hOOQg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1741679789; c=relaxed/relaxed;
+	bh=rUxu9n8PWJK8TIneFd17PvzeUgHqtOvu2tZv8yp40q0=;
+	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GKN5Wy/Hpo2m4YJPXW09o3V4iJ944aqQnyc22m3v8mQYeFDyEeML68M5KeiWNYUg5Ba5Xb9li6tL5RAPvNh0bdvTLhq1tp4Id+1CQRa30938f/P0qg8xtQxTtSfLZoB9UaT/sc80YeI+YVFyDg2VtkZIfW1qdGJUixhDAksxYAkwF686jlH8sy8EnnALhn2v6HS+FU01lAXtKq+GiZuYmc4pvkuDmgVQxjcCIDzFq4qkfvUDetzNfSMID26Z5vEDpiG/QUgKfWEB+GRvzNLFrai4RyElJV5tSW1wMP0781fEK1kF5+k05fLDAyR3spoA8zXeHKuvRttou5CP8BCbvw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com; dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Z9If5mae; dkim-atps=neutral; spf=pass (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=nicolas.frattaroli@collabora.com; receiver=lists.ozlabs.org) smtp.mailfrom=collabora.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=BBI+eHOG;
+	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Z9If5mae;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=nicolas.frattaroli@collabora.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 908 seconds by postgrey-1.37 at boromir; Tue, 11 Mar 2025 18:56:27 AEDT
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBnT446nLz2ywR
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 19:47:36 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B3kLgU002214;
-	Tue, 11 Mar 2025 08:47:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=1NEJHK
-	reQRf8TYmEQtw7jBiV5M3M/i95+kR0z4U2GWs=; b=BBI+eHOGNAdwr6qQjjtnvN
-	F9apyS7pbjUVj4tLXH2Ov0+FR9y4prd+DOulP8HPqihzMIhtHUoAR5qVzQ9ge104
-	l1eRef/NyCLWlV31EFWsphLAqwMKQ0XEHrib9N7GV/I+djWbUzXoXlBpwsspo3Lm
-	vKuiYVsqtZOu5Z87r+AXfZg4N9hqwXd2+FM2REqmb11qf/X8qPiyV0BL0+IcscsU
-	RRQ4MO/jdsLBD3J9zQ07rg1LmydHH2XvEi+8HRNVTs1SNn04u95Kw6rLJECKEeU6
-	AyK9ikY2tV30Zhi4ZCqrLPwcs+YOWJDG328y0DnwOGRXkN+nG+//eGhwEXnvbFVw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45adjb1cvq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 08:47:25 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B7Y4Bp014527;
-	Tue, 11 Mar 2025 08:47:24 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4592ekay60-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 08:47:24 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52B8lNWm5243588
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 08:47:23 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7241258062;
-	Tue, 11 Mar 2025 08:47:23 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7E32858045;
-	Tue, 11 Mar 2025 08:47:21 +0000 (GMT)
-Received: from [9.204.206.207] (unknown [9.204.206.207])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 11 Mar 2025 08:47:21 +0000 (GMT)
-Message-ID: <5cd65d1f-37ea-4051-82ea-e6879bfc288a@linux.ibm.com>
-Date: Tue, 11 Mar 2025 14:17:20 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBmL369dTz3bmS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 18:56:27 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1741678872; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=MJhSiQKukPtTuShQejA0RSWV7KKFmxqUrfq/CsZhbzBAJzMIS9hkibtJfIWN4KX1qvuXh3QFp83els47mloBQ+GXqjUrmKlgNH3+5DkQa9PTTnWcIp362dcno3tKSbbj+nui+JMAkoJR+7/dq3iHHDL2ILkv6+Xqkcp0QRUyoPU=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1741678872; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
+	bh=rUxu9n8PWJK8TIneFd17PvzeUgHqtOvu2tZv8yp40q0=; 
+	b=VhquqaV+T7/RkZdjXbx+nFpkn6Eu1ZFXBTCGteIroX8Py4NRkWBz6pmcieXmhwOtjZa5E0LBIx5xvBtuVkwHv/4DXWmeoKnLXttyY1qQVeNZN9+Tyva/x0duz+0aYd/7AThDTj+SryJ9Oo0vBGYp3BVj7C1mfFOte5FiGgnQy/M=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
+	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741678872;
+	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
+	h=From:From:To:To:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To:Cc;
+	bh=rUxu9n8PWJK8TIneFd17PvzeUgHqtOvu2tZv8yp40q0=;
+	b=Z9If5maeCv7yGZ/Xsg08ZcvYTveoMcZhhSAopHPvcoCY7JWGhF3P+tzvjFWRI2yF
+	9mTIGlkobmpUrMSvQUJOi3s7myhb4gcMKjOJ0/FHokoadlNjoGktX7UTajD8dmDCvZG
+	/mDaZ6+Iwh/PQXFJgWsPGYdvISHmkVX4L2a0L41A=
+Received: by mx.zohomail.com with SMTPS id 1741678868033939.9054328647139;
+	Tue, 11 Mar 2025 00:41:08 -0700 (PDT)
+From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+ Michael Ellerman <mpe@ellerman.id.au>, heiko@sntech.de,
+ srinivas.kandagatla@linaro.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: Re: [linux-next-20250307] Build Failure
+Date: Tue, 11 Mar 2025 08:41:04 +0100
+Message-ID: <5867354.DvuYhMxLoT@workhorse>
+In-Reply-To: <25306d01-db9d-42aa-9c26-2e18dfc30241@linux.ibm.com>
+References:
+ <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
+ <25306d01-db9d-42aa-9c26-2e18dfc30241@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,77 +73,124 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next-20250307] Build Failure
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 58Ph_biZIyZmFrfEOkZx5D3hQ7fGbute
-X-Proofpoint-GUID: 58Ph_biZIyZmFrfEOkZx5D3hQ7fGbute
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-11_01,2025-03-11_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=976
- spamscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 suspectscore=0
- adultscore=0 phishscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
- definitions=main-2503110057
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Tuesday, 11 March 2025 05:23:23 Central European Standard Time Venkat Rao 
+Bagalkote wrote:
+> Git Bisect is poinitng to commit:
+> 3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b as first bad commit.
+
+That does not seem like a correct bisection to me. The build error isn't even 
+in the same translation unit as the change the commit you landed on touches, 
+much less any subsystem even remotely related to it.
+
+> 
+> Git bisect log:
+> 
+> git bisect start
+> # status: waiting for both good and bad commits
+> # bad: [0a2f889128969dab41861b6e40111aa03dc57014] Add linux-next
+> specific files for 20250307
+> git bisect bad 0a2f889128969dab41861b6e40111aa03dc57014
+> # status: waiting for good commit(s), bad commit known
+> # good: [7eb172143d5508b4da468ed59ee857c6e5e01da6] Linux 6.14-rc5
+> git bisect good 7eb172143d5508b4da468ed59ee857c6e5e01da6
+> # good: [7eb172143d5508b4da468ed59ee857c6e5e01da6] Linux 6.14-rc5
+> git bisect good 7eb172143d5508b4da468ed59ee857c6e5e01da6
+> # good: [80ec13b98c6378cbf9b29d7ee7d3db930ddbd858] Merge branch 'master'
+> of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git
+> git bisect good 80ec13b98c6378cbf9b29d7ee7d3db930ddbd858
+> # good: [6c60220c45270869a7c5f791f6e0197b1f0d0388] Merge branch
+> 'driver-core-next' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
+> git bisect good 6c60220c45270869a7c5f791f6e0197b1f0d0388
+> # good: [187734f508b0a9a00ccaaf7d8ba05874b624ac73] Merge branch
+> 'for-next' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/remoteproc/linux.git
+> git bisect good 187734f508b0a9a00ccaaf7d8ba05874b624ac73
+> # good: [316ff3a28679b82eb2bf17c02dbca970e7433182] Merge branch
+> 'for-next/seccomp' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git
+> git bisect good 316ff3a28679b82eb2bf17c02dbca970e7433182
+> # bad: [69759c9d8dd7df716dcca3601b82e5618332cef7] Merge branch
+> 'rust-next' of https://github.com/Rust-for-Linux/linux.git
+> git bisect bad 69759c9d8dd7df716dcca3601b82e5618332cef7
+> # bad: [1e4eee5176c91b00e73cee90712a995668020a9c] Merge branch
+> 'mhi-next' of git://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git
+> git bisect bad 1e4eee5176c91b00e73cee90712a995668020a9c
+> # bad: [962bc2aae4f4295314d4a5f5c59a465f97f8b59a] Merge branch
+> 'for-next' of
+> git://git.kernel.org/pub/scm/linux/kernel/git/andy/linux-auxdisplay.git
+> git bisect bad 962bc2aae4f4295314d4a5f5c59a465f97f8b59a
+> # bad: [612fd001319aae2b514fc234939806cf3294dbba] Merge branch 'main' of
+> git://git.infradead.org/users/willy/xarray.git
+> git bisect bad 612fd001319aae2b514fc234939806cf3294dbba
+> # bad: [f5175dd69428ab517c8d68e772c4d287b6570d8e] dt-bindings: nvmem:
+> fixed-cell: increase bits start value to 31
+> git bisect bad f5175dd69428ab517c8d68e772c4d287b6570d8e
+> # bad: [8c94337ebbfb840944574f82df0cbe35930d8df8] dt-bindings: nvmem:
+> rockchip,otp: Add compatible for RK3576
+> git bisect bad 8c94337ebbfb840944574f82df0cbe35930d8df8
+> # bad: [024e21343f3cbcde0343473fcaf094d2c19cc7bf] nvmem: rockchip-otp:
+> Move read-offset into variant-data
+> git bisect bad 024e21343f3cbcde0343473fcaf094d2c19cc7bf
+> # bad: [3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b] clk: rockchip: rk3576:
+> define clk_otp_phy_g
+> git bisect bad 3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b
+> # first bad commit: [3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b] clk:
+> rockchip: rk3576: define clk_otp_phy_g
+> 
+> On 09/03/25 6:08 pm, Venkat Rao Bagalkote wrote:
+> > Greetings!!,
+> > 
+> > I see linux-next-20250307 fails to build on IBM Power9 and Power10
+> > servers.
+> > 
+> > 
+> > Errors:
+> > 
+> > In file included from ^[[01m^[[K<command-line>^[[m^[[K:
+
+"In file included from <command-line>" seems a little suspicious.
+
+> > ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K
+> > ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or directory
+> >    11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
+> >       |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
+> > compilation terminated.
+> > make[4]: *** [usr/include/Makefile:85:
+> > usr/include/cxl/features.hdrtest] Error 1
+> > make[3]: *** [scripts/Makefile.build:461: usr/include] Error 2
+> > make[2]: *** [scripts/Makefile.build:461: usr] Error 2
+> > make[2]: *** Waiting for unfinished jobs....
+> > arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4:
+> > intra_function_call not a direct call
+> > arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c:
+> > unannotated intra-function call
+> > arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool:
+> > .text+0xe84: intra_function_call not a direct call
+> > make[1]: *** [/home/linux_src/linux/Makefile:1997: .] Error 2
+> > make: *** [Makefile:251: __sub-make] Error 2
+> > 
+> > Please add below tag, if you happen to fix this issue.
+> > 
+> > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> > 
+> > 
+> > Regards,
+> > 
+> > Venkat.
+
+Regards,
+Nicolas Frattaroli
 
 
-On 3/9/25 6:08 PM, Venkat Rao Bagalkote wrote:
-> Greetings!!,
-> 
-> I see linux-next-20250307 fails to build on IBM Power9 and Power10 servers.
-> 
-> 
-> Errors:
-> 
-> In file included from ^[[01m^[[K<command-line>^[[m^[[K:
-> ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or directory
->    11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
->       |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
-> compilation terminated.
-> make[4]: *** [usr/include/Makefile:85: usr/include/cxl/features.hdrtest] Error 1
-> make[3]: *** [scripts/Makefile.build:461: usr/include] Error 2
-> make[2]: *** [scripts/Makefile.build:461: usr] Error 2
-> make[2]: *** Waiting for unfinished jobs....
-> arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: intra_function_call not a direct call
-> arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c: unannotated intra-function call
-> arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool: .text+0xe84: intra_function_call not a direct call
-> make[1]: *** [/home/linux_src/linux/Makefile:1997: .] Error 2
-> make: *** [Makefile:251: __sub-make] Error 2
-> 
-> Please add below tag, if you happen to fix this issue.
-> 
 
-Fixes has been posted to handle these errors 
-
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/88876fb4e412203452e57d1037a1341cf15ccc7b.1741128981.git.christophe.leroy@csgroup.eu/
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/7aa7eb73fe6bc95ac210510e22394ca0ae227b69.1741128786.git.christophe.leroy@csgroup.eu/
-
-and these are already part of powerpc/next-test, will be moved to powerpc/next soon
-
-Maddy
-
-> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> 
-> 
-> Regards,
-> 
-> Venkat.
-> 
-> 
 
 
