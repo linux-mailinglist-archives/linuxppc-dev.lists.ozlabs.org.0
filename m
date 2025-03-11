@@ -1,73 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6858-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6859-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E08AA5AE06
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 00:36:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9AC0A5B7F6
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 05:23:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBYDm5lwgz301Y;
-	Tue, 11 Mar 2025 10:36:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBgcf5cYhz30NF;
+	Tue, 11 Mar 2025 15:23:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741649768;
-	cv=none; b=mM1tXe0g8Oo56lnPx0iq0MqnrT4actTlv1kIDwL2bBy50tVfuiDy7LmUjObTxyE6ACWuQZGx6NohSxhJJjhDuVuwLc5V9tbQUMmZZ2Dvb32zn7GKbl4i6yYiVfBsrG8ZwzsqQEN3Qy9PJyPfZaQ7/INspzuC7ZtL33+9woo3TkLAOG6IS5O1o37qdgsWW6rmiuQQRDB+MYNjtKhRSLCdvBNEbCdyAx9pqxiop1stezssXQJ4AhFxrdEREKLqBljs7HKmGn2tFGNQMn85G9ZsLpEalYhecijaYzc8R0Wz0bCShqSoyMeM8HcUE+n1+trv5ZLYRy3nUsGGMNoEXHt22Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741667026;
+	cv=none; b=cbBt5/D8G3Ggw3GslKf2ZZAGZM/w8BvdAJgB8OlJO/c49f3I4XDFal0Ek0Cjxn3p1PA45nq2YgMfT3di3IgZE13HWGRRUAAtmTdR05V8nz56HbDZ/xEpF/YLOuqXmlp8JE+o5NPyaXSvA2otkTlSYzx0rlNQ9qt3Ib5U//VchhdDIN15x379EZsvvPZC0310K/3g4Oxxrz0FdGIS1uWYBP4DiK+f21XWQ9aN+GEK0KDmMaLGtFTnABmklaOCzDqwXUpvxfNUsim0dBCUs/5yAGUx3NezDHmjJ3WSXt3b51zkC6y8ZewM1qROc58HgOQFTrT2hFMx+sBGK6t5tg726A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741649768; c=relaxed/relaxed;
-	bh=R6Qo7w2ukDlO6wPlHSv9WlGLNVR1x0MNnFEj/CMEi60=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=QHvv9GI8F0/yFMRhKxCwp6kVhd8MyKYUVphPv6b8T3I9L9TZ5TlBElbRI3zOHQWyvkfJ2CpR/lR5U48JAMrUl72QPkuKggR2/DxYU0CSwlh5VC9vW/NFf3CBpuMMyN1ONoNzVM9VX/bm+JXup0cv8W0Ft/Dso7b2anP8iTjim0p7LuyJu9si7DZ0KjFO5PIbbhy9zz6Ks/4SqvlcIkMb/Ki0jlr5sJssdqf8gVoBNaXhFVvGyIeMWTtFztytQRwJ+HIbmvpd84aAHq/XZ6fZokg5B7GRhHxeXGrdoJ/NJ2zCMaVHrAhyKpUoHEzQ0xLFNtrBS5wrpGuT70zkqTFRcA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PtiytiJx; dkim-atps=neutral; spf=pass (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1741667026; c=relaxed/relaxed;
+	bh=2sFMT/OdFkBmM6SRLuEe3CsOlj5Z36F3ouTNqeEiRDY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=CoaVF6eqqdMKvNzOrLBBGHaqCxiU05Jmh+IzWeQrTxiIpAbTPlJThf3GOKvucf9cCwkMvNH6cPYDkGlApbCF8FtTTaew/THlbIKx1Xn3a5DTtHlbZh13TG/sVqfdLkUAW0e7LGTzUZPp6Q/2/2QjY56YL53MfZpYrGUL4m2UEOM8fuiZG1fG+BRrIZenYjWte1rGrcYbuag1B7owHfpzPYMAaHY01hgYii/5LOOsIi8YtIau3TcUbg86NVXf3GVO/ZMAu9Imxd2JsNRS+4049MLXqCdfB089gGIxf5NP3wUK4lQbowCEWpoSDX2EJV5PJX/fZrA6t7UoyjJp9M36JQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sYGR64IX; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=PtiytiJx;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=sYGR64IX;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBYDg1JvVz2yjV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 10:36:00 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741649763; x=1773185763;
-  h=date:from:to:cc:subject:message-id;
-  bh=kaG+xFQMkbozI46JAPR2SzEgvgjimMMYRlaawOWzUeI=;
-  b=PtiytiJxLvx1hvlxY3iCi86yBgV2FORoT5yg/jL2CblAUiKazkuczn9O
-   /FP1Walwv8zRaA39GPeetFcfWZDJzMG3LIS7JryTHAh+pXeKpmes4G/Sh
-   Zj/1il1P2LFzwMdBGhgQiQMZ/8B7G/I+QhlRDLeLFfg2DeSrxthGN2+jL
-   3MzGtP6doxSAZ2SoAHII/ucXjhZUmJY/siKhoAeJEH4KvaDfEvEpOaVDo
-   8ctNlUfretmSEZcJReVcI6ePq4nTW0YJcVFJWDmk7MME3t1W7YscEsM29
-   j0qlA4zchbfDidaxy9EmMvTHG0ZIbDLNek8m1MIMe1hV7usJ9+inWd5ni
-   g==;
-X-CSE-ConnectionGUID: rzXDFxTWRAeJ0xzCnh+C4w==
-X-CSE-MsgGUID: 5cMdEan0QM6GTc1WHABYNw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="30245274"
-X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; 
-   d="scan'208";a="30245274"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Mar 2025 16:35:57 -0700
-X-CSE-ConnectionGUID: DVKt7Bg+R72nKmGDumVMUg==
-X-CSE-MsgGUID: 45dWciXHSmOJZAqAllXX9Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,237,1736841600"; 
-   d="scan'208";a="124737123"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by fmviesa005.fm.intel.com with ESMTP; 10 Mar 2025 16:35:56 -0700
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1trmf4-0006BQ-1L;
-	Mon, 10 Mar 2025 23:35:54 +0000
-Date: Tue, 11 Mar 2025 07:35:21 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:next-test] BUILD SUCCESS
- 861efb8a48ee8b73ae4e8817509cd4e82fd52bc4
-Message-ID: <202503110713.6TxenSYO-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBgcc40cDz2yy9
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 15:23:43 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B3kAvq002047;
+	Tue, 11 Mar 2025 04:23:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=2sFMT/
+	OdFkBmM6SRLuEe3CsOlj5Z36F3ouTNqeEiRDY=; b=sYGR64IXHYFan1/GD1YUAT
+	Sdl48G7SQl9hePRi3K+9OKRYsNPV9FOeblSzbbN3Gi8VAAKNQ0M4CPTteLRtwwbj
+	jPrWKsnY3f4ZsNAJDSXCEzHJ5f0pKyOOzvzRZGMLKI4cvzZXVhHsCuzr2dtmoSs9
+	/HlNn4dH4dxlghk3ldfzjk93kKtnH3GUdC70gVAKUsrZ9PVqpwCXOToNqob88mZL
+	k1qTZ0gIiejpucWJmOIKXwRm2D1wntuNRG0Irsrrsv6aq7ci/0Sekb3fSsWXAjj+
+	qZImE/AfUBSYgaq/n3jQC9xfC/MBWbuvEXm7ztFuMgCWFM+VZLCIrNOKhdbZ98Vw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45adjb03nq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 04:23:29 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B2EPsM027566;
+	Tue, 11 Mar 2025 04:23:27 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4591qkj42u-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 04:23:27 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52B4NREV24314544
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Mar 2025 04:23:27 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 39DB658064;
+	Tue, 11 Mar 2025 04:23:27 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7414F58057;
+	Tue, 11 Mar 2025 04:23:24 +0000 (GMT)
+Received: from [9.204.204.161] (unknown [9.204.204.161])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Mar 2025 04:23:24 +0000 (GMT)
+Message-ID: <25306d01-db9d-42aa-9c26-2e18dfc30241@linux.ibm.com>
+Date: Tue, 11 Mar 2025 09:53:23 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,149 +77,131 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next-20250307] Build Failure
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+To: Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>,
+        heiko@sntech.de, srinivas.kandagatla@linaro.org,
+        nicolas.frattaroli@collabora.com
+References: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
+In-Reply-To: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: SkzSaid52IzM1svozZYcGsQPUODjGEY2
+X-Proofpoint-GUID: SkzSaid52IzM1svozZYcGsQPUODjGEY2
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-11_01,2025-03-07_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=981
+ spamscore=0 lowpriorityscore=0 clxscore=1011 malwarescore=0 suspectscore=0
+ adultscore=0 phishscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503110025
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
+X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next-test
-branch HEAD: 861efb8a48ee8b73ae4e8817509cd4e82fd52bc4  powerpc/kexec: fix physical address calculation in clear_utlb_entry()
+Git Bisect is poinitng to commit: 
+3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b as first bad commit.
 
-Warning ids grouped by kconfigs:
 
-recent_errors
-`-- powerpc-allnoconfig
-    `-- kismet:WARNING:unmet-direct-dependencies-detected-for-PPC_RADIX_BROADCAST_TLBIE-when-selected-by-PPC_POWERNV
+Git bisect log:
 
-elapsed time: 1078m
+git bisect start
+# status: waiting for both good and bad commits
+# bad: [0a2f889128969dab41861b6e40111aa03dc57014] Add linux-next 
+specific files for 20250307
+git bisect bad 0a2f889128969dab41861b6e40111aa03dc57014
+# status: waiting for good commit(s), bad commit known
+# good: [7eb172143d5508b4da468ed59ee857c6e5e01da6] Linux 6.14-rc5
+git bisect good 7eb172143d5508b4da468ed59ee857c6e5e01da6
+# good: [7eb172143d5508b4da468ed59ee857c6e5e01da6] Linux 6.14-rc5
+git bisect good 7eb172143d5508b4da468ed59ee857c6e5e01da6
+# good: [80ec13b98c6378cbf9b29d7ee7d3db930ddbd858] Merge branch 'master' 
+of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git
+git bisect good 80ec13b98c6378cbf9b29d7ee7d3db930ddbd858
+# good: [6c60220c45270869a7c5f791f6e0197b1f0d0388] Merge branch 
+'driver-core-next' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
+git bisect good 6c60220c45270869a7c5f791f6e0197b1f0d0388
+# good: [187734f508b0a9a00ccaaf7d8ba05874b624ac73] Merge branch 
+'for-next' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/remoteproc/linux.git
+git bisect good 187734f508b0a9a00ccaaf7d8ba05874b624ac73
+# good: [316ff3a28679b82eb2bf17c02dbca970e7433182] Merge branch 
+'for-next/seccomp' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git
+git bisect good 316ff3a28679b82eb2bf17c02dbca970e7433182
+# bad: [69759c9d8dd7df716dcca3601b82e5618332cef7] Merge branch 
+'rust-next' of https://github.com/Rust-for-Linux/linux.git
+git bisect bad 69759c9d8dd7df716dcca3601b82e5618332cef7
+# bad: [1e4eee5176c91b00e73cee90712a995668020a9c] Merge branch 
+'mhi-next' of git://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git
+git bisect bad 1e4eee5176c91b00e73cee90712a995668020a9c
+# bad: [962bc2aae4f4295314d4a5f5c59a465f97f8b59a] Merge branch 
+'for-next' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/andy/linux-auxdisplay.git
+git bisect bad 962bc2aae4f4295314d4a5f5c59a465f97f8b59a
+# bad: [612fd001319aae2b514fc234939806cf3294dbba] Merge branch 'main' of 
+git://git.infradead.org/users/willy/xarray.git
+git bisect bad 612fd001319aae2b514fc234939806cf3294dbba
+# bad: [f5175dd69428ab517c8d68e772c4d287b6570d8e] dt-bindings: nvmem: 
+fixed-cell: increase bits start value to 31
+git bisect bad f5175dd69428ab517c8d68e772c4d287b6570d8e
+# bad: [8c94337ebbfb840944574f82df0cbe35930d8df8] dt-bindings: nvmem: 
+rockchip,otp: Add compatible for RK3576
+git bisect bad 8c94337ebbfb840944574f82df0cbe35930d8df8
+# bad: [024e21343f3cbcde0343473fcaf094d2c19cc7bf] nvmem: rockchip-otp: 
+Move read-offset into variant-data
+git bisect bad 024e21343f3cbcde0343473fcaf094d2c19cc7bf
+# bad: [3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b] clk: rockchip: rk3576: 
+define clk_otp_phy_g
+git bisect bad 3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b
+# first bad commit: [3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b] clk: 
+rockchip: rk3576: define clk_otp_phy_g
 
-configs tested: 122
-configs skipped: 4
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-alpha                             allnoconfig    gcc-14.2.0
-alpha                            allyesconfig    gcc-14.2.0
-arc                              allmodconfig    gcc-13.2.0
-arc                               allnoconfig    gcc-13.2.0
-arc                              allyesconfig    gcc-13.2.0
-arc                   randconfig-001-20250310    gcc-13.2.0
-arc                   randconfig-002-20250310    gcc-13.2.0
-arm                              allmodconfig    gcc-14.2.0
-arm                               allnoconfig    clang-17
-arm                              allyesconfig    gcc-14.2.0
-arm                          pxa3xx_defconfig    clang-21
-arm                   randconfig-001-20250310    clang-21
-arm                   randconfig-002-20250310    gcc-14.2.0
-arm                   randconfig-003-20250310    gcc-14.2.0
-arm                   randconfig-004-20250310    clang-21
-arm64                            allmodconfig    clang-18
-arm64                             allnoconfig    gcc-14.2.0
-arm64                 randconfig-001-20250310    clang-19
-arm64                 randconfig-002-20250310    clang-17
-arm64                 randconfig-003-20250310    clang-15
-arm64                 randconfig-004-20250310    clang-17
-csky                              allnoconfig    gcc-14.2.0
-csky                  randconfig-001-20250310    gcc-14.2.0
-csky                  randconfig-002-20250310    gcc-14.2.0
-hexagon                          allmodconfig    clang-21
-hexagon                           allnoconfig    clang-21
-hexagon                          allyesconfig    clang-18
-hexagon               randconfig-001-20250310    clang-21
-hexagon               randconfig-002-20250310    clang-21
-i386                             allmodconfig    gcc-12
-i386                              allnoconfig    gcc-12
-i386                             allyesconfig    gcc-12
-i386        buildonly-randconfig-001-20250310    clang-19
-i386        buildonly-randconfig-002-20250310    clang-19
-i386        buildonly-randconfig-003-20250310    clang-19
-i386        buildonly-randconfig-004-20250310    clang-19
-i386        buildonly-randconfig-005-20250310    clang-19
-i386        buildonly-randconfig-006-20250310    clang-19
-i386                                defconfig    clang-19
-loongarch                        allmodconfig    gcc-14.2.0
-loongarch                         allnoconfig    gcc-14.2.0
-loongarch             randconfig-001-20250310    gcc-14.2.0
-loongarch             randconfig-002-20250310    gcc-14.2.0
-m68k                             allmodconfig    gcc-14.2.0
-m68k                              allnoconfig    gcc-14.2.0
-m68k                             allyesconfig    gcc-14.2.0
-m68k                       m5275evb_defconfig    gcc-14.2.0
-m68k                        m5307c3_defconfig    gcc-14.2.0
-microblaze                       allmodconfig    gcc-14.2.0
-microblaze                        allnoconfig    gcc-14.2.0
-microblaze                       allyesconfig    gcc-14.2.0
-mips                              allnoconfig    gcc-14.2.0
-nios2                             allnoconfig    gcc-14.2.0
-nios2                 randconfig-001-20250310    gcc-14.2.0
-nios2                 randconfig-002-20250310    gcc-14.2.0
-openrisc                          allnoconfig    gcc-14.2.0
-openrisc                         allyesconfig    gcc-14.2.0
-openrisc                            defconfig    gcc-14.2.0
-parisc                           allmodconfig    gcc-14.2.0
-parisc                            allnoconfig    gcc-14.2.0
-parisc                           allyesconfig    gcc-14.2.0
-parisc                              defconfig    gcc-14.2.0
-parisc                randconfig-001-20250310    gcc-14.2.0
-parisc                randconfig-002-20250310    gcc-14.2.0
-powerpc                           allnoconfig    gcc-14.2.0
-powerpc                          allyesconfig    clang-16
-powerpc                 canyonlands_defconfig    clang-19
-powerpc                    ge_imp3a_defconfig    gcc-14.2.0
-powerpc               randconfig-001-20250310    clang-17
-powerpc               randconfig-002-20250310    clang-21
-powerpc               randconfig-003-20250310    clang-17
-powerpc64             randconfig-001-20250310    gcc-14.2.0
-powerpc64             randconfig-002-20250310    gcc-14.2.0
-powerpc64             randconfig-003-20250310    gcc-14.2.0
-riscv                             allnoconfig    gcc-14.2.0
-riscv                            allyesconfig    clang-21
-riscv                               defconfig    clang-19
-riscv                 randconfig-001-20250310    clang-19
-riscv                 randconfig-002-20250310    gcc-14.2.0
-s390                             allmodconfig    clang-19
-s390                              allnoconfig    clang-15
-s390                             allyesconfig    gcc-14.2.0
-s390                                defconfig    clang-15
-s390                  randconfig-001-20250310    gcc-14.2.0
-s390                  randconfig-002-20250310    clang-18
-s390                       zfcpdump_defconfig    clang-19
-sh                               allmodconfig    gcc-14.2.0
-sh                                allnoconfig    gcc-14.2.0
-sh                               allyesconfig    gcc-14.2.0
-sh                                  defconfig    gcc-14.2.0
-sh                    randconfig-001-20250310    gcc-14.2.0
-sh                    randconfig-002-20250310    gcc-14.2.0
-sh                          rsk7203_defconfig    gcc-14.2.0
-sh                        sh7763rdp_defconfig    gcc-14.2.0
-sh                            titan_defconfig    gcc-14.2.0
-sparc                            allmodconfig    gcc-14.2.0
-sparc                             allnoconfig    gcc-14.2.0
-sparc                 randconfig-001-20250310    gcc-14.2.0
-sparc                 randconfig-002-20250310    gcc-14.2.0
-sparc64                             defconfig    gcc-14.2.0
-sparc64               randconfig-001-20250310    gcc-14.2.0
-sparc64               randconfig-002-20250310    gcc-14.2.0
-um                               allmodconfig    clang-21
-um                                allnoconfig    clang-18
-um                               allyesconfig    gcc-12
-um                                  defconfig    clang-21
-um                             i386_defconfig    gcc-12
-um                    randconfig-001-20250310    gcc-12
-um                    randconfig-002-20250310    clang-17
-um                           x86_64_defconfig    clang-15
-x86_64                            allnoconfig    clang-19
-x86_64                           allyesconfig    clang-19
-x86_64      buildonly-randconfig-001-20250310    gcc-12
-x86_64      buildonly-randconfig-002-20250310    clang-19
-x86_64      buildonly-randconfig-003-20250310    clang-19
-x86_64      buildonly-randconfig-004-20250310    clang-19
-x86_64      buildonly-randconfig-005-20250310    clang-19
-x86_64      buildonly-randconfig-006-20250310    gcc-12
-x86_64                              defconfig    gcc-11
-xtensa                            allnoconfig    gcc-14.2.0
-xtensa                randconfig-001-20250310    gcc-14.2.0
-xtensa                randconfig-002-20250310    gcc-14.2.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On 09/03/25 6:08 pm, Venkat Rao Bagalkote wrote:
+> Greetings!!,
+>
+> I see linux-next-20250307 fails to build on IBM Power9 and Power10 
+> servers.
+>
+>
+> Errors:
+>
+> In file included from ^[[01m^[[K<command-line>^[[m^[[K:
+> ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K 
+> ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or directory
+>    11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
+>       |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
+> compilation terminated.
+> make[4]: *** [usr/include/Makefile:85: 
+> usr/include/cxl/features.hdrtest] Error 1
+> make[3]: *** [scripts/Makefile.build:461: usr/include] Error 2
+> make[2]: *** [scripts/Makefile.build:461: usr] Error 2
+> make[2]: *** Waiting for unfinished jobs....
+> arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: 
+> intra_function_call not a direct call
+> arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c: 
+> unannotated intra-function call
+> arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool: 
+> .text+0xe84: intra_function_call not a direct call
+> make[1]: *** [/home/linux_src/linux/Makefile:1997: .] Error 2
+> make: *** [Makefile:251: __sub-make] Error 2
+>
+> Please add below tag, if you happen to fix this issue.
+>
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>
+>
+> Regards,
+>
+> Venkat.
+>
 
