@@ -1,74 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-6887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6888-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 175C6A5BC71
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 10:39:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A2CA5BC74
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 10:41:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBpdC3qYWz3bnB;
-	Tue, 11 Mar 2025 20:39:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBpfq3DXfz3bnc;
+	Tue, 11 Mar 2025 20:41:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.11
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741685983;
-	cv=none; b=elswQ76VVeQaQWELum6Z6m+bZj/7GBgkz7QzpiK7BrPvXiy4CkAUdbwQT7p33pPPkZheMsh85wKsXFh0dfZJIa3+8uz1TriQMt9MBaTQSRR12r51QTerW7AxqLFdSPY0IncHkMhlijSGXckF+RBJSfZdgeA2ADQtrgkb8ZiIO+Iu3TkNgHDRGvFf+j08uuAgmT++b4JgbD5PHFxfY+K5hOEZnVfeZCOCkN5XBgCgjyvuRLEKhEpPvANFkPysGKp1gqaQYwM7qLnVKTRfXQN7//8uNfPTS8V4e7h4MnQtQ/qkqKVE03XkZEJejQGFKwi/5JicDfUmwHjv0o4N5bkGyA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741686067;
+	cv=none; b=eYGeuq4m4H2E85vgNhgms6byb34vxxcCVdofrU8fjnHjab8y0ay/F16KmVk/6HYcqpBhgw2yywvDW2Y6rLlvQXZVB4k4SY5jjbBmvuAF+JBEFJNDgK7DnWsKHEXme/TQ1neA0YGEbzU/a12fAkHJUlFzEpv/brguqF3GBlQUNIUNxjQgYLvXTczPy5Q6SkW2lrpTQUnMTbw3QI8/5Xwec51Lzy+74jQabDqvMs6BwIoou/uHzDnG7HF5yFaeOEfoFh0I23eetlzernLvWYunLdT7ldny+W200ZnHWuwo5ecc6mPSO36x8MLS4eiZ37oJiIJu1CGWIx6gVT+uP+9iow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741685983; c=relaxed/relaxed;
-	bh=102wf9qd2ao6CQWIkgU3BxaLpSqzYGDhMeXtkxNmqtE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bOhEz0FvGEXsk+9b8RMctc1dxf5XQqj3agY90BCRm4lv/F2SIuKCBU/RMT/lW2vuczR+8YCDEKmOlA6nyQR1VOpbBYG78X/A0JnkZoLfY83JtwX/yKqcW7XkoZGTefbl3p3nVLmBHsdRWO7zQBeKu8y7md2KPPYvtkyCvIjr6oHXfbvRXy0TaQvZ5ZcPVRgiH3y8hH/wi6Yf/+CxqKGQaGKHGGub9aD0U4h6GY90CN06Rwhqhrt5N8xag8p8rFusos5AByhYMIr8K10IcLlJOcjixA15IQ+6MPaF4jnJ/TjdBTMN2UlizO1zLbXwVkZhlIc1ulJffv1Q2YCGsahB1A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ipymuPYV; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1741686067; c=relaxed/relaxed;
+	bh=6I1b0TCf0861eUg0j1bG0JIXQ0cQRlMRhcps9J6sxtY=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:References:
+	 In-Reply-To:Content-Type; b=Y/JWiYrDkvWPCTENKVJAUbFpHZ0n8lTMsCvS8k66Q9SPdgGSpLjD1ZGUs6SWdK7CbOTwaemkgbwtpiW2RLz6IjQATzWqU3I7rk5v18xZkPhwH4q28fTmVhFiGaf60DhKU6GW545AxH1DrXCR2+LCBFTd9cX+WsZzRB+vsYD5UPhE7gc7kxLc4DI8rp9HPnWiIh0FWEvL2cXYecSOQodTitjnIqj72pTnh/v0MpNVhScqrt8o7R3HtLaS42I4Tnjzp7WsSFdWx3c0i04NZJsxy3lP3+z06qeyLLc/d5lSu0vl6Ke72sWKNwkxwCeTABvxdZtVqMHICnPxQXJHTN0irg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SsJLQwkg; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ipymuPYV;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SsJLQwkg;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBpd925szz3blv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 20:39:38 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741685981; x=1773221981;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=W+ThvGzyags0oy0GD0f6DFZf/gVocxjUqYpDIHny/is=;
-  b=ipymuPYVxkiEP+3Az1xhzR/jFxBWOdcMtDTVC9P4BfRFs/1XMUwisw/h
-   YLZ6rJDY22Gt8UrI68A+NDZE/RRfevtc5AYjZK7O77db8f6AfHaCYRvf1
-   pp/9myqY9Deq9E4WKegoN7rQjBKjpGGrR4PcrqUGVvPsfVPYcdbexV0rX
-   2hOyXKpDii5pou1UWjqqwLaMT7By9dgEtai48V6qhYHc9sk4niYwssB42
-   Z8hnFU3AMgS26vGei/mogDsOVRRSXLBfuPzOGD/JY5Bv8xk1/koHLq95Q
-   Wpz0fNUU1mMIiR4IboS4EeH+x8ilDcnrYERYlE2oZsA/quNip8PODqi0Y
-   Q==;
-X-CSE-ConnectionGUID: LbV7JIMcROCoIIybwuJYeA==
-X-CSE-MsgGUID: p5Q+EzwrRRuRHk8c9xD2OA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="53356860"
-X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
-   d="scan'208";a="53356860"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 02:39:35 -0700
-X-CSE-ConnectionGUID: zmlavfLxSxOrlhQRGn1sdw==
-X-CSE-MsgGUID: q1Pg65+qTAGO+/rVHn6w4w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
-   d="scan'208";a="121176978"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by orviesa008.jf.intel.com with ESMTP; 11 Mar 2025 02:39:32 -0700
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1trw57-0006XE-0P;
-	Tue, 11 Mar 2025 09:39:26 +0000
-Date: Tue, 11 Mar 2025 17:38:26 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, msuchanek@suse.de, mahesh@linux.ibm.com,
-	tyreld@linux.ibm.com, hbabu@us.ibm.com, haren@linux.ibm.com,
-	sv@linux.ibm.com
-Subject: Re: [PATCH v7 3/7] powerpc/pseries: Add papr-indices char driver for
- ibm,get-indices
-Message-ID: <202503111710.tsPk3Snj-lkp@intel.com>
-References: <20250309213916.762116-4-haren@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBpfl282cz3blv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 20:41:03 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B3kS8V002310;
+	Tue, 11 Mar 2025 09:40:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=6I1b0T
+	Cf0861eUg0j1bG0JIXQ0cQRlMRhcps9J6sxtY=; b=SsJLQwkgvh8isfsMPCQHrt
+	hDZid+Nr+rEUHXY7rcMrGVcAZce1RrwlC3mQ20PZIWKkLwZW9dYcgfE/DVTYKaa8
+	qoPxR/Q2vYDlSRf6RxTC4iCjYzkbjqXBy0s1rJEsECRUy4+VWnol4NpIQ2PWOBTZ
+	fxDUXE94IEEnd3ZxJj9kEz8ojwtkwCjgk4sH3c3SqVf3P7tgC4IrzaL0Ccf4f3kW
+	BpM6++k4Ny0+IUrzGT2n4SPqHxZbHtyc0Fo6Q2ZFkJAJQiacUdPqwxMyHMUyP15T
+	CRy06biemw/FqjBFisEXtQz9Q7aC81Vx7Oqr4YWkU1inZv5QG1Wwe+P9taSQJV2g
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45adjb1nnh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 09:40:51 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B7Z4e1014483;
+	Tue, 11 Mar 2025 09:40:50 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4592ekb5ny-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 09:40:50 +0000
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52B9eoRv65470974
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Mar 2025 09:40:50 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 07C765805E;
+	Tue, 11 Mar 2025 09:40:50 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3347458056;
+	Tue, 11 Mar 2025 09:40:48 +0000 (GMT)
+Received: from [9.204.206.207] (unknown [9.204.206.207])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 11 Mar 2025 09:40:47 +0000 (GMT)
+Message-ID: <601912e0-e257-4f3f-9c41-6d957d42b746@linux.ibm.com>
+Date: Tue, 11 Mar 2025 15:10:46 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,77 +78,90 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250309213916.762116-4-haren@linux.ibm.com>
-X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next-20250307] Build Failure
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
+References: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
+ <5cd65d1f-37ea-4051-82ea-e6879bfc288a@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <5cd65d1f-37ea-4051-82ea-e6879bfc288a@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: QufTZr0CAMkhLyVmBox5kbEIR-2L574Q
+X-Proofpoint-GUID: QufTZr0CAMkhLyVmBox5kbEIR-2L574Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-11_01,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 mlxlogscore=999
+ spamscore=0 lowpriorityscore=0 clxscore=1015 malwarescore=0 suspectscore=0
+ adultscore=0 phishscore=0 impostorscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502100000
+ definitions=main-2503110064
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Haren,
-
-kernel test robot noticed the following build warnings:
-
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.14-rc6]
-[cannot apply to next-20250307]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Haren-Myneni/powerpc-pseries-Define-common-functions-for-RTAS-sequence-calls/20250310-054319
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20250309213916.762116-4-haren%40linux.ibm.com
-patch subject: [PATCH v7 3/7] powerpc/pseries: Add papr-indices char driver for ibm,get-indices
-config: powerpc64-randconfig-r072-20250311 (https://download.01.org/0day-ci/archive/20250311/202503111710.tsPk3Snj-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project e15545cad8297ec7555f26e5ae74a9f0511203e7)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250311/202503111710.tsPk3Snj-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503111710.tsPk3Snj-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> arch/powerpc/platforms/pseries/papr-indices.c:124: warning: Function parameter or struct member 'seq' not described in 'indices_sequence_begin'
 
 
-vim +124 arch/powerpc/platforms/pseries/papr-indices.c
+On 3/11/25 2:17 PM, Madhavan Srinivasan wrote:
+> 
+> 
+> On 3/9/25 6:08 PM, Venkat Rao Bagalkote wrote:
+>> Greetings!!,
+>>
+>> I see linux-next-20250307 fails to build on IBM Power9 and Power10 servers.
+>>
+>>
+>> Errors:
+>>
+>> In file included from ^[[01m^[[K<command-line>^[[m^[[K:
+>> ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or directory
+>>    11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
+>>       |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
+>> compilation terminated.
 
-   110	
-   111	/*
-   112	 * Internal indices sequence APIs. A sequence is a series of calls to
-   113	 * ibm,get-indices for a given location code. The sequence ends when
-   114	 * an error is encountered or all indices for the input has been
-   115	 * returned.
-   116	 */
-   117	
-   118	/**
-   119	 * indices_sequence_begin() - Begin a indices retrieval sequence.
-   120	 *
-   121	 * Context: May sleep.
-   122	 */
-   123	static void indices_sequence_begin(struct papr_rtas_sequence *seq)
- > 124	{
-   125		struct rtas_get_indices_params  *param;
-   126	
-   127		param = (struct rtas_get_indices_params *)seq->params;
-   128		/*
-   129		 * We could allocate the work area before acquiring the
-   130		 * function lock, but that would allow concurrent requests to
-   131		 * exhaust the limited work area pool for no benefit. So
-   132		 * allocate the work area under the lock.
-   133		 */
-   134		mutex_lock(&rtas_ibm_get_indices_lock);
-   135		param->work_area = rtas_work_area_alloc(RTAS_GET_INDICES_BUF_SIZE);
-   136		param->next = 1;
-   137		param->status = 0;
-   138	}
-   139	
+This is new report, needs to debug 
+Fixes i was pointing out is for the objtool errors.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Maddy
+
+
+>> make[4]: *** [usr/include/Makefile:85: usr/include/cxl/features.hdrtest] Error 1
+>> make[3]: *** [scripts/Makefile.build:461: usr/include] Error 2
+>> make[2]: *** [scripts/Makefile.build:461: usr] Error 2
+>> make[2]: *** Waiting for unfinished jobs....
+>> arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4: intra_function_call not a direct call
+>> arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c: unannotated intra-function call
+>> arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool: .text+0xe84: intra_function_call not a direct call
+>> make[1]: *** [/home/linux_src/linux/Makefile:1997: .] Error 2
+>> make: *** [Makefile:251: __sub-make] Error 2
+>>
+>> Please add below tag, if you happen to fix this issue.
+>>
+> 
+> Fixes has been posted to handle these errors 
+> 
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/88876fb4e412203452e57d1037a1341cf15ccc7b.1741128981.git.christophe.leroy@csgroup.eu/
+> https://patchwork.ozlabs.org/project/linuxppc-dev/patch/7aa7eb73fe6bc95ac210510e22394ca0ae227b69.1741128786.git.christophe.leroy@csgroup.eu/
+> 
+> and these are already part of powerpc/next-test, will be moved to powerpc/next soon
+> 
+> Maddy
+> 
+>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>>
+>>
+>> Regards,
+>>
+>> Venkat.
+>>
+>>
+> 
+> 
+
 
