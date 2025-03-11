@@ -1,66 +1,95 @@
-Return-Path: <linuxppc-dev+bounces-6885-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6886-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA964A5BBFE
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 10:22:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C137A5BC54
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 10:32:28 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBpFl2c4Fz2yDr;
-	Tue, 11 Mar 2025 20:22:51 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBpSn5dh0z30Vs;
+	Tue, 11 Mar 2025 20:32:25 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=136.143.188.112 arc.chain=zohomail.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741679789;
-	cv=pass; b=btVVoPMIQfDWU7NOaOrercLRo5qINC/Lypi/fJ9obb81jXV2bySWJYTmATJJ0WMTCnfOClBgIDAwq+8RaanMUV/AUx/jkKep73eG0aoKfHI+K6lsk3/06IoTQTeklFDTZPX05xl0WaVUfmFnkYPAEEVmyhPUeyfGKLNEFvv96Q9p3kct4VrVagb9VwGUrDNWvXk+JN2LbDzGvolTlf780IUpY3IXJyPDZmUExMr64zc8t7Lui7hVWDbcbUlFYbRRaZGa8NTxXBod+OASN6EEeGzZ2Y0rg+k3VQehtszWNomAtxjvSlEZxiEADPB4cka35Kmw2aRHKZETGvTu1hOOQg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741679789; c=relaxed/relaxed;
-	bh=rUxu9n8PWJK8TIneFd17PvzeUgHqtOvu2tZv8yp40q0=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GKN5Wy/Hpo2m4YJPXW09o3V4iJ944aqQnyc22m3v8mQYeFDyEeML68M5KeiWNYUg5Ba5Xb9li6tL5RAPvNh0bdvTLhq1tp4Id+1CQRa30938f/P0qg8xtQxTtSfLZoB9UaT/sc80YeI+YVFyDg2VtkZIfW1qdGJUixhDAksxYAkwF686jlH8sy8EnnALhn2v6HS+FU01lAXtKq+GiZuYmc4pvkuDmgVQxjcCIDzFq4qkfvUDetzNfSMID26Z5vEDpiG/QUgKfWEB+GRvzNLFrai4RyElJV5tSW1wMP0781fEK1kF5+k05fLDAyR3spoA8zXeHKuvRttou5CP8BCbvw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com; dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Z9If5mae; dkim-atps=neutral; spf=pass (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=nicolas.frattaroli@collabora.com; receiver=lists.ozlabs.org) smtp.mailfrom=collabora.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741685545;
+	cv=none; b=nnoeX//zgXSkmosJPCYyi1U1o8GUYY7gbT3StRrOEuHsNiqGW7k+2Js6uY6Gi34GtBtb/2fLAKqaXqeD8YWxTyRg9ISfLIX018lz2OMR0NHD2VA83JleEDMd7+j5umn395nyDFHfwqoVCxC35PXrvVqJW20AieoFRKLErXnhSMGU5z6pgY0JYDLN0Srb++ZRdnSGMvDgrKKG0ke2EadoeaWUfqC8wQqx3m2i3bdxws6qQDaxEv0IbSpjP/x2IxjHOaei7KsILxwIv3npaWl7xmd/K78U963rpy7IQ4gdd3AZ/dwdNPZ7N8yfLuuel0MrDnh8KgvX3XVdx3Wa43h/YA==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1741685545; c=relaxed/relaxed;
+	bh=86NBFuRadsVUmel+UiOUBCdQv1HrG0o3+CvP/y7JgRk=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=D80oUHkVIqD6xwDOcbhN2jd27Hnw2i6JmOVykh/EHvgl/sMpBEVaUu+p/l4H4PGeBrWvV/xgAkuiIIyfzC08UlbBXSAIDr2ycLfyrV9kQSjaH0IrgigRLoMOVhRROjG1Z3e4+6ZhiIBxmKlwYKcpOuXrpwI161g3fTKVhmzksOsEA3XBf8D1N3bvtMsBeHrezcit7vzfij+jikgCpBXkc/qP8i13t+i/L7HURIU0bgh/oiyacfIZuNV3yZUHfETPU0gO6chli2vnWLlwbRdxrgttXHY3/5zoxfF+OcmIcK0D7FPc1uk2wsW2rj/G/HGiygH++6tHD/8AxxphIpkkJw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tSK4mao4; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=collabora.com header.i=nicolas.frattaroli@collabora.com header.a=rsa-sha256 header.s=zohomail header.b=Z9If5mae;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tSK4mao4;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=collabora.com (client-ip=136.143.188.112; helo=sender4-pp-f112.zoho.com; envelope-from=nicolas.frattaroli@collabora.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 908 seconds by postgrey-1.37 at boromir; Tue, 11 Mar 2025 18:56:27 AEDT
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBmL369dTz3bmS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 18:56:27 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1741678872; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=MJhSiQKukPtTuShQejA0RSWV7KKFmxqUrfq/CsZhbzBAJzMIS9hkibtJfIWN4KX1qvuXh3QFp83els47mloBQ+GXqjUrmKlgNH3+5DkQa9PTTnWcIp362dcno3tKSbbj+nui+JMAkoJR+7/dq3iHHDL2ILkv6+Xqkcp0QRUyoPU=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1741678872; h=Content-Type:Content-Transfer-Encoding:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To:Cc; 
-	bh=rUxu9n8PWJK8TIneFd17PvzeUgHqtOvu2tZv8yp40q0=; 
-	b=VhquqaV+T7/RkZdjXbx+nFpkn6Eu1ZFXBTCGteIroX8Py4NRkWBz6pmcieXmhwOtjZa5E0LBIx5xvBtuVkwHv/4DXWmeoKnLXttyY1qQVeNZN9+Tyva/x0duz+0aYd/7AThDTj+SryJ9Oo0vBGYp3BVj7C1mfFOte5FiGgnQy/M=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=nicolas.frattaroli@collabora.com;
-	dmarc=pass header.from=<nicolas.frattaroli@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1741678872;
-	s=zohomail; d=collabora.com; i=nicolas.frattaroli@collabora.com;
-	h=From:From:To:To:Subject:Subject:Date:Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Transfer-Encoding:Content-Type:Message-Id:Reply-To:Cc;
-	bh=rUxu9n8PWJK8TIneFd17PvzeUgHqtOvu2tZv8yp40q0=;
-	b=Z9If5maeCv7yGZ/Xsg08ZcvYTveoMcZhhSAopHPvcoCY7JWGhF3P+tzvjFWRI2yF
-	9mTIGlkobmpUrMSvQUJOi3s7myhb4gcMKjOJ0/FHokoadlNjoGktX7UTajD8dmDCvZG
-	/mDaZ6+Iwh/PQXFJgWsPGYdvISHmkVX4L2a0L41A=
-Received: by mx.zohomail.com with SMTPS id 1741678868033939.9054328647139;
-	Tue, 11 Mar 2025 00:41:08 -0700 (PDT)
-From: Nicolas Frattaroli <nicolas.frattaroli@collabora.com>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>, heiko@sntech.de,
- srinivas.kandagatla@linaro.org, Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Subject: Re: [linux-next-20250307] Build Failure
-Date: Tue, 11 Mar 2025 08:41:04 +0100
-Message-ID: <5867354.DvuYhMxLoT@workhorse>
-In-Reply-To: <25306d01-db9d-42aa-9c26-2e18dfc30241@linux.ibm.com>
-References:
- <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
- <25306d01-db9d-42aa-9c26-2e18dfc30241@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBpSm5YHvz2yD8
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 20:32:24 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B7oCeA015900;
+	Tue, 11 Mar 2025 09:32:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=86NBFu
+	RadsVUmel+UiOUBCdQv1HrG0o3+CvP/y7JgRk=; b=tSK4mao4KUwoOmAjNnVRSd
+	metRAR4FyJ8ev6EFsKuva3J59LXbycP4ibjfxxpCODbCNN0bmJzun5tQkAXMmC8A
+	JnEGR9QfDu9oa3PEct3prjLz0324Lu3hGzv/6pewsgYqg2rNih6+06whS7NA1zmV
+	k9yn6ZNv5F+R5ULJh5s6XH8q+T7QstjSOoVX+FcN7/ECA44iYU7mu8Egf138U2oZ
+	XlxAkYGEypf14AdOR9mby9tpgCv/4aawj3P5eUhO2TrN+OlCzBdd7Saqn1KS1gAd
+	AtpVWqqgc7UIZghKaGj1rpVZWUU/e2Y1nQrz+4SNwe4kIS/9fCy6Ow+U0GRR75UQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45a1gp544n-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 09:32:16 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52B8rPk4008649;
+	Tue, 11 Mar 2025 09:32:16 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45a1gp544f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 09:32:16 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B6Sdi8022265;
+	Tue, 11 Mar 2025 09:32:15 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45917nbddd-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 11 Mar 2025 09:32:15 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52B9WBTr39584246
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 11 Mar 2025 09:32:11 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8BD1D20043;
+	Tue, 11 Mar 2025 09:32:11 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6DE6520040;
+	Tue, 11 Mar 2025 09:32:07 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.39.19.180])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 11 Mar 2025 09:32:07 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Tue, 11 Mar 2025 15:02:06 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Athira Rajeev <atrajeev@linux.ibm.com>
+Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm@vger.kernel.org,
+        kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin
+ <npiggin@gmail.com>,
+        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
+        sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
+        amachhiw@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
+Subject: Re: [PATCH v4 6/6] powerpc/kvm-hv-pmu: Add perf-events for Hostwide
+ counters
+In-Reply-To: <96795462-3AFA-4C90-9E63-ACB9AE3E66EE@linux.ibm.com>
+References: <20250224131522.77104-1-vaibhav@linux.ibm.com>
+ <20250224131522.77104-7-vaibhav@linux.ibm.com>
+ <96795462-3AFA-4C90-9E63-ACB9AE3E66EE@linux.ibm.com>
+Date: Tue, 11 Mar 2025 15:02:06 +0530
+Message-ID: <87ikofud49.fsf@vajain21.in.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,124 +102,242 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Spam-Status: No, score=-0.2 required=5.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: SZrUU42cdm-4ApI_3zxQkdoYvz_n9hD6
+X-Proofpoint-ORIG-GUID: M5TteZ_w2XWaQS51ysCBLLkWMb8Nzryi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-11_01,2025-03-11_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
+ mlxlogscore=999 suspectscore=0 spamscore=0 impostorscore=0 bulkscore=0
+ phishscore=0 malwarescore=0 priorityscore=1501 adultscore=0
+ lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502100000 definitions=main-2503110064
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Tuesday, 11 March 2025 05:23:23 Central European Standard Time Venkat Rao 
-Bagalkote wrote:
-> Git Bisect is poinitng to commit:
-> 3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b as first bad commit.
+Athira Rajeev <atrajeev@linux.ibm.com> writes:
 
-That does not seem like a correct bisection to me. The build error isn't even 
-in the same translation unit as the change the commit you landed on touches, 
-much less any subsystem even remotely related to it.
+>> On 24 Feb 2025, at 6:45=E2=80=AFPM, Vaibhav Jain <vaibhav@linux.ibm.com>=
+ wrote:
+>>=20
+>> Update 'kvm-hv-pmu.c' to add five new perf-events mapped to the five
+>> Hostwide counters. Since these newly introduced perf events are at system
+>> wide scope and can be read from any L1-Lpar CPU, 'kvmppc_pmu' scope and
+>> capabilities are updated appropriately.
+>>=20
+>> Also introduce two new helpers. First is kvmppc_update_l0_stats() that u=
+ses
+>> the infrastructure introduced in previous patches to issues the
+>> H_GUEST_GET_STATE hcall L0-PowerVM to fetch guest-state-buffer holding t=
+he
+>> latest values of these counters which is then parsed and 'l0_stats'
+>> variable updated.
+>>=20
+>> Second helper is kvmppc_pmu_event_update() which is called from
+>> 'kvmppv_pmu' callbacks and uses kvmppc_update_l0_stats() to update
+>> 'l0_stats' and the update the 'struct perf_event's event-counter.
+>>=20
+>> Some minor updates to kvmppc_pmu_{add, del, read}() to remove some debug
+>> scaffolding code.
+>>=20
+>> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+>> ---
+>> Changelog
+>>=20
+>> v3->v4:
+>> * Minor tweaks to patch description and code as its now being built as a
+>> separate kernel module.
+>>=20
+>> v2->v3:
+>> None
+>>=20
+>> v1->v2:
+>> None
+>> ---
+>> arch/powerpc/perf/kvm-hv-pmu.c | 92 +++++++++++++++++++++++++++++++++-
+>> 1 file changed, 91 insertions(+), 1 deletion(-)
+>>=20
+>> diff --git a/arch/powerpc/perf/kvm-hv-pmu.c b/arch/powerpc/perf/kvm-hv-p=
+mu.c
+>> index ed371454f7b5..274459bb32d6 100644
+>> --- a/arch/powerpc/perf/kvm-hv-pmu.c
+>> +++ b/arch/powerpc/perf/kvm-hv-pmu.c
+>> @@ -30,6 +30,11 @@
+>> #include "asm/guest-state-buffer.h"
+>>=20
+>> enum kvmppc_pmu_eventid {
+>> + KVMPPC_EVENT_HOST_HEAP,
+>> + KVMPPC_EVENT_HOST_HEAP_MAX,
+>> + KVMPPC_EVENT_HOST_PGTABLE,
+>> + KVMPPC_EVENT_HOST_PGTABLE_MAX,
+>> + KVMPPC_EVENT_HOST_PGTABLE_RECLAIM,
+>> KVMPPC_EVENT_MAX,
+>> };
+>>=20
+>> @@ -61,8 +66,14 @@ static DEFINE_SPINLOCK(lock_l0_stats);
+>> /* GSB related structs needed to talk to L0 */
+>> static struct kvmppc_gs_msg *gsm_l0_stats;
+>> static struct kvmppc_gs_buff *gsb_l0_stats;
+>> +static struct kvmppc_gs_parser gsp_l0_stats;
+>>=20
+>> static struct attribute *kvmppc_pmu_events_attr[] =3D {
+>> + KVMPPC_PMU_EVENT_ATTR(host_heap, KVMPPC_EVENT_HOST_HEAP),
+>> + KVMPPC_PMU_EVENT_ATTR(host_heap_max, KVMPPC_EVENT_HOST_HEAP_MAX),
+>> + KVMPPC_PMU_EVENT_ATTR(host_pagetable, KVMPPC_EVENT_HOST_PGTABLE),
+>> + KVMPPC_PMU_EVENT_ATTR(host_pagetable_max, KVMPPC_EVENT_HOST_PGTABLE_MA=
+X),
+>> + KVMPPC_PMU_EVENT_ATTR(host_pagetable_reclaim, KVMPPC_EVENT_HOST_PGTABL=
+E_RECLAIM),
+>> NULL,
+>> };
+>>=20
+>> @@ -71,7 +82,7 @@ static const struct attribute_group kvmppc_pmu_events_=
+group =3D {
+>> .attrs =3D kvmppc_pmu_events_attr,
+>> };
+>>=20
+>> -PMU_FORMAT_ATTR(event, "config:0");
+>> +PMU_FORMAT_ATTR(event, "config:0-5");
+>> static struct attribute *kvmppc_pmu_format_attr[] =3D {
+>> &format_attr_event.attr,
+>> NULL,
+>> @@ -88,6 +99,79 @@ static const struct attribute_group *kvmppc_pmu_attr_=
+groups[] =3D {
+>> NULL,
+>> };
+>>=20
+>> +/*
+>> + * Issue the hcall to get the L0-host stats.
+>> + * Should be called with l0-stat lock held
+>> + */
+>> +static int kvmppc_update_l0_stats(void)
+>> +{
+>> + int rc;
+>> +
+>> + /* With HOST_WIDE flags guestid and vcpuid will be ignored */
+>> + rc =3D kvmppc_gsb_recv(gsb_l0_stats, KVMPPC_GS_FLAGS_HOST_WIDE);
+>> + if (rc)
+>> + goto out;
+>> +
+>> + /* Parse the guest state buffer is successful */
+>> + rc =3D kvmppc_gse_parse(&gsp_l0_stats, gsb_l0_stats);
+>> + if (rc)
+>> + goto out;
+>> +
+>> + /* Update the l0 returned stats*/
+>> + memset(&l0_stats, 0, sizeof(l0_stats));
+>> + rc =3D kvmppc_gsm_refresh_info(gsm_l0_stats, gsb_l0_stats);
+>> +
+>> +out:
+>> + return rc;
+>> +}
+>> +
+>> +/* Update the value of the given perf_event */
+>> +static int kvmppc_pmu_event_update(struct perf_event *event)
+>> +{
+>> + int rc;
+>> + u64 curr_val, prev_val;
+>> + unsigned long flags;
+>> + unsigned int config =3D event->attr.config;
+>> +
+>> + /* Ensure no one else is modifying the l0_stats */
+>> + spin_lock_irqsave(&lock_l0_stats, flags);
+>> +
+>> + rc =3D kvmppc_update_l0_stats();
+>> + if (!rc) {
+>> + switch (config) {
+>> + case KVMPPC_EVENT_HOST_HEAP:
+>> + curr_val =3D l0_stats.guest_heap;
+>> + break;
+>> + case KVMPPC_EVENT_HOST_HEAP_MAX:
+>> + curr_val =3D l0_stats.guest_heap_max;
+>> + break;
+>> + case KVMPPC_EVENT_HOST_PGTABLE:
+>> + curr_val =3D l0_stats.guest_pgtable_size;
+>> + break;
+>> + case KVMPPC_EVENT_HOST_PGTABLE_MAX:
+>> + curr_val =3D l0_stats.guest_pgtable_size_max;
+>> + break;
+>> + case KVMPPC_EVENT_HOST_PGTABLE_RECLAIM:
+>> + curr_val =3D l0_stats.guest_pgtable_reclaim;
+>> + break;
+>> + default:
+>> + rc =3D -ENOENT;
+>> + break;
+>> + }
+>> + }
+>> +
+>> + spin_unlock_irqrestore(&lock_l0_stats, flags);
+>> +
+>> + /* If no error than update the perf event */
+>> + if (!rc) {
+>> + prev_val =3D local64_xchg(&event->hw.prev_count, curr_val);
+>> + if (curr_val > prev_val)
+>> + local64_add(curr_val - prev_val, &event->count);
+>> + }
+>> +
+>> + return rc;
+>> +}
+>> +
+>> static int kvmppc_pmu_event_init(struct perf_event *event)
+>> {
+>> unsigned int config =3D event->attr.config;
+>> @@ -110,15 +194,19 @@ static int kvmppc_pmu_event_init(struct perf_event=
+ *event)
+>>=20
+>> static void kvmppc_pmu_del(struct perf_event *event, int flags)
+>> {
+>> + /* Do nothing */
+>> }
+>
+> If we don=E2=80=99t read the counter stats in =E2=80=9Cdel=E2=80=9D call =
+back, we will loose the final count getting updated, right ?
+> Del callback needs to call kvmppc_pmu_read. Can you check the difference =
+in count stats by calling kvmppc_pmu_read here ?
+>
 
-> 
-> Git bisect log:
-> 
-> git bisect start
-> # status: waiting for both good and bad commits
-> # bad: [0a2f889128969dab41861b6e40111aa03dc57014] Add linux-next
-> specific files for 20250307
-> git bisect bad 0a2f889128969dab41861b6e40111aa03dc57014
-> # status: waiting for good commit(s), bad commit known
-> # good: [7eb172143d5508b4da468ed59ee857c6e5e01da6] Linux 6.14-rc5
-> git bisect good 7eb172143d5508b4da468ed59ee857c6e5e01da6
-> # good: [7eb172143d5508b4da468ed59ee857c6e5e01da6] Linux 6.14-rc5
-> git bisect good 7eb172143d5508b4da468ed59ee857c6e5e01da6
-> # good: [80ec13b98c6378cbf9b29d7ee7d3db930ddbd858] Merge branch 'master'
-> of git://git.kernel.org/pub/scm/linux/kernel/git/klassert/ipsec-next.git
-> git bisect good 80ec13b98c6378cbf9b29d7ee7d3db930ddbd858
-> # good: [6c60220c45270869a7c5f791f6e0197b1f0d0388] Merge branch
-> 'driver-core-next' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/driver-core.git
-> git bisect good 6c60220c45270869a7c5f791f6e0197b1f0d0388
-> # good: [187734f508b0a9a00ccaaf7d8ba05874b624ac73] Merge branch
-> 'for-next' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/remoteproc/linux.git
-> git bisect good 187734f508b0a9a00ccaaf7d8ba05874b624ac73
-> # good: [316ff3a28679b82eb2bf17c02dbca970e7433182] Merge branch
-> 'for-next/seccomp' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git
-> git bisect good 316ff3a28679b82eb2bf17c02dbca970e7433182
-> # bad: [69759c9d8dd7df716dcca3601b82e5618332cef7] Merge branch
-> 'rust-next' of https://github.com/Rust-for-Linux/linux.git
-> git bisect bad 69759c9d8dd7df716dcca3601b82e5618332cef7
-> # bad: [1e4eee5176c91b00e73cee90712a995668020a9c] Merge branch
-> 'mhi-next' of git://git.kernel.org/pub/scm/linux/kernel/git/mani/mhi.git
-> git bisect bad 1e4eee5176c91b00e73cee90712a995668020a9c
-> # bad: [962bc2aae4f4295314d4a5f5c59a465f97f8b59a] Merge branch
-> 'for-next' of
-> git://git.kernel.org/pub/scm/linux/kernel/git/andy/linux-auxdisplay.git
-> git bisect bad 962bc2aae4f4295314d4a5f5c59a465f97f8b59a
-> # bad: [612fd001319aae2b514fc234939806cf3294dbba] Merge branch 'main' of
-> git://git.infradead.org/users/willy/xarray.git
-> git bisect bad 612fd001319aae2b514fc234939806cf3294dbba
-> # bad: [f5175dd69428ab517c8d68e772c4d287b6570d8e] dt-bindings: nvmem:
-> fixed-cell: increase bits start value to 31
-> git bisect bad f5175dd69428ab517c8d68e772c4d287b6570d8e
-> # bad: [8c94337ebbfb840944574f82df0cbe35930d8df8] dt-bindings: nvmem:
-> rockchip,otp: Add compatible for RK3576
-> git bisect bad 8c94337ebbfb840944574f82df0cbe35930d8df8
-> # bad: [024e21343f3cbcde0343473fcaf094d2c19cc7bf] nvmem: rockchip-otp:
-> Move read-offset into variant-data
-> git bisect bad 024e21343f3cbcde0343473fcaf094d2c19cc7bf
-> # bad: [3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b] clk: rockchip: rk3576:
-> define clk_otp_phy_g
-> git bisect bad 3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b
-> # first bad commit: [3e081aa132bbefe31ac95dd6dfc8d787ffa83d0b] clk:
-> rockchip: rk3576: define clk_otp_phy_g
-> 
-> On 09/03/25 6:08 pm, Venkat Rao Bagalkote wrote:
-> > Greetings!!,
-> > 
-> > I see linux-next-20250307 fails to build on IBM Power9 and Power10
-> > servers.
-> > 
-> > 
-> > Errors:
-> > 
-> > In file included from ^[[01m^[[K<command-line>^[[m^[[K:
+Yes, agreed. Will address this in next version of the patch series
 
-"In file included from <command-line>" seems a little suspicious.
+> Thanks
+> Athira
+>
+>>=20
+>> static int kvmppc_pmu_add(struct perf_event *event, int flags)
+>> {
+>> + if (flags & PERF_EF_START)
+>> + return kvmppc_pmu_event_update(event);
+>> return 0;
+>> }
+>>=20
+>> static void kvmppc_pmu_read(struct perf_event *event)
+>> {
+>> + kvmppc_pmu_event_update(event);
+>> }
+>>=20
+>> /* Return the size of the needed guest state buffer */
+>> @@ -302,6 +390,8 @@ static struct pmu kvmppc_pmu =3D {
+>> .read =3D kvmppc_pmu_read,
+>> .attr_groups =3D kvmppc_pmu_attr_groups,
+>> .type =3D -1,
+>> + .scope =3D PERF_PMU_SCOPE_SYS_WIDE,
+>> + .capabilities =3D PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_NO_INTERRUPT,
+>> };
+>>=20
+>> static int __init kvmppc_register_pmu(void)
+>> --=20
+>> 2.48.1
+>>=20
+>>=20
+>>=20
+>
+>
 
-> > ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K
-> > ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or directory
-> >    11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
-> >       |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
-> > compilation terminated.
-> > make[4]: *** [usr/include/Makefile:85:
-> > usr/include/cxl/features.hdrtest] Error 1
-> > make[3]: *** [scripts/Makefile.build:461: usr/include] Error 2
-> > make[2]: *** [scripts/Makefile.build:461: usr] Error 2
-> > make[2]: *** Waiting for unfinished jobs....
-> > arch/powerpc/kernel/switch.o: warning: objtool: .text+0x4:
-> > intra_function_call not a direct call
-> > arch/powerpc/crypto/ghashp8-ppc.o: warning: objtool: .text+0x22c:
-> > unannotated intra-function call
-> > arch/powerpc/kvm/book3s_hv_rmhandlers.o: warning: objtool:
-> > .text+0xe84: intra_function_call not a direct call
-> > make[1]: *** [/home/linux_src/linux/Makefile:1997: .] Error 2
-> > make: *** [Makefile:251: __sub-make] Error 2
-> > 
-> > Please add below tag, if you happen to fix this issue.
-> > 
-> > Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-> > 
-> > 
-> > Regards,
-> > 
-> > Venkat.
-
-Regards,
-Nicolas Frattaroli
-
-
-
-
+--=20
+Cheers
+~ Vaibhav
 
