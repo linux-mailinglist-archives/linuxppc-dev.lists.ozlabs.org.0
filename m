@@ -1,74 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-6877-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6880-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02037A5B9DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 08:33:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E501A5BA34
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 08:52:13 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBlqg3Y0Rz3bmN;
-	Tue, 11 Mar 2025 18:33:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBmDs27KLz3bmc;
+	Tue, 11 Mar 2025 18:51:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741678415;
-	cv=none; b=h5zux9cPZDCUcnp5Ru0C/E9qRa1JSM+0f3AvuEqY3Vj8zPUe5T8Qe1vZ2Vs7KCC9jAsm77C5tmqk6mRjLLSGrKp9DtoBhlCFpz4EXjfuynjhfqBv7AMUH0NTEqKmXNGoreWmFfYD8FBBamZe68OouugFwKwPbBzOXSvIpFlYlu4IGhIo96qin8aU75JIlfRv9Ic7/sF0JKR8fRrrii/4NLytT/Oas0Ey0s+IUslIigbSPXM8qV6a3nvtkJWQivIsP9GOX42/LdCcE+RNXvLzVeKmhm4YZrRfrFlbD9ZiSR+zeDGqKJ1ivSRdagibqwahbxY+9p8bezYStFekHueQfQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.190
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741679517;
+	cv=none; b=lDx9+5ndQGW7c3h8lE0ZJp6y13WRUf2m7jn/oJ8yU88ZRf+mQgj9ss1Ytx9I/HkQfnD9gVRrx8SeNfrUYetHwyhbVB+d5nWnjUi9a2m72owGKijZSRvPFiRIcH+g/QiFmjdLtQegVtxi0VkOyDBDBnDnjMusf/5hCXIfz3x7Vc9xcTqFFJOBrG4SScbLRpBBXLt/DCrV23phr1BHlPneeLpeOowfPATGibcvEYhaafig16gKEd4XGcb7bRxdTe8A7sCslRTOnpGyLJyC5m28waGbMtUBZjB0MMwrXqf43cc8nagPq4HB+/SzpTPaRZHNU6K2OKuGgZLU0M1P7Wnosg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741678415; c=relaxed/relaxed;
-	bh=MYDAm0HJLjznDghykeCZ61JVOtfYGi+IS7z3BcCiIPI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=TQIa0S74RYjF6B090XJVrr2TRaDApvMSGS2oL9dXRkwTOdXLTxLIdsRhV0+5Q4PQ16EqUTmvQNHbSbHfXTtLoahycIzXXDoS/3HdppBpXwNY+GiMvvDjxSXhIViGnQ3y1cfDXwuqlPUWSguMoQ3jgOFoHbJ1x78N8wrflh2rf8XV/FxoGF9jREdsBnxlr3zYWzGfsjOTn/lO+wnG5iUgjRMGIoI7RRR+BZz9dvt8awec9get/XMGw0VE0tIyYXEibrX06tVOaZ+yf4bvkUC6CXIgXqfAl3wOL/YNu6wJVmwvtwdJ9UPN2MVhaljaQF8P7ddFyGPdisCpU1QkG8/SMg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=coxerVde; dkim-atps=neutral; spf=pass (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=coxerVde;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.10; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+	t=1741679517; c=relaxed/relaxed;
+	bh=CizGOx+KeIkQbQ+xODzrMwfptRNdjTVshSRgHNm94vg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=P9DvsR+1zPXRwyPm+Kld6p35t3RKVq6dxL0MnEt7L9WExmPrNFso1BtYqrYuLUuYnsVHLIazaNNy21bEgF9vBZdzF9j8dnn4KJxtUzgCreDvHT1oceu/5kcKx742IysiAD4o0dIxMZj9BWt57GUnFErkb5+g9i239FGbqG+e6vXqaBHzU5rzkCFNt5DGJIb6u1RXc6wxdxqtJeuZ3t2fk2LFZXcI1xSudm6TMBwznQ9mo7hZGlcA59pF143XF8BUbsEvEuxSuDp3jHkb4bmxOrJ+n3wwR+9hBdhlBJFKafgrXStulxOEw9dDlWfkKpNq8tE5c3R9anNEIZctcvUFBQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.190; helo=szxga04-in.huawei.com; envelope-from=yangyicong@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBlqc6pcpz3bmJ
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 18:33:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1741678413; x=1773214413;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=bvZK6cFi7goNewHU3vBg2XkUUKxvFEMMbFjetmDHRJ0=;
-  b=coxerVdeEra7Sw2wv5ov2xviVa63+wvby2FBurDf7j8065BxBvRO9HAZ
-   pTPEB7IXoZmFNh3D7vYZOsPg33nYOZf81pnbAEwoBolxfu50HWdoxrrcs
-   RdFo38VjhwdFywXNNisGJaMkIYVsYnmJ7pirPqprn6AEFchFh76haBFLP
-   gSYDv21OosrcpcV4DHT1uwJhMLuJhA8kfvkZ6kwq1Tn+akp7PA7ajxRCg
-   igUo5LaMmxyQO4fQjTGLCuOe5QlivI+oX0JS+NfADwqyvWxlbeUrhX60O
-   9sdiVspQi7CKFySuKWuZ+sKVc3osD9G27ggTCcF4EmSYoHIzgc+9ZF/eP
-   Q==;
-X-CSE-ConnectionGUID: r+QuY4etQtWAA5vQk9c4iA==
-X-CSE-MsgGUID: nrFxmXFjRzqrN3U58R/ChA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="60107135"
-X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
-   d="scan'208";a="60107135"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 00:33:29 -0700
-X-CSE-ConnectionGUID: K+SKXOAgTtCjRvj0qjFCWA==
-X-CSE-MsgGUID: DKPZBBEzSQC0oJzI/CQg0w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
-   d="scan'208";a="120467675"
-Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
-  by fmviesa008.fm.intel.com with ESMTP; 11 Mar 2025 00:33:25 -0700
-Received: from kbuild by a4747d147074 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1tru79-0006SC-1F;
-	Tue, 11 Mar 2025 07:33:23 +0000
-Date: Tue, 11 Mar 2025 15:32:28 +0800
-From: kernel test robot <lkp@intel.com>
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: oe-kbuild-all@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au,
-	npiggin@gmail.com, msuchanek@suse.de, mahesh@linux.ibm.com,
-	tyreld@linux.ibm.com, hbabu@us.ibm.com, haren@linux.ibm.com,
-	sv@linux.ibm.com
-Subject: Re: [PATCH v7 1/7] powerpc/pseries: Define common functions for RTAS
- sequence calls
-Message-ID: <202503111557.y6cdjLzI-lkp@intel.com>
-References: <20250309213916.762116-2-haren@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBmDp2tV3z3bmf
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 18:51:52 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.44])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4ZBm9002pTz2CcGk;
+	Tue, 11 Mar 2025 15:48:36 +0800 (CST)
+Received: from kwepemd200014.china.huawei.com (unknown [7.221.188.8])
+	by mail.maildlp.com (Postfix) with ESMTPS id 4CE511402CD;
+	Tue, 11 Mar 2025 15:51:46 +0800 (CST)
+Received: from localhost.localdomain (10.50.165.33) by
+ kwepemd200014.china.huawei.com (7.221.188.8) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Tue, 11 Mar 2025 15:51:45 +0800
+From: Yicong Yang <yangyicong@huawei.com>
+To: <catalin.marinas@arm.com>, <will@kernel.org>, <sudeep.holla@arm.com>,
+	<tglx@linutronix.de>, <peterz@infradead.org>, <mpe@ellerman.id.au>,
+	<linux-arm-kernel@lists.infradead.org>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <pierre.gondois@arm.com>,
+	<dietmar.eggemann@arm.com>
+CC: <linuxppc-dev@lists.ozlabs.org>, <x86@kernel.org>,
+	<linux-kernel@vger.kernel.org>, <morten.rasmussen@arm.com>,
+	<msuchanek@suse.de>, <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<jonathan.cameron@huawei.com>, <prime.zeng@hisilicon.com>,
+	<linuxarm@huawei.com>, <yangyicong@hisilicon.com>, <xuwei5@huawei.com>,
+	<guohanjun@huawei.com>, <sshegde@linux.ibm.com>
+Subject: [PATCH v12 0/4] Support SMT control on arm64
+Date: Tue, 11 Mar 2025 15:51:39 +0800
+Message-ID: <20250311075143.61078-1-yangyicong@huawei.com>
+X-Mailer: git-send-email 2.31.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,91 +61,103 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250309213916.762116-2-haren@linux.ibm.com>
-X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.50.165.33]
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemd200014.china.huawei.com (7.221.188.8)
+X-Spam-Status: No, score=-2.3 required=5.0 tests=RCVD_IN_DNSWL_MED,
+	RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Hi Haren,
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-kernel test robot noticed the following build warnings:
+The core CPU control framework supports runtime SMT control which
+is not yet supported on arm64. Besides the general vulnerabilities
+concerns we want this runtime control on our arm64 server for:
 
-[auto build test WARNING on powerpc/next]
-[also build test WARNING on powerpc/fixes linus/master v6.14-rc6]
-[cannot apply to next-20250307]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+- better single CPU performance in some cases
+- saving overall power consumption
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Haren-Myneni/powerpc-pseries-Define-common-functions-for-RTAS-sequence-calls/20250310-054319
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
-patch link:    https://lore.kernel.org/r/20250309213916.762116-2-haren%40linux.ibm.com
-patch subject: [PATCH v7 1/7] powerpc/pseries: Define common functions for RTAS sequence calls
-config: powerpc64-randconfig-r072-20250311 (https://download.01.org/0day-ci/archive/20250311/202503111557.y6cdjLzI-lkp@intel.com/config)
-compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project e15545cad8297ec7555f26e5ae74a9f0511203e7)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250311/202503111557.y6cdjLzI-lkp@intel.com/reproduce)
+This patchset implements it in the following aspects:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202503111557.y6cdjLzI-lkp@intel.com/
+- Provides a default topology_is_primary_thread()
+- support retrieve SMT thread number on OF based system
+- support retrieve SMT thread number on ACPI based system
+- select HOTPLUG_SMT for arm64
 
-All warnings (new ones prefixed by >>):
+Tests has been done on our ACPI based arm64 server and on ACPI/OF
+based QEMU VMs.
 
->> arch/powerpc/platforms/pseries/papr-vpd.c:127: warning: Function parameter or struct member 'seq' not described in 'vpd_sequence_begin'
---
->> arch/powerpc/platforms/pseries/papr-rtas-common.c:171: warning: Excess function parameter 'param' description in 'papr_rtas_retrieve'
->> arch/powerpc/platforms/pseries/papr-rtas-common.c:208: warning: Excess function parameter 'param' description in 'papr_rtas_setup_file_interface'
->> arch/powerpc/platforms/pseries/papr-rtas-common.c:255: warning: Function parameter or struct member 'status' not described in 'papr_rtas_sequence_should_stop'
->> arch/powerpc/platforms/pseries/papr-rtas-common.c:255: warning: Function parameter or struct member 'init_state' not described in 'papr_rtas_sequence_should_stop'
+Change since v11:
+- Remove the check and warning for heterogeneous platform as suggested and discussed
+- refine comments/commit according to Dietmar
+Link: https://lore.kernel.org/linux-arm-kernel/20250218141018.18082-1-yangyicong@huawei.com/
 
+Change since v10:
+- handle topology parsing failure case on DT based system
+- address some style comments per Jonathan and add tags, Thanks
+Link: https://lore.kernel.org/linux-arm-kernel/20241220075313.51502-1-yangyicong@huawei.com/
 
-vim +127 arch/powerpc/platforms/pseries/papr-vpd.c
+Change since v9:
+- Refine the comment of topology_is_primary_thread(). Tested with LoongArch
+  to prove it also works on architecture's not using CONFIG_GENERIC_ARCH_TOPOLOGY
+- always call cpu_smt_set_num_threads() to make the smt/control shows correct
+  status on non-SMT system
+Link: https://lore.kernel.org/linux-arm-kernel/20241114141127.23232-1-yangyicong@huawei.com/
 
-514f6ff4369a30b Nathan Lynch 2023-12-12  113  
-514f6ff4369a30b Nathan Lynch 2023-12-12  114  /*
-514f6ff4369a30b Nathan Lynch 2023-12-12  115   * Internal VPD sequence APIs. A VPD sequence is a series of calls to
-514f6ff4369a30b Nathan Lynch 2023-12-12  116   * ibm,get-vpd for a given location code. The sequence ends when an
-514f6ff4369a30b Nathan Lynch 2023-12-12  117   * error is encountered or all VPD for the location code has been
-514f6ff4369a30b Nathan Lynch 2023-12-12  118   * returned.
-514f6ff4369a30b Nathan Lynch 2023-12-12  119   */
-514f6ff4369a30b Nathan Lynch 2023-12-12  120  
-514f6ff4369a30b Nathan Lynch 2023-12-12  121  /**
-514f6ff4369a30b Nathan Lynch 2023-12-12  122   * vpd_sequence_begin() - Begin a VPD retrieval sequence.
-514f6ff4369a30b Nathan Lynch 2023-12-12  123   *
-514f6ff4369a30b Nathan Lynch 2023-12-12  124   * Context: May sleep.
-514f6ff4369a30b Nathan Lynch 2023-12-12  125   */
-c657e2672fb8b67 Haren Myneni 2025-03-09  126  static void vpd_sequence_begin(struct papr_rtas_sequence *seq)
-514f6ff4369a30b Nathan Lynch 2023-12-12 @127  {
-c657e2672fb8b67 Haren Myneni 2025-03-09  128  	struct rtas_ibm_get_vpd_params *vpd_params;
-514f6ff4369a30b Nathan Lynch 2023-12-12  129  	/*
-514f6ff4369a30b Nathan Lynch 2023-12-12  130  	 * Use a static data structure for the location code passed to
-514f6ff4369a30b Nathan Lynch 2023-12-12  131  	 * RTAS to ensure it's in the RMA and avoid a separate work
-514f6ff4369a30b Nathan Lynch 2023-12-12  132  	 * area allocation. Guarded by the function lock.
-514f6ff4369a30b Nathan Lynch 2023-12-12  133  	 */
-514f6ff4369a30b Nathan Lynch 2023-12-12  134  	static struct papr_location_code static_loc_code;
-514f6ff4369a30b Nathan Lynch 2023-12-12  135  
-c657e2672fb8b67 Haren Myneni 2025-03-09  136  	vpd_params =  (struct rtas_ibm_get_vpd_params *)seq->params;
-514f6ff4369a30b Nathan Lynch 2023-12-12  137  	/*
-514f6ff4369a30b Nathan Lynch 2023-12-12  138  	 * We could allocate the work area before acquiring the
-514f6ff4369a30b Nathan Lynch 2023-12-12  139  	 * function lock, but that would allow concurrent requests to
-514f6ff4369a30b Nathan Lynch 2023-12-12  140  	 * exhaust the limited work area pool for no benefit. So
-514f6ff4369a30b Nathan Lynch 2023-12-12  141  	 * allocate the work area under the lock.
-514f6ff4369a30b Nathan Lynch 2023-12-12  142  	 */
-514f6ff4369a30b Nathan Lynch 2023-12-12  143  	mutex_lock(&rtas_ibm_get_vpd_lock);
-c657e2672fb8b67 Haren Myneni 2025-03-09  144  	static_loc_code = *(struct papr_location_code *)vpd_params->loc_code;
-c657e2672fb8b67 Haren Myneni 2025-03-09  145  	vpd_params =  (struct rtas_ibm_get_vpd_params *)seq->params;
-c657e2672fb8b67 Haren Myneni 2025-03-09  146  	vpd_params->work_area = rtas_work_area_alloc(SZ_4K);
-c657e2672fb8b67 Haren Myneni 2025-03-09  147  	vpd_params->loc_code = &static_loc_code;
-c657e2672fb8b67 Haren Myneni 2025-03-09  148  	vpd_params->sequence = 1;
-c657e2672fb8b67 Haren Myneni 2025-03-09  149  	vpd_params->status = 0;
-514f6ff4369a30b Nathan Lynch 2023-12-12  150  }
-514f6ff4369a30b Nathan Lynch 2023-12-12  151  
+Change since v8:
+- Fix WARN on ACPI based non-SMT platform noticed in v7, per Pierre.
+Link: https://lore.kernel.org/all/20241105093237.63565-1-yangyicong@huawei.com/
+
+Change since v7:
+Address the comments from Thomas:
+- Add a newline between the glue define and function of topology_is_primary_thread
+- Explicitly mention the sibling mask won't be empty in the comment
+Link: https://lore.kernel.org/lkml/20241030125415.18994-1-yangyicong@huawei.com/
+
+Change since v6:
+- Fix unused variable if !CONFIG_ARM64 || !CONFIG_RISV found by lkp-test
+- Fix max_smt_thread_num updating in OF path pointed by Pierre
+- Drop unused variable and refine the comments/commit per Pierre
+Link: https://lore.kernel.org/linux-arm-kernel/20241015021841.35713-1-yangyicong@huawei.com/
+
+Change since v5:
+- Drop the dependency on CONFIG_SMP since it's always on arm64, per Pierre
+- Avoid potential multiple calls of cpu_smt_set_num_threads() on asymmetric system, per Dietmar
+- Detect heterogeneous SMT topology and issue a warning for partly support, per Pierre
+- Thanks Dietmar for testing, didn't pickup the tag due to code changes. Thanks testing by Pierre
+Link: https://lore.kernel.org/linux-arm-kernel/20240806085320.63514-1-yangyicong@huawei.com/
+
+Change since v4:
+- Provide a default topology_is_primary_thread() in the framework, Per Will
+Link: https://lore.kernel.org/linux-arm-kernel/20231121092602.47792-1-yangyicong@huawei.com/
+
+Change since v3:
+- Fix some build and kconfig error reported by kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/linux-arm-kernel/20231114040110.54590-1-yangyicong@huawei.com/
+
+Change since v2:
+- Detect SMT thread number at topology build from ACPI/DT, avoid looping CPUs
+- Split patches into ACPI/OF/arch_topology path and enable the kconfig for arm64
+Link: https://lore.kernel.org/linux-arm-kernel/20231010115335.13862-1-yangyicong@huawei.com/
+
+Yicong Yang (4):
+  cpu/SMT: Provide a default topology_is_primary_thread()
+  arch_topology: Support SMT control for OF based system
+  arm64: topology: Support SMT control on ACPI based system
+  arm64: Kconfig: Enable HOTPLUG_SMT
+
+ arch/arm64/Kconfig                  |  1 +
+ arch/arm64/kernel/topology.c        | 54 +++++++++++++++++++++++++++++
+ arch/powerpc/include/asm/topology.h |  1 +
+ arch/x86/include/asm/topology.h     |  2 +-
+ drivers/base/arch_topology.c        | 18 ++++++++++
+ include/linux/topology.h            | 24 +++++++++++++
+ 6 files changed, 99 insertions(+), 1 deletion(-)
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.24.0
+
 
