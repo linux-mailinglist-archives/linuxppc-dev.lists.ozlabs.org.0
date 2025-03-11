@@ -1,95 +1,74 @@
-Return-Path: <linuxppc-dev+bounces-6886-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6887-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C137A5BC54
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 10:32:28 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 175C6A5BC71
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 11 Mar 2025 10:39:46 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBpSn5dh0z30Vs;
-	Tue, 11 Mar 2025 20:32:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZBpdC3qYWz3bnB;
+	Tue, 11 Mar 2025 20:39:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741685545;
-	cv=none; b=nnoeX//zgXSkmosJPCYyi1U1o8GUYY7gbT3StRrOEuHsNiqGW7k+2Js6uY6Gi34GtBtb/2fLAKqaXqeD8YWxTyRg9ISfLIX018lz2OMR0NHD2VA83JleEDMd7+j5umn395nyDFHfwqoVCxC35PXrvVqJW20AieoFRKLErXnhSMGU5z6pgY0JYDLN0Srb++ZRdnSGMvDgrKKG0ke2EadoeaWUfqC8wQqx3m2i3bdxws6qQDaxEv0IbSpjP/x2IxjHOaei7KsILxwIv3npaWl7xmd/K78U963rpy7IQ4gdd3AZ/dwdNPZ7N8yfLuuel0MrDnh8KgvX3XVdx3Wa43h/YA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.11
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741685983;
+	cv=none; b=elswQ76VVeQaQWELum6Z6m+bZj/7GBgkz7QzpiK7BrPvXiy4CkAUdbwQT7p33pPPkZheMsh85wKsXFh0dfZJIa3+8uz1TriQMt9MBaTQSRR12r51QTerW7AxqLFdSPY0IncHkMhlijSGXckF+RBJSfZdgeA2ADQtrgkb8ZiIO+Iu3TkNgHDRGvFf+j08uuAgmT++b4JgbD5PHFxfY+K5hOEZnVfeZCOCkN5XBgCgjyvuRLEKhEpPvANFkPysGKp1gqaQYwM7qLnVKTRfXQN7//8uNfPTS8V4e7h4MnQtQ/qkqKVE03XkZEJejQGFKwi/5JicDfUmwHjv0o4N5bkGyA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741685545; c=relaxed/relaxed;
-	bh=86NBFuRadsVUmel+UiOUBCdQv1HrG0o3+CvP/y7JgRk=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=D80oUHkVIqD6xwDOcbhN2jd27Hnw2i6JmOVykh/EHvgl/sMpBEVaUu+p/l4H4PGeBrWvV/xgAkuiIIyfzC08UlbBXSAIDr2ycLfyrV9kQSjaH0IrgigRLoMOVhRROjG1Z3e4+6ZhiIBxmKlwYKcpOuXrpwI161g3fTKVhmzksOsEA3XBf8D1N3bvtMsBeHrezcit7vzfij+jikgCpBXkc/qP8i13t+i/L7HURIU0bgh/oiyacfIZuNV3yZUHfETPU0gO6chli2vnWLlwbRdxrgttXHY3/5zoxfF+OcmIcK0D7FPc1uk2wsW2rj/G/HGiygH++6tHD/8AxxphIpkkJw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tSK4mao4; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1741685983; c=relaxed/relaxed;
+	bh=102wf9qd2ao6CQWIkgU3BxaLpSqzYGDhMeXtkxNmqtE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bOhEz0FvGEXsk+9b8RMctc1dxf5XQqj3agY90BCRm4lv/F2SIuKCBU/RMT/lW2vuczR+8YCDEKmOlA6nyQR1VOpbBYG78X/A0JnkZoLfY83JtwX/yKqcW7XkoZGTefbl3p3nVLmBHsdRWO7zQBeKu8y7md2KPPYvtkyCvIjr6oHXfbvRXy0TaQvZ5ZcPVRgiH3y8hH/wi6Yf/+CxqKGQaGKHGGub9aD0U4h6GY90CN06Rwhqhrt5N8xag8p8rFusos5AByhYMIr8K10IcLlJOcjixA15IQ+6MPaF4jnJ/TjdBTMN2UlizO1zLbXwVkZhlIc1ulJffv1Q2YCGsahB1A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ipymuPYV; dkim-atps=neutral; spf=pass (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=tSK4mao4;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=ipymuPYV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=vaibhav@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.11; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBpSm5YHvz2yD8
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 20:32:24 +1100 (AEDT)
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52B7oCeA015900;
-	Tue, 11 Mar 2025 09:32:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=86NBFu
-	RadsVUmel+UiOUBCdQv1HrG0o3+CvP/y7JgRk=; b=tSK4mao4KUwoOmAjNnVRSd
-	metRAR4FyJ8ev6EFsKuva3J59LXbycP4ibjfxxpCODbCNN0bmJzun5tQkAXMmC8A
-	JnEGR9QfDu9oa3PEct3prjLz0324Lu3hGzv/6pewsgYqg2rNih6+06whS7NA1zmV
-	k9yn6ZNv5F+R5ULJh5s6XH8q+T7QstjSOoVX+FcN7/ECA44iYU7mu8Egf138U2oZ
-	XlxAkYGEypf14AdOR9mby9tpgCv/4aawj3P5eUhO2TrN+OlCzBdd7Saqn1KS1gAd
-	AtpVWqqgc7UIZghKaGj1rpVZWUU/e2Y1nQrz+4SNwe4kIS/9fCy6Ow+U0GRR75UQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45a1gp544n-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 09:32:16 +0000 (GMT)
-Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52B8rPk4008649;
-	Tue, 11 Mar 2025 09:32:16 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45a1gp544f-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 09:32:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52B6Sdi8022265;
-	Tue, 11 Mar 2025 09:32:15 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45917nbddd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 11 Mar 2025 09:32:15 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52B9WBTr39584246
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 11 Mar 2025 09:32:11 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8BD1D20043;
-	Tue, 11 Mar 2025 09:32:11 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6DE6520040;
-	Tue, 11 Mar 2025 09:32:07 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.39.19.180])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue, 11 Mar 2025 09:32:07 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Tue, 11 Mar 2025 15:02:06 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Athira Rajeev <atrajeev@linux.ibm.com>
-Cc: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, kvm@vger.kernel.org,
-        kvm-ppc@vger.kernel.org, Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        Vaidyanathan Srinivasan <svaidy@linux.vnet.ibm.com>,
-        sbhat@linux.ibm.com, gautam@linux.ibm.com, kconsul@linux.ibm.com,
-        amachhiw@linux.ibm.com, Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Subject: Re: [PATCH v4 6/6] powerpc/kvm-hv-pmu: Add perf-events for Hostwide
- counters
-In-Reply-To: <96795462-3AFA-4C90-9E63-ACB9AE3E66EE@linux.ibm.com>
-References: <20250224131522.77104-1-vaibhav@linux.ibm.com>
- <20250224131522.77104-7-vaibhav@linux.ibm.com>
- <96795462-3AFA-4C90-9E63-ACB9AE3E66EE@linux.ibm.com>
-Date: Tue, 11 Mar 2025 15:02:06 +0530
-Message-ID: <87ikofud49.fsf@vajain21.in.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZBpd925szz3blv
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 11 Mar 2025 20:39:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1741685981; x=1773221981;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=W+ThvGzyags0oy0GD0f6DFZf/gVocxjUqYpDIHny/is=;
+  b=ipymuPYVxkiEP+3Az1xhzR/jFxBWOdcMtDTVC9P4BfRFs/1XMUwisw/h
+   YLZ6rJDY22Gt8UrI68A+NDZE/RRfevtc5AYjZK7O77db8f6AfHaCYRvf1
+   pp/9myqY9Deq9E4WKegoN7rQjBKjpGGrR4PcrqUGVvPsfVPYcdbexV0rX
+   2hOyXKpDii5pou1UWjqqwLaMT7By9dgEtai48V6qhYHc9sk4niYwssB42
+   Z8hnFU3AMgS26vGei/mogDsOVRRSXLBfuPzOGD/JY5Bv8xk1/koHLq95Q
+   Wpz0fNUU1mMIiR4IboS4EeH+x8ilDcnrYERYlE2oZsA/quNip8PODqi0Y
+   Q==;
+X-CSE-ConnectionGUID: LbV7JIMcROCoIIybwuJYeA==
+X-CSE-MsgGUID: p5Q+EzwrRRuRHk8c9xD2OA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11369"; a="53356860"
+X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
+   d="scan'208";a="53356860"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Mar 2025 02:39:35 -0700
+X-CSE-ConnectionGUID: zmlavfLxSxOrlhQRGn1sdw==
+X-CSE-MsgGUID: q1Pg65+qTAGO+/rVHn6w4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.14,238,1736841600"; 
+   d="scan'208";a="121176978"
+Received: from lkp-server02.sh.intel.com (HELO a4747d147074) ([10.239.97.151])
+  by orviesa008.jf.intel.com with ESMTP; 11 Mar 2025 02:39:32 -0700
+Received: from kbuild by a4747d147074 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1trw57-0006XE-0P;
+	Tue, 11 Mar 2025 09:39:26 +0000
+Date: Tue, 11 Mar 2025 17:38:26 +0800
+From: kernel test robot <lkp@intel.com>
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: oe-kbuild-all@lists.linux.dev, maddy@linux.ibm.com, mpe@ellerman.id.au,
+	npiggin@gmail.com, msuchanek@suse.de, mahesh@linux.ibm.com,
+	tyreld@linux.ibm.com, hbabu@us.ibm.com, haren@linux.ibm.com,
+	sv@linux.ibm.com
+Subject: Re: [PATCH v7 3/7] powerpc/pseries: Add papr-indices char driver for
+ ibm,get-indices
+Message-ID: <202503111710.tsPk3Snj-lkp@intel.com>
+References: <20250309213916.762116-4-haren@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,242 +81,77 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: SZrUU42cdm-4ApI_3zxQkdoYvz_n9hD6
-X-Proofpoint-ORIG-GUID: M5TteZ_w2XWaQS51ysCBLLkWMb8Nzryi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-11_01,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 clxscore=1015
- mlxlogscore=999 suspectscore=0 spamscore=0 impostorscore=0 bulkscore=0
- phishscore=0 malwarescore=0 priorityscore=1501 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502100000 definitions=main-2503110064
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250309213916.762116-4-haren@linux.ibm.com>
+X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Athira Rajeev <atrajeev@linux.ibm.com> writes:
+Hi Haren,
 
->> On 24 Feb 2025, at 6:45=E2=80=AFPM, Vaibhav Jain <vaibhav@linux.ibm.com>=
- wrote:
->>=20
->> Update 'kvm-hv-pmu.c' to add five new perf-events mapped to the five
->> Hostwide counters. Since these newly introduced perf events are at system
->> wide scope and can be read from any L1-Lpar CPU, 'kvmppc_pmu' scope and
->> capabilities are updated appropriately.
->>=20
->> Also introduce two new helpers. First is kvmppc_update_l0_stats() that u=
-ses
->> the infrastructure introduced in previous patches to issues the
->> H_GUEST_GET_STATE hcall L0-PowerVM to fetch guest-state-buffer holding t=
-he
->> latest values of these counters which is then parsed and 'l0_stats'
->> variable updated.
->>=20
->> Second helper is kvmppc_pmu_event_update() which is called from
->> 'kvmppv_pmu' callbacks and uses kvmppc_update_l0_stats() to update
->> 'l0_stats' and the update the 'struct perf_event's event-counter.
->>=20
->> Some minor updates to kvmppc_pmu_{add, del, read}() to remove some debug
->> scaffolding code.
->>=20
->> Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
->> ---
->> Changelog
->>=20
->> v3->v4:
->> * Minor tweaks to patch description and code as its now being built as a
->> separate kernel module.
->>=20
->> v2->v3:
->> None
->>=20
->> v1->v2:
->> None
->> ---
->> arch/powerpc/perf/kvm-hv-pmu.c | 92 +++++++++++++++++++++++++++++++++-
->> 1 file changed, 91 insertions(+), 1 deletion(-)
->>=20
->> diff --git a/arch/powerpc/perf/kvm-hv-pmu.c b/arch/powerpc/perf/kvm-hv-p=
-mu.c
->> index ed371454f7b5..274459bb32d6 100644
->> --- a/arch/powerpc/perf/kvm-hv-pmu.c
->> +++ b/arch/powerpc/perf/kvm-hv-pmu.c
->> @@ -30,6 +30,11 @@
->> #include "asm/guest-state-buffer.h"
->>=20
->> enum kvmppc_pmu_eventid {
->> + KVMPPC_EVENT_HOST_HEAP,
->> + KVMPPC_EVENT_HOST_HEAP_MAX,
->> + KVMPPC_EVENT_HOST_PGTABLE,
->> + KVMPPC_EVENT_HOST_PGTABLE_MAX,
->> + KVMPPC_EVENT_HOST_PGTABLE_RECLAIM,
->> KVMPPC_EVENT_MAX,
->> };
->>=20
->> @@ -61,8 +66,14 @@ static DEFINE_SPINLOCK(lock_l0_stats);
->> /* GSB related structs needed to talk to L0 */
->> static struct kvmppc_gs_msg *gsm_l0_stats;
->> static struct kvmppc_gs_buff *gsb_l0_stats;
->> +static struct kvmppc_gs_parser gsp_l0_stats;
->>=20
->> static struct attribute *kvmppc_pmu_events_attr[] =3D {
->> + KVMPPC_PMU_EVENT_ATTR(host_heap, KVMPPC_EVENT_HOST_HEAP),
->> + KVMPPC_PMU_EVENT_ATTR(host_heap_max, KVMPPC_EVENT_HOST_HEAP_MAX),
->> + KVMPPC_PMU_EVENT_ATTR(host_pagetable, KVMPPC_EVENT_HOST_PGTABLE),
->> + KVMPPC_PMU_EVENT_ATTR(host_pagetable_max, KVMPPC_EVENT_HOST_PGTABLE_MA=
-X),
->> + KVMPPC_PMU_EVENT_ATTR(host_pagetable_reclaim, KVMPPC_EVENT_HOST_PGTABL=
-E_RECLAIM),
->> NULL,
->> };
->>=20
->> @@ -71,7 +82,7 @@ static const struct attribute_group kvmppc_pmu_events_=
-group =3D {
->> .attrs =3D kvmppc_pmu_events_attr,
->> };
->>=20
->> -PMU_FORMAT_ATTR(event, "config:0");
->> +PMU_FORMAT_ATTR(event, "config:0-5");
->> static struct attribute *kvmppc_pmu_format_attr[] =3D {
->> &format_attr_event.attr,
->> NULL,
->> @@ -88,6 +99,79 @@ static const struct attribute_group *kvmppc_pmu_attr_=
-groups[] =3D {
->> NULL,
->> };
->>=20
->> +/*
->> + * Issue the hcall to get the L0-host stats.
->> + * Should be called with l0-stat lock held
->> + */
->> +static int kvmppc_update_l0_stats(void)
->> +{
->> + int rc;
->> +
->> + /* With HOST_WIDE flags guestid and vcpuid will be ignored */
->> + rc =3D kvmppc_gsb_recv(gsb_l0_stats, KVMPPC_GS_FLAGS_HOST_WIDE);
->> + if (rc)
->> + goto out;
->> +
->> + /* Parse the guest state buffer is successful */
->> + rc =3D kvmppc_gse_parse(&gsp_l0_stats, gsb_l0_stats);
->> + if (rc)
->> + goto out;
->> +
->> + /* Update the l0 returned stats*/
->> + memset(&l0_stats, 0, sizeof(l0_stats));
->> + rc =3D kvmppc_gsm_refresh_info(gsm_l0_stats, gsb_l0_stats);
->> +
->> +out:
->> + return rc;
->> +}
->> +
->> +/* Update the value of the given perf_event */
->> +static int kvmppc_pmu_event_update(struct perf_event *event)
->> +{
->> + int rc;
->> + u64 curr_val, prev_val;
->> + unsigned long flags;
->> + unsigned int config =3D event->attr.config;
->> +
->> + /* Ensure no one else is modifying the l0_stats */
->> + spin_lock_irqsave(&lock_l0_stats, flags);
->> +
->> + rc =3D kvmppc_update_l0_stats();
->> + if (!rc) {
->> + switch (config) {
->> + case KVMPPC_EVENT_HOST_HEAP:
->> + curr_val =3D l0_stats.guest_heap;
->> + break;
->> + case KVMPPC_EVENT_HOST_HEAP_MAX:
->> + curr_val =3D l0_stats.guest_heap_max;
->> + break;
->> + case KVMPPC_EVENT_HOST_PGTABLE:
->> + curr_val =3D l0_stats.guest_pgtable_size;
->> + break;
->> + case KVMPPC_EVENT_HOST_PGTABLE_MAX:
->> + curr_val =3D l0_stats.guest_pgtable_size_max;
->> + break;
->> + case KVMPPC_EVENT_HOST_PGTABLE_RECLAIM:
->> + curr_val =3D l0_stats.guest_pgtable_reclaim;
->> + break;
->> + default:
->> + rc =3D -ENOENT;
->> + break;
->> + }
->> + }
->> +
->> + spin_unlock_irqrestore(&lock_l0_stats, flags);
->> +
->> + /* If no error than update the perf event */
->> + if (!rc) {
->> + prev_val =3D local64_xchg(&event->hw.prev_count, curr_val);
->> + if (curr_val > prev_val)
->> + local64_add(curr_val - prev_val, &event->count);
->> + }
->> +
->> + return rc;
->> +}
->> +
->> static int kvmppc_pmu_event_init(struct perf_event *event)
->> {
->> unsigned int config =3D event->attr.config;
->> @@ -110,15 +194,19 @@ static int kvmppc_pmu_event_init(struct perf_event=
- *event)
->>=20
->> static void kvmppc_pmu_del(struct perf_event *event, int flags)
->> {
->> + /* Do nothing */
->> }
->
-> If we don=E2=80=99t read the counter stats in =E2=80=9Cdel=E2=80=9D call =
-back, we will loose the final count getting updated, right ?
-> Del callback needs to call kvmppc_pmu_read. Can you check the difference =
-in count stats by calling kvmppc_pmu_read here ?
->
+kernel test robot noticed the following build warnings:
 
-Yes, agreed. Will address this in next version of the patch series
+[auto build test WARNING on powerpc/next]
+[also build test WARNING on powerpc/fixes linus/master v6.14-rc6]
+[cannot apply to next-20250307]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-> Thanks
-> Athira
->
->>=20
->> static int kvmppc_pmu_add(struct perf_event *event, int flags)
->> {
->> + if (flags & PERF_EF_START)
->> + return kvmppc_pmu_event_update(event);
->> return 0;
->> }
->>=20
->> static void kvmppc_pmu_read(struct perf_event *event)
->> {
->> + kvmppc_pmu_event_update(event);
->> }
->>=20
->> /* Return the size of the needed guest state buffer */
->> @@ -302,6 +390,8 @@ static struct pmu kvmppc_pmu =3D {
->> .read =3D kvmppc_pmu_read,
->> .attr_groups =3D kvmppc_pmu_attr_groups,
->> .type =3D -1,
->> + .scope =3D PERF_PMU_SCOPE_SYS_WIDE,
->> + .capabilities =3D PERF_PMU_CAP_NO_EXCLUDE | PERF_PMU_CAP_NO_INTERRUPT,
->> };
->>=20
->> static int __init kvmppc_register_pmu(void)
->> --=20
->> 2.48.1
->>=20
->>=20
->>=20
->
->
+url:    https://github.com/intel-lab-lkp/linux/commits/Haren-Myneni/powerpc-pseries-Define-common-functions-for-RTAS-sequence-calls/20250310-054319
+base:   https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git next
+patch link:    https://lore.kernel.org/r/20250309213916.762116-4-haren%40linux.ibm.com
+patch subject: [PATCH v7 3/7] powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+config: powerpc64-randconfig-r072-20250311 (https://download.01.org/0day-ci/archive/20250311/202503111710.tsPk3Snj-lkp@intel.com/config)
+compiler: clang version 21.0.0git (https://github.com/llvm/llvm-project e15545cad8297ec7555f26e5ae74a9f0511203e7)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20250311/202503111710.tsPk3Snj-lkp@intel.com/reproduce)
 
---=20
-Cheers
-~ Vaibhav
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202503111710.tsPk3Snj-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> arch/powerpc/platforms/pseries/papr-indices.c:124: warning: Function parameter or struct member 'seq' not described in 'indices_sequence_begin'
+
+
+vim +124 arch/powerpc/platforms/pseries/papr-indices.c
+
+   110	
+   111	/*
+   112	 * Internal indices sequence APIs. A sequence is a series of calls to
+   113	 * ibm,get-indices for a given location code. The sequence ends when
+   114	 * an error is encountered or all indices for the input has been
+   115	 * returned.
+   116	 */
+   117	
+   118	/**
+   119	 * indices_sequence_begin() - Begin a indices retrieval sequence.
+   120	 *
+   121	 * Context: May sleep.
+   122	 */
+   123	static void indices_sequence_begin(struct papr_rtas_sequence *seq)
+ > 124	{
+   125		struct rtas_get_indices_params  *param;
+   126	
+   127		param = (struct rtas_get_indices_params *)seq->params;
+   128		/*
+   129		 * We could allocate the work area before acquiring the
+   130		 * function lock, but that would allow concurrent requests to
+   131		 * exhaust the limited work area pool for no benefit. So
+   132		 * allocate the work area under the lock.
+   133		 */
+   134		mutex_lock(&rtas_ibm_get_indices_lock);
+   135		param->work_area = rtas_work_area_alloc(RTAS_GET_INDICES_BUF_SIZE);
+   136		param->next = 1;
+   137		param->status = 0;
+   138	}
+   139	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
