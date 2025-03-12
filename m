@@ -1,91 +1,96 @@
-Return-Path: <linuxppc-dev+bounces-6928-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6929-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EE44A5D648
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Mar 2025 07:31:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E43BA5D651
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Mar 2025 07:35:26 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZCLP53GxQz30W5;
-	Wed, 12 Mar 2025 17:31:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZCLV35MhXz3btn;
+	Wed, 12 Mar 2025 17:35:23 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741761065;
-	cv=none; b=CbArz0TlRSIfIzu/Vc+XHcnSDfF8h3tKokwyAHcfbL54Prtp2Vde9xIJuwpzVHPqrzvahDwDc00IaUgI1XNolxH2uqCYZpu1k9bSwPg9naAD/3GqPcyZUfq1u0IPhXUrw3tkPbporWwJkC+lVg+BbTDF696gls5J0Y35Ele7LYqA1kiEvjlWBYnVhn3nBfKoDImNC7n98axJxTIgCJEMHMlxtA3QLgXo16dzrsodVEemAFzqX2iAy37uUW75KA2hVLtJpU54ckxEpCZFbQuu2CdzSO1bs8dZ3wBVN1hABauG4CJdVVfZiV3mtx3D52RaOJHOYQxpOxK8D6ntOYJGKg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741761323;
+	cv=none; b=QG9rn2Gq9/ine0v8Ag5tkzOnnBuHztDGbtSXjvjIvkBf4QBY0+ZuZNiScR3pG0LnlKshWyDnJbi8JmuT/SZCokrAycWwD1bMgREXwn7y+MtXJbMucwOpDSOW+zW0nPw4+vnbqR72Wb4oo0uECO9fb+x7Gg05gCJX1EKqVsVjlaE0AsCChml0SVYYoK13IDMaxSkOK7AiYtJz6eF2/v3+vdjDj5FXa7oOnPM/8rcACC6EhQ4k4mXoUAIKsSmvjomgVjVLoOcJbNNT/gA6hSQeMBWy1eJRp3B/Cn8DY5+DCXhzMMrmn38qURITIlYEuaGu8Btpdtz1eYWFVSP7JQl+qA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741761065; c=relaxed/relaxed;
-	bh=6tZpLYng3OBziE8gsJ8ssCwAfoL6SRRFjtoOtUsl/Tg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:Mime-Version; b=Fb9jVaCLs4/qnPI0fmP9rurNsjD8zvSm8SVZlZJhXJa1/EVmOobrsRsAZSjrSRrVEwox00jd+6dcus2pZEAGPVc4PQ/jUGhuzuWu7IGMpSMYZ/c436BW7AcMOR8eMiiF2ywIuAl17+JojNlgk1h+ulPSZ6y7IMSCD0kLlbhbqKIAZ87sGD3xfVYhgoekARAZVWx9ELfwdN9stLKZWDZi0YCuevjHu8Hi5szEWkUr7N463Oi9kVfyga8B7YuZnFB5EJdAITqC/tnLLT7LJte8FV9nKzEohnO4xE+3AewULX8AUPs/VkA3PGUanrQ58zhkb5WCgAJmEcAAttYomJ4Yyg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UcLJx5S6; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1741761323; c=relaxed/relaxed;
+	bh=L01F4tka81VK1WGhlNJbg+RT6azDphkZ5PvXfllUquU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RVPHiOgmQpmXA5hWoe0p5Bl8QrNN14HhUWTfcJA/bS+iZ4TtzcI3IbI+x+sPX4LNaNu/uz/Qxz9n3u8dp6Nsyw4ONUmn/QopNc+p6bhEu3VBJJVR/zhb9/X5Ja5ptz/qbC5V/vfuidQ0WDElYGah70ZIC5+mgxsZISAfIXy/Ut+LKPOY9apdZd8xSowsOe7JYwTdBF6iHHumUfFByYSCE5Bo6kCmRGEYHkIdwcGw6mLY8wUJzO+NJDWUGyylyHgu0X+PvPgES2SyRbf6Am0sejYRkk5I3UZNa2gPJPprpQCtHkOVpQy3kVsMwhBpg1TyhPNU8QX7RECVMzUr4fdaCA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s5OTgyGp; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UcLJx5S6;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=s5OTgyGp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZCLP15qpsz30Kg
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 17:31:01 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BKcf5t004971;
-	Wed, 12 Mar 2025 06:30:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6tZpLY
-	ng3OBziE8gsJ8ssCwAfoL6SRRFjtoOtUsl/Tg=; b=UcLJx5S6nSq/YZad4xvYuX
-	LJcONlU6MNxDd1zvgCA1DSj9H//d36RyhIop+Jg2PXpB3NsFxAc3ETO/JtguLefC
-	AshaW68lsdEp2bS16S4UsDKJuY4daI08hG89zpumLxWJdfVYFvIIJxZhoZVa1qg2
-	u4z4xaGadfxiqZIaovQ366R4PWFHwEmWrxSe0VYklJZYZdI3pFh8msmdQCqZN+K3
-	AydKa9bT2e7vseQotgG50MUvgQQ33LpTv7ECnGKI2PILVbzJZbutzY1sLMGagc7Y
-	oP+2fpQR5L07qzX37svzNWVSCrvyK7ZlCeAG80zbD3IbOBp24IRkjlcjsNcJSglw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avcyt15e-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 06:30:52 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52C6R2aB029252;
-	Wed, 12 Mar 2025 06:30:52 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avcyt15c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 06:30:52 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52C6Mg0n027172;
-	Wed, 12 Mar 2025 06:30:51 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsqtmgw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 06:30:51 +0000
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52C6Umm930606016
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Mar 2025 06:30:48 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 29D555805D;
-	Wed, 12 Mar 2025 06:30:48 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E90A458053;
-	Wed, 12 Mar 2025 06:30:46 +0000 (GMT)
-Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com (unknown [9.61.74.78])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Mar 2025 06:30:46 +0000 (GMT)
-Message-ID: <d25bfe9d18156adfc2ba656aea55a4b70d17b3bd.camel@linux.ibm.com>
-Subject: Re: [PATCH v8 1/7] powerpc/pseries: Define common functions for
- RTAS sequence calls
-From: Haren Myneni <haren@linux.ibm.com>
-To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
-        npiggin@gmail.com, msuchanek@suse.de, mahesh@linux.ibm.com,
-        tyreld@linux.ibm.com, hbabu@us.ibm.com, sv@linux.ibm.com
-Date: Tue, 11 Mar 2025 23:30:46 -0700
-In-Reply-To: <ao7wd4on2rdvhosbecyq2yb7agpop4cvluby6csxw6pi6s24fp@xtthgpv3noe7>
-References: <20250311225049.146783-1-haren@linux.ibm.com>
-	 <20250311225049.146783-2-haren@linux.ibm.com>
-	 <ao7wd4on2rdvhosbecyq2yb7agpop4cvluby6csxw6pi6s24fp@xtthgpv3noe7>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZCLV24bsQz30Kg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 17:35:22 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id A9EFC5C47AF;
+	Wed, 12 Mar 2025 06:33:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407D8C4CEE3;
+	Wed, 12 Mar 2025 06:35:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1741761319;
+	bh=5mdaPZVI9H0/LV5hmobVgKrUIL2iuMSKhSTxPs81fPU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=s5OTgyGpaumshikTp+iDDuLZlaDN5ZFNt0xhyxhEjxDoGdrRr5fCFJqupGsQ1e9mc
+	 x5+ujh1N69RbM6sMUkTLS3DxQMtFw4J494229H1wYU5SpwxEIdYz9MdPy8mIFSl7pw
+	 l37VuFqhXXoOyw7aw+nwsTVBrmtEviGrZHfYnDThjgKfYUlSm8F0VvgI37TsJEXPQg
+	 Z/TS0S2P3vKV4E8YK2hLZIT0IUPWeSPBaDZrgP63fW1/ioeooSw+E437KEQCfrER7m
+	 3bE2KZoye8/AcR9u24hQHDyQiTnD+Psif0K5SR2GQnCkTLYx0lBk09w8YpbQLP/phf
+	 PvVxVGjqV5khg==
+Date: Wed, 12 Mar 2025 08:34:56 +0200
+From: Mike Rapoport <rppt@kernel.org>
+To: "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc: Mark Brown <broonie@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Andy Lutomirski <luto@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+	Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Guo Ren <guoren@kernel.org>, Heiko Carstens <hca@linux.ibm.com>,
+	Helge Deller <deller@gmx.de>, Huacai Chen <chenhuacai@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiaxun Yang <jiaxun.yang@flygoat.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Matt Turner <mattst88@gmail.com>, Max Filippov <jcmvbkbc@gmail.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Michal Simek <monstr@monstr.eu>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Weinberger <richard@nod.at>,
+	Stafford Horne <shorne@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Vasily Gorbik <gor@linux.ibm.com>, Vineet Gupta <vgupta@kernel.org>,
+	Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org, x86@kernel.org
+Subject: Re: [PATCH 10/13] arch, mm: set high_memory in free_area_init()
+Message-ID: <Z9ErEBuMMvd6i2n9@kernel.org>
+References: <20250306185124.3147510-1-rppt@kernel.org>
+ <20250306185124.3147510-11-rppt@kernel.org>
+ <cee346ec-5fa5-4d0b-987b-413ee585dbaa@sirena.org.uk>
+ <Z9CyRHewqfZlmgIo@shell.armlinux.org.uk>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,414 +102,136 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: IZ3lFeZmStTjN8X3kbdum4NaKhjAt8IL
-X-Proofpoint-ORIG-GUID: gCZkinCO83a1dtWy5AOLj66wgZF5g4Po
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-12_02,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
- mlxscore=0 lowpriorityscore=0 priorityscore=1501 mlxlogscore=999
- malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0 phishscore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503120041
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Z9CyRHewqfZlmgIo@shell.armlinux.org.uk>
+X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Wed, 2025-03-12 at 10:55 +0530, Mukesh Kumar Chaurasiya wrote:
-> On Tue, Mar 11, 2025 at 03:50:42PM -0700, Haren Myneni wrote:
-> > The RTAS call can be normal where retrieves the data form the
-> > hypervisor once or sequence based RTAS call which has to
-> > issue multiple times until the complete data is obtained. For
-> > some of these sequence RTAS calls, the OS should not interleave
-> > calls with different input until the sequence is completed.
-> > The data is collected for each call and copy to the buffer
-> > for the entire sequence during ioctl() handle and then expose
-> > this buffer to the user space with read() handle.
+On Tue, Mar 11, 2025 at 09:59:32PM +0000, Russell King (Oracle) wrote:
+> On Tue, Mar 11, 2025 at 05:51:06PM +0000, Mark Brown wrote:
+> > On Thu, Mar 06, 2025 at 08:51:20PM +0200, Mike Rapoport wrote:
+> > > From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
+> > > 
+> > > high_memory defines upper bound on the directly mapped memory.
+> > > This bound is defined by the beginning of ZONE_HIGHMEM when a system has
+> > > high memory and by the end of memory otherwise.
+> > > 
+> > > All this is known to generic memory management initialization code that
+> > > can set high_memory while initializing core mm structures.
+> > > 
+> > > Remove per-architecture calculation of high_memory and add a generic
+> > > version to free_area_init().
 > > 
-> > One such sequence RTAS call is ibm,get-vpd and its support is
-> > already included in the current code. To add the similar support
-> > for other sequence based calls, move the common functions in to
-> > separate file and update papr_rtas_sequence struct with the
-> > following callbacks so that RTAS call specific code will be
-> > defined and executed to complete the sequence.
-> > 
-> > struct papr_rtas_sequence {
-> >         int error;
-> >         void params;
-> >         void (*begin) (struct papr_rtas_sequence *);
-> >         void (*end) (struct papr_rtas_sequence *);
-> >         const char * (*work) (struct papr_rtas_sequence *, size_t
-> > *);
-> > };
-> > 
-> > params: Input parameters used to pass for RTAS call.
-> > Begin:	RTAS call specific function to initialize data
-> > 	including work area allocation.
-> > End:	RTAS call specific function to free up resources
-> > 	(free work area) after the sequence is completed.
-> > Work:	The actual RTAS call specific function which collects
-> > 	the data from the hypervisor.
-> > 
-> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-> > ---
-> >  arch/powerpc/platforms/pseries/Makefile       |   2 +-
-> >  .../platforms/pseries/papr-rtas-common.c      | 310
-> > ++++++++++++++++
-> >  .../platforms/pseries/papr-rtas-common.h      |  61 +++
-> >  arch/powerpc/platforms/pseries/papr-vpd.c     | 351 +++-----------
-> > ----
-> >  4 files changed, 416 insertions(+), 308 deletions(-)
-> >  create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-
-> > common.c
-> >  create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-
-> > common.h
-> > 
-> > diff --git a/arch/powerpc/platforms/pseries/Makefile
-> > b/arch/powerpc/platforms/pseries/Makefile
-> > index 7bf506f6b8c8..697c216b70dc 100644
-> > --- a/arch/powerpc/platforms/pseries/Makefile
-> > +++ b/arch/powerpc/platforms/pseries/Makefile
-> > @@ -3,7 +3,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
-> >  
-> >  obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
-> >  			   of_helpers.o rtas-work-area.o papr-sysparm.o 
-> > \
-> > -			   papr-vpd.o \
-> > +			   papr-rtas-common.o papr-vpd.o \
-> >  			   setup.o iommu.o event_sources.o ras.o \
-> >  			   firmware.o power.o dlpar.o mobility.o rng.o
-> > \
-> >  			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
-> > diff --git a/arch/powerpc/platforms/pseries/papr-rtas-common.c
-> > b/arch/powerpc/platforms/pseries/papr-rtas-common.c
-> > new file mode 100644
-> > index 000000000000..2d0220209de0
-> > --- /dev/null
-> > +++ b/arch/powerpc/platforms/pseries/papr-rtas-common.c
-> > @@ -0,0 +1,310 @@
-> > +// SPDX-License-Identifier: GPL-2.0-only
-> > +
-> > +#define pr_fmt(fmt) "papr-common: " fmt
-> > +
-> > +#include <linux/types.h>
-> > +#include <linux/kernel.h>
-> > +#include <linux/signal.h>
-> > +#include <linux/slab.h>
-> > +#include <linux/file.h>
-> > +#include <linux/fs.h>
-> > +#include <linux/anon_inodes.h>
-> > +#include <linux/sched/signal.h>
-> > +#include "papr-rtas-common.h"
-> > +
-> > +/*
-> > + * Sequence based RTAS HCALL has to issue multiple times to
-> > retrieve
-> > + * complete data from the hypervisor. For some of these RTAS
-> > calls,
-> > + * the OS should not interleave calls with different input until
-> > the
-> > + * sequence is completed. So data is collected for these calls
-> > during
-> > + * ioctl handle and export to user space with read() handle.
-> > + * This file provides common functions needed for such sequence
-> > based
-> > + * RTAS calls Ex: ibm,get-vpd and ibm,get-indices.
-> > + */
-> > +
-> > +bool papr_rtas_blob_has_data(const struct papr_rtas_blob *blob)
-> > +{
-> > +	return blob->data && blob->len;
-> > +}
-> > +
-> > +void papr_rtas_blob_free(const struct papr_rtas_blob *blob)
-> > +{
-> > +	if (blob) {
-> > +		kvfree(blob->data);
-> > +		kfree(blob);
-> > +	}
-> > +}
-> > +
-> > +/**
-> > + * papr_rtas_blob_extend() - Append data to a &struct
-> > papr_rtas_blob.
-> > + * @blob: The blob to extend.
-> > + * @data: The new data to append to @blob.
-> > + * @len:  The length of @data.
-> > + *
-> > + * Context: May sleep.
-> > + * Return: -ENOMEM on allocation failure, 0 otherwise.
-> > + */
-> > +static int papr_rtas_blob_extend(struct papr_rtas_blob *blob,
-> > +				const char *data, size_t len)
-> > +{
-> > +	const size_t new_len = blob->len + len;
-> > +	const size_t old_len = blob->len;
-> > +	const char *old_ptr = blob->data;
-> > +	char *new_ptr;
-> > +
-> > +	new_ptr = kvrealloc(old_ptr, new_len, GFP_KERNEL_ACCOUNT);
-> > +	if (!new_ptr)
-> > +		return -ENOMEM;
-> > +
-> > +	memcpy(&new_ptr[old_len], data, len);
-> > +	blob->data = new_ptr;
-> > +	blob->len = new_len;
-> > +	return 0;
-> > +}
-> > +
-> > +/**
-> > + * papr_rtas_blob_generate() - Construct a new &struct
-> > papr_rtas_blob.
-> > + * @seq: work function of the caller that is called to obtain
-> > + *       data with the caller RTAS call.
-> > + *
-> > + * The @work callback is invoked until it returns NULL. @seq is
-> > + * passed to @work in its first argument on each call. When
-> > + * @work returns data, it should store the data length in its
-> > + * second argument.
-> > + *
-> > + * Context: May sleep.
-> > + * Return: A completely populated &struct papr_rtas_blob, or NULL
-> > on error.
-> > + */
-> > +static const struct papr_rtas_blob *
-> > +papr_rtas_blob_generate(struct papr_rtas_sequence *seq)
-> > +{
-> > +	struct papr_rtas_blob *blob;
-> > +	const char *buf;
-> > +	size_t len;
-> > +	int err = 0;
-> > +
-> > +	blob  = kzalloc(sizeof(*blob), GFP_KERNEL_ACCOUNT);
-> > +	if (!blob)
-> > +		return NULL;
-> > +
-> > +	if (!seq->work)
-> > +		return ERR_PTR(-EINVAL);
-> > +
-> > +
-> > +	while (err == 0 && (buf = seq->work(seq, &len)))
-> > +		err = papr_rtas_blob_extend(blob, buf, len);
-> > +
-> > +	if (err != 0 || !papr_rtas_blob_has_data(blob))
-> > +		goto free_blob;
-> > +
-> > +	return blob;
-> > +free_blob:
-> > +	papr_rtas_blob_free(blob);
-> > +	return NULL;
-> > +}
-> > +
-> > +int papr_rtas_sequence_set_err(struct papr_rtas_sequence *seq, int
-> > err)
-> > +{
-> > +	/* Preserve the first error recorded. */
-> > +	if (seq->error == 0)
-> > +		seq->error = err;
-> > +
-> > +	return seq->error;
-> > +}
-> > +
-> > +/*
-> > + * Higher-level retrieval code below. These functions use the
-> > + * papr_rtas_blob_* and sequence_* APIs defined above to create
-> > fd-based
-> > + * handles for consumption by user space.
-> > + */
-> > +
-> > +/**
-> > + * papr_rtas_run_sequence() - Run a single retrieval sequence.
-> > + * @seq:	Functions of the caller to complete the sequence
-> > + *
-> > + * Context: May sleep. Holds a mutex and an RTAS work area for its
-> > + *          duration. Typically performs multiple sleepable slab
-> > + *          allocations.
-> > + *
-> > + * Return: A populated &struct papr_rtas_blob on success. Encoded
-> > error
-> > + * pointer otherwise.
-> > + */
-> > +static const struct papr_rtas_blob *papr_rtas_run_sequence(struct
-> > papr_rtas_sequence *seq)
-> > +{
-> > +	const struct papr_rtas_blob *blob;
-> > +
-> > +	if (seq->begin)
-> > +		seq->begin(seq);
-> > +
-> > +	blob = papr_rtas_blob_generate(seq);
-> > +	if (!blob)
-> > +		papr_rtas_sequence_set_err(seq, -ENOMEM);
-> > +
-> > +	if (seq->end)
-> > +		seq->end(seq);
-> > +
-> > +
-> > +	if (seq->error) {
-> > +		papr_rtas_blob_free(blob);
-> > +		return ERR_PTR(seq->error);
-> > +	}
-> > +
-> > +	return blob;
-> > +}
-> > +
-> > +/**
-> > + * papr_rtas_retrieve() - Return the data blob that is exposed to
-> > + * user space.
-> > + * @seq: RTAS call specific functions to be invoked until the
-> > + *       sequence is completed.
-> > + *
-> > + * Run sequences against @param until a blob is successfully
-> > + * instantiated, or a hard error is encountered, or a fatal signal
-> > is
-> > + * pending.
-> > + *
-> > + * Context: May sleep.
-> > + * Return: A fully populated data blob when successful. Encoded
-> > error
-> > + * pointer otherwise.
-> > + */
-> > +const struct papr_rtas_blob *papr_rtas_retrieve(struct
-> > papr_rtas_sequence *seq)
-> > +{
-> > +	const struct papr_rtas_blob *blob;
-> > +
-> > +	/*
-> > +	 * EAGAIN means the sequence returns error with a -4 (data
-> > +	 * changed and need to start the sequence) status from RTAS
-> > calls
-> > +	 * and we should attempt a new sequence. PAPR+ (v2.13
-> > R1–7.3.20–5
-> > +	 * - ibm,get-vpd, R1–7.3.17–6 - ibm,get-indices) indicates that
-> > +	 * this should be a transient condition, not something that
-> > +	 * happens continuously. But we'll stop trying on a fatal
-> > signal.
-> > +	 */
-> > +	do {
-> > +		blob = papr_rtas_run_sequence(seq);
-> > +		if (!IS_ERR(blob)) /* Success. */
-> > +			break;
-> > +		if (PTR_ERR(blob) != -EAGAIN) /* Hard error. */
-> > +			break;
-> > +		cond_resched();
-> > +	} while (!fatal_signal_pending(current));
-> > +
-> > +	return blob;
-> > +}
-> > +
-> > +/**
-> > + * papr_rtas_setup_file_interface - Complete the sequence and
-> > obtain
-> > + * the data and export to user space with fd-based handles. Then
-> > the
-> > + * user spave gets the data with read() handle.
-> > + * @seq: RTAS call specific functions to get the data.
-> > + * @fops: RTAS call specific file operations such as read().
-> > + * @name: RTAS call specific char device node.
-> > + *
-> > + * Return: FD handle for consumption by user space
-> > + */
-> > +long papr_rtas_setup_file_interface(struct papr_rtas_sequence
-> > *seq,
-> > +				const struct file_operations *fops,
-> > +				char *name)
-> > +{
-> > +	const struct papr_rtas_blob *blob;
-> > +	struct file *file;
-> > +	long ret;
-> > +	int fd;
-> > +
-> > +	blob = papr_rtas_retrieve(seq);
-> > +	if (IS_ERR(blob))
-> > +		return PTR_ERR(blob);
-> > +
-> > +	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
-> > +	if (fd < 0) {
-> > +		ret = fd;
-> > +		goto free_blob;
-> > +	}
-> > +
-> > +	file = anon_inode_getfile(name, fops, (void *)blob, O_RDONLY);
-> > +	if (IS_ERR(file)) {
-> > +		ret = PTR_ERR(file);
-> > +		goto put_fd;
-> > +	}
-> > +
-> > +	file->f_mode |= FMODE_LSEEK | FMODE_PREAD;
-> > +	fd_install(fd, file);
-> > +	return fd;
-> > +
-> > +put_fd:
-> > +	put_unused_fd(fd);
-> > +free_blob:
-> > +	papr_rtas_blob_free(blob);
-> > +	return ret;
-> > +}
-> > +
-> > +/*
-> > + * papr_rtas_sequence_should_stop() - Determine whether RTAS
-> > retrieval
-> > + *                                    sequence should continue.
-> > + *
-> > + * Examines the sequence error state and outputs of the last call
-> > to
-> > + * the specific RTAS to determine whether the sequence in progress
-> > + * should continue or stop.
-> > + *
-> > + * Return: True if the sequence has encountered an error or if all
-> > data
-> > + *         for this sequence has been retrieved. False otherwise.
-> > + */
-> > +bool papr_rtas_sequence_should_stop(const struct
-> > papr_rtas_sequence *seq,
-> > +				s32 status, bool init_state)
-> > +{
-> > +	bool done;
-> > +
-> > +	if (seq->error)
-> > +		return true;
-> > +
-> > +	switch (status) {
-> > +	case RTAS_SEQ_COMPLETE:
-> > +		if (init_state)
-> > +			done = false; /* Initial state. */
-> > +		else
-> > +			done = true; /* All data consumed. */
-> > +		break;
-> > +	case RTAS_SEQ_MORE_DATA:
-> > +		done = false; /* More data available. */
-> > +		break;
-> > +	default:
-> > +		done = true; /* Error encountered. */
-> > +		break;
-> > +	}
-> > +
-> > +	return done;
-> > +}
-> > +
-> > +/*
-> > + * User space read to retrieve data for the corresponding RTAS
-> > call.
-> > + * papr_rtas_blob is filled with the data using the corresponding
-> > RTAS
-> > + * call sequence API.
-> > + */
-> > +ssize_t papr_rtas_common_handle_read(struct file *file,
-> > +	       char __user *buf, size_t size, loff_t *off)
-> > +{
-> > +	const struct papr_rtas_blob *blob = file->private_data;
-> > +
-> > +	/* bug: we should not instantiate a handle without any data
-> > attached. */	if (!papr_rtas_blob_has_data(blob)) {
-> Line break is missing here.
+> > This patch appears to be causing breakage on a number of 32 bit arm
+> > platforms, including qemu's virt-2.11,gic-version=3.  Affected platforms
+> > die on boot with no output, a bisect with qemu points at this commit and
+> > those for physical platforms appear to be converging on the same place.
+> 
+> I'm not convinced that the old and the new code is doing the same
+> thing.
+> 
+> The new code:
+> 
+> +       phys_addr_t highmem = memblock_end_of_DRAM();
+> +
+> +#ifdef CONFIG_HIGHMEM
+> +       unsigned long pfn = arch_zone_lowest_possible_pfn[ZONE_HIGHMEM];
+> +
+> +       if (arch_has_descending_max_zone_pfns() || highmem > PFN_PHYS(pfn))
+> +               highmem = PFN_PHYS(pfn);
+> +#endif
+> +
+> +       high_memory = phys_to_virt(highmem - 1) + 1;
+> 
+> First, when CONFIG_HIGHMEM is disabled, this code assumes that the last
+> byte of DRAM declared to memblock is the highmem limit. This _could_
+> overflow phys_to_virt() and lead to an invalid value for high_memory.
+> 
+> Second, arch_zone_lowest_possible_pfn[ZONE_HIGHMEM] is the _start_ of
+> highmem. This is not what arch code sets high_memory to - because
+> the start of highmem may not contiguously follow on from lowmem.
+> 
+> In arch/arm/mm/mmu.c, lowmem_limit is computed to be the highest + 1
+> physical address that lowmem can possibly be, taking into account the
+> amount of vmalloc memory that is required. This is used to set
+> high_memory.
+> 
+> We also limit the amount of usable RAM via memblock_set_current_limit()
+> which memblock_end_of_DRAM() doesn't respect.
+> 
+> I don't think the proposed generic version is suitable for 32-bit arm.
 
-Thanks for finding it. I did not find this with checkpatch initially.
-Looks like made this mistake in v4 revision.
+Unless I'm missing something, both memblock.current_limit and start of
+ZONE_HIGHMEM are set to arm_lowmem_limit which will be different from
+memblock_end_of_DRAM() only for machines with more than nearly 4GiB of RAM
+and those will supposedly use HIGHMEM anyway.
 
+But this does not matter anyway because failures Mark reported happen
+because 32-bit arm uses high_memory before mem_init() and that what causes
+the hangs. 
 
+Here's the fix I have, I'll send v2 shortly.
+
+diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
+index e492d58a0386..f02f872ea8a9 100644
+--- a/arch/arm/mm/mmu.c
++++ b/arch/arm/mm/mmu.c
+@@ -1250,6 +1250,8 @@ void __init adjust_lowmem_bounds(void)
+ 
+ 	arm_lowmem_limit = lowmem_limit;
+ 
++	high_memory = __va(arm_lowmem_limit - 1) + 1;
++
+ 	if (!memblock_limit)
+ 		memblock_limit = arm_lowmem_limit;
+ 
+diff --git a/arch/arm/mm/nommu.c b/arch/arm/mm/nommu.c
+index 65903ed5e80d..1a8f6914ee59 100644
+--- a/arch/arm/mm/nommu.c
++++ b/arch/arm/mm/nommu.c
+@@ -146,6 +146,7 @@ void __init adjust_lowmem_bounds(void)
+ 	phys_addr_t end;
+ 	adjust_lowmem_bounds_mpu();
+ 	end = memblock_end_of_DRAM();
++	high_memory = __va(end - 1) + 1;
+ 	memblock_set_current_limit(end);
+ }
+ 
+diff --git a/mm/mm_init.c b/mm/mm_init.c
+index 545e11f1a3ba..0aef4bef93c4 100644
+--- a/mm/mm_init.c
++++ b/mm/mm_init.c
+@@ -1765,14 +1765,20 @@ static bool arch_has_descending_max_zone_pfns(void)
+ 
+ static void set_high_memory(void)
+ {
++	unsigned long pfn = arch_zone_lowest_possible_pfn[ZONE_HIGHMEM];
+ 	phys_addr_t highmem = memblock_end_of_DRAM();
+ 
+-#ifdef CONFIG_HIGHMEM
+-	unsigned long pfn = arch_zone_lowest_possible_pfn[ZONE_HIGHMEM];
++	/*
++	 * Some architectures (e.g. ARM) set high_memory very early and
++	 * use it in arch setup code.
++	 * If an architecture already set high_memory don't overwrite it
++	 */
++	if (high_memory)
++		return;
+ 
+-	if (arch_has_descending_max_zone_pfns() || highmem > PFN_PHYS(pfn))
++	if (IS_ENABLED(CONFIG_HIGHMEM) &&
++	    (arch_has_descending_max_zone_pfns() || highmem > PFN_PHYS(pfn)))
+ 		highmem = PFN_PHYS(pfn);
+-#endif
+ 
+ 	high_memory = phys_to_virt(highmem - 1) + 1;
+ }
+
+-- 
+Sincerely yours,
+Mike.
 
