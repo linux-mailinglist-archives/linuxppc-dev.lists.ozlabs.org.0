@@ -1,71 +1,91 @@
-Return-Path: <linuxppc-dev+bounces-6927-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6928-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F102AA5D5D5
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Mar 2025 07:03:12 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EE44A5D648
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Mar 2025 07:31:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZCKmt2xQ9z2yvs;
-	Wed, 12 Mar 2025 17:03:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZCLP53GxQz30W5;
+	Wed, 12 Mar 2025 17:31:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741759390;
-	cv=none; b=VHuxZ7xvTgLXv3fzgez5Qx01krY9WqfZ5NSEqe7RP0zOjwvRNgRpzTCCJxvUDflHQ1JNKHOUzd3kHhkcVZGHdxlWkf5/PcSUYsdBheoW1ZUW59Na7Dj/kOt/prj+jBR5NbVdI599/XcU0AprtXBhVDQpSCynyu/1L6guZMPn5YqRnX03+2ggMbmnkFFSbeWTW2yy6NhL8Yw+qtA11x2IQxR8TE18RLT5z6B/uXaEoLS5W0/d0Sd+koHMRfgDFS6uWNd/r+QGAguDCiRQH8ZJuWv1L63fK/8943D3xrBXfP3hcPBbtVE4Btl99UT9cO30hmTPrFOFNDwA+8+gvm9y+g==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741761065;
+	cv=none; b=CbArz0TlRSIfIzu/Vc+XHcnSDfF8h3tKokwyAHcfbL54Prtp2Vde9xIJuwpzVHPqrzvahDwDc00IaUgI1XNolxH2uqCYZpu1k9bSwPg9naAD/3GqPcyZUfq1u0IPhXUrw3tkPbporWwJkC+lVg+BbTDF696gls5J0Y35Ele7LYqA1kiEvjlWBYnVhn3nBfKoDImNC7n98axJxTIgCJEMHMlxtA3QLgXo16dzrsodVEemAFzqX2iAy37uUW75KA2hVLtJpU54ckxEpCZFbQuu2CdzSO1bs8dZ3wBVN1hABauG4CJdVVfZiV3mtx3D52RaOJHOYQxpOxK8D6ntOYJGKg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741759390; c=relaxed/relaxed;
-	bh=zHbvP9t3W6uEmOv1+pjYYUlhNuoOIAj0TkrNSUOEeuI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=MLY2/DeakFkedPkFSw1aKTGJCwY73wCyCJnmsogOQmlm3rrWJZHMahV7rEN0xtJZceiTjPhneC7y/S+IDkZJG9inNM+3KQUPDOahg8lS63y2k72jBxeTmreCCSFcXByqUx+AAXdlU2GWWC3D3mJU74HvaSG4KTTJlChSO4PPmav3mj7t2EJcShKJYlu8Unw9YWTskazJLnopf1OyLn4LxY6NmBSGqvjw80VpsxMVsfexqDI1Q/BLL5bhAgXfXKUP/u7kJfmlqIxArX7IF1ov1Sk4qeYKmBnp7BmVWfbBIzD7Hbifv6tV0z0mRKF7+YOaEipwe018aq3inUjQF6foyQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UqgqLpuY; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1741761065; c=relaxed/relaxed;
+	bh=6tZpLYng3OBziE8gsJ8ssCwAfoL6SRRFjtoOtUsl/Tg=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:Mime-Version; b=Fb9jVaCLs4/qnPI0fmP9rurNsjD8zvSm8SVZlZJhXJa1/EVmOobrsRsAZSjrSRrVEwox00jd+6dcus2pZEAGPVc4PQ/jUGhuzuWu7IGMpSMYZ/c436BW7AcMOR8eMiiF2ywIuAl17+JojNlgk1h+ulPSZ6y7IMSCD0kLlbhbqKIAZ87sGD3xfVYhgoekARAZVWx9ELfwdN9stLKZWDZi0YCuevjHu8Hi5szEWkUr7N463Oi9kVfyga8B7YuZnFB5EJdAITqC/tnLLT7LJte8FV9nKzEohnO4xE+3AewULX8AUPs/VkA3PGUanrQ58zhkb5WCgAJmEcAAttYomJ4Yyg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UcLJx5S6; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UqgqLpuY;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=UcLJx5S6;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZCKms1MfLz2ypV
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 17:03:08 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BKpXR0021831;
-	Wed, 12 Mar 2025 06:03:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=zHbvP9
-	t3W6uEmOv1+pjYYUlhNuoOIAj0TkrNSUOEeuI=; b=UqgqLpuYT1gf6fnJji1rHG
-	fMWUF5BCf5v1E0LuugGH54TjU8BTFhQ+6CqfbbzZXNkuPZzo9uwjG3GseVp4msQp
-	1X/sHdOBc8a6/y0e38I3b24HjxnGaPtJvbImglmYaAqNxW4k0SAGRoMPYwhkR99h
-	w8ZUPKFzzdmqoi5WSzRvJEYmDzNZRNqMxcwl2KFi0I44YDqHvHCnL5wIVw17rti0
-	UUp3/AyUrZ+ZX60Gb5GwY0uQZJ/Y/umCVbiZmtn3xUpMhdgV/AIhUaBQlxVgByDj
-	PIyaRvUNVVU69RqHduXfMXIUW+rtMAdBbSkrzpMxWdusVdKUQTZqvNvvxwv1TDpA
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZCLP15qpsz30Kg
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 17:31:01 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52BKcf5t004971;
+	Wed, 12 Mar 2025 06:30:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=6tZpLY
+	ng3OBziE8gsJ8ssCwAfoL6SRRFjtoOtUsl/Tg=; b=UcLJx5S6nSq/YZad4xvYuX
+	LJcONlU6MNxDd1zvgCA1DSj9H//d36RyhIop+Jg2PXpB3NsFxAc3ETO/JtguLefC
+	AshaW68lsdEp2bS16S4UsDKJuY4daI08hG89zpumLxWJdfVYFvIIJxZhoZVa1qg2
+	u4z4xaGadfxiqZIaovQ366R4PWFHwEmWrxSe0VYklJZYZdI3pFh8msmdQCqZN+K3
+	AydKa9bT2e7vseQotgG50MUvgQQ33LpTv7ECnGKI2PILVbzJZbutzY1sLMGagc7Y
+	oP+2fpQR5L07qzX37svzNWVSCrvyK7ZlCeAG80zbD3IbOBp24IRkjlcjsNcJSglw
 	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avk49v27-1
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avcyt15e-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 06:02:59 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52C2WiBV003148;
-	Wed, 12 Mar 2025 06:02:59 GMT
-Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atstjhrg-1
+	Wed, 12 Mar 2025 06:30:52 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52C6R2aB029252;
+	Wed, 12 Mar 2025 06:30:52 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45avcyt15c-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 12 Mar 2025 06:02:59 +0000
-Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
-	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52C62wbC26346110
+	Wed, 12 Mar 2025 06:30:52 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52C6Mg0n027172;
+	Wed, 12 Mar 2025 06:30:51 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsqtmgw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 12 Mar 2025 06:30:51 +0000
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52C6Umm930606016
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 12 Mar 2025 06:02:58 GMT
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3EA1258043;
-	Wed, 12 Mar 2025 06:02:58 +0000 (GMT)
-Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8666858055;
-	Wed, 12 Mar 2025 06:02:56 +0000 (GMT)
-Received: from [9.61.240.129] (unknown [9.61.240.129])
-	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 12 Mar 2025 06:02:56 +0000 (GMT)
-Message-ID: <e2498b0f-cc3d-43da-8422-9ef237d16d43@linux.ibm.com>
-Date: Wed, 12 Mar 2025 11:32:54 +0530
+	Wed, 12 Mar 2025 06:30:48 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 29D555805D;
+	Wed, 12 Mar 2025 06:30:48 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E90A458053;
+	Wed, 12 Mar 2025 06:30:46 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com (unknown [9.61.74.78])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 12 Mar 2025 06:30:46 +0000 (GMT)
+Message-ID: <d25bfe9d18156adfc2ba656aea55a4b70d17b3bd.camel@linux.ibm.com>
+Subject: Re: [PATCH v8 1/7] powerpc/pseries: Define common functions for
+ RTAS sequence calls
+From: Haren Myneni <haren@linux.ibm.com>
+To: Mukesh Kumar Chaurasiya <mchauras@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, maddy@linux.ibm.com, mpe@ellerman.id.au,
+        npiggin@gmail.com, msuchanek@suse.de, mahesh@linux.ibm.com,
+        tyreld@linux.ibm.com, hbabu@us.ibm.com, sv@linux.ibm.com
+Date: Tue, 11 Mar 2025 23:30:46 -0700
+In-Reply-To: <ao7wd4on2rdvhosbecyq2yb7agpop4cvluby6csxw6pi6s24fp@xtthgpv3noe7>
+References: <20250311225049.146783-1-haren@linux.ibm.com>
+	 <20250311225049.146783-2-haren@linux.ibm.com>
+	 <ao7wd4on2rdvhosbecyq2yb7agpop4cvluby6csxw6pi6s24fp@xtthgpv3noe7>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.28.5 (3.28.5-27.el8_10) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,280 +97,414 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: PowerPC: Observing Kernel softlockup while running ftrace
- selftest
-Content-Language: en-GB
-To: Hari Bathini <hbathini@linux.ibm.com>, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-References: <dc78f68f-baae-4758-8f6c-86bbbbef54c3@linux.ibm.com>
- <87fae526-178b-4231-bbe7-dfdd61ac183c@linux.ibm.com>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <87fae526-178b-4231-bbe7-dfdd61ac183c@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Mime-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: RnpinlwDVM2XRdLdUOShRlVs-hbBxn73
-X-Proofpoint-GUID: RnpinlwDVM2XRdLdUOShRlVs-hbBxn73
+X-Proofpoint-GUID: IZ3lFeZmStTjN8X3kbdum4NaKhjAt8IL
+X-Proofpoint-ORIG-GUID: gCZkinCO83a1dtWy5AOLj66wgZF5g4Po
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-12_02,2025-03-11_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- clxscore=1015 impostorscore=0 phishscore=0 mlxscore=0 mlxlogscore=999
- lowpriorityscore=0 spamscore=0 malwarescore=0 adultscore=0 bulkscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503120039
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ mlxscore=0 lowpriorityscore=0 priorityscore=1501 mlxlogscore=999
+ malwarescore=0 adultscore=0 bulkscore=0 impostorscore=0 phishscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503120041
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+On Wed, 2025-03-12 at 10:55 +0530, Mukesh Kumar Chaurasiya wrote:
+> On Tue, Mar 11, 2025 at 03:50:42PM -0700, Haren Myneni wrote:
+> > The RTAS call can be normal where retrieves the data form the
+> > hypervisor once or sequence based RTAS call which has to
+> > issue multiple times until the complete data is obtained. For
+> > some of these sequence RTAS calls, the OS should not interleave
+> > calls with different input until the sequence is completed.
+> > The data is collected for each call and copy to the buffer
+> > for the entire sequence during ioctl() handle and then expose
+> > this buffer to the user space with read() handle.
+> > 
+> > One such sequence RTAS call is ibm,get-vpd and its support is
+> > already included in the current code. To add the similar support
+> > for other sequence based calls, move the common functions in to
+> > separate file and update papr_rtas_sequence struct with the
+> > following callbacks so that RTAS call specific code will be
+> > defined and executed to complete the sequence.
+> > 
+> > struct papr_rtas_sequence {
+> >         int error;
+> >         void params;
+> >         void (*begin) (struct papr_rtas_sequence *);
+> >         void (*end) (struct papr_rtas_sequence *);
+> >         const char * (*work) (struct papr_rtas_sequence *, size_t
+> > *);
+> > };
+> > 
+> > params: Input parameters used to pass for RTAS call.
+> > Begin:	RTAS call specific function to initialize data
+> > 	including work area allocation.
+> > End:	RTAS call specific function to free up resources
+> > 	(free work area) after the sequence is completed.
+> > Work:	The actual RTAS call specific function which collects
+> > 	the data from the hypervisor.
+> > 
+> > Signed-off-by: Haren Myneni <haren@linux.ibm.com>
+> > ---
+> >  arch/powerpc/platforms/pseries/Makefile       |   2 +-
+> >  .../platforms/pseries/papr-rtas-common.c      | 310
+> > ++++++++++++++++
+> >  .../platforms/pseries/papr-rtas-common.h      |  61 +++
+> >  arch/powerpc/platforms/pseries/papr-vpd.c     | 351 +++-----------
+> > ----
+> >  4 files changed, 416 insertions(+), 308 deletions(-)
+> >  create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-
+> > common.c
+> >  create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-
+> > common.h
+> > 
+> > diff --git a/arch/powerpc/platforms/pseries/Makefile
+> > b/arch/powerpc/platforms/pseries/Makefile
+> > index 7bf506f6b8c8..697c216b70dc 100644
+> > --- a/arch/powerpc/platforms/pseries/Makefile
+> > +++ b/arch/powerpc/platforms/pseries/Makefile
+> > @@ -3,7 +3,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
+> >  
+> >  obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
+> >  			   of_helpers.o rtas-work-area.o papr-sysparm.o 
+> > \
+> > -			   papr-vpd.o \
+> > +			   papr-rtas-common.o papr-vpd.o \
+> >  			   setup.o iommu.o event_sources.o ras.o \
+> >  			   firmware.o power.o dlpar.o mobility.o rng.o
+> > \
+> >  			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
+> > diff --git a/arch/powerpc/platforms/pseries/papr-rtas-common.c
+> > b/arch/powerpc/platforms/pseries/papr-rtas-common.c
+> > new file mode 100644
+> > index 000000000000..2d0220209de0
+> > --- /dev/null
+> > +++ b/arch/powerpc/platforms/pseries/papr-rtas-common.c
+> > @@ -0,0 +1,310 @@
+> > +// SPDX-License-Identifier: GPL-2.0-only
+> > +
+> > +#define pr_fmt(fmt) "papr-common: " fmt
+> > +
+> > +#include <linux/types.h>
+> > +#include <linux/kernel.h>
+> > +#include <linux/signal.h>
+> > +#include <linux/slab.h>
+> > +#include <linux/file.h>
+> > +#include <linux/fs.h>
+> > +#include <linux/anon_inodes.h>
+> > +#include <linux/sched/signal.h>
+> > +#include "papr-rtas-common.h"
+> > +
+> > +/*
+> > + * Sequence based RTAS HCALL has to issue multiple times to
+> > retrieve
+> > + * complete data from the hypervisor. For some of these RTAS
+> > calls,
+> > + * the OS should not interleave calls with different input until
+> > the
+> > + * sequence is completed. So data is collected for these calls
+> > during
+> > + * ioctl handle and export to user space with read() handle.
+> > + * This file provides common functions needed for such sequence
+> > based
+> > + * RTAS calls Ex: ibm,get-vpd and ibm,get-indices.
+> > + */
+> > +
+> > +bool papr_rtas_blob_has_data(const struct papr_rtas_blob *blob)
+> > +{
+> > +	return blob->data && blob->len;
+> > +}
+> > +
+> > +void papr_rtas_blob_free(const struct papr_rtas_blob *blob)
+> > +{
+> > +	if (blob) {
+> > +		kvfree(blob->data);
+> > +		kfree(blob);
+> > +	}
+> > +}
+> > +
+> > +/**
+> > + * papr_rtas_blob_extend() - Append data to a &struct
+> > papr_rtas_blob.
+> > + * @blob: The blob to extend.
+> > + * @data: The new data to append to @blob.
+> > + * @len:  The length of @data.
+> > + *
+> > + * Context: May sleep.
+> > + * Return: -ENOMEM on allocation failure, 0 otherwise.
+> > + */
+> > +static int papr_rtas_blob_extend(struct papr_rtas_blob *blob,
+> > +				const char *data, size_t len)
+> > +{
+> > +	const size_t new_len = blob->len + len;
+> > +	const size_t old_len = blob->len;
+> > +	const char *old_ptr = blob->data;
+> > +	char *new_ptr;
+> > +
+> > +	new_ptr = kvrealloc(old_ptr, new_len, GFP_KERNEL_ACCOUNT);
+> > +	if (!new_ptr)
+> > +		return -ENOMEM;
+> > +
+> > +	memcpy(&new_ptr[old_len], data, len);
+> > +	blob->data = new_ptr;
+> > +	blob->len = new_len;
+> > +	return 0;
+> > +}
+> > +
+> > +/**
+> > + * papr_rtas_blob_generate() - Construct a new &struct
+> > papr_rtas_blob.
+> > + * @seq: work function of the caller that is called to obtain
+> > + *       data with the caller RTAS call.
+> > + *
+> > + * The @work callback is invoked until it returns NULL. @seq is
+> > + * passed to @work in its first argument on each call. When
+> > + * @work returns data, it should store the data length in its
+> > + * second argument.
+> > + *
+> > + * Context: May sleep.
+> > + * Return: A completely populated &struct papr_rtas_blob, or NULL
+> > on error.
+> > + */
+> > +static const struct papr_rtas_blob *
+> > +papr_rtas_blob_generate(struct papr_rtas_sequence *seq)
+> > +{
+> > +	struct papr_rtas_blob *blob;
+> > +	const char *buf;
+> > +	size_t len;
+> > +	int err = 0;
+> > +
+> > +	blob  = kzalloc(sizeof(*blob), GFP_KERNEL_ACCOUNT);
+> > +	if (!blob)
+> > +		return NULL;
+> > +
+> > +	if (!seq->work)
+> > +		return ERR_PTR(-EINVAL);
+> > +
+> > +
+> > +	while (err == 0 && (buf = seq->work(seq, &len)))
+> > +		err = papr_rtas_blob_extend(blob, buf, len);
+> > +
+> > +	if (err != 0 || !papr_rtas_blob_has_data(blob))
+> > +		goto free_blob;
+> > +
+> > +	return blob;
+> > +free_blob:
+> > +	papr_rtas_blob_free(blob);
+> > +	return NULL;
+> > +}
+> > +
+> > +int papr_rtas_sequence_set_err(struct papr_rtas_sequence *seq, int
+> > err)
+> > +{
+> > +	/* Preserve the first error recorded. */
+> > +	if (seq->error == 0)
+> > +		seq->error = err;
+> > +
+> > +	return seq->error;
+> > +}
+> > +
+> > +/*
+> > + * Higher-level retrieval code below. These functions use the
+> > + * papr_rtas_blob_* and sequence_* APIs defined above to create
+> > fd-based
+> > + * handles for consumption by user space.
+> > + */
+> > +
+> > +/**
+> > + * papr_rtas_run_sequence() - Run a single retrieval sequence.
+> > + * @seq:	Functions of the caller to complete the sequence
+> > + *
+> > + * Context: May sleep. Holds a mutex and an RTAS work area for its
+> > + *          duration. Typically performs multiple sleepable slab
+> > + *          allocations.
+> > + *
+> > + * Return: A populated &struct papr_rtas_blob on success. Encoded
+> > error
+> > + * pointer otherwise.
+> > + */
+> > +static const struct papr_rtas_blob *papr_rtas_run_sequence(struct
+> > papr_rtas_sequence *seq)
+> > +{
+> > +	const struct papr_rtas_blob *blob;
+> > +
+> > +	if (seq->begin)
+> > +		seq->begin(seq);
+> > +
+> > +	blob = papr_rtas_blob_generate(seq);
+> > +	if (!blob)
+> > +		papr_rtas_sequence_set_err(seq, -ENOMEM);
+> > +
+> > +	if (seq->end)
+> > +		seq->end(seq);
+> > +
+> > +
+> > +	if (seq->error) {
+> > +		papr_rtas_blob_free(blob);
+> > +		return ERR_PTR(seq->error);
+> > +	}
+> > +
+> > +	return blob;
+> > +}
+> > +
+> > +/**
+> > + * papr_rtas_retrieve() - Return the data blob that is exposed to
+> > + * user space.
+> > + * @seq: RTAS call specific functions to be invoked until the
+> > + *       sequence is completed.
+> > + *
+> > + * Run sequences against @param until a blob is successfully
+> > + * instantiated, or a hard error is encountered, or a fatal signal
+> > is
+> > + * pending.
+> > + *
+> > + * Context: May sleep.
+> > + * Return: A fully populated data blob when successful. Encoded
+> > error
+> > + * pointer otherwise.
+> > + */
+> > +const struct papr_rtas_blob *papr_rtas_retrieve(struct
+> > papr_rtas_sequence *seq)
+> > +{
+> > +	const struct papr_rtas_blob *blob;
+> > +
+> > +	/*
+> > +	 * EAGAIN means the sequence returns error with a -4 (data
+> > +	 * changed and need to start the sequence) status from RTAS
+> > calls
+> > +	 * and we should attempt a new sequence. PAPR+ (v2.13
+> > R1–7.3.20–5
+> > +	 * - ibm,get-vpd, R1–7.3.17–6 - ibm,get-indices) indicates that
+> > +	 * this should be a transient condition, not something that
+> > +	 * happens continuously. But we'll stop trying on a fatal
+> > signal.
+> > +	 */
+> > +	do {
+> > +		blob = papr_rtas_run_sequence(seq);
+> > +		if (!IS_ERR(blob)) /* Success. */
+> > +			break;
+> > +		if (PTR_ERR(blob) != -EAGAIN) /* Hard error. */
+> > +			break;
+> > +		cond_resched();
+> > +	} while (!fatal_signal_pending(current));
+> > +
+> > +	return blob;
+> > +}
+> > +
+> > +/**
+> > + * papr_rtas_setup_file_interface - Complete the sequence and
+> > obtain
+> > + * the data and export to user space with fd-based handles. Then
+> > the
+> > + * user spave gets the data with read() handle.
+> > + * @seq: RTAS call specific functions to get the data.
+> > + * @fops: RTAS call specific file operations such as read().
+> > + * @name: RTAS call specific char device node.
+> > + *
+> > + * Return: FD handle for consumption by user space
+> > + */
+> > +long papr_rtas_setup_file_interface(struct papr_rtas_sequence
+> > *seq,
+> > +				const struct file_operations *fops,
+> > +				char *name)
+> > +{
+> > +	const struct papr_rtas_blob *blob;
+> > +	struct file *file;
+> > +	long ret;
+> > +	int fd;
+> > +
+> > +	blob = papr_rtas_retrieve(seq);
+> > +	if (IS_ERR(blob))
+> > +		return PTR_ERR(blob);
+> > +
+> > +	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
+> > +	if (fd < 0) {
+> > +		ret = fd;
+> > +		goto free_blob;
+> > +	}
+> > +
+> > +	file = anon_inode_getfile(name, fops, (void *)blob, O_RDONLY);
+> > +	if (IS_ERR(file)) {
+> > +		ret = PTR_ERR(file);
+> > +		goto put_fd;
+> > +	}
+> > +
+> > +	file->f_mode |= FMODE_LSEEK | FMODE_PREAD;
+> > +	fd_install(fd, file);
+> > +	return fd;
+> > +
+> > +put_fd:
+> > +	put_unused_fd(fd);
+> > +free_blob:
+> > +	papr_rtas_blob_free(blob);
+> > +	return ret;
+> > +}
+> > +
+> > +/*
+> > + * papr_rtas_sequence_should_stop() - Determine whether RTAS
+> > retrieval
+> > + *                                    sequence should continue.
+> > + *
+> > + * Examines the sequence error state and outputs of the last call
+> > to
+> > + * the specific RTAS to determine whether the sequence in progress
+> > + * should continue or stop.
+> > + *
+> > + * Return: True if the sequence has encountered an error or if all
+> > data
+> > + *         for this sequence has been retrieved. False otherwise.
+> > + */
+> > +bool papr_rtas_sequence_should_stop(const struct
+> > papr_rtas_sequence *seq,
+> > +				s32 status, bool init_state)
+> > +{
+> > +	bool done;
+> > +
+> > +	if (seq->error)
+> > +		return true;
+> > +
+> > +	switch (status) {
+> > +	case RTAS_SEQ_COMPLETE:
+> > +		if (init_state)
+> > +			done = false; /* Initial state. */
+> > +		else
+> > +			done = true; /* All data consumed. */
+> > +		break;
+> > +	case RTAS_SEQ_MORE_DATA:
+> > +		done = false; /* More data available. */
+> > +		break;
+> > +	default:
+> > +		done = true; /* Error encountered. */
+> > +		break;
+> > +	}
+> > +
+> > +	return done;
+> > +}
+> > +
+> > +/*
+> > + * User space read to retrieve data for the corresponding RTAS
+> > call.
+> > + * papr_rtas_blob is filled with the data using the corresponding
+> > RTAS
+> > + * call sequence API.
+> > + */
+> > +ssize_t papr_rtas_common_handle_read(struct file *file,
+> > +	       char __user *buf, size_t size, loff_t *off)
+> > +{
+> > +	const struct papr_rtas_blob *blob = file->private_data;
+> > +
+> > +	/* bug: we should not instantiate a handle without any data
+> > attached. */	if (!papr_rtas_blob_has_data(blob)) {
+> Line break is missing here.
 
-On 10/03/25 4:25 pm, Hari Bathini wrote:
-> Venkat, can you confirm if the issue is reproducible
-> disabling CONFIG_PPC_IRQ_SOFT_MASK_DEBUG  ?
+Thanks for finding it. I did not find this with checkpatch initially.
+Looks like made this mistake in v4 revision.
 
-Hari,
 
-This issue is reproducible after diabling CONFIG_PPC_IRQ_SOFT_MASK_DEBUG.
-
-# powerpc Debugging
-#
-CONFIG_PPC_DISABLE_WERROR=y
-CONFIG_PRINT_STACK_DEPTH=64
-# CONFIG_HCALL_STATS is not set
-CONFIG_PPC_EMULATED_STATS=y
-# CONFIG_CODE_PATCHING_SELFTEST is not set
-CONFIG_JUMP_LABEL_FEATURE_CHECKS=y
-# CONFIG_JUMP_LABEL_FEATURE_CHECK_DEBUG is not set
-CONFIG_FTR_FIXUP_SELFTEST=y
-CONFIG_MSI_BITMAP_SELFTEST=y
-# CONFIG_GUEST_STATE_BUFFER_TEST is not set
-# CONFIG_PPC_IRQ_SOFT_MASK_DEBUG is not set
-CONFIG_PPC_RFI_SRR_DEBUG=y
-CONFIG_XMON=y
-# CONFIG_XMON_DEFAULT is not set
-CONFIG_XMON_DISASSEMBLY=y
-CONFIG_XMON_DEFAULT_RO_MODE=y
-CONFIG_DEBUGGER=y
-CONFIG_BOOTX_TEXT=y
-# CONFIG_PPC_EARLY_DEBUG is not set
-# end of powerpc Debugging
-
-Regards,
-
-Venkat.
-
->
->
-> On 06/03/25 6:04 pm, Venkat Rao Bagalkote wrote:
->> Greetings!!!
->>
->>
->> I am observing soft lock up's while running ftrace selftest on linux- 
->> next kernel.
->>
->> Kernel Version: next-20250305
->>
->> make run_tests
->> TAP version 13
->> 1..2
->> # timeout set to 0
->> # selftests: ftrace: poll
->> # Error: Polling file is not specified
->> not ok 1 selftests: ftrace: poll # exit=255
->> # timeout set to 0
->> # selftests: ftrace: ftracetest-ktap
->> # TAP version 13
->> # 1..155
->> # ok 1 Basic trace file check
->> # ok 2 Basic test for tracers
->> # ok 3 Basic trace clock test
->> # ok 4 Basic event tracing check
->> # ok 5 Test tracefs GID mount option
->> # ok 6 Change the ringbuffer size
->> # ok 7 Change the ringbuffer sub-buffer size
->> # ok 8 Snapshot and tracing_cpumask
->> # ok 9 Snapshot and tracing setting
->> # ok 10 Test file and directory ownership changes for eventfs
->> # ok 11 Basic tests on writing to trace_marker
->> # ok 12 trace_pipe and trace_marker
->> # not ok 13 Test ftrace direct functions against tracers # UNRESOLVED
->> # not ok 14 Test ftrace direct functions against kprobes # UNRESOLVED
->> # ok 15 Generic dynamic event - add/remove probes with BTF arguments 
->> # SKIP
->> # ok 16 Generic dynamic event - add/remove eprobe events
->> # ok 17 Generic dynamic event - Repeating add/remove fprobe events # 
->> SKIP
->> # ok 18 Generic dynamic event - add/remove fprobe events # SKIP
->> # ok 19 Generic dynamic event - add/remove kprobe events
->> # ok 20 Generic dynamic event - add/remove synthetic events
->> # ok 21 Generic dynamic event - add/remove tracepoint probe events on 
->> module # SKIP
->> # ok 22 Generic dynamic event - add/remove tracepoint probe events # 
->> SKIP
->> # ok 23 Generic dynamic event - add/remove/test uprobe events
->> # ok 24 Generic dynamic event - selective clear (compatibility)
->> # ok 25 Checking dynamic events limitations
->> # ok 26 Event probe event parser error log check
->> # ok 27 Fprobe event VFS type argument # SKIP
->> # ok 28 Function return probe entry argument access # SKIP
->> # ok 29 Fprobe event parser error log check # SKIP
->> # ok 30 Generic dynamic event - generic clear event
->> # ok 31 Generic dynamic event - check if duplicate events are caught
->> # ok 32 Tracepoint probe event parser error log check # SKIP
->> # ok 33 event tracing - enable/disable with event level files
->> # not ok 34 event tracing - enable/disable with module event # 
->> UNRESOLVED
->> # ok 35 event tracing - restricts events based on pid notrace filtering
->> # ok 36 event tracing - restricts events based on pid
->> # ok 37 event tracing - enable/disable with subsystem level files
->> # ok 38 event tracing - enable/disable with top level files
->> # not ok 39 Test trace_printk from module # UNRESOLVED
->> # ok 40 event filter function - test event filtering on functions
->> # ok 41 ftrace - function graph filters with stack tracer
->> # ok 42 ftrace - function graph filters
->> # ok 43 ftrace - function graph filters
->> # ok 44 ftrace - function profiler with function graph tracing
->> # ok 45 ftrace - function graph print function return value # SKIP
->> # ok 46 ftrace - function trace with cpumask
->> # ok 47 ftrace - test for function event triggers
->> # ok 48 ftrace - function glob filters
->> # ok 49 ftrace - function pid notrace filters
->> # ok 50 ftrace - function pid filters
->> # ok 51 ftrace - stacktrace filter command
->>
->>
->> Warnings:
->>
->>
->> [ 2668.008907] watchdog: BUG: soft lockup - CPU#0 stuck for 2265s! 
->> [swapper/0:0]
->> [ 2668.008954] Modules linked in: bonding(E) nft_fib_inet(E) 
->> nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) 
->> nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) 
->> nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) 
->> nf_defrag_ipv4(E) ip_set(E) rfkill(E) nf_tables(E) nfnetlink(E) 
->> mlx5_ib(E) ib_uverbs(E) ib_core(E) pseries_rng(E) vmx_crypto(E) 
->> dax_pmem(E) drm(E) drm_panel_orientation_quirks(E) xfs(E) sr_mod(E) 
->> cdrom(E) sd_mod(E) sg(E) lpfc(E) nd_pmem(E) nvmet_fc(E) nd_btt(E) 
->> ibmvscsi(E) scsi_transport_srp(E) ibmveth(E) nvmet(E) nvme_fc(E) 
->> mlx5_core(E) nvme_fabrics(E) papr_scm(E) mlxfw(E) nvme_core(E) 
->> libnvdimm(E) tls(E) psample(E) scsi_transport_fc(E) fuse(E)
->> [ 2668.010198] CPU: 0 UID: 0 PID: 0 Comm: swapper/0 Kdump: loaded 
->> Tainted: G        W   EL     6.14.0-rc5-next-20250305 #1
->> [ 2668.010242] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE, [L]=SOFTLOCKUP
->> [ 2668.010276] Hardware name: IBM,8375-42A POWER9 (architected) 
->> 0x4e0202 0xf000005 of:IBM,FW950.80 (VL950_131) hv:phyp pSeries
->> [ 2668.010316] NIP:  c000000000039f90 LR: c00000000007c1a4 CTR: 
->> c000000000039f44
->> [ 2668.010354] REGS: c000000002c9f538 TRAP: 0900   Tainted: G        
->> W EL      (6.14.0-rc5-next-20250305)
->> [ 2668.010392] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
->> 22002844  XER: 20040000
->> [ 2668.010639] CFAR: 0000000000000000 IRQMASK: 0
->> [ 2668.010639] GPR00: c00000000007c1a4 c000000002c9f510 
->> c000000001688100 c000000002c9f508
->> [ 2668.010639] GPR04: 8000000002823033 c000000002c61700 
->> c000000002c61700 0000000000000178
->> [ 2668.010639] GPR08: 0000000000000002 0000000000000049 
->> 0000000000000000 0000000000002000
->> [ 2668.010639] GPR12: c000000000328588 c000000003020000 
->> 0000000000000000 0000000000000000
->> [ 2668.010639] GPR16: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [ 2668.010639] GPR20: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [ 2668.010639] GPR24: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000003
->> [ 2668.010639] GPR28: 0000000000000002 0000000000000000 
->> fcffffffffffffff c000000002c9f760
->> [ 2668.011572] NIP [c000000000039f90] 
->> __replay_soft_interrupts+0x5c/0x22c
->> [ 2668.011628] LR [c00000000007c1a4] return_to_handler+0x0/0x40
->> [ 2668.011680] Call Trace:
->> [ 2668.011715] [c000000002c9f510] [c00000000003a018] 
->> __replay_soft_interrupts+0xe4/0x22c (unreliable)
->> [ 2668.011809] [c000000002c9f6c0] [c00000000007c1a4] 
->> return_to_handler+0x0/0x40 (replay_soft_interrupts+0x28/0x40)
->> [ 2668.011918] [c000000002c9f6e0] [c00000000007c1a4] 
->> return_to_handler+0x0/0x40 (interrupt_exit_kernel_prepare+0x20c/0x250)
->> [ 2668.012025] [c000000002c9f730] [c00000000000da68] 
->> interrupt_return_srr_kernel+0x8/0x18c
->> [ 2668.012098] --- interrupt: 700 at arch_local_irq_restore+0x90/0x280
->> [ 2668.012149] NIP:  c00000000003a1f0 LR: c00000000033b458 CTR: 
->> 00000000000008fb
->> [ 2668.012188] REGS: c000000002c9f760 TRAP: 0700   Tainted: G        
->> W EL      (6.14.0-rc5-next-20250305)
->> [ 2668.012224] MSR:  8000000002823033 <SF,VEC,VSX,FP,ME,IR,DR,RI,LE> 
->> CR: 28002844  XER: 20040000
->> [ 2668.012509] CFAR: c00000000033b454 IRQMASK: 0
->> [ 2668.012509] GPR00: c00000000033b458 c000000002c9fa00 
->> c000000001688100 0000000000000000
->> [ 2668.012509] GPR04: 000000000000001c 0000000000000000 
->> 0000000000000018 c0000000c89ff980
->> [ 2668.012509] GPR08: c0000000c89ff980 0000000000000000 
->> c0000000c89ff980 0000000028002844
->> [ 2668.012509] GPR12: c000000000325fd0 c000000003020000 
->> c0000000000ffde8 0000000000000000
->> [ 2668.012509] GPR16: 0000000000000000 0000000000000000 
->> 0000000000000000 0000000000000000
->> [ 2668.012509] GPR20: 0000000000c00000 0000000000000008 
->> 0000000000000000 0000000000000000
->> [ 2668.012509] GPR24: 0000000000000000 c000000000000000 
->> fffffffffffffeff c000000004070500
->> [ 2668.012509] GPR28: 0000000000000002 0000000000000003 
->> 00000000913f411d fcffffffffffffff
->> [ 2668.013441] NIP [c00000000003a1f0] arch_local_irq_restore+0x90/0x280
->> [ 2668.013492] LR [c00000000033b458] rb_commit+0xc8/0x280
->> [ 2668.013541] --- interrupt: 700
->> [ 2668.013575] [c000000002c9fa00] [0000000000000000] 0x0 (unreliable)
->> [ 2668.013667] [c000000002c9fa40] [c00000000033b458] 
->> rb_commit+0xc8/0x280
->> [ 2668.013738] [c000000002c9fa70] [c00000000033e6a4] 
->> ring_buffer_unlock_commit+0x38/0x1b0
->> [ 2668.013807] [c000000002c9fab0] [c00000000034d53c] 
->> trace_function+0xcc/0x19c
->> [ 2668.013877] [c000000002c9fb00] [c00000000035ec14] 
->> function_trace_call+0x154/0x1d4
->> [ 2668.013951] [c000000002c9fb50] [c000000000329f88] 
->> arch_ftrace_ops_list_func+0x15c/0x290
->> [ 2668.014021] [c000000002c9fc20] [c00000000007c0cc] 
->> ftrace_call+0x4/0x4c
->> [ 2668.014092] [c000000002c9fdd0] [c0000000000ffde8] 
->> pseries_lpar_idle.part.0+0x10/0x164
->> [ 2668.014163] [c000000002c9fdf0] [c00000000007c1a4] 
->> return_to_handler+0x0/0x40 (arch_cpu_idle+0x50/0x120)
->> [ 2668.014269] [c000000002c9fe10] [c00000000007c1a4] 
->> return_to_handler+0x0/0x40 (default_idle_call+0x50/0x10c)
->> [ 2668.014375] [c000000002c9fe30] [c0000000001f52bc] 
->> cpuidle_idle_call+0x1b8/0x240
->> [ 2668.014447] [c000000002c9fe90] [c00000000007c1a4] 
->> return_to_handler+0x0/0x40 (do_idle+0x100/0x1ac)
->> [ 2668.014554] [c000000002c9fee0] [c00000000007c1a4] 
->> return_to_handler+0x0/0x40 (cpu_startup_entry+0x4c/0x50)
->> [ 2668.014661] [c000000002c9ff10] [c000000000011280] rest_init+0xf0/0xf4
->> [ 2668.014732] [c000000002c9ff40] [c000000002006604] 
->> start_kernel+0x50c/0x5e0
->> [ 2668.014806] [c000000002c9ffe0] [c00000000000ea9c] 
->> start_here_common+0x1c/0x20
->> [ 2668.014878] Code: 71298000 408201ec 892d0933 7d2a48f8 554a07fe 
->> 0b0a0000 792ad7e2 0b0a0000 61290040 38610028 992d0933 48042259 
->> <60000000> 39200000 e9410130 f9210160
->>
->>
->> If you fix this issue please add below tag.
->>
->> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->>
->>
->> Regards,
->>
->> Venkat.
->>
->>
->
 
