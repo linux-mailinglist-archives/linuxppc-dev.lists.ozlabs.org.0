@@ -1,49 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-6932-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6933-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD1AA5DADB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Mar 2025 11:50:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62449A5DEFD
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 12 Mar 2025 15:31:27 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZCS7z6436z3br5;
-	Wed, 12 Mar 2025 21:50:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZCY3J1MLVz3btk;
+	Thu, 13 Mar 2025 01:31:24 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741776607;
-	cv=none; b=MG+sa55OLrrCxpZd0Wx/bSDNTt6QMLt9+wsYe5zWt8RXkgZDh5040/gEExlF0bTo7xLSzTjVqt7msXMedEJnPsUkE8e00+YwIFsrveTdZwcnU9dl4J6pAPmqHtLLc1hGOFFfFRfRFjG0w6Sw3Zz4sdEmQckTtaqtu7cO+xgfYYqMfms332P/jSRd0yC8Gq7H/p8F5Mpa28ksDzo5ZjFgNRlIlFM+2VM3zqTy+N4w90kVqnR4bx9ayrYKsu789RFVPM0wfDEycdeCOrLZa71OgBQWbKAujiEme8q+XxBG/zuFotrsuTlNX85qoFeGQyMk9MsnXzeoELgRwHPgULT6og==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62e"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741789884;
+	cv=none; b=EgDqsleqCX4WkofqOAKLXM5AMlDgiCkK457q1N0nDm6QRHWnRSBijL+BHIYgus+AiD7Pad2Y4zjW3Fs/d4X8fTYh5MvhiQayXBzfQRIUzoP7YxCN/L5AV2ClUe4h/pOlaslXMTrPVq6eBFGGlPevFX6kDbFSB7MY6NlojSBcwpbxD0fSis8uniZ0MyupgDY+ELJopH7yDbGonwfGfmqyeiy5N22OVl5tGyOiSsYEZJ4Qjn8ILv2mWQBVIzIU1vqIuritHV42TY+lRdERbRCpzZC1vpoySNWOQ92GAsafZD6jS9YxszhcvUdZW6zex47rW5bH3+eEMA53iFu/03pxrw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741776607; c=relaxed/relaxed;
-	bh=iYb8BLhObhcFQyDF7JALbCYObFTanr4UORyBS9ikBLg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=BEFJ9bjoeLBwO0naN8MhtMqIQuwqBCdF5fb8jODP7Avgy1TjzKp8Do1gBkLqBNOf0YpgFdZ5EBmAc1dauWnVpx1J86eki9I1JsKDumsgXQJgQvBqWqrzY05WU5e3sBtPE4ULRiD06fP4LRosizLet+jpZAU4XPbo0i9oDqGTxkH9PtlAL4Y4VO9sBvFshai5qTry+Q+ZgeJLAOxsknJlda8D2Kd0NVvvZhZtgVaLyUGgQ5Ix3qupnEQcp3hECtNs7hT3YcTRATxVXxDDAWvDEGMmk4/ns0eBGZdX6oGpX3k4cOkWAzX8v0uTE4+94G0/cyyyxd68yZhthkVZboamVg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZCS7y2nW8z3bmf
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 21:50:05 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4ZCRPX36Yhz9sgW;
-	Wed, 12 Mar 2025 11:16:48 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id sWOjLZKmmSMT; Wed, 12 Mar 2025 11:16:48 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4ZCRPX25Rsz9sgS;
-	Wed, 12 Mar 2025 11:16:48 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 34E478B768;
-	Wed, 12 Mar 2025 11:16:48 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id GVHOBlTWoH6b; Wed, 12 Mar 2025 11:16:48 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id DEF2F8B763;
-	Wed, 12 Mar 2025 11:16:47 +0100 (CET)
-Message-ID: <e5a67a3a-f2ca-45b7-b227-267477c62ccb@csgroup.eu>
-Date: Wed, 12 Mar 2025 11:16:47 +0100
+	t=1741789884; c=relaxed/relaxed;
+	bh=7wHVeTdcbD/lMPZ+7RVnSVzW4Yy+8n9avYr5uzJiRKg=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=QHN1AV9jpjFU1l3Y6jnhG6rP4cleXuIsYAydj+rAwR3JvTmfXs7KtdvjRTzHz51SJR4fh6l7WMJABDJsLjJlRXmw7EhyKeoHECh/z0VnGcmEi4/mK5SU0Cvs/q5hjBkKCGhdtEp7VRoesUmh8jMhCyDL+A0zGsmU4EZTX1e7Yf8oMpIayB/uT69JKaaSBS/6rOvogTAy/2ISXW5NTpBOtDJW3/6jfca60LBO/zQqM9jHX0Tq7DIDjWSCuVADVCRUOoOG+3OaHXR/6Lt/3v+VQeiVMXeRkZaztHaUYR+uXXbAoV0WiUUde8nsmoSP+3Wm1HdcZNs0hk6Bm/03oYMZpA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org; dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=M3+wRi10; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=frkoenig@chromium.org; receiver=lists.ozlabs.org) smtp.mailfrom=chromium.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=chromium.org header.i=@chromium.org header.a=rsa-sha256 header.s=google header.b=M3+wRi10;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=chromium.org (client-ip=2607:f8b0:4864:20::62e; helo=mail-pl1-x62e.google.com; envelope-from=frkoenig@chromium.org; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZCY3F61l8z30gC
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Mar 2025 01:31:20 +1100 (AEDT)
+Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-22185cddbffso18032315ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 12 Mar 2025 07:31:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1741789878; x=1742394678; darn=lists.ozlabs.org;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7wHVeTdcbD/lMPZ+7RVnSVzW4Yy+8n9avYr5uzJiRKg=;
+        b=M3+wRi10NKwtIZPJz/Fhj2gYsZbBHiZrnXjyuH+ANY+61lpj4WnJZFgmlBKLDpD6Yk
+         CaorNpUoJsyVPj6zjSk5FxnVwfAhdsPiudbd4MwGirt3L3nF3tWce+jgnh+rfEmLw9NH
+         5j+PLaFaEbu2+EuyueLFBYWDVORqAPv0Y3MOw=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741789878; x=1742394678;
+        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
+         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7wHVeTdcbD/lMPZ+7RVnSVzW4Yy+8n9avYr5uzJiRKg=;
+        b=XxQeCv71sbCMiPgLzrhVEJmDzRpVZe7eU6RCkXJJwpOYciEl1+YOSnnQ13dlMBbCuF
+         8bWftcGYTz2EYe7JabZ4ZulL2irWWwHagahwxyIuVbQDCY9zdy8ByofEH38x1J+14FGY
+         sSg2VNJms0JEM5fr9LlrsYy8WQ0mrkaYxObCD8Z2osKDrSKmKC0unpoKRIjhf601BQNP
+         3XuGP4bO5ddm0ltP4fF0DB1KxJjD0ig4RHlT0Vp9dgBhEc9F2whH4lmfcsZHnvpupn44
+         RqICFIeww1nYNX2DYKw092TB1Vpm8lwsUdz+eHw7sGOpLOez3FhaHdOSCigY89754RWQ
+         SGxg==
+X-Gm-Message-State: AOJu0YyZRHFwH3x06JkJU1SOFo3B5cofrv+p7UXjR4M6JZnVDXkOj6IN
+	th8Z+GdR7zWtJHhZl7r3Q5MF3WOMwiwgvfb1ljQxbO5l8Eh9VR1EGMngDkSpZVyaFA/K2/dFtT8
+	=
+X-Gm-Gg: ASbGncvAPNycDaJbM3Ph31lNRfkkWFslWzLQlpVlMfakSD+fvk54y9iOO7ezMZ8pY5h
+	caQGiOXq/tB25i5bdBSDS7TVCJm31TURfcwkh3cTCnXyUtQCWm+y8N2e6geyw00BloJX40OT9Nr
+	aHSWVmklm7xpvp6dDmnRJLoz/sUN4eMUlNra2w9HTUsPopaowlBjit2MGKpiN0E7LWV4O8rB4I0
+	gv8BpsjbEuxaLVPSzNTUNDdI2Aj8mkCzguM0fT7BqaX400UyPvtYoXUGMvURJLRNd7lZWHMkq54
+	15OGeH+HpaAHGlVP4BLTQQ/hPTzlSQEm8gEyWRgzPPKif85tLd46cNukfsDqramMbvtyosm9n2L
+	bQrCwhwhCqSWlvZQNRBZVzB7+
+X-Google-Smtp-Source: AGHT+IGso4VXNf4LaA6gyp5gDGaLztOCm9ys3zkim+c3BRQl8gd7egffGxKYj+WJgPgAHh1RMcUppg==
+X-Received: by 2002:aa7:8449:0:b0:736:b400:b58f with SMTP id d2e1a72fcca58-736ec417889mr10251381b3a.0.1741789877798;
+        Wed, 12 Mar 2025 07:31:17 -0700 (PDT)
+Received: from zipper.pdx.corp.google.com ([2a00:79e0:2e13:6:ea1:ba82:2605:7d4e])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-736af3a69b2sm10408708b3a.6.2025.03.12.07.31.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 12 Mar 2025 07:31:17 -0700 (PDT)
+From: Fritz Koenig <frkoenig@chromium.org>
+Date: Wed, 12 Mar 2025 07:31:16 -0700
+Subject: [PATCH v2] Documentation: ocxl.rst: Update consortium site
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,88 +80,59 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next-20250307] Build Failure
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
- Michael Ellerman <mpe@ellerman.id.au>
-References: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
- <5ab103b4-70f0-454e-bca6-0bfc66d143f5@csgroup.eu>
- <c0a716d0-6811-4b1b-b008-d4e97900cb0e@linux.ibm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <c0a716d0-6811-4b1b-b008-d4e97900cb0e@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=5.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20250312-dead_site-v2-1-920a313743ee@chromium.org>
+X-B4-Tracking: v=1; b=H4sIALOa0WcC/23MSw7CIBSF4a00dyyGR6XWkfswjUG4LXfQYqAST
+ cPexY4d/icn3wYJI2GCS7NBxEyJwlJDHhqw3iwTMnK1QXJ54koI5tC4e6IVGfb6rNpecK0V1P8
+ z4kjv3boNtT2lNcTPTmfxW/8pWTDBOvNQFo3q2lFerY9hptd8DHGCoZTyBbJ8ivOlAAAA
+To: Frederic Barrat <fbarrat@linux.ibm.com>, 
+ Andrew Donnellan <ajd@linux.ibm.com>, Jonathan Corbet <corbet@lwn.net>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-doc@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Fritz Koenig <frkoenig@chromium.org>
+X-Mailer: b4 0.15-dev-37811
+X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+Point to post-merger site.
 
+Signed-off-by: Fritz Koenig <frkoenig@chromium.org>
+---
+Changes in v2:
+- Update link per feedback
+- Update commit message to reflect sureness in corectness
+- Link to v1: https://lore.kernel.org/r/20250311-dead_site-v1-1-7ab3cea374f2@chromium.org
+---
+ Documentation/userspace-api/accelerators/ocxl.rst | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-Le 12/03/2025 à 11:11, Venkat Rao Bagalkote a écrit :
-> 
-> On 12/03/25 4:20 am, Christophe Leroy wrote:
->>
->>
->> Le 09/03/2025 à 13:38, Venkat Rao Bagalkote a écrit :
->>> Greetings!!,
->>>
->>> I see linux-next-20250307 fails to build on IBM Power9 and Power10 
->>> servers.
->>>
->>>
->>> Errors:
->>>
->>> In file included from ^[[01m^[[K<command-line>^[[m^[[K:
->>> ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K 
->>> ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or directory
->>>     11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
->>>        |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
->>
->> This is unreadable. Please avoid fancy colors that add escapes to 
->> logs. You can unset LANG environment var before building in order to 
->> get pastable stuff.
->>
->> By the way I don't think it is a kernel issue because nowhere in the 
->> kernel you have uuid/uuid.h
->>
->> But can you provide your .config (the actual one, not an old one from 
->> kernel 6.0.0-rc3 like last time) and tell which version of GCC you are 
->> using.
->>
-> Attached are the two config files on both CI nodes build failures were 
-> reported.
-> 
-> On both the CI nodes gcc version is 11.5.0.
-> 
-> Below data are from the failure nodes.
-> 
-> commit-time: 2025-03-07 20:31:46 +1100
-> commit-id: 0a2f889128969dab41861b6e40111aa03dc57014
-> version: 6.14.0-rc5-next-20250307-auto
-> 
+diff --git a/Documentation/userspace-api/accelerators/ocxl.rst b/Documentation/userspace-api/accelerators/ocxl.rst
+index db7570d5e50d..4e213af70237 100644
+--- a/Documentation/userspace-api/accelerators/ocxl.rst
++++ b/Documentation/userspace-api/accelerators/ocxl.rst
+@@ -3,8 +3,11 @@ OpenCAPI (Open Coherent Accelerator Processor Interface)
+ ========================================================
+ 
+ OpenCAPI is an interface between processors and accelerators. It aims
+-at being low-latency and high-bandwidth. The specification is
+-developed by the `OpenCAPI Consortium <http://opencapi.org/>`_.
++at being low-latency and high-bandwidth.
++
++The specification was developed by the OpenCAPI Consortium, and is now
++available from the `Compute Express Link Consortium
++<https://computeexpresslink.org/resource/opencapi-specification-archive/>`_.
+ 
+ It allows an accelerator (which could be an FPGA, ASICs, ...) to access
+ the host memory coherently, using virtual addresses. An OpenCAPI
 
-Sorry I'm still puzzled with your config files.
+---
+base-commit: 0b46b049d6eccd947c361018439fcb596e741d7a
+change-id: 20250311-dead_site-e96834910663
 
+Best regards,
+-- 
+Fritz Koenig <frkoenig@chromium.org>
 
-The one named p10_build_failure contains:
-
-# Linux/powerpc 6.3.0-rc3 Kernel Configuration
-#
-CONFIG_CC_VERSION_TEXT="gcc (GCC) 8.4.1 20200928 (Red Hat 8.4.1-1)"
-
-
-The one named p10_kdump_config_build_failure contains:
-
-# Linux/powerpc 6.3.0 Kernel Configuration
-#
-CONFIG_CC_VERSION_TEXT="gcc (GCC) 8.5.0 20210514 (Red Hat 8.5.0-18)"
-
-
-You are talking about CI nodes, do you have an online link to the full 
-report ?
-
-Christophe
 
