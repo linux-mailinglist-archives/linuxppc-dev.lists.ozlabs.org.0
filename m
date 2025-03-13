@@ -1,80 +1,106 @@
-Return-Path: <linuxppc-dev+bounces-6985-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6986-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17832A5FDC3
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Mar 2025 18:29:05 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE8A2A5FF45
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Mar 2025 19:31:24 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDDxp4X7Yz2xHp;
-	Fri, 14 Mar 2025 04:29:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDGKg0GGMz3c8w;
+	Fri, 14 Mar 2025 05:31:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741886942;
-	cv=none; b=BdLwrCWfOAZ1eQ8qXrupcjH9XASMzC8Ty5s72bBDIPuteRH08THCwSm600XJO5PIDOBaftrX7wfWwCgZ42m3S5tA9aLMDya8e7c2GLmjhH5lQI2cRwV/D85tUcQHBju+aB/Fm7OF7KHESnWItPaEKuoWsphs6uuEdfoZ/wHEwV7sNypzeL7zZL3dEalZ261BNBQWrN0nWDEAh9I5d4f96hLUlpZNPmQqYFMXtcWAh3HkcO0/a9WjSN9csm+p0U5oYvC8YB4un/finKCkd6SFBgqhMbV0Fczk/OyDWjcYSlb00kgVSG5RF8/N8CrS1lX5mWqPvupmmkDsBhNg7GjFbg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741890678;
+	cv=none; b=ovYiZZETShWmfzVvIm73uNrZ6udKHAm8/5uqWhHwKds4OjoaATovDS+5a5YvbGH5K9CS3cSxvquzxl+DZGgRkzOCrWrXCi45SBCvkODP7OVGycmS0+CC1lLcj1rsKnVyZsjLId1rVoqUD0CmZ9jI5HADQYkopdaGFH9T2WVdasRa/IAbr17g9Q71ZaYTr3kL03Fo2u8SIJPm6Do81Pd7sZYk9E6fR8sztaJZn9QS2eGuQHtBKGHj/QWMFiUsXfAh/OJs3DGqcDL/P1njoelfyEF9s6mgLz2GULXuJQrkm5V+sHDWSArFsyavowEi2VD597vxMddJF4RDEpZijQeKLg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741886942; c=relaxed/relaxed;
-	bh=68jrK55bbIZ10VhchUt0s2FV/53r+meKmVS3GIUNxdM=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZLvtd+73K2icEBjZVNGfQK1P0nIrOwzUGDfPTXeIxTfBp1XDWFOXy1m7vF1gM6bKRjqPIQQGqP1athErqFHyxt4BhpNByzZPvgy8+7qKzSbkJA2j13lx3txCnR42cmQnhyuw9V2H0eEHduV9/JjdQ3X34x7ZjtLc0bgdIV1voOsQjUrgpoOH8ogP70piWEGTXtTR2R3NSTmyRRmAvuGGybdjOY9pgj27Zr3ufEO9OcAWlhlw2Ka0Lj+GzRLB32Xkg4txCyCI12w0vdvK8i0D9fF1yX33Sg+BcjzR3CrfMSJ8AOFp8w3VhQbgvg03Et+CHOIgh+O8+1gIK4G8FL1Rww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WsiJ1vS4; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1741890678; c=relaxed/relaxed;
+	bh=Jt5WSssG+OEvsuPkFz6BZY4vYElG8JeyaALVDa3jMX0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G3t5Jimj9WYxratdQxS9gUekgfMcGmrkICwHyFADPCOJE6vUcgbVpoB3eL8cmvFBES+UqD/UihTXdFyc7PMFw+AP06sAioq+8lqzxXAECURLp3JStGc7kgMAYlBHNuX0Go60HR8zOcJmCRGALDEHy37KwOYjW2U6ILVKiyBvLIaWv2scBg7IiBgW9+OIuHOkasC8V+GEMADJYjvyTfJfETid+iI32ijCRv/OU2DbBg/f3WyPW+L4zcFuEdKTnfb3/HJ9RYE3+m6wCvKDxOpze2AZL4QQCATeJZhAjwEKzO1bYlhMYddSYzRpzy1ndSKGbo+Qq0rvsojdCgfMyNoxqQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KmvhV74o; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=WsiJ1vS4;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=KmvhV74o;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=kees@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDDxn4qrTz2xBb
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 04:29:01 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 088A65C62A2;
-	Thu, 13 Mar 2025 17:26:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78296C4CEDD;
-	Thu, 13 Mar 2025 17:28:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741886938;
-	bh=pCKx8h4RdPEXnrliEof7w9TGctCJ+lkyJAvPxZvj8as=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WsiJ1vS4VkmRkEQ91gUkBcXJpHCkjiQdXuKiOQrrIiFFBXTiyzWC1lNxpbasmhUpq
-	 3JfyOHYn+nAM5kLaFI7eKKMk0HVf0PYt9MfKkoBJ8D20YQKw1ngGTv9SXVphquEE2h
-	 5FlTV4pustJ2ITwpRF1Mfnt55HA7MhFAT/DH8k8bfDg8uSfYhcoZzDsRwQ4++FKCuA
-	 ot/lfD8WMiYADiTKuF+3761zflCg4viKvvK9vcUUI5qt7A6AsUxSPP/q9N2rzjlyFr
-	 zE/pTffZvM1VqP7YEYZUp20FKgVv5uizsSJhZI1T/0EIjucCggWl2hxTSmb3uw6p4S
-	 9WKQ0vOSUIRTA==
-From: Kees Cook <kees@kernel.org>
-To: Arpitha Raghunandan <98.arpi@gmail.com>,
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDGKd0wbKz3048
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 05:31:15 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-223959039f4so28916675ad.3
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 13 Mar 2025 11:31:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1741890674; x=1742495474; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Jt5WSssG+OEvsuPkFz6BZY4vYElG8JeyaALVDa3jMX0=;
+        b=KmvhV74osp2niYs4oMlIL2TstzzbdIJe9YnPopanMTedSxc4iPjPop3xha903Kkko+
+         /bRnk8q8IyXkr1S5T0AXzEhNYYu1uVbDs2VDwWdcJjPbbh1C6EH4yJSqTL/9yxmvlf97
+         VxsXBWqIMntdNSMCOMTxDa3//DNhH82EB1L8Ax66GpMCepvae5KMmRVupiVS+DZDYEdJ
+         uF/xzLZVbQHoanOkDraybNueBOqeImF+eM6Cuqqv+8mPAcIlHgAJmKmw3d0AcbQ7EZis
+         Emw6BdOKS/lH1A+2L/Z49rSrnGYhKk2/u1DMFu+Tvwq+CVAnSeiYh+C9fVju1C2nwgsp
+         fi2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1741890674; x=1742495474;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Jt5WSssG+OEvsuPkFz6BZY4vYElG8JeyaALVDa3jMX0=;
+        b=VOitLoR2j3ANrPSS1CuQRyctQe9aJktw1/l9oxt6KiMFkke7DKsVgl41pdaR4HEJCt
+         w7j233QduGJryK9nfGAWkUG6IiOEUA9IR0pUeCypwS6Nhb8xCsys0IU0KZfJS9m/qDYd
+         P250jxc/U5sAMbYeq/QFv4xY8ghz2o7534IXHjTdbR9YNrRet/oxHR3IfThK8ozgsAWZ
+         nxTpMs75B3Trm9x/zpxZVNkYtCAWFxkN7+iXLgK54jnElQGjFUqfTwPkcU0nacGWkzN7
+         uEKPfBQthUrS9MXStRmLNMOmC514OqMzJ3N5JAKCUjz2tc+tXB700N5hG7m7a5hU7XC9
+         jmng==
+X-Forwarded-Encrypted: i=1; AJvYcCX1fNSV/wTMjOjC8W+tvi55THuixn9wgUgVneC5115deq4nmtoYXcNrl8jGqnr0eehiz1WnGgjRsaE5Ipg=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyvqVdrOCVaEg8EChzuytE+DZ1+mvyaPbmTNUAhZaDqhFqHZPxd
+	kKmoH+nmXdu6N/efHqLDgr9O4dFc6Z917qtT0p//bQrJ/Agf2LuD
+X-Gm-Gg: ASbGnct51x0Jc7zqPvsO44oMwnuROZjjxYwFt8nNKRONRyAn1YF2fJRO42o/gt1l9j/
+	/rs57Vh4esfihpRGLcvAo1O9mb14N6bR5nlSSMOKwB273I/ZtQm+5nB9ycikv/ME5renlFtWUQR
+	S7WE0R2+Gv2h4GS3/8ltU3Gfpn2w0dSIf/QzPGBfBY2BNJmaogUth5ZDCTgxIGrc58qSSP4Alke
+	fIU6+ynwxzwOzCNyJoKt2zGWeK/dohupTko+FXqXCk3gA7qFNmGny5ae6aQoHcsUUbahuAYHoXH
+	y9hK5lm8utbu+lawWHvP17aORb9i15ieiMwt4qQPsmD4puKnazcSNzt/KA==
+X-Google-Smtp-Source: AGHT+IHUyL3JZBiKaHL1hLSTeQrgywlLwwEUN5of1N0Gy8TC0X3IRTq509SX5+fcaAZt7Xsc6jRvwQ==
+X-Received: by 2002:a17:902:d48f:b0:220:fb23:48df with SMTP id d9443c01a7336-225dd8ed442mr5472005ad.36.1741890673680;
+        Thu, 13 Mar 2025 11:31:13 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-3011926599csm4185647a91.35.2025.03.13.11.31.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Mar 2025 11:31:13 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Thu, 13 Mar 2025 11:31:12 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Maxime Ripard <mripard@kernel.org>
+Cc: Kees Cook <kees@kernel.org>, Alessandro Carminati <acarmina@redhat.com>,
+	linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	=?iso-8859-1?Q?Ma=EDra?= Canal <mcanal@igalia.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Daniel Diaz <daniel.diaz@linaro.org>,
 	David Gow <davidgow@google.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
+	Arthur Grillo <arthurgrillo@riseup.net>,
 	Brendan Higgins <brendan.higgins@linux.dev>,
-	Tamir Duberstein <tamird@gmail.com>
-Cc: Kees Cook <kees@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-m68k@lists.linux-m68k.org,
-	linuxppc-dev@lists.ozlabs.org,
-	workflows@vger.kernel.org
-Subject: Re: [PATCH v6 0/3] printf: convert self-test to KUnit
-Date: Thu, 13 Mar 2025 10:28:50 -0700
-Message-Id: <174188692856.3317505.16138391415680640168.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250307-printf-kunit-convert-v6-0-4d85c361c241@gmail.com>
-References: <20250307-printf-kunit-convert-v6-0-4d85c361c241@gmail.com>
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Alessandro Carminati <alessandro.carminati@gmail.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+	linux-sh@vger.kernel.org, loongarch@lists.linux.dev, x86@kernel.org
+Subject: Re: [PATCH v4 00/14] Add support for suppressing warning backtraces
+Message-ID: <c8287bde-fa1c-4113-af22-4701d40d386e@roeck-us.net>
+References: <20250313114329.284104-1-acarmina@redhat.com>
+ <202503131016.5DCEAEC945@keescook>
+ <20250313-abiding-vivid-robin-159dfa@houat>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -87,35 +113,27 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250313-abiding-vivid-robin-159dfa@houat>
+X-Spam-Status: No, score=0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, 07 Mar 2025 17:08:55 -0500, Tamir Duberstein wrote:
-> This is one of just 3 remaining "Test Module" kselftests (the others
-> being bitmap and scanf), the rest having been converted to KUnit.
+On Thu, Mar 13, 2025 at 06:24:25PM +0100, Maxime Ripard wrote:
+> > 
+> > Yeah, as with my prior review, I'm a fan of this. It makes a bunch of my
+> > very noisy tests much easier to deal with.
 > 
-> I tested this using:
+> And for the record, we're also affected by this in DRM and would very
+> much like to get it merged in one shape or another.
 > 
-> $ tools/testing/kunit/kunit.py run --arch arm64 --make_options LLVM=1 printf
-> 
-> [...]
 
-Applied to for-next/move-kunit-tests, thanks!
+I was unable to get maintainers of major architectures interested enough
+to provide feedback, and did not see a path forward. Maybe Alessandro
+has more success than me.
 
-[1/3] printf: convert self-test to KUnit
-      https://git.kernel.org/kees/c/7a79e7daa84e
-[2/3] printf: break kunit into test cases
-      https://git.kernel.org/kees/c/81a03aa9b88c
-[3/3] printf: implicate test line in failure messages
-      https://git.kernel.org/kees/c/034bee685fd4
-
-Take care,
-
--- 
-Kees Cook
-
+Guenter
 
