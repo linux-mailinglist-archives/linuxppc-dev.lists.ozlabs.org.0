@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-6966-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-6968-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E310DA5F689
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Mar 2025 14:52:01 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80594A5F695
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Mar 2025 14:52:15 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZD87M4WrYz3c7j;
-	Fri, 14 Mar 2025 00:51:59 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZD87d0nYWz3c88;
+	Fri, 14 Mar 2025 00:52:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741873919;
-	cv=none; b=VU5h295mpRc137tqLGS7wPJ7EkOHMbdSBTgj8pToGGAGTtGEuFvUnNx8I6kUuycsi9GKoF7cecjII//O+CTxMdknEXkF+kcqlaxmyHxXiiTB9q6Zxvfcv3iEcVSv456hzJwYFp8M1bbf6rNS9+TEdvMHICBvnOvU4rIPTNcWu4Zkt3TLj11iBeK9kYGstVqOXV4L0AIBFpve34ny43+TkMuFVzT/V4bj0SV2zRGEHZr6T8QWiGDKQi2NPGIUeSYUz71Ir0FxTUgfBYkFefOZJ4WmaZ61SZdNNUxavkntJVXvPuPdRgx6M4kO+WTFL/jJ18y3d3Us4/szl3db3dMiZQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741873933;
+	cv=none; b=d0hC0Q2V7YyOGVP1k8UiPJtw9T8f3Z6aV8nDfTBKff3uoHXXVmBs85fD/zHB3T2pzMkAax/K2C37esR3V5SlBd8ng6A8vm2Kt/n8fmP51kE+SwTY0+lLV58m4/LdF057c1tYiaqqtOBYnwShqF9LKZZ2pGKc3G4JUU6lZ83gHtsurGOaJf0KwqR8IqXBK6L6QTTVTBs78wkaQWA7l1a4k/c14Jt8NkoicO/K2jST9iSyEhtJ/e8oAlP4Gja8ZDto4+mLRCOvXbGyuteKXAqlbey4tAhbcLNxnI8jjTmfqpbdvINb7dnubMchCX2YohBZ5hmnGr9sFQqG7zyHGhLAJQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741873919; c=relaxed/relaxed;
-	bh=c9I7HQ2NavvKSYyx5OHuIDWo643x0RWPfhB92n3oSpI=;
+	t=1741873933; c=relaxed/relaxed;
+	bh=EqEJoM4rgtKrOS/V5SDQTOhmiMYuUlj1yWrv5iY9ngQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ay30Lx9pOF6mRYyDthH++gN2MiTaf6L4UXjijv754zI3Fa3bhC2UAjLZ1Yz9D8cO11XlZWabwRRAtTgmj35KrkD4g3DrljiaJE1D7pFrOCxRDMcZBvn1tVw3iw8yLG07eSkSn7lVh58/GhEvciqOUBYzsnqSi231xSy7AbyrAs7zlFb+s8AKziZUFNtkLP9TS2xSMtKpTG/KAlTrqcS1PJtAtG1f8323gT91dMK5VFo0x30rIjEhqtmNrVPExwnUJzekPlMkN0ZOmuCCsALKpHEu50o2FdiwMlAce1jWCfR3OBVR12E501yENC4MDekXDsA2ocIJ+btarYFGjwaYxg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lkivtWoT; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=SMsDSBAj3UkUDtKwYYHK2Grxrj3+cPeNJbCHUE4Rs2Qv46QRoYfwIXNV1Zy+EFXYJsmi2caPLIuu3OBXkoEdfhflCEM3aiQbW3dpFWB5l9dO+QqSKI3KQr0sRh4qnaZqiD/Te3wptV/ypK9fEHQqOgnGzm27PhBWbdLRyNN83HrcGjlTkQUxwwsstwJgOu2aiRFvv24a7rQpgFC4qA1UNvx/EyvExP/wdRGSBxrs4jWBQ2JB1JTjE1SGlX/DsylVZ1n+uV/Z+PmYJfzajlr4KqaceE+EIHOtzrrWMyyzzasLUUrXrTSKvN350TJRTWwGwap34gp9yayl73bz6/OERQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HkCN8WEi; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=lkivtWoT;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=HkCN8WEi;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=rppt@kernel.org; receiver=lists.ozlabs.org)
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZD87L5zBwz30Lt
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 00:51:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZD87c24LRz30Lt
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 00:52:12 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 468B45C108A;
-	Thu, 13 Mar 2025 13:49:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D278CC4CEE5;
-	Thu, 13 Mar 2025 13:51:43 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id AEE665C4862;
+	Thu, 13 Mar 2025 13:49:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47360C4CEEA;
+	Thu, 13 Mar 2025 13:51:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1741873916;
-	bh=vJ1t8jcOv4IahmAbojjG/hS3bRjZ1yhzZyXAgkQKcCk=;
+	s=k20201202; t=1741873930;
+	bh=Af9gKlZIDExjo3NK0sfX49tiYlvs18loCfa3z4qCS4k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkivtWoTeJzPisCwCmeZ9L2Fz06iBYCw7N7oUdPfSyVbKGHBQSJRQN557ej/tzus0
-	 RT9LYZZKsZEuccc831bWhcS16iFVfInWEJvOyu28bZGwYqulYjyTkus9rBocPVvhz4
-	 m8zeNcqioCGuPo109d5hVWHgDD9f18aJRE/THVHMZkClmOyxFtvaA5ad1Sbfx5UsQa
-	 /mN176Bn7itUz9e8h5ICJhb2Pyd0QqADYzYHfdo8hw/y2vYpPI7xdW6pUdF2K5dqLP
-	 rpEfF6BvQYYCTc7YKFjKCOY7th9g+KIym2sJYOE6kTLClyLAp0snpD940nJFfAVx96
-	 iFppF0Okn7hYA==
+	b=HkCN8WEiZBDjOoNXkOEhfAhooerV5dkF2AGCJWQINBT3fsaxpVBZFUOQ//qEwjrlr
+	 2bPNOWsGN1jhMAGqtWghdbP/jbKVpjyzoCccZNeP956MHM+FvQnV9vxHUVxRi1f57Z
+	 Cy2YUjxboCWMf8Ik4jDKpmCaERo0psIxJMx1djt5KJO5hJIfLq+Tx6yluPloxucc9B
+	 6OYJdeY4IAXQhLphwpYrBpClaEiHNJqeML3xePGY/xtE3X+oYEZbMNo1hpUyjyziIo
+	 HNC9zwJ99nOKR2UIM2I44zSMPyeB7SMX8Wiy499daNzgPSdZFBmii2RnjlN8BaRWiJ
+	 bOL4XjeNb0D3Q==
 From: Mike Rapoport <rppt@kernel.org>
 To: Andrew Morton <akpm@linux-foundation.org>
 Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
@@ -103,9 +103,9 @@ Cc: Alexander Gordeev <agordeev@linux.ibm.com>,
 	linux-arch@vger.kernel.org,
 	linux-mm@kvack.org,
 	x86@kernel.org
-Subject: [PATCH v2 07/13] s390: make setup_zero_pages() use memblock
-Date: Thu, 13 Mar 2025 15:49:57 +0200
-Message-ID: <20250313135003.836600-8-rppt@kernel.org>
+Subject: [PATCH v2 08/13] xtensa: split out printing of virtual memory layout to a function
+Date: Thu, 13 Mar 2025 15:49:58 +0200
+Message-ID: <20250313135003.836600-9-rppt@kernel.org>
 X-Mailer: git-send-email 2.47.2
 In-Reply-To: <20250313135003.836600-1-rppt@kernel.org>
 References: <20250313135003.836600-1-rppt@kernel.org>
@@ -129,61 +129,136 @@ X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: "Mike Rapoport (Microsoft)" <rppt@kernel.org>
 
-Allocating the zero pages from memblock is simpler because the memory is
-already reserved.
-
-This will also help with pulling out memblock_free_all() to the generic
+This will help with pulling out memblock_free_all() to the generic
 code and reducing code duplication in arch::mem_init().
 
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 ---
- arch/s390/mm/init.c | 16 +++-------------
- 1 file changed, 3 insertions(+), 13 deletions(-)
+ arch/xtensa/mm/init.c | 97 ++++++++++++++++++++++---------------------
+ 1 file changed, 50 insertions(+), 47 deletions(-)
 
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index f2298f7a3f21..f8333feb6a7e 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -73,8 +73,6 @@ static void __init setup_zero_pages(void)
+diff --git a/arch/xtensa/mm/init.c b/arch/xtensa/mm/init.c
+index b2587a1a7c46..01577d33e602 100644
+--- a/arch/xtensa/mm/init.c
++++ b/arch/xtensa/mm/init.c
+@@ -66,6 +66,55 @@ void __init bootmem_init(void)
+ 	memblock_dump_all();
+ }
+ 
++static void __init print_vm_layout(void)
++{
++	pr_info("virtual kernel memory layout:\n"
++#ifdef CONFIG_KASAN
++		"    kasan   : 0x%08lx - 0x%08lx  (%5lu MB)\n"
++#endif
++#ifdef CONFIG_MMU
++		"    vmalloc : 0x%08lx - 0x%08lx  (%5lu MB)\n"
++#endif
++#ifdef CONFIG_HIGHMEM
++		"    pkmap   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
++		"    fixmap  : 0x%08lx - 0x%08lx  (%5lu kB)\n"
++#endif
++		"    lowmem  : 0x%08lx - 0x%08lx  (%5lu MB)\n"
++		"    .text   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
++		"    .rodata : 0x%08lx - 0x%08lx  (%5lu kB)\n"
++		"    .data   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
++		"    .init   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
++		"    .bss    : 0x%08lx - 0x%08lx  (%5lu kB)\n",
++#ifdef CONFIG_KASAN
++		KASAN_SHADOW_START, KASAN_SHADOW_START + KASAN_SHADOW_SIZE,
++		KASAN_SHADOW_SIZE >> 20,
++#endif
++#ifdef CONFIG_MMU
++		VMALLOC_START, VMALLOC_END,
++		(VMALLOC_END - VMALLOC_START) >> 20,
++#ifdef CONFIG_HIGHMEM
++		PKMAP_BASE, PKMAP_BASE + LAST_PKMAP * PAGE_SIZE,
++		(LAST_PKMAP*PAGE_SIZE) >> 10,
++		FIXADDR_START, FIXADDR_END,
++		(FIXADDR_END - FIXADDR_START) >> 10,
++#endif
++		PAGE_OFFSET, PAGE_OFFSET +
++		(max_low_pfn - min_low_pfn) * PAGE_SIZE,
++#else
++		min_low_pfn * PAGE_SIZE, max_low_pfn * PAGE_SIZE,
++#endif
++		((max_low_pfn - min_low_pfn) * PAGE_SIZE) >> 20,
++		(unsigned long)_text, (unsigned long)_etext,
++		(unsigned long)(_etext - _text) >> 10,
++		(unsigned long)__start_rodata, (unsigned long)__end_rodata,
++		(unsigned long)(__end_rodata - __start_rodata) >> 10,
++		(unsigned long)_sdata, (unsigned long)_edata,
++		(unsigned long)(_edata - _sdata) >> 10,
++		(unsigned long)__init_begin, (unsigned long)__init_end,
++		(unsigned long)(__init_end - __init_begin) >> 10,
++		(unsigned long)__bss_start, (unsigned long)__bss_stop,
++		(unsigned long)(__bss_stop - __bss_start) >> 10);
++}
+ 
+ void __init zones_init(void)
  {
- 	unsigned long total_pages = memblock_estimated_nr_free_pages();
- 	unsigned int order;
--	struct page *page;
--	int i;
- 
- 	/* Latest machines require a mapping granularity of 512KB */
- 	order = 7;
-@@ -83,16 +81,7 @@ static void __init setup_zero_pages(void)
- 	while (order > 2 && (total_pages >> 10) < (1UL << order))
- 		order--;
- 
--	empty_zero_page = __get_free_pages(GFP_KERNEL | __GFP_ZERO, order);
--	if (!empty_zero_page)
--		panic("Out of memory in setup_zero_pages");
--
--	page = virt_to_page((void *) empty_zero_page);
--	split_page(page, order);
--	for (i = 1 << order; i > 0; i--) {
--		mark_page_reserved(page);
--		page++;
--	}
-+	empty_zero_page = (unsigned long)memblock_alloc_or_panic(PAGE_SIZE << order, PAGE_SIZE);
- 
- 	zero_page_mask = ((PAGE_SIZE << order) - 1) & PAGE_MASK;
+@@ -77,6 +126,7 @@ void __init zones_init(void)
+ #endif
+ 	};
+ 	free_area_init(max_zone_pfn);
++	print_vm_layout();
  }
-@@ -176,9 +165,10 @@ void __init mem_init(void)
- 	pv_init();
- 	kfence_split_mapping();
  
-+	setup_zero_pages();	/* Setup zeroed pages. */
-+
- 	/* this will put all low memory onto the freelists */
+ static void __init free_highpages(void)
+@@ -118,53 +168,6 @@ void __init mem_init(void)
+ 	high_memory = (void *)__va(max_low_pfn << PAGE_SHIFT);
+ 
  	memblock_free_all();
--	setup_zero_pages();	/* Setup zeroed pages. */
+-
+-	pr_info("virtual kernel memory layout:\n"
+-#ifdef CONFIG_KASAN
+-		"    kasan   : 0x%08lx - 0x%08lx  (%5lu MB)\n"
+-#endif
+-#ifdef CONFIG_MMU
+-		"    vmalloc : 0x%08lx - 0x%08lx  (%5lu MB)\n"
+-#endif
+-#ifdef CONFIG_HIGHMEM
+-		"    pkmap   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
+-		"    fixmap  : 0x%08lx - 0x%08lx  (%5lu kB)\n"
+-#endif
+-		"    lowmem  : 0x%08lx - 0x%08lx  (%5lu MB)\n"
+-		"    .text   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
+-		"    .rodata : 0x%08lx - 0x%08lx  (%5lu kB)\n"
+-		"    .data   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
+-		"    .init   : 0x%08lx - 0x%08lx  (%5lu kB)\n"
+-		"    .bss    : 0x%08lx - 0x%08lx  (%5lu kB)\n",
+-#ifdef CONFIG_KASAN
+-		KASAN_SHADOW_START, KASAN_SHADOW_START + KASAN_SHADOW_SIZE,
+-		KASAN_SHADOW_SIZE >> 20,
+-#endif
+-#ifdef CONFIG_MMU
+-		VMALLOC_START, VMALLOC_END,
+-		(VMALLOC_END - VMALLOC_START) >> 20,
+-#ifdef CONFIG_HIGHMEM
+-		PKMAP_BASE, PKMAP_BASE + LAST_PKMAP * PAGE_SIZE,
+-		(LAST_PKMAP*PAGE_SIZE) >> 10,
+-		FIXADDR_START, FIXADDR_END,
+-		(FIXADDR_END - FIXADDR_START) >> 10,
+-#endif
+-		PAGE_OFFSET, PAGE_OFFSET +
+-		(max_low_pfn - min_low_pfn) * PAGE_SIZE,
+-#else
+-		min_low_pfn * PAGE_SIZE, max_low_pfn * PAGE_SIZE,
+-#endif
+-		((max_low_pfn - min_low_pfn) * PAGE_SIZE) >> 20,
+-		(unsigned long)_text, (unsigned long)_etext,
+-		(unsigned long)(_etext - _text) >> 10,
+-		(unsigned long)__start_rodata, (unsigned long)__end_rodata,
+-		(unsigned long)(__end_rodata - __start_rodata) >> 10,
+-		(unsigned long)_sdata, (unsigned long)_edata,
+-		(unsigned long)(_edata - _sdata) >> 10,
+-		(unsigned long)__init_begin, (unsigned long)__init_end,
+-		(unsigned long)(__init_end - __init_begin) >> 10,
+-		(unsigned long)__bss_start, (unsigned long)__bss_stop,
+-		(unsigned long)(__bss_stop - __bss_start) >> 10);
  }
  
- unsigned long memory_block_size_bytes(void)
+ static void __init parse_memmap_one(char *p)
 -- 
 2.47.2
 
