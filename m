@@ -1,49 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-7011-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7012-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A90E6A601EF
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Mar 2025 21:09:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1706BA601F0
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 13 Mar 2025 21:10:02 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDJWK50BGz3cYF;
-	Fri, 14 Mar 2025 07:09:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDJWR3VH0z3cYg;
+	Fri, 14 Mar 2025 07:09:55 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=131.188.11.21
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741888052;
-	cv=none; b=Np3ZtIVCYmIMEI+Ri7wefo6Pmt5P/mSWBh9GoCI5IjlVlh/e/qexiEPb4RB05gRGB15n1OwzbfDvH3ZyEXscWabnj3ImK+0aA1EBvevQbupKVgrNfbN6909Rsp1EAruToQbG6GRvtdrMHJK/M57X4SCdscEaU+sNmcoF/L+ov3/IqBl9Wl/Ow2Ux7C4xgvFwZGrM7I6cYo3KRHv3yaZw0jbLRFV6L/NFBi2N+jvfp6jXCQKk2xx/0EBRZRpJaHuXySA9C12v4e+EUFuaSXhCBzP6Jw8RrSytKl2JbAAMGBMeKNj3h1xARIhk545PwCcRcesQgMkFt34+Bijl6Fzmog==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:638:a000:1025::14"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741888214;
+	cv=none; b=L7GH43hTSHKv7+d61AEPmwzyv3v2g4laBFGfmQJyEx+jevKTKHB49Joore++PGqoI9RYfjhIbhPru/+TJBdnxLYUsYMxnFytPbVULn9eQhCUbaYusYusohcdG2QXV6r/h7+oNvnxIepSCJv/IaFIc2hN4xZ0C/L3oHM9RY7kZtRJPyqJX2Dl/nhdNbkUSl2GJGqidpaM1vcuMp4c7NpEIyY25qFGDL/pZusVon9WnJpMVGjpYe7A4LgF4Cb42meW4jct+RsSeOYj7jycu3A5Gjke2pafc6mtt2ZO0XEdwLTjx2/QaFBMvun+RHBZQpnjbYhxsfVrjlXV7cFbi9o9qA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741888052; c=relaxed/relaxed;
-	bh=7PdRevp9VEBQ7cXe+7SQLSfTFULBTjgQdqLzMbVqv7w=;
+	t=1741888214; c=relaxed/relaxed;
+	bh=0uXitbae6V581uWjrVMHNj7OGX7cHcNF+H00TPTK55g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C7Qi3o+OG5KiAcRAbXVIDhjLnJVd2jvfiw/CA6z7W1U+aBEUvRCygXIszEEjsg4C22bir4uyvtrjJroxLjB2XrZwgMa2JJqAH3FowaN98+BLtpqg9eIL2jA+tR0gVzSWAwXoTyXwEeC50kDvF0bQIknsxcTVgIuQRZCKP1uiOywwJgqHLAp26f7m6nYwcfPL1UbUL8jnvbtxod4Gwv/YChRBE3ns9nQCwa51kU5d0bv2imORXOHiRCEm2BjjyTtv6WXLcXLjiWC/TdYeTiNyOTvOnMhtgFIZrBgFB2x4vyh7qUOncCkJu+hoNe9Dkfot1PYd9Ezrry3wkUJHEJ9yUg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=OdzuV4hB; dkim-atps=neutral; spf=pass (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
+	 MIME-Version; b=cCVOAWsntoATfdw50sX3f0GVNBf8RRm15Anke4KM1CBWpuZP8ziAmCYoiFTVg2F3lf8WMkt6Iav3hQQJUSfZIFiZb+SUCYhpGNUUvnnW215PelTuvTd67CGQn4DkpNudcjevZxRCRhRUVeoZeM9KWNmDjYw0rduoqBovcJCa6AjnAML1PpCWV83KQ7+63RQ8xi7dUEbB8XSdZDhO2pGhWysYwa9dCPmkzCSq4ofEC4EGLHT+aSR6zT79VQZGuMoNi6AVFD2CXpLQ2GwBFDcPUHWDmurJl/KRksXSFPk+e1o5aXAyz4akr3tgdcUetBEcNttjkrEI4Olbnjp1bIg8xw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=fnZGLrQ7; dkim-atps=neutral; spf=pass (client-ip=2001:638:a000:1025::14; helo=mx-rz-1.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=OdzuV4hB;
+	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=fnZGLrQ7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=131.188.11.21; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
-Received: from mx-rz-2.rrze.uni-erlangen.de (mx-rz-2.rrze.uni-erlangen.de [131.188.11.21])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=2001:638:a000:1025::14; helo=mx-rz-1.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
+Received: from mx-rz-1.rrze.uni-erlangen.de (mx-rz-1.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::14])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDFM75Rmxz3c6c
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 04:47:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDFQF4vHgz3c6c
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 04:50:13 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
-	t=1741888048; bh=7PdRevp9VEBQ7cXe+7SQLSfTFULBTjgQdqLzMbVqv7w=;
+	t=1741888210; bh=0uXitbae6V581uWjrVMHNj7OGX7cHcNF+H00TPTK55g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From:To:CC:
 	 Subject;
-	b=OdzuV4hBjdperRm0XJOh2lk2Vh3TaWgTXirNqf6btIxTKqUuKQKbTti196BtDLE10
-	 EnabT2TpBViOZFl85SCJ1WvXDOol1iuY6w03mEIp6YkmJqocIposjTAfU16QJXS1+G
-	 AJHYYnLfFHCrGKq28gmAUkKY6dJ5MGc4HhQBlS4p6gSFVljkCJues9EtLy1Y5uoNUG
-	 WttBODYXpemaNkvZGyqiZeQPst1vL5+NRYIcsvc3XeS20HpsCPs47y5pYHVn7FXpxZ
-	 OE55JosgXUbJcSYolp3bzaq13u+V4AhOrx5B6sW544da05jdcZlxTDqUIdXAiRD8LD
-	 k1RZLnKf1flFg==
+	b=fnZGLrQ7Vi3LttrhctZMbJiPeDHFaZy5u8vbZKvOz8RIlQ7E+/oHDYLK7hXtqUqfL
+	 kbQISb496iGQB2bANJ96nP4KeVKj1pDk1tJJa2uvtz5qJ2kqnIqhQ1N0ai0pPProJh
+	 giThajl9SCo/J5UH6GGFGbAhof6smCAsmz5jGOriZ3OpGMV7nMTnhpimg3IKaFouH6
+	 JIj73rRBKSIHU5H4Xy8e72xcCdG5WE8aWLefBi8icomUMe8wa0MYPYmNTpOegpy9Wo
+	 E4PdYM55TT6acKMLzGgi4WQnoTKRwlZ9KoCVA0b0CZc13JfuR2ahF5M6QEIkfs6aYw
+	 YwwtGNdl2bImw==
 Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4ZDFM40SxpzPjxV;
-	Thu, 13 Mar 2025 18:47:28 +0100 (CET)
+	by mx-rz-1.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4ZDFQB1Nk1z8sZC;
+	Thu, 13 Mar 2025 18:50:10 +0100 (CET)
 X-Virus-Scanned: amavisd-new at boeck5.rrze.uni-erlangen.de (RRZE)
 X-RRZE-Flag: Not-Spam
 X-RRZE-Submit-IP: 2001:9e8:3614:2b00:7ee6:68e5:4447:ba92
@@ -51,9 +51,9 @@ Received: from luis-tp.fritz.box (unknown [IPv6:2001:9e8:3614:2b00:7ee6:68e5:444
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	(Authenticated sender: U2FsdGVkX18m9Vn9FOlTwMXhkaYiMwSCy8dUUwAZyWw=)
-	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4ZDFM03tYpzPjvW;
-	Thu, 13 Mar 2025 18:47:24 +0100 (CET)
+	(Authenticated sender: U2FsdGVkX18qRqVufABMZXGakgrMybBRhw8+0eTup34=)
+	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4ZDFQ62JbTz8sYB;
+	Thu, 13 Mar 2025 18:50:06 +0100 (CET)
 From: Luis Gerhorst <luis.gerhorst@fau.de>
 To: Alexei Starovoitov <ast@kernel.org>,
 	Daniel Borkmann <daniel@iogearbox.net>,
@@ -96,9 +96,9 @@ To: Alexei Starovoitov <ast@kernel.org>,
 	Tiezhu Yang <yangtiezhu@loongson.cn>
 Cc: Maximilian Ott <ott@cs.fau.de>,
 	Milan Stephan <milan.stephan@fau.de>
-Subject: [PATCH bpf-next 08/11] bpf: Allow nospec-protected var-offset stack access
-Date: Thu, 13 Mar 2025 18:41:46 +0100
-Message-ID: <20250313174149.1113165-3-luis.gerhorst@fau.de>
+Subject: [PATCH bpf-next 09/11] bpf: Return PTR_ERR from push_stack()
+Date: Thu, 13 Mar 2025 18:41:47 +0100
+Message-ID: <20250313174149.1113165-4-luis.gerhorst@fau.de>
 X-Mailer: git-send-email 2.48.1
 In-Reply-To: <20250313174149.1113165-1-luis.gerhorst@fau.de>
 References: <20250313172127.1098195-1-luis.gerhorst@fau.de>
@@ -117,76 +117,193 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,
-	RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.0
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-Insert a nospec before the access to prevent it from ever using an index
-that is subject to speculative scalar-confusion.
+Main reason is, that it will later allow us to fall back to a nospec for
+certain errors in push_stack().
+
+This changes the sanitization-case to returning -ENOMEM. However, this
+is more fitting as -EFAULT would indicate a verifier-internal bug.
 
 Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
 Acked-by: Henriette Herzog <henriette.herzog@rub.de>
 Cc: Maximilian Ott <ott@cs.fau.de>
 Cc: Milan Stephan <milan.stephan@fau.de>
 ---
- kernel/bpf/verifier.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ kernel/bpf/verifier.c | 72 ++++++++++++++++++++++++++-----------------
+ 1 file changed, 43 insertions(+), 29 deletions(-)
 
 diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 8093a5bac4d1..683a76aceffa 100644
+index 683a76aceffa..610f9567af7c 100644
 --- a/kernel/bpf/verifier.c
 +++ b/kernel/bpf/verifier.c
-@@ -7858,6 +7858,11 @@ static int check_atomic(struct bpf_verifier_env *env, struct bpf_insn *insn)
+@@ -2011,8 +2011,10 @@ static struct bpf_verifier_state *push_stack(struct bpf_verifier_env *env,
+ 	int err;
+ 
+ 	elem = kzalloc(sizeof(struct bpf_verifier_stack_elem), GFP_KERNEL);
+-	if (!elem)
+-		goto err;
++	if (!elem) {
++		err = -ENOMEM;
++		goto unrecoverable_err;
++	}
+ 
+ 	elem->insn_idx = insn_idx;
+ 	elem->prev_insn_idx = prev_insn_idx;
+@@ -2022,12 +2024,19 @@ static struct bpf_verifier_state *push_stack(struct bpf_verifier_env *env,
+ 	env->stack_size++;
+ 	err = copy_verifier_state(&elem->st, cur);
+ 	if (err)
+-		goto err;
++		goto unrecoverable_err;
+ 	elem->st.speculative |= speculative;
+ 	if (env->stack_size > BPF_COMPLEXITY_LIMIT_JMP_SEQ) {
+ 		verbose(env, "The sequence of %d jumps is too complex.\n",
+ 			env->stack_size);
+-		goto err;
++		/* Do not return -EINVAL to prevent main loop from trying to
++		 * mitigate this using nospec if we are on a speculative path.
++		 * If it was tried anyway, we would encounter an -ENOMEM (from
++		 * which we can not recover) again shortly on the next
++		 * non-speculative path that has to be checked.
++		 */
++		err = -ENOMEM;
++		goto unrecoverable_err;
  	}
- }
- 
-+static struct bpf_insn_aux_data *cur_aux(const struct bpf_verifier_env *env)
-+{
-+	return &env->insn_aux_data[env->insn_idx];
-+}
-+
- /* When register 'regno' is used to read the stack (either directly or through
-  * a helper function) make sure that it's within stack boundary and, depending
-  * on the access type and privileges, that all elements of the stack are
-@@ -7897,18 +7902,18 @@ static int check_stack_range_initialized(
- 	if (tnum_is_const(reg->var_off)) {
- 		min_off = max_off = reg->var_off.value + off;
- 	} else {
--		/* Variable offset is prohibited for unprivileged mode for
-+		/* Variable offset requires a nospec for unprivileged mode for
- 		 * simplicity since it requires corresponding support in
- 		 * Spectre masking for stack ALU.
- 		 * See also retrieve_ptr_limit().
+ 	if (elem->st.parent) {
+ 		++elem->st.parent->branches;
+@@ -2042,12 +2051,14 @@ static struct bpf_verifier_state *push_stack(struct bpf_verifier_env *env,
  		 */
- 		if (!env->bypass_spec_v1) {
--			char tn_buf[48];
--
--			tnum_strn(tn_buf, sizeof(tn_buf), reg->var_off);
--			verbose(env, "R%d variable offset stack access prohibited for !root, var_off=%s\n",
--				regno, tn_buf);
--			return -EACCES;
-+			/* Allow the access, but prevent it from using a
-+			 * speculative offset using a nospec before the
-+			 * dereference op.
-+			 */
-+			cur_aux(env)->nospec = true;
-+			WARN_ON_ONCE(cur_aux(env)->alu_state);
- 		}
- 		/* Only initialized buffer on stack is allowed to be accessed
- 		 * with variable offset. With uninitialized buffer it's hard to
-@@ -11096,11 +11101,6 @@ static int check_get_func_ip(struct bpf_verifier_env *env)
- 	return -ENOTSUPP;
+ 	}
+ 	return &elem->st;
+-err:
++unrecoverable_err:
+ 	free_verifier_state(env->cur_state, true);
+ 	env->cur_state = NULL;
+ 	/* pop all elements and return */
+ 	while (!pop_stack(env, NULL, NULL, false));
+-	return NULL;
++	WARN_ON_ONCE(err >= 0);
++	WARN_ON_ONCE(error_recoverable_with_nospec(err));
++	return ERR_PTR(err);
  }
  
--static struct bpf_insn_aux_data *cur_aux(const struct bpf_verifier_env *env)
--{
--	return &env->insn_aux_data[env->insn_idx];
--}
--
- static bool loop_flag_is_zero(struct bpf_verifier_env *env)
- {
- 	struct bpf_reg_state *regs = cur_regs(env);
+ #define CALLER_SAVED_REGS 6
+@@ -8856,8 +8867,8 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 		prev_st = find_prev_entry(env, cur_st->parent, insn_idx);
+ 		/* branch out active iter state */
+ 		queued_st = push_stack(env, insn_idx + 1, insn_idx, false);
+-		if (!queued_st)
+-			return -ENOMEM;
++		if (IS_ERR(queued_st))
++			return PTR_ERR(queued_st);
+ 
+ 		queued_iter = get_iter_from_state(queued_st, meta);
+ 		queued_iter->iter.state = BPF_ITER_STATE_ACTIVE;
+@@ -10440,8 +10451,8 @@ static int push_callback_call(struct bpf_verifier_env *env, struct bpf_insn *ins
+ 	 * proceed with next instruction within current frame.
+ 	 */
+ 	callback_state = push_stack(env, env->subprog_info[subprog].start, insn_idx, false);
+-	if (!callback_state)
+-		return -ENOMEM;
++	if (IS_ERR(callback_state))
++		return PTR_ERR(callback_state);
+ 
+ 	err = setup_func_entry(env, subprog, insn_idx, set_callee_state_cb,
+ 			       callback_state);
+@@ -13892,7 +13903,7 @@ sanitize_speculative_path(struct bpf_verifier_env *env,
+ 	struct bpf_reg_state *regs;
+ 
+ 	branch = push_stack(env, next_idx, curr_idx, true);
+-	if (branch && insn) {
++	if (!IS_ERR(branch) && insn) {
+ 		regs = branch->frame[branch->curframe]->regs;
+ 		if (BPF_SRC(insn->code) == BPF_K) {
+ 			mark_reg_unknown(env, regs, insn->dst_reg);
+@@ -13920,7 +13931,7 @@ static int sanitize_ptr_alu(struct bpf_verifier_env *env,
+ 	u8 opcode = BPF_OP(insn->code);
+ 	u32 alu_state, alu_limit;
+ 	struct bpf_reg_state tmp;
+-	bool ret;
++	struct bpf_verifier_state *branch;
+ 	int err;
+ 
+ 	if (can_skip_alu_sanitation(env, insn))
+@@ -13993,11 +14004,11 @@ static int sanitize_ptr_alu(struct bpf_verifier_env *env,
+ 		tmp = *dst_reg;
+ 		copy_register_state(dst_reg, ptr_reg);
+ 	}
+-	ret = sanitize_speculative_path(env, NULL, env->insn_idx + 1,
+-					env->insn_idx);
+-	if (!ptr_is_dst_reg && ret)
++	branch = sanitize_speculative_path(env, NULL, env->insn_idx + 1,
++					   env->insn_idx);
++	if (!ptr_is_dst_reg && !IS_ERR(branch))
+ 		*dst_reg = tmp;
+-	return !ret ? REASON_STACK : 0;
++	return IS_ERR(branch) ? REASON_STACK : 0;
+ }
+ 
+ static void sanitize_mark_insn_seen(struct bpf_verifier_env *env)
+@@ -16246,8 +16257,8 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 
+ 		/* branch out 'fallthrough' insn as a new state to explore */
+ 		queued_st = push_stack(env, idx + 1, idx, false);
+-		if (!queued_st)
+-			return -ENOMEM;
++		if (IS_ERR(queued_st))
++			return PTR_ERR(queued_st);
+ 
+ 		queued_st->may_goto_depth++;
+ 		if (prev_st)
+@@ -16311,10 +16322,12 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 		 * the fall-through branch for simulation under speculative
+ 		 * execution.
+ 		 */
+-		if (!env->bypass_spec_v1 &&
+-		    !sanitize_speculative_path(env, insn, *insn_idx + 1,
+-					       *insn_idx))
+-			return -EFAULT;
++		if (!env->bypass_spec_v1) {
++			struct bpf_verifier_state *branch = sanitize_speculative_path(
++				env, insn, *insn_idx + 1, *insn_idx);
++			if (IS_ERR(branch))
++				return PTR_ERR(branch);
++		}
+ 		if (env->log.level & BPF_LOG_LEVEL)
+ 			print_insn_state(env, this_branch, this_branch->curframe);
+ 		*insn_idx += insn->off;
+@@ -16324,11 +16337,12 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 		 * program will go. If needed, push the goto branch for
+ 		 * simulation under speculative execution.
+ 		 */
+-		if (!env->bypass_spec_v1 &&
+-		    !sanitize_speculative_path(env, insn,
+-					       *insn_idx + insn->off + 1,
+-					       *insn_idx))
+-			return -EFAULT;
++		if (!env->bypass_spec_v1) {
++			struct bpf_verifier_state *branch = sanitize_speculative_path(
++				env, insn, *insn_idx + insn->off + 1, *insn_idx);
++			if (IS_ERR(branch))
++				return PTR_ERR(branch);
++		}
+ 		if (env->log.level & BPF_LOG_LEVEL)
+ 			print_insn_state(env, this_branch, this_branch->curframe);
+ 		return 0;
+@@ -16351,8 +16365,8 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 
+ 	other_branch = push_stack(env, *insn_idx + insn->off + 1, *insn_idx,
+ 				  false);
+-	if (!other_branch)
+-		return -EFAULT;
++	if (IS_ERR(other_branch))
++		return PTR_ERR(other_branch);
+ 	other_branch_regs = other_branch->frame[other_branch->curframe]->regs;
+ 
+ 	if (BPF_SRC(insn->code) == BPF_X) {
 -- 
 2.48.1
 
