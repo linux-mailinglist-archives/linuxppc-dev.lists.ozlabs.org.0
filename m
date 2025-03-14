@@ -1,78 +1,86 @@
-Return-Path: <linuxppc-dev+bounces-7041-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7042-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51BF5A60959
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 07:58:08 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37263A60987
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 08:12:39 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDZvK3mGyz3cX0;
-	Fri, 14 Mar 2025 17:58:05 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDbD23Hq7z3cXw;
+	Fri, 14 Mar 2025 18:12:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741935485;
-	cv=none; b=WV8vZFyE8horYH89tS9gHS86UzS/UyWmpZGfD5q6Q5j/q5LS99M/TzYnxKcEGksk+S8D1ePY/5AtEkv5+KbL8gYPdv1byLtJC0UmFEigz7izilKTxWQvHgBF/VITgIYenc1GDBJGmIsLJwJ9iFD2wo7mWihFmr/V30i0i5bfgvRr4DyBy9HE37gKGhduAWy3MNOpIcGFrBvJ2cYHRGY0Qg3NHVYhcGccQl19mrsJpPlMQnq/W4Mv6u/M3OTHRodGgx54V1Bwi4xUsLkCV2KNjZl1kaGcdVPgp8QqdNLUtyR+9Q4F5RsF5oQAKsbuBbw9kNfYG8Tc8N5iJ1qIWwgIBA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741936354;
+	cv=none; b=Zdcr6XOpqAk2BJiHaymBSXsr98NoiyA4VKW3viQtnOT0sZFFEKK25RPJ0i6cvRB1zKxsBnrOCtWBCQ0DLJ1ZIb28PKXMY+MLQct66f52gzWR1kzMBgovA1rNMN3FhE0E5uNLAaOyMMs+ALxxJQ2AESJP0KJ8Y9b3auFrtH2URaddIOtjtSchPgCKA3EyGMfRcWCdheWke9DAWM+6sYDD6USlKQik+jv1Cl3QXWim/A3FngnoFQLp06u0+LEkcPDvfYz76ntawZ263+J1lfy4FCH+5lPi7Z8BJzOIO6sXHtmwKDjMHZ/LPDY6VSUzZSI5tb96+4ughiZrQ4ex+EG3OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741935485; c=relaxed/relaxed;
-	bh=93rADN1l4leHkQdDKQol30WlkU++J8cD8JYZk+aER8Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MjQN5NQp51WCkZ0aoqbgh3WTjm9r4I20IGOu2CkVzFjzMcgnnMvpRp1v0PeUsPAemKsDYwX7Ho6k0Uy0QoVi2djwRGz6fI/yzgjWVJ+Yy2E4Pf8XjYzEdFzD4B/76QdYbanJjFyg4tLhZM1kT1TzClCc9EHWUSrvXnyRfoPlfJ57oXmZlSKlfC7Y7weB6AnMmFUGbLJC/2y/Ws4mevejFiipcUbfbQSPYLVxP/AIJ/CunHpN5VD/3ZHx7sMQJPIGWCQX5CqaEraHgKB7QP0tqzonbDk7MnNOUD0EiHxL2KCstYuQvw6R0efq+LM0o74WkZURqYa/Ok2VEUrXh3TCng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SCDAkLZ3; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1741936354; c=relaxed/relaxed;
+	bh=dSjUdv+wNUmbSqWZifQPj14OsZRcZ5i6atD82Al+C+8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=S+7JeMaE5VmdKMDqCrp+QGL0P99TnHQGv/GCe+Rh59NnfSCUuuY3KcIQA6KV/o4gSCySVhJnZd2h5Yl7Yb6smsWwgZqBK8mwxY9hpEh7kMzpjHCm8AdfqkF2RTIB21D3vTiqzVwpIFJXYI6D7597+Eo6MBuizLiEpOacKGi5SMfUDM8qMJJ70FB6ARsuT3KiW+TMhJLuG181nQ45gBjlo4fgJPesDMBuzFMp7a7+5+jfw88R7cRuWnsb+JTuZ1Vsq2IvecJAjm1PyR4ld8tzoC2vD+TkoisVW7cN1BVcnBMmqt6AzvwyLLGe+h9BVd7u2By7pMnV1375+WrDf0dSIw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie8vQMZH; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie8vQMZH; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=SCDAkLZ3;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie8vQMZH;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ie8vQMZH;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=thuth@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDZvJ0T1cz30RN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 17:58:03 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DNQ5aq015394;
-	Fri, 14 Mar 2025 06:57:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=93rADN
-	1l4leHkQdDKQol30WlkU++J8cD8JYZk+aER8Y=; b=SCDAkLZ3+c3c3Z6R/xLZku
-	hcDQhgrw/18knPUJ3r0b4SEx0jP+gMJDsG3V2/C1tfuBd9l3NpzXQ6vOgO81YDpc
-	5evttTJMokQy5zW5NdZBmR9+bHJiTHuHjyvk4ZJwzj8p8tFNgq/dHZQNBvD5KzQT
-	/HHx2v6GHGnlOME14ESIE13EmsrTw0ySd0kM0FuO2W1mj5W/KDtSO4+eGbwO6PO4
-	P7qSjmL/H2fa7rqYpCH/9NDoJAPOtklP/hYjX5wZALiYRD0uO3SYgdAxjMH05P9D
-	1tBW7vPfSieMF3ssuffNDp5ZFsVpSKYyXpg0o73087elSW+DFwhLnM0T4SxIVejQ
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c6k02397-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 06:57:49 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52E6sAH1020818;
-	Fri, 14 Mar 2025 06:57:49 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c6k02394-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 06:57:49 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52E512Qn012259;
-	Fri, 14 Mar 2025 06:57:48 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsrnnbv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 06:57:48 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52E6vitF23265552
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Mar 2025 06:57:44 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8CB132004B;
-	Fri, 14 Mar 2025 06:57:44 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A2C3720043;
-	Fri, 14 Mar 2025 06:57:41 +0000 (GMT)
-Received: from [9.39.22.126] (unknown [9.39.22.126])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Mar 2025 06:57:41 +0000 (GMT)
-Message-ID: <62356be0-a319-4ec8-88d6-08bed4c04945@linux.ibm.com>
-Date: Fri, 14 Mar 2025 12:27:40 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDbD110Bqz3cXK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 18:12:30 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741936343;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dSjUdv+wNUmbSqWZifQPj14OsZRcZ5i6atD82Al+C+8=;
+	b=ie8vQMZHhxc0vI1mtSlx15ln3gF8zbQBhj2wjtua8EVZXpb3JjJyuzhQk/t5soegIyeTer
+	CR8nR7Isp7Tnpb+VtkvUt5t5iajsy8um20PgdHUgo0yvXtUI//2AsENpyZRTJnSOcZE9sX
+	iJikCP+DQWsGr6rlraYJYS6Wrj8Sy5g=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1741936343;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dSjUdv+wNUmbSqWZifQPj14OsZRcZ5i6atD82Al+C+8=;
+	b=ie8vQMZHhxc0vI1mtSlx15ln3gF8zbQBhj2wjtua8EVZXpb3JjJyuzhQk/t5soegIyeTer
+	CR8nR7Isp7Tnpb+VtkvUt5t5iajsy8um20PgdHUgo0yvXtUI//2AsENpyZRTJnSOcZE9sX
+	iJikCP+DQWsGr6rlraYJYS6Wrj8Sy5g=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-615-KGbOqyMwNxCRVfMUlTveAA-1; Fri,
+ 14 Mar 2025 03:12:19 -0400
+X-MC-Unique: KGbOqyMwNxCRVfMUlTveAA-1
+X-Mimecast-MFC-AGG-ID: KGbOqyMwNxCRVfMUlTveAA_1741936337
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5580718007E1;
+	Fri, 14 Mar 2025 07:12:17 +0000 (UTC)
+Received: from thuth-p1g4.redhat.com (unknown [10.44.32.82])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E8C3B18001DE;
+	Fri, 14 Mar 2025 07:12:12 +0000 (UTC)
+From: Thomas Huth <thuth@redhat.com>
+To: linux-kernel@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org,
+	Thomas Huth <thuth@redhat.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 26/41] powerpc: Replace __ASSEMBLY__ with __ASSEMBLER__ in uapi headers
+Date: Fri, 14 Mar 2025 08:09:57 +0100
+Message-ID: <20250314071013.1575167-27-thuth@redhat.com>
+In-Reply-To: <20250314071013.1575167-1-thuth@redhat.com>
+References: <20250314071013.1575167-1-thuth@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,56 +93,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] powerpc: powenv: oxcl: use lock guard for mutex
-To: Andrew Donnellan <ajd@linux.ibm.com>, maddy@linux.ibm.com,
-        linuxppc-dev@lists.ozlabs.org
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
-        peterz@infradead.org, fbarrat@linux.ibm.com, mahesh@linux.ibm.com,
-        oohall@gmail.com, hbathini@linux.ibm.com, dhowells@redhat.com,
-        haren@linux.ibm.com, linux-kernel@vger.kernel.org
-References: <20250314054544.1998928-1-sshegde@linux.ibm.com>
- <20250314054544.1998928-6-sshegde@linux.ibm.com>
- <af15fbf507dee3d96249bdfbb1a7419a26985f9b.camel@linux.ibm.com>
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <af15fbf507dee3d96249bdfbb1a7419a26985f9b.camel@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: KmZZO4VnmgZGcKkFmOx0OgjFyLhNuX_w
-X-Proofpoint-ORIG-GUID: n3QZFdmW8An65Vpl2vFqfy-V7FeP4Rjy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-14_02,2025-03-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- mlxlogscore=601 priorityscore=1501 impostorscore=0 lowpriorityscore=0
- bulkscore=0 phishscore=0 adultscore=0 spamscore=0 mlxscore=0
- suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2503140054
-X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Spam-Status: No, score=-0.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
+__ASSEMBLY__ is only defined by the Makefile of the kernel, so
+this is not really useful for uapi headers (unless the userspace
+Makefile defines it, too). Let's switch to __ASSEMBLER__ which
+gets set automatically by the compiler when compiling assembly
+code.
 
+This is a completely mechanical patch (done with a simple "sed -i"
+statement).
 
-On 3/14/25 11:36, Andrew Donnellan wrote:
-> On Fri, 2025-03-14 at 11:15 +0530, Shrikanth Hegde wrote:
->> use guard(mutex) for scope based resource management of mutex.
->> This would make the code simpler and easier to maintain.
->>
->> More details on lock guards can be found at
->> https://lore.kernel.org/all/20230612093537.614161713@infradead.org/T/#u
->>
->> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> 
-> The subject line of this patch misspells powernv and ocxl.
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: linuxppc-dev@lists.ozlabs.org
+Signed-off-by: Thomas Huth <thuth@redhat.com>
+---
+ arch/powerpc/include/uapi/asm/opal-prd.h |  4 ++--
+ arch/powerpc/include/uapi/asm/ptrace.h   | 12 ++++++------
+ arch/powerpc/include/uapi/asm/types.h    |  4 ++--
+ 3 files changed, 10 insertions(+), 10 deletions(-)
 
-Ah. my bad. will correct it.
+diff --git a/arch/powerpc/include/uapi/asm/opal-prd.h b/arch/powerpc/include/uapi/asm/opal-prd.h
+index 1869cf83a870e..11abcf0192ca1 100644
+--- a/arch/powerpc/include/uapi/asm/opal-prd.h
++++ b/arch/powerpc/include/uapi/asm/opal-prd.h
+@@ -40,7 +40,7 @@
+ #define OPAL_PRD_SCOM_READ		_IOR('o', 0x02, struct opal_prd_scom)
+ #define OPAL_PRD_SCOM_WRITE		_IOW('o', 0x03, struct opal_prd_scom)
+ 
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ 
+ struct opal_prd_info {
+ 	__u64	version;
+@@ -54,6 +54,6 @@ struct opal_prd_scom {
+ 	__s64	rc;
+ };
+ 
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+ 
+ #endif /* _UAPI_ASM_POWERPC_OPAL_PRD_H */
+diff --git a/arch/powerpc/include/uapi/asm/ptrace.h b/arch/powerpc/include/uapi/asm/ptrace.h
+index 7004cfea3f5ff..01e630149d48e 100644
+--- a/arch/powerpc/include/uapi/asm/ptrace.h
++++ b/arch/powerpc/include/uapi/asm/ptrace.h
+@@ -27,7 +27,7 @@
+ 
+ #include <linux/types.h>
+ 
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ 
+ #ifdef __KERNEL__
+ struct user_pt_regs
+@@ -57,7 +57,7 @@ struct pt_regs
+ 	unsigned long result;		/* Result of a system call */
+ };
+ 
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+ 
+ 
+ /*
+@@ -200,7 +200,7 @@ struct pt_regs
+ #define PPC_PTRACE_SETHWDEBUG	0x88
+ #define PPC_PTRACE_DELHWDEBUG	0x87
+ 
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ 
+ struct ppc_debug_info {
+ 	__u32 version;			/* Only version 1 exists to date */
+@@ -212,7 +212,7 @@ struct ppc_debug_info {
+ 	__u64 features;
+ };
+ 
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+ 
+ /*
+  * features will have bits indication whether there is support for:
+@@ -224,7 +224,7 @@ struct ppc_debug_info {
+ #define PPC_DEBUG_FEATURE_DATA_BP_DAWR		0x0000000000000010
+ #define PPC_DEBUG_FEATURE_DATA_BP_ARCH_31	0x0000000000000020
+ 
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ 
+ struct ppc_hw_breakpoint {
+ 	__u32 version;		/* currently, version must be 1 */
+@@ -236,7 +236,7 @@ struct ppc_hw_breakpoint {
+ 	__u64 condition_value;	/* contents of the DVC register */
+ };
+ 
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+ 
+ /*
+  * Trigger Type
+diff --git a/arch/powerpc/include/uapi/asm/types.h b/arch/powerpc/include/uapi/asm/types.h
+index 327616fb70e44..9dbf55e38ea58 100644
+--- a/arch/powerpc/include/uapi/asm/types.h
++++ b/arch/powerpc/include/uapi/asm/types.h
+@@ -28,14 +28,14 @@
+ # include <asm-generic/int-ll64.h>
+ #endif
+ 
+-#ifndef __ASSEMBLY__
++#ifndef __ASSEMBLER__
+ 
+ 
+ typedef struct {
+ 	__u32 u[4];
+ } __attribute__((aligned(16))) __vector128;
+ 
+-#endif /* __ASSEMBLY__ */
++#endif /* __ASSEMBLER__ */
+ 
+ 
+ #endif /* _UAPI_ASM_POWERPC_TYPES_H */
+-- 
+2.48.1
 
-> 
-> Otherwise this looks like a nice cleanup.
-
-Thanks.
 
