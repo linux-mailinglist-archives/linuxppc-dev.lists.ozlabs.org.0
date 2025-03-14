@@ -1,75 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-7035-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7036-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0605A6086D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 06:46:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1687CA6086E
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 06:46:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDYJj1x42z3brN;
-	Fri, 14 Mar 2025 16:46:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDYJp3BBbz3cY0;
+	Fri, 14 Mar 2025 16:46:34 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741931189;
-	cv=none; b=DYVueOA1O2tE85fY4+VR8bl9RnDJymCfbFvvDGueIilTm+K3V7+is3sIRQMin4ha6w4fHw+1JC8nJwAcZC68pU4GEUz+jGfsbodVaw5pEwjE8YmWOJSsFs9OX5a3mHlW/a5ULKOQ+w72NNP/lex8wzmOTJhrgd/E/gHgh11kDUKUL+uoIf7NLgLW3ZQHHHoxfafBF6GMHED5CYi7eqJ4ud5p0RstuvZ9BV1vuyICrp3fAPx+O1mMin83eu8WrYOOjFgz0ZjDOdfdAq28uoXppuFdCAqXWTQUNG5d/43pqPRm/EMV3mHZ2/ZpSisVx73aFTDRquF0LunlsQClpJSeBA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741931194;
+	cv=none; b=iPjXbTQo3jis+uKnc/gwMksgdpHkAYbZPOBb8F7u3nwTIxEv61i27NuulGmNq33NdmN358McHnBAfD5w6nqLhjD8ob7SgHaWkQiX+Z61+a/lU4omy5Wr/JK9ivA30tP0rAx/AszJX95rWaVdNlKPb6aJ3t9bEFrhkkNmcR81nSyGEzf573pzQ0xJgLk/dVFDXhjR9ziBuYQ7J73fbECXbqJN9H/+GZ8Q3+HHthxwa7Kn3zV7XarwFrmjPsG+CSV064ozHecP7WhNAih2w4dJAXP4MKXI3HbTVWxuEnxXXeakc4jwVsw5PpN3TnVfh9li8f+tdA/dDLRUz750Cn/o7Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741931189; c=relaxed/relaxed;
-	bh=rHiuokT753NlluXTPeZq8TFHySwH4S01ZogXJ3+Y+w0=;
+	t=1741931194; c=relaxed/relaxed;
+	bh=MwVYPr7/JahDzLEPr39TM/CoUV6AsGze/brxnTHHiOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BJBb4tLcaP02Dw+xT/8651Nb9ph0FBVF8qYNlJBEfWwGQtozXBCZ3JpUsbJsA7VRrgEOnJmRrXSvRZDd28IebGvj61zQKIMSveI7KdmUqswE0B+llqXOYFheRI0hNTrTLvVe+xhI+LTe/N3dmm7Lai0d+479gdOylUWbDgAmDtac4ll3ZKxyjnd0jgKWISDHomZdVy1+5eXslUN9xOY4DifOlnlvGu9aqpdE0x9M4l87ewJSixQeNkyEhswVjkULhdj2kbEq6NvXZcBxws7TncqKADQZd7xn2+21NYWA4i8Vt/uYDxxrp2x5IC5roKQyAd+CAV/SGdNwgE5tjZe2iA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VaOKzo0G; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=oNpvEB4Zww/Af/Dy2vKrcZF7caiYSayFZOdQWwjwfEJSmrGz99thH2t70A58fwSxMKMM0/DbBJtDYytDfpy5UUL7NplVRTDMIKGwJyDyM+vUf8S5qsoiLEnhoKozmFdT03CDWEhygfYttXZUiAPQvOl1/qZy0SXgwFcEZ8Qx7S92hKmcGz4X1PQT/hdYdQFvtZhXv9lphKWSW8HljsgRjgU8sTuArqUhhcFX/cMR5/fHmQYrgjvGlGnGmcMXY8SDgy3Of4KDwxtkFNU4GF4hltwrz3HB60FYTwOqbhnW8QYp5TvCXhSIPzL5uPt1CqIL09C4Ba1pfk+7OzSjIcskQA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JPQjRw5j; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VaOKzo0G;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=JPQjRw5j;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDYJh4p3Rz30gC
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 16:46:28 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DNP1bY030636;
-	Fri, 14 Mar 2025 05:46:18 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDYJn5H82z30gC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 16:46:33 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DNOvdH018074;
+	Fri, 14 Mar 2025 05:46:23 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=rHiuokT753NlluXTP
-	eZq8TFHySwH4S01ZogXJ3+Y+w0=; b=VaOKzo0GdpXRufdfxNuVB1cDGzh7EXbCf
-	6N1SJsJ/1iekCMyWfkCvn6FueLWNVqX2c7coXP2v30sy+DNTmBnFeEN+tDQZIh8T
-	AIBZ/5ekJV9JJIbGq2A3zXJLKfUsEM95SNTcGQwy0pyGxLP/BglQ5f5hP5bOziwG
-	RSC0Ao7aDdh9vImD6AUS7qPvJs79esS7eTcTBsDS6dNSy7BnxgMiSYc0DC+pRGYI
-	agQFMS9jMZBy/5J7z9JbcTZtmC/NUvrNPtJn7OB3FhEmrQnusIBtx1BWrhImBk1w
-	YDmJyyKbUW1sbJ3vLZJvNnKse3/yuM6ljwNLJRguPxrurMqw+JWyg==
+	:mime-version:references:subject:to; s=pp1; bh=MwVYPr7/JahDzLEPr
+	39TM/CoUV6AsGze/brxnTHHiOc=; b=JPQjRw5jyIo4LSnDe/LgzhDwKHRnx4z50
+	dyexkfSR1fKYyCykGfHAesfKQcoI6OYleyIDfDK/xJtzwgEvRirc/vGSHlbG+RG8
+	o+Fo2hX4vDEs/PW3jNW8xmLb64OfCHoUk3EaXeSzO2iqd5l4iYTno2BEN2maI3zU
+	fUOIBUkbk730FTQvyDoxXKXzGcyyQWw+I7TdIx+0p2XTrjB5OcR4nD/nWndJqkdU
+	cLzsMVsBkO/PxXSWaxLVZzvNTGOWF761ddLbNtZIb5RyPGpXFb/imszeOJDMVpz3
+	3Kw479VuyCzYMex9a+HRKxbR08fHyBVMqDzyrYMpSxUmlhwiAY5Og==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45byd8vf8t-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c0srbwd0-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 05:46:17 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52E5kHUo031530;
-	Fri, 14 Mar 2025 05:46:17 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45byd8vf8q-1
+	Fri, 14 Mar 2025 05:46:23 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52E5f4nA002102;
+	Fri, 14 Mar 2025 05:46:22 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c0srbwcu-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 05:46:17 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52E42Xb6003181;
-	Fri, 14 Mar 2025 05:46:16 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atstwes5-1
+	Fri, 14 Mar 2025 05:46:22 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52E4OnoG012359;
+	Fri, 14 Mar 2025 05:46:21 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsrne45-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 05:46:16 +0000
+	Fri, 14 Mar 2025 05:46:21 +0000
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52E5kCrE56885648
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52E5kHk455116166
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Mar 2025 05:46:12 GMT
+	Fri, 14 Mar 2025 05:46:17 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CD9732004B;
-	Fri, 14 Mar 2025 05:46:12 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 92D762004B;
+	Fri, 14 Mar 2025 05:46:17 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54AF820043;
-	Fri, 14 Mar 2025 05:46:09 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 362D820043;
+	Fri, 14 Mar 2025 05:46:14 +0000 (GMT)
 Received: from li-7bb28a4c-2dab-11b2-a85c-887b5c60d769.ibm.com.com (unknown [9.39.22.126])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Mar 2025 05:46:09 +0000 (GMT)
+	Fri, 14 Mar 2025 05:46:13 +0000 (GMT)
 From: Shrikanth Hegde <sshegde@linux.ibm.com>
 To: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
 Cc: sshegde@linux.ibm.com, npiggin@gmail.com, christophe.leroy@csgroup.eu,
@@ -77,9 +77,9 @@ Cc: sshegde@linux.ibm.com, npiggin@gmail.com, christophe.leroy@csgroup.eu,
         ajd@linux.ibm.com, mahesh@linux.ibm.com, oohall@gmail.com,
         hbathini@linux.ibm.com, dhowells@redhat.com, haren@linux.ibm.com,
         linux-kernel@vger.kernel.org
-Subject: [PATCH 2/6] powerpc: rtas: use lock guard for mutex
-Date: Fri, 14 Mar 2025 11:15:40 +0530
-Message-ID: <20250314054544.1998928-3-sshegde@linux.ibm.com>
+Subject: [PATCH 3/6] powerpc: fadump: use lock guard for mutex
+Date: Fri, 14 Mar 2025 11:15:41 +0530
+Message-ID: <20250314054544.1998928-4-sshegde@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250314054544.1998928-1-sshegde@linux.ibm.com>
 References: <20250314054544.1998928-1-sshegde@linux.ibm.com>
@@ -97,16 +97,16 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: IBlATTYsNKDMT8dsNglSO243_h1UCjor
-X-Proofpoint-ORIG-GUID: GLkJoCAn9DenybbOgYEdK--V0EnxENV3
+X-Proofpoint-ORIG-GUID: cn0oyIPr0nPtp64hNPcm0nsDHxubdUR8
+X-Proofpoint-GUID: GZb7snCNZ99lih3uHAJ8kU9CscgD49pH
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-14_01,2025-03-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- malwarescore=0 impostorscore=0 priorityscore=1501 bulkscore=0 phishscore=0
- lowpriorityscore=0 suspectscore=0 mlxlogscore=999 clxscore=1015 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503140041
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ malwarescore=0 phishscore=0 mlxlogscore=684 mlxscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503140041
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
@@ -120,166 +120,31 @@ https://lore.kernel.org/all/20230612093537.614161713@infradead.org/T/#u
 
 Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
 ---
- arch/powerpc/kernel/rtas_flash.c | 64 ++++++++++----------------------
- 1 file changed, 20 insertions(+), 44 deletions(-)
+ arch/powerpc/kernel/fadump.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/kernel/rtas_flash.c b/arch/powerpc/kernel/rtas_flash.c
-index 5407024881e5..583dc16e9d3c 100644
---- a/arch/powerpc/kernel/rtas_flash.c
-+++ b/arch/powerpc/kernel/rtas_flash.c
-@@ -312,13 +312,13 @@ static ssize_t rtas_flash_write(struct file *file, const char __user *buffer,
+diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+index 4b371c738213..5fd2c546fd8c 100644
+--- a/arch/powerpc/kernel/fadump.c
++++ b/arch/powerpc/kernel/fadump.c
+@@ -1374,15 +1374,13 @@ static void fadump_free_elfcorehdr_buf(void)
+ 
+ static void fadump_invalidate_release_mem(void)
  {
- 	struct rtas_update_flash_t *const uf = &rtas_update_flash_data;
- 	char *p;
--	int next_free, rc;
-+	int next_free;
- 	struct flash_block_list *fl;
- 
--	mutex_lock(&rtas_update_flash_mutex);
-+	guard(mutex)(&rtas_update_flash_mutex);
- 
- 	if (uf->status == FLASH_AUTH || count == 0)
--		goto out;	/* discard data */
-+		return count;	/* discard data */
- 
- 	/* In the case that the image is not ready for flashing, the memory
- 	 * allocated for the block list will be freed upon the release of the 
-@@ -327,7 +327,7 @@ static ssize_t rtas_flash_write(struct file *file, const char __user *buffer,
- 	if (uf->flist == NULL) {
- 		uf->flist = kmem_cache_zalloc(flash_block_cache, GFP_KERNEL);
- 		if (!uf->flist)
--			goto nomem;
-+			return -ENOMEM;
- 	}
- 
- 	fl = uf->flist;
-@@ -338,7 +338,7 @@ static ssize_t rtas_flash_write(struct file *file, const char __user *buffer,
- 		/* Need to allocate another block_list */
- 		fl->next = kmem_cache_zalloc(flash_block_cache, GFP_KERNEL);
- 		if (!fl->next)
--			goto nomem;
-+			return -ENOMEM;
- 		fl = fl->next;
- 		next_free = 0;
- 	}
-@@ -347,25 +347,17 @@ static ssize_t rtas_flash_write(struct file *file, const char __user *buffer,
- 		count = RTAS_BLK_SIZE;
- 	p = kmem_cache_zalloc(flash_block_cache, GFP_KERNEL);
- 	if (!p)
--		goto nomem;
-+		return -ENOMEM;
- 	
- 	if(copy_from_user(p, buffer, count)) {
- 		kmem_cache_free(flash_block_cache, p);
--		rc = -EFAULT;
--		goto error;
-+		return -EFAULT;
- 	}
- 	fl->blocks[next_free].data = p;
- 	fl->blocks[next_free].length = count;
- 	fl->num_blocks++;
--out:
--	mutex_unlock(&rtas_update_flash_mutex);
--	return count;
- 
--nomem:
--	rc = -ENOMEM;
--error:
--	mutex_unlock(&rtas_update_flash_mutex);
--	return rc;
-+	return count;
- }
- 
- /*
-@@ -405,19 +397,18 @@ static ssize_t manage_flash_write(struct file *file, const char __user *buf,
- 	static const char reject_str[] = "0";
- 	static const char commit_str[] = "1";
- 	char stkbuf[10];
--	int op, rc;
-+	int op;
- 
--	mutex_lock(&rtas_manage_flash_mutex);
-+	guard(mutex)(&rtas_manage_flash_mutex);
- 
- 	if ((args_buf->status == MANAGE_AUTH) || (count == 0))
--		goto out;
-+		return count;
- 		
- 	op = -1;
- 	if (buf) {
- 		if (count > 9) count = 9;
--		rc = -EFAULT;
- 		if (copy_from_user (stkbuf, buf, count))
--			goto error;
-+			return -EFAULT;
- 		if (strncmp(stkbuf, reject_str, strlen(reject_str)) == 0) 
- 			op = RTAS_REJECT_TMP_IMG;
- 		else if (strncmp(stkbuf, commit_str, strlen(commit_str)) == 0) 
-@@ -425,18 +416,11 @@ static ssize_t manage_flash_write(struct file *file, const char __user *buf,
- 	}
- 	
- 	if (op == -1) {   /* buf is empty, or contains invalid string */
--		rc = -EINVAL;
--		goto error;
-+		return -EINVAL;
- 	}
- 
- 	manage_flash(args_buf, op);
--out:
--	mutex_unlock(&rtas_manage_flash_mutex);
- 	return count;
--
--error:
--	mutex_unlock(&rtas_manage_flash_mutex);
--	return rc;
- }
- 
- /*
-@@ -499,16 +483,14 @@ static ssize_t validate_flash_write(struct file *file, const char __user *buf,
- {
- 	struct rtas_validate_flash_t *const args_buf =
- 		&rtas_validate_flash_data;
--	int rc;
- 
--	mutex_lock(&rtas_validate_flash_mutex);
-+	guard(mutex)(&rtas_validate_flash_mutex);
- 
- 	/* We are only interested in the first 4K of the
- 	 * candidate image */
- 	if ((*off >= VALIDATE_BUF_SIZE) || 
- 		(args_buf->status == VALIDATE_AUTH)) {
- 		*off += count;
--		mutex_unlock(&rtas_validate_flash_mutex);
- 		return count;
- 	}
- 
-@@ -519,20 +501,14 @@ static ssize_t validate_flash_write(struct file *file, const char __user *buf,
- 		args_buf->status = VALIDATE_INCOMPLETE;
- 	}
- 
--	if (!access_ok(buf, count)) {
--		rc = -EFAULT;
--		goto done;
--	}
--	if (copy_from_user(args_buf->buf + *off, buf, count)) {
--		rc = -EFAULT;
--		goto done;
--	}
-+	if (!access_ok(buf, count))
-+		return -EFAULT;
+-	mutex_lock(&fadump_mutex);
++	guard(mutex)(&fadump_mutex);
 +
-+	if (copy_from_user(args_buf->buf + *off, buf, count))
-+		return -EFAULT;
+ 	if (!fw_dump.dump_active) {
+-		mutex_unlock(&fadump_mutex);
+ 		return;
+ 	}
  
- 	*off += count;
--	rc = count;
--done:
--	mutex_unlock(&rtas_validate_flash_mutex);
--	return rc;
-+	return count;
- }
- 
- static int validate_flash_release(struct inode *inode, struct file *file)
+ 	fadump_cleanup();
+-	mutex_unlock(&fadump_mutex);
+-
+ 	fadump_free_elfcorehdr_buf();
+ 	fadump_release_memory(fw_dump.boot_mem_top, memblock_end_of_DRAM());
+ 	fadump_free_cpu_notes_buf();
 -- 
 2.39.3
 
