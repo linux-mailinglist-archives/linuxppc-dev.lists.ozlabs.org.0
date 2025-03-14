@@ -1,61 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-7045-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7046-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFF67A60B4A
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 09:25:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C5C6A60CC8
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 10:08:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDcrF352Qz3cY6;
-	Fri, 14 Mar 2025 19:25:33 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDdnn4HFsz3cYb;
+	Fri, 14 Mar 2025 20:08:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:8b0:10b:1:d65d:64ff:fe57:4e05"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741940733;
-	cv=none; b=aSnKmf1DfmqkcnHfxKsIcI+NeF+5cBFwuWEc9GhlxDtbPVF0ZwIJD5PlIl6n5KsYRM1lu7k6rrmb+gmNZr74OFQkiADQQ8S5AVegfjvVeEDFMOaqWhrlfSWuak2EgbcXDO7buGMAo7JAV0x9IRsiecB8R2roCkjrVI1BEi3QQHhgfvqZWB/keTMFqJ1dvAvsk56MFkAjMvIL80qMVWMB1M54s6qwdyPmeq+1IL0aMqXdDzPTprEzLiweAxHA3pIQacjNiNYpUCFKCNgpZNmx61cM1Wo1kmvu+ibkCulrNf1CKBXuvIY1/V9/ejMTEaJw3HipZMHOJlPhYMbtRX0Uzg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741943309;
+	cv=none; b=OU3D4PhTBQrkbNSoNCX/93NZfZp2h9TUYMC9bBde8FNY8Vs5IkuMzL81XgZwpuvafaZSobEoC/qrApADpHINXO/HEr00wBGCGQlZEwM1+Qp/LwPsRsepi77xn4oGZsxHih4rqxq5ssb+r+5zJwFjX9LjYRvl6NN1Flo/YOosLU1lv9dmsPBAeSedYbiJHYTwfgS+hIt7CTSiHM3oq9Jbq3In/PmL69eg0ObpqxXtZIEri4AY1kD6o1zCyKnopxkt69x0Y94LTc8icEM1I/XYZcsNt8dE7X6LgZQI9PS5YrspK8cSTLnTM6Lwm3DMHn9cI6omyu6Hku8u0qIUpVuzdQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741940733; c=relaxed/relaxed;
-	bh=Z7pgffBCJ64s8SUSy2F4lOeJncQvjpMHvfcMDHpHISU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QmPUP5mQexyDORgMWpsx1sjVTtwfmzeJaAdimYf3wYW/ppqoYnvH6UlDpiN/1OmwBE5Vgx8CaTke9LMdjrNEQhK6ZW+NxUoH5pbt3YHnC+fGibQ2BU5Jx6xAWob2el0LE0Tx6tSL4ncw0AEeAr3EbH8hr4ed3sOjPw23k9nQdLE0ZeUSGRTq81/StKmVDoaRf9SR8k1Lx59vD3f3kBt4LEfXpnkLwlswQrDLwoQEZiOIrRM/ut7M6r+hZl69QP75HJKvEVvwt0d8j5ktW6Y7XQFpsnvm8z/+EpIpYOxiaAgmGUj+CrkuTngwXnN6oaPAdcaEftuNVg0pArhHML/+Sg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org; dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=chq/MjDm; dkim-atps=neutral; spf=none (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org) smtp.mailfrom=infradead.org
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=infradead.org
+	t=1741943309; c=relaxed/relaxed;
+	bh=P5Ptcoo0re4UupnZRhseH76+bGD+NG6A68s8gCEYTzI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FCXWBLLGf3P4glgU6b1vE8Ff8DdIRb95GlYU+rjDmb/DoUNh1AHI/1MZSc9Q0uS62QD5uyyhgkIGoDaxOjn+TknjBP5eGfTtOj9c10YWTFPyhEfqMxMLp2c+oek72+K+y87rXc0JPcU8aRHM+0RzNLHmnMoBcGGdY+byCbxhnfsrwwkfNn1gNwGaSkJzTiT0wtMKjKLXa90O0uF5As2WyKPx8H4j9fdDWUka4pq5uEgGV1FeDqCJ5QEYTUe28ecfjxU+ypSzEbi3nm7EdQdcOY8pWcnD8/67HJZlFOA6G/9j63hb7JpLbFoHYLvBxTOQtOq+J4aSSYe+F9HfqZlJWw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Mn/OPDYa; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; secure) header.d=infradead.org header.i=@infradead.org header.a=rsa-sha256 header.s=desiato.20200630 header.b=chq/MjDm;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Mn/OPDYa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=infradead.org (client-ip=2001:8b0:10b:1:d65d:64ff:fe57:4e05; helo=desiato.infradead.org; envelope-from=peterz@infradead.org; receiver=lists.ozlabs.org)
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDcrC6nDSz3cXB
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 19:25:31 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Z7pgffBCJ64s8SUSy2F4lOeJncQvjpMHvfcMDHpHISU=; b=chq/MjDmPZbcwvng7KEQEyltYs
-	0B/7QZ/AuEbZazc6aejMs4WhONAtLYkvgXCXuH5ALxsMlWtynUkdr2HaJB9aUrNeSUoYFPeIdbhlr
-	uzkt+wPPkAw1rq5490pS1vaEkbUaciXRmH07/+pUUmrB29kNWL6j5289WSiZhOtMobAe3m7NRCL47
-	/TE2fkspHx0ucgkwpu3frb0PkLvSEiy/7UzUP/093VjRlnJKsRBksFii7xWrxy1XkReF25xHYfyx7
-	rkb75+XNocsjpXyjidaxpsddigYobR4rKD8a385m+9wZ21BfHvtG0tY+qr/KQ+PuZ6HqiTghpTqAo
-	XzA3fcvg==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98 #2 (Red Hat Linux))
-	id 1tt0MC-00000002rQb-1DsY;
-	Fri, 14 Mar 2025 08:25:28 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id DFAFE300599; Fri, 14 Mar 2025 09:25:27 +0100 (CET)
-Date: Fri, 14 Mar 2025 09:25:27 +0100
-From: Peter Zijlstra <peterz@infradead.org>
-To: Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
-	christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
-	fbarrat@linux.ibm.com, ajd@linux.ibm.com, mahesh@linux.ibm.com,
-	oohall@gmail.com, hbathini@linux.ibm.com, dhowells@redhat.com,
-	haren@linux.ibm.com, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] powerpc: book3s: vas: use lock guard for mutex
-Message-ID: <20250314082527.GU5880@noisy.programming.kicks-ass.net>
-References: <20250314054544.1998928-1-sshegde@linux.ibm.com>
- <20250314054544.1998928-5-sshegde@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDdnm3Pj9z3cYN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 20:08:26 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DNP4Qv018322;
+	Fri, 14 Mar 2025 09:08:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=P5Ptco
+	o0re4UupnZRhseH76+bGD+NG6A68s8gCEYTzI=; b=Mn/OPDYaG0OL/6nGYnKYOY
+	DeQU50X23BQlguz7qfLDTLT0HtWVvH1ff7TYmK3WwBrFIXHbxWJa6glBFk+qBDIJ
+	QaeDKrcTXjGTzQFxdOcAaF/3SOBKDxs6TvW9XgRVnQ5cb+UNmqjk7Kc3a/Sb2lhK
+	qoSefv4V/2Tns0D6MvLoIxRTbhndbbHnW5ZGLb6kLpGs9Hb3skW3uFZ/+qNAWxVZ
+	HT1GIio5HgioUzR5b1AHVzPHV/gZUOClPGQfG37lbvNHV3msXV7ubjJ+PP+BjCmr
+	tuM+8ukjrkN1lUrdRFd752D59SQi6u4Ifqa1AzsIbEtkW5Ar8yvFm7me0eSfOu5g
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c0srcscr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 09:08:14 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52E96Nbl017054;
+	Fri, 14 Mar 2025 09:08:13 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c0srcscj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 09:08:13 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52E96kuE027065;
+	Fri, 14 Mar 2025 09:08:12 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsr644r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 14 Mar 2025 09:08:12 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52E988jd18415970
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 14 Mar 2025 09:08:08 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 767762004B;
+	Fri, 14 Mar 2025 09:08:08 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7F65320043;
+	Fri, 14 Mar 2025 09:08:05 +0000 (GMT)
+Received: from [9.39.22.126] (unknown [9.39.22.126])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Mar 2025 09:08:05 +0000 (GMT)
+Message-ID: <1263bf89-a2dd-4ae9-a8f9-9c36ddd08208@linux.ibm.com>
+Date: Fri, 14 Mar 2025 14:38:04 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,56 +85,100 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250314054544.1998928-5-sshegde@linux.ibm.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/6] powerpc: fadump: use lock guard for mutex
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, mpe@ellerman.id.au, fbarrat@linux.ibm.com,
+        ajd@linux.ibm.com, mahesh@linux.ibm.com, oohall@gmail.com,
+        hbathini@linux.ibm.com, dhowells@redhat.com, haren@linux.ibm.com,
+        linux-kernel@vger.kernel.org
+References: <20250314054544.1998928-1-sshegde@linux.ibm.com>
+ <20250314054544.1998928-4-sshegde@linux.ibm.com>
+ <20250314082223.GT5880@noisy.programming.kicks-ass.net>
+From: Shrikanth Hegde <sshegde@linux.ibm.com>
+Content-Language: en-US
+In-Reply-To: <20250314082223.GT5880@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 2aHaGjGqb04H9xa5NdtJKF2BmYUQP55S
+X-Proofpoint-GUID: 5qlFFH1qpa3l-RY29U11zq59JxMJzqO4
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-14_03,2025-03-13_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 adultscore=0
+ priorityscore=1501 lowpriorityscore=0 clxscore=1015 bulkscore=0
+ malwarescore=0 phishscore=0 mlxlogscore=744 mlxscore=0 impostorscore=0
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503140071
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Fri, Mar 14, 2025 at 11:15:42AM +0530, Shrikanth Hegde wrote:
-> use guard(mutex) for scope based resource management of mutex.
-> This would make the code simpler and easier to maintain.
-> 
-> More details on lock guards can be found at
-> https://lore.kernel.org/all/20230612093537.614161713@infradead.org/T/#u
-> 
-> There is also an example of using scoped_guard. 
-> 
-> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
-> ---
->  arch/powerpc/platforms/book3s/vas-api.c | 19 ++++++-------------
->  1 file changed, 6 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-> index 0b6365d85d11..eb1a97271afb 100644
-> --- a/arch/powerpc/platforms/book3s/vas-api.c
-> +++ b/arch/powerpc/platforms/book3s/vas-api.c
-> @@ -425,7 +425,7 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
->  		return VM_FAULT_SIGBUS;
->  	}
->  
-> -	mutex_lock(&txwin->task_ref.mmap_mutex);
-> +	guard(mutex)(&txwin->task_ref.mmap_mutex);
->  	/*
->  	 * The window may be inactive due to lost credit (Ex: core
->  	 * removal with DLPAR). If the window is active again when
-> @@ -437,11 +437,9 @@ static vm_fault_t vas_mmap_fault(struct vm_fault *vmf)
->  		if (paste_addr) {
->  			fault = vmf_insert_pfn(vma, vma->vm_start,
->  					(paste_addr >> PAGE_SHIFT));
-> -			mutex_unlock(&txwin->task_ref.mmap_mutex);
->  			return fault;
->  		}
->  	}
-> -	mutex_unlock(&txwin->task_ref.mmap_mutex);
-
-I had to open up this file to check, but this seems incorrect since you
-now also run do_fail_paste() with the lock held, where previously you
-did not.
 
 
->  	/*
->  	 * Received this fault due to closing the actual window.
+On 3/14/25 13:52, Peter Zijlstra wrote:
+
+Thanks Peter for taking a look.
+
+> On Fri, Mar 14, 2025 at 11:15:41AM +0530, Shrikanth Hegde wrote:
+>> use guard(mutex) for scope based resource management of mutex.
+>> This would make the code simpler and easier to maintain.
+>>
+>> More details on lock guards can be found at
+>> https://lore.kernel.org/all/20230612093537.614161713@infradead.org/T/#u
+>>
+>> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
+>> ---
+>>   arch/powerpc/kernel/fadump.c | 6 ++----
+>>   1 file changed, 2 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+>> index 4b371c738213..5fd2c546fd8c 100644
+>> --- a/arch/powerpc/kernel/fadump.c
+>> +++ b/arch/powerpc/kernel/fadump.c
+>> @@ -1374,15 +1374,13 @@ static void fadump_free_elfcorehdr_buf(void)
+>>   
+>>   static void fadump_invalidate_release_mem(void)
+>>   {
+>> -	mutex_lock(&fadump_mutex);
+>> +	guard(mutex)(&fadump_mutex);
+>> +
+>>   	if (!fw_dump.dump_active) {
+>> -		mutex_unlock(&fadump_mutex);
+>>   		return;
+>>   	}
+>>   
+>>   	fadump_cleanup();
+>> -	mutex_unlock(&fadump_mutex);
+>> -
+> 
+> This will result in running the below functions with the mutex held.
+> 
+>>   	fadump_free_elfcorehdr_buf();
+>>   	fadump_release_memory(fw_dump.boot_mem_top, memblock_end_of_DRAM());
+>>   	fadump_free_cpu_notes_buf();
+> 
+
+Ok. Got it, since the variable is still in scope unlock wont be called.
+So, will use scoped_guard as you suggested below in v2.
+
+> 
+> The equivalent transformation for the above code would look like:
+> 
+> static void fadump_invalidate_release_mem(void)
+> {
+> 	scoped_guard (mutex, &fadump_mutex) {
+> 		if (!fw_dump.dump_active)
+> 			return;
+> 
+> 		fadump_cleanup();
+> 	}
+> 
+> 	fadump_free_elfcorehdr_buf();
+> 	...
+
+ok.
 
