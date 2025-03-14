@@ -1,78 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-7051-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7052-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97099A60EFE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 11:33:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 592FCA60FB4
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 14 Mar 2025 12:18:16 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDgh96sdTz3cYZ;
-	Fri, 14 Mar 2025 21:33:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZDhgT56N3z3cYq;
+	Fri, 14 Mar 2025 22:18:13 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741948425;
-	cv=none; b=FrAigxMzmR6djB2PPd5MWKpts84T2MyoUjiLOHA+EXvm41OCdjp4Z/YXJ+BVybju9zo9vuLcBSa2qmqfnh37YnAx9UsVQXjtMIZ4QRXcz80QKNTmMYKEv0GJYyVXoYAe+4c3uktxy9ywWWYzxUZmafpKgmexbHrPfuqqhfU8poK8ED44XyN3cPJRcGnFb68HAjRZQn40r9y+x787h0m93ErLf3dhbeOjjIMq9nA6qkPGDg83CyJ9YkTd8eCTJQM66zrqnOWaetWS6kjBYHa7Mg1yJF0dIFBOe0ViY/Nbd5hs8w6zZU5PKkknbnP5ynawbWeMq7kUx8D3abN+qthGKg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1741951093;
+	cv=none; b=hiiS98KB97QKXqQVroVXNdPnzpT9yc+WzkaHtMOzx4p7gKKrEH9AnSq05agOveythcz/UmBHS1hL+o4aWn2+e2WZ2pdOaFCtaERYYGh9in0eXBCqCikT6lKJFqjGGhZsPtqw9jR4hXhqajquxFhJNc3P3bTr0jO8wSnTi6owTwCsxatEbdOUeWhFm2ELtsq7ACk9T2M7eV4ZrFTt/z6xAZsKG7HY1dcV8C8PFdXwThEMKyfGorJNZ09wH9YWVH7EY00giJ1x1VJiWbltQ7MPSS/Vg96FxqNyrndZaiTKjiGogp/HZEb1Qpja0WP7roFmChOvxSj96ZH1G7kmGZ6ugA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1741948425; c=relaxed/relaxed;
-	bh=Zehx15J+Iu9s0WruS0o895sbHmnpA1v5UGFy+CYZIYs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=ioYOq84ML0uSRPxwlYPU9TBgBNabNozF88bJ5YPp2QjbZ/UN031e4GLDrMD1tdvIV5sIv+xToeB1vFeeh2X0MiBtyMe+4629QNLqjeH/oQaEDP98LqJiNEiabzpMQUqozxChubcdsWGO4gTNe0/r7YsWjSHh4A5dDSESn7vY8AbUAVpRQ3m3rVLX2DloMCMQDP1yNOwqm3Caa3q5GaiKFRcxhQAA32dz+H+AT9KDlGQHuGDWzZfGkgc7Y211Kwoue9sDdy5HzWMjNpJx6/owjMsRIbKtaeKC3C0asJRqV8izdOs8iQ3I2mQNKZqr2M5Uky43AXrtbIETioNU7h+Z5w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G59gc53B; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1741951093; c=relaxed/relaxed;
+	bh=RKnN/xB+xdnuzxMwWS73Gokv3HdwNlIHB52J8pEGBeM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=l/PmOLUibr7cCWmgRh88qu2w2gxHW3ufriI3j9DyQ2MxzfwF30jK6OmiqiCZ6CQfIebuJDgwaZCXIT36hNrn6YKvoXragljOLnFI49CL2SCFe1xOnatlFUh5owMcpGH/y6ZGuK3sI3KP0AGbUrcJqoKRXUfYUewxmAFxei1mniZgFeaV3kAmOQ0Li/33XCLIgSLrLXScEnk8FHxhT0A8xsOlvV0U5QGNOYTk7XDx7HyhB4WkAMjPZ0DREuJWPJPZLDXArf8P8Ap+ALIzw4Jta0aTBLoNZyDidE3DBJx+i/e7M8yZIoPCyGw2kq3UxPcz/w5JDJvGDFtob4OrLsL0Hg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l9T+Mtj/; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=G59gc53B;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=l9T+Mtj/;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sshegde@linux.ibm.com; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDgh840kSz3cYN
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 21:33:43 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52DNPAP6032478;
-	Fri, 14 Mar 2025 10:33:30 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZDhgS3VRsz3cYN
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 14 Mar 2025 22:18:11 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52EAUC8x014092;
+	Fri, 14 Mar 2025 11:18:03 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Zehx15
-	J+Iu9s0WruS0o895sbHmnpA1v5UGFy+CYZIYs=; b=G59gc53BK418TbwPRKEUVX
-	hlWSymuhEc/i9H6i5B8k/7oTfRhi5yp5RjpCdTCH8zZSSmoUsHSixysIsgqFQHft
-	sPAXuSvYlJE9gENlcfob8tLkXol3pBx9fVkTrb6CHZcpl/h+nxz0FXWnhtBC5uCf
-	WRdd/2DDZQUG+Hln4+vsfLFlOeBgsST0kNge4p4T0VxPpI6YmgwoQOXY+1to2qHI
-	Z0+bDbsf+BKI2KMRpvGE4h6aqUFlsNQ+LtM78NgHsx7PBWVBzWhux/YHGpSWsU7n
-	MMEHbiGRZryhJZmJMiEPt7PtoiPm3N4kxtn02/tsjyI39bnlDZbwzg8gagsOgAUA
+	:message-id:mime-version:references:subject:to; s=pp1; bh=RKnN/x
+	B+xdnuzxMwWS73Gokv3HdwNlIHB52J8pEGBeM=; b=l9T+Mtj/pbu27LSuPzaIxK
+	c96/NHF+vxH1EbGssfP44stS8vTBhpfWOcz/YnVglyv6otxF/O8jOqXHxvwsspmx
+	pnueZDaG2iioYz1Sf2BE13WHV2eTuXy2MH1qF3i2NVi6ITMgFakenyES24V2tYj6
+	uXahAAPeFKAT1BB/fDTMrYpWchhL0Tn9+F366qjnJjl9V9A0e6q8rShnRWtKVXKk
+	mAu/xCAPgaExmF7X2U+rT+aJsSZEYAnGWE+JAKsxlBxnILcOQa0UJJZjBfS7DQcu
+	DD5Uais4uf3RlRywghu+NMTrgpmKD0wFDqTGavqYSgyiZxPhtN9TydzqIjPYdmPg
 	==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c6hpu4sg-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c6k038b4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 10:33:29 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52EAV1gT022665;
-	Fri, 14 Mar 2025 10:33:29 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c6hpu4se-1
+	Fri, 14 Mar 2025 11:18:03 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52EBGLRo025180;
+	Fri, 14 Mar 2025 11:18:03 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45c6k038b2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 10:33:29 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52E8WSwZ015357;
-	Fri, 14 Mar 2025 10:33:28 GMT
+	Fri, 14 Mar 2025 11:18:02 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52E8j59r012359;
+	Fri, 14 Mar 2025 11:18:02 GMT
 Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45atsppfwb-1
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45atsrpkkx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 14 Mar 2025 10:33:28 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52EAXOVt46268764
+	Fri, 14 Mar 2025 11:18:02 +0000
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52EBHwSg50659830
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 14 Mar 2025 10:33:25 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D3B7E20043;
-	Fri, 14 Mar 2025 10:33:24 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 13F2D2004E;
-	Fri, 14 Mar 2025 10:33:22 +0000 (GMT)
-Received: from [9.39.22.126] (unknown [9.39.22.126])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 14 Mar 2025 10:33:21 +0000 (GMT)
-Message-ID: <cb0c10be-2c86-4b14-9f2b-5e00e4d8ae4d@linux.ibm.com>
-Date: Fri, 14 Mar 2025 16:03:21 +0530
+	Fri, 14 Mar 2025 11:17:58 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7408320040;
+	Fri, 14 Mar 2025 11:17:58 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4DCFA20043;
+	Fri, 14 Mar 2025 11:17:56 +0000 (GMT)
+Received: from [9.39.22.158] (unknown [9.39.22.158])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 14 Mar 2025 11:17:56 +0000 (GMT)
+Message-ID: <4070ff3d-bddf-48f3-af54-ca67393f39d2@linux.ibm.com>
+Date: Fri, 14 Mar 2025 16:47:55 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,135 +86,172 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5/6] powerpc: powenv: oxcl: use lock guard for mutex
-From: Shrikanth Hegde <sshegde@linux.ibm.com>
-To: ajd@linux.ibm.com
-Cc: npiggin@gmail.com, christophe.leroy@csgroup.eu, mpe@ellerman.id.au,
-        peterz@infradead.org, fbarrat@linux.ibm.com, mahesh@linux.ibm.com,
-        oohall@gmail.com, hbathini@linux.ibm.com, dhowells@redhat.com,
-        haren@linux.ibm.com, linux-kernel@vger.kernel.org, maddy@linux.ibm.com,
-        linuxppc-dev@lists.ozlabs.org
-References: <20250314054544.1998928-1-sshegde@linux.ibm.com>
- <20250314054544.1998928-6-sshegde@linux.ibm.com>
- <d6999d74-45f6-413a-8881-90473b322dfa@linux.ibm.com>
+Subject: Re: [PATCH v8 0/7] Add character devices for indices, platform-dump
+ and physical-attestation RTAS
+To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
+        hbabu@us.ibm.com
+References: <20250311225049.146783-1-haren@linux.ibm.com>
 Content-Language: en-US
-In-Reply-To: <d6999d74-45f6-413a-8881-90473b322dfa@linux.ibm.com>
+From: Sathvika Vasireddy <sv@linux.ibm.com>
+In-Reply-To: <20250311225049.146783-1-haren@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: IgaT5YasunpTLXjhRCLnVAvnQ9Mh7IHA
-X-Proofpoint-ORIG-GUID: F-LiitUIB4IY-Iw_HplT5YqSh7kdHWj1
+X-Proofpoint-GUID: A6noKCw5MHHpiWgBhZAQWjkQ9bpmGd74
+X-Proofpoint-ORIG-GUID: pWkXqQIngE_SkD1_ghxdOEqYMBBqEV44
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-14_04,2025-03-13_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- lowpriorityscore=0 suspectscore=0 impostorscore=0 adultscore=0
- mlxlogscore=999 malwarescore=0 bulkscore=0 clxscore=1015 spamscore=0
- phishscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503140082
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 priorityscore=1501 impostorscore=0 lowpriorityscore=0
+ bulkscore=0 phishscore=0 adultscore=0 spamscore=0 mlxscore=0
+ suspectscore=0 clxscore=1015 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2503140087
 X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 
+On 3/12/25 4:20 AM, Haren Myneni wrote:
+> Several APIs such as rtas_get_indices(), rtas_get_dynamic_sensor(),
+> rtas_set_dynamic_indicator(), rtas_platform_dump() and
+> rtas_physical_attestation()  provided by librtas library are
+> implemented in user space using rtas syscall in combination with
+> writable mappings of /dev/mem. But this implementation is not
+> compatible with system lockdown which prohibits /dev/mem access.
+> The current kernel already provides char based driver interfaces
+> for several RTAS calls such as VPD and system parameters to
+> support lockdown feature.
+>
+> This patch series adds new char based drivers, /dev/papr-indices
+> for ibm,get-indices, ibm,get-dynamic-sensor-state and
+> ibm,set-dynamic-indicator RTAS Calls. /dev/papr-platform-dump
+> for ibm,platform-dump and /dev/papr-physical-attestation
+> fir ibm,physical-attestation. Providing the similar
+> open/ioctl/read interfaces to the user space as in the case of
+> VPD and system parameters.
+>
+> I have made changes to librtas library to use the new kernel
+> interfaces if the corresponding device entry is available.
+>
+> This patch series has the following patches:
+> powerpc/pseries: Define common functions for RTAS sequence calls
+> - For some of sequence based RTAS calls, the OS should not start
+>    another sequence with different input until the previous sequence
+>    is completed. So the sequence should be completed during ioctl()
+>    and expose the entire buffer during read(). ibm,get-indices is
+>    sequence based RTAS function similar to ibm,get-vpd and we already
+>    have the corresponding implementation for VPD driver. So update
+>    papr_rtas_sequence struct for RTAS call specific functions and move
+>    the top level sequence functions in to a separate file.
+>
+> powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+> - /dev/papr-indices driver supports ibm,get-indices,
+>    ibm,get-dynamic-sensor-state and ibm,set-dynamic-indicator RTAS Calls.
+>    papr-indices.h introduces 3 different ioctls for these RTAS calls and
+>    the corresponding ioctl input buffer.
+>
+> powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+> - Introduce /dev/papr-indices char based driver and add support for
+>    get-indices RTAS function
+>
+> powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+> - Update /dev/papr-indices for set-dynamic-indicator RTAS function
+>
+> powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+> -  Update /dev/papr-indices for  get-dynamic-sensor-state RTAS function
+>
+> powerpc/pseries: Add papr-platform-dump character driver for dump
+>     retrieval
+> - Introduce /dev/papr-platform-dump char driver and adds support for
+>    ibm,platform-dump. Received suggestions from the previous post as a
+>    separate patch - Updated the patch with invalidating the dump using
+>    a separate ioctl.
+>
+> powerpc/pseries: Add a char driver for papr-physical-attestation RTAS
+> - Introduce /dev/papr-physical-attestation char driver to provide
+>    kernel interface for ibm,physical-attestation RTAS function.
+>
+> Changelog:
+> v8:
+> - Fixed build warnings for the proper function parameter descriptions
+>    (vpd_sequence_begin(), few papr_rtas_*() functions, and etc) as
+>    reported by kernel test robot <lkp@intel.com>
+>
+> v7:
+> - Pass the proper next value to the subsequent RTAS calls for the
+>    get-indices sequence RTAS.
+>    (Vasireddy Sathvika found this bug).
+>
+> v6:
+> - Define the proper command ID for PAPR_PHY_ATTEST_IOC_HANDLE ioctl
+> - Update ioctls description in ioctl-number.rst.
+>
+> v5:
+> - Return with -EINPROGRESS in papr_platform_dump_invalidate_ioctl()
+>    if the complete dump is not read (Suggested by Michal Suchánek).
+>
+> v4:
+> - Include patch "Add char driver for papr-physical-attestation RTAS"
+>    in this series. ibm,physical-attestation is sequence based RTAS
+>    call and the implementation is also similar to ibm,get-vpd and
+>    ibm,get-indices.
+>
+> v3:
+> - put_unused_fd() only after get_unused_fd() successful for the failure
+>    case later ("Add papr-platform-dump character driver for dump
+>    retrieval" patch).
+>
+> v2:
+> - Added unlock rtas_ibm_set_dynamic_indicator_lock and
+>    rtas_ibm_get_dynamic_sensor_state_lock mutex for failure cases
+>    as reported by Dan Carpenter
+> - Fixed build warnings for the proper function parameter descriptions
+>    as reported by kernel test robot <lkp@intel.com>
+>
+> Haren Myneni (7):
+>    powerpc/pseries: Define common functions for RTAS sequence calls
+>    powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+>    powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+>    powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+>    powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+>    powerpc/pseries: Add papr-platform-dump character driver for dump
+>      retrieval
+>    powerpc/pseries: Add a char driver for physical-attestation RTAS
+>
+>   .../userspace-api/ioctl/ioctl-number.rst      |   6 +
+>   arch/powerpc/include/asm/rtas.h               |   4 +
+>   arch/powerpc/include/uapi/asm/papr-indices.h  |  41 ++
+>   .../uapi/asm/papr-physical-attestation.h      |  31 ++
+>   .../include/uapi/asm/papr-platform-dump.h     |  15 +
+>   arch/powerpc/kernel/rtas.c                    |   8 +-
+>   arch/powerpc/platforms/pseries/Makefile       |   3 +-
+>   arch/powerpc/platforms/pseries/papr-indices.c | 488 ++++++++++++++++++
+>   .../platforms/pseries/papr-phy-attest.c       | 288 +++++++++++
+>   .../platforms/pseries/papr-platform-dump.c    | 411 +++++++++++++++
+>   .../platforms/pseries/papr-rtas-common.c      | 310 +++++++++++
+>   .../platforms/pseries/papr-rtas-common.h      |  61 +++
+>   arch/powerpc/platforms/pseries/papr-vpd.c     | 351 ++-----------
+>   13 files changed, 1705 insertions(+), 312 deletions(-)
+>   create mode 100644 arch/powerpc/include/uapi/asm/papr-indices.h
+>   create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
+>   create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
+>   create mode 100644 arch/powerpc/platforms/pseries/papr-indices.c
+>   create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
+>   create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
+>   create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.c
+>   create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.h
+>
+Userspace tools that use these interfaces are displaying consistent 
+results across old/new librtas and kernel combinations.
 
-On 3/14/25 15:00, Shrikanth Hegde wrote:
-> 
-> 
-> On 3/14/25 11:15, Shrikanth Hegde wrote:
->> use guard(mutex) for scope based resource management of mutex.
->> This would make the code simpler and easier to maintain.
->>
->> More details on lock guards can be found at
->> https://lore.kernel.org/all/20230612093537.614161713@infradead.org/T/#u
->>
->> Signed-off-by: Shrikanth Hegde <sshegde@linux.ibm.com>
->> ---
->>   arch/powerpc/platforms/powernv/ocxl.c | 12 +++---------
->>   1 file changed, 3 insertions(+), 9 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/ocxl.c b/arch/powerpc/ 
->> platforms/powernv/ocxl.c
->> index 64a9c7125c29..f8139948348e 100644
->> --- a/arch/powerpc/platforms/powernv/ocxl.c
->> +++ b/arch/powerpc/platforms/powernv/ocxl.c
->> @@ -172,12 +172,11 @@ static void pnv_ocxl_fixup_actag(struct pci_dev 
->> *dev)
->>       if (phb->type != PNV_PHB_NPU_OCAPI)
->>           return;
->> -    mutex_lock(&links_list_lock);
->> +    guard(mutex)(&links_list_lock);
->>       link = find_link(dev);
->>       if (!link) {
->>           dev_warn(&dev->dev, "couldn't update actag information\n");
->> -        mutex_unlock(&links_list_lock);
->>           return;
->>       }
->> @@ -206,7 +205,6 @@ static void pnv_ocxl_fixup_actag(struct pci_dev *dev)
->>       dev_dbg(&dev->dev, "total actags for function: %d\n",
->>           link->fn_desired_actags[PCI_FUNC(dev->devfn)]);
->> -    mutex_unlock(&links_list_lock);
->>   }
->>   DECLARE_PCI_FIXUP_HEADER(PCI_ANY_ID, PCI_ANY_ID, pnv_ocxl_fixup_actag);
->> @@ -253,12 +251,11 @@ int pnv_ocxl_get_actag(struct pci_dev *dev, u16 
->> *base, u16 *enabled,
->>   {
->>       struct npu_link *link;
->> -    mutex_lock(&links_list_lock);
->> +    guard(mutex)(&links_list_lock);
->>       link = find_link(dev);
->>       if (!link) {
->>           dev_err(&dev->dev, "actag information not found\n");
->> -        mutex_unlock(&links_list_lock);
->>           return -ENODEV;
->>       }
->>       /*
->> @@ -274,7 +271,6 @@ int pnv_ocxl_get_actag(struct pci_dev *dev, u16 
->> *base, u16 *enabled,
->>       *enabled   = link->fn_actags[PCI_FUNC(dev->devfn)].count;
->>       *supported = link->fn_desired_actags[PCI_FUNC(dev->devfn)];
->> -    mutex_unlock(&links_list_lock);
->>       return 0;
->>   }
->>   EXPORT_SYMBOL_GPL(pnv_ocxl_get_actag);
->> @@ -293,12 +289,11 @@ int pnv_ocxl_get_pasid_count(struct pci_dev 
->> *dev, int *count)
->>        *
->>        * We only support one AFU-carrying function for now.
->>        */
->> -    mutex_lock(&links_list_lock);
->> +    guard(mutex)(&links_list_lock);
->>       link = find_link(dev);
->>       if (!link) {
->>           dev_err(&dev->dev, "actag information not found\n");
->> -        mutex_unlock(&links_list_lock);
->>           return -ENODEV;
->>       }
->> @@ -309,7 +304,6 @@ int pnv_ocxl_get_pasid_count(struct pci_dev *dev, 
->> int *count)
->>               break;
->>           }
->> -    mutex_unlock(&links_list_lock);
-> 
-> Hi. Andrew,
-> 
-> After this change below dev_dbg will be called with mutex held still. Is 
-> that a concern? I don't see the mutex being used in that path.
-> 
-> Since using scoped_guard cause more code churn here, I would prefer not 
-> use it.
+For this series:
+Tested-by: Sathvika Vasireddy <sv@linux.ibm.com>
 
-I see current code in pnv_ocxl_fixup_actag calls dev_dbg with mutex 
-held. So likely not a concern of using just guard in 
-pnv_ocxl_get_pasid_count as well.
-
-Assuming that, let me send out v2 with corrected commit subject. :w
-
-> 
->>       dev_dbg(&dev->dev, "%d PASIDs available for function\n",
->>           rc ? 0 : *count);
->>       return rc;
-> 
+Thanks,
+Sathvika
 
 
