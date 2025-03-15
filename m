@@ -1,106 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-7080-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7081-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BE18A628AC
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Mar 2025 09:07:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 716FFA62A0B
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Mar 2025 10:28:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZFDNX4DDXz30Pl;
-	Sat, 15 Mar 2025 19:07:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZFGBC51Mzz30WS;
+	Sat, 15 Mar 2025 20:28:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742026028;
-	cv=none; b=HXFzJZ1ono6amlbvkCZP0ijfcBtELrdk8QPzd0RmL9704kNM2Vq1DUk1Fz/2ErJBr4F4G8Ks3LV0g3fm/9+lLO5MuuSORErcM1X6ehifIqWgUf7aSEWu0t5nWZiktHQ7N/U3MkkyIvk0k3SpAgKM0TZHu2oO+OM+cHGkHhxe7gsyo8eHm25+26loLRR0VyIBgioMKTXt59z8dja+xq4e/10MOXQoLaq4MhIPPY8iQi/v1L+ZR5G8/LHuWckZmTK59OMnr5KynMQ6W2ePyl39/wHH5gJ1cuAgWB/9dEr7WSHD0As2t9nP//0hSq/7u6pkm0Ko5ae9DjmKqHz8gRttFA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742030899;
+	cv=none; b=k7S740n5/OYEakO85Af1ol3cMBGlSOaYur7463NO2M96pFOhsn7gOGy0tOAn0qpH+0dziyotXrEUJ4KDt3ns05eY4E/jNX1bHUdTnMGRuXh/7BE+5Kojp/S0xBx3StkuMh0WXDGwBjSWCE/kt08jnA+hleqjEdQ2z04q5jBx1qMlTqVahMew8ZpRiug38f0oN/5HdUH/GG4e0E88d79lvjRVBYBizg+fCf4h6dy5MDOpsPVjV27T4HGygCePerpYSplqWtN1FK4IkXsRlM6x6xJS0f4NtjO/uHhJjjKxpCW2kSwUlM4sLHPcHzaXTmI8taVMv6wa6psFo65z3v1KLQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742026028; c=relaxed/relaxed;
-	bh=C5tWsuLYebqW+3y76WtKrIdRf2XYwkMQtn4K8NAAL+Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Rz4FZQVp8c4HTsUkELBygPzAPehLyeWmwujfDbZY49VMQpEiwkyAamvduN89buwgXS6s9+UtHVvy6EaBbQTuKDM2h//umbQJSlIhE8Um1gmkCYt7/wWs2jlplQxRWBJwluF2KwFqlHH4X0x/mDy9jlYcFobQuZOdxKE/x//W2EGq+p2E+eRoUnjKa5ULKVimPkHWN3KQTvVXlE3K5f6NOVzZngzlKTlJlX5d0nTsrEIPKXQ0cGqfoXDie8Ywgpa7v7Z+Qn2QSbJV/N+mvD55xuh6ruLVSmULXJezQCGAlluzELHSqvkuQCTpkQ0cjdlNnujke8Hm8O1sGpPE8LefpQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=doTz3HnS; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=eddyz87@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1742030899; c=relaxed/relaxed;
+	bh=lyWH9iIiE4iMdH3+dRR4ZyzDVh/yTQFEUNr+Me5Q0o4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=nGkgeDCHyW1gXUKhuM2MtFuPsJLbf7PJM2VHGM59dqtGD4zX/A0iTZqeMqRmvmwWvrAq7rQlaMkrn4XMwTqIHc8Xzsi1xoF16W7mn98jcnfBKVhOoI/41Y1+E2VUt1a6uHIyt8KsMALfgLLuh/Cm+mMbfQeRzM9X4sKrPsUvI+yj4AfaXrPP7TYQl1Y4Wme5bK+9O7gVK5YhYhG/dPcRNC8OJqP2HOLFspf5XK4wYthqmbxtXrJMkIm0P+KrxhTtjFoCMrDdYH1ng7SvHnWVOpsQ1Dn2kkxzQ3UeKCpgRNaWRRABu+haMg6Jg9f+bPehOTyXeBpvLRr501jzid3hYQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NNcF28JO; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=doTz3HnS;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NNcF28JO;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=eddyz87@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZFDNW6g62z30BG
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Mar 2025 19:07:07 +1100 (AEDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-2232aead377so64091305ad.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Mar 2025 01:07:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742026026; x=1742630826; darn=lists.ozlabs.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=C5tWsuLYebqW+3y76WtKrIdRf2XYwkMQtn4K8NAAL+Q=;
-        b=doTz3HnSkU/C0CelMgyCGxXg1UXc+uuMuQ/ByJXatI0xHfWF5I8ysF+Yc6nKJIlIzB
-         Lg71nQCEB4ZQYLaDocgqoowRKBMxP7A3Cx1jKuXYm9hURaQ1xywWip5UaUP4ROpO+n2x
-         RDUcBHyHTQS8LvtZ39Jec87hdb3UoTvvprJkGopBGwu9ZCyb0DdsRElwT6+FV3S98IsN
-         m2RkhQVjSsMaTHIvOJFd2S/p1Jbkt6I980wUzxPSCQvPOZcIKRYAlXdacHa5fQNSjMUZ
-         3vXStMdNNDpl9+Rr5edRK7KgYYkEiqTT3zSekzBxzu7Y1gFhBxLubZLxz2LhN0UjX6sI
-         lrRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742026026; x=1742630826;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=C5tWsuLYebqW+3y76WtKrIdRf2XYwkMQtn4K8NAAL+Q=;
-        b=ZyIy91k3IV77F1nmEDJgeqgRVgmZviK7BEmVKOz3jay55PElDzpaxbJah0QALc2v6/
-         LfLvLnLUNoxPPO0x+4c6Yr1MbmyaZmkPCv8JISyu+00am/UhkaIqWaz4bmOpIy+cuvAV
-         KGCHPhnf4ryqSZ6a1KS00VJKTyhlUOoc+A3X21PlnPnlOOdtS7s3R6A1ytJAy6Eb+KH8
-         o2CDrf9eYpKWI6vrpgxX4oaFu85CJqNPhaS6q4yKgLhzkWmDPgl/b0myFlLiRnhO3kGr
-         1dEG7dDS5+mYvg62UVsJA+uu/EXHLijE1mAaB07Rzt/QDmYtuQFhE15wy3Z3zVk5l0lg
-         D1SA==
-X-Forwarded-Encrypted: i=1; AJvYcCUyAAqoMVaGfDFV2oKt/Xzuk03qpvS+gFl/g1epJdSEFNb0TxFtjhXH4YXxUESkhkNPNBnjPUyQW7M6bLA=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yy5atjM/Oqry9WHHKEHaYfOq8bgoQsB+QLnuM95a/fDFV/ceins
-	u/ZQGZRrN9drUet9NmpOipj7/DAfN7KWJ5Hh774P5W+R5BGAHfWT
-X-Gm-Gg: ASbGncvGS18hh8mNBo+RO/704NKw4JsVs9uyn/aRo6gM+7XUvfcm6bq4X0A9FBSpSFR
-	aPGjFeQ7CQu76kIWJzJhBcTVNaNL+jtguQXKFOxlhvqaSj0+xHifcCZuFiDzwtoJwkzk2k6xAyd
-	4U7RaOBZhUSe+SJ9wn4mWgwlweD5yBaPEVpmkErwhfMNCAI0Y62sCOn8vCsQEpmS9ChyxtbmV4Z
-	LRyDgQOcA7qKjqWYf+KyfWSO72BgPd/PnSJqEPEPWOByksB3u/zY8hFZRxD4lPce7jAaPn+NOiV
-	we4KsdR/5oN7sWTrFUZKiOG891F3mqT1JVTrPQuz
-X-Google-Smtp-Source: AGHT+IGkNV2xTO9dQHlWSeyy/i0XrYakerLhhNGAIMLNT4Ti+wVWJjCGhEhKRAxcpm1P6DPPcR4EQQ==
-X-Received: by 2002:a17:902:ce0b:b0:223:668d:eba9 with SMTP id d9443c01a7336-225e0a15945mr71542395ad.10.1742026026102;
-        Sat, 15 Mar 2025 01:07:06 -0700 (PDT)
-Received: from [192.168.0.56] ([38.34.87.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-225c68a80e3sm40085605ad.83.2025.03.15.01.07.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 15 Mar 2025 01:07:05 -0700 (PDT)
-Message-ID: <46a0770582be4f8f80701aca4eb17b1706609033.camel@gmail.com>
-Subject: Re: [PATCH bpf-next 03/11] bpf: Return -EFAULT on internal errors
-From: Eduard Zingerman <eddyz87@gmail.com>
-To: Luis Gerhorst <luis.gerhorst@fau.de>, Alexei Starovoitov
- <ast@kernel.org>,  Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
- <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
- <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend	
- <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
- Fomichev	 <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
- <jolsa@kernel.org>,  Puranjay Mohan <puranjay@kernel.org>, Xu Kuohai
- <xukuohai@huaweicloud.com>, Catalin Marinas	 <catalin.marinas@arm.com>,
- Will Deacon <will@kernel.org>, Hari Bathini	 <hbathini@linux.ibm.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,  Naveen N Rao
- <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
- Ellerman	 <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Mykola
- Lysenko	 <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>, Henriette Herzog	
- <henriette.herzog@rub.de>, Cupertino Miranda
- <cupertino.miranda@oracle.com>,  Matan Shachnai <m.shachnai@gmail.com>,
- Dimitar Kanaliev <dimitar.kanaliev@siteground.com>, Shung-Hsi Yu	
- <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, George Guo	
- <guodongtai@kylinos.cn>, WANG Xuerui <git@xen0n.name>, Tiezhu Yang	
- <yangtiezhu@loongson.cn>
-Cc: Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
-Date: Sat, 15 Mar 2025 01:07:01 -0700
-In-Reply-To: <20250313172919.1103397-1-luis.gerhorst@fau.de>
-References: <20250313172127.1098195-1-luis.gerhorst@fau.de>
-	 <20250313172919.1103397-1-luis.gerhorst@fau.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZFGB95nXZz30Nl
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Mar 2025 20:28:17 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52F7DIuH006276;
+	Sat, 15 Mar 2025 09:28:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=lyWH9iIiE4iMdH3+dRR4ZyzDVh/y
+	TQFEUNr+Me5Q0o4=; b=NNcF28JOjR+gGRhtv/m1OuigowIkeBLfyrgLvBP1GJak
+	4K+mHkf1AaFlVuIGE4b6jZdvtz4FBDiYQXg0C2INigWmMtu3TSDQN5L2nYAwhE3E
+	VfnnAAr7UJxZn0aTFUGeJswlrLOlsUgWJsF/vhVz7a4ETSY9ZhnOei38f8190C7o
+	UM5YqTQi9n3eLBsTCPAYYxl3Oa4bWiZZ5RkmzXtHVhkmBXVwWfNPRSCS3QTwOy0r
+	ORfQ4iNFw1mFDm/HS8F7xhdyK2igxKjYJZgI+/Y/LbBYomYJSPdvExBcUNLtVvsY
+	1L3vShJgz0PASlykSuJXskLF/M60XmYbulhNOAPhcQ==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45d1ud8vn0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 15 Mar 2025 09:28:06 +0000 (GMT)
+Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52F9S6tU030942;
+	Sat, 15 Mar 2025 09:28:06 GMT
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45d1ud8vmx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 15 Mar 2025 09:28:06 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52F8G5NA014761;
+	Sat, 15 Mar 2025 09:28:05 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45d1srs3bj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 15 Mar 2025 09:28:05 +0000
+Received: from smtpav03.dal12v.mail.ibm.com (smtpav03.dal12v.mail.ibm.com [10.241.53.102])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52F9S2NH2949708
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 15 Mar 2025 09:28:03 GMT
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 93F4F58056;
+	Sat, 15 Mar 2025 09:28:02 +0000 (GMT)
+Received: from smtpav03.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BACF158064;
+	Sat, 15 Mar 2025 09:28:01 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.74.78])
+	by smtpav03.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Sat, 15 Mar 2025 09:28:01 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
+        hbabu@us.ibm.com, haren@linux.ibm.com, sv@linux.ibm.com
+Subject: [PATCH v9 0/7] Add character devices for indices, platform-dump
+Date: Sat, 15 Mar 2025 02:27:48 -0700
+Message-ID: <20250315092756.1031182-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -113,26 +90,161 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
-	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: HH2uBYq4Jozn90HQsE7ekXJESgLgIikX
+X-Proofpoint-ORIG-GUID: 3pNOHhWNnevbBrVoajEjhBgP-ed3wHGQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-15_03,2025-03-14_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 suspectscore=0
+ bulkscore=0 clxscore=1015 impostorscore=0 lowpriorityscore=0
+ mlxlogscore=999 spamscore=0 phishscore=0 adultscore=0 mlxscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503150064
+X-Spam-Status: No, score=-0.7 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
-On Thu, 2025-03-13 at 18:29 +0100, Luis Gerhorst wrote:
-> This prevents us from trying to recover from these on speculative paths
-> in the future.
->=20
-> Signed-off-by: Luis Gerhorst <luis.gerhorst@fau.de>
-> Acked-by: Henriette Herzog <henriette.herzog@rub.de>
-> Cc: Maximilian Ott <ott@cs.fau.de>
-> Cc: Milan Stephan <milan.stephan@fau.de>
-> ---
+Several APIs such as rtas_get_indices(), rtas_get_dynamic_sensor(),
+rtas_set_dynamic_indicator(), rtas_platform_dump() and
+rtas_physical_attestation()  provided by librtas library are
+implemented in user space using rtas syscall in combination with
+writable mappings of /dev/mem. But this implementation is not
+compatible with system lockdown which prohibits /dev/mem access.
+The current kernel already provides char based driver interfaces
+for several RTAS calls such as VPD and system parameters to
+support lockdown feature.
 
-Same as for previous patch.
+This patch series adds new char based drivers, /dev/papr-indices
+for ibm,get-indices, ibm,get-dynamic-sensor-state and
+ibm,set-dynamic-indicator RTAS Calls. /dev/papr-platform-dump
+for ibm,platform-dump and /dev/papr-physical-attestation
+fir ibm,physical-attestation. Providing the similar
+open/ioctl/read interfaces to the user space as in the case of
+VPD and system parameters.
 
-Reviewed-by: Eduard Zingerman <eddyz87@gmail.com>
+I have made changes to librtas library to use the new kernel
+interfaces if the corresponding device entry is available.
 
-[...]
+This patch series has the following patches:
+powerpc/pseries: Define common functions for RTAS sequence calls
+- For some of sequence based RTAS calls, the OS should not start
+  another sequence with different input until the previous sequence
+  is completed. So the sequence should be completed during ioctl()
+  and expose the entire buffer during read(). ibm,get-indices is
+  sequence based RTAS function similar to ibm,get-vpd and we already
+  have the corresponding implementation for VPD driver. So update
+  papr_rtas_sequence struct for RTAS call specific functions and move
+  the top level sequence functions in to a separate file.
+
+powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+- /dev/papr-indices driver supports ibm,get-indices,
+  ibm,get-dynamic-sensor-state and ibm,set-dynamic-indicator RTAS Calls.
+  papr-indices.h introduces 3 different ioctls for these RTAS calls and
+  the corresponding ioctl input buffer.
+
+powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+- Introduce /dev/papr-indices char based driver and add support for
+  get-indices RTAS function
+
+powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+- Update /dev/papr-indices for set-dynamic-indicator RTAS function
+
+powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+-  Update /dev/papr-indices for  get-dynamic-sensor-state RTAS function
+
+powerpc/pseries: Add papr-platform-dump character driver for dump
+   retrieval
+- Introduce /dev/papr-platform-dump char driver and adds support for
+  ibm,platform-dump. Received suggestions from the previous post as a
+  separate patch - Updated the patch with invalidating the dump using
+  a separate ioctl.
+
+powerpc/pseries: Add a char driver for papr-physical-attestation RTAS
+- Introduce /dev/papr-physical-attestation char driver to provide
+  kernel interface for ibm,physical-attestation RTAS function.
+
+Thanks to Sathvika Vasireddy for testing these kernel APIs with various
+tools.
+ 
+Changelog:
+v9:
+- Fixed syntax issue in papr-rtas-common.c as reported by
+  Mukesh Kumar Chaurasiya
+
+v8:
+- Fixed build warnings for the proper function parameter descriptions
+  (vpd_sequence_begin(), few papr_rtas_*() functions, and etc) as
+  reported by kernel test robot <lkp@intel.com>
+
+v7:
+- Pass the proper next value to the subsequent RTAS calls for the
+  get-indices sequence RTAS.
+  (Vasireddy Sathvika found this bug).
+
+v6:
+- Define the proper command ID for PAPR_PHY_ATTEST_IOC_HANDLE ioctl
+- Update ioctls description in ioctl-number.rst.
+
+v5:
+- Return with -EINPROGRESS in papr_platform_dump_invalidate_ioctl()
+  if the complete dump is not read (Suggested by Michal Suchánek).
+
+v4:
+- Include patch "Add char driver for papr-physical-attestation RTAS"
+  in this series. ibm,physical-attestation is sequence based RTAS
+  call and the implementation is also similar to ibm,get-vpd and
+  ibm,get-indices.
+
+v3:
+- put_unused_fd() only after get_unused_fd() successful for the failure
+  case later ("Add papr-platform-dump character driver for dump
+  retrieval" patch).
+
+v2:
+- Added unlock rtas_ibm_set_dynamic_indicator_lock and
+  rtas_ibm_get_dynamic_sensor_state_lock mutex for failure cases
+  as reported by Dan Carpenter
+- Fixed build warnings for the proper function parameter descriptions
+  as reported by kernel test robot <lkp@intel.com>
+
+Haren Myneni (7):
+  powerpc/pseries: Define common functions for RTAS sequence calls
+  powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+  powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+  powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+  powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+  powerpc/pseries: Add papr-platform-dump character driver for dump
+    retrieval
+  powerpc/pseries: Add a char driver for physical-attestation RTAS
+
+ .../userspace-api/ioctl/ioctl-number.rst      |   6 +
+ arch/powerpc/include/asm/rtas.h               |   4 +
+ arch/powerpc/include/uapi/asm/papr-indices.h  |  41 ++
+ .../uapi/asm/papr-physical-attestation.h      |  31 ++
+ .../include/uapi/asm/papr-platform-dump.h     |  15 +
+ arch/powerpc/kernel/rtas.c                    |   8 +-
+ arch/powerpc/platforms/pseries/Makefile       |   3 +-
+ arch/powerpc/platforms/pseries/papr-indices.c | 488 ++++++++++++++++++
+ .../platforms/pseries/papr-phy-attest.c       | 288 +++++++++++
+ .../platforms/pseries/papr-platform-dump.c    | 411 +++++++++++++++
+ .../platforms/pseries/papr-rtas-common.c      | 311 +++++++++++
+ .../platforms/pseries/papr-rtas-common.h      |  61 +++
+ arch/powerpc/platforms/pseries/papr-vpd.c     | 351 ++-----------
+ 13 files changed, 1706 insertions(+), 312 deletions(-)
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-indices.h
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
+ create mode 100644 arch/powerpc/platforms/pseries/papr-indices.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.h
+
+-- 
+2.43.5
 
 
