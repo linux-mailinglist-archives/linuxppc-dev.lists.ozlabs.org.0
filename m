@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7092-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7093-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D843A62B69
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Mar 2025 11:59:46 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D04EA62B6F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 15 Mar 2025 11:59:53 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZFJCW6Hlnz3ccV;
-	Sat, 15 Mar 2025 21:59:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZFJCd2xb0z3cZM;
+	Sat, 15 Mar 2025 21:59:41 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742036375;
-	cv=none; b=cnpNBxrDAiX6zHNQo3ouJzZAATWx0uw3XQyXCExZdfcZtBSkga87Atb0MT5Vh1iu7UxJ8bhXOVoduNRqXmRITAKZciEyFCVVc/hUCD9f6OjBh0hLYG2fRQFjmmF//AX5GEamq2Zs9HVqfHVyLzM7GSq2IsuHeQXVuSfL2Ua1aewctqB855JhsIO5RB1mMUd7GeTkTIm0POg3qTOm0BdFThTGHZcxQ6lnp3fDy1ekyq+O73Cp3dDLt2bsd76c5AZEInCTPWHPB3Z+3Eb3ZtaaWsfMuADQ3UoTcToNxR4MqNvk/ZMLIiPhMePy9IHvVHdTisAcZbtfbKnEP8+z9RFVjw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742036381;
+	cv=none; b=i0MA0pHlq2+FdpBeM4h7XFOb+IVSHVJNhoI8g925X1ZBHEJPTq9geiNZoTXWMdrDD75ilpFURjRVcrTcrJ2cBnH3Oe0n0WpyhxMFt5QFwQq0MZ/bkD+4/e63R84ZmZ0sP7RfqIYfKOwvnIDzWAzXIv+EbOnIK4LZ90UwN7rqxEzCgt6dRr8EkmBsMLQL2ma9OBSk1V3sBJBIRbsiFTTWjvIXVtRtwhtdiGLKRyoqEe2VROs9T0o8F2yDy7Rdx2IPtjIzCTqDwu/Qyswq0oGorJ2IVbXzMcXve0hariihDozgEzqP/qkw8SK7uSgmt81NZ1XZz1+kjLWVTqgUqiIB+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742036375; c=relaxed/relaxed;
-	bh=QNYoMGWG2h+yYDmaqldiFU6pjv1XfmeaFc1i7PDIb5Y=;
+	t=1742036381; c=relaxed/relaxed;
+	bh=vKGKTxIS6jX30iJcNn5jqAGJ/NZg6FxhP37IyCLqd1M=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XwdTU25Umj2GeESACAqCW7MFgqtZMAlynZJxvxWXCh4WGPOgP3qA5xxbV+IZMSGG+dNuT8MFMxb/eAz80jOlbxqBFiIWXhEeeSo1inRPFg00wHNayg7pNL83Pljgs2t1/T8Lz/EstTzQf+8MP3kZtlf/syeVptW1TdpA0rYIxGMsUiDFznmwwG5dk3gt2g5qb47uhdS5GkDKOVjr+W5z6I5Mv6WvXxXbD2MwDFRm3kYuF3bLZuwX/6TowYhlpG3UfFH176uAAHdPmqJvlxg7PGjQir4tmNw0p/ypFnAyNh7HA0nT/KxSUiyahpKj2SNSoEK0t5ypt04NVYODsrdszw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+bdiqGN; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=MpsksQJzBaIfpnB+wZOfyK7NCQE3M4nYRBTFoLsx25Kip7r4iGWxu2YyeuqJrE5qou7xW7PYvHf5hrRc6NMzKPFmhWNMS0/6X8nE6yjoh6APxQLUiLmpdghGHB2DeiQMZAF5XwObtTHyu/rBj3lLuNW2qoJdxY9DdktwMdaYT9LQzH6TFV0L8/P2eyEdodKFOX2mxQQ3cTbcVs7BgC1Y+99s2jMhYjq3xE+5+vcdnpGTGJIfof3hmC403LUcCd5vosb/3GJHOqBSAcL6fnmprCVKPdrEjII7dndCuogeMN+UMa11vapTIGgEiZ2530W5+ii2wjYcRb8haj4qJAy5Gw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=diX0xfqF; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=V+bdiqGN;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=diX0xfqF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=arnd@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZFJCW0JPlz30Vw
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Mar 2025 21:59:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZFJCc4Dsjz30Vw
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Mar 2025 21:59:40 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 3A48CA489D6;
-	Sat, 15 Mar 2025 10:54:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E94C1C4CEED;
-	Sat, 15 Mar 2025 10:59:27 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 420A85C41E7;
+	Sat, 15 Mar 2025 10:57:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19449C4CEE9;
+	Sat, 15 Mar 2025 10:59:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742036372;
-	bh=/gsyKJhuoIen+vHsBslWnn/2C+BZeE5kQsZ8QckJoRI=;
+	s=k20201202; t=1742036377;
+	bh=A5i5/N269tmlctuJx50AMW6UOHChrJm88b2b4zSeyoA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+bdiqGN8Z8XOKssQQKhRShJZpgdJU/nDmTn2ED0MtuKUnS5le08t96rPYxjBIW3W
-	 EEjWDsWMb/VL49fo30BlNQ9aW1IqRkBdQPXhsa7JCcSJ1za3w9XXCKFqjVipuCYzSA
-	 QLgWrS+9HVDy5DynWbyMvCZD/o2pd8i++ywdtQGNubkvh+FjQqVI8ogvKUmXVh8UIm
-	 j5GRzafGvHy8Z9mU22LR87OV28V/hM7swqiMFSP+nmGB/4fJfA3M/nWf/b1J6du1xR
-	 PTMFl0VGtXo0jf4htyqvc7URq4YGmmI/oIvLIHhSVmacjGt5VEU2RtCM8nbfnFi8Fx
-	 tHb2HdNFzItjg==
+	b=diX0xfqF9v6ZGZRle7yS797sxjadb3E94MlDDS4u2Ag47HK7jKFgrf0+lFKqJyd4Z
+	 9zI1O0TL4ydGgnrIeulnAzEMTAwCyHN4aaYIjOJk4KG9iQ9AUEgXcaqj1ZPma2QWCj
+	 7R4G/nVWt1vuxaxJKUIQRdYxGdOY+kQSZryHNxz+vVP+V61ore9HhuE0ButGW2mWzR
+	 bZv7UuwIJNTuGwzwOmv42rKJQ/X2fJFY4DLlYwRmOt8Uuk/ln2ZGVjY/dlC/AIRZQf
+	 xIBQPHVRG8UBgapcN+S6EKST97e/EqLy5aOB9pu3G9miFJF68PdnfRDwdShSTHnAR1
+	 0xk0SMnqOCSoA==
 From: Arnd Bergmann <arnd@kernel.org>
 To: linux-arch@vger.kernel.org
 Cc: Arnd Bergmann <arnd@arndb.de>,
@@ -70,9 +70,9 @@ Cc: Arnd Bergmann <arnd@arndb.de>,
 	linux-parisc@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	linux-sh@vger.kernel.org
-Subject: [PATCH 3/6] parisc: stop using asm-generic/iomap.h
-Date: Sat, 15 Mar 2025 11:59:04 +0100
-Message-Id: <20250315105907.1275012-4-arnd@kernel.org>
+Subject: [PATCH 4/6] powerpc: asm/io.h: remove split ioread64/iowrite64 helpers
+Date: Sat, 15 Mar 2025 11:59:05 +0100
+Message-Id: <20250315105907.1275012-5-arnd@kernel.org>
 X-Mailer: git-send-email 2.39.5
 In-Reply-To: <20250315105907.1275012-1-arnd@kernel.org>
 References: <20250315105907.1275012-1-arnd@kernel.org>
@@ -89,94 +89,106 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.7 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+X-Spam-Status: No, score=-5.4 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.0
 X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
 
 From: Arnd Bergmann <arnd@arndb.de>
 
-parisc uses custom iomap helpers to map bus specific function calls into
-a linear __iomem token, but it tries to use the declarations from the x86
-"generic iomap" code.
+In previous kernels, there were conflicting definitions for what
+ioread64_lo_hi() and similar functions were supposed to do on
+architectures with native 64-bit MMIO. Based on the actual usage in
+drivers, they are in fact expected to be a pair of 32-bit accesses on
+all architectures, which makes the powerpc64 definition wrong.
 
-Untangle the two by duplicating the required declations and dropping
-the #include that pulls in more stuff that is not needed here, to
-allow simplify the generic version later.
+Remove it and use the generic implementation instead.
+
+Drivers that want to have split lo/hi or hi/lo accesses on 32-bit
+architectures but can use 64-bit accesses where supported should instead
+use ioread64()/iowrite64() after including the corresponding header file.
 
 Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 ---
- arch/parisc/include/asm/io.h | 36 +++++++++++++++++++++++++++---------
- 1 file changed, 27 insertions(+), 9 deletions(-)
+ arch/powerpc/include/asm/io.h | 48 -----------------------------------
+ 1 file changed, 48 deletions(-)
 
-diff --git a/arch/parisc/include/asm/io.h b/arch/parisc/include/asm/io.h
-index 3143cf29ce27..59d85d2386bb 100644
---- a/arch/parisc/include/asm/io.h
-+++ b/arch/parisc/include/asm/io.h
-@@ -227,36 +227,54 @@ extern void outsl (unsigned long port, const void *src, unsigned long count);
- #define F_EXTEND(x) ((unsigned long)((x) | (0xffffffff00000000ULL)))
- 
- #ifdef CONFIG_64BIT
--#define ioread64 ioread64
--#define ioread64be ioread64be
--#define iowrite64 iowrite64
--#define iowrite64be iowrite64be
- extern u64 ioread64(const void __iomem *addr);
- extern u64 ioread64be(const void __iomem *addr);
-+#define ioread64 ioread64
-+#define ioread64be ioread64be
-+
- extern void iowrite64(u64 val, void __iomem *addr);
- extern void iowrite64be(u64 val, void __iomem *addr);
-+#define iowrite64 iowrite64
-+#define iowrite64be iowrite64be
- #endif
- 
--#include <asm-generic/iomap.h>
--/*
-- * These get provided from <asm-generic/iomap.h> since parisc does not
-- * select GENERIC_IOMAP.
-- */
-+extern void __iomem *ioport_map(unsigned long port, unsigned int nr);
-+extern void ioport_unmap(void __iomem *);
- #define ioport_map ioport_map
- #define ioport_unmap ioport_unmap
-+
-+extern unsigned int ioread8(const void __iomem *);
-+extern unsigned int ioread16(const void __iomem *);
-+extern unsigned int ioread16be(const void __iomem *);
-+extern unsigned int ioread32(const void __iomem *);
-+extern unsigned int ioread32be(const void __iomem *);
- #define ioread8 ioread8
- #define ioread16 ioread16
- #define ioread32 ioread32
- #define ioread16be ioread16be
+diff --git a/arch/powerpc/include/asm/io.h b/arch/powerpc/include/asm/io.h
+index fd92ac450169..d36c4ccaca08 100644
+--- a/arch/powerpc/include/asm/io.h
++++ b/arch/powerpc/include/asm/io.h
+@@ -738,35 +738,11 @@ static inline unsigned int ioread32be(const void __iomem *addr)
  #define ioread32be ioread32be
-+
-+extern void iowrite8(u8, void __iomem *);
-+extern void iowrite16(u16, void __iomem *);
-+extern void iowrite16be(u16, void __iomem *);
-+extern void iowrite32(u32, void __iomem *);
-+extern void iowrite32be(u32, void __iomem *);
- #define iowrite8 iowrite8
- #define iowrite16 iowrite16
- #define iowrite32 iowrite32
- #define iowrite16be iowrite16be
+ 
+ #ifdef __powerpc64__
+-static inline u64 ioread64_lo_hi(const void __iomem *addr)
+-{
+-	return readq(addr);
+-}
+-#define ioread64_lo_hi ioread64_lo_hi
+-
+-static inline u64 ioread64_hi_lo(const void __iomem *addr)
+-{
+-	return readq(addr);
+-}
+-#define ioread64_hi_lo ioread64_hi_lo
+-
+ static inline u64 ioread64be(const void __iomem *addr)
+ {
+ 	return readq_be(addr);
+ }
+ #define ioread64be ioread64be
+-
+-static inline u64 ioread64be_lo_hi(const void __iomem *addr)
+-{
+-	return readq_be(addr);
+-}
+-#define ioread64be_lo_hi ioread64be_lo_hi
+-
+-static inline u64 ioread64be_hi_lo(const void __iomem *addr)
+-{
+-	return readq_be(addr);
+-}
+-#define ioread64be_hi_lo ioread64be_hi_lo
+ #endif /* __powerpc64__ */
+ 
+ static inline void iowrite16be(u16 val, void __iomem *addr)
+@@ -782,35 +758,11 @@ static inline void iowrite32be(u32 val, void __iomem *addr)
  #define iowrite32be iowrite32be
-+
-+extern void ioread8_rep(const void __iomem *port, void *buf, unsigned long count);
-+extern void ioread16_rep(const void __iomem *port, void *buf, unsigned long count);
-+extern void ioread32_rep(const void __iomem *port, void *buf, unsigned long count);
- #define ioread8_rep ioread8_rep
- #define ioread16_rep ioread16_rep
- #define ioread32_rep ioread32_rep
-+
-+extern void iowrite8_rep(void __iomem *port, const void *buf, unsigned long count);
-+extern void iowrite16_rep(void __iomem *port, const void *buf, unsigned long count);
-+extern void iowrite32_rep(void __iomem *port, const void *buf, unsigned long count);
- #define iowrite8_rep iowrite8_rep
- #define iowrite16_rep iowrite16_rep
- #define iowrite32_rep iowrite32_rep
+ 
+ #ifdef __powerpc64__
+-static inline void iowrite64_lo_hi(u64 val, void __iomem *addr)
+-{
+-	writeq(val, addr);
+-}
+-#define iowrite64_lo_hi iowrite64_lo_hi
+-
+-static inline void iowrite64_hi_lo(u64 val, void __iomem *addr)
+-{
+-	writeq(val, addr);
+-}
+-#define iowrite64_hi_lo iowrite64_hi_lo
+-
+ static inline void iowrite64be(u64 val, void __iomem *addr)
+ {
+ 	writeq_be(val, addr);
+ }
+ #define iowrite64be iowrite64be
+-
+-static inline void iowrite64be_lo_hi(u64 val, void __iomem *addr)
+-{
+-	writeq_be(val, addr);
+-}
+-#define iowrite64be_lo_hi iowrite64be_lo_hi
+-
+-static inline void iowrite64be_hi_lo(u64 val, void __iomem *addr)
+-{
+-	writeq_be(val, addr);
+-}
+-#define iowrite64be_hi_lo iowrite64be_hi_lo
+ #endif /* __powerpc64__ */
+ 
+ struct pci_dev;
 -- 
 2.39.5
 
