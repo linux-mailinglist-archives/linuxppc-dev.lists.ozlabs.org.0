@@ -1,62 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-7105-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7106-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2957A6412A
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 07:19:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 850C8A6414D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 07:21:34 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGPv75kVzz2yGM;
-	Mon, 17 Mar 2025 17:19:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGPxm1PNCz2yfH;
+	Mon, 17 Mar 2025 17:21:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742192355;
-	cv=none; b=Bz78A8xc8CjYsd6I8apvSoWPErlFd1U/ZDAfiprbucd122t2Nd13V/ptq2iYgL6kd70S1Zfw6lbKFStg0IZS1RGOtNlNfJVsKBhaJU7f9AsRw+d8SDvUcMyQ9Qt7vYdo/2c/hAEtKRSgo5j2vifpyhLDXx+69ZrIHdSvrtsE5nCF3NiRI+KZpiTZQ7ltuoMiYhwV44IfQvQdJ1kY6ax08zQ7Cq7mNPQS/DYLuWTTnSBpzheWbxHRlg1BPhG/5xKwAiidsPr4n8qFyaWTDItJ5d/p3D+32Hi3SZLLDzXdu9Hg3oIUU2vFX0Ae3ZCYiYazhl+TsHs11CVVsdo0sQ0BYg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742192492;
+	cv=none; b=UejdoiI/qSIMxDVySFAq1cVXlIR7MnVy4UYxMi2BH6Si0iG8lpYLPXwRuLcoEkfi6ehbFob+xkMEV+JeUhDLiCJPDfaYUqrRea664jilq0HUtsceRJoX45jjX4Ydk5fTww11uFLIfP4N63DeqApSaGXB27QnRxOUVKoZ97cRxphqhqU7hyafDwWIJXt8vU5n1DkrFWNMDEuL/jaiypQrdapsflf2khnVa9beKifS2poLQJIoRJ30CjxVs9IdFBFGggmcCqUNb1GC9puxwulOQ76ZjYESuJZSZsqa4R2SIpytXcWl3fVsYxI5hDqbG5hwWa0Yl2zib2BPTOOe9trE8w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742192355; c=relaxed/relaxed;
-	bh=MmDSfCWD9WhoSWlQWr2gV1apY67d6RtH3rSTiz+c+dc=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=CUPuSGUOFFuPgfi1dWYn2fEfvRkeXudlP8wAMPYh5LxNWguJ1fBg3PwLaH1p7oANzLGwgLwis5mH4IsrH/qZokIu6C2wi1S9IZo6OsAGpcPvB3jFz7iNy8o4QfuAbt3kMobdfXciXLR26c7d9qDX3QXs3NIAua1CmnnNItH0s3vwugYFm0cQO4FK6nNkns+X3kjcvwm4ywXN9v81mQHx3EtgfJq1o4TK/0+7ocEiw2p8ApnB4qqVqYXC6Zbnxpqqlk3XhiUS1l8wC7IpGBE1l+HH41J/KH5HukDY/DCXjbQ7hITza3EU2kQVUIKfnH3nDLYHJcEVFoxDsRkD3fLDYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGPv71M72z2ygD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 17:19:15 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2FFCB1BF3;
-	Sun, 16 Mar 2025 23:18:53 -0700 (PDT)
-Received: from a077893.blr.arm.com (a077893.blr.arm.com [10.162.16.153])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 8DC983F673;
-	Sun, 16 Mar 2025 23:18:37 -0700 (PDT)
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-To: linux-mm@kvack.org
-Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Steven Price <steven.price@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	Marc Zyngier <maz@kernel.org>
-Subject: [PATCH 2/2] arm64/ptdump: Replace u64 with pteval_t
-Date: Mon, 17 Mar 2025 11:48:18 +0530
-Message-Id: <20250317061818.16244-3-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20250317061818.16244-1-anshuman.khandual@arm.com>
-References: <20250317061818.16244-1-anshuman.khandual@arm.com>
+	t=1742192492; c=relaxed/relaxed;
+	bh=62TVVR3egov3BuZwmGA2ZcIfHWOSNSFBUDkmiY0/fps=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RiFsetUdOM5yqYBQOg2mEUgzON9SY1ZLQ6cpiir21BX1RTF7ZulqixqalFQpDxJa8f4InaBSCR+Ibdq980t3YQvxy8E0q2ojnJenF2oLSp8M7+mbL9x/S/jyV3dP01IbeFZE3iPzGTOgdrsNi7maTvdOO6/v4wWias1v2iPCsMOmXwkDwW8MzAdPoY0VTRbilcXE3JqihkbH2ObMCHIqQd7+g6qCt8sykrEKzG1eBdMGGAJL9NNgpR9st78id7ZQrrWEE0EjKRlarR7KXTWbwhDX95ozRX+3fP78JthGuN0ThRivM0juylViyxZ9lIiXv33GV782k6p8VQqc1vXoMQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n1VO9p/+; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n1VO9p/+;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=jirislaby@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGPxl1gpkz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 17:21:31 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 7A819A43A24;
+	Mon, 17 Mar 2025 06:15:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E73C4CEE3;
+	Mon, 17 Mar 2025 06:21:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742192488;
+	bh=fCMBUGoV/CmK63hWHLSVRtiCVntHpGgIWbVE2zyNOeM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=n1VO9p/++wG9AF5fP451/y2IKPOcP+N6cstuUTJC7hHd1vCmLx79K05GAwJiaSffY
+	 n3X9gZ9hHrq1Bk3RJ3i//Gu88zagA+tS1fH26sNPJB1Pp1DCybZdLJgEvieQwzCk8F
+	 XvDm11BPpLTFSLtiu3FfP884iWF5Gxf4Aru7o4E6F3yE6HBpPKrxxViEj3/6vPO7Hk
+	 xBukA7E9OvLDVulB0Mit7dQaiBgxSgdSu8R6ugowmTNRshTqFC5n7fs4RxlxvH0ooB
+	 a2d6sU5IEp5UPqTQGUhtGPWblx3/esdOJ3DCvdnWeBEcVPTT9F2P9xB6e3UoGmRSGB
+	 nBvLYbgDW2E6Q==
+Message-ID: <10eecd8c-52b8-4050-8b1d-f612f4ffc653@kernel.org>
+Date: Mon, 17 Mar 2025 07:21:23 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,73 +57,115 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH linux-next] ASoC: use sysfs_emit() instead of scnprintf().
+To: xie.ludan@zte.com.cn, xiubo.lee@gmail.com
+Cc: shengjiu.wang@gmail.com, festevam@gmail.com, nicoleotsuka@gmail.com,
+ lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ shawnguo@kernel.org, s.hauer@pengutronix.de, kernel@pengutronix.de,
+ linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org
+References: <20250315141546004ww7-8GUuuRfAQIb8b4KYZ@zte.com.cn>
+Content-Language: en-US
+From: Jiri Slaby <jirislaby@kernel.org>
+Autocrypt: addr=jirislaby@kernel.org; keydata=
+ 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
+In-Reply-To: <20250315141546004ww7-8GUuuRfAQIb8b4KYZ@zte.com.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Page table entry's value, mask and protection are represented with pteval_t
-data type format not u64 that has been assumed while dumping the page table
-entries. Replace all such u64 instances with pteval_t instead as required.
+On 15. 03. 25, 7:15, xie.ludan@zte.com.cn wrote:
+> From: XieLudan <xie.ludan@zte.com.cn>
+> 
+> 
+> Follow the advice in Documentation/filesystems/sysfs.rst:
+> 
+> show() should only use sysfs_emit() or sysfs_emit_at() when formatting
+> 
+> the value to be returned to user space.
+> 
+> 
+> Signed-off-by: XieLudan <xie.ludan@zte.com.cn>
+> 
+> ---
+> 
+>   sound/soc/fsl/imx-audmux.c | 26 +++++++++++---------------
+> 
+>   1 file changed, 11 insertions(+), 15 deletions(-)
+> 
+> 
+> diff --git a/sound/soc/fsl/imx-audmux.c b/sound/soc/fsl/imx-audmux.c
+> 
+> index cc2918ee2cf5..6062503d3543 100644
+> 
+> --- a/sound/soc/fsl/imx-audmux.c
+> 
+> +++ b/sound/soc/fsl/imx-audmux.c
+> 
+> @@ -77,45 +77,41 @@ static ssize_t audmux_read_file(struct file *file, 
+> char __user *user_buf,
+> 
+> ret = sysfs_emit(buf, "PDCR: %08x\nPTCR: %08x\n", pdcr, ptcr);
+> 
+> if (ptcr & IMX_AUDMUX_V2_PTCR_TFSDIR)
+> 
+> -ret += scnprintf(buf + ret, PAGE_SIZE - ret,
+> 
+> +ret += sysfs_emit(buf + ret,
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/arm64/include/asm/ptdump.h | 8 ++++----
- arch/arm64/mm/ptdump.c          | 2 +-
- 2 files changed, 5 insertions(+), 5 deletions(-)
+This is wrong too [1].
 
-diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
-index e5da9ce8a515..476a870489b9 100644
---- a/arch/arm64/include/asm/ptdump.h
-+++ b/arch/arm64/include/asm/ptdump.h
-@@ -24,8 +24,8 @@ struct ptdump_info {
- };
- 
- struct ptdump_prot_bits {
--	u64		mask;
--	u64		val;
-+	pteval_t	mask;
-+	pteval_t	val;
- 	const char	*set;
- 	const char	*clear;
- };
-@@ -34,7 +34,7 @@ struct ptdump_pg_level {
- 	const struct ptdump_prot_bits *bits;
- 	char name[4];
- 	int num;
--	u64 mask;
-+	pteval_t mask;
- };
- 
- /*
-@@ -51,7 +51,7 @@ struct ptdump_pg_state {
- 	const struct mm_struct *mm;
- 	unsigned long start_address;
- 	int level;
--	u64 current_prot;
-+	pteval_t current_prot;
- 	bool check_wx;
- 	unsigned long wx_pages;
- 	unsigned long uxn_pages;
-diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
-index fd1610b4fd15..a5651be95868 100644
---- a/arch/arm64/mm/ptdump.c
-+++ b/arch/arm64/mm/ptdump.c
-@@ -194,7 +194,7 @@ void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
- 	struct ptdump_pg_state *st = container_of(pt_st, struct ptdump_pg_state, ptdump);
- 	struct ptdump_pg_level *pg_level = st->pg_level;
- 	static const char units[] = "KMGTPE";
--	u64 prot = 0;
-+	pteval_t prot = 0;
- 
- 	/* check if the current level has been folded dynamically */
- 	if (st->mm && ((level == 1 && mm_p4d_folded(st->mm)) ||
+[1] 
+https://lore.kernel.org/all/9c552d9a-2d46-4069-a9c4-35fab857bfc3@kernel.org/
+
+regards,
 -- 
-2.25.1
+js
+suse labs
 
 
