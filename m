@@ -1,32 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-7135-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7136-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CC41A652F0
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 15:22:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CAC2A652F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 15:22:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccG0hpdz2yqR;
-	Tue, 18 Mar 2025 01:22:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccJ0dPqz2yqf;
+	Tue, 18 Mar 2025 01:22:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742221326;
-	cv=none; b=Bj8D6T+XXX2M0vCDZiArl/OJ/Ahy/FwWHtoQ81StI9BQZQCRq/ZDkDrTphhVHcbfXhSIBJvGmJWfXjZLEg/p9Z5fXiY7fKVbSIB2uQNqk0Ci627mJZbPAEzzkViZ/icj9vGK25kTLfK3bXjVuE8dyCnwUDpeO+LgFi7ssXzfZxtJvSM33v6EPrV3pKuYMPY9hI/Srb0fi6AN6JG1Bg6S67sNEIF8k15RHWnDsP4N0C7X6mrjwD85cBQ/Z7IoInr2LrE2KuXg6j1Iwcjkk9OYlqEvyT6oWt9GmICeXISjpDp+jgOeKRNB07jrpFN2ju+LL9rXpt5Z6srQcyYwuLuqBQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742221328;
+	cv=none; b=WlG6ZsKm8lGwZzauX1Zt7WmyvGITQH48/wF0Uqhdn6n3B4eAqbOQyTauDeiL0ximUZNV7R/crrBJ74uELluvyCDCBCyt3Jkno6p/Q1SekSZfyDKkpjwQdD71iXls+vLJ/GZg05C2R0Vbs/mFDoQqoNJGhY+LH1Fdky3YgJ+JYptfkvw747x+d+xiVVULvCByRxzW2KsPxdxvxqDm3LaRpPZ12d36L/FA9oHIxJf32rkNtgyI4mLAzz+BxKrd4dhJNGsctSxxCAQXe5emJClmTyy/SUszwDQgRzqfUF3GY9/JCdyHh2QmB7GVsV+QX+3xqgCVwO5Bv094ovEf8mGqug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742221326; c=relaxed/relaxed;
-	bh=GQCGHjxoviKrg5MlZcwQWV/9UYQWX2agQfORO3jzRQU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PtTnxhLLzVpTRnkoFax3y4WN0YEWaam98C1lSe088n0P3KmiQMqb2vINaZDIUzVq1/kvZlhFb9RTLy72tTALYQB7xQnAGUZ6BJsIrXx7vDSq6DoqsdgX0nbeyB34QyTxBcfs11kteo+4/Rui2Kswr8z0OIDZQH7cHSRt/qPgvvLEiCxsF18w7eKjrrmFpELZS14nmOZ4XOdrcMNtap7FZMmP0mmvf656rR3b8uNTfSh5SnLryDyVM8p+p1S7LEsl1tTsu2d5On0FaMhXDVDQ5rV7aOx+gcqKBLoFnrmq403s3HmXmWMKWIbVlQdezgetIttvXn3ApIABdvDPGyYnwg==
+	t=1742221328; c=relaxed/relaxed;
+	bh=/qdT7+4ubPgbgEWg/jUXvx/IzFk/7KwkKCTNSsj59Nw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kYOGt9O9WWmiXQemKiPHuH43KffQawnW+yKHUE0jdkDebU4eiCdMWOYc7QtAY8ZQUfUcHZ3r6tkUcAQD1+IdU5aJFS7No3imyXr8g9/dWc+bOT8D3VDQedRQ+OylEYAucT6Vn7h0MbvLMoVH/Og2KJjiqYi5h7hl5GBfjj0dbVZoUPgT2a0VJj067XcbrCf+/9SDNXeOZsaYQ4mha3JcGZJuMrdpgSI7zOykkTxjDTvGUMnRk8Qq34oJZzyyPLgEf7B2jk9QaKHlqM3oSn3hAEaFccrEkm0iIFD+ajZvFycr/lnhcakBcg0NxWXzY6kDZ/Lgbn58rTP2BqivQSUWjg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccD5sw7z2ySB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 01:22:03 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccG4rzwz2ySB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 01:22:06 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 89EB513D5;
-	Mon, 17 Mar 2025 07:21:39 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 42C2F1688;
+	Mon, 17 Mar 2025 07:21:44 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 5FD433F63F;
-	Mon, 17 Mar 2025 07:21:26 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id EFD3D3F63F;
+	Mon, 17 Mar 2025 07:21:30 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -60,10 +61,12 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-s390@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org
-Subject: [PATCH 00/11] Always call constructor for kernel page tables
-Date: Mon, 17 Mar 2025 14:16:49 +0000
-Message-ID: <20250317141700.3701581-1-kevin.brodsky@arm.com>
+Subject: [PATCH 01/11] mm: Pass mm down to pagetable_{pte,pmd}_ctor
+Date: Mon, 17 Mar 2025 14:16:50 +0000
+Message-ID: <20250317141700.3701581-2-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
+In-Reply-To: <20250317141700.3701581-1-kevin.brodsky@arm.com>
+References: <20250317141700.3701581-1-kevin.brodsky@arm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,172 +84,363 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-There has been much confusion around exactly when page table
-constructors/destructors (pagetable_*_[cd]tor) are supposed to be
-called. They were initially introduced for user PTEs only (to support
-split page table locks), then at the PMD level for the same purpose.
-Accounting was added later on, starting at the PTE level and then moving
-to higher levels (PMD, PUD). Finally, with my earlier series "Account
-page tables at all levels" [1], the ctor/dtor is run for all levels, all
-the way to PGD.
+In preparation for calling constructors for all kernel page tables
+while eliding unnecessary ptlock initialisation, let's pass down the
+associated mm to the PTE/PMD level ctors. (These are the two levels
+where ptlocks are used.)
 
-I thought this was the end of the story, and it hopefully is for user
-pgtables, but I was wrong for what concerns kernel pgtables. The current
-situation there makes very little sense:
+In most cases the mm is already around at the point of calling the
+ctor so we simply pass it down. This is however not the case for
+special page table allocators:
 
-* At the PTE level, the ctor/dtor is not called (at least in the generic
-  implementation). Specific helpers are used for kernel pgtables at this
-  level (pte_{alloc,free}_kernel()) and those have never called the
-  ctor/dtor, most likely because they were initially irrelevant in the
-  kernel case.
+* arch/arm/mm/mmu.c
+* arch/arm64/mm/mmu.c
+* arch/riscv/mm/init.c
 
-* At all other levels, the ctor/dtor is normally called. This is
-  potentially wasteful at the PMD level (more on that later).
+In those cases, the page tables being allocated are either for
+standard kernel memory (init_mm) or special page directories, which
+may not be associated to any mm. For now let's pass NULL as mm; this
+will be refined where possible in future patches.
 
-This series aims to ensure that the ctor/dtor is always called for kernel
-pgtables, as it already is for user pgtables. Besides consistency, the
-main motivation is to guarantee that ctor/dtor hooks are systematically
-called; this makes it possible to insert hooks to protect page tables [2],
-for instance. There is however an extra challenge: split locks are not
-used for kernel pgtables, and it would therefore be wasteful to
-initialise them (ptlock_init()).
+No functional change in this patch.
 
-It is worth clarifying exactly when split locks are used. They clearly
-are for user pgtables, but as illustrated in commit 61444cde9170 ("ARM:
-8591/1: mm: use fully constructed struct pages for EFI pgd
-allocations"), they also are for special page tables like efi_mm. The
-one case where split locks are definitely unused is pgtables owned by
-init_mm; this is consistent with the behaviour of apply_to_pte_range().
-
-The approach chosen in this series is therefore to pass the mm
-associated to the pgtables being constructed to
-pagetable_{pte,pmd}_ctor() (patch 1), and skip ptlock_init() if
-mm == &init_mm (patch 2 and 6). This makes it possible to call the PTE
-ctor/dtor from pte_{alloc,free}_kernel() without unintended consequences
-(patch 2). As a result the accounting functions are now called at
-all levels for kernel pgtables, and split locks are never initialised.
-
-In configurations where ptlocks are dynamically allocated (32-bit,
-PREEMPT_RT, etc.) and ARCH_ENABLE_SPLIT_PMD_PTLOCK is selected, this
-series results in the removal of a kmem_cache allocation for every
-kernel PMD. Additionally, for certain architectures that do not use
-<asm-generic/pgalloc.h> such as s390, the same optimisation occurs at
-the PTE level.
-
+Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
-
-Things get more complicated when it comes to special pgtable allocators
-(patch 7-11). All architectures need such allocators to create initial
-kernel pgtables; we are not concerned with those as the ctor cannot be
-called so early in the boot sequence. However, those allocators may also
-be used later in the boot sequence or during normal operations. There
-are two main use-cases:
-
-1. Mapping EFI memory: efi_mm (arm, arm64, riscv)
-2. arch_add_memory(): init_mm
-
-The ctor is already explicitly run (at the PTE/PMD level) in the first
-case, as required for pgtables that are not associated with init_mm.
-However the same allocators may also be used for the second use-case (or
-others), and this is where it gets messy. Patch 1 calls the ctor with
-NULL as mm in those situations, as the actual mm isn't available.
-Practically this means that ptlocks will be unconditionally initialised.
-This is fine on arm - create_mapping_late() is only used for the EFI
-mapping. On arm64, __create_pgd_mapping() is also used by
-arch_add_memory(); patch 7/8/10 ensure that ctors are called at all
-levels with the appropriate mm. The situation is similar on riscv, but
-propagating the mm down to the ctor would require significant
-refactoring. Since they are already called unconditionally, this series
-leaves riscv no worse off - patch 9 adds comments to clarify the
-situation.
-
-From a cursory look at other architectures implementing
-arch_add_memory(), s390 and x86 may also need a similar treatment to add
-constructor calls. This is to be taken care of in a future version or as
-a follow-up.
-
----
-
-The complications in those special pgtable allocators beg the question:
-does it really make sense to treat efi_mm and init_mm differently in
-e.g. apply_to_pte_range()? Maybe what we really need is a way to tell if
-an mm corresponds to user memory or not, and never use split locks for
-non-user mm's. Feedback and suggestions welcome!
-
-- Kevin
-
-[1] https://lore.kernel.org/linux-mm/20250103184415.2744423-1-kevin.brodsky@arm.com/
-[2] https://lore.kernel.org/linux-hardening/20250203101839.1223008-1-kevin.brodsky@arm.com/
----
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Andreas Larsson <andreas@gaisler.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: "David S. Miller" <davem@davemloft.net>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Linus Walleij <linus.walleij@linaro.org>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Mike Rapoport (IBM)" <rppt@kernel.org>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yang Shi <yang@os.amperecomputing.com>
-Cc: linux-arch@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-csky@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Cc: linux-m68k@lists.linux-m68k.org
-Cc: linux-openrisc@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: sparclinux@vger.kernel.org
----
-Kevin Brodsky (11):
-  mm: Pass mm down to pagetable_{pte,pmd}_ctor
-  mm: Call ctor/dtor for kernel PTEs
-  m68k: mm: Call ctor/dtor for kernel PTEs
-  powerpc: mm: Call ctor/dtor for kernel PTEs
-  sparc64: mm: Call ctor/dtor for kernel PTEs
-  mm: Skip ptlock_init() for kernel PMDs
-  arm64: mm: Use enum to identify pgtable level instead of *_SHIFT
-  arm64: mm: Always call PTE/PMD ctor in __create_pgd_mapping()
-  riscv: mm: Clarify ctor mm argument in alloc_{pte,pmd}_late
-  arm64: mm: Call PUD/P4D ctor in __create_pgd_mapping()
-  riscv: mm: Call PUD/P4D ctor in special kernel pgtable alloc
-
  arch/arm/mm/mmu.c                        |  2 +-
- arch/arm64/mm/mmu.c                      | 91 ++++++++++++++----------
- arch/csky/include/asm/pgalloc.h          |  2 +-
+ arch/arm64/mm/mmu.c                      |  4 ++--
  arch/loongarch/include/asm/pgalloc.h     |  2 +-
- arch/m68k/include/asm/mcf_pgalloc.h      |  8 ++-
- arch/m68k/include/asm/motorola_pgalloc.h | 10 +--
- arch/m68k/mm/motorola.c                  |  6 +-
- arch/microblaze/mm/pgtable.c             |  2 +-
+ arch/m68k/include/asm/mcf_pgalloc.h      |  2 +-
+ arch/m68k/include/asm/motorola_pgalloc.h | 10 +++++-----
+ arch/m68k/mm/motorola.c                  |  6 +++---
  arch/mips/include/asm/pgalloc.h          |  2 +-
- arch/openrisc/mm/ioremap.c               |  2 +-
  arch/parisc/include/asm/pgalloc.h        |  2 +-
  arch/powerpc/mm/book3s64/pgtable.c       |  2 +-
- arch/powerpc/mm/pgtable-frag.c           | 30 ++++----
- arch/riscv/mm/init.c                     | 26 ++++---
+ arch/powerpc/mm/pgtable-frag.c           |  2 +-
+ arch/riscv/mm/init.c                     |  4 ++--
  arch/s390/include/asm/pgalloc.h          |  2 +-
  arch/s390/mm/pgalloc.c                   |  2 +-
- arch/sparc/mm/init_64.c                  | 29 ++++----
+ arch/sparc/mm/init_64.c                  |  2 +-
  arch/sparc/mm/srmmu.c                    |  2 +-
  arch/x86/mm/pgtable.c                    |  2 +-
- include/asm-generic/pgalloc.h            | 11 ++-
- include/linux/mm.h                       | 10 +--
- 21 files changed, 137 insertions(+), 108 deletions(-)
+ include/asm-generic/pgalloc.h            |  4 ++--
+ include/linux/mm.h                       |  6 ++++--
+ 18 files changed, 30 insertions(+), 28 deletions(-)
 
-
-base-commit: 4701f33a10702d5fc577c32434eb62adde0a1ae1
+diff --git a/arch/arm/mm/mmu.c b/arch/arm/mm/mmu.c
+index f02f872ea8a9..edb7f56b7c91 100644
+--- a/arch/arm/mm/mmu.c
++++ b/arch/arm/mm/mmu.c
+@@ -735,7 +735,7 @@ static void *__init late_alloc(unsigned long sz)
+ 	void *ptdesc = pagetable_alloc(GFP_PGTABLE_KERNEL & ~__GFP_HIGHMEM,
+ 			get_order(sz));
+ 
+-	if (!ptdesc || !pagetable_pte_ctor(ptdesc))
++	if (!ptdesc || !pagetable_pte_ctor(NULL, ptdesc))
+ 		BUG();
+ 	return ptdesc_to_virt(ptdesc);
+ }
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 1dfe1a8efdbe..437d4977bcf5 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -494,9 +494,9 @@ static phys_addr_t pgd_pgtable_alloc(int shift)
+ 	 * folded, and if so pagetable_pte_ctor() becomes nop.
+ 	 */
+ 	if (shift == PAGE_SHIFT)
+-		BUG_ON(!pagetable_pte_ctor(ptdesc));
++		BUG_ON(!pagetable_pte_ctor(NULL, ptdesc));
+ 	else if (shift == PMD_SHIFT)
+-		BUG_ON(!pagetable_pmd_ctor(ptdesc));
++		BUG_ON(!pagetable_pmd_ctor(NULL, ptdesc));
+ 
+ 	return pa;
+ }
+diff --git a/arch/loongarch/include/asm/pgalloc.h b/arch/loongarch/include/asm/pgalloc.h
+index 7211dff8c969..57b7dbcee259 100644
+--- a/arch/loongarch/include/asm/pgalloc.h
++++ b/arch/loongarch/include/asm/pgalloc.h
+@@ -72,7 +72,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+ 	if (!ptdesc)
+ 		return NULL;
+ 
+-	if (!pagetable_pmd_ctor(ptdesc)) {
++	if (!pagetable_pmd_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/arch/m68k/include/asm/mcf_pgalloc.h b/arch/m68k/include/asm/mcf_pgalloc.h
+index 4c648b51e7fd..465a71101b7d 100644
+--- a/arch/m68k/include/asm/mcf_pgalloc.h
++++ b/arch/m68k/include/asm/mcf_pgalloc.h
+@@ -48,7 +48,7 @@ static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
+ 
+ 	if (!ptdesc)
+ 		return NULL;
+-	if (!pagetable_pte_ctor(ptdesc)) {
++	if (!pagetable_pte_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/arch/m68k/include/asm/motorola_pgalloc.h b/arch/m68k/include/asm/motorola_pgalloc.h
+index 5abe7da8ac5a..1091fb0affbe 100644
+--- a/arch/m68k/include/asm/motorola_pgalloc.h
++++ b/arch/m68k/include/asm/motorola_pgalloc.h
+@@ -15,7 +15,7 @@ enum m68k_table_types {
+ };
+ 
+ extern void init_pointer_table(void *table, int type);
+-extern void *get_pointer_table(int type);
++extern void *get_pointer_table(struct mm_struct *mm, int type);
+ extern int free_pointer_table(void *table, int type);
+ 
+ /*
+@@ -26,7 +26,7 @@ extern int free_pointer_table(void *table, int type);
+ 
+ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+ {
+-	return get_pointer_table(TABLE_PTE);
++	return get_pointer_table(mm, TABLE_PTE);
+ }
+ 
+ static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+@@ -36,7 +36,7 @@ static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
+ 
+ static inline pgtable_t pte_alloc_one(struct mm_struct *mm)
+ {
+-	return get_pointer_table(TABLE_PTE);
++	return get_pointer_table(mm, TABLE_PTE);
+ }
+ 
+ static inline void pte_free(struct mm_struct *mm, pgtable_t pgtable)
+@@ -53,7 +53,7 @@ static inline void __pte_free_tlb(struct mmu_gather *tlb, pgtable_t pgtable,
+ 
+ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+ {
+-	return get_pointer_table(TABLE_PMD);
++	return get_pointer_table(mm, TABLE_PMD);
+ }
+ 
+ static inline int pmd_free(struct mm_struct *mm, pmd_t *pmd)
+@@ -75,7 +75,7 @@ static inline void pgd_free(struct mm_struct *mm, pgd_t *pgd)
+ 
+ static inline pgd_t *pgd_alloc(struct mm_struct *mm)
+ {
+-	return get_pointer_table(TABLE_PGD);
++	return get_pointer_table(mm, TABLE_PGD);
+ }
+ 
+ 
+diff --git a/arch/m68k/mm/motorola.c b/arch/m68k/mm/motorola.c
+index 73651e093c4d..6ab3ef39ba7a 100644
+--- a/arch/m68k/mm/motorola.c
++++ b/arch/m68k/mm/motorola.c
+@@ -139,7 +139,7 @@ void __init init_pointer_table(void *table, int type)
+ 	return;
+ }
+ 
+-void *get_pointer_table(int type)
++void *get_pointer_table(struct mm_struct *mm, int type)
+ {
+ 	ptable_desc *dp = ptable_list[type].next;
+ 	unsigned int mask = list_empty(&ptable_list[type]) ? 0 : PD_MARKBITS(dp);
+@@ -164,10 +164,10 @@ void *get_pointer_table(int type)
+ 			 * m68k doesn't have SPLIT_PTE_PTLOCKS for not having
+ 			 * SMP.
+ 			 */
+-			pagetable_pte_ctor(virt_to_ptdesc(page));
++			pagetable_pte_ctor(mm, virt_to_ptdesc(page));
+ 			break;
+ 		case TABLE_PMD:
+-			pagetable_pmd_ctor(virt_to_ptdesc(page));
++			pagetable_pmd_ctor(mm, virt_to_ptdesc(page));
+ 			break;
+ 		case TABLE_PGD:
+ 			pagetable_pgd_ctor(virt_to_ptdesc(page));
+diff --git a/arch/mips/include/asm/pgalloc.h b/arch/mips/include/asm/pgalloc.h
+index 26c7a6ede983..415237af4029 100644
+--- a/arch/mips/include/asm/pgalloc.h
++++ b/arch/mips/include/asm/pgalloc.h
+@@ -65,7 +65,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+ 	if (!ptdesc)
+ 		return NULL;
+ 
+-	if (!pagetable_pmd_ctor(ptdesc)) {
++	if (!pagetable_pmd_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/arch/parisc/include/asm/pgalloc.h b/arch/parisc/include/asm/pgalloc.h
+index 2ca74a56415c..3b84ee93edaa 100644
+--- a/arch/parisc/include/asm/pgalloc.h
++++ b/arch/parisc/include/asm/pgalloc.h
+@@ -39,7 +39,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long address)
+ 	ptdesc = pagetable_alloc(gfp, PMD_TABLE_ORDER);
+ 	if (!ptdesc)
+ 		return NULL;
+-	if (!pagetable_pmd_ctor(ptdesc)) {
++	if (!pagetable_pmd_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/arch/powerpc/mm/book3s64/pgtable.c b/arch/powerpc/mm/book3s64/pgtable.c
+index ce64abea9e3e..83afc4e72088 100644
+--- a/arch/powerpc/mm/book3s64/pgtable.c
++++ b/arch/powerpc/mm/book3s64/pgtable.c
+@@ -423,7 +423,7 @@ static pmd_t *__alloc_for_pmdcache(struct mm_struct *mm)
+ 	ptdesc = pagetable_alloc(gfp, 0);
+ 	if (!ptdesc)
+ 		return NULL;
+-	if (!pagetable_pmd_ctor(ptdesc)) {
++	if (!pagetable_pmd_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/arch/powerpc/mm/pgtable-frag.c b/arch/powerpc/mm/pgtable-frag.c
+index 713268ccb1a0..387e9b1fe12c 100644
+--- a/arch/powerpc/mm/pgtable-frag.c
++++ b/arch/powerpc/mm/pgtable-frag.c
+@@ -61,7 +61,7 @@ static pte_t *__alloc_for_ptecache(struct mm_struct *mm, int kernel)
+ 		ptdesc = pagetable_alloc(PGALLOC_GFP | __GFP_ACCOUNT, 0);
+ 		if (!ptdesc)
+ 			return NULL;
+-		if (!pagetable_pte_ctor(ptdesc)) {
++		if (!pagetable_pte_ctor(mm, ptdesc)) {
+ 			pagetable_free(ptdesc);
+ 			return NULL;
+ 		}
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 15b2eda4c364..703c3648cfa9 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -409,7 +409,7 @@ static phys_addr_t __meminit alloc_pte_late(uintptr_t va)
+ {
+ 	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL & ~__GFP_HIGHMEM, 0);
+ 
+-	BUG_ON(!ptdesc || !pagetable_pte_ctor(ptdesc));
++	BUG_ON(!ptdesc || !pagetable_pte_ctor(NULL, ptdesc));
+ 	return __pa((pte_t *)ptdesc_address(ptdesc));
+ }
+ 
+@@ -489,7 +489,7 @@ static phys_addr_t __meminit alloc_pmd_late(uintptr_t va)
+ {
+ 	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL & ~__GFP_HIGHMEM, 0);
+ 
+-	BUG_ON(!ptdesc || !pagetable_pmd_ctor(ptdesc));
++	BUG_ON(!ptdesc || !pagetable_pmd_ctor(NULL, ptdesc));
+ 	return __pa((pmd_t *)ptdesc_address(ptdesc));
+ }
+ 
+diff --git a/arch/s390/include/asm/pgalloc.h b/arch/s390/include/asm/pgalloc.h
+index b19b6ed2ab53..cd65b93d87e9 100644
+--- a/arch/s390/include/asm/pgalloc.h
++++ b/arch/s390/include/asm/pgalloc.h
+@@ -98,7 +98,7 @@ static inline pmd_t *pmd_alloc_one(struct mm_struct *mm, unsigned long vmaddr)
+ 	if (!table)
+ 		return NULL;
+ 	crst_table_init(table, _SEGMENT_ENTRY_EMPTY);
+-	if (!pagetable_pmd_ctor(virt_to_ptdesc(table))) {
++	if (!pagetable_pmd_ctor(mm, virt_to_ptdesc(table))) {
+ 		crst_table_free(mm, table);
+ 		return NULL;
+ 	}
+diff --git a/arch/s390/mm/pgalloc.c b/arch/s390/mm/pgalloc.c
+index 30387a6e98ff..35b0ab6fab24 100644
+--- a/arch/s390/mm/pgalloc.c
++++ b/arch/s390/mm/pgalloc.c
+@@ -170,7 +170,7 @@ unsigned long *page_table_alloc(struct mm_struct *mm)
+ 	ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+ 	if (!ptdesc)
+ 		return NULL;
+-	if (!pagetable_pte_ctor(ptdesc)) {
++	if (!pagetable_pte_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
+index 05882bca5b73..cd60a0a8ca0e 100644
+--- a/arch/sparc/mm/init_64.c
++++ b/arch/sparc/mm/init_64.c
+@@ -2899,7 +2899,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
+ 
+ 	if (!ptdesc)
+ 		return NULL;
+-	if (!pagetable_pte_ctor(ptdesc)) {
++	if (!pagetable_pte_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/arch/sparc/mm/srmmu.c b/arch/sparc/mm/srmmu.c
+index dd32711022f5..f8fb4911d360 100644
+--- a/arch/sparc/mm/srmmu.c
++++ b/arch/sparc/mm/srmmu.c
+@@ -350,7 +350,7 @@ pgtable_t pte_alloc_one(struct mm_struct *mm)
+ 	page = pfn_to_page(__nocache_pa((unsigned long)ptep) >> PAGE_SHIFT);
+ 	spin_lock(&mm->page_table_lock);
+ 	if (page_ref_inc_return(page) == 2 &&
+-			!pagetable_pte_ctor(page_ptdesc(page))) {
++			!pagetable_pte_ctor(mm, page_ptdesc(page))) {
+ 		page_ref_dec(page);
+ 		ptep = NULL;
+ 	}
+diff --git a/arch/x86/mm/pgtable.c b/arch/x86/mm/pgtable.c
+index 1fef5ad32d5a..2d20f021c50b 100644
+--- a/arch/x86/mm/pgtable.c
++++ b/arch/x86/mm/pgtable.c
+@@ -249,7 +249,7 @@ static int preallocate_pmds(struct mm_struct *mm, pmd_t *pmds[], int count)
+ 
+ 		if (!ptdesc)
+ 			failed = true;
+-		if (ptdesc && !pagetable_pmd_ctor(ptdesc)) {
++		if (ptdesc && !pagetable_pmd_ctor(mm, ptdesc)) {
+ 			pagetable_free(ptdesc);
+ 			ptdesc = NULL;
+ 			failed = true;
+diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
+index 892ece4558a2..e164ca66f0f6 100644
+--- a/include/asm-generic/pgalloc.h
++++ b/include/asm-generic/pgalloc.h
+@@ -70,7 +70,7 @@ static inline pgtable_t __pte_alloc_one_noprof(struct mm_struct *mm, gfp_t gfp)
+ 	ptdesc = pagetable_alloc_noprof(gfp, 0);
+ 	if (!ptdesc)
+ 		return NULL;
+-	if (!pagetable_pte_ctor(ptdesc)) {
++	if (!pagetable_pte_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+@@ -137,7 +137,7 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
+ 	ptdesc = pagetable_alloc_noprof(gfp, 0);
+ 	if (!ptdesc)
+ 		return NULL;
+-	if (!pagetable_pmd_ctor(ptdesc)) {
++	if (!pagetable_pmd_ctor(mm, ptdesc)) {
+ 		pagetable_free(ptdesc);
+ 		return NULL;
+ 	}
+diff --git a/include/linux/mm.h b/include/linux/mm.h
+index 8483e09aeb2c..d92c16f6cfa2 100644
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3015,7 +3015,8 @@ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
+ 	pagetable_free(ptdesc);
+ }
+ 
+-static inline bool pagetable_pte_ctor(struct ptdesc *ptdesc)
++static inline bool pagetable_pte_ctor(struct mm_struct *mm,
++				      struct ptdesc *ptdesc)
+ {
+ 	if (!ptlock_init(ptdesc))
+ 		return false;
+@@ -3121,7 +3122,8 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
+ 	return ptl;
+ }
+ 
+-static inline bool pagetable_pmd_ctor(struct ptdesc *ptdesc)
++static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
++				      struct ptdesc *ptdesc)
+ {
+ 	if (!pmd_ptlock_init(ptdesc))
+ 		return false;
 -- 
 2.47.0
 
