@@ -1,67 +1,43 @@
-Return-Path: <linuxppc-dev+bounces-7101-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7102-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2C2FA6335F
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 16 Mar 2025 03:45:04 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BA3A6408B
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 07:02:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZFjBK0QSqz2ydj;
-	Sun, 16 Mar 2025 13:44:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGPWy0Kpsz2ySZ;
+	Mon, 17 Mar 2025 17:02:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::634"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742050547;
-	cv=none; b=iepaEERzMav8u0Y/mRbCnSITu5zjFoI0C6mgWtFe9SEMBnNUWhwy/V6HvMOHR9SAIAnNYFxzjifZ/JVTmBsS4c8K1Fa2rm/3+EAIi7x2P88FTcqIr02s8YAw1VHt/gA7QK/Lepv1YtABoyXMppUpwkbMxt+ETb3vN+wb6UC55K9Eg8bnt9QoSmgP5RSI6Q1rO5MbW5aQJAzKWzUtr8MCv+WuU6ryLpwO6RG4eLp8LczMJxrPRF1OooPXSzjNwkaEWKN57X80yIZPqYnjmcE6YfAJhBOJR4262I3SdHsNVKxnqm+P/glKPnGfjwWhE1Yu8tcyCSbijrVggThbdeSGog==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.101
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742191357;
+	cv=none; b=joqZ9Hu+3WMNnA+/ekPN+2SDPluc8zFqyhHy/Hf+oPsOSSkajV1zNzWDrY9gFTUWrTrIkW9179Oyt09bFXePUoilEOzlvGV8VtNfj9R08/hMWDZYm46asVfkmxdyJmtGHYZajyS189EEIhREQ6+SBYRwNm7pbX3ag+zw5qYGzfFL6wW8LMEIbmWAG4KlJ8CzN/ntggl9cKxzppsBpYp/IDN6vMf6CbM6w3R8YXz7Ds1z7iZl/0PT8G9wmsgyRJ9RfYBT6TQ1wxQNOqrOSSU71bUnYVyPgKblOA1Uwnbs9buknrcvYFp1K4pfl/IgAP3lv7RAtb5ymmaDAay8r6fO+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742050547; c=relaxed/relaxed;
-	bh=XA99tfLBp8bXT73QYWUaMhUBMUYYGtyNQMBwQmFvmFg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 Cc:Content-Type; b=jYPPzj2M96APQqnUisQeDN5I74cOlCJ7wXpJWWqDD9WoxBxFCbC6xqEM4urJQGSHRJuBY3A08oFOtoKyZ6PboWR/5TR+QZONfGfhutkDOiIztVVxjGzpX2uGFJEpSUh1yUsCThJTwwOzQ5ePROj0CCZKpgKZkN6+WRiVuKTnKWi+ig2UbKK9PY7d8I0hLmnmJA01SPxE1uiC3YDvmj8YkX6YJw+IJcwfM3YYB+NNMkLSjzausHvWixEOHx3J9dcaaWoN+ZBu7KnxZMWG+FsFqY1gZFYdAV3Qk9usvSQz7BEIIHNV9eQV8wuw3AaQA5srLhTDT18DaZm7AfVqaxA0gg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=E01YhmRh; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=downinthebunnyhole@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1742191357; c=relaxed/relaxed;
+	bh=b5GxWT6HNGG5WO59UC9kgPZf/Ys/EEvS9UccUUiRohs=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=Af8A8Q7y8IBE38W8a4UmEvaUIllRhHpJ2sVQA335Uc/ssQ04ADvnR/tnI/dISTQRnvWv41DV568zVuJlgwaProrY2sSECKo8C2q6ubKgt62QeSA43wPcKaASrHIZ+iWL3WV9LhftwV0ryySzw/4qvcmhTzLOjYi4j54wTF5pJDwa2IzY/iwhcnGpLlFJW2eNgOxDqZ13V98ESpVssoJVUdSqzUs9SXzzWszoW06wPtx6ylsbouVjISa9TaZksS8zXw/yKWzNVqj7c569iI1LNYlteFeG9rVkRMHUWVyRmnYFuPe8i61h7Ndo30uWugfCEJqQ0JUNNfMoLnJsU7hRtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=uuroSi7t; dkim-atps=neutral; spf=pass (client-ip=115.124.30.101; helo=out30-101.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=E01YhmRh;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=uuroSi7t;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::634; helo=mail-pl1-x634.google.com; envelope-from=downinthebunnyhole@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.101; helo=out30-101.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZFPS21KS4z304x
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 16 Mar 2025 01:55:45 +1100 (AEDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-223594b3c6dso60296965ad.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 15 Mar 2025 07:55:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742050543; x=1742655343; darn=lists.ozlabs.org;
-        h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=XA99tfLBp8bXT73QYWUaMhUBMUYYGtyNQMBwQmFvmFg=;
-        b=E01YhmRh15InJyh7/jc7nVGRzTjRk6Mj6apwcepeoH25I7li+13WySGGmu9tMo8HaG
-         d6YAn6j2W+Rk/bfTkYRCjVxqXVSM8fxhMkY0VYAKHSQGasBYN/t0q7yPPFuThx+UqBG1
-         CHD08PVrWn+Ubm7oEWyFZeT3PezoXFce2rLPHk8EL/gjgRaVKE17yKcKUu5aD9ah03XD
-         DYtO9TTScv7jQBAROirxqJD3XFUybYyRXwTiV6nclith1E1UTEGnZk7nc1vmiffvOxxb
-         lABs1iLox0+5wmiZuATBqdeBIQ3C/3DHCDicAT87qwc9JUVZ2GlJfOixNGMQg+N1umEc
-         zbnw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742050543; x=1742655343;
-        h=cc:subject:message-id:date:from:in-reply-to:references:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=XA99tfLBp8bXT73QYWUaMhUBMUYYGtyNQMBwQmFvmFg=;
-        b=UU5sNPyAm0ZS8cTtXdgistT/BQ8rJK1lxcXnAJWwXEwCxe8O4M+pL9u5Uu18ibsLdn
-         0BaYQXaWPTB2c+knSwM/3LjP+n/30LAnncOnPIx2fxQPw4b2OVu26ufXGpMDjLDmLKkw
-         w1s673TkWeZ6JX4OYRv8xnT5yy2UV+Qq9th4ZAFQIBWZBaR33rsN42yXHBkE2H3Bnvsz
-         1LW4lyelhpBRb0WMKBTjLxyUiNS0qymqq/aPjgN8OOdcNbQUM8lDHoejn8OHK3LUGa9R
-         IM7edAGaqM29IdBsNusipMwM/f7ivliIUxhXX5tG6vvQVfs2Q2uzAD+4hV/z7LmGZekx
-         aIPA==
-X-Forwarded-Encrypted: i=1; AJvYcCUm80JVhed5jIsURXMCaAexxgTvgYgdQwauuFjBROFhXt5162TiGs7TGlHueaqnPuxk5s4bUryND990Owc=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YxI3IKebYJQ7L0G64rQmGQSA1JnuWSQ7HK2ACIt/wmu7IbXkHaG
-	cyFe8YLHDBef3l6KC359qzy3cdEUIwyD2cbIMiD98OotkDGFhdRIF5YoRGnWlHGapPlGV5lVowv
-	UKro06xghtl4NAG8ZQgne5JUY92E=
-X-Gm-Gg: ASbGncuoXcR8XA+rifo6f4P+KlzxSEBRMiFTsvJ7BkBjGDnBB1h9T1NQBeqZ1iCfF6v
-	bj1kfNfsj14bA+oVzp9SWEc4ayFSj9PLSxSSJsTzThM2ZrNdonzuBLjEiw4Qb5Qpa0N3/Vo/BzS
-	aBa4H1movV4M8qknln0ocqJXk=
-X-Received: by 2002:a17:90b:2e44:b0:2f9:d9fe:e72e with SMTP id
- 98e67ed59e1d1-30151cc2490mt7920216a91.16.1742050543260; Sat, 15 Mar 2025
- 07:55:43 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGPWw0yB5z2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 17:02:34 +1100 (AEDT)
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1742191350; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
+	bh=b5GxWT6HNGG5WO59UC9kgPZf/Ys/EEvS9UccUUiRohs=;
+	b=uuroSi7tzP0aO0rRsDS3FcPRpYumSWPJvUfPuetq8NCzuoTDakoeAKwmy6SUGSRMOJn7ppfV4ZTwdGzmo/iERh2eTxDU2MJ2aHsSbfN43thr21cTaI840OGY2b3cNr3fLPmVOkLnQEgnvnkMK+Hv3nkmdu9HfuSzwEsfvD4hzwc=
+Received: from 30.246.160.93(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WRZvNEt_1742191346 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 17 Mar 2025 14:02:27 +0800
+Message-ID: <362fcb01-8d9c-49e6-be83-5a784c1e5f3e@linux.alibaba.com>
+Date: Mon, 17 Mar 2025 14:02:26 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,43 +50,84 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250306185124.3147510-1-rppt@kernel.org> <20250306185124.3147510-11-rppt@kernel.org>
- <cee346ec-5fa5-4d0b-987b-413ee585dbaa@sirena.org.uk> <Z9CyRHewqfZlmgIo@shell.armlinux.org.uk>
- <Z9ErEBuMMvd6i2n9@kernel.org>
-In-Reply-To: <Z9ErEBuMMvd6i2n9@kernel.org>
-From: DiTBho Down in The Bunny hole <downinthebunnyhole@gmail.com>
-Date: Sat, 15 Mar 2025 15:55:33 +0100
-X-Gm-Features: AQ5f1Jrmv7KQRCuWBIo_vXTI9aIDRsZr_EQ5uQHAURWeudjXpiSlHPWiANvw4jg
-Message-ID: <CAAZ8i80e6CsD1Y36-sVrVs4QPB-82J1gPOeDvHa_+sQtfUpMtQ@mail.gmail.com>
-Subject: Soekris crypto 1411, where to find ?
-Cc: linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-mips@vger.kernel.org, linux-openrisc@vger.kernel.org, 
-	linux-parisc <linux-parisc@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, sparclinux@vger.kernel.org, 
-	linux-um@lists.infradead.org, linux-arch@vger.kernel.org, linux-mm@kvack.org, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=3.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,MALFORMED_FREEMAIL,
-	MISSING_HEADERS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.0
-X-Spam-Level: ***
-X-Spam-Checker-Version: SpamAssassin 4.0.0 (2022-12-13) on lists.ozlabs.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] PCI/AER: Report fatal errors of RCiEP and EP if
+ link recoverd
+From: Shuai Xue <xueshuai@linux.alibaba.com>
+To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org
+Cc: mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
+ terry.bowman@amd.com, tianruidong@linux.alibaba.com
+References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
+ <20250217024218.1681-4-xueshuai@linux.alibaba.com>
+ <8a833aaf-53aa-4e56-a560-2b84a6e9c28c@linux.intel.com>
+ <1dea64ef-3c9f-4bff-820f-34d8f3a6a1d4@linux.alibaba.com>
+In-Reply-To: <1dea64ef-3c9f-4bff-820f-34d8f3a6a1d4@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-hi
-this is probably not the right place to ask, but I've been searching
-eBay and similar places for 2 years and haven't found one yet.
-I support older MIPS hardware and need to find a Soekris crypto 1411
-miniPCI module or two, to add VPN acceleration.
 
-Anyone have an idea where to buy it?
 
-Soekris company went out of business years ago.
+在 2025/3/3 12:33, Shuai Xue 写道:
+> 
+> 
+> 在 2025/3/3 11:43, Sathyanarayanan Kuppuswamy 写道:
+>>
+>> On 2/16/25 6:42 PM, Shuai Xue wrote:
+>>> The AER driver has historically avoided reading the configuration space of
+>>> an endpoint or RCiEP that reported a fatal error, considering the link to
+>>> that device unreliable. Consequently, when a fatal error occurs, the AER
+>>> and DPC drivers do not report specific error types, resulting in logs like:
+>>>
+>>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>>    nvme nvme0: frozen state error detected, reset controller
+>>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>>
+>>> AER status registers are sticky and Write-1-to-clear. If the link recovered
+>>> after hot reset, we can still safely access AER status of the error device.
+>>> In such case, report fatal errors which helps to figure out the error root
+>>> case.
+>>>
+>>> After this patch, the logs like:
+>>>
+>>>    pcieport 0000:30:03.0: EDR: EDR event received
+>>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
+>>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
+>>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
+>>>    nvme nvme0: frozen state error detected, reset controller
+>>>    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
+>>>    nvme 0000:34:00.0: ready 0ms after DPC
+>>>    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
+>>>    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
+>>>    nvme 0000:34:00.0:    [ 4] DLP                    (First)
+>>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
+>>
+>> IMO, above info about device error details is more of a debug info. Since the
+>> main use of this info use to understand more details about the recovered
+>> DPC error. So I think is better to print with debug tag. Lets see what others
+>> think.
+>>
+>> Code wise, looks fine to me.
+> 
+> thanks, looking forward to more feedback.
+>>
+>>
 
-Let me know.
-D.
+Hi, all,
+
+Gentle ping.
+
+Thanks.
+Shuai
+
 
