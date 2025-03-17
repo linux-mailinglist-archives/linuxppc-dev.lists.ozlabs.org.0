@@ -1,43 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-7102-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7103-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BA3A6408B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 07:02:40 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 957B8A64125
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 07:19:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGPWy0Kpsz2ySZ;
-	Mon, 17 Mar 2025 17:02:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGPtx0Kxsz2yGN;
+	Mon, 17 Mar 2025 17:19:05 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=115.124.30.101
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742191357;
-	cv=none; b=joqZ9Hu+3WMNnA+/ekPN+2SDPluc8zFqyhHy/Hf+oPsOSSkajV1zNzWDrY9gFTUWrTrIkW9179Oyt09bFXePUoilEOzlvGV8VtNfj9R08/hMWDZYm46asVfkmxdyJmtGHYZajyS189EEIhREQ6+SBYRwNm7pbX3ag+zw5qYGzfFL6wW8LMEIbmWAG4KlJ8CzN/ntggl9cKxzppsBpYp/IDN6vMf6CbM6w3R8YXz7Ds1z7iZl/0PT8G9wmsgyRJ9RfYBT6TQ1wxQNOqrOSSU71bUnYVyPgKblOA1Uwnbs9buknrcvYFp1K4pfl/IgAP3lv7RAtb5ymmaDAay8r6fO+w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742192344;
+	cv=none; b=DG4uCy8sFj9+OpBwUEdKt1HJao+dAukITpxkxfjUt03uN+tyipX2+kdOY5ubETh9Kgh+9KndvuWTwjUPLVPnyYRseROpsU+WdPrquXqEAfpBk3iySjD4asLYmf2jxB1LMJAHtKM8YfxjB8V/BpNOZ5rXVigAXnSK1986BVAZ5T9EOT1+oeFX7pBznGUXw8eV23aRdQslaRVkfcBpAc5sAOkuv6NttgBvFLQtBQ4+PGEtsiTMi4G/3c12c6XqKmn2UhWZhFC0l2PiQ/PLrNliKm2JCGI7XGhN8Z7SArgog0dW2MwO+iQsVzHssemCe3C+A99vkr1wmFz83sPdW+Wyfw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742191357; c=relaxed/relaxed;
-	bh=b5GxWT6HNGG5WO59UC9kgPZf/Ys/EEvS9UccUUiRohs=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=Af8A8Q7y8IBE38W8a4UmEvaUIllRhHpJ2sVQA335Uc/ssQ04ADvnR/tnI/dISTQRnvWv41DV568zVuJlgwaProrY2sSECKo8C2q6ubKgt62QeSA43wPcKaASrHIZ+iWL3WV9LhftwV0ryySzw/4qvcmhTzLOjYi4j54wTF5pJDwa2IzY/iwhcnGpLlFJW2eNgOxDqZ13V98ESpVssoJVUdSqzUs9SXzzWszoW06wPtx6ylsbouVjISa9TaZksS8zXw/yKWzNVqj7c569iI1LNYlteFeG9rVkRMHUWVyRmnYFuPe8i61h7Ndo30uWugfCEJqQ0JUNNfMoLnJsU7hRtw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=uuroSi7t; dkim-atps=neutral; spf=pass (client-ip=115.124.30.101; helo=out30-101.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.a=rsa-sha256 header.s=default header.b=uuroSi7t;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.alibaba.com (client-ip=115.124.30.101; helo=out30-101.freemail.mail.aliyun.com; envelope-from=xueshuai@linux.alibaba.com; receiver=lists.ozlabs.org)
-Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGPWw0yB5z2yGM
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 17:02:34 +1100 (AEDT)
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1742191350; h=Message-ID:Date:MIME-Version:Subject:From:To:Content-Type;
-	bh=b5GxWT6HNGG5WO59UC9kgPZf/Ys/EEvS9UccUUiRohs=;
-	b=uuroSi7tzP0aO0rRsDS3FcPRpYumSWPJvUfPuetq8NCzuoTDakoeAKwmy6SUGSRMOJn7ppfV4ZTwdGzmo/iERh2eTxDU2MJ2aHsSbfN43thr21cTaI840OGY2b3cNr3fLPmVOkLnQEgnvnkMK+Hv3nkmdu9HfuSzwEsfvD4hzwc=
-Received: from 30.246.160.93(mailfrom:xueshuai@linux.alibaba.com fp:SMTPD_---0WRZvNEt_1742191346 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 17 Mar 2025 14:02:27 +0800
-Message-ID: <362fcb01-8d9c-49e6-be83-5a784c1e5f3e@linux.alibaba.com>
-Date: Mon, 17 Mar 2025 14:02:26 +0800
+	t=1742192344; c=relaxed/relaxed;
+	bh=V/eQJqVgbd3UXy9T88/l4rv0D+h5MVbR2tramUFNA08=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CUU7XxrajhiftrKQlZ1wud7ujwf53iD9tWoA03Tv6ev0wc+kMbLmj4W9ouV8wFNAwF4jNNFnOOWCUhcmk4gZy0LrUu23sFfgZTsLO2WRN5ZC0IaXw0ErjXwFnx1kWBhtwgMS1kDn2pdaLTDqIcfGJNaRKTywehJSAk/K+qFgeBH1WSRRmxySQ+6927oTr9Mb8UskUFn2FJayuTlh1yx3/UyTVG/n3x2TTWzZuIEq2xgnn13hJtLloBKyv/D+JButk4GHEVwA4Z0BDtPOwyP+vfCGa0BUfIq904sK5hfHgwvqIpQLY8MN+9Rxpu6OthvdwXVXgihFwUq6Pn+LfKojJQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGPtv6CG3z2yGM
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 17:19:02 +1100 (AEDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2595E13D5;
+	Sun, 16 Mar 2025 23:18:39 -0700 (PDT)
+Received: from a077893.blr.arm.com (a077893.blr.arm.com [10.162.16.153])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6A6203F673;
+	Sun, 16 Mar 2025 23:18:23 -0700 (PDT)
+From: Anshuman Khandual <anshuman.khandual@arm.com>
+To: linux-mm@kvack.org
+Cc: Anshuman Khandual <anshuman.khandual@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Steven Price <steven.price@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org
+Subject: [PATCH 0/2] mm/ptdump: Drop assumption that pxd_val() is u64
+Date: Mon, 17 Mar 2025 11:48:16 +0530
+Message-Id: <20250317061818.16244-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -50,84 +65,75 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] PCI/AER: Report fatal errors of RCiEP and EP if
- link recoverd
-From: Shuai Xue <xueshuai@linux.alibaba.com>
-To: Sathyanarayanan Kuppuswamy <sathyanarayanan.kuppuswamy@linux.intel.com>,
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, bhelgaas@google.com, kbusch@kernel.org
-Cc: mahesh@linux.ibm.com, oohall@gmail.com, Jonathan.Cameron@huawei.com,
- terry.bowman@amd.com, tianruidong@linux.alibaba.com
-References: <20250217024218.1681-1-xueshuai@linux.alibaba.com>
- <20250217024218.1681-4-xueshuai@linux.alibaba.com>
- <8a833aaf-53aa-4e56-a560-2b84a6e9c28c@linux.intel.com>
- <1dea64ef-3c9f-4bff-820f-34d8f3a6a1d4@linux.alibaba.com>
-In-Reply-To: <1dea64ef-3c9f-4bff-820f-34d8f3a6a1d4@linux.alibaba.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-15.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS,UNPARSEABLE_RELAY,USER_IN_DEF_DKIM_WL,
-	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Last argument passed down in note_page() is u64 assuming pxd_val() returned
+value (all page table levels) is 64 bit - which might not be the case going
+ahead when D128 page tables is enabled on arm64 platform. Besides pxd_val()
+is very platform specific and its type should not be assumed in generic MM.
 
+This series splits note_page() into individual page table level specific
+callbacks which accepts corresponding pxd_t page table entry as an argument
+instead and later all subscribing platforms could derive pxd_val() from the
+entries as required and proceed as before.
 
-在 2025/3/3 12:33, Shuai Xue 写道:
-> 
-> 
-> 在 2025/3/3 11:43, Sathyanarayanan Kuppuswamy 写道:
->>
->> On 2/16/25 6:42 PM, Shuai Xue wrote:
->>> The AER driver has historically avoided reading the configuration space of
->>> an endpoint or RCiEP that reported a fatal error, considering the link to
->>> that device unreliable. Consequently, when a fatal error occurs, the AER
->>> and DPC drivers do not report specific error types, resulting in logs like:
->>>
->>>    pcieport 0000:30:03.0: EDR: EDR event received
->>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
->>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
->>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
->>>    nvme nvme0: frozen state error detected, reset controller
->>>    nvme 0000:34:00.0: ready 0ms after DPC
->>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
->>>
->>> AER status registers are sticky and Write-1-to-clear. If the link recovered
->>> after hot reset, we can still safely access AER status of the error device.
->>> In such case, report fatal errors which helps to figure out the error root
->>> case.
->>>
->>> After this patch, the logs like:
->>>
->>>    pcieport 0000:30:03.0: EDR: EDR event received
->>>    pcieport 0000:30:03.0: DPC: containment event, status:0x0005 source:0x3400
->>>    pcieport 0000:30:03.0: DPC: ERR_FATAL detected
->>>    pcieport 0000:30:03.0: AER: broadcast error_detected message
->>>    nvme nvme0: frozen state error detected, reset controller
->>>    pcieport 0000:30:03.0: waiting 100 ms for downstream link, after activation
->>>    nvme 0000:34:00.0: ready 0ms after DPC
->>>    nvme 0000:34:00.0: PCIe Bus Error: severity=Uncorrectable (Fatal), type=Data Link Layer, (Receiver ID)
->>>    nvme 0000:34:00.0:   device [144d:a804] error status/mask=00000010/00504000
->>>    nvme 0000:34:00.0:    [ 4] DLP                    (First)
->>>    pcieport 0000:30:03.0: AER: broadcast slot_reset message
->>
->> IMO, above info about device error details is more of a debug info. Since the
->> main use of this info use to understand more details about the recovered
->> DPC error. So I think is better to print with debug tag. Lets see what others
->> think.
->>
->> Code wise, looks fine to me.
-> 
-> thanks, looking forward to more feedback.
->>
->>
+Page table entry's value, mask and protection are represented with pteval_t
+not u64 that has been assumed while dumping the page table entries on arm64
+platform. Replace such u64 instances with pteval_t instead as expected.
 
-Hi, all,
+This series has been tested on arm64 platform but it does build on other
+relevant platforms (v6.14-rc7).
 
-Gentle ping.
+Changes in V1:
 
-Thanks.
-Shuai
+- Added note_page_flush() callback and implemented the same on all
+  subscribing platforms
+- Moved note_page() argument change from u64 to pteval_t on arm64 platform
+  from second patch to the first patch instead
+
+Changes in RFC:
+
+https://lore.kernel.org/all/20250310095902.390664-1-anshuman.khandual@arm.com/
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-mm@kvack.org
+
+Anshuman Khandual (2):
+  mm/ptdump: Split note_page() into level specific callbacks
+  arm64/ptdump: Replace u64 with pteval_t
+
+ arch/arm64/include/asm/ptdump.h | 24 ++++++++++++----
+ arch/arm64/mm/ptdump.c          | 50 ++++++++++++++++++++++++++++++---
+ arch/powerpc/mm/ptdump/ptdump.c | 46 ++++++++++++++++++++++++++++--
+ arch/riscv/mm/ptdump.c          | 46 ++++++++++++++++++++++++++++--
+ arch/s390/mm/dump_pagetables.c  | 46 ++++++++++++++++++++++++++++--
+ arch/x86/mm/dump_pagetables.c   | 39 ++++++++++++++++++++++++-
+ include/linux/ptdump.h          |  9 ++++--
+ mm/ptdump.c                     | 42 ++++++++++++++++++++-------
+ 8 files changed, 272 insertions(+), 30 deletions(-)
+
+-- 
+2.25.1
 
 
