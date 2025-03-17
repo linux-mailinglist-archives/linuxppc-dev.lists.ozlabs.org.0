@@ -1,81 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7112-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7113-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D66A647D1
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 10:43:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9679A647F5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 10:46:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGVQf0z6xz2ygd;
-	Mon, 17 Mar 2025 20:43:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGVV00t7vz2ygf;
+	Mon, 17 Mar 2025 20:46:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:260d::612" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742204602;
-	cv=pass; b=gVWC5kVX15E0YFqtgPbACcBC6kDGwVOh0HLbXR9oPHnlPXkK8w/i8axmfk34ZuPV/NT5H9cpWsJyO75eh9J5snHnb5uk6XlKk4Vsfis9njTeUzORWX5v0dqXiCReXLCEofV/1enHnh1/ZSy8GXMqJAMq7TCq5ck4yWk6TnLzCRb8xWde7eez0UT8Nws1bRotlfRqUUlWKL8Q5BJthoyAnccwyRlZvosm3Aq+c8suB6GDQN2y+CXNhhq3zignrZEAMEqRcPxv6WqSgjmjFKZ6WwiRjRplxqn8t6YAWdhgZkN2ubrVnUL2HW96AUCdE9py2ZjRB1vmpFTZK2hupemwTg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742204602; c=relaxed/relaxed;
-	bh=n6Chb4BEKFiohxMu56XswWBYmWZryunrkL08HUjfJmE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ditKMtKgXMF+7YUqWRjJywVGkFbNUO5LrMaWdPSMBxa+3mLKKNFge6WVeoaYfhTH6AW0560Jo/Qjq06+Zq3xbfHEiPR2Aom7rI1RnqT15gK1624Mx+xdbt4KmMf+edQKzisf4pxU/OL36MOk1RNB+ut8hwVM+fHHDSSMt52QIXyNbd580TaYg9zxz7dF7+3ShStQaO5lkS9tp+vqyojhaaQ5wIfI12aSGosnLjuMm1QykKvqQjxZakaO4P2SJuxbeKcbKXeF7kUjM6RyBzF8luFA8iU4YK+sYGHRQjlN88eQVt43sLXYXgVQFx3XdlcH2bnoS8Eom1z+X08tpWDRUQ==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P0yLGz4m; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:260d::612; helo=eur03-dba-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742204776;
+	cv=none; b=LO/VcEidKkYNuDlIqWC6puWCN7v5WyUGV+cMSmJ2HP9cLzMOkLdp6CaeUCZz4ArDMhFepCNChlAkfH6qeQaxHi7QD3fl2jHLx7EK10Wd1YG7YQXmh3KUU0nU2XEFS3gXmHaBBCRJVeSRXdr0jzI9CxlXPcLFkb0G2vTROlJhaTj7ysL/b5nYuRvg7losI1dGflGSpPkpE8kSjQdtprhEJ15LctQ5C8K1D3rQf/gIvdtojbvs2MmV7MCKE+192vAJKXOLgJBdzYkLt72OvLJTB6+86SI15vmndS3jHZa+fOloEdEEGfTEM3kZK2EW2SBvk9oSVfrdPHo6JcLvScmY2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1742204776; c=relaxed/relaxed;
+	bh=a3Z920sjslTYtQWbVmfCMmUEmBhePId9iuSjdY0LKVQ=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=hv5EQOr1JdlzJLj7sAirVsb1E9Ep8c1TpvOu0azu/aVi6Js3Xd3lmRHux6uXK3EWpvBy9HTKi2SfGORt6trcMy9FZsyGa8JWupd9sT7R+bHNkVdXTPRH9fE7u90CFfEgl2nIRhWwFzGu6f4iKpwVyGICdqCbE3KofVa2dikYGiX99huYMjkqr2mcmmaGd+CsJjB8MrrDiqm1xPxih5AQ54eQI5LC8fB2GNN2lzQmeMW1OiKXKzPFJpPQ+VHJzZRhGdvwDeUZPogfI3byVF/DMIJiVKgJJEtX/qvR7xNkDbBiLyTTPy0TkW/Ju0ZxRlNOgpdH0hQWJQPkDaQtY9T6Wg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c0r/QLuv; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=P0yLGz4m;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=c0r/QLuv;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260d::612; helo=eur03-dba-obe.outbound.protection.outlook.com; envelope-from=vladimir.oltean@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on20612.outbound.protection.outlook.com [IPv6:2a01:111:f403:260d::612])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGVQd1G5bz2ygK
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 20:43:21 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cY/dXggouxNVwOT1bu2TI/cwuJfAyRW4FQ3drmLfp/272oJqtH/oa6uy3SmrKtigPRPiP7TJZZ1zq2lidAmaEJeI/5PjJM9kpEfKEYK3gJqEsAu1AUDmPLsK7wYH95OMhS7AwlbLAJh9IcmhK/ANX/KuIh8veuFsSbJsHG1Tt/Eaz+K3s015I7K/tT+oF0kx1wNnIgB8wOxCjYR8JyOHEdULx/CYIa6kEgNXsUrh/hmbTD5f5b5TM6BhHUgxOrXwMArFu+ZBrgbOJc0Sdghi3I6IZFFZtePRqnvSoBaeY5/hVkByq7Rz2notAi7a1wG2cdcfGaiEmmigTJL3PeYMfQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=n6Chb4BEKFiohxMu56XswWBYmWZryunrkL08HUjfJmE=;
- b=jvsVKFG//LPZJWBY4+Kr+vrg4aULoj4r4VLry3K2iXyd2aPd7+JfQrfSCr4m1TpARfwn7FM6p2r0F8Gp7wIfQ2SEvB4HOyag4wUoavFgHd6BD+vh/s4BQK+/68Ox955n53R85jmio5Dep2hMVuGM5HJrm+mOARhqadaAuwvamMck3a7w6YecTgKHQvk4eYmDzDWrPzfLnVjjESFtibE1oH5EBv5jSGThzouyoKwVu3/N8uL2+UbDTKSK0MsGSAxVi2Qv8ng5vCsOI4jZuZtN63QppKQTqRhWGoq1oGnNKdoxA5gzAfcp9qCCo3tdK45k8sQk/qXN/XurNOtxum+P3g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=n6Chb4BEKFiohxMu56XswWBYmWZryunrkL08HUjfJmE=;
- b=P0yLGz4m4IEs3lyowi3Bs5+GhE4yJxu0Wg+Igj8CXGooa9T8ni9LnmDGex13kW1zLpjxvt995qgGUr1llR24A62dOMHv0jMRpnLpFd+0uR5E7iBznbcWCVB5T3POHup1UYPx9AQFgIPLrZVNHILz4E3w3WmT6s/l/VOz+BcHE74usNiLo2ro+H7C+jkm+j8S0DkizJ4ob9G2beRAb+tGQwvdPt3O2c0YV6/luTlu3LuMXQIUuI02PA6xKXRWyI+eSK+YWfNFMOObEhDORvL1rw6O+0iR0EJV+rWbjsIrSM4+JZQR2QoIdfF6rMrsOJkWqkELQq/Ejbn7/tIcVTKDKg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
- by DBBPR04MB8060.eurprd04.prod.outlook.com (2603:10a6:10:1e6::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Mon, 17 Mar
- 2025 09:43:03 +0000
-Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
- ([fe80::7417:d17f:8d97:44d2%6]) with mapi id 15.20.8534.031; Mon, 17 Mar 2025
- 09:43:03 +0000
-Date: Mon, 17 Mar 2025 11:42:59 +0200
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: claudiu.manoil@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, christophe.leroy@csgroup.eu,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	imx@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v4 net-next 03/14] net: enetc: move generic MAC filterng
- interfaces to enetc-core
-Message-ID: <20250317094259.b6mwygvr75lxgkwh@skbuf>
-References: <20250311053830.1516523-1-wei.fang@nxp.com>
- <20250311053830.1516523-1-wei.fang@nxp.com>
- <20250311053830.1516523-4-wei.fang@nxp.com>
- <20250311053830.1516523-4-wei.fang@nxp.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250311053830.1516523-4-wei.fang@nxp.com>
- <20250311053830.1516523-4-wei.fang@nxp.com>
-X-ClientProxiedBy: VI1P190CA0023.EURP190.PROD.OUTLOOK.COM
- (2603:10a6:802:2b::36) To AM8PR04MB7779.eurprd04.prod.outlook.com
- (2603:10a6:20b:24b::14)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGVTz04spz2ygK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 20:46:14 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52H8mi8r003235;
+	Mon, 17 Mar 2025 09:46:06 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=a3Z920sjslTYtQWbVmfCMmUEmBhe
+	PId9iuSjdY0LKVQ=; b=c0r/QLuvm6OAK48K0hOwnrOyrjxyHinC4s1zzFa74uzt
+	dBB2N8URq112ioubkIkBzUlN8hOsc5ZjHR3WjdvsaIQ6cIzg4hC1+WJ2JENNjOHq
+	o4ileiaQ1IYpMTctfjpgoPTtBmvoEGsJmMGPUEpvrG3DKl9aLIcrMik7932JDLnP
+	yQc4dMga41maWnYYSybz1rtSqSbOfO18cKuJN0W4eZayhGv8ssRtVNJyIGmU0bZo
+	vbhLCbcYTbuJgxgLVWtTsgmP/nxRmfrTmkAwVTBjMdExX6vwnKUKKcLWD6VUAM4r
+	6EvPnf1KxpYeNA0AnWevFLvcyiVBIbjQfk7RZKMdWQ==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45e5v02h4f-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Mar 2025 09:46:05 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52H88lAN032356;
+	Mon, 17 Mar 2025 09:46:05 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45dkvt5p14-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 17 Mar 2025 09:46:05 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52H9k2Ys29295176
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 17 Mar 2025 09:46:03 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 350B45805D;
+	Mon, 17 Mar 2025 09:46:04 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 72C9C58057;
+	Mon, 17 Mar 2025 09:46:02 +0000 (GMT)
+Received: from [9.61.253.6] (unknown [9.61.253.6])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 17 Mar 2025 09:46:02 +0000 (GMT)
+Message-ID: <5f88a95b-1c8d-4a74-9753-9cdb2e64daf4@linux.ibm.com>
+Date: Mon, 17 Mar 2025 15:16:00 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,110 +76,103 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|DBBPR04MB8060:EE_
-X-MS-Office365-Filtering-Correlation-Id: 32938dbd-f18f-4324-162f-08dd65381c8a
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?AYNL2RIeYmeiaE8LNOPOJ1FVBpIktGKEIe1iVDGT5cfJ8W97etArmrXcrjuQ?=
- =?us-ascii?Q?RauNnxwo8kZMKKXBPDqGFntRxRvNIum+bl8CqpOfzEbZm/uhHjfS2KkHwNJg?=
- =?us-ascii?Q?/FsqS3KddkElD2tCvOv+ky2j4n4K9YeSgloi52jgSkhq1ERv/jxoIF3GWS7Y?=
- =?us-ascii?Q?LM68notIef92MiEKpnoKWUK9LkRlFocH3DblLU7G0wKsJMX42n91nVNFvXU1?=
- =?us-ascii?Q?Nkt20ekxDXDIzLJogwjmuALEtiUcAgSSGdjZYx2UrXvvx+Rn0VD9ATPNsjSX?=
- =?us-ascii?Q?3xl8fYtCNQ/mtkEEv/8dWCseSXkPYIZqRCaEFL9hqP7+7rkiUxs4yhjfebhm?=
- =?us-ascii?Q?5njOarpAoVCcnGbfDQM8z5pUAhx6h1jsJcnas1r7EJfzabCEMt2A8kBICiOb?=
- =?us-ascii?Q?Cze7VaAsp9xxEhQyXJSjsz4gcySNz5ucWmyyeJ1BFfSX022Ecm0xxb7pbzqg?=
- =?us-ascii?Q?eaL1Z7gRmsIbyh+XbozMYoOMsGAl4ZgJoaTvkkhwYAs6YxSwSwcgirlkQrEu?=
- =?us-ascii?Q?KSOa1I0SU/nS4X4Dz0lBizwsmavnAgfBlrUx/Q8oM4mn4xgrIV6Fbd/YTO+z?=
- =?us-ascii?Q?ejW/8I5QKHnS/HTwjTM4n5JqTF6ppGXq6u055pOsZGT64AM5pDmsqfibmhCN?=
- =?us-ascii?Q?7B4R1Ts8XQO9brRR+zovkljL35XzC/mEqDIvibcuPwmkOpP+twroC3dZIBga?=
- =?us-ascii?Q?eqivV/yyjXZ+Ehvdy7dORSoHQn6G3Yv26t1bLvyJxoLRG58pFuEic9Q6c0O0?=
- =?us-ascii?Q?9uXT3xre6WlnYT3zWbClLX8J5bFqe0iGtSNXQ++HKxRyGg3bZ6KB57htduDU?=
- =?us-ascii?Q?QJIuOs3dd7ChZVzQp3z75yP4+jAkYMDvHpzNEcDQp1Bf44MYKHYag0h6jomr?=
- =?us-ascii?Q?wvXUKrdjAx5y8WbIThxpEHXWi+a8CVu6IocXAOVw+glQx+l562mIz0wRKiSz?=
- =?us-ascii?Q?TNu1YXKgtfTwFeuyR5LA4ReaLbytmZH59Mpa//2HlsEjbaqcc7LiQD6D5qIX?=
- =?us-ascii?Q?bfJdkLLg9/fzLeoJJC23fn7NTsgKR0yqaDspnhNiBbKU+QzAzjSahUnV2a6k?=
- =?us-ascii?Q?87EdxpeOQDg/gBCKXv/4g5EEiPq6s4Rq4rzp8ptSGe1gqUhLe49aVvzbek7b?=
- =?us-ascii?Q?/i40Mo9GxS2DKusuJsNAOys61/iNTU+vf9w7io8hUWcAMbM4YcuVdDsrOHOZ?=
- =?us-ascii?Q?zBOPuxuO3nuvKTsRns3/XJeo73VH2niuCh+8JgBOvr/CUTZe4Ecq5eU4jvTw?=
- =?us-ascii?Q?mzdJ99QoSlNfTJmpW4jbsPLfCS1QqGQI5Xft8Hokc4F1Bda4Uupxz0GhlgBn?=
- =?us-ascii?Q?O0lgMFbWXSrNPseH8ZWk9Xp1YHglhWgj5hnE2cb5rNe7ScEu1H7IspPUqPP8?=
- =?us-ascii?Q?4TzP4znOfbMLmPnq+z6WHO0dcxUR?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?e69cWLOo7VN1suVvA9bYL2YF0rCDtDAVIiYISnrXQ9unmwle5u3FItP7i0sh?=
- =?us-ascii?Q?AjZO+zSyOQ/f85DD6FmeDj0TQppvt3HsWwrPR6QAdKadZz1ivlOt5Ej1AVOA?=
- =?us-ascii?Q?1rEDa4dZyPcrlKb9P5Vk6JBjEdpU70z6eRvJOwIoMePuVIy+ZOt8f5FLsS+v?=
- =?us-ascii?Q?XnZTAPgA8j8qnyLasiKfwGPn8RNzjGXk3YaFYtcl7xh5NTi/y4oNty7bnXGK?=
- =?us-ascii?Q?WXy2XK1fFPE5rSlXPb3ShfhC164SUT/F/KfqsBsoczCD+SQMJZ0pszgT/7+g?=
- =?us-ascii?Q?zim79PmlS2TeQj03zs/k5lsKHzkQt/CKntiXa1qR5iUR6phsgI/bfXaNf44+?=
- =?us-ascii?Q?HxWQRJ091DsAnfwOPOXkS/0Bp3YGsVgHBUG9ChLD3z8MJAJ+TFRKOoya6OIh?=
- =?us-ascii?Q?VCeu3UFaMIEiQv5/k2u1nLNp3rN/Q/2SOu1dk2NG4APadP46FjBA+gkc3/jz?=
- =?us-ascii?Q?oZq1Ns6KJvCbVg6/D3jeu1XvYgWNpYEfaCMZu6thstMXLE+bVRJu6B2dXlUW?=
- =?us-ascii?Q?1yji5Rkxv5JmvvmNy22tfLC4l/FI+JayYAsKA/iBA9rD7SJ3pDQVTeC+yx+r?=
- =?us-ascii?Q?dZoJ8aeLPADSPxjonY1W/b/3U45e78wLp4ExIpnrcuyq9MGsgeztTkQk5W1L?=
- =?us-ascii?Q?nPWmmmgpxH5VF2v2CUidgz7W69vhyb2BQyyJniUyg3my7YSJarUfVH8Ww1Lu?=
- =?us-ascii?Q?X3Uf4wsbfdXRHAjycIHzfTZluxt54SD6oksyCJ1huMhFj4QGU1aWqW29hODs?=
- =?us-ascii?Q?msu04/HIaznbT79e8KQszBi61lDmKnoWlefHiIK1glnyqz8bhORwsJoRk4Bm?=
- =?us-ascii?Q?zqkxwLB8ZW4/eDxiBUbso5SRLM+ocXFzr4QehmQ4BKxVAOZlsqGBdCpaSDa8?=
- =?us-ascii?Q?HgUb+Yknh7S5Wz6lq/N8LQrlgGWUV3y+ppcWVT81sogOIAJF9Lm9Ualmw/ac?=
- =?us-ascii?Q?6mkOWtxnidkC4A1zO2gmsgoam3Mwx+8JRJjizJ0uze63rksdvsaJTAXpaUJY?=
- =?us-ascii?Q?51yOv3oPbmVcI/b+mbPBexh0YXFFzMkxj0EbOrGG+4gZoy0E0iVors5pr677?=
- =?us-ascii?Q?OybQQaVsfjtv1vFOef6V2nCn/DNcaXG7lZIFCRmNqXyFEgOZHgL6jPPbTuFT?=
- =?us-ascii?Q?7W7qqIrUuH3Pq3w+JsbWrVEEYZB5rVwVlCYDjBBo07HfPOGp8GKy6dI5WyWZ?=
- =?us-ascii?Q?Z+Uj5pZCmXs1n/H/Qy5H6FjYv2SpqbzhjPUj9L3qBlcGKzMxOLiyH/8vrp7B?=
- =?us-ascii?Q?U++ykKVZ1/Er80wapFJDkj+jV36Fi5MsV/EzddNIR8rvLOahx/4blMm1Jc5E?=
- =?us-ascii?Q?Oul5V2ENoRpE1k8wqYySeSMMAzLxxS4NTYZEg8De5c1M0HjH025S5SF5Gmvg?=
- =?us-ascii?Q?Ok2ip/4on2po1qAfouJcYNOo96YeII6+xjIU+2bxy6fhCv+PsITix5bJigTY?=
- =?us-ascii?Q?3JmgmkNqAnk2yToUdjv7INS7Sie+7vCQMwL4A2Icqfafm+jFP/8i7bQfAVTT?=
- =?us-ascii?Q?XbnQZOE2KcBpHzRh3VhNusoedsiefiVlfb3yqsUQUYyCFgiSWsyD4Udxnm0K?=
- =?us-ascii?Q?fMOc+7Q851wdj99Ybl7VITrGp/oGQSTylvJ8QifS7/Bji299XL9v83i9vPQy?=
- =?us-ascii?Q?6w=3D=3D?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 32938dbd-f18f-4324-162f-08dd65381c8a
-X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2025 09:43:03.0387
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: YsVdy8OapEo3M1lA4WGjEKrkUc6OpqPfmmaozkU8MBJGOBYx+mBAqOVPPYw1YR7h9z+o/l5DeGKkAoxGmrGE7A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBBPR04MB8060
-X-Spam-Status: No, score=-0.3 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-	T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [main-line][PowerPC]selftests/powerpc/signal: sigfuz fails
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: yB8YfxfjreZhljaWCgqy_Ulnka7mvHf6
+X-Proofpoint-GUID: yB8YfxfjreZhljaWCgqy_Ulnka7mvHf6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-17_03,2025-03-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 suspectscore=0
+ impostorscore=0 adultscore=0 mlxscore=0 spamscore=0 phishscore=0
+ priorityscore=1501 lowpriorityscore=0 malwarescore=0 mlxlogscore=999
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503170069
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-title: s/filterng/filtering/
+Greetings!!
 
-On Tue, Mar 11, 2025 at 01:38:19PM +0800, Wei Fang wrote:
-> Although only ENETC PF can access the MAC address filter table, the table
-> entries can specify MAC address filtering for one or more SIs based on
-> SI_BITMAP, which means that the table also supports MAC address filtering
-> for VFs.
-> 
-> Currently, only the ENETC v1 PF driver supports MAC address filtering. In
-> order to add the MAC address filtering support for the ENETC v4 PF driver
-> and VF driver in the future, the relevant generic interfaces are moved to
-> the enetc-core driver. At the same time, the struct enetc_mac_filter is
-> moved from enetc_pf to enetc_si, because enetc_si is a structure shared by
-> PF and VFs. This lays the basis for i.MX95 ENETC PF and VFs to support
-> MAC address filtering.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
+I am observing selftests/powerpc/signal:sigfuz test fails on linux 
+mainline repo on IBM Power10 systems.
 
-For this series I don't see any VF implementation of ndo_set_rx_mode().
-I don't think you have to move struct enetc_mac_filter from struct enetc_pf
-to struct enetc_si, so please don't do that until there is a justification
-for it that is contained in the same patch set, and the two can be
-evaluated together.
+The test passes on the kernel with commit head: 
+619f0b6fad524f08d493a98d55bac9ab8895e3a6 and fails on the kernel with 
+commit head: ce69b4019001407f9cd738dd2ba217b3a8ab831b on the main line.
 
-Moving enetc_add_mac_addr_ht_filter() and enetc_reset_mac_addr_filter()
-to enetc.c seems fine.
+
+Repo: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+
+I tried to do git bisect and the bisect tool pointed first bad commit 
+to: 16ebb6f5b6295c9688749862a39a4889c56227f8.
+
+But upon reverting the first bad commit issue is still seen. So please 
+ignore, if the bisection dosent help.
+
+
+Error:
+
+# selftests: powerpc/signal: sigfuz
+# test: signal_fuzzer
+# tags: git_version:v6.14-rc7-1-g49c747976afa
+# !! killing signal_fuzzer
+# !! child died by signal 15
+# failure: signal_fuzzer
+not ok 3 selftests: powerpc/signal: sigfuz # exit=1
+
+
+Bisect log:
+
+git bisect start
+# status: waiting for both good and bad commits
+# good: [619f0b6fad524f08d493a98d55bac9ab8895e3a6] Merge tag 
+'seccomp-v6.13-rc8' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/kees/linux
+git bisect good 619f0b6fad524f08d493a98d55bac9ab8895e3a6
+# status: waiting for bad commit, 1 good commit known
+# bad: [ce69b4019001407f9cd738dd2ba217b3a8ab831b] Merge tag 
+'net-6.13-rc8' of git://git.kernel.org/pub/scm/linux/kernel/git/netdev/net
+git bisect bad ce69b4019001407f9cd738dd2ba217b3a8ab831b
+# good: [f62bb88782ffc2d8b619ac781ca26582b00c4db6] Merge branch '100GbE' 
+of git://git.kernel.org/pub/scm/linux/kernel/git/tnguy/net-queue
+git bisect good f62bb88782ffc2d8b619ac781ca26582b00c4db6
+# bad: [2c3688090f8a1f085230aa839cc63e4a7b977df0] net/mlx5e: Fix 
+inversion dependency warning while enabling IPsec tunnel
+git bisect bad 2c3688090f8a1f085230aa839cc63e4a7b977df0
+# bad: [d6e3316a1680305da291a5b5deaf424559aaf06c] net: pcs: xpcs: 
+actively unset DW_VR_MII_DIG_CTRL1_2G5_EN for 1G SGMII
+git bisect bad d6e3316a1680305da291a5b5deaf424559aaf06c
+# bad: [f0d0277796db613c124206544b6dbe95b520ab6c] net: netpoll: ensure 
+skb_pool list is always initialized
+git bisect bad f0d0277796db613c124206544b6dbe95b520ab6c
+# bad: [c17ff476f53afb30f90bb3c2af77de069c81a622] net: xilinx: axienet: 
+Fix IRQ coalescing packet count overflow
+git bisect bad c17ff476f53afb30f90bb3c2af77de069c81a622
+# bad: [16ebb6f5b6295c9688749862a39a4889c56227f8] nfp: bpf: prevent 
+integer overflow in nfp_bpf_event_output()
+git bisect bad 16ebb6f5b6295c9688749862a39a4889c56227f8
+# first bad commit: [16ebb6f5b6295c9688749862a39a4889c56227f8] nfp: bpf: 
+prevent integer overflow in nfp_bpf_event_output()
+
+
+If you happen to fix the issue, please add below tag.
+
+
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Regards,
+
+Venkat.
+
 
