@@ -1,71 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-7108-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7109-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C572A6438C
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 08:27:35 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DC0A646E5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 10:19:21 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGRPw3d4Sz2yd7;
-	Mon, 17 Mar 2025 18:27:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGTtt1zSwz2yfy;
+	Mon, 17 Mar 2025 20:19:18 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742196452;
-	cv=none; b=TOwBvdKaCe7NxqUN3DMmOoNRxJgO55l4psVWh5BVYdV/uXEEMmv1/tx9IudbY58rAtUcUw1tUU+i9b0jiGFeEG5ZK5vL9b/KG3VKYO6L1pgD1zbYPY0Nw4E1CVNePJWMFJ7rwOaY/OF/HC97HvMMdneLvGDexZBNOjSp1SzVe6CNq1LGNOpJtVX3KZ6rTDprqwvBD5C5+Elx5iVt6wGQD1S2gfSVwtdeLFlHJOSoL2yFtNXe5s4dEE/BFZu+XjD9MafWBmOzJZAqEt5cIewwPpaHUTq9/1kULpw5pm2CDItKrz/CCDCGZF2FOomszwK4dmGNjPtY8hFs5vHYBl3VKA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::635"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742203158;
+	cv=none; b=cEXiJvkHZ8ibF13nYMWOR84nwPtqzXJ0MLBlPOoaL+JdYm99xgtZ8ES0FI3UjLalb8qR/oYicHhh7hp24TmbaFRKwtjIQOJZLuGL/apaUXWpezQdUDarSO2UJTptFpPkLTXYt2yY1O115qW9R0MqM2+wW2Db31PVom4tAMi8/uORKoupTLpP9MptNNC3Uc4hdhZOXr4bf2V9V6HHXxhviH/tBk3WzuIILuQAX3Y/FKuiuyJ0ZULMALtrcTqNCZXR3tB6UgKp+S9vyj18AYy01AJ8M0fBrjzweZTt+41NCUmuoSD/BQ7Iy8owBsuqWSgpK5mTgpVa9Pluquhb2GTwNg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742196452; c=relaxed/relaxed;
-	bh=hcycxxjnsnNocNAPKlQOHoruJQXx4GJ8snQ6qY0ENpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=dQqXyX4ohIIwGXTphRVSRzjgPA32Uc6a+8wXcswQ7mpDuNgUR8dbGm3X6ELEzbW/k1zd/PLk8W1Wtvg3q+pj72spkeGSo0dXBgIV3OPsJZcwnk1LQpUjGWvCV+frQhjcpdfuiueiVByXdk2o/RpkHP/cbohjOHBkEMTpuOTJQQoMeahzH3oDiXfBUsXBpmrGYfGXVWO+lQZZi4zhYKpA54q+f6z3cmU94NR2blRzRTrl2nQp1GZZpbJkmd3G/2DnxLONCDbFCAp1T7dn/IM7lAHIMXAUosD8YF3YGwFfHo1trnw60MUmYCLqz0r4pMCzCSqZckem1QIrIxrWruckyA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s/Ni7WMl; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742203158; c=relaxed/relaxed;
+	bh=lMORBukfDNOzWrCEQijjWj2H6MggMJxZRFJuSPvnV3s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Tip2BtdfXnYdwm+4HRfDdrOwwUOS+BEc+QxwkmJwabQYHw25p4OXg22byzitv0tyRCHG8H/26AVDdZWTcyLw1/+RZq35Xxh4Ilhzy+Vfz82lSXjN/2h0Dd4RkIHXb3JZuHgO4W/lI22MH/eg5i7Km8TupBqtfKuB9pHcN38OxA7AbguLyO39VrwWmwyyZ+J94OLZ81zglO5V/w2EZIjdOB7SbO13w+8INYiqu6m0G7w1YCR0GXt8XcVIcXdagW5CakFrB+XBkmkns2dqbVP+pFltmKpGIVHvNX9BCr3fFww3SUIkNvm8wMTBQKpTv3ehDZ2NTz3qphF+G6dHPShv8g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=B4slC08c; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=eddyz87@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=s/Ni7WMl;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=B4slC08c;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::635; helo=mail-pl1-x635.google.com; envelope-from=eddyz87@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGRPv3zvsz2xqG
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 18:27:31 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52GMGTSu001856;
-	Mon, 17 Mar 2025 07:27:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=hcycxx
-	jnsnNocNAPKlQOHoruJQXx4GJ8snQ6qY0ENpo=; b=s/Ni7WMl2dNwuL3BWf3jRW
-	CHlrWgErJ5y+3q3O8xJhLc2nzugzOX+D6LD4hhdDm6MgYsyXjsXxI949r5x7Wwni
-	41yhM5a8MgQvUFeI+iUm6kbl4nd2doG0lAyNufsrC4DvD4VtjvJ4XKv8cefjcFVU
-	b+Im2CGHvm+hRGRuVivjiqxLepPmsj+bN3EqFBSgNMmrjkB4uNKkG4mcDohuCsVh
-	V7jR74OjVN1IDVTdVySMquYU+1/yNzV+V5EKzBqTPeGp7swcMuVzLL2NaXVAldMb
-	BSB13q/2Ws/hHYMyHRHVfE94x+xIGBwGasNcGyTYaHV66WBZzE864wLQsMdwlVYA
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45e6251tgt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Mar 2025 07:27:17 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52H4HFVR012347;
-	Mon, 17 Mar 2025 07:27:16 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dmvnmxkd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 17 Mar 2025 07:27:16 +0000
-Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52H7RGLI26477134
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 17 Mar 2025 07:27:16 GMT
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3F49858054;
-	Mon, 17 Mar 2025 07:27:16 +0000 (GMT)
-Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2F2695803F;
-	Mon, 17 Mar 2025 07:27:14 +0000 (GMT)
-Received: from [9.61.253.6] (unknown [9.61.253.6])
-	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 17 Mar 2025 07:27:13 +0000 (GMT)
-Message-ID: <25e5d468-6c40-40b7-a010-8c8018b6d228@linux.ibm.com>
-Date: Mon, 17 Mar 2025 12:57:12 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGTtr5lsTz2ydW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 20:19:15 +1100 (AEDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-225df540edcso46316455ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 02:19:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742203154; x=1742807954; darn=lists.ozlabs.org;
+        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=lMORBukfDNOzWrCEQijjWj2H6MggMJxZRFJuSPvnV3s=;
+        b=B4slC08cx5cZpiBhmUrVMNKIEtQVX0rZOzgqB/w85SqciAfy3DBC9u8QYh019zRAL6
+         9as+o7GmUtMJIgdHdB1+Keoym3eZ/Mundy1Ajj9NcUjgkjWI/VUtg01LQZZ9SP+V70FX
+         Gk8yDHFG04ubge2msQ2k+1Gnyo+deRpt+QTkk98StyNibsRHCH+MGyDhlSOk67RKQqRO
+         leXrNoPd/8pprtRdltM+1G/nYfByjKiV/kfiQ5XOtzG33xogXsOKHIIJoB4ULS+aEiH4
+         c1Jlbu5wyequr0VkEcfD55tdrS/SNxlrkaPJLVL7oU+dxdw56KPvMrIy6SIEDGFEf7kt
+         ObZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742203154; x=1742807954;
+        h=mime-version:user-agent:references:in-reply-to:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lMORBukfDNOzWrCEQijjWj2H6MggMJxZRFJuSPvnV3s=;
+        b=b4q4OmNt6MmvIi4+ugwRgA7p4OtnGSgE410CtyhmTQLsRRqT4+JeVa8FLQCW2vzJRa
+         lSqzFofT88Fz/lVWae612mm2HjJKZhJGV8gvSPHd2Zi2o5KQy3C9k+CR83J5VsrGJ2ha
+         pfeScJwu7WkGRScQGFjwFG/T8Blp3dK8NTgPuA7pOxdunAQ94MfiVitAi4kDR1uXuCX8
+         X9s7DqDjBTWUsWzEtk2cs+fX7Xd0ai0+R3fBKwMUKDo/dGQR8y8/aRlUjQ5Xc3kjqIv2
+         a/0hGD9W9cBsdmNXKjMUbZp14Naoslo1IXM6EPM95MBps+yVGGSOF9ups0UbZZkpdDl1
+         z1wg==
+X-Forwarded-Encrypted: i=1; AJvYcCXPcFKXbL7r9yhvqrTZSd7mhEGgzEc3PLxYWK8IzJcZcyOnAvPTMmjpKhZ0HFFQ1T3RI6uPSCCE7/aIXMk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxgutw7mVJofZrqkcVoZL06F0WB2dE3iwjKXTbWyhdsbtwFZYkQ
+	LamUflRNkex0ZPCzIzQ6Piw3QxwWHYNWso3DxygpJVCwiuhkXs8x
+X-Gm-Gg: ASbGnct/nIy8X59s/OboBefytIf6a5wsKZFG6xTCcADiRu12lUHnbFXVa6rSda0Vhsy
+	Yi9VqMjraHFdDoqRIWPMLWG/fAk4NAeFhczVWiSm5utcPQgXJ0yMTkYK3EUisLheoS2B+WOQe9w
+	2OGEQz9AilxMNQVI8F671eLmaITEI+os/IihaiY2GuLdmnjn1sS/g5aPeJkpsCqgQ7M9KeOObaT
+	Qm3wLUcziXJYkVlVqp/YCl77mz5nYQjLmW2AGIE5g6Jgv8vtW04yHys11lixbIYME1P7AweeGMA
+	egpMkaLB406uuikwsmmAyUKG001Hzagija0PWUJFYnOkItRXHAI=
+X-Google-Smtp-Source: AGHT+IFQrLJwhlX7+RiGH3CxZ9FfxID5MIfJ1arkUBWGEnsa5Y9RjhdscgDV1ztpHSFUF5oJv7iB3A==
+X-Received: by 2002:a05:6a00:8306:b0:736:5813:8c46 with SMTP id d2e1a72fcca58-737107f9d11mr17429679b3a.8.1742203153453;
+        Mon, 17 Mar 2025 02:19:13 -0700 (PDT)
+Received: from [192.168.0.56] ([38.34.87.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-737115293f6sm7340451b3a.14.2025.03.17.02.19.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Mar 2025 02:19:12 -0700 (PDT)
+Message-ID: <9083b52fd4a2d7a5a0473e858042c277c883f8b0.camel@gmail.com>
+Subject: Re: [PATCH bpf-next 09/11] bpf: Return PTR_ERR from push_stack()
+From: Eduard Zingerman <eddyz87@gmail.com>
+To: Luis Gerhorst <luis.gerhorst@fau.de>, Alexei Starovoitov
+ <ast@kernel.org>,  Daniel Borkmann <daniel@iogearbox.net>, Andrii Nakryiko
+ <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>,  Song Liu
+ <song@kernel.org>, Yonghong Song <yonghong.song@linux.dev>, John Fastabend	
+ <john.fastabend@gmail.com>, KP Singh <kpsingh@kernel.org>, Stanislav
+ Fomichev	 <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, Jiri Olsa
+ <jolsa@kernel.org>,  Puranjay Mohan <puranjay@kernel.org>, Xu Kuohai
+ <xukuohai@huaweicloud.com>, Catalin Marinas	 <catalin.marinas@arm.com>,
+ Will Deacon <will@kernel.org>, Hari Bathini	 <hbathini@linux.ibm.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,  Naveen N Rao
+ <naveen@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, Michael
+ Ellerman	 <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, Mykola
+ Lysenko	 <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>, Henriette Herzog	
+ <henriette.herzog@rub.de>, Cupertino Miranda
+ <cupertino.miranda@oracle.com>,  Matan Shachnai <m.shachnai@gmail.com>,
+ Dimitar Kanaliev <dimitar.kanaliev@siteground.com>, Shung-Hsi Yu	
+ <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-kselftest@vger.kernel.org, George Guo	
+ <guodongtai@kylinos.cn>, WANG Xuerui <git@xen0n.name>, Tiezhu Yang	
+ <yangtiezhu@loongson.cn>
+Cc: Maximilian Ott <ott@cs.fau.de>, Milan Stephan <milan.stephan@fau.de>
+Date: Mon, 17 Mar 2025 02:19:08 -0700
+In-Reply-To: <20250313174149.1113165-4-luis.gerhorst@fau.de>
+References: <20250313172127.1098195-1-luis.gerhorst@fau.de>
+	 <20250313174149.1113165-1-luis.gerhorst@fau.de>
+	 <20250313174149.1113165-4-luis.gerhorst@fau.de>
+Content-Type: multipart/mixed; boundary="=-pU3IArgK79wjJvjdvEwt"
+User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,88 +112,82 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next-20250307] Build Failure
-Content-Language: en-GB
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Stephen Rothwell <sfr@canb.auug.org.au>, linux-kernel@vger.kernel.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, Michael Ellerman <mpe@ellerman.id.au>
-References: <70ba4e80-53c4-4583-82f3-2851e0829aa6@linux.ibm.com>
- <5ab103b4-70f0-454e-bca6-0bfc66d143f5@csgroup.eu>
- <c0a716d0-6811-4b1b-b008-d4e97900cb0e@linux.ibm.com>
- <5c671410-cedd-4854-a3e7-2060607d5c4d@csgroup.eu>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <5c671410-cedd-4854-a3e7-2060607d5c4d@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: YhvBaWjhfQDpi8JCDxE7_yIHnHyO0JDU
-X-Proofpoint-ORIG-GUID: YhvBaWjhfQDpi8JCDxE7_yIHnHyO0JDU
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-17_02,2025-03-17_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 malwarescore=0 adultscore=0 mlxlogscore=865
- clxscore=1015 suspectscore=0 spamscore=0 phishscore=0 priorityscore=1501
- bulkscore=0 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503170054
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=0.1 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+--=-pU3IArgK79wjJvjdvEwt
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 12/03/25 8:49 pm, Christophe Leroy wrote:
->
->
-> Le 12/03/2025 à 11:11, Venkat Rao Bagalkote a écrit :
->>
->> On 12/03/25 4:20 am, Christophe Leroy wrote:
->>>
->>>
->>> Le 09/03/2025 à 13:38, Venkat Rao Bagalkote a écrit :
->>>> Greetings!!,
->>>>
->>>> I see linux-next-20250307 fails to build on IBM Power9 and Power10 
->>>> servers.
->>>>
->>>>
->>>> Errors:
->>>>
->>>> In file included from ^[[01m^[[K<command-line>^[[m^[[K:
->>>> ^[[01m^[[K./usr/include/cxl/features.h:11:10:^[[m^[[K 
->>>> ^[[01;31m^[[Kfatal error: ^[[m^[[Kuuid/uuid.h: No such file or 
->>>> directory
->>>>     11 | #include ^[[01;31m^[[K<uuid/uuid.h>^[[m^[[K
->>>>        |          ^[[01;31m^[[K^~~~~~~~~~~~~^[[m^[[K
->>>
->>> This is unreadable. Please avoid fancy colors that add escapes to 
->>> logs. You can unset LANG environment var before building in order to 
->>> get pastable stuff.
->>>
->
-> Allthought not really readable, it seems to mention that uuid/uuid.h 
-> is missing.
->
-> Can you confirm that you have installed libuuid package in your system 
-> ? Maybe you also need some libuuid-dev packet to get headers ?
+On Thu, 2025-03-13 at 18:41 +0100, Luis Gerhorst wrote:
+
+[...]
+
+> @@ -2011,8 +2011,10 @@ static struct bpf_verifier_state *push_stack(struc=
+t bpf_verifier_env *env,
+>  	int err;
+> =20
+>  	elem =3D kzalloc(sizeof(struct bpf_verifier_stack_elem), GFP_KERNEL);
+> -	if (!elem)
+> -		goto err;
+> +	if (!elem) {
+> +		err =3D -ENOMEM;
+> +		goto unrecoverable_err;
+> +	}
+
+Could you please point me to a location, where exact error code
+returned by updated push_stack() matters?
+I checked push_stack() callgraph (in the attachment), but can't find
+anything.
+
+> =20
+>  	elem->insn_idx =3D insn_idx;
+>  	elem->prev_insn_idx =3D prev_insn_idx;
+> @@ -2022,12 +2024,19 @@ static struct bpf_verifier_state *push_stack(stru=
+ct bpf_verifier_env *env,
+
+[...]
 
 
-Yeah uuid package is installed on my system. I am seeing this failure 
-only with build next-20250307.
+--=-pU3IArgK79wjJvjdvEwt
+Content-Disposition: attachment; filename="push_stack.dot"
+Content-Transfer-Encoding: base64
+Content-Type: text/vnd.graphviz; name="push_stack.dot"; charset="UTF-8"
 
-Builds with before and after are compiling successfully.
+ZGlncmFwaCBHIHsKTm9kZTB4NTVkZDRhOGQ0YjUwIFtsYWJlbD0ie2NoZWNrX2NvbmRfam1wX29w
+fSIsIHNoYXBlPXJlY29yZF07Ck5vZGUweDU1ZGQ0YWEwNjc5MCBbbGFiZWw9IntzYW5pdGl6ZV9z
+cGVjdWxhdGl2ZV9wYXRofSIsIHNoYXBlPXJlY29yZF07Ck5vZGUweDU1ZGQ0YThjYTU4MCBbbGFi
+ZWw9IntjaGVja19oZWxwZXJfY2FsbH0iLCBzaGFwZT1yZWNvcmRdOwpOb2RlMHg1NWRkNGE4Y2Yy
+NjAgW2xhYmVsPSJ7Y2hlY2tfa2Z1bmNfY2FsbH0iLCBzaGFwZT1yZWNvcmRdOwpOb2RlMHg1NWRk
+NGE4OGQ3ZDAgW2xhYmVsPSJ7ZG9fY2hlY2t9Iiwgc2hhcGU9cmVjb3JkXTsKTm9kZTB4NTVkZDRh
+YTNhMzYwIFtsYWJlbD0ie2FkanVzdF9wdHJfbWluX21heF92YWxzfSIsIHNoYXBlPXJlY29yZF07
+Ck5vZGUweDU1ZGQ0YTc2YzYyMCBbbGFiZWw9Intkb19jaGVja19jb21tb259Iiwgc2hhcGU9cmVj
+b3JkXTsKTm9kZTB4NTVkZDRhOGJhODUwIFtsYWJlbD0ie2FkanVzdF9yZWdfbWluX21heF92YWxz
+fSIsIHNoYXBlPXJlY29yZF07Ck5vZGUweDU1ZGQ0OTU5ZmU0MCBbbGFiZWw9Intwcm9jZXNzX2l0
+ZXJfbmV4dF9jYWxsfSIsIHNoYXBlPXJlY29yZF07Ck5vZGUweDU1ZGQ0YWE1YzFlMCBbbGFiZWw9
+IntzYW5pdGl6ZV9wdHJfYWx1fSIsIHNoYXBlPXJlY29yZF07Ck5vZGUweDU1ZGQ0YTlhM2FjMCBb
+bGFiZWw9IntwdXNoX2NhbGxiYWNrX2NhbGx9Iiwgc2hhcGU9cmVjb3JkXTsKTm9kZTB4NTVkZDRh
+OWZiOWQwIFtsYWJlbD0ie3B1c2hfc3RhY2t9Iiwgc2hhcGU9cmVjb3JkXTsKTm9kZTB4NTVkZDRh
+Nzc4ZGIwIFtsYWJlbD0ie2RvX2NoZWNrX3N1YnByb2dzfSIsIHNoYXBlPXJlY29yZF07Ck5vZGUw
+eDU1ZGQ0YTc0MTk5MCBbbGFiZWw9InticGZfY2hlY2t9Iiwgc2hhcGU9cmVjb3JkXTsKTm9kZTB4
+NTVkZDRhNzQxOTkwIC0+IE5vZGUweDU1ZGQ0YTc3OGRiMDsKTm9kZTB4NTVkZDRhNzQxOTkwIC0+
+IE5vZGUweDU1ZGQ0YTc2YzYyMDsKTm9kZTB4NTVkZDRhNzc4ZGIwIC0+IE5vZGUweDU1ZGQ0YTc2
+YzYyMDsKTm9kZTB4NTVkZDRhNzZjNjIwIC0+IE5vZGUweDU1ZGQ0YTg4ZDdkMDsKTm9kZTB4NTVk
+ZDRhODhkN2QwIC0+IE5vZGUweDU1ZGQ0YThkNGI1MDsKTm9kZTB4NTVkZDRhODhkN2QwIC0+IE5v
+ZGUweDU1ZGQ0YThjYTU4MDsKTm9kZTB4NTVkZDRhODhkN2QwIC0+IE5vZGUweDU1ZGQ0YThjZjI2
+MDsKTm9kZTB4NTVkZDRhODhkN2QwIC0+IE5vZGUweDU1ZGQ0YThiYTg1MDsKTm9kZTB4NTVkZDRh
+OGNmMjYwIC0+IE5vZGUweDU1ZGQ0OTU5ZmU0MDsKTm9kZTB4NTVkZDRhOGNmMjYwIC0+IE5vZGUw
+eDU1ZGQ0YTlhM2FjMDsKTm9kZTB4NTVkZDRhOGNhNTgwIC0+IE5vZGUweDU1ZGQ0YTlhM2FjMDsK
+Tm9kZTB4NTVkZDRhOGQ0YjUwIC0+IE5vZGUweDU1ZGQ0YTlmYjlkMDsKTm9kZTB4NTVkZDRhOGQ0
+YjUwIC0+IE5vZGUweDU1ZGQ0YWEwNjc5MDsKTm9kZTB4NTVkZDRhOGJhODUwIC0+IE5vZGUweDU1
+ZGQ0YWEzYTM2MDsKTm9kZTB4NTVkZDRhYTNhMzYwIC0+IE5vZGUweDU1ZGQ0YWE1YzFlMDsKTm9k
+ZTB4NTVkZDRhYTVjMWUwIC0+IE5vZGUweDU1ZGQ0YTlmYjlkMDsKTm9kZTB4NTVkZDRhYTA2Nzkw
+IC0+IE5vZGUweDU1ZGQ0YTlmYjlkMDsKTm9kZTB4NTVkZDRhOWEzYWMwIC0+IE5vZGUweDU1ZGQ0
+YTlmYjlkMDsKTm9kZTB4NTVkZDQ5NTlmZTQwIC0+IE5vZGUweDU1ZGQ0YTlmYjlkMDsKfQo=
 
-UUID package version:
-libuuid-2.37.4-18.el9.ppc64le
-libuuid-2.37.4-20.el9.ppc64le
 
-Regards,
-
-Venkat.
-
->
-> Christophe
->
+--=-pU3IArgK79wjJvjdvEwt--
 
