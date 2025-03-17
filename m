@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-7137-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7138-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 925C3A652F8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 15:22:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F0F0A652FE
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 15:22:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccM4nVDz2yql;
-	Tue, 18 Mar 2025 01:22:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccR66lBz2yqr;
+	Tue, 18 Mar 2025 01:22:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742221331;
-	cv=none; b=owYBNODcKyzGplO5eWKa4jSI/zL8F06wYQvPmAZtYC4g5wSu5EF00pEMSzNn5b2VpXMHCWGM7C9G5UyuQF7H2HX5Y2swybeWmlwk88Cl5k6NiPW7fXcyrlwvYPceFddGnBP4LzlVQuX+7NLJjsh3rF+7U/anLLCEydZYLMwByBnwO24Bkp1o/GScMMpnp23MlsP+QRTOm6TRGAEZmGyDJK9qXHbxoBQcmqShLnCvKUV4/wHSerNlDlYiCQPBfE8uDcpUf/rqGPOZG4TlQgL2OCVh0UJVqBQLx+1tjluCKuHMpXWqM5sSNjGoWo64K/Ml2jvxnMlbOa0qVD63dnRuLg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742221335;
+	cv=none; b=UwOuLQGk7sUBA0s5YMREwOGlrSMMKIyOCCM5HYh+XXwrWaUHe2HxVTgDRs0zt5D+GFGFsmZJGXwQ1odrVFMbdYAr8Uv+EFv+85sZYPlKGoFnonlxbNQry1BcuZj9GPAehgao688/dv6JZwkBJLRG6YdgjLiJRctyNptiVVc8MUYmGXRCuE6k5GIi1RR5tUvY8lB4B0GFf7uqQfL4Wcslz8JzR3c8PrxRtItdf6anVM0lYN5PQm9MgcTA72C53KCLOdn3GKn8tTwzLBaPq4T94ISZYewMbh3wE0bXBnkgc5kHb0+SuzgdvNy5V0rYK7i20dkfN/lpRr9wqr6Ze4kmPw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742221331; c=relaxed/relaxed;
-	bh=FkrrTiKic5g/SkGADpTJcYzWJvDsKPZ0Ua0I8vQ0aUw=;
+	t=1742221335; c=relaxed/relaxed;
+	bh=tEBbZMuK7OXxaJSao4EKWfZ44UXf7uN/ZmWU7nnmgv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B1j4Fx6/PIpm2ZwHSwPFYkZSZ6qt1eoCMt5gpsMVpyejLYFA3Lcd8BWHgLQSg03rwGSPobLDci1mT2+lwzkrbygzxFd5Xw451RDblagJUWiSvorrjaIBBfY0JUFh7Yn42zho2jkEy5dUp629RI8Z/RNd4xpbWC2HsVnDIc3+P8CAdE+qXrn3pfPnhXaZDXxhV5VH6ERKXyjoEJehJo/6u1YyPLP0NnZUYTzWPN30aG5fMub3bmLiIozmw1PMLq/cKeIRNwr/+Mdjun8YW0KTyeftCZkTf3sSNO+jQaTtGuXbjDoi3ba5P9EM7uBA6yGrWJsyMzkCX021zRqTlF/MJA==
+	 MIME-Version; b=hvb7nJzckDMy/uUyy16/8mqVSY0bMzVKnHlVC5Qc9Ux894KNUiMFMhzMWxgwbjk3yVLgxcMeSidO1eVkeieL8ZRD8RkAFu8H6U3v7qTYXpKhazXhGwf2z8gzrbheZOciB1WBN68aqUptwMwKjIl/2YuruRKVHeJeuFwq2lj3qDPTLMjZDDi1fGXf2ZWBhehfeUwWDDJchZQLVZ4MLPHOhGlO2URcJf9dLZYu+U1KEnh0ERXXbApM1Y6lRT0cB4FKacDiVbUKoR8cMpscHoQ20IPmR6BCy+L0TrLxyHYu91vF+DYipIlbvMTkScYvrUHVSju3GEvr9B47kl/EAf8nsw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccL6ZdDz2ySB
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 01:22:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGccR39MDz2ySB
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 01:22:15 +1100 (AEDT)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CF25D22FA;
-	Mon, 17 Mar 2025 07:21:48 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 67A932573;
+	Mon, 17 Mar 2025 07:21:53 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A78843F63F;
-	Mon, 17 Mar 2025 07:21:35 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3FEA43F63F;
+	Mon, 17 Mar 2025 07:21:40 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -61,9 +61,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-s390@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org
-Subject: [PATCH 02/11] mm: Call ctor/dtor for kernel PTEs
-Date: Mon, 17 Mar 2025 14:16:51 +0000
-Message-ID: <20250317141700.3701581-3-kevin.brodsky@arm.com>
+Subject: [PATCH 03/11] m68k: mm: Call ctor/dtor for kernel PTEs
+Date: Mon, 17 Mar 2025 14:16:52 +0000
+Message-ID: <20250317141700.3701581-4-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250317141700.3701581-1-kevin.brodsky@arm.com>
 References: <20250317141700.3701581-1-kevin.brodsky@arm.com>
@@ -84,97 +84,29 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Since [1], constructors/destructors are expected to be called for
-all page table pages, at all levels and for both user and kernel
-pgtables. There is however one glaring exception: kernel PTEs are
-managed via separate helpers (pte_alloc_kernel/pte_free_kernel),
-which do not call the [cd]tor, at least not in the generic
-implementation.
-
-The most obvious reason for this anomaly is that init_mm is
-special-cased not to use split page table locks. As a result calling
-ptlock_init() for PTEs associated with init_mm would be wasteful,
-potentially resulting in dynamic memory allocation. However, pgtable
-[cd]tors perform other actions - currently related to
-accounting/statistics, and potentially more functionally significant
-in the future.
-
-Now that pagetable_pte_ctor() is passed the associated mm, we can
-make it skip the call to ptlock_init() for init_mm; this allows us
-to call the ctor from pte_alloc_one_kernel() too. This is matched by
-a call to the pgtable destructor in pte_free_kernel(); no
-special-casing is needed on that path, as ptlock_free() is already
-called unconditionally. (ptlock_free() is a no-op unless a ptlock
-was allocated for the given PTP.)
-
-This patch ensures that all architectures that rely on
-<asm-generic/pgalloc.h> call the [cd]tor for kernel PTEs.
-pte_free_kernel() cannot be overridden so changing the generic
-implementation is sufficient. pte_alloc_one_kernel() can be
-overridden using __HAVE_ARCH_PTE_ALLOC_ONE_KERNEL, and a few
-architectures implement it by calling the page allocator directly.
-We amend those so that they call the generic
-__pte_alloc_one_kernel() instead, if possible, ensuring that the
-ctor is called.
-
-A few architectures do not use <asm-generic/pgalloc.h>; those will
-be taken care of separately.
-
-[1] https://lore.kernel.org/linux-mm/20250103184415.2744423-1-kevin.brodsky@arm.com/
+The generic implementation of pte_{alloc_one,free}_kernel now calls
+the [cd]tor. Align the m68k/ColdFire implementation of those
+functions by calling the [cd]tor explicitly.
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/csky/include/asm/pgalloc.h | 2 +-
- arch/microblaze/mm/pgtable.c    | 2 +-
- arch/openrisc/mm/ioremap.c      | 2 +-
- include/asm-generic/pgalloc.h   | 7 ++++++-
- include/linux/mm.h              | 2 +-
- 5 files changed, 10 insertions(+), 5 deletions(-)
+ arch/m68k/include/asm/mcf_pgalloc.h | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/csky/include/asm/pgalloc.h b/arch/csky/include/asm/pgalloc.h
-index bf8400c28b5a..288dca0d160a 100644
---- a/arch/csky/include/asm/pgalloc.h
-+++ b/arch/csky/include/asm/pgalloc.h
-@@ -29,7 +29,7 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
- 	pte_t *pte;
- 	unsigned long i;
+diff --git a/arch/m68k/include/asm/mcf_pgalloc.h b/arch/m68k/include/asm/mcf_pgalloc.h
+index 465a71101b7d..fc5454d37da3 100644
+--- a/arch/m68k/include/asm/mcf_pgalloc.h
++++ b/arch/m68k/include/asm/mcf_pgalloc.h
+@@ -7,7 +7,7 @@
  
--	pte = (pte_t *) __get_free_page(GFP_KERNEL);
-+	pte = __pte_alloc_one_kernel(mm);
- 	if (!pte)
- 		return NULL;
- 
-diff --git a/arch/microblaze/mm/pgtable.c b/arch/microblaze/mm/pgtable.c
-index 9f73265aad4e..e96dd1b7aba4 100644
---- a/arch/microblaze/mm/pgtable.c
-+++ b/arch/microblaze/mm/pgtable.c
-@@ -245,7 +245,7 @@ unsigned long iopa(unsigned long addr)
- __ref pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
+ static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
  {
- 	if (mem_init_done)
--		return (pte_t *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
-+		return __pte_alloc_one_kernel(mm);
- 	else
- 		return memblock_alloc_try_nid(PAGE_SIZE, PAGE_SIZE,
- 					      MEMBLOCK_LOW_LIMIT,
-diff --git a/arch/openrisc/mm/ioremap.c b/arch/openrisc/mm/ioremap.c
-index 8e63e86251ca..3b352f97fecb 100644
---- a/arch/openrisc/mm/ioremap.c
-+++ b/arch/openrisc/mm/ioremap.c
-@@ -36,7 +36,7 @@ pte_t __ref *pte_alloc_one_kernel(struct mm_struct *mm)
- 	pte_t *pte;
+-	pagetable_free(virt_to_ptdesc(pte));
++	pagetable_dtor_free(virt_to_ptdesc(pte));
+ }
  
- 	if (likely(mem_init_done)) {
--		pte = (pte_t *)get_zeroed_page(GFP_KERNEL);
-+		pte = __pte_alloc_one_kernel(mm);
- 	} else {
- 		pte = memblock_alloc_or_panic(PAGE_SIZE, PAGE_SIZE);
- 	}
-diff --git a/include/asm-generic/pgalloc.h b/include/asm-generic/pgalloc.h
-index e164ca66f0f6..3c8ec3bfea44 100644
---- a/include/asm-generic/pgalloc.h
-+++ b/include/asm-generic/pgalloc.h
-@@ -23,6 +23,11 @@ static inline pte_t *__pte_alloc_one_kernel_noprof(struct mm_struct *mm)
+ extern const char bad_pmd_string[];
+@@ -19,6 +19,10 @@ static inline pte_t *pte_alloc_one_kernel(struct mm_struct *mm)
  
  	if (!ptdesc)
  		return NULL;
@@ -182,32 +114,9 @@ index e164ca66f0f6..3c8ec3bfea44 100644
 +		pagetable_free(ptdesc);
 +		return NULL;
 +	}
-+
+ 
  	return ptdesc_address(ptdesc);
  }
- #define __pte_alloc_one_kernel(...)	alloc_hooks(__pte_alloc_one_kernel_noprof(__VA_ARGS__))
-@@ -48,7 +53,7 @@ static inline pte_t *pte_alloc_one_kernel_noprof(struct mm_struct *mm)
-  */
- static inline void pte_free_kernel(struct mm_struct *mm, pte_t *pte)
- {
--	pagetable_free(virt_to_ptdesc(pte));
-+	pagetable_dtor_free(virt_to_ptdesc(pte));
- }
- 
- /**
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index d92c16f6cfa2..ee31ffd7ead2 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3018,7 +3018,7 @@ static inline void pagetable_dtor_free(struct ptdesc *ptdesc)
- static inline bool pagetable_pte_ctor(struct mm_struct *mm,
- 				      struct ptdesc *ptdesc)
- {
--	if (!ptlock_init(ptdesc))
-+	if (mm != &init_mm && !ptlock_init(ptdesc))
- 		return false;
- 	__pagetable_ctor(ptdesc);
- 	return true;
 -- 
 2.47.0
 
