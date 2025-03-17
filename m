@@ -1,55 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-7126-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7127-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88D78A64BD8
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 12:09:54 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B3EFA64C01
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 17 Mar 2025 12:13:47 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGXLP694gz2ygL;
-	Mon, 17 Mar 2025 22:09:49 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGXQw5tfJz2ygh;
+	Mon, 17 Mar 2025 22:13:44 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2404:9400:2221:ea00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742209789;
-	cv=none; b=Ac2DSNwv6LjUkF/IjoAMG5Rx4TMJRg/931ENaw7YVtVKtrXuEuV6nLIK/vA6ffUuTOE133ppn+Hzgc3lk/p9l0nJxgHp8Wnuw2kH8jq2soCgNTYSHtgcZoUSkgux/6OlzQ7gH/WQ/wMAjaq+bIdjIlJF85NmkJ+bcTdM4rTshP8lXeVL2C9uaCPKioP3UexKX/g2cnaTknMp1N7lvNpfehA6kQhyP/aMK/+O0xly/KHxqZikP9tJ4usnNz3Sp0YRdvZV79o2L8+/RXuyJqG3nrKmxGs+KhW6H0Hzj08AxwOUEGI4GfsT+q8APp/Vtt3jbQB0QI4ia5uUHxh/dP+b7Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=150.107.74.76
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742210024;
+	cv=none; b=YZ/cPivrUF4+X/fA4gDzqLhj484PI9bhlBTNyd2HzHkbD7p034NJP5amnxFnwl76vsqa+uGmHe6jFqMmFotrOJWArUKUfhKXW5d8d1vkTZHLjfOpAp0sdCIuIWy2PEER9FAIJRfGRleqYJ/ooHrd0yeEHvkWeOQB9A0tm5n2uQ0c40ViEa/euXLA4TzbRRCQyizNLG2m64mVOgOTv05k83Ix9SQQEuL+xiNn5zmaFvmGOkTCFIJJeiSj6Eaer+QqCTrvwJUIXuFIGch4sFqEnOY0zynZI/PG0vYfkrcwNnAuNW1bv5GDGFfi6xkAXMROqZlgsw56yXhxk0E0oBaZOw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742209789; c=relaxed/relaxed;
-	bh=zqbOzGR/S1NqZVeaOkKz/a3SBP5r2fF1Gtl6KlZ7yBc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=njY0v/ofEmHaC5Q+7o2yiey688Ar4WYq5RSFhH+p+enp0qCrYExugL0EPOFTeON6FbqVP+/8i8pX+9ZdwlrYAYBsA6VhZpVHtG4JHABxsf2gAt31z4H1jU8e6japUgeeCfiFlWRHtR2tGGP1GUutWLkjIffn7CUo52oaxEb6UN4SpjjB4nbzbydfLPt7hgV95zr4Lr0N7gySwN28H21ZafFPJ9x4G9VRRW5y9qVeJCjWsDwFvokCxWEjyahaCYW3kOQ+JLY2aFQETN/xi46ZwG+zMJWavqLB+0ZNccAsa1hMCirVl/q6y8kpuHiAfkp7KLucPa4dWOLq2azTwc/xag==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EVq82bFL; dkim-atps=neutral
+	t=1742210024; c=relaxed/relaxed;
+	bh=QmYJK6DbOMSaneqCEueu5eJ3peh4bmGZrCrSWkmUiLA=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=G6eVQLQIjz+oW4Fr/As5rTr8sr53BrHhZsyJVjd6j+jNk2tu+VMa4A+kTwEVtSk6kPTIebG82snIY2vhzgvmsyCkbzmfsZDmEK+Lr32w1Uue1ekDN4jm35wSv2HO0ZcrCqRSwCB2Dq4harlZkUGwYvjZH3kjiAb4io3mqBwbUJ2oeiC0pfi4FXP5vfY8/B+2iRth4/f1ltGXIZOhwffYVbADu9eeghL772jyOeLbKS96Xj8SU+kYEcBQ6zewbltmnysLpeWEzttJtZDokhP9sfhHJvV6E5hTTCdaJrWb7quNGmJ52BDro/6etqDqMN8KTDhmJyJlXc31LhtfnBAq7Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IadPcq2s; dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=EVq82bFL;
+	dkim=pass (2048-bit key; unprotected) header.d=ellerman.id.au header.i=@ellerman.id.au header.a=rsa-sha256 header.s=201909 header.b=IadPcq2s;
 	dkim-atps=neutral
-Received: from mail.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGXLN2YlSz2yN3
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 22:09:48 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGXQw1g6vz2yfG
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 17 Mar 2025 22:13:44 +1100 (AEDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
-	s=201909; t=1742209786;
-	bh=zqbOzGR/S1NqZVeaOkKz/a3SBP5r2fF1Gtl6KlZ7yBc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=EVq82bFLVWAwnFiYN0xCZZwDgOF0En0/B6KlIlF0AL70U0X3pAwg0xxKx62byv3ge
-	 aMe1twjF8tvlPeanOl4hAHlpb1/ZelXSr6SlIfwTIhCwSrKJvfv0PlLnv9+PM23D6W
-	 +Uq+vA1jF/DjtjhyJZAzsBy72YdW636f4Wu+2nmdrAATaKX5g8x/5ucNOYrYkXrOzx
-	 ahnp4XaUQl4zwqgyghzPmR/X4I5Z6idikh8as2ab6ioTZQdagjMs2WRXT8X0+JFr1B
-	 ipffAUWJh25DmOUXvjbNHhFnIW/gFii9V9Dh1tSZ2JxW9yQd1NA7yQ/ao+sJDeckIP
-	 fwNVy8VQhP65w==
+	s=201909; t=1742210024;
+	bh=QmYJK6DbOMSaneqCEueu5eJ3peh4bmGZrCrSWkmUiLA=;
+	h=From:To:Subject:In-Reply-To:References:Date:From;
+	b=IadPcq2s0qAUW2pyCB3wc5wE4JkOC1NlqDkMJTAWwDYTyLpFgdkbzR6RxlymHxYP3
+	 840MBpY0FB5Y5/gXmCwDbOiLo92gysYBsV9nb1OxKkNMfw7+W8I+poWzLQLzDADV10
+	 zRVzeH0n2OfUtYKPlap4d3jDwqQXrFgxvPhb7BdxhQG7wKMILt0wij5ru/KgxW8XBj
+	 Pd5ALvUbfAMzfMv7Tr7w84DLC2ncaHd7UkgmhAGgekOriJeKzMAhick6APckwzn6aW
+	 RJNggJ1nnTh1/v4QI+PxuDd8ShNpvGkVbANNr6BlVEpYtmQWpVPBMwCU6xslrwi0PV
+	 z6rcO5tyNqqQw==
 Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
-	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZGXLL2Y2Pz4x1t;
-	Mon, 17 Mar 2025 22:09:46 +1100 (AEDT)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4ZGXQw0MgHz4x8W;
+	Mon, 17 Mar 2025 22:13:44 +1100 (AEDT)
 From: Michael Ellerman <mpe@ellerman.id.au>
-To: Stephen Rothwell <sfr@canb.auug.org.au>, maddy@linux.ibm.com
-Cc: linuxppc-dev@lists.ozlabs.org, Linux Next Mailing List
- <linux-next@vger.kernel.org>, Andrew Donnellan <ajd@linux.ibm.com>,
- "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Please add powerpc topic/cxl branch to linux-next
-Date: Mon, 17 Mar 2025 22:09:43 +1100
-Message-ID: <87y0x3dibs.fsf@mpe.ellerman.id.au>
+To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>
+Subject: Re: [main-line][PowerPC]selftests/powerpc/signal: sigfuz fails
+In-Reply-To: <5f88a95b-1c8d-4a74-9753-9cdb2e64daf4@linux.ibm.com>
+References: <5f88a95b-1c8d-4a74-9753-9cdb2e64daf4@linux.ibm.com>
+Date: Mon, 17 Mar 2025 22:13:41 +1100
+Message-ID: <87v7s7di56.fsf@mpe.ellerman.id.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,21 +70,46 @@ X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi sfr,
+Venkat Rao Bagalkote <venkat88@linux.ibm.com> writes:
+> Greetings!!
+>
+> I am observing selftests/powerpc/signal:sigfuz test fails on linux 
+> mainline repo on IBM Power10 systems.
+>
+> The test passes on the kernel with commit head: 
+> 619f0b6fad524f08d493a98d55bac9ab8895e3a6 and fails on the kernel with 
+> commit head: ce69b4019001407f9cd738dd2ba217b3a8ab831b on the main line.
+>
+>
+> Repo: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>
+> I tried to do git bisect and the bisect tool pointed first bad commit 
+> to: 16ebb6f5b6295c9688749862a39a4889c56227f8.
+>
+> But upon reverting the first bad commit issue is still seen. So please 
+> ignore, if the bisection dosent help.
+>
+>
+> Error:
+>
+> # selftests: powerpc/signal: sigfuz
+> # test: signal_fuzzer
+> # tags: git_version:v6.14-rc7-1-g49c747976afa
+> # !! killing signal_fuzzer
+> # !! child died by signal 15
+> # failure: signal_fuzzer
+> not ok 3 selftests: powerpc/signal: sigfuz # exit=1
 
-Could you please add the topic/cxl branch of the powerpc tree to
-linux-next for the next few weeks, it's targeted for the next merge
-window.
+That error means the test is timing out and being killed by the test
+harness.
 
-  https://web.git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/log/?h=topic/cxl
+That could be due to a bug, but it could just be that your system is
+overloaded or something. You can increase the timeout in the code by
+adding a call to test_harness_timeout().
 
-It contains a topic branch of sorts to hold the cxl removal. It has a
-few commits from the SCSI tree, up to and including the cxlflash
-removal, then it merges powerpc/fixes to get a Documentation/ patch that
-touches cxl, and then the cxl removal patch from Andrew.
-
-The plan will be to send it to Linus after the powerpc and SCSI trees
-have been merged, during the merge window.
+The test also includes lots of randomisation, so if you actually need to
+bisect it you'd want to change the code to use a consistent random seed
+in the calls to srand().
 
 cheers
 
