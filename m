@@ -1,71 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-7168-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7169-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29BFAA66984
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Mar 2025 06:39:11 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DC3A66D11
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Mar 2025 08:59:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZH0yN4MH1z2yVv;
-	Tue, 18 Mar 2025 16:39:08 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZH44f00YZz2yr1;
+	Tue, 18 Mar 2025 18:59:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742276348;
-	cv=none; b=czMZdf/w2YBBrVKnH4lQ+81BIBBOlz5sZT3x5D1tI8u6YO84OoFiJVrtq+Yg0Thcm6F4mnpTQMnK6Nkkn1ivYQtT4SyxRENGO4ZYPDw2ojGyg4WwADSPPoQwFSWxxG6/uZmInNM2V818vWoy71oiDJdE3bCzjctKH3cVtSxHzKURlDID6+tGTvPrAQGSABRB6UMWOw/EecXH/0JX8YPZyeEnr3Hf0pr6o9mcXgTAGs9/x6sQQPbwSKsqww7eK0vqx3ORpT9VYgXFYF7HAXEnRLmBShtzXlywGUDRBs+vOpQPZENuX6NOCcnCfznUDKSEYJlDTWl4zMLJn7WQZ2869w==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:638:a000:1025::16"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742284785;
+	cv=none; b=jqBvLtwUpYXqfqQt/cG8H5mKqDgCBxiVQuch9X42T9/VowAbVl4KZ8jel6yNYukpSKREA3hcbgme+LcO7SZuSZNFshUYEVE1MgOKsmWHnB/vgFehRmcIxGTvdNyMt8rZTbtNdrx8mRtWXaWZHCxIjkFGFg3Yq4SuEKiBlYme8GETYwfRgjVqsFqAlDmpQNhjGA1ZCeiE/3mAFRNZBh8abKQJWMwcqQffymqsA0wtVwQU6lxVIryl+WqqjCMNz/MVL6NLqSZ/i4bKSBSs5wRNTE5OgM8f07ODxwy64nddmSUBvVKt2HQvoGvSb6H32/U4lhXmoRMDlKcxmhuG7AMCRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742276348; c=relaxed/relaxed;
-	bh=DioCaqQk0CryK0PbM4g67zBKbEP75bAXPCKEk2n/rJE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GZSN0OQPcdLeoCqyVuWr8Pz+6jlboFsK2OCyn9mFMcs6nmPQFjOuccqQSVkSkkEpAtZHf/fFJyy4gqcmKZaUI8jOpr0wJWORcJb652qquOmJjv496X/b8Mg3CCFDPNrNorW8ipf9gA4JGhRuN/KDEEPeyKCf8YVGwYLk7lySUN9q0NEDigz6EnKSGrB9pCQz/3RDYE7YQl9syEQG9Nbrq1ZexgHRmYoxOYnQEbBcOMde0wPqTzBd56VfzURelSAldUXSveMy0V/ECd2ynKZ1dNCJBB3iZbLCeccSk6itPrCmMaTK4nqRgZhvql5W7cUtnc7mr/RXz7Vy7JLia5ZpAQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A/MKBvxg; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742284785; c=relaxed/relaxed;
+	bh=T8g3BGN/mHpuPfK1H4SEVNvXxea99G16e6oOkBugydQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=YGCwBJ9kEueoV6wxR+wfeikGF7LeZa65skfAdZglxiPXnijmxbfYe122LU5nQntvv+qWmiyfQyhy0HAco9BEtiHNl8Kv//8rqoZi3g/rqJRXuOgN5tmPecLLpOdJP1yzfTyaCVvXeg9p8bH5Zo44EX06XBPMAJtICCUpa0tZMySt0DYtDob8lXptN8E4Sxv+bSKKxQds7xldaAeIQAwtC8ghO21Qn9S523ZLKjAYBDM0vWwl2SBr/DkW29Z0fBkDmj4GQ5gCMx3yG44eHne7M6WRf5m9tRI1/niFK9NRp3KvfBjjDhQpeJPqJGirtKwMjMssvklAS2doMeI3dK43Vw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=keevS7Wo; dkim-atps=neutral; spf=pass (client-ip=2001:638:a000:1025::16; helo=mx-rz-3.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=A/MKBvxg;
+	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=keevS7Wo;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=2001:638:a000:1025::16; helo=mx-rz-3.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
+Received: from mx-rz-3.rrze.uni-erlangen.de (mx-rz-3.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::16])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZH0yM49T3z2yDr
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 16:39:07 +1100 (AEDT)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52HKpnst011320;
-	Tue, 18 Mar 2025 05:38:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=DioCaq
-	Qk0CryK0PbM4g67zBKbEP75bAXPCKEk2n/rJE=; b=A/MKBvxgMO+AjzBPdR4piH
-	owaMe0gV3nyCYKcmUF4Yj+5e6/Bdeu9UXzwC6Gw1dYD58EjPhnMs7chyToN+bM+b
-	pQQpOJJ/XTt5fTzyw6LhxwN1TLrFThrThelJlrFntLVcfKeKpKOErV429PFpC1Rm
-	4UR9pH9AUK9h15sDrQff0CdGqUqvJiCxUEp88Yf6QPiRDIRuXp3c3DL7/m7BQLVl
-	JrrbQRFTtH7gKZ5Wz6m9DW6rRxJTnp5R4LPv87yqr9oCNm3EN8MnNbdUOIpJyNng
-	1C9PH0F0/lFG91tesMaz1oETViSSodDKGOrLfuy9vllD8j1MJw4PQu+7mqT/H9kw
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45eu55sphd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Mar 2025 05:38:54 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52I4BjAD001076;
-	Tue, 18 Mar 2025 05:38:54 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45dp3khxqp-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 18 Mar 2025 05:38:54 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52I5crwj33358338
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 18 Mar 2025 05:38:53 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 19E955805D;
-	Tue, 18 Mar 2025 05:38:53 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D726F58057;
-	Tue, 18 Mar 2025 05:38:47 +0000 (GMT)
-Received: from [9.66.75.14] (unknown [9.66.75.14])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 18 Mar 2025 05:38:47 +0000 (GMT)
-Message-ID: <67bff00d-eca7-41bd-ad9c-7ee6d5dac040@linux.ibm.com>
-Date: Tue, 18 Mar 2025 11:08:45 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZH44Z2PM3z2yfS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 18:59:39 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
+	t=1742284770; bh=T8g3BGN/mHpuPfK1H4SEVNvXxea99G16e6oOkBugydQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From:To:CC:
+	 Subject;
+	b=keevS7WotUTlE4uv/uI0BB9M4xxOkfuah7+yI24TqsIPktTPJvCGGObVIIW6jeZKP
+	 w/bt5U30Oj42lmLjgCWzHND/darszlQnzkm2TfzKKC+5r8+zbw9gW/2+jMj1r8WoJN
+	 GWRd9JqWh62APoSyejo2Ue2ELzZ0R2JZChH0j3j5Gac6QGaEneNPA6B1S4KPi+9Ymt
+	 yq1OYftJSwHLFuepJ7+09KW9dPLsPrN4xGbBORAPBGx98UMms/frWVgz3oxRkMuf8t
+	 uCDu2K54M6rBVztc9Rrz/SOMocwXb+IlFyT1Lw80YIgT51+KovX1JWNEK+/fOk+RjO
+	 cQLLlEgHw199w==
+Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-rz-3.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4ZH44K5yb4z1xqh;
+	Tue, 18 Mar 2025 08:59:29 +0100 (CET)
+X-Virus-Scanned: amavisd-new at boeck4.rrze.uni-erlangen.de (RRZE)
+X-RRZE-Flag: Not-Spam
+X-RRZE-Submit-IP: 2a02:8071:7900:bc0:c583:a400:7f8d:5e80
+Received: from localhost (unknown [IPv6:2a02:8071:7900:bc0:c583:a400:7f8d:5e80])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: U2FsdGVkX1/njMYOnHzLTANywgVWOWsVTWqW358Unx4=)
+	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4ZH44G1Xjqz1yjk;
+	Tue, 18 Mar 2025 08:59:26 +0100 (CET)
+From: Luis Gerhorst <luis.gerhorst@fau.de>
+To: Eduard Zingerman <eddyz87@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>,  Daniel Borkmann
+ <daniel@iogearbox.net>,  Andrii Nakryiko <andrii@kernel.org>,  Martin
+ KaFai Lau <martin.lau@linux.dev>,  Song Liu <song@kernel.org>,  Yonghong
+ Song <yonghong.song@linux.dev>,  John Fastabend
+ <john.fastabend@gmail.com>,  KP Singh <kpsingh@kernel.org>,  Stanislav
+ Fomichev <sdf@fomichev.me>,  Hao Luo <haoluo@google.com>,  Jiri Olsa
+ <jolsa@kernel.org>,  Puranjay Mohan <puranjay@kernel.org>,  Xu Kuohai
+ <xukuohai@huaweicloud.com>,  Catalin Marinas <catalin.marinas@arm.com>,
+  Will Deacon <will@kernel.org>,  Hari Bathini <hbathini@linux.ibm.com>,
+  Christophe Leroy <christophe.leroy@csgroup.eu>,  Naveen N Rao
+ <naveen@kernel.org>,  Madhavan Srinivasan <maddy@linux.ibm.com>,  Michael
+ Ellerman <mpe@ellerman.id.au>,  Nicholas Piggin <npiggin@gmail.com>,
+  Mykola Lysenko <mykolal@fb.com>,  Shuah Khan <shuah@kernel.org>,
+  Henriette Herzog <henriette.herzog@rub.de>,  Cupertino Miranda
+ <cupertino.miranda@oracle.com>,  Matan Shachnai <m.shachnai@gmail.com>,
+  Dimitar Kanaliev <dimitar.kanaliev@siteground.com>,  Shung-Hsi Yu
+ <shung-hsi.yu@suse.com>,  Daniel Xu <dxu@dxuuu.xyz>,  bpf@vger.kernel.org,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org,
+  linuxppc-dev@lists.ozlabs.org,  linux-kselftest@vger.kernel.org,  George
+ Guo <guodongtai@kylinos.cn>,  WANG Xuerui <git@xen0n.name>,  Tiezhu Yang
+ <yangtiezhu@loongson.cn>,  Maximilian Ott <ott@cs.fau.de>,  Milan Stephan
+ <milan.stephan@fau.de>
+Subject: Re: [PATCH bpf-next 09/11] bpf: Return PTR_ERR from push_stack()
+In-Reply-To: <9083b52fd4a2d7a5a0473e858042c277c883f8b0.camel@gmail.com>
+	(Eduard Zingerman's message of "Mon, 17 Mar 2025 02:19:08 -0700")
+References: <20250313172127.1098195-1-luis.gerhorst@fau.de>
+	<20250313174149.1113165-1-luis.gerhorst@fau.de>
+	<20250313174149.1113165-4-luis.gerhorst@fau.de>
+	<9083b52fd4a2d7a5a0473e858042c277c883f8b0.camel@gmail.com>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Tue, 18 Mar 2025 08:59:24 +0100
+Message-ID: <87r02uu5ur.fsf@fau.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -78,166 +100,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v13 00/11] Support page table check on PowerPC
-To: Andrew Donnellan <ajd@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: x86@kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        pasha.tatashin@soleen.com, sweettea-kernel@dorminy.me
-References: <20250211161404.850215-1-ajd@linux.ibm.com>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <20250211161404.850215-1-ajd@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 9pxqW5-JFDH7ipa2HtNalmErx99yR2nv
-X-Proofpoint-GUID: 9pxqW5-JFDH7ipa2HtNalmErx99yR2nv
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-18_02,2025-03-17_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
- mlxlogscore=999 priorityscore=1501 adultscore=0 suspectscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 clxscore=1011 phishscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503180037
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Eduard Zingerman <eddyz87@gmail.com> writes:
 
+> Could you please point me to a location, where exact error code
+> returned by updated push_stack() matters?
+> I checked push_stack() callgraph (in the attachment), but can't find
+> anything.
 
-On 2/11/25 9:43 PM, Andrew Donnellan wrote:
-> Support page table check on all PowerPC platforms. This works by
-> serialising assignments, reassignments and clears of page table
-> entries at each level in order to ensure that anonymous mappings
-> have at most one writable consumer, and likewise that file-backed
-> mappings are not simultaneously also anonymous mappings.
-> 
-> In order to support this infrastructure, a number of stubs must be
-> defined for all powerpc platforms. Additionally, seperate set_pte_at()
-> and set_pte_at_unchecked(), to allow for internal, uninstrumented mappings.
-> 
-> (This series was written by Rohan McLure, who has left IBM and is no longer
-> working on powerpc - I've taken far too long to pick this up and finally
-> send it.)
-> 
+Only with the final patch 11 ("bpf: Fall back to nospec for spec path
+verification") applied, the error code should matter. Then, the error
+code either matches `state->speculative &&
+error_recoverable_with_nospec(err)` in do_check() if it was EINVAL (in
+this case we heuristically avoided nested speculative path verification
+but have to add a nospec), or we continue to raise the error (e.g.,
+ENOMEM) from do_check().
 
-For powerpc changes
-Acked-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Or is your question on this part from the commit message of patch 9?
 
-> v13:
->  * Rebase on mainline
->  * Don't use set_pte_at_unchecked() for early boot purposes (Pasha)
-> 
-> v12:
->  * Rename commits that revert changes to instead reflect that we are
->    reinstating old behaviour due to it providing more flexibility
->  * Add return line to pud_pfn() stub
->  * Instrument ptep_get_and_clear() for nohash
-> Link: https://lore.kernel.org/linuxppc-dev/20240402051154.476244-1-rmclure@linux.ibm.com/
-> 
-> v11:
->  * The pud_pfn() stub, which previously had no legitimate users on any
->    powerpc platform, now has users in Book3s64 with transparent pages.
->    Include a stub of the same name for each platform that does not
->    define their own.
->  * Drop patch that standardised use of p*d_leaf(), as already included
->    upstream in v6.9.
->  * Provide fallback definitions of p{m,u}d_user_accessible_page() that
->    do not reference p*d_leaf(), p*d_pte(), as they are defined after
->    powerpc/mm headers by linux/mm headers.
->  * Ensure that set_pte_at_unchecked() has the same checks as
->    set_pte_at().
-> Link: https://lore.kernel.org/linuxppc-dev/20240328045535.194800-14-rmclure@linux.ibm.com/ 
-> 
-> v10:
->  * Revert patches that removed address and mm parameters from page table
->    check routines, including consuming code from arm64, x86_64 and
->    riscv.
->  * Implement *_user_accessible_page() routines in terms of pte_user()
->    where available (64-bit, book3s) but otherwise by checking the
->    address (on platforms where the pte does not imply whether the
->    mapping is for user or kernel)
->  * Internal set_pte_at() calls replaced with set_pte_at_unchecked(), which
->    is identical, but prevents double instrumentation.
-> Link: https://lore.kernel.org/linuxppc-dev/20240313042118.230397-9-rmclure@linux.ibm.com/T/
-> 
-> v9:
->  * Adapt to using the set_ptes() API, using __set_pte_at() where we need
->    must avoid instrumentation.
->  * Use the logic of *_access_permitted() for implementing
->    *_user_accessible_page(), which are required routines for page table
->    check.
->  * Even though we no longer need p{m,u,4}d_leaf(), still default
->    implement these to assist in refactoring out extant
->    p{m,u,4}_is_leaf().
->  * Add p{m,u}_pte() stubs where asm-generic does not provide them, as
->    page table check wants all *user_accessible_page() variants, and we
->    would like to default implement the variants in terms of
->    pte_user_accessible_page().
->  * Avoid the ugly pmdp_collapse_flush() macro nonsense! Just instrument
->    its constituent calls instead for radix and hash.
-> Link: https://lore.kernel.org/linuxppc-dev/20231130025404.37179-2-rmclure@linux.ibm.com/
-> 
-> v8:
->  * Fix linux/page_table_check.h include in asm/pgtable.h breaking
->    32-bit.
-> Link: https://lore.kernel.org/linuxppc-dev/20230215231153.2147454-1-rmclure@linux.ibm.com/
-> 
-> v7:
->  * Remove use of extern in set_pte prototypes
->  * Clean up pmdp_collapse_flush macro
->  * Replace set_pte_at with static inline function
->  * Fix commit message for patch 7
-> Link: https://lore.kernel.org/linuxppc-dev/20230215020155.1969194-1-rmclure@linux.ibm.com/
-> 
-> v6:
->  * Support huge pages and p{m,u}d accounting.
->  * Remove instrumentation from set_pte from kernel internal pages.
->  * 64s: Implement pmdp_collapse_flush in terms of __pmdp_collapse_flush
->    as access to the mm_struct * is required.
-> Link: https://lore.kernel.org/linuxppc-dev/20230214015939.1853438-1-rmclure@linux.ibm.com/
-> 
-> v5:
-> Link: https://lore.kernel.org/linuxppc-dev/20221118002146.25979-1-rmclure@linux.ibm.com/
-> 
-> Rohan McLure (11):
->   mm/page_table_check: Reinstate address parameter in
->     [__]page_table_check_pud_set()
->   mm/page_table_check: Reinstate address parameter in
->     [__]page_table_check_pmd_set()
->   mm/page_table_check: Provide addr parameter to
->     page_table_check_pte_set()
->   mm/page_table_check: Reinstate address parameter in
->     [__]page_table_check_pud_clear()
->   mm/page_table_check: Reinstate address parameter in
->     [__]page_table_check_pmd_clear()
->   mm/page_table_check: Reinstate address parameter in
->     [__]page_table_check_pte_clear()
->   mm: Provide address parameter to p{te,md,ud}_user_accessible_page()
->   powerpc: mm: Add pud_pfn() stub
->   powerpc: mm: Implement *_user_accessible_page() for ptes
->   powerpc: mm: Use set_pte_at_unchecked() for internal usages
->   powerpc: mm: Support page table check
-> 
->  arch/arm64/include/asm/pgtable.h             | 18 +++---
->  arch/powerpc/Kconfig                         |  1 +
->  arch/powerpc/include/asm/book3s/32/pgtable.h | 12 +++-
->  arch/powerpc/include/asm/book3s/64/pgtable.h | 62 +++++++++++++++---
->  arch/powerpc/include/asm/nohash/pgtable.h    | 13 +++-
->  arch/powerpc/include/asm/pgtable.h           | 19 ++++++
->  arch/powerpc/mm/book3s64/hash_pgtable.c      |  4 ++
->  arch/powerpc/mm/book3s64/pgtable.c           | 17 +++--
->  arch/powerpc/mm/book3s64/radix_pgtable.c     |  9 ++-
->  arch/powerpc/mm/pgtable.c                    | 12 ++++
->  arch/riscv/include/asm/pgtable.h             | 18 +++---
->  arch/x86/include/asm/pgtable.h               | 20 +++---
->  include/linux/page_table_check.h             | 67 ++++++++++++--------
->  include/linux/pgtable.h                      | 10 +--
->  mm/page_table_check.c                        | 39 +++++++-----
->  15 files changed, 225 insertions(+), 96 deletions(-)
-> 
+  This changes the sanitization-case to returning -ENOMEM. However, this
+  is more fitting as -EFAULT would indicate a verifier-internal bug.
 
+This was referring to the sanitize_speculative_path() calls in
+check_cond_jmp_op(). For that case, the error should also only be used
+in do_check() with patch 11 applied. However, regarding this, EFAULT and
+ENOMEM are treated the same (they both don't satisfy
+error_recoverable_with_nospec()), therefore this change is primarily
+made to not complicate the code.
+
+I just became aware that there is some special handling of EFAULT as
+discussed in c7a897843224 ("bpf: don't leave partial mangled prog in
+jit_subprogs error path"). I will have look into this in detail to make
+sure changing push_stack() from EFAULT to ENOMEM is OK.
+
+Hope this answers your question.
+
+Adding some of these details to v2 won't hurt I guess.
 
