@@ -1,35 +1,154 @@
-Return-Path: <linuxppc-dev+bounces-7161-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7162-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1914AA66871
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Mar 2025 05:38:48 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B00E4A6688E
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Mar 2025 05:47:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGzcg4p8lz2yfv;
-	Tue, 18 Mar 2025 15:38:43 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGzps6Rvqz2ygm;
+	Tue, 18 Mar 2025 15:47:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742272723;
-	cv=none; b=CBlVd6/3QcD83/u5DFUCTZMU1vWN8c5sERXxzlG9SdCfCdWhLKTgl47YAuJRW0Y0KavwxU7oJ05SLclrRRDzJxjWM7xk+6IHxWwc3742sGL8eImgVUbDgvVCn3nZMGV7j1FyyJH+hZKrYyxITBJkpxXaLj86v5ZLEKWUQyMtHCdaHMofandaqxk/UZlSm0sqaJd8lTQLVeVETA8XEQ8qUmtUhrMkpQWJf4pvW+XYLI6ZgfCee1eREYoFtrq9k/qWDYxPcTcFk3s5Y70nVXR7bWsDFQD58ItEKHhHDiOr945hQQ3m4MrqnFawvoS3qANYXMz61eThxct0v5A7pcsVDA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742272723; c=relaxed/relaxed;
-	bh=rwck3yq1zfX0/VzN1MDQ+NCBErVzByOdr+S/IgfqxhI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=D2iuWnXUyKxZQ540euWr/gX/N1RXrCrCRxvAEd249rxRH+fXweo4VimdJCVSRFLZC4DcAPyh9Pq55Qjku5+Kd1y/Il7dYGetDLlgazg/j/uPMEcPpD9fo0aI9HrC4qRyhqk1JEFJHE/+YHlu00e784DsLej3abb2uQRN7ATITuWr5991ijGpFWhYXTgbmmo87BqnnWMpX4UnXB0YEWyLa9USwOSMapmrS/2rZDkVjhmSvfSbFfGdt9Zk6zWcHLgfvOJs+WP76AUm6wCwPd/NJ16rjTSaauMnbzVq8vEY7XU8LJQGm1ZVB4JkPLx1y5vl8Oqvm2wG+a3WYj3Yr9aJnA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=anshuman.khandual@arm.com; receiver=lists.ozlabs.org)
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZGzcd5YFfz2yfS
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 15:38:39 +1100 (AEDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 300C2152B;
-	Mon, 17 Mar 2025 21:38:16 -0700 (PDT)
-Received: from [10.163.44.33] (unknown [10.163.44.33])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B992E3F63F;
-	Mon, 17 Mar 2025 21:38:00 -0700 (PDT)
-Message-ID: <392723e2-da82-4bdb-bebe-ed1c982d0d5f@arm.com>
-Date: Tue, 18 Mar 2025 10:07:56 +0530
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:260c::609" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742273253;
+	cv=pass; b=Pa+eCN8NPvlcMF1iqa738Z2jWQBJ7joMmWPHWAeJJKlkrIdoyxGkaJ0euUdDd+binhcf4rcSuAIUJOzn/i+XFqRESIDyndYWCRcOZblKwrEc1BfpDR0zUhZyRYXNkZIb77duJcPHGwsnpLFCxpgrRbH6S/5jF4L+WsQzb7Ti5alDut3k5ZxUUY0Lv+NXYTcuqRSRZd6gcZ45XjXFl4tTYsin73BGyztx8p1V/h8GBXo4acXGGyG6q63Hs/TPjFmVVxAMeoxb5U6QGE4qpvmdqODhBPvsinxidc5xSnS0ykWIYdo+BwdOfS0JltTc+oq3XyladCUSTCrzT2zif2R3Kg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1742273253; c=relaxed/relaxed;
+	bh=SjfbbxQYmkDljJscfJTxsg7HU0NdPTRrVoFEzg2mXuw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Gd8YsrcIZBT6R2KzbZ2/UqeDzvG9nQnw++Offv+pBL8G2lX/Q2f5xhAEP1k72H8lk7yEqLF2ICveTNmQg4EWG8+uhzgdz82OiktB5A0LtZ6sm1G4JkOgvq5b13IhWvMGAmy9NhQyZ2tObvatmBUl1wspnET8cz0Lgzi2CSdZew8pPDuS05xvvtmiUQOJ+xhNOWXZzu73HeGQMSIL/gdg8250efER/iTw4tQ9Nd/JQaIKSDiMkUAxBw+Z1AfnX7JFhoa2wyygWfHgewwAlG13Aa5wQrIAMb8/P27jrXKlmZNpUMx4tulK5prDpKC2RjSfO5J0x2qhOcTVc044x/NxgQ==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=X0DAMdZg; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:260c::609; helo=eur03-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=X0DAMdZg;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260c::609; helo=eur03-vi1-obe.outbound.protection.outlook.com; envelope-from=wei.fang@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on20609.outbound.protection.outlook.com [IPv6:2a01:111:f403:260c::609])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZGzpr4VCHz2yfS
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 18 Mar 2025 15:47:32 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZPGYCIe50NgL/ykpFbLQVh8bWUIFUrG+HIhDerHRDghrsp3KpkrspfJ1Z7gyIhnsep1DBSxvgb2BW3Rc9nidseaYstTycMzGuGuJMAd3RRMypFFapuXBRnRDneedj4VsGzpURH0dRleu6rbVA5rCtGCse/GljCwlyxCMByV4LpJTNsZH7JlUpLKmm2pJld9bilHEuMZZPMnT8gT06NZMGS4tdQpAcyuWGm3pDJSLCTa9vCjVYB4jtMlRSjFLv/HChenPewjGI532iFRC2vNuVNKXBC1PY5xS24MLDEA1KroxpKs+7IylcRnLgeqfzy5tRinc6Teya27vJL9UOKOb7g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=SjfbbxQYmkDljJscfJTxsg7HU0NdPTRrVoFEzg2mXuw=;
+ b=TLC5HCk61wDhqehoWK5y5r7XqQs2+qT9qmB6IbjbkIjrJiwODwDVfn7MMq7/YHUVaWKZ0SqfJf6iR7Ue0U72BtCvTo2/odf6zMKq0t4BG2JAzFJ+Y6b6s8QKaTH0DHPU701KUafMkcn6cJ0VsrrhfOGMlNKIsRFI0nkgE9L1TbPbYjYDL/6or21xaqMEMPYZjZZ//D2pWBvha+nnsAjBpZIN62I8cbD0gUMRSvaDLILBlcFDu5cdPyRao07HcqXk7EmTE6IDve0JilKD1jKjgz0pmYSHa3XWV8ot8NpIRV7Hxk2u/dW/AzroiOGjD0EsaPVVJrT2l94aB+4mBh4lWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=SjfbbxQYmkDljJscfJTxsg7HU0NdPTRrVoFEzg2mXuw=;
+ b=X0DAMdZgSza52jzOCnqZAP5DGYxrPm6WotmLZAi3jkinDbo8FJ3wNzZLibmE1KXMYEGZdMCrEoLU9hefjsbyB75bBj0ZFVEh51T9//xoOKLYGiL/bwPbU+8Iy8TWsGld2teWw/3ikMRRDZhuA6Fo9GkVTQneU/Ibzzfno84YzMka+GpA5iH4i4YsElfgEQqKx3M21KdLQPNh//6QliAiV0UYUDkfJ8Jrp2UPyK3GTx6tIbtWyv92LQttlQVvDDUSKHg2qH10qyz4G8XFRpcaKLW9RG2eyFS+InTJFea6KRahXWdcMvL+VS1rpm/V9PUNGFaFe05dWYduwfFdv3E+IA==
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
+ by AM9PR04MB7635.eurprd04.prod.outlook.com (2603:10a6:20b:285::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Tue, 18 Mar
+ 2025 04:47:13 +0000
+Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
+ ([fe80::a7c2:e2fa:8e04:40db%5]) with mapi id 15.20.8534.031; Tue, 18 Mar 2025
+ 04:47:11 +0000
+From: Wei Fang <wei.fang@nxp.com>
+To: Vladimir Oltean <vladimir.oltean@nxp.com>
+CC: Claudiu Manoil <claudiu.manoil@nxp.com>, Clark Wang
+	<xiaoning.wang@nxp.com>, "andrew+netdev@lunn.ch" <andrew+netdev@lunn.ch>,
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com"
+	<edumazet@google.com>, "kuba@kernel.org" <kuba@kernel.org>,
+	"pabeni@redhat.com" <pabeni@redhat.com>, "christophe.leroy@csgroup.eu"
+	<christophe.leroy@csgroup.eu>, "netdev@vger.kernel.org"
+	<netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "imx@lists.linux.dev" <imx@lists.linux.dev>,
+	"linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+	"linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>
+Subject: RE: [PATCH v4 net-next 08/14] net: enetc: add RSS support for i.MX95
+ ENETC PF
+Thread-Topic: [PATCH v4 net-next 08/14] net: enetc: add RSS support for i.MX95
+ ENETC PF
+Thread-Index: AQHbkkpbosg+I5pSyEimx2zUNxYPxbN3hVPcgADCsDA=
+Date: Tue, 18 Mar 2025 04:47:11 +0000
+Message-ID:
+ <PAXPR04MB8510DE829523749E9FB5E20B88DE2@PAXPR04MB8510.eurprd04.prod.outlook.com>
+References: <20250311053830.1516523-1-wei.fang@nxp.com>
+ <20250311053830.1516523-1-wei.fang@nxp.com>
+ <20250311053830.1516523-9-wei.fang@nxp.com>
+ <20250311053830.1516523-9-wei.fang@nxp.com>
+ <20250317155501.4haweyhlrfozg7zr@skbuf>
+In-Reply-To: <20250317155501.4haweyhlrfozg7zr@skbuf>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: PAXPR04MB8510:EE_|AM9PR04MB7635:EE_
+x-ms-office365-filtering-correlation-id: 886ff731-8bd6-4866-0cd7-08dd65d7f226
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|366016|7416014|376014|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?Dh+xjG0mAf+BnAr6k5ypxR9yxWNFADbbr0QBaEA4MZmQWtWOO2PTo6JpBT7h?=
+ =?us-ascii?Q?khn0nfvgyMSDFE5X86Y/GrkT8NH32t1bqgBjy0ohFq5dgn+NN3cjiDxFMNzE?=
+ =?us-ascii?Q?3UaVbwc4yQQXqGOJ4WFZBj2SZx6PuOeW87RBQNU7vApDZ9IdGWqtLAoKEL+2?=
+ =?us-ascii?Q?05udpXCqOG/vMoxAOlHYkGFiObK1sGobf8NNNfxPZHu9TBa8WuDJGyJQL+CT?=
+ =?us-ascii?Q?F2B/xREa6CccQ7fSDNka73MdnMQUAaL4MB6K8nPUZCnX7EsKCkvv16iaV7RP?=
+ =?us-ascii?Q?0wgNfUiZK0xGedlYebTJugQQC+D0dG4AiyYGsx3iGzpMkveZcNQ0eA1klaz+?=
+ =?us-ascii?Q?zRrO35ookg1HTDQFcRDAWO5qvFtMl/bf+VRuOkqy3mfAfChA/80EaORtORjA?=
+ =?us-ascii?Q?XWiSuXr2jxQh7m5/rk9sThA3vMBBHe+miwGJbGBAt/P4QGwavi/adnwR/mMY?=
+ =?us-ascii?Q?Zuk7FRV3jZN5eoZnA9RMmH9L/TVzNMk9I6KMERWU94QlsxlUv84TbpHwXjL0?=
+ =?us-ascii?Q?QhxkpqJgh1rRTBehvnGpPonOchIO1yMkRmfFBNjl2jpitw2KkPwhAh1LBNjQ?=
+ =?us-ascii?Q?VVM9REenQbfEoHhtKIRERmSg2Vwc0N4OwoVwSU+W7g4F0KCYamR4TQu4fGde?=
+ =?us-ascii?Q?Uc3sf5C9oE1er9ufGS2z0MPekg0KC5ZYULkMmbI3anraWQY+6R3wKn2LYtVx?=
+ =?us-ascii?Q?2+5SPOKbEO1Aie8oPNgYnJSP8TtT41ed/OxRQywRWgr4s+XXQoGo8xWdgVkz?=
+ =?us-ascii?Q?y03pfyGqEIkn/WQa0qygF4990kKh5PgsTToOn/WVCUveSFAXlVMhFoxVL5DV?=
+ =?us-ascii?Q?z3cNvE0RQmjRw0THhnGWFIkRbtB60OXj0s51KWBGJ9RDrwkBLvkNPuNzbEKx?=
+ =?us-ascii?Q?lyCaFzQmZoXwOc82yXBW1XZqDLlwN87jyqYcagqWhrJrg0zSM0dnqDRflQ1M?=
+ =?us-ascii?Q?6ujUSZzEqrJ+uUsnw474429tZl0DLyB3PnvAGTcB/J3oyq3cAQOD+gEmXV2v?=
+ =?us-ascii?Q?OaIwfzJpMnwCfG9908b5q8TCsWWzVqFoZB4U5Rnkxn9xRGYjbLOA9Tby/qF5?=
+ =?us-ascii?Q?EZ2KQEM9j/UOKX6h+CxtcQbXFKmHxa97SumIv0X65jOKxXsT5kCiadIKUw5M?=
+ =?us-ascii?Q?kg48zOhNyLuR0zhWXOkXeRYsk5qiG1h8Pxbrx64oKSvPWUV5tm8NLRyHYrTV?=
+ =?us-ascii?Q?A9pnDuQQAnzm2oWbNEZS9OSZag8ZjJ71pJ/4/xVrsJ/5CICA4uROeBu3hb1j?=
+ =?us-ascii?Q?AMZhRzMWH+CnsVB2lSXx92ALSPD/Nrbfm3IBOt2y5pmztwctzAbFTv4hgH14?=
+ =?us-ascii?Q?8RWCjOUBdcugPzyudt2VZ/mS/RrE5SzwbOXHkSPYjULpcJIZ28wk5zIokZir?=
+ =?us-ascii?Q?iJZBP8uI3vsVM3UkS2q/PapAvXU1d+0xTdfJD9gsjjfK7DwY+bwDdYX87WrD?=
+ =?us-ascii?Q?WZb0d2fbw7v2xvwst29eKKKoPIuP0Xhj?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014)(38070700018);DIR:OUT;SFP:1101;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?0WN+iYU603J3KRZ5viWNFR2Ym8DI+XSxruapTGzg0lma8hAt3ayHUpQeg11C?=
+ =?us-ascii?Q?hgvUDrJFM2k41mgpZkc0uTJ7fZAzpcfsLCFCIf3R1IIoVS0oQ+PpTTzi+jqb?=
+ =?us-ascii?Q?8teYCTTlqUQVnfuIoKjpGeBvd/AWvLcXMdiiS8LlZvzEnmgSlLQQeWOvGTI6?=
+ =?us-ascii?Q?GtY05/MTgUa6mtdOnvtv/oFY/LMSE1WIbnCMZ8pr8wXAM6vCFlO3/D2qjS1U?=
+ =?us-ascii?Q?VqtwPaeURYXt1TE/dNsaMqExdRGydQIRTXg9RiicI9IIwhe8S5vhpLellvBq?=
+ =?us-ascii?Q?lLznE6jr94p0FMNMfn6F+v9/d/r8kncmh712XsKWcEaSh03CeDAqjbWuuUJ/?=
+ =?us-ascii?Q?6YiAU8MupUkeELUHdq8ff+GJFBeipT0/54kj67pfbe3oH4AIqtRDzbFaj2ZI?=
+ =?us-ascii?Q?pqE3YDsFFBye2DDosK5IHWKk4Tv00pETNGehAWNGh0jbxsKZWbXB45wd2h6z?=
+ =?us-ascii?Q?BgHTCPgk298A29yNgbvQgP8FZJz0eJb2yqNnKSxQNxo2WrxyuIdivV/EpIK9?=
+ =?us-ascii?Q?oxfC35Ug21CKKUR3djEI8HOBr/kaeab2S5aTIzOn+k7vb7NSN5ZHeX2niNCp?=
+ =?us-ascii?Q?iwTn9IttRfSU4+CQbb73DgNdyctEn6X+96ERGbMu/RwEVciWHvzWR2uPmEtI?=
+ =?us-ascii?Q?FSj/XAAH6FF7XUAV4dfgXrnMDznWGNBazAluK2VWctdFl8CIZCLVhohheIJG?=
+ =?us-ascii?Q?0/y6WhlavzW0q0JN4CRgYABl7SDJRiSRdpmuSdJcttPlAZAnYdi53gDXm0nP?=
+ =?us-ascii?Q?i7JBUDFkc9QPMde3Xxcrmu3t/5rwyyxDjfezvYsDfv/vM9NaHblrB0gbmnhn?=
+ =?us-ascii?Q?1ucfxTm0l/4uOHvUsou2LeSXnPTkxdxl63NASJ2qd/VK3sNBi6lNp0oNtrjD?=
+ =?us-ascii?Q?6bTYLcPIJLmmGCLyxSlnj/t04GsIhW1eAhlqf33CDWrNpHqxrEqD4LhuBH5x?=
+ =?us-ascii?Q?W2/jbAnTLfurdFIIP5LeuwRIGdIdS7HO0GZVOOdSEg8Jjz/Viu96tqaYVRmS?=
+ =?us-ascii?Q?Y8Iggslouq+s0zp76SdU09chm2hA2YOkwmqs5hWsdj7RTn2xutmKNJIXaeT4?=
+ =?us-ascii?Q?vesPmgobQqdrZUpGTHxmNcA44lbWWr2OeqsmYhBj8J/r1cAtl4iPthgVy/5e?=
+ =?us-ascii?Q?8qLdKM/udWSEW45qJmAOWwLiVbGq1yP/zK+l39RMiDoyzGlpOuwlTnM31g9d?=
+ =?us-ascii?Q?sDg6WrjyVVTGmcL+oVU69SvMtXJbhzOZso35JpzB/0OdKJ2yTQYPhH+C5qE8?=
+ =?us-ascii?Q?jJJQSG3ktlymariC02TQVFgYGjsMO1NRXAQIokcOgB9gjKSvM+HkR0YD3sEH?=
+ =?us-ascii?Q?jXOzDd/0grYIGXGxMA1sBKEGdsC85zyxPfCj7dXoKYVVlAb0s2nXXSBXpkHN?=
+ =?us-ascii?Q?vdiHD0VbVIwiVyk7y4oVTXnsTdJKkMYQD117wMVWZUkJ+1w6We+pVTToR5NJ?=
+ =?us-ascii?Q?uuX+NrgY+2oLE9K9vO86T3Md80IlsQ8U4NuuPshurz3sL/UwgEuEP8LOiFXL?=
+ =?us-ascii?Q?QsdzxwHSEDfHCVlPMC54shfZQcczavIegY+yjIozDBtTmb0CrXHy9xwBXeHm?=
+ =?us-ascii?Q?SFyODA33WE1vnCXaFUw=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -42,273 +161,185 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] arm64/ptdump: Replace u64 with pteval_t
-To: Ryan Roberts <ryan.roberts@arm.com>, linux-mm@kvack.org
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Steven Price <steven.price@arm.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>, Paul Walmsley
- <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>,
- Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
- Heiko Carstens <hca@linux.ibm.com>, Peter Zijlstra <peterz@infradead.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, Marc Zyngier <maz@kernel.org>
-References: <20250317061818.16244-1-anshuman.khandual@arm.com>
- <20250317061818.16244-3-anshuman.khandual@arm.com>
- <16c12c3f-f2c2-45fa-9db6-4dfaeb002059@arm.com>
-Content-Language: en-US
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-In-Reply-To: <16c12c3f-f2c2-45fa-9db6-4dfaeb002059@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 886ff731-8bd6-4866-0cd7-08dd65d7f226
+X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Mar 2025 04:47:11.1079
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7QFzKl7E+QfpH3e2G3zdULyTvtqgWRudad9BfFr6ekwM2/y9DAoR3VhjW5lHxFcmTWvBun6qoxMKVHuNWHI7qQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7635
+X-Spam-Status: No, score=0.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+> On Tue, Mar 11, 2025 at 01:38:24PM +0800, Wei Fang wrote:
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h
+> b/drivers/net/ethernet/freescale/enetc/enetc.h
+> > index a3ce324c716c..ecf79338cd79 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc.h
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+> > @@ -543,6 +543,8 @@ void enetc_set_rss_key(struct enetc_si *si, const u=
+8
+> *bytes);
+> >  int enetc_get_rss_table(struct enetc_si *si, u32 *table, int count);
+> >  int enetc_set_rss_table(struct enetc_si *si, const u32 *table, int cou=
+nt);
+> >  int enetc_send_cmd(struct enetc_si *si, struct enetc_cbd *cbd);
+> > +int enetc4_get_rss_table(struct enetc_si *si, u32 *table, int count);
+> > +int enetc4_set_rss_table(struct enetc_si *si, const u32 *table, int co=
+unt);
+> >
+> >  static inline void *enetc_cbd_alloc_data_mem(struct enetc_si *si,
+> >  					     struct enetc_cbd *cbd,
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> > index f991e1aae85c..53dbd5d71859 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc4_pf.c
+> > @@ -693,6 +693,14 @@ static void enetc4_pf_set_rx_mode(struct
+> net_device *ndev)
+> >  	queue_work(si->workqueue, &si->rx_mode_task);
+> >  }
+> >
+> > +static int enetc4_pf_set_features(struct net_device *ndev,
+> > +				  netdev_features_t features)
+> > +{
+> > +	enetc_set_features(ndev, features);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static const struct net_device_ops enetc4_ndev_ops =3D {
+> >  	.ndo_open		=3D enetc_open,
+> >  	.ndo_stop		=3D enetc_close,
+> > @@ -700,6 +708,7 @@ static const struct net_device_ops enetc4_ndev_ops
+> =3D {
+> >  	.ndo_get_stats		=3D enetc_get_stats,
+> >  	.ndo_set_mac_address	=3D enetc_pf_set_mac_addr,
+> >  	.ndo_set_rx_mode	=3D enetc4_pf_set_rx_mode,
+> > +	.ndo_set_features	=3D enetc4_pf_set_features,
+> >  };
+> >
+> >  static struct phylink_pcs *
+> > @@ -1108,6 +1117,8 @@ static void enetc4_pf_netdev_destroy(struct
+> enetc_si *si)
+> >  static const struct enetc_si_ops enetc4_psi_ops =3D {
+> >  	.setup_cbdr =3D enetc4_setup_cbdr,
+> >  	.teardown_cbdr =3D enetc4_teardown_cbdr,
+> > +	.get_rss_table =3D enetc4_get_rss_table,
+> > +	.set_rss_table =3D enetc4_set_rss_table,
+> >  };
+> >
+> >  static int enetc4_pf_wq_task_init(struct enetc_si *si)
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+> > index 4e5125331d7b..1a74b93f1fd3 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_cbdr.c
+> > @@ -299,3 +299,17 @@ int enetc_set_rss_table(struct enetc_si *si, const
+> u32 *table, int count)
+> >  	return enetc_cmd_rss_table(si, (u32 *)table, count, false);
+> >  }
+> >  EXPORT_SYMBOL_GPL(enetc_set_rss_table);
+> > +
+> > +int enetc4_get_rss_table(struct enetc_si *si, u32 *table, int count)
+> > +{
+> > +	return ntmp_rsst_query_or_update_entry(&si->ntmp.cbdrs,
+> > +					       table, count, true);
+> > +}
+> > +EXPORT_SYMBOL_GPL(enetc4_get_rss_table);
+> > +
+> > +int enetc4_set_rss_table(struct enetc_si *si, const u32 *table, int co=
+unt)
+> > +{
+> > +	return ntmp_rsst_query_or_update_entry(&si->ntmp.cbdrs,
+> > +					       (u32 *)table, count, false);
+> > +}
+> > +EXPORT_SYMBOL_GPL(enetc4_set_rss_table);
+>=20
+> I don't understand the logic for placing enetc4_get_rss_table() and
+> enetc4_set_rss_table() in enetc_cbdr.c (built as part of fsl-enetc-core-y=
+)?
+> It's not core code, it's used only by NETC v4.
 
+The ENETC v4 VF will reuse the driver of ENETC v1, and it also supports
+RSS, so I think these functions are fine to be placed in enetc-core.
 
-On 3/17/25 14:58, Ryan Roberts wrote:
-> On 17/03/2025 06:18, Anshuman Khandual wrote:
->> Page table entry's value, mask and protection are represented with pteval_t
->> data type format not u64 that has been assumed while dumping the page table
->> entries. Replace all such u64 instances with pteval_t instead as required.
->>
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Marc Zyngier <maz@kernel.org>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-kernel@vger.kernel.org
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>  arch/arm64/include/asm/ptdump.h | 8 ++++----
->>  arch/arm64/mm/ptdump.c          | 2 +-
->>  2 files changed, 5 insertions(+), 5 deletions(-)
->>
->> diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
->> index e5da9ce8a515..476a870489b9 100644
->> --- a/arch/arm64/include/asm/ptdump.h
->> +++ b/arch/arm64/include/asm/ptdump.h
->> @@ -24,8 +24,8 @@ struct ptdump_info {
->>  };
->>  
->>  struct ptdump_prot_bits {
->> -	u64		mask;
->> -	u64		val;
->> +	pteval_t	mask;
->> +	pteval_t	val;
-> 
-> Given Ard's suggestion of using "ptdesc" as a generic term for PTDESC_SHIFT (or
-> PTDESC_ORDER, or whatever we ended up calling it), I wonder if it would be
-> cleaner to do the same with the types? We could have a ptdesc_t, which is
-> typedef'ed as u64 (or u128), then pteval_t, pmdval_t, ..., could all be
-> typedef'ed as ptdesc_t. Then for code that just wants a generic pgtable
-> descriptor value, we can use that type to indicate that it can be at any level.
+>=20
+> > diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+> b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+> > index 1a8fae3c406b..bc65135925b8 100644
+> > --- a/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+> > +++ b/drivers/net/ethernet/freescale/enetc/enetc_ethtool.c
+> > @@ -625,6 +625,24 @@ static int enetc_get_rxnfc(struct net_device *ndev=
+,
+> struct ethtool_rxnfc *rxnfc,
+> >  	return 0;
+> >  }
+> >
+> > +static int enetc4_get_rxnfc(struct net_device *ndev, struct ethtool_rx=
+nfc
+> *rxnfc,
+> > +			    u32 *rule_locs)
+> > +{
+> > +	struct enetc_ndev_priv *priv =3D netdev_priv(ndev);
+> > +
+> > +	switch (rxnfc->cmd) {
+> > +	case ETHTOOL_GRXRINGS:
+> > +		rxnfc->data =3D priv->num_rx_rings;
+> > +		break;
+> > +	case ETHTOOL_GRXFH:
+> > +		return enetc_get_rsshash(rxnfc);
+>=20
+> These rxnfc commands seem implemented identically to the corresponding
+> subset from enetc_get_rxnfc(). Rather than duplicating those, could you
+> rather return -EOPNOTSUPP for the unsupported ones on NETC v4, and reuse
+> enetc_get_rxnfc()?
+>=20
 
-Something like the following ? Will cross check again if this might have
-missed something which could be converted as ptdesc_t as well.
+I have explained it to Jakub in v2:
+https://lore.kernel.org/imx/PAXPR04MB8510B52B7D27640C557680B4881A2@PAXPR04M=
+B8510.eurprd04.prod.outlook.com/
 
-diff --git a/arch/arm64/include/asm/pgtable-types.h b/arch/arm64/include/asm/pgtable-types.h
-index 6d6d4065b0cb..686541e986e3 100644
---- a/arch/arm64/include/asm/pgtable-types.h
-+++ b/arch/arm64/include/asm/pgtable-types.h
-@@ -11,11 +11,13 @@
- 
- #include <asm/types.h>
- 
--typedef u64 pteval_t;
--typedef u64 pmdval_t;
--typedef u64 pudval_t;
--typedef u64 p4dval_t;
--typedef u64 pgdval_t;
-+typedef u64 ptdesc_t;
-+
-+typedef ptdesc_t pteval_t;
-+typedef ptdesc_t pmdval_t;
-+typedef ptdesc_t pudval_t;
-+typedef ptdesc_t p4dval_t;
-+typedef ptdesc_t pgdval_t;
- 
- /*
-  * These are used to make use of C type-checking..
-@@ -46,7 +48,7 @@ typedef struct { pgdval_t pgd; } pgd_t;
- #define pgd_val(x)	((x).pgd)
- #define __pgd(x)	((pgd_t) { (x) } )
- 
--typedef struct { pteval_t pgprot; } pgprot_t;
-+typedef struct { ptdesc_t pgprot; } pgprot_t;
- #define pgprot_val(x)	((x).pgprot)
- #define __pgprot(x)	((pgprot_t) { (x) } )
- 
-diff --git a/arch/arm64/include/asm/ptdump.h b/arch/arm64/include/asm/ptdump.h
-index e5da9ce8a515..9548813bc877 100644
---- a/arch/arm64/include/asm/ptdump.h
-+++ b/arch/arm64/include/asm/ptdump.h
-@@ -24,8 +24,8 @@ struct ptdump_info {
- };
- 
- struct ptdump_prot_bits {
--	u64		mask;
--	u64		val;
-+	ptdesc_t	mask;
-+	ptdesc_t	val;
- 	const char	*set;
- 	const char	*clear;
- };
-@@ -34,7 +34,7 @@ struct ptdump_pg_level {
- 	const struct ptdump_prot_bits *bits;
- 	char name[4];
- 	int num;
--	u64 mask;
-+	ptdesc_t mask;
- };
- 
- /*
-@@ -51,7 +51,7 @@ struct ptdump_pg_state {
- 	const struct mm_struct *mm;
- 	unsigned long start_address;
- 	int level;
--	u64 current_prot;
-+	ptdesc_t current_prot;
- 	bool check_wx;
- 	unsigned long wx_pages;
- 	unsigned long uxn_pages;
-diff --git a/arch/arm64/kernel/efi.c b/arch/arm64/kernel/efi.c
-index 1d25d8899dbf..42e281c07c2f 100644
---- a/arch/arm64/kernel/efi.c
-+++ b/arch/arm64/kernel/efi.c
-@@ -29,7 +29,7 @@ static bool region_is_misaligned(const efi_memory_desc_t *md)
-  * executable, everything else can be mapped with the XN bits
-  * set. Also take the new (optional) RO/XP bits into account.
-  */
--static __init pteval_t create_mapping_protection(efi_memory_desc_t *md)
-+static __init ptdesc_t create_mapping_protection(efi_memory_desc_t *md)
- {
- 	u64 attr = md->attribute;
- 	u32 type = md->type;
-@@ -83,7 +83,7 @@ static __init pteval_t create_mapping_protection(efi_memory_desc_t *md)
- 
- int __init efi_create_mapping(struct mm_struct *mm, efi_memory_desc_t *md)
- {
--	pteval_t prot_val = create_mapping_protection(md);
-+	ptdesc_t prot_val = create_mapping_protection(md);
- 	bool page_mappings_only = (md->type == EFI_RUNTIME_SERVICES_CODE ||
- 				   md->type == EFI_RUNTIME_SERVICES_DATA);
- 
-diff --git a/arch/arm64/kernel/pi/map_kernel.c b/arch/arm64/kernel/pi/map_kernel.c
-index e57b043f324b..a00f57c73d81 100644
---- a/arch/arm64/kernel/pi/map_kernel.c
-+++ b/arch/arm64/kernel/pi/map_kernel.c
-@@ -159,7 +159,7 @@ static void noinline __section(".idmap.text") set_ttbr0_for_lpa2(u64 ttbr)
- static void __init remap_idmap_for_lpa2(void)
- {
- 	/* clear the bits that change meaning once LPA2 is turned on */
--	pteval_t mask = PTE_SHARED;
-+	ptdesc_t mask = PTE_SHARED;
- 
- 	/*
- 	 * We have to clear bits [9:8] in all block or page descriptors in the
-diff --git a/arch/arm64/kernel/pi/map_range.c b/arch/arm64/kernel/pi/map_range.c
-index 2b69e3beeef8..30c6bc50844f 100644
---- a/arch/arm64/kernel/pi/map_range.c
-+++ b/arch/arm64/kernel/pi/map_range.c
-@@ -30,7 +30,7 @@ void __init map_range(u64 *pte, u64 start, u64 end, u64 pa, pgprot_t prot,
- 		      int level, pte_t *tbl, bool may_use_cont, u64 va_offset)
- {
- 	u64 cmask = (level == 3) ? CONT_PTE_SIZE - 1 : U64_MAX;
--	pteval_t protval = pgprot_val(prot) & ~PTE_TYPE_MASK;
-+	ptdesc_t protval = pgprot_val(prot) & ~PTE_TYPE_MASK;
- 	int lshift = (3 - level) * (PAGE_SHIFT - 3);
- 	u64 lmask = (PAGE_SIZE << lshift) - 1;
- 
-@@ -87,7 +87,7 @@ void __init map_range(u64 *pte, u64 start, u64 end, u64 pa, pgprot_t prot,
- 	}
- }
- 
--asmlinkage u64 __init create_init_idmap(pgd_t *pg_dir, pteval_t clrmask)
-+asmlinkage u64 __init create_init_idmap(pgd_t *pg_dir, ptdesc_t clrmask)
- {
- 	u64 ptep = (u64)pg_dir + PAGE_SIZE;
- 	pgprot_t text_prot = PAGE_KERNEL_ROX;
-diff --git a/arch/arm64/kernel/pi/pi.h b/arch/arm64/kernel/pi/pi.h
-index c91e5e965cd3..91dcb5b6bbd1 100644
---- a/arch/arm64/kernel/pi/pi.h
-+++ b/arch/arm64/kernel/pi/pi.h
-@@ -33,4 +33,4 @@ void map_range(u64 *pgd, u64 start, u64 end, u64 pa, pgprot_t prot,
- 
- asmlinkage void early_map_kernel(u64 boot_status, void *fdt);
- 
--asmlinkage u64 create_init_idmap(pgd_t *pgd, pteval_t clrmask);
-+asmlinkage u64 create_init_idmap(pgd_t *pgd, ptdesc_t clrmask);
-diff --git a/arch/arm64/mm/mmap.c b/arch/arm64/mm/mmap.c
-index 07aeab8a7606..c86c348857c4 100644
---- a/arch/arm64/mm/mmap.c
-+++ b/arch/arm64/mm/mmap.c
-@@ -83,7 +83,7 @@ arch_initcall(adjust_protection_map);
- 
- pgprot_t vm_get_page_prot(unsigned long vm_flags)
- {
--	pteval_t prot;
-+	ptdesc_t prot;
- 
- 	/* Short circuit GCS to avoid bloating the table. */
- 	if (system_supports_gcs() && (vm_flags & VM_SHADOW_STACK)) {
-diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
-index fd1610b4fd15..280e850f1688 100644
---- a/arch/arm64/mm/ptdump.c
-+++ b/arch/arm64/mm/ptdump.c
-@@ -194,7 +194,7 @@ void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
- 	struct ptdump_pg_state *st = container_of(pt_st, struct ptdump_pg_state, ptdump);
- 	struct ptdump_pg_level *pg_level = st->pg_level;
- 	static const char units[] = "KMGTPE";
--	u64 prot = 0;
-+	ptdesc_t prot = 0;
- 
- 	/* check if the current level has been folded dynamically */
- 	if (st->mm && ((level == 1 && mm_p4d_folded(st->mm)) ||
--- 
-2.25.1
+So I don't want to reuse it for ENETC v4 PF.
 
-> 
-> Thanks,
-> Ryan
-> 
->>  	const char	*set;
->>  	const char	*clear;
->>  };
->> @@ -34,7 +34,7 @@ struct ptdump_pg_level {
->>  	const struct ptdump_prot_bits *bits;
->>  	char name[4];
->>  	int num;
->> -	u64 mask;
->> +	pteval_t mask;
->>  };
->>  
->>  /*
->> @@ -51,7 +51,7 @@ struct ptdump_pg_state {
->>  	const struct mm_struct *mm;
->>  	unsigned long start_address;
->>  	int level;
->> -	u64 current_prot;
->> +	pteval_t current_prot;
->>  	bool check_wx;
->>  	unsigned long wx_pages;
->>  	unsigned long uxn_pages;
->> diff --git a/arch/arm64/mm/ptdump.c b/arch/arm64/mm/ptdump.c
->> index fd1610b4fd15..a5651be95868 100644
->> --- a/arch/arm64/mm/ptdump.c
->> +++ b/arch/arm64/mm/ptdump.c
->> @@ -194,7 +194,7 @@ void note_page(struct ptdump_state *pt_st, unsigned long addr, int level,
->>  	struct ptdump_pg_state *st = container_of(pt_st, struct ptdump_pg_state, ptdump);
->>  	struct ptdump_pg_level *pg_level = st->pg_level;
->>  	static const char units[] = "KMGTPE";
->> -	u64 prot = 0;
->> +	pteval_t prot = 0;
->>  
->>  	/* check if the current level has been folded dynamically */
->>  	if (st->mm && ((level == 1 && mm_p4d_folded(st->mm)) ||
-> 
+> > +	default:
+> > +		return -EOPNOTSUPP;
+> > +	}
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int enetc_set_rxnfc(struct net_device *ndev, struct ethtool_rxn=
+fc
+> *rxnfc)
+> >  {
+> >  	struct enetc_ndev_priv *priv =3D netdev_priv(ndev);
+> > @@ -685,22 +703,29 @@ static int enetc_get_rss_key_base(struct enetc_si
+> *si)
+> >  	return ENETC4_PRSSKR(0);
+> >  }
+> >
+> > +static void enetc_get_rss_key(struct enetc_si *si, const u8 *key)
+> > +{
+> > +	int base =3D enetc_get_rss_key_base(si);
+> > +	struct enetc_hw *hw =3D &si->hw;
+> > +	int i;
+> > +
+> > +	for (i =3D 0; i < ENETC_RSSHASH_KEY_SIZE / 4; i++)
+> > +		((u32 *)key)[i] =3D enetc_port_rd(hw, base + i * 4);
+> > +}
+>=20
+> I would have expected that this refactoring of code into
+> enetc_get_rss_key() would be done as part of the previous change:
+> "net: enetc: make enetc_set_rss_key() reusable".
+>=20
+
+I think this goes against the theme.
+
 
