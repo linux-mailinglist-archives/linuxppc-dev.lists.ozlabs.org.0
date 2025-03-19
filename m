@@ -1,77 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-7215-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7216-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D63A68B91
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 12:29:23 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3621CA68C04
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 12:44:32 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHmh04CCfz2yrZ;
-	Wed, 19 Mar 2025 22:29:20 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHn1T44cSz2yvv;
+	Wed, 19 Mar 2025 22:44:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2613::606" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742383760;
-	cv=pass; b=if5IemmUsg4d2QeSCDoZW2FljjAGATvMbOOufzT8pOyWJQZh4MlQr+YHNdAIFWuChGXPm8bg6FXvFLXv22ra2g6Ra4cJHIGO4HI9jcOqZQVEg8P64tALDnV9FHHe3EEOf7Bk6f0r2AQ8cuWnYs+xX7OpdS3nwcEOs7HNRbtFbCX+0CkPx+VLQfhNDkP4U3N7I4MzwuRPAmqOezWXarVpQc7NAaHsTxGpT21EByTcdqDgoDey1FrhC4Vh1WHhogVuh/hWkxa/4TygmDooy2NSo+OmRuHTAxNw132ohIGEqofI7gY4O1NbFqz5d8/uO0bdxSNl0R84uqlMDYQcBkkt5Q==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742383760; c=relaxed/relaxed;
-	bh=7sdkZghpbBIMTieie8VW3ux22BV3CC+lSqDnjnuzXuQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=SXry7niOf2h2Pn4PdaTOZzCdbGh5SOEzBHyzz179c72CHZXaN4NmA+yq1lvR8Y/BsymIKkVFUsPUZ0Dp1AZT0i3wfrEiTpnxUT2wJLGl1fCyM8Tkim6ga7vRpV8/MrOZd72y8wlDuqXIYjANQEdJ2mtgW643CmxRpx/pVp9VrHDK3WsqU6msH3PJUzpf3VDzyuZi7vd9IdJyAtOS5I7x1OnBJuX4hqUvlsoVkyocOA6do9zAXxftv7fPtYE8DkzjNv1y0G872CwcJiLvSDF46YkdNUlTHyH4CfW/Ze2Y6Mb5Y9nu9VsSAjleCMUMw+1VdriozKfrQDRjPu155s+kSw==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=N4kIUJeU; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2613::606; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742384669;
+	cv=none; b=QBXXaMDEr+aAIVreGkcuLh/pZoSZvOir9xccShg37McC1IntEeDDPHYC3sVV+2mjDijH3IpWwEfmA4H9PondGuTkdURGPFB8iYah8X1FUtHYOOCSMim5yWccrLnyn/6e5ZuLMXShTAxHcCK9PwJsrte6zkU+1rB/5cuyaWzstz22LinuF5cU8Ib06AIvPSdYpPXtQ5vg2ayPePFKp5ZepZSnS/KYvbzO1s6azKYytpEfXr7t52ACp+7h75Jg/GLBc2P00h3U1EJnJAQx9vNvGqg1R4qtMQIR/ZjqaCPj7wcrFNkPFYhXDq2R+zBVQNcEpP+eyUMYeNipTYSk+Ded+Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1742384669; c=relaxed/relaxed;
+	bh=vjxafd7/u5Y+QwmhmIFT9I0JYjjq9NcGj0d7ATle1OU=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:References:
+	 In-Reply-To:Content-Type; b=gNxx1M64xjxm8ZalrBHtlKhnU7tG8BdKVxlsUA9rcTj4OMmE/8l4AjTLnujZaQe7LcNDkTrFr9qWxrkuk1THsxuJ6vOG4M7nsNpUnswadPHAewpV6tNUKkX1p3DRKPhPbs/0lOx+MPkN9k5f9M3JLh1gaUAFNpXAs+3uD1/K91kAGKEv3gWsQl3pXnYNaZD10YHJkXCCErSrVA45l/ivKd6LplxYMXvvdYot7pPlNk9zrXClbeHyANncTZVyxiWhn9aGQ/5gDf4ljl73mAHY5PGqH6FZibhShILZXSkRL0SE7mg7qn09saU+Kgs9icFZyBvSV7hXoH7BI4XgPq67vQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HCuZr5Ho; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=N4kIUJeU;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=HCuZr5Ho;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::606; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20606.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::606])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHmgz2xhVz2yf3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Mar 2025 22:29:18 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=wQ5XW8GNAguzltFY6KhfhSYbnyfPwWwBRJYvmArI3sDtbYLaB3aiec/gOnmji8XlQaeXylZyNlF0arzmUSEWG79PaLqgdw8E2CXn8SEEpgiNzmG/tj/M0tBHxXe75m42fdYsfgXpYtR/dPN24wJ8iWtdNLyKoMy0KW4N/1GGOT1wv3GohS36NLhhse+Y5pJFg9Rl9mQDT5Y6gB79gfsr85nrENt06V6OUOoxb+RsQ+wwjg5vBtggFZXxjUd9eUklCm8rg/dRrEokSVOnLs4K4sSR1nkjnDwzosf1oxKQPuaeujsDmE2zeqnqLlyM2hB8OXInxr1gxNVE7n9FD3dwsg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7sdkZghpbBIMTieie8VW3ux22BV3CC+lSqDnjnuzXuQ=;
- b=xpJHbrftEciECJ2L45s4Z5R+/j/JE42MgkiSclTSm0ApT5yqGVhWMDA+/F3kVhSX7B6Li9ghvmqXJUcNnwUeouWXLpsdv0sq6EdUtKMLnutRALsTUIP6JoJntJmSjSU/EBYJzkX/dlKkqWLkyAKkW2gvPMchKNw44H3KD3KN2D323knCgxmQpY2RGAT2PYPUU572g57JbLncmAy5TJVKLu+QHjyZ18042yTVycMFgbZhoLchSB8fFLFz0waigaL5ilpVelAH4zY45SC48ZMqgQ7ur+hUnOrPHgsxr2Xr0Z9Epa6fC7oBEB3vAiPj/KCHPrVc0gkOIYrH2TkmVJl8Cw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7sdkZghpbBIMTieie8VW3ux22BV3CC+lSqDnjnuzXuQ=;
- b=N4kIUJeUBN0S1dk4r/hI3jmjj2P3NuXO5FzgnrJHQV5BoydaZbhGePn0cMi8CMYcHvB3pxbRC9Rd+fI59L8LD0ySJUENCxVtnisqi3u9QJn7huqlNM2hyEPmlT39cRsGTScNZuvlJaHdP1Zm3utOcfMqE75ERGKE5i6qkVIwzMGZGi/ux1bDF43iuzGo47iSgFCnFigm+SgK8LYcicNSy9SLBjmQQljsoTb1dJu+mtmTytnnCIrMeSkhzYdthDprQephHnB06KfoXJ45z+vW4fJqAxaiToSahQrbIok3hp4rb+RGRi5GwQ8ddo6ITvuUkD/BdbYTQHJf40ISE0qMHA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8868.eurprd04.prod.outlook.com (2603:10a6:20b:42f::6)
- by DBAPR04MB7448.eurprd04.prod.outlook.com (2603:10a6:10:1a6::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.33; Wed, 19 Mar
- 2025 11:29:00 +0000
-Received: from AS8PR04MB8868.eurprd04.prod.outlook.com
- ([fe80::b317:9c26:147f:c06e]) by AS8PR04MB8868.eurprd04.prod.outlook.com
- ([fe80::b317:9c26:147f:c06e%5]) with mapi id 15.20.8534.034; Wed, 19 Mar 2025
- 11:29:00 +0000
-Date: Wed, 19 Mar 2025 13:28:57 +0200
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: Stuart Yoder <stuyoder@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, Arnd Bergmann <arnd@arndb.de>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH 1/3] MAINTAINERS: add myself as maintainer for the fsl-mc
- bus
-Message-ID: <3b5hwovhn22npstnssawg3lxsgc7xq5je3zajjxp5xdwdrtz27@wv7qcj6kl2na>
-References: <20250319094311.2966519-1-ioana.ciornei@nxp.com>
- <20250319094311.2966519-2-ioana.ciornei@nxp.com>
- <CAEac7tYQE76z4pYminhvMJR6GZ66RPRv4PxM-U9VpGJjvn6APg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAEac7tYQE76z4pYminhvMJR6GZ66RPRv4PxM-U9VpGJjvn6APg@mail.gmail.com>
-X-ClientProxiedBy: AM0PR04CA0084.eurprd04.prod.outlook.com
- (2603:10a6:208:be::25) To AS8PR04MB8868.eurprd04.prod.outlook.com
- (2603:10a6:20b:42f::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHn1S3Bbfz2yrp
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Mar 2025 22:44:27 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52J3kDaU019347;
+	Wed, 19 Mar 2025 11:44:19 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=vjxafd
+	7/u5Y+QwmhmIFT9I0JYjjq9NcGj0d7ATle1OU=; b=HCuZr5HoY6TJ1PxP/MS0T0
+	ECWr8BtK30zscdJQBHMYKjUrD1O5nQbbFYF0YeZEap8CrwabYNRbZS8/Mbi0w9lt
+	58Qt69utk/JI78BnyEZRXoJZ7hmGzdHH2LQpQqcRG/KzW2Y0kjZN76x6K09amYiK
+	1seQduMp9O0CY3ncI2hBGnK+VgM1pIszjBq4Bq6sgKHzZB2IbM02TBxl/IBdILf4
+	DS401szlwlFUA2Vlfnu0e/LxV+1eT0ZSEKF2iq5JTGTg1fKnSdZYbj4vNVIJEpkA
+	h0fATM1/Ve7dI+Zwl1akNCvCm0j+X1bddQWWZNYV4Qv1FD71dEoM7bVkEFg4KGwg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45fpa9j3fa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Mar 2025 11:44:19 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52JBDxu1023196;
+	Wed, 19 Mar 2025 11:44:18 GMT
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45dp3ks3ts-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Mar 2025 11:44:18 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52JBiHUg25887236
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Mar 2025 11:44:17 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7DFB65805C;
+	Wed, 19 Mar 2025 11:44:17 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7C6A658054;
+	Wed, 19 Mar 2025 11:44:15 +0000 (GMT)
+Received: from [9.61.249.96] (unknown [9.61.249.96])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 19 Mar 2025 11:44:14 +0000 (GMT)
+Message-ID: <6debfdf3-2e7b-4581-b1ab-cc5ec1607237@linux.ibm.com>
+Date: Wed, 19 Mar 2025 17:14:12 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,129 +78,225 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8868:EE_|DBAPR04MB7448:EE_
-X-MS-Office365-Filtering-Correlation-Id: a78177d8-c224-44b4-f8c8-08dd66d93ead
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?TVlKS1RwNzdIYW45WjZrM3FpN0k4Y1AwQytZbkVKYjFQQS9uVFhWS2tjN2da?=
- =?utf-8?B?SlpPQkFMMXhTbXorTEtwM3Vwc3hwKzB3UW5nOGZnc1NPK0pYMndaT1dZeDBR?=
- =?utf-8?B?RzZSVWUzNXd3V3loY0xwTVBMYmgwY0o2TzdBWEp5cDZGR24vRkNUYzA5bTJt?=
- =?utf-8?B?TlFiSW1lV1N5Zzh2ZjRicEtxRkZHeDJPVFA2aEhjTUZtODRrb0NhRzVlK3VP?=
- =?utf-8?B?UnBtOC9UR3BuOXk3c1VJTWUwSWhseGxyQTNCaVptSDVhOHpDRTh0bXpvcldy?=
- =?utf-8?B?dnBMNTBEWDYya0hkbi9PeTBTY3FOdEZnNTR3QjFBd2JQTklETUxGcTVPVVhh?=
- =?utf-8?B?RTc4YWo0VkIvYTBCUm1nOUR0U1J2MnYwdllLTmo1SVJlU0Q0TXh5RWkrdmtL?=
- =?utf-8?B?aU04Mk5YcnpwY2Y4d1YyZ1ZjTUJzN2N3WWVnb251UnVES3Q3cUdtRElPVmkw?=
- =?utf-8?B?Y25UL3hyYlpPQlZ0U3R2bytMQlVLbXo2blkydzRWY0c5YWRiV3MvN0Zhdm5Z?=
- =?utf-8?B?cDlYMzBSUmJwOVNkMU1vY3lLVEowRG4rWG1MbXd0OU1sT25HdFlkUzh3bnpJ?=
- =?utf-8?B?a2ZqUVNTTGpSSHRuY3U0REJHd2gxMEhvVnhNazZtOHlRWXhDMHFXejdqNk5K?=
- =?utf-8?B?ZzNKNXhTU0NGUGlZbnZtM3IxTHJwaVhuSTZaRmNPeGJMUDhERzFBSWRxVUlF?=
- =?utf-8?B?T1NIdEJScllSN2RSSmFQNnJHVitsM3VCYWU1aEhKcmREczBZNU1BNEpuUi9a?=
- =?utf-8?B?Mk5odWtxVGxOemlJTlF0Wjg5OVhMazB6ZmZmbnBkNEtOOGpHaVh0bHNPQnpN?=
- =?utf-8?B?dkZsbWdUYmZpR0xDQTJTaGxDeHRjMlMyWGpwVVI1RHo1bmRjRGl6TVRKNnpw?=
- =?utf-8?B?SXJYaDg2NFhyNHJ2SDVLRmljTjh3VEI1dS9UUDBnRFZZbERGaEIwZHJVM2RF?=
- =?utf-8?B?SXlRcFdDYnZzMk9KaHAvbmdOMnI2WkV3UStmQU5MWVp3bDJsajRwQVdpU0ts?=
- =?utf-8?B?Tmhncmc4UFdTNWpRdmtWTThJVW1hWXNISnF4cmIrRHBydGNFalVvdExEOXQ1?=
- =?utf-8?B?b1AybG1oZCtYNVB6VUd0a2o3NGRDTERIamM5OW5FYjBlZ2VrQ29oOFBLYWFD?=
- =?utf-8?B?anh4eERjaytwbUQ0YzBJeHYyODNYTzJFcEJsMDh5V2hCYjRSMmZhNlNwd2Y0?=
- =?utf-8?B?VzV6a042Wm12K25ySWRYUzRzRzlnbnZ1T0x5bmtzZVlXOVowL3dYYStmNGxt?=
- =?utf-8?B?ajNBTXRwbWNPVGZFRktHNlYzbXpmR1VEWG4rN1dnSEdOL29nZzhXNWthOTFw?=
- =?utf-8?B?bzk2K1lQUlhJalNUQUR1Yyt1aUFuREExR0NRK1VlSnpkR1ErRXM2cjVYZFU5?=
- =?utf-8?B?TFA2dytZdWpyckpZeVpTN3hKMTVnQzFHTEc3eXpMVUlvclhVVDNTQTUrbGg0?=
- =?utf-8?B?UVh6Q3VFb0YrcWFVNlp6NERaQ0Fwd1VTZGtQdUZoVWxkYXdPaldNbm1uSFlL?=
- =?utf-8?B?Y3ZMVW5VWTFNcjkwRWZ0aEozMXdQbFlPTGgvM0JCd0FDcktqazZmWS9Cb0Nq?=
- =?utf-8?B?blkvb0RNR2dBTGlJSlcxVng0dFNGem5pMDVmSW5YS0Z2Zy9zblJVZEwzZktJ?=
- =?utf-8?B?Ykptc2psVUhTY3BxMEZ5VjhWbjhZTXNHNHptV3AwS0FodlRSRzU5T3k2UHdo?=
- =?utf-8?B?bEpKWkNpcGN4dG9qSVVHTFdwRGVwelNRZGV4UkwxU2ZiTGxTUWszaElCckVH?=
- =?utf-8?B?U2hMRUUzUHRTS3diMFRXLzFBcitKRTVsWi82R2hRYjJOb1JBcEZEUjg1NGlD?=
- =?utf-8?B?eitWcVRkOGd1UTNLKzZHRWtTYjU0dzJSL3NMM2l3cnVySlI2M0duRVlvdTNu?=
- =?utf-8?Q?Y5cmHvG1TKDoG?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8868.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?cEp1b09pSUFma01jcU5WT1B4b3BXU3R4YTkzUWtWejErak9TL1ZoRXB2bEtj?=
- =?utf-8?B?dE5CWDh0ZUk0QnY2TnpOWjVaT0RoOVEwQW9kVzRRVmtEa2NuOG9KU1NpcHlF?=
- =?utf-8?B?SjR4RDlUalVLR0g1V2Z3dVVtNlgzNCt0UHIrQTU5SDI4ZHBMRFZibzYzejJn?=
- =?utf-8?B?WWp5a1VwR1RmaTl5VW1TUFAya09oaklHMzExaGVydEVDNkRGTUx1RGhYK3pG?=
- =?utf-8?B?bm1ab0Y0cE5ZVk5hMy9lSU55ZlIyTUFFUW05NVVQK0Z2aU1wd3BrdU8zZWov?=
- =?utf-8?B?OHFDU2ZLdTJvZy9RVWJlbE9pdnNmRVJ1dkRJQzNScHhpOTNsU2gxQ3MyU3Zu?=
- =?utf-8?B?QXFJeURwS1AvUnd1TkhXWHZGcCs4VVlFTm5neDA5cXFIaTV5Qi9tZFppamlL?=
- =?utf-8?B?SFVUZzRuRkZiSWwxK29aL0p0Vnd5MkJiQlg3T1hLNzZjRmxPTHRqdHZrVTU2?=
- =?utf-8?B?eVZzalh0aHQwQWZobEdBcEM4QnNPaHhFTWxCSjl2cHJETjNMWHpYdGNvMThj?=
- =?utf-8?B?aHVKS2hxQjZOek9ybGVyK1dHZ3Z4NnczeEJGamJCMUVmSEtFVmYzM3pEWGJ3?=
- =?utf-8?B?NjFxV0hiTmNmUlhUOStOaGtpUnNEYklIK2JGc0drUTQ0M1Erdnh1SndBR3NN?=
- =?utf-8?B?cmpJZFh2cVJVa1FObkFISEZ3RWtYS3hWYnZYd2NKczZwUVFPbnlmeUpRWUx6?=
- =?utf-8?B?MHNZclNoRkNpOWY4ci9HQmxuUXBpcU11ckIvWDJBS2REVFIrMU94WFZvNnd1?=
- =?utf-8?B?ZDFjOUdOWTkwVEpUZlF4aTJsamdZK1JvSFZDemFLaUl1RzZ4QVVTZGVCTW1I?=
- =?utf-8?B?R2xVL1VwdWlhU0JiVE9WYmZETUZzSlBHemVidVd2ZXc3c3ltVmVJdEtKVk96?=
- =?utf-8?B?T3hqd3VHdWU3b2lwdXBKcHdCTmtoa3VvNGN5ck1HR1lIaUZFTldrTTRNVFhJ?=
- =?utf-8?B?WURzSENlYy9uOFpNQzdmaE05Mlp5WHR6VDE2aGRocXlhNU13RXRWUUoxSWhv?=
- =?utf-8?B?K2liUTViZ3lNbkI2ekpEcG1TQ3F0eWZDVXl3RUdjZXhqWUpuNGxsdUVDZWwy?=
- =?utf-8?B?aDVtWndRUXpvakxjeEV5a0lmR3dQSHpkcCtwUklGYkJ5TzhHenRGTUpaMTRC?=
- =?utf-8?B?STZxbEdMTEU0dUZycjNLMFI3bUUzOERpWkdjeWg4SG9TMGNVa0ZEZ2x5VlJZ?=
- =?utf-8?B?eGNvUFNTWGxoZlZlK2dMcW51KzlzQ1FVS0RoeVg5NnNVaGxNWWVrYnozTVJn?=
- =?utf-8?B?OG8wYUZDd3gzMjRORzgxM1pxK2x2Y1RqdG9iem9SbjdoSUp3c1lJYjZBUFdl?=
- =?utf-8?B?L3JGcVFkekZpejdqZlJsd3RxcVB0Z1RrN0ZmdTBwd3lUdkhvWHVVOGFYdnhX?=
- =?utf-8?B?YVIvcDFZajZJK2t5dGNIMUgvUmQ2NkhZcGNlbkQ4MXZLQ1ZDSEtlYUxVOFlW?=
- =?utf-8?B?QjhsUko3bW94cWxYYmJmWXkyZWlnRFlZbklPbU1Ia2E0UjdMdVM1dTdhNlJD?=
- =?utf-8?B?T2NSNnVjSVJPamU1VTNWc0hleVZIS1V3QmFUR1dYZTR0WUpYZ1NvUU9tTFd4?=
- =?utf-8?B?ejJEK2lsR0tjOU9melcvUUw5bVdHMzBGMDY5L2FYTTRLUzZOTENERDRUNldI?=
- =?utf-8?B?d3lFSEVYNEZHNVo2NzZ2Vm5JYWpMdGx5enJRY0I1aEdNaHQ5dlQ5aldqdVlW?=
- =?utf-8?B?Y0dVTE5vbjBldndFNTI3RzBCejhzTWNGRnVDMzJjekdqV09xYUc5alBNK09F?=
- =?utf-8?B?VC9oRFhmcDZsK0l5TmdiVFlxaTVIWlZOVSsrVjYvRjBTVUpqVjZMQlpMWkFo?=
- =?utf-8?B?bkJ6WVNGOWcyMC9qZHR5U1I2c0pUWTd4SlJoeURzQkdtbzhxcG9XaDJHQm9P?=
- =?utf-8?B?bmUwencrK1pZU2F1K1dLR2lLSmt5U3RON0VnRXZHcUl0SWR0Um84WFUzT1Bl?=
- =?utf-8?B?RS9rTmJyRVpOaGhBQis4MmpjcFp3WnNabjE4aWhSYkFYTnoySGJ0aXRjOUpv?=
- =?utf-8?B?S0hiQURobjA0eCtZTmJNL0ZPTDFyVk1RZVAySFFnUUkzdFMwNjV0ekc1dkwx?=
- =?utf-8?B?V2duWjNKWENjRCtod20xT3Z5c0FnOXYzaW5wVUJMaFVHNzZBbHpSTzRhVzA1?=
- =?utf-8?Q?urQPWdeNpLP/ClR1S6Fgxkx2m?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a78177d8-c224-44b4-f8c8-08dd66d93ead
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8868.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Mar 2025 11:29:00.3822
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6xSTZlkmmcA2nAQUD7xz93FAuWOnDQIQpi3PDAw7tYISYZbvUiprrrnfdwWRKdpAObqv3gvL3ZoJxLd7iq8Wzw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAPR04MB7448
-X-Spam-Status: No, score=0.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: Re: [main-line][PowerPC]selftests/powerpc/signal: sigfuz fails
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>, linuxppc-dev@lists.ozlabs.org,
+        LKML <linux-kernel@vger.kernel.org>
+References: <5f88a95b-1c8d-4a74-9753-9cdb2e64daf4@linux.ibm.com>
+ <87v7s7di56.fsf@mpe.ellerman.id.au>
+ <8efb89d6-cae0-441c-909c-3de5574e9058@linux.ibm.com>
+Content-Language: en-GB
+In-Reply-To: <8efb89d6-cae0-441c-909c-3de5574e9058@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: n8j5TlE9gbBlXD45tQbMS7QjYRdlzNth
+X-Proofpoint-ORIG-GUID: n8j5TlE9gbBlXD45tQbMS7QjYRdlzNth
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-19_03,2025-03-19_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
+ phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0 malwarescore=0
+ clxscore=1015 mlxscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503190080
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Mar 19, 2025 at 05:45:19AM -0500, Stuart Yoder wrote:
-> On Wed, Mar 19, 2025 at 4:43 AM Ioana Ciornei <ioana.ciornei@nxp.com> wrote:
-> 
-> > Laurentiu left the company and is no longer involved with the fsl-mc
-> > bus. Remove him and add myself as maintainer.
-> >
-> > Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-> > ---
-> >  MAINTAINERS | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/MAINTAINERS b/MAINTAINERS
-> > index ebf7fa9a814d..76b6db4074ce 100644
-> > --- a/MAINTAINERS
-> > +++ b/MAINTAINERS
-> > @@ -19633,7 +19633,7 @@ F:      include/linux/qnx6_fs.h
-> >
-> >  QORIQ DPAA2 FSL-MC BUS DRIVER
-> >  M:     Stuart Yoder <stuyoder@gmail.com>
-> > -M:     Laurentiu Tudor <laurentiu.tudor@nxp.com>
-> > +M:     Ioana Ciornei <ioana.ciornei@nxp.com>
-> >  L:     linux-kernel@vger.kernel.org
-> >  S:     Maintained
-> >  F:     Documentation/ABI/stable/sysfs-bus-fsl-mc
-> >
-> 
-> Please remove me as well.
+Thanks Michael and Maddy for the feedback.
 
-Ok, sure. I will update the patch in v2.
+On 18/03/25 4:20 pm, Madhavan Srinivasan wrote:
+> On 3/17/25 4:43 PM, Michael Ellerman wrote:
+>> Venkat Rao Bagalkote<venkat88@linux.ibm.com> writes:
+>>> Greetings!!
+>>>
+>>> I am observing selftests/powerpc/signal:sigfuz test fails on linux
+>>> mainline repo on IBM Power10 systems.
+>>>
+>>> The test passes on the kernel with commit head:
+>>> 619f0b6fad524f08d493a98d55bac9ab8895e3a6 and fails on the kernel with
+>>> commit head: ce69b4019001407f9cd738dd2ba217b3a8ab831b on the main line.
+>>>
+>>>
+>>> Repo:https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+>>>
+>>> I tried to do git bisect and the bisect tool pointed first bad commit
+>>> to: 16ebb6f5b6295c9688749862a39a4889c56227f8.
+>>>
+>>> But upon reverting the first bad commit issue is still seen. So please
+>>> ignore, if the bisection dosent help.
+>>>
+>>>
+>>> Error:
+>>>
+>>> # selftests: powerpc/signal: sigfuz
+>>> # test: signal_fuzzer
+>>> # tags: git_version:v6.14-rc7-1-g49c747976afa
+>>> # !! killing signal_fuzzer
+>>> # !! child died by signal 15
+>>> # failure: signal_fuzzer
+>>> not ok 3 selftests: powerpc/signal: sigfuz # exit=1
+>> That error means the test is timing out and being killed by the test
+>> harness.
+>>
+> I tired multiple times with the config shared by Venkat in my P10 LPAR
+> and it always passes for me with default timeout as 0.
+>
+>
+> ok 2 selftests: powerpc/signal: signal_tm
+> # timeout set to 0
+> # selftests: powerpc/signal: sigfuz
+> # test: signal_fuzzer
+> # tags: git_version:v6.14-rc2-61-g861efb8a48ee
+> # success: signal_fuzzer
+> ok 3 selftests: powerpc/signal: sigfuz
+> # timeout set to 0
+> # selftests: powerpc/signal: sigreturn_vdso
+> # test: sigreturn_vdso
+> # tags: git_version:v6.14-rc2-61-g861efb8a48ee
+> # VDSO is at 0x7fff9aac0000-0x7fff9aacffff (65536 bytes)
+> # Signal delivered OK with VDSO mapped
+> # VDSO moved to 0x7fff9aa50000-0x7fff9aa5ffff (65536 bytes)
+> # Signal delivered OK with VDSO moved
+> # Unmapped VDSO
+> # Remapped the stack executable
+> # Signal delivered OK with VDSO unmapped
+> # success: sigreturn_vdso
+>
+>
+> Setup: P10 LPAR with 16CPUs, LPAR running only the selftest
+> Kernel: powerpc/next (861efb8a48ee), config shared by venkat
+>
+> Maddy
+>
+>
+> One key difference which I could figure out so far in the set up is, mine is Power10 system running on P11 FW.
+>
+> I quickly gave a try with P10 system with P10 FW, and issue is not seen.
+>
+> Logs from P10 system running on P10 FW:
+>
+> make -j 33 -C powerpc/signal/ run_tests make: Entering directory 
+> '/root/venkat/linux/tools/testing/selftests/powerpc/signal' TAP 
+> version 13 1..7 # timeout set to 0 # selftests: powerpc/signal: signal 
+> # test: signal # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # 
+> success: signal ok 1 selftests: powerpc/signal: signal # timeout set 
+> to 0 # selftests: powerpc/signal: signal_tm # test: signal_tm # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # [SKIP] Test skipped on line 
+> 58 # skip: signal_tm ok 2 selftests: powerpc/signal: signal_tm # 
+> timeout set to 0 # selftests: powerpc/signal: sigfuz # test: 
+> signal_fuzzer # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # 
+> success: signal_fuzzer ok 3 selftests: powerpc/signal: sigfuz # 
+> timeout set to 0 # selftests: powerpc/signal: sigreturn_vdso # test: 
+> sigreturn_vdso # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # VDSO 
+> is at 0x7fffae2e0000-0x7fffae2effff (65536 bytes) # Signal delivered 
+> OK with VDSO mapped # VDSO moved to 0x7fffae270000-0x7fffae27ffff 
+> (65536 bytes) # Signal delivered OK with VDSO moved # Unmapped VDSO # 
+> Remapped the stack executable # Signal delivered OK with VDSO unmapped 
+> # success: sigreturn_vdso ok 4 selftests: powerpc/signal: 
+> sigreturn_vdso # timeout set to 0 # selftests: powerpc/signal: 
+> sig_sc_double_restart # test: sig sys restart # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # success: sig sys restart ok 5 
+> selftests: powerpc/signal: sig_sc_double_restart # timeout set to 0 # 
+> selftests: powerpc/signal: sigreturn_kernel # test: sigreturn_kernel # 
+> tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # All children killed as 
+> expected # success: sigreturn_kernel ok 6 selftests: powerpc/signal: 
+> sigreturn_kernel # timeout set to 0 # selftests: powerpc/signal: 
+> sigreturn_unaligned # test: sigreturn_unaligned # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # success: sigreturn_unaligned 
+> ok 7 selftests: powerpc/signal: sigreturn_unaligned make: Leaving 
+> directory '/root/venkat/linux/tools/testing/selftests/powerpc/signal'
+>> That could be due to a bug, but it could just be that your system is
+>> overloaded or something. You can increase the timeout in the code by
+>> adding a call to test_harness_timeout().
+>>
+>> The test also includes lots of randomisation, so if you actually need to
+>> bisect it you'd want to change the code to use a consistent random seed
+>> in the calls to srand().
+>>
+>> cheers
+> I increased the timeout from 0 to 120, I still see the issue.
+>
+> Below are the logs with and with out time out.
+>
+> make -j 33 -C powerpc/signal/ run_tests all clean clean_mods_dir 
+> emit_tests gen_mods_dir install run_tests [root@ltcden8-lp3 
+> selftests]# make -j 33 -C powerpc/signal/ run_tests make: Entering 
+> directory '/root/linux/tools/testing/selftests/powerpc/signal' CC 
+> signal CC signal_tm CC sigfuz CC sigreturn_vdso CC 
+> sig_sc_double_restart CC sigreturn_kernel CC sigreturn_unaligned TAP 
+> version 13 1..7 # timeout set to 0 # selftests: powerpc/signal: signal 
+> # test: signal # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # 
+> success: signal ok 1 selftests: powerpc/signal: signal # timeout set 
+> to 0 # selftests: powerpc/signal: signal_tm # test: signal_tm # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # [SKIP] Test skipped on line 
+> 58 # skip: signal_tm ok 2 selftests: powerpc/signal: signal_tm # 
+> timeout set to 0 # selftests: powerpc/signal: sigfuz # test: 
+> signal_fuzzer # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # !! 
+> killing signal_fuzzer # !! child died by signal 15 # failure: 
+> signal_fuzzer not ok 3 selftests: powerpc/signal: sigfuz # exit=1 # 
+> timeout set to 0 # selftests: powerpc/signal: sigreturn_vdso # test: 
+> sigreturn_vdso # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # VDSO 
+> is at 0x7fffb1860000-0x7fffb186ffff (65536 bytes) # Signal delivered 
+> OK with VDSO mapped # VDSO moved to 0x7fffb17f0000-0x7fffb17fffff 
+> (65536 bytes) # Signal delivered OK with VDSO moved # Unmapped VDSO # 
+> Remapped the stack executable # Signal delivered OK with VDSO unmapped 
+> # success: sigreturn_vdso ok 4 selftests: powerpc/signal: 
+> sigreturn_vdso # timeout set to 0 # selftests: powerpc/signal: 
+> sig_sc_double_restart # test: sig sys restart # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # success: sig sys restart ok 5 
+> selftests: powerpc/signal: sig_sc_double_restart # timeout set to 0 # 
+> selftests: powerpc/signal: sigreturn_kernel # test: sigreturn_kernel # 
+> tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # All children killed as 
+> expected # success: sigreturn_kernel ok 6 selftests: powerpc/signal: 
+> sigreturn_kernel # timeout set to 0 # selftests: powerpc/signal: 
+> sigreturn_unaligned # test: sigreturn_unaligned # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # success: sigreturn_unaligned 
+> ok 7 selftests: powerpc/signal: sigreturn_unaligned make: Leaving 
+> directory '/root/linux/tools/testing/selftests/powerpc/signal'
+> # vi powerpc/signal/settings make -j 33 -C powerpc/signal/ run_tests 
+> make: Entering directory 
+> '/root/linux/tools/testing/selftests/powerpc/signal' TAP version 13 
+> 1..7 # timeout set to 120 # selftests: powerpc/signal: signal # test: 
+> signal # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # success: 
+> signal ok 1 selftests: powerpc/signal: signal # timeout set to 120 # 
+> selftests: powerpc/signal: signal_tm # test: signal_tm # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # [SKIP] Test skipped on line 
+> 58 # skip: signal_tm ok 2 selftests: powerpc/signal: signal_tm # 
+> timeout set to 120 # selftests: powerpc/signal: sigfuz # test: 
+> signal_fuzzer # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # not ok 
+> 3 selftests: powerpc/signal: sigfuz # TIMEOUT 120 seconds # timeout 
+> set to 120 # selftests: powerpc/signal: sigreturn_vdso # test: 
+> sigreturn_vdso # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # VDSO 
+> is at 0x7fff8b170000-0x7fff8b17ffff (65536 bytes) # Signal delivered 
+> OK with VDSO mapped # VDSO moved to 0x7fff8b100000-0x7fff8b10ffff 
+> (65536 bytes) # Signal delivered OK with VDSO moved # Unmapped VDSO # 
+> Remapped the stack executable # Signal delivered OK with VDSO unmapped 
+> # success: sigreturn_vdso ok 4 selftests: powerpc/signal: 
+> sigreturn_vdso # timeout set to 120 # selftests: powerpc/signal: 
+> sig_sc_double_restart # test: sig sys restart # tags: 
+> git_version:v6.14-rc7-69-g81e4f8d68c66 # success: sig sys restart ok 5 
+> selftests: powerpc/signal: sig_sc_double_restart # timeout set to 120 
+> # selftests: powerpc/signal: sigreturn_kernel # test: sigreturn_kernel 
+> # tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # All children killed 
+> as expected # success: sigreturn_kernel ok 6 selftests: 
+> powerpc/signal: sigreturn_kernel # timeout set to 120 # selftests: 
+> powerpc/signal: sigreturn_unaligned # test: sigreturn_unaligned # 
+> tags: git_version:v6.14-rc7-69-g81e4f8d68c66 # success: 
+> sigreturn_unaligned ok 7 selftests: powerpc/signal: 
+> sigreturn_unaligned make: Leaving directory 
+> '/root/linux/tools/testing/selftests/powerpc/signal' [root@ltcden8-lp3 
+> selftests]# [root@ltcden8-lp3 selftests]# [root@ltcden8-lp3 
+> selftests]# uname -r 6.14.0-rc7-00069-g81e4f8d68c66 [root@ltcden8-lp3 
+> selftests]#
+
+
+Regards,
+
+Venkat.
 
 
