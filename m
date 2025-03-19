@@ -1,79 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-7199-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7200-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C27C1A68703
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 09:38:17 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 659C2A68773
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 10:06:50 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHhtb0nh5z2yf7;
-	Wed, 19 Mar 2025 19:38:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHjWV4Cspz2xQ6;
+	Wed, 19 Mar 2025 20:06:46 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742373495;
-	cv=none; b=bcqunRsIGecbD7iOUfsYgc0GXKa4t0mnPR3EV61XTD6ypgt47W3sZ3RuHimDjfjS3SXOhTYcoZ1nkuCXcd98xno0x99gZmcqHJlvCEpjwehcPzCcaLTASMqnC3khc0hxgZvj7d/MAzgkeiUcQsu8jwp6Ef/WGxe1wlBqvZAbEBqL321HpXVq1nkickePN03HsRaI2i1mmAXkFWLIkm6Rch5j2dDMlBIYhYOU0cjgxXX5hfdg3WceLSIIUWtzaqydicNsTLDnL4hKCkpXUkxf8UrOHV7GRrYPmrszpZ20dLofnucr3E0VOBR6DOWa6HZYVdBRIHLHmUIwPB9DuLk6ZQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:638:a000:1025::15"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742375206;
+	cv=none; b=Sq7Np3i9Cukx5cci2kf8MJr5cYWyDcLjjyBha97GzVbLiu5hyWcHPaMC/AP35Mqodj19h0LTt3Z1fSTYKKmn8htjFnL1b5s7bmMhSkyT/lB/1FHL6Swz+ZVRmkXktiaTIWgAGARSXgRe2txAVO/L1FGus+M+4VWQ0qFuUJO2JYVIiGTEayKnvCnKQ38n93FANoCZNPxQCDjLZ/56lNxQjrK3ernLOOgxkEU2XWWlyEoX8bSJNijCvYYSSKnMs5PJr34nasht9n6O/KX4dp0bfSaPwttxLMUVmY2cMc5hcdH7jiyAZDPngR/D6engXLUk2cfzN/rvp6g8i6NvzFqNPQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742373495; c=relaxed/relaxed;
-	bh=5P0ou98STZpgghc1UqmKlxfPc69VHOFn9SDvXbrHyhA=;
-	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To; b=l3R6hZqZ+8eRPDO6yJl4nUKv3qJOzqZBlhPqYpmi3A5NvgZV1SUjy44CiGo8lXcbtvPRPd5QytO4zuzZGuLTDaJQhlbpdLjXtD/nA21b+S1t+CYaSSMrijhEI8DvnK7j3gIFujNfjcSD27FUzJmTXoUvVE/QuTOh3+uB8y8U0DygQbbxL06DmGRd9OKnEUZR34CdbBwQ4C5uwEiMGjgvYwAKYS447TtUgCsFAVlGRkencH7W+//1jmRqcV9+YZd40GD9boLEwLhEf3RQTAijgflo8PQPu3WKOaVzD0ubJKYpM2yiccvYL27h79x0GLB6SWpnbNgAtOJoVq+Ji6OX/w==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n5JxkyhF; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742375206; c=relaxed/relaxed;
+	bh=/5goDERUrPXPyZzmCy7lw+XwkgPNVdvQxkY1QQaRiqA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=DQSLrUkvyBwktzYUY0rUL9gYBsq0hwv16M5xzej6iXOXvLUJy3GKzc82gwc6hPEWkOipoBPjEL/qRfpWmQlL8Wq3k7T1q3mZVcY4eNjQas9I+ZWSQlsZp8jDuJFyuj72jzXDlFdfFH6p1FanaXITT2af8HzYE7/A19TzBlOjEEO85Wp8D6ij3QsSAHY6qtMBUWgO7lqGLQ/K/zybTWQSnW9J+FefdJdqRO0Nz+ZZOS9RZRcTn6FvLZ7mArSN7ZPuvkyOLsFqgHxmFjPk+HCOMidb+GwapBmtkFzVeqrTlhHTcpe4i1LaAEFPVUET2tNpGnqolt8bqYUxj+v7CMzUsg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de; dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=lzSXVoxA; dkim-atps=neutral; spf=pass (client-ip=2001:638:a000:1025::15; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org) smtp.mailfrom=fau.de
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=fau.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=n5JxkyhF;
+	dkim=pass (2048-bit key; secure) header.d=fau.de header.i=@fau.de header.a=rsa-sha256 header.s=fau-2021 header.b=lzSXVoxA;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=sv@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=fau.de (client-ip=2001:638:a000:1025::15; helo=mx-rz-2.rrze.uni-erlangen.de; envelope-from=luis.gerhorst@fau.de; receiver=lists.ozlabs.org)
+Received: from mx-rz-2.rrze.uni-erlangen.de (mx-rz-2.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHhtZ0mY1z2xQ5
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Mar 2025 19:38:13 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52J3jqut018599;
-	Wed, 19 Mar 2025 08:38:05 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=5P0ou98STZpgghc1UqmKlxfPc69VHO
-	Fn9SDvXbrHyhA=; b=n5JxkyhFTXM1ldu8xpYmZ8yuHUZIU+cQQOb3hMzTtLdd4z
-	9g8DGUaQKSUiyj7dcO9oDUHw5mhChnPBlaBXWbyjrC0TizT7BA6EXVm5mzv/+dAD
-	aplgeBii7kQeppohHPAbGRIzSbhiugEv5j22IO7/EpjUJvshVEd3cWXtCVQYVudr
-	DTWlsF+O2SazVigRrhIj+lAwgHHTcev8vAHCnPjYp8Xl3NUdvOSnu8fwNv7ZeAD/
-	0zrfGIPTh+hzBCdFVL0MZBem98em1kXQQpw0u+rO9HuG5cCzuP++XnmeAUpCkWEY
-	OUKIhk9NicQy7VrDFTuwcq/vaS2TzBvLJZ5RM2WQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45fpa9h5yw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Mar 2025 08:38:04 +0000 (GMT)
-Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52J8Uv6B019764;
-	Wed, 19 Mar 2025 08:38:04 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45fpa9h5yt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Mar 2025 08:38:04 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52J7XDPE005635;
-	Wed, 19 Mar 2025 08:38:03 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dm900qsu-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 19 Mar 2025 08:38:02 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52J8bxaY55837156
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 19 Mar 2025 08:37:59 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ED47D20040;
-	Wed, 19 Mar 2025 08:37:58 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D298220049;
-	Wed, 19 Mar 2025 08:37:56 +0000 (GMT)
-Received: from [9.199.155.138] (unknown [9.199.155.138])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 19 Mar 2025 08:37:56 +0000 (GMT)
-Content-Type: multipart/alternative;
- boundary="------------nxhmRf3MqlUKCdctk9a0zSU8"
-Message-ID: <57ed7a07-bb81-45f5-9109-b26cdb868c87@linux.ibm.com>
-Date: Wed, 19 Mar 2025 14:07:55 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHjWQ443Yz2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Mar 2025 20:06:40 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fau.de; s=fau-2021;
+	t=1742375193; bh=/5goDERUrPXPyZzmCy7lw+XwkgPNVdvQxkY1QQaRiqA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From:To:CC:
+	 Subject;
+	b=lzSXVoxAZAnJzDEK3eE3Aj534D+oBP149HbMd5Pg72Qe/WLAC3uoTnpjRsVzsIYox
+	 TnYOSHjKGuB3gHkkqfdQ1OTs1uRRT/tls2LiJQviOSpmAsToF0tuXQxoPh+Knvua7E
+	 mnx3iG4H8d2/gugEFKL5yNykGUx0uN36jMW5M6pViwJaZ6mLY7uXMFkK7fy8K2/NJ2
+	 HC8FUqCub2ttWnDa7p1wJy6j+33lnqdVUeBHkXu/261LFECZL0AkRC091jFVzXJD6m
+	 84+ErL1QGP+WFgpl2uMQHur82B8hea9fHUY3oayifgIcBEHmBmbvegaOhKfZ7ZLv/9
+	 IlIezQeTcmibw==
+Received: from mx-rz-smart.rrze.uni-erlangen.de (mx-rz-smart.rrze.uni-erlangen.de [IPv6:2001:638:a000:1025::1e])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-rz-2.rrze.uni-erlangen.de (Postfix) with ESMTPS id 4ZHjWF1N6dzPkVl;
+	Wed, 19 Mar 2025 10:06:33 +0100 (CET)
+X-Virus-Scanned: amavisd-new at boeck1.rrze.uni-erlangen.de (RRZE)
+X-RRZE-Flag: Not-Spam
+X-RRZE-Submit-IP: 2a02:8071:7900:bc0:c583:a400:7f8d:5e80
+Received: from localhost (unknown [IPv6:2a02:8071:7900:bc0:c583:a400:7f8d:5e80])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: U2FsdGVkX18CrB7ddj49FWVqrSeQ4eIWyZV3PfQwQ7Q=)
+	by smtp-auth.uni-erlangen.de (Postfix) with ESMTPSA id 4ZHjW86Bk0zPjtK;
+	Wed, 19 Mar 2025 10:06:28 +0100 (CET)
+From: Luis Gerhorst <luis.gerhorst@fau.de>
+To: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann
+ <daniel@iogearbox.net>,
+	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>,
+	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>,
+	Yonghong Song <yonghong.song@linux.dev>, John Fastabend
+ <john.fastabend@gmail.com>,
+	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao
+ Luo <haoluo@google.com>,
+	Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay@kernel.org>,
+	Xu Kuohai <xukuohai@huaweicloud.com>, Catalin Marinas
+ <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao
+ <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman
+ <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>, Shuah
+ Khan <shuah@kernel.org>,
+	Henriette Herzog <henriette.herzog@rub.de>, Cupertino Miranda
+ <cupertino.miranda@oracle.com>,
+	Matan Shachnai <m.shachnai@gmail.com>, Dimitar Kanaliev
+ <dimitar.kanaliev@siteground.com>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf
+ <bpf@vger.kernel.org>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, LKML
+ <linux-kernel@vger.kernel.org>,
+	ppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>,
+ George Guo <guodongtai@kylinos.cn>,
+	WANG Xuerui <git@xen0n.name>, Tiezhu Yang <yangtiezhu@loongson.cn>,
+ Maximilian Ott <ott@cs.fau.de>,
+	Milan Stephan <milan.stephan@fau.de>
+Subject: Re: [PATCH bpf-next 11/11] bpf: Fall back to nospec for spec path
+ verification
+In-Reply-To: <CAADnVQKL-NwxigMWM+U=n5ZXPG+xHYzSTEv0Rq8Y91m45eRJDw@mail.gmail.com>
+	(Alexei Starovoitov's message of "Tue, 18 Mar 2025 19:40:44 -0700")
+References: <20250313172127.1098195-1-luis.gerhorst@fau.de>
+	<20250313175312.1120183-1-luis.gerhorst@fau.de>
+	<20250313175312.1120183-2-luis.gerhorst@fau.de>
+	<CAADnVQKL-NwxigMWM+U=n5ZXPG+xHYzSTEv0Rq8Y91m45eRJDw@mail.gmail.com>
+User-Agent: mu4e 1.12.8; emacs 29.4
+Date: Wed, 19 Mar 2025 10:06:27 +0100
+Message-ID: <87cyedie3w.fsf@fau.de>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,357 +112,187 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 0/7] Add character devices for indices, platform-dump
-To: Haren Myneni <haren@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
-        hbabu@us.ibm.com
-References: <20250315092756.1031182-1-haren@linux.ibm.com>
-Content-Language: en-US
-From: Sathvika Vasireddy <sv@linux.ibm.com>
-In-Reply-To: <20250315092756.1031182-1-haren@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: GP-kxDEGsoT7a-vXvAGmB50XeACQA7Za
-X-Proofpoint-ORIG-GUID: f3KOr-4IZEXRiwy3UOsxMirbJE3giUif
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-19_02,2025-03-17_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 bulkscore=0
- phishscore=0 priorityscore=1501 spamscore=0 impostorscore=0 malwarescore=0
- clxscore=1015 mlxscore=0 adultscore=0 lowpriorityscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503190058
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	HTML_MESSAGE,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This is a multi-part message in MIME format.
---------------nxhmRf3MqlUKCdctk9a0zSU8
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Alexei Starovoitov <alexei.starovoitov@gmail.com> writes:
 
-
-On 3/15/25 2:57 PM, Haren Myneni wrote:
-> Several APIs such as rtas_get_indices(), rtas_get_dynamic_sensor(),
-> rtas_set_dynamic_indicator(), rtas_platform_dump() and
-> rtas_physical_attestation()  provided by librtas library are
-> implemented in user space using rtas syscall in combination with
-> writable mappings of /dev/mem. But this implementation is not
-> compatible with system lockdown which prohibits /dev/mem access.
-> The current kernel already provides char based driver interfaces
-> for several RTAS calls such as VPD and system parameters to
-> support lockdown feature.
+> On Thu, Mar 13, 2025 at 10:57=E2=80=AFAM Luis Gerhorst <luis.gerhorst@fau=
+.de> wrote:
+>> With increased limits this allows applying mitigations to large BPF
+>> progs such as the Parca Continuous Profiler's prog. However, this
+>> requires a jump-seq limit of 256k. In any case, the same principle
+>> should apply to smaller programs therefore include it even if the limit
+>> stays at 8k for now. Most programs in [1] only require a limit of 32k.
 >
-> This patch series adds new char based drivers, /dev/papr-indices
-> for ibm,get-indices, ibm,get-dynamic-sensor-state and
-> ibm,set-dynamic-indicator RTAS Calls. /dev/papr-platform-dump
-> for ibm,platform-dump and /dev/papr-physical-attestation
-> fir ibm,physical-attestation. Providing the similar
-> open/ioctl/read interfaces to the user space as in the case of
-> VPD and system parameters.
+> Do you mean that without this change the verifier needs 256k
+> jmp limit to load Parca's prog as unpriv due to speculative
+> path exploration with push_stack ?
 >
-> I have made changes to librtas library to use the new kernel
-> interfaces if the corresponding device entry is available.
+
+Only with this change Parca is loadable when manually enabling Spectre
+defenses for privileged programs and setting the following limits:
+- BPF_COMPLEXITY_LIMIT_JMP_SEQ=3D256k
+- BPF_COMPLEXITY_LIMIT_SPEC_V1_VERIFICATION=3D128k
+- BPF_COMPLEXITY_LIMIT_INSNS=3D32M
+
 >
-> This patch series has the following patches:
-> powerpc/pseries: Define common functions for RTAS sequence calls
-> - For some of sequence based RTAS calls, the OS should not start
->    another sequence with different input until the previous sequence
->    is completed. So the sequence should be completed during ioctl()
->    and expose the entire buffer during read(). ibm,get-indices is
->    sequence based RTAS function similar to ibm,get-vpd and we already
->    have the corresponding implementation for VPD driver. So update
->    papr_rtas_sequence struct for RTAS call specific functions and move
->    the top level sequence functions in to a separate file.
+> And this change uses 4k as a trade-off between prog runtime
+> and verification time ?
 >
-> powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
-> - /dev/papr-indices driver supports ibm,get-indices,
->    ibm,get-dynamic-sensor-state and ibm,set-dynamic-indicator RTAS Calls.
->    papr-indices.h introduces 3 different ioctls for these RTAS calls and
->    the corresponding ioctl input buffer.
+
+Yes, this change uses 4k to limited nested speculative path exploration.
+At the top-level (i.e., on architectural paths), spawned speculative
+paths are still explored.
+
 >
-> powerpc/pseries: Add papr-indices char driver for ibm,get-indices
-> - Introduce /dev/papr-indices char based driver and add support for
->    get-indices RTAS function
+> But tracing progs use bpf_probe_read_kernel(), so they're never going
+> to be unpriv.
 >
-> powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
-> - Update /dev/papr-indices for set-dynamic-indicator RTAS function
+
+I'm sorry this was not clear. Parca is only used as an example here
+to test whether this improves expressiveness in general.
+
+If you do not see this as a favorable tradeoff (because of the code
+complexity), I think it would be acceptable to drop the last patch for
+now. The biggest improvements is already achieved with the other patches
+as evident from the selftests. I can do a more exhaustive analysis on
+patch 11 later.
+
 >
-> powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
-> -  Update /dev/papr-indices for  get-dynamic-sensor-state RTAS function
+>> @@ -2010,6 +2011,19 @@ static struct bpf_verifier_state *push_stack(stru=
+ct bpf_verifier_env *env,
+>>         struct bpf_verifier_stack_elem *elem;
+>>         int err;
+>>
+>> +       if (!env->bypass_spec_v1 &&
+>> +           cur->speculative &&
 >
-> powerpc/pseries: Add papr-platform-dump character driver for dump
->     retrieval
-> - Introduce /dev/papr-platform-dump char driver and adds support for
->    ibm,platform-dump. Received suggestions from the previous post as a
->    separate patch - Updated the patch with invalidating the dump using
->    a separate ioctl.
+> Should this be
+> (cur->speculative || speculative)
+> ?
+
+No, I think it will be unsafe to add `|| speculative` here. If we were
+to return -EINVAL from push_stack() when pushing a speculative path from
+a non-speculative path (e.g., in check_cond_jmp_op() through
+sanitize_speculative_path()), this will cause do_check() to add an
+lfence before the jump-op.
+
+Here's a minimal example program:
+
+	A =3D true
+	B =3D true
+	if A goto e
+	f()
+	if B goto e
+	unsafe()
+e:	exit
+
+There are the following speculative and non-speculative paths
+(`cur->speculative` and `speculative` referring to the value of the
+push_stack() parameters):
+
+- A =3D true
+- B =3D true
+- if A goto e
+  - A && !cur->speculative && !speculative
+    - exit
+  - !A && !cur->speculative && speculative
+    - f()
+    - if B goto e
+      - B && cur->speculative && !speculative
+        - exit
+      - !B && cur->speculative && speculative
+        - unsafe()
+
+`|| speculative` might cause us to only add an lfence before `if A goto
+e`, which would not be sufficient. Intel recommends adding the lfence
+after the jump [1].
+
 >
-> powerpc/pseries: Add a char driver for papr-physical-attestation RTAS
-> - Introduce /dev/papr-physical-attestation char driver to provide
->    kernel interface for ibm,physical-attestation RTAS function.
+> In general I'm not convinced that the approach is safe.
 >
-> Thanks to Sathvika Vasireddy for testing these kernel APIs with various
-> tools.
->   
-> Changelog:
-> v9:
-> - Fixed syntax issue in papr-rtas-common.c as reported by
->    Mukesh Kumar Chaurasiya
+> This recoverable EINVAL means that exploration under speculation
+> stops early, but there could be more branches and they won't be
+> sanitized with extra lfence.
+> So speculative execution can still happen at later insns.
 >
-> v8:
-> - Fixed build warnings for the proper function parameter descriptions
->    (vpd_sequence_begin(), few papr_rtas_*() functions, and etc) as
->    reported by kernel test robot<lkp@intel.com>
+
+`goto process_bpf_exit` only causes us to stop analyzing this particular
+path, not the rest of the program.
+
+This is based on the assumption, that the lfence stops the CPU from ever
+reaching those branches (if they are not reachable through other means).
+
 >
-> v7:
-> - Pass the proper next value to the subsequent RTAS calls for the
->    get-indices sequence RTAS.
->    (Vasireddy Sathvika found this bug).
+> Similar concern in patch 7:
+> + if (state->speculative && cur_aux(env)->nospec)
+> +   goto process_bpf_exit;
 >
-> v6:
-> - Define the proper command ID for PAPR_PHY_ATTEST_IOC_HANDLE ioctl
-> - Update ioctls description in ioctl-number.rst.
+> One lfence at this insn doesn't stop speculation until the program end.
+> Only at this insn. The rest of the code is free to speculate.
 >
-> v5:
-> - Return with -EINPROGRESS in papr_platform_dump_invalidate_ioctl()
->    if the complete dump is not read (Suggested by Michal Suchánek).
+
+Taking the program above as an example, this allows us to stop before
+f() if an lfence was inserted there.
+
+Fully patched program would be:
+
+	A =3D true
+	B =3D true
+	if A goto e
+	lfence
+	f()
+	if B goto e
+	unsafe()
+e:	exit
+
+In this example, all instructions after the lfence are dead code (and
+with the lfence they are also dead code speculatively).
+
+I believe this is in line with Intel's guidance [1]:
+
+	An LFENCE instruction or a serializing instruction will ensure that
+	no later instructions execute, even speculatively, until all prior
+	instructions complete locally. Developers might prefer LFENCE over a
+	serializing instruction because LFENCE may have lower latency.
+	Inserting an LFENCE instruction after a bounds check prevents later
+	operations from executing before the bound check completes.
+
+With regards to the example, this implies that `if B goto e` will not
+execute before `if A goto e` completes. Once `if A goto e` completes,
+the CPU should find that the speculation was wrong and continue with
+`exit`.
+
+If there is any other path that leads to `if B goto e` (and therefore
+`unsafe()`) without going through `if A goto e`, then an lfence might of
+course still be needed there. However, I assume this other path will be
+explored separately and therefore be discovered by the verifier even if
+the exploration discussed here stops at the lfence. If this assumption
+is wrong, please let me know.
+
 >
-> v4:
-> - Include patch "Add char driver for papr-physical-attestation RTAS"
->    in this series. ibm,physical-attestation is sequence based RTAS
->    call and the implementation is also similar to ibm,get-vpd and
->    ibm,get-indices.
+> The refactoring in patches 1-3 is nice.
+> Patches 4-5 are tricky and somewhat questionable, but make sense.
+> Patch 7 without early goto process_bpf_exit looks correct too,
+> Patch 8 is borderline. Feels like it's opening the door for
+> new vulnerabilities and space to explore for security researchers.
+> We disabled unpriv bpf by default and have no intentions to enable it.
+> Even if we land the whole thing the unpriv will stay disabled.
+> So trade offs don't appear favorable.
 >
-> v3:
-> - put_unused_fd() only after get_unused_fd() successful for the failure
->    case later ("Add papr-platform-dump character driver for dump
->    retrieval" patch).
->
-> v2:
-> - Added unlock rtas_ibm_set_dynamic_indicator_lock and
->    rtas_ibm_get_dynamic_sensor_state_lock mutex for failure cases
->    as reported by Dan Carpenter
-> - Fixed build warnings for the proper function parameter descriptions
->    as reported by kernel test robot<lkp@intel.com>
->
-> Haren Myneni (7):
->    powerpc/pseries: Define common functions for RTAS sequence calls
->    powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
->    powerpc/pseries: Add papr-indices char driver for ibm,get-indices
->    powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
->    powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
->    powerpc/pseries: Add papr-platform-dump character driver for dump
->      retrieval
->    powerpc/pseries: Add a char driver for physical-attestation RTAS
->
->   .../userspace-api/ioctl/ioctl-number.rst      |   6 +
->   arch/powerpc/include/asm/rtas.h               |   4 +
->   arch/powerpc/include/uapi/asm/papr-indices.h  |  41 ++
->   .../uapi/asm/papr-physical-attestation.h      |  31 ++
->   .../include/uapi/asm/papr-platform-dump.h     |  15 +
->   arch/powerpc/kernel/rtas.c                    |   8 +-
->   arch/powerpc/platforms/pseries/Makefile       |   3 +-
->   arch/powerpc/platforms/pseries/papr-indices.c | 488 ++++++++++++++++++
->   .../platforms/pseries/papr-phy-attest.c       | 288 +++++++++++
->   .../platforms/pseries/papr-platform-dump.c    | 411 +++++++++++++++
->   .../platforms/pseries/papr-rtas-common.c      | 311 +++++++++++
->   .../platforms/pseries/papr-rtas-common.h      |  61 +++
->   arch/powerpc/platforms/pseries/papr-vpd.c     | 351 ++-----------
->   13 files changed, 1706 insertions(+), 312 deletions(-)
->   create mode 100644 arch/powerpc/include/uapi/asm/papr-indices.h
->   create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
->   create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
->   create mode 100644 arch/powerpc/platforms/pseries/papr-indices.c
->   create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
->   create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
->   create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.c
->   create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.h
-Userspace tools that use these interfaces are displaying consistent 
-results across old/new librtas and kernel combinations.
 
-For this series:
-Tested-by: Sathvika Vasireddy <sv@linux.ibm.com>
+Thank you very much for having a look. Let me know whether the above
+resolves your concern.
 
-Thanks,
-Sathvika
---------------nxhmRf3MqlUKCdctk9a0zSU8
-Content-Type: text/html; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+In any case, should I separate patches 1-3 into another series?
 
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  </head>
-  <body>
-    <p><br>
-    </p>
-    <div class="moz-cite-prefix"><font face="monospace">On 3/15/25 2:57
-        PM, Haren Myneni wrote:</font><br>
-    </div>
-    <blockquote type="cite"
-      cite="mid:20250315092756.1031182-1-haren@linux.ibm.com">
-      <pre class="moz-quote-pre" wrap="">Several APIs such as rtas_get_indices(), rtas_get_dynamic_sensor(),
-rtas_set_dynamic_indicator(), rtas_platform_dump() and
-rtas_physical_attestation()  provided by librtas library are
-implemented in user space using rtas syscall in combination with
-writable mappings of /dev/mem. But this implementation is not
-compatible with system lockdown which prohibits /dev/mem access.
-The current kernel already provides char based driver interfaces
-for several RTAS calls such as VPD and system parameters to
-support lockdown feature.
-
-This patch series adds new char based drivers, /dev/papr-indices
-for ibm,get-indices, ibm,get-dynamic-sensor-state and
-ibm,set-dynamic-indicator RTAS Calls. /dev/papr-platform-dump
-for ibm,platform-dump and /dev/papr-physical-attestation
-fir ibm,physical-attestation. Providing the similar
-open/ioctl/read interfaces to the user space as in the case of
-VPD and system parameters.
-
-I have made changes to librtas library to use the new kernel
-interfaces if the corresponding device entry is available.
-
-This patch series has the following patches:
-powerpc/pseries: Define common functions for RTAS sequence calls
-- For some of sequence based RTAS calls, the OS should not start
-  another sequence with different input until the previous sequence
-  is completed. So the sequence should be completed during ioctl()
-  and expose the entire buffer during read(). ibm,get-indices is
-  sequence based RTAS function similar to ibm,get-vpd and we already
-  have the corresponding implementation for VPD driver. So update
-  papr_rtas_sequence struct for RTAS call specific functions and move
-  the top level sequence functions in to a separate file.
-
-powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
-- /dev/papr-indices driver supports ibm,get-indices,
-  ibm,get-dynamic-sensor-state and ibm,set-dynamic-indicator RTAS Calls.
-  papr-indices.h introduces 3 different ioctls for these RTAS calls and
-  the corresponding ioctl input buffer.
-
-powerpc/pseries: Add papr-indices char driver for ibm,get-indices
-- Introduce /dev/papr-indices char based driver and add support for
-  get-indices RTAS function
-
-powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
-- Update /dev/papr-indices for set-dynamic-indicator RTAS function
-
-powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
--  Update /dev/papr-indices for  get-dynamic-sensor-state RTAS function
-
-powerpc/pseries: Add papr-platform-dump character driver for dump
-   retrieval
-- Introduce /dev/papr-platform-dump char driver and adds support for
-  ibm,platform-dump. Received suggestions from the previous post as a
-  separate patch - Updated the patch with invalidating the dump using
-  a separate ioctl.
-
-powerpc/pseries: Add a char driver for papr-physical-attestation RTAS
-- Introduce /dev/papr-physical-attestation char driver to provide
-  kernel interface for ibm,physical-attestation RTAS function.
-
-Thanks to Sathvika Vasireddy for testing these kernel APIs with various
-tools.
- 
-Changelog:
-v9:
-- Fixed syntax issue in papr-rtas-common.c as reported by
-  Mukesh Kumar Chaurasiya
-
-v8:
-- Fixed build warnings for the proper function parameter descriptions
-  (vpd_sequence_begin(), few papr_rtas_*() functions, and etc) as
-  reported by kernel test robot <a class="moz-txt-link-rfc2396E" href="mailto:lkp@intel.com">&lt;lkp@intel.com&gt;</a>
-
-v7:
-- Pass the proper next value to the subsequent RTAS calls for the
-  get-indices sequence RTAS.
-  (Vasireddy Sathvika found this bug).
-
-v6:
-- Define the proper command ID for PAPR_PHY_ATTEST_IOC_HANDLE ioctl
-- Update ioctls description in ioctl-number.rst.
-
-v5:
-- Return with -EINPROGRESS in papr_platform_dump_invalidate_ioctl()
-  if the complete dump is not read (Suggested by Michal Suchánek).
-
-v4:
-- Include patch "Add char driver for papr-physical-attestation RTAS"
-  in this series. ibm,physical-attestation is sequence based RTAS
-  call and the implementation is also similar to ibm,get-vpd and
-  ibm,get-indices.
-
-v3:
-- put_unused_fd() only after get_unused_fd() successful for the failure
-  case later ("Add papr-platform-dump character driver for dump
-  retrieval" patch).
-
-v2:
-- Added unlock rtas_ibm_set_dynamic_indicator_lock and
-  rtas_ibm_get_dynamic_sensor_state_lock mutex for failure cases
-  as reported by Dan Carpenter
-- Fixed build warnings for the proper function parameter descriptions
-  as reported by kernel test robot <a class="moz-txt-link-rfc2396E" href="mailto:lkp@intel.com">&lt;lkp@intel.com&gt;</a>
-
-Haren Myneni (7):
-  powerpc/pseries: Define common functions for RTAS sequence calls
-  powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
-  powerpc/pseries: Add papr-indices char driver for ibm,get-indices
-  powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
-  powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
-  powerpc/pseries: Add papr-platform-dump character driver for dump
-    retrieval
-  powerpc/pseries: Add a char driver for physical-attestation RTAS
-
- .../userspace-api/ioctl/ioctl-number.rst      |   6 +
- arch/powerpc/include/asm/rtas.h               |   4 +
- arch/powerpc/include/uapi/asm/papr-indices.h  |  41 ++
- .../uapi/asm/papr-physical-attestation.h      |  31 ++
- .../include/uapi/asm/papr-platform-dump.h     |  15 +
- arch/powerpc/kernel/rtas.c                    |   8 +-
- arch/powerpc/platforms/pseries/Makefile       |   3 +-
- arch/powerpc/platforms/pseries/papr-indices.c | 488 ++++++++++++++++++
- .../platforms/pseries/papr-phy-attest.c       | 288 +++++++++++
- .../platforms/pseries/papr-platform-dump.c    | 411 +++++++++++++++
- .../platforms/pseries/papr-rtas-common.c      | 311 +++++++++++
- .../platforms/pseries/papr-rtas-common.h      |  61 +++
- arch/powerpc/platforms/pseries/papr-vpd.c     | 351 ++-----------
- 13 files changed, 1706 insertions(+), 312 deletions(-)
- create mode 100644 arch/powerpc/include/uapi/asm/papr-indices.h
- create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
- create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
- create mode 100644 arch/powerpc/platforms/pseries/papr-indices.c
- create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
- create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
- create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.c
- create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.h
-</pre>
-    </blockquote>
-    <font face="monospace">Userspace tools that use these interfaces are
-      displaying consistent results across old/new librtas and kernel
-      combinations.
-      <br>
-    </font>
-    <font face="monospace"><br>
-      For this series:
-      <br>
-      Tested-by: Sathvika Vasireddy <a class="moz-txt-link-rfc2396E"
-        href="mailto:sv@linux.ibm.com">&lt;sv@linux.ibm.com&gt;</a>
-      <br>
-    </font>
-    <font face="monospace"><br>
-      Thanks,
-      <br>
-      Sathvika
-    </font><span style="white-space: pre-wrap">
-</span>
-  </body>
-</html>
-
---------------nxhmRf3MqlUKCdctk9a0zSU8--
-
+[1] https://www.intel.com/content/www/us/en/developer/articles/technical/so=
+ftware-security-guidance/technical-documentation/runtime-speculative-side-c=
+hannel-mitigations.html
+    ("Managed Runtime Speculative Execution Side Channel Mitigations")
 
