@@ -1,84 +1,148 @@
-Return-Path: <linuxppc-dev+bounces-7219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7221-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D17EA6966F
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 18:29:41 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74FB6A6968F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 18:32:06 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHwgk2ZY9z2xGp;
-	Thu, 20 Mar 2025 04:29:38 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHwkG0DvJz2xlQ;
+	Thu, 20 Mar 2025 04:31:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742405378;
-	cv=none; b=aTTugwdQVKnPGguUp9MesMQVzLpYY0uLXtecucavj+5CLlUZ/cAofJkMAwFaRw9g000AcuI2SQMJxKySBMTO3NQG468wdWyUCdW8By1rJuYPD34IWhR+KKpY0+RHgu1BNuIFkD03kzyOhCjyQ6DJ77kywZenrNrH8yDjjEYJCPPhS9lUIXpuQHfJWdSE981GO73WhOVe1J0wMbMbEG7GFyWjuiY027K+YxG9rKx1ImayA4nJuJ/1Ufjz2YJZBmGuOLrymoUwObPmApfz3r7/j+W3ktonuEfdo+zCLWOptpdTNlYeCCwPG8GrcQjSTdhH07yFmKHsGtskjtNYlcFVqA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=65.109.113.108
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742405509;
+	cv=none; b=IxJi+llod/xP827wjtJvV+ie6qQIZhPEOH25aK6cOEcnW/gio2qjhvxTkR1+1cPoazwRw/eRiskJBKu+heACGR5OcvDBmmCOqP0ZVzx9Pk2iW+GmguKKX8Y2qVX2U90dD5T81pGIhLudkbBCOufp+RtZNmBv6fTAXJh2WD0QwY1MtcAn7yLfxFWFNn1LpHM7q+IxMqS3p3O8fsRZUuLk3slABDB5rkO11v8Jrat9fnQOq0EPFHYnvEm8FjbihlrcxyFGryL7rPdNaTrtRDpNKrLbkXJOtZtjGeY6TuIiiumLWVsYZ+5f7f11moGzTD2NhETvUJjC5sNDRb5T+Fpdyw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742405378; c=relaxed/relaxed;
-	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
+	t=1742405509; c=relaxed/relaxed;
+	bh=y4IueNFhKFDuJLhg35AaumVxylQHY1jpwsFPITe81G8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Bslm/3uyOuCRWbQPukW7RazL9n3vJY0f0vOFhlg6MIthYJwD+GW8m6hV3oeoc/uZt6Gj3moyvV5fpHApL5DEOQx5bMvUdcmug2/85G9qmFeITNI/b2Lcb53GcSgId97wrZcpuyXnsrYSGnrpZ9XoE3CTFVdXhtNTaYw+DftXf+Vptb68cmo47fOiXWkwXeMt8GHd/nqWGlnxyG5HFBm9oj+0LDhn7CfPeJ8lKiG9hfGjgWrUy0jnwS8B4ClUzG4xz5WhIIyRCxTwXrUgJo4MlX/AYASu1fAF7uc2KAorC3n+BT9LkvxP6SQOyUPWqA+aN+WF0kimHC65w1edAP1CuQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=OTaHvz9HxzEEY77tV84hgFxgDzldW7IGFFJwsCvjSXoFN4b+dbuQpw5lfIGvNXDYbraMZ3pF10aOWxEbn+yyffmv9w52LQpd6FUonneT4f+pE3yJH3b8qt8OQSAGrh8KpLz0fnFupqD9Ij1u3isRzCRTJCH5kj2gmgwmHyQoGnP2orICMCFiQiWQDtYO7GtMtnxAQHRRwoD1uUBkJUN2yHwLus0FOQ8p5gxu5z1iiPals8WNx6+RP9wG/lWyYde3RuXKrPZpZnFvHnvhsu8jRALUkDpfOBN6bFw7EPa067rD7MuL7uThsVTGyYwajMplJnRp7IPiFxK0krDBIm5qPw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de; dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=OPuKnj8n; dkim-atps=neutral; spf=pass (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org) smtp.mailfrom=alien8.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=alien8.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v;
+	dkim=pass (4096-bit key; unprotected) header.d=alien8.de header.i=@alien8.de header.a=rsa-sha256 header.s=alien8 header.b=OPuKnj8n;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=alien8.de (client-ip=65.109.113.108; helo=mail.alien8.de; envelope-from=bp@alien8.de; receiver=lists.ozlabs.org)
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHwgf4jvkz2ySW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 04:29:34 +1100 (AEDT)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHwkB2d7Jz2xlM
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 04:31:46 +1100 (AEDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 033E640E01D1;
+	Wed, 19 Mar 2025 17:31:33 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id EOIBCM-ZWxOR; Wed, 19 Mar 2025 17:31:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1742405488; bh=y4IueNFhKFDuJLhg35AaumVxylQHY1jpwsFPITe81G8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OPuKnj8nSqrVhz24YDL81CfCg2gKR9pIWbtbaHWonnfkdzAOYbC52VlJf5R+D42NL
+	 p+FEyIidvNStF1js+JfxT0C7rZGoAMoejdM1WgsnqZOgssxdFq7zcrdehkdBOhwBCf
+	 6qn9py1y7c1kbXSMeviUQDURN49OG5fv/WjXQdW5IkqHVFOA0DbDKfAETmttIs75Qp
+	 okPexPU9CehnEmaY3d7p6wh5PbiGuNMNTVx27sDHmdjIb3Dtjbu4HRwbY4Q14i4bwJ
+	 dsbkbZltr+kVU6ilR9D0zZyxFpO/sh1scDlcoWBs6e/bo71ONMVPvUCTlG7i2ceeA5
+	 wLaaxTPNfgLMm+60LsvQKf3f4DtxJ37YimbXvOnTV9Uiwo+mADi/UxAjzpM0rP7ZL9
+	 wo6QkkCKHUim+f+duFQ3p6m3NNZfUI/OdPhNo3Vh4zPkc4ReJUxDq/sHn7PoTceDKC
+	 dFHviztK56ka7KdDhZc4xg9gEecFpX/b8YeeHYnRAAy42UF9NNurT+CJRgEvMwDn9o
+	 EmwYWflsznK/wu6GRntJJGeTc65/wswB2vmGe19QbC0B8PxXLmDLJ6Gvkm3RlzDUX4
+	 /qN979SHOM73h+ayNLsjM9Jni661c+WpiCH3Ao/36bsD+FjghQdcQsWiSHsw8vbL4o
+	 RjebWhOYASgWk0sBPvsbIbnY=
+Received: from zn.tnic (pd95303ce.dip0.t-ipconnect.de [217.83.3.206])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 07F6021F4D;
-	Wed, 19 Mar 2025 17:29:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1742405371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
-	b=wIBWcptdGL+wkdTnuRmjJXC5snJGbMWIVCxqbn4wIIeDRVC6KrF/+knh7WpDye1AppidiY
-	oNnP7wAOwinz/S8kaqmYKPtVBmudI4p92iT9mxxa37UvjtdFWE9R78N+1335L82mEYL9fl
-	Ph/m6w+67nMRNXkoR8w7Ivs6dU8SdFA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1742405371;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
-	b=mhSjOK8vSII2RfD2Z5FNo8udjoZhtjLW5cncFRKciXlruiXhPe8UnU/jpdU9VmR1lTs5Nl
-	mM3BuhZTKoi/brCQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1742405371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
-	b=wIBWcptdGL+wkdTnuRmjJXC5snJGbMWIVCxqbn4wIIeDRVC6KrF/+knh7WpDye1AppidiY
-	oNnP7wAOwinz/S8kaqmYKPtVBmudI4p92iT9mxxa37UvjtdFWE9R78N+1335L82mEYL9fl
-	Ph/m6w+67nMRNXkoR8w7Ivs6dU8SdFA=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1742405371;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
-	b=mhSjOK8vSII2RfD2Z5FNo8udjoZhtjLW5cncFRKciXlruiXhPe8UnU/jpdU9VmR1lTs5Nl
-	mM3BuhZTKoi/brCQ==
-Date: Wed, 19 Mar 2025 18:29:29 +0100
-From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
-To: Gaurav Batra <gbatra@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, donettom@linux.ibm.com
-Subject: Re: [PATCH] powerpc/pseries/iommu: memory notifier incorrectly adds
- TCEs for pmemory
-Message-ID: <Z9r--U_INHB4RjXI@kitsune.suse.cz>
-References: <20250130183854.92258-1-gbatra@linux.ibm.com>
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 73B2040E015E;
+	Wed, 19 Mar 2025 17:29:43 +0000 (UTC)
+Date: Wed, 19 Mar 2025 18:29:35 +0100
+From: Borislav Petkov <bp@alien8.de>
+To: Brendan Jackman <jackmanb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Richard Henderson <richard.henderson@linaro.org>,
+	Matt Turner <mattst88@gmail.com>, Vineet Gupta <vgupta@kernel.org>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+	Brian Cain <bcain@quicinc.com>, Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Michal Simek <monstr@monstr.eu>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Dinh Nguyen <dinguyen@kernel.org>, Jonas Bonn <jonas@southpole.se>,
+	Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+	Stafford Horne <shorne@gmail.com>,
+	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+	Helge Deller <deller@gmx.de>, Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Yoshinori Sato <ysato@users.sourceforge.jp>,
+	Rich Felker <dalias@libc.org>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	"David S. Miller" <davem@davemloft.net>,
+	Andreas Larsson <andreas@gaisler.com>,
+	Richard Weinberger <richard@nod.at>,
+	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
+	Chris Zankel <chris@zankel.net>, Max Filippov <jcmvbkbc@gmail.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Uladzislau Rezki <urezki@gmail.com>,
+	Christoph Hellwig <hch@infradead.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, x86@kernel.org,
+	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+	linux-snps-arc@lists.infradead.org,
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+	linux-hexagon@vger.kernel.org, loongarch@lists.linux.dev,
+	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+	sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+	linux-arch@vger.kernel.org, linux-mm@kvack.org,
+	linux-trace-kernel@vger.kernel.org,
+	linux-perf-users@vger.kernel.org, kvm@vger.kernel.org,
+	linux-efi@vger.kernel.org, Junaid Shahid <junaids@google.com>,
+	Yosry Ahmed <yosryahmed@google.com>
+Subject: Re: [PATCH RFC v2 04/29] mm: asi: Add infrastructure for boot-time
+ enablement
+Message-ID: <20250319172935.GMZ9r-_zzXhyhHBLfj@fat_crate.local>
+References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
+ <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,176 +155,275 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250130183854.92258-1-gbatra@linux.ibm.com>
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-0.999];
-	MIME_GOOD(-0.10)[text/plain];
-	MISSING_XM_UA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[nongnu.org:url]
-X-Spam-Score: -4.30
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+In-Reply-To: <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com>
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello,
+On Fri, Jan 10, 2025 at 06:40:30PM +0000, Brendan Jackman wrote:
+> Add a boot time parameter to control the newly added X86_FEATURE_ASI.
+> "asi=on" or "asi=off" can be used in the kernel command line to enable
+> or disable ASI at boot time. If not specified, ASI enablement depends
+> on CONFIG_ADDRESS_SPACE_ISOLATION_DEFAULT_ON, which is off by default.
 
-looks like this upsets some assumption qemu has about these windows.
+I don't know yet why we need this default-on thing...
 
-https://lists.nongnu.org/archive/html/qemu-devel/2025-03/msg05137.html
-
-When Linux kernel that has this patch applied is running inside a qemu
-VM with a PCI device and the VM is rebooted qemu crashes shortly after
-the next Linux kernel starts.
-
-This is quite curious since qemu does AFAIK not support pmemory at all.
-
-Any idea what went wrong there?
-
-Thanks
-
-Michal
-
-On Thu, Jan 30, 2025 at 12:38:54PM -0600, Gaurav Batra wrote:
-> iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
-> notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
-> (DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
-> for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
-> dynamically mapped when the device driver instructs to do so.
+> asi_check_boottime_disable() is modeled after
+> pti_check_boottime_disable().
 > 
-> The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
-> after LPAR boot. The command to do so is -
+> The boot parameter is currently ignored until ASI is fully functional.
 > 
-> daxctl reconfigure-device --mode=system-ram dax0.0 --force
+> Once we have a set of ASI features checked in that we have actually
+> tested, we will stop ignoring the flag. But for now let's just add the
+> infrastructure so we can implement the usage code.
 > 
-> This will dynamically add pmemory range to LPAR RAM eventually invoking
-> iommu_mem_notifier(). The address range of pmemory is way beyond the Max
-> RAM that the LPAR can have. Which means, this range is beyond the DDW
-> created for the device, at device initialization time.
-> 
-> As a result when TCEs are pre-mapped for the pmemory range, by
-> iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
-> command, daxctl, to add pmemory as RAM.
-> 
-> The solution is to not pre-map TCEs for pmemory.
-> 
-> Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+> Ignoring checkpatch.pl CONFIG_DESCRIPTION because the _DEFAULT_ON
+> Kconfig is trivial to explain.
+
+Those last two paragraphs go...
+
+> Checkpatch-args: --ignore CONFIG_DESCRIPTION
+> Co-developed-by: Junaid Shahid <junaids@google.com>
+> Signed-off-by: Junaid Shahid <junaids@google.com>
+> Co-developed-by: Yosry Ahmed <yosryahmed@google.com>
+> Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+> Signed-off-by: Brendan Jackman <jackmanb@google.com>
 > ---
->  arch/powerpc/include/asm/mmzone.h      |  1 +
->  arch/powerpc/mm/numa.c                 |  2 +-
->  arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
->  3 files changed, 18 insertions(+), 14 deletions(-)
-> 
-> diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
-> index d99863cd6cde..049152f8d597 100644
-> --- a/arch/powerpc/include/asm/mmzone.h
-> +++ b/arch/powerpc/include/asm/mmzone.h
-> @@ -29,6 +29,7 @@ extern cpumask_var_t node_to_cpumask_map[];
->  #ifdef CONFIG_MEMORY_HOTPLUG
->  extern unsigned long max_pfn;
->  u64 memory_hotplug_max(void);
-> +u64 hot_add_drconf_memory_max(void);
->  #else
->  #define memory_hotplug_max() memblock_end_of_DRAM()
->  #endif
-> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
-> index 3c1da08304d0..603a0f652ba6 100644
-> --- a/arch/powerpc/mm/numa.c
-> +++ b/arch/powerpc/mm/numa.c
-> @@ -1336,7 +1336,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
->  	return nid;
->  }
+
+... here as that's text not really pertaining to the contents of the patch.
+
+>  arch/x86/Kconfig                         |  9 +++++
+>  arch/x86/include/asm/asi.h               | 19 ++++++++--
+>  arch/x86/include/asm/cpufeatures.h       |  1 +
+>  arch/x86/include/asm/disabled-features.h |  8 ++++-
+>  arch/x86/mm/asi.c                        | 61 +++++++++++++++++++++++++++-----
+>  arch/x86/mm/init.c                       |  4 ++-
+>  include/asm-generic/asi.h                |  4 +++
+>  7 files changed, 92 insertions(+), 14 deletions(-)
+
+...
+
+>   * the N ASI classes.
+>   */
 >  
-> -static u64 hot_add_drconf_memory_max(void)
-> +u64 hot_add_drconf_memory_max(void)
->  {
->  	struct device_node *memory = NULL;
->  	struct device_node *dn = NULL;
-> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
-> index 29f1a0cc59cd..abd9529a8f41 100644
-> --- a/arch/powerpc/platforms/pseries/iommu.c
-> +++ b/arch/powerpc/platforms/pseries/iommu.c
-> @@ -1284,17 +1284,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
->  
->  static phys_addr_t ddw_memory_hotplug_max(void)
->  {
-> -	resource_size_t max_addr = memory_hotplug_max();
-> -	struct device_node *memory;
-> +	resource_size_t max_addr;
->  
-> -	for_each_node_by_type(memory, "memory") {
-> -		struct resource res;
-> -
-> -		if (of_address_to_resource(memory, 0, &res))
-> -			continue;
-> -
-> -		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
-> -	}
-> +#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
-> +	max_addr = hot_add_drconf_memory_max();
-> +#else
-> +	max_addr = memblock_end_of_DRAM();
-> +#endif
->  
->  	return max_addr;
->  }
-> @@ -1600,7 +1596,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
->  
->  	if (direct_mapping) {
->  		/* DDW maps the whole partition, so enable direct DMA mapping */
-> -		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
-> +		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
->  					    win64->value, tce_setrange_multi_pSeriesLP_walk);
->  		if (ret) {
->  			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
-> @@ -2346,11 +2342,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
->  	struct memory_notify *arg = data;
->  	int ret = 0;
->  
-> +	/* This notifier can get called when onlining persistent memory as well.
-> +	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
-> +	 * always be above ddw_memory_hotplug_max()
-> +	 */
+> +#define static_asi_enabled() cpu_feature_enabled(X86_FEATURE_ASI)
+
+Yeah, as already mentioned somewhere else, whack that thing pls.
+
 > +
->  	switch (action) {
->  	case MEM_GOING_ONLINE:
->  		spin_lock(&dma_win_list_lock);
->  		list_for_each_entry(window, &dma_win_list, list) {
-> -			if (window->direct) {
-> +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-> +				ddw_memory_hotplug_max()) {
->  				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
->  						arg->nr_pages, window->prop);
->  			}
-> @@ -2362,7 +2364,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
->  	case MEM_OFFLINE:
->  		spin_lock(&dma_win_list_lock);
->  		list_for_each_entry(window, &dma_win_list, list) {
-> -			if (window->direct) {
-> +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
-> +				ddw_memory_hotplug_max()) {
->  				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
->  						arg->nr_pages, window->prop);
->  			}
-> 
-> base-commit: 95ec54a420b8f445e04a7ca0ea8deb72c51fe1d3
-> -- 
-> 2.39.3 (Apple Git-146)
-> 
-> 
+>  /*
+>   * ASI uses a per-CPU tainting model to track what mitigation actions are
+>   * required on domain transitions. Taints exist along two dimensions:
+> @@ -131,6 +134,8 @@ struct asi {
+>  
+>  DECLARE_PER_CPU_ALIGNED(struct asi *, curr_asi);
+>  
+> +void asi_check_boottime_disable(void);
+> +
+>  void asi_init_mm_state(struct mm_struct *mm);
+>  
+>  int asi_init_class(enum asi_class_id class_id, struct asi_taint_policy *taint_policy);
+> @@ -155,7 +160,9 @@ void asi_exit(void);
+>  /* The target is the domain we'll enter when returning to process context. */
+>  static __always_inline struct asi *asi_get_target(struct task_struct *p)
+>  {
+> -	return p->thread.asi_state.target;
+> +	return static_asi_enabled()
+> +	       ? p->thread.asi_state.target
+> +	       : NULL;
+
+Waaay too fancy for old people:
+
+	if ()
+		return...
+	else
+		return NULL;
+
+:-)
+
+The others too pls.
+
+>  static __always_inline void asi_set_target(struct task_struct *p,
+> @@ -166,7 +173,9 @@ static __always_inline void asi_set_target(struct task_struct *p,
+>  
+>  static __always_inline struct asi *asi_get_current(void)
+>  {
+> -	return this_cpu_read(curr_asi);
+> +	return static_asi_enabled()
+> +	       ? this_cpu_read(curr_asi)
+> +	       : NULL;
+>  }
+>  
+>  /* Are we currently in a restricted address space? */
+> @@ -175,7 +184,11 @@ static __always_inline bool asi_is_restricted(void)
+>  	return (bool)asi_get_current();
+>  }
+>  
+> -/* If we exit/have exited, can we stay that way until the next asi_enter? */
+> +/*
+> + * If we exit/have exited, can we stay that way until the next asi_enter?
+
+What is that supposed to mean here?
+
+> + *
+> + * When ASI is disabled, this returns true.
+> + */
+>  static __always_inline bool asi_is_relaxed(void)
+>  {
+>  	return !asi_get_target(current);
+> diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
+> index 913fd3a7bac6506141de65f33b9ee61c615c7d7d..d6a808d10c3b8900d190ea01c66fc248863f05e2 100644
+> --- a/arch/x86/include/asm/cpufeatures.h
+> +++ b/arch/x86/include/asm/cpufeatures.h
+> @@ -474,6 +474,7 @@
+>  #define X86_FEATURE_CLEAR_BHB_HW	(21*32+ 3) /* BHI_DIS_S HW control enabled */
+>  #define X86_FEATURE_CLEAR_BHB_LOOP_ON_VMEXIT (21*32+ 4) /* Clear branch history at vmexit using SW loop */
+>  #define X86_FEATURE_FAST_CPPC		(21*32 + 5) /* AMD Fast CPPC */
+> +#define X86_FEATURE_ASI			(21*32+6) /* Kernel Address Space Isolation */
+>  
+>  /*
+>   * BUG word(s)
+> diff --git a/arch/x86/include/asm/disabled-features.h b/arch/x86/include/asm/disabled-features.h
+> index c492bdc97b0595ec77f89dc9b0cefe5e3e64be41..c7964ed4fef8b9441e1c0453da587787d8008d9d 100644
+> --- a/arch/x86/include/asm/disabled-features.h
+> +++ b/arch/x86/include/asm/disabled-features.h
+> @@ -50,6 +50,12 @@
+>  # define DISABLE_PTI		(1 << (X86_FEATURE_PTI & 31))
+>  #endif
+>  
+> +#ifdef CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION
+> +# define DISABLE_ASI		0
+> +#else
+> +# define DISABLE_ASI		(1 << (X86_FEATURE_ASI & 31))
+> +#endif
+> +
+>  #ifdef CONFIG_MITIGATION_RETPOLINE
+>  # define DISABLE_RETPOLINE	0
+>  #else
+> @@ -154,7 +160,7 @@
+>  #define DISABLED_MASK17	0
+>  #define DISABLED_MASK18	(DISABLE_IBT)
+>  #define DISABLED_MASK19	(DISABLE_SEV_SNP)
+> -#define DISABLED_MASK20	0
+> +#define DISABLED_MASK20	(DISABLE_ASI)
+>  #define DISABLED_MASK21	0
+>  #define DISABLED_MASK_CHECK BUILD_BUG_ON_ZERO(NCAPINTS != 22)
+>  
+
+Right, that hunk is done this way now:
+
+diff --git a/arch/x86/Kconfig.cpufeatures b/arch/x86/Kconfig.cpufeatures
+index e12d5b7e39a2..f219eaf664fb 100644
+--- a/arch/x86/Kconfig.cpufeatures
++++ b/arch/x86/Kconfig.cpufeatures
+@@ -199,3 +199,7 @@ config X86_DISABLED_FEATURE_SEV_SNP
+ config X86_DISABLED_FEATURE_INVLPGB
+ 	def_bool y
+ 	depends on !BROADCAST_TLB_FLUSH
++
++config X86_DISABLED_FEATURE_ASI
++	def_bool y
++	depends on !MITIGATION_ADDRESS_SPACE_ISOLATION
+
+
+> diff --git a/arch/x86/mm/asi.c b/arch/x86/mm/asi.c
+> index 105cd8b43eaf5c20acc80d4916b761559fb95d74..5baf563a078f5b3a6cd4b9f5e92baaf81b0774c4 100644
+> --- a/arch/x86/mm/asi.c
+> +++ b/arch/x86/mm/asi.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/percpu.h>
+>  #include <linux/spinlock.h>
+>  
+> +#include <linux/init.h>
+>  #include <asm/asi.h>
+>  #include <asm/cmdline.h>
+>  #include <asm/cpufeature.h>
+> @@ -29,6 +30,9 @@ static inline bool asi_class_id_valid(enum asi_class_id class_id)
+>  
+>  static inline bool asi_class_initialized(enum asi_class_id class_id)
+>  {
+> +	if (!boot_cpu_has(X86_FEATURE_ASI))
+
+check_for_deprecated_apis: WARNING: arch/x86/mm/asi.c:33: Do not use boot_cpu_has() - use cpu_feature_enabled() instead.
+
+Check your whole set pls.
+
+> +		return 0;
+> +
+>  	if (WARN_ON(!asi_class_id_valid(class_id)))
+>  		return false;
+>  
+> @@ -51,6 +55,9 @@ EXPORT_SYMBOL_GPL(asi_init_class);
+>  
+>  void asi_uninit_class(enum asi_class_id class_id)
+>  {
+> +	if (!boot_cpu_has(X86_FEATURE_ASI))
+> +		return;
+> +
+>  	if (!asi_class_initialized(class_id))
+>  		return;
+>  
+> @@ -66,10 +73,36 @@ const char *asi_class_name(enum asi_class_id class_id)
+>  	return asi_class_names[class_id];
+>  }
+>  
+> +void __init asi_check_boottime_disable(void)
+> +{
+> +	bool enabled = IS_ENABLED(CONFIG_MITIGATION_ADDRESS_SPACE_ISOLATION_DEFAULT_ON);
+> +	char arg[4];
+> +	int ret;
+> +
+> +	ret = cmdline_find_option(boot_command_line, "asi", arg, sizeof(arg));
+> +	if (ret == 3 && !strncmp(arg, "off", 3)) {
+> +		enabled = false;
+> +		pr_info("ASI disabled through kernel command line.\n");
+> +	} else if (ret == 2 && !strncmp(arg, "on", 2)) {
+> +		enabled = true;
+> +		pr_info("Ignoring asi=on param while ASI implementation is incomplete.\n");
+> +	} else {
+> +		pr_info("ASI %s by default.\n",
+> +			enabled ? "enabled" : "disabled");
+> +	}
+> +
+> +	if (enabled)
+> +		pr_info("ASI enablement ignored due to incomplete implementation.\n");
+
+Incomplete how?
+
+> +}
+> +
+>  static void __asi_destroy(struct asi *asi)
+>  {
+> -	lockdep_assert_held(&asi->mm->asi_init_lock);
+> +	WARN_ON_ONCE(asi->ref_count <= 0);
+> +	if (--(asi->ref_count) > 0)
+
+Switch that to
+
+include/linux/kref.h
+
+It gives you a sanity-checking functionality too so you don't need the WARN...
+
+> +		return;
+>  
+> +	free_pages((ulong)asi->pgd, PGD_ALLOCATION_ORDER);
+> +	memset(asi, 0, sizeof(struct asi));
+
+And then you can do:
+
+	if (kref_put())
+		free_pages...
+
+and so on.
+
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
 
