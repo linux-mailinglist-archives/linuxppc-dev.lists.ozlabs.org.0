@@ -1,91 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-7192-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7193-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C367DA67E83
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 18 Mar 2025 22:14:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E9498A682FF
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 03:06:40 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHPjF0T1Wz2xYr;
-	Wed, 19 Mar 2025 08:14:09 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHXBX2FNcz2yVb;
+	Wed, 19 Mar 2025 13:06:28 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=103.168.172.152
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742332448;
-	cv=none; b=CGra6+ZmcbZgZ/nZrWw7ddILzG37/p9V8zE53/2WK6orl61PKRS7D0/phK8odyViVvxmfTCbT6g23DyyJ9fdPH4hEHrcfRviIEF2hqYHqUPGtFxMuQyhccirv34LHlfi8B4f4wQrWcTU/j53CNI0PsYhj80l1bJ/zPFRDVg2f6HAhepAz8FfBQoNK0oUO/mVv9Y5kqHDddVzFRFRbfmvDA0c2EADzZld+0vFbg1z3qp3Uf9iYP7VRpPmIQTeom1cVkJoQNovCkqBQx7kELToLPezT7lT83VsFdEbnke05+4/yrqfLP3mOtKGTKs6+7cHzB0NDK+HfjX+SuoYolPo3g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742349988;
+	cv=none; b=GkC948RiIblZX/7STm8+iFD/75xKfP/hXuWHsP9b2kcUqUwT5U8WJc9wMy7t0j+yse42PIeoD0ZLLDoxv4b/aaIAcB/zwX2sshI5rpd+8G12rmhASzj9XmPhfDPJD0KCvxLQpCl0NF8oE1pOoH5i86ICYbtLnYsDHR1xwl1aiGT3uX+TzmGkVIvVqOsntRuz3gcYKw2Wlw8QYrASqtBv9JylDsCP5h05TJYxw/CIKLg4zEV/gzMyf2ULNH4Q4hpb6wpUmSqUMzZwnD3H/TWQ0Uo/rRmUhClQTI/Q3iSG0oOOjrLSaYvPkiBv9Bf1KY1RjYKOcdjwDbx1tq3YLDfgbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742332448; c=relaxed/relaxed;
-	bh=6Wnno4ANVKxueaFjx6I4DVJGzAoa07LKkIYejE1OybM=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=An/j4txlDT0niYUljmZX5gxrT4cH2wfFlDwVU/6xrSg0E0AmomsCJaKfbOcr8y3A/j4dpYqfN3JVJ+75E99r/Xq96P+bN9PL+BqAdweFQPI0YDt8KnQsrUD6sGAiVxOeiMcBn1K/f2PFnmRddfo238jc2iSZL5ofBo+kcf/1hMYUx4NOwl4whRXNqN24kdNbG//ba7+CQdDL7xd2zLXmp/GuXsEJZ2FkRnaaymcu2oLhugi2TtPKQfDj8EzzjjfD4nfugPu8jAlW6NKt/pdW34rT6c0FnfNRtnPT5cI3jUsrVmIKS9zjBNBQBUA0eTjGgd8agGqvECnL3Nso1koTBQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de; dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=dFI2VrSs; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=mQ/4TodD; dkim-atps=neutral; spf=pass (client-ip=103.168.172.152; helo=fhigh-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org) smtp.mailfrom=arndb.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arndb.de
+	t=1742349988; c=relaxed/relaxed;
+	bh=TpO5zMWHSqnsfVEXRxj22SIw7P54O7quVzaG6vmYJ2Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=biBB3yvO9ff72wPollJbBiILWK4RLW/CCpDlMMdtbaplDpIFstzfU0OF6f8P+FcOh72OtVm1kiZL6LekmxxF2MWgilfOclwWN6ZJQQXxLXe/SQWDGkyi+BNjh/DKmmvqRWjoB6rV+xBdGqgJbKSb1zvY+NRoCgUdIEgisLHI9LJA2bclAlQRmXRyCvlc8FvMcnKI0UVdBch5fGjygQP8j3ziyYaMoNAMVzq2FuKNKk15UQCEoL4+mmHOn4AeERHW+Y/JYtNJcOccyxr742ij7QxO3gtnjxm6dRjapdZrIRs+0r+hmZawH49V5izhS6v5XGLRcCyzG4K/Kmhdo77Iow==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e1a5CJqk; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=arndb.de header.i=@arndb.de header.a=rsa-sha256 header.s=fm1 header.b=dFI2VrSs;
-	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=mQ/4TodD;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=e1a5CJqk;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arndb.de (client-ip=103.168.172.152; helo=fhigh-a1-smtp.messagingengine.com; envelope-from=arnd@arndb.de; receiver=lists.ozlabs.org)
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHPjB2Zrnz2xQ6
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Mar 2025 08:14:05 +1100 (AEDT)
-Received: from phl-compute-07.internal (phl-compute-07.phl.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 9B9911140098;
-	Tue, 18 Mar 2025 17:14:01 -0400 (EDT)
-Received: from phl-imap-11 ([10.202.2.101])
-  by phl-compute-07.internal (MEProxy); Tue, 18 Mar 2025 17:14:01 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1742332441;
-	 x=1742418841; bh=6Wnno4ANVKxueaFjx6I4DVJGzAoa07LKkIYejE1OybM=; b=
-	dFI2VrSsmJvKZXQEWv0b+6lLs6h2rrXpBXnD1WDs/tjYgHOrEPqjQWYfpgJLJ6Dz
-	0uDpMTiYauSbiQ4w2sPcdGkd+qAIZWKppygqbk/wfeUy/5S3ligXhQnU0UPnPamc
-	bMnZNv6U/QohqSlf4tad3QFXfd4U1AKDR7poUyd+1pJ8gXBV9d6Bb9QjJlapLC1t
-	L6Z5wDmWa1pm8yDStkhgRHlWgUQ3Niz8m597DS0xsI8YtDvYLdJyqscOVqMvw+LZ
-	hArMs2YXZ8HI8A61ETHkr8uZL+3lzuAJPMVGi3NUeWSmci/NXyfy/ISbdCjh1fb0
-	anJmKVtYQJFh0/k9ChTKyA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742332441; x=
-	1742418841; bh=6Wnno4ANVKxueaFjx6I4DVJGzAoa07LKkIYejE1OybM=; b=m
-	Q/4TodDV8ABnaVLbk4J9v4V2dkLG+MvRKig12GI7AQAb9/7YOBqOyG3ROJb+rr5d
-	cHKzOapNwmhS7uGqA9TEOIa4fTT9tWJhEFIUwYJptXONDrOnkYzF0pIZ7nPtP3hC
-	+rKCCB/jOvJ4vRY86cSe6324xoxM3LCh2Pa8gn4Zbg5TyDwdyPYNaIOjAGvwnSzr
-	FetD+Tyn4ZBnH0mVXa0Cke3SEYdYO0pMR/KIjeKNAP1pYyGHJrQtlvJGxlJVs+Of
-	rs0V6sz1QQHX+/1G7GvCuJu/qx61R2ofEcLYus0wSVWAmhbajW+aAC/F5vkG2s4R
-	/FYA+2ozaAXrAOXwmKv7g==
-X-ME-Sender: <xms:F-LZZy9i0AVgHg-YAxTpb124c99eTBx38tHM1-Qg2LszbHeO1h4RUQ>
-    <xme:F-LZZyskOj8tXApOtq1mDy3oRBPQp9YoKEYYnrbImc_SZkPjIwH4UaD9XJBdVucmL
-    9sQE7_nZuFAQ2MGioo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddugeefgeelucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
-    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
-    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
-    tddtnecuhfhrohhmpedftehrnhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnug
-    gsrdguvgeqnecuggftrfgrthhtvghrnhephfdthfdvtdefhedukeetgefggffhjeeggeet
-    fefggfevudegudevledvkefhvdeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvgdpnhgspghrtghpthhtohep
-    vdejpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopehtshgsohhgvghnugesrghlph
-    hhrgdrfhhrrghnkhgvnhdruggvpdhrtghpthhtoheptghhrhhishhtohhphhgvrdhlvghr
-    ohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopehmphgvsegvlhhlvghrmhgrnhdrih
-    gurdgruhdprhgtphhtthhopehmrghtthhsthekkeesghhmrghilhdrtghomhdprhgtphht
-    thhopehnphhighhgihhnsehgmhgrihhlrdgtohhmpdhrtghpthhtohepuggvlhhlvghrse
-    hgmhigrdguvgdprhgtphhtthhopegshhgvlhhgrggrshesghhoohhglhgvrdgtohhmpdhr
-    tghpthhtohepjhgrmhgvshdrsghothhtohhmlhgvhieshhgrnhhsvghnphgrrhhtnhgvrh
-    hshhhiphdrtghomhdprhgtphhtthhopegrrhhnugeskhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:F-LZZ4BgRMG0eAxsIote5hKKvCoaN4SXRlCZ_otOdfFFvz7XHT5_Ig>
-    <xmx:F-LZZ6eCs_NZ5WlasQgWvDs0mRuVxgDQ-EqMCMskWnEdubX_9LcrWQ>
-    <xmx:F-LZZ3NvCIv8H_n97d6jL42SkKKWBkml4iYZkXFnXNXQIBGxCj9UZw>
-    <xmx:F-LZZ0lio7_8obwVeZUmRWtis46Jpxj8QNkQYa_yPycLplbdyZZcrg>
-    <xmx:GeLZZ6iI2zTTRi4-1WdYuNqLi26yaA5Xh5sDeCMxyU0p-pxYSjTiEUKV>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 1A2B82220072; Tue, 18 Mar 2025 17:13:58 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHXBV6ybPz2ySb
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Mar 2025 13:06:26 +1100 (AEDT)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52IKqsJm015381;
+	Wed, 19 Mar 2025 02:06:09 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TpO5zM
+	WHSqnsfVEXRxj22SIw7P54O7quVzaG6vmYJ2Y=; b=e1a5CJqkGZLd4d3Sq9ny9I
+	hkeQ8RmGvrCBp6rcmovYxMGjxx4fcap/w2IsgrEYy/BEBDMPvRd5Scv9j2xbcofu
+	HeBrA7pnx3j68d1slqxuxwMEkyJ/m1C3caW6RFIxwW2x4EGDf+gbblY5VuS2fhTO
+	2MsWN8NTqeuEqY6DzPx1DTHr55SpedykKLyFp44SByikluN4WJSwJqUp1H5TAiRG
+	cC4p4JEzxof65f7pADe9Yo1kgdbtx/kFTRFwhs5IVhKqqWsA2W4kTMB/s0TZrbyq
+	tks+sCDBqztES9Hp1K4X0Fx2yiwkH04GwVmE1YQQBwb5kjqFo2qh7TRmVM1Yco0w
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45fg87h03h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Mar 2025 02:06:09 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52J23Lra022340;
+	Wed, 19 Mar 2025 02:06:08 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45fg87h03e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Mar 2025 02:06:08 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52IMeCwQ005741;
+	Wed, 19 Mar 2025 02:06:08 GMT
+Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45dpk2erbk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 19 Mar 2025 02:06:08 +0000
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52J267JA17629932
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 19 Mar 2025 02:06:07 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2399B5805E;
+	Wed, 19 Mar 2025 02:06:07 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C5D345805D;
+	Wed, 19 Mar 2025 02:06:01 +0000 (GMT)
+Received: from [9.43.115.80] (unknown [9.43.115.80])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 19 Mar 2025 02:06:01 +0000 (GMT)
+Message-ID: <952dbc9c-f720-4a66-b083-27b9c6fa82db@linux.ibm.com>
+Date: Wed, 19 Mar 2025 07:35:58 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,169 +85,97 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-ThreadId: T334a9a9a7e89e162
-Date: Tue, 18 Mar 2025 22:13:35 +0100
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Nathan Chancellor" <nathan@kernel.org>, "Arnd Bergmann" <arnd@kernel.org>
-Cc: Linux-Arch <linux-arch@vger.kernel.org>,
- "Richard Henderson" <richard.henderson@linaro.org>,
- "Matt Turner" <mattst88@gmail.com>,
- "Geert Uytterhoeven" <geert@linux-m68k.org>,
- "Greg Ungerer" <gerg@linux-m68k.org>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
- "Helge Deller" <deller@gmx.de>,
- "Madhavan Srinivasan" <maddy@linux.ibm.com>,
- "Michael Ellerman" <mpe@ellerman.id.au>,
- "Nicholas Piggin" <npiggin@gmail.com>,
- "Christophe Leroy" <christophe.leroy@csgroup.eu>,
- "Naveen N Rao" <naveen@kernel.org>,
- "Yoshinori Sato" <ysato@users.sourceforge.jp>,
- "Rich Felker" <dalias@libc.org>,
- "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
- "Julian Vetter" <julian@outer-limits.org>,
- "Bjorn Helgaas" <bhelgaas@google.com>, linux-alpha@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
-Message-Id: <5b2779f8-573d-401e-817e-979e02f811d3@app.fastmail.com>
-In-Reply-To: <20250318203906.GA4089579@ax162>
-References: <20250315105907.1275012-1-arnd@kernel.org>
- <20250315105907.1275012-6-arnd@kernel.org> <20250318203906.GA4089579@ax162>
-Subject: Re: [PATCH 5/6] mips: drop GENERIC_IOMAP wrapper
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/prom_init: Fixup missing powermac #size-cells on
+ i2s nodes
+To: "Rob Herring (Arm)" <robh@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Naveen N Rao <naveen@kernel.org>
+Cc: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+References: <20250318192256.3534046-1-robh@kernel.org>
+Content-Language: en-US
+From: Madhavan Srinivasan <maddy@linux.ibm.com>
+In-Reply-To: <20250318192256.3534046-1-robh@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ueaK4xiw1esXU2b_ia4JMmc7Q1gHdJkC
+X-Proofpoint-ORIG-GUID: 1vmI6gwI_RgPA_AMK8ilQ_ZZD3dbv9ia
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-18_10,2025-03-17_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 mlxscore=0
+ adultscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=972 bulkscore=0
+ malwarescore=0 clxscore=1011 impostorscore=0 spamscore=0
+ priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503190012
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, Mar 18, 2025, at 21:39, Nathan Chancellor wrote:
-> On Sat, Mar 15, 2025 at 11:59:06AM +0100, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
->> diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
 
->>  void __ioread64_copy(void *to, const void __iomem *from, size_t count);
->>  
->> +#ifdef CONFIG_PCI_DRIVERS_LEGACY
->> +struct pci_dev;
->> +void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
->> +#define pci_iounmap pci_iounmap
->> +#endif
->> +
->>  #include <asm-generic/io.h>
->>  
->>  static inline void *isa_bus_to_virt(unsigned long address)
->> diff --git a/arch/mips/lib/iomap-pci.c b/arch/mips/lib/iomap-pci.c
->> index a9cb28813f0b..2f82c776c6d0 100644
->> --- a/arch/mips/lib/iomap-pci.c
->> +++ b/arch/mips/lib/iomap-pci.c
->> @@ -43,4 +43,13 @@ void __iomem *__pci_ioport_map(struct pci_dev *dev,
->>  	return (void __iomem *) (ctrl->io_map_base + port);
->>  }
->>  
->> +void pci_iounmap(struct pci_dev *dev, void __iomem *addr)
->> +{
->> +	struct pci_controller *ctrl = dev->bus->sysdata;
->> +	void __iomem *base = (void __iomem *)ctrl->io_map_base;
->> +
->> +	if (addr < base || addr > (base + resource_size(ctrl->io_resource)))
->> +		iounmap(addr);
->> +}
->> +
->>  #endif /* CONFIG_PCI_DRIVERS_LEGACY */
->> -- 
->> 2.39.5
->> 
->
-> This change as commit 976bf3aec388 ("mips: drop GENERIC_IOMAP wrapper") in
-> -next introduces new instances of -Wnull-pointer-arithmetic when building
-> certain mips configurations with clang.
->
 
-Thanks for the report, I missed that the generic ioport_map() function
-is missing the PCI_IOBASE macro, we should probably remove that from
-the asm-generic/io.h header and require architectures to define it
-themselves, since the NULL fallback is pretty much always wrong.
+On 3/19/25 12:52 AM, Rob Herring (Arm) wrote:
+> On some powermacs `i2s` nodes are missing `#size-cells` properties,
+> which is deprecated and now triggers a warning at boot since commit
+> 045b14ca5c36 ("of: WARN on deprecated #address-cells/#size-cells
+> handling").
+> 
+> For example:
+> 
+>   Missing '#size-cells' in /pci@f2000000/mac-io@17/i2s@10000
+>   WARNING: CPU: 0 PID: 462 at drivers/of/base.c:134 of_bus_n_size_cells+0xb0/0x120
+>   Hardware name: PowerMac3,4 7400 0xc0209 PowerMac
+>   ...
+>   Call Trace:
+>     of_bus_n_size_cells+0xb0/0x120 (unreliable)
+>     of_bus_default_count_cells+0x40/0x60
+>     __of_get_address+0x158/0x294
+>     __of_address_to_resource+0x48/0x258
+>     i2sbus_probe+0x564/0x85c [snd_aoa_i2sbus]
+>     macio_device_probe+0x60/0x108
+>     really_probe+0xd8/0x344
+>     __driver_probe_device+0x90/0x1f0
+>     driver_probe_device+0x40/0xf4
+>     ...
+> 
+> As there's already a fixup for the same issue on `escc` nodes, add
+> `i2s` device_type to the existing fixup.
+> 
+> Reported-by: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
+> Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
 
-There is also a type mismatch between the MIPS
-PCI_IOBASE/mips_io_port_base and the one that asm-generic/io.h
-expects, so I had to add a couple of extra typecasts, which
-makes it rather ugly, but the change below seems to work.
+Have already picked up this patch as part of powerpc-next. 
 
-     Arnd
+https://patchwork.ozlabs.org/project/linuxppc-dev/patch/875xmizl6a.fsf@igel.home/
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 1fe56d1870a6..78c6573f91f2 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -544,12 +544,16 @@ extern void (*_dma_cache_inv)(unsigned long start, unsigned long size);
- 
- void __ioread64_copy(void *to, const void __iomem *from, size_t count);
- 
--#ifdef CONFIG_PCI_DRIVERS_LEGACY
-+#if defined(CONFIG_PCI) && defined(CONFIG_PCI_DRIVERS_LEGACY)
- struct pci_dev;
- void pci_iounmap(struct pci_dev *dev, void __iomem *addr);
- #define pci_iounmap pci_iounmap
- #endif
- 
-+#ifndef PCI_IOBASE
-+#define PCI_IOBASE ((void __iomem *)mips_io_port_base)
-+#endif
-+
- #include <asm-generic/io.h>
- 
- static inline void *isa_bus_to_virt(unsigned long address)
-diff --git a/arch/mips/include/asm/mach-loongson64/spaces.h b/arch/mips/include/asm/mach-loongson64/spaces.h
-index ce04e998a37b..dbd26db5f2c5 100644
---- a/arch/mips/include/asm/mach-loongson64/spaces.h
-+++ b/arch/mips/include/asm/mach-loongson64/spaces.h
-@@ -7,9 +7,10 @@
- #endif /* CONFIG_64BIT */
- 
- /* Skip 128k to trap NULL pointer dereferences */
--#define PCI_IOBASE	_AC(0xc000000000000000 + SZ_128K, UL)
-+#define PCI_PORT_BASE	_AC(0xc000000000000000 + SZ_128K, UL)
-+#define PCI_IOBASE	(void __iomem *)PCI_PORT_BASE
- #define PCI_IOSIZE	SZ_16M
--#define MAP_BASE	(PCI_IOBASE + PCI_IOSIZE)
-+#define MAP_BASE	(PCI_PORT_BASE + PCI_IOSIZE)
- 
- #define IO_SPACE_LIMIT  (PCI_IOSIZE - 1)
- 
-diff --git a/arch/mips/include/asm/mach-ralink/spaces.h b/arch/mips/include/asm/mach-ralink/spaces.h
-index a9f0570d0f04..a63d106c89c6 100644
---- a/arch/mips/include/asm/mach-ralink/spaces.h
-+++ b/arch/mips/include/asm/mach-ralink/spaces.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_MACH_RALINK_SPACES_H_
- #define __ASM_MACH_RALINK_SPACES_H_
- 
--#define PCI_IOBASE	mips_io_port_base
-+#define PCI_IOBASE	(void __iomem *)mips_io_port_base
- #define PCI_IOSIZE	SZ_64K
- #define IO_SPACE_LIMIT	(PCI_IOSIZE - 1)
- 
-diff --git a/arch/mips/loongson64/init.c b/arch/mips/loongson64/init.c
-index a35dd7311795..b9f90f33fc9a 100644
---- a/arch/mips/loongson64/init.c
-+++ b/arch/mips/loongson64/init.c
-@@ -128,7 +128,7 @@ void __init prom_init(void)
- 	}
- 
- 	/* init base address of io space */
--	set_io_port_base(PCI_IOBASE);
-+	set_io_port_base((unsigned long)PCI_IOBASE);
- 
- 	if (loongson_sysconf.early_config)
- 		loongson_sysconf.early_config();
-@@ -178,7 +178,7 @@ static int __init add_legacy_isa_io(struct fwnode_handle *fwnode, resource_size_
- 		return -EINVAL;
- 	}
- 
--	vaddr = PCI_IOBASE + range->io_start;
-+	vaddr = (unsigned long)PCI_IOBASE + range->io_start;
- 
- 	vmap_page_range(vaddr, vaddr + size, hw_start, pgprot_device(PAGE_KERNEL));
+Maddy
+
+> ---
+>  arch/powerpc/kernel/prom_init.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/prom_init.c b/arch/powerpc/kernel/prom_init.c
+> index 57082fac4668..69018a2afc41 100644
+> --- a/arch/powerpc/kernel/prom_init.c
+> +++ b/arch/powerpc/kernel/prom_init.c
+> @@ -2889,11 +2889,11 @@ static void __init fixup_device_tree_pmac(void)
+>  	char type[8];
+>  	phandle node;
+>  
+> -	// Some pmacs are missing #size-cells on escc nodes
+> +	// Some pmacs are missing #size-cells on escc and i2s nodes
+>  	for (node = 0; prom_next_node(&node); ) {
+>  		type[0] = '\0';
+>  		prom_getprop(node, "device_type", type, sizeof(type));
+> -		if (prom_strcmp(type, "escc"))
+> +		if (prom_strcmp(type, "escc") && prom_strcmp(type, "i2s"))
+>  			continue;
+>  
+>  		if (prom_getproplen(node, "#size-cells") != PROM_ERROR)
+
 
