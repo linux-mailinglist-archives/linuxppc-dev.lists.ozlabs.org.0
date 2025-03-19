@@ -1,79 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-7218-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7219-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03199A68D76
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 14:11:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D17EA6966F
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 19 Mar 2025 18:29:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHpxz2n7Nz2yyJ;
-	Thu, 20 Mar 2025 00:11:35 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZHwgk2ZY9z2xGp;
+	Thu, 20 Mar 2025 04:29:38 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::632"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742389895;
-	cv=none; b=YrfR43/YqaneqxBJtBgTOy3iQh/xcAYm7SiAc3DaxgUX85/uhxMFLl0PawrXS4s/qNM8tPTPPCgeMD6wjiDlSDFnlPcjlt6eabBfJ0wtvQFZpqUGLwhmw7SmCbcFjCXPLwM0fDtoOvN2aP8LQo504ukiTOAk+RKtu1xDCUeBYoZUKBS8y4f/khG7RmcK2vOw4vZfKLo8qn/4HFtR6keEVPU4AZa99BjOTOSeyBWmYrz4SpUWZtP54DQjLcRU5rD73v9/n0O5OurTsJKLRBMrrGuv2q+N+h9y+c4pArAhCXjsa6LVv9hUF5SkVeEmLbT233YXtjT/NbDsKH8ukMiAww==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.130
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742405378;
+	cv=none; b=aTTugwdQVKnPGguUp9MesMQVzLpYY0uLXtecucavj+5CLlUZ/cAofJkMAwFaRw9g000AcuI2SQMJxKySBMTO3NQG468wdWyUCdW8By1rJuYPD34IWhR+KKpY0+RHgu1BNuIFkD03kzyOhCjyQ6DJ77kywZenrNrH8yDjjEYJCPPhS9lUIXpuQHfJWdSE981GO73WhOVe1J0wMbMbEG7GFyWjuiY027K+YxG9rKx1ImayA4nJuJ/1Ufjz2YJZBmGuOLrymoUwObPmApfz3r7/j+W3ktonuEfdo+zCLWOptpdTNlYeCCwPG8GrcQjSTdhH07yFmKHsGtskjtNYlcFVqA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742389895; c=relaxed/relaxed;
-	bh=/CKiUxIsp+RiAjt+4CW+mXa9kqAZnMY4uY5XJZebADk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cY9xkdBpP//NhtZKN+vWLQyBSyKvB+zBbuzWZyRPHTxvcJtl4j27SBvRt7p2s79ExmhanZJo1zRHJudEOI3ncX7SSsg3NNPmCQUgDf8pTPxk6rfMMiX/E/CIEUAqaeSNCwupx+AS4oAXI2RYHUGoy5tv9TrsJfxY8iVMfdZjsSe5tHzafPa7GPlL+EzLOpOiS7oTbmTfDrzNHmqdgQFqO22ZUOGfs/ByoupHUFbRV7E4WXwKbd4TGjNpDBWIt5LzK0PcGdKLmRdAPfy3F03eItjHe9vG1C8LsnfL//rF4aAk4t1RHd9e2f0pe8Z+VHE8UpBn9cr7kkkoWtH3gjEm4g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Hu8bMugN; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+	t=1742405378; c=relaxed/relaxed;
+	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Bslm/3uyOuCRWbQPukW7RazL9n3vJY0f0vOFhlg6MIthYJwD+GW8m6hV3oeoc/uZt6Gj3moyvV5fpHApL5DEOQx5bMvUdcmug2/85G9qmFeITNI/b2Lcb53GcSgId97wrZcpuyXnsrYSGnrpZ9XoE3CTFVdXhtNTaYw+DftXf+Vptb68cmo47fOiXWkwXeMt8GHd/nqWGlnxyG5HFBm9oj+0LDhn7CfPeJ8lKiG9hfGjgWrUy0jnwS8B4ClUzG4xz5WhIIyRCxTwXrUgJo4MlX/AYASu1fAF7uc2KAorC3n+BT9LkvxP6SQOyUPWqA+aN+WF0kimHC65w1edAP1CuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v; dkim-atps=neutral; spf=pass (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Hu8bMugN;
+	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd;
+	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v;
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=wIBWcptd;
+	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=mhSjOK8v;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::632; helo=mail-pl1-x632.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.130; helo=smtp-out1.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHpxx551nz2ywR
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 00:11:32 +1100 (AEDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-2260c91576aso59993175ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 19 Mar 2025 06:11:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742389891; x=1742994691; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=/CKiUxIsp+RiAjt+4CW+mXa9kqAZnMY4uY5XJZebADk=;
-        b=Hu8bMugN/qY8HbzWTRf6rCRarPDhQgm3X5i8njKd0oJ0ms6sKjD4RR8LUlmGOXl1ow
-         nUVudngs8+vFVLfoO+jdxxZ5VYihHLaZNuyKKXmhk1c21nWuH7U07c4LKtylF8Coawbt
-         fy3oep8FPTCjKrWxFHQ2C11oIkzmx0Um6qDo6sn3vHEbIl7QlB+HXNzdAxkxsWbiveLj
-         t2NNOYnZZxJ9bVuLGLUO+8duK7gfFUJmBbFf/1iy/F/lpKMn3GGhWW0VosnY0bdb8cQC
-         bFLi1IfYeJb5BwzDSJEAyz2kIcAV1dq01/WgNnkFl59Sc5FFCiqqFCzGh5n8PA1TSpJw
-         QRMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742389891; x=1742994691;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/CKiUxIsp+RiAjt+4CW+mXa9kqAZnMY4uY5XJZebADk=;
-        b=uIKdK2tjUfOgqWDPgwhgX7gWaB6VYEO1acGFsCPnYHGeWth2JbL0Aq0YHkuKoI3xAf
-         SYKmOH9cmMRvYHedP9G9jL4QWlv9JBMoOx00U2hqF5RUNrx5sO9w0Xpli6eRHgCNAkzq
-         Qm6w+nHCLVLCXWvE0GlQPD5Z7iLdfs5rrXZVpF8BQrTURqa/tJiFLpYc4pQnSE0C0z4N
-         /gvfF6o/vjlPVinPqyZ8ESp3NVCpvlboC9Q2IS0mLf7vy+y72w3JC3j6+Czq9RnST82Q
-         I6SGeJyEn7URZjJ1Rw+zd6BOpGDWUBU+KC3GPMxZ9NXy3V8ICe0mFok2rnUFnAO7Lh4w
-         SC0w==
-X-Forwarded-Encrypted: i=1; AJvYcCURO6UBhA0ln3W6QFIB5BvN7vXWTsgPjVSF2ix02GvIQ9XHj+MFCJ020M5sRG3XH2f5F3iusLOpdgnKfWE=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzQ8p8arw1Bh1M/IQeQoYbiIbUHkpfYW4v6UFxpDvB7n3RK+mAB
-	wphtzyUzJwUog23sCRwc7CoOnpje5YBe6/NRhIwe2r5N4cSQHj8t
-X-Gm-Gg: ASbGncuZZRnWrZo2X3IRf6hwGfvw4wSHd2eROrZfp+ptEEAf39EhVCHHuCV+65qi3Bo
-	6rit7iabGH0U1OORenMGjtwrD5x68c7y9j40Fj80p/Zl9MckPK4mSH6Y6Edt5v8G2NFjX7Y1Srw
-	XxOkjQ5A7ZN8wXaaoGx3ka20on9MXdzHWM4uofZ3+hmGn5dKs359l5ym1qssO/N68TScBrhqkRc
-	7OMBTHXgGrBsdlFNxGWWAKzYKs9VrrMy6LYuQQSxwgwowF1eGFp4yxVlY/Ol8TcCS4qecfIkaTA
-	lQn8QYKQaOP/fqA9O3I5mFZIeLd+ZyBhUR1EzLVokwFEW+JubYF9FD38IIJ/rF+vDNPJquDyl5l
-	nb6zgov1bwZ5z+Ox/tg==
-X-Google-Smtp-Source: AGHT+IEioVgtuSEfAYuAE8IAAYiDjsUn61PAgb/S9UQkSNM/19B6DRuSeEADVUHZxIm2XFZUlNalCg==
-X-Received: by 2002:a05:6a21:6e48:b0:1f5:839e:ece8 with SMTP id adf61e73a8af0-1fbeb1854bcmr4348609637.2.1742389891204;
-        Wed, 19 Mar 2025 06:11:31 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:da43:aeff:fecc:bfd5? ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7371157369bsm11469895b3a.75.2025.03.19.06.11.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Mar 2025 06:11:30 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <9030a298-fcb6-48ea-a941-ad6916bf9fa7@roeck-us.net>
-Date: Wed, 19 Mar 2025 06:11:28 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZHwgf4jvkz2ySW
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 04:29:34 +1100 (AEDT)
+Received: from kitsune.suse.cz (unknown [10.100.12.127])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 07F6021F4D;
+	Wed, 19 Mar 2025 17:29:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1742405371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
+	b=wIBWcptdGL+wkdTnuRmjJXC5snJGbMWIVCxqbn4wIIeDRVC6KrF/+knh7WpDye1AppidiY
+	oNnP7wAOwinz/S8kaqmYKPtVBmudI4p92iT9mxxa37UvjtdFWE9R78N+1335L82mEYL9fl
+	Ph/m6w+67nMRNXkoR8w7Ivs6dU8SdFA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1742405371;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
+	b=mhSjOK8vSII2RfD2Z5FNo8udjoZhtjLW5cncFRKciXlruiXhPe8UnU/jpdU9VmR1lTs5Nl
+	mM3BuhZTKoi/brCQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1742405371; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
+	b=wIBWcptdGL+wkdTnuRmjJXC5snJGbMWIVCxqbn4wIIeDRVC6KrF/+knh7WpDye1AppidiY
+	oNnP7wAOwinz/S8kaqmYKPtVBmudI4p92iT9mxxa37UvjtdFWE9R78N+1335L82mEYL9fl
+	Ph/m6w+67nMRNXkoR8w7Ivs6dU8SdFA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1742405371;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=vMrYu1osGr7V6A5J0GJf4oN8siwZ0RnsLRJLACTdmTY=;
+	b=mhSjOK8vSII2RfD2Z5FNo8udjoZhtjLW5cncFRKciXlruiXhPe8UnU/jpdU9VmR1lTs5Nl
+	mM3BuhZTKoi/brCQ==
+Date: Wed, 19 Mar 2025 18:29:29 +0100
+From: Michal =?iso-8859-1?Q?Such=E1nek?= <msuchanek@suse.de>
+To: Gaurav Batra <gbatra@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org, donettom@linux.ibm.com
+Subject: Re: [PATCH] powerpc/pseries/iommu: memory notifier incorrectly adds
+ TCEs for pmemory
+Message-ID: <Z9r--U_INHB4RjXI@kitsune.suse.cz>
+References: <20250130183854.92258-1-gbatra@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -86,172 +91,176 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 07/14] arm64: Add support for suppressing warning
- backtraces
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
- Will Deacon <will@kernel.org>, Alessandro Carminati <acarmina@redhat.com>
-Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
- Arnd Bergmann <arnd@arndb.de>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
- <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>,
- Kees Cook <keescook@chromium.org>, Daniel Diaz <daniel.diaz@linaro.org>,
- David Gow <davidgow@google.com>, Arthur Grillo <arthurgrillo@riseup.net>,
- Brendan Higgins <brendan.higgins@linux.dev>,
- Naresh Kamboju <naresh.kamboju@linaro.org>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard
- <mripard@kernel.org>, =?UTF-8?B?VmlsbGUgU3lyasOkbMOk?=
- <ville.syrjala@linux.intel.com>, Daniel Vetter <daniel@ffwll.ch>,
- Thomas Zimmermann <tzimmermann@suse.de>,
- Alessandro Carminati <alessandro.carminati@gmail.com>,
- Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org,
- kunit-dev@googlegroups.com, linux-arch@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
- loongarch@lists.linux.dev, x86@kernel.org,
- Linux Kernel Functional Testing <lkft@linaro.org>,
- Catalin Marinas <catalin.marinas@arm.com>
-References: <20250313114329.284104-1-acarmina@redhat.com>
- <20250313114329.284104-8-acarmina@redhat.com>
- <20250313122503.GA7438@willie-the-truck>
- <CAGegRW5r3V2-_44-X353vS-GZwDYG=SVwc6MzSGE8GdFQuFoKA@mail.gmail.com>
- <20250318155946.GC13829@willie-the-truck>
- <a64bf821-ea90-4fd9-92ec-13bf7b7a3067@csgroup.eu>
-Content-Language: en-US
-From: Guenter Roeck <linux@roeck-us.net>
-Autocrypt: addr=linux@roeck-us.net; keydata=
- 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
- mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
-In-Reply-To: <a64bf821-ea90-4fd9-92ec-13bf7b7a3067@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=2.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Level: **
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250130183854.92258-1-gbatra@linux.ibm.com>
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-0.999];
+	MIME_GOOD(-0.10)[text/plain];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ZERO(0.00)[0];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[nongnu.org:url]
+X-Spam-Score: -4.30
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 3/19/25 01:05, Christophe Leroy wrote:
+Hello,
+
+looks like this upsets some assumption qemu has about these windows.
+
+https://lists.nongnu.org/archive/html/qemu-devel/2025-03/msg05137.html
+
+When Linux kernel that has this patch applied is running inside a qemu
+VM with a PCI device and the VM is rebooted qemu crashes shortly after
+the next Linux kernel starts.
+
+This is quite curious since qemu does AFAIK not support pmemory at all.
+
+Any idea what went wrong there?
+
+Thanks
+
+Michal
+
+On Thu, Jan 30, 2025 at 12:38:54PM -0600, Gaurav Batra wrote:
+> iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
+> notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
+> (DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
+> for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
+> dynamically mapped when the device driver instructs to do so.
+> 
+> The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
+> after LPAR boot. The command to do so is -
+> 
+> daxctl reconfigure-device --mode=system-ram dax0.0 --force
+> 
+> This will dynamically add pmemory range to LPAR RAM eventually invoking
+> iommu_mem_notifier(). The address range of pmemory is way beyond the Max
+> RAM that the LPAR can have. Which means, this range is beyond the DDW
+> created for the device, at device initialization time.
+> 
+> As a result when TCEs are pre-mapped for the pmemory range, by
+> iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
+> command, daxctl, to add pmemory as RAM.
+> 
+> The solution is to not pre-map TCEs for pmemory.
+> 
+> Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+> ---
+>  arch/powerpc/include/asm/mmzone.h      |  1 +
+>  arch/powerpc/mm/numa.c                 |  2 +-
+>  arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
+>  3 files changed, 18 insertions(+), 14 deletions(-)
+> 
+> diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+> index d99863cd6cde..049152f8d597 100644
+> --- a/arch/powerpc/include/asm/mmzone.h
+> +++ b/arch/powerpc/include/asm/mmzone.h
+> @@ -29,6 +29,7 @@ extern cpumask_var_t node_to_cpumask_map[];
+>  #ifdef CONFIG_MEMORY_HOTPLUG
+>  extern unsigned long max_pfn;
+>  u64 memory_hotplug_max(void);
+> +u64 hot_add_drconf_memory_max(void);
+>  #else
+>  #define memory_hotplug_max() memblock_end_of_DRAM()
+>  #endif
+> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+> index 3c1da08304d0..603a0f652ba6 100644
+> --- a/arch/powerpc/mm/numa.c
+> +++ b/arch/powerpc/mm/numa.c
+> @@ -1336,7 +1336,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
+>  	return nid;
+>  }
+>  
+> -static u64 hot_add_drconf_memory_max(void)
+> +u64 hot_add_drconf_memory_max(void)
+>  {
+>  	struct device_node *memory = NULL;
+>  	struct device_node *dn = NULL;
+> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+> index 29f1a0cc59cd..abd9529a8f41 100644
+> --- a/arch/powerpc/platforms/pseries/iommu.c
+> +++ b/arch/powerpc/platforms/pseries/iommu.c
+> @@ -1284,17 +1284,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
+>  
+>  static phys_addr_t ddw_memory_hotplug_max(void)
+>  {
+> -	resource_size_t max_addr = memory_hotplug_max();
+> -	struct device_node *memory;
+> +	resource_size_t max_addr;
+>  
+> -	for_each_node_by_type(memory, "memory") {
+> -		struct resource res;
+> -
+> -		if (of_address_to_resource(memory, 0, &res))
+> -			continue;
+> -
+> -		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
+> -	}
+> +#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
+> +	max_addr = hot_add_drconf_memory_max();
+> +#else
+> +	max_addr = memblock_end_of_DRAM();
+> +#endif
+>  
+>  	return max_addr;
+>  }
+> @@ -1600,7 +1596,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>  
+>  	if (direct_mapping) {
+>  		/* DDW maps the whole partition, so enable direct DMA mapping */
+> -		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+> +		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
+>  					    win64->value, tce_setrange_multi_pSeriesLP_walk);
+>  		if (ret) {
+>  			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
+> @@ -2346,11 +2342,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+>  	struct memory_notify *arg = data;
+>  	int ret = 0;
+>  
+> +	/* This notifier can get called when onlining persistent memory as well.
+> +	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
+> +	 * always be above ddw_memory_hotplug_max()
+> +	 */
+> +
+>  	switch (action) {
+>  	case MEM_GOING_ONLINE:
+>  		spin_lock(&dma_win_list_lock);
+>  		list_for_each_entry(window, &dma_win_list, list) {
+> -			if (window->direct) {
+> +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
+> +				ddw_memory_hotplug_max()) {
+>  				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+>  						arg->nr_pages, window->prop);
+>  			}
+> @@ -2362,7 +2364,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+>  	case MEM_OFFLINE:
+>  		spin_lock(&dma_win_list_lock);
+>  		list_for_each_entry(window, &dma_win_list, list) {
+> -			if (window->direct) {
+> +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
+> +				ddw_memory_hotplug_max()) {
+>  				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+>  						arg->nr_pages, window->prop);
+>  			}
+> 
+> base-commit: 95ec54a420b8f445e04a7ca0ea8deb72c51fe1d3
+> -- 
+> 2.39.3 (Apple Git-146)
 > 
 > 
-> Le 18/03/2025 à 16:59, Will Deacon a écrit :
->> On Thu, Mar 13, 2025 at 05:40:59PM +0100, Alessandro Carminati wrote:
->>> On Thu, Mar 13, 2025 at 1:25 PM Will Deacon <will@kernel.org> wrote:
->>>>
->>>> On Thu, Mar 13, 2025 at 11:43:22AM +0000, Alessandro Carminati wrote:
->>>>> diff --git a/arch/arm64/include/asm/bug.h b/arch/arm64/include/asm/bug.h
->>>>> index 28be048db3f6..044c5e24a17d 100644
->>>>> --- a/arch/arm64/include/asm/bug.h
->>>>> +++ b/arch/arm64/include/asm/bug.h
->>>>> @@ -11,8 +11,14 @@
->>>>>
->>>>>   #include <asm/asm-bug.h>
->>>>>
->>>>> +#ifdef HAVE_BUG_FUNCTION
->>>>> +# define __BUG_FUNC  __func__
->>>>> +#else
->>>>> +# define __BUG_FUNC  NULL
->>>>> +#endif
->>>>> +
->>>>>   #define __BUG_FLAGS(flags)                           \
->>>>> -     asm volatile (__stringify(ASM_BUG_FLAGS(flags)));
->>>>> +     asm volatile (__stringify(ASM_BUG_FLAGS(flags, %c0)) : : "i" (__BUG_FUNC));
->>>>
->>>> Why is 'i' the right asm constraint to use here? It seems a bit odd to
->>>> use that for a pointer.
->>>
->>> I received this code as legacy from a previous version.
->>> In my review, I considered the case when HAVE_BUG_FUNCTION is defined:
->>> Here, __BUG_FUNC is defined as __func__, which is the name of the
->>> current function as a string literal.
->>> Using the constraint "i" seems appropriate to me in this case.
->>>
->>> However, when HAVE_BUG_FUNCTION is not defined:
->>> __BUG_FUNC is defined as NULL. Initially, I considered it literal 0,
->>> but after investigating your concern, I found:
->>>
->>> ```
->>> $ echo -E "#include <stdio.h>\n#include <stddef.h>\nint main()
->>> {\nreturn 0;\n}" | aarch64-linux-gnu-gcc -E -dM - | grep NULL
->>> #define NULL ((void *)0)
->>> ```
->>>
->>> I realized that NULL is actually a pointer that is not a link time
->>> symbol, and using the "i" constraint with NULL may result in undefined
->>> behavior.
->>>
->>> Would the following alternative definition for __BUG_FUNC be more convincing?
->>>
->>> ```
->>> #ifdef HAVE_BUG_FUNCTION
->>>      #define __BUG_FUNC __func__
->>> #else
->>>      #define __BUG_FUNC (uintptr_t)0
->>> #endif
->>> ```
->>> Let me know your thoughts.
->>
->> Thanks for the analysis; I hadn't noticed this specific issue, it just
->> smelled a bit fishy. Anyway, the diff above looks better, thanks.
-> 
-> That propably deserves a comment.
-> 
-> Doesn't sparse and/or checkpatch complain about 0 being used in lieu of NULL ?
-> 
-
-__BUG_FUNC is only used as parameter to asm code, not as pointer.
-
- From the diff:
-
--                    : : "i" (__FILE__), "i" (__LINE__),                \
-+                    : : "i" (__FILE__), "i" (__BUG_FUNC), "i" (__LINE__),\
-
-The use is quite similar to __FILE__ and __LINE__. It might even be possible
-and appropriate to just define __BUG_FUNC as 0 if HAVE_BUG_FUNCTION is not defined.
-
-Guenter
-
 
