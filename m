@@ -1,71 +1,220 @@
-Return-Path: <linuxppc-dev+bounces-7235-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7236-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8484FA6A911
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Mar 2025 15:51:33 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0D42A6A98C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Mar 2025 16:19:04 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJT6p4Wybz304x;
-	Fri, 21 Mar 2025 01:51:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJTkZ149Hz2yvk;
+	Fri, 21 Mar 2025 02:19:02 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742482290;
-	cv=none; b=WDfMH82TwnpWQxzNx3v28BWh+Svbeq5VtnFFoddToW0utp5olqK7CpWcMMu/vaZ277hSMCSeNVlQT/6wSIuTrlPuZix2MGitNUZQEV9oDYOVxxqrx5PDqH8iZxGa4mxXWFlmQEgEa1Pai1IubeDFZClqyQkw2gxrnVDJH/x0Lkw4TXO1Z0B6q5nRoIznuxhapMwmLjGL/gc7xH1SVs+EcJHp87w6AM6gEyri7hd72XEwkNA8H3yh4W4SBYp3f/To13xn8sUGcnjguqBOAqWc8PuY8CTGGMBtZVSHznVbY1pxSYvbpzDRqSbIQLAAo8ajP3EWg9kA24RQ2DeKNJPnsg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742483942;
+	cv=none; b=GsZV/fUm+hLIdTdsFGrd/L8401pzqyKfWhiTattBmUaZkPP+pcHtg57YqrcR8WjieJxCzX5o7X6xsxp0Gzf2xbJ5YrC/tveMJ5wrJzlCsTSDXygpyPOExTGj9GPCGi9OBjOipn9YeXyEJoBSnaKSYWHg0vbDuXTZUNq5qhJEhUvAScPLIgXa+HuLKaVCZ3f7XVP7C6tCZ4hRhIHJP496Ogn/kzXwpLfRWgU+NGwSWU0VYGKP4G4VBm8SoGvy08i0qsg62cCG5AYHJVSlfuC75ozQUR/pvxIwcKgMnsPPxO4d0Enge1CSt+hckRKVSa2yynA7fYkUjEbhtu03XqRovA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742482290; c=relaxed/relaxed;
-	bh=4siztRv4WpexKlPE4A/kPFRipMeol9HmJlLcdcjIBG4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=jWCfzsYq2cgDyqC0UeIA4L88lVcASrxPq22TzedcdDYX5m8W82mZ9I486xs6UlArul9oFPo5Oohg37M/zGRRfGw78B/DYy+G0W+aEFi4L3H+P0+n25/hLFvhwXNOgt9AU7850v/kuFSJ+eiXLMmPVnHDdAPSM/U2uGuX/0sd4v+6LBDdq64TyTrZgVL69kwdupzYSTXWu6SKQ2CRwWS7KrDJPuEKu9G+BOFfrQCCBgn2uxuvFOYs07ETs5/8BZT6QmzYbHmXvrD7X5JrDKgS4B3xXvHY2T5fsV2fgOjqlBF2NnLtORIWw6acoZGtxpoaFVRw6XL6YiPeMvDyjb7LRg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rvZVC0H5; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742483942; c=relaxed/relaxed;
+	bh=rCzcmXMuHtfzs90QYD8k+YqTGhYvPxzH2rNIAb2m1Pk=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=MfsDOqVVXEYJMFAxobztTWAPDe61n8MKdhloUCEQT53cQe1EqlqfrOYNEekqVGhP2p6tOLilaVc5qscc7nRT/KXWzDvLuze/r6z1FKGPl0CHEMilBSdZq4i2HBsez/4MS3kVybRfw3dG3WOOUObkkTTA8UB8Teg9kZUY0dvT/YTQWTzGaVjxfMB1Na5GHfErAFbt/zdTdGtJL+2mIgyUXrGLyYiqqSqbLll5KUvblOCBTsz8cSuKPHe3QJ4kSUZudbU8z6cKNVo3Qo0qht8FgDXqS8wH5OquaJD3MXhW4ZyI0cWQg7YMDODKYehy67pYON+5VUB3b2MAdU6z10g9eA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jtAZa04N; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rvZVC0H5;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=jtAZa04N;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJT6m2NwGz302c
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 01:51:27 +1100 (AEDT)
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52KDP3cN030969
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 14:51:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=4siztR
-	v4WpexKlPE4A/kPFRipMeol9HmJlLcdcjIBG4=; b=rvZVC0H50J4y7htW5yTOlx
-	c/yCbo9IBlLMV9gnfTWUNahzbs+YN0AS+X83v3K9UpBp8pn8KCjUE8mjusvmA6ZP
-	Sibtzs37n/ggfmj4YHmQruqAG5Aor3xnOuzW+hhv0AlVUGBfInoSSIv5/WPsX1Ym
-	tHOvb1Ag57hjOSF8xgckwXiwdRr14nJgr4+1N7rWmj9y6VfZHjJB8oPxDboBPG5S
-	2QJl3XOhp9yzU9W8LLAr88QXCapcynbldyX24ai6c2OLVNm7RvYYJoNpUpNm5LB1
-	dLz54gT9Qx3eu/GFepiSzHB+YUZ9/ixwIyBh31ZkSpgVVVxQsqF5rmysP2eEx2PA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gbd9k5xb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 14:51:24 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52KEPQpQ032041
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 14:51:23 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45dkvtrrk2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 14:51:23 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52KEpIpE32899632
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 20 Mar 2025 14:51:19 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DC38320049;
-	Thu, 20 Mar 2025 14:51:18 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5D25820040;
-	Thu, 20 Mar 2025 14:51:14 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.254.132])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 20 Mar 2025 14:51:13 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJTkY00rsz2yfT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 02:19:00 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 77FA76115E;
+	Thu, 20 Mar 2025 15:18:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A232C4CEDD;
+	Thu, 20 Mar 2025 15:18:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742483936;
+	bh=1Z6H2iLvH3rXMt19HL+9taZFJeo/GqQ1pEgfLHm/VO8=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=jtAZa04NkVALEmArILtqhgvGWzNrqybg3hrSGdZZ2VVAFhkXh1nT4jpUcZ4Kc2DDn
+	 0A6i4ERYcuiCeprXqYIMy4u4kiFrkwJYEeYsWv+53EA4mBSJ6BqBYD7yzk5jl0BW7F
+	 3K+uSeS65G8FFh9VmSyWsSaODa9u59R3cNyzrD/bWKcMoby2y3/LjyBnzNkYD+iJSL
+	 9QHQkLG/EQ0PXCuzUmTG72RV9mKDT4ZRjt1NiAC6yuM4pg17khef1prwdyUg+6q41R
+	 XwbECsZNkZ4re5+LVruYEIZ107+IH+Jq6zDSLtPqFFjlA4zbkDNY4cbCQwK98Zoq0c
+	 4mfWfzYas3b3w==
+From: Mark Brown <broonie@kernel.org>
+To: tglx@linutronix.de, "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: maz@kernel.org, linux-kernel@vger.kernel.org, 
+ Aaro Koskinen <aaro.koskinen@iki.fi>, 
+ Abhinav Kumar <quic_abhinavk@quicinc.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, 
+ Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+ Alexandre Ghiti <alex@ghiti.fr>, 
+ Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+ Alex Deucher <alexander.deucher@amd.com>, Alex Shi <alexs@kernel.org>, 
+ Alim Akhtar <alim.akhtar@samsung.com>, 
+ =?utf-8?q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>, 
+ Alyssa Rosenzweig <alyssa@rosenzweig.io>, amd-gfx@lists.freedesktop.org, 
+ Amit Kucheria <amitk@kernel.org>, Anatolij Gustschin <agust@denx.de>, 
+ Andi Shyti <andi.shyti@kernel.org>, 
+ =?utf-8?q?Andreas_F=C3=A4rber?= <afaerber@suse.de>, 
+ Andreas Kemnade <andreas@kemnade.info>, 
+ Andrew Jeffery <andrew@codeconstruct.com.au>, Andrew Lunn <andrew@lunn.ch>, 
+ Andy Shevchenko <andy@kernel.org>, 
+ AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>, 
+ Antoine Tenart <atenart@kernel.org>, 
+ Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+ Anup Patel <anup@brainfault.org>, Arnd Bergmann <arnd@arndb.de>, 
+ asahi@lists.linux.dev, Bartosz Golaszewski <brgl@bgdev.pl>, 
+ Baruch Siach <baruch@tkos.co.il>, 
+ Benjamin Herrenschmidt <benh@kernel.crashing.org>, 
+ Bharat Kumar Gogada <bharat.kumar.gogada@amd.com>, 
+ Bjorn Andersson <andersson@kernel.org>, Bjorn Helgaas <bhelgaas@google.com>, 
+ Borislav Petkov <bp@alien8.de>, 
+ Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
+ Claudiu Beznea <claudiu.beznea@tuxon.dev>, 
+ Corentin Chary <corentin.chary@gmail.com>, 
+ Daire McNamara <daire.mcnamara@microchip.com>, 
+ Daniel Golle <daniel@makrotopia.org>, 
+ Daniel Lezcano <daniel.lezcano@linaro.org>, Daniel Mack <daniel@zonque.org>, 
+ Daniel Palmer <daniel@thingy.jp>, Dave Hansen <dave.hansen@linux.intel.com>, 
+ David Airlie <airlied@gmail.com>, "David S. Miller" <davem@davemloft.net>, 
+ DENG Qingfang <dqfext@gmail.com>, Dinh Nguyen <dinguyen@kernel.org>, 
+ Dmitry Baryshkov <dmitry.baryshkov@linaro.org>, 
+ Dongliang Mu <dzm91@hust.edu.cn>, Doug Berger <opendmb@gmail.com>, 
+ dri-devel@lists.freedesktop.org, Eddie James <eajames@linux.ibm.com>, 
+ Eric Dumazet <edumazet@google.com>, Fabio Estevam <festevam@gmail.com>, 
+ Florian Fainelli <florian.fainelli@broadcom.com>, 
+ Geoff Levand <geoff@infradead.org>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Gregory Clement <gregory.clement@bootlin.com>, Guo Ren <guoren@kernel.org>, 
+ Hans de Goede <hdegoede@redhat.com>, 
+ Haojian Zhuang <haojian.zhuang@gmail.com>, 
+ Haojian Zhuang <haojian.zhuang@linaro.org>, 
+ Heiko Stuebner <heiko@sntech.de>, Herve Codina <herve.codina@bootlin.com>, 
+ Hou Zhiqiang <Zhiqiang.Hou@nxp.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+ Huacai Chen <chenhuacai@kernel.org>, 
+ Changhuang Liang <changhuang.liang@starfivetech.com>, 
+ Chen-Yu Tsai <wens@csie.org>, "Chester A. Unal" <chester.a.unal@arinc9.com>, 
+ =?utf-8?q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Chris Zankel <chris@zankel.net>, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ Imre Kaloz <kaloz@openwrt.org>, Ingo Molnar <mingo@redhat.com>, 
+ Jakub Kicinski <kuba@kernel.org>, James Morse <james.morse@arm.com>, 
+ Janne Grunau <j@jannau.net>, Janusz Krzysztofik <jmkrzyszt@gmail.com>, 
+ Jaroslav Kysela <perex@perex.cz>, Jassi Brar <jassisinghbrar@gmail.com>, 
+ Jernej Skrabec <jernej.skrabec@gmail.com>, 
+ Jerome Brunet <jbrunet@baylibre.com>, 
+ Jianjun Wang <jianjun.wang@mediatek.com>, 
+ Jiawen Wu <jiawenwu@trustnetic.com>, Jiaxun Yang <jiaxun.yang@flygoat.com>, 
+ Jim Quinlan <jim2101024@gmail.com>, Jingoo Han <jingoohan1@gmail.com>, 
+ Joel Stanley <joel@jms.id.au>, Johannes Berg <johannes@sipsolutions.net>, 
+ John Crispin <john@phrozen.org>, 
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>, 
+ Jonas Bonn <jonas@southpole.se>, Jonathan Cameron <jic23@kernel.org>, 
+ Jonathan Corbet <corbet@lwn.net>, Jonathan Hunter <jonathanh@nvidia.com>, 
+ =?utf-8?q?Jonathan_Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>, 
+ Joyce Ooi <joyce.ooi@intel.com>, 
+ Karthikeyan Mitran <m.karthikeyan@mobiveil.co.in>, 
+ Keerthy <j-keerthy@ti.com>, Kevin Hilman <khilman@baylibre.com>, 
+ Konrad Dybcio <konradybcio@kernel.org>, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kw@linux.com>, 
+ Kunihiko Hayashi <hayashi.kunihiko@socionext.com>, 
+ Lakshmi Sowjanya D <lakshmi.sowjanya.d@intel.com>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Lee Jones <lee@kernel.org>, 
+ Liam Girdwood <lgirdwood@gmail.com>, 
+ Linus Walleij <linus.walleij@linaro.org>, Linus Walleij <linusw@kernel.org>, 
+ linux-amlogic@lists.infradead.org, linux-arm-kernel@lists.infradead.org, 
+ linux-arm-msm@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-edac@vger.kernel.org, linux-gpio@vger.kernel.org, 
+ linux-iio@vger.kernel.org, linux-i2c@vger.kernel.org, 
+ linux-mediatek@lists.infradead.org, linux-mips@vger.kernel.org, 
+ linux-omap@vger.kernel.org, linux-pci@vger.kernel.org, 
+ linuxppc-dev@lists.ozlabs.org, linux-remoteproc@vger.kernel.org, 
+ linux-riscv@lists.infradead.org, linux-rpi-kernel@lists.infradead.org, 
+ linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
+ linux-sound@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+ linux-um@lists.infradead.org, linux-wireless@vger.kernel.org, 
+ loongarch@lists.linux.dev, Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ Ludovic Desroches <ludovic.desroches@microchip.com>, 
+ Lukasz Luba <lukasz.luba@arm.com>, "Luke D. Jones" <luke@ljones.dev>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, 
+ =?utf-8?q?Marek_Beh=C3=BAn?= <kabel@kernel.org>, 
+ Marijn Suijten <marijn.suijten@somainline.org>, 
+ Mark-PK Tsai <mark-pk.tsai@mediatek.com>, 
+ Martin Blumenstingl <martin.blumenstingl@googlemail.com>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Poirier <mathieu.poirier@linaro.org>, 
+ Matthias Brugger <matthias.bgg@gmail.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Max Filippov <jcmvbkbc@gmail.com>, 
+ Maxime Coquelin <mcoquelin.stm32@gmail.com>, 
+ Mengyuan Lou <mengyuanlou@net-swift.com>, Michael Buesch <m@bues.ch>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Michal Simek <michal.simek@amd.com>, 
+ Miodrag Dinic <miodrag.dinic@mips.com>, Naveen N Rao <naveen@kernel.org>, 
+ Neil Armstrong <neil.armstrong@linaro.org>, netdev@vger.kernel.org, 
+ Nicolas Ferre <nicolas.ferre@microchip.com>, 
+ Nicolas Saenz Julienne <nsaenz@kernel.org>, 
+ Nicholas Piggin <npiggin@gmail.com>, 
+ Nikhil Agarwal <nikhil.agarwal@amd.com>, Nipun Gupta <nipun.gupta@amd.com>, 
+ Nishanth Menon <nm@ti.com>, =?utf-8?q?Pali_Roh=C3=A1r?= <pali@kernel.org>, 
+ Palmer Dabbelt <palmer@dabbelt.com>, Paolo Abeni <pabeni@redhat.com>, 
+ Paul Cercueil <paul@crapouillou.net>, 
+ Paul Walmsley <paul.walmsley@sifive.com>, 
+ Pengutronix Kernel Team <kernel@pengutronix.de>, 
+ Peter Rosin <peda@axentia.se>, Philipp Zabel <p.zabel@pengutronix.de>, 
+ Piotr Wojtaszczyk <piotr.wojtaszczyk@timesys.com>, 
+ platform-driver-x86@vger.kernel.org, 
+ Prasad Kumpatla <quic_pkumpatl@quicinc.com>, 
+ Qiang Zhao <qiang.zhao@nxp.com>, Qin Jian <qinjian@cqplus1.com>, 
+ "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Randy Dunlap <rdunlap@infradead.org>, Ray Jui <rjui@broadcom.com>, 
+ Rengarajan Sundararajan <Rengarajan.S@microchip.com>, 
+ Richard Cochran <richardcochran@gmail.com>, 
+ Richard Weinberger <richard@nod.at>, Rich Felker <dalias@libc.org>, 
+ Rob Clark <robdclark@gmail.com>, Robert Jarzmik <robert.jarzmik@free.fr>, 
+ Robert Richter <rric@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Roger Quadros <rogerq@kernel.org>, Russell King <linux@armlinux.org.uk>, 
+ Ryan Chen <ryan_chen@aspeedtech.com>, Ryder Lee <ryder.lee@mediatek.com>, 
+ Samuel Holland <samuel@sholland.org>, 
+ Santosh Shilimkar <ssantosh@kernel.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>, 
+ Scott Branden <sbranden@broadcom.com>, Scott Wood <oss@buserror.net>, 
+ Sean Paul <sean@poorly.run>, Sean Wang <sean.wang@kernel.org>, 
+ Sean Wang <sean.wang@mediatek.com>, 
+ Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>, 
+ Sergio Paracuellos <sergio.paracuellos@gmail.com>, 
+ Shawn Guo <shawnguo@kernel.org>, Shawn Lin <shawn.lin@rock-chips.com>, 
+ Siddharth Vadapalli <s-vadapalli@ti.com>, Simona Vetter <simona@ffwll.ch>, 
+ Stafford Horne <shorne@gmail.com>, 
+ Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>, 
+ Stephen Boyd <sboyd@kernel.org>, Sven Peter <sven@svenpeter.dev>, 
+ Takashi Iwai <tiwai@suse.com>, Talel Shenhar <talel@amazon.com>, 
+ Tero Kristo <kristo@kernel.org>, 
+ Thangaraj Samynathan <Thangaraj.S@microchip.com>, 
+ Thara Gopinath <thara.gopinath@gmail.com>, 
+ Thierry Reding <thierry.reding@gmail.com>, 
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
+ Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
+ Toan Le <toan@os.amperecomputing.com>, Tony Lindgren <tony@atomide.com>, 
+ Tony Luck <tony.luck@intel.com>, UNGLinuxDriver@microchip.com, 
+ =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <ukleinek@kernel.org>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Vineet Gupta <vgupta@kernel.org>, 
+ Vladimir Oltean <olteanv@gmail.com>, Vladimir Zapolskiy <vz@mleia.com>, 
+ WANG Xuerui <kernel@xen0n.name>, Woojung Huh <woojung.huh@microchip.com>, 
+ x86@kernel.org, Yanteng Si <si.yanteng@linux.dev>, 
+ Yoshinori Sato <ysato@users.sourceforge.jp>, 
+ Zhang Rui <rui.zhang@intel.com>
+In-Reply-To: <20250319092951.37667-1-jirislaby@kernel.org>
+References: <20250319092951.37667-1-jirislaby@kernel.org>
+Subject: Re: (subset) [PATCH v2 00/57] irqdomain: Cleanups and
+ Documentation
+Message-Id: <174248389026.68765.4225899402848645156.b4-ty@kernel.org>
+Date: Thu, 20 Mar 2025 15:18:10 +0000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,167 +226,51 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH 0/9] Add support for configure and control of Hardware
- Trace Macro(HTM)
-From: Athira Rajeev <atrajeev@linux.ibm.com>
-In-Reply-To: <5411ccd9-6077-4f95-8b8b-92ab5d990d9d@linux.ibm.com>
-Date: Thu, 20 Mar 2025 20:21:00 +0530
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Disha Goel <disgoel@linux.vnet.ibm.com>, hbathini@linux.vnet.ibm.com,
-        Aditya.Bodkhe1@ibm.com, Abhishek Dubey <adubey@linux.ibm.com>,
-        skb99@linux.ibm.com, Shrikanth Hegde <sshegde@linux.ibm.com>,
-        Ritesh Harjani <riteshh@linux.ibm.com>,
-        Tejas Manhas <Tejas.Manhas1@ibm.com>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <FD8A575C-5B02-4300-8203-58DB44F52CB7@linux.ibm.com>
-References: <20250314135541.1831-1-atrajeev@linux.ibm.com>
- <5411ccd9-6077-4f95-8b8b-92ab5d990d9d@linux.ibm.com>
-To: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-X-Mailer: Apple Mail (2.3776.700.51)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2ZAucFaVDzhSz2_LZuOyQ_cJaJw4Ckwl
-X-Proofpoint-GUID: 2ZAucFaVDzhSz2_LZuOyQ_cJaJw4Ckwl
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-20_03,2025-03-20_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
- priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
- mlxlogscore=999 lowpriorityscore=0 adultscore=0 suspectscore=0
- clxscore=1015 mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2503200090
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-1b0d6
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Wed, 19 Mar 2025 10:28:53 +0100, Jiri Slaby (SUSE) wrote:
+> tl;dr if patches are agreed upon, I ask subsys maintainers to take the
+> respective ones via their trees (as they are split per subsys), so that
+> the IRQ tree can take only the rest. That would minimize churn/conflicts
+> during merges.
+> 
+> ===
+> 
+> [...]
 
+Applied to
 
-> On 20 Mar 2025, at 6:43=E2=80=AFPM, Venkat Rao Bagalkote =
-<venkat88@linux.ibm.com> wrote:
->=20
-> On 14/03/25 7:25 pm, Athira Rajeev wrote:
->> H_HTM (Hardware Trace Macro) hypervisor call is an HCALL to export
->> data from Hardware Trace Macro (HTM) function. The debugfs interface
->> to export the HTM function data in a partition currently supports =
-only
->> dumping of HTM data in an lpar. Patchset add support for =
-configuration
->> and control of HTM function via debugfs interface.
->>=20
->> With the patchset, after loading htmdump module,
->> below files are present:
->>=20
->> ls /sys/kernel/debug/powerpc/htmdump/
->>   coreindexonchip  htmcaps  htmconfigure  htmflags  htminfo  htmsetup
->>   htmstart  htmstatus  htmtype  nodalchipindex  nodeindex  trace
->>=20
->> - nodeindex, nodalchipindex, coreindexonchip specifies which
->>   partition to configure the HTM for.
->> - htmtype: specifies the type of HTM. Supported target is
->>   hardwareTarget.
->> - trace: is to read the HTM data.
->> - htmconfigure: Configure/Deconfigure the HTM. Writing 1 to
->>   the file will configure the trace, writing 0 to the file
->>   will do deconfigure.
->> - htmstart: start/Stop the HTM. Writing 1 to the file will
->>   start the tracing, writing 0 to the file will stop the tracing.
->> - htmstatus: get the status of HTM. This is needed to understand
->>   the HTM state after each operation.
->> - htmsetup: set the HTM buffer size. Size of HTM buffer is in
->>   power of 2.
->> - htminfo: provides the system processor configuration details.
->>   This is needed to understand the appropriate values for nodeindex,
->>   nodalchipindex, coreindexonchip.
->> - htmcaps : provides the HTM capabilities like minimum/maximum buffer
->>   size, what kind of tracing the HTM supports etc.
->> - htmflags : allows to pass flags to hcall. Currently supports
->>   controlling the wrapping of HTM buffer.
->>=20
->> Example usage:
->> To collect HTM traces for a partition represented by nodeindex as
->> zero, nodalchipindex as 1 and coreindexonchip as 12.
->>=20
->>   # cd /sys/kernel/debug/powerpc/htmdump/
->>   # echo 2 > htmtype
->>   # echo 0 > nodeindex
->>   # echo 1 > nodalchipindex
->>   # echo 12 > coreindexonchip
->>   # echo 1 > htmflags     # to set noWrap for HTM buffers
->>   # echo 1 > htmconfigure # Configure the HTM
->>   # echo 1 > htmstart     # Start the HTM
->>   # echo 0 > htmstart     # Stop the HTM
->>   # echo 0 > htmconfigure # Deconfigure the HTM
->>   # cat htmstatus         # Dump the status of HTM entries as data
->>=20
->> Athira Rajeev (9):
->>   powerpc/pseries/htmdump: Add htm_hcall_wrapper to integrate other =
-htm
->>     operations
->>   powerpc/pseries/htmdump: Add htm configure support to htmdump =
-module
->>   powerpc/pseries/htmdump: Add htm start support to htmdump module
->>   powerpc/pseries/htmdump: Add htm status support to htmdump module
->>   powerpc/pseries/htmdump: Add htm info support to htmdump module
->>   powerpc/pseries/htmdump: Add htm setup support to htmdump module
->>   powerpc/pseries/htmdump: Add htm flags support to htmdump module
->>   powerpc/pseries/htmdump: Add htm capabilities support to htmdump
->>     module
->>   powerpc/pseries/htmdump: Add documentation for H_HTM debugfs =
-interface
->>=20
->>  Documentation/arch/powerpc/htm.rst        | 104 ++++++
->>  arch/powerpc/include/asm/plpar_wrappers.h |  20 +-
->>  arch/powerpc/platforms/pseries/htmdump.c  | 370 =
-+++++++++++++++++++++-
->>  3 files changed, 475 insertions(+), 19 deletions(-)
->>  create mode 100644 Documentation/arch/powerpc/htm.rst
->>=20
-> Hello Athira,
->=20
-> I tried to apply this patch set on powerpc-next repo, but pacth 007 =
-failed. Please refer the failure below.
->=20
->=20
-> Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
-> --------------------------
-> Apply? [y]es/[n]o/[e]dit/[v]iew patch/[a]ccept all: a
-> Applying: powerpc/pseries/htmdump: Add htm_hcall_wrapper to integrate =
-other htm operations
-> Applying: powerpc/pseries/htmdump: Add htm configure support to =
-htmdump module
-> Applying: powerpc/pseries/htmdump: Add htm start support to htmdump =
-module
-> Applying: powerpc/pseries/htmdump: Add htm status support to htmdump =
-module
-> Applying: powerpc/pseries/htmdump: Add htm info support to htmdump =
-module
-> Applying: powerpc/pseries/htmdump: Add htm setup support to htmdump =
-module
-> Applying: powerpc/pseries/htmdump: Add htm flags support to htmdump =
-module
-> error: patch failed: arch/powerpc/platforms/pseries/htmdump.c:180
-> error: arch/powerpc/platforms/pseries/htmdump.c: patch does not apply
-> Patch failed at 0007 powerpc/pseries/htmdump: Add htm flags support to =
-htmdump module
-> hint: Use 'git am --show-current-patch=3Ddiff' to see the failed patch
-> When you have resolved this problem, run "git am --continue".
-> If you prefer to skip this patch, run "git am --skip" instead.
-> To restore the original branch and stop patching, run "git am =
---abort=E2=80=9D.
-Hi Venkat
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-Thanks for checking the patch series. I will be posting a V2 with =
-changes soon to address above issue.
+Thanks!
 
-Thanks
-Athira
->=20
->=20
-> Regards,
->=20
-> Venkat.
+[35/57] irqdomain: sound: Switch to irq_domain_create_linear()
+        commit: 83eddf0116b09186f909bc643f2093f266f204ea
 
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
+
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
