@@ -1,68 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-7229-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7230-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D2D3A6A3E8
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Mar 2025 11:44:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D5CFA6A5B6
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Mar 2025 13:04:14 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJMf55FTZz2yf4;
-	Thu, 20 Mar 2025 21:44:45 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJPPg4tXWz2ySW;
+	Thu, 20 Mar 2025 23:04:07 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::349"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742467485;
-	cv=none; b=map0seAfeC+h1+7tEJqtiReCpRnikx7zbnaFLdp6qHyTAsqu9h0OMj+ib0+2in6mEi1Mv45b0L+vugpvSnO0K5Q9nqPBYllEPYe/Ql7JiIDG0Bb3bxJhouXhk2TueOtiln8xecmzemhPAQBrCYs1tLjCjr26Ob8vh5BpV9YiadcmX5aQ4kXGG6z2jBw8uhrOSfIQlejveLSy0sXjtMQaTehI5Is9d9rOl30MRa/AAidKvWvpX5j3T0tpWZ8GySNseVqH5iaZXOxIqaJ6yxICvBO7i8J6vuFsykeQFLAbu6XbM1sE3X2eN1GjmypTALfPeoh7CdMnqi04W5AXUM9P/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742467485; c=relaxed/relaxed;
-	bh=j11DFSETqOLtc+vMOz1k4rHgXFA118EedepjEdU8Zqw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ABO7kgQbKAHFHcl8vKgwIrSsTJkOrXjuM0+Rln1i+zpQQt8yt5dmlyF2K4dzZ7o/9r5sBExJBVmoZ1YGuNP4bjT5BjI+SiGPlACQy+mlyN4vIzvXnsgzy+J4TUPF6mT9zexYmC+egTvTdH6rcVCmI3PJwwSpunYu7rxlxB9GweW9zt543QjPw2d23CLtW5B4NuYxy4frsq/tmptCy+TjhpHtxuwGVruSxaAYialWAZuiVw/R2S3Y2J2QnW0ztA60BG0g5OqXKB3BDl/vjLzhBPfR6mYe/JxhiYnmsMbqE9XPPCfyUJrkBDhxOK80g4P67C1OQbUJljDP8pHCF49hQA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=CdSNHyPj; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3mphbzwgkddewnpxznaotbbtyr.pbzyvahkccp-qriyvfgf.bmynof.bet@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org) smtp.mailfrom=flex--jackmanb.bounces.google.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2613::627" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742472247;
+	cv=pass; b=eh+3qhXME3sabourMHw9AstnClV0x1P8ygHNG3tRNLXW2KR2HYEiHmUTuc3K0jXsZ3mbGkGE5lgEDV5TFA6SPFQRGF19ASnEFg2E7oLAyHPwks14w3xb0JQ4VWKvX0Mg4j9flLVhTOy1yP6DEC2/U8JrM3DP6TzZ4oI31fd2fVKup5QDXAFJA5K/B7AM56K/ySMMSvJd2kvl85tWFH+q5mLrToCpxLeNs0zis50n6PLrMFEJP+dkSpxjVTPfWEZSRqIZ4kRpfxzbr65lAH6DcwLl39pd0B0NNqDQSI+5xvqnkoKiug09DeJ/rk4HuSWSOI5MuO8L8YzErEwTtVVDeQ==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1742472247; c=relaxed/relaxed;
+	bh=ezq2u8RK4tbhgzT5JP3/NkxqIL6TCRYzyDSa6DG7j2U=;
+	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=G3fpTBi+tNwPfMCeeyC8rY67ILqr/OBRja8bRHQ0SiQtSbiBeo6oXsHRCLMxAW1XHStW++UEDatH1eMUlWtTjpUj4E5tpGNd69b4b2i+84CMcYrc6Jf+cCAPuZp50yCNoMwVoOr7JgKuA0v0MTOB+fdvilruMxcjNvfSL+RVgDf4GQYJhBdmPIJo3bC+yflPxuOuZK6NctRTjklzAWyfQr63ZVBQ+1q+6DxQsYNbTMdH8UAjbWsXkwL76lj0vWUG0wjxliHuiUmLTC9CerMJ0wg6vn0j890rLls6toSedP8PCm9ggGv9Yr2eTgm6MOOcShXd7TdUDr5yG6NctaHprA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=kTz7MgY+; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2613::627; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=CdSNHyPj;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=kTz7MgY+;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=flex--jackmanb.bounces.google.com (client-ip=2a00:1450:4864:20::349; helo=mail-wm1-x349.google.com; envelope-from=3mphbzwgkddewnpxznaotbbtyr.pbzyvahkccp-qriyvfgf.bmynof.bet@flex--jackmanb.bounces.google.com; receiver=lists.ozlabs.org)
-Received: from mail-wm1-x349.google.com (mail-wm1-x349.google.com [IPv6:2a00:1450:4864:20::349])
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::627; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20627.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::627])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJMf374zdz2ySW
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 21:44:43 +1100 (AEDT)
-Received: by mail-wm1-x349.google.com with SMTP id 5b1f17b1804b1-43d3b211d0eso9419185e9.1
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 03:44:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1742467480; x=1743072280; darn=lists.ozlabs.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=j11DFSETqOLtc+vMOz1k4rHgXFA118EedepjEdU8Zqw=;
-        b=CdSNHyPjmeUAFRXhLGVXWiD3fG8KYb8cHQQlx8F1jz2mb8Y9kMJlUSZA1PsqWMsAKF
-         GAGTvfNmlfYlrF/i/X20dJkX0D1NLxC77y9lVN7dPIyzT+smh/7mvE7uDwi9TLSKLAT7
-         sF4Uh0Hc6GGDAtklZILGO6UIKulKOT4yrU2s91amFCNGYgxek8Nrn9ICj2933esZYw4t
-         CJSykAsVz6T0ryK8mqGOeYMdSf+qiYZEKQXqAvrd8sEmtkmyYxCErdsRq5SnqQMo3fQ8
-         YhHdRf3DW/zTn1BD1cjUhDeVBUFbOsZKEL82vblgsRWTzq9VHJ5tJtb8FFlarb7EBAPa
-         kVEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742467480; x=1743072280;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=j11DFSETqOLtc+vMOz1k4rHgXFA118EedepjEdU8Zqw=;
-        b=isNRvjoz+Me6D8XG/6WwFIfgw0OpTbqe0dnhAsDn5Ml4ubB6pFcfJsLCPQFk9u6yYN
-         13V2S00C+DYMMNBt8SOFzFDEI3KITsL1sOMeU3VgMXmIzRuuEHVjyqkhnFHDh8aaQsUI
-         J6WllrbpZReZEzWxrKWzuvPPWqKn178/BKyeP/N3WiIdCRto87HlilEHX1GOOWNWoqXN
-         9GJZJyyhQzzGu+YZrSIYh+snc0F71eJnCuIh+m8xYk2hqbBiQZGWikg7hfBSFA6lr8lM
-         0bZVTRTBY0Gkh9Z8ZktBGsTLnJFphEllt9Nj+sha6kh1kE9APworkLFe1tlWySUZZHvf
-         bqyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuQLsTxpEDFt+2TTaK+Q2tBOu/BxQF43xVHCTJBy0gtJNbdBK9ioPRi2bf0+eYx1JgtgLey9qwwdb0k2k=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzFwyQcCkZtWyPNlSH4/RRfR0ucbyfudPkkcgsAQUlfcUCKVjQ2
-	pr3srcMP/i1BpdsOj8Sh5CUOZHGhC0dnTsXutoKMDsGVAdYDxTC1uRYMlf1eevbuY1975Dv1y41
-	Jelz1t9AZDQ==
-X-Google-Smtp-Source: AGHT+IHmhdHTuCMOMffmpvyIMCzJObzjHJotMPvb7/CKZriBN1WJ2Qe2CHVhTxdEuiWThlixsbw8H9oOiShQMA==
-X-Received: from wmgg15.prod.google.com ([2002:a05:600d:f:b0:43b:c450:ea70])
- (user=jackmanb job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:600c:1da2:b0:439:5f04:4f8d with SMTP id 5b1f17b1804b1-43d49187ba9mr20806165e9.12.1742467480075;
- Thu, 20 Mar 2025 03:44:40 -0700 (PDT)
-Date: Thu, 20 Mar 2025 10:44:38 +0000
-In-Reply-To: <Z9sRQ0cK0rupEiT-@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJPPd71fkz2ySP
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 23:04:05 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=PQsGyD6JeatklZfgoFJ2bD+Pqa2xqoMyX9zQ4clOHZdlH+4ckbcoLM6JvIlJZshN1qSOjH9V6aNnFhYwW5Qnb3FxARX+ZYQRVL558zJrKEXcu6drcI7UgWAQcVDDhOnoeYYjvjDGUkxTS6ahFUCfCBARDXeJf5dgiEcx4u35/WP7/p7T/uVvAP71K4MWBRIXBcE3ghPLsD6HnNComx0lXgZUObWLByz6PW/LPfdB3ZuI4Q+iy5d/dQ9ktseW+VOm2lpfj0ghlJsVemMazuH3TDVVWuxEino1gs+erdzXjeb0P+pmC5tbxh/7/WeWqKNFoz1FYjwB1mdcniwh/AZeuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ezq2u8RK4tbhgzT5JP3/NkxqIL6TCRYzyDSa6DG7j2U=;
+ b=u5eExaEbV995SV993VCD68EdbWPxXRrYqVPfY4FhsaMLh1JMacar4gFY+JKkF+UyFM2KwTQj5TWydM9rDrqZleh3dO/UUr1AbT9zqVdbukfTZRRmHdy4cHbfqNUUNZLh8jG6F/8578mjh0pNksYUwYgTM8uhhqK5VVMI/s/idTdoVZ41rXXeKzubQUj/mUWahyd9kyW+wn8eTcPSewKUm58CVTanQL/JecuD809gTp7OUfop4T0VvjoQ+qEptyoMapjgg9GTskt7UuCnEX0ZvN4rkYag7pZOMIBAzatlwV4gea789Nx50DG15W06a1rgS21q+o92r7ufkh+og5w1mA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ezq2u8RK4tbhgzT5JP3/NkxqIL6TCRYzyDSa6DG7j2U=;
+ b=kTz7MgY+bV+jiLHJXz6msUA2TzIuVhYx1ITFIoSDFUcDhnKgR829OZN69WqRs3vKv5h7AG14pdaRb6wvOLE6vna7rFGcma5m8iOZNm5CQz0osHHM9QNf0om61x2WLoo+sAnG7GdGzy/0muL3NewwIZcGzcyTI45fi//NN2GNkTcvFHSWcKPxNpwqTBncOxG76jKTEcMKQN1kVwuvi9MyGhfafoSfSbiSF4r51HPVtK4F/k7Jnn70ne6PCt0OG2zn7rALUzp4AGhkfBCibCfeWFX6vqAsaazZxf/rf1CxM68AMgz9fMeYuezqsJyY8QKEphzlJxZGK5TiZ1bojH9eAg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AS8PR04MB8868.eurprd04.prod.outlook.com (2603:10a6:20b:42f::6)
+ by AM0PR04MB6929.eurprd04.prod.outlook.com (2603:10a6:208:181::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.35; Thu, 20 Mar
+ 2025 12:03:43 +0000
+Received: from AS8PR04MB8868.eurprd04.prod.outlook.com
+ ([fe80::b317:9c26:147f:c06e]) by AS8PR04MB8868.eurprd04.prod.outlook.com
+ ([fe80::b317:9c26:147f:c06e%5]) with mapi id 15.20.8534.034; Thu, 20 Mar 2025
+ 12:03:43 +0000
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
+To: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Stuart Yoder <stuyoder@gmail.com>,
+	linux-kernel@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: [PATCH v2 0/3] MAINTAINERS: updates for the fsl-mc bus entry
+Date: Thu, 20 Mar 2025 14:03:16 +0200
+Message-Id: <20250320120319.3520315-1-ioana.ciornei@nxp.com>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: WA1P291CA0010.POLP291.PROD.OUTLOOK.COM
+ (2603:10a6:1d0:19::10) To AS8PR04MB8868.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42f::6)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,138 +79,102 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-References: <20250110-asi-rfc-v2-v2-0-8419288bc805@google.com>
- <20250110-asi-rfc-v2-v2-4-8419288bc805@google.com> <20250319172935.GMZ9r-_zzXhyhHBLfj@fat_crate.local>
- <Z9sRQ0cK0rupEiT-@google.com>
-X-Mailer: aerc 0.18.2
-Message-ID: <D8L164U8HBTB.G5MS86AIISLM@google.com>
-Subject: Re: [PATCH RFC v2 04/29] mm: asi: Add infrastructure for boot-time enablement
-From: Brendan Jackman <jackmanb@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>, Borislav Petkov <bp@alien8.de>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Pawan Gupta <pawan.kumar.gupta@linux.intel.com>, 
-	<x86@kernel.org>, <linux-kernel@vger.kernel.org>, 
-	<linux-alpha@vger.kernel.org>, <linux-snps-arc@lists.infradead.org>, 
-	<linux-arm-kernel@lists.infradead.org>, <linux-csky@vger.kernel.org>, 
-	<linux-hexagon@vger.kernel.org>, <loongarch@lists.linux.dev>, 
-	<linux-m68k@lists.linux-m68k.org>, <linux-mips@vger.kernel.org>, 
-	<linux-openrisc@vger.kernel.org>, <linux-parisc@vger.kernel.org>, 
-	<linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>, 
-	<linux-s390@vger.kernel.org>, <linux-sh@vger.kernel.org>, 
-	<sparclinux@vger.kernel.org>, <linux-um@lists.infradead.org>, 
-	<linux-arch@vger.kernel.org>, <linux-mm@kvack.org>, 
-	<linux-trace-kernel@vger.kernel.org>, <linux-perf-users@vger.kernel.org>, 
-	<kvm@vger.kernel.org>, <linux-efi@vger.kernel.org>, 
-	Junaid Shahid <junaids@google.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-8.6 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-	USER_IN_DEF_DKIM_WL autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8868:EE_|AM0PR04MB6929:EE_
+X-MS-Office365-Filtering-Correlation-Id: 60d9703e-22c2-40d5-8758-08dd67a742be
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?fgNyTgpe1qYM3f4KUyvLmHNxFh53Oi8bJ48Tw7fRj2k0N2q2jnYzHU6OEGYH?=
+ =?us-ascii?Q?FlxtwmSzHsjhcMdAdp17TGiXhcqCVdPO7VKjFISuG+pf5s6G4DdMYmTP/dYo?=
+ =?us-ascii?Q?TjuJJwghl0LRPZISQU/D0tSlB9b1qjarphEq8sGE24TiZayN+5KgssQMDaEu?=
+ =?us-ascii?Q?saa9QwBHcgJfQ0LIyVMVNF9frIFx2JcGesl5EsVXtel604qN+iIGtfy/ZPf+?=
+ =?us-ascii?Q?mfo330hNtaYcXs9Cev540iQDkXIKjGAu8/Mp9vjRDfXc0t3gGdH08+/iavaE?=
+ =?us-ascii?Q?hHyBofhfDyWnbU8i0oPXn5R5cg8JqVtNJ8Vaq1w5DErdIz7PjxczLJ7kVJhs?=
+ =?us-ascii?Q?YqYpXBkBiv/EfLo6pGvSDGQzDpxifjxjRWcVw345xrJJfe3slP/U69OoRagE?=
+ =?us-ascii?Q?UR6p+a2cHmLTUdy8a8QdF/Gj1uX4Txuk0A51alhtCz4+nTJC6XCCMk5b+pvt?=
+ =?us-ascii?Q?Ypxqjc8E1ZWrbmF+rU4/3BVB7LalNiQ5IcJGAYnDMbOHRWAE/i3vRqqhDRTc?=
+ =?us-ascii?Q?K9cxnn4PAxz/f3C962IqoPRA/1gjZOs41aWBsqwxUm838sHX0PhHcKc/WSdD?=
+ =?us-ascii?Q?EgAV3ap7dCaI6GhWOqVVUASZs+vp+liigZ/XpakT1AvSI8viMqYF0GtppXkZ?=
+ =?us-ascii?Q?Bgee6lHvxMn5zZe6mOTEqlxhBq+cszmHxMZQtSn8UVgcS1SHUbbFArHdeVHF?=
+ =?us-ascii?Q?8P6Qu5vpesSRqw1Jq74n/A6D7BhnwBZnj75ZmNW4CxNI0wgMOpFu7qZG2mfd?=
+ =?us-ascii?Q?DUTOYo1QV6M0EsuV+NVkQetDNrXcV425hD55iCzUFvwmD2hROLwMZUuKHtsc?=
+ =?us-ascii?Q?gk2Z7WNP2HcyshE7U0ME1jk29it/BFgwSKqkz2iuMddBGaWdjJIb0/bewhLN?=
+ =?us-ascii?Q?GAJgEpMyw4McFhvs0QhEOy0TYbGffyCIwrI6Mal3TvW53YQrENhi+Auckldv?=
+ =?us-ascii?Q?q39YzQsL9PLyq4oLfd7CBpuEbyqH8nbUN3tmgYZo04R+pC2SmS8yaQjYBwrY?=
+ =?us-ascii?Q?vxrBqbqX0R3At8Lgk/uNGSLZrhfAOh16YRUpXQGhjY8bHvr+cim3sHR+Mjck?=
+ =?us-ascii?Q?zleUbavwi4BqoVukNOOgM/Cn90CMTdyoI6hFbtK3JD/XSN7IwGfn8TWcM09t?=
+ =?us-ascii?Q?QzZ1Xwj49mNO2MyFAtURr/uOApvr8ffk9s+/wqCk67TAmyQHq6fyK7s4VIr7?=
+ =?us-ascii?Q?FB26aobZS3reN8sdN4mCicXNICdjzOqU98EJuCtiBEv08swoJm3fKn+oJ6nQ?=
+ =?us-ascii?Q?uUrVnaNIetRX5S2YvAz5i/RvMtWW1oNztt/b+hPiBYeoQXjcIRqCbvoPDQ3e?=
+ =?us-ascii?Q?7KyVpvjf2dl7xpo5l1TCmjVm26VQWr8HD9EjpigaVTCC64RKW48CT0Nda5Ue?=
+ =?us-ascii?Q?O5UjPcI1lEIZ0IfcIlboExOKocrz?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8868.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?H9xAvUSlObjhAbIcpsxcIn5tU/XiuiQtj5XhYYE12hNJDgJ6sx0Py7oHK9U5?=
+ =?us-ascii?Q?4jmDSbma5Nz7IkK0xQGdR259aiSMRh9m40aEXswFZOaU36GbY5jDgJ+whU6e?=
+ =?us-ascii?Q?V7HTwzVfKyCBUqhKTHAwLiDtV4I9dXWpxRmSncTRUdB/n9SDvmJn/DBPtbYx?=
+ =?us-ascii?Q?tZS4kEX2VQ+uWuMh5dkHzNojsISNAtUA+nLbUe6Nhi1ZGUC/wge5APpazh0a?=
+ =?us-ascii?Q?jjUcRrOGAzVTD+sPvAMS/bc43ApqNh9CJFFzNOId5IQfxCzi2dJoIfntjR77?=
+ =?us-ascii?Q?SynlIENVD5q38YXD0PAv2lXMWf7WBpiI7LmnlegfFMOWWt87CF4KVSCPvgUJ?=
+ =?us-ascii?Q?dsOPyp+CPloF970InGk/Ch1geV7t+0q9MMvIdiR4XF5zbLms1qBD69y3ajm8?=
+ =?us-ascii?Q?SAyk3tbsy/ZLb0jqHxC1Bdn/LD7gmq+6dUA+v1lqaj6jWTNLUIve1g4CFOq5?=
+ =?us-ascii?Q?iD4gW9eZDoG1gycHxqxNnyi1my5ATavj+Tq5kQOm6JmfkJdhkuopAxSLfrZG?=
+ =?us-ascii?Q?j8UwxgC9dtPawGOhGpak2BsJwycQUuAebiUoaYMQim55vKzjbjEF6c/h9U9r?=
+ =?us-ascii?Q?/rZHmqy2z0U1mvu6VmNv++f+HaTrR2oNvDHLNEpcjLfLrXRbrnhE9AFY9RY/?=
+ =?us-ascii?Q?YPoZr4Qjknc7Mx/i17K/LvMuLQ8QEjvsDwuiGsJFRmlZ98aJPzy+n80hEPvO?=
+ =?us-ascii?Q?YKyhYL3r1zHKz7kvkNaCGyj//LghlZw0VWccCB3lvEu00nGOoKx/hhNq520R?=
+ =?us-ascii?Q?dMgzfobNQ5/V0Slh1jMTFJ7WjqIcuwj4XYAI1unhZ1bp1A3gNmB49PCWoEep?=
+ =?us-ascii?Q?lBICqCBvP5C58rFNo/N307EtuVh1oCzM1jhQ5e47dpd0EiX3F49zVME+PiK8?=
+ =?us-ascii?Q?L+j3gOc54skaXjDLsJ8ah5CO+SKl2NT3VJwEja5DSs3xx8zbP3LOKyyhKQDh?=
+ =?us-ascii?Q?q5X9P8tyXvraH1+54p1RXQUwXpTtNuYM5TCOshXG9bjUBx57aD8qEhu16PH3?=
+ =?us-ascii?Q?ut4kDxIj3x4j46lDwutA+i+6xnMNEO8/ACncVyRWnJdwL7dTDoENa8PsmKP1?=
+ =?us-ascii?Q?I3zgbjVuG7rlVv9MgKGQuUhenhuLZsjlabkjmQHqwdv6I1r91YgXyQqkxo6L?=
+ =?us-ascii?Q?yEPk8PF8MzyoJpDKVgL/xHZRulQoW7PXKNiT2XXdEpcEPDyYn9RXhMUra5ZZ?=
+ =?us-ascii?Q?6Cgwei+9Kv89wHqjUXcbS6q5gEq4SyAKaZGeyJIkgNLraGY8wgMN6/Ay/WgI?=
+ =?us-ascii?Q?VcJtU6amwR3xKlfkMO5iI9g9MJa5qfsjV+N6OYLGw3E5sfPnulnsMrJD/jeI?=
+ =?us-ascii?Q?5S0pLa2IclRvieCkJv4vpaZXl/G5Cc/ZPpSEtLt/xszdrKUDatHiVIQur9sO?=
+ =?us-ascii?Q?W/d6jl1t5/JMwRxOSY+ZjE4/qAG9kIbCB4J/WDne8HG5pI1dluskj0KCr7Jp?=
+ =?us-ascii?Q?WDdQixZmilJCA6urRqgaVnC0VKgmn86OoGt7fwsAEqGI0CzTjwfZnyBHVEDu?=
+ =?us-ascii?Q?GByN7j3PTeYMCOs1SeQpTIL19EiN9YUPtMAg+BQsgXOWCIgefPilv18AHZeN?=
+ =?us-ascii?Q?WOGtbhd1LEvE+DIHaLkdFUwuXT4MeR6qAJWmFwpe?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 60d9703e-22c2-40d5-8758-08dd67a742be
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8868.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2025 12:03:43.4553
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4tFLvBI9O0nuOsQHvS5dzZSNx/iyu6NRmjjFNAXkIcTPgLB6EHqtpNE8n96PmRvapCdrUC7UHXp0YU0esMBC1A==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6929
+X-Spam-Status: No, score=0.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed Mar 19, 2025 at 6:47 PM UTC, Yosry Ahmed wrote:
-> On Wed, Mar 19, 2025 at 06:29:35PM +0100, Borislav Petkov wrote:
-> > On Fri, Jan 10, 2025 at 06:40:30PM +0000, Brendan Jackman wrote:
-> > > Add a boot time parameter to control the newly added X86_FEATURE_ASI.
-> > > "asi=on" or "asi=off" can be used in the kernel command line to enable
-> > > or disable ASI at boot time. If not specified, ASI enablement depends
-> > > on CONFIG_ADDRESS_SPACE_ISOLATION_DEFAULT_ON, which is off by default.
-> > 
-> > I don't know yet why we need this default-on thing...
->
-> It's a convenience to avoid needing to set asi=on if you want ASI to be
-> on by default. It's similar to HUGETLB_PAGE_OPTIMIZE_VMEMMAP_DEFAULT_ON
-> or ZSWAP_DEFAULT_ON.
->
-> [..]
-> > > @@ -175,7 +184,11 @@ static __always_inline bool asi_is_restricted(void)
-> > >  	return (bool)asi_get_current();
-> > >  }
-> > >  
-> > > -/* If we exit/have exited, can we stay that way until the next asi_enter? */
-> > > +/*
-> > > + * If we exit/have exited, can we stay that way until the next asi_enter?
-> > 
-> > What is that supposed to mean here?
->
-> asi_is_relaxed() checks if the thread is outside an ASI critical
-> section.
->
-> I say "the thread" because it will also return true if we are executing
-> an interrupt that arrived during the critical section, even though the
-> interrupt handler is not technically part of the critical section.
->
-> Now the reason it says "if we exit we stay that way" is probably
-> referring to the fact that an asi_exit() when interrupting a critical
-> section will be undone in the interrupt epilogue by re-entering ASI.
->
-> I agree the wording here is confusing. We should probably describe this
-> more explicitly and probably rename the function after the API
-> discussions you had in the previous patch.
+This patch set updates the fsl-mc bus driver MAINTAINERS entry. Since
+there are small separate changes, I put each of them into a separate
+patch.
 
-Yeah, this is confusing. It's trying to very concisely define the
-concept of "relaxed" but now I see it through Boris' eyes I realise
-it's really unhelpful to try and do that. And yeah we should probably
-just rework the terminology/API.
+Changes in v2:
+- 1/3: also removed Stuart from the MAINTAINERS file
+https://lore.kernel.org/linuxppc-dev/CAEac7tYQE76z4pYminhvMJR6GZ66RPRv4PxM-U9VpGJjvn6APg@mail.gmail.com/
 
-To re-iterate what Yosry said, aside from my too-clever comment style
-the more fundamental thing that's confusing here is that, using the
-terminology currently in the code there are two concepts at play:
+Ioana Ciornei (3):
+  MAINTAINERS: add myself as maintainer for the fsl-mc bus
+  MAINTAINERS: fix nonexistent dtbinding file name
+  MAINTAINERS: add the linuppc-dev list to the fsl-mc bus entry
 
-- The critical section: this is the path from asi_enter() to
-  asi_relax(). The critical section can be interrupted, and code
-  running in those interupts is not said to be "in the critical
-  section".
+ MAINTAINERS | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-- Being "tense" vs "relaxed". Being "tense" means the _task_ is in a
-  critical section, but the current code might not be.
+-- 
+2.34.1
 
-This distinction is theoretically relevant because e.g. it's a bug to
-access sensitive data in a critical section, but it's OK to access it
-while in the tense state (we will switch to the restricted address
-space, but this is OK because we will have a chance to asi_enter()
-again before we get back to the untrusted code). 
-
-BTW, just to be clear:
-
-1. Both of these are only relevant to code that's pretty deeply aware
-   of ASI. (TLB flushing code, entry code, stuff like that).
-
-2. To be honest whenever you write:
-
-     if (asi_in_critical_section())
-
-   You probably mean:
-
-     if (WARN_ON(asi_in_critical_section()))
-
-   For example if we try to flush the TLB in the critical section,
-   there's a thing we can do to handle it. But that really shouldn't
-   be necessary.  We want the critical section code to be very small
-   and straight-line code.
-
-   And indeed in the present code we don't use
-   asi_in_critical_section() for anything bur WARNing.
-
-> asi_is_relaxed() checks if the thread is outside an ASI critical
-> section.
-
-Now I see it written this way, this is probably the best way to
-conceptualise it. Instead of having two concepts "tense/relaxed" vs
-"ASI critical section" we could just say "the task is in a critical
-section" vs "the CPU is in a critical section". So we could have
-something like:
-
-bool asi_task_critical(void);
-bool asi_cpu_critical(void);
-
-(They could also accept an argument for the task/CPU, but I can't see
-any reason why you'd peek at another context like that).
-
---
-
-For everything else, Ack to Boris or +1 to Yosry respectively.
 
