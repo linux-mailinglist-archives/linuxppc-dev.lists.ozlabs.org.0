@@ -1,76 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-7233-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7234-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4588A6A5BA
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Mar 2025 13:04:32 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A304AA6A6E7
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 20 Mar 2025 14:14:07 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJPPl0lmqz2yk3;
-	Thu, 20 Mar 2025 23:04:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJQyN6rGNz303d;
+	Fri, 21 Mar 2025 00:14:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2613::627" arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742472251;
-	cv=pass; b=TwB3FK+t23IvpMIlN+znPDrd09N/xnhL6he+alaDqaiJLvcSNIX0vRtM+irc4QjLsncNrIGU1Gg3wIhuOiSinkH9C/DXoSeKow130Hy/8iA5SgvkymWwedMYnlwlWJ0xIKj7Cmd/LBlEgGrgWX/XOEbtrkDvJUnoyhmAGw5pJov873TiMUKrSQss8uYXld+zx5ITOB1RW+2jDsffdYxmCaN+58qWgFCGlfSNZft1ST7ch0kDIK9PvS/J72PGhZJ9VNkGsxMcjDLK50QV5/1nItcIYha6mrwCl80d6BvszArtJUZo2S8h5jZ80DvRXM8M8RrLokFX1bzGgWzPG+4bOA==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742472251; c=relaxed/relaxed;
-	bh=KdyNZjalv+6KnmoBQUYjXG1iAhjSEQVw19i2zgQ+1YA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ON9QRKLhbuXgFUF7ra6583oj7dZ2IhmsjmWf47dgvi4SkCjq5jpE2lyhIcicb2IriHVi3RgpZm9MwlsN5FVpllNgP2IfztdxSmoCymaqgQr1wrNmLQFcLb8PeKQ3Lv4PzxwgGPlVz3hneNF6UtPtcaeJi0gu45S+yWh9SvSpgJeRNf5DiO1T3CM+eE4sTQey8niaxggJUokG0XVOq3QFMY0x6qujDkZv2gDt3HSvMAY4FkPXiGHu3acyTIbwrZXWF36wpOKVc21ut8erYtOHt7zOUtcPWDDynudTq80DdAOIXxvHjoOQNU69/xCcufHK2VuyVmaVAjtaTr5/1wOx6w==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=CKqqK4Up; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2613::627; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742476444;
+	cv=none; b=cKBSMDnEyKoqKlE/oJ31EqqGScckt+5peEqF0qGDLWZEWkeLyOwVwR6argXKrWFrGK2umtlE4PCG7JdrRT5+ieaMbvvcSpDYrt0y85XEdiaE7lGwxyMhGbReXUQ0Wwr+iLsa1RVu99+ZrlsWVvgSxQiuUhPCupsp1qrZ7qc/hfuXdGigBEcptPCcgol0YWKjJmUKN9WE8unYu0o4V2dztQG0vPLkc4Vcr6Lwd6fzv03ipxnevadpUfemehnRWtujLOHtTu+mVWnXxRJyirLxfy0r3eICI32FMhmhTuVCD2b6lC3P1sCTb2nIclr1w3RVqu9jVdPF2WnTKqoApmcl4w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1742476444; c=relaxed/relaxed;
+	bh=Po2YgksHr3V186DMdy3RPFY5+FN3Z16HLYpvoE/VpkU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oiQqtY7kFSGevjJYlacmOV8hqHNLQKqcem44l2Ka8l4zTz4A4hyqGFhG9+NHcmqbc+jsVez4e6DvcwMLCFoGJI2dU9b+gXu0XwKqw8P60VgRFD5uICCnM92mghdNMZfjrAmwV8OwQSuacyNdmpz9e3e4tCTf2/mJAOlzrsFC9wS63M4D00peQDkL3DuCeWZOdFwOLUnZ67A0J1hOoCrfQors9bLA1sJQ5M202A6tcXqlZdxlRQdpL1G/E/vqxdWUAlShSLuXf5BNmbS2CUEiU1t7BxgxHaVrvHEW49oBdGsDZO3tVAT4CRmBrLd3uywWu4VGVmBYmD/ub0NpK5Ag3A==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=blNl9jwF; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=CKqqK4Up;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=blNl9jwF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2613::627; helo=eur05-vi1-obe.outbound.protection.outlook.com; envelope-from=ioana.ciornei@nxp.com; receiver=lists.ozlabs.org)
-Received: from EUR05-VI1-obe.outbound.protection.outlook.com (mail-vi1eur05on20627.outbound.protection.outlook.com [IPv6:2a01:111:f403:2613::627])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJPPk4GWkz305v
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 23:04:10 +1100 (AEDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vlKi1pYoVMyMZ1nOIVxDGeyK8kqoIflJ1L7VAE75w/ICEo5EW4F4oVOhAwt1L9bl3UzgNO9lxi9GQHYeTgFWfLJ4qelINzcmOUScOf643h9BbN9jyJUM2ZcCoytnHb50ZdcfhkgvXx6vTfnQv3xl2gpK9l9gPs/S2dGMmpMc/ZMv4FAhXzGWWK5aU2NpPxL34Vb4yzcEkM2nesyF6+8wKBG3nMj3zprfeDHnbbvCTLYvicQfonaTekzkdko9hGH5KrnwOMTwSV7SxO090oG1kflNcuI865IvyfO8LAXzTdbObf8v/NySY/zXmxMFUvXdFvZPmQ0Sh6QM+1CkVfImbw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KdyNZjalv+6KnmoBQUYjXG1iAhjSEQVw19i2zgQ+1YA=;
- b=na9NSjgvtus1S86PeyvlhVWK6FnW8mqT5BJhwoWrB4dscaM/o1E5POUZ6vYr2yLlTEAU/H6KXEWY6ptLUXEUYmKF8hO+apB87CSsanEEN2wi01jnCQb/QyBE/l1pfWyGI5YAV46Fu/YcUF3dl7oIB57W8tsfURjRMPXmz8XHZ2fPvVlDejwhW8OqLUCzu4N6zAySE+p4WQnphRwYQPI9fQdiq0fmLEoZm3aS9XG9mX0DP4p7rI+zaXPv/lOAgJMcLI4qvqAsGRIoQxgE4X4eNCgo38uNbZAZnWwW+Xkwb0E9FNeMjjfo/bGsgT8CVNUd1Wmwz3tQTcF5ln+atLzHgw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KdyNZjalv+6KnmoBQUYjXG1iAhjSEQVw19i2zgQ+1YA=;
- b=CKqqK4UpZ/oepIHkBXb+L+msrbmFCrtnu0qGm2yAq+yLP5/tQY8mCSaj9rAn004tR6PRtn17K0H8nQRGXDPKOvNkabcmN1zuSZ/gMpZgwusWXr5jTMOsJMmDV3hZ2UYEswibLLAdH5kC2/ZQzAOdyg7hGnqBzEepw2bo3PBQ4TAKiVSPBmqJBxgvKFj+/KKkLSqkPANYI2t9eLIbcjhW7S6yW06YCj7UFNLoQITi15+2fsWEjWMPs2mzI9pIYURFYWl8/5HMESW52oSnNn8ps0lEmjcqizGblKvdw1fIeQXinIOoxKL5UdBzdTQlXzzDEhEj0p/IPNbsDFkjcW+vyg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from AS8PR04MB8868.eurprd04.prod.outlook.com (2603:10a6:20b:42f::6)
- by AM0PR04MB6929.eurprd04.prod.outlook.com (2603:10a6:208:181::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.35; Thu, 20 Mar
- 2025 12:03:49 +0000
-Received: from AS8PR04MB8868.eurprd04.prod.outlook.com
- ([fe80::b317:9c26:147f:c06e]) by AS8PR04MB8868.eurprd04.prod.outlook.com
- ([fe80::b317:9c26:147f:c06e%5]) with mapi id 15.20.8534.034; Thu, 20 Mar 2025
- 12:03:49 +0000
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Stuart Yoder <stuyoder@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: [PATCH v2 3/3] MAINTAINERS: add the linuppc-dev list to the fsl-mc bus entry
-Date: Thu, 20 Mar 2025 14:03:19 +0200
-Message-Id: <20250320120319.3520315-4-ioana.ciornei@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20250320120319.3520315-1-ioana.ciornei@nxp.com>
-References: <20250320120319.3520315-1-ioana.ciornei@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: WA1P291CA0024.POLP291.PROD.OUTLOOK.COM
- (2603:10a6:1d0:19::18) To AS8PR04MB8868.eurprd04.prod.outlook.com
- (2603:10a6:20b:42f::6)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJQyM6W9Dz2yS4
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 00:14:03 +1100 (AEDT)
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52K3kFcB030483
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 13:14:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Po2Ygk
+	sHr3V186DMdy3RPFY5+FN3Z16HLYpvoE/VpkU=; b=blNl9jwFVVsDq5CNFraaQu
+	1nMHeEj1BIP0xZx7/fyBXIcRaUzd/M9a0FHma+36NaT4leBeN+LEXaF6VZxZzVPe
+	wlLIakTmYUVsUNbWu/I3TxHpYxKUAkdhUEXf7q6AdJvEbBkZQKMD/1doZMs53+ZK
+	KSJYtUOc2cRT4/ZSF3oxAxFmLZKuiwAXYTecNEeKxvjWUjjhd8ZgRnQR9+NBo9Bu
+	pU+t+5/xY2hYteiPsL/OeBn1Fuxab9GGC93Oyd2itOg/ED5Agk4L8OziwevLDeiT
+	Dm1wi+7g9bOVzIS68CeGaoa+CeClk3VkInR89cqhXbKdd2nFB7WIEpLBaHtaP37g
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gbd9jmu5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 13:14:00 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52KBGP21012447
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 13:13:59 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dmvp84q5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 20 Mar 2025 13:13:59 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52KDDt3015270494
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 20 Mar 2025 13:13:55 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BE4D75805D;
+	Thu, 20 Mar 2025 13:13:55 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3780F5805C;
+	Thu, 20 Mar 2025 13:13:52 +0000 (GMT)
+Received: from [9.204.204.161] (unknown [9.204.204.161])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 20 Mar 2025 13:13:51 +0000 (GMT)
+Message-ID: <5411ccd9-6077-4f95-8b8b-92ab5d990d9d@linux.ibm.com>
+Date: Thu, 20 Mar 2025 18:43:50 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -83,112 +78,137 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AS8PR04MB8868:EE_|AM0PR04MB6929:EE_
-X-MS-Office365-Filtering-Correlation-Id: 52a5b7c0-0f71-4b85-2578-08dd67a7467f
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7053199007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?nJ3g7sd92HG732OJmKd2ey9qwtB/q67riUofJ6HKyEpeEugvSjUZON2gq8+0?=
- =?us-ascii?Q?T6cFQe2IqxmAmBo5mDneElydP5Af4F/p+jt9Rh8tRpCFmyr4drw2hAMwx9tl?=
- =?us-ascii?Q?1cDIQnvlfBYgxLON2k+O0ebPlTZyvZ4K2EwH4WpCOqgVfnmbNfEcTTyHHShw?=
- =?us-ascii?Q?VhQqZk5RGeBJsBBm+ggSjzdrl6f/2+zac7fBBtiRZZBKt9936RcJj78wKwzQ?=
- =?us-ascii?Q?EGBLEvCrz79z8gEdAHBGsK1BESmLtY08sl0FMthazgO1tQJ7h5WHczJdmnen?=
- =?us-ascii?Q?zZ3Ftk26goFyNBMlkAvNVU/rXZfbSCNykVfYKXQnEu2EFdNjB1+2iqUokqnd?=
- =?us-ascii?Q?qfn+yLHeoBpBEbUHILcXIGfE2oI6yCqobXHF98X88PyVx7XknZzqVw2Jlrp2?=
- =?us-ascii?Q?74ljuwHsaytgwkd9ouGyhjdYujFCCjN2Z8HDzs8z/oGvqfLvD/usfUAudd22?=
- =?us-ascii?Q?mesrOmzWktQQ3iwYWvJuCAe6uQNcdJQViimlBkzNtw0OEKSnuFBJsV//Dr6f?=
- =?us-ascii?Q?MX956ZkfQ+w4Yzq3nmeXOcEc4ciIGajzCRAbhu6/wgCq2pIVcBXKKNvZ4D0f?=
- =?us-ascii?Q?sB4R8QnSw1czfcoj9UYi9Q9msiBtzAIMySxVLg1zwPEN8IskUCkxmbXHtpUK?=
- =?us-ascii?Q?ozgGWau1LgyNzoWdkw+K2iBABoS2TYHGM1y3I3fwsSf81Vylb1zXujmmnA5J?=
- =?us-ascii?Q?N0Kc334cm0iYfXI+mia4Q1lVqhXoTmPJtM4SugnigCKs3jVSfAnMmc7RSKCI?=
- =?us-ascii?Q?vRmDlOIn0dpCMCuga+v4CvNsS2GQJHvo5T9sjpqk8DX+Rfech14oNMvWAyB2?=
- =?us-ascii?Q?5Jqo5QCEbSzJUHH2LSYNiFmvBKJnoU24x49QAILKA2XzSa/X9+CorQ+x5dWN?=
- =?us-ascii?Q?pbVaxnlf/zb5N8oPGMjxcMGd6KpZcWzFYBhU6EiXpnrqj3TkqJqz6KISX+vf?=
- =?us-ascii?Q?ClZsfV6J3u1VieiwhrWFDhk1LGNUgBwAWmzCCVFsCs+BBCPzzswIdELaasr2?=
- =?us-ascii?Q?tuns66kUgwaSyPtoRp27nbI2MURBqQtyH8+icjfFxhInyYUNfz6lBI7/UPK5?=
- =?us-ascii?Q?H9fXoLZNc7TtOEqdxjbBud6cxJJHhD20Ps0TZX38heMs9WVx5iqSiGrwFBqD?=
- =?us-ascii?Q?iaj3H/ulhx59iBaI53umrSbMFjsyqVpAnMzbaC9PkBTxiJ5lVYL9KtTsZ7lL?=
- =?us-ascii?Q?jk55HG/O865A4PHhmtnORGOUzg7n2w035TFr/RxWpom9hMl+B20w+OK5Odbl?=
- =?us-ascii?Q?po8AWIaMau9RhTNWgpY5rQISrF0+NdaX8R/gLVnEaz1rg3Gz87m2bC6yVuKq?=
- =?us-ascii?Q?xi8eYhjESagYYINd6aNRhhLWQSTehN/gpKvtUMzaVezTfLsVaU0rUjR4FtjF?=
- =?us-ascii?Q?niNPSeKR43nc0rDAy5nElwEYCQWx?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8868.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?2MMt+Ctl+7/r/UlRcvY5y47ZHfoYsuY3rG0PhE2l7gqtt5F/I4YJMs7EjYn2?=
- =?us-ascii?Q?onUkcLhJc/H7lHluz+eR2syiWrYKz4fRW+eUkNk4uOSS8mha4xv9uDzc7kaz?=
- =?us-ascii?Q?mRYwnQUCa6yed2Wk+JbjaOX/ThVwg+ge77dnQezhn/uz0QR3zE/Ywk4Ljf7m?=
- =?us-ascii?Q?jBp9zGAiORDR27ppOd1iWBnrWpxh1il2e9vT5Y+3XUBffn4uycJEfKa3vqaw?=
- =?us-ascii?Q?5OWGjuWYPuok19NFHrObiXpEX2KTDwQkW69e5m+NQZo8KBEj3S30ze01sgB3?=
- =?us-ascii?Q?cUHwA3As3q4411iFwybQ7+vcFHUciYzL19rQLn/WmclxWYG7QGTWZTCrbsdC?=
- =?us-ascii?Q?4U+Y754iGRGDcxNqYWg8Xvj1yWCgPMWxXzom4rcbl3NJaLeKQvSwObHZLzyB?=
- =?us-ascii?Q?5VSE/pSBUWEfvsuYjd0aEwh3zD8zqAwG8Vs2KvH78jNdM/gqkZ8GD6SQHr2e?=
- =?us-ascii?Q?lEYs8cFHgvqqfX1F/7QySdO9NjL6Cd4PwsQurWJc4tvL6R6JXrZCMF12ieHS?=
- =?us-ascii?Q?JK3QlbHE9lm9bFP/21X988HIM2VQzcKuJG6bEpgqmDM8g+qXq02l4KtP39Lc?=
- =?us-ascii?Q?7xGvpoIbgCGbUuqhKJjYealsAFi5vWH3Yv5OJu0SApdqUDgC+wbHDwHdFEgb?=
- =?us-ascii?Q?u+4Cn4Ng9Ux3o09i4Gf74DS+qrfHe8V6mA8GJIGC2V+3mvK0DWwpTyJ4WJe7?=
- =?us-ascii?Q?K94/DNXhcGtDrp7uTmhIFZrPcW4A4/zMY+hl/xYTriNgT9Saa5jcrFMxU2PJ?=
- =?us-ascii?Q?A59LVGv+PvffB1Cmg1eH4iUan1CnCgQS1d8kXUxWnieYVqTvNIO6VyMkDwyx?=
- =?us-ascii?Q?VvbdvtgpusxNCNUTr14gtrl0OTITub0B21kC6c3xKgHRIQd/TqkhBFN/3JJ0?=
- =?us-ascii?Q?A+bz3Ea0REBF56qNKGZp8FiFP2dVhprdLQ0nRikdLHam5dhCi56lW8KiF9RS?=
- =?us-ascii?Q?iz5VX7RUphq2afIXeQWUNiSpt/YYCXRvH3ZHJyfAH2/DKJTluvrl9N4pzjeH?=
- =?us-ascii?Q?OEx8WIVRGCJxBOJrh779jqEagJJkpigiuS5PW0os/8Oa6Czs0t5RJ8VlnwX6?=
- =?us-ascii?Q?Q9CibB9MoE5k2ms3jA+UxKUdUQbXYVlmMN8YIqOizH25E1GFN5xpnNdZuxwZ?=
- =?us-ascii?Q?wJaQbaaQYFwnx/vMo8dROiAZZCjxgl2CmG4qucpU1uhZkFZd8vg8s9an2egI?=
- =?us-ascii?Q?KFCO3vVbFtNSyQMWGxebyDhB0WXMM1MBtwk9wLNRX66X3d/91HuHI7HKNr/F?=
- =?us-ascii?Q?SsirYyYzkGkH5Wcx45lRBYV1nh8or3m3o/IFoWNThbVTSGO3KLsLHXBSSawj?=
- =?us-ascii?Q?ocRO5iH85Gt6J67iMBll20Qihu4LqwVkC6j5ftql2QHA2f5V5h07yv41y4rw?=
- =?us-ascii?Q?ax0ua38hrMATISvNW2m77SoKYJikhSwekUtgL8pBW51A7ERISieC80QKlnBy?=
- =?us-ascii?Q?LndhnGkBEYcPih8NOCGVAKHTfPUwjNK/kRprdF2GVT1VuhXhifXwQN6x0imX?=
- =?us-ascii?Q?lj4De6sTY8W+CTkDKq0oZuLH/L/eNFss6Eem3i9wGIMRHTFVuT3pAaKouA8Q?=
- =?us-ascii?Q?aXs+iSNJvor/v0otwlWkKnxhZVzTdne8nZmWBK1U?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 52a5b7c0-0f71-4b85-2578-08dd67a7467f
-X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8868.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Mar 2025 12:03:49.7395
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: joSFwgpZh2DeK3aNpXSlUhXuPDUqKmwHLjkdsaE50GNeI81zWDkbL4AykKZXMcQNTiSrbA5y/gowGgjpk84T3w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM0PR04MB6929
-X-Spam-Status: No, score=0.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 0/9] Add support for configure and control of Hardware
+ Trace Macro(HTM)
+To: Athira Rajeev <atrajeev@linux.ibm.com>, maddy@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org
+Cc: disgoel@linux.vnet.ibm.com, hbathini@linux.vnet.ibm.com,
+        Aditya.Bodkhe1@ibm.com, adubey@linux.ibm.com, skb99@linux.ibm.com,
+        sshegde@linux.ibm.com, riteshh@linux.ibm.com, Tejas.Manhas1@ibm.com
+References: <20250314135541.1831-1-atrajeev@linux.ibm.com>
+Content-Language: en-GB
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20250314135541.1831-1-atrajeev@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qN_RJHCiqPcH9xcxMOFj2nzX-rqR95YY
+X-Proofpoint-GUID: qN_RJHCiqPcH9xcxMOFj2nzX-rqR95YY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-20_03,2025-03-19_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0
+ priorityscore=1501 malwarescore=0 spamscore=0 impostorscore=0
+ mlxlogscore=999 lowpriorityscore=0 adultscore=0 suspectscore=0
+ clxscore=1015 mlxscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2503200080
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-As discussed in the thread linked below, the fsl-mc bus lacked a clear
-maintenance path. Since Christophe accepted to take the fsl-mc bus
-patches through his soc fsl subtree, add the linuxppc-dev mailing list
-in the MAINTAINERS entry.
+On 14/03/25 7:25 pm, Athira Rajeev wrote:
+> H_HTM (Hardware Trace Macro) hypervisor call is an HCALL to export
+> data from Hardware Trace Macro (HTM) function. The debugfs interface
+> to export the HTM function data in a partition currently supports only
+> dumping of HTM data in an lpar. Patchset add support for configuration
+> and control of HTM function via debugfs interface.
+>
+> With the patchset, after loading htmdump module,
+> below files are present:
+>
+> ls /sys/kernel/debug/powerpc/htmdump/
+>    coreindexonchip  htmcaps  htmconfigure  htmflags  htminfo  htmsetup
+>    htmstart  htmstatus  htmtype  nodalchipindex  nodeindex  trace
+>
+> - nodeindex, nodalchipindex, coreindexonchip specifies which
+>    partition to configure the HTM for.
+> - htmtype: specifies the type of HTM. Supported target is
+>    hardwareTarget.
+> - trace: is to read the HTM data.
+> - htmconfigure: Configure/Deconfigure the HTM. Writing 1 to
+>    the file will configure the trace, writing 0 to the file
+>    will do deconfigure.
+> - htmstart: start/Stop the HTM. Writing 1 to the file will
+>    start the tracing, writing 0 to the file will stop the tracing.
+> - htmstatus: get the status of HTM. This is needed to understand
+>    the HTM state after each operation.
+> - htmsetup: set the HTM buffer size. Size of HTM buffer is in
+>    power of 2.
+> - htminfo: provides the system processor configuration details.
+>    This is needed to understand the appropriate values for nodeindex,
+>    nodalchipindex, coreindexonchip.
+> - htmcaps : provides the HTM capabilities like minimum/maximum buffer
+>    size, what kind of tracing the HTM supports etc.
+> - htmflags : allows to pass flags to hcall. Currently supports
+>    controlling the wrapping of HTM buffer.
+>
+> Example usage:
+> To collect HTM traces for a partition represented by nodeindex as
+> zero, nodalchipindex as 1 and coreindexonchip as 12.
+>
+>    # cd /sys/kernel/debug/powerpc/htmdump/
+>    # echo 2 > htmtype
+>    # echo 0 > nodeindex
+>    # echo 1 > nodalchipindex
+>    # echo 12 > coreindexonchip
+>    # echo 1 > htmflags     # to set noWrap for HTM buffers
+>    # echo 1 > htmconfigure # Configure the HTM
+>    # echo 1 > htmstart     # Start the HTM
+>    # echo 0 > htmstart     # Stop the HTM
+>    # echo 0 > htmconfigure # Deconfigure the HTM
+>    # cat htmstatus         # Dump the status of HTM entries as data
+>
+> Athira Rajeev (9):
+>    powerpc/pseries/htmdump: Add htm_hcall_wrapper to integrate other htm
+>      operations
+>    powerpc/pseries/htmdump: Add htm configure support to htmdump module
+>    powerpc/pseries/htmdump: Add htm start support to htmdump module
+>    powerpc/pseries/htmdump: Add htm status support to htmdump module
+>    powerpc/pseries/htmdump: Add htm info support to htmdump module
+>    powerpc/pseries/htmdump: Add htm setup support to htmdump module
+>    powerpc/pseries/htmdump: Add htm flags support to htmdump module
+>    powerpc/pseries/htmdump: Add htm capabilities support to htmdump
+>      module
+>    powerpc/pseries/htmdump: Add documentation for H_HTM debugfs interface
+>
+>   Documentation/arch/powerpc/htm.rst        | 104 ++++++
+>   arch/powerpc/include/asm/plpar_wrappers.h |  20 +-
+>   arch/powerpc/platforms/pseries/htmdump.c  | 370 +++++++++++++++++++++-
+>   3 files changed, 475 insertions(+), 19 deletions(-)
+>   create mode 100644 Documentation/arch/powerpc/htm.rst
+>
+Hello Athira,
 
-Link: https://lore.kernel.org/r/1d822960-85a7-42b3-88cf-9d3dbc75a831@csgroup.eu
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Acked-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-Changes in v2:
-- none
+I tried to apply this patch set on powerpc-next repo, but pacth 007 
+failed. Please refer the failure below.
 
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 012a3fbf884c..23a12b4362ba 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19639,6 +19639,7 @@ F:	include/linux/qnx6_fs.h
- 
- QORIQ DPAA2 FSL-MC BUS DRIVER
- M:	Ioana Ciornei <ioana.ciornei@nxp.com>
-+L:	linuxppc-dev@lists.ozlabs.org
- L:	linux-kernel@vger.kernel.org
- S:	Maintained
- F:	Documentation/ABI/stable/sysfs-bus-fsl-mc
--- 
-2.34.1
+Signed-off-by: Athira Rajeev <atrajeev@linux.ibm.com>
+--------------------------
+Apply? [y]es/[n]o/[e]dit/[v]iew patch/[a]ccept all: a
+Applying: powerpc/pseries/htmdump: Add htm_hcall_wrapper to integrate 
+other htm operations
+Applying: powerpc/pseries/htmdump: Add htm configure support to htmdump 
+module
+Applying: powerpc/pseries/htmdump: Add htm start support to htmdump module
+Applying: powerpc/pseries/htmdump: Add htm status support to htmdump module
+Applying: powerpc/pseries/htmdump: Add htm info support to htmdump module
+Applying: powerpc/pseries/htmdump: Add htm setup support to htmdump module
+Applying: powerpc/pseries/htmdump: Add htm flags support to htmdump module
+error: patch failed: arch/powerpc/platforms/pseries/htmdump.c:180
+error: arch/powerpc/platforms/pseries/htmdump.c: patch does not apply
+Patch failed at 0007 powerpc/pseries/htmdump: Add htm flags support to 
+htmdump module
+hint: Use 'git am --show-current-patch=diff' to see the failed patch
+When you have resolved this problem, run "git am --continue".
+If you prefer to skip this patch, run "git am --skip" instead.
+To restore the original branch and stop patching, run "git am --abort".
+
+
+Regards,
+
+Venkat.
 
 
