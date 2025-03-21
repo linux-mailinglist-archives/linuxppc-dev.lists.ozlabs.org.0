@@ -1,78 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7264-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7266-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B8DA6BA0C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 12:42:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DFDA6BCAB
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 15:13:59 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZK0tH0vSdz30Nl;
-	Fri, 21 Mar 2025 22:42:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZK4F10y8xz30MR;
+	Sat, 22 Mar 2025 01:13:57 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742557351;
-	cv=none; b=K5lCEcEFV/p/Z4aO8j7KVaOMD+aaE16R5BLQ2OqpLC4EFUAfTxa4IbAE/BmklJk7+xG+SWK1FjpU29QmPDyINtv5rppahstFsVOGF5D07k0d3XaE4yVGN9ZUSiDeh3b48ydDkgk1+0ZNRyArEWwM9M+OxOg2m0Ffg2qtOxs6kj4hlvRjvmqq4IXDGYAC3SnJxsKJVNgjNkWBR5GlM1RK8rXwR0d6Mk0dp7Mzt57R5Qu68f2+9uZPXaFY9m/OO+uQwSEdVUopLU5Aem7cG5ySYYA/9y9xogWgBZjeZI8rE92QORKz5Cdq8fa7ZaI1IeDxQ3dY9g7MysMwOedUBpoidQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742566437;
+	cv=none; b=Wg7/PyuMfjyPtvLVqOkn0BZKb7iUxTvEab9cWgLYCsTmEaWETwECCLHa/97lFHrimaXPncg6HvZM+9EfAH3XmPLAOn0BizD/HBXGo7UYYzb/R3Y9frhidQwJLULit+/W1lFzpzKxKxlQsqMpzafPm3fHGu+XRa+y1/qAv4iyg2QfbjJ62N0Z1js/iam2VKaYhDdGUvlrcQQU6QP4RREY+EUi4YiNi+8oK1HV9fio2qbDYxuqzBnifE9zQ6ND78zneB+3Hvn9R8GbnXFf5K8tiYqfW/LwlO+YwW6VB6Pdy0FyZrbf7yjHUADl0E/43ekXGWYQ/JjLInlG82hPuePIQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742557351; c=relaxed/relaxed;
-	bh=HxEUrFSkwvtTHGZsRrcYMHupA72KBahfp9Or61L+rwM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gHUlqAnoxQR0z9U0F6yTgtvvhAizea9AhmQohFxSVTohJq5Sw3NkdP11g1seeY8yvTd2jUnW6plXaUUqJhKn5Gd76MNuNLUn22Rwjv3IpR1sb15JjNjyd0UfjKUC7Vt7VjVUxcAGJxx3vPc2pKUev65WqRExZQLHjdgoMKVy5YY+2IASmzypIpgq/Zake3maxfe860SbUivyXqX1pmPvmmyhO4MLp54DIqhetyNv03gOkHp4Gv8EmoGDxoEPFxbHKuggSlVDcrPpHNkSWey+mUyVeXvZKzF9hPAAd18DnOgrWOFcBMjW9JBFKWcCJMqV5grj1e6nglUDBXUS6rp/+g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y8hrAs+p; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742566437; c=relaxed/relaxed;
+	bh=oJaLMY9QN+tDgU4cokiF5R9hlYPzHSPoq0nCjE8IMf4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A4YHoMHpWy2Tpivx0BROtCen/+U+U9/tj6YFv9Upj/NCD1Ee1GhYwk3E+iu8E5WbcqC+yrQLX2C+2v2yxH8xBn+EcrYqe+1YcxkfHa+nGoPs0wRAyq4Env/egK4WO86Qkwaeonez4GmiL16ONUhmVc3qGQOXHYBQmqJPwft6Jgk0LDRa3CXHurthQWe/2awj2KrOM90VBYffMmvh9DKi/zbolSsXkGe1oWehaEw9lKxPOTAqJ0MbRNtLhCQxD/F1fow8Wh1UUPv5o2PClyCxEjACV8+2bGGEurVstyKUAMcyVmEFzqteH+VbI6p0Rad4+JJmXFPSjrJF5sQE55g4FA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TtomZVYe; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Y8hrAs+p;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TtomZVYe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=maddy@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 466 seconds by postgrey-1.37 at boromir; Sat, 22 Mar 2025 01:13:55 AEDT
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZK0tF4kJ5z30D3
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 22:42:29 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52LATcLe014247;
-	Fri, 21 Mar 2025 11:42:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=HxEUrF
-	SkwvtTHGZsRrcYMHupA72KBahfp9Or61L+rwM=; b=Y8hrAs+pldr03rjzo+WhAy
-	U52ZrtB+IqpzlWD9UpaK9zugv90jFOORN2zkELt6EwBYrXFWIcZS7T1RujhRR0LQ
-	3Nf9j8Yjpxk3xB9bYRq14TwB/gDfnvtsM98c0oASGAYIbK/QB4X9zQZqm+IkjRDE
-	ribkrbF5GRfCwv50NtewtRkh8OhPtU6xy8rSO7LnT8LIX56v3qdxJjHbPqxbZAph
-	BD+5t5VtF45BpBRp3FPz6zlw4+LuZ5Jdm7JFgVBVk7SG8v/GkVL/roGm5XjcQs+L
-	s7rfJ8QPLxW6fTafqX2ZQ1y2WOGXHcm336io/OvsUF3QmYmLAdMZqov2l5nbldnw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gt80u9xe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 11:42:15 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52LBY281031415;
-	Fri, 21 Mar 2025 11:42:14 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gt80u9x5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 11:42:14 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52LB0iUw019218;
-	Fri, 21 Mar 2025 11:42:14 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dmvpd2m9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 11:42:14 +0000
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52LBgCoH31654592
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Mar 2025 11:42:13 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E184158067;
-	Fri, 21 Mar 2025 11:42:12 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B8DF85805D;
-	Fri, 21 Mar 2025 11:42:04 +0000 (GMT)
-Received: from [9.43.64.160] (unknown [9.43.64.160])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 21 Mar 2025 11:42:04 +0000 (GMT)
-Message-ID: <31a3d76b-617b-4c97-b83d-2cd47fabbf02@linux.ibm.com>
-Date: Fri, 21 Mar 2025 17:12:01 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZK4Dz4fZcz2ySh
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 01:13:55 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id 93A0543470;
+	Fri, 21 Mar 2025 14:06:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F51FC4CEE9;
+	Fri, 21 Mar 2025 14:06:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742565966;
+	bh=Efp2oPA71k6HAIzm+TmV+Ye55dV032TIttlnUM1IzOA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TtomZVYeDy8wuAU9Z1FLMBCNPF80tqxAb9OYMid0PPJqMYM3GP6Y13h3xTFT3duda
+	 EsZJtubJ4eo1f27/8eijbytMXypXK9OpAQvtR6SSvixcT5H5Vii2MhLoL5SLtzb/Lu
+	 0s/caJoC/vby0Y1EP4mDAykVW2LxQXapv6BFXtpmQyPrxZgK6STqVkdLGCyTYHu8Vm
+	 mCCFPWNOppzziuF3ByXKJs3Ie2dXyK1dl1rP19u8nYcVc1S745ZPh8fdb1rtan7e9q
+	 Du4G1UQee+eAtGBrbvm+tFS9gYh0kewyZAIG31l16DPgHomybi/A7b0/1WpyBnZYBO
+	 txFCMNNUxYjnQ==
+Date: Fri, 21 Mar 2025 14:05:58 +0000
+From: Conor Dooley <conor@kernel.org>
+To: Suren Baghdasaryan <surenb@google.com>
+Cc: akpm@linux-foundation.org, willy@infradead.org, david@redhat.com,
+	vbabka@suse.cz, lorenzo.stoakes@oracle.com, liam.howlett@oracle.com,
+	alexandru.elisei@arm.com, peterx@redhat.com, hannes@cmpxchg.org,
+	mhocko@kernel.org, m.szyprowski@samsung.com, iamjoonsoo.kim@lge.com,
+	mina86@mina86.com, axboe@kernel.dk, viro@zeniv.linux.org.uk,
+	brauner@kernel.org, hch@infradead.org, jack@suse.cz,
+	hbathini@linux.ibm.com, sourabhjain@linux.ibm.com,
+	ritesh.list@gmail.com, aneesh.kumar@kernel.org, bhelgaas@google.com,
+	sj@kernel.org, fvdl@google.com, ziy@nvidia.com, yuzhao@google.com,
+	minchan@kernel.org, linux-mm@kvack.org,
+	linuxppc-dev@lists.ozlabs.org, linux-block@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, Minchan Kim <minchan@google.com>
+Subject: Re: [RFC 3/3] mm: integrate GCMA with CMA using dt-bindings
+Message-ID: <20250321-unhelpful-doze-791895ca5b01@spud>
+References: <20250320173931.1583800-1-surenb@google.com>
+ <20250320173931.1583800-4-surenb@google.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,178 +76,105 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 2/2] tools/perf/powerpc/util: Add support to handle
- compatible mode PVR for perf json events
-To: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Athira Rajeev <atrajeev@linux.vnet.ibm.com>, namhyung@kernel.org
-Cc: linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, irogers@google.com,
-        akanksha@linux.ibm.com, kjain@linux.ibm.com,
-        disgoel@linux.vnet.ibm.com, acme@kernel.org, hbathini@linux.ibm.com,
-        adrian.hunter@intel.com, jolsa@kernel.org
-References: <20241010145107.51211-1-atrajeev@linux.vnet.ibm.com>
- <20241010145107.51211-2-atrajeev@linux.vnet.ibm.com>
- <7cd87317-4f2a-45af-bd07-6e715406ff55@csgroup.eu>
-Content-Language: en-US
-From: Madhavan Srinivasan <maddy@linux.ibm.com>
-In-Reply-To: <7cd87317-4f2a-45af-bd07-6e715406ff55@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: TxLlLE1cX4Hnb4p2JPivH8_9XWPO13lL
-X-Proofpoint-GUID: 3Jh4cugb2FdlH5bhaW77yb4YKss_41FL
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-21_04,2025-03-20_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 phishscore=0
- priorityscore=1501 mlxscore=0 adultscore=0 suspectscore=0 clxscore=1011
- impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2503210085
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+Content-Type: multipart/signed; micalg=pgp-sha256;
+	protocol="application/pgp-signature"; boundary="fM541kW8FgR5YYtY"
+Content-Disposition: inline
+In-Reply-To: <20250320173931.1583800-4-surenb@google.com>
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
+--fM541kW8FgR5YYtY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 3/21/25 4:04 PM, Christophe Leroy wrote:
-> Hi,
-> 
-> Le 10/10/2024 à 16:51, Athira Rajeev a écrit :
->> perf list picks the events supported for specific platform
->> from pmu-events/arch/powerpc/<platform>. Example power10 events
->> are in pmu-events/arch/powerpc/power10, power9 events are part
->> of pmu-events/arch/powerpc/power9. The decision of which
->> platform to pick is determined based on PVR value in powerpc.
->> The PVR value is matched from pmu-events/arch/powerpc/mapfile.csv
->>
->> Example:
->>
->> Format:
->>     PVR,Version,JSON/file/pathname,Type
->>
->> 0x004[bcd][[:xdigit:]]{4},1,power8,core
->> 0x0066[[:xdigit:]]{4},1,power8,core
->> 0x004e[[:xdigit:]]{4},1,power9,core
->> 0x0080[[:xdigit:]]{4},1,power10,core
->> 0x0082[[:xdigit:]]{4},1,power10,core
->>
->> The code gets the PVR from system using get_cpuid_str function
->> in arch/powerpc/util/headers.c ( from SPRN_PVR ) and compares
->> with value from mapfile.csv
->> In case of compat mode, say when partition is booted in a power9
->> mode when the system is a power10, this picks incorrectly. Because
->> PVR will point to power10 where as it should pick events from power9
->> folder. To support generic events, add new folder
->> pmu-events/arch/powerpc/compat to contain the ISA architected events
->> which is supported in compat mode. Also return 0x00ffffff as pvr
->> when booted in compat mode. Based on this pvr value, json will
->> pick events from pmu-events/arch/powerpc/compat
->>
->> Suggested-by: Madhavan Srinivasan <maddy@linux.ibm.com>
->> Signed-off-by: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-> 
-> I see this patch was merged into mainline allthough it had CI failures and still has.
-> 
-> Could you please fix it ?
+On Thu, Mar 20, 2025 at 10:39:31AM -0700, Suren Baghdasaryan wrote:
+> This patch introduces a new "guarantee" property for shared-dma-pool.
+> With this property, admin can create specific memory pool as
+> GCMA-based CMA if they care about allocation success rate and latency.
+> The downside of GCMA is that it can host only clean file-backed pages
+> since it's using cleancache as its secondary user.
+>=20
+> Signed-off-by: Minchan Kim <minchan@google.com>
+> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
+> ---
+>  arch/powerpc/kernel/fadump.c |  2 +-
+>  include/linux/cma.h          |  2 +-
+>  kernel/dma/contiguous.c      | 11 ++++++++++-
+>  mm/cma.c                     | 33 ++++++++++++++++++++++++++-------
+>  mm/cma.h                     |  1 +
+>  mm/cma_sysfs.c               | 10 ++++++++++
+>  6 files changed, 49 insertions(+), 10 deletions(-)
+>=20
+> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
+> index 4b371c738213..4eb7be0cdcdb 100644
+> --- a/arch/powerpc/kernel/fadump.c
+> +++ b/arch/powerpc/kernel/fadump.c
+> @@ -111,7 +111,7 @@ void __init fadump_cma_init(void)
+>  		return;
+>  	}
+> =20
+> -	rc =3D cma_init_reserved_mem(base, size, 0, "fadump_cma", &fadump_cma);
+> +	rc =3D cma_init_reserved_mem(base, size, 0, "fadump_cma", &fadump_cma, =
+false);
+>  	if (rc) {
+>  		pr_err("Failed to init cma area for firmware-assisted dump,%d\n", rc);
+>  		/*
+> diff --git a/include/linux/cma.h b/include/linux/cma.h
+> index 62d9c1cf6326..3207db979e94 100644
+> --- a/include/linux/cma.h
+> +++ b/include/linux/cma.h
+> @@ -46,7 +46,7 @@ extern int __init cma_declare_contiguous_multi(phys_add=
+r_t size,
+>  extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
+>  					unsigned int order_per_bit,
+>  					const char *name,
+> -					struct cma **res_cma);
+> +					struct cma **res_cma, bool gcma);
+>  extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsi=
+gned int align,
+>  			      bool no_warn);
+>  extern bool cma_pages_valid(struct cma *cma, const struct page *pages, u=
+nsigned long count);
+> diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
+> index 055da410ac71..a68b3123438c 100644
+> --- a/kernel/dma/contiguous.c
+> +++ b/kernel/dma/contiguous.c
+> @@ -459,6 +459,7 @@ static int __init rmem_cma_setup(struct reserved_mem =
+*rmem)
+>  	unsigned long node =3D rmem->fdt_node;
+>  	bool default_cma =3D of_get_flat_dt_prop(node, "linux,cma-default", NUL=
+L);
+>  	struct cma *cma;
+> +	bool gcma;
+>  	int err;
+> =20
+>  	if (size_cmdline !=3D -1 && default_cma) {
+> @@ -476,7 +477,15 @@ static int __init rmem_cma_setup(struct reserved_mem=
+ *rmem)
+>  		return -EINVAL;
+>  	}
+> =20
+> -	err =3D cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name, &c=
+ma);
+> +	gcma =3D !!of_get_flat_dt_prop(node, "guarantee", NULL);
 
-We already have a fix patch posted for this issue 
+When this (or if I guess) this goes !RFC, you will need to document this
+new property that you're adding.
 
-https://patchwork.ozlabs.org/project/linuxppc-dev/patch/20250321100726.699956-1-likhitha@linux.ibm.com/
+--fM541kW8FgR5YYtY
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Maddy
+-----BEGIN PGP SIGNATURE-----
 
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ91yRgAKCRB4tDGHoIJi
+0vghAQCIfI8+ZQNSSUJvyG5N5hCisJl/fWg9Vm7F5uQooGdzzwD/TYcjtjBBKsJv
+aa6VSuGFaENELpO0FBTADe4awZ04uA0=
+=vA0y
+-----END PGP SIGNATURE-----
 
-> 
-> arch/powerpc/util/header.c: In function 'is_compat_mode':
-> Error: arch/powerpc/util/header.c:20:14: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
->    20 |  if (!strcmp((char *)platform, (char *)base_platform))
->       |              ^
-> Error: arch/powerpc/util/header.c:20:32: error: cast to pointer from integer of different size [-Werror=int-to-pointer-cast]
->    20 |  if (!strcmp((char *)platform, (char *)base_platform))
->       |                                ^
-> cc1: all warnings being treated as errors
-> make[6]: *** [/linux/tools/build/Makefile.build:86: /output/arch/powerpc/util/header.o] Error 1
-> 
-> 
-> The following fix but is maybe not the right one as in reality getauxval() seems to return a long not a u64.
-> 
-> diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
-> index c7df534dbf8f..1b045d410f31 100644
-> --- a/tools/perf/arch/powerpc/util/header.c
-> +++ b/tools/perf/arch/powerpc/util/header.c
-> @@ -17,7 +17,7 @@ static bool is_compat_mode(void)
->      u64 base_platform = getauxval(AT_BASE_PLATFORM);
->      u64 platform = getauxval(AT_PLATFORM);
-> 
-> -    if (!strcmp((char *)platform, (char *)base_platform))
-> +    if (!strcmp((char *)(long)platform, (char *)(long)base_platform))
->          return false;
-> 
->      return true;
-> 
-> 
-> Thanks
-> Christophe
-> 
->> ---
->> changelog:
->> V1 -> V2:
->> Corrected commit message and subject line
->>
->>   tools/perf/arch/powerpc/util/header.c | 32 ++++++++++++++++++++++++++-
->>   1 file changed, 31 insertions(+), 1 deletion(-)
->>
->> diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
->> index 6b00efd53638..adc82c479443 100644
->> --- a/tools/perf/arch/powerpc/util/header.c
->> +++ b/tools/perf/arch/powerpc/util/header.c
->> @@ -10,6 +10,18 @@
->>   #include "utils_header.h"
->>   #include "metricgroup.h"
->>   #include <api/fs/fs.h>
->> +#include <sys/auxv.h>
->> +
->> +static bool is_compat_mode(void)
->> +{
->> +    u64 base_platform = getauxval(AT_BASE_PLATFORM);
->> +    u64 platform = getauxval(AT_PLATFORM);
->> +
->> +    if (!strcmp((char *)platform, (char *)base_platform))
->> +        return false;
->> +
->> +    return true;
->> +}
->>     int
->>   get_cpuid(char *buffer, size_t sz)
->> @@ -33,8 +45,26 @@ char *
->>   get_cpuid_str(struct perf_pmu *pmu __maybe_unused)
->>   {
->>       char *bufp;
->> +    unsigned long pvr;
->> +
->> +    /*
->> +     * IBM Power System supports compatible mode. That is
->> +     * Nth generation platform can support previous generation
->> +     * OS in a mode called compatibile mode. For ex. LPAR can be
->> +     * booted in a Power9 mode when the system is a Power10.
->> +     *
->> +     * In the compatible mode, care must be taken when generating
->> +     * PVR value. When read, PVR will be of the AT_BASE_PLATFORM
->> +     * To support generic events, return 0x00ffffff as pvr when
->> +     * booted in compat mode. Based on this pvr value, json will
->> +     * pick events from pmu-events/arch/powerpc/compat
->> +     */
->> +    if (!is_compat_mode())
->> +        pvr = mfspr(SPRN_PVR);
->> +    else
->> +        pvr = 0x00ffffff;
->>   -    if (asprintf(&bufp, "0x%.8lx", mfspr(SPRN_PVR)) < 0)
->> +    if (asprintf(&bufp, "0x%.8lx", pvr) < 0)
->>           bufp = NULL;
->>         return bufp;
-> 
-
+--fM541kW8FgR5YYtY--
 
