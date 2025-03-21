@@ -1,69 +1,105 @@
-Return-Path: <linuxppc-dev+bounces-7266-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7265-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8DFDA6BCAB
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 15:13:59 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4CBA6BC85
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 15:06:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZK4F10y8xz30MR;
-	Sat, 22 Mar 2025 01:13:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZK44S60Xqz305D;
+	Sat, 22 Mar 2025 01:06:32 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742566437;
-	cv=none; b=Wg7/PyuMfjyPtvLVqOkn0BZKb7iUxTvEab9cWgLYCsTmEaWETwECCLHa/97lFHrimaXPncg6HvZM+9EfAH3XmPLAOn0BizD/HBXGo7UYYzb/R3Y9frhidQwJLULit+/W1lFzpzKxKxlQsqMpzafPm3fHGu+XRa+y1/qAv4iyg2QfbjJ62N0Z1js/iam2VKaYhDdGUvlrcQQU6QP4RREY+EUi4YiNi+8oK1HV9fio2qbDYxuqzBnifE9zQ6ND78zneB+3Hvn9R8GbnXFf5K8tiYqfW/LwlO+YwW6VB6Pdy0FyZrbf7yjHUADl0E/43ekXGWYQ/JjLInlG82hPuePIQw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742565992;
+	cv=none; b=dcy6PURs+hEI0w+SeKmDPU6xnOCYnmjk/BX0fSAZuscxlPNyl5cFLo5kJgfbi1pwPTlaw4bOsEnzbOX0dS25Ytba7aU3SLak3qnm+CRg7/fW1U8j2UcQQrarkp+PWCeVVqqqWo/9f7xuig1kHZ52wsBMgTlhP9dcGi7y4tm0bEFrKu7EtmciWc4WHStBblDp0Lx2PM8RyTEXIcu30sFZaQCv5K2heuRgTPAspBi9DOjv6QUWDnS381kbYwNG5TyLxLP7BSUSAVjaNZ58RELdD2MT6OvSIngRGLT2/7qXJmkTliaeiXR9UW8kUKybf+iVa9swkNtIGNaSRVoEVk4fgQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742566437; c=relaxed/relaxed;
-	bh=oJaLMY9QN+tDgU4cokiF5R9hlYPzHSPoq0nCjE8IMf4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A4YHoMHpWy2Tpivx0BROtCen/+U+U9/tj6YFv9Upj/NCD1Ee1GhYwk3E+iu8E5WbcqC+yrQLX2C+2v2yxH8xBn+EcrYqe+1YcxkfHa+nGoPs0wRAyq4Env/egK4WO86Qkwaeonez4GmiL16ONUhmVc3qGQOXHYBQmqJPwft6Jgk0LDRa3CXHurthQWe/2awj2KrOM90VBYffMmvh9DKi/zbolSsXkGe1oWehaEw9lKxPOTAqJ0MbRNtLhCQxD/F1fow8Wh1UUPv5o2PClyCxEjACV8+2bGGEurVstyKUAMcyVmEFzqteH+VbI6p0Rad4+JJmXFPSjrJF5sQE55g4FA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TtomZVYe; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1742565992; c=relaxed/relaxed;
+	bh=PtfqZFqF8iFiel/s4I4nuuc5DqZUNdlFQlj2cWV2Ueg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=n2V2fl/UP5rSz5Qp85uhhwgy+pVzMrrKtYLhllQeWcx4VGty4esxgnAqi25Y3uB9I746EM1l2NeRicGCYG5tgsSf3jEFL0Oo6gZERIFmmecuCNXUButAa0ItA1Lk/bgmwt80bVVZg8ngE+Aa6CeBslDFJc8gfqC6bm+GBRYK1glg04ngFrdnHC9nJlnWcAyEi6ylsSQnKnq0zOhBiM3pkGQ5jWRKI/PbWK0KjWfYrxzsStj9kGx+TX6mQRCQmLiJj6ncX+l2fLnmW/3HQys4JElQg4+6FYXpOWDeAM9+sSdQ50lcKuDZ0O6T+rLM0nLzc5aALrdPECUcuKq9MrB9nQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SKZT2Tqi; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QttLd1xs; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TtomZVYe;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=SKZT2Tqi;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=QttLd1xs;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=conor@kernel.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 466 seconds by postgrey-1.37 at boromir; Sat, 22 Mar 2025 01:13:55 AEDT
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=alex.williamson@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZK4Dz4fZcz2ySh
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 01:13:55 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 93A0543470;
-	Fri, 21 Mar 2025 14:06:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F51FC4CEE9;
-	Fri, 21 Mar 2025 14:06:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742565966;
-	bh=Efp2oPA71k6HAIzm+TmV+Ye55dV032TIttlnUM1IzOA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TtomZVYeDy8wuAU9Z1FLMBCNPF80tqxAb9OYMid0PPJqMYM3GP6Y13h3xTFT3duda
-	 EsZJtubJ4eo1f27/8eijbytMXypXK9OpAQvtR6SSvixcT5H5Vii2MhLoL5SLtzb/Lu
-	 0s/caJoC/vby0Y1EP4mDAykVW2LxQXapv6BFXtpmQyPrxZgK6STqVkdLGCyTYHu8Vm
-	 mCCFPWNOppzziuF3ByXKJs3Ie2dXyK1dl1rP19u8nYcVc1S745ZPh8fdb1rtan7e9q
-	 Du4G1UQee+eAtGBrbvm+tFS9gYh0kewyZAIG31l16DPgHomybi/A7b0/1WpyBnZYBO
-	 txFCMNNUxYjnQ==
-Date: Fri, 21 Mar 2025 14:05:58 +0000
-From: Conor Dooley <conor@kernel.org>
-To: Suren Baghdasaryan <surenb@google.com>
-Cc: akpm@linux-foundation.org, willy@infradead.org, david@redhat.com,
-	vbabka@suse.cz, lorenzo.stoakes@oracle.com, liam.howlett@oracle.com,
-	alexandru.elisei@arm.com, peterx@redhat.com, hannes@cmpxchg.org,
-	mhocko@kernel.org, m.szyprowski@samsung.com, iamjoonsoo.kim@lge.com,
-	mina86@mina86.com, axboe@kernel.dk, viro@zeniv.linux.org.uk,
-	brauner@kernel.org, hch@infradead.org, jack@suse.cz,
-	hbathini@linux.ibm.com, sourabhjain@linux.ibm.com,
-	ritesh.list@gmail.com, aneesh.kumar@kernel.org, bhelgaas@google.com,
-	sj@kernel.org, fvdl@google.com, ziy@nvidia.com, yuzhao@google.com,
-	minchan@kernel.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-block@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, iommu@lists.linux.dev,
-	linux-kernel@vger.kernel.org, Minchan Kim <minchan@google.com>
-Subject: Re: [RFC 3/3] mm: integrate GCMA with CMA using dt-bindings
-Message-ID: <20250321-unhelpful-doze-791895ca5b01@spud>
-References: <20250320173931.1583800-1-surenb@google.com>
- <20250320173931.1583800-4-surenb@google.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZK44R4QWZz2ySN
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 01:06:29 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742565984;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PtfqZFqF8iFiel/s4I4nuuc5DqZUNdlFQlj2cWV2Ueg=;
+	b=SKZT2TqiGog31SHDGSOPh6FoplixFOL/dkNwDdujcHBcGU5FAD6mxcn45cyKrZkzOBuasu
+	6j3t4TQIkBG/SH+U/NhJr0mUgMDw5cyVMs+XryHQ0cqjZTJd6RD0PcZeBUxCWBTjMN8jEc
+	S3janHRmQwlT1tVcJMytvIPfKOGNgOY=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742565985;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PtfqZFqF8iFiel/s4I4nuuc5DqZUNdlFQlj2cWV2Ueg=;
+	b=QttLd1xsCLc9uEjGakyNZOf9Hnm8ceqor6tinnUALoO0R18EHmrTThPaqQstQaHfHq36Q1
+	HcI0AR1UL3cEZYhH17IUvMjXv7f/lff7Qq4o7cI+W+Mo0NY/YXbJKgqJqDcL1hDKjHWhjg
+	SgdWpm1ViGRiFFXVnUKiBUB4uLmzFgA=
+Received: from mail-oi1-f197.google.com (mail-oi1-f197.google.com
+ [209.85.167.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-204-RqmL6-_7PdG6lJcrNbRyoQ-1; Fri, 21 Mar 2025 10:06:23 -0400
+X-MC-Unique: RqmL6-_7PdG6lJcrNbRyoQ-1
+X-Mimecast-MFC-AGG-ID: RqmL6-_7PdG6lJcrNbRyoQ_1742565982
+Received: by mail-oi1-f197.google.com with SMTP id 5614622812f47-3f6aaeb8bfeso397190b6e.3
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 07:06:23 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742565982; x=1743170782;
+        h=content-transfer-encoding:mime-version:organization:references
+         :in-reply-to:message-id:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=PtfqZFqF8iFiel/s4I4nuuc5DqZUNdlFQlj2cWV2Ueg=;
+        b=R4XwJObkgNmLJlKsPrK14iDF2mObVwLMBXHBTnKIWPKKIfj3zrjjbrFDr6VMBYNW+n
+         GZswNGzBwVH4XQD3wpl3AoG3Hm5YbFFMC5lQiVpEcmHt8QE0aqClS95oYhLofj/1wjVv
+         1HnPWKCYWAE7JgPijq/y+ZW2HluE+M6GaP5sQv7zYayhVKpTwCVlX0X8z8AEwwV3lOEI
+         35iO7pD2wDTY8ypSddM77nq7AQ0wUSMggWusJP+Q1xefRV3G2S1J/OWLiYw0fggr2+8p
+         eVra59r+i1FyJRSr3eJOwHcZIP4G286e4QmfxVPlRatUholgkh517R1RiQ3TY0BdvZFd
+         ZEdg==
+X-Forwarded-Encrypted: i=1; AJvYcCX+INDXD9nY0Wk19PmXdS3Ta7rkgtuBvKDtYr2dd8PFV6bq4o+d7PyfTJyHfqqhgDIp01qBTv173GSAq0s=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxxg4MsHq3qiLuuWS8vGKuAnueujQTMw1eD5iE4Az4jC3+y7BoH
+	Yy8yEw+9877pNjWERr5Ms3LTBWZZabQ4D6FqeLJQqZCFDtuK9r2oUoHGb9HLU/bpowhG0di8LMl
+	YBz+2UsQ1wuJ4RdlgWLNcDM9iQ08GfQc25rutV66btoI4fL7vyfyu50eh6NL9lUk=
+X-Gm-Gg: ASbGncsGB69kJk8bawwgURSzTxEUMfuFDvI5RuTN2y4lTd6QzO2rWSnjgvaIAKNY+e5
+	zoYdKiLor4V7YXu+7f2mf18eNaNUxXJJ9eIxmRPejpRrCPfRccTZVWfHQKbx6GMLocQy5oIA074
+	2yO6Ebm3nuMjM3lUf1ND0P+zlMbIa3ITxJigyn27yFfLdLhyIxaOQ7PWb8Gll7l+vIEk6w6ceBy
+	cSh+h4/E4WIscxB3uN1FVoKa0PmcSrbH3GS6cyCJ3bThmGZ3nu+BRtMI7JSJZQIORH9ZoOdN16v
+	MfEvdSv8zHLvf6Ws1/A=
+X-Received: by 2002:a05:6808:6807:b0:3fe:b5d3:3f23 with SMTP id 5614622812f47-3febf793391mr842059b6e.5.1742565982322;
+        Fri, 21 Mar 2025 07:06:22 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEXrUa2CJtGUuPnUiUVvqG8OIHWW+85+a82cVLjG6j0tZ/F39gii6vY+WagE3AnL6fCZ04BMg==
+X-Received: by 2002:a05:6808:6807:b0:3fe:b5d3:3f23 with SMTP id 5614622812f47-3febf793391mr842043b6e.5.1742565981807;
+        Fri, 21 Mar 2025 07:06:21 -0700 (PDT)
+Received: from redhat.com ([38.15.36.11])
+        by smtp.gmail.com with ESMTPSA id 5614622812f47-3febf7109ddsm335819b6e.26.2025.03.21.07.06.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Mar 2025 07:06:19 -0700 (PDT)
+Date: Fri, 21 Mar 2025 08:06:13 -0600
+From: Alex Williamson <alex.williamson@redhat.com>
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+Cc: jgg@ziepe.ca, kevin.tian@intel.com, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, yi.l.liu@intel.com, Yunxiang.Li@amd.com,
+ pstanner@redhat.com, maddy@linux.ibm.com, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] vfio: pci: Advertise INTx only if LINE is connected
+Message-ID: <20250321080613.566cb6bd.alex.williamson@redhat.com>
+In-Reply-To: <9131d1be-d68e-48d6-afe3-af8949194b21@linux.ibm.com>
+References: <174231895238.2295.12586708771396482526.stgit@linux.ibm.com>
+	<20250318115832.04abbea7.alex.williamson@redhat.com>
+	<9131d1be-d68e-48d6-afe3-af8949194b21@linux.ibm.com>
+Organization: Red Hat
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,105 +112,78 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="fM541kW8FgR5YYtY"
-Content-Disposition: inline
-In-Reply-To: <20250320173931.1583800-4-surenb@google.com>
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 68ttlV4ua2z6Zgzh3mGU659QVa-zt4xbTnIVKQXI7-c_1742565982
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+On Thu, 20 Mar 2025 23:24:49 +0530
+Shivaprasad G Bhat <sbhat@linux.ibm.com> wrote:
 
---fM541kW8FgR5YYtY
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+> On 3/18/25 11:28 PM, Alex Williamson wrote:
+> > On Tue, 18 Mar 2025 17:29:21 +0000
+> > Shivaprasad G Bhat <sbhat@linux.ibm.com> wrote:
+> >  
+> >> On POWER systems, when the device is behind the io expander,
+> >> not all PCI slots would have the PCI_INTERRUPT_LINE connected.
+> >> The firmware assigns a valid PCI_INTERRUPT_PIN though. In such
+> >> configuration, the irq_info ioctl currently advertizes the
+> >> irq count as 1 as the PCI_INTERRUPT_PIN is valid.
+> >>
+> >> The patch adds the additional check[1] if the irq is assigned
+> >> for the PIN which is done iff the LINE is connected.
+> >>
+> >> [1]: https://lore.kernel.org/qemu-devel/20250131150201.048aa3bf.alex.williamson@redhat.com/
+> >>
+> >> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+> >> Suggested-By: Alex Williamson <alex.williamson@redhat.com>
+> >> ---
+> >>   drivers/vfio/pci/vfio_pci_core.c |    4 ++++
+> >>   1 file changed, 4 insertions(+)
+> >>
+> >> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> >> index 586e49efb81b..4ce70f05b4a8 100644
+> >> --- a/drivers/vfio/pci/vfio_pci_core.c
+> >> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> >> @@ -734,6 +734,10 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
+> >>   			return 0;
+> >>   
+> >>   		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+> >> +#if IS_ENABLED(CONFIG_PPC64)
+> >> +		if (!vdev->pdev->irq)
+> >> +			pin = 0;
+> >> +#endif
+> >>   
+> >>   		return pin ? 1 : 0;
+> >>   	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
+> >>
+> >>  
+> > See:
+> >
+> > https://lore.kernel.org/all/20250311230623.1264283-1-alex.williamson@redhat.com/
+> >
+> > Do we need to expand that to test !vdev->pdev->irq in
+> > vfio_config_init()?  
+> 
+> Yes. Looks to be the better option. I did try this and it works.
+> 
+> 
+> I see your patch has already got Reviewed-by. Are you planning
+> 
+> for v2 Or want me to post a separate patch with this new check?
 
-On Thu, Mar 20, 2025 at 10:39:31AM -0700, Suren Baghdasaryan wrote:
-> This patch introduces a new "guarantee" property for shared-dma-pool.
-> With this property, admin can create specific memory pool as
-> GCMA-based CMA if they care about allocation success rate and latency.
-> The downside of GCMA is that it can host only clean file-backed pages
-> since it's using cleancache as its secondary user.
->=20
-> Signed-off-by: Minchan Kim <minchan@google.com>
-> Signed-off-by: Suren Baghdasaryan <surenb@google.com>
-> ---
->  arch/powerpc/kernel/fadump.c |  2 +-
->  include/linux/cma.h          |  2 +-
->  kernel/dma/contiguous.c      | 11 ++++++++++-
->  mm/cma.c                     | 33 ++++++++++++++++++++++++++-------
->  mm/cma.h                     |  1 +
->  mm/cma_sysfs.c               | 10 ++++++++++
->  6 files changed, 49 insertions(+), 10 deletions(-)
->=20
-> diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-> index 4b371c738213..4eb7be0cdcdb 100644
-> --- a/arch/powerpc/kernel/fadump.c
-> +++ b/arch/powerpc/kernel/fadump.c
-> @@ -111,7 +111,7 @@ void __init fadump_cma_init(void)
->  		return;
->  	}
-> =20
-> -	rc =3D cma_init_reserved_mem(base, size, 0, "fadump_cma", &fadump_cma);
-> +	rc =3D cma_init_reserved_mem(base, size, 0, "fadump_cma", &fadump_cma, =
-false);
->  	if (rc) {
->  		pr_err("Failed to init cma area for firmware-assisted dump,%d\n", rc);
->  		/*
-> diff --git a/include/linux/cma.h b/include/linux/cma.h
-> index 62d9c1cf6326..3207db979e94 100644
-> --- a/include/linux/cma.h
-> +++ b/include/linux/cma.h
-> @@ -46,7 +46,7 @@ extern int __init cma_declare_contiguous_multi(phys_add=
-r_t size,
->  extern int cma_init_reserved_mem(phys_addr_t base, phys_addr_t size,
->  					unsigned int order_per_bit,
->  					const char *name,
-> -					struct cma **res_cma);
-> +					struct cma **res_cma, bool gcma);
->  extern struct page *cma_alloc(struct cma *cma, unsigned long count, unsi=
-gned int align,
->  			      bool no_warn);
->  extern bool cma_pages_valid(struct cma *cma, const struct page *pages, u=
-nsigned long count);
-> diff --git a/kernel/dma/contiguous.c b/kernel/dma/contiguous.c
-> index 055da410ac71..a68b3123438c 100644
-> --- a/kernel/dma/contiguous.c
-> +++ b/kernel/dma/contiguous.c
-> @@ -459,6 +459,7 @@ static int __init rmem_cma_setup(struct reserved_mem =
-*rmem)
->  	unsigned long node =3D rmem->fdt_node;
->  	bool default_cma =3D of_get_flat_dt_prop(node, "linux,cma-default", NUL=
-L);
->  	struct cma *cma;
-> +	bool gcma;
->  	int err;
-> =20
->  	if (size_cmdline !=3D -1 && default_cma) {
-> @@ -476,7 +477,15 @@ static int __init rmem_cma_setup(struct reserved_mem=
- *rmem)
->  		return -EINVAL;
->  	}
-> =20
-> -	err =3D cma_init_reserved_mem(rmem->base, rmem->size, 0, rmem->name, &c=
-ma);
-> +	gcma =3D !!of_get_flat_dt_prop(node, "guarantee", NULL);
+It seems worth noting this as an additional vector for virtualizing the
+PIN register since we'd often expect the PIN is already zero if
+pdev->irq is zero.  I posted a patch[1], please review/test.  Thanks,
 
-When this (or if I guess) this goes !RFC, you will need to document this
-new property that you're adding.
+Alex
 
---fM541kW8FgR5YYtY
-Content-Type: application/pgp-signature; name="signature.asc"
+[1]https://lore.kernel.org/all/20250320194145.2816379-1-alex.williamson@redhat.com/
 
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZ91yRgAKCRB4tDGHoIJi
-0vghAQCIfI8+ZQNSSUJvyG5N5hCisJl/fWg9Vm7F5uQooGdzzwD/TYcjtjBBKsJv
-aa6VSuGFaENELpO0FBTADe4awZ04uA0=
-=vA0y
------END PGP SIGNATURE-----
-
---fM541kW8FgR5YYtY--
 
