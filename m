@@ -1,52 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7272-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7273-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9EA6A6BF9F
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 17:20:02 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4088CA6C0A2
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 17:54:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZK72S3m2wz2xl6;
-	Sat, 22 Mar 2025 03:20:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZK7p34ch6z30CF;
+	Sat, 22 Mar 2025 03:54:19 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742574000;
-	cv=none; b=hR7+K8SvGJ3v/X0bmOuNE6pxro2A6zOG1DGpS987FoW8NUwX91AwzHR0m7x/bG+unqZryAGNp8+mQD5hAkjs2jQKj8PhDQPDuTYVGTFQtV9iF9AdAsYVJP8DVhLuTkuiVfvmJcun52sSlNoTFXNKoOZBY01g0AyqE4SvTLtGp7Nh6wzorIqRbcDkJUsJ5Fmn5nxXPG1GXMaIZQQuBuCfWgqp7x4S8APo6mGqlY8Mkq0uIK+riZ1ZmgiMVTlk8SXCFgLjbpALl8mqnkGbt5R0GO5f4ZWSbxr+XWdboCpmqghSR+tJ31cH9/PmW9sXBIDj7Lo1sjlCkgnV8JKrDsJekA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::235"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742576059;
+	cv=none; b=M3NmjXy18P0JpH/2M9AOcBK7xPTIgNYLvLrBXibzUYQa9a4gKeWgZaYSWoHh6o+VMl5m7DyZJpQVa2h8CsVbscHChT7ozLQw96FvsIJ2eKS1Y9KI4OAs8QKoTnalGcAFKoO4zLM1h4ziQNpjluQp+wFI2N1u2kCBkjIeVyXg54PvaRjz9gmmgwnKjbX+8Eh0TwE8/gSkSIyCMTv9GMh68j8bnPIBKImufBhbaDkIKsC9hkutIJI7yEwhgSTZmKN88/XKDbUY5iEf7MYrEghroJlYol+pF469LzI7p7oiY/nudp2O8EzWAm8z9Qh5K9ZF0VwOTlSm1D2PO2P+HBjD7w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742574000; c=relaxed/relaxed;
-	bh=fG9wfZKtKEFmustfrPmN1a6rH6OGwMla1FdZ+LnH1fo=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=Gw6Q9jaK5OEA4XSme0ybYHOeL8ndYQWmYxmRwP2ZnMCrRiCvPHGrG1emvYEXE2KsiGAsyHzMcpSFPC0y9fDbGq/Iz4xLhXuKwZzods2PTpMej++dbxAKddkpeq3zkjqjtQn0wcinta4UpnDqQY2gFOmeKFD5/M59jlH1i7Iu8bVR3JNiUAoUxv3HcY2oNkoW4tPy2F5WtJvi3jdDUCJ61jxcgmfOP+Rff0pCv/Y9zZxXnitNI0651NjBhESkX3420oFsKG87YnK3ZR8IbjrNW7SD6qN2oGw3U6C/+ReWvYRuJsML07XGNDOletR55Zj/zF1IboSfgQKTy8KiVOIu9Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Liw89G9J; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1742576059; c=relaxed/relaxed;
+	bh=UOuUAOdU6fzwILEwoTUwQrZ3IxBywdm7PqAVnZyzNrk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=i4FI8f3AT0r6rOjisaR2l1FXWEgVbGGECHSBTWwOX/UoEGha57LZimHlfJjNM32VMoHtLuu15GyNNJAgCN5ENzkxF9n9q4KJ002AgUjSc8QVONTVLxavOji4hyHMaGbyexfNF2zRuBvI6gOq21zTq85AIs4qoPRImjLJRTT+SVSZENQZjVTNuWZ+OikAxkFIjWCKkHMEAgIBA4vDdwE65J29+0d+j2Jt/x00TOXE61y3LTtOD2m66UQd9pOk/XZt8dvA485fRPeOsZbAXKPbkDmY+B4EbelUlkxUJOzN77DE3rh3u2UhkHIcV2RX+fs0mp/9i2/cTWlMb3Gf2Nd3rA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Etq30h3F; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Liw89G9J;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Etq30h3F;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=patchwork-bot+netdevbpf@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::235; helo=mail-lj1-x235.google.com; envelope-from=tamird@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZK72R5qm2z2xdg
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 03:19:59 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 17DE65C6A7B;
-	Fri, 21 Mar 2025 16:17:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3447C4CEE3;
-	Fri, 21 Mar 2025 16:19:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742573995;
-	bh=XI2f7SgbQyb+AjtyGj/tTNrFlGkFGsaPs29m6a6WOvg=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=Liw89G9JebAAheTFGPYolng/r/+euxjKQK+sJFI4TrqTrKYLQRHVbvcRQ/cBk+UVz
-	 5nhfYLQHDxA+gubhPIX/1xxcAZ7mt/hNfftQON3JbzzwBeE3g8oGNTS+bKrhNsh8QI
-	 ZHbtZoZ+aMGmkJRNMypGw1p3Gf92SK3ZSEmv4S65j6IY9IQtQTpWa4ZJ/OFUsXhmXH
-	 DFxXrfg96Zi7aDVu/DBm1R3ssg6ut6k52DxOERAQWd2qPMLTXBmAsJQr9eSykde5hY
-	 bp2Rev6o3RCi4m78rkwZAMcMxqxJDPV7/raGRMQfAYLU75KhLqFmmnYpqmfaysku+2
-	 djJW8iK6RmiWQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id EBF0A3806659;
-	Fri, 21 Mar 2025 16:20:32 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZK7p20t9vz3089
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 03:54:17 +1100 (AEDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-30bef9b04adso23219611fa.1
+        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 09:54:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742576053; x=1743180853; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=UOuUAOdU6fzwILEwoTUwQrZ3IxBywdm7PqAVnZyzNrk=;
+        b=Etq30h3F20ZscfrE6OhwLkkhZuehAMjNRDmLykKoWXaIjEOnWZfGksxRNBlD5bN280
+         Q7uIObY1Z49+hobNjpgtlo9O+3UZc+PBe8Yy4y7/xyN6/lcZc5gXK2X5RF042HRiQ5Kj
+         rVLX1Ixf3XWuaYL+y6st1Te7FOh7HloO17RwFvpRON2H1NSz3tV5HgOzvwDfLY9jeYo3
+         3bqfp3err+JrnVYgtCvnSf4GYArXCRs0dKkQJc59HBXp3mLa4C7WpGzVCwK4Uyj39Fn/
+         WOQLwcy2JooW5neG0Z6xP6/7UkJWr+1f2E4w3XO5IzMFRcjUFwQAzsaQ3k80sZtJYxzd
+         vRkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742576053; x=1743180853;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UOuUAOdU6fzwILEwoTUwQrZ3IxBywdm7PqAVnZyzNrk=;
+        b=Vmu4vtX4Teg3UPz3g/kmS1wQ+bMSMiXk+VqnlccAhIB3z19YH4svt+r6Sjge/Z+EmR
+         KSpkxHiwjLa6qTvXzTJUukM/IPKRG6nooqUKfImeQ7Nrt1Be6UxJEP2dlLXNgdMcSSaK
+         rWDvBc0OypeK70Bviwv87kqVMUNXyrsaZa+FArSnT04vaSBLexYcOesuMKbDaxnpqKEN
+         nqlRX7Zr2VemaE4d19GFCGLF/AS6kXvOAMdzmNqwseMppHOtFDDxU6xXX6AXmJBRhcyW
+         SWksStvqTMP5i7hQ6UsWJHy4QXE+vJvI29/tBQ8BRBLNVAiawY2AvIj1V3ze8CFozWi8
+         2mLw==
+X-Forwarded-Encrypted: i=1; AJvYcCX0dB5+X+1/BjxbTUAAwvpsFqmuGShmz52Fyc/VBmZCkXhusod5ueT6FnLDKPZSa05yiiRPlM8CR5f4rO4=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YytEy3EdqBR6m/8dFMMOzJloqE2fd12JZ3R422aHN06aZKCRuWm
+	tsRReAcODcEQR6CnrncrdAjg7193zdzV+IFkcLulDWVUN3uGdCGfmPAvp0rvFYHjUPxCLUmlFcS
+	a9BI88EpLEVb13TuHcnQ2kXavFhg=
+X-Gm-Gg: ASbGncsmecfD4rJY5BFkiJtYD+57qE/SUvCTaG08mQHcDh9Ts5JUg5twtiASlvtXC6g
+	g5hulicsSRHzNykDzFjjylH+YSQwGCIvBktLW0IFoTcX+3y1eG/rNmYz/nJaOY0ET32Gg0i3qSS
+	ywkQPYEA8I5BVGY/CjmMkuRbLIAReCqC49G4GammRG5g==
+X-Google-Smtp-Source: AGHT+IG4olNJH+a7c6RlZFJF8zMksT58/wvmA/7TP25sQDIbCAdnPDYZgYQ8vKGk1x10x0tRVyTKoEGU45fo+N4bqok=
+X-Received: by 2002:a2e:8e73:0:b0:30b:b7c3:949a with SMTP id
+ 38308e7fff4ca-30d7e2383b9mr16939331fa.18.1742576052901; Fri, 21 Mar 2025
+ 09:54:12 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -59,50 +76,58 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH] net: remove sb1000 cable modem driver
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <174257403177.2538209.5678698281791174462.git-patchwork-notify@kernel.org>
-Date: Fri, 21 Mar 2025 16:20:31 +0000
-References: <20250312085236.2531870-1-arnd@kernel.org>
-In-Reply-To: <20250312085236.2531870-1-arnd@kernel.org>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
- pabeni@redhat.com, andrew+netdev@lunn.ch, arnd@arndb.de, horms@kernel.org,
- corbet@lwn.net, christophe.leroy@csgroup.eu, rafael@kernel.org,
- netdev@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- linux-acpi@vger.kernel.org
-X-Spam-Status: No, score=-6.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250207-bitmap-kunit-convert-v1-0-c520675343b6@gmail.com>
+ <Z6eaDuXnT_rjVSNS@thinkpad> <CAMuHMdUsq_39kgBa8oanXeTzv44HuhS1e5MK7K2jxkVXQ7uWdw@mail.gmail.com>
+ <bd71c705-5f57-4067-b200-fd80b98ddbc9@nvidia.com> <Z6pfomw-3LuWoQQo@thinkpad> <CABVgOS=KZrM2dWyp1HzVS0zh7vquLxmTY2T2Ti53DQADrW+sJg@mail.gmail.com>
+In-Reply-To: <CABVgOS=KZrM2dWyp1HzVS0zh7vquLxmTY2T2Ti53DQADrW+sJg@mail.gmail.com>
+From: Tamir Duberstein <tamird@gmail.com>
+Date: Fri, 21 Mar 2025 12:53:36 -0400
+X-Gm-Features: AQ5f1JocXlnKOaYntHf6DffQI-TKvt-QvytM7DCEc6s7gdq0Tj17rR69Ljw6v-g
+Message-ID: <CAJ-ks9mevv68v1Mh0GdGd9Y2EEp3_kdV6FygOiAenYG0=e4=Tw@mail.gmail.com>
+Subject: Re: distro support for CONFIG_KUNIT: [PATCH 0/3] bitmap: convert
+ self-test to KUnit
+To: David Gow <davidgow@google.com>
+Cc: Yury Norov <yury.norov@gmail.com>, John Hubbard <jhubbard@nvidia.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, Rasmus Villemoes <linux@rasmusvillemoes.dk>, 
+	Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Muhammad Usama Anjum <usama.anjum@collabora.com>, linux-kernel@vger.kernel.org, 
+	linux-m68k@lists.linux-m68k.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-kselftest@vger.kernel.org, Brad Figg <bfigg@nvidia.com>, 
+	David Hildenbrand <david@redhat.com>, Michal Hocko <mhocko@suse.com>, Jason Gunthorpe <jgg@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello:
+Hi all, now that the printf and scanf series have been taken via kees'
+tree[0] and sent in for v6.15-rc1[1], I wonder if we'd like to revisit
+this discussion.
 
-This patch was applied to netdev/net-next.git (main)
-by Paolo Abeni <pabeni@redhat.com>:
+As I understand it, the primary objections to moving bitmap to KUnit were:
+- Unclear benefits.
+- Source churn.
+- Extra dependencies for benchmarks.
 
-On Wed, 12 Mar 2025 09:51:19 +0100 you wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> This one is hilariously outdated, it provided a faster downlink over
-> TV cable for users of analog modems in the 1990s, through an ISA card.
-> 
-> The web page for the userspace tools has been broken for 25 years, and
-> the driver has only ever seen mechanical updates.
-> 
-> [...]
+Hopefully David's enumeration of the benefits of KUnit was compelling.
+Regarding source churn: it is inevitable, but I did pay attention to
+this and minimized the diff where possible.
 
-Here is the summary with links:
-  - net: remove sb1000 cable modem driver
-    https://git.kernel.org/netdev/net-next/c/3fed9fda150d
+The last point is trickiest, because KUnit doesn't have first-class
+benchmark support, but nor is there a blessed benchmark facility in
+the kernel generally. I'd prefer not to tie this series to distros
+enabling KUNIT_CONFIG by default, which will take $time.
 
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
+I think the most sensible thing we can do - if we accept that KUnit
+has benefits to offer - is to split test_bitmap.c into
+benchmark_bitmap.c and bitmap_kunit.c.
 
+Please let me know your thoughts.
+Tamir
 
+[0] https://web.git.kernel.org/pub/scm/linux/kernel/git/kees/linux.git/log/?h=move-lib-kunit-v6.15-rc1
+[1] https://lore.kernel.org/all/202503170842.FFEE75351@keescook/
 
