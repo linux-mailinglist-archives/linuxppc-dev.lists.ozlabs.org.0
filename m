@@ -1,84 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7260-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7261-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37762A6B87C
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 11:07:53 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id C59BBA6B8A9
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 11:20:41 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJyn23KNTz30Bd;
-	Fri, 21 Mar 2025 21:07:50 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZJz3q1xgjz30HB;
+	Fri, 21 Mar 2025 21:20:39 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742551670;
-	cv=none; b=n+Ptj/IJDtb9A0vVOPei7TSI4u/COTjCE6tZE6DvZquR7ktSfetOx1zlDyMLBJf9UMvLoBn5WVmfIHZCoHgWhkY/Eyt6rzemJ8UHNj7UWzYYIBujX+iADiX7ws9Dq8dnR4go8I6x8TN5TqzbnkCTvpENtbbMUzwPW90Ru18C+7fNFhhgCWkk55hNRq+ZmEZRLDg8QeoHIRDiCIozuRdYBA2ug1iG8pILM7mv9GSm3f6sPwUGzHhR1rCfTydzidjiAOvqg56p84+pGc4qL6m+gxgg8nvif8ucFc/nykPwfhUIyUMBROXvtEB72Q4mI02QCmPwC6WilUkgdEeudYBZuA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742552439;
+	cv=none; b=goYGR0Q8tqAOPqGo2SxgHTx+NFcI0dMJC7ZuSFAQQz4NkEmCe49NHZKJ3ChsliML8l9qQvyumHtwf1Yxw45m8dmGYOG8ysGS9XJX6V30jhSl0z66UE/q4lxHgUTBsoTYE1luXXlAYVVlhb1lPaL/e4s06WI47hX3C1l6snvZAhSelWAQfiGXWxexPvg0xJ/LEBL+1yjvjwQy30vy1r3OhJKtqAy+NNYVE6h9yg69bq2bCP5sR6n6urw5yix/TP9e0NS9w4O0dJe4cP8JBArzqmJFsQlnnEaCsv5eXo0rU6jITOI31+qsqme+oc1xh4+ZCH01Oq3HSwxW7G/uf1V6/A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742551670; c=relaxed/relaxed;
-	bh=4XjLjnWnS+ew2vEBAG7UnbXuh8vaeLiFyoddfqTArTQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Euwe60WaD6qnnxKtBzBdqZxgdKOwW2EuesvRngSBMcQL6Bvokj+WDA1FqLC83DgNGzYl1cSPFBSa5xpiaL+EAwgJxhAFdu5gPhQUPgUd2zwnWTeLY+q51E5PWSd18WGuGw3iinHQoQyjwA8WMPZmcr0Ue7to9vHyqbXcZcq6P7dvcQNWFDVdCQf9nPXHj4IaTkx3X5vt5xeI+zCJU4us3ErbJgQqstQyTjUC4voazqyM61W4t4u46UIEacSNNRvO+5L0ABeH7nKO2Zm+OwBDiTE5MFrUDCZcmgk72FQwjE/NH758wavT9KKpjZ1fEFsIPY6eTYYFYMD8PbOb0GUGcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=awiEtE80; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1742552439; c=relaxed/relaxed;
+	bh=k6sITkLL5WSaXK5P4wsfuCU5WdDjGxfaJ23BEDNo1C4=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=XWcHWlQGZR/1rVnVn48tu5hWWzBuxWT/4+h/w0zUl29vMjdLNv8R6u+Nm456NcZaJhSrlc9iDE1QUPvB63dO6MnXTNxP3rWGaE1B2XucBtUG6WOrH6rHgtrwBSJA+7Tq+qe79TubfHM1vgecmMM04A9dg2PuDXD776qm9r/1OfnUrpIhOefpZjXkaJ61fvmc+Vo7WDYL1kAxLkaRugdcLFmXCLZkyeePhjuPCU50t0a87GbvTGGUCa5MZ6w5B6x14rtKYMJWTpNAupWDZAe4rLsh/DUiiVJSYy3XiY+Qbt9f3dwFp86iN4OROAU548c8V/vT4Pmlb4fpXmJKRxVeAQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DpdThO82; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=awiEtE80;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=DpdThO82;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJyn13NLRz3093
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 21:07:48 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52KNGCN4024127;
-	Fri, 21 Mar 2025 10:07:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=4XjLjnWnS+ew2vEBAG7UnbXuh8vaeLiFyoddfqTAr
-	TQ=; b=awiEtE80WhJRcDLJqeAqQ38/nkEk9XF+wN37hAMV4nzyEFWm9Qf6sTj3V
-	gB5KOcBctT80y2CxIl38z8yRi6ue8LugmMK9G6zshAN5343MrCh4S7VkqWm0xSUp
-	U/cqtTqrigF69oNkxeIGu/mhrMHx+wzk84bpwq0UJecPC6t4mrBZ4/KxBdKt0tD/
-	my493OYNIaQHuIEw5o0vPDtUn+HAVb1nQxBfHf6RJP0H8xJKPb2qTDSA5rMxJfOQ
-	MNnmS4goTXVu69wmlaOx8+1c4Mu/9WXg8ImECcjA74k1SK6O7pgGFMf45/atZvyQ
-	9Pld5/Oz/bRyx3ldhR8CHHZWN0I4A==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gk21wrkh-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 10:07:43 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52L9Yi7t023627;
-	Fri, 21 Mar 2025 10:07:42 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZJz3p3Kk7z30CF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 21:20:37 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52L9uFc1015378;
+	Fri, 21 Mar 2025 10:20:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=k6sITkLL5WSaXK5P4wsfuCU5WdDj
+	GxfaJ23BEDNo1C4=; b=DpdThO82xS6WJDPFZwZ9MAvH2GVqZnJE/leMGADT7ijh
+	1wdb94Yf5POag+ZMiiwe282pajPdndgF1rwzDTsbADub3t6LwaVQEfMZt9iBq0if
+	IczInQU8wf7W7Qkuax2869l7WVpREW5JmUZ4Zs/28Uag8JyhuSTZyBERRqYxMy0C
+	JWdGpEal/cojHSVv4OBUuQzZ+g31XLgWmfwTgDIkryBGquSL5kIB6JYVJ9Yir42e
+	6IF4tTm3EccHy03XZf4NfmgK81z8ENJxPdEt4In4i3ilUyN4t4LHgWU12fWSOv6K
+	s5anm2/IFfkR2yrdD8bd2sxj2i9mrOZxl5VBfTTosQ==
 Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gk21wrke-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45gt80twtp-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 10:07:42 +0000 (GMT)
+	Fri, 21 Mar 2025 10:20:34 +0000 (GMT)
 Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52L6MdXJ019192;
-	Fri, 21 Mar 2025 10:07:41 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dmvpcrtb-1
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52L6MeOa019206;
+	Fri, 21 Mar 2025 10:20:34 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45dmvpcsx6-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 21 Mar 2025 10:07:41 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52LA7bq157672114
+	Fri, 21 Mar 2025 10:20:34 +0000
+Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52LAKXcP7733842
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 21 Mar 2025 10:07:37 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 90E942004F;
-	Fri, 21 Mar 2025 10:07:37 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 61DD82004E;
-	Fri, 21 Mar 2025 10:07:35 +0000 (GMT)
-Received: from li-e616facc-2daa-11b2-a85c-9c7f23c3cd5e.ibm.com.com (unknown [9.39.27.250])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 21 Mar 2025 10:07:35 +0000 (GMT)
-From: Likhitha Korrapati <likhitha@linux.ibm.com>
-To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
-        irogers@google.com, namhyung@kernel.org
-Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        maddy@linux.ibm.com, atrajeev@linux.ibm.com,
-        Likhitha Korrapati <likhitha@linux.ibm.com>
-Subject: [PATCH] tools/perf/arch/powerpc/util: Fix is_compat_mode build break  in ppc64
-Date: Fri, 21 Mar 2025 15:37:26 +0530
-Message-ID: <20250321100726.699956-1-likhitha@linux.ibm.com>
-X-Mailer: git-send-email 2.43.5
+	Fri, 21 Mar 2025 10:20:33 GMT
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5417458054;
+	Fri, 21 Mar 2025 10:20:33 +0000 (GMT)
+Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E61605805C;
+	Fri, 21 Mar 2025 10:20:31 +0000 (GMT)
+Received: from [9.61.240.173] (unknown [9.61.240.173])
+	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 21 Mar 2025 10:20:31 +0000 (GMT)
+Message-ID: <e4b1ccf8-c626-4683-82db-219354a27e61@linux.ibm.com>
+Date: Fri, 21 Mar 2025 15:50:30 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,66 +76,138 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+To: LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>, riteshh@linux.ibm.com
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [linux-next-20250320][btrfs] Kernel OOPs while running btrfs/108
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: AmVX1TC4-LSgmBiGagmKET8Q_c_D9Szp
-X-Proofpoint-GUID: gJ0kBAn_jnj9GiitlXgT-4ewojWjdPVz
+X-Proofpoint-ORIG-GUID: btmRWDcLj9gkBB12ZSskeBVP_KUyEkH1
+X-Proofpoint-GUID: btmRWDcLj9gkBB12ZSskeBVP_KUyEkH1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-21_03,2025-03-20_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 clxscore=1011
- bulkscore=0 adultscore=0 priorityscore=1501 spamscore=0 mlxlogscore=950
- malwarescore=0 phishscore=0 impostorscore=0 lowpriorityscore=0 mlxscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503210069
+ definitions=2025-03-21_04,2025-03-20_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=986 phishscore=0
+ priorityscore=1501 mlxscore=0 adultscore=0 suspectscore=0 clxscore=1015
+ impostorscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2503210073
 X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Commit 54f9aa1092457 ("tools/perf/powerpc/util: Add support to
-handle compatible mode PVR for perf json events") introduced
-to select proper JSON events in case of compat mode using
-auxiliary vector. But this caused a compilation error in ppc64
-Big Endian.
+Greetings!!!
 
-arch/powerpc/util/header.c: In function 'is_compat_mode':
-arch/powerpc/util/header.c:20:21: error: cast to pointer from
-integer of different size [-Werror=int-to-pointer-cast]
-   20 |         if (!strcmp((char *)platform, (char *)base_platform))
-      |                     ^
-arch/powerpc/util/header.c:20:39: error: cast to pointer from
-integer of different size [-Werror=int-to-pointer-cast]
-   20 |         if (!strcmp((char *)platform, (char *)base_platform))
-      |
 
-Commit saved the getauxval(AT_BASE_PLATFORM) and getauxval(AT_PLATFORM)
-return values in u64 which causes the compilation error.
+I am observing Kernel oops while running brtfs/108 TC on IBM Power System.
 
-Patch fixes this issue by changing u64 to "unsigned long".
+Repo: Linux-Next (next-20250320)
 
-Fixes: 54f9aa1092457 ("tools/perf/powerpc/util: Add support to handle compatible mode PVR for perf json events")
-Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
----
- tools/perf/arch/powerpc/util/header.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Traces:
 
-diff --git a/tools/perf/arch/powerpc/util/header.c b/tools/perf/arch/powerpc/util/header.c
-index c7df534dbf8f..0be74f048f96 100644
---- a/tools/perf/arch/powerpc/util/header.c
-+++ b/tools/perf/arch/powerpc/util/header.c
-@@ -14,8 +14,8 @@
- 
- static bool is_compat_mode(void)
- {
--	u64 base_platform = getauxval(AT_BASE_PLATFORM);
--	u64 platform = getauxval(AT_PLATFORM);
-+	unsigned long base_platform = getauxval(AT_BASE_PLATFORM);
-+	unsigned long platform = getauxval(AT_PLATFORM);
- 
- 	if (!strcmp((char *)platform, (char *)base_platform))
- 		return false;
--- 
-2.43.5
+[  418.392604] run fstests btrfs/108 at 2025-03-21 05:11:21
+[  418.560137] Kernel attempted to read user page (0) - exploit attempt? 
+(uid: 0)
+[  418.560156] BUG: Kernel NULL pointer dereference on read at 0x00000000
+[  418.560161] Faulting instruction address: 0xc0000000010ef8b0
+[  418.560166] Oops: Kernel access of bad area, sig: 11 [#1]
+[  418.560169] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA pSeries
+[  418.560174] Modules linked in: btrfs blake2b_generic xor raid6_pq 
+zstd_compress loop nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib 
+nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct 
+nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 bonding nf_defrag_ipv4 
+tls rfkill ip_set nf_tables nfnetlink sunrpc pseries_rng vmx_crypto fuse 
+ext4 mbcache jbd2 sd_mod sg ibmvscsi scsi_transport_srp ibmveth
+[  418.560212] CPU: 1 UID: 0 PID: 37583 Comm: rm Kdump: loaded Not 
+tainted 6.14.0-rc7-next-20250320 #1 VOLUNTARY
+[  418.560218] Hardware name: IBM,9080-HEX Power11
+[  418.560223] NIP:  c0000000010ef8b0 LR: c00800000bb190ac CTR: 
+c0000000010ef888
+[  418.560227] REGS: c0000000a252f5a0 TRAP: 0300   Not tainted 
+(6.14.0-rc7-next-20250320)
+[  418.560232] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 
+44008444  XER: 20040000
+[  418.560240] CFAR: c00800000bc1df84 DAR: 0000000000000000 DSISR: 
+40000000 IRQMASK: 1
+[  418.560240] GPR00: c00800000bb190ac c0000000a252f840 c0000000016a8100 
+0000000000000000
+[  418.560240] GPR04: 0000000000000000 0000000000010000 0000000000000000 
+fffffffffffe0000
+[  418.560240] GPR08: c00000010724aad8 0000000000000003 0000000000001000 
+c00800000bc1df70
+[  418.560240] GPR12: c0000000010ef888 c000000affffdb00 0000000000000000 
+0000000000000000
+[  418.560240] GPR16: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[  418.560240] GPR20: c0000000777a8000 c00000006a9c9000 c00000010724a950 
+c0000000777a8000
+[  418.560240] GPR24: fffffffffffffffe c00000010724aad8 0000000000010000 
+00000000000000a0
+[  418.560240] GPR28: 0000000000010000 c00c00000048c3c0 0000000000000000 
+0000000000000000
+[  418.560287] NIP [c0000000010ef8b0] _raw_spin_lock_irq+0x28/0x98
+[  418.560294] LR [c00800000bb190ac] wait_subpage_spinlock+0x64/0xd0 [btrfs]
+[  418.560339] Call Trace:
+[  418.560342] [c0000000a252f870] [c00800000bb205dc] 
+btrfs_invalidate_folio+0xa8/0x4f0 [btrfs]
+[  418.560384] [c0000000a252f930] [c0000000004cbcdc] 
+truncate_cleanup_folio+0x110/0x14c
+[  418.560391] [c0000000a252f960] [c0000000004ccc7c] 
+truncate_inode_pages_range+0x100/0x4dc
+[  418.560397] [c0000000a252fbd0] [c00800000bb20ba8] 
+btrfs_evict_inode+0x74/0x510 [btrfs]
+[  418.560437] [c0000000a252fc90] [c00000000065c71c] evict+0x164/0x334
+[  418.560443] [c0000000a252fd30] [c000000000647c9c] do_unlinkat+0x2f4/0x3a4
+[  418.560449] [c0000000a252fde0] [c000000000647da0] sys_unlinkat+0x54/0xac
+[  418.560454] [c0000000a252fe10] [c000000000033498] 
+system_call_exception+0x138/0x330
+[  418.560461] [c0000000a252fe50] [c00000000000d05c] 
+system_call_vectored_common+0x15c/0x2ec
+[  418.560468] --- interrupt: 3000 at 0x7fffb1b366bc
+[  418.560471] NIP:  00007fffb1b366bc LR: 00007fffb1b366bc CTR: 
+0000000000000000
+[  418.560475] REGS: c0000000a252fe80 TRAP: 3000   Not tainted 
+(6.14.0-rc7-next-20250320)
+[  418.560479] MSR:  800000000280f033 
+<SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44008804  XER: 00000000
+[  418.560490] IRQMASK: 0
+[  418.560490] GPR00: 0000000000000124 00007ffffcb4e2b0 00007fffb1c37d00 
+ffffffffffffff9c
+[  418.560490] GPR04: 000000013d660380 0000000000000000 0000000000000000 
+0000000000000003
+[  418.560490] GPR08: 0000000000000000 0000000000000000 0000000000000000 
+0000000000000000
+[  418.560490] GPR12: 0000000000000000 00007fffb1dba5c0 00007ffffcb4e538 
+000000011972d0e8
+[  418.560490] GPR16: 000000011972d098 000000011972d060 000000011972d020 
+000000011972cff0
+[  418.560490] GPR20: 000000011972d298 000000011972cc10 0000000000000000 
+000000013d6615a0
+[  418.560490] GPR24: 0000000000000002 000000011972d0b8 000000011972cf98 
+000000011972d1d0
+[  418.560490] GPR28: 00007ffffcb4e538 000000013d6602f0 0000000000000000 
+0000000000100000
+[  418.560532] NIP [00007fffb1b366bc] 0x7fffb1b366bc
+[  418.560536] LR [00007fffb1b366bc] 0x7fffb1b366bc
+[  418.560538] --- interrupt: 3000
+[  418.560541] Code: 7c0803a6 4e800020 3c4c005c 38428878 7c0802a6 
+60000000 39200001 992d0932 a12d0008 3ce0fffe 5529083c 61290001 
+<7d001829> 7d063879 40c20018 7d063838
+[  418.560555] ---[ end trace 0000000000000000 ]---
+
+
+If you happed to fix this, please add below tag.
+
+
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Regards,
+
+Venkat.
 
 
