@@ -1,87 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-7284-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7285-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C034AA6C4CE
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 22:06:09 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14AF6A6C513
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 21 Mar 2025 22:24:52 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZKFNb1C9Tz2xfR;
-	Sat, 22 Mar 2025 08:06:07 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZKFnq5n7lz2ySK;
+	Sat, 22 Mar 2025 08:24:31 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.129.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742591167;
-	cv=none; b=gRxkOuyh2PQRN5Ce/J2uY30Pi8RKlNgj4Tckr7ExnGa9Ej/PGkKFfooNVZYs3bg5kh8UNiek7ZiMz5GTY3lm1jZ6eEs5rMf23jx74zvEcp6IszaLZhIthtwLBw/w+O9gwCmvPOTwS3nnY5aWyW/bifDzHW8dM+rkQ1FTDM2PLdvK09h33tWS3vZBMSiAU5bwGargmcUARErQvksQAvcei6TmUdSAWBDPdr18ZzHhpCGTTqNlG8BAIqpRfDGQUYVxN53LLvKzd73soS7FYwDKapOIFbBmw4ZypMBYn3GmfSA6Ix+egq1qPbgHNlAW1IBy7d9KeE8U0WLi/PzQhklbjQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=212.227.17.22
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742592271;
+	cv=none; b=nHfxQ6rVv35hU8rRAij/bRQ2+YO2NdSRCETUo9JUwOp83eePN+SnxADqmBv9Eu7hFwrPLUr0+8/4s10PVwSj1WkIpHKtS3GWtdsiUhdJHTapxkZo0E1HRVbLz2cs7oMoCdYWRWYxgK+a0hwxcG0T9dzM5KcipxxKWzPgu3xDT6pmI8oWUm6UI86r4e6fjtirJwvtruy8sfXGGRolfG7uk6zDTdf3kxGgYgiS4ndoib0s5uYNoMLxIoSumQb4HFLYJ5r0JHKuOJriL4Qmy5FOa+4JBrSERyV+/Kk2o9jAglIpWaik3+BKXOgZdt7Znm3zlSmrys9wRiGa7x56X2H0nA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742591167; c=relaxed/relaxed;
-	bh=WRnJoqDrjjM/0a1a+E2erJF3D59Mlmw/EEkVC6fPK4Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DnBC+nK7HHnQGQvKrgQADrbuz17zJU+EhmdtEcmhfGbAmbVRZwsMSv+dKdDwVXxOQW8iQ/MCJnbYylu477gARahDmjOO6VvP6Sj4DOUwkQODqNXvSt7KXqrapc/GZGlh2INOFETx/7pa8ipSLh7xVtX8eCliDM1iK8sAV2aVwuL7+eP0sV3b5KYaa9MIRCmwCIWMrbCP7Gpuv3aybS0vn4he+5fblz9LGYb2noo/qmQW4OPvIclFo+2wKKGalkKtz4OeokA4tzuFBGU2vA7qEG57mpE2jJ0QPbjp6MI56Fotk3xKRMvrZXQNq5fKtVnKJQERgWBs5rgock8mU0oBKA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gHmxFAY0; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ClT+65h7; dkim-atps=neutral; spf=pass (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=acarmina@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1742592271; c=relaxed/relaxed;
+	bh=IVnb8ZwPiwiyfmuh233CWz1oUTuFPqMcfBUsXXDRahk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=cVaaoIds9F5VbTWF7BtcxeeLP7Jj4F2P/b8qYCI39GwDsSoz+C488rgOFcPpbPzFgWl9EcCNgGZCZfaLVUX7HV1swKHOe4MiRiuP0MCgZV3oXsmgdKT6rtMg8dX+WS09UDIN/vJ7LCJUIyFsOwbLcQQl+AqLbXISetS0epBBFzeblEmfNN9WDe8ZhpggUXYAos73IVWcfhhePlxMSp4uNkQ/UcPiimArRWb19TxP3EjCzdpDmm47IvSchZWcRS3OJ+axw480dgTbFhHUqGwyOhMmJGG3plKC+dcK7fX8jnZcp7fNmxwhza5rxLSwXwIgrvBZMNkojmzSgFi3Vb9Elg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com; dkim=pass (2048-bit key; secure) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.a=rsa-sha256 header.s=s31663417 header.b=izICLJ8I; dkim-atps=neutral; spf=pass (client-ip=212.227.17.22; helo=mout.gmx.net; envelope-from=quwenruo.btrfs@gmx.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmx.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=gHmxFAY0;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=ClT+65h7;
+	dkim=pass (2048-bit key; secure) header.d=gmx.com header.i=quwenruo.btrfs@gmx.com header.a=rsa-sha256 header.s=s31663417 header.b=izICLJ8I;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.129.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=acarmina@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmx.com (client-ip=212.227.17.22; helo=mout.gmx.net; envelope-from=quwenruo.btrfs@gmx.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 313 seconds by postgrey-1.37 at boromir; Sat, 22 Mar 2025 08:24:28 AEDT
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZKFNX0Rs0z2xd6
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 08:06:01 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742591158;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WRnJoqDrjjM/0a1a+E2erJF3D59Mlmw/EEkVC6fPK4Y=;
-	b=gHmxFAY0KhiJFMaJ6aPKNM6ITg/GX8BYG+FTO3HdEgTT6w6kbZzLOfaTaYgJ1m2nRZyUBJ
-	D8lj44UqFv3S3oXqPQnDtha4pCp0tCjl8sWYEZV8pwmfiHIJ10m75LA9gsffsmRJvvqiRr
-	k2HV1quk896qb504/VOdQhe2S95lhqE=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1742591159;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WRnJoqDrjjM/0a1a+E2erJF3D59Mlmw/EEkVC6fPK4Y=;
-	b=ClT+65h7v3dL4SymA1AG2dSqHUesNCJfP/6xAW70I1F2dqF8tRTuxBbLVIm0RBLa9+MkN4
-	uxA4/DnIM8j4dId0pR2fCSL02Wy53vQV408DBl3E8QhxHpjWA43uI3Ek4f481CeN7JYSgv
-	zQyKskM9LROKHEhEexpVoot1ZbJzCuU=
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
- [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-cPTBwEW_Nx2CCjm_f7MAnQ-1; Fri, 21 Mar 2025 17:05:55 -0400
-X-MC-Unique: cPTBwEW_Nx2CCjm_f7MAnQ-1
-X-Mimecast-MFC-AGG-ID: cPTBwEW_Nx2CCjm_f7MAnQ_1742591154
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-224364f2492so34645975ad.3
-        for <linuxppc-dev@lists.ozlabs.org>; Fri, 21 Mar 2025 14:05:54 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742591154; x=1743195954;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=WRnJoqDrjjM/0a1a+E2erJF3D59Mlmw/EEkVC6fPK4Y=;
-        b=aC9FwbEIMyOBj2YM3WOFuUg8/CmAHb5YubQ3JCoFTcV0Yb6xOWBvLiqemM0iSBJZNd
-         4vovuflwcnaCJwx8n/IOZ/f0IlE72CCpFHspc3YCFB+2bM0z56JtC/Lmgs/4T8+zKSI2
-         5pWgvpdZY/YU4RtLtXKrff5wi25cVtdJ/aaIgX6C1cvPUonBfWKmllbOywBSghU9pve6
-         JBY2sLC7Ca1Xf3chMPIyBdNrLBisghHP4AmYKYbRobmdyk0RDF3u1V9eE2qHPxhWsWIN
-         QBS4dP/097JVbKrOQ1U8zw8yWOOX7eQ4A1ju7h0NH9/53QA4cAnoaqU/P/Xn284qG95y
-         nBVg==
-X-Forwarded-Encrypted: i=1; AJvYcCWaBEbQPZvYIn8xmocNOzcfx6zrjE0LVOfMrMwfm3ffyY7hGCT77TbrLevj50Et/yW/bI9R7GgvUtKgERY=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YweqKEJ4r6bBwmfL4sXgCHyzluIfHtBD30MD9r2yMCRAQ8LvEPH
-	QebeEwvdg7OyvFPiOkgsVH3v0rJA+NO0/kv2svdnh4iEEc7M6MbnL3VWL/CafLFAZPc2lQWIYnB
-	0juD4NuC1EDaINKJXsm0RgMwOkdAgkBv0DzG5nLMAVlyQjLdXlkuxXQv3+wyO9FtrFVl2CNUDNF
-	NITOqBlUW0qx4Tuq3apBEtBAUHUxkkA2h8TrSwSw==
-X-Gm-Gg: ASbGncsJzQFk4UWzV8x8ZjO6EBq+mVJBaFMc5MT3zNGDIv6VBmAotg0dHuYAd32H/wg
-	Trj906XZHFBa1HRbHW7l4vZm/n4b+fa2e7fzeNBVBxucvX4iJH1qfnuSHV8yp7TXSgvgcugU=
-X-Received: by 2002:a17:902:ce08:b0:224:2175:b0cd with SMTP id d9443c01a7336-22780db3884mr78325185ad.26.1742591153928;
-        Fri, 21 Mar 2025 14:05:53 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEN00ZwsCSvrb1GxmsoNJZNu7MKJs1Ucfk1lD2MiRFFRVzqqr5ClONI/dVh1idt8Msn85KVY7jetnaUeKy09VA=
-X-Received: by 2002:a17:902:ce08:b0:224:2175:b0cd with SMTP id
- d9443c01a7336-22780db3884mr78324575ad.26.1742591153425; Fri, 21 Mar 2025
- 14:05:53 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZKFnm5vcMz2yRx
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 08:24:28 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.com;
+	s=s31663417; t=1742592263; x=1743197063; i=quwenruo.btrfs@gmx.com;
+	bh=IVnb8ZwPiwiyfmuh233CWz1oUTuFPqMcfBUsXXDRahk=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=izICLJ8I8y93rVHKlBT29IgNlbEFLSg6V1GWDvv+pXjIt5/TefmjzxsImPCFzyjp
+	 Ar/w0RFof0FKXz9/VKZ8FkPcXi56ehaqG4Ah/qEhzbO6hPDBGkofAiU/Y8bIYj7ad
+	 SQpI4FsAb+sgo2ITc7VzjciXintn6HwWHdOg7rXrQGogcFjZGiBK4G9+PY4mhkyAj
+	 CzO9OLKMl9Wi+QsV8ntZYEHUiKpqlAg3mSF5kBI1kEgGF+gcOq81Fgbti76FH4Cqn
+	 eqgnqtfXJ1B+aNSLHZt3Gt9iN4Y5cNZdeuN0kTITYd+G49KlDqaLeKFZHLUQnHLC8
+	 pcnnCDijgf7alQPcog==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [172.16.0.191] ([159.196.52.54]) by mail.gmx.net (mrgmx105
+ [212.227.17.174]) with ESMTPSA (Nemesis) id 1Mkpap-1tSDBU3OxT-00gN1B; Fri, 21
+ Mar 2025 22:19:00 +0100
+Message-ID: <d3be2a1b-71d9-425f-bb56-30d3fd890270@gmx.com>
+Date: Sat, 22 Mar 2025 07:48:54 +1030
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,341 +61,263 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250313114329.284104-1-acarmina@redhat.com> <20250313114329.284104-11-acarmina@redhat.com>
- <b6bb68f0-7e93-4db2-9fe6-f615f06ddeb1@roeck-us.net>
-In-Reply-To: <b6bb68f0-7e93-4db2-9fe6-f615f06ddeb1@roeck-us.net>
-From: Alessandro Carminati <acarmina@redhat.com>
-Date: Fri, 21 Mar 2025 22:05:42 +0100
-X-Gm-Features: AQ5f1JoQT0Axds-sBfJ5O3FpL2NPQAbk3ZSqHh9aN-1kzXKN_DmP6zsQowxJbF0
-Message-ID: <CAGegRW4GinPmsav5=VBfjXBKy4cUEs5FWv-ixXODk7ajZ69vYg@mail.gmail.com>
-Subject: Re: [PATCH v4 10/14] s390: Add support for suppressing warning backtraces
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>, 
-	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, Kees Cook <keescook@chromium.org>, 
-	Daniel Diaz <daniel.diaz@linaro.org>, David Gow <davidgow@google.com>, 
-	Arthur Grillo <arthurgrillo@riseup.net>, Brendan Higgins <brendan.higgins@linux.dev>, 
-	Naresh Kamboju <naresh.kamboju@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard <mripard@kernel.org>, 
-	=?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
-	Daniel Vetter <daniel@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>, 
-	Alessandro Carminati <alessandro.carminati@gmail.com>, Jani Nikula <jani.nikula@intel.com>, 
-	dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com, 
-	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	linux-sh@vger.kernel.org, loongarch@lists.linux.dev, x86@kernel.org, 
-	Linux Kernel Functional Testing <lkft@linaro.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>, 
-	Alexander Gordeev <agordeev@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: c3irt5hZ7ixpuuXdUGQBbu6E6hTmeKiol-ow0XPwUVE_1742591154
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [linux-next-20250320][btrfs] Kernel OOPs while running btrfs/108
+To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+ Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
+ LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
+ Madhavan Srinivasan <maddy@linux.ibm.com>, linux-btrfs@vger.kernel.org
+References: <e4b1ccf8-c626-4683-82db-219354a27e61@linux.ibm.com>
+ <87h63ms7gk.fsf@gmail.com>
+Content-Language: en-US
+From: Qu Wenruo <quwenruo.btrfs@gmx.com>
+Autocrypt: addr=quwenruo.btrfs@gmx.com; keydata=
+ xsBNBFnVga8BCACyhFP3ExcTIuB73jDIBA/vSoYcTyysFQzPvez64TUSCv1SgXEByR7fju3o
+ 8RfaWuHCnkkea5luuTZMqfgTXrun2dqNVYDNOV6RIVrc4YuG20yhC1epnV55fJCThqij0MRL
+ 1NxPKXIlEdHvN0Kov3CtWA+R1iNN0RCeVun7rmOrrjBK573aWC5sgP7YsBOLK79H3tmUtz6b
+ 9Imuj0ZyEsa76Xg9PX9Hn2myKj1hfWGS+5og9Va4hrwQC8ipjXik6NKR5GDV+hOZkktU81G5
+ gkQtGB9jOAYRs86QG/b7PtIlbd3+pppT0gaS+wvwMs8cuNG+Pu6KO1oC4jgdseFLu7NpABEB
+ AAHNIlF1IFdlbnJ1byA8cXV3ZW5ydW8uYnRyZnNAZ214LmNvbT7CwJQEEwEIAD4CGwMFCwkI
+ BwIGFQgJCgsCBBYCAwECHgECF4AWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1YAUJEP5a
+ sQAKCRDCPZHzoSX+qF+mB/9gXu9C3BV0omDZBDWevJHxpWpOwQ8DxZEbk9b9LcrQlWdhFhyn
+ xi+l5lRziV9ZGyYXp7N35a9t7GQJndMCFUWYoEa+1NCuxDs6bslfrCaGEGG/+wd6oIPb85xo
+ naxnQ+SQtYLUFbU77WkUPaaIU8hH2BAfn9ZSDX9lIxheQE8ZYGGmo4wYpnN7/hSXALD7+oun
+ tZljjGNT1o+/B8WVZtw/YZuCuHgZeaFdhcV2jsz7+iGb+LsqzHuznrXqbyUQgQT9kn8ZYFNW
+ 7tf+LNxXuwedzRag4fxtR+5GVvJ41Oh/eygp8VqiMAtnFYaSlb9sjia1Mh+m+OBFeuXjgGlG
+ VvQFzsBNBFnVga8BCACqU+th4Esy/c8BnvliFAjAfpzhI1wH76FD1MJPmAhA3DnX5JDORcga
+ CbPEwhLj1xlwTgpeT+QfDmGJ5B5BlrrQFZVE1fChEjiJvyiSAO4yQPkrPVYTI7Xj34FnscPj
+ /IrRUUka68MlHxPtFnAHr25VIuOS41lmYKYNwPNLRz9Ik6DmeTG3WJO2BQRNvXA0pXrJH1fN
+ GSsRb+pKEKHKtL1803x71zQxCwLh+zLP1iXHVM5j8gX9zqupigQR/Cel2XPS44zWcDW8r7B0
+ q1eW4Jrv0x19p4P923voqn+joIAostyNTUjCeSrUdKth9jcdlam9X2DziA/DHDFfS5eq4fEv
+ ABEBAAHCwHwEGAEIACYCGwwWIQQt33LlpaVbqJ2qQuHCPZHzoSX+qAUCZxF1gQUJEP5a0gAK
+ CRDCPZHzoSX+qHGpB/kB8A7M7KGL5qzat+jBRoLwB0Y3Zax0QWuANVdZM3eJDlKJKJ4HKzjo
+ B2Pcn4JXL2apSan2uJftaMbNQbwotvabLXkE7cPpnppnBq7iovmBw++/d8zQjLQLWInQ5kNq
+ Vmi36kmq8o5c0f97QVjMryHlmSlEZ2Wwc1kURAe4lsRG2dNeAd4CAqmTw0cMIrR6R/Dpt3ma
+ +8oGXJOmwWuDFKNV4G2XLKcghqrtcRf2zAGNogg3KulCykHHripG3kPKsb7fYVcSQtlt5R6v
+ HZStaZBzw4PcDiaAF3pPDBd+0fIKS6BlpeNRSFG94RYrt84Qw77JWDOAZsyNfEIEE0J6LSR/
+In-Reply-To: <87h63ms7gk.fsf@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Provags-ID: V03:K1:KrvDeZvtsqNSrCoAVASEESa18NJsdNZpjHKd+tDcWSKwywxBg2C
+ NcmB3OBewOOoRlhThBmNteyR8R265tgfs68UYy0jmsq8BW1JC1+RXWzSGjjoYj6zL/8zA+Y
+ SFV2lbTMQP969l8OoEVW3hTMyiKcrfHwWm5mPBmATsACRxO5Mp696UlMPmYVxwXhHgqfvLq
+ wpxl+Ba4h1VMTfbK3VZ8A==
+UI-OutboundReport: notjunk:1;M01:P0:B5CQzepJb5A=;/ZP+QML9ov+Jeyi0FM8tEOIUkxl
+ eXoxskxgnNjLN2zWd+ORHF7c2dmoAxy/cpV3UKjafY7lLeRTNvxDj66Leqdbi7x6trEydSFU9
+ gshEioOCZt+crZw0SkU5dFjAFT+Fe149UBP0z6W1JbmKAOCQMHbL6aHh7IvTXLPiJyDBOU44u
+ fAMVjIys0+BZwnmGUc8PnqJ0fGCeq7LMNIi1xgPrVxaLWCy0NoKqDADULXD2R/q41yex4B7mC
+ tMdgsMzHBnu1MG/B4aACtz20gv5JpSPMBeyur7B7+2Hx/xmBWnxwCAOtKA/db5XsYjhgs6k35
+ K0kS7ELgqLqovcJA9O+mK2OZyIlgPVLOgSzqqwb7IKSlz3xziPeapcCvYNNwVXSL0lNj5lecA
+ 81lAhsnH6js8R0xx6XNMnhteU+l+J8cAS6xbbwX6OlwtnJcvVnjojuGVkEcKY6m4ED+TlNjXR
+ RxNu97BW1+G2GX0nWBr2lZAc9vzC9b0/3MslMkV5g1IL7G6hG9QtaJ3BhMUfxrsiXUmQHE64s
+ wMyImHG8iyxJ8om3fedt/UJcO9FM3KHnKEVrgMpz+SIvD6vRT2dVl6wFfUxNeXmsa6JiopToH
+ a1WPBir5htFJMQh9opUm5PeZweEp6YB/XkN4ePoyOyXomGErF42+a8ZHoTQ0XcKrdRZw9lGD1
+ 8A4+qT+AQQDg6EZiUTQdTK1jUBgYmfFEICmHNQDCq9mmLx+xy3Nk4g07VX0I44ysRiwR76Yrm
+ oX06bVU8/Ba2zhH/dm0cEdH78EcxkHqsX6T2aLfLGDN/y57r5GveyS7TZy7wiMCSSgexjZUur
+ hgD/mBmEyuoWFBcyHXFZgh+ylMAxN3ri76DaNQuWQ+4WY2hJDXYq6gx2gE71D5jWRl2TkXJdU
+ +2ujSFnklADB66k3eislgvR30z/+vGzas4UDEmqFQ46/GVGDe/RbSmG9+iOYo/4Ny0jWbtXPV
+ 2ZE4TwvYZBwYbJQp/usNkBo77aaVpBHVXBcovyufYtWeelR8sPuXXg1/bvkyQ/OhHHbMpSy73
+ A20vAIeCnJC2JjH8h+LXTt0XSflbHJG2GuphNM1hpxvIn/CQCVIQM3eGKR/DntvJCMi7X/9Ie
+ uWI4t8pJPHD/reuJYoNg16T6Z33QYVsNEeutfY7Wob3grxovdgsVv4bgyxf0rdv8+CfJ+qi+J
+ NYSFGG6cBzO3GgWh76PiKgWlgZkJjJW0VSNhm/V2DtDmrijjjMyCVOq2lKvZqBNLGatxp8cf3
+ dCakgDqo2IFc1IQ9rVMRKjf1qty2k6dI2OLhwhIVWHEOH1mNNsHcf6ZrmZYMyBG4Vwd3jv3Rg
+ 0E2ldAFt9E0fFl0gwqBZV+VTCBLCiRfuNxK/kPKpkNwX/Jmo7u3h81Eeg6trjTSSL0ydZbg44
+ mxm39d75XkkfsApx7iL96CQYJ0ATDhUKpVFT/H8uexBUbW6p8uVohI1IPzQQyB9+zW8XBJ9lq
+ K/m+GQZABVwLp6nikOm1dB07b/mKGCYwI91xOFZWn1k+vU5z9
+X-Spam-Status: No, score=-1.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hello Guenter,
-Sorry for being late to the party.
 
-On Fri, Mar 21, 2025 at 6:06=E2=80=AFPM Guenter Roeck <linux@roeck-us.net> =
-wrote:
->
-> On 3/13/25 04:43, Alessandro Carminati wrote:
-> > From: Guenter Roeck <linux@roeck-us.net>
-> >
-> > Add name of functions triggering warning backtraces to the __bug_table
-> > object section to enable support for suppressing WARNING backtraces.
-> >
-> > To limit image size impact, the pointer to the function name is only ad=
-ded
-> > to the __bug_table section if both CONFIG_KUNIT_SUPPRESS_BACKTRACE and
-> > CONFIG_DEBUG_BUGVERBOSE are enabled. Otherwise, the __func__ assembly
-> > parameter is replaced with a (dummy) NULL parameter to avoid an image s=
-ize
-> > increase due to unused __func__ entries (this is necessary because
-> > __func__ is not a define but a virtual variable).
-> >
-> > Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
-> > Cc: Heiko Carstens <hca@linux.ibm.com>
-> > Cc: Vasily Gorbik <gor@linux.ibm.com>
-> > Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-> > Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-> > Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
-> > ---
-> >   arch/s390/include/asm/bug.h | 17 ++++++++++++++---
-> >   1 file changed, 14 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/arch/s390/include/asm/bug.h b/arch/s390/include/asm/bug.h
-> > index c500d45fb465..44d4e9f24ae0 100644
-> > --- a/arch/s390/include/asm/bug.h
-> > +++ b/arch/s390/include/asm/bug.h
-> > @@ -8,6 +8,15 @@
-> >
-> >   #ifdef CONFIG_DEBUG_BUGVERBOSE
-> >
-> > +#ifdef CONFIG_KUNIT_SUPPRESS_BACKTRACE
-> > +# define HAVE_BUG_FUNCTION
-> > +# define __BUG_FUNC_PTR      "       .long   %0-.\n"
-> > +# define __BUG_FUNC  __func__
->
-> gcc 7.5.0 on s390 barfs; it doesn't like the use of "__func__" with "%0-.=
-"
->
-> drivers/gpu/drm/bridge/analogix/analogix-i2c-dptx.c: In function 'anx_dp_=
-aux_transfer':
-> ././include/linux/compiler_types.h:492:20: warning: asm operand 0 probabl=
-y doesn't match constraints
->
-> I was unable to find an alternate constraint that the compiler would acce=
-pt.
->
-> I don't know if the same problem is seen with older compilers on other ar=
-chitectures,
-> or if the problem is relevant in the first place.
->
-> gcc 10.3.0 and later do not have this problem. I also tried s390 builds w=
-ith gcc 9.4
-> and 9.5 but they both crash for unrelated reasons.
->
-> If this is a concern, the best idea I have is to make KUNIT_SUPPRESS_BACK=
-TRACE
-> depend on, say,
->         depends on CC_IS_CLANG || (CC_IS_GCC && GCC_VERSION >=3D 100300)
->
-> A more complex solution might be to define an architecture flag such
-> as HAVE_SUPPRESS_BACKTRACE, make that conditional on the gcc version
-> for s390 only, and make KUNIT_SUPPRESS_BACKTRACE depend on it.
 
-I've spent some time trying to better define the problem.
-Although it may seem trivial, the old compiler simply doesn't work=E2=80=94=
-I
-believe the issue is a bit more complex.
-
-So, let me share some code and then comment on it.
-$ cat bug-s390.c
-#include "bug_entry.h"
-#define asm_inline asm __inline
-# define __BUG_FUNC_PTR " .long %0-.\n"
-# define __BUG_FUNC __func__
-#define __EMIT_BUG(x) do { \
-asm_inline volatile( \
-"0: mc 0,0\n" \
-".section .rodata.str,\"aMS\",@progbits,1\n" \
-"1: .asciz \""__FILE__"\"\n" \
-".previous\n" \
-".section __bug_table,\"aw\"\n" \
-"2: .long 0b-.\n" \
-" .long 1b-.\n" \
-__BUG_FUNC_PTR \
-" .short %1,%2\n" \
-" .org 2b+%3\n" \
-".previous\n" \
-: : "i" (__BUG_FUNC), \
-    "i" (__LINE__), \
-    "i" (x), \
-    "i" (sizeof(struct bug_entry))); \
-} while (0)
-
-#define BUG() do { \
-__EMIT_BUG(0); \
-} while (0)
-
-void f1(){
-BUG();
-}
-void f2(){
-BUG();
-}
-int main() {
-BUG();
-        f1();
-        f2();
-return 0;
-}
-$ # This is a stripped version of the s390x code for bug
-$ ~/x-tools/s390x-ibm-linux-gnu_14/bin/s390x-ibm-linux-gnu-gcc -v
-Using built-in specs.
-COLLECT_GCC=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu_14/bin/s390x-ibm=
--linux-gnu-gcc
-COLLECT_LTO_WRAPPER=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu_14/bin/.=
-./libexec/gcc/s390x-ibm-linux-gnu/14.2.0/lto-wrapper
-Target: s390x-ibm-linux-gnu
-Configured with:
-/home/alessandro/src/s390x-toolchain/.build/s390x-ibm-linux-gnu/src/gcc/con=
-figure
---build=3Dx86_64-build_pc-linux-gnu --host=3Dx86_64-build_pc-linux-gnu
---target=3Ds390x-ibm-linux-gnu
---prefix=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu
---exec_prefix=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu
---with-sysroot=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu/s390x-ibm-lin=
-ux-gnu/sysroot
---enable-languages=3Dc,c++ --with-pkgversion=3D'crosstool-NG
-1.27.0.18_7458341' --enable-__cxa_atexit --disable-libmudflap
---disable-libgomp --disable-libssp --disable-libquadmath
---disable-libquadmath-support --disable-libsanitizer --disable-libmpx
---with-gmp=3D/home/alessandro/src/s390x-toolchain/.build/s390x-ibm-linux-gn=
-u/buildtools
---with-mpfr=3D/home/alessandro/src/s390x-toolchain/.build/s390x-ibm-linux-g=
-nu/buildtools
---with-mpc=3D/home/alessandro/src/s390x-toolchain/.build/s390x-ibm-linux-gn=
-u/buildtools
---with-isl=3D/home/alessandro/src/s390x-toolchain/.build/s390x-ibm-linux-gn=
-u/buildtools
---enable-lto --enable-threads=3Dposix --enable-target-optspace
---disable-plugin --disable-nls --disable-multilib
---with-local-prefix=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu/s390x-ib=
-m-linux-gnu/sysroot
---enable-long-long
-Thread model: posix
-Supported LTO compression algorithms: zlib zstd
-gcc version 14.2.0 (crosstool-NG 1.27.0.18_7458341)
-$ ~/x-tools/s390x-ibm-linux-gnu_14/bin/s390x-ibm-linux-gnu-gcc -S -m64
-bug-s390.c
-$ ~/x-tools/s390x-ibm-linux-gnu_14/bin/s390x-ibm-linux-gnu-gcc -S -m64
--fPIC bug-s390.c
-$ ~/x-tools/s390x-ibm-linux-gnu/bin/s390x-ibm-linux-gnu-gcc -v
-Using built-in specs.
-COLLECT_GCC=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu/bin/s390x-ibm-li=
-nux-gnu-gcc
-COLLECT_LTO_WRAPPER=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu/libexec/=
-gcc/s390x-ibm-linux-gnu/7.5.0/lto-wrapper
-Target: s390x-ibm-linux-gnu
-Configured with:
-/home/alessandro/src/cross-s390/.build/s390x-ibm-linux-gnu/src/gcc/configur=
+=E5=9C=A8 2025/3/22 02:26, Ritesh Harjani (IBM) =E5=86=99=E9=81=93:
+>
+> +linux-btrfs
+>
+> Venkat Rao Bagalkote <venkat88@linux.ibm.com> writes:
+>
+>> Greetings!!!
+>>
+>>
+>> I am observing Kernel oops while running brtfs/108 TC on IBM Power Syst=
+em.
+>>
+>> Repo: Linux-Next (next-20250320)
+>
+> Looks like this next tag had many btrfs related changes -
+> https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/=
+log/fs/btrfs?h=3Dnext-20250320
+>
+>>
+>> Traces:
+>>
+>> [=C2=A0 418.392604] run fstests btrfs/108 at 2025-03-21 05:11:21
+>> [=C2=A0 418.560137] Kernel attempted to read user page (0) - exploit at=
+tempt?
+>> (uid: 0)
+>> [=C2=A0 418.560156] BUG: Kernel NULL pointer dereference on read at 0x0=
+0000000
+>
+> NULL pointer dereference...
+>
+>> [=C2=A0 418.560161] Faulting instruction address: 0xc0000000010ef8b0
+>> [=C2=A0 418.560166] Oops: Kernel access of bad area, sig: 11 [#1]
+>> [=C2=A0 418.560169] LE PAGE_SIZE=3D64K MMU=3DRadix=C2=A0 SMP NR_CPUS=3D=
+8192 NUMA pSeries
+>> [=C2=A0 418.560174] Modules linked in: btrfs blake2b_generic xor raid6_=
+pq
+>> zstd_compress loop nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
+>> nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
+>> nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 bonding nf_defrag_ipv4
+>> tls rfkill ip_set nf_tables nfnetlink sunrpc pseries_rng vmx_crypto fus=
 e
---build=3Dx86_64-build_pc-linux-gnu --host=3Dx86_64-build_pc-linux-gnu
---target=3Ds390x-ibm-linux-gnu
---prefix=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu
---exec_prefix=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu
---with-sysroot=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu/s390x-ibm-lin=
-ux-gnu/sysroot
---enable-languages=3Dc --with-pkgversion=3D'crosstool-NG
-1.27.0.18_7458341' --enable-__cxa_atexit --disable-tm-clone-registry
---disable-libmudflap --disable-libgomp --disable-libssp
---disable-libquadmath --disable-libquadmath-support
---disable-libsanitizer --disable-libmpx --disable-libstdcxx-verbose
---with-gmp=3D/home/alessandro/src/cross-s390/.build/s390x-ibm-linux-gnu/bui=
-ldtools
---with-mpfr=3D/home/alessandro/src/cross-s390/.build/s390x-ibm-linux-gnu/bu=
-ildtools
---with-mpc=3D/home/alessandro/src/cross-s390/.build/s390x-ibm-linux-gnu/bui=
-ldtools
---with-isl=3D/home/alessandro/src/cross-s390/.build/s390x-ibm-linux-gnu/bui=
-ldtools
---enable-lto --without-zstd --enable-threads=3Dposix
---enable-target-optspace --disable-plugin --disable-nls
---disable-multilib
---with-local-prefix=3D/home/alessandro/x-tools/s390x-ibm-linux-gnu/s390x-ib=
-m-linux-gnu/sysroot
---enable-long-long
-Thread model: posix
-gcc version 7.5.0 (crosstool-NG 1.27.0.18_7458341)
-$ ~/x-tools/s390x-ibm-linux-gnu/bin/s390x-ibm-linux-gnu-gcc  -S -m64 bug-s3=
-90.c
-$ ~/x-tools/s390x-ibm-linux-gnu/bin/s390x-ibm-linux-gnu-gcc  -S -m64
--fPIC bug-s390.c
-bug-s390.c: In function 'f1':
-bug-s390.c:2:20: warning: asm operand 0 probably doesn't match constraints
- #define asm_inline asm __inline
-                    ^
-bug-s390.c:6:2: note: in expansion of macro 'asm_inline'
-  asm_inline volatile(     \
-  ^~~~~~~~~~
-bug-s390.c:25:2: note: in expansion of macro '__EMIT_BUG'
-  __EMIT_BUG(0);     \
-  ^~~~~~~~~~
-bug-s390.c:29:2: note: in expansion of macro 'BUG'
-  BUG();
-  ^~~
-bug-s390.c:2:20: error: impossible constraint in 'asm'
- #define asm_inline asm __inline
-                    ^
-bug-s390.c:6:2: note: in expansion of macro 'asm_inline'
-  asm_inline volatile(     \
-  ^~~~~~~~~~
-bug-s390.c:25:2: note: in expansion of macro '__EMIT_BUG'
-  __EMIT_BUG(0);     \
-  ^~~~~~~~~~
-bug-s390.c:29:2: note: in expansion of macro 'BUG'
-  BUG();
-  ^~~
-bug-s390.c: In function 'f2':
-bug-s390.c:2:20: warning: asm operand 0 probably doesn't match constraints
- #define asm_inline asm __inline
-                    ^
-bug-s390.c:6:2: note: in expansion of macro 'asm_inline'
-  asm_inline volatile(     \
-  ^~~~~~~~~~
-bug-s390.c:25:2: note: in expansion of macro '__EMIT_BUG'
-  __EMIT_BUG(0);     \
-  ^~~~~~~~~~
-bug-s390.c:32:2: note: in expansion of macro 'BUG'
-  BUG();
-  ^~~
-bug-s390.c: In function 'main':
-bug-s390.c:2:20: warning: asm operand 0 probably doesn't match constraints
- #define asm_inline asm __inline
-                    ^
-bug-s390.c:6:2: note: in expansion of macro 'asm_inline'
-  asm_inline volatile(     \
-  ^~~~~~~~~~
-bug-s390.c:25:2: note: in expansion of macro '__EMIT_BUG'
-  __EMIT_BUG(0);     \
-  ^~~~~~~~~~
-bug-s390.c:35:2: note: in expansion of macro 'BUG'
-  BUG();
-  ^~~
-$ cat linux-6.14-rc7/arch/s390/Makefile| grep "fPIC"
-KBUILD_AFLAGS_MODULE +=3D -fPIC
-KBUILD_CFLAGS_MODULE +=3D -fPIC
-KBUILD_CFLAGS +=3D -fPIC
+>> ext4 mbcache jbd2 sd_mod sg ibmvscsi scsi_transport_srp ibmveth
+>> [=C2=A0 418.560212] CPU: 1 UID: 0 PID: 37583 Comm: rm Kdump: loaded Not
+>> tainted 6.14.0-rc7-next-20250320 #1 VOLUNTARY
+>> [=C2=A0 418.560218] Hardware name: IBM,9080-HEX Power11
+>> [=C2=A0 418.560223] NIP:=C2=A0 c0000000010ef8b0 LR: c00800000bb190ac CT=
+R:
+>> c0000000010ef888
+>> [=C2=A0 418.560227] REGS: c0000000a252f5a0 TRAP: 0300=C2=A0=C2=A0 Not t=
+ainted
+>> (6.14.0-rc7-next-20250320)
+>> [=C2=A0 418.560232] MSR:=C2=A0 8000000000009033 <SF,EE,ME,IR,DR,RI,LE>=
+=C2=A0 CR:
+>> 44008444=C2=A0 XER: 20040000
+>> [=C2=A0 418.560240] CFAR: c00800000bc1df84 DAR: 0000000000000000 DSISR:
+>> 40000000 IRQMASK: 1
+>> [=C2=A0 418.560240] GPR00: c00800000bb190ac c0000000a252f840 c000000001=
+6a8100
+>> 0000000000000000
+>> [=C2=A0 418.560240] GPR04: 0000000000000000 0000000000010000 0000000000=
+000000
+>> fffffffffffe0000
+>> [=C2=A0 418.560240] GPR08: c00000010724aad8 0000000000000003 0000000000=
+001000
+>> c00800000bc1df70
+>> [=C2=A0 418.560240] GPR12: c0000000010ef888 c000000affffdb00 0000000000=
+000000
+>> 0000000000000000
+>> [=C2=A0 418.560240] GPR16: 0000000000000000 0000000000000000 0000000000=
+000000
+>> 0000000000000000
+>> [=C2=A0 418.560240] GPR20: c0000000777a8000 c00000006a9c9000 c000000107=
+24a950
+>> c0000000777a8000
+>> [=C2=A0 418.560240] GPR24: fffffffffffffffe c00000010724aad8 0000000000=
+010000
+>> 00000000000000a0
+>> [=C2=A0 418.560240] GPR28: 0000000000010000 c00c00000048c3c0 0000000000=
+000000
+>> 0000000000000000
+>> [=C2=A0 418.560287] NIP [c0000000010ef8b0] _raw_spin_lock_irq+0x28/0x98
+>> [=C2=A0 418.560294] LR [c00800000bb190ac] wait_subpage_spinlock+0x64/0x=
+d0 [btrfs]
+>
+>
+> btrfs is working on subpage size support for a while now.
+> Adding +linux-btrfs, in case if they are already aware of this problem.
+>
+> I am not that familiar with btrfs code. But does this look like that the
+> subpage (folio->private became NULL here) somehow?
 
-As you can see, the problem is not that the compiler itself doesn't
-work, but rather that -fPIC introduces some complications.
-__func__ is a compile-time constant, but this holds true only for
-traditionally linked code.
-When compiling position-independent code, this assumption no longer applies=
-.
+The for-next branch seems to have some conflicts, IIRC the following two
+commits are no longer in our tree anymore:
 
-GCC makes significant efforts to handle this, and for several
-architectures, it manages to solve the problem.
-However, this is not universally the case.
-Additionally, -fPIC is not widely used in kernel code... I have only
-seen it used for VDSO, the x86 boot piggyback decompressor, PowerPC
-boot, and the s390x architecture.
+btrfs: kill EXTENT_FOLIO_PRIVATE
+btrfs: add mapping_set_release_always to inode's mapping
 
-That said, GCC has been mitigating this issue, allowing us to treat a
-non-compile-time constant as if it were one.
-A proof of this is that, at least since GCC 11, the s390x version of
-GCC is able to build this code.
-Before that... certainly in GCC 7.5 it couldn't.
+I believe those two may be the cause.
 
-A simple fix would be to restrict usage to GCC versions greater than
-11 for s390.
+Mind to test with the our current for-next branch? Where that's all of
+our development happening, and I run daily subpage fstests on it to make
+sure at least that branch is safe:
 
-The real concern is that we have a latent issue that could be
-triggered by changes in build settings, as "feature" support varies
-across GCC versions and architectures.
-For example, while x86_64 at version 14 seems to work both with and
-without -fPIC, this is not the case for AArch64, where enabling -fPIC
-causes failures even in version 14.
+   https://github.com/btrfs/linux/tree/for-next
 
-I'm currently working on a long-term fix for this.
+And appreciate if you can verify if the NULL pointer dereference is
+still there on that branch.
+
+Thanks,
+Qu
 
 >
-> Guenter
+> -ritesh
 >
-
-
---=20
----
-Alessandro
+>> [=C2=A0 418.560339] Call Trace:
+>> [=C2=A0 418.560342] [c0000000a252f870] [c00800000bb205dc]
+>> btrfs_invalidate_folio+0xa8/0x4f0 [btrfs]
+>> [=C2=A0 418.560384] [c0000000a252f930] [c0000000004cbcdc]
+>> truncate_cleanup_folio+0x110/0x14c
+>> [=C2=A0 418.560391] [c0000000a252f960] [c0000000004ccc7c]
+>> truncate_inode_pages_range+0x100/0x4dc
+>> [=C2=A0 418.560397] [c0000000a252fbd0] [c00800000bb20ba8]
+>> btrfs_evict_inode+0x74/0x510 [btrfs]
+>> [=C2=A0 418.560437] [c0000000a252fc90] [c00000000065c71c] evict+0x164/0=
+x334
+>> [=C2=A0 418.560443] [c0000000a252fd30] [c000000000647c9c] do_unlinkat+0=
+x2f4/0x3a4
+>> [=C2=A0 418.560449] [c0000000a252fde0] [c000000000647da0] sys_unlinkat+=
+0x54/0xac
+>> [=C2=A0 418.560454] [c0000000a252fe10] [c000000000033498]
+>> system_call_exception+0x138/0x330
+>> [=C2=A0 418.560461] [c0000000a252fe50] [c00000000000d05c]
+>> system_call_vectored_common+0x15c/0x2ec
+>> [=C2=A0 418.560468] --- interrupt: 3000 at 0x7fffb1b366bc
+>> [=C2=A0 418.560471] NIP:=C2=A0 00007fffb1b366bc LR: 00007fffb1b366bc CT=
+R:
+>> 0000000000000000
+>> [=C2=A0 418.560475] REGS: c0000000a252fe80 TRAP: 3000=C2=A0=C2=A0 Not t=
+ainted
+>> (6.14.0-rc7-next-20250320)
+>> [=C2=A0 418.560479] MSR:=C2=A0 800000000280f033
+>> <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>=C2=A0 CR: 44008804=C2=A0 XER: 0000=
+0000
+>> [=C2=A0 418.560490] IRQMASK: 0
+>> [=C2=A0 418.560490] GPR00: 0000000000000124 00007ffffcb4e2b0 00007fffb1=
+c37d00
+>> ffffffffffffff9c
+>> [=C2=A0 418.560490] GPR04: 000000013d660380 0000000000000000 0000000000=
+000000
+>> 0000000000000003
+>> [=C2=A0 418.560490] GPR08: 0000000000000000 0000000000000000 0000000000=
+000000
+>> 0000000000000000
+>> [=C2=A0 418.560490] GPR12: 0000000000000000 00007fffb1dba5c0 00007ffffc=
+b4e538
+>> 000000011972d0e8
+>> [=C2=A0 418.560490] GPR16: 000000011972d098 000000011972d060 0000000119=
+72d020
+>> 000000011972cff0
+>> [=C2=A0 418.560490] GPR20: 000000011972d298 000000011972cc10 0000000000=
+000000
+>> 000000013d6615a0
+>> [=C2=A0 418.560490] GPR24: 0000000000000002 000000011972d0b8 0000000119=
+72cf98
+>> 000000011972d1d0
+>> [=C2=A0 418.560490] GPR28: 00007ffffcb4e538 000000013d6602f0 0000000000=
+000000
+>> 0000000000100000
+>> [=C2=A0 418.560532] NIP [00007fffb1b366bc] 0x7fffb1b366bc
+>> [=C2=A0 418.560536] LR [00007fffb1b366bc] 0x7fffb1b366bc
+>> [=C2=A0 418.560538] --- interrupt: 3000
+>> [=C2=A0 418.560541] Code: 7c0803a6 4e800020 3c4c005c 38428878 7c0802a6
+>> 60000000 39200001 992d0932 a12d0008 3ce0fffe 5529083c 61290001
+>> <7d001829> 7d063879 40c20018 7d063838
+>> [=C2=A0 418.560555] ---[ end trace 0000000000000000 ]---
+>>
+>>
+>> If you happed to fix this, please add below tag.
+>>
+>>
+>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+>>
+>>
+>> Regards,
+>>
+>> Venkat.
+>
 
 
