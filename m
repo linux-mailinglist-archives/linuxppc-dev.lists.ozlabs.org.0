@@ -1,78 +1,93 @@
-Return-Path: <linuxppc-dev+bounces-7287-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7288-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9301FA6C831
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Mar 2025 09:06:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 22D64A6C961
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Mar 2025 11:36:18 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZKX2T6j46z2yfV;
-	Sat, 22 Mar 2025 19:06:25 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZKbML1qH9z2yH0;
+	Sat, 22 Mar 2025 21:36:14 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742630785;
-	cv=none; b=MEuyuicogaAtVg8k5feWp+Kqvf5PPSx38StOqtwceRxO/8i6zVzFAYMtxI7aMRZJCEWna7P1Odzkq3W8u3/nGDE9vRD/wnfGce7+wnpd/YUFIWKHKnAFFi4xmSMeoFPYKYw3XfefOP5By/pmnUcFbz7FE4c9nxxPbyoW1fqcHcMiheUHGl756x5QLoqF/FKtJ8S9gg/hVsYXMLfaJrc0BnCL4P/XluHMPY84CJ99NbaSGdXAFkvrsSEvkrFE9YodSLqGFLxpGLOASSZalVoqcAyna0DxzFaYAlmu/KuFmAx13geg3X4AqPbzXHSNdIX3N8cG7THV1nuSBG+HgDij9g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=202.12.124.145
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742639774;
+	cv=none; b=MalzGnGocjdPIJqgOdJfQONG+GcpOj8LqL3MTkNjEMUkXOnV87YRU2RHCTvWSM+t4E/ngBG+ndIDbXxPZ90imyRB2OILS3AXlKPrP4lNX4/Nw6Lncd2TBXQkKp/IC0ikkxc2dLKA61fMtzYpionR/PBQL6M0SasF4qbvWAKXeG22fLVGGohjG2oeniUTDL2DAzd1oancROvDWVQyqkLtU0hmYfQy0HG7jjcUgM83fvuuDhWRilO91d0W3d9zlatuFdtyFl3mTuAswkmz6t7HOD3ZSJkIkClPRqljwK0ubKiAaEuaMDBwsYkILsa+RP3K9jJtXQFId8TB/dPvAv9yOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742630785; c=relaxed/relaxed;
-	bh=HDF6RBkHi6jkmsGpsNlDQxqjfPEGr06K1bqndAdkZrE=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=JdQrkfEcv/Gfeh47nt/5hL8FO/jOPWjUo9X+Ff9yuLs2MlQMiZQ8pa9EDt9NG+OOgmWuughvcrN08IbiSvNQM999GQy9Lbi/vvngrS29f0sWwRjvm0L/OEENfhJfMjT2DXrZAgCm8wt85DKOoHPXK/u4vs9JL9xLlOurtHeDPWWwAu+zey7PVW5xJPLMw1nTA+eVTRLRLweSufh2v921b4X9QWJ85yyb2/eC4LaoPbAvj1zuioM/jh4xoGDEVqGaPH3tjOAotA6VY6IKNNoaleobTHEwR2Usytqk9/GkRcay4WW4izH+ctDHkGJ/Sf01yjDVlur951Sz9jQOkK3Ldg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hRjU5uzW; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742639774; c=relaxed/relaxed;
+	bh=4k06jUYDMqKxGVP7wovx5h5JsVcIo+gSmbwAwSo1yGQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=QpuOsBUe2a4GEy+af88c22sn1g/TF21HZK+WRLOwKJ0OnTMEe6G5Isooz1O9BQ2hHOt50Xz+x7Gent1l43YTdIFjtFKGFFEC8xsr3yJpH5bfweaVJETpclG7HaLMJB71NqAk/RXhA8v9/s06RAPJHPwgsx9IHqr3qGWufk2MUPBNxiFuX8srFT1awF/VLM5G/j6A9JR7W/ycNJZ3FgoInUtip+JCI36+Sag3JGiq9deCJ+27RRNaLTrAQkv3X7fRRLVFfB9dar7MwROZ28ndjwe0cTV6NDjveCNtJ40oUovusoj9+TJP1GlYdvKBJt9XoI5brEhDJ46QE62CxckMeA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=svenpeter.dev; dkim=pass (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm2 header.b=t9hjJIaZ; dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=JMLYl9t7; dkim-atps=neutral; spf=pass (client-ip=202.12.124.145; helo=fout-b2-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev; receiver=lists.ozlabs.org) smtp.mailfrom=svenpeter.dev
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=svenpeter.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=hRjU5uzW;
+	dkim=pass (2048-bit key; unprotected) header.d=svenpeter.dev header.i=@svenpeter.dev header.a=rsa-sha256 header.s=fm2 header.b=t9hjJIaZ;
+	dkim=pass (2048-bit key; unprotected) header.d=messagingengine.com header.i=@messagingengine.com header.a=rsa-sha256 header.s=fm1 header.b=JMLYl9t7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=atrajeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=svenpeter.dev (client-ip=202.12.124.145; helo=fout-b2-smtp.messagingengine.com; envelope-from=sven@svenpeter.dev; receiver=lists.ozlabs.org)
+X-Greylist: delayed 597 seconds by postgrey-1.37 at boromir; Sat, 22 Mar 2025 21:36:10 AEDT
+Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZKX2S6t7hz2ySm
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 19:06:24 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52M3grr1030610;
-	Sat, 22 Mar 2025 08:06:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=HDF6RB
-	kHi6jkmsGpsNlDQxqjfPEGr06K1bqndAdkZrE=; b=hRjU5uzWlzcuzH8MODT3qe
-	fKxnjokaZhPxJs7KJlwaSj6OejNWtTv4ZumW730bPpuxCwO80gLamlooJicO+yn5
-	VnDfupzgMxKWLXCbk4oJRHQWAYITC1Sxt4vT5zw2nQjzaRXe8x2XIZeayDwxeMdQ
-	otVZxJN0MM2zOkqrG4mFBSjvuCEHBHZdhoOdPHH33frOidtJS8Pp5z95NpDgLK+u
-	hLS18CSkGJUH25Yg6XxD0IXCIKUSm++kVrEzfOMbEDbmO4W+USwJHuTSnmaTFQo2
-	yB/X84lQkzY2cuCv4/ENMWfCMNfqBMb/z4V6+cbNSBWypTLCVsdPmWU8oOr/TBPA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45hngm8nk4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Mar 2025 08:06:15 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52M86Frf020527;
-	Sat, 22 Mar 2025 08:06:15 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45hngm8nk1-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Mar 2025 08:06:15 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52M3JT4n009157;
-	Sat, 22 Mar 2025 08:06:14 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45hn6grrn7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Mar 2025 08:06:14 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52M86B3C40042902
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 22 Mar 2025 08:06:11 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 15D6520043;
-	Sat, 22 Mar 2025 08:06:11 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BD63A20040;
-	Sat, 22 Mar 2025 08:06:06 +0000 (GMT)
-Received: from smtpclient.apple (unknown [9.61.245.171])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Sat, 22 Mar 2025 08:06:06 +0000 (GMT)
-Content-Type: text/plain;
-	charset=utf-8
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZKbMG5jC7z2yGf
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 21:36:10 +1100 (AEDT)
+Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
+	by mailfout.stl.internal (Postfix) with ESMTP id 4987B11400E9;
+	Sat, 22 Mar 2025 06:26:07 -0400 (EDT)
+Received: from phl-imap-07 ([10.202.2.97])
+  by phl-compute-12.internal (MEProxy); Sat, 22 Mar 2025 06:26:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=svenpeter.dev;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1742639167; x=1742725567; bh=4k06jUYDMqKxGVP7wovx5h5JsVcIo+gS
+	mbwAwSo1yGQ=; b=t9hjJIaZzhAb1sTydGWTipJLOFWuRXeGvTCZiY2Wa0w1ZXxJ
+	2OqUcciKnI3eTrGrgOL5sC9mRUqToBcEz0aL+MvPfmgB2clmjg30512g4/0xEB0m
+	51NctuA8mSeDUrZ0dTA+O45AA4r0YZcAwfsBKCj2rjRK1oaOzy0bfBzlzRr+++3P
+	2v7AKCcGv4z9xJMql/YZnb0Sg+4bkZ94/x5Tm5f+ClqbgfoDnPs9ZqHD3Ve86Iyg
+	YcHSrKEeZR0cbsbJa6w2KgTr+tyZDUXngdSVbsKFOA9VDo2fx4wBfQrvJbTOM/ZW
+	csBo2UGafDBgICynM/T1ek+kT+uKjDqe2ZUz5Q==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1742639167; x=
+	1742725567; bh=4k06jUYDMqKxGVP7wovx5h5JsVcIo+gSmbwAwSo1yGQ=; b=J
+	MLYl9t785lSpiAA96/nVBW2560PquizTiJ8pqPArqrjCo5bfyzZsgcSX7m7FhXgo
+	UEyyVerugktrDSXSfMsnXR1sHurc8xTNkpn2LLeUSXOH34G7bmMst8v02xjRgRVe
+	x5BhmSoNOp/u8lD1RtDI0h51OmI4VJz07qc3lqCtJFX/ewfPnOHZeV73janzWkOx
+	wiASxedcsjhz5kpIrUKwqCsCyFjdp/SvFq7/dKAV553eJVrN3u7NslgR+MODdryJ
+	JKy5xXjfxuQky4qRXFjG811q15NT21+aOQxaWe5R+BMOhejXB5eFjsvTaP8u1ju7
+	w9OSTz4zInZa/kC3/y1bw==
+X-ME-Sender: <xms:PJDeZwKamvFvitc_8b5-ILgAsDhJJiMw033QL0nZjP-XvdB4NVg6YA>
+    <xme:PJDeZwJ7_8KViu88SX8MC-SW6OotvS7WWjPT_6w22WJn8PungaSOp7Dx9QQbaScb8
+    8yHPw6kMensShK46yM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgdduheefjedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggv
+    pdfurfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpih
+    gvnhhtshculddquddttddmnecujfgurhepofggfffhvfevkfgjfhfutgfgsehtjeertder
+    tddtnecuhfhrohhmpedfufhvvghnucfrvghtvghrfdcuoehsvhgvnhesshhvvghnphgvth
+    gvrhdruggvvheqnecuggftrfgrthhtvghrnhepleefteeugeduudeuudeuhfefheegveek
+    ueefffdvffektdffffelveffvddvueffnecuvehluhhsthgvrhfuihiivgeptdenucfrrg
+    hrrghmpehmrghilhhfrhhomhepshhvvghnsehsvhgvnhhpvghtvghrrdguvghvpdhnsggp
+    rhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheptghhrhhish
+    htohhphhgvrdhlvghrohihsegtshhgrhhouhhprdgvuhdprhgtphhtthhopehmphgvsegv
+    lhhlvghrmhgrnhdrihgurdgruhdprhgtphhtthhopehnphhighhgihhnsehgmhgrihhlrd
+    gtohhmpdhrtghpthhtohepjhesjhgrnhhnrghurdhnvghtpdhrtghpthhtoheprghnughi
+    rdhshhihthhisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehnrghvvggvnheskhgvrh
+    hnvghlrdhorhhgpdhrtghpthhtohepmhgrugguhieslhhinhhugidrihgsmhdrtghomhdp
+    rhgtphhtthhopehlihhnuhigqdgrrhhmqdhkvghrnhgvlheslhhishhtshdrihhnfhhrrg
+    guvggrugdrohhrghdprhgtphhtthhopegrshgrhhhisehlihhsthhsrdhlihhnuhigrdgu
+    vghv
+X-ME-Proxy: <xmx:PJDeZwuEg6hGGEK5PHiAyO3GZtowY5eCwDah_bCuezcT5Y8pwbI5-Q>
+    <xmx:PJDeZ9aGqHFd2wNx5nns2BEm6odzvnQ3MmBCHCfeEJg_Msy_RGfI6A>
+    <xmx:PJDeZ3ZxcestJZdFEPmdTTneC5DR54PktFNkZZdl-FuF2zCBFrwWTw>
+    <xmx:PJDeZ5Dv65gsmURvHnm_NCS9k_iSaGuGAV5cWMCRz796Qm7cCnzlQw>
+    <xmx:P5DeZzqXt91aNcgVvxTn0rV8KereEgd4qWw4JYKeoXGGKsd4V-Iif9Ep>
+Feedback-ID: i51094778:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id A70FFBA006F; Sat, 22 Mar 2025 06:26:04 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,102 +99,164 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH] tools/perf/arch/powerpc/util: Fix is_compat_mode build
- break  in ppc64
-From: Athira Rajeev <atrajeev@linux.ibm.com>
-In-Reply-To: <20250321100726.699956-1-likhitha@linux.ibm.com>
-Date: Sat, 22 Mar 2025 13:35:52 +0530
-Cc: Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ian Rogers <irogers@google.com>, Namhyung Kim <namhyung@kernel.org>,
-        "open list:PERFORMANCE EVENTS SUBSYSTEM" <linux-perf-users@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <22675B19-F5B4-4CAE-A320-58F42107FE44@linux.ibm.com>
-References: <20250321100726.699956-1-likhitha@linux.ibm.com>
-To: Likhitha Korrapati <likhitha@linux.ibm.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>
-X-Mailer: Apple Mail (2.3776.700.51)
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2JNeXZHijJWmfC985k7YiPTooY6kTnLa
-X-Proofpoint-GUID: kzU3Inqd7PhIS0v3e2c2d-QdoJ4TDbCi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-22_03,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 mlxscore=0 impostorscore=0 clxscore=1011 priorityscore=1501
- malwarescore=0 mlxlogscore=999 spamscore=0 suspectscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503220056
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+MIME-Version: 1.0
+X-ThreadId: T4cec72d9951ea634
+Date: Sat, 22 Mar 2025 11:25:44 +0100
+From: "Sven Peter" <sven@svenpeter.dev>
+To: "Andi Shyti" <andi.shyti@kernel.org>
+Cc: "Janne Grunau" <j@jannau.net>, "Alyssa Rosenzweig" <alyssa@rosenzweig.io>,
+ "Madhavan Srinivasan" <maddy@linux.ibm.com>,
+ "Michael Ellerman" <mpe@ellerman.id.au>,
+ "Nicholas Piggin" <npiggin@gmail.com>,
+ "Christophe Leroy" <christophe.leroy@csgroup.eu>,
+ "Naveen N Rao" <naveen@kernel.org>,
+ linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, asahi@lists.linux.dev,
+ linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org,
+ linux-kernel@vger.kernel.org, "Hector Martin" <marcan@marcan.st>
+Message-Id: <3a849f4d-2cea-458a-9045-b2ae98d4293d@app.fastmail.com>
+In-Reply-To: 
+ <mp77oombs4xgr6sjj44ne7muybfrwejgehzv5xupeanh6udui3@ymgfesctindh>
+References: <20250222-pasemi-fixes-v1-0-d7ea33d50c5e@svenpeter.dev>
+ <20250222-pasemi-fixes-v1-2-d7ea33d50c5e@svenpeter.dev>
+ <mp77oombs4xgr6sjj44ne7muybfrwejgehzv5xupeanh6udui3@ymgfesctindh>
+Subject: Re: [PATCH 2/4] i2c: pasemi: Improve error recovery
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi Andi,
+
+Thanks for the review! Will send a v2 after -rc1 is out.
+
+On Thu, Mar 20, 2025, at 01:17, Andi Shyti wrote:
+> Hi Sven,
+>
+> On Sat, Feb 22, 2025 at 01:38:34PM +0000, Sven Peter via B4 Relay wrote:
+>> The hardware (supposedly) has a 25ms timeout for clock stretching
+>> and the driver uses 100ms which should be plenty.
+>
+> Can we add this lines as a comment to the define you are adding?
+
+Sure.
+
+>
+>> The error
+>> reocvery itself is however lacking.
+>
+> ...
+>
+>> -static void pasemi_smb_clear(struct pasemi_smbus *smbus)
+>> +static int pasemi_smb_clear(struct pasemi_smbus *smbus)
+>>  {
+>>  	unsigned int status;
+>> +	int timeout = TRANSFER_TIMEOUT_MS;
+>>  
+>>  	status = reg_read(smbus, REG_SMSTA);
+>> +
+>> +	/* First wait for the bus to go idle */
+>> +	while ((status & (SMSTA_XIP | SMSTA_JAM)) && timeout--) {
+>> +		msleep(1);
+>
+> Please, use usleep_range for 1 millisecond timeout.
+
+Ack.
+
+>
+>> +		status = reg_read(smbus, REG_SMSTA);
+>> +	}
+>
+> You could use here readx_poll_timeout() here.
+
+Yup, that should work.
+
+>
+>> +
+>> +	if (timeout < 0) {
+>> +		dev_warn(smbus->dev, "Bus is still stuck (status 0x%08x)\n", status);
+>
+> if it's an error, please use an error.
+
+Ack.
+
+>
+>> +		return -EIO;
+>> +	}
+>> +
+>> +	/* If any badness happened or there is data in the FIFOs, reset the FIFOs */
+>> +	if ((status & (SMSTA_MRNE | SMSTA_JMD | SMSTA_MTO | SMSTA_TOM | SMSTA_MTN | SMSTA_MTA)) ||
+>> +		!(status & SMSTA_MTE))
+>
+> Please, fixe the alignment here.
+
+Ok.
+
+>
+>> +		pasemi_reset(smbus);
+>> +
+>> +	/* Clear the flags */
+>>  	reg_write(smbus, REG_SMSTA, status);
+>> +
+>> +	return 0;
+>>  }
+>>  
+>>  static int pasemi_smb_waitready(struct pasemi_smbus *smbus)
+>>  {
+>> -	int timeout = 100;
+>> +	int timeout = TRANSFER_TIMEOUT_MS;
+>>  	unsigned int status;
+>>  
+>>  	if (smbus->use_irq) {
+>>  		reinit_completion(&smbus->irq_completion);
+>> -		reg_write(smbus, REG_IMASK, SMSTA_XEN | SMSTA_MTN);
+>> -		wait_for_completion_timeout(&smbus->irq_completion, msecs_to_jiffies(100));
+>> +		/* XEN should be set when a transaction terminates, whether due to error or not */
+>> +		reg_write(smbus, REG_IMASK, SMSTA_XEN);
+>> +		wait_for_completion_timeout(&smbus->irq_completion, msecs_to_jiffies(timeout));
+>
+> what happens if the timeout expires?
+
+I think that can only happen if the hardware is seriously broken because
+it's always supposed to set XEN. I'll make sure to catch that case in v2
+though and print a separate error message similar to how the polling case
+below is taken care of right now.
+
+>
+>>  		reg_write(smbus, REG_IMASK, 0);
+>>  		status = reg_read(smbus, REG_SMSTA);
+>>  	} else {
+>
+> ...
+>
+>>  	struct pasemi_smbus *smbus = adapter->algo_data;
+>>  	int ret, i;
+>>  
+>> -	pasemi_smb_clear(smbus);
+>> +	if (pasemi_smb_clear(smbus))
+>> +		return -EIO;
+>
+> Can we use
+>
+> 	ret = ...
+> 	if (ret)
+> 		return ret;
+>
+> This way we return whatever comes from pasemi_smb_clear().
+>
+>>  
+>>  	ret = 0;
+>
+> This way we can remove this line, as well.
+
+Sure, will do both for v2.
 
 
-> On 21 Mar 2025, at 3:37=E2=80=AFPM, Likhitha Korrapati =
-<likhitha@linux.ibm.com> wrote:
->=20
-> Commit 54f9aa1092457 ("tools/perf/powerpc/util: Add support to
-> handle compatible mode PVR for perf json events") introduced
-> to select proper JSON events in case of compat mode using
-> auxiliary vector. But this caused a compilation error in ppc64
-> Big Endian.
->=20
-> arch/powerpc/util/header.c: In function 'is_compat_mode':
-> arch/powerpc/util/header.c:20:21: error: cast to pointer from
-> integer of different size [-Werror=3Dint-to-pointer-cast]
->   20 |         if (!strcmp((char *)platform, (char *)base_platform))
->      |                     ^
-> arch/powerpc/util/header.c:20:39: error: cast to pointer from
-> integer of different size [-Werror=3Dint-to-pointer-cast]
->   20 |         if (!strcmp((char *)platform, (char *)base_platform))
->      |
->=20
-> Commit saved the getauxval(AT_BASE_PLATFORM) and =
-getauxval(AT_PLATFORM)
-> return values in u64 which causes the compilation error.
->=20
-> Patch fixes this issue by changing u64 to "unsigned long".
->=20
-> Fixes: 54f9aa1092457 ("tools/perf/powerpc/util: Add support to handle =
-compatible mode PVR for perf json events")
-> Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
 
-Hi Likhitha,
-Thanks for the fix.=20
+Thanks,
 
-Reviewed-by: Athira Rajeev <atrajeev@linux.ibm.com>
 
-Thanks
-Athira
-> ---
-> tools/perf/arch/powerpc/util/header.c | 4 ++--
-> 1 file changed, 2 insertions(+), 2 deletions(-)
->=20
-> diff --git a/tools/perf/arch/powerpc/util/header.c =
-b/tools/perf/arch/powerpc/util/header.c
-> index c7df534dbf8f..0be74f048f96 100644
-> --- a/tools/perf/arch/powerpc/util/header.c
-> +++ b/tools/perf/arch/powerpc/util/header.c
-> @@ -14,8 +14,8 @@
->=20
-> static bool is_compat_mode(void)
-> {
-> - u64 base_platform =3D getauxval(AT_BASE_PLATFORM);
-> - u64 platform =3D getauxval(AT_PLATFORM);
-> + unsigned long base_platform =3D getauxval(AT_BASE_PLATFORM);
-> + unsigned long platform =3D getauxval(AT_PLATFORM);
->=20
-> if (!strcmp((char *)platform, (char *)base_platform))
-> return false;
-> --=20
-> 2.43.5
->=20
+Sven
 
 
