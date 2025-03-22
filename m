@@ -1,78 +1,90 @@
-Return-Path: <linuxppc-dev+bounces-7289-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7290-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 539DEA6CA81
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Mar 2025 15:16:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79354A6CA95
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 22 Mar 2025 15:33:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZKhF236gxz2yTQ;
-	Sun, 23 Mar 2025 01:16:06 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZKhd95pGXz2yVX;
+	Sun, 23 Mar 2025 01:33:33 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742652966;
-	cv=none; b=MvmOUp2nBA4+HBhR0EsiY/CDc3ueSNr817mcJBYOXiH0lm9WKV1ACA2f2j5QvxnjKzWVJAYxrCYjo1dJC/P0f3NZ4u7UUnDdb28Tlkq6SuKEJ8KE4fXJwfmK8FFrfny55k3H6DyxunFs4E7E0a3N6lWX8KFf56bGdnzdRXwzkirTiq5rJ1zkW3SPM5mGg/d3S8DvKpoeWqPc0fo3arbERV8+1tCXgn8KasjJKztxrFo1rtE33j320mYsYksEhFE6Le5DPPLFjs1gNEafUAnDLPWEIDkVaReQUr9YlMmdiJv8+7eGXJ+Ua+Lr/dZzWVt+SX6iDE2nwo1pcvsBIDqf+g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::62c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742654013;
+	cv=none; b=VeLAXMSItQXbomsjhWYxMPXmuW3rnnLxJAFihDTqRwF1fTVCJCTz+IEpOFo95xbMe9A3SM70vSJ9wGh6tcwFA5tv977FXclO9CoHNkiN3vkRq2JS4MIeB2VIS3pJa6p6F5lSqP9XGo5DIZt7upo00lNgni6jv5vlXui8C1VQg/oHEkvL+ea2RWV2Gk9DZtLSwkIfs/gI6uL/VVmJJvAft/nJBSTUjnGfgn3GtkfoCmpQU3VV1Lvu7PJdJBlmU1Beh10B/y3gS+EIlOaWz5CaaEnTmhHR/vMSLLSXlx4e8UeiGy9QGWuogaHTBd+M950lSeG9hDqMj3YlPbznF+V5tw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742652966; c=relaxed/relaxed;
-	bh=2TRwiqSkbFHVjCTVROzGbvKy/nfUXvy3YcGeFnqWB5Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=lKduXw3UCa1Ybd2B+0MB9ZCn3otSKvDr9oIlcosMqYsJ0vdOZ99QsAc+SyqHDUQ/J6v880D3Y2H43soi2IrgkG1iRJciT4kRzs0WLVy3+C/mL2fqWTAImz8eBPXJuWDIDTbsPn1FcNXpy+azZrL3EGJt4s9M4ftNFluOQqd1Du8yuatsKeDpCJTk4d7u4B9iHn4pjGTc88eiylmX2MAzDaqH0IlE3vgNryTK33x9FjKqTKNziPczELdMAaYH00vt4Wz9L3iC37bxoP1e36XWPkrPKsjM/JjJsTq7CWVpbHY9e4m4zsRXUogBr5EdP5si0pkoC0uhF8iZM/wJCIwdag==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I7VkODU6; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742654013; c=relaxed/relaxed;
+	bh=CIBZE6KgWtHZM48TAyKomWUpshgbZruN/nT+wM0z3cY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jUVEzxmhI59ExW0vgJIeuowQn4gk4/wMO1Ogbgws4LADuP3IwjLzrYo24gKh5MlN6tpfiHoVvekV1yMPRXgYPQMwnyFEgiQNQdQ3x02TMVs6ZBqtJajPPDlvPoCk6i//J20M+wf863pAIOlaG8G8My1DftA2EMNHayRxz7DA8MJ+6JdeZKlTv8/eQ1MnB1ZmW2FQS8M+vlSadmjwE1QZ1ExBeM1Xy/ldFwJxdjKlmJeMBZAS6kfsHP9yrxcOK8Rt08y/cY9qB4nTK6K0Kxccb3Pv3U9jMN1LIeZP76+YXyObmBKfHoFe/O5sy6tO1sTWZIBfwJ2TdsEc+lKaKqwdtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Xd7+w1pa; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=I7VkODU6;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Xd7+w1pa;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::62c; helo=mail-pl1-x62c.google.com; envelope-from=groeck7@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZKhDy4PrDz2ySm
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Mar 2025 01:16:02 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52MAx5sa000469;
-	Sat, 22 Mar 2025 14:15:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=2TRwiq
-	SkbFHVjCTVROzGbvKy/nfUXvy3YcGeFnqWB5Q=; b=I7VkODU6KkjtmclVj6PYRc
-	cHO2m6pysRNn031A3xNyJQxtf1MUivQIWnJTUcWYBGyrgbSEu4JAv3E4VQ1uOTGM
-	XF+x7fVhcw9Eub1tXVMYQ5qAv4TPTzDchYzrKKIMnjNOBgHgC2cnVGkBp/mSMke+
-	2AIMoli0Tmv7GKtITJT5jcNojfPRwFn6ILEwo6jxA9Cz3s7M9Abh404hcltcSoUl
-	LMzmjrziTPoTOP1cow6HWE/J3xrLi2/exD7xLCBquG4Z3zxlxBXcIYMq0gAjaqQx
-	M/am89aLCuCRKImtogy5/dSAsXsSiaRyMIFOj4mgsf1dJ+ebyAoUZFx63p4bzHHw
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45hngm9jqg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Mar 2025 14:15:58 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52MEFwOG031493;
-	Sat, 22 Mar 2025 14:15:58 GMT
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45hngm9jqe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Mar 2025 14:15:58 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52MEAxR7008337;
-	Sat, 22 Mar 2025 14:15:57 GMT
-Received: from smtprelay05.wdc07v.mail.ibm.com ([172.16.1.72])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45hn89hrn6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sat, 22 Mar 2025 14:15:57 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay05.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52MEFvjG21627596
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sat, 22 Mar 2025 14:15:57 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2ED7458058;
-	Sat, 22 Mar 2025 14:15:57 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 451D758057;
-	Sat, 22 Mar 2025 14:15:53 +0000 (GMT)
-Received: from [9.61.252.95] (unknown [9.61.252.95])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Sat, 22 Mar 2025 14:15:53 +0000 (GMT)
-Message-ID: <49a741c3-2564-4d6f-b4e1-0402b52a4cb9@linux.ibm.com>
-Date: Sat, 22 Mar 2025 19:45:51 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZKhd818S1z2ySm
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Mar 2025 01:33:30 +1100 (AEDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-22622ddcc35so39281865ad.2
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 22 Mar 2025 07:33:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1742654008; x=1743258808; darn=lists.ozlabs.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CIBZE6KgWtHZM48TAyKomWUpshgbZruN/nT+wM0z3cY=;
+        b=Xd7+w1paYUsbI3FJDJGZvr4pyzmJlZjB/AjIcKqw/ukLlNo3dPvfHINQxJ5zvTJ6jM
+         nzVLY68zLlBuchEW7RY77+/L0SSf8/ePeFNcNMXMCCx44Nak5zXPSfZKJ7nq2/q9GTfk
+         IC4woDZM48ew7TN08TUIpTgzR5/6zje6oTu1PB9ae8EnWsd2QbTJ7c9dGHaO8l6Qv2pX
+         7C6lQUy0Z+RxSd2ULpz7/29IKaV9d2nDWW38x+1hbPRIdCr+77oQcZrrumwT3k9h69AX
+         HfmiUemlPVb0zUjWXdpScTZ/X7beJ9eACMVNdKOo36DSZW3RZmdtLw5HVOEjGS7H9Kn/
+         TjBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742654008; x=1743258808;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CIBZE6KgWtHZM48TAyKomWUpshgbZruN/nT+wM0z3cY=;
+        b=sJKowBeXS7mJb+BZiJCf91nwiyIl9RQIFAvJ761sp95G4u2bXdIz+ewWZwdT52vr9I
+         UE71m/63m25Ka+159wiVLxuarhNcBQHCkENE2GB6Uu0AROeQF1XjNMWhgfhx3abqoBsx
+         a/pO6GlhXN28mVO7CsKaI4/GlD8MIctjiQzEw2/UTcKH0T5Uc91P4/VkD1TQb9pT1Id6
+         FceFOkGnpJWa7FDKe4B7KsBYc2/P7zVa7OPcYmq1Z2hWnyK6EYHKleUGrvevioh/ICXc
+         O9osZ0woaed/3whVdoxrsCHMhyztAwMMRRWbnbRPzDm0vnPMxgRE9JSSRA3jVUJxB43s
+         LmiQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVo1mYosbsZq+BoktYEbLJfnkEs8fYo79KX79gVvcjW9aJsopQYHA5L2uksX8oDNTFZgo5zjIkUEJIy6HY=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yzwh5q2BLtgv7CyaotQXdJz3g8j7u4xjzQzRcopOIgo7ljCWJa8
+	be+UcQWktFKlU7VrtTxlNjUmNQDBBRxQRA7qgq2TXKFwgZwtffNv
+X-Gm-Gg: ASbGncuC7vS1n0xVZWn+XtsGrQRDDYOn4iZWVzgkJT7TgYFTLe6ZvfzNH1FlztHsaJa
+	bMkd99Bc9yT6TkBxEBOCFnefJqM4EsAwXDvTxINeKuhYoasIKELtXmhuAkO4Ju67lREjKonuhj9
+	XH/tp9yWTubIV97oKWxnEerFxPW576t9OETyr5yljfhwOnZarWVPaeC0jFVgrSKJ75/k7G12AWi
+	NWFQkD+c7sAwZhHYEfrUy5SAKJn9c76x9HF+p6cCPxu1WtPWR5vjZvP3xor//qcITm8utRmR9+v
+	Dvlju9ezxV3aLbUJzMrKjPJWcRYNhiMCtnR87g9TS4JKtAmj6k3wL4XoVEaEpodOBy6+
+X-Google-Smtp-Source: AGHT+IFuGDrvHo87gSkJ3AgKg7PRhGZxToZM2+HRB79B6clNvtT7xfbYzfwMUOphtPaGeqwrjNJHSw==
+X-Received: by 2002:a17:903:320e:b0:224:1294:1d24 with SMTP id d9443c01a7336-22780c51260mr108189625ad.3.1742654008346;
+        Sat, 22 Mar 2025 07:33:28 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:da43:aeff:fecc:bfd5])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22780f4c3a6sm36082255ad.92.2025.03.22.07.33.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 22 Mar 2025 07:33:27 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date: Sat, 22 Mar 2025 07:33:27 -0700
+From: Guenter Roeck <linux@roeck-us.net>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-crypto@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org,
+	Zhihang Shao <zhihang.shao.iscas@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Vinicius Peixoto <vpeixoto@lkcamp.dev>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH v2 08/12] lib/crc_kunit.c: add KUnit test suite for CRC
+ library functions
+Message-ID: <389b899f-893c-4855-9e30-d8920a5d6f91@roeck-us.net>
+References: <20241202012056.209768-1-ebiggers@kernel.org>
+ <20241202012056.209768-9-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,243 +97,89 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next-20250320][btrfs] Kernel OOPs while running btrfs/108
-To: Qu Wenruo <quwenruo.btrfs@gmx.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>, linux-btrfs@vger.kernel.org
-References: <e4b1ccf8-c626-4683-82db-219354a27e61@linux.ibm.com>
- <87h63ms7gk.fsf@gmail.com> <d3be2a1b-71d9-425f-bb56-30d3fd890270@gmx.com>
-Content-Language: en-GB
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <d3be2a1b-71d9-425f-bb56-30d3fd890270@gmx.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: OA9wgwp_0YBtFP2HRLhfI2ThCS2mXqPQ
-X-Proofpoint-GUID: NdxYPujSaY4vidPPINVvboNrHPigKlhW
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-22_06,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- adultscore=0 mlxscore=0 impostorscore=0 clxscore=1011 priorityscore=1501
- malwarescore=0 mlxlogscore=999 spamscore=0 suspectscore=0 phishscore=0
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503220103
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241202012056.209768-9-ebiggers@kernel.org>
+X-Spam-Status: No, score=2.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Hi,
 
-On 22/03/25 2:48 am, Qu Wenruo wrote:
->
->
-> 在 2025/3/22 02:26, Ritesh Harjani (IBM) 写道:
->>
->> +linux-btrfs
->>
->> Venkat Rao Bagalkote <venkat88@linux.ibm.com> writes:
->>
->>> Greetings!!!
->>>
->>>
->>> I am observing Kernel oops while running brtfs/108 TC on IBM Power 
->>> System.
->>>
->>> Repo: Linux-Next (next-20250320)
->>
->> Looks like this next tag had many btrfs related changes -
->> https://web.git.kernel.org/pub/scm/linux/kernel/git/next/linux-next.git/log/fs/btrfs?h=next-20250320 
->>
->>
->>>
->>> Traces:
->>>
->>> [  418.392604] run fstests btrfs/108 at 2025-03-21 05:11:21
->>> [  418.560137] Kernel attempted to read user page (0) - exploit 
->>> attempt?
->>> (uid: 0)
->>> [  418.560156] BUG: Kernel NULL pointer dereference on read at 
->>> 0x00000000
->>
->> NULL pointer dereference...
->>
->>> [  418.560161] Faulting instruction address: 0xc0000000010ef8b0
->>> [  418.560166] Oops: Kernel access of bad area, sig: 11 [#1]
->>> [  418.560169] LE PAGE_SIZE=64K MMU=Radix  SMP NR_CPUS=8192 NUMA 
->>> pSeries
->>> [  418.560174] Modules linked in: btrfs blake2b_generic xor raid6_pq
->>> zstd_compress loop nft_fib_inet nft_fib_ipv4 nft_fib_ipv6 nft_fib
->>> nft_reject_inet nf_reject_ipv4 nf_reject_ipv6 nft_reject nft_ct
->>> nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 bonding nf_defrag_ipv4
->>> tls rfkill ip_set nf_tables nfnetlink sunrpc pseries_rng vmx_crypto 
->>> fuse
->>> ext4 mbcache jbd2 sd_mod sg ibmvscsi scsi_transport_srp ibmveth
->>> [  418.560212] CPU: 1 UID: 0 PID: 37583 Comm: rm Kdump: loaded Not
->>> tainted 6.14.0-rc7-next-20250320 #1 VOLUNTARY
->>> [  418.560218] Hardware name: IBM,9080-HEX Power11
->>> [  418.560223] NIP:  c0000000010ef8b0 LR: c00800000bb190ac CTR:
->>> c0000000010ef888
->>> [  418.560227] REGS: c0000000a252f5a0 TRAP: 0300   Not tainted
->>> (6.14.0-rc7-next-20250320)
->>> [  418.560232] MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR:
->>> 44008444  XER: 20040000
->>> [  418.560240] CFAR: c00800000bc1df84 DAR: 0000000000000000 DSISR:
->>> 40000000 IRQMASK: 1
->>> [  418.560240] GPR00: c00800000bb190ac c0000000a252f840 
->>> c0000000016a8100
->>> 0000000000000000
->>> [  418.560240] GPR04: 0000000000000000 0000000000010000 
->>> 0000000000000000
->>> fffffffffffe0000
->>> [  418.560240] GPR08: c00000010724aad8 0000000000000003 
->>> 0000000000001000
->>> c00800000bc1df70
->>> [  418.560240] GPR12: c0000000010ef888 c000000affffdb00 
->>> 0000000000000000
->>> 0000000000000000
->>> [  418.560240] GPR16: 0000000000000000 0000000000000000 
->>> 0000000000000000
->>> 0000000000000000
->>> [  418.560240] GPR20: c0000000777a8000 c00000006a9c9000 
->>> c00000010724a950
->>> c0000000777a8000
->>> [  418.560240] GPR24: fffffffffffffffe c00000010724aad8 
->>> 0000000000010000
->>> 00000000000000a0
->>> [  418.560240] GPR28: 0000000000010000 c00c00000048c3c0 
->>> 0000000000000000
->>> 0000000000000000
->>> [  418.560287] NIP [c0000000010ef8b0] _raw_spin_lock_irq+0x28/0x98
->>> [  418.560294] LR [c00800000bb190ac] wait_subpage_spinlock+0x64/0xd0 
->>> [btrfs]
->>
->>
->> btrfs is working on subpage size support for a while now.
->> Adding +linux-btrfs, in case if they are already aware of this problem.
->>
->> I am not that familiar with btrfs code. But does this look like that the
->> subpage (folio->private became NULL here) somehow?
->
-> The for-next branch seems to have some conflicts, IIRC the following two
-> commits are no longer in our tree anymore:
->
-> btrfs: kill EXTENT_FOLIO_PRIVATE
-> btrfs: add mapping_set_release_always to inode's mapping
->
-> I believe those two may be the cause.
->
-> Mind to test with the our current for-next branch? Where that's all of
-> our development happening, and I run daily subpage fstests on it to make
-> sure at least that branch is safe:
->
->   https://github.com/btrfs/linux/tree/for-next
->
-> And appreciate if you can verify if the NULL pointer dereference is
-> still there on that branch.
+On Sun, Dec 01, 2024 at 05:20:52PM -0800, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
+> 
+> Add a KUnit test suite for the crc16, crc_t10dif, crc32_le, crc32_be,
+> crc32c, and crc64_be library functions.  It avoids code duplication by
+> sharing most logic among all CRC variants.  The test suite includes:
+> 
+> - Differential fuzz test of each CRC function against a simple
+>   bit-at-a-time reference implementation.
+> - Test for CRC combination, when implemented by a CRC variant.
+> - Optional benchmark of each CRC function with various data lengths.
+> 
+> This is intended as a replacement for crc32test and crc16_kunit, as well
+> as a new test for CRC variants which didn't previously have a test.
+> 
+> Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+> Cc: Vinicius Peixoto <vpeixoto@lkcamp.dev>
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
+> ---
+...
+> +
+> +		nosimd = rand32() % 8 == 0;
+> +
+> +		/*
+> +		 * Compute the CRC, and verify that it equals the CRC computed
+> +		 * by a simple bit-at-a-time reference implementation.
+> +		 */
+> +		expected_crc = crc_ref(v, init_crc, &test_buffer[offset], len);
+> +		if (nosimd)
+> +			local_irq_disable();
+> +		actual_crc = v->func(init_crc, &test_buffer[offset], len);
+> +		if (nosimd)
+> +			local_irq_enable();
 
+This triggers a traceback on some arm systems.
 
-I verified with the for-next repo, and I dont see the issue. btrfs/108 
-passes.
+[    7.810000]     ok 2 crc16_benchmark # SKIP not enabled
+[    7.810000] ------------[ cut here ]------------
+[    7.810000] WARNING: CPU: 0 PID: 1145 at kernel/softirq.c:369 __local_bh_enable_ip+0x118/0x194
+[    7.810000] Modules linked in:
+[    7.810000] CPU: 0 UID: 0 PID: 1145 Comm: kunit_try_catch Tainted: G                 N 6.14.0-rc7-00196-g88d324e69ea9 #1
+[    7.810000] Tainted: [N]=TEST
+[    7.810000] Hardware name: NPCM7XX Chip family
+[    7.810000] Call trace:
+[    7.810000]  unwind_backtrace from show_stack+0x10/0x14
+[    7.810000]  show_stack from dump_stack_lvl+0x7c/0xac
+[    7.810000]  dump_stack_lvl from __warn+0x7c/0x1b8
+[    7.810000]  __warn from warn_slowpath_fmt+0x19c/0x1a4
+[    7.810000]  warn_slowpath_fmt from __local_bh_enable_ip+0x118/0x194
+[    7.810000]  __local_bh_enable_ip from crc_t10dif_arch+0xd4/0xe8
+[    7.810000]  crc_t10dif_arch from crc_t10dif_wrapper+0x14/0x1c
+[    7.810000]  crc_t10dif_wrapper from crc_main_test+0x178/0x360
+[    7.810000]  crc_main_test from kunit_try_run_case+0x78/0x1e0
+[    7.810000]  kunit_try_run_case from kunit_generic_run_threadfn_adapter+0x1c/0x34
+[    7.810000]  kunit_generic_run_threadfn_adapter from kthread+0x118/0x254
+[    7.810000]  kthread from ret_from_fork+0x14/0x28
+[    7.810000] Exception stack(0xe3651fb0 to 0xe3651ff8)
+[    7.810000] 1fa0:                                     00000000 00000000 00000000 00000000
+[    7.810000] 1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+[    7.810000] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+[    7.810000] irq event stamp: 29
+[    7.810000] hardirqs last  enabled at (27): [<c037875c>] __local_bh_enable_ip+0xb4/0x194
+[    7.810000] hardirqs last disabled at (28): [<c0b09684>] crc_main_test+0x2e4/0x360
+[    7.810000] softirqs last  enabled at (26): [<c032a3ac>] kernel_neon_end+0x0/0x1c
+[    7.810000] softirqs last disabled at (29): [<c032a3c8>] kernel_neon_begin+0x0/0x70
+[    7.810000] ---[ end trace 0000000000000000 ]---
+[    8.050000]     # crc_t10dif_test: pass:1 fail:0 skip:0 total:1
 
-./check btrfs/108
-RECREATING    -- btrfs on /dev/loop0
-FSTYP         -- btrfs
-PLATFORM      -- Linux/ppc64le ltcden8-lp1 6.14.0-rc7-g88d324e69ea9 #1 
-SMP Sat Mar 22 07:47:48 CDT 2025
-MKFS_OPTIONS  -- -f -s 4096 -n 4096 /dev/loop1
-MOUNT_OPTIONS -- -o context=system_u:object_r:root_t:s0 /dev/loop1 
-/mnt/scratch
+kernel_neon_end() calls local_bh_enable() which apparently conflicts with
+the local_irq_disable() in above code.
 
-btrfs/108        1s
-Ran: btrfs/108
-Passed all 1 tests
-
-Repo: https://github.com/btrfs/linux/tree/for-next
-
-
-Regards,
-
-Venkat.
-
->
-> Thanks,
-> Qu
->
->>
->> -ritesh
->>
->>> [  418.560339] Call Trace:
->>> [  418.560342] [c0000000a252f870] [c00800000bb205dc]
->>> btrfs_invalidate_folio+0xa8/0x4f0 [btrfs]
->>> [  418.560384] [c0000000a252f930] [c0000000004cbcdc]
->>> truncate_cleanup_folio+0x110/0x14c
->>> [  418.560391] [c0000000a252f960] [c0000000004ccc7c]
->>> truncate_inode_pages_range+0x100/0x4dc
->>> [  418.560397] [c0000000a252fbd0] [c00800000bb20ba8]
->>> btrfs_evict_inode+0x74/0x510 [btrfs]
->>> [  418.560437] [c0000000a252fc90] [c00000000065c71c] evict+0x164/0x334
->>> [  418.560443] [c0000000a252fd30] [c000000000647c9c] 
->>> do_unlinkat+0x2f4/0x3a4
->>> [  418.560449] [c0000000a252fde0] [c000000000647da0] 
->>> sys_unlinkat+0x54/0xac
->>> [  418.560454] [c0000000a252fe10] [c000000000033498]
->>> system_call_exception+0x138/0x330
->>> [  418.560461] [c0000000a252fe50] [c00000000000d05c]
->>> system_call_vectored_common+0x15c/0x2ec
->>> [  418.560468] --- interrupt: 3000 at 0x7fffb1b366bc
->>> [  418.560471] NIP:  00007fffb1b366bc LR: 00007fffb1b366bc CTR:
->>> 0000000000000000
->>> [  418.560475] REGS: c0000000a252fe80 TRAP: 3000   Not tainted
->>> (6.14.0-rc7-next-20250320)
->>> [  418.560479] MSR:  800000000280f033
->>> <SF,VEC,VSX,EE,PR,FP,ME,IR,DR,RI,LE>  CR: 44008804  XER: 00000000
->>> [  418.560490] IRQMASK: 0
->>> [  418.560490] GPR00: 0000000000000124 00007ffffcb4e2b0 
->>> 00007fffb1c37d00
->>> ffffffffffffff9c
->>> [  418.560490] GPR04: 000000013d660380 0000000000000000 
->>> 0000000000000000
->>> 0000000000000003
->>> [  418.560490] GPR08: 0000000000000000 0000000000000000 
->>> 0000000000000000
->>> 0000000000000000
->>> [  418.560490] GPR12: 0000000000000000 00007fffb1dba5c0 
->>> 00007ffffcb4e538
->>> 000000011972d0e8
->>> [  418.560490] GPR16: 000000011972d098 000000011972d060 
->>> 000000011972d020
->>> 000000011972cff0
->>> [  418.560490] GPR20: 000000011972d298 000000011972cc10 
->>> 0000000000000000
->>> 000000013d6615a0
->>> [  418.560490] GPR24: 0000000000000002 000000011972d0b8 
->>> 000000011972cf98
->>> 000000011972d1d0
->>> [  418.560490] GPR28: 00007ffffcb4e538 000000013d6602f0 
->>> 0000000000000000
->>> 0000000000100000
->>> [  418.560532] NIP [00007fffb1b366bc] 0x7fffb1b366bc
->>> [  418.560536] LR [00007fffb1b366bc] 0x7fffb1b366bc
->>> [  418.560538] --- interrupt: 3000
->>> [  418.560541] Code: 7c0803a6 4e800020 3c4c005c 38428878 7c0802a6
->>> 60000000 39200001 992d0932 a12d0008 3ce0fffe 5529083c 61290001
->>> <7d001829> 7d063879 40c20018 7d063838
->>> [  418.560555] ---[ end trace 0000000000000000 ]---
->>>
->>>
->>> If you happed to fix this, please add below tag.
->>>
->>>
->>> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->>>
->>>
->>> Regards,
->>>
->>> Venkat.
->>
->
->
+Guenter
 
