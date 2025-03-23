@@ -1,105 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-7295-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7296-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AD6A6CEBA
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Mar 2025 11:33:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25F0CA6CFE5
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Mar 2025 16:35:54 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZLCF30FyJz2yfX;
-	Sun, 23 Mar 2025 21:32:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZLKyZ3K3yz2yMF;
+	Mon, 24 Mar 2025 02:35:50 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742725974;
-	cv=none; b=oqeBUZXq0LH6dhEwLoYtUlzLYWwqIBCZjUShKvaoz4rTNdjiMM8UA9X7qbt7bmx+wLtQMS2TzKSW7da+9fMkNjubbHirWGirZyudqZ3JzWO8ss9gaj/98XEqnMV8BkIo9mZqd1qBjdL6/r7N/xFvRoyK9KAeK86+IoxxwXwBKyD6lK8ZhswteWK1bJCSH+7Q0wIuzNksvctGOOJ/nLFRSxIYGE4myZW3KyktPZVVKbJFt4q0cLDnmSQBiAcLGKP3anU0UH54tBA1U7QTQbZgREFgDyI2HLh6rAXBjMStjEm22ESXWz1JEWduj07yHnZYHsHoctfAQk2l2RAEvALnfQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742744150;
+	cv=none; b=LGyltQurTxObiz3BCdmzYECwLoCJHoO1kcCh8YLGJe7xEo8Pj8e/C835TT3925DIXL1+QTLRAM2Z4PKk7110/SXAueh44Jj5IvIRqMhj+Dt4q/aKKaCCsO8IOf+1B1AvemUyEcsjhUvigngK0rGzmNtOeev3aC1fw2JENZIA0OUlb92vu2TyBQ3jVJuKGQMb6EI1jEru66tnCh8ylKzDzH/4FicCCVlctlpPpSxdvtbc7yaxXUZ8dCWqgivLPpM3Awn4hXgNq50ESX5Y2TmEKQdm1RcgXj7J9pMoSGRv7YLHqUe0TDDEbHyFuD8l4fRP/oz5KpBqS4+OVYOXK69S+w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742725974; c=relaxed/relaxed;
-	bh=QjVtbp8yBGM6h+YYmjBSD7lg9d3KsF1yROQtOZ8tQ14=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=d/cHcwYYP5qDTiZVmfN1yz08ZCPpFRKh81NGk38MaYixngNtgxkf8Sfz7VUpbhj8YeIn8Epu2c9Kd51wFOlD65oLZW1uZqEzJqfEMA9m6+famwBG/ux55Ug/bSWCEwtw4+qSfHS3Roae5pDSETjM6FTVzDVrLU0q5DhpnL0vbFLgIDXBbcIIOSMMoUlUlrkIRCZ30MxhkzRD/SxNouVHgdNek395VzGt93dCgIYVNnkr6NJDuvJb9MR7gf/r/ztmNJlQnld/z+3NL+tbd/9nk/9kJH9MgT+B87xPp4eNCNAHfjC/+fq6TpOTXNHBT5eA+7OoorHvHGsOg6DPt6jhLw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LAbd7AT3; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=pali@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1742744150; c=relaxed/relaxed;
+	bh=rzGPF+jAuoVNNvZKw8AOUI3kCWKHyeZTsTlWTjdMBUs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LSaw8f/tPFV73Apw9r/bn6xfJuFEWGuP5niOmYFLfqq3mHtZGqgPdccjG4X3IztPvVQ8cBh9eUWIwTRXvyLti65cz1jItEOM7fp3xeoty+HLLhRyDDyzoA3ts8WdPKKWihq8ZkPxe9frWva++3YTlkuV2kE6EptwDbhWLz1nph0y8YWez1LBWIDm2tXMbtQ4HXpUAdonkuppfdiAZsJSZWWLo1QfNG6UvyRk/F7X0z827UDIDcFyIeohRktZ+phMPxF71Q66zIF4WAxYmvvhcQXtAWvQbHX7Env0O8NH9DXtGHLeyeeGriIco/v/ghwj+kkd7mjlp0fAm9h6CaXNWg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YzmqxlQZ; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LAbd7AT3;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=YzmqxlQZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=pali@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZLCF15pP4z2yfF
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Mar 2025 21:32:53 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZLKyX6ly8z2yLB
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Mar 2025 02:35:44 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 6A90AA49701;
-	Sun, 23 Mar 2025 10:27:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0C78C4CEEA;
-	Sun, 23 Mar 2025 10:32:49 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTP id 99C145C5AFC
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Mar 2025 15:33:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2156BC4AF09
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Mar 2025 15:35:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742725970;
-	bh=22IN0QCxwLGn5bz1ZuEjWluuK6xzFnnzFoh8o64RIEY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LAbd7AT3HTEufIBq7Y/BHCtHUyO6C5+vfu3hHINcSwZrvjvYPGc+DMZUpYzvZq5HM
-	 P8FcJ7W8e7MHHIG+18pKes7wb/LHdtGp53ICPBxBiwe1cJmBmvQ9SM4dYmxa21ct+l
-	 bDC8jknBMPn9kJAY/TwdYqb7pwUoE8R7T5YdzECI8eqFK2Xe5jTSZ8nFoDJofZiFiM
-	 d5CUi8s5Za7RqyGgDhHGuiFdSeCDUgH90LVTc0DUxGs62l4SBpIeNYy+d4qQklLlAf
-	 7zwquXf2QXRJHQxMWJyGxHHb5ycc7IeHnb3eBfiaA3LSDAjlTILSGkQY0pFGZ0GTrK
-	 I/OzBltEL3ynw==
-Received: by pali.im (Postfix)
-	id C505F7DE; Sun, 23 Mar 2025 11:32:34 +0100 (CET)
-Date: Sun, 23 Mar 2025 11:32:34 +0100
-From: Pali =?utf-8?B?Um9ow6Fy?= <pali@kernel.org>
-To: Amir Goldstein <amir73il@gmail.com>
-Cc: Andrey Albershteyn <aalbersh@redhat.com>,
-	Richard Henderson <richard.henderson@linaro.org>,
-	Matt Turner <mattst88@gmail.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Michal Simek <monstr@monstr.eu>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	"James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-	Helge Deller <deller@gmx.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Yoshinori Sato <ysato@users.sourceforge.jp>,
-	Rich Felker <dalias@libc.org>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	"David S. Miller" <davem@davemloft.net>,
-	Andreas Larsson <andreas@gaisler.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-	Max Filippov <jcmvbkbc@gmail.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	=?utf-8?Q?Micka=C3=ABl_Sala=C3=BCn?= <mic@digikod.net>,
-	=?utf-8?Q?G=C3=BCnther?= Noack <gnoack@google.com>,
-	Arnd Bergmann <arnd@arndb.de>, Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>, linux-alpha@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-	sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	linux-security-module@vger.kernel.org, linux-api@vger.kernel.org,
-	linux-arch@vger.kernel.org, selinux@vger.kernel.org,
-	Andrey Albershteyn <aalbersh@kernel.org>, linux-xfs@vger.kernel.org
-Subject: Re: [PATCH v4 0/3] fs: introduce getfsxattrat and setfsxattrat
- syscalls
-Message-ID: <20250323103234.2mwhpsbigpwtiby4@pali>
-References: <20250321-xattrat-syscall-v4-0-3e82e6fb3264@kernel.org>
- <CAOQ4uxjQDUg8HFG+mSxMkR54zen7nC2jttzOKqh13Bx-uosh3Q@mail.gmail.com>
+	s=k20201202; t=1742744142;
+	bh=2N2/cZq9PK/1OD9D7rI0owgZtoMseqZwZPwvsoNCvXg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=YzmqxlQZ/kTC9/X6Nbi0GB4G6dV1X5hxISwkHmhgwt+ADGF1rsm2my+JKh4mm7gTO
+	 +Wi+rZl6qtd7joIEhSO4JjncVE0ybEAvVK7JCS4uu6Boqvk1pR24pn6AMMZ15HCWIh
+	 rKE/PGJWjn9J9RMSeQa2SpYcm0g9hTT/wjdQG2e/2NDeKmx1GP1KD2uen16RiKiwFV
+	 JozAfd8P1mxnh01D1tCnXGKy3+fJZSk8nD3yn9ulQ4y6XbpS33orG9bW0i6oV4A5Vr
+	 Pf23igPbAiWHiFXd2YZjJAiwLavwGSqTFn703gDMtMv/2QePdOgR+mET98nJCNPmOG
+	 uweKQUDjq2hMA==
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-30bf7d0c15eso36723801fa.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Mar 2025 08:35:42 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXxBPL0sOylmIDeabXlLA3ZvloFLZRvn6OCJ7ZZxUftI7fx4Pn+DoI4TnWqFOgF14ipVpgwgbDKTA+Lh1E=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YysqBg2rb7YsEu6NNWJZEVPMPAOTSNbXsPQ0TEMpn0P6zV/k3bB
+	NyKS2lBoMUaEmOQx0/8N3mrZndik8TXs2/uAxSfu//K0NVENBds8TXFgypMwqfxPF4NsENQVE11
+	W7sCau45p7pBO/sxvyv17AHq88Lg=
+X-Google-Smtp-Source: AGHT+IFLcZeXGkTxlRz0UlNugKaJuCUYhZIJxwtZuNGOXiFAM7FV0N99brYUCnXNyXzlAo8JVSr/VCRroadSoUTiddY=
+X-Received: by 2002:a2e:be85:0:b0:30b:a187:44ad with SMTP id
+ 38308e7fff4ca-30d7e2ba306mr36637601fa.26.1742744140424; Sun, 23 Mar 2025
+ 08:35:40 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -112,262 +65,120 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOQ4uxjQDUg8HFG+mSxMkR54zen7nC2jttzOKqh13Bx-uosh3Q@mail.gmail.com>
-User-Agent: NeoMutt/20180716
-X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+References: <20241202012056.209768-1-ebiggers@kernel.org> <20241202012056.209768-9-ebiggers@kernel.org>
+ <389b899f-893c-4855-9e30-d8920a5d6f91@roeck-us.net>
+In-Reply-To: <389b899f-893c-4855-9e30-d8920a5d6f91@roeck-us.net>
+From: Ard Biesheuvel <ardb@kernel.org>
+Date: Sun, 23 Mar 2025 16:35:29 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXHAktbQ-605wfqXCWtn8bP-yEv8sYKWAykajeAX2m1hEA@mail.gmail.com>
+X-Gm-Features: AQ5f1JoDr3TNnxKgMP4guUoXVQFse2BD4z6mD7wYVwiWtnHwnC7PDo4J2TBYgEQ
+Message-ID: <CAMj1kXHAktbQ-605wfqXCWtn8bP-yEv8sYKWAykajeAX2m1hEA@mail.gmail.com>
+Subject: Re: [PATCH v2 08/12] lib/crc_kunit.c: add KUnit test suite for CRC
+ library functions
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Eric Biggers <ebiggers@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, x86@kernel.org, 
+	Zhihang Shao <zhihang.shao.iscas@gmail.com>, Vinicius Peixoto <vpeixoto@lkcamp.dev>, 
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-6.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sunday 23 March 2025 09:45:06 Amir Goldstein wrote:
-> On Fri, Mar 21, 2025 at 8:50 PM Andrey Albershteyn <aalbersh@redhat.com> wrote:
+On Sat, 22 Mar 2025 at 15:33, Guenter Roeck <linux@roeck-us.net> wrote:
+>
+> Hi,
+>
+> On Sun, Dec 01, 2024 at 05:20:52PM -0800, Eric Biggers wrote:
+> > From: Eric Biggers <ebiggers@google.com>
 > >
-> > This patchset introduced two new syscalls getfsxattrat() and
-> > setfsxattrat(). These syscalls are similar to FS_IOC_FSSETXATTR ioctl()
-> > except they use *at() semantics. Therefore, there's no need to open the
-> > file to get an fd.
+> > Add a KUnit test suite for the crc16, crc_t10dif, crc32_le, crc32_be,
+> > crc32c, and crc64_be library functions.  It avoids code duplication by
+> > sharing most logic among all CRC variants.  The test suite includes:
 > >
-> > These syscalls allow userspace to set filesystem inode attributes on
-> > special files. One of the usage examples is XFS quota projects.
+> > - Differential fuzz test of each CRC function against a simple
+> >   bit-at-a-time reference implementation.
+> > - Test for CRC combination, when implemented by a CRC variant.
+> > - Optional benchmark of each CRC function with various data lengths.
 > >
-> > XFS has project quotas which could be attached to a directory. All
-> > new inodes in these directories inherit project ID set on parent
-> > directory.
+> > This is intended as a replacement for crc32test and crc16_kunit, as well
+> > as a new test for CRC variants which didn't previously have a test.
 > >
-> > The project is created from userspace by opening and calling
-> > FS_IOC_FSSETXATTR on each inode. This is not possible for special
-> > files such as FIFO, SOCK, BLK etc. Therefore, some inodes are left
-> > with empty project ID. Those inodes then are not shown in the quota
-> > accounting but still exist in the directory. This is not critical but in
-> > the case when special files are created in the directory with already
-> > existing project quota, these new inodes inherit extended attributes.
-> > This creates a mix of special files with and without attributes.
-> > Moreover, special files with attributes don't have a possibility to
-> > become clear or change the attributes. This, in turn, prevents userspace
-> > from re-creating quota project on these existing files.
-> >
-> > Christian, if this get in some mergeable state, please don't merge it
-> > yet. Amir suggested these syscalls better to use updated struct fsxattr
-> > with masking from Pali Rohár patchset, so, let's see how it goes.
-> 
-> Andrey,
-> 
-> To be honest I don't think it would be fair to delay your syscalls more
-> than needed.
-
-I agree.
-
-> If Pali can follow through and post patches on top of your syscalls for
-> next merge window that would be great, but otherwise, I think the
-> minimum requirement is that the syscalls return EINVAL if fsx_pad
-> is not zero. we can take it from there later.
-
-IMHO SYS_getfsxattrat is fine in this form.
-
-For SYS_setfsxattrat I think there are needed some modifications
-otherwise we would have problem again with backward compatibility as
-is with ioctl if the syscall wants to be extended in future.
-
-I would suggest for following modifications for SYS_setfsxattrat:
-
-- return EINVAL if fsx_xflags contains some reserved or unsupported flag
-
-- add some flag to completely ignore fsx_extsize, fsx_projid, and
-  fsx_cowextsize fields, so SYS_setfsxattrat could be used just to
-  change fsx_xflags, and so could be used without the preceding
-  SYS_getfsxattrat call.
-
-What do you think about it?
-
-Use cases for future without breaking backward compatibility:
-- atomically / race-free do set or clear just one flag in fsx_xflags
-  (so avoid getfsxattrat - modify buffer - setfsxattrat roundtrip)
-- use fsx_pad[] for some new purposes 
-
-> We can always also increase the size of struct fsxattr, but let's first
-> use the padding space already available.
-> 
-> Thanks,
-> Amir.
-> 
-> >
-> > NAME
-> >
-> >         getfsxattrat/setfsxattrat - get/set filesystem inode attributes
-> >
-> > SYNOPSIS
-> >
-> >         #include <sys/syscall.h>    /* Definition of SYS_* constants */
-> >         #include <unistd.h>
-> >
-> >         long syscall(SYS_getfsxattrat, int dirfd, const char *pathname,
-> >                 struct fsxattr *fsx, size_t size,
-> >                 unsigned int at_flags);
-> >         long syscall(SYS_setfsxattrat, int dirfd, const char *pathname,
-> >                 struct fsxattr *fsx, size_t size,
-> >                 unsigned int at_flags);
-> >
-> >         Note: glibc doesn't provide for getfsxattrat()/setfsxattrat(),
-> >         use syscall(2) instead.
-> >
-> > DESCRIPTION
-> >
-> >         The syscalls take fd and path to the child together with struct
-> >         fsxattr. If path is absolute, fd is not used. If path is empty,
-> >         inode under fd is used to get/set attributes on.
-> >
-> >         This is an alternative to FS_IOC_FSGETXATTR/FS_IOC_FSSETXATTR
-> >         ioctl with a difference that file don't need to be open as we
-> >         can reference it with a path instead of fd. By having this we
-> >         can manipulated filesystem inode attributes not only on regular
-> >         files but also on special ones. This is not possible with
-> >         FS_IOC_FSSETXATTR ioctl as with special files we can not call
-> >         ioctl() directly on the filesystem inode using file descriptor.
-> >
-> > RETURN VALUE
-> >
-> >         On success, 0 is returned.  On error, -1 is returned, and errno
-> >         is set to indicate the error.
-> >
-> > ERRORS
-> >
-> >         EINVAL          Invalid at_flag specified (only
-> >                         AT_SYMLINK_NOFOLLOW and AT_EMPTY_PATH is
-> >                         supported).
-> >
-> >         EINVAL          Size was smaller than any known version of
-> >                         struct fsxattr.
-> >
-> >         EINVAL          Invalid combination of parameters provided in
-> >                         fsxattr for this type of file.
-> >
-> >         E2BIG           Size of input argument **struct fsxattr** is too
-> >                         big.
-> >
-> >         EBADF           Invalid file descriptor was provided.
-> >
-> >         EPERM           No permission to change this file.
-> >
-> >         EOPNOTSUPP      Filesystem does not support setting attributes
-> >                         on this type of inode
-> >
-> > HISTORY
-> >
-> >         Added in Linux 6.14.
-> >
-> > EXAMPLE
-> >
-> > Create directory and file "mkdir ./dir && touch ./dir/foo" and then
-> > execute the following program:
-> >
-> >         #include <fcntl.h>
-> >         #include <errno.h>
-> >         #include <string.h>
-> >         #include <linux/fs.h>
-> >         #include <stdio.h>
-> >         #include <sys/syscall.h>
-> >         #include <unistd.h>
-> >
-> >         int
-> >         main(int argc, char **argv) {
-> >                 int dfd;
-> >                 int error;
-> >                 struct fsxattr fsx;
-> >
-> >                 dfd = open("./dir", O_RDONLY);
-> >                 if (dfd == -1) {
-> >                         printf("can not open ./dir");
-> >                         return dfd;
-> >                 }
-> >
-> >                 error = syscall(467, dfd, "./foo", &fsx, 0);
-> >                 if (error) {
-> >                         printf("can not call 467: %s", strerror(errno));
-> >                         return error;
-> >                 }
-> >
-> >                 printf("dir/foo flags: %d\n", fsx.fsx_xflags);
-> >
-> >                 fsx.fsx_xflags |= FS_XFLAG_NODUMP;
-> >                 error = syscall(468, dfd, "./foo", &fsx, 0);
-> >                 if (error) {
-> >                         printf("can not call 468: %s", strerror(errno));
-> >                         return error;
-> >                 }
-> >
-> >                 printf("dir/foo flags: %d\n", fsx.fsx_xflags);
-> >
-> >                 return error;
-> >         }
-> >
-> > SEE ALSO
-> >
-> >         ioctl(2), ioctl_iflags(2), ioctl_xfs_fsgetxattr(2)
-> >
+> > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> > Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+> > Cc: Vinicius Peixoto <vpeixoto@lkcamp.dev>
+> > Signed-off-by: Eric Biggers <ebiggers@google.com>
 > > ---
-> > Changes in v4:
-> > - Use getname_maybe_null() for correct handling of dfd + path semantic
-> > - Remove restriction for special files on which flags are allowed
-> > - Utilize copy_struct_from_user() for better future compatibility
-> > - Add draft man page to cover letter
-> > - Convert -ENOIOCTLCMD to -EOPNOSUPP as more appropriate for syscall
-> > - Add missing __user to header declaration of syscalls
-> > - Link to v3: https://lore.kernel.org/r/20250211-xattrat-syscall-v3-1-a07d15f898b2@kernel.org
-> >
-> > Changes in v3:
-> > - Remove unnecessary "dfd is dir" check as it checked in user_path_at()
-> > - Remove unnecessary "same filesystem" check
-> > - Use CLASS() instead of directly calling fdget/fdput
-> > - Link to v2: https://lore.kernel.org/r/20250122-xattrat-syscall-v2-1-5b360d4fbcb2@kernel.org
-> >
-> > v1:
-> > https://lore.kernel.org/linuxppc-dev/20250109174540.893098-1-aalbersh@kernel.org/
-> >
-> > Previous discussion:
-> > https://lore.kernel.org/linux-xfs/20240520164624.665269-2-aalbersh@redhat.com/
-> >
-> > ---
-> > Andrey Albershteyn (3):
-> >       lsm: introduce new hooks for setting/getting inode fsxattr
-> >       fs: split fileattr/fsxattr converters into helpers
-> >       fs: introduce getfsxattrat and setfsxattrat syscalls
-> >
-> >  arch/alpha/kernel/syscalls/syscall.tbl      |   2 +
-> >  arch/arm/tools/syscall.tbl                  |   2 +
-> >  arch/arm64/tools/syscall_32.tbl             |   2 +
-> >  arch/m68k/kernel/syscalls/syscall.tbl       |   2 +
-> >  arch/microblaze/kernel/syscalls/syscall.tbl |   2 +
-> >  arch/mips/kernel/syscalls/syscall_n32.tbl   |   2 +
-> >  arch/mips/kernel/syscalls/syscall_n64.tbl   |   2 +
-> >  arch/mips/kernel/syscalls/syscall_o32.tbl   |   2 +
-> >  arch/parisc/kernel/syscalls/syscall.tbl     |   2 +
-> >  arch/powerpc/kernel/syscalls/syscall.tbl    |   2 +
-> >  arch/s390/kernel/syscalls/syscall.tbl       |   2 +
-> >  arch/sh/kernel/syscalls/syscall.tbl         |   2 +
-> >  arch/sparc/kernel/syscalls/syscall.tbl      |   2 +
-> >  arch/x86/entry/syscalls/syscall_32.tbl      |   2 +
-> >  arch/x86/entry/syscalls/syscall_64.tbl      |   2 +
-> >  arch/xtensa/kernel/syscalls/syscall.tbl     |   2 +
-> >  fs/inode.c                                  | 130 ++++++++++++++++++++++++++++
-> >  fs/ioctl.c                                  |  39 ++++++---
-> >  include/linux/fileattr.h                    |   2 +
-> >  include/linux/lsm_hook_defs.h               |   4 +
-> >  include/linux/security.h                    |  16 ++++
-> >  include/linux/syscalls.h                    |   6 ++
-> >  include/uapi/asm-generic/unistd.h           |   8 +-
-> >  include/uapi/linux/fs.h                     |   3 +
-> >  security/security.c                         |  32 +++++++
-> >  25 files changed, 259 insertions(+), 13 deletions(-)
-> > ---
-> > base-commit: ffd294d346d185b70e28b1a28abe367bbfe53c04
-> > change-id: 20250114-xattrat-syscall-6a1136d2db59
-> >
-> > Best regards,
-> > --
-> > Andrey Albershteyn <aalbersh@kernel.org>
-> >
-> >
+> ...
+> > +
+> > +             nosimd = rand32() % 8 == 0;
+> > +
+> > +             /*
+> > +              * Compute the CRC, and verify that it equals the CRC computed
+> > +              * by a simple bit-at-a-time reference implementation.
+> > +              */
+> > +             expected_crc = crc_ref(v, init_crc, &test_buffer[offset], len);
+> > +             if (nosimd)
+> > +                     local_irq_disable();
+> > +             actual_crc = v->func(init_crc, &test_buffer[offset], len);
+> > +             if (nosimd)
+> > +                     local_irq_enable();
+>
+> This triggers a traceback on some arm systems.
+>
+> [    7.810000]     ok 2 crc16_benchmark # SKIP not enabled
+> [    7.810000] ------------[ cut here ]------------
+> [    7.810000] WARNING: CPU: 0 PID: 1145 at kernel/softirq.c:369 __local_bh_enable_ip+0x118/0x194
+> [    7.810000] Modules linked in:
+> [    7.810000] CPU: 0 UID: 0 PID: 1145 Comm: kunit_try_catch Tainted: G                 N 6.14.0-rc7-00196-g88d324e69ea9 #1
+> [    7.810000] Tainted: [N]=TEST
+> [    7.810000] Hardware name: NPCM7XX Chip family
+> [    7.810000] Call trace:
+> [    7.810000]  unwind_backtrace from show_stack+0x10/0x14
+> [    7.810000]  show_stack from dump_stack_lvl+0x7c/0xac
+> [    7.810000]  dump_stack_lvl from __warn+0x7c/0x1b8
+> [    7.810000]  __warn from warn_slowpath_fmt+0x19c/0x1a4
+> [    7.810000]  warn_slowpath_fmt from __local_bh_enable_ip+0x118/0x194
+> [    7.810000]  __local_bh_enable_ip from crc_t10dif_arch+0xd4/0xe8
+> [    7.810000]  crc_t10dif_arch from crc_t10dif_wrapper+0x14/0x1c
+> [    7.810000]  crc_t10dif_wrapper from crc_main_test+0x178/0x360
+> [    7.810000]  crc_main_test from kunit_try_run_case+0x78/0x1e0
+> [    7.810000]  kunit_try_run_case from kunit_generic_run_threadfn_adapter+0x1c/0x34
+> [    7.810000]  kunit_generic_run_threadfn_adapter from kthread+0x118/0x254
+> [    7.810000]  kthread from ret_from_fork+0x14/0x28
+> [    7.810000] Exception stack(0xe3651fb0 to 0xe3651ff8)
+> [    7.810000] 1fa0:                                     00000000 00000000 00000000 00000000
+> [    7.810000] 1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+> [    7.810000] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+> [    7.810000] irq event stamp: 29
+> [    7.810000] hardirqs last  enabled at (27): [<c037875c>] __local_bh_enable_ip+0xb4/0x194
+> [    7.810000] hardirqs last disabled at (28): [<c0b09684>] crc_main_test+0x2e4/0x360
+> [    7.810000] softirqs last  enabled at (26): [<c032a3ac>] kernel_neon_end+0x0/0x1c
+> [    7.810000] softirqs last disabled at (29): [<c032a3c8>] kernel_neon_begin+0x0/0x70
+> [    7.810000] ---[ end trace 0000000000000000 ]---
+> [    8.050000]     # crc_t10dif_test: pass:1 fail:0 skip:0 total:1
+>
+> kernel_neon_end() calls local_bh_enable() which apparently conflicts with
+> the local_irq_disable() in above code.
+>
+
+This seems to be an oversight on my part. Can you try the below please?
+
+diff --git a/arch/arm/include/asm/simd.h b/arch/arm/include/asm/simd.h
+index 82191dbd7e78..56ddbd3c4997 100644
+--- a/arch/arm/include/asm/simd.h
++++ b/arch/arm/include/asm/simd.h
+@@ -4,5 +4,6 @@
+
+ static __must_check inline bool may_use_simd(void)
+ {
+-       return IS_ENABLED(CONFIG_KERNEL_MODE_NEON) && !in_hardirq();
++       return IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
++              !in_hardirq() && !irqs_disabled();
+ }
+
+However, this test code also appears to assume that SIMD is forbidden
+on any architecture when IRQs are disabled, but this not guaranteed.
 
