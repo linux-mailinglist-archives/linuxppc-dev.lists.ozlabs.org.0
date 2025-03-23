@@ -1,87 +1,64 @@
-Return-Path: <linuxppc-dev+bounces-7299-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7300-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7777A6D008
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Mar 2025 17:36:34 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49707A6D02D
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Mar 2025 18:12:57 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZLMJY2Wyvz2ygd;
-	Mon, 24 Mar 2025 03:36:29 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZLN6Z3ly0z2ygh;
+	Mon, 24 Mar 2025 04:12:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742747789;
-	cv=none; b=CGO0hIAtAYnbShGjUIVBn8BbX9P8AKXwpWTVfQRT/NKIw6Cr+xFJ9swrptLKp/Q8SWfvBBhF8KFcB+vnM0vi+177ePCd6T6p9rDJO8V1QWgi0aVywd5WHJ2X5sO+Zn4MO53xJK7VfA4Hhro8o5WCjPVUpKh0xN4OvbF93yQVVSEny8PpQ87mH3zxfh8SijlhscNsB9htzZcrQHXoCbwz67G8Xl4NLW6Ced9E3Dlqv6IS68ra63XUkQhgv6Hxdy3k29bA4GW+w+o5BLNPhaQyuozVif9uCSQGlVEZBNYhcEr8eAo84eIytkIeGEhelDGly+Bbtdp0Od5k6GbkVJbssQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742749974;
+	cv=none; b=RQt6GVYvjo40vl6GU28JoKcwa4EOONg1icgE4HdLZMr2hcrS478e3nusWfV5Tq/kVo0QZgEIJTOnhKuESmNuEkrXaiCH//g1y4t9cTXr33Ak3L6N34X4kHZFc5wJ3mxAyiUWuUZsoKzZsaSlTRDNsOSpsVw0mgHAd8SVepGCQGvlMOe+VsfATYGzD2qUjEt+afza3alrjBggYV0Qpl6B4lt1K+SlsGoN32fMVBbXCFQT7TtuIvKhj9NZ6FLNAiwxejI/oPuAHhmtdL12g4XyL0Z5RmVtl5odfBKg4/8XqSkJNQjyqZY4tv0/X5t6NbFUIecwUzzdPqMmCt8PZe7Vow==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742747789; c=relaxed/relaxed;
-	bh=sM/ybHruEmdSlSR/k3rexBzIxeb6dE4m6RLkYIDagPQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KQCE7r38+v48PBr6vUVW4h3oK7ibM5r7OllVy2wWU+P7EwEOHirDHKr7XKqDyO3lR8Qot5K7jYYiaYfoKWTKDK3jfXYEmfSNJvALyh/iYlW0Hu0L91GQr7f97OF5E46ystDGEhKktxSQRT8MEXfkYDJq+kooJaw7oEOQ8q4YbgE7cSUt07/UAZAimfJRGsFx/g0ZOYYyIug1hV6zQrrj1GusLLRjT8SKAl9wjRPytVEnVEl9iE/gG2DsKzy3ffXQNlTm5AvElyo/BasCREoIjmBxagiuN7i+IVkcGDlYRfyzfhYJ87/xt/rVSuaOSOXvIQ3T6+fAUCd+qlR1KgmwXg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qwWXMvyf; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=misanjum@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742749974; c=relaxed/relaxed;
+	bh=tb7rMiQzTkHus/lAKHW1ZZ9ikFtbsqbwSt9L/aLaNTk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rsohf+VLa5/3wvoeCuE5t678cAEPJXM5lD6bdEI691ejeGWyxSg7+UGFlBhmQmqZuw1eW/9k/nwOMgq/Xcs80/A6CI79TiX22myEyGNHJG/seZxuXTV3QaW3YHIuENzJrhAXDcVKdDVWP/nOUgeWbuCC4RGv2WSJjzBLf0UQEJ3Nwq63trOp3Cfkej0EDvuLryOxgaFsN58w7b8gjCpbbYcYOX0dy0/10jRw4oXBOYFpa+3ftgnVrAY3TIU2rdf4xqPeYXAcWZ3AyY+OLj23D3pjNMt9mnnbuE9UpWo3fE05wLZANh8HgWnsMgfVjKfmiYpaTtPRVVQR0a5tL6YWuw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T60O6Nje; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qwWXMvyf;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=T60O6Nje;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=misanjum@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZLMJX025Hz2yfR
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Mar 2025 03:36:27 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52NEAG40007193;
-	Sun, 23 Mar 2025 16:36:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=sM/ybH
-	ruEmdSlSR/k3rexBzIxeb6dE4m6RLkYIDagPQ=; b=qwWXMvyf9wX0cxJIkb6Ztu
-	BA1GfkDev9DjjCl4y1ZqmeK2xrKJvjmaLhNPyt/Ms2CSLcrbt7NgGyPKswG3dLHF
-	YVmoWz4KLghr9djr9DCuZv9zS7Rg5WaW7kGACuW8AXaqrKy42bN6Mw6rGZpwkyM2
-	qM610NNRNFpLQExr648moeZUpYylKMjKnClFQIcsr/8HkG2Owsn4WT+DeyZuqDtv
-	R+8aX/taYfE7mbCxG9nh45hXryp2feN0IIQ/RudVLdYplCS3GNCbgRmp0+bRu/8m
-	f8ArvBeANxIuuGBfvhIJGBUzB3URu4+MCh8V/vM8eCXE2scS00wGXbHC2mvlrkNA
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45j4cp2u3c-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Mar 2025 16:36:15 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52NGXTfL009795;
-	Sun, 23 Mar 2025 16:36:15 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45j4cp2u3a-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Mar 2025 16:36:14 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52NDTAnq009694;
-	Sun, 23 Mar 2025 16:36:14 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j9rka89y-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 23 Mar 2025 16:36:14 +0000
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52NGaANF13369850
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 23 Mar 2025 16:36:10 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A962B20043;
-	Sun, 23 Mar 2025 16:36:10 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5E3D220040;
-	Sun, 23 Mar 2025 16:36:09 +0000 (GMT)
-Received: from ltcden6-lp1.aus.stglabs.ibm.com (unknown [9.3.101.155])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 23 Mar 2025 16:36:09 +0000 (GMT)
-From: Misbah Anjum N <misanjum@linux.ibm.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, naveen@kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 1/1] arch/powerpc: Remove redundant typedef for bool
-Date: Sun, 23 Mar 2025 11:36:07 -0500
-Message-ID: <20250323163607.537270-2-misanjum@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250323163607.537270-1-misanjum@linux.ibm.com>
-References: <20250323163607.537270-1-misanjum@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZLN6Y27Lxz2yfR
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Mar 2025 04:12:53 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by nyc.source.kernel.org (Postfix) with ESMTP id 2A617A48F8B;
+	Sun, 23 Mar 2025 17:07:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64CEC4CEE2;
+	Sun, 23 Mar 2025 17:12:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1742749970;
+	bh=XozAwQbTpUGYueKBZlPi1Tm0N8h4iRa1gpfz6WWgGhw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T60O6NjeFks2vJ6xoS5NBfgqWn8g0dPX15v5A0FxuX5LYy3UbxKMI4+NeCdWURWZG
+	 jCHwGkV04UqT5ic3MTt8KF6h9q5JEKJIlNLRXpxt4T4ZGEYsmnIVB2NU0YbS0Ydp7T
+	 ZjWpEvA56svrG5y/IEJz+CstDBwaIxEQLdRVgbcupgsUaw30FA/gSyKbg57dS4bLro
+	 mMQYE0Cu741xEKT8D/20is7yPBNPEYrB86hgDgBBSjY/sJnR8FxzPSpMYCaNB8fhxw
+	 5Pdo5Fk0lpKO5EIkasrZ8lsQXMV+t9w32r+13Jscjh2ISDmJcyWosyKOOnxqqRI/wn
+	 9pKRZr7zW+sug==
+Date: Sun, 23 Mar 2025 10:12:43 -0700
+From: Eric Biggers <ebiggers@kernel.org>
+To: Ard Biesheuvel <ardb@kernel.org>
+Cc: Guenter Roeck <linux@roeck-us.net>, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-crypto@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	x86@kernel.org, Zhihang Shao <zhihang.shao.iscas@gmail.com>,
+	Vinicius Peixoto <vpeixoto@lkcamp.dev>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: Re: [PATCH v2 08/12] lib/crc_kunit.c: add KUnit test suite for CRC
+ library functions
+Message-ID: <20250323171243.GA852@quark.localdomain>
+References: <20241202012056.209768-1-ebiggers@kernel.org>
+ <20241202012056.209768-9-ebiggers@kernel.org>
+ <389b899f-893c-4855-9e30-d8920a5d6f91@roeck-us.net>
+ <CAMj1kXHAktbQ-605wfqXCWtn8bP-yEv8sYKWAykajeAX2m1hEA@mail.gmail.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -94,73 +71,123 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 2CiNiKEF0Y0ptND0lguePAc19oiyAy3m
-X-Proofpoint-GUID: 715rgrEjQYfMiu-wbW7z75spDO1Pdkt1
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-23_08,2025-03-21_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=614
- impostorscore=0 priorityscore=1501 malwarescore=0 suspectscore=0
- spamscore=0 adultscore=0 clxscore=1015 mlxscore=0 lowpriorityscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503230115
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXHAktbQ-605wfqXCWtn8bP-yEv8sYKWAykajeAX2m1hEA@mail.gmail.com>
+X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The custom 'bool' typedef in arch/powerpc/boot/types.h is incompatible with
-the C23 standard, where 'bool', 'true', and 'false' are now reserved keywords.
-With newer GCC versions (such as GCC 15), redefining 'bool' leads to compilation
-errors. For example:
-    error: 'bool' cannot be defined via 'typedef'
+On Sun, Mar 23, 2025 at 04:35:29PM +0100, Ard Biesheuvel wrote:
+> On Sat, 22 Mar 2025 at 15:33, Guenter Roeck <linux@roeck-us.net> wrote:
+> >
+> > Hi,
+> >
+> > On Sun, Dec 01, 2024 at 05:20:52PM -0800, Eric Biggers wrote:
+> > > From: Eric Biggers <ebiggers@google.com>
+> > >
+> > > Add a KUnit test suite for the crc16, crc_t10dif, crc32_le, crc32_be,
+> > > crc32c, and crc64_be library functions.  It avoids code duplication by
+> > > sharing most logic among all CRC variants.  The test suite includes:
+> > >
+> > > - Differential fuzz test of each CRC function against a simple
+> > >   bit-at-a-time reference implementation.
+> > > - Test for CRC combination, when implemented by a CRC variant.
+> > > - Optional benchmark of each CRC function with various data lengths.
+> > >
+> > > This is intended as a replacement for crc32test and crc16_kunit, as well
+> > > as a new test for CRC variants which didn't previously have a test.
+> > >
+> > > Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+> > > Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
+> > > Cc: Vinicius Peixoto <vpeixoto@lkcamp.dev>
+> > > Signed-off-by: Eric Biggers <ebiggers@google.com>
+> > > ---
+> > ...
+> > > +
+> > > +             nosimd = rand32() % 8 == 0;
+> > > +
+> > > +             /*
+> > > +              * Compute the CRC, and verify that it equals the CRC computed
+> > > +              * by a simple bit-at-a-time reference implementation.
+> > > +              */
+> > > +             expected_crc = crc_ref(v, init_crc, &test_buffer[offset], len);
+> > > +             if (nosimd)
+> > > +                     local_irq_disable();
+> > > +             actual_crc = v->func(init_crc, &test_buffer[offset], len);
+> > > +             if (nosimd)
+> > > +                     local_irq_enable();
+> >
+> > This triggers a traceback on some arm systems.
+> >
+> > [    7.810000]     ok 2 crc16_benchmark # SKIP not enabled
+> > [    7.810000] ------------[ cut here ]------------
+> > [    7.810000] WARNING: CPU: 0 PID: 1145 at kernel/softirq.c:369 __local_bh_enable_ip+0x118/0x194
+> > [    7.810000] Modules linked in:
+> > [    7.810000] CPU: 0 UID: 0 PID: 1145 Comm: kunit_try_catch Tainted: G                 N 6.14.0-rc7-00196-g88d324e69ea9 #1
+> > [    7.810000] Tainted: [N]=TEST
+> > [    7.810000] Hardware name: NPCM7XX Chip family
+> > [    7.810000] Call trace:
+> > [    7.810000]  unwind_backtrace from show_stack+0x10/0x14
+> > [    7.810000]  show_stack from dump_stack_lvl+0x7c/0xac
+> > [    7.810000]  dump_stack_lvl from __warn+0x7c/0x1b8
+> > [    7.810000]  __warn from warn_slowpath_fmt+0x19c/0x1a4
+> > [    7.810000]  warn_slowpath_fmt from __local_bh_enable_ip+0x118/0x194
+> > [    7.810000]  __local_bh_enable_ip from crc_t10dif_arch+0xd4/0xe8
+> > [    7.810000]  crc_t10dif_arch from crc_t10dif_wrapper+0x14/0x1c
+> > [    7.810000]  crc_t10dif_wrapper from crc_main_test+0x178/0x360
+> > [    7.810000]  crc_main_test from kunit_try_run_case+0x78/0x1e0
+> > [    7.810000]  kunit_try_run_case from kunit_generic_run_threadfn_adapter+0x1c/0x34
+> > [    7.810000]  kunit_generic_run_threadfn_adapter from kthread+0x118/0x254
+> > [    7.810000]  kthread from ret_from_fork+0x14/0x28
+> > [    7.810000] Exception stack(0xe3651fb0 to 0xe3651ff8)
+> > [    7.810000] 1fa0:                                     00000000 00000000 00000000 00000000
+> > [    7.810000] 1fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+> > [    7.810000] 1fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+> > [    7.810000] irq event stamp: 29
+> > [    7.810000] hardirqs last  enabled at (27): [<c037875c>] __local_bh_enable_ip+0xb4/0x194
+> > [    7.810000] hardirqs last disabled at (28): [<c0b09684>] crc_main_test+0x2e4/0x360
+> > [    7.810000] softirqs last  enabled at (26): [<c032a3ac>] kernel_neon_end+0x0/0x1c
+> > [    7.810000] softirqs last disabled at (29): [<c032a3c8>] kernel_neon_begin+0x0/0x70
+> > [    7.810000] ---[ end trace 0000000000000000 ]---
+> > [    8.050000]     # crc_t10dif_test: pass:1 fail:0 skip:0 total:1
+> >
+> > kernel_neon_end() calls local_bh_enable() which apparently conflicts with
+> > the local_irq_disable() in above code.
+> >
+> 
+> This seems to be an oversight on my part. Can you try the below please?
+> 
+> diff --git a/arch/arm/include/asm/simd.h b/arch/arm/include/asm/simd.h
+> index 82191dbd7e78..56ddbd3c4997 100644
+> --- a/arch/arm/include/asm/simd.h
+> +++ b/arch/arm/include/asm/simd.h
+> @@ -4,5 +4,6 @@
+> 
+>  static __must_check inline bool may_use_simd(void)
+>  {
+> -       return IS_ENABLED(CONFIG_KERNEL_MODE_NEON) && !in_hardirq();
+> +       return IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
+> +              !in_hardirq() && !irqs_disabled();
+>  }
 
-Since 'stdbool.h' is already included and provides a standard definition for
-'bool', this typedef is redundant and can be removed to avoid conflicts.
+Thanks Ard, you beat me to it.  Yes, may_use_simd() needs to be consistent with
+kernel_neon_begin().  On x86 there is a case where the equivalent function is
+expected to work when irqs_disabled(), but if there is no such case on arm this
+fix looks good.  Can you send it out as a formal patch?  Presumably for the arm
+maintainer to pick up.
 
-Compilation Error:
-    $ make -j$(nproc)
-    ....
-    In file included from arch/powerpc/boot/ops.h:13,
-                     from arch/powerpc/boot/cuboot.c:12:
-    arch/powerpc/boot/types.h:43:13: error: ‘bool’ cannot be defined via ‘typedef’
-    43 | typedef int bool;
-        |             ^~~~
-    arch/powerpc/boot/types.h:43:13: note: ‘bool’ is a keyword with ‘-std=c23’ onwards
-    arch/powerpc/boot/types.h:43:1: warning: useless type name in empty declaration
-    43 | typedef int bool;
-        | ^~~~~~~
-    ....
-    make[2]: *** [arch/powerpc/boot/Makefile:235: arch/powerpc/boot/devtree.o] Error 1
-    make[2]: *** [arch/powerpc/boot/Makefile:235: arch/powerpc/boot/ofconsole.o] Error 1
-    make[2]: *** [arch/powerpc/boot/Makefile:235: arch/powerpc/boot/ns16550.o] Error 1
-    make[2]: *** [arch/powerpc/boot/Makefile:235: arch/powerpc/boot/main.o] Error 1
-    make[1]: *** [arch/powerpc/Makefile:236: zImage] Error 2
-    make: *** [Makefile:251: __sub-make] Error 2
+> However, this test code also appears to assume that SIMD is forbidden
+> on any architecture when IRQs are disabled, but this not guaranteed.
 
-Signed-off-by: Misbah Anjum N <misanjum@linux.ibm.com>
----
- arch/powerpc/boot/types.h | 2 ++
- 1 file changed, 2 insertions(+)
+Yes, to reliably test the no-SIMD code paths, I need to finish refactoring the
+crypto_simd_disabled_for_test stuff to be disentangled from the crypto subsystem
+so that crc_kunit.c can use it.  It's on my list of things to do, and I'm
+planning to get it done in 6.16.  Disabling hardirqs is just a trick to get
+there more easily on some architectures.  But as this shows it's a useful test
+to have anyway, so we'll want to keep that too.  The CRC functions need to work
+in any context, and any context that we can easily test we should do so.
 
-diff --git a/arch/powerpc/boot/types.h b/arch/powerpc/boot/types.h
-index 8a4c418b7..6f34b31b8 100644
---- a/arch/powerpc/boot/types.h
-+++ b/arch/powerpc/boot/types.h
-@@ -40,7 +40,9 @@ typedef s64 int64_t;
- #define min_t(type, a, b) min(((type) a), ((type) b))
- #define max_t(type, a, b) max(((type) a), ((type) b))
- 
-+#if !defined(__STDC_VERSION__) || __STDC_VERSION__ < 202300L
- typedef int bool;
-+#endif
- 
- #ifndef true
- #define true 1
--- 
-2.49.0
-
+- Eric
 
