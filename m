@@ -1,81 +1,37 @@
-Return-Path: <linuxppc-dev+bounces-7302-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7303-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23AFCA6D10A
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 23 Mar 2025 21:31:22 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143B1A6D2D6
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 24 Mar 2025 02:33:55 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZLSWT6RCkz2yYf;
-	Mon, 24 Mar 2025 07:31:17 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZLbDb4HRgz2yHj;
+	Mon, 24 Mar 2025 12:33:51 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::132"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742757089;
-	cv=none; b=fX/rn65Z8v7iIe5SZ6GAE4g/TqmcV7cFXTwIcHM89u+phcWDAV9qnIrSfQXsSmdSCFUP0oYi4CvqVWbYUWvPTRhVF6MmXVq6VVl0vyWEvblo5LAf8JmdKteZxm7FlQtE/1UyayC+Uh1Gb1YXurIuKp6nwIJbGrjTL682e8scVEVjyU6OmXR7s2A8pYIVznzjWkiqKqM3H334aHC7BokPEvcGJwiEUKMOy8bvi2+ahJRJ3zRvI6SwOkD8RUeC7zARZiDW48i+I7rJVNMwG8MpnrQEm7KqdRtU4EyCJAq664VeO4PO845b8LllBFyaxQzWVRcvI8jDwM7vOx3wJPGgMg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742780031;
+	cv=none; b=inrZsIKa+wRY0R4sZ7205RJhpAmahupUT1YMMSymSzmtOhfkf5kyaX0X1aWO/zepN+TSA+3r7PQ7Q515/5UF4puS6l3pnOXrKBrhsOdmxYXvWR+JGtge2PPzLkzwuSY4EpsVOjmlOBbJDOYQvnF0DBwuYsfqzAo6nqefOnST5Df8HigbR8OBGOaQLf0WwGOYlvN3980GV/bx7bCSwZy3xBc5ACdk5+qjSZKjDKtK9q1bNqgkZlGQd3mo1ufl35vWcv4OtqihbbFl7abJ4TcT36aVLMte16AAQ/Uxgz8LsUy+sjPVxE8hko50YJVJoFkcPrH1zYmJjf6ax6AUo3lkEg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742757089; c=relaxed/relaxed;
-	bh=k2UXDREX7NCT6rzJh9pIz8VRGqLG/DrIFKyvimbffiE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hNnS45EXv2gv47rRGtGLWZ0RhCSUoNxAfo40uxiHJD5YCcZhROX+lD+R5Nfrwa/3ft4tejN4dwhdHsSUWp7naA/4MD4i1J7Vo5X8ScD4cqb96H0YcPBCqpZGIMwfaOOC1eY5izERwh+pzzsZaozAYyOzQ7mFLmIb7mwQ1DVSEg+YYs2LlNUO1RdVpGSP3th+AE9Rhqnl3s/XIax7VGz3jchv4ctA7eV/a/BMTl8AWFpiPxDx+clXiK+UDhdn8BsPM786u3t2uGj6dwJqihTN2H12+1lCM9PTfzhky5yrNHm22qwWSIHGAny/TI48rJ4afzUcag8s3sAoFbi7RXQpQA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dmOhlouG; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=johan.korsnes@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=dmOhlouG;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::132; helo=mail-lf1-x132.google.com; envelope-from=johan.korsnes@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+	t=1742780031; c=relaxed/relaxed;
+	bh=Rj5ozTJuceFyrWABOwsmQAvCsM/o50+/4A5IyDCqHPs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=S/e8zzozQFptqgdb5qksvvRvMbxmCXgSDzLTNUpOIqXsXLoxxhiVmVBQrPy+eiYK2ylV48hbuRenapj7MdQOsX9tcVj/LvR/3fMJWNxtw/hOSgaFn/wELQQ0sRWsvDoHf6wtg4NU4RIvStx2pj4hEKpFC2utX/B+u1o/vI5AC16OpjkwG+oubdDqersTqf6NNJ+j2bNzGINVe319j/+xlHmCSZqkmyyNGWLo4wHATe+4W/sBZWNbEY8wiuIo22cvqhhr27Z7Bkm57jDCfVNORRVTqNuTskWwXPWqY0YDYIeUwBPSW+m7CT1pzCUj8TDNDKha7+pdSHmp0hfHhrYKYA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=srs0=d9jp=wl=linux-m68k.org=gerg@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=srs0=d9jp=wl=linux-m68k.org=gerg@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZLQlM2LYTz2yYf
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Mar 2025 06:11:26 +1100 (AEDT)
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-5493b5bc6e8so3837494e87.2
-        for <linuxppc-dev@lists.ozlabs.org>; Sun, 23 Mar 2025 12:11:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1742757081; x=1743361881; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=k2UXDREX7NCT6rzJh9pIz8VRGqLG/DrIFKyvimbffiE=;
-        b=dmOhlouGlHqL6YnMUsexLmGdYVTe/8iA7sTMhQBm0HdVj8mt/AvA91I/muqXESeqsX
-         F9dBD4zmK9gHWie4xCQW7tGco6PvNkLFjiCrUYR5vQidMyl972xNoNN1N564VpumvulF
-         sWwzbn88u4O9XmmYMeOP3pXs9pueSdz4NLU17tNjicC0rGSlA6cumdFu8560DW5NhTeT
-         8AbmaNwnWfiMjnOsJ2JX1nXn89dZqykYac8JgVZw/kqmDaSkW0IUzAG1M0zW63uN34+b
-         JTjRAAX/a4ouPdtaBowJfNm1SC8NG9nFseeTxC1XpPNcDRx5IF3JpiSPtg8TP4wlKz78
-         nQ8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1742757081; x=1743361881;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=k2UXDREX7NCT6rzJh9pIz8VRGqLG/DrIFKyvimbffiE=;
-        b=DT0eyQ+XcCwpUY7Y8IikW9/U/Sj/40D0saDQroZFOvWOWNq3hYTrN3OP3iv98y3wct
-         V+kLCQphggbV5Y4O81BbAx7H6hF7IGX6XiITNNpLN8TgobGqfQ78Rno+5Kr6HrnpPKss
-         5M0ZZni8Mu/9iz1kXJRUXQP51gCqJJ+UPTUwIp5s1Jttmf1giI9bkNUSupitKNAof+Fd
-         opRlVEkrLz8ODvMv8NmhXMk2IjH52riI7fIb88LpTQ7AGJQj6s00GsM+OR6ldUS8v+3j
-         oy/cnKTVgdWrZTc2WI9FDlJuYODU0MarLOndrk7IE0WNS7XvjERx+Mh5tExF2yGHOfFv
-         r1Ng==
-X-Gm-Message-State: AOJu0YyvgocIB/TMqnfJOV9KUZVN7FjvkSGgoJes6WkU6ZtLdwFV/e+x
-	C8CNmUAYetLBHeHhgyUTy97lO9H6aLKzf6woMdbsawo2SlQmRKARcsUfEu/oYtE=
-X-Gm-Gg: ASbGnctiE2I3laLq6ZIwSo0WXThxq9gmBWP9m+SIJ/VUOiDLX9DHLN6/JBqGvTmnaGV
-	KRoV9MJxg9ccwaH9qsD2uJVCps+fMOtfmA6Pmm4yhsgDioALVHY9jVrHe2OGrp7R4KTiSyc94I3
-	VXA4U7iDkZe7nxWaLYsu5yQweRGeWgXSapJabH1s7jzsyUMOeIHA3CuB8FI7ddCYnkORr9rBHX0
-	gjk5S+5EG8rBTIIJh9dvpyS/C66jJOCgQWkCwjGZ5Q8Z0yfzU9RFzuVMlswLNTrGx10fmlcFOI/
-	3qXrKVUwPoVxMoJyfmtFowoBNQQUdMGNhH5/tWyxvBJu+ui5iVDGr5pdOiAFHjl74v8ZWvoPLqb
-	i1VXXTWXKsX+zloKIGIs9SHKtbe9/i6AWDJl69xiI06mKDhR/lL6PJ65+GDxclapdZA==
-X-Google-Smtp-Source: AGHT+IHEt8V1Ivgl9FvA7bVKb5eP/O06ebVpeeumRBqq7MHpg+hehnYl3kYEYuf0dv7BuuXK3fURSg==
-X-Received: by 2002:a05:6512:68d:b0:549:8f24:b617 with SMTP id 2adb3069b0e04-54ad6470ad5mr3594493e87.4.1742757080119;
-        Sun, 23 Mar 2025 12:11:20 -0700 (PDT)
-Received: from yocto-build-johan.c.remarkable-codex-builds.internal (122.96.88.34.bc.googleusercontent.com. [34.88.96.122])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-54ad6468948sm862482e87.47.2025.03.23.12.11.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Mar 2025 12:11:18 -0700 (PDT)
-From: Johan Korsnes <johan.korsnes@gmail.com>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Johan Korsnes <johan.korsnes@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH] arch: powerpc: defconfig: Drop obsolete CONFIG_NET_CLS_TCINDEX
-Date: Sun, 23 Mar 2025 20:11:16 +0100
-Message-ID: <20250323191116.113482-1-johan.korsnes@gmail.com>
-X-Mailer: git-send-email 2.49.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZLbDY3sCCz2yGy
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 24 Mar 2025 12:33:49 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id 8C30061583;
+	Mon, 24 Mar 2025 01:33:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6601C4CEE2;
+	Mon, 24 Mar 2025 01:33:38 +0000 (UTC)
+Message-ID: <64f226e5-7931-40ba-878a-a28688da82fd@linux-m68k.org>
+Date: Mon, 24 Mar 2025 11:33:35 +1000
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,37 +44,140 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/6] m68k/nommu: stop using GENERIC_IOMAP
+To: Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org
+Cc: Arnd Bergmann <arnd@arndb.de>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Matt Turner <mattst88@gmail.com>, Geert Uytterhoeven <geert@linux-m68k.org>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+ Helge Deller <deller@gmx.de>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>,
+ Christophe Leroy <christophe.leroy@csgroup.eu>,
+ Naveen N Rao <naveen@kernel.org>, Yoshinori Sato
+ <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Julian Vetter <julian@outer-limits.org>, Bjorn Helgaas
+ <bhelgaas@google.com>, linux-alpha@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+ linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org
+References: <20250315105907.1275012-1-arnd@kernel.org>
+ <20250315105907.1275012-7-arnd@kernel.org>
+Content-Language: en-US
+From: Greg Ungerer <gerg@linux-m68k.org>
+In-Reply-To: <20250315105907.1275012-7-arnd@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=1.0 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Level: *
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-This option was removed from the Kconfig in commit
-8c710f75256b ("net/sched: Retire tcindex classifier") but it was not
-removed from the defconfigs.
+Hi Arnd,
 
-Fixes: 8c710f75256b ("net/sched: Retire tcindex classifier")
-Signed-off-by: Johan Korsnes <johan.korsnes@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- arch/powerpc/configs/ppc6xx_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+On 15/3/25 20:59, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> There is no need to go through the GENERIC_IOMAP wrapper for PIO on
+> nommu platforms, since these always come from PCI I/O space that is
+> itself memory mapped.
+> 
+> Instead, the generic ioport_map() can just return the MMIO location
+> of the ports directly by applying the PCI_IO_PA offset, while
+> ioread32/iowrite32 trivially turn into readl/writel as they do
+> on most other architectures.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 
-diff --git a/arch/powerpc/configs/ppc6xx_defconfig b/arch/powerpc/configs/ppc6xx_defconfig
-index ca0c90e95837..b8eb158a80fd 100644
---- a/arch/powerpc/configs/ppc6xx_defconfig
-+++ b/arch/powerpc/configs/ppc6xx_defconfig
-@@ -253,7 +253,6 @@ CONFIG_NET_SCH_DSMARK=m
- CONFIG_NET_SCH_NETEM=m
- CONFIG_NET_SCH_INGRESS=m
- CONFIG_NET_CLS_BASIC=m
--CONFIG_NET_CLS_TCINDEX=m
- CONFIG_NET_CLS_ROUTE4=m
- CONFIG_NET_CLS_FW=m
- CONFIG_NET_CLS_U32=m
--- 
-2.49.0
+With this applied this fails to build for me:
+
+   UPD     include/generated/utsversion.h
+   CC      init/version-timestamp.o
+   LD      vmlinux
+m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function `quirk_switchtec_ntb_dma_alias':
+quirks.c:(.text+0x23e4): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x24fe): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function `disable_igfx_irq':
+quirks.c:(.text+0x32f4): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x3348): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x338a): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x33d2): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function `reset_ivb_igd':
+quirks.c:(.text+0x3502): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x3658): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x3682): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function `reset_hinic_vf_dev':
+quirks.c:(.text+0x3844): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x39fc): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x3a86): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x3ab4): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function `quirk_reset_lenovo_thinkpad_p50_nvgpu':
+quirks.c:(.text+0x3cf6): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: drivers/pci/quirks.o: in function `nvme_disable_and_flr':
+quirks.c:(.text+0x3e32): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x3eac): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: quirks.c:(.text+0x3fc0): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/pci/devres.o: in function `pcim_addr_resource_release':
+devres.c:(.text+0x414): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: devres.c:(.text+0x420): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/pci/devres.o: in function `pcim_iomap':
+devres.c:(.text+0x524): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: devres.c:(.text+0x576): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/pci/devres.o: in function `pcim_iomap_range':
+devres.c:(.text+0x980): undefined reference to `pci_iomap_range'
+m68k-linux-uclibc-ld: drivers/pci/devres.o: in function `pcim_iomap_region':
+devres.c:(.text+0xc0e): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: drivers/net/ethernet/intel/e100.o: in function `e100_remove':
+e100.c:(.text+0x1fe6): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: drivers/net/ethernet/intel/e100.o: in function `e100_probe':
+e100.c:(.text+0x362a): undefined reference to `pci_iomap'
+m68k-linux-uclibc-ld: e100.c:(.text+0x381c): undefined reference to `pci_iounmap'
+m68k-linux-uclibc-ld: e100.c:(.text+0x3928): undefined reference to `pci_iounmap'
+make[2]: *** [scripts/Makefile.vmlinux:77: vmlinux] Error 1
+make[1]: *** [/home/gerg/accelerated-linux.lkml/linux/Makefile:1231: vmlinux] Error 2
+make: *** [Makefile:251: __sub-make] Error 2
+
+FWIW this was a m5475evb_defconfig with CONFIG_MMU disabled.
+
+Regards
+Greg
+
+
+
+> ---
+>   arch/m68k/Kconfig             | 2 +-
+>   arch/m68k/include/asm/io_no.h | 4 ----
+>   2 files changed, 1 insertion(+), 5 deletions(-)
+> 
+> diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
+> index b2ed0308c0ea..b50c275fa94d 100644
+> --- a/arch/m68k/Kconfig
+> +++ b/arch/m68k/Kconfig
+> @@ -18,7 +18,7 @@ config M68K
+>   	select DMA_DIRECT_REMAP if M68K_NONCOHERENT_DMA && !COLDFIRE
+>   	select GENERIC_ATOMIC64
+>   	select GENERIC_CPU_DEVICES
+> -	select GENERIC_IOMAP if HAS_IOPORT
+> +	select GENERIC_IOMAP if HAS_IOPORT && MMU
+>   	select GENERIC_IRQ_SHOW
+>   	select GENERIC_LIB_ASHLDI3
+>   	select GENERIC_LIB_ASHRDI3
+> diff --git a/arch/m68k/include/asm/io_no.h b/arch/m68k/include/asm/io_no.h
+> index 2c96e8480173..516371d5587a 100644
+> --- a/arch/m68k/include/asm/io_no.h
+> +++ b/arch/m68k/include/asm/io_no.h
+> @@ -123,10 +123,6 @@ static inline void writel(u32 value, volatile void __iomem *addr)
+>   #define PCI_IO_SIZE	0x00010000		/* 64k */
+>   #define PCI_IO_MASK	(PCI_IO_SIZE - 1)
+>   
+> -#define HAVE_ARCH_PIO_SIZE
+> -#define PIO_OFFSET	0
+> -#define PIO_MASK	0xffff
+> -#define PIO_RESERVED	0x10000
+>   #define PCI_IOBASE	((void __iomem *) PCI_IO_PA)
+>   #define PCI_SPACE_LIMIT	PCI_IO_MASK
+>   #endif /* CONFIG_PCI */
 
 
