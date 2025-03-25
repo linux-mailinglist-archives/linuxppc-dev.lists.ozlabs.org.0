@@ -1,66 +1,49 @@
-Return-Path: <linuxppc-dev+bounces-7320-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DA56A6EA4F
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 08:20:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C18BA6EA53
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 08:20:29 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMLsl6Wfvz2yKq;
-	Tue, 25 Mar 2025 18:20:11 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMLsx6Ts7z2yqd;
+	Tue, 25 Mar 2025 18:20:21 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742887211;
-	cv=none; b=AGMO+e/y6+xekpQ1DSy7p/3TRUIw84TOGP75UMHPbetqs6wCnjiTlfBUJGxM2Imfxksg5EktaXqeoKJfP6gyN2ND7K8LrxOGEl2J7p8GIysQVB7hffZwGKvUMucyQSxLYbIu62p9TfpbI77aeiwyCcpnmQYz2HV+2iTyohdXLXZVTpkx4ND1iKGa2ELUyC8gdg71NjdADFCjdbfBYseo+gs5NO73NDsFdMIaF5x+ldYxUbjDZ4tfc+1KHLrR3OI5WGwBbciP+wuQv7Rw/QTPuLIwscDN6Om66tnsTtMuRU62i67iTGbwYpO91+0xsTZ8cpEqLKli67KX6N0BxTxYEg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742887221;
+	cv=none; b=CNuYdRt6x3n16LuezRpsO+85tRzeLYpcKclLgkws6Rwmqj+MroS8OuZ+8J8dvpdqsxxA9CLyxeW88A1xy3YTzw0kdz6LGuhM21nCDT4fFL53KssvxVz6yQ5PVZJpDMj2bMIlLwNCS+WtDYUEu500D0VuHFapI1kB5P/pm19KssV1o7mYln/mjRvM3cUtYXr2GHMAL5U8iruOcK1AZdiZgYQHsp2gNZ//NrVnDmFv1Nhxn9YVJOZvoFZ9xtEpBTyj7MKJdFQxCcl0xL8fZdvfiOODSIwtM0oGYSm+q7x3+l/RuC/FmFjLDx8qBJygR2Bg3p897IDx/AomOKM0TKT6bw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742887211; c=relaxed/relaxed;
-	bh=nVCvfQ5DtQYHcmAr0D2aMfpBZawKOMRMx48ObQpx+8o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nPA6eCIhkGSQnBXmpQk06Vt8KFKKqR1Si4j9HxvLmi1Nlr0Hb2VXFh/6AF/oSBZRZUDCIRp3O8w4grF+TC5rgg3r7oUDQLr1vobuu9BL8mXpRadLPZMsQjjUeZfqsaQ5cb7j6pMSFX4WZe0BTbTat61Whe93vpOTTZPVOrceTOaYrpB2qcaSlJZHaDzQrItKcMr1hj+HfcdF2vW9cZ6BckikbQWoXgBRCfHE1/tgOmXCON+172mBgST1urAG72O6uP4nGHZN0WhxXl2lFo5pXZii0eo9f2TIgkK1jQ73OCV5ijTSXyf/xLG0z1jYZDBjAOOIohGwBbIxv8z/wGosrw==
+	t=1742887221; c=relaxed/relaxed;
+	bh=piogwt4lmu4qtK2/ZkbCRH1Dp64bWGgsY5Wm+uO4l14=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ys+POb50lBn7P64AfZQsk3pofYHfKHnRlo/xuo5/LX8tGROxklL6rIVEV0V/La1a6r4jDKA4LMH3oV6doN2CqYfJYgC8dAeB81DBgUkXdPRRZbprPSTluHK+sun7d77Baj7bglv16S9Gvh0L4mLJ8Y/cH3PKB1heLeWFWEFJ0cIAqkwHDA+8v0MJdAxOYEy2HQ5WPGuCuMIBIcz+VVQUDqtQDZFE4xbNQYOgRlbpcHmo9rXGgFCSlNpl2uD6aMHNLCoGB5v+LD2U6DrL6wAGikhsgdBf80K7JOebRxeAXK3Dv+YCEtqEqGv4CsqPPPQIWLhDUlkNO8ftX89KVupTBw==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
 Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMLsl0VjCz2yqg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Mar 2025 18:20:10 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMLsx1xwGz2yqg
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Mar 2025 18:20:21 +1100 (AEDT)
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4ZMLYK5Gt4z9sSh;
-	Tue, 25 Mar 2025 08:05:57 +0100 (CET)
+	by localhost (Postfix) with ESMTP id 4ZMLk83dyNz9sSm;
+	Tue, 25 Mar 2025 08:13:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
 	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id FJ4bAikuKLHX; Tue, 25 Mar 2025 08:05:57 +0100 (CET)
+	with ESMTP id w1R402GlpRmr; Tue, 25 Mar 2025 08:13:36 +0100 (CET)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4ZMLYK4VFHz9sSg;
-	Tue, 25 Mar 2025 08:05:57 +0100 (CET)
+	by pegase2.c-s.fr (Postfix) with ESMTP id 4ZMLk82p2tz9sSj;
+	Tue, 25 Mar 2025 08:13:36 +0100 (CET)
 Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 851568B765;
-	Tue, 25 Mar 2025 08:05:57 +0100 (CET)
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A99B8B765;
+	Tue, 25 Mar 2025 08:13:36 +0100 (CET)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
 	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id 1R3S4luMUOar; Tue, 25 Mar 2025 08:05:57 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 565FA8B763;
-	Tue, 25 Mar 2025 08:05:57 +0100 (CET)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-	by PO20335.IDSI0.si.c-s.fr (8.18.1/8.17.1) with ESMTPS id 52P75npS009415
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Tue, 25 Mar 2025 08:05:49 +0100
-Received: (from chleroy@localhost)
-	by PO20335.IDSI0.si.c-s.fr (8.18.1/8.18.1/Submit) id 52P75mFm009410;
-	Tue, 25 Mar 2025 08:05:48 +0100
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-To: ioana.ciornei@nxp.com, stuyoder@gmail.com, linux@treblig.org
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] bus: fsl-mc: Remove deadcode
-Date: Tue, 25 Mar 2025 08:03:29 +0100
-Message-ID: <174288553818.2234438.11007216946587143383.b4-ty@csgroup.eu>
-X-Mailer: git-send-email 2.47.0
-In-Reply-To: <20241115152055.279732-1-linux@treblig.org>
-References: <20241115152055.279732-1-linux@treblig.org>
+	with ESMTP id Q_Gt9WeIslhN; Tue, 25 Mar 2025 08:13:36 +0100 (CET)
+Received: from [192.168.235.99] (unknown [192.168.235.99])
+	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC7668B763;
+	Tue, 25 Mar 2025 08:13:35 +0100 (CET)
+Message-ID: <b192632a-7b30-4227-96b8-84a587c45fa2@csgroup.eu>
+Date: Tue, 25 Mar 2025 08:13:35 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -73,34 +56,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1742886214; l=584; i=christophe.leroy@csgroup.eu; s=20211009; h=from:subject:message-id; bh=VhmgXn8UTNWepu/WKdG9W0WStpBu+2fR6BBNfwNb5Vo=; b=OOvXAJey8QbW05uaPC1iND6tTU4jLioJLk4ni3WxNp8YZL9IeOycvAmyn8xVebICfDxO/xZ2T ZW88LyzkL67DtjvUgJNVQ4IKPHgyaY28eIKUhtLCD0xCKdaYppLQQbT
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] vfio: pci: Advertise INTx only if LINE is connected
+To: Shivaprasad G Bhat <sbhat@linux.ibm.com>, alex.williamson@redhat.com,
+ jgg@ziepe.ca, kevin.tian@intel.com
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, yi.l.liu@intel.com,
+ Yunxiang.Li@amd.com, pstanner@redhat.com, maddy@linux.ibm.com,
+ linuxppc-dev@lists.ozlabs.org
+References: <174231895238.2295.12586708771396482526.stgit@linux.ibm.com>
+Content-Language: fr-FR
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
+In-Reply-To: <174231895238.2295.12586708771396482526.stgit@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-On Fri, 15 Nov 2024 15:20:55 +0000, linux@treblig.org wrote:
-> fsl_mc_allocator_driver_exit() was added explicitly by
-> commit 1e8ac83b6caf ("bus: fsl-mc: add fsl_mc_allocator cleanup function")
-> but was never used.
-> 
-> Remove it.
-> 
-> fsl_mc_portal_reset() was added in 2015 by
-> commit 197f4d6a4a00 ("staging: fsl-mc: fsl-mc object allocator driver")
-> but was never used.
-> 
-> [...]
 
-Applied, thanks!
+Le 18/03/2025 à 18:29, Shivaprasad G Bhat a écrit :
+> On POWER systems, when the device is behind the io expander,
+> not all PCI slots would have the PCI_INTERRUPT_LINE connected.
+> The firmware assigns a valid PCI_INTERRUPT_PIN though. In such
+> configuration, the irq_info ioctl currently advertizes the
+> irq count as 1 as the PCI_INTERRUPT_PIN is valid.
+> 
+> The patch adds the additional check[1] if the irq is assigned
+> for the PIN which is done iff the LINE is connected.
+> 
+> [1]: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fqemu-devel%2F20250131150201.048aa3bf.alex.williamson%40redhat.com%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Ce0fb1d4bf2064e115ce408dd6642796b%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638779157886704638%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=egZuT5CZsC6S%2Bd7bZTuO4RcKL8IJREPbxIMGZZkZeMQ%3D&reserved=0
+> 
+> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+> Suggested-By: Alex Williamson <alex.williamson@redhat.com>
+> ---
+>   drivers/vfio/pci/vfio_pci_core.c |    4 ++++
+>   1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 586e49efb81b..4ce70f05b4a8 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -734,6 +734,10 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
+>   			return 0;
+>   
+>   		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
+> +#if IS_ENABLED(CONFIG_PPC64)
+> +		if (!vdev->pdev->irq)
+> +			pin = 0;
+> +#endif
 
-[1/1] bus: fsl-mc: Remove deadcode
-      commit: c25951eb7518844fcb7fc9ec58e888731e8c46d0
+I see no reason for #ifdef here, please instead do:
 
-Best regards,
--- 
-Christophe Leroy <christophe.leroy@csgroup.eu>
+	if (IS_ENABLED(CONFIG_PPC64) && !vdev->pdev->irq)
+
+See 
+https://docs.kernel.org/process/coding-style.html#conditional-compilation
+
+>   
+>   		return pin ? 1 : 0;
+>   	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
+> 
+> 
+> 
+
 
