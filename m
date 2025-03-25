@@ -1,88 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-7328-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7329-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF54A704F6
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 16:25:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 24E15A70BDC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 22:02:05 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMYdk1w08z2yGN;
-	Wed, 26 Mar 2025 02:25:30 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMj5y53WVz2yDk;
+	Wed, 26 Mar 2025 08:01:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742916330;
-	cv=none; b=b2fvwWgUPi4lJrHpt7QoTpcC8Q7BE14Q3jQQWQknSI6GgPmNFWl8zPBzp122yb1dGMiBqz8wkT+paW50vLH1YlzUNj3xIAoSsKSdae1z+qZi5W0Vo5Fqh8W+CTDTZaLOAGVV5mym11KgGXFEnx1476hnXwkz60SU0qqzRZeD0MW9J+XqXrKLUgFSGGDnW6Wi8d6hDR6Co2L00VLqa+0v4R4Fivmr7iiS4H+q+av4JqGzJFZ5p5TQfAZG/8uBhHinSZAL/m/gbF/bfWHS+kjYJwFi/HSq6ZvJurYZFQW4LdDrYRBQtGuSjSgv7ftxJkWR0enON7Vt4wrmXLnnLymqlw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742914811;
+	cv=none; b=NzsQqCYe1ONZP7ToeBqAW3FDDSCfeMW2qYqEgQOkGJIfBvWEjNWzxlcPcDAyWj2PrAcMJ+yugXx+oDqFbfggwVqbuY9WFW5mXt9HHqb+ux4LZQUvvSfAo9GfY1tYuVzLvIgVThW//IW8RsadDQ/hiP/orYr8hERgSFtaG4xe1Evd46M/+wdXIf3Tpe71BqCf30g64Z63ogooKGtcK7EaW2Po5/xpvyYj0++w+mOtzWQYKjgIPIXG8XTMw4sh+yKbQhAJR9b6LzX1U3KcPEhPW/3ON1wJl1dXmhwKlivogAxPpI02oiRedbRDZkZCdZnKau3NI76d2IARZ4FfiBAaqg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742916330; c=relaxed/relaxed;
-	bh=6PPWTdboa2PhVIUe4B4/Kwhi9JapPd/TmkNOKigN7s8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxKOBEtgdJUeh4RPbXman+Uu/kVMuCuHARZgc+qanT6KjIKnedEqZbUcn1lHD3/dM/MdhCAJ2ru4CDjhoK2H2u8jhE+YbHaTlBpcEguTP+ln09buaBQaoA+xULt79ZR7O3YWytn86URqwdO8o7CMuXMuaKs2AO7WA8YRGf2WqtzKRy2kwWwFGZNEmFZKnvO96Ypgh1nqoRu7wbKcNpdgVjPm0qAAF8UEx/V/eiwpVqo/40JG2umPwv7afdqcMfxM5FTPvKP6xMb/3aBi7sYXIXdEYH/UfySHXgHGQDRwXeFNbSF48MvZjuHnSt6WntBjDI/lVw6yUVi6WFY5eeZyGw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tzmr1Ig1; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1742914811; c=relaxed/relaxed;
+	bh=GPD56TsPvi3UfQl0ryL3JUmt+MmqXDPi65xi8w44GI8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JKuQboh0/jODSbJiKsTsAyoj+qGU9lVZjlFV3jq0eww8M87skPqW8oCp43W/XHZe3M1rS9TVOWHTTTYIpi7qYRhW2NVXyRw3Rc916u6BDF1QDVlsryA1c2v+K+7ZpnV+r9xuH/dZLNRe4Nsg/W4fB4xjVB6uKvd0ukQ+chDUyxFEwNMQUBKnNl12tXa6GCVBBnrltTUT0vNe40t6OTJqy1UNbu/N3WRSxcGxTvBP/SUldTQYqiLoibOFWE7Kwc8JWZB/nYonRlFzmNaxbEoexBfoYdtHVihu7nEOhFXkvRqfWPwxNeioPE0yAWiX53M6jOKxomtA7ND9HPVbDe81kA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jo4lS6nb; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jo4lS6nb; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=tglozar@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Tzmr1Ig1;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jo4lS6nb;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Jo4lS6nb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=tglozar@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZMYdh54YWz2yf4
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Mar 2025 02:25:28 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52P7vp46010542;
-	Tue, 25 Mar 2025 15:25:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=6PPWTdboa2PhVIUe4
-	B4/Kwhi9JapPd/TmkNOKigN7s8=; b=Tzmr1Ig1QSFDbPcMjEl/6u3BInsspE69Q
-	XpqzC0RcOnNzA2HCe874C8p4qq1sLATa502s//P3iO+RbtFNqOu4Rzhdwmdo6/ax
-	a2LXRE5jkb9/GXyIZic6zW9ZtxvPA1aZb8PZSfVBNH5SxRD8hqHTOXW+jb4YAhqW
-	bG1t4CLAEHomQvHGJONb6a+HnVbHoEY8mgn3+BhceQHN8GzESSsUCNrg73PQRzgK
-	c0r3/GzuNvVJeRN51povCfBCgpYF4RuIGJooefEgzzW8zbQ5VgIic9X7lJAmIk1i
-	nn38sXphhUhXJhaLFSo566XLgZZXPc+lq3u57MumDlGGYrt1nUTkg==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kejpvgns-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Mar 2025 15:25:16 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52PFJeDq012596;
-	Tue, 25 Mar 2025 15:25:15 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kejpvgnq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Mar 2025 15:25:15 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52PECOdt005791;
-	Tue, 25 Mar 2025 15:25:15 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45ja82bnyf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 25 Mar 2025 15:25:15 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52PFPBPI55378178
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 25 Mar 2025 15:25:11 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9BACC2004B;
-	Tue, 25 Mar 2025 15:25:11 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C6A620049;
-	Tue, 25 Mar 2025 15:25:11 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue, 25 Mar 2025 15:25:11 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
-	id 2DAA9E0F4E; Tue, 25 Mar 2025 16:25:11 +0100 (CET)
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 1/1] powerpc/64s: Do not re-activate batched TLB flush
-Date: Tue, 25 Mar 2025 16:25:11 +0100
-Message-ID: <3b4e3e28172f09165b19ee7cac67a860d7cc1c6e.1742915600.git.agordeev@linux.ibm.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <cover.1742915600.git.agordeev@linux.ibm.com>
-References: <cover.1742915600.git.agordeev@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZMY4T6yFVz2yGN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Mar 2025 02:00:06 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742914802;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GPD56TsPvi3UfQl0ryL3JUmt+MmqXDPi65xi8w44GI8=;
+	b=Jo4lS6nbSPFUZqQ/YRSzh47wyg/MiAFjBkkpBci2pLWgaKT9Y0MlnvS2QXsy4X13l2R9H4
+	ejad+NTAGfILpWnDfHsPYE9rfUrsJ48bNnjHrxRlHMbIcOef087NLrzcrDxTgE8nYrV14E
+	ZHrDxSnDbOH5rrYMnmX+a3mea471IEE=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1742914802;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GPD56TsPvi3UfQl0ryL3JUmt+MmqXDPi65xi8w44GI8=;
+	b=Jo4lS6nbSPFUZqQ/YRSzh47wyg/MiAFjBkkpBci2pLWgaKT9Y0MlnvS2QXsy4X13l2R9H4
+	ejad+NTAGfILpWnDfHsPYE9rfUrsJ48bNnjHrxRlHMbIcOef087NLrzcrDxTgE8nYrV14E
+	ZHrDxSnDbOH5rrYMnmX+a3mea471IEE=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-54-cNDcgyZnMmWFiYzRPL2kBQ-1; Tue, 25 Mar 2025 11:00:00 -0400
+X-MC-Unique: cNDcgyZnMmWFiYzRPL2kBQ-1
+X-Mimecast-MFC-AGG-ID: cNDcgyZnMmWFiYzRPL2kBQ_1742914799
+Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-ac31adc55e4so489094466b.3
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Mar 2025 08:00:00 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1742914799; x=1743519599;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GPD56TsPvi3UfQl0ryL3JUmt+MmqXDPi65xi8w44GI8=;
+        b=IenlN02cgT9LzRN+Fsep+r8kf6yv5kJkFEBLX2IUTH8NJIF2hwy0GexMXCVndKgnnc
+         u3kP7R5SDHwfhyouKZicvU/CNEhthKeKsQoTdFsdK5I8Jre5TDbELah3mhuID4xPqmw0
+         /g5OhfFqSdzjLM+onL8wBFvKtbugfoh63WqmWCtuqCikbQHzQPUJVWvHNmSgnN/g3iln
+         DkmE7whyUe6nSFfxyuIzBu/tHlM3kJ2nFacV0zcrWjbB91cd5qHPFxKXoogJgyF8jAJe
+         Oa6c/Il4d/d7GnscnlCGe87WIYj4mPW7nUxpfRPt1dW121zfLQgK/MtvA4uIrjHjwIye
+         1gWg==
+X-Forwarded-Encrypted: i=1; AJvYcCWF844NfP7HUrEvvOJK2zwS+5TL70DpNrXfesoPiFvN8+T7qm4akBG/k770sZTJnCJDLMoDeDQPRROjuPQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YxwIJMMf4U4peudi53yqrp3dLqLr63hePuCikCrx/iJw+3mGAyY
+	s2tmsm94tzr91p5fWrNDg9lukQu+9Me/Xk6LUoSIHR9dDZcbFTWSwfe/QmaFyOd1lpwOncleKvy
+	gqfp+y7cLuPW0cDgGq2MYaT51KgciqXld05jxH3/q4AUehlI99lU6XRWybzfoPOXmVV9uL4cMCh
+	kU+BWH2FTZibJQ3tB0x+cEfDAFmy+GU/N/EN99QQ==
+X-Gm-Gg: ASbGnctShdnvld0EB2uoxJzMaTZuOMEb+pekT/1yag4I1Glz10kvMluZNh0Iyi1hhxf
+	tIx/WjfTUI5DxydzGRlftsxlFI0HIPyI/cTC4ot8ijaNN+i6YQuDJ5PDxmrYBxnymgzBxA4E/CA
+	==
+X-Received: by 2002:a17:907:1b05:b0:ac3:8626:607 with SMTP id a640c23a62f3a-ac3f251fbd3mr1795389466b.38.1742914799287;
+        Tue, 25 Mar 2025 07:59:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IG+YUjGVWtfpyBwCFBLJ1QlJAEWsiUBcgZ5CATDRVTkA/NPywRDWZDxKGd2LtWzuRZROP8MS1zhzDRVTnbwctU=
+X-Received: by 2002:a17:907:1b05:b0:ac3:8626:607 with SMTP id
+ a640c23a62f3a-ac3f251fbd3mr1795382466b.38.1742914798382; Tue, 25 Mar 2025
+ 07:59:58 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -95,102 +95,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: W4JztF7XFuZDc2ndbmEoVo9vzl3Jx9g0
-X-Proofpoint-GUID: Uzeiw_TcWN1sWiTe7bgJfO_Q2KwWm7uc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-25_06,2025-03-25_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=489 adultscore=0
- suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 clxscore=1015
- impostorscore=0 malwarescore=0 mlxscore=0 priorityscore=1501 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2503250105
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+References: <5df6968a-2e5f-468e-b457-fc201535dd4c@linux.ibm.com>
+ <8b0b2a41-203d-41f8-888d-2273afb877d0@qmon.net> <Z+KXN0KjyHlQPLUj@linux.ibm.com>
+ <15370998-6a91-464d-b680-931074889bc1@kernel.org>
+In-Reply-To: <15370998-6a91-464d-b680-931074889bc1@kernel.org>
+From: Tomas Glozar <tglozar@redhat.com>
+Date: Tue, 25 Mar 2025 15:59:44 +0100
+X-Gm-Features: AQ5f1JoiLoJo4ZTpZl2aK1T1MfyI1PFI0KWuUJogAG7QL32ZnjVnpgltDvnuL14
+Message-ID: <CAP4=nvQ23pcQQ+bf6ddVWXd4zAXfUTqQxDrimqhsrB-sBXL_ew@mail.gmail.com>
+Subject: Re: [linux-next-20250324]/tool/bpf/bpftool fails to complie on linux-next-20250324
+To: Quentin Monnet <qmo@kernel.org>
+Cc: Saket Kumar Bhaskar <skb99@linux.ibm.com>, Venkat Rao Bagalkote <venkat88@linux.ibm.com>, 
+	Hari Bathini <hbathini@linux.ibm.com>, bpf <bpf@vger.kernel.org>, 
+	LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org, 
+	jkacur@redhat.com, lgoncalv@redhat.com, gmonaco@redhat.com, 
+	williams@redhat.com, rostedt@goodmis.org
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: DNb-VSmTsdUBG25nXIngyf2MtJ2GkVXMDr6aYTbt5_0_1742914799
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Since commit b9ef323ea168 ("powerpc/64s: Disable preemption in
-hash lazy mmu mode") a task can not be preempted while inside
-arch_enter_lazy_mmu_mode(). Therefore, the batch re-activation
-code is never gets called, so remove it.
+Hello Quentin, Venkat, Saket,
 
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
----
- arch/powerpc/include/asm/thread_info.h |  2 --
- arch/powerpc/kernel/process.c          | 25 -------------------------
- 2 files changed, 27 deletions(-)
+Thanks for looking into this.
 
-diff --git a/arch/powerpc/include/asm/thread_info.h b/arch/powerpc/include/asm/thread_info.h
-index 2785c7462ebf..092118a68862 100644
---- a/arch/powerpc/include/asm/thread_info.h
-+++ b/arch/powerpc/include/asm/thread_info.h
-@@ -154,12 +154,10 @@ void arch_setup_new_exec(void);
- /* Don't move TLF_NAPPING without adjusting the code in entry_32.S */
- #define TLF_NAPPING		0	/* idle thread enabled NAP mode */
- #define TLF_SLEEPING		1	/* suspend code enabled SLEEP mode */
--#define TLF_LAZY_MMU		3	/* tlb_batch is active */
- #define TLF_RUNLATCH		4	/* Is the runlatch enabled? */
- 
- #define _TLF_NAPPING		(1 << TLF_NAPPING)
- #define _TLF_SLEEPING		(1 << TLF_SLEEPING)
--#define _TLF_LAZY_MMU		(1 << TLF_LAZY_MMU)
- #define _TLF_RUNLATCH		(1 << TLF_RUNLATCH)
- 
- #ifndef __ASSEMBLY__
-diff --git a/arch/powerpc/kernel/process.c b/arch/powerpc/kernel/process.c
-index ef91f71e07c4..b5810b932e21 100644
---- a/arch/powerpc/kernel/process.c
-+++ b/arch/powerpc/kernel/process.c
-@@ -1281,9 +1281,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
- {
- 	struct thread_struct *new_thread, *old_thread;
- 	struct task_struct *last;
--#ifdef CONFIG_PPC_64S_HASH_MMU
--	struct ppc64_tlb_batch *batch;
--#endif
- 
- 	new_thread = &new->thread;
- 	old_thread = &current->thread;
-@@ -1291,14 +1288,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 	WARN_ON(!irqs_disabled());
- 
- #ifdef CONFIG_PPC_64S_HASH_MMU
--	batch = this_cpu_ptr(&ppc64_tlb_batch);
--	if (batch->active) {
--		current_thread_info()->local_flags |= _TLF_LAZY_MMU;
--		if (batch->index)
--			__flush_tlb_pending(batch);
--		batch->active = 0;
--	}
--
- 	/*
- 	 * On POWER9 the copy-paste buffer can only paste into
- 	 * foreign real addresses, so unprivileged processes can not
-@@ -1369,20 +1358,6 @@ struct task_struct *__switch_to(struct task_struct *prev,
- 	 */
- 
- #ifdef CONFIG_PPC_BOOK3S_64
--#ifdef CONFIG_PPC_64S_HASH_MMU
--	/*
--	 * This applies to a process that was context switched while inside
--	 * arch_enter_lazy_mmu_mode(), to re-activate the batch that was
--	 * deactivated above, before _switch(). This will never be the case
--	 * for new tasks.
--	 */
--	if (current_thread_info()->local_flags & _TLF_LAZY_MMU) {
--		current_thread_info()->local_flags &= ~_TLF_LAZY_MMU;
--		batch = this_cpu_ptr(&ppc64_tlb_batch);
--		batch->active = 1;
--	}
--#endif
--
- 	/*
- 	 * Math facilities are masked out of the child MSR in copy_thread.
- 	 * A new task does not need to restore_math because it will
--- 
-2.45.2
+=C3=BAt 25. 3. 2025 v 13:12 odes=C3=ADlatel Quentin Monnet <qmo@kernel.org>=
+ napsal:
+> If you talk about tools/tracing/rtla/Makefile failing to locate bpftool,
+> it's another matter. As far as I understand, the RTLA Makefile assumes
+> that bpftool is available from $PATH, this is why the commit introduced
+> a probe in tools/build/feature: to ensure that bpftool is installed and
+> available. So here again, I don't see the motivation for changing the
+> path to the binary (And how do you know it's /usr/sbin/bpftool anyway?
+> Some users have it under /usr/local/sbin/, for example). If the intent
+> were to compile a bootstrap bpftool to make sure that it's available
+> instead then it should replicate what other BPF utilities or selftests
+> do, and get rid of the probe. But the commit description for
+> 8a635c3856dd indicates that RTLA folks prefer not to compile bpftool and
+> rely on it being installed.
+
+Yes, that is correct. The reason why I opted to use the system bpftool
+is that bpftool itself has a lot of dependencies, and they would have
+to be available at the time of building RTLA. Since RTLA only requires
+basic bpftool skeleton generation, and the only "special" feature it
+uses is CO-RE which is already quite old now, I don't expect the build
+to fail with system bpftool, so I chose to use that to make both the
+build dependencies and the RTLA Makefiles simpler.
+
+My commits sets BPFTOOL to bpftool since otherwise, the feature check
+would fail, as BPFTOOL wouldn't be defined, since it is not passed to
+the feature detection make call. I observed we are doing the same for
+Clang and the LLVM toolchain in tools/scripts/Makefile.include;
+obviously, there is no problem there, since neither of these are
+in-kernel.
+
+Shouldn't the selftests always test the in-tree bpftool instead of the
+system one? Let's say there is a stray BPFTOOL environmental variable.
+In that case, the tests will give incorrect, possibly false negative
+results, if the user is expecting selftests to test what is in the
+kernel tree. If it is intended to also be able to test with another
+version of bpftool, we can work around the problem by removing the
+BPFTOOL definition from tools/scripts/Makefile.include and exporting
+it from the rtla Makefiles instead, to make sure the feature tests see
+it. The problem with that is, obviously, that future users of the
+bpftool feature check would have to do the same, or they would always
+fail, unless the user sets BPFTOOL as an environment variable
+themselves.
+
+Tomas
 
 
