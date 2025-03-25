@@ -1,49 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7322-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7323-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C18BA6EA53
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 08:20:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3183CA6EDBC
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 11:32:23 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMLsx6Ts7z2yqd;
-	Tue, 25 Mar 2025 18:20:21 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMR7S3wQVz2yLJ;
+	Tue, 25 Mar 2025 21:32:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.235.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742887221;
-	cv=none; b=CNuYdRt6x3n16LuezRpsO+85tRzeLYpcKclLgkws6Rwmqj+MroS8OuZ+8J8dvpdqsxxA9CLyxeW88A1xy3YTzw0kdz6LGuhM21nCDT4fFL53KssvxVz6yQ5PVZJpDMj2bMIlLwNCS+WtDYUEu500D0VuHFapI1kB5P/pm19KssV1o7mYln/mjRvM3cUtYXr2GHMAL5U8iruOcK1AZdiZgYQHsp2gNZ//NrVnDmFv1Nhxn9YVJOZvoFZ9xtEpBTyj7MKJdFQxCcl0xL8fZdvfiOODSIwtM0oGYSm+q7x3+l/RuC/FmFjLDx8qBJygR2Bg3p897IDx/AomOKM0TKT6bw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742898740;
+	cv=none; b=Mv/PLMgLiFKyjDXwMaetSKjJwZdJsQe/y2R+GMMj85uNwEZreZl376PUyOCAWcZ0kNe+ganyhNEuoIpAnoa4I4XggoryWM3wNIYKqNCnzQaROx0R0kA/RoVGiuKK9A7/Cm6Lp2zZa8ogJvfSaFN0DyoIKNp5fjCqSEH1VTRxMPN3HTgSAknBY6LHH5vgiogqosOAvgEwR+E6bgGMuRejNuTWMnv90DUe3/BLU4rpMNeVVmYAFDru8mwE0522Oq1kgmMfHbsUTgpdSX+k6tnvW+hxyO7bOahZNJj1S8TrSDLZwNRzSuq9IP+jdCkQRXNLffZPArJ55wzJe9AwrARnGw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742887221; c=relaxed/relaxed;
-	bh=piogwt4lmu4qtK2/ZkbCRH1Dp64bWGgsY5Wm+uO4l14=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ys+POb50lBn7P64AfZQsk3pofYHfKHnRlo/xuo5/LX8tGROxklL6rIVEV0V/La1a6r4jDKA4LMH3oV6doN2CqYfJYgC8dAeB81DBgUkXdPRRZbprPSTluHK+sun7d77Baj7bglv16S9Gvh0L4mLJ8Y/cH3PKB1heLeWFWEFJ0cIAqkwHDA+8v0MJdAxOYEy2HQ5WPGuCuMIBIcz+VVQUDqtQDZFE4xbNQYOgRlbpcHmo9rXGgFCSlNpl2uD6aMHNLCoGB5v+LD2U6DrL6wAGikhsgdBf80K7JOebRxeAXK3Dv+YCEtqEqGv4CsqPPPQIWLhDUlkNO8ftX89KVupTBw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.235.10; helo=pegase2.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase2.c-s.fr (pegase2.c-s.fr [93.17.235.10])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMLsx1xwGz2yqg
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Mar 2025 18:20:21 +1100 (AEDT)
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-	by localhost (Postfix) with ESMTP id 4ZMLk83dyNz9sSm;
-	Tue, 25 Mar 2025 08:13:36 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-	by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id w1R402GlpRmr; Tue, 25 Mar 2025 08:13:36 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase2.c-s.fr (Postfix) with ESMTP id 4ZMLk82p2tz9sSj;
-	Tue, 25 Mar 2025 08:13:36 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A99B8B765;
-	Tue, 25 Mar 2025 08:13:36 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id Q_Gt9WeIslhN; Tue, 25 Mar 2025 08:13:36 +0100 (CET)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id BC7668B763;
-	Tue, 25 Mar 2025 08:13:35 +0100 (CET)
-Message-ID: <b192632a-7b30-4227-96b8-84a587c45fa2@csgroup.eu>
-Date: Tue, 25 Mar 2025 08:13:35 +0100
+	t=1742898740; c=relaxed/relaxed;
+	bh=TDu0Ny0Fcmjl+OCepVqwkzhE+JS6jvmII5BtRtgp3Xw=;
+	h=Message-ID:Date:MIME-Version:To:From:Subject:Content-Type; b=FK8YKsPbQDgMAZ0kWEVkZq+gMO4SwXG4tFSE1FwSoE9j64QVsc63aoT8ijA5YaePjJ12ivs7ZlpZgyrEHHkzDmB0R4TpbqZdsOv8Igt0eA+1XYQzU1eVsJ/8Ba+3buNRDSYRU+2eDfjh3XvzbJ795H60jG+Wvb0o6kb0gE/o8j4KziFLuUNa/Nh+EcbyQiJV2uYH4XNuxhyzEn1kpvdDWoRf2P04uiZjILJyM7vDORKnIKU1SzvE/cRtoxDpYL2kiCXz1kiJn7A8FCLOr4XdYHRzVsIl/kd6/7ydcwz+9neRTFZcvWHgjqDXIngG4V40TAhGsEvEfiWwOfGTel+TzA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MBpKnnhe; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=MBpKnnhe;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZMR7R2hDMz2yGZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Mar 2025 21:32:19 +1100 (AEDT)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52P8rFDM011900;
+	Tue, 25 Mar 2025 10:32:15 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=TDu0Ny0Fcmjl+OCepVqwkzhE+JS6
+	jvmII5BtRtgp3Xw=; b=MBpKnnheWBepOp1W3NkAWcv+9Gb1k630RvhptHs0nJNd
+	1UJJXSc8yRGxr8XxX7CN59FL/oEAn+uI9A9zim3LeC8TfbI+vQ7+OCBhoD76uAxU
+	OCKZMjYzNbrW96JTv68qn2FcmuWp+Y3zsLQS5PNVBRphJeUn2f9cZyb/bhKSdkn0
+	g2G3+XNlNqu89PqAlokJuNhFY6sHrjlTcklqsmIOf2RTboe9vxF9RGHQqKOZdazC
+	uSO5eJ6aAm1WI/PXQu5LfVk2x7dCxt2y0Rj8aNLkVOUCqMb/mUr9xpGjEkxrsjeQ
+	XeeHxim5ceqLyRNtedDX3gSs+ASU+2BprMyJsRi0Ww==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kejptytp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Mar 2025 10:32:15 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52P7lM8M030330;
+	Tue, 25 Mar 2025 10:32:14 GMT
+Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j7htb351-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Mar 2025 10:32:14 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52PAWD2j11076112
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Mar 2025 10:32:14 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A7B3F58058;
+	Tue, 25 Mar 2025 10:32:13 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2058558059;
+	Tue, 25 Mar 2025 10:32:10 +0000 (GMT)
+Received: from [9.61.251.51] (unknown [9.61.251.51])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 25 Mar 2025 10:32:09 +0000 (GMT)
+Message-ID: <5df6968a-2e5f-468e-b457-fc201535dd4c@linux.ibm.com>
+Date: Tue, 25 Mar 2025 16:02:08 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,67 +77,114 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] vfio: pci: Advertise INTx only if LINE is connected
-To: Shivaprasad G Bhat <sbhat@linux.ibm.com>, alex.williamson@redhat.com,
- jgg@ziepe.ca, kevin.tian@intel.com
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, yi.l.liu@intel.com,
- Yunxiang.Li@amd.com, pstanner@redhat.com, maddy@linux.ibm.com,
- linuxppc-dev@lists.ozlabs.org
-References: <174231895238.2295.12586708771396482526.stgit@linux.ibm.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <174231895238.2295.12586708771396482526.stgit@linux.ibm.com>
+Content-Language: en-GB
+To: Saket Kumar Bhaskar <skb99@linux.ibm.com>,
+        Hari Bathini <hbathini@linux.ibm.com>, bpf <bpf@vger.kernel.org>,
+        LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
+        jkacur@redhat.com, lgoncalv@redhat.com, gmonaco@redhat.com,
+        williams@redhat.com, tglozar@redhat.com, rostedt@goodmis.org
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+Subject: [linux-next-20250324]/tool/bpf/bpftool fails to complie on
+ linux-next-20250324
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: upORWBvozE1TM21JUSyh-tiHSH1YQ4xZ
+X-Proofpoint-GUID: upORWBvozE1TM21JUSyh-tiHSH1YQ4xZ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-25_04,2025-03-25_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=802 adultscore=0
+ suspectscore=0 phishscore=0 lowpriorityscore=0 spamscore=0 clxscore=1011
+ impostorscore=0 malwarescore=0 mlxscore=0 priorityscore=1501 bulkscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2503250072
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Greetings!!!
 
 
-Le 18/03/2025 à 18:29, Shivaprasad G Bhat a écrit :
-> On POWER systems, when the device is behind the io expander,
-> not all PCI slots would have the PCI_INTERRUPT_LINE connected.
-> The firmware assigns a valid PCI_INTERRUPT_PIN though. In such
-> configuration, the irq_info ioctl currently advertizes the
-> irq count as 1 as the PCI_INTERRUPT_PIN is valid.
-> 
-> The patch adds the additional check[1] if the irq is assigned
-> for the PIN which is done iff the LINE is connected.
-> 
-> [1]: https://eur01.safelinks.protection.outlook.com/?url=https%3A%2F%2Flore.kernel.org%2Fqemu-devel%2F20250131150201.048aa3bf.alex.williamson%40redhat.com%2F&data=05%7C02%7Cchristophe.leroy2%40cs-soprasteria.com%7Ce0fb1d4bf2064e115ce408dd6642796b%7C8b87af7d86474dc78df45f69a2011bb5%7C0%7C0%7C638779157886704638%7CUnknown%7CTWFpbGZsb3d8eyJFbXB0eU1hcGkiOnRydWUsIlYiOiIwLjAuMDAwMCIsIlAiOiJXaW4zMiIsIkFOIjoiTWFpbCIsIldUIjoyfQ%3D%3D%7C0%7C%7C%7C&sdata=egZuT5CZsC6S%2Bd7bZTuO4RcKL8IJREPbxIMGZZkZeMQ%3D&reserved=0
-> 
-> Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-> Suggested-By: Alex Williamson <alex.williamson@redhat.com>
-> ---
->   drivers/vfio/pci/vfio_pci_core.c |    4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 586e49efb81b..4ce70f05b4a8 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -734,6 +734,10 @@ static int vfio_pci_get_irq_count(struct vfio_pci_core_device *vdev, int irq_typ
->   			return 0;
->   
->   		pci_read_config_byte(vdev->pdev, PCI_INTERRUPT_PIN, &pin);
-> +#if IS_ENABLED(CONFIG_PPC64)
-> +		if (!vdev->pdev->irq)
-> +			pin = 0;
-> +#endif
+bpftool fails to complie on linux-next-20250324 repo.
 
-I see no reason for #ifdef here, please instead do:
 
-	if (IS_ENABLED(CONFIG_PPC64) && !vdev->pdev->irq)
+Error:
 
-See 
-https://docs.kernel.org/process/coding-style.html#conditional-compilation
+make: *** No rule to make target 'bpftool', needed by 
+'/home/linux/tools/testing/selftests/bpf/tools/include/vmlinux.h'. Stop.
+make: *** Waiting for unfinished jobs.....
 
->   
->   		return pin ? 1 : 0;
->   	} else if (irq_type == VFIO_PCI_MSI_IRQ_INDEX) {
-> 
-> 
-> 
+
+Git bisect points to commit: 8a635c3856ddb74ed3fe7c856b271cdfeb65f293 as 
+first bad commit.
+
+Bisect log:
+
+git bisect start
+# status: waiting for both good and bad commits
+# good: [4701f33a10702d5fc577c32434eb62adde0a1ae1] Linux 6.14-rc7
+git bisect good 4701f33a10702d5fc577c32434eb62adde0a1ae1
+# status: waiting for bad commit, 1 good commit known
+# bad: [882a18c2c14fc79adb30fe57a9758283aa20efaa] Add linux-next 
+specific files for 20250324
+git bisect bad 882a18c2c14fc79adb30fe57a9758283aa20efaa
+# good: [36ad536dbad8e29a1fdb7a8760a9c4fcb0dcf7cb] Merge branch 
+'for-next' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/wireless/wireless-next.git
+git bisect good 36ad536dbad8e29a1fdb7a8760a9c4fcb0dcf7cb
+# good: [96c123361d8e32f6012aa449eed27147979af27e] Merge branch 'next' 
+of git://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
+git bisect good 96c123361d8e32f6012aa449eed27147979af27e
+# bad: [b9fc57d1f74797e7b25c779671c03192a81feb1a] Merge branch 
+'usb-next' of git://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git
+git bisect bad b9fc57d1f74797e7b25c779671c03192a81feb1a
+# good: [1da0a3d00734bf365f53480a7ffb4361fd61e6d5] Merge branch 'master' 
+of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip.git
+git bisect good 1da0a3d00734bf365f53480a7ffb4361fd61e6d5
+# bad: [4541ffab99f8b7ddadb367c73f28ea1fe70f2f97] Merge branch 'next' of 
+git://git.kernel.org/pub/scm/virt/kvm/kvm.git
+git bisect bad 4541ffab99f8b7ddadb367c73f28ea1fe70f2f97
+# good: [361da275e5ce98bbab5f6990d02eb9709742d703] Merge branch 
+'kvm-nvmx-and-vm-teardown' into HEAD
+git bisect good 361da275e5ce98bbab5f6990d02eb9709742d703
+# bad: [28b4c36e59ccfd4e38eaf804b292b3c5b2287900] Merge branch 
+'for-next' of 
+git://git.kernel.org/pub/scm/linux/kernel/git/trace/linux-trace.git
+git bisect bad 28b4c36e59ccfd4e38eaf804b292b3c5b2287900
+# good: [2ec5357274fdbe8d48d13d33a1b0e367bcadb85a] Merge sorttable/for-next
+git bisect good 2ec5357274fdbe8d48d13d33a1b0e367bcadb85a
+# good: [af1a78613133542583c9a9875c824678a3c3a145] Merge branch 
+'edac-drivers' into edac-for-next
+git bisect good af1a78613133542583c9a9875c824678a3c3a145
+# good: [2325ccf7b99fa8e1e95c3ce8a205e170d244b062] Merge branch 
+'edac-for-next' of git://git.kernel.org/pub/scm/linux/kernel/git/ras/ras.git
+git bisect good 2325ccf7b99fa8e1e95c3ce8a205e170d244b062
+# bad: [18923806b1291102cad3a6b713006c7e7f563534] rtla/timerlat_top: 
+Move divisor to update
+git bisect bad 18923806b1291102cad3a6b713006c7e7f563534
+# bad: [9dc3766ed07c95c9a77fa98dcbc83dcb7f49df3d] rtla: Add optional 
+dependency on BPF tooling
+git bisect bad 9dc3766ed07c95c9a77fa98dcbc83dcb7f49df3d
+# bad: [8a635c3856ddb74ed3fe7c856b271cdfeb65f293] tools/build: Add 
+bpftool-skeletons feature test
+git bisect bad 8a635c3856ddb74ed3fe7c856b271cdfeb65f293
+# good: [6fa5e3a87cd7838453be66c3a69c2236a1680504] rtla/timerlat: Unify 
+params struct
+git bisect good 6fa5e3a87cd7838453be66c3a69c2236a1680504
+# first bad commit: [8a635c3856ddb74ed3fe7c856b271cdfeb65f293] 
+tools/build: Add bpftool-skeletons feature test
+
+
+If you happen to fix this, please add below tag.
+
+
+Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+
+
+Regards,
+
+Venkat.
 
 
