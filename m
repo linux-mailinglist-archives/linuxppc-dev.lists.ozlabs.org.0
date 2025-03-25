@@ -1,50 +1,85 @@
-Return-Path: <linuxppc-dev+bounces-7326-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7327-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E6D0A6FE40
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 13:52:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AEB7A704F5
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 25 Mar 2025 16:25:36 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMVDz1CDLz2yqc;
-	Tue, 25 Mar 2025 23:52:19 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZMYdj2tgDz2ygn;
+	Wed, 26 Mar 2025 02:25:29 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742904272;
-	cv=none; b=V5NJlUUcTdraB/WsJ+Ic+mZZLy4U/O40CQc9TJK2acf5cUW1eQHAFbokCCutpjxl9/ye2DXnbesS03w62TqrBhABo2BduSYnCMRkaScaneccilx+jAXfFSLEumOERlW2nNNfRJyRuq9URFOG/QJzfkGtM0EjcBX1CdxJvrEgwH2KX6cyF6lg0w0jnFtyDSXOWklnc4zI9+Agh/zonrG/PSu+qJV9zdmZIYl36YQIwrWEOslW5pwJuprlW81r2NSH3t25NwoOgj1Ys0taqbAm7tDIOPV9ff0AQc2T9yaVqUjZ3k19TL5riuKkvLk/B9XghcbqYt8rHsVHzktgubHDwg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742916329;
+	cv=none; b=k/TxzzC1ddZhAmY4bNS3n4pANyMTBTPwed7FnTCBFsrHErVVRknqDu+inCdinhDKdqpsQ9aLG6WVF/zrOmJQyDq7MXiO9kl39LeAfwlF+5+mTPjCQ+my/z8xSPXSzuRSesSw1PuiXyhzrDJyAO47IHb15Hl/7O7dLye7NdKsYuwSJuI9wm7tQCq9Mjf2in7rYc6u0LJj//oDAGfqVeF9tMat2AL3tnSHxLIMdQuaKKfOKrg40nz0jyGBf4KZy4S/qu77HbXa8EY+ZKPG1kvqUfetTpxceMYXZ0RBRM65unnI+z2FLTo4XzyrxJ4rXcrqs6nWVjG14szrl9AnjkGrpA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742904272; c=relaxed/relaxed;
-	bh=Rp0Ir+0TgwjjFPPNTjF2m/e/l07zT5s8JzJgEoC2ijA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=OvSr5F5zhdaiHHFhFhi+gaemoOaVKEujtZKNm5CA5D7wk9xU6f0Pxn8dwJIhRin0lsoyTuQdcy94/bFNNk7LzgEu8Kb2cMCO6iua/Fb5gR/ugjdZxt8L+fFOIwxACrrLycGWhzorPh2WgZPgJgDm6tfYcKGdckElt7SE33dTgKghVdGguF3QiK1TILPNyPADwpXuuq8QPdCxM1l7AI8mDY8oQ5VG5k7p15Z0hm6t9Exj1NZEuH/WV5YJjysk78C8DDGt7yOd5DOI//+GDXK/ZWwxXZFU0q7hvXVoay11cxS7QDB+PUrwj8PGYRsipoFMXTTm5bs1BlIETi1K2GnGDw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LMSi9rHJ; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=qmo@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1742916329; c=relaxed/relaxed;
+	bh=DekOHVItqBqELoUTN744py+oUiPjvzWGJ/Ap1nj5o1s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jUIlxEIHOgc1fA48WKaMOwtsV25hp88ao5YtDrBiC9VqMzN7Rhc21P6qPFv0wuuaLjCAA91EmLSUktRxIq80HYwZabgVR0MBhqS5n/cpRzwY4BqU+4TesW/LYU3VjRx5XjNTwwyjQknq9fFFkKeYyV6xSDvqT0vgzKIQIozjMZPvfL7Ppz/2s6D+mI+nqF/6tGBuCq4eOAX2xw7RSAdew2G5gXNmVpEcO9tG+qjzR5aRkrfOFLC1H9rT+AL9fS4VMcUsO2io9OYuksemY/wNKsTGjRmwCdxM4R3S/luaVhSXQZIIyJhoxSkJ0A6EItK0q4FoNn/B42s4k6Ln+Pc1gg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qs3qYkkF; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=LMSi9rHJ;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=qs3qYkkF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=qmo@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZMT9q5F04z2yqT
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 25 Mar 2025 23:04:31 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 89DCF5C5420;
-	Tue, 25 Mar 2025 12:02:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E74FC4CEE4;
-	Tue, 25 Mar 2025 12:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1742904268;
-	bh=Lgn+GjPuLLv587AjfxPK4UTvCKPwHlaM+UJ3rYCoRzY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=LMSi9rHJGjJXGdNd/dIHCcGyuASfC3D6gHLXw6U5bfhA2YP24OMJAO+wrDIG5gew4
-	 sEZio9lQpI7z8bb89Ge3UshE+gkbRCrtyFM3f7B7apBf7L9OMwjQ9TfSEdGnLfnBYL
-	 OAHaOR3AoaiFCD98Xo6niQRRVAIovLyiU5NMaogC+V1x3XqO780BSJAFwzFzKaO6Cy
-	 BVsDv9WvNSFzZbur5DauCssWseQYStvLOjP/rMyRMjHbSDJtJI3QA/3j2Ozhg2A55j
-	 0TZmi1rTkX7txMyOfv6wmTdIQKz3MG3ZVLZD9gpdvjkdPvRrxX96kvLLgXxKuuQ95X
-	 dp/Q4QJtUtNtw==
-Message-ID: <15370998-6a91-464d-b680-931074889bc1@kernel.org>
-Date: Tue, 25 Mar 2025 12:04:23 +0000
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZMYdh0Tklz2yGN
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 26 Mar 2025 02:25:26 +1100 (AEDT)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52PE3GTR026302;
+	Tue, 25 Mar 2025 15:25:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=DekOHVItqBqELoUTN744py+oUiPjvzWGJ/Ap1nj5o
+	1s=; b=qs3qYkkFhvG+QpRnPQqr7y3mwRNzzJ8sVzCFEcTs3Cc/eC1Pd3uziDPCw
+	5/nLDl0KaI0HUq7ifznhfrgIr96ZPvA4HL18IynaKMjFqdXvGFQOlRjIOOoGMGRk
+	Qjq8xVPEgMnV+w6dJVqXPW05F6ttNtZJORxF8sRS2QFVZ5IigVzOQLL4LWjmsLZO
+	eLqb8ybLYEHy51bO3hrdaPRGmxXc8gjA7HvdGZgFygZVJz1WiO6u255dQ4+OpOaL
+	sTZGUfbsO27AmD/KP44mHgeqPq8QNxu7uPh8tmW0bzCb03QroBMNsCN8opq3BRl2
+	8eQpLh2clN3/CdmCE2WPMAuvAcg5w==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kwwq8ete-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Mar 2025 15:25:16 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52PFOfPq011335;
+	Tue, 25 Mar 2025 15:25:16 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45kwwq8eta-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Mar 2025 15:25:16 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52PDsvvV009737;
+	Tue, 25 Mar 2025 15:25:15 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j9rkksta-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 25 Mar 2025 15:25:15 +0000
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52PFPBu846596442
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 25 Mar 2025 15:25:11 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A6C1F2004B;
+	Tue, 25 Mar 2025 15:25:11 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 97B0420043;
+	Tue, 25 Mar 2025 15:25:11 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 25 Mar 2025 15:25:11 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 55669)
+	id 2B6F5E055E; Tue, 25 Mar 2025 16:25:11 +0100 (CET)
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>, Naveen N Rao <naveen@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH 0/1] powerpc/64s: Do not re-activate batched TLB flush
+Date: Tue, 25 Mar 2025 16:25:10 +0100
+Message-ID: <cover.1742915600.git.agordeev@linux.ibm.com>
+X-Mailer: git-send-email 2.45.2
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -57,127 +92,37 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [linux-next-20250324]/tool/bpf/bpftool fails to complie on
- linux-next-20250324
-To: Saket Kumar Bhaskar <skb99@linux.ibm.com>
-Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
- Hari Bathini <hbathini@linux.ibm.com>, bpf <bpf@vger.kernel.org>,
- LKML <linux-kernel@vger.kernel.org>, linuxppc-dev@lists.ozlabs.org,
- jkacur@redhat.com, lgoncalv@redhat.com, gmonaco@redhat.com,
- williams@redhat.com, tglozar@redhat.com, rostedt@goodmis.org
-References: <5df6968a-2e5f-468e-b457-fc201535dd4c@linux.ibm.com>
- <8b0b2a41-203d-41f8-888d-2273afb877d0@qmon.net>
- <Z+KXN0KjyHlQPLUj@linux.ibm.com>
-From: Quentin Monnet <qmo@kernel.org>
-Content-Language: en-GB
-In-Reply-To: <Z+KXN0KjyHlQPLUj@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: ME-RZcMcqTXsd7q_uAVOV5FXHh7koUGO
+X-Proofpoint-ORIG-GUID: OELmDwiUVEGhwIwWIOnx7pu9D6zS72mK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1093,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-03-25_06,2025-03-25_02,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 adultscore=0
+ bulkscore=0 clxscore=1015 mlxlogscore=478 spamscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 mlxscore=0 priorityscore=1501
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2503250105
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-2025-03-25 17:14 UTC+0530 ~ Saket Kumar Bhaskar <skb99@linux.ibm.com>
-> On Tue, Mar 25, 2025 at 11:09:24AM +0000, Quentin Monnet wrote:
->> 2025-03-25 16:02 UTC+0530 ~ Venkat Rao Bagalkote <venkat88@linux.ibm.com>
->>> Greetings!!!
->>>
->>>
->>> bpftool fails to complie on linux-next-20250324 repo.
->>>
->>>
->>> Error:
->>>
->>> make: *** No rule to make target 'bpftool', needed by '/home/linux/
->>> tools/testing/selftests/bpf/tools/include/vmlinux.h'. Stop.
->>> make: *** Waiting for unfinished jobs.....
->>
->>
->> Thanks! Would be great to have a bit more context on the error (and on
->> how to reproduce) for next time. Bpftool itself seems to compile fine,
->> the error shows that it's building it from the context of the selftests
->> that seems broken.
->>
->>
-> Yes, selftest build for BPF fails.
-> ## pwd
-> /linux/tools/testing/selftests/bpf
-> 
-> # make -j 33
-> 
-> make: *** No rule to make target 'bpftool', needed by '/home/upstreamci/linux/tools/testing/selftests/bpf/tools/include/vmlinux.h'.  Stop.
-> make: *** Waiting for unfinished jobs....
-> 
->>> Git bisect points to commit: 8a635c3856ddb74ed3fe7c856b271cdfeb65f293 as
->>> first bad commit.
->>
->> Thank you Venkat for the bisect!
->>
->> On a quick look, that commit introduced a definition for BPFTOOL in
->> tools/scripts/Makefile.include:
->>
->> 	diff --git a/tools/scripts/Makefile.include .../Makefile.include
->> 	index 0aa4005017c7..71bbe52721b3 100644
->> 	--- a/tools/scripts/Makefile.include
->> 	+++ b/tools/scripts/Makefile.include
->> 	@@ -91,6 +91,9 @@ LLVM_CONFIG	?= llvm-config
->> 	 LLVM_OBJCOPY	?= llvm-objcopy
->> 	 LLVM_STRIP	?= llvm-strip
->> 	
->> 	+# Some tools require bpftool
->> 	+BPFTOOL		?= bpftool
->> 	+
->> 	 ifeq ($(CC_NO_CLANG), 1)
->> 	 EXTRA_WARNINGS += -Wstrict-aliasing=3
->>
->> But several utilities or selftests under tools/ include
->> tools/scripts/Makefile.include _and_ use their own version of the
->> $(BPFTOOL) variable, often assigning only if unset, for example in
->> tools/testing/selftests/bpf/Makefile:
->>
->> 	BPFTOOL ?= $(DEFAULT_BPFTOOL)
->>
->> My guess is that the new definition from Makefile.include overrides this
->> with simply "bpftool" as a value, and the Makefile fails to build it as
->> a result.
->>
->> If I guessed correctly, one workaround would be to rename the variable
->> in Makefile.include (and in whatever Makefile now relies on it) into
->> something that is not used in the other Makefiles, for example
->> BPFTOOL_BINARY.
->>
->> Please copy the BPF mailing list on changes impacting BPF tooling (or
->> for BPF-related patchsets in general).
->>
->> Thanks,
->> Quentin
-> Yes you are right that the new definition from Makefile.include overrides this
-> with simply "bpftool" as a value, and the Makefile in bpf selftest fails to 
-> build it as a result.
-> 
-> But the main cause is that it is not able to locate the bpftool binary.
+Hi All,
 
-I'm not sure I follow. What component is not able to locate the binary?
+I have no means to test the patch, it only passes a compile check.
 
-If you talk about the BPF selftests, I believe they only fail to locate
-it because of the collision on the $(BPFTOOL) variable. Selftests'
-Makefile was able to find the binary before that commit, so there should
-be no need to change the path to the binary.
+Thanks!
 
-If you talk about tools/tracing/rtla/Makefile failing to locate bpftool,
-it's another matter. As far as I understand, the RTLA Makefile assumes
-that bpftool is available from $PATH, this is why the commit introduced
-a probe in tools/build/feature: to ensure that bpftool is installed and
-available. So here again, I don't see the motivation for changing the
-path to the binary (And how do you know it's /usr/sbin/bpftool anyway?
-Some users have it under /usr/local/sbin/, for example). If the intent
-were to compile a bootstrap bpftool to make sure that it's available
-instead then it should replicate what other BPF utilities or selftests
-do, and get rid of the probe. But the commit description for
-8a635c3856dd indicates that RTLA folks prefer not to compile bpftool and
-rely on it being installed.
+Alexander Gordeev (1):
+  powerpc/64s: Do not re-activate batched TLB flush
 
-Quentin
+ arch/powerpc/include/asm/thread_info.h |  2 --
+ arch/powerpc/kernel/process.c          | 25 -------------------------
+ 2 files changed, 27 deletions(-)
+
+-- 
+2.45.2
+
 
