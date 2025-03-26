@@ -1,89 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-7340-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7341-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B267A71894
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Mar 2025 15:35:00 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93673A71927
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 26 Mar 2025 15:46:22 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZN8Sx6S4fz2yr4;
-	Thu, 27 Mar 2025 01:34:57 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZN8k402LNz2yqT;
+	Thu, 27 Mar 2025 01:46:20 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1742999697;
-	cv=none; b=QASur5PwPNrK0u783WpHA3/0cqcYoP9cib+uOwXX+QpkM756aCyCdH5XrnVGkvlnmsHKxFVTnnW35mzomO/Wjck95TIp4Tamt4dI957DIv/KZ9tZe+rCxXozV59i3L3FtS6mPhVYzqez0NUJYChXhw6wmjtlQ4JIUHqKaca+TN+P5/djMTMwsfjLvoKJ5GIAsPxD3q1eNqfDJskHPHfBrzmyQ88+OgSfyUG4Z1dbngHVCadGQSZ4wuPws6Kj3s35+cNR/xxjJ4ZwqCehPXmCThsnir48x2WiAtVRoOmpdxu/nB17rzo+nNz2CRRyNZz3LhWFNnE1zyQVAhXErc21kw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743000379;
+	cv=none; b=NrSUtwT5Y9O/YhHoNQN3lZs/jhw7aP7oyO/gZeokpUVWDYC/kDFIyeE/9sfc/TAbpghW2zbdqM/p6uxENBnVUq5nh3XSvbtWNPwxa3Asfthb7yE9Yj/Sdrr0ds5NU9hRptCGXTeL0lhSjvArk+wQRmDRiu8wLJeHaCcGknhE1Z85J1k1MF2oisnuLXXAb5ICT0IxJlu6/ymb+zrPeJHbwDaXqgL36n8zEVpWIsN1lEuZs4Smt5cO8zw1x17P8iCmVLtHRsqKL8Cch194CQqcOfBeTQIANWBICQhROn7lNHHcpW5gNGVBgIki2v58V49txiZ+AaVD0XbTxnMdoKMdog==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1742999697; c=relaxed/relaxed;
-	bh=vjZptpcOlbNxynv6rWgAxMAwmUdnew2ACRJ/iVP4Irg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cTWcuiZR8g6D1IqFXQ/ssg20aQO86i6Ja1ECMLjY5WGIrZlpxah7IcX6XCftOZNXdYcIWiQyy0rhGvWGQ1a9izWyaXeu9y/PZQi3apya/n+WU2pZ7M99GcqR0wS3i+0wJrpPoek2cHIPA9hL1vP6WCL3D4WzypODEqmURBsnsLjqSkmCataJ6mRAdsmJSgDWgN+yGgSFnoNMz/0sTpj+qpCLv6JmVxvuAiiDSVsLp//sY4+D1URsTbVtQibmDNn+pNqawEm9X7G1NEdqQ1dXudyTUf49rMYVsTACCULXORYZv0cXB/pjDeoDNayHR9zL4iM/BaTbEx0kZh0QpePiqg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NBgC+P97; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	t=1743000379; c=relaxed/relaxed;
+	bh=5s9cqAAV7911tDUE8vM5EUr1soQauf5iRbceIq9JMaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OXPjO0K6RvUTj/jUWD9aV5r1FCqe9ouerRrcwPyD4GxuPF638zoG/P3xYW7bcvnV7V8w9Acr4CxBDzthRNagGO3lC3EY3Cu1i5ORTS7xRjlRS7H9y1xUtroRiwbvgl4qwAe1Qieo1QicGW6NF6uwMsvbI9ah6XCg7dDOBzahwO7W1qcIBslp3fMCTApUZMKR7foGWzk0+z2KdIxuSerzas2r/xv5/ep3XLFh49QKvbsAr24rI4e0EKRtLqC++nYQY2JGs0S8V6hSP1lHLsQ2z+LfRJJbYdqYdjh3mRE2cNzQFE850GypYTw8PVmlZCmsvqfvNEAV0I5ZYXZQjMyBKg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CbttrlwV; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gbatra@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=NBgC+P97;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=CbttrlwV;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=gbatra@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZN8Sx0GNcz2yr3
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Mar 2025 01:34:56 +1100 (AEDT)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52QCSApW003206;
-	Wed, 26 Mar 2025 14:34:31 GMT
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZN8k20g2yz2ySh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 27 Mar 2025 01:46:17 +1100 (AEDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52Q8FpmE032156;
+	Wed, 26 Mar 2025 14:46:15 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=vjZptpcOlbNxynv6rWgAxMAwmUdnew2ACRJ/iVP4I
-	rg=; b=NBgC+P97M+mDcKrLp60iImH7yWt18CCbQNQbjstc50caLXifrnNlUT5qU
-	OkKKWqLQmeLjS6H3eWxiJkuyqvj2nVXQW4CNkgp8tOwlwTslLJIhPqXYi6j0cOex
-	L2LU0XevMURJzD/7TtgKwU7gxLgt76+lLIOjayzjZhFsimgIB96dETE5A2u+dOwu
-	JmDwd8Ts3ffIRChdKMSSc8feYZ8M9xz6RckcyXu6spQqRTBFzaiS0JAB5McLiITU
-	Spa061dAZVQSQhlPGCl7w88SstfhIe3KW1Uhg0d5I7MCtO9xeZA5oaaySxlfhLQb
-	EQpH8UHX9cjDbRdSUPnBT1XAbbbRw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45mhm3rnnt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Mar 2025 14:34:31 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52QEW94V026482;
-	Wed, 26 Mar 2025 14:34:31 GMT
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=5s9cqA
+	AV7911tDUE8vM5EUr1soQauf5iRbceIq9JMaw=; b=CbttrlwVHZdOyynJW/Jag/
+	cWbjoORjwn+xoTSIV1qS73EzZLYBSel3M1Pi85ervQ/LL1AsICyUCvY+Vm/oYZkz
+	EOkYLRIylUuRNJvf8vPvslKuIJF33GkDdpsOoDPDocly3IA3uQKzmMbj4vLhk8xE
+	TqajBIxH2wHpsWnZwtb7QowwZPXMaGRiueYjgZ1nYYxS3ekajU+vVDl8X8x61vHr
+	Kx3pyUQ+voCYMldGHBI+GiBkIAN4HvQ17vYAqwUytz/8EXaoDayg+svnEXCREWIL
+	yJKbtuhBXnWRxz3173u9l9SEzTCqhGhi/TtehiPOqHgmSSn/Oh3jqkepljgxT3yA
+	==
 Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45mhm3rnnk-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45m3q0mc5b-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Mar 2025 14:34:31 +0000 (GMT)
+	Wed, 26 Mar 2025 14:46:14 +0000 (GMT)
 Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QAtqZ1009718;
-	Wed, 26 Mar 2025 14:34:30 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j9rkrhq4-1
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52QBBBND009693;
+	Wed, 26 Mar 2025 14:46:14 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45j9rkrjs2-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 26 Mar 2025 14:34:30 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52QEYPgj49086956
+	Wed, 26 Mar 2025 14:46:14 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52QEkC9k30147072
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 26 Mar 2025 14:34:26 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DCAE82004E;
-	Wed, 26 Mar 2025 14:34:25 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 226DF2004B;
-	Wed, 26 Mar 2025 14:34:23 +0000 (GMT)
-Received: from li-bd3f974c-2712-11b2-a85c-df1cec4d728e.ibm.com.com (unknown [9.43.113.131])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 26 Mar 2025 14:34:22 +0000 (GMT)
-From: Hari Bathini <hbathini@linux.ibm.com>
-To: linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Naveen N. Rao" <naveen@kernel.org>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Andrii Nakryiko <andrii@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>, stable@vger.kernel.org
-Subject: [RESEND PATCH] powerpc64/bpf: fix JIT code size calculation of bpf trampoline
-Date: Wed, 26 Mar 2025 20:04:22 +0530
-Message-ID: <20250326143422.1158383-1-hbathini@linux.ibm.com>
-X-Mailer: git-send-email 2.48.1
+	Wed, 26 Mar 2025 14:46:12 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5B13058057;
+	Wed, 26 Mar 2025 14:46:12 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2508758059;
+	Wed, 26 Mar 2025 14:46:12 +0000 (GMT)
+Received: from [9.61.251.233] (unknown [9.61.251.233])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 26 Mar 2025 14:46:12 +0000 (GMT)
+Message-ID: <aaab4789-390c-4b8d-9b83-bdb5fd6b0767@linux.ibm.com>
+Date: Wed, 26 Mar 2025 09:46:11 -0500
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -96,133 +78,190 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] powerpc/pseries/iommu: memory notifier incorrectly adds
+ TCEs for pmemory
+To: =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>
+Cc: linuxppc-dev@lists.ozlabs.org, donettom@linux.ibm.com
+References: <20250130183854.92258-1-gbatra@linux.ibm.com>
+ <Z9r--U_INHB4RjXI@kitsune.suse.cz>
+Content-Language: en-US
+From: Gaurav Batra <gbatra@linux.ibm.com>
+In-Reply-To: <Z9r--U_INHB4RjXI@kitsune.suse.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 84Bcj8CB_tgd0ZFQE6odoc1Chgl4awTZ
-X-Proofpoint-GUID: aSupdVLRRnHCDMUp7Pi7SrliP4XM7WrZ
+X-Proofpoint-ORIG-GUID: zwXzBJnlRlDNrirI3JoqsqOMcDYDJnub
+X-Proofpoint-GUID: zwXzBJnlRlDNrirI3JoqsqOMcDYDJnub
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-03-26_07,2025-03-26_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- malwarescore=0 suspectscore=0 phishscore=0 clxscore=1015 adultscore=0
- impostorscore=0 mlxscore=0 lowpriorityscore=0 mlxlogscore=750
- priorityscore=1501 classifier=spam adjust=0 reason=mlx scancount=1
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ suspectscore=0 clxscore=1011 spamscore=0 lowpriorityscore=0 phishscore=0
+ mlxlogscore=999 priorityscore=1501 adultscore=0 bulkscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
  engine=8.19.0-2502280000 definitions=main-2503260088
 X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The JIT compile of ldimm instructions can be anywhere between 1-5
-instructions long depending on the value being loaded.
+Hello Michal,
 
-arch_bpf_trampoline_size() provides JIT size of the BPF trampoline
-before the buffer for JIT'ing it is allocated. BPF trampoline JIT
-code has ldimm instructions that need to load the value of pointer
-to struct bpf_tramp_image. But this pointer value is not same while
-calling arch_bpf_trampoline_size() & arch_prepare_bpf_trampoline().
-So, the size arrived at using arch_bpf_trampoline_size() can vary
-from the size needed in arch_prepare_bpf_trampoline(). When the
-number of ldimm instructions emitted in arch_bpf_trampoline_size()
-is less than the number of ldimm instructions emitted during the
-actual JIT compile of trampoline, the below warning is produced:
+In the patch to fix the pmemory bug, I made some changes to the code 
+that determines Max memory an LPAR can have (excluding pmemory). This 
+information is needed while creating Dynamic DMA Window (DDW). These 
+changes are in the main line code path of DDW creation. This might have 
+irritated QEMU somehow, no idea yet on how.
 
-  WARNING: CPU: 8 PID: 204190 at arch/powerpc/net/bpf_jit_comp.c:981 __arch_prepare_bpf_trampoline.isra.0+0xd2c/0xdcc
+Thanks,
 
-which is:
+Gaurav
 
-  /* Make sure the trampoline generation logic doesn't overflow */
-  if (image && WARN_ON_ONCE(&image[ctx->idx] >
-			(u32 *)rw_image_end - BPF_INSN_SAFETY)) {
-
-Pass NULL as the first argument to __arch_prepare_bpf_trampoline()
-call from arch_bpf_trampoline_size() function, to differentiate it
-from how arch_prepare_bpf_trampoline() calls it and ensure maximum
-possible instructions are emitted in arch_bpf_trampoline_size() for
-ldimm instructions that load a different value during the actual JIT
-compile of BPF trampoline.
-
-Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
-Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Closes: https://lore.kernel.org/all/6168bfc8-659f-4b5a-a6fb-90a916dde3b3@linux.ibm.com/
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
----
-
-* Removed a redundant '/' accidently added in a comment and resending.
-
- arch/powerpc/net/bpf_jit_comp.c | 29 +++++++++++++++++++++++------
- 1 file changed, 23 insertions(+), 6 deletions(-)
-
-diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
-index 2991bb171a9b..c94717ccb2bd 100644
---- a/arch/powerpc/net/bpf_jit_comp.c
-+++ b/arch/powerpc/net/bpf_jit_comp.c
-@@ -833,7 +833,12 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 	EMIT(PPC_RAW_STL(_R26, _R1, nvr_off + SZL));
- 
- 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
--		PPC_LI_ADDR(_R3, (unsigned long)im);
-+		/*
-+		 * Emit maximum possible instructions while getting the size of
-+		 * bpf trampoline to ensure trampoline JIT code doesn't overflow.
-+		 */
-+		PPC_LI_ADDR(_R3, im ? (unsigned long)im :
-+				(unsigned long)(~(1UL << (BITS_PER_LONG - 1))));
- 		ret = bpf_jit_emit_func_call_rel(image, ro_image, ctx,
- 						 (unsigned long)__bpf_tramp_enter);
- 		if (ret)
-@@ -889,7 +894,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 			bpf_trampoline_restore_tail_call_cnt(image, ctx, func_frame_offset, r4_off);
- 
- 		/* Reserve space to patch branch instruction to skip fexit progs */
--		im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
-+		if (im)
-+			im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
- 		EMIT(PPC_RAW_NOP());
- 	}
- 
-@@ -912,8 +918,14 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- 		}
- 
- 	if (flags & BPF_TRAMP_F_CALL_ORIG) {
--		im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
--		PPC_LI_ADDR(_R3, im);
-+		if (im)
-+			im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
-+		/*
-+		 * Emit maximum possible instructions while getting the size of
-+		 * bpf trampoline to ensure trampoline JIT code doesn't overflow.
-+		 */
-+		PPC_LI_ADDR(_R3, im ? (unsigned long)im :
-+				(unsigned long)(~(1UL << (BITS_PER_LONG - 1))));
- 		ret = bpf_jit_emit_func_call_rel(image, ro_image, ctx,
- 						 (unsigned long)__bpf_tramp_exit);
- 		if (ret)
-@@ -972,7 +984,6 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
- int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
- 			     struct bpf_tramp_links *tlinks, void *func_addr)
- {
--	struct bpf_tramp_image im;
- 	void *image;
- 	int ret;
- 
-@@ -988,7 +999,13 @@ int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
- 	if (!image)
- 		return -ENOMEM;
- 
--	ret = __arch_prepare_bpf_trampoline(&im, image, image + PAGE_SIZE, image,
-+	/*
-+	 * Pass NULL as bpf_tramp_image pointer to differentiate the intent to get the
-+	 * buffer size for trampoline here. This differentiation helps in accounting for
-+	 * maximum possible instructions if the JIT code size is likely to vary during
-+	 * the actual JIT compile of the trampoline.
-+	 */
-+	ret = __arch_prepare_bpf_trampoline(NULL, image, image + PAGE_SIZE, image,
- 					    m, flags, tlinks, func_addr);
- 	bpf_jit_free_exec(image);
- 
--- 
-2.48.1
-
+On 3/19/25 12:29 PM, Michal Suchánek wrote:
+> Hello,
+>
+> looks like this upsets some assumption qemu has about these windows.
+>
+> https://lists.nongnu.org/archive/html/qemu-devel/2025-03/msg05137.html
+>
+> When Linux kernel that has this patch applied is running inside a qemu
+> VM with a PCI device and the VM is rebooted qemu crashes shortly after
+> the next Linux kernel starts.
+>
+> This is quite curious since qemu does AFAIK not support pmemory at all.
+>
+> Any idea what went wrong there?
+>
+> Thanks
+>
+> Michal
+>
+> On Thu, Jan 30, 2025 at 12:38:54PM -0600, Gaurav Batra wrote:
+>> iommu_mem_notifier() is invoked when RAM is dynamically added/removed. This
+>> notifier call is responsible to add/remove TCEs from the Dynamic DMA Window
+>> (DDW) when TCEs are pre-mapped. TCEs are pre-mapped only for RAM and not
+>> for persistent memory (pmemory). For DMA buffers in pmemory, TCEs are
+>> dynamically mapped when the device driver instructs to do so.
+>>
+>> The issue is 'daxctl' command is capable of adding pmemory as "System RAM"
+>> after LPAR boot. The command to do so is -
+>>
+>> daxctl reconfigure-device --mode=system-ram dax0.0 --force
+>>
+>> This will dynamically add pmemory range to LPAR RAM eventually invoking
+>> iommu_mem_notifier(). The address range of pmemory is way beyond the Max
+>> RAM that the LPAR can have. Which means, this range is beyond the DDW
+>> created for the device, at device initialization time.
+>>
+>> As a result when TCEs are pre-mapped for the pmemory range, by
+>> iommu_mem_notifier(), PHYP HCALL returns H_PARAMETER. This failed the
+>> command, daxctl, to add pmemory as RAM.
+>>
+>> The solution is to not pre-map TCEs for pmemory.
+>>
+>> Signed-off-by: Gaurav Batra <gbatra@linux.ibm.com>
+>> ---
+>>   arch/powerpc/include/asm/mmzone.h      |  1 +
+>>   arch/powerpc/mm/numa.c                 |  2 +-
+>>   arch/powerpc/platforms/pseries/iommu.c | 29 ++++++++++++++------------
+>>   3 files changed, 18 insertions(+), 14 deletions(-)
+>>
+>> diff --git a/arch/powerpc/include/asm/mmzone.h b/arch/powerpc/include/asm/mmzone.h
+>> index d99863cd6cde..049152f8d597 100644
+>> --- a/arch/powerpc/include/asm/mmzone.h
+>> +++ b/arch/powerpc/include/asm/mmzone.h
+>> @@ -29,6 +29,7 @@ extern cpumask_var_t node_to_cpumask_map[];
+>>   #ifdef CONFIG_MEMORY_HOTPLUG
+>>   extern unsigned long max_pfn;
+>>   u64 memory_hotplug_max(void);
+>> +u64 hot_add_drconf_memory_max(void);
+>>   #else
+>>   #define memory_hotplug_max() memblock_end_of_DRAM()
+>>   #endif
+>> diff --git a/arch/powerpc/mm/numa.c b/arch/powerpc/mm/numa.c
+>> index 3c1da08304d0..603a0f652ba6 100644
+>> --- a/arch/powerpc/mm/numa.c
+>> +++ b/arch/powerpc/mm/numa.c
+>> @@ -1336,7 +1336,7 @@ int hot_add_scn_to_nid(unsigned long scn_addr)
+>>   	return nid;
+>>   }
+>>   
+>> -static u64 hot_add_drconf_memory_max(void)
+>> +u64 hot_add_drconf_memory_max(void)
+>>   {
+>>   	struct device_node *memory = NULL;
+>>   	struct device_node *dn = NULL;
+>> diff --git a/arch/powerpc/platforms/pseries/iommu.c b/arch/powerpc/platforms/pseries/iommu.c
+>> index 29f1a0cc59cd..abd9529a8f41 100644
+>> --- a/arch/powerpc/platforms/pseries/iommu.c
+>> +++ b/arch/powerpc/platforms/pseries/iommu.c
+>> @@ -1284,17 +1284,13 @@ static LIST_HEAD(failed_ddw_pdn_list);
+>>   
+>>   static phys_addr_t ddw_memory_hotplug_max(void)
+>>   {
+>> -	resource_size_t max_addr = memory_hotplug_max();
+>> -	struct device_node *memory;
+>> +	resource_size_t max_addr;
+>>   
+>> -	for_each_node_by_type(memory, "memory") {
+>> -		struct resource res;
+>> -
+>> -		if (of_address_to_resource(memory, 0, &res))
+>> -			continue;
+>> -
+>> -		max_addr = max_t(resource_size_t, max_addr, res.end + 1);
+>> -	}
+>> +#if defined(CONFIG_NUMA) && defined(CONFIG_MEMORY_HOTPLUG)
+>> +	max_addr = hot_add_drconf_memory_max();
+>> +#else
+>> +	max_addr = memblock_end_of_DRAM();
+>> +#endif
+>>   
+>>   	return max_addr;
+>>   }
+>> @@ -1600,7 +1596,7 @@ static bool enable_ddw(struct pci_dev *dev, struct device_node *pdn)
+>>   
+>>   	if (direct_mapping) {
+>>   		/* DDW maps the whole partition, so enable direct DMA mapping */
+>> -		ret = walk_system_ram_range(0, memblock_end_of_DRAM() >> PAGE_SHIFT,
+>> +		ret = walk_system_ram_range(0, ddw_memory_hotplug_max() >> PAGE_SHIFT,
+>>   					    win64->value, tce_setrange_multi_pSeriesLP_walk);
+>>   		if (ret) {
+>>   			dev_info(&dev->dev, "failed to map DMA window for %pOF: %d\n",
+>> @@ -2346,11 +2342,17 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+>>   	struct memory_notify *arg = data;
+>>   	int ret = 0;
+>>   
+>> +	/* This notifier can get called when onlining persistent memory as well.
+>> +	 * TCEs are not pre-mapped for persistent memory. Persistent memory will
+>> +	 * always be above ddw_memory_hotplug_max()
+>> +	 */
+>> +
+>>   	switch (action) {
+>>   	case MEM_GOING_ONLINE:
+>>   		spin_lock(&dma_win_list_lock);
+>>   		list_for_each_entry(window, &dma_win_list, list) {
+>> -			if (window->direct) {
+>> +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
+>> +				ddw_memory_hotplug_max()) {
+>>   				ret |= tce_setrange_multi_pSeriesLP(arg->start_pfn,
+>>   						arg->nr_pages, window->prop);
+>>   			}
+>> @@ -2362,7 +2364,8 @@ static int iommu_mem_notifier(struct notifier_block *nb, unsigned long action,
+>>   	case MEM_OFFLINE:
+>>   		spin_lock(&dma_win_list_lock);
+>>   		list_for_each_entry(window, &dma_win_list, list) {
+>> -			if (window->direct) {
+>> +			if (window->direct && (arg->start_pfn << PAGE_SHIFT) <
+>> +				ddw_memory_hotplug_max()) {
+>>   				ret |= tce_clearrange_multi_pSeriesLP(arg->start_pfn,
+>>   						arg->nr_pages, window->prop);
+>>   			}
+>>
+>> base-commit: 95ec54a420b8f445e04a7ca0ea8deb72c51fe1d3
+>> -- 
+>> 2.39.3 (Apple Git-146)
+>>
+>>
 
