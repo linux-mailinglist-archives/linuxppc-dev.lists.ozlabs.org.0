@@ -1,139 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7377-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 497EBA753E1
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Mar 2025 02:34:18 +0100 (CET)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5FCDBA754EA
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Mar 2025 09:04:01 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZPg0l4rSSz2yqv;
-	Sat, 29 Mar 2025 12:34:15 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZPqfQ3XZMz2yfV;
+	Sat, 29 Mar 2025 19:03:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2606::612" arc.chain="microsoft.com:microsoft.com"
-ARC-Seal: i=3; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743181653;
-	cv=pass; b=FmSsd7epGk/6SRPdZQN6Hws5YYe3AqzxA532c8MDJAOe9QM8C5ILJzCSXHg+1VEpfIK43KmJVS0dND4bUCShIT8xjcZMOAwtfSfIjiWc7TCeQWaK2ttODu4HFwvtdJIxrbTNXjCJMcuahF0YSWcIYvcWexCDnXGfOOCEjc7P2QRdPCfRavjddVZrSq97LQipm/jsggxxmjBiQuXJcthEyJ8d94o0gaT1ao7M1zMbE6s/lhASHFuAM7nflFoWolaVSG7yqN99zPs/EXYKlH9NdZh/DpFEjqgo3SYzWRSTn38O5r8GQdQyvZMdCRQPn8l2RnFT1EdI87HxVNBhiThtcQ==
-ARC-Message-Signature: i=3; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743181653; c=relaxed/relaxed;
-	bh=kdpMLLgGaWDfSJnJ+bZmFNCEEs+Qnbmc6ctsPn6R4U8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=mjsze1vJLoyZaW0hhYgy+W4OxZvjtqZ9UMz7R/rqecUnCQ9ME4qijeuFrCEG971fmTQACMRSgHUcXz7nfkvXe+9Wpup/HOOmw6NML89dSSIyDiB80qD9TiyBDn2C99h/va1sHuvW0g44SJKCLWLFs57EZP3n9v4w1A77lL785t+SxJ0j01xtx2w78zM2dK66lEap8erIJTNi3AIoGitwGk1C5m2e2eJUBbPg/4MsFSX3Tq0WCVPPc5stG3ahq0EeLr7rhQogCe/5ApWS75OvmTDF/8mMTqcXDWH5mmCdtZFSsHws36Kg+gnv8zhcIZHIxB5lFhfem3UMSbf2O/NRkw==
-ARC-Authentication-Results: i=3; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; dkim=pass (1024-bit key; unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=k6fBl8bg; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=k6fBl8bg; dkim-atps=neutral; spf=pass (client-ip=2a01:111:f403:2606::612; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=yeoreum.yun@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f32"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743235438;
+	cv=none; b=nkf0w20pUZhxA0WkjgSEAm2SFcvnxFgpxCzH/TckgWnGQh7NA00kTYNsdevPPbIZNxK8A08U4dP6guevpPtPBv7eYHLG0Nfq+MzRMwyB6chcIkL6Vx7/dlQxjkxJAL3EED0gg6v7oJCoQolCqEm1ekTsp8Ok1Z1mbmi+Yhf66E6x77hm4UbAuBHWW06EJjgXHcdsD0hL6P7Jlt081HlX9g8NKT/Pf+dXufHJtlyT5/GD2oQryuCqD0BwlnhIOgVoI/Rkdl6yOpKs+kBixPKbr88ODbEnRLc3PyL3GZmGsQ/lSWQbuRFcu/nenvk2UlFc84Z4fY/oXz8dEercy3/a8g==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1743235438; c=relaxed/relaxed;
+	bh=O+g6QCYreRUbdBSVpJottvI7BuQC9m1idYkykfo8Pok=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WbAMDFCsWKiEYuQA0vmJZLGPruQXABssdoQIi+/f/Cw3v2c1Nnxlx8A2+5V+uZDC1OHUeigUrvVEirgmdf0y00BpKlskTCLZxPj+rlgSUB3rPE3+JALXt+9iapdKaKU57jFXzDznq+SDiHMs491hOGnqbNg55QzeYPPjKuXb1QpRPwRraFpIWU3+DWxa8yfKTvv91yPXEtSiVfs9T0LdpjOLikVtjdE5Mad12OinzGefXwbiFXwrOZ3v3r9M/kJvl5smhkwYToGiwhVJ7ZaGyF0Vn+qgENUZur6ohxJZrNPFEbMDLaVzv8y0PpgtsmVXJ+FlFJ2CKrhTfi8QImqPbg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZKHhek3x; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=davidgow@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=k6fBl8bg;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.a=rsa-sha256 header.s=selector1 header.b=k6fBl8bg;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZKHhek3x;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=2a01:111:f403:2606::612; helo=eur02-am0-obe.outbound.protection.outlook.com; envelope-from=yeoreum.yun@arm.com; receiver=lists.ozlabs.org)
-Received: from EUR02-AM0-obe.outbound.protection.outlook.com (mail-am0eur02on20612.outbound.protection.outlook.com [IPv6:2a01:111:f403:2606::612])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=davidgow@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZPRm26wn0z2yqq
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Mar 2025 04:07:28 +1100 (AEDT)
-ARC-Seal: i=2; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=pass;
- b=L90B+d4E3IrwX577fQ3jRL0GrhiuloOAdFhO/eFmBa07jjPXDymwHWzjcbYxQSlyJv6zkwcQWfZpY2puXh4tDWId7JHlRvfr+liS0bxvubOwGFaNRPf88Fd2BALOG1sFTBFNqtrBLahv7hmQ6dZf/tol+lVC0NyNlI7Zn5CnUyvrA5Jt7F43UoLtkA5jElRkP1to0ghgWvk9voY8t6vw0qN3/vaD+KPRmsyQ7kdldIz8iRFIGXMES2bRqWJx7Azmtw0sxrhtleqpBV8BChcQGGYJv0eWOtpPZLtmckpNmIk7KqjEnAg5A9fBFblBPZiiDJrK+fXNJErAH4UwqaNbhQ==
-ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kdpMLLgGaWDfSJnJ+bZmFNCEEs+Qnbmc6ctsPn6R4U8=;
- b=Jnnm7OZwtSivGOToI7Epfs5QBg5mB/iYuboNgSU2EthKxmFVOAyyFgVXcqPdndFf8etihwU1DelvQMcXAPgb4AJ1sndNioUBALLH/mRimQlU1xgKtwx9YZsDBmgr5YaDQv5gnnC/YjVLvdw9KnKYHRlzEX/AqFQNh2C4Dx5MS1paPaUQCt9+a+tlE4J4c3MLweWzY6WKhQlAVIp06/O5VU2FjiLi4QtnX3ORKwQay9uuVRGgwme5Lwaetnf5r5WRdph969NRGGEqXOEXxksKlKkONeJ1QAhI60/LO7MgZcVS4gEaqqLwFkp4WF35dX7ydZSIk958MXFC0kNi2HrXTw==
-ARC-Authentication-Results: i=2; mx.microsoft.com 1; spf=fail (sender ip is
- 4.158.2.129) smtp.rcpttodomain=huawei.com smtp.mailfrom=arm.com; dmarc=pass
- (p=none sp=none pct=100) action=none header.from=arm.com; dkim=pass
- (signature was verified) header.d=arm.com; arc=pass (0 oda=1 ltdi=1
- spf=[1,1,smtp.mailfrom=arm.com] dkim=[1,1,header.d=arm.com]
- dmarc=[1,1,header.from=arm.com])
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kdpMLLgGaWDfSJnJ+bZmFNCEEs+Qnbmc6ctsPn6R4U8=;
- b=k6fBl8bgCTpLk8SjognP3F1o8lEXU2Hy3dhxgaHa1/6ge/cLWdAjdC4ZeIr3xVm5ZNQij4H7Xr47NT3ZEgcOHayTPutf6Mx3L31/6y4E5JN29La2P1Sdg5vy6dVfnXxauB6WE5adx1LIS2PSdn1f+v0sXgpAl0g4b8cQ8rTLF/Y=
-Received: from DUZPR01CA0073.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:3c2::11) by VI0PR08MB10918.eurprd08.prod.outlook.com
- (2603:10a6:800:258::11) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Fri, 28 Mar
- 2025 17:07:06 +0000
-Received: from DB1PEPF000509EE.eurprd03.prod.outlook.com
- (2603:10a6:10:3c2:cafe::d9) by DUZPR01CA0073.outlook.office365.com
- (2603:10a6:10:3c2::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.46 via Frontend Transport; Fri,
- 28 Mar 2025 17:07:04 +0000
-X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 4.158.2.129)
- smtp.mailfrom=arm.com; dkim=pass (signature was verified)
- header.d=arm.com;dmarc=pass action=none header.from=arm.com;
-Received-SPF: Fail (protection.outlook.com: domain of arm.com does not
- designate 4.158.2.129 as permitted sender) receiver=protection.outlook.com;
- client-ip=4.158.2.129; helo=outbound-uk1.az.dlp.m.darktrace.com;
-Received: from outbound-uk1.az.dlp.m.darktrace.com (4.158.2.129) by
- DB1PEPF000509EE.mail.protection.outlook.com (10.167.242.72) with Microsoft
- SMTP Server (version=TLS1_3, cipher=TLS_AES_256_GCM_SHA384) id 15.20.8534.20
- via Frontend Transport; Fri, 28 Mar 2025 17:07:04 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=TUkpDP3BsR7JtdRFaJiXN5UCJzoOgkW8DVHnR+6kyRcF9N2pPvIxEstNPO2REO6LK99FFLg+bN8GJ0fGi3RIjkXB3OBnLD1IdHQJnwsLHFLRg7dlSbmHqOJ3BwZGmWXtKkX77L/Fy1oEbOkhEYvwPU+QilrMTVzs1nyFvEHKsk4j/PvJhD7YiwA1tFVLAnG1mGGN3phHnppu7gl0wqVgLsrCaKQBJGOy4WnLJd2geyNmc0AYRQYZA47y27rHrirLJx7Ey0os1UrG6zQHtJa0gHwjnjdTUY3UA1rXaFOxf1ZnnqGQmmuswWSSs+Uyw1FwK7OzueOMbB+ukINRyI8mmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kdpMLLgGaWDfSJnJ+bZmFNCEEs+Qnbmc6ctsPn6R4U8=;
- b=fVSJjBbmdwHIjmkqsP/pqyGryMZh8HTQ1TYq8YT5cx5gqkoRZ23I4EPk2+dxOj0spn86rTmaR9rbzSVYwteF+S4APhOUB97Zp0hpPBi4e36m2P9N7EOnBZo8JahdcEQs3jgnF4CvR+yHD0pn4T1bPxnLK4/QWaX/u24jXRYN70ZxHtbbNzZqZnDnrIVkHYKI8QUctEEKGhNzUWs++jygwEsYekNxXlhmsdqIvOZeXg4YBEt02sl81I4MPsbHievMam1odz2Eoei21i/8spBbfpTkmWda0SLmRMSP5gTFHacs9R860nzgEFOLxUW9C5uMlczktY5zpufgl8mnzn/GCA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=arm.com; dmarc=pass action=none header.from=arm.com; dkim=pass
- header.d=arm.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arm.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kdpMLLgGaWDfSJnJ+bZmFNCEEs+Qnbmc6ctsPn6R4U8=;
- b=k6fBl8bgCTpLk8SjognP3F1o8lEXU2Hy3dhxgaHa1/6ge/cLWdAjdC4ZeIr3xVm5ZNQij4H7Xr47NT3ZEgcOHayTPutf6Mx3L31/6y4E5JN29La2P1Sdg5vy6dVfnXxauB6WE5adx1LIS2PSdn1f+v0sXgpAl0g4b8cQ8rTLF/Y=
-Authentication-Results-Original: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=arm.com;
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20) by DU5PR08MB10579.eurprd08.prod.outlook.com
- (2603:10a6:10:517::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.44; Fri, 28 Mar
- 2025 17:06:31 +0000
-Received: from GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739]) by GV1PR08MB10521.eurprd08.prod.outlook.com
- ([fe80::d430:4ef9:b30b:c739%6]) with mapi id 15.20.8534.043; Fri, 28 Mar 2025
- 17:06:31 +0000
-Date: Fri, 28 Mar 2025 17:06:27 +0000
-From: Yeoreum Yun <yeoreum.yun@arm.com>
-To: Tong Tiangen <tongtiangen@huawei.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Will Deacon <will@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	James Morse <james.morse@arm.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Vincenzo Frascino <vincenzo.frascino@arm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Alexander Potapenko <glider@google.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	"Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	"Naveen N. Rao" <naveen.n.rao@linux.ibm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	linux-arm-kernel@lists.infradead.org, linux-mm@kvack.org,
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	kasan-dev@googlegroups.com, wangkefeng.wang@huawei.com,
-	Guohanjun <guohanjun@huawei.com>
-Subject: Re: [PATCH v13 2/5] arm64: add support for ARCH_HAS_COPY_MC
-Message-ID: <Z+bXE7UNWFLEfhQC@e129823.arm.com>
-References: <20241209024257.3618492-1-tongtiangen@huawei.com>
- <20241209024257.3618492-3-tongtiangen@huawei.com>
- <Z6zKfvxKnRlyNzkX@arm.com>
- <df40840d-e860-397d-60bd-02f4b2d0b433@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <df40840d-e860-397d-60bd-02f4b2d0b433@huawei.com>
-X-ClientProxiedBy: LO4P302CA0021.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c1::12) To GV1PR08MB10521.eurprd08.prod.outlook.com
- (2603:10a6:150:163::20)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZPqfN2YGrz2yVb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Mar 2025 19:03:55 +1100 (AEDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-6e8fd49b85eso43610006d6.0
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Mar 2025 01:03:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1743235432; x=1743840232; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=O+g6QCYreRUbdBSVpJottvI7BuQC9m1idYkykfo8Pok=;
+        b=ZKHhek3x4wkq/V/nDtdLgCwiKQRwZYUYAQxfL1yIo4XNpk3tfTRLjgli1DNZeW3DW/
+         KcZsMm96jo0GAdJ5xQcNJPpeumzsZqvsNqgyep08djM/ca8f8hg5TpDuQpar3y1eYEAG
+         h+rUHLUYz8PGa5IoqH3yK4oWS7JIdzHLekB1bPsTpMUNAVw1POayIunbTORb976li8uQ
+         urh0uWWazZDW10ZAW1abz1qKpUwxCdrL9cnbihTgSKPFRrMBG36yZNpg1SHsrbLt1pLO
+         D6rFTsVxN8+sbmcnLHEVYdLb145XAn0D2JusLWGvItZW20G5GjgnpFOUA7tHApWmt4O/
+         c1+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743235432; x=1743840232;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O+g6QCYreRUbdBSVpJottvI7BuQC9m1idYkykfo8Pok=;
+        b=Cjc/C0MBZwbPSFgACXgHOHOWWGZ857fqzEwmG9ac56OYH115wS/oGOxz1wP0+AX34M
+         i7ysL4SCXxFgbnipFYu1f3YeQIpKLOMaIbjXegc+QlbRu7SHzzhrvIK4+4dmROI/VOtA
+         KXpKFCdHtyddmKtNwb+nknHZTswxPO/v7uGgMusdwcI0J/gEMYcyWDAPfIv5xt5aP/Cq
+         y/w+IvvNipsqaCXoyDyA1j0wzSRk0AAJ17OkYRa+PFzSLg+eu2DfeCH3tYtbq3mr9S3O
+         SJaSliVAUqwZ5uJ05HykIQkPIKu8NuVlqaU7VIDHLE5MhWv3lBQS1dq+6MXGdI+riAep
+         TQsg==
+X-Forwarded-Encrypted: i=1; AJvYcCVcct/6CEgUW6b9gvDOI/aSiFDfslL65Kett3+MgNvDMt6+4ctnCu1v+h4MT4thqFJuV9yWPAW27ZSCOAQ=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YziQufqFOHpIWsSlWJ8TbYc5an/ZODMJR05SyRCu7PS/1IJH5po
+	PwbP/4nlo/BE5LfL+NL3nAzquWA/ABjg7YZPYYtqw85JzRPN1lO284xFbrfCxh57KcdFJ+P1V2/
+	c4KMoKP4N7+L8NS8nXaPnIEZFnZHu0dPaEljJ
+X-Gm-Gg: ASbGnctFyNkR7mbqRiEfohJPQ1iLrzkkVN0QKXBnw8mxflmzkLRbhSWuQvdZwEHTyzu
+	3Vdt3Wvyg0k8XQJqcZ3mld3Ob6Jhn3bwiSYYQ3wIG56mlIdMZRzpVPpByzdhTMuNyhC8S3EPcGm
+	2gLLm0B999eOmK0JP4jSHIeWc6F4M=
+X-Google-Smtp-Source: AGHT+IEJ8ce7V8CIlKC2A2azWY99VUL4El8Tj9GDvwsAXVoga+qrIDcAvwT96/mFGtya6VF3o6ehcJ+woWz7LYivLLE=
+X-Received: by 2002:a05:6214:e67:b0:6e8:fa33:2965 with SMTP id
+ 6a1803df08f44-6eed5f93113mr33481246d6.14.1743235431710; Sat, 29 Mar 2025
+ 01:03:51 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -146,173 +76,293 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-TrafficTypeDiagnostic:
-	GV1PR08MB10521:EE_|DU5PR08MB10579:EE_|DB1PEPF000509EE:EE_|VI0PR08MB10918:EE_
-X-MS-Office365-Filtering-Correlation-Id: 75078d1c-f6fe-4993-9b40-08dd6e1af6d1
-X-LD-Processed: f34e5979-57d9-4aaa-ad4d-b122a662184d,ExtAddr,ExtAddr
-x-checkrecipientrouted: true
-NoDisclaimer: true
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam-Untrusted:
- BCL:0;ARA:13230040|7416014|1800799024|376014|366016;
-X-Microsoft-Antispam-Message-Info-Original:
- =?utf-8?B?c212NVkvMHNZUVphMnoyOTRDMStGZ3F6OWlDQjJnaHVtUHZxUXpxYWVvZGxq?=
- =?utf-8?B?SzBZdlQ4SGVqMGJLREFLM2ZSSndaL2tsU1g5MVhPZ1hTMjdPWE1wZVNKcXZS?=
- =?utf-8?B?eCtCTTNjdzNYWC9zcXVzd1k4QmtrSEMrdGkrdGJSeVA2LzZYS1RzcHVKTWla?=
- =?utf-8?B?Z2EyZXN6b3k1WFZuR0I5QzhXUFBCSkQ2N2VNaXdFRVE0dUFuU0pSazdzTi9R?=
- =?utf-8?B?V050V0s4VG1FaHlKWlNFR1Z6QTBsMG42MzFwUnIzZ2pqUEtPcTVaTWJhT1hI?=
- =?utf-8?B?SFVXRUZFeTk4WXJHMTk4cjAveWlDV3BlcTM2MmtjbklJVHp4di80SDgwdzMx?=
- =?utf-8?B?L1hDSjZnRHhjK2krYzdrUE00VHdxZHl3ZHkrR1Y5QTV0aFZ4NXYrOVR3L3Iz?=
- =?utf-8?B?eng5UWttM0xiS05TNnU4QXRSRW0xckZEUWpNK05MTVFHL3FzQjY1U2pzK2RF?=
- =?utf-8?B?QkdFRERTbVYvTE90TitwUEN3V25GMEtrZUFCeFE5ZFVVN0JERHBKdUllbG5J?=
- =?utf-8?B?ZG9wWlgwQW1tOXFpdy91V1pBbllZNWZXd3g5RzhSNGFuQnY5RytrQ2pjOEt6?=
- =?utf-8?B?OVhGM2tDZHFFN21wcjZzb1crWHpmZHhiY1kvMGtwcFAxYU5sajJoMUcrUDRS?=
- =?utf-8?B?NzB0dUhPOFhQL3c4YStySkI2bGpvRGJKTXluck43Q2NXWDBwUEZhTkpGNXlP?=
- =?utf-8?B?UkRMSVJWVXhVSVljREcxS3g3ejZUOXBwZzkvK0hMa3pWWnlFalp6cWlGeE43?=
- =?utf-8?B?dkNsRGR0MVFmenNkQ3VPU0lDaUxjbnVodmtrdXRIMzM3TnVUT2FFc0cyS29K?=
- =?utf-8?B?NUw3blZRb0lHM2hQVHREUUMzN3NlVXdaL1dlZi9mdzdydENTSTdCeHRreWox?=
- =?utf-8?B?NngzMGhrQyt1UWxJekhIcTRDQXpFWmJhdCtRQ2Q2SVd0RkRYTjZjK3dqOWhn?=
- =?utf-8?B?L1Ivayt4OTlHaWRDYmhab0RnTmFkS2VzemxBM1NCMEVJSjNaU2xHbiswbTl6?=
- =?utf-8?B?MlVqd3lEeFp4eTJkYkFGNjMzaGhTa1RuWnR0UUVkLy94eFlVOEdsZXFGblF0?=
- =?utf-8?B?SlZZR3VpSHgrb1JGRmlqU0RHWHVmTTdjOHJCTkEvTlA5TmNvMFlpZmtEV3hm?=
- =?utf-8?B?dkIySUNNbjRlYUpQY0VqNU1SamxvVFZJRDNlMFpPdzBGYjE1QmNhNUNNUEdx?=
- =?utf-8?B?REdFM3E3c2lNbmk1cGxhV2lyNG1TcmxZNWV3dEI3dndjWGVsMHpXTjRwV2ds?=
- =?utf-8?B?MU5qT2craktsM3NuK1MyeGFvdzNiUldyV1drd1R0S1pTSWhJckFMN0d2MkND?=
- =?utf-8?B?MUJLajBDYmJ6dzdYVzRMWnZOTUR3c3lxWjZ1TW0zcnZ6cWduYnlNZEU3TGtE?=
- =?utf-8?B?VzBBVzBDNVBFQjVxNllKb0lvOGpQeUJIaXlXVGlwRlNIZmp2Q1IzK01MSEFs?=
- =?utf-8?B?VTgzZTUwdG9semJZY1BTNjVFcXZWU2NiRnkrTUgyMHRCbmE4eDlzc3YvS1NM?=
- =?utf-8?B?ZEF4SGFEVHBWNC9Ieno5MFgzSzRrcU5VdkpINjdVTnNPVExPQ1cwTVNhWUV5?=
- =?utf-8?B?WWt3SDNzRFJwUUwvRG44ZWREL0MzVUpZYThvZHliSjRKUUgxZXNibGo1bGZq?=
- =?utf-8?B?aks0dWhwc1JSSS9nWnBmK21HMXBjRUVJd29KOHJ2a203cXlyeWVmM1FMbjdI?=
- =?utf-8?B?cEVMVFh3bTVEMWRpNnJxclpYdEVnek9CR0dTYklUejlrZzQwRThaSkVIWnNw?=
- =?utf-8?B?V2UvRUlNZzBJbXpTeFJWcXYvQUVBR3BiWExOMDdOSWJJRFRscEtHV2ZjRTFu?=
- =?utf-8?B?RFZJRWtZOCthbEgvUGJWeHNqb0cvYkRXQi82MWZtSVluMEdlVHFqSjdGZUI2?=
- =?utf-8?Q?019IxEdbvII5d?=
-X-Forefront-Antispam-Report-Untrusted:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:GV1PR08MB10521.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU5PR08MB10579
-X-EOPAttributedMessage: 0
-X-MS-Exchange-Transport-CrossTenantHeadersStripped:
- DB1PEPF000509EE.eurprd03.prod.outlook.com
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id-Prvs:
-	a5ac8323-c499-4c6b-a42e-08dd6e1ae2d6
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|376014|7416014|14060799003|35042699022|36860700013|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?RmUva1VHOGlEeEJTOXNzaE55NlpVOGdRMCs3dVRFYklpMjZkLzV6RDl4Rzdj?=
- =?utf-8?B?MW5ENkVHbVloQzMxNVEvdmhCUEVTV3FsUXZOWjdqQlR4OTRxQ3hYbXE4dy96?=
- =?utf-8?B?S3hKTVBxcE1nVUMwbWE3SWpza0RlNDJPZDV2ODhmQStNeEp3anVYQWdwTEo5?=
- =?utf-8?B?a2RiSFFvMUxwU0hzOEozMzRBQ0RGc3RjaURSVmJvSlNrZUxsTit2TldEMm4z?=
- =?utf-8?B?d2ZjREJyeldYRzNmcW9ZSDNVTW5KekkyUWtSUDM5dUl5VnpiRGQ5TzR4VGZE?=
- =?utf-8?B?K21ZNlNVTDlFd3hrR2JwaVFTSjB1TU9SWk5ueU16N0Z5YndsMWp2Y1VwVUZv?=
- =?utf-8?B?WmxyMHB4NG5wcjBkT2RqOTJtRmFzQ3BxVEM2VWtHcmxLN0FpOGZVOVo3dUNy?=
- =?utf-8?B?WXFZOC9XWGJYdld5anIyczdSQUJZTlNUdEQ3SkRQTnQ3MzhRdndvcjEwbFA5?=
- =?utf-8?B?eWRLZ1grMzlTRFlKOVVERDVUMHVSWjJzeG1mM0RYaWJOSjNCOEN1bm9XTlda?=
- =?utf-8?B?NVcvM1BEZTlCVzRJT3AxdTVBOU82QXQvR1RsSmFqb0NCWTA2MDFFbE9Ed0NI?=
- =?utf-8?B?UVhGZk5Wb2kwSGdJbUFIeGNPbmp5QU5zUUwvam01aTU2a2JudDVSTWx0amxx?=
- =?utf-8?B?TTRVcklyOFEydWR4K1RFSTNVNnRTbWp4ZWw3emJxcE1tNFVaU3paUjRnU3ll?=
- =?utf-8?B?MnlaK3JZbDBFcTQrOUxLTnlERXNLeDBqaHdkK2dnTVdQQ0xuek4zSm5pZ0FV?=
- =?utf-8?B?aDRBb0phUk5WOGNlK3BZYms2LzRWZU1Qci9YeGN6cW9xVG9lK2hOaGNCb2tQ?=
- =?utf-8?B?K2xuaS9Fck1VYW9RWkQ3M01BZEQvTE04MXB6TkszVmh6T21vS0MvTlhrdU40?=
- =?utf-8?B?NTIvbFBTdU9iSFRUNmhRZmxFMlZLY0EvNGZNK1dmRE9rWjFpOHFXQUh5MG0z?=
- =?utf-8?B?UncyNzkwMjRtQWx5NWx6aGhObVhYbXZ0RG1aNnFMTUgwenBGTFl1RTlrbnRw?=
- =?utf-8?B?SW5wOTFITUMxaVdOR2RTQlE2OG4zb3VOdExRR0s3Z1V1QkR0V3dzMFBaQm5r?=
- =?utf-8?B?L2x5TlArbm1EYVhXL3hSUDFham5EbFRCejhnY0ZjM2FTV3ZhcmRidm8vKzJh?=
- =?utf-8?B?QkhqMi9EdXFiMDlpNVZxQVBNak9FajVQZko0UnN6QWRkdGRRbWJxK2ZzOUo4?=
- =?utf-8?B?ZXJtcHJndUExb0d2ZkdOZHpUQjRRWnk1bncwR0dNSnltcytUcDZHTnl0NUlv?=
- =?utf-8?B?ZXQzS3hXbDJWQWFnOUQraWVjc0hCclJWMjFUWmluYnZBZ0o2Q01JY2pkNks5?=
- =?utf-8?B?QnVCRHpkTVQ1dktBK2dwd2RrUHNCYS9ZUE4yTEdrNWR2N3VIWG1KeXN0bHNL?=
- =?utf-8?B?dGUyQkIyZjZxUkkyUy96YnFjYWdjUUZMVzRLZ0pUUlM0V1JQNmlEY2xvRU5M?=
- =?utf-8?B?OVk4ZUJQaTJYcm52Rk9KK0lpd0hQczcxRlV5Q091ZDFRTTF0b0Fjd1Jkb1ZX?=
- =?utf-8?B?Uy9QalNOT2pkdGprbzdiOGdXTmNQK2pGcG5iVFl3MzJTK3MvMFc4ZThkNk1F?=
- =?utf-8?B?RExZMVUzSVdPeHl3NVdnSUMzUnRtSncwdlB6K2Z6TFlza2JsTEFEVTlQSW1u?=
- =?utf-8?B?SytJMDRySW1nTW9IWGpzL3A1VHpCckxOc0NLS29QOVpWVnF2ZHRKOUJrOWZT?=
- =?utf-8?B?S3Qvek5oTUhESVZNQ2QyL3BBVEFGRnNyd1JhZnJKN1FHaWUwcHgyZEx4SEhm?=
- =?utf-8?B?bGZHUmo3dGhKZEgvVlBwWUJsdUZnUFAybElWQ1FVeWlnL1FrNXZySWJpREYz?=
- =?utf-8?B?STRXeCtMVFpha01neVVqQ252dDg2Q1ZtK0xDaWhaVlhqZ1BoUTlyUEtLOCty?=
- =?utf-8?B?cnpiMHVXZVVIRVcxb2xjYyttWmRoNEt5VjFBMUhBOHhtQ2R3S25reXp4VFZG?=
- =?utf-8?B?N3F6SkMvb21LSHNrSFZtdDlxRUo4djVaS0NuQis5Q3BXY2x3ejJ3MzFONHNS?=
- =?utf-8?Q?K0Kr40mZgElBtZZZ9+nMcKH1vg23o8=3D?=
-X-Forefront-Antispam-Report:
-	CIP:4.158.2.129;CTRY:GB;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:outbound-uk1.az.dlp.m.darktrace.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(376014)(7416014)(14060799003)(35042699022)(36860700013)(1800799024);DIR:OUT;SFP:1101;
-X-OriginatorOrg: arm.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Mar 2025 17:07:04.3740
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 75078d1c-f6fe-4993-9b40-08dd6e1af6d1
-X-MS-Exchange-CrossTenant-Id: f34e5979-57d9-4aaa-ad4d-b122a662184d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=f34e5979-57d9-4aaa-ad4d-b122a662184d;Ip=[4.158.2.129];Helo=[outbound-uk1.az.dlp.m.darktrace.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB1PEPF000509EE.eurprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR08MB10918
-X-Spam-Status: No, score=-0.3 required=3.0 tests=ARC_SIGNED,ARC_VALID,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250313114329.284104-1-acarmina@redhat.com>
+In-Reply-To: <20250313114329.284104-1-acarmina@redhat.com>
+From: David Gow <davidgow@google.com>
+Date: Sat, 29 Mar 2025 16:03:36 +0800
+X-Gm-Features: AQ5f1JqXTcD760nl7rxAYS90_BR-Zg4uyvqHwpHf7WGakdu8aw2xd4LNhe4EvmU
+Message-ID: <CABVgOSk89WzaptN-peaty6ZLxnOHWRB02_JkjfK+5kCepNsxXg@mail.gmail.com>
+Subject: Re: [PATCH v4 00/14] Add support for suppressing warning backtraces
+To: Alessandro Carminati <acarmina@redhat.com>
+Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>, 
+	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, Kees Cook <keescook@chromium.org>, 
+	Daniel Diaz <daniel.diaz@linaro.org>, Arthur Grillo <arthurgrillo@riseup.net>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Maxime Ripard <mripard@kernel.org>, 
+	=?UTF-8?B?VmlsbGUgU3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Guenter Roeck <linux@roeck-us.net>, Alessandro Carminati <alessandro.carminati@gmail.com>, 
+	Jani Nikula <jani.nikula@intel.com>, dri-devel@lists.freedesktop.org, 
+	kunit-dev@googlegroups.com, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
+	loongarch@lists.linux.dev, x86@kernel.org
+Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
+	boundary="000000000000b57c47063176a0c3"
+X-Spam-Status: No, score=-16.7 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi,
+--000000000000b57c47063176a0c3
+Content-Type: text/plain; charset="UTF-8"
 
+On Thu, 13 Mar 2025 at 19:44, Alessandro Carminati <acarmina@redhat.com> wrote:
 >
+> Some unit tests intentionally trigger warning backtraces by passing bad
+> parameters to kernel API functions. Such unit tests typically check the
+> return value from such calls, not the existence of the warning backtrace.
 >
-> 在 2025/2/13 0:21, Catalin Marinas 写道:
-> > (catching up with old threads)
-> >
-> > On Mon, Dec 09, 2024 at 10:42:54AM +0800, Tong Tiangen wrote:
-> > > For the arm64 kernel, when it processes hardware memory errors for
-> > > synchronize notifications(do_sea()), if the errors is consumed within the
-> > > kernel, the current processing is panic. However, it is not optimal.
-> > >
-> > > Take copy_from/to_user for example, If ld* triggers a memory error, even in
-> > > kernel mode, only the associated process is affected. Killing the user
-> > > process and isolating the corrupt page is a better choice.
-> >
-> > I agree that killing the user process and isolating the page is a better
-> > choice but I don't see how the latter happens after this patch. Which
-> > page would be isolated?
+> Such intentionally generated warning backtraces are neither desirable
+> nor useful for a number of reasons.
+> - They can result in overlooked real problems.
+> - A warning that suddenly starts to show up in unit tests needs to be
+>   investigated and has to be marked to be ignored, for example by
+>   adjusting filter scripts. Such filters are ad-hoc because there is
+>   no real standard format for warnings. On top of that, such filter
+>   scripts would require constant maintenance.
 >
-> The SEA is triggered when the page with hardware error is read. After
-> that, the page is isolated in memory_failure() (mf). The processing of
-> mf is mentioned in the comments of do_sea().
+> One option to address problem would be to add messages such as "expected
+> warning backtraces start / end here" to the kernel log.  However, that
+> would again require filter scripts, it might result in missing real
+> problematic warning backtraces triggered while the test is running, and
+> the irrelevant backtrace(s) would still clog the kernel log.
 >
-> /*
->  * APEI claimed this as a firmware-first notification.
->  * Some processing deferred to task_work before ret_to_user().
->  */
+> Solve the problem by providing a means to identify and suppress specific
+> warning backtraces while executing test code. Support suppressing multiple
+> backtraces while at the same time limiting changes to generic code to the
+> absolute minimum. Architecture specific changes are kept at minimum by
+> retaining function names only if both CONFIG_DEBUG_BUGVERBOSE and
+> CONFIG_KUNIT are enabled.
 >
-> Some processing include mf.
+> The first patch of the series introduces the necessary infrastructure.
+> The second patch introduces support for counting suppressed backtraces.
+> This capability is used in patch three to implement unit tests.
+> Patch four documents the new API.
+> The next two patches add support for suppressing backtraces in drm_rect
+> and dev_addr_lists unit tests. These patches are intended to serve as
+> examples for the use of the functionality introduced with this series.
+> The remaining patches implement the necessary changes for all
+> architectures with GENERIC_BUG support.
 >
-> >
-> > > Add new fixup type EX_TYPE_KACCESS_ERR_ZERO_MEM_ERR to identify insn
-> > > that can recover from memory errors triggered by access to kernel memory,
-> > > and this fixup type is used in __arch_copy_to_user(), This make the regular
-> > > copy_to_user() will handle kernel memory errors.
-> >
-> > Is the assumption that the error on accessing kernel memory is
-> > transient? There's no way to isolate the kernel page and also no point
-> > in isolating the destination page either.
+> With CONFIG_KUNIT enabled, image size increase with this series applied is
+> approximately 1%. The image size increase (and with it the functionality
+> introduced by this series) can be avoided by disabling
+> CONFIG_KUNIT_SUPPRESS_BACKTRACE.
 >
-> Yes, it's transient, the kernel page in mf can't be isolated, the
-> transient access (ld) of this kernel page is currently expected to kill
-> the user-mode process to avoid error spread.
+> This series is based on the RFC patch and subsequent discussion at
+> https://patchwork.kernel.org/project/linux-kselftest/patch/02546e59-1afe-4b08-ba81-d94f3b691c9a@moroto.mountain/
+> and offers a more comprehensive solution of the problem discussed there.
+>
+> Design note:
+>   Function pointers are only added to the __bug_table section if both
+>   CONFIG_KUNIT_SUPPRESS_BACKTRACE and CONFIG_DEBUG_BUGVERBOSE are enabled
+>   to avoid image size increases if CONFIG_KUNIT is disabled. There would be
+>   some benefits to adding those pointers all the time (reduced complexity,
+>   ability to display function names in BUG/WARNING messages). That change,
+>   if desired, can be made later.
+>
+> Checkpatch note:
+>   Remaining checkpatch errors and warnings were deliberately ignored.
+>   Some are triggered by matching coding style or by comments interpreted
+>   as code, others by assembler macros which are disliked by checkpatch.
+>   Suggestions for improvements are welcome.
+>
+> Changes since RFC:
+> - Introduced CONFIG_KUNIT_SUPPRESS_BACKTRACE
+> - Minor cleanups and bug fixes
+> - Added support for all affected architectures
+> - Added support for counting suppressed warnings
+> - Added unit tests using those counters
+> - Added patch to suppress warning backtraces in dev_addr_lists tests
+>
+> Changes since v1:
+> - Rebased to v6.9-rc1
+> - Added Tested-by:, Acked-by:, and Reviewed-by: tags
+>   [I retained those tags since there have been no functional changes]
+> - Introduced KUNIT_SUPPRESS_BACKTRACE configuration option, enabled by
+>   default.
+>
+> Changes since v2:
+> - Rebased to v6.9-rc2
+> - Added comments to drm warning suppression explaining why it is needed.
+> - Added patch to move conditional code in arch/sh/include/asm/bug.h
+>   to avoid kerneldoc warning
+> - Added architecture maintainers to Cc: for architecture specific patches
+> - No functional changes
+>
+> Changes since v3:
+> - Rebased to v6.14-rc6
+> - Dropped net: "kunit: Suppress lock warning noise at end of dev_addr_lists tests"
+>   since 3db3b62955cd6d73afde05a17d7e8e106695c3b9
+> - Added __kunit_ and KUNIT_ prefixes.
+> - Tested on interessed architectures.
+>
+> ----
 
-I'm not sure about how this works.
-IIUC, the memory_failure() wouldn't kill any process if page which
-raises sea is kernel page (because this wasn't mapped).
+Sorry: I also thought this had already landed.
 
-But, to mark the kernel page as posision, I think it also need to call
-apei_claim_sea() in !user_mode().
-What about calling the apei_claim_sea() when fix_exception_me()
-successed only in !user_mode() case?
+I'm definitely in favour of us taking this, though agree that we
+definitely can't afford to break the s390x build.
 
-Thanks.
+I've (re-)reviewed the early patches as well, and am generally acking
+the series (though some of the architecture-specific patches are
+definitely beyond my expertise to review fully).
+
+Acked-by: David Gow <davidgow@google.com>
+
+Cheers,
+-- David
+
+
+> Guenter Roeck (14):
+>   bug/kunit: Core support for suppressing warning backtraces
+>   kunit: bug: Count suppressed warning backtraces
+>   kunit: Add test cases for backtrace warning suppression
+>   kunit: Add documentation for warning backtrace suppression API
+>   drm: Suppress intentional warning backtraces in scaling unit tests
+>   x86: Add support for suppressing warning backtraces
+>   arm64: Add support for suppressing warning backtraces
+>   loongarch: Add support for suppressing warning backtraces
+>   parisc: Add support for suppressing warning backtraces
+>   s390: Add support for suppressing warning backtraces
+>   sh: Add support for suppressing warning backtraces
+>   sh: Move defines needed for suppressing warning backtraces
+>   riscv: Add support for suppressing warning backtraces
+>   powerpc: Add support for suppressing warning backtraces
 >
-> The SEA processes synchronization errors. Only hardware errors on the
-> source page can be detected (Through synchronous ld insn) and processed.
-> The destination page cannot be processed.
+>  Documentation/dev-tools/kunit/usage.rst |  30 ++++++-
+>  arch/arm64/include/asm/asm-bug.h        |  27 ++++--
+>  arch/arm64/include/asm/bug.h            |   8 +-
+>  arch/loongarch/include/asm/bug.h        |  42 +++++++---
+>  arch/parisc/include/asm/bug.h           |  29 +++++--
+>  arch/powerpc/include/asm/bug.h          |  37 +++++++--
+>  arch/riscv/include/asm/bug.h            |  38 ++++++---
+>  arch/s390/include/asm/bug.h             |  17 +++-
+>  arch/sh/include/asm/bug.h               |  28 ++++++-
+>  arch/x86/include/asm/bug.h              |  21 +++--
+>  drivers/gpu/drm/tests/drm_rect_test.c   |  16 ++++
+>  include/asm-generic/bug.h               |  16 +++-
+>  include/kunit/bug.h                     |  56 +++++++++++++
+>  include/kunit/test.h                    |   1 +
+>  include/linux/bug.h                     |  13 +++
+>  lib/bug.c                               |  51 +++++++++++-
+>  lib/kunit/Kconfig                       |   9 ++
+>  lib/kunit/Makefile                      |   7 +-
+>  lib/kunit/backtrace-suppression-test.c  | 104 ++++++++++++++++++++++++
+>  lib/kunit/bug.c                         |  42 ++++++++++
+>  20 files changed, 519 insertions(+), 73 deletions(-)
+>  create mode 100644 include/kunit/bug.h
+>  create mode 100644 lib/kunit/backtrace-suppression-test.c
+>  create mode 100644 lib/kunit/bug.c
 >
-> >
+> --
+> 2.34.1
 >
+
+--000000000000b57c47063176a0c3
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Description: S/MIME Cryptographic Signature
+
+MIIUnQYJKoZIhvcNAQcCoIIUjjCCFIoCAQExDzANBglghkgBZQMEAgEFADALBgkqhkiG9w0BBwGg
+ghIEMIIGkTCCBHmgAwIBAgIQfofDAVIq0iZG5Ok+mZCT2TANBgkqhkiG9w0BAQwFADBMMSAwHgYD
+VQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBSNjETMBEGA1UEChMKR2xvYmFsU2lnbjETMBEGA1UE
+AxMKR2xvYmFsU2lnbjAeFw0yMzA0MTkwMzUzNDdaFw0zMjA0MTkwMDAwMDBaMFQxCzAJBgNVBAYT
+AkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMSowKAYDVQQDEyFHbG9iYWxTaWduIEF0bGFz
+IFI2IFNNSU1FIENBIDIwMjMwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYydcdmKyg
+4IBqVjT4XMf6SR2Ix+1ChW2efX6LpapgGIl63csmTdJQw8EcbwU9C691spkltzTASK2Ayi4aeosB
+mk63SPrdVjJNNTkSbTowej3xVVGnYwAjZ6/qcrIgRUNtd/mbtG7j9W80JoP6o2Szu6/mdjb/yxRM
+KaCDlloE9vID2jSNB5qOGkKKvN0x6I5e/B1Y6tidYDHemkW4Qv9mfE3xtDAoe5ygUvKA4KHQTOIy
+VQEFpd/ZAu1yvrEeA/egkcmdJs6o47sxfo9p/fGNsLm/TOOZg5aj5RHJbZlc0zQ3yZt1wh+NEe3x
+ewU5ZoFnETCjjTKz16eJ5RE21EmnCtLb3kU1s+t/L0RUU3XUAzMeBVYBEsEmNnbo1UiiuwUZBWiJ
+vMBxd9LeIodDzz3ULIN5Q84oYBOeWGI2ILvplRe9Fx/WBjHhl9rJgAXs2h9dAMVeEYIYkvW+9mpt
+BIU9cXUiO0bky1lumSRRg11fOgRzIJQsphStaOq5OPTb3pBiNpwWvYpvv5kCG2X58GfdR8SWA+fm
+OLXHcb5lRljrS4rT9MROG/QkZgNtoFLBo/r7qANrtlyAwPx5zPsQSwG9r8SFdgMTHnA2eWCZPOmN
+1Tt4xU4v9mQIHNqQBuNJLjlxvalUOdTRgw21OJAFt6Ncx5j/20Qw9FECnP+B3EPVmQIDAQABo4IB
+ZTCCAWEwDgYDVR0PAQH/BAQDAgGGMDMGA1UdJQQsMCoGCCsGAQUFBwMCBggrBgEFBQcDBAYJKwYB
+BAGCNxUGBgkrBgEEAYI3FQUwEgYDVR0TAQH/BAgwBgEB/wIBADAdBgNVHQ4EFgQUM7q+o9Q5TSoZ
+18hmkmiB/cHGycYwHwYDVR0jBBgwFoAUrmwFo5MT4qLn4tcc1sfwf8hnU6AwewYIKwYBBQUHAQEE
+bzBtMC4GCCsGAQUFBzABhiJodHRwOi8vb2NzcDIuZ2xvYmFsc2lnbi5jb20vcm9vdHI2MDsGCCsG
+AQUFBzAChi9odHRwOi8vc2VjdXJlLmdsb2JhbHNpZ24uY29tL2NhY2VydC9yb290LXI2LmNydDA2
+BgNVHR8ELzAtMCugKaAnhiVodHRwOi8vY3JsLmdsb2JhbHNpZ24uY29tL3Jvb3QtcjYuY3JsMBEG
+A1UdIAQKMAgwBgYEVR0gADANBgkqhkiG9w0BAQwFAAOCAgEAVc4mpSLg9A6QpSq1JNO6tURZ4rBI
+MkwhqdLrEsKs8z40RyxMURo+B2ZljZmFLcEVxyNt7zwpZ2IDfk4URESmfDTiy95jf856Hcwzdxfy
+jdwx0k7n4/0WK9ElybN4J95sgeGRcqd4pji6171bREVt0UlHrIRkftIMFK1bzU0dgpgLMu+ykJSE
+0Bog41D9T6Swl2RTuKYYO4UAl9nSjWN6CVP8rZQotJv8Kl2llpe83n6ULzNfe2QT67IB5sJdsrNk
+jIxSwaWjOUNddWvCk/b5qsVUROOuctPyYnAFTU5KY5qhyuiFTvvVlOMArFkStNlVKIufop5EQh6p
+jqDGT6rp4ANDoEWbHKd4mwrMtvrh51/8UzaJrLzj3GjdkJ/sPWkDbn+AIt6lrO8hbYSD8L7RQDqK
+C28FheVr4ynpkrWkT7Rl6npWhyumaCbjR+8bo9gs7rto9SPDhWhgPSR9R1//WF3mdHt8SKERhvtd
+NFkE3zf36V9Vnu0EO1ay2n5imrOfLkOVF3vtAjleJnesM/R7v5tMS0tWoIr39KaQNURwI//WVuR+
+zjqIQVx5s7Ta1GgEL56z0C5GJoNE1LvGXnQDyvDO6QeJVThFNgwkossyvmMAaPOJYnYCrYXiXXle
+A6TpL63Gu8foNftUO0T83JbV/e6J8iCOnGZwZDrubOtYn1QwggWDMIIDa6ADAgECAg5F5rsDgzPD
+hWVI5v9FUTANBgkqhkiG9w0BAQwFADBMMSAwHgYDVQQLExdHbG9iYWxTaWduIFJvb3QgQ0EgLSBS
+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
+YE9NAgMBAAGjggHgMIIB3DAeBgNVHREEFzAVgRNkYXZpZGdvd0Bnb29nbGUuY29tMA4GA1UdDwEB
+/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIwHQYDVR0OBBYEFHgsCGkO2Hex
+N6ybc+GeQEb6790qMFgGA1UdIARRME8wCQYHZ4EMAQUBAjBCBgorBgEEAaAyCgMDMDQwMgYIKwYB
+BQUHAgEWJmh0dHBzOi8vd3d3Lmdsb2JhbHNpZ24uY29tL3JlcG9zaXRvcnkvMAwGA1UdEwEB/wQC
+MAAwgZoGCCsGAQUFBwEBBIGNMIGKMD4GCCsGAQUFBzABhjJodHRwOi8vb2NzcC5nbG9iYWxzaWdu
+LmNvbS9jYS9nc2F0bGFzcjZzbWltZWNhMjAyMzBIBggrBgEFBQcwAoY8aHR0cDovL3NlY3VyZS5n
+bG9iYWxzaWduLmNvbS9jYWNlcnQvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3J0MB8GA1UdIwQYMBaA
+FDO6vqPUOU0qGdfIZpJogf3BxsnGMEYGA1UdHwQ/MD0wO6A5oDeGNWh0dHA6Ly9jcmwuZ2xvYmFs
+c2lnbi5jb20vY2EvZ3NhdGxhc3I2c21pbWVjYTIwMjMuY3JsMA0GCSqGSIb3DQEBCwUAA4ICAQAs
+exV05yVDmPhHRqOq9lAbfWOUvEf8zydxabZUHna6bayb83jD2eb9nMGGEprfuNBRmFg35sgF1TyN
++ieuQakvQYmY8tzK49hhHa2Y3qhGCTqYTHO3ypHvhHsZiGbL0gmdgB9P8ssVIws//34ae99GUOxo
+XKTxPwwsQ5Arq42besv3/HXAW+4nRAT8d3ht5ZWCHc5rjL/vdGzu7PaYo3u0da69AZ8Sh4Gf5yoc
+QANr2ZkMrxXbLmSmnRvbkQrzlZp2YbTFnczx46429D6q75/FNFOL1vAjxtRAPzkyACvW0eKvchza
+TMvvD3IWERLlcBL5yXpENc3rI8/wVjqgAWYxlFg1b/4b/TCgYe2MZC0rx4Uh3zTIbmPNiHdN6QZ9
+oDiYzWUcqWZ5jCO4bMKNlVJXeCvdANLHuhcC8FONj5VzNgYXs6gWkp9/Wt6XnQPX4dF4JBa8JdL/
+cT46RJIzoiJHEx/8syO5FparZHIKbkunoq6niPsRaQUGeqWc56H4Z1sQXuBJN9fhqkIkG0Ywfrwt
+uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
+PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
+Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
+BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQg1KtAiaINglwhUWIlJLOFKwhrb9oC
+EXUsWOFmB2dsYDcwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+MzI5MDgwMzUyWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
+AQEBBQAEggEAnzJsFiWer46vSKVW1QjXqf699AQUVA+HmwLnHxfkgE4DkAQIs7EeaTRYR2VX8SLi
+SY8ykrWn8vVJmrwWqpEY/Yn9JZzHhb1R8F66DZa5ZSN7EB6H6CRRl7zmMIhpTj4qOYxjjg0R8Amu
+shB5i6l7iobEzFyA6JThpc9yhvlBKnMAQT3LL62JPe//PRbe0eBoJ+VhwGxjfhWz3WF5mBqcs6lL
+RmfEesTaO/m+uSCweSJ7rVLqowWJj36Hc89esKapStkOblU0wmGpaR+qwfzcekgvAkLvS1b0QObY
+oovwPT4iwO5QNcterb6T2ox5iO+vQLGtq7P05W2X11Ycv5eUIQ==
+--000000000000b57c47063176a0c3--
 
