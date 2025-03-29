@@ -1,69 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7378-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7379-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FCDBA754EA
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Mar 2025 09:04:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CD7A754F1
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 29 Mar 2025 09:04:09 +0100 (CET)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZPqfQ3XZMz2yfV;
-	Sat, 29 Mar 2025 19:03:58 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZPqfX3PVhz2yrh;
+	Sat, 29 Mar 2025 19:04:04 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f32"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743235438;
-	cv=none; b=nkf0w20pUZhxA0WkjgSEAm2SFcvnxFgpxCzH/TckgWnGQh7NA00kTYNsdevPPbIZNxK8A08U4dP6guevpPtPBv7eYHLG0Nfq+MzRMwyB6chcIkL6Vx7/dlQxjkxJAL3EED0gg6v7oJCoQolCqEm1ekTsp8Ok1Z1mbmi+Yhf66E6x77hm4UbAuBHWW06EJjgXHcdsD0hL6P7Jlt081HlX9g8NKT/Pf+dXufHJtlyT5/GD2oQryuCqD0BwlnhIOgVoI/Rkdl6yOpKs+kBixPKbr88ODbEnRLc3PyL3GZmGsQ/lSWQbuRFcu/nenvk2UlFc84Z4fY/oXz8dEercy3/a8g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::f33"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743235444;
+	cv=none; b=bvVIHWDDqsNh8Kv7IEbRCh6cJWjIo/rDhXioc+sio1S2PMFpFFb+VWYXHrUBh3pIstwtTSX+x3kDWG4Am41ZiqWMyrpN9D+0fY2Q9DxcCjiDyaxmLNIeUbA55YcMtH5tU24T4kIpTuegA7l9WKtj64YXJCPyRO8TI4ywB8mxlw/jFoi187RaR1xNpw6psIF2yxbPukEsz15iq0KlqyE+NhJGlr+Qz+xKkCToS651/nxZZPe+5mIwx0CKwvFkqeZ6a5dm6knMpXmlGTV62cvu081H96DsrumcCKSHUnasuEltBov5a9SqSC0coLO9ZtcRl//jIbQaXr6pBAxuhrkQ/g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743235438; c=relaxed/relaxed;
-	bh=O+g6QCYreRUbdBSVpJottvI7BuQC9m1idYkykfo8Pok=;
+	t=1743235444; c=relaxed/relaxed;
+	bh=pxqBMESMpKtyhnE3opD8feyndfFzLgmpgazP015XLus=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=WbAMDFCsWKiEYuQA0vmJZLGPruQXABssdoQIi+/f/Cw3v2c1Nnxlx8A2+5V+uZDC1OHUeigUrvVEirgmdf0y00BpKlskTCLZxPj+rlgSUB3rPE3+JALXt+9iapdKaKU57jFXzDznq+SDiHMs491hOGnqbNg55QzeYPPjKuXb1QpRPwRraFpIWU3+DWxa8yfKTvv91yPXEtSiVfs9T0LdpjOLikVtjdE5Mad12OinzGefXwbiFXwrOZ3v3r9M/kJvl5smhkwYToGiwhVJ7ZaGyF0Vn+qgENUZur6ohxJZrNPFEbMDLaVzv8y0PpgtsmVXJ+FlFJ2CKrhTfi8QImqPbg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZKHhek3x; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=davidgow@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=ORraji+/9B25DDd7iotyEmB/+9SZE7xZhSPZD7xymZ1RkSmtHqoEpUzCDgtYSbn4GVJ9qnpNuOMLjERbPZqUXlOM80KNDlgqQ3qJzDbSSmqJwW7Zp8Aav0VASyrET/Jb3nmkfaQGHkzqJtyGxQ+785h0WXbQIth/djhILe334M9ZVjcd1e8HIH57irPRFeL1vNdO+LypPuVQuzDQntDwFdb5rc/KOaGypshxUm88Pk/q+HpbT1dSM+lPs6i1wZVM0OseEkBAnL4zb8AAaPynUTPzTgaIQHaBjr3bi689vYjaeUM1Gkjra1unCuNRWQz+01YHUj56DTv1NcCr5u95yw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com; dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BgyUYJej; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::f33; helo=mail-qv1-xf33.google.com; envelope-from=davidgow@google.com; receiver=lists.ozlabs.org) smtp.mailfrom=google.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=ZKHhek3x;
+	dkim=pass (2048-bit key; unprotected) header.d=google.com header.i=@google.com header.a=rsa-sha256 header.s=20230601 header.b=BgyUYJej;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f32; helo=mail-qv1-xf32.google.com; envelope-from=davidgow@google.com; receiver=lists.ozlabs.org)
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=google.com (client-ip=2607:f8b0:4864:20::f33; helo=mail-qv1-xf33.google.com; envelope-from=davidgow@google.com; receiver=lists.ozlabs.org)
+Received: from mail-qv1-xf33.google.com (mail-qv1-xf33.google.com [IPv6:2607:f8b0:4864:20::f33])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZPqfN2YGrz2yVb
-	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Mar 2025 19:03:55 +1100 (AEDT)
-Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-6e8fd49b85eso43610006d6.0
-        for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Mar 2025 01:03:55 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZPqfW3RTQz2yVb
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Mar 2025 19:04:03 +1100 (AEDT)
+Received: by mail-qv1-xf33.google.com with SMTP id 6a1803df08f44-6ecfc2cb1aaso27689026d6.3
+        for <linuxppc-dev@lists.ozlabs.org>; Sat, 29 Mar 2025 01:04:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1743235432; x=1743840232; darn=lists.ozlabs.org;
+        d=google.com; s=20230601; t=1743235441; x=1743840241; darn=lists.ozlabs.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=O+g6QCYreRUbdBSVpJottvI7BuQC9m1idYkykfo8Pok=;
-        b=ZKHhek3x4wkq/V/nDtdLgCwiKQRwZYUYAQxfL1yIo4XNpk3tfTRLjgli1DNZeW3DW/
-         KcZsMm96jo0GAdJ5xQcNJPpeumzsZqvsNqgyep08djM/ca8f8hg5TpDuQpar3y1eYEAG
-         h+rUHLUYz8PGa5IoqH3yK4oWS7JIdzHLekB1bPsTpMUNAVw1POayIunbTORb976li8uQ
-         urh0uWWazZDW10ZAW1abz1qKpUwxCdrL9cnbihTgSKPFRrMBG36yZNpg1SHsrbLt1pLO
-         D6rFTsVxN8+sbmcnLHEVYdLb145XAn0D2JusLWGvItZW20G5GjgnpFOUA7tHApWmt4O/
-         c1+w==
+        bh=pxqBMESMpKtyhnE3opD8feyndfFzLgmpgazP015XLus=;
+        b=BgyUYJejt4I+5RPJQxgOZ+U/LT5NBJzghVF+ar4vOr8g2qBj1PO1NF+QYJhHMqRtYz
+         hJYrVvfufskAkK00i9NMN8UItbpxrr+VYPIzKNa6q5Q58x191ezMyduOPo10DK/Px235
+         p9yeZVkLbN+426K+r8KZd7GNj2zYgrgH6hqudK7oeHhcpZQJQDM7xPs6sdM5sr0ImJLq
+         dYYeYKCvg6yNyp3ShuGIaZmRySieNves/dp5fTWESaW0gSB4xgPqZKThcbotzks/o6iw
+         aeYP+6UHcn+xZiOyu+2QvU8Go5x98hE2pqufnvzalJBsvSoQRGstlrMzV+0SmsvVFCtL
+         eFKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743235432; x=1743840232;
+        d=1e100.net; s=20230601; t=1743235441; x=1743840241;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=O+g6QCYreRUbdBSVpJottvI7BuQC9m1idYkykfo8Pok=;
-        b=Cjc/C0MBZwbPSFgACXgHOHOWWGZ857fqzEwmG9ac56OYH115wS/oGOxz1wP0+AX34M
-         i7ysL4SCXxFgbnipFYu1f3YeQIpKLOMaIbjXegc+QlbRu7SHzzhrvIK4+4dmROI/VOtA
-         KXpKFCdHtyddmKtNwb+nknHZTswxPO/v7uGgMusdwcI0J/gEMYcyWDAPfIv5xt5aP/Cq
-         y/w+IvvNipsqaCXoyDyA1j0wzSRk0AAJ17OkYRa+PFzSLg+eu2DfeCH3tYtbq3mr9S3O
-         SJaSliVAUqwZ5uJ05HykIQkPIKu8NuVlqaU7VIDHLE5MhWv3lBQS1dq+6MXGdI+riAep
-         TQsg==
-X-Forwarded-Encrypted: i=1; AJvYcCVcct/6CEgUW6b9gvDOI/aSiFDfslL65Kett3+MgNvDMt6+4ctnCu1v+h4MT4thqFJuV9yWPAW27ZSCOAQ=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YziQufqFOHpIWsSlWJ8TbYc5an/ZODMJR05SyRCu7PS/1IJH5po
-	PwbP/4nlo/BE5LfL+NL3nAzquWA/ABjg7YZPYYtqw85JzRPN1lO284xFbrfCxh57KcdFJ+P1V2/
-	c4KMoKP4N7+L8NS8nXaPnIEZFnZHu0dPaEljJ
-X-Gm-Gg: ASbGnctFyNkR7mbqRiEfohJPQ1iLrzkkVN0QKXBnw8mxflmzkLRbhSWuQvdZwEHTyzu
-	3Vdt3Wvyg0k8XQJqcZ3mld3Ob6Jhn3bwiSYYQ3wIG56mlIdMZRzpVPpByzdhTMuNyhC8S3EPcGm
-	2gLLm0B999eOmK0JP4jSHIeWc6F4M=
-X-Google-Smtp-Source: AGHT+IEJ8ce7V8CIlKC2A2azWY99VUL4El8Tj9GDvwsAXVoga+qrIDcAvwT96/mFGtya6VF3o6ehcJ+woWz7LYivLLE=
-X-Received: by 2002:a05:6214:e67:b0:6e8:fa33:2965 with SMTP id
- 6a1803df08f44-6eed5f93113mr33481246d6.14.1743235431710; Sat, 29 Mar 2025
- 01:03:51 -0700 (PDT)
+        bh=pxqBMESMpKtyhnE3opD8feyndfFzLgmpgazP015XLus=;
+        b=XVEQz0uzeXlU2zPGgjR2AihSaj9LYAa3FAcGgOxsXKCDb0unAnsd2SSCFdWWlVQ1Py
+         pRDmfRcZSQzqJAs/FtbjIqQIKMyQZ3VWZjGRQMqE52oOyeZ8lE+HYv/bvEzfhJesRhlC
+         3g1xrZgSPqkfxYhokXOdERMQkM4YlAXsh1wxcKb1k9KBHSxRVEgYPiYsGoDegRlLGy7f
+         GBYXAgoIVOmYCqLHihe55ZtL9UXbWt7dLrqZODTsGIoG1wN1cjdxvJqFjsOMW77Gz+XM
+         kkPnFxaIg6d/Czt3TzHh08yJI8lTfyaPYaSx4SUTlOuU9HDmQbqSYAIM9OwSIkXU4vKR
+         jw5g==
+X-Forwarded-Encrypted: i=1; AJvYcCVvOw5Xry8pakx5FEfGYdjm9PpjRJM5+wLfQRAtBxnukhhUAyiM3rhhl732fgKUyo+m6aa3M9FmZrXvL98=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YywNOtH6CWpErr2pT45gNEvg6GLbSayLqxuQeVob7WWRNrueo5n
+	snLGeWr0jJAAImgAPcUDDvPDLXiCej2E4YlBoKEcfJBjjesHqUD67aI8zTV1Ft+z7isITlz3/Ud
+	ehD7Qdc7BKtbPQIAdDVFeH6JAkQVG5Wxgw8qc
+X-Gm-Gg: ASbGncsgwCFmZQCGHwGakFHdL955CisxsuBL2YORLM4EfcaDzbPPWRd1uIIHD+F8hT5
+	Ae6eVnxB/v8Fm7Jg1u5mWekBL9tHIkyKQpSrsKJ5oHF2pROldXKur/TrrfaUaJnuQDcovfFP8YB
+	oyYk2ecKvuTM1aDaBvcMWQ0NZquHw=
+X-Google-Smtp-Source: AGHT+IGd9IAWS5Asv8qeaKCNI8M/lJrlOqpbPnYOWZIQStV8j0h0OihWzO/lzERuMD4FV6GMZtujp8mB1Gw37oek+Ng=
+X-Received: by 2002:a05:6214:2401:b0:6e6:6b99:cd1e with SMTP id
+ 6a1803df08f44-6eed625e756mr24139206d6.26.1743235440705; Sat, 29 Mar 2025
+ 01:04:00 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,13 +76,13 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250313114329.284104-1-acarmina@redhat.com>
-In-Reply-To: <20250313114329.284104-1-acarmina@redhat.com>
+References: <20250313114329.284104-1-acarmina@redhat.com> <20250313114329.284104-2-acarmina@redhat.com>
+In-Reply-To: <20250313114329.284104-2-acarmina@redhat.com>
 From: David Gow <davidgow@google.com>
-Date: Sat, 29 Mar 2025 16:03:36 +0800
-X-Gm-Features: AQ5f1JqXTcD760nl7rxAYS90_BR-Zg4uyvqHwpHf7WGakdu8aw2xd4LNhe4EvmU
-Message-ID: <CABVgOSk89WzaptN-peaty6ZLxnOHWRB02_JkjfK+5kCepNsxXg@mail.gmail.com>
-Subject: Re: [PATCH v4 00/14] Add support for suppressing warning backtraces
+Date: Sat, 29 Mar 2025 16:03:49 +0800
+X-Gm-Features: AQ5f1JqQWjP8FLOBnFf9qzSfODWFo3TcfCh1IF96gBcl5X5G2gEPmXeOj2SeHoI
+Message-ID: <CABVgOS=+y-yO+4G6-77Cry3LH-bhA+MLsrT-G45ZbxNUyEBRhw@mail.gmail.com>
+Subject: Re: [PATCH v4 01/14] bug/kunit: Core support for suppressing warning backtraces
 To: Alessandro Carminati <acarmina@redhat.com>
 Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>, 
 	Arnd Bergmann <arnd@arndb.de>, =?UTF-8?B?TWHDrXJhIENhbmFs?= <mcanal@igalia.com>, 
@@ -100,23 +100,26 @@ Cc: linux-kselftest@vger.kernel.org, David Airlie <airlied@gmail.com>,
 	linux-kernel@vger.kernel.org, linux-parisc@vger.kernel.org, 
 	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
 	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	loongarch@lists.linux.dev, x86@kernel.org
+	loongarch@lists.linux.dev, x86@kernel.org, 
+	Linux Kernel Functional Testing <lkft@linaro.org>
 Content-Type: multipart/signed; protocol="application/pkcs7-signature"; micalg=sha-256;
-	boundary="000000000000b57c47063176a0c3"
+	boundary="00000000000040288b063176a144"
 X-Spam-Status: No, score=-16.7 required=3.0 tests=DKIMWL_WL_MED,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,ENV_AND_HDR_SPF_MATCH,
 	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
 	USER_IN_DEF_SPF_WL autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
---000000000000b57c47063176a0c3
+--00000000000040288b063176a144
 Content-Type: text/plain; charset="UTF-8"
 
 On Thu, 13 Mar 2025 at 19:44, Alessandro Carminati <acarmina@redhat.com> wrote:
 >
-> Some unit tests intentionally trigger warning backtraces by passing bad
-> parameters to kernel API functions. Such unit tests typically check the
-> return value from such calls, not the existence of the warning backtrace.
+> From: Guenter Roeck <linux@roeck-us.net>
+>
+> Some unit tests intentionally trigger warning backtraces by passing
+> bad parameters to API functions. Such unit tests typically check the
+> return value from those calls, not the existence of the warning backtrace.
 >
 > Such intentionally generated warning backtraces are neither desirable
 > nor useful for a number of reasons.
@@ -134,138 +137,31 @@ On Thu, 13 Mar 2025 at 19:44, Alessandro Carminati <acarmina@redhat.com> wrote:
 > the irrelevant backtrace(s) would still clog the kernel log.
 >
 > Solve the problem by providing a means to identify and suppress specific
-> warning backtraces while executing test code. Support suppressing multiple
-> backtraces while at the same time limiting changes to generic code to the
-> absolute minimum. Architecture specific changes are kept at minimum by
-> retaining function names only if both CONFIG_DEBUG_BUGVERBOSE and
-> CONFIG_KUNIT are enabled.
+> warning backtraces while executing test code. Since the new functionality
+> results in an image size increase of about 1% if CONFIG_KUNIT is enabled,
+> provide configuration option KUNIT_SUPPRESS_BACKTRACE to be able to disable
+> the new functionality. This option is by default enabled since almost all
+> systems with CONFIG_KUNIT enabled will want to benefit from it.
 >
-> The first patch of the series introduces the necessary infrastructure.
-> The second patch introduces support for counting suppressed backtraces.
-> This capability is used in patch three to implement unit tests.
-> Patch four documents the new API.
-> The next two patches add support for suppressing backtraces in drm_rect
-> and dev_addr_lists unit tests. These patches are intended to serve as
-> examples for the use of the functionality introduced with this series.
-> The remaining patches implement the necessary changes for all
-> architectures with GENERIC_BUG support.
->
-> With CONFIG_KUNIT enabled, image size increase with this series applied is
-> approximately 1%. The image size increase (and with it the functionality
-> introduced by this series) can be avoided by disabling
-> CONFIG_KUNIT_SUPPRESS_BACKTRACE.
->
-> This series is based on the RFC patch and subsequent discussion at
-> https://patchwork.kernel.org/project/linux-kselftest/patch/02546e59-1afe-4b08-ba81-d94f3b691c9a@moroto.mountain/
-> and offers a more comprehensive solution of the problem discussed there.
->
-> Design note:
->   Function pointers are only added to the __bug_table section if both
->   CONFIG_KUNIT_SUPPRESS_BACKTRACE and CONFIG_DEBUG_BUGVERBOSE are enabled
->   to avoid image size increases if CONFIG_KUNIT is disabled. There would be
->   some benefits to adding those pointers all the time (reduced complexity,
->   ability to display function names in BUG/WARNING messages). That change,
->   if desired, can be made later.
->
-> Checkpatch note:
->   Remaining checkpatch errors and warnings were deliberately ignored.
->   Some are triggered by matching coding style or by comments interpreted
->   as code, others by assembler macros which are disliked by checkpatch.
->   Suggestions for improvements are welcome.
->
-> Changes since RFC:
-> - Introduced CONFIG_KUNIT_SUPPRESS_BACKTRACE
-> - Minor cleanups and bug fixes
-> - Added support for all affected architectures
-> - Added support for counting suppressed warnings
-> - Added unit tests using those counters
-> - Added patch to suppress warning backtraces in dev_addr_lists tests
->
-> Changes since v1:
-> - Rebased to v6.9-rc1
-> - Added Tested-by:, Acked-by:, and Reviewed-by: tags
->   [I retained those tags since there have been no functional changes]
-> - Introduced KUNIT_SUPPRESS_BACKTRACE configuration option, enabled by
->   default.
->
-> Changes since v2:
-> - Rebased to v6.9-rc2
-> - Added comments to drm warning suppression explaining why it is needed.
-> - Added patch to move conditional code in arch/sh/include/asm/bug.h
->   to avoid kerneldoc warning
-> - Added architecture maintainers to Cc: for architecture specific patches
-> - No functional changes
->
-> Changes since v3:
-> - Rebased to v6.14-rc6
-> - Dropped net: "kunit: Suppress lock warning noise at end of dev_addr_lists tests"
->   since 3db3b62955cd6d73afde05a17d7e8e106695c3b9
-> - Added __kunit_ and KUNIT_ prefixes.
-> - Tested on interessed architectures.
->
-> ----
+> Cc: Dan Carpenter <dan.carpenter@linaro.org>
+> Cc: Daniel Diaz <daniel.diaz@linaro.org>
+> Cc: Naresh Kamboju <naresh.kamboju@linaro.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> Acked-by: Dan Carpenter <dan.carpenter@linaro.org>
+> Reviewed-by: Kees Cook <keescook@chromium.org>
+> Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+> Signed-off-by: Alessandro Carminati <acarmina@redhat.com>
+> ---
 
-Sorry: I also thought this had already landed.
+Thanks Guenter & Alessandro: I'm very happy with this.
 
-I'm definitely in favour of us taking this, though agree that we
-definitely can't afford to break the s390x build.
+Reviewed-by: David Gow <davidgow@google.com>
 
-I've (re-)reviewed the early patches as well, and am generally acking
-the series (though some of the architecture-specific patches are
-definitely beyond my expertise to review fully).
 
-Acked-by: David Gow <davidgow@google.com>
-
-Cheers,
 -- David
 
-
-> Guenter Roeck (14):
->   bug/kunit: Core support for suppressing warning backtraces
->   kunit: bug: Count suppressed warning backtraces
->   kunit: Add test cases for backtrace warning suppression
->   kunit: Add documentation for warning backtrace suppression API
->   drm: Suppress intentional warning backtraces in scaling unit tests
->   x86: Add support for suppressing warning backtraces
->   arm64: Add support for suppressing warning backtraces
->   loongarch: Add support for suppressing warning backtraces
->   parisc: Add support for suppressing warning backtraces
->   s390: Add support for suppressing warning backtraces
->   sh: Add support for suppressing warning backtraces
->   sh: Move defines needed for suppressing warning backtraces
->   riscv: Add support for suppressing warning backtraces
->   powerpc: Add support for suppressing warning backtraces
->
->  Documentation/dev-tools/kunit/usage.rst |  30 ++++++-
->  arch/arm64/include/asm/asm-bug.h        |  27 ++++--
->  arch/arm64/include/asm/bug.h            |   8 +-
->  arch/loongarch/include/asm/bug.h        |  42 +++++++---
->  arch/parisc/include/asm/bug.h           |  29 +++++--
->  arch/powerpc/include/asm/bug.h          |  37 +++++++--
->  arch/riscv/include/asm/bug.h            |  38 ++++++---
->  arch/s390/include/asm/bug.h             |  17 +++-
->  arch/sh/include/asm/bug.h               |  28 ++++++-
->  arch/x86/include/asm/bug.h              |  21 +++--
->  drivers/gpu/drm/tests/drm_rect_test.c   |  16 ++++
->  include/asm-generic/bug.h               |  16 +++-
->  include/kunit/bug.h                     |  56 +++++++++++++
->  include/kunit/test.h                    |   1 +
->  include/linux/bug.h                     |  13 +++
->  lib/bug.c                               |  51 +++++++++++-
->  lib/kunit/Kconfig                       |   9 ++
->  lib/kunit/Makefile                      |   7 +-
->  lib/kunit/backtrace-suppression-test.c  | 104 ++++++++++++++++++++++++
->  lib/kunit/bug.c                         |  42 ++++++++++
->  20 files changed, 519 insertions(+), 73 deletions(-)
->  create mode 100644 include/kunit/bug.h
->  create mode 100644 lib/kunit/backtrace-suppression-test.c
->  create mode 100644 lib/kunit/bug.c
->
-> --
-> 2.34.1
->
-
---000000000000b57c47063176a0c3
+--00000000000040288b063176a144
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename="smime.p7s"
@@ -355,14 +251,14 @@ uFrCoYIRlx4rSVHpBIKgnsgdm0SFQK72MPmIkfhfq9Fh0h8AjhF73sLO7K5BfwWkx1gwMySyNY0e
 PCRYr6WEVOkUJS0a0fui693ymMPFLQAimmz8EpyFok4Ju066StkYO1dIgUIla4x61auxkWHwnzGC
 Al0wggJZAgEBMGgwVDELMAkGA1UEBhMCQkUxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExKjAo
 BgNVBAMTIUdsb2JhbFNpZ24gQXRsYXMgUjYgU01JTUUgQ0EgMjAyMwIQAcDMKctW1GQKDKqEUSh4
-pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQg1KtAiaINglwhUWIlJLOFKwhrb9oC
-EXUsWOFmB2dsYDcwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
-MzI5MDgwMzUyWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
+pjANBglghkgBZQMEAgEFAKCBxzAvBgkqhkiG9w0BCQQxIgQgGXnEJtIzeKr9PLfaEzjYKScRbNFx
+pc4XvlhSxccKoHMwGAYJKoZIhvcNAQkDMQsGCSqGSIb3DQEHATAcBgkqhkiG9w0BCQUxDxcNMjUw
+MzI5MDgwNDAxWjBcBgkqhkiG9w0BCQ8xTzBNMAsGCWCGSAFlAwQBKjALBglghkgBZQMEARYwCwYJ
 YIZIAWUDBAECMAoGCCqGSIb3DQMHMAsGCSqGSIb3DQEBBzALBglghkgBZQMEAgEwDQYJKoZIhvcN
-AQEBBQAEggEAnzJsFiWer46vSKVW1QjXqf699AQUVA+HmwLnHxfkgE4DkAQIs7EeaTRYR2VX8SLi
-SY8ykrWn8vVJmrwWqpEY/Yn9JZzHhb1R8F66DZa5ZSN7EB6H6CRRl7zmMIhpTj4qOYxjjg0R8Amu
-shB5i6l7iobEzFyA6JThpc9yhvlBKnMAQT3LL62JPe//PRbe0eBoJ+VhwGxjfhWz3WF5mBqcs6lL
-RmfEesTaO/m+uSCweSJ7rVLqowWJj36Hc89esKapStkOblU0wmGpaR+qwfzcekgvAkLvS1b0QObY
-oovwPT4iwO5QNcterb6T2ox5iO+vQLGtq7P05W2X11Ycv5eUIQ==
---000000000000b57c47063176a0c3--
+AQEBBQAEggEAWyDsJHDO/e6Hpdxk2ziW7NAPXbA+qgz5VGtgdNw6jXxzMO4McY9+dyqi6WFbyjFe
++5TJ+LosyXYWTR2P/BTSRzFVcQLnSyk49Q/VCoB1A1wG60/Xy3kyk24wsuhw0cyxFtYZiz57EfxO
+9+2OcyWBSAq/QYINQvbmNDSIRFPeCaQeZS//95evesNXRpjBzyVepWOwbdCqrtTJ+M4whGyJewDt
+KPc0Ox4EVdDbj6/w3+J/uniwSt/8WF+G1YfhFHR5dMB+wC2Wd9JhwKsCm1nIbjhXzeVgA0nn715b
+MgY/A+PHUkhUMtcXqBZC7TEOf3xMiibOYDxaOm4w49WZBmyh5w==
+--00000000000040288b063176a144--
 
