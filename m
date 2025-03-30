@@ -1,93 +1,132 @@
-Return-Path: <linuxppc-dev+bounces-7385-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7386-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3C3DA759D5
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Mar 2025 13:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B70A75A3B
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 30 Mar 2025 15:42:29 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZQXHz5bPpz2xmk;
-	Sun, 30 Mar 2025 22:35:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZQb6V0Xw8z2yFJ;
+	Mon, 31 Mar 2025 00:42:26 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743320901;
-	cv=none; b=hMCxubFh4xkPyviVPjQwqsM9jCDUMP8OCIge1rsdWlgJ0Qt6igoEKg+0+4iU5YzoYhx6a/p4r6bTinWI8Zc5K5J/zEaSQw1/R/s8EyekiJ2kp9hkX6ffVbWxmHfAIxOf2rUhN5Z9c80ktb5rWYZT2eyHSysp02ipu2Ll3U4HQsu5x6zPxkfKtWpZ4uQZU+Th6w1zvfNk5qXYLagKqkI+RK6iPC4W4JJsm6h/rgCYt6uAGzPmdY23sqd7jkYiDu+g75Tve0pLn+luml+PMLQbTZ8oV5tkZ1HNaRX0tTyK9VrO/HSr+bh4S/jyOkYtpwFiu3vXXodrsmxwzgW5VlkBZA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743342145;
+	cv=none; b=LacJA33AOdsA0otvkeuo3AFwqSQYjEDBFxawx348Hd8Jy4xtCiIq5Kzq0jfWR0gMJ1Csmes3iFIcTWQmPemqiRvHl59v7jkY/6KUTkIEckvQ5LnGgxKA0L+nVSkJOrJFe5vdy2/z2jwVfGz4bHLNMmUbBXYU2P3s2wSzLjHaA2JUgld56wMNw/aRnRf4RDrCjRKWkSVq4mVMWUrxeWW8UZ8iw3GwRiHYpJNTBDjaKM3gy7zU9U0+wOYYzSAvUhYPiETt5EaSvVYeZ6AZkpSZmSQQL498NNI1ZMTNLh47DeLgrNgILmQCb/Q0VIL/mM2EGeAwqn2v4nhrDdndAaMR+A==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743320901; c=relaxed/relaxed;
-	bh=ttcq4pZHt7Gr+FZ9vt0xqE+TrTQMgvp2ZXVHLpm2ltY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=YTbkq3XKA0Hi6addP2XAFr/OiVaGl6xWSudM3+832vhXdC0zFx3bstVLwd21eMuwLUdmylXvf01dKbSuOuDyJu2L/7XXYKGY7PF2ARPU5v+oIDmltuQ70CxmU3Wwy4/uZEeGD7mj/VNjhaXNzaZ/JkcOd5LN81HOYQ3YJohs+6G2Ve/HXUrn5lu4BP6Qipay+uHQ9IMqAXNqpOshWErc2YNia9g7TqzWT3DmkGgFY024CntTEQtyZfgQ0qXIynOIYKf/9KwKPt/VhgINNJfmAvbvpIT+GjzrHg4Rcx1M5aPvPp0vpl2WAkmBlTv1EF1eq4C9Mfy++NjdZFURFjz6dA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QsWasIzX; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vineethr@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1743342145; c=relaxed/relaxed;
+	bh=EVKwqJPfr4QPaIDNGk2hvYA8CboNSIQugm7IZY2L/BA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=X9w5H4bhzoF2m+hihn6KnqqqGsFd1now2Fxgpg5LweNbi+RpPfFx0d/jp53gujSt5vFnT9JLThaAzp56c7/h4tkk68kjLunxZSsbHvBQWs3nOdb1C81R/2THruKjBfaQGg8ZCReOGnLWwD25Fb8UseeCRWKkdKmNKg8nFJ7J4QwKsZkPSt0uuussONXmogO8ip6XkJWxmxzvw4HGVNOe+Tat/oGL2LzJlcKxUyXTF23Lv5qcA+dkNgHQ3B3g14odKTolWDk2teIPcs+mVtv6+ciZcQVe6dR1caPwhAgbKrqoR03j8Aa47YbkjqRcJzWnwugClHRXWtRiRbSekhUiuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i3iYYq+D; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=apTelp9U; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=QsWasIzX;
+	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=i3iYYq+D;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=apTelp9U;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vineethr@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=mst@redhat.com; receiver=lists.ozlabs.org)
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZQRFt30Phz2yKq
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Mar 2025 18:48:17 +1100 (AEDT)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 52U6tj0N008817;
-	Sun, 30 Mar 2025 07:47:51 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=ttcq4pZHt7Gr+FZ9vt0xqE+TrTQM
-	gvp2ZXVHLpm2ltY=; b=QsWasIzXkBNtaKT5ejogHShJEqtV8ukhPc40fAlSIAeL
-	8DB7rj/oeM9Sf0d8SQ3cEqJwo9S+HUshMZSPobyrIWi73wL+k+4ek382PHekajxN
-	dlZSQvcP6jENMYkyGDlZzSOFthOm+g9vUyz4Jw803n/zql+SIkhN2Bj+JBY3L/fM
-	WzlwlsNVUgkdBMxejzhDwyJi6D6u/sJJFZrRtjvVc6wAAMdoE26n+FD+1PKpK+Al
-	0gXTQyF6TUSIxP+Wj+DCAScW+dPFR4R1alQVGteHsqtgwpQST37NRUSbarwJJKqn
-	pY5+b41wHofKW5C1bZZisYvLKs2OXOtBNV3D9Bm5Lw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45pr1p9fys-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 30 Mar 2025 07:47:50 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 52U7lo8F007840;
-	Sun, 30 Mar 2025 07:47:50 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45pr1p9fyq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 30 Mar 2025 07:47:50 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 52U1rM19014555;
-	Sun, 30 Mar 2025 07:47:49 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45pvpkrvb2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 30 Mar 2025 07:47:49 +0000
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 52U7ljgr18350498
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Sun, 30 Mar 2025 07:47:45 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 43A3920049;
-	Sun, 30 Mar 2025 07:47:45 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8A01120040;
-	Sun, 30 Mar 2025 07:47:40 +0000 (GMT)
-Received: from li-fdfde5cc-27d0-11b2-a85c-e224154bf6d4.ibm.com.com (unknown [9.43.97.134])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Sun, 30 Mar 2025 07:47:40 +0000 (GMT)
-From: Madadi Vineeth Reddy <vineethr@linux.ibm.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Eric Biggers <ebiggers@google.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Yosry Ahmed <yosry.ahmed@linux.dev>,
-        Tamir Duberstein <tamird@gmail.com>,
-        Srikar Dronamraju <srikar@linux.ibm.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org, LKML <linux-kernel@vger.kernel.org>,
-        Madadi Vineeth Reddy <vineethr@linux.ibm.com>
-Subject: [PATCH] powerpc/defconfigs: Set HZ=1000 on ppc64 and powernv defconfigs
-Date: Sun, 30 Mar 2025 13:17:34 +0530
-Message-ID: <20250330074734.16679-1-vineethr@linux.ibm.com>
-X-Mailer: git-send-email 2.47.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZQb6S3lNxz2xsW
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Mar 2025 00:42:22 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743342137;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EVKwqJPfr4QPaIDNGk2hvYA8CboNSIQugm7IZY2L/BA=;
+	b=i3iYYq+D8iQfEKf3eOyyjTHSLbf/MwxstfT3lB6L53rZC/DiJb86GWxWVEUZtZU+5gvMqQ
+	nBdhptl2Bi7ybah62P4Lt0TG4s2sbUfqqB6w+QQgqhvWLRzwEL36tLXO9OgSzbNrrq2BdT
+	QfXVn4WAwhbfXBr6+a7dveCMttMtRtc=
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1743342138;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EVKwqJPfr4QPaIDNGk2hvYA8CboNSIQugm7IZY2L/BA=;
+	b=apTelp9U7lLc3kM4d7/EK6a2qjTv8pzhiTdtP/SPQaDpYBAjOWQzlAb6sGtVgM+kwW69hg
+	FbI+dX/DzdFbX3ou4TqDDPt1biTQwxM33geZHlNCaqIThhUXMuVoFsygEHOGNQ4f5cZ0+Q
+	WLlG2Z8zF/Nb4ZcTc2P+kSSXAH8oWtc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-290-rD_4rkOLPRGJIn8Y0WqoCQ-1; Sun, 30 Mar 2025 09:42:16 -0400
+X-MC-Unique: rD_4rkOLPRGJIn8Y0WqoCQ-1
+X-Mimecast-MFC-AGG-ID: rD_4rkOLPRGJIn8Y0WqoCQ_1743342135
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4394c489babso17198795e9.1
+        for <linuxppc-dev@lists.ozlabs.org>; Sun, 30 Mar 2025 06:42:15 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743342135; x=1743946935;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EVKwqJPfr4QPaIDNGk2hvYA8CboNSIQugm7IZY2L/BA=;
+        b=Xrk75hK3BeFdWPbnpS9A0eCG8c3L2y1vkWAqYXvlFbFHiOneQ+eBlod5zlZ3u4dkD/
+         JSWzQhc627uFeJxeMi7VnqjVWmK3VBX9XLih9Ee4wXPH9FgvXDlsaNiHxgvOB7f4IwCI
+         hwq7jJB7s0vaSJEGuRMzAbKF82Aq/1mPtPc/MKZkQL+5g2MxWyElOD6Lj+vXMtBc62ld
+         dhTpK0H2InbBsA5dvjX/Dm8lhgbB8o/NnEIJsjDTWhIM7IRFAjLmMzjl1zVymtc6nn0A
+         ktBfHyXRnHf8FEqdfRaIOi58OJnNjgmcWYey2OPfW90rkoR1h/Hn+3dJjoZqYFLFWTt5
+         6UVg==
+X-Forwarded-Encrypted: i=1; AJvYcCXUo8TjdoXedtMr3quUqVa3xjGNVZ84I4QXtqNme1GBoHo2eQuag8iax+6NQYvw1gQF9R0GiHzjM+TcFYk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yy/LyeY83M12PlSVSq8U7thBXcWjjWVtG+uAcYTNSsvdMl/b1x0
+	f4YXdD48pLe1aVTQsI3tjIcOKFSdjjIkK9TvezTsvhJyotQJ1zKn1T3tsa2OGUREMSXuEylsbXI
+	6dLPQimtnRqMWUauzAwJAlV6I+knoGKgP/VblAL7o3gKlNtEXR52fOrwkslCeeuQ=
+X-Gm-Gg: ASbGncvsC7N0xJ0JLFbmf6SVwfktCKW9k/gOiQVEQZ4p6md7du+oIU2Yx9j0627UVLz
+	GaembJvlk9NoVnzi2jF5uRVcfRNBgJcKLG6XaLVV76/9wr3afXm3A9/7n35geqkZP3PhNQ6oGga
+	TxjbBCJcwFl3DLG5KxGNKk6MZY3pkU3p1FM6l3yF92TetOS7nz+8FTvmbzGiY6PA1Bo0UAvYEgK
+	ZiIq3XM7P4BRUab1RxB8HAfwdgHjlaZhRw2PomyOV7rB0OhbfYw+TDi7oo+Gkiai/lNM2Okl3ZS
+	5eREkBVrCA==
+X-Received: by 2002:a05:600c:384d:b0:43c:fded:9654 with SMTP id 5b1f17b1804b1-43db62bd0a5mr44135325e9.19.1743342134755;
+        Sun, 30 Mar 2025 06:42:14 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFceVYy8P/4rdEylphWngsUQJtsROJ+u5xjCs5nBFb/+Q+tLCz4LEP8IBXSQxv5v24A9e0nCQ==
+X-Received: by 2002:a05:600c:384d:b0:43c:fded:9654 with SMTP id 5b1f17b1804b1-43db62bd0a5mr44134915e9.19.1743342134286;
+        Sun, 30 Mar 2025 06:42:14 -0700 (PDT)
+Received: from redhat.com ([2a0d:6fc0:1517:1000:ea83:8e5f:3302:3575])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43d90000f48sm91443025e9.37.2025.03.30.06.42.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 30 Mar 2025 06:42:12 -0700 (PDT)
+Date: Sun, 30 Mar 2025 09:42:07 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Claire Chang <tientzu@chromium.org>, Rob Herring <robh+dt@kernel.org>,
+	mpe@ellerman.id.au, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>,
+	Frank Rowand <frowand.list@gmail.com>,
+	Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+	boris.ostrovsky@oracle.com, jgross@suse.com,
+	Christoph Hellwig <hch@lst.de>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	heikki.krogerus@linux.intel.com, peterz@infradead.org,
+	benh@kernel.crashing.org, grant.likely@arm.com, paulus@samba.org,
+	mingo@kernel.org, sstabellini@kernel.org,
+	Saravana Kannan <saravanak@google.com>, xypron.glpk@gmx.de,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+	Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+	xen-devel@lists.xenproject.org, Thierry Reding <treding@nvidia.com>,
+	linux-devicetree <devicetree@vger.kernel.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	Nicolas Boichat <drinkcat@chromium.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	lkml <linux-kernel@vger.kernel.org>,
+	"list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Robin Murphy <robin.murphy@arm.com>, hch@infradead.org,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	virtualization@lists.linux.dev, graf@amazon.de
+Subject: Re: Using Restricted DMA for virtio-pci
+Message-ID: <20250330093532-mutt-send-email-mst@kernel.org>
+References: <20210209062131.2300005-1-tientzu@chromium.org>
+ <979b6a34ca5724ced1d4871b58bf227065d7da57.camel@infradead.org>
+ <20250321142947-mutt-send-email-mst@kernel.org>
+ <d1382a6ee959f22dc5f6628d8648af77f4702418.camel@infradead.org>
+ <8e7084b04e5c0456c0ff32ea131a199c6af763cd.camel@infradead.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -100,126 +139,191 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+In-Reply-To: <8e7084b04e5c0456c0ff32ea131a199c6af763cd.camel@infradead.org>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-MFC-PROC-ID: 2Ugap6yTBP34ePsZdn31OTdcWaRrqrKv4OB0dkCgg1w_1743342135
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: 6K6noxtlI7DKdwX5XZATnrIciW5ht5UF
-X-Proofpoint-ORIG-GUID: ArbiTZTrsMQ4WUKzruDXvUT0xHYD1Hsm
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-03-30_03,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 adultscore=0
- phishscore=0 mlxlogscore=999 impostorscore=0 malwarescore=0 spamscore=0
- priorityscore=1501 lowpriorityscore=0 bulkscore=0 mlxscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2503300051
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Commit 030bdc3fd080 ("powerpc/defconfigs: Set HZ=100 on pseries and ppc64
-defconfigs") lowered CONFIG_HZ from 250 to 100, citing reduced need for a
-higher tick rate due to high-resolution timers and concerns about timer
-interrupt overhead and cascading effects in the timer wheel.
+On Fri, Mar 28, 2025 at 05:40:41PM +0000, David Woodhouse wrote:
+> On Fri, 2025-03-21 at 18:42 +0000, David Woodhouse wrote:
+> > On Fri, 2025-03-21 at 14:32 -0400, Michael S. Tsirkin wrote:
+> > > On Fri, Mar 21, 2025 at 03:38:10PM +0000, David Woodhouse wrote:
+> > > > On Tue, 2021-02-09 at 14:21 +0800, Claire Chang wrote:
+> > > > > This series implements mitigations for lack of DMA access control on
+> > > > > systems without an IOMMU, which could result in the DMA accessing the
+> > > > > system memory at unexpected times and/or unexpected addresses, possibly
+> > > > > leading to data leakage or corruption.
+> > > > 
+> > > > Replying to an ancient (2021) thread which has already been merged...
+> > > > 
+> > > > I'd like to be able to use this facility for virtio devices.
+> > > > 
+> > > > Virtio already has a complicated relationship with the DMA API, because
+> > > > there were a bunch of early VMM bugs where the virtio devices where
+> > > > magically exempted from IOMMU protection, but the VMM lied to the guest
+> > > > and claimed they weren't.
+> > > > 
+> > > > With the advent of confidential computing, and the VMM (or whatever's
+> > > > emulating the virtio device) not being *allowed* to arbitrarily access
+> > > > all of the guest's memory, the DMA API becomes necessary again.
+> > > > 
+> > > > Either a virtual IOMMU needs to determine which guest memory the VMM
+> > > > may access, or the DMA API is wrappers around operations which
+> > > > share/unshare (or unencrypt/encrypt) the memory in question.
+> > > > 
+> > > > All of which is complicated and slow, if we're looking at a minimal
+> > > > privileged hypervisor stub like pKVM which enforces the lack of guest
+> > > > memory access from VMM.
+> > > > 
+> > > > I'm thinking of defining a new type of virtio-pci device which cannot
+> > > > do DMA to arbitrary system memory. Instead it has an additional memory
+> > > > BAR which is used as a SWIOTLB for bounce buffering.
+> > > > 
+> > > > The driver for it would look much like the existing virtio-pci device
+> > > > except that it would register the restricted-dma region first (and thus
+> > > > the swiotlb dma_ops), and then just go through the rest of the setup
+> > > > like any other virtio device.
+> > > > 
+> > > > That seems like it ought to be fairly simple, and seems like a
+> > > > reasonable way to allow an untrusted VMM to provide virtio devices with
+> > > > restricted DMA access.
+> > > > 
+> > > > While I start actually doing the typing... does anyone want to start
+> > > > yelling at me now? Christoph? mst? :)
+> > > 
+> > > 
+> > > I don't mind as such (though I don't understand completely), but since
+> > > this is changing the device anyway, I am a bit confused why you can't
+> > > just set the VIRTIO_F_ACCESS_PLATFORM feature bit?� This forces DMA API
+> > > which will DTRT for you, will it not?
+> > 
+> > That would be necessary but not sufficient. ...
 
-However, improvements have been made to the timer wheel algorithm since
-then, particularly in eliminating cascading effects at the cost of minor
-timekeeping inaccuracies. More details are available here
-https://lwn.net/Articles/646950/. This removes the original concern about
-cascading, and the reliance on high-resolution timers is not applicable
-to the scheduler, which still depends on periodic ticks set by CONFIG_HZ.
+could you explain pls?
 
-With the introduction of the EEVDF scheduler, users can specify custom
-slices for workloads. The default base_slice is 3ms, but with CONFIG_HZ=100
-(10ms tick interval), base_slice is ineffective. Workloads like stress-ng
-that do not voluntarily yield the CPU run for ~10ms before switching out.
-Additionally, setting a custom slice below 3ms (e.g., 2ms) should lower
-task latency, but this effect is lost due to the coarse 10ms tick.
+> My first cut at a proposed spec change looks something like this. I'll
+> post it to the virtio-comment list once I've done some corporate
+> bureaucracy and when the list stops sending me python tracebacks in
+> response to my subscribe request.
 
-By increasing CONFIG_HZ to 1000 (1ms tick), base_slice is properly honored,
-and user-defined slices work as expected. Benchmark results support this
-change:
+the linux foundation one does this? maybe poke at the admins.
 
-Latency improvements in schbench with EEVDF under stress-ng-induced noise:
+> In the meantime I'll hack up some QEMU and guest Linux driver support
+> to match.
+> 
+> diff --git a/content.tex b/content.tex
+> index c17ffa6..1e6e1d6 100644
+> --- a/content.tex
+> +++ b/content.tex
+> @@ -773,6 +773,9 @@ \chapter{Reserved Feature Bits}\label{sec:Reserved Feature Bits}
+>  Currently these device-independent feature bits are defined:
+>  
+>  \begin{description}
+> +  \item[VIRTIO_F_SWIOTLB (27)] This feature indicates that the device
+> +  provides a memory region which is to be used for bounce buffering,
+> +  rather than permitting direct memory access to system memory.
+>    \item[VIRTIO_F_INDIRECT_DESC (28)] Negotiating this feature indicates
+>    that the driver can use descriptors with the VIRTQ_DESC_F_INDIRECT
+>    flag set, as described in \ref{sec:Basic Facilities of a Virtio
+> @@ -885,6 +888,10 @@ \chapter{Reserved Feature Bits}\label{sec:Reserved Feature Bits}
+>  VIRTIO_F_ACCESS_PLATFORM is not offered, then a driver MUST pass only physical
+>  addresses to the device.
+>  
+> +A driver SHOULD accept VIRTIO_F_SWIOTLB if it is offered, and it MUST
+> +then pass only addresses within the Software IOTLB bounce buffer to the
+> +device.
+> +
+>  A driver SHOULD accept VIRTIO_F_RING_PACKED if it is offered.
+>  
+>  A driver SHOULD accept VIRTIO_F_ORDER_PLATFORM if it is offered.
+> @@ -921,6 +928,10 @@ \chapter{Reserved Feature Bits}\label{sec:Reserved Feature Bits}
+>  A device MAY fail to operate further if VIRTIO_F_ACCESS_PLATFORM is not
+>  accepted.
+>  
+> +A device MUST NOT offer VIRTIO_F_SWIOTLB if its transport does not
+> +provide a Software IOTLB bounce buffer.
+> +A device MAY fail to operate further if VIRTIO_F_SWIOTLB is not accepted.
+> +
+>  If VIRTIO_F_IN_ORDER has been negotiated, a device MUST use
+>  buffers in the same order in which they have been available.
+>  
+> diff --git a/transport-pci.tex b/transport-pci.tex
+> index a5c6719..23e0d57 100644
+> --- a/transport-pci.tex
+> +++ b/transport-pci.tex
+> @@ -129,6 +129,7 @@ \subsection{Virtio Structure PCI Capabilities}\label{sec:Virtio Transport Option
+>  \item ISR Status
+>  \item Device-specific configuration (optional)
+>  \item PCI configuration access
+> +\item SWIOTLB bounce buffer
+>  \end{itemize}
+>  
+>  Each structure can be mapped by a Base Address register (BAR) belonging to
+> @@ -188,6 +189,8 @@ \subsection{Virtio Structure PCI Capabilities}\label{sec:Virtio Transport Option
+>  #define VIRTIO_PCI_CAP_SHARED_MEMORY_CFG 8
+>  /* Vendor-specific data */
+>  #define VIRTIO_PCI_CAP_VENDOR_CFG        9
+> +/* Software IOTLB bounce buffer */
+> +#define VIRTIO_PCI_CAP_SWIOTLB           10
+>  \end{lstlisting}
+>  
+>          Any other value is reserved for future use.
+> @@ -744,6 +747,36 @@ \subsubsection{Vendor data capability}\label{sec:Virtio
+>  The driver MUST qualify the \field{vendor_id} before
+>  interpreting or writing into the Vendor data capability.
+>  
+> +\subsubsection{Software IOTLB bounce buffer capability}\label{sec:Virtio
+> +Transport Options / Virtio Over PCI Bus / PCI Device Layout /
+> +Software IOTLB bounce buffer capability}
+> +
+> +The optional Software IOTLB bounce buffer capability allows the
+> +device to provide a memory region which can be used by the driver
+> +driver for bounce buffering. This allows a device on the PCI
+> +transport to operate without DMA access to system memory addresses.
+> +
+> +The Software IOTLB region is referenced by the
+> +VIRTIO_PCI_CAP_SWIOTLB capability. Bus addresses within the referenced
+> +range are not subject to the requirements of the VIRTIO_F_ORDER_PLATFORM
+> +capability, if negotiated.
 
-Scheduler       CONFIG_HZ  Custom Slice  99th Percentile Latency (µs)
---------------------------------------------------------------------
-EEVDF           1000       No            0.30x
-EEVDF           1000       2 ms          0.29x
-EEVDF (default) 100        No            1.00x
 
-Switching to HZ=1000 reduces the 99th percentile latency in schbench by
-~70%. This improvement occurs because, with HZ=1000, stress-ng tasks run
-for ~3ms before yielding, compared to ~10ms with HZ=100. As a result,
-schbench gets CPU time sooner, reducing its latency.
+why not? an optimization?
+A mix of swiotlb and system memory might be very challenging from POV
+of ordering.
 
-Daytrader Performance:
 
-Daytrader results show minor variation within standard deviation,
-indicating no significant regression.
+> +
+> +\devicenormative{\paragraph}{Software IOTLB bounce buffer capability}{Virtio
+> +Transport Options / Virtio Over PCI Bus / PCI Device Layout /
+> +Software IOTLB bounce buffer capability}
+> +
+> +Devices which present the Software IOTLB bounce buffer capability
+> +SHOULD also offer the VIRTIO_F_SWIOTLB feature.
+> +
+> +\drivernormative{\paragraph}{Software IOTLB bounce buffer capability}{Virtio
+> +Transport Options / Virtio Over PCI Bus / PCI Device Layout /
+> +Software IOTLB bounce buffer capability}
+> +
+> +The driver SHOULD use the offered buffer in preference to passing system
+> +memory addresses to the device.
 
-Workload (Users/Instances)  Throughput 1000HZ vs 100HZ (Std Dev%)
---------------------------------------------------------------------------
-30 u, 1 i                   +3.01% (1.62%)
-60 u, 1 i                   +1.46% (2.69%)
-90 u, 1 i                   –1.33% (3.09%)
-30 u, 2 i                   -1.20% (1.71%)
-30 u, 3 i                   –0.07% (1.33%)
+Even if not using VIRTIO_F_SWIOTLB? Is that really necessary?
 
-Avg. Response Time: No Change (=)
+> If the driver accepts the VIRTIO_F_SWIOTLB
+> +feature, then the driver MUST use the offered buffer and never pass system
+> +memory addresses to the device.
+> +
+>  \subsubsection{PCI configuration access capability}\label{sec:Virtio Transport Options / Virtio Over PCI Bus / PCI Device Layout / PCI configuration access capability}
+>  
+>  The VIRTIO_PCI_CAP_PCI_CFG capability
+> 
 
-pgbench select queries:
-
-Metric                         1000HZ vs 100HZ (Std Dev%)
-------------------------------------------------------------------
-Average TPS Change             +2.16% (1.27%)
-Average Latency Change         –2.21% (1.21%)
-
-Average TPS: Higher the better
-Average Latency: Lower the better
-
-pgbench shows both throughput and latency improvements beyond standard
-deviation.
-
-Given these results and the improvements in timer wheel implementation,
-increasing CONFIG_HZ to 1000 ensures that powerpc benefits from EEVDF’s
-base_slice and allows fine-tuned scheduling for latency-sensitive
-workloads.
-
-Signed-off-by: Madadi Vineeth Reddy <vineethr@linux.ibm.com>
----
- arch/powerpc/configs/powernv_defconfig | 2 +-
- arch/powerpc/configs/ppc64_defconfig   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-index 6b6d7467fecf..8abf17d26b3a 100644
---- a/arch/powerpc/configs/powernv_defconfig
-+++ b/arch/powerpc/configs/powernv_defconfig
-@@ -46,7 +46,7 @@ CONFIG_CPU_FREQ_GOV_POWERSAVE=y
- CONFIG_CPU_FREQ_GOV_USERSPACE=y
- CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
- CONFIG_CPU_IDLE=y
--CONFIG_HZ_100=y
-+CONFIG_HZ_1000=y
- CONFIG_BINFMT_MISC=m
- CONFIG_PPC_TRANSACTIONAL_MEM=y
- CONFIG_PPC_UV=y
-diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-index 5fa154185efa..45d437e4c62e 100644
---- a/arch/powerpc/configs/ppc64_defconfig
-+++ b/arch/powerpc/configs/ppc64_defconfig
-@@ -57,7 +57,7 @@ CONFIG_CPU_FREQ_GOV_POWERSAVE=y
- CONFIG_CPU_FREQ_GOV_USERSPACE=y
- CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
- CONFIG_CPU_FREQ_PMAC64=y
--CONFIG_HZ_100=y
-+CONFIG_HZ_1000=y
- CONFIG_PPC_TRANSACTIONAL_MEM=y
- CONFIG_KEXEC=y
- CONFIG_KEXEC_FILE=y
--- 
-2.47.0
 
 
