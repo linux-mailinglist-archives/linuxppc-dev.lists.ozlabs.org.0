@@ -1,95 +1,88 @@
-Return-Path: <linuxppc-dev+bounces-7396-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7397-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0C54A7649B
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Mar 2025 12:57:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB188A766B5
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 31 Mar 2025 15:19:58 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZR7Pm03bWz2yd7;
-	Mon, 31 Mar 2025 21:57:32 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZRBZ23lNMz2yf9;
+	Tue,  1 Apr 2025 00:19:54 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=195.135.223.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743418651;
-	cv=none; b=XsBeeOgZ0W1yBfnHoY0F9n3oFtYRCKFDLlkWAgTY5AMWwA5C7M862sgeAQc/i5hdYkijN8lfrqPoKK4ukG9ZQ7pHTfcH+eDhLsAd5Udmmeb8kmj2hgxiN3/KLgBtwGDarbY4WNdlbHBVXawyEvNwlT8jt9bA96HN7LTGgzpKzhu/SsfSXeJykrDh+EozHal7EUbYJDkuOU9hhNe5Ljey5TxIyPy8VumE6q61ynQbVoEwWI94z/xR9wrVLKI5DS6zqMlUNlfAGXkR5oZG7QwzQVsfS2wpXIzaha4UQ4M0PuqIsu47tOZA1aFpG04ZC+TVF7Xs6UK2nv6v71GEuTE5HA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::444"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743427194;
+	cv=none; b=FPq2qE9mztXVespjMlaE35dmMFyGfiogKamxzhwlCPhZESam1bNOVqqgUTW6WLJH6txQXaCeZwO59mkSJggGhe6ANBtieXhqajQefcUXins4T/TcnMesTUIo/AVzOS7BwW4k97DuuFpcqsBqBx/9PN+gUsOdm/OPLKTBBSVPLjjIR/QzbhR7whk4LWbevM9W3yLPk8H0GPH4pUFnQZsnshnNpvTNe379MoyBhimYchxj+ySFbO5E3EBRC0Qnp6I6V336j1UDRG7qeb5ul4ApvEA6LGpBLtwaAcOH3xwb5vSPrCLHeZp4dxjhE61k/7xUvmR1KozDgsasInGFATRzbQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743418651; c=relaxed/relaxed;
-	bh=akuXqyCZOSdlrQSLt/Khb4sbew/avXeSTkqZbTZoVGA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZZGvZGUbJhf0ehm9E68Uy65eAIpyXrVZuZWUtR3BuplTN07UnUyRCA37nT3adtRBp5zWlSgii7EQKhDguw1bNx7ytFsXPNkVCr7t9GtfO4rOo3s51WgXJ6W/aab1Sb48JGGv/ju6ktemzd/Z+3kx40hQjfa3gT7wxIq0Q0AQWSJ/GfAtzqhZL+l5y6Hgc9aTg2zMPcFaJZZdw9ByReusBAn1AGWiwpqLH1Ft8znwGVIWEWlqFf4+qONtIHyEKqN9O+Uz/y5yYirwjiPxGyjQujRwPt7lmt5DmpruCxKyoawp9WBCympl21aea7yNXL36gjbE+tSTrGek5fbhiewsIA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de; dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=YF2RlIl6; dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=jCEmoNfH; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=YF2RlIl6; dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=jCEmoNfH; dkim-atps=neutral; spf=pass (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org) smtp.mailfrom=suse.de
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=suse.de
+	t=1743427194; c=relaxed/relaxed;
+	bh=YcmYk5PTzxCtOJOaVVP5nkeOuljxOTS0F0qSnk/8Fxg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=kZ5Slt9g4tx9q7xeZyxorXUHnirmfZhehFSNFmAkaVs4IJgb/mrSXWLj/iIkYMV1aExGZ/qMjATtQlprZLoy33/TD+peTIRQgWAEsSVqOX6gFwXw8ERaQuZQSZ4DatbqhErhkmADjj40fib0Dw8E7jpPSdn3fYEaCHxr2gBKQK6ROZfiYzD1LFfIwlBZpaF3duDU2BvJ+aSYZtxnGK8FtzIpwYuNoCO1wMTSwrHX3OG+UTzfH/pRNrD/kpgNn+rpBXr/urqTVpKiSfXuA7OeTKjk5zNhWQi2D+B+nAPbutyICoS4eBeHWtL5EeWbzLc0SxqFjX0aIYTWHVd1I4gafA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=fNi0kh21; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com; envelope-from=shung-hsi.yu@suse.com; receiver=lists.ozlabs.org) smtp.mailfrom=suse.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=YF2RlIl6;
-	dkim=pass header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=jCEmoNfH;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.a=rsa-sha256 header.s=susede2_rsa header.b=YF2RlIl6;
-	dkim=neutral header.d=suse.de header.i=@suse.de header.a=ed25519-sha256 header.s=susede2_ed25519 header.b=jCEmoNfH;
+	dkim=pass (2048-bit key; unprotected) header.d=suse.com header.i=@suse.com header.a=rsa-sha256 header.s=google header.b=fNi0kh21;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.de (client-ip=195.135.223.131; helo=smtp-out2.suse.de; envelope-from=msuchanek@suse.de; receiver=lists.ozlabs.org)
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=suse.com (client-ip=2a00:1450:4864:20::444; helo=mail-wr1-x444.google.com; envelope-from=shung-hsi.yu@suse.com; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZR7Pk0G33z2yGN
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Mar 2025 21:57:29 +1100 (AEDT)
-Received: from kitsune.suse.cz (unknown [10.100.12.127])
-	by smtp-out2.suse.de (Postfix) with ESMTP id 8F78D1F38D;
-	Mon, 31 Mar 2025 10:57:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743418646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=akuXqyCZOSdlrQSLt/Khb4sbew/avXeSTkqZbTZoVGA=;
-	b=YF2RlIl6UxN8gjtKv0fke8bouCvvzRT47LyJmr4ULr/9KeRuP9MYy/Zsjz2D7FzQQ0N9Ym
-	9N3yo1NLUQKL3ggQB8T4Mw+2GTh5BNCtI/o42NQCbs/3sMi1UXLBstsuqCa6hvDkNa5Un4
-	B34+bCrrCeqc4z5SMf6hQb/B66alz84=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743418646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=akuXqyCZOSdlrQSLt/Khb4sbew/avXeSTkqZbTZoVGA=;
-	b=jCEmoNfHFOR5dPqJlRHSH7G3ktjTYy1SPRHbig7fqJuMu1xf/bPM+2YX9xT+M53/SOpXGj
-	6LUkv7dq+/o9aCDw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1743418646; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=akuXqyCZOSdlrQSLt/Khb4sbew/avXeSTkqZbTZoVGA=;
-	b=YF2RlIl6UxN8gjtKv0fke8bouCvvzRT47LyJmr4ULr/9KeRuP9MYy/Zsjz2D7FzQQ0N9Ym
-	9N3yo1NLUQKL3ggQB8T4Mw+2GTh5BNCtI/o42NQCbs/3sMi1UXLBstsuqCa6hvDkNa5Un4
-	B34+bCrrCeqc4z5SMf6hQb/B66alz84=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1743418646;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=akuXqyCZOSdlrQSLt/Khb4sbew/avXeSTkqZbTZoVGA=;
-	b=jCEmoNfHFOR5dPqJlRHSH7G3ktjTYy1SPRHbig7fqJuMu1xf/bPM+2YX9xT+M53/SOpXGj
-	6LUkv7dq+/o9aCDw==
-From: Michal Suchanek <msuchanek@suse.de>
-To: linuxppc-dev@lists.ozlabs.org
-Cc: Michal Suchanek <msuchanek@suse.de>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>
-Subject: [PATCH v3] powerpc/boot: Fix build with gcc 15
-Date: Mon, 31 Mar 2025 12:57:19 +0200
-Message-ID: <20250331105722.19709-1-msuchanek@suse.de>
-X-Mailer: git-send-email 2.47.1
-In-Reply-To: <875xjsjj6b.fsf@mpe.ellerman.id.au>
-References: <875xjsjj6b.fsf@mpe.ellerman.id.au>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZRBZ11Smxz2yf3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  1 Apr 2025 00:19:51 +1100 (AEDT)
+Received: by mail-wr1-x444.google.com with SMTP id ffacd0b85a97d-399737f4fa4so2183341f8f.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 31 Mar 2025 06:19:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1743427188; x=1744031988; darn=lists.ozlabs.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YcmYk5PTzxCtOJOaVVP5nkeOuljxOTS0F0qSnk/8Fxg=;
+        b=fNi0kh21biYGb+jahhPD1Uho/RkdSOX+Y6xRAIXQ/y/1ee+nS5ZOo20H2kdOj+jiUw
+         +3rXXnql/Ve3SKbx22n89BXzKdlaqHw5DvlN4hw50PsS/WPJNxkzN9fh96LRfQdqN73M
+         TiCswR+u1icm6QPcKrxLHsfM4Cdeytwb7nc3At0AgUVZiOBZZgmam/YzQ06FkOFgz7Wn
+         b9H2kO/IXNPrCE8BM8g0xDSR8rGeNukiIoGe9VHZ/RTpZ8ii/ubIecNyPO79/SSD5qBm
+         VTFpmq2vzxiTxnx7+US60kUYNP94YfmwUCKXN4tJwHRIsVHF3U7vN5B6wpJ2CJZ7M5yH
+         aXIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1743427188; x=1744031988;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YcmYk5PTzxCtOJOaVVP5nkeOuljxOTS0F0qSnk/8Fxg=;
+        b=KCa9NvneeaW+J1hqZVTSJrM7nqn79Q+oIcmOr2dvYHPT87C8SMKfTjChhAEFGyZqww
+         PK9QC51J7220dP+3QJkJhxa/JTBfk6Nm+zhYohF+WWBcUuNNGODqMlLwK4e58qQfP9a8
+         rHBS3do80vyRy+g8Oen2EkSuS36Z1eYc4VA2gF5zWoPtxzHOwiC2QXllU4HeqtQ2qL6+
+         dlfzhJe3O7lWehmzXWDFJvNh4tyNlZ3kLmfdbOHkuyNRU+azKDOvi7LPSXdTiePhyykP
+         vRmORukWzar2B7PWqPGogVagA23fWYh2lddg//dgR38imCqMgOz2NUiZvUCY9v1gwJTZ
+         iT3w==
+X-Forwarded-Encrypted: i=1; AJvYcCVSG+v5sHHvimouQ+VxgFaaxbZX4gRK/gxJMjA4RcjALq1pQE+mZKfDKHU7YDrwt4P+eLcEouA7A+s3hxE=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyTG7+Xl9fuLwP/cSXe5vGCq2Vr0jdwGe3p2KTp7fo38Q1Kb2RW
+	Yk5+KKcCW0GEJpEYzrGvRW05+rUqgJgfE33epegVnZd7UJPQiYgDgyN/cZHmRYk=
+X-Gm-Gg: ASbGnctIIqYlWPttotWUjy7USmLoIAH8ismMRjv74EJ4Scnb/NhD38BfC4jCpBAWnsx
+	mcRPLkxFP9rLm+JakNbj2Pz7uEnXVoz6wQ/LRCARyQ7sQHmy5LpDTAUKoKO6VH/rEc8HhUEpS7h
+	uKn/gVy7LORtha3Wlm+TceoM5IRv0dRzdSOnVOhkThJWlxRkNPDns5di2W1n6HfH4X5E1tQMiAp
+	5n01btnEJyz8kdiVAjaUQEIDhVIe3HG1vrd+Q5nKpCuhoDZYskpXXjJQkjeThhQbdJ2T58gfDnH
+	Lfctk1hKZjTht6n+J0STerLD8JpDmM8gR1dGwJQy+GxiE+QLQSRnVSy9reaDFYcYpnQpwWNt7hu
+	GwmyZsGvda1fjcChX26R8N3tLpL6/LVNyw+PM4g==
+X-Google-Smtp-Source: AGHT+IGZqmArJyrihK4euVLU0horXdZgOg53706JbhiZUWs5TDnkpgzuRWwj3lskoRyG6Hkk8G0VLA==
+X-Received: by 2002:a05:6000:2b06:b0:399:6d26:7752 with SMTP id ffacd0b85a97d-39c12117ad8mr5124011f8f.38.1743427188556;
+        Mon, 31 Mar 2025 06:19:48 -0700 (PDT)
+Received: from u94a (2001-b011-fa04-3f62-b2dc-efff-fee8-7e7a.dynamic-ip6.hinet.net. [2001:b011:fa04:3f62:b2dc:efff:fee8:7e7a])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2291f1dedcfsm68393265ad.193.2025.03.31.06.19.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Mar 2025 06:19:47 -0700 (PDT)
+Date: Mon, 31 Mar 2025 21:19:36 +0800
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+To: "Naveen N. Rao" <naveen@kernel.org>, 
+	Hari Bathini <hbathini@linux.ibm.com>, bpf@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>, 
+	Mark Rutland <mark.rutland@arm.com>, Daniel Borkmann <daniel@iogearbox.net>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nicholas Piggin <npiggin@gmail.com>, 
+	Alexei Starovoitov <ast@kernel.org>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Vishal Chourasia <vishalc@linux.ibm.com>, 
+	Mahesh J Salgaonkar <mahesh@linux.ibm.com>, Miroslav Benes <mbenes@suse.cz>, 
+	Michal =?utf-8?B?U3VjaMOhbmVr?= <msuchanek@suse.de>, linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+	linux-trace-kernel@vger.kernel.org, live-patching@vger.kernel.org
+Subject: [BUG?] ppc64le: fentry BPF not triggered after live patch (v6.14)
+Message-ID: <rwmwrvvtg3pd7qrnt3of6dideioohwhsplancoc2gdrjran7bg@j5tqng6loymr>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -102,60 +95,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCVD_COUNT_ZERO(0.00)[0];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.de,linux.ibm.com,ellerman.id.au,gmail.com,csgroup.eu,kernel.org,google.com,vger.kernel.org];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:email,suse.de:mid];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Spam-Score: -2.80
-X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Similar to x86 the ppc boot code does not build with GCC 15.
+Hi all,
 
-Copy the fix from
-commit ee2ab467bddf ("x86/boot: Use '-std=gnu11' to fix build with GCC 15")
+On ppc64le (v6.14, kernel config attached), I've observed that fentry
+BPF programs stop being invoked after the target kernel function is live
+patched. This occurs regardless of whether the BPF program was attached
+before or after the live patch. I believe fentry/fprobe on ppc64le is
+added with [1].
 
-Signed-off-by: Michal Suchanek <msuchanek@suse.de>
----
-v2: Move the fix outside of ifdef to apply to all subarchitectures
-v3: Change BOOTCFLAGS rather than BOOTTARGETFLAGS
----
- arch/powerpc/boot/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+Steps to reproduce on ppc64le:
+- Use bpftrace (v0.10.0+) to attach a BPF program to cmdline_proc_show
+  with fentry (kfunc is the older name bpftrace used for fentry, used
+  here for max compatability)
 
-diff --git a/arch/powerpc/boot/Makefile b/arch/powerpc/boot/Makefile
-index 184d0680e661..a7ab087d412c 100644
---- a/arch/powerpc/boot/Makefile
-+++ b/arch/powerpc/boot/Makefile
-@@ -70,6 +70,7 @@ BOOTCPPFLAGS	:= -nostdinc $(LINUXINCLUDE)
- BOOTCPPFLAGS	+= -isystem $(shell $(BOOTCC) -print-file-name=include)
- 
- BOOTCFLAGS	:= $(BOOTTARGETFLAGS) \
-+		   -std=gnu11 \
- 		   -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		   -fno-strict-aliasing -O2 \
- 		   -msoft-float -mno-altivec -mno-vsx \
--- 
-2.47.1
+    bpftrace -e 'kfunc:cmdline_proc_show { printf("%lld: cmdline_proc_show() called by %s\n", nsecs(), comm) }'
 
+- Run `cat /proc/cmdline` and observe bpftrace output
+
+- Load samples/livepatch/livepatch-sample.ko
+
+- Run `cat /proc/cmdline` again. Observe "this has been live patched" in
+  output, but no new bpftrace output.
+
+Note: once the live patching module is disabled through the sysfs interface
+the BPF program invocation is restored.
+
+Is this the expected interaction between fentry BPF and live patching?
+On x86_64 it does _not_ happen, so I'd guess the behavior on ppc64le is
+unintended. Any insights appreciated.
+
+
+Thanks,
+Shung-Hsi Yu
+
+1: https://lore.kernel.org/all/20241030070850.1361304-2-hbathini@linux.ibm.com/
 
