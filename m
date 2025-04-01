@@ -1,81 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-7415-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7416-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9999DA77C12
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Apr 2025 15:29:56 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B22A77E45
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Apr 2025 16:53:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZRpl613Mvz2xjK;
-	Wed,  2 Apr 2025 00:29:54 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZRrZy5v5Nz2yf1;
+	Wed,  2 Apr 2025 01:52:58 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743514194;
-	cv=none; b=ljC2Ud+LlDmEGxG65Y36lDll7RvNEZ2+BsVZdRcWd8S/M9Ok/YsWQwGW3ssopOcWu0gZNv75E+ZrCvsy8aDbAEgDG7dfY2XYzzWuJahNPM9UpDBgdGKW4fpvrqsRdEFs/TsPncYYRM3xSqxuV2Jch/Z58pI7cfhVuvA552RvTQA/s7blPRTapE4GJO7WmTDGNpN7KFZcRmP+5HuivZI8Pti90hF/xNBKY+VppcQvCODD2Xv/fQQYTswpg6PxzvwetBSqRPyJfT/M6Bi1Rq35zmLm+hyFb0wSYOvp93GRBSYPPejsYClqwLBEsTMtxVQ0i+QHXrNVYw7gMLVXqmQGBw==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743514194; c=relaxed/relaxed;
-	bh=vum2VPsAmkSY4eA7/AWlLh/Hj1eTAOOUXG/gORFGUSE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Dq6gJ+Jx51QO6FA6F9Mowhla0VayFII00siwzufgpFdiFYi22/MicgoQq0CpF2GrjZ+KTS0UlmbmMzH2IxVKv6uxFtwy1loMJXWue3fQFCrgD/5txUIlIXQuBF8lNUjAuyXWv+YzDY5sCpvRb/JLAPhC8qkHAdEFZUkcdEOSmrslsSbcYx34z9xRWvvDSk2UPcbubVCAYJEVOZ4RRtLX18txW8ODuLYud0EGm6eo9oPTsmojS6DLmZ58F243lfsHVCLZ7XTkllX2vRMP1TNQvtTipkrYaIx4eE6NMV3Qu0TX/h6JQk48i/IQE2E799l0UUxqAkPPbkr0R9BVD1DreA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EmC44FQQ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:260e::621" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743519178;
+	cv=pass; b=HYz8VTa8rY6IkpQ2mHehKjgFhHpyiiBUgSnyYBnqHZ0trPHAwEGSeBMI48zEcO15GQwkEMKZK1kTJFspYFi+ZoZqnIojT9HXOXkzeOLfZDsDXSthtsTvzvsnm2BkqgpHpE1s1toIVALINKKCbvU7U6ZWTk8lDOiqKV71jBdQ2u4e1kSHyzc+sKZ6lJOYseXYTi62tVB0+QkHX2oV0pOLShjHPv4Wx08PdjGzQjiLdWDkqySPlmN2VDOMcCCFUqGLmjuKfZOOemZyGyVrL+MuosggoCyUJ4JJJOSu/p4yaLBTr2QT3zmtMJRl/Z7APF9nJTQINA+Xo5OX6pr+D9zOOg==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1743519178; c=relaxed/relaxed;
+	bh=jahQ3DtBaPXca5egBHCWthHkQzQJDZIvDycBzFCHbrE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ZP/x5u4ELa6BsTmZAi9FCR7bZ5nJtO1nAnqWlO8POhQ9scqtEA11PtNkBXPmcAVR9Ka5z5cp3v8KHTuwPQOVfG0RVpQnFDctyFO4Zwqi9u0NIxX3gFFKuQj5tGdQ+edLOC+kxxx8YnaP+iB57ce2p1gZ5kXYAVBYWV4i37GeLXO03DFttn7JmVb+OXNmchGvif/QiZyjfDVVBnOFwKplw+LK+QQhLdVu74AoN21xVxBYQBcByM8Hmorhd+T7vzpMq/49nucwRrOPOn/njWhh5+14KBnwjXF4RG8hNjjhA4TH976U/vInRmcTZMeivJAemRO+1z81WOCIcDSRx2eUBA==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nzBDmEUF; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:260e::621; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EmC44FQQ;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=nzBDmEUF;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:260e::621; helo=eur03-am7-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR03-AM7-obe.outbound.protection.outlook.com (mail-am7eur03on20621.outbound.protection.outlook.com [IPv6:2a01:111:f403:260e::621])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZRpl46fnnz2xdL
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Apr 2025 00:29:52 +1100 (AEDT)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53191QAu012055;
-	Tue, 1 Apr 2025 13:29:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=vum2VPsAmkSY4eA7/AWlLh/Hj1eTAO
-	OUXG/gORFGUSE=; b=EmC44FQQn95rDsXfAXrgNmjD0sJ1vSk4+QjAdoDp2sJdB5
-	RVyYDfrKPOtWNOzOE5wdfcpPZ9nTtSwvkpJOBzSmqR21t9vd6kPE6vOxqoO4+bEC
-	ueUsExuRWz92KoYnxIl1gkPcNp8bp1h1AOr3FsuKHNRJnfXdtC3dng35FroZkszk
-	IPPE2wdjJTIVobnIUvG2mWT0CER0n0QyPNW8Lci5Nas9kPZTPSaOgt7a1MCof8Lh
-	8P3Wh261OMrW9F6qiW8OkHD11VWSnW/29fOSAtY1X7DH5I4j/w/BCR/0+SGD3Ols
-	dipv8nYS5UQhXMxeBXJwNJNDjIJFXwjOhf04qymg==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45r290kuvc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Apr 2025 13:29:49 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 531DQEex001724;
-	Tue, 1 Apr 2025 13:29:48 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45rddkrv7u-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 01 Apr 2025 13:29:48 +0000
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 531DTmhK18874890
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 1 Apr 2025 13:29:48 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1A67958050;
-	Tue,  1 Apr 2025 13:29:48 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id BC46C58052;
-	Tue,  1 Apr 2025 13:29:47 +0000 (GMT)
-Received: from d.ibm.com (unknown [9.61.129.250])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Tue,  1 Apr 2025 13:29:47 +0000 (GMT)
-From: Dave Marquardt <davemarq@linux.ibm.com>
-To: Paolo Abeni <pabeni@redhat.com>
-Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Nick Child
- <nnac123@linux.ibm.com>
-Subject: Re: [PATCH net] net: ibmveth: make veth_pool_store stop hanging
-In-Reply-To: <9d90b5e4-bd6d-4d78-a1c5-044621c06c96@redhat.com> (Paolo Abeni's
-	message of "Tue, 1 Apr 2025 13:52:51 +0200")
-References: <20250331212328.109496-1-davemarq@linux.ibm.com>
-	<9d90b5e4-bd6d-4d78-a1c5-044621c06c96@redhat.com>
-Date: Tue, 01 Apr 2025 08:29:47 -0500
-Message-ID: <874iz8au2c.fsf@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZRrZx32fQz2yVv
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Apr 2025 01:52:56 +1100 (AEDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=AtrwQaBLQZ2eUKUeTyb+3rVV4rAkW+UABB63UMo9FreKavV3prq9PbA4x1Y5umu6/Q/trWnv+AUlPafkFbyIwx5T/1pithsUlRURV3C6kzZ02QKPuvY5o/cqBnJ3NyWWhi7AiVcoIX795BHN7fcqQxjTlZqhOG7I4zq/9hu7/7u+/FjDiKsI2+/r/xPWgB/8ny9rb1CtvSs0TGtzMWig/CPY5qbtTieprcJJl1lfJip939KxTELN9s1vNPhIiywrcHpQufqNsVcrxOBMMbfKbvDFkVxhy0/FSs3p8RMoBdwwDoRcefv5cyqd+3ISfUdX0bDrFEzsCwU3JAhsPE6dJA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jahQ3DtBaPXca5egBHCWthHkQzQJDZIvDycBzFCHbrE=;
+ b=Sbuk9k+yzCwzlsDsGwpGVrbOsOIojNI6S4M5Z1lcuyG6pv7aUrQQTPBgHKxbZzgAb7FzSCX9a2nIeTru1vqbn9YluEAMatnedb/dEJPYAtKqg6ncjdnmI5mxYpsbvdOi9N95NmA598R3WrcLK04Lfs5fdFhdXWIGDnmFWXYlPM1sHnryU8FOKUwn4SUFPIh2CJgBuFQeJYDYRo2+y/t0xw1usmkofA+wCNo95V7w4lJT6XELYd1nQ+u4pKucXeAAYEex85NBk6jouqTdkoVaWJn3jtItvzazk79bu1LR3hwfrT7l2M9JtPke5loDzA+xroZ/auVZPmHXY16Ask9ONQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jahQ3DtBaPXca5egBHCWthHkQzQJDZIvDycBzFCHbrE=;
+ b=nzBDmEUFNaYRK178nrBqFsrQ2vPvy2oOmvawBeTh/0ImfFceVhBMzM8by5At9/PoPZ3HWtURsUjF4/da0rqwfQ63/cMIM5P7IyagFUYOgYlhX7fD8FRDDmeYBOJJM+CgBXmImqj/NohvL8W2i3yW2w8v7+wMNMlib1RIu9y59/28xCfCZe6T6cKKR2AlgTxx2zOjaXxhg8PL+BBuO7vlt2n5l2qI5dQlwOfj3Xxr30aBfIJ53Yf+nrpZlQ7uOB5bfTmYsoPrbIraV3SDnJxUq7mIZQnG3zri/OwLtMh7yAMgEAFxEMyYBBGEOIwaylegG8cyzeMxKGH4tZDP/UnLtA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by DU2PR04MB9524.eurprd04.prod.outlook.com (2603:10a6:10:2f7::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8534.50; Tue, 1 Apr
+ 2025 14:52:35 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8534.048; Tue, 1 Apr 2025
+ 14:52:35 +0000
+Date: Tue, 1 Apr 2025 10:52:25 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Henry Martin <bsdhenrymartin@gmail.com>
+Cc: shengjiu.wang@gmail.com, xiubo.lee@gmail.com, festevam@gmail.com,
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org,
+	perex@perex.cz, tiwai@suse.com, shawnguo@kernel.org,
+	s.hauer@pengutronix.de, kernel@pengutronix.de,
+	linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v1] ASoC: imx-card: Add NULL check in imx_card_probe()
+Message-ID: <Z+v9qbFjSNpDcHW1@lizhi-Precision-Tower-5810>
+References: <20250401142510.29900-1-bsdhenrymartin@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250401142510.29900-1-bsdhenrymartin@gmail.com>
+X-ClientProxiedBy: BYAPR01CA0034.prod.exchangelabs.com (2603:10b6:a02:80::47)
+ To PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -88,171 +83,125 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: vUjxD8Z2vmjkO8ti1nt_96TMMdbj2M_8
-X-Proofpoint-GUID: vUjxD8Z2vmjkO8ti1nt_96TMMdbj2M_8
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-01_05,2025-03-27_02,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 bulkscore=0 clxscore=1011 adultscore=0 spamscore=0
- lowpriorityscore=0 suspectscore=0 mlxscore=0 mlxlogscore=999
- impostorscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2504010083
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS,WEIRD_PORT autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|DU2PR04MB9524:EE_
+X-MS-Office365-Filtering-Correlation-Id: dd336ecf-a78e-4043-a02d-08dd712cd68f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|52116014|366016|376014|7416014|38350700014|7053199007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?xrapDI0y1R/W9V7Ww6BEh24WxOTQWKy3CsjrnZBKkksprmE9qTyJCVSqopNw?=
+ =?us-ascii?Q?bz9AqI2nInt7WSp0J9My1Diz12Ll4tizocFvl3CQhVHKZlJIO1WQ/F9Skfaa?=
+ =?us-ascii?Q?z0gVkAeczT4fSibMsxhTKBZh+K2GjqJPedxz3seFgmHNjNjFNMOVzfFuanGO?=
+ =?us-ascii?Q?E/oZjL/6LVDm6exM/bB2KlvI+fB/5fOBoYABWOBDIvvohsb2nYeAdtrAzqDC?=
+ =?us-ascii?Q?YPZTul4s/B5h6bDJc5Fas4dcJ6KTSSY90cV4HDzJmINGoSCsFs4++KLxQrq+?=
+ =?us-ascii?Q?2Sh6obMG1CZ3kwLtgHhslH2dh15gtpojKiMYHP8pYySbzyV88CMY2DMnV1LM?=
+ =?us-ascii?Q?WjSyODP9J8qOrMlqb1oV4DwhnJDA3XoeYVD5PhK22b9yqHbw9k3S1JLdG6Mc?=
+ =?us-ascii?Q?j13C6EHsfEx/zeEpenNouaMPOeW4Sh0WobtczT8WNwB6JOhLMeK110URmfX2?=
+ =?us-ascii?Q?I2gVNZEMGMJHIFDcio/n/pXaHTTPtMmYw3LKnvzhWK+w4KRCF3tp5gWI0sUT?=
+ =?us-ascii?Q?U0Tbfbtkvd/HxxGUBmTLdNfGcASkErjH+qobXsD7vm6VWBbjfb4rPrGU9jY+?=
+ =?us-ascii?Q?3IAGGpFnC+DDd6vQC5/D95JCnnGkSRPFDdSWgdJiH1UgkTHDX8XRWDOYZGdi?=
+ =?us-ascii?Q?BGrOYoJedzj30W/FDsrUUHWrompZlUoz1v7qbNe/tmnysk8Xts8YceVhXqN/?=
+ =?us-ascii?Q?45uZSL1A4ytyXQBc8n9IQscas4FCWgdMLVh9w2oAGhr9FlOs74fcU0duxaKa?=
+ =?us-ascii?Q?m3iO5pymJlhjqi3YYDZawTJCH+ASG3MPl0rk/HfdDeMY+RliTWlmVbw3l9TX?=
+ =?us-ascii?Q?+CAI9uh0gio0CxvLodmt5hh8SpuVfM7rYLrSiHfD0uUuj6+kwUvWA4S1DYNz?=
+ =?us-ascii?Q?kVkFduXXlcChP6N6asQ1z2AtuPCyzAoq0dWVuEOV/MtMDbg68dBiMdvi/q1B?=
+ =?us-ascii?Q?nN5xiW/ZY7qCqK0X8w8Lvee+Rw7uC8DrEjebHhJKUvRfaotQ+J1zfEJxAkoA?=
+ =?us-ascii?Q?dwNaRVBF8OQ6iZ+f7it3pg/rU87GRGHZr3ly59bz7nB1dAD+eCCPpmg2ik6s?=
+ =?us-ascii?Q?vpyqQtlZ5lbscO6rScFVabVq+q3iFc7ESSUACvj/N7B6ToTg/auRiVJB3xfN?=
+ =?us-ascii?Q?SQrfL4aEMwnIDeRvmLh/EIdeORt8+g6PZ2dSW56h8zvwFpJUwvIu/dCBdv7c?=
+ =?us-ascii?Q?Exp61YIoFXfiVkTcRcoXHaCkDxD/XxSPexyYMfq/VPCoutRvKJZVooAVQ0sY?=
+ =?us-ascii?Q?tLJGgc9tB4P2BftdBnHznhK6O3AGeCbYvOjy5tmTXLqa7AbM7bB99/y1exjv?=
+ =?us-ascii?Q?CynJiUKe8OcgpFXfMkzQbQ9tvMgv99A0AP2UdCMXdSnG7txVX0m23wjX+lP/?=
+ =?us-ascii?Q?hcRkmaPhrRPM+bji4F9BZ7GNSNF8Iq6mQwCh/B0dz9fm6U1OTE9m1lvpBZ1C?=
+ =?us-ascii?Q?dtyKUYQTPIieM0mgn8GcKinCc7xHM6oE?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(52116014)(366016)(376014)(7416014)(38350700014)(7053199007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?n3E9PQhYtxnn9vbJYQoprs4T9QSBY1+cxJJZ99vslP/0JNx1fvCqeUFYTyJR?=
+ =?us-ascii?Q?fZcb71474eSc2p2Fa99b8ajRQsYlRxA6yxWc5I9KDSW4JyVL6VsyM7CEdz4C?=
+ =?us-ascii?Q?OIAzgzJ9g29TImur/NeYAv6yNAQX1v9Ef8mYQ465dcQH4YTIARw3OnqkOmH2?=
+ =?us-ascii?Q?mKYXJMeCdRPYfjvJN9X/7Q7Fj/sLjGKNGcD+K0IE605DQ7cFUGXU6FfKy+mq?=
+ =?us-ascii?Q?Dl4mh+K4QjqmjuBW2SAzHEFPMV/9/NioTWzMdjZnmoEztyaHKR+Xyefko5kn?=
+ =?us-ascii?Q?5oMSRzgHWVlFduVk+t11RvtaU0d1lTvnXwMcnRJzrjZgsGSAnDnD1BEwboha?=
+ =?us-ascii?Q?zJUhd+kTlsdF+yIxRBtsO8j7+R3gh6IEDzMYLdN+EvdkaOU7OIF6PDMKKxg6?=
+ =?us-ascii?Q?xSSRhT7YJR1GkGa6UNQH2f5vUJZhytfqtJ5qqd7hUrn+VrtPkXBiALOPNYCm?=
+ =?us-ascii?Q?LFd/vIL3SGNBD4VYEmYPELG3J023XKk5zGsW8LMqoGAE47AQtDsPCk1uTiKK?=
+ =?us-ascii?Q?03y80m4wu4EhvFce9ssuSWGf/LrDgP05N4mQIo9zvtRdf9sKmgdKP+ITB2PC?=
+ =?us-ascii?Q?KcBnmaBhm3BUjVMSKgmrMl5t7MrrVaPmXiJcsJqVgXG+wkoLWceVPY/5yr+p?=
+ =?us-ascii?Q?URIhktNQuWQUhmHuKjE4TG8McB27OF/EmYfCqqAH8KzLQcNixd4JJYDg/Lok?=
+ =?us-ascii?Q?2MNUWFdOn04us1HZDK7lZ9exePMZm7qqPf+qUKVHExpoKcu76dgpp41ubORs?=
+ =?us-ascii?Q?ZQAEUHZ+tPIlTPZqPnOQ4nhqQcWT6ITZYAaYcK/5uLgreJnDl2GASzaBvi6X?=
+ =?us-ascii?Q?Gdl7UuI8xFnIgRV9ZL5uq61VXIVOGdxSLMhjRxsZH+lAoOgzdpGB8xIFGJHd?=
+ =?us-ascii?Q?WryC856BjHJmtlY+3s5ahxrjVcel4UR2QV8eg2MZuWF2pXCJSBkN7zQkb7BU?=
+ =?us-ascii?Q?yRKMsm9gX43M00J7DN+jz11FSpEaxL+73nmgk72qPz6PVCEKcMklJQUSNWnF?=
+ =?us-ascii?Q?aHkHt8wg1fAuJRkY8KKfnFJNkvDqnUfddByJ6fm+m3w0DYeAInQeiWNqioIE?=
+ =?us-ascii?Q?PgHbj9zI4QE2hnwMUQdNeadRV2fAatP2WzpcUiAoDNCCFQWosXw08AHlKWaK?=
+ =?us-ascii?Q?w2Y3yQQjUo+tLAk2jBDNO+825RA4Yl9CrCOZZ0xuzHJscyke2wp/Jt6vU1Gj?=
+ =?us-ascii?Q?Yx+CzUz3hedPgLiwKbW8X5fZe0xjnXklurV7gCz9A/lxuMPuAP1qnNU0mIhv?=
+ =?us-ascii?Q?J2qGUbRRbRsB8LtgjSNBgSDhHBgnkwTjffcN6nxJdYVfZdxQmeaU8LPuW1r3?=
+ =?us-ascii?Q?/x4c01w32t5Z6PsVy5Vpryoq7Sh1+8b5c3Uq9hNg0pa2956r87fOLMm4UUAq?=
+ =?us-ascii?Q?LVefdnKraR5nfgiDiHG3EfjllfWjX2EFnUbVBDjSKopCNLtMcuHjHVLE0XZZ?=
+ =?us-ascii?Q?P4sNgMf6dOLlmMJXseRyGFPd2XZ7tCmd6BrwFcmCJIEwfb0AWod0VMH0wVJC?=
+ =?us-ascii?Q?th9DBEDTSGuU3z5R3lUUxyEMnBYl3kMAIXOV72mOnBHmFRiQ6ikNcgjSTNTz?=
+ =?us-ascii?Q?xXGlfJF9gPbjqfszp2Kz5ksnVDGRV7yUevyW7UMy?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: dd336ecf-a78e-4043-a02d-08dd712cd68f
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Apr 2025 14:52:35.1586
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sId6UeOeDyl4OiF5Qf00N+W1FqOJWoHg9GjbgkzjWfoQLA0irJQSBkteqP9MdIl+1AVMjMFncE/tqXFQlaGY5Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR04MB9524
+X-Spam-Status: No, score=0.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Paolo Abeni <pabeni@redhat.com> writes:
-
-> On 3/31/25 11:23 PM, davemarq@linux.ibm.com wrote:
->> From: Dave Marquardt <davemarq@linux.ibm.com>
->> 
->> Use rtnl_mutex to synchronize veth_pool_store with itself,
->> ibmveth_close and ibmveth_open, preventing multiple calls in a row to
->> napi_disable.
->> 
->> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
->> Fixes: 860f242eb534 ("[PATCH] ibmveth change buffer pools dynamically")
->> Reviewed-by: Nick Child <nnac123@linux.ibm.com>
->> ---
->> In working on removing BUG_ON calls from ibmveth, I realized that 2
->> threads could call veth_pool_store through writing to
->> /sys/devices/vio/30000002/pool*/*. You can do this easily with a little
->> shell script.
->> 
->> Running on a 6.14 kernel, I saw a hang:
->> 
->>     [  243.683282][  T108] INFO: task stress.sh:5829 blocked for more than 122 seconds.
->>     [  243.683300][  T108]       Not tainted 6.14.0-01103-g2df0c02dab82 #3
->>     [  243.683303][  T108] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->>     [  366.563278][  T108] INFO: task stress.sh:5829 blocked for more than 245 seconds.
->>     [  366.563297][  T108]       Not tainted 6.14.0-01103-g2df0c02dab82 #3
->>     [  366.563301][  T108] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->> 
->> I configured LOCKDEP, compiled ibmveth.c with DEBUG, and built a new
->> kernel. I ran the test again and saw:
->> 
->>     Setting pool0/active to 0
->>     Setting pool1/active to 1
->>     [   73.911067][ T4365] ibmveth 30000002 eth0: close starting
->>     Setting pool1/active to 1
->>     Setting pool1/active to 0
->>     [   73.911367][ T4366] ibmveth 30000002 eth0: close starting
->>     [   73.916056][ T4365] ibmveth 30000002 eth0: close complete
->>     [   73.916064][ T4365] ibmveth 30000002 eth0: open starting
->>     [  110.808564][  T712] systemd-journald[712]: Sent WATCHDOG=1 notification.
->>     [  230.808495][  T712] systemd-journald[712]: Sent WATCHDOG=1 notification.
->>     [  243.683786][  T123] INFO: task stress.sh:4365 blocked for more than 122 seconds.
->>     [  243.683827][  T123]       Not tainted 6.14.0-01103-g2df0c02dab82-dirty #8
->>     [  243.683833][  T123] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
->>     [  243.683838][  T123] task:stress.sh       state:D stack:28096 pid:4365  tgid:4365  ppid:4364   task_flags:0x400040 flags:0x00042000
->>     [  243.683852][  T123] Call Trace:
->>     [  243.683857][  T123] [c00000000c38f690] [0000000000000001] 0x1 (unreliable)
->>     [  243.683868][  T123] [c00000000c38f840] [c00000000001f908] __switch_to+0x318/0x4e0
->>     [  243.683878][  T123] [c00000000c38f8a0] [c000000001549a70] __schedule+0x500/0x12a0
->>     [  243.683888][  T123] [c00000000c38f9a0] [c00000000154a878] schedule+0x68/0x210
->>     [  243.683896][  T123] [c00000000c38f9d0] [c00000000154ac80] schedule_preempt_disabled+0x30/0x50
->>     [  243.683904][  T123] [c00000000c38fa00] [c00000000154dbb0] __mutex_lock+0x730/0x10f0
->>     [  243.683913][  T123] [c00000000c38fb10] [c000000001154d40] napi_enable+0x30/0x60
->>     [  243.683921][  T123] [c00000000c38fb40] [c000000000f4ae94] ibmveth_open+0x68/0x5dc
->>     [  243.683928][  T123] [c00000000c38fbe0] [c000000000f4aa20] veth_pool_store+0x220/0x270
->>     [  243.683936][  T123] [c00000000c38fc70] [c000000000826278] sysfs_kf_write+0x68/0xb0
->>     [  243.683944][  T123] [c00000000c38fcb0] [c0000000008240b8] kernfs_fop_write_iter+0x198/0x2d0
->>     [  243.683951][  T123] [c00000000c38fd00] [c00000000071b9ac] vfs_write+0x34c/0x650
->>     [  243.683958][  T123] [c00000000c38fdc0] [c00000000071bea8] ksys_write+0x88/0x150
->>     [  243.683966][  T123] [c00000000c38fe10] [c0000000000317f4] system_call_exception+0x124/0x340
->>     [  243.683973][  T123] [c00000000c38fe50] [c00000000000d05c] system_call_vectored_common+0x15c/0x2ec
->>     ...
->>     [  243.684087][  T123] Showing all locks held in the system:
->>     [  243.684095][  T123] 1 lock held by khungtaskd/123:
->>     [  243.684099][  T123]  #0: c00000000278e370 (rcu_read_lock){....}-{1:2}, at: debug_show_all_locks+0x50/0x248
->>     [  243.684114][  T123] 4 locks held by stress.sh/4365:
->>     [  243.684119][  T123]  #0: c00000003a4cd3f8 (sb_writers#3){.+.+}-{0:0}, at: ksys_write+0x88/0x150
->>     [  243.684132][  T123]  #1: c000000041aea888 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x154/0x2d0
->>     [  243.684143][  T123]  #2: c0000000366fb9a8 (kn->active#64){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x160/0x2d0
->>     [  243.684155][  T123]  #3: c000000035ff4cb8 (&dev->lock){+.+.}-{3:3}, at: napi_enable+0x30/0x60
->>     [  243.684166][  T123] 5 locks held by stress.sh/4366:
->>     [  243.684170][  T123]  #0: c00000003a4cd3f8 (sb_writers#3){.+.+}-{0:0}, at: ksys_write+0x88/0x150
->>     [  243.684183][  T123]  #1: c00000000aee2288 (&of->mutex#2){+.+.}-{3:3}, at: kernfs_fop_write_iter+0x154/0x2d0
->>     [  243.684194][  T123]  #2: c0000000366f4ba8 (kn->active#64){.+.+}-{0:0}, at: kernfs_fop_write_iter+0x160/0x2d0
->>     [  243.684205][  T123]  #3: c000000035ff4cb8 (&dev->lock){+.+.}-{3:3}, at: napi_disable+0x30/0x60
->>     [  243.684216][  T123]  #4: c0000003ff9bbf18 (&rq->__lock){-.-.}-{2:2}, at: __schedule+0x138/0x12a0
->> 
->> From the ibmveth debug, two threads are calling veth_pool_store, which
->> calls ibmveth_close and ibmveth_open. Here's the sequence:
->> 
->>   T4365             T4366             
->>   ----------------- ----------------- ---------
->>   veth_pool_store   veth_pool_store   
->>                     ibmveth_close     
->>   ibmveth_close                       
->>   napi_disable                        
->>                     napi_disable      
->>   ibmveth_open                        
->>   napi_enable                         <- HANG
->> 
->> ibmveth_close calls napi_disable at the top and ibmveth_open calls
->> napi_enable at the top.
->> 
->> https://docs.kernel.org/networking/napi.html]] says
->> 
->>   The control APIs are not idempotent. Control API calls are safe
->>   against concurrent use of datapath APIs but an incorrect sequence of
->>   control API calls may result in crashes, deadlocks, or race
->>   conditions. For example, calling napi_disable() multiple times in a
->>   row will deadlock.
->> 
->> In the normal open and close paths, rtnl_mutex is acquired to prevent
->> other callers. This is missing from veth_pool_store. Use rtnl_mutex in
->> veth_pool_store fixes these hangs.
+On Tue, Apr 01, 2025 at 10:25:10PM +0800, Henry Martin wrote:
+> devm_kasprintf() returns NULL when memory allocation fails. Currently,
+> imx_card_probe() does not check for this case, which results in a NULL
+> pointer dereference.
 >
-> Some/most of the above should actually land into the commit message,
-> please rewrite it accordingly.
-
-Okay, will do for v2.
-
->>  drivers/net/ethernet/ibm/ibmveth.c | 27 +++++++++++++++++++++++----
->>  1 file changed, 23 insertions(+), 4 deletions(-)
->> 
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->> index b619a3ec245b..77ef19a53e72 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.c
->> +++ b/drivers/net/ethernet/ibm/ibmveth.c
->> @@ -1802,18 +1802,24 @@ static ssize_t veth_pool_store(struct kobject *kobj, struct attribute *attr,
->>  	long value = simple_strtol(buf, NULL, 10);
->>  	long rc;
->>  
->> +	rtnl_lock();
->> +
->>  	if (attr == &veth_active_attr) {
->>  		if (value && !pool->active) {
->>  			if (netif_running(netdev)) {
->>  				if (ibmveth_alloc_buffer_pool(pool)) {
->>  					netdev_err(netdev,
->>  						   "unable to alloc pool\n");
->> +					rtnl_unlock();
->>  					return -ENOMEM;
->>  				}
->>  				pool->active = 1;
->>  				ibmveth_close(netdev);
->> -				if ((rc = ibmveth_open(netdev)))
->> +				rc = ibmveth_open(netdev);
->> +				if (rc) {
->> +					rtnl_unlock();
->>  					return rc;
+> Add NULL check after devm_kasprintf() to prevent this issue.
 >
-> If you avoid a bit of duplicate code with
-> 					goto unlock_err;
+> Fixes: aa736700f42f ("ASoC: imx-card: Add imx-card machine driver")
+> Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+> ---
+
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+
+>  sound/soc/fsl/imx-card.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 >
-> // at the end of the function
-> unlock_err:
-> 	rtnl_unlock();
-> 	return rc;
-
-Yes, I'll do this for v2. Thanks.
-
--Dave
+> diff --git a/sound/soc/fsl/imx-card.c b/sound/soc/fsl/imx-card.c
+> index 905294682996..3686d468506b 100644
+> --- a/sound/soc/fsl/imx-card.c
+> +++ b/sound/soc/fsl/imx-card.c
+> @@ -772,6 +772,8 @@ static int imx_card_probe(struct platform_device *pdev)
+>  				data->dapm_routes[i].sink =
+>  					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+>  						       i + 1, "Playback");
+> +				if (!data->dapm_routes[i].sink)
+> +					return -ENOMEM;
+>  				data->dapm_routes[i].source = "CPU-Playback";
+>  			}
+>  		}
+> @@ -789,6 +791,8 @@ static int imx_card_probe(struct platform_device *pdev)
+>  				data->dapm_routes[i].source =
+>  					devm_kasprintf(&pdev->dev, GFP_KERNEL, "%d %s",
+>  						       i + 1, "Capture");
+> +				if (!data->dapm_routes[i].source)
+> +					return -ENOMEM;
+>  				data->dapm_routes[i].sink = "CPU-Capture";
+>  			}
+>  		}
+> --
+> 2.34.1
+>
 
