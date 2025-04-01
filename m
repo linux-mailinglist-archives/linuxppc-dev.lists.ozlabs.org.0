@@ -1,61 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-7419-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7420-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C363DA781DA
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Apr 2025 20:04:58 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFF15A7830E
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  1 Apr 2025 22:01:10 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZRwrS1J1kz2xl6;
-	Wed,  2 Apr 2025 05:04:56 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZRzQX2T5Cz2yfL;
+	Wed,  2 Apr 2025 07:01:08 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743530696;
-	cv=none; b=Ndr7ZpoDWOlkcMzqNHRXqOZE9l6IYd/BjQ9b0DGTYthZJH1urteSrw3tt8vq+SQoLnUoNBK96B590F++/b0+ikVoP07O7RGFM0YjrmQXevCN3RLxIkQBnlYKhaxleTUm7mNoelpHwJWZN61gbjLJ4/fyzF3AzREkh6siFH3z3XBBO19kxUcbdQEh3A+Xu8wxLHIP9NfhH8cPKtaTZYA6/fTGZowaR4bbVqN9mGqoMc+Qos68Ss7npCDrEwTze8CxZGEbOiZSIkltbNRTN2Og8h+xgFeCtt8evqbQ7tpoOgNkwcc7JqPPWoJkYcrda8kiqZupP/kWmXqctCFM6dEhng==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743537668;
+	cv=none; b=Yp/SUkNhD/gVE2wE0r9sqfOHppkHAVGlkDiJlRZ2AVefbr9NIieAyT67BCOSAN6E6jCcreBIR0mlBScv6nZLJ3khfyo7p/81lp8CUPMLbMe6TDcWvZfz/2oF9KHdQYBZDjEhgjCkVcf/37uiheUUCA0A2PggOMbgm/VfvHrbeAC7tVBl+07o9FCNt7q+Af/1LKAaF9WoKMXtXQ0Yvu4/OwffO9EtTNBsWFwGs4E6bi/VZpZHqCTQNObOZRChKMgbooPhmmn9l81NTs6MiopQnYuIiw5bWt3GgBb4OKlvtFakdMQ50fOYHhE1y76QuX3Xfbr6FIr8dbsXf61ZZ2vN9Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743530696; c=relaxed/relaxed;
-	bh=LB5IRxPNWYdSS+G6MLjXl0IBrONExgZhEiGTec7yczk=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=CtBci9qZ/8mlLP0bX6vh5PRvHVqGsMSEZsRHUQ3BOL32IGUpi4hubfWnzPNYPPDxeqwpDlX0g7SORlvZpgDrQ8BEr5pQPYn3KKfD4NYBQZQuUyD25VZF46DyUPl2Pu2Y9uNzdLuvko5uUzp8nDN3hzA+5KTYRcWtX/W5Hb+K60xFvou1lAx+J1raj0TEs7jruYQcgcYOLp7HrsmObqHnx7dQrjW4Xi2lZQ53cQ63MJrCwGuJU8M3lY4T3zdtRROqWZVYNbQJUaPFpmIha11AU4MochQ/2ft65Ieop3chCDTM93z9BQbjpuiS8I2ZJQ9vGWy3buvhpG3R2DmzzonlTg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h/i+k9op; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1743537668; c=relaxed/relaxed;
+	bh=jM6QZVFE4yOPUAkjj67yuEz/kk194Hzhle9HnSGWJfE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfGt4ouvEXhE0qzv85mbfhnVk2/msHBv7G/lsR9EZlsvl9zysXvPM8FcKa3uDqfdqLLBd7k5qC/mT5N7HB+VIo6BgdHiWeNZ4DAM+JUjSMUjTnZvKmf6r5WykZ5FjNTbbcNyzgvUXkmvgvuUbOTWOAwklwpmEB7Jq45rKnPm2xS7PCLjvmtkamWScg2B2+YpqgCiK6Jgg58Rsz9yDH90ZOk0qcqJ+Igx4YXNKlZCNSxfMTElv6pbkWDRJ4tNG5mH+LdS0gwFr6sq8l4E+X//EwNz8hWrznUaLNcUueF9MZdbUhFYz/pZ/SYmeEDbFOUn+ijyGtfV01ttDVAaepp4SQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sj0UIMgJ; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=h/i+k9op;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Sj0UIMgJ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=jpoimboe@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZRwrR37lWz2xQD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Apr 2025 05:04:55 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZRzQR5yPxz2yVX
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  2 Apr 2025 07:01:03 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 1C29268409;
-	Tue,  1 Apr 2025 18:04:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C5DC4CEE4;
-	Tue,  1 Apr 2025 18:04:49 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 3ABB8A4155A;
+	Tue,  1 Apr 2025 19:55:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB7BC4CEE4;
+	Tue,  1 Apr 2025 20:00:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743530692;
-	bh=X3UWVR5FrAiTLHuUdqDGWuSjTyf0NcWGQa2Gmhjp7SI=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=h/i+k9opvXNDV/viKgz+IkFJDV0Q/+srL6x1bADFHk/mNdi36uSTPuGv5g5wlUNOh
-	 6nTKRTXq6KItqyV8v9GzG52p1ttKL/MYNkyBNpj8uScFbZrEjS0bNcoGAg9RXnZGAo
-	 HDXCYaH9bFx5OIdBohOCn28yQ3WawNYDtNw47zX+kv7v2sdYPNQw+0wYns//VNVt+q
-	 L8I+jUstMjum93FaeEfdgxeeP2/kDfqmj3ZRRoJ3zFZnmyhc17xR6h7fJsP3l0ai6t
-	 4yZVNp2B0kHRdpLkiAOJsyBz7/9VtTlupu9J9HrsATz6sjr/RzT8V3wmwEDU3iRaiJ
-	 2FZWVFt4Om9qA==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, xiubo.lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- shawnguo@kernel.org, s.hauer@pengutronix.de, 
- Henry Martin <bsdhenrymartin@gmail.com>
-Cc: kernel@pengutronix.de, linux-sound@vger.kernel.org, 
- linuxppc-dev@lists.ozlabs.org, imx@lists.linux.dev, 
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-In-Reply-To: <20250401142510.29900-1-bsdhenrymartin@gmail.com>
-References: <20250401142510.29900-1-bsdhenrymartin@gmail.com>
-Subject: Re: [PATCH v1] ASoC: imx-card: Add NULL check in imx_card_probe()
-Message-Id: <174353068900.126969.2791062137526970115.b4-ty@kernel.org>
-Date: Tue, 01 Apr 2025 19:04:49 +0100
+	s=k20201202; t=1743537659;
+	bh=SsEtymDjFxM1dLd88DEPk7b/DPbXgQcSJ+nDYJthskA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Sj0UIMgJB3BhWg6Q5hThirUmVNapBvLUCssaM9xJhq4z8rINztn8U2a8VU7uKVvO+
+	 KNTKB8yFVEH/6P0aJxnzC8ql/cEZBktK2XjcFkIJonPY+vNiktGaEJh1pu3KP86pOZ
+	 0Z/JDChHvvi4fQgWwY2pv315OrvtUWanr7oVb/zq3/xkPyam7hR1FljADmz/mdjKmW
+	 3KeD4+Bq0JfzX1PdRiolOCzdjflmaIQN6ONyog6XNtxrNEObEDL4X29f59mJiYMhry
+	 cfSVpBrf0Tf8VE+sJ34qXMxAOHcRzpXoXlXhcPxZlM+YajKX9z4ArQ7bi8GhCQGACf
+	 ReX1Z2plvjm5Q==
+Date: Tue, 1 Apr 2025 13:00:55 -0700
+From: Josh Poimboeuf <jpoimboe@kernel.org>
+To: Guenter Roeck <linux@roeck-us.net>
+Cc: Peter Zijlstra <peterz@infradead.org>, 
+	Alessandro Carminati <acarmina@redhat.com>, linux-kselftest@vger.kernel.org, 
+	David Airlie <airlied@gmail.com>, Arnd Bergmann <arnd@arndb.de>, 
+	=?utf-8?B?TWHDrXJh?= Canal <mcanal@igalia.com>, Dan Carpenter <dan.carpenter@linaro.org>, 
+	Kees Cook <keescook@chromium.org>, Daniel Diaz <daniel.diaz@linaro.org>, 
+	David Gow <davidgow@google.com>, Arthur Grillo <arthurgrillo@riseup.net>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, Naresh Kamboju <naresh.kamboju@linaro.org>, 
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Maxime Ripard <mripard@kernel.org>, Ville =?utf-8?B?U3lyasOkbMOk?= <ville.syrjala@linux.intel.com>, 
+	Daniel Vetter <daniel@ffwll.ch>, Thomas Zimmermann <tzimmermann@suse.de>, 
+	Alessandro Carminati <alessandro.carminati@gmail.com>, Jani Nikula <jani.nikula@intel.com>, 
+	dri-devel@lists.freedesktop.org, kunit-dev@googlegroups.com, linux-arch@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
+	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, loongarch@lists.linux.dev, 
+	x86@kernel.org, Linux Kernel Functional Testing <lkft@linaro.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [PATCH v4 06/14] x86: Add support for suppressing warning
+ backtraces
+Message-ID: <rkuxvq6pkha6pixz5rtu327ujt7ism5f4wgrak7egcecuxwe42@qkn5ewdzwhvo>
+References: <20250313114329.284104-1-acarmina@redhat.com>
+ <20250313114329.284104-7-acarmina@redhat.com>
+ <20250401170829.GO5880@noisy.programming.kicks-ass.net>
+ <ddc7939f-fb98-43af-aed1-0bc0594ecc41@roeck-us.net>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,50 +83,36 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c25d1
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ddc7939f-fb98-43af-aed1-0bc0594ecc41@roeck-us.net>
+X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Tue, 01 Apr 2025 22:25:10 +0800, Henry Martin wrote:
-> devm_kasprintf() returns NULL when memory allocation fails. Currently,
-> imx_card_probe() does not check for this case, which results in a NULL
-> pointer dereference.
+On Tue, Apr 01, 2025 at 10:53:46AM -0700, Guenter Roeck wrote:
+> On 4/1/25 10:08, Peter Zijlstra wrote:
+> > > +	if (!KUNIT_IS_SUPPRESSED_WARNING(__func__))			\
+> > > +		_BUG_FLAGS(ASM_UD2, __flags, ANNOTATE_REACHABLE(1b));	\
+> > >   	instrumentation_end();					\
+> > >   } while (0)
+> > 
+> > NAK, this grows the BUG site for now appreciable reason.
 > 
-> Add NULL check after devm_kasprintf() to prevent this issue.
-> 
-> 
-> [...]
+> Only if CONFIG_KUNIT_SUPPRESS_BACKTRACE is enabled. Why does that
+> warrant a NACK ?
 
-Applied to
+I agree with Peter, this bloats the code around thousands of UD2 sites.
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+It would be much better to do the checking after the exception.  In fact
+it looks like you're already doing that in report_bug()?
 
-Thanks!
+	if (warning && KUNIT_IS_SUPPRESSED_WARNING(function))
+		return BUG_TRAP_TYPE_WARN;
 
-[1/1] ASoC: imx-card: Add NULL check in imx_card_probe()
-      commit: 93d34608fd162f725172e780b1c60cc93a920719
+Why check it twice?
 
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+-- 
+Josh
 
