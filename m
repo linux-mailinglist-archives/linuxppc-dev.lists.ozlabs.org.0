@@ -1,41 +1,41 @@
-Return-Path: <linuxppc-dev+bounces-7430-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7431-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 465D4A79A01
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Apr 2025 04:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A66A79A1F
+	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Apr 2025 04:48:19 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZSm8t4KQVz2yr9;
-	Thu,  3 Apr 2025 13:37:02 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZSmPr6RFLz2ypW;
+	Thu,  3 Apr 2025 13:48:16 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.255
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743647822;
-	cv=none; b=VX3fv1m6XxAoOmwESrm3sUjwoUeCtMwnRjV00rnsM3Y293zfSHheVd6e+dvyyJ36mnLuZeJgURqar4l/7pfIp+tWO89v0zczg1eWqiFiEu15nmKl1+zPiTn6+Z62mFIcZ8Zygivlt2deochhcRzADgGhFxAd+lQihOq4IOZZlfPMUdd/69sizaUOO6JFJtjYuYRAHzHpJe3LZ4T5xF3sOFgaYqgLzzix1QrF7qfYzbLmxRgQ2rGOcGSKjbrvYUkVyEMcW9Dqf8ESrfwkYkzM5DJVhPR41hflAxb2cmMYkJLaQP9r/zV/pSFzrtP7MoL2wIuQXKPorWBqZJmAsCYmAw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=45.249.212.189
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743648496;
+	cv=none; b=F104ufIyC4mB/yl2hOUIz4KyM+a9Qb6Vos6+lPHH/IfFYBRFRJ8fpCh6lP+y3jUtl7B8xnHBDNdkH6ch+DHstBjDMirF6ul9RgmIpbcbmfY6JYg5wEhUfe6MOkkGLJMupE2I6ddU9Z08KWrXSV3rig15WzkWcKLnyeD73KeGDrKpI+eurUK8j2+k7/eHRet8moqQg9yVowoEu7b+dF7LEXQ9KTObCLZ+Xij3OCxj/ZzpAJC89rnXTxmYYrZFcVGAgUL5vjAxKtZFt7mOcCEdvpwlRUcWEU7fGpCUbGn7N/8DUr+sFLhCeKxTSQ39q+ksXbDx9cyyE+EYWIasvFuHaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743647822; c=relaxed/relaxed;
-	bh=XZv1gSCoqPkSvuRo5CdsTOUa2UhovNSLORAb5XIYnJ4=;
+	t=1743648496; c=relaxed/relaxed;
+	bh=If1ZsNgrBBDERc1MRA+MXXmaA+so/oBkFX2K0q6MNvI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=U2+d1Pv7cJk8Lyw18RkPUCZMEqu+wP/KYm1UVqTAVwq+dAJqWN4Dm19ERt7b7Iv+aEur4zu/uF/zVUQskkcdaJDIcyH4cqYYSTnmUwRoOLxefb+bRGVeZQ7goNL2D0Uf57BJuL/mQmBAnn1J2kD2iLZtuhLKHT3r4HLYHFPFBxKUSTPpah07TdxxjLMCJLt/YFlb5z84uTr3OxtkIqPZOah3OHMOcJ/CE8CB7vTx6PXmCOSMACjcKvEhB1dMCsjnSepVVOGkuYjEAqxsVzqle53rKQRJ/epHFSwVsmv5bHtWdeIVe6tTtkpPYxAbxY4+0BsG0wWNhmuHmh3pbG5yYQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
+	 In-Reply-To:Content-Type; b=QDSHiOFE80qgyyyAoYEmR3cxWy4AOGbhksBBFRABa+U7xnKl7h5ji9/QWi7n///v74bYk2/HKxHrA2CbQvNWvf6zbsc4L3TEFfgg3/Ck9jvWr72E7rNUnRF6LGLxyBpCVXwQMB5SUXvtCgCu5XroUeDokRrUiy8zb8HchM5XV7L87438zPaaW/cjmDYDdPTvQRpoFGAu+BjSexfPt6uKBZowTdSQEUAUQz+Kvst4Ei/AmgZJ798VTYmgO/2oSJScI6NtPuv2S0Eig0yImfKYKWlugkMHvwhtsoEVn5+7UuZMJVxtOM4JQ7SKx2qTzFcetksmdn9KhO+QR4fy8QoIXg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org) smtp.mailfrom=huawei.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.255; helo=szxga08-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=huawei.com (client-ip=45.249.212.189; helo=szxga03-in.huawei.com; envelope-from=tongtiangen@huawei.com; receiver=lists.ozlabs.org)
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZSm8r69ZYz2ykZ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Apr 2025 13:36:58 +1100 (AEDT)
-Received: from mail.maildlp.com (unknown [172.19.88.194])
-	by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4ZSm842dzTz1d0rb;
-	Thu,  3 Apr 2025 10:36:20 +0800 (CST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZSmPq2jWbz2ydy
+	for <linuxppc-dev@lists.ozlabs.org>; Thu,  3 Apr 2025 13:48:13 +1100 (AEDT)
+Received: from mail.maildlp.com (unknown [172.19.163.252])
+	by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4ZSmKq0chQzHrDQ;
+	Thu,  3 Apr 2025 10:44:47 +0800 (CST)
 Received: from kwepemk500005.china.huawei.com (unknown [7.202.194.90])
-	by mail.maildlp.com (Postfix) with ESMTPS id D73ED140383;
-	Thu,  3 Apr 2025 10:36:52 +0800 (CST)
+	by mail.maildlp.com (Postfix) with ESMTPS id B33E31800EB;
+	Thu,  3 Apr 2025 10:48:07 +0800 (CST)
 Received: from [10.174.179.234] (10.174.179.234) by
  kwepemk500005.china.huawei.com (7.202.194.90) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 3 Apr 2025 10:36:50 +0800
-Message-ID: <78f82bf6-ec47-6b10-7c05-2189cc262f13@huawei.com>
-Date: Thu, 3 Apr 2025 10:36:49 +0800
+ 15.2.1544.11; Thu, 3 Apr 2025 10:48:05 +0800
+Message-ID: <82bf1b64-d887-c50b-17b1-2de978896d44@huawei.com>
+Date: Thu, 3 Apr 2025 10:48:04 +0800
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -51,7 +51,7 @@ MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
  Thunderbird/91.8.0
 Subject: Re: [PATCH v13 2/5] arm64: add support for ARCH_HAS_COPY_MC
-To: Yeoreum Yun <yeoreum.yun@arm.com>
+To: "Luck, Tony" <tony.luck@intel.com>
 CC: Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland
 	<mark.rutland@arm.com>, Jonathan Cameron <Jonathan.Cameron@huawei.com>, Mauro
  Carvalho Chehab <mchehab+huawei@kernel.org>, Will Deacon <will@kernel.org>,
@@ -73,24 +73,23 @@ CC: Catalin Marinas <catalin.marinas@arm.com>, Mark Rutland
 References: <20241209024257.3618492-1-tongtiangen@huawei.com>
  <20241209024257.3618492-3-tongtiangen@huawei.com> <Z6zKfvxKnRlyNzkX@arm.com>
  <df40840d-e860-397d-60bd-02f4b2d0b433@huawei.com>
- <Z+bXE7UNWFLEfhQC@e129823.arm.com>
+ <Z-GOKgBNxKWQ21w4@agluck-desk3>
 From: Tong Tiangen <tongtiangen@huawei.com>
-In-Reply-To: <Z+bXE7UNWFLEfhQC@e129823.arm.com>
+In-Reply-To: <Z-GOKgBNxKWQ21w4@agluck-desk3>
 Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Originating-IP: [10.174.179.234]
-X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
  kwepemk500005.china.huawei.com (7.202.194.90)
-X-Spam-Status: No, score=-3.3 required=3.0 tests=NICE_REPLY_A,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-4.3 required=3.0 tests=NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
 
-在 2025/3/29 1:06, Yeoreum Yun 写道:
-> Hi,
-> 
+在 2025/3/25 0:54, Luck, Tony 写道:
+> On Fri, Feb 14, 2025 at 09:44:02AM +0800, Tong Tiangen wrote:
 >>
 >>
 >> 在 2025/2/13 0:21, Catalin Marinas 写道:
@@ -133,21 +132,43 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 >> Yes, it's transient, the kernel page in mf can't be isolated, the
 >> transient access (ld) of this kernel page is currently expected to kill
 >> the user-mode process to avoid error spread.
+>>
+>>
+>> The SEA processes synchronization errors. Only hardware errors on the
+>> source page can be detected (Through synchronous ld insn) and processed.
+>> The destination page cannot be processed.
 > 
-> I'm not sure about how this works.
-> IIUC, the memory_failure() wouldn't kill any process if page which
-> raises sea is kernel page (because this wasn't mapped).
-
-right.
-
+> I've considered the copy_to_user() case as only partially fixable. There
+> are lots of cases to consider:
 > 
-> But, to mark the kernel page as posision, I think it also need to call
-> apei_claim_sea() in !user_mode().
-> What about calling the apei_claim_sea() when fix_exception_me()
-> successed only in !user_mode() case?
+> 1) Many places where drivers copy to user in ioctl(2) calls.
+>     Killing the application solves the immediate problem, but if
+>     the problem with kernel memory is not transient, then you
+>     may run into it again.
+> 
+> 2) Copy from Linux page cache to user for a read(2) system call.
+>     This one is a candidate for recovery. Might need help from the
+>     file system code. If the kernel page is a clean copy of data in
+>     the file system, then drop this page and re-read from storage
+>     into a new page. Then resume the copy_to_user().
+>     If the page is modified, then need some file system action to
+>     somehow mark this range of addresses in the file as lost forever.
+>     First step in tackling this case is identifying that the source
+>     address is a page cache page.
+> 
+> 3) Probably many other places where the kernel copies to user for
+>     other system calls. Would need to look at these on a case by case
+>     basis. Likely most have the same issue as ioctl(2) above.
 
-This was discussed with Mark in V12:
-https://lore.kernel.org/lkml/20240528085915.1955987-3-tongtiangen@huawei.com/
+1) 3)
+Yes, in extreme cases, user-mode processes may be killed all the time.
+The hardware error that repeatedly triggered in the same page, in this
+case, firmware maybe report a fatal error, if yes, this problem can be
+solved.
+
+2)
+This is indeed a workaround, somewhat complex, but it seems worthwhile
+to avoid kernel panic.
 
 Sorry for didn't catch your reply in time:)
 
@@ -155,13 +176,7 @@ Thanks,
 Tong.
 
 > 
-> Thanks.
->>
->> The SEA processes synchronization errors. Only hardware errors on the
->> source page can be detected (Through synchronous ld insn) and processed.
->> The destination page cannot be processed.
->>
->>>
->>
+> -Tony
+> 
 > .
 
