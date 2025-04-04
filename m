@@ -1,75 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-7442-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7443-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E75DDA7B2E7
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Apr 2025 02:06:03 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5AFCA7B6A1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Apr 2025 05:28:46 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTJm84lSWz30MR;
-	Fri,  4 Apr 2025 11:06:00 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTPG3300Lz30NF;
+	Fri,  4 Apr 2025 14:28:43 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743725160;
-	cv=none; b=L26Y0bnBfpKiSlntEHdhKf5bH5HmnfiaAtGACA1c3tiPhYRl2VtLJehHOzxvKF22Mux7Bdn0RVpSCwUDj0onD5pj+LKGMZ0iiH4wNjKXxV3xeUGJkOcb3e8dlCKgb+L1n4/LtAdRuXlwZp9iGXC16Y6r88NH0UqEo0yijv6sjFYX/QSyqfUStexZ6HnjoF2XvR+pMbl0s5xn0SV3l0YMeqwvIdVbj/+aMQyyZiWNPv31PYah2HP1QfRg6Sv55qM5eL3sfeMAMnK0ypET2AZhCgkm+LyVLAwBv76XExtGwgIDrmbuCIzqUmTHG8ku+/aKtl4/UA2lVLu/sKbOGRtZKw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.9
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743737323;
+	cv=none; b=kIqTlwO+Y7eaRpjTLEDBlXlnaqpRM8VxTVD5OV8d3vbWtsok9l7TxnhlAFTRPknNxOoXvRmgWCkFs3AbMkqWcKtobF0VAOI6F0eLZ5PfAg7B7+RbkwcfUJlJ7stg6oHlzTHwHUIIv64AD0jjreTrdMu2/JRXv2ZdxcjY110hQk37/9wf6CsqCpEjdFDUK/LaeN1cvLzYaJ64yEELLg//bXi0Gvfqv+E9AJmJ4/TYDigesFfogMY8qyJ/qMQlkw5ApVBDTvWPsmtynt5NoFgYaQ8Yu+mHuF15mzFHJWGKUk1M9685h2tYteQ3rd7xAC47kTnBN5Ey8ouV6Y4bwz1wMw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743725160; c=relaxed/relaxed;
-	bh=2C/d7vvukKZ2LBtMiAuzC1XciiG81GObwwDrbzbmpRI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=XjK6Nx55f72MxovRx2ljVdp0mRZnpVEHWGa8NmpQ90DbLWQVBYcx+K7NgrkFsQPi1nMfkCzjy+I4dJwUDKhid3soWSiQsp2raQyMXZIdSV+CdWlyv1/D6XuYGXiGZkTKguo2fDQDMm2tIP9ucX9eEUfuQzhIrK2uyfWZbIhaB4sV56SV6R+bQtqXekxxKsaqB4eyVfg/8sxKMcK0wQwQrTcNCXzObjdP/mhWUZfFLKAwuo/33IqGi2KdkUbXoAyUiA3C3zzIAlDgMnctI/xK2jkXZca4PslCNTM/x2fZOWbDTKkK5kwoRXKaKBGSzAOKXCjFVqgJ0VAgZjQWKmUfng==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mkm9bpH4; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1743737323; c=relaxed/relaxed;
+	bh=rXaIcKYvX2xusRVs5+XVwO02jEcP1fv4bVacj0rvH28=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=AwibmpTbvtfUOmVKtuOadlB1oyWNHZXQCEQ1sjmdSP8DCbWrBgxqr9UWhQ1esfnewvG0TJNJS4cuuJuuZd97KCLRYIlnGLkg5f2CzaUTM52vbchgmNn++XUaxvHicEMTKBVn95bSdZw1B4YvCuRbkfbsRUMnI1KCTq0o7znyn/Xf5mGbUZ7f31zp0gEKwOH0MG0tsoB43Y3b0ZLin0zrAqOWb8lMU8bo42cJ6/xWOZmFZt6+qCkksg2JFa75wgf64gQtTIURRMM+NNtpNkIylQN5qWNoFj8D2LSUgmvhsdyJx8WoGsIk4Kza++NgpAAM3pQafszprViuqEZe/zlYdg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F1mfjMVh; dkim-atps=neutral; spf=pass (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=mkm9bpH4;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=F1mfjMVh;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=198.175.65.9; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTJm76FTgz30MM
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 11:05:59 +1100 (AEDT)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 57B2F5C6AB8;
-	Fri,  4 Apr 2025 00:03:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1723FC4CEE3;
-	Fri,  4 Apr 2025 00:05:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725157;
-	bh=MoxHxLpMQ/cPzCeMsJWesuSPEGcl5oWPfXJxOh0zs2g=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkm9bpH4ZaxYo0ou5/1nca2csS9HLIl9mGHriPBE4vgAm0keW9kcW/3MBSyvaHcAo
-	 rJhH4/b9flzhRQ7UiSHtD5cGW5VphraKelzsqQkTKXeKMxU8d8GKIzmenBRsZMcqN3
-	 FkcXzRHDZg7R3JLY+7RNR6la/xmR+1bQ18m2EBDwdolPqK/ifaY9+nhVXajH6bb9xW
-	 XveQ97xxyUGsM/3ZS3VCFCLAyLTz4TXDO9FF6JM1JgffDL2Cczx3D94RwXwTPyrrE+
-	 1dUijjjWKVG9Zm+P4IBMnpEK6Il3qzwQeVfDep1BuYxLtxniZU/boMHqVXf001tF79
-	 raoEOJeXQZu3w==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Herbert Xu <herbert@gondor.apana.org.au>,
-	kernel test robot <lkp@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	linux@armlinux.org.uk,
-	leitao@debian.org,
-	nayna@linux.ibm.com,
-	pfsmorigo@gmail.com,
-	maddy@linux.ibm.com,
-	mpe@ellerman.id.au,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-crypto@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.12 06/20] crypto: lib/Kconfig - Fix lib built-in failure when arch is modular
-Date: Thu,  3 Apr 2025 20:05:26 -0400
-Message-Id: <20250404000541.2688670-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250404000541.2688670-1-sashal@kernel.org>
-References: <20250404000541.2688670-1-sashal@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTPG05dQZz2yhG
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 14:28:38 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1743737321; x=1775273321;
+  h=date:from:to:cc:subject:message-id;
+  bh=ODOw7RWb5Kvazqo5j+ilxF7FEOC6TfcML++THqfkXgw=;
+  b=F1mfjMVhWANn6SYx87b6nhT0LAO3A/INIw8zOcjnsTL6L3ZKLbaKSCVj
+   PTwC6286GPTn2LHA4FdALwFC9TRJpTzD64i64hmt7upjpONiiwrMJPjdG
+   rq3Trl/vXyHZh3IHyoXG11wPjTOaXYZlgy/ShSoURcG2XR68ZDegdSmo5
+   uk/rvpzg/1ZeJbZtK8inELbSUXECeH5cAsNx09GTdZHILaST1EYPJbWQh
+   OXhYtdalzPJKRywz15EGrffQY+FMrQna8VXPrj/ir06rnOnzLZ9oMDPok
+   q8VvzxfPtbkkyVxKjAvSR1Y8dV1MyYe6FfjovDy49MEtPxjY5Z3MaMSJZ
+   g==;
+X-CSE-ConnectionGUID: 8RfQsexBTiqIYF2BYtMdTA==
+X-CSE-MsgGUID: pKsR85avRcaSj4dCmARzzA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11393"; a="67642956"
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; 
+   d="scan'208";a="67642956"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Apr 2025 20:28:34 -0700
+X-CSE-ConnectionGUID: At6kDqAkQ3qogyDiJmaPIg==
+X-CSE-MsgGUID: rAQn53muQfWGulduuDtfag==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,187,1739865600"; 
+   d="scan'208";a="132056027"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 03 Apr 2025 20:28:33 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u0XjL-0000y3-0L;
+	Fri, 04 Apr 2025 03:28:31 +0000
+Date: Fri, 04 Apr 2025 11:28:28 +0800
+From: kernel test robot <lkp@intel.com>
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:merge] BUILD SUCCESS
+ 522742a9ebe774eaf77fdb5c7af1f1cf36965bb1
+Message-ID: <202504041117.J0XbIxCG-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,218 +79,150 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.12.21
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-6.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git merge
+branch HEAD: 522742a9ebe774eaf77fdb5c7af1f1cf36965bb1  Automatic merge of 'master' into merge (2025-04-03 13:33)
 
-[ Upstream commit 1047e21aecdf17c8a9ab9fd4bd24c6647453f93d ]
+elapsed time: 1450m
 
-The HAVE_ARCH Kconfig options in lib/crypto try to solve the
-modular versus built-in problem, but it still fails when the
-the LIB option (e.g., CRYPTO_LIB_CURVE25519) is selected externally.
+configs tested: 129
+configs skipped: 3
 
-Fix this by introducing a level of indirection with ARCH_MAY_HAVE
-Kconfig options, these then go on to select the ARCH_HAVE options
-if the ARCH Kconfig options matches that of the LIB option.
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202501230223.ikroNDr1-lkp@intel.com/
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/arm/crypto/Kconfig     |  6 +++---
- arch/powerpc/crypto/Kconfig |  4 ++--
- arch/x86/crypto/Kconfig     |  6 +++---
- lib/crypto/Kconfig          | 26 ++++++++++++++++++--------
- 4 files changed, 26 insertions(+), 16 deletions(-)
+tested configs:
+alpha                             allnoconfig    gcc-14.2.0
+alpha                            allyesconfig    gcc-14.2.0
+arc                              allmodconfig    gcc-14.2.0
+arc                               allnoconfig    gcc-14.2.0
+arc                              allyesconfig    gcc-14.2.0
+arc                   randconfig-001-20250403    gcc-14.2.0
+arc                   randconfig-002-20250403    gcc-12.4.0
+arm                              allmodconfig    gcc-14.2.0
+arm                               allnoconfig    clang-21
+arm                              allyesconfig    gcc-14.2.0
+arm                   randconfig-001-20250403    clang-21
+arm                   randconfig-002-20250403    gcc-8.5.0
+arm                   randconfig-003-20250403    clang-21
+arm                   randconfig-004-20250403    gcc-8.5.0
+arm64                            allmodconfig    clang-19
+arm64                             allnoconfig    gcc-14.2.0
+arm64                 randconfig-001-20250403    gcc-6.5.0
+arm64                 randconfig-002-20250403    clang-16
+arm64                 randconfig-003-20250403    clang-17
+arm64                 randconfig-004-20250403    clang-20
+csky                              allnoconfig    gcc-14.2.0
+csky                  randconfig-001-20250403    gcc-14.2.0
+csky                  randconfig-002-20250403    gcc-14.2.0
+hexagon                          allmodconfig    clang-17
+hexagon                           allnoconfig    clang-21
+hexagon                          allyesconfig    clang-21
+hexagon               randconfig-001-20250403    clang-21
+hexagon               randconfig-002-20250403    clang-21
+i386                             allmodconfig    gcc-12
+i386                              allnoconfig    gcc-12
+i386                             allyesconfig    gcc-12
+i386        buildonly-randconfig-001-20250403    clang-20
+i386        buildonly-randconfig-002-20250403    clang-20
+i386        buildonly-randconfig-003-20250403    clang-20
+i386        buildonly-randconfig-004-20250403    gcc-12
+i386        buildonly-randconfig-005-20250403    gcc-12
+i386        buildonly-randconfig-006-20250403    gcc-12
+i386                                defconfig    clang-20
+loongarch                        allmodconfig    gcc-14.2.0
+loongarch                         allnoconfig    gcc-14.2.0
+loongarch             randconfig-001-20250403    gcc-12.4.0
+loongarch             randconfig-002-20250403    gcc-14.2.0
+m68k                             allmodconfig    gcc-14.2.0
+m68k                              allnoconfig    gcc-14.2.0
+m68k                             allyesconfig    gcc-14.2.0
+m68k                          amiga_defconfig    gcc-14.2.0
+m68k                       m5249evb_defconfig    gcc-14.2.0
+m68k                        m5272c3_defconfig    gcc-14.2.0
+microblaze                       allmodconfig    gcc-14.2.0
+microblaze                        allnoconfig    gcc-14.2.0
+microblaze                       allyesconfig    gcc-14.2.0
+mips                              allnoconfig    gcc-14.2.0
+mips                       bmips_be_defconfig    gcc-14.2.0
+mips                           ip32_defconfig    clang-21
+mips                           jazz_defconfig    clang-17
+nios2                             allnoconfig    gcc-14.2.0
+nios2                 randconfig-001-20250403    gcc-10.5.0
+nios2                 randconfig-002-20250403    gcc-14.2.0
+openrisc                          allnoconfig    gcc-14.2.0
+openrisc                         allyesconfig    gcc-14.2.0
+openrisc                            defconfig    gcc-14.2.0
+openrisc                 simple_smp_defconfig    gcc-14.2.0
+openrisc                       virt_defconfig    gcc-14.2.0
+parisc                           allmodconfig    gcc-14.2.0
+parisc                            allnoconfig    gcc-14.2.0
+parisc                           allyesconfig    gcc-14.2.0
+parisc                              defconfig    gcc-14.2.0
+parisc                randconfig-001-20250403    gcc-13.3.0
+parisc                randconfig-002-20250403    gcc-11.5.0
+powerpc                          allmodconfig    gcc-14.2.0
+powerpc                           allnoconfig    gcc-14.2.0
+powerpc                          allyesconfig    clang-21
+powerpc                      chrp32_defconfig    clang-19
+powerpc                          g5_defconfig    gcc-14.2.0
+powerpc                         ps3_defconfig    gcc-14.2.0
+powerpc               randconfig-001-20250403    clang-16
+powerpc               randconfig-002-20250403    gcc-6.5.0
+powerpc               randconfig-003-20250403    clang-21
+powerpc64             randconfig-001-20250403    clang-19
+powerpc64             randconfig-002-20250403    clang-17
+powerpc64             randconfig-003-20250403    clang-21
+riscv                            allmodconfig    clang-21
+riscv                             allnoconfig    gcc-14.2.0
+riscv                            allyesconfig    clang-16
+riscv                               defconfig    clang-21
+riscv                 randconfig-001-20250403    clang-21
+riscv                 randconfig-002-20250403    clang-21
+s390                             alldefconfig    gcc-14.2.0
+s390                             allmodconfig    clang-18
+s390                              allnoconfig    clang-15
+s390                             allyesconfig    gcc-14.2.0
+s390                                defconfig    clang-15
+s390                  randconfig-001-20250403    gcc-9.3.0
+s390                  randconfig-002-20250403    gcc-7.5.0
+s390                       zfcpdump_defconfig    clang-15
+sh                               allmodconfig    gcc-14.2.0
+sh                                allnoconfig    gcc-14.2.0
+sh                               allyesconfig    gcc-14.2.0
+sh                                  defconfig    gcc-14.2.0
+sh                     magicpanelr2_defconfig    gcc-14.2.0
+sh                    randconfig-001-20250403    gcc-6.5.0
+sh                    randconfig-002-20250403    gcc-14.2.0
+sparc                            allmodconfig    gcc-14.2.0
+sparc                             allnoconfig    gcc-14.2.0
+sparc                 randconfig-001-20250403    gcc-11.5.0
+sparc                 randconfig-002-20250403    gcc-13.3.0
+sparc64                             defconfig    gcc-14.2.0
+sparc64               randconfig-001-20250403    gcc-7.5.0
+sparc64               randconfig-002-20250403    gcc-13.3.0
+um                               allmodconfig    clang-19
+um                                allnoconfig    clang-21
+um                               allyesconfig    gcc-12
+um                                  defconfig    clang-21
+um                             i386_defconfig    gcc-12
+um                    randconfig-001-20250403    clang-19
+um                    randconfig-002-20250403    gcc-12
+um                           x86_64_defconfig    clang-15
+x86_64                            allnoconfig    clang-20
+x86_64                           allyesconfig    clang-20
+x86_64      buildonly-randconfig-001-20250403    clang-20
+x86_64      buildonly-randconfig-002-20250403    clang-20
+x86_64      buildonly-randconfig-003-20250403    clang-20
+x86_64      buildonly-randconfig-004-20250403    clang-20
+x86_64      buildonly-randconfig-005-20250403    gcc-11
+x86_64      buildonly-randconfig-006-20250403    clang-20
+x86_64                              defconfig    gcc-11
+xtensa                            allnoconfig    gcc-14.2.0
+xtensa                randconfig-001-20250403    gcc-11.5.0
+xtensa                randconfig-002-20250403    gcc-13.3.0
 
-diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
-index 5ff49a5e9afc9..8af59c1735ea4 100644
---- a/arch/arm/crypto/Kconfig
-+++ b/arch/arm/crypto/Kconfig
-@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_NEON
- 	tristate "Public key crypto: Curve25519 (NEON)"
- 	depends on KERNEL_MODE_NEON
- 	select CRYPTO_LIB_CURVE25519_GENERIC
--	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
- 	help
- 	  Curve25519 algorithm
- 
-@@ -47,7 +47,7 @@ config CRYPTO_NHPOLY1305_NEON
- config CRYPTO_POLY1305_ARM
- 	tristate "Hash functions: Poly1305 (NEON)"
- 	select CRYPTO_HASH
--	select CRYPTO_ARCH_HAVE_LIB_POLY1305
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
- 	help
- 	  Poly1305 authenticator algorithm (RFC7539)
- 
-@@ -214,7 +214,7 @@ config CRYPTO_AES_ARM_CE
- config CRYPTO_CHACHA20_NEON
- 	tristate "Ciphers: ChaCha20, XChaCha20, XChaCha12 (NEON)"
- 	select CRYPTO_SKCIPHER
--	select CRYPTO_ARCH_HAVE_LIB_CHACHA
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
- 	help
- 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
- 	  stream cipher algorithms
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 46a4c85e85e24..2a2615e35fdb5 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_PPC64
- 	tristate "Public key crypto: Curve25519 (PowerPC64)"
- 	depends on PPC64 && CPU_LITTLE_ENDIAN
- 	select CRYPTO_LIB_CURVE25519_GENERIC
--	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
- 	help
- 	  Curve25519 algorithm
- 
-@@ -128,7 +128,7 @@ config CRYPTO_CHACHA20_P10
- 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
- 	select CRYPTO_SKCIPHER
- 	select CRYPTO_LIB_CHACHA_GENERIC
--	select CRYPTO_ARCH_HAVE_LIB_CHACHA
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
- 	help
- 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
- 	  stream cipher algorithms
-diff --git a/arch/x86/crypto/Kconfig b/arch/x86/crypto/Kconfig
-index 7b1bebed879df..d87b268d17d39 100644
---- a/arch/x86/crypto/Kconfig
-+++ b/arch/x86/crypto/Kconfig
-@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_X86
- 	tristate "Public key crypto: Curve25519 (ADX)"
- 	depends on X86 && 64BIT
- 	select CRYPTO_LIB_CURVE25519_GENERIC
--	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
- 	help
- 	  Curve25519 algorithm
- 
-@@ -352,7 +352,7 @@ config CRYPTO_CHACHA20_X86_64
- 	depends on X86 && 64BIT
- 	select CRYPTO_SKCIPHER
- 	select CRYPTO_LIB_CHACHA_GENERIC
--	select CRYPTO_ARCH_HAVE_LIB_CHACHA
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
- 	help
- 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
- 	  stream cipher algorithms
-@@ -420,7 +420,7 @@ config CRYPTO_POLY1305_X86_64
- 	tristate "Hash functions: Poly1305 (SSE2/AVX2)"
- 	depends on X86 && 64BIT
- 	select CRYPTO_LIB_POLY1305_GENERIC
--	select CRYPTO_ARCH_HAVE_LIB_POLY1305
-+	select CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
- 	help
- 	  Poly1305 authenticator algorithm (RFC7539)
- 
-diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
-index b01253cac70a7..c542ef1d64d03 100644
---- a/lib/crypto/Kconfig
-+++ b/lib/crypto/Kconfig
-@@ -42,12 +42,17 @@ config CRYPTO_LIB_BLAKE2S_GENERIC
- 	  of CRYPTO_LIB_BLAKE2S.
- 
- config CRYPTO_ARCH_HAVE_LIB_CHACHA
--	tristate
-+	bool
- 	help
- 	  Declares whether the architecture provides an arch-specific
- 	  accelerated implementation of the ChaCha library interface,
- 	  either builtin or as a module.
- 
-+config CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
-+	tristate
-+	select CRYPTO_ARCH_HAVE_LIB_CHACHA if CRYPTO_LIB_CHACHA=m
-+	select CRYPTO_ARCH_HAVE_LIB_CHACHA if CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA=y
-+
- config CRYPTO_LIB_CHACHA_GENERIC
- 	tristate
- 	select CRYPTO_LIB_UTILS
-@@ -60,7 +65,6 @@ config CRYPTO_LIB_CHACHA_GENERIC
- 
- config CRYPTO_LIB_CHACHA
- 	tristate "ChaCha library interface"
--	depends on CRYPTO_ARCH_HAVE_LIB_CHACHA || !CRYPTO_ARCH_HAVE_LIB_CHACHA
- 	select CRYPTO_LIB_CHACHA_GENERIC if CRYPTO_ARCH_HAVE_LIB_CHACHA=n
- 	help
- 	  Enable the ChaCha library interface. This interface may be fulfilled
-@@ -68,12 +72,17 @@ config CRYPTO_LIB_CHACHA
- 	  is available and enabled.
- 
- config CRYPTO_ARCH_HAVE_LIB_CURVE25519
--	tristate
-+	bool
- 	help
- 	  Declares whether the architecture provides an arch-specific
- 	  accelerated implementation of the Curve25519 library interface,
- 	  either builtin or as a module.
- 
-+config CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
-+	tristate
-+	select CRYPTO_ARCH_HAVE_LIB_CURVE25519 if CRYPTO_LIB_CURVE25519=m
-+	select CRYPTO_ARCH_HAVE_LIB_CURVE25519 if CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519=y
-+
- config CRYPTO_LIB_CURVE25519_GENERIC
- 	tristate
- 	help
-@@ -85,7 +94,6 @@ config CRYPTO_LIB_CURVE25519_GENERIC
- 
- config CRYPTO_LIB_CURVE25519
- 	tristate "Curve25519 scalar multiplication library"
--	depends on CRYPTO_ARCH_HAVE_LIB_CURVE25519 || !CRYPTO_ARCH_HAVE_LIB_CURVE25519
- 	select CRYPTO_LIB_CURVE25519_GENERIC if CRYPTO_ARCH_HAVE_LIB_CURVE25519=n
- 	select CRYPTO_LIB_UTILS
- 	help
-@@ -104,12 +112,17 @@ config CRYPTO_LIB_POLY1305_RSIZE
- 	default 1
- 
- config CRYPTO_ARCH_HAVE_LIB_POLY1305
--	tristate
-+	bool
- 	help
- 	  Declares whether the architecture provides an arch-specific
- 	  accelerated implementation of the Poly1305 library interface,
- 	  either builtin or as a module.
- 
-+config CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
-+	tristate
-+	select CRYPTO_ARCH_HAVE_LIB_POLY1305 if CRYPTO_LIB_POLY1305=m
-+	select CRYPTO_ARCH_HAVE_LIB_POLY1305 if CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305=y
-+
- config CRYPTO_LIB_POLY1305_GENERIC
- 	tristate
- 	help
-@@ -121,7 +134,6 @@ config CRYPTO_LIB_POLY1305_GENERIC
- 
- config CRYPTO_LIB_POLY1305
- 	tristate "Poly1305 library interface"
--	depends on CRYPTO_ARCH_HAVE_LIB_POLY1305 || !CRYPTO_ARCH_HAVE_LIB_POLY1305
- 	select CRYPTO_LIB_POLY1305_GENERIC if CRYPTO_ARCH_HAVE_LIB_POLY1305=n
- 	help
- 	  Enable the Poly1305 library interface. This interface may be fulfilled
-@@ -130,8 +142,6 @@ config CRYPTO_LIB_POLY1305
- 
- config CRYPTO_LIB_CHACHA20POLY1305
- 	tristate "ChaCha20-Poly1305 AEAD support (8-byte nonce library version)"
--	depends on CRYPTO_ARCH_HAVE_LIB_CHACHA || !CRYPTO_ARCH_HAVE_LIB_CHACHA
--	depends on CRYPTO_ARCH_HAVE_LIB_POLY1305 || !CRYPTO_ARCH_HAVE_LIB_POLY1305
- 	depends on CRYPTO
- 	select CRYPTO_LIB_CHACHA
- 	select CRYPTO_LIB_POLY1305
--- 
-2.39.5
-
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
