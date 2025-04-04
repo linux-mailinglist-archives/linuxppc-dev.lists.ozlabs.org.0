@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7440-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7441-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33CE9A7B2D1
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Apr 2025 02:04:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 555BEA7B2D8
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Apr 2025 02:05:17 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTJkM4dP6z30LS;
-	Fri,  4 Apr 2025 11:04:27 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTJlH0Pm5z30Kg;
+	Fri,  4 Apr 2025 11:05:15 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743725067;
-	cv=none; b=NFF8vVzunUE1z5uErRlPK3Ws9Hsvl5RQ6x6neN8eRnbqYLpeOlmzNHKYvUmD650pK+O5T2Quj+K7eNkGbj3R+ZK7JXy+3OA5nM+6jwlvS7KkBJoZxkP3l+9bO2Xzj9XGg6sXha5Y4yi4iV3z9sCYUfVa3hxxR00g6zF4kCeOAYQp4pyKeNXFKtduo9h3EDe1IrKoMNFptdgdv0NNgoU8rS4O0Xf3qFQA5GBgFBGpeTs1VPk6MBSSsvg8Zp383mc34TP8apcIvHweUt/PLTg6ot4DMcZ1X9UvxJj32x6nlCrecPVjTqSptVAGf3uScCKdKK4HEULtqKjnQ4IuHYD7HA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743725115;
+	cv=none; b=GWPA3ppALeDZJ1Lg1TlOsU0v6QX2gCa04eNjAu92fZv2mHo3hMByM8et3Wv3DYtmtKYK7Mzp2oSuYn/5NxK/4CfF6ABOUJCCh7nCL4wCNl8l/qvTNvY24KiRRlb1p9oZ0ookSqZKHXHlDtDcXIU5/QHVcnyO5RZRRDn3JxeAdlycRlfkEmvpNW3G65APG4r7KDLCqBg5z/SMJxr/bgIb3hqLAJkexhDykBMDa9iUujClF8kpzkvG7Cbsuhnben4ym7TSN7bFCGaZ/JnRvf4tUjdaKGgmll5lRFs3KXaewUqvmwqnONVbsYPil76B4DR3Q6U4Pm2abhFf6UohXvJxGA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743725067; c=relaxed/relaxed;
-	bh=LgeY4Fi97N5VuKWREsOEO3eIUOZAZelR3wdZIa+P15c=;
+	t=1743725115; c=relaxed/relaxed;
+	bh=wwQJWT3E4Za1gMFmO0KiwKEGd+4lX/BAmsR8ca0Ov4o=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eWrCZam49BqxHOOqIoBh5utKZbqpAEMV7NeUFQcKpsMHWHg+3Fl/I1cBD1wxfp6Md6zIXW0JYkv1zYR7KrJcGCBhIWNsp11/m1wSVDiMRm+O4RG0relzdWKjjN2MR8r7MrI4TGIBRHMsB6gPFY+3lHL48IAbIZVLByk+ByYOJWef6uuBvaDYLRINsSUbk53HMCm9Bo0mixcnvNqqlsZsL84htYZjnbPzscgCQi6QTwsYdnzyz9YFuz3oMqcDKGM1/TOkMS+/d6K2D0eiucmRBoopBnpfnerX0FnNmjejot6ONquFGeVEy0QgJ7mxzdqFNZZUSXYYry69lxpvEnSJ/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQeedIY2; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=gUV0kqeWi98T24EXhIndM5ZQTJd1tTaIo13/qwSIpk+wP+18Ks+Kr6wUa3liFdKoewLVMYbyjLG58OnbMMRhRPn8tdfd8AZ5qjk247XfHwpz99wG9ql5kTVDM/K6hF8UsEmFmQyC3eyi1O9DEljGmuVcZFOcU1RpdnZlqhHf94SKDAGU5ugWF+6u5UjsqK1kjPn4QDFATEu7xUpKNsO9ZsqgL1fnkxkbgaMSGqGxJXvQfvIvSDLckOh4J8aM822iyCXc+wdRQRlzPV7GpxmEAragzr2xFXEPpn6gFv/BybUhhFnc1O3roowdogqotjTn6zMZunD6GDNYob5Rvq/bFQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TeaEjhBb; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQeedIY2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=TeaEjhBb;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTJkL3bSLz30Kg
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 11:04:26 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTJlG1RTQz2yfF
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 11:05:14 +1100 (AEDT)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id C308044EDB;
-	Fri,  4 Apr 2025 00:04:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D366C4CEF3;
-	Fri,  4 Apr 2025 00:04:18 +0000 (UTC)
+	by nyc.source.kernel.org (Postfix) with ESMTP id 8F1FAA46A8E;
+	Thu,  3 Apr 2025 23:59:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EB0C4CEE3;
+	Fri,  4 Apr 2025 00:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743725060;
-	bh=+U852PWkX9HpJ8w3HK774CIjyZa5t/VrC96/GO5bNBM=;
+	s=k20201202; t=1743725111;
+	bh=kVQgNxq4m2oGBNbzDF5BjkGwrAuG/5jrS+kaq/UaZzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQeedIY2meXJRHLon5gxOJAM/jg72VmbqHwCFFb+sveLhKKts8gGQFfK2ndoez8vO
-	 3EMuBJixAGmlURwTnDJQO4vrlbq0KxuBRzYbmIg/miCTs5GsqPW4EqiMuXrYRhnkdY
-	 g6MYT8lxOek2EAq9tOvQ/l48b1VaLKsrg5nty2uzuu+UPRqcJ/g6R1JjJfxc+K+V/l
-	 4aidBm6BDWHGVHwwmOtAcWDHD+fYgtaKbu5XMsCPwnoNZiJa5m72r8bZLCI9C7X7cG
-	 MkLYJJHKartQ5xoASeoCV3glB64o63X89s1nzEai4yuugtQVvLXPrXBc++T0lTFiWn
-	 PJQNVgeRS6Bgw==
+	b=TeaEjhBbCQSJHQu2oOakvU3VJOdnaAPlxybbFw3CiY/b6ZUpxdUJOULr0igtTwkj/
+	 N7cb7T/oIlDQFUhejWsaWKuJ9mLdikAoxhSrUdUzvOicU7o7Llg19Mjyb9G20bbDdN
+	 desEkL0bU1F/i7qrxaMGjAOSqn2hm51x7x33/z9uYIwAQbtVraOGl4DFCGDASQZlSM
+	 4h4UUPdFC4xapT7ga4hLX9be2YV6IUgzfZm6kjsAFihqVdTwahUzp+XeS8qQxZnCBB
+	 ikU3NTrbtZ+xrxMq0WyszIMkBYs+TK3IIIB77ia5RRckAPSuqcULcxpyneoiON6KG7
+	 UzGCT0pEzPZeg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -64,12 +64,12 @@ Cc: Herbert Xu <herbert@gondor.apana.org.au>,
 	linux-crypto@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org,
 	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.14 07/23] crypto: lib/Kconfig - Fix lib built-in failure when arch is modular
-Date: Thu,  3 Apr 2025 20:03:44 -0400
-Message-Id: <20250404000402.2688049-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.13 07/22] crypto: lib/Kconfig - Fix lib built-in failure when arch is modular
+Date: Thu,  3 Apr 2025 20:04:36 -0400
+Message-Id: <20250404000453.2688371-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20250404000402.2688049-1-sashal@kernel.org>
-References: <20250404000402.2688049-1-sashal@kernel.org>
+In-Reply-To: <20250404000453.2688371-1-sashal@kernel.org>
+References: <20250404000453.2688371-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,7 +84,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.14
+X-stable-base: Linux 6.13.9
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
@@ -115,7 +115,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  4 files changed, 26 insertions(+), 16 deletions(-)
 
 diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
-index 32650c8431d98..47d9cc59f254c 100644
+index 5ff49a5e9afc9..8af59c1735ea4 100644
 --- a/arch/arm/crypto/Kconfig
 +++ b/arch/arm/crypto/Kconfig
 @@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_NEON
@@ -146,7 +146,7 @@ index 32650c8431d98..47d9cc59f254c 100644
  	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
  	  stream cipher algorithms
 diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 5b315e9756b3f..e453cb0c82d2a 100644
+index 951a437264611..14299927d7964 100644
 --- a/arch/powerpc/crypto/Kconfig
 +++ b/arch/powerpc/crypto/Kconfig
 @@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_PPC64
@@ -158,7 +158,7 @@ index 5b315e9756b3f..e453cb0c82d2a 100644
  	help
  	  Curve25519 algorithm
  
-@@ -95,7 +95,7 @@ config CRYPTO_CHACHA20_P10
+@@ -128,7 +128,7 @@ config CRYPTO_CHACHA20_P10
  	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
  	select CRYPTO_SKCIPHER
  	select CRYPTO_LIB_CHACHA_GENERIC
@@ -168,7 +168,7 @@ index 5b315e9756b3f..e453cb0c82d2a 100644
  	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
  	  stream cipher algorithms
 diff --git a/arch/x86/crypto/Kconfig b/arch/x86/crypto/Kconfig
-index 4757bf922075b..c189dad0969ba 100644
+index 3d2e38ba52403..82c5fbb13f048 100644
 --- a/arch/x86/crypto/Kconfig
 +++ b/arch/x86/crypto/Kconfig
 @@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_X86
