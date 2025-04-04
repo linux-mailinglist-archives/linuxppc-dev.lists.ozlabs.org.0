@@ -1,56 +1,57 @@
-Return-Path: <linuxppc-dev+bounces-7448-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7449-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA718A7B6FA
-	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Apr 2025 06:51:35 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CC41A7B94F
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Apr 2025 10:52:06 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTR5b6kPCz2yfF;
-	Fri,  4 Apr 2025 15:51:31 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTXR747s5z2ygW;
+	Fri,  4 Apr 2025 19:52:03 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743742291;
-	cv=none; b=lCv1yMr/zainatp08oqFlSMCJi+nplmpIATj71pzQ4eu+UVSqemR70xtN2IdXgaJdo/NGy8/poY2905fg6X0H3ZjEadAqowtKACxHuStzg0Y5RwfFDgMDEKFtU0WmmMMRvbo5f34VBs9MYF51sTh+MnM3t0kcVi6qgtr0DwF+JZdvKhOZbFpTnpE2+ixkJOdvA9OuKv45Za5POiBgkEdPgBNhvxUXLCo2/o8DS+C6qgNeJPsC2D5Sw9HHXYa8MymRvpWx3JZW4JvnszOoKiuQRMe0hsTeenKVKpvPIAUUB+tbPF7stQmCZjnFwayoCHDlZtwkY88tR9o7KGWSP1kHw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a01:37:3000::53df:4ef0:0"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743756723;
+	cv=none; b=ETAPloIH7BUfJtJj92VhXfIfHh5QI8yZNqFNB9t6CfppEcOZynLyY6j5eO6FPx6v27lreGwi5kLOxGbkHAIbZFHicfaLPr+DE9tflxpfrNYCU+ZteQC+/bxRvGEozXV0jOn/msvlDFsi/E2/EJ5higrhCw6KSSiEw1hyCLM3BBh1IexrNRanERpUNVWsUkM9R+lpgNIr8i96BAEx89WljfAM/vy1DtKjO+3WGOqJqRERgQBtr9+KnCD/M2z+FMr1r+1jbFuJbM7H5g0TNBaldwCjTQ6sAAiEjUaM4cBROB+3zM+acer5uzsAXZ+R/nZEpIxF0sJKWcOGFZhluy1rFg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743742291; c=relaxed/relaxed;
-	bh=1MYkHqc/nP/fGBQIUNI2OfmIg7gHypOzq7R4zOWYFdo=;
+	t=1743756723; c=relaxed/relaxed;
+	bh=RvGsjgUC8SuMJhCkYB5xcASRdRZx4IOBdoR2BE9Z+Yw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fEi4WAu9WU9GxXpd30lSXl4jQc9S5m+eAW6vaUpowuMUAwgp7VLio9uLi+m6gpDXEC0Zh+ISFSOWyFmONFfhrYzZT+ttFMmApx+9TSU/aNidSP7ucdvW6hvQsIcllpAoufPXtjlSkNAU70js8faKBXhc0mBtoX4yQQKGq3dJcrXlJmvML65tXw5QkBAf5cuX/anKzHOyHU49IIVwIXOKvVfcjq3Rab9u+TFYwRNkU+yzlPBEwWzWYrfJOFgXnCmhGCumoys13YBfzL+jZNHZTqR7aRlOR65zAICMeR/aNI/qDhJWuOBNKKZPmSH6BMN4y2MsdjsWa9guvqo9Zwuydw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+	 Content-Type:Content-Disposition:In-Reply-To; b=BXO5iAZBzWwmglg9dxgDOFBA2sj2R4009LYCF0Ks7a5q4TV8+etj0lSlFpcUhIb22J84MUSDOEwzFSwMKgH0N4RG0fvTD+Y28qn9ndqDkHD6QWFTeTScZdszciprMyWsOtY/U/jZgonouBKAS7x/Zi0vwLc9A8TkyAK8+O4tW4Luenrica/wqOidJ+VTferAMB/99QbXpTkTGfSP5y1zMu1JMrx9vu145PnE2o70o1+B6r+a0ksCN1hhY2C8jiywzX9jvH1SpE6P81FBgTB4P5FmhA99D55a7ojzoTC+SOIBDaRK1l9e9yJPcX1VzqoVNxeP9Koe691ceIFOFMIDFA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout2.hostsharing.net
 Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-X-Greylist: delayed 525 seconds by postgrey-1.37 at boromir; Fri, 04 Apr 2025 15:51:30 AEDT
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout2.hostsharing.net (client-ip=2a01:37:3000::53df:4ef0:0; helo=bmailout2.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+X-Greylist: delayed 326 seconds by postgrey-1.37 at boromir; Fri, 04 Apr 2025 19:52:02 AEDT
+Received: from bmailout2.hostsharing.net (bmailout2.hostsharing.net [IPv6:2a01:37:3000::53df:4ef0:0])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTR5Z4qVxz2ydx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 15:51:30 +1100 (AEDT)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTXR665tdz2yfT
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 19:52:02 +1100 (AEDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
 	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
 	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id 84EE52C06E55;
-	Fri,  4 Apr 2025 06:42:29 +0200 (CEST)
+	by bmailout2.hostsharing.net (Postfix) with ESMTPS id E74F3200A2A0;
+	Fri,  4 Apr 2025 10:46:15 +0200 (CEST)
 Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id BD8EF1143F; Fri,  4 Apr 2025 06:42:32 +0200 (CEST)
-Date: Fri, 4 Apr 2025 06:42:32 +0200
+	id 282651212B; Fri,  4 Apr 2025 10:46:27 +0200 (CEST)
+Date: Fri, 4 Apr 2025 10:46:27 +0200
 From: Lukas Wunner <lukas@wunner.de>
-To: Shawn Anastasio <sanastasio@raptorengineering.com>
-Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org, tpearson@raptorengineering.com,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Naveen N Rao <naveen@kernel.org>,
+To: manivannan.sadhasivam@linaro.org
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
 	Bjorn Helgaas <bhelgaas@google.com>,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-Subject: Re: [PATCH 2/3] pci/hotplug/pnv_php: Work around switches with
- broken presence detection
-Message-ID: <Z-9jOFiPaxYAJwdm@wunner.de>
-References: <20250404041810.245984-1-sanastasio@raptorengineering.com>
- <20250404041810.245984-3-sanastasio@raptorengineering.com>
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof Wilczy??ski <kw@linux.com>, Rob Herring <robh@kernel.org>,
+	dingwei@marvell.com, cassel@kernel.org,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 2/4] PCI/ERR: Add support for resetting the slot in a
+ platforms specific way
+Message-ID: <Z--cY5Uf6JyTYL9y@wunner.de>
+References: <20250404-pcie-reset-slot-v1-0-98952918bf90@linaro.org>
+ <20250404-pcie-reset-slot-v1-2-98952918bf90@linaro.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,59 +66,56 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250404041810.245984-3-sanastasio@raptorengineering.com>
+In-Reply-To: <20250404-pcie-reset-slot-v1-2-98952918bf90@linaro.org>
 X-Spam-Status: No, score=0.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
 	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-[cc += Krishna]
-
-On Thu, Apr 03, 2025 at 11:18:09PM -0500, Shawn Anastasio wrote:
-> The Microsemi Switchtec PM8533 PFX 48xG3 [11f8:8533] PCIe switch system
-> was observed to incorrectly assert the Presence Detect Set bit in its
-> capabilities when tested on a Raptor Computing Systems Blackbird system,
-> resulting in the hot insert path never attempting a rescan of the bus
-> and any downstream devices not being re-detected.
+On Fri, Apr 04, 2025 at 01:52:22PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> When the PCI error handling requires resetting the slot, reset it using the
+> host bridge specific 'reset_slot' callback if available before calling the
+> 'slot_reset' callback of the PCI drivers.
 > 
-> Work around this by additionally checking whether the PCIe data link is
-> active or not when performing presence detection on downstream switches'
-> ports, similar to the pciehp_hpc.c driver.
+> The 'reset_slot' callback is responsible for resetting the given slot
+> referenced by the 'pci_dev' pointer in a platform specific way and bring it
+> back to the working state if possible. If any error occurs during the slot
+> reset operation, relevant errno should be returned.
 [...]
-> --- a/drivers/pci/hotplug/pnv_php.c
-> +++ b/drivers/pci/hotplug/pnv_php.c
-> @@ -390,6 +390,20 @@ static int pnv_php_get_power_state(struct hotplug_slot *slot, u8 *state)
->  	return 0;
->  }
+> --- a/drivers/pci/pcie/err.c
+> +++ b/drivers/pci/pcie/err.c
+> @@ -234,11 +234,16 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>  	}
 >  
-> +static int pcie_check_link_active(struct pci_dev *pdev)
-> +{
-> +	u16 lnk_status;
-> +	int ret;
+>  	if (status == PCI_ERS_RESULT_NEED_RESET) {
+> -		/*
+> -		 * TODO: Should call platform-specific
+> -		 * functions to reset slot before calling
+> -		 * drivers' slot_reset callbacks?
+> -		 */
+> +		if (host->reset_slot) {
+> +			ret = host->reset_slot(host, bridge);
+> +			if (ret) {
+> +				pci_err(bridge, "failed to reset slot: %d\n",
+> +					ret);
+> +				status = PCI_ERS_RESULT_DISCONNECT;
+> +				goto failed;
+> +			}
+> +		}
 > +
-> +	ret = pcie_capability_read_word(pdev, PCI_EXP_LNKSTA, &lnk_status);
-> +	if (ret == PCIBIOS_DEVICE_NOT_FOUND || PCI_POSSIBLE_ERROR(lnk_status))
-> +		return -ENODEV;
-> +
-> +	ret = !!(lnk_status & PCI_EXP_LNKSTA_DLLLA);
-> +
-> +	return ret;
-> +}
-> +
 
-This appears to be a 1:1 copy of pciehp_check_link_active(),
-save for the ctrl_dbg() call.
+This feels like something that should be plumbed into
+pcibios_reset_secondary_bus(), rather than pcie_do_recovery().
 
-For the sake of code-reuse, please move the function into the
-PCI library drivers/pci/pci.c so that it can be used everywhere.
+Note that in the DPC case, pcie_do_recovery() doesn't issue a reset
+itself.  The reset has already happened, it was automatically done
+by the hardware and all the kernel needs to do is bring up the link
+again.  Do you really need any special handling for that in the
+host controller driver?
 
-Note that there's another patch pending which does exactly that:
-
-https://lore.kernel.org/r/20250225-qps615_v4_1-v4-7-e08633a7bdf8@oss.qualcomm.com/
-
-So either include that patch in your series (addressing the review
-feedback I sent for it and cc'ing the original submitter) or wait
-for it to be respun by the original submitter.
+Only in the AER case do you want to issue a reset on the secondary bus
+and if there's any platform-specific support needed for that, it needs
+to go into pcibios_reset_secondary_bus().
 
 Thanks,
 
