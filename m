@@ -1,70 +1,75 @@
-Return-Path: <linuxppc-dev+bounces-7439-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7440-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C137A7AEAF
-	for <lists+linuxppc-dev@lfdr.de>; Thu,  3 Apr 2025 22:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33CE9A7B2D1
+	for <lists+linuxppc-dev@lfdr.de>; Fri,  4 Apr 2025 02:04:31 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTD2p2hYQz304x;
-	Fri,  4 Apr 2025 07:33:22 +1100 (AEDT)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZTJkM4dP6z30LS;
+	Fri,  4 Apr 2025 11:04:27 +1100 (AEDT)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::434"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743712402;
-	cv=none; b=bA07rXosTb/3hj8PFMTbLoiSD20IQhdpoO6zEfJaYPw7igymoUGiYwhFT6lNf61yQK2pow4rjL7VBCm0vV3SHuJ0p+MtfvhmuizTFg26SPKCMKL8E8HJ6APrjU5XSiitOtBDL7p+kbzP60sEAa1yLjH0XSZaQcmzbozdgtldixKX4MZihhPjNFaUNgxSbR6quFurHGa1erLcmQ17kwd6zegatn2MXcgjEfT40A/KYw9XR/LchbTvZ5FlT0vsDWBKqDV2b+UXsaYPRFvBa2erbWU2ywOB6V/mVRtcMdm70q8ul9013LXxSWdnMGUsG5oPlAatkcwnnf+M5PEAjbwwTA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743725067;
+	cv=none; b=NFF8vVzunUE1z5uErRlPK3Ws9Hsvl5RQ6x6neN8eRnbqYLpeOlmzNHKYvUmD650pK+O5T2Quj+K7eNkGbj3R+ZK7JXy+3OA5nM+6jwlvS7KkBJoZxkP3l+9bO2Xzj9XGg6sXha5Y4yi4iV3z9sCYUfVa3hxxR00g6zF4kCeOAYQp4pyKeNXFKtduo9h3EDe1IrKoMNFptdgdv0NNgoU8rS4O0Xf3qFQA5GBgFBGpeTs1VPk6MBSSsvg8Zp383mc34TP8apcIvHweUt/PLTg6ot4DMcZ1X9UvxJj32x6nlCrecPVjTqSptVAGf3uScCKdKK4HEULtqKjnQ4IuHYD7HA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743712402; c=relaxed/relaxed;
-	bh=ur2Tr6iw7X46fc/5bRLx6fdqJrE0cltK+bwwRImun+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VKhpIF85ACu5fpj1e2PAhbsspq2qQrmO6ZOeLZOYe70UTZMkiRX2fJrjGvy3OhQSOKFxRsqrRaWiK6S/MLqNDuOZBukkiieAZuJqBhZ6iOX9VywvCH47EOpfr+2QIMwgFfCjxX19MoxQK+/VKg43BY61cbI7eeLk4IKf58GdaQLqpaQiVBN8Brv6KkiL2PZdlAtsofDOdfZq+HBVZ4uNUn+ICe+Aqg5BUjK18h1T91PQEmIIQNC0vmkV2bVLYrLLOhSGPqHVqM/nMAr9fOcKRV1t8tL+dm3gWRZMq3HBjl+CgG303N/utzTNOxWphxL+ws+qYrmC9EcmWGlvCeyGlw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NMjFSgTq; dkim-atps=neutral; spf=pass (client-ip=2a00:1450:4864:20::434; helo=mail-wr1-x434.google.com; envelope-from=alexei.starovoitov@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1743725067; c=relaxed/relaxed;
+	bh=LgeY4Fi97N5VuKWREsOEO3eIUOZAZelR3wdZIa+P15c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=eWrCZam49BqxHOOqIoBh5utKZbqpAEMV7NeUFQcKpsMHWHg+3Fl/I1cBD1wxfp6Md6zIXW0JYkv1zYR7KrJcGCBhIWNsp11/m1wSVDiMRm+O4RG0relzdWKjjN2MR8r7MrI4TGIBRHMsB6gPFY+3lHL48IAbIZVLByk+ByYOJWef6uuBvaDYLRINsSUbk53HMCm9Bo0mixcnvNqqlsZsL84htYZjnbPzscgCQi6QTwsYdnzyz9YFuz3oMqcDKGM1/TOkMS+/d6K2D0eiucmRBoopBnpfnerX0FnNmjejot6ONquFGeVEy0QgJ7mxzdqFNZZUSXYYry69lxpvEnSJ/Q==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQeedIY2; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=NMjFSgTq;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=VQeedIY2;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2a00:1450:4864:20::434; helo=mail-wr1-x434.google.com; envelope-from=alexei.starovoitov@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=sashal@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTD2m2FJqz2ySF
-	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 07:33:19 +1100 (AEDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-39c1efc457bso828295f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 03 Apr 2025 13:33:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1743712394; x=1744317194; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ur2Tr6iw7X46fc/5bRLx6fdqJrE0cltK+bwwRImun+Q=;
-        b=NMjFSgTq3PoZYqs1M4z+dMDfedb7AoFOaBzIB3AIfpgJN5sblOUjnst1bWMnmk/K+/
-         nBS7OFzbu27Zuy2PgRAR+Gntd4BRbUexnyPSnsmObHx1Il8XpkHfTkIsgt0bbHtAl5qO
-         Xvl2tJvZYFvQ8vZ8DmwL7xA6/ypug1AvYy4eTIAdqpt7T82ioUNjJnhilkD8WJwMbJJH
-         LGnAyCDngU0dn4e1JN3zgGh+DXnb4gLte8d9D7VEzfHoa+exbpDSIfiZpkVXTPRtCwfF
-         UhEwA6VF7AaOznQTBLB3Zg0xNudq2PS5nFLGplnwemA97emAj4dvtf9D2NCsmpugKZoa
-         s7rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1743712394; x=1744317194;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ur2Tr6iw7X46fc/5bRLx6fdqJrE0cltK+bwwRImun+Q=;
-        b=CVK5qUS0DE+gF9tVN1rfSMWNnjEKBnNhslFeOTp63SslkJxrjb4GU2MhvhqSENkUVL
-         T25qMtmpOBhms1E39BtLWq5FPhwxOAhKs3JLerq8eZJa6ePuEZmhYHW1QlVRWfn7Np+0
-         NEALhjGPNoVs4qDrdcHp0XkUWIrNjDRYklnTEC1jBfz2VM9oNuEEo9T+z3Wf1eBjs9fm
-         xYfE/Zzloj4RD9A5NfeZtuqSGuvxyo54LLyEa1vfjs8BwXGhs/B+NOaattclfrJI4V+G
-         xITu4G9Edu4dS8RfMded7CeJJvIH1Fa70WDru8cR2ooeQIgUH2YCWhVQJ4UpG7Js5iLn
-         x5aw==
-X-Forwarded-Encrypted: i=1; AJvYcCUPc9Pe5YGl4S8P8MEmpGGG1rLWXDOfXshlHx7mnU53Jf90pRYofE7t4TR+PRLKTYT+1RxcPmRjUwY5u8Y=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyZMcHy79T/kjE8QhAcU2UfWqQZloYGTJL5cXDWNhACsPeVn0fp
-	IGSRmMMvrzbp76ZE0dz/5XpO9UCrzd9Z2h581gPuic6RsSxfCmjTnPyuw9yFazCRlAr3B76d43f
-	1QGy3Rj98dne7XJIZWRufve35lpQ=
-X-Gm-Gg: ASbGnctNi4ysoP/+0rJ6yGHbMP5UhlZ5V4Kb9z4XP3ktiHEJiQnL20STONzrtrfEFZI
-	KdNmxWLzjAgZOS+3P+0LVkAAKOf9w+L81xfmAcXu4OYNpOZV3hZZsqAWn9LhYO63Dk76YkHy3sC
-	Nahfo+n8I72BdlU2c9dOsW/u/ME20rix8L4+2F4R+X+A==
-X-Google-Smtp-Source: AGHT+IEu34HOnVSPLCEPZgUjMqgj5ikBMtgLqNQ7LH7V6Xsh1zQa1uWkmsD6Y8njY4+v2/UFK6c0Z5jpunIin/qN29o=
-X-Received: by 2002:a05:6000:4284:b0:39b:ede7:8906 with SMTP id
- ffacd0b85a97d-39cb359572bmr610867f8f.19.1743712394400; Thu, 03 Apr 2025
- 13:33:14 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZTJkL3bSLz30Kg
+	for <linuxppc-dev@lists.ozlabs.org>; Fri,  4 Apr 2025 11:04:26 +1100 (AEDT)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by sea.source.kernel.org (Postfix) with ESMTP id C308044EDB;
+	Fri,  4 Apr 2025 00:04:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D366C4CEF3;
+	Fri,  4 Apr 2025 00:04:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1743725060;
+	bh=+U852PWkX9HpJ8w3HK774CIjyZa5t/VrC96/GO5bNBM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VQeedIY2meXJRHLon5gxOJAM/jg72VmbqHwCFFb+sveLhKKts8gGQFfK2ndoez8vO
+	 3EMuBJixAGmlURwTnDJQO4vrlbq0KxuBRzYbmIg/miCTs5GsqPW4EqiMuXrYRhnkdY
+	 g6MYT8lxOek2EAq9tOvQ/l48b1VaLKsrg5nty2uzuu+UPRqcJ/g6R1JjJfxc+K+V/l
+	 4aidBm6BDWHGVHwwmOtAcWDHD+fYgtaKbu5XMsCPwnoNZiJa5m72r8bZLCI9C7X7cG
+	 MkLYJJHKartQ5xoASeoCV3glB64o63X89s1nzEai4yuugtQVvLXPrXBc++T0lTFiWn
+	 PJQNVgeRS6Bgw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Herbert Xu <herbert@gondor.apana.org.au>,
+	kernel test robot <lkp@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	davem@davemloft.net,
+	linux@armlinux.org.uk,
+	leitao@debian.org,
+	nayna@linux.ibm.com,
+	pfsmorigo@gmail.com,
+	maddy@linux.ibm.com,
+	mpe@ellerman.id.au,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-crypto@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH AUTOSEL 6.14 07/23] crypto: lib/Kconfig - Fix lib built-in failure when arch is modular
+Date: Thu,  3 Apr 2025 20:03:44 -0400
+Message-Id: <20250404000402.2688049-7-sashal@kernel.org>
+X-Mailer: git-send-email 2.39.5
+In-Reply-To: <20250404000402.2688049-1-sashal@kernel.org>
+References: <20250404000402.2688049-1-sashal@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,60 +82,217 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250313172127.1098195-1-luis.gerhorst@fau.de>
- <20250313175312.1120183-1-luis.gerhorst@fau.de> <20250313175312.1120183-2-luis.gerhorst@fau.de>
- <CAADnVQKL-NwxigMWM+U=n5ZXPG+xHYzSTEv0Rq8Y91m45eRJDw@mail.gmail.com> <87cyedie3w.fsf@fau.de>
-In-Reply-To: <87cyedie3w.fsf@fau.de>
-From: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Date: Thu, 3 Apr 2025 13:33:01 -0700
-X-Gm-Features: ATxdqUHPAFiAlWbRvEI6Dyb_uIy-F7VX7qdc8juRjqz8Jt6HEvin01eMZNJzsww
-Message-ID: <CAADnVQKAFfOKWe+rdvaM=sKp229Kn14jj=K6+8oybw5m2Mh-RQ@mail.gmail.com>
-Subject: Re: [PATCH bpf-next 11/11] bpf: Fall back to nospec for spec path verification
-To: Luis Gerhorst <luis.gerhorst@fau.de>
-Cc: Alexei Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>, 
-	Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau <martin.lau@linux.dev>, 
-	Eduard Zingerman <eddyz87@gmail.com>, Song Liu <song@kernel.org>, 
-	Yonghong Song <yonghong.song@linux.dev>, John Fastabend <john.fastabend@gmail.com>, 
-	KP Singh <kpsingh@kernel.org>, Stanislav Fomichev <sdf@fomichev.me>, Hao Luo <haoluo@google.com>, 
-	Jiri Olsa <jolsa@kernel.org>, Puranjay Mohan <puranjay@kernel.org>, 
-	Xu Kuohai <xukuohai@huaweicloud.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Hari Bathini <hbathini@linux.ibm.com>, 
-	Christophe Leroy <christophe.leroy@csgroup.eu>, Naveen N Rao <naveen@kernel.org>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Mykola Lysenko <mykolal@fb.com>, Shuah Khan <shuah@kernel.org>, 
-	Henriette Herzog <henriette.herzog@rub.de>, Cupertino Miranda <cupertino.miranda@oracle.com>, 
-	Matan Shachnai <m.shachnai@gmail.com>, Dimitar Kanaliev <dimitar.kanaliev@siteground.com>, 
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>, Daniel Xu <dxu@dxuuu.xyz>, bpf <bpf@vger.kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, LKML <linux-kernel@vger.kernel.org>, 
-	ppc-dev <linuxppc-dev@lists.ozlabs.org>, 
-	"open list:KERNEL SELFTEST FRAMEWORK" <linux-kselftest@vger.kernel.org>, George Guo <guodongtai@kylinos.cn>, 
-	WANG Xuerui <git@xen0n.name>, Tiezhu Yang <yangtiezhu@loongson.cn>, Maximilian Ott <ott@cs.fau.de>, 
-	Milan Stephan <milan.stephan@fau.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.14
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Mar 19, 2025 at 2:06=E2=80=AFAM Luis Gerhorst <luis.gerhorst@fau.de=
-> wrote:
->
-> Thank you very much for having a look. Let me know whether the above
-> resolves your concern.
->
-> In any case, should I separate patches 1-3 into another series?
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-Sorry for the delay. lsfmm was followed by the busy merge window.
+[ Upstream commit 1047e21aecdf17c8a9ab9fd4bd24c6647453f93d ]
 
-Please rebase and repost the patches with the detailed
-explanation of how lfence works internally and it affects on
-the algorithm.
-I mistakenly thought that lfence is a load fence only.
-That it forces all prior loads to complete, but not the other insns.
-Since it's an absolute speculation barrier the algorithm appears sound.
-My only remaining reservation is a heuristic in this patch.
-If we don't do it, we wouldn't have to special case push_stack() too,
-right?
-Let's continue discussion in the new thread.
+The HAVE_ARCH Kconfig options in lib/crypto try to solve the
+modular versus built-in problem, but it still fails when the
+the LIB option (e.g., CRYPTO_LIB_CURVE25519) is selected externally.
+
+Fix this by introducing a level of indirection with ARCH_MAY_HAVE
+Kconfig options, these then go on to select the ARCH_HAVE options
+if the ARCH Kconfig options matches that of the LIB option.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202501230223.ikroNDr1-lkp@intel.com/
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm/crypto/Kconfig     |  6 +++---
+ arch/powerpc/crypto/Kconfig |  4 ++--
+ arch/x86/crypto/Kconfig     |  6 +++---
+ lib/crypto/Kconfig          | 26 ++++++++++++++++++--------
+ 4 files changed, 26 insertions(+), 16 deletions(-)
+
+diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
+index 32650c8431d98..47d9cc59f254c 100644
+--- a/arch/arm/crypto/Kconfig
++++ b/arch/arm/crypto/Kconfig
+@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_NEON
+ 	tristate "Public key crypto: Curve25519 (NEON)"
+ 	depends on KERNEL_MODE_NEON
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
+ 	help
+ 	  Curve25519 algorithm
+ 
+@@ -47,7 +47,7 @@ config CRYPTO_NHPOLY1305_NEON
+ config CRYPTO_POLY1305_ARM
+ 	tristate "Hash functions: Poly1305 (NEON)"
+ 	select CRYPTO_HASH
+-	select CRYPTO_ARCH_HAVE_LIB_POLY1305
++	select CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
+ 	help
+ 	  Poly1305 authenticator algorithm (RFC7539)
+ 
+@@ -214,7 +214,7 @@ config CRYPTO_AES_ARM_CE
+ config CRYPTO_CHACHA20_NEON
+ 	tristate "Ciphers: ChaCha20, XChaCha20, XChaCha12 (NEON)"
+ 	select CRYPTO_SKCIPHER
+-	select CRYPTO_ARCH_HAVE_LIB_CHACHA
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
+ 	help
+ 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
+ 	  stream cipher algorithms
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 5b315e9756b3f..e453cb0c82d2a 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_PPC64
+ 	tristate "Public key crypto: Curve25519 (PowerPC64)"
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
+ 	help
+ 	  Curve25519 algorithm
+ 
+@@ -95,7 +95,7 @@ config CRYPTO_CHACHA20_P10
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_SKCIPHER
+ 	select CRYPTO_LIB_CHACHA_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CHACHA
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
+ 	help
+ 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
+ 	  stream cipher algorithms
+diff --git a/arch/x86/crypto/Kconfig b/arch/x86/crypto/Kconfig
+index 4757bf922075b..c189dad0969ba 100644
+--- a/arch/x86/crypto/Kconfig
++++ b/arch/x86/crypto/Kconfig
+@@ -6,7 +6,7 @@ config CRYPTO_CURVE25519_X86
+ 	tristate "Public key crypto: Curve25519 (ADX)"
+ 	depends on X86 && 64BIT
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
+ 	help
+ 	  Curve25519 algorithm
+ 
+@@ -352,7 +352,7 @@ config CRYPTO_CHACHA20_X86_64
+ 	depends on X86 && 64BIT
+ 	select CRYPTO_SKCIPHER
+ 	select CRYPTO_LIB_CHACHA_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_CHACHA
++	select CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
+ 	help
+ 	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
+ 	  stream cipher algorithms
+@@ -420,7 +420,7 @@ config CRYPTO_POLY1305_X86_64
+ 	tristate "Hash functions: Poly1305 (SSE2/AVX2)"
+ 	depends on X86 && 64BIT
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+-	select CRYPTO_ARCH_HAVE_LIB_POLY1305
++	select CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
+ 	help
+ 	  Poly1305 authenticator algorithm (RFC7539)
+ 
+diff --git a/lib/crypto/Kconfig b/lib/crypto/Kconfig
+index b01253cac70a7..c542ef1d64d03 100644
+--- a/lib/crypto/Kconfig
++++ b/lib/crypto/Kconfig
+@@ -42,12 +42,17 @@ config CRYPTO_LIB_BLAKE2S_GENERIC
+ 	  of CRYPTO_LIB_BLAKE2S.
+ 
+ config CRYPTO_ARCH_HAVE_LIB_CHACHA
+-	tristate
++	bool
+ 	help
+ 	  Declares whether the architecture provides an arch-specific
+ 	  accelerated implementation of the ChaCha library interface,
+ 	  either builtin or as a module.
+ 
++config CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA
++	tristate
++	select CRYPTO_ARCH_HAVE_LIB_CHACHA if CRYPTO_LIB_CHACHA=m
++	select CRYPTO_ARCH_HAVE_LIB_CHACHA if CRYPTO_ARCH_MAY_HAVE_LIB_CHACHA=y
++
+ config CRYPTO_LIB_CHACHA_GENERIC
+ 	tristate
+ 	select CRYPTO_LIB_UTILS
+@@ -60,7 +65,6 @@ config CRYPTO_LIB_CHACHA_GENERIC
+ 
+ config CRYPTO_LIB_CHACHA
+ 	tristate "ChaCha library interface"
+-	depends on CRYPTO_ARCH_HAVE_LIB_CHACHA || !CRYPTO_ARCH_HAVE_LIB_CHACHA
+ 	select CRYPTO_LIB_CHACHA_GENERIC if CRYPTO_ARCH_HAVE_LIB_CHACHA=n
+ 	help
+ 	  Enable the ChaCha library interface. This interface may be fulfilled
+@@ -68,12 +72,17 @@ config CRYPTO_LIB_CHACHA
+ 	  is available and enabled.
+ 
+ config CRYPTO_ARCH_HAVE_LIB_CURVE25519
+-	tristate
++	bool
+ 	help
+ 	  Declares whether the architecture provides an arch-specific
+ 	  accelerated implementation of the Curve25519 library interface,
+ 	  either builtin or as a module.
+ 
++config CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519
++	tristate
++	select CRYPTO_ARCH_HAVE_LIB_CURVE25519 if CRYPTO_LIB_CURVE25519=m
++	select CRYPTO_ARCH_HAVE_LIB_CURVE25519 if CRYPTO_ARCH_MAY_HAVE_LIB_CURVE25519=y
++
+ config CRYPTO_LIB_CURVE25519_GENERIC
+ 	tristate
+ 	help
+@@ -85,7 +94,6 @@ config CRYPTO_LIB_CURVE25519_GENERIC
+ 
+ config CRYPTO_LIB_CURVE25519
+ 	tristate "Curve25519 scalar multiplication library"
+-	depends on CRYPTO_ARCH_HAVE_LIB_CURVE25519 || !CRYPTO_ARCH_HAVE_LIB_CURVE25519
+ 	select CRYPTO_LIB_CURVE25519_GENERIC if CRYPTO_ARCH_HAVE_LIB_CURVE25519=n
+ 	select CRYPTO_LIB_UTILS
+ 	help
+@@ -104,12 +112,17 @@ config CRYPTO_LIB_POLY1305_RSIZE
+ 	default 1
+ 
+ config CRYPTO_ARCH_HAVE_LIB_POLY1305
+-	tristate
++	bool
+ 	help
+ 	  Declares whether the architecture provides an arch-specific
+ 	  accelerated implementation of the Poly1305 library interface,
+ 	  either builtin or as a module.
+ 
++config CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305
++	tristate
++	select CRYPTO_ARCH_HAVE_LIB_POLY1305 if CRYPTO_LIB_POLY1305=m
++	select CRYPTO_ARCH_HAVE_LIB_POLY1305 if CRYPTO_ARCH_MAY_HAVE_LIB_POLY1305=y
++
+ config CRYPTO_LIB_POLY1305_GENERIC
+ 	tristate
+ 	help
+@@ -121,7 +134,6 @@ config CRYPTO_LIB_POLY1305_GENERIC
+ 
+ config CRYPTO_LIB_POLY1305
+ 	tristate "Poly1305 library interface"
+-	depends on CRYPTO_ARCH_HAVE_LIB_POLY1305 || !CRYPTO_ARCH_HAVE_LIB_POLY1305
+ 	select CRYPTO_LIB_POLY1305_GENERIC if CRYPTO_ARCH_HAVE_LIB_POLY1305=n
+ 	help
+ 	  Enable the Poly1305 library interface. This interface may be fulfilled
+@@ -130,8 +142,6 @@ config CRYPTO_LIB_POLY1305
+ 
+ config CRYPTO_LIB_CHACHA20POLY1305
+ 	tristate "ChaCha20-Poly1305 AEAD support (8-byte nonce library version)"
+-	depends on CRYPTO_ARCH_HAVE_LIB_CHACHA || !CRYPTO_ARCH_HAVE_LIB_CHACHA
+-	depends on CRYPTO_ARCH_HAVE_LIB_POLY1305 || !CRYPTO_ARCH_HAVE_LIB_POLY1305
+ 	depends on CRYPTO
+ 	select CRYPTO_LIB_CHACHA
+ 	select CRYPTO_LIB_POLY1305
+-- 
+2.39.5
+
 
