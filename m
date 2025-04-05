@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7463-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7468-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7901FA7CB4F
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Apr 2025 20:31:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E538A7CB63
+	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Apr 2025 20:32:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZVPDk39WQz2yrn;
-	Sun,  6 Apr 2025 04:31:02 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZVPDm6QZjz2yhV;
+	Sun,  6 Apr 2025 04:31:04 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743877862;
-	cv=none; b=gHGLOtRhHMHt2gRnZMa9/YmE9OBJ4VcIqlIeQUEAuDE6C0UpswkVwZI6DqxB4FXGLcqXS/fkRtAp2nFrEtflqgqIOzpW0oMj0t/j0XbOIFWHtyUS80oPLxc6YHTghCwOYMJTLCi/8lrN4G1EdnewgW9mESXLYtVN3a/RlkLsBM1l8Ylb+r+VtgGMJdBIiRaUAQtvjZd92baPZ9MCPGdsqa7AYm4DdfTZbbF+bP0QqBWF7EYyyECeEUMEy7DmGw12tOSu4swAM1QYQ+YbKaVTK9qdxoez3C8EVH1jGL6H47r1rMYhj1Myn5+jLsMXPvKupymGcURLMy0ocGNGBMfZpw==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743877864;
+	cv=none; b=b4E3zZcDrZxBpJS9xZgIIePSGi3GPKVk0I08f1lyjgHeZ4Bok86BJOkF2LuVEMn5sijzPG1tYc90PcfhWDELFVADPtBOKUL2Zz8s0eTj05ZUxY/tqeBbVbi0JiLEFjQ5UmqvDWBp5acB3o5bXqcTcue07br7X+3YJJ8jQ+ypeYJ2uBpKnTZCEkcyv9rRPIT6cDkYEgfdRK0Mly+YsSPPsDhi2yWRt6eDmgEdnNr6xaYWy1G+6cdOeEQOFWoo6Lyq2NAiLFKp1llPOYsxiDvEE/wGIS3t4oJWPfvTGuFqKvn1mXLkv+A9Q+SXPSNnJIjRNQqgCoXLaLwAGu6EQT+q2w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743877862; c=relaxed/relaxed;
-	bh=3yMQgp8OMvDydSAfRE2fxabHtW1l0t3Mqtp244+I0ug=;
+	t=1743877864; c=relaxed/relaxed;
+	bh=r46e7dak9DFnm2+mkpQoxOm7+bzKpHfmKNESehoVImI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jOdkAfFdmn0VjwC2IbZd+FBNYklcy4QJAVoXUR6hezB1zViDBInMAaV8DZjW6gumWHVQhslKDF+2bj6n0dVOs4LaFXYhxB3BhpiQm3WUILn4F9rYM4gVNJkHLClu3wkVyGw5dFwAJyulgaQciqBWzOeM3c8BrYp+JjlwFtcnklCmXc2x0GUduE/Z3ak7VVSaayDbDIeMEkKH9Ob6tSH172NcaCCEz4xHOPnsIXVzDOuB8nkybOBjFdVUcKtl+u5k6tmKXm/DL/lPjPzXaQndGnnr3wzNEAEuxK/BfDM1SeqPLKg37I2FJjx9lZxwtRR7CZ6WwFqVFmxtPa1+ZfgQ/Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CE/ooCdC; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=ZGVv6JqEWurIGA4TEIb4mEw3lJrsDCqx7oXx22LRk6OXHZGQUSJOqVFdDs0jl8ZLqUPgHPF5g7U5QxxtmcUErNG6loUfZcD4+rQ2ybxhXRfFnvzlQGF4KhCtm9OHtkCcevPFi8wz8TS/lOSFO0BF1as9A+L9r41xzKt5HT2HWEnKAaHGnptOxH4+fzJCEH4lWMyai/BwgxFdv4l+pns0mx1ybC4NpwKy//i8ua1TxGF8gUA8C6E8aYTMNSQmLl3Uzyk/MBDMIlv3iB+4OSkDX1bkeY3mJHkZvf2DveJiZByogmz6MAo19oRYPvKj6ZKqCUxU7BrY143W5saMT1jN0g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PQAXJq/n; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=CE/ooCdC;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=PQAXJq/n;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
 Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZVPDf2xjgz2ynR
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZVPDg4yPyz2yrY
 	for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Apr 2025 04:30:58 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 63D306115E;
+	by tor.source.kernel.org (Postfix) with ESMTP id DAD0D61164;
 	Sat,  5 Apr 2025 18:30:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AF0C4CEE9;
-	Sat,  5 Apr 2025 18:30:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42FF8C4CEE7;
+	Sat,  5 Apr 2025 18:30:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1743877856;
-	bh=eW0xTEYWjFUyh4AXaM8KqKhQHIAg7OUKLr5XE1L/PVc=;
+	bh=Xwh08sUrwMmQCiHRbYZtr7YEg0mBK+LLgKoP4B4fAZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CE/ooCdCQStDNLZa23kR/ZLdWXC5Cyy8blaw32N9VZ/HZByRudI24Av624U6J6GjI
-	 vFHfKUJr5kXkrwEOfMxCzev4cmLQ0AxskdtKyhysD4HzgiRFfYhbCiyZiCraAivggH
-	 cZL4pzullvEXBaDJryylkKqnIORc48+kUXizZjdOFAJrM4lGxS+NL6HCg/7JQVso1g
-	 NxcrHPNy69kYkSJpwVov9VFJ9KzlJ+FkWUrAnbR7RmSmSy5Frr4XTV9WxxskziNvNK
-	 nfAuxRJPNAipQqBcEr96SWMXEapihar2DCrrObyZ3tyQoRC0NtFv8ztDL5bCqP6DLl
-	 s+6NA8DqN+72w==
+	b=PQAXJq/nTIrYXPGSD4Rnn6n3p4oa0uFWpwBny/fE1QMrnfmFAqlzJGqii9u2ExoNG
+	 VCxf3BI4IuLWmrth2IQ2UWIgWYqoY8u577ch5z3LTqObfLB4+yYjIJh/iNoPuvTyHY
+	 HKNBrhd0s8N4ndBt6e4BIcBy/UBCy2Hs84SVVpDfFKKV2MWLBgW6oThbeLlN1d6cy3
+	 cJXJHokTaaCN+H0JLtR7gX603ND3ilHiSKtDygFGgyLfhRn4t2F2xgKehWPgykgrl2
+	 3IGvAudA0Tkhuc4zSu/Gf30BqTSHJv8jBAdAAjhgKIHviWwQfAPkcbw43UA3Saj4X9
+	 BiFzjf/Mh0KSQ==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -55,9 +55,9 @@ Cc: linux-kernel@vger.kernel.org,
 	Ard Biesheuvel <ardb@kernel.org>,
 	"Jason A . Donenfeld " <Jason@zx2c4.com>,
 	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 7/9] crypto: s390/chacha - remove the skcipher algorithms
-Date: Sat,  5 Apr 2025 11:26:07 -0700
-Message-ID: <20250405182609.404216-8-ebiggers@kernel.org>
+Subject: [PATCH 8/9] crypto: x86/chacha - remove the skcipher algorithms
+Date: Sat,  5 Apr 2025 11:26:08 -0700
+Message-ID: <20250405182609.404216-9-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250405182609.404216-1-ebiggers@kernel.org>
 References: <20250405182609.404216-1-ebiggers@kernel.org>
@@ -89,180 +89,218 @@ algorithms and leave just the library functions.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/s390/crypto/Kconfig       |   7 ---
- arch/s390/crypto/chacha-glue.c | 101 +++++----------------------------
- 2 files changed, 13 insertions(+), 95 deletions(-)
+ arch/x86/crypto/Kconfig       |   9 ---
+ arch/x86/crypto/chacha_glue.c | 142 +---------------------------------
+ 2 files changed, 4 insertions(+), 147 deletions(-)
 
-diff --git a/arch/s390/crypto/Kconfig b/arch/s390/crypto/Kconfig
-index 8c4db8b64fa21..055b08f259ab2 100644
---- a/arch/s390/crypto/Kconfig
-+++ b/arch/s390/crypto/Kconfig
-@@ -108,20 +108,13 @@ config CRYPTO_DES_S390
- 	  As of z196 the CTR mode is hardware accelerated.
+diff --git a/arch/x86/crypto/Kconfig b/arch/x86/crypto/Kconfig
+index 3d948f10c94cd..8cf0a3f55576e 100644
+--- a/arch/x86/crypto/Kconfig
++++ b/arch/x86/crypto/Kconfig
+@@ -350,22 +350,13 @@ config CRYPTO_ARIA_GFNI_AVX512_X86_64
+ 	  Processes 64 blocks in parallel.
  
- config CRYPTO_CHACHA_S390
+ config CRYPTO_CHACHA20_X86_64
  	tristate
- 	depends on S390
+ 	depends on X86 && 64BIT
 -	select CRYPTO_SKCIPHER
  	select CRYPTO_LIB_CHACHA_GENERIC
  	select CRYPTO_ARCH_HAVE_LIB_CHACHA
  	default CRYPTO_LIB_CHACHA_INTERNAL
 -	help
--	  Length-preserving cipher: ChaCha20 stream cipher (RFC 7539)
+-	  Length-preserving ciphers: ChaCha20, XChaCha20, and XChaCha12
+-	  stream cipher algorithms
 -
--	  Architecture: s390
--
--	  It is available as of z13.
+-	  Architecture: x86_64 using:
+-	  - SSSE3 (Supplemental SSE3)
+-	  - AVX2 (Advanced Vector Extensions 2)
+-	  - AVX-512VL (Advanced Vector Extensions-512VL)
  
- config CRYPTO_HMAC_S390
- 	tristate "Keyed-hash message authentication code: HMAC"
- 	depends on S390
- 	select CRYPTO_HASH
-diff --git a/arch/s390/crypto/chacha-glue.c b/arch/s390/crypto/chacha-glue.c
-index 0c68191f2aa4c..b3ffaa5553855 100644
---- a/arch/s390/crypto/chacha-glue.c
-+++ b/arch/s390/crypto/chacha-glue.c
-@@ -1,69 +1,23 @@
- // SPDX-License-Identifier: GPL-2.0
+ config CRYPTO_AEGIS128_AESNI_SSE2
+ 	tristate "AEAD ciphers: AEGIS-128 (AES-NI/SSE4.1)"
+ 	depends on X86 && 64BIT
+ 	select CRYPTO_AEAD
+diff --git a/arch/x86/crypto/chacha_glue.c b/arch/x86/crypto/chacha_glue.c
+index 83a07b31cdd3a..71ec959caadaa 100644
+--- a/arch/x86/crypto/chacha_glue.c
++++ b/arch/x86/crypto/chacha_glue.c
+@@ -1,17 +1,14 @@
+ // SPDX-License-Identifier: GPL-2.0-or-later
  /*
-- * s390 ChaCha stream cipher.
-+ * ChaCha stream cipher (s390 optimized)
+- * x64 SIMD accelerated ChaCha and XChaCha stream ciphers,
+- * including ChaCha20 (RFC7539)
++ * ChaCha and HChaCha functions (x86_64 optimized)
   *
-  * Copyright IBM Corp. 2021
+  * Copyright (C) 2015 Martin Willi
   */
  
- #define KMSG_COMPONENT "chacha_s390"
- #define pr_fmt(fmt) KMSG_COMPONENT ": " fmt
- 
--#include <crypto/internal/chacha.h>
--#include <crypto/internal/skcipher.h>
 -#include <crypto/algapi.h>
+-#include <crypto/internal/chacha.h>
 +#include <crypto/chacha.h>
- #include <linux/cpufeature.h>
+ #include <crypto/internal/simd.h>
+-#include <crypto/internal/skcipher.h>
  #include <linux/kernel.h>
  #include <linux/module.h>
  #include <linux/sizes.h>
- #include <asm/fpu.h>
- #include "chacha-s390.h"
+ #include <asm/simd.h>
  
--static void chacha20_crypt_s390(u32 *state, u8 *dst, const u8 *src,
--				unsigned int nbytes, const u32 *key,
--				u32 *counter)
+@@ -152,126 +149,10 @@ void chacha_crypt_arch(u32 *state, u8 *dst, const u8 *src, unsigned int bytes,
+ 		dst += todo;
+ 	} while (bytes);
+ }
+ EXPORT_SYMBOL(chacha_crypt_arch);
+ 
+-static int chacha_simd_stream_xor(struct skcipher_request *req,
+-				  const struct chacha_ctx *ctx, const u8 *iv)
 -{
--	DECLARE_KERNEL_FPU_ONSTACK32(vxstate);
--
--	kernel_fpu_begin(&vxstate, KERNEL_VXR);
--	chacha20_vx(dst, src, nbytes, key, counter);
--	kernel_fpu_end(&vxstate, KERNEL_VXR);
--
--	*counter += round_up(nbytes, CHACHA_BLOCK_SIZE) / CHACHA_BLOCK_SIZE;
--}
--
--static int chacha20_s390(struct skcipher_request *req)
--{
--	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
--	struct chacha_ctx *ctx = crypto_skcipher_ctx(tfm);
--	u32 state[CHACHA_STATE_WORDS] __aligned(16);
+-	u32 state[CHACHA_STATE_WORDS] __aligned(8);
 -	struct skcipher_walk walk;
--	unsigned int nbytes;
--	int rc;
+-	int err;
 -
--	rc = skcipher_walk_virt(&walk, req, false);
--	chacha_init(state, ctx->key, req->iv);
+-	err = skcipher_walk_virt(&walk, req, false);
+-
+-	chacha_init(state, ctx->key, iv);
 -
 -	while (walk.nbytes > 0) {
--		nbytes = walk.nbytes;
+-		unsigned int nbytes = walk.nbytes;
+-
 -		if (nbytes < walk.total)
 -			nbytes = round_down(nbytes, walk.stride);
 -
--		if (nbytes <= CHACHA_BLOCK_SIZE) {
+-		if (!static_branch_likely(&chacha_use_simd) ||
+-		    !crypto_simd_usable()) {
 -			chacha_crypt_generic(state, walk.dst.virt.addr,
 -					     walk.src.virt.addr, nbytes,
 -					     ctx->nrounds);
 -		} else {
--			chacha20_crypt_s390(state, walk.dst.virt.addr,
--					    walk.src.virt.addr, nbytes,
--					    &state[4], &state[12]);
+-			kernel_fpu_begin();
+-			chacha_dosimd(state, walk.dst.virt.addr,
+-				      walk.src.virt.addr, nbytes,
+-				      ctx->nrounds);
+-			kernel_fpu_end();
 -		}
--		rc = skcipher_walk_done(&walk, walk.nbytes - nbytes);
+-		err = skcipher_walk_done(&walk, walk.nbytes - nbytes);
 -	}
--	return rc;
+-
+-	return err;
 -}
 -
- void hchacha_block_arch(const u32 *state, u32 *stream, int nrounds)
- {
- 	/* TODO: implement hchacha_block_arch() in assembly */
- 	hchacha_block_generic(state, stream, nrounds);
- }
-@@ -74,57 +28,28 @@ void chacha_crypt_arch(u32 *state, u8 *dst, const u8 *src,
- {
- 	/* s390 chacha20 implementation has 20 rounds hard-coded,
- 	 * it cannot handle a block of data or less, but otherwise
- 	 * it can handle data of arbitrary size
- 	 */
--	if (bytes <= CHACHA_BLOCK_SIZE || nrounds != 20 || !cpu_has_vx())
-+	if (bytes <= CHACHA_BLOCK_SIZE || nrounds != 20 || !cpu_has_vx()) {
- 		chacha_crypt_generic(state, dst, src, bytes, nrounds);
--	else
--		chacha20_crypt_s390(state, dst, src, bytes,
--				    &state[4], &state[12]);
+-static int chacha_simd(struct skcipher_request *req)
+-{
+-	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
+-	struct chacha_ctx *ctx = crypto_skcipher_ctx(tfm);
+-
+-	return chacha_simd_stream_xor(req, ctx, req->iv);
 -}
--EXPORT_SYMBOL(chacha_crypt_arch);
-+	} else {
-+		DECLARE_KERNEL_FPU_ONSTACK32(vxstate);
- 
--static struct skcipher_alg chacha_algs[] = {
+-
+-static int xchacha_simd(struct skcipher_request *req)
+-{
+-	struct crypto_skcipher *tfm = crypto_skcipher_reqtfm(req);
+-	struct chacha_ctx *ctx = crypto_skcipher_ctx(tfm);
+-	u32 state[CHACHA_STATE_WORDS] __aligned(8);
+-	struct chacha_ctx subctx;
+-	u8 real_iv[16];
+-
+-	chacha_init(state, ctx->key, req->iv);
+-
+-	if (req->cryptlen > CHACHA_BLOCK_SIZE && crypto_simd_usable()) {
+-		kernel_fpu_begin();
+-		hchacha_block_ssse3(state, subctx.key, ctx->nrounds);
+-		kernel_fpu_end();
+-	} else {
+-		hchacha_block_generic(state, subctx.key, ctx->nrounds);
+-	}
+-	subctx.nrounds = ctx->nrounds;
+-
+-	memcpy(&real_iv[0], req->iv + 24, 8);
+-	memcpy(&real_iv[8], req->iv + 16, 8);
+-	return chacha_simd_stream_xor(req, &subctx, real_iv);
+-}
+-
+-static struct skcipher_alg algs[] = {
 -	{
 -		.base.cra_name		= "chacha20",
--		.base.cra_driver_name	= "chacha20-s390",
--		.base.cra_priority	= 900,
+-		.base.cra_driver_name	= "chacha20-simd",
+-		.base.cra_priority	= 300,
 -		.base.cra_blocksize	= 1,
 -		.base.cra_ctxsize	= sizeof(struct chacha_ctx),
 -		.base.cra_module	= THIS_MODULE,
-+		kernel_fpu_begin(&vxstate, KERNEL_VXR);
-+		chacha20_vx(dst, src, bytes, &state[4], &state[12]);
-+		kernel_fpu_end(&vxstate, KERNEL_VXR);
- 
+-
 -		.min_keysize		= CHACHA_KEY_SIZE,
 -		.max_keysize		= CHACHA_KEY_SIZE,
 -		.ivsize			= CHACHA_IV_SIZE,
 -		.chunksize		= CHACHA_BLOCK_SIZE,
 -		.setkey			= chacha20_setkey,
--		.encrypt		= chacha20_s390,
--		.decrypt		= chacha20_s390,
-+		state[12] += round_up(bytes, CHACHA_BLOCK_SIZE) /
-+			     CHACHA_BLOCK_SIZE;
- 	}
+-		.encrypt		= chacha_simd,
+-		.decrypt		= chacha_simd,
+-	}, {
+-		.base.cra_name		= "xchacha20",
+-		.base.cra_driver_name	= "xchacha20-simd",
+-		.base.cra_priority	= 300,
+-		.base.cra_blocksize	= 1,
+-		.base.cra_ctxsize	= sizeof(struct chacha_ctx),
+-		.base.cra_module	= THIS_MODULE,
+-
+-		.min_keysize		= CHACHA_KEY_SIZE,
+-		.max_keysize		= CHACHA_KEY_SIZE,
+-		.ivsize			= XCHACHA_IV_SIZE,
+-		.chunksize		= CHACHA_BLOCK_SIZE,
+-		.setkey			= chacha20_setkey,
+-		.encrypt		= xchacha_simd,
+-		.decrypt		= xchacha_simd,
+-	}, {
+-		.base.cra_name		= "xchacha12",
+-		.base.cra_driver_name	= "xchacha12-simd",
+-		.base.cra_priority	= 300,
+-		.base.cra_blocksize	= 1,
+-		.base.cra_ctxsize	= sizeof(struct chacha_ctx),
+-		.base.cra_module	= THIS_MODULE,
+-
+-		.min_keysize		= CHACHA_KEY_SIZE,
+-		.max_keysize		= CHACHA_KEY_SIZE,
+-		.ivsize			= XCHACHA_IV_SIZE,
+-		.chunksize		= CHACHA_BLOCK_SIZE,
+-		.setkey			= chacha12_setkey,
+-		.encrypt		= xchacha_simd,
+-		.decrypt		= xchacha_simd,
+-	},
 -};
-+}
-+EXPORT_SYMBOL(chacha_crypt_arch);
- 
+-
  bool chacha_is_arch_optimized(void)
  {
- 	return cpu_has_vx();
+ 	return static_key_enabled(&chacha_use_simd);
  }
  EXPORT_SYMBOL(chacha_is_arch_optimized);
- 
--static int __init chacha_mod_init(void)
--{
+@@ -291,27 +172,12 @@ static int __init chacha_simd_mod_init(void)
+ 		if (IS_ENABLED(CONFIG_AS_AVX512) &&
+ 		    boot_cpu_has(X86_FEATURE_AVX512VL) &&
+ 		    boot_cpu_has(X86_FEATURE_AVX512BW)) /* kmovq */
+ 			static_branch_enable(&chacha_use_avx512vl);
+ 	}
 -	return IS_REACHABLE(CONFIG_CRYPTO_SKCIPHER) ?
--		crypto_register_skciphers(chacha_algs, ARRAY_SIZE(chacha_algs)) : 0;
--}
+-		crypto_register_skciphers(algs, ARRAY_SIZE(algs)) : 0;
++	return 0;
+ }
 -
--static void __exit chacha_mod_fini(void)
+-static void __exit chacha_simd_mod_fini(void)
 -{
--	if (IS_REACHABLE(CONFIG_CRYPTO_SKCIPHER))
--		crypto_unregister_skciphers(chacha_algs, ARRAY_SIZE(chacha_algs));
+-	if (IS_REACHABLE(CONFIG_CRYPTO_SKCIPHER) && boot_cpu_has(X86_FEATURE_SSSE3))
+-		crypto_unregister_skciphers(algs, ARRAY_SIZE(algs));
 -}
 -
--arch_initcall(chacha_mod_init);
--module_exit(chacha_mod_fini);
--
--MODULE_DESCRIPTION("ChaCha20 stream cipher");
-+MODULE_DESCRIPTION("ChaCha stream cipher (s390 optimized)");
- MODULE_LICENSE("GPL v2");
--
+ arch_initcall(chacha_simd_mod_init);
+-module_exit(chacha_simd_mod_fini);
+ 
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Martin Willi <martin@strongswan.org>");
+-MODULE_DESCRIPTION("ChaCha and XChaCha stream ciphers (x64 SIMD accelerated)");
 -MODULE_ALIAS_CRYPTO("chacha20");
+-MODULE_ALIAS_CRYPTO("chacha20-simd");
+-MODULE_ALIAS_CRYPTO("xchacha20");
+-MODULE_ALIAS_CRYPTO("xchacha20-simd");
+-MODULE_ALIAS_CRYPTO("xchacha12");
+-MODULE_ALIAS_CRYPTO("xchacha12-simd");
++MODULE_DESCRIPTION("ChaCha and HChaCha functions (x86_64 optimized)");
 -- 
 2.49.0
 
