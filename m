@@ -1,66 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-7467-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7470-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0381A7CB61
-	for <lists+linuxppc-dev@lfdr.de>; Sat,  5 Apr 2025 20:31:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 914FAA7CEFB
+	for <lists+linuxppc-dev@lfdr.de>; Sun,  6 Apr 2025 18:34:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZVPDm5hJsz2yfx;
-	Sun,  6 Apr 2025 04:31:04 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZVyc85rjgz2xdg;
+	Mon,  7 Apr 2025 02:34:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743877864;
-	cv=none; b=oVP3v20IjjaQgD4ywgq4fMnr6GhMnUKCG2apaUNzNJNPumeDmmjcTU4RHwWETUjE2iq87osBKPJ2C7Pu5Fe3k4RJq/jWVMEE4fx2ZswVYhbmuOeHLKXlzUdjoTSQywWBpLsDaO4pB1utBYBIoCzeftG63hXn1zTveuobecBOI0csSGuXukvLXAnnKm/prJP2v4eF+oOMZ6hNFVWzHH93kgPLHLoxnIywMkOl7qpSIYTGvkodEzpzW8EKUZhPwmrtsf4fFwfcHHAISxZP7ckxC46O83mlabdD2XmgrnDDOf4vboUcKLu3fpvAHqSf55rqxKfAczi0B9+/qjHk6bCjsg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1743957288;
+	cv=none; b=SvYPOWXh9ug55sIwFetaFL4Sg2ikwZ+TpDDLemt/lqfSGELdylXNOeZ8K2rRjmMJ1RECWBkCUd/qexIjCQyozwCrBhkVzSc5gxsQnjMsvquAHmAJUYepUdE1edIX1Kscv1DX7CTCeDytumGQq5bDRDUi+fT4ba2acUZf9Y45n1U9c1cXvvJaZchnPGlAIYQb7WOJ+xftE33/T0I7E/a18O3jttmwC2bJbwXs88LtAxfyr8FGrtfrUAGOnQGIX9r9gtqlyStXbItXxizctEMr65jGxZn9ZXsqR67L6UHrXLxbUUi5+AqiKPNzp2f7UGXzupL6EFOCz7UnqlPKUkSCQQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1743877864; c=relaxed/relaxed;
-	bh=nhCL9ALqrw3D/8w7HiPkEzxnjAyvDKamWX6KnYu6nwA=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fL1XSgmH9tma8BVBW+vv2wAS1RCV1hUKsFGolSahPijtiL5YPaYtHI2U1chePAyI68PO7E5/M7t8TwuxIcOxMdQ/fbIXYFRLeJ5O6hcXdK9jv+NYrO/9y9t6v8DSu0Wyy9QMFDUkC40qqoE8ZNkfMl9cjdqJrJ+P32PYUQUqsv7zw/VzOuclFg7Yx+eZQo5UMLcJlHKJK//2odQZ0FRhyFvbrKL+qGlfVpYSVSZN6NeNmoC+RXDuN1sUoBQkOHIfNsv8TI7C+1sdy0pdKs2vNCdZrbLBp8lPkFQFY7FHO1m+/9K70xaRxf8MQSEAYL4nkAJC+uFRjKa17HG0/XcVaQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ju1cg6yr; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1743957288; c=relaxed/relaxed;
+	bh=qLFtcIKkBCr2UmXnu02eczKZYSvK24BFD+5YU178Hrk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Lfg4iGavEwVg0XnEwmWLNMlPnxpW1yBUKxYZ2GOenwzpTEmGL2bzOII8FXa7pT7ZOWteO/zrZHLE+xlknmEg0Yq680HiZI9E+Xr8EBoakUCZar0UMM5sXRvVhInEQYeQqezeT6xCxgMh0mX7CB8ahlr5vawpQpkFif7r6dtYE9C+Jr5ho1coYAjw/YNiyTolt94U7hAV3/ExdqPpShO6EXMlM45mqZYjqAym+qKeGgrBARIGjXFiuhLVY64ZgguavUhoiAOeXIuJN1SZfTZw2YmPrh6daRkgu4op1xFdHwxU7d58zqyjGWZsi2vWWn+X062+oUPIfFF5/sB4eR9TMQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gwBcdXWL; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=Ju1cg6yr;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=gwBcdXWL;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=likhitha@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZVPDh1Ltwz2ygY
-	for <linuxppc-dev@lists.ozlabs.org>; Sun,  6 Apr 2025 04:30:59 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 80AAD61139;
-	Sat,  5 Apr 2025 18:30:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B91BCC4CEEE;
-	Sat,  5 Apr 2025 18:30:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1743877857;
-	bh=xm9pQBjynxcvCeIRTBV15aMlBzjyI8/pKv+7T2s3kQY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ju1cg6yronHNVCwqCj3RXAUddHMdeVnV37A1BlKl8lKfGjcLZ1O5Jr47JPwtgEb8w
-	 kBtjrQz3oQTK0rF2GIxt9Jca1cQ2ovIovsG6x4ozwgzI/GbWA8lRcEtmfqMDHrTqpT
-	 GkdEJQJ46F2Rn2YbfgjD6ZNJWzdg9KZ4ECZmXWRKimG527EO6mCfbyhULimX30AAin
-	 iZ+x9yi8figCx1FLSGpxDTsI1oClBdWm+rRR1K6l7HqAHfcbGiEQ2Yy0vRh9G1DEDV
-	 Fz64+CRHAlOrMoZ3dqTecWbhgJP5bMpDNyYjfK3/ZQdfcw+7ZrPkaN6Q+fqq/Aktxg
-	 VZhaClah8z4gQ==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mips@vger.kernel.org,
-	linuxppc-dev@lists.ozlabs.org,
-	linux-riscv@lists.infradead.org,
-	linux-s390@vger.kernel.org,
-	x86@kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>,
-	"Jason A . Donenfeld " <Jason@zx2c4.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 9/9] crypto: chacha - remove <crypto/internal/chacha.h>
-Date: Sat,  5 Apr 2025 11:26:09 -0700
-Message-ID: <20250405182609.404216-10-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250405182609.404216-1-ebiggers@kernel.org>
-References: <20250405182609.404216-1-ebiggers@kernel.org>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZVyc41S1Yz2xJ8
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Apr 2025 02:34:43 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5368uvXt027152;
+	Sun, 6 Apr 2025 16:34:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=qLFtcIKkBCr2UmXnu02eczKZYSvK24BFD+5YU178H
+	rk=; b=gwBcdXWLwn/JtW4F8d0o2pAbG/ulnOIXYRU9vHxMsSvx6b/Qz7JnEDfA0
+	JB10XQKFqYQy+sTE9SPoF/I3xxqkUXb5NxmOLkvMFOgAGro1p0F2dk7tWbafgr7Q
+	Rj9vSngerUtzbh+KDb3tIudv74LMKHG5mz/NNzN2KhV5hvW+RH+tOdgsYSh0I2ce
+	7LMYIjaYpymjDLoAZGYShMVQFfdOoEMMPmBDt7Msl+lxPbjGds2eWnkkMgruyiyl
+	8RRb1hAGF2KnGUGRHrWJRk2uZOlqI5FH8m5fO52UJXbIFy3eI5U8neqsD7Y485QU
+	YmZzRx784aBufN86QjYorNPN/GjTg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45ubr0jrsw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 06 Apr 2025 16:34:30 +0000 (GMT)
+Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 536GYUfN006530;
+	Sun, 6 Apr 2025 16:34:30 GMT
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45ubr0jrsu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 06 Apr 2025 16:34:30 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 536DEq7h014473;
+	Sun, 6 Apr 2025 16:34:29 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ufuna99p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 06 Apr 2025 16:34:29 +0000
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 536GYPx626870332
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sun, 6 Apr 2025 16:34:25 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9949020049;
+	Sun,  6 Apr 2025 16:34:25 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 848D620040;
+	Sun,  6 Apr 2025 16:34:21 +0000 (GMT)
+Received: from li-e616facc-2daa-11b2-a85c-9c7f23c3cd5e.ibm.com.com (unknown [9.39.20.57])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sun,  6 Apr 2025 16:34:21 +0000 (GMT)
+From: Likhitha Korrapati <likhitha@linux.ibm.com>
+To: acme@kernel.org, jolsa@kernel.org, adrian.hunter@intel.com,
+        irogers@google.com, namhyung@kernel.org
+Cc: linux-perf-users@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        maddy@linux.ibm.com, atrajeev@linux.ibm.com,
+        Likhitha Korrapati <likhitha@linux.ibm.com>
+Subject: [PATCH] tools/lib/perf: Fix -Werror=alloc-size-larger-than in cpumap.c
+Date: Sun,  6 Apr 2025 22:04:12 +0530
+Message-ID: <20250406163412.897313-1-likhitha@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,126 +92,70 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: uXAkx6ONmm2gNLmbAIULtmQvm6muFQqQ
+X-Proofpoint-GUID: 7lxIQj-qXevGsWmFquYBXpGJi-Qsw3li
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-06_04,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 impostorscore=0
+ suspectscore=0 lowpriorityscore=0 spamscore=0 mlxlogscore=999
+ clxscore=1015 phishscore=0 adultscore=0 priorityscore=1501 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504060119
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Eric Biggers <ebiggers@google.com>
+perf build break observed when using gcc 13-3 (FC39 ppc64le)
+with the following error.
 
-<crypto/internal/chacha.h> is now included only by crypto/chacha.c, so
-fold it into there.
+cpumap.c: In function 'perf_cpu_map__merge':
+cpumap.c:414:20: error: argument 1 range [18446744069414584320, 18446744073709551614] exceeds maximum object size 9223372036854775807 [-Werror=alloc-size-larger-than=]
+  414 |         tmp_cpus = malloc(tmp_len * sizeof(struct perf_cpu));
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+In file included from cpumap.c:4:
+/usr/include/stdlib.h:672:14: note: in a call to allocation function 'malloc' declared here
+  672 | extern void *malloc (size_t __size) __THROW __attribute_malloc__
+      |              ^~~~~~
+cc1: all warnings being treated as errors
 
-Signed-off-by: Eric Biggers <ebiggers@google.com>
+Error happens to be only in gcc13-3 and not in latest gcc 14.
+Even though git-bisect pointed bad commit as:
+'commit f5b07010c13c ("libperf: Don't remove -g when EXTRA_CFLAGS are used")',
+issue is with tmp_len being "int". It holds number of cpus and making
+it "unsigned int" fixes the issues.
+
+After the fix:
+
+  CC      util/pmu-flex.o
+  CC      util/expr-flex.o
+  LD      util/perf-util-in.o
+  LD      perf-util-in.o
+  AR      libperf-util.a
+  LINK    perf
+  GEN     python/perf.cpython-312-powerpc64le-linux-gnu.so
+
+Signed-off-by: Likhitha Korrapati <likhitha@linux.ibm.com>
 ---
- crypto/chacha.c                  | 35 +++++++++++++++++++++++++-
- include/crypto/internal/chacha.h | 43 --------------------------------
- 2 files changed, 34 insertions(+), 44 deletions(-)
- delete mode 100644 include/crypto/internal/chacha.h
+ tools/lib/perf/cpumap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/chacha.c b/crypto/chacha.c
-index 2009038c5e56c..5103bc0b2881f 100644
---- a/crypto/chacha.c
-+++ b/crypto/chacha.c
-@@ -6,14 +6,47 @@
-  * Copyright (C) 2018 Google LLC
-  */
- 
- #include <linux/unaligned.h>
- #include <crypto/algapi.h>
--#include <crypto/internal/chacha.h>
-+#include <crypto/chacha.h>
- #include <crypto/internal/skcipher.h>
- #include <linux/module.h>
- 
-+struct chacha_ctx {
-+	u32 key[8];
-+	int nrounds;
-+};
-+
-+static int chacha_setkey(struct crypto_skcipher *tfm,
-+			 const u8 *key, unsigned int keysize, int nrounds)
-+{
-+	struct chacha_ctx *ctx = crypto_skcipher_ctx(tfm);
-+	int i;
-+
-+	if (keysize != CHACHA_KEY_SIZE)
-+		return -EINVAL;
-+
-+	for (i = 0; i < ARRAY_SIZE(ctx->key); i++)
-+		ctx->key[i] = get_unaligned_le32(key + i * sizeof(u32));
-+
-+	ctx->nrounds = nrounds;
-+	return 0;
-+}
-+
-+static int chacha20_setkey(struct crypto_skcipher *tfm,
-+			   const u8 *key, unsigned int keysize)
-+{
-+	return chacha_setkey(tfm, key, keysize, 20);
-+}
-+
-+static int chacha12_setkey(struct crypto_skcipher *tfm,
-+			   const u8 *key, unsigned int keysize)
-+{
-+	return chacha_setkey(tfm, key, keysize, 12);
-+}
-+
- static int chacha_stream_xor(struct skcipher_request *req,
- 			     const struct chacha_ctx *ctx, const u8 *iv,
- 			     bool arch)
+diff --git a/tools/lib/perf/cpumap.c b/tools/lib/perf/cpumap.c
+index 4454a5987570..c7c784e18225 100644
+--- a/tools/lib/perf/cpumap.c
++++ b/tools/lib/perf/cpumap.c
+@@ -398,7 +398,7 @@ bool perf_cpu_map__is_subset(const struct perf_cpu_map *a, const struct perf_cpu
+ int perf_cpu_map__merge(struct perf_cpu_map **orig, struct perf_cpu_map *other)
  {
- 	struct skcipher_walk walk;
-diff --git a/include/crypto/internal/chacha.h b/include/crypto/internal/chacha.h
-deleted file mode 100644
-index b085dc1ac1516..0000000000000
---- a/include/crypto/internal/chacha.h
-+++ /dev/null
-@@ -1,43 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0 */
--
--#ifndef _CRYPTO_INTERNAL_CHACHA_H
--#define _CRYPTO_INTERNAL_CHACHA_H
--
--#include <crypto/chacha.h>
--#include <crypto/internal/skcipher.h>
--#include <linux/crypto.h>
--
--struct chacha_ctx {
--	u32 key[8];
--	int nrounds;
--};
--
--static inline int chacha_setkey(struct crypto_skcipher *tfm, const u8 *key,
--				unsigned int keysize, int nrounds)
--{
--	struct chacha_ctx *ctx = crypto_skcipher_ctx(tfm);
--	int i;
--
--	if (keysize != CHACHA_KEY_SIZE)
--		return -EINVAL;
--
--	for (i = 0; i < ARRAY_SIZE(ctx->key); i++)
--		ctx->key[i] = get_unaligned_le32(key + i * sizeof(u32));
--
--	ctx->nrounds = nrounds;
--	return 0;
--}
--
--static inline int chacha20_setkey(struct crypto_skcipher *tfm, const u8 *key,
--				  unsigned int keysize)
--{
--	return chacha_setkey(tfm, key, keysize, 20);
--}
--
--static inline int chacha12_setkey(struct crypto_skcipher *tfm, const u8 *key,
--				  unsigned int keysize)
--{
--	return chacha_setkey(tfm, key, keysize, 12);
--}
--
--#endif /* _CRYPTO_CHACHA_H */
+ 	struct perf_cpu *tmp_cpus;
+-	int tmp_len;
++	unsigned int tmp_len;
+ 	int i, j, k;
+ 	struct perf_cpu_map *merged;
+ 
 -- 
-2.49.0
+2.43.5
 
 
