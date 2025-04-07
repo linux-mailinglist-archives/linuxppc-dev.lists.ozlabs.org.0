@@ -1,67 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-7481-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7482-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD06A7D728
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Apr 2025 10:06:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33606A7D76B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Apr 2025 10:17:02 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWMH36l09z2yRx;
-	Mon,  7 Apr 2025 18:06:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWMWH3XGQz2xpn;
+	Mon,  7 Apr 2025 18:16:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=209.85.221.169
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744013183;
-	cv=none; b=Cwzf4j1/kYxU9irqx3L/ccemVUCYFKHb77tm6A1+sZQRr53thbyaOdHC72F/QglmItEKw5jZhcHF8dIrDdg7qGVLUyEqpqgaEoogmuaNiz+qdfBMsQD3iCHRbYHdTq/t5WjagzN95ydfgfYooZoiTLltvT3J2c/UjUnsh1AjPh4veR7JW67rszlPE2c3AR8+76V+DOgaxgaj+0Y8lf7dLLuEdtq1CDF5y6dBJmFDVU08MyTUNNhge0fR22lKeEB9P9TWeLJxYpHzOV93/u+6fiYqncZcL8Yd47Cw8/mC6AaI0NRsnvzrtK0F3m0Y3Bf1vVZtG4qxzYKnl4Jk57XayA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744013819;
+	cv=none; b=g2cpyXUa4ppGPHRlO6Jy3UU/EcStURstItz0rIXQu67hBu9FCdCfLY0YDBwcPf1uWoFpWTd1kZAkW0eQEyya5gC+bJh8OuwA/XWpcR7tzuLXVG6lKniLXlEmmMHo1Hpf++EN4ngdR1vMjppKhscsqA/1fU7tJEp47Pet4onHF7MIWOuCNaIf5C9ADp7w3h0sakprr21wCxUN+dFSMSePbeUtqpF/Be8fpGaCwlGFj6yqvXyaEax1Ce4lQb0Y/Ho1kWiPp0I67ux60l2lCJG8HqaSml54/cGHKZIsUycSkozdYhXRpcWE1GAxb4avTJQTCvefKFpe3A1vgj6/842Hgw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744013183; c=relaxed/relaxed;
-	bh=em0yD0kIpDtyZFKdGXKgNdHuMfrDjAXLZIWfYU3VNv0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PZXhiVda/0azS5zIJT565uPNr9Ii2VVlzqDzxGeSt4qVsJqgXVRBei7I5Ee7D93Mob+O3GOgeat1q3B1AVYj04HY7ymjFybJAMxlkMlXYHk+Qm2dhPI/6wZ/ux5Ki59SN003OtjZusFjrCGSTPzzdNB7L3ASIKaLG0Vq6Ha9EQqNEpR5iaKzgcO7JMGdNw8VAqCohxZeTABCyXJhw1GbS3vSlgDMxI9BBVZ8eS6R4+TqpoTGGy9KAgK9Yjkni89dVKC9HGvUGFaSxPKZzq5Dl1ySn2Aeoaf2fcl9Ih6P6u9kdjAMFHOh4l4PfGsYm6uGBRen4onO0XU6rKL2RK2fmQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass (client-ip=209.85.221.169; helo=mail-vk1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=209.85.221.169; helo=mail-vk1-f169.google.com; envelope-from=geert.uytterhoeven@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1744013819; c=relaxed/relaxed;
+	bh=nabt4MTzF21qlD7olPmRrgXeKPdV2cuXz31d6xns7pk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=npCw7XuqKaxoRzHuTuyidSzPeFDs6BpFyVvqx5ZjrlNL+7sfntH+An2TRF8ApfzysU9+hq+vqUbVAIgCJf/7fGL77FuL9DUgtATlkx4nrakgGQ5r3CW0qHqigqNIMPelME4aD2DzNbBAqhzbLUasp/lFVpwMsJYL7CG0SEVN4rPnND8ugqSRBgkJp9jodsvzNqrO9G5oMwD0pMiUdoQkftvzB5k+3+QEJOhlVSpgTa+Z6CQg0s9bFaYCloYUwsqkTE2vNOkT5Bzrk9OyBulQ79rD35BSr8OqnosxbKo6criZEJiF+rVvIG2C2aAnFbP2SjEYZKYQVA76FXMt7uk88g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TfYaQwIs; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=TfYaQwIs;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hbathini@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWMH21rK6z2xpn
-	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Apr 2025 18:06:21 +1000 (AEST)
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-51eb1823a8eso2185865e0c.3
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Apr 2025 01:06:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744013177; x=1744617977;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=em0yD0kIpDtyZFKdGXKgNdHuMfrDjAXLZIWfYU3VNv0=;
-        b=Thq7nCrq2TfcivqphPKfyTVBEYvDKQayj2JVUq7Fu2vyp9ck5zy+xDAY6SNeMHus9k
-         NsUvEgZkY0kvB8N3tF9VyulUE9GhlgJAWSPnyWUsCeLNSf5bM6W5+9QsRFQmnpHKFfwR
-         RJtSwzuKFVbDn9+sU1sz0/bycv57GUSQwghiUmGq752DaCqC4ECJHYl4nk8B2iXEpDgN
-         nlk52YGuuR/r5x2qBOomycVwnlVfsgjC1wpGmscX8gfUDHEbegPPnVX498wPkPQlurp0
-         X0u7zYNZ8KeGRTmvgoVtRUcEzfH3WYOfbAypU/ySKxZJDvcyM0mPYgSmPoOfvcnAsjnW
-         0BIA==
-X-Forwarded-Encrypted: i=1; AJvYcCV+XLpGUG9lT+LleecqV8ZIGeS5la38q1xsy5CHo1HUra91XsPG9A70eT7q/byCUd7qt4oNeY+AT/EDxUo=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yyfzpv6aDmMhrKSDPNsxKHwiUIouDLnqbElltZXPhlWLcNzxvqg
-	n8SNZGPRrM8Xk4cDN0RHEPS2iO6CRj4HP6+q1FIt8ZKpk9H2DK3d5MH4vLoc
-X-Gm-Gg: ASbGncsC5ZH/QOJE6u4CD4oMWIB5Gvvrn1kDF5smEGnnrNAEypX5lplRNh9xiwT2tJQ
-	f5EiV6hef58kb0SYOL0DiPtph2H2MB4rDRzErrfGHNqBZ5VLMI7hB1fxjqCQ9HaeF6BO68Gpcfj
-	o+ZtHwWUVQdVF40pSGInHujUz8Flcq91UTBKYBafLR7+hZejWh4++y4f1c5kpMU5UfiA+P3RVSB
-	MtQQzat9w58aWGTglH9inelvfa62K5AH+FSWA0+na7AWFBKyUt9qjNe21ePeJ3RDWicu0n8Mbt1
-	avSFAXlai1GBV7HCjAd81dGQqwkJo2E8fz5AMhnJaCYzoUnAAe2I6YFP5MaDQ3u0OsL0oRtlxlP
-	cHecu90A3frA=
-X-Google-Smtp-Source: AGHT+IEOVRGr2G+0ZHNJezneEJk4HOj1ihHtx9+1wi7BgGoelXI0QYnk3BNp/2ai1xieV21x3kjWpQ==
-X-Received: by 2002:a05:6122:4f91:b0:527:67da:74ee with SMTP id 71dfb90a1353d-52767da815amr7430266e0c.5.1744013177027;
-        Mon, 07 Apr 2025 01:06:17 -0700 (PDT)
-Received: from mail-vk1-f173.google.com (mail-vk1-f173.google.com. [209.85.221.173])
-        by smtp.gmail.com with ESMTPSA id 71dfb90a1353d-5275af7a043sm1762643e0c.29.2025.04.07.01.06.16
-        for <linuxppc-dev@lists.ozlabs.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 07 Apr 2025 01:06:16 -0700 (PDT)
-Received: by mail-vk1-f173.google.com with SMTP id 71dfb90a1353d-52617ceae0dso1255836e0c.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Apr 2025 01:06:16 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXFysaJK0jsVsZNY1sI6ZKdm6tW/b7R2SrZwM0mxeidZOrZ81nFFiySncFWJ4aMSZ099vw84ws9rvJ/F6o=@lists.ozlabs.org
-X-Received: by 2002:a05:6102:1622:b0:4c3:221:8f47 with SMTP id
- ada2fe7eead31-4c8553d0fafmr8533368137.13.1744013176401; Mon, 07 Apr 2025
- 01:06:16 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWMWF6m11z2xlK
+	for <linuxppc-dev@lists.ozlabs.org>; Mon,  7 Apr 2025 18:16:57 +1000 (AEST)
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 536MGZZu028164;
+	Mon, 7 Apr 2025 08:16:31 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=nabt4M
+	TzF21qlD7olPmRrgXeKPdV2cuXz31d6xns7pk=; b=TfYaQwIsEXj0+xl/be2u3N
+	Sfq6LSaTC8uXkIWwKYeIbOtt9EPT59/boI0gkBhdagb8tMlwJZyI5t4ZK2MYa8z8
+	QFK181Ubw/S8LHF6ivpB8U23+daactok/GrDx4KzH0fLYouxkC4O0o4CSbe1Otw+
+	vRGk/ZJVOZMQnIfeeCvW8j7KtR5EZIAqdDve1zXY38+Q6dhFW3lSdqU28/92RQY8
+	DLzit2IQSqT0DwDGoTb/evs4yVYZ5e8y4cZiVmef+OC9rR1XXxQSju8izu2ooID4
+	kdzD5cGAH+NqsAIQBzM4UFu9gub9/fkxMCRCPbEZ5SApxY5wzWQQ7Rt8WrpynErg
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45uwswtnvq-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Apr 2025 08:16:30 +0000 (GMT)
+Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 5378FFoK018849;
+	Mon, 7 Apr 2025 08:16:30 GMT
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45uwswtnvm-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Apr 2025 08:16:30 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 5375iRVK025562;
+	Mon, 7 Apr 2025 08:16:29 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ugbkmvda-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 07 Apr 2025 08:16:29 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 5378GPIu56623414
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 7 Apr 2025 08:16:25 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B98A2004B;
+	Mon,  7 Apr 2025 08:16:25 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B555D20043;
+	Mon,  7 Apr 2025 08:16:20 +0000 (GMT)
+Received: from [9.203.115.62] (unknown [9.203.115.62])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon,  7 Apr 2025 08:16:20 +0000 (GMT)
+Message-ID: <873f3934-e964-49d4-a312-1debb1c77255@linux.ibm.com>
+Date: Mon, 7 Apr 2025 13:46:19 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -74,98 +85,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250218175735.19882-1-linmag7@gmail.com> <20250218175735.19882-2-linmag7@gmail.com>
- <4209b9816551367f8e5670cc5a08e139f0f2c215.camel@physik.fu-berlin.de>
-In-Reply-To: <4209b9816551367f8e5670cc5a08e139f0f2c215.camel@physik.fu-berlin.de>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Mon, 7 Apr 2025 10:06:03 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWLVw8aUY8aCowgOz+puxjrDqcbUXUAoVXGi8=FpTHwrA@mail.gmail.com>
-X-Gm-Features: ATxdqUEtUaFZruSQ19joR0gbmVyVokHgxasQdxoPHK2-UPmtdbKL5noyYxpgMcc
-Message-ID: <CAMuHMdWLVw8aUY8aCowgOz+puxjrDqcbUXUAoVXGi8=FpTHwrA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/1] mm: pgtable: fix pte_swp_exclusive
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Magnus Lindholm <linmag7@gmail.com>, richard.henderson@linaro.org, mattst88@gmail.com, 
-	ink@unseen.parts, kees@kernel.org, arnd@arndb.de, 
-	linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org, chris@zankel.net, 
-	dinguyen@kernel.org, jcmvbkbc@gmail.com, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org, 
-	linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, 
-	linux-snps-arc@lists.infradead.org, linux-um@lists.infradead.org, 
-	loongarch@lists.linux.dev, monstr@monstr.eu, sparclinux@vger.kernel.org, 
-	x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=1.0 required=3.0 tests=FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
-X-Spam-Level: *
+User-Agent: Mozilla Thunderbird
+Subject: Re: [BUG?] ppc64le: fentry BPF not triggered after live patch (v6.14)
+To: Shung-Hsi Yu <shung-hsi.yu@suse.com>, "Naveen N. Rao"
+ <naveen@kernel.org>,
+        bpf@vger.kernel.org
+Cc: Michael Ellerman <mpe@ellerman.id.au>,
+        Mark Rutland
+ <mark.rutland@arm.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Vishal Chourasia <vishalc@linux.ibm.com>,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Miroslav Benes <mbenes@suse.cz>,
+        =?UTF-8?Q?Michal_Such=C3=A1nek?= <msuchanek@suse.de>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-trace-kernel@vger.kernel.org, live-patching@vger.kernel.org
+References: <rwmwrvvtg3pd7qrnt3of6dideioohwhsplancoc2gdrjran7bg@j5tqng6loymr>
+Content-Language: en-US
+From: Hari Bathini <hbathini@linux.ibm.com>
+In-Reply-To: <rwmwrvvtg3pd7qrnt3of6dideioohwhsplancoc2gdrjran7bg@j5tqng6loymr>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: CiVB0C82QOgMH9tKUtHz9g8EIftRWHzy
+X-Proofpoint-ORIG-GUID: m4LySXxzR5w3uK0HEcFy_rQKR8xuJbln
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-07_02,2025-04-03_03,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501 mlxscore=0
+ bulkscore=0 mlxlogscore=999 spamscore=0 adultscore=0 clxscore=1011
+ phishscore=0 lowpriorityscore=0 impostorscore=0 suspectscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504070056
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Adrian,
+Hi Shung-Hsi Yu
 
-On Sat, 5 Apr 2025 at 19:22, John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
-> On Tue, 2025-02-18 at 18:55 +0100, Magnus Lindholm wrote:
-> > Make pte_swp_exclusive return bool instead of int. This will better reflect
-> > how pte_swp_exclusive is actually used in the code. This fixes swap/swapoff
-> > problems on Alpha due pte_swp_exclusive not returning correct values when
-> > _PAGE_SWP_EXCLUSIVE bit resides in upper 32-bits of PTE (like on alpha).
->
-> Minor nitpick:
->
-> "when _PAGE_SWP_EXCLUSIVE" => "when the _PAGE_SWP_EXCLUSIVE"
->
-> >
-> > Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Thanks for reporting this.
 
-> > --- a/arch/alpha/include/asm/pgtable.h
-> > +++ b/arch/alpha/include/asm/pgtable.h
-> > @@ -334,7 +334,7 @@ extern inline pte_t mk_swap_pte(unsigned long type, unsigned long offset)
-> >  #define __pte_to_swp_entry(pte)      ((swp_entry_t) { pte_val(pte) })
-> >  #define __swp_entry_to_pte(x)        ((pte_t) { (x).val })
-> >
-> > -static inline int pte_swp_exclusive(pte_t pte)
-> > +static inline bool pte_swp_exclusive(pte_t pte)
-> >  {
-> >       return pte_val(pte) & _PAGE_SWP_EXCLUSIVE;
-> >  }
+On 31/03/25 6:49 pm, Shung-Hsi Yu wrote:
+> Hi all,
+> 
+> On ppc64le (v6.14, kernel config attached), I've observed that fentry
+> BPF programs stop being invoked after the target kernel function is live
+> patched. This occurs regardless of whether the BPF program was attached
+> before or after the live patch. I believe fentry/fprobe on ppc64le is
+> added with [1].
+> 
+> Steps to reproduce on ppc64le:
+> - Use bpftrace (v0.10.0+) to attach a BPF program to cmdline_proc_show
+>    with fentry (kfunc is the older name bpftrace used for fentry, used
+>    here for max compatability)
+> 
+>      bpftrace -e 'kfunc:cmdline_proc_show { printf("%lld: cmdline_proc_show() called by %s\n", nsecs(), comm) }'
+> 
+> - Run `cat /proc/cmdline` and observe bpftrace output
+> 
+> - Load samples/livepatch/livepatch-sample.ko
+> 
+> - Run `cat /proc/cmdline` again. Observe "this has been live patched" in
+>    output, but no new bpftrace output.
+> 
+> Note: once the live patching module is disabled through the sysfs interface
+> the BPF program invocation is restored.
+> 
+> Is this the expected interaction between fentry BPF and live patching?
+> On x86_64 it does _not_ happen, so I'd guess the behavior on ppc64le is
+> unintended. Any insights appreciated.
 
-> > --- a/arch/xtensa/include/asm/pgtable.h
-> > +++ b/arch/xtensa/include/asm/pgtable.h
-> > @@ -355,7 +355,7 @@ ptep_set_wrprotect(struct mm_struct *mm, unsigned long addr, pte_t *ptep)
-> >  #define __pte_to_swp_entry(pte)      ((swp_entry_t) { pte_val(pte) })
-> >  #define __swp_entry_to_pte(x)        ((pte_t) { (x).val })
-> >
-> > -static inline int pte_swp_exclusive(pte_t pte)
-> > +static inline bool pte_swp_exclusive(pte_t pte)
-> >  {
-> >       return pte_val(pte) & _PAGE_SWP_EXCLUSIVE;
-> >  }
->
-> I'm not so sure about this implicit cast from unsigned long to bool though.
->
-> Is this verified to work correctly on all architectures? I wonder why this
+As Naveen updated in another thread already, this behavior is expected
+as ppc64le does not handle it. Will take a stab at fixing it.
 
-Should work fine: any non-zero value is mapped to one.
+> 
+> Thanks,
+> Shung-Hsi Yu
+> 
+> 1: https://lore.kernel.org/all/20241030070850.1361304-2-hbathini@linux.ibm.com/
 
-> bug was not caught earlier on alpha on the other hand.
+fwiw, the above patch was necessary for fentry, but the support was
+complete with:
 
-On Alpha, "pte_val(pte) & _PAGE_SWP_EXCLUSIVE" is either
-_PAGE_SWP_EXCLUSIVE == 0x8000000000UL or zero.  Due to the return
-type being int, the return value was truncated, and the function always
-returned zero.
+  
+https://lore.kernel.org/all/20241018173632.277333-18-hbathini@linux.ibm.com/
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+Thanks
+Hari
 
