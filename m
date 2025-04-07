@@ -1,78 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7495-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7496-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1F3FA7E7B5
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Apr 2025 19:03:52 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8094BA7E80B
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Apr 2025 19:21:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWbCB4zldz2ywR;
-	Tue,  8 Apr 2025 03:03:50 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWbc30Ldrz2yvs;
+	Tue,  8 Apr 2025 03:21:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744045430;
-	cv=none; b=FjhrNUBDbDcvay0rlefDRzkvlf3BR7JJOu0Pkmc7QQ2Wsd34cxgfOu1H1QV/N0z6sbH51oYZC+yjG3pETqL7dQ7TmKdXiL9J3CNZ7hlztedo+q70Vof6dZc/NSMGuw0iQuH0JLZ1Y0GpZVuaQX5My0uZ2Kdvsu+e/wnL61eKWmkk9YeNKt/vwyN6No1uXEi2eWaPukNlObm8hhUke1tDxPSiF6QZ08yvWNG7ueP8GWiUZ60jR469HbIYo5w2yWRceu2EaO6aqEajoY+sGIjwz1UWRVG6BgkKeZeoqFzocc+51SMEHkVI6BYknxIEXrSNq130xIEBDS5emXC/KrBIcQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::72c"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744046514;
+	cv=none; b=YBhD3bPGEbnQNTAVvO1nhFIFH34NAX88LrWUH1FT8juOhwseaAICoWh5LoXlvTwRzsXmYI1n5lJiWU9/LqSdTkntSZBK4suC4/hd4Vl9P3bxYtakl/xOsRB1ljOd2Jbb2aQ6U5x9cECws383nuQV6dZ2Fr9jH+mrwL/YczE6BTt2S2V5URJknEI15jYO+6Idzvv2Gg2QvdOUTbAG0D5Onht25BDBcDTacIBBCZL1w2CnsW7gLgTwUClMeOjxSX1WDfVhMkm3htkHC3qSrKOx3II6nDk76kbjvxVuWT3SVFbmyt60kKXpZHK7PWxn/DInEuU/g3MVR09JZVCPhyhtzw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744045430; c=relaxed/relaxed;
-	bh=dckmjxpu56Wa9tflT33OSyH8dZNmobK5eYJULmKIvTM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gm/6yGJgGfQwxqCBtM23P6Cx0EJxAnP2Pl4RBsjS8jh8NDB3QWYCsnPFHjdrGqPGQRYOIRVnevDGpIcZ9k+MX2kb2sl/ks60NRkTfoD8PhAOGR01SgnHG7xX8g15nyIU2a2EoPfMrDzafdG1Dz9qzz8m8++KqPsmhbMUxp9zSCT9RMkRIB7dAHsx2udqJbAgb8a9pS5w1uQ3PZJFNjO5dhmqJU/Ib8KdKLS59/K3sX+xdOMht0iF98miBQBIQXtrGELO779fcFYLPA/+no3PMALVHuE1ZM0UNUqzJeJugtqm4L8jW2plfFOzg4NDrLsUmHvbg38fDDLWl4qDiC7DhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ROXVjC51; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1744046514; c=relaxed/relaxed;
+	bh=+Lpv+G8DKtsTH/9Jnl9+3WmC00rN+BEBcmyoDdyEm2g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I0HWdOQj/UL9K/oyvgKJYL4WsjB6fVU0a9bgva9dUJheQiDUQY++dVbhCaKYjTJeOas1S9t4dNzcUvJJVObO63dYq/tGOkpmUWRYjrQqrEM0GuFeuao+6q94wpZSDq6s5rhlymhj1TP4jB8ovVH87f+tS9iU5NB3eUsCRoiokWInBkFsFgDJXaRauCgxLIh3XSEo0N3eUOh7xfJPlWPHuYEAiqrn6m2Z3pMEEetRPoFfltu6OxkKIaJIddCJgLbEYvXttsbYQqyp8GvbXAFGvPVQnPQHRUAyooBa1Oe6kyjJDlS2vmdjDm/HPEAEhfxYUT56h8gVrNHfbxzU5VfeDw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Kv2LrkMD; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::72c; helo=mail-qk1-x72c.google.com; envelope-from=ansuelsmth@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=ROXVjC51;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Kv2LrkMD;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::72c; helo=mail-qk1-x72c.google.com; envelope-from=ansuelsmth@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWbC93KNHz2yTK
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 03:03:49 +1000 (AEST)
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5379HqAR020630;
-	Mon, 7 Apr 2025 17:03:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=dckmjx
-	pu56Wa9tflT33OSyH8dZNmobK5eYJULmKIvTM=; b=ROXVjC51lO8BwJFjsytLDr
-	eyOFb551dm+D/AI7Pi46cC9WEpz5pkbgGx2gY7dPBC7ABObvMYby7UB/I7aMeHOI
-	BdHZ0yZoyccLQcMPSYG1mVZivaxkMCb3om7d9yv4eSJODYwjjllp320q1pnOIePR
-	0io9xyEGeq6FeJTVRUBUYmK2doPfR8oD6NjB8KCicUxmNPUHul8AYQZyQSyCg2zT
-	DW+XNZDaRrhf7AY/zLH6EJ/Ysuu6/JVrFgVdC0WeDnrRZ4FzDW6qckXPvOl1zfL0
-	pYeye/UZ4g/O9L30VJq9O7S8kL6sSLX/MvRsYcsEyAsVnLuQFQaA5rm1/kUFu6Jg
-	==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45v0u0msks-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Apr 2025 17:03:28 +0000 (GMT)
-Received: from m0353725.ppops.net (m0353725.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 537Gq1tM010391;
-	Mon, 7 Apr 2025 17:03:27 GMT
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45v0u0mskq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Apr 2025 17:03:27 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 537FASbq017702;
-	Mon, 7 Apr 2025 17:03:27 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uh2keknj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 07 Apr 2025 17:03:27 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 537H3QTw29622900
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 7 Apr 2025 17:03:26 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4E11B58055;
-	Mon,  7 Apr 2025 17:03:26 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 129905804B;
-	Mon,  7 Apr 2025 17:03:22 +0000 (GMT)
-Received: from [9.61.245.238] (unknown [9.61.245.238])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon,  7 Apr 2025 17:03:21 +0000 (GMT)
-Message-ID: <898dce36-06fa-447a-92bb-bdd4fedd65f0@linux.ibm.com>
-Date: Mon, 7 Apr 2025 22:33:20 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWbc16MF8z2yrh
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 03:21:53 +1000 (AEST)
+Received: by mail-qk1-x72c.google.com with SMTP id af79cd13be357-7c5f720c717so588646285a.0
+        for <linuxppc-dev@lists.ozlabs.org>; Mon, 07 Apr 2025 10:21:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744046510; x=1744651310; darn=lists.ozlabs.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+Lpv+G8DKtsTH/9Jnl9+3WmC00rN+BEBcmyoDdyEm2g=;
+        b=Kv2LrkMDSpqKoK0yR03JL8pVQ/lQ6LIAYmgVN1dwPr5mVQJDU2h4Jn8FuOHmSQIBM1
+         ognhubIlj4fHTuDif6207k8o49NNvOdDfDUXeYVEjJzk5uweUu6YNBH4pJxw7GwS7+aq
+         2PUD7roLKDs8x4GX9yLv9QkDP4vQfH+fDzXxK6RM9PqRnFLWfEkRTCCSRiNn21Ycl6Dm
+         A1ZCU0DDJgdIA+DRbzOP5ghpX0TQz7o5+PYTsmtcEAxRdIVH/pJYHOqVst7WzQtuM2vW
+         ZQ1P7xEXoClmO1vI6Ha3LXUoK/3Wwh/Z7a7DJkOUNyPJWadlTDFRlHx2AL79LIGJSR/Y
+         IYgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744046510; x=1744651310;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+Lpv+G8DKtsTH/9Jnl9+3WmC00rN+BEBcmyoDdyEm2g=;
+        b=X4n6AcIKANANupoXkK2S2WKJY4Sp24zZIbDtZ9rh5gi+5mK6gfWmxxh769qJ3Z04eh
+         OBI47E3kfJFTtLnOx2RvQNofRw13uxW+Qm0Engb/kkuJ+zVXSDnLNQrruXrKYJX/B3pZ
+         XInXO8OEQk0AeO7HZm/+A+FvTf0UEOC9qXiqIt43ybDvc+UwLyPch7tlXvq6B2ABTyCA
+         ab1aA+nX4/i+AZwBSPEIpIK80fQsMJVkOrf5aBhD7IUXRuU0dsJrGo+GDv7TEurRxHg4
+         Y0dR4El1biTNBcxo/2C5KHHu88PzLW41Tfqt3QVyq4vwOoI8NYG8/79B6DfgnMqweZJw
+         2QDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXJpnl3lrNP3/03SPTRjxhgWacc7IkhlDzImaphL+G0IXg6LuiCB9RAOudZnLNeK6onAQDyvLTUi8MPVpw=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YyxQH6JTX/2wCGh2eWMNj6vTg14yK6fMc0UV3ma76iPXZDMkYtl
+	GyIVaiiL/H5P4sAQkaWbWaOrF0VbyBOXaJQY8EoThG15B33yB5cmdCXI7mS/W2XovFpb2NLO0iD
+	bxzRfg/R7JMT/QpKEzvOh7jACM7U=
+X-Gm-Gg: ASbGncviUQi+ZBnEXWEjd/pJ4J37RT/9w0fSK2rP+7A0igWHnj/NsnbkrcD7QrqFzh2
+	AjF0ZFyPkckkM5no8hk3H1juyVlt8F2Bor6kY+/jdTroMDz9o2NTj98712QFjVCvZ4ULLrw7Vi0
+	Er3nX5Pwc1axjKCHvpxCXMvRqRKQ3Mdn7ZmHk=
+X-Google-Smtp-Source: AGHT+IE7oF7zYUiFClD9j+MaUG+QMzWikeMa5fdbd6jkjTVPOvWSr5tLM3OX7RIKBrrUgH1CqT/Ky1y9rQ5HCbtZCIc=
+X-Received: by 2002:a0c:c688:0:b0:6ed:18cd:956d with SMTP id
+ 6a1803df08f44-6f0d25479aamr4072856d6.22.1744046510291; Mon, 07 Apr 2025
+ 10:21:50 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,137 +76,162 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] powerpc: Add check to select
- PPC_RADIX_BROADCAST_TLBIE
-Content-Language: en-GB
-To: Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, paulus@ozlabs.org
-Cc: naveen@kernel.org, linuxppc-dev@lists.ozlabs.org,
-        kernel test robot <lkp@intel.com>
-References: <20250407084029.357710-1-maddy@linux.ibm.com>
-From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-In-Reply-To: <20250407084029.357710-1-maddy@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: cZFKoXoWmbOVmCcE8rKEpuHUCaMif1pj
-X-Proofpoint-GUID: 3RYCnXJTxm4sPN-LIOWEbNDETi4U_1dY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-07_04,2025-04-03_03,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- clxscore=1011 spamscore=0 priorityscore=1501 mlxscore=0 impostorscore=0
- phishscore=0 malwarescore=0 mlxlogscore=975 bulkscore=0 adultscore=0
- suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504070118
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+References: <20250403181907.1947517-1-sean.anderson@linux.dev>
+ <20250407182738.498d96b0@kmaincent-XPS-13-7390> <720b6db8-49c5-47e7-98da-f044fc38fc1a@linux.dev>
+ <CA+_ehUyAo7fMTe_P0ws_9zrcbLEWVwBXDKbezcKVkvDUUNg0rg@mail.gmail.com> <1aec6dab-ed03-4ca3-8cd1-9cfbb807be10@linux.dev>
+In-Reply-To: <1aec6dab-ed03-4ca3-8cd1-9cfbb807be10@linux.dev>
+From: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
+Date: Mon, 7 Apr 2025 19:21:38 +0200
+X-Gm-Features: ATxdqUFVoaO2wEB2GhdEUNwWwPj2cMvxUNhs7goYdYdDae4Y74aVkceCOkA0pWY
+Message-ID: <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
+Subject: Re: [RFC net-next PATCH 00/13] Add PCS core support
+To: Sean Anderson <sean.anderson@linux.dev>
+Cc: Kory Maincent <kory.maincent@bootlin.com>, netdev@vger.kernel.org, 
+	Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller" <davem@davemloft.net>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Russell King <linux@armlinux.org.uk>, linux-kernel@vger.kernel.org, upstream@airoha.com, 
+	Heiner Kallweit <hkallweit1@gmail.com>, Alexandre Belloni <alexandre.belloni@bootlin.com>, 
+	Alexandre Torgue <alexandre.torgue@foss.st.com>, 
+	Christophe Leroy <christophe.leroy@csgroup.eu>, Clark Wang <xiaoning.wang@nxp.com>, 
+	Claudiu Beznea <claudiu.beznea@microchip.com>, Claudiu Manoil <claudiu.manoil@nxp.com>, 
+	Conor Dooley <conor+dt@kernel.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Joyce Ooi <joyce.ooi@intel.com>, 
+	Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+	Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>, Li Yang <leoyang.li@nxp.com>, 
+	Madalin Bucur <madalin.bucur@nxp.com>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Maxime Coquelin <mcoquelin.stm32@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
+	Michal Simek <michal.simek@amd.com>, Naveen N Rao <naveen@kernel.org>, 
+	Nicholas Piggin <npiggin@gmail.com>, Nicolas Ferre <nicolas.ferre@microchip.com>, 
+	Radhey Shyam Pandey <radhey.shyam.pandey@amd.com>, Rob Herring <robh+dt@kernel.org>, 
+	Rob Herring <robh@kernel.org>, Robert Hancock <robert.hancock@calian.com>, 
+	Saravana Kannan <saravanak@google.com>, Shawn Guo <shawnguo@kernel.org>, UNGLinuxDriver@microchip.com, 
+	Vladimir Oltean <vladimir.oltean@nxp.com>, Wei Fang <wei.fang@nxp.com>, devicetree@vger.kernel.org, 
+	imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-stm32@st-md-mailman.stormreply.com, 
+	linuxppc-dev@lists.ozlabs.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS,WEIRD_QUOTING autolearn=disabled version=4.0.1
+	OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-
-On 07/04/25 2:10 pm, Madhavan Srinivasan wrote:
-> Commit 3d45a3d0d2e6 ("powerpc: Define config option for processors with broadcast TLBIE")
-> added a config option PPC_RADIX_BROADCAST_TLBIE to support processors with
-> broadcast TLBIE. Since this option is relevant only for RADIX_MMU, add
-> a check as a dependency to enable PPC_RADIX_BROADCAST_TLBIE in both
-> powernv and pseries configs. This fixes the unmet config dependency
-> warning reported
+Il giorno lun 7 apr 2025 alle ore 19:00 Sean Anderson
+<sean.anderson@linux.dev> ha scritto:
 >
->     WARNING: unmet direct dependencies detected for PPC_RADIX_BROADCAST_TLBIE
->       Depends on [n]: PPC_RADIX_MMU [=n]
->       Selected by [y]:
->       - PPC_PSERIES [=y] && PPC64 [=y] && PPC_BOOK3S [=y]
+> On 4/7/25 12:46, Christian Marangi (Ansuel) wrote:
+> > Il giorno lun 7 apr 2025 alle ore 18:33 Sean Anderson
+> > <sean.anderson@linux.dev> ha scritto:
+> >>
+> >> On 4/7/25 12:27, Kory Maincent wrote:
+> >> > On Thu,  3 Apr 2025 14:18:54 -0400
+> >> > Sean Anderson <sean.anderson@linux.dev> wrote:
+> >> >
+> >> >> This series adds support for creating PCSs as devices on a bus with a
+> >> >> driver (patch 3). As initial users,
+> >> >>
+> >> >> - The Lynx PCS (and all of its users) is converted to this system (patch 5)
+> >> >> - The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
+> >> >> - The Cadence MACB driver is converted to support external PCSs (namely
+> >> >>   the Xilinx PCS) (patches 9-10).
+> >> >>
+> >> >> The last few patches add device links for pcs-handle to improve boot times,
+> >> >> and add compatibles for all Lynx PCSs.
+> >> >>
+> >> >> Care has been taken to ensure backwards-compatibility. The main source
+> >> >> of this is that many PCS devices lack compatibles and get detected as
+> >> >> PHYs. To address this, pcs_get_by_fwnode_compat allows drivers to edit
+> >> >> the devicetree to add appropriate compatibles.
+> >> >
+> >> > I don't dive into your patch series and I don't know if you have heard about it
+> >> > but Christian Marangi is currently working on fwnode for PCS:
+> >> > https://lore.kernel.org/netdev/20250406221423.9723-1-ansuelsmth@gmail.com
+> >> >
+> >> > Maybe you should sync with him!
+> >>
+> >> I saw that series and made some comments. He is CC'd on this one.
+> >>
+> >> I think this approach has two advantages:
+> >>
+> >> - It completely solves the problem of the PCS being unregistered while the netdev
+> >>   (or whatever) is up
+> >> - I have designed the interface to make it easy to convert existing
+> >>   drivers that may not be able to use the "standard" probing process
+> >>   (because they have to support other devicetree structures for
+> >>   backwards-compatibility).
+> >>
+> >
+> > I notice this and it's my fault for taking too long to post v2 of the PCS patch.
+> > There was also this idea of entering the wrapper hell but I scrapped that early
+> > as I really feel it's a workaround to the current problem present for
+> > PCS handling.
 >
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202504051857.jRqxM60c-lkp@intel.com/
-> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-
-Tested this on pseries LPAR and the patch fixes the reported issue. Hence,
-
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-
-> ---
->   arch/powerpc/platforms/powernv/Kconfig | 2 +-
->   arch/powerpc/platforms/pseries/Kconfig | 2 +-
->   2 files changed, 2 insertions(+), 2 deletions(-)
+> It's no workaround. The fundamental problem is that drivers can become
+> unbound at any time, and we cannot make consumers drop their references.
+> Every subsystem must deal with this reality, or suffer from
+> user-after-free bugs. See [1-3] for discussion of this problem in
+> relation to PCSs and PHYs, and [4] for more discussion of my approach.
 >
-> diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
-> index 3fbe0295ce14..95d7ba73d43d 100644
-> --- a/arch/powerpc/platforms/powernv/Kconfig
-> +++ b/arch/powerpc/platforms/powernv/Kconfig
-> @@ -17,7 +17,7 @@ config PPC_POWERNV
->   	select MMU_NOTIFIER
->   	select FORCE_SMP
->   	select ARCH_SUPPORTS_PER_VMA_LOCK
-> -	select PPC_RADIX_BROADCAST_TLBIE
-> +	select PPC_RADIX_BROADCAST_TLBIE if PPC_RADIX_MMU
->   	default y
->   
->   config OPAL_PRD
-> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
-> index a934c2a262f6..fa3c2fff082a 100644
-> --- a/arch/powerpc/platforms/pseries/Kconfig
-> +++ b/arch/powerpc/platforms/pseries/Kconfig
-> @@ -23,7 +23,7 @@ config PPC_PSERIES
->   	select FORCE_SMP
->   	select SWIOTLB
->   	select ARCH_SUPPORTS_PER_VMA_LOCK
-> -	select PPC_RADIX_BROADCAST_TLBIE
-> +	select PPC_RADIX_BROADCAST_TLBIE if PPC_RADIX_MMU
->   	default y
->   
->   config PARAVIRT
+> [1] https://lore.kernel.org/netdev/YV7Kp2k8VvN7J0fY@shell.armlinux.org.uk/
+> [2] https://lore.kernel.org/netdev/20220816163701.1578850-1-sean.anderson@seco.com/
+> [3] https://lore.kernel.org/netdev/9747f8ef-66b3-0870-cbc0-c1783896b30d@seco.com/
+> [3] https://lpc.events/event/17/contributions/1627/
+>
+> > And the real problem IMHO is that currently PCS handling is fragile and with too
+> > many assumptions. With Daniel we also discussed backwards-compatibility.
+> > (mainly needed for mt7621 and mt7986 (for mediatek side those are the 2
+> > that slipped in before it was correctly complained that things were
+> > taking a bad path)
+> >
+> > We feel v2 permits correct support of old implementations.
+> > The ""legacy"" implementation pose the assumption that PCS is never removed
+> > (unless the MAC driver is removed)
+> > That fits v2 where a MAC has to initially provide a list of PCS to
+> > phylink instance.
+>
+> And what happens when the driver is unbound from the device and suddenly
+> a PCS on that list is free'd memory but is in active use by a netdev?
+>
 
-With out this patch:
+driver bug for not correctly implementing the removal task.
 
-  make olddefconfig
-   HOSTCC  scripts/basic/fixdep
-   HOSTCC  scripts/kconfig/conf.o
-   HOSTCC  scripts/kconfig/confdata.o
-   HOSTCC  scripts/kconfig/expr.o
-   LEX     scripts/kconfig/lexer.lex.c
-   YACC    scripts/kconfig/parser.tab.[ch]
-   HOSTCC  scripts/kconfig/lexer.lex.o
-   HOSTCC  scripts/kconfig/menu.o
-   HOSTCC  scripts/kconfig/parser.tab.o
-   HOSTCC  scripts/kconfig/preprocess.o
-   HOSTCC  scripts/kconfig/symbol.o
-   HOSTCC  scripts/kconfig/util.o
-   HOSTLD  scripts/kconfig/conf
+The approach is remove as provider and call phylink removal phase
+under rtnl lock.
+We tested this with unbind, that is actually the main problem we are
+trying to address
+and works correctly.
 
-WARNING: unmet direct dependencies detected for PPC_RADIX_BROADCAST_TLBIE
-   Depends on [n]: PPC_RADIX_MMU [=n]
-   Selected by [y]:
-   - PPC_PSERIES [=y] && PPC64 [=y] && PPC_BOOK3S [=y]
-#
-# configuration written to .config
-#
+> > With this implementation, a MAC can manually parse whatever PCS node structure
+> > is in place and fill the PCS.
+> >
+> > As really the "late" removal/addition of a PCS can only be supported with fwnode
+> > implementation as dedicated PCS driver will make use of that.
+>
+> I agree that a "cells" approach would require this, but
+>
+> - There are no in-tree examples of where this is necessary
+> - I think this would be easy to add when necessary
+>
 
+There are no in-tree cause only now we are starting to support
+complex configuration with multiple PCS placed outside the MAC.
 
-With this patch:
+I feel it's better to define a standard API for them now before
+we permit even more MAC driver to implement custom property
+and have to address tons of workaround for compatibility.
 
-make olddefconfig
-   HOSTCC  scripts/basic/fixdep
-   HOSTCC  scripts/kconfig/conf.o
-   HOSTCC  scripts/kconfig/confdata.o
-   HOSTCC  scripts/kconfig/expr.o
-   LEX     scripts/kconfig/lexer.lex.c
-   YACC    scripts/kconfig/parser.tab.[ch]
-   HOSTCC  scripts/kconfig/lexer.lex.o
-   HOSTCC  scripts/kconfig/menu.o
-   HOSTCC  scripts/kconfig/parser.tab.o
-   HOSTCC  scripts/kconfig/preprocess.o
-   HOSTCC  scripts/kconfig/symbol.o
-   HOSTCC  scripts/kconfig/util.o
-   HOSTLD  scripts/kconfig/conf
-#
-# No change to .config
-#
-
-Regards,
-
-Venkat.
-
+> > I honestly hope we can skip having to enter the wrapper hell.
+>
+> Unfortunately, this is required by the kernel driver model :l
+>
+> > Anyway I also see you made REALLY GOOD documentation.
+>
+> Thanks. One of my peeves is subsystems that have zero docs...
+>
+> > Would be ideal to
+> > collaborate for that. Anyway it's up to net maintainers on what path to follow.
+> >
+> > Just my 2 cent on the PCS topic.
+>
+> --Sean
 
