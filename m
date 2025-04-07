@@ -1,46 +1,45 @@
-Return-Path: <linuxppc-dev+bounces-7497-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7498-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51814A7E8CF
-	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Apr 2025 19:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BC58A7E956
+	for <lists+linuxppc-dev@lfdr.de>; Mon,  7 Apr 2025 20:06:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWc9B4cF9z2yrK;
-	Tue,  8 Apr 2025 03:47:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWcbz0NzNz2yrg;
+	Tue,  8 Apr 2025 04:06:55 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:41d0:203:375::bb"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744048030;
-	cv=none; b=fq8XR8QLW0JpzDdDlConpNCZJI4xmNtgtgc9VDXMhy/o5436/S9qN4t2ip7s7TVXYoheC8w0La1aWp49yCqW1t7WeJ46Q0nSSd/cPtrpvK6PwQ4seIWwz1ELRTK/Ec5YcBpFvy8+L9a37vZzNC38oNqXkbuTPUhISMv/Unlg3HZxe+S0iXheIgTaC+xc3jlp9Exe5HABLuXyigKR/1p50imPhdQax75Z+kLgD+nkby5I47WY7rZXohl/qA4ZGokwLf6BOMPmPTdlHZ6dTTu5MgZEUNcj+XqOaBzpANKPodJEYuFpTEgnEGrEAEPn/VgvOv+P7ESgG5b+ckeC6+PdNg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=91.218.175.188
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744049214;
+	cv=none; b=b/cNUyVc5fb2SRbm0jNxNz5GcZIzPxAh2GCVB6K3mAJx7ljLwbIMdbRDs0UeB1aHuw6L7hbP5jFmglQkeZzOT9tonHnXg3B+kl1DY14y71tCbDdkSSnVLmOqJbmD/daLYgmHISgOmeI94gP6i0srfXxJxx/nrdgG3wKKQh53aWoEocpwxIRyNCiOR5rpy/cLf3cdNUk/UGoA4m6suP6AvLgS4EAcZxdHnKVbw42pX9vFnhVPdid0LZgtocFWg6Vc9ySFnszVKFka9ilzhVGf3KqqjbbzoKSIdNZZ089NbULAGHhsxzsSAtWiC6SjnI7fNW7aMehHKmTTDsx/StqunA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744048030; c=relaxed/relaxed;
-	bh=++KpZ5uwY1Janf+N2PmBTtktOp7tWbX3i2J7W2ip/E4=;
+	t=1744049214; c=relaxed/relaxed;
+	bh=kFU4PCOFCF2t2dPmfjFQsFfH3+loT9oNKaTNo2jAsrw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lkeGjF7tAX11KXQlKYApMJqhSzOoimaOtucbcRVXUfChwd0GO9VE5YfQ38dz2qnj9xfzP4SePVhmn6NMQRwmj6a/Sv7i1KRWd03JUdEFzQvlnDF7XqUV/Y02CL6EMEUzAyY/QHHlZTwyUSLTU3VFFeMjn+P5VUCa5XUAE87/FQHLysANMeK82Gt74VH5ltQ1YbWXV97qVaWgX8ZWPNmlkdyjQ+iva9gUTGnV1l1rTHEYafJlGmEHPCUZVMsQwz/f1gS9r6H3NWnzjXGU5wNHnCV/ytWzMgoDxKmCzWPKxngzhzaGLwsabSBqO7quZTCJQaOTMzIZEtbAWxfnyTfVDA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DK9a5CGf; dkim-atps=neutral; spf=pass (client-ip=2001:41d0:203:375::bb; helo=out-187.mta1.migadu.com; envelope-from=sean.anderson@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	 In-Reply-To:Content-Type; b=Y7R1pOc4ZwfbM9RKP3ZLw+yPj5fJ1pgFIfDixZeNu/RpqZhspuwteXSHJBUs/UmoVXERpwvhk1Sn42T10tkCq0dM4TKl9k/4pL3ItHYeo7rxERTZf1ZldCEFnsA+xUrOZuL7ckpuy7rjKfX8J9oOa+kvWz3yZYZVg4E097uKuPzdVk/bTyOIQklYkhPC59xI5wVE2EU8xcFLOjWk2oaCTR+1rrR9jNw2SJn6lA3xXHtfyD1Q/rzbeAiYS8wTFxmM156Leis3ArVxRtysAeyxgSGGCUOFj3fcjgSyAXYIYi+24XqNJEUOkb6aNYVleDsJCyD62io8Wdq+BsuwBy3inw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kybWyAZ0; dkim-atps=neutral; spf=pass (client-ip=91.218.175.188; helo=out-188.mta0.migadu.com; envelope-from=sean.anderson@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=DK9a5CGf;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=kybWyAZ0;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=2001:41d0:203:375::bb; helo=out-187.mta1.migadu.com; envelope-from=sean.anderson@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 339 seconds by postgrey-1.37 at boromir; Tue, 08 Apr 2025 03:47:04 AEST
-Received: from out-187.mta1.migadu.com (out-187.mta1.migadu.com [IPv6:2001:41d0:203:375::bb])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=91.218.175.188; helo=out-188.mta0.migadu.com; envelope-from=sean.anderson@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWc941R9Pz2yKv
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 03:47:03 +1000 (AEST)
-Message-ID: <ed5990bd-e671-4f96-bec8-543de3b48712@linux.dev>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWcbw1jslz2yqy
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 04:06:51 +1000 (AEST)
+Message-ID: <3203955d-b0fa-4ef6-bcec-6d23a5b6441d@linux.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744047656;
+	t=1744049190;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=++KpZ5uwY1Janf+N2PmBTtktOp7tWbX3i2J7W2ip/E4=;
-	b=DK9a5CGfgWrjLUaQxeq3ptm/moAts7IV3ci0gsTJzHJivLe+sJaFymatq0QIC6jWTCNwMu
-	Q99N888ii24jACU37tbV8TN2AH/EV9OfsoMU0BFj8NRJZh5cUxFBUwwkPmdN5RROHGw35w
-	0Rl++5YUu0v1A2j5dPo8wVs5LvznUIk=
-Date: Mon, 7 Apr 2025 13:40:45 -0400
+	bh=kFU4PCOFCF2t2dPmfjFQsFfH3+loT9oNKaTNo2jAsrw=;
+	b=kybWyAZ0LNPljlzODiID9MCxmPkOsj3+XZ3NOBA1SJ+GUkEwxi2q4YG6Tqzxu5OztwOoy2
+	4FWNfu+DxWPsP6v4QiY6skK5eZddzEVCNMMTHOBHgUXOXHrueBs+hUmpIpZBJYNh/tQl0M
+	sPWqXv7raQ0Wc9svTCLcg7RV8xLYw7E=
+Date: Mon, 7 Apr 2025 14:06:21 -0400
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -54,8 +53,7 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Subject: Re: [RFC net-next PATCH 00/13] Add PCS core support
-To: Daniel Golle <daniel@makrotopia.org>,
- "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
+To: "Christian Marangi (Ansuel)" <ansuelsmth@gmail.com>
 Cc: Kory Maincent <kory.maincent@bootlin.com>, netdev@vger.kernel.org,
  Andrew Lunn <andrew+netdev@lunn.ch>, "David S . Miller"
  <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
@@ -92,43 +90,130 @@ References: <20250403181907.1947517-1-sean.anderson@linux.dev>
  <CA+_ehUyAo7fMTe_P0ws_9zrcbLEWVwBXDKbezcKVkvDUUNg0rg@mail.gmail.com>
  <1aec6dab-ed03-4ca3-8cd1-9cfbb807be10@linux.dev>
  <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
- <Z_QKl-4563l05WB3@makrotopia.org>
 Content-Language: en-US
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 From: Sean Anderson <sean.anderson@linux.dev>
-In-Reply-To: <Z_QKl-4563l05WB3@makrotopia.org>
+In-Reply-To: <CA+_ehUzeMBFrDEb7Abn3UO3S7VVjMiKc+2o=p5RGjPDkfLPVtQ@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
-	version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_PASS,
+	WEIRD_QUOTING autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 4/7/25 13:25, Daniel Golle wrote:
-> On Mon, Apr 07, 2025 at 07:21:38PM +0200, Christian Marangi (Ansuel) wrote:
->> Il giorno lun 7 apr 2025 alle ore 19:00 Sean Anderson
->> > I agree that a "cells" approach would require this, but
+On 4/7/25 13:21, Christian Marangi (Ansuel) wrote:
+> Il giorno lun 7 apr 2025 alle ore 19:00 Sean Anderson
+> <sean.anderson@linux.dev> ha scritto:
+>>
+>> On 4/7/25 12:46, Christian Marangi (Ansuel) wrote:
+>> > Il giorno lun 7 apr 2025 alle ore 18:33 Sean Anderson
+>> > <sean.anderson@linux.dev> ha scritto:
+>> >>
+>> >> On 4/7/25 12:27, Kory Maincent wrote:
+>> >> > On Thu,  3 Apr 2025 14:18:54 -0400
+>> >> > Sean Anderson <sean.anderson@linux.dev> wrote:
+>> >> >
+>> >> >> This series adds support for creating PCSs as devices on a bus with a
+>> >> >> driver (patch 3). As initial users,
+>> >> >>
+>> >> >> - The Lynx PCS (and all of its users) is converted to this system (patch 5)
+>> >> >> - The Xilinx PCS is broken out from the AXI Ethernet driver (patches 6-8)
+>> >> >> - The Cadence MACB driver is converted to support external PCSs (namely
+>> >> >>   the Xilinx PCS) (patches 9-10).
+>> >> >>
+>> >> >> The last few patches add device links for pcs-handle to improve boot times,
+>> >> >> and add compatibles for all Lynx PCSs.
+>> >> >>
+>> >> >> Care has been taken to ensure backwards-compatibility. The main source
+>> >> >> of this is that many PCS devices lack compatibles and get detected as
+>> >> >> PHYs. To address this, pcs_get_by_fwnode_compat allows drivers to edit
+>> >> >> the devicetree to add appropriate compatibles.
+>> >> >
+>> >> > I don't dive into your patch series and I don't know if you have heard about it
+>> >> > but Christian Marangi is currently working on fwnode for PCS:
+>> >> > https://lore.kernel.org/netdev/20250406221423.9723-1-ansuelsmth@gmail.com
+>> >> >
+>> >> > Maybe you should sync with him!
+>> >>
+>> >> I saw that series and made some comments. He is CC'd on this one.
+>> >>
+>> >> I think this approach has two advantages:
+>> >>
+>> >> - It completely solves the problem of the PCS being unregistered while the netdev
+>> >>   (or whatever) is up
+>> >> - I have designed the interface to make it easy to convert existing
+>> >>   drivers that may not be able to use the "standard" probing process
+>> >>   (because they have to support other devicetree structures for
+>> >>   backwards-compatibility).
+>> >>
 >> >
->> > - There are no in-tree examples of where this is necessary
->> > - I think this would be easy to add when necessary
+>> > I notice this and it's my fault for taking too long to post v2 of the PCS patch.
+>> > There was also this idea of entering the wrapper hell but I scrapped that early
+>> > as I really feel it's a workaround to the current problem present for
+>> > PCS handling.
+>>
+>> It's no workaround. The fundamental problem is that drivers can become
+>> unbound at any time, and we cannot make consumers drop their references.
+>> Every subsystem must deal with this reality, or suffer from
+>> user-after-free bugs. See [1-3] for discussion of this problem in
+>> relation to PCSs and PHYs, and [4] for more discussion of my approach.
+>>
+>> [1] https://lore.kernel.org/netdev/YV7Kp2k8VvN7J0fY@shell.armlinux.org.uk/
+>> [2] https://lore.kernel.org/netdev/20220816163701.1578850-1-sean.anderson@seco.com/
+>> [3] https://lore.kernel.org/netdev/9747f8ef-66b3-0870-cbc0-c1783896b30d@seco.com/
+>> [3] https://lpc.events/event/17/contributions/1627/
+>>
+>> > And the real problem IMHO is that currently PCS handling is fragile and with too
+>> > many assumptions. With Daniel we also discussed backwards-compatibility.
+>> > (mainly needed for mt7621 and mt7986 (for mediatek side those are the 2
+>> > that slipped in before it was correctly complained that things were
+>> > taking a bad path)
 >> >
->> 
->> There are no in-tree cause only now we are starting to support
->> complex configuration with multiple PCS placed outside the MAC.
->> 
->> I feel it's better to define a standard API for them now before
->> we permit even more MAC driver to implement custom property
->> and have to address tons of workaround for compatibility.
+>> > We feel v2 permits correct support of old implementations.
+>> > The ""legacy"" implementation pose the assumption that PCS is never removed
+>> > (unless the MAC driver is removed)
+>> > That fits v2 where a MAC has to initially provide a list of PCS to
+>> > phylink instance.
+>>
+>> And what happens when the driver is unbound from the device and suddenly
+>> a PCS on that list is free'd memory but is in active use by a netdev?
+>>
 > 
-> Qualcomm's PCS driver will require offering multiple phylink_pcs by a
-> single device/of_node. So while it's true that there is currently no
-> in-tree user for that, that very user is already knocking on our doors.
+> driver bug for not correctly implementing the removal task.
 > 
-> See
-> https://patchwork.kernel.org/project/netdevbpf/list/?series=931658&state=*
+> The approach is remove as provider and call phylink removal phase
+> under rtnl lock.
+> We tested this with unbind, that is actually the main problem we are
+> trying to address
+> and works correctly.
 
-OK, but I still think this is quite easy to add.
+OK, so this is a different approach since your last submission. Please
+CC me on your series.
+
+- Fundamentally this is going to make backwards compatibility very
+  difficult, since your approach cannot work with mac_select_pcs. How
+  are you going to handle the case of MAC-internal PCSs? Are you going
+  to make them create a swnode and bind to it just to create a PCS for
+  e.g. MMIO registers? And how is the MAC supposed to know how to select
+  the PCS? From what I can tell you don't even notify the MAC about
+  which PCS it's using.
+
+  I considered an approach like this, where the phylink would be in the
+  driver's seat (so to speak), but I decided not to persue it due to
+  the problems listed above. A lot of PCSs are tightly-integrated with
+  their MACs, so it does not make sense to introduce this little
+  coupling. I think it is better to let the MAC select the PCS e.g.
+  based on the phy interface. This tends to be a few lines of code for
+  the MAC and saves so much complexity in phylink.
+
+  I think you should try doing the macb and lynx conversions for your
+  approach. It will make the above problems obvious.
+
+- Your approach is very intrusive. There are lots of changes all over
+  phylink across several patches and it is hard to verify all the
+  assumptions. Whereas a wrapper keeps everything contained to one file,
+  and most of the functions can be evaluated independently.
 
 --Sean
 
