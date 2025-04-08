@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-7529-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7532-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82242A7FA62
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 11:54:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E2ECA7FA66
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 11:54:45 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1d52c7gz30Pn;
-	Tue,  8 Apr 2025 19:54:17 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1d72SGWz30Sv;
+	Tue,  8 Apr 2025 19:54:19 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744106057;
-	cv=none; b=b221yMkrcKE3LUhKVZta3Lgo7xYQPQRCHqymH2fbbvK9rehPI9uM7pjn00sHa9qY2T89tSv2eSiqnhztJpLieTeOG5IPrAxoR6GVDj4awfN9EyrhVOuJJQlir3G4ak51YD5IqlVj/5QuVQrtLWoKUh5j2RSptyWWYaMNrKpA1p4MJeIvdfKt3gKYLRpv1YPzOproHYSo7bqOzzDBptwp85lB41xDVPt5Z9xAskvR+k/KfguB0mYLEwEhN6Kc8dKk7AwFi4+FvtVk2wjgKh7rl9rDMdSEqzrZnsXWg2S0ldivXpdlM5j5ci0BGyJJgdCWxWVTNEn97Q04iFi6YP2MvA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744106059;
+	cv=none; b=CXAn3XfpYUvCmnOyNrzWj0wwTb4Cja8qXQuNFaPW5iZBqo79dK1FhTkhGKCh+d0lgt8BWZOMD0cuoSnmCYqeQu0C9sPKggmjA/az5nP4CKZYGSM3w1gVii07hnfbCeUVo/yPLGQLRoWtsxgDE6J992vERSB2oTzoeo7geH5DKeUg2u1cAd8fCevEl18dfIg2+CeLjoprzW1g8dMwhrSPNI/Xs54lKAOaR07NOfJCugCfBRAjg1IqyXsGRBaaGioB0lEjVS7XLvWQdmATp6eDdB5Z+TEIDPVC2mzAiIztzZV1x+AvkiYTC3Y35u/rGaK342S6QJ4cyYsGGh6wPQIq3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744106057; c=relaxed/relaxed;
-	bh=AoW5uPcncPp3axMC3OLXSZhaQ2vhQ+ldUmkYdrG/FME=;
+	t=1744106059; c=relaxed/relaxed;
+	bh=+0pYQ1qH+UpfJYLoe9vNgfctFN5Ww4sCZmrF9jkxtoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lzlHQqVp3yNZdBZcFx/aY9j9W0pPehg3B+dtCf1B4J4Al0Bb8Fnuo9rDeppq1b3f3eRPRh4ec3h8RCq1tnB9anlfQiJ1GyI2VZawKKyBqC08qR4QZTdzLQCxBKbiGuLEsODFCEH5XZ+ccLlzE+cjII7Knqhu2xG/qpB7adn9ZIaIZDSEAXfuTS1BeHrPE2OKBUKLIiF/c64nlGsiJYIZSyssA2M6EaY9JWZYl8P6mxKp/eZgJrObG75TFndSq7Og+/OeDYqkrs8UaOgMYVUIsNyIkDEFmiu098pgZzYSEwRKAht06RVBXnJ4SwN3UJzJBokToY6Fj1FNso76od7F3Q==
+	 MIME-Version; b=GG4rs7a/B9IbTiiZfWhhnrhUZtTIFrVxd19WQzOfn42mqs7kHVqO7r0tW7aaK0uPswph5faz4b2z5qwWWXOKIPBx9XhYjNa/yi54uA17jIwLDmeof1U1OgPq8yyVt22UISO0yQoE2jvkOW6/IfDtW4dhfwYgzpKfUptq+Z1LsMaHaUnFJ4i0/pug3vrZl8rDd2TN5TbhgdFXhi2drURQxzdT9TyAFJ3UXnpTfHP6IZ8QV5MJYyPiKtD4gUua13ROhWyTcAYCHYQXUGhkjukOvIE78pg0e8hgnCOzvCi0gxbS7Wuzds704JhwcI5CU5lcAXhcfhU1EVnL0C5PcSU7kg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1d43zzxz307K
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 19:54:16 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1d64Bfzz30T3
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 19:54:18 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3EB2B2328;
-	Tue,  8 Apr 2025 02:53:44 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EC0D71688;
+	Tue,  8 Apr 2025 02:53:48 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id F29D83F6A8;
-	Tue,  8 Apr 2025 02:53:38 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ABBF53F6A8;
+	Tue,  8 Apr 2025 02:53:43 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 07/12] mm: Skip ptlock_init() for kernel PMDs
-Date: Tue,  8 Apr 2025 10:52:17 +0100
-Message-ID: <20250408095222.860601-8-kevin.brodsky@arm.com>
+Subject: [PATCH v2 08/12] arm64: mm: Use enum to identify pgtable level instead of *_SHIFT
+Date: Tue,  8 Apr 2025 10:52:18 +0100
+Message-ID: <20250408095222.860601-9-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250408095222.860601-1-kevin.brodsky@arm.com>
 References: <20250408095222.860601-1-kevin.brodsky@arm.com>
@@ -85,40 +85,205 @@ X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Split page table locks are not used for pgtables associated to
-init_mm, at any level. pte_alloc_kernel() does not call
-ptlock_init() as a result. There is however no separate alloc/free
-functions for kernel PMDs, and pmd_ptlock_init() is called
-unconditionally. When ALLOC_SPLIT_PTLOCKS is true (e.g. 32-bit
-architectures or if CONFIG_PREEMPT_RT is selected), this results in
-unnecessary dynamic memory allocation every time a kernel PMD is
-allocated.
+Commit 90292aca9854 ("arm64: mm: use appropriate ctors for page
+tables") introduced pgtable ctor calls in pgd_pgtable_alloc(). To
+identify the pgtable level and call the appropriate ctor, the
+*_SHIFT value associated with the pgtable level is used. However,
+those values do not unambiguously identify a level, because if a
+given level is folded, the *_SHIFT value will be equal to that of
+the upper level (e.g. PMD_SHIFT == PUD_SHIFT if PMD is folded).
 
-Now that pagetable_pmd_ctor() is passed the associated mm, we can
-easily remove this overhead by skipping pmd_ptlock_init() if the
-pgtable is associated to init_mm. No special-casing is needed on the
-dtor path, as ptlock_free() is already called unconditionally for
-all levels. (ptlock_free() is a no-op unless a ptlock was allocated
-for the given PTP.)
+As things stand, there is probably not much damaged done by calling
+the ctor for a different level, and ARCH_ENABLE_SPLIT_PMD_PTLOCK is
+only selected if PMD isn't folded (so we don't needlessly initialise
+pmd_ptlock). Still, this is pretty confusing, and it would get even
+more confusing when adding ctor calls for the remaining levels.
+
+Let's simplify all this by using an enum to identify the pgtable
+level instead; this way folding becomes irrelevant. This is inspired
+by one of the m68k pgtable allocators
+(arch/m68k/include/asm/motorola_pgalloc.h).
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- include/linux/mm.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c | 54 +++++++++++++++++++++++++++------------------
+ 1 file changed, 33 insertions(+), 21 deletions(-)
 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 3f48e449574a..ef420f4dc72c 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3210,7 +3210,7 @@ static inline spinlock_t *pmd_lock(struct mm_struct *mm, pmd_t *pmd)
- static inline bool pagetable_pmd_ctor(struct mm_struct *mm,
- 				      struct ptdesc *ptdesc)
+diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+index 8c5c471cfb06..eca324b3a6fc 100644
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -46,6 +46,13 @@
+ #define NO_CONT_MAPPINGS	BIT(1)
+ #define NO_EXEC_MAPPINGS	BIT(2)	/* assumes FEAT_HPDS is not used */
+ 
++enum pgtable_type {
++	TABLE_PTE,
++	TABLE_PMD,
++	TABLE_PUD,
++	TABLE_P4D,
++};
++
+ u64 kimage_voffset __ro_after_init;
+ EXPORT_SYMBOL(kimage_voffset);
+ 
+@@ -107,7 +114,7 @@ pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+ }
+ EXPORT_SYMBOL(phys_mem_access_prot);
+ 
+-static phys_addr_t __init early_pgtable_alloc(int shift)
++static phys_addr_t __init early_pgtable_alloc(enum pgtable_type pgtable_type)
  {
--	if (!pmd_ptlock_init(ptdesc))
-+	if (mm != &init_mm && !pmd_ptlock_init(ptdesc))
- 		return false;
- 	ptdesc_pmd_pts_init(ptdesc);
- 	__pagetable_ctor(ptdesc);
+ 	phys_addr_t phys;
+ 
+@@ -192,7 +199,7 @@ static void init_pte(pte_t *ptep, unsigned long addr, unsigned long end,
+ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ 				unsigned long end, phys_addr_t phys,
+ 				pgprot_t prot,
+-				phys_addr_t (*pgtable_alloc)(int),
++				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+ 				int flags)
+ {
+ 	unsigned long next;
+@@ -207,7 +214,7 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ 		if (flags & NO_EXEC_MAPPINGS)
+ 			pmdval |= PMD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+-		pte_phys = pgtable_alloc(PAGE_SHIFT);
++		pte_phys = pgtable_alloc(TABLE_PTE);
+ 		ptep = pte_set_fixmap(pte_phys);
+ 		init_clear_pgtable(ptep);
+ 		ptep += pte_index(addr);
+@@ -243,7 +250,7 @@ static void alloc_init_cont_pte(pmd_t *pmdp, unsigned long addr,
+ 
+ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ 		     phys_addr_t phys, pgprot_t prot,
+-		     phys_addr_t (*pgtable_alloc)(int), int flags)
++		     phys_addr_t (*pgtable_alloc)(enum pgtable_type), int flags)
+ {
+ 	unsigned long next;
+ 
+@@ -277,7 +284,8 @@ static void init_pmd(pmd_t *pmdp, unsigned long addr, unsigned long end,
+ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 				unsigned long end, phys_addr_t phys,
+ 				pgprot_t prot,
+-				phys_addr_t (*pgtable_alloc)(int), int flags)
++				phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++				int flags)
+ {
+ 	unsigned long next;
+ 	pud_t pud = READ_ONCE(*pudp);
+@@ -294,7 +302,7 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 		if (flags & NO_EXEC_MAPPINGS)
+ 			pudval |= PUD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+-		pmd_phys = pgtable_alloc(PMD_SHIFT);
++		pmd_phys = pgtable_alloc(TABLE_PMD);
+ 		pmdp = pmd_set_fixmap(pmd_phys);
+ 		init_clear_pgtable(pmdp);
+ 		pmdp += pmd_index(addr);
+@@ -325,7 +333,7 @@ static void alloc_init_cont_pmd(pud_t *pudp, unsigned long addr,
+ 
+ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 			   phys_addr_t phys, pgprot_t prot,
+-			   phys_addr_t (*pgtable_alloc)(int),
++			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+ 			   int flags)
+ {
+ 	unsigned long next;
+@@ -339,7 +347,7 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 		if (flags & NO_EXEC_MAPPINGS)
+ 			p4dval |= P4D_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+-		pud_phys = pgtable_alloc(PUD_SHIFT);
++		pud_phys = pgtable_alloc(TABLE_PUD);
+ 		pudp = pud_set_fixmap(pud_phys);
+ 		init_clear_pgtable(pudp);
+ 		pudp += pud_index(addr);
+@@ -383,7 +391,7 @@ static void alloc_init_pud(p4d_t *p4dp, unsigned long addr, unsigned long end,
+ 
+ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 			   phys_addr_t phys, pgprot_t prot,
+-			   phys_addr_t (*pgtable_alloc)(int),
++			   phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+ 			   int flags)
+ {
+ 	unsigned long next;
+@@ -397,7 +405,7 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ 		if (flags & NO_EXEC_MAPPINGS)
+ 			pgdval |= PGD_TABLE_PXN;
+ 		BUG_ON(!pgtable_alloc);
+-		p4d_phys = pgtable_alloc(P4D_SHIFT);
++		p4d_phys = pgtable_alloc(TABLE_P4D);
+ 		p4dp = p4d_set_fixmap(p4d_phys);
+ 		init_clear_pgtable(p4dp);
+ 		p4dp += p4d_index(addr);
+@@ -427,7 +435,7 @@ static void alloc_init_p4d(pgd_t *pgdp, unsigned long addr, unsigned long end,
+ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+ 					unsigned long virt, phys_addr_t size,
+ 					pgprot_t prot,
+-					phys_addr_t (*pgtable_alloc)(int),
++					phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+ 					int flags)
+ {
+ 	unsigned long addr, end, next;
+@@ -455,7 +463,7 @@ static void __create_pgd_mapping_locked(pgd_t *pgdir, phys_addr_t phys,
+ static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+ 				 unsigned long virt, phys_addr_t size,
+ 				 pgprot_t prot,
+-				 phys_addr_t (*pgtable_alloc)(int),
++				 phys_addr_t (*pgtable_alloc)(enum pgtable_type),
+ 				 int flags)
+ {
+ 	mutex_lock(&fixmap_lock);
+@@ -468,10 +476,11 @@ static void __create_pgd_mapping(pgd_t *pgdir, phys_addr_t phys,
+ extern __alias(__create_pgd_mapping_locked)
+ void create_kpti_ng_temp_pgd(pgd_t *pgdir, phys_addr_t phys, unsigned long virt,
+ 			     phys_addr_t size, pgprot_t prot,
+-			     phys_addr_t (*pgtable_alloc)(int), int flags);
++			     phys_addr_t (*pgtable_alloc)(enum pgtable_type),
++			     int flags);
+ #endif
+ 
+-static phys_addr_t __pgd_pgtable_alloc(int shift)
++static phys_addr_t __pgd_pgtable_alloc(enum pgtable_type pgtable_type)
+ {
+ 	/* Page is zeroed by init_clear_pgtable() so don't duplicate effort. */
+ 	void *ptr = (void *)__get_free_page(GFP_PGTABLE_KERNEL & ~__GFP_ZERO);
+@@ -480,23 +489,26 @@ static phys_addr_t __pgd_pgtable_alloc(int shift)
+ 	return __pa(ptr);
+ }
+ 
+-static phys_addr_t pgd_pgtable_alloc(int shift)
++static phys_addr_t pgd_pgtable_alloc(enum pgtable_type pgtable_type)
+ {
+-	phys_addr_t pa = __pgd_pgtable_alloc(shift);
++	phys_addr_t pa = __pgd_pgtable_alloc(pgtable_type);
+ 	struct ptdesc *ptdesc = page_ptdesc(phys_to_page(pa));
+ 
+ 	/*
+ 	 * Call proper page table ctor in case later we need to
+ 	 * call core mm functions like apply_to_page_range() on
+ 	 * this pre-allocated page table.
+-	 *
+-	 * We don't select ARCH_ENABLE_SPLIT_PMD_PTLOCK if pmd is
+-	 * folded, and if so pagetable_pte_ctor() becomes nop.
+ 	 */
+-	if (shift == PAGE_SHIFT)
++	switch (pgtable_type) {
++	case TABLE_PTE:
+ 		BUG_ON(!pagetable_pte_ctor(NULL, ptdesc));
+-	else if (shift == PMD_SHIFT)
++		break;
++	case TABLE_PMD:
+ 		BUG_ON(!pagetable_pmd_ctor(NULL, ptdesc));
++		break;
++	default:
++		break;
++	}
+ 
+ 	return pa;
+ }
 -- 
 2.47.0
 
