@@ -1,49 +1,77 @@
-Return-Path: <linuxppc-dev+bounces-7509-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7512-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05572A7F4DD
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 08:20:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 63537A7F5EB
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 09:21:20 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWwtY3dQ7z2ypW;
-	Tue,  8 Apr 2025 16:20:37 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWyDZ1jl1z2yrm;
+	Tue,  8 Apr 2025 17:21:18 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=93.17.236.30
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744093237;
-	cv=none; b=IvWH9WNUdaYMwtcPoPDzYsBy8FDNKHntY60WBZYce1sPlAt7CaLB6zfpwfX59VOlnL6xiIIbdjJ1Lqr020DaQztHpyGPmDJtb+FbOEps1pQK6H+6zHzyufq2v3GvoUVWji442LPPV4fi7xiK+9+Q4CCKcEYqKrTnimNHeA8sAVmVT6lV3hXiokCBOJmQy1EEf1n1B9bUx0NN3kyFzxrIiKUif6BrUhozSZ+eefUSHeTx8olnxGX+TTYKUlR6KdU/oUoakoFBv/aPmv5gtNrTYU4onDPs3l3ZrgUfFOhuF3lrWZqFvsxYuJ5JvwyVCVcCPuj0dqXI86rey5WOMgDX8Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2a00:1450:4864:20::42f"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744096878;
+	cv=none; b=ch+471x/EUgy8q2XrcjtFa840gvAyJ6rLodm85CwXWXLKtH0hS00o3Xxb8gCRVYP8VQNZ9CcWlXaDG/MQpGH+cB5rxLM068PRSdnWfGxHHtrXyrtkXJFq0KM095sYXF8d22M1EW2IBW5cYwNEHgjjK/fOxXSXXjR4YfOAm1wypUE+6v/VWs4XVU/M1Q1BPgdEN2dKI9bjwStlLvAlo3J+qG1DD41HTxn2EM401wmkjWQ92WIOCOFZlfJEPRrpCSY6/xmL+s78FrzzEIyBASYedzys7niYZe3TB43p6lCBWYpG7shgMkyhmHB0euP88beqRaSmu7SW/fuIa6jxKJOIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744093237; c=relaxed/relaxed;
-	bh=SrdxJnl2tcWUT1vJ4kRYkx7I7rIIww+RR86Nz8MeihQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MPfIF/WA+LMHqa6lK+QRcypupNDM2erwPZwPfA7+LOHAWh3PDB2HSmR4mMVzLI/+bRXGCybEwWL4pum8ujYiqji7EBJeyLjXicDnyTFBW3RzLDrIEh3muu3oxpcCPfKDFj3ZF0mtQQf8g/vr5us8QFXD5UVUsdpu5ZmwJMtDv7ld5Gmkxn91vysZyaxk8tcuKtMm/VdvdiqKTE1MZskp4w5ezfMhk3B4VolwFeYbIaOxbrcdXxShjlxYJKplFafBzELDTKmGk0o2IbLXenzMc8q9DI7aiZ2ZEhJWSG7puT/G8zkE0qvfTBeFBFZmMrPHBdmM78Wd5LP3AyJ0gjrQhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu; spf=pass (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org) smtp.mailfrom=csgroup.eu
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=csgroup.eu
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=csgroup.eu (client-ip=93.17.236.30; helo=pegase1.c-s.fr; envelope-from=christophe.leroy@csgroup.eu; receiver=lists.ozlabs.org)
-Received: from pegase1.c-s.fr (pegase1.c-s.fr [93.17.236.30])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWwtX4Nh8z2ygp
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 16:20:35 +1000 (AEST)
-Received: from localhost (mailhub3.si.c-s.fr [192.168.12.233])
-	by localhost (Postfix) with ESMTP id 4ZWwV35TYQz9vhK;
-	Tue,  8 Apr 2025 08:02:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-	by localhost (pegase1.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id hpupnrTgHEot; Tue,  8 Apr 2025 08:02:51 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-	by pegase1.c-s.fr (Postfix) with ESMTP id 4ZWwV34m5bz9t2V;
-	Tue,  8 Apr 2025 08:02:51 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 9CB528B76C;
-	Tue,  8 Apr 2025 08:02:51 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-	by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-	with ESMTP id x-i2u3q9lYF6; Tue,  8 Apr 2025 08:02:51 +0200 (CEST)
-Received: from [192.168.235.99] (unknown [192.168.235.99])
-	by messagerie.si.c-s.fr (Postfix) with ESMTP id 20E478B767;
-	Tue,  8 Apr 2025 08:02:51 +0200 (CEST)
-Message-ID: <0ed6cb24-e8dc-4821-91a9-b638ca862878@csgroup.eu>
-Date: Tue, 8 Apr 2025 08:02:50 +0200
+	t=1744096878; c=relaxed/relaxed;
+	bh=TE8KU3GgwOIWy128lWSLTsSWedqlmnBG56cma81HI8U=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=IyC/20snp86rXsufr6/Vlvp0WXySNjvSUpVF3UseBFikDyCvyf+OEOhf106ztN2xGbO0OZn2DrulL1BUguQWnoPbkkhRyhELSoOc2D1cvLZpD0MJCgFXp29AFGcbVzdJ2gIiJHG69mkqK9eeyG1uNMI3ZINNHTuJ5zhOQrjM9b1T064QiBgH7bhYRCL4tgSgfDSyt+PuWWSp92IIDs7M9f2Ffj9ZHCvflyeYkHmS5TJudx9Ke8WvdlrmexUPsGfhR42az4D0jEZ7jjukW5gJQQE4/MqfljjXQw2Mo2PbpwpMS5r/ih8kpO4Jv0pXHA3qlmry4q7WNebRLZEnT0XQJg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=bKgurOnN; dkim-atps=neutral; spf=none (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org) smtp.mailfrom=bgdev.pl
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.a=rsa-sha256 header.s=20230601 header.b=bKgurOnN;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=bgdev.pl (client-ip=2a00:1450:4864:20::42f; helo=mail-wr1-x42f.google.com; envelope-from=brgl@bgdev.pl; receiver=lists.ozlabs.org)
+Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWyDW6SWVz2xrb
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 17:21:15 +1000 (AEST)
+Received: by mail-wr1-x42f.google.com with SMTP id ffacd0b85a97d-39ac8e7688aso3848269f8f.2
+        for <linuxppc-dev@lists.ozlabs.org>; Tue, 08 Apr 2025 00:21:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1744096872; x=1744701672; darn=lists.ozlabs.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TE8KU3GgwOIWy128lWSLTsSWedqlmnBG56cma81HI8U=;
+        b=bKgurOnNn20KAXNQMKpk3w30dOM2LhH6QLuxlR4u6+eIlfSoMEgQskf9sgCTO4VAmH
+         YnwftbS7lyXZ0MLPsh3zA6kpVJkfvQ8uk+k2MwidR19iPrg3nCMK4D0d6GPVQl0lVZ0u
+         /uqbRjkoX1grExiUhez1a6R7klzurX8nkcEbFXqIbwpOe1fH9YMF3WjMKFV3TrEtPZG7
+         vEyj1xEWAuNvfyqXsY/UP+/U//3PNS67YqpZ6DtNIyBsn6237gy2iYg4reed/+ZbZGQy
+         pIdT2MbHRaE5eAqcrdWSwdR2WYunQXFstrgfsS5D/dQtXMhFfj6T0iVUUECOBxCdKTLS
+         o7lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744096872; x=1744701672;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TE8KU3GgwOIWy128lWSLTsSWedqlmnBG56cma81HI8U=;
+        b=MNoZhpV5ktCO2/AYBb0Gc5W+pf312wbf88kI6zKwOHQAqojMEliFAtfesY7zvEIO/3
+         MDZrL53rUmisp0UtWR0TeR2fV9txuEUK8NV9a4+R8S2MJvGT8A3YuxN/RsZrsRQdD3Dt
+         tmzObFs7SLWv/xBI/8tXiMeVK1Nw+lcwzFJiW08pyOYbW875TMaFyw0zRbetdD6ZkiBz
+         1fbeFnjmV12OnjIheRya0sjTkt5soLbtLSFiOWs2/hrnipKtpm5sXmEWkpxS6n0fYenz
+         dcdqmTu8apIBBJjxF2gVPfIhrolTExe93MT6fQ08LlppyV2616H5ppb1gi+2dC1NlACD
+         Hfgg==
+X-Gm-Message-State: AOJu0Yxy/kdwr/Zd/lpTgu0ZOpxpbRxc8eEhUjfOKlalhBQB/UMZ3aJN
+	3byJfLUEp3D1aPea1WrqJCJCG1HBZ5XmBibh63JN4mpTdCtCqJC5vdahVLpuM1Qa5uHg4nIsTHo
+	sWNs=
+X-Gm-Gg: ASbGncsnNwckyH1sXCJQm3fVHY8aWS20yZX2RKtYlWmFVkJHu9GmkAW/lxmsosmVWH1
+	tT9xp+KV6Ze08vG49MJpvo4Q8N+UWipKyFnXi7Qi5IdVjhV/D9EYLntqIRILz0BM1VHNQY7Ep1B
+	NhUmPkHHI5BKNLEpILIb0GYQlogMkd9t1h7bDGY3h1Z29OhFNLnGDLa9KI8Onwb1qiKO+tTu4kQ
+	2BvAHjng/Fqo7yQDHY5Zzv3EVRqFJRbvN+39Ojvyy99QVMTYk9IjnWAnQhnY26pBaphWqf4Ylx9
+	M7SbpLijoEgI96sB4ZXsieRGMgf5boX6E3miXA==
+X-Google-Smtp-Source: AGHT+IEzkrRzBMtSl4ctUvpMUsrqjcehR8fZ97eCkYCoVM5CevnJWRctAuT077lImW/GKdTsztThZA==
+X-Received: by 2002:a05:6000:2403:b0:399:71d4:b8 with SMTP id ffacd0b85a97d-39d6fc293edmr7415263f8f.23.1744096872357;
+        Tue, 08 Apr 2025 00:21:12 -0700 (PDT)
+Received: from [127.0.1.1] ([2a01:cb1d:dc:7e00:2adf:eaae:f6ea:1a73])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-43ec342a1fesm154404135e9.3.2025.04.08.00.21.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 08 Apr 2025 00:21:12 -0700 (PDT)
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Subject: [PATCH 0/5] powerpc: convert board-file GPIO chips to using new
+ value setters
+Date: Tue, 08 Apr 2025 09:21:08 +0200
+Message-Id: <20250408-gpiochip-set-rv-powerpc-v1-0-73dc1ebc6ef1@linaro.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -56,110 +84,68 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] powerpc: Add check to select
- PPC_RADIX_BROADCAST_TLBIE
-To: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
- Madhavan Srinivasan <maddy@linux.ibm.com>, mpe@ellerman.id.au,
- npiggin@gmail.com, christophe.leroy@csgroup.eu, paulus@ozlabs.org
-Cc: naveen@kernel.org, linuxppc-dev@lists.ozlabs.org,
- kernel test robot <lkp@intel.com>
-References: <20250407084029.357710-1-maddy@linux.ibm.com>
- <874iyzzt27.fsf@gmail.com>
-Content-Language: fr-FR
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
-In-Reply-To: <874iyzzt27.fsf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=0.0 required=3.0 tests=SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGTO9GcC/x3MMQqAMAxA0atIZgMaUdSriEOpUbPYkIoKxbtbH
+ N/wf4LIJhxhLBIYXxIlHBl1WYDf3bExypINVFFbNdThphL8LoqRT7QLNdxs6rHmoV+oJyLnINd
+ qvMrzn6f5fT+J7rl7aQAAAA==
+To: Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Linus Walleij <linus.walleij@linaro.org>, 
+ Bartosz Golaszewski <brgl@bgdev.pl>, Anatolij Gustschin <agust@denx.de>
+Cc: linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, 
+ linux-gpio@vger.kernel.org, 
+ Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1235;
+ i=bartosz.golaszewski@linaro.org; h=from:subject:message-id;
+ bh=tXCJ6XOIP5UMxUMzwAAhIQV73CiyhZPXy/4pnKrXAZE=;
+ b=owEBbQKS/ZANAwAKARGnLqAUcddyAcsmYgBn9M5m0mAka9slZ1K1D+jsHMTs4VAcc/p4oxLtN
+ XB1vI9OBBeJAjMEAAEKAB0WIQQWnetsC8PEYBPSx58Rpy6gFHHXcgUCZ/TOZgAKCRARpy6gFHHX
+ chuuD/0SxuTx4+pN8BePlC//dOOUmReVczVf6jRowNhc02sYQt1a/bPYtM3rNcNcqdMCJDF45ud
+ MfOXuA0DsTxCBEI6ccmItFp7dkfhtlyr/A/bTC6ITmXlGEDYgQSJ4c6R9DamchQx4oM7L9jqNiA
+ LcctfJw7ge/xHBhkcwJ1Q6eKug/cu2FcP55KjiXS7IResKIi3ox/5loej5E/FaDUQsOLvrZkZ3n
+ vfWO/NNW9ujF1DuPMbBjHOakESTkGQzWuXTyfVbRbKmab15nsBL91W8NcRXMqFXODIETP1TFKXp
+ 9qlaH8RAC+RNkm1HVzALgp1IxX85h+TqJIot5FPsAb+HBqP1yeLmdolkGMJjd9clUO6STS8Jvci
+ +/+T5YAlLV0lRjKXo3YUhb9j9wmRa3Yqm8S2uLgaXVx+ULhzyPMztrr0ikxzEj6frq0ZDDDB28p
+ OMVGh/Wz9QcHVhTuI6TcD0fs+owDNWwrD+v5F8JoCWU0Uvnit2XhoYETY1yWDuX2jKBYG0BVVFz
+ r+ekbp8lykB6WpWoACh/bCvrDbhKL5JXghXg6hZl4WW+n8liV0/Y64jVDqPGhUmCZx4OQsD7Qyb
+ kJWluEDSE6xG/lMhcoE++E2gaGZJOQZAMAr9ru4dMrpYEPlBKsybqw6y+CofqzWwT2GzsoDXvWQ
+ LawoqFDJt++YjAQ==
+X-Developer-Key: i=bartosz.golaszewski@linaro.org; a=openpgp;
+ fpr=169DEB6C0BC3C46013D2C79F11A72EA01471D772
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+struct gpio_chip now has callbacks for setting line values that return
+an integer, allowing to indicate failures. We're in the process of 
+converting all GPIO drivers to using the new API. This series converts 
+all powerpc board-file level controllers.
 
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+---
+Bartosz Golaszewski (5):
+      powerpc: sysdev/gpio: use new line value setter callbacks
+      powerpc: 83xx/gpio: use new line value setter callbacks
+      powerpc: 44x/gpio: use new line value setter callbacks
+      powerpc: 52xx/gpio: use new line value setter callbacks
+      powerpc: 8xx/gpio: use new line value setter callbacks
 
-Le 07/04/2025 à 21:10, Ritesh Harjani (IBM) a écrit :
-> Madhavan Srinivasan <maddy@linux.ibm.com> writes:
-> 
->> Commit 3d45a3d0d2e6 ("powerpc: Define config option for processors with broadcast TLBIE")
-> 
-> We may need to add above to Fixes tag as well, no?
-> 
->> added a config option PPC_RADIX_BROADCAST_TLBIE to support processors with
->> broadcast TLBIE. Since this option is relevant only for RADIX_MMU, add
->> a check as a dependency to enable PPC_RADIX_BROADCAST_TLBIE in both
->> powernv and pseries configs. This fixes the unmet config dependency
->> warning reported
->>
->>     WARNING: unmet direct dependencies detected for PPC_RADIX_BROADCAST_TLBIE
->>       Depends on [n]: PPC_RADIX_MMU [=n]
->>       Selected by [y]:
->>       - PPC_PSERIES [=y] && PPC64 [=y] && PPC_BOOK3S [=y]
->>
->> Reported-by: kernel test robot <lkp@intel.com>
->> Closes: https://lore.kernel.org/oe-kbuild-all/202504051857.jRqxM60c-lkp@intel.com/
->> Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-> 
-> It's a bit strange that even though PPC_RADIX_BROADCAST_TLBIE adds
-> PPC_RADIX_MMU as a dependency where is it defined, we still have to add
-> an extra check for the same dependency to enable this for any platform.
+ arch/powerpc/platforms/44x/gpio.c              |  7 ++++---
+ arch/powerpc/platforms/52xx/mpc52xx_gpt.c      |  6 ++++--
+ arch/powerpc/platforms/83xx/mcu_mpc8349emitx.c |  6 ++++--
+ arch/powerpc/platforms/8xx/cpm1.c              | 12 ++++++++----
+ arch/powerpc/sysdev/cpm_common.c               |  6 ++++--
+ 5 files changed, 24 insertions(+), 13 deletions(-)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250326-gpiochip-set-rv-powerpc-1e98d28222aa
 
-That's expected, see 
-https://docs.kernel.org/kbuild/kconfig-language.html#menu-attributes :
-
-select should be used with care. select will force a symbol to a value 
-without visiting the dependencies. By abusing select you are able to 
-select a symbol FOO even if FOO depends on BAR that is not set. In 
-general use select only for non-visible symbols (no prompts anywhere) 
-and for symbols with no dependencies. That will limit the usefulness but 
-on the other hand avoid the illegal configurations all over.
-
-Christophe
-
-> 
-> The config generated by the 0day in the shared link, indeed had an unmet
-> dependency. i.e.
-> 
-> CONFIG_PPC_64S_HASH_MMU=y
-> # CONFIG_PPC_RADIX_MMU is not set
-> CONFIG_PPC_RADIX_BROADCAST_TLBIE=y
-> 
-> 
-> So, the fix look good to me. Please feel free to take:
-> Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-> 
-> 
->> ---
->>   arch/powerpc/platforms/powernv/Kconfig | 2 +-
->>   arch/powerpc/platforms/pseries/Kconfig | 2 +-
->>   2 files changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/arch/powerpc/platforms/powernv/Kconfig b/arch/powerpc/platforms/powernv/Kconfig
->> index 3fbe0295ce14..95d7ba73d43d 100644
->> --- a/arch/powerpc/platforms/powernv/Kconfig
->> +++ b/arch/powerpc/platforms/powernv/Kconfig
->> @@ -17,7 +17,7 @@ config PPC_POWERNV
->>   	select MMU_NOTIFIER
->>   	select FORCE_SMP
->>   	select ARCH_SUPPORTS_PER_VMA_LOCK
->> -	select PPC_RADIX_BROADCAST_TLBIE
->> +	select PPC_RADIX_BROADCAST_TLBIE if PPC_RADIX_MMU
->>   	default y
->>   
->>   config OPAL_PRD
->> diff --git a/arch/powerpc/platforms/pseries/Kconfig b/arch/powerpc/platforms/pseries/Kconfig
->> index a934c2a262f6..fa3c2fff082a 100644
->> --- a/arch/powerpc/platforms/pseries/Kconfig
->> +++ b/arch/powerpc/platforms/pseries/Kconfig
->> @@ -23,7 +23,7 @@ config PPC_PSERIES
->>   	select FORCE_SMP
->>   	select SWIOTLB
->>   	select ARCH_SUPPORTS_PER_VMA_LOCK
->> -	select PPC_RADIX_BROADCAST_TLBIE
->> +	select PPC_RADIX_BROADCAST_TLBIE if PPC_RADIX_MMU
->>   	default y
->>   
->>   config PARAVIRT
->> -- 
->> 2.48.1
+Best regards,
+-- 
+Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
 
