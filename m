@@ -1,33 +1,33 @@
-Return-Path: <linuxppc-dev+bounces-7535-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7536-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1BB98A7FA6D
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 11:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 242F4A7FA70
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 11:55:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1dP4ljnz303B;
-	Tue,  8 Apr 2025 19:54:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1dV1qL8z30Vb;
+	Tue,  8 Apr 2025 19:54:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744106073;
-	cv=none; b=A7FJsSIvC6FlrW4d0qx6E/UJq5My/MwFyGN6rLmK5HUWYfCzLTzQBQDXK2eqc2bdPdQGuRjvfpwevPw/tAwMN4Z5Z35uQFzFOugrDOraM4VC+blDOFrDtxGNAYPw5dvzRL5xGW/PYknO0dbwSW5GIIunEGbrQFr27rcl1jLF2Of/Yn0ctQGPTIgbZgqwTYpDSerz9zpACdva6WZF29sv2GaAVE2cHq7+kJ3584zyLHTMK6EGHgwFHsGoBepad6HIB1przc95gNjAiqY3I4iDkeVCiwdRY6wNVas3D+jxcrvQpihx5p97Z8YBdXAyz8NZA0MQlPLnF7hxPhMuqY9iEQ==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744106078;
+	cv=none; b=CP0M9BA08rC47+K46P5SOFW2b6wvS3Up+saXSs9uaCPHz0LCusGsd33rFdrxbyyxXXjpRfWWBfaGOsJngBxY7z3OF/d/qepf9i1fP9rukOfJHFk1f3lstl2T+Jz+6QhPv5l1+mLglB/+GNd+R4gFWjw3q7z8t5PwcvPVCdGLPyBocHWoo8as894fgoa75/PDh/DVHgDmZQB3L68mqtcFqPhGYtSd9QgYbcU7hBl0EFo47abvNaDthNrks5WzKUef9mFmI+zv5X8gEPZCrHuui3w82c7v4ef0ESYAnR8lfCi5hsoSwf3wN5UDJuFrUjZNfT3GjcFqvPqfaM8tpwYNvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744106073; c=relaxed/relaxed;
-	bh=zCqJ5i1RxEJN7X5dUM1nM7yZwBGmu6xdERTmZRAkVic=;
+	t=1744106078; c=relaxed/relaxed;
+	bh=08E//Tnzm4Otbmgjv5PkMZzFPCICf9ItkLK9Ykz94vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IHEl4jn3GZWwrZ/1QZR+6MfzyvOJuE0jtQzSvu9GJaqIVXQGVTjKGwnmd8kfWk55RvMlm9fOTEeOsvdlreBcT7azkaVmF1032s5T5SXVFjWvNBqmH/ziZSDG476caNegjUOAT4KqIYXXXu6KPB7FWi3P1Zs29/Lf6P5gh6Oi0+mXQyBiVLiDkZ6Lp45/JHlLcfe4uAbB9YJ5Vw5urVuAoE6lDoE96Zm0260xC4hvI66kOL8A+nUKKU9JkjS1kaO2WRVlCxKSJLdnuD3WI2dEPNwvHmzxL/Rfv1gr9FEte2tG0GA/f6KpvWPWZONX1xmVX9K4Can9Hpk5p2kBPemCnA==
+	 MIME-Version; b=eATSxwW7eN/H1wP2o04h752QmlNdhJ04EBj0LKi9YVacg69wETfyW8s7jVXZQN4wwsdnAWd2NG05LOeod04OqRZdZE7Qm+Eo7tUG62G8TB46yOlzwnfCJrrc1vc2IEm572fQNZY7/cipoqcdw6EnlGTzBzXC/6Sq2oIU4n4BswXsT75EQxpd7RR6E8VQmklsFNVT04tQV+w8wSd9gfte6AZoz+wr0p6K1CpOi1waSeRCWL9ShXWt+I9Fgb4534vUylEub1fwynTSOGL7tWPl8xRmQzyJgT0WUWNnD8MTKpfl3c/yqiyJNXne2QlUlMlXw1TleC4plB0QIzX0HAx2lg==
 ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
 Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1dP0MnBz300B
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 19:54:33 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX1dT5M1vz300B
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 19:54:37 +1000 (AEST)
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 15DC122FA;
-	Tue,  8 Apr 2025 02:54:03 -0700 (PDT)
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id C22912308;
+	Tue,  8 Apr 2025 02:54:07 -0700 (PDT)
 Received: from e123572-lin.arm.com (e123572-lin.cambridge.arm.com [10.1.194.54])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CA25B3F6A8;
-	Tue,  8 Apr 2025 02:53:57 -0700 (PDT)
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8289A3F6A8;
+	Tue,  8 Apr 2025 02:54:02 -0700 (PDT)
 From: Kevin Brodsky <kevin.brodsky@arm.com>
 To: linux-mm@kvack.org
 Cc: linux-kernel@vger.kernel.org,
@@ -62,9 +62,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	sparclinux@vger.kernel.org,
 	x86@kernel.org
-Subject: [PATCH v2 11/12] arm64: mm: Call PUD/P4D ctor in __create_pgd_mapping()
-Date: Tue,  8 Apr 2025 10:52:21 +0100
-Message-ID: <20250408095222.860601-12-kevin.brodsky@arm.com>
+Subject: [PATCH v2 12/12] riscv: mm: Call PUD/P4D ctor in special kernel pgtable alloc
+Date: Tue,  8 Apr 2025 10:52:22 +0100
+Message-ID: <20250408095222.860601-13-kevin.brodsky@arm.com>
 X-Mailer: git-send-email 2.47.0
 In-Reply-To: <20250408095222.860601-1-kevin.brodsky@arm.com>
 References: <20250408095222.860601-1-kevin.brodsky@arm.com>
@@ -87,30 +87,52 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 Constructors for PUD/P4D-level pgtables were recently introduced.
 They should be called for all pgtables; make sure they are called
-for special kernel mappings created by __create_pgd_mapping() too.
+for special kernel mappings created by create_pgd_mapping() too.
+
+While at it also switch to using pagetable_alloc() like
+in alloc_{pte,pmd}_late().
 
 Signed-off-by: Kevin Brodsky <kevin.brodsky@arm.com>
 ---
- arch/arm64/mm/mmu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ arch/riscv/mm/init.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 51cfc891f6a1..8fcf59ba39db 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -497,7 +497,11 @@ static phys_addr_t __pgd_pgtable_alloc(struct mm_struct *mm,
- 	case TABLE_PMD:
- 		BUG_ON(!pagetable_pmd_ctor(mm, ptdesc));
- 		break;
--	default:
-+	case TABLE_PUD:
-+		pagetable_pud_ctor(ptdesc);
-+		break;
-+	case TABLE_P4D:
-+		pagetable_p4d_ctor(ptdesc);
- 		break;
- 	}
+diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
+index 59a982f88908..8d0374d7ce8e 100644
+--- a/arch/riscv/mm/init.c
++++ b/arch/riscv/mm/init.c
+@@ -590,11 +590,11 @@ static phys_addr_t __init alloc_pud_fixmap(uintptr_t va)
  
+ static phys_addr_t __meminit alloc_pud_late(uintptr_t va)
+ {
+-	unsigned long vaddr;
++	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+ 
+-	vaddr = __get_free_page(GFP_KERNEL);
+-	BUG_ON(!vaddr);
+-	return __pa(vaddr);
++	BUG_ON(!ptdesc);
++	pagetable_pud_ctor(ptdesc);
++	return __pa((pud_t *)ptdesc_address(ptdesc));
+ }
+ 
+ static p4d_t *__init get_p4d_virt_early(phys_addr_t pa)
+@@ -628,11 +628,11 @@ static phys_addr_t __init alloc_p4d_fixmap(uintptr_t va)
+ 
+ static phys_addr_t __meminit alloc_p4d_late(uintptr_t va)
+ {
+-	unsigned long vaddr;
++	struct ptdesc *ptdesc = pagetable_alloc(GFP_KERNEL, 0);
+ 
+-	vaddr = __get_free_page(GFP_KERNEL);
+-	BUG_ON(!vaddr);
+-	return __pa(vaddr);
++	BUG_ON(!ptdesc);
++	pagetable_p4d_ctor(ptdesc);
++	return __pa((p4d_t *)ptdesc_address(ptdesc));
+ }
+ 
+ static void __meminit create_pud_mapping(pud_t *pudp, uintptr_t va, phys_addr_t pa, phys_addr_t sz,
 -- 
 2.47.0
 
