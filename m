@@ -1,58 +1,60 @@
-Return-Path: <linuxppc-dev+bounces-7506-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7507-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE653A7F168
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 01:48:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0270BA7F37D
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 06:20:57 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWmBd2n3Wz2yqy;
-	Tue,  8 Apr 2025 09:48:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZWtDJ3DCWz2yk3;
+	Tue,  8 Apr 2025 14:20:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744069737;
-	cv=none; b=RH279n38wo2dbrQnRNbJRxxvYQIzfF2KzCRbwheTJn1vKHDJ5QFS5JZXS6ixxot1vqXoGMCX1zgUmvvQX/mOUItPHI8gayDJ48l3QRimaZB62jNSmYAqmL7D9bWaD5ZpOLmFAHdoo4v4p+3azYphKvZjGTMDNUqL5OglakHds6dcbAo878v/bHUvRbem8bj0iT8bBXbX7nlub2w++xnjOlFjLs2zEOlDDTvmCqFPDpw1p6Nfs1vo4fbReOIq+fEagVMk75wH58eIVQ3lDppPqdtf0xVS5N4xKkZuESsbabVPE3uR75JrwUHSMvJEAabMpsR21/nIDbZznLwZq2QqiA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744086048;
+	cv=none; b=CHSLEVrRAwon3yCAT6riHei238Uiq4xHV2HfpiFZQTj0OllYp2KsKdC4E1lNwpKgAHaH3KhkBZIm2ilnqWjjZzitPIgjg9JA9dy6UDAgrORnkogtB/A0WHGarmjmcCA7AjUrwv6hPlej4cT8igdwF3XfR+i0HBPfjovELPrL/lXqdzf2M8CyH6p/GA6rscwovV5fPZHCHFGBAyUXRYNvpRcHDAloNCA30MJPJ8Ag3ADY8Jzp46h4RbgxDAFTFgUuLuAtrG0dgzUOS0z0Sveq8DhJHT/oTSDFdERsmWRCbF6uEkLXuy9gxmclQmPBfTPBYtA2vXOwkkqRCe9ahOdDRg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744069737; c=relaxed/relaxed;
-	bh=GWeaeQStxrYRprmz8g7xCRUbqTX5zImlCTkE+R4Z52c=;
-	h=From:To:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=eO4+toe8C0vl03eiDhj78CLMPi429d1wkb5rLuqtTxSr5jBc4CV5MoG3pYzbTVz0GdtgcA4IxVJNVujdAM2xNbVvVWH9tgSORwlSQL6oxpvqWzXfEhVfgNCpEWbQpL0tv05IuGHNnqyAerH88/KDcF4colEtGboBfRCLrXUMYXkko9ImMoZieGKG/4BzXauZR9fyS1xdudWymjDpnawysbADBWSMcDUlTi+PsjvrJb/JLXWX46d/dRAXvVcEQ64yvjmN/eixgVAXxZmoBmigxUa//HH6Osz6E9LMGFm1zZdVyfL8OCfhcEWLYOQIcTSTYE0ow4+469X5au+J/vW4Fg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KE5oLfVu; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1744086048; c=relaxed/relaxed;
+	bh=f/DoFNRuiiVAkwV02tS1l/zFMuQjpgmiB/Gter90zGI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XhOy+t6xikimK6YFsLE1fpd+y7ECM5pKJWeIjuYqbC8a+Uty5HcNojteFPdKasxIslgQ1jf8/neNNcLXms2M2+tYWUfG4ZaAHiYhhRyknT3up/fJBbngP/EbgHwrExpv4ZMF3WuIYtWK90mYdT7+e1sUpeFQTTAte63lQ8iyOcI9Ya1YFmbRELnoL7bAa9So8ShwI51W+nvRzz4/lpVNhBqFRV0LJcYZutqGNuHN1yiQXcNYwVFohkyxDGIoqYygaxbDTl+qUVacDkJILo7ogrR4y5I8UXdoEpLKFv25CjyaEL0MNPM4hIWr+WqTmrroZmsAzhaxH6KpIJadZYE/pA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=OKTDF4+E; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=KE5oLfVu;
+	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=OKTDF4+E;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWmBc4rXKz2yjV
-	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 09:48:56 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 5EFDDA4308D;
-	Mon,  7 Apr 2025 23:43:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA287C4CEDD;
-	Mon,  7 Apr 2025 23:48:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744069733;
-	bh=jMMELnblMemF3AYQvGgHeCfvJKpdkDZIw7VpKQqJUUo=;
-	h=From:To:In-Reply-To:References:Subject:Date:From;
-	b=KE5oLfVuQ6RdNYzVpQHcwdXdgM4r69W2Wm4Vt9oxwQAevIHsvxLmhJrlV+DcgmSdn
-	 ofUuZJtfxVK3Jjr2zTyoat2roKHA0s/oTdkXUcbwhVOb4QrDv49ZVCFiPQGmrVxfEJ
-	 PNC3VNAjIFSIbYTZFLEJm3tlZZl0FpyX31IVvgnO4lEUFktNQotsUt6ANEEC39gO/D
-	 9S4KdGPdH3MwWRSmX4O/+QvHmyVRLpRniJYdmnaw6jut0MDulwwniwzN+Dl7dWuaa7
-	 hzq/IJv6yY3MslMrNzcFFRwd4M/RMN2gnI6nFfXdXZsVv274VJYxL3rxtFPtXSGtUS
-	 5Ag1uLZmkNvGg==
-From: Mark Brown <broonie@kernel.org>
-To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
- nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
- linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
- linux-kernel@vger.kernel.org, Shengjiu Wang <shengjiu.wang@nxp.com>
-In-Reply-To: <20250319033504.2898605-1-shengjiu.wang@nxp.com>
-References: <20250319033504.2898605-1-shengjiu.wang@nxp.com>
-Subject: Re: [PATCH] ASoC: fsl_asrc_dma: get codec or cpu dai from backend
-Message-Id: <174406973149.1344763.148124979192544931.b4-ty@kernel.org>
-Date: Tue, 08 Apr 2025 00:48:51 +0100
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZWtDH2SFRz2yGZ
+	for <linuxppc-dev@lists.ozlabs.org>; Tue,  8 Apr 2025 14:20:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=f/DoFNRuiiVAkwV02tS1l/zFMuQjpgmiB/Gter90zGI=; b=OKTDF4+Efe4g+aPEIyC/KLv4Nw
+	Fi+R60MnSn4xlGz8gKguCFkX4SSGRyT/gj/df+JWet8duRcWVA974LmmTGwccMJKZ2gb5DcqEB+/a
+	j4r6Y12EcCVBw7BXh2eWJHLyMPN2EaWXbbvhL4R2f3LE0Q7Rf01PO4V924C8rk5CKqVt2/5HO9tb+
+	KOeBL48wE+dKScZeGtncQ+X2kKh/kePMqu1+FLsdGyVxKLamqTb2vZ6LwV3OKgjVxdU4dFVJr1bjq
+	MSlzH1m1hbS5VTehq5kePO5kVvTA+Gf02DDNk9XTct7Q+iHF7RvLrWbh//63REJdqAlGnwGTEUFuO
+	8gmO9SeQ==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1u20Ru-00Dlm8-25;
+	Tue, 08 Apr 2025 12:20:35 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Tue, 08 Apr 2025 12:20:34 +0800
+Date: Tue, 8 Apr 2025 12:20:34 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Sourabh Jain <sourabhjain@linux.ibm.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+	linux-crypto@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
+Subject: [PATCH] crypto: scomp - Fix null-pointer deref when freeing streams
+Message-ID: <Z_SkEnIWk8E0mLJf@gondor.apana.org.au>
+References: <3c239727-6c46-45c2-80e7-d6853427f72c@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,50 +67,48 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-c25d1
-X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3c239727-6c46-45c2-80e7-d6853427f72c@linux.ibm.com>
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, 19 Mar 2025 11:35:04 +0800, Shengjiu Wang wrote:
-> With audio graph card, original cpu dai is changed to codec device in
-> backend, so if cpu dai is dummy device in backend, get the codec dai
-> device, which is the real hardware device connected.
-> 
-> The specific case is ASRC->SAI->AMIX->CODEC.
-> 
-> 
-> [...]
+On Mon, Apr 07, 2025 at 11:49:27PM +0530, Sourabh Jain wrote:
+>
+> [   90.892796] NIP [c000000000845eb0] scomp_free_streams+0x6c/0xe8
+> [   90.892803] LR [c000000000845ee0] scomp_free_streams+0x9c/0xe8
 
-Applied to
+Looks like I never tested 842 which curiously does not have a
+self-test.  Please try this patch:
 
-   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
+---8<---
+As the scomp streams are freed when an algorithm is unregistered,
+it is possible that the algorithm has never been used at all (e.g.,
+an algorithm that does not have a self-test).  So test whether the
+streams exist before freeing them.
 
-Thanks!
+Reported-by: Sourabh Jain <sourabhjain@linux.ibm.com>
+Fixes: 3d72ad46a23a ("crypto: acomp - Move stream management into scomp layer")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 
-[1/1] ASoC: fsl_asrc_dma: get codec or cpu dai from backend
-      commit: ef5c23ae9ab380fa756f257411024a9b4518d1b9
-
-All being well this means that it will be integrated into the linux-next
-tree (usually sometime in the next 24 hours) and sent to Linus during
-the next merge window (or sooner if it is a bug fix), however if
-problems are discovered then the patch may be dropped or reverted.
-
-You may get further e-mails resulting from automated or manual testing
-and review of the tree, please engage with people reporting problems and
-send followup patches addressing any issues that are reported if needed.
-
-If any updates are required or you are submitting further changes they
-should be sent as incremental updates against current git, existing
-patches will not be replaced.
-
-Please add any relevant lists and maintainers to the CCs when replying
-to this mail.
-
-Thanks,
-Mark
-
+diff --git a/crypto/scompress.c b/crypto/scompress.c
+index d435d4b24469..f67ce38d203d 100644
+--- a/crypto/scompress.c
++++ b/crypto/scompress.c
+@@ -111,6 +111,9 @@ static void scomp_free_streams(struct scomp_alg *alg)
+ 	struct crypto_acomp_stream __percpu *stream = alg->stream;
+ 	int i;
+ 
++	if (!stream)
++		return;
++
+ 	for_each_possible_cpu(i) {
+ 		struct crypto_acomp_stream *ps = per_cpu_ptr(stream, i);
+ 
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
