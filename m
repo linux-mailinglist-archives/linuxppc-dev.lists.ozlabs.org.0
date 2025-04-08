@@ -1,61 +1,71 @@
-Return-Path: <linuxppc-dev+bounces-7548-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7549-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1125AA80FC3
-	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 17:23:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91DB8A81008
+	for <lists+linuxppc-dev@lfdr.de>; Tue,  8 Apr 2025 17:31:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX8wK427sz3089;
-	Wed,  9 Apr 2025 01:22:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZX96M0bgDz30KY;
+	Wed,  9 Apr 2025 01:31:39 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.10
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744125777;
-	cv=none; b=YuiDYDEDTicnS3CI29ECE2Blc4pZqcI35Mw2LNTyO1tQEiio1LUKX+WI3g2UzKkQcdTblLrTdMIi/jTlLlk8sBeHj2kWe61eFyB1rqprZpdcGkmU+KxVpi/ACXa92OdT7s/+ODeLGV+fZCPiYfb/Um3td0CtyyXEo1MpEAt2S3Joom9SJA1rJozmCiKsN24ImyVF5S2gMASHTUg9xv3/uGDDcPNKg4TLEwWnoeBCiI4WK3e1lYtG02epXV8dXCZnMmoLHo2q+nA5LcBANofVQbdC5JmliWl4KHpK/wkGWrycwYHTnP7Zl0QHjJEjkbuogLTI2XpCwnfO3zr3yDI1Zw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744126298;
+	cv=none; b=MQ0dm7ugh1jmM8KY9AOvJhLAMa53tAifTEJMUGTzH/pZcBZRC+DsDhbywVMoNaL/g3jAPeD56kLhUTYXW4k1PmgIx5yyDW3GOpOEpI+PuJFezG75HP+O0R04oErNAn5GdnGIqwi06W80Vl18GwJsa6ev/er2kLEyVTMehnkK73DSwuOzZxtSQ+dE3ofe4AzDOJ779HGuoThFvynGMmjA4AITHS7bJv5FCe4ESvkL8GnpyAiZLUTrHJy6qzR8OcZX5dpkP/PF67s+GoKIC41Etu/pI26rFRHEoFlgkHLUkRIee8BM6TqVLqXqYIjA+rwu8bg4G2BjCjpukg1SxMDtQA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744125777; c=relaxed/relaxed;
-	bh=l8cdqG5KHqsfV2J/kbmNJYoWMA/0nOsqrEAaBMjMGD8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hPM4xsqJq9mM5Qe8K700TNSlYD5rwkeWXqquC+qmREkV5i7QgdzKBk2Oy6Y78OhUZ5dqMEW+8OwIs/8AkaVEB06mW6YcUANyQhw3TTRpmKN1Ynskm751KqJB5ciQeeXTygHslxUaWv2OZxTfbSa0M7lLq/mozfELiYRwgwEFTB9A17fxC+5bYCwqs0rLJqQcrXLSYnN17hgOf2fpOOcajIY1abpzAzH8PQhiZ5OsITH9KVvwmjWJmcOv7degaflTHvCEukIQmJmOq096TxjL5kj+In6QSITSxwxVDjWNS8AztaOf9u/QiTUlUjmQA5pO2DRePudyQNjTCRi1V6G5Aw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UUL97Fz2; dkim-atps=neutral; spf=pass (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1744126298; c=relaxed/relaxed;
+	bh=h3v2u8ip3cqMDDLNIpKhDZO5Hm5vU3p7hzEHmiU+27A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AEwU1OZc739/FTqEnM48v6V/qQI7uYEz3z74R8HMxTBEXITpkCOHD+9YNtgk+IWIs+BrQp9HgsSBjijHEYgwatABs1AfS8KxHPqX+9Jzx+HUk9yQJwn16K9Xdyrg1nOvcm6MZ7IS/scEDW59CqoQKaSWIDFWiUn3WxCywIx8gdlRSZ/X3Y64cEAX88Zg1G0IVOCCeIa9kGu1ZuH0Pbx2k+zGfZqCSp/t2W5dNVS0LjNtrPnlcP1bnpSiG4nrFvd2WiWarQ3RkDvHtDYsCuJnSaR/OmANkhpe67pJql/e53Rt9hesT0Cnp2fqdsg/Nj5se40Xvf1qsovN4oh31ZlcSg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P4UJEaCt; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=UUL97Fz2;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=P4UJEaCt;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.10; helo=mgamail.intel.com; envelope-from=dave.hansen@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=jarkko@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZX8wH2dvvz2yrj
-	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Apr 2025 01:22:53 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744125776; x=1775661776;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=D9XuG7Ugb2+SGuMTNvueeFKYwGqptTWhQqYGjQrqjVo=;
-  b=UUL97Fz2GiYhL9yMeroewCtmHqjUxAvhX3bd2ScNmb5Lru8uvlkf8i94
-   dKpFO083n3MC7jDVObeH3b98e9Y8hXLEdzHxEYw+2EJtumvfBvVbe6T/S
-   6mt7COmcDBzYIGbagS7GLK08TWQUJx7i36OVvRTHdk1wEMwwVeIEH+Z/9
-   BnSdK5FsveZ1okg06Qvf8Fu8aKey8aRPGFVFnaj0yPtrse26i0HxPknXj
-   2MLNVWNrwH0uwxfKIpVKxgWeBhrjjLy0wdNW+LEDgEq66GA/8VusbrtFI
-   8nauSwrsyyVW/YrsvgK7lULn6Yk043UB6JU+VSm8AGmH2b8Aa6B3QqUCG
-   w==;
-X-CSE-ConnectionGUID: ItqS7+EvTxGpVMKncy05QA==
-X-CSE-MsgGUID: a8Er1S4gTVWi4JYsrCUq7g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11397"; a="56936755"
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
-   d="scan'208";a="56936755"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 08:22:51 -0700
-X-CSE-ConnectionGUID: Ib9xckXnQRq6rJZ0mR1kdw==
-X-CSE-MsgGUID: IfuAIkdqSzeGpojNSuwg2g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,198,1739865600"; 
-   d="scan'208";a="133023105"
-Received: from ssimmeri-mobl2.amr.corp.intel.com (HELO [10.124.220.83]) ([10.124.220.83])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Apr 2025 08:22:49 -0700
-Message-ID: <409d2019-a409-4e97-a16f-6b345b0f5a38@intel.com>
-Date: Tue, 8 Apr 2025 08:22:47 -0700
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZX96K6BFHz30D3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed,  9 Apr 2025 01:31:37 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by dfw.source.kernel.org (Postfix) with ESMTP id 4793E5C59B4;
+	Tue,  8 Apr 2025 15:29:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14E9C4CEE5;
+	Tue,  8 Apr 2025 15:31:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744126294;
+	bh=Uq29KL+ro4IRBo8g5H8MypBCBK0Ooc76QGNcWH4alfw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=P4UJEaCtF61oGuLRw5Uii2z9vVlYo67NwlmwTqICCwpgHdYrc/oIvkhAI0jjnKiYr
+	 Foi1EZ+/FfOtwDutvDlZ9IsQ6EaTcYYiD+reVoWqi4tU8zzV1GPixJdCq3xMn5ULof
+	 keSD4lGX9dDqatRoGU+M0XVaSjc2nQ2FStY95360gQvs2zoe+wDlgAKASUDQjaYgeZ
+	 kQ3WWSvJQ9LkYm40V+PxAHXYZKpuv+S9USOhEty0CogIdTgr+YTMAnmHfwKeorOjfK
+	 lEPaV0ygH0+6jINKFxGVxFPjOV4RS3OnCQKWa9pJFTARzwygN4IV07Gvc2xj2sINKa
+	 D8jpHP3BSx3cg==
+Date: Tue, 8 Apr 2025 18:31:30 +0300
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	linux-kernel@vger.kernel.org,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	linux-arm-kernel@lists.infradead.org,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	linuxppc-dev@lists.ozlabs.org,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Sumit Garg <sumit.garg@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	linux-integrity@vger.kernel.org, Jason Gunthorpe <jgg@ziepe.ca>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Peter Huewe <peterhuewe@gmx.de>,
+	James Bottomley <James.Bottomley@hansenpartnership.com>
+Subject: Re: [PATCH v2 2/4] tpm: support devices with synchronous send()
+Message-ID: <Z_VBUozuHvbxdyB3@kernel.org>
+References: <20250408083208.43512-1-sgarzare@redhat.com>
+ <20250408083208.43512-3-sgarzare@redhat.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,103 +78,99 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/12] x86: pgtable: Always use pte_free_kernel()
-To: Kevin Brodsky <kevin.brodsky@arm.com>, linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org, Albert Ou <aou@eecs.berkeley.edu>,
- Andreas Larsson <andreas@gaisler.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Catalin Marinas <catalin.marinas@arm.com>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- "David S. Miller" <davem@davemloft.net>,
- Geert Uytterhoeven <geert@linux-m68k.org>,
- Linus Walleij <linus.walleij@linaro.org>,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Mark Rutland <mark.rutland@arm.com>, Matthew Wilcox <willy@infradead.org>,
- Michael Ellerman <mpe@ellerman.id.au>, "Mike Rapoport (IBM)"
- <rppt@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
- Paul Walmsley <paul.walmsley@sifive.com>,
- Peter Zijlstra <peterz@infradead.org>, Qi Zheng
- <zhengqi.arch@bytedance.com>, Ryan Roberts <ryan.roberts@arm.com>,
- Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
- linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-openrisc@vger.kernel.org, linux-riscv@lists.infradead.org,
- linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
- sparclinux@vger.kernel.org, x86@kernel.org
-References: <20250408095222.860601-1-kevin.brodsky@arm.com>
- <20250408095222.860601-3-kevin.brodsky@arm.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20250408095222.860601-3-kevin.brodsky@arm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250408083208.43512-3-sgarzare@redhat.com>
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 4/8/25 02:52, Kevin Brodsky wrote:
-> Page table pages are normally freed using the appropriate helper for
-> the given page table level. On x86, pud_free_pmd_page() and
-> pmd_free_pte_page() are an exception to the rule: they call
-> free_page() directly.
+On Tue, Apr 08, 2025 at 10:32:06AM +0200, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> Constructor/destructor calls are about to be introduced for kernel
-> PTEs. To avoid missing dtor calls in those helpers, free the PTE
-> pages using pte_free_kernel() instead of free_page().
+> Some devices do not support interrupts and provide a single synchronous
+> operation to send the command and receive the response on the same buffer.
 > 
-> While at it also use pmd_free() instead of calling pagetable_dtor()
-> explicitly at the PMD level.
+> Currently, these types of drivers must use an internal buffer where they
+> temporarily store the response between .send() and recv() calls.
+> 
+> Introduce a new flag (TPM_CHIP_FLAG_SYNC) to support synchronous send().
+> If that flag is set by the driver, tpm_try_transmit() will use the send()
+> callback to send the command and receive the response on the same buffer
+> synchronously. In that case send() return the number of bytes of the
+> response on success, or -errno on failure.
+> 
+> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> Suggested-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>  include/linux/tpm.h              |  1 +
+>  drivers/char/tpm/tpm-interface.c | 18 +++++++++++++++---
+>  2 files changed, 16 insertions(+), 3 deletions(-)
+> 
+> diff --git a/include/linux/tpm.h b/include/linux/tpm.h
+> index 2e38edd5838c..0e9746dc9d30 100644
+> --- a/include/linux/tpm.h
+> +++ b/include/linux/tpm.h
+> @@ -350,6 +350,7 @@ enum tpm_chip_flags {
+>  	TPM_CHIP_FLAG_SUSPENDED			= BIT(8),
+>  	TPM_CHIP_FLAG_HWRNG_DISABLED		= BIT(9),
+>  	TPM_CHIP_FLAG_DISABLE			= BIT(10),
+> +	TPM_CHIP_FLAG_SYNC			= BIT(11),
+>  };
+>  
+>  #define to_tpm_chip(d) container_of(d, struct tpm_chip, dev)
+> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
+> index 3b6ddcdb4051..9fbe84b5a131 100644
+> --- a/drivers/char/tpm/tpm-interface.c
+> +++ b/drivers/char/tpm/tpm-interface.c
+> @@ -114,8 +114,17 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
+>  		return rc;
+>  	}
+>  
+> -	/* A sanity check. send() should just return zero on success e.g.
+> -	 * not the command length.
+> +	/* Synchronous devices return the response directly during the send()
+> +	 * call in the same buffer.
+> +	 */
 
-Looks sane and adding consistency is nice.
+Nit:
 
-Are there any tests for folio_test_pgtable() at free_page() time? If we
-had that, it would make it less likely that another free_page() user
-could sneak in without calling the destructor.
+/*
+ * ...
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+It's wrong in the existing comment.
+
+> +	if (chip->flags & TPM_CHIP_FLAG_SYNC) {
+> +		len = rc;
+> +		rc = 0;
+> +		goto out_send_sync;
+> +	}
+> +
+> +	/* A sanity check. send() of asynchronous devices should just return
+> +	 * zero on success e.g. not the command length.
+>  	 */
+>  	if (rc > 0) {
+>  		dev_warn(&chip->dev,
+> @@ -151,7 +160,10 @@ static ssize_t tpm_try_transmit(struct tpm_chip *chip, void *buf, size_t bufsiz)
+>  	if (len < 0) {
+>  		rc = len;
+>  		dev_err(&chip->dev, "tpm_transmit: tpm_recv: error %d\n", rc);
+> -	} else if (len < TPM_HEADER_SIZE || len != be32_to_cpu(header->length))
+> +		return rc;
+> +	}
+> +out_send_sync:
+
+out_sync would be sufficient
+
+> +	if (len < TPM_HEADER_SIZE || len != be32_to_cpu(header->length))
+>  		rc = -EFAULT;
+>  
+>  	return rc ? rc : len;
+> -- 
+> 2.49.0
+> 
+
+BR, Jarkko
 
