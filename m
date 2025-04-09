@@ -1,92 +1,35 @@
-Return-Path: <linuxppc-dev+bounces-7560-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7561-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB037A827BE
-	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Apr 2025 16:26:12 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDB69A828A8
+	for <lists+linuxppc-dev@lfdr.de>; Wed,  9 Apr 2025 16:50:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZXlcL2RbYz2xlP;
-	Thu, 10 Apr 2025 00:26:10 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZXm8m4LmHz2yg0;
+	Thu, 10 Apr 2025 00:50:48 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744208770;
-	cv=none; b=KwRcOp7OYwuDlcRa516CKniZDwtXM8B7YYCHpUlxD5g751fYWtpU7FyzF9Yl4Vvta8LiPxmUy24jGTfjNYD+rsdqQp5c6DPs/DrMmxMnhtqeLnfRCccbQHdYUr0FEDY6dTfwM8anJFKsh57RHyjfR2o7+xXWyDIlq+9uGgdm3TpkcXptqehMasDMX37rIVhhR0MavfxA6A9nk6TJ0oGiYHFLFemnVjGupML0SirwThVactPx3tvR3TxX1Nwv6sf6+NCgq9VjZtRuwUYioHolNX2AdH5tDgWvyNzHKGOEIZKS4zNeb4F1+pjfGml50nS6SHVnpO7R7ZqNpZBl4Sza6g==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=217.140.110.172
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744210248;
+	cv=none; b=bTvVKPWeT05sUOPT4F9Iu1XvYe92sxNAouuBoBih9VpFuQ1RD2y8lAYNJHyXV2cw2YiUErAMNnO8ld7YZ6TvZBZqtJXTXc/UqNV1UgV051UTfn+Z5N4hSmWsf5PNxbkEvOxkQdtEDgO5CLA8RDL0CFNZUtseM106b1vC9oikc3CQwzlrKCADuPQpJiXZS4Qnz/2soJ4g7wQ41mEVggE7T9dQGLrQ1OxqSoxmSmwfzSKU33XAbYL0W2UaH61B5AQ1MxovHAY5hlgDWyRfGmFn6vEVVPwxFwzZPygkVpK0Ol3UXirJRmGxyJ8FXwLXM92ebTpplbe1g6G//4Nv4/XAAg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744208770; c=relaxed/relaxed;
-	bh=dZ0mp0fbK09n1Ak/UvqxB1GCA8Znz4UQv5qeUc3rPlA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k4w9AkxmEtGaBnuHCc8149/vF7y993s3i82E8KzdmKx1n2cuwDZTR1H7eWl8Gi4y/A4YydRFyii92vrNF05uCd5RTmDey88bKmyF3jGdH0M9/ttmsc4N0eX6s6SDUftZuEZS8QwgZux5Hc2Blan4luACDY5Vwntr6o9cfYOmi1Kn2aSoPcDzKrvAWsOHTB6tjhU9h1rsd6kKH2kOA3N3XH7octDfIHHWnft4ciR9k7LnWkSxJu5Uh9ztvvyFbpxZoDWN6jHttS6uYupj2YZyF6LqyiGFz/0yWHPxyy88x1O+OtbTgRHqlXRZaS8yFcdtVjDEWvjNWt19w48cyzcGKw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IRgQg+p0; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=IRgQg+p0;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZXlcH0YVcz2xd2
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Apr 2025 00:26:06 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 5397HMTX003773;
-	Wed, 9 Apr 2025 14:25:59 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=dZ0mp0fbK09n1Ak/UvqxB1GCA8Znz4
-	UQv5qeUc3rPlA=; b=IRgQg+p0Df+Nfa6nCWz0aEmpIN27N+9MFzz7n1AyGBY2SS
-	cXs87tCxIwF0jtud5qNjSNgLlGskDd18xPUtz+/8MSJ/uSLwVcWXURJobKL9USL7
-	8EN7dKtn1kp0R6rIo4CDW/5JV5ErMnUDU9hiTGkoezgYSUuDWyh9D25PwHXGhYEU
-	GwDF8p5b+jp5ID0M4C+Y0j6hOMrzAaZiI9tILkqMv9kUPI6oMQCKz/g1dMx19Fy7
-	/Mi3mE2FTHiiz9sThs3WKUK09GhZCaCxCrNi4XcuR9sS8mYCsxH280QQ/YKbGiEv
-	weowmHYXdl2bXlIuZEv7vv+w3bod+XI/wwk/gkeQ==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45w7yxd3vs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Apr 2025 14:25:59 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 539EB8On010066;
-	Wed, 9 Apr 2025 14:25:58 GMT
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45w7yxd3vq-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Apr 2025 14:25:58 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 539D3ElP011078;
-	Wed, 9 Apr 2025 14:25:58 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45uf7yr7wn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 09 Apr 2025 14:25:57 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 539EPthu51446068
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 9 Apr 2025 14:25:56 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E2E2B20043;
-	Wed,  9 Apr 2025 14:25:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A20A320040;
-	Wed,  9 Apr 2025 14:25:55 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.155.204.135])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed,  9 Apr 2025 14:25:55 +0000 (GMT)
-Date: Wed, 9 Apr 2025 16:25:54 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Hugh Dickins <hughd@google.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>, Juergen Gross <jgross@suse.com>,
-        Jeremy Fitzhardinge <jeremy@goop.org>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, kasan-dev@googlegroups.com,
-        sparclinux@vger.kernel.org, xen-devel@lists.xenproject.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/3] kasan: Avoid sleepable page allocation from
- atomic context
-Message-ID: <Z/aDckdBFPfg2h/P@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <cover.1744128123.git.agordeev@linux.ibm.com>
- <2d9f4ac4528701b59d511a379a60107fa608ad30.1744128123.git.agordeev@linux.ibm.com>
- <3e245617-81a5-4ea3-843f-b86261cf8599@gmail.com>
+	t=1744210248; c=relaxed/relaxed;
+	bh=ysq3Coq358H4yMpQcctd5puOMXBWwelZzURuknrY7ys=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P0v9gg8UAdrPnC3ZJVZuQwDVR+a4vi931AP0tyYuxXlwYMM1b8QodP/nfHCykMAwIWfBnRr9D9gyS4FThuTj7TBC2rVr4ls4gPetKM6mb1tVeN6pPRu80AYC1B0c4K5q9fHayg87HT+Fdc83FSyPFTtKchAcmfz921PFQZpr9V5sca1EOI9go4tM6A3IZAx85Xpk8S0S59bTrlgqGZBsPtrObfOLDzilgvgQ3aEmQ3xl6Zii4xwueAS+8OESUA7qEuHjJswSUBW3XtIUyxvXHyp4NbYG79iy53LPRcjt0os67B8B1p22E2R4VJzH21fpSagKa72740E+uwH76d42zg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org) smtp.mailfrom=arm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=arm.com (client-ip=217.140.110.172; helo=foss.arm.com; envelope-from=kevin.brodsky@arm.com; receiver=lists.ozlabs.org)
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZXm8l3HJ7z2ySh
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Apr 2025 00:50:45 +1000 (AEST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 52F3115A1;
+	Wed,  9 Apr 2025 07:50:13 -0700 (PDT)
+Received: from [10.57.67.254] (unknown [10.57.67.254])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 58A653F59E;
+	Wed,  9 Apr 2025 07:50:07 -0700 (PDT)
+Message-ID: <99771f33-8ad8-4ba5-9cf0-f504588d99a0@arm.com>
+Date: Wed, 9 Apr 2025 16:50:04 +0200
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -99,48 +42,79 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3e245617-81a5-4ea3-843f-b86261cf8599@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: MHqebilzhsuhaERLi3oJf9wiQWwhiimV
-X-Proofpoint-GUID: uhQA63QGysorbXbRGqjCOxWiIF599GSi
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-09_05,2025-04-08_04,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 bulkscore=0
- spamscore=0 impostorscore=0 lowpriorityscore=0 priorityscore=1501
- clxscore=1015 malwarescore=0 mlxscore=0 suspectscore=0 mlxlogscore=844
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504090086
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 02/12] x86: pgtable: Always use pte_free_kernel()
+To: Matthew Wilcox <willy@infradead.org>, Dave Hansen <dave.hansen@intel.com>
+Cc: linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+ Albert Ou <aou@eecs.berkeley.edu>, Andreas Larsson <andreas@gaisler.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Catalin Marinas <catalin.marinas@arm.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ "David S. Miller" <davem@davemloft.net>,
+ Geert Uytterhoeven <geert@linux-m68k.org>,
+ Linus Walleij <linus.walleij@linaro.org>,
+ Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Mark Rutland <mark.rutland@arm.com>, Michael Ellerman <mpe@ellerman.id.au>,
+ "Mike Rapoport (IBM)" <rppt@kernel.org>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Peter Zijlstra <peterz@infradead.org>, Qi Zheng
+ <zhengqi.arch@bytedance.com>, Ryan Roberts <ryan.roberts@arm.com>,
+ Will Deacon <will@kernel.org>, Yang Shi <yang@os.amperecomputing.com>,
+ linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+ linux-openrisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+ sparclinux@vger.kernel.org, x86@kernel.org
+References: <20250408095222.860601-1-kevin.brodsky@arm.com>
+ <20250408095222.860601-3-kevin.brodsky@arm.com>
+ <409d2019-a409-4e97-a16f-6b345b0f5a38@intel.com>
+ <Z_VQxyqkU8DV7QGy@casper.infradead.org>
+ <9247436d-ae01-4eb8-bd5d-370b2fb2eebc@intel.com>
+ <Z_VfeFgrj23Oa0fX@casper.infradead.org>
+Content-Language: en-GB
+From: Kevin Brodsky <kevin.brodsky@arm.com>
+In-Reply-To: <Z_VfeFgrj23Oa0fX@casper.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=3.0 tests=RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Apr 09, 2025 at 04:10:58PM +0200, Andrey Ryabinin wrote:
+On 08/04/2025 19:40, Matthew Wilcox wrote:
+> On Tue, Apr 08, 2025 at 09:54:42AM -0700, Dave Hansen wrote:
+>> On 4/8/25 09:37, Matthew Wilcox wrote:
+>>> On Tue, Apr 08, 2025 at 08:22:47AM -0700, Dave Hansen wrote:
+>>>> Are there any tests for folio_test_pgtable() at free_page() time? If we
+>>>> had that, it would make it less likely that another free_page() user
+>>>> could sneak in without calling the destructor.
+>>> It's hidden, but yes:
+>>>
+>>> static inline bool page_expected_state(struct page *page,
+>>>                                         unsigned long check_flags)
+>>> {
+>>>         if (unlikely(atomic_read(&page->_mapcount) != -1))
+>>>                 return false;
+>>>
+>>> PageTable uses page_type which aliases with mapcount, so this check
+>>> covers "PageTable is still set when the last refcount to it is put".
+>> Huh, so shouldn't we have ended up in bad_page() for these, other than:
+>>
+>>         pagetable_dtor(virt_to_ptdesc(pmd));
+>>         free_page((unsigned long)pmd);
+> I think at this point in Kevin's series, we don't call the ctor for
+> these pages, so we never set PageTable() on them. I could be wrong;
 
-Hi Andrey,
+Correct, that's why I added this patch early in the series (the next
+patch adds the ctor call in pte_alloc_one_kernel()).
 
-> > @@ -301,7 +301,7 @@ static int kasan_populate_vmalloc_pte(pte_t *ptep, unsigned long addr,
-> >  	if (likely(!pte_none(ptep_get(ptep))))
-> >  		return 0;
-> >  
-> > -	page = __get_free_page(GFP_KERNEL);
-> > +	page = __get_free_page(GFP_ATOMIC);
-> >  	if (!page)
-> >  		return -ENOMEM;
-> >  
-> 
-> I think a better way to fix this would be moving out allocation from atomic context. Allocate page prior
-> to apply_to_page_range() call and pass it down to kasan_populate_vmalloc_pte().
+The BUG() in v1 was indeed triggered by a page_expected_state() check [1].
 
-I think the page address could be passed as the parameter to kasan_populate_vmalloc_pte().
+> as Kevin says, this is all very twisty and confusing with exceptions and
+> exceptions to exceptions.  This series should reduce the confusion.
 
-> Whenever kasan_populate_vmalloc_pte() will require additional page we could bail out with -EAGAIN,
-> and allocate another one.
+I hope so!
 
-When would it be needed? kasan_populate_vmalloc_pte() handles just one page.
+- Kevin
 
-Thanks!
+[1] https://lore.kernel.org/oe-lkp/202503211612.e11bd73f-lkp@intel.com/
 
