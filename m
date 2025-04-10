@@ -1,63 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-7565-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7566-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D763A83756
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Apr 2025 05:48:38 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5516A83F1E
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Apr 2025 11:42:34 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZY5QC64yBz30WR;
-	Thu, 10 Apr 2025 13:48:35 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYFGY2HYtz3blk;
+	Thu, 10 Apr 2025 19:42:29 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744256915;
-	cv=none; b=lMjayGqQhxagTpVVRKcC25WcRraQXJOXqIKJDTYlKY7eCsp5e/cAgP6IQN3IiV9K16SjrRaLjTzGd69WNENXyobmo7DRjeenxWkkaGbXZqypoYIa93lR4k8EO0lLLAZ2ciAs0fC5GFgR+mxu4pXhcNUyKmqSi37VZn/GrQYnRfjcs2yomqdH7aWbEo9SBmN18qKKdz7X4vD/HHDEKvFpWXINO6sp2ooxBtPJ3LtC2XiVwtnFrUR5awCV/xNW2hIL0acwoM5Y3TE2xzI3+vAmbUyNxy9HgcHQIIJ9bUGTR6D6EiqdUJuRNRZ1we5jUlxdw27eO4w8jLrwI15VQBYaWg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2001:4b98:dc4:8:216:3eff:fe9d:e7b4"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744278149;
+	cv=none; b=OsLMDzwxeBEmz4DQJasS6LGayzO9/YSAR+q9HCk8Er8hHAs0b789IH3o0G7SrIuP8BBtms/W04/HSXh3dycnqFCvgypShCgQEhAzY+Omo7OTDW3iOHA1gdjdfFezeyiGMXuiTViPhjokKp4JFodKySQPaVDP7Sl7AplxE+FeHNG4ZvRJFBjWvKHiAdGoMlCSPWF72NU6589A4ti4dasRzmDf2sbNf8JoC9WwpWjLLg+zIB02ZIeyVzNYDzO9F/ZXYdyVRs2a9VS/G2TP/pSlj4BGXHFoGhHijvBMJk/AJrlvvkDUAQYq5wtMXpSlM1OFoxUQ9W7+UmVJQ5/4SbS1Ig==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744256915; c=relaxed/relaxed;
-	bh=mP9JHWc0F/ypDEA+qI4URem1tBJxVJMkRZIpFfnYXmA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iwPkxazGo997uvaQDVcD4cO/h741F88q3HbEFdBhvHow2Ec4cE5B6sj5sGo6n9afhhhdheRlwTkzRT4PiaFpBT5noWMTxVFpXzija9Jd4wxsyX0weRVxrhyED7TYUcrwFMzcn0x31gUvt5SeXP/3P/u1T1P7t0l8SiR7WzXlWxv5qgaOkPSKtnH0pV4k/ktCGyu4HtKHfpFzj25i8zIDLfgzzryphXdhv+qMlvyzJbd8pmAuEeD33Ozo3nl4QFqG041e365tgYGUNXgVB4OAurUpD4KTLAxT1P9yONxx44MYvWf2+hjMq4pPQhP64xcksZqIKd5SojVpdx6L+MdHhQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=htZtMLUj; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
+	t=1744278149; c=relaxed/relaxed;
+	bh=RXfF9Y2cL7mQps/DxKXkwK8dk0p3899KyBTvvn4p4qo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=A8Wy5dpxuf//l5rq6Qk9f5mnvhZgP6zw2vgaywMvn5e3Abwgn2t1oTb46oiBHSjPXfweCoNWYG/iw4wKWWmdg0Zl6fsCn+u3d8O3s7exoGeevgWj9lNjg23AOR6GoBPez7j6UF0zL37e0HmPDCRngURW4k1E3WoubhWj2fJozIJlCzXnlveD84tQmhGCfhAh7RzggKM/INh5X951IQNhPGPd4UAH/5JIOsREAKfknEQV7DA8lKkpgF16rQAWdhQdmBkewsjBnvdPSGXtsOTk2NV7En7LaO3TALiycwCn+OHwzczf1JXh4BEOlvKQH+7UxQ3m8bhdyFvHebrqKxDHVA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=i6veY8PT; dkim-atps=neutral; spf=pass (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org) smtp.mailfrom=bootlin.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=htZtMLUj;
+	dkim=pass (2048-bit key; unprotected) header.d=bootlin.com header.i=@bootlin.com header.a=rsa-sha256 header.s=gm1 header.b=i6veY8PT;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=bootlin.com (client-ip=2001:4b98:dc4:8:216:3eff:fe9d:e7b4; helo=mslow3.mail.gandi.net; envelope-from=herve.codina@bootlin.com; receiver=lists.ozlabs.org)
+Received: from mslow3.mail.gandi.net (mslow3.mail.gandi.net [IPv6:2001:4b98:dc4:8:216:3eff:fe9d:e7b4])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZY5Q96mlVz2yhY
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Apr 2025 13:48:32 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=mP9JHWc0F/ypDEA+qI4URem1tBJxVJMkRZIpFfnYXmA=; b=htZtMLUjtOdEJNyOkU6JIhuxBN
-	K+yfQocgzGvePasuAsHVX8Sd4CEn2f9lYh8LkwQ8d7KMzQaShDCXzc/VsvCCxS9td57TsgRjz26yJ
-	bYAj4eOatF2ARK5QVhR9WvI/IAD3UKR8t3pC1Q+bLID0VnnVmpbNMbhtkfoyFXseD8HreYHldsAcc
-	g3a6vzrr3Lo+1VWJpPDL3lYfH7jmaPN2UdudwloHcp6XfCu+f9LJVOMKK30/wLsXtB7aHZu43NN/Q
-	lYlODLlY8YquiVTdVZeBp30xyxnT3kvYY/toBFm2tHUpG1Up7BjNiaTADHliTWK4UZmrXSdlitrKT
-	STjTgZSw==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1u2itr-00EQ8O-0C;
-	Thu, 10 Apr 2025 11:48:24 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Thu, 10 Apr 2025 11:48:23 +0800
-Date: Thu, 10 Apr 2025 11:48:23 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Sourabh Jain <sourabhjain@linux.ibm.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-	linux-crypto@vger.kernel.org, lkml <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] crypto: scomp - Fix null-pointer deref when freeing
- streams
-Message-ID: <Z_c_hzEyvlqA2aJP@gondor.apana.org.au>
-References: <3c239727-6c46-45c2-80e7-d6853427f72c@linux.ibm.com>
- <Z_SkEnIWk8E0mLJf@gondor.apana.org.au>
- <70ef4489-dc7c-49fe-ac8e-fc0fd58e2bab@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYFGW5Bg4z3blT
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Apr 2025 19:42:27 +1000 (AEST)
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
+	by mslow3.mail.gandi.net (Postfix) with ESMTP id 0165E583D5C
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 10 Apr 2025 09:17:02 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPA id B255443137;
+	Thu, 10 Apr 2025 09:16:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
+	t=1744276611;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=RXfF9Y2cL7mQps/DxKXkwK8dk0p3899KyBTvvn4p4qo=;
+	b=i6veY8PTN1LEUXtwSuGCybJctp3ofui6noGnAgCrwivJm7wnzEx4/nl/OWX21frLWAFICV
+	UDmM25RlWSD8H7n4RQakUQ8m8hOIjrYTYvN9o1HnFW1BxrcSS4RxYaSzTtvh98fu88MnVq
+	bSN9QUa+rQp7CauSazRquc+NGeYm3obSid6U5RfcS6Pcoc0OLuenkzr8eGPxypTb0vSg4h
+	m7nQXa5daQvowErjxtL2HlRGzrk883ee/O4LvODlr+ZiAuUl0iSqP25v4DA/uYhjqrIdcu
+	FC5qYX1WbyeDSbnnOUQ629Dgf4XIdN5J+APuvKaDFe3VCs+wm5U69rVh2QJoVw==
+From: Herve Codina <herve.codina@bootlin.com>
+To: Herve Codina <herve.codina@bootlin.com>,
+	Shengjiu Wang <shengjiu.wang@gmail.com>,
+	Xiubo Li <Xiubo.Lee@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Nicolin Chen <nicoleotsuka@gmail.com>,
+	Liam Girdwood <lgirdwood@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linux-sound@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org,
+	linux-kernel@vger.kernel.org,
+	Thomas Petazzoni <thomas.petazzoni@bootlin.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ASoC: fsl: fsl_qmc_audio: Reset audio data pointers on TRIGGER_START event
+Date: Thu, 10 Apr 2025 11:16:43 +0200
+Message-ID: <20250410091643.535627-1-herve.codina@bootlin.com>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -70,24 +75,49 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <70ef4489-dc7c-49fe-ac8e-fc0fd58e2bab@linux.ibm.com>
-X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeefvddrtddtgddvtdekhedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuifetpfffkfdpucggtfgfnhhsuhgsshgtrhhisggvnecuuegrihhlohhuthemuceftddunecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpefjvghrvhgvucevohguihhnrgcuoehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomheqnecuggftrfgrthhtvghrnhepfeetkeffjedvieffteeugeetueevteduieekvdevgfeugefhveetleduheekgffgnecukfhppedvrgdtudemvgdtrgemvdegieemjeejledtmedviegtgeemvgdvvdemiedtfegumeehkegrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvdgrtddumegvtdgrmedvgeeimeejjeeltdemvdeitgegmegvvddvmeeitdefugemheekrgdphhgvlhhopehlohgtrghlhhhoshhtrdhlohgtrghlughomhgrihhnpdhmrghilhhfrhhomhephhgvrhhvvgdrtghoughinhgrsegsohhothhlihhnrdgtohhmpdhnsggprhgtphhtthhopeduhedprhgtphhtthhopehhvghrvhgvrdgtohguihhnrgessghoohhtlhhinhdrtghomhdprhgtphhtthhopehshhgvnhhgjhhiuhdrfigrnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepighiuhgsohdrnfgvvgesghhmrghilhdrtghomhdprhgtphhtthhopehfv
+ ghsthgvvhgrmhesghhmrghilhdrtghomhdprhgtphhtthhopehnihgtohhlvghothhsuhhkrgesghhmrghilhdrtghomhdprhgtphhtthhopehlghhirhgufihoohgusehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghrohhonhhivgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgvrhgvgiesphgvrhgvgidrtgii
+X-GND-Sasl: herve.codina@bootlin.com
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Apr 10, 2025 at 09:15:56AM +0530, Sourabh Jain wrote:
->
-> The above fix doesn't apply cleanly on next-20250409.
+On SNDRV_PCM_TRIGGER_START event, audio data pointers are not reset.
 
-It should be fixed in the latest cryptodev tree:
+This leads to wrong data buffer usage when multiple TRIGGER_START are
+received and ends to incorrect buffer usage between the user-space and
+the driver. Indeed, the driver can read data that are not already set by
+the user-space or the user-space and the driver are writing and reading
+the same area.
 
-https://web.git.kernel.org/pub/scm/linux/kernel/git/herbert/cryptodev-2.6.git/commit/?id=5322584385d938773cbb562db64d8423dd5fd026
+Fix that resetting data pointers on each SNDRV_PCM_TRIGGER_START events.
 
-Cheers,
+Fixes: 075c7125b11c ("ASoC: fsl: Add support for QMC audio")
+Cc: stable@vger.kernel.org
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+---
+ sound/soc/fsl/fsl_qmc_audio.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
+index b2979290c973..5614a8b909ed 100644
+--- a/sound/soc/fsl/fsl_qmc_audio.c
++++ b/sound/soc/fsl/fsl_qmc_audio.c
+@@ -250,6 +250,9 @@ static int qmc_audio_pcm_trigger(struct snd_soc_component *component,
+ 	switch (cmd) {
+ 	case SNDRV_PCM_TRIGGER_START:
+ 		bitmap_zero(prtd->chans_pending, 64);
++		prtd->buffer_ended = 0;
++		prtd->ch_dma_addr_current = prtd->ch_dma_addr_start;
++
+ 		if (substream->stream == SNDRV_PCM_STREAM_PLAYBACK) {
+ 			for (i = 0; i < prtd->channels; i++)
+ 				prtd->qmc_dai->chans[i].prtd_tx = prtd;
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.49.0
+
 
