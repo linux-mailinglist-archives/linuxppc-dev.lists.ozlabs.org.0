@@ -1,74 +1,76 @@
-Return-Path: <linuxppc-dev+bounces-7572-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7573-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0EFDA84C35
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Apr 2025 20:39:36 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2CA6A84E25
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 10 Apr 2025 22:25:01 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYTBG0tyNz3bqW;
-	Fri, 11 Apr 2025 04:39:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYWWv2ZKgz301B;
+	Fri, 11 Apr 2025 06:24:59 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744310374;
-	cv=none; b=ksVgLUb2WE6d1+ntBgdYGdVtYsHdr7INXwCrgh59ULdShTvg+WDzRv7jblgw3TkLRIKl522ozEAa6WwxYgSG+ghLAsrcnFYHuomE7H+qPaoanhao2htpkxsQQZ/XWtyb/gofN6wwtO+zIBJd3L0kHi1tJkLG4H1Gy3UPsE2qNBsk5UzZyKrNucGyq50JJ1963ebYZLGdvS/FRBeEfnuABtNCDw+paJC9vrQ+w53pE1LM4vpFcBn9H/83qeG/x9Md8iTBTU827B4Ua1ZMa0TcGCwXBR19zGYowKFxDhaw3AQESnD1pG7Nz9UA9Q6X2575blmOoMvQsOejabxw+VmYVA==
-ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744310374; c=relaxed/relaxed;
-	bh=18/9cGoDQlqTsXsRMO3AJA7exMHlf8vV8hvWnTgnZp0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=RUXJCGKBFQ2Fr4C1ix1GaIUZykdk9E3om8zaQo/IirUWzjva28vlDIJqsgKbuALxMJo4FYO6TqqvOYiSQdR8pdL5UGGwq4ukoeHrWe9EsYbxySsEGlBJ9DdokrmBLb1xSyd7VwqgCksdiTHdqO+7oBEan1ag4STKP1n1BqxX8UQ77boKsUoWmToyGPB8vzrUNOnvT010Fd8Z5QLqpqRwpXtagS3tDHT1ySALuZx9K8+jA//YqvIju+CzHwA41BusJM2FNzFevw1EqpQwFPKHv+XEb3QZaDHKGHXJJkvBkdDSOJRyssHP4te0KB3lz3KW2DBM+Z/BYHXvpodUi3ZPJQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=We6NjXbi; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip="2a01:111:f403:2607::601" arc.chain=microsoft.com
+ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744316699;
+	cv=pass; b=N527Ks2hYTjX8RA3F0CTnF6ZGaKHTJLSY6HiL5pNic75vBmJ6AI8ho+zSHpkYhp/0WMVtzlgOsS45IOAGqtuld+hi7FKrlADMeeViSvrfV3aN2sewGWUafzxG8oripf2VyPvJwanPT/fINs7hxlwxc9YzJCeriTsJ8qlKlBBnekawrVvvt2J377EvfsZtCo8rrQuAtDs0OCGWK5fzpqqE7jHa5Ivz9yYDMdZDlYFJVilvVByu+pt1Mx2T5IIgm1MEN0q4n8y+1AkfooyKm1aPZX3IR/bJ50efodp9hE9/qndbsa/QBXMmq8K/avRyhuNUYfApggIJqR7EzxNErPAnw==
+ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1744316699; c=relaxed/relaxed;
+	bh=mazPp4zSgWivvS7NPVlwDA5zKRLj9Sslt7Tb/2Y4h10=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=DFgdkeQ3Bp5bs6XeoM4sp886x34I0XmNYG/CrxpJT4gOuR1n2x+SJ9dFf+Y8MRuEMHfLmAslyD+FeocfQoF6zB/Ru1GlQVrjw5i2YUrtswUzf/wrgOSggm4V+S4F7Pr0IlR+GMWzQMY4a7fbH6BffGbqrP3ujoKVELBIgQ2sBIRaWCreIvsMoZa7oUaS4gkuFthpWr7uGNHKzVVi9NOmSACjhQ/vIuvrP0wWWWFexM1GRWNdYwJxu3WYdwNlkIpROHDS6dSU8KTLGnxPnnW2ZBAqdl9v8QXPL5B/yPCi80tSjmlyh2Gfv9qtPQPxhjJ1kt2NJMErAzwOK9t6NqZOLw==
+ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com; dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=B9bDHhPW; dkim-atps=neutral; spf=permerror (client-ip=2a01:111:f403:2607::601; helo=eur02-vi1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org) smtp.mailfrom=nxp.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=nxp.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=We6NjXbi;
+	dkim=pass (2048-bit key; unprotected) header.d=nxp.com header.i=@nxp.com header.a=rsa-sha256 header.s=selector1 header.b=B9bDHhPW;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=permerror (SPF Permanent Error: Void lookup limit of 2 exceeded) smtp.mailfrom=nxp.com (client-ip=2a01:111:f403:2607::601; helo=eur02-vi1-obe.outbound.protection.outlook.com; envelope-from=frank.li@nxp.com; receiver=lists.ozlabs.org)
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on20601.outbound.protection.outlook.com [IPv6:2a01:111:f403:2607::601])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (secp384r1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYTBF1RBtz3bqP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 04:39:32 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53ACS4nU003715;
-	Thu, 10 Apr 2025 18:39:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=18/9cGoDQlqTsXsRMO3AJA7exMHlf8vV8hvWnTgnZ
-	p0=; b=We6NjXbica9ymBHrn5soaVf3eOZSE1PyjahbkkU+f2SFLr3ULsauQVFSg
-	0cOdM8QN3LuO5E1KcyjmIX9/8sE/N3JDiR6DEnhzN7gEQIYkGLzfItuFWx8MjHwA
-	XciN34vZdnsCj72msooNFLFFb6A+ez6lsOeccNlxipfLCU20GZY2pSawSuE6kL1e
-	tp1VAwPGx2aWoWUvZ7RzzOr8hYgY6iNUmJ3jFhtsIoi7aVydEJ0fBsTDy1OYdcud
-	UtnlFpOqavtRPKjwlAkKO5a7V2Zv8L+d42u516RbzMpOelwut2q/jLMNikZC3uUP
-	NKQO5U8FGmSLtale8ekQb4UYD22bw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xe13t455-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Apr 2025 18:39:30 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53AHn2oC018451;
-	Thu, 10 Apr 2025 18:39:29 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 45uh2ky9f8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 10 Apr 2025 18:39:29 +0000
-Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53AIdRor28377602
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 10 Apr 2025 18:39:28 GMT
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CF4B458055;
-	Thu, 10 Apr 2025 18:39:27 +0000 (GMT)
-Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 7E8C85804B;
-	Thu, 10 Apr 2025 18:39:27 +0000 (GMT)
-Received: from d.austin.ibm.com (unknown [9.41.102.181])
-	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 10 Apr 2025 18:39:27 +0000 (GMT)
-From: Dave Marquardt <davemarq@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: Dave Marquardt <davemarq@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH net-next] ibmveth: Use WARN_ON with error handling rather than BUG_ON
-Date: Thu, 10 Apr 2025 13:39:18 -0500
-Message-ID: <20250410183918.422936-1-davemarq@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYWWt05jTz2ydl
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 06:24:57 +1000 (AEST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=JYIMbCTMAxH1Z6y6VFFTYlX6Xx2iavJ16Jz13xsuWuVdA9u5HnQjPTf47KuWsND2HKMlnIWdiZXppJJ16SUALoYKdCu4C8jwrA3dllchG7GVMAb14eGedB7RHVB1iBhHHKvTLP0cGpWfQq+NHvS7nJsZVv3YWJrJDa3t92jjDD5EdSXIoXSmF6Mkwa0uz8xDr3h3WHyk1RBton5wGJqKH0svpoVzRN2Obv7mGhEH6wjry/z0Rkx/QXZZIY1HYcuG37kmlArsd1Bqop3FCSyw0UCBCflECuRy30eLGDj5HBmdop/aQ6TnrjPNjeoSJThGWRq5HhPQdO2ayT3niH80iQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=mazPp4zSgWivvS7NPVlwDA5zKRLj9Sslt7Tb/2Y4h10=;
+ b=fcu13YdUXjQ3qnDkN2tmMEJweRRltnbE6vYc3FTeUsr5UnW0/puUP0tf2a8thsD+utJWlq5egSqp6vBAYYFtn+pdOrLPnh0yrtVMg7pI5hEsohR6r+ldLtoVjLsqzywNz9igU9OqEJ0I8cKpVNCI0hSah1bCst1e6bv9F3hKzyouO1KI+SPWo+aRJyGc6vY1LRHqOd9+OO539SXzreyGuwwQuQ0f/SC1gUzURXERpki2yfpUU8r2XPEXWWDpUl1BqSh1Swi+CaYVpGqiDKkEiSSIrq7T6Cy7TGJoVVy2x5VSNa76IfHPIREbbmpG/MBcwSdG2Dl6Be8D7pruOivDew==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=mazPp4zSgWivvS7NPVlwDA5zKRLj9Sslt7Tb/2Y4h10=;
+ b=B9bDHhPWSyawf+quczlZ3dROfqhYzJajSNuyxR9bjFRB1UrkQLuFbXP7lK5goMNGgGomMlqV1JEUISm22m301au4NJyZU5zVF/IH7EL0c1rqX10i+Xjd2k/eRLDT3pHMFUBJm9KZ78oYgZNwHmeFPX9Q59m8RlsIDhRHykiFaRs0wt/8z96w8KOy/yVjFic2yIrhCrmjlTPWAIhKKSWOkDfzEh6YuBKx7qUp19mfmIgL7WfBtWjsKVXRE3gKsSYkcTzVd44gMP1CYwuzwoEu1q3EIwWfnNxn551hsoocTf/ShgCCB8gECUOUH21H8f292ZgF2wsyb9cr6Tqy69T/hA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com (2603:10a6:102:240::14)
+ by AM7PR04MB6853.eurprd04.prod.outlook.com (2603:10a6:20b:107::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8606.33; Thu, 10 Apr
+ 2025 20:24:36 +0000
+Received: from PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06]) by PAXPR04MB9642.eurprd04.prod.outlook.com
+ ([fe80::9126:a61e:341d:4b06%2]) with mapi id 15.20.8632.021; Thu, 10 Apr 2025
+ 20:24:36 +0000
+Date: Thu, 10 Apr 2025 16:24:32 -0400
+From: Frank Li <Frank.li@nxp.com>
+To: Geert Uytterhoeven <geert+renesas@glider.be>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	linux-arm-kernel@lists.infradead.org, devicetree@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: soc: fsl: fsl,ls1028a-reset: Fix maintainer
+ entry
+Message-ID: <Z/gpAHQKVRjpNpBi@lizhi-Precision-Tower-5810>
+References: <185e1e06692dc5b08abcde2d3dd137c78e979d08.1744301283.git.geert+renesas@glider.be>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <185e1e06692dc5b08abcde2d3dd137c78e979d08.1744301283.git.geert+renesas@glider.be>
+X-ClientProxiedBy: AS4P190CA0025.EURP190.PROD.OUTLOOK.COM
+ (2603:10a6:20b:5d0::12) To PAXPR04MB9642.eurprd04.prod.outlook.com
+ (2603:10a6:102:240::14)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -81,508 +83,116 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4hsIQiWIZPtpk8f8aa38QNCYw-U05ouk
-X-Proofpoint-GUID: 4hsIQiWIZPtpk8f8aa38QNCYw-U05ouk
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-10_05,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 adultscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504100133
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAXPR04MB9642:EE_|AM7PR04MB6853:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8d4dab60-24a3-413a-114c-08dd786db679
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|52116014|1800799024|376014|7053199007|38350700014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?4ZgdL7pwGpU/sCFjzlDhbcBhsSxgpNYHnJGBPEaC4XsPl2lEHxWCa/Lh5/D+?=
+ =?us-ascii?Q?9KNFvKynrgVpGXnjLdwe80MS0nhHnqyTkAcsAefB6ZL1vWAad99OfKD2o87E?=
+ =?us-ascii?Q?dDuRuOEvPvMGcsbiRUIuiNH2tmMGIcFSaPTfMKAHMmejB/xFYaGoy0pp0KsI?=
+ =?us-ascii?Q?xD1Ieb6xJeG43GVmTp8xPR5JfL7CtJJM5g1zBijoJi6PB/5OGr1tsxaW6PZr?=
+ =?us-ascii?Q?XdMZ8Es/Fn3p1Zvo3M33LcFAkI9zWSlPQW49wRX4vHCmBalezCDH/ziXlhZt?=
+ =?us-ascii?Q?DGvKD5pGo5uyYVlY1lKG4xAjjyhMVJQamrPKMw8X94Pu90KYHF/dD0bJBO4u?=
+ =?us-ascii?Q?zLiCnntIwMV0L40kliMtwS+IobdKXTxRvwyKC42ARwoqwGjWqhQBRjsKltVQ?=
+ =?us-ascii?Q?2l2GwsBa7efIUJIyt5eeyNSgiV0uAeQREcjRA4JgVAnN+oRxrb8W3msSfIlc?=
+ =?us-ascii?Q?yhzeSQ+NALwf0KsZyWyq856owyXw1wy1McAn34JGLOh70JLGWtquazueJRh6?=
+ =?us-ascii?Q?y0U9cwaYUkzprKzjXJpZFZSt0WV1pJt0FY0uWd557cpeuWboIVBytHTqYSI0?=
+ =?us-ascii?Q?J8eTvMBVZYoV7pphAqK+IEn8rSxo3UuPBsRngQX96LvD61cS4wKJHJ4ptfSD?=
+ =?us-ascii?Q?YcnKFRx5T0D58rDHj2WLqaTZRUVJqrgbOWz4Kw4f4iHxkZkwLhYeZhXKq2TI?=
+ =?us-ascii?Q?syo3Jyi2Eyp2MZVoJOqVk1gTG+l+0m1Scw4qkN0a8+dStbHPSYG1/DIUy4tk?=
+ =?us-ascii?Q?b1dKeWbWNdCoPWeLZZ1ICU8f1ZecT3tceCTIxWY0qhhwqPjVyX92+FfE0kxv?=
+ =?us-ascii?Q?yT1OHlUY8Nr/63JQQSpcdsTc0UVRLn/YoaF7F8zMCyWvAfTlzT/Hp+SZPggV?=
+ =?us-ascii?Q?LwvQbH8vrRbHIFqruzFOf3GCGDbxvy7i6w68V0GVefj375MnYhbR+AWO3icZ?=
+ =?us-ascii?Q?8gJe1rB+CTUFkxfRdfQJ3gzG448jeMWwUZ4WOxUqXMhfyGkLgR6OyUz0vbZU?=
+ =?us-ascii?Q?Zvs35Qhk02ZyH9qWMbECHD6yTTtfNPZUb5iCXqIpXPw7kd0Rs46PjZQP5lFR?=
+ =?us-ascii?Q?sgH/gqsiWsZ+4RIn3fIaFnDZUjCuTTNt3xsvGcs9mnEv7/1rggGq8zd2QQox?=
+ =?us-ascii?Q?hQ1VCAz3wzbyrUNVWDbJDV5yJ0CNqfjHXgvKcDvaH1woXGAX9oZ4BEeW9mgv?=
+ =?us-ascii?Q?bFFZbMVXA9AJ19uCZhGIwDmD4r4hJiiAs8hKncWn+i8SMUS9VZOPMByUZG7W?=
+ =?us-ascii?Q?v7dv6WShphT5vVaKJ2DYVN/Ww2XN6rV/3qLev/Kn8CPbXB2JfX9Jy6vfpjwM?=
+ =?us-ascii?Q?F5l8olTprSI8/J4d/bfxFDwLc3XTtg4Pg619HtsowG22zkKRBh5p/yYtsDAa?=
+ =?us-ascii?Q?4CysH7I3MD5j7178W/m7mSBZhByt?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB9642.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(52116014)(1800799024)(376014)(7053199007)(38350700014);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?WgNMfY8NMNejoC2i9H+PYndsge/2MIPaIoRTNCTHbP2eZj7IlllHZmOev5jV?=
+ =?us-ascii?Q?LEWVy+eFysnDe/0+WxU+WRrRhVJTq/LA5jmMelR+jO3gIrD1t5YfGzjT4F2Z?=
+ =?us-ascii?Q?jePFy0v/7RZiGWfaCa66zaRoQKe0kRDsleUMovEgIa/BJHGvN0WcwVq1vDh+?=
+ =?us-ascii?Q?0RUC+X0WMc16yYmGafMfrxPcrnpcqcIKwsdvhXTPh0iEe5kzsF2qhoCFDn0J?=
+ =?us-ascii?Q?mO9fOrBcHBBBxbe5s8mGjcPRWWVJmcguHb5xcK7+sp2XsSsmIvv+HVyg0VCB?=
+ =?us-ascii?Q?CiHZZQN0nknb0forbjAscuTvJj1kBP7RAsGpeZzDRqpd45j9Rt8+9q5BCE6v?=
+ =?us-ascii?Q?tUJiXZP99GA5dkifjcaIY78LEna2ySqlX46rhYN7Pq586tdJrxwBBr4DrHCw?=
+ =?us-ascii?Q?jASuhyLKNlGaN13fueeU+PRyeWREgVNoMh//mJOoojV5D801wUZHYvJnF8li?=
+ =?us-ascii?Q?31QHaZlAQwVptHJfPafq/4R4zMbFVSG+1sINQXjFdWFG63lBwRV2cJPZyJ9E?=
+ =?us-ascii?Q?UH5VHDchDvfKaUQndkhMU4lbz9yrmnNTTDzQxWb6MVAWbWDatMDitJCgqO85?=
+ =?us-ascii?Q?qWXCwiEy8y7x3ynBevmlh1cVm9OsaHJVaDObBldwqbiIYRCm9r6jbmAvhRBX?=
+ =?us-ascii?Q?dzLmnUwMnqjJSYFSy6oke3BRgsKSiY2WTC+g+lvvYSNNf7JdsnvBF1Ba3iUH?=
+ =?us-ascii?Q?zjbXoIVzaRuAaq8azJLMeIr1QAX5Xdk3w/RgA/uBLIXAXKpaQGkivCzjyELL?=
+ =?us-ascii?Q?EAGV4SI9QB5pgGetx4YuSKbSwXkgE1vq1mDWGhp2j62y3tAOPlonMTpxM0dK?=
+ =?us-ascii?Q?23v8F2DPS1Ik15wk47xJ3kisefOiEltxwlnAUOpexkAz24GQY7wzUV0HLSL7?=
+ =?us-ascii?Q?Gqu8aikwReMaPaTPT29Wp1d5eRAKd+pUeSwu/C1nWT5dzKYBjegAPjXSb1Tb?=
+ =?us-ascii?Q?7gqDhpZwmTR1XbLE0GG5wVhVmaztmJYSNhLAJ//TfxbuQrdhgirmvIbfDwvS?=
+ =?us-ascii?Q?H9UsyWjiPKegbcvU/9Ii5yzxgrVxTZaundjt+CJqGMmBVRJVjza9iht1bKjI?=
+ =?us-ascii?Q?JjPrpOZYhgTCw7vNZbvBNyIMXtN6jHf/hgaR5v+Gs3KxHIgmq5QfOCXMV4QQ?=
+ =?us-ascii?Q?6CPFv/ldtInqKZ//yVMXp32n4yG8ZQJS7NM8ClCBADZk5xolS6ko2IMOkV0e?=
+ =?us-ascii?Q?c1RlUjtplusyVfiIh3go8QBahuPqTD1cprhwrbbfud12UTn2jpB8ygssiP5j?=
+ =?us-ascii?Q?3Bbnradry7MIDUqF+tuJBlRQXCN7ujGN0Vb8y6njergZBpahaYcR0NqqhXNR?=
+ =?us-ascii?Q?159+BG/f6a5R6NOaruCNeiVB7ln9a+WW+zL9WAUbcTlLCPF4azCCwq42AIYh?=
+ =?us-ascii?Q?mcbY6ILPY8xM5mBZNurNH/Ffjn0G0NUVJF7GkBLxlQcyukGuscwo7wV5s6lb?=
+ =?us-ascii?Q?WgGXcHJ6eeGFeRC/1jNurZ+JfncxY/awPxNbgA/Or2lzlKDXOTGJ6djfQs1C?=
+ =?us-ascii?Q?lheUmhLSCR0VIn30TOjOPRTKNZeYEWEZgYT2qejLMkHGHkTR9boundeY/1S/?=
+ =?us-ascii?Q?uUb0cU6Ti79GVcmu7/c=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8d4dab60-24a3-413a-114c-08dd786db679
+X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB9642.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Apr 2025 20:24:36.6298
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: SE5O+/tmlpbRoaKrZMhNU0tPRYQq/Ez5Cv0dSzdO9P1Mnehal//1UbETTM6Qw3nujIlM39DrQq0POFKuKBxhLw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM7PR04MB6853
+X-Spam-Status: No, score=0.7 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+	SPF_HELO_PASS,T_SPF_PERMERROR autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-- Replaced BUG_ON calls with WARN_ON calls with error handling,
-  with calls to a new ibmveth_reset routine, which resets the device.
-- Added KUnit tests for ibmveth_remove_buffer_from_pool and
-  ibmveth_rxq_get_buffer under new IBMVETH_KUNIT_TEST config option.
-- Removed unneeded forward declaration of ibmveth_rxq_harvest_buffer.
+On Thu, Apr 10, 2025 at 06:11:12PM +0200, Geert Uytterhoeven wrote:
+> make dt_binding_check:
+>
+>     Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml: maintainers:0: 'Frank Li' does not match '@'
+> 	    from schema $id: http://devicetree.org/meta-schemas/base.yaml#
+>
+> Fix this by adding Frank's email address.
 
-Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
----
- drivers/net/ethernet/ibm/Kconfig   |  13 ++
- drivers/net/ethernet/ibm/ibmveth.c | 242 ++++++++++++++++++++++++++---
- drivers/net/ethernet/ibm/ibmveth.h |  65 ++++----
- 3 files changed, 269 insertions(+), 51 deletions(-)
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
 
-diff --git a/drivers/net/ethernet/ibm/Kconfig b/drivers/net/ethernet/ibm/Kconfig
-index c0c112d95b89..4f4b23465c47 100644
---- a/drivers/net/ethernet/ibm/Kconfig
-+++ b/drivers/net/ethernet/ibm/Kconfig
-@@ -27,6 +27,19 @@ config IBMVETH
- 	  To compile this driver as a module, choose M here. The module will
- 	  be called ibmveth.
- 
-+config IBMVETH_KUNIT_TEST
-+	bool "KUnit test for IBM LAN Virtual Ethernet support" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	depends on KUNIT=y && IBMVETH=y
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This builds unit tests for the IBM LAN Virtual Ethernet driver.
-+
-+	  For more information on KUnit and unit tests in general, please refer
-+	  to the KUnit documentation in Documentation/dev-tools/kunit/.
-+
-+	  If unsure, say N.
-+
- source "drivers/net/ethernet/ibm/emac/Kconfig"
- 
- config EHEA
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 04192190beba..ea201e5cc8bc 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -28,6 +28,7 @@
- #include <linux/ip.h>
- #include <linux/ipv6.h>
- #include <linux/slab.h>
-+#include <linux/workqueue.h>
- #include <asm/hvcall.h>
- #include <linux/atomic.h>
- #include <asm/vio.h>
-@@ -39,8 +40,6 @@
- #include "ibmveth.h"
- 
- static irqreturn_t ibmveth_interrupt(int irq, void *dev_instance);
--static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
--				       bool reuse);
- static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev);
- 
- static struct kobj_type ktype_veth_pool;
-@@ -231,7 +230,10 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
- 		index = pool->free_map[free_index];
- 		skb = NULL;
- 
--		BUG_ON(index == IBM_VETH_INVALID_MAP);
-+		if (WARN_ON(index == IBM_VETH_INVALID_MAP)) {
-+			(void)schedule_work(&adapter->work);
-+			goto failure2;
-+		}
- 
- 		/* are we allocating a new buffer or recycling an old one */
- 		if (pool->skbuff[index])
-@@ -300,6 +302,7 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
- 		                 DMA_FROM_DEVICE);
- 	dev_kfree_skb_any(pool->skbuff[index]);
- 	pool->skbuff[index] = NULL;
-+failure2:
- 	adapter->replenish_add_buff_failure++;
- 
- 	mb();
-@@ -370,20 +373,36 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
- 	}
- }
- 
--/* remove a buffer from a pool */
--static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
--					    u64 correlator, bool reuse)
-+/**
-+ * ibmveth_remove_buffer_from_pool - remove a buffer from a pool
-+ * @adapter: adapter instance
-+ * @correlator: identifies pool and index
-+ * @reuse: whether to reuse buffer
-+ *
-+ * Return:
-+ * * %0       - success
-+ * * %-EINVAL - correlator maps to pool or index out of range
-+ * * %-EFAULT - pool and index map to null skb
-+ */
-+static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
-+					   u64 correlator, bool reuse)
- {
- 	unsigned int pool  = correlator >> 32;
- 	unsigned int index = correlator & 0xffffffffUL;
- 	unsigned int free_index;
- 	struct sk_buff *skb;
- 
--	BUG_ON(pool >= IBMVETH_NUM_BUFF_POOLS);
--	BUG_ON(index >= adapter->rx_buff_pool[pool].size);
-+	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
-+	    WARN_ON(index >= adapter->rx_buff_pool[pool].size)) {
-+		(void)schedule_work(&adapter->work);
-+		return -EINVAL;
-+	}
- 
- 	skb = adapter->rx_buff_pool[pool].skbuff[index];
--	BUG_ON(skb == NULL);
-+	if (WARN_ON(!skb)) {
-+		(void)schedule_work(&adapter->work);
-+		return -EFAULT;
-+	}
- 
- 	/* if we are going to reuse the buffer then keep the pointers around
- 	 * but mark index as available. replenish will see the skb pointer and
-@@ -411,6 +430,8 @@ static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
- 	mb();
- 
- 	atomic_dec(&(adapter->rx_buff_pool[pool].available));
-+
-+	return 0;
- }
- 
- /* get the current buffer on the rx queue */
-@@ -420,24 +441,44 @@ static inline struct sk_buff *ibmveth_rxq_get_buffer(struct ibmveth_adapter *ada
- 	unsigned int pool = correlator >> 32;
- 	unsigned int index = correlator & 0xffffffffUL;
- 
--	BUG_ON(pool >= IBMVETH_NUM_BUFF_POOLS);
--	BUG_ON(index >= adapter->rx_buff_pool[pool].size);
-+	if (WARN_ON(pool >= IBMVETH_NUM_BUFF_POOLS) ||
-+	    WARN_ON(index >= adapter->rx_buff_pool[pool].size)) {
-+		(void)schedule_work(&adapter->work);
-+		return NULL;
-+	}
- 
- 	return adapter->rx_buff_pool[pool].skbuff[index];
- }
- 
--static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
--				       bool reuse)
-+/**
-+ * ibmveth_rxq_harvest_buffer - Harvest buffer from pool
-+ *
-+ * @adapter - pointer to adapter
-+ * @reuse   - whether to reuse buffer
-+ *
-+ * Context: called from ibmveth_poll
-+ *
-+ * Return:
-+ * * %0    - success
-+ * * other - non-zero return from ibmveth_remove_buffer_from_pool
-+ */
-+static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
-+				      bool reuse)
- {
- 	u64 cor;
-+	int rc;
- 
- 	cor = adapter->rx_queue.queue_addr[adapter->rx_queue.index].correlator;
--	ibmveth_remove_buffer_from_pool(adapter, cor, reuse);
-+	rc = ibmveth_remove_buffer_from_pool(adapter, cor, reuse);
-+	if (unlikely(rc))
-+		return rc;
- 
- 	if (++adapter->rx_queue.index == adapter->rx_queue.num_slots) {
- 		adapter->rx_queue.index = 0;
- 		adapter->rx_queue.toggle = !adapter->rx_queue.toggle;
- 	}
-+
-+	return 0;
- }
- 
- static void ibmveth_free_tx_ltb(struct ibmveth_adapter *adapter, int idx)
-@@ -709,6 +750,35 @@ static int ibmveth_close(struct net_device *netdev)
- 	return 0;
- }
- 
-+/**
-+ * ibmveth_reset - Handle scheduled reset work
-+ *
-+ * @w - pointer to work_struct embedded in adapter structure
-+ *
-+ * Context: This routine acquires rtnl_mutex and disables its NAPI through
-+ *          ibmveth_close. It can't be called directly in a context that has
-+ *          already acquired rtnl_mutex or disabled its NAPI, or directly from
-+ *          a poll routine.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_reset(struct work_struct *w)
-+{
-+	struct ibmveth_adapter *adapter = container_of(w, struct ibmveth_adapter, work);
-+	struct net_device *netdev = adapter->netdev;
-+
-+	netdev_dbg(netdev, "reset starting\n");
-+
-+	rtnl_lock();
-+
-+	dev_close(adapter->netdev);
-+	(void)dev_open(adapter->netdev, NULL);
-+
-+	rtnl_unlock();
-+
-+	netdev_dbg(netdev, "reset complete\n");
-+}
-+
- static int ibmveth_set_link_ksettings(struct net_device *dev,
- 				      const struct ethtool_link_ksettings *cmd)
- {
-@@ -1324,7 +1394,8 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 			wmb(); /* suggested by larson1 */
- 			adapter->rx_invalid_buffer++;
- 			netdev_dbg(netdev, "recycling invalid buffer\n");
--			ibmveth_rxq_harvest_buffer(adapter, true);
-+			if (unlikely(ibmveth_rxq_harvest_buffer(adapter, true)))
-+				break;
- 		} else {
- 			struct sk_buff *skb, *new_skb;
- 			int length = ibmveth_rxq_frame_length(adapter);
-@@ -1334,6 +1405,8 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 			__sum16 iph_check = 0;
- 
- 			skb = ibmveth_rxq_get_buffer(adapter);
-+			if (unlikely(!skb))
-+				break;
- 
- 			/* if the large packet bit is set in the rx queue
- 			 * descriptor, the mss will be written by PHYP eight
-@@ -1357,10 +1430,12 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 				if (rx_flush)
- 					ibmveth_flush_buffer(skb->data,
- 						length + offset);
--				ibmveth_rxq_harvest_buffer(adapter, true);
-+				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, true)))
-+					break;
- 				skb = new_skb;
- 			} else {
--				ibmveth_rxq_harvest_buffer(adapter, false);
-+				if (unlikely(ibmveth_rxq_harvest_buffer(adapter, false)))
-+					break;
- 				skb_reserve(skb, offset);
- 			}
- 
-@@ -1407,7 +1482,10 @@ static int ibmveth_poll(struct napi_struct *napi, int budget)
- 	 * then check once more to make sure we are done.
- 	 */
- 	lpar_rc = h_vio_signal(adapter->vdev->unit_address, VIO_IRQ_ENABLE);
--	BUG_ON(lpar_rc != H_SUCCESS);
-+	if (WARN_ON(lpar_rc != H_SUCCESS)) {
-+		(void)schedule_work(&adapter->work);
-+		goto out;
-+	}
- 
- 	if (ibmveth_rxq_pending_buffer(adapter) && napi_schedule(napi)) {
- 		lpar_rc = h_vio_signal(adapter->vdev->unit_address,
-@@ -1428,7 +1506,7 @@ static irqreturn_t ibmveth_interrupt(int irq, void *dev_instance)
- 	if (napi_schedule_prep(&adapter->napi)) {
- 		lpar_rc = h_vio_signal(adapter->vdev->unit_address,
- 				       VIO_IRQ_DISABLE);
--		BUG_ON(lpar_rc != H_SUCCESS);
-+		WARN_ON(lpar_rc != H_SUCCESS);
- 		__napi_schedule(&adapter->napi);
- 	}
- 	return IRQ_HANDLED;
-@@ -1670,6 +1748,7 @@ static int ibmveth_probe(struct vio_dev *dev, const struct vio_device_id *id)
- 
- 	adapter->vdev = dev;
- 	adapter->netdev = netdev;
-+	INIT_WORK(&adapter->work, ibmveth_reset);
- 	adapter->mcastFilterSize = be32_to_cpu(*mcastFilterSize_p);
- 	ibmveth_init_link_settings(netdev);
- 
-@@ -1962,3 +2041,128 @@ static void __exit ibmveth_module_exit(void)
- 
- module_init(ibmveth_module_init);
- module_exit(ibmveth_module_exit);
-+
-+#ifdef CONFIG_IBMVETH_KUNIT_TEST
-+#include <kunit/test.h>
-+
-+/**
-+ * ibmveth_reset_kunit - reset routine for running in KUnit environment
-+ *
-+ * @w - pointer to work_struct embedded in adapter structure
-+ *
-+ * Context: Called in the KUnit environment. Does nothing.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_reset_kunit(struct work_struct *w)
-+{
-+	netdev_dbg(NULL, "reset_kunit starting\n");
-+	netdev_dbg(NULL, "reset_kunit complete\n");
-+}
-+
-+/**
-+ * ibmveth_remove_buffer_from_pool_test - unit test for some of
-+ *                                        ibmveth_remove_buffer_from_pool
-+ * @test - pointer to kunit structure
-+ *
-+ * Tests the error returns from ibmveth_remove_buffer_from_pool.
-+ * ibmveth_remove_buffer_from_pool also calls WARN_ON, so dmesg should be
-+ * checked to see that these warnings happened.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_remove_buffer_from_pool_test(struct kunit *test)
-+{
-+	struct ibmveth_adapter *adapter = kunit_kzalloc(test, sizeof(*adapter), GFP_KERNEL);
-+	struct ibmveth_buff_pool *pool;
-+	u64 correlator;
-+
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter);
-+
-+	INIT_WORK(&adapter->work, ibmveth_reset_kunit);
-+
-+	/* Set sane values for buffer pools */
-+	for (int i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+					 pool_count[i], pool_size[i],
-+					 pool_active[i]);
-+
-+	pool = &adapter->rx_buff_pool[0];
-+	pool->skbuff = kunit_kcalloc(test, pool->size, sizeof(void *), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool->skbuff);
-+
-+	correlator = ((u64)IBMVETH_NUM_BUFF_POOLS << 32) | 0;
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
-+
-+	correlator = ((u64)0 << 32) | adapter->rx_buff_pool[0].size;
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
-+
-+	correlator = (u64)0 | 0;
-+	pool->skbuff[0] = NULL;
-+	KUNIT_EXPECT_EQ(test, -EFAULT, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
-+	KUNIT_EXPECT_EQ(test, -EFAULT, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
-+}
-+
-+/**
-+ * ibmveth_rxq_get_buffer_test - unit test for ibmveth_rxq_get_buffer
-+ * @test - pointer to kunit structure
-+ *
-+ * Tests ibmveth_rxq_get_buffer. ibmveth_rxq_get_buffer also calls WARN_ON for
-+ * the NULL returns, so dmesg should be checked to see that these warnings
-+ * happened.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_rxq_get_buffer_test(struct kunit *test)
-+{
-+	struct ibmveth_adapter *adapter = kunit_kzalloc(test, sizeof(*adapter), GFP_KERNEL);
-+	struct sk_buff *skb = kunit_kzalloc(test, sizeof(*skb), GFP_KERNEL);
-+	struct ibmveth_buff_pool *pool;
-+
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
-+
-+	INIT_WORK(&adapter->work, ibmveth_reset_kunit);
-+
-+	adapter->rx_queue.queue_len = 1;
-+	adapter->rx_queue.index = 0;
-+	adapter->rx_queue.queue_addr = kunit_kzalloc(test, sizeof(struct ibmveth_rx_q_entry),
-+						     GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter->rx_queue.queue_addr);
-+
-+	/* Set sane values for buffer pools */
-+	for (int i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+					 pool_count[i], pool_size[i],
-+					 pool_active[i]);
-+
-+	pool = &adapter->rx_buff_pool[0];
-+	pool->skbuff = kunit_kcalloc(test, pool->size, sizeof(void *), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool->skbuff);
-+
-+	adapter->rx_queue.queue_addr[0].correlator = (u64)IBMVETH_NUM_BUFF_POOLS << 32 | 0;
-+	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
-+
-+	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | adapter->rx_buff_pool[0].size;
-+	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
-+
-+	pool->skbuff[0] = skb;
-+	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | 0;
-+	KUNIT_EXPECT_PTR_EQ(test, skb, ibmveth_rxq_get_buffer(adapter));
-+}
-+
-+static struct kunit_case ibmveth_test_cases[] = {
-+	KUNIT_CASE(ibmveth_remove_buffer_from_pool_test),
-+	KUNIT_CASE(ibmveth_rxq_get_buffer_test),
-+	{}
-+};
-+
-+static struct kunit_suite ibmveth_test_suite = {
-+	.name = "ibmveth-kunit-test",
-+	.test_cases = ibmveth_test_cases,
-+};
-+
-+kunit_test_suite(ibmveth_test_suite);
-+#endif
-diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-index 8468e2c59d7a..b0a2460ec9f9 100644
---- a/drivers/net/ethernet/ibm/ibmveth.h
-+++ b/drivers/net/ethernet/ibm/ibmveth.h
-@@ -134,38 +134,39 @@ struct ibmveth_rx_q {
- };
- 
- struct ibmveth_adapter {
--    struct vio_dev *vdev;
--    struct net_device *netdev;
--    struct napi_struct napi;
--    unsigned int mcastFilterSize;
--    void * buffer_list_addr;
--    void * filter_list_addr;
--    void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
--    unsigned int tx_ltb_size;
--    dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
--    dma_addr_t buffer_list_dma;
--    dma_addr_t filter_list_dma;
--    struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
--    struct ibmveth_rx_q rx_queue;
--    int rx_csum;
--    int large_send;
--    bool is_active_trunk;
--
--    u64 fw_ipv6_csum_support;
--    u64 fw_ipv4_csum_support;
--    u64 fw_large_send_support;
--    /* adapter specific stats */
--    u64 replenish_task_cycles;
--    u64 replenish_no_mem;
--    u64 replenish_add_buff_failure;
--    u64 replenish_add_buff_success;
--    u64 rx_invalid_buffer;
--    u64 rx_no_buffer;
--    u64 tx_map_failed;
--    u64 tx_send_failed;
--    u64 tx_large_packets;
--    u64 rx_large_packets;
--    /* Ethtool settings */
-+	struct vio_dev *vdev;
-+	struct net_device *netdev;
-+	struct napi_struct napi;
-+	struct work_struct work;
-+	unsigned int mcastFilterSize;
-+	void *buffer_list_addr;
-+	void *filter_list_addr;
-+	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
-+	unsigned int tx_ltb_size;
-+	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
-+	dma_addr_t buffer_list_dma;
-+	dma_addr_t filter_list_dma;
-+	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
-+	struct ibmveth_rx_q rx_queue;
-+	int rx_csum;
-+	int large_send;
-+	bool is_active_trunk;
-+
-+	u64 fw_ipv6_csum_support;
-+	u64 fw_ipv4_csum_support;
-+	u64 fw_large_send_support;
-+	/* adapter specific stats */
-+	u64 replenish_task_cycles;
-+	u64 replenish_no_mem;
-+	u64 replenish_add_buff_failure;
-+	u64 replenish_add_buff_success;
-+	u64 rx_invalid_buffer;
-+	u64 rx_no_buffer;
-+	u64 tx_map_failed;
-+	u64 tx_send_failed;
-+	u64 tx_large_packets;
-+	u64 rx_large_packets;
-+	/* Ethtool settings */
- 	u8 duplex;
- 	u32 speed;
- };
--- 
-2.49.0
-
+>
+> Fixes: 9ca5a7d9d2e05de6 ("dt-bindings: soc: fsl: Add fsl,ls1028a-reset for reset syscon node")
+> Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+> ---
+>  .../devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml          | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
+> index 31295be910130c2b..234089b5954ddb97 100644
+> --- a/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
+> +++ b/Documentation/devicetree/bindings/soc/fsl/fsl,ls1028a-reset.yaml
+> @@ -7,7 +7,7 @@ $schema: http://devicetree.org/meta-schemas/core.yaml#
+>  title: Freescale Layerscape Reset Registers Module
+>
+>  maintainers:
+> -  - Frank Li
+> +  - Frank Li <Frank.Li@nxp.com>
+>
+>  description:
+>    Reset Module includes chip reset, service processor control and Reset Control
+> --
+> 2.43.0
+>
 
