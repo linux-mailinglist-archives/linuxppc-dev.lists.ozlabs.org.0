@@ -1,91 +1,68 @@
-Return-Path: <linuxppc-dev+bounces-7588-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7589-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2635A8538E
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 07:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC8D4A85408
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 08:20:05 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYm7H545bz3bs0;
-	Fri, 11 Apr 2025 15:52:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYmjx1rPKz3bsY;
+	Fri, 11 Apr 2025 16:19:33 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744350779;
-	cv=none; b=eKkn2vG31jlR3GqeTU8FWi+htjJ7bBpdOw/HldDVSRZUKstLTDOynYsUD4JA8/KLRVXJy2YaAYK1jB4HCKr+pzNMbmPHKJ10mj4jjZMfHYULFg6dtF+PCcyg5lPiQKMtTJ5pspEvin6vpa45LxQk/32ukD3N7eLxzdV7DwqKITDHgGQkTgCEyPVFQx9AqXkm4Mt8JHO3Sg+MTRmQLwfEsLsgQjjJziYWW3QmSyV/BszJNvWPVaplzAlg6R/+oM0RQ3QpE7ju46g16w3uVIvSK7d9btprN7LOQ3KgB2xoOCQ7CGdpULcePL+PEsdbWe4c2NrPjJJRzlywpGHx1cVitA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.18
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744351440;
+	cv=none; b=LvDUrmr/X1VbCtFdRS4kDgNsrh2TnstweqMUU4dUNHNed3QGBZW2mM/Sbs+FAaYypb3cnMPe+QYUxTr4ufuo4CWT0ErWttvcQI+VNcy9t/jODXv44iSXmOIYCIW/3GX0co7mPt83a8Ff2RvHbJ4Jwv3xu4xezqt9sCt0zYLi1Q7p3pVJYXrorrlH4PvK2Vp7V2kC0qwwzAgwvSzBRQPGcaprzMTvTVLPX8di8vy2mnrD4mre+WdfngPtaWaI+582XDloNa5A0MD1X9YYWXO8CFucbbQEEWEY7ZY5yWBDveqy80yxXC51Ao75+ruPDdi0SUOgR08/Mwmxz3AuUyo1jg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744350779; c=relaxed/relaxed;
-	bh=6815fdXt5wx/NIZwToT5MJ1KOs1DW9jxPYWMNNSKLkM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=WfA2q5CySd3n6Xk4W31JWlnIL2DjccCCEEdchBt5rHqjpTsvKNDGL/WHuPsnJOWTR+N0fHGzO18ijAV8OpLB1V34ZzZWl8hpk+tUK6BQ+ellv7GE7STWgsHKTmAeazA4oO2IsXHcS2suZv0R9ZCooT6iGthUSfx+nP+6FzIQimXUTLYRa36lQGlaSUmObjD06QzYS6vS2aq6ucvFwZkcM/TNt2v4vp/UsEK4yKKnWQWiKEnmc6A40X0oE9wdmsIbxnPbA/MdmKR5NOTdrBPn/pZ1edHuCsBMwFY97sRcGV27mwzX40RIfVtIQorOZyp9kmF/yoRbkQmJrOmNcF50Qw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDywqT0H; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1744351440; c=relaxed/relaxed;
+	bh=uJQQMibyfuVjox29xt3pah4Pv5FCw5xqsgjOfo50QKs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FOlIZ2ASJ/l77LJD+soDFnvb8pjibN2KfuvNedvkVrNV031da4nPxFNwd03aWd/5Hb8fmcSHuAkZ0ZGvhHWmPDobeERYsitVMtyNPL0SuKecPNtg/KkxEPCLATE9P+nQOKC5/ngHF+6x6YRt34SlLIiuo5CSytaB32lfa/hXHqAilNXjsihate7Og314sKLSeGrRol3TTB347xG7+h+NSlQ7WQzvsw2XhtxMJ/OL7ebxdfzt57zSUAFV7J44YVsyZELjRIM9SokAwptb9Zd+IjixAc3Qjtml5qwC3qlp8n6CEBwpxlu5b3Mha6wk1VveFFQXlUKGLPXhUhORFm0CEw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OCUhBYLK; dkim-atps=neutral; spf=none (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=dDywqT0H;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=OCUhBYLK;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.18; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 64 seconds by postgrey-1.37 at boromir; Fri, 11 Apr 2025 16:03:58 AEST
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYm7G6LZyz3brr
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 15:52:58 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53ALeKFZ003742;
-	Fri, 11 Apr 2025 05:52:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=6815fd
-	Xt5wx/NIZwToT5MJ1KOs1DW9jxPYWMNNSKLkM=; b=dDywqT0HCG42MA3lFXxlOx
-	If33JtZB1VBcsPEgGE1kfQUAVh7XUAbAteN+SzNGPemXoF/Ax8+wuQJr+aX76fyD
-	ou6jK4UtumMGSG+AFDmPBrBcbvsQsx8zFO02lVUElPhkWMzGdPKBabYlt3Rcbmsx
-	82cQexdGSvQef6v4QwZ3zJIuyp41HKyHMR4hi603Ki/LaVWLDz6HJQi2C4Q1IbNy
-	IGYVOnPAlfQ4PiOj4QCAfODygKhsfN61nTGwmZQQCY0o0gzTZEPn1kSvlhp+NUJu
-	N6hjDRSRZ2dKD7rF+j6AnBo3r+rzKBUS+rW0nGoLeTLpF09QoLCgYEs/b7841LMw
-	==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xe13vgnc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 05:52:48 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53B1blvD025510;
-	Fri, 11 Apr 2025 05:52:47 GMT
-Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ugbm9hrs-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 05:52:47 +0000
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53B5qjmG34275820
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Apr 2025 05:52:45 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AB03320043;
-	Fri, 11 Apr 2025 05:52:45 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3E76220040;
-	Fri, 11 Apr 2025 05:52:45 +0000 (GMT)
-Received: from ozlabs.au.ibm.com (unknown [9.63.197.14])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 11 Apr 2025 05:52:45 +0000 (GMT)
-Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.63.198.114])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id DD900602EA;
-	Fri, 11 Apr 2025 15:52:41 +1000 (AEST)
-Message-ID: <4c32923d60e8d67a4a3194a405b5a422e08e280c.camel@linux.ibm.com>
-Subject: Re: [PATCH v13 04/11] mm/page_table_check: Reinstate address
- parameter in [__]page_table_check_pud_clear()
-From: Andrew Donnellan <ajd@linux.ibm.com>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: linuxppc-dev@lists.ozlabs.org, x86@kernel.org, linux-mm@kvack.org,
-        linux-riscv@lists.infradead.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org, pasha.tatashin@soleen.com,
-        sweettea-kernel@dorminy.me
-Date: Fri, 11 Apr 2025 15:52:37 +1000
-In-Reply-To: <20250313161038.8bd10fa54778e984d8f849d7@linux-foundation.org>
-References: <20250211161404.850215-1-ajd@linux.ibm.com>
-		<20250211161404.850215-5-ajd@linux.ibm.com>
-	 <20250313161038.8bd10fa54778e984d8f849d7@linux-foundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-User-Agent: Evolution 3.54.3 (3.54.3-1.fc41) 
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYmMy0gmgz3bsK
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 16:03:57 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744351438; x=1775887438;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=NKf5KeOfLVorPYyoK1YgtGvlZbAV4fKd+y+iIgoc1QM=;
+  b=OCUhBYLKPxxELCoSZ/DwtPkdU1wsF2nzxi+EJLtNSxY2y2iakdNwqxXb
+   r0vse8bLbbdM18GMpSFVt2XrfityyIdAzEnmhl6ZznDwdLDFk9aYbiPB2
+   sa9xQXbvbOkuCGaXiqQiYAOuE/lrXTh+HIj85QwQRXU85LPAjUN1Jb6PZ
+   jWcKxN06x4LmOYnYvRhR/R5OAhAXzZxnh1f8bDRHQeyHgH/DfISzYDHAp
+   +1fk4H/ZDMY/5kwfP6v7blKl3JweM4XpFjJUUQfq5sirBdZWyVO9JFEVW
+   hAeP/NwXdtPt0zNMUOhk9ni32jIv2lDDHVd5/Bkn91iizZtpmn88xUnIR
+   A==;
+X-CSE-ConnectionGUID: dIYLDlIKSlu5jTOddqzY0g==
+X-CSE-MsgGUID: DkoG84rVSyecCnt+IesXwg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11400"; a="45134284"
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
+   d="scan'208";a="45134284"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 23:02:49 -0700
+X-CSE-ConnectionGUID: Ffy9UZLTSQ+xVtBq5owDwg==
+X-CSE-MsgGUID: m+1ODMQyQL+LR7bUxitJlw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,203,1739865600"; 
+   d="scan'208";a="129072671"
+Received: from mev-dev.igk.intel.com ([10.237.112.144])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Apr 2025 23:02:48 -0700
+Date: Fri, 11 Apr 2025 08:02:31 +0200
+From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+To: Dave Marquardt <davemarq@linux.ibm.com>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next] ibmveth: Use WARN_ON with error handling rather
+ than BUG_ON
+Message-ID: <Z/iwd8qonlrfOkO5@mev-dev.igk.intel.com>
+References: <20250410183918.422936-1-davemarq@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -98,52 +75,109 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: a9C5cwqg82L-CU9EonpgcGBjo0_UaNDx
-X-Proofpoint-GUID: a9C5cwqg82L-CU9EonpgcGBjo0_UaNDx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_01,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
- bulkscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 adultscore=0
- suspectscore=0 priorityscore=1501 spamscore=0 impostorscore=0
- clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504110038
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250410183918.422936-1-davemarq@linux.ibm.com>
+X-Spam-Status: No, score=-3.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-T24gVGh1LCAyMDI1LTAzLTEzIGF0IDE2OjEwIC0wNzAwLCBBbmRyZXcgTW9ydG9uIHdyb3RlOgo+
-IE9uIFdlZCwgMTIgRmViIDIwMjUgMDM6MTM6NTcgKzExMDAgQW5kcmV3IERvbm5lbGxhbgo+IDxh
-amRAbGludXguaWJtLmNvbT4gd3JvdGU6Cj4gCj4gPiBUaGlzIHJldmVydHMgY29tbWl0IDkzMWMz
-OGUxNjQ5OSAoIm1tL3BhZ2VfdGFibGVfY2hlY2s6IHJlbW92ZQo+ID4gdW51c2VkCj4gPiBwYXJh
-bWV0ZXIgaW4gW19fXXBhZ2VfdGFibGVfY2hlY2tfcHVkX2NsZWFyIikuCj4gPiAKPiA+IFJlaW5z
-dGF0ZSBwcmV2aW91c2x5IHVudXNlZCBwYXJhbWV0ZXJzIGZvciB0aGUgcHVycG9zZSBvZgo+ID4g
-c3VwcG9ydGluZwo+ID4gcG93ZXJwYyBwbGF0Zm9ybXMsIGFzIG1hbnkgZG8gbm90IGVuY29kZSB1
-c2VyL2tlcm5lbCBvd25lcnNoaXAgb2YKPiA+IHRoZQo+ID4gcGFnZSBpbiB0aGUgcHRlLCBidXQg
-aW5zdGVhZCBpbiB0aGUgYWRkcmVzcyBvZiB0aGUgYWNjZXNzLgo+IAo+IE15IHg4Ni02NCBhbGxt
-b2Rjb25maWcgZXhwbG9kZWQuCj4gCj4gLi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9wZ3RhYmxlLmg6
-IEluIGZ1bmN0aW9uICdwdWRwX2VzdGFibGlzaCc6Cj4gLi9hcmNoL3g4Ni9pbmNsdWRlL2FzbS9w
-Z3RhYmxlLmg6MTQ0Mzo0NjogZXJyb3I6IHBhc3NpbmcgYXJndW1lbnQgMgo+IG9mICdwYWdlX3Rh
-YmxlX2NoZWNrX3B1ZF9zZXQnIG1ha2VzIGludGVnZXIgZnJvbSBwb2ludGVyIHdpdGhvdXQgYQo+
-IGNhc3QgWy1XZXJyb3I9aW50LWNvbnZlcnNpb25dCj4gwqAxNDQzIHzCoMKgwqDCoMKgwqDCoMKg
-IHBhZ2VfdGFibGVfY2hlY2tfcHVkX3NldCh2bWEtPnZtX21tLCBwdWRwLCBwdWQpOwo+IMKgwqDC
-oMKgwqAgfMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBefn5+Cj4gwqDCoMKgwqDC
-oCB8wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHwKPiDCoMKgwqDCoMKgIHzCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgcHVkX3QgKgo+IAo+IAo+IAo+ICNpZmRlZiBD
-T05GSUdfSEFWRV9BUkNIX1RSQU5TUEFSRU5UX0hVR0VQQUdFX1BVRAo+IHN0YXRpYyBpbmxpbmUg
-cHVkX3QgcHVkcF9lc3RhYmxpc2goc3RydWN0IHZtX2FyZWFfc3RydWN0ICp2bWEsCj4gwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHVuc2lnbmVkIGxvbmcgYWRkcmVzcywgcHVkX3QgKnB1
-ZHAsIHB1ZF90IHB1ZCkKPiB7Cj4gCXBhZ2VfdGFibGVfY2hlY2tfcHVkX3NldCh2bWEtPnZtX21t
-LCBwdWRwLCBwdWQpOwo+IAkuLi4KPiAKClNvcnJ5LCBteSBlbWFpbCBmaWx0ZXJzIHNlbnQgdGhp
-cyB0byB0aGUgd3JvbmcgZm9sZGVyIGZvciBzb21lIHJlYXNvbgphbmQgSSBkaWRuJ3Qgc2VlIHRo
-aXMuIEkndmUgc2VudCB2MTQ6CgpodHRwczovL3BhdGNod29yay5vemxhYnMub3JnL3Byb2plY3Qv
-bGludXhwcGMtZGV2L2xpc3QvP3Nlcmllcz00NTIyNDcKClRoYW5rcywKLS0gCkFuZHJldyBEb25u
-ZWxsYW4gICAgT3pMYWJzLCBBREwgQ2FuYmVycmEKYWpkQGxpbnV4LmlibS5jb20gICBJQk0gQXVz
-dHJhbGlhIExpbWl0ZWQK
+On Thu, Apr 10, 2025 at 01:39:18PM -0500, Dave Marquardt wrote:
+> - Replaced BUG_ON calls with WARN_ON calls with error handling,
+>   with calls to a new ibmveth_reset routine, which resets the device.
+> - Added KUnit tests for ibmveth_remove_buffer_from_pool and
+>   ibmveth_rxq_get_buffer under new IBMVETH_KUNIT_TEST config option.
+> - Removed unneeded forward declaration of ibmveth_rxq_harvest_buffer.
 
+It will be great if you split this patch into 3 patches according to
+your description.
+
+> 
+> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
+> ---
+>  drivers/net/ethernet/ibm/Kconfig   |  13 ++
+>  drivers/net/ethernet/ibm/ibmveth.c | 242 ++++++++++++++++++++++++++---
+>  drivers/net/ethernet/ibm/ibmveth.h |  65 ++++----
+>  3 files changed, 269 insertions(+), 51 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/ibm/Kconfig b/drivers/net/ethernet/ibm/Kconfig
+> index c0c112d95b89..4f4b23465c47 100644
+> --- a/drivers/net/ethernet/ibm/Kconfig
+> +++ b/drivers/net/ethernet/ibm/Kconfig
+> @@ -27,6 +27,19 @@ config IBMVETH
+>  	  To compile this driver as a module, choose M here. The module will
+>  	  be called ibmveth.
+>  
+> +config IBMVETH_KUNIT_TEST
+> +	bool "KUnit test for IBM LAN Virtual Ethernet support" if !KUNIT_ALL_TESTS
+> +	depends on KUNIT
+> +	depends on KUNIT=y && IBMVETH=y
+> +	default KUNIT_ALL_TESTS
+> +	help
+> +	  This builds unit tests for the IBM LAN Virtual Ethernet driver.
+> +
+> +	  For more information on KUnit and unit tests in general, please refer
+> +	  to the KUnit documentation in Documentation/dev-tools/kunit/.
+> +
+> +	  If unsure, say N.
+> +
+>  source "drivers/net/ethernet/ibm/emac/Kconfig"
+>  
+>  config EHEA
+> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+> index 04192190beba..ea201e5cc8bc 100644
+> --- a/drivers/net/ethernet/ibm/ibmveth.c
+> +++ b/drivers/net/ethernet/ibm/ibmveth.c
+> @@ -28,6 +28,7 @@
+>  #include <linux/ip.h>
+>  #include <linux/ipv6.h>
+>  #include <linux/slab.h>
+> +#include <linux/workqueue.h>
+>  #include <asm/hvcall.h>
+>  #include <linux/atomic.h>
+>  #include <asm/vio.h>
+> @@ -39,8 +40,6 @@
+>  #include "ibmveth.h"
+>  
+>  static irqreturn_t ibmveth_interrupt(int irq, void *dev_instance);
+> -static void ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
+> -				       bool reuse);
+>  static unsigned long ibmveth_get_desired_dma(struct vio_dev *vdev);
+>  
+>  static struct kobj_type ktype_veth_pool;
+> @@ -231,7 +230,10 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>  		index = pool->free_map[free_index];
+>  		skb = NULL;
+>  
+> -		BUG_ON(index == IBM_VETH_INVALID_MAP);
+> +		if (WARN_ON(index == IBM_VETH_INVALID_MAP)) {
+> +			(void)schedule_work(&adapter->work);
+
+What is the purpose of void casting here (and in other places in this
+patch)?
+
+> +			goto failure2;
+
+Maybe increment_buffer_failure, or sth that is telling what happen after
+goto.
+
+> +		}
+>  
+>  		/* are we allocating a new buffer or recycling an old one */
+>  		if (pool->skbuff[index])
+> @@ -300,6 +302,7 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>  		                 DMA_FROM_DEVICE);
+>  	dev_kfree_skb_any(pool->skbuff[index]);
+>  	pool->skbuff[index] = NULL;
+> +failure2:
+>  	adapter->replenish_add_buff_failure++;
+>  
+>  	mb();
+> @@ -370,20 +373,36 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
+>  	}
+>  }
+>  
+
+[...]
 
