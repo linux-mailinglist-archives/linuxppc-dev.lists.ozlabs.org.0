@@ -1,90 +1,67 @@
-Return-Path: <linuxppc-dev+bounces-7618-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7619-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA8BA85C6D
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 14:05:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 71872A862C6
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 18:04:44 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYwNW0wc1z3c7S;
-	Fri, 11 Apr 2025 22:04:59 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZZ1hW6bHfz3c7H;
+	Sat, 12 Apr 2025 02:04:11 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744373099;
-	cv=none; b=dGxj5EWDxmrq4LKOv+BV3PZOh0QPQEbDFrmy5vv80+AfOoxJFqdBvwdxenXyC22U7z2ThRtb9VpKi5Mc03tPyrDkKAQhnTRaj6NqxH968Jzw6eDTxuCiKISDh5w8zR5+R9kpjy3qY7Qkv+Ksazx7OfAUqkzH2eC6lJDi2tpmGPqJ/KK4SAJ84F0nNaEMMDw00CgG5CEy5QfivZUpPMuA+K2QXATskmWF3ImjKcRTSaSxaGd3yZmK/hpmiUoXkjqHyZ+YmBmgfLoD20Rme3sGlUqC9Y2Kol4verHNMUNye3HI9zEt3kt3B3mhWhgSIM3ajAgNZbUg9bwMRp1r7FMVOQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.66
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744387451;
+	cv=none; b=kuHSK7VODbxwfeHl4xP17GSscyq00J+Z9nZ+wg6rD/CwIyXMSoSLdnaUc8Nfrf2hEb3uUCt81kFamAjT/B0UUkIFnNakmj8SjmVo8Bjefkooz7HAe4dbQbIc+dEueydTUkYSSAaNpPyL6f/5OSjpJ7Ht1NvcXMXAwkt6bIQcWIgAmG1GO98vdcETVVZi69USKS3aTvGl8ha59r9TcXuxGrH3e0gio0h+WDYGiw3zXVy5s1zc/IH2DVEINQ2aaXJHUhuxX4yTgkO7HggE7Hu2hPesPe5vQNAs1dL7llfWVcUCuUNtgFB9cFvm9jXlQrrB1b3UaNLA789fVQebBuheng==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744373099; c=relaxed/relaxed;
-	bh=PnqGyYgzHT0Sz+5k6BXWUk5N9daIOAt0miBGvgSDKAY=;
+	t=1744387451; c=relaxed/relaxed;
+	bh=ejKf20pOpO39eZMwBLObnnjNB1MCJoGHKV4yIz9++fU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WRmKp7czM2wRRvP0W9uGK3yWLxCXvK64oUkquENfxBNkwbaTEQABwMOeGG6BpZAoZ8Ve4EpfudB7DPnhj6EI3i1cSRNGs25oXQMU7I1D3UZOjTJ4PMYbSxzA7V7PN2VHMGMuJww/lo5aITdbUKfIH0XEL+7MXVTOSE1kHdunzVWQWeotBZOgiYxLFJ1wLCnxyP5ud/O2WuMzgrKNgKvvvVUz3Y82EvGgsLTc62gxgeX+2gT25YviUJiEo+2VHHLfsUCiTEIx+M96lj5zGd+XWEsbqpC6Bqr/v2wKD7WRMS+8DJsdI8Kb8PB1yo32yEqX70hZg+vXLsTOEr3deAWMXQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rg6+7yX1; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=YuFRubl+vmYo3D59AK9CzwrdrYMXTWiJpwRuJCMk2fiKveVwI0Hprt3CW+nFluQD/jauKhwIb6HVPTJwn6PB9oqhTIfvPIQrpOjdoiI84xzYWEhG1egyrJZvPO0MGk9UzkUHGAQga0Qi/GuqgbX6vw+vGFXXYazyXpl4PdYqTZeHMgtVIczeXqC+INvZLLdxI9/FNw48DY3kzVSYF2b1oP/rfbFl+Z2tJypLqMmmvYnSCS+1LDuY56CGJFfi7gWmC/PI+0L1xygCbDmtF2ZfMLjvtFnpmetvxkufvkow550Fr4R8qrS4ayu005Bzgjp269acMeoYwSHEjG3OLXrfxw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=kqTqv1D8; dkim-atps=neutral; spf=pass (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=rg6+7yX1;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=kqTqv1D8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=agordeev@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.66; helo=mout02.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout02.posteo.de (mout02.posteo.de [185.67.36.66])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYwNT6jzLz3c5q
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 22:04:57 +1000 (AEST)
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B4Hwbv028306;
-	Fri, 11 Apr 2025 12:04:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=PnqGyYgzHT0Sz+5k6BXWUk5N9daIOA
-	t0miBGvgSDKAY=; b=rg6+7yX1oIY/hrDNoGj3DwccvaTK1QnKM/d3OmrcztqEDp
-	j4j5yfP62lfxD/7TrZFOhfyN/XMIoQfZ9vBMmaXQZiQxsA6GTPDm833Y+/EC3OIe
-	EVs/aJqbsqOqPuf9GkcCGI+TAuCYbMSXC3WAuwom/mXn7fzwJevaJwo4QojGds41
-	jOG6NWCKAmBMEP3STFTm8r6lvpkCTgDuZRyy1CUREkt2rgPkvaChg17e2Fifu4mj
-	LsxtUVPM4U+FemCOiNrQDNqf6JSM0VFG10GCRlIJZfrAUB7AhisPET/LTJCs7Vcx
-	K2jP6Vv5ysev6rq9j6y5SM7EnQ6SgRS4oy8ulnNA==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xj5xmbq9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 12:04:49 +0000 (GMT)
-Received: from m0360072.ppops.net (m0360072.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53BBvsIB009672;
-	Fri, 11 Apr 2025 12:04:49 GMT
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xj5xmbq7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 12:04:49 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53B8Brgm029520;
-	Fri, 11 Apr 2025 12:04:48 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 45x1k78q3q-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 12:04:48 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53BC4kR641484682
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 11 Apr 2025 12:04:46 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8519420043;
-	Fri, 11 Apr 2025 12:04:46 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 975B920040;
-	Fri, 11 Apr 2025 12:04:45 +0000 (GMT)
-Received: from li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com (unknown [9.171.62.45])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 11 Apr 2025 12:04:45 +0000 (GMT)
-Date: Fri, 11 Apr 2025 14:04:44 +0200
-From: Alexander Gordeev <agordeev@linux.ibm.com>
-To: Nicholas Piggin <npiggin@gmail.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Hugh Dickins <hughd@google.com>, Guenter Roeck <linux@roeck-us.net>,
-        Juergen Gross <jgross@suse.com>, Jeremy Fitzhardinge <jeremy@goop.org>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        kasan-dev@googlegroups.com, sparclinux@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH v1 0/4] mm: Fix apply_to_pte_range() vs lazy MMU mode
-Message-ID: <Z/kFXDwneQ9yHiJl@li-008a6a4c-3549-11b2-a85c-c5cc2836eea2.ibm.com>
-References: <cover.1744037648.git.agordeev@linux.ibm.com>
- <D93MFO5IGN4M.2FWKFWQ9G807P@gmail.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZZ1hQ4QrGz3c5t
+	for <linuxppc-dev@lists.ozlabs.org>; Sat, 12 Apr 2025 02:04:03 +1000 (AEST)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout02.posteo.de (Postfix) with ESMTPS id BDBB1240101
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 18:03:53 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1744387433; bh=/IB7pxPh4D63PdU9ybhC5RL3CnukcCoPGslr+QEUg2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=kqTqv1D8zFFSRbrZiNbM71X6kzxa1MZaXqyCQue/2vuDQML4MrL5WsW1C5MeB5pWi
+	 iLD0JxcIvHZJvIXGo1VPVr3giKGGOuq6sVvhNCJRqm1L933FvouNadCzsuGHF1f7FX
+	 4vEQn9feGDlZymPTKmHfNvbs00bT2qFGH7XcflHW3UEr+CuyNUnk6z0a4Oq2pIUuSe
+	 JmiQJfpydStVQQQvlDJkCxps0NiuknLZsFKPOScjaujX0QU6t98Po7wD3X/QnoD+KA
+	 oetj7EoEzyVpcbV9aXl6GgEAtmWytfzrta69u2vy5mBNmbH0EsYTGtpqZD7cmgWkbx
+	 n/NweZ9jMV4ZQ==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4ZZ1h73mr2z6twf;
+	Fri, 11 Apr 2025 18:03:51 +0200 (CEST)
+Date: Fri, 11 Apr 2025 16:03:50 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Conor Dooley <conor@kernel.org>
+Cc: j.ne@posteo.net, Thomas Gleixner <tglx@linutronix.de>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, Crystal Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>, linux-kernel@vger.kernel.org,
+	devicetree@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH] dt-bindings: interrupt-controller: Convert fsl,mpic-msi
+ to YAML
+Message-ID: <Z_k9ZoNqWAiVb6Uz@probook>
+References: <20250403-msipic-yaml-v1-1-f4248475714f@posteo.net>
+ <20250404-exuberant-unvarying-b8ee5ab10b00@spud>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -97,52 +74,199 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <D93MFO5IGN4M.2FWKFWQ9G807P@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: G_BAGoiaaveYky3440tvomTW6sZpx75k
-X-Proofpoint-ORIG-GUID: 0HKwRFIDMdOHgUv5TCoToIJxhDHz4gm6
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-11_04,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 impostorscore=0
- spamscore=0 malwarescore=0 bulkscore=0 phishscore=0 mlxscore=0
- suspectscore=0 priorityscore=1501 lowpriorityscore=0 adultscore=0
- mlxlogscore=591 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504110077
-X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20250404-exuberant-unvarying-b8ee5ab10b00@spud>
+X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H2,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Fri, Apr 11, 2025 at 05:12:28PM +1000, Nicholas Piggin wrote:
-...
-> Huh. powerpc actually has some crazy code in __switch_to() that is
-> supposed to handle preemption while in lazy mmu mode. So we probably
-> don't even need to disable preemption, just use the raw per-cpu
-> accessors (or keep disabling preemption and remove the now dead code
-> from context switch).
+On Fri, Apr 04, 2025 at 06:06:39PM +0100, Conor Dooley wrote:
+> On Thu, Apr 03, 2025 at 07:38:00PM +0200, J. Neusch=C3=A4fer via B4 Relay=
+ wrote:
+> > From: "J. Neusch=C3=A4fer" <j.ne@posteo.net>
+> >=20
+> > As part of a larger effort to bring various PowerPC-related bindings
+> > into the YAML world, this patch converts msi-pic.txt to YAML and moves
+> > it into the bindings/interrupt-controller/ directory. The conversion may
+> > necessarily be a bit hard to read because the binding is quite verbose.
+> >=20
+> > Signed-off-by: J. Neusch=C3=A4fer <j.ne@posteo.net>
+> > ---
+> >  .../interrupt-controller/fsl,mpic-msi.yaml         | 141 +++++++++++++=
+++++++++
+> >  .../devicetree/bindings/powerpc/fsl/msi-pic.txt    | 111 -------------=
+---
+> >  2 files changed, 141 insertions(+), 111 deletions(-)
+> >=20
+> > diff --git a/Documentation/devicetree/bindings/interrupt-controller/fsl=
+,mpic-msi.yaml b/Documentation/devicetree/bindings/interrupt-controller/fsl=
+,mpic-msi.yaml
+> > new file mode 100644
+> > index 0000000000000000000000000000000000000000..99a98864bd10c5e5b67112c=
+0149fe123b51ca26f
+> > --- /dev/null
+> > +++ b/Documentation/devicetree/bindings/interrupt-controller/fsl,mpic-m=
+si.yaml
+> > @@ -0,0 +1,141 @@
+> > +# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
+> > +%YAML 1.2
+> > +---
+> > +$id: http://devicetree.org/schemas/interrupt-controller/fsl,mpic-msi.y=
+aml#
+> > +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> > +
+> > +title: Freescale MSI interrupt controller
+> > +
+> > +description:
+>=20
+> I think you want some sort of chomping operator here to preserve
+> formatting.
 
-Well, I tried to do the latter ;)
-https://lore.kernel.org/linuxppc-dev/3b4e3e28172f09165b19ee7cac67a860d7cc1c6e.1742915600.git.agordeev@linux.ibm.com/
-Not sure how it is aligned with the current state (see below).
+Sounds good, will do.
 
-> IIRC all this got built up over a long time with some TLB flush
-> rules changing at the same time, we could probably stay in lazy mmu
-> mode for a longer time until it was discovered we really need to
-> flush before dropping the PTL.
-> 
-> ppc64 and sparc I think don't even need lazy mmu mode for kasan (TLBs
-> do not require flushing) and will function just fine if not in lazy
-> mode (they just flush one TLB at a time), not sure about xen. We could
-> actually go the other way and require that archs operate properly when
-> not in lazy mode (at least for kernel page tables) and avoid it for
-> apply_to_page_range()?
+>=20
+> > +  The Freescale hypervisor and msi-address-64
+> > +  -------------------------------------------
+> > +
+> > +  Normally, PCI devices have access to all of CCSR via an ATMU mapping=
+=2E  The
+> > +  Freescale MSI driver calculates the address of MSIIR (in the MSI reg=
+ister
+> > +  block) and sets that address as the MSI message address.
+[...]
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+> > +      - enum:
+> > +          - fsl,mpic-msi
+> > +          - fsl,mpic-msi-v4.3
+> > +          - fsl,ipic-msi
+> > +          - fsl,vmpic-msi
+> > +          - fsl,vmpic-msi-v4.3
+> > +      - items:
+> > +          - enum:
+> > +              - fsl,mpc8572-msi
+> > +              - fsl,mpc8610-msi
+> > +              - fsl,mpc8641-msi
+> > +          - const: fsl,mpic-msi
+> > +    description:
+>=20
+> > +      compatible list, may contain one or two entries The first is
+> > +      "fsl,CHIP-msi", where CHIP is the processor(mpc8610, mpc8572, et=
+c.) and
+> > +      the second is "fsl,mpic-msi" or "fsl,ipic-msi" or "fsl,mpic-msi-=
+v4.3"
+> > +      depending on the parent type and version.=20
+>=20
+> I think this just dupes the compatible list and should be dropped.
 
-Ryan Roberts hopefully brought some order to the topic:
-https://lore.kernel.org/linux-mm/20250303141542.3371656-1-ryan.roberts@arm.com/
+Sounds good.
 
-> Thanks,
-> Nick
+>=20
+> > If mpic version is 4.3, the
+> > +      number of MSI registers is increased to 16, MSIIR1 is provided t=
+o access
+> > +      these 16 registers, and compatible "fsl,mpic-msi-v4.3" should be=
+ used.
+>=20
+> This part is kinda stating the obvious I /think/ but might not be for
+> odd reason?
+
+For part of it (using fsl,mpic-msi-v4.3 for version 4.3) yes, but the
+other part, the relation between the version and the register (MSIIR vs.
+MSIIR1) and number of shared interrupts (8 vs. 16) is only obvious for
+readers that have read the hardware reference manuals in detail.
+
+Since it's a difference that essentially depends on the value of
+"compatible", I'll rewrite it as an "if/then/else" block in the schema.
+
+>=20
+> > +      The first entry is optional; the second entry is required.
+>=20
+> I think this part is confusing and should be dropped.
+
+I'll drop it, since it's also redundant with the "oneOf: ..." list for
+the compatible property.
+
+>=20
+> > +
+> > +  reg:
+> > +    minItems: 1
+> > +    items:
+> > +      - description: Address and length of the shared message interrupt
+> > +          register set
+>=20
+> > +      - description: Address of aliased MSIIR or MSIIR1 register for p=
+latforms
+> > +          that have such an alias. If using MSIIR1, the second region =
+must be
+> > +          added because different MSI group has different MSIIR1 offse=
+t.
+>=20
+> This part is based on platform, so should it not have an if/then/else
+> below restricting it to the correct platforms?
+
+Good point, I'll do that.
+
+>=20
+> > +
+> > +  interrupts:
+> > +    minItems: 1
+> > +    maxItems: 16
+> > +    description:
+> > +      Each one of the interrupts here is one entry per 32 MSIs, and ro=
+uted to
+> > +      the host interrupt controller. The interrupts should be set as e=
+dge
+> > +      sensitive. If msi-available-ranges is present, only the interrup=
+ts that
+> > +      correspond to available ranges shall be present.
+> > +
+> > +  msi-available-ranges:
+> > +    $ref: /schemas/types.yaml#/definitions/uint32-matrix
+> > +    items:
+> > +      items:
+> > +        - description: First MSI interrupt in this range
+> > +        - description: Number of MSI interrupts in this range
+> > +    description:
+>=20
+> > +      Use <start count> style section to define which MSI interrupt ca=
+n be used
+> > +      in the 256 msi interrupts.
+>=20
+> I think this dupes information in the items list in a more confusing
+> manner.
+
+I'll trim it down.
+
+>=20
+> > This property is optional, without this, all
+> > +      the MSI interrupts can be used.  Each available range must begin=
+ and end
+> > +      on a multiple of 32 (i.e.  no splitting an individual MSI regist=
+er or the
+> > +      associated PIC interrupt).
+>=20
+> > MPIC v4.3 does not support this property
+> > +      because the 32 interrupts of an individual register are not cont=
+inuous
+> > +      when using MSIIR1.
+>=20
+> Sounds like another if/then/else should restrict this too.
+
+I'll move it under if/else.
+
+
+> Rest seems fine :)
+>=20
+> Cheers,
+> Conor.
+
+
+Thank you for your review!
+
+J. Neusch=C3=A4fer
 
