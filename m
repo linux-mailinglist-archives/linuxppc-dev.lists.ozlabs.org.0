@@ -1,53 +1,56 @@
-Return-Path: <linuxppc-dev+bounces-7599-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7600-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F91A856E1
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 10:44:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 876C8A85703
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 10:52:18 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYqxT0rtXz3c6Z;
-	Fri, 11 Apr 2025 18:44:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYr6800K0z2x9g;
+	Fri, 11 Apr 2025 18:52:16 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.174
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744361085;
-	cv=none; b=e1hdu+FF+03IImnXFxwsCm5oFQWjKL6PvYC75vijNZ724o1Udu7Vje/6BvTMvRWQTBnvwBdbSjeDSFr039LlN+u5zQ4Xk5alyt6mN+PlkV7bXo6UuxeJfJ/mf9TRxQ5bNQ1MD+CRNFusJ06YMEeHevLTdP7pdhar0O4bYI5ER1cBPuYk0Pvj3wZN2bYY+CJOTjjEgvZEwdBiksL9/J9JsCdllQPefqZlLqv75TdzCakum4ZsQxb2SQEvzQrVlYXsC6lLMLdaU4iMYmzd511KIn6lXZVuyUr5vXHN4+Ese3HX8qw/+R4x6t9MrA/Apr3hk8Xw1GzR73eTsKREDPYLDg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=95.215.58.186
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744361535;
+	cv=none; b=PJIkCzqdJYGrr8NNLNuENeLhYQRURzpfGUzei0SnKTbwxwR/c0NfyhIbRctBuicSh9QeMu4wAhhU7WG5errwGQ2YWQ6pM+IrzSyPV08Boej5hQk8hTQ3uLSKubqdKN3AId2Fnau8vAThD+MZnpvXGH9Z7Jk+fD2be/bApvy3i+lln0jvpOBSMWnUXOiz6ntHDvxukTvI18+ihG1NPD3FBQTwKqh5dT+XSyI98LTxPGCDFQzonSRuxwhVXTSrSdMzlr7TtyCybcT1mDKVskNWnAbgfTukTGdE825ZujlBgd3X/XUuTn6kVOIziePoqF9/2RmNBGUacaMj+gMPgf2KiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744361085; c=relaxed/relaxed;
-	bh=MdTcTTn9V7geK5rQuA+yDIzL/vSURyQGllXaAX2HpQA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IuKlIUCXtn4ys/OcGLC4Yy5Jod0nqC/AX4EyfvcLzCnOPDtk1GsN1XFRkJGbMX0yXj9uP4oNsxrZOmocxFcXGrDRNAINZgxB15SGIQekIZhaDgguCUDAta2ytxvb0KaRzdzSmxCu3ArG2L8+JG9IdHZt6NwnGYXneWHbjyAwYg+0KotgzEvorJpfzIT8I6IQHzD4Z+QFIzP5jdQcASRy7cW/c1R554GkbpaQ5VLZM6YCLEuWyPs35m7ACj+PooI/AQGH4B9BguBbVBBg5+UaNMbKgtkexNTRIC7bb/i+fVq9+uN1edOHs5sxB+N1wp+aHnIhcLRRW+/mBGT3vIfPmg==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass (client-ip=95.215.58.174; helo=out-174.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
+	t=1744361535; c=relaxed/relaxed;
+	bh=rD0AeWa3VYYnbBf/+BWpTsXB9fuGYu1O2IlTp9BrMoU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kyxeUTwyE6xqvdHAi3QOJcLT0D+S2396J3otfIIPrUleIBysVT7nsvPx01Vnq2oYeb8i2sQ6D+lapKHwtf5rk8qqiHH/XwCFtb/qtOd7w2jnNr7p0DTQHL6uhuiSB6+NngghY4i+WMHXhC8OPqu8WcgPNEjfH1ZFsan1KW0dyVCc+qJZBslBQ6SoJapb8wXuwTpQTXvb6ZSrhOgbgdF2KX+ZUuL23UDUEmv3/BfHXlvnkkieTVjGD+foqxenbkDWKZ1PnSSgkrEDnv8AIGIyP6NCIIBrw9baIrlUcMTwU80Y+nt4ukKot5ywI6mHVyIVbkipivHye0S+yibuClkM2g==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev; dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WoFndN8k; dkim-atps=neutral; spf=pass (client-ip=95.215.58.186; helo=out-186.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org) smtp.mailfrom=linux.dev
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.174; helo=out-174.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
-X-Greylist: delayed 100 seconds by postgrey-1.37 at boromir; Fri, 11 Apr 2025 18:44:38 AEST
-Received: from out-174.mta1.migadu.com (out-174.mta1.migadu.com [95.215.58.174])
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (1024-bit key; unprotected) header.d=linux.dev header.i=@linux.dev header.a=rsa-sha256 header.s=key1 header.b=WoFndN8k;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.dev (client-ip=95.215.58.186; helo=out-186.mta1.migadu.com; envelope-from=thorsten.blum@linux.dev; receiver=lists.ozlabs.org)
+Received: from out-186.mta1.migadu.com (out-186.mta1.migadu.com [95.215.58.186])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYqxL5DjDz3c5h
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 18:44:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYr666qF2z2x9N
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 18:52:14 +1000 (AEST)
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1744360953;
+	t=1744361516;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=MdTcTTn9V7geK5rQuA+yDIzL/vSURyQGllXaAX2HpQA=;
-	b=QcoNEaICIR7s08TAtqE8OHsqC62eyCEeqIvkymDTx3s0HSiFqrlyKIq1Cx5BQ2Wdm5uf9X
-	GZPohmMqYc36Wc1340M1ZJMOIhq6BVnn+Wa7VHeDsknIPSKvyLm5GHrRaKmSfcLvBJfkoR
-	cWLY6m6MounWXUj/gsAPIQEieZIRiFU=
+	bh=rD0AeWa3VYYnbBf/+BWpTsXB9fuGYu1O2IlTp9BrMoU=;
+	b=WoFndN8kzgMVyUySouKB4elQnoEc5kScFJ51C5wivJqaHbv7CGmh2Lqm0Q7p8iufUDD/yd
+	9l5TwN7oo8l7L0Ni9V1rilPmEFQFNXA/1C9fkL2Q4q7+NJcElHcp5usdc15AZaxvSwWBtR
+	vhnmqZxYcLuZdEYdy3Q8xDByfuGkjLg=
 From: Thorsten Blum <thorsten.blum@linux.dev>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
+To: Geoff Levand <geoff@infradead.org>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
 	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Naveen N Rao <naveen@kernel.org>
 Cc: Thorsten Blum <thorsten.blum@linux.dev>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	linuxppc-dev@lists.ozlabs.org,
-	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [RESEND PATCH] KVM: powerpc: Enable commented out BUILD_BUG_ON() assertion
-Date: Fri, 11 Apr 2025 10:42:21 +0200
-Message-ID: <20250411084222.6916-1-thorsten.blum@linux.dev>
+Subject: [RESEND PATCH] powerpc/ps3: Use str_write_read() in ps3_notification_read_write()
+Date: Fri, 11 Apr 2025 10:51:33 +0200
+Message-ID: <20250411085134.7657-1-thorsten.blum@linux.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -67,33 +70,36 @@ X-Spam-Status: No, score=-0.9 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The BUILD_BUG_ON() assertion was commented out in commit 38634e676992
-("powerpc/kvm: Remove problematic BUILD_BUG_ON statement") and fixed in
-commit c0a187e12d48 ("KVM: powerpc: Fix BUILD_BUG_ON condition"), but
-not enabled. Enable it now that this no longer breaks and remove the
-comment.
+Remove hard-coded strings by using the str_write_read() helper function.
 
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
- arch/powerpc/kvm/timing.h | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/powerpc/platforms/ps3/device-init.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kvm/timing.h b/arch/powerpc/kvm/timing.h
-index 45817ab82bb4..14b0e23f601f 100644
---- a/arch/powerpc/kvm/timing.h
-+++ b/arch/powerpc/kvm/timing.h
-@@ -38,11 +38,7 @@ static inline void kvmppc_set_exit_type(struct kvm_vcpu *vcpu, int type) {}
- static inline void kvmppc_account_exit_stat(struct kvm_vcpu *vcpu, int type)
+diff --git a/arch/powerpc/platforms/ps3/device-init.c b/arch/powerpc/platforms/ps3/device-init.c
+index 61722133eb2d..22d91ac424dd 100644
+--- a/arch/powerpc/platforms/ps3/device-init.c
++++ b/arch/powerpc/platforms/ps3/device-init.c
+@@ -14,6 +14,7 @@
+ #include <linux/slab.h>
+ #include <linux/reboot.h>
+ #include <linux/rcuwait.h>
++#include <linux/string_choices.h>
+ 
+ #include <asm/firmware.h>
+ #include <asm/lv1call.h>
+@@ -724,7 +725,7 @@ static irqreturn_t ps3_notification_interrupt(int irq, void *data)
+ static int ps3_notification_read_write(struct ps3_notification_device *dev,
+ 				       u64 lpar, int write)
  {
- 	/* type has to be known at build time for optimization */
--
--	/* The BUILD_BUG_ON below breaks in funny ways, commented out
--	 * for now ... -BenH
- 	BUILD_BUG_ON(!__builtin_constant_p(type));
--	*/
- 	switch (type) {
- 	case EXT_INTR_EXITS:
- 		vcpu->stat.ext_intr_exits++;
+-	const char *op = write ? "write" : "read";
++	const char *op = str_write_read(write);
+ 	unsigned long flags;
+ 	int res;
+ 
 -- 
 2.49.0
 
