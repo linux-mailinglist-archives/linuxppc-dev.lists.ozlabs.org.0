@@ -1,69 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-7575-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7578-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7E3CA852B3
-	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 06:40:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 53C07A85355
+	for <lists+linuxppc-dev@lfdr.de>; Fri, 11 Apr 2025 07:44:43 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYkWm2WRrz3bpG;
-	Fri, 11 Apr 2025 14:40:36 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZYlxL0GsCz3brV;
+	Fri, 11 Apr 2025 15:44:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=pass smtp.remote-ip=205.220.178.238 arc.chain=microsoft.com
-ARC-Seal: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744339831;
-	cv=pass; b=H8QNeT5YkIV45v9IdAi3u+U3Zj1eRQ41b1uOBQJZkmbqogJqmY1ofJPh7CZsgJrcbQO+eyMUXXedbffDFpbm8XfNIaDgpkaOMA8wkPFvq516KlgO82CxT7DuIzBc5a7nwF5/60Bx3PMYC5xEv1Q6YEgrcF3gaqInB8ymBY/1BaeXNcfbXkxYbYT2n6/HAJgY9EapwmH0bgWU3XvNentTj/pxNDvVqFYKFU7VFXZp4/1+NES2bChgxXiB0sb2iJ7efJmkKQysc9ODbVWQz+RemolBLzsMb2TRwBaq+WHdVBQdKIj2AIO7ng5Y5I6ZIJS/pKVnrTFQJ7dsn12VWNQbEg==
-ARC-Message-Signature: i=2; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744339831; c=relaxed/relaxed;
-	bh=mBAIHBG4ic88cQWcXbWauxQRGZeslouZDyZCVDBUQwY=;
-	h=From:To:Cc:Subject:Date:Message-Id:Content-Type:MIME-Version; b=Xg6yhGKeRbYS47lSzeIQpETxNOKH6O8UY+HMe0qHwf+84LD8tSUKWFt43zjJ7zc7+y+METMVqizKlz+xlxDszXIGx1jLTyxDPj2UuLc6ykqCLaEwqRnYb9WciUaQBaVPaIBBUIwOlZxRnNgVouPOBnwOVF81k2kRquOPzPAo5ZTw0gYwIBwvY3emHpjL1fsRftl2ppaAPS3ip0Z7ECDcjjJ+0znBDNpuo+zv1sjaGa/cHht2sCi+A5RiAz7Hhcw3qk7Cl/oGlPHlI9qlYF+r5pZIex5NBuXJHzaz9StHNN2pe62WmlJTeg3P2XIgn5T+CW0OMK+MzLFaDRbObr+fCA==
-ARC-Authentication-Results: i=2; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=windriver.com; spf=pass (client-ip=205.220.178.238; helo=mx0b-0064b401.pphosted.com; envelope-from=prvs=61962bd2bb=donghua.liu@windriver.com; receiver=lists.ozlabs.org) smtp.mailfrom=windriver.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=windriver.com
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=windriver.com (client-ip=205.220.178.238; helo=mx0b-0064b401.pphosted.com; envelope-from=prvs=61962bd2bb=donghua.liu@windriver.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1402 seconds by postgrey-1.37 at boromir; Fri, 11 Apr 2025 12:50:30 AEST
-Received: from mx0b-0064b401.pphosted.com (mx0b-0064b401.pphosted.com [205.220.178.238])
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744350261;
+	cv=none; b=dHPz4b73HaSREL/Ktt6X5aroUrA8Jiy6t9n1ThQk17hi+qG7eAE32Bj0EiX/DTjkMn+W69Dw4ptN0Cf0P/vVPqa0KI/FNjepLJTAsAyYi/AIO343wUP9tr19NlucA1hYcgH42ZRQON2ST+O1sL1yfUm4VvWLOTsagCVdZLxe+1o/O3iSHAKaf3jNiuF8h0ZThoNGZlOFsTGS8qJ3AupJ/jJcSgUNbBY6U9ZL2CYZmkLj7x14FcGAW8A3zhaSkVFe2WgNFs7TnR6RDscfNHqY7ql/H6ZQ6fJcTISKVXwVOb9Q/G1RyfYPli3/otuc9jgT4J9hG3hwGgJvbkIt6wMA2w==
+ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
+	t=1744350261; c=relaxed/relaxed;
+	bh=g/9oFaxoRt7zlOW90/wBFLuDkMSAFcU7A0l8UeUUQZU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WkD7jIyupuQVQD+oXBiXSj1bYDu5pT7tZzx0YmDsPq8gQDxmY7UWqgL690WGGj5YIgj1hD0a+p0C/MeP/4fQBqFones2fy/0KcS9nbBauru93NEVdhwJ8G/Tyi6kfPYL+whNdx3cIXp6KAvXfdEWmu68YaV7s9CMaNOXCvnPKn99p41CDbbCS5axK73uvpv2hb7ZPwv7X9reOIlDcaBBvp2Td7PhPe2wS3z8wp+iNeMMCCIC84fs2mBhVih4cmTpcQfiQqXjfg5rFEWVqfl63bIgLxv581MOy4FDyNAzcOmHbnr+RBs++GB8IBAWoeLjfmKt+ClkSdLOurscBk1Uhg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VOngdkjP; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=VOngdkjP;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=ajd@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYh4k4kr7z2yfx
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 12:50:28 +1000 (AEST)
-Received: from pps.filterd (m0250811.ppops.net [127.0.0.1])
-	by mx0a-0064b401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53B18mSi014583;
-	Fri, 11 Apr 2025 02:26:40 GMT
-Received: from nam11-dm6-obe.outbound.protection.outlook.com (mail-dm6nam11lp2170.outbound.protection.outlook.com [104.47.57.170])
-	by mx0a-0064b401.pphosted.com (PPS) with ESMTPS id 45tsr1qt03-1
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZYlxH08dTz3bqp
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 11 Apr 2025 15:44:18 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53ALB1ej004517;
+	Fri, 11 Apr 2025 05:44:05 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=g/9oFaxoRt7zlOW90/wBFLuDkMSAFcU7A0l8UeUUQ
+	ZU=; b=VOngdkjPrlCwCTdU9yx0LT/hEuF0aySRH2URy0UxlQTecwzIEQVTXKE96
+	GrmfRu+wtTouvwGsSzAddt3BGOwqawflxi7dQU59D+GNWwWfnEXqju4WDelSBD+E
+	UudoSvBBCbkNBsUuiQXkVhW9tyhbdz89f2pfJNOb7mtLhrBVHT4z5Y5EHTrh2Ygt
+	sOikJRWfty+icIjwziljuqEese9SJNVH8tyzlOC34gEyaBZDwV1HITkDCFH3uHE6
+	PRL8xKCKYqbfm7NpR7qZICh/Wix7Lo9wKbUWRK9rQZSgpeRdX4R+09GVWQubJP2g
+	7TYX7dMuOeRIBKlMwpddw9ytZJr5w==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 45xe13vft4-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 11 Apr 2025 02:26:40 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=yFULSA0k5HlkyqIEbT5iwNssSXlg9mQN4y+ULPc8J1EBTYjqGSx8KLqAG+ht4SVqWcOjNKPBb0f08vLBBC9fBkJqY4XJ6/XainyUmRHE7ntKV5O+f0zMQreCVBn1WPEaHFCKWrd0ZwscKR6qOjpcXa/dww+3uk4ZiCpI3HmjG/zEDqYZ4z2id3ZI3KQ/BBwrKFBIqWKxRFhWtPUtDBrllQABMW8qv1PhaWooGmOA+aj9b9hixHMRXph8GVHqc5plHFtiWdD+FX3Hk20tg9go8kDXOfpqJ//nRMAQXL299nLdHH+Oa6Iy7s3QCx0GG+Qsc7J+MJ8lbGbixJFQ94DXpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=mBAIHBG4ic88cQWcXbWauxQRGZeslouZDyZCVDBUQwY=;
- b=mEtZzNI/ogD1BY8a0A8NDS0pz36tFhjT3XrKEc4P1kHGlogix+NNiYhXEzU6WSjOz5tKC/vJyeqpu3ZZzYL68Cy6ORrzWkB4tH5fPOsp/3M8l8CT/YfUc2odMGGSljhtdw7k8nQY9DJEQ5nX+uKY23KDcY+0GveAurpTPei5isGyb6k9OB92O9T4yGFI65R47/kf0IXQSHE/BID6sxIPvem5p4uTIp8M8hzeCLinm/4yuPHt7LUC67H7/6+sk2iA84VW24V+cVmr0jTh5zxs/oTdXD4P7B69ubeAdLzm3Qnv7qcQWLgpuk4JEELYtKFaeO8+WajuIgxBMIt5uKhynA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=windriver.com; dmarc=pass action=none
- header.from=windriver.com; dkim=pass header.d=windriver.com; arc=none
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com (2603:10b6:930:54::6)
- by CO1PR11MB5186.namprd11.prod.outlook.com (2603:10b6:303:9b::24) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8632.22; Fri, 11 Apr
- 2025 02:26:36 +0000
-Received: from CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d]) by CY8PR11MB7012.namprd11.prod.outlook.com
- ([fe80::83d5:946f:3692:8c0d%4]) with mapi id 15.20.8606.033; Fri, 11 Apr 2025
- 02:26:36 +0000
-From: Cliff Liu <donghua.liu@windriver.com>
-To: stable@vger.kernel.org
-Cc: mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        leitao@debian.org, nathanl@linux.ibm.com, donghua.liu@windriver.com,
-        Zhe.He@windriver.com, linuxppc-dev@lists.ozlabs.org,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10.y] powerpc/rtas: Prevent Spectre v1 gadget construction in sys_rtas()
-Date: Fri, 11 Apr 2025 10:26:23 +0800
-Message-Id: <20250411022623.947973-1-donghua.liu@windriver.com>
-X-Mailer: git-send-email 2.34.1
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SGBP274CA0012.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::24)
- To CY8PR11MB7012.namprd11.prod.outlook.com (2603:10b6:930:54::6)
+	Fri, 11 Apr 2025 05:44:04 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53B0p97m013925;
+	Fri, 11 Apr 2025 05:44:03 GMT
+Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 45ufup1j26-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 11 Apr 2025 05:44:03 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53B5i10628836368
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 11 Apr 2025 05:44:01 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8DAE920043;
+	Fri, 11 Apr 2025 05:44:01 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B753C20040;
+	Fri, 11 Apr 2025 05:44:00 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.63.197.14])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 11 Apr 2025 05:44:00 +0000 (GMT)
+Received: from jarvis.ozlabs.ibm.com (haven.au.ibm.com [9.63.198.114])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by ozlabs.au.ibm.com (Postfix) with ESMTPSA id 1AC76602D4;
+	Fri, 11 Apr 2025 15:43:57 +1000 (AEST)
+From: Andrew Donnellan <ajd@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: x86@kernel.org, linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        pasha.tatashin@soleen.com, sweettea-kernel@dorminy.me,
+        christophe.leroy@csgroup.eu
+Subject: [PATCH v14 00/11] Support page table check on PowerPC
+Date: Fri, 11 Apr 2025 15:43:43 +1000
+Message-ID: <20250411054354.511145-1-ajd@linux.ibm.com>
+X-Mailer: git-send-email 2.49.0
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -76,153 +89,153 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY8PR11MB7012:EE_|CO1PR11MB5186:EE_
-X-MS-Office365-Filtering-Correlation-Id: fca0b609-0eab-43ff-8606-08dd78a04897
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|52116014|38350700014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?BF2deh7GeynsCl5kEgr9ilhTMsOQKrHixagCr+6uU5HwveHFnOhdh0Fwz4Sh?=
- =?us-ascii?Q?pvux+DAFkmGFR8hAOREAoROqngkVTkayqTGyqMLhvpevkJRD0rlPzucksqel?=
- =?us-ascii?Q?NSvoPc/LxSVc/ekJVM7LKFrKcRolXMvT1qy6hR5KMEfW3GErc5HbRZkRHLbt?=
- =?us-ascii?Q?42ckXHuI9W9AQww+ARu+2ETW+tLRVllrWcDmy4P/Vvc+8ZMAJH2mI69+H0FK?=
- =?us-ascii?Q?VGcpi/rFFZENy8SkQLghLdlFcqMtFsrzcXDsVfcLXa5hmS3yGbz26VQwWX0Z?=
- =?us-ascii?Q?VdHh+fCD4wlIs2ihXx1CtwH8TWnZxXmu9Eo6FUavYcJWNB0zMFBHe342RapV?=
- =?us-ascii?Q?AQpQgzZfJYxAsZ4ojsGaawINiaLow+o4FwxNFkC3t6mKZp3Fmwa7XwTdSi7X?=
- =?us-ascii?Q?FxgypCOJwqgrgWXhcHlsLMJ7m3smYGw65Zr9i7CFEcpFHz3I2mQWiUvPTcYB?=
- =?us-ascii?Q?E3Y1NOloWhA3ak9fhbB8OCTLqlYFkMFE2Em1WMRW6EAL14bGzTANnexaSwp+?=
- =?us-ascii?Q?WkMcFi1f+bkNf/XDLLe+jH61r1lrHYyXiXp4x3WQqZVTMsG5/LytqctrYkkr?=
- =?us-ascii?Q?q8No+xbMl4ipS6qUa3tfdRgW/cn20045CCg706hUyM11nlyMFMf7a6PH0cl6?=
- =?us-ascii?Q?udu0YhlYfQjU0f0KQ7Xa2sNSm5VUJRMRyNdw9gP8cru8AYrzTOEmpZiJFzGp?=
- =?us-ascii?Q?iqfbgh5liOBdEa234yrUBDuMyslQWNT7nMVxfzJep7FOiBJfaGOTPpeoXJFW?=
- =?us-ascii?Q?bXLBe9q2HUv3vGL16hi9EiGXZECYsAdDITjC7/bAtCM16QWoc65kB54dKsNj?=
- =?us-ascii?Q?CfkpXvjAxqxCGx9Fpt0noaKfi3BHXE8yfcLF9gsaXMmmFnT98m4VC485DS1a?=
- =?us-ascii?Q?3HNVBK4xvSIm9estThKWfdxO4QxNzF1e9KzqPbyA1RsSW7vMlBfd18mHk7W3?=
- =?us-ascii?Q?hR1HyV6eVe8+Z3CnYyAmJ2SJDW0q34Es6IlLgpXTcL+qlRkswcN9AUytHFfd?=
- =?us-ascii?Q?LM6IaqmaUZIRAGv7mmabmJwkRQ8SKZYDmKRb9pOP6YZmgsxBNEKxFxEjxTo1?=
- =?us-ascii?Q?QxILxEQ7J2aSwpvR6ngMnqCVbyG4m1d8/TW7M+x3rY36TbQoplmhkYRL3jL7?=
- =?us-ascii?Q?zf55qVXVL//bFmV995QtSUXr1k4cwdVf6KmotmOnBPsDLrkPUMylS2v4TIM8?=
- =?us-ascii?Q?Rr4hvIggYegA9WmZ7hHPXIfOBpEiV7wK0oQvCwsbXPeDls/1uqZ8s52pSNrY?=
- =?us-ascii?Q?SHfLNpGxZbWWrXWswFJ0qu2JWzcnVjVWeGnYxCP6a65dxFJsqXSPVHcXrgmu?=
- =?us-ascii?Q?XTzpjiCRPe1FN2DV/WRm4PrfpLXWajjJlojco/67URnWg4/dYw4g65qfGRU/?=
- =?us-ascii?Q?c/z7v2nQSsBLnPspbBpHNCq81pMho8U5N8Yg/fRxOCJDf7rgCklYwNtEtyul?=
- =?us-ascii?Q?oFxhkRZeatQ=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY8PR11MB7012.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(52116014)(38350700014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?fLWJ7m2cLX4QH6pFcmRzeEiUmuqwV6dTh796zzyl5S8oyN9ZhZVBgqNjtMDE?=
- =?us-ascii?Q?/ej95+C9AfJrpit7jzz5ecs9wW6QXgBVrgcqIjcWiW4Xjo+Ho9K8obTbkGxb?=
- =?us-ascii?Q?S7HFeoMRqJjLNtELgTMtIg/4z0GoVVN5R55e1JaTQLmX71VAG742ITC56BeU?=
- =?us-ascii?Q?NTc+hHRDoHSjdMJTMWgyH6xLfkqMyHtuqbOD0n1djq+bRrZsI12AQZwd7E09?=
- =?us-ascii?Q?r6DS6Ro2C77C4Y+qvCCyOcV4nUDKlhB9oIXchliZlKzrlaK48d2I6TG8t7e2?=
- =?us-ascii?Q?ZKQlVa9bWswUvLHTBZxRwGWKrUsdjfs8Qiima46xT0GwcOMsswxLTL+91Bz7?=
- =?us-ascii?Q?QUuZEz352GvbZ9Qi5cpM0faDwporxcRVV1d2gx8CaJ5QL2QSqC3V9m9nYPDt?=
- =?us-ascii?Q?LJh+j84u9gZi5cCsBSaIyHH5kmvuB05Wye+XQTAYpJfCgUrQsiZuJWmw5BCd?=
- =?us-ascii?Q?ZwVIKJPvxbueAzlIIyNkz1eVCb/WPPQFT0VfSLSqIUF1NNctjyrO9Ma1Okd1?=
- =?us-ascii?Q?FpZMVBT6e+vIVS2LinvHeOFlCr7IhZkfbW2YnR0hvyN8Uo1EGftwMW1CP6II?=
- =?us-ascii?Q?obtBzdT3qDkqU+UlYUubMS+JNbdNFzKZkdjUQZFvNK5pmQto0uJxL9gDchW4?=
- =?us-ascii?Q?/aEMZFXWDzSSVuw5FdhLPTRtPxuUtJyQo9Cgx8KIaedXnCw/aRi0gwYOByKf?=
- =?us-ascii?Q?qffKpydFvIsvBFA5Rwb8duuMbPOpWeCtcPihB4J4duqfalRUNG+SfNZNEuJ9?=
- =?us-ascii?Q?BtwNtWn/k9C+YDfzLSscAWeSsQxjoMMqdrGakhSDyVb0N/tixHR+t4Tp0qyU?=
- =?us-ascii?Q?Sk9b2TOhZO2j2m5M3Fz3S8oFD7ERg0ocMTDkxlTqKKEUYWux+U4R2pi42fEa?=
- =?us-ascii?Q?aXRYFOfEjsfq/V3D2Q2pbGzVXlynaF2ZU0OUglJl6VILr0sGvwZw3ZrBCW/l?=
- =?us-ascii?Q?Li8T4LmsEIwy/Azf1jlhGADsWltzWgclmu3W1vCLD4I0E6Au8G2juqz4EGMw?=
- =?us-ascii?Q?tPnJFHY8CWYJckmMsupu/el4fLbEtbtLRvjw9ZGTZGjgRJrbPB9JsSwNP9KZ?=
- =?us-ascii?Q?b8Gez+j7GXC3TQJyiu1ACbQqOxjTe4iIiKqwIv24oPi3lBId2HGYcpVDYgOf?=
- =?us-ascii?Q?R3MJCN24O1/mdB2HZrO07Gjce6iwsG2sTTcYPAJaQRhBpqn4DpOCERAzsTe1?=
- =?us-ascii?Q?fd+rkt+8BEOT6Y51uGJPI7sEmVuWDmYSXLIana5NTrD/oNuDL6iwczEvulb2?=
- =?us-ascii?Q?DIEJBsXZDnSP1GD1/Idw17GrYwQO2K3NrfLXfIDDJYVuNVb63tndVM3J4IiR?=
- =?us-ascii?Q?ExCXTv85/n0AQ2ivkqIQy7GyYSqL5HnHE1cdmfSofqnqhK5WLNUDx/ONuH/t?=
- =?us-ascii?Q?xMUpLQR11m1OWW7560IWWk4YmHuCPoTGERVeVQMWhUvpC5EAC1ONUwYiAKVy?=
- =?us-ascii?Q?HYohi9zju8tCSWMSuoBhP3msO/qyd3V0qVTiNr4r6xSsDcwCTQYvTjRywrSO?=
- =?us-ascii?Q?piBA5u//U2zOj/KgN1WCpiXXJ0Zuxy7k6QswxPcQ+pfG6OmN6dDPtFV0wKaL?=
- =?us-ascii?Q?SXQy/S/5vQdVwWFj4qgYLTlY5eH6dysIXQQRZpT1hFRIBxsMz2YIskXea526?=
- =?us-ascii?Q?Ng=3D=3D?=
-X-OriginatorOrg: windriver.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fca0b609-0eab-43ff-8606-08dd78a04897
-X-MS-Exchange-CrossTenant-AuthSource: CY8PR11MB7012.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Apr 2025 02:26:36.6179
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 8ddb2873-a1ad-4a18-ae4e-4644631433be
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: SSXrzha2C0wxgEfX7dguTr0oIK6/IA/a8cgmR4Ym80KK04EVrDREPpE9OU4ke12STtaOwpgldcy3Vi5XDm+YCvIoFjR48Zf16xZzhi5lRAg=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CO1PR11MB5186
-X-Authority-Analysis: v=2.4 cv=Td6WtQQh c=1 sm=1 tr=0 ts=67f87de0 cx=c_pps a=joO5rFOndlhnht97C4Lqsw==:117 a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=wKuvFiaSGQ0qltdbU6+NXLB8nM8=:19 a=Ol13hO9ccFRV9qXi2t6ftBPywas=:19 a=xqWC_Br6kY4A:10 a=XR8D0OoHHMoA:10
- a=bC-a23v3AAAA:8 a=VnNF1IyMAAAA:8 a=xNf9USuDAAAA:8 a=t7CeM3EgAAAA:8 a=u2LiicgN0kIDZIMe9SoA:9 a=-FEs8UIgK8oA:10 a=FO4_E8m0qiDe52t0p3_H:22 a=FdTzh2GWekK77mhwV6Dw:22
-X-Proofpoint-ORIG-GUID: KTI_EQ2MxGtGnLvzgCzAgKXtp3XPFi9R
-X-Proofpoint-GUID: KTI_EQ2MxGtGnLvzgCzAgKXtp3XPFi9R
-X-Sensitive_Customer_Information: Yes
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: XFTub1w76ddUJcbaUFbHNKeD3yEsbzlg
+X-Proofpoint-GUID: XFTub1w76ddUJcbaUFbHNKeD3yEsbzlg
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-11_01,2025-04-10_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 mlxscore=0
- mlxlogscore=999 clxscore=1011 lowpriorityscore=0 adultscore=0 bulkscore=0
- impostorscore=0 phishscore=0 spamscore=0 suspectscore=0 priorityscore=1501
- classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.21.0-2502280000
- definitions=main-2504110017
-X-Spam-Status: No, score=-1.8 required=3.0 tests=ARC_SIGNED,ARC_VALID,
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0 mlxscore=0
+ bulkscore=0 malwarescore=0 phishscore=0 mlxlogscore=999 adultscore=0
+ suspectscore=0 priorityscore=1501 spamscore=0 impostorscore=0
+ clxscore=1015 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504110038
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+Support page table check on all PowerPC platforms. This works by
+serialising assignments, reassignments and clears of page table
+entries at each level in order to ensure that anonymous mappings
+have at most one writable consumer, and likewise that file-backed
+mappings are not simultaneously also anonymous mappings.
 
-[ Upstream commit 0974d03eb479384466d828d65637814bee6b26d7 ]
+In order to support this infrastructure, a number of stubs must be
+defined for all powerpc platforms. Additionally, separate set_pte_at()
+and set_pte_at_unchecked(), to allow for internal, uninstrumented mappings.
 
-Smatch warns:
+(This series was written by Rohan McLure, who has left IBM and is no longer
+working on powerpc.)
 
-  arch/powerpc/kernel/rtas.c:1932 __do_sys_rtas() warn: potential
-  spectre issue 'args.args' [r] (local cap)
+v14:
+ * Fix a call to page_table_check_pud_set() that was missed (akpm)
 
-The 'nargs' and 'nret' locals come directly from a user-supplied
-buffer and are used as indexes into a small stack-based array and as
-inputs to copy_to_user() after they are subject to bounds checks.
+v13:
+ * Rebase on mainline
+ * Don't use set_pte_at_unchecked() for early boot purposes (Pasha)
+Link: https://lore.kernel.org/linuxppc-dev/20250211161404.850215-1-ajd@linux.ibm.com/
 
-Use array_index_nospec() after the bounds checks to clamp these values
-for speculative execution.
+v12:
+ * Rename commits that revert changes to instead reflect that we are
+   reinstating old behaviour due to it providing more flexibility
+ * Add return line to pud_pfn() stub
+ * Instrument ptep_get_and_clear() for nohash
+Link: https://lore.kernel.org/linuxppc-dev/20240402051154.476244-1-rmclure@linux.ibm.com/
 
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240530-sys_rtas-nargs-nret-v1-1-129acddd4d89@linux.ibm.com
-Signed-off-by: Cliff Liu <donghua.liu@windriver.com>
-Signed-off-by: He Zhe <Zhe.He@windriver.com>
----
-Verified the powerpc build test.
----
- arch/powerpc/kernel/rtas.c | 4 ++++
- 1 file changed, 4 insertions(+)
+v11:
+ * The pud_pfn() stub, which previously had no legitimate users on any
+   powerpc platform, now has users in Book3s64 with transparent pages.
+   Include a stub of the same name for each platform that does not
+   define their own.
+ * Drop patch that standardised use of p*d_leaf(), as already included
+   upstream in v6.9.
+ * Provide fallback definitions of p{m,u}d_user_accessible_page() that
+   do not reference p*d_leaf(), p*d_pte(), as they are defined after
+   powerpc/mm headers by linux/mm headers.
+ * Ensure that set_pte_at_unchecked() has the same checks as
+   set_pte_at().
+Link: https://lore.kernel.org/linuxppc-dev/20240328045535.194800-14-rmclure@linux.ibm.com/ 
 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index 5976a25c6264..a8299981798a 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -16,6 +16,7 @@
- #include <linux/capability.h>
- #include <linux/delay.h>
- #include <linux/cpu.h>
-+#include <linux/nospec.h>
- #include <linux/sched.h>
- #include <linux/smp.h>
- #include <linux/completion.h>
-@@ -1173,6 +1174,9 @@ SYSCALL_DEFINE1(rtas, struct rtas_args __user *, uargs)
- 	    || nargs + nret > ARRAY_SIZE(args.args))
- 		return -EINVAL;
- 
-+	nargs = array_index_nospec(nargs, ARRAY_SIZE(args.args));
-+	nret = array_index_nospec(nret, ARRAY_SIZE(args.args) - nargs);
-+
- 	/* Copy in args. */
- 	if (copy_from_user(args.args, uargs->args,
- 			   nargs * sizeof(rtas_arg_t)) != 0)
+v10:
+ * Revert patches that removed address and mm parameters from page table
+   check routines, including consuming code from arm64, x86_64 and
+   riscv.
+ * Implement *_user_accessible_page() routines in terms of pte_user()
+   where available (64-bit, book3s) but otherwise by checking the
+   address (on platforms where the pte does not imply whether the
+   mapping is for user or kernel)
+ * Internal set_pte_at() calls replaced with set_pte_at_unchecked(), which
+   is identical, but prevents double instrumentation.
+Link: https://lore.kernel.org/linuxppc-dev/20240313042118.230397-9-rmclure@linux.ibm.com/T/
+
+v9:
+ * Adapt to using the set_ptes() API, using __set_pte_at() where we need
+   must avoid instrumentation.
+ * Use the logic of *_access_permitted() for implementing
+   *_user_accessible_page(), which are required routines for page table
+   check.
+ * Even though we no longer need p{m,u,4}d_leaf(), still default
+   implement these to assist in refactoring out extant
+   p{m,u,4}_is_leaf().
+ * Add p{m,u}_pte() stubs where asm-generic does not provide them, as
+   page table check wants all *user_accessible_page() variants, and we
+   would like to default implement the variants in terms of
+   pte_user_accessible_page().
+ * Avoid the ugly pmdp_collapse_flush() macro nonsense! Just instrument
+   its constituent calls instead for radix and hash.
+Link: https://lore.kernel.org/linuxppc-dev/20231130025404.37179-2-rmclure@linux.ibm.com/
+
+v8:
+ * Fix linux/page_table_check.h include in asm/pgtable.h breaking
+   32-bit.
+Link: https://lore.kernel.org/linuxppc-dev/20230215231153.2147454-1-rmclure@linux.ibm.com/
+
+v7:
+ * Remove use of extern in set_pte prototypes
+ * Clean up pmdp_collapse_flush macro
+ * Replace set_pte_at with static inline function
+ * Fix commit message for patch 7
+Link: https://lore.kernel.org/linuxppc-dev/20230215020155.1969194-1-rmclure@linux.ibm.com/
+
+v6:
+ * Support huge pages and p{m,u}d accounting.
+ * Remove instrumentation from set_pte from kernel internal pages.
+ * 64s: Implement pmdp_collapse_flush in terms of __pmdp_collapse_flush
+   as access to the mm_struct * is required.
+Link: https://lore.kernel.org/linuxppc-dev/20230214015939.1853438-1-rmclure@linux.ibm.com/
+
+v5:
+Link: https://lore.kernel.org/linuxppc-dev/20221118002146.25979-1-rmclure@linux.ibm.com/
+
+Rohan McLure (11):
+  mm/page_table_check: Reinstate address parameter in
+    [__]page_table_check_pud_set()
+  mm/page_table_check: Reinstate address parameter in
+    [__]page_table_check_pmd_set()
+  mm/page_table_check: Provide addr parameter to
+    page_table_check_pte_set()
+  mm/page_table_check: Reinstate address parameter in
+    [__]page_table_check_pud_clear()
+  mm/page_table_check: Reinstate address parameter in
+    [__]page_table_check_pmd_clear()
+  mm/page_table_check: Reinstate address parameter in
+    [__]page_table_check_pte_clear()
+  mm: Provide address parameter to p{te,md,ud}_user_accessible_page()
+  powerpc: mm: Add pud_pfn() stub
+  powerpc: mm: Implement *_user_accessible_page() for ptes
+  powerpc: mm: Use set_pte_at_unchecked() for internal usages
+  powerpc: mm: Support page table check
+
+ arch/arm64/include/asm/pgtable.h             | 18 +++---
+ arch/powerpc/Kconfig                         |  1 +
+ arch/powerpc/include/asm/book3s/32/pgtable.h | 12 +++-
+ arch/powerpc/include/asm/book3s/64/pgtable.h | 62 +++++++++++++++---
+ arch/powerpc/include/asm/nohash/pgtable.h    | 13 +++-
+ arch/powerpc/include/asm/pgtable.h           | 19 ++++++
+ arch/powerpc/mm/book3s64/hash_pgtable.c      |  4 ++
+ arch/powerpc/mm/book3s64/pgtable.c           | 17 +++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c     |  9 ++-
+ arch/powerpc/mm/pgtable.c                    | 12 ++++
+ arch/riscv/include/asm/pgtable.h             | 18 +++---
+ arch/x86/include/asm/pgtable.h               | 22 +++----
+ include/linux/page_table_check.h             | 67 ++++++++++++--------
+ include/linux/pgtable.h                      | 10 +--
+ mm/page_table_check.c                        | 39 +++++++-----
+ 15 files changed, 226 insertions(+), 97 deletions(-)
+
 -- 
-2.34.1
+2.49.0
 
 
