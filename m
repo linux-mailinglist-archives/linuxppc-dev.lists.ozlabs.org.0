@@ -1,49 +1,50 @@
-Return-Path: <linuxppc-dev+bounces-7631-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7630-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAB3A86E4E
-	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Apr 2025 19:09:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D59D8A86E4F
+	for <lists+linuxppc-dev@lfdr.de>; Sat, 12 Apr 2025 19:10:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZZg5b15fLz2yr2;
-	Sun, 13 Apr 2025 03:09:39 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZZg5Z1gkNz2ym2;
+	Sun, 13 Apr 2025 03:09:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:4641:c500::1"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744477776;
-	cv=none; b=aqE54de/ytoFmNeagYr1R4xtKv/aioj7YWY5sDHyYvuOp9qQBv4FPyt3r4V2xfRvy5/X5r7wVeRgqSJla7nWnM/l6B/5D5CpSdGcPEg5Z8/v6dVtNdJVeSzdJwYAvRwZeLLFXnHMqnVhuRmHY/IgXkdNXPHSszMamrHu3Om21+FSAEZoKNAHqvSp2SYjfhmJXqfCHRx/D946sg3Fk9Ut5h56sVf70f1NAyMOIGGWZYRhksZkVu+Sb2D53p1MskaBSZ4hZuzIrcFrzzGYJih+2NciYvNCXOwhI4gmB5VgALGDYivnVGWHsuts4HTxPZDkMm7GnYNLNALGEpHGiRZ5yQ==
+	cv=none; b=mIQeX69pm75lt/124zHO1kS/1WqvM4Xba3mmChYrMzmk7OymMaMsm25oYAwyfikFIs5wI0bb1v9M52npD1Jh8UXkMo6EXnnsgl5L0xipL/e44LJuT3CgkNZ2FmMHnFr+6xPNKdLCTsc12dmytW99vayiIMYc9jMNU491RRHZOkW67CoPExegbKVHGqDq+Arnde88donAvjGjW6poMA6dWx2me6RIwB9r5VL9wsuF0k1JzaOF+5cG6IRaX5c/tOVcTJ+/vN/ZVngEnnZliw4TIMC9ffKPQw4tPLq4WaBaDVFnX8wjVg2+qc07hMko2uMmSS/ycFqLPpGsNF7ww3EI7g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1744477776; c=relaxed/relaxed;
-	bh=sRfG7NfsBI5rLkopsqbBFUZphr8cXyEofEEUpRXJIyY=;
+	bh=kzFdnT0JfG6g9S19fMLO94LAbSHHZlOjFGRwz1+oYsU=;
 	h=Date:Content-Type:MIME-Version:From:Cc:To:In-Reply-To:References:
-	 Message-Id:Subject; b=S5yr5IN2+en5yempvnTQGlb6rC6iIUCLitMGTKLEpSb7p4NiNuLnIJjHAaN66GlkMYSVtzKwdJfLggCA62mOpICFZ73mVmN+QHgg/wuevEJrhrs/Cn4icUC5+F7d1ADGVBTzwJ3LTxcwCY0R6ZAYiX853u3dbAg48e2rx6OGWeQCfJ4lkaANP1e7yF+UHn2DOpUj4VsozFmWVrCJaNvijTwG26KePpZF+mX0lV+MsGois0NpxE6EKEIGVFNp1QpxH0JHIr6xvEUzuMCsCyFQXSEi/9Tq9sA204V2qXXsCZPneQVyQF06QviuTDGJA1snp2nA+WzwHcz1714u/Tn8JA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bTNCdUzm; dkim-atps=neutral; spf=pass (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 Message-Id:Subject; b=Bu0YcmxLCrB0s3CeP9r6rid0n6qBLGJzy6kL5musTV8jGrNj+OCYFhP3EZMil/ulof70cHLYexd+PMJ3lAbibtQrMEAChe0iZZ9+DUR/74UiWUt2lSAezpMh+MmF3+4m4l7ZZlF9MKpLlh4qQ3aamcVBwm1pC2MXyC0O0OR3ajnbz/PZUqM0G2r0xSjE62XrKkAyeoRem9b9eEVAHI63qS7y1O9p4dAV5Lhkq7boD9dPLz05IBIhuQQGAVt9YU6KRTt+acm/Uy8ms72E6PRB4g5bLXGeaT/f1KenXiNxg3AjM45IpxLCgwO7CZCfxxWCaEfdxCCAIRqwoRuQZSBqSA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWRVIa6s; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=bTNCdUzm;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=IWRVIa6s;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:4641:c500::1; helo=dfw.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=robh@kernel.org; receiver=lists.ozlabs.org)
+X-Greylist: delayed 83934 seconds by postgrey-1.37 at boromir; Sun, 13 Apr 2025 03:09:34 AEST
+Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZZg5T5Szwz2ygJ
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Apr 2025 03:09:32 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZZg5V5qCLz2yhb
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Apr 2025 03:09:34 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by dfw.source.kernel.org (Postfix) with ESMTP id 5ECF75C4910;
-	Sat, 12 Apr 2025 17:07:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E59C4CEE3;
-	Sat, 12 Apr 2025 17:09:25 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 6C56B4A44B;
+	Sat, 12 Apr 2025 17:09:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08093C4CEE5;
+	Sat, 12 Apr 2025 17:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744477766;
-	bh=0AfTfcTDNqBJUpHIEtVuw3wm5u8+gYscdgy87EVwLo0=;
+	s=k20201202; t=1744477767;
+	bh=3ld2o6Mj/F94jH7yDDeMdOra5lZxxX/tPTJX7Yh+cYE=;
 	h=Date:From:Cc:To:In-Reply-To:References:Subject:From;
-	b=bTNCdUzmxxvUvgUTxZPk91QJEYLOn/6SYDZA9YhmnJhMv4FSdUDSPpTFN7KyqzTTc
-	 lichVb7RzvhfUwCqZShO4DuvMaJbvuzq5hxcAXoWu4WhPeQpPW3mKn7yC1Qc9sB392
-	 WMmGErm8sgwlelWXei+FtQU2iMzvRpOaNdq2xHpJ8Y83faSsBjLjoYXE4ELDBx/2Ml
-	 XjM9zb+AIf3Y2hr4n/Hp3+0o3Py5qkqON3sRBBfl9+WIFlMeWAFd0raBvxKGEneTUW
-	 r/YtAesh6pIhSOHH6kshLyB/KikFGLxmFxsH/MgYtMgXKitRXYdh4gZ+jvfXzlWt4Q
-	 FnLIxTMjpo2zg==
-Date: Sat, 12 Apr 2025 12:09:24 -0500
+	b=IWRVIa6sQUgho1AjQlyyF1dR2vufCEmTq5gfMz6DO89U8OuHsnIbwwUFu1fxxmr6+
+	 BLz2rnOjdLDRYzOxg7nfywH0THh5hUeHHf1E/ZwEUFt/2pgaUo/c2Ng5kYhiKKNXFJ
+	 Al+SEkYxWCrzi7MUCzebwi0KcDKaAUClL3IZEI34S7THE1Cx7GAUT8OtdTKm4x4xmu
+	 wf/ddAueD5ctLxkxcb7AnVLoDyZbdiaU5BnTBRt2sGw+maqs/GpQOPjbsBw9I6gBpZ
+	 q29EMBZGXGGSU4CbJYJ+x5ELE8ADYaX37sNResOcYTYCLnhx4IbIUclRItuVsF4wNR
+	 x8LOU/42YAXxA==
+Date: Sat, 12 Apr 2025 12:09:26 -0500
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
@@ -59,49 +60,82 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 From: "Rob Herring (Arm)" <robh@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org, 
- Conor Dooley <conor+dt@kernel.org>, Naveen N Rao <naveen@kernel.org>, 
- devicetree@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org, 
- Crystal Wood <oss@buserror.net>, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Maxime Ripard <mripard@kernel.org>, Crystal Wood <oss@buserror.net>, 
+ linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ Krzysztof Kozlowski <krzk@kernel.org>, 
+ Thomas Zimmermann <tzimmermann@suse.de>, Conor Dooley <conor+dt@kernel.org>, 
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, Frank Li <Frank.Li@nxp.com>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, linux-mtd@lists.infradead.org, 
+ Naveen N Rao <naveen@kernel.org>, devicetree@vger.kernel.org, 
+ dri-devel@lists.freedesktop.org, Richard Weinberger <richard@nod.at>, 
+ Nicholas Piggin <npiggin@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
+ Miquel Raynal <miquel.raynal@bootlin.com>, David Airlie <airlied@gmail.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>
 To: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-In-Reply-To: <20250412-fslpmc-yaml-v2-1-98c0948a2921@posteo.net>
-References: <20250412-fslpmc-yaml-v2-1-98c0948a2921@posteo.net>
-Message-Id: <174447776411.1354506.14019622197188509443.robh@kernel.org>
-Subject: Re: [PATCH v2] dt-bindings: powerpc: Convert fsl/pmc.txt to YAML
+In-Reply-To: <20250412-ppcyaml-elbc-v5-4-03f0e577139f@posteo.net>
+References: <20250412-ppcyaml-elbc-v5-0-03f0e577139f@posteo.net>
+ <20250412-ppcyaml-elbc-v5-4-03f0e577139f@posteo.net>
+Message-Id: <174447776475.1354537.103427368501741372.robh@kernel.org>
+Subject: Re: [PATCH v5 4/4] dt-bindings: memory-controllers: Convert
+ fsl,elbc to YAML
 X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 
-On Sat, 12 Apr 2025 14:49:38 +0200, J. Neuschäfer wrote:
-> This patch rewrites pmc.txt into YAML format. Descriptive texts are
-> expanded or shortened in a few places to better fit today's conventions.
+On Sat, 12 Apr 2025 15:16:05 +0200, J. Neuschäfer wrote:
+> Convert the Freescale localbus controller bindings from text form to
+> YAML. Compared to the .txt version, the YAML binding contains a new
+> usage example with FCM NAND flash, and a full list of compatible strings
+> based on current usage in arch/powerpc/boot/dts/.
 > 
-> The list of compatible strings (and combinations of them) is based on
-> existing device trees in arch/powerpc as well as compatible strings
-> already mentioned in the plain-text version of the binding.
+> Note that the both the compatible strings and the unit address format
+> are kept as-is, for compatibility with existing kernels and device
+> trees, as well as unit address readability. This results in dts
+> validation warnings:
 > 
-> One thing I didn't handle are soc-clk@... nodes as seen in
-> Documentation/devicetree/bindings/powerpc/fsl/pmc.yaml.
+>   Warning (simple_bus_reg): /example-0/localbus@f0010100/board-control@1,0:
+>   simple-bus unit address format error, expected "100000000"
 > 
 > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
 > ---
-> Changes in v2:
-> - Rebase on v6.15-rc1
-> - Link to v1: https://lore.kernel.org/r/20250315-fslpmc-yaml-v1-1-10ba354a85c2@posteo.net
-> ---
 > 
-> Note: The examples include a consumer (sata@19000), to demonstrate how
-> sleep specifiers work. I've heard that "unrelated" nodes in examples are
-> generally discouraged, but I'm not sure if it's better to keep it or to
-> drop it in this example.
+> V5:
+> - fix reference to fsl/lbc.txt in
+>   Documentation/devicetree/bindings/display/ssd1289fb.txt
+> 
+> V4:
+> - no changes
+> 
+> V3:
+> - move this patch after the GPCM/FCM patches to dtschema/dtc warnings
+>   due to missing bindings for fsl,elbc-gpcm-uio and fsl,elbc-fcm-nand
+> - add "simple-bus" again, for compatibility with existing DTs/drivers
+>   based on discussion with Crystal Wood and Rob Herring
+> - fix fsl,pq2-localbus compatible properties based on mgcoge.dts / ep8248e.dts
+>   (was missing "simple-bus")
+> - add board-control (bcsr) example again, now using the compatible
+>   string listed in Documentation/devicetree/bindings/board/fsl,bcsr.yaml
+> - remove interrupt-parent property from example
+> - rework the commit message
+> 
+> V2:
+> - fix order of properties in examples, according to dts coding style
+> - move to Documentation/devicetree/bindings/memory-controllers
+> - clarify the commit message a tiny bit
+> - remove unnecessary multiline markers (|)
+> - define address format in patternProperties
+> - trim subject line (remove "binding")
+> - remove use of "simple-bus", because it's technically incorrect
 > ---
->  .../devicetree/bindings/powerpc/fsl/pmc.txt        |  63 --------
->  .../devicetree/bindings/powerpc/fsl/pmc.yaml       | 159 +++++++++++++++++++++
->  2 files changed, 159 insertions(+), 63 deletions(-)
+>  .../devicetree/bindings/display/ssd1289fb.txt      |   2 +-
+>  .../bindings/memory-controllers/fsl,elbc.yaml      | 158 +++++++++++++++++++++
+>  .../devicetree/bindings/powerpc/fsl/lbc.txt        |  43 ------
+>  3 files changed, 159 insertions(+), 44 deletions(-)
 > 
 
 My bot found errors running 'make dt_binding_check' on your patch:
@@ -109,14 +143,15 @@ My bot found errors running 'make dt_binding_check' on your patch:
 yamllint warnings/errors:
 
 dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/powerpc/fsl/pmc.example.dtb: sata@19000 (fsl,mpc8377-sata): 'sleep' does not match any of the regexes: 'pinctrl-[0-9]+'
-	from schema $id: http://devicetree.org/schemas/ata/fsl,pq-sata.yaml#
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/powerpc/fsl/pmc.example.dtb: sata@19000 (fsl,mpc8377-sata): 'cell-index' is a required property
-	from schema $id: http://devicetree.org/schemas/ata/fsl,pq-sata.yaml#
+Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dts:29.23-34.15: Warning (simple_bus_reg): /example-0/localbus@f0010100/flash@0,0: simple-bus unit address format error, expected "0"
+Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dts:36.31-39.15: Warning (simple_bus_reg): /example-0/localbus@f0010100/board-control@1,0: simple-bus unit address format error, expected "100000000"
+Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dts:41.31-46.15: Warning (simple_bus_reg): /example-0/localbus@f0010100/simple-periph@2,0: simple-bus unit address format error, expected "200000000"
+Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dts:82.23-89.15: Warning (simple_bus_reg): /example-1/localbus@e0005000/flash@0,0: simple-bus unit address format error, expected "0"
+Documentation/devicetree/bindings/memory-controllers/fsl,elbc.example.dts:91.22-97.15: Warning (simple_bus_reg): /example-1/localbus@e0005000/nand@1,0: simple-bus unit address format error, expected "100000000"
 
 doc reference errors (make refcheckdocs):
 
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250412-fslpmc-yaml-v2-1-98c0948a2921@posteo.net
+See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20250412-ppcyaml-elbc-v5-4-03f0e577139f@posteo.net
 
 The base for the series is generally the latest rc1. A different dependency
 should be noted in *this* patch.
