@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7635-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7637-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B5CA870B9
-	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Apr 2025 06:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5255AA870BF
+	for <lists+linuxppc-dev@lfdr.de>; Sun, 13 Apr 2025 06:56:51 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZZymP1fBPz2yrC;
-	Sun, 13 Apr 2025 14:55:49 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZZymQ2tt7z2yrv;
+	Sun, 13 Apr 2025 14:55:50 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2604:1380:45d1:ec00::3"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744520149;
-	cv=none; b=AI8YY4AIU6ercoPqqHslOFtinhl1ky++SWV6XpSDsVpXd+MVZWzRgitBWn/e3ntvbc4XQUj5z+PBTE9v9SeitTd9j+UXV9V+Fp1GHhXbJOCJwulITOfGJ1+Gt+RLcWGA+YsJWCxZOfHuaHHpOBtsBiiyqkXm1VorVa97rUqtR4Qz/Lbz9dsCHf9F7MPS/LpC6ZPsNarUop4S52cmmS72tTn1vFCke9c5XjCJ3rV/cP8aC3qAvUPFqilHiWtng2F8LwZ9hoSvTupheuMSGCjNaPegxU1HEfQTDWW59cZtVbO9Z2UriwNc5tKqAVnHOP2JuBkSfDkSaanvgcaroCIDBA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744520150;
+	cv=none; b=iq6vHYaGo69tyLOOaFRyWyFCSrBfK0yTr54aryhZmj5tYyYY27kpxStHLm26Gpxu7dkQzbYWA5vG99FxLWzJuMFxw5Jry9fPNeXsn3JMkq5LsvDFqzUDDXTG+vBvTTxwzk+cHHB2cIJBSBWv2mFiEdO+i6VkEz++zbbXL1T85N0LnH5lTklv+IqkTVW9DwXESOKG5PHO56ju6xdiC4yV25RSidhRUUVmf5KCddkTCV3aKe8LKAj/4r7WptTwueYTEgqtKNx2u4E5OgCsCcqrrHjMTZXN3pHINUBb1a85DFkXLexp80NgGAfEpfxPK+LvMUB0KtLG2Y2jsRi8FFG+xA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744520149; c=relaxed/relaxed;
-	bh=6LFKrjXL+ASEJNAYWGzGxdZzCjPuyh8F8fOUR6TZNK0=;
+	t=1744520150; c=relaxed/relaxed;
+	bh=ghHI1ua22909A9AO+A0V2TeTXm1nvlLoI7Gwe5xVBGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YcZrTMl2PFnwxfeqfj/DHGA468qhqU393bCe3BwY6nNl7YDMo17bz7DOyNOrqiJlzlnCv4FKwfmRHKqj4+e+DcqRHuSJ9apd8szU2EOpLS/eXhih4NCegvt7MnJV0CUQMYiz20jaOiATE2872JolvpdRUNkvGOBK/vi6s5B3fTu0XK/E5MhNq6BphVOBZ0duzQ+cWJcNEAe5MAwfKPf40rewpswzIlru+0gG7XBegMYirEiSc9ktBk+U7lXG/ZAZP81ATdeAM8zJJDtm3MngCRis5qxgwITfEeY/jZF2TN+lV1jHL5eka+k19gPXj/XwlUJlCWbp6HTjLJPzLxMnbQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aqBiDJNe; dkim-atps=neutral; spf=pass (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=S1mG0a2PSIdl9eLBfUbGqDoYEKgNIQ3FhME9qOa+kL0J8xJj1C067VZzC6+QfcUJDfPPTfKFlDwsgbDJkm4Cjc6bG6r+8x1vRS4J2Rm8h2YWXYdl8GqFVJ3TsLnF4z+BOrvnxW7wQxJoNag/m13jL5fmNxgkNfItZ+WmfQChVPhvDPr9fnEJNwPKVewtaL09WW+GCmKbSnLqFF5RukG9nhPf/XV8N5lKx0HnxReOO5xrmAiaRYFHoWi4z7ly0bDC7W5os42TLZUV9dixrGSuN8slNJeFDfUpnDzghW1Zn4ETv4SeBU3bR79KSTYTse9IxxM+3Qa2GCeeemF2H2d6ZA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qurcntK5; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=aqBiDJNe;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qurcntK5;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2604:1380:45d1:ec00::3; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [IPv6:2604:1380:45d1:ec00::3])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZZymJ3MmMz2yDD
-	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Apr 2025 14:55:44 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZZymL4w5Bz2yHj
+	for <linuxppc-dev@lists.ozlabs.org>; Sun, 13 Apr 2025 14:55:46 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 33772A40DC5;
+	by nyc.source.kernel.org (Postfix) with ESMTP id C1C63A40E71;
 	Sun, 13 Apr 2025 04:50:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10ACDC4CEEC;
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6BB1C4CEEF;
 	Sun, 13 Apr 2025 04:55:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744520141;
-	bh=hZyztrbmssg+PrHVWx2Hv09SPvgkFndX9/sdkxmFyCM=;
+	s=k20201202; t=1744520142;
+	bh=9FIfB3SWlQ3XpNk3Dx8kombdj2eN1jWYviON2vPLySA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqBiDJNeYaacGQKLSOrtH0dEmHnz8GG7mwtiNLcT21DVDsTUo4a2IaxaEIwwY+a7x
-	 dvmdb7NMOO7O4OucwSb/wmk2V6lsZVQTSYVyXTArnKXrs8+w8OvXrsYRPELDOOAozO
-	 Z/A4AacddrqD236XPJvlGqNyhS96sc+eDhjDcoCv2uwOCcNh/oW7sXbh+gNdHoBBkW
-	 ggSTugWAcoP8HkugkbFl2TPVoL2KfFoQLFclwOoMmJ2EHXE254NfXXBUOJGpjBVCtA
-	 cVqQiGeYDG457JRu4L36AywhK9aOWYtt2rOxA/DkCJV0zHKmer/ll2wBuioClhzJ+o
-	 x5dfUmi2MXaNg==
+	b=qurcntK5oD7ir9QIYy87uFOTG7DZ5ai9xFFMpiTEhR/j4EdtY12M1OVTdVtw/NJsu
+	 rsi1wNoL03woAdSu5nYj1OYQmu0DYRKWlULNk+FTWgaf2Zblpp5kLX7C7phu3fINkJ
+	 FaacxnBSITxJUiMkcoVJmZVe9NRVMocxReuTm9Pemzo9v6gGJxHgF6uHuS4P1oa0cy
+	 e52Y1ytSrBM2Ff5pvBoMUuPsuevuOXObpmTux9yE2jVJ0ejIcew5LdtJJw2W2JfmFM
+	 qFMw+xdBSJRuCKY61p/OVXS05LkzuFyjgccxIl3qFqMfmh5X9gWRb5IiP+vnLiXMN2
+	 d51Zcu6bAdL7w==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -50,9 +50,9 @@ Cc: linux-kernel@vger.kernel.org,
 	linux-mips@vger.kernel.org,
 	linuxppc-dev@lists.ozlabs.org,
 	x86@kernel.org
-Subject: [PATCH 3/9] crypto: arm/poly1305 - remove redundant shash algorithm
-Date: Sat, 12 Apr 2025 21:54:15 -0700
-Message-ID: <20250413045421.55100-4-ebiggers@kernel.org>
+Subject: [PATCH 4/9] crypto: arm64/poly1305 - remove redundant shash algorithm
+Date: Sat, 12 Apr 2025 21:54:16 -0700
+Message-ID: <20250413045421.55100-5-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250413045421.55100-1-ebiggers@kernel.org>
 References: <20250413045421.55100-1-ebiggers@kernel.org>
@@ -69,10 +69,9 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=1.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-	SUSPICIOUS_RECIPS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Level: *
+X-Spam-Status: No, score=-1.0 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS,SUSPICIOUS_RECIPS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
@@ -85,37 +84,37 @@ library functions there.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/arm/crypto/Kconfig         |   6 --
- arch/arm/crypto/poly1305-glue.c | 167 +-------------------------------
- 2 files changed, 3 insertions(+), 170 deletions(-)
+ arch/arm64/crypto/Kconfig         |   6 --
+ arch/arm64/crypto/poly1305-glue.c | 140 ++----------------------------
+ 2 files changed, 6 insertions(+), 140 deletions(-)
 
-diff --git a/arch/arm/crypto/Kconfig b/arch/arm/crypto/Kconfig
-index 332f2430beec..3530e7c80793 100644
---- a/arch/arm/crypto/Kconfig
-+++ b/arch/arm/crypto/Kconfig
-@@ -46,18 +46,12 @@ config CRYPTO_NHPOLY1305_NEON
- 	  Architecture: arm using:
+diff --git a/arch/arm64/crypto/Kconfig b/arch/arm64/crypto/Kconfig
+index ce655da0fbee..c47a7649a241 100644
+--- a/arch/arm64/crypto/Kconfig
++++ b/arch/arm64/crypto/Kconfig
+@@ -26,18 +26,12 @@ config CRYPTO_NHPOLY1305_NEON
  	  - NEON (Advanced SIMD) extensions
  
- config CRYPTO_POLY1305_ARM
+ config CRYPTO_POLY1305_NEON
  	tristate
+ 	depends on KERNEL_MODE_NEON
 -	select CRYPTO_HASH
  	select CRYPTO_ARCH_HAVE_LIB_POLY1305
  	default CRYPTO_LIB_POLY1305_INTERNAL
 -	help
 -	  Poly1305 authenticator algorithm (RFC7539)
 -
--	  Architecture: arm optionally using
+-	  Architecture: arm64 using:
 -	  - NEON (Advanced SIMD) extensions
  
- config CRYPTO_BLAKE2S_ARM
- 	bool "Hash functions: BLAKE2s"
- 	select CRYPTO_ARCH_HAVE_LIB_BLAKE2S
- 	help
-diff --git a/arch/arm/crypto/poly1305-glue.c b/arch/arm/crypto/poly1305-glue.c
-index 238dbf50d05d..6d6998b3ec7e 100644
---- a/arch/arm/crypto/poly1305-glue.c
-+++ b/arch/arm/crypto/poly1305-glue.c
+ config CRYPTO_SHA1_ARM64_CE
+ 	tristate "Hash functions: SHA-1 (ARMv8 Crypto Extensions)"
+ 	depends on KERNEL_MODE_NEON
+ 	select CRYPTO_HASH
+diff --git a/arch/arm64/crypto/poly1305-glue.c b/arch/arm64/crypto/poly1305-glue.c
+index 89415731d9be..cb152ceac14a 100644
+--- a/arch/arm64/crypto/poly1305-glue.c
++++ b/arch/arm64/crypto/poly1305-glue.c
 @@ -6,19 +6,16 @@
   */
  
@@ -134,17 +133,17 @@ index 238dbf50d05d..6d6998b3ec7e 100644
  #include <linux/module.h>
 +#include <linux/unaligned.h>
  
- void poly1305_init_arm(void *state, const u8 *key);
- void poly1305_blocks_arm(void *state, const u8 *src, u32 len, u32 hibit);
- void poly1305_blocks_neon(void *state, const u8 *src, u32 len, u32 hibit);
- void poly1305_emit_arm(void *state, u8 *digest, const u32 *nonce);
-@@ -38,106 +35,10 @@ void poly1305_init_arch(struct poly1305_desc_ctx *dctx, const u8 key[POLY1305_KE
+ asmlinkage void poly1305_init_arm64(void *state, const u8 *key);
+ asmlinkage void poly1305_blocks(void *state, const u8 *src, u32 len, u32 hibit);
+ asmlinkage void poly1305_blocks_neon(void *state, const u8 *src, u32 len, u32 hibit);
+ asmlinkage void poly1305_emit(void *state, u8 *digest, const u32 *nonce);
+@@ -34,96 +31,10 @@ void poly1305_init_arch(struct poly1305_desc_ctx *dctx, const u8 key[POLY1305_KE
  	dctx->s[3] = get_unaligned_le32(key + 28);
  	dctx->buflen = 0;
  }
  EXPORT_SYMBOL(poly1305_init_arch);
  
--static int arm_poly1305_init(struct shash_desc *desc)
+-static int neon_poly1305_init(struct shash_desc *desc)
 -{
 -	struct poly1305_desc_ctx *dctx = shash_desc_ctx(desc);
 -
@@ -155,12 +154,12 @@ index 238dbf50d05d..6d6998b3ec7e 100644
 -	return 0;
 -}
 -
--static void arm_poly1305_blocks(struct poly1305_desc_ctx *dctx, const u8 *src,
+-static void neon_poly1305_blocks(struct poly1305_desc_ctx *dctx, const u8 *src,
 -				 u32 len, u32 hibit, bool do_neon)
 -{
 -	if (unlikely(!dctx->sset)) {
 -		if (!dctx->rset) {
--			poly1305_init_arm(&dctx->h, src);
+-			poly1305_init_arm64(&dctx->h, src);
 -			src += POLY1305_BLOCK_SIZE;
 -			len -= POLY1305_BLOCK_SIZE;
 -			dctx->rset = 1;
@@ -183,10 +182,10 @@ index 238dbf50d05d..6d6998b3ec7e 100644
 -	if (static_branch_likely(&have_neon) && likely(do_neon))
 -		poly1305_blocks_neon(&dctx->h, src, len, hibit);
 -	else
--		poly1305_blocks_arm(&dctx->h, src, len, hibit);
+-		poly1305_blocks(&dctx->h, src, len, hibit);
 -}
 -
--static void arm_poly1305_do_update(struct poly1305_desc_ctx *dctx,
+-static void neon_poly1305_do_update(struct poly1305_desc_ctx *dctx,
 -				    const u8 *src, u32 len, bool do_neon)
 -{
 -	if (unlikely(dctx->buflen)) {
@@ -198,14 +197,14 @@ index 238dbf50d05d..6d6998b3ec7e 100644
 -		dctx->buflen += bytes;
 -
 -		if (dctx->buflen == POLY1305_BLOCK_SIZE) {
--			arm_poly1305_blocks(dctx, dctx->buf,
--					    POLY1305_BLOCK_SIZE, 1, false);
+-			neon_poly1305_blocks(dctx, dctx->buf,
+-					     POLY1305_BLOCK_SIZE, 1, false);
 -			dctx->buflen = 0;
 -		}
 -	}
 -
 -	if (likely(len >= POLY1305_BLOCK_SIZE)) {
--		arm_poly1305_blocks(dctx, src, len, 1, do_neon);
+-		neon_poly1305_blocks(dctx, src, len, 1, do_neon);
 -		src += round_down(len, POLY1305_BLOCK_SIZE);
 -		len %= POLY1305_BLOCK_SIZE;
 -	}
@@ -216,25 +215,15 @@ index 238dbf50d05d..6d6998b3ec7e 100644
 -	}
 -}
 -
--static int arm_poly1305_update(struct shash_desc *desc,
--			       const u8 *src, unsigned int srclen)
+-static int neon_poly1305_update(struct shash_desc *desc,
+-				const u8 *src, unsigned int srclen)
 -{
--	struct poly1305_desc_ctx *dctx = shash_desc_ctx(desc);
--
--	arm_poly1305_do_update(dctx, src, srclen, false);
--	return 0;
--}
--
--static int __maybe_unused arm_poly1305_update_neon(struct shash_desc *desc,
--						   const u8 *src,
--						   unsigned int srclen)
--{
--	struct poly1305_desc_ctx *dctx = shash_desc_ctx(desc);
 -	bool do_neon = crypto_simd_usable() && srclen > 128;
+-	struct poly1305_desc_ctx *dctx = shash_desc_ctx(desc);
 -
 -	if (static_branch_likely(&have_neon) && do_neon)
 -		kernel_neon_begin();
--	arm_poly1305_do_update(dctx, src, srclen, do_neon);
+-	neon_poly1305_do_update(dctx, src, srclen, do_neon);
 -	if (static_branch_likely(&have_neon) && do_neon)
 -		kernel_neon_end();
 -	return 0;
@@ -243,15 +232,15 @@ index 238dbf50d05d..6d6998b3ec7e 100644
  void poly1305_update_arch(struct poly1305_desc_ctx *dctx, const u8 *src,
  			  unsigned int nbytes)
  {
- 	bool do_neon = IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
- 		       crypto_simd_usable();
-@@ -197,49 +98,10 @@ void poly1305_final_arch(struct poly1305_desc_ctx *dctx, u8 *dst)
- 	poly1305_emit_arm(&dctx->h, dst, dctx->s);
- 	*dctx = (struct poly1305_desc_ctx){};
+ 	if (unlikely(dctx->buflen)) {
+ 		u32 bytes = min(nbytes, POLY1305_BLOCK_SIZE - dctx->buflen);
+@@ -179,61 +90,22 @@ void poly1305_final_arch(struct poly1305_desc_ctx *dctx, u8 *dst)
+ 	poly1305_emit(&dctx->h, dst, dctx->s);
+ 	memzero_explicit(dctx, sizeof(*dctx));
  }
  EXPORT_SYMBOL(poly1305_final_arch);
  
--static int arm_poly1305_final(struct shash_desc *desc, u8 *dst)
+-static int neon_poly1305_final(struct shash_desc *desc, u8 *dst)
 -{
 -	struct poly1305_desc_ctx *dctx = shash_desc_ctx(desc);
 -
@@ -262,23 +251,10 @@ index 238dbf50d05d..6d6998b3ec7e 100644
 -	return 0;
 -}
 -
--static struct shash_alg arm_poly1305_algs[] = {{
--	.init			= arm_poly1305_init,
--	.update			= arm_poly1305_update,
--	.final			= arm_poly1305_final,
--	.digestsize		= POLY1305_DIGEST_SIZE,
--	.descsize		= sizeof(struct poly1305_desc_ctx),
--
--	.base.cra_name		= "poly1305",
--	.base.cra_driver_name	= "poly1305-arm-old",
--	.base.cra_priority	= 150,
--	.base.cra_blocksize	= POLY1305_BLOCK_SIZE,
--	.base.cra_module	= THIS_MODULE,
--#ifdef CONFIG_KERNEL_MODE_NEON
--}, {
--	.init			= arm_poly1305_init,
--	.update			= arm_poly1305_update_neon,
--	.final			= arm_poly1305_final,
+-static struct shash_alg neon_poly1305_alg = {
+-	.init			= neon_poly1305_init,
+-	.update			= neon_poly1305_update,
+-	.final			= neon_poly1305_final,
 -	.digestsize		= POLY1305_DIGEST_SIZE,
 -	.descsize		= sizeof(struct poly1305_desc_ctx),
 -
@@ -287,49 +263,42 @@ index 238dbf50d05d..6d6998b3ec7e 100644
 -	.base.cra_priority	= 200,
 -	.base.cra_blocksize	= POLY1305_BLOCK_SIZE,
 -	.base.cra_module	= THIS_MODULE,
--#endif
--}};
+-};
 -
  bool poly1305_is_arch_optimized(void)
  {
- 	/* We always can use at least the ARM scalar implementation. */
+ 	/* We always can use at least the ARM64 scalar implementation. */
  	return true;
  }
-@@ -248,34 +110,11 @@ EXPORT_SYMBOL(poly1305_is_arch_optimized);
- static int __init arm_poly1305_mod_init(void)
+ EXPORT_SYMBOL(poly1305_is_arch_optimized);
+ 
+ static int __init neon_poly1305_mod_init(void)
  {
- 	if (IS_ENABLED(CONFIG_KERNEL_MODE_NEON) &&
- 	    (elf_hwcap & HWCAP_NEON))
- 		static_branch_enable(&have_neon);
--	else if (IS_REACHABLE(CONFIG_CRYPTO_HASH))
--		/* register only the first entry */
--		return crypto_register_shash(&arm_poly1305_algs[0]);
+-	if (!cpu_have_named_feature(ASIMD))
+-		return 0;
+-
+-	static_branch_enable(&have_neon);
 -
 -	return IS_REACHABLE(CONFIG_CRYPTO_HASH) ?
--		crypto_register_shashes(arm_poly1305_algs,
--					ARRAY_SIZE(arm_poly1305_algs)) : 0;
+-		crypto_register_shash(&neon_poly1305_alg) : 0;
 -}
 -
--static void __exit arm_poly1305_mod_exit(void)
+-static void __exit neon_poly1305_mod_exit(void)
 -{
--	if (!IS_REACHABLE(CONFIG_CRYPTO_HASH))
--		return;
--	if (!static_branch_likely(&have_neon)) {
--		crypto_unregister_shash(&arm_poly1305_algs[0]);
--		return;
--	}
--	crypto_unregister_shashes(arm_poly1305_algs,
--				  ARRAY_SIZE(arm_poly1305_algs));
+-	if (IS_REACHABLE(CONFIG_CRYPTO_HASH) && cpu_have_named_feature(ASIMD))
+-		crypto_unregister_shash(&neon_poly1305_alg);
++	if (cpu_have_named_feature(ASIMD))
++		static_branch_enable(&have_neon);
 +	return 0;
  }
 -
- arch_initcall(arm_poly1305_mod_init);
--module_exit(arm_poly1305_mod_exit);
+ arch_initcall(neon_poly1305_mod_init);
+-module_exit(neon_poly1305_mod_exit);
  
- MODULE_DESCRIPTION("Accelerated Poly1305 transform for ARM");
+-MODULE_DESCRIPTION("Poly1305 transform using NEON instructions");
++MODULE_DESCRIPTION("Poly1305 authenticator (ARM64 optimized)");
  MODULE_LICENSE("GPL v2");
 -MODULE_ALIAS_CRYPTO("poly1305");
--MODULE_ALIAS_CRYPTO("poly1305-arm");
 -MODULE_ALIAS_CRYPTO("poly1305-neon");
 -- 
 2.49.0
