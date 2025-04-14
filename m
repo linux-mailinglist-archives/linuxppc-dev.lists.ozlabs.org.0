@@ -1,58 +1,80 @@
-Return-Path: <linuxppc-dev+bounces-7646-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7647-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 904FDA8785F
-	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Apr 2025 09:04:32 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A96EA8818D
+	for <lists+linuxppc-dev@lfdr.de>; Mon, 14 Apr 2025 15:18:04 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZbdZ70mdnz2yr8;
-	Mon, 14 Apr 2025 17:04:15 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZbnsN1v5sz2yqc;
+	Mon, 14 Apr 2025 23:18:00 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744614255;
-	cv=none; b=kr3KFhLvReT5cd7ccwnI76TpyMyteF8pLdYdhWvKHdgxd4Q565Gr+Dt0IFIsxEuLwdk8sYk9UEzuQEtcIToQ+SbD+oxtoK9uDFj8H/er7aDxVXa6IHc45CfImDDBS0VMN9YTN2BqfnGlHAfqG07QjKL5ge1Np2EYF52o6Z0Rr+A9V2vvs2dvteQoQLlxYidty6DjJXbkQhu5ohRKkvZe+U2ZGrnAPOYeNRSmEO7YNCeN71U89k9G3qNSjeyzO9gxOpDTzyJ/SPPM0Y8xAsLXTBhbURs68S/3R6kjoX3JdKoFUGC2SuK9p/YPMQsKp3PQOWS95guMMQDFTg9lm9sZqw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744636680;
+	cv=none; b=gwEDmjThNrcTE8xj/Vcb4vJXfTCV/qSLs1+GB4tdHGWzLOIlucnEcX3aTPE1BFPS6A3CLxmY521vsLOLqC2MWVH5B5BUvQ44mpDpdOK3we6Pe0iOnQflX3mE43Q0heiFci/sqXE9q5rOzk387RBGR32aIxpI4Ax597opdYM44707W6M3dMXFduQRTUIjf0r+GGLIAHKJBOnSeqUYtlaD+8qQDkA3tL0IjtwIunVl7rx3Mc9yplBE+9IkbOY6XiZTU3NTHls70/PaHoYsr1DwOglD8O11v3EGEC+xdvBv4Ghzqsz6HB7mgH5qe2fBl5YyR8N3lZn9FNA9olABejxO5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744614255; c=relaxed/relaxed;
-	bh=A952/haBhzu1Eh0V7dVLXe3Dv2m1JQRtOevmR/ub3NA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cT8tDepDt3a2C6KRhxPYTReorIjV8NfiEzJzewdU3x2AjzJGa/ieTYXHWpgrxbPK2Z4tdTZoF5nQ2jnED5jZwazt6e5u0zwhMWJed2bX6q6PWzvxkBuiYFiyzArxuq7J9PIED7Umw8tFiWumd7nF7cQwIa8thYRiwYla5Vrr9c/orX19/54Zspq3RlM3OHA4tM7dos/5ZHVzZUJQtsxK/LNRO4cpWyvyayGDIXLukm689BF7PmzjhOlEfVbXEa9IgqH2SSbASK7dOPOd0hJ963RmJIjkLSfPFTAly8Ce0bE2qrnLex14Ge4ouIONLfsp8EbV9PCUGpOiiXFNBIwz5A==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EOKguFF2; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1744636680; c=relaxed/relaxed;
+	bh=8VE57CFYuSWnpfedeptxs8N1kct+AUFt+N8bO011XO4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hGrZB3o/xPlJx/bfGphg6cSUOLv9HCYH1weFiPzBctNVVtWTeNyWFeB7JILneSAGDH4+F7D0Rjrnu9Nv8OA5lreAL4XVgccyYKwa9j/5wJel1zgwomlCqJG4ovTPBRA2DCQ7LMT3dcm8KnIvSTN8goLmdCM/ONnp9nxHsGKe1/r6sMtvnhECojt1gOPDZ50HKq696zSttPU/Uzktxy+O+jrjyRTnked0R4APyxnTYCDGB4/NHsKHy+VJwa242W4P7EU8OtLt43KSqhwbKExSEEf74l8v7ZIHj0vcRiRCgsdTh4qulSszvUW0dPKp3Cd5xIfBlLW4vHVbyKSepnwKsw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wu687hea; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=EOKguFF2;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=Wu687hea;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=ardb@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZbdZ555vPz2ygD
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Apr 2025 17:04:13 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id 7C3B4A4861B
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Apr 2025 06:58:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 940C5C4CEEB
-	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Apr 2025 07:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744614249;
-	bh=icC6pKxwkk63ydYys6oK1ioyyV4qcPSvCmG0NKiQefg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=EOKguFF2VxI82DMzK1Hz/A36DdD6tyL16iCFnyNocB04XiHAEx2Usjf/l6jDguOkg
-	 x3x3GRKL3w5pPVXZXuWw8qka//Ftfz2gh2c3JWvNBxmk2NWEGeFWbV1va2ur/nm60z
-	 GY7tun/dRfez4UgI3Y+aeNdjEkOUTPStzp/a77Huyjwo9YDobX5TXngfK1JnmNckvv
-	 Pxe1thYVFZ8sjvAerBTj+XrQO6k9DRsERd4IDnLmszh5hTBhX9R1hMavHavnnO/RBa
-	 8vBY9W5SWdJavz0DzdjfjrDYaFhxI5GAVDy48t8XDSSp72bBnRzw+3Sv8wRiahxeGv
-	 Hqppo3tkdiUcg==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-54d3ee30af1so3736728e87.0
-        for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Apr 2025 00:04:09 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCVPczirPzDS7CDzvocHR3YJ68GGPf2g+2axk5Kud/2+HLAK2OSfYxUcAOfzRkugwhMn7QvUjVeXejZGm7s=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YwOkIbthUnrEgVkIZ4/Q9o+uzIi08GdwDVN31ETFAMLEtvoxAgi
-	u5YOAxdvAC87PyhS75/G6bqYOvzy8iwjzGMlt7PZvB+yOMmKEqBEcHZHszL2rFwgFw1ju7jSRt+
-	gqu87kUX9G1VdJren92+dfog1SEQ=
-X-Google-Smtp-Source: AGHT+IEoYXlejAjxOwys1OLaOhDBK3py6wT/Y0QJYW6cfE2lr6fzReeEdjo+qSenumfyEoIhuh4zXG1xEt+R7ijOO8Y=
-X-Received: by 2002:a05:6512:ba7:b0:546:2f7a:38c4 with SMTP id
- 2adb3069b0e04-54d45292cd1mr2746051e87.13.1744614247886; Mon, 14 Apr 2025
- 00:04:07 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZbnsL42Krz2ygD
+	for <linuxppc-dev@lists.ozlabs.org>; Mon, 14 Apr 2025 23:17:57 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53EAej3p012665;
+	Mon, 14 Apr 2025 13:17:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=8VE57CFYuSWnpfedeptxs8N1kct+AU
+	Ft+N8bO011XO4=; b=Wu687heaFzkO1n45JIgh//CUD9GtU97lXkw+PgC5KWpYSA
+	7iVKbKJ8+ICYs1EimM/k8qqCs/4LxGY8E3UNqEkfTYoZozYD63hYaaPliCl1yj14
+	OKwc8/XvTJVVNLmg6zyqpVBCixVJXfqokMNxfAfzkDclYQjWbFqtD9Orx0iZayob
+	WeJ2wMYX4sMS9gbbc+yua0ir8CtipUl9zXu/hDnWdcMPf67AUNWNXV6RxYZCDNWM
+	vVIqdicqOMGV537l55+otgWUc9lHuF6ktevu4DCzN+bxOFD1DuO3k3W5AQKBTZT5
+	dJhxC/RSpUzb1hr+aIryAWYEbu2AiRTU7uv2l11g==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4610tp8q70-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Apr 2025 13:17:51 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53EAxas6024914;
+	Mon, 14 Apr 2025 13:17:50 GMT
+Received: from smtprelay03.wdc07v.mail.ibm.com ([172.16.1.70])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4602gt6njv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 14 Apr 2025 13:17:50 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay03.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53EDHlcJ31392442
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 14 Apr 2025 13:17:47 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1BC7858055;
+	Mon, 14 Apr 2025 13:17:50 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CF2835804B;
+	Mon, 14 Apr 2025 13:17:49 +0000 (GMT)
+Received: from d.ibm.com (unknown [9.61.3.79])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Mon, 14 Apr 2025 13:17:49 +0000 (GMT)
+From: Dave Marquardt <davemarq@linux.ibm.com>
+To: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Cc: netdev@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next] ibmveth: Use WARN_ON with error handling
+ rather than BUG_ON
+In-Reply-To: <Z/iwd8qonlrfOkO5@mev-dev.igk.intel.com> (Michal Swiatkowski's
+	message of "Fri, 11 Apr 2025 08:02:31 +0200")
+References: <20250410183918.422936-1-davemarq@linux.ibm.com>
+	<Z/iwd8qonlrfOkO5@mev-dev.igk.intel.com>
+Date: Mon, 14 Apr 2025 08:17:49 -0500
+Message-ID: <87o6wyhog2.fsf@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,273 +87,80 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250413154350.10819-1-ebiggers@kernel.org>
-In-Reply-To: <20250413154350.10819-1-ebiggers@kernel.org>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Mon, 14 Apr 2025 09:03:56 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGhG6PKVzqmVT6qrQ+GPkk_oxXE5d-ut0swi49V2=o-wQ@mail.gmail.com>
-X-Gm-Features: ATxdqUEnYfS7U-gc63ktCKYv5CbPjrmaDdsHdKGekiLY6qQSH14mpXQi1o5UxKs
-Message-ID: <CAMj1kXGhG6PKVzqmVT6qrQ+GPkk_oxXE5d-ut0swi49V2=o-wQ@mail.gmail.com>
-Subject: Re: [PATCH] lib/crc: make the CPU feature static keys __ro_after_init
-To: Eric Biggers <ebiggers@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, loongarch@lists.linux.dev, 
-	linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	sparclinux@vger.kernel.org, linux-s390@vger.kernel.org, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 4I7gNUnM2h20g9MDMZfyoQQWrFIHVeLR
+X-Proofpoint-ORIG-GUID: 4I7gNUnM2h20g9MDMZfyoQQWrFIHVeLR
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-14_04,2025-04-10_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ phishscore=0 clxscore=1011 mlxlogscore=999 adultscore=0 lowpriorityscore=0
+ malwarescore=0 impostorscore=0 suspectscore=0 mlxscore=0 bulkscore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504140095
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Sun, 13 Apr 2025 at 17:44, Eric Biggers <ebiggers@kernel.org> wrote:
->
-> From: Eric Biggers <ebiggers@google.com>
->
-> All of the CRC library's CPU feature static_keys are initialized by
-> initcalls and never change afterwards, so there's no need for them to be
-> in the regular .data section.  Put them in .data..ro_after_init instead.
->
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
-> ---
->
-> I'm planning to take this via the crc tree.
->
->  arch/arm/lib/crc-t10dif-glue.c       | 4 ++--
->  arch/arm/lib/crc32-glue.c            | 4 ++--
->  arch/arm64/lib/crc-t10dif-glue.c     | 4 ++--
->  arch/loongarch/lib/crc32-loongarch.c | 2 +-
->  arch/mips/lib/crc32-mips.c           | 2 +-
->  arch/powerpc/lib/crc-t10dif-glue.c   | 2 +-
->  arch/powerpc/lib/crc32-glue.c        | 2 +-
->  arch/s390/lib/crc32-glue.c           | 2 +-
->  arch/sparc/lib/crc32_glue.c          | 2 +-
->  arch/x86/lib/crc-t10dif-glue.c       | 2 +-
->  arch/x86/lib/crc32-glue.c            | 4 ++--
->  arch/x86/lib/crc64-glue.c            | 2 +-
->  12 files changed, 16 insertions(+), 16 deletions(-)
->
+Michal Swiatkowski <michal.swiatkowski@linux.intel.com> writes:
 
+> On Thu, Apr 10, 2025 at 01:39:18PM -0500, Dave Marquardt wrote:
+>> - Replaced BUG_ON calls with WARN_ON calls with error handling,
+>>   with calls to a new ibmveth_reset routine, which resets the device.
+>> - Added KUnit tests for ibmveth_remove_buffer_from_pool and
+>>   ibmveth_rxq_get_buffer under new IBMVETH_KUNIT_TEST config option.
+>> - Removed unneeded forward declaration of ibmveth_rxq_harvest_buffer.
+>
+> It will be great if you split this patch into 3 patches according to
+> your description.
 
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Thanks. I debated the right approach here. Thanks for the guidance.
 
+>>  static struct kobj_type ktype_veth_pool;
+>> @@ -231,7 +230,10 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>>  		index = pool->free_map[free_index];
+>>  		skb = NULL;
+>>  
+>> -		BUG_ON(index == IBM_VETH_INVALID_MAP);
+>> +		if (WARN_ON(index == IBM_VETH_INVALID_MAP)) {
+>> +			(void)schedule_work(&adapter->work);
+>
+> What is the purpose of void casting here (and in other places in this
+> patch)?
 
+I'm indicating that I'm ignoring the bool returned by schedule_work().
+Since this seemed odd to you, I take it the convention in Linux code is
+not doing this.
 
-> diff --git a/arch/arm/lib/crc-t10dif-glue.c b/arch/arm/lib/crc-t10dif-glue.c
-> index 6efad3d78284..382437094bdd 100644
-> --- a/arch/arm/lib/crc-t10dif-glue.c
-> +++ b/arch/arm/lib/crc-t10dif-glue.c
-> @@ -14,12 +14,12 @@
->  #include <crypto/internal/simd.h>
+>> +			goto failure2;
 >
->  #include <asm/neon.h>
->  #include <asm/simd.h>
+> Maybe increment_buffer_failure, or sth that is telling what happen after
+> goto.
+
+Okay, I can change that.
+
+>> +		}
+>>  
+>>  		/* are we allocating a new buffer or recycling an old one */
+>>  		if (pool->skbuff[index])
+>> @@ -300,6 +302,7 @@ static void ibmveth_replenish_buffer_pool(struct ibmveth_adapter *adapter,
+>>  		                 DMA_FROM_DEVICE);
+>>  	dev_kfree_skb_any(pool->skbuff[index]);
+>>  	pool->skbuff[index] = NULL;
+>> +failure2:
+>>  	adapter->replenish_add_buff_failure++;
+>>  
+>>  	mb();
+>> @@ -370,20 +373,36 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
+>>  	}
+>>  }
+>>  
 >
-> -static DEFINE_STATIC_KEY_FALSE(have_neon);
-> -static DEFINE_STATIC_KEY_FALSE(have_pmull);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_neon);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_pmull);
->
->  #define CRC_T10DIF_PMULL_CHUNK_SIZE    16U
->
->  asmlinkage u16 crc_t10dif_pmull64(u16 init_crc, const u8 *buf, size_t len);
->  asmlinkage void crc_t10dif_pmull8(u16 init_crc, const u8 *buf, size_t len,
-> diff --git a/arch/arm/lib/crc32-glue.c b/arch/arm/lib/crc32-glue.c
-> index 4340351dbde8..7ef7db9c0de7 100644
-> --- a/arch/arm/lib/crc32-glue.c
-> +++ b/arch/arm/lib/crc32-glue.c
-> @@ -16,12 +16,12 @@
->
->  #include <asm/hwcap.h>
->  #include <asm/neon.h>
->  #include <asm/simd.h>
->
-> -static DEFINE_STATIC_KEY_FALSE(have_crc32);
-> -static DEFINE_STATIC_KEY_FALSE(have_pmull);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_pmull);
->
->  #define PMULL_MIN_LEN  64      /* min size of buffer for pmull functions */
->
->  asmlinkage u32 crc32_pmull_le(const u8 buf[], u32 len, u32 init_crc);
->  asmlinkage u32 crc32_armv8_le(u32 init_crc, const u8 buf[], u32 len);
-> diff --git a/arch/arm64/lib/crc-t10dif-glue.c b/arch/arm64/lib/crc-t10dif-glue.c
-> index bacd18f23168..99d0b5668a28 100644
-> --- a/arch/arm64/lib/crc-t10dif-glue.c
-> +++ b/arch/arm64/lib/crc-t10dif-glue.c
-> @@ -15,12 +15,12 @@
->  #include <crypto/internal/simd.h>
->
->  #include <asm/neon.h>
->  #include <asm/simd.h>
->
-> -static DEFINE_STATIC_KEY_FALSE(have_asimd);
-> -static DEFINE_STATIC_KEY_FALSE(have_pmull);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_asimd);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_pmull);
->
->  #define CRC_T10DIF_PMULL_CHUNK_SIZE    16U
->
->  asmlinkage void crc_t10dif_pmull_p8(u16 init_crc, const u8 *buf, size_t len,
->                                     u8 out[16]);
-> diff --git a/arch/loongarch/lib/crc32-loongarch.c b/arch/loongarch/lib/crc32-loongarch.c
-> index c44ee4f32557..8e6d1f517e73 100644
-> --- a/arch/loongarch/lib/crc32-loongarch.c
-> +++ b/arch/loongarch/lib/crc32-loongarch.c
-> @@ -24,11 +24,11 @@ do {                                                        \
->  } while (0)
->
->  #define CRC32(crc, value, size)                _CRC32(crc, value, size, crc)
->  #define CRC32C(crc, value, size)       _CRC32(crc, value, size, crcc)
->
-> -static DEFINE_STATIC_KEY_FALSE(have_crc32);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32);
->
->  u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
->  {
->         if (!static_branch_likely(&have_crc32))
->                 return crc32_le_base(crc, p, len);
-> diff --git a/arch/mips/lib/crc32-mips.c b/arch/mips/lib/crc32-mips.c
-> index 676a4b3e290b..84df361e7181 100644
-> --- a/arch/mips/lib/crc32-mips.c
-> +++ b/arch/mips/lib/crc32-mips.c
-> @@ -60,11 +60,11 @@ do {                                                        \
->         _CRC32(crc, value, size, crc32)
->
->  #define CRC32C(crc, value, size) \
->         _CRC32(crc, value, size, crc32c)
->
-> -static DEFINE_STATIC_KEY_FALSE(have_crc32);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32);
->
->  u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
->  {
->         if (!static_branch_likely(&have_crc32))
->                 return crc32_le_base(crc, p, len);
-> diff --git a/arch/powerpc/lib/crc-t10dif-glue.c b/arch/powerpc/lib/crc-t10dif-glue.c
-> index f411b0120cc5..ddd5c4088f50 100644
-> --- a/arch/powerpc/lib/crc-t10dif-glue.c
-> +++ b/arch/powerpc/lib/crc-t10dif-glue.c
-> @@ -19,11 +19,11 @@
->  #define VMX_ALIGN              16
->  #define VMX_ALIGN_MASK         (VMX_ALIGN-1)
->
->  #define VECTOR_BREAKPOINT      64
->
-> -static DEFINE_STATIC_KEY_FALSE(have_vec_crypto);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vec_crypto);
->
->  u32 __crct10dif_vpmsum(u32 crc, unsigned char const *p, size_t len);
->
->  u16 crc_t10dif_arch(u16 crci, const u8 *p, size_t len)
->  {
-> diff --git a/arch/powerpc/lib/crc32-glue.c b/arch/powerpc/lib/crc32-glue.c
-> index dbd10f339183..42f2dd3c85dd 100644
-> --- a/arch/powerpc/lib/crc32-glue.c
-> +++ b/arch/powerpc/lib/crc32-glue.c
-> @@ -11,11 +11,11 @@
->  #define VMX_ALIGN              16
->  #define VMX_ALIGN_MASK         (VMX_ALIGN-1)
->
->  #define VECTOR_BREAKPOINT      512
->
-> -static DEFINE_STATIC_KEY_FALSE(have_vec_crypto);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vec_crypto);
->
->  u32 __crc32c_vpmsum(u32 crc, const u8 *p, size_t len);
->
->  u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
->  {
-> diff --git a/arch/s390/lib/crc32-glue.c b/arch/s390/lib/crc32-glue.c
-> index 124214a27340..8f20a8e595c3 100644
-> --- a/arch/s390/lib/crc32-glue.c
-> +++ b/arch/s390/lib/crc32-glue.c
-> @@ -16,11 +16,11 @@
->
->  #define VX_MIN_LEN             64
->  #define VX_ALIGNMENT           16L
->  #define VX_ALIGN_MASK          (VX_ALIGNMENT - 1)
->
-> -static DEFINE_STATIC_KEY_FALSE(have_vxrs);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vxrs);
->
->  /*
->   * DEFINE_CRC32_VX() - Define a CRC-32 function using the vector extension
->   *
->   * Creates a function to perform a particular CRC-32 computation. Depending
-> diff --git a/arch/sparc/lib/crc32_glue.c b/arch/sparc/lib/crc32_glue.c
-> index a70752c729cf..d34e7cc7e1a1 100644
-> --- a/arch/sparc/lib/crc32_glue.c
-> +++ b/arch/sparc/lib/crc32_glue.c
-> @@ -15,11 +15,11 @@
->  #include <linux/kernel.h>
->  #include <linux/crc32.h>
->  #include <asm/pstate.h>
->  #include <asm/elf.h>
->
-> -static DEFINE_STATIC_KEY_FALSE(have_crc32c_opcode);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32c_opcode);
->
->  u32 crc32_le_arch(u32 crc, const u8 *data, size_t len)
->  {
->         return crc32_le_base(crc, data, len);
->  }
-> diff --git a/arch/x86/lib/crc-t10dif-glue.c b/arch/x86/lib/crc-t10dif-glue.c
-> index f89c335cde3c..d073b3678edc 100644
-> --- a/arch/x86/lib/crc-t10dif-glue.c
-> +++ b/arch/x86/lib/crc-t10dif-glue.c
-> @@ -7,11 +7,11 @@
->
->  #include <linux/crc-t10dif.h>
->  #include <linux/module.h>
->  #include "crc-pclmul-template.h"
->
-> -static DEFINE_STATIC_KEY_FALSE(have_pclmulqdq);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_pclmulqdq);
->
->  DECLARE_CRC_PCLMUL_FUNCS(crc16_msb, u16);
->
->  u16 crc_t10dif_arch(u16 crc, const u8 *p, size_t len)
->  {
-> diff --git a/arch/x86/lib/crc32-glue.c b/arch/x86/lib/crc32-glue.c
-> index e3f93b17ac3f..e6a6285cfca8 100644
-> --- a/arch/x86/lib/crc32-glue.c
-> +++ b/arch/x86/lib/crc32-glue.c
-> @@ -9,12 +9,12 @@
->
->  #include <linux/crc32.h>
->  #include <linux/module.h>
->  #include "crc-pclmul-template.h"
->
-> -static DEFINE_STATIC_KEY_FALSE(have_crc32);
-> -static DEFINE_STATIC_KEY_FALSE(have_pclmulqdq);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_crc32);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_pclmulqdq);
->
->  DECLARE_CRC_PCLMUL_FUNCS(crc32_lsb, u32);
->
->  u32 crc32_le_arch(u32 crc, const u8 *p, size_t len)
->  {
-> diff --git a/arch/x86/lib/crc64-glue.c b/arch/x86/lib/crc64-glue.c
-> index b0e1b719ecbf..1214ee726c16 100644
-> --- a/arch/x86/lib/crc64-glue.c
-> +++ b/arch/x86/lib/crc64-glue.c
-> @@ -7,11 +7,11 @@
->
->  #include <linux/crc64.h>
->  #include <linux/module.h>
->  #include "crc-pclmul-template.h"
->
-> -static DEFINE_STATIC_KEY_FALSE(have_pclmulqdq);
-> +static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_pclmulqdq);
->
->  DECLARE_CRC_PCLMUL_FUNCS(crc64_msb, u64);
->  DECLARE_CRC_PCLMUL_FUNCS(crc64_lsb, u64);
->
->  u64 crc64_be_arch(u64 crc, const u8 *p, size_t len)
->
-> base-commit: e8c24520a1338f938774268a9bafb679ace93b76
-> --
-> 2.49.0
->
+> [...]
+
+Thanks for your review!
+
+-Dave
 
