@@ -1,94 +1,54 @@
-Return-Path: <linuxppc-dev+bounces-7663-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7664-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3090EA89FC2
-	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Apr 2025 15:43:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6A1EA8A2E7
+	for <lists+linuxppc-dev@lfdr.de>; Tue, 15 Apr 2025 17:37:24 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZcQNH5ypdz3bcy;
-	Tue, 15 Apr 2025 23:43:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZcSvj400Gz2xYl;
+	Wed, 16 Apr 2025 01:37:21 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744724607;
-	cv=none; b=judXxXs9sjft+8kw1/Fg89ieuUqMCLw8q5oNky0VvvwPjqp2RGBtg7Gf3F0QSkG1Vm6WAV8vWPKyCqxOrq755xzYORO6alxn4LT9KOOzVOp3ksIEjoUjZONzlbHY4x7XkhxmfdelxxrvHKcgOLKCwRpPMbKQ+8HZFb3EKWXXeJ4H8eSBowQdsUWpHJoT0xTSlSGINiNazkwxCnTMGm4OqX4k1R+0b7iN9kPqWcggzTFR2rO1/+e4xiRrQeq4oUuOq6YJHh9inUcE+/WFq0OV1D7sISbWYrIXpa9U9Sxz7D8FSqLMNSY2fA8xtVY5qdwmY8vagjd6VenidXVrRK0SdA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744731441;
+	cv=none; b=X2X5osHfO7QqFDo142JL7ujP5EYgwXWCpLegIxNvLNI0wklplEijmZCzvJ9XC2USarNDyX1Gjh5lmU392OXcspVu/rGClNL0ATM+CyL5dzfetvzSP1RvZ0YJhwKC1xt5zwDz4IvOHugSdZYEM+T2BybLwL/RiuSIw4vcKLpIWGX+Dr+ETU3qve39mBODb4lS3s8NPPjb2pYxl5NesVkG72a0CeDtG0O7glrkFQZjlwwSuMeLETMRIqVPn4k8qbBtZMUTkv/B403HqPqg+WjWm7YoTqH4GAjnstxIFG1byaz6KdEvzaVzdcLTyo3MtbYoEkjUT8MKGsZtbjiBLZOkOQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744724607; c=relaxed/relaxed;
-	bh=/BknlwHAWOUIUSD2VyjY9YAAgdtDCJlgRixChgK4ykw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=WTj6s8Pt5us5ZKWjcWX1z2zwIHykxrrXJw/qlE8e8zJsDZykbLVf12+lI0C2XmZyXSt5HFsw7P2eOg6qWYJjBGinyKUd1Z6ZLQAogPeTlWEyvng2CdokQ64NicPXaxTXZsfxPutHaHQf/YEu9C/VHH0vbxh8EvIdyQnqm8cUkIpMjm9Y8piNI5js4Eltv2BZgUdvvfKk4b/5XsPCph1VoYILwdIdIDc2Xf1SvrJjZGkRbsOFUtO6ugoyT5hrMcsTVzlGx0T1AhqSYZOTchJLwl4ScYD9HNzFaDnerC6wrLNxn8nDvpPdiS/NIYAVXRKcBiHdvXo0NzeS+u4FuKKihQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EXRnloSF; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EXRnloSF; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1744731441; c=relaxed/relaxed;
+	bh=fihApEIuWNDTZ5SUlcQlAQ9Qq6nixx8s0KB4soooB8M=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=gAA8yG6gDdTxaP+swJn2CimF03eSvy0Qi8K8FjJEgEGvm1S9I0kwe3oLO2X/L0BNkyeKdG0tIklJDPNYgZECqdL++qc4O6/ltZp1hs6V7RFk0gArcggJ8iCn6nWN0a8tv2ARJpY5Y0lzxMyX0eu1/2R+sf97+6Bulf1PXi+ATdr64uN0l3tnG3tk4SBGEI6XFLaufq0Uj0EshRIB+2sJA6WFEEHviai8dKvOqwoqLguWk29Sz3DlXw3D199G5pZY2TMEE2hVTDnqdo7ALIMm0H4yyHsoI2czUlh2kH09ldzPsP+t4WuYeMegmn+n4TueBRkwrjMgBF4ca7zHoCa+Vg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qxgcx+y8; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+sven.svenpeter.dev@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EXRnloSF;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=EXRnloSF;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=qxgcx+y8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=pabeni@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+sven.svenpeter.dev@kernel.org; receiver=lists.ozlabs.org)
+Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZcQNG4GP7z2yRn
-	for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Apr 2025 23:43:24 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744724601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/BknlwHAWOUIUSD2VyjY9YAAgdtDCJlgRixChgK4ykw=;
-	b=EXRnloSF479QJV//yYVyB/XOaPifwzMte16jjkHkYwmeENIt0Y9GOFgmpeANd0D6x5KTQr
-	1oRx4KQEwb7l0lXgDiCbltTrHpQmnpHjmvP3bT0OGqelyKYBUDFxukrpDVNPKUpr1o0LS9
-	GXsMda+HQllnuHmeKHdyUBIxzrrQNXQ=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744724601;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/BknlwHAWOUIUSD2VyjY9YAAgdtDCJlgRixChgK4ykw=;
-	b=EXRnloSF479QJV//yYVyB/XOaPifwzMte16jjkHkYwmeENIt0Y9GOFgmpeANd0D6x5KTQr
-	1oRx4KQEwb7l0lXgDiCbltTrHpQmnpHjmvP3bT0OGqelyKYBUDFxukrpDVNPKUpr1o0LS9
-	GXsMda+HQllnuHmeKHdyUBIxzrrQNXQ=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-594-Upe69eqXOm2qzIMv4eHmZA-1; Tue, 15 Apr 2025 09:43:19 -0400
-X-MC-Unique: Upe69eqXOm2qzIMv4eHmZA-1
-X-Mimecast-MFC-AGG-ID: Upe69eqXOm2qzIMv4eHmZA_1744724598
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-39c30f26e31so3744863f8f.3
-        for <linuxppc-dev@lists.ozlabs.org>; Tue, 15 Apr 2025 06:43:18 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744724598; x=1745329398;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/BknlwHAWOUIUSD2VyjY9YAAgdtDCJlgRixChgK4ykw=;
-        b=JvZhHQ1kAuqDLmJ4A/uN2m2kRi4feQufc0mZ7wbwgwLHysK90nznMS3Q040tGXTWE+
-         FM+85ENynP8KM22bho6CWoE8XozItCbwp4TEtoZkWtS/BrlJJ1VE+SQs2UoBC38Tz6KM
-         xfDNRccV376vXRmWqB8HtqzC5y390KG44HMtIgWGbEgDk0kYLdFKa8h/mf+7mV1DnS1h
-         fH6twwRRg7TI4QofUH4zCxVMzQ69bdU4ukfiyo+658IqFbRG53gn4y9UF1Po2TCrRBuB
-         nxM7TnNDRsMxdSh3VqgOe8k9P4LDJB3JSnsr2ogVh0mQEuBG8Zh8ncsSPURMzfUdfldX
-         ld0w==
-X-Forwarded-Encrypted: i=1; AJvYcCWJRshdbJx+MOOx+ucZ94l8t1y++GzhFhgL+vt9khXXbHLiMdIsx60Jt4Fn2QvORw/S14c2JFbTCd2iFQ4=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YyKnTP+YJeSdrS9vSekJiULY6Q+4MPEYc4+bcPVo9PzWdXxRG7U
-	KIBhao+MGAmwlNNYCpkA4JEREPO8R5nSyrb9a96skIyfSsy5iMgHeMAKFpKyOZVMJ7WrPiHBpZ8
-	srhmIpN2zDu6jIDgYx4ghjak9F3Izh4UtJaVIPHu7Fz7XH+fUOohdIdozaf1N5dI=
-X-Gm-Gg: ASbGncvi2gix2UhD7Log+ssZUcEuG8L/7nsmcEvcwmNx2nJgync7VAo6bjzWQpnGLi2
-	/k+GYJS3/AGWF6vvQdb5159PcY1Q6V9tpQ98ibtTK+ZnHO0u8LCN4kl2kjY5kgsE79Q8r5e9j6P
-	N3VAaeS+OB47JJXW+KCLA+RVmwro873WsTtAzzGJWl9UD30mTjajYfP/VJxmF0+6eqzFUw7WP6L
-	9PsBOr7MNHv0OlR23GsJZOzYlk7UziRgEoZ3k1JucbiU15AUR4JcoQZ1aV6MwkHY6fFZRF1pIEM
-	+lVvoG57VCdZkrvACZdc6tdIK5Qw5EeupoQz/PI=
-X-Received: by 2002:a5d:59a3:0:b0:390:e1e0:1300 with SMTP id ffacd0b85a97d-39eaaea4548mr13282375f8f.33.1744724598001;
-        Tue, 15 Apr 2025 06:43:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG0JyZk7iu1Ps9aWjZNEP8lEOiYdz+v1T/ibFseJb/dw7p9p9LOXvKaUssvdPPF8RDwWIrTgw==
-X-Received: by 2002:a5d:59a3:0:b0:390:e1e0:1300 with SMTP id ffacd0b85a97d-39eaaea4548mr13282344f8f.33.1744724597586;
-        Tue, 15 Apr 2025 06:43:17 -0700 (PDT)
-Received: from [192.168.88.253] (146-241-34-52.dyn.eolo.it. [146.241.34.52])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eae96c02esm14065754f8f.23.2025.04.15.06.43.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 15 Apr 2025 06:43:17 -0700 (PDT)
-Message-ID: <4ffd3630-bc75-47db-b63c-3dcb7af8249c@redhat.com>
-Date: Tue, 15 Apr 2025 15:43:15 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZcSvh2jVwz2xTh
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 01:37:20 +1000 (AEST)
+Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
+	by tor.source.kernel.org (Postfix) with ESMTP id AAC1B6115F;
+	Tue, 15 Apr 2025 15:37:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 21F3EC4CEEB;
+	Tue, 15 Apr 2025 15:37:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1744731437;
+	bh=ymN+LyNWSLpbDsTvqi1RfS1hGNC4G0Ay2QtUtBcebSE=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=qxgcx+y8f/T0QqwUy4z4BMkQEGP5nKd1tpaCCc1jg1KFKOJGkzMKzu5Hvs6zUjBtO
+	 papZAgHQ9egtnGMZCNNILgO67XO7nKVDpnB5DvbV0knXpFGLv/x6ui2RoIS2U42H1H
+	 t/PilexvtBsfXdrjGfUHI+BdmkSRO8np4kHOjlMjylBhFd5noOwIRZ87XzPuBCTrfO
+	 ptrL7N18ofihn7iZdUW3zSZOsSOAeSHVxuDoY+frBagPdYWrEjGNL7akfYIRsOqN1d
+	 1P3kb3Bm9hKvDo/dcMvsOBeQudYo+gWBiB9btuxHyDeyoeBr7/jHjYT3dRYLacu1L4
+	 r3bs1VLwQ8/Pw==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 04DDDC369AB;
+	Tue, 15 Apr 2025 15:37:17 +0000 (UTC)
+From: Sven Peter via B4 Relay <devnull+sven.svenpeter.dev@kernel.org>
+Subject: [PATCH v2 0/6] Apple/PASemi i2c error recovery fixes
+Date: Tue, 15 Apr 2025 15:36:54 +0000
+Message-Id: <20250415-pasemi-fixes-v2-0-c543bf53151a@svenpeter.dev>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,46 +61,85 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 net-next 06/14] net: enetc: add set/get_rss_table()
- hooks to enetc_si_ops
-To: Wei Fang <wei.fang@nxp.com>, claudiu.manoil@nxp.com,
- vladimir.oltean@nxp.com, xiaoning.wang@nxp.com, andrew+netdev@lunn.ch,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org
-Cc: christophe.leroy@csgroup.eu, netdev@vger.kernel.org,
- linux-kernel@vger.kernel.org, imx@lists.linux.dev,
- linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20250411095752.3072696-1-wei.fang@nxp.com>
- <20250411095752.3072696-7-wei.fang@nxp.com>
-From: Paolo Abeni <pabeni@redhat.com>
-In-Reply-To: <20250411095752.3072696-7-wei.fang@nxp.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: 1xM9GyTG_NfYO3_iLJ-annl8ioVtIKhrEjNa3nyulI0_1744724598
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+X-B4-Tracking: v=1; b=H4sIABZ9/mcC/1WMQQ6CMBREr0L+2pq2gERX3sOwKHSUvxCaftJoS
+ O9uJXHh8s3kvY0EkSF0qTaKSCy8zAXsoaJxcvMDin1hstq22lqtghM8Wd35BVFncxqHrmt0Mzg
+ qSojYj2Lc+sITy7rE915P5rv+QvY/lIzSyndwde1bPba4SsIcsCIePRL1OecPBfj1sawAAAA=
+X-Change-ID: 20250220-pasemi-fixes-916cb77404ba
+To: Janne Grunau <j@jannau.net>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
+ Madhavan Srinivasan <maddy@linux.ibm.com>, 
+ Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
+ Christophe Leroy <christophe.leroy@csgroup.eu>, 
+ Naveen N Rao <naveen@kernel.org>, Andi Shyti <andi.shyti@kernel.org>, 
+ Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>
+Cc: linuxppc-dev@lists.ozlabs.org, asahi@lists.linux.dev, 
+ linux-arm-kernel@lists.infradead.org, linux-i2c@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Sven Peter <sven@svenpeter.dev>, 
+ Andy Shevchenko <andy.shevchenko@gmail.com>
+X-Mailer: b4 0.14.2
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1509; i=sven@svenpeter.dev;
+ h=from:subject:message-id;
+ bh=ymN+LyNWSLpbDsTvqi1RfS1hGNC4G0Ay2QtUtBcebSE=;
+ b=owGbwMvMwCHmIlirolUq95LxtFoSQ/q/WqW39UeZ2Vs4Hu471P1vrbLFhq3/9kvNXFKdzyq+j
+ 7MlkbWwo5SFQYyDQVZMkWX7fnvTJw/fCC7ddOk9zBxWJpAhDFycAjCRm0IM/0y7N11kSl4vsPBN
+ e11CRPJmjTvNtzVf/ehWW7f33Wexj76MDEc5bobPYdU5tcPjyDnljo4tLnwHrzcd9mDs/BEcN79
+ 4Ej8A
+X-Developer-Key: i=sven@svenpeter.dev; a=openpgp;
+ fpr=A1E3E34A2B3C820DBC4955E5993B08092F131F93
+X-Endpoint-Received: by B4 Relay for sven@svenpeter.dev/default with
+ auth_id=167
+X-Original-From: Sven Peter <sven@svenpeter.dev>
+Reply-To: sven@svenpeter.dev
+X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 4/11/25 11:57 AM, Wei Fang wrote:
-> Since i.MX95 ENETC (v4) uses NTMP 2.0 to manage the RSS table, which is
-> different from LS1028A ENETC (v1). In order to reuse some functions
-> related to the RSS table, so add .get_rss_table() and .set_rss_table()
-> hooks to enetc_si_ops.
-> 
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> ---
-> v5 changes:
-> Add enetc_set_default_rss_key() to enetc_pf_common.c and use it in both
-> enetc v1 and v4 drivers
+Hi,
 
-Note for the reviewers: this changelog actually applies to the next
-(07/14) patch.
+This series adds a few fixes/improvements to the error recovery for
+Apple/PASemi i2c controllers.
+The patches have been in our downstream tree and were originally used
+to debug a rare glitch caused by clock strechting but are useful in
+general. We haven't seen the controller misbehave since adding these.
 
-/P
+Best,
+
+Sven
+
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
+---
+Changes in v2:
+- Added commit to use the correct include (bits.h instead of bitfield.h)
+- Added commit to sort includes
+- Moved timeout explanations to code instead of just the commit log
+- Made timeout recovery also work correctly in the interrupt case when
+  waiting for the condition failed
+- Used readx_poll_timeout instead of open-coded alternative
+- Link to v1: https://lore.kernel.org/r/20250222-pasemi-fixes-v1-0-d7ea33d50c5e@svenpeter.dev
+
+---
+Hector Martin (3):
+      i2c: pasemi: Improve error recovery
+      i2c: pasemi: Enable the unjam machine
+      i2c: pasemi: Log bus reset causes
+
+Sven Peter (3):
+      i2c: pasemi: Use correct bits.h include
+      i2c: pasemi: Sort includes alphabetically
+      i2c: pasemi: Improve timeout handling
+
+ drivers/i2c/busses/i2c-pasemi-core.c | 114 ++++++++++++++++++++++++++++-------
+ drivers/i2c/busses/i2c-pasemi-pci.c  |  10 +--
+ 2 files changed, 96 insertions(+), 28 deletions(-)
+---
+base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
+change-id: 20250220-pasemi-fixes-916cb77404ba
+
+Best regards,
+-- 
+Sven Peter <sven@svenpeter.dev>
+
 
 
