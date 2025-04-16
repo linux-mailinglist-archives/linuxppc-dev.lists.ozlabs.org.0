@@ -1,82 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-7688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7689-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12179A905CA
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 16:13:59 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B587A906A0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 16:38:16 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zd3103LtTz2yf9;
-	Thu, 17 Apr 2025 00:13:56 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zd3Y16n0Lz2ySk;
+	Thu, 17 Apr 2025 00:38:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744812836;
-	cv=none; b=jJXkvWvDqtK2rNDIMgnu4FI+U2NgNas2sWc5nTu/5XsLyzzJwTSfE1p7daUsdHMsMvkeBET64pbW5QtCVviS7hw2YPBVcWx4RrosKKZCmj+2rlw+PTLCvVu1w29tMFqlNjV8GTlPcx0QGL0npScTCFce+QVvU6DeQ9s4gccUP0jATLll248iTs1L4qfi6zReC+aoMM8PpuCUy4G8DpB0ZeiOj+loZGJrbfMPJDCMyC0QSQw/Xd3GwIL01XdHY2IHBkZEH5E5dy+8QR0hQWItDRdy31YmAY1boc7SG8xX3pqWs5KbkXv4NxQepuTzQkKwJNv2FJqWX4lOIQ37LDuwlw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744814293;
+	cv=none; b=kxmgPwN/JSCm0NJIABQNp/ozIn15MCMf7J8UeY+y4WBmus5VU/itwsCQM770anewhr9MvYbOy4/L3IbhnP6aWr8xkqCvh4KGZkJXoXM0s3NgB2RwPAAdtEa6sKbdzjme9+gdFTRWB5ojuYRD5l1HY9PPm/ne4IghoMuda6YZOvZ0eTKK5MTwRlsjAz6xpFuD0H4IafQI9LpYWVw+HNMdVfuM/Ub9vZW0R3wWb0a69Z2qwmaXwboy1ZME4pYkf+oSoYJssYbuJaJZ5Ffo9jRyQDfzaZZyvVGynzXmH/yKDck2TwIBeN5NEylDkt6H4oFw1yrLjJHvV4oyqOE1qu7KKw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744812836; c=relaxed/relaxed;
-	bh=Kg7g99BYB8SaEZHORP0dZSRe0tlnjVtMmCUo1y3MJV4=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=UL45yT3ywVwSd92i6c5IsPaGyIkQeqkK0v8t4T0zDWOETzHjFu5A6W7VoDE/WJPV6BhOaoNA7P+RmV7gBBtvfLF4Pq5UXmoS1m5XqvjRBJEH8Ux+z3oREjC1UdebqiUZMX88aGXlyKTXGBjhCXmb6EOaVRWnnCukeheKUlx2MDc4tEc+YMI6Or1lckipNs68j07/LnTNN/epq76kes39ChZX5OcSGNWMdiUdrEtEP0N0yxU8FQoTp4kHg/m/TWgKwLkMVBPU6VFB35ZOQdkeXqlDIi+nrOhb29EAzN8IcB2T1vqNCxpWVDIq1YBEtNEHAQ0Wm9EfROSiQoeBPByCtw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EPtVOq3m; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EPtVOq3m;
-	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	t=1744814293; c=relaxed/relaxed;
+	bh=LmAOiGA9pw5k3i+0g+vWrux8qZj3BhX8AvTB7BFnYAg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RV+3UjtuPbwQSotWYjIzeEf0NlCo2BwRw3Wex6Ymnrt6mBBUwQcf2qdDWqwWF6WFXiOT8ydlupHr3r1C94j29W6C6qjxLvywUJmu5F3JOpa+1v8TOao6HRYu/gOIjXdACwrth7ZKvjPh3S6LfgL1QWHaggaeMrU5u+qedQIMYVnA3ZvdYWbD4/lnOnl0safn8FvXUuPLeW3lGqEOss1qC0RXHd0dD4FuHEanOyvruDLd9v4YOxTLtO96+0RHXMHvCjLoIrEp+abS388fnKXcUS4MRXUo/bxbwxbIcZ7qstJn70eQ7aT9baBknEXiPUE7KBv8jEwXReE6yjdzuoqTuQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
+Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
+Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd30z0tG4z2yS7
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 00:13:54 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GAea7i019797;
-	Wed, 16 Apr 2025 14:13:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=Kg7g99BYB8SaEZHORP0dZSRe0tlnjV
-	tMmCUo1y3MJV4=; b=EPtVOq3mhLU1kvvzny31SiRZHfua7ot2YVzjgJcNJh+g8d
-	uAt8nYFtCGgp4Ko9KxV/LCQ8sFdb4FsV6WKsnt0AWKy1eiA6dnvPaK6DaeyivjTI
-	/iGzGD/0bZDhWXwzr7RayWIyYBxcuO7Vv7Paiw4DS1542VsuTsG2QtBii4MJ+fPy
-	1CJSYzrslCT1KWWMkSYSVuBtYNZzX5PzsWHgfkTcEos5jKveJE25w8MlYBkXX5iI
-	1PxuLY3CuLr0Mu1jRqQ+OVbxvfrmqqCrrt+Ed/iS1DXYwDdTsADEMoeyG6j+dsB9
-	0BCdCDSVqReyGADTzBQtnyPiN/navqzrDDELXiXg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462b0q13fk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 14:13:43 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GAQmTE030919;
-	Wed, 16 Apr 2025 14:13:43 GMT
-Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4603gnrqpn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 14:13:43 +0000
-Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
-	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GEDg4F22741658
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Apr 2025 14:13:42 GMT
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1AE8758061;
-	Wed, 16 Apr 2025 14:13:42 +0000 (GMT)
-Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C01EA5805D;
-	Wed, 16 Apr 2025 14:13:41 +0000 (GMT)
-Received: from d.ibm.com (unknown [9.61.55.205])
-	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 16 Apr 2025 14:13:41 +0000 (GMT)
-From: Dave Marquardt <davemarq@linux.ibm.com>
-To: Simon Horman <horms@kernel.org>
-Cc: netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v2 1/2] net: ibmveth: make ibmveth use WARN_ON
- instead of BUG_ON
-In-Reply-To: <20250416123449.GQ395307@horms.kernel.org> (Simon Horman's
-	message of "Wed, 16 Apr 2025 13:34:49 +0100")
-References: <20250414194016.437838-1-davemarq@linux.ibm.com>
-	<20250414194016.437838-2-davemarq@linux.ibm.com>
-	<20250416123449.GQ395307@horms.kernel.org>
-Date: Wed, 16 Apr 2025 09:13:40 -0500
-Message-ID: <877c3kdwiz.fsf@linux.ibm.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd3Y02qqWz2xQ6
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 00:38:10 +1000 (AEST)
+Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
+	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
+	by bmailout3.hostsharing.net (Postfix) with ESMTPS id E372F2C06039;
+	Wed, 16 Apr 2025 16:38:00 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+	id D4BF0173A2F; Wed, 16 Apr 2025 16:38:01 +0200 (CEST)
+Date: Wed, 16 Apr 2025 16:38:01 +0200
+From: Lukas Wunner <lukas@wunner.de>
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+	Oliver O'Halloran <oohall@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof Wilczy??ski <kw@linux.com>, Rob Herring <robh@kernel.org>,
+	dingwei@marvell.com, cassel@kernel.org,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+Subject: Re: [PATCH 2/4] PCI/ERR: Add support for resetting the slot in a
+ platforms specific way
+Message-ID: <Z__AyQeZmXiNwT7c@wunner.de>
+References: <20250404-pcie-reset-slot-v1-0-98952918bf90@linaro.org>
+ <20250404-pcie-reset-slot-v1-2-98952918bf90@linaro.org>
+ <Z--cY5Uf6JyTYL9y@wunner.de>
+ <3dokyirkf47lqxgx5k2ybij5b5an6qnceifsub3mcmjvzp3kdb@sm7f2jxxepdc>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -89,182 +65,61 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: 4HOrPrJVLIXs7Ie9wzPM09t9FYmVhU00
-X-Proofpoint-GUID: 4HOrPrJVLIXs7Ie9wzPM09t9FYmVhU00
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-16_04,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 mlxscore=0
- bulkscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999
- impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2502280000 definitions=main-2504160115
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3dokyirkf47lqxgx5k2ybij5b5an6qnceifsub3mcmjvzp3kdb@sm7f2jxxepdc>
+X-Spam-Status: No, score=0.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
+	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
+	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Simon Horman <horms@kernel.org> writes:
+On Tue, Apr 15, 2025 at 07:03:17PM +0530, Manivannan Sadhasivam wrote:
+> On Fri, Apr 04, 2025 at 10:46:27AM +0200, Lukas Wunner wrote:
+> > On Fri, Apr 04, 2025 at 01:52:22PM +0530, Manivannan Sadhasivam via B4 Relay wrote:
+> > > When the PCI error handling requires resetting the slot, reset it
+> > > using the host bridge specific 'reset_slot' callback if available
+> > > before calling the 'slot_reset' callback of the PCI drivers.
+> > > 
+> > > The 'reset_slot' callback is responsible for resetting the given slot
+> > > referenced by the 'pci_dev' pointer in a platform specific way and
+> > > bring it back to the working state if possible. If any error occurs
+> > > during the slot reset operation, relevant errno should be returned.
+> > 
+> > This feels like something that should be plumbed into
+> > pcibios_reset_secondary_bus(), rather than pcie_do_recovery().
+> 
+> I did consider that, but didn't go for it since there was no platform
+> reset code present in that function. But I will try to use it as I
+> don't have a strong preference to do reset slot in pcie_do_recovery().
 
-> On Mon, Apr 14, 2025 at 02:40:15PM -0500, Dave Marquardt wrote:
->> Replaced BUG_ON calls with WARN_ON calls with error handling, with
->> calls to a new ibmveth_reset routine, which resets the device. Removed
->> conflicting and unneeded forward declaration.
->
-> To me the most important change here is adding the ibmveth_reset.
-> So I would report that in the subject (rather than the WARN_ON) change.
-> But perhaps that is just me.
+The only platform overriding pcibios_reset_secondary_bus() is powerpc,
+and it only does that on PowerNV.
 
-Thanks, I'll consider that.
+I think you could continue to stick with the approach of adding a
+->reset_slot() callback to struct pci_host_bridge, but it would
+be good if at the same time you could convert PowerNV to use the
+newly introduced callback as well.  And then remove the way to
+override the reset procedure via pcibios_reset_secondary_bus().
 
->> 
->> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
->> ---
->>  drivers/net/ethernet/ibm/ibmveth.c | 116 ++++++++++++++++++++++++-----
->>  drivers/net/ethernet/ibm/ibmveth.h |  65 ++++++++--------
->>  2 files changed, 130 insertions(+), 51 deletions(-)
->> 
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
->
-> ...
->
->> @@ -370,20 +372,36 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
->>  	}
->>  }
->>  
->> -/* remove a buffer from a pool */
->> -static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
->> -					    u64 correlator, bool reuse)
->> +/**
->> + * ibmveth_remove_buffer_from_pool - remove a buffer from a pool
->> + * @adapter: adapter instance
->> + * @correlator: identifies pool and index
->> + * @reuse: whether to reuse buffer
->
-> The above is the correct way to document function parameters in a Kernel doc.
->
->> + *
->> + * Return:
->> + * * %0       - success
->> + * * %-EINVAL - correlator maps to pool or index out of range
->> + * * %-EFAULT - pool and index map to null skb
->> + */
->> +static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
->> +					   u64 correlator, bool reuse)
->
-> ...
->
->> +/**
->> + * ibmveth_rxq_harvest_buffer - Harvest buffer from pool
->> + *
->> + * @adapter - pointer to adapter
->> + * @reuse   - whether to reuse buffer
->
-> But this is not correct. IOW, tooling expects
-> f.e. @adapter: ...  rather than @adapter - ...
->
-> Flagged by W=1 builds and ./scripts/kernel-doc -none
+All pci_host_bridge's which do not define a ->reset_slot() could be
+assigned a default callback which just calls pci_reset_secondary_bus().
 
-Thanks, I'll start using this in my work.
+Alternatively, pcibios_reset_secondary_bus() could be made to invoke the
+pci_host_bridge's ->reset_slot() callback if it's not NULL, else
+pci_reset_secondary_bus().  And in that case, the __weak attribute
+could be removed as well as the powerpc-specific version of
+pcibios_reset_secondary_bus().
 
->> + *
->> + * Context: called from ibmveth_poll
->> + *
->> + * Return:
->> + * * %0    - success
->> + * * other - non-zero return from ibmveth_remove_buffer_from_pool
->> + */
->> +static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
->> +				      bool reuse)
->
-> ...
->
->> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
->> index 8468e2c59d7a..b0a2460ec9f9 100644
->> --- a/drivers/net/ethernet/ibm/ibmveth.h
->> +++ b/drivers/net/ethernet/ibm/ibmveth.h
->> @@ -134,38 +134,39 @@ struct ibmveth_rx_q {
->>  };
->>  
->>  struct ibmveth_adapter {
->> -    struct vio_dev *vdev;
->> -    struct net_device *netdev;
->> -    struct napi_struct napi;
->> -    unsigned int mcastFilterSize;
->> -    void * buffer_list_addr;
->> -    void * filter_list_addr;
->> -    void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
->> -    unsigned int tx_ltb_size;
->> -    dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
->> -    dma_addr_t buffer_list_dma;
->> -    dma_addr_t filter_list_dma;
->> -    struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
->> -    struct ibmveth_rx_q rx_queue;
->> -    int rx_csum;
->> -    int large_send;
->> -    bool is_active_trunk;
->> -
->> -    u64 fw_ipv6_csum_support;
->> -    u64 fw_ipv4_csum_support;
->> -    u64 fw_large_send_support;
->> -    /* adapter specific stats */
->> -    u64 replenish_task_cycles;
->> -    u64 replenish_no_mem;
->> -    u64 replenish_add_buff_failure;
->> -    u64 replenish_add_buff_success;
->> -    u64 rx_invalid_buffer;
->> -    u64 rx_no_buffer;
->> -    u64 tx_map_failed;
->> -    u64 tx_send_failed;
->> -    u64 tx_large_packets;
->> -    u64 rx_large_packets;
->> -    /* Ethtool settings */
->> +	struct vio_dev *vdev;
->> +	struct net_device *netdev;
->> +	struct napi_struct napi;
->> +	struct work_struct work;
->> +	unsigned int mcastFilterSize;
->> +	void *buffer_list_addr;
->> +	void *filter_list_addr;
->> +	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
->> +	unsigned int tx_ltb_size;
->> +	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
->> +	dma_addr_t buffer_list_dma;
->> +	dma_addr_t filter_list_dma;
->> +	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
->> +	struct ibmveth_rx_q rx_queue;
->> +	int rx_csum;
->> +	int large_send;
->> +	bool is_active_trunk;
->> +
->> +	u64 fw_ipv6_csum_support;
->> +	u64 fw_ipv4_csum_support;
->> +	u64 fw_large_send_support;
->> +	/* adapter specific stats */
->> +	u64 replenish_task_cycles;
->> +	u64 replenish_no_mem;
->> +	u64 replenish_add_buff_failure;
->> +	u64 replenish_add_buff_success;
->> +	u64 rx_invalid_buffer;
->> +	u64 rx_no_buffer;
->> +	u64 tx_map_failed;
->> +	u64 tx_send_failed;
->> +	u64 tx_large_packets;
->> +	u64 rx_large_packets;
->> +	/* Ethtool settings */
->>  	u8 duplex;
->>  	u32 speed;
->>  };
->
-> If you would like to update the indentation of this structure
-> then please do so in a separate patch which precedes
-> adding/removing/chainging fields of the structure.
->
-> As it, it's very hard to see the non-formatting changes in this hunk.
+I guess what I'm trying to say is, you don't *have* to plumb this
+into pcibios_reset_secondary_bus().  In fact, having a host bridge
+specific callback could be useful if the SoC contains several
+host bridges which require different callbacks to perform a reset.
 
-I agree. Thanks for the suggestion.
+I just want to make sure that the code remains maintainable,
+i.e. we don't have two separate ways to override how a bus reset
+is performed.
 
--Dave
+Thanks,
+
+Lukas
 
