@@ -1,83 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-7719-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7720-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01134A90F07
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 00:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 794E1A90F08
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 00:58:47 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdGdw4Yvwz3c3K;
-	Thu, 17 Apr 2025 08:58:12 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdGdx357Tz30W9;
+	Thu, 17 Apr 2025 08:58:13 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744844292;
-	cv=none; b=cW27g/KsJu+tXjoJcSqcMooN2ugjZNsIVVW6b8G8E3n4TX6p+PA0CPTRAvV8zVNnukbm3kU+9wEC+jDcGIzzXM9hXLin0fUgeHzUYhNMWr+lpW2Mhu7tqXXSvrJ7+mEh11RSoDVqn5VB1DV+dtfxK8qWa274SqpXBBpfADLdfcG8BPZX2Clnvy/KeiWJjgm7wqF55fisBhs6Mgh/OWBIRZURcYigozJXD55CugV1yEuI5H0vRD24CIw5FpP6QtYX4OtzcrUpxfA0usgFmGIWYamj6nOaNWrRtinVsl3YY1yDRowS4RlcrwI6RnduY1qOoqqzqtqWLhP2UHbZ0ygrZg==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744844293;
+	cv=none; b=YkbavcYmHic7LvpFMuh36HfRbXQrcUunNuo77RshRA9zwpUQ9B/cgp24mTQWK/JQB9lXH0uFxdmMHkvo1Ch1qhvYv4X1xhDqJQhCZ4HqWXH1padVoeioKE8vRbAgJjqjacTX3RKZGK2Bv0brMMv32CGE4benXiJtX0fXHcsUwpk0hQSquH6xRYlzuSyo6lZKJ0/g6JxFkNjBjVCKI8ijRTdWFJJWwpnnZfTFaqznC0EPY28EylkhvAlyQENZtVvaXfIF0I6FZEFAW5ZeUA9JXsz4+rIFbWYdvHrUHMQsFfHn5b6YV4ERQF8s9TYagXZlO52cPbdayG23s7N2F8T/0g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744844292; c=relaxed/relaxed;
-	bh=YHRigfLltT+bSaFg6++ia9EJ9e6MDcInI530A5FL07U=;
+	t=1744844293; c=relaxed/relaxed;
+	bh=k0OSzX2ltq94xVig0nvPqKfMcj0motMV4B9jR9MC5VI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M2p5XktNnGYXTB05ZPwk9r1nZqof7aMVJ/Wgg0vdphYuYo+P3QUZl3cJpkH+curZVvGmPqso0GYRT63Wr+S4LLr4YqiGFTxiLkEn3JYkGINgv8cu6pzML20CJHBo2wkFxsZ1CSk50XdAD0BIAY0XFToMNcf0mEGxQukoE4Be2fpcZP6IpsVF+BUnJaDawe4pbqu7XPgStDSs6tCPNwiSJGJWsJ1AasBSW2RCRdzvRgX9H8ME7s/ar50XBsSd3fJHTScil+TDyRhQ+bMvFkx2cdERYW7NPnmJtR/UvWuIXfMhhiA9bHDTV84da1Q7eNzY+pNTMMcQALdVnnOENo8zxw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LnNR5/Ck; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+	 MIME-Version; b=EY9f+/9/5QLLgvI7w1nBBHd+yc4AAnrJjZmNDtF3NO3DXm7Wz2T/33u6/6EY47zYbhaq+ez1gJ/faj/tWeOfG0h1cr27rfRKsFLURT4AGZfQkNZbCC4VRf+pEgaUJQ2x6FCYGAuBnkHdGSSV8fASTT/+Xd/Iqv/4kMci5ojqeOuiwktCXtlh8gvL5RqQcecPr5bgh/TH5gP73NuHnhjyhqEJMjLMD48MPLW68Nuz1FNn0t4k2jZNU84GNBgF6Oo/01H1O/foATima5Tm4dXm6j0Wy7bfHB8lkbEMbpQc7P7Ek++NtoS6OQZFe84dMAr7TyZ6gP++owuxsggcGnx6gw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lhya7I5z; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=LnNR5/Ck;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=lhya7I5z;
 	dkim-atps=neutral
 Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdGdv5P8lz3c3H
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdGdv5Ndwz3bxp
 	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 08:58:11 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLW7lF018976;
-	Wed, 16 Apr 2025 22:58:03 GMT
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GL37sE012278;
+	Wed, 16 Apr 2025 22:58:04 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=YHRigfLltT+bSaFg6
-	++ia9EJ9e6MDcInI530A5FL07U=; b=LnNR5/CkvZZl8N2AuLWjMcy0ImBHwdYZq
-	T8XVJsyhZ3vr5FE0Js6ykQibeVlUglFPWspW+pPFMyAyaYwcZaTWnb/ms0YBytR+
-	SPFevJsAqd0Rvj36zP1bIdhhpeTHjJpfbmK6+gwsH7PHJEI7EalLDOhsXirpV/12
-	oJl8YWsVUrZPuH7gOkZf0TB4nFCwwpUZ29mWIobYsMU9AGbvKNxDeU0gEQH+t+Yy
-	0Lo6kwNWfaDK+i8aZPuq4d1lub+kWLmFpsxY7ak1rgq8jbe2dY0xis5sY/gQR4k0
-	dOfwT4tG44DA4u+ZlQ5N2WxYpbRwd/7blqCdURKCg4i27ShLXxKww==
+	:mime-version:references:subject:to; s=pp1; bh=k0OSzX2ltq94xVig0
+	nvPqKfMcj0motMV4B9jR9MC5VI=; b=lhya7I5zACXEkwchkVfn2jzQx9/MVTQx3
+	AAbDT1x/NZC2rv6DFfDQXvBGKkkxx2G3MOkzaxrpzHglI5Nio4my7FoITlTzCbnq
+	aJSc8fcwxTIHa5Wz7bOcA9toTyjfg5G5P+It4TNpwMOk7eOkZfDrweho8z/Mp4l2
+	xHqJpyg4fzHhO8lrFdamjflkG/5LnV+m3W+i70rtz6Hzopho4R+w0f/WgaPO7DMA
+	BVB9nT6Ma+Z/cSA6mU7zG6rHY5/6PDZmbcDT3MHpq5fNSmqRR4ZXto0NR3Xvl80r
+	h/bSfg6gGtWlTVJ1o1DWLimWFMFUmEgDnTj8PSQbaI5WFWWKzczGg==
 Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mhu08r9-1
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462m49rc01-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 22:58:04 +0000 (GMT)
+Received: from m0360083.ppops.net (m0360083.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53GMsTsL005242;
+	Wed, 16 Apr 2025 22:58:04 GMT
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462m49rbyx-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Wed, 16 Apr 2025 22:58:03 +0000 (GMT)
-Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53GMw3O4023835;
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GJe8Jh016689;
 	Wed, 16 Apr 2025 22:58:03 GMT
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mhu08r5-1
+Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 460572ac9p-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 22:58:02 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GMHRUP017204;
-	Wed, 16 Apr 2025 22:58:01 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46040m2khw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 22:58:01 +0000
+	Wed, 16 Apr 2025 22:58:03 +0000
 Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GMvwTr12059344
+	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GMw01t27460302
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Apr 2025 22:57:59 GMT
+	Wed, 16 Apr 2025 22:58:00 GMT
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D536D58057;
-	Wed, 16 Apr 2025 22:57:58 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 9EB7D58058;
+	Wed, 16 Apr 2025 22:58:00 +0000 (GMT)
 Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EFDBB5805D;
-	Wed, 16 Apr 2025 22:57:57 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B581458057;
+	Wed, 16 Apr 2025 22:57:59 +0000 (GMT)
 Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.110.97])
 	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Apr 2025 22:57:57 +0000 (GMT)
+	Wed, 16 Apr 2025 22:57:59 +0000 (GMT)
 From: Haren Myneni <haren@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org
 Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
         msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
         hbabu@us.ibm.com, haren@linux.ibm.com, sv@linux.ibm.com
-Subject: [PATCH v10 5/7] powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
-Date: Wed, 16 Apr 2025 15:57:40 -0700
-Message-ID: <20250416225743.596462-6-haren@linux.ibm.com>
+Subject: [PATCH v10 6/7] powerpc/pseries: Add papr-platform-dump character driver for dump retrieval
+Date: Wed, 16 Apr 2025 15:57:41 -0700
+Message-ID: <20250416225743.596462-7-haren@linux.ibm.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20250416225743.596462-1-haren@linux.ibm.com>
 References: <20250416225743.596462-1-haren@linux.ibm.com>
@@ -95,179 +95,550 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=Hvd2G1TS c=1 sm=1 tr=0 ts=680035fb cx=c_pps a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=jcsyh7huxqttTu1n34cA:9
-X-Proofpoint-ORIG-GUID: SofM7QnoRIRM95dQ-FqDnzQkYma-BaAD
-X-Proofpoint-GUID: wH1Fnxxmo1C11L9LqHAFJDcik4lhOUbH
+X-Authority-Analysis: v=2.4 cv=etnfzppX c=1 sm=1 tr=0 ts=680035fc cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=XR8D0OoHHMoA:10 a=VnNF1IyMAAAA:8 a=VwQbUJbxAAAA:8 a=nszy2cTSAZFP56LzybkA:9
+X-Proofpoint-ORIG-GUID: lz7lamLveBIhtU5vBIe_OKhryQ65taQL
+X-Proofpoint-GUID: sNhtwFD-ppaZFztE8WC82wX2tOUw8mDv
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
  definitions=2025-04-16_09,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
- lowpriorityscore=0 spamscore=0 mlxlogscore=999 suspectscore=0
- malwarescore=0 bulkscore=0 clxscore=1015 impostorscore=0 mlxscore=0
- phishscore=0 priorityscore=1501 classifier=spam authscore=0 adjust=0
- reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504160180
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ suspectscore=0 mlxscore=0 mlxlogscore=999 clxscore=1015 spamscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 bulkscore=0 malwarescore=0
+ phishscore=0 classifier=spam authscore=0 adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2502280000 definitions=main-2504160180
 X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-The RTAS call ibm,get-dynamic-sensor-state is used to get the
-sensor state identified by the location code and the sensor
-token. The librtas library provides an API
-rtas_get_dynamic_sensor() which uses /dev/mem access for work
-area allocation but is restricted under system lockdown.
+ibm,platform-dump RTAS call in combination with writable mapping
+/dev/mem is issued to collect platform dump from the hypervisor
+and may need multiple calls to get the complete dump. The current
+implementation uses rtas_platform_dump() API provided by librtas
+library to issue these RTAS calls. But /dev/mem access by the
+user space is prohibited under system lockdown.
 
-This patch provides an interface with new ioctl
- PAPR_DYNAMIC_SENSOR_IOC_GET to the papr-indices character
-driver which executes this HCALL and copies the sensor state
-in the user specified ioctl buffer.
+The solution should be to restrict access to RTAS function in user
+space and provide kernel interfaces to collect dump. This patch
+adds papr-platform-dump character driver and expose standard
+interfaces such as open / ioctl/ read to user space in ways that
+are compatible with lockdown.
 
-Refer PAPR 7.3.19 ibm,get-dynamic-sensor-state for more
-information on this RTAS call.
-- User input parameters to the RTAS call: location code string
-  and the sensor token
+PAPR (7.3.3.4.1 ibm,platform-dump) provides a method to obtain
+the complete dump:
+- Each dump will be identified by ID called dump tag.
+- A sequence of RTAS calls have to be issued until retrieve the
+  complete dump. The hypervisor expects the first RTAS call with
+  the sequence 0 and the subsequent calls with the sequence
+  number returned from the previous calls.
+- The hypervisor returns "dump complete" status once the complete
+  dump is retrieved. But expects one more RTAS call from the
+  partition with the NULL buffer to invalidate dump which means
+  the dump will be removed in the hypervisor.
+- Sequence of calls are allowed with different dump IDs at the
+  same time but not with the same dump ID.
 
-Expose these interfaces to user space with a /dev/papr-indices
+Expose these interfaces to user space with a /dev/papr-platform-dump
 character device using the following programming model:
- int fd = open("/dev/papr-indices", O_RDWR);
- int ret = ioctl(fd, PAPR_DYNAMIC_SENSOR_IOC_GET,
-		struct papr_indices_io_block)
-  - The user space specifies input parameters in
-    papr_indices_io_block struct
-  - Returned state for the specified sensor is copied to
-    papr_indices_io_block.dynamic_param.state
+
+   int devfd = open("/dev/papr-platform-dump", O_RDONLY);
+   int fd = ioctl(devfd,PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE, &dump_id)
+	- Restrict user space to access with the same dump ID.
+          Typically we do not expect user space requests the dump
+          again for the same dump ID.
+   char *buf = malloc(size);
+   length = read(fd, buf, size);
+        - size should be minimum 1K based on PAPR and  <= 4K based
+          on RTAS work area size. It will be restrict to RTAS work
+          area size. Using 4K work area based on the current
+          implementation in librtas library
+        - Each read call issue RTAS call to get the data based on
+          the size requirement and returns bytes returned from the
+          hypervisor
+        - If the previous call returns dump complete status, the
+          next read returns 0 like EOF.
+   ret = ioctl(PAPR_PLATFORM_DUMP_IOC_INVALIDATE, &dump_id)
+	- RTAS call with NULL buffer to invalidates the dump.
+
+The read API should use the file descriptor obtained from ioctl
+based on dump ID so that gets dump contents for the corresponding
+dump ID. Implemented support in librtas (rtas_platform_dump()) for
+this new ABI to support system lockdown.
 
 Signed-off-by: Haren Myneni <haren@linux.ibm.com>
 Tested-by: Sathvika Vasireddy <sv@linux.ibm.com>
 ---
- arch/powerpc/include/asm/rtas.h               |  1 +
- arch/powerpc/kernel/rtas.c                    |  2 +-
- arch/powerpc/platforms/pseries/papr-indices.c | 67 +++++++++++++++++++
- 3 files changed, 69 insertions(+), 1 deletion(-)
+ .../userspace-api/ioctl/ioctl-number.rst      |   2 +
+ .../include/uapi/asm/papr-platform-dump.h     |  15 +
+ arch/powerpc/platforms/pseries/Makefile       |   1 +
+ .../platforms/pseries/papr-platform-dump.c    | 411 ++++++++++++++++++
+ 4 files changed, 429 insertions(+)
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
+ create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
 
-diff --git a/arch/powerpc/include/asm/rtas.h b/arch/powerpc/include/asm/rtas.h
-index 2da52f59e4c6..fcd822f0e1d7 100644
---- a/arch/powerpc/include/asm/rtas.h
-+++ b/arch/powerpc/include/asm/rtas.h
-@@ -517,6 +517,7 @@ extern unsigned long rtas_rmo_buf;
- extern struct mutex rtas_ibm_get_vpd_lock;
- extern struct mutex rtas_ibm_get_indices_lock;
- extern struct mutex rtas_ibm_set_dynamic_indicator_lock;
-+extern struct mutex rtas_ibm_get_dynamic_sensor_state_lock;
- 
- #define GLOBAL_INTERRUPT_QUEUE 9005
- 
-diff --git a/arch/powerpc/kernel/rtas.c b/arch/powerpc/kernel/rtas.c
-index e497b3b95ef2..2aab71481da3 100644
---- a/arch/powerpc/kernel/rtas.c
-+++ b/arch/powerpc/kernel/rtas.c
-@@ -92,12 +92,12 @@ struct rtas_function {
-  * Per-function locks for sequence-based RTAS functions.
-  */
- static DEFINE_MUTEX(rtas_ibm_activate_firmware_lock);
--static DEFINE_MUTEX(rtas_ibm_get_dynamic_sensor_state_lock);
- static DEFINE_MUTEX(rtas_ibm_lpar_perftools_lock);
- static DEFINE_MUTEX(rtas_ibm_physical_attestation_lock);
- DEFINE_MUTEX(rtas_ibm_get_vpd_lock);
- DEFINE_MUTEX(rtas_ibm_get_indices_lock);
- DEFINE_MUTEX(rtas_ibm_set_dynamic_indicator_lock);
-+DEFINE_MUTEX(rtas_ibm_get_dynamic_sensor_state_lock);
- 
- static struct rtas_function rtas_function_table[] __ro_after_init = {
- 	[RTAS_FNIDX__CHECK_EXCEPTION] = {
-diff --git a/arch/powerpc/platforms/pseries/papr-indices.c b/arch/powerpc/platforms/pseries/papr-indices.c
-index c46b728d5f47..3c7545591c45 100644
---- a/arch/powerpc/platforms/pseries/papr-indices.c
-+++ b/arch/powerpc/platforms/pseries/papr-indices.c
-@@ -371,6 +371,67 @@ static long papr_dynamic_indicator_ioc_set(struct papr_indices_io_block __user *
- 	return ret;
- }
- 
-+/**
-+ * papr_dynamic_sensor_ioc_get - ibm,get-dynamic-sensor-state RTAS Call
-+ * PAPR 2.13 7.3.19
-+ *
-+ * @ubuf: Input parameters to RTAS call such as sensor token
-+ *        Copies the state in user space buffer.
-+ *
-+ *
-+ * Returns success or -errno.
+diff --git a/Documentation/userspace-api/ioctl/ioctl-number.rst b/Documentation/userspace-api/ioctl/ioctl-number.rst
+index 638dc4034483..c4a6266105ec 100644
+--- a/Documentation/userspace-api/ioctl/ioctl-number.rst
++++ b/Documentation/userspace-api/ioctl/ioctl-number.rst
+@@ -368,6 +368,8 @@ Code  Seq#    Include File                                           Comments
+                                                                      <mailto:linuxppc-dev>
+ 0xB2  03-05 arch/powerpc/include/uapi/asm/papr-indices.h             powerpc/pseries indices API
+                                                                      <mailto:linuxppc-dev>
++0xB2  06-07 arch/powerpc/include/uapi/asm/papr-platform-dump.h       powerpc/pseries Platform Dump API
++                                                                     <mailto:linuxppc-dev>
+ 0xB3  00     linux/mmc/ioctl.h
+ 0xB4  00-0F  linux/gpio.h                                            <mailto:linux-gpio@vger.kernel.org>
+ 0xB5  00-0F  uapi/linux/rpmsg.h                                      <mailto:linux-remoteproc@vger.kernel.org>
+diff --git a/arch/powerpc/include/uapi/asm/papr-platform-dump.h b/arch/powerpc/include/uapi/asm/papr-platform-dump.h
+new file mode 100644
+index 000000000000..a1d89c290dab
+--- /dev/null
++++ b/arch/powerpc/include/uapi/asm/papr-platform-dump.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
++#ifndef _UAPI_PAPR_PLATFORM_DUMP_H_
++#define _UAPI_PAPR_PLATFORM_DUMP_H_
++
++#include <asm/ioctl.h>
++#include <asm/papr-miscdev.h>
++
++/*
++ * ioctl for /dev/papr-platform-dump. Returns a platform-dump handle fd
++ * corresponding to dump tag.
 + */
++#define PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE _IOW(PAPR_MISCDEV_IOC_ID, 6, __u64)
++#define PAPR_PLATFORM_DUMP_IOC_INVALIDATE    _IOW(PAPR_MISCDEV_IOC_ID, 7, __u64)
 +
-+static long papr_dynamic_sensor_ioc_get(struct papr_indices_io_block __user *ubuf)
++#endif /* _UAPI_PAPR_PLATFORM_DUMP_H_ */
+diff --git a/arch/powerpc/platforms/pseries/Makefile b/arch/powerpc/platforms/pseries/Makefile
+index 7ea293c7c5b6..5715e5660490 100644
+--- a/arch/powerpc/platforms/pseries/Makefile
++++ b/arch/powerpc/platforms/pseries/Makefile
+@@ -4,6 +4,7 @@ ccflags-$(CONFIG_PPC_PSERIES_DEBUG)	+= -DDEBUG
+ obj-y			:= lpar.o hvCall.o nvram.o reconfig.o \
+ 			   of_helpers.o rtas-work-area.o papr-sysparm.o \
+ 			   papr-rtas-common.o papr-vpd.o papr-indices.o \
++			   papr-platform-dump.o \
+ 			   setup.o iommu.o event_sources.o ras.o \
+ 			   firmware.o power.o dlpar.o mobility.o rng.o \
+ 			   pci.o pci_dlpar.o eeh_pseries.o msi.o \
+diff --git a/arch/powerpc/platforms/pseries/papr-platform-dump.c b/arch/powerpc/platforms/pseries/papr-platform-dump.c
+new file mode 100644
+index 000000000000..f8d55eccdb6b
+--- /dev/null
++++ b/arch/powerpc/platforms/pseries/papr-platform-dump.c
+@@ -0,0 +1,411 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) "papr-platform-dump: " fmt
++
++#include <linux/anon_inodes.h>
++#include <linux/file.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/kernel.h>
++#include <linux/miscdevice.h>
++#include <asm/machdep.h>
++#include <asm/rtas-work-area.h>
++#include <asm/rtas.h>
++#include <uapi/asm/papr-platform-dump.h>
++
++/*
++ * Function-specific return values for ibm,platform-dump, derived from
++ * PAPR+ v2.13 7.3.3.4.1 "ibm,platform-dump RTAS Call".
++ */
++#define	RTAS_IBM_PLATFORM_DUMP_COMPLETE	0	/* Complete dump retrieved. */
++#define	RTAS_IBM_PLATFORM_DUMP_CONTINUE	1	/* Continue dump */
++#define	RTAS_NOT_AUTHORIZED		-9002	/* Not Authorized */
++
++#define	RTAS_IBM_PLATFORM_DUMP_START	2 /* Linux status to start dump */
++
++/**
++ * struct ibm_platform_dump_params - Parameters (in and out) for
++ *                                              ibm,platform-dump
++ * @work_area:		In: work area buffer for results.
++ * @buf_length:		In: work area buffer length in bytes
++ * @dump_tag_hi:	In: Most-significant 32 bits of a Dump_Tag representing
++ *                      an id of the dump being processed.
++ * @dump_tag_lo:	In: Least-significant 32 bits of a Dump_Tag representing
++ *                      an id of the dump being processed.
++ * @sequence_hi:	In: Sequence number in most-significant 32 bits.
++ *                      Out: Next sequence number in most-significant 32 bits.
++ * @sequence_lo:	In: Sequence number in Least-significant 32 bits
++ *                      Out: Next sequence number in Least-significant 32 bits.
++ * @bytes_ret_hi:	Out: Bytes written in most-significant 32 bits.
++ * @bytes_ret_lo:	Out: Bytes written in Least-significant 32 bits.
++ * @status:		Out: RTAS call status.
++ * @list:		Maintain the list of dumps are in progress. Can
++ *                      retrieve multiple dumps with different dump IDs at
++ *                      the same time but not with the same dump ID. This list
++ *                      is used to determine whether the dump for the same ID
++ *                      is in progress.
++ */
++struct ibm_platform_dump_params {
++	struct rtas_work_area	*work_area;
++	u32			buf_length;
++	u32			dump_tag_hi;
++	u32			dump_tag_lo;
++	u32			sequence_hi;
++	u32			sequence_lo;
++	u32			bytes_ret_hi;
++	u32			bytes_ret_lo;
++	s32			status;
++	struct list_head	list;
++};
++
++/*
++ * Multiple dumps with different dump IDs can be retrieved at the same
++ * time, but not with dame dump ID. platform_dump_list_mutex and
++ * platform_dump_list are used to prevent this behavior.
++ */
++static DEFINE_MUTEX(platform_dump_list_mutex);
++static LIST_HEAD(platform_dump_list);
++
++/**
++ * rtas_ibm_platform_dump() - Call ibm,platform-dump to fill a work area
++ * buffer.
++ * @params: See &struct ibm_platform_dump_params.
++ * @buf_addr: Address of dump buffer (work_area)
++ * @buf_length: Length of the buffer in bytes (min. 1024)
++ *
++ * Calls ibm,platform-dump until it errors or successfully deposits data
++ * into the supplied work area. Handles RTAS retry statuses. Maps RTAS
++ * error statuses to reasonable errno values.
++ *
++ * Can request multiple dumps with different dump IDs at the same time,
++ * but not with the same dump ID which is prevented with the check in
++ * the ioctl code (papr_platform_dump_create_handle()).
++ *
++ * The caller should inspect @params.status to determine whether more
++ * calls are needed to complete the sequence.
++ *
++ * Context: May sleep.
++ * Return: -ve on error, 0 for dump complete and 1 for continue dump
++ */
++static int rtas_ibm_platform_dump(struct ibm_platform_dump_params *params,
++				phys_addr_t buf_addr, u32 buf_length)
 +{
-+	struct papr_indices_io_block kbuf;
-+	struct rtas_work_area *work_area;
-+	s32 fwrc, token, ret;
-+	u32 rets;
-+
-+	token = rtas_function_token(RTAS_FN_IBM_GET_DYNAMIC_SENSOR_STATE);
-+	if (token == RTAS_UNKNOWN_SERVICE)
-+		return -ENOENT;
-+
-+	mutex_lock(&rtas_ibm_get_dynamic_sensor_state_lock);
-+	work_area = papr_dynamic_indice_buf_from_user(ubuf, &kbuf);
-+	if (IS_ERR(work_area)) {
-+		ret = PTR_ERR(work_area);
-+		goto out;
-+	}
++	u32 rets[4];
++	s32 fwrc;
++	int ret = 0;
 +
 +	do {
-+		fwrc = rtas_call(token, 2, 2, &rets,
-+				kbuf.dynamic_param.token,
-+				rtas_work_area_phys(work_area));
++		fwrc = rtas_call(rtas_function_token(RTAS_FN_IBM_PLATFORM_DUMP),
++				6, 5,
++				rets,
++				params->dump_tag_hi,
++				params->dump_tag_lo,
++				params->sequence_hi,
++				params->sequence_lo,
++				buf_addr,
++				buf_length);
 +	} while (rtas_busy_delay(fwrc));
 +
-+	rtas_work_area_free(work_area);
-+
 +	switch (fwrc) {
-+	case RTAS_SUCCESS:
-+		if (put_user(rets, &ubuf->dynamic_param.state))
-+			ret = -EFAULT;
-+		else
-+			ret = 0;
++	case RTAS_HARDWARE_ERROR:
++		ret = -EIO;
 +		break;
-+	case RTAS_IBM_DYNAMIC_INDICE_NO_INDICATOR:	/* No such indicator */
-+		ret = -EOPNOTSUPP;
++	case RTAS_NOT_AUTHORIZED:
++		ret = -EPERM;
++		break;
++	case RTAS_IBM_PLATFORM_DUMP_CONTINUE:
++	case RTAS_IBM_PLATFORM_DUMP_COMPLETE:
++		params->sequence_hi = rets[0];
++		params->sequence_lo = rets[1];
++		params->bytes_ret_hi = rets[2];
++		params->bytes_ret_lo = rets[3];
 +		break;
 +	default:
-+		pr_err("unexpected ibm,get-dynamic-sensor result %d\n",
-+				fwrc);
-+		fallthrough;
-+	case RTAS_HARDWARE_ERROR:	/* Hardware/platform error */
 +		ret = -EIO;
++		pr_err_ratelimited("unexpected ibm,platform-dump status %d\n",
++				fwrc);
 +		break;
 +	}
 +
-+out:
-+	mutex_unlock(&rtas_ibm_get_dynamic_sensor_state_lock);
++	params->status = fwrc;
 +	return ret;
 +}
 +
- /*
-  * Top-level ioctl handler for /dev/papr-indices.
-  */
-@@ -384,6 +445,9 @@ static long papr_indices_dev_ioctl(struct file *filp, unsigned int ioctl,
- 	case PAPR_INDICES_IOC_GET:
- 		ret = papr_indices_create_handle(argp);
- 		break;
-+	case PAPR_DYNAMIC_SENSOR_IOC_GET:
-+		ret = papr_dynamic_sensor_ioc_get(argp);
++/*
++ * Platform dump is used with multiple RTAS calls to retrieve the
++ * complete dump for the provided dump ID. Once the complete dump is
++ * retrieved, the hypervisor returns dump complete status (0) for the
++ * last RTAS call and expects the caller issues one more call with
++ * NULL buffer to invalidate the dump so that the hypervisor can remove
++ * the dump.
++ *
++ * After the specific dump is invalidated in the hypervisor, expect the
++ * dump complete status for the new sequence - the user space initiates
++ * new request for the same dump ID.
++ */
++static ssize_t papr_platform_dump_handle_read(struct file *file,
++		char __user *buf, size_t size, loff_t *off)
++{
++	struct ibm_platform_dump_params *params = file->private_data;
++	u64 total_bytes;
++	s32 fwrc;
++
++	/*
++	 * Dump already completed with the previous read calls.
++	 * In case if the user space issues further reads, returns
++	 * -EINVAL.
++	 */
++	if (!params->buf_length) {
++		pr_warn_once("Platform dump completed for dump ID %llu\n",
++			(u64) (((u64)params->dump_tag_hi << 32) |
++				params->dump_tag_lo));
++		return -EINVAL;
++	}
++
++	/*
++	 * The hypervisor returns status 0 if no more data available to
++	 * download. The dump will be invalidated with ioctl (see below).
++	 */
++	if (params->status == RTAS_IBM_PLATFORM_DUMP_COMPLETE) {
++		params->buf_length = 0;
++		/*
++		 * Returns 0 to the user space so that user
++		 * space read stops.
++		 */
++		return 0;
++	}
++
++	if (size < SZ_1K) {
++		pr_err_once("Buffer length should be minimum 1024 bytes\n");
++		return -EINVAL;
++	} else if (size > params->buf_length) {
++		/*
++		 * Allocate 4K work area. So if the user requests > 4K,
++		 * resize the buffer length.
++		 */
++		size = params->buf_length;
++	}
++
++	fwrc = rtas_ibm_platform_dump(params,
++			rtas_work_area_phys(params->work_area),
++			size);
++	if (fwrc < 0)
++		return fwrc;
++
++	total_bytes = (u64) (((u64)params->bytes_ret_hi << 32) |
++			params->bytes_ret_lo);
++
++	/*
++	 * Kernel or firmware bug, do not continue.
++	 */
++	if (WARN(total_bytes > size, "possible write beyond end of work area"))
++		return -EFAULT;
++
++	if (copy_to_user(buf, rtas_work_area_raw_buf(params->work_area),
++			total_bytes))
++		return -EFAULT;
++
++	return total_bytes;
++}
++
++static int papr_platform_dump_handle_release(struct inode *inode,
++					struct file *file)
++{
++	struct ibm_platform_dump_params *params = file->private_data;
++
++	if (params->work_area)
++		rtas_work_area_free(params->work_area);
++
++	mutex_lock(&platform_dump_list_mutex);
++	list_del(&params->list);
++	mutex_unlock(&platform_dump_list_mutex);
++
++	kfree(params);
++	file->private_data = NULL;
++	return 0;
++}
++
++/*
++ * This ioctl is used to invalidate the dump assuming the user space
++ * issue this ioctl after obtain the complete dump.
++ * Issue the last RTAS call with NULL buffer to invalidate the dump
++ * which means dump will be freed in the hypervisor.
++ */
++static long papr_platform_dump_invalidate_ioctl(struct file *file,
++				unsigned int ioctl, unsigned long arg)
++{
++	struct ibm_platform_dump_params *params;
++	u64 __user *argp = (void __user *)arg;
++	u64 param_dump_tag, dump_tag;
++
++	if (ioctl != PAPR_PLATFORM_DUMP_IOC_INVALIDATE)
++		return -ENOIOCTLCMD;
++
++	if (get_user(dump_tag, argp))
++		return -EFAULT;
++
++	/*
++	 * private_data is freeded during release(), so should not
++	 * happen.
++	 */
++	if (!file->private_data) {
++		pr_err("No valid FD to invalidate dump for the ID(%llu)\n",
++				dump_tag);
++		return -EINVAL;
++	}
++
++	params = file->private_data;
++	param_dump_tag = (u64) (((u64)params->dump_tag_hi << 32) |
++				params->dump_tag_lo);
++	if (dump_tag != param_dump_tag) {
++		pr_err("Invalid dump ID(%llu) to invalidate dump\n",
++				dump_tag);
++		return -EINVAL;
++	}
++
++	if (params->status != RTAS_IBM_PLATFORM_DUMP_COMPLETE) {
++		pr_err("Platform dump is not complete, but requested "
++			"to invalidate dump for ID(%llu)\n",
++			dump_tag);
++		return -EINPROGRESS;
++	}
++
++	return rtas_ibm_platform_dump(params, 0, 0);
++}
++
++static const struct file_operations papr_platform_dump_handle_ops = {
++	.read = papr_platform_dump_handle_read,
++	.release = papr_platform_dump_handle_release,
++	.unlocked_ioctl	= papr_platform_dump_invalidate_ioctl,
++};
++
++/**
++ * papr_platform_dump_create_handle() - Create a fd-based handle for
++ * reading platform dump
++ *
++ * Handler for PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE ioctl command
++ * Allocates RTAS parameter struct and work area and attached to the
++ * file descriptor for reading by user space with the multiple RTAS
++ * calls until the dump is completed. This memory allocation is freed
++ * when the file is released.
++ *
++ * Multiple dump requests with different IDs are allowed at the same
++ * time, but not with the same dump ID. So if the user space is
++ * already opened file descriptor for the specific dump ID, return
++ * -EALREADY for the next request.
++ *
++ * @dump_tag: Dump ID for the dump requested to retrieve from the
++ *		hypervisor
++ *
++ * Return: The installed fd number if successful, -ve errno otherwise.
++ */
++static long papr_platform_dump_create_handle(u64 dump_tag)
++{
++	struct ibm_platform_dump_params *params;
++	u64 param_dump_tag;
++	struct file *file;
++	long err;
++	int fd;
++
++	/*
++	 * Return failure if the user space is already opened FD for
++	 * the specific dump ID. This check will prevent multiple dump
++	 * requests for the same dump ID at the same time. Generally
++	 * should not expect this, but in case.
++	 */
++	list_for_each_entry(params, &platform_dump_list, list) {
++		param_dump_tag = (u64) (((u64)params->dump_tag_hi << 32) |
++					params->dump_tag_lo);
++		if (dump_tag == param_dump_tag) {
++			pr_err("Platform dump for ID(%llu) is already in progress\n",
++					dump_tag);
++			return -EALREADY;
++		}
++	}
++
++	params =  kzalloc(sizeof(struct ibm_platform_dump_params),
++			GFP_KERNEL_ACCOUNT);
++	if (!params)
++		return -ENOMEM;
++
++	params->work_area = rtas_work_area_alloc(SZ_4K);
++	params->buf_length = SZ_4K;
++	params->dump_tag_hi = (u32)(dump_tag >> 32);
++	params->dump_tag_lo = (u32)(dump_tag & 0x00000000ffffffffULL);
++	params->status = RTAS_IBM_PLATFORM_DUMP_START;
++
++	fd = get_unused_fd_flags(O_RDONLY | O_CLOEXEC);
++	if (fd < 0) {
++		err = fd;
++		goto free_area;
++	}
++
++	file = anon_inode_getfile_fmode("[papr-platform-dump]",
++				&papr_platform_dump_handle_ops,
++				(void *)params, O_RDONLY,
++				FMODE_LSEEK | FMODE_PREAD);
++	if (IS_ERR(file)) {
++		err = PTR_ERR(file);
++		goto put_fd;
++	}
++
++	fd_install(fd, file);
++
++	list_add(&params->list, &platform_dump_list);
++
++	pr_info("%s (%d) initiated platform dump for dump tag %llu\n",
++		current->comm, current->pid, dump_tag);
++	return fd;
++put_fd:
++	put_unused_fd(fd);
++free_area:
++	rtas_work_area_free(params->work_area);
++	kfree(params);
++	return err;
++}
++
++/*
++ * Top-level ioctl handler for /dev/papr-platform-dump.
++ */
++static long papr_platform_dump_dev_ioctl(struct file *filp,
++					unsigned int ioctl,
++					unsigned long arg)
++{
++	u64 __user *argp = (void __user *)arg;
++	u64 dump_tag;
++	long ret;
++
++	if (get_user(dump_tag, argp))
++		return -EFAULT;
++
++	switch (ioctl) {
++	case PAPR_PLATFORM_DUMP_IOC_CREATE_HANDLE:
++		mutex_lock(&platform_dump_list_mutex);
++		ret = papr_platform_dump_create_handle(dump_tag);
++		mutex_unlock(&platform_dump_list_mutex);
 +		break;
- 	case PAPR_DYNAMIC_INDICATOR_IOC_SET:
- 		if (filp->f_mode & FMODE_WRITE)
- 			ret = papr_dynamic_indicator_ioc_set(argp);
-@@ -416,6 +480,9 @@ static __init int papr_indices_init(void)
- 	if (!rtas_function_implemented(RTAS_FN_IBM_SET_DYNAMIC_INDICATOR))
- 		return -ENODEV;
- 
-+	if (!rtas_function_implemented(RTAS_FN_IBM_GET_DYNAMIC_SENSOR_STATE))
++	default:
++		ret = -ENOIOCTLCMD;
++		break;
++	}
++	return ret;
++}
++
++static const struct file_operations papr_platform_dump_ops = {
++	.unlocked_ioctl = papr_platform_dump_dev_ioctl,
++};
++
++static struct miscdevice papr_platform_dump_dev = {
++	.minor = MISC_DYNAMIC_MINOR,
++	.name = "papr-platform-dump",
++	.fops = &papr_platform_dump_ops,
++};
++
++static __init int papr_platform_dump_init(void)
++{
++	if (!rtas_function_implemented(RTAS_FN_IBM_PLATFORM_DUMP))
 +		return -ENODEV;
 +
- 	return misc_register(&papr_indices_dev);
- }
- machine_device_initcall(pseries, papr_indices_init);
++	return misc_register(&papr_platform_dump_dev);
++}
++machine_device_initcall(pseries, papr_platform_dump_init);
 -- 
 2.43.5
 
