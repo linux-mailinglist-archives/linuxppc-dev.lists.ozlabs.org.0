@@ -1,78 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-7712-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7713-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F96A90D7C
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 22:58:27 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB5DA90E6C
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 00:05:25 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdCzM5qFVz3c0n;
-	Thu, 17 Apr 2025 06:58:07 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdFSy6h51z2yGN;
+	Thu, 17 Apr 2025 08:05:22 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744837087;
-	cv=none; b=ov8WV9COfw24Ci+cjzSrLYliKdbAL0MUeBJvhQGzeiRmXEtY+8gaY+/L8txzRjV4rnMxYfRSclbxX6gvkxnCwsOuqTftCet9NAQ7t4uLOLZ6hWCVvHlZvEMuvpsdm5t/IF1Ak4epj42U19HYcxjBBsv+0AIrTPYGnTkKE09sOAVNCgDCzNhejyDL+M8/PlY9pVs0u99j/gUr59/DM9eWQWKOQe1t+ot5FDDjdJ7ovPgYqJM2HC28dSyVJ875Rf4k0+CMk5D3H83DFyVBytGnMWpuPYn0qTg9swSCxRX3CSaD98a+C0Zp3ypuIKFf4wTmBIo+sRaYuV1Jcxp4zHvFIw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.180.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744827563;
+	cv=none; b=MD1fNFFx/llsdb/MeypiOIyClj8KfD9RSeBDjTMWcVUHSwMZ6lW8NGZeuM2ocSGQO+mL9hbrncoozQuvkxH6pcPuYjhzymCm5lirHwQRX75b8cKqaKx7bVDt1ZXVZ0iZu6PMr7B81porlzhHU7tqsh8mRenkOlO0KE38LyY4IYeZN+gQ4jiodg0nVUwv8h7Tvtc0g6fmK0B4nHqpSumxHHjJwIdAmXaxIGI9WaMymuqJzIBMqYDiQBZ6YiklbEfibVTfgQJyzZd7NUDUWRDxOYqPvMQ/oyNcNADZv1TS1IBCt6h5+s3AnIL2aTYk4VqXKNZWtwyk35QGzN0Mlp8CmA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744837087; c=relaxed/relaxed;
-	bh=kV0hQaWmProlhsKXETMeWh5cXOWX/R2Wb2mnJiZJ5Zo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4j6n5tVNKQtWefqbbRxWMJqoXP4ajXvJvk8QKGw8g3cHPbi8N/uut2vLn0EJiTfbg97AVlsteEOXcF63gg4+QipQ6WkUYQscxHi5O1ubnLFKiUGrgclI9f0pi5GD7pq9D1rDL/bHIJe4wX4tzpKABUyFNVCDN6Nm9W38FCjviV0CGbc0H9bewqWRd8bzx0rlnUYTZuCfmXt6vtXNLJO/azlfWwZsICFEvuQE4a9UoYPn7ETS43k1qo4YBQgwLmKm7/eCK4Ps3wvfCMrbUIFn+oCORCvfos0JNaxlXne16G1YLHWVb3WfsDGAOhcA8NbYpAkmDO4JhqxlS+U6EV8Qw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iNISd2gT; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1744827563; c=relaxed/relaxed;
+	bh=V5pmctK1Tr+I/l712rxqAECJA15ahdHQ8zwALeKKjYY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Igl6oCOCbvyitiNuC3mBgGioWnQS4Wgfx56id5yNgere3/xVZEI7UufQ44A/U26U4MgV/DgfzzmagmH9y+GUQZ65SwcDbm4U5qeh/afw8KltI4KskDTVI/sgPaDNYi6l/l0Cc3Za2eaviaQU80XOIq+QA/5+8rZNHu9zpT4EGzKvKe1sk9EljYV7jacB0K6N2KxdHv1xBiAiE2+b5Fk8JNJPZ9HtnoYHTHvjUmaRS/xBNM9Rd06Jv6Rcd6J7u8Xwjt0Ro3HOqSMVtBKsR7QnGhxnKf3HbVwGM6ndv3REiYvN3TqpUyULYc+855wJE1zy332wQiVHyNstYQ/DxCM4Ww==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cMofM81g; dkim-atps=neutral; spf=pass (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.qualcomm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=iNISd2gT;
+	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cMofM81g;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oss.qualcomm.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 1639 seconds by postgrey-1.37 at boromir; Thu, 17 Apr 2025 04:19:22 AEST
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdCzK2m7Lz3bvX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 06:58:04 +1000 (AEST)
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GGsq7Y018279;
-	Wed, 16 Apr 2025 20:58:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=kV0hQaWmProlhsKXE
-	TMeWh5cXOWX/R2Wb2mnJiZJ5Zo=; b=iNISd2gTisB7UMoYSpGldwrHKqetG1J4B
-	H7zKrQE5wZu/73qSl20LdaRhQF/pa4ScnJaZcdfr7MQwkrQ+LAIQRxc0M2JugPDr
-	JAxYS0sdIdSkbxYXfuOPlINSz9donXZJFEPen5mi23Ymx69yHy8hytkbsDtBBtA3
-	UYJ3TjH1e3dc/u8/Mj1FVrs/oiycU4IcQzHvbAUqbwugvgJTklcfHuv9ghLZ9A/k
-	IhpXc0NrVRAvhKtU9jlJ5H3hS+VD4Z2YZX5O5b4esygcBEarujUSRB7PIR83nuWK
-	FxmZcXwM9E2orld72TylWpgbTtM5kT+h82bPBa6f6v9yUSILbd+4g==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461y1gease-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 20:58:00 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GIT2wp017199;
-	Wed, 16 Apr 2025 20:57:59 GMT
-Received: from smtprelay02.dal12v.mail.ibm.com ([172.16.1.4])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 46040m26kg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 20:57:59 +0000
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay02.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GKvwx328115710
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Apr 2025 20:57:58 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AE4445805D;
-	Wed, 16 Apr 2025 20:57:58 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 89A3158059;
-	Wed, 16 Apr 2025 20:57:58 +0000 (GMT)
-Received: from d.attlocal.net (unknown [9.61.183.42])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Apr 2025 20:57:58 +0000 (GMT)
-From: Dave Marquardt <davemarq@linux.ibm.com>
-To: netdev@vger.kernel.org
-Cc: michal.swiatkowski@linux.intel.com, horms@kernel.org,
-        Dave Marquardt <davemarq@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH net-next v3 3/3] net: ibmveth: added KUnit tests for some buffer pool functions
-Date: Wed, 16 Apr 2025 15:57:51 -0500
-Message-ID: <20250416205751.66365-4-davemarq@linux.ibm.com>
-X-Mailer: git-send-email 2.49.0
-In-Reply-To: <20250416205751.66365-1-davemarq@linux.ibm.com>
-References: <20250416205751.66365-1-davemarq@linux.ibm.com>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd8SB0DLmz2ySX
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 04:19:20 +1000 (AEST)
+Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53G9mpa8007385
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:51:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	V5pmctK1Tr+I/l712rxqAECJA15ahdHQ8zwALeKKjYY=; b=cMofM81gdD+S3Y9Z
+	SfmcXozq7mfib5IEJxf9+KeW+HA2EVsPubKzLJ8LjysfDwjUhnKHFnTQni1ff5m1
+	YgrBFmYX7YkWHXgq7BdYz3G7dGUM952jjf32Rf6MgJ621C1cpa3GRQ9FskHsvYK9
+	oevWWjA7nFWYpDPwx/b2WlZlv7Jb0aUcVbv012qvEj50cEodJ7F1JbyhcoyHElOH
+	ZkDFTyIV0eE5uergsHmE5xGCSyyNSQ/gRWLy7c+ziIYgPvk0rr4bNyODfZxRz3fm
+	BghhPqdwm29VlaXk+kkWA3hFvQiampjHNZdxRoDmFsER6GKGXBa+MVl6unsG3OyS
+	jPM7bw==
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yfgjmakn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:51:58 +0000 (GMT)
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2241e7e3addso61618585ad.1
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 10:51:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744825917; x=1745430717;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=V5pmctK1Tr+I/l712rxqAECJA15ahdHQ8zwALeKKjYY=;
+        b=gMtUGcIJzAn25DKzYA/oh8YYbdt1Wvx0sTVJyJWgpcbuIWJaJxGzNVv6WEqbdyXpGF
+         ZAnR3BCJntsONev5XtqJkOrwLz/Ibzrj5ZhTetm1kDZB3yEsgZOnq3549QGhhQtRimPl
+         EyoUGIgJWTTRDuE8853pwGGsDcf5bCty0C0SF+qUuahS6zXQVLYvEcfC2YO6VsWOL8go
+         Jo1eMhz0e4DcyWREMCLy6RCR0ueDTgDYb+42Lupz9ctj+CB4vbmB2Jx+rwqiBDU3ieJ+
+         09+N20hkTuwPmsg+v8hpPrq6ykmf3/zLKNhL6zKx3FrOF413hSWbaQp1VlVnByVIpejx
+         mmzA==
+X-Forwarded-Encrypted: i=1; AJvYcCX+X9McJUT7b7hplG0LQ31nSQc++j2sKQbBXBgOy/FlljLwBGipGmGqmekTJQt/8txEfS3r3OjlDLlOlvk=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0Yxcr7TrxMyN5QQ33fmzH5b7OlU0SSub68FKx8jhZqXliwsT8csk
+	X843ervhpkSYBXTsSo7wNPwjT3aTe648HQ/WshoK7MdJXLkpcpgkNf5W+FWEJCAuYk+g8xPFl+F
+	kGe0SK/PLXaazvfltfz+RdkmksbCZ4NOCxNxDO9GgUxzgNdF4BVGZPskTkSoHvhar
+X-Gm-Gg: ASbGncssj28lu6jVQYfbvE0IxYXJjhCXopWOp9+vBQKhtYIkI896w79rEfngZCLrzDb
+	+sb794w+emK9JJIKxcx7aWosPnyjLBx/AteRa/nuorIn/zce96bcqyJw0JTsnDWrFnEdKdh4C1m
+	U1Hh2ZDluYX6mQanxMQd4VDxHispx13UZ12RpAqdKFv61iFVzdzYq/g3E+iqtv9xd+iz1GHx7Ed
+	fMeiyrFEw1iVckqoibFnYBxTFNa8mcjzS6EJFV6sUDZ9CTS2bnIdc+33qifX1mwBH6l/IzDsknI
+	RfxvKVhAsai0YVroVfGHUjefwqHNp8ge3+Qe+3UL0OA=
+X-Received: by 2002:a17:902:e806:b0:223:5e6a:57ab with SMTP id d9443c01a7336-22c3597ee39mr40894965ad.39.1744825917072;
+        Wed, 16 Apr 2025 10:51:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEBBh895n5PHGGk4xFwNiJSEFm0TRS2bV+6pyeHxlVKUwuhtV4iIkGq6YnLmD4RRZx0r4AhgA==
+X-Received: by 2002:a17:902:e806:b0:223:5e6a:57ab with SMTP id d9443c01a7336-22c3597ee39mr40894435ad.39.1744825916570;
+        Wed, 16 Apr 2025 10:51:56 -0700 (PDT)
+Received: from [192.168.29.92] ([49.43.231.216])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fcc816sm17235435ad.206.2025.04.16.10.51.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 16 Apr 2025 10:51:56 -0700 (PDT)
+Message-ID: <26b70e1b-861f-4c94-47a7-a267c41cadbb@oss.qualcomm.com>
+Date: Wed, 16 Apr 2025 23:21:49 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -85,190 +91,191 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: xKsnmu60IicYoaQ5qWz93aI8qKpv5e_M
-X-Proofpoint-GUID: xKsnmu60IicYoaQ5qWz93aI8qKpv5e_M
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 3/4] PCI: Add link down handling for host bridges
+Content-Language: en-US
+To: manivannan.sadhasivam@linaro.org,
+        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Rob Herring <robh@kernel.org>
+Cc: dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>,
+        linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
+References: <20250416-pcie-reset-slot-v2-0-efe76b278c10@linaro.org>
+ <20250416-pcie-reset-slot-v2-3-efe76b278c10@linaro.org>
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+In-Reply-To: <20250416-pcie-reset-slot-v2-3-efe76b278c10@linaro.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: jt4oGylm_flRmjKrXQLenQtablMySK1-
+X-Proofpoint-ORIG-GUID: jt4oGylm_flRmjKrXQLenQtablMySK1-
+X-Authority-Analysis: v=2.4 cv=Cve/cm4D c=1 sm=1 tr=0 ts=67ffee3e cx=c_pps a=cmESyDAEBpBGqyK7t0alAg==:117 a=ozAjUsZc/ya1UnB0O6+iCQ==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=KKAkSRfTAAAA:8 a=WP6hIalcOMfy4p2eL3AA:9 a=QEXdDO2ut3YA:10
+ a=1OuFwYUASf3TG4hYMiVC:22 a=cvBusfyB2V15izCimMoJ:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-16_08,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1015 mlxscore=0
- lowpriorityscore=0 bulkscore=0 malwarescore=0 impostorscore=0
- suspectscore=0 phishscore=0 mlxlogscore=999 priorityscore=1501 spamscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504160168
+ definitions=2025-04-16_06,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
+ malwarescore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0
+ suspectscore=0 impostorscore=0 mlxlogscore=999 mlxscore=0
+ priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504160146
 X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+	NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Added KUnit tests for ibmveth_remove_buffer_from_pool and
-ibmveth_rxq_get_buffer under new IBMVETH_KUNIT_TEST config option.
 
-Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
----
- drivers/net/ethernet/ibm/Kconfig   |  13 +++
- drivers/net/ethernet/ibm/ibmveth.c | 125 +++++++++++++++++++++++++++++
- 2 files changed, 138 insertions(+)
 
-diff --git a/drivers/net/ethernet/ibm/Kconfig b/drivers/net/ethernet/ibm/Kconfig
-index c0c112d95b89..4f4b23465c47 100644
---- a/drivers/net/ethernet/ibm/Kconfig
-+++ b/drivers/net/ethernet/ibm/Kconfig
-@@ -27,6 +27,19 @@ config IBMVETH
- 	  To compile this driver as a module, choose M here. The module will
- 	  be called ibmveth.
- 
-+config IBMVETH_KUNIT_TEST
-+	bool "KUnit test for IBM LAN Virtual Ethernet support" if !KUNIT_ALL_TESTS
-+	depends on KUNIT
-+	depends on KUNIT=y && IBMVETH=y
-+	default KUNIT_ALL_TESTS
-+	help
-+	  This builds unit tests for the IBM LAN Virtual Ethernet driver.
-+
-+	  For more information on KUnit and unit tests in general, please refer
-+	  to the KUnit documentation in Documentation/dev-tools/kunit/.
-+
-+	  If unsure, say N.
-+
- source "drivers/net/ethernet/ibm/emac/Kconfig"
- 
- config EHEA
-diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
-index 59158284ec43..e56cfc82ddd0 100644
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -2040,3 +2040,128 @@ static void __exit ibmveth_module_exit(void)
- 
- module_init(ibmveth_module_init);
- module_exit(ibmveth_module_exit);
-+
-+#ifdef CONFIG_IBMVETH_KUNIT_TEST
-+#include <kunit/test.h>
-+
-+/**
-+ * ibmveth_reset_kunit - reset routine for running in KUnit environment
-+ *
-+ * @w: pointer to work_struct embedded in adapter structure
-+ *
-+ * Context: Called in the KUnit environment. Does nothing.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_reset_kunit(struct work_struct *w)
-+{
-+	netdev_dbg(NULL, "reset_kunit starting\n");
-+	netdev_dbg(NULL, "reset_kunit complete\n");
-+}
-+
-+/**
-+ * ibmveth_remove_buffer_from_pool_test - unit test for some of
-+ *                                        ibmveth_remove_buffer_from_pool
-+ * @test: pointer to kunit structure
-+ *
-+ * Tests the error returns from ibmveth_remove_buffer_from_pool.
-+ * ibmveth_remove_buffer_from_pool also calls WARN_ON, so dmesg should be
-+ * checked to see that these warnings happened.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_remove_buffer_from_pool_test(struct kunit *test)
-+{
-+	struct ibmveth_adapter *adapter = kunit_kzalloc(test, sizeof(*adapter), GFP_KERNEL);
-+	struct ibmveth_buff_pool *pool;
-+	u64 correlator;
-+
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter);
-+
-+	INIT_WORK(&adapter->work, ibmveth_reset_kunit);
-+
-+	/* Set sane values for buffer pools */
-+	for (int i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+					 pool_count[i], pool_size[i],
-+					 pool_active[i]);
-+
-+	pool = &adapter->rx_buff_pool[0];
-+	pool->skbuff = kunit_kcalloc(test, pool->size, sizeof(void *), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool->skbuff);
-+
-+	correlator = ((u64)IBMVETH_NUM_BUFF_POOLS << 32) | 0;
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
-+
-+	correlator = ((u64)0 << 32) | adapter->rx_buff_pool[0].size;
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
-+	KUNIT_EXPECT_EQ(test, -EINVAL, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
-+
-+	correlator = (u64)0 | 0;
-+	pool->skbuff[0] = NULL;
-+	KUNIT_EXPECT_EQ(test, -EFAULT, ibmveth_remove_buffer_from_pool(adapter, correlator, false));
-+	KUNIT_EXPECT_EQ(test, -EFAULT, ibmveth_remove_buffer_from_pool(adapter, correlator, true));
-+}
-+
-+/**
-+ * ibmveth_rxq_get_buffer_test - unit test for ibmveth_rxq_get_buffer
-+ * @test: pointer to kunit structure
-+ *
-+ * Tests ibmveth_rxq_get_buffer. ibmveth_rxq_get_buffer also calls WARN_ON for
-+ * the NULL returns, so dmesg should be checked to see that these warnings
-+ * happened.
-+ *
-+ * Return: void
-+ */
-+static void ibmveth_rxq_get_buffer_test(struct kunit *test)
-+{
-+	struct ibmveth_adapter *adapter = kunit_kzalloc(test, sizeof(*adapter), GFP_KERNEL);
-+	struct sk_buff *skb = kunit_kzalloc(test, sizeof(*skb), GFP_KERNEL);
-+	struct ibmveth_buff_pool *pool;
-+
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, skb);
-+
-+	INIT_WORK(&adapter->work, ibmveth_reset_kunit);
-+
-+	adapter->rx_queue.queue_len = 1;
-+	adapter->rx_queue.index = 0;
-+	adapter->rx_queue.queue_addr = kunit_kzalloc(test, sizeof(struct ibmveth_rx_q_entry),
-+						     GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, adapter->rx_queue.queue_addr);
-+
-+	/* Set sane values for buffer pools */
-+	for (int i = 0; i < IBMVETH_NUM_BUFF_POOLS; i++)
-+		ibmveth_init_buffer_pool(&adapter->rx_buff_pool[i], i,
-+					 pool_count[i], pool_size[i],
-+					 pool_active[i]);
-+
-+	pool = &adapter->rx_buff_pool[0];
-+	pool->skbuff = kunit_kcalloc(test, pool->size, sizeof(void *), GFP_KERNEL);
-+	KUNIT_ASSERT_NOT_ERR_OR_NULL(test, pool->skbuff);
-+
-+	adapter->rx_queue.queue_addr[0].correlator = (u64)IBMVETH_NUM_BUFF_POOLS << 32 | 0;
-+	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
-+
-+	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | adapter->rx_buff_pool[0].size;
-+	KUNIT_EXPECT_PTR_EQ(test, NULL, ibmveth_rxq_get_buffer(adapter));
-+
-+	pool->skbuff[0] = skb;
-+	adapter->rx_queue.queue_addr[0].correlator = (u64)0 << 32 | 0;
-+	KUNIT_EXPECT_PTR_EQ(test, skb, ibmveth_rxq_get_buffer(adapter));
-+}
-+
-+static struct kunit_case ibmveth_test_cases[] = {
-+	KUNIT_CASE(ibmveth_remove_buffer_from_pool_test),
-+	KUNIT_CASE(ibmveth_rxq_get_buffer_test),
-+	{}
-+};
-+
-+static struct kunit_suite ibmveth_test_suite = {
-+	.name = "ibmveth-kunit-test",
-+	.test_cases = ibmveth_test_cases,
-+};
-+
-+kunit_test_suite(ibmveth_test_suite);
-+#endif
--- 
-2.49.0
+On 4/16/2025 9:59 PM, Manivannan Sadhasivam via B4 Relay wrote:
+> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> 
+> The PCI link, when down, needs to be recovered to bring it back. But that
+> cannot be done in a generic way as link recovery procedure is specific to
+> host bridges. So add a new API pci_host_handle_link_down() that could be
+> called by the host bridge drivers when the link goes down.
+> 
+> The API will iterate through all the slots and calls the pcie_do_recovery()
+> function with 'pci_channel_io_frozen' as the state. This will result in the
+> execution of the AER Fatal error handling code. Since the link down
+> recovery is pretty much the same as AER Fatal error handling,
+> pcie_do_recovery() helper is reused here. First the AER error_detected
+> callback will be triggered for the bridge and the downstream devices. Then,
+> pcie_do_slot_reset() will be called for each slots, which will reset the
+> slots using 'reset_slot' callback to recover the link. Once that's done,
+> resume message will be broadcasted to the bridge and the downstream devices
+> indicating successful link recovery.
+> 
+> In case if the AER support is not enabled in the kernel, only
+> pci_bus_error_reset() will be called for each slots as there is no way we
+> could inform the drivers about link recovery.
+> 
+The PCIe endpoint drivers are registering with err_handlers and they
+will be invoked only from pcie_do_recovery, but there are getting built
+by default irrespective of AER is enabled or not.
 
+Does it make sense to built err.c irrespective of AER is enabled or not
+to use common logic without the need of having dependency on AER.
+
+Also since err.c is tied with AER, DPC also had a hard requirement
+to enable AER which is not needed technically.
+
+- Krishna Chaitanya.
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+> ---
+>   drivers/pci/pci.h      | 21 +++++++++++++++++++++
+>   drivers/pci/pcie/err.c | 27 +++++++++++++++++++++++++++
+>   drivers/pci/probe.c    |  7 +++++++
+>   include/linux/pci.h    |  1 +
+>   4 files changed, 56 insertions(+)
+> 
+> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
+> index b81e99cd4b62a3022c8b07a09f212f6888674487..6c1d4c5a82d68e5842636ff296a8d3a06487cb11 100644
+> --- a/drivers/pci/pci.h
+> +++ b/drivers/pci/pci.h
+> @@ -966,6 +966,7 @@ int pci_aer_clear_status(struct pci_dev *dev);
+>   int pci_aer_raw_clear_status(struct pci_dev *dev);
+>   void pci_save_aer_state(struct pci_dev *dev);
+>   void pci_restore_aer_state(struct pci_dev *dev);
+> +void pcie_do_recover_slots(struct pci_host_bridge *host);
+>   #else
+>   static inline void pci_no_aer(void) { }
+>   static inline void pci_aer_init(struct pci_dev *d) { }
+> @@ -975,6 +976,26 @@ static inline int pci_aer_clear_status(struct pci_dev *dev) { return -EINVAL; }
+>   static inline int pci_aer_raw_clear_status(struct pci_dev *dev) { return -EINVAL; }
+>   static inline void pci_save_aer_state(struct pci_dev *dev) { }
+>   static inline void pci_restore_aer_state(struct pci_dev *dev) { }
+> +static inline void pcie_do_recover_slots(struct pci_host_bridge *host)
+> +{
+> +	struct pci_bus *bus = host->bus;
+> +	struct pci_dev *dev;
+> +	int ret;
+> +
+> +	if (!host->reset_slot)
+> +		dev_warn(&host->dev, "Missing reset_slot() callback\n");
+> +
+> +	for_each_pci_bridge(dev, bus) {
+> +		if (!pci_is_root_bus(bus))
+> +			continue;
+> +
+> +		ret = pci_bus_error_reset(dev);
+> +		if (ret)
+> +			pci_err(dev, "Failed to reset slot: %d\n", ret);
+> +		else
+> +			pci_info(dev, "Slot has been reset\n");
+> +	}
+> +}
+>   #endif
+>   
+>   #ifdef CONFIG_ACPI
+> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
+> index b834fc0d705938540d3d7d3d8739770c09fe7cf1..70d8cd37255c5638fddf38e13ea87cb8ebe8553f 100644
+> --- a/drivers/pci/pcie/err.c
+> +++ b/drivers/pci/pcie/err.c
+> @@ -270,3 +270,30 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
+>   
+>   	return status;
+>   }
+> +
+> +static pci_ers_result_t pcie_do_slot_reset(struct pci_dev *dev)
+> +{
+> +	int ret;
+> +
+> +	ret = pci_bus_error_reset(dev);
+> +	if (ret) {
+> +		pci_err(dev, "Failed to reset slot: %d\n", ret);
+> +		return PCI_ERS_RESULT_DISCONNECT;
+> +	}
+> +
+> +	pci_info(dev, "Slot has been reset\n");
+> +
+> +	return PCI_ERS_RESULT_RECOVERED;
+> +}
+> +
+> +void pcie_do_recover_slots(struct pci_host_bridge *host)
+> +{
+> +	struct pci_bus *bus = host->bus;
+> +	struct pci_dev *dev;
+> +
+> +	for_each_pci_bridge(dev, bus) {
+> +		if (pci_is_root_bus(bus))
+> +			pcie_do_recovery(dev, pci_channel_io_frozen,
+> +					 pcie_do_slot_reset);
+> +	}
+> +}
+> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+> index 364fa2a514f8a68fb18bded3259c6847d3932f8b..60ad20eea0259797e68afa7979bb1fc24b6f213b 100644
+> --- a/drivers/pci/probe.c
+> +++ b/drivers/pci/probe.c
+> @@ -3249,6 +3249,13 @@ int pci_host_probe(struct pci_host_bridge *bridge)
+>   }
+>   EXPORT_SYMBOL_GPL(pci_host_probe);
+>   
+> +void pci_host_handle_link_down(struct pci_host_bridge *bridge)
+> +{
+> +	dev_info(&bridge->dev, "Recovering slots due to Link Down\n");
+> +	pcie_do_recover_slots(bridge);
+> +}
+> +EXPORT_SYMBOL_GPL(pci_host_handle_link_down);
+> +
+>   int pci_bus_insert_busn_res(struct pci_bus *b, int bus, int bus_max)
+>   {
+>   	struct resource *res = &b->busn_res;
+> diff --git a/include/linux/pci.h b/include/linux/pci.h
+> index 8d7d2a49b76cf64b4218b179cec495e0d69ddf6f..76e977af2d524200b67f39a6d0417ee565cf5116 100644
+> --- a/include/linux/pci.h
+> +++ b/include/linux/pci.h
+> @@ -1157,6 +1157,7 @@ struct pci_bus *pci_create_root_bus(struct device *parent, int bus,
+>   				    struct pci_ops *ops, void *sysdata,
+>   				    struct list_head *resources);
+>   int pci_host_probe(struct pci_host_bridge *bridge);
+> +void pci_host_handle_link_down(struct pci_host_bridge *bridge);
+>   int pci_bus_insert_busn_res(struct pci_bus *b, int bus, int busmax);
+>   int pci_bus_update_busn_res_end(struct pci_bus *b, int busmax);
+>   void pci_bus_release_busn_res(struct pci_bus *b);
+> 
 
