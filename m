@@ -1,70 +1,58 @@
-Return-Path: <linuxppc-dev+bounces-7682-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7683-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 372B2A8B21D
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 09:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32106A8B2E3
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 10:00:50 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zct1L689gz3bp0;
-	Wed, 16 Apr 2025 17:28:38 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZctkQ3KB8z2yDr;
+	Wed, 16 Apr 2025 18:00:46 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102b"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744788518;
-	cv=none; b=TYtuteUV0U/ObLb5d0+cAWHVA0uOS8xIAD31aYEcZvXGupxj0GyfA5HB9kGHIstIvhlnZRnyxH/jCgI3tbXOghCcGlijFvk4M40gOQ9eZDCYa8WoTirTBvB7dlG6k6JSJMNhgnhUEZeB4vVkoDi8gW3U+0xcOxAujbtb6Ym5mAxOGtKINVo9er3ZvubLUjBoBi082ivdnX47+MJMx67mDvECcDMZxsI9CPNlQOLcoywZShG1xzKEyyJmHpK1k4GK2UeQJJpA03ekSQ9AizR/xkZUBiucACynG45IK/6Sx3Cmm4Sxpo1w5+IhG0+Gz0qanq/PgZqm9f+JpaamYSJMOg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=144.6.53.87
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744790446;
+	cv=none; b=ZJ1Y6qeUrW7Q4aShuZ8ta7OBplJwL5Je7KlpoUNGer1xpn2oG9J4/kxjT+9zvg8V4JWCRvA2A2GDBAFuEm4Tgxd+7TXKKgbvv7WhyfqPm4We9g+T1TioN/Su0ckHJIr8xXwv++7/iJRv7DF3a/SOtnAJA0vtjQZR2lNHKDfk31zu8aw29CP5TnvZtwANozyhfZ/ffW4WzhRQAfLMqiYn83LBexVJWeR0d2TGbP0M0LJrmmWBer4Llk1IPfHpk3JI5Dzbh57xTsJiBtcMqUFgIvFcDgqPDQ/HQIEwwfoLKWUBi0iNFIswps9W0SGCtsb959pNiqM7R2hiY71Rrw+v8Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744788518; c=relaxed/relaxed;
-	bh=qvlLa3VA9efC7avAUZkCgRlCB4WN+H9bYNViBn32pLg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eSwK5ukBXZgOMz3pFghncLSvoBHAKieHxLfV/Koq3dPPL7Y8dEvlx7vYKl6SaDwyoOArQmcMUvr7HbiXxcI2+q1ILuhQo4Q0GJF6vj5we4KgNYrLRC5taXFxO/5dSDSJyQn5F5D773rgP1l8D+1ydtf15GfpUhpu1O9MBD+Pft8Sci3vjfG0VTwvrGxTokvX0xy17fZj5TzkARXlWneovYKrT72GW8vIdUsT4Uxc2+UJ0XufZ5610NnwpKmNDrMdraw9YKB/vmPTc4KTEdfbwlQNrdS2LmjXG7bPcT6+Q6obuGpIxSTV9cfN4fY+Nz4pG5MmaAnlPL6BqZ3+pig6QQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Wd/nlYwe; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	t=1744790446; c=relaxed/relaxed;
+	bh=CxllXsS7oZKhmgl74o8BLeNmMQKxBZycllNwlO7QoVM=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=J/eMGko/f0QGPlCgXcUCnRFduyzVSOWG5MLX3Ev0jYBuZvagDL4ZiBr6kXTpe/tdGLQtJWXu8xH+Dqcdvn+NQgKvTPyvboY8RWJcP2xcnspNY2SJWP3A65BU/3z8zlCRh9qyHrascPDNNMSTSWB1ogvLUQzrWGBvttvJO5C7sKwKt5S8FdfZq0wf88VOFVHDQ16j6OnCHBgAuIu77tiusMo8KkvRYPXUOShdk2LKaBz/MUgvmY/O9Uexsq3ZDtMRRjCdaXxWLT4fbYFyCPNIm0NfeWVpK3M99VRICYtwqV95KXoCB26RSLoBQzDgALfPFAV66kDRu47A4hdZOjLJXg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=p6rOFRuB; dkim-atps=neutral; spf=pass (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org) smtp.mailfrom=gondor.apana.org.au
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Wd/nlYwe;
+	dkim=pass (2048-bit key; unprotected) header.d=hmeau.com header.i=@hmeau.com header.a=rsa-sha256 header.s=formenos header.b=p6rOFRuB;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gondor.apana.org.au (client-ip=144.6.53.87; helo=abb.hmeau.com; envelope-from=herbert@gondor.apana.org.au; receiver=lists.ozlabs.org)
+Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zct1K4RH3z2ym3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:28:36 +1000 (AEST)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-301918a4e3bso6515098a91.3
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 00:28:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1744788514; x=1745393314; darn=lists.ozlabs.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qvlLa3VA9efC7avAUZkCgRlCB4WN+H9bYNViBn32pLg=;
-        b=Wd/nlYwe/VdxEx52pQ5lJ7BS/SHpLHJmmdX1g12Sj8FPpYl1M22J2XcNAGolYHffeM
-         rHP/eSIVh2/ygb5djDNmi/CF/YUCtPz6cSalpMBT/bz8J97BmciJPPYUQg058dMe0yOV
-         GXtYfvOxYWxrMppXUwl7hcXTJv9Nvo4asiM+5nJRf/BxVVRwV0fmL/te3gMjxAYQ3quI
-         odtulC6yGgbk+PRGBsF5ZBMoMlqibkxZheDVsUN2kUVZKjKIMB7KGOYrCXxMJaxrWoLw
-         4WCQzvhCRsNDEKPlza2fwGPcVh10f5KwM+UhriVjv39X2X7pstkRUl5LMmIqKdTTw6YB
-         3oNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744788514; x=1745393314;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qvlLa3VA9efC7avAUZkCgRlCB4WN+H9bYNViBn32pLg=;
-        b=e7+YPhDVhY12y78Hm24B+oYEBbORVl90pxva7QKHfV1en6Zsbbt+0IRIDyaqLQPx+h
-         cmBdZxWp9g6UdrN0VCeeJJtOo6891ITHImmgQ+NggE7pvFXJttlWj5iE5M+3CZpaVeo6
-         pBZq4r/kbPmHquP4eTqydZGbZ0sx6Gagj/fuav/6KkCnZma47J8P9OjZXPgMqylZ/0/B
-         yUcg17vUK+fnT8hq0aFnIMlhWNra8nkRbLi8u1XUe/w3/vp8nrKPKecEAQ82GcxLb3KZ
-         mLwNMnAgCjf8RI5dNzyCrt9j5YxRNtrh2XYeHMQ7a4emzKNzEAmw7sTBVVakqZFMY94B
-         y3XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVAWAhj0WQWl9oiC8C5bkDvXFAKb7kEKpT/7zaFM0foN9tDDZfjAHS17wYSVOLJ3WXp2U//WLhr2pnqGl8=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0YzhRQupkdXuKfpZSq4TOO2L9I2fHQS60S2kgLhoaeZ2IL56P2BW
-	Ema7yIPVJhH+HK4qoAoG9xcEIZUKDtFfhjK0mtNkhJHj/yPOi2GOn8dQYAt2Z1aKyg0jX+w1dUs
-	G8xzCDoReABsjc12ipFxJjafFuxM=
-X-Gm-Gg: ASbGncsE+Hctg1BCGVhZVXqXAYwEEc9V1msbK/bLnJ7ZPQ+uDjvBpJqtpBcxbQIoYwN
-	CfMe18K2Ji4oGOx/Tf4buNhBpYcTAHhrfzKTQVE1CUMRbsrR5aYic0kJ+9ldhwuUwBQwEytxGz/
-	Bt7XEMM7sQU1/AKjJ5pQ==
-X-Google-Smtp-Source: AGHT+IGW5zcCmv3b7BVm4A40QK0n9oi/g9NFeFg+vQtedK+zMuIzEBKZNFZcJGBHY+4JsYxPwA1hTYFwiZZ7HXKb0a8=
-X-Received: by 2002:a17:90b:574c:b0:2ee:edae:75e with SMTP id
- 98e67ed59e1d1-30863f1c831mr1185370a91.13.1744788514329; Wed, 16 Apr 2025
- 00:28:34 -0700 (PDT)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZctkP69YMz2xqG
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 18:00:45 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
+	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:Message-ID:Subject:Cc:To:
+	From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=CxllXsS7oZKhmgl74o8BLeNmMQKxBZycllNwlO7QoVM=; b=p6rOFRuBNqBL9Vs+KMLwfIwpaW
+	yz/TUWI06KiYLjDOWRkW1thUO1NCa0FsczE1IdP8yWQJuNPoj7zLoeTV/bcNnNzwnrrQZxCAF6hWN
+	rR3nya2bEWTJ06hsRLUYISaUNvMGmmJL2xQjFg9UXnzbuNs+F3O8tZDTNTPjcwkWcdfZbNyJ4y44h
+	MNkHBN0Q6sxrv8XtbZop2V1nmDZtMJY4YBCj2ZV5ufdu+NQuPvRjnUCx6msKVoK7FpDyGaHfZtkeJ
+	fVmHWHaHPram2mO/vEo3QW8W7xM+RzwRRrwC4Eq7LpM/nK/62FTZQlA3nyOmTRNvV4g+dWKgbKTzE
+	D7ct5GZA==;
+Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
+	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
+	id 1u4xhH-00G7yK-1U;
+	Wed, 16 Apr 2025 16:00:40 +0800
+Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Wed, 16 Apr 2025 16:00:39 +0800
+Date: Wed, 16 Apr 2025 16:00:39 +0800
+From: Herbert Xu <herbert@gondor.apana.org.au>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+	linuxppc-dev@lists.ozlabs.org, x86@kernel.org
+Subject: Re: [PATCH 0/9] Remove per-architecture poly1305 shash glue code
+Message-ID: <Z_9jp6J6YKImbzyg@gondor.apana.org.au>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -77,30 +65,60 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-References: <20250416041431.546370-1-nichen@iscas.ac.cn>
-In-Reply-To: <20250416041431.546370-1-nichen@iscas.ac.cn>
-From: Daniel Baluta <daniel.baluta@gmail.com>
-Date: Wed, 16 Apr 2025 10:30:19 +0300
-X-Gm-Features: ATxdqUEL8u77ss7dHQffyWPdVCGHmFsnGmhGr0uT_PfqkPxcRAmmZB4Ahi-EWlY
-Message-ID: <CAEnQRZBb=E75DPn=siqvhAqFas6Lt-++0Ka9W6gY0fbQgHBcrg@mail.gmail.com>
-Subject: Re: [PATCH] ASoC: fsl_rpmsg: Remove useless return variable
-To: Chen Ni <nichen@iscas.ac.cn>
-Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
-	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
-	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250413045421.55100-1-ebiggers@kernel.org>
+X-Newsgroups: apana.lists.os.linux.cryptoapi,apana.lists.os.linux.kernel
+X-Spam-Status: No, score=0.0 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
 	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Apr 16, 2025 at 7:15=E2=80=AFAM Chen Ni <nichen@iscas.ac.cn> wrote:
->
-> Remove unnecessary return variable and compress the return logic.
->
-> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
+Eric Biggers <ebiggers@kernel.org> wrote:
+> This series removes the per-architecture poly1305 shash glue code and
+> re-implements the poly1305 shashes on top of the Poly1305 library
+> functions.  This ends up being much simpler, and it is how it should
+> have been done originally.  This follows similar changes to crc32,
+> crc32c, and chacha20.
+> 
+> This series also makes the Poly1305 library be optimized on PowerPC.
+> Previously the PowerPC-optimized Poly1305 code only supported shash.
+> 
+> Eric Biggers (9):
+>  crypto: powerpc/poly1305 - implement library instead of shash
+>  crypto: poly1305 - centralize the shash wrappers for arch code
+>  crypto: arm/poly1305 - remove redundant shash algorithm
+>  crypto: arm64/poly1305 - remove redundant shash algorithm
+>  crypto: mips/poly1305 - drop redundant dependency on CONFIG_MIPS
+>  crypto: mips/poly1305 - remove redundant shash algorithm
+>  crypto: x86/poly1305 - remove redundant shash algorithm
+>  crypto: x86/poly1305 - don't select CRYPTO_LIB_POLY1305_GENERIC
+>  crypto: poly1305 - remove rset and sset fields of poly1305_desc_ctx
+> 
+> arch/arm/crypto/Kconfig                 |   6 -
+> arch/arm/crypto/poly1305-glue.c         | 170 ++----------------------
+> arch/arm64/crypto/Kconfig               |   6 -
+> arch/arm64/crypto/poly1305-glue.c       | 143 ++------------------
+> arch/mips/crypto/Kconfig                |   6 -
+> arch/mips/crypto/poly1305-glue.c        | 120 +----------------
+> arch/powerpc/crypto/Kconfig             |  11 +-
+> arch/powerpc/crypto/poly1305-p10-glue.c | 134 ++++++-------------
+> arch/x86/crypto/Kconfig                 |   8 --
+> arch/x86/crypto/poly1305_glue.c         |  99 ++------------
+> crypto/Makefile                         |   3 +-
+> crypto/poly1305.c                       | 153 +++++++++++++++++++++
+> crypto/poly1305_generic.c               | 149 ---------------------
+> include/crypto/poly1305.h               |  13 +-
+> lib/crypto/poly1305.c                   |   2 -
+> 15 files changed, 242 insertions(+), 781 deletions(-)
+> create mode 100644 crypto/poly1305.c
+> delete mode 100644 crypto/poly1305_generic.c
+> 
+> 
+> base-commit: 3be3f70ee95da03a87d94c4a714ee679a5c7b34d
 
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
+All applied.  Thanks.
+-- 
+Email: Herbert Xu <herbert@gondor.apana.org.au>
+Home Page: http://gondor.apana.org.au/~herbert/
+PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
 
