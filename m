@@ -1,46 +1,82 @@
-Return-Path: <linuxppc-dev+bounces-7687-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7688-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B1FCA90565
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 16:05:34 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12179A905CA
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 16:13:59 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zd2qC157cz2xxr;
-	Thu, 17 Apr 2025 00:05:27 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zd3103LtTz2yf9;
+	Thu, 17 Apr 2025 00:13:56 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=37.157.195.192
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744812326;
-	cv=none; b=CwjXMc2cHkD8L/TPoC9w6svAHnpPxfBIGnXfWxVKTi/1mbi2hlgZw96FGeEoSQDu92AZ9+Yokt8a3sHF1HLGjqPyq/6BoDOppA5QAsrUjbSIkccUCToQl3r6b05xKSZSkGVx+RplLmC2lQWhUB088RFHvYfKW7km/LAJKLxvzK1j6BgQ/QwCNr6GGFXLWlbqZA9TfujkU6OtM3WkndUtRGpX9/4Hk66tsBK/3/unK6dZ3IFJlpcu/A80YmW10Pr/VTSvw2S+O+SfiGeuY2ka1W+wZMAu8amaeCvi0UO8IBM3LAvqs7jbKMMli9cxrdEq8ZyFLSKGmVfvJIUzEycA2Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744812836;
+	cv=none; b=jJXkvWvDqtK2rNDIMgnu4FI+U2NgNas2sWc5nTu/5XsLyzzJwTSfE1p7daUsdHMsMvkeBET64pbW5QtCVviS7hw2YPBVcWx4RrosKKZCmj+2rlw+PTLCvVu1w29tMFqlNjV8GTlPcx0QGL0npScTCFce+QVvU6DeQ9s4gccUP0jATLll248iTs1L4qfi6zReC+aoMM8PpuCUy4G8DpB0ZeiOj+loZGJrbfMPJDCMyC0QSQw/Xd3GwIL01XdHY2IHBkZEH5E5dy+8QR0hQWItDRdy31YmAY1boc7SG8xX3pqWs5KbkXv4NxQepuTzQkKwJNv2FJqWX4lOIQ37LDuwlw==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744812326; c=relaxed/relaxed;
-	bh=pB0dS7/T+jbGwEXc/fOdvPOwksDu4Aq6hFM5wtUwUXc=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=F3LCk5ldxEDvTgW5jNoTEIFC4yZJbvq3TDTtyy9vA+2dwFm4mjYcEAilgHY5MHj+NuiyMdrA9pVCY1afxlgqDa/9fY6m3LN4I0qdSko6KXUbiKmHpYbrvnhukZi8pnZJRfZ0BfYlZPOOgdzvu1Ka6sSNSMYRlXBbNQ+pPG2y9W7Q0E+ZTY+pzAi44iNH8EyoPEbn9RtgvU6dIB58FW/kwysOmtORypcdOA+7KPICIA4MttgELSyrmQLhLoMHyZsbQDkxaBSvdpjDTKxrgweEplN9xc5sTJR1ikSqU66eJsJ2EcYLUSdLhdNZGAe4wCV2aMHspeN8xdSSYDzWMl/+Iw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=danny.cz; spf=pass (client-ip=37.157.195.192; helo=redcrew.org; envelope-from=dan@danny.cz; receiver=lists.ozlabs.org) smtp.mailfrom=danny.cz
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=danny.cz
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=danny.cz (client-ip=37.157.195.192; helo=redcrew.org; envelope-from=dan@danny.cz; receiver=lists.ozlabs.org)
-Received: from redcrew.org (redcrew.org [37.157.195.192])
+	t=1744812836; c=relaxed/relaxed;
+	bh=Kg7g99BYB8SaEZHORP0dZSRe0tlnjVtMmCUo1y3MJV4=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=UL45yT3ywVwSd92i6c5IsPaGyIkQeqkK0v8t4T0zDWOETzHjFu5A6W7VoDE/WJPV6BhOaoNA7P+RmV7gBBtvfLF4Pq5UXmoS1m5XqvjRBJEH8Ux+z3oREjC1UdebqiUZMX88aGXlyKTXGBjhCXmb6EOaVRWnnCukeheKUlx2MDc4tEc+YMI6Or1lckipNs68j07/LnTNN/epq76kes39ChZX5OcSGNWMdiUdrEtEP0N0yxU8FQoTp4kHg/m/TWgKwLkMVBPU6VFB35ZOQdkeXqlDIi+nrOhb29EAzN8IcB2T1vqNCxpWVDIq1YBEtNEHAQ0Wm9EfROSiQoeBPByCtw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EPtVOq3m; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=EPtVOq3m;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=davemarq@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd2q853V5z2xlP
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 00:05:22 +1000 (AEST)
-Received: from server.danny.cz (85-71-161-19.rce.o2.cz [85.71.161.19])
-	by redcrew.org (Postfix) with ESMTP id 31E086B;
-	Wed, 16 Apr 2025 16:05:18 +0200 (CEST)
-DKIM-Filter: OpenDKIM Filter v2.11.0 redcrew.org 31E086B
-Received: from talos.danny.cz (talos [IPv6:2001:470:5c11:160:47df:83f6:718e:218])
-	by server.danny.cz (Postfix) with SMTP id 032B915E001;
-	Wed, 16 Apr 2025 16:05:17 +0200 (CEST)
-Date: Wed, 16 Apr 2025 16:05:17 +0200
-From: Dan =?UTF-8?B?SG9yw6Fr?= <dan@danny.cz>
-To: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: Re: early soft lockup in 6.15-rc2 on PowerNV
-Message-Id: <20250416160517.4176a26c7e1d253ddb184007@danny.cz>
-In-Reply-To: <87ecxsh08k.fsf@gmail.com>
-References: <20250416104552.1b2c63939d42a9bc20f2ef8d@danny.cz>
-	<87ecxsh08k.fsf@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; powerpc64le-redhat-linux-gnu)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd30z0tG4z2yS7
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 00:13:54 +1000 (AEST)
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GAea7i019797;
+	Wed, 16 Apr 2025 14:13:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=Kg7g99BYB8SaEZHORP0dZSRe0tlnjV
+	tMmCUo1y3MJV4=; b=EPtVOq3mhLU1kvvzny31SiRZHfua7ot2YVzjgJcNJh+g8d
+	uAt8nYFtCGgp4Ko9KxV/LCQ8sFdb4FsV6WKsnt0AWKy1eiA6dnvPaK6DaeyivjTI
+	/iGzGD/0bZDhWXwzr7RayWIyYBxcuO7Vv7Paiw4DS1542VsuTsG2QtBii4MJ+fPy
+	1CJSYzrslCT1KWWMkSYSVuBtYNZzX5PzsWHgfkTcEos5jKveJE25w8MlYBkXX5iI
+	1PxuLY3CuLr0Mu1jRqQ+OVbxvfrmqqCrrt+Ed/iS1DXYwDdTsADEMoeyG6j+dsB9
+	0BCdCDSVqReyGADTzBQtnyPiN/navqzrDDELXiXg==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462b0q13fk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 14:13:43 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GAQmTE030919;
+	Wed, 16 Apr 2025 14:13:43 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4603gnrqpn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 14:13:43 +0000
+Received: from smtpav02.wdc07v.mail.ibm.com (smtpav02.wdc07v.mail.ibm.com [10.39.53.229])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GEDg4F22741658
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Apr 2025 14:13:42 GMT
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1AE8758061;
+	Wed, 16 Apr 2025 14:13:42 +0000 (GMT)
+Received: from smtpav02.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C01EA5805D;
+	Wed, 16 Apr 2025 14:13:41 +0000 (GMT)
+Received: from d.ibm.com (unknown [9.61.55.205])
+	by smtpav02.wdc07v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 16 Apr 2025 14:13:41 +0000 (GMT)
+From: Dave Marquardt <davemarq@linux.ibm.com>
+To: Simon Horman <horms@kernel.org>
+Cc: netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com,
+        linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH net-next v2 1/2] net: ibmveth: make ibmveth use WARN_ON
+ instead of BUG_ON
+In-Reply-To: <20250416123449.GQ395307@horms.kernel.org> (Simon Horman's
+	message of "Wed, 16 Apr 2025 13:34:49 +0100")
+References: <20250414194016.437838-1-davemarq@linux.ibm.com>
+	<20250414194016.437838-2-davemarq@linux.ibm.com>
+	<20250416123449.GQ395307@horms.kernel.org>
+Date: Wed, 16 Apr 2025 09:13:40 -0500
+Message-ID: <877c3kdwiz.fsf@linux.ibm.com>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -52,107 +88,183 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.0 required=3.0 tests=NICE_REPLY_A,SPF_HELO_NONE,
+MIME-Version: 1.0
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: 4HOrPrJVLIXs7Ie9wzPM09t9FYmVhU00
+X-Proofpoint-GUID: 4HOrPrJVLIXs7Ie9wzPM09t9FYmVhU00
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-16_04,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ priorityscore=1501 suspectscore=0 clxscore=1015 spamscore=0 mlxscore=0
+ bulkscore=0 phishscore=0 lowpriorityscore=0 mlxlogscore=999
+ impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2504160115
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
 	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Ritesh,
+Simon Horman <horms@kernel.org> writes:
 
-On Wed, 16 Apr 2025 15:55:15 +0530
-Ritesh Harjani (IBM) <ritesh.list@gmail.com> wrote:
+> On Mon, Apr 14, 2025 at 02:40:15PM -0500, Dave Marquardt wrote:
+>> Replaced BUG_ON calls with WARN_ON calls with error handling, with
+>> calls to a new ibmveth_reset routine, which resets the device. Removed
+>> conflicting and unneeded forward declaration.
+>
+> To me the most important change here is adding the ibmveth_reset.
+> So I would report that in the subject (rather than the WARN_ON) change.
+> But perhaps that is just me.
 
-> Dan Horák <dan@danny.cz> writes:
-> 
-> > Hi,
-> >
-> > after updating to Fedora built 6.15-rc2 kernel from 6.14 I am getting a
-> > soft lockup early in the boot and NVME related timeout/crash later
-> > (could it be related?). I am first checking if this is a known issue
-> > as I have not started bisecting yet.
-> >
-> > [    2.866399] Memory: 63016960K/67108864K available (25152K kernel code, 4416K rwdata, 24000K rodata, 9792K init, 1796K bss, 476160K reserved, 3356672K cma-reserved)
-> > [    2.874121] devtmpfs: initialized
-> > [   24.037685] watchdog: BUG: soft lockup - CPU#0 stuck for 22s! [swapper/0:1]
-> > [   24.037690] CPU#0 Utilization every 4s during lockup:
-> > [   24.037692] 	#1: 101% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   24.037697] 	#2: 100% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   24.037701] 	#3: 100% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   24.037704] 	#4: 101% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   24.037707] 	#5: 100% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   24.037711] Modules linked in:
-> > [   24.037716] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Not tainted 6.15.0-0.rc2.22.fc43.ppc64le #1 VOLUNTARY 
-> > [   24.037722] Hardware name: T2P9D01 REV 1.00 POWER9 0x4e1202 opal:skiboot-bc106a0 PowerNV
-> > [   24.037725] NIP:  c00000000308a72c LR: c00000000308a7d0 CTR: c0000000018012c0
-> > [   24.037729] REGS: c000200006637a50 TRAP: 0900   Not tainted  (6.15.0-0.rc2.22.fc43.ppc64le)
-> > [   24.037733] MSR:  9000000002009033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 48000828  XER: 00000000
-> > [   24.037750] CFAR: 0000000000000000 IRQMASK: 0 
-> > [   24.037750] GPR00: c00000000308a7d0 c000200006637cf0 c0000000025baa00 0000000000000040 
-> > [   24.037750] GPR04: c0002007ff390b00 0000000000010000 0000000000000000 c0002007ff3a0b00 
-> > [   24.037750] GPR08: 00000000002007ff 000000000012d092 0000000000000000 0000000000000000 
-> > [   24.037750] GPR12: 0000000000000000 c000000003fb0000 c000000000011320 0000000000000000 
-> > [   24.037750] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> > [   24.037750] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> > [   24.037750] GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> > [   24.037750] GPR28: 0000000000000000 c000000003f10be0 c0000000019efaf8 0000000000037940 
-> > [   24.037806] NIP [c00000000308a72c] memory_dev_init+0xb4/0x194
-> > [   24.037815] LR [c00000000308a7d0] memory_dev_init+0x158/0x194
-> > [   24.037820] Call Trace:
-> > [   24.037822] [c000200006637cf0] [c00000000308a7d0] memory_dev_init+0x158/0x194 (unreliable)
-> > [   24.037830] [c000200006637d70] [c000000003089bd0] driver_init+0x74/0xa0
-> > [   24.037836] [c000200006637d90] [c00000000300f628] kernel_init_freeable+0x204/0x288
-> > [   24.037843] [c000200006637df0] [c000000000011344] kernel_init+0x2c/0x1b8
-> > [   24.037849] [c000200006637e50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-> > [   24.037855] --- interrupt: 0 at 0x0
-> > [   24.037858] Code: 7c651b78 40820010 3fa20195 3bbd61e0 48000080 3c62ff89 389e00c8 3863e510 4bf7a625 60000000 39290001 7c284840 <41800088> 792aaac2 7c2a2840 4080ffec 
-> > [   48.045039] watchdog: BUG: soft lockup - CPU#0 stuck for 44s! [swapper/0:1]
-> > [   48.045043] CPU#0 Utilization every 4s during lockup:
-> > [   48.045045] 	#1: 101% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   48.045049] 	#2: 100% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   48.045053] 	#3: 100% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   48.045056] 	#4: 101% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   48.045059] 	#5: 100% system,	  0% softirq,	  0% hardirq,	  0% idle
-> > [   48.045063] Modules linked in:
-> > [   48.045067] CPU: 0 UID: 0 PID: 1 Comm: swapper/0 Tainted: G             L     ------  ---  6.15.0-0.rc2.22.fc43.ppc64le #1 VOLUNTARY 
-> > [   48.045073] Tainted: [L]=SOFTLOCKUP
-> > [   48.045075] Hardware name: T2P9D01 REV 1.00 POWER9 0x4e1202 opal:skiboot-bc106a0 PowerNV
-> > [   48.045077] NIP:  c00000000308a72c LR: c00000000308a7d0 CTR: c0000000018012c0
-> > [   48.045081] REGS: c000200006637a50 TRAP: 0900   Tainted: G             L     ------  ---   (6.15.0-0.rc2.22.fc43.ppc64le)
-> > [   48.045085] MSR:  9000000002009033 <SF,HV,VEC,EE,ME,IR,DR,RI,LE>  CR: 48000828  XER: 00000000
-> > [   48.045100] CFAR: 0000000000000000 IRQMASK: 0 
-> > [   48.045100] GPR00: c00000000308a7d0 c000200006637cf0 c0000000025baa00 0000000000000040 
-> > [   48.045100] GPR04: c0002007ff390b00 0000000000010000 0000000000000000 c0002007ff3a0b00 
-> > [   48.045100] GPR08: 00000000002007ff 00000000000a65fd 0000000000000000 0000000000000000 
-> > [   48.045100] GPR12: 0000000000000000 c000000003fb0000 c000000000011320 0000000000000000 
-> > [   48.045100] GPR16: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> > [   48.045100] GPR20: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> > [   48.045100] GPR24: 0000000000000000 0000000000000000 0000000000000000 0000000000000000 
-> > [   48.045100] GPR28: 0000000000000000 c000000003f10be0 c0000000019efaf8 000000000007f880 
-> > [   48.045155] NIP [c00000000308a72c] memory_dev_init+0xb4/0x194
-> > [   48.045161] LR [c00000000308a7d0] memory_dev_init+0x158/0x194
-> > [   48.045166] Call Trace:
-> > [   48.045167] [c000200006637cf0] [c00000000308a7d0] memory_dev_init+0x158/0x194 (unreliable)
-> > [   48.045175] [c000200006637d70] [c000000003089bd0] driver_init+0x74/0xa0
-> > [   48.045181] [c000200006637d90] [c00000000300f628] kernel_init_freeable+0x204/0x288
-> > [   48.045187] [c000200006637df0] [c000000000011344] kernel_init+0x2c/0x1b8
-> > [   48.045193] [c000200006637e50] [c00000000000debc] ret_from_kernel_user_thread+0x14/0x1c
-> > [   48.045199] --- interrupt: 0 at 0x0
-> 
-> The above looks similar to
-> https://lore.kernel.org/all/20250410125110.1232329-1-gshan@redhat.com/
-> 
-> Maybe you can give this patch a try for above softlockup.
+Thanks, I'll consider that.
 
-yes, it was it, the mentioned patch fixes the soft-lockup, so feel free
-to add
+>> 
+>> Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
+>> ---
+>>  drivers/net/ethernet/ibm/ibmveth.c | 116 ++++++++++++++++++++++++-----
+>>  drivers/net/ethernet/ibm/ibmveth.h |  65 ++++++++--------
+>>  2 files changed, 130 insertions(+), 51 deletions(-)
+>> 
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.c b/drivers/net/ethernet/ibm/ibmveth.c
+>
+> ...
+>
+>> @@ -370,20 +372,36 @@ static void ibmveth_free_buffer_pool(struct ibmveth_adapter *adapter,
+>>  	}
+>>  }
+>>  
+>> -/* remove a buffer from a pool */
+>> -static void ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+>> -					    u64 correlator, bool reuse)
+>> +/**
+>> + * ibmveth_remove_buffer_from_pool - remove a buffer from a pool
+>> + * @adapter: adapter instance
+>> + * @correlator: identifies pool and index
+>> + * @reuse: whether to reuse buffer
+>
+> The above is the correct way to document function parameters in a Kernel doc.
+>
+>> + *
+>> + * Return:
+>> + * * %0       - success
+>> + * * %-EINVAL - correlator maps to pool or index out of range
+>> + * * %-EFAULT - pool and index map to null skb
+>> + */
+>> +static int ibmveth_remove_buffer_from_pool(struct ibmveth_adapter *adapter,
+>> +					   u64 correlator, bool reuse)
+>
+> ...
+>
+>> +/**
+>> + * ibmveth_rxq_harvest_buffer - Harvest buffer from pool
+>> + *
+>> + * @adapter - pointer to adapter
+>> + * @reuse   - whether to reuse buffer
+>
+> But this is not correct. IOW, tooling expects
+> f.e. @adapter: ...  rather than @adapter - ...
+>
+> Flagged by W=1 builds and ./scripts/kernel-doc -none
 
-Tested-by: Dan Horák <dan@danny.cz>
+Thanks, I'll start using this in my work.
 
+>> + *
+>> + * Context: called from ibmveth_poll
+>> + *
+>> + * Return:
+>> + * * %0    - success
+>> + * * other - non-zero return from ibmveth_remove_buffer_from_pool
+>> + */
+>> +static int ibmveth_rxq_harvest_buffer(struct ibmveth_adapter *adapter,
+>> +				      bool reuse)
+>
+> ...
+>
+>> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
+>> index 8468e2c59d7a..b0a2460ec9f9 100644
+>> --- a/drivers/net/ethernet/ibm/ibmveth.h
+>> +++ b/drivers/net/ethernet/ibm/ibmveth.h
+>> @@ -134,38 +134,39 @@ struct ibmveth_rx_q {
+>>  };
+>>  
+>>  struct ibmveth_adapter {
+>> -    struct vio_dev *vdev;
+>> -    struct net_device *netdev;
+>> -    struct napi_struct napi;
+>> -    unsigned int mcastFilterSize;
+>> -    void * buffer_list_addr;
+>> -    void * filter_list_addr;
+>> -    void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+>> -    unsigned int tx_ltb_size;
+>> -    dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+>> -    dma_addr_t buffer_list_dma;
+>> -    dma_addr_t filter_list_dma;
+>> -    struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+>> -    struct ibmveth_rx_q rx_queue;
+>> -    int rx_csum;
+>> -    int large_send;
+>> -    bool is_active_trunk;
+>> -
+>> -    u64 fw_ipv6_csum_support;
+>> -    u64 fw_ipv4_csum_support;
+>> -    u64 fw_large_send_support;
+>> -    /* adapter specific stats */
+>> -    u64 replenish_task_cycles;
+>> -    u64 replenish_no_mem;
+>> -    u64 replenish_add_buff_failure;
+>> -    u64 replenish_add_buff_success;
+>> -    u64 rx_invalid_buffer;
+>> -    u64 rx_no_buffer;
+>> -    u64 tx_map_failed;
+>> -    u64 tx_send_failed;
+>> -    u64 tx_large_packets;
+>> -    u64 rx_large_packets;
+>> -    /* Ethtool settings */
+>> +	struct vio_dev *vdev;
+>> +	struct net_device *netdev;
+>> +	struct napi_struct napi;
+>> +	struct work_struct work;
+>> +	unsigned int mcastFilterSize;
+>> +	void *buffer_list_addr;
+>> +	void *filter_list_addr;
+>> +	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
+>> +	unsigned int tx_ltb_size;
+>> +	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
+>> +	dma_addr_t buffer_list_dma;
+>> +	dma_addr_t filter_list_dma;
+>> +	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
+>> +	struct ibmveth_rx_q rx_queue;
+>> +	int rx_csum;
+>> +	int large_send;
+>> +	bool is_active_trunk;
+>> +
+>> +	u64 fw_ipv6_csum_support;
+>> +	u64 fw_ipv4_csum_support;
+>> +	u64 fw_large_send_support;
+>> +	/* adapter specific stats */
+>> +	u64 replenish_task_cycles;
+>> +	u64 replenish_no_mem;
+>> +	u64 replenish_add_buff_failure;
+>> +	u64 replenish_add_buff_success;
+>> +	u64 rx_invalid_buffer;
+>> +	u64 rx_no_buffer;
+>> +	u64 tx_map_failed;
+>> +	u64 tx_send_failed;
+>> +	u64 tx_large_packets;
+>> +	u64 rx_large_packets;
+>> +	/* Ethtool settings */
+>>  	u8 duplex;
+>>  	u32 speed;
+>>  };
+>
+> If you would like to update the indentation of this structure
+> then please do so in a separate patch which precedes
+> adding/removing/chainging fields of the structure.
+>
+> As it, it's very hard to see the non-formatting changes in this hunk.
 
-The NVME issue seems to be unrelated, I will keep looking ...
+I agree. Thanks for the suggestion.
 
-
-		Dan
+-Dave
 
