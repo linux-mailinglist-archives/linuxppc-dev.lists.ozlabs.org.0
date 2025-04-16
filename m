@@ -1,84 +1,83 @@
-Return-Path: <linuxppc-dev+bounces-7713-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7714-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB5DA90E6C
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 00:05:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A100A90F01
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 00:58:07 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdFSy6h51z2yGN;
-	Thu, 17 Apr 2025 08:05:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdGdl6SQtz2yr0;
+	Thu, 17 Apr 2025 08:58:03 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.180.131
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744827563;
-	cv=none; b=MD1fNFFx/llsdb/MeypiOIyClj8KfD9RSeBDjTMWcVUHSwMZ6lW8NGZeuM2ocSGQO+mL9hbrncoozQuvkxH6pcPuYjhzymCm5lirHwQRX75b8cKqaKx7bVDt1ZXVZ0iZu6PMr7B81porlzhHU7tqsh8mRenkOlO0KE38LyY4IYeZN+gQ4jiodg0nVUwv8h7Tvtc0g6fmK0B4nHqpSumxHHjJwIdAmXaxIGI9WaMymuqJzIBMqYDiQBZ6YiklbEfibVTfgQJyzZd7NUDUWRDxOYqPvMQ/oyNcNADZv1TS1IBCt6h5+s3AnIL2aTYk4VqXKNZWtwyk35QGzN0Mlp8CmA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744844283;
+	cv=none; b=B5Ag4lVf2IZASNaTjhrl4TIPO7YmF9eYnPInd52XhKv/QFyMHku69mirwZEGb2tycuQxa+l1QIK5eOsxlCn7SWDv5XG2aXR6LDS1qX/uE8bmROSg+c2o5cP1gP3H4+/6vqPDBs3j4jW0R7uuP5zqlfCK4RrB3cmnMoZxUJjKxKUl1kEvSM+y+aixmf24t9N0TY9wxF7JaGiLigkugtqpepPJ68vRnxrFbUEU4rPU3O1oem/Exlnrdi0SliJw748i9gNSuRa8zEicNqp77Rf6FPO+xu5UdkIyPDq118vGqm0AW7q0Q8PMlFdMtcBtQWUc2OoZWkeiGGQGwVz8f6mWaQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744827563; c=relaxed/relaxed;
-	bh=V5pmctK1Tr+I/l712rxqAECJA15ahdHQ8zwALeKKjYY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Igl6oCOCbvyitiNuC3mBgGioWnQS4Wgfx56id5yNgere3/xVZEI7UufQ44A/U26U4MgV/DgfzzmagmH9y+GUQZ65SwcDbm4U5qeh/afw8KltI4KskDTVI/sgPaDNYi6l/l0Cc3Za2eaviaQU80XOIq+QA/5+8rZNHu9zpT4EGzKvKe1sk9EljYV7jacB0K6N2KxdHv1xBiAiE2+b5Fk8JNJPZ9HtnoYHTHvjUmaRS/xBNM9Rd06Jv6Rcd6J7u8Xwjt0Ro3HOqSMVtBKsR7QnGhxnKf3HbVwGM6ndv3REiYvN3TqpUyULYc+855wJE1zy332wQiVHyNstYQ/DxCM4Ww==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cMofM81g; dkim-atps=neutral; spf=pass (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.qualcomm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+	t=1744844283; c=relaxed/relaxed;
+	bh=6x5aUMdcqpImd4TaXO5stAhWxLkyHtHDJubhlEq4NsQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QloQICEdFUSlbnO/xzlnUGf0vGRZ5mQ/sxdQwldLkW5gqARN5joiBRGupikFhXRwRIg7c66xnGJXXQjQCRpUZrJR2lC3DEadu7a1b3F4KqrxW6ukD3+evJ7GrWzlMRj0nElQvVPLU6J6WLfLou3HCYBez04v/k9ns+DSMOIstkXGSxrc/JgefrhYtb9zY9SafuHZ5vI2qTwXZ10IjUi9Qn9az2orTJ5PQl5Xny1p0mSe2tW++mPIuEFz9kU/5rhKWyYu468qR3TGeJC+bE5PH6xz11m/LlP5iaZqaIwyNVi3qFaHddAgqguKyPsMiMnK2Ghl7/y9hDVKBAIsV6AmdA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C3bdNwvZ; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=cMofM81g;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=C3bdNwvZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oss.qualcomm.com (client-ip=205.220.180.131; helo=mx0b-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 1639 seconds by postgrey-1.37 at boromir; Thu, 17 Apr 2025 04:19:22 AEST
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=haren@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd8SB0DLmz2ySX
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 04:19:20 +1000 (AEST)
-Received: from pps.filterd (m0279868.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53G9mpa8007385
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:51:58 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
-	V5pmctK1Tr+I/l712rxqAECJA15ahdHQ8zwALeKKjYY=; b=cMofM81gdD+S3Y9Z
-	SfmcXozq7mfib5IEJxf9+KeW+HA2EVsPubKzLJ8LjysfDwjUhnKHFnTQni1ff5m1
-	YgrBFmYX7YkWHXgq7BdYz3G7dGUM952jjf32Rf6MgJ621C1cpa3GRQ9FskHsvYK9
-	oevWWjA7nFWYpDPwx/b2WlZlv7Jb0aUcVbv012qvEj50cEodJ7F1JbyhcoyHElOH
-	ZkDFTyIV0eE5uergsHmE5xGCSyyNSQ/gRWLy7c+ziIYgPvk0rr4bNyODfZxRz3fm
-	BghhPqdwm29VlaXk+kkWA3hFvQiampjHNZdxRoDmFsER6GKGXBa+MVl6unsG3OyS
-	jPM7bw==
-Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com [209.85.214.197])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45yfgjmakn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:51:58 +0000 (GMT)
-Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2241e7e3addso61618585ad.1
-        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 10:51:58 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744825917; x=1745430717;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=V5pmctK1Tr+I/l712rxqAECJA15ahdHQ8zwALeKKjYY=;
-        b=gMtUGcIJzAn25DKzYA/oh8YYbdt1Wvx0sTVJyJWgpcbuIWJaJxGzNVv6WEqbdyXpGF
-         ZAnR3BCJntsONev5XtqJkOrwLz/Ibzrj5ZhTetm1kDZB3yEsgZOnq3549QGhhQtRimPl
-         EyoUGIgJWTTRDuE8853pwGGsDcf5bCty0C0SF+qUuahS6zXQVLYvEcfC2YO6VsWOL8go
-         Jo1eMhz0e4DcyWREMCLy6RCR0ueDTgDYb+42Lupz9ctj+CB4vbmB2Jx+rwqiBDU3ieJ+
-         09+N20hkTuwPmsg+v8hpPrq6ykmf3/zLKNhL6zKx3FrOF413hSWbaQp1VlVnByVIpejx
-         mmzA==
-X-Forwarded-Encrypted: i=1; AJvYcCX+X9McJUT7b7hplG0LQ31nSQc++j2sKQbBXBgOy/FlljLwBGipGmGqmekTJQt/8txEfS3r3OjlDLlOlvk=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yxcr7TrxMyN5QQ33fmzH5b7OlU0SSub68FKx8jhZqXliwsT8csk
-	X843ervhpkSYBXTsSo7wNPwjT3aTe648HQ/WshoK7MdJXLkpcpgkNf5W+FWEJCAuYk+g8xPFl+F
-	kGe0SK/PLXaazvfltfz+RdkmksbCZ4NOCxNxDO9GgUxzgNdF4BVGZPskTkSoHvhar
-X-Gm-Gg: ASbGncssj28lu6jVQYfbvE0IxYXJjhCXopWOp9+vBQKhtYIkI896w79rEfngZCLrzDb
-	+sb794w+emK9JJIKxcx7aWosPnyjLBx/AteRa/nuorIn/zce96bcqyJw0JTsnDWrFnEdKdh4C1m
-	U1Hh2ZDluYX6mQanxMQd4VDxHispx13UZ12RpAqdKFv61iFVzdzYq/g3E+iqtv9xd+iz1GHx7Ed
-	fMeiyrFEw1iVckqoibFnYBxTFNa8mcjzS6EJFV6sUDZ9CTS2bnIdc+33qifX1mwBH6l/IzDsknI
-	RfxvKVhAsai0YVroVfGHUjefwqHNp8ge3+Qe+3UL0OA=
-X-Received: by 2002:a17:902:e806:b0:223:5e6a:57ab with SMTP id d9443c01a7336-22c3597ee39mr40894965ad.39.1744825917072;
-        Wed, 16 Apr 2025 10:51:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEBBh895n5PHGGk4xFwNiJSEFm0TRS2bV+6pyeHxlVKUwuhtV4iIkGq6YnLmD4RRZx0r4AhgA==
-X-Received: by 2002:a17:902:e806:b0:223:5e6a:57ab with SMTP id d9443c01a7336-22c3597ee39mr40894435ad.39.1744825916570;
-        Wed, 16 Apr 2025 10:51:56 -0700 (PDT)
-Received: from [192.168.29.92] ([49.43.231.216])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fcc816sm17235435ad.206.2025.04.16.10.51.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Apr 2025 10:51:56 -0700 (PDT)
-Message-ID: <26b70e1b-861f-4c94-47a7-a267c41cadbb@oss.qualcomm.com>
-Date: Wed, 16 Apr 2025 23:21:49 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdGdk4Bsjz2yqp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 08:58:02 +1000 (AEST)
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53GLcsVo015122;
+	Wed, 16 Apr 2025 22:57:54 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=pp1; bh=6x5aUMdcqpImd4TaXO5stAhWxLky
+	HtHDJubhlEq4NsQ=; b=C3bdNwvZw/73ej1ltS/FOh76MKC8tbNrE5Q8Udu6LlxZ
+	UskBaG96SbfaPmMf5D6tiu6Bbsj4K8wrQKJ5M4rbSFnzaeJIU6ZTDGM/rNYXM00y
+	2RbvmamXkX/+A4pBgsQlUBopyD6LHa7bNqW1U9OMG80wHENqCNI6oc32RsvrGj7Q
+	dnssU4KFBUMKUMhEJ7AF0k9Wj1LT5PrQd+PZnRCtZ/AESuBhWsx/tJzpWr9cIRVK
+	8tffXfmlxXQR/pmCljss2ET72I8opxcUzvLVtfQ0iMQCkR61WwLoWjwGIZwAqKV9
+	dNSaFZWfOjEANLHrkOJ9de2CGmaQjGI4Cc1OTaWmxg==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mn7r7y1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 22:57:53 +0000 (GMT)
+Received: from m0356517.ppops.net (m0356517.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53GMplJ0026898;
+	Wed, 16 Apr 2025 22:57:53 GMT
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mn7r7xy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 22:57:53 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53GK7H6p001308;
+	Wed, 16 Apr 2025 22:57:52 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4602w02x9d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 16 Apr 2025 22:57:52 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53GMvmpf41288184
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 16 Apr 2025 22:57:49 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E073F58057;
+	Wed, 16 Apr 2025 22:57:48 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1541E58059;
+	Wed, 16 Apr 2025 22:57:48 +0000 (GMT)
+Received: from li-4910aacc-2eed-11b2-a85c-d93b702d4d28.ibm.com.com (unknown [9.61.110.97])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 16 Apr 2025 22:57:47 +0000 (GMT)
+From: Haren Myneni <haren@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org
+Cc: maddy@linux.ibm.com, mpe@ellerman.id.au, npiggin@gmail.com,
+        msuchanek@suse.de, mahesh@linux.ibm.com, tyreld@linux.ibm.com,
+        hbabu@us.ibm.com, haren@linux.ibm.com, sv@linux.ibm.com
+Subject: [PATCH v10 0/7] Add character devices for indices, platform-dump and physical-attestation RTAS
+Date: Wed, 16 Apr 2025 15:57:35 -0700
+Message-ID: <20250416225743.596462-1-haren@linux.ibm.com>
+X-Mailer: git-send-email 2.43.5
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -91,191 +90,167 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v2 3/4] PCI: Add link down handling for host bridges
-Content-Language: en-US
-To: manivannan.sadhasivam@linaro.org,
-        Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-        Oliver O'Halloran <oohall@gmail.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
-        Rob Herring <robh@kernel.org>
-Cc: dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>,
-        linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-References: <20250416-pcie-reset-slot-v2-0-efe76b278c10@linaro.org>
- <20250416-pcie-reset-slot-v2-3-efe76b278c10@linaro.org>
-From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
-In-Reply-To: <20250416-pcie-reset-slot-v2-3-efe76b278c10@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: jt4oGylm_flRmjKrXQLenQtablMySK1-
-X-Proofpoint-ORIG-GUID: jt4oGylm_flRmjKrXQLenQtablMySK1-
-X-Authority-Analysis: v=2.4 cv=Cve/cm4D c=1 sm=1 tr=0 ts=67ffee3e cx=c_pps a=cmESyDAEBpBGqyK7t0alAg==:117 a=ozAjUsZc/ya1UnB0O6+iCQ==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=KKAkSRfTAAAA:8 a=WP6hIalcOMfy4p2eL3AA:9 a=QEXdDO2ut3YA:10
- a=1OuFwYUASf3TG4hYMiVC:22 a=cvBusfyB2V15izCimMoJ:22
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=ANnAolku c=1 sm=1 tr=0 ts=680035f2 cx=c_pps a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=QyXUC8HyAAAA:8 a=Sq2hntZDzmfLkG_lgzwA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: 3AhOS8AM6rbyTRQyN3ICiy9g4TBvjV1C
+X-Proofpoint-ORIG-GUID: lPYZsGqi6idAzIxA7Y3mjVO6It-dCbc-
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-16_06,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 clxscore=1011
- malwarescore=0 lowpriorityscore=0 bulkscore=0 spamscore=0 phishscore=0
- suspectscore=0 impostorscore=0 mlxlogscore=999 mlxscore=0
- priorityscore=1501 classifier=spam authscore=0 authtc=n/a authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2502280000
- definitions=main-2504160146
+ definitions=2025-04-16_09,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
+ mlxlogscore=999 adultscore=0 spamscore=0 mlxscore=0 bulkscore=0
+ suspectscore=0 phishscore=0 clxscore=1015 impostorscore=0
+ priorityscore=1501 lowpriorityscore=0 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504160180
 X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
+Several APIs such as rtas_get_indices(), rtas_get_dynamic_sensor(),
+rtas_set_dynamic_indicator(), rtas_platform_dump() and
+rtas_physical_attestation()  provided by librtas library are
+implemented in user space using rtas syscall in combination with
+writable mappings of /dev/mem. But this implementation is not
+compatible with system lockdown which prohibits /dev/mem access.
+The current kernel already provides char based driver interfaces
+for several RTAS calls such as VPD and system parameters to
+support lockdown feature.
 
+This patch series adds new char based drivers, /dev/papr-indices
+for ibm,get-indices, ibm,get-dynamic-sensor-state and
+ibm,set-dynamic-indicator RTAS Calls. /dev/papr-platform-dump
+for ibm,platform-dump and /dev/papr-physical-attestation
+fir ibm,physical-attestation. Providing the similar
+open/ioctl/read interfaces to the user space as in the case of
+VPD and system parameters.
 
-On 4/16/2025 9:59 PM, Manivannan Sadhasivam via B4 Relay wrote:
-> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> 
-> The PCI link, when down, needs to be recovered to bring it back. But that
-> cannot be done in a generic way as link recovery procedure is specific to
-> host bridges. So add a new API pci_host_handle_link_down() that could be
-> called by the host bridge drivers when the link goes down.
-> 
-> The API will iterate through all the slots and calls the pcie_do_recovery()
-> function with 'pci_channel_io_frozen' as the state. This will result in the
-> execution of the AER Fatal error handling code. Since the link down
-> recovery is pretty much the same as AER Fatal error handling,
-> pcie_do_recovery() helper is reused here. First the AER error_detected
-> callback will be triggered for the bridge and the downstream devices. Then,
-> pcie_do_slot_reset() will be called for each slots, which will reset the
-> slots using 'reset_slot' callback to recover the link. Once that's done,
-> resume message will be broadcasted to the bridge and the downstream devices
-> indicating successful link recovery.
-> 
-> In case if the AER support is not enabled in the kernel, only
-> pci_bus_error_reset() will be called for each slots as there is no way we
-> could inform the drivers about link recovery.
-> 
-The PCIe endpoint drivers are registering with err_handlers and they
-will be invoked only from pcie_do_recovery, but there are getting built
-by default irrespective of AER is enabled or not.
+I have made changes to librtas library to use the new kernel
+interfaces if the corresponding device entry is available.
 
-Does it make sense to built err.c irrespective of AER is enabled or not
-to use common logic without the need of having dependency on AER.
+This patch series has the following patches:
+powerpc/pseries: Define common functions for RTAS sequence calls
+- For some of sequence based RTAS calls, the OS should not start
+  another sequence with different input until the previous sequence
+  is completed. So the sequence should be completed during ioctl()
+  and expose the entire buffer during read(). ibm,get-indices is
+  sequence based RTAS function similar to ibm,get-vpd and we already
+  have the corresponding implementation for VPD driver. So update
+  papr_rtas_sequence struct for RTAS call specific functions and move
+  the top level sequence functions in to a separate file.
 
-Also since err.c is tied with AER, DPC also had a hard requirement
-to enable AER which is not needed technically.
+powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+- /dev/papr-indices driver supports ibm,get-indices,
+  ibm,get-dynamic-sensor-state and ibm,set-dynamic-indicator RTAS Calls.
+  papr-indices.h introduces 3 different ioctls for these RTAS calls and
+  the corresponding ioctl input buffer.
 
-- Krishna Chaitanya.
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
->   drivers/pci/pci.h      | 21 +++++++++++++++++++++
->   drivers/pci/pcie/err.c | 27 +++++++++++++++++++++++++++
->   drivers/pci/probe.c    |  7 +++++++
->   include/linux/pci.h    |  1 +
->   4 files changed, 56 insertions(+)
-> 
-> diff --git a/drivers/pci/pci.h b/drivers/pci/pci.h
-> index b81e99cd4b62a3022c8b07a09f212f6888674487..6c1d4c5a82d68e5842636ff296a8d3a06487cb11 100644
-> --- a/drivers/pci/pci.h
-> +++ b/drivers/pci/pci.h
-> @@ -966,6 +966,7 @@ int pci_aer_clear_status(struct pci_dev *dev);
->   int pci_aer_raw_clear_status(struct pci_dev *dev);
->   void pci_save_aer_state(struct pci_dev *dev);
->   void pci_restore_aer_state(struct pci_dev *dev);
-> +void pcie_do_recover_slots(struct pci_host_bridge *host);
->   #else
->   static inline void pci_no_aer(void) { }
->   static inline void pci_aer_init(struct pci_dev *d) { }
-> @@ -975,6 +976,26 @@ static inline int pci_aer_clear_status(struct pci_dev *dev) { return -EINVAL; }
->   static inline int pci_aer_raw_clear_status(struct pci_dev *dev) { return -EINVAL; }
->   static inline void pci_save_aer_state(struct pci_dev *dev) { }
->   static inline void pci_restore_aer_state(struct pci_dev *dev) { }
-> +static inline void pcie_do_recover_slots(struct pci_host_bridge *host)
-> +{
-> +	struct pci_bus *bus = host->bus;
-> +	struct pci_dev *dev;
-> +	int ret;
-> +
-> +	if (!host->reset_slot)
-> +		dev_warn(&host->dev, "Missing reset_slot() callback\n");
-> +
-> +	for_each_pci_bridge(dev, bus) {
-> +		if (!pci_is_root_bus(bus))
-> +			continue;
-> +
-> +		ret = pci_bus_error_reset(dev);
-> +		if (ret)
-> +			pci_err(dev, "Failed to reset slot: %d\n", ret);
-> +		else
-> +			pci_info(dev, "Slot has been reset\n");
-> +	}
-> +}
->   #endif
->   
->   #ifdef CONFIG_ACPI
-> diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-> index b834fc0d705938540d3d7d3d8739770c09fe7cf1..70d8cd37255c5638fddf38e13ea87cb8ebe8553f 100644
-> --- a/drivers/pci/pcie/err.c
-> +++ b/drivers/pci/pcie/err.c
-> @@ -270,3 +270,30 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
->   
->   	return status;
->   }
-> +
-> +static pci_ers_result_t pcie_do_slot_reset(struct pci_dev *dev)
-> +{
-> +	int ret;
-> +
-> +	ret = pci_bus_error_reset(dev);
-> +	if (ret) {
-> +		pci_err(dev, "Failed to reset slot: %d\n", ret);
-> +		return PCI_ERS_RESULT_DISCONNECT;
-> +	}
-> +
-> +	pci_info(dev, "Slot has been reset\n");
-> +
-> +	return PCI_ERS_RESULT_RECOVERED;
-> +}
-> +
-> +void pcie_do_recover_slots(struct pci_host_bridge *host)
-> +{
-> +	struct pci_bus *bus = host->bus;
-> +	struct pci_dev *dev;
-> +
-> +	for_each_pci_bridge(dev, bus) {
-> +		if (pci_is_root_bus(bus))
-> +			pcie_do_recovery(dev, pci_channel_io_frozen,
-> +					 pcie_do_slot_reset);
-> +	}
-> +}
-> diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-> index 364fa2a514f8a68fb18bded3259c6847d3932f8b..60ad20eea0259797e68afa7979bb1fc24b6f213b 100644
-> --- a/drivers/pci/probe.c
-> +++ b/drivers/pci/probe.c
-> @@ -3249,6 +3249,13 @@ int pci_host_probe(struct pci_host_bridge *bridge)
->   }
->   EXPORT_SYMBOL_GPL(pci_host_probe);
->   
-> +void pci_host_handle_link_down(struct pci_host_bridge *bridge)
-> +{
-> +	dev_info(&bridge->dev, "Recovering slots due to Link Down\n");
-> +	pcie_do_recover_slots(bridge);
-> +}
-> +EXPORT_SYMBOL_GPL(pci_host_handle_link_down);
-> +
->   int pci_bus_insert_busn_res(struct pci_bus *b, int bus, int bus_max)
->   {
->   	struct resource *res = &b->busn_res;
-> diff --git a/include/linux/pci.h b/include/linux/pci.h
-> index 8d7d2a49b76cf64b4218b179cec495e0d69ddf6f..76e977af2d524200b67f39a6d0417ee565cf5116 100644
-> --- a/include/linux/pci.h
-> +++ b/include/linux/pci.h
-> @@ -1157,6 +1157,7 @@ struct pci_bus *pci_create_root_bus(struct device *parent, int bus,
->   				    struct pci_ops *ops, void *sysdata,
->   				    struct list_head *resources);
->   int pci_host_probe(struct pci_host_bridge *bridge);
-> +void pci_host_handle_link_down(struct pci_host_bridge *bridge);
->   int pci_bus_insert_busn_res(struct pci_bus *b, int bus, int busmax);
->   int pci_bus_update_busn_res_end(struct pci_bus *b, int busmax);
->   void pci_bus_release_busn_res(struct pci_bus *b);
-> 
+powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+- Introduce /dev/papr-indices char based driver and add support for
+  get-indices RTAS function
+
+powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+- Update /dev/papr-indices for set-dynamic-indicator RTAS function
+
+powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+-  Update /dev/papr-indices for  get-dynamic-sensor-state RTAS function
+
+powerpc/pseries: Add papr-platform-dump character driver for dump
+   retrieval
+- Introduce /dev/papr-platform-dump char driver and adds support for
+  ibm,platform-dump. Received suggestions from the previous post as a
+  separate patch - Updated the patch with invalidating the dump using
+  a separate ioctl.
+
+powerpc/pseries: Add a char driver for papr-physical-attestation RTAS
+- Introduce /dev/papr-physical-attestation char driver to provide
+  kernel interface for ibm,physical-attestation RTAS function.
+
+Thanks to Sathvika Vasireddy for testing these kernel APIs with various
+tools.
+
+Changelog:
+v10:
+- Rebase to 6.15-rc2: Use anon_inode_getfile_fmode() instead of
+  anon_inode_getfile()
+
+v9:
+- Fixed syntax issue in papr-rtas-common.c as reported by
+  Mukesh Kumar Chaurasiya
+
+v8:
+- Fixed build warnings for the proper function parameter descriptions
+  (vpd_sequence_begin(), few papr_rtas_*() functions, and etc) as
+  reported by kernel test robot <lkp@intel.com>
+
+v7:
+- Pass the proper next value to the subsequent RTAS calls for the
+  get-indices sequence RTAS.
+  (Vasireddy Sathvika found this bug).
+
+v6:
+- Define the proper command ID for PAPR_PHY_ATTEST_IOC_HANDLE ioctl
+- Update ioctls description in ioctl-number.rst.
+
+v5:
+- Return with -EINPROGRESS in papr_platform_dump_invalidate_ioctl()
+  if the complete dump is not read (Suggested by Michal Suchánek).
+
+v4:
+- Include patch "Add char driver for papr-physical-attestation RTAS"
+  in this series. ibm,physical-attestation is sequence based RTAS
+  call and the implementation is also similar to ibm,get-vpd and
+  ibm,get-indices.
+
+v3:
+- put_unused_fd() only after get_unused_fd() successful for the failure
+  case later ("Add papr-platform-dump character driver for dump
+  retrieval" patch).
+
+v2:
+- Added unlock rtas_ibm_set_dynamic_indicator_lock and
+  rtas_ibm_get_dynamic_sensor_state_lock mutex for failure cases
+  as reported by Dan Carpenter
+- Fixed build warnings for the proper function parameter descriptions
+  as reported by kernel test robot <lkp@intel.com>
+
+Haren Myneni (7):
+  powerpc/pseries: Define common functions for RTAS sequence calls
+  powerpc/pseries: Define papr_indices_io_block for papr-indices ioctls
+  powerpc/pseries: Add papr-indices char driver for ibm,get-indices
+  powerpc/pseries: Add ibm,set-dynamic-indicator RTAS call support
+  powerpc/pseries: Add ibm,get-dynamic-sensor-state RTAS call support
+  powerpc/pseries: Add papr-platform-dump character driver for dump
+    retrieval
+  powerpc/pseries: Add a char driver for physical-attestation RTAS
+
+ .../userspace-api/ioctl/ioctl-number.rst      |   6 +
+ arch/powerpc/include/asm/rtas.h               |   4 +
+ arch/powerpc/include/uapi/asm/papr-indices.h  |  41 ++
+ .../uapi/asm/papr-physical-attestation.h      |  31 ++
+ .../include/uapi/asm/papr-platform-dump.h     |  15 +
+ arch/powerpc/kernel/rtas.c                    |   8 +-
+ arch/powerpc/platforms/pseries/Makefile       |   3 +-
+ arch/powerpc/platforms/pseries/papr-indices.c | 488 ++++++++++++++++++
+ .../platforms/pseries/papr-phy-attest.c       | 288 +++++++++++
+ .../platforms/pseries/papr-platform-dump.c    | 411 +++++++++++++++
+ .../platforms/pseries/papr-rtas-common.c      | 311 +++++++++++
+ .../platforms/pseries/papr-rtas-common.h      |  61 +++
+ arch/powerpc/platforms/pseries/papr-vpd.c     | 352 ++-----------
+ 13 files changed, 1707 insertions(+), 312 deletions(-)
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-indices.h
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-physical-attestation.h
+ create mode 100644 arch/powerpc/include/uapi/asm/papr-platform-dump.h
+ create mode 100644 arch/powerpc/platforms/pseries/papr-indices.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-phy-attest.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-platform-dump.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.c
+ create mode 100644 arch/powerpc/platforms/pseries/papr-rtas-common.h
+
+-- 
+2.43.5
+
 
