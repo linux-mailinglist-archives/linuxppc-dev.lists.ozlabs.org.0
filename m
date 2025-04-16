@@ -1,78 +1,73 @@
-Return-Path: <linuxppc-dev+bounces-7680-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7681-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41536A8B090
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 08:41:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 43F96A8B1D1
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 09:19:11 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zcrz24Wvnz2y06;
-	Wed, 16 Apr 2025 16:41:34 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZcspN6sXzz3bnD;
+	Wed, 16 Apr 2025 17:19:08 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744785694;
-	cv=none; b=SD7tAwLetVyAm/5Eqm3JBhKFj8+8KY4xaW7ouAHsGbDgStYe6ycg7fJSyS8ZRCbvSYOtp0lnDMShrxYk9PiP8oQMcGJILoXBxaPxT6xMeOuL5+r00kOU+C1ODlyhaeKYYMy6js8VdJc1Zpx9nrUU5060DceglhwYcWvzFEMHKbeE8g18z2cPO8qnK78hg7sNiwLJSJTa58KOf5axxzdAamcjX1P8Q9KX7qTT3tr2MY3gqgaVmoGDJaUk8c1O6fuSYWSsi7vhKETC7TepSkLbl2AmGFIJCtuDQMUUCLN+52E8uIA1JU0P9vBgPRCw+M/y7tthJSWNmYGdckW02Sy21Q==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744787948;
+	cv=none; b=BY6+9mPlm5cx/SFk8q7vIKRpT2sdEfcHY4BFzjnUFtBJBggEt4dLLqDVRFkaHiF34lAXfEyMufcFsmvA8IAqHXL+CQckatwL+PQA+kFl0EDYHD7SaM38B0YUwmpUAOTtz0V9uQrFs8nJtPCA+ciiw8eoDzmMDU+fOKIPlaqDX9t7D8Vez45321MTkjlBhDLvLkB14oG6MyMscvY0Itzrumfse2o3JokTnUAzNfMLuAq+0Ymjb598kHyiN7HcDNeCVFAxfXW53NlsG73198Tq4jxdUSKsm33h4mVH0CIQoUPidhpjdiv6YdrP4cArtclPGW+IwEq0mjecHJQwtudGmg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744785694; c=relaxed/relaxed;
-	bh=CjiUfw8sFjLkVHZFD2DU255iU4N7QuXe4GHriAkYEUY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oKIL3qt2OTjiCl0XZCZbswyWGYsFO44+Vbg86+59Xlyen2oWzy67IodVfVtNZG/NCEF0E5kGSNYYhYoAYqG3QjvWYFt6/mZOXhfaOR5cTXXIVYOvuPA9MPA7DCyheKXzr3n9nfVL2Y0HOWHUzpdLY8wJkU7Wgr4xdgO12MfRJLHniHuB4wmFpIlpLNWDvuz0LpC1scVYyYxUW8n83bweCprbnOJ70k1Dz+FNwaQQkIXyRWKQiCadWOodT3F+q2TD5n+5HMHi5zGt4YYdVK4L72brwcicpuqLiCw2vNZP94r57LJJHMVtNY2aMUUhIKEUlbtKIMdxaTZ8QaLSYAn3BA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i/FekEqy; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vineethr@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+	t=1744787948; c=relaxed/relaxed;
+	bh=iZU4vUuydQ3tr8HsA42PhcwRHPi43BVnmkasgguswmI=;
+	h=Date:From:To:Cc:Subject:Message-ID; b=mcj+RoyU4gK27JU7U1CekkC4Yf8rQEozhHXB4zdUgvHBFibsuAybae+ZM/dlG45EhTtdH9ELFaltB+ai9i94dAz0duCE9VRROilCxN06aD7nS3VSbXuIT5L49ZSeiB0som3lzUozYrHx4l+ijMPa4FkT/k1woEJAN44FHi21h+z8GYcABi8mRXmweQa0CrXcUkEcKn3L8yW+sVnmB9/UapplWRl7hKZzhdQ8dMzfF/86JfHA6LwVk/UF4h3xI5LP6IJv1IV5+JxfgodpaxmQfq23SSR+MWxpJ7pe/VIOadB1gforvSs9wfBZ77dhBnc5LVf4Fx3QU4ucW2D5d8fVRw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VVGpsU1G; dkim-atps=neutral; spf=pass (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=i/FekEqy;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VVGpsU1G;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=vineethr@linux.ibm.com; receiver=lists.ozlabs.org)
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zcrz069JQz2xqG
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 16:41:32 +1000 (AEST)
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53FIdvdP021151;
-	Wed, 16 Apr 2025 06:41:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:to; s=pp1;
-	 bh=CjiUfw8sFjLkVHZFD2DU255iU4N7QuXe4GHriAkYEUY=; b=i/FekEqyvSO6
-	2owF0T24+zqiBofcXJbqEhwrjGRlEk12Vc6t8/pvRyji0Fo4D/XP1JQaS076YY0Z
-	gaFcwm8l6Bj+GdnwtcJegbqQszXHXCOw4RVhCahqzYm2VWMIZMi2eLq4FxicOINo
-	/FxB9hIzJSGrWmndFu50NziKlCx5h7TKn3yv8hMZW/KJ8qmZuJZKJkW1tDn1kzB/
-	PEDQxr/BmmGJ3sx39+LdUWY21vE23zV91+u+salcfA7tW6etUNb62fi5fouvCmeI
-	76Y7ScXpzKBYsyw6XYN4cCak+5HTWvcsAtrprbDgnDxscXxpesgGWsRaxHNz7Zgw
-	JtE2pCW3vw==
-Received: from pps.reinject (localhost [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461nwq4tj6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 06:41:02 +0000 (GMT)
-Received: from m0356516.ppops.net (m0356516.ppops.net [127.0.0.1])
-	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53G6V5oa011439;
-	Wed, 16 Apr 2025 06:41:01 GMT
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 461nwq4tj3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 06:41:01 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53G5Hvvk024907;
-	Wed, 16 Apr 2025 06:41:00 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4602gtf8be-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 16 Apr 2025 06:41:00 +0000
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53G6ew0s30147250
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 16 Apr 2025 06:40:59 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DED5D58051;
-	Wed, 16 Apr 2025 06:40:58 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C76C25805A;
-	Wed, 16 Apr 2025 06:40:53 +0000 (GMT)
-Received: from [9.204.206.228] (unknown [9.204.206.228])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 16 Apr 2025 06:40:53 +0000 (GMT)
-Message-ID: <d482d2ff-90e6-4c71-8681-1d9fceeb70f9@linux.ibm.com>
-Date: Wed, 16 Apr 2025 12:10:52 +0530
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZcspL4fpyz2ym3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:19:04 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1744787947; x=1776323947;
+  h=date:from:to:cc:subject:message-id;
+  bh=QY5pLNVQbkOC8rnQrAJ2xUeYNDP1HFpX1ZGbWNj5UiQ=;
+  b=VVGpsU1GEP7MsWHqI66FyMfGs/GqdXVVbPvSAANlI4ONndu2/9/CM2vV
+   XACR7JN1/GXDy4D7D72io01fq/YQ+LlI9XjKdfA2p1sOXyX/1GZ92IMac
+   fTs3fZsaeP7aCCZgN4B6v9mvcdnzjZ1MADiu1VYeKKFKAHfxcyNCzsR4A
+   fICXkML47PASxSEsDCMfXjg0bNMSBOECk1o97dQKmLmnTpEqDyfKfOrR2
+   0jyLpL575/Uv03nexJvMjnYf3CMrm/AG21ef3QiIMhuq7Lb7s5bDXSiSp
+   2IDPnM2cwyFwVzM5Qh/+87qJLmeGsFcUNOYP4LaYVm/i/Rmto4cm4xK0z
+   Q==;
+X-CSE-ConnectionGUID: Ym/d6BonQTu16bA86zpRVg==
+X-CSE-MsgGUID: niiN/H3rQ4uwKB3fbZiVRQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="33940616"
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
+   d="scan'208";a="33940616"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 00:19:02 -0700
+X-CSE-ConnectionGUID: hh7D4ksGRLKPUO0+1hhBZQ==
+X-CSE-MsgGUID: 0C5fm0MDTvWkgA0VHqvxwg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
+   d="scan'208";a="130125892"
+Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
+  by orviesa009.jf.intel.com with ESMTP; 16 Apr 2025 00:19:02 -0700
+Received: from kbuild by b207828170a5 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1u4x2w-000JF6-2y;
+	Wed, 16 Apr 2025 07:18:58 +0000
+Date: Wed, 16 Apr 2025 15:18:57 +0800
+From: kernel test robot <lkp@intel.com>
+To: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: linuxppc-dev@lists.ozlabs.org
+Subject: [powerpc:fixes-test] BUILD SUCCESS
+ 3700976f2ae8dfec4c17433f8a16c9e6c334cf89
+Message-ID: <202504161549.hHkVBYh1-lkp@intel.com>
+User-Agent: s-nail v14.9.24
+X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -84,158 +79,30 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc/defconfigs: Set HZ=1000 on ppc64 and powernv
- defconfigs
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin
- <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Naveen N Rao <naveen@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-        Eric Biggers <ebiggers@google.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Yosry Ahmed <yosry.ahmed@linux.dev>,
-        Tamir Duberstein <tamird@gmail.com>,
-        Srikar Dronamraju <srikar@linux.ibm.com>,
-        Shrikanth Hegde <sshegde@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        LKML <linux-kernel@vger.kernel.org>,
-        Madadi Vineeth Reddy <vineethr@linux.ibm.com>
-References: <20250330074734.16679-1-vineethr@linux.ibm.com>
-Content-Language: en-US
-Reply-To: 20250330074734.16679-1-vineethr@linux.ibm.com
-From: Madadi Vineeth Reddy <vineethr@linux.ibm.com>
-In-Reply-To: <20250330074734.16679-1-vineethr@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: kWUkxHY8twDaPpL0eNjfFgoUhd4rx9Fm
-X-Proofpoint-GUID: HtE-QrCrCo0uoyvGmgm9Bh0Rr0WgE71d
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
- definitions=2025-04-16_02,2025-04-15_01,2024-11-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- suspectscore=0 clxscore=1015 bulkscore=0 priorityscore=1501 mlxscore=0
- spamscore=0 malwarescore=0 mlxlogscore=999 impostorscore=0 adultscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2502280000 definitions=main-2504160052
-X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
-	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Maddy,
+tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
+branch HEAD: 3700976f2ae8dfec4c17433f8a16c9e6c334cf89  powerpc: Add check to select PPC_RADIX_BROADCAST_TLBIE
 
-Ping.
+elapsed time: 1441m
 
-Any thoughts on this? Can it be picked up?
+configs tested: 9
+configs skipped: 144
 
-Thanks,
-Madadi Vineeth Reddy
+The following configs have been built successfully.
+More configs may be tested in the coming days.
 
-On 30/03/25 13:17, Madadi Vineeth Reddy wrote:
-> Commit 030bdc3fd080 ("powerpc/defconfigs: Set HZ=100 on pseries and ppc64
-> defconfigs") lowered CONFIG_HZ from 250 to 100, citing reduced need for a
-> higher tick rate due to high-resolution timers and concerns about timer
-> interrupt overhead and cascading effects in the timer wheel.
-> 
-> However, improvements have been made to the timer wheel algorithm since
-> then, particularly in eliminating cascading effects at the cost of minor
-> timekeeping inaccuracies. More details are available here
-> https://lwn.net/Articles/646950/. This removes the original concern about
-> cascading, and the reliance on high-resolution timers is not applicable
-> to the scheduler, which still depends on periodic ticks set by CONFIG_HZ.
-> 
-> With the introduction of the EEVDF scheduler, users can specify custom
-> slices for workloads. The default base_slice is 3ms, but with CONFIG_HZ=100
-> (10ms tick interval), base_slice is ineffective. Workloads like stress-ng
-> that do not voluntarily yield the CPU run for ~10ms before switching out.
-> Additionally, setting a custom slice below 3ms (e.g., 2ms) should lower
-> task latency, but this effect is lost due to the coarse 10ms tick.
-> 
-> By increasing CONFIG_HZ to 1000 (1ms tick), base_slice is properly honored,
-> and user-defined slices work as expected. Benchmark results support this
-> change:
-> 
-> Latency improvements in schbench with EEVDF under stress-ng-induced noise:
-> 
-> Scheduler       CONFIG_HZ  Custom Slice  99th Percentile Latency (µs)
-> --------------------------------------------------------------------
-> EEVDF           1000       No            0.30x
-> EEVDF           1000       2 ms          0.29x
-> EEVDF (default) 100        No            1.00x
-> 
-> Switching to HZ=1000 reduces the 99th percentile latency in schbench by
-> ~70%. This improvement occurs because, with HZ=1000, stress-ng tasks run
-> for ~3ms before yielding, compared to ~10ms with HZ=100. As a result,
-> schbench gets CPU time sooner, reducing its latency.
-> 
-> Daytrader Performance:
-> 
-> Daytrader results show minor variation within standard deviation,
-> indicating no significant regression.
-> 
-> Workload (Users/Instances)  Throughput 1000HZ vs 100HZ (Std Dev%)
-> --------------------------------------------------------------------------
-> 30 u, 1 i                   +3.01% (1.62%)
-> 60 u, 1 i                   +1.46% (2.69%)
-> 90 u, 1 i                   –1.33% (3.09%)
-> 30 u, 2 i                   -1.20% (1.71%)
-> 30 u, 3 i                   –0.07% (1.33%)
-> 
-> Avg. Response Time: No Change (=)
-> 
-> pgbench select queries:
-> 
-> Metric                         1000HZ vs 100HZ (Std Dev%)
-> ------------------------------------------------------------------
-> Average TPS Change             +2.16% (1.27%)
-> Average Latency Change         –2.21% (1.21%)
-> 
-> Average TPS: Higher the better
-> Average Latency: Lower the better
-> 
-> pgbench shows both throughput and latency improvements beyond standard
-> deviation.
-> 
-> Given these results and the improvements in timer wheel implementation,
-> increasing CONFIG_HZ to 1000 ensures that powerpc benefits from EEVDF’s
-> base_slice and allows fine-tuned scheduling for latency-sensitive
-> workloads.
-> 
-> Signed-off-by: Madadi Vineeth Reddy <vineethr@linux.ibm.com>
-> ---
->  arch/powerpc/configs/powernv_defconfig | 2 +-
->  arch/powerpc/configs/ppc64_defconfig   | 2 +-
->  2 files changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/powerpc/configs/powernv_defconfig b/arch/powerpc/configs/powernv_defconfig
-> index 6b6d7467fecf..8abf17d26b3a 100644
-> --- a/arch/powerpc/configs/powernv_defconfig
-> +++ b/arch/powerpc/configs/powernv_defconfig
-> @@ -46,7 +46,7 @@ CONFIG_CPU_FREQ_GOV_POWERSAVE=y
->  CONFIG_CPU_FREQ_GOV_USERSPACE=y
->  CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
->  CONFIG_CPU_IDLE=y
-> -CONFIG_HZ_100=y
-> +CONFIG_HZ_1000=y
->  CONFIG_BINFMT_MISC=m
->  CONFIG_PPC_TRANSACTIONAL_MEM=y
->  CONFIG_PPC_UV=y
-> diff --git a/arch/powerpc/configs/ppc64_defconfig b/arch/powerpc/configs/ppc64_defconfig
-> index 5fa154185efa..45d437e4c62e 100644
-> --- a/arch/powerpc/configs/ppc64_defconfig
-> +++ b/arch/powerpc/configs/ppc64_defconfig
-> @@ -57,7 +57,7 @@ CONFIG_CPU_FREQ_GOV_POWERSAVE=y
->  CONFIG_CPU_FREQ_GOV_USERSPACE=y
->  CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
->  CONFIG_CPU_FREQ_PMAC64=y
-> -CONFIG_HZ_100=y
-> +CONFIG_HZ_1000=y
->  CONFIG_PPC_TRANSACTIONAL_MEM=y
->  CONFIG_KEXEC=y
->  CONFIG_KEXEC_FILE=y
+tested configs:
+powerpc               allmodconfig    gcc-14.2.0
+powerpc                allnoconfig    gcc-14.2.0
+powerpc               allyesconfig    clang-21
+powerpc    randconfig-001-20250415    gcc-5.5.0
+powerpc    randconfig-002-20250415    clang-17
+powerpc    randconfig-003-20250415    gcc-7.5.0
+powerpc64  randconfig-001-20250415    gcc-7.5.0
+powerpc64  randconfig-002-20250415    clang-17
+powerpc64  randconfig-003-20250415    gcc-10.5.0
 
+--
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
 
