@@ -1,73 +1,70 @@
-Return-Path: <linuxppc-dev+bounces-7681-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7682-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43F96A8B1D1
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 09:19:11 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 372B2A8B21D
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 09:28:41 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZcspN6sXzz3bnD;
-	Wed, 16 Apr 2025 17:19:08 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zct1L689gz3bp0;
+	Wed, 16 Apr 2025 17:28:38 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744787948;
-	cv=none; b=BY6+9mPlm5cx/SFk8q7vIKRpT2sdEfcHY4BFzjnUFtBJBggEt4dLLqDVRFkaHiF34lAXfEyMufcFsmvA8IAqHXL+CQckatwL+PQA+kFl0EDYHD7SaM38B0YUwmpUAOTtz0V9uQrFs8nJtPCA+ciiw8eoDzmMDU+fOKIPlaqDX9t7D8Vez45321MTkjlBhDLvLkB14oG6MyMscvY0Itzrumfse2o3JokTnUAzNfMLuAq+0Ymjb598kHyiN7HcDNeCVFAxfXW53NlsG73198Tq4jxdUSKsm33h4mVH0CIQoUPidhpjdiv6YdrP4cArtclPGW+IwEq0mjecHJQwtudGmg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2607:f8b0:4864:20::102b"
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744788518;
+	cv=none; b=TYtuteUV0U/ObLb5d0+cAWHVA0uOS8xIAD31aYEcZvXGupxj0GyfA5HB9kGHIstIvhlnZRnyxH/jCgI3tbXOghCcGlijFvk4M40gOQ9eZDCYa8WoTirTBvB7dlG6k6JSJMNhgnhUEZeB4vVkoDi8gW3U+0xcOxAujbtb6Ym5mAxOGtKINVo9er3ZvubLUjBoBi082ivdnX47+MJMx67mDvECcDMZxsI9CPNlQOLcoywZShG1xzKEyyJmHpK1k4GK2UeQJJpA03ekSQ9AizR/xkZUBiucACynG45IK/6Sx3Cmm4Sxpo1w5+IhG0+Gz0qanq/PgZqm9f+JpaamYSJMOg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744787948; c=relaxed/relaxed;
-	bh=iZU4vUuydQ3tr8HsA42PhcwRHPi43BVnmkasgguswmI=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=mcj+RoyU4gK27JU7U1CekkC4Yf8rQEozhHXB4zdUgvHBFibsuAybae+ZM/dlG45EhTtdH9ELFaltB+ai9i94dAz0duCE9VRROilCxN06aD7nS3VSbXuIT5L49ZSeiB0som3lzUozYrHx4l+ijMPa4FkT/k1woEJAN44FHi21h+z8GYcABi8mRXmweQa0CrXcUkEcKn3L8yW+sVnmB9/UapplWRl7hKZzhdQ8dMzfF/86JfHA6LwVk/UF4h3xI5LP6IJv1IV5+JxfgodpaxmQfq23SSR+MWxpJ7pe/VIOadB1gforvSs9wfBZ77dhBnc5LVf4Fx3QU4ucW2D5d8fVRw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VVGpsU1G; dkim-atps=neutral; spf=pass (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=intel.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=intel.com
+	t=1744788518; c=relaxed/relaxed;
+	bh=qvlLa3VA9efC7avAUZkCgRlCB4WN+H9bYNViBn32pLg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eSwK5ukBXZgOMz3pFghncLSvoBHAKieHxLfV/Koq3dPPL7Y8dEvlx7vYKl6SaDwyoOArQmcMUvr7HbiXxcI2+q1ILuhQo4Q0GJF6vj5we4KgNYrLRC5taXFxO/5dSDSJyQn5F5D773rgP1l8D+1ydtf15GfpUhpu1O9MBD+Pft8Sci3vjfG0VTwvrGxTokvX0xy17fZj5TzkARXlWneovYKrT72GW8vIdUsT4Uxc2+UJ0XufZ5610NnwpKmNDrMdraw9YKB/vmPTc4KTEdfbwlQNrdS2LmjXG7bPcT6+Q6obuGpIxSTV9cfN4fY+Nz4pG5MmaAnlPL6BqZ3+pig6QQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com; dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Wd/nlYwe; dkim-atps=neutral; spf=pass (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org) smtp.mailfrom=gmail.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=VVGpsU1G;
+	dkim=pass (2048-bit key; unprotected) header.d=gmail.com header.i=@gmail.com header.a=rsa-sha256 header.s=20230601 header.b=Wd/nlYwe;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=lkp@intel.com; receiver=lists.ozlabs.org)
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=gmail.com (client-ip=2607:f8b0:4864:20::102b; helo=mail-pj1-x102b.google.com; envelope-from=daniel.baluta@gmail.com; receiver=lists.ozlabs.org)
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZcspL4fpyz2ym3
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:19:04 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744787947; x=1776323947;
-  h=date:from:to:cc:subject:message-id;
-  bh=QY5pLNVQbkOC8rnQrAJ2xUeYNDP1HFpX1ZGbWNj5UiQ=;
-  b=VVGpsU1GEP7MsWHqI66FyMfGs/GqdXVVbPvSAANlI4ONndu2/9/CM2vV
-   XACR7JN1/GXDy4D7D72io01fq/YQ+LlI9XjKdfA2p1sOXyX/1GZ92IMac
-   fTs3fZsaeP7aCCZgN4B6v9mvcdnzjZ1MADiu1VYeKKFKAHfxcyNCzsR4A
-   fICXkML47PASxSEsDCMfXjg0bNMSBOECk1o97dQKmLmnTpEqDyfKfOrR2
-   0jyLpL575/Uv03nexJvMjnYf3CMrm/AG21ef3QiIMhuq7Lb7s5bDXSiSp
-   2IDPnM2cwyFwVzM5Qh/+87qJLmeGsFcUNOYP4LaYVm/i/Rmto4cm4xK0z
-   Q==;
-X-CSE-ConnectionGUID: Ym/d6BonQTu16bA86zpRVg==
-X-CSE-MsgGUID: niiN/H3rQ4uwKB3fbZiVRQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11404"; a="33940616"
-X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
-   d="scan'208";a="33940616"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Apr 2025 00:19:02 -0700
-X-CSE-ConnectionGUID: hh7D4ksGRLKPUO0+1hhBZQ==
-X-CSE-MsgGUID: 0C5fm0MDTvWkgA0VHqvxwg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.15,215,1739865600"; 
-   d="scan'208";a="130125892"
-Received: from lkp-server01.sh.intel.com (HELO b207828170a5) ([10.239.97.150])
-  by orviesa009.jf.intel.com with ESMTP; 16 Apr 2025 00:19:02 -0700
-Received: from kbuild by b207828170a5 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1u4x2w-000JF6-2y;
-	Wed, 16 Apr 2025 07:18:58 +0000
-Date: Wed, 16 Apr 2025 15:18:57 +0800
-From: kernel test robot <lkp@intel.com>
-To: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: linuxppc-dev@lists.ozlabs.org
-Subject: [powerpc:fixes-test] BUILD SUCCESS
- 3700976f2ae8dfec4c17433f8a16c9e6c334cf89
-Message-ID: <202504161549.hHkVBYh1-lkp@intel.com>
-User-Agent: s-nail v14.9.24
-X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
-X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zct1K4RH3z2ym3
+	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:28:36 +1000 (AEST)
+Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-301918a4e3bso6515098a91.3
+        for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 00:28:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1744788514; x=1745393314; darn=lists.ozlabs.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qvlLa3VA9efC7avAUZkCgRlCB4WN+H9bYNViBn32pLg=;
+        b=Wd/nlYwe/VdxEx52pQ5lJ7BS/SHpLHJmmdX1g12Sj8FPpYl1M22J2XcNAGolYHffeM
+         rHP/eSIVh2/ygb5djDNmi/CF/YUCtPz6cSalpMBT/bz8J97BmciJPPYUQg058dMe0yOV
+         GXtYfvOxYWxrMppXUwl7hcXTJv9Nvo4asiM+5nJRf/BxVVRwV0fmL/te3gMjxAYQ3quI
+         odtulC6yGgbk+PRGBsF5ZBMoMlqibkxZheDVsUN2kUVZKjKIMB7KGOYrCXxMJaxrWoLw
+         4WCQzvhCRsNDEKPlza2fwGPcVh10f5KwM+UhriVjv39X2X7pstkRUl5LMmIqKdTTw6YB
+         3oNA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744788514; x=1745393314;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qvlLa3VA9efC7avAUZkCgRlCB4WN+H9bYNViBn32pLg=;
+        b=e7+YPhDVhY12y78Hm24B+oYEBbORVl90pxva7QKHfV1en6Zsbbt+0IRIDyaqLQPx+h
+         cmBdZxWp9g6UdrN0VCeeJJtOo6891ITHImmgQ+NggE7pvFXJttlWj5iE5M+3CZpaVeo6
+         pBZq4r/kbPmHquP4eTqydZGbZ0sx6Gagj/fuav/6KkCnZma47J8P9OjZXPgMqylZ/0/B
+         yUcg17vUK+fnT8hq0aFnIMlhWNra8nkRbLi8u1XUe/w3/vp8nrKPKecEAQ82GcxLb3KZ
+         mLwNMnAgCjf8RI5dNzyCrt9j5YxRNtrh2XYeHMQ7a4emzKNzEAmw7sTBVVakqZFMY94B
+         y3XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVAWAhj0WQWl9oiC8C5bkDvXFAKb7kEKpT/7zaFM0foN9tDDZfjAHS17wYSVOLJ3WXp2U//WLhr2pnqGl8=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YzhRQupkdXuKfpZSq4TOO2L9I2fHQS60S2kgLhoaeZ2IL56P2BW
+	Ema7yIPVJhH+HK4qoAoG9xcEIZUKDtFfhjK0mtNkhJHj/yPOi2GOn8dQYAt2Z1aKyg0jX+w1dUs
+	G8xzCDoReABsjc12ipFxJjafFuxM=
+X-Gm-Gg: ASbGncsE+Hctg1BCGVhZVXqXAYwEEc9V1msbK/bLnJ7ZPQ+uDjvBpJqtpBcxbQIoYwN
+	CfMe18K2Ji4oGOx/Tf4buNhBpYcTAHhrfzKTQVE1CUMRbsrR5aYic0kJ+9ldhwuUwBQwEytxGz/
+	Bt7XEMM7sQU1/AKjJ5pQ==
+X-Google-Smtp-Source: AGHT+IGW5zcCmv3b7BVm4A40QK0n9oi/g9NFeFg+vQtedK+zMuIzEBKZNFZcJGBHY+4JsYxPwA1hTYFwiZZ7HXKb0a8=
+X-Received: by 2002:a17:90b:574c:b0:2ee:edae:75e with SMTP id
+ 98e67ed59e1d1-30863f1c831mr1185370a91.13.1744788514329; Wed, 16 Apr 2025
+ 00:28:34 -0700 (PDT)
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,30 +76,31 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-digest@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
+MIME-Version: 1.0
+References: <20250416041431.546370-1-nichen@iscas.ac.cn>
+In-Reply-To: <20250416041431.546370-1-nichen@iscas.ac.cn>
+From: Daniel Baluta <daniel.baluta@gmail.com>
+Date: Wed, 16 Apr 2025 10:30:19 +0300
+X-Gm-Features: ATxdqUEL8u77ss7dHQffyWPdVCGHmFsnGmhGr0uT_PfqkPxcRAmmZB4Ahi-EWlY
+Message-ID: <CAEnQRZBb=E75DPn=siqvhAqFas6Lt-++0Ka9W6gY0fbQgHBcrg@mail.gmail.com>
+Subject: Re: [PATCH] ASoC: fsl_rpmsg: Remove useless return variable
+To: Chen Ni <nichen@iscas.ac.cn>
+Cc: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+	nicoleotsuka@gmail.com, lgirdwood@gmail.com, broonie@kernel.org, 
+	perex@perex.cz, tiwai@suse.com, linux-sound@vger.kernel.org, 
+	linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
+	SPF_HELO_NONE,SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-tree/branch: https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git fixes-test
-branch HEAD: 3700976f2ae8dfec4c17433f8a16c9e6c334cf89  powerpc: Add check to select PPC_RADIX_BROADCAST_TLBIE
+On Wed, Apr 16, 2025 at 7:15=E2=80=AFAM Chen Ni <nichen@iscas.ac.cn> wrote:
+>
+> Remove unnecessary return variable and compress the return logic.
+>
+> Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
 
-elapsed time: 1441m
-
-configs tested: 9
-configs skipped: 144
-
-The following configs have been built successfully.
-More configs may be tested in the coming days.
-
-tested configs:
-powerpc               allmodconfig    gcc-14.2.0
-powerpc                allnoconfig    gcc-14.2.0
-powerpc               allyesconfig    clang-21
-powerpc    randconfig-001-20250415    gcc-5.5.0
-powerpc    randconfig-002-20250415    clang-17
-powerpc    randconfig-003-20250415    gcc-7.5.0
-powerpc64  randconfig-001-20250415    gcc-7.5.0
-powerpc64  randconfig-002-20250415    clang-17
-powerpc64  randconfig-003-20250415    gcc-10.5.0
-
---
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
 
