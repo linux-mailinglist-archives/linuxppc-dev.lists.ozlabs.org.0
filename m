@@ -1,56 +1,59 @@
-Return-Path: <linuxppc-dev+bounces-7704-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7705-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02115A909BB
-	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 19:15:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 13A62A90BB0
+	for <lists+linuxppc-dev@lfdr.de>; Wed, 16 Apr 2025 20:54:48 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zd72L3G9sz3blC;
-	Thu, 17 Apr 2025 03:15:22 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zd9F155Fgz3bn1;
+	Thu, 17 Apr 2025 04:54:45 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
 Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744823722;
-	cv=none; b=U3lGVkHbzak0xbRjmwIk6/rbcirpEHxjkj92PC+UT0VL77+CcIfC1pnZXIBrLbBpx4YamUzbEdc2B3Q7+BKKkEr0JuPBBthuak9a0IzlSyzC5T863fPBeClFAtteLH9+wFoTqHedVEsdedmw6oxn3nexfz9P4HUSkY1G8z1KfupdVZr117CNF4YflH+KIdrw8rJwU2i0I4+GEXPMOBxwLK7WmwC6kI9Ze8pZ9qInT7DPq6m/9YQUKd73JVaBqOYft9Z1BQuC9FQK8zrLHPybA1Rgv5LNRsgKVJN/ba2CW+CwXInZCvFrX19L07o5KAeT230L995ieQ1jdxpOOnMGiA==
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744829685;
+	cv=none; b=bQDO0HbezM7jSMVodEYLVWiMvDY/+tSKs7+WyjcT8wGwecRBtF5Eduv+DWZN87YQxcsz53BVJZmc5FbPf303Tu7hgqGTtCLl2FGtJertlUq5eLaTyt5vUP4WGKa5AVyS0lggLJQ/uQyUAomfv28QzlvL2Dk16UqzrMS6NhTF68t9O2gW+dfjV20Geef2EG9sSi6juBAgrjcAezVfXv0i4YLPMRI5kCP/84focX7N4q3G+7rIr+ltudZKNsM1k7kPR5QoVd5MIJaiOWTCCk+Rw0Pa4MlISkjeHhuicozk9+e0RDnFJeh8BtRYndZYFpOAfgQYyqaKeH2yJ6wZ81qD3g==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744823722; c=relaxed/relaxed;
-	bh=u9eaFAPQWVpPHI3HNxTM8tnlRWJ65b++4ZKSp7OxWd4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=n6+MfWYk8PsN/a3CamObLuk+BZ6POiRJEo+ykpEfOPp21ab79kFsyCOrQW81dSf3H3IWsue4wh1C3agzwpwmKnWYq/kxUYz5kjUXirk4QEFLarstRlYHA3gMTH212Lq8Y6ojETefGKCY7NdnTBU5uFzAZyCXMgX1tn4ZX1d/e3+Qz5Df3/NgbtCpcGrTgGaEOzHE7ZkVqqZmllGwG+0ahX1a73bal4iSRdnX5wDEVBqYhwxZ8itUMwmHnSRv5ACZKjRU4PpRnSzVGPcgkiNEFjNe0A9b41vQSfHP/wJYk/KaYKQO7C1C7Mw1opZK3OfJy8GvYSf3kaHj9KEGUfCl4Q==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n2e8LiJd; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	t=1744829685; c=relaxed/relaxed;
+	bh=qLrLUzsFF/fQZeZrf1KawTjQNlPQ6IHM/LTrSkJYX3c=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=LpL3434UC7XUoxo8FexyCtqGd1bcLNqiyENnZYptysXl92XpHrBsMLL+LGpa1yQ7BliF4I8bL17b2DYH80rGWvJF5FbLjopp6JOPvV9K7JIluuSaftSILt4XJp58h5cDwm5sy2XIJ05kPIelzFSo59lqXBNWNEVdXRc31NZOv7E8LjaGrc/IjuM1WM4/ssd9oZff6l9BE7O5jt82EuZUcJmoOmx/K8yaTTzQMBc/X/sZJm70+5p4Bpgvm//be6Zcc1ErsXWd8sOG9w+FwbTF8/lTj659U/QVtSly/VoArKK8t3JVTKiNBvm9QL5UgkDDwfhTUBZSxlvFyQnorY/eaw==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hBkSJNao; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=n2e8LiJd;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=hBkSJNao;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=broonie@kernel.org; receiver=lists.ozlabs.org)
 Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd72K5Px5z2yrr
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 03:15:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zd9F10pHLz2yr4
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 04:54:45 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 86C7840BDD
-	for <linuxppc-dev@lists.ozlabs.org>; Wed, 16 Apr 2025 17:15:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A4AC4CEE2;
-	Wed, 16 Apr 2025 17:15:19 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 9F7344A2FB;
+	Wed, 16 Apr 2025 18:54:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAFE0C4AF09;
+	Wed, 16 Apr 2025 18:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744823719;
-	bh=PtS50I1JEx78saTBfrIr2/aVCZOH4dhGGysijRowgC0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n2e8LiJdxP35mPYrF33YC5NWI2GA+R0A0NF6IRn0hMETQmeIcY5FFKS3l3Pix3PdO
-	 69prvrhfe8abkQ1K2+OlkHPXSW1Fr0fwi7gbZ4s8RXkD3Tz8ldD7QJv/C5tov6JQhN
-	 jxXo8hrW5kUdv1jmXLqu4GZ1guwGgx2cxoEFgyoIoGJp0PvhkIKBwRPWV08D5Nm1Ag
-	 1hzez+mN7o/2o/9XMYNztpaox4toV76lfYFvc3ppOnJpSU99ucndmkn6fL5Sz1FwVN
-	 nLeNWyIzxMc//AEA+yU8Go2QDi8bttOejLpDK0/07/eKo+9rSotdY6cNIoBe0fauhi
-	 DRAYJ4ru+k83Q==
-From: Eric Biggers <ebiggers@kernel.org>
-To: linux-crypto@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	linux-kernel@vger.kernel.org,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH] powerpc/crc: include <linux/uaccess.h>
-Date: Wed, 16 Apr 2025 10:14:39 -0700
-Message-ID: <20250416171439.226938-1-ebiggers@kernel.org>
-X-Mailer: git-send-email 2.49.0
+	s=k20201202; t=1744829682;
+	bh=HkxnMpHH4HUof71suoyJTPqcloEFW2ZCJEO35rSobdY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=hBkSJNaoUw05O1BtAawQzkeO/5ucbxvrTkR2ZFvtt9lnYRtxiQvg/pkyKUpNB3GIg
+	 yYNB09/B7cFbpRe/EEP5jSY9kS6Ewck+hJo2Dy/FZH+YoZ/cGPZ88ZzTHAWOyBNywM
+	 8jsUYAI0Q04x4CHeE5OuE6cZ2Vm7/WzgJ7mthGRbLtzHNhZMs99arqiLUMAAOVs5vV
+	 aJoDqYOHEcSfu3dZ+fp6fzOHk7eLvbkOl6/WdQMgsScHDiLsA49IAOl9UX9DWo/KKN
+	 6saIwxcR/7y7QQ6eUhVd/5uJ54drjtonCdXE+yR5ehGpM2hagmKUSa7tr+0MyPa1Fk
+	 AtxGtpIx48E7A==
+From: Mark Brown <broonie@kernel.org>
+To: shengjiu.wang@gmail.com, Xiubo.Lee@gmail.com, festevam@gmail.com, 
+ nicoleotsuka@gmail.com, lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com, 
+ Chen Ni <nichen@iscas.ac.cn>
+Cc: linux-sound@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20250416041431.546370-1-nichen@iscas.ac.cn>
+References: <20250416041431.546370-1-nichen@iscas.ac.cn>
+Subject: Re: [PATCH] ASoC: fsl_rpmsg: Remove useless return variable
+Message-Id: <174482968045.823707.11072007128438554496.b4-ty@kernel.org>
+Date: Wed, 16 Apr 2025 19:54:40 +0100
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -63,64 +66,45 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-c25d1
 X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
 	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: Eric Biggers <ebiggers@google.com>
+On Wed, 16 Apr 2025 12:14:31 +0800, Chen Ni wrote:
+> Remove unnecessary return variable and compress the return logic.
+> 
+> 
 
-Since <asm/simd.h> no longer transitively includes <linux/uaccess.h>
-which provides pagefault_disable() and pagefault_enable(),
-<linux/uaccess.h> now needs to be included directly.
+Applied to
 
-Fixes: 7ba8df47810f ("asm-generic: Make simd.h more resilient")
-Signed-off-by: Eric Biggers <ebiggers@google.com>
----
+   https://git.kernel.org/pub/scm/linux/kernel/git/broonie/sound.git for-next
 
-I can take this via the crc tree, but it really should go via crypto
-since the patch that broke this is in there...
+Thanks!
 
- arch/powerpc/lib/crc-t10dif-glue.c | 1 +
- arch/powerpc/lib/crc32-glue.c      | 1 +
- 2 files changed, 2 insertions(+)
+[1/1] ASoC: fsl_rpmsg: Remove useless return variable
+      commit: ba05bc25490a2256f60be2c02bd797e6f8217119
 
-diff --git a/arch/powerpc/lib/crc-t10dif-glue.c b/arch/powerpc/lib/crc-t10dif-glue.c
-index ddd5c4088f50..c48284f7b582 100644
---- a/arch/powerpc/lib/crc-t10dif-glue.c
-+++ b/arch/powerpc/lib/crc-t10dif-glue.c
-@@ -11,10 +11,11 @@
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/string.h>
- #include <linux/kernel.h>
- #include <linux/cpufeature.h>
-+#include <linux/uaccess.h>
- #include <asm/simd.h>
- #include <asm/switch_to.h>
- 
- #define VMX_ALIGN		16
- #define VMX_ALIGN_MASK		(VMX_ALIGN-1)
-diff --git a/arch/powerpc/lib/crc32-glue.c b/arch/powerpc/lib/crc32-glue.c
-index 42f2dd3c85dd..d7f57576c74e 100644
---- a/arch/powerpc/lib/crc32-glue.c
-+++ b/arch/powerpc/lib/crc32-glue.c
-@@ -3,10 +3,11 @@
- #include <crypto/internal/simd.h>
- #include <linux/init.h>
- #include <linux/module.h>
- #include <linux/kernel.h>
- #include <linux/cpufeature.h>
-+#include <linux/uaccess.h>
- #include <asm/simd.h>
- #include <asm/switch_to.h>
- 
- #define VMX_ALIGN		16
- #define VMX_ALIGN_MASK		(VMX_ALIGN-1)
+All being well this means that it will be integrated into the linux-next
+tree (usually sometime in the next 24 hours) and sent to Linus during
+the next merge window (or sooner if it is a bug fix), however if
+problems are discovered then the patch may be dropped or reverted.
 
-base-commit: 5f7325fbb3d416ba66f163a9272e17d70f1d9bf4
--- 
-2.49.0
+You may get further e-mails resulting from automated or manual testing
+and review of the tree, please engage with people reporting problems and
+send followup patches addressing any issues that are reported if needed.
+
+If any updates are required or you are submitting further changes they
+should be sent as incremental updates against current git, existing
+patches will not be replaced.
+
+Please add any relevant lists and maintainers to the CCs when replying
+to this mail.
+
+Thanks,
+Mark
 
 
