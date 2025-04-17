@@ -1,53 +1,78 @@
-Return-Path: <linuxppc-dev+bounces-7746-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7747-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8455BA91F67
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 16:21:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C162A91FD4
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 16:37:14 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zdg773SCBz2yhV;
-	Fri, 18 Apr 2025 00:21:23 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdgTN0zNwz3bxJ;
+	Fri, 18 Apr 2025 00:37:12 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.105.4.254
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744899683;
-	cv=none; b=dBHtFs1yjrxqtaCmhXibskBqQCtK9uLXrGM3HbC35W/f1W4wa161cexnPdjZJvNxMLrpNaGPq78Tfng9ElU3Ck4oX9+QUysxVPhvzCKruEf5cuGm99lDg5ehBihzYW5AgLhANbt0ZuhH1IMJBVTTYDvQhVvKw/nujACuSSuWkyqJv+Uz6PACFpeyb/yXCY43BFAZ/Lkb3E9mlS/KIdxpBlkGvrsKRqK31+I4bK511YyxVd1Pu28w8w+5X6B7wmtG9s41FOui03XgyQw/KgmL15l63Rl59jtEqsrcz/SWWN+V6o+DEI/ecHuLdL6tjnlTB0szJu2r2BQDPrqSuTdesA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.156.1
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744900632;
+	cv=none; b=ahF9i5CRhnIn4YO1BbYKcn9DlfCFxxeCj6Na85QBHsHuGnzJwgSN3CRuwlcx5RuE0Ed+1z8uETe/jjWW5h4atiUJDFa/TzY3lq3veixEpc22lmwJBxc4xoHqsDYkiB57US5XpEnzV4sQBT5eJXxEGjbCkq06nzSO39fSE+zocbk6vqtmxtQ0zL7ewl/tZyr1PAGl3zVGLoNmTzRJa31v0i09SF5hmGY/lXez+aCv3J1DEDDNiByU4O5ohUSFR2azLazbtGJU0QWqJEl6wcPoyY/Vn8+PMyBgbx4yB/w6KU+DU9650IXh+crB6w2DRRVxqvtxiHSfHXz64Cye20z4Ug==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744899683; c=relaxed/relaxed;
-	bh=FrWtrMYpBScljwY5UZwrCVAU/ua7O38SqpYLp1vm9VI=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=JeQP9hadhefoaB6VD+m9EN5n2gYGhnKejG1gkjxGfvsY3U7olXUb6Xk/mbC3u0r1D1McP4/JGQ48I8OJJnJqKA3pOkTVCDAVNhS8EKGqlgUfA7W1QViTeH6Q75dGQlhO8dUKNjXt+V3CCluTsSc4sIsVdr1OWQFXUxlN7mgmUwPNU6RZOaqXAUfyvmSN9LE0Is4HrvpWUGYRP0cKIWtGMpa0hXjmGMVjuKxdlzX9GXJiRZLDMI4D1xDgc6frlD76Xw9ck6S8FT05GhY43MjBS0o1ZAsUmyfabXY185VJYpblb7H0PPgJ21RSmKI9CQfXKQrPSpBmwNOkt8fypCBWsA==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rH5vF7Ix; dkim-atps=neutral; spf=pass (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	t=1744900632; c=relaxed/relaxed;
+	bh=uk/KzPKtZlYzbu4tHDiYZIDCA83mFg/mBq8oFeo8img=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SgV70XoufdP/EEvmXYRxGiT6ZamFCq9x+Ii8jrIO7UQsy0MSz8xo4EnsLgz269HGUXpXBwxwMqZ2e82GUTCEHyOU/b3NGENgnR5e8R//WuFww6FvliOyj2DgIVVn3pARbEk9t9aRduyIIWB6l1ufSkIG1x2UiiqxXgKaFxFsdf44wLIeegCmVg92qJbnXMsJxEWjuw7FZOBbRLUuU/n4HUAeEf9Clpjx7kG+3y7rDipvg5E2tHQyYuI3ppggXCUBLxI16wBUuoNDsEeNE0wGAXKKIz2VL0mVuZWZaEUqQYrxbiws8RMXL7o3RHDHziIv86hnuppc95Ss18L1cIfMpg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mC3i1rfp; dkim-atps=neutral; spf=pass (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rH5vF7Ix;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=mC3i1rfp;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.105.4.254; helo=tor.source.kernel.org; envelope-from=devnull+j.ne.posteo.net@kernel.org; receiver=lists.ozlabs.org)
-Received: from tor.source.kernel.org (tor.source.kernel.org [172.105.4.254])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.156.1; helo=mx0a-001b2d01.pphosted.com; envelope-from=venkat88@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zdg750xqvz2yfP
-	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 00:21:21 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 897E960010;
-	Thu, 17 Apr 2025 14:20:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 29CB3C4CEE4;
-	Thu, 17 Apr 2025 14:21:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744899676;
-	bh=QpPsC8T0JZuelBW5cDn8QrMJ9RtXSAtuNxVSGRHgdSY=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=rH5vF7IxaQxt7Vhl/NGfPve4cE1hPhw/UMylGqO5gLzhkXeUaGS+mab6BLQjDmFYY
-	 t75ti+tuFD2bBPEAB0PnxpoTK6L2q3EcRoBGM3odK/UInyFnD/M3WAOu/qo6Og1wtf
-	 2fc+NTvUyUyHeDaxXe5bkMcuJgozoGlHphpBnUM2l9mFpVwwmGNuRoiIabiY+AtJgM
-	 hBQ+q3FKoHvxeDyhW7cWfYFTk/cAp5VOh10+GBRaX9qiI8bGXRHFo4qeJ9i9uAY/gr
-	 ywHB5JtwV33ZQHvc0g6/fd4s8IkVkq3+xw5RO2yj45n3brWoIdDssivzqqFwxRDlQM
-	 SFpPZPdzOXOCw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 2073BC369C2;
-	Thu, 17 Apr 2025 14:21:16 +0000 (UTC)
-From: =?utf-8?q?J=2E_Neusch=C3=A4fer_via_B4_Relay?= <devnull+j.ne.posteo.net@kernel.org>
-Date: Thu, 17 Apr 2025 16:21:14 +0200
-Subject: [PATCH v3] dt-bindings: powerpc: Convert fsl/pmc.txt to YAML
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdgTL6PpXz3bxC
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 00:37:10 +1000 (AEST)
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H7ueGT018096;
+	Thu, 17 Apr 2025 14:36:39 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=uk/KzP
+	KtZlYzbu4tHDiYZIDCA83mFg/mBq8oFeo8img=; b=mC3i1rfp3gykRoD1p6h9dl
+	LBXcHmnzPuJCq/KNt8jIMhyoW8CWd+5lzsry/X4knIcAlJlrDqkUTE+iXqshjc9T
+	xUdf+bGXKEDG/EcdvO3pbqt3C5KI/FsHTyqUeczHRZ6+OzXS6Frf5HyLLblCDnKO
+	u+sE9lj5g/hUx/bGqgZYQDQ45r5cROfUPWxw+kOg8rEU64fWFwcFqUmdRVhrV3rv
+	pR19Jeo3xPPPRC63isUzhrULZg2edOwy5hn9ukwN2fraeY7J16hN9581pbohdXcC
+	xD2k113q2cnbMGArcgbjW+BT2HsW1w7hlPxHrJC/P9tKL5dBxqm4uLZAT19/2EhQ
+	==
+Received: from pps.reinject (localhost [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mhu45pr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Apr 2025 14:36:38 +0000 (GMT)
+Received: from m0353729.ppops.net (m0353729.ppops.net [127.0.0.1])
+	by pps.reinject (8.18.0.8/8.18.0.8) with ESMTP id 53HEXijm011067;
+	Thu, 17 Apr 2025 14:36:38 GMT
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462mhu45pn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Apr 2025 14:36:38 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53HBcuiH010392;
+	Thu, 17 Apr 2025 14:36:37 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4604qkdtq4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Apr 2025 14:36:37 +0000
+Received: from smtpav01.wdc07v.mail.ibm.com (smtpav01.wdc07v.mail.ibm.com [10.39.53.228])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53HEaZNu43581736
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Apr 2025 14:36:35 GMT
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 97DBC58059;
+	Thu, 17 Apr 2025 14:36:35 +0000 (GMT)
+Received: from smtpav01.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AA3C65804B;
+	Thu, 17 Apr 2025 14:36:31 +0000 (GMT)
+Received: from [9.61.245.161] (unknown [9.61.245.161])
+	by smtpav01.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 17 Apr 2025 14:36:31 +0000 (GMT)
+Message-ID: <93efae34-796f-48a6-9ea7-44d20a67d0d8@linux.ibm.com>
+Date: Thu, 17 Apr 2025 20:06:30 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -60,306 +85,231 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20250417-fslpmc-yaml-v3-1-b3eccd389176@posteo.net>
-X-B4-Tracking: v=1; b=H4sIAFkOAWgC/1WMwQqDMBAFf0X23JRkNdb01P8oPcS41oAaSSRUx
- H9vtIci7zQPZlYI5C0FuGcreIo2WDcmyC8ZmE6Pb2K2SQzIUXLEkrWhnwbDFj30TPHGlKqtbw1
- qSMbkqbWfo/Z8Je5smJ1fjngU+/vr5EKeOlGwNF7rXBa6kgYfkwszuetIM+yhiH+5EHiWMcmqM
- lwVlUaF4iRv2/YFwKU0SOQAAAA=
-X-Change-ID: 20250226-fslpmc-yaml-90dc69fb7d2a
-To: Crystal Wood <oss@buserror.net>, 
- Madhavan Srinivasan <maddy@linux.ibm.com>, 
- Michael Ellerman <mpe@ellerman.id.au>, Nicholas Piggin <npiggin@gmail.com>, 
- Christophe Leroy <christophe.leroy@csgroup.eu>, 
- Naveen N Rao <naveen@kernel.org>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linuxppc-dev@lists.ozlabs.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1744899675; l=9529;
- i=j.ne@posteo.net; s=20240329; h=from:subject:message-id;
- bh=bW43HEpOEpNYn4tTSUfgDCb0hz+VsjYccuCsnUP7S4E=;
- b=e3b7ZbB1tUs08gQNlDgkQ77uMl439G6Dh0v/xgO28/jOOwNCpeTRZxLj8QvGxt1obxUsTwKrU
- 7ry8dzvcWb1CJYxXBBirrD40fcWhUnw4yjO2PFppoKJ3skf8FC8LWNN
-X-Developer-Key: i=j.ne@posteo.net; a=ed25519;
- pk=NIe0bK42wNaX/C4bi6ezm7NJK0IQE+8MKBm7igFMIS4=
-X-Endpoint-Received: by B4 Relay for j.ne@posteo.net/20240329 with
- auth_id=156
-X-Original-From: =?utf-8?q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
-Reply-To: j.ne@posteo.net
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] powerpc64/bpf: fix JIT code size calculation of bpf
+ trampoline
+Content-Language: en-GB
+To: Hari Bathini <hbathini@linux.ibm.com>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>, bpf@vger.kernel.org
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>,
+        "Naveen N. Rao" <naveen@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>, stable@vger.kernel.org
+References: <20250416194037.204424-1-hbathini@linux.ibm.com>
+From: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+In-Reply-To: <20250416194037.204424-1-hbathini@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Hvd2G1TS c=1 sm=1 tr=0 ts=680111f6 cx=c_pps a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=CiTnoRQfHxluCWF7Iu0A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: zCOOQn0vX--s_pR9DSoai1pYUhoBsMgM
+X-Proofpoint-GUID: -O5iP8pAnfkRdu6nRdVfNjM_DUzhpiyA
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-17_04,2025-04-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0
+ lowpriorityscore=0 spamscore=0 mlxlogscore=852 suspectscore=0
+ malwarescore=0 bulkscore=0 clxscore=1015 impostorscore=0 mlxscore=0
+ phishscore=0 priorityscore=1501 classifier=spam authscore=0 adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504170109
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-From: "J. Neuschäfer" <j.ne@posteo.net>
 
-This patch rewrites pmc.txt into YAML format. Descriptive texts are
-expanded or shortened in a few places to better fit today's conventions.
+On 17/04/25 1:10 am, Hari Bathini wrote:
+> arch_bpf_trampoline_size() provides JIT size of the BPF trampoline
+> before the buffer for JIT'ing it is allocated. The total number of
+> instructions emitted for BPF trampoline JIT code depends on where
+> the final image is located. So, the size arrived at with the dummy
+> pass in arch_bpf_trampoline_size() can vary from the actual size
+> needed in  arch_prepare_bpf_trampoline().  When the instructions
+> accounted in  arch_bpf_trampoline_size() is less than the number of
+> instructions emitted during the actual JIT compile of the trampoline,
+> the below warning is produced:
+>
+>    WARNING: CPU: 8 PID: 204190 at arch/powerpc/net/bpf_jit_comp.c:981 __arch_prepare_bpf_trampoline.isra.0+0xd2c/0xdcc
+>
+> which is:
+>
+>    /* Make sure the trampoline generation logic doesn't overflow */
+>    if (image && WARN_ON_ONCE(&image[ctx->idx] >
+>    			(u32 *)rw_image_end - BPF_INSN_SAFETY)) {
+>
+> So, during the dummy pass, instead of providing some arbitrary image
+> location, account for maximum possible instructions if and when there
+> is a dependency with image location for JIT'ing.
+>
+> Fixes: d243b62b7bd3 ("powerpc64/bpf: Add support for bpf trampolines")
+> Reported-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
+> Closes: https://lore.kernel.org/all/6168bfc8-659f-4b5a-a6fb-90a916dde3b3@linux.ibm.com/
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
+> ---
+>
+> Changes since v1:
+> - Pass NULL for image during intial pass and account for max. possible
+>    instruction during this pass as Naveen suggested.
+>
+>
+>   arch/powerpc/net/bpf_jit.h        | 20 ++++++++++++++++---
+>   arch/powerpc/net/bpf_jit_comp.c   | 33 ++++++++++---------------------
+>   arch/powerpc/net/bpf_jit_comp64.c |  9 +++++++++
+>   3 files changed, 36 insertions(+), 26 deletions(-)
+>
+> diff --git a/arch/powerpc/net/bpf_jit.h b/arch/powerpc/net/bpf_jit.h
+> index 6beacaec63d3..4c26912c2e3c 100644
+> --- a/arch/powerpc/net/bpf_jit.h
+> +++ b/arch/powerpc/net/bpf_jit.h
+> @@ -51,8 +51,16 @@
+>   		EMIT(PPC_INST_BRANCH_COND | (((cond) & 0x3ff) << 16) | (offset & 0xfffc));					\
+>   	} while (0)
+>   
+> -/* Sign-extended 32-bit immediate load */
+> +/*
+> + * Sign-extended 32-bit immediate load
+> + *
+> + * If this is a dummy pass (!image), account for
+> + * maximum possible instructions.
+> + */
+>   #define PPC_LI32(d, i)		do {					      \
+> +	if (!image)							      \
+> +		ctx->idx += 2;						      \
+> +	else {								      \
+>   		if ((int)(uintptr_t)(i) >= -32768 &&			      \
+>   				(int)(uintptr_t)(i) < 32768)		      \
+>   			EMIT(PPC_RAW_LI(d, i));				      \
+> @@ -60,10 +68,15 @@
+>   			EMIT(PPC_RAW_LIS(d, IMM_H(i)));			      \
+>   			if (IMM_L(i))					      \
+>   				EMIT(PPC_RAW_ORI(d, d, IMM_L(i)));	      \
+> -		} } while(0)
+> +		}							      \
+> +	} } while (0)
+>   
+>   #ifdef CONFIG_PPC64
+> +/* If dummy pass (!image), account for maximum possible instructions */
+>   #define PPC_LI64(d, i)		do {					      \
+> +	if (!image)							      \
+> +		ctx->idx += 5;						      \
+> +	else {								      \
+>   		if ((long)(i) >= -2147483648 &&				      \
+>   				(long)(i) < 2147483648)			      \
+>   			PPC_LI32(d, i);					      \
+> @@ -84,7 +97,8 @@
+>   			if ((uintptr_t)(i) & 0x000000000000ffffULL)	      \
+>   				EMIT(PPC_RAW_ORI(d, d, (uintptr_t)(i) &       \
+>   							0xffff));             \
+> -		} } while (0)
+> +		}							      \
+> +	} } while (0)
+>   #define PPC_LI_ADDR	PPC_LI64
+>   
+>   #ifndef CONFIG_PPC_KERNEL_PCREL
+> diff --git a/arch/powerpc/net/bpf_jit_comp.c b/arch/powerpc/net/bpf_jit_comp.c
+> index 2991bb171a9b..c0684733e9d6 100644
+> --- a/arch/powerpc/net/bpf_jit_comp.c
+> +++ b/arch/powerpc/net/bpf_jit_comp.c
+> @@ -504,10 +504,11 @@ static int invoke_bpf_prog(u32 *image, u32 *ro_image, struct codegen_context *ct
+>   	EMIT(PPC_RAW_ADDI(_R3, _R1, regs_off));
+>   	if (!p->jited)
+>   		PPC_LI_ADDR(_R4, (unsigned long)p->insnsi);
+> -	if (!create_branch(&branch_insn, (u32 *)&ro_image[ctx->idx], (unsigned long)p->bpf_func,
+> -			   BRANCH_SET_LINK)) {
+> -		if (image)
+> -			image[ctx->idx] = ppc_inst_val(branch_insn);
+> +	/* Account for max possible instructions during dummy pass for size calculation */
+> +	if (image && !create_branch(&branch_insn, (u32 *)&ro_image[ctx->idx],
+> +				    (unsigned long)p->bpf_func,
+> +				    BRANCH_SET_LINK)) {
+> +		image[ctx->idx] = ppc_inst_val(branch_insn);
+>   		ctx->idx++;
+>   	} else {
+>   		EMIT(PPC_RAW_LL(_R12, _R25, offsetof(struct bpf_prog, bpf_func)));
+> @@ -889,7 +890,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>   			bpf_trampoline_restore_tail_call_cnt(image, ctx, func_frame_offset, r4_off);
+>   
+>   		/* Reserve space to patch branch instruction to skip fexit progs */
+> -		im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
+> +		if (ro_image) /* image is NULL for dummy pass */
+> +			im->ip_after_call = &((u32 *)ro_image)[ctx->idx];
+>   		EMIT(PPC_RAW_NOP());
+>   	}
+>   
+> @@ -912,7 +914,8 @@ static int __arch_prepare_bpf_trampoline(struct bpf_tramp_image *im, void *rw_im
+>   		}
+>   
+>   	if (flags & BPF_TRAMP_F_CALL_ORIG) {
+> -		im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
+> +		if (ro_image) /* image is NULL for dummy pass */
+> +			im->ip_epilogue = &((u32 *)ro_image)[ctx->idx];
+>   		PPC_LI_ADDR(_R3, im);
+>   		ret = bpf_jit_emit_func_call_rel(image, ro_image, ctx,
+>   						 (unsigned long)__bpf_tramp_exit);
+> @@ -973,25 +976,9 @@ int arch_bpf_trampoline_size(const struct btf_func_model *m, u32 flags,
+>   			     struct bpf_tramp_links *tlinks, void *func_addr)
+>   {
+>   	struct bpf_tramp_image im;
+> -	void *image;
+>   	int ret;
+>   
+> -	/*
+> -	 * Allocate a temporary buffer for __arch_prepare_bpf_trampoline().
+> -	 * This will NOT cause fragmentation in direct map, as we do not
+> -	 * call set_memory_*() on this buffer.
+> -	 *
+> -	 * We cannot use kvmalloc here, because we need image to be in
+> -	 * module memory range.
+> -	 */
+> -	image = bpf_jit_alloc_exec(PAGE_SIZE);
+> -	if (!image)
+> -		return -ENOMEM;
+> -
+> -	ret = __arch_prepare_bpf_trampoline(&im, image, image + PAGE_SIZE, image,
+> -					    m, flags, tlinks, func_addr);
+> -	bpf_jit_free_exec(image);
+> -
+> +	ret = __arch_prepare_bpf_trampoline(&im, NULL, NULL, NULL, m, flags, tlinks, func_addr);
+>   	return ret;
+>   }
+>   
+> diff --git a/arch/powerpc/net/bpf_jit_comp64.c b/arch/powerpc/net/bpf_jit_comp64.c
+> index 233703b06d7c..91f9efe8b8d7 100644
+> --- a/arch/powerpc/net/bpf_jit_comp64.c
+> +++ b/arch/powerpc/net/bpf_jit_comp64.c
+> @@ -225,6 +225,15 @@ int bpf_jit_emit_func_call_rel(u32 *image, u32 *fimage, struct codegen_context *
+>   	}
+>   
+>   #ifdef CONFIG_PPC_KERNEL_PCREL
+> +	/*
+> +	 * If fimage is NULL (the initial pass to find image size),
+> +	 * account for the maximum no. of instructions possible.
+> +	 */
+> +	if (!fimage) {
+> +		ctx->idx += 7;
+> +		return 0;
+> +	}
+> +
+>   	reladdr = func_addr - local_paca->kernelbase;
+>   
+>   	if (reladdr < (long)SZ_8G && reladdr >= -(long)SZ_8G) {
 
-The list of compatible strings (and combinations of them) is based on
-existing device trees in arch/powerpc as well as compatible strings
-already mentioned in the plain-text version of the binding.
 
-One thing I didn't handle are soc-clk@... nodes as seen in
-arch/powerpc/boot/dts/fsl/pq3-power.dtsi. They are also ignored
-by Linux drivers.
+Above patch fixes the reported issue. Ran the test( ./test_progs) for 
+three times, and issue is not seen. Hence,
 
-Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
----
-Changes in v3:
-- Combine two compatible strings into one "enum"
-- Remove sleep consumer (sata@19000) from example
-- Fix reference to example for soc-clk@... nodes, and explain why they
-  are not modeled
-- Link to v2: https://lore.kernel.org/r/20250412-fslpmc-yaml-v2-1-98c0948a2921@posteo.net
 
-Changes in v2:
-- Rebase on v6.15-rc1
-- Link to v1: https://lore.kernel.org/r/20250315-fslpmc-yaml-v1-1-10ba354a85c2@posteo.net
----
- .../devicetree/bindings/powerpc/fsl/pmc.txt        |  63 ---------
- .../devicetree/bindings/powerpc/fsl/pmc.yaml       | 152 +++++++++++++++++++++
- 2 files changed, 152 insertions(+), 63 deletions(-)
+Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
 
-diff --git a/Documentation/devicetree/bindings/powerpc/fsl/pmc.txt b/Documentation/devicetree/bindings/powerpc/fsl/pmc.txt
-deleted file mode 100644
-index 07256b7ffcaab2ba57b33cf279df45d830ce33b3..0000000000000000000000000000000000000000
---- a/Documentation/devicetree/bindings/powerpc/fsl/pmc.txt
-+++ /dev/null
-@@ -1,63 +0,0 @@
--* Power Management Controller
--
--Properties:
--- compatible: "fsl,<chip>-pmc".
--
--  "fsl,mpc8349-pmc" should be listed for any chip whose PMC is
--  compatible.  "fsl,mpc8313-pmc" should also be listed for any chip
--  whose PMC is compatible, and implies deep-sleep capability.
--
--  "fsl,mpc8548-pmc" should be listed for any chip whose PMC is
--  compatible.  "fsl,mpc8536-pmc" should also be listed for any chip
--  whose PMC is compatible, and implies deep-sleep capability.
--
--  "fsl,mpc8641d-pmc" should be listed for any chip whose PMC is
--  compatible; all statements below that apply to "fsl,mpc8548-pmc" also
--  apply to "fsl,mpc8641d-pmc".
--
--  Compatibility does not include bit assignments in SCCR/PMCDR/DEVDISR; these
--  bit assignments are indicated via the sleep specifier in each device's
--  sleep property.
--
--- reg: For devices compatible with "fsl,mpc8349-pmc", the first resource
--  is the PMC block, and the second resource is the Clock Configuration
--  block.
--
--  For devices compatible with "fsl,mpc8548-pmc", the first resource
--  is a 32-byte block beginning with DEVDISR.
--
--- interrupts: For "fsl,mpc8349-pmc"-compatible devices, the first
--  resource is the PMC block interrupt.
--
--- fsl,mpc8313-wakeup-timer: For "fsl,mpc8313-pmc"-compatible devices,
--  this is a phandle to an "fsl,gtm" node on which timer 4 can be used as
--  a wakeup source from deep sleep.
--
--Sleep specifiers:
--
--  fsl,mpc8349-pmc: Sleep specifiers consist of one cell.  For each bit
--  that is set in the cell, the corresponding bit in SCCR will be saved
--  and cleared on suspend, and restored on resume.  This sleep controller
--  supports disabling and resuming devices at any time.
--
--  fsl,mpc8536-pmc: Sleep specifiers consist of three cells, the third of
--  which will be ORed into PMCDR upon suspend, and cleared from PMCDR
--  upon resume.  The first two cells are as described for fsl,mpc8578-pmc.
--  This sleep controller only supports disabling devices during system
--  sleep, or permanently.
--
--  fsl,mpc8548-pmc: Sleep specifiers consist of one or two cells, the
--  first of which will be ORed into DEVDISR (and the second into
--  DEVDISR2, if present -- this cell should be zero or absent if the
--  hardware does not have DEVDISR2) upon a request for permanent device
--  disabling.  This sleep controller does not support configuring devices
--  to disable during system sleep (unless supported by another compatible
--  match), or dynamically.
--
--Example:
--
--	power@b00 {
--		compatible = "fsl,mpc8313-pmc", "fsl,mpc8349-pmc";
--		reg = <0xb00 0x100 0xa00 0x100>;
--		interrupts = <80 8>;
--	};
-diff --git a/Documentation/devicetree/bindings/powerpc/fsl/pmc.yaml b/Documentation/devicetree/bindings/powerpc/fsl/pmc.yaml
-new file mode 100644
-index 0000000000000000000000000000000000000000..276ece7f01dbafe0accbb9d884f5611e75193ca2
---- /dev/null
-+++ b/Documentation/devicetree/bindings/powerpc/fsl/pmc.yaml
-@@ -0,0 +1,152 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/powerpc/fsl/pmc.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Power Management Controller
-+
-+maintainers:
-+  - J. Neuschäfer <j.ne@posteo.net>
-+
-+description: |
-+  The Power Management Controller in several MPC8xxx SoCs helps save power by
-+  controlling chip-wide low-power states as well as peripheral clock gating.
-+
-+  Sleep of peripheral devices is configured by the `sleep` property, for
-+  example `sleep = <&pmc 0x00000030>`. Any cells after the &pmc phandle are
-+  called a sleep specifier.
-+
-+  For "fsl,mpc8349-pmc", sleep specifiers consist of one cell.  For each bit that
-+  is set in the cell, the corresponding bit in SCCR will be saved and cleared
-+  on suspend, and restored on resume.  This sleep controller supports disabling
-+  and resuming devices at any time.
-+
-+  For "fsl,mpc8536-pmc", sleep specifiers consist of three cells, the third of
-+  which will be ORed into PMCDR upon suspend, and cleared from PMCDR upon
-+  resume.  The first two cells are as described for fsl,mpc8548-pmc.  This
-+  sleep controller only supports disabling devices during system sleep, or
-+  permanently.
-+
-+  For "fsl,mpc8548-pmc" or "fsl,mpc8641d-pmc", Sleep specifiers consist of one
-+  or two cells, the first of which will be ORed into DEVDISR (and the second
-+  into DEVDISR2, if present -- this cell should be zero or absent if the
-+  hardware does not have DEVDISR2) upon a request for permanent device
-+  disabling.  This sleep controller does not support configuring devices to
-+  disable during system sleep (unless supported by another compatible match),
-+  or dynamically.
-+
-+properties:
-+  compatible:
-+    oneOf:
-+      - items:
-+          - const: fsl,mpc8315-pmc
-+          - const: fsl,mpc8313-pmc
-+          - const: fsl,mpc8349-pmc
-+
-+      - items:
-+          - enum:
-+              - fsl,mpc8313-pmc
-+              - fsl,mpc8323-pmc
-+              - fsl,mpc8360-pmc
-+              - fsl,mpc8377-pmc
-+              - fsl,mpc8378-pmc
-+              - fsl,mpc8379-pmc
-+          - const: fsl,mpc8349-pmc
-+
-+      - items:
-+          - const: fsl,p1022-pmc
-+          - const: fsl,mpc8536-pmc
-+          - const: fsl,mpc8548-pmc
-+
-+      - items:
-+          - enum:
-+              - fsl,mpc8536-pmc
-+              - fsl,mpc8568-pmc
-+              - fsl,mpc8569-pmc
-+          - const: fsl,mpc8548-pmc
-+
-+      - enum:
-+          - fsl,mpc8548-pmc
-+          - fsl,mpc8641d-pmc
-+
-+    description: |
-+      "fsl,mpc8349-pmc" should be listed for any chip whose PMC is
-+      compatible.  "fsl,mpc8313-pmc" should also be listed for any chip
-+      whose PMC is compatible, and implies deep-sleep capability.
-+
-+      "fsl,mpc8548-pmc" should be listed for any chip whose PMC is
-+      compatible.  "fsl,mpc8536-pmc" should also be listed for any chip
-+      whose PMC is compatible, and implies deep-sleep capability.
-+
-+      "fsl,mpc8641d-pmc" should be listed for any chip whose PMC is
-+      compatible; all statements below that apply to "fsl,mpc8548-pmc" also
-+      apply to "fsl,mpc8641d-pmc".
-+
-+      Compatibility does not include bit assignments in SCCR/PMCDR/DEVDISR; these
-+      bit assignments are indicated via the sleep specifier in each device's
-+      sleep property.
-+
-+  reg:
-+    minItems: 1
-+    maxItems: 2
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  fsl,mpc8313-wakeup-timer:
-+    $ref: /schemas/types.yaml#/definitions/phandle
-+    description:
-+      For "fsl,mpc8313-pmc"-compatible devices, this is a phandle to an
-+      "fsl,gtm" node on which timer 4 can be used as a wakeup source from deep
-+      sleep.
-+
-+allOf:
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            const: fsl,mpc8349-pmc
-+    then:
-+      properties:
-+        reg:
-+          items:
-+            - description: PMC block
-+            - description: Clock Configuration block
-+
-+  - if:
-+      properties:
-+        compatible:
-+          contains:
-+            enum:
-+              - fsl,mpc8548-pmc
-+              - fsl,mpc8641d-pmc
-+    then:
-+      properties:
-+        reg:
-+          items:
-+            - description: 32-byte block beginning with DEVDISR
-+
-+required:
-+  - compatible
-+  - reg
-+
-+additionalProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+
-+    pmc: power@b00 {
-+        compatible = "fsl,mpc8377-pmc", "fsl,mpc8349-pmc";
-+        reg = <0xb00 0x100>, <0xa00 0x100>;
-+        interrupts = <80 IRQ_TYPE_LEVEL_LOW>;
-+    };
-+
-+  - |
-+    power@e0070 {
-+        compatible = "fsl,mpc8548-pmc";
-+        reg = <0xe0070 0x20>;
-+    };
-+
-+...
 
----
-base-commit: 0af2f6be1b4281385b618cb86ad946eded089ac8
-change-id: 20250226-fslpmc-yaml-90dc69fb7d2a
+Regards,
 
-Best regards,
--- 
-J. Neuschäfer <j.ne@posteo.net>
-
+Venkat.
 
 
