@@ -1,48 +1,48 @@
-Return-Path: <linuxppc-dev+bounces-7762-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7763-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54A3EA927A0
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 20:27:54 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D79BA927A1
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 20:28:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdmZp4Tr5z3c3s;
-	Fri, 18 Apr 2025 04:27:14 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdmZq1SMwz3c4D;
+	Fri, 18 Apr 2025 04:27:15 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c0a:e001:78e:0:1991:8:25"
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744914434;
-	cv=none; b=apdlDvJ1wu0ZPikHHaPJWEUzykaJYKxMrVSR/18v0OBKh9ecWELezh68pagSR1+09U8A9Gma04oJ5mQ9LtHW0CldKobb/vgmFFORQx0pvDkRfBTCs917F9RC6oClZ3uGxxftanclqe9kAWPBpiY3ZjYZDQHduVg8QIdRz7B8oSMdD2pFRpmCkEnrOfTtTGafOqByfs5dcKQoGcUxQvbdBQW0Gut6d1g+hs7O6+0pE+XFwYjeCur5MFx+78JSkh52ReOgkMOcG4D/2gIIUXYga5GKervpTQciq4k9y7RD0S2H4zHPf8NTQJvIkdkHYe8omZDagG2dsBmCPVMQ2yNfrg==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=172.234.252.31
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744914435;
+	cv=none; b=OVcvZZHm/SipYGDTuHIBDk7YhpsE50Mn/ryw9JwNAPJP/VWtZtn9VWFeqRSGN1SZ+OshpCm8llayJaennA6YcxMEtYm/fJ4Hf1Cn7uGPp8LYGiJRtOx0Nu18KlcsritL7PbroyDxutJFtA61OcoX1bTrxzds6BtDEbIGGIxMLdungWIA1gIE0u9ODaxXJqH3iUKxFdadDCz4d6x+42aCKadk9dIb35gST92KgECt+gF5Oti40zfIlcfIGW6m4did70zYfbzKkbgSHt9j5pMxw7c1mtvpDKFp68+LtXoN//cbpBoee9ZXHD9g8YuchJjD9jMqgs82l2U/sbACwZc7VA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744914434; c=relaxed/relaxed;
-	bh=Ziu+L6Gvu/QsNUG27BOWOGH5dUupD0J8kiCPibpJTeI=;
+	t=1744914435; c=relaxed/relaxed;
+	bh=eWTRKkKWhvpczKSnn8QWkVNNu349jBQ7I522SXZ74dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbGI1m+EW7JY+uhJU/AbN0hCJ2Gbxgdx0U39W5Qb144b78kJgepMc82xlOZ1kQuAhJoGyK+/JWQVoe9uujwg76I0mH3wVEEo3S3O42YdJXypHUUjpLeeP//BcBlo4KYIzzcQuoDqJCPJXuKwjhSHiSz1bU7leoUqlJa4Qh+qSIxfr1NgRYBD1vifSIxh0kqv7vWEeN5U+Y3ErQlEc+QAPgtUhbO81R4Kjsd8sP+c1JeBOqy0p+616oNODP4/dzd6tnREYlWPkfWME9oNUmcfFZ9/M/pnkcK0C/+2BpPXOszjU4VV38JA0uaiM3xDkqu0IHak1dIm5N4puGGTmcREqw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iWMie4DA; dkim-atps=neutral; spf=pass (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 MIME-Version; b=i6NA3VYeG4kP9pgYlZDTyaK4m5mRvZysxvLIK/wWmLtZy4pkolW1v9uQ1N5VdyjOgi+N7i11Q4Hzz/LBzJoPkTAARBFXGCct7/z13bcSKDwwJ9iqTPTHuWZAzCEcK6gdMqriCm04lNpgyqWRaaBYBtCV9bTNTfAmbVIOEDn02uRF20nQNGayPRIoJt/VkPBWoMwZkSBGtEZOG5MVtKAOpkC1xhqHVU3axnxqrOrUXx3kmzceyzGxNzKYE4AeK5tE84bZl8tyVyq6qB1LKuZWZN53lHWfdovIIuOVcvkqexg1vXw60YuDn8kwCjJv6c88Rd9ReKQ+oxk3bcBG2FP+Fg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rDsCxtn3; dkim-atps=neutral; spf=pass (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=iWMie4DA;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=rDsCxtn3;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c0a:e001:78e:0:1991:8:25; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
-Received: from sea.source.kernel.org (sea.source.kernel.org [IPv6:2600:3c0a:e001:78e:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=172.234.252.31; helo=sea.source.kernel.org; envelope-from=ebiggers@kernel.org; receiver=lists.ozlabs.org)
+Received: from sea.source.kernel.org (sea.source.kernel.org [172.234.252.31])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdmZn0Q68z3c4D
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdmZn6n0Rz3c4r
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 04:27:13 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by sea.source.kernel.org (Postfix) with ESMTP id 4C50A4A510;
-	Thu, 17 Apr 2025 18:27:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3E2AC4CEF0;
-	Thu, 17 Apr 2025 18:27:10 +0000 (UTC)
+	by sea.source.kernel.org (Postfix) with ESMTP id 38CB74A526;
+	Thu, 17 Apr 2025 18:27:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96532C4CEEA;
+	Thu, 17 Apr 2025 18:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744914431;
-	bh=G+RJfQwnrkpe+wcA+WG93U24b0GCpAuDSETRip59rRQ=;
+	s=k20201202; t=1744914432;
+	bh=dsE7qfp3A3zmlcPG+tvm4sv24/L4ppO0aAJ6BZiEshE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWMie4DATTokrFQv/LaLT+2y5Te5b7EzAIDVUK6YdkaXLjrBF5GDhBHPh+63huN2W
-	 Er83WZhTfYFCVtYFjOI3rJWltW5O9QQ2PCYWbMoZAQvKCc+FAm47RNAKyZTqpbmLMv
-	 5/wbtrkLP20SSF/KC5920irbPfn5FnSadNc4EAK1eVK8tb/4Uf2ZOSnZ3cHuiQ1zNO
-	 VzCg47eWhx45SZp2T/tDX+++Uc+pssczx1X8xY3QBG4xkFlVkMu6ZumATl2ZMa97wB
-	 quS/5UzIHOtaGmLyS7TiXHsHj/cYY6Mw48TKzI9Z8ILte/qi2p4qJMoeEFfVRCDNxn
-	 m7ZdqcDwRm2ag==
+	b=rDsCxtn3lebQV/DysLhlXFbm/jncgwomZE43WtxQP24LtFE9xOa6eiBclZTQg8gDA
+	 3i+j3v6r50KIUvO1d2f48AAFIoj4fUY/I6hS7t2+pB5aL99Y91V+Kzolg1S3dFzK1W
+	 YmIRVjS0t8vEJ6EiUPzxMajKFyxEWSlavCF2LEd6VhnTb/rYUhXfOqH5nXDNaDa8ni
+	 ar9klYXp61RWo3pSI30VW4AUilqd4McXNnCe0pDOHszpxAKhTden3pUGSby2brHFmP
+	 9x6UwlkgdIPBH9H34XsZtVKioNaIav0ZkUaIIrvvYZfYdw17pnWZSyakOtR5xQXcRz
+	 o04U7Rx5/k7vg==
 From: Eric Biggers <ebiggers@kernel.org>
 To: linux-crypto@vger.kernel.org
 Cc: linux-arch@vger.kernel.org,
@@ -57,9 +57,9 @@ Cc: linux-arch@vger.kernel.org,
 	x86@kernel.org,
 	"Jason A . Donenfeld " <Jason@zx2c4.com>,
 	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 06/15] crypto: powerpc - drop redundant dependencies on PPC
-Date: Thu, 17 Apr 2025 11:26:14 -0700
-Message-ID: <20250417182623.67808-7-ebiggers@kernel.org>
+Subject: [PATCH 07/15] crypto: powerpc - remove CRYPTO dependency of library functions
+Date: Thu, 17 Apr 2025 11:26:15 -0700
+Message-ID: <20250417182623.67808-8-ebiggers@kernel.org>
 X-Mailer: git-send-email 2.49.0
 In-Reply-To: <20250417182623.67808-1-ebiggers@kernel.org>
 References: <20250417182623.67808-1-ebiggers@kernel.org>
@@ -83,25 +83,58 @@ X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Eric Biggers <ebiggers@google.com>
 
-arch/powerpc/crypto/Kconfig is sourced only when CONFIG_PPC=y, so there
-is no need for the symbols defined inside it to depend on PPC.
+Continue disentangling the crypto library functions from the generic
+crypto infrastructure by removing the unnecessary CRYPTO dependency of
+CRYPTO_CHACHA20_P10 and CRYPTO_POLY1305_P10.  To do this, make
+arch/powerpc/crypto/Kconfig be sourced regardless of CRYPTO, and
+explicitly list the CRYPTO dependency in the symbols that do need it.
 
 Signed-off-by: Eric Biggers <ebiggers@google.com>
 ---
- arch/powerpc/crypto/Kconfig | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ arch/powerpc/Kconfig        |  2 ++
+ arch/powerpc/crypto/Kconfig | 16 +++++++++-------
+ crypto/Kconfig              |  3 ---
+ 3 files changed, 11 insertions(+), 10 deletions(-)
 
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index 6722625a406a..9ffd80880675 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -1346,8 +1346,10 @@ config PHYSICAL_START
+ endif
+ 
+ config PPC_LIB_RHEAP
+ 	bool
+ 
++source "arch/powerpc/crypto/Kconfig"
++
+ source "arch/powerpc/kvm/Kconfig"
+ 
+ source "kernel/livepatch/Kconfig"
 diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index cbcf76953d83..8bcc69013464 100644
+index 8bcc69013464..0f14bdf104d5 100644
 --- a/arch/powerpc/crypto/Kconfig
 +++ b/arch/powerpc/crypto/Kconfig
-@@ -15,48 +15,46 @@ config CRYPTO_CURVE25519_PPC64
+@@ -2,11 +2,11 @@
+ 
+ menu "Accelerated Cryptographic Algorithms for CPU (powerpc)"
+ 
+ config CRYPTO_CURVE25519_PPC64
+ 	tristate
+-	depends on PPC64 && CPU_LITTLE_ENDIAN
++	depends on CRYPTO && PPC64 && CPU_LITTLE_ENDIAN
+ 	select CRYPTO_KPP
+ 	select CRYPTO_LIB_CURVE25519_GENERIC
+ 	select CRYPTO_ARCH_HAVE_LIB_CURVE25519
+ 	default CRYPTO_LIB_CURVE25519_INTERNAL
+ 	help
+@@ -15,46 +15,48 @@ config CRYPTO_CURVE25519_PPC64
  	  Architecture: PowerPC64
  	  - Little-endian
  
  config CRYPTO_MD5_PPC
  	tristate "Digests: MD5"
--	depends on PPC
++	depends on CRYPTO
  	select CRYPTO_HASH
  	help
  	  MD5 message digest algorithm (RFC1321)
@@ -110,7 +143,7 @@ index cbcf76953d83..8bcc69013464 100644
  
  config CRYPTO_SHA1_PPC
  	tristate "Hash functions: SHA-1"
--	depends on PPC
++	depends on CRYPTO
  	help
  	  SHA-1 secure hash algorithm (FIPS 180)
  
@@ -118,8 +151,8 @@ index cbcf76953d83..8bcc69013464 100644
  
  config CRYPTO_SHA1_PPC_SPE
  	tristate "Hash functions: SHA-1 (SPE)"
--	depends on PPC && SPE
-+	depends on SPE
+-	depends on SPE
++	depends on CRYPTO && SPE
  	help
  	  SHA-1 secure hash algorithm (FIPS 180)
  
@@ -128,8 +161,8 @@ index cbcf76953d83..8bcc69013464 100644
  
  config CRYPTO_SHA256_PPC_SPE
  	tristate "Hash functions: SHA-224 and SHA-256 (SPE)"
--	depends on PPC && SPE
-+	depends on SPE
+-	depends on SPE
++	depends on CRYPTO && SPE
  	select CRYPTO_SHA256
  	select CRYPTO_HASH
  	help
@@ -140,13 +173,64 @@ index cbcf76953d83..8bcc69013464 100644
  
  config CRYPTO_AES_PPC_SPE
  	tristate "Ciphers: AES, modes: ECB/CBC/CTR/XTS (SPE)"
--	depends on PPC && SPE
-+	depends on SPE
+-	depends on SPE
++	depends on CRYPTO && SPE
  	select CRYPTO_SKCIPHER
  	help
  	  Block ciphers: AES cipher algorithms (FIPS-197)
  	  Length-preserving ciphers: AES with ECB, CBC, CTR, and XTS modes
  
+@@ -72,11 +74,11 @@ config CRYPTO_AES_PPC_SPE
+ 	  architecture specific assembler implementations that work on 1KB
+ 	  tables or 256 bytes S-boxes.
+ 
+ config CRYPTO_AES_GCM_P10
+ 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
+-	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
++	depends on CRYPTO && PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_ALGAPI
+ 	select CRYPTO_AEAD
+ 	select CRYPTO_SKCIPHER
+ 	select CRYPTO_SIMD
+@@ -104,17 +106,17 @@ config CRYPTO_POLY1305_P10
+ 	select CRYPTO_LIB_POLY1305_GENERIC
+ 	default CRYPTO_LIB_POLY1305_INTERNAL
+ 
+ config CRYPTO_DEV_VMX
+         bool "Support for VMX cryptographic acceleration instructions"
+-        depends on PPC64 && VSX
++        depends on CRYPTO && PPC64 && VSX
+         help
+           Support for VMX cryptographic acceleration instructions.
+ 
+ config CRYPTO_DEV_VMX_ENCRYPT
+ 	tristate "Encryption acceleration support on P8 CPU"
+-	depends on CRYPTO_DEV_VMX
++	depends on CRYPTO && CRYPTO_DEV_VMX
+ 	select CRYPTO_AES
+ 	select CRYPTO_CBC
+ 	select CRYPTO_CTR
+ 	select CRYPTO_GHASH
+ 	select CRYPTO_XTS
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index cfa426bea0c6..2467dba73372 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -1424,13 +1424,10 @@ endmenu
+ 
+ config CRYPTO_HASH_INFO
+ 	bool
+ 
+ if !KMSAN # avoid false positives from assembly
+-if PPC
+-source "arch/powerpc/crypto/Kconfig"
+-endif
+ if RISCV
+ source "arch/riscv/crypto/Kconfig"
+ endif
+ if S390
+ source "arch/s390/crypto/Kconfig"
 -- 
 2.49.0
 
