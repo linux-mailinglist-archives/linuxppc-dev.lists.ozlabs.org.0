@@ -1,70 +1,69 @@
-Return-Path: <linuxppc-dev+bounces-7728-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7729-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 442A8A91591
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 09:46:04 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACE83A915A8
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 09:48:54 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdVLw2k3cz2ym3;
-	Thu, 17 Apr 2025 17:46:00 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdVQD2ryTz2yqT;
+	Thu, 17 Apr 2025 17:48:52 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=198.175.65.15
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744875960;
-	cv=none; b=ZIqVrmhm0x4PJLz9sYdK++bYFaGx7JPStmkdTM2C4Qjrjh5hXQStPLYp2ulg/cktEubRImuKTQfw+JcwEqoIpOaNQyaYdIHu8Cspw4XyVM+vkJ1pTLldcl+3ofNaOH/gj8T3ipdZwmy9Ign+tSz/n4fJFbFVZMXgJ7LjvK8lAQFYcJHULyv8wIjZSGBZDuuPknMYjcmLIH9P8mdWXq9nIN3z7jrxcF2gGbBfCNj1vPBwrRI+rNhzE4ZnplDK0cDmvSVwBvXv64x0P0wBlWYyg2Hhtz/DDCpXrYgWl3ChzHsafiLH3ctk1qyON36IC3Px1NxXGNRa5GWqcNxiua5oIA==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=192.198.163.16
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744876132;
+	cv=none; b=GbHBj+1MCM2UE85m763UMWF+X6Q0PRSYgs04SbOf/SoM34A52AqtZsk5GV5k/jHYTZ3QbkZvG+yfLCO8V8QbXLZoW184rplkbc6Nf13La8V8JQqBbQXE1Etf7daGk8vFJldyyJRv6i6pVVvHe4mGBTLifqND6ssCYgw1N+63WZeRBQhf+3z4bCNFha17xyCHipP2ynQwt72ZE9RpSe6OncFWy6RzKSI4hMJSZiOJ+xkWDn4kEF730bQTu2aok5KzOhEmSaG11QEyyxWJyJcPjh1FYhxQgA/4UzzAjjDUjfa15OWMQTaS3Q0Btd3vmshjwV6ej+XerKmkld8fRzAKiA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744875960; c=relaxed/relaxed;
-	bh=1JqcdGwTdxzrmkBSqnRwsWIPqbNQuyemDrSqYOkqzO8=;
+	t=1744876132; c=relaxed/relaxed;
+	bh=p43bfdOmuQ8qqwc94HMuGClre+3eHsXSQHqnA09BKYA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AkGk0sx86wwlEWmb+WQTAyO394q1LqmuwZC/j1HuYgxUcdS6musSxZinrsJt7su6yKIUv4IxhrcUWW/HSYqoimo+7I7sBuznrxO4BZ1FUh25YRjZzlfSMYl5EZOSBOEvXgeJWiJNULg5LNfRJme2zBrdC74kWi1Rmuqp7VnoeiVl0MzXGwKMV4FhxR6DE4knZrAaAMKyseAz5F6t13RBrHi8dB/ACE60KLmtHuBLTv3qXrCKZgDLNNTcrPDY8ODq3u1yBsGLSXYakVr0NwB9N13QeVnzY2zHOf0uYkFE+3xlm6rV8xjCSrZDNit+66a9mkq/kl3413x/EI4fz9Oudw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K2txqIoi; dkim-atps=neutral; spf=none (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=V91ZO7N/JI3WL4xkFOgTxg7UzdA9eu7dzo3FtxPEQK+KpyJbDmpt1fxc1ZBt+D2nldKm9hUCrGliGAK6KzQ7lNSgja5aXZzpbrL4GeIos/6O7m7M9b98f6i/KSufRP4ACT37wlxnK3mrYR3nCMe3uiXlCH2hq0LQlXN+i1XsiPFwclU7d2mGACfk+symkuYaQzRL83JN8DapcgFYqFJtpfcAP08gQECV9UwK+tzP3hv0W2r206xdflWeuj5uzKO4Q01m6da/YpkVgFaWwnbzUAygSaPV6/CzH2piHndWV3amDBn0uXak2Eaxk1wbFGGdgEMg5i1MqKscsL2Xp2aySA==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=etbCC2Fn; dkim-atps=neutral; spf=none (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.intel.com
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=K2txqIoi;
+	dkim=pass (2048-bit key; unprotected) header.d=intel.com header.i=@intel.com header.a=rsa-sha256 header.s=Intel header.b=etbCC2Fn;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=198.175.65.15; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org)
-X-Greylist: delayed 62 seconds by postgrey-1.37 at boromir; Thu, 17 Apr 2025 17:45:57 AEST
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Authentication-Results: lists.ozlabs.org; spf=none (no SPF record) smtp.mailfrom=linux.intel.com (client-ip=192.198.163.16; helo=mgamail.intel.com; envelope-from=michal.swiatkowski@linux.intel.com; receiver=lists.ozlabs.org)
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdVLs6ghzz2ydv
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 17:45:57 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdVQC2pvWz2ydv
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 17:48:51 +1000 (AEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1744875958; x=1776411958;
+  t=1744876131; x=1776412131;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=tslz6DlI/Mm4YFhda6oTOI/VUg3AL5GOdcZku7+10qg=;
-  b=K2txqIoiHzXkmJTobsyy2jBAJCuSof1xGqN/IZZ2kFW8wYVoSeDmFbK1
-   vvNxnYqUqZN7iWMbuYayDTXfF6fRUgsuLzDVM3GSf9Pw3ykNj4f2J5Jda
-   LxtQ3VwRVYkLh2fO/8mWuCGCpSHDSG4ndfsewdr7hEZJ0NO4BPsh3QUEk
-   +WMnqTXzW771eSzU9FXnb/coFaYjFRRbTxHUobzdxOs0KsMuSN51Z+BWE
-   GfC1IVwJKApydkRmnDMaVnVb8si0inQWfXUvIsRI7TrchYHTtxgO74LeN
-   kV0KaOEDlwND7zat8n9tbEAV6GY8NVf4UuHPcSwNDIvL0QM/vGJEKqhIK
-   g==;
-X-CSE-ConnectionGUID: J3YYOMfSTc6P9HtUlJWr2A==
-X-CSE-MsgGUID: OxMJ0809Tf6nNNpqkHccnQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="50099765"
+  bh=AJDZ7g9e7QmBIngwpIsFAzOeQfTEjm5Sb3aXttAvypM=;
+  b=etbCC2FnKLkKtbCI6Dkuvxbh6iwngJNWhYVnH974UGMFDVcgf5o2wc/4
+   6E/NbEwhoOcrwIf4TBOM6wnqa1KAtlZmhcmzT0MC5B7sytE7X5EHljTnB
+   c/KDXzAoJxP1uxggGOW1XHM0L3hOIEAQZfaM9yvzaQBHqHOodezG0BX6s
+   hoT2SkAyH8QsN91TavE5DEuhKeUsvTvGl1Otqf8NW/pLJ91WssQ3XLZua
+   I1iwWAAKVljWy8bXq+o/Kk4P5zhPElW3FQYDDD6arD8GYtpZz1ynbTukh
+   KhwovLm91pJmdGGEZXV7Uv2ATz7ktM6nna7pDRMSbajYOVlKrRq6tFZxR
+   A==;
+X-CSE-ConnectionGUID: mUDckHkvQtm6R9lyv4FQsg==
+X-CSE-MsgGUID: bGKjAy1qTA+iRSks58YVrw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11405"; a="34066279"
 X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
-   d="scan'208";a="50099765"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:44:52 -0700
-X-CSE-ConnectionGUID: SECiPiZnTDWrnD/BIEfxOA==
-X-CSE-MsgGUID: oLWOzVShQrCnUO/bkHGTAg==
+   d="scan'208";a="34066279"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:48:48 -0700
+X-CSE-ConnectionGUID: Ulxf/l1DTvKPfFBNMUKtMw==
+X-CSE-MsgGUID: ojzmiwjyT1abjQjC4jZfTQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.15,218,1739865600"; 
-   d="scan'208";a="130586301"
+   d="scan'208";a="131054723"
 Received: from mev-dev.igk.intel.com ([10.237.112.144])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:44:50 -0700
-Date: Thu, 17 Apr 2025 09:44:32 +0200
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Apr 2025 00:48:47 -0700
+Date: Thu, 17 Apr 2025 09:48:28 +0200
 From: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
 To: Dave Marquardt <davemarq@linux.ibm.com>
 Cc: netdev@vger.kernel.org, michal.swiatkowski@linux.intel.com,
 	horms@kernel.org, linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH net-next v3 1/3] net: ibmveth: Indented struct
- ibmveth_adapter correctly
-Message-ID: <aACxYGS9F8bh5PkG@mev-dev.igk.intel.com>
+Subject: Re: [PATCH net-next v3 2/3] net: ibmveth: Reset the adapter when
+ unexpected states are detected
+Message-ID: <aACyTHFwKonUwLv+@mev-dev.igk.intel.com>
 References: <20250416205751.66365-1-davemarq@linux.ibm.com>
- <20250416205751.66365-2-davemarq@linux.ibm.com>
+ <20250416205751.66365-3-davemarq@linux.ibm.com>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -79,98 +78,24 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20250416205751.66365-2-davemarq@linux.ibm.com>
+In-Reply-To: <20250416205751.66365-3-davemarq@linux.ibm.com>
 X-Spam-Status: No, score=-3.3 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
 	DKIM_VALID,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=disabled
 	version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Wed, Apr 16, 2025 at 03:57:49PM -0500, Dave Marquardt wrote:
-> Made struct ibmveth_adapter follow indentation rules
+On Wed, Apr 16, 2025 at 03:57:50PM -0500, Dave Marquardt wrote:
+> Reset the adapter through new function ibmveth_reset, called in
+> WARN_ON situations. Removed conflicting and unneeded forward
+> declaration.
 > 
 > Signed-off-by: Dave Marquardt <davemarq@linux.ibm.com>
 > ---
->  drivers/net/ethernet/ibm/ibmveth.h | 64 +++++++++++++++---------------
->  1 file changed, 32 insertions(+), 32 deletions(-)
+>  drivers/net/ethernet/ibm/ibmveth.c | 116 ++++++++++++++++++++++++-----
+>  drivers/net/ethernet/ibm/ibmveth.h |   1 +
+>  2 files changed, 98 insertions(+), 19 deletions(-)
 > 
-> diff --git a/drivers/net/ethernet/ibm/ibmveth.h b/drivers/net/ethernet/ibm/ibmveth.h
-> index 8468e2c59d7a..0f72ce54e7cf 100644
-> --- a/drivers/net/ethernet/ibm/ibmveth.h
-> +++ b/drivers/net/ethernet/ibm/ibmveth.h
-> @@ -134,38 +134,38 @@ struct ibmveth_rx_q {
->  };
->  
->  struct ibmveth_adapter {
-> -    struct vio_dev *vdev;
-> -    struct net_device *netdev;
-> -    struct napi_struct napi;
-> -    unsigned int mcastFilterSize;
-> -    void * buffer_list_addr;
-> -    void * filter_list_addr;
-> -    void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
-> -    unsigned int tx_ltb_size;
-> -    dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
-> -    dma_addr_t buffer_list_dma;
-> -    dma_addr_t filter_list_dma;
-> -    struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
-> -    struct ibmveth_rx_q rx_queue;
-> -    int rx_csum;
-> -    int large_send;
-> -    bool is_active_trunk;
-> -
-> -    u64 fw_ipv6_csum_support;
-> -    u64 fw_ipv4_csum_support;
-> -    u64 fw_large_send_support;
-> -    /* adapter specific stats */
-> -    u64 replenish_task_cycles;
-> -    u64 replenish_no_mem;
-> -    u64 replenish_add_buff_failure;
-> -    u64 replenish_add_buff_success;
-> -    u64 rx_invalid_buffer;
-> -    u64 rx_no_buffer;
-> -    u64 tx_map_failed;
-> -    u64 tx_send_failed;
-> -    u64 tx_large_packets;
-> -    u64 rx_large_packets;
-> -    /* Ethtool settings */
-> +	struct vio_dev *vdev;
-> +	struct net_device *netdev;
-> +	struct napi_struct napi;
-> +	unsigned int mcastFilterSize;
-> +	void *buffer_list_addr;
-> +	void *filter_list_addr;
-> +	void *tx_ltb_ptr[IBMVETH_MAX_QUEUES];
-> +	unsigned int tx_ltb_size;
-> +	dma_addr_t tx_ltb_dma[IBMVETH_MAX_QUEUES];
-> +	dma_addr_t buffer_list_dma;
-> +	dma_addr_t filter_list_dma;
-> +	struct ibmveth_buff_pool rx_buff_pool[IBMVETH_NUM_BUFF_POOLS];
-> +	struct ibmveth_rx_q rx_queue;
-> +	int rx_csum;
-> +	int large_send;
-> +	bool is_active_trunk;
-> +
-> +	u64 fw_ipv6_csum_support;
-> +	u64 fw_ipv4_csum_support;
-> +	u64 fw_large_send_support;
-> +	/* adapter specific stats */
-> +	u64 replenish_task_cycles;
-> +	u64 replenish_no_mem;
-> +	u64 replenish_add_buff_failure;
-> +	u64 replenish_add_buff_success;
-> +	u64 rx_invalid_buffer;
-> +	u64 rx_no_buffer;
-> +	u64 tx_map_failed;
-> +	u64 tx_send_failed;
-> +	u64 tx_large_packets;
-> +	u64 rx_large_packets;
-> +	/* Ethtool settings */
->  	u8 duplex;
->  	u32 speed;
->  };
-> -- 
-> 2.49.0
 
+Thanks for addressing comments
 Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-
 
