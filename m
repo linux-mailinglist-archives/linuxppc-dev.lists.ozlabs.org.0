@@ -1,94 +1,79 @@
-Return-Path: <linuxppc-dev+bounces-7739-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7740-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D64A91C22
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 14:30:22 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5763AA91CFF
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 14:53:39 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zdcfz498vz3bwF;
-	Thu, 17 Apr 2025 22:30:19 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zdd9s0TZfz3brV;
+	Thu, 17 Apr 2025 22:53:37 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=170.10.133.124
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744893019;
-	cv=none; b=nohMOoxx5BpEPqfiGwdePOEVVmZO9YLznIgsjYJAdyFvPJGUnBSwULzCSJiAZVQC5FkC/yAJo9StV4VtTJpxMYUpa/txfsGzSte/6bKr98iRUQSRP4ZZy7gvk4QnVCrUYi7l/MxFmIPdLLiJ3atrRQBFEHDHeo3QsjtgjLm2foyB5j3NMwg/EjQK+UKhmdIQCC3UCWHboUluvSIeHBzSE+NQrwHDYa6dvdGe1uPUSs5YFujKRhODhHznWw+PVA1y27AS0KOBR1rIQT0HDWhLaXKC6ZYx/mZYP+rxsrigP58HsBMMgEnXvGwM9qp5U35YotDLMQNUIh7i4rK7Gfgsrw==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=148.163.158.5
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744894416;
+	cv=none; b=ggJa3xEDH3Gb7NFOM2w4FGAyQQVbMuQ2hMY30B9e4oCTiqJ9M0GiqlYEEJm/ftc0EO+wpBE523MxbeQ7+iRaT0EmPZfB/dd58cfmKBESYRd9vkma4ToOsR07OnW6YZmXvzNHmbkaJ3JB5/28GOsHhtcb3n5bbVab+DDAC7ZS/Yeslw3gOZoFELIPZJrxZ0cuZiEgOAzQe/4grTRG5Q9CLl+5vWePEfQUm1/SIwLv8du5tY8iWGn4ONdjulKhV5WJeUGb1k5x8JmVrFXQtTDy5Up4w/sp6ujQ14QklfBQM5umIDIzXGpT2Y0T+ScxRX/CibtoCQpk1oNTp6znRmexIg==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744893019; c=relaxed/relaxed;
-	bh=yhMyX45oy8j7OuPZBUX0GxcKvnTqCUj4i4UmRZNxPfY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gCTNBOKlb0eqDa3g/oLxcomFWy5AFbwpXf2HtHjJgY1Mr5wCOUHleVA/jjGmQ8nUbutw8uX5W7A+BtUlI7feMmWXNwe45lPqPs6QoJKa1kd1EoIRd4bbxBjEfO/BdZZgsiBTfOth9eRqR3e0V6ksE6jUHN1utrU1ymdWI2gle+fOtYjTLgbyl5tjNVi0WL2cLZI1+Ib7+cy4KLv+93crL13+sAZZUL5YUJXqDHttCiAqxEX2IpfsRD6nBHoANN/WdVvypfDVnLKnotwHJ3J72SYZAqmyOUJp4XYMAUyqDmMUxbXoDd+yvH/nbU6wDPALg8vEsmC56iBFDQk7f3nG0g==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Lq6Wc3pd; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Lq6Wc3pd; dkim-atps=neutral; spf=pass (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vmalik@redhat.com; receiver=lists.ozlabs.org) smtp.mailfrom=redhat.com
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+	t=1744894416; c=relaxed/relaxed;
+	bh=sxLU9duCgf8SfMyLYupstJbj0NSNm6H3ZBa2n7luzGc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XfkQHMufYNUTNtNYEieiifKR0UjTnCBKph1r78cl2LG8ds8ucef+rJg/bfLhWGAnG/hvZ2VtTA/QYExg5HlEwFmCyiyPIqWcl1oTJalX0MYYnEtGc1U+kFyVZthnHCG+rjTJkSuOXOFoCQuyEox9uv6rEO3Yjpv0qCSVXsMA6hUuVkFN1FjbLe8JpqiIeHXx3XtpjgTOYEP1Rx3Nkjk+FZoqP9qtqEUT1yUFjq0DDe9tYM2zSgX66eJNuCV3RatBchMhPev38IPoNH0pxcbX88/qcUnKV6pSSQ9U06BXAnzVAXqx15WUh/oUtNTPEDOYQsD2Xh+0Odaw87mDVGe6AQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PWxMTYAZ; dkim-atps=neutral; spf=pass (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org) smtp.mailfrom=linux.ibm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (1024-bit key; unprotected) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Lq6Wc3pd;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.a=rsa-sha256 header.s=mimecast20190719 header.b=Lq6Wc3pd;
+	dkim=pass (2048-bit key; unprotected) header.d=ibm.com header.i=@ibm.com header.a=rsa-sha256 header.s=pp1 header.b=PWxMTYAZ;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=redhat.com (client-ip=170.10.133.124; helo=us-smtp-delivery-124.mimecast.com; envelope-from=vmalik@redhat.com; receiver=lists.ozlabs.org)
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=linux.ibm.com (client-ip=148.163.158.5; helo=mx0b-001b2d01.pphosted.com; envelope-from=hca@linux.ibm.com; receiver=lists.ozlabs.org)
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zdcfy2YCTz3btJ
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 22:30:16 +1000 (AEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744893012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yhMyX45oy8j7OuPZBUX0GxcKvnTqCUj4i4UmRZNxPfY=;
-	b=Lq6Wc3pdUs+OD515yfFw2XXcUNEfBNX3V3Ea4YosJ75XQELTyK6g6APyCXr71MiGZqtUmz
-	f+e/Q0EouMnBEXcD3D0bxJNcB3chQNpqbOETW0Z4f7PbrWQSfCi5fSlkONheWWrsZ2GTyO
-	JvnWrmKI1gDzIUmbh7XMg8gWfAA+J9g=
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1744893012;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yhMyX45oy8j7OuPZBUX0GxcKvnTqCUj4i4UmRZNxPfY=;
-	b=Lq6Wc3pdUs+OD515yfFw2XXcUNEfBNX3V3Ea4YosJ75XQELTyK6g6APyCXr71MiGZqtUmz
-	f+e/Q0EouMnBEXcD3D0bxJNcB3chQNpqbOETW0Z4f7PbrWQSfCi5fSlkONheWWrsZ2GTyO
-	JvnWrmKI1gDzIUmbh7XMg8gWfAA+J9g=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-512-YtXa8mXDN6OClzHB8pQz9g-1; Thu, 17 Apr 2025 08:30:10 -0400
-X-MC-Unique: YtXa8mXDN6OClzHB8pQz9g-1
-X-Mimecast-MFC-AGG-ID: YtXa8mXDN6OClzHB8pQz9g_1744893010
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-39979ad285bso374212f8f.2
-        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 05:30:10 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1744893009; x=1745497809;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yhMyX45oy8j7OuPZBUX0GxcKvnTqCUj4i4UmRZNxPfY=;
-        b=ldYZbUAwVv8yGuRTfXA3YlhhIF2vXXNpUC5rnbNmegQqOz0lVGV+eL4m4RVOyMKECR
-         8GRZKiWK/bt2UI7Bew12udWNv/tlhU3Dk9/PgwuaHHs4F7Bq3hi6ZIeGXcaRrQRSCDRE
-         4HG5B57DPhReV/oZDl3Er7B1p6qaw6zjaNkz+9d/OJqKvpkorszAruZg1nPA3h3Fgx8I
-         neyQrCUKfmn7NFmT+mTRV4aKJ4ou2lyeoCgHnSgpO7HQILvbEVAA5kbWwdtYzguvI2I0
-         crdsZRpfhGOqH5p0fJBk+dp1yk5p6JegNRu056NEMa3UsYCvLBzcUCBTlRqPbv3+Tm/y
-         nBNw==
-X-Forwarded-Encrypted: i=1; AJvYcCWM40r7t2KDn+II9X69VvpKXtht012y6JqPqsI4e19BmLF+g7h/l7dvh1qcAMaW9Y1i2l0OfDKArWCZHkg=@lists.ozlabs.org
-X-Gm-Message-State: AOJu0Yx6xsnYywYIIz9pETLeZmqRQvK4C3DirW1WQb+SG9H11i8RM0Do
-	t6UwD2TkhpI9uJfaqgDt7HJzfu5zRRlcwPAVwTWIrxDX8sSa3Pnv3HD0lM5SfV+ETyMnGT68Xux
-	8O4LX0RSAXCO8+8uF3pQtIOtJqyMjCIuXZcmES0WGKCZVKk/pxD4fApjFJVBV9w==
-X-Gm-Gg: ASbGncvCbf8EhA6qyaKbrl8TGlsYZN4WZ4MQA1hnfQXY7X1aEWIfvkQRqToFhhT6f5l
-	TZH7hKcJaswXjYcW6PZ2qPd9YNjLkevd+rR6V9CP+1Xi6M/x7J84i1HfY+zArmCD4SS8iMkwPBJ
-	os5uPXCy5NVC+zD22d/E+O8tFRGU/zu02W0pqHGGajwkw6fKurHIhaqMxSY4KUH2uMGuirNfm2Y
-	gr9Af2B5qsh91xtG/eIN3jLo2++1uUZny06cdTVDNMSDkOMGQWmT3pU7drJRvs0EEm4TGKGNZ40
-	pMDJWeV0mrx2K6CE18guPC5Jm6P6jYs=
-X-Received: by 2002:a5d:64ae:0:b0:38b:d7d2:12f6 with SMTP id ffacd0b85a97d-39ee5b10eb7mr5582949f8f.2.1744893009624;
-        Thu, 17 Apr 2025 05:30:09 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGM+EJsa6GxQG1p+PKq+EFBpaq5Cqq9HZNJaYx3ETePAwU12QpiixwVwkoc85pVDuylnTVdww==
-X-Received: by 2002:a5d:64ae:0:b0:38b:d7d2:12f6 with SMTP id ffacd0b85a97d-39ee5b10eb7mr5582912f8f.2.1744893009131;
-        Thu, 17 Apr 2025 05:30:09 -0700 (PDT)
-Received: from [172.20.10.3] (37-48-9-64.nat.epc.tmcz.cz. [37.48.9.64])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-39eaf43ce3bsm20457233f8f.66.2025.04.17.05.30.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 17 Apr 2025 05:30:08 -0700 (PDT)
-Message-ID: <0a3e442f-339a-44ad-aad8-c21ec342c5a8@redhat.com>
-Date: Thu, 17 Apr 2025 14:30:06 +0200
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zdd9r0V2Pz30Tp
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 22:53:35 +1000 (AEST)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53HArisF018556;
+	Thu, 17 Apr 2025 12:53:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=sxLU9duCgf8SfMyLYupstJbj0NSNm6
+	H3ZBa2n7luzGc=; b=PWxMTYAZ4jnrtqWzXSaZS0fkAjAfJEXKUK/86EdoDIpOLK
+	Mi497z2LA4c5kb5ba7ec2eQVjOzk/U3pYoNyZ3x/Xa64hRZEmweEClWVDQR/KXdf
+	HPCzXWTM7hxoszv8Rgmt1+J6WifRVXZaCOf7oinw+eHq4BpuZOOGkdLxvUICR0An
+	BYd0qbFuIsHPb5vsphRj20fxQMNtsCW7eM12dalLCns/dLLDVIILJ1cxJC3l+M5l
+	R+7302WjXk2EPc6LPIADZYTdknfcB1TaDL6hNDABJ7SUQrTXaRUfdcB3CcqdVsMU
+	8gRwk2dzZ/ZL1FtsQs9WMz04oP12qVgg+3xzK4EQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 462ph0b11r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Apr 2025 12:53:23 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 53HA0HLn030943;
+	Thu, 17 Apr 2025 12:53:22 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4603gnwr4y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 17 Apr 2025 12:53:22 +0000
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 53HCrKoc35651856
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 17 Apr 2025 12:53:21 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D500B20043;
+	Thu, 17 Apr 2025 12:53:20 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 469F420040;
+	Thu, 17 Apr 2025 12:53:20 +0000 (GMT)
+Received: from osiris (unknown [9.87.137.75])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu, 17 Apr 2025 12:53:20 +0000 (GMT)
+Date: Thu, 17 Apr 2025 14:53:18 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Eric Biggers <ebiggers@kernel.org>
+Cc: linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+        Ard Biesheuvel <ardb@kernel.org>, linux-arm-kernel@lists.infradead.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        linux-s390@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH] lib/crc: make the CPU feature static keys __ro_after_init
+Message-ID: <20250417125318.12521F12-hca@linux.ibm.com>
+References: <20250413154350.10819-1-ebiggers@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -101,98 +86,119 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] powerpc64/ftrace: fix clobbered r15 during livepatching
-To: Hari Bathini <hbathini@linux.ibm.com>,
- linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Cc: linux-trace-kernel@vger.kernel.org,
- Madhavan Srinivasan <maddy@linux.ibm.com>,
- Nicholas Piggin <npiggin@gmail.com>,
- Christophe Leroy <christophe.leroy@csgroup.eu>,
- Michael Ellerman <mpe@ellerman.id.au>, "Naveen N. Rao" <naveen@kernel.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, stable@vger.kernel.org
-References: <20250416191227.201146-1-hbathini@linux.ibm.com>
-From: Viktor Malik <vmalik@redhat.com>
-In-Reply-To: <20250416191227.201146-1-hbathini@linux.ibm.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-MFC-PROC-ID: ujHZvFm3kN50PyHb-5IwRB0Hpbu_ygjzNedgTTLoCw8_1744893010
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-	RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20250413154350.10819-1-ebiggers@kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=QJdoRhLL c=1 sm=1 tr=0 ts=6800f9c3 cx=c_pps a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17 a=kj9zAlcOel0A:10 a=XR8D0OoHHMoA:10 a=1XWaLZrsAAAA:8 a=VnNF1IyMAAAA:8 a=D0vrx1nMhUQuyXyLR1kA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: CiZgrlgThAo1hPOeoX6oy1totgLBfc2n
+X-Proofpoint-ORIG-GUID: CiZgrlgThAo1hPOeoX6oy1totgLBfc2n
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-17_03,2025-04-17_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 spamscore=0
+ adultscore=0 mlxlogscore=942 priorityscore=1501 mlxscore=0
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 clxscore=1011 malwarescore=0
+ impostorscore=0 classifier=spam authscore=0 adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2502280000 definitions=main-2504170090
+X-Spam-Status: No, score=-0.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On 4/16/25 21:12, Hari Bathini wrote:
-> While r15 is clobbered always with PPC_FTRACE_OUT_OF_LINE, it is
-> not restored in livepatch sequence leading to not so obvious fails
-> like below:
+On Sun, Apr 13, 2025 at 08:43:50AM -0700, Eric Biggers wrote:
+> From: Eric Biggers <ebiggers@google.com>
 > 
->   BUG: Unable to handle kernel data access on write at 0xc0000000000f9078
->   Faulting instruction address: 0xc0000000018ff958
->   Oops: Kernel access of bad area, sig: 11 [#1]
->   ...
->   NIP:  c0000000018ff958 LR: c0000000018ff930 CTR: c0000000009c0790
->   REGS: c00000005f2e7790 TRAP: 0300   Tainted: G              K      (6.14.0+)
->   MSR:  8000000000009033 <SF,EE,ME,IR,DR,RI,LE>  CR: 2822880b  XER: 20040000
->   CFAR: c0000000008addc0 DAR: c0000000000f9078 DSISR: 0a000000 IRQMASK: 1
->   GPR00: c0000000018f2584 c00000005f2e7a30 c00000000280a900 c000000017ffa488
->   GPR04: 0000000000000008 0000000000000000 c0000000018f24fc 000000000000000d
->   GPR08: fffffffffffe0000 000000000000000d 0000000000000000 0000000000008000
->   GPR12: c0000000009c0790 c000000017ffa480 c00000005f2e7c78 c0000000000f9070
->   GPR16: c00000005f2e7c90 0000000000000000 0000000000000000 0000000000000000
->   GPR20: 0000000000000000 c00000005f3efa80 c00000005f2e7c60 c00000005f2e7c88
->   GPR24: c00000005f2e7c60 0000000000000001 c0000000000f9078 0000000000000000
->   GPR28: 00007fff97960000 c000000017ffa480 0000000000000000 c0000000000f9078
->   ...
->   Call Trace:
->     check_heap_object+0x34/0x390 (unreliable)
->   __mutex_unlock_slowpath.isra.0+0xe4/0x230
->   seq_read_iter+0x430/0xa90
->   proc_reg_read_iter+0xa4/0x200
->   vfs_read+0x41c/0x510
->   ksys_read+0xa4/0x190
->   system_call_exception+0x1d0/0x440
->   system_call_vectored_common+0x15c/0x2ec
+> All of the CRC library's CPU feature static_keys are initialized by
+> initcalls and never change afterwards, so there's no need for them to be
+> in the regular .data section.  Put them in .data..ro_after_init instead.
 > 
-> Fix it by restoring r15 always.
-> 
-> Fixes: eec37961a56a ("powerpc64/ftrace: Move ftrace sequence out of line")
-> Reported-by: Viktor Malik <vmalik@redhat.com>
-> Closes: https://lore.kernel.org/lkml/1aec4a9a-a30b-43fd-b303-7a351caeccb7@redhat.com
-> Cc: stable@vger.kernel.org # v6.13+
-> Signed-off-by: Hari Bathini <hbathini@linux.ibm.com>
-
-After applying the patch, the panic doesn't happen anymore and livepatch
-works as expected.
-
-Thanks!
-
-Tested-by: Viktor Malik <vmalik@redhat.com>
-
+> Signed-off-by: Eric Biggers <ebiggers@google.com>
 > ---
->  arch/powerpc/kernel/trace/ftrace_entry.S | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/arch/powerpc/kernel/trace/ftrace_entry.S b/arch/powerpc/kernel/trace/ftrace_entry.S
-> index 2c1b24100eca..3565c67fc638 100644
-> --- a/arch/powerpc/kernel/trace/ftrace_entry.S
-> +++ b/arch/powerpc/kernel/trace/ftrace_entry.S
-> @@ -212,10 +212,10 @@
->  	bne-	1f
->  
->  	mr	r3, r15
-> +1:	mtlr	r3
->  	.if \allregs == 0
->  	REST_GPR(15, r1)
->  	.endif
-> -1:	mtlr	r3
->  #endif
->  
->  	/* Restore gprs */
+> I'm planning to take this via the crc tree.
+> 
+>  arch/arm/lib/crc-t10dif-glue.c       | 4 ++--
+>  arch/arm/lib/crc32-glue.c            | 4 ++--
+>  arch/arm64/lib/crc-t10dif-glue.c     | 4 ++--
+>  arch/loongarch/lib/crc32-loongarch.c | 2 +-
+>  arch/mips/lib/crc32-mips.c           | 2 +-
+>  arch/powerpc/lib/crc-t10dif-glue.c   | 2 +-
+>  arch/powerpc/lib/crc32-glue.c        | 2 +-
+>  arch/s390/lib/crc32-glue.c           | 2 +-
+
+
+Acked-by: Heiko Carstens <hca@linux.ibm.com> # s390
+
+I just realized that we can get rid of the static key in the s390
+piece and end up with slightly better code. Could you add the patch
+below to your tree, please? If this would go via the s390 tree this
+would result in a merge conflict, which is unnecessary.
+
+From 6c4c0ca6fe87e43acf6192f1afc0a6346db994f4 Mon Sep 17 00:00:00 2001
+From: Heiko Carstens <hca@linux.ibm.com>
+Date: Thu, 17 Apr 2025 14:30:56 +0200
+Subject: [PATCH] s390/crc32: Remove have_vxrs static key
+
+Replace the have_vxrs static key with a cpu_has_vx() call.  cpu_has_vx()
+resolves into a compile time constant (true) if the kernel is compiled for
+z13 or newer. Otherwise it generates an unconditional one instruction
+branch, which is patched based on CPU alternatives.
+
+In any case the generated code is at least as good as before and avoids
+static key handling.
+
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+---
+ arch/s390/lib/crc32-glue.c | 10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
+
+diff --git a/arch/s390/lib/crc32-glue.c b/arch/s390/lib/crc32-glue.c
+index 8f20a8e595c3..649ed7e8b99c 100644
+--- a/arch/s390/lib/crc32-glue.c
++++ b/arch/s390/lib/crc32-glue.c
+@@ -18,8 +18,6 @@
+ #define VX_ALIGNMENT		16L
+ #define VX_ALIGN_MASK		(VX_ALIGNMENT - 1)
+ 
+-static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vxrs);
+-
+ /*
+  * DEFINE_CRC32_VX() - Define a CRC-32 function using the vector extension
+  *
+@@ -34,8 +32,7 @@ static __ro_after_init DEFINE_STATIC_KEY_FALSE(have_vxrs);
+ 		unsigned long prealign, aligned, remaining;		    \
+ 		DECLARE_KERNEL_FPU_ONSTACK16(vxstate);			    \
+ 									    \
+-		if (datalen < VX_MIN_LEN + VX_ALIGN_MASK ||		    \
+-		    !static_branch_likely(&have_vxrs))			    \
++		if (datalen < VX_MIN_LEN + VX_ALIGN_MASK || !cpu_has_vx())  \
+ 			return ___crc32_sw(crc, data, datalen);		    \
+ 									    \
+ 		if ((unsigned long)data & VX_ALIGN_MASK) {		    \
+@@ -66,8 +63,6 @@ DEFINE_CRC32_VX(crc32c_arch, crc32c_le_vgfm_16, crc32c_base)
+ 
+ static int __init crc32_s390_init(void)
+ {
+-	if (cpu_have_feature(S390_CPU_FEATURE_VXRS))
+-		static_branch_enable(&have_vxrs);
+ 	return 0;
+ }
+ arch_initcall(crc32_s390_init);
+@@ -79,10 +74,11 @@ module_exit(crc32_s390_exit);
+ 
+ u32 crc32_optimizations(void)
+ {
+-	if (static_key_enabled(&have_vxrs))
++	if (cpu_has_vx()) {
+ 		return CRC32_LE_OPTIMIZATION |
+ 		       CRC32_BE_OPTIMIZATION |
+ 		       CRC32C_OPTIMIZATION;
++	}
+ 	return 0;
+ }
+ EXPORT_SYMBOL(crc32_optimizations);
+-- 
+2.45.2
 
 
