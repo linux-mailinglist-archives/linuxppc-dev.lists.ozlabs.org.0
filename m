@@ -1,62 +1,84 @@
-Return-Path: <linuxppc-dev+bounces-7734-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7736-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BACDA91B1E
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 13:43:13 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E092A91BB2
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 14:12:55 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zdbcb27lYz3bjg;
-	Thu, 17 Apr 2025 21:43:11 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4ZdcGs0b7rz2ygk;
+	Thu, 17 Apr 2025 22:12:53 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=176.9.242.62
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744890191;
-	cv=none; b=e4eimUrrAGQcIIejFQuZeR90QUZIXeTiP15CY8i8XTc1/GNKgtyTUS3MVZQospMFeeRCpI/q8hiCY8PeaodXgxYPObnFL6WvpSubbG5shI5uAZXZb4l6/8KR0rm+Y+KI7ZoQeHV9Mt+01TGkAZhdISnaSwEmIo+G9HJ8xRosItDQwOVnu/h6oiBc/oQ6rpaZUcBovNUTOS63dhDDSGQTK0sgxJ269F/qL6FRZPlgZ5aYPnczJpatdycR4TaBJ+n3pFnUsx0jqmbfNW3C7fq2T0T0+t8BZmEbGNVPzBawsEBeBXEJhOWNha5EThOHACMASCLq0nJhmCycVuOPOiBkjQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=205.220.168.131
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744883310;
+	cv=none; b=ofgvaZtrYQoZJBWviu5KeeXwcDPhPF60n9zG8dRZPux+p/g+iPLVOXEx1lVK6ytNbVYu3leivE/iCHiLjE8zwHNtjuf7HNzgBTYOubu3inyvdcIVo7B7kjOvFUkHo4kTlVtT1k7gdaz3EqvCK3SDydqM7xw3PEjXU9jf1LH/8aW7vedH78a8tNE+h5Y3ltnfDddUHT9/hleyPD+milV96//x1aEcodKusc7VL7k3wX29jqrAlkyOtF0aW3Vqn2zny1ooTnpU76zEubkQqhGVIcXzJdp0xNNXE9uHZmSMXZKNFYumNWBrdQWrEs0Ty5rl2NyGA5OrcWf6gQ/OBKvI5w==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744890191; c=relaxed/relaxed;
-	bh=ksfUHwJwEa/Qtvl9koWNYt/f0eJlXmKPuay0tU422kA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZyZpl6mskI/6+gYymiXDJa19HK6awkpwxIth1urGPfZij7jeKPeyuVGDkSPlwgmbGnuLEoLvQP4edioCTYXAaE13pDg2GCMIN5D0VuUL2GiPx5BLmXcGWxZyQw/3JYvz51hRHsyXCDB8B5cPAbvNPos49OSuN6wi1W3aX12NDLItqsJeraEoZfHNx5FK4vBC07IisQ7pGP/jiq9aZx5wIr4v15psmzCcmJU/50ME3ObgPCON6s7DLV0MMXN1PR/xVVbQJbJom4i93Cilbpv/PP2lY5vEGDx4DRyRM/OeH4xH2IOb6xeRMHzFq6DWOj2zs1+d4XzuVLoKbbfqx6PuHw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de; spf=pass (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org) smtp.helo=bmailout3.hostsharing.net
-Authentication-Results: lists.ozlabs.org; dmarc=none (p=none dis=none) header.from=wunner.de
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.helo=bmailout3.hostsharing.net (client-ip=176.9.242.62; helo=bmailout3.hostsharing.net; envelope-from=foo00@h08.hostsharing.net; receiver=lists.ozlabs.org)
-Received: from bmailout3.hostsharing.net (bmailout3.hostsharing.net [176.9.242.62])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	t=1744883310; c=relaxed/relaxed;
+	bh=ib44xKBj/Ro+Xh08yJf1yGF0ql4Q7w+22UKEcuxyUGk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dIrm7SnTcEO+j8QS0S5WIxYXFYFiWqY3nEHb4t4XE3WGcuJqKotFf2ePVKOAmg+IdNIMRytOeaE1H27EDBU1u6GcisM+xiV6ip4nEsp+/4DYmCzM8BPc56L3kbG9SpQwRHKoEBiLQmYfNcbgTYtPR2xkXulM2MAVyItiTNyb5Gq9Yh2XFgQjJwarPQMGonRltImn011wBLGJ2r9R6xMyxbz/xhGnAAyYpxY8hDE8AJgnsS4vV/itt5Ypv6T/wnNGzbgQ6F+3ijydePDgPwhq8rzHpYhk2+P54VChu3EiS2UO96Ib2EQyv086JJTdNBNafxop2ly9mcOnZLH+iN4Vzg==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Uv0qjN97; dkim-atps=neutral; spf=pass (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org) smtp.mailfrom=oss.qualcomm.com
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: lists.ozlabs.org;
+	dkim=pass (2048-bit key; unprotected) header.d=qualcomm.com header.i=@qualcomm.com header.a=rsa-sha256 header.s=qcppdkim1 header.b=Uv0qjN97;
+	dkim-atps=neutral
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=oss.qualcomm.com (client-ip=205.220.168.131; helo=mx0a-0031df01.pphosted.com; envelope-from=krishna.chundru@oss.qualcomm.com; receiver=lists.ozlabs.org)
+X-Greylist: delayed 2183 seconds by postgrey-1.37 at boromir; Thu, 17 Apr 2025 19:48:28 AEST
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdbcY5XRGz2ygK
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 21:43:09 +1000 (AEST)
-Received: from h08.hostsharing.net (h08.hostsharing.net [IPv6:2a01:37:1000::53df:5f1c:0])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
-	 client-signature RSA-PSS (4096 bits) client-digest SHA256)
-	(Client CN "*.hostsharing.net", Issuer "RapidSSL TLS RSA CA G1" (verified OK))
-	by bmailout3.hostsharing.net (Postfix) with ESMTPS id A152F2C05243;
-	Thu, 17 Apr 2025 13:42:58 +0200 (CEST)
-Received: by h08.hostsharing.net (Postfix, from userid 100393)
-	id 02911B1FD0; Thu, 17 Apr 2025 13:43:00 +0200 (CEST)
-Date: Thu, 17 Apr 2025 13:42:59 +0200
-From: Lukas Wunner <lukas@wunner.de>
-To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
-	Oliver O'Halloran <oohall@gmail.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof Wilczy??ski <kw@linux.com>, Rob Herring <robh@kernel.org>,
-	dingwei@marvell.com, cassel@kernel.org,
-	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
-	linuxppc-dev@lists.ozlabs.org, linux-pci@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-msm@vger.kernel.org
-Subject: Re: [PATCH 2/4] PCI/ERR: Add support for resetting the slot in a
- platforms specific way
-Message-ID: <aADpQ0rbuj571B4R@wunner.de>
-References: <20250404-pcie-reset-slot-v1-0-98952918bf90@linaro.org>
- <20250404-pcie-reset-slot-v1-2-98952918bf90@linaro.org>
- <Z--cY5Uf6JyTYL9y@wunner.de>
- <3dokyirkf47lqxgx5k2ybij5b5an6qnceifsub3mcmjvzp3kdb@sm7f2jxxepdc>
- <Z__AyQeZmXiNwT7c@wunner.de>
- <rrqn7hlefn7klaczi2jkfta72pwmtentj3zp37yvw3brwpnalk@3eapwfeo5y4d>
- <aABJ_u8-FXeJoPyF@wunner.de>
- <jb4iq364iqwk3swux5cjiczyvdyrkjtqjclefyfjrntepvroyn@7vbvbzu3pd3p>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4ZdY4D6W9Hz305P
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 19:48:26 +1000 (AEST)
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 53H5l6bR027212
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 09:12:02 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	ib44xKBj/Ro+Xh08yJf1yGF0ql4Q7w+22UKEcuxyUGk=; b=Uv0qjN97adMvtefz
+	EGm8EizDkZw6NWJUroUIg6Re6QCO0cnRWiLoMQNnp0n9A7OfwDB6MlrjPUQjFVN2
+	RhoKU+OiCE2gx/QGfen8TjmLgivVvd9lIgod8tXQf7735RuZ0vp/tcwdCN2Z16MO
+	XYIWC2IRhfWgdM3X++Rrc4/QY7WWQQXx3MJQoTTZPLQBgI3ZGoGq9q7jOTSoRXKQ
+	UZFdl6N3FCwaq9rfb6fsDD6cAhCnpLKZXf7UdPkAxitmc7Qr8jWIr0nUKRUuEfXh
+	hDuEc/z7La/wDE1Lk3wNjgNLWxPQ1+fCLOrvo5gm/s8b5WM/E+GxwU8MIoKj/dJT
+	M4MYCQ==
+Received: from mail-pl1-f200.google.com (mail-pl1-f200.google.com [209.85.214.200])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 45ydvjej1r-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 09:12:01 +0000 (GMT)
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-22c31b55ac6so10569215ad.0
+        for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 02:12:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1744881121; x=1745485921;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ib44xKBj/Ro+Xh08yJf1yGF0ql4Q7w+22UKEcuxyUGk=;
+        b=LNSTuGsglectCZO2YeEo99YZCJDc/pjLnuApgYR89TXPZ2uXYEUXCOZN0SNvcpx/pS
+         rAmMzrc43Or1kdaysfs0mezcybZO66JTWkg8Cn252M/jEXy55G4ESMrfDmGy/deiNIfm
+         OzzFPCVj8r/yHDgv+TMhYIyVsctWon/e74W8mZtVdsfZJi3S/xHC7WjpzIifuDa8Mixb
+         M0+ZAszqlAwItBc+Wos5Dxox7b3HEl84ycHYXmOO2KrVtMZNQJEcuL4bAvCrAO/JWzhl
+         0JrxZmQXlWWphE6YHoLZFZmxFKXiu2lNYpHPPs+oivZlcB9hVdfBzxmI0UrpfU+yJ2bl
+         zI3w==
+X-Forwarded-Encrypted: i=1; AJvYcCW1eYk4rNxEGu/b/EoTlppI1AwtBWMAGnH8HWp3lVtdkKEUTgtSalQKY7Qemfk19sdm0TmFLPnBl+eeaOU=@lists.ozlabs.org
+X-Gm-Message-State: AOJu0YwpR2FR4FEPsPcKMXCDDw0btfAjUbkQQTWW24+xuVPvvbXdRVV2
+	56aJ9IYG/jNjctIKM7WEIykS/mJ8W/bOSk9IEN6XCaM9Y1u8y8ixCS0+iH2FLulzjaFAbvDt1UK
+	cvgGc8MAcDu+UZVifoyXJlOKv14eLfzmqbIq911Df7h3pwGOrI5WxP5zYS7AO6arV
+X-Gm-Gg: ASbGnctiFtvo/NsnKkQrPZFAfihDewkn/cR4fEc31O/hcP+Ls2Yid4nk2fY+ytBCoHr
+	JFxBmNwteDovpV6/ajRj1ooqvgFgO3Wl3o0cxkwm+UCHZ+5vWjtuo3SSXq1vo/Ge1qRLSKz04My
+	PJekicKK5dEZzmkbRiMObVmQLDT2yGhu98Toiwc6/a+wi5TrEqrgzbsN7KImM3fe+hmAjkiZclM
+	VqtC9PS0qjDl8n2cioS+8t9Y187eiJPaeNz/eKcgliJmFB7Q67JJiizGgjd78WpR4aMScet6wUF
+	1x1Jw2Ard9uc7hj68W7ppMt67/hM3jDDX8NSIg9HwQ==
+X-Received: by 2002:a17:903:2f85:b0:223:6744:bfb9 with SMTP id d9443c01a7336-22c35973405mr86070435ad.41.1744881121017;
+        Thu, 17 Apr 2025 02:12:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQyKNgE0DokKtvPIYouYE1uOOI7So2YqEjxzqZuyFFiQfJrMgw7yOOs6D0q9vCJ2ghjk5ZDA==
+X-Received: by 2002:a17:903:2f85:b0:223:6744:bfb9 with SMTP id d9443c01a7336-22c35973405mr86070015ad.41.1744881120660;
+        Thu, 17 Apr 2025 02:12:00 -0700 (PDT)
+Received: from [10.92.199.136] ([202.46.23.19])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-22c33fe9810sm28564065ad.249.2025.04.17.02.11.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 17 Apr 2025 02:12:00 -0700 (PDT)
+Message-ID: <2c0b0929-0610-3e99-03be-a50e9f5f323b@oss.qualcomm.com>
+Date: Thu, 17 Apr 2025 14:41:55 +0530
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -69,237 +91,118 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <jb4iq364iqwk3swux5cjiczyvdyrkjtqjclefyfjrntepvroyn@7vbvbzu3pd3p>
-X-Spam-Status: No, score=0.3 required=3.0 tests=HEADER_FROM_DIFFERENT_DOMAINS,
-	RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE autolearn=disabled
-	version=4.0.1 OzLabs 8
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.1
+Subject: Re: [PATCH v2 3/4] PCI: Add link down handling for host bridges
+Content-Language: en-US
+To: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Mahesh J Salgaonkar <mahesh@linux.ibm.com>,
+        Oliver O'Halloran <oohall@gmail.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        =?UTF-8?Q?Krzysztof_Wilczy=c5=84ski?= <kw@linux.com>,
+        Rob Herring <robh@kernel.org>, dingwei@marvell.com, cassel@kernel.org,
+        Lukas Wunner <lukas@wunner.de>, linuxppc-dev@lists.ozlabs.org,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org
+References: <20250416-pcie-reset-slot-v2-0-efe76b278c10@linaro.org>
+ <20250416-pcie-reset-slot-v2-3-efe76b278c10@linaro.org>
+ <26b70e1b-861f-4c94-47a7-a267c41cadbb@oss.qualcomm.com>
+ <lsehjhqicvit32jcsjkfqemgypnpim6zbxwapzdrncm3hwrp44@bvwg2acyyvle>
+From: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+In-Reply-To: <lsehjhqicvit32jcsjkfqemgypnpim6zbxwapzdrncm3hwrp44@bvwg2acyyvle>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=ZIrXmW7b c=1 sm=1 tr=0 ts=6800c5e1 cx=c_pps a=IZJwPbhc+fLeJZngyXXI0A==:117 a=j4ogTh8yFefVWWEFDRgCtg==:17 a=IkcTkHD0fZMA:10 a=XR8D0OoHHMoA:10 a=KKAkSRfTAAAA:8 a=om0y8n2fdRonrlNA1WoA:9 a=QEXdDO2ut3YA:10
+ a=uG9DUKGECoFWVXl0Dc02:22 a=cvBusfyB2V15izCimMoJ:22
+X-Proofpoint-GUID: xP0TPir5Qnt8H9VHoT5HPs-H0ySWYIYd
+X-Proofpoint-ORIG-GUID: xP0TPir5Qnt8H9VHoT5HPs-H0ySWYIYd
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1095,Hydra:6.0.680,FMLib:17.12.68.34
+ definitions=2025-04-17_02,2025-04-15_01,2024-11-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 suspectscore=0
+ clxscore=1015 priorityscore=1501 bulkscore=0 phishscore=0 mlxlogscore=999
+ spamscore=0 impostorscore=0 malwarescore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam authscore=0 authtc=n/a authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2502280000
+ definitions=main-2504170071
+X-Spam-Status: No, score=-1.7 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	NICE_REPLY_A,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-On Thu, Apr 17, 2025 at 11:09:21AM +0530, Manivannan Sadhasivam wrote:
-> On Thu, Apr 17, 2025 at 02:23:26AM +0200, Lukas Wunner wrote:
-> > On Wed, Apr 16, 2025 at 08:34:21PM +0530, Manivannan Sadhasivam wrote:
-> > > I don't think it is possible to get rid of the powerpc version. It has
-> > > its own pci_dev::sysdata pointing to 'struct pci_controller' pointer
-> > > which is internal to powerpc arch code. And the generic code would need
-> > > 'struct pci_host_bridge' to access the callback.
-> > 
-> > Below is my proposal to convert powerpc to the new ->slot_reset() callback.
-> > Compile-tested only.
-> > 
-> > Feel free to include this in your series, alternatively I can submit it
-> > to powerpc maintainers once your series has landed.  Thanks!
+
+
+On 4/17/2025 1:24 PM, Manivannan Sadhasivam wrote:
+> On Wed, Apr 16, 2025 at 11:21:49PM +0530, Krishna Chaitanya Chundru wrote:
+>>
+>>
+>> On 4/16/2025 9:59 PM, Manivannan Sadhasivam via B4 Relay wrote:
+>>> From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+>>>
+>>> The PCI link, when down, needs to be recovered to bring it back. But that
+>>> cannot be done in a generic way as link recovery procedure is specific to
+>>> host bridges. So add a new API pci_host_handle_link_down() that could be
+>>> called by the host bridge drivers when the link goes down.
+>>>
+>>> The API will iterate through all the slots and calls the pcie_do_recovery()
+>>> function with 'pci_channel_io_frozen' as the state. This will result in the
+>>> execution of the AER Fatal error handling code. Since the link down
+>>> recovery is pretty much the same as AER Fatal error handling,
+>>> pcie_do_recovery() helper is reused here. First the AER error_detected
+>>> callback will be triggered for the bridge and the downstream devices. Then,
+>>> pcie_do_slot_reset() will be called for each slots, which will reset the
+>>> slots using 'reset_slot' callback to recover the link. Once that's done,
+>>> resume message will be broadcasted to the bridge and the downstream devices
+>>> indicating successful link recovery.
+>>>
+>>> In case if the AER support is not enabled in the kernel, only
+>>> pci_bus_error_reset() will be called for each slots as there is no way we
+>>> could inform the drivers about link recovery.
+>>>
+>> The PCIe endpoint drivers are registering with err_handlers and they
+>> will be invoked only from pcie_do_recovery, but there are getting built
+>> by default irrespective of AER is enabled or not.
+>>
 > 
-> Looks good to me, thanks! I think it would be better if it is submitted
-> once my series has landed in mainline (just to avoid immutable branch
-> hassle between powerpc and PCI trees).
+> AER is *one* of the functionalities of an endpoint. And the endpoint could
+> mostly work without AER reporting (except for AER fatal/non-fatal where recovery
+> need to be performed by the host). So it wouldn't make sense to add AER
+> dependency for them.
+> 
+>> Does it make sense to built err.c irrespective of AER is enabled or not
+>> to use common logic without the need of having dependency on AER.
+>>
+> 
+> Well, yes and no. Right now, only DPC reuses the err handlers except AER. But
+> DPC driver itself is functional dependent on AER. So I don't think it is really
+> required to build err.c independent of AER. But I will try to rework the code in
+> the future for fixing things like 'AER' prefix added to logs and such.
+>
+Right now we have DPC & AER to use this pcie_do_recovery(), now we are
+adding supporting for controller reported error (Link down) not sure if
+there will be newer ways to report errors in future.
 
-Sure, this can wait until your series has landed.  It would also be
-possible to merge through the pci tree if powerpc maintainers ack the
-patch.
+May be not in this series, in future better to de-couple err.c from
+AER as err.c. As the sources of error reporting is not limited to AER
+or DPC alone now.
 
-I've realized that pci_reset_secondary_bus() can be made private as well,
-so below is an updated patch.  Just putting this out there FWIW.
+>> Also since err.c is tied with AER, DPC also had a hard requirement
+>> to enable AER which is not needed technically.
+>>
+> 
+> DPC driver is functional dependent on AER.
+I got a impression by seeing below statement that DPC can work
+independently.
+As per spec 6 sec 6.2.11.2, DPC error signaling "A DPC-capable
+Downstream Port must support ERR_COR signaling, independent of whether
+it supports Advanced Error Reporting (AER) or not".
 
--- 8< --
+In fact it can work if AER is not enabled also, but will not have full
+functionality of DPC.
 
-From: Lukas Wunner <lukas@wunner.de>
-Subject: [PATCH] powerpc/powernv/pci: Migrate to pci_host_bridge::reset_slot
- callback
-
-struct pci_host_bridge has just been amended with a ->reset_slot()
-callback to allow for a host-bridge-specific bus reset procedure.
-
-PowerNV needs a platform-specific bus reset procedure and has historically
-implemented it by overriding pcibios_reset_secondary_bus().
-
-Migrate PowerNV to the new ->reset_slot() callback to avoid having to
-maintain two different mechanisms for platform- and host-bridge-specific
-bus reset procedures.  Assign the callback as soon as the pci_host_bridge
-is allocated through the following call chain:
-
-pcibios_init()
-  pcibios_scan_phb()
-    pci_create_root_bus()
-      pci_register_host_bridge()
-        pcibios_root_bridge_prepare()
-
-The powerpc-specific implementation of pcibios_reset_secondary_bus() can
-thus be deleted and the remaining default implementation in the PCI core
-can be made private.  pci_reset_secondary_bus() can also be made private.
-The ->reset_secondary_bus() callback in struct pci_controller_ops becomes
-obsolete and can be deleted.
-
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
----
- arch/powerpc/include/asm/pci-bridge.h        |  1 -
- arch/powerpc/kernel/pci-common.c             | 12 ------------
- arch/powerpc/platforms/powernv/eeh-powernv.c | 14 +++++++++-----
- arch/powerpc/platforms/powernv/pci-ioda.c    |  9 +++++++--
- arch/powerpc/platforms/powernv/pci.h         |  3 ++-
- drivers/pci/pci.c                            |  4 ++--
- include/linux/pci.h                          |  2 --
- 7 files changed, 20 insertions(+), 25 deletions(-)
-
-diff --git a/arch/powerpc/include/asm/pci-bridge.h b/arch/powerpc/include/asm/pci-bridge.h
-index 2aa3a091ef20..0de09fc90641 100644
---- a/arch/powerpc/include/asm/pci-bridge.h
-+++ b/arch/powerpc/include/asm/pci-bridge.h
-@@ -36,7 +36,6 @@ struct pci_controller_ops {
- 					    unsigned long type);
- 	void		(*setup_bridge)(struct pci_bus *bus,
- 					unsigned long type);
--	void		(*reset_secondary_bus)(struct pci_dev *pdev);
- 
- #ifdef CONFIG_PCI_MSI
- 	int		(*setup_msi_irqs)(struct pci_dev *pdev,
-diff --git a/arch/powerpc/kernel/pci-common.c b/arch/powerpc/kernel/pci-common.c
-index eac84d687b53..dad15fbec4e0 100644
---- a/arch/powerpc/kernel/pci-common.c
-+++ b/arch/powerpc/kernel/pci-common.c
-@@ -233,18 +233,6 @@ void pcibios_setup_bridge(struct pci_bus *bus, unsigned long type)
- 		hose->controller_ops.setup_bridge(bus, type);
- }
- 
--void pcibios_reset_secondary_bus(struct pci_dev *dev)
--{
--	struct pci_controller *phb = pci_bus_to_host(dev->bus);
--
--	if (phb->controller_ops.reset_secondary_bus) {
--		phb->controller_ops.reset_secondary_bus(dev);
--		return;
--	}
--
--	pci_reset_secondary_bus(dev);
--}
--
- resource_size_t pcibios_default_alignment(void)
- {
- 	if (ppc_md.pcibios_default_alignment)
-diff --git a/arch/powerpc/platforms/powernv/eeh-powernv.c b/arch/powerpc/platforms/powernv/eeh-powernv.c
-index db3370d1673c..9ea2fa892efc 100644
---- a/arch/powerpc/platforms/powernv/eeh-powernv.c
-+++ b/arch/powerpc/platforms/powernv/eeh-powernv.c
-@@ -890,18 +890,22 @@ static int pnv_eeh_bridge_reset(struct pci_dev *pdev, int option)
- 	return (rc == OPAL_SUCCESS) ? 0 : -EIO;
- }
- 
--void pnv_pci_reset_secondary_bus(struct pci_dev *dev)
-+int pnv_pci_reset_secondary_bus(struct pci_host_bridge *host,
-+				struct pci_dev *dev)
- {
- 	struct pci_controller *hose;
-+	int rc_hot, rc_dea;
- 
- 	if (pci_is_root_bus(dev->bus)) {
- 		hose = pci_bus_to_host(dev->bus);
--		pnv_eeh_root_reset(hose, EEH_RESET_HOT);
--		pnv_eeh_root_reset(hose, EEH_RESET_DEACTIVATE);
-+		rc_hot = pnv_eeh_root_reset(hose, EEH_RESET_HOT);
-+		rc_dea = pnv_eeh_root_reset(hose, EEH_RESET_DEACTIVATE);
- 	} else {
--		pnv_eeh_bridge_reset(dev, EEH_RESET_HOT);
--		pnv_eeh_bridge_reset(dev, EEH_RESET_DEACTIVATE);
-+		rc_hot = pnv_eeh_bridge_reset(dev, EEH_RESET_HOT);
-+		rc_dea = pnv_eeh_bridge_reset(dev, EEH_RESET_DEACTIVATE);
- 	}
-+
-+	return rc_hot ? : rc_dea;
- }
- 
- static void pnv_eeh_wait_for_pending(struct pci_dn *pdn, const char *type,
-diff --git a/arch/powerpc/platforms/powernv/pci-ioda.c b/arch/powerpc/platforms/powernv/pci-ioda.c
-index ae4b549b5ca0..e1b75a4bc681 100644
---- a/arch/powerpc/platforms/powernv/pci-ioda.c
-+++ b/arch/powerpc/platforms/powernv/pci-ioda.c
-@@ -2145,6 +2145,12 @@ static void pnv_pci_ioda_fixup(void)
- #endif
- }
- 
-+static int pnv_pci_root_bridge_prepare(struct pci_host_bridge *bridge)
-+{
-+	bridge->reset_slot = pnv_pci_reset_secondary_bus;
-+	return 0;
-+}
-+
- /*
-  * Returns the alignment for I/O or memory windows for P2P
-  * bridges. That actually depends on how PEs are segmented.
-@@ -2504,7 +2510,6 @@ static const struct pci_controller_ops pnv_pci_ioda_controller_ops = {
- 	.release_device		= pnv_pci_release_device,
- 	.window_alignment	= pnv_pci_window_alignment,
- 	.setup_bridge		= pnv_pci_fixup_bridge_resources,
--	.reset_secondary_bus	= pnv_pci_reset_secondary_bus,
- 	.shutdown		= pnv_pci_ioda_shutdown,
- #ifdef CONFIG_IOMMU_API
- 	.device_group		= pnv_pci_device_group,
-@@ -2515,7 +2520,6 @@ static const struct pci_controller_ops pnv_npu_ocapi_ioda_controller_ops = {
- 	.enable_device_hook	= pnv_ocapi_enable_device_hook,
- 	.release_device		= pnv_pci_release_device,
- 	.window_alignment	= pnv_pci_window_alignment,
--	.reset_secondary_bus	= pnv_pci_reset_secondary_bus,
- 	.shutdown		= pnv_pci_ioda_shutdown,
- };
- 
-@@ -2724,6 +2728,7 @@ static void __init pnv_pci_init_ioda_phb(struct device_node *np,
- 	}
- 
- 	ppc_md.pcibios_default_alignment = pnv_pci_default_alignment;
-+	ppc_md.pcibios_root_bridge_prepare = pnv_pci_root_bridge_prepare;
- 
- #ifdef CONFIG_PCI_IOV
- 	ppc_md.pcibios_fixup_sriov = pnv_pci_ioda_fixup_iov;
-diff --git a/arch/powerpc/platforms/powernv/pci.h b/arch/powerpc/platforms/powernv/pci.h
-index 42075501663b..44e8969c7729 100644
---- a/arch/powerpc/platforms/powernv/pci.h
-+++ b/arch/powerpc/platforms/powernv/pci.h
-@@ -275,7 +275,8 @@ extern struct iommu_table *pnv_pci_table_alloc(int nid);
- 
- extern void pnv_pci_init_ioda2_phb(struct device_node *np);
- extern void pnv_pci_init_npu2_opencapi_phb(struct device_node *np);
--extern void pnv_pci_reset_secondary_bus(struct pci_dev *dev);
-+extern int pnv_pci_reset_secondary_bus(struct pci_host_bridge *host,
-+				       struct pci_dev *dev);
- extern int pnv_eeh_phb_reset(struct pci_controller *hose, int option);
- 
- extern struct pnv_ioda_pe *pnv_pci_bdfn_to_pe(struct pnv_phb *phb, u16 bdfn);
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 13709bb898a9..28cdcd698914 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4962,7 +4962,7 @@ int pci_bridge_wait_for_secondary_bus(struct pci_dev *dev, char *reset_type)
- 			    PCIE_RESET_READY_POLL_MS - delay);
- }
- 
--void pci_reset_secondary_bus(struct pci_dev *dev)
-+static void pci_reset_secondary_bus(struct pci_dev *dev)
- {
- 	u16 ctrl;
- 
-@@ -4980,7 +4980,7 @@ void pci_reset_secondary_bus(struct pci_dev *dev)
- 	pci_write_config_word(dev, PCI_BRIDGE_CONTROL, ctrl);
- }
- 
--void __weak pcibios_reset_secondary_bus(struct pci_dev *dev)
-+static void pcibios_reset_secondary_bus(struct pci_dev *dev)
- {
- 	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
- 	int ret;
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 76e977af2d52..829d7cbbf258 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -1397,8 +1397,6 @@ int pci_try_reset_function(struct pci_dev *dev);
- int pci_probe_reset_slot(struct pci_slot *slot);
- int pci_probe_reset_bus(struct pci_bus *bus);
- int pci_reset_bus(struct pci_dev *dev);
--void pci_reset_secondary_bus(struct pci_dev *dev);
--void pcibios_reset_secondary_bus(struct pci_dev *dev);
- void pci_update_resource(struct pci_dev *dev, int resno);
- int __must_check pci_assign_resource(struct pci_dev *dev, int i);
- void pci_release_resource(struct pci_dev *dev, int resno);
--- 
-2.43.0
-
+- Krishna Chaitanya.
+> 
+> - Mani
+> 
 
