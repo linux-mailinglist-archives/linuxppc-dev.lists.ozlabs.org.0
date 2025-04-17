@@ -1,61 +1,66 @@
-Return-Path: <linuxppc-dev+bounces-7744-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7745-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
 Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6372A91D8D
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 15:16:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E8DBDA91F5B
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 16:19:12 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zddh56GCLz3byj;
-	Thu, 17 Apr 2025 23:16:21 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zdg4Y2JL7z2ygK;
+	Fri, 18 Apr 2025 00:19:09 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=147.75.193.91
-ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744895781;
-	cv=none; b=TVWA4G6pf02vD3t3S8YcoHxvaIncUhceIUA3DjOfiIn1NsyTc8Rd0Os42JNHxKuYNExIsqYNTfcbcXZL0ZLI8KX9d7TSbacHuzp/P0WMN14CX6iD5uNMVfKW0bp7pFKVjFGZQDKhblunggdoy6xH6Q6E6TTmTU8eX2g5XJZZxAcnxLkD3ABcqXn5hJ5T7iPJvxoffimFZoA2pM7Z68tptbccn8364OH67/GleN0V8t7mO1ghOd7e8rE9iR4M7UtwNY80BEu0Gbstvm5h0JIYq2+ZN2MIFwirZ8YD37bC8+0x8smII5kR7zCe4IVT+hGCGpZ/acgVGxEVeUJLn1ymFQ==
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=185.67.36.65
+ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744899549;
+	cv=none; b=KB/b6lJCjYGwDc7b/P7j98EPQOqNj7NJE8ooFQ30c9xdjHkU66v1/G1tb9GCbffYn4IpfZTBZnpP/vqUjy8QsrqR0IKTfxUU/alYO7X9ou5CeuB7jcWIAxrXXEqsHj5wwixhK4eb4j1+ZThMl/Gp03HVzOoOOJHfFVqkQqt/2dUJ2JPn2ibny13U9fTRQvCMDIZqLDr10za9YEq2gyFK52e8Ov83//+vVUv54ATmnf/DEzCXOzfgSgl/iVe/zuKCVqMNENXgSy3OUj/OFZJp4WCH0jlLiSnuMREBGnCJ+15oisENmAy1BWVTOONZPnF6/TTxoT7b4VJWG3fnoWvSww==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
-	t=1744895781; c=relaxed/relaxed;
-	bh=NqfmpbjW7riguud7DMBTVyGF+ZF1AdVA9f8c2C7hnLI=;
+	t=1744899549; c=relaxed/relaxed;
+	bh=LYKUAE7w/PuTuSwMwOcfwNPDzoaeaOm76gYKFAbUHEw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JV5vCg+Vu+Qtj+ANZn91IMa/4X0mbSLKdkA8Y61y0DB2nZWpv1IhpXVdu68K8xxWUJkzsCHItQybkLE5aLmMikOYsZIcemcyIGgDnandY1hyLv7LZ4ZeGMTDkdyVT3kzgX94XseALqvFmu48d/UZwzSwVAXLmN1ywJ0R9GGkRoLWAn2ZGlfN9sBjnRUNt6xP7aLP4IyBjuLpWdL7t5mT4SAx+YzD7TuCHeT6SLdc8k5tExcNmPJl6JOURypOA5xs3SLtJv/FFmfr9GQbLkeSS8uh+2IEUq5SU5sd+Co2YynYSVdSUrN+7OajgT4Uv93N2nxtijdmRNqrqonmBzZQcQ==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t6ThyFqA; dkim-atps=neutral; spf=pass (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
-Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=dOmOUYUrPc89Do+MnWdUuQShzsSKeiTwuqK1MKfTfUcz22Vtu7P833NuJaIagATt0K4D9cJn9ZnopcElMCgYqEkswvGwizC5+3A0suVx39zx+HUUHuBa/sNHtp3sXPlHVYgpZ/PCSbzBuYXnVQrKGG3Kl6irwiczVnKHSjZvEFvYS2yw8rI8YO9bC/97yARrYh3sYpRrTXJxJgCAxlTkwuI2wE4PpA6c36Yt+mNEsN7BSVa1ev22e6SPOan8kxHc/eqo/dUXZIE678aKJWYx0Ni8qvJPfgvp/QvqN/Oc6THQ/qAjME0MBRdxP++H+K3P5cPiub5bdNl0ji64sl3iLQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net; dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=IcEvn5P7; dkim-atps=neutral; spf=pass (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org) smtp.mailfrom=posteo.net
+Authentication-Results: lists.ozlabs.org; dmarc=pass (p=none dis=none) header.from=posteo.net
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=t6ThyFqA;
+	dkim=pass (2048-bit key; secure) header.d=posteo.net header.i=@posteo.net header.a=rsa-sha256 header.s=2017 header.b=IcEvn5P7;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=147.75.193.91; helo=nyc.source.kernel.org; envelope-from=andi.shyti@kernel.org; receiver=lists.ozlabs.org)
-Received: from nyc.source.kernel.org (nyc.source.kernel.org [147.75.193.91])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=posteo.net (client-ip=185.67.36.65; helo=mout01.posteo.de; envelope-from=j.ne@posteo.net; receiver=lists.ozlabs.org)
+Received: from mout01.posteo.de (mout01.posteo.de [185.67.36.65])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zddh45srBz3byh
-	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 23:16:20 +1000 (AEST)
-Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by nyc.source.kernel.org (Postfix) with ESMTP id E7021A4B394;
-	Thu, 17 Apr 2025 13:10:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B78C4CEE4;
-	Thu, 17 Apr 2025 13:16:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1744895777;
-	bh=JOB3Kk/EM3/vcVbO0LHbslX6iAjbGgIXo4UEDu68gq8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=t6ThyFqA8noKENc0TRm+jM7qkIhPqeNxxbNYDgUD1uF9by0kXywDqsDo5p/U9cuUE
-	 YMMXm+EIDwh/MlXQbHRpZ9VAGvonfTIZLAeUM17+YAoAeFQkD0daIYSj0c5M23Y7ac
-	 +gDbFX3ebm+od/yhd3ry9t3/q7ZjF0g+wWbfK8kmuIuE/+F9xPKuBJxd4pCCdSB/IH
-	 Jep+YB1r1DIuhn2zqURutMz2MEm9klog/jRzeE+UjsmL16RwrkJal5yz131LSvZFiM
-	 v+o2Pkyd3L8UbSkMr/tVN2Ctnkunw2kkSI//U6DYbmnbUXcetX6NZJxstjwNAtsdoV
-	 knXwfFuq+hi5A==
-Date: Thu, 17 Apr 2025 15:16:14 +0200
-From: Andi Shyti <andi.shyti@kernel.org>
-To: Sven Peter <sven@svenpeter.dev>
-Cc: Janne Grunau <j@jannau.net>, Alyssa Rosenzweig <alyssa@rosenzweig.io>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	Nicholas Piggin <npiggin@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
-	linuxppc-dev@lists.ozlabs.org, asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
-	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Andy Shevchenko <andy.shevchenko@gmail.com>
-Subject: Re: [PATCH v2 0/6] Apple/PASemi i2c error recovery fixes
-Message-ID: <kw3iierscam5stq7igwxpj2std6hwc36y2xbbqliheorbaouxn@zspp5ltjxrus>
-References: <20250415-pasemi-fixes-v2-0-c543bf53151a@svenpeter.dev>
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zdg4S688jz2ydv
+	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 00:19:01 +1000 (AEST)
+Received: from submission (posteo.de [185.67.36.169]) 
+	by mout01.posteo.de (Postfix) with ESMTPS id F11A8240027
+	for <linuxppc-dev@lists.ozlabs.org>; Thu, 17 Apr 2025 16:18:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=posteo.net; s=2017;
+	t=1744899531; bh=PrJVLP5f8fwnGGlUkRAHMFELfuQEh6br7KhpaFyfBEg=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:Content-Transfer-Encoding:From;
+	b=IcEvn5P7CPvR3WM212MVKLuhSZCSaIZzkri4rgqml2phktYxIjWjN0vJACvsJVfIz
+	 CtBFwykipg7y1p5DEvXTxHjhm8F1eErOcyPUlhlVUFFj30F0VFDddFDgAzpRokljY+
+	 oXh0uIFlk68wZEUf3WreCJGGJK1rVgoSyxpb9SzgzGQKO94IAg0M1+a3oHvAXOOayn
+	 1yp1Ak1zdr5Jk/v2kLIAswnvTyNtxppCrmBePqvhfBc8GuCW6A9fWoK/JrBuYJh1ks
+	 +6MsvGJlVzCexLxExnb3wo2fim/XWGDqBn4Uy49+8sdVBa6e3EsLeAW2bxzEOhQ+c3
+	 DLQzlMpvIdnoA==
+Received: from customer (localhost [127.0.0.1])
+	by submission (posteo.de) with ESMTPSA id 4Zdg491zWsz6tyf;
+	Thu, 17 Apr 2025 16:18:49 +0200 (CEST)
+Date: Thu, 17 Apr 2025 14:18:49 +0000
+From: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>
+To: Rob Herring <robh@kernel.org>
+Cc: =?utf-8?Q?J=2E_Neusch=C3=A4fer?= <j.ne@posteo.net>,
+	Crystal Wood <oss@buserror.net>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Naveen N Rao <naveen@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>, linuxppc-dev@lists.ozlabs.org,
+	devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] dt-bindings: powerpc: Convert fsl/pmc.txt to YAML
+Message-ID: <aAENyZObpPCmm1m9@probook>
+References: <20250412-fslpmc-yaml-v2-1-98c0948a2921@posteo.net>
+ <20250412183732.GA1442430-robh@kernel.org>
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -68,31 +73,57 @@ List-Subscribe: <mailto:linuxppc-dev+subscribe@lists.ozlabs.org>,
   <mailto:linuxppc-dev+subscribe-nomail@lists.ozlabs.org>
 List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20250415-pasemi-fixes-v2-0-c543bf53151a@svenpeter.dev>
-X-Spam-Status: No, score=-3.5 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20250412183732.GA1442430-robh@kernel.org>
+X-Spam-Status: No, score=-2.5 required=3.0 tests=DKIM_SIGNED,DKIM_VALID,
+	DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+	autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
-Hi Sven,
-
-> Hector Martin (3):
->       i2c: pasemi: Improve error recovery
->       i2c: pasemi: Enable the unjam machine
->       i2c: pasemi: Log bus reset causes
+On Sat, Apr 12, 2025 at 01:37:32PM -0500, Rob Herring wrote:
+> On Sat, Apr 12, 2025 at 02:49:38PM +0200, J. Neuschäfer wrote:
+> > This patch rewrites pmc.txt into YAML format. Descriptive texts are
+> > expanded or shortened in a few places to better fit today's conventions.
+> > 
+> > The list of compatible strings (and combinations of them) is based on
+> > existing device trees in arch/powerpc as well as compatible strings
+> > already mentioned in the plain-text version of the binding.
+> > 
+> > One thing I didn't handle are soc-clk@... nodes as seen in
+> > Documentation/devicetree/bindings/powerpc/fsl/pmc.yaml.
+> > 
+> > Signed-off-by: J. Neuschäfer <j.ne@posteo.net>
+> > ---
+> > Changes in v2:
+> > - Rebase on v6.15-rc1
+> > - Link to v1: https://lore.kernel.org/r/20250315-fslpmc-yaml-v1-1-10ba354a85c2@posteo.net
+> > ---
+> > 
+> > Note: The examples include a consumer (sata@19000), to demonstrate how
+> > sleep specifiers work. I've heard that "unrelated" nodes in examples are
+> > generally discouraged, but I'm not sure if it's better to keep it or to
+> > drop it in this example.
 > 
-> Sven Peter (3):
->       i2c: pasemi: Use correct bits.h include
->       i2c: pasemi: Sort includes alphabetically
+> I'd drop. Unless you want to fix the error. There's nothing really 
+> unique with how 'sleep' property works.
 
-I applied in i2c/i2c-host the two patches above, so that you can
-start from patch 3 as there were a few little notes.
+Okay.
 
-I didn't see necessary the Fixes tag in the bits.h patch so that
-I removed it.
+> > +properties:
+> > +  compatible:
+> > +    oneOf:
+[...]
+> > +      - const: fsl,mpc8548-pmc
+> > +
+> > +      - const: fsl,mpc8641d-pmc
+> 
+> 1 enum for these 2.
+
+Will do.
+
 
 Thanks,
-Andi
+J. Neuschäfer
 
