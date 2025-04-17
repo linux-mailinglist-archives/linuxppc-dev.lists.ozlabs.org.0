@@ -1,56 +1,55 @@
-Return-Path: <linuxppc-dev+bounces-7755-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
+Return-Path: <linuxppc-dev+bounces-7752-lists+linuxppc-dev=lfdr.de@lists.ozlabs.org>
 X-Original-To: lists+linuxppc-dev@lfdr.de
 Delivered-To: lists+linuxppc-dev@lfdr.de
-Received: from lists.ozlabs.org (lists.ozlabs.org [112.213.38.117])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9972CA923C9
-	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 19:17:24 +0200 (CEST)
+Received: from lists.ozlabs.org (lists.ozlabs.org [IPv6:2404:9400:2:0:216:3eff:fee1:b9f1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E15EEA923BE
+	for <lists+linuxppc-dev@lfdr.de>; Thu, 17 Apr 2025 19:17:00 +0200 (CEST)
 Received: from boromir.ozlabs.org (localhost [127.0.0.1])
-	by lists.ozlabs.org (Postfix) with ESMTP id 4Zdl1T5P4hz3c3w;
-	Fri, 18 Apr 2025 03:16:45 +1000 (AEST)
+	by lists.ozlabs.org (Postfix) with ESMTP id 4Zdl1S4DPjz3c2L;
+	Fri, 18 Apr 2025 03:16:44 +1000 (AEST)
 X-Original-To: linuxppc-dev@lists.ozlabs.org
-Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip="2600:3c04:e001:324:0:1991:8:25"
+Authentication-Results: lists.ozlabs.org; arc=none smtp.remote-ip=139.178.84.217
 ARC-Seal: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707; t=1744910202;
-	cv=none; b=RrIAE9hOjmKeyt4hy3zW+4NzwomjjK4j6e8ocvgJIi37HFOQDHhLwJydyKkSSgn6Ga7Nqubq0q5+biAFzEzkfIwoKGyHf+9fjVu4M78lJuYRe0TzaZ6DorVtzXG3zxN2Qv++TwvlqgOuwnEG0VTzrxrdZct03U+/0i4APN3lhwV0koDl9bNtih9tz+/uJo6fVYhJeHKsVdJQAKzpiuAB2ypglp51vyMtiddfiLtLdvYFaTF03MOeIF+kd1kadol/pG8lsVQJFfbmdF/bJN+qpgTNYCodGDKuA5sTNkZVHbG4js/dzCbGBpZrY2d9JmlskJKlxiJCj2cCGZuW5E8pIQ==
+	cv=none; b=l+ZynF5JUGiXWCcOWg2BBBXdC0CNGf5Sur3tAJbRsK97bpRBWDFrTLOpYFsVVvgg4+op8BgzmUqPwi8V4nDKMjrwtUjFageYzF3fPJ7yzjQ/OhY4JYYEWtFsEsNbd9Vi+p2KDxZMgoSDhGjw546jzSVyYw6vGqgpf0zOXb5QH/4i/sCYfB5GA3YbruQYER9DErkvXcJaGzJ+eyc1pCukunLewRM9ypa3JeMZ1aVoW2JTY/Rr3eGgFOPSP3zRRsCvjNtLzP4BKO6R6Ew5ApislmxrEpmUdlMPkBoqXITD7UjUmKL70p56DdU/DWraJzp5G76oNBgneo2ZMiQbND0rsA==
 ARC-Message-Signature: i=1; a=rsa-sha256; d=lists.ozlabs.org; s=201707;
 	t=1744910202; c=relaxed/relaxed;
-	bh=vgdQ4ldG8Yd4PsgVO+ZhhIFFPimFbRSky/89G6E5f4c=;
+	bh=ifFHvG3hdl7+pcKI69icjTNPXuBs9nIjzkTU5vNm/Bw=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=D9lZVfgx1j+4cbe1iVFkmsLtIFijEPfc65pYhbGnhb0W22ErDSXE15+UYVpco4Sjs2RYduDT1cnmCl4/LhrpacVkU1UZ0b6dUemhfVtvxbBGOKgrKkTJfOGlfcCwTkRTOE4/c8WcbLJpuZJjiTyeyFZnpQx3XxFYpTWEci/I+kmWKlc1UTU8RegnPFrSA0DreQ7qPBqdE6BLl4/FOScFdfmZVKSRbyu+7LtfaiMlicUfH8SDJDafWmtH9sLm9BDhiZBkcvlZcfa/hOehuwOPm3VkKr6UUcabnsLfg3A3hGML3oHiYOO/4Flu8wmYLFesuSkW/3NSVXZerjp8QtXKBw==
-ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gxgP+zhp; dkim-atps=neutral; spf=pass (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=devnull+manivannan.sadhasivam.linaro.org@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
+	 In-Reply-To:To:Cc; b=nXipRsQXfnx5b1ceuPJ/Wx9ttoG2X87FU+fsdFF4hWL6q1VXipbaLu9yQFF6ZOcBc6iWypgOJZn+WzzG44Qp4mN3s9YLxLGTNbqoDR9FfpxT0l6disjbu5VetgQNjyg9X2ph2t+/EOZgj6LYJ6F5CLbT/dqHtbcp+SxPWtI8AWVbfgo/do0bBOzptX05xubcgip/4qwF8LnOZycAsF+NdoD9WPBlNt7D1469OHpP4gjjjwGIlFUlEU1vWi34A3DHQJTaDw+CwALRLnxK09+Bd7svJIxw5yH22FlnFWp3tnZD1ppeMJ6SPLrL482QIuFlZye28O16xXEW4gIT1sVNwQ==
+ARC-Authentication-Results: i=1; lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org; dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ctwSy7B8; dkim-atps=neutral; spf=pass (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+manivannan.sadhasivam.linaro.org@kernel.org; receiver=lists.ozlabs.org) smtp.mailfrom=kernel.org
 Authentication-Results: lists.ozlabs.org; dmarc=pass (p=quarantine dis=none) header.from=kernel.org
 Authentication-Results: lists.ozlabs.org;
-	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=gxgP+zhp;
+	dkim=pass (2048-bit key; unprotected) header.d=kernel.org header.i=@kernel.org header.a=rsa-sha256 header.s=k20201202 header.b=ctwSy7B8;
 	dkim-atps=neutral
-Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=2600:3c04:e001:324:0:1991:8:25; helo=tor.source.kernel.org; envelope-from=devnull+manivannan.sadhasivam.linaro.org@kernel.org; receiver=lists.ozlabs.org)
-X-Greylist: delayed 10521 seconds by postgrey-1.37 at boromir; Fri, 18 Apr 2025 03:16:40 AEST
-Received: from tor.source.kernel.org (tor.source.kernel.org [IPv6:2600:3c04:e001:324:0:1991:8:25])
+Authentication-Results: lists.ozlabs.org; spf=pass (sender SPF authorized) smtp.mailfrom=kernel.org (client-ip=139.178.84.217; helo=dfw.source.kernel.org; envelope-from=devnull+manivannan.sadhasivam.linaro.org@kernel.org; receiver=lists.ozlabs.org)
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zdl1N2lF0z3c0H
+	by lists.ozlabs.org (Postfix) with ESMTPS id 4Zdl1N4wwRz3c1L
 	for <linuxppc-dev@lists.ozlabs.org>; Fri, 18 Apr 2025 03:16:40 +1000 (AEST)
 Received: from smtp.kernel.org (transwarp.subspace.kernel.org [100.75.92.58])
-	by tor.source.kernel.org (Postfix) with ESMTP id 876FC6845F;
-	Thu, 17 Apr 2025 17:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 04292C4CEEA;
+	by dfw.source.kernel.org (Postfix) with ESMTP id 9D8685C5806;
+	Thu, 17 Apr 2025 17:14:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 14678C4CEF0;
 	Thu, 17 Apr 2025 17:16:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1744910197;
-	bh=j7a1MWfbRFpfxfm/Ng5E8w9b6pWr++a/2lyhhriAkgI=;
+	bh=v5E+aOtX1b+E5OwEtcvzwlG6BCHoSNdwgBUEf0TStt0=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=gxgP+zhpaU7X1ueylO1Luuv59xPMnGK+XkGlxHboBA4LUqOcwRWxBgAWp7A0LZP96
-	 O+h8wZB3dRMoXpq/2kUxlh/7YpkckmIacDUHaDc7UDXaBl+Jz9v3UkyXy83wJa1igh
-	 EuRR3vMDB6znZWZvZ2S1kOCVek9IhKSy5+KGuzK/FSoi6h1KJ+PHfbmk5HD0lAmNmF
-	 kxIV7qOcEMFANjEjqGX63aSFWXmL+AEDzascIB9vA9PdpfrHJn6J3QnliQzOwJeoF2
-	 lZqEXbtrrwOWkG0lwzwSodsTEF3J3l0M72sy8Q3SkwpS/FjGguhHAGNyV3BpRJrA7V
-	 HScGcjhEYJWqg==
+	b=ctwSy7B8nmyoVXDxWs6hs3cFnwafrmay3FmIFjuUX4tXVlTPaUb6SECJCuyZ6m1p4
+	 gCqQ+U5tcxB5xcIBEPC5NcUF2HBD8htaxAOxsQctMiJORxCRqnGmpsjVsW/92EeAOd
+	 j9GFgWQIR01eXEZMR0kjiyTcZS4WNKvjMsK5BluzGqfuJ0S4zm5riOR2Z0h7dX7wdL
+	 Jobb/hH66cizg3Eaez2r8ch3NEpjbTBObP2seHvHFdwaMi7cQw9wUK0VDl2KMgYYr9
+	 0IjhrBjybxOokpU+2y1qALbAgtEoQWL2mB3XoeQSXtuURXHPd+s0Hqb6pZczEgOhaz
+	 ZTnhb6EWJ8YLA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id E8408C369D0;
-	Thu, 17 Apr 2025 17:16:36 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 06DDDC369C9;
+	Thu, 17 Apr 2025 17:16:37 +0000 (UTC)
 From: Manivannan Sadhasivam via B4 Relay <devnull+manivannan.sadhasivam.linaro.org@kernel.org>
-Date: Thu, 17 Apr 2025 22:46:28 +0530
-Subject: [PATCH v3 2/5] PCI/ERR: Add support for resetting the slots in a
- platform specific way
+Date: Thu, 17 Apr 2025 22:46:29 +0530
+Subject: [PATCH v3 3/5] PCI: host-common: Make the driver as a common
+ library for host controller drivers
 X-Mailing-List: linuxppc-dev@lists.ozlabs.org
 List-Id: <linuxppc-dev.lists.ozlabs.org>
 List-Help: <mailto:linuxppc-dev+help@lists.ozlabs.org>
@@ -65,7 +64,7 @@ List-Unsubscribe: <mailto:linuxppc-dev+unsubscribe@lists.ozlabs.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250417-pcie-reset-slot-v3-2-59a10811c962@linaro.org>
+Message-Id: <20250417-pcie-reset-slot-v3-3-59a10811c962@linaro.org>
 References: <20250417-pcie-reset-slot-v3-0-59a10811c962@linaro.org>
 In-Reply-To: <20250417-pcie-reset-slot-v3-0-59a10811c962@linaro.org>
 To: Mahesh J Salgaonkar <mahesh@linux.ibm.com>, 
@@ -84,98 +83,216 @@ Cc: dingwei@marvell.com, cassel@kernel.org, Lukas Wunner <lukas@wunner.de>,
  linux-arm-kernel@lists.infradead.org, linux-riscv@lists.infradead.org, 
  Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 X-Mailer: b4 0.14.2
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2766;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7466;
  i=manivannan.sadhasivam@linaro.org; h=from:subject:message-id;
- bh=DxjgbttCz+WbWbTBQh3uh5PZxc6tk82mAeHt4QTMKaE=;
- b=owEBbQGS/pANAwAKAVWfEeb+kc71AcsmYgBoATdvYVK0GQzi8sgrm/ZgUCcsXnUDTGn+R5woL
- GlG2618bPiJATMEAAEKAB0WIQRnpUMqgUjL2KRYJ5dVnxHm/pHO9QUCaAE3bwAKCRBVnxHm/pHO
- 9R1nB/4mCdE+kKaobUu8xgqLp12VIK1lyMLUue8d1Oth+RUvL8sS+yxd4LB6Fyzs/mOxUiMk9H/
- ciVe5BciCPKbXJTceNhCr29+4sbd+EorHB0I/OxV2abPOr5PzUno1WHPIGZEwo18l5BjFHBiLDj
- JE7FV2UBmHNq6L/5khv8XpKbKu/uM+0kLdETMu1LQ0PyzvYgzNQknk0jZfBFb4ujvvPJMizNfEF
- 1bcqAbBgus7YPWMgcFrKyX1pmC7zonfc0vDo9IQDdnGT8HWat1cRgaH0q0Bg83XYaDl3Lf7p2Ub
- y1D3PjC6s1NXtA22GQWiLKxDEQv79CJFwsq6fqs7jmqCAPEF
+ bh=K/sPDFj1hecH/GGD3XDJ2CIncZKealVndyMKk1UM77I=;
+ b=owGbwMvMwMUYOl/w2b+J574ynlZLYshgNM/fpqvZ+L5CtHvib4WcqW/iGq9cFvty3XjdrHMSM
+ Q5s/R12nYzGLAyMXAyyYoos6UudtRo9Tt9YEqE+HWYQKxPIFAYuTgGYyIrjHAxNiles352M92uO
+ OjP1m35YeOSWSV77GLewZYXO+1O/KlS3In+LwaTI/5fqLHxLja0FLefO8+PifCu8/vnF63P2ODr
+ EH9VXZu1yOs2QHHvZN5ndqv9rmHKX+01BTpXDIgx8nY6uc2bFHzVvWBls9UbNX2jXuYzi+b+3fx
+ abMKHDwapNT9kmg/PzMdNS84nf879Vrd3Y1PohItN27t8Vbvs4+c61/M4v95d/6Hluu+/esGt2J
+ 7StD7IFXprMPVdjb3nd5BKVnfVJpu/1nPY35tmpmC5bOlVQ7+VCUUUtQwGhnw3+tV2/ZkzpTHmo
+ HrhH8W9MrGMXm/9dBq5uLcuEmpYPc5XWhn4rlRVLdnwPAA==
 X-Developer-Key: i=manivannan.sadhasivam@linaro.org; a=openpgp;
  fpr=C668AEC3C3188E4C611465E7488550E901166008
 X-Endpoint-Received: by B4 Relay for
  manivannan.sadhasivam@linaro.org/default with auth_id=185
 X-Original-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Reply-To: manivannan.sadhasivam@linaro.org
-X-Spam-Status: No, score=-1.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-	autolearn=disabled version=4.0.1 OzLabs 8
+X-Spam-Status: No, score=-6.2 required=3.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
+	SPF_PASS autolearn=disabled version=4.0.1 OzLabs 8
 X-Spam-Checker-Version: SpamAssassin 4.0.1 (2024-03-25) on lists.ozlabs.org
 
 From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-Some host bridge devices require resetting the slots in a platform specific
-way to recover them from error conditions such as Fatal AER errors, Link
-Down etc... So introduce pci_host_bridge::reset_slot callback and call it
-from pcibios_reset_secondary_bus() if available.
+This common library will be used as a placeholder for helper functions
+shared by the host controller drivers. This avoids placing the host
+controller drivers specific helpers in drivers/pci/*.c, to avoid enlarging
+the kernel Image on platforms that do not use host controller drivers at
+all (like x86/ACPI platforms).
 
-The 'reset_slot' callback is responsible for resetting the given slot
-referenced by the 'pci_dev' pointer in a platform specific way and bring it
-back to the working state if possible. If any error occurs during the slot
-reset operation, relevant errno should be returned.
-
+Suggested-by: Lukas Wunner <lukas@wunner.de>
 Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 ---
- drivers/pci/pci.c      | 12 ++++++++++++
- drivers/pci/pcie/err.c |  5 -----
- include/linux/pci.h    |  1 +
- 3 files changed, 13 insertions(+), 5 deletions(-)
+ drivers/pci/controller/Kconfig                    |  8 ++++----
+ drivers/pci/controller/dwc/pcie-hisi.c            |  1 +
+ drivers/pci/controller/pci-host-common.c          |  6 ++++--
+ drivers/pci/controller/pci-host-common.h          | 16 ++++++++++++++++
+ drivers/pci/controller/pci-host-generic.c         |  2 ++
+ drivers/pci/controller/pci-thunder-ecam.c         |  2 ++
+ drivers/pci/controller/pci-thunder-pem.c          |  1 +
+ drivers/pci/controller/pcie-apple.c               |  2 ++
+ drivers/pci/controller/plda/pcie-microchip-host.c |  1 +
+ include/linux/pci-ecam.h                          |  6 ------
+ 10 files changed, 33 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 4d7c9f64ea24ec754a135a2585c99489cfa641a9..13709bb898a967968540826a2b7ee8ade6b7e082 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4982,7 +4982,19 @@ void pci_reset_secondary_bus(struct pci_dev *dev)
+diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
+index 9800b768105402d6dd1ba4b134c2ec23da6e4201..9bb8bf669a807272777b6168d042f8fd7490aeec 100644
+--- a/drivers/pci/controller/Kconfig
++++ b/drivers/pci/controller/Kconfig
+@@ -3,6 +3,10 @@
+ menu "PCI controller drivers"
+ 	depends on PCI
  
- void __weak pcibios_reset_secondary_bus(struct pci_dev *dev)
++config PCI_HOST_COMMON
++	tristate
++	select PCI_ECAM
++
+ config PCI_AARDVARK
+ 	tristate "Aardvark PCIe controller"
+ 	depends on (ARCH_MVEBU && ARM64) || COMPILE_TEST
+@@ -119,10 +123,6 @@ config PCI_FTPCI100
+ 	depends on OF
+ 	default ARCH_GEMINI
+ 
+-config PCI_HOST_COMMON
+-	tristate
+-	select PCI_ECAM
+-
+ config PCI_HOST_GENERIC
+ 	tristate "Generic PCI host controller"
+ 	depends on OF
+diff --git a/drivers/pci/controller/dwc/pcie-hisi.c b/drivers/pci/controller/dwc/pcie-hisi.c
+index 8904b5b85ee589576afcb6c81bb4bd39ff960c15..3c17897e56fcb60ec08cf522ee1485f90a2f36a3 100644
+--- a/drivers/pci/controller/dwc/pcie-hisi.c
++++ b/drivers/pci/controller/dwc/pcie-hisi.c
+@@ -15,6 +15,7 @@
+ #include <linux/pci-acpi.h>
+ #include <linux/pci-ecam.h>
+ #include "../../pci.h"
++#include "../pci-host-common.h"
+ 
+ #if defined(CONFIG_PCI_HISI) || (defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS))
+ 
+diff --git a/drivers/pci/controller/pci-host-common.c b/drivers/pci/controller/pci-host-common.c
+index f441bfd6f96a8bde1c07fcf97d43d0693c424a27..f93bc7034e697250711833a5151f7ef177cd62a0 100644
+--- a/drivers/pci/controller/pci-host-common.c
++++ b/drivers/pci/controller/pci-host-common.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+- * Generic PCI host driver common code
++ * Common library for PCI host controller drivers
+  *
+  * Copyright (C) 2014 ARM Limited
+  *
+@@ -15,6 +15,8 @@
+ #include <linux/pci-ecam.h>
+ #include <linux/platform_device.h>
+ 
++#include "pci-host-common.h"
++
+ static void gen_pci_unmap_cfg(void *ptr)
  {
-+	struct pci_host_bridge *host = pci_find_host_bridge(dev->bus);
-+	int ret;
-+
-+	if (host->reset_slot) {
-+		ret = host->reset_slot(host, dev);
-+		if (ret)
-+			pci_err(dev, "failed to reset slot: %d\n", ret);
-+
-+		return;
-+	}
-+
- 	pci_reset_secondary_bus(dev);
-+
+ 	pci_ecam_free((struct pci_config_window *)ptr);
+@@ -94,5 +96,5 @@ void pci_host_common_remove(struct platform_device *pdev)
  }
+ EXPORT_SYMBOL_GPL(pci_host_common_remove);
  
- /**
-diff --git a/drivers/pci/pcie/err.c b/drivers/pci/pcie/err.c
-index de6381c690f5c21f00021cdc7bde8d93a5c7db52..b834fc0d705938540d3d7d3d8739770c09fe7cf1 100644
---- a/drivers/pci/pcie/err.c
-+++ b/drivers/pci/pcie/err.c
-@@ -234,11 +234,6 @@ pci_ers_result_t pcie_do_recovery(struct pci_dev *dev,
- 	}
+-MODULE_DESCRIPTION("Generic PCI host common driver");
++MODULE_DESCRIPTION("Common library for PCI host controller drivers");
+ MODULE_LICENSE("GPL v2");
+diff --git a/drivers/pci/controller/pci-host-common.h b/drivers/pci/controller/pci-host-common.h
+new file mode 100644
+index 0000000000000000000000000000000000000000..30253ff26e01fb445ecf67b795209e6d0a9ec7c4
+--- /dev/null
++++ b/drivers/pci/controller/pci-host-common.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Common library for PCI host controller drivers
++ *
++ * Copyright (C) 2025 Linaro Limited
++ *
++ * Author: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
++ */
++
++#ifndef _PCI_HOST_COMMON_H
++#define _PCI_HOST_COMMON_H
++
++int pci_host_common_probe(struct platform_device *pdev);
++void pci_host_common_remove(struct platform_device *pdev);
++
++#endif
+diff --git a/drivers/pci/controller/pci-host-generic.c b/drivers/pci/controller/pci-host-generic.c
+index 4051b9b61dace669422e5a6453cc9f58a081beb5..c1bc0d34348f44c9fdd549811f637fb50fe89c64 100644
+--- a/drivers/pci/controller/pci-host-generic.c
++++ b/drivers/pci/controller/pci-host-generic.c
+@@ -14,6 +14,8 @@
+ #include <linux/pci-ecam.h>
+ #include <linux/platform_device.h>
  
- 	if (status == PCI_ERS_RESULT_NEED_RESET) {
--		/*
--		 * TODO: Should call platform-specific
--		 * functions to reset slot before calling
--		 * drivers' slot_reset callbacks?
--		 */
- 		status = PCI_ERS_RESULT_RECOVERED;
- 		pci_dbg(bridge, "broadcast slot_reset message\n");
- 		pci_walk_bridge(bridge, report_slot_reset, &status);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 0e8e3fd77e96713054388bdc82f439e51023c1bf..8d7d2a49b76cf64b4218b179cec495e0d69ddf6f 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -599,6 +599,7 @@ struct pci_host_bridge {
- 	void (*release_fn)(struct pci_host_bridge *);
- 	int (*enable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
- 	void (*disable_device)(struct pci_host_bridge *bridge, struct pci_dev *dev);
-+	int (*reset_slot)(struct pci_host_bridge *bridge, struct pci_dev *dev);
- 	void		*release_data;
- 	unsigned int	ignore_reset_delay:1;	/* For entire hierarchy */
- 	unsigned int	no_ext_tags:1;		/* No Extended Tags */
++#include "pci-host-common.h"
++
+ static const struct pci_ecam_ops gen_pci_cfg_cam_bus_ops = {
+ 	.bus_shift	= 16,
+ 	.pci_ops	= {
+diff --git a/drivers/pci/controller/pci-thunder-ecam.c b/drivers/pci/controller/pci-thunder-ecam.c
+index 08161065a89c35a95714df935ef437dfc8845697..b5b4a958e6a22b21501cad45bb242a95a784efc1 100644
+--- a/drivers/pci/controller/pci-thunder-ecam.c
++++ b/drivers/pci/controller/pci-thunder-ecam.c
+@@ -11,6 +11,8 @@
+ #include <linux/pci-ecam.h>
+ #include <linux/platform_device.h>
+ 
++#include "pci-host-common.h"
++
+ #if defined(CONFIG_PCI_HOST_THUNDER_ECAM) || (defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS))
+ 
+ static void set_val(u32 v, int where, int size, u32 *val)
+diff --git a/drivers/pci/controller/pci-thunder-pem.c b/drivers/pci/controller/pci-thunder-pem.c
+index f1bd5de67997cddac173723bc7f4ec20aaf20064..5fa037fb61dc356f3029d1b5cae632ae1da5bb9b 100644
+--- a/drivers/pci/controller/pci-thunder-pem.c
++++ b/drivers/pci/controller/pci-thunder-pem.c
+@@ -14,6 +14,7 @@
+ #include <linux/platform_device.h>
+ #include <linux/io-64-nonatomic-lo-hi.h>
+ #include "../pci.h"
++#include "pci-host-common.h"
+ 
+ #if defined(CONFIG_PCI_HOST_THUNDER_PEM) || (defined(CONFIG_ACPI) && defined(CONFIG_PCI_QUIRKS))
+ 
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 18e11b9a7f46479348815c3f706319189e0a80b5..edd4c8c683c6a693401b47f5f056641c13ae89f8 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -29,6 +29,8 @@
+ #include <linux/of_irq.h>
+ #include <linux/pci-ecam.h>
+ 
++#include "pci-host-common.h"
++
+ #define CORE_RC_PHYIF_CTL		0x00024
+ #define   CORE_RC_PHYIF_CTL_RUN		BIT(0)
+ #define CORE_RC_PHYIF_STAT		0x00028
+diff --git a/drivers/pci/controller/plda/pcie-microchip-host.c b/drivers/pci/controller/plda/pcie-microchip-host.c
+index 3fdfffdf027001bf88df8e1c2538587298228220..24bbf93b8051fa0d9027ce6983eae34cad81065e 100644
+--- a/drivers/pci/controller/plda/pcie-microchip-host.c
++++ b/drivers/pci/controller/plda/pcie-microchip-host.c
+@@ -23,6 +23,7 @@
+ #include <linux/wordpart.h>
+ 
+ #include "../../pci.h"
++#include "../pci-host-common.h"
+ #include "pcie-plda.h"
+ 
+ #define MC_MAX_NUM_INBOUND_WINDOWS		8
+diff --git a/include/linux/pci-ecam.h b/include/linux/pci-ecam.h
+index 3a10f8cfc3ad5c90585a8fc971be714011ed18fe..d930651473b4d0b406e657a24ede87e09517d091 100644
+--- a/include/linux/pci-ecam.h
++++ b/include/linux/pci-ecam.h
+@@ -93,10 +93,4 @@ extern const struct pci_ecam_ops al_pcie_ops;	/* Amazon Annapurna Labs PCIe */
+ extern const struct pci_ecam_ops tegra194_pcie_ops; /* Tegra194 PCIe */
+ extern const struct pci_ecam_ops loongson_pci_ecam_ops; /* Loongson PCIe */
+ #endif
+-
+-#if IS_ENABLED(CONFIG_PCI_HOST_COMMON)
+-/* for DT-based PCI controllers that support ECAM */
+-int pci_host_common_probe(struct platform_device *pdev);
+-void pci_host_common_remove(struct platform_device *pdev);
+-#endif
+ #endif
 
 -- 
 2.43.0
